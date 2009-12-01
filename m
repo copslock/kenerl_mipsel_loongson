@@ -1,55 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 12:17:19 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:39842 "EHLO
-        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492257AbZLALRQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 12:17:16 +0100
-Received: by pzk35 with SMTP id 35so3583862pzk.22
-        for <multiple recipients>; Tue, 01 Dec 2009 03:17:09 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 12:24:52 +0100 (CET)
+Received: from mail-px0-f188.google.com ([209.85.216.188]:57711 "EHLO
+        mail-px0-f188.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491890AbZLAFOF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 06:14:05 +0100
+Received: by pxi26 with SMTP id 26so3482064pxi.21
+        for <linux-mips@linux-mips.org>; Mon, 30 Nov 2009 21:13:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :in-reply-to:references:content-type:organization:date:message-id
          :mime-version:x-mailer:content-transfer-encoding;
-        bh=LkCofArmK7dwd2HGTz6gKeJsoTtytXbkQU90l2kII6M=;
-        b=Gij/nukzgsAKQUjiM4QOBtxb2Hc4yEFP1+D2YNqPsooLuM6s8gYfKimfS+KnMv63E6
-         ORKQ3LKXKb+kDHYfi+x6y7ti8nIBj3uBJdVBIEKtnzuUPXohtwc6+0P+oavl/5yP68wU
-         DrlMBIc+xGMT3v/d85HR8XCWgVPVAt1iSPjiU=
+        bh=biDWTKaGpxE7E8xz9W9tSmQ9Kx04Qa2WjIz6vqWIDXU=;
+        b=aUf+/D+VT+cwAmrF16opwrsNBeTxT7YRzo1P/88Yg4zC9PuCxl3wb8bAyFci0QkeQr
+         5HFpyb+sgoWfTYd4vSpNEmBfM/qLS8pMUTAL/lx3j4X80oWHWsmfLN0/Hol+1HVmNADM
+         8oRDMEaO+HMKpU0zjHqlGQzShTIpfu5z1SAz8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=BSugQVKB9AKQwUj31oeO2yqeKXAYjQ+zFpq3rbVGnQir8S95E22ni+ROas36xTWA/G
-         dHhZnAF1PFgWfLzk2XUnMn9YbfluyqV1dN0/vgJU1gqnzk4UxYBumPQe+FNUktVUw92h
-         TVSTnciKRx7XUDtwvGQCOBXSv4C3+T1tBn/IM=
-Received: by 10.114.188.17 with SMTP id l17mr10606869waf.135.1259666229368;
-        Tue, 01 Dec 2009 03:17:09 -0800 (PST)
+        b=qvgG2I5hbXvVrHNpamnm4ZlSt1OhmG5C4gpxJ2mqViUoeoUJjBxeJ/pnqgqWWn1Ggn
+         0lG1ehw05/mzQu4N/QVWxHwtwkUYW6sGEtLRRNsFuOA4rzc/EofobfJ3rJrzWoViNRDU
+         2ynlB+PP2ShO1LTePvbaWT9wd44TeZN15tVKc=
+Received: by 10.115.134.40 with SMTP id l40mr9838187wan.41.1259644437268;
+        Mon, 30 Nov 2009 21:13:57 -0800 (PST)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm4561pzk.3.2009.12.01.03.17.05
+        by mx.google.com with ESMTPS id 21sm306126pxi.12.2009.11.30.21.13.54
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 01 Dec 2009 03:17:08 -0800 (PST)
-Subject: Re: [PATCH v6 0/8] Loongson: YeeLoong: add platform specific
- drivers
+        Mon, 30 Nov 2009 21:13:56 -0800 (PST)
+Subject: Re: hello! can you help me for compiling the linux kernel?
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, "Rafael J. Wysocki" <rjw@sisk.pl>,
-        linux-mips@linux-mips.org, zhangfx@lemote.com
-In-Reply-To: <cover.1259660040.git.wuzhangjin@gmail.com>
-References: <cover.1259660040.git.wuzhangjin@gmail.com>
+To:     jack_lu <jacklu@allplus-cn.com>
+Cc:     linux-mips@linux-mips.org
+In-Reply-To: <74D96A2497124516897C6F4D06D8B5AB@DELLPC>
+References: <74D96A2497124516897C6F4D06D8B5AB@DELLPC>
 Content-Type: text/plain; charset="UTF-8"
 Organization: DSLab, Lanzhou University, China
-Date:   Tue, 01 Dec 2009 19:16:46 +0800
-Message-ID: <1259666206.7093.4.camel@falcon.domain.org>
+Date:   Tue, 01 Dec 2009 13:13:36 +0800
+Message-ID: <1259644416.5139.11.camel@falcon.domain.org>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25232
+X-archive-position: 25233
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,98 +55,67 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Sorry, I have sent this stuff 8 times, forgive me ;(
+On Tue, 2009-12-01 at 11:52 +0800, jack_lu wrote:
+> Dear Sir,
+> 　　hello! can you help me for compiling the linux kernel?
+> 　　Linux version is linux-2.6.21.5.
+> 　　CPU:mips
+> 　　Cross-compilation tools is eldk and openwrt file packages.
 
-On Tue, 2009-12-01 at 19:06 +0800, Wu Zhangin wrote:
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
+Hello,
+
+Which board are you using? and did you try the corresponding defconfig
+file under arch/mips/configs/.
+
+Regards,
+	Wu zhangjin
+
+> 　　Errors are the followings.
+> 　　init/built-in.o: In function `init':
+> 　　init/main.c:833: undefined reference to `opipmux_gel_init'
+> 　　init/main.c:833: relocation truncated to fit: R_MIPS_26 against `opipmux_gel_init'
+> 　　init/main.c:835: undefined reference to `ip_auto_config'
+> 　　init/main.c:835: relocation truncated to fit: R_MIPS_26 against `ip_auto_config'
+> 　　init/built-in.o: In function `start_kernel':
+> 　　init/main.c:525: undefined reference to `setup_prom_printf'
+> 　　init/main.c:525: relocation truncated to fit: R_MIPS_26 against `setup_prom_printf'
+> 　　init/main.c:527: undefined reference to `prom_printf'
+> 　　init/main.c:527: relocation truncated to fit: R_MIPS_26 against `prom_printf'
+> 　　init/main.c:530: undefined reference to `prom_printf'
+> 　　init/main.c:530: relocation truncated to fit: R_MIPS_26 against `prom_printf'
+> 　　arch/mips/kernel/built-in.o: In function `test_setdata':
+> 　　arch/mips/kernel/syscall.c:461: undefined reference to `set_ipmux_el_tx_buf_data'
+> 　　arch/mips/kernel/syscall.c:461: relocation truncated to fit: R_MIPS_26 against `set_ipmux_el_tx_buf_data'
+> 　　arch/mips/kernel/built-in.o: In function `test_getdata':
+> 　　arch/mips/kernel/syscall.c:453: undefined reference to `get_ipmux_el_rx_buf_data'
+> 　　arch/mips/kernel/syscall.c:453: relocation truncated to fit: R_MIPS_26 against `get_ipmux_el_rx_buf_data'
+> 　　arch/mips/kernel/built-in.o: In function `test_waitinterrupt':
+> 　　arch/mips/kernel/syscall.c:446: undefined reference to `wait_for_host_test_interrupt'
+> 　　arch/mips/kernel/syscall.c:446: relocation truncated to fit: R_MIPS_26 against `wait_for_host_test_interrupt'
+> 　　kernel/built-in.o: In function `free_module':
+> 　　kernel/module.c:1231: undefined reference to `kfree1'
+> 　　kernel/module.c:1231: relocation truncated to fit: R_MIPS_26 against `kfree1'
+> 　　drivers/built-in.o: In function `snapshot_map':
+> 　　drivers/md/dm-snap.c:900: undefined reference to `__cmpdi2'
+> 　　drivers/md/dm-snap.c:900: relocation truncated to fit: R_MIPS_26 against `__cmpdi2'
+> 　　make: *** [.tmp_vmlinux1] Error 1
+> 　　make: *** No rule to make target `../vmlinux', needed by `piggy.lzma'.  Stop.
+> 　　copyed to ../wrt_uImage
+> 　　cp: cannot stat `uImageLzma': No such file or directory
+> 　　ls: cannot access ../wrt_uImage: No such file or directory
+> 　　===============================================================
+> 　　    output files:                           
+> 　　         wrt_uImage : the kernel image      
+> 　　
+> 　　
+> 　　Thanks &Best Wishes,
+> 　　Jack_Lu(鲁红刚)
+>    益满颖贸易（上海）有限公司
+>    上海市愚园路168号环球大厦A座2101室
+>    电话：+86 21 62495328/29/30/31 分机：820
+>    传真：+86 21 62490538
+>    MSN: luhongang@163.com
 > 
-> This patchset adds platform specific drivers for YeeLoong netbook. including
-> the backlight, battery, hwmon, video output, suspend and hotkey(input) drivers.
-> These drivers provide standard interfaces to the user-space applications to
-> manage the relative devices:
-> 	
->  	 Modules			Tools
+> 　　
 > 
-> 	- backlight
-> 	  /sys/class/backlight/		kpowersave, gnome-power-manager
-> 	- battery
-> 	  /proc/apm			kpowersave, gnome-power-manager
-> 	- hwmon
-> 	  /sys/class/hwmon/		lm-sensors, sensors-applet...
-> 	- video output
-> 	  /sys/class/video_output	?
-> 	- suspend
-> 	  /sys/power/state		kpowersave, gnome-power-manager
-> 	- hotkey
-> 	  /sys/class/input/		gnome-settings-daemon ?
-> 
-> To utilize the above interfaces, you are recommended to install the latest hal,
-> dbus.
-> 
-> This v6 revision incorporates with the feedbacks from Ralf, Pavel Machek,
-> Rafael J. Wysocki and Dmitry Torokhov.
-> 
-> Changes from the old v5 revision:
-> 
-> 	- Cleanup the "select" and "depend" of the options
-> 	  Replace some "select"s by "depend"s to avoid potential compiling
-> 	  errors.
-> 
-> 	- Cleanup the hotkey(input) driver
-> 	  Merge several functions, Cleanup the comments, Use Switch...Case
-> 	  instead of the array.
-> 
-> 	- Fixup of the video output driver  
-> 	  Seems the video output subsystem doesn't handle the input value, we
-> 	  handle it outselves via !!od->request_state.
-> 
-> 	- Append the yl_ prefix to the file names
-> 	  yl_ prefix is needed to distinguish it with the next patchset for
-> 	  lynloong pc platform drivers.
-> 
-> All changes have been tested again.
-> 
-> Best Regards,
->      Wu Zhangjin
-> 
-> Wu Zhangjin (8):
->   Loongson: Lemote-2F: add platform specific submenu
->   Loongson: YeeLoong: add platform specific option
->   Loongson: YeeLoong: add backlight driver
->   Loongson: YeeLoong: add battery driver
->   Loongson: YeeLoong: add hwmon driver
->   Loongson: YeeLoong: add video output driver
->   Loongson: YeeLoong: add suspend driver
->   Loongson: YeeLoong: add hotkey driver
-> 
->  arch/mips/kernel/setup.c                           |    1 +
->  arch/mips/loongson/Kconfig                         |   21 +
->  arch/mips/loongson/lemote-2f/Makefile              |    7 +-
->  arch/mips/loongson/lemote-2f/ec_kb3310b.c          |  130 ------
->  arch/mips/loongson/lemote-2f/ec_kb3310b.h          |  188 --------
->  arch/mips/loongson/lemote-2f/pm.c                  |    4 +-
->  arch/mips/loongson/lemote-2f/reset.c               |    2 +-
->  .../loongson/lemote-2f/yeeloong_laptop/Kconfig     |   65 +++
->  .../loongson/lemote-2f/yeeloong_laptop/Makefile    |   10 +
->  .../lemote-2f/yeeloong_laptop/ec_kb3310b.c         |  126 ++++++
->  .../lemote-2f/yeeloong_laptop/ec_kb3310b.h         |  193 +++++++++
->  .../lemote-2f/yeeloong_laptop/yl_backlight.c       |   93 ++++
->  .../lemote-2f/yeeloong_laptop/yl_battery.c         |  127 ++++++
->  .../loongson/lemote-2f/yeeloong_laptop/yl_hotkey.c |  452 ++++++++++++++++++++
->  .../loongson/lemote-2f/yeeloong_laptop/yl_hwmon.c  |  239 +++++++++++
->  .../lemote-2f/yeeloong_laptop/yl_suspend.c         |  135 ++++++
->  .../loongson/lemote-2f/yeeloong_laptop/yl_vo.c     |  164 +++++++
->  17 files changed, 1635 insertions(+), 322 deletions(-)
->  delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.c
->  delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/Kconfig
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/Makefile
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/ec_kb3310b.c
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/ec_kb3310b.h
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/yl_backlight.c
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/yl_battery.c
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/yl_hotkey.c
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/yl_hwmon.c
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/yl_suspend.c
->  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/yl_vo.c
 > 

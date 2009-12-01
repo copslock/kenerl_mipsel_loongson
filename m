@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 12:25:23 +0100 (CET)
-Received: from 60-248-150-25.HINET-IP.hinet.net ([60.248.150.25]:47728 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 12:25:41 +0100 (CET)
+Received: from 60-248-150-25.HINET-IP.hinet.net ([60.248.150.25]:41294 "EHLO
         dns.allplus-cn.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1492002AbZLAFaB convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 06:30:01 +0100
+        with ESMTP id S1492070AbZLAFd3 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 06:33:29 +0100
 Received: from DELLPC (unknown [116.231.39.52])
-        by dns.allplus-cn.com (Postfix) with ESMTP id C41B42DBB23;
-        Tue,  1 Dec 2009 14:28:03 +0800 (CST)
+        by dns.allplus-cn.com (Postfix) with ESMTP id 7D60A2DBD5D;
+        Tue,  1 Dec 2009 14:31:41 +0800 (CST)
 From:   "jack_lu" <jacklu@allplus-cn.com>
 To:     <wuzhangjin@gmail.com>
 Cc:     <linux-mips@linux-mips.org>
@@ -13,15 +13,15 @@ References: <74D96A2497124516897C6F4D06D8B5AB@DELLPC> <1259644416.5139.11.camel@
 In-Reply-To: <1259644416.5139.11.camel@falcon.domain.org>
 Subject: =?gb2312?B?tPC4tDogaGVsbG8hIGNhbiB5b3UgaGVscCBtZSBmb3IgY29tcGlsaQ==?=
         =?gb2312?B?bmcgdGhlIGxpbnV4IGtlcm5lbD8=?=
-Date:   Tue, 1 Dec 2009 13:29:32 +0800
-Message-ID: <1A667674F8FA4416BF13CA3E9B322994@DELLPC>
+Date:   Tue, 1 Dec 2009 13:33:11 +0800
+Message-ID: <505B44E810DF4EFDA65D25549FF81605@DELLPC>
 MIME-Version: 1.0
 Content-Type: text/plain;
         charset="gb2312"
 Content-Transfer-Encoding: 8BIT
 X-Mailer: Microsoft Office Outlook 11
 X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7600.16385
-Thread-Index: AcpyTUIR86a5UbZCQDKxZPGeG8YtqgAB2Dmw
+Thread-Index: AcpyTUIR86a5UbZCQDKxZPGeG8YtqgABe7Wg
 X-Allplus-MailScanner-Information: Please contact the ISP for more information
 X-Allplus-MailScanner: Found to be clean
 X-Allplus-MailScanner-From: jacklu@allplus-cn.com
@@ -29,7 +29,7 @@ Return-Path: <jacklu@allplus-cn.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25234
+X-archive-position: 25235
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -38,18 +38,11 @@ X-original-sender: jacklu@allplus-cn.com
 Precedence: bulk
 X-list: linux-mips
 
-Dear Wu，
-     The demo board is ONU. It is used in EPON systerm.
-     I copy the cross-compilation to /opt,then modify CROSS_COMPILE
-=/opt/openwrt/kamikaze_7.09/staging_dir_mips/bin/mips-linux-uclibc- in
-mklzma.sh and Makefile.
-     Then make config,and compile kernel.
-     Use make command or sh mklzma.sh command can compile kernel.the same
-errors come when excute one of two commands
-
-Best Wishes
+Dear Wu,
+     I tried to add #include <asm-mips/ipmux.h> or extern __init
+opipmux_gel_init,but can not resolve these errors.
+Thanks,
 Jack Lu
-
 
 -----邮件原件-----
 发件人: Wu Zhangjin [mailto:wuzhangjin@gmail.com] 

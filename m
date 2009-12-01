@@ -1,61 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 16:58:39 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:38038 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492779AbZLAP6g (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Dec 2009 16:58:36 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nB1Fwlbd005937;
-        Tue, 1 Dec 2009 15:58:47 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nB1FwkdH005936;
-        Tue, 1 Dec 2009 15:58:46 GMT
-Date:   Tue, 1 Dec 2009 15:58:46 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:     linux-mips@linux-mips.org, zhangfx@lemote.com
-Subject: Re: [PATCH 2/2] Loongson: disable FLATMEM
-Message-ID: <20091201155846.GC23697@linux-mips.org>
-References: <1259650542-31922-1-git-send-email-wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 19:04:11 +0100 (CET)
+Received: from mail-px0-f176.google.com ([209.85.216.176]:34982 "EHLO
+        mail-px0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492943AbZLASEI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 19:04:08 +0100
+Received: by pxi6 with SMTP id 6so470284pxi.0
+        for <multiple recipients>; Tue, 01 Dec 2009 10:03:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :message-id:references:mime-version:content-type:content-disposition
+         :in-reply-to:user-agent;
+        bh=u1AliPVst7RdmfJDzZ7mr9CUBONmzPmQ6Gp1aCL3iPE=;
+        b=tZ6M1JOgZU7k3QY3Ckt9iVAYoc5kk1+jJU1MprcpEMpvhNRPTRKt8uo28g4VwcL6yd
+         9Hmbah1T5YLk2IqSoJ09HQiMUDqDKudGbuC/x5Z/M8xpsg4DwFvUNg7+CCm2PBVmLJlo
+         tavc/xfygoTqF/0HH1k+ZzlTRTu29vsYs0seQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        b=bh7eXohTDOugVKK2/7F7JcQYH+shqyvMAH6FnFENhFJ4/Lb73tKmMUTdjzSX6Mqcn/
+         xpIwTPNEBUeS3rjktL9QW888+MjbQJXL0pIyvTGr0Q8v5FtYehbbjzwll+ShtBepo73E
+         mxK9OAEkZF14Opd39+FwzRVYM8XGKCRqu1MOs=
+Received: by 10.114.214.24 with SMTP id m24mr11666600wag.93.1259690639846;
+        Tue, 01 Dec 2009 10:03:59 -0800 (PST)
+Received: from mailhub.coreip.homeip.net (c-24-6-153-137.hsd1.ca.comcast.net [24.6.153.137])
+        by mx.google.com with ESMTPS id 22sm410727pxi.14.2009.12.01.10.03.58
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 01 Dec 2009 10:03:58 -0800 (PST)
+Date:   Tue, 1 Dec 2009 10:03:50 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Wu Zhangin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        zhangfx@lemote.com
+Subject: Re: [PATCH v6 8/8] Loongson: YeeLoong: add hotkey driver
+Message-ID: <20091201180350.GB19259@core.coreip.homeip.net>
+References: <cover.1259664573.git.wuzhangjin@gmail.com> <939c1425f653e3bda05799345c53198dfd2c1dcc.1259664573.git.wuzhangjin@gmail.com> <20091201154050.GJ14064@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1259650542-31922-1-git-send-email-wuzhangjin@gmail.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20091201154050.GJ14064@linux-mips.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <dmitry.torokhov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25255
+X-archive-position: 25256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dmitry.torokhov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 01, 2009 at 02:55:42PM +0800, Wu Zhangjin wrote:
+On Tue, Dec 01, 2009 at 03:40:50PM +0000, Ralf Baechle wrote:
+> On Tue, Dec 01, 2009 at 07:12:37PM +0800, Wu Zhangin wrote:
+> 
+> > From: Wu Zhangjin <wuzhangjin@gmail.com>
+> > 
+> > This patch adds Hotkey Driver, which will do relative actions for The
+> > hotkey event and report the corresponding input keys to the user-space
+> > applications.
+> 
+> This one also should become a platform driver.  And is probably a
+> candidate for drivers/input/keyboard.
+> 
 
-> With FLATMEM, The STD(Hibernation) for Loongson will fail, and there are
-> also some other problems(break the files) when using NFS or CIFS(samba).
-> 
-> And as the config help of SPARSEMEM says:
-> 
-> "This option provides some potential performance benefits, along with
-> decreased code complexity."
-> 
-> So, to avoid the potential problems of FLATMEM, we disable FLATMEM
-> directly and use SPARSEMEM instead.
-> 
-> Relative Email thread:
-> 
-> http://groups.google.com/group/loongson-dev/browse_thread/thread/b6b65890ec2b0f24/feb43e5aa7f55d9b?show_docid=feb43e5aa7f55d9b
-> 
-> Reported-by: Tatu Kilappa <tatu.kilappa@gmail.com>
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+Umm, it still mixes up bunch of stuff not directly related to input. I'd
+vote for drivers/platform/mips (since we have a few of kitchen-sink
+style drivers for x86-based laptops in drivers/platform/x86).
 
-Applied - though I'm not so sure if I can get this one to Linus as
-close to a release as we are now.
+Thanks.
 
-Thanks!
-
-  Ralf
+-- 
+Dmitry

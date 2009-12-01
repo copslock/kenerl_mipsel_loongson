@@ -1,161 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 04:58:42 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:52760 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491808AbZLAD6i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Dec 2009 04:58:38 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nB13wwNe015313;
-        Tue, 1 Dec 2009 03:58:58 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nB13wwCk015311;
-        Tue, 1 Dec 2009 03:58:58 GMT
-Date:   Tue, 1 Dec 2009 03:58:58 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David VomLehn <dvomlehn@cisco.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] Set of fixes for DMA when dma_addr_t != physical
- address
-Message-ID: <20091201035857.GC29728@linux-mips.org>
-References: <20091125200027.GA13748@dvomlehn-lnx2.corp.sa.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 04:59:53 +0100 (CET)
+Received: from 60-248-150-25.HINET-IP.hinet.net ([60.248.150.25]:43600 "EHLO
+        dns.allplus-cn.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S1491756AbZLADwg convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 04:52:36 +0100
+Received: from DELLPC (unknown [116.231.39.52])
+        by dns.allplus-cn.com (Postfix) with ESMTP id 912192DBD5D
+        for <linux-mips@linux-mips.org>; Tue,  1 Dec 2009 12:50:43 +0800 (CST)
+From:   "jack_lu" <jacklu@allplus-cn.com>
+To:     <linux-mips@linux-mips.org>
+Subject:  hello! can you help me for compiling the linux kernel?
+Date:   Tue, 1 Dec 2009 11:52:07 +0800
+Message-ID: <74D96A2497124516897C6F4D06D8B5AB@DELLPC>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20091125200027.GA13748@dvomlehn-lnx2.corp.sa.net>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Mailer: Microsoft Office Outlook 11
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7600.16385
+Thread-Index: AcpyNZYhWZbNIwZFQnuHM/f8qsMGWQAA/jsg
+X-Allplus-MailScanner-Information: Please contact the ISP for more information
+X-Allplus-MailScanner: Found to be clean
+X-Allplus-MailScanner-From: jacklu@allplus-cn.com
+Return-Path: <jacklu@allplus-cn.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25219
+X-archive-position: 25220
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jacklu@allplus-cn.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 25, 2009 at 03:00:28PM -0500, David VomLehn wrote:
+Dear Sir,
+　　hello! can you help me for compiling the linux kernel?
+　　Linux version is linux-2.6.21.5.
+　　CPU:mips
+　　Cross-compilation tools is eldk and openwrt file packages.
+　　Errors are the followings.
+　　init/built-in.o: In function `init':
+　　init/main.c:833: undefined reference to `opipmux_gel_init'
+　　init/main.c:833: relocation truncated to fit: R_MIPS_26 against `opipmux_gel_init'
+　　init/main.c:835: undefined reference to `ip_auto_config'
+　　init/main.c:835: relocation truncated to fit: R_MIPS_26 against `ip_auto_config'
+　　init/built-in.o: In function `start_kernel':
+　　init/main.c:525: undefined reference to `setup_prom_printf'
+　　init/main.c:525: relocation truncated to fit: R_MIPS_26 against `setup_prom_printf'
+　　init/main.c:527: undefined reference to `prom_printf'
+　　init/main.c:527: relocation truncated to fit: R_MIPS_26 against `prom_printf'
+　　init/main.c:530: undefined reference to `prom_printf'
+　　init/main.c:530: relocation truncated to fit: R_MIPS_26 against `prom_printf'
+　　arch/mips/kernel/built-in.o: In function `test_setdata':
+　　arch/mips/kernel/syscall.c:461: undefined reference to `set_ipmux_el_tx_buf_data'
+　　arch/mips/kernel/syscall.c:461: relocation truncated to fit: R_MIPS_26 against `set_ipmux_el_tx_buf_data'
+　　arch/mips/kernel/built-in.o: In function `test_getdata':
+　　arch/mips/kernel/syscall.c:453: undefined reference to `get_ipmux_el_rx_buf_data'
+　　arch/mips/kernel/syscall.c:453: relocation truncated to fit: R_MIPS_26 against `get_ipmux_el_rx_buf_data'
+　　arch/mips/kernel/built-in.o: In function `test_waitinterrupt':
+　　arch/mips/kernel/syscall.c:446: undefined reference to `wait_for_host_test_interrupt'
+　　arch/mips/kernel/syscall.c:446: relocation truncated to fit: R_MIPS_26 against `wait_for_host_test_interrupt'
+　　kernel/built-in.o: In function `free_module':
+　　kernel/module.c:1231: undefined reference to `kfree1'
+　　kernel/module.c:1231: relocation truncated to fit: R_MIPS_26 against `kfree1'
+　　drivers/built-in.o: In function `snapshot_map':
+　　drivers/md/dm-snap.c:900: undefined reference to `__cmpdi2'
+　　drivers/md/dm-snap.c:900: relocation truncated to fit: R_MIPS_26 against `__cmpdi2'
+　　make: *** [.tmp_vmlinux1] Error 1
+　　make: *** No rule to make target `../vmlinux', needed by `piggy.lzma'.  Stop.
+　　copyed to ../wrt_uImage
+　　cp: cannot stat `uImageLzma': No such file or directory
+　　ls: cannot access ../wrt_uImage: No such file or directory
+　　===============================================================
+　　    output files:                           
+　　         wrt_uImage : the kernel image      
+　　
+　　
+　　Thanks &Best Wishes,
+　　Jack_Lu(鲁红刚)
+   益满颖贸易（上海）有限公司
+   上海市愚园路168号环球大厦A座2101室
+   电话：+86 21 62495328/29/30/31 分机：820
+   传真：+86 21 62490538
+   MSN: luhongang@163.com
 
-> Fixes for using DMA on systems where the DMA address and the physical address
-> differ.
-> 
-> Signed-off-by: Dezhong Diao <dediao@cisco.com>
-> Signed-off-by: David VomLehn <dvomlehn@cisco.com>
-> ---
->  arch/mips/mm/dma-default.c |   22 ++++++++++++++--------
->  1 files changed, 14 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-> index 414d7ff..eaa7fb4 100644
-> --- a/arch/mips/mm/dma-default.c
-> +++ b/arch/mips/mm/dma-default.c
-> @@ -24,8 +24,11 @@ static inline unsigned long dma_addr_to_virt(struct device *dev,
->  	dma_addr_t dma_addr)
->  {
->  	unsigned long addr = plat_dma_addr_to_phys(dev, dma_addr);
-> +	unsigned int offset = (dma_addr & ~PAGE_MASK);
-> +	struct page *pg;
->  
-> -	return (unsigned long)phys_to_virt(addr);
-> +	pg = pfn_to_page(addr >> PAGE_SHIFT);
-> +	return (unsigned long)(page_address(pg) + offset);
+　　
 
-So this is the core of the two patches.
 
-It'll make I/O to kmapped pages work - but you're not supposed to do that.
-The burden to perform I/O on highmem pages is on the subsystem that does
-the I/O, not the DMA layer!
-
->  }
->  
->  /*
-> @@ -136,7 +139,6 @@ EXPORT_SYMBOL(dma_free_coherent);
->  static inline void __dma_sync(unsigned long addr, size_t size,
->  	enum dma_data_direction direction)
->  {
-> -
-
-This is the blank line the previous patch shouldn't have added.
-
->  	BUG_ON(addr < KSEG0);
->  
->  	switch (direction) {
-> @@ -197,8 +199,8 @@ int dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
->  		addr = (unsigned long) sg_virt(sg);
->  		if (!plat_device_is_coherent(dev) && (addr >= KSEG0))
->  			__dma_sync(addr, sg->length, direction);
-> -
-> -		sg->dma_address = sg_phys(sg);
-> +		sg->dma_address = plat_map_dma_mem_page(dev, sg_page(sg)) +
-> +			sg->offset;
-
-Ah, this segment undoes the damage done by the previous patch.  If I apply
-both and diff, the change looks like:
-
--               sg->dma_address = plat_map_dma_mem(dev,
--                                                  (void *)addr, sg->length);
-+               sg->dma_address = plat_map_dma_mem_page(dev, sg_page(sg)) +
-+                       sg->offset;
-
-sg_page returns a struct page *.  Adding sg->offset yields nonense.  I think
-you mean something like ((unsigned long) sg_page(sg)) + sg->offset.
-
->  	}
->  
->  	return nents;
-> @@ -253,7 +255,8 @@ void dma_sync_single_for_cpu(struct device *dev, dma_addr_t dma_handle,
->  		unsigned long addr;
->  
->  		addr = dma_addr_to_virt(dev, dma_handle);
-> -		__dma_sync(addr, size, direction);
-> +		if (addr >= KSEG0)
-> +			__dma_sync(addr, size, direction);
-
-Again this KSEG0 comparison will not work as intended on 64-bit.  And on 32-bit
-I don't see why it would be required.  No userspace address should ever be
-passed into this function.
-
->  	}
->  }
->  
-> @@ -269,7 +272,8 @@ void dma_sync_single_for_device(struct device *dev, dma_addr_t dma_handle,
->  		unsigned long addr;
->  
->  		addr = dma_addr_to_virt(dev, dma_handle);
-> -		__dma_sync(addr, size, direction);
-> +		if (addr >= KSEG0)
-> +			__dma_sync(addr, size, direction);
-
-Ditto.
-
->  	}
->  }
->  
-> @@ -284,7 +288,8 @@ void dma_sync_single_range_for_cpu(struct device *dev, dma_addr_t dma_handle,
->  		unsigned long addr;
->  
->  		addr = dma_addr_to_virt(dev, dma_handle);
-> -		__dma_sync(addr + offset, size, direction);
-> +		if (addr >= KSEG0)
-> +			__dma_sync(addr + offset, size, direction);
-
-Ditto.
-
->  	}
->  }
->  
-> @@ -300,7 +305,8 @@ void dma_sync_single_range_for_device(struct device *dev, dma_addr_t dma_handle,
->  		unsigned long addr;
->  
->  		addr = dma_addr_to_virt(dev, dma_handle);
-> -		__dma_sync(addr + offset, size, direction);
-> +		if (addr >= KSEG0)
-> +			__dma_sync(addr + offset, size, direction);
-
-Ditto.
-
->  	}
->  }
->  
-
-  Ralf
+-- 
+This message has been scanned for viruses and
+dangerous content by MailScanner, and is
+believed to be clean.

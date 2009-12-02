@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2009 18:19:33 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:48966 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493472AbZLBRTa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Dec 2009 18:19:30 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nB2HJSu5000373;
-        Wed, 2 Dec 2009 17:19:28 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nB2HJRuK000371;
-        Wed, 2 Dec 2009 17:19:27 GMT
-Date:   Wed, 2 Dec 2009 17:19:27 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Ales Mulej <Ales.Mulej@HSTX.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: Reserved instruction in kernel code
-Message-ID: <20091202171927.GB13441@linux-mips.org>
-References: <C5BD21D6E1A3114C8765C8FBBD0087BA330A85@exchtxuk2.HSTX.global.vpn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2009 18:40:48 +0100 (CET)
+Received: from mail-fx0-f225.google.com ([209.85.220.225]:61742 "EHLO
+        mail-fx0-f225.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492001AbZLBRko convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Dec 2009 18:40:44 +0100
+Received: by mail-fx0-f225.google.com with SMTP id 25so497551fxm.26
+        for <multiple recipients>; Wed, 02 Dec 2009 09:40:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=OgwRzilwzzv05ykIRJ+Z5uggB7+R/TH6zeIGH1A2XO4=;
+        b=wfucZ9ow/cwc88sIixlxTDtqEAWXqnO0MNQxi/7ztE5KC5+9GiJ5eUAKK73AuUyzML
+         T5kdHYL2En1nU/Kp7Stnal29L9V5Pmg1tLN4aGHrdLWF42z3q9lj26US8jjd0F/QAybj
+         eF6w8YA8PX9efDfcpj4eeILOIiJNyS+K0JEqI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=N17OO/Fd/llocXn6eXu4A0R7kpsaEKdi40Cf8PTpabi7O6RBv0srxUvQP6EnPVn6bN
+         SEMMetMVZsvIeJg2rHjq+BWp2ChDuFqsn0VmtDnUM8GodZVjjJMwJ6o+t6BbRFw1T+tk
+         98UwOoTtFa4sEQywJV7RMWraoB9fR9RYj9SpQ=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C5BD21D6E1A3114C8765C8FBBD0087BA330A85@exchtxuk2.HSTX.global.vpn>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.223.164.104 with SMTP id d40mr58149fay.98.1259775644522; Wed, 
+        02 Dec 2009 09:40:44 -0800 (PST)
+In-Reply-To: <20091202170828.GA13441@linux-mips.org>
+References: <1258835681-32200-1-git-send-email-dmitri.vorobiev@movial.com>
+         <20091202170828.GA13441@linux-mips.org>
+Date:   Wed, 2 Dec 2009 19:40:44 +0200
+Message-ID: <90edad820912020940s3ac3aa18j4abf60922937f0b7@mail.gmail.com>
+Subject: Re: [PATCH] [MIPS] Fix and enhance built-in kernel command line
+From:   Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Dmitri Vorobiev <dmitri.vorobiev@movial.com>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <dmitri.vorobiev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25278
+X-archive-position: 25279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dmitri.vorobiev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 02, 2009 at 11:15:06AM -0000, Ales Mulej wrote:
+On Wed, Dec 2, 2009 at 7:08 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> I also patched up the defconfig files to use the
+> right settings for CONFIG_CMDLINE_BOOL and CONFIG_CMDLINE_OVERRIDE.
+>
 
-> 
-> I'm porting linux(2.6.31.6) to the Wintegra WINHDP2 refrence board.
-> 
-> As a refrence I already have an old BSP from Wintegra based on kernel
-> 2.6.10.
-> 
->  
-> 
-> During the kernel start up process I receive following error:
-> 
->  
-> 
-> Reserved instruction in kernel code[#1]:
+Thanks, Ralf!
 
-The CPU is taking an exception because of an instruction it doesn't know.
-One reason for this might be an incorrect CPU type setting in the kernel
-configuration resulting in the generation of such code.
+Dmitri
 
-  Ralf
+> Thanks,
+>
+>  Ralf
+>
+>

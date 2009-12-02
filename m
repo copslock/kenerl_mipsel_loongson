@@ -1,95 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2009 11:16:36 +0100 (CET)
-Received: from mail-ew0-f212.google.com ([209.85.219.212]:60441 "EHLO
-        mail-ew0-f212.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492418AbZLBKQc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2009 11:16:32 +0100
-Received: by ewy4 with SMTP id 4so40969ewy.27
-        for <multiple recipients>; Wed, 02 Dec 2009 02:16:27 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2009 11:54:17 +0100 (CET)
+Received: from mail-px0-f176.google.com ([209.85.216.176]:54954 "EHLO
+        mail-px0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492297AbZLBJng (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2009 10:43:36 +0100
+Received: by pxi6 with SMTP id 6so19680pxi.0
+        for <multiple recipients>; Wed, 02 Dec 2009 01:43:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:organization:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=GDhhUFKbqkFHMdOOjUO9tS7mpIKErGDBxzCpKvRAKRQ=;
-        b=noC7DjrnAD1A5byE7JmuM8RGzoGGSd6sqrBDivV4n0R1Zn4r9N/8rLWwR+5Q9akYT5
-         vACnE0USrq6hEzVnMeTFaFMrHGkFErJmTjguczUQpmmKih1pBk+C4V0jFTrDpP+kcc1p
-         PJcj/mMENh7Hlky0dBmaKiDby35wMWUziT7+k=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=/dFU7o7IW9jD7R+RUbEEXoUN1R26RqHlDSkmPSYKG2U=;
+        b=OXHBhnW9bKiGgjuTEPCtO7shHmC3jfhkWdMvJ8/i0K7BZzoaN9z8nXVcamQnRXSIqd
+         a6C3BnCqGABl85cqZm1o86hO8dDoYjwfhmLyx/LqjGRTpEAtD2nWTKfunZ9Xc/fFUfFQ
+         a5ml8QC/NHbEO8z/OZXZgHliMgHyFs4sVI68c=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:organization:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=JlMAJAxgeK4NZ5cC+kbaJsk+I5zSlcaB/q5Hnin8OHM529P2Ll1RHbqx2WblQIPi3i
-         JWP3keSYc/1EHI19R4+N5+sKlix+7De7opMei6d0c3jyv32QPwjIBwRwlBBGBCnCJVMk
-         C0BOPJE9ydfd6bthAbz5nM3eIzdcGW6BGlO88=
-Received: by 10.213.107.16 with SMTP id z16mr7484580ebo.47.1259748987090;
-        Wed, 02 Dec 2009 02:16:27 -0800 (PST)
-Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by mx.google.com with ESMTPS id 13sm639574ewy.1.2009.12.02.02.16.25
-        (version=SSLv3 cipher=RC4-MD5);
-        Wed, 02 Dec 2009 02:16:26 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-To:     Hector Martin <hector@marcansoft.com>
-Subject: Re: BCM63xx merge progress
-Date:   Wed, 2 Dec 2009 11:16:01 +0100
-User-Agent: KMail/1.12.2 (Linux/2.6.31-15-server; KDE/4.3.2; x86_64; ; )
-Cc:     mbizon@freebox.fr, linux-mips@linux-mips.org, ralf@linux-mips.org
-References: <4B15974E.1060505@marcansoft.com> <1259719052.2452.26.camel@kero> <4B15D4E7.6060707@marcansoft.com>
-In-Reply-To: <4B15D4E7.6060707@marcansoft.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=uHsjj/D63ihVEhDJ+IBqKv4DmEShfHyG6YwM9kkRQc51vI1ke4ce3YExgv6mXJ2Jsx
+         1CFTAZpLUzhE+lyIVlyVeP8J2tKAv1lvqGXpGfUoWFwQA3/UWeYwOzT6JxaH1OBc3gbe
+         L4dbf/k4yUzyfN/eXzCBDOcJsnGDvUSnb2bKw=
+Received: by 10.115.98.40 with SMTP id a40mr1749547wam.97.1259747006938;
+        Wed, 02 Dec 2009 01:43:26 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 23sm721931pzk.8.2009.12.02.01.43.20
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 02 Dec 2009 01:43:25 -0800 (PST)
+Subject: Re: [PATCH v6 8/8] Loongson: YeeLoong: add hotkey driver
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        zhangfx@lemote.com
+In-Reply-To: <20091201180350.GB19259@core.coreip.homeip.net>
+References: <cover.1259664573.git.wuzhangjin@gmail.com>
+         <939c1425f653e3bda05799345c53198dfd2c1dcc.1259664573.git.wuzhangjin@gmail.com>
+         <20091201154050.GJ14064@linux-mips.org>
+         <20091201180350.GB19259@core.coreip.homeip.net>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Wed, 02 Dec 2009 17:43:00 +0800
+Message-ID: <1259746980.7254.29.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
-Message-Id: <200912021116.01290.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25265
+X-archive-position: 25266
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 02 December 2009 03:45:59 Hector Martin wrote:
-> Maxime Bizon wrote:
-> > On Wed, 2009-12-02 at 01:25 +0100, Hector Martin wrote:
-> >> Well, there's a commit (4059ddb4) that claims to "Add USB OHCI support",
-> >> yet it only adds a #include to ohci-hcd.c and a few .h bits. The actual
-> >> ohci-bcm63xx.c is missing, which means the OHCI driver probably won't
-> >> even compile. It's also missing the relevant platform device stuff in
-> >
-> > I cannot find this commit in linus' tree nor linux-mips master, where
-> > does it come from ?
+On Tue, 2009-12-01 at 10:03 -0800, Dmitry Torokhov wrote: 
+> On Tue, Dec 01, 2009 at 03:40:50PM +0000, Ralf Baechle wrote:
+> > On Tue, Dec 01, 2009 at 07:12:37PM +0800, Wu Zhangin wrote:
+> > 
+> > > From: Wu Zhangjin <wuzhangjin@gmail.com>
+> > > 
+> > > This patch adds Hotkey Driver, which will do relative actions for The
+> > > hotkey event and report the corresponding input keys to the user-space
+> > > applications.
+> > 
+> > This one also should become a platform driver.  And is probably a
+> > candidate for drivers/input/keyboard.
+> > 
 > 
-> Okay, nevermind, that was a screwup by me. At some point one of my
-> OpenWRT patch test commits made its way onto the wrong local branch, and
-> I didn't notice where it lived. Oops. (This commit was meant to be
-> incomplete, it comes straight from the OpenWRT patch). I think I found
-> the mips-bcm63xx (proper) patch, tried to search for it on my local
-> repo, and this thing popped up and I didn't look at it closely enough.
-> This is what I get for trying to work at 4am.
+> Umm, it still mixes up bunch of stuff not directly related to input. I'd
+> vote for drivers/platform/mips (since we have a few of kitchen-sink
+> style drivers for x86-based laptops in drivers/platform/x86).
 > 
-> I take back the 'broken' then, we're just left with 'incomplete'. Makes
-> quite a bit more sense now, sorry for the confusion.
-> 
-> > The remaining two patches that were not merged in 2.6.32 are on top of
-> > this tree: http://www.linux-mips.org/git?p=linux-bcm63xx.git
-> >
-> > They should apply with little difficulty on current upstream kernel and
-> > besides the *_be stuffs that need to be cleaned up, they were ACKed by
-> > the usb maintainer.
-> 
-> Cool, I'll see about applying them and working off of that. Thanks for
-> the confirmation.
-> 
-> FWIW, I'm trying to reverse engineer Broadcom's DSL driver, which I hope
-> will be useful so we can finally have a properly working OpenWRT
-> firmware for DSL routers based on this firmware.
 
-Good luck :)
--- 
-WBR, Florian
+Hello,
+
+Do you mean we go back to drivers/platform/mips/yeeloong_laptop.c? (or
+split the input stuff into yeeloong_input.c)
+
+For considering the next platform support of LynLoong PC and the future
+other MIPS netbooks/PC(e.g. gdium), perhaps drivers/platform/mips is
+really the good place to put them in. and benefit from it, we maybe
+easier to share the functions, variables. of course, the problem about
+the API modification will also be there:
+
+"Experience has shown that drivers for a particular subsystem are best
+combined in a single menu, in a single directory.  Otherwise any changes
+to subsystem's internal APIs will become a major pain.  Which in the end
+means arch/ is usually the place for drivers that don't fit into any
+established cathegory." -- Ralf
+
+Best Regards,
+	Wu Zhangjin

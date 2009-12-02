@@ -1,59 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2009 02:57:49 +0100 (CET)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:38826 "EHLO smtp6-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493649AbZLBB5q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Dec 2009 02:57:46 +0100
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-        by smtp6-g21.free.fr (Postfix) with ESMTP id E4109E08033;
-        Wed,  2 Dec 2009 02:57:37 +0100 (CET)
-Received: from [127.0.0.1] (sakura.staff.proxad.net [213.228.1.107])
-        by smtp6-g21.free.fr (Postfix) with ESMTP id A5D84E08030;
-        Wed,  2 Dec 2009 02:57:33 +0100 (CET)
-Subject: Re: BCM63xx merge progress
-From:   Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
-To:     Hector Martin <hector@marcansoft.com>
-Cc:     Florian Fainelli <florian@openwrt.org>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
-In-Reply-To: <4B15B40D.70006@marcansoft.com>
-References: <4B15974E.1060505@marcansoft.com>
-         <1259709927.2926.608.camel@sakura.staff.proxad.net>
-         <4B15B40D.70006@marcansoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Wed, 02 Dec 2009 02:57:32 +0100
-Message-ID: <1259719052.2452.26.camel@kero>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mbizon@freebox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Dec 2009 02:58:28 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:38039 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493657AbZLBB6X (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Dec 2009 02:58:23 +0100
+Date:   Wed, 2 Dec 2009 01:58:23 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ingo Molnar <mingo@elte.hu>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michal Simek <monstr@monstr.eu>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] MIPS: Add a high resolution sched_clock() via
+ cnt32_to_63().
+In-Reply-To: <20091123084241.GA23635@elte.hu>
+Message-ID: <alpine.LFD.2.00.0912020148200.23935@eddie.linux-mips.org>
+References: <dae45f23b5d34f64fc60a445015e7dfe05aa0d07.1258875717.git.wuzhangjin@gmail.com> <20091122081328.GB24558@elte.hu> <4B0925BD.6070507@ru.mvista.com> <20091122180616.GB24711@elte.hu> <20091122202314.GB1941@linux-mips.org>
+ <20091123084241.GA23635@elte.hu>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25261
+X-archive-position: 25262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, 23 Nov 2009, Ingo Molnar wrote:
 
-On Wed, 2009-12-02 at 01:25 +0100, Hector Martin wrote:
+> > > >   MIPS's is not really a proper English. :-)
+> > > 
+> > > AFAIK 'MIPS' is not the plural of 'MIP' (but an acronym ending with 
+> > > 'S'), hence the possessive form would be MIPS's.
+> > 
+> > MIPS Technologies' IP lawyers insist that MIPS is a proper name and 
+> > not an acronym - this position has certain advantages in trademark 
+> > law.
+> 
+> That too seems to support my point that "MIPS's" is the right spelling.
 
-> Well, there's a commit (4059ddb4) that claims to "Add USB OHCI support",
-> yet it only adds a #include to ohci-hcd.c and a few .h bits. The actual
-> ohci-bcm63xx.c is missing, which means the OHCI driver probably won't
-> even compile. It's also missing the relevant platform device stuff in
+ My understanding is that "MIPS" is actually meant (as far as IP law is 
+concerned) to be an adjective, so you can't really make a possessive form 
+out of it as it is irrelevant.  The correct form IMHO is thus simply: 
+"MIPS sched_clock implementation" which happens to sound the best to me 
+too.
 
-I cannot find this commit in linus' tree nor linux-mips master, where
-does it come from ?
-
-The remaining two patches that were not merged in 2.6.32 are on top of
-this tree: http://www.linux-mips.org/git?p=linux-bcm63xx.git
-
-They should apply with little difficulty on current upstream kernel and
-besides the *_be stuffs that need to be cleaned up, they were ACKed by
-the usb maintainer.
-
--- 
-Maxime
+  Maciej

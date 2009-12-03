@@ -1,54 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2009 10:02:26 +0100 (CET)
-Received: from mailrelay009.isp.belgacom.be ([195.238.6.176]:1207 "EHLO
-        mailrelay009.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492291AbZLCJCX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2009 10:02:23 +0100
-X-Belgacom-Dynamic: yes
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEABsNF0tR9cXB/2dsb2JhbADXIAqEJwQ
-Received: from 193.197-245-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.245.197.193])
-  by relay.skynet.be with ESMTP; 03 Dec 2009 10:02:17 +0100
-Received: from wim by infomag with local (Exim 4.69)
-        (envelope-from <wim@infomag.iguana.be>)
-        id 1NG7Zp-0004fZ-B3; Thu, 03 Dec 2009 10:02:17 +0100
-Date:   Thu, 3 Dec 2009 10:02:17 +0100
-From:   Wim Van Sebroeck <wim@iguana.be>
-To:     David Woodhouse <dwmw2@infradead.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Thomas Koeller <thomas.koeller@baslerweb.com>,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH] eXcite: Remove platform support and drivers.
-Message-ID: <20091203090217.GT3772@infomag.iguana.be>
-References: <20091202153016.GA9892@linux-mips.org> <20091202153534.GA10692@linux-mips.org> <alpine.LFD.2.00.0912030709230.10116@macbook.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2009 15:55:03 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:36834 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493114AbZLCOy7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 Dec 2009 15:54:59 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nB3Estbv016360;
+        Thu, 3 Dec 2009 14:54:56 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nB3EsrFk016358;
+        Thu, 3 Dec 2009 14:54:53 GMT
+Date:   Thu, 3 Dec 2009 14:54:53 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:     linux-mips@linux-mips.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Dave Jones <davej@redhat.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        cpufreq@vger.kernel.org
+Subject: Re: [PATCH v0] Loongson2: CPUFreq: add support to load module
+ automatically
+Message-ID: <20091203145452.GA28957@linux-mips.org>
+References: <8421507f5dfc1a70d1dba92ad7604a8bfaa5a447.1259805106.git.wuzhangjin@gmail.com>
+ <1259815795.4474.34.camel@falcon.domain.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.00.0912030709230.10116@macbook.infradead.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <wim@iguana.be>
+In-Reply-To: <1259815795.4474.34.camel@falcon.domain.org>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25287
+X-archive-position: 25288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Thu, Dec 03, 2009 at 12:49:55PM +0800, Wu Zhangjin wrote:
 
->> The platform has never been fully merged.  Remove it including MTD and
->> watchdog drivers.
->>
->> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
->> ---
->> I'd like acks from the watchdog and MTD maintainers please.
->
-> Acked-by: David Woodhouse <David.Woodhouse@intel.com>
+> > +++ b/arch/mips/loongson/common/platform.c
+> > @@ -0,0 +1,32 @@
+> > +/*
+> > + * Copyright (C) 2009 Lemote Inc.
+> > + * Author: Wu Zhangjin, wuzj@lemote.com
+> > + *
+> > + * This program is free software; you can redistribute  it and/or modify it
+> > + * under  the terms of  the GNU General  Public License as published by the
+> > + * Free Software Foundation;  either version 2 of the  License, or (at your
+> > + * option) any later version.
+> > + */
+> > +
+> > +#include <linux/err.h>
+> > +#include <linux/platform_device.h>
+> > +
+> > +#include <asm/bootinfo.h>
+> 
+> The above header file is not needed.
 
-Acked-by: Wim Van Sebroeck <wim@iguana.be>
+I folded your patch into "MIPS: Loongson 2F: Add CPU frequency scaling
+support" and removed that line.  Thanks!
 
-Kind regards,
-Wim.
+  Ralf

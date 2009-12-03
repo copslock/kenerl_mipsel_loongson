@@ -1,49 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2009 08:10:27 +0100 (CET)
-Received: from casper.infradead.org ([85.118.1.10]:56926 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492175AbZLCHKX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2009 08:10:23 +0100
-Received: from [89.193.139.6] (helo=[10.36.82.250])
-        by casper.infradead.org with esmtpsa (Exim 4.69 #1 (Red Hat Linux))
-        id 1NG5pP-0003Ly-Nk; Thu, 03 Dec 2009 07:10:18 +0000
-Date:   Thu, 3 Dec 2009 07:10:00 +0000 (GMT)
-From:   David Woodhouse <dwmw2@infradead.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org,
-        Thomas Koeller <thomas.koeller@baslerweb.com>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH] eXcite: Remove platform support and drivers.
-In-Reply-To: <20091202153534.GA10692@linux-mips.org>
-Message-ID: <alpine.LFD.2.00.0912030709230.10116@macbook.infradead.org>
-References: <20091202153016.GA9892@linux-mips.org> <20091202153534.GA10692@linux-mips.org>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2009 09:37:08 +0100 (CET)
+Received: from mail01.baslerweb.com ([80.156.24.166]:58975 "EHLO
+        mail01.baslerweb.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492315AbZLCIhF convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2009 09:37:05 +0100
+Received: from unknown (HELO AHR075S.basler.corp) ([172.16.20.75])
+  by mail01-out.baslerweb.com with ESMTP; 03 Dec 2009 09:39:45 +0100
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org
-        See http://www.infradead.org/rpr.html
-Return-Path: <BATV+27164d45208a24c6f88d+2293+infradead.org+dwmw2@casper.srs.infradead.org>
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Subject: RE: Removal of Basler eXcite platform support
+Date:   Thu, 3 Dec 2009 09:37:04 +0100
+Message-ID: <C5A8FDEFF7647F4C9CB927D7DEB307730DA2D38C@ahr075s.basler.corp>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Removal of Basler eXcite platform support
+Thread-Index: AcpzZFxSn8Mb99v2QnaNT5FPGxTx5AAjvgcw
+References: <20091202153016.GA9892@linux-mips.org>
+From:   "Koeller, T." <Thomas.Koeller@baslerweb.com>
+To:     "Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+Return-Path: <Thomas.Koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25285
+X-archive-position: 25286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwmw2@infradead.org
+X-original-sender: Thomas.Koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2 Dec 2009, Ralf Baechle wrote:
+> From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+> Sent: Wednesday, December 02, 2009 4:30 PM
+> To: linux-mips@linux-mips.org; Koeller, T.
+> Subject: RFC: Removal of Basler eXcite platform support
+> 
+> Support for the Basler eXcite was never fully merged and 
+> there seems to be
+> no push to complete that or any users.  So I'd like to remove 
+> the support
+> for it in the upcoming 2.6.33 cycle.  Any comments?
+> 
+> I'll post the patch which I already have sitting in the queue 
+> tree in a
+> a separate mail.
+> 
+>   Ralf
 
-> The platform has never been fully merged.  Remove it including MTD and
-> watchdog drivers.
->
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> ---
-> I'd like acks from the watchdog and MTD maintainers please.
+The eXcite hardware is no longer available. So for me it is
+o.k. to remove support for it.
 
-Acked-by: David Woodhouse <David.Woodhouse@intel.com>
 
--- 
-dwmw2
+_______________________________
+
+Thomas Köller, Software Developer
+
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
+
+Tel. +49 (0) 4102 463-390
+Fax  +49 (0) 4102 463-46390
+
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com
+
+Vorstand: Dr.-Ing. Dietmar Ley (Vorsitzender) · John P. Jennings · Aufsichtsratsvorsitzender: Norbert Basler
+Basler AG · Amtsgericht Ahrensburg HRB 4090 · Ust-IdNr.: DE 135 098 121 · Steuer-Nr.: 30 292 04497 · WEEE-Reg.-Nr. DE 83888045
+
+_______________________________
+
+
+ 

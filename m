@@ -1,110 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2009 17:30:26 +0100 (CET)
-Received: from mail-px0-f176.google.com ([209.85.216.176]:36285 "EHLO
-        mail-px0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492914AbZLDQaW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2009 17:30:22 +0100
-Received: by pxi6 with SMTP id 6so714019pxi.0
-        for <multiple recipients>; Fri, 04 Dec 2009 08:30:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=u2gLDyxrC9BjabwZXR9sf061r5jwuKspjFs+3ivl4bc=;
-        b=mHmDFi37Qc8w9Ts860jywncImBgmXN3dv2zhsG3RelHfGMb/k45f+bMnABAS82aQRW
-         GcxITNjqv7LFjjDsoFmPuHiTxDqziUb2kOir76MnGX0jZ1udFdE7MrxrVNDpUt9/M9t+
-         abB9kCYDcu0gvOQDSc1NRhVH8pHOY5znAKAxE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=cUTVwVLcr5IiRqDEQPePYG+aRXe0tULyr4Uf0alfMDLsjsr0+gAALF/MkbOHSZ+q4Z
-         fZNyrr/JFccdCyNbuD3X4uFpnq4RiQ7qVa9TsqTvuGZV6cJxZTtAZmRZJJNR1Un/3wcz
-         FTNTKprxWTgTnpFuZgVpPrLOjFL1Wg2IXPcZY=
-Received: by 10.114.237.19 with SMTP id k19mr4353492wah.69.1259944213206;
-        Fri, 04 Dec 2009 08:30:13 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm2602676pzk.15.2009.12.04.08.30.07
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 04 Dec 2009 08:30:12 -0800 (PST)
-Subject: Re: [PATCH v7 5/8] Loongson: YeeLoong: add hardware monitoring
- driver
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, akpm@linux-foundation.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "Rafael J. Wysocki" <rjw@sisk.pl>, zhangfx@lemote.com,
-        linux-laptop@vger.kernel.org
-In-Reply-To: <20091204080813.GB1540@ucw.cz>
-References: <cover.1259932036.git.wuzhangjin@gmail.com>
-         <102732263f647e47216c1f2cb121c30226cc995e.1259932036.git.wuzhangjin@gmail.com>
-         <20091204080813.GB1540@ucw.cz>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Sat, 05 Dec 2009 00:29:45 +0800
-Message-ID: <1259944185.9554.8.camel@falcon.domain.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2009 18:31:05 +0100 (CET)
+Received: from out1.smtp.messagingengine.com ([66.111.4.25]:46426 "EHLO
+        out1.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493402AbZLDRa6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2009 18:30:58 +0100
+Received: from compute2.internal (compute2.internal [10.202.2.42])
+        by gateway1.messagingengine.com (Postfix) with ESMTP id 34EB5C4F8D;
+        Fri,  4 Dec 2009 12:30:57 -0500 (EST)
+Received: from web8.messagingengine.com ([10.202.2.217])
+  by compute2.internal (MEProxy); Fri, 04 Dec 2009 12:30:57 -0500
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=messagingengine.com; h=message-id:from:to:cc:mime-version:content-transfer-encoding:content-type:in-reply-to:references:subject:date; s=smtpout; bh=jGDdHI/SKkc95aZSRhlkrL8K8ls=; b=XVrpsORb26GCaYuPKVOLW1qOPGX7hER44gmNmM134kN5M3pi79PC60YmlYwNus74cI4JhEJh8VspIBOtX+1cSqq0iUjfffdUiGGiwg4Rq5oXPimbPc6EBvSzFTHpECM3pXauzfa1a12khXMlKBwRlHVLblXZv3+R3c42cyT0Bn8=
+Received: by web8.messagingengine.com (Postfix, from userid 99)
+        id 18656134BAE; Fri,  4 Dec 2009 12:30:57 -0500 (EST)
+Message-Id: <1259947857.14965.1348483153@webmail.messagingengine.com>
+X-Sasl-Enc: vghcyFVCki5Hc+7gJ3ka12vQo0IH1e+0Kz9FMgnH62f/ 1259947857
+From:   myuboot@fastmail.fm
+To:     "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
+Cc:     linux-kernel@vger.kernel.org,
+        "linux-mips" <linux-mips@linux-mips.org>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Mailer: MessagingEngine.com Webmail Interface
+In-Reply-To: <20091204160333.GA8842@alpha.franken.de>
+References: <20091028103551.0b4052d8@pixies.home.jungo.com>
+ <1259891550.19943.1348372917@webmail.messagingengine.com>
+ <20091204160333.GA8842@alpha.franken.de>
+Subject: Re: PIR OFFSET for AR7
+Date:   Fri, 04 Dec 2009 11:30:57 -0600
+Return-Path: <myuboot@fastmail.fm>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25320
+X-archive-position: 25321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: myuboot@fastmail.fm
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2009-12-04 at 09:08 +0100, Pavel Machek wrote:
-> Hi!
-> 
-> > +static int get_cpu_temp(void)
-> > +{
-> > +	int value;
-> > +
-> > +	value = ec_read(REG_TEMPERATURE_VALUE);
-> > +
-> > +	if (value & (1 << 7))
-> > +		value = (value & 0x7f) - 128;
-> > +	else
-> > +		value = value & 0xff;
-> 
-> wtf?
-> 
-> Maybe value should be 's8'?
-> 
-> > +static int get_battery_current(void)
-> > +{
-> > +	int value;
-> > +
-> > +	value = (ec_read(REG_BAT_CURRENT_HIGH) << 8) |
-> > +		(ec_read(REG_BAT_CURRENT_LOW));
-> > +
-> > +	if (value & 0x8000)
-> > +		value = 0xffff - value;
-> 
-> Another version of  pair-complement conversion; this one is broken --
-> off by 1.
-> 
-> > +static int parse_arg(const char *buf, unsigned long count, int *val)
-> > +{
-> > +	if (!count)
-> > +		return 0;
-> > +	if (sscanf(buf, "%i", val) != 1)
-> > +		return -EINVAL;
-> > +	return count;
-> > +}
-> 
-> We have strict_strtoul for a reason...
-> 
+Thomas,
 
-Done, thanks!
+Sorry, you are right. I mistook PM_OFFSET for PIR_OFFSET.
 
-Regards,
-	Wu Zhangjin
+Thanks, Andrew
+On Fri, 04 Dec 2009 17:03 +0100, "Thomas Bogendoerfer"
+<tsbogend@alpha.franken.de> wrote:
+> On Thu, Dec 03, 2009 at 07:52:30PM -0600, myuboot@fastmail.fm wrote:
+> > Hi, What is the use of PIR register for AR7 board in file
+> > arch/mips/ar7/irq.c?
+> 
+> it gives back the channel and line of the pending interrupt with the
+> highest priority.
+> 
+> > If I understand it right, PIR is used to define the
+> > polarity of the interrupts. It seems to me that it needs to initialized?
+> 
+> no, it's a read only register. Why do you think it has something to do
+> with interrupt polarity ?
+> 
+> Thomas.
+> 
+> -- 
+> Crap can work. Given enough thrust pigs will fly, but it's not necessary
+> a
+> good idea.                                                [ RFC1925, 2.3
+> ]

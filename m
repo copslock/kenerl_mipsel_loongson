@@ -1,139 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Dec 2009 18:55:10 +0100 (CET)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.125]:52274 "EHLO
-        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493244AbZLCRzG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Dec 2009 18:55:06 +0100
-Received: from [192.168.23.10] (really [74.67.89.75])
-          by hrndva-omta01.mail.rr.com with ESMTP
-          id <20091203175454480.KXKO3094@hrndva-omta01.mail.rr.com>;
-          Thu, 3 Dec 2009 17:54:54 +0000
-Subject: Re: [PATCH v9 04/10] tracing: add dynamic function tracer support
- for MIPS
-From:   Steven Rostedt <rostedt@goodmis.org>
-Reply-To: rostedt@goodmis.org
-To:     Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Nicholas Mc Guire <der.herr@hofr.at>, zhangfx@lemote.com,
-        Ingo Molnar <mingo@elte.hu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-In-Reply-To: <6a25a6132d64830bbd7339fe8b3841a51d02ac6d.1258719323.git.wuzhangjin@gmail.com>
-References: <adf867c5a6864fa196c667d3f09a6a694f3903c5.1258719323.git.wuzhangjin@gmail.com>
-         <51e30436a435480f1f0dec146a82f2b250900690.1258719323.git.wuzhangjin@gmail.com>
-         <267c0824194b659b46fc038ba43492df30369fec.1258719323.git.wuzhangjin@gmail.com>
-         <6a25a6132d64830bbd7339fe8b3841a51d02ac6d.1258719323.git.wuzhangjin@gmail.com>
-Content-Type: text/plain
-Organization: Kihon Technologies Inc.
-Date:   Thu, 03 Dec 2009 12:54:53 -0500
-Message-Id: <1259862893.12870.141.camel@gandalf.stny.rr.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2009 02:44:08 +0100 (CET)
+Received: from smtp2.caviumnetworks.com ([209.113.159.134]:14882 "EHLO
+        smtp2.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1494402AbZLDBoE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2009 02:44:04 +0100
+Received: from maexch1.caveonetworks.com (Not Verified[192.168.14.20]) by smtp2.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+        id <B4b1868790000>; Thu, 03 Dec 2009 20:40:09 -0500
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by maexch1.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 3 Dec 2009 20:44:00 -0500
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 3 Dec 2009 17:43:58 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id nB41htE2015112;
+        Thu, 3 Dec 2009 17:43:56 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id nB41hsOn015110;
+        Thu, 3 Dec 2009 17:43:54 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Cleanup forgotten label_module_alloc in tlbex.c
+Date:   Thu,  3 Dec 2009 17:43:54 -0800
+Message-Id: <1259891034-15086-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 04 Dec 2009 01:43:58.0737 (UTC) FILETIME=[3F70B810:01CA7483]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25297
+X-archive-position: 25298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2009-11-20 at 20:34 +0800, Wu Zhangjin wrote:
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
-> 
+commit e0cc87f59490d7d62a8ab2a76498dc8a2b64927a left
+label_module_alloc unused.  Remove it now.
 
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/Kconfig              |    2 +
->  arch/mips/include/asm/ftrace.h |    9 +++
->  arch/mips/kernel/Makefile      |    3 +-
->  arch/mips/kernel/ftrace.c      |  112 ++++++++++++++++++++++++++++++++++++++++
->  arch/mips/kernel/mcount.S      |   29 ++++++++++
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/mm/tlbex.c |    8 --------
+ 1 files changed, 0 insertions(+), 8 deletions(-)
 
-
->  scripts/recordmcount.pl        |   54 +++++++++++++++++++
-
-
->  6 files changed, 208 insertions(+), 1 deletions(-)
->  create mode 100644 arch/mips/kernel/ftrace.c
-> 
-
-
-
-> diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
-> index 24604d4..9d80d0d 100755
-> --- a/scripts/recordmcount.pl
-> +++ b/scripts/recordmcount.pl
-> @@ -295,6 +295,60 @@ if ($arch eq "x86_64") {
->      $ld .= " -m elf64_sparc";
->      $cc .= " -m64";
->      $objcopy .= " -O elf64-sparc";
-> +
-> +} elsif ($arch eq "mips") {
-> +    # To enable module support, we need to enable the -mlong-calls option
-> +    # of gcc for module, after using this option, we can not get the real
-> +    # offset of the calling to _mcount, but the offset of the lui
-> +    # instruction or the addiu one. herein, we record the address of the
-> +    # first one, and then we can replace this instruction by a branch
-> +    # instruction to jump over the profiling function to filter the
-> +    # indicated functions, or swith back to the lui instruction to trace
-> +    # them, which means dynamic tracing.
-> +    #
-> +    #       c:	3c030000 	lui	v1,0x0
-> +    #			c: R_MIPS_HI16	_mcount
-> +    #			c: R_MIPS_NONE	*ABS*
-> +    #			c: R_MIPS_NONE	*ABS*
-> +    #      10:	64630000 	daddiu	v1,v1,0
-> +    #			10: R_MIPS_LO16	_mcount
-> +    #			10: R_MIPS_NONE	*ABS*
-> +    #			10: R_MIPS_NONE	*ABS*
-> +    #      14:	03e0082d 	move	at,ra
-> +    #      18:	0060f809 	jalr	v1
-> +    #
-> +    # for the kernel:
-> +    #
-> +    #     10:   03e0082d        move    at,ra
-> +    #	  14:   0c000000        jal     0 <loongson_halt>
-> +    #                    14: R_MIPS_26   _mcount
-> +    #                    14: R_MIPS_NONE *ABS*
-> +    #                    14: R_MIPS_NONE *ABS*
-> +    #	 18:   00020021        nop
-> +    if ($is_module eq "0") {
-> +	    $mcount_regex = "^\\s*([0-9a-fA-F]+):.*\\s_mcount\$";
-> +    } else {
-> +	    $mcount_regex = "^\\s*([0-9a-fA-F]+): R_MIPS_HI16\\s+_mcount\$";
-> +    }
-> +    $objdump .= " -Melf-trad".$endian."mips ";
-> +
-> +    if ($endian eq "big") {
-> +	    $endian = " -EB ";
-> +	    $ld .= " -melf".$bits."btsmip";
-> +    } else {
-> +	    $endian = " -EL ";
-> +	    $ld .= " -melf".$bits."ltsmip";
-> +    }
-> +
-> +    $cc .= " -mno-abicalls -fno-pic -mabi=" . $bits . $endian;
-> +    $ld .= $endian;
-> +
-> +    if ($bits == 64) {
-> +	    $function_regex =
-> +		"^([0-9a-fA-F]+)\\s+<(.|[^\$]L.*?|\$[^L].*?|[^\$][^L].*?)>:";
-> +	    $type = ".dword";
-> +    }
-> +
->  } else {
->      die "Arch $arch is not supported with CONFIG_FTRACE_MCOUNT_RECORD";
->  }
-
-This only adds MIPS arch support to recordmcount.pl, and does not touch
-any other arch or generic code. Thus, I consider this arch specific
-code.
-
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
-
--- Steve
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 571f92f..3d6f48a 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -73,9 +73,6 @@ static int __cpuinit m4kc_tlbp_war(void)
+ enum label_id {
+ 	label_second_part = 1,
+ 	label_leave,
+-#ifdef MODULE_START
+-	label_module_alloc,
+-#endif
+ 	label_vmalloc,
+ 	label_vmalloc_done,
+ 	label_tlbw_hazard,
+@@ -92,9 +89,6 @@ enum label_id {
+ 
+ UASM_L_LA(_second_part)
+ UASM_L_LA(_leave)
+-#ifdef MODULE_START
+-UASM_L_LA(_module_alloc)
+-#endif
+ UASM_L_LA(_vmalloc)
+ UASM_L_LA(_vmalloc_done)
+ UASM_L_LA(_tlbw_hazard)
+@@ -821,8 +815,6 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 	} else {
+ #if defined(CONFIG_HUGETLB_PAGE)
+ 		const enum label_id ls = label_tlb_huge_update;
+-#elif defined(MODULE_START)
+-		const enum label_id ls = label_module_alloc;
+ #else
+ 		const enum label_id ls = label_vmalloc;
+ #endif
+-- 
+1.6.0.6

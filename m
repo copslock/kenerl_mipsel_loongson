@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2009 18:52:12 +0100 (CET)
-Received: from mail-ew0-f224.google.com ([209.85.219.224]:54767 "EHLO
-        mail-ew0-f224.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493554AbZLDRwJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2009 18:52:09 +0100
-Received: by ewy24 with SMTP id 24so3080820ewy.26
-        for <linux-mips@linux-mips.org>; Fri, 04 Dec 2009 09:52:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=uD/1LGam3sEYdOqwV9fy57iswMHxH+9QYr37ksAUfWE=;
-        b=WQDiggAhJH54rtpBcx7V1VkKQCylckM+F/q4njEvyW8lDnpA5NMaBJYkcVemWYlj7P
-         V7yTy6GcnQqTrrs9AiA2NS5Ady1yM0Hb96zxOOKlDENBbv/Iejp9UxQHsUTA36Ba23tm
-         eDtaPiCzDd543dAe9fIzXkxwIy6Le8Dr4zzFw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=n/AM1gNbeWluynaU1WRKD/M1dGvuTGgjT53umAGFUljhPOsl6GRfqnzobLMW31JWPC
-         jop2H6lp/gMypP6mtbCJmKy6VG1cssLNE043r25LVkPtTYA8Gh+EkSWq5dXb7qEyjq1Y
-         Z8kiotEqv4mODaPLbRMkivkdlsasHRIy+KeWI=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Dec 2009 19:12:30 +0100 (CET)
+Received: from smtp2.caviumnetworks.com ([209.113.159.134]:18728 "EHLO
+        smtp2.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493676AbZLDSM1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Dec 2009 19:12:27 +0100
+Received: from maexch1.caveonetworks.com (Not Verified[192.168.14.20]) by smtp2.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+        id <B4b19501e0001>; Fri, 04 Dec 2009 13:08:30 -0500
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by maexch1.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Fri, 4 Dec 2009 13:12:23 -0500
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Fri, 4 Dec 2009 10:12:21 -0800
+Message-ID: <4B195102.1020606@caviumnetworks.com>
+Date:   Fri, 04 Dec 2009 10:12:18 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Received: by 10.216.88.144 with SMTP id a16mr1148039wef.208.1259949123901; 
-        Fri, 04 Dec 2009 09:52:03 -0800 (PST)
-Date:   Fri, 4 Dec 2009 11:52:03 -0600
-Message-ID: <83f0348b0912040952h40d4d151n79ca5fc33a830ee2@mail.gmail.com>
-Subject: mmap KSEG1
-From:   Ed Okerson <ed.okerson@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <ed.okerson@gmail.com>
+To:     Ed Okerson <ed.okerson@gmail.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: mmap KSEG1
+References: <83f0348b0912040952h40d4d151n79ca5fc33a830ee2@mail.gmail.com>
+In-Reply-To: <83f0348b0912040952h40d4d151n79ca5fc33a830ee2@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 04 Dec 2009 18:12:21.0366 (UTC) FILETIME=[528FC960:01CA750D]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25322
+X-archive-position: 25323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ed.okerson@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Is it possible to mmap an address in KSEG1 so a user space app can
-read/write to an IO device uncached?
+Ed Okerson wrote:
+> Is it possible to mmap an address in KSEG1 so a user space app can
+> read/write to an IO device uncached?
+> 
 
-Ed
+It depends on your definition of 'possible'.  The mips32/64 architecture 
+specification has a 'C' field in the EntryLo register that controls 
+cachability, so given an appropriate device driver it should be doable.
+
+Calling  __ioremap() with the appropriate flags should allow you to set 
+the 'C' bits.
+
+Depending on your requirements, you might be able to get by using 
+/dev/mem and some 'sync' instructions, instead of establishing an 
+uncached mapping.
+
+
+David Daney

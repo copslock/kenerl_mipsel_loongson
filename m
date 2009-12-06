@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Dec 2009 08:06:45 +0100 (CET)
-Received: from mail-px0-f188.google.com ([209.85.216.188]:63385 "EHLO
-        mail-px0-f188.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492205AbZLFHFa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Dec 2009 08:05:30 +0100
-Received: by pxi26 with SMTP id 26so1367800pxi.21
-        for <multiple recipients>; Sat, 05 Dec 2009 23:05:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Dec 2009 08:07:09 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:34471 "EHLO
+        mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492232AbZLFHFe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Dec 2009 08:05:34 +0100
+Received: by mail-pw0-f45.google.com with SMTP id 18so1914974pwi.24
+        for <multiple recipients>; Sat, 05 Dec 2009 23:05:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=vK6D361y+JwaD6Dzqg+3PAWSkOx9H4gFym52emRSCTQ=;
-        b=pOYK19FeqxFLYLFmheBqddekj+f4VkWOhp+Stl5wN9MrAuXNY5p7LUP2CaqAOwGlya
-         +G4LcaTg/re006hb3DfQd4E4u7EOynxMeiUN55DFHt1LrVFVbDU6oNYjLmeOtZJ/Y8pi
-         zGjXr+4217pUYBWvKPzMXNBZwGcbephy3WHcY=
+        bh=2YFxo6jKnJLvwx05QfAVM3eYlLa4ycaHWmKM2zDrFPQ=;
+        b=oai8qqnci7JPVj1bjjurmaJe0gkqmwQj7luOGuvgwrcrdJC7IKurnxWiCgqQ9v6s2B
+         kitBpgvF1e8MeCPVG8CH2I1KqLs7Gal+6fiAfBnvHmCDTD/+yfE1IHApH2uW3D3LjBHm
+         +6+dVravWcPUGEwAfPdLdQI8ATeewxIxMWJqs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=aciTarY1S7vZ0oqHH9o0FbgMBcYeEpJ/NMjW/Ez5QCgr2rBhd9and/0htglvlizdGm
-         LUbZw5X1XGoNWMS4t6mvYXxvK+l3nUMRzp66aESTCha+KysJmK1vSS33DHRqLkJ/zliE
-         rLkiB/vLCwuJF529NhsQE6oiE4ZM8aaERrNB0=
-Received: by 10.115.101.5 with SMTP id d5mr8408692wam.23.1260083121191;
-        Sat, 05 Dec 2009 23:05:21 -0800 (PST)
+        b=q34AjexX6FhUxyuTpHfdemjPzUxgRH/biD9yTBoG4mVmuruLS3qK7neaanC8lOEq+7
+         4Ul/SsqLzNuXDx555zk/7Y0Q43yKhMe4pgheGCicbptKrBsLfUtPODWIRP5K3MYgywLM
+         NjjNCphr8QAa5n6brqA7m6XAQxw3zdAVb69wY=
+Received: by 10.114.83.17 with SMTP id g17mr8301430wab.38.1260083133460;
+        Sat, 05 Dec 2009 23:05:33 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm3974972pzk.5.2009.12.05.23.05.15
+        by mx.google.com with ESMTPS id 20sm3974972pzk.5.2009.12.05.23.05.27
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 05 Dec 2009 23:05:20 -0800 (PST)
+        Sat, 05 Dec 2009 23:05:33 -0800 (PST)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>, akpm@linux-foundation.org
 Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
@@ -34,21 +34,23 @@ Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         linux-laptop@vger.kernel.org,
         Stephen Rothwell <sfr@canb.auug.org.au>,
         Pavel Machek <pavel@ucw.cz>
-Subject: [PATCH v8 3/8] Loongson: YeeLoong: add backlight driver
-Date:   Sun,  6 Dec 2009 15:01:43 +0800
-Message-Id: <3c77f3891e73e189cceef7155dc9cb6503084a4b.1260082252.git.wuzhangjin@gmail.com>
+Subject: [PATCH v8 5/8] Loongson: YeeLoong: add hardware monitoring driver
+Date:   Sun,  6 Dec 2009 15:01:45 +0800
+Message-Id: <d8789fa7e97d8a170c4e2516d7ef2d2fbbe42cc6.1260082252.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <5a8742a71e96ba40bee34fb37478cc8339e76530.1260082252.git.wuzhangjin@gmail.com>
+In-Reply-To: <57ed2090c7f1a1a9c0e31d457617c7473b9e29ad.1260082252.git.wuzhangjin@gmail.com>
 References: <cover.1260082252.git.wuzhangjin@gmail.com>
  <d6bb11d33fe01abd6de945117ce647af73841f00.1260082252.git.wuzhangjin@gmail.com>
  <5a8742a71e96ba40bee34fb37478cc8339e76530.1260082252.git.wuzhangjin@gmail.com>
+ <3c77f3891e73e189cceef7155dc9cb6503084a4b.1260082252.git.wuzhangjin@gmail.com>
+ <57ed2090c7f1a1a9c0e31d457617c7473b9e29ad.1260082252.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1260082252.git.wuzhangjin@gmail.com>
 References: <cover.1260082252.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25334
+X-archive-position: 25335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,121 +60,268 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This patch adds YeeLoong Backlight Driver, it provides standard
-interface(/sys/class/backlight/) for user-space applications(e.g.
-kpowersave, gnome-power-manager) to control the brightness of the
-backlight.
+This patch adds hardware monitoring driver, it provides standard
+interface(/sys/class/hwmon/) for lm-sensors/sensors-applet to monitor
+the temperatures of CPU and battery, the PWM of fan, the current,
+voltage of battery.
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
  drivers/platform/mips/Kconfig           |    1 +
- drivers/platform/mips/yeeloong_laptop.c |   81 +++++++++++++++++++++++++++++++
- 2 files changed, 82 insertions(+), 0 deletions(-)
+ drivers/platform/mips/yeeloong_laptop.c |  214 ++++++++++++++++++++++++++++++-
+ 2 files changed, 211 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
-index 5ac5215..c1ba03d 100644
+index 965933b..352594c 100644
 --- a/drivers/platform/mips/Kconfig
 +++ b/drivers/platform/mips/Kconfig
-@@ -17,6 +17,7 @@ if MIPS_PLATFORM_DEVICES
- config LEMOTE_YEELOONG2F
- 	tristate "Lemote YeeLoong Laptop"
- 	depends on LEMOTE_MACH2F
-+	select BACKLIGHT_CLASS_DEVICE
+@@ -20,6 +20,7 @@ config LEMOTE_YEELOONG2F
+ 	select BACKLIGHT_CLASS_DEVICE
+ 	select SYS_SUPPORTS_APM_EMULATION
+ 	select APM_EMULATION
++	select HWMON
  	help
  	  YeeLoong netbook is a mini laptop made by Lemote, which is basically
  	  compatible to FuLoong2F mini PC, but it has an extra Embedded
 diff --git a/drivers/platform/mips/yeeloong_laptop.c b/drivers/platform/mips/yeeloong_laptop.c
-index 85fc7ed..f04a7e2 100644
+index 0d9f2a6..78ddfad 100644
 --- a/drivers/platform/mips/yeeloong_laptop.c
 +++ b/drivers/platform/mips/yeeloong_laptop.c
-@@ -11,6 +11,79 @@
+@@ -14,6 +14,8 @@
+ #include <linux/backlight.h>	/* for backlight subdriver */
+ #include <linux/fb.h>
+ #include <linux/apm-emulation.h>/* for battery subdriver */
++#include <linux/hwmon.h>	/* for hwmon subdriver */
++#include <linux/hwmon-sysfs.h>
  
- #include <linux/err.h>
- #include <linux/platform_device.h>
-+#include <linux/backlight.h>	/* for backlight subdriver */
-+#include <linux/fb.h>
+ #include <ec_kb3310b.h>
+ 
+@@ -29,10 +31,7 @@ static int yeeloong_set_brightness(struct backlight_device *bd)
+ 		 bd->props.power == FB_BLANK_UNBLANK) ?
+ 	    bd->props.brightness : 0;
+ 
+-	if (level > MAX_BRIGHTNESS)
+-		level = MAX_BRIGHTNESS;
+-	else if (level < 0)
+-		level = 0;
++	level = SENSORS_LIMIT(level, 0, MAX_BRIGHTNESS);
+ 
+ 	/* Avoid to modify the brightness when EC is tuning it */
+ 	if (old_level != level) {
+@@ -186,6 +185,205 @@ static void yeeloong_battery_exit(void)
+ 		apm_get_power_status = NULL;
+ }
+ 
++/* hwmon subdriver */
 +
-+#include <ec_kb3310b.h>
-+
-+/* backlight subdriver */
-+#define MAX_BRIGHTNESS	8
-+
-+static int yeeloong_set_brightness(struct backlight_device *bd)
++/* pwm(auto/manual) enable or not */
++static int get_fan_pwm_enable(void)
 +{
-+	unsigned int level, current_level;
-+	static unsigned int old_level;
-+
-+	level = (bd->props.fb_blank == FB_BLANK_UNBLANK &&
-+		 bd->props.power == FB_BLANK_UNBLANK) ?
-+	    bd->props.brightness : 0;
-+
-+	if (level > MAX_BRIGHTNESS)
-+		level = MAX_BRIGHTNESS;
-+	else if (level < 0)
-+		level = 0;
-+
-+	/* Avoid to modify the brightness when EC is tuning it */
-+	if (old_level != level) {
-+		current_level = ec_read(REG_DISPLAY_BRIGHTNESS);
-+		if (old_level == current_level)
-+			ec_write(REG_DISPLAY_BRIGHTNESS, level);
-+	}
-+	old_level = level;
-+
-+	return 0;
++	return ec_read(REG_FAN_AUTO_MAN_SWITCH);
 +}
 +
-+static int yeeloong_get_brightness(struct backlight_device *bd)
++static void set_fan_pwm_enable(int manual)
 +{
-+	return ec_read(REG_DISPLAY_BRIGHTNESS);
++	ec_write(REG_FAN_AUTO_MAN_SWITCH, !!manual);
 +}
 +
-+static struct backlight_ops backlight_ops = {
-+	.get_brightness = yeeloong_get_brightness,
-+	.update_status = yeeloong_set_brightness,
++static int get_fan_pwm(void)
++{
++	return ec_read(REG_FAN_SPEED_LEVEL);
++}
++
++static void set_fan_pwm(int value)
++{
++	value = SENSORS_LIMIT(value, 0, 3);
++
++	/* We must ensure the fan is on */
++	if (value > 0)
++		ec_write(REG_FAN_CONTROL, BIT_FAN_CONTROL_ON);
++
++	ec_write(REG_FAN_SPEED_LEVEL, value);
++}
++
++static int get_fan_rpm(void)
++{
++	int value;
++
++	value = FAN_SPEED_DIVIDER /
++	    (((ec_read(REG_FAN_SPEED_HIGH) & 0x0f) << 8) |
++	     ec_read(REG_FAN_SPEED_LOW));
++
++	return value;
++}
++
++static int get_cpu_temp(void)
++{
++	s8 value;
++
++	value = ec_read(REG_TEMPERATURE_VALUE);
++
++	return value * 1000;
++}
++
++static int get_battery_temp(void)
++{
++	int value;
++
++	value = (ec_read(REG_BAT_TEMPERATURE_HIGH) << 8) |
++		(ec_read(REG_BAT_TEMPERATURE_LOW));
++
++	return value * 1000;
++}
++
++static int get_battery_temp_alarm(void)
++{
++	int status;
++
++	status = (ec_read(REG_BAT_CHARGE_STATUS) &
++			BIT_BAT_CHARGE_STATUS_OVERTEMP);
++
++	return !!status;
++}
++
++static int get_battery_current(void)
++{
++	s16 value;
++
++	value = (ec_read(REG_BAT_CURRENT_HIGH) << 8) |
++		(ec_read(REG_BAT_CURRENT_LOW));
++
++	if (value < 0)
++		value = ~value + 1;
++
++	return value;
++}
++
++static int get_battery_voltage(void)
++{
++	int value;
++
++	value = (ec_read(REG_BAT_VOLTAGE_HIGH) << 8) |
++		(ec_read(REG_BAT_VOLTAGE_LOW));
++
++	return value;
++}
++
++static ssize_t store_sys_hwmon(void (*set) (int), const char *buf, size_t count)
++{
++	int ret;
++	unsigned long value;
++
++	if (!count)
++		return 0;
++
++	ret = strict_strtoul(buf, 10, &value);
++	if (ret)
++		return ret;
++
++	set(value);
++
++	return count;
++}
++
++static ssize_t show_sys_hwmon(int (*get) (void), char *buf)
++{
++	return sprintf(buf, "%d\n", get());
++}
++
++#define CREATE_SENSOR_ATTR(_name, _mode, _set, _get)		\
++	static ssize_t show_##_name(struct device *dev,			\
++				    struct device_attribute *attr,	\
++				    char *buf)				\
++	{								\
++		return show_sys_hwmon(_set, buf);			\
++	}								\
++	static ssize_t store_##_name(struct device *dev,		\
++				     struct device_attribute *attr,	\
++				     const char *buf, size_t count)	\
++	{								\
++		return store_sys_hwmon(_get, buf, count);		\
++	}								\
++	static SENSOR_DEVICE_ATTR(_name, _mode, show_##_name, store_##_name, 0);
++
++CREATE_SENSOR_ATTR(fan1_input, S_IRUGO, get_fan_rpm, NULL);
++CREATE_SENSOR_ATTR(pwm1, S_IRUGO | S_IWUSR, get_fan_pwm, set_fan_pwm);
++CREATE_SENSOR_ATTR(pwm1_enable, S_IRUGO | S_IWUSR, get_fan_pwm_enable,
++		set_fan_pwm_enable);
++CREATE_SENSOR_ATTR(temp1_input, S_IRUGO, get_cpu_temp, NULL);
++CREATE_SENSOR_ATTR(temp2_input, S_IRUGO, get_battery_temp, NULL);
++CREATE_SENSOR_ATTR(temp2_max_alarm, S_IRUGO, get_battery_temp_alarm, NULL);
++CREATE_SENSOR_ATTR(curr1_input, S_IRUGO, get_battery_current, NULL);
++CREATE_SENSOR_ATTR(in1_input, S_IRUGO, get_battery_voltage, NULL);
++
++static ssize_t
++show_name(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "yeeloong\n");
++}
++
++static SENSOR_DEVICE_ATTR(name, S_IRUGO, show_name, NULL, 0);
++
++static struct attribute *hwmon_attributes[] = {
++	&sensor_dev_attr_pwm1.dev_attr.attr,
++	&sensor_dev_attr_pwm1_enable.dev_attr.attr,
++	&sensor_dev_attr_fan1_input.dev_attr.attr,
++	&sensor_dev_attr_temp1_input.dev_attr.attr,
++	&sensor_dev_attr_temp2_input.dev_attr.attr,
++	&sensor_dev_attr_temp2_max_alarm.dev_attr.attr,
++	&sensor_dev_attr_curr1_input.dev_attr.attr,
++	&sensor_dev_attr_in1_input.dev_attr.attr,
++	&sensor_dev_attr_name.dev_attr.attr,
++	NULL
 +};
 +
-+static struct backlight_device *yeeloong_backlight_dev;
++static struct attribute_group hwmon_attribute_group = {
++	.attrs = hwmon_attributes
++};
 +
-+static int yeeloong_backlight_init(void)
++static struct device *yeeloong_hwmon_dev;
++
++static int yeeloong_hwmon_init(void)
 +{
 +	int ret;
 +
-+	yeeloong_backlight_dev = backlight_device_register("backlight0", NULL,
-+			NULL, &backlight_ops);
-+
-+	if (IS_ERR(yeeloong_backlight_dev)) {
-+		ret = PTR_ERR(yeeloong_backlight_dev);
-+		yeeloong_backlight_dev = NULL;
++	yeeloong_hwmon_dev = hwmon_device_register(NULL);
++	if (IS_ERR(yeeloong_hwmon_dev)) {
++		pr_err("Fail to register yeeloong hwmon device\n");
++		yeeloong_hwmon_dev = NULL;
++		return PTR_ERR(yeeloong_hwmon_dev);
++	}
++	ret = sysfs_create_group(&yeeloong_hwmon_dev->kobj,
++				 &hwmon_attribute_group);
++	if (ret) {
++		hwmon_device_unregister(yeeloong_hwmon_dev);
++		yeeloong_hwmon_dev = NULL;
 +		return ret;
 +	}
-+
-+	yeeloong_backlight_dev->props.max_brightness = MAX_BRIGHTNESS;
-+	yeeloong_backlight_dev->props.brightness =
-+		yeeloong_get_brightness(yeeloong_backlight_dev);
-+	backlight_update_status(yeeloong_backlight_dev);
++	/* ensure fan is set to auto mode */
++	set_fan_pwm_enable(BIT_FAN_AUTO);
 +
 +	return 0;
 +}
 +
-+static void yeeloong_backlight_exit(void)
++static void yeeloong_hwmon_exit(void)
 +{
-+	if (yeeloong_backlight_dev) {
-+		backlight_device_unregister(yeeloong_backlight_dev);
-+		yeeloong_backlight_dev = NULL;
++	if (yeeloong_hwmon_dev) {
++		sysfs_remove_group(&yeeloong_hwmon_dev->kobj,
++				   &hwmon_attribute_group);
++		hwmon_device_unregister(yeeloong_hwmon_dev);
++		yeeloong_hwmon_dev = NULL;
 +	}
 +}
- 
++
  static struct platform_device_id platform_device_ids[] = {
  	{
-@@ -42,11 +115,19 @@ static int __init yeeloong_init(void)
- 		return ret;
- 	}
+ 		.name = "yeeloong_laptop",
+@@ -225,11 +423,19 @@ static int __init yeeloong_init(void)
  
-+	ret = yeeloong_backlight_init();
+ 	yeeloong_battery_init();
+ 
++	ret = yeeloong_hwmon_init();
 +	if (ret) {
-+		pr_err("Fail to register yeeloong backlight driver.\n");
-+		yeeloong_backlight_exit();
++		pr_err("Fail to register yeeloong hwmon driver.\n");
++		yeeloong_hwmon_exit();
 +		return ret;
 +	}
 +
@@ -181,9 +330,9 @@ index 85fc7ed..f04a7e2 100644
  
  static void __exit yeeloong_exit(void)
  {
-+	yeeloong_backlight_exit();
++	yeeloong_hwmon_exit();
+ 	yeeloong_battery_exit();
+ 	yeeloong_backlight_exit();
  	platform_driver_unregister(&platform_driver);
- 
- 	pr_info("Unload YeeLoong Platform Specific Driver.\n");
 -- 
 1.6.2.1

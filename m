@@ -1,77 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2009 13:58:45 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:57440 "EHLO
-        mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493770AbZLGMzV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Dec 2009 13:55:21 +0100
-Received: by pwi18 with SMTP id 18so2477030pwi.24
-        for <multiple recipients>; Mon, 07 Dec 2009 04:55:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=rxjNrjYi7BwsSgoC3zO9Y5BlEF23URNA5DiaarGeTro=;
-        b=TOUr3nWxktX5NyPlslRH9DQltANRMFEhK40M8zweUfYEYHej/P6Sk9/2bfWaHgkXJs
-         EdBPz1rR3dwJD+xkxL24vIzxex4O8cNzXMauO+kP0L3tmC82nFAIda+WURbn9FN5alUb
-         3MGuPGf8RdoeDtvqBrc+BnE1cXEIfEcq0LqW8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        b=UTgZz4HWSxgU3XFCEAlJiA9ta9Rh4TYmzGe9pYBBUKROi9IuZgTYRf5vOY6l/UQsJz
-         b2i0k9XwZNyQt+eXz1dMRkkDcdMpLhYnzqqoP5k8qjmfU8xlGF1bEi8N+J7uPxQa1n29
-         +YpBQSRW5YptTWzExTksnGqF87LV8T5yoGfvM=
-MIME-Version: 1.0
-Received: by 10.115.81.24 with SMTP id i24mr11623414wal.194.1260190512545; 
-        Mon, 07 Dec 2009 04:55:12 -0800 (PST)
-Date:   Mon, 7 Dec 2009 20:55:12 +0800
-Message-ID: <c6ed1ac50912070455n736af31fuf2c981fc182b494f@mail.gmail.com>
-Subject: Dma addr should use Kuseg1 for MIPS32?
-From:   figo zhang <figo1802@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>, macro@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Dec 2009 14:10:40 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47902 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493836AbZLGNKh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Dec 2009 14:10:37 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nB7DAZaO021002;
+        Mon, 7 Dec 2009 13:10:35 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nB7DAYjv021000;
+        Mon, 7 Dec 2009 13:10:34 GMT
+Date:   Mon, 7 Dec 2009 13:10:34 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Dennis.Yxun" <dennis.yxun@gmail.com>
 Cc:     linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=0016e64de622d98132047a22f79c
-Return-Path: <figo1802@gmail.com>
+Subject: Re: Question: about Physical Address mapping
+Message-ID: <20091207131034.GA5119@linux-mips.org>
+References: <7b09df4c0912062339g418f432cr28d92c18ed273d2@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7b09df4c0912062339g418f432cr28d92c18ed273d2@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25348
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 25349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: figo1802@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0016e64de622d98132047a22f79c
-Content-Type: text/plain; charset=ISO-8859-1
+On Mon, Dec 07, 2009 at 03:39:15PM +0800, Dennis.Yxun wrote:
 
-hi,
+> HI ALL:
+>    I have a problem, that our MIPS hardware put registers location from
+> 0x7000,0000 -0x7040,0000.
+> So, I need to init TLB to access those registers.
+>    My question is: can I map those range to Kseg2 (mapped,uncached)? I found
+> "add_wired_entry" sit in
+> kernel code, seems I should use this function.
+> 
+>    I found code in arch/mips/jazz/irq.c, and the comment tells me
+> /* Map 0xe4000000 -> 0x0:600005C0, 0xe4100000 -> 400005C0 */
+>    add_wired_entry(0x01800017, 0x01000017, 0xe4000000, PM_4M);
+> 
+> does that mean after add_wired_entry, virtual address 0xe400,0000 map to
+> physical address 0x600005C0?
+> why the address is 0x6000,05C0, not 0x6000,0000
 
-I am writing a driver for MIPS32. i wirte this code for DMA addr:
+I probably knew 15 years ago when I wrote this code :)
 
-dma_vaddr =(char*) __get_free_pages(GFP_KERNEL|
-GFP_DMA, order);
-dma_phy = virt_to_phy(dma_vaddr);
+add_wired_entry() is a very awkard API and its use in the Jazz code is
+broken so I suggest you use ioremap() instead.
 
-i write dma_phy to DMA base register, but why it cannot work? it should
-write Kseg1 space to DMA register?
-I remember that it is ok for ARM/X86 .
-
-
-Best,
-Figo.zhang
-
---0016e64de622d98132047a22f79c
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-hi,<br><br>I am writing a driver for MIPS32. i wirte this code for DMA addr=
-:<br><br>dma_vaddr =3D(char*) __get_free_pages(GFP_KERNEL|<div class=3D"im"=
->GFP_DMA, order);<br>dma_phy =3D virt_to_phy(dma_vaddr);<br><br>i write dma=
-_phy to DMA base register, but why it cannot work? it should write Kseg1 sp=
-ace to DMA register? <br>
-
-I remember that it is ok for ARM/X86 .<br><br><br>Best,<br>Figo.zhang</div>
-
---0016e64de622d98132047a22f79c--
+  Ralf

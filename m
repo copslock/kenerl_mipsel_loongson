@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2009 08:38:29 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:39854 "EHLO
-        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491038AbZLHHi0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2009 08:38:26 +0100
-Received: by pzk35 with SMTP id 35so4535227pzk.22
-        for <multiple recipients>; Mon, 07 Dec 2009 23:38:19 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2009 08:53:25 +0100 (CET)
+Received: from mail-px0-f176.google.com ([209.85.216.176]:38576 "EHLO
+        mail-px0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491045AbZLHHxW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2009 08:53:22 +0100
+Received: by pxi6 with SMTP id 6so3906415pxi.0
+        for <multiple recipients>; Mon, 07 Dec 2009 23:53:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :in-reply-to:references:content-type:organization:date:message-id
          :mime-version:x-mailer:content-transfer-encoding;
-        bh=zTQnfOkxKLvLw/fgTG23uX1WjT7TuwX2YfPtEY/ywsE=;
-        b=Sqz0fcMSFFcDIgfozQy/+UtcbOuhzryIjN9aWPwmWof0pbnEO0PCWvm2KSJiFg6tYU
-         MciRmTwigL+Y3TARDjPEtKvy0XhRN1rok0ot3dU6fQCOCn7bwMtbAK5rKBi0PzbuWYvK
-         KK2kfPX3rIWowxIqEk64dNkbAWTZXunD80occ=
+        bh=4Xhz3xF/WU4xG71WNh8ATKGonFefN/OgssnrD1YvgBU=;
+        b=Q2xNomNxrj+GFJOFzcfUormKMFvWYPuc2zrMRLOqBiXL7EtelKTlDRvhShTisLefhy
+         Ano1Ii0QFBoeDUsHNSJWV046oGFS0BqmUQVU99LFENoQ+sN3YX3yt4J+jLBZyLwGdymI
+         IbLiNdGKLySgjPYQ3wH/xiQlytU7XJlsSTwM4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=HcHCuBcZ8mqwcBBBmuc2SfMYayODGGU37ktjYxg4GDzxh5Eg4Vx3XTsqA2eIeepbu+
-         I0DSJXWm2L1+u/Eq/anQOaoC1aCKSAT/17JENtQksi7A9yyotKwrPqSdbVEea0kRMLHq
-         Yt14RsjzgQr41mG2ZvgsMwx+axyXlXu/uxFbI=
-Received: by 10.115.66.28 with SMTP id t28mr14270793wak.177.1260257898949;
-        Mon, 07 Dec 2009 23:38:18 -0800 (PST)
+        b=aE4AlpJwZnCoe1m/2nVV1ehlsnMY92k9Q3HEOAhndYXMqMdYlwGI/69n1Uv7LaUSuQ
+         D+dKk3yr1jaSeJxlLeKf2KOnH0M8K1WXVzSELG3y7Kbi1B5EDlnrRAqnDntzGC4kQZAW
+         z9dTVKpdeHvKWCk12FIpNXIVJxTWR6bh+Kdog=
+Received: by 10.114.188.37 with SMTP id l37mr8044012waf.221.1260258795301;
+        Mon, 07 Dec 2009 23:53:15 -0800 (PST)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm5777909pzk.2.2009.12.07.23.38.13
+        by mx.google.com with ESMTPS id 21sm5787320pzk.15.2009.12.07.23.53.08
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 07 Dec 2009 23:38:18 -0800 (PST)
-Subject: Re: [PATCH v8 1/8] MIPS: add subdirectory for platform extension
- drivers
+        Mon, 07 Dec 2009 23:53:12 -0800 (PST)
+Subject: Re: [PATCH v8 3/8] Loongson: YeeLoong: add backlight driver
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -40,13 +39,15 @@ Cc:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
         linux-laptop@vger.kernel.org,
         Stephen Rothwell <sfr@canb.auug.org.au>,
         Pavel Machek <pavel@ucw.cz>
-In-Reply-To: <d6bb11d33fe01abd6de945117ce647af73841f00.1260082252.git.wuzhangjin@gmail.com>
+In-Reply-To: <3c77f3891e73e189cceef7155dc9cb6503084a4b.1260082252.git.wuzhangjin@gmail.com>
 References: <cover.1260082252.git.wuzhangjin@gmail.com>
          <d6bb11d33fe01abd6de945117ce647af73841f00.1260082252.git.wuzhangjin@gmail.com>
+         <5a8742a71e96ba40bee34fb37478cc8339e76530.1260082252.git.wuzhangjin@gmail.com>
+         <3c77f3891e73e189cceef7155dc9cb6503084a4b.1260082252.git.wuzhangjin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Organization: DSLab, Lanzhou University, China
-Date:   Tue, 08 Dec 2009 15:37:45 +0800
-Message-ID: <1260257865.3315.79.camel@falcon.domain.org>
+Date:   Tue, 08 Dec 2009 15:52:44 +0800
+Message-ID: <1260258764.3315.82.camel@falcon.domain.org>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
@@ -54,7 +55,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25365
+X-archive-position: 25366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,67 +63,37 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf
-
-I plan to send a new revision of this patchset, Can I get your Acked-by:
-for patch 1-3/8?
-
-Thanks!
-	Wu Zhangjin
-
 On Sun, 2009-12-06 at 15:01 +0800, Wu Zhangjin wrote:
 > From: Wu Zhangjin <wuzhangjin@gmail.com>
 > 
-> It is really hard to split the platform specific subdrivers into
-> different subsystems, which will generate lots of duplicated source
-> code, break the whole support into several pieces and also will make the
-> users be difficult to choose the suitable subdrivers in different
-> places.
-> 
-> So, I did like the forks have done under drivers/platform/x86, created
-> the drivers/platform/mips/ for putting the future MIPS netbook/laptop/pc
-> extension drivers in.
-> 
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  drivers/platform/Kconfig      |    4 ++++
->  drivers/platform/mips/Kconfig |   18 ++++++++++++++++++
->  2 files changed, 22 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/platform/mips/Kconfig
-> 
-> diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
-> index 9652c3f..2319c0b 100644
-> --- a/drivers/platform/Kconfig
-> +++ b/drivers/platform/Kconfig
-> @@ -3,3 +3,7 @@
->  if X86
->  source "drivers/platform/x86/Kconfig"
->  endif
+> This patch adds YeeLoong Backlight Driver, it provides standard
+> interface(/sys/class/backlight/) for user-space applications(e.g.
+> kpowersave, gnome-power-manager) to control the brightness of the
+> backlight.
+[...]
+> +static int yeeloong_set_brightness(struct backlight_device *bd)
+> +{
+> +	unsigned int level, current_level;
+> +	static unsigned int old_level;
 > +
-> +if MIPS
-> +source "drivers/platform/mips/Kconfig"
-> +endif
-> diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
-> new file mode 100644
-> index 0000000..2f77693
-> --- /dev/null
-> +++ b/drivers/platform/mips/Kconfig
-> @@ -0,0 +1,18 @@
-> +#
-> +# MIPS Platform Specific Drivers
-> +#
+> +	level = (bd->props.fb_blank == FB_BLANK_UNBLANK &&
+> +		 bd->props.power == FB_BLANK_UNBLANK) ?
+> +	    bd->props.brightness : 0;
 > +
-> +menuconfig MIPS_PLATFORM_DEVICES
-> +	bool "MIPS Platform Specific Device Drivers"
-> +	default y
-> +	help
-> +	  Say Y here to get to see options for device drivers of various
-> +	  MIPS platforms, including vendor-specific netbook/laptop/pc extension
-> +	  drivers.  This option alone does not add any kernel code.
+> +	if (level > MAX_BRIGHTNESS)
+> +		level = MAX_BRIGHTNESS;
+> +	else if (level < 0)
+> +		level = 0;
 > +
-> +	  If you say N, all options in this submenu will be skipped and disabled.
-> +
-> +if MIPS_PLATFORM_DEVICES
-> +
-> +
-> +endif # MIPS_PLATFORM_DEVICES
+> +	/* Avoid to modify the brightness when EC is tuning it */
+> +	if (old_level != level) {
+> +		current_level = ec_read(REG_DISPLAY_BRIGHTNESS);
+> +		if (old_level == current_level)
+> +			ec_write(REG_DISPLAY_BRIGHTNESS, level);
+> +	}
+> +	old_level = level;
+
+Will move the above line into the end of "if { ... }".
+
+Regards,
+	Wu Zhangjin

@@ -1,168 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2009 02:49:48 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:61252 "EHLO
-        mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1494562AbZLHBto (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2009 02:49:44 +0100
-Received: by pwj1 with SMTP id 1so400986pwj.24
-        for <multiple recipients>; Mon, 07 Dec 2009 17:49:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2009 07:51:40 +0100 (CET)
+Received: from mail-yw0-f203.google.com ([209.85.211.203]:65521 "EHLO
+        mail-yw0-f203.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491036AbZLHGvh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2009 07:51:37 +0100
+Received: by ywh41 with SMTP id 41so7394148ywh.0
+        for <multiple recipients>; Mon, 07 Dec 2009 22:51:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=XKXWg8dmOQz/aFW9Ia6RDliGwEBycBvJXX6uUmncVqQ=;
-        b=lBbTdrLUPJW/AzOiMVAeoEZQBMm6ItIcXodLYtDjDzfuEK6orXwAar0ZdzNelYxK8f
-         c/WN/tjn5U36H5TunUeN5ERums/usggcebXkov7xi1NQk6ramvQ/Wamxs0qD9EBjJGaT
-         FjoRUlTXBocEFUrGqP1s9pmG/+plc3ct01jT8=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=EtAEBQV8n0GY8JzHypYEVZXP+R2oo7mma7FaJgup1L4=;
+        b=EOAb0iN07i/YeORR6XuxZFy9SAsb2dh6h1Sum9p0ns1ABAo8cPQsgoITS+C/VoodbN
+         ryKrA7JSvVaZg2+ZzeatmfZY88kIBmk2IT7ZWJAoTiANrZlW7f/wWfz8ZTRZX/7HBhnI
+         p14xiBLZXfE7A7zVzOZM4G4RST3dVI9cbFx20=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=vlOkVJXlpNONdLvfrMF6nNykCAZgbwMRZIupv3l09Jyp2C4VciOUUwJbf35BWaEPq8
-         ySCm9cSk5CljVB+qJNOU+rn7X50L407QJ0YaiyoZpI2mlsO8JhnWujTDWQg5Dapw9oIl
-         8aTIzmbO/oG4FMqv/9mFNvigY6E6eUoXqvrco=
-MIME-Version: 1.0
-Received: by 10.115.117.4 with SMTP id u4mr13666518wam.43.1260236974784; Mon, 
-        07 Dec 2009 17:49:34 -0800 (PST)
-In-Reply-To: <20091207134502.GB5119@linux-mips.org>
-References: <c6ed1ac50912070455n736af31fuf2c981fc182b494f@mail.gmail.com>
-         <20091207134502.GB5119@linux-mips.org>
-Date:   Tue, 8 Dec 2009 09:49:34 +0800
-Message-ID: <c6ed1ac50912071749m49b1e5f5m7ae53384389338d9@mail.gmail.com>
-Subject: Re: Dma addr should use Kuseg1 for MIPS32?
-From:   figo zhang <figo1802@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <ddaney@caviumnetworks.com>, macro@linux-mips.org,
-        linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=0016e64e9098384a61047a2dc9a0
-Return-Path: <figo1802@gmail.com>
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=AJUjP9wk8l+WV3InT9Sq1jIkMlUA3zdhN73j/lys+IPlbdhYJJQIeu71PTGBlyVEMB
+         wBSttF5g18OHlu0q49E/fuMVesQYT7dDahjy4c9Fzg0/a6oSgugouM7YY3CCPCyz3bGd
+         gL1RzLyX1HgAexVC1C5dlUbfHyAO32l45lRS0=
+Received: by 10.90.21.8 with SMTP id 8mr1816536agu.35.1260255088635;
+        Mon, 07 Dec 2009 22:51:28 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm3985032iwn.12.2009.12.07.22.51.21
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 07 Dec 2009 22:51:26 -0800 (PST)
+Subject: Re: [PATCH v8 5/8] Loongson: YeeLoong: add hardware monitoring
+ driver
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, akpm@linux-foundation.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J . Wysocki" <rjw@sisk.pl>, zhangfx@lemote.com,
+        linux-laptop@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+In-Reply-To: <20091207094909.GD23088@elf.ucw.cz>
+References: <cover.1260082252.git.wuzhangjin@gmail.com>
+         <d8789fa7e97d8a170c4e2516d7ef2d2fbbe42cc6.1260082252.git.wuzhangjin@gmail.com>
+         <20091206084717.GD2766@ucw.cz> <1260147298.3126.2.camel@falcon.domain.org>
+         <20091207080446.GB23088@elf.ucw.cz>
+         <1260178870.9092.34.camel@falcon.domain.org>
+         <20091207094909.GD23088@elf.ucw.cz>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Tue, 08 Dec 2009 14:50:56 +0800
+Message-ID: <1260255056.3315.23.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25354
+X-archive-position: 25355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: figo1802@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---0016e64e9098384a61047a2dc9a0
-Content-Type: text/plain; charset=ISO-8859-1
+Hi, Pavel Machek
 
-2009/12/7 Ralf Baechle <ralf@linux-mips.org>
+After fixing the get_battery_current(), can I get your Acked-by: for the
+next revision of this patch?
 
-> On Mon, Dec 07, 2009 at 08:55:12PM +0800, figo zhang wrote:
->
-> > I am writing a driver for MIPS32. i wirte this code for DMA addr:
-> >
-> > dma_vaddr =(char*) __get_free_pages(GFP_KERNEL|
-> > GFP_DMA, order);
->
-> You probably don't want to use GFP_DMA - unless your hardware has DMA
-> restrictions such as the ISA's bus's 16MB limit.
->
-> > dma_phy = virt_to_phy(dma_vaddr);
->
+Thanks!
+	Wu Zhangjin
 
-> Ouch.  Don't.  See Documentation/DMA-API.txt for how to do it.
->
-
-hi Ralf,
-is it using dma_alloc_coherent()? i see the this funtion in
-arch/mips/mm/dma_default.c, it also invork the
-__get_free_pages() and return the dma_addr by
-plat_map_dma_mem()->virt_to_phy() , see
-include/asm-mips/mach-genric/dma-coherent.h. so i think, i see use
-__get_free_pages() alloce buffer for DMA.
-
->
-> > i write dma_phy to DMA base register, but why it cannot work? it should
-> > write Kseg1 space to DMA register?
-> > I remember that it is ok for ARM/X86 .
->
-> It's only happens to work on some systems.
->
-
-in my puzzle, if i run
-dma_vaddr =(char*) __get_free_pages(GFP_KERNEL,  order);
-dma_phy = virt_to_phy(dma_vaddr);
-
-if the result is:
-dma_vaddr = 0x801b00000;
-dma_phy = 0x1b00000;
-
-so i should write 0x1b00000 to my DMA Base register or wirte (0x1b000000 |
-0xa0000000) to DMA?
-
-2. If my system have HIGHMEM, so i alloc highmem pages by :
-  page = alloc_pages(__GFP_HIGHMEM, order);
-  phy = page_to_phys(page);
-
-how i write this highmem phy addr to DMA base register?
-
-Best,
-Figo.zhang
-
-
-
->  Ralf
->
-
---0016e64e9098384a61047a2dc9a0
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<br><br><div class=3D"gmail_quote">2009/12/7 Ralf Baechle <span dir=3D"ltr"=
->&lt;<a href=3D"mailto:ralf@linux-mips.org">ralf@linux-mips.org</a>&gt;</sp=
-an><br><blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rg=
-b(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
-<div class=3D"im">On Mon, Dec 07, 2009 at 08:55:12PM +0800, figo zhang wrot=
-e:<br>
-<br>
-&gt; I am writing a driver for MIPS32. i wirte this code for DMA addr:<br>
-&gt;<br>
-&gt; dma_vaddr =3D(char*) __get_free_pages(GFP_KERNEL|<br>
-&gt; GFP_DMA, order);<br>
-<br>
-</div>You probably don&#39;t want to use GFP_DMA - unless your hardware has=
- DMA<br>
-restrictions such as the ISA&#39;s bus&#39;s 16MB limit.<br>
-<div><br>
-&gt; dma_phy =3D virt_to_phy(dma_vaddr); <br></div></blockquote><blockquote=
- class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); =
-margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;"><div class=3D"im">
-<br>
-</div>Ouch. =A0Don&#39;t. =A0See Documentation/DMA-API.txt for how to do it=
-.<br></blockquote><div><br>hi Ralf, <br>is it using dma_alloc_coherent()? i=
- see the this funtion in arch/mips/mm/dma_default.c, it also invork the=A0 =
-<br>
-__get_free_pages() and return the dma_addr by plat_map_dma_mem()-&gt;virt_t=
-o_phy() , see include/asm-mips/mach-genric/dma-coherent.h. so i think, i se=
-e use __get_free_pages() alloce buffer for DMA.<br></div><blockquote class=
-=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); margin=
-: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
-
-<div class=3D"im"><br>
-&gt; i write dma_phy to DMA base register, but why it cannot work? it shoul=
-d<br>
-&gt; write Kseg1 space to DMA register?<br>
-&gt; I remember that it is ok for ARM/X86 .<br>
-<br>
-</div>It&#39;s only happens to work on some systems.<br></blockquote><div><=
-br>in my puzzle, if i run=A0 <br>dma_vaddr =3D(char*) __get_free_pages(GFP_=
-KERNEL,=A0 order);<br>dma_phy =3D virt_to_phy(dma_vaddr); <br><br>if the re=
-sult is:<br>
-dma_vaddr =3D 0x801b00000;<br>dma_phy =3D 0x1b00000;<br><br>so i should wri=
-te 0x1b00000 to my DMA Base register or wirte (0x1b000000 | 0xa0000000) to =
-DMA?<br><br>2. If my system have HIGHMEM, so i alloc highmem pages by :<br>
-=A0 page =3D alloc_pages(__GFP_HIGHMEM, order);<br>=A0 phy =3D page_to_phys=
-(page);<br><br>how i write this highmem phy addr to DMA base register?<br><=
-br>Best,<br>Figo.zhang<br>=A0 <br><br></div><blockquote class=3D"gmail_quot=
-e" style=3D"border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt =
-0.8ex; padding-left: 1ex;">
-
-<font color=3D"#888888"><br>
- =A0Ralf<br>
-</font></blockquote></div><br>
-
---0016e64e9098384a61047a2dc9a0--
+On Mon, 2009-12-07 at 10:49 +0100, Pavel Machek wrote:
+> On Mon 2009-12-07 17:41:10, Wu Zhangjin wrote:
+> > On Mon, 2009-12-07 at 09:04 +0100, Pavel Machek wrote:
+> > > > > What is going on here? I thought the value is already in two's
+> > > > > complement... Is the above equivalent of
+> > > > > 
+> > > > > 	      if (value < 0)
+> > > > > 	      	 value = -value; 
+> > > > > 
+> > > > > ? If so, why? If not, can you add a comment?
+> > > > 
+> > > > Right, then, will use this instead:
+> > > > 
+> > > > static int get_battery_current(void)
+> > > > { 
+> > > > 	s16 value;
+> > > > 
+> > > > 	value = (ec_read(REG_BAT_CURRENT_HIGH) << 8) |
+> > > > 		(ec_read(REG_BAT_CURRENT_LOW));
+> > > > 
+> > > > 	return abs(value);
+> > > > }
+> > > 
+> > > That's certainly better. But... why not return signed value? Current
+> > > flowing from the battery is certainly very different from current
+> > > flowing into it...
+> > 
+> > You are totally right ;)
+> > 
+> > Just test it, when flowing from the battery, the value is negative, and
+> > when flowing into the battery, the value is positive, so, no abs()
+> > needed. thanks!
+> 
+> Make it return -value, then. I believe other code uses >0 values for
+> discharge.
+> 									Pavel
+> 

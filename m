@@ -1,62 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2009 12:37:26 +0100 (CET)
-Received: from gateway-1237.mvista.com ([206.112.117.35]:15036 "HELO
-        imap.sh.mvista.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with SMTP id S1492628AbZLHLhW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Dec 2009 12:37:22 +0100
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-        by imap.sh.mvista.com (Postfix) with SMTP
-        id 8EAD93ED9; Tue,  8 Dec 2009 03:37:13 -0800 (PST)
-Message-ID: <4B1E3A5A.9050100@ru.mvista.com>
-Date:   Tue, 08 Dec 2009 14:36:58 +0300
-From:   Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Dec 2009 13:37:02 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:39100 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493974AbZLHMg6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Dec 2009 13:36:58 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nB8CavEG021569;
+        Tue, 8 Dec 2009 12:36:57 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nB8CavdB021567;
+        Tue, 8 Dec 2009 12:36:57 GMT
+Date:   Tue, 8 Dec 2009 12:36:57 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Yoichi Yuasa <yuasa@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH resend] MIPS: more replace CL_SIZE by COMMAND_LINE_SIZE
+Message-ID: <20091208123657.GB20624@linux-mips.org>
+References: <20091208165844.ddd9106f.yuasa@linux-mips.org>
+ <20091208172444.9e48afe7.yuasa@linux-mips.org>
 MIME-Version: 1.0
-To:     figo zhang <figo1802@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>, macro@linux-mips.org,
-        linux-mips@linux-mips.org
-Subject: Re: Dma addr should use Kuseg1 for MIPS32?
-References: <c6ed1ac50912070455n736af31fuf2c981fc182b494f@mail.gmail.com>         <20091207134502.GB5119@linux-mips.org> <c6ed1ac50912071749m49b1e5f5m7ae53384389338d9@mail.gmail.com>
-In-Reply-To: <c6ed1ac50912071749m49b1e5f5m7ae53384389338d9@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20091208172444.9e48afe7.yuasa@linux-mips.org>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25370
+X-archive-position: 25371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Tue, Dec 08, 2009 at 05:24:44PM +0900, Yoichi Yuasa wrote:
 
-figo zhang wrote:
+> Sorry, I forgot one more CL_SIZE.
+> 
+> Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
 
->
->     > i write dma_phy to DMA base register, but why it cannot work? it
->     should
->     > write Kseg1 space to DMA register?
->     > I remember that it is ok for ARM/X86 .
->
->     It's only happens to work on some systems.
->
->
-> in my puzzle, if i run 
-> dma_vaddr =(char*) __get_free_pages(GFP_KERNEL,  order);
-> dma_phy = virt_to_phy(dma_vaddr);
->
-> if the result is:
-> dma_vaddr = 0x801b00000;
-> dma_phy = 0x1b00000;
->
-> so i should write 0x1b00000 to my DMA Base register or wirte 
-> (0x1b000000 | 0xa0000000) to DMA?
+I fixed these in the pull tree for Linus a few days ago along with a few
+other issues and I was planning to get these fixes into the main tree
+indirectly by just pulling from Linus.
 
-   You must always use the physical addresses when programming DMA, i.e. 
-0x1b00000 in this case.
+Thanks!
 
-WBR, Sergei
+  Ralf

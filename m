@@ -1,74 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2009 02:59:36 +0100 (CET)
-Received: from mail-yw0-f203.google.com ([209.85.211.203]:45218 "EHLO
-        mail-yw0-f203.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1494395AbZLIB7d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2009 02:59:33 +0100
-Received: by ywh41 with SMTP id 41so8238454ywh.0
-        for <multiple recipients>; Tue, 08 Dec 2009 17:59:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Dec 2009 12:00:42 +0100 (CET)
+Received: from mail-px0-f202.google.com ([209.85.216.202]:64349 "EHLO
+        mail-px0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491205AbZLILAj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Dec 2009 12:00:39 +0100
+Received: by pxi40 with SMTP id 40so666038pxi.21
+        for <multiple recipients>; Wed, 09 Dec 2009 03:00:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:date:from:to:cc
-         :subject:message-id:in-reply-to:references:x-mailer:mime-version
-         :content-type:content-transfer-encoding;
-        bh=B9JLO0NSfvKq5ezVPEcHF6i2pYPkeab78yHibEVEltU=;
-        b=EbZq3s5EbzdYB53bT0rGLu/N2XlpCByVzFvIJbeb7oAPAUhAeGOFcts49bZCkmtbV3
-         5LM1JZ35q+6nmkVXNXuMI26Ryq00xsbCy29l7+noR7M23PaIR22mqoSDA5x+fT11Xbor
-         XNB42xnXt3RYGnHYmIdN1tpE0QCAXhftzEhNE=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=857nE80KHgfbd2GB1vwxiyEimJlR66TOYfgwOmGsb8Q=;
+        b=DwUxOeRzf06Ovhl2DMEPYSHHWsxrdpc5sTPHE7GDwDz3lWTc6wtzay0P6LQfF1NZkH
+         AfNVut74JXG3ti6BaXkNFWkjgRx4AGKGBo+alT0S4RxPQ0Y/4x8o3V/rx9PcqgAVUdO3
+         xRgrcepxGhBQXaYMtt/QseYSM8SzGKJ1RlXJ4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
-         :x-mailer:mime-version:content-type:content-transfer-encoding;
-        b=GktlTjfCy5ly6bZH5gN9D/KQTLDe1kIFUApYIiphisIIjmsSo3uKzKlXa9I3VF8i9o
-         rFMukZHJspKEdMkZyLVqB4z00WuYdUhHo9fO+EHmzwPsdjgD9NxIWjW44+iNNU4ixAiL
-         zLJl2DfX9XYApqcNFjlYv3qfEn0e0CYO3FYDo=
-Received: by 10.150.77.24 with SMTP id z24mr15383530yba.41.1260323966550;
-        Tue, 08 Dec 2009 17:59:26 -0800 (PST)
-Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
-        by mx.google.com with ESMTPS id 15sm3693174gxk.12.2009.12.08.17.59.22
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=spsgyYR8TiNOYPLc7X67OJiDF6MS66XiBmJJzfnm+TtBTWm5WkdVJ5Tor2P/3Pm4Tc
+         KjXhr7/h/yv1AaGDACbyW4qlAvH5PTe0U3yh+b6wVUinJ+XRn60Pwwxuhbl2AfmZTsit
+         cxABb/5rqnlMfA08rXEQqw36pzhaDOm8yxPqQ=
+Received: by 10.115.134.40 with SMTP id l40mr18452260wan.41.1260356429532;
+        Wed, 09 Dec 2009 03:00:29 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 20sm6858944pzk.13.2009.12.09.03.00.24
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 08 Dec 2009 17:59:24 -0800 (PST)
-Date:   Wed, 9 Dec 2009 10:58:26 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
-To:     Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:     yuasa@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH resend] MIPS: more replace CL_SIZE by COMMAND_LINE_SIZE
-Message-Id: <20091209105826.e114cde8.yuasa@linux-mips.org>
-In-Reply-To: <4B1E39B3.5000207@ru.mvista.com>
-References: <20091208165844.ddd9106f.yuasa@linux-mips.org>
-        <20091208172444.9e48afe7.yuasa@linux-mips.org>
-        <4B1E39B3.5000207@ru.mvista.com>
-X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
+        Wed, 09 Dec 2009 03:00:28 -0800 (PST)
+Subject: Re: [PATCH v9 5/8] Loongson: YeeLoong: add hardware monitoring
+ driver
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, akpm@linux-foundation.org,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J . Wysocki" <rjw@sisk.pl>, zhangfx@lemote.com,
+        linux-laptop@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+In-Reply-To: <20091208150229.GA1375@ucw.cz>
+References: <cover.1260281599.git.wuzhangjin@gmail.com>
+         <5e9acb4cd757075f617daa45cbd6f5fad94678ac.1260281599.git.wuzhangjin@gmail.com>
+         <20091208150229.GA1375@ucw.cz>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Wed, 09 Dec 2009 18:59:52 +0800
+Message-ID: <1260356392.3926.2.camel@falcon.domain.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa.linux@gmail.com>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25384
+X-archive-position: 25385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Sergei,
-
-On Tue, 08 Dec 2009 14:34:11 +0300
-Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-
-> Hello.
+On Tue, 2009-12-08 at 16:02 +0100, Pavel Machek wrote:
+> Hi!
 > 
-> Yoichi Yuasa wrote:
-> > Sorry, I forgot one more CL_SIZE.
-> >   
+> > This patch adds hardware monitoring driver, it provides standard
+> > interface(/sys/class/hwmon/) for lm-sensors/sensors-applet to monitor
+> > the temperatures of CPU and battery, the PWM of fan, the current,
+> > voltage of battery.
 > 
->    You should put such notes under the --- tearline, not into the patch 
-> description.
+> It is probably ok for now, but in future current/voltage of battery
+> should be exported as power_supply class (drivers/power)...
 
-I'll be careful.
+Currently, the version based on the power_supply class have some
+problems when using with gnome-power-manager(the whole system will hang
+there), but works well with kpowersave, after fixing the bug, we will
+use it instead of this APM Emulated one.
 
-Thanks,
-Yoichi
+Thanks & Regards!
+	Wu Zhangjin

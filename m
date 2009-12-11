@@ -1,42 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Dec 2009 15:55:49 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:61262 "EHLO
-        mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492955AbZLJOzj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Dec 2009 15:55:39 +0100
-Received: by pwj1 with SMTP id 1so2300911pwj.24
-        for <multiple recipients>; Thu, 10 Dec 2009 06:55:31 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Dec 2009 03:48:29 +0100 (CET)
+Received: from mail-yx0-f204.google.com ([209.85.210.204]:44401 "EHLO
+        mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1494012AbZLKCsZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Dec 2009 03:48:25 +0100
+Received: by yxe42 with SMTP id 42so487503yxe.22
+        for <multiple recipients>; Thu, 10 Dec 2009 18:48:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=4KUHlP1P7U+R6ZnGSESxCWuZeidYz2GXE0ETnQABMmM=;
-        b=LLggD2B0IUGH6v902qZrFqL2jRHbDznjvpd9XkkNB6863GUdpLmUu71T1phD/mm5FX
-         hUuKkeGrx5qZuu32ZJP4M0bQEHuIo/vrdN28Y3tf5k8esOayjmLJ/bnjkKf9cxUTWsjQ
-         DBRI8BbTXwhrvTFvISG6XkBry8PW4MkRmLG+g=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=H2uyOGrqpzUr6ebcCsXeqiL9KDWEWBSAb6ANRuBQwgA=;
+        b=wmKXsuL1OWEn5R2plz3J7D/xYj2knuJpSEMrMYLBXcjEua6scU71aOMacMUnUTSqmS
+         SCXkWJvtO8uukj20sCvwu7DP2ilWiOgwwq31DuK8uzApasm5D6dJNs3exfkpoBD1yNZJ
+         /Yeggwz33/LwNK41iPMs46i+fzZTHaI7XaAQw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=lx3ZA/NNzHHDXzJmwTy3Iti5hrPTfBgv5sdez4uBtu75qkBBgS+Bh2lueRWc/e+6Tn
-         6/VGq7WdS6Ha/oF2S5yTqGXgpOeZU5+3Mg8cbcnOuRIiCeEOAw/+rLccNO/PxKHspq0P
-         QDdSZufkjC5lnejK5DNCIetQOfiHkBS5QJFW4=
-Received: by 10.141.125.6 with SMTP id c6mr24691rvn.16.1260456931117;
-        Thu, 10 Dec 2009 06:55:31 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm973613pzk.0.2009.12.10.06.55.27
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=fjAH4UUfEMj8+71Ihy8r7lE1rNlBcOH3pzBi4V3bQbRSpTSaY82xkD8p9RRxxnJVNS
+         6xl9Zb/hnLdseJpIWoOOY1eYOvHj/v+YJ6HDLG/PEyFPQ9E4IIc0PwduUMObiWMyTn7A
+         WYXr+blS0nk7aGG4z1qaoaHDeKu9jAWIzxF1E=
+Received: by 10.150.48.6 with SMTP id v6mr1569899ybv.131.1260499695043;
+        Thu, 10 Dec 2009 18:48:15 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 8sm677225yxb.25.2009.12.10.18.48.06
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 10 Dec 2009 06:55:30 -0800 (PST)
+        Thu, 10 Dec 2009 18:48:13 -0800 (PST)
+Subject: Re: [PATCH v9 8/8] Loongson: YeeLoong: add input/hotkey driver
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] MIPS: Cleanup and Fixup of compressed kernel support
-Date:   Thu, 10 Dec 2009 22:55:13 +0800
-Message-Id: <1260456913-7822-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
+Cc:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J . Wysocki" <rjw@sisk.pl>, zhangfx@lemote.com,
+        linux-laptop@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Pavel Machek <pavel@ucw.cz>
+In-Reply-To: <e6d590fa37e6003dd482918fdef02c1fc127d6c8.1260281599.git.wuzhangjin@gmail.com>
+References: <cover.1260254344.git.wuzhangjin@gmail.com>
+         <39d232e3f8359e9c11bad7536f0162444401ec94.1260281599.git.wuzhangjin@gmail.com>
+         <7676d8397e593dbec0d40e24429b7ccbcecfa588.1260281599.git.wuzhangjin@gmail.com>
+         <4d821efaecc3dee0b9124119507a694e81572437.1260281599.git.wuzhangjin@gmail.com>
+         <5c426a5091bee3e4483fc0b93f26359e2840428b.1260281599.git.wuzhangjin@gmail.com>
+         <5e9acb4cd757075f617daa45cbd6f5fad94678ac.1260281599.git.wuzhangjin@gmail.com>
+         <234c5ecd475b05e3eb17ead3ae107cfe3426e0e0.1260281599.git.wuzhangjin@gmail.com>
+         <6af33d6c42ba4de9eea27316c64f81b96e01c948.1260281599.git.wuzhangjin@gmail.com>
+         <e6d590fa37e6003dd482918fdef02c1fc127d6c8.1260281599.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Fri, 11 Dec 2009 10:47:40 +0800
+Message-ID: <1260499660.3193.17.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25390
+X-archive-position: 25391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,299 +68,53 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Tue, 2009-12-08 at 22:15 +0800, Wu Zhangjin wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
+> 
+> This patch adds Hotkey Driver, which will do related actions for The
+> hotkey event(/sys/class/input) and report the corresponding input keys
+> to the user-space applications.
+> 
+> [NOTE:
+> 
+> This patch is based on the sparse keymap library in:
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input next
+> 
+> of Dmitry Torokhov. that sparse keymap support is also queued for
+> 2.6.33. Before the above branch is pulled by linus, this patch is not
+> appliable.]
+> 
+[...]
+> +
+> +/* yeeloong_wifi_handler may be implemented in the wifi driver */
+> +sci_handler yeeloong_wifi_handler;
+> +EXPORT_SYMBOL(yeeloong_wifi_handler);
+> +
 
-Changes:
+Because we have reported the KEY_WLAN to user-space and If we provide
+the standard rfkill interfaces too, there is no need to handle the Fn+F5
+event in kernel space, will remove the above three lines the following
+related source code.
 
-    o Remove the .initrd section
-    the initrd section is put in vmlinux, not need to handle it here.
+> +static void do_event_action(int event)
+> +{
+> +	sci_handler handler;
+> +	int reg, status;
+> +	struct key_entry *ke;
+> +
+> +	reg = 0;
+> +	handler = NULL;
+> +
+> +	switch (event) {
+[...]
+> +	case EVENT_WLAN:
+> +		/* We use 2 to indicate it as a switch */
+> +		status = 2;
+> +		handler = yeeloong_wifi_handler;
+> +		break;
 
-    o Move .MIPS.options, .options, .pdr, .reginfo, .comment, .note from
-    Makefile to the /DSICARD/ of ld.script
-    If not move the .MIPS.options, the kernel compiled with gcc
-    3.4.6 will not boot.
+Will remove it and send the this patch as v10 later.
 
-    o Clean up the file format.
-    o Remove several other un-needed sections.
-
-Have tested this patch with gcc 3.4.6 and gcc 4.4.1, and also with,
-without the initrd file system. All of them works well.
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/boot/compressed/Makefile     |    9 +-
- arch/mips/boot/compressed/decompress.c |   10 --
- arch/mips/boot/compressed/ld.script    |  195 +++++++++-----------------------
- 3 files changed, 59 insertions(+), 155 deletions(-)
-
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index e27f40b..671d344 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -56,7 +56,7 @@ $(obj)/piggy.o: $(obj)/vmlinux.$(suffix_y) $(obj)/dummy.o
- LDFLAGS_vmlinuz := $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T
- vmlinuz: $(src)/ld.script $(obj-y) $(obj)/piggy.o
- 	$(call if_changed,ld)
--	$(Q)$(OBJCOPY) $(OBJCOPYFLAGS) -R .comment -R .stab -R .stabstr -R .initrd -R .sysmap $@
-+	$(Q)$(OBJCOPY) $(OBJCOPYFLAGS) $@
- 
- #
- # Some DECstations need all possible sections of an ECOFF executable
-@@ -84,14 +84,11 @@ vmlinuz.ecoff: $(obj)/../elf2ecoff $(VMLINUZ)
- $(obj)/../elf2ecoff: $(src)/../elf2ecoff.c
- 	$(Q)$(HOSTCC) -o $@ $^
- 
--drop-sections	= .reginfo .mdebug .comment .note .pdr .options .MIPS.options
--strip-flags	= $(addprefix --remove-section=,$(drop-sections))
--
--OBJCOPYFLAGS_vmlinuz.bin := $(OBJCOPYFLAGS) -O binary $(strip-flags)
-+OBJCOPYFLAGS_vmlinuz.bin := $(OBJCOPYFLAGS) -O binary
- vmlinuz.bin: vmlinuz
- 	$(call if_changed,objcopy)
- 
--OBJCOPYFLAGS_vmlinuz.srec := $(OBJCOPYFLAGS) -S -O srec $(strip-flags)
-+OBJCOPYFLAGS_vmlinuz.srec := $(OBJCOPYFLAGS) -S -O srec
- vmlinuz.srec: vmlinuz
- 	$(call if_changed,objcopy)
- 
-diff --git a/arch/mips/boot/compressed/decompress.c b/arch/mips/boot/compressed/decompress.c
-index 67330c2..e48fd72 100644
---- a/arch/mips/boot/compressed/decompress.c
-+++ b/arch/mips/boot/compressed/decompress.c
-@@ -28,8 +28,6 @@ char *zimage_start;
- 
- /* The linker tells us where the image is. */
- extern unsigned char __image_begin, __image_end;
--extern unsigned char __ramdisk_begin, __ramdisk_end;
--unsigned long initrd_size;
- 
- /* debug interfaces  */
- extern void puts(const char *s);
-@@ -102,14 +100,6 @@ void decompress_kernel(unsigned long boot_heap_start)
- 	puthex((unsigned long)(zimage_size + zimage_start));
- 	puts("\n");
- 
--	if (initrd_size) {
--		puts("initrd at:     ");
--		puthex((unsigned long)(&__ramdisk_begin));
--		puts(" ");
--		puthex((unsigned long)(&__ramdisk_end));
--		puts("\n");
--	}
--
- 	/* this area are prepared for mallocing when decompressing */
- 	free_mem_ptr = boot_heap_start;
- 	free_mem_end_ptr = boot_heap_start + BOOT_HEAP_SIZE;
-diff --git a/arch/mips/boot/compressed/ld.script b/arch/mips/boot/compressed/ld.script
-index 29e9f4c..0b3fc82 100644
---- a/arch/mips/boot/compressed/ld.script
-+++ b/arch/mips/boot/compressed/ld.script
-@@ -1,150 +1,67 @@
-+/*
-+ * ld.script for compressed kernel support of MIPS
-+ *
-+ * Copyright (C) 2009 Lemote Inc.
-+ * Author: Wu Zhangjin <wuzj@lemote.com>
-+ */
-+
- OUTPUT_ARCH(mips)
- ENTRY(start)
- SECTIONS
- {
--  /* Read-only sections, merged into text segment: */
--  .init          : { *(.init)		} =0
--  .text      :
--  {
--    _ftext = . ;
--    *(.text)
--    *(.rodata)
--    *(.rodata1)
--    /* .gnu.warning sections are handled specially by elf32.em.  */
--    *(.gnu.warning)
--  } =0
--  .kstrtab : { *(.kstrtab) }
--
--  . = ALIGN(16);		/* Exception table */
--  __start___ex_table = .;
--  __ex_table : { *(__ex_table) }
--  __stop___ex_table = .;
--
--  __start___dbe_table = .;	/* Exception table for data bus errors */
--  __dbe_table : { *(__dbe_table) }
--  __stop___dbe_table = .;
--
--  __start___ksymtab = .;	/* Kernel symbol table */
--  __ksymtab : { *(__ksymtab) }
--  __stop___ksymtab = .;
--
--  _etext = .;
--
--  . = ALIGN(8192);
--  .data.init_task : { *(.data.init_task) }
--
--  /* Startup code */
--  . = ALIGN(4096);
--  __init_begin = .;
--  .text.init : { *(.text.init) }
--  .data.init : { *(.data.init) }
--  . = ALIGN(16);
--  __setup_start = .;
--  .setup.init : { *(.setup.init) }
--  __setup_end = .;
--  __initcall_start = .;
--  .initcall.init : { *(.initcall.init) }
--  __initcall_end = .;
--  . = ALIGN(4096);	/* Align double page for init_task_union */
--  __init_end = .;
--
--  . = ALIGN(4096);
--  .data.page_aligned : { *(.data.idt) }
--
--  . = ALIGN(32);
--  .data.cacheline_aligned : { *(.data.cacheline_aligned) }
-+	/* . = VMLINUZ_LOAD_ADDRESS */
-+	/* read-only */
-+	_text = .;	/* Text and read-only data */
-+	.text	: {
-+		_ftext = . ;
-+		*(.text)
-+		*(.rodata)
-+	} = 0
-+	_etext = .;	/* End of text section */
- 
--  .fini      : { *(.fini)    } =0
--  .reginfo : { *(.reginfo) }
--  /* Adjust the address for the data segment.  We want to adjust up to
--     the same address within the page on the next page up.  It would
--     be more correct to do this:
--       . = .;
--     The current expression does not correctly handle the case of a
--     text segment ending precisely at the end of a page; it causes the
--     data segment to skip a page.  The above expression does not have
--     this problem, but it will currently (2/95) cause BFD to allocate
--     a single segment, combining both text and data, for this case.
--     This will prevent the text segment from being shared among
--     multiple executions of the program; I think that is more
--     important than losing a page of the virtual address space (note
--     that no actual memory is lost; the page which is skipped can not
--     be referenced).  */
--  . = .;
--  .data    :
--  {
--    _fdata = . ;
--    *(.data)
-+	/* writable */
-+	.data	: {	/* Data */
-+		_fdata = . ;
-+		*(.data)
-+		/* Put the compressed image here, so bss is on the end. */
-+		__image_begin = .;
-+		*(.image)
-+		__image_end = .;
-+		CONSTRUCTORS
-+	}
-+  	.sdata	: { *(.sdata) }
-+  	. = ALIGN(4);
-+	_edata  =  .;	/* End of data section */
- 
--   /* Put the compressed image here, so bss is on the end. */
--   __image_begin = .;
--   *(.image)
--   __image_end = .;
--   /* Align the initial ramdisk image (INITRD) on page boundaries. */
--   . = ALIGN(4096);
--   __ramdisk_begin = .;
--   *(.initrd)
--   __ramdisk_end = .;
--   . = ALIGN(4096);
-+	/* BSS */
-+	__bss_start = .;
-+	_fbss = .;
-+	.sbss	: { *(.sbss) *(.scommon) }
-+	.bss	: {
-+		*(.dynbss)
-+		*(.bss)
-+		*(COMMON)
-+	}
-+	.  = ALIGN(4);
-+	_end = . ;
- 
--    CONSTRUCTORS
--  }
--  .data1   : { *(.data1) }
--  _gp = . + 0x8000;
--  .lit8 : { *(.lit8) }
--  .lit4 : { *(.lit4) }
--  .ctors         : { *(.ctors)   }
--  .dtors         : { *(.dtors)   }
--  .got           : { *(.got.plt) *(.got) }
--  .dynamic       : { *(.dynamic) }
--  /* We want the small data sections together, so single-instruction offsets
--     can access them all, and initialized data all before uninitialized, so
--     we can shorten the on-disk segment size.  */
--  .sdata     : { *(.sdata) }
--  . = ALIGN(4);
--  _edata  =  .;
--  PROVIDE (edata = .);
-+	/* These are needed for ELF backends which have not yet been converted
-+	 * to the new style linker.  */
- 
--  __bss_start = .;
--  _fbss = .;
--  .sbss      : { *(.sbss) *(.scommon) }
--  .bss       :
--  {
--   *(.dynbss)
--   *(.bss)
--   *(COMMON)
--   .  = ALIGN(4);
--  _end = . ;
--  PROVIDE (end = .);
--  }
-+	.stab 0 : { *(.stab) }
-+	.stabstr 0 : { *(.stabstr) }
- 
--  /* Sections to be discarded */
--  /DISCARD/ :
--  {
--        *(.text.exit)
--        *(.data.exit)
--        *(.exitcall.exit)
--  }
-+	/* These must appear regardless of  .  */
-+	.gptab.sdata : { *(.gptab.data) *(.gptab.sdata) }
-+	.gptab.sbss : { *(.gptab.bss) *(.gptab.sbss) }
- 
--  /* This is the MIPS specific mdebug section.  */
--  .mdebug : { *(.mdebug) }
--  /* These are needed for ELF backends which have not yet been
--     converted to the new style linker.  */
--  .stab 0 : { *(.stab) }
--  .stabstr 0 : { *(.stabstr) }
--  /* DWARF debug sections.
--     Symbols in the .debug DWARF section are relative to the beginning of the
--     section so we begin .debug at 0.  It's not clear yet what needs to happen
--     for the others.   */
--  .debug          0 : { *(.debug) }
--  .debug_srcinfo  0 : { *(.debug_srcinfo) }
--  .debug_aranges  0 : { *(.debug_aranges) }
--  .debug_pubnames 0 : { *(.debug_pubnames) }
--  .debug_sfnames  0 : { *(.debug_sfnames) }
--  .line           0 : { *(.line) }
--  /* These must appear regardless of  .  */
--  .gptab.sdata : { *(.gptab.data) *(.gptab.sdata) }
--  .gptab.sbss : { *(.gptab.bss) *(.gptab.sbss) }
--  .comment : { *(.comment) }
--  .note : { *(.note) }
-+	/* Sections to be discarded */
-+	/DISCARD/	: {
-+		*(.MIPS.options)
-+		*(.options)
-+		*(.pdr)
-+		*(.reginfo)
-+		*(.comment)
-+		*(.note)
-+	}
- }
--- 
-1.6.2.1
+Best Regards,
+	Wu Zhangjin

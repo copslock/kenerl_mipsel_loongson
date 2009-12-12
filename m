@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Dec 2009 20:46:28 +0100 (CET)
-Received: from elvis.franken.de ([193.175.24.41]:37987 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493318AbZLLTqY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 12 Dec 2009 20:46:24 +0100
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1NJXv2-0003Mw-00; Sat, 12 Dec 2009 20:46:20 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id A157FC2A89; Sat, 12 Dec 2009 20:31:14 +0100 (CET)
-Date:   Sat, 12 Dec 2009 20:31:14 +0100
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Florian Fainelli <ffainelli@freebox.fr>
-Cc:     linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>,
-        ralf@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: add readl/write_be
-Message-ID: <20091212193114.GA11103@alpha.franken.de>
-References: <200912121757.56365.ffainelli@freebox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2009 00:55:51 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:60365 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493715AbZLLXzr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Dec 2009 00:55:47 +0100
+Date:   Sat, 12 Dec 2009 23:55:47 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Yoichi Yuasa <yuasa@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH resend] MIPS: more replace CL_SIZE by COMMAND_LINE_SIZE
+In-Reply-To: <20091208123657.GB20624@linux-mips.org>
+Message-ID: <alpine.LFD.2.00.0912122350550.14955@eddie.linux-mips.org>
+References: <20091208165844.ddd9106f.yuasa@linux-mips.org> <20091208172444.9e48afe7.yuasa@linux-mips.org> <20091208123657.GB20624@linux-mips.org>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200912121757.56365.ffainelli@freebox.fr>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25395
+X-archive-position: 25396
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Dec 12, 2009 at 05:57:56PM +0100, Florian Fainelli wrote:
-> +#define readl_be(addr)			__raw_readl((__force unsigned *)addr)
-> +#define writel_be(val, addr)		__raw_writel(val, (__force unsigned *)addr)
+On Tue, 8 Dec 2009, Ralf Baechle wrote:
 
-looks broken for little endian machines. __raw_XXX doesn't do any swapping,
-so IMHO the correct thing would be to use be32_to_cpu/cpu_to_be32.
+> > Sorry, I forgot one more CL_SIZE.
+> > 
+> > Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+> 
+> I fixed these in the pull tree for Linus a few days ago along with a few
+> other issues and I was planning to get these fixes into the main tree
+> indirectly by just pulling from Linus.
 
-Thomas.
+ Hmm, why do I have a feeling of deja vu?...  Must be this:
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=97b7ae4257ef7ba8ed9b7944a4f56a49af3e8abb
+
+  Maciej

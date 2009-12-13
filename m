@@ -1,43 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2009 00:55:51 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:60365 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493715AbZLLXzr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 13 Dec 2009 00:55:47 +0100
-Date:   Sat, 12 Dec 2009 23:55:47 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Yoichi Yuasa <yuasa@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH resend] MIPS: more replace CL_SIZE by COMMAND_LINE_SIZE
-In-Reply-To: <20091208123657.GB20624@linux-mips.org>
-Message-ID: <alpine.LFD.2.00.0912122350550.14955@eddie.linux-mips.org>
-References: <20091208165844.ddd9106f.yuasa@linux-mips.org> <20091208172444.9e48afe7.yuasa@linux-mips.org> <20091208123657.GB20624@linux-mips.org>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2009 12:40:52 +0100 (CET)
+Received: from mgw1.diku.dk ([130.225.96.91]:34639 "EHLO mgw1.diku.dk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492646AbZLMLkp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 13 Dec 2009 12:40:45 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mgw1.diku.dk (Postfix) with ESMTP id 8DF0252C346;
+        Sun, 13 Dec 2009 12:40:40 +0100 (CET)
+X-Virus-Scanned: amavisd-new at diku.dk
+Received: from mgw1.diku.dk ([127.0.0.1])
+        by localhost (mgw1.diku.dk [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id zWsf1N6qHFyP; Sun, 13 Dec 2009 12:40:39 +0100 (CET)
+Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
+        by mgw1.diku.dk (Postfix) with ESMTP id 6D9ED52C338;
+        Sun, 13 Dec 2009 12:40:39 +0100 (CET)
+Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
+        by nhugin.diku.dk (Postfix) with ESMTP
+        id 1946B6DF894; Sun, 13 Dec 2009 12:36:48 +0100 (CET)
+Received: by ask.diku.dk (Postfix, from userid 3767)
+        id 52500480B; Sun, 13 Dec 2009 12:40:39 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by ask.diku.dk (Postfix) with ESMTP id 45DBA4225;
+        Sun, 13 Dec 2009 12:40:39 +0100 (CET)
+Date:   Sun, 13 Dec 2009 12:40:39 +0100 (CET)
+From:   Julia Lawall <julia@diku.dk>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/9] arch/mips/alchemy: Correct code taking the size of a
+ pointer
+Message-ID: <Pine.LNX.4.64.0912131240100.24267@ask.diku.dk>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Return-Path: <julia@diku.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25396
+X-archive-position: 25397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: julia@diku.dk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 8 Dec 2009, Ralf Baechle wrote:
+From: Julia Lawall <julia@diku.dk>
 
-> > Sorry, I forgot one more CL_SIZE.
-> > 
-> > Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
-> 
-> I fixed these in the pull tree for Linus a few days ago along with a few
-> other issues and I was planning to get these fixes into the main tree
-> indirectly by just pulling from Linus.
+sizeof(dp) is just the size of the pointer.  Change it to the size of the
+referenced structure.
 
- Hmm, why do I have a feeling of deja vu?...  Must be this:
+A simplified version of the semantic patch that finds this problem is as
+follows: (http://coccinelle.lip6.fr/)
 
-http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=97b7ae4257ef7ba8ed9b7944a4f56a49af3e8abb
+// <smpl>
+@@
+expression *x;
+expression f;
+type T;
+@@
 
-  Maciej
+*f(...,(T)x,...)
+// </smpl>
+
+Signed-off-by: Julia Lawall <julia@diku.dk>
+
+---
+ arch/mips/alchemy/common/dbdma.c    |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
+index 4851308..40071bd 100644
+--- a/arch/mips/alchemy/common/dbdma.c
++++ b/arch/mips/alchemy/common/dbdma.c
+@@ -612,7 +612,7 @@ u32 au1xxx_dbdma_put_source(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
+ 	dma_cache_wback_inv((unsigned long)buf, nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	au_sync();
+-	dma_cache_wback_inv((unsigned long)dp, sizeof(dp));
++	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
+ 
+ 	/* Get next descriptor pointer.	*/
+@@ -674,7 +674,7 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
+ 	dma_cache_inv((unsigned long)buf, nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	au_sync();
+-	dma_cache_wback_inv((unsigned long)dp, sizeof(dp));
++	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
+ 
+ 	/* Get next descriptor pointer.	*/

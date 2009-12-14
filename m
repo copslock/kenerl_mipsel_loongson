@@ -1,60 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2009 15:04:36 +0100 (CET)
-Received: from bby1mta02.pmc-sierra.com ([216.241.235.117]:45628 "EHLO
-        bby1mta02.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1494137AbZLNOEc convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Dec 2009 15:04:32 +0100
-Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
-        by localhost (Postfix) with SMTP id EEAF68E0053;
-        Mon, 14 Dec 2009 05:34:13 -0800 (PST)
-Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
-        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id E09018E004E;
-        Mon, 14 Dec 2009 05:34:13 -0800 (PST)
-Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.159]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 14 Dec 2009 05:35:18 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2009 17:40:43 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:6057 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1494309AbZLNQkh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2009 17:40:37 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+        id <B4b266a770000>; Mon, 14 Dec 2009 08:40:23 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 14 Dec 2009 08:40:23 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 14 Dec 2009 08:40:23 -0800
+Message-ID: <4B266A75.6020809@caviumnetworks.com>
+Date:   Mon, 14 Dec 2009 08:40:21 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="US-ASCII"
-Content-Transfer-Encoding: 8BIT
-Subject: Help in enabling HIGHMEM support
-Date:   Mon, 14 Dec 2009 05:34:13 -0800
-Message-ID: <A7DEA48C84FD0B48AAAE33F328C020140457EE41@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <Pine.LNX.4.64.0912131240100.24267@ask.diku.dk>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Help in enabling HIGHMEM support
-Thread-Index: Acp76Us9ZgTlFG+xR6iby0FPPn3JZAA10yWA
-References: <Pine.LNX.4.64.0912131240100.24267@ask.diku.dk>
-From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-To:     <linux-mips@linux-mips.org>
-Cc:     <ralf@linux-mips.org>
-X-OriginalArrivalTime: 14 Dec 2009 13:35:19.0084 (UTC) FILETIME=[470A56C0:01CA7CC2]
-Return-Path: <Anoop_P.A@pmc-sierra.com>
+To:     Florian Fainelli <ffainelli@freebox.fr>
+CC:     linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>,
+        ralf@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: add readl/write_be
+References: <200912121757.56365.ffainelli@freebox.fr>
+In-Reply-To: <200912121757.56365.ffainelli@freebox.fr>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 14 Dec 2009 16:40:23.0403 (UTC) FILETIME=[21BAF3B0:01CA7CDC]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25398
+X-archive-position: 25399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Anoop_P.A@pmc-sierra.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi list,
+Florian Fainelli wrote:
+> MIPS currently lacks the readl_be and writel_be accessors
+> which are required by BCM63xx for OHCI and EHCI support.
+> Let's define them globally for MIPS. This also fixes the
+> compilation of the bcm63xx defconfig against USB.
+> 
+> Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
+> ---
+> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+> index 436878e..65cb4e4 100644
+> --- a/arch/mips/include/asm/io.h
+> +++ b/arch/mips/include/asm/io.h
+> @@ -447,6 +447,9 @@ __BUILDIO(q, u64)
+>  #define readl_relaxed			readl
+>  #define readq_relaxed			readq
+>  
+> +#define readl_be(addr)			__raw_readl((__force unsigned *)addr)
+> +#define writel_be(val, addr)		__raw_writel(val, (__force unsigned *)addr)
+> +
 
-We have a requirement to use a bigger RAM (1 GB / 2GB) with a RM9000
-based SOC. I thought of going with HIGHMEM path rather than enabling
-64bit support thinking it will be easier.
 
-I have tried enabling HIGMEM in kernel. Board boots fine with a 512 MB
-RAM plugged in. But if I connect a 1 GB RAM kernel will not boot. I am
-not even getting single print from kernel. I am using linux-2.6.18
-kernel.
+Without addressing the need for the patch, as a technical matter, the 
+macro parameters should probably be protected by parenthesis.  I.E.:
 
-It will be great if get any pointers suggestions in debugging this?
-
-Thanks
-Anoop 
+#define readl_be(addr)			__raw_readl((__force unsigned *)(addr))
+#define writel_be(val, addr)		__raw_writel((val), (__force unsigned 
+*)(addr))

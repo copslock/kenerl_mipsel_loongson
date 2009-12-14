@@ -1,84 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2009 18:01:18 +0100 (CET)
-Received: from zmc.proxad.net ([212.27.53.206]:38362 "EHLO zmc.proxad.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2009 18:35:14 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:56267 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1494314AbZLNRBO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 14 Dec 2009 18:01:14 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 4EC2034182F8;
-        Mon, 14 Dec 2009 18:01:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at 
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id S+L-gAz3og5L; Mon, 14 Dec 2009 18:01:13 +0100 (CET)
-Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by zmc.proxad.net (Postfix) with ESMTPSA id CC22A34182DC;
-        Mon, 14 Dec 2009 18:01:13 +0100 (CET)
-From:   Florian Fainelli <ffainelli@freebox.fr>
-Organization: Freebox
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: [PATCH 2/2] MIPS: add readl/write_be
-Date:   Mon, 14 Dec 2009 18:02:13 +0100
-User-Agent: KMail/1.12.2 (Linux/2.6.31-16-server; KDE/4.3.2; x86_64; ; )
-Cc:     linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>,
-        ralf@linux-mips.org
-References: <200912121757.56365.ffainelli@freebox.fr> <20091212193114.GA11103@alpha.franken.de>
-In-Reply-To: <20091212193114.GA11103@alpha.franken.de>
+        id S1494332AbZLNRfL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Dec 2009 18:35:11 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nBEHZAcb019542;
+        Mon, 14 Dec 2009 17:35:10 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nBEHZ9Pj019540;
+        Mon, 14 Dec 2009 17:35:09 GMT
+Date:   Mon, 14 Dec 2009 17:35:09 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Help in enabling HIGHMEM support
+Message-ID: <20091214173509.GB15067@linux-mips.org>
+References: <Pine.LNX.4.64.0912131240100.24267@ask.diku.dk>
+ <A7DEA48C84FD0B48AAAE33F328C020140457EE41@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <200912141802.13171.ffainelli@freebox.fr>
-Return-Path: <ffainelli@freebox.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A7DEA48C84FD0B48AAAE33F328C020140457EE41@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25400
+X-archive-position: 25401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ffainelli@freebox.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Thomas,
+On Mon, Dec 14, 2009 at 05:34:13AM -0800, Anoop P.A. wrote:
 
-On Saturday 12 December 2009 20:31:14 Thomas Bogendoerfer wrote:
-> On Sat, Dec 12, 2009 at 05:57:56PM +0100, Florian Fainelli wrote:
-> > +#define readl_be(addr)			__raw_readl((__force unsigned *)addr)
-> > +#define writel_be(val, addr)		__raw_writel(val, (__force unsigned
-> > *)addr)
+> We have a requirement to use a bigger RAM (1 GB / 2GB) with a RM9000
+> based SOC. I thought of going with HIGHMEM path rather than enabling
+> 64bit support thinking it will be easier.
+
+This sounds like sawing off 32 legs just to be able to make use of a
+free [1] wheelchair.
+
+> I have tried enabling HIGMEM in kernel. Board boots fine with a 512 MB
+> RAM plugged in. But if I connect a 1 GB RAM kernel will not boot. I am
+> not even getting single print from kernel. I am using linux-2.6.18
+> kernel.
 > 
-> looks broken for little endian machines. __raw_XXX doesn't do any swapping,
-> so IMHO the correct thing would be to use be32_to_cpu/cpu_to_be32.
+> It will be great if get any pointers suggestions in debugging this?
 
-Yeah, I missed that point. Please find below version 2 of the patch which also addresses David's comment.
---
-From: Florian Fainelli <ffainelli@freebox.fr>
-Subject: [PATCH v2] MIPS: add readl_be/writel_be
+With this amount of RAM, use a 64-bit kernel if you can.  You'll be
+happy not to know about all the headaches you will never encounter.
 
-MIPS currently lacks the readl_be and writel_be accessors
-which are required by BCM63xx for OHCI and EHCI support.
-Let's define them globally for MIPS. This also fixes the
-compilation of the bcm63xx defconfig against USB.
+  Ralf
 
-Changes from v1:
-- make it work on little-endian machines
-- protect macros arguments with parenthesis
-
-Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
----
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 436878e..4a76d39 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -447,6 +447,9 @@ __BUILDIO(q, u64)
- #define readl_relaxed			readl
- #define readq_relaxed			readq
- 
-+#define readl_be(addr)			cpu_to_be32(__raw_readl((__force unsigned *)(addr)))
-+#define writel_be(val, addr)		__raw_writel(be32_to_cpu((val)), (__force unsigned *)(addr))
-+
- /*
-  * Some code tests for these symbols
-  */
--- 
+[1] Conditions apply.

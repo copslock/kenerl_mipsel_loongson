@@ -1,90 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Dec 2009 12:40:52 +0100 (CET)
-Received: from mgw1.diku.dk ([130.225.96.91]:34639 "EHLO mgw1.diku.dk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492646AbZLMLkp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 13 Dec 2009 12:40:45 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mgw1.diku.dk (Postfix) with ESMTP id 8DF0252C346;
-        Sun, 13 Dec 2009 12:40:40 +0100 (CET)
-X-Virus-Scanned: amavisd-new at diku.dk
-Received: from mgw1.diku.dk ([127.0.0.1])
-        by localhost (mgw1.diku.dk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zWsf1N6qHFyP; Sun, 13 Dec 2009 12:40:39 +0100 (CET)
-Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
-        by mgw1.diku.dk (Postfix) with ESMTP id 6D9ED52C338;
-        Sun, 13 Dec 2009 12:40:39 +0100 (CET)
-Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
-        by nhugin.diku.dk (Postfix) with ESMTP
-        id 1946B6DF894; Sun, 13 Dec 2009 12:36:48 +0100 (CET)
-Received: by ask.diku.dk (Postfix, from userid 3767)
-        id 52500480B; Sun, 13 Dec 2009 12:40:39 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by ask.diku.dk (Postfix) with ESMTP id 45DBA4225;
-        Sun, 13 Dec 2009 12:40:39 +0100 (CET)
-Date:   Sun, 13 Dec 2009 12:40:39 +0100 (CET)
-From:   Julia Lawall <julia@diku.dk>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 1/9] arch/mips/alchemy: Correct code taking the size of a
- pointer
-Message-ID: <Pine.LNX.4.64.0912131240100.24267@ask.diku.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2009 15:04:36 +0100 (CET)
+Received: from bby1mta02.pmc-sierra.com ([216.241.235.117]:45628 "EHLO
+        bby1mta02.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1494137AbZLNOEc convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Dec 2009 15:04:32 +0100
+Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
+        by localhost (Postfix) with SMTP id EEAF68E0053;
+        Mon, 14 Dec 2009 05:34:13 -0800 (PST)
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
+        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id E09018E004E;
+        Mon, 14 Dec 2009 05:34:13 -0800 (PST)
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.159]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 14 Dec 2009 05:35:18 -0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <julia@diku.dk>
+Content-Type: text/plain;
+        charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: Help in enabling HIGHMEM support
+Date:   Mon, 14 Dec 2009 05:34:13 -0800
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C020140457EE41@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+In-Reply-To: <Pine.LNX.4.64.0912131240100.24267@ask.diku.dk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Help in enabling HIGHMEM support
+Thread-Index: Acp76Us9ZgTlFG+xR6iby0FPPn3JZAA10yWA
+References: <Pine.LNX.4.64.0912131240100.24267@ask.diku.dk>
+From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:     <linux-mips@linux-mips.org>
+Cc:     <ralf@linux-mips.org>
+X-OriginalArrivalTime: 14 Dec 2009 13:35:19.0084 (UTC) FILETIME=[470A56C0:01CA7CC2]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25397
+X-archive-position: 25398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: julia@diku.dk
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Julia Lawall <julia@diku.dk>
+Hi list,
 
-sizeof(dp) is just the size of the pointer.  Change it to the size of the
-referenced structure.
+We have a requirement to use a bigger RAM (1 GB / 2GB) with a RM9000
+based SOC. I thought of going with HIGHMEM path rather than enabling
+64bit support thinking it will be easier.
 
-A simplified version of the semantic patch that finds this problem is as
-follows: (http://coccinelle.lip6.fr/)
+I have tried enabling HIGMEM in kernel. Board boots fine with a 512 MB
+RAM plugged in. But if I connect a 1 GB RAM kernel will not boot. I am
+not even getting single print from kernel. I am using linux-2.6.18
+kernel.
 
-// <smpl>
-@@
-expression *x;
-expression f;
-type T;
-@@
+It will be great if get any pointers suggestions in debugging this?
 
-*f(...,(T)x,...)
-// </smpl>
-
-Signed-off-by: Julia Lawall <julia@diku.dk>
-
----
- arch/mips/alchemy/common/dbdma.c    |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
-index 4851308..40071bd 100644
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -612,7 +612,7 @@ u32 au1xxx_dbdma_put_source(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 	dma_cache_wback_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	au_sync();
--	dma_cache_wback_inv((unsigned long)dp, sizeof(dp));
-+	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
- 
- 	/* Get next descriptor pointer.	*/
-@@ -674,7 +674,7 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 	dma_cache_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	au_sync();
--	dma_cache_wback_inv((unsigned long)dp, sizeof(dp));
-+	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
- 
- 	/* Get next descriptor pointer.	*/
+Thanks
+Anoop 

@@ -1,64 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2009 17:40:43 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:6057 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1494309AbZLNQkh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Dec 2009 17:40:37 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-        id <B4b266a770000>; Mon, 14 Dec 2009 08:40:23 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 14 Dec 2009 08:40:23 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 14 Dec 2009 08:40:23 -0800
-Message-ID: <4B266A75.6020809@caviumnetworks.com>
-Date:   Mon, 14 Dec 2009 08:40:21 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:     Florian Fainelli <ffainelli@freebox.fr>
-CC:     linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>,
-        ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Dec 2009 18:01:18 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:38362 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1494314AbZLNRBO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 14 Dec 2009 18:01:14 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 4EC2034182F8;
+        Mon, 14 Dec 2009 18:01:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id S+L-gAz3og5L; Mon, 14 Dec 2009 18:01:13 +0100 (CET)
+Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
+        by zmc.proxad.net (Postfix) with ESMTPSA id CC22A34182DC;
+        Mon, 14 Dec 2009 18:01:13 +0100 (CET)
+From:   Florian Fainelli <ffainelli@freebox.fr>
+Organization: Freebox
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Subject: Re: [PATCH 2/2] MIPS: add readl/write_be
-References: <200912121757.56365.ffainelli@freebox.fr>
-In-Reply-To: <200912121757.56365.ffainelli@freebox.fr>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Date:   Mon, 14 Dec 2009 18:02:13 +0100
+User-Agent: KMail/1.12.2 (Linux/2.6.31-16-server; KDE/4.3.2; x86_64; ; )
+Cc:     linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>,
+        ralf@linux-mips.org
+References: <200912121757.56365.ffainelli@freebox.fr> <20091212193114.GA11103@alpha.franken.de>
+In-Reply-To: <20091212193114.GA11103@alpha.franken.de>
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Dec 2009 16:40:23.0403 (UTC) FILETIME=[21BAF3B0:01CA7CDC]
-Return-Path: <David.Daney@caviumnetworks.com>
+Message-Id: <200912141802.13171.ffainelli@freebox.fr>
+Return-Path: <ffainelli@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25399
+X-archive-position: 25400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ffainelli@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-Florian Fainelli wrote:
-> MIPS currently lacks the readl_be and writel_be accessors
-> which are required by BCM63xx for OHCI and EHCI support.
-> Let's define them globally for MIPS. This also fixes the
-> compilation of the bcm63xx defconfig against USB.
+Hello Thomas,
+
+On Saturday 12 December 2009 20:31:14 Thomas Bogendoerfer wrote:
+> On Sat, Dec 12, 2009 at 05:57:56PM +0100, Florian Fainelli wrote:
+> > +#define readl_be(addr)			__raw_readl((__force unsigned *)addr)
+> > +#define writel_be(val, addr)		__raw_writel(val, (__force unsigned
+> > *)addr)
 > 
-> Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
-> ---
-> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-> index 436878e..65cb4e4 100644
-> --- a/arch/mips/include/asm/io.h
-> +++ b/arch/mips/include/asm/io.h
-> @@ -447,6 +447,9 @@ __BUILDIO(q, u64)
->  #define readl_relaxed			readl
->  #define readq_relaxed			readq
->  
-> +#define readl_be(addr)			__raw_readl((__force unsigned *)addr)
-> +#define writel_be(val, addr)		__raw_writel(val, (__force unsigned *)addr)
-> +
+> looks broken for little endian machines. __raw_XXX doesn't do any swapping,
+> so IMHO the correct thing would be to use be32_to_cpu/cpu_to_be32.
 
+Yeah, I missed that point. Please find below version 2 of the patch which also addresses David's comment.
+--
+From: Florian Fainelli <ffainelli@freebox.fr>
+Subject: [PATCH v2] MIPS: add readl_be/writel_be
 
-Without addressing the need for the patch, as a technical matter, the 
-macro parameters should probably be protected by parenthesis.  I.E.:
+MIPS currently lacks the readl_be and writel_be accessors
+which are required by BCM63xx for OHCI and EHCI support.
+Let's define them globally for MIPS. This also fixes the
+compilation of the bcm63xx defconfig against USB.
 
-#define readl_be(addr)			__raw_readl((__force unsigned *)(addr))
-#define writel_be(val, addr)		__raw_writel((val), (__force unsigned 
-*)(addr))
+Changes from v1:
+- make it work on little-endian machines
+- protect macros arguments with parenthesis
+
+Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
+---
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 436878e..4a76d39 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -447,6 +447,9 @@ __BUILDIO(q, u64)
+ #define readl_relaxed			readl
+ #define readq_relaxed			readq
+ 
++#define readl_be(addr)			cpu_to_be32(__raw_readl((__force unsigned *)(addr)))
++#define writel_be(val, addr)		__raw_writel(be32_to_cpu((val)), (__force unsigned *)(addr))
++
+ /*
+  * Some code tests for these symbols
+  */
+-- 

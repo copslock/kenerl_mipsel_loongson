@@ -1,102 +1,147 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2009 00:37:04 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:17500 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1495096AbZLPXg7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2009 00:36:59 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-        id <B4b296c8a0000>; Wed, 16 Dec 2009 15:26:07 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 16 Dec 2009 15:26:02 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 16 Dec 2009 15:26:02 -0800
-Message-ID: <4B296C8A.6000900@caviumnetworks.com>
-Date:   Wed, 16 Dec 2009 15:26:02 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:     Stephen Hemminger <shemminger@vyatta.com>
-CC:     Chetan Loke <chetanloke@gmail.com>,
-        Chris Friesen <cfriesen@nortel.com>, netdev@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Irq architecture for multi-core network driver.
-References: <4AE0D14B.1070307@caviumnetworks.com>       <4AE0D72A.4090607@nortel.com>   <4AE0DB98.1000101@caviumnetworks.com>   <b2f3590f0912161408u73947f6fx6902ebef927caf94@mail.gmail.com>   <4B295F8C.4050905@caviumnetworks.com> <20091216150051.63b6e31c@nehalam>
-In-Reply-To: <20091216150051.63b6e31c@nehalam>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2009 02:17:02 +0100 (CET)
+Received: from mail-yx0-f204.google.com ([209.85.210.204]:40651 "EHLO
+        mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1495129AbZLQBQ6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2009 02:16:58 +0100
+Received: by yxe42 with SMTP id 42so1757881yxe.22
+        for <multiple recipients>; Wed, 16 Dec 2009 17:16:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=LZChG43e3BMGfGvsSrtOorcgZNTnwXYFRNSVAcPHeUc=;
+        b=WnLWyCQtIKNlhcYmNFjFGi9q13xxVL/895beaNNDfsW4ethfTrUd+VBnNpfqgXi8Yg
+         5ekdPXZVbTPL3H6EF5MzoxpR3eQeUaQ+H3gAR7VZlcKK+voxLGmsvGS3bI5PILAuScvs
+         MYdNTtL1ckOjwb2lahS+pq3xBEVEoIl3BI99A=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=edhgR2ERi9JUyIGxHYPqytMtfZOAc3QK967gVYf33h+6MoyQh6m7HVrt3UNJEKkPjx
+         2tCRV5NoChTA1HQeuXv3vmLWwKmKjeebO7B/JumurAKXY8t3g67QcpQvGK4vZMD+lt9C
+         0s2iGO5DAxPkRQ9HsOGEztH2tRUsTMWNXGWXc=
+Received: by 10.150.102.5 with SMTP id z5mr2946046ybb.160.1261012608973;
+        Wed, 16 Dec 2009 17:16:48 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm558818ywh.31.2009.12.16.17.16.40
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 16 Dec 2009 17:16:46 -0800 (PST)
+Subject: Re: [PATCH v10 5/8] Loongson: YeeLoong: add hardware monitoring
+ driver
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        "Rafael J . Wysocki" <rjw@sisk.pl>, zhangfx@lemote.com,
+        linux-laptop@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Pavel Machek <pavel@ucw.cz>
+In-Reply-To: <d74dbb0ff251bc26556e27c21be3ce7c752776be.1260868626.git.wuzhangjin@gmail.com>
+References: <d74dbb0ff251bc26556e27c21be3ce7c752776be.1260868626.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Thu, 17 Dec 2009 09:16:10 +0800
+Message-ID: <1261012570.7239.13.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 16 Dec 2009 23:26:02.0443 (UTC) FILETIME=[21C139B0:01CA7EA7]
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25412
+X-archive-position: 25413
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Stephen Hemminger wrote:
-> On Wed, 16 Dec 2009 14:30:36 -0800
-> David Daney <ddaney@caviumnetworks.com> wrote:
-> 
->> Chetan Loke wrote:
->>>>> Does your hardware do flow-based queues?  In this model you have
->>>>> multiple rx queues and the hardware hashes incoming packets to a single
->>>>> queue based on the addresses, ports, etc. This ensures that all the
->>>>> packets of a single connection always get processed in the order they
->>>>> arrived at the net device.
->>>>>
->>>> Indeed, this is exactly what we have.
->>>>
->>>>
->>>>> Typically in this model you have as many interrupts as queues
->>>>> (presumably 16 in your case).  Each queue is assigned an interrupt and
->>>>> that interrupt is affined to a single core.
->>>> Certainly this is one mode of operation that should be supported, but I
->>>> would also like to be able to go for raw throughput and have as many cores
->>>> as possible reading from a single queue (like I currently have).
->>>>
->>> Well, you could let the NIC firmware(f/w) handle this. The f/w would
->>> know which interrupt was just injected recently.In other words it
->>> would have a history of which CPU's would be available. So if some
->>> previously interrupted CPU isn't making good progress then the
->>> firmware should route the incoming response packets to a different
->>> queue. This way some other CPU will pick it up.
->>>
->>
->> It isn's a NIC.  There is no firmware.  The system interrupt hardware is 
->> what it is and cannot be changed.
->>
->> My current implementation still has a single input queue configured and 
->> I get a maskable interrupt on a single CPU when packets are available. 
->> If the queue depth increases above a given threshold, I optionally send 
->> an IPI to another CPU to enable NAPI polling on that CPU.
->>
->> Currently I have a module parameter that controls the maximum number of 
->> CPUs that will have NAPI polling enabled.
->>
->> This allows me to get multiple CPUs doing receive processing without 
->> having to hack into the lower levels of the system's interrupt 
->> processing code to try to do interrupt steering.  Since all the 
->> interrupt service routine was doing was call netif_rx_schedule(), I can 
->> simply do this via smp_call_function_single().
-> 
-> Better to look into receive packet steering patches that are still
-> under review (rather than reinventing it just for your driver)
-> 
+Hi,
 
-Indeed.  Although it turns out that I can do packet steering in hardware 
-  across up to 16 queues each with their own irq and thus dedicated CPU. 
-  So it is unclear to me if the receive packet steering patches offer 
-much benefit to this hardware.
+On Tue, 2009-12-15 at 17:24 +0800, Wu Zhangjin wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
+> 
+> This can be applied between v9 4/8 and v9 6/8.
+> 
+> Changes from v9 5/8:
+> 
+> 	o ensure the fan controlling interface is compatible with the
+> 	one described in Documentation/hwmon/sysfs-interface
+[...]
+> +/* hwmon subdriver */
+> +
+> +#define MIN_FAN_SPEED 0
+> +#define MAX_FAN_SPEED 3
+> +
+> +static int get_fan_pwm_enable(void)
+> +{
+> +	int level, mode;
+> +
+> +	level = ec_read(REG_FAN_SPEED_LEVEL);
+> +	mode = ec_read(REG_FAN_AUTO_MAN_SWITCH);
+> +
+> +	if (level == MAX_FAN_SPEED && mode == BIT_FAN_MANUAL)
+> +		mode = 0;
+> +	else if (mode == BIT_FAN_MANUAL)
+> +		mode = 1;
+> +	else
+> +		mode = 2;
+> +
+> +	return mode;
+> +}
+> +
+> +static void set_fan_pwm_enable(int mode)
+> +{
+> +	switch (mode) {
+> +	case 0:
+> +		/* fullspeed */
+> +		ec_write(REG_FAN_AUTO_MAN_SWITCH, BIT_FAN_MANUAL);
+> +		ec_write(REG_FAN_SPEED_LEVEL, MAX_FAN_SPEED);
+> +		break;
+> +	case 1:
+> +		ec_write(REG_FAN_AUTO_MAN_SWITCH, BIT_FAN_MANUAL);
+> +		break;
+> +	case 2:
+> +		ec_write(REG_FAN_AUTO_MAN_SWITCH, BIT_FAN_AUTO);
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +}
+> +
+[...]
+> +
+> +static int yeeloong_hwmon_init(void)
+> +{
+> +	int ret;
+> +
+> +	yeeloong_hwmon_dev = hwmon_device_register(NULL);
+> +	if (IS_ERR(yeeloong_hwmon_dev)) {
+> +		pr_err("Fail to register yeeloong hwmon device\n");
+> +		yeeloong_hwmon_dev = NULL;
+> +		return PTR_ERR(yeeloong_hwmon_dev);
+> +	}
+> +	ret = sysfs_create_group(&yeeloong_hwmon_dev->kobj,
+> +				 &hwmon_attribute_group);
+> +	if (ret) {
+> +		hwmon_device_unregister(yeeloong_hwmon_dev);
+> +		yeeloong_hwmon_dev = NULL;
+> +		return ret;
+> +	}
+> +	/* ensure fan is set to auto mode */
+> +	set_fan_pwm_enable(BIT_FAN_AUTO);
+> +
 
-One concern is the ability to forward as many packets as possible from a 
-very low number of flows (between 1 and 4).  Since it is an artificial 
-benchmark, we can arbitrarily say that packet reordering is allowed. 
-The simple hack to do NAPI polling on all CPUs from a single queue gives 
-good results.  There is no need to remind me that packet reordering 
-should be avoided, I already know this.
+We need to change the above line to:
 
-David Daney
+set_fan_pwm_enable(2);
+
+to ensure it is compatible to the hwmon interface too.
+
+Best Regards,
+	Wu Zhangjin

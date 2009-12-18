@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2009 13:22:19 +0100 (CET)
-Received: from mail-gx0-f210.google.com ([209.85.217.210]:41823 "EHLO
-        mail-gx0-f210.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492907AbZLRMWP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2009 13:22:15 +0100
-Received: by mail-gx0-f210.google.com with SMTP id 2so2717102gxk.4
-        for <multiple recipients>; Fri, 18 Dec 2009 04:22:14 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2009 14:00:47 +0100 (CET)
+Received: from mail-yw0-f203.google.com ([209.85.211.203]:47549 "EHLO
+        mail-yw0-f203.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493083AbZLRNAn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2009 14:00:43 +0100
+Received: by ywh41 with SMTP id 41so8910964ywh.0
+        for <multiple recipients>; Fri, 18 Dec 2009 05:00:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:date:from:to:cc
          :subject:message-id:x-mailer:mime-version:content-type
          :content-transfer-encoding;
-        bh=+sEYEUGzdZkVb+vMsCDdXe70Op57Tf23s/WNsshv7oE=;
-        b=TOyuOOzy1LrbO7MMeriUmQztkF/Po0KrsIxcmola8YIcuCmHJe80OgtA4ECF1RJKRp
-         tUeO+QYln5Xrt0p0tOuQuNF+4UOLy/CzZRVZ24cd8PVj+u/MQdurUkjaqcimIXcPiCDE
-         jkgB1osyMianbTIGIJUC3peRk+Vf3yOgIJ0J4=
+        bh=W7nW/1XM48AZ4pVmwmXmeBxCeilgHaXPJo+PnRpP8o0=;
+        b=eW6ItsQzcnuACis+dOUmDS6OCz1ZVwl2d4kwjZD+h9HTKsqg+Nu65EnIjGCTcISxue
+         AOdmXUOmGpCppL6i+VMADjvz7ng2LJ+TfMUM2nBIcfz9z236+K7UM2ph0I3LFfCMsT2s
+         C4QVlvyUJzHH0NpezGfne+3PQpr8qn+Zrro+w=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
          :content-type:content-transfer-encoding;
-        b=KROobzei4uTtcBt1JUYq0kZ6PIueqUYcLOUnYzQBdO35dmB+PxeS0kL0UlnYKMZJM0
-         hp39n+xTN5QQUSm1UDrH6xdOWt/Sa0a4E35TVJyQWYLoPbPdkeex8CSZdl3NHHvuR7M3
-         /mfCV8lrF7lQXCZgYXyTpuZePRyspcceJZgbE=
-Received: by 10.91.18.39 with SMTP id v39mr4070029agi.66.1261138562150;
-        Fri, 18 Dec 2009 04:16:02 -0800 (PST)
+        b=xOSjoTxM08A2E64kWZC/2xTPUIKDWLi+YNZK3I4N7v05UXlXgskGcbku9U2gJPGWx5
+         DrlPYhG3uHemcUT9VBrT+37x7QHZbnyf5sIprkm+dLfmrNAtElJzLOfCFFf9mVLr3Xn2
+         OLDegm7Qr0n09vzl8vyA27htXTaJ3ZrIX+gCI=
+Received: by 10.101.167.16 with SMTP id u16mr6263581ano.7.1261141236490;
+        Fri, 18 Dec 2009 05:00:36 -0800 (PST)
 Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
-        by mx.google.com with ESMTPS id 15sm955160gxk.8.2009.12.18.04.15.58
+        by mx.google.com with ESMTPS id 13sm1432506gxk.1.2009.12.18.05.00.34
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 18 Dec 2009 04:16:00 -0800 (PST)
-Date:   Fri, 18 Dec 2009 21:13:17 +0900
+        Fri, 18 Dec 2009 05:00:35 -0800 (PST)
+Date:   Fri, 18 Dec 2009 21:29:17 +0900
 From:   Yoichi Yuasa <yuasa@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 1/2] MIPS: vmlinux.ecoff directory move to arch/mips/boot
-Message-Id: <20091218211317.45e5da2e.yuasa@linux-mips.org>
+Subject: [PATCH 1/5]MIPS: remove unused powertv prom_getcmdline()
+Message-Id: <20091218212917.f42e8180.yuasa@linux-mips.org>
 X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,7 +41,7 @@ Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25416
+X-archive-position: 25417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,25 +49,26 @@ X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-It moves to the same directory as vmlinux.bin and vmlinux.srec .
-
 Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
 ---
- arch/mips/boot/Makefile |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/mips/powertv/cmdline.c |    5 -----
+ 1 files changed, 0 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
-index 094bc84..e39a08e 100644
---- a/arch/mips/boot/Makefile
-+++ b/arch/mips/boot/Makefile
-@@ -28,7 +28,7 @@ VMLINUX = vmlinux
- all: vmlinux.ecoff vmlinux.srec
+diff --git a/arch/mips/powertv/cmdline.c b/arch/mips/powertv/cmdline.c
+index 98d73cb..ee7ab47 100644
+--- a/arch/mips/powertv/cmdline.c
++++ b/arch/mips/powertv/cmdline.c
+@@ -31,11 +31,6 @@
+  */
+ #define prom_argv(index) ((char *)(long)_prom_argv[(index)])
  
- vmlinux.ecoff: $(obj)/elf2ecoff $(VMLINUX)
--	$(obj)/elf2ecoff $(VMLINUX) vmlinux.ecoff $(E2EFLAGS)
-+	$(obj)/elf2ecoff $(VMLINUX) $(obj)/vmlinux.ecoff $(E2EFLAGS)
- 
- $(obj)/elf2ecoff: $(obj)/elf2ecoff.c
- 	$(HOSTCC) -o $@ $^
+-char * __init prom_getcmdline(void)
+-{
+-	return &(arcs_cmdline[0]);
+-}
+-
+ void  __init prom_init_cmdline(void)
+ {
+ 	int len;
 -- 
 1.6.5.7

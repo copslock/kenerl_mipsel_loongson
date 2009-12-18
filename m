@@ -1,147 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Dec 2009 02:17:02 +0100 (CET)
-Received: from mail-yx0-f204.google.com ([209.85.210.204]:40651 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2009 13:21:26 +0100 (CET)
+Received: from mail-yx0-f204.google.com ([209.85.210.204]:36186 "EHLO
         mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1495129AbZLQBQ6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Dec 2009 02:16:58 +0100
-Received: by yxe42 with SMTP id 42so1757881yxe.22
-        for <multiple recipients>; Wed, 16 Dec 2009 17:16:49 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1492907AbZLRMVU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2009 13:21:20 +0100
+Received: by yxe42 with SMTP id 42so3203306yxe.22
+        for <multiple recipients>; Fri, 18 Dec 2009 04:21:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=LZChG43e3BMGfGvsSrtOorcgZNTnwXYFRNSVAcPHeUc=;
-        b=WnLWyCQtIKNlhcYmNFjFGi9q13xxVL/895beaNNDfsW4ethfTrUd+VBnNpfqgXi8Yg
-         5ekdPXZVbTPL3H6EF5MzoxpR3eQeUaQ+H3gAR7VZlcKK+voxLGmsvGS3bI5PILAuScvs
-         MYdNTtL1ckOjwb2lahS+pq3xBEVEoIl3BI99A=
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:x-mailer:mime-version:content-type
+         :content-transfer-encoding;
+        bh=kq3ENNo9hy/48x1bXGLLKjO9+8LxxwW7dLgQBXJZWVs=;
+        b=U+r2HUOzirTGP5bvuxltaYNiG2rWXXCkLZghRqRmf/vmWrFUC6EnGpxlF6MNmthbpL
+         UiZQmPFeW8Mz4e7jvZcBxgP9rtN7fVzQtWiwCqmQtdW6z/H9KbxzdVrRkQCv7ZWSLgbU
+         1uhE7Fo5yMzhSlD4y7eOgJNHDQXhSHzbAE9OU=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=edhgR2ERi9JUyIGxHYPqytMtfZOAc3QK967gVYf33h+6MoyQh6m7HVrt3UNJEKkPjx
-         2tCRV5NoChTA1HQeuXv3vmLWwKmKjeebO7B/JumurAKXY8t3g67QcpQvGK4vZMD+lt9C
-         0s2iGO5DAxPkRQ9HsOGEztH2tRUsTMWNXGWXc=
-Received: by 10.150.102.5 with SMTP id z5mr2946046ybb.160.1261012608973;
-        Wed, 16 Dec 2009 17:16:48 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm558818ywh.31.2009.12.16.17.16.40
+        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        b=XcuWZtM0WoOIrUSiZwyDz0uBpHsYfvfK1jCA33fQMK9vSLwRlHnr2yYzKKLJYCSBsj
+         bHeVIj2rrUruCSKd1x2akSiKmX0CLk05q+eJSEC8FRrvzuRJeTekWmsHN/a8pW1UgF+t
+         aXjLE0glgyF1igzhrafEDZB00+BoVIfEyhWPY=
+Received: by 10.91.105.3 with SMTP id h3mr4182090agm.6.1261138872545;
+        Fri, 18 Dec 2009 04:21:12 -0800 (PST)
+Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
+        by mx.google.com with ESMTPS id 13sm1421312gxk.1.2009.12.18.04.21.10
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 16 Dec 2009 17:16:46 -0800 (PST)
-Subject: Re: [PATCH v10 5/8] Loongson: YeeLoong: add hardware monitoring
- driver
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
+        Fri, 18 Dec 2009 04:21:11 -0800 (PST)
+Date:   Fri, 18 Dec 2009 21:20:24 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     akpm@linux-foundation.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "Rafael J . Wysocki" <rjw@sisk.pl>, zhangfx@lemote.com,
-        linux-laptop@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Pavel Machek <pavel@ucw.cz>
-In-Reply-To: <d74dbb0ff251bc26556e27c21be3ce7c752776be.1260868626.git.wuzhangjin@gmail.com>
-References: <d74dbb0ff251bc26556e27c21be3ce7c752776be.1260868626.git.wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Thu, 17 Dec 2009 09:16:10 +0800
-Message-ID: <1261012570.7239.13.camel@falcon.domain.org>
+Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: ar7 remove kgdb_enabled
+Message-Id: <20091218212024.d9d9b411.yuasa@linux-mips.org>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25413
+X-archive-position: 25414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+kgdb_enabled has not been used.
 
-On Tue, 2009-12-15 at 17:24 +0800, Wu Zhangjin wrote:
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
-> 
-> This can be applied between v9 4/8 and v9 6/8.
-> 
-> Changes from v9 5/8:
-> 
-> 	o ensure the fan controlling interface is compatible with the
-> 	one described in Documentation/hwmon/sysfs-interface
-[...]
-> +/* hwmon subdriver */
-> +
-> +#define MIN_FAN_SPEED 0
-> +#define MAX_FAN_SPEED 3
-> +
-> +static int get_fan_pwm_enable(void)
-> +{
-> +	int level, mode;
-> +
-> +	level = ec_read(REG_FAN_SPEED_LEVEL);
-> +	mode = ec_read(REG_FAN_AUTO_MAN_SWITCH);
-> +
-> +	if (level == MAX_FAN_SPEED && mode == BIT_FAN_MANUAL)
-> +		mode = 0;
-> +	else if (mode == BIT_FAN_MANUAL)
-> +		mode = 1;
-> +	else
-> +		mode = 2;
-> +
-> +	return mode;
-> +}
-> +
-> +static void set_fan_pwm_enable(int mode)
-> +{
-> +	switch (mode) {
-> +	case 0:
-> +		/* fullspeed */
-> +		ec_write(REG_FAN_AUTO_MAN_SWITCH, BIT_FAN_MANUAL);
-> +		ec_write(REG_FAN_SPEED_LEVEL, MAX_FAN_SPEED);
-> +		break;
-> +	case 1:
-> +		ec_write(REG_FAN_AUTO_MAN_SWITCH, BIT_FAN_MANUAL);
-> +		break;
-> +	case 2:
-> +		ec_write(REG_FAN_AUTO_MAN_SWITCH, BIT_FAN_AUTO);
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +}
-> +
-[...]
-> +
-> +static int yeeloong_hwmon_init(void)
-> +{
-> +	int ret;
-> +
-> +	yeeloong_hwmon_dev = hwmon_device_register(NULL);
-> +	if (IS_ERR(yeeloong_hwmon_dev)) {
-> +		pr_err("Fail to register yeeloong hwmon device\n");
-> +		yeeloong_hwmon_dev = NULL;
-> +		return PTR_ERR(yeeloong_hwmon_dev);
-> +	}
-> +	ret = sysfs_create_group(&yeeloong_hwmon_dev->kobj,
-> +				 &hwmon_attribute_group);
-> +	if (ret) {
-> +		hwmon_device_unregister(yeeloong_hwmon_dev);
-> +		yeeloong_hwmon_dev = NULL;
-> +		return ret;
-> +	}
-> +	/* ensure fan is set to auto mode */
-> +	set_fan_pwm_enable(BIT_FAN_AUTO);
-> +
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+---
+ arch/mips/ar7/prom.c |    8 --------
+ 1 files changed, 0 insertions(+), 8 deletions(-)
 
-We need to change the above line to:
-
-set_fan_pwm_enable(2);
-
-to ensure it is compatible to the hwmon interface too.
-
-Best Regards,
-	Wu Zhangjin
+diff --git a/arch/mips/ar7/prom.c b/arch/mips/ar7/prom.c
+index 5ad6f1d..453dd22 100644
+--- a/arch/mips/ar7/prom.c
++++ b/arch/mips/ar7/prom.c
+@@ -219,14 +219,6 @@ static void __init console_config(void)
+ 	if (strstr(prom_getcmdline(), "console="))
+ 		return;
+ 
+-#ifdef CONFIG_KGDB
+-	if (!strstr(prom_getcmdline(), "nokgdb")) {
+-		strcat(prom_getcmdline(), " console=kgdb");
+-		kgdb_enabled = 1;
+-		return;
+-	}
+-#endif
+-
+ 	s = prom_getenv("modetty0");
+ 	if (s) {
+ 		baud = simple_strtoul(s, &p, 10);
+-- 
+1.6.5.7

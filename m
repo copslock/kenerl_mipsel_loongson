@@ -1,38 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2009 14:00:47 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Dec 2009 14:01:13 +0100 (CET)
 Received: from mail-yw0-f203.google.com ([209.85.211.203]:47549 "EHLO
         mail-yw0-f203.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493083AbZLRNAn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2009 14:00:43 +0100
-Received: by ywh41 with SMTP id 41so8910964ywh.0
-        for <multiple recipients>; Fri, 18 Dec 2009 05:00:36 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1493015AbZLRNA4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Dec 2009 14:00:56 +0100
+Received: by mail-yw0-f203.google.com with SMTP id 41so8910964ywh.0
+        for <multiple recipients>; Fri, 18 Dec 2009 05:00:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:date:from:to:cc
-         :subject:message-id:x-mailer:mime-version:content-type
-         :content-transfer-encoding;
-        bh=W7nW/1XM48AZ4pVmwmXmeBxCeilgHaXPJo+PnRpP8o0=;
-        b=eW6ItsQzcnuACis+dOUmDS6OCz1ZVwl2d4kwjZD+h9HTKsqg+Nu65EnIjGCTcISxue
-         AOdmXUOmGpCppL6i+VMADjvz7ng2LJ+TfMUM2nBIcfz9z236+K7UM2ph0I3LFfCMsT2s
-         C4QVlvyUJzHH0NpezGfne+3PQpr8qn+Zrro+w=
+         :subject:message-id:in-reply-to:references:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=ELZP8rpIkL/49NAEKn2TBCb8ahCssVPdtlqXVz4jzog=;
+        b=fgLl9bJXIJt2o6SqRDoMgNq0dsTmlhw/fMZlz5jNQwCIxTr1OrF8DtIGds0Z/Emzyd
+         GS+keyUMIcKkukfxh/kgklGlPeTLVy+Lq8rfFMHKcitgWeSUQKq9+o04Gat3gv/4JKDo
+         JlaKfBSBl99dxHnGmx3L/X9NynoMuT8gvERd0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
-         :content-type:content-transfer-encoding;
-        b=xOSjoTxM08A2E64kWZC/2xTPUIKDWLi+YNZK3I4N7v05UXlXgskGcbku9U2gJPGWx5
-         DrlPYhG3uHemcUT9VBrT+37x7QHZbnyf5sIprkm+dLfmrNAtElJzLOfCFFf9mVLr3Xn2
-         OLDegm7Qr0n09vzl8vyA27htXTaJ3ZrIX+gCI=
-Received: by 10.101.167.16 with SMTP id u16mr6263581ano.7.1261141236490;
-        Fri, 18 Dec 2009 05:00:36 -0800 (PST)
+        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
+         :x-mailer:mime-version:content-type:content-transfer-encoding;
+        b=Ydb/4yF+oMGdebkY2L+I5WxkGTmZjGNWQAbieNwAgTV9fm8iJ6xrmZtFYb2ttUOx+W
+         4VcKjJuvxX598sea0HGHAOQ63jXxRQZMb5orPqaDRSN2OJmDQDZMrhyk3UAKiXImSgWH
+         ijGsfbFYbmX9vgIYgNuuUEMve0y6xQjTTxA5I=
+Received: by 10.90.235.6 with SMTP id i6mr601672agh.81.1261141245850;
+        Fri, 18 Dec 2009 05:00:45 -0800 (PST)
 Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
-        by mx.google.com with ESMTPS id 13sm1432506gxk.1.2009.12.18.05.00.34
+        by mx.google.com with ESMTPS id 14sm1469182gxk.6.2009.12.18.05.00.43
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 18 Dec 2009 05:00:35 -0800 (PST)
-Date:   Fri, 18 Dec 2009 21:29:17 +0900
+        Fri, 18 Dec 2009 05:00:45 -0800 (PST)
+Date:   Fri, 18 Dec 2009 21:33:46 +0900
 From:   Yoichi Yuasa <yuasa@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 1/5]MIPS: remove unused powertv prom_getcmdline()
-Message-Id: <20091218212917.f42e8180.yuasa@linux-mips.org>
+Subject: [PATCH 3/5] MIPS: remove powertv mips_machine_halt()
+Message-Id: <20091218213346.01f63eac.yuasa@linux-mips.org>
+In-Reply-To: <20091218213018.79a9fc11.yuasa@linux-mips.org>
+References: <20091218212917.f42e8180.yuasa@linux-mips.org>
+        <20091218213018.79a9fc11.yuasa@linux-mips.org>
 X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,7 +44,7 @@ Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25417
+X-archive-position: 25418
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,26 +52,51 @@ X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+mips_machine_halt() is same as mips_machine_restart().
+In addition, the registration of _machine_halt and pm_power_off are deleted.
+because mips_machine_halt() is restart function.
+
 Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
 ---
- arch/mips/powertv/cmdline.c |    5 -----
- 1 files changed, 0 insertions(+), 5 deletions(-)
+ arch/mips/powertv/reset.c |   18 ------------------
+ 1 files changed, 0 insertions(+), 18 deletions(-)
 
-diff --git a/arch/mips/powertv/cmdline.c b/arch/mips/powertv/cmdline.c
-index 98d73cb..ee7ab47 100644
---- a/arch/mips/powertv/cmdline.c
-+++ b/arch/mips/powertv/cmdline.c
-@@ -31,11 +31,6 @@
-  */
- #define prom_argv(index) ((char *)(long)_prom_argv[(index)])
+diff --git a/arch/mips/powertv/reset.c b/arch/mips/powertv/reset.c
+index 494c652..0007652 100644
+--- a/arch/mips/powertv/reset.c
++++ b/arch/mips/powertv/reset.c
+@@ -28,9 +28,6 @@
+ #include <asm/mach-powertv/asic_regs.h>
+ #include "reset.h"
  
--char * __init prom_getcmdline(void)
+-static void mips_machine_restart(char *command);
+-static void mips_machine_halt(void);
+-
+ static void mips_machine_restart(char *command)
+ {
+ #ifdef CONFIG_BOOTLOADER_DRIVER
+@@ -44,22 +41,7 @@ static void mips_machine_restart(char *command)
+ #endif
+ }
+ 
+-static void mips_machine_halt(void)
 -{
--	return &(arcs_cmdline[0]);
+-#ifdef CONFIG_BOOTLOADER_DRIVER
+-	/*
+-	 * Call the bootloader's reset function to ensure
+-	 * that persistent data is flushed before hard reset
+-	 */
+-	kbldr_SetCauseAndReset();
+-#else
+-	writel(0x1, asic_reg_addr(watchdog));
+-#endif
 -}
 -
- void  __init prom_init_cmdline(void)
+ void mips_reboot_setup(void)
  {
- 	int len;
+ 	_machine_restart = mips_machine_restart;
+-	_machine_halt = mips_machine_halt;
+-	pm_power_off = mips_machine_halt;
+ }
 -- 
 1.6.5.7

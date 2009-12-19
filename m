@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Dec 2009 23:02:32 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:55471 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Dec 2009 23:07:48 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:32895 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493603AbZLSWC3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 19 Dec 2009 23:02:29 +0100
+        id S1494515AbZLSWHp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 19 Dec 2009 23:07:45 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nBJM2LSQ023445;
-        Sat, 19 Dec 2009 22:02:21 GMT
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nBJM7iQS023634;
+        Sat, 19 Dec 2009 22:07:44 GMT
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nBJM2KP2023443;
-        Sat, 19 Dec 2009 22:02:20 GMT
-Date:   Sat, 19 Dec 2009 22:02:19 +0000
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nBJM7i0E023631;
+        Sat, 19 Dec 2009 22:07:44 GMT
+Date:   Sat, 19 Dec 2009 22:07:43 +0000
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
+To:     Dmitri Vorobiev <dmitri.vorobiev@movial.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Two-level pagetables for 64-bit kernels with 64KB
- pages.
-Message-ID: <20091219220219.GB19780@linux-mips.org>
-References: <1259963556-6876-1-git-send-email-ddaney@caviumnetworks.com>
+Subject: Re: [PATCH] [MIPS] Fix MIPSsim build after command-line cleanup
+Message-ID: <20091219220743.GA23526@linux-mips.org>
+References: <20091205104158.GA11800@linux-mips.org>
+ <1260014960-16415-1-git-send-email-dmitri.vorobiev@movial.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1259963556-6876-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1260014960-16415-1-git-send-email-dmitri.vorobiev@movial.com>
 User-Agent: Mutt/1.5.20 (2009-08-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25423
+X-archive-position: 25424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,14 +34,16 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 04, 2009 at 01:52:36PM -0800, David Daney wrote:
+On Sat, Dec 05, 2009 at 02:09:20PM +0200, Dmitri Vorobiev wrote:
 
-> For 64-bit kernels with 64KB pages and two level page tables, there
-> are 42 bits worth of virtual address space This is larger than the 40
-> bits of virtual address space obtained with the default 4KB Page size
-> and three levels, so there are no draw backs for using two level
-> tables with this configuration.
+> Commit `MIPSsim: Remove unused code' removed the file
+> arch/mips/mipssim/sim_cmdline.c but did not clean the
+> reference to the corresponding object file.  This patch
+> is to fix the build breakage resulted from the above.
 
-Queued for 2.6.34,
+I've already done this change myself to what was in the 2.6.33 before it
+went upstream, so this is no longer necessary.
+
+Thanks anyway!
 
   Ralf

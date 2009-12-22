@@ -1,89 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Dec 2009 16:49:12 +0100 (CET)
-Received: from mv-drv-hcb003.ocn.ad.jp ([118.23.109.133]:46452 "EHLO
-        mv-drv-hcb003.ocn.ad.jp" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1494900AbZLUPtI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Dec 2009 16:49:08 +0100
-Received: from vcmba.ocn.ne.jp (localhost.localdomain [127.0.0.1])
-        by mv-drv-hcb003.ocn.ad.jp (Postfix) with ESMTP id 3B59F56421D;
-        Tue, 22 Dec 2009 00:49:02 +0900 (JST)
-Received: from localhost.localdomain (softbank221040169135.bbtec.net [221.40.169.135])
-        by vcmba.ocn.ne.jp (Postfix) with ESMTP;
-        Tue, 22 Dec 2009 00:49:02 +0900 (JST)
-From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH] TXx9: Cleanup builtin-cmdline processing
-Date:   Tue, 22 Dec 2009 00:48:57 +0900
-Message-Id: <1261410537-7921-1-git-send-email-anemo@mba.ocn.ne.jp>
-X-Mailer: git-send-email 1.5.6.5
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Dec 2009 02:33:34 +0100 (CET)
+Received: from sj-iport-5.cisco.com ([171.68.10.87]:34016 "EHLO
+        sj-iport-5.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1494057AbZLVBd3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Dec 2009 02:33:29 +0100
+Authentication-Results: sj-iport-5.cisco.com; dkim=neutral (message not signed) header.i=none
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: ApoEACSwL0urRN+J/2dsb2JhbADAJ5ZAhC4E
+X-IronPort-AV: E=Sophos;i="4.47,434,1257120000"; 
+   d="scan'208";a="123480832"
+Received: from sj-core-3.cisco.com ([171.68.223.137])
+  by sj-iport-5.cisco.com with ESMTP; 22 Dec 2009 01:33:20 +0000
+Received: from dvomlehn-lnx2.corp.sa.net ([64.101.20.155])
+        by sj-core-3.cisco.com (8.13.8/8.14.3) with ESMTP id nBM1XJHx006622;
+        Tue, 22 Dec 2009 01:33:19 GMT
+Date:   Mon, 21 Dec 2009 17:33:19 -0800
+From:   David VomLehn <dvomlehn@cisco.com>
+To:     Yoichi Yuasa <yuasa@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/5]MIPS: remove unused powertv prom_getcmdline()
+Message-ID: <20091222013319.GA24784@dvomlehn-lnx2.corp.sa.net>
+References: <20091218212917.f42e8180.yuasa@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20091218212917.f42e8180.yuasa@linux-mips.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25433
+X-archive-position: 25434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-Since commit 6acc7d ("Fix and enhance built-in kernel command line")
-arcs_cmdline[] does not contain built-in command line.  The commit
-introduce CONFIG_CMDLINE_BOOL and CONFIG_CMDLINE_OVERRIDE to control
-built-in command line, and now we can use them instead of
-platform-specific built-in command line processing.
+On Fri, Dec 18, 2009 at 09:29:17PM +0900, Yoichi Yuasa wrote:
+> Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+> ---
+>  arch/mips/powertv/cmdline.c |    5 -----
+>  1 files changed, 0 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/mips/powertv/cmdline.c b/arch/mips/powertv/cmdline.c
+> index 98d73cb..ee7ab47 100644
+> --- a/arch/mips/powertv/cmdline.c
+> +++ b/arch/mips/powertv/cmdline.c
+> @@ -31,11 +31,6 @@
+>   */
+>  #define prom_argv(index) ((char *)(long)_prom_argv[(index)])
+>  
+> -char * __init prom_getcmdline(void)
+> -{
+> -	return &(arcs_cmdline[0]);
+> -}
+> -
+>  void  __init prom_init_cmdline(void)
+>  {
+>  	int len;
+> -- 
+> 1.6.5.7
+> 
+> 
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/txx9/generic/setup.c |   21 ---------------------
- 1 files changed, 0 insertions(+), 21 deletions(-)
-
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 06e801c..e27809b 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -160,7 +160,6 @@ static void __init prom_init_cmdline(void)
- 	int argc;
- 	int *argv32;
- 	int i;			/* Always ignore the "-c" at argv[0] */
--	static char builtin[COMMAND_LINE_SIZE] __initdata;
- 
- 	if (fw_arg0 >= CKSEG0 || fw_arg1 < CKSEG0) {
- 		/*
-@@ -174,20 +173,6 @@ static void __init prom_init_cmdline(void)
- 		argv32 = (int *)fw_arg1;
- 	}
- 
--	/* ignore all built-in args if any f/w args given */
--	/*
--	 * But if built-in strings was started with '+', append them
--	 * to command line args.  If built-in was started with '-',
--	 * ignore all f/w args.
--	 */
--	builtin[0] = '\0';
--	if (arcs_cmdline[0] == '+')
--		strcpy(builtin, arcs_cmdline + 1);
--	else if (arcs_cmdline[0] == '-') {
--		strcpy(builtin, arcs_cmdline + 1);
--		argc = 0;
--	} else if (argc <= 1)
--		strcpy(builtin, arcs_cmdline);
- 	arcs_cmdline[0] = '\0';
- 
- 	for (i = 1; i < argc; i++) {
-@@ -201,12 +186,6 @@ static void __init prom_init_cmdline(void)
- 		} else
- 			strcat(arcs_cmdline, str);
- 	}
--	/* append saved builtin args */
--	if (builtin[0]) {
--		if (arcs_cmdline[0])
--			strcat(arcs_cmdline, " ");
--		strcat(arcs_cmdline, builtin);
--	}
- }
- 
- static int txx9_ic_disable __initdata;
--- 
-1.5.6.5
+Looks good, thanks!
+Reviewed-by: David VomLehn (dvomlehn@cisco.com)

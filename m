@@ -1,34 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Dec 2009 14:58:04 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:34610 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Dec 2009 15:05:30 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:57253 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492074AbZLXN6B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Dec 2009 14:58:01 +0100
+        id S1492003AbZLXOF0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Dec 2009 15:05:26 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nBODw3dM031258;
-        Thu, 24 Dec 2009 14:58:03 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nBOE5TbL031598;
+        Thu, 24 Dec 2009 15:05:29 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nBODw2ll031257;
-        Thu, 24 Dec 2009 14:58:02 +0100
-Date:   Thu, 24 Dec 2009 14:58:02 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nBOE5Snq031596;
+        Thu, 24 Dec 2009 15:05:28 +0100
+Date:   Thu, 24 Dec 2009 15:05:28 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David VomLehn <dvomlehn@cisco.com>
-Cc:     Yoichi Yuasa <yuasa@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2/5] MIPS: remove unused powertv ptv_memsize
-Message-ID: <20091224135802.GH29598@linux-mips.org>
-References: <20091218212917.f42e8180.yuasa@linux-mips.org>
- <20091218213018.79a9fc11.yuasa@linux-mips.org>
- <20091222013421.GB24784@dvomlehn-lnx2.corp.sa.net>
+To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] TXx9: Cleanup builtin-cmdline processing
+Message-ID: <20091224140528.GI29598@linux-mips.org>
+References: <1261410537-7921-1-git-send-email-anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20091222013421.GB24784@dvomlehn-lnx2.corp.sa.net>
+In-Reply-To: <1261410537-7921-1-git-send-email-anemo@mba.ocn.ne.jp>
 User-Agent: Mutt/1.5.20 (2009-08-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25459
+X-archive-position: 25460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,13 +33,14 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 21, 2009 at 05:34:21PM -0800, David VomLehn wrote:
+On Tue, Dec 22, 2009 at 12:48:57AM +0900, Atsushi Nemoto wrote:
 
-> Looks good, thanks!
-> Reviewed-by: David VomLehn (dvomlehn@cisco.com)
+> Since commit 6acc7d ("Fix and enhance built-in kernel command line")
+> arcs_cmdline[] does not contain built-in command line.  The commit
+> introduce CONFIG_CMDLINE_BOOL and CONFIG_CMDLINE_OVERRIDE to control
+> built-in command line, and now we can use them instead of
+> platform-specific built-in command line processing.
 
-Reviewed-by, Cc, To Signed-off-by lines are suppsed to have an email
-address in RFC 2822 format.  This is so various utilities can extract
-email addresses from commits.
+Thanks Atsushi-San, applied!
 
   Ralf

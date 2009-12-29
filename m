@@ -1,40 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Dec 2009 16:10:30 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:36507 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492084AbZLXPK1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Dec 2009 16:10:27 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nBOFAUD6001647;
-        Thu, 24 Dec 2009 16:10:30 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nBOFAT2T001645;
-        Thu, 24 Dec 2009 16:10:29 +0100
-Date:   Thu, 24 Dec 2009 16:10:29 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Yoichi Yuasa <yuasa@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Cobalt use strlcat() for the command line arguments
-Message-ID: <20091224151029.GA1105@linux-mips.org>
-References: <20091224170634.6663f521.yuasa@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Dec 2009 16:08:13 +0100 (CET)
+Received: from rm-302-31-12.virtual-dedicated.net ([65.23.155.177]:44652 "EHLO
+        liblfds.org" rhost-flags-OK-FAIL-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492074AbZL2PII (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Dec 2009 16:08:08 +0100
+Received: from [82.170.92.142] (unknown [82.170.92.142])
+        by liblfds.org (Postfix) with ESMTP id 4DBD7167CB
+        for <linux-mips@linux-mips.org>; Tue, 29 Dec 2009 10:08:06 -0500 (EST)
+Message-ID: <4B3A1B52.4020204@45mercystreet.com>
+Date:   Tue, 29 Dec 2009 16:08:02 +0100
+From:   Toby Douglass <trd@45mercystreet.com>
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20091224170634.6663f521.yuasa@linux-mips.org>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+To:     linux-mips@linux-mips.org
+Subject: porting lock-free data structure library - login request
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <trd@45mercystreet.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25463
+X-archive-position: 25464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: trd@45mercystreet.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 24, 2009 at 05:06:34PM +0900, Yoichi Yuasa wrote:
+Hi -
 
-Thanks Yoichi-San!  Also applied.
+I've just subscribed to the linux-mips list and this is my first post.
 
-  Ralf
+I have published a portable, license-free, lock-free data structure 
+library, liblfds.
+
+http://www.liblfds.org
+
+I recently ported to ARM; I've had a request to port to MIPS.
+
+Problem is getting hold of a Linux account on a multi-core MIPS machine...
+
+...spare a MIPS login, brother?

@@ -1,26 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 18:14:17 +0100 (CET)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:37326 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493095Ab0ACRON (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2010 18:14:13 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 18:19:00 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:46156 "EHLO
+        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493100Ab0ACRSx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2010 18:18:53 +0100
+Received: by pzk35 with SMTP id 35so2471458pzk.22
+        for <multiple recipients>; Sun, 03 Jan 2010 09:18:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arm.linux.org.uk; s=caramon; h=Date:From:To:Cc:Subject:
-        Message-ID:References:MIME-Version:Content-Type:In-Reply-To:
-        Sender; bh=b+KVeDGTRxna6nYooZMgog5WYVnkYOhgfICoDw9iu+A=; b=KkfNs
-        dnGA6JhGjTAm0iWTAGwBaQPzK8gC4UmufAvwDVwZa2jRnJjAUVO6M2P5zsj+rm81
-        eImVOFYhyZZ2zGzXHqktveEFCmB4MK/zhD4WZ77iXmZdZIiRMO7kKcR5KZUvjxP+
-        ArIzkpUBB0ry1K2/bt8zViIG/Tim3O7UoBuHek=
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86])
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.69)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1NRTy4-00070N-Tp; Sun, 03 Jan 2010 17:10:17 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.69)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1NRTy2-0005sb-Ch; Sun, 03 Jan 2010 17:10:14 +0000
-Date:   Sun, 3 Jan 2010 17:10:13 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Hui Zhu <teawater@gmail.com>
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :from:date:message-id:subject:to:cc:content-type;
+        bh=ADqWtOkmWNRAXak6e5D2rrQDNmCIruLo0UK4TmDi4qo=;
+        b=UbT69qXw9uPti8my6Bose/KxDVfYtyK4KB+jA0df3tMhB39YuQ9CjwlTYHbhJvgUTX
+         UchFWLZJr3qFJyU8SkxFAIoQ12o/JSTEdx/JZPcsa0j+sExbOZwxEgOWnC4csbaOACh1
+         sRzUYJbs33fd5o1apQK2pfsH+mFcH67k5/46c=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        b=GY12ynTmXlY2rZO+lUmsBUmE0pCMofK0IUZtLuIeSQQ7FWUzbXEmCHNdW4RWak+9C5
+         d8anxJsf1zhUo7wN0moQt+/xeUePCS318o2A6a/gkNLMXaihk7D1pCBpyEDT0bjuz31S
+         umCN2fyKVswhmkitpc6TFi+I+y8Bz598IXRl8=
+MIME-Version: 1.0
+Received: by 10.143.25.9 with SMTP id c9mr198023wfj.7.1262539125091; Sun, 03 
+        Jan 2010 09:18:45 -0800 (PST)
+In-Reply-To: <20100103171013.GC21156@n2100.arm.linux.org.uk>
+References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com> 
+        <20100103160313.GA21156@n2100.arm.linux.org.uk> <daef60381001030830u176c0cfavbb31358a2b42ed60@mail.gmail.com> 
+        <20100103164414.GB21156@n2100.arm.linux.org.uk> <daef60381001030855o3a39c3fdr879e2634fb85c491@mail.gmail.com> 
+        <20100103171013.GC21156@n2100.arm.linux.org.uk>
+From:   Hui Zhu <teawater@gmail.com>
+Date:   Mon, 4 Jan 2010 01:18:25 +0800
+Message-ID: <daef60381001030918r26658a26l52133d43d4342a16@mail.gmail.com>
+Subject: Re: [PATCH] stack2core: show stack message and convert it to core 
+        file when kernel die
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
 Cc:     saeed bishara <saeed.bishara@gmail.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Nicolas Pitre <nico@fluxnic.net>,
@@ -42,31 +55,36 @@ Cc:     saeed bishara <saeed.bishara@gmail.com>,
         "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, Coly Li <coly.li@suse.de>
-Subject: Re: [PATCH] stack2core: show stack message and convert it to core
-        file when kernel die
-Message-ID: <20100103171013.GC21156@n2100.arm.linux.org.uk>
-References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com> <20100103160313.GA21156@n2100.arm.linux.org.uk> <daef60381001030830u176c0cfavbb31358a2b42ed60@mail.gmail.com> <20100103164414.GB21156@n2100.arm.linux.org.uk> <daef60381001030855o3a39c3fdr879e2634fb85c491@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <daef60381001030855o3a39c3fdr879e2634fb85c491@mail.gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 25479
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 25480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: teawater@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1952
+X-UID: 1956
 
-On Mon, Jan 04, 2010 at 12:55:04AM +0800, Hui Zhu wrote:
-> I didn't give the user raw oopses.
-> I give him core file. When the kernel die, do we can get a core file now?
+Sorry I make a mistake, I sent the mail before I complete it.  Maybe
+some hotkey or something.
 
-I think there's a communication issue here... clearly you're not
-understanding what I've been trying to tell you.
+The s2c can get the message from the current panic message is better.
+I am not get them for now, maybe it need open some options or
+something.
 
-I don't think I can help you any further.
+Thanks,
+Hui
+
+On Mon, Jan 4, 2010 at 01:10, Russell King - ARM Linux
+<linux@arm.linux.org.uk> wrote:
+> On Mon, Jan 04, 2010 at 12:55:04AM +0800, Hui Zhu wrote:
+>> I didn't give the user raw oopses.
+>> I give him core file. When the kernel die, do we can get a core file now?
+>
+> I think there's a communication issue here... clearly you're not
+> understanding what I've been trying to tell you.
+>
+> I don't think I can help you any further.
+>

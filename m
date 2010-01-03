@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 21:17:13 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 21:17:48 +0100 (CET)
 Received: from mail-ew0-f223.google.com ([209.85.219.223]:50138 "EHLO
         mail-ew0-f223.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492583Ab0ACURJ (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1492622Ab0ACURJ (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2010 21:17:09 +0100
-Received: by ewy23 with SMTP id 23so416198ewy.24
-        for <multiple recipients>; Sun, 03 Jan 2010 12:16:56 -0800 (PST)
+Received: by mail-ew0-f223.google.com with SMTP id 23so416198ewy.24
+        for <multiple recipients>; Sun, 03 Jan 2010 12:17:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:date:subject
          :mime-version:x-uid:x-length:to:cc:reply-to:content-type
          :content-transfer-encoding:message-id;
-        bh=4yniO0wslh/Cc1BZ6s1zJphBnDiT1JHV8IzmEJ4FkD4=;
-        b=Om6QyjNPmogH7bPHgKP8KYOLZM4hFYQIKNcYTmUAgaxu+YA9QMlYh0HkN6rddcFtt8
-         mEZhBH7vdOuyuBnMq8kcUprqMuzMP6xVQCPdkDZBrqjL1ZuNmmJ9oGUzoT5ZX3bg+Y2Y
-         xxlmNSAAeoRvQf4kOV3wfU2E1saja1GelT6ds=
+        bh=hHzR5/4ph5/o5y8eK7c9TPnyRgO1itw3mzrr90hckMI=;
+        b=HR28vB7XRcZBF+/ociKSBcaQ6Jindo0HXkZPP+M/REl2LprMB34NBZl/2/Zn8OwR1b
+         PzguMU386etZPAJWV7ZpEd4jH+RUmoRGyuQ/YhXf9JLR7xMdswzoDeWKB4i5eVqhP5bW
+         bvelIU2GAQdiJbU23jxFe4rn7MBRChivFNVSk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc:reply-to
          :content-type:content-transfer-encoding:message-id;
-        b=p5x6BQU1KyR/Vm8YfOCS6hfLPBhbdcJTkRpBCWPSPKgFaa/hHEjdzUF1PZU/1Qk4Lh
-         BmA3xT/JacGLpk1zkpoQG9dOb9Hv2qS9S5nO89bXaF8AqU4uUwq/NB1pSqtA8yFBnru0
-         LeJ+bTvGXmvDrNyA3nSC+5dH+fNJMzbGvKhNQ=
-Received: by 10.216.164.9 with SMTP id b9mr3227121wel.153.1262549815640;
-        Sun, 03 Jan 2010 12:16:55 -0800 (PST)
+        b=LqS/N3M4oxVDkEu5rH97OtlrkCZH5plTaZXB5zXDTHOrqNlrMym0cyxsYs5hn8Fqwt
+         bYRnDd65r+kKx9GbBn1SYLyErD5cJYKnKtjnUDBROHbsDS8TCUooStWZleeTc2/CyMim
+         fU+SfWBswiENGmZ7apxy1Ibh/oOq9S+ZZrsY4=
+Received: by 10.213.39.203 with SMTP id h11mr3887204ebe.0.1262549829502;
+        Sun, 03 Jan 2010 12:17:09 -0800 (PST)
 Received: from lenovo.localnet (92.59.76-86.rev.gaoland.net [86.76.59.92])
-        by mx.google.com with ESMTPS id 28sm41922519eye.5.2010.01.03.12.16.54
+        by mx.google.com with ESMTPS id 7sm35603745eyb.2.2010.01.03.12.17.08
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 03 Jan 2010 12:16:55 -0800 (PST)
+        Sun, 03 Jan 2010 12:17:08 -0800 (PST)
 From:   Florian Fainelli <florian@openwrt.org>
-Date:   Sun, 3 Jan 2010 21:16:51 +0100
-Subject: [PATCH 1/4] ar7: implement gpiolib
+Date:   Sun, 3 Jan 2010 21:17:06 +0100
+Subject: [PATCH 2/4] ar7: implement clock API
 MIME-Version: 1.0
-X-Length: 8020
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
+X-Length: 13396
+To:     linux-mips@linux-mips.org, Wim Van Sebroeck <wim@iguana.be>
+Cc:     ralf@linux-mips.org, netdev@vger.kernel.org,
+        David Miller <davem@davemloft.net>
 Reply-To: Florian Fainelli <florian@openwrt.org>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201001032116.52819.florian@openwrt.org>
-X-archive-position: 25486
+Message-Id: <201001032117.07022.florian@openwrt.org>
+X-archive-position: 25487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,29 +49,18 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1991
+X-UID: 1992
 
-This patch implements gpiolib for the AR7 SoC.
+This patch makes the ar7 clock code implement the
+Linux clk API. Drivers using the various clocks
+available in the SoC are updated accordingly.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9541171..bd80252 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -41,7 +41,7 @@ config AR7
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_ZBOOT_UART16550
--	select GENERIC_GPIO
-+	select ARCH_REQUIRE_GPIOLIB
- 	select GCD
- 	select VLYNQ
- 	help
-diff --git a/arch/mips/ar7/gpio.c b/arch/mips/ar7/gpio.c
-index 74e14a3..0e9f4e1 100644
---- a/arch/mips/ar7/gpio.c
-+++ b/arch/mips/ar7/gpio.c
+diff --git a/arch/mips/ar7/clock.c b/arch/mips/ar7/clock.c
+index cc65c8e..fc0e715 100644
+--- a/arch/mips/ar7/clock.c
++++ b/arch/mips/ar7/clock.c
 @@ -1,6 +1,7 @@
  /*
   * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
@@ -79,251 +69,423 @@ index 74e14a3..0e9f4e1 100644
   *
   * This program is free software; you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
-@@ -18,31 +19,113 @@
-  */
- 
- #include <linux/module.h>
-+#include <linux/gpio.h>
- 
- #include <asm/mach-ar7/gpio.h>
- 
--static const char *ar7_gpio_list[AR7_GPIO_MAX];
-+struct ar7_gpio_chip {
-+	void __iomem	*regs;
-+	struct gpio_chip chip;
-+};
- 
--int gpio_request(unsigned gpio, const char *label)
-+static int ar7_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
- {
--	if (gpio >= AR7_GPIO_MAX)
--		return -EINVAL;
-+	struct ar7_gpio_chip *gpch =
-+				container_of(chip, struct ar7_gpio_chip, chip);
-+	void __iomem *gpio_in = gpch->regs + AR7_GPIO_INPUT;
- 
--	if (ar7_gpio_list[gpio])
--		return -EBUSY;
-+	return readl(gpio_in) & (1 << gpio);
-+}
-+
-+static void ar7_gpio_set_value(struct gpio_chip *chip,
-+				unsigned gpio, int value)
-+{
-+	struct ar7_gpio_chip *gpch =
-+				container_of(chip, struct ar7_gpio_chip, chip);
-+	void __iomem *gpio_out = gpch->regs + AR7_GPIO_OUTPUT;
-+	unsigned tmp;
-+
-+	tmp = readl(gpio_out) & ~(1 << gpio);
-+	if (value)
-+		tmp |= 1 << gpio;
-+	writel(tmp, gpio_out);
-+}
-+
-+static int ar7_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
-+{
-+	struct ar7_gpio_chip *gpch =
-+				container_of(chip, struct ar7_gpio_chip, chip);
-+	void __iomem *gpio_dir = gpch->regs + AR7_GPIO_DIR;
- 
--	if (label)
--		ar7_gpio_list[gpio] = label;
--	else
--		ar7_gpio_list[gpio] = "busy";
-+	writel(readl(gpio_dir) | (1 << gpio), gpio_dir);
- 
- 	return 0;
- }
--EXPORT_SYMBOL(gpio_request);
- 
--void gpio_free(unsigned gpio)
-+static int ar7_gpio_direction_output(struct gpio_chip *chip,
-+					unsigned gpio, int value)
- {
--	BUG_ON(!ar7_gpio_list[gpio]);
--	ar7_gpio_list[gpio] = NULL;
-+	struct ar7_gpio_chip *gpch =
-+				container_of(chip, struct ar7_gpio_chip, chip);
-+	void __iomem *gpio_dir = gpch->regs + AR7_GPIO_DIR;
-+
-+	ar7_gpio_set_value(chip, gpio, value);
-+	writel(readl(gpio_dir) & ~(1 << gpio), gpio_dir);
-+
-+	return 0;
-+}
-+
-+static struct ar7_gpio_chip ar7_gpio_chip = {
-+	.chip = {
-+		.label		= "ar7-gpio",
-+		.direction_input	= ar7_gpio_direction_input,
-+		.direction_output	= ar7_gpio_direction_output,
-+		.set			= ar7_gpio_set_value,
-+		.get			= ar7_gpio_get_value,
-+		.base			= 0,
-+		.ngpio			= AR7_GPIO_MAX,
-+	}
-+};
-+
-+int ar7_gpio_enable(unsigned gpio)
-+{
-+	void __iomem *gpio_en = ar7_gpio_chip.regs + AR7_GPIO_ENABLE;
-+
-+	writel(readl(gpio_en) | (1 << gpio), gpio_en);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(ar7_gpio_enable);
-+
-+int ar7_gpio_disable(unsigned gpio)
-+{
-+	void __iomem *gpio_en = ar7_gpio_chip.regs + AR7_GPIO_ENABLE;
-+
-+	writel(readl(gpio_en) & ~(1 << gpio), gpio_en);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(ar7_gpio_disable);
-+
-+static int __init ar7_gpio_init(void)
-+{
-+	int ret;
-+
-+	ar7_gpio_chip.regs = ioremap_nocache(AR7_REGS_GPIO,
-+					AR7_REGS_GPIO + 0x10);
-+
-+	if (!ar7_gpio_chip.regs) {
-+		printk(KERN_ERR "ar7-gpio: failed to ioremap regs\n");
-+		return -ENOMEM;
-+	}
-+
-+	ret = gpiochip_add(&ar7_gpio_chip.chip);
-+	if (ret) {
-+		printk(KERN_ERR "ar7-gpio: failed to add gpiochip\n");
-+		return ret;
-+	}
-+	printk(KERN_INFO "ar7-gpio: registered %d GPIOs\n",
-+				ar7_gpio_chip.chip.ngpio);
-+	return ret;
- }
--EXPORT_SYMBOL(gpio_free);
-+arch_initcall(ar7_gpio_init);
-diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index 85169c0..acbe147 100644
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -34,6 +34,7 @@
- #include <linux/etherdevice.h>
- #include <linux/phy.h>
- #include <linux/phy_fixed.h>
-+#include <linux/gpio.h>
+@@ -24,6 +25,8 @@
+ #include <linux/delay.h>
+ #include <linux/gcd.h>
+ #include <linux/io.h>
++#include <linux/err.h>
++#include <linux/clk.h>
  
  #include <asm/addrspace.h>
  #include <asm/mach-ar7/ar7.h>
-diff --git a/arch/mips/include/asm/mach-ar7/gpio.h b/arch/mips/include/asm/mach-ar7/gpio.h
-index cbe9c4f..73f9b16 100644
---- a/arch/mips/include/asm/mach-ar7/gpio.h
-+++ b/arch/mips/include/asm/mach-ar7/gpio.h
-@@ -1,5 +1,5 @@
- /*
-- * Copyright (C) 2007 Florian Fainelli <florian@openwrt.org>
-+ * Copyright (C) 2007-2009 Florian Fainelli <florian@openwrt.org>
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-@@ -22,88 +22,18 @@
+@@ -94,12 +97,16 @@ struct tnetd7200_clocks {
+ 	struct tnetd7200_clock usb;
+ };
+ 
+-int ar7_cpu_clock = 150000000;
+-EXPORT_SYMBOL(ar7_cpu_clock);
+-int ar7_bus_clock = 125000000;
+-EXPORT_SYMBOL(ar7_bus_clock);
+-int ar7_dsp_clock;
+-EXPORT_SYMBOL(ar7_dsp_clock);
++static struct clk bus_clk = {
++	.rate	= 125000000,
++};
++
++static struct clk cpu_clk = {
++	.rate	= 150000000,
++};
++
++static struct clk dsp_clk;
++static struct clk vbus_clk;
+ 
+ static void approximate(int base, int target, int *prediv,
+ 			int *postdiv, int *mul)
+@@ -185,7 +192,7 @@ static int tnetd7300_get_clock(u32 shift, struct tnetd7300_clock *clock,
+ 		base_clock = AR7_XTAL_CLOCK;
+ 		break;
+ 	case BOOT_PLL_SOURCE_CPU:
+-		base_clock = ar7_cpu_clock;
++		base_clock = cpu_clk.rate;
+ 		break;
+ 	}
+ 
+@@ -212,11 +219,11 @@ static void tnetd7300_set_clock(u32 shift, struct tnetd7300_clock *clock,
+ 	u32 *bootcr, u32 frequency)
+ {
+ 	int prediv, postdiv, mul;
+-	int base_clock = ar7_bus_clock;
++	int base_clock = bus_clk.rate;
+ 
+ 	switch ((*bootcr & (BOOT_PLL_SOURCE_MASK << shift)) >> shift) {
+ 	case BOOT_PLL_SOURCE_BUS:
+-		base_clock = ar7_bus_clock;
++		base_clock = bus_clk.rate;
+ 		break;
+ 	case BOOT_PLL_SOURCE_REF:
+ 		base_clock = AR7_REF_CLOCK;
+@@ -225,7 +232,7 @@ static void tnetd7300_set_clock(u32 shift, struct tnetd7300_clock *clock,
+ 		base_clock = AR7_XTAL_CLOCK;
+ 		break;
+ 	case BOOT_PLL_SOURCE_CPU:
+-		base_clock = ar7_cpu_clock;
++		base_clock = cpu_clk.rate;
+ 		break;
+ 	}
+ 
+@@ -247,18 +254,18 @@ static void __init tnetd7300_init_clocks(void)
+ 					ioremap_nocache(UR8_REGS_CLOCKS,
+ 					sizeof(struct tnetd7300_clocks));
+ 
+-	ar7_bus_clock = tnetd7300_get_clock(BUS_PLL_SOURCE_SHIFT,
++	bus_clk.rate = tnetd7300_get_clock(BUS_PLL_SOURCE_SHIFT,
+ 		&clocks->bus, bootcr, AR7_AFE_CLOCK);
+ 
+ 	if (*bootcr & BOOT_PLL_ASYNC_MODE)
+-		ar7_cpu_clock = tnetd7300_get_clock(CPU_PLL_SOURCE_SHIFT,
++		cpu_clk.rate = tnetd7300_get_clock(CPU_PLL_SOURCE_SHIFT,
+ 			&clocks->cpu, bootcr, AR7_AFE_CLOCK);
+ 	else
+-		ar7_cpu_clock = ar7_bus_clock;
++		cpu_clk.rate = bus_clk.rate;
+ 
+-	if (ar7_dsp_clock == 250000000)
++	if (dsp_clk.rate == 250000000)
+ 		tnetd7300_set_clock(DSP_PLL_SOURCE_SHIFT, &clocks->dsp,
+-			bootcr, ar7_dsp_clock);
++			bootcr, dsp_clk.rate);
+ 
+ 	iounmap(clocks);
+ 	iounmap(bootcr);
+@@ -343,20 +350,20 @@ static void __init tnetd7200_init_clocks(void)
+ 		printk(KERN_INFO "Clocks: Setting DSP clock\n");
+ 		calculate(dsp_base, TNETD7200_DEF_DSP_CLK,
+ 			&dsp_prediv, &dsp_postdiv, &dsp_mul);
+-		ar7_bus_clock =
++		bus_clk.rate =
+ 			((dsp_base / dsp_prediv) * dsp_mul) / dsp_postdiv;
+ 		tnetd7200_set_clock(dsp_base, &clocks->dsp,
+ 			dsp_prediv, dsp_postdiv * 2, dsp_postdiv, dsp_mul * 2,
+-			ar7_bus_clock);
++			bus_clk.rate);
+ 
+ 		printk(KERN_INFO "Clocks: Setting CPU clock\n");
+ 		calculate(cpu_base, TNETD7200_DEF_CPU_CLK, &cpu_prediv,
+ 			&cpu_postdiv, &cpu_mul);
+-		ar7_cpu_clock =
++		cpu_clk.rate =
+ 			((cpu_base / cpu_prediv) * cpu_mul) / cpu_postdiv;
+ 		tnetd7200_set_clock(cpu_base, &clocks->cpu,
+ 			cpu_prediv, cpu_postdiv, -1, cpu_mul,
+-			ar7_cpu_clock);
++			cpu_clk.rate);
+ 
+ 	} else
+ 		if (*bootcr & BOOT_PLL_2TO1_MODE) {
+@@ -365,48 +372,90 @@ static void __init tnetd7200_init_clocks(void)
+ 			printk(KERN_INFO "Clocks: Setting CPU clock\n");
+ 			calculate(cpu_base, TNETD7200_DEF_CPU_CLK, &cpu_prediv,
+ 				&cpu_postdiv, &cpu_mul);
+-			ar7_cpu_clock = ((cpu_base / cpu_prediv) * cpu_mul)
++			cpu_clk.rate = ((cpu_base / cpu_prediv) * cpu_mul)
+ 								/ cpu_postdiv;
+ 			tnetd7200_set_clock(cpu_base, &clocks->cpu,
+ 				cpu_prediv, cpu_postdiv, -1, cpu_mul,
+-				ar7_cpu_clock);
++				cpu_clk.rate);
+ 
+ 			printk(KERN_INFO "Clocks: Setting DSP clock\n");
+ 			calculate(dsp_base, TNETD7200_DEF_DSP_CLK, &dsp_prediv,
+ 				&dsp_postdiv, &dsp_mul);
+-			ar7_bus_clock = ar7_cpu_clock / 2;
++			bus_clk.rate = cpu_clk.rate / 2;
+ 			tnetd7200_set_clock(dsp_base, &clocks->dsp,
+ 				dsp_prediv, dsp_postdiv * 2, dsp_postdiv,
+-				dsp_mul * 2, ar7_bus_clock);
++				dsp_mul * 2, bus_clk.rate);
+ 		} else {
+ 			printk(KERN_INFO "Clocks: Sync 1:1 mode\n");
+ 
+ 			printk(KERN_INFO "Clocks: Setting DSP clock\n");
+ 			calculate(dsp_base, TNETD7200_DEF_DSP_CLK, &dsp_prediv,
+ 				&dsp_postdiv, &dsp_mul);
+-			ar7_bus_clock = ((dsp_base / dsp_prediv) * dsp_mul)
++			bus_clk.rate = ((dsp_base / dsp_prediv) * dsp_mul)
+ 								/ dsp_postdiv;
+ 			tnetd7200_set_clock(dsp_base, &clocks->dsp,
+ 				dsp_prediv, dsp_postdiv * 2, dsp_postdiv,
+-				dsp_mul * 2, ar7_bus_clock);
++				dsp_mul * 2, bus_clk.rate);
+ 
+-			ar7_cpu_clock = ar7_bus_clock;
++			cpu_clk.rate = bus_clk.rate;
+ 		}
+ 
+ 	printk(KERN_INFO "Clocks: Setting USB clock\n");
+-	usb_base = ar7_bus_clock;
++	usb_base = bus_clk.rate;
+ 	calculate(usb_base, TNETD7200_DEF_USB_CLK, &usb_prediv,
+ 		&usb_postdiv, &usb_mul);
+ 	tnetd7200_set_clock(usb_base, &clocks->usb,
+ 		usb_prediv, usb_postdiv, -1, usb_mul,
+ 		TNETD7200_DEF_USB_CLK);
+ 
+-	ar7_dsp_clock = ar7_cpu_clock;
++	dsp_clk.rate = cpu_clk.rate;
+ 
+ 	iounmap(clocks);
+ 	iounmap(bootcr);
+ }
+ 
++/*
++ * Linux clock API
++ */
++int clk_enable(struct clk *clk)
++{
++	return 0;
++}
++EXPORT_SYMBOL(clk_enable);
++
++void clk_disable(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_disable);
++
++unsigned long clk_get_rate(struct clk *clk)
++{
++	return clk->rate;
++}
++EXPORT_SYMBOL(clk_get_rate);
++
++struct clk *clk_get(struct device *dev, const char *id)
++{
++	if (!strcmp(id, "bus"))
++		return &bus_clk;
++	/* cpmac and vbus share the same rate */
++	if (!strcmp(id, "cpmac"))
++		return &vbus_clk;
++	if (!strcmp(id, "cpu"))
++		return &cpu_clk;
++	if (!strcmp(id, "dsp"));
++		return &dsp_clk;
++	if (!strcmp(id, "vbus"))
++		return &vbus_clk;
++	return ERR_PTR(-ENOENT);
++}
++EXPORT_SYMBOL(clk_get);
++
++void clk_put(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_put);
++
+ int __init ar7_init_clocks(void)
+ {
+ 	switch (ar7_chip_id()) {
+@@ -415,12 +464,14 @@ int __init ar7_init_clocks(void)
+ 		tnetd7200_init_clocks();
+ 		break;
+ 	case AR7_CHIP_7300:
+-		ar7_dsp_clock = tnetd7300_dsp_clock();
++		dsp_clk.rate = tnetd7300_dsp_clock();
+ 		tnetd7300_init_clocks();
+ 		break;
+ 	default:
+ 		break;
+ 	}
++	/* adjust vbus clock rate */
++	vbus_clk.rate = bus_clk.rate / 2;
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+index acbe147..c591f69 100644
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -35,6 +35,7 @@
+ #include <linux/phy.h>
+ #include <linux/phy_fixed.h>
+ #include <linux/gpio.h>
++#include <linux/clk.h>
+ 
+ #include <asm/addrspace.h>
+ #include <asm/mach-ar7/ar7.h>
+@@ -507,13 +508,18 @@ static int __init ar7_register_devices(void)
+ 	u32 *bootcr, val;
+ #ifdef CONFIG_SERIAL_8250
+ 	static struct uart_port uart_port[2] __initdata;
++	struct clk *bus_clk;
+ 
+ 	memset(uart_port, 0, sizeof(struct uart_port) * 2);
+ 
++	bus_clk = clk_get(NULL, "bus");
++	if (IS_ERR(bus_clk))
++		panic("unable to get bus clk\n");
++
+ 	uart_port[0].type = PORT_16550A;
+ 	uart_port[0].line = 0;
+ 	uart_port[0].irq = AR7_IRQ_UART0;
+-	uart_port[0].uartclk = ar7_bus_freq() / 2;
++	uart_port[0].uartclk = clk_get_rate(bus_clk) / 2;
+ 	uart_port[0].iotype = UPIO_MEM32;
+ 	uart_port[0].mapbase = AR7_REGS_UART0;
+ 	uart_port[0].membase = ioremap(uart_port[0].mapbase, 256);
+@@ -528,7 +534,7 @@ static int __init ar7_register_devices(void)
+ 		uart_port[1].type = PORT_16550A;
+ 		uart_port[1].line = 1;
+ 		uart_port[1].irq = AR7_IRQ_UART1;
+-		uart_port[1].uartclk = ar7_bus_freq() / 2;
++		uart_port[1].uartclk = clk_get_rate(bus_clk) / 2;
+ 		uart_port[1].iotype = UPIO_MEM32;
+ 		uart_port[1].mapbase = UR8_REGS_UART1;
+ 		uart_port[1].membase = ioremap(uart_port[1].mapbase, 256);
+diff --git a/arch/mips/ar7/time.c b/arch/mips/ar7/time.c
+index a1fba89..5fb8a01 100644
+--- a/arch/mips/ar7/time.c
++++ b/arch/mips/ar7/time.c
+@@ -20,11 +20,21 @@
+ 
+ #include <linux/init.h>
+ #include <linux/time.h>
++#include <linux/err.h>
++#include <linux/clk.h>
+ 
+ #include <asm/time.h>
  #include <asm/mach-ar7/ar7.h>
  
- #define AR7_GPIO_MAX 32
-+#define NR_BUILTIN_GPIO AR7_GPIO_MAX
+ void __init plat_time_init(void)
+ {
+-	mips_hpt_frequency = ar7_cpu_freq() / 2;
++	struct clk *cpu_clk;
++
++	cpu_clk = clk_get(NULL, "cpu");
++	if (IS_ERR(cpu_clk)) {
++		printk(KERN_ERR "unable to get cpu clock\n");
++		return;
++	}
++
++	mips_hpt_frequency = clk_get_rate(cpu_clk) / 2;
+ }
+diff --git a/arch/mips/include/asm/mach-ar7/ar7.h b/arch/mips/include/asm/mach-ar7/ar7.h
+index 21cbbc7..2410360 100644
+--- a/arch/mips/include/asm/mach-ar7/ar7.h
++++ b/arch/mips/include/asm/mach-ar7/ar7.h
+@@ -105,26 +105,10 @@ static inline u8 ar7_chip_rev(void)
+ 	return (readl((void *)KSEG1ADDR(AR7_REGS_GPIO + 0x14)) >> 16) & 0xff;
+ }
  
--extern int gpio_request(unsigned gpio, const char *label);
--extern void gpio_free(unsigned gpio);
-+#define gpio_to_irq(gpio)	NULL
+-static inline int ar7_cpu_freq(void)
+-{
+-	return ar7_cpu_clock;
+-}
+-
+-static inline int ar7_bus_freq(void)
+-{
+-	return ar7_bus_clock;
+-}
+-
+-static inline int ar7_vbus_freq(void)
+-{
+-	return ar7_bus_clock / 2;
+-}
+-#define ar7_cpmac_freq ar7_vbus_freq
+-
+-static inline int ar7_dsp_freq(void)
+-{
+-	return ar7_dsp_clock;
+-}
++struct clk {
++	unsigned int	rate;
++	int		id;
++};
  
--/* Common GPIO layer */
--static inline int gpio_get_value(unsigned gpio)
--{
--	void __iomem *gpio_in =
--		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_INPUT);
-+#define gpio_get_value __gpio_get_value
-+#define gpio_set_value __gpio_set_value
+ static inline int ar7_has_high_cpmac(void)
+ {
+diff --git a/drivers/net/cpmac.c b/drivers/net/cpmac.c
+index 8d0be26..bf2072e 100644
+--- a/drivers/net/cpmac.c
++++ b/drivers/net/cpmac.c
+@@ -36,6 +36,7 @@
+ #include <linux/phy_fixed.h>
+ #include <linux/platform_device.h>
+ #include <linux/dma-mapping.h>
++#include <linux/clk.h>
+ #include <asm/gpio.h>
+ #include <asm/atomic.h>
  
--	return readl(gpio_in) & (1 << gpio);
--}
--
--static inline void gpio_set_value(unsigned gpio, int value)
--{
--	void __iomem *gpio_out =
--		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_OUTPUT);
--	unsigned tmp;
--
--	tmp = readl(gpio_out) & ~(1 << gpio);
--	if (value)
--		tmp |= 1 << gpio;
--	writel(tmp, gpio_out);
--}
--
--static inline int gpio_direction_input(unsigned gpio)
--{
--	void __iomem *gpio_dir =
--		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_DIR);
--
--	if (gpio >= AR7_GPIO_MAX)
--		return -EINVAL;
--
--	writel(readl(gpio_dir) | (1 << gpio), gpio_dir);
--
--	return 0;
--}
--
--static inline int gpio_direction_output(unsigned gpio, int value)
--{
--	void __iomem *gpio_dir =
--		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_DIR);
--
--	if (gpio >= AR7_GPIO_MAX)
--		return -EINVAL;
--
--	gpio_set_value(gpio, value);
--	writel(readl(gpio_dir) & ~(1 << gpio), gpio_dir);
--
--	return 0;
--}
--
--static inline int gpio_to_irq(unsigned gpio)
--{
--	return -EINVAL;
--}
--
--static inline int irq_to_gpio(unsigned irq)
--{
--	return -EINVAL;
--}
-+#define gpio_cansleep __gpio_cansleep
+@@ -294,9 +295,16 @@ static int cpmac_mdio_write(struct mii_bus *bus, int phy_id,
  
- /* Board specific GPIO functions */
--static inline int ar7_gpio_enable(unsigned gpio)
--{
--	void __iomem *gpio_en =
--		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_ENABLE);
--
--	writel(readl(gpio_en) | (1 << gpio), gpio_en);
--
--	return 0;
--}
--
--static inline int ar7_gpio_disable(unsigned gpio)
--{
--	void __iomem *gpio_en =
--		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_ENABLE);
--
--	writel(readl(gpio_en) & ~(1 << gpio), gpio_en);
--
--	return 0;
--}
-+int ar7_gpio_enable(unsigned gpio);
-+int ar7_gpio_disable(unsigned gpio);
+ static int cpmac_mdio_reset(struct mii_bus *bus)
+ {
++	struct clk *cpmac_clk;
++
++	cpmac_clk = clk_get(&bus->dev, "cpmac");
++	if (IS_ERR(cpmac_clk)) {
++		printk(KERN_ERR "unable to get cpmac clock\n");
++		return -1;
++	}
+ 	ar7_device_reset(AR7_RESET_BIT_MDIO);
+ 	cpmac_write(bus->priv, CPMAC_MDIO_CONTROL, MDIOC_ENABLE |
+-		    MDIOC_CLKDIV(ar7_cpmac_freq() / 2200000 - 1));
++		    MDIOC_CLKDIV(clk_get_rate(cpmac_clk) / 2200000 - 1));
+ 	return 0;
+ }
  
- #include <asm-generic/gpio.h>
+diff --git a/drivers/watchdog/ar7_wdt.c b/drivers/watchdog/ar7_wdt.c
+index 2e94b71..2bb95cd 100644
+--- a/drivers/watchdog/ar7_wdt.c
++++ b/drivers/watchdog/ar7_wdt.c
+@@ -34,6 +34,7 @@
+ #include <linux/ioport.h>
+ #include <linux/io.h>
+ #include <linux/uaccess.h>
++#include <linux/clk.h>
  
+ #include <asm/addrspace.h>
+ #include <asm/mach-ar7/ar7.h>
+@@ -80,6 +81,8 @@ static struct resource *ar7_regs_wdt;
+ /* Pointer to the remapped WDT IO space */
+ static struct ar7_wdt *ar7_wdt;
+ 
++static struct clk *vbus_clk;
++
+ static void ar7_wdt_kick(u32 value)
+ {
+ 	WRITE_REG(ar7_wdt->kick_lock, 0x5555);
+@@ -138,17 +141,19 @@ static void ar7_wdt_disable(u32 value)
+ static void ar7_wdt_update_margin(int new_margin)
+ {
+ 	u32 change;
++	u32 vbus_rate;
+ 
+-	change = new_margin * (ar7_vbus_freq() / prescale_value);
++	vbus_rate = clk_get_rate(vbus_clk);
++	change = new_margin * (vbus_rate / prescale_value);
+ 	if (change < 1)
+ 		change = 1;
+ 	if (change > 0xffff)
+ 		change = 0xffff;
+ 	ar7_wdt_change(change);
+-	margin = change * prescale_value / ar7_vbus_freq();
++	margin = change * prescale_value / vbus_rate;
+ 	printk(KERN_INFO DRVNAME
+ 	       ": timer margin %d seconds (prescale %d, change %d, freq %d)\n",
+-	       margin, prescale_value, change, ar7_vbus_freq());
++	       margin, prescale_value, change, vbus_rate);
+ }
+ 
+ static void ar7_wdt_enable_wdt(void)
+@@ -298,6 +303,13 @@ static int __devinit ar7_wdt_probe(struct platform_device *pdev)
+ 		goto out_mem_region;
+ 	}
+ 
++	vbus_clk = clk_get(NULL, "vbus");
++	if (IS_ERR(vbus_clk)) {
++		printk(KERN_ERR DRVNAME ": could not get vbus clock\n");
++		rc = PTR_ERR(vbus_clk);
++		goto out_mem_region;
++	}
++
+ 	ar7_wdt_disable_wdt();
+ 	ar7_wdt_prescale(prescale_value);
+ 	ar7_wdt_update_margin(margin);

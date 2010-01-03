@@ -1,40 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 18:19:00 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:46156 "EHLO
-        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493100Ab0ACRSx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2010 18:18:53 +0100
-Received: by pzk35 with SMTP id 35so2471458pzk.22
-        for <multiple recipients>; Sun, 03 Jan 2010 09:18:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :from:date:message-id:subject:to:cc:content-type;
-        bh=ADqWtOkmWNRAXak6e5D2rrQDNmCIruLo0UK4TmDi4qo=;
-        b=UbT69qXw9uPti8my6Bose/KxDVfYtyK4KB+jA0df3tMhB39YuQ9CjwlTYHbhJvgUTX
-         UchFWLZJr3qFJyU8SkxFAIoQ12o/JSTEdx/JZPcsa0j+sExbOZwxEgOWnC4csbaOACh1
-         sRzUYJbs33fd5o1apQK2pfsH+mFcH67k5/46c=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        b=GY12ynTmXlY2rZO+lUmsBUmE0pCMofK0IUZtLuIeSQQ7FWUzbXEmCHNdW4RWak+9C5
-         d8anxJsf1zhUo7wN0moQt+/xeUePCS318o2A6a/gkNLMXaihk7D1pCBpyEDT0bjuz31S
-         umCN2fyKVswhmkitpc6TFi+I+y8Bz598IXRl8=
-MIME-Version: 1.0
-Received: by 10.143.25.9 with SMTP id c9mr198023wfj.7.1262539125091; Sun, 03 
-        Jan 2010 09:18:45 -0800 (PST)
-In-Reply-To: <20100103171013.GC21156@n2100.arm.linux.org.uk>
-References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com> 
-        <20100103160313.GA21156@n2100.arm.linux.org.uk> <daef60381001030830u176c0cfavbb31358a2b42ed60@mail.gmail.com> 
-        <20100103164414.GB21156@n2100.arm.linux.org.uk> <daef60381001030855o3a39c3fdr879e2634fb85c491@mail.gmail.com> 
-        <20100103171013.GC21156@n2100.arm.linux.org.uk>
-From:   Hui Zhu <teawater@gmail.com>
-Date:   Mon, 4 Jan 2010 01:18:25 +0800
-Message-ID: <daef60381001030918r26658a26l52133d43d4342a16@mail.gmail.com>
-Subject: Re: [PATCH] stack2core: show stack message and convert it to core 
-        file when kernel die
-To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
-Cc:     saeed bishara <saeed.bishara@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 18:24:24 +0100 (CET)
+Received: from casper.infradead.org ([85.118.1.10]:60437 "EHLO
+        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1493101Ab0ACRYU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2010 18:24:20 +0100
+Received: from c-24-20-218-92.hsd1.or.comcast.net ([24.20.218.92] helo=localhost.localdomain)
+        by casper.infradead.org with esmtpsa (Exim 4.69 #1 (Red Hat Linux))
+        id 1NRUB1-0001p0-Os; Sun, 03 Jan 2010 17:23:40 +0000
+Date:   Sun, 3 Jan 2010 09:26:08 -0800
+From:   Arjan van de Ven <arjan@infradead.org>
+To:     Hui Zhu <teawater@gmail.com>
+Cc:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        saeed bishara <saeed.bishara@gmail.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Nicolas Pitre <nico@fluxnic.net>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -55,36 +31,43 @@ Cc:     saeed bishara <saeed.bishara@gmail.com>,
         "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, Coly Li <coly.li@suse.de>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 25480
+Subject: Re: [PATCH] stack2core: show stack message and convert it to core 
+ file when kernel die
+Message-ID: <20100103092608.0a04c664@infradead.org>
+In-Reply-To: <daef60381001030855o3a39c3fdr879e2634fb85c491@mail.gmail.com>
+References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com>
+        <20100103160313.GA21156@n2100.arm.linux.org.uk>
+        <daef60381001030830u176c0cfavbb31358a2b42ed60@mail.gmail.com>
+        <20100103164414.GB21156@n2100.arm.linux.org.uk>
+        <daef60381001030855o3a39c3fdr879e2634fb85c491@mail.gmail.com>
+Organization: Intel
+X-Mailer: Claws Mail 3.7.3 (GTK+ 2.16.6; i586-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <arjan@infradead.org> by casper.infradead.org
+        See http://www.infradead.org/rpr.html
+X-archive-position: 25481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: teawater@gmail.com
+X-original-sender: arjan@infradead.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1956
+X-UID: 1958
 
-Sorry I make a mistake, I sent the mail before I complete it.  Maybe
-some hotkey or something.
+On Mon, 4 Jan 2010 00:55:04 +0800
+Hui Zhu <teawater@gmail.com> wrote:
+> 
+> It show which line make kernel die.
+> 
 
-The s2c can get the message from the current panic message is better.
-I am not get them for now, maybe it need open some options or
-something.
+similar to scripts/markup_oops.pl already does ?
 
-Thanks,
-Hui
 
-On Mon, Jan 4, 2010 at 01:10, Russell King - ARM Linux
-<linux@arm.linux.org.uk> wrote:
-> On Mon, Jan 04, 2010 at 12:55:04AM +0800, Hui Zhu wrote:
->> I didn't give the user raw oopses.
->> I give him core file. When the kernel die, do we can get a core file now?
->
-> I think there's a communication issue here... clearly you're not
-> understanding what I've been trying to tell you.
->
-> I don't think I can help you any further.
->
+-- 
+Arjan van de Ven 	Intel Open Source Technology Centre
+For development, discussion and tips for power savings, 
+visit http://www.lesswatts.org

@@ -1,44 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 21:18:23 +0100 (CET)
-Received: from mail-ew0-f223.google.com ([209.85.219.223]:50138 "EHLO
-        mail-ew0-f223.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492667Ab0ACUR2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2010 21:17:28 +0100
-Received: by mail-ew0-f223.google.com with SMTP id 23so416198ewy.24
-        for <multiple recipients>; Sun, 03 Jan 2010 12:17:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 21:18:46 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.150]:35349 "EHLO
+        ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492583Ab0ACURk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Jan 2010 21:17:40 +0100
+Received: by ey-out-1920.google.com with SMTP id 4so1898825eyg.52
+        for <multiple recipients>; Sun, 03 Jan 2010 12:17:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:reply-to:content-type
+         :mime-version:x-uid:x-length:to:cc:reply-to:content-type
          :content-transfer-encoding:message-id;
-        bh=kX57BdFPQTXbW/keEsNrQH+alTpJGe7jMIFG1/seobQ=;
-        b=H17V+m4iFridvPE2hR6ZVDIZ90ppcHqzv9FBRHIAURHlNhKtoCeGQPjv+eWWBL4tLK
-         NhPPk+/RYk3cqBRfFVDVhSmZnmrXiXhfN34qy1GjNT7sQb6hP2FUX6wMj8s5WTUDwZSy
-         Guvegs77fuej839CABSZPHz1bsy7jdqgmANZw=
+        bh=kAqGgO0N/sIG3fn1N12EgwuWj1vT6ipoSPzLEOEwTM0=;
+        b=Wuu+E0N2i5rlGSmEMrD13Vm2ItH84WBgIbwDDiiX1KkYXYXtQ5/KjeD76gpc+bE8I+
+         LIsCrZ5mxOrNQWbgrP3hmFY2BuTvzb38Qre5cTLyHP53R95SXIh8Cebw268X/QGeh9DT
+         +Cm42Cs6l3bpyM99wg1P7pGZy/aW44WL0geT0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to:reply-to
+        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc:reply-to
          :content-type:content-transfer-encoding:message-id;
-        b=sY3k5wa9hqdyanCcHZ7ycUyuC7G4PCjEQEY4SXkkXpa3LvNlS/GujE3u3To06OChsj
-         2ghwi1L5C1q5IdtffnSPOesby+kx/zoqpHuzYOV4C1mzhSSgCH2n30Ex+5a7n4X8OyEg
-         VmA5V2Yo2ZSvpU7PIS6oMfvdhlh8Ep7+zavbU=
-Received: by 10.213.109.148 with SMTP id j20mr23544715ebp.2.1262549848632;
-        Sun, 03 Jan 2010 12:17:28 -0800 (PST)
+        b=UPpPFajl/3Eqiy3MA8BIn+ohVecbuv7T1TGjezFCk65s1PD1xUZifZcxmoeCNSHphc
+         G1vvFvggyXVT9ydYtvkdR4vYY26nQ9p6Oz93PwCpXdpVuh8ZjiBYJBX9cd4deTYxzp69
+         OdVvbYGdp4hwq15GF15LuU6cz3HtxeyIXceBQ=
+Received: by 10.213.109.75 with SMTP id i11mr3426701ebp.68.1262549859209;
+        Sun, 03 Jan 2010 12:17:39 -0800 (PST)
 Received: from lenovo.localnet (92.59.76-86.rev.gaoland.net [86.76.59.92])
-        by mx.google.com with ESMTPS id 10sm28528342eyd.37.2010.01.03.12.17.27
+        by mx.google.com with ESMTPS id 28sm35691658eyg.12.2010.01.03.12.17.38
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 03 Jan 2010 12:17:27 -0800 (PST)
+        Sun, 03 Jan 2010 12:17:38 -0800 (PST)
 From:   Florian Fainelli <florian@openwrt.org>
-Date:   Sun, 3 Jan 2010 21:17:26 +0100
-Subject: [PATCH 3/4] MIPS: deal with larger physical offset
+Date:   Sun, 3 Jan 2010 21:17:37 +0100
+Subject: [PATCH 4/4] MTD: include ar7part in the list of partitions parsers
 MIME-Version: 1.0
-X-Length: 2223
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+X-Length: 1572
+To:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        David Woodhouse <dwmw2@infradead.org>
+Cc:     ralf@linux-mips.org
 Reply-To: Florian Fainelli <florian@openwrt.org>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201001032117.26581.florian@openwrt.org>
-X-archive-position: 25488
+Message-Id: <201001032117.37459.florian@openwrt.org>
+X-archive-position: 25489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,50 +49,25 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1993
+X-UID: 1994
 
-AR7 has a larger physical offset than other MIPS based
-systems and therefore needs to setup handlers differently.
-This version uses uasm instead of the hand crafted assembly
-previously sent. This modification is also required for
-running the kernel in mapped address space.
+This patch modifies the physmap-flash driver to include
+the ar7part partition parser in the list of parsers to
+use when a physmap-flash driver is registered. This is
+required for AR7 to create partitions correctly.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Signed-off-by: Eugene Konev <ejka@imfi.kspu.ru>
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 308e434..dbf52ab 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -51,6 +51,8 @@
- #include <asm/stacktrace.h>
- #include <asm/irq.h>
+diff --git a/drivers/mtd/maps/physmap.c b/drivers/mtd/maps/physmap.c
+index d9603f7..0e65ee7 100644
+--- a/drivers/mtd/maps/physmap.c
++++ b/drivers/mtd/maps/physmap.c
+@@ -79,7 +79,7 @@ static const char *rom_probe_types[] = {
+ 					"map_rom",
+ 					NULL };
+ #ifdef CONFIG_MTD_PARTITIONS
+-static const char *part_probe_types[] = { "cmdlinepart", "RedBoot", NULL };
++static const char *part_probe_types[] = { "cmdlinepart", "RedBoot", "ar7part", NULL };
+ #endif
  
-+#include "../mm/uasm.h"
-+
- extern void check_wait(void);
- extern asmlinkage void r4k_wait(void);
- extern asmlinkage void rollback_handle_int(void);
-@@ -1283,9 +1285,18 @@ void *set_except_vector(int n, void *addr)
- 
- 	exception_handlers[n] = handler;
- 	if (n == 0 && cpu_has_divec) {
--		*(u32 *)(ebase + 0x200) = 0x08000000 |
--					  (0x03ffffff & (handler >> 2));
--		local_flush_icache_range(ebase + 0x200, ebase + 0x204);
-+		unsigned long jump_mask = ~((1 << 28) - 1);
-+		u32 *buf = (u32 *)(ebase + 0x200);
-+		unsigned int k0 = 26;
-+		if((handler & jump_mask) == ((ebase + 0x200) & jump_mask)) {
-+			uasm_i_j(&buf, handler & jump_mask);
-+			uasm_i_nop(&buf);
-+		} else {
-+			UASM_i_LA(&buf, k0, handler);
-+			uasm_i_jr(&buf, k0);
-+			uasm_i_nop(&buf);
-+		}
-+		local_flush_icache_range(ebase + 0x200, (unsigned long)buf);
- 	}
- 	return (void *)old_handler;
- }
+ static int physmap_flash_probe(struct platform_device *dev)

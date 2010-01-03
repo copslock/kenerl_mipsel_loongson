@@ -1,157 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 23:08:35 +0100 (CET)
-Received: from lo.gmane.org ([80.91.229.12]:33095 "EHLO lo.gmane.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Jan 2010 23:48:41 +0100 (CET)
+Received: from hera.kernel.org ([140.211.167.34]:54733 "EHLO hera.kernel.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493007Ab0ACWIc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 3 Jan 2010 23:08:32 +0100
-Received: from list by lo.gmane.org with local (Exim 4.50)
-        id 1NRYcf-0004q9-Tm
-        for linux-mips@linux-mips.org; Sun, 03 Jan 2010 23:08:29 +0100
-Received: from chipmunk.wormnet.eu ([195.195.131.226])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Sun, 03 Jan 2010 23:08:29 +0100
-Received: from alex by chipmunk.wormnet.eu with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Sun, 03 Jan 2010 23:08:29 +0100
-X-Injected-Via-Gmane: http://gmane.org/
-To:     linux-mips@linux-mips.org
-From:   Alexander Clouter <alex@digriz.org.uk>
-Subject:  Re: [PATCH 4/4] MTD: include ar7part in the list of partitions parsers
-Date:   Sun, 3 Jan 2010 21:31:46 +0000
-Message-ID:  <2ve717-7pt.ln1@chipmunk.wormnet.eu>
-References:  <201001032117.37459.florian@openwrt.org> <1262552177.3181.5891.camel@macbook.infradead.org>
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: chipmunk.wormnet.eu
-User-Agent: tin/1.9.3-20080506 ("Dalintober") (UNIX) (Linux/2.6.26-2-sparc64-smp (sparc64))
-Cc:     linux-mtd@lists.infradead.org
-X-archive-position: 25491
+        id S1493057Ab0ACWsg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 3 Jan 2010 23:48:36 +0100
+Received: from htj.dyndns.org (localhost [127.0.0.1])
+        by hera.kernel.org (8.14.3/8.14.3) with ESMTP id o03Mlqui006642
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
+        Sun, 3 Jan 2010 22:47:54 GMT
+Received: from [10.7.8.135] (a135.air [10.7.8.135])
+        by htj.dyndns.org (Postfix) with ESMTPSA id 64B5A10810A2F;
+        Mon,  4 Jan 2010 07:53:13 +0900 (KST)
+Message-ID: <4B411F14.1040302@kernel.org>
+Date:   Mon, 04 Jan 2010 07:49:56 +0900
+From:   Tejun Heo <tj@kernel.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.5) Gecko/20091130 SUSE/3.0.0-1.1.1 Thunderbird/3.0
+MIME-Version: 1.0
+To:     Hui Zhu <teawater@gmail.com>
+CC:     Russell King <linux@arm.linux.org.uk>,
+        saeed bishara <saeed.bishara@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
+        Chris Dearman <chris@mips.com>,
+        Paul Gortmaker <Paul.Gortmaker@windriver.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Rusty Russell <rusty@rustcorp.com.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, Coly Li <coly.li@suse.de>
+Subject: Re: [PATCH] stack2core: show stack message and convert it to core
+ file   when kernel die
+References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com>
+In-Reply-To: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com>
+X-Enigmail-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 25492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@digriz.org.uk
+X-original-sender: tj@kernel.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2019
+X-UID: 2034
 
-In gmane.linux.drivers.mtd David Woodhouse <dwmw2@infradead.org> wrote:
->
-> On Sun, 2010-01-03 at 21:17 +0100, Florian Fainelli wrote:
->> This patch modifies the physmap-flash driver to include
->> the ar7part partition parser in the list of parsers to
->> use when a physmap-flash driver is registered. This is
->> required for AR7 to create partitions correctly.
+On 01/04/2010 12:05 AM, Hui Zhu wrote:
+> Hello,
 > 
-> Hrm, perhaps we'd do better to allow the probe types to be specified in
-> the platform physmap_flash_data?
+> For, when the kernel die, the user will get some message like:
+> PC is at kernel_init+0xd4/0x104
+> LR is at _atomic_dec_and_lock+0x48/0x6c
+> pc : [<c0008470>]    lr : [<c01911f8>]    psr: 60000013
+> sp : c7823fd8  ip : c7823f48  fp : c7823ff4
+> Stack: (0xc7823fd8 to 0xc7824000)
+> 3fc0:                                                       00000000 00000001
+> Backtrace:
+> [<c000839c>] (kernel_init+0x0/0x104) from [<c0042660>] (do_exit+0x0/0x880)
+> This backtrace have some wrong message sometime and cannot get any
+> val. Of course, kdump can get more message.  But it need do some a lot
+> of other config.
 > 
-I am not completely convinced the ar7part approach is the best way as 
-you are:
- 1) not actually reading a partition table and instead using a bunch of 
-	'magic' values to try to work out the partition layout
- 2) it bears no resemble to what is seen by the ADAM2 bootloader
- 3) regardless of whether you would actually want to, the user is unable 
-	to amend the partition table and have Linux automagically set 
-	the table apprioately
+> The stack2core function, can let kernel show stack message when kernel
+> die.  This stack message can be convert to core file by program s2c
+> (tools/s2c).  Then gdb can show the message in this core file.
 
-I chatted with Florian a while back about this but we never continued 
-with it (Real Life[tm] seemed to get in the way) but I had cobbled the 
-following together:
-----
-diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index e2278c0..df33fea 100644
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -24,6 +24,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/platform_device.h>
- #include <linux/mtd/physmap.h>
-+#include <linux/mtd/partitions.h>
- #include <linux/serial.h>
- #include <linux/serial_8250.h>
- #include <linux/ioport.h>
-@@ -467,6 +468,60 @@ static void cpmac_get_mac(int instance, unsigned char *dev_addr)
- 			char2hex(mac[i * 3 + 1]);
- }
- 
-+static void __init detect_partitions(void)
-+{
-+	unsigned int i, start, end;
-+	int ret;
-+	char mtdenv[5], *buf;
-+
-+	for (physmap_flash_data.nr_parts = 0;
-+			physmap_flash_data.nr_parts < 10;
-+			physmap_flash_data.nr_parts++) {
-+		sprintf(mtdenv, "mtd%d", physmap_flash_data.nr_parts);
-+		if (!prom_getenv(mtdenv))
-+			break;
-+	}
-+
-+	if (physmap_flash_data.nr_parts == 0) {
-+		printk(KERN_INFO "No partitions found for physmap MTD\n");
-+		return;
-+	}
-+	if (physmap_flash_data.nr_parts == 10)
-+		printk(KERN_INFO "Reached nr_parts limit for physmap MTD\n");
-+
-+	physmap_flash_data.parts = kzalloc(
-+			sizeof(struct mtd_partition)*physmap_flash_data.nr_parts,
-+			GFP_KERNEL);
-+	if (!physmap_flash_data.parts) {
-+		printk(KERN_ERR "Unable to alloc physmap MTD parts struct\n");
-+		return;
-+	}
-+
-+	for (i = 0; i < physmap_flash_data.nr_parts; i++) {
-+		sprintf(mtdenv, "mtd%d", i);
-+		buf = prom_getenv(mtdenv);
-+
-+		ret = sscanf(buf, "%x,%x", &start, &end);
-+		if (ret != 2 || start < 0x90000000 || start > 0x90400000
-+				|| end < 0x90000000 || end > 0x90400000
-+				|| start > end) {
-+			printk(KERN_WARNING "broken partition table for physmap\n");
-+			kfree(physmap_flash_data.parts);
-+			physmap_flash_data.parts = NULL;
-+			physmap_flash_data.nr_parts = 0;
-+			return;
-+		}
-+
-+		start -= 0x90000000;
-+		end -= 0x90000000;
-+
-+		physmap_flash_data.parts[i].name	= NULL;
-+		physmap_flash_data.parts[i].size	= end - start;
-+		physmap_flash_data.parts[i].offset	= start;
-+		physmap_flash_data.parts[i].mask_flags	= MTD_WRITEABLE;
-+	}
-+}
-+
- static void __init detect_leds(void)
- {
- 	char *prid, *usb_prod;
-@@ -536,6 +591,7 @@ static int __init ar7_register_devices(void)
- 			return res;
- 	}
- #endif /* CONFIG_SERIAL_8250 */
-+	detect_partitions();
- 	res = platform_device_register(&physmap_flash);
- 	if (res)
- 		return res;
-----
+FWIW, I love it.  I used to have to match the assembly to the source
+code manually to find out which register and stack space meant what.
+This will be very helpful in decoding oops message, but I think that
+it would be far more useful if it uses the existing oops messages
+instead of adding extra messages.  The new messages don't add any new
+information and the oops message is already quite long and scrolls off
+the screen on certain configurations.  Adding new configuration option
+and making oops message longer will make acquiring the information
+quite more difficult.
 
-It simply pulls apart the 'PROM' (aka ADAM2) config and uses that to 
-build the partition table.
+If implementing parsing of oops message in C is too awkward
+(unsurprising at all), maybe implementing a converter in perl or
+python is the easiest way so that it takes the oops message and puts
+out well formatted input for the s2c program?
 
-Work's For Me[tm].
-
-Just my thoughts.
-
-Cheers
+thanks.
 
 -- 
-Alexander Clouter
-.sigmonster says: BOFH excuse #12:
-                  dry joints on cable plug
+tejun

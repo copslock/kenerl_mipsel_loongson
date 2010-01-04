@@ -1,76 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2010 08:09:28 +0100 (CET)
-Received: from mail-ew0-f223.google.com ([209.85.219.223]:48130 "EHLO
-        mail-ew0-f223.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491923Ab0ADHJY convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Jan 2010 08:09:24 +0100
-Received: by ewy23 with SMTP id 23so694648ewy.24
-        for <multiple recipients>; Sun, 03 Jan 2010 23:09:18 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2010 10:17:20 +0100 (CET)
+Received: from mail-yx0-f204.google.com ([209.85.210.204]:36824 "EHLO
+        mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492628Ab0ADJRQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2010 10:17:16 +0100
+Received: by yxe42 with SMTP id 42so15199460yxe.22
+        for <multiple recipients>; Mon, 04 Jan 2010 01:17:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:reply-to:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=fEwdowCE3CieEarvyK13/HtrJWDdIdjGIUqXnTnTdok=;
-        b=xM1wbqdjmSoucRP3qqGbX8cCdP272/tOtoEgHZX+QPCRFdKTIzqWjFh9OG/3TUVsJE
-         anKipdolPcKQ9kFnPeBDgXE35QQ7AoWN2FOWedrR1lHnF+Cdc0kE6lPFBqztCPm2uUgq
-         VSBeNcx75axD+Hd80qfs66s5t3irCyALfJnY0=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=QJx9WnzhqLxc1oADgwb1wanDr6ZVP1dIYBPTHA5o8js=;
+        b=ZnJry/b17TuEkFgdurTUalK2Bf2Ensnp2tnquYWDi2dbeOQV4+jJp1Sea/jwqLkKJn
+         P6N6H3nMbnKdxKqnms24yYzf/iGV2oSxEjghTiwk9PJqCLUQKhYLfc9MEc6uRaQ1Cdp8
+         zwwVBiuFWPZNUXMMQ+P+4s9NuyS2WhhKsnXxs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=R25DI1uhljo2jYlXHz5Obxkg0AVSxjmnX1Az0PaH7QOwvUZzOl8zvR3OL6vPJWw0r2
-         s25KvhIm1mMbYc5lHEFGk0NTpekRVWqpMNklTqpFg9qF8jknL//Q2YG6eyc0MlVhJFo4
-         Fz4d09qwd4kq1ywP9S6R5NKRTE0of7u85DjEQ=
-Received: by 10.213.41.209 with SMTP id p17mr4896159ebe.9.1262588958323;
-        Sun, 03 Jan 2010 23:09:18 -0800 (PST)
-Received: from lenovo.localnet (92.59.76-86.rev.gaoland.net [86.76.59.92])
-        by mx.google.com with ESMTPS id 7sm36494403eyg.41.2010.01.03.23.09.15
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=aKUiJrPt7SH22AQYqML+PazBtvv69gfyYo7fgTTiVbbGHksn4myIZ74c6WEkMue7/8
+         F8R1WidVVqcSZZn1cf8KDcU60avSTLWh8LAuVgblzQL8Ev27OGuttcrvpP4jUU2LK44i
+         Lj87LDIOuzCEjQiMKQ6a1W2z5Eg7VP9bupdT8=
+Received: by 10.151.24.13 with SMTP id b13mr34359500ybj.197.1262596629795;
+        Mon, 04 Jan 2010 01:17:09 -0800 (PST)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id 21sm6122077ywh.16.2010.01.04.01.17.04
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 03 Jan 2010 23:09:16 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-Reply-To: Florian Fainelli <florian@openwrt.org>
-To:     David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH 4/4] MTD: include ar7part in the list of partitions parsers
-Date:   Mon, 4 Jan 2010 08:09:12 +0100
-User-Agent: KMail/1.12.2 (Linux/2.6.32-trunk-686; KDE/4.3.2; i686; ; )
-Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
-        ralf@linux-mips.org
-References: <201001032117.37459.florian@openwrt.org> <1262552177.3181.5891.camel@macbook.infradead.org>
-In-Reply-To: <1262552177.3181.5891.camel@macbook.infradead.org>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <201001040809.14480.florian@openwrt.org>
-X-archive-position: 25497
+        Mon, 04 Jan 2010 01:17:08 -0800 (PST)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, yanh@lemote.com, huhb@lemote.com,
+        zhangfx@lemote.com, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH 00/10] Misc updates of Loongson support 
+Date:   Mon,  4 Jan 2010 17:16:42 +0800
+Message-Id: <cover.1262586650.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.5.6
+X-archive-position: 25498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2222
+X-UID: 2259
 
-Hi David,
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-Le dimanche 3 janvier 2010 21:56:17, David Woodhouse a écrit :
-> On Sun, 2010-01-03 at 21:17 +0100, Florian Fainelli wrote:
-> > This patch modifies the physmap-flash driver to include
-> > the ar7part partition parser in the list of parsers to
-> > use when a physmap-flash driver is registered. This is
-> > required for AR7 to create partitions correctly.
-> 
-> Hrm, perhaps we'd do better to allow the probe types to be specified in
-> the platform physmap_flash_data?
+This patchset introduces the following changes:
 
-I guess so, will cook a patch which does that. Thanks!
--- 
-Best regards, Florian Fainelli
-Email: florian@openwrt.org
-Web: http://openwrt.org
-IRC: [florian] on irc.freenode.net
--------------------------------
+	o Loongson: Lemote-2F: Get the machine type from PMON_VER
+	  Allows the users of the old lemote 2f family machines to run the latest
+	  kernel without passing the machtype= kernel command line.
+
+	o Loongson: Lemote-2F: USB: Not Emulate Non-Posted Writes
+	  When copying large amounts of data between usb devices and hard disk, the
+	  usb device will disconnect, this patch fixes it.
+
+	o Loongson: Convert loongson_halt() to use unreachable()
+	  Use unreachable() instead of "while(1);"
+
+	o Loongson: Remove the serial port output of compressed kernel support
+	  The compressed kernel support is stable enough for loongson, no need to
+	  print debug info, which will save several bytes and speedup the booting a
+	  little.
+
+	o Misc Cleanups
+	  Loongson: Move prom_argc and prom_argv into prom_init_cmdline()
+	  Loongson: Cleanup of the environment variables
+	  Loongson: arch/mips/Makefile: add missing whitespace
+	  Loongson: mem.c: Fixup of the indentation
+
+	o Loongson: Change the Email address of Wu Zhangjin
+	  my old Email address wuzj@lemote.com is not usable, use wuzhangjin@gmail.com instead.
+
+	o Loongson: Lemote-2F: update defconfig
+	  Update the defconfig for the latest kernel supports
+
+Best Regards,
+		Wu Zhangjin
+
+Wu Zhangjin (10):
+  Loongson: Lemote-2F: Get the machine type from PMON_VER
+  Loongson: Lemote-2F: USB: Not Emulate Non-Posted Writes
+  Loongson: Convert loongson_halt() to use unreachable()
+  Loongson: Remove the serial port output of compressed kernel support
+  Loongson: Move prom_argc and prom_argv into prom_init_cmdline()
+  Loongson: Cleanup of the environment variables
+  Loongson: arch/mips/Makefile: add missing whitespace
+  Loongson: mem.c: Fixup of the indentation
+  Loongson: Change the Email address of Wu Zhangjin
+  Loongson: Lemote-2F: update defconfig
+
+ arch/mips/Kconfig                                  |    2 +-
+ arch/mips/Makefile                                 |    6 +-
+ arch/mips/boot/compressed/Makefile                 |    2 +-
+ arch/mips/boot/compressed/decompress.c             |    4 +-
+ arch/mips/configs/lemote2f_defconfig               |  964 ++++++++++++++------
+ arch/mips/include/asm/ftrace.h                     |    2 +-
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    2 +-
+ .../include/asm/mach-loongson/cs5536/cs5536_vsm.h  |    2 +-
+ arch/mips/include/asm/mach-loongson/loongson.h     |    5 +-
+ arch/mips/include/asm/mach-loongson/machine.h      |    4 +-
+ arch/mips/include/asm/mach-loongson/mem.h          |    2 +-
+ arch/mips/include/asm/mach-loongson/pci.h          |   13 +-
+ arch/mips/kernel/ftrace.c                          |    2 +-
+ arch/mips/kernel/mcount.S                          |    2 +-
+ arch/mips/loongson/common/cmdline.c                |    9 +-
+ arch/mips/loongson/common/cs5536/cs5536_acc.c      |    2 +-
+ arch/mips/loongson/common/cs5536/cs5536_ehci.c     |    2 +-
+ arch/mips/loongson/common/cs5536/cs5536_ide.c      |    2 +-
+ arch/mips/loongson/common/cs5536/cs5536_isa.c      |    2 +-
+ arch/mips/loongson/common/cs5536/cs5536_mfgpt.c    |    2 +-
+ arch/mips/loongson/common/cs5536/cs5536_ohci.c     |    2 +-
+ arch/mips/loongson/common/cs5536/cs5536_pci.c      |    2 +-
+ arch/mips/loongson/common/early_printk.c           |    2 +-
+ arch/mips/loongson/common/env.c                    |   29 +-
+ arch/mips/loongson/common/init.c                   |    2 +-
+ arch/mips/loongson/common/machtype.c               |   12 +-
+ arch/mips/loongson/common/mem.c                    |    7 +-
+ arch/mips/loongson/common/platform.c               |    2 +-
+ arch/mips/loongson/common/pm.c                     |    2 +-
+ arch/mips/loongson/common/reset.c                  |    7 +-
+ arch/mips/loongson/common/serial.c                 |    2 +-
+ arch/mips/loongson/common/time.c                   |    4 +-
+ arch/mips/loongson/common/uart_base.c              |    2 +-
+ arch/mips/loongson/fuloong-2e/reset.c              |    4 +-
+ arch/mips/loongson/lemote-2f/Makefile              |    1 +
+ arch/mips/loongson/lemote-2f/machtype.c            |   45 +
+ arch/mips/loongson/lemote-2f/pm.c                  |    2 +-
+ arch/mips/loongson/lemote-2f/reset.c               |    2 +-
+ arch/mips/oprofile/op_model_loongson2.c            |    2 +-
+ arch/mips/pci/fixup-lemote2f.c                     |    2 +-
+ arch/mips/pci/ops-loongson2.c                      |    4 +-
+ arch/mips/power/cpu.c                              |    4 +-
+ arch/mips/power/hibernate.S                        |    4 +-
+ drivers/staging/sm7xx/smtc2d.c                     |    2 +-
+ drivers/staging/sm7xx/smtc2d.h                     |    2 +-
+ drivers/staging/sm7xx/smtcfb.c                     |    2 +-
+ drivers/staging/sm7xx/smtcfb.h                     |    2 +-
+ 47 files changed, 807 insertions(+), 377 deletions(-)
+ create mode 100644 arch/mips/loongson/lemote-2f/machtype.c

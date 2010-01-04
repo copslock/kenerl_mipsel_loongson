@@ -1,39 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2010 10:17:20 +0100 (CET)
-Received: from mail-yx0-f204.google.com ([209.85.210.204]:36824 "EHLO
-        mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492628Ab0ADJRQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2010 10:17:16 +0100
-Received: by yxe42 with SMTP id 42so15199460yxe.22
-        for <multiple recipients>; Mon, 04 Jan 2010 01:17:09 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2010 10:17:45 +0100 (CET)
+Received: from mail-yw0-f182.google.com ([209.85.211.182]:60952 "EHLO
+        mail-yw0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493167Ab0ADJRa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Jan 2010 10:17:30 +0100
+Received: by ywh12 with SMTP id 12so15942361ywh.21
+        for <multiple recipients>; Mon, 04 Jan 2010 01:17:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=QJx9WnzhqLxc1oADgwb1wanDr6ZVP1dIYBPTHA5o8js=;
-        b=ZnJry/b17TuEkFgdurTUalK2Bf2Ensnp2tnquYWDi2dbeOQV4+jJp1Sea/jwqLkKJn
-         P6N6H3nMbnKdxKqnms24yYzf/iGV2oSxEjghTiwk9PJqCLUQKhYLfc9MEc6uRaQ1Cdp8
-         zwwVBiuFWPZNUXMMQ+P+4s9NuyS2WhhKsnXxs=
+         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
+        bh=NdxxoCGiXy8NAIyTCaMqSPt0YOmU89Q7iPwtSBH1NaU=;
+        b=InWL0ano7UhIGXjN+pEvEFD8ZHJ8WQI7zcmXb7NpWOLD1qv8JCqns94Bl+gsMqN9a9
+         UrCviFS0RwqtDtHAG4MnOXUIhEnA1D1M1bhX4teDGdyAW+VIXIH6E3QpQeHPfZbW29Ju
+         Ps/65hK8dVh38cwFUm61WvqFy6vzlS1VEHh3c=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=aKUiJrPt7SH22AQYqML+PazBtvv69gfyYo7fgTTiVbbGHksn4myIZ74c6WEkMue7/8
-         F8R1WidVVqcSZZn1cf8KDcU60avSTLWh8LAuVgblzQL8Ev27OGuttcrvpP4jUU2LK44i
-         Lj87LDIOuzCEjQiMKQ6a1W2z5Eg7VP9bupdT8=
-Received: by 10.151.24.13 with SMTP id b13mr34359500ybj.197.1262596629795;
-        Mon, 04 Jan 2010 01:17:09 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=GG/mIKKqCEK+WAn1JDotOW/DVnM3LH42PHFPVnJrv8YKDjm5wtvYVuDqQQB2Hle/F0
+         UKLTYYfUpS6QkcOGWGgchmba0tXmWrLTqJ4rfdujYGfnRg/gStzpxLTV154Wzw+Y/IP3
+         dQV6rWOJ4CivNIn3Rwvi1whOqaTEq7xhDaPYI=
+Received: by 10.150.104.11 with SMTP id b11mr2562011ybc.235.1262596643451;
+        Mon, 04 Jan 2010 01:17:23 -0800 (PST)
 Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id 21sm6122077ywh.16.2010.01.04.01.17.04
+        by mx.google.com with ESMTPS id 21sm6122077ywh.16.2010.01.04.01.17.16
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 04 Jan 2010 01:17:08 -0800 (PST)
+        Mon, 04 Jan 2010 01:17:21 -0800 (PST)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, yanh@lemote.com, huhb@lemote.com,
         zhangfx@lemote.com, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH 00/10] Misc updates of Loongson support 
-Date:   Mon,  4 Jan 2010 17:16:42 +0800
-Message-Id: <cover.1262586650.git.wuzhangjin@gmail.com>
+Subject: [PATCH 01/10] Loongson: Lemote-2F: Get the machine type from PMON_VER
+Date:   Mon,  4 Jan 2010 17:16:43 +0800
+Message-Id: <f4aeb125cb030f10d34966febfe9715874d52ab2.1262596493.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.5.6
-X-archive-position: 25498
+In-Reply-To: <cover.1262586650.git.wuzhangjin@gmail.com>
+References: <cover.1262586650.git.wuzhangjin@gmail.com>
+In-Reply-To: <cover.1262596493.git.wuzhangjin@gmail.com>
+References: <cover.1262596493.git.wuzhangjin@gmail.com>
+X-archive-position: 25499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,101 +46,127 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2259
+X-UID: 2260
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This patchset introduces the following changes:
+Lemote have used the PMON_VER strings to indicate the loongson-2f
+machine series:
 
-	o Loongson: Lemote-2F: Get the machine type from PMON_VER
-	  Allows the users of the old lemote 2f family machines to run the latest
-	  kernel without passing the machtype= kernel command line.
+ 	PMON_VER=LM8089		Lemote 8.9'' netbook
+ 	         LM8101		Lemote 10.1'' netbook
+ 	(The above two netbooks have the same kernel support)
+	         LM6XXX		Lemote FuLoong(2F) box series
+	         LM9XXX		Lemote LynLoong PC series
 
-	o Loongson: Lemote-2F: USB: Not Emulate Non-Posted Writes
-	  When copying large amounts of data between usb devices and hard disk, the
-	  usb device will disconnect, this patch fixes it.
+Before the machtype is supported by the PMON, we can get the machine
+type from the PMON_VER for these machines, this will help the users a
+lot.
 
-	o Loongson: Convert loongson_halt() to use unreachable()
-	  Use unreachable() instead of "while(1);"
-
-	o Loongson: Remove the serial port output of compressed kernel support
-	  The compressed kernel support is stable enough for loongson, no need to
-	  print debug info, which will save several bytes and speedup the booting a
-	  little.
-
-	o Misc Cleanups
-	  Loongson: Move prom_argc and prom_argv into prom_init_cmdline()
-	  Loongson: Cleanup of the environment variables
-	  Loongson: arch/mips/Makefile: add missing whitespace
-	  Loongson: mem.c: Fixup of the indentation
-
-	o Loongson: Change the Email address of Wu Zhangjin
-	  my old Email address wuzj@lemote.com is not usable, use wuzhangjin@gmail.com instead.
-
-	o Loongson: Lemote-2F: update defconfig
-	  Update the defconfig for the latest kernel supports
-
-Best Regards,
-		Wu Zhangjin
-
-Wu Zhangjin (10):
-  Loongson: Lemote-2F: Get the machine type from PMON_VER
-  Loongson: Lemote-2F: USB: Not Emulate Non-Posted Writes
-  Loongson: Convert loongson_halt() to use unreachable()
-  Loongson: Remove the serial port output of compressed kernel support
-  Loongson: Move prom_argc and prom_argv into prom_init_cmdline()
-  Loongson: Cleanup of the environment variables
-  Loongson: arch/mips/Makefile: add missing whitespace
-  Loongson: mem.c: Fixup of the indentation
-  Loongson: Change the Email address of Wu Zhangjin
-  Loongson: Lemote-2F: update defconfig
-
- arch/mips/Kconfig                                  |    2 +-
- arch/mips/Makefile                                 |    6 +-
- arch/mips/boot/compressed/Makefile                 |    2 +-
- arch/mips/boot/compressed/decompress.c             |    4 +-
- arch/mips/configs/lemote2f_defconfig               |  964 ++++++++++++++------
- arch/mips/include/asm/ftrace.h                     |    2 +-
- .../asm/mach-loongson/cpu-feature-overrides.h      |    2 +-
- .../include/asm/mach-loongson/cs5536/cs5536_vsm.h  |    2 +-
- arch/mips/include/asm/mach-loongson/loongson.h     |    5 +-
- arch/mips/include/asm/mach-loongson/machine.h      |    4 +-
- arch/mips/include/asm/mach-loongson/mem.h          |    2 +-
- arch/mips/include/asm/mach-loongson/pci.h          |   13 +-
- arch/mips/kernel/ftrace.c                          |    2 +-
- arch/mips/kernel/mcount.S                          |    2 +-
- arch/mips/loongson/common/cmdline.c                |    9 +-
- arch/mips/loongson/common/cs5536/cs5536_acc.c      |    2 +-
- arch/mips/loongson/common/cs5536/cs5536_ehci.c     |    2 +-
- arch/mips/loongson/common/cs5536/cs5536_ide.c      |    2 +-
- arch/mips/loongson/common/cs5536/cs5536_isa.c      |    2 +-
- arch/mips/loongson/common/cs5536/cs5536_mfgpt.c    |    2 +-
- arch/mips/loongson/common/cs5536/cs5536_ohci.c     |    2 +-
- arch/mips/loongson/common/cs5536/cs5536_pci.c      |    2 +-
- arch/mips/loongson/common/early_printk.c           |    2 +-
- arch/mips/loongson/common/env.c                    |   29 +-
- arch/mips/loongson/common/init.c                   |    2 +-
- arch/mips/loongson/common/machtype.c               |   12 +-
- arch/mips/loongson/common/mem.c                    |    7 +-
- arch/mips/loongson/common/platform.c               |    2 +-
- arch/mips/loongson/common/pm.c                     |    2 +-
- arch/mips/loongson/common/reset.c                  |    7 +-
- arch/mips/loongson/common/serial.c                 |    2 +-
- arch/mips/loongson/common/time.c                   |    4 +-
- arch/mips/loongson/common/uart_base.c              |    2 +-
- arch/mips/loongson/fuloong-2e/reset.c              |    4 +-
- arch/mips/loongson/lemote-2f/Makefile              |    1 +
- arch/mips/loongson/lemote-2f/machtype.c            |   45 +
- arch/mips/loongson/lemote-2f/pm.c                  |    2 +-
- arch/mips/loongson/lemote-2f/reset.c               |    2 +-
- arch/mips/oprofile/op_model_loongson2.c            |    2 +-
- arch/mips/pci/fixup-lemote2f.c                     |    2 +-
- arch/mips/pci/ops-loongson2.c                      |    4 +-
- arch/mips/power/cpu.c                              |    4 +-
- arch/mips/power/hibernate.S                        |    4 +-
- drivers/staging/sm7xx/smtc2d.c                     |    2 +-
- drivers/staging/sm7xx/smtc2d.h                     |    2 +-
- drivers/staging/sm7xx/smtcfb.c                     |    2 +-
- drivers/staging/sm7xx/smtcfb.h                     |    2 +-
- 47 files changed, 807 insertions(+), 377 deletions(-)
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/loongson/common/machtype.c    |   10 +++++-
+ arch/mips/loongson/lemote-2f/Makefile   |    1 +
+ arch/mips/loongson/lemote-2f/machtype.c |   45 +++++++++++++++++++++++++++++++
+ 3 files changed, 54 insertions(+), 2 deletions(-)
  create mode 100644 arch/mips/loongson/lemote-2f/machtype.c
+
+diff --git a/arch/mips/loongson/common/machtype.c b/arch/mips/loongson/common/machtype.c
+index 0ed52b3..3799098 100644
+--- a/arch/mips/loongson/common/machtype.c
++++ b/arch/mips/loongson/common/machtype.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
++ * Copyright (C) 2009 Lemote Inc.
+  * Author: Wu Zhangjin, wuzj@lemote.com
+  *
+  * Copyright (c) 2009 Zhang Le <r0bertz@gentoo.org>
+@@ -35,6 +35,10 @@ const char *get_system_type(void)
+ 	return system_types[mips_machtype];
+ }
+ 
++void __weak __init mach_prom_init_machtype(void)
++{
++}
++
+ void __init prom_init_machtype(void)
+ {
+ 	char *p, str[MACHTYPE_LEN];
+@@ -43,8 +47,10 @@ void __init prom_init_machtype(void)
+ 	mips_machtype = LOONGSON_MACHTYPE;
+ 
+ 	p = strstr(arcs_cmdline, "machtype=");
+-	if (!p)
++	if (!p) {
++		mach_prom_init_machtype();
+ 		return;
++	}
+ 	p += strlen("machtype=");
+ 	strncpy(str, p, MACHTYPE_LEN);
+ 	p = strstr(str, " ");
+diff --git a/arch/mips/loongson/lemote-2f/Makefile b/arch/mips/loongson/lemote-2f/Makefile
+index 4d84b27..01f71b1 100644
+--- a/arch/mips/loongson/lemote-2f/Makefile
++++ b/arch/mips/loongson/lemote-2f/Makefile
+@@ -3,6 +3,7 @@
+ #
+ 
+ obj-y += irq.o reset.o ec_kb3310b.o
++obj-y += machtype.o irq.o reset.o ec_kb3310b.o
+ 
+ #
+ # Suspend Support
+diff --git a/arch/mips/loongson/lemote-2f/machtype.c b/arch/mips/loongson/lemote-2f/machtype.c
+new file mode 100644
+index 0000000..610f431
+--- /dev/null
++++ b/arch/mips/loongson/lemote-2f/machtype.c
+@@ -0,0 +1,45 @@
++/*
++ * Copyright (C) 2009 Lemote Inc.
++ * Author: Wu Zhangjin, wuzj@lemote.com
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++#include <asm/bootinfo.h>
++
++#include <loongson.h>
++
++void __init mach_prom_init_machtype(void)
++{
++	/* We share the same kernel image file among Lemote 2F family
++	 * of machines, and provide the machtype= kernel command line
++	 * to users to indicate their machine, this command line will
++	 * be passed by the latest PMON automatically. and fortunately,
++	 * up to now, we can get the machine type from the PMON_VER=
++	 * commandline directly except the NAS machine, In the old
++	 * machines, this will help the users a lot.
++	 *
++	 * If no "machtype=" passed, get machine type from "PMON_VER=".
++	 * 	PMON_VER=LM8089		Lemote 8.9'' netbook
++	 * 	         LM8101		Lemote 10.1'' netbook
++	 * 	(The above two netbooks have the same kernel support)
++	 *	         LM6XXX		Lemote FuLoong(2F) box series
++	 *	         LM9XXX		Lemote LynLoong PC series
++	 */
++	if (strstr(arcs_cmdline, "PMON_VER=LM")) {
++		if (strstr(arcs_cmdline, "PMON_VER=LM8"))
++			mips_machtype = MACH_LEMOTE_YL2F89;
++		else if (strstr(arcs_cmdline, "PMON_VER=LM6"))
++			mips_machtype = MACH_LEMOTE_FL2F;
++		else if (strstr(arcs_cmdline, "PMON_VER=LM9"))
++			mips_machtype = MACH_LEMOTE_LL2F;
++		else
++			mips_machtype = MACH_LEMOTE_NAS;
++
++		strcat(arcs_cmdline, " machtype=");
++		strcat(arcs_cmdline, get_system_type());
++		strcat(arcs_cmdline, " ");
++	}
++}
+-- 
+1.6.5.6

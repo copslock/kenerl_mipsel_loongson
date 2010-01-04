@@ -1,75 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2010 00:21:18 +0100 (CET)
-Received: from hera.kernel.org ([140.211.167.34]:34424 "EHLO hera.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493121Ab0ACXVN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 4 Jan 2010 00:21:13 +0100
-Received: from htj.dyndns.org (localhost [127.0.0.1])
-        by hera.kernel.org (8.14.3/8.14.3) with ESMTP id o03NJWeG010170
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
-        Sun, 3 Jan 2010 23:19:34 GMT
-Received: from [127.0.0.2] (htj.dyndns.org [127.0.0.2])
-        by htj.dyndns.org (Postfix) with ESMTPSA id CA8E110810A37;
-        Mon,  4 Jan 2010 08:24:53 +0900 (KST)
-Message-ID: <4B412745.9070307@kernel.org>
-Date:   Mon, 04 Jan 2010 08:24:53 +0900
-From:   Tejun Heo <tj@kernel.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.5) Gecko/20091130 SUSE/3.0.0-1.1.1 Thunderbird/3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Jan 2010 08:09:28 +0100 (CET)
+Received: from mail-ew0-f223.google.com ([209.85.219.223]:48130 "EHLO
+        mail-ew0-f223.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491923Ab0ADHJY convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Jan 2010 08:09:24 +0100
+Received: by ewy23 with SMTP id 23so694648ewy.24
+        for <multiple recipients>; Sun, 03 Jan 2010 23:09:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:reply-to:to
+         :subject:date:user-agent:cc:references:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:message-id;
+        bh=fEwdowCE3CieEarvyK13/HtrJWDdIdjGIUqXnTnTdok=;
+        b=xM1wbqdjmSoucRP3qqGbX8cCdP272/tOtoEgHZX+QPCRFdKTIzqWjFh9OG/3TUVsJE
+         anKipdolPcKQ9kFnPeBDgXE35QQ7AoWN2FOWedrR1lHnF+Cdc0kE6lPFBqztCPm2uUgq
+         VSBeNcx75axD+Hd80qfs66s5t3irCyALfJnY0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        b=R25DI1uhljo2jYlXHz5Obxkg0AVSxjmnX1Az0PaH7QOwvUZzOl8zvR3OL6vPJWw0r2
+         s25KvhIm1mMbYc5lHEFGk0NTpekRVWqpMNklTqpFg9qF8jknL//Q2YG6eyc0MlVhJFo4
+         Fz4d09qwd4kq1ywP9S6R5NKRTE0of7u85DjEQ=
+Received: by 10.213.41.209 with SMTP id p17mr4896159ebe.9.1262588958323;
+        Sun, 03 Jan 2010 23:09:18 -0800 (PST)
+Received: from lenovo.localnet (92.59.76-86.rev.gaoland.net [86.76.59.92])
+        by mx.google.com with ESMTPS id 7sm36494403eyg.41.2010.01.03.23.09.15
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 03 Jan 2010 23:09:16 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+Reply-To: Florian Fainelli <florian@openwrt.org>
+To:     David Woodhouse <dwmw2@infradead.org>
+Subject: Re: [PATCH 4/4] MTD: include ar7part in the list of partitions parsers
+Date:   Mon, 4 Jan 2010 08:09:12 +0100
+User-Agent: KMail/1.12.2 (Linux/2.6.32-trunk-686; KDE/4.3.2; i686; ; )
+Cc:     linux-mips@linux-mips.org, linux-mtd@lists.infradead.org,
+        ralf@linux-mips.org
+References: <201001032117.37459.florian@openwrt.org> <1262552177.3181.5891.camel@macbook.infradead.org>
+In-Reply-To: <1262552177.3181.5891.camel@macbook.infradead.org>
 MIME-Version: 1.0
-To:     Arjan van de Ven <arjan@infradead.org>
-CC:     Hui Zhu <teawater@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        saeed bishara <saeed.bishara@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
-        Chris Dearman <chris@mips.com>,
-        Paul Gortmaker <Paul.Gortmaker@windriver.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Greg Kroah-Hartman <gregkh@suse.de>,
-        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, Coly Li <coly.li@suse.de>
-Subject: Re: [PATCH] stack2core: show stack message and convert it to core
- file   when kernel die
-References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com>        <4B411F14.1040302@kernel.org>   <20100103150134.5bdab023@infradead.org> <4B412341.2010002@kernel.org> <20100103151406.20228c3a@infradead.org>
-In-Reply-To: <20100103151406.20228c3a@infradead.org>
-X-Enigmail-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 25496
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201001040809.14480.florian@openwrt.org>
+X-archive-position: 25497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2049
+X-UID: 2222
 
-On 01/04/2010 08:14 AM, Arjan van de Ven wrote:
->> Whichever one works but s2c wouldn't require symbol decoding.  Maybe
->> we can simply add an option to tell it to just parse the oops and
->> output it in machine friendly format.  Oh, also, the patch does add
->> new information the module load addresses.  We should be able to add
->> those to the oops message in a compact form.
+Hi David,
+
+Le dimanche 3 janvier 2010 21:56:17, David Woodhouse a écrit :
+> On Sun, 2010-01-03 at 21:17 +0100, Florian Fainelli wrote:
+> > This patch modifies the physmap-flash driver to include
+> > the ar7part partition parser in the list of parsers to
+> > use when a physmap-flash driver is registered. This is
+> > required for AR7 to create partitions correctly.
 > 
-> actually one does not need those; you know the start address of the
-> function already from the current oops output, and since you know the
-> address of the function within the module as well, you know the start
-> address of the module.
+> Hrm, perhaps we'd do better to allow the probe types to be specified in
+> the platform physmap_flash_data?
 
-Right.  Thanks for the explanation.
-
+I guess so, will cook a patch which does that. Thanks!
 -- 
-tejun
+Best regards, Florian Fainelli
+Email: florian@openwrt.org
+Web: http://openwrt.org
+IRC: [florian] on irc.freenode.net
+-------------------------------

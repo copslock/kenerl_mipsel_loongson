@@ -1,43 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2010 10:04:38 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:63902 "EHLO
-        mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490985Ab0AEJEf convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Jan 2010 10:04:35 +0100
-Received: by pwj1 with SMTP id 1so10227251pwj.24
-        for <multiple recipients>; Tue, 05 Jan 2010 01:04:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :from:date:message-id:subject:to:cc:content-type
-         :content-transfer-encoding;
-        bh=tccDM0Qe8mSQVdIqClWAw/kADLps4idUuTg9kIjhSZk=;
-        b=E4FESs50oIyxVhRLVJ+XKFj6Xb81nBHHLdedL1K5nv/6IKTzDlKxb1rsEgN0lAbRgC
-         9GDFw57g+kYl/xUYaiXmbDuLC09kKUkLxhcKOtfdxxnKNwMbFhMX0btN6Qr9bFMy/YAH
-         PJ8RxolD+bmoHEcOoAE2o63AHJU1qfMgGxR/Q=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        b=nws820z5bCvmcMS/BKOusJn404uNnkqjruDBiOMv7bNGtDuSxrJBxgIzHdz9OHIBN9
-         3R3nqYATKWtHf/ebOWRbv8hEU8ClRtFtDwy3sxuojqFxsjy2WV3QkDvfytOSSc7UReXq
-         CYsh5veyQUbT9r1Fh1AxdprNbvxewoPwJIewA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Jan 2010 10:15:45 +0100 (CET)
+Received: from hera.kernel.org ([140.211.167.34]:44599 "EHLO hera.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490985Ab0AEJPh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 5 Jan 2010 10:15:37 +0100
+Received: from htj.dyndns.org (localhost [127.0.0.1])
+        by hera.kernel.org (8.14.3/8.14.3) with ESMTP id o059EnFn024251
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
+        Tue, 5 Jan 2010 09:14:51 GMT
+Received: from [127.0.0.2] (htj.dyndns.org [127.0.0.2])
+        by htj.dyndns.org (Postfix) with ESMTPSA id 8FC5D1006343A;
+        Tue,  5 Jan 2010 18:20:23 +0900 (KST)
+Message-ID: <4B430457.5020906@kernel.org>
+Date:   Tue, 05 Jan 2010 18:20:23 +0900
+From:   Tejun Heo <tj@kernel.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.5) Gecko/20091130 SUSE/3.0.0-1.1.1 Thunderbird/3.0
 MIME-Version: 1.0
-Received: by 10.142.1.22 with SMTP id 22mr14966512wfa.303.1262682267605; Tue, 
-        05 Jan 2010 01:04:27 -0800 (PST)
-In-Reply-To: <4B4273D6.2010306@kernel.org>
-References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com> 
-        <4B411F14.1040302@kernel.org> <20100103150134.5bdab023@infradead.org> 
-        <4B412341.2010002@kernel.org> <20100103151406.20228c3a@infradead.org> 
-        <daef60381001040822q188d7374te5a177c5f9877ac2@mail.gmail.com> 
-        <4B4273D6.2010306@kernel.org>
-From:   Hui Zhu <teawater@gmail.com>
-Date:   Tue, 5 Jan 2010 17:04:07 +0800
-Message-ID: <daef60381001050104u5d4adf11k16bec2406501fbd2@mail.gmail.com>
-Subject: Re: [PATCH] stack2core: show stack message and convert it to core 
-        file when kernel die
-To:     Tejun Heo <tj@kernel.org>
-Cc:     Arjan van de Ven <arjan@infradead.org>,
+To:     Hui Zhu <teawater@gmail.com>
+CC:     Arjan van de Ven <arjan@infradead.org>,
         Russell King <linux@arm.linux.org.uk>,
         saeed bishara <saeed.bishara@gmail.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -60,74 +39,52 @@ Cc:     Arjan van de Ven <arjan@infradead.org>,
         "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, Coly Li <coly.li@suse.de>
+Subject: Re: [PATCH] stack2core: show stack message and convert it to core
+        file when kernel die
+References: <daef60381001030705r93b3fbfkc50e7b9bbc62b334@mail.gmail.com>        <4B411F14.1040302@kernel.org> <20100103150134.5bdab023@infradead.org>   <4B412341.2010002@kernel.org> <20100103151406.20228c3a@infradead.org>   <daef60381001040822q188d7374te5a177c5f9877ac2@mail.gmail.com>   <4B4273D6.2010306@kernel.org> <daef60381001050104u5d4adf11k16bec2406501fbd2@mail.gmail.com>
+In-Reply-To: <daef60381001050104u5d4adf11k16bec2406501fbd2@mail.gmail.com>
+X-Enigmail-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 25514
+Content-Transfer-Encoding: 7bit
+X-archive-position: 25515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: teawater@gmail.com
+X-original-sender: tj@kernel.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 3134
+X-UID: 3136
 
-Hi,
+Hello,
 
-I agree with read the current stack message is better.
+On 01/05/2010 06:04 PM, Hui Zhu wrote:
+> I agree with read the current stack message is better.
+> 
+> About the extending, I have some question with it:
+> 1.  markup_oops.pl have itself idea, it try use dmesg| markup_oops.pl
+> show what happen to usr.  This is different with s2c.
+> I am not sure people like it have other function with it.  Too much
+> part of this file need to be change.  It need rewrite, just the oops
+> message parse part can be keep.
 
-About the extending, I have some question with it:
-1.  markup_oops.pl have itself idea, it try use dmesg| markup_oops.pl
-show what happen to usr.  This is different with s2c.
-I am not sure people like it have other function with it.  Too much
-part of this file need to be change.  It need rewrite, just the oops
-message parse part can be keep.
+Yeah, I think you'll need to refactor it and share only the parsing
+frontend.  Just adding a switch (-m or whatever) which puts it into
+machine-friendly translator mode should do the trick.
 
-2.  I use perl to work in a long time before, I know it good at parse
-the text, but I am not sure it good at handle struct like:
-struct mips64_elf_prstatus
-{
-	struct s2c_elf_siginfo	pr_info;
-	uint16_t		pr_cursig;
-	uint64_t		pr_sigpend;
-	uint64_t		pr_sighold;
-	uint32_t		pr_pid;
-	uint32_t		pr_ppid;
-	uint32_t		pr_pgrp;
-	uint32_t		pr_sid;
-	struct s2c_timeval_64	pr_utime;
-	struct s2c_timeval_64	pr_stime;
-	struct s2c_timeval_64	pr_cutime;
-	struct s2c_timeval_64	pr_cstime;
+> 2.  I use perl to work in a long time before, I know it good at parse
+> the text, but I am not sure it good at handle struct like:
 
-	uint64_t		pr_reg[45];
+You don't need to handle the data structure at all.  Just make it
+parse the dmesg and output machine-friendly formatted output which can
+be processed by s2c.  ie. just make it do the reformatting.
 
-	uint32_t		pr_fpvalid;
-} __attribute__ ((aligned(8)));
-Even if what happen, I will keep a c s2c with myself.  :)
+> Even if what happen, I will keep a c s2c with myself.  :)
 
-Best regards,
-Hui
+That will be sad.  I really want it too.  :-)
 
-On Tue, Jan 5, 2010 at 07:03, Tejun Heo <tj@kernel.org> wrote:
-> Hello,
->
-> On 01/05/2010 01:22 AM, Hui Zhu wrote:
->> For the s2c, user just "s2c < message >core" It did everything with itself.
->> After that, gdb vmlinux core.
->
-> It is true that by making the kernel oops message more verbose, s2c
-> can be made way simpler.  However, dependence on standard object tools
-> or perl is already assumed and avoiding it doesn't really buy
-> anything.  I really like the idea but unfortunately I'm doubtful that
-> it will be able to go upstream in the current form.  The suggested
-> solution (extending markup_oops.pl) won't be too much work, most of
-> functionality will remain the same and will have much higher chance of
-> getting included.
->
-> Thanks.
->
-> --
-> tejun
->
+Thanks.
+
+-- 
+tejun

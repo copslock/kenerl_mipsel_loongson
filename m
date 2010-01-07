@@ -1,98 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Jan 2010 22:08:44 +0100 (CET)
-Received: from lo.gmane.org ([80.91.229.12]:60268 "EHLO lo.gmane.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492226Ab0AFVIk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 6 Jan 2010 22:08:40 +0100
-Received: from list by lo.gmane.org with local (Exim 4.50)
-        id 1NSd7J-0007fA-9X
-        for linux-mips@linux-mips.org; Wed, 06 Jan 2010 22:08:33 +0100
-Received: from chipmunk.wormnet.eu ([195.195.131.226])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 06 Jan 2010 22:08:33 +0100
-Received: from alex by chipmunk.wormnet.eu with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 06 Jan 2010 22:08:33 +0100
-X-Injected-Via-Gmane: http://gmane.org/
-To:     linux-mips@linux-mips.org
-From:   Alexander Clouter <alex@digriz.org.uk>
-Subject:  Re: [PATCH 4/4] MTD: include ar7part in the list of partitions parsers
-Date:   Wed, 6 Jan 2010 20:28:10 +0000
-Message-ID:  <qb8f17-41q.ln1@chipmunk.wormnet.eu>
-References:  <201001032117.37459.florian@openwrt.org> <1262552177.3181.5891.camel@macbook.infradead.org> <2ve717-7pt.ln1@chipmunk.wormnet.eu> <201001050941.42161.florian@openwrt.org>
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: chipmunk.wormnet.eu
-User-Agent: tin/1.9.3-20080506 ("Dalintober") (UNIX) (Linux/2.6.26-2-sparc64-smp (sparc64))
-Cc:     linux-mtd@lists.infradead.org
-X-archive-position: 25521
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Jan 2010 01:55:43 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:10979 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492529Ab0AGAzj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Jan 2010 01:55:39 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+        id <B4b4531010001>; Wed, 06 Jan 2010 16:55:29 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 6 Jan 2010 16:55:15 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 6 Jan 2010 16:55:15 -0800
+Message-ID: <4B4530F3.1070701@caviumnetworks.com>
+Date:   Wed, 06 Jan 2010 16:55:15 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@suse.de>
+Subject: [PATCH 0/3] Staging: Improvments to Octeon Ethernet driver.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 07 Jan 2010 00:55:15.0822 (UTC) FILETIME=[134AC8E0:01CA8F34]
+X-archive-position: 25522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@digriz.org.uk
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 4359
+X-UID: 4570
 
-In gmane.linux.ports.mips.general Florian Fainelli <florian@openwrt.org> wrote:
->
->> [snipped]
->> 
->> It simply pulls apart the 'PROM' (aka ADAM2) config and uses that to
->> build the partition table.
-> 
-> This is indeed simple but if I recall right the rationale behind ar7part was 
-> to create a sane partition layout no matter if the bootloader was ADAM2 or 
-> PSPBoot and the root filesystem type. JFFS2 and squashfs do not have the same 
-> erase-block size alignment constraints, ar7part deals with that too.
-> 
-I am not convinced that is a good idea, one main reason is ar7part.c has 
-gotten terribly wrong the partition table ('loader' is too small[1] and 
-'rootfs' overlaps with the 'linux' partition').
+These patches attempt to cleanup and improve the octeon-ethernet
+driver in staging.  The first patch fixes up octeon interrupt handling
+in preparation for the following patches.  The second and third
+patches convert to NAPI and enable scatter-gather as well is cleaning
+up some ugly garbage.
 
-This is what I have from ADAM2's perspective:
-----
-Adam2_AR7WRD > printenv
-[snipped]
-mtd0                  0x900e0000,0x903f0000 <-- rootfs
-mtd1                  0x90020000,0x900e0000 <-- kernel
-mtd2                  0x90000000,0x90020000 <-- adam2 bootloader
-mtd3                  0x903f0000,0x90400000 <-- configuration
-mtd4                  0x90020000,0x903f0000 <-- kernel + rootfs
-----
+Since Octeon is a MIPS based SOC, we might want to merge the entire
+series via Ralf's linux-mips.org tree.
 
-Linux spits out:
-----
-physmap platform flash device: 00800000 at 10000000
-physmap-flash.0: Found 1 x16 devices at 0x0 in 16-bit bank
- Amd/Fujitsu Extended Query Table at 0x0040
-physmap-flash.0: Swapping erase regions for broken CFI table.
-number of CFI chips: 1
-cmdlinepart partition parsing not available
-RedBoot partition parsing not available
-4 ar7part partitions found on MTD device physmap-flash.0
-Creating 4 MTD partitions on "physmap-flash.0":
-0x000000000000-0x000000010000 : "loader"
-0x0000003f0000-0x000000400000 : "config"
-0x000000020000-0x0000003f0000 : "linux"
-0x0000000d0000-0x0000003f0000 : "rootfs"
-----
+I will reply with the three patches.
 
-My patch munched on whatever prom_getenv() returned, which from what I 
-can tell looking at arch/mips/ar7/prom.c will work for both PSPBoot and 
-ADAM2?
+David Daney (3):
+   MIPS: Octeon: Fix EIO handling.
+   Staging: Octeon Ethernet: Clean up and convert to NAPI.
+   Staging: Octeon Ethernet: Enable scatter-gather.
 
-Are there some strange mtd environment variables I am yet to see out in 
-the wild or does my patch simply not work for PSPBoot primed kit?  If 
-not can you give me some 'spiel' to play around with?
-
-Cheers
-
-[1] okay, ADAM2 weighs in at less than 64kiB however it is not outside 
-	the realm of possibility someone will port u-boot to AR7 which 
-	would benefit from the full 128kiB of space?
-
--- 
-Alexander Clouter
-.sigmonster says: A man who turns green has eschewed protein.
+  arch/mips/cavium-octeon/octeon-irq.c      |   40 +++-
+  drivers/staging/octeon/Kconfig            |    1 +
+  drivers/staging/octeon/ethernet-defines.h |   28 ---
+  drivers/staging/octeon/ethernet-mem.c     |   89 +++-----
+  drivers/staging/octeon/ethernet-rx.c      |  377 
+++++++++++++++++------------
+  drivers/staging/octeon/ethernet-rx.h      |   25 ++-
+  drivers/staging/octeon/ethernet-tx.c      |  330 ++++++++++++-------------
+  drivers/staging/octeon/ethernet-tx.h      |   27 +--
+  drivers/staging/octeon/ethernet.c         |  157 +++++--------
+  drivers/staging/octeon/octeon-ethernet.h  |   48 +---
+  10 files changed, 532 insertions(+), 590 deletions(-)

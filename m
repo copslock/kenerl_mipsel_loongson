@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jan 2010 11:42:31 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:35117 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Jan 2010 15:44:35 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:35689 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491107Ab0AKKm2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 11 Jan 2010 11:42:28 +0100
+        id S1492220Ab0AKOob (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 11 Jan 2010 15:44:31 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o0BAgJh0015727;
-        Mon, 11 Jan 2010 11:42:19 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o0BEiJoF007537;
+        Mon, 11 Jan 2010 15:44:20 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o0BAgFNh015725;
-        Mon, 11 Jan 2010 11:42:15 +0100
-Date:   Mon, 11 Jan 2010 11:42:15 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o0BEiHlA007535;
+        Mon, 11 Jan 2010 15:44:17 +0100
+Date:   Mon, 11 Jan 2010 15:44:16 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Anton Blanchard <anton@samba.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Rusty Russell <rusty@rustcorp.com.au>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [patch 4/6] mips: cpumask_of_node() should handle -1 as a node
-Message-ID: <20100111104215.GF13886@linux-mips.org>
-References: <20100106045509.245662398@samba.org>
- <20100106045525.207405499@samba.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     "Bozic, Rade (EXT-Other - DE/Ulm)" <rade.bozic.ext@nsn.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        linux-i2c@vger.kernel.org,
+        "Ben Dooks (embedded platforms)" <ben-linux@fluff.org>,
+        "Jean Delvare (PC drivers, core)" <khali@linux-fr.org>
+Subject: Re: [PATCH 0/3] Add I2C support for Octeon SOCs.
+Message-ID: <20100111144416.GA23157@linux-mips.org>
+References: <4B463B1F.6000404@caviumnetworks.com>
+ <4B463C71.3080005@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20100106045525.207405499@samba.org>
+In-Reply-To: <4B463C71.3080005@caviumnetworks.com>
 User-Agent: Mutt/1.5.20 (2009-08-17)
-X-archive-position: 25563
+X-archive-position: 25564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,12 +35,27 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 6966
+X-UID: 7070
 
-On Wed, Jan 06, 2010 at 03:55:13PM +1100, Anton Blanchard wrote:
+On Thu, Jan 07, 2010 at 11:56:33AM -0800, David Daney wrote:
 
-> Subject: [patch 4/6] mips: cpumask_of_node() should handle -1 as a node
+> David Daney wrote:
+> >This patch set adds I2C driver support for Cavium Networks' Octeon
+> >processor family.  The Octeon is a multi-core MIPS64 based SOC.
+> >
+> >The first patch adds platform devices for the I2C devices.  The second
+> >patch is the main driver.  Finally the third patch registers some
+> >devices so we have something to control with the fancy new driver.
+> >
+> >I will reply with the three patches.
+> >
+> >David Daney (2):
+> >  MIPS: Octeon: Add I2C platform driver.
+> >  MIPS: Octeon: Register some devices on the I2C bus.
+> >
+> >Rade Bozic (1):
+> >  I2C: Add driver for Cavium OCTEON I2C ports.
 
-Thanks, applied!
+Do you want to merge this series through the MIPS tree?
 
   Ralf

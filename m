@@ -1,77 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2010 10:28:30 +0100 (CET)
-Received: from rhlx01.hs-esslingen.de ([129.143.116.10]:44863 "EHLO
-        rhlx01.hs-esslingen.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492023Ab0AMJ20 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2010 10:28:26 +0100
-Received: by rhlx01.hs-esslingen.de (Postfix, from userid 102)
-        id C7B14400C1; Wed, 13 Jan 2010 10:28:25 +0100 (CET)
-Date:   Wed, 13 Jan 2010 10:28:25 +0100
-From:   Andreas Mohr <andi@lisas.de>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Andreas Mohr <andi@lisas.de>, alsa-devel@alsa-project.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Kumar Gala <galak@gate.crashing.org>,
-        Becky Bruce <beckyb@kernel.crashing.org>
-Subject: Re: [PATCH 0/5] PCM mmap (temporary) fixes for non-coherent
-        architectures
-Message-ID: <20100113092825.GA15394@rhlx01.hs-esslingen.de>
-References: <1259248388-20095-1-git-send-email-tiwai@suse.de> <20100101193130.GA21510@rhlx01.hs-esslingen.de> <s5haawj7qlv.wl%tiwai@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <s5haawj7qlv.wl%tiwai@suse.de>
-X-Priority: none
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 25578
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2010 10:29:26 +0100 (CET)
+Received: from poutre.nerim.net ([62.4.16.124]:58584 "EHLO poutre.nerim.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492073Ab0AMJ3V (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Jan 2010 10:29:21 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by poutre.nerim.net (Postfix) with ESMTP id 0BF6339DEC5;
+        Wed, 13 Jan 2010 10:29:19 +0100 (CET)
+X-Virus-Scanned: amavisd-new at nerim.net
+Received: from poutre.nerim.net ([127.0.0.1])
+        by localhost (poutre.nerim.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id CDsMDhA905k1; Wed, 13 Jan 2010 10:29:18 +0100 (CET)
+Received: from hyperion.delvare (jdelvare.pck.nerim.net [62.212.121.182])
+        by poutre.nerim.net (Postfix) with ESMTP id C70B739DEB4;
+        Wed, 13 Jan 2010 10:29:17 +0100 (CET)
+Date:   Wed, 13 Jan 2010 10:29:18 +0100
+From:   Jean Delvare <khali@linux-fr.org>
+To:     Markus Gothe <nietzsche@lysator.liu.se>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-i2c@vger.kernel.org,
+        "Bozic, Rade (EXT-Other - DE/Ulm)" <rade.bozic.ext@nsn.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        "Ben Dooks (embedded platforms)" <ben-linux@fluff.org>
+Subject: Re: [PATCH 0/3] Add I2C support for Octeon SOCs.
+Message-ID: <20100113102918.328a77d7@hyperion.delvare>
+In-Reply-To: <F5F1F5D1-6057-49CF-A5B3-A921E1C0EEEB@lysator.liu.se>
+References: <4B463B1F.6000404@caviumnetworks.com>
+        <4B463C71.3080005@caviumnetworks.com>
+        <20100111144416.GA23157@linux-mips.org>
+        <4B4B5CD3.4040204@caviumnetworks.com>
+        <F5F1F5D1-6057-49CF-A5B3-A921E1C0EEEB@lysator.liu.se>
+X-Mailer: Claws Mail 3.5.0 (GTK+ 2.14.4; i586-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-archive-position: 25579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andi@lisas.de
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 8359
+X-UID: 8363
 
-Hi,
+On Wed, 13 Jan 2010 01:49:08 +0100, Markus Gothe wrote:
+> Methinks this goes to I2C...
 
-On Tue, Jan 12, 2010 at 08:02:36AM +0100, Takashi Iwai wrote:
-> At Fri, 1 Jan 2010 20:31:30 +0100,
-> Andreas Mohr wrote:
-> > 
-> > Hi,
-> > 
-> > I've tried this patch set (with the typo-corrected part 4) on my ASUS
-> > WL-500gP v2 MIPSEL via a backport to 2.6.31.9, but all I get is a
-> > small blip of the sound I wanted to play, and then the system is fubar
-> > (I believe just the same thing as what happened without having this patch
-> > applied).
+But given that you are not maintaining any part of the kernel, what you
+think on this matter doesn't have much value, methinks. You do not
+seriously intend to tell maintainers how they should work together, do
+you?
 
-Crap, you already managed to beat me to my own reply! ;)
-(I'll try your patch in the other mail _ASAP_)
-
-> As I mentioned in the previous followup, if your device is a
-> USB-audio, the patch doesn't help because it's for devices with
-> buffers using dma_alloc_coherent().  For USB-audio, it uses vmalloc
-> for an intermediate buffer.  Maybe this should be changed to dma_*()
-> stuff for such architectures.
-
-I've been searching the mailing list postings up and down,
-but I couldn't deduce anything to that effect from that content
-(but I'm mailing list-externally - maybe I just really didn't find the
-correct posting or there was a threading split)
-
-> Nevertheless, I don't know whether the crash is related with the
-> audio part...
-
-Yes, I wasn't fully pointing at the crash being caused by insufficient
-patches in that area either...
-(but I haven't fully investigated these OOPSes yet)
-
-Thanks a lot for your new test patch,
-
-Andreas Mohr
+-- 
+Jean Delvare

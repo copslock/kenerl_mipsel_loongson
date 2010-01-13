@@ -1,56 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2010 10:29:26 +0100 (CET)
-Received: from poutre.nerim.net ([62.4.16.124]:58584 "EHLO poutre.nerim.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492073Ab0AMJ3V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 13 Jan 2010 10:29:21 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by poutre.nerim.net (Postfix) with ESMTP id 0BF6339DEC5;
-        Wed, 13 Jan 2010 10:29:19 +0100 (CET)
-X-Virus-Scanned: amavisd-new at nerim.net
-Received: from poutre.nerim.net ([127.0.0.1])
-        by localhost (poutre.nerim.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id CDsMDhA905k1; Wed, 13 Jan 2010 10:29:18 +0100 (CET)
-Received: from hyperion.delvare (jdelvare.pck.nerim.net [62.212.121.182])
-        by poutre.nerim.net (Postfix) with ESMTP id C70B739DEB4;
-        Wed, 13 Jan 2010 10:29:17 +0100 (CET)
-Date:   Wed, 13 Jan 2010 10:29:18 +0100
-From:   Jean Delvare <khali@linux-fr.org>
-To:     Markus Gothe <nietzsche@lysator.liu.se>
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-i2c@vger.kernel.org,
-        "Bozic, Rade (EXT-Other - DE/Ulm)" <rade.bozic.ext@nsn.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        "Ben Dooks (embedded platforms)" <ben-linux@fluff.org>
-Subject: Re: [PATCH 0/3] Add I2C support for Octeon SOCs.
-Message-ID: <20100113102918.328a77d7@hyperion.delvare>
-In-Reply-To: <F5F1F5D1-6057-49CF-A5B3-A921E1C0EEEB@lysator.liu.se>
-References: <4B463B1F.6000404@caviumnetworks.com>
-        <4B463C71.3080005@caviumnetworks.com>
-        <20100111144416.GA23157@linux-mips.org>
-        <4B4B5CD3.4040204@caviumnetworks.com>
-        <F5F1F5D1-6057-49CF-A5B3-A921E1C0EEEB@lysator.liu.se>
-X-Mailer: Claws Mail 3.5.0 (GTK+ 2.14.4; i586-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-archive-position: 25579
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2010 13:33:13 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58969 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492427Ab0AMMdJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Jan 2010 13:33:09 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o0DCX0ti020646;
+        Wed, 13 Jan 2010 13:33:01 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o0DCWwwQ020645;
+        Wed, 13 Jan 2010 13:32:58 +0100
+Date:   Wed, 13 Jan 2010 13:32:58 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: New macro smp_mb__before_llsc.
+Message-ID: <20100113123258.GA20354@linux-mips.org>
+References: <4B47D8ED.1020006@caviumnetworks.com>
+ <1262999864-2353-1-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1262999864-2353-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+X-archive-position: 25580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 8363
+X-UID: 8517
 
-On Wed, 13 Jan 2010 01:49:08 +0100, Markus Gothe wrote:
-> Methinks this goes to I2C...
+On Fri, Jan 08, 2010 at 05:17:43PM -0800, David Daney wrote:
 
-But given that you are not maintaining any part of the kernel, what you
-think on this matter doesn't have much value, methinks. You do not
-seriously intend to tell maintainers how they should work together, do
-you?
+> Replace some instances of smp_llsc_mb() with a new macro
+> smp_mb__before_llsc().  It is used before ll/sc sequences that are
+> documented as needing write barrier semantics.
+> 
+> The default implementation of smp_mb__before_llsc() is just
+> smp_llsc_mb(), so there are no changes in semantics.
+> 
+> Also simplify definition of smp_mb(), smp_rmb(), and smp_wmb() to be
+> just barrier() in the non-SMP case.
 
--- 
-Jean Delvare
+Queued for 2.6.34.  Thanks!
+
+  Ralf

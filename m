@@ -1,93 +1,164 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jan 2010 18:46:39 +0100 (CET)
-Received: from mail-fx0-f211.google.com ([209.85.220.211]:34590 "EHLO
-        mail-fx0-f211.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493215Ab0AMRqe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jan 2010 18:46:34 +0100
-Received: by fxm3 with SMTP id 3so13781407fxm.24
-        for <linux-mips@linux-mips.org>; Wed, 13 Jan 2010 09:46:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=hcYUKKmEKOOMXkn9/a0sNk/1UcyVKjLiidR6Ie9gF/M=;
-        b=QAvLEUF3Fof/GyW06EuaxSiZkdpBDJzpM7X3cjPMMSLRszfBBP99iSsqSOt7bbYDs+
-         In44y7/TtUM7/2LR0qBSYrH5S0qo/1JdKG91aMEWaPlSp+5WnbrABM+lmKgl4KUtrWgZ
-         ICCmstuEFSKy3OmWbY3Fkh4GNGz7IUkXD4Zqk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=tNH6jIbQlPzMLk33gfIAHTMOoIG3bC+ufG2oVldroms0i8CLTn1Gs47izfx9caXLoh
-         prJ6c+9ybaBzKj/F3hdodXJ200K5hD7S1IKh23bcY3ZilpHcGLKXbDlM/BeAMN1u4Q/E
-         K4/TrQODC+K4zTCMV/bvcJl031WmjnPQkqssI=
-Received: by 10.223.29.193 with SMTP id r1mr10606394fac.29.1263404789246;
-        Wed, 13 Jan 2010 09:46:29 -0800 (PST)
-Received: from localhost.localdomain (p5496EE2B.dip.t-dialin.net [84.150.238.43])
-        by mx.google.com with ESMTPS id 14sm10943855fxm.11.2010.01.13.09.46.27
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 13 Jan 2010 09:46:28 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [RFC PATCH] MIPS: Alchemy: debug output for compressed kernels
-Date:   Wed, 13 Jan 2010 18:46:58 +0100
-Message-Id: <1263404818-23038-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.6.5.6
-X-archive-position: 25585
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jan 2010 04:29:56 +0100 (CET)
+Received: from mga11.intel.com ([192.55.52.93]:16817 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490947Ab0AND3u (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Jan 2010 04:29:50 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP; 13 Jan 2010 19:29:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.49,272,1262592000"; 
+   d="scan'208";a="764069671"
+Received: from wfg-t61.sh.intel.com (HELO localhost.localdomain) ([10.239.20.251])
+  by fmsmga001.fm.intel.com with ESMTP; 13 Jan 2010 19:29:40 -0800
+Received: from wfg by localhost.localdomain with local (Exim 4.69)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1NVGOw-0004uJ-Lx; Thu, 14 Jan 2010 11:29:38 +0800
+Date:   Thu, 14 Jan 2010 11:29:38 +0800
+From:   Wu Fengguang <fengguang.wu@intel.com>
+To:     =?utf-8?Q?Am=C3=A9rico?= Wang <xiyou.wangcong@gmail.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Chen Liqin <liqin.chen@sunplusct.com>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Andi Kleen <andi@firstfloor.org>,
+        Nick Piggin <npiggin@suse.de>,
+        Hugh Dickins <hugh.dickins@tiscali.co.uk>,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH 4/8] resources: introduce generic page_is_ram()
+Message-ID: <20100114032938.GB11709@localhost>
+References: <20100113135305.013124116@intel.com> <20100113135957.680223335@intel.com> <20100113142923.GB4038@hack>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20100113142923.GB4038@hack>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 25586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 8746
+X-UID: 9095
 
-Hook up the compressed debug output for all Alchemy systems supported
-by current kernel codebase.
+On Wed, Jan 13, 2010 at 10:29:23PM +0800, Américo Wang wrote:
+> On Wed, Jan 13, 2010 at 09:53:09PM +0800, Wu Fengguang wrote:
+> >It's based on walk_system_ram_range(), for archs that don't have
+> >their own page_is_ram().
+> >
+> >The static verions in MIPS and SCORE are also made global.
+> >
+> >CC: Chen Liqin <liqin.chen@sunplusct.com>
+> >CC: Lennox Wu <lennox.wu@gmail.com>
+> >CC: Ralf Baechle <ralf@linux-mips.org>
+> >CC: linux-mips@linux-mips.org
+> >CC: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com> 
+> >Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
+> >---
+> > arch/mips/mm/init.c    |    2 +-
+> > arch/score/mm/init.c   |    2 +-
+> > include/linux/ioport.h |    2 ++
+> > kernel/resource.c      |   10 ++++++++++
+> > 4 files changed, 14 insertions(+), 2 deletions(-)
+> >
+> >--- linux-mm.orig/kernel/resource.c	2010-01-10 10:11:53.000000000 +0800
+> >+++ linux-mm/kernel/resource.c	2010-01-10 10:15:33.000000000 +0800
+> >@@ -297,6 +297,16 @@ int walk_system_ram_range(unsigned long 
+> > 
+> > #endif
+> > 
+> >+static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
+> >+{
+> >+	return 24;
+> >+}
+> >+
+> >+int __attribute__((weak)) page_is_ram(unsigned long pfn)
+> >+{
+> >+	return 24 == walk_system_ram_range(pfn, 1, NULL, __is_ram);
+> >+}
+> 
+> 
+> Why do you choose 24 instead of using a macro expressing its meaning?
 
-Cc: Wu Zhangjin <wuzhangjin@gmail.com>
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+Hmm, I thought they are close enough to be obvious.
+Anyway this should look better:
+
+resources: introduce generic page_is_ram()
+
+It's based on walk_system_ram_range(), for archs that don't have
+their own page_is_ram().
+
+The static verions in MIPS and SCORE are also made global.
+
+CC: Chen Liqin <liqin.chen@sunplusct.com>
+CC: Lennox Wu <lennox.wu@gmail.com>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Américo Wang <xiyou.wangcong@gmail.com>
+CC: linux-mips@linux-mips.org
+CC: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com> 
+Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
 ---
-The code is built for all alchemy systems since I doubt anyone would
-solder on an extra UART chip instead of using the built-in ones.
+ arch/mips/mm/init.c    |    2 +-
+ arch/score/mm/init.c   |    2 +-
+ include/linux/ioport.h |    2 ++
+ kernel/resource.c      |   11 +++++++++++
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
-Should work on all in-kernel boards; my db1200 likes it:
- zimage at:     82E21350 82FA149D
- Uncompressing Linux at load address 80100000
- Now, booting the kernel...
-
-
- arch/mips/boot/compressed/Makefile       |    1 +
- arch/mips/boot/compressed/uart-alchemy.c |    7 +++++++
- 2 files changed, 8 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/boot/compressed/uart-alchemy.c
-
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index 671d344..5f09c18 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -33,6 +33,7 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
- obj-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
+--- linux-mm.orig/kernel/resource.c	2010-01-13 21:27:28.000000000 +0800
++++ linux-mm/kernel/resource.c	2010-01-14 11:28:20.000000000 +0800
+@@ -297,6 +297,17 @@ int walk_system_ram_range(unsigned long 
  
- obj-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
-+obj-$(CONFIG_MACH_ALCHEMY)		   += $(obj)/uart-alchemy.o
+ #endif
  
- OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary -R .comment -S
- $(obj)/vmlinux.bin: $(KBUILD_IMAGE)
-diff --git a/arch/mips/boot/compressed/uart-alchemy.c b/arch/mips/boot/compressed/uart-alchemy.c
-new file mode 100644
-index 0000000..1bff22f
---- /dev/null
-+++ b/arch/mips/boot/compressed/uart-alchemy.c
-@@ -0,0 +1,7 @@
-+#include <asm/mach-au1x00/au1000.h>
-+
-+void putc(char c)
++#define PAGE_IS_RAM	24
++static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
 +{
-+	/* all current (Jan. 2010) in-kernel boards */
-+	alchemy_uart_putchar(UART0_PHYS_ADDR, c);
++	return PAGE_IS_RAM;
 +}
--- 
-1.6.5.6
++int __attribute__((weak)) page_is_ram(unsigned long pfn)
++{
++	return PAGE_IS_RAM == walk_system_ram_range(pfn, 1, NULL, __is_ram);
++}
++#undef PAGE_IS_RAM
++
+ /*
+  * Find empty slot in the resource tree given range and alignment.
+  */
+--- linux-mm.orig/include/linux/ioport.h	2010-01-13 21:27:28.000000000 +0800
++++ linux-mm/include/linux/ioport.h	2010-01-13 21:44:50.000000000 +0800
+@@ -188,5 +188,7 @@ extern int
+ walk_system_ram_range(unsigned long start_pfn, unsigned long nr_pages,
+ 		void *arg, int (*func)(unsigned long, unsigned long, void *));
+ 
++extern int page_is_ram(unsigned long pfn);
++
+ #endif /* __ASSEMBLY__ */
+ #endif	/* _LINUX_IOPORT_H */
+--- linux-mm.orig/arch/score/mm/init.c	2010-01-13 21:27:28.000000000 +0800
++++ linux-mm/arch/score/mm/init.c	2010-01-13 21:44:50.000000000 +0800
+@@ -59,7 +59,7 @@ static unsigned long setup_zero_page(voi
+ }
+ 
+ #ifndef CONFIG_NEED_MULTIPLE_NODES
+-static int __init page_is_ram(unsigned long pagenr)
++int page_is_ram(unsigned long pagenr)
+ {
+ 	if (pagenr >= min_low_pfn && pagenr < max_low_pfn)
+ 		return 1;
+--- linux-mm.orig/arch/mips/mm/init.c	2010-01-13 21:27:28.000000000 +0800
++++ linux-mm/arch/mips/mm/init.c	2010-01-13 21:44:50.000000000 +0800
+@@ -298,7 +298,7 @@ void __init fixrange_init(unsigned long 
+ }
+ 
+ #ifndef CONFIG_NEED_MULTIPLE_NODES
+-static int __init page_is_ram(unsigned long pagenr)
++int page_is_ram(unsigned long pagenr)
+ {
+ 	int i;
+ 

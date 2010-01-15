@@ -1,64 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2010 07:51:11 +0100 (CET)
-Received: from gate.crashing.org ([63.228.1.57]:52433 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491192Ab0AOGvH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jan 2010 07:51:07 +0100
-Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id o0F6ooMT030152;
-        Fri, 15 Jan 2010 00:50:51 -0600
-Subject: Re: [PATCH 0/5] PCM mmap (temporary) fixes for non-coherent
- architectures
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Andreas Mohr <andi@lisas.de>, alsa-devel@alsa-project.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org, Kumar Gala <galak@gate.crashing.org>,
-        Becky Bruce <beckyb@kernel.crashing.org>
-In-Reply-To: <s5hvdf3lvfi.wl%tiwai@suse.de>
-References: <1259248388-20095-1-git-send-email-tiwai@suse.de>
-         <20100101193130.GA21510@rhlx01.hs-esslingen.de>
-         <s5haawj7qlv.wl%tiwai@suse.de> <s5hljg24bl7.wl%tiwai@suse.de>
-         <1263526082.724.395.camel@pasglop>  <s5hvdf3lvfi.wl%tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Fri, 15 Jan 2010 17:50:49 +1100
-Message-ID: <1263538249.724.405.camel@pasglop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jan 2010 08:29:20 +0100 (CET)
+Received: from biz61.inmotionhosting.com ([74.124.219.59]:49737 "EHLO
+        biz61.inmotionhosting.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491138Ab0AOH3Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Jan 2010 08:29:16 +0100
+Received: from orthoptera.viasat.com ([199.106.52.17] helo=mud)
+        by biz61.inmotionhosting.com with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.69)
+        (envelope-from <acmay@acmay.org>)
+        id 1NVgcB-0000jt-VM; Thu, 14 Jan 2010 23:29:04 -0800
+Date:   Thu, 14 Jan 2010 23:29:00 -0800
+From:   Andrew May <acmay@acmay.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org, gregkh@suse.de
+Subject: Re: [PATCH 7/7] Staging: Octeon Ethernet: Use constants from in.h
+Message-ID: <20100114232900.55111058@mud>
+In-Reply-To: <1262891106-32146-7-git-send-email-ddaney@caviumnetworks.com>
+References: <4B463005.8060505@caviumnetworks.com>
+        <1262891106-32146-7-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: Claws Mail 3.7.4 (GTK+ 2.18.5; i486-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-archive-position: 25593
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - biz61.inmotionhosting.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - acmay.org
+X-archive-position: 25594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: acmay@acmay.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 10013
+X-UID: 10019
 
-On Fri, 2010-01-15 at 07:43 +0100, Takashi Iwai wrote:
+On Thu,  7 Jan 2010 11:05:06 -0800
+David Daney <ddaney@caviumnetworks.com> wrote:
+
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> ---
+>  drivers/staging/octeon/ethernet-defines.h |    3 ---
+>  drivers/staging/octeon/ethernet-tx.c      |    8 ++++----
+>  2 files changed, 4 insertions(+), 7 deletions(-)
 > 
-> > It -might- be worth looking at adding code to the USB stack to
-> propagate
-> > the parent device dma_ops down to USB devices... hard to tell.
-> 
-> Or we may simply need to drop the mmap support on such
-> architectures...
+> diff --git a/drivers/staging/octeon/ethernet-defines.h
+> b/drivers/staging/octeon/ethernet-defines.h index 9c4910e..00a8561
+> 100644 --- a/drivers/staging/octeon/ethernet-defines.h
+> +++ b/drivers/staging/octeon/ethernet-defines.h
+> @@ -98,9 +98,6 @@
+>  #define MAX_SKB_TO_FREE 10
+>  #define MAX_OUT_QUEUE_DEPTH 1000
+>  
+> -#define IP_PROTOCOL_TCP             6
+> -#define IP_PROTOCOL_UDP             0x11
+> -
+>  #define FAU_NUM_PACKET_BUFFERS_TO_FREE (CVMX_FAU_REG_END -
+> sizeof(uint32_t)) #define TOTAL_NUMBER_OF_PORTS
+> (CVMX_PIP_NUM_INPUT_PORTS+1) 
+> diff --git a/drivers/staging/octeon/ethernet-tx.c
+> b/drivers/staging/octeon/ethernet-tx.c index bc67e41..62258bd 100644
+> --- a/drivers/staging/octeon/ethernet-tx.c
+> +++ b/drivers/staging/octeon/ethernet-tx.c
+> @@ -359,8 +359,8 @@ dont_put_skbuff_in_hw:
+>  	if (USE_HW_TCPUDP_CHECKSUM && (skb->protocol ==
+> htons(ETH_P_IP)) && (ip_hdr(skb)->version == 4) && (ip_hdr(skb)->ihl
+> == 5) && ((ip_hdr(skb)->frag_off == 0) || (ip_hdr(skb)->frag_off == 1
+> << 14))
+> -	    && ((ip_hdr(skb)->protocol == IP_PROTOCOL_TCP)
+> -		|| (ip_hdr(skb)->protocol == IP_PROTOCOL_UDP))) {
+> +	    && ((ip_hdr(skb)->protocol == IPPROTO_TCP)
+> +		|| (ip_hdr(skb)->protocol == IPPROTO_UDP))) {
+>  		/* Use hardware checksum calc */
+>  		pko_command.s.ipoffp1 = sizeof(struct ethhdr) + 1;
+>  	}
 
-Nah, that would suck since that includes x86 nowadays :-)
+Why isn't skb->ip_summed checked here instead? It seems like the csum
+calculation needs to be skipped by the stack if this is actually going
+to help performance.
 
-I think you probably need to separate the struct device * used for DMA
-(it could be default be the same as the "main" struct device tho or it
-could default to NULL which means no mmap support).
-
-USB could (if not already) provide an accessor to obtain the HC's struct
-device for such mappings. We'll have to discuss that with Alan Stern I
-suppose.
-
-The USB Audio or similar drivers could then use that accessors to fill
-up Alsa's dma_device field to replace the "default".
-
-Cheers,
-Ben.
+And does this end up re-writing a bad checksum on a routed packet, back
+to being a good checksum?

@@ -1,80 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jan 2010 19:08:41 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:19612 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492706Ab0ARSIi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Jan 2010 19:08:38 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b54a3a60000>; Mon, 18 Jan 2010 10:08:38 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 18 Jan 2010 10:08:32 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 18 Jan 2010 10:08:32 -0800
-Message-ID: <4B54A3A0.5080101@caviumnetworks.com>
-Date:   Mon, 18 Jan 2010 10:08:32 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:     wuzhangjin@gmail.com
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-        David Daney <david.s.daney@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>, linux-mips@linux-mips.org
-Subject: Re: [PATCH v6] MIPS: Add a high resolution sched_clock() via cnt32_to_63().
-References: <1259319110-16107-1-git-send-email-wuzhangjin@gmail.com> <1263801284.11671.50.camel@falcon>
-In-Reply-To: <1263801284.11671.50.camel@falcon>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 18 Jan 2010 18:08:32.0367 (UTC) FILETIME=[3EA80FF0:01CA9869]
-X-archive-position: 25604
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2010 01:08:38 +0100 (CET)
+Received: from lo.gmane.org ([80.91.229.12]:34734 "EHLO lo.gmane.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492880Ab0ASAIe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 19 Jan 2010 01:08:34 +0100
+Received: from list by lo.gmane.org with local (Exim 4.50)
+        id 1NX1e2-0002tC-2p
+        for linux-mips@linux-mips.org; Tue, 19 Jan 2010 01:08:30 +0100
+Received: from chipmunk.wormnet.eu ([195.195.131.226])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2010 01:08:30 +0100
+Received: from alex by chipmunk.wormnet.eu with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Tue, 19 Jan 2010 01:08:30 +0100
+X-Injected-Via-Gmane: http://gmane.org/
+To:     linux-mips@linux-mips.org
+From:   Alexander Clouter <alex@digriz.org.uk>
+Subject:  [PATCH] MIPS: fix vmlinuz build when only 32bit math shell is available
+Date:   Mon, 18 Jan 2010 23:17:27 +0000
+Message-ID:  <7p6f27-emk.ln1@chipmunk.wormnet.eu>
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: chipmunk.wormnet.eu
+User-Agent: tin/1.9.3-20080506 ("Dalintober") (UNIX) (Linux/2.6.26-2-sparc64-smp (sparc64))
+X-archive-position: 25605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: alex@digriz.org.uk
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 11977
+X-UID: 12164
 
-Wu Zhangjin wrote:
-> If the processor support dynamic cpu frequency and the support is
-> enabled in kernel, this sched_clock() implementation will be broken(and
-> If the frequency of the MIPS CP0 counter is related to the cpu's
-> frequency).
-> 
-> So, some extra resitrictions should be added to it.
-> 
-> arch/mips/Kconfig
-> 
-> config CPU_HAS_FIXED_CP0_COUNTER
-> 	bool
-> 
-> config SYS_SUPPORTS_HRES_SCHED_CLOCK
-> 	bool
-> 	depends on CPU_HAS_FIXED_CP0_COUNTER || !CPU_FREQ
-> 
-> arch/mips/kernel/csrc-r4k.c
-> 
-> #ifdef SYS_SUPPORTS_HRES_SCHED_CLOCK
-> 
-> /* The high resolution version of sched_clock() */
-> 
-> #endif
-> 
-> And I'm not sure whether the cavium octeon support dynamic cpu
-> frequency,
+Counter to the documentation for the dash shell, it seems that on my
+x86_64 filth under Debian only does 32bit math.  As I have configured
+my lapdog to use 'dash' for non-interactive tasks I run into problems
+when compiling a compressed kernel.
 
-Not currently...
+I play with the AR7 platform, so VMLINUX_LOAD_ADDRESS is
+0xffffffff94100000, and for a (for example) 4MiB kernel
+VMLINUZ_LOAD_ADDRESS is made out to be:
+----
+alex@berk:~$ bash -c 'printf "%x\n" $((0xffffffff94100000 + 0x400000))'
+ffffffff94500000
+alex@berk:~$ dash -c 'printf "%x\n" $((0xffffffff94100000 + 0x400000))'
+80000000003fffff
+----
 
-> if yes, it's high resolution version of sched_clock() also
-> should be wrapped with the above macro to ensure it is not broken:
-> 
-> arch/mips/cavium-octeon/csrc-octeon.c
-> 
+The former is obviously correct whilst the later breaks things royally.
 
-... So this is not applicable.
+This patch fixes vmlinuz kernel builds on systems where only a 32bit
+math enabled shell is a available.  It does this by bringing 'bc' back
+in as a build dependency (Wu Zhangjin had orginally used 'bc' but I had
+suggested he 'fixes' the original dependency *sigh*) but things now seem
+to work as expected.
 
+Signed-off-by: Alexander Clouter <alex@digriz.org.uk>
+---
+ arch/mips/boot/compressed/Makefile |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
 
-> Regards,
-> 	Wu Zhangjin
-> 
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 671d344..65d1adf 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -14,8 +14,10 @@
+ 
+ # compressed kernel load addr: VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
+ VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | cut -d' ' -f1)
+-VMLINUX_SIZE := $(shell [ -n "$(VMLINUX_SIZE)" ] && echo $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
+-VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" ] && printf %x $$(($(VMLINUX_LOAD_ADDRESS) + $(VMLINUX_SIZE))))
++VMLINUX_SIZE := $(shell printf %X $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
++VMLINUZ_LOAD_ADDRESS := $(shell A=$(VMLINUX_LOAD_ADDRESS); A=$${A\#0xffffffff}; echo $${A\#0x} | tr a-f A-F)
++VMLINUZ_LOAD_ADDRESS := $(shell echo "obase=16; ibase=16; $(VMLINUZ_LOAD_ADDRESS) + $(VMLINUX_SIZE)" | bc)
++VMLINUZ_LOAD_ADDRESS := $(shell A=$(VMLINUX_LOAD_ADDRESS); [ "$${A\#0xffffffff}" = "$${A}" ] && echo 0x$(VMLINUZ_LOAD_ADDRESS) || echo 0xffffffff$(VMLINUZ_LOAD_ADDRESS))
+ 
+ # set the default size of the mallocing area for decompressing
+ BOOT_HEAP_SIZE := 0x400000
+-- 
+1.6.6

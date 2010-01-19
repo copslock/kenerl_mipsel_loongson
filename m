@@ -1,135 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2010 10:43:51 +0100 (CET)
-Received: from mail-iw0-f196.google.com ([209.85.223.196]:61856 "EHLO
-        mail-iw0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491791Ab0ASJno (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2010 10:43:44 +0100
-Received: by iwn34 with SMTP id 34so2645451iwn.21
-        for <multiple recipients>; Tue, 19 Jan 2010 01:43:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=h250tB2N8sBORvWQ71mv+I2+itppLEeSoyl1wH35Bf4=;
-        b=Uk49XRL+7gWYKb0fxTKGKcbnBvPTzsSAB1xT0cr8dGQVuW6W+DpP7jrmrd9TwgB0pb
-         7JPz2399QJOY82aq2s1expoPKEjWHPsRbJhNkeerN5da0SNbxORNYPZgymm7C+ql57Cn
-         C7wXk+bSRqCdyDp7yCFqFE2TahDDtG8JOtQmM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=j24BVsLuEbp0BTEJbaj/yv3LLhx4/6XwGDGozCAsb0itdhPe2W7G8s50xJYDypXxcj
-         YUt1RMMIiDZt+mW/isvKRUoM2XIIbZRbUyqW7epKHoHxVpnzCqZ8qTLPgIKA1xmUlHGM
-         wtPR7LJ/WOiUhZyL8/GWbhBoaLHePg3jXHnuU=
-Received: by 10.231.147.70 with SMTP id k6mr1192810ibv.55.1263894216467;
-        Tue, 19 Jan 2010 01:43:36 -0800 (PST)
-Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id 21sm5193800iwn.14.2010.01.19.01.43.34
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 19 Jan 2010 01:43:35 -0800 (PST)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Alexander Clouter <alex@digriz.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>,
-        Alexander Clouter <alex@digriz.org.uk>
-Subject: [PATCH v1] MIPS: fix vmlinuz build when only 32bit math shell is available
-Date:   Tue, 19 Jan 2010 17:43:09 +0800
-Message-Id: <42fa29d2007a40a31a0bb8fbf1091e11eb9b5ac2.1263893871.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.5.6
-X-archive-position: 25608
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jan 2010 10:56:04 +0100 (CET)
+Received: from chipmunk.wormnet.eu ([195.195.131.226]:55770 "EHLO
+        chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491791Ab0ASJ4A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jan 2010 10:56:00 +0100
+Received: by chipmunk.wormnet.eu (Postfix, from userid 1000)
+        id 182E184879; Tue, 19 Jan 2010 09:55:57 +0000 (GMT)
+Date:   Tue, 19 Jan 2010 09:55:57 +0000
+From:   Alexander Clouter <alex@digriz.org.uk>
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH v1] MIPS: fix vmlinuz build when only 32bit math shell
+        is available
+Message-ID: <20100119095556.GF32413@chipmunk>
+References: <42fa29d2007a40a31a0bb8fbf1091e11eb9b5ac2.1263893871.git.wuzhangjin@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42fa29d2007a40a31a0bb8fbf1091e11eb9b5ac2.1263893871.git.wuzhangjin@gmail.com>
+Organization: diGriz
+X-URL:  http://www.digriz.org.uk/
+X-JabberID: alex@digriz.org.uk
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 25609
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: alex@digriz.org.uk
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 12377
+X-UID: 12401
 
-Hi, Alexander Clouter
+Hi,
 
-Does this revision work for you?
-
-Regards,
-		Wu Zhangjin
-
--------------------------------
-
-Changes from v0:
-
-	- Revert the '-n "$(VMLINUX_SIZE)"' to avoid the error of "make clean"
-	- Consider more situations of the VMLINUX_LOAD_ADDRESS
-
-Counter to the documentation for the dash shell, it seems that on my
-x86_64 filth under Debian only does 32bit math.  As I have configured my
-lapdog to use 'dash' for non-interactive tasks I run into problems when
-compiling a compressed kernel.
-
-I play with the AR7 platform, so VMLINUX_LOAD_ADDRESS is
-0xffffffff94100000, and for a (for example) 4MiB kernel
-VMLINUZ_LOAD_ADDRESS is made out to be:
-
+* Wu Zhangjin <wuzhangjin@gmail.com> [2010-01-19 17:43:09+0800]:
+> 
+> Does this revision work for you?
+>
+> Changes from v0:
+> 
+> 	- Revert the '-n "$(VMLINUX_SIZE)"' to avoid the error of "make clean"
+> 	- Consider more situations of the VMLINUX_LOAD_ADDRESS
+> 
+> [snipped]
+>
+> So, we can split the original 64bit string to two parts, and only
+> calculate the low 32bit part, which is big enough(about 4095 M) for a
+> normal linux kernel image file, now, we calculate the
+> VMLINUZ_LOAD_ADDRESS like this:
+>
+As a passing query, why do we have the high 32bit (0xffffffff....) spiel 
+if later we can just make VMLINU[XZ]_LOAD_ADDRESS the low half?  I see 
+the output of 'nm' shows:
 ----
-alex@berk:~$ bash -c 'printf "%x\n" $((0xffffffff94100000 + 0x400000))'
-ffffffff94500000
-alex@berk:~$ dash -c 'printf "%x\n" $((0xffffffff94100000 + 0x400000))'
-80000000003fffff
+alex@berk:/usr/src/wag54g/linux$ nm vmlinux | head -n1
+941019e4 t .ex0
+alex@berk:/usr/src/wag54g/linux$ nm vmlinuz | head -n1
+944abb50 B .heap
 ----
 
-The former is obviously correct whilst the later breaks things royally.
+However I am guessing it's some 64bit CPU requirement as my x86_64 
+kernel seems to have 0xffffffff....  Which raises the question, why is 
+AR7 not just using VMLINUX_LOAD_ADDRESS=0x94100000?
 
-But fortunately, this works for both bash and dash:
-
+> 1. Append "the high 32bit of VMLINUX_LOAD_ADDRESS" as the prefix if it
+> exists.
+> 
+> 2. Get the sum of "the low 32bit of VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE"
+> with printf "%08x" (08 herein is used to prefix the result with 0...)
+> 
+> The corresponding shell script is:
+> 
+>   A=$VMLINUX_LOAD_ADDRESS;
+>   # Append "the high 32bit of VMLINUX_LOAD_ADDRESS" as the prefix if it exists.
+>   [ "${A:0:10}" != "${A}" ] && echo -n ${A:2:8};
+>   # Get the sum of "the low 32bit of VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE"
+>   printf "%08x" $(($VMLINUX_SIZE + 0x${A:(-8)}))
+> 
+Eugh, bash-ism's...
 ----
-$ bash -c 'printf "%x\n" $((0x94100000 + 0x400000))'
-94500000
-$ dash -c 'printf "%x\n" $((0x94100000 + 0x400000))'
-94500000
+alex@berk:/usr/src/wag54g/linux$ bash -c 'A=1234567890; echo ${A:0:5}'
+12345
+alex@berk:/usr/src/wag54g/linux$ dash -c 'A=1234567890; echo ${A:0:5}'
+dash: Bad substitution
 ----
 
-So, we can split the original 64bit string to two parts, and only
-calculate the low 32bit part, which is big enough(about 4095 M) for a
-normal linux kernel image file, now, we calculate the
-VMLINUZ_LOAD_ADDRESS like this:
+Your 'punishment', use Plan9 for a period of no less than a week! :)
 
-1. Append "the high 32bit of VMLINUX_LOAD_ADDRESS" as the prefix if it
-exists.
+You have to use the pattern matching approach I used in my original 
+patch, that's portable.  Look at 'man 1 dash' and search for 'substr' 
+for more details.
 
-2. Get the sum of "the low 32bit of VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE"
-with printf "%08x" (08 herein is used to prefix the result with 0...)
+Cheers
 
-The corresponding shell script is:
-
-  A=$VMLINUX_LOAD_ADDRESS;
-  # Append "the high 32bit of VMLINUX_LOAD_ADDRESS" as the prefix if it exists.
-  [ "${A:0:10}" != "${A}" ] && echo -n ${A:2:8};
-  # Get the sum of "the low 32bit of VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE"
-  printf "%08x" $(($VMLINUX_SIZE + 0x${A:(-8)}))
-
-This patch fixes vmlinuz kernel builds on systems where only a 32bit
-math enabled shell is a available.
-
-Signed-off-by: Alexander Clouter <alex@digriz.org.uk>
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/boot/compressed/Makefile |    6 +++++-
- 1 files changed, 5 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index 569b6ad..0c4eb01 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -15,7 +15,11 @@
- # compressed kernel load addr: VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
- VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | cut -d' ' -f1)
- VMLINUX_SIZE := $(shell [ -n "$(VMLINUX_SIZE)" ] && echo $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
--VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" ] && printf %x $$(($(VMLINUX_LOAD_ADDRESS) + $(VMLINUX_SIZE))))
-+# VMLINUZ_LOAD_ADDRESS = concat "high32 of VMLINUX_LOAD_ADDRESS" and "(low32 of VMLINUX_LOAD_ADDRESS) + VMLINUX_SIZE"
-+VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" ] && ( \
-+				A=$(VMLINUX_LOAD_ADDRESS); \
-+				[ "$${A:0:10}" != "$${A}" ] && echo -n $${A:2:8}; \
-+				printf "%08x" $$(($(VMLINUX_SIZE) + 0x$${A:(-8)})) ))
- 
- # set the default size of the mallocing area for decompressing
- BOOT_HEAP_SIZE := 0x400000
 -- 
-1.6.5.6
+Alexander Clouter
+.sigmonster says: I'm not prejudiced, I hate everyone equally.

@@ -1,135 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 19:58:41 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:51158 "EHLO
-        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491036Ab0AVS6h convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 Jan 2010 19:58:37 +0100
-Received: by pzk35 with SMTP id 35so1074185pzk.22
-        for <linux-mips@linux-mips.org>; Fri, 22 Jan 2010 10:58:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=P8RunPtJMhiRR/9cnZ6FMJ9g5s6XdqLiBHi/WnBUGpo=;
-        b=lXiiUjYZ7tQxnvpiUUgPiZIW345fVUWZFImwGWZ9VQIEO8AKusJ42cVPHmgbxqY2an
-         1cPW/UtLYrvCz+oS0lSkx3+yKPDKPyyuCKl8Y+83GqBX8LXV+TCS91cg1uGaCPQZ4kpJ
-         rVwl+OLKMfma1DVNpJ34C4MWUm8jX7ZYQysH8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=QEzSEhKeS2UGFGjk1Hvv0GNGSEHl/vXuYamBkE89MTzcH6TWqnrLLKjH2sJNHEjXMO
-         Sghznu57Zb9cXGw02seE3us/1POsUuxjr2PfLMZdWD1YnkpXotpzy7oQvZz5H+/Na+NL
-         6c3nhraei7N54wxYro5QJp7hUhwLANXJdjslI=
-MIME-Version: 1.0
-Received: by 10.141.89.10 with SMTP id r10mr550755rvl.69.1264139401934; Thu, 
-        21 Jan 2010 21:50:01 -0800 (PST)
-In-Reply-To: <20100122053711.GB3761@localhost>
-References: <20100122032102.137106635@intel.com>
-         <20100122033004.193166010@intel.com>
-         <7b6bb4a51001212115j741e91c4p61f3f1d6e2ec1de4@mail.gmail.com>
-         <20100122053711.GB3761@localhost>
-Date:   Fri, 22 Jan 2010 13:50:01 +0800
-Message-ID: <7b6bb4a51001212150h32f62e53ga230b381ce5da126@mail.gmail.com>
-Subject: Re: [PATCH 1/3] resources: introduce generic page_is_ram()
-From:   Xiaotian Feng <xtfeng@gmail.com>
-To:     Wu Fengguang <fengguang.wu@intel.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 20:04:06 +0100 (CET)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.123]:60204 "EHLO
+        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492962Ab0AVTD7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2010 20:03:59 +0100
+Received: from hrndva-omtalb.mail.rr.com ([10.128.143.54])
+          by hrndva-qmta02.mail.rr.com with ESMTP
+          id <20100121201943579.GOHQ1979@hrndva-qmta02.mail.rr.com>;
+          Thu, 21 Jan 2010 20:19:43 +0000
+X-Authority-Analysis: v=1.0 c=1 a=LvvgB44tUwgA:10 a=7U3hwN5JcxgA:10 a=RohvjoL97AP8R6aLz2sA:9 a=MheSl5-8FtpD39-O3RCa9KwXgicA:4
+X-Cloudmark-Score: 0
+X-Originating-IP: 74.67.89.75
+Received: from [74.67.89.75] ([74.67.89.75:55861] helo=[192.168.23.10])
+        by hrndva-oedge04.mail.rr.com (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 2.2.2.39 r()) with ESMTP
+        id 1A/A6-29964-196B85B4; Thu, 21 Jan 2010 20:18:26 +0000
+Subject: Re: Lots of bugs with current->state = TASK_*INTERRUPTIBLE
+From:   Steven Rostedt <rostedt@goodmis.org>
+Reply-To: rostedt@goodmis.org
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Chen Liqin <liqin.chen@sunplusct.com>,
-        Lennox Wu <lennox.wu@gmail.com>,
+        linux-arch@vger.kernel.org, Greg KH <greg@kroah.com>,
+        Andy Whitcroft <apw@canonical.com>,
         Ralf Baechle <ralf@linux-mips.org>,
-        =?UTF-8?Q?Am=C3=A9rico_Wang?= <xiyou.wangcong@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
-        Yinghai Lu <yinghai@kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andi Kleen <andi@firstfloor.org>,
-        "Zheng, Shaohui" <shaohui.zheng@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 25623
+        linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <4B58B1B3.6000502@caviumnetworks.com>
+References: <1263932978.31321.53.camel@gandalf.stny.rr.com>
+         <4B58A89A.8050405@caviumnetworks.com>
+         <1264102455.31321.293.camel@gandalf.stny.rr.com>
+         <4B58B1B3.6000502@caviumnetworks.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+Organization: Kihon Technologies Inc.
+Date:   Thu, 21 Jan 2010 15:18:24 -0500
+Message-ID: <1264105104.31321.298.camel@gandalf.stny.rr.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 25624
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xtfeng@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 14189
+X-UID: 14337
 
-On Fri, Jan 22, 2010 at 1:37 PM, Wu Fengguang <fengguang.wu@intel.com> wrote:
-> On Thu, Jan 21, 2010 at 10:15:50PM -0700, Xiaotian Feng wrote:
->> On Fri, Jan 22, 2010 at 11:21 AM, Wu Fengguang <fengguang.wu@intel.com> wrote:
->> > It's based on walk_system_ram_range(), for archs that don't have
->> > their own page_is_ram().
->> >
->> > The static verions in MIPS and SCORE are also made global.
->> >
->> > CC: Chen Liqin <liqin.chen@sunplusct.com>
->> > CC: Lennox Wu <lennox.wu@gmail.com>
->> > CC: Ralf Baechle <ralf@linux-mips.org>
->> > CC: Américo Wang <xiyou.wangcong@gmail.com>
->> > CC: linux-mips@linux-mips.org
->> > CC: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
->> > CC: Yinghai Lu <yinghai@kernel.org>
->> > Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
->> > ---
->> >  arch/mips/mm/init.c    |    2 +-
->> >  arch/score/mm/init.c   |    2 +-
->> >  include/linux/ioport.h |    2 ++
->> >  kernel/resource.c      |   11 +++++++++++
->> >  4 files changed, 15 insertions(+), 2 deletions(-)
->> >
->> > --- linux-mm.orig/kernel/resource.c     2010-01-22 11:20:34.000000000 +0800
->> > +++ linux-mm/kernel/resource.c  2010-01-22 11:20:35.000000000 +0800
->> > @@ -327,6 +327,17 @@ int walk_system_ram_range(unsigned long
->> >
->> >  #endif
->> >
->> > +#define PAGE_IS_RAM    24
->> > +static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
->> > +{
->> > +       return PAGE_IS_RAM;
->> > +}
->> > +int __attribute__((weak)) page_is_ram(unsigned long pfn)
->> > +{
->> > +       return PAGE_IS_RAM == walk_system_ram_range(pfn, 1, NULL, __is_ram);
->> > +}
->> > +#undef PAGE_IS_RAM
->> > +
->>
->> I'm not sure, but any build test for powerpc/mips/score?
->
-> Sorry, no build tests yet:
->
->        /bin/sh: score-linux-gcc: command not found
->
-> I just make the mips/score page_is_ram() non-static and assume that
-> will make it compile.
->
->> walk_system_ram_range is defined when CONFIG_ARCH_HAS_WALK_MEMORY is not set.
->> Is it safe when CONFIG_ARCH_HAS_WALK_MEMORY is set for some powerpc archs?
->
-> Good question. Grep shows that CONFIG_ARCH_HAS_WALK_MEMORY is only
-> defined for powerpc, and it has its own page_is_ram() as well as
-> walk_system_ram_range().
->
-> walk_system_ram_range() must be defined somewhere because it is
-> expected to be generic routine: exported and called from both
-> in-kernel and out-of-tree code.
->
+On Thu, 2010-01-21 at 11:57 -0800, David Daney wrote:
 
-Yes, powerpc has its own walk_system_ram_range() and page_is_ram() ;-)
+> >> Since the current CPU sees the memory accesses in order, what can be 
+> >> happening on other CPUs that would require a full mb()?
+> > 
+> > Lets look at a hypothetical situation with:
+> > 
+> > 	add_wait_queue();
+> > 	current->state = TASK_UNINTERRUPTIBLE;
+> > 	smp_wmb();
+> > 	if (!x)
+> > 		schedule();
+> > 
+> > 
+> > 
+> > Then somewhere we probably have:
+> > 
+> > 	x = 1;
+> > 	smp_wmb();
+> > 	wake_up(queue);
+> > 
+> > 
+> > 
+> > 	   CPU 0			   CPU 1
+> > 	------------			-----------
+> > 	add_wait_queue();
+> > 	(cpu pipeline sees a load
+> > 	 of x ahead, and preloads it)
+> 
+> 
+> This is what I thought.
+> 
+> My cpu (Cavium Octeon) does not have out of order reads, so my wmb() is 
 
-Would it be better if moving the weak attribute page_is_ram() into #if
-!defined(CONFIG_ARCH_HAS_WALK_MEMORY) ?
+Can you have reads that are out of order wrt writes? Because the above
+does not have out of order reads. It just had a read that came before a
+write. The above code could look like:
 
-> Thanks,
-> Fengguang
->
+(hypothetical assembly language)
+
+	ld r2, TASK_UNINTERRUPTIBLE
+	st r2, (current->state)
+	wmb
+	ld r1, (x)
+	cmp r1, 0
+
+Is it possible for the CPU to do the load of r1 before storing r2? If
+so, then the bug still exists.
+
+-- Steve
+
+
+> in fact a full mb() from the point of view of the current CPU.  So I 
+> think I could weaken my bariers in set_current_state() and still get 
+> correct operation.  However as you say...
+> 

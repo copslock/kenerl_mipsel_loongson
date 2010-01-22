@@ -1,139 +1,135 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jan 2010 06:24:34 +0100 (CET)
-Received: from mail-yx0-f204.google.com ([209.85.210.204]:36335 "EHLO
-        mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491098Ab0AUFY2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jan 2010 06:24:28 +0100
-Received: by yxe42 with SMTP id 42so1675695yxe.22
-        for <multiple recipients>; Wed, 20 Jan 2010 21:24:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 19:58:41 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:51158 "EHLO
+        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491036Ab0AVS6h convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 Jan 2010 19:58:37 +0100
+Received: by pzk35 with SMTP id 35so1074185pzk.22
+        for <linux-mips@linux-mips.org>; Fri, 22 Jan 2010 10:58:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=F4IB2ehoMbawC2Lr1rwfq/W457KWpmI4qSxxTXd5IWA=;
-        b=wpnkKclq6iDvJlxCQp/62jD26NdbbrgUDz4NuBw39hZquwUBfu4l3ze48A0pMTwcSm
-         2Aer02T/Bj93Za2yNF7UUZUEi9CxpbIa9GblxSdlCiBvBtfLI/UZrG5lwH8BbJqglUpm
-         nhZwhMRa3DwEX0Z3N6YHhEnV69A2zJhPgVYsE=
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=P8RunPtJMhiRR/9cnZ6FMJ9g5s6XdqLiBHi/WnBUGpo=;
+        b=lXiiUjYZ7tQxnvpiUUgPiZIW345fVUWZFImwGWZ9VQIEO8AKusJ42cVPHmgbxqY2an
+         1cPW/UtLYrvCz+oS0lSkx3+yKPDKPyyuCKl8Y+83GqBX8LXV+TCS91cg1uGaCPQZ4kpJ
+         rVwl+OLKMfma1DVNpJ34C4MWUm8jX7ZYQysH8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=WoD+joUG9Y4vyzdJhLTKqKMZ+AonLasHBscd8wprMakwZqR3MpNsbB8wcfAj9Mca9U
-         gaVcrBjTxOxpigTmSQosh2cY/2GkDO6BPDL1dipv2eLyLBuYnYIOpihY7V5UdtFZEhYO
-         SzfjFkLKM0sLPDsytz8c8/gbxp5ElktHD+Cp0=
-Received: by 10.150.15.42 with SMTP id 42mr1418819ybo.266.1264051462477;
-        Wed, 20 Jan 2010 21:24:22 -0800 (PST)
-Received: from ?192.168.2.212? ([202.201.14.140])
-        by mx.google.com with ESMTPS id 22sm289547ywh.30.2010.01.20.21.24.18
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 20 Jan 2010 21:24:20 -0800 (PST)
-Subject: Re: [PATCHv2] MIPS: fix vmlinuz build for 32bit-only math shells
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Alexander Clouter <alex@digriz.org.uk>
-In-Reply-To:  <vs6k27-7b2.ln1@chipmunk.wormnet.eu>
-References:  <vs6k27-7b2.ln1@chipmunk.wormnet.eu>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Thu, 21 Jan 2010 13:23:57 +0800
-Message-ID: <1264051437.1814.8.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 25622
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=QEzSEhKeS2UGFGjk1Hvv0GNGSEHl/vXuYamBkE89MTzcH6TWqnrLLKjH2sJNHEjXMO
+         Sghznu57Zb9cXGw02seE3us/1POsUuxjr2PfLMZdWD1YnkpXotpzy7oQvZz5H+/Na+NL
+         6c3nhraei7N54wxYro5QJp7hUhwLANXJdjslI=
+MIME-Version: 1.0
+Received: by 10.141.89.10 with SMTP id r10mr550755rvl.69.1264139401934; Thu, 
+        21 Jan 2010 21:50:01 -0800 (PST)
+In-Reply-To: <20100122053711.GB3761@localhost>
+References: <20100122032102.137106635@intel.com>
+         <20100122033004.193166010@intel.com>
+         <7b6bb4a51001212115j741e91c4p61f3f1d6e2ec1de4@mail.gmail.com>
+         <20100122053711.GB3761@localhost>
+Date:   Fri, 22 Jan 2010 13:50:01 +0800
+Message-ID: <7b6bb4a51001212150h32f62e53ga230b381ce5da126@mail.gmail.com>
+Subject: Re: [PATCH 1/3] resources: introduce generic page_is_ram()
+From:   Xiaotian Feng <xtfeng@gmail.com>
+To:     Wu Fengguang <fengguang.wu@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Chen Liqin <liqin.chen@sunplusct.com>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        =?UTF-8?Q?Am=C3=A9rico_Wang?= <xiyou.wangcong@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>,
+        Yinghai Lu <yinghai@kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andi Kleen <andi@firstfloor.org>,
+        "Zheng, Shaohui" <shaohui.zheng@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 25623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: xtfeng@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13804
+X-UID: 14189
 
-Hi, Ralf
+On Fri, Jan 22, 2010 at 1:37 PM, Wu Fengguang <fengguang.wu@intel.com> wrote:
+> On Thu, Jan 21, 2010 at 10:15:50PM -0700, Xiaotian Feng wrote:
+>> On Fri, Jan 22, 2010 at 11:21 AM, Wu Fengguang <fengguang.wu@intel.com> wrote:
+>> > It's based on walk_system_ram_range(), for archs that don't have
+>> > their own page_is_ram().
+>> >
+>> > The static verions in MIPS and SCORE are also made global.
+>> >
+>> > CC: Chen Liqin <liqin.chen@sunplusct.com>
+>> > CC: Lennox Wu <lennox.wu@gmail.com>
+>> > CC: Ralf Baechle <ralf@linux-mips.org>
+>> > CC: Américo Wang <xiyou.wangcong@gmail.com>
+>> > CC: linux-mips@linux-mips.org
+>> > CC: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
+>> > CC: Yinghai Lu <yinghai@kernel.org>
+>> > Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
+>> > ---
+>> >  arch/mips/mm/init.c    |    2 +-
+>> >  arch/score/mm/init.c   |    2 +-
+>> >  include/linux/ioport.h |    2 ++
+>> >  kernel/resource.c      |   11 +++++++++++
+>> >  4 files changed, 15 insertions(+), 2 deletions(-)
+>> >
+>> > --- linux-mm.orig/kernel/resource.c     2010-01-22 11:20:34.000000000 +0800
+>> > +++ linux-mm/kernel/resource.c  2010-01-22 11:20:35.000000000 +0800
+>> > @@ -327,6 +327,17 @@ int walk_system_ram_range(unsigned long
+>> >
+>> >  #endif
+>> >
+>> > +#define PAGE_IS_RAM    24
+>> > +static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
+>> > +{
+>> > +       return PAGE_IS_RAM;
+>> > +}
+>> > +int __attribute__((weak)) page_is_ram(unsigned long pfn)
+>> > +{
+>> > +       return PAGE_IS_RAM == walk_system_ram_range(pfn, 1, NULL, __is_ram);
+>> > +}
+>> > +#undef PAGE_IS_RAM
+>> > +
+>>
+>> I'm not sure, but any build test for powerpc/mips/score?
+>
+> Sorry, no build tests yet:
+>
+>        /bin/sh: score-linux-gcc: command not found
+>
+> I just make the mips/score page_is_ram() non-static and assume that
+> will make it compile.
+>
+>> walk_system_ram_range is defined when CONFIG_ARCH_HAS_WALK_MEMORY is not set.
+>> Is it safe when CONFIG_ARCH_HAS_WALK_MEMORY is set for some powerpc archs?
+>
+> Good question. Grep shows that CONFIG_ARCH_HAS_WALK_MEMORY is only
+> defined for powerpc, and it has its own page_is_ram() as well as
+> walk_system_ram_range().
+>
+> walk_system_ram_range() must be defined somewhere because it is
+> expected to be generic routine: exported and called from both
+> in-kernel and out-of-tree code.
+>
 
-This patch is a bugfix, which is necessary for the users who are using
-dash(or the other SHELLs not compatible with bash). without it, they
-will get a broken compressed kernel image(with wrong load address).
+Yes, powerpc has its own walk_system_ram_range() and page_is_ram() ;-)
 
-Could you please queue it for 2.6.34 and also 2.6.33?
+Would it be better if moving the weak attribute page_is_ram() into #if
+!defined(CONFIG_ARCH_HAS_WALK_MEMORY) ?
 
-Thanks & Regards,
-	Wu Zhangjin
-
-On Wed, 2010-01-20 at 20:50 +0000, Alexander Clouter wrote:
-> Counter to the documentation for the dash shell, it seems that on my
-> x86_64 filth under Debian only does 32bit math.  As I have configured my
-> lapdog to use 'dash' for non-interactive tasks I run into problems when
-> compiling a compressed kernel.
-> 
-> I play with the AR7 platform, so VMLINUX_LOAD_ADDRESS is
-> 0xffffffff94100000, and for an example 4MiB kernel
-> VMLINUZ_LOAD_ADDRESS is made out to be:
-> ----
-> alex@berk:~$ bash -c 'printf "%x\n" $((0xffffffff94100000 + 0x400000))'
-> ffffffff94500000
-> alex@berk:~$ dash -c 'printf "%x\n" $((0xffffffff94100000 + 0x400000))'
-> 80000000003fffff
-> ----
-> 
-> The former is obviously correct whilst the later breaks things royally.
-> 
-> Fortunately working with only the lower 32bit's works for both bash and
-> dash:
-> ----
-> $ bash -c 'printf "%x\n" $((0x94100000 + 0x400000))'
-> 94500000
-> $ dash -c 'printf "%x\n" $((0x94100000 + 0x400000))'
-> 94500000
-> ----
-> 
-> So, we can split the original 64bit string to two parts, and only
-> calculate the low 32bit part, which is big enough (1GiB kernel sizes
-> anyone?) for a normal Linux kernel image file, now, we calculate the
-> VMLINUZ_LOAD_ADDRESS like this:
-> 
-> 1. if present, append top 32bit of VMLINUX_LOAD_ADDRESS" as a prefix
-> 2. get the sum of the low 32bit of VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
-> 
-> This patch fixes vmlinuz kernel builds on systems where only a 
-> 32bit-only math shell is available.
-> 
-> Patch Changelog:
->   Version 2
->     - simplified method by using 'expr' for 'substr' and making it work 
-> 	with dash once again
->   Version 1
->     - Revert the removals of '-n "$(VMLINUX_SIZE)"' to avoid the error  
->         of "make clean"
->     - Consider more cases of the VMLINUX_LOAD_ADDRESS
->   Version 0
->     - initial release
-> 
-> Signed-off-by: Alexander Clouter <alex@digriz.org.uk>
-> Acked-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/boot/compressed/Makefile |    7 +++++--
->  1 files changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-> index 671d344..ab78095 100644
-> --- a/arch/mips/boot/compressed/Makefile
-> +++ b/arch/mips/boot/compressed/Makefile
-> @@ -14,8 +14,11 @@
->  
->  # compressed kernel load addr: VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
->  VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | cut -d' ' -f1)
-> -VMLINUX_SIZE := $(shell [ -n "$(VMLINUX_SIZE)" ] && echo $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
-> -VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" ] && printf %x $$(($(VMLINUX_LOAD_ADDRESS) + $(VMLINUX_SIZE))))
-> +VMLINUX_SIZE := $(shell [ -n "$(VMLINUX_SIZE)" ] && echo -n $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
-> +# VMLINUZ_LOAD_ADDRESS = concat "high32 of VMLINUX_LOAD_ADDRESS" and "(low32 of VMLINUX_LOAD_ADDRESS) + VMLINUX_SIZE"
-> +HIGH32 := $(shell A=$(VMLINUX_LOAD_ADDRESS); [ $${\#A} -gt 10 ] && expr substr "$(VMLINUX_LOAD_ADDRESS)" 3 $$(($${\#A} - 10)))
-> +LOW32 := $(shell [ -n "$(HIGH32)" ] && A=11 || A=3; expr substr "$(VMLINUX_LOAD_ADDRESS)" $${A} 8)
-> +VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" -a -n "$(LOW32)" ] && printf "$(HIGH32)%08x" $$(($(VMLINUX_SIZE) + 0x$(LOW32))))
->  
->  # set the default size of the mallocing area for decompressing
->  BOOT_HEAP_SIZE := 0x400000
+> Thanks,
+> Fengguang
+>

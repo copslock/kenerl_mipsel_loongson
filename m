@@ -1,24 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 20:46:00 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 20:46:26 +0100 (CET)
 Received: from mga11.intel.com ([192.55.52.93]:56048 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492553Ab0AVTpc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 Jan 2010 20:45:32 +0100
+        id S1492555Ab0AVTpd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 Jan 2010 20:45:33 +0100
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP; 21 Jan 2010 21:51:44 -0800
+  by fmsmga102.fm.intel.com with ESMTP; 22 Jan 2010 00:15:50 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="4.49,322,1262592000"; 
-   d="scan'208";a="533534828"
+   d="scan'208";a="533568544"
 Received: from wfg-t61.sh.intel.com (HELO localhost.localdomain) ([10.239.22.67])
-  by fmsmga002.fm.intel.com with ESMTP; 21 Jan 2010 21:52:07 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 22 Jan 2010 00:16:09 -0800
 Received: from wfg by localhost.localdomain with local (Exim 4.69)
         (envelope-from <fengguang.wu@intel.com>)
-        id 1NYCRN-0002B2-Tm; Fri, 22 Jan 2010 13:52:17 +0800
-Date:   Fri, 22 Jan 2010 13:52:17 +0800
+        id 1NYEgl-0001pf-Gx; Fri, 22 Jan 2010 16:16:19 +0800
+Date:   Fri, 22 Jan 2010 16:16:19 +0800
 From:   Wu Fengguang <fengguang.wu@intel.com>
-To:     Xiaotian Feng <xtfeng@gmail.com>
+To:     "H. Peter Anvin" <hpa@zytor.com>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Chen Liqin <liqin.chen@sunplusct.com>,
         Lennox Wu <lennox.wu@gmail.com>,
@@ -31,16 +30,16 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         LKML <linux-kernel@vger.kernel.org>,
         Andi Kleen <andi@firstfloor.org>,
         "Zheng, Shaohui" <shaohui.zheng@intel.com>
-Subject: Re: [PATCH 1/3] resources: introduce generic page_is_ram()
-Message-ID: <20100122055217.GA8358@localhost>
-References: <20100122032102.137106635@intel.com> <20100122033004.193166010@intel.com> <7b6bb4a51001212115j741e91c4p61f3f1d6e2ec1de4@mail.gmail.com> <20100122053711.GB3761@localhost> <7b6bb4a51001212150h32f62e53ga230b381ce5da126@mail.gmail.com>
+Subject: [PATCH 1/3 v4] resources: introduce generic page_is_ram()
+Message-ID: <20100122081619.GA6431@localhost>
+References: <20100122032102.137106635@intel.com> <20100122033004.193166010@intel.com> <4B595904.4000202@zytor.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7b6bb4a51001212150h32f62e53ga230b381ce5da126@mail.gmail.com>
+In-Reply-To: <4B595904.4000202@zytor.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 25632
+X-archive-position: 25633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,78 +48,135 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 14904
+X-UID: 14905
 
-On Thu, Jan 21, 2010 at 09:50:01PM -0800, Xiaotian Feng wrote:
-> On Fri, Jan 22, 2010 at 1:37 PM, Wu Fengguang <fengguang.wu@intel.com> wrote:
-> > On Thu, Jan 21, 2010 at 10:15:50PM -0700, Xiaotian Feng wrote:
-> >> On Fri, Jan 22, 2010 at 11:21 AM, Wu Fengguang <fengguang.wu@intel.com> wrote:
-> >> > It's based on walk_system_ram_range(), for archs that don't have
-> >> > their own page_is_ram().
-> >> >
-> >> > The static verions in MIPS and SCORE are also made global.
-> >> >
-> >> > CC: Chen Liqin <liqin.chen@sunplusct.com>
-> >> > CC: Lennox Wu <lennox.wu@gmail.com>
-> >> > CC: Ralf Baechle <ralf@linux-mips.org>
-> >> > CC: Américo Wang <xiyou.wangcong@gmail.com>
-> >> > CC: linux-mips@linux-mips.org
-> >> > CC: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
-> >> > CC: Yinghai Lu <yinghai@kernel.org>
-> >> > Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
-> >> > ---
-> >> >  arch/mips/mm/init.c    |    2 +-
-> >> >  arch/score/mm/init.c   |    2 +-
-> >> >  include/linux/ioport.h |    2 ++
-> >> >  kernel/resource.c      |   11 +++++++++++
-> >> >  4 files changed, 15 insertions(+), 2 deletions(-)
-> >> >
-> >> > --- linux-mm.orig/kernel/resource.c     2010-01-22 11:20:34.000000000 +0800
-> >> > +++ linux-mm/kernel/resource.c  2010-01-22 11:20:35.000000000 +0800
-> >> > @@ -327,6 +327,17 @@ int walk_system_ram_range(unsigned long
-> >> >
-> >> >  #endif
-> >> >
-> >> > +#define PAGE_IS_RAM    24
-> >> > +static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
-> >> > +{
-> >> > +       return PAGE_IS_RAM;
-> >> > +}
-> >> > +int __attribute__((weak)) page_is_ram(unsigned long pfn)
-> >> > +{
-> >> > +       return PAGE_IS_RAM == walk_system_ram_range(pfn, 1, NULL, __is_ram);
-> >> > +}
-> >> > +#undef PAGE_IS_RAM
-> >> > +
-> >>
-> >> I'm not sure, but any build test for powerpc/mips/score?
-> >
-> > Sorry, no build tests yet:
-> >
-> >        /bin/sh: score-linux-gcc: command not found
-> >
-> > I just make the mips/score page_is_ram() non-static and assume that
-> > will make it compile.
-> >
-> >> walk_system_ram_range is defined when CONFIG_ARCH_HAS_WALK_MEMORY is not set.
-> >> Is it safe when CONFIG_ARCH_HAS_WALK_MEMORY is set for some powerpc archs?
-> >
-> > Good question. Grep shows that CONFIG_ARCH_HAS_WALK_MEMORY is only
-> > defined for powerpc, and it has its own page_is_ram() as well as
-> > walk_system_ram_range().
-> >
-> > walk_system_ram_range() must be defined somewhere because it is
-> > expected to be generic routine: exported and called from both
-> > in-kernel and out-of-tree code.
-> >
+On Fri, Jan 22, 2010 at 12:51:32AM -0700, H. Peter Anvin wrote:
+> On 01/21/2010 07:21 PM, Wu Fengguang wrote:
+> > --- linux-mm.orig/kernel/resource.c	2010-01-22 11:20:34.000000000 +0800
+> > +++ linux-mm/kernel/resource.c	2010-01-22 11:20:35.000000000 +0800
+> > @@ -327,6 +327,17 @@ int walk_system_ram_range(unsigned long 
+> >  
+> >  #endif
+> >  
+> > +#define PAGE_IS_RAM	24
+> > +static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
+> > +{
+> > +	return PAGE_IS_RAM;
+> > +}
+> > +int __attribute__((weak)) page_is_ram(unsigned long pfn)
+> > +{
+> > +	return PAGE_IS_RAM == walk_system_ram_range(pfn, 1, NULL, __is_ram);
+> > +}
+> > +#undef PAGE_IS_RAM
+> > +
 > 
-> Yes, powerpc has its own walk_system_ram_range() and page_is_ram() ;-)
+> Stylistic nitpick:
 > 
-> Would it be better if moving the weak attribute page_is_ram() into #if
-> !defined(CONFIG_ARCH_HAS_WALK_MEMORY) ?
+> The use of the magic number "24" here is pretty ugly; it seems to imply
+> that there is something peculiar with this number and that it is trying
+> to avoid an overlap, whereas in fact any number but 0 and -1 would do.
 
-Only several archs defined page_is_ram(), so that would not be feasible
-for doing a _generic_ page_is_ram().
+Yes, exactly.
 
-Thanks,
-Fengguang
+> I would rather see just returning 1 and do:
+> 
+> 	return walk_system_ram_range(pfn, 1, NULL, __is_ram) == 1;
+> 
+> (walk_system_ram_range() returning -1 on error, and 0 means continue.)
+
+Good suggestion.
+
+> Note also that we don't write "constant == expression"; although some
+> schools teach it as a way to avoid the "=" versus "==" beginner C
+> mistake, it makes the code less intuitive to read.
+
+Yeah.
+
+> Other than that, the patchset looks good; if Ingo doesn't beat me to it
+> I'll put it in tomorrow (need sleep right now.)
+
+OK, thanks! Here is the updated patch.
+
+---
+resources: introduce generic page_is_ram()
+
+It's based on walk_system_ram_range(), for archs that don't have
+their own page_is_ram().
+
+The static verions in MIPS and SCORE are also made global.
+
+v4: prefer plain 1 instead of PAGE_IS_RAM (H. Peter Anvin)
+v3: add comment (KAMEZAWA Hiroyuki)
+    "AFAIK, this "System RAM" information has been used for kdump to
+    grab valid memory area and seems good for the kernel itself."
+v2: add PAGE_IS_RAM macro (Américo Wang)
+
+CC: Chen Liqin <liqin.chen@sunplusct.com>
+CC: Lennox Wu <lennox.wu@gmail.com>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Américo Wang <xiyou.wangcong@gmail.com>
+CC: linux-mips@linux-mips.org
+CC: Yinghai Lu <yinghai@kernel.org>
+Reviewed-by: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com> 
+Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
+---
+ arch/mips/mm/init.c    |    2 +-
+ arch/score/mm/init.c   |    2 +-
+ include/linux/ioport.h |    2 ++
+ kernel/resource.c      |   13 +++++++++++++
+ 4 files changed, 17 insertions(+), 2 deletions(-)
+
+--- linux-mm.orig/kernel/resource.c	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/kernel/resource.c	2010-01-22 16:12:55.000000000 +0800
+@@ -327,6 +327,19 @@ int walk_system_ram_range(unsigned long 
+ 
+ #endif
+ 
++static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
++{
++	return 1;
++}
++/*
++ * This generic page_is_ram() returns true if specified address is
++ * registered as "System RAM" in iomem_resource list.
++ */
++int __attribute__((weak)) page_is_ram(unsigned long pfn)
++{
++	return walk_system_ram_range(pfn, 1, NULL, __is_ram) == 1;
++}
++
+ /*
+  * Find empty slot in the resource tree given range and alignment.
+  */
+--- linux-mm.orig/include/linux/ioport.h	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/include/linux/ioport.h	2010-01-22 11:20:35.000000000 +0800
+@@ -191,5 +191,7 @@ extern int
+ walk_system_ram_range(unsigned long start_pfn, unsigned long nr_pages,
+ 		void *arg, int (*func)(unsigned long, unsigned long, void *));
+ 
++extern int page_is_ram(unsigned long pfn);
++
+ #endif /* __ASSEMBLY__ */
+ #endif	/* _LINUX_IOPORT_H */
+--- linux-mm.orig/arch/score/mm/init.c	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/arch/score/mm/init.c	2010-01-22 11:20:35.000000000 +0800
+@@ -59,7 +59,7 @@ static unsigned long setup_zero_page(voi
+ }
+ 
+ #ifndef CONFIG_NEED_MULTIPLE_NODES
+-static int __init page_is_ram(unsigned long pagenr)
++int page_is_ram(unsigned long pagenr)
+ {
+ 	if (pagenr >= min_low_pfn && pagenr < max_low_pfn)
+ 		return 1;
+--- linux-mm.orig/arch/mips/mm/init.c	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/arch/mips/mm/init.c	2010-01-22 11:20:35.000000000 +0800
+@@ -298,7 +298,7 @@ void __init fixrange_init(unsigned long 
+ }
+ 
+ #ifndef CONFIG_NEED_MULTIPLE_NODES
+-static int __init page_is_ram(unsigned long pagenr)
++int page_is_ram(unsigned long pagenr)
+ {
+ 	int i;
+ 

@@ -1,50 +1,164 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 20:29:26 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:59120 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492381Ab0AVT3W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 22 Jan 2010 20:29:22 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o0MEqvUw007031;
-        Fri, 22 Jan 2010 15:52:59 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o0MEqu5b007029;
-        Fri, 22 Jan 2010 15:52:56 +0100
-Date:   Fri, 22 Jan 2010 15:52:56 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Alexander Clouter <alex@digriz.org.uk>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCHv2] MIPS: fix vmlinuz build for 32bit-only math shells
-Message-ID: <20100122145256.GA5570@linux-mips.org>
-References: <vs6k27-7b2.ln1@chipmunk.wormnet.eu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 20:45:36 +0100 (CET)
+Received: from mga11.intel.com ([192.55.52.93]:56048 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492448Ab0AVTpa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 22 Jan 2010 20:45:30 +0100
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP; 21 Jan 2010 20:20:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.49,321,1262592000"; 
+   d="scan'208";a="766352045"
+Received: from wfg-t61.sh.intel.com (HELO localhost.localdomain) ([10.239.22.67])
+  by fmsmga001.fm.intel.com with ESMTP; 21 Jan 2010 20:20:48 -0800
+Received: from wfg by localhost.localdomain with local (Exim 4.69)
+        (envelope-from <fengguang.wu@intel.com>)
+        id 1NYB0o-0006Y0-Vf; Fri, 22 Jan 2010 12:20:46 +0800
+Date:   Fri, 22 Jan 2010 12:20:46 +0800
+From:   Wu Fengguang <fengguang.wu@intel.com>
+To:     KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Chen Liqin <liqin.chen@sunplusct.com>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        =?utf-8?Q?Am=C3=A9rico?= Wang <xiyou.wangcong@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Yinghai Lu <yinghai@kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andi Kleen <andi@firstfloor.org>,
+        "Zheng, Shaohui" <shaohui.zheng@intel.com>
+Subject: [PATCH 1/3 v3] resources: introduce generic page_is_ram()
+Message-ID: <20100122042046.GA24258@localhost>
+References: <20100122032102.137106635@intel.com> <20100122033004.193166010@intel.com> <20100122131017.544dd91b.kamezawa.hiroyu@jp.fujitsu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <vs6k27-7b2.ln1@chipmunk.wormnet.eu>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-X-archive-position: 25630
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20100122131017.544dd91b.kamezawa.hiroyu@jp.fujitsu.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 25631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: fengguang.wu@intel.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 14879
+X-UID: 14903
 
-On Wed, Jan 20, 2010 at 08:50:07PM +0000, Alexander Clouter wrote:
+On Fri, Jan 22, 2010 at 06:10:17AM +0200, KAMEZAWA Hiroyuki wrote:
+> On Fri, 22 Jan 2010 11:21:03 +0800
+> Wu Fengguang <fengguang.wu@intel.com> wrote:
+> 
+> > It's based on walk_system_ram_range(), for archs that don't have
+> > their own page_is_ram().
+> > 
+> > The static verions in MIPS and SCORE are also made global.
+> > 
+> > CC: Chen Liqin <liqin.chen@sunplusct.com>
+> > CC: Lennox Wu <lennox.wu@gmail.com>
+> > CC: Ralf Baechle <ralf@linux-mips.org>
+> > CC: Am辿rico Wang <xiyou.wangcong@gmail.com>
+> > CC: linux-mips@linux-mips.org
+> > CC: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com> 
+> > CC: Yinghai Lu <yinghai@kernel.org>
+> > Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
+> 
+> Reviewed-by: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com>
+> 
+> Maybe adding comment like this is good for reviewers..
+> 
+> "This page_is_ram() returns true if specified address is registered
+>  as System RAM in io_resource list."
+> 
+> AFAIK, this "System RAM" information has been used for kdump to grab valid
+> memory area and seems good for the kernel itself.
 
-> Counter to the documentation for the dash shell, it seems that on my
-> x86_64 filth under Debian only does 32bit math.  As I have configured my
+Thanks! Patch updated as follows.
 
-POSIX apparently specifies at least "long" type arithmetic for shells, so
-if your dash indeed is a 64-bit binary it's in violation of POSIX.  What
-does
+---
+resources: introduce generic page_is_ram()
 
-  file $(which $SHELL)
+It's based on walk_system_ram_range(), for archs that don't have
+their own page_is_ram().
 
-say?
+The static verions in MIPS and SCORE are also made global.
 
-The dash binary on my Fedora 12 i386 seems to perform 64-bit arithmetic.
+v3: add comment (KAMEZAWA Hiroyuki)
+v2: add PAGE_IS_RAM macro (Américo Wang)
 
-  Ralf
+CC: Chen Liqin <liqin.chen@sunplusct.com>
+CC: Lennox Wu <lennox.wu@gmail.com>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Américo Wang <xiyou.wangcong@gmail.com>
+CC: linux-mips@linux-mips.org
+CC: Yinghai Lu <yinghai@kernel.org>
+Reviewed-by: KAMEZAWA Hiroyuki <kamezawa.hiroyu@jp.fujitsu.com> 
+Signed-off-by: Wu Fengguang <fengguang.wu@intel.com>
+---
+ arch/mips/mm/init.c    |    2 +-
+ arch/score/mm/init.c   |    2 +-
+ include/linux/ioport.h |    2 ++
+ kernel/resource.c      |   15 +++++++++++++++
+ 4 files changed, 19 insertions(+), 2 deletions(-)
+
+--- linux-mm.orig/kernel/resource.c	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/kernel/resource.c	2010-01-22 12:17:50.000000000 +0800
+@@ -327,6 +327,21 @@ int walk_system_ram_range(unsigned long 
+ 
+ #endif
+ 
++#define PAGE_IS_RAM	24
++static int __is_ram(unsigned long pfn, unsigned long nr_pages, void *arg)
++{
++	return PAGE_IS_RAM;
++}
++/*
++ * This generic page_is_ram() returns true if specified address is
++ * registered as "System RAM" in iomem_resource list.
++ */
++int __attribute__((weak)) page_is_ram(unsigned long pfn)
++{
++	return PAGE_IS_RAM == walk_system_ram_range(pfn, 1, NULL, __is_ram);
++}
++#undef PAGE_IS_RAM
++
+ /*
+  * Find empty slot in the resource tree given range and alignment.
+  */
+--- linux-mm.orig/include/linux/ioport.h	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/include/linux/ioport.h	2010-01-22 11:20:35.000000000 +0800
+@@ -191,5 +191,7 @@ extern int
+ walk_system_ram_range(unsigned long start_pfn, unsigned long nr_pages,
+ 		void *arg, int (*func)(unsigned long, unsigned long, void *));
+ 
++extern int page_is_ram(unsigned long pfn);
++
+ #endif /* __ASSEMBLY__ */
+ #endif	/* _LINUX_IOPORT_H */
+--- linux-mm.orig/arch/score/mm/init.c	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/arch/score/mm/init.c	2010-01-22 11:20:35.000000000 +0800
+@@ -59,7 +59,7 @@ static unsigned long setup_zero_page(voi
+ }
+ 
+ #ifndef CONFIG_NEED_MULTIPLE_NODES
+-static int __init page_is_ram(unsigned long pagenr)
++int page_is_ram(unsigned long pagenr)
+ {
+ 	if (pagenr >= min_low_pfn && pagenr < max_low_pfn)
+ 		return 1;
+--- linux-mm.orig/arch/mips/mm/init.c	2010-01-22 11:20:34.000000000 +0800
++++ linux-mm/arch/mips/mm/init.c	2010-01-22 11:20:35.000000000 +0800
+@@ -298,7 +298,7 @@ void __init fixrange_init(unsigned long 
+ }
+ 
+ #ifndef CONFIG_NEED_MULTIPLE_NODES
+-static int __init page_is_ram(unsigned long pagenr)
++int page_is_ram(unsigned long pagenr)
+ {
+ 	int i;
+ 

@@ -1,95 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jan 2010 23:42:04 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:16835 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491033Ab0AVWle (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jan 2010 23:41:34 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b5a29a20003>; Fri, 22 Jan 2010 14:41:38 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Fri, 22 Jan 2010 14:41:22 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Fri, 22 Jan 2010 14:41:22 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id o0MMfI4V005023;
-        Fri, 22 Jan 2010 14:41:18 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id o0MMfIZ0005022;
-        Fri, 22 Jan 2010 14:41:18 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 2/2] MIPS: Decode c0_config4 for large TLBs.
-Date:   Fri, 22 Jan 2010 14:41:15 -0800
-Message-Id: <1264200075-4992-2-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-In-Reply-To: <1264200075-4992-1-git-send-email-ddaney@caviumnetworks.com>
-References: <1264200075-4992-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 22 Jan 2010 22:41:22.0518 (UTC) FILETIME=[05ADDF60:01CA9BB4]
-X-archive-position: 25640
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jan 2010 13:02:38 +0100 (CET)
+Received: from mail-pz0-f172.google.com ([209.85.222.172]:65509 "EHLO
+        mail-pz0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492232Ab0AWMCd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jan 2010 13:02:33 +0100
+Received: by pzk2 with SMTP id 2so1532336pzk.21
+        for <multiple recipients>; Sat, 23 Jan 2010 04:02:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=Bdssmb+AsKKrZ1rv9CoQRmRlv1o3OoxBzH6mH4eRyJ8=;
+        b=SlUUb1EdbmbZKIR+5vS7HTcJn5rRXLWSGv9IwM06wqUaVCpAcS76/s0n0pbz4Ci2Pm
+         oUtJFP3MbRk1463QSSrmBywNNZz7w1hg7JAeezxU99CLmt8Ug3kcjpB76Zc/us0l1UuC
+         DM1c3DOcEC02TJ6Ecl5Pttl3YXCon/8ASFtgI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=nqK9N8ptTwHC3spjaqyBKOyJso8wYMA0S8pKsK3KiuYEEXoYDSaYOtLLRM13VMQ1i1
+         VHOkspzG+ZCaktrgqJBIUC46UjQ1lC55hkGVNs5/A+D8WMSPIHh1R1SGlS1nMSLRwuPS
+         LJzRsd3h0+WnV0wRoAsEOW4kTYFhYwftP/SnY=
+Received: by 10.142.1.35 with SMTP id 35mr2822329wfa.330.1264248144736;
+        Sat, 23 Jan 2010 04:02:24 -0800 (PST)
+Received: from ?192.168.2.212? ([202.201.14.140])
+        by mx.google.com with ESMTPS id 23sm2866779pzk.8.2010.01.23.04.02.22
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 23 Jan 2010 04:02:24 -0800 (PST)
+Subject: Re: [PATCHv2] MIPS: fix vmlinuz build for 32bit-only math shells
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Alexander Clouter <alex@digriz.org.uk>, linux-mips@linux-mips.org
+In-Reply-To: <20100122145256.GA5570@linux-mips.org>
+References: <vs6k27-7b2.ln1@chipmunk.wormnet.eu>
+         <20100122145256.GA5570@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Sat, 23 Jan 2010 19:56:16 +0800
+Message-ID: <1264247776.14811.8.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.2 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 25641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 15067
+X-UID: 15322
 
-For processors that have more than 64 TLBs, we need to decode both
-config1 and config4 to determine the total number TLBs.
+On Fri, 2010-01-22 at 15:52 +0100, Ralf Baechle wrote:
+> On Wed, Jan 20, 2010 at 08:50:07PM +0000, Alexander Clouter wrote:
+> 
+> > Counter to the documentation for the dash shell, it seems that on my
+> > x86_64 filth under Debian only does 32bit math.  As I have configured my
+> 
+> POSIX apparently specifies at least "long" type arithmetic for shells, so
+> if your dash indeed is a 64-bit binary it's in violation of POSIX.  What
+> does
+> 
+>   file $(which $SHELL)
+> 
+> say?
+> 
+> The dash binary on my Fedora 12 i386 seems to perform 64-bit arithmetic.
+> 
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/include/asm/mipsregs.h |    3 +++
- arch/mips/kernel/cpu-probe.c     |   14 ++++++++++++++
- 2 files changed, 17 insertions(+), 0 deletions(-)
+Hi, Ralf
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 5c192a0..298216e 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -564,6 +564,9 @@
- #define MIPS_CONF3_DSP		(_ULCAST_(1) << 10)
- #define MIPS_CONF3_ULRI		(_ULCAST_(1) << 13)
- 
-+#define MIPS_CONF4_MMUSIZEEXT	(_ULCAST_(255) << 0)
-+#define MIPS_CONF4_MMUEXTDEF	(_ULCAST_(3) << 14)
-+
- #define MIPS_CONF7_WII		(_ULCAST_(1) << 31)
- 
- #define MIPS_CONF7_RPS		(_ULCAST_(1) << 2)
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 80e202e..517c565 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -691,6 +691,18 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 	return config3 & MIPS_CONF_M;
- }
- 
-+static inline unsigned int decode_config4(struct cpuinfo_mips *c)
-+{
-+	unsigned int config4;
-+
-+	config4 = read_c0_config4();
-+
-+	if ((config4 & MIPS_CONF4_MMUEXTDEF) == 0x4000 && cpu_has_tlb)
-+		c->tlbsize += (config4 & MIPS_CONF4_MMUSIZEEXT) * 0x40;
-+
-+	return config4 & MIPS_CONF_M;
-+}
-+
- static void __cpuinit decode_configs(struct cpuinfo_mips *c)
- {
- 	int ok;
-@@ -709,6 +721,8 @@ static void __cpuinit decode_configs(struct cpuinfo_mips *c)
- 		ok = decode_config2(c);
- 	if (ok)
- 		ok = decode_config3(c);
-+	if (ok)
-+		ok = decode_config4(c);
- 
- 	mips_probe_watch_registers(c);
- }
--- 
-1.6.0.6
+on my yeeloong laptop, with dash(0.5.5.1-3) in o32 ABI, it also can only
+execute 32-bit numbers, but on my thinkpad SL400(i686, dash version is
+0.5.5.1-2), it works well with 64-bit arithmetic.
+
+So, it means dash not always works normally, perhaps there is a bug
+there, or the bug only exists on MIPS machines?
+
+Best Regards,
+	Wu Zhangjin

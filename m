@@ -1,69 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jan 2010 18:58:37 +0100 (CET)
-Received: from bby1mta03.pmc-sierra.com ([216.241.235.118]:57072 "EHLO
-        bby1mta03.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492812Ab0AXR6e convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 24 Jan 2010 18:58:34 +0100
-Received: from bby1mta03.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
-        by localhost (Postfix) with SMTP id 5A6F21070072
-        for <linux-mips@linux-mips.org>; Sun, 24 Jan 2010 09:58:23 -0800 (PST)
-Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
-        by bby1mta03.pmc-sierra.bc.ca (Postfix) with SMTP id 51D8D1070071
-        for <linux-mips@linux-mips.org>; Sun, 24 Jan 2010 09:58:23 -0800 (PST)
-Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.158]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
-         Sun, 24 Jan 2010 09:58:58 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Jan 2010 06:51:00 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.150]:9968 "EHLO
+        ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491991Ab0AYFu5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Jan 2010 06:50:57 +0100
+Received: by ey-out-1920.google.com with SMTP id 26so690284eyw.52
+        for <linux-mips@linux-mips.org>; Sun, 24 Jan 2010 21:50:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=TBza8mz/YhuXTydQKnmA11jzSn6clWqW4etj+BZjLrs=;
+        b=cnQUBspD77Q4J8jZRrQLGbBDmJCqkUnOaXfggh5q41LXmvtFxN/6FD0ynZ4mmxBt4T
+         T9mYcl59cxlceERe8byPB+NYHQKYK/PQmQgxs+JQa+8DOPw2L/Zw622YrVLQ10YSOr6i
+         skQUp/ePMzBjni0PSuLFi1iSAUHVv0TH299Ow=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=aQVLP2vmIqxcYeaNwUC5uN16fzdNzBA1bHS5NWe9PxFlOyTUI308nnkQUNNIsrg6Qx
+         o7iabEuxsRnO2ZHpOHEKK8X6Sd/EN/Ry1x9xpkMUw8I45QSHHuQPlXoXo1lWOFXQVAx4
+         cg3XSutgb0kYkK5OT7OtMCSw+nYLl+effn88w=
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: 1 GB RAM with RM9000 SOC
-Date:   Sun, 24 Jan 2010 09:58:21 -0800
-Message-ID: <A7DEA48C84FD0B48AAAE33F328C020140474B674@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <20100124002352.GB3251@linux-mips.org>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: 1 GB RAM with RM9000 SOC
-Thread-Index: Acqci6ZOP5Gk3i25RkG8+2VyyGcwYwAksd0g
-References: <4B56475F.8070608@gmail.com> <20100124002352.GB3251@linux-mips.org>
-From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-To:     <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 24 Jan 2010 17:58:58.0602 (UTC) FILETIME=[E724F8A0:01CA9D1E]
-X-archive-position: 25646
+Received: by 10.216.86.3 with SMTP id v3mr2382867wee.165.1264398655113; Sun, 
+        24 Jan 2010 21:50:55 -0800 (PST)
+Date:   Mon, 25 Jan 2010 02:50:55 -0300
+Message-ID: <6675c11001242150v44795f7axd4c9c09a5ed8a8ab@mail.gmail.com>
+Subject: binary concatenation
+From:   hernan lopez pardo <hernanlopezpardo@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 25647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Anoop_P.A@pmc-sierra.com
+X-original-sender: hernanlopezpardo@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 15613
+X-UID: 15832
 
-Hi list,
+Hello, simple question
 
- 
+$t1 = 101
+$t2 = 11
 
-Any of you successfully used >512MB ram with MIPS SOC's.  I have a
-requirement where I have to use 1 GB ram with RM9000 based SOC. 
+How I do for concatenate $t1, $t2 for obtain $t3 = 10111 ?.
 
-I have enabled 64 Bit support and so far it is working with 512 MB of
-RAM. How ever if I increase memory beyond 512MB I am getting kernel
-panic.
-
- 
-
- I am adding memory region from 0x00 add_memory_region(0 ,0x40000000 ,
-BOOT_MEM_RAM). (PMON maps RAM from 0x0 to 0x40000000)  Am I wrong here?
-
- 
-
-It will be great if you can give some suggestion /point me to a working
-implementation. I am using 2.6.18 kernel.
-
- 
-
-Thanks
-
-Anoop
+Thanks.

@@ -1,38 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 20:39:05 +0100 (CET)
-Received: from mail-bw0-f221.google.com ([209.85.218.221]:45271 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 20:40:16 +0100 (CET)
+Received: from mail-bw0-f221.google.com ([209.85.218.221]:42989 "EHLO
         mail-bw0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493426Ab0AZTjB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2010 20:39:01 +0100
-Received: by bwz21 with SMTP id 21so3920612bwz.24
-        for <linux-mips@linux-mips.org>; Tue, 26 Jan 2010 11:38:55 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1493426Ab0AZTkN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2010 20:40:13 +0100
+Received: by bwz21 with SMTP id 21so3921890bwz.24
+        for <linux-mips@linux-mips.org>; Tue, 26 Jan 2010 11:40:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer;
-        bh=MhMX9Pnrmy48FNvJlA1nYMqEshF41e11KooJf/zQJ64=;
-        b=ZHgMItuSBCI5mcowagTzAXylPA53f+NJ/zwM/hZrSa3qgQ09Gxb4TrgGn3ar1/cn/k
-         IAsf6iFrFwoq7xK6jLOM75fQWxNLGs81Z/m/XTmD41iB8LaIHF1W3wdExtECsOW1qX/j
-         yGHPEHt0z8la/mtK7EV1UWUcLHrYHnx3oHRiA=
+        bh=SV2OGCObQ6Sf9WJbXgVQJLcZhyTIIYRcrvHqWjpJM6s=;
+        b=sbqjlgQXelbLBTkB9Q6YwB9sPebKdEAqU9L76e1ZUrdEACPlqWyGNUbgaRAT1UnlNo
+         pbB+DHse+kescfPsCMImofQ94sL0HICPoYCbdB8yR5VNd/xCOZjO2SyOQLArgAA1XZMj
+         6wKTvmlYEoQMRYyOmeCW3pdBMtreHBim5A0vU=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        b=XYZwu0m93PV5Lypwxj5lV6aGkpPYJOFUDJI8n22CZP9snXHVsp+VLv6Dq3F6OBEizc
-         jF/p/PCCeWeiUl0F3lUAsepZmXESqGTOprElB7WCxlKMPzF3F2N+sSMOUIWqgPvb4qPw
-         RgxvZH0ZZf+D2B7MeowoQpzYV2mcvMeRFENkQ=
-Received: by 10.204.141.78 with SMTP id l14mr675940bku.50.1264534735318;
-        Tue, 26 Jan 2010 11:38:55 -0800 (PST)
+        b=DjC96mfkY4crha0Y3otqGfBUjRT0t0MtQXkkvC/M+bIiloYCY3RjfocV1L8raNpmXz
+         WCYlf/P01mGIPKNmINspd8kfKUc90Z4+Z4HUHoVsmtjpkwFMvg6i4znRr1w84T686Oc3
+         ilv9NPcHKOHxjsk8GGu6gGj+2OrJd5Rwc7yvs=
+Received: by 10.204.5.216 with SMTP id 24mr264876bkw.141.1264534807786;
+        Tue, 26 Jan 2010 11:40:07 -0800 (PST)
 Received: from localhost.localdomain (p5496CA8F.dip.t-dialin.net [84.150.202.143])
-        by mx.google.com with ESMTPS id 14sm2826467bwz.1.2010.01.26.11.38.54
+        by mx.google.com with ESMTPS id 13sm2828863bwz.6.2010.01.26.11.40.06
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 26 Jan 2010 11:38:54 -0800 (PST)
+        Tue, 26 Jan 2010 11:40:07 -0800 (PST)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v2] MIPS: Alchemy: fix dbdma ring destruction memory debugcheck.
-Date:   Tue, 26 Jan 2010 20:39:33 +0100
-Message-Id: <1264534773-24909-1-git-send-email-manuel.lauss@gmail.com>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH v2] MIPS: Alchemy: debug output for compressed kernels
+Date:   Tue, 26 Jan 2010 20:40:09 +0100
+Message-Id: <1264534809-24938-1-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.6.6
-X-archive-position: 25689
+X-archive-position: 25690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,85 +42,50 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16902
+X-UID: 16903
 
-DBDMA descriptors need to be located at 32-byte aligned addresses;
-however kmalloc in conjunction with the SLAB allocator and 
-CONFIG_DEBUG_SLUB enabled doesn't deliver any.  The dbdma code works
-around that by allocating a larger area and realigning the start
-address within it.
+Hook up the compressed debug output for all Alchemy systems supported
+by current kernel codebase.
 
-When freeing a channel however this adjustment is not taken into
-account which results in an oops:
-
-Kernel bug detected[#1]:
-[...]
-Call Trace:
-[<80186010>] cache_free_debugcheck+0x284/0x318
-[<801869d8>] kfree+0xe8/0x2a0
-[<8010b31c>] au1xxx_dbdma_chan_free+0x2c/0x7c
-[<80388dc8>] au1x_pcm_dbdma_free+0x34/0x4c
-[<80388fa8>] au1xpsc_pcm_close+0x28/0x38
-[<80383cb8>] soc_codec_close+0x14c/0x1cc
-[<8036dbb4>] snd_pcm_release_substream+0x60/0xac
-[<8036dc40>] snd_pcm_release+0x40/0xa0
-[<8018c7a8>] __fput+0x11c/0x228
-[<80188f60>] filp_close+0x7c/0x98
-[<80189018>] sys_close+0x9c/0xe4
-[<801022a0>] stack_done+0x20/0x3c
-
-Fix this by recording the address delivered by kmalloc() and using
-it as parameter to kfree().
-
-This fix is only necessary with the SLAB allocator and CONFIG_DEBUG_SLAB
-enabled;  non-debug SLAB, SLUB do return nicely aligned addresses,
-debug-enabled SLUB currently panics early in the boot process.
-
+Cc: Wu Zhangjin <wuzhangjin@gmail.com>
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
-v2: slightly improved the patch rationale, thanks to David Daney.
+v2: Applies on top of Wu Zhangjin's "MIPS: Cleanup the debugging of compressed
+kernel support" fixed v3 patch, and -queue.
 
- arch/mips/alchemy/common/dbdma.c                 |    7 +++++--
- arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h |    1 +
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/mips/boot/compressed/Makefile       |    1 +
+ arch/mips/boot/compressed/uart-alchemy.c |   11 +++++++++++
+ 2 files changed, 12 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/boot/compressed/uart-alchemy.c
 
-diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
-index 40071bd..3b2ccc0 100644
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -411,8 +411,11 @@ u32 au1xxx_dbdma_ring_alloc(u32 chanid, int entries)
- 		if (desc_base == 0)
- 			return 0;
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 388b58c..fff73d4 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -34,6 +34,7 @@ obj-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
  
-+		ctp->cdb_membase = desc_base;
- 		desc_base = ALIGN_ADDR(desc_base, sizeof(au1x_ddma_desc_t));
--	}
-+	} else
-+		ctp->cdb_membase = desc_base;
+ ifdef CONFIG_DEBUG_ZBOOT
+ obj-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
++obj-$(CONFIG_MACH_ALCHEMY)		   += $(obj)/uart-alchemy.o
+ endif
+ 
+ OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary -R .comment -S
+diff --git a/arch/mips/boot/compressed/uart-alchemy.c b/arch/mips/boot/compressed/uart-alchemy.c
+new file mode 100644
+index 0000000..4c957df
+--- /dev/null
++++ b/arch/mips/boot/compressed/uart-alchemy.c
+@@ -0,0 +1,11 @@
++/*
++ * Alchemy on-chip uart based serial debug support for zboot
++ */
 +
- 	dp = (au1x_ddma_desc_t *)desc_base;
- 
- 	/* Keep track of the base descriptor. */
-@@ -829,7 +832,7 @@ void au1xxx_dbdma_chan_free(u32 chanid)
- 
- 	au1xxx_dbdma_stop(chanid);
- 
--	kfree((void *)ctp->chan_desc_base);
-+	kfree((void *)ctp->cdb_membase);
- 
- 	stp->dev_flags &= ~DEV_FLAGS_INUSE;
- 	dtp->dev_flags &= ~DEV_FLAGS_INUSE;
-diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h b/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
-index c098b45..8c6b110 100644
---- a/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
-+++ b/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
-@@ -305,6 +305,7 @@ typedef struct dbdma_chan_config {
- 	dbdev_tab_t		*chan_dest;
- 	au1x_dma_chan_t		*chan_ptr;
- 	au1x_ddma_desc_t	*chan_desc_base;
-+	u32			cdb_membase; /* kmalloc base of above */
- 	au1x_ddma_desc_t	*get_ptr, *put_ptr, *cur_ptr;
- 	void			*chan_callparam;
- 	void			(*chan_callback)(int, void *);
++#include <asm/mach-au1x00/au1000.h>
++
++void putc(char c)
++{
++	/* all current (Jan. 2010) in-kernel boards */
++	alchemy_uart_putchar(UART0_PHYS_ADDR, c);
++}
 -- 
 1.6.6

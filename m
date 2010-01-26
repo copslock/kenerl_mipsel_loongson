@@ -1,28 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 15:26:15 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:45750 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 15:54:45 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33234 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1493328Ab0AZO0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 26 Jan 2010 15:26:11 +0100
+        id S1493335Ab0AZOym (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 26 Jan 2010 15:54:42 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o0QEQEQJ000657;
-        Tue, 26 Jan 2010 15:26:15 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o0QEsnkI010414;
+        Tue, 26 Jan 2010 15:54:50 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o0QEQE3J000655;
-        Tue, 26 Jan 2010 15:26:14 +0100
-Date:   Tue, 26 Jan 2010 15:26:14 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o0QEsnjc010412;
+        Tue, 26 Jan 2010 15:54:49 +0100
+Date:   Tue, 26 Jan 2010 15:54:48 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David VomLehn <dvomlehn@cisco.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] powertv: Fix support for timer interrupts when using >64
- external IRQs
-Message-ID: <20100126142614.GC17849@linux-mips.org>
-References: <20091222014922.GA30164@dvomlehn-lnx2.corp.sa.net>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: Re: [RFC PATCH] MIPS: Alchemy: debug output for compressed kernels
+Message-ID: <20100126145448.GD17849@linux-mips.org>
+References: <1263404818-23038-1-git-send-email-manuel.lauss@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20091222014922.GA30164@dvomlehn-lnx2.corp.sa.net>
+In-Reply-To: <1263404818-23038-1-git-send-email-manuel.lauss@gmail.com>
 User-Agent: Mutt/1.5.20 (2009-08-17)
-X-archive-position: 25672
+X-archive-position: 25673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,23 +32,21 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16730
+X-UID: 16737
 
-On Mon, Dec 21, 2009 at 05:49:22PM -0800, David VomLehn wrote:
+On Wed, Jan 13, 2010 at 06:46:58PM +0100, Manuel Lauss wrote:
 
-> The MIPS processor is limited to 64 external interrupt sources. Using a
-> greater number without IRQ sharing requires reading platform-specific
-> registers. On such platforms, reading the IntCtl register to determine
-> which interrupt corresponds to a timer interrupt will not work.
+> Hook up the compressed debug output for all Alchemy systems supported
+> by current kernel codebase.
 > 
-> On MIPSR2 systems there is a solution--the TI bit in the Cause register,
-> specifically indicates that a timer interrupt has occured. This patch
-> uses that bit to detect interrupts for MIPSR2 processors, which may be
-> expected to work regardless of how the timer interrupt may be routed
-> in the hardware.
+> Cc: Wu Zhangjin <wuzhangjin@gmail.com>
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
+> The code is built for all alchemy systems since I doubt anyone would
+> solder on an extra UART chip instead of using the built-in ones.
 
-I think this isn't relevant for any currently in-tree supported platforms (?)
-so I've queued this for 2.6.34.
+Hardware folks tend have interesting ideas to say the least :)  But until
+then I'm happy to queue this patch for 2.6.34.
 
 Thanks,
 

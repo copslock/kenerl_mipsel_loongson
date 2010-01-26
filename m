@@ -1,39 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 20:40:16 +0100 (CET)
-Received: from mail-bw0-f221.google.com ([209.85.218.221]:42989 "EHLO
-        mail-bw0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493426Ab0AZTkN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2010 20:40:13 +0100
-Received: by bwz21 with SMTP id 21so3921890bwz.24
-        for <linux-mips@linux-mips.org>; Tue, 26 Jan 2010 11:40:07 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 21:46:50 +0100 (CET)
+Received: from gv-out-0910.google.com ([216.239.58.185]:25605 "EHLO
+        gv-out-0910.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493447Ab0AZUqq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2010 21:46:46 +0100
+Received: by gv-out-0910.google.com with SMTP id r4so388130gve.2
+        for <linux-mips@linux-mips.org>; Tue, 26 Jan 2010 12:46:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=SV2OGCObQ6Sf9WJbXgVQJLcZhyTIIYRcrvHqWjpJM6s=;
-        b=sbqjlgQXelbLBTkB9Q6YwB9sPebKdEAqU9L76e1ZUrdEACPlqWyGNUbgaRAT1UnlNo
-         pbB+DHse+kescfPsCMImofQ94sL0HICPoYCbdB8yR5VNd/xCOZjO2SyOQLArgAA1XZMj
-         6wKTvmlYEoQMRYyOmeCW3pdBMtreHBim5A0vU=
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type;
+        bh=PBiBp8m8qZSFzf+UGIsjavv9sdtiH2SoU62x5MdR5Vo=;
+        b=rIVG1JvEvBaLBsDhIJzTCYHpbIdtcWTbP1qQJSw8lm7hV3w5IOT0XEGJWVbA3ANntZ
+         XOHgwiY/WZXpHYrR4iB9T+U4IfbVp/mfXnUXBvp9F/zh25uYibkt/pZkEdM73vJPpiii
+         coldXJcJaTsVvr2Ev1PSwFcsppjjVAFjgZILs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=DjC96mfkY4crha0Y3otqGfBUjRT0t0MtQXkkvC/M+bIiloYCY3RjfocV1L8raNpmXz
-         WCYlf/P01mGIPKNmINspd8kfKUc90Z4+Z4HUHoVsmtjpkwFMvg6i4znRr1w84T686Oc3
-         ilv9NPcHKOHxjsk8GGu6gGj+2OrJd5Rwc7yvs=
-Received: by 10.204.5.216 with SMTP id 24mr264876bkw.141.1264534807786;
-        Tue, 26 Jan 2010 11:40:07 -0800 (PST)
-Received: from localhost.localdomain (p5496CA8F.dip.t-dialin.net [84.150.202.143])
-        by mx.google.com with ESMTPS id 13sm2828863bwz.6.2010.01.26.11.40.06
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 26 Jan 2010 11:40:07 -0800 (PST)
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=qn18P9n3Ejh6Jf2n5YPCHsK0wMm6PH4Lnznhu9ZXUsli17tHChdBTtn1FAgLqVwLJH
+         yC+d+TrWehG6gTma05RcF0A3Elv24pr+cdFw3tftjmdVHTERXX+RVBOtpSBxMeeV5xyC
+         wXDsx3YfZClVi7V//5CBC7FfzKRvWxspn4jDE=
+MIME-Version: 1.0
+Received: by 10.103.80.20 with SMTP id h20mr4323772mul.88.1264538805510; Tue, 
+        26 Jan 2010 12:46:45 -0800 (PST)
+In-Reply-To: <hhq35v$m1q$1@ger.gmane.org>
+References: <hhq35v$m1q$1@ger.gmane.org>
+Date:   Tue, 26 Jan 2010 21:46:45 +0100
+Message-ID: <f861ec6f1001261246y545e7a9ahe11eaf16fd587959@mail.gmail.com>
+Subject: Re: [RFC] Support 36-bit iomem on 32-bit Au1x00
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v2] MIPS: Alchemy: debug output for compressed kernels
-Date:   Tue, 26 Jan 2010 20:40:09 +0100
-Message-Id: <1264534809-24938-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.6.6
-X-archive-position: 25690
+To:     "pascal@pabr.org" <pascal@pabr.org>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 25691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,50 +41,20 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16903
+X-UID: 16929
 
-Hook up the compressed debug output for all Alchemy systems supported
-by current kernel codebase.
+Hi Pascal,
 
-Cc: Wu Zhangjin <wuzhangjin@gmail.com>
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-v2: Applies on top of Wu Zhangjin's "MIPS: Cleanup the debugging of compressed
-kernel support" fixed v3 patch, and -queue.
+On Sun, Jan 3, 2010 at 1:39 PM, pascal@pabr.org <pascal@pabr.org> wrote:
+> Hi,
+>
+> I believe these changes are needed on Alchemy SoCs in order to
+> use iomem above 4G with the usual platform_device machinery:
+>
+> - Set CONFIG_ARCH_PHYS_ADDR_T_64BIT to make resource_size_t 64-bit.
+> - Increase IOMEM_RESOURCE_END so that platforms can register resources.
 
- arch/mips/boot/compressed/Makefile       |    1 +
- arch/mips/boot/compressed/uart-alchemy.c |   11 +++++++++++
- 2 files changed, 12 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/boot/compressed/uart-alchemy.c
+Have you tried to register a platform device above the 4G line?  I get an oops
+inside the platform device match code  when I do.  I'll try to figure out why.
 
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index 388b58c..fff73d4 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -34,6 +34,7 @@ obj-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
- 
- ifdef CONFIG_DEBUG_ZBOOT
- obj-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
-+obj-$(CONFIG_MACH_ALCHEMY)		   += $(obj)/uart-alchemy.o
- endif
- 
- OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary -R .comment -S
-diff --git a/arch/mips/boot/compressed/uart-alchemy.c b/arch/mips/boot/compressed/uart-alchemy.c
-new file mode 100644
-index 0000000..4c957df
---- /dev/null
-+++ b/arch/mips/boot/compressed/uart-alchemy.c
-@@ -0,0 +1,11 @@
-+/*
-+ * Alchemy on-chip uart based serial debug support for zboot
-+ */
-+
-+#include <asm/mach-au1x00/au1000.h>
-+
-+void putc(char c)
-+{
-+	/* all current (Jan. 2010) in-kernel boards */
-+	alchemy_uart_putchar(UART0_PHYS_ADDR, c);
-+}
--- 
-1.6.6
+Manuel

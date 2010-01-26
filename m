@@ -1,86 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 19:13:03 +0100 (CET)
-Received: from mail-yw0-f182.google.com ([209.85.211.182]:35859 "EHLO
-        mail-yw0-f182.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493394Ab0AZSM7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2010 19:12:59 +0100
-Received: by ywh12 with SMTP id 12so4242592ywh.21
-        for <multiple recipients>; Tue, 26 Jan 2010 10:12:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=hn3v2+NSmQLv8QsG7U9TqfcXd7lBBoFv8emfeJHLLJQ=;
-        b=NzDYIz3vhngnH6tG7CWgZRZ8YpTfrXpEbDKMnny8AKCJryAlwQevMNDiYAEgf6opQs
-         ZaaS2vNX3iIgrjtKvUqRVC76pbHsbDcJe4xyjf/XzYTasgeSdK5oB85pKJex6YD7iV7s
-         X92JoARr89XD0kuMYoyyiJRn5a7425DCniStg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=wdhaEC+UCW/L40iYGNmwSsbWjwrqpXHwAUhPVY575JccnsXTfs/xLGuODLaotphK7O
-         ZIn+k+AOd5Veb5MJM+d+7aM4m7BSqNtPjrdooq6/tqnIF4PrFGRR23gP76mSfabeZu/5
-         gzeOAoeAZDlCMT3SlwgDarroNTJ0S6Wo8hVMs=
-Received: by 10.101.133.34 with SMTP id k34mr2179921ann.213.1264529573279;
-        Tue, 26 Jan 2010 10:12:53 -0800 (PST)
-Received: from ?192.168.1.236? ([219.246.59.166])
-        by mx.google.com with ESMTPS id 4sm2185037ywi.39.2010.01.26.10.12.49
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 26 Jan 2010 10:12:52 -0800 (PST)
-Subject: Re: [PATCH -queue v3] MIPS: Cleanup the debugging of compressed 
- kernel support
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <f861ec6f1001261007k4f71244fqcc92e2b6b1c9234c@mail.gmail.com>
-References: <cf2781a56090637044a5ad3837caef468a674ee4.1264524254.git.wuzhangjin@gmail.com>
-         <f861ec6f1001261007k4f71244fqcc92e2b6b1c9234c@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Wed, 27 Jan 2010 02:06:48 +0800
-Message-ID: <1264529208.11605.3.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 25685
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jan 2010 19:36:26 +0100 (CET)
+Received: from sj-iport-5.cisco.com ([171.68.10.87]:56177 "EHLO
+        sj-iport-5.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1493421Ab0AZSgU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jan 2010 19:36:20 +0100
+Authentication-Results: sj-iport-5.cisco.com; dkim=neutral (message not signed) header.i=none
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: ApoEAGvFXkurRN+J/2dsb2JhbADDWJcihDkE
+X-IronPort-AV: E=Sophos;i="4.49,347,1262563200"; 
+   d="scan'208";a="140289602"
+Received: from sj-core-3.cisco.com ([171.68.223.137])
+  by sj-iport-5.cisco.com with ESMTP; 26 Jan 2010 18:36:06 +0000
+Received: from dvomlehn-lnx2.corp.sa.net ([64.101.20.155])
+        by sj-core-3.cisco.com (8.13.8/8.14.3) with ESMTP id o0QIa67t022355;
+        Tue, 26 Jan 2010 18:36:06 GMT
+Date:   Tue, 26 Jan 2010 10:36:06 -0800
+From:   David VomLehn <dvomlehn@cisco.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] powertv: Fix support for timer interrupts when using
+        >64 external IRQs
+Message-ID: <20100126183606.GA9784@dvomlehn-lnx2.corp.sa.net>
+References: <20091222014922.GA30164@dvomlehn-lnx2.corp.sa.net> <20100126142614.GC17849@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100126142614.GC17849@linux-mips.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 25686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16844
+X-UID: 16861
 
-On Tue, 2010-01-26 at 19:07 +0100, Manuel Lauss wrote:
-> Hi!
+On Tue, Jan 26, 2010 at 08:26:14AM -0600, Ralf Baechle wrote:
+> On Mon, Dec 21, 2009 at 05:49:22PM -0800, David VomLehn wrote:
 > 
-> On Tue, Jan 26, 2010 at 6:01 PM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> >
-> > --- a/arch/mips/boot/compressed/Makefile
-> > +++ b/arch/mips/boot/compressed/Makefile
-> > @@ -32,7 +32,9 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
-> >
-> >  obj-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
-> >
-> > +ifdef DEBUG_ZBOOT
+> > The MIPS processor is limited to 64 external interrupt sources. Using a
+> > greater number without IRQ sharing requires reading platform-specific
+> > registers. On such platforms, reading the IntCtl register to determine
+> > which interrupt corresponds to a timer interrupt will not work.
+> > 
+> > On MIPSR2 systems there is a solution--the TI bit in the Cause register,
+> > specifically indicates that a timer interrupt has occured. This patch
+> > uses that bit to detect interrupts for MIPSR2 processors, which may be
+> > expected to work regardless of how the timer interrupt may be routed
+> > in the hardware.
 > 
-> The above doesn't work in my testing, but this does:
-> ifeq ($(CONFIG_DEBUG_ZBOOT),y)
+> I think this isn't relevant for any currently in-tree supported platforms (?)
+> so I've queued this for 2.6.34.
+> 
+> Thanks,
+> 
+>   Ralf
 
-oh, my god, I have forgotten the prefix CONFIG_, perhaps Ralf will help to fix it ;)
-
-it should be:
-
-ifdef CONFIG_DEBUG_ZBOOT
-...
-endif
-
-of course, your ifeq version also works ;)
-
-Thanks & Regards!
-	Wu Zhangjin
+It's required for the PowerTV platform, but the release that includes it
+is at your discretion.
+-- 
+David VL

@@ -1,118 +1,205 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2010 15:46:04 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:45371 "EHLO
-        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493546Ab0A0OqA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2010 15:46:00 +0100
-Received: by pzk35 with SMTP id 35so1461518pzk.22
-        for <multiple recipients>; Wed, 27 Jan 2010 06:45:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :content-type:organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        bh=Y7Bb7+ms1TgkUQC5sMY9fgAf5au4f8nJVMY7wWp9oVg=;
-        b=fqyFMe6BEnxdxofYt4/qb0f3ebSo4PuZgsHnr9pd007iP4+cdrhkkO0eDgxO/f+uhn
-         Zgub/dUOW+jguiYIED5Ee4LEYuxvdHCA9aj9rLvLwIQA27MJKYQPNlGzlLVtR6ZkmpJF
-         joVe3/90asi/3u7PeWc+FIIerDFHMmLF6JJPc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:content-type:organization:date
-         :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=CdEUks89aHe/QG9UWiTGH9Q9Lvv8GzIBGu+lbmyo9zDT4PYbr1rlNkxPdP8f+fz7O+
-         xmx3hroSmIuxz+NzIb+iB4dWEh+WWEhKQ4M9y7L1HAeurZGeyUo4PyiAMGNaCuohIy3F
-         dLqV+Z/VeyPvxxo+XSngrDqIYkJNp9+w6HMsM=
-Received: by 10.114.3.2 with SMTP id 2mr2146012wac.156.1264603552614;
-        Wed, 27 Jan 2010 06:45:52 -0800 (PST)
-Received: from ?192.168.2.212? ([202.201.14.140])
-        by mx.google.com with ESMTPS id 20sm5528966pzk.1.2010.01.27.06.45.50
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 27 Jan 2010 06:45:51 -0800 (PST)
-Subject: [PATCH -queue] Loongson: Cleanup the halt and poweroff action
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Liu Shiwei <liushiwei@gmail.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Wed, 27 Jan 2010 22:39:46 +0800
-Message-ID: <1264603186.21973.0.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 25701
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jan 2010 22:23:29 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13960 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492340Ab0A0VXZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jan 2010 22:23:25 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4b60aed20000>; Wed, 27 Jan 2010 13:23:30 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 27 Jan 2010 13:23:00 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 27 Jan 2010 13:23:00 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id o0RLMuNa031806;
+        Wed, 27 Jan 2010 13:22:56 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id o0RLMrOR031804;
+        Wed, 27 Jan 2010 13:22:53 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] Staging: Octeon Ethernet: Fix memory allocation.
+Date:   Wed, 27 Jan 2010 13:22:53 -0800
+Message-Id: <1264627373-31780-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 27 Jan 2010 21:23:00.0198 (UTC) FILETIME=[E6F18860:01CA9F96]
+X-archive-position: 25702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 17556
+X-UID: 17831
 
-(Add linux-mips <linux-mips@linux-mips.org> into the CC: list to make the patchwork get it!)
+After aligning the blocks returned by kmalloc, we need to save the
+original pointer so they can be correctly freed.
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+There are no guarantees about the alignment of SKB data, so we need to
+handle worst case alignment.
 
-In the old source code, I have let halt and poweroff do the same action,
-but in reality, they have different meanings.
+Since right shifts over subtraction have no distributive property, we
+need to fix the back pointer calculation.
 
-As the manpage of shutdown shows:
-
--r     Reboot after shutdown.
--H     Halt action is to halt or drop into boot monitor on systems that support it.
--P     Halt action is to turn off the power.
-
-and in the real world, some machines(e.g. NAS) did not provide a power
-button and the shutdown works as reset, so, we need to provide a
-mechanism to let the users turn off the power safely without breaking
-the system, such a mechanism is "halt", which only put the system into a
-dead loop or a power-save mode and print some information to the screen
-to tell the users to turn off the power safely.
-
-$ shutdown -hH now /* loongson_halt, not turn off the power */
-$ shutdown -hP now /* loongson_poweroff, work as poweroff */
-
-Tested-by: Liu Shiwei <liushiwei@gmail.com>
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/loongson/common/reset.c |   13 +++++++++++--
- 1 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/loongson/common/reset.c b/arch/mips/loongson/common/reset.c
-index 33dff18..4bd9c18 100644
---- a/arch/mips/loongson/common/reset.c
-+++ b/arch/mips/loongson/common/reset.c
-@@ -25,17 +25,26 @@ static void loongson_restart(char *command)
- 	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
+The original in the linux-queue tree is broken as it assumes the
+kmalloc returns aligned blocks.  This is not the case when slab
+debugging is enabled.
+
+ drivers/staging/octeon/ethernet-mem.c |   45 ++++++++++++++++++++------------
+ drivers/staging/octeon/ethernet-tx.c  |    6 ++--
+ 2 files changed, 31 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/staging/octeon/ethernet-mem.c b/drivers/staging/octeon/ethernet-mem.c
+index 7090521..53ed2f7 100644
+--- a/drivers/staging/octeon/ethernet-mem.c
++++ b/drivers/staging/octeon/ethernet-mem.c
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2007 Cavium Networks
++ * Copyright (c) 2003-2010 Cavium Networks
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -45,7 +45,7 @@ static int cvm_oct_fill_hw_skbuff(int pool, int size, int elements)
+ 	int freed = elements;
+ 	while (freed) {
+ 
+-		struct sk_buff *skb = dev_alloc_skb(size + 128);
++		struct sk_buff *skb = dev_alloc_skb(size + 256);
+ 		if (unlikely(skb == NULL)) {
+ 			pr_warning
+ 			    ("Failed to allocate skb for hardware pool %d\n",
+@@ -53,7 +53,7 @@ static int cvm_oct_fill_hw_skbuff(int pool, int size, int elements)
+ 			break;
+ 		}
+ 
+-		skb_reserve(skb, 128 - (((unsigned long)skb->data) & 0x7f));
++		skb_reserve(skb, 256 - (((unsigned long)skb->data) & 0x7f));
+ 		*(struct sk_buff **)(skb->data - sizeof(void *)) = skb;
+ 		cvmx_fpa_free(skb->data, pool, DONT_WRITEBACK(size / 128));
+ 		freed--;
+@@ -91,10 +91,7 @@ static void cvm_oct_free_hw_skbuff(int pool, int size, int elements)
  }
  
--static void loongson_halt(void)
-+static void loongson_poweroff(void)
+ /**
+- * This function fills a hardware pool with memory. Depending
+- * on the config defines, this memory might come from the
+- * kernel or global 32bit memory allocated with
+- * cvmx_bootmem_alloc.
++ * This function fills a hardware pool with memory.
+  *
+  * @pool:     Pool to populate
+  * @size:     Size of each buffer in the pool
+@@ -103,18 +100,29 @@ static void cvm_oct_free_hw_skbuff(int pool, int size, int elements)
+ static int cvm_oct_fill_hw_memory(int pool, int size, int elements)
  {
- 	mach_prepare_shutdown();
- 	unreachable();
- }
+ 	char *memory;
++	char *fpa;
+ 	int freed = elements;
  
-+static void loongson_halt(void)
-+{
-+	pr_notice("\n\n** You can safely turn off the power now **\n\n");
-+	while (1) {
-+		if (cpu_wait)
-+			cpu_wait();
-+	}
-+}
-+
- static int __init mips_reboot_setup(void)
+ 	while (freed) {
+-		/* We need to force alignment to 128 bytes here */
+-		memory = kmalloc(size + 127, GFP_ATOMIC);
++		/*
++		 * FPA memory must be 128 byte aligned.  Since we are
++		 * aligning we need to save the original pointer so we
++		 * can feed it to kfree when the memory is returned to
++		 * the kernel.
++		 *
++		 * We allocate an extra 256 bytes to allow for
++		 * alignment and space for the original pointer saved
++		 * just before the block.
++		 */
++		memory = kmalloc(size + 256, GFP_ATOMIC);
+ 		if (unlikely(memory == NULL)) {
+ 			pr_warning("Unable to allocate %u bytes for FPA pool %d\n",
+ 				   elements * size, pool);
+ 			break;
+ 		}
+-		memory = (char *)(((unsigned long)memory + 127) & -128);
+-		cvmx_fpa_free(memory, pool, 0);
++		fpa = (char *)(((unsigned long)memory + 256) & ~0x7fUL);
++		*((char **)fpa - 1) = memory;
++		cvmx_fpa_free(fpa, pool, 0);
+ 		freed--;
+ 	}
+ 	return elements - freed;
+@@ -130,13 +138,16 @@ static int cvm_oct_fill_hw_memory(int pool, int size, int elements)
+ static void cvm_oct_free_hw_memory(int pool, int size, int elements)
  {
- 	_machine_restart = loongson_restart;
- 	_machine_halt = loongson_halt;
--	pm_power_off = loongson_halt;
-+	pm_power_off = loongson_poweroff;
+ 	char *memory;
++	char *fpa;
+ 	do {
+-		memory = cvmx_fpa_alloc(pool);
+-		if (memory) {
++		fpa = cvmx_fpa_alloc(pool);
++		if (fpa) {
+ 			elements--;
+-			kfree(phys_to_virt(cvmx_ptr_to_phys(memory)));
++			fpa = (char *)phys_to_virt(cvmx_ptr_to_phys(fpa));
++			memory = *((char **)fpa - 1);
++			kfree(memory);
+ 		}
+-	} while (memory);
++	} while (fpa);
  
- 	return 0;
- }
+ 	if (elements < 0)
+ 		pr_warning("Freeing of pool %u had too many buffers (%d)\n",
+@@ -149,7 +160,7 @@ static void cvm_oct_free_hw_memory(int pool, int size, int elements)
+ int cvm_oct_mem_fill_fpa(int pool, int size, int elements)
+ {
+ 	int freed;
+-	if (USE_SKBUFFS_IN_HW)
++	if (USE_SKBUFFS_IN_HW && pool == CVMX_FPA_PACKET_POOL)
+ 		freed = cvm_oct_fill_hw_skbuff(pool, size, elements);
+ 	else
+ 		freed = cvm_oct_fill_hw_memory(pool, size, elements);
+@@ -158,7 +169,7 @@ int cvm_oct_mem_fill_fpa(int pool, int size, int elements)
+ 
+ void cvm_oct_mem_empty_fpa(int pool, int size, int elements)
+ {
+-	if (USE_SKBUFFS_IN_HW)
++	if (USE_SKBUFFS_IN_HW && pool == CVMX_FPA_PACKET_POOL)
+ 		cvm_oct_free_hw_skbuff(pool, size, elements);
+ 	else
+ 		cvm_oct_free_hw_memory(pool, size, elements);
+diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
+index a3594bb..e5695d9 100644
+--- a/drivers/staging/octeon/ethernet-tx.c
++++ b/drivers/staging/octeon/ethernet-tx.c
+@@ -4,7 +4,7 @@
+  * Contact: support@caviumnetworks.com
+  * This file is part of the OCTEON SDK
+  *
+- * Copyright (c) 2003-2007 Cavium Networks
++ * Copyright (c) 2003-2010 Cavium Networks
+  *
+  * This file is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License, Version 2, as
+@@ -186,7 +186,7 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	 * shown a 25% increase in performance under some loads.
+ 	 */
+ #if REUSE_SKBUFFS_WITHOUT_FREE
+-	fpa_head = skb->head + 128 - ((unsigned long)skb->head & 0x7f);
++	fpa_head = skb->head + 256 - ((unsigned long)skb->head & 0x7f);
+ 	if (unlikely(skb->data < fpa_head)) {
+ 		/*
+ 		 * printk("TX buffer beginning can't meet FPA
+@@ -247,7 +247,7 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	pko_command.s.reg0 = 0;
+ 	pko_command.s.dontfree = 0;
+ 
+-	hw_buffer.s.back = (skb->data - fpa_head) >> 7;
++	hw_buffer.s.back = ((unsigned long)skb->data >> 7) - ((unsigned long)fpa_head >> 7);
+ 	*(struct sk_buff **)(fpa_head - sizeof(void *)) = skb;
+ 
+ 	/*
 -- 
-1.6.6
+1.6.0.6

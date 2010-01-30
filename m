@@ -1,214 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jan 2010 18:55:33 +0100 (CET)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:38440 "EHLO
-        sakura.staff.proxad.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493017Ab0A3Ryp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Jan 2010 18:54:45 +0100
-Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-        id A111B551085; Sat, 30 Jan 2010 18:54:45 +0100 (CET)
-From:   Maxime Bizon <mbizon@freebox.fr>
-To:     David Brownell <dbrownell@users.sourceforge.net>,
-        linux-usb@vger.kernel.org
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH 2/2] USB: add Broadcom 63xx integrated EHCI controller support.
-Date:   Sat, 30 Jan 2010 18:54:31 +0100
-Message-Id: <1264874071-28851-3-git-send-email-mbizon@freebox.fr>
-X-Mailer: git-send-email 1.6.3.3
-In-Reply-To: <1264874071-28851-1-git-send-email-mbizon@freebox.fr>
-References: <1264874071-28851-1-git-send-email-mbizon@freebox.fr>
-X-archive-position: 25770
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jan 2010 19:24:00 +0100 (CET)
+Received: from metis.ext.pengutronix.de ([92.198.50.35]:40211 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493019Ab0A3SX4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Jan 2010 19:23:56 +0100
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.69)
+        (envelope-from <wsa@pengutronix.de>)
+        id 1NbHz0-0001hJ-Ha; Sat, 30 Jan 2010 19:23:46 +0100
+Received: from wsa by octopus.hi.pengutronix.de with local (Exim 4.69)
+        (envelope-from <wsa@pengutronix.de>)
+        id 1NbHyx-0001yy-GE; Sat, 30 Jan 2010 19:23:43 +0100
+Date:   Sat, 30 Jan 2010 19:23:43 +0100
+From:   Wolfram Sang <w.sang@pengutronix.de>
+To:     Maxime Bizon <mbizon@freebox.fr>
+Cc:     Greg Kroah-Hartman <gregkh@suse.de>, linux-serial@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] bcm63xx_uart: allow more than one uart to be
+        registered.
+Message-ID: <20100130182343.GA6971@pengutronix.de>
+References: <1264873377-28479-1-git-send-email-mbizon@freebox.fr> <1264873377-28479-3-git-send-email-mbizon@freebox.fr>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="fUYQa+Pmc3FrFX/N"
+Content-Disposition: inline
+In-Reply-To: <1264873377-28479-3-git-send-email-mbizon@freebox.fr>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
+X-SA-Exim-Mail-From: wsa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+X-archive-position: 25771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: w.sang@pengutronix.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 19488
+X-UID: 19498
 
-Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
----
- drivers/usb/host/ehci-bcm63xx.c |  154 +++++++++++++++++++++++++++++++++++++++
- drivers/usb/host/ehci-hcd.c     |    5 +
- 2 files changed, 159 insertions(+), 0 deletions(-)
- create mode 100644 drivers/usb/host/ehci-bcm63xx.c
 
-diff --git a/drivers/usb/host/ehci-bcm63xx.c b/drivers/usb/host/ehci-bcm63xx.c
-new file mode 100644
-index 0000000..50638f7
---- /dev/null
-+++ b/drivers/usb/host/ehci-bcm63xx.c
-@@ -0,0 +1,154 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/platform_device.h>
-+#include <bcm63xx_cpu.h>
-+#include <bcm63xx_regs.h>
-+#include <bcm63xx_io.h>
-+
-+static int ehci_bcm63xx_setup(struct usb_hcd *hcd)
-+{
-+	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-+	int retval;
-+
-+	retval = ehci_halt(ehci);
-+	if (retval)
-+		return retval;
-+
-+	retval = ehci_init(hcd);
-+	if (retval)
-+		return retval;
-+
-+	ehci_reset(ehci);
-+	ehci_port_power(ehci, 0);
-+
-+	return retval;
-+}
-+
-+
-+static const struct hc_driver ehci_bcm63xx_hc_driver = {
-+	.description =		hcd_name,
-+	.product_desc =		"BCM63XX integrated EHCI controller",
-+	.hcd_priv_size =	sizeof(struct ehci_hcd),
-+
-+	.irq =			ehci_irq,
-+	.flags =		HCD_MEMORY | HCD_USB2,
-+
-+	.reset =		ehci_bcm63xx_setup,
-+	.start =		ehci_run,
-+	.stop =			ehci_stop,
-+	.shutdown =		ehci_shutdown,
-+
-+	.urb_enqueue =		ehci_urb_enqueue,
-+	.urb_dequeue =		ehci_urb_dequeue,
-+	.endpoint_disable =	ehci_endpoint_disable,
-+
-+	.get_frame_number =	ehci_get_frame,
-+
-+	.hub_status_data =	ehci_hub_status_data,
-+	.hub_control =		ehci_hub_control,
-+	.bus_suspend =		ehci_bus_suspend,
-+	.bus_resume =		ehci_bus_resume,
-+	.relinquish_port =	ehci_relinquish_port,
-+	.port_handed_over =	ehci_port_handed_over,
-+};
-+
-+static int __devinit ehci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
-+{
-+	struct resource *res_mem;
-+	struct usb_hcd *hcd;
-+	struct ehci_hcd *ehci;
-+	u32 reg;
-+	int ret, irq;
-+
-+	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	irq = platform_get_irq(pdev, 0);;
-+	if (!res_mem || irq < 0)
-+		return -ENODEV;
-+
-+	reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_REG);
-+	reg &= ~USBH_PRIV_SWAP_EHCI_DATA_MASK;
-+	reg |= USBH_PRIV_SWAP_EHCI_ENDN_MASK;
-+	bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_REG);
-+
-+	/*
-+	 * The magic value comes for the original vendor BSP and is
-+	 * needed for USB to work. Datasheet does not help, so the
-+	 * magic value is used as-is.
-+	 */
-+	bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020, USBH_PRIV_TEST_REG);
-+
-+	hcd = usb_create_hcd(&ehci_bcm63xx_hc_driver, &pdev->dev, "bcm63xx");
-+	if (!hcd)
-+		return -ENOMEM;
-+	hcd->rsrc_start = res_mem->start;
-+	hcd->rsrc_len = res_mem->end - res_mem->start + 1;
-+
-+	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-+		pr_debug("request_mem_region failed\n");
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-+	if (!hcd->regs) {
-+		pr_debug("ioremap failed\n");
-+		ret = -EIO;
-+		goto out1;
-+	}
-+
-+	ehci = hcd_to_ehci(hcd);
-+	ehci->big_endian_mmio = 1;
-+	ehci->big_endian_desc = 0;
-+	ehci->caps = hcd->regs;
-+	ehci->regs = hcd->regs +
-+		HC_LENGTH(ehci_readl(ehci, &ehci->caps->hc_capbase));
-+	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
-+	ehci->sbrn = 0x20;
-+
-+	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED);
-+	if (ret)
-+		goto out2;
-+
-+	platform_set_drvdata(pdev, hcd);
-+	return 0;
-+
-+out2:
-+	iounmap(hcd->regs);
-+out1:
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+out:
-+	usb_put_hcd(hcd);
-+	return ret;
-+}
-+
-+static int __devexit ehci_hcd_bcm63xx_drv_remove(struct platform_device *pdev)
-+{
-+	struct usb_hcd *hcd;
-+
-+	hcd = platform_get_drvdata(pdev);
-+	usb_remove_hcd(hcd);
-+	iounmap(hcd->regs);
-+	usb_put_hcd(hcd);
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	platform_set_drvdata(pdev, NULL);
-+	return 0;
-+}
-+
-+static struct platform_driver ehci_hcd_bcm63xx_driver = {
-+	.probe		= ehci_hcd_bcm63xx_drv_probe,
-+	.remove		= __devexit_p(ehci_hcd_bcm63xx_drv_remove),
-+	.shutdown	= usb_hcd_platform_shutdown,
-+	.driver		= {
-+		.name	= "bcm63xx_ehci",
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+MODULE_ALIAS("platform:bcm63xx_ehci");
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 1ec3857..8e7c61e 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -1158,6 +1158,11 @@ MODULE_LICENSE ("GPL");
- #define	PLATFORM_DRIVER		ehci_atmel_driver
- #endif
- 
-+#ifdef CONFIG_BCM63XX
-+#include "ehci-bcm63xx.c"
-+#define	PLATFORM_DRIVER		ehci_hcd_bcm63xx_driver
-+#endif
-+
- #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
-     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER)
- #error "missing bus glue for ehci-hcd"
--- 
-1.6.3.3
+--fUYQa+Pmc3FrFX/N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Jan 30, 2010 at 06:42:57PM +0100, Maxime Bizon wrote:
+> The bcm6358 CPU has two uarts, make it possible to use the second one.
+>=20
+> Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+> ---
+>  drivers/serial/bcm63xx_uart.c |    5 +++--
+>  1 files changed, 3 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/serial/bcm63xx_uart.c b/drivers/serial/bcm63xx_uart.c
+> index f78ede8..6ab959a 100644
+> --- a/drivers/serial/bcm63xx_uart.c
+> +++ b/drivers/serial/bcm63xx_uart.c
+> @@ -35,7 +35,7 @@
+>  #include <bcm63xx_regs.h>
+>  #include <bcm63xx_io.h>
+> =20
+> -#define BCM63XX_NR_UARTS	1
+> +#define BCM63XX_NR_UARTS	2
+> =20
+>  static struct uart_port ports[BCM63XX_NR_UARTS];
+> =20
+> @@ -784,7 +784,7 @@ static struct uart_driver bcm_uart_driver =3D {
+>  	.dev_name	=3D "ttyS",
+>  	.major		=3D TTY_MAJOR,
+>  	.minor		=3D 64,
+> -	.nr		=3D 1,
+> +	.nr		=3D 2,
+
+Err, why not using the #define here?
+
+Regards,
+
+   Wolfram
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--fUYQa+Pmc3FrFX/N
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAktkeS8ACgkQD27XaX1/VRunaACfXCtn8XYadPAc+/ykB5n5HEiY
+8IcAn2qX4XsClbWCBbaYwic8kUFU/Hxt
+=gEJH
+-----END PGP SIGNATURE-----
+
+--fUYQa+Pmc3FrFX/N--

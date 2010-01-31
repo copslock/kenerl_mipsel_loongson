@@ -1,50 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2010 13:26:41 +0100 (CET)
-Received: from mail-pz0-f203.google.com ([209.85.222.203]:61177 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2010 13:46:11 +0100 (CET)
+Received: from mail-pz0-f203.google.com ([209.85.222.203]:61082 "EHLO
         mail-pz0-f203.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492272Ab0AaM0h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Jan 2010 13:26:37 +0100
-Received: by pzk41 with SMTP id 41so5411856pzk.0
-        for <multiple recipients>; Sun, 31 Jan 2010 04:26:30 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1492263Ab0AaMqH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Jan 2010 13:46:07 +0100
+Received: by pzk41 with SMTP id 41so5445407pzk.0
+        for <multiple recipients>; Sun, 31 Jan 2010 04:46:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=uG2qwTWn7jMLpaMm1g6ja3ZFAB/ym9jYtrsk//AdPe0=;
-        b=RgC2W8gjmqyPSIklDsyzId6zpT5SRvyARNBiQ8fI05PjMkuH+AaWDyJp3HQqQDAdPB
-         +Kg8s9VzpzTbxsuWCURM4F+Duvfny93+CHVRy8qep0TWSXHDVGaPIdAItwLZfbCxVWN6
-         n5x9s9vgvxemXAWN30S/pfYHPkzjCXx6iSJZk=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=w2TuaS2ix81oNYMMQNnhQ09+mejFgjcOiMA5c6FqZBo=;
+        b=aa1MY/AW6xV+ajIfkIKE2yJkBjotEndodO/HH8gXk4WQMzKFi724A8ko8t4D9WlTac
+         kD7/AdaDAk0oHMeVwgIrcqNdTd4zynNccYzFypWQZfJJ8r03ScQF8oAzr22TFfo/7boP
+         7iQVgiwbMzuZqctf9haB1dHqeIgHVTmSaLHV0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=j3hFVf0w4ll1LeS2p2KP4A/KRyNWLBr/Vv+Oz3n7NoBxqcKfTNuv70DjCKThUApZwt
-         69AFecoW/y1pRxeQvkOIeCMLwETgoLdUc5GCelhp0gqsvvIPAdz8lnTINfRlJv0BIcDW
-         3EEpWESXeMF9xCsWjv4idqbN4IQctUIBL4dlg=
-Received: by 10.141.131.10 with SMTP id i10mr2273102rvn.87.1264940788966;
-        Sun, 31 Jan 2010 04:26:28 -0800 (PST)
-Received: from ?192.168.2.212? ([202.201.14.140])
-        by mx.google.com with ESMTPS id 20sm838466pzk.13.2010.01.31.04.26.26
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=wPsU8fhE88wL2t+Z5htLDt4ER7s5dKSXT0EWcgEbGbE8SEZMRNPD9YBFLxFDCaGKkt
+         te1Pba5HKTcC6jEvVTkaZeNcx35fBhfn6O1xQBtJ30YB64zphCrQNX1S6jQnbStunoCS
+         nlgsRrhVco1wMLJOkmCp4muUckDqicg/CFWvM=
+Received: by 10.141.2.2 with SMTP id e2mr2195769rvi.274.1264941960712;
+        Sun, 31 Jan 2010 04:46:00 -0800 (PST)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id 21sm3575766pzk.15.2010.01.31.04.45.58
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 31 Jan 2010 04:26:28 -0800 (PST)
-Subject: Re: [PATCH v11 0/9] Loongson: YeeLoong: add platform drivers
+        Sun, 31 Jan 2010 04:46:00 -0800 (PST)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, "Rafael J. Wysocki" <rjw@sisk.pl>,
-        linux-mips@linux-mips.org, zhangfx@lemote.com
-In-Reply-To: <cover.1264940063.git.wuzhangjin@gmail.com>
-References: <cover.1264940063.git.wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Sun, 31 Jan 2010 20:20:23 +0800
-Message-ID: <1264940423.21259.2.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 25787
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>,
+        linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH v4] MIPS: Make the debugging of compressed kernel configurable
+Date:   Sun, 31 Jan 2010 20:39:40 +0800
+Message-Id: <67a1110ea3c3276af659bc669ec87f0976121815.1264941563.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.6
+X-archive-position: 25788
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,63 +42,70 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 19726
+X-UID: 19727
 
-On Sun, 2010-01-31 at 20:15 +0800, Wu Zhangjin wrote:
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-(ooh, just re-generate the patchset with "git format-patch" but forgot
-to put the comments, here it is!)
+Changes from v3:
 
-This patchset adds several platform specific drivers for the YeeLoong
-netbook
-made by Lemote.
+ O Rebased on the latest linux-queue git tree of Ralf.
+ O Make the option is disabled by default.
+ O Fix the missing CONFIG_ prefix of DEBUG_ZBOOT in Makefile
+ (reported by "Manuel Lauss")
 
-It is completely based on the v10 revision and with the following
-changes:
+This patch adds a new DEBUG_ZBOOT option to allow the users to enable it
+to debug the compressed kernel support for a new board and this optoin
+should be disabled to reduce the kernel image size and speed up the
+kernel booting procedure when the compressed kernel support is stable.
 
-  O Rebased on the latest linux-queue git tree of Ralf.
-  O Split the EC revision related handling out of the "input/hotkey"
-driver.
-  O Rewrite the AC & Battery driver with the new power_supply interface
-as "Pavel Machek" suggested.
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/Kconfig.debug            |   19 +++++++++++++++++++
+ arch/mips/boot/compressed/Makefile |    2 ++
+ 2 files changed, 21 insertions(+), 0 deletions(-)
 
-All of them have been tested again.
-
-Best Regards,
-	Wu Zhangjin
-
-> 
-> Wu Zhangjin (9):
->   MIPS: add subdirectory for platform extension drivers
->   Loongson: YeeLoong: add platform driver
->   Loongson: YeeLoong: add backlight driver
->   Loongson: YeeLoong: add hardware monitoring driver
->   Loongson: YeeLoong: add video output driver
->   Loongson: YeeLoong: add suspend support
->   Loongson: YeeLoong: add input/hotkey driver
->   Loongson: YeeLoong: Co-operate with the revisions of EC
->   Loongson: YeeLoong: add power_supply based battery driver
-> 
->  arch/mips/include/asm/mach-loongson/ec_kb3310b.h |  188 ++++
->  arch/mips/include/asm/mach-loongson/loongson.h   |    6 +
->  arch/mips/loongson/common/cmdline.c              |    8 +
->  arch/mips/loongson/lemote-2f/Makefile            |    2 +-
->  arch/mips/loongson/lemote-2f/ec_kb3310b.c        |   12 +-
->  arch/mips/loongson/lemote-2f/ec_kb3310b.h        |  188 ----
->  arch/mips/loongson/lemote-2f/platform.c          |   39 +
->  arch/mips/loongson/lemote-2f/pm.c                |    4 +-
->  arch/mips/loongson/lemote-2f/reset.c             |    2 +-
->  drivers/platform/Kconfig                         |    4 +
->  drivers/platform/Makefile                        |    1 +
->  drivers/platform/mips/Kconfig                    |   32 +
->  drivers/platform/mips/Makefile                   |    5 +
->  drivers/platform/mips/yeeloong_laptop.c          | 1192 ++++++++++++++++++++++
->  14 files changed, 1483 insertions(+), 200 deletions(-)
->  create mode 100644 arch/mips/include/asm/mach-loongson/ec_kb3310b.h
->  delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h
->  create mode 100644 arch/mips/loongson/lemote-2f/platform.c
->  create mode 100644 drivers/platform/mips/Kconfig
->  create mode 100644 drivers/platform/mips/Makefile
->  create mode 100644 drivers/platform/mips/yeeloong_laptop.c
-> 
+diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+index d2b88a0..32a010d 100644
+--- a/arch/mips/Kconfig.debug
++++ b/arch/mips/Kconfig.debug
+@@ -102,4 +102,23 @@ config RUNTIME_DEBUG
+ 	  arch/mips/include/asm/debug.h for debugging macros.
+ 	  If unsure, say N.
+ 
++config DEBUG_ZBOOT
++	bool "Enable compressed kernel support debugging"
++	depends on DEBUG_KERNEL && SYS_SUPPORTS_ZBOOT
++	default n
++	help
++	  If you want to add compressed kernel support to a new board, and the
++	  board supports uart16550 compatible serial port, please select
++	  SYS_SUPPORTS_ZBOOT_UART16550 for your board and enable this option to
++	  debug it.
++
++	  If your board doesn't support uart16550 compatible serial port, you
++	  can try to select SYS_SUPPORTS_ZBOOT and use the other methods to
++	  debug it. for example, add a new serial port support just as
++	  arch/mips/boot/compressed/uart-16550.c does.
++
++	  After the compressed kernel support works, please disable this option
++	  to reduce the kernel image size and speed up the booting procedure a
++	  little.
++
+ endmenu
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 76d6930..790ddd3 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -35,8 +35,10 @@ KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) -D__ASSEMBLY__ \
+ 
+ obj-y := $(obj)/head.o $(obj)/decompress.o $(obj)/dbg.o
+ 
++ifdef CONFIG_DEBUG_ZBOOT
+ obj-$(CONFIG_SYS_SUPPORTS_ZBOOT_UART16550) += $(obj)/uart-16550.o
+ obj-$(CONFIG_MACH_ALCHEMY)		   += $(obj)/uart-alchemy.o
++endif
+ 
+ OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary -R .comment -S
+ $(obj)/vmlinux.bin: $(KBUILD_IMAGE)
+-- 
+1.6.6

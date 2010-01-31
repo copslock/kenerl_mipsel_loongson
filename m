@@ -1,53 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2010 13:26:12 +0100 (CET)
-Received: from mail-px0-f181.google.com ([209.85.216.181]:42449 "EHLO
-        mail-px0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492298Ab0AaMWl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Jan 2010 13:22:41 +0100
-Received: by mail-px0-f181.google.com with SMTP id 11so3141235pxi.22
-        for <multiple recipients>; Sun, 31 Jan 2010 04:22:40 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Jan 2010 13:26:41 +0100 (CET)
+Received: from mail-pz0-f203.google.com ([209.85.222.203]:61177 "EHLO
+        mail-pz0-f203.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492272Ab0AaM0h (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Jan 2010 13:26:37 +0100
+Received: by pzk41 with SMTP id 41so5411856pzk.0
+        for <multiple recipients>; Sun, 31 Jan 2010 04:26:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=NwxNzURbYItlb1WetSwx5yt1aojXGiNlrYUtGQcN5r8=;
-        b=JCOGexubogpl7axVJcqQOs1hGSxlo5zbNtW9GvmjUEPGXxn4RZjZExZOMalgU1ar8L
-         veFmRs049Bx08YwawJpt0LOng7Eim5aNEs08bnHBEaa2JeEbBa8PRPG8BphejU6NfPQR
-         2VnvEUHvFQSxxo01hPFXbAdwpi0HR0eU8ul8k=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=uG2qwTWn7jMLpaMm1g6ja3ZFAB/ym9jYtrsk//AdPe0=;
+        b=RgC2W8gjmqyPSIklDsyzId6zpT5SRvyARNBiQ8fI05PjMkuH+AaWDyJp3HQqQDAdPB
+         +Kg8s9VzpzTbxsuWCURM4F+Duvfny93+CHVRy8qep0TWSXHDVGaPIdAItwLZfbCxVWN6
+         n5x9s9vgvxemXAWN30S/pfYHPkzjCXx6iSJZk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=FxThFZYTjC42uWN/D5VllnnVSRhor9J1vTWPi+HmSzzaOugbpE6L2PpSX55fDK9lTB
-         LqtsTzJ+5WTApSErina8z7mITlnDmaUbAl8qw1VFTlRxSKza7GxtJO79DWf3Rq6koryE
-         xHT4JP2gKbDaacaHiCEAL8V8z0tk+Yns6Frwo=
-Received: by 10.141.213.16 with SMTP id p16mr2249465rvq.101.1264940560686;
-        Sun, 31 Jan 2010 04:22:40 -0800 (PST)
-Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id 21sm3552209pzk.3.2010.01.31.04.22.37
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=j3hFVf0w4ll1LeS2p2KP4A/KRyNWLBr/Vv+Oz3n7NoBxqcKfTNuv70DjCKThUApZwt
+         69AFecoW/y1pRxeQvkOIeCMLwETgoLdUc5GCelhp0gqsvvIPAdz8lnTINfRlJv0BIcDW
+         3EEpWESXeMF9xCsWjv4idqbN4IQctUIBL4dlg=
+Received: by 10.141.131.10 with SMTP id i10mr2273102rvn.87.1264940788966;
+        Sun, 31 Jan 2010 04:26:28 -0800 (PST)
+Received: from ?192.168.2.212? ([202.201.14.140])
+        by mx.google.com with ESMTPS id 20sm838466pzk.13.2010.01.31.04.26.26
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 31 Jan 2010 04:22:40 -0800 (PST)
+        Sun, 31 Jan 2010 04:26:28 -0800 (PST)
+Subject: Re: [PATCH v11 0/9] Loongson: YeeLoong: add platform drivers
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Pavel Machek <pavel@ucw.cz>, "Rafael J. Wysocki" <rjw@sisk.pl>,
         linux-mips@linux-mips.org, zhangfx@lemote.com
-Subject: [PATCH v11 9/9] Loongson: YeeLoong: add power_supply based battery driver
-Date:   Sun, 31 Jan 2010 20:15:55 +0800
-Message-Id: <7a00b4cea6df3f5b49f2fb1c573033dcc25470d1.1264940063.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.6
-In-Reply-To: <5eee168975db1e110be7dc554fe8f38d339cccbb.1264940063.git.wuzhangjin@gmail.com>
-References: <cover.1264940063.git.wuzhangjin@gmail.com>
- <b25d80b0d15f92b93fa3cb70c97c39cfb0d79c16.1264940063.git.wuzhangjin@gmail.com>
- <b1305e7c601d017d8c612c985cc20bb1003620f4.1264940063.git.wuzhangjin@gmail.com>
- <edfa13e4c6c10f97ba984f0fa5b65404a9468cec.1264940063.git.wuzhangjin@gmail.com>
- <d83f0e8948c0552fe26998537d984bf47ef691ae.1264940063.git.wuzhangjin@gmail.com>
- <a3f00c700de6209c22d3e526ef6869814b1483fc.1264940063.git.wuzhangjin@gmail.com>
- <c9b93c006f7dd475b3781e4917ada1f441edcaa9.1264940063.git.wuzhangjin@gmail.com>
- <f4976b3269dc1092ce495f82b4a65062f8a61bda.1264940063.git.wuzhangjin@gmail.com>
- <5eee168975db1e110be7dc554fe8f38d339cccbb.1264940063.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1264940063.git.wuzhangjin@gmail.com>
 References: <cover.1264940063.git.wuzhangjin@gmail.com>
-X-archive-position: 25786
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Sun, 31 Jan 2010 20:20:23 +0800
+Message-ID: <1264940423.21259.2.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.2 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 25787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,303 +53,63 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 19725
+X-UID: 19726
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Sun, 2010-01-31 at 20:15 +0800, Wu Zhangjin wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-Based on the old emulated APM battery driver and the power_supply class,
-this patch adds a new battery driver.
+(ooh, just re-generate the patchset with "git format-patch" but forgot
+to put the comments, here it is!)
 
-References:
-1. Documentation/power/power_supply_class.txt
-2. drivers/power/
+This patchset adds several platform specific drivers for the YeeLoong
+netbook
+made by Lemote.
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- drivers/platform/mips/Kconfig           |    1 +
- drivers/platform/mips/yeeloong_laptop.c |  223 +++++++++++++++++++++++++++++++
- 2 files changed, 224 insertions(+), 0 deletions(-)
+It is completely based on the v10 revision and with the following
+changes:
 
-diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
-index 01560b0..cdfccea 100644
---- a/drivers/platform/mips/Kconfig
-+++ b/drivers/platform/mips/Kconfig
-@@ -21,6 +21,7 @@ config LEMOTE_YEELOONG2F
- 	select HWMON
- 	select VIDEO_OUTPUT_CONTROL
- 	select INPUT_SPARSEKMAP
-+	select POWER_SUPPLY
- 	depends on INPUT
- 	help
- 	  YeeLoong netbook is a mini laptop made by Lemote, which is basically
-diff --git a/drivers/platform/mips/yeeloong_laptop.c b/drivers/platform/mips/yeeloong_laptop.c
-index 877257a..d7a310f 100644
---- a/drivers/platform/mips/yeeloong_laptop.c
-+++ b/drivers/platform/mips/yeeloong_laptop.c
-@@ -19,6 +19,7 @@
- #include <linux/input/sparse-keymap.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
-+#include <linux/power_supply.h>	/* for AC & Battery subdriver */
- 
- #include <cs5536/cs5536.h>
- 
-@@ -349,6 +350,208 @@ static void yeeloong_hwmon_exit(void)
- 	}
- }
- 
-+/* AC & Battery subdriver */
-+
-+static struct power_supply yeeloong_ac, yeeloong_bat;
-+
-+#define AC_OFFLINE          0
-+#define AC_ONLINE           1
-+
-+static int yeeloong_get_ac_props(struct power_supply *psy,
-+				enum power_supply_property psp,
-+				union power_supply_propval *val)
-+{
-+	switch (psp) {
-+	case POWER_SUPPLY_PROP_ONLINE:
-+		val->intval = ((ec_read(REG_BAT_POWER)) & BIT_BAT_POWER_ACIN) ?
-+			AC_ONLINE : AC_OFFLINE;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static enum power_supply_property yeeloong_ac_props[] = {
-+	POWER_SUPPLY_PROP_ONLINE,
-+};
-+
-+static struct power_supply yeeloong_ac = {
-+	.name = "yeeloong-ac",
-+	.type = POWER_SUPPLY_TYPE_MAINS,
-+	.properties = yeeloong_ac_props,
-+	.num_properties = ARRAY_SIZE(yeeloong_ac_props),
-+	.get_property = yeeloong_get_ac_props,
-+};
-+
-+#define BAT_CAP_CRITICAL 5
-+#define BAT_CAP_HIGH     99
-+
-+static int yeeloong_bat_get_ex_property(enum power_supply_property psp,
-+				     union power_supply_propval *val)
-+{
-+	int bat_in, curr_cap, cap_level, status, charge, health;
-+
-+	status = ec_read(REG_BAT_STATUS);
-+	bat_in = status & BIT_BAT_STATUS_IN;
-+	curr_cap = get_bat_info(RELATIVE_CAP);
-+	if (status & BIT_BAT_STATUS_FULL)
-+		curr_cap = 100;
-+
-+	switch (psp) {
-+	case POWER_SUPPLY_PROP_PRESENT:
-+		val->intval = bat_in;
-+		break;
-+	case POWER_SUPPLY_PROP_CAPACITY:
-+		val->intval = curr_cap;
-+		break;
-+	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
-+		cap_level = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
-+		if (status & BIT_BAT_STATUS_LOW) {
-+			cap_level = POWER_SUPPLY_CAPACITY_LEVEL_LOW;
-+			if (curr_cap <= BAT_CAP_CRITICAL)
-+				cap_level =
-+					POWER_SUPPLY_CAPACITY_LEVEL_CRITICAL;
-+		} else if (status & BIT_BAT_STATUS_FULL) {
-+			cap_level = POWER_SUPPLY_CAPACITY_LEVEL_FULL;
-+			if (curr_cap >= BAT_CAP_HIGH)
-+				cap_level = POWER_SUPPLY_CAPACITY_LEVEL_HIGH;
-+		} else if (status & BIT_BAT_STATUS_DESTROY)
-+			cap_level = POWER_SUPPLY_CAPACITY_LEVEL_UNKNOWN;
-+		val->intval = cap_level;
-+		break;
-+	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
-+		/* seconds */
-+		val->intval = bat_in ? (curr_cap - 3) * 54 + 142 : 00;
-+		break;
-+	case POWER_SUPPLY_PROP_STATUS:
-+		if (!bat_in)
-+			charge = POWER_SUPPLY_STATUS_UNKNOWN;
-+		else {
-+			if (status & BIT_BAT_STATUS_FULL) {
-+				val->intval = POWER_SUPPLY_STATUS_FULL;
-+				break;
-+			}
-+
-+			charge = ec_read(REG_BAT_CHARGE);
-+			if (charge & FLAG_BAT_CHARGE_DISCHARGE)
-+				charge = POWER_SUPPLY_STATUS_DISCHARGING;
-+			else if (charge & FLAG_BAT_CHARGE_CHARGE)
-+				charge = POWER_SUPPLY_STATUS_CHARGING;
-+			else
-+				charge = POWER_SUPPLY_STATUS_NOT_CHARGING;
-+		}
-+		val->intval = charge;
-+		break;
-+	case POWER_SUPPLY_PROP_HEALTH:
-+		if (!bat_in) /* no battery present */
-+			health = POWER_SUPPLY_HEALTH_UNKNOWN;
-+		else { /* Assume it is good */
-+			health = POWER_SUPPLY_HEALTH_GOOD;
-+			if (status &
-+				(BIT_BAT_STATUS_DESTROY | BIT_BAT_STATUS_LOW))
-+				health = POWER_SUPPLY_HEALTH_DEAD;
-+			if (ec_read(REG_BAT_CHARGE_STATUS) &
-+				BIT_BAT_CHARGE_STATUS_OVERTEMP)
-+				health = POWER_SUPPLY_HEALTH_OVERHEAT;
-+		}
-+		val->intval = health;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static int yeeloong_get_bat_props(struct power_supply *psy,
-+				     enum power_supply_property psp,
-+				     union power_supply_propval *val)
-+{
-+	switch (psp) {
-+	/* Fixed information */
-+	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-+		val->intval = get_bat_info(DESIGN_CAP) * 1000;	/* mV -> µV */
-+		break;
-+	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
-+		val->intval = get_bat_info(DESIGN_VOL) * 1000;	/* mA -> µA */
-+		break;
-+	case POWER_SUPPLY_PROP_CHARGE_FULL:
-+		val->intval = get_bat_info(FULLCHG_CAP) * 1000;	/* µA */
-+		break;
-+	case POWER_SUPPLY_PROP_MANUFACTURER:
-+		val->strval =
-+			(ec_read(REG_BAT_VENDOR) == FLAG_BAT_VENDOR_SANYO) ?
-+			"SANYO" : "SIMPLO";
-+		break;
-+	/* Dynamic information */
-+	case POWER_SUPPLY_PROP_CURRENT_NOW:
-+		val->intval = get_battery_current() * 1000;	/* mA -> µA */
-+		break;
-+	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-+		val->intval = get_battery_voltage() * 1000;	/* mV -> µV */
-+		break;
-+	case POWER_SUPPLY_PROP_TEMP:
-+		val->intval = get_battery_temp();	/* Celcius */
-+		break;
-+	/* Dynamic but relative information */
-+	default:
-+		return yeeloong_bat_get_ex_property(psp, val);
-+	}
-+
-+	return 0;
-+}
-+
-+static enum power_supply_property yeeloong_bat_props[] = {
-+	POWER_SUPPLY_PROP_STATUS,
-+	POWER_SUPPLY_PROP_PRESENT,
-+	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-+	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-+	POWER_SUPPLY_PROP_CURRENT_NOW,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-+	POWER_SUPPLY_PROP_HEALTH,
-+	POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW,
-+	POWER_SUPPLY_PROP_CAPACITY,
-+	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-+	POWER_SUPPLY_PROP_TEMP,
-+	POWER_SUPPLY_PROP_MANUFACTURER,
-+};
-+
-+static struct power_supply yeeloong_bat = {
-+	.name = "yeeloong-bat",
-+	.type = POWER_SUPPLY_TYPE_BATTERY,
-+	.properties = yeeloong_bat_props,
-+	.num_properties = ARRAY_SIZE(yeeloong_bat_props),
-+	.get_property = yeeloong_get_bat_props,
-+};
-+
-+static int ac_bat_initialized;
-+
-+static int yeeloong_bat_init(void)
-+{
-+	int ret;
-+
-+	ret = power_supply_register(NULL, &yeeloong_ac);
-+	if (ret)
-+		return ret;
-+	ret = power_supply_register(NULL, &yeeloong_bat);
-+	if (ret) {
-+		power_supply_unregister(&yeeloong_ac);
-+		return ret;
-+	}
-+	ac_bat_initialized = 1;
-+
-+	return 0;
-+}
-+
-+static void yeeloong_bat_exit(void)
-+{
-+	ac_bat_initialized = 0;
-+
-+	power_supply_unregister(&yeeloong_ac);
-+	power_supply_unregister(&yeeloong_bat);
-+}
-+
- /* video output subdriver */
- 
- static int lcd_video_output_get(struct output_device *od)
-@@ -623,6 +826,15 @@ static int usb0_handler(int status)
- 	return status;
- }
- 
-+static int ac_bat_handler(int status)
-+{
-+	if (ac_bat_initialized) {
-+		power_supply_changed(&yeeloong_ac);
-+		power_supply_changed(&yeeloong_bat);
-+	}
-+	return status;
-+}
-+
- static void do_event_action(int event)
- {
- 	sci_handler handler;
-@@ -668,6 +880,9 @@ static void do_event_action(int event)
- 	case EVENT_AUDIO_VOLUME:
- 		reg = REG_AUDIO_VOLUME;
- 		break;
-+	case EVENT_AC_BAT:
-+		handler = ac_bat_handler;
-+		break;
- 	default:
- 		break;
- 	}
-@@ -926,6 +1141,13 @@ static int __init yeeloong_init(void)
- 		return ret;
- 	}
- 
-+	ret = yeeloong_bat_init();
-+	if (ret) {
-+		pr_err("Fail to register yeeloong battery driver.\n");
-+		yeeloong_bat_exit();
-+		return ret;
-+	}
-+
- 	ret = yeeloong_hwmon_init();
- 	if (ret) {
- 		pr_err("Fail to register yeeloong hwmon driver.\n");
-@@ -955,6 +1177,7 @@ static void __exit yeeloong_exit(void)
- 	yeeloong_hotkey_exit();
- 	yeeloong_vo_exit();
- 	yeeloong_hwmon_exit();
-+	yeeloong_bat_exit();
- 	yeeloong_backlight_exit();
- 	platform_driver_unregister(&platform_driver);
- 
--- 
-1.6.6
+  O Rebased on the latest linux-queue git tree of Ralf.
+  O Split the EC revision related handling out of the "input/hotkey"
+driver.
+  O Rewrite the AC & Battery driver with the new power_supply interface
+as "Pavel Machek" suggested.
+
+All of them have been tested again.
+
+Best Regards,
+	Wu Zhangjin
+
+> 
+> Wu Zhangjin (9):
+>   MIPS: add subdirectory for platform extension drivers
+>   Loongson: YeeLoong: add platform driver
+>   Loongson: YeeLoong: add backlight driver
+>   Loongson: YeeLoong: add hardware monitoring driver
+>   Loongson: YeeLoong: add video output driver
+>   Loongson: YeeLoong: add suspend support
+>   Loongson: YeeLoong: add input/hotkey driver
+>   Loongson: YeeLoong: Co-operate with the revisions of EC
+>   Loongson: YeeLoong: add power_supply based battery driver
+> 
+>  arch/mips/include/asm/mach-loongson/ec_kb3310b.h |  188 ++++
+>  arch/mips/include/asm/mach-loongson/loongson.h   |    6 +
+>  arch/mips/loongson/common/cmdline.c              |    8 +
+>  arch/mips/loongson/lemote-2f/Makefile            |    2 +-
+>  arch/mips/loongson/lemote-2f/ec_kb3310b.c        |   12 +-
+>  arch/mips/loongson/lemote-2f/ec_kb3310b.h        |  188 ----
+>  arch/mips/loongson/lemote-2f/platform.c          |   39 +
+>  arch/mips/loongson/lemote-2f/pm.c                |    4 +-
+>  arch/mips/loongson/lemote-2f/reset.c             |    2 +-
+>  drivers/platform/Kconfig                         |    4 +
+>  drivers/platform/Makefile                        |    1 +
+>  drivers/platform/mips/Kconfig                    |   32 +
+>  drivers/platform/mips/Makefile                   |    5 +
+>  drivers/platform/mips/yeeloong_laptop.c          | 1192 ++++++++++++++++++++++
+>  14 files changed, 1483 insertions(+), 200 deletions(-)
+>  create mode 100644 arch/mips/include/asm/mach-loongson/ec_kb3310b.h
+>  delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h
+>  create mode 100644 arch/mips/loongson/lemote-2f/platform.c
+>  create mode 100644 drivers/platform/mips/Kconfig
+>  create mode 100644 drivers/platform/mips/Makefile
+>  create mode 100644 drivers/platform/mips/yeeloong_laptop.c
+> 

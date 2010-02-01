@@ -1,98 +1,134 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2010 05:38:54 +0100 (CET)
-Received: from mail-px0-f181.google.com ([209.85.216.181]:56630 "EHLO
-        mail-px0-f181.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491109Ab0BAEiu convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Feb 2010 05:38:50 +0100
-Received: by pxi11 with SMTP id 11so3691982pxi.22
-        for <linux-mips@linux-mips.org>; Sun, 31 Jan 2010 20:38:42 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2010 07:35:38 +0100 (CET)
+Received: from mail-iw0-f183.google.com ([209.85.223.183]:61088 "EHLO
+        mail-iw0-f183.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491852Ab0BAGfd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Feb 2010 07:35:33 +0100
+Received: by iwn13 with SMTP id 13so252669iwn.20
+        for <linux-mips@linux-mips.org>; Sun, 31 Jan 2010 22:35:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:content-type
-         :content-transfer-encoding;
-        bh=odC0p4YoMigSNBR0oOC34kx5Qno9xVqDZSn2Aivg3cg=;
-        b=c//+Iq6pZlR/J9+18rPpPpmL2kQcTVit/LIDJqAZtKJg7uwg3khXAyKZV4gLTli4qQ
-         v+lMDxsmeOCYN4GtjqADE9REGg+5okFYI/PWUrDBdws0i1oLB1fxwnSxu7Jc+4lN29rT
-         BYWflLhvZOsqwda442PnJJOnJkF2wKKi+oQqw=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=lQ7CVHceWGeOru1CECZ0uuHJX+bNelRNB5k81G4+aeQ=;
+        b=WiMzVm1UY3xXREoj1CkEOFQrDaEthR+2H+tw5svfC87a2l/7NiL7yH7AG7ZAFMUYRJ
+         nyksI4TMAR71Zxf9K8pLUwWwcm1stntC/7KugD9V8Zmuzc/Ywt0ETY0yF1etQKY/lWJB
+         Y+bHdfaqy/o7A/TGoEIeB6ZAB92+mtwEIAe0Y=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :content-type:content-transfer-encoding;
-        b=CLSQoYjvWFJZlAzuevCGFhzqkkLqD2eU/oJSRj4RTeqIoAbdqrBL6035mcTFRcEAGm
-         Vtft1IABds4BkIj9+LtAh9qVeY6PzC3V9Q+X7w7UeVbnln5gStI8ZZImLAHypUx/yTM1
-         giRMX2rI36SVp4VUDmpuFBj5DfsYWdUd1PkSw=
-MIME-Version: 1.0
-Received: by 10.140.82.42 with SMTP id f42mr2818896rvb.163.1264999122356; Sun, 
-        31 Jan 2010 20:38:42 -0800 (PST)
-In-Reply-To: <20100129155303.GB3376@woodpecker.gentoo.org>
-References: <38dc7fce1001290227v746c0a3dp4b3d81a58e73cf83@mail.gmail.com>
-         <20100129155303.GB3376@woodpecker.gentoo.org>
-Date:   Mon, 1 Feb 2010 13:38:42 +0900
-Message-ID: <38dc7fce1001312038n6238ce9bga92df61ba04317dd@mail.gmail.com>
-Subject: Re: GCC 4.4.2(mips) with -mplt option
-From:   YD <ydgoo9@gmail.com>
-To:     YD <ydgoo9@gmail.com>, linux-mips <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <ydgoo9@gmail.com>
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=wrdWfZtygx4ykurAyriu/o/qOXY9rtHU2BomiPeQIyb0JWmHKWzgLkZCzopGPbY66g
+         sjrb/d/K+697bdxcyeUgI+xdU0/EM3Kqqy/fd4bFHY2emZNEXnuu1pOJ3DK332lHp9RP
+         ZrGoN0GI5m/S09bhBsWYBQF/vxbGR/CgSrBpE=
+Received: by 10.231.148.83 with SMTP id o19mr279622ibv.39.1265006125863;
+        Sun, 31 Jan 2010 22:35:25 -0800 (PST)
+Received: from ?192.168.2.212? ([202.201.14.140])
+        by mx.google.com with ESMTPS id 21sm5141367iwn.10.2010.01.31.22.35.23
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 31 Jan 2010 22:35:25 -0800 (PST)
+Subject: Re: [PATCH 1/3] MIPS: AR7 whitespace hacking
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Alexander Clouter <alex@digriz.org.uk>
+Cc:     linux-mips@linux-mips.org
+In-Reply-To: <bq2h37-ch6.ln1@chipmunk.wormnet.eu>
+References: <bq2h37-ch6.ln1@chipmunk.wormnet.eu>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Mon, 01 Feb 2010 14:29:17 +0800
+Message-ID: <1265005758.31984.8.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.2 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25797
+X-archive-position: 25798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ydgoo9@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I saw the toolchain for MIPS from broadcom(GCC-4.2.0, uClibc-0.9.29)
-does support -mplt option.
+On Sun, 2010-01-31 at 19:38 +0000, Alexander Clouter wrote:
+> MIPS: AR7 whitespace hacking
+> 
+> Signed-off-by: Alexander Clouter <alex@digriz.org.uk>
+[...]
+>  void __init prom_free_prom_memory(void)
+> diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+> index c591f69..76a358e 100644
+> --- a/arch/mips/ar7/platform.c
+> +++ b/arch/mips/ar7/platform.c
+> @@ -42,39 +42,42 @@
+>  #include <asm/mach-ar7/gpio.h>
+>  #include <asm/mach-ar7/prom.h>
+>  
+> +/*****************************************************************************
+> + * VLYNQ Bus
+> + ****************************************************************************/
 
-I assumed they patched some code for uClibc and GCC also.
+Why not simply use:
 
-I hope I could find some patch like it. but I did not find yet.
+/* VLYNQ Bus */
 
+You have deleted lots of whitespaces, but added more *.
 
-On Sat, Jan 30, 2010 at 12:53 AM, Zhang Le <r0bertz@gentoo.org> wrote:
-> On 19:27 Fri 29 Jan     , YD wrote:
->> Hello,
->>
->> I have built the toolchain using the buildroot ( GCC 4.4.2 with
->> uClibc-0.9.30.1 )
->
-> I think you need to check if uClibc supports this feature.
-> -mplt need support from libc, specifically dynamic loader, ld.so.
->
->>
->> Everything works well but when I compiled with -mplt option, always it
->> fails with Segmentation fault.
->>
->> I read some articles that with -mplt option, preformance will be 10%
->> highter than without plt option.
->>
->> I don't know why this fails everytime. please help me...
->>
->> #include <stdio.h>
->> int main()
->> {
->>  printf("Hello world \n"); return 0;
->> }
->>
->> #mipsel-linux-gcc  -o a a.c
->>  Hello world
->> #mipsel-linux-gcc -mplt -o a a.c
->>  Segmentation fault
->> #mipsel-linux-gcc -mplt -no-shared -o a a.c
->>  Segmentation fault
->> #mipsel-linux-gcc -mplt -no-shared -mabicalls -o a a.c
->>  Segmentation fault
->
-> And -no-shared is actually not needed
-> http://gcc.gnu.org/ml/gcc/2008-12/msg00010.html
->
-> You should be able to verify this by 'mipsel-linux-gcc -v'
->
-> Zhang, Le
->
+[...]
+> +/*****************************************************************************
+> + * Flash
+> + ****************************************************************************/
+[...]
+> +
+> +/*****************************************************************************
+> + * Ethernet
+> + ****************************************************************************/
+[...]
+> +
+> +/*****************************************************************************
+> + * USB
+> + ****************************************************************************/
+> +
+[...]
+>  
+> +/*****************************************************************************
+> + * LEDs
+> + ****************************************************************************/
+[...]
+> +/*****************************************************************************
+> + * Watchdog
+> + ****************************************************************************/
+[...]
+> +
+> +/*****************************************************************************
+> + * Init
+> + ****************************************************************************/
+[...]
+>  
+> @@ -70,7 +71,6 @@ console_initcall(ar7_init_console);
+>   * Initializes basic routines and structures pointers, memory size (as
+>   * given by the bios and saves the command line.
+>   */
+> -
+>  void __init plat_mem_setup(void)
+>  {
+>  	unsigned long io_base;
+> @@ -88,6 +88,5 @@ void __init plat_mem_setup(void)
+>  	prom_meminit();
+>  
+>  	printk(KERN_INFO "%s, ID: 0x%04x, Revision: 0x%02x\n",
+> -					get_system_type(),
+> -		ar7_chip_id(), ar7_chip_rev());
+> +			get_system_type(), ar7_chip_id(), ar7_chip_rev());
+>  }
+
+Perhaps you can use pr_info() instead of printk(KERN_INFO) too, of
+course, if there are more printk(KERN_...), you can replace them by
+pr_xxx defined in include/linux/kernel.h
+
+Best Regards,
+	Wu Zhangjin

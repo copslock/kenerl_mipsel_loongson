@@ -1,66 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2010 03:18:52 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:42434 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1493297Ab0BACSo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Feb 2010 03:18:44 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o112Iu6R009066;
-        Mon, 1 Feb 2010 03:18:57 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o112ItGc009062;
-        Mon, 1 Feb 2010 03:18:55 +0100
-Date:   Mon, 1 Feb 2010 03:18:54 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Guenter Roeck <guenter.roeck@ericsson.com>
-Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: Kernel crash in 2.6.32.6 / bcm1480 with 16k page size
-Message-ID: <20100201021854.GA8572@linux-mips.org>
-References: <20100129151220.GA3882@ericsson.com>
- <4B6316D2.1060006@caviumnetworks.com>
- <20100129180619.GA20113@linux-mips.org>
- <20100129183926.GB9895@ericsson.com>
- <4B632F60.4000604@caviumnetworks.com>
- <20100129192532.GA11123@ericsson.com>
- <4B6336F1.8070208@caviumnetworks.com>
- <20100129195801.GC11123@ericsson.com>
- <alpine.LFD.2.00.1001310907320.31764@eddie.linux-mips.org>
- <20100131165503.GA18523@ericsson.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2010 05:38:54 +0100 (CET)
+Received: from mail-px0-f181.google.com ([209.85.216.181]:56630 "EHLO
+        mail-px0-f181.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491109Ab0BAEiu convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Feb 2010 05:38:50 +0100
+Received: by pxi11 with SMTP id 11so3691982pxi.22
+        for <linux-mips@linux-mips.org>; Sun, 31 Jan 2010 20:38:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:content-type
+         :content-transfer-encoding;
+        bh=odC0p4YoMigSNBR0oOC34kx5Qno9xVqDZSn2Aivg3cg=;
+        b=c//+Iq6pZlR/J9+18rPpPpmL2kQcTVit/LIDJqAZtKJg7uwg3khXAyKZV4gLTli4qQ
+         v+lMDxsmeOCYN4GtjqADE9REGg+5okFYI/PWUrDBdws0i1oLB1fxwnSxu7Jc+4lN29rT
+         BYWflLhvZOsqwda442PnJJOnJkF2wKKi+oQqw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :content-type:content-transfer-encoding;
+        b=CLSQoYjvWFJZlAzuevCGFhzqkkLqD2eU/oJSRj4RTeqIoAbdqrBL6035mcTFRcEAGm
+         Vtft1IABds4BkIj9+LtAh9qVeY6PzC3V9Q+X7w7UeVbnln5gStI8ZZImLAHypUx/yTM1
+         giRMX2rI36SVp4VUDmpuFBj5DfsYWdUd1PkSw=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20100131165503.GA18523@ericsson.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.140.82.42 with SMTP id f42mr2818896rvb.163.1264999122356; Sun, 
+        31 Jan 2010 20:38:42 -0800 (PST)
+In-Reply-To: <20100129155303.GB3376@woodpecker.gentoo.org>
+References: <38dc7fce1001290227v746c0a3dp4b3d81a58e73cf83@mail.gmail.com>
+         <20100129155303.GB3376@woodpecker.gentoo.org>
+Date:   Mon, 1 Feb 2010 13:38:42 +0900
+Message-ID: <38dc7fce1001312038n6238ce9bga92df61ba04317dd@mail.gmail.com>
+Subject: Re: GCC 4.4.2(mips) with -mplt option
+From:   YD <ydgoo9@gmail.com>
+To:     YD <ydgoo9@gmail.com>, linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <ydgoo9@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25796
+X-archive-position: 25797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ydgoo9@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jan 31, 2010 at 08:55:03AM -0800, Guenter Roeck wrote:
+I saw the toolchain for MIPS from broadcom(GCC-4.2.0, uClibc-0.9.29)
+does support -mplt option.
 
-> >  The size of the address space can be probed via CP0 registers (for MIPS 
-> > architecture processors that is).  No need to add any CPU dependencies 
-> > (except from legacy 64-bit MIPS processors perhaps).
-> > 
-> That would help. Do you happen to know which CP0 register(s) to look for ? 
-> I browsed through the MIPS 5K and 20Kc manuals, but didn't find it.
+I assumed they patched some code for uClibc and GCC also.
 
-Write a value with all bits set to c0_entryhi, then read it back again.
-The set bits in the VPN2 bitfield will indicate the size of the virtual
-address range supported.  The MIPS64 documentation also calls this value
-SEGBITS.  The nice thing about this probe is that it is supported for
-all 64-bit MIPS processors except the R8000 which has an entirely different
-TLB scheme anyway.
+I hope I could find some patch like it. but I did not find yet.
 
-Similarly it is possible to probe the physical address range in either
-c0_entrylo0 or c0_entrylo1.  This is also of interest on 32-bit processors.
 
-  Ralf
+On Sat, Jan 30, 2010 at 12:53 AM, Zhang Le <r0bertz@gentoo.org> wrote:
+> On 19:27 Fri 29 Jan     , YD wrote:
+>> Hello,
+>>
+>> I have built the toolchain using the buildroot ( GCC 4.4.2 with
+>> uClibc-0.9.30.1 )
+>
+> I think you need to check if uClibc supports this feature.
+> -mplt need support from libc, specifically dynamic loader, ld.so.
+>
+>>
+>> Everything works well but when I compiled with -mplt option, always it
+>> fails with Segmentation fault.
+>>
+>> I read some articles that with -mplt option, preformance will be 10%
+>> highter than without plt option.
+>>
+>> I don't know why this fails everytime. please help me...
+>>
+>> #include <stdio.h>
+>> int main()
+>> {
+>>  printf("Hello world \n"); return 0;
+>> }
+>>
+>> #mipsel-linux-gcc  -o a a.c
+>>  Hello world
+>> #mipsel-linux-gcc -mplt -o a a.c
+>>  Segmentation fault
+>> #mipsel-linux-gcc -mplt -no-shared -o a a.c
+>>  Segmentation fault
+>> #mipsel-linux-gcc -mplt -no-shared -mabicalls -o a a.c
+>>  Segmentation fault
+>
+> And -no-shared is actually not needed
+> http://gcc.gnu.org/ml/gcc/2008-12/msg00010.html
+>
+> You should be able to verify this by 'mipsel-linux-gcc -v'
+>
+> Zhang, Le
+>

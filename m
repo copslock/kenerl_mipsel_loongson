@@ -1,107 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2010 23:33:23 +0100 (CET)
-Received: from imr2.ericy.com ([198.24.6.3]:33254 "EHLO imr2.ericy.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Feb 2010 23:37:45 +0100 (CET)
+Received: from kroah.org ([198.145.64.141]:59963 "EHLO coco.kroah.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492687Ab0BAWdQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Feb 2010 23:33:16 +0100
-Received: from eusaamw0706.eamcs.ericsson.se ([147.117.20.31])
-        by imr2.ericy.com (8.13.1/8.13.1) with ESMTP id o11MYCjT020938;
-        Mon, 1 Feb 2010 16:34:12 -0600
-Received: from [155.53.128.103] (147.117.20.212) by
- eusaamw0706.eamcs.ericsson.se (147.117.20.91) with Microsoft SMTP Server id
- 8.1.375.2; Mon, 1 Feb 2010 17:33:06 -0500
-Subject: Re: [PATCH v2] Virtual memory size detection for 64 bit MIPS CPUs
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-Reply-To: guenter.roeck@ericsson.com
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <4B6751D8.7080805@caviumnetworks.com>
-References: <1265058019-21484-1-git-send-email-guenter.roeck@ericsson.com>
-         <4B674ADD.1050306@caviumnetworks.com>
-         <1265061872.5825.71.camel@groeck-laptop>
-         <4B6751D8.7080805@caviumnetworks.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: Ericsson
-Date:   Mon, 1 Feb 2010 14:34:49 -0800
-Message-ID: <1265063689.5825.86.camel@groeck-laptop>
+        id S1492746Ab0BAWhl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 1 Feb 2010 23:37:41 +0100
+Received: from localhost (c-98-246-45-209.hsd1.or.comcast.net [98.246.45.209])
+        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by coco.kroah.org (Postfix) with ESMTPSA id 5181148A11;
+        Mon,  1 Feb 2010 14:37:38 -0800 (PST)
+Date:   Mon, 1 Feb 2010 14:29:19 -0800
+From:   Greg KH <greg@kroah.com>
+To:     Wolfram Sang <w.sang@pengutronix.de>
+Cc:     Maxime Bizon <mbizon@freebox.fr>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        linux-serial@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] bcm63xx_uart: allow more than one uart to be
+ registered.
+Message-ID: <20100201222919.GD19294@kroah.com>
+References: <1264873377-28479-1-git-send-email-mbizon@freebox.fr>
+ <1264873377-28479-3-git-send-email-mbizon@freebox.fr>
+ <20100130182343.GA6971@pengutronix.de>
 MIME-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 8bit
-Return-Path: <guenter.roeck@ericsson.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100130182343.GA6971@pengutronix.de>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25830
+X-archive-position: 25831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: greg@kroah.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2010-02-01 at 17:12 -0500, David Daney wrote:
-> Guenter Roeck wrote:
-> > On Mon, 2010-02-01 at 16:42 -0500, David Daney wrote:
-> >> Guenter Roeck wrote:
-> >> [...]
-> >>>  
-> >>> +static inline void cpu_set_vmbits(struct cpuinfo_mips *c)
-> >>> +{
-> >>> +	if (cpu_has_64bits) {
-> >>> +		unsigned long zbits;
-> >>> +
-> >>> +		asm volatile(".set mips64\n"
-> >>> +			     "and %0, 0\n"
-> >>> +			     "dsubu %0, 1\n"
-> >>> +			     "dmtc0 %0, $10, 0\n"
-> >>> +			     "dmfc0 %0, $10, 0\n"
-> >>> +			     "dsll %0, %0, 2\n"
-> >>> +			     "dsra %0, %0, 2\n"
-> >>> +			     "dclz %0, %0\n"
-> >>> +			     ".set mips0\n"
-> >>> +			     : "=r" (zbits));
-> >>> +		c->vmbits = 64 - zbits;
-> >>> +	} else
-> >>> +		c->vmbits = 32;
-> >>> +}
-> >>> +
-> >> It should be possible to express this in 'pure' C using 
-> >> read_c0_entryhi()/write_c0_entryhi(), also you need to be sure you are 
+On Sat, Jan 30, 2010 at 07:23:43PM +0100, Wolfram Sang wrote:
+> On Sat, Jan 30, 2010 at 06:42:57PM +0100, Maxime Bizon wrote:
+> > The bcm6358 CPU has two uarts, make it possible to use the second one.
 > > 
-> > Sure, no problem.
+> > Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+> > ---
+> >  drivers/serial/bcm63xx_uart.c |    5 +++--
+> >  1 files changed, 3 insertions(+), 2 deletions(-)
 > > 
-> >> not writing 1s to any reserved bits of the register.
-> >>
-> > That may be tricky, since the upper bits are reserved in some
-> > architectures. For example, the 20Kc core specification says that bits
-> > 61:40 are reserved and must be written with 0.
-> > 
-> > I can write, say, 0x3fffffffffff0000 to avoid writing into lower
-> > reserved bits, but that won't help for any upper reserved bits. Would
-> > that be acceptable / better ?
+> > diff --git a/drivers/serial/bcm63xx_uart.c b/drivers/serial/bcm63xx_uart.c
+> > index f78ede8..6ab959a 100644
+> > --- a/drivers/serial/bcm63xx_uart.c
+> > +++ b/drivers/serial/bcm63xx_uart.c
+> > @@ -35,7 +35,7 @@
+> >  #include <bcm63xx_regs.h>
+> >  #include <bcm63xx_io.h>
+> >  
+> > -#define BCM63XX_NR_UARTS	1
+> > +#define BCM63XX_NR_UARTS	2
+> >  
+> >  static struct uart_port ports[BCM63XX_NR_UARTS];
+> >  
+> > @@ -784,7 +784,7 @@ static struct uart_driver bcm_uart_driver = {
+> >  	.dev_name	= "ttyS",
+> >  	.major		= TTY_MAJOR,
+> >  	.minor		= 64,
+> > -	.nr		= 1,
+> > +	.nr		= 2,
 > 
-> 
-> The MIPS64® Privileged Resource Architecture manual might be a better 
-> reference.
-> 
-Unfortunately, the download link for that manual on mips.com seems to be
-broken.
+> Err, why not using the #define here?
 
-> I would set 1s only in bits 13-63 (the VPN2 and R fields).  We don't 
-> support and don't really care about VPN2X, the upper bits are really the 
-> only ones of interest here.
-> 
-Ok, I'll do that.
+Good idea, I've tweaked the patch to do that.
 
-This is the new code:
+thanks,
 
-static inline void cpu_set_vmbits(struct cpuinfo_mips *c)
-{
-        if (cpu_has_64bits) {
-                write_c0_entryhi(0xfffffffffffff000ULL);
-                c->vmbits = __fls(read_c0_entryhi() &
-0x3ffffffffffff000ULL) + 1;
-        } else
-                c->vmbits = 32;
-}
-
-Guenter
+greg k-h

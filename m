@@ -1,124 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2010 11:54:06 +0100 (CET)
-Received: from mgate.redback.com ([155.53.3.41]:23982 "EHLO mgate.redback.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492089Ab0BBKx6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Feb 2010 11:53:58 +0100
-X-IronPort-AV: E=Sophos;i="4.49,389,1262592000"; 
-   d="scan'208";a="7759509"
-Received: from prattle.redback.com ([155.53.12.9])
-  by mgate.redback.com with ESMTP; 02 Feb 2010 02:53:56 -0800
-Received: from localhost (localhost [127.0.0.1])
-        by prattle.redback.com (Postfix) with ESMTP id 596251539A9C;
-        Tue,  2 Feb 2010 02:53:56 -0800 (PST)
-Received: from prattle.redback.com ([127.0.0.1])
- by localhost (prattle [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 07551-09; Tue,  2 Feb 2010 02:53:56 -0800 (PST)
-Received: from localhost (rbos-pc-13.lab.redback.com [10.12.11.133])
-        by prattle.redback.com (Postfix) with ESMTP id 485A81539A9B;
-        Tue,  2 Feb 2010 02:53:52 -0800 (PST)
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-To:     linux-mips@linux-mips.org
-Cc:     Guenter Roeck <guenter.roeck@ericsson.com>
-Subject: [PATCH v5] Virtual memory size detection for 64 bit MIPS CPUs
-Date:   Tue,  2 Feb 2010 02:37:41 -0800
-Message-Id: <1265107061-18355-1-git-send-email-guenter.roeck@ericsson.com>
-X-Mailer: git-send-email 1.6.0.4
-Return-Path: <prvs=6426729b5=groeck@redback.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2010 12:42:51 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:46597 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492230Ab0BBLmr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 2 Feb 2010 12:42:47 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o12Bh11Z011980;
+        Tue, 2 Feb 2010 12:43:02 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o12Bgx9E011972;
+        Tue, 2 Feb 2010 12:42:59 +0100
+Date:   Tue, 2 Feb 2010 12:42:59 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Guenter Roeck <guenter.roeck@ericsson.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH v3] Virtual memory size detection for 64 bit MIPS CPUs
+Message-ID: <20100202114259.GA10837@linux-mips.org>
+References: <1265064686-31278-1-git-send-email-guenter.roeck@ericsson.com>
+ <4B676755.10600@caviumnetworks.com>
+ <20100202001026.GA6883@ericsson.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100202001026.GA6883@ericsson.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25844
+X-archive-position: 25845
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Linux kernel 2.6.32 and later allocates memory from the top of virtual memory
-space.
+On Mon, Feb 01, 2010 at 04:10:26PM -0800, Guenter Roeck wrote:
 
-This patch implements virtual memory size detection for 64 bit MIPS CPUs
-to avoid resulting crashes.
+> > > +	if (cpu_has_64bits) {
+> > > +		write_c0_entryhi(0xfffffffffffff000ULL);
+> > 
+> > macro indicated that we need to avoid hazards here on R4000.
 
-Signed-off-by: Guenter Roeck <guenter.roeck@ericsson.com>
----
- arch/mips/include/asm/cpu-features.h |    3 +++
- arch/mips/include/asm/cpu-info.h     |    1 +
- arch/mips/include/asm/pgtable-64.h   |    4 +++-
- arch/mips/kernel/cpu-probe.c         |   12 ++++++++++++
- 4 files changed, 19 insertions(+), 1 deletions(-)
+A MTC0 instruction on an R4000 writes EntryHi on pipeline stage 7 but
+will read from the same register on stage 4 which leaves a window of
+2 instructions, that is 2 NOP instructions needed.
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 1f4df64..284eb55 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -209,6 +209,9 @@
- # ifndef cpu_has_64bit_addresses
- # define cpu_has_64bit_addresses	1
- # endif
-+# ifndef cpu_vmbits
-+# define cpu_vmbits cpu_data[0].vmbits
-+# endif
- #endif
- 
- #if defined(CONFIG_CPU_MIPSR2_IRQ_VI) && !defined(cpu_has_vint)
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index 1260443..3c694bc 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -58,6 +58,7 @@ struct cpuinfo_mips {
- 	struct cache_desc	tcache;	/* Tertiary/split secondary cache */
- 	int			srsets;	/* Shadow register sets */
- 	int			core;	/* physical core number */
-+	int			vmbits;	/* Virtual memory size in bits */
- #if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
- 	/*
- 	 * In the MIPS MT "SMTC" model, each TC is considered
-diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
-index 9cd5089..8eda30b 100644
---- a/arch/mips/include/asm/pgtable-64.h
-+++ b/arch/mips/include/asm/pgtable-64.h
-@@ -110,7 +110,9 @@
- #define VMALLOC_START		MAP_BASE
- #define VMALLOC_END	\
- 	(VMALLOC_START + \
--	 PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE - (1UL << 32))
-+	 min(PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE, \
-+	     (1UL << cpu_vmbits)) - (1UL << 32))
-+
- #if defined(CONFIG_MODULES) && defined(KBUILD_64BIT_SYM32) && \
- 	VMALLOC_START != CKSSEG
- /* Load modules into 32bit-compatible segment. */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 7a51866..21dc4b8 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -282,6 +282,16 @@ static inline int __cpu_has_fpu(void)
- 	return ((cpu_get_fpu_id() & 0xff00) != FPIR_IMP_NONE);
- }
- 
-+static inline void cpu_set_vmbits(struct cpuinfo_mips *c)
-+{
-+	if (cpu_has_64bits) {
-+		write_c0_entryhi(0x3ffffffffffff000ULL);
-+		back_to_back_c0_hazard();
-+		c->vmbits = fls64(read_c0_entryhi() & 0x3ffffffffffff000ULL);
-+	} else
-+		c->vmbits = 32;
-+}
-+
- #define R4K_OPTS (MIPS_CPU_TLB | MIPS_CPU_4KEX | MIPS_CPU_4K_CACHE \
- 		| MIPS_CPU_COUNTER)
- 
-@@ -967,6 +977,8 @@ __cpuinit void cpu_probe(void)
- 		c->srsets = ((read_c0_srsctl() >> 26) & 0x0f) + 1;
- 	else
- 		c->srsets = 1;
-+
-+	cpu_set_vmbits(c);
- }
- 
- __cpuinit void cpu_report(void)
--- 
-1.6.0.4
+> > Perhaps adding:
+> > 
+> >   	back_to_back_c0_hazard();
+> > 
+> Compiler already added a nop, so I thought it wasn't necessary.
+> Doesn't hurt either, so I'll put it in.
+
+This probe is needed as per MIPSxx architecture spec and several CPUs will
+missbehave without it.  The 74K which of course is 32-bit but it
+illustrates the issue might even issue these instructions out of order.
+back_to_back_c0_hazard will expand into a suitable sequence to handle
+the pipeline hazard.  And we can't trust on the compiler doing the right
+thing here; as explained above we might need multiple nops and some CPUs
+will need other instructions to deal with the hazard, for example a number
+of SSNOPs or an EHB instruction.
+
+  Ralf

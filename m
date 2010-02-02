@@ -1,124 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2010 01:19:14 +0100 (CET)
-Received: from mgate.redback.com ([155.53.3.41]:18405 "EHLO mgate.redback.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492422Ab0BBATK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Feb 2010 01:19:10 +0100
-X-IronPort-AV: E=Sophos;i="4.49,386,1262592000"; 
-   d="scan'208";a="7753395"
-Received: from prattle.redback.com ([155.53.12.9])
-  by mgate.redback.com with ESMTP; 01 Feb 2010 16:19:07 -0800
-Received: from localhost (localhost [127.0.0.1])
-        by prattle.redback.com (Postfix) with ESMTP id 2A670E3A68A;
-        Mon,  1 Feb 2010 16:19:07 -0800 (PST)
-Received: from prattle.redback.com ([127.0.0.1])
- by localhost (prattle [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 06350-09; Mon,  1 Feb 2010 16:19:07 -0800 (PST)
-Received: from localhost (rbos-pc-13.lab.redback.com [10.12.11.133])
-        by prattle.redback.com (Postfix) with ESMTP id 18DF5E3A687;
-        Mon,  1 Feb 2010 16:19:05 -0800 (PST)
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-To:     linux-mips@linux-mips.org
-Cc:     Guenter Roeck <guenter.roeck@ericsson.com>
-Subject: [PATCH v4] Virtual memory size detection for 64 bit MIPS CPUs
-Date:   Mon,  1 Feb 2010 16:02:59 -0800
-Message-Id: <1265068979-12052-1-git-send-email-guenter.roeck@ericsson.com>
-X-Mailer: git-send-email 1.6.0.4
-Return-Path: <prvs=6426729b5=groeck@redback.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Feb 2010 02:02:17 +0100 (CET)
+Received: from mail-ww0-f49.google.com ([74.125.82.49]:57770 "EHLO
+        mail-ww0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492839Ab0BBBCJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Feb 2010 02:02:09 +0100
+Received: by wwg30 with SMTP id 30so658343wwg.36
+        for <linux-mips@linux-mips.org>; Mon, 01 Feb 2010 17:02:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=GaZLB6Dk3RWy4wgi2SdGToY8vYB/Pif7qxiBw6Sk2Ns=;
+        b=vus1cn80kwnQV4HvmmvVCZymu74YmncAyw7jhGw3LkiM2Tin2lFzaoGpasdiv9UwWX
+         goxyS3i+MHDCggLPBoesb1cue4HwRwm3KtwLi/OBXb43hKJXJCTP3efki7k8CNPGK7Yc
+         7ap42Fpp+DqDAH0reB14vnoNjiB2Kv+2W5ZG4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=IaenIMO/ATerVVLriSG3WBqtDagqT8qVkZwgSous2mNxVdNLQB/bfTa3MMQ7G5pwm+
+         Q+BBBjO/LMHzUus8Pt/UfSZXca5szwiXOGbzV/LD/xzRqhY5XQOl/Oo3XmGNkIbnIuC9
+         QLLxj46OQw9kdAoJgJ9YOxthmxnnFCXpxD02Q=
+MIME-Version: 1.0
+Received: by 10.216.93.18 with SMTP id k18mr2960331wef.218.1265072524252; Mon, 
+        01 Feb 2010 17:02:04 -0800 (PST)
+Date:   Mon, 1 Feb 2010 19:02:04 -0600
+Message-ID: <83f0348b1002011702j305c726ek18e006dc7c4087aa@mail.gmail.com>
+Subject: Problems compiling old code
+From:   Ed Okerson <ed.okerson@gmail.com>
+To:     linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <ed.okerson@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25837
+X-archive-position: 25838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: ed.okerson@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Linux kernel 2.6.32 and later allocates memory from the top of virtual memory
-space.
+I just inherited some old code that was previously being built on
+Cygwin with a very old sde-gcc (2.96).  When I attempt to build it on
+a Linux machine using a more recent cross compiler and toolchain, I
+get the following errors:
 
-This patch implements virtual memory size detection for 64 bit MIPS CPUs
-to avoid resulting crashes.
+mipsel-linux-uclibc-objcopy --output-target=binary prog prog.bin
+BFD: Warning: Writing section `.text' to huge (ie negative) file
+offset 0x86bfff4c.
+BFD: Warning: Writing section `.rodata' to huge (ie negative) file
+offset 0x86c3e97c.
+BFD: Warning: Writing section `.data.rel.ro' to huge (ie negative)
+file offset 0x86c479ec.
+BFD: Warning: Writing section `.data' to huge (ie negative) file
+offset 0x86c4896c.
+BFD: Warning: Writing section `.got' to huge (ie negative) file offset
+0x86c4d35c.
+BFD: Warning: Writing section `.sdata' to huge (ie negative) file
+offset 0x86c4d84c.
+mipsel-linux-uclibc-objcopy: prog.bin: File truncated
 
-Signed-off-by: Guenter Roeck <guenter.roeck@ericsson.com>
----
- arch/mips/include/asm/cpu-features.h |    3 +++
- arch/mips/include/asm/cpu-info.h     |    1 +
- arch/mips/include/asm/pgtable-64.h   |    4 +++-
- arch/mips/kernel/cpu-probe.c         |   12 ++++++++++++
- 4 files changed, 19 insertions(+), 1 deletions(-)
+Is there a simple solution to this?  My Google skills must be waning
+as I was unable to find anything helpful. :(
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 1f4df64..284eb55 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -209,6 +209,9 @@
- # ifndef cpu_has_64bit_addresses
- # define cpu_has_64bit_addresses	1
- # endif
-+# ifndef cpu_vmbits
-+# define cpu_vmbits cpu_data[0].vmbits
-+# endif
- #endif
- 
- #if defined(CONFIG_CPU_MIPSR2_IRQ_VI) && !defined(cpu_has_vint)
-diff --git a/arch/mips/include/asm/cpu-info.h b/arch/mips/include/asm/cpu-info.h
-index 1260443..3c694bc 100644
---- a/arch/mips/include/asm/cpu-info.h
-+++ b/arch/mips/include/asm/cpu-info.h
-@@ -58,6 +58,7 @@ struct cpuinfo_mips {
- 	struct cache_desc	tcache;	/* Tertiary/split secondary cache */
- 	int			srsets;	/* Shadow register sets */
- 	int			core;	/* physical core number */
-+	int			vmbits;	/* Virtual memory size in bits */
- #if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
- 	/*
- 	 * In the MIPS MT "SMTC" model, each TC is considered
-diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
-index 9cd5089..259ec58 100644
---- a/arch/mips/include/asm/pgtable-64.h
-+++ b/arch/mips/include/asm/pgtable-64.h
-@@ -110,7 +110,9 @@
- #define VMALLOC_START		MAP_BASE
- #define VMALLOC_END	\
- 	(VMALLOC_START + \
--	 PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE - (1UL << 32))
-+	 min(PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE, \
-+	     (1UL<<cpu_vmbits)) - (1UL << 32))
-+
- #if defined(CONFIG_MODULES) && defined(KBUILD_64BIT_SYM32) && \
- 	VMALLOC_START != CKSSEG
- /* Load modules into 32bit-compatible segment. */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 7a51866..ac9aca1 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -282,6 +282,16 @@ static inline int __cpu_has_fpu(void)
- 	return ((cpu_get_fpu_id() & 0xff00) != FPIR_IMP_NONE);
- }
- 
-+static inline void cpu_set_vmbits(struct cpuinfo_mips *c)
-+{
-+	if (cpu_has_64bits) {
-+		write_c0_entryhi(0xfffffffffffff000ULL);
-+		back_to_back_c0_hazard();
-+		c->vmbits = fls64(read_c0_entryhi() & 0x3ffffffffffff000ULL);
-+	} else
-+		c->vmbits = 32;
-+}
-+
- #define R4K_OPTS (MIPS_CPU_TLB | MIPS_CPU_4KEX | MIPS_CPU_4K_CACHE \
- 		| MIPS_CPU_COUNTER)
- 
-@@ -967,6 +977,8 @@ __cpuinit void cpu_probe(void)
- 		c->srsets = ((read_c0_srsctl() >> 26) & 0x0f) + 1;
- 	else
- 		c->srsets = 1;
-+
-+	cpu_set_vmbits(c);
- }
- 
- __cpuinit void cpu_report(void)
--- 
-1.6.0.4
+Ed Okerson

@@ -1,57 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 12:38:06 +0100 (CET)
-Received: from bby1mta02.pmc-sierra.com ([216.241.235.117]:54059 "EHLO
-        bby1mta02.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492308Ab0BCLiC convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Feb 2010 12:38:02 +0100
-Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
-        by localhost (Postfix) with SMTP id AB8168E00A8;
-        Wed,  3 Feb 2010 03:37:49 -0800 (PST)
-Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
-        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id 9ED538E0090;
-        Wed,  3 Feb 2010 03:37:49 -0800 (PST)
-Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.158]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 3 Feb 2010 03:38:55 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 13:33:24 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:59764 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491050Ab0BCMdU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Feb 2010 13:33:20 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o13CXW7t006907;
+        Wed, 3 Feb 2010 13:33:33 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o13CXVvB006904;
+        Wed, 3 Feb 2010 13:33:31 +0100
+Date:   Wed, 3 Feb 2010 13:33:31 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Cached Base address difference.
+Message-ID: <20100203123331.GB20375@linux-mips.org>
+References: <1265015455-32553-1-git-send-email-wuzhangjin@gmail.com>
+ <b2b2f2321002011903m7a090481m52d84a664beb5468@mail.gmail.com>
+ <20100203012934.GA20375@linux-mips.org>
+ <A7DEA48C84FD0B48AAAE33F328C0201404809DE0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: Cached Base address difference.
-Date:   Wed, 3 Feb 2010 03:34:25 -0800
-Message-ID: <A7DEA48C84FD0B48AAAE33F328C0201404809DE0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <20100203012934.GA20375@linux-mips.org>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Cached Base address difference.
-Thread-Index: AcqkcGoVEhLVXra2RxuiaAF6KL+WnQAUuWPQ
-References: <1265015455-32553-1-git-send-email-wuzhangjin@gmail.com> <b2b2f2321002011903m7a090481m52d84a664beb5468@mail.gmail.com> <20100203012934.GA20375@linux-mips.org>
-From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-To:     "Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 03 Feb 2010 11:38:55.0499 (UTC) FILETIME=[779115B0:01CAA4C5]
-Return-Path: <Anoop_P.A@pmc-sierra.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A7DEA48C84FD0B48AAAE33F328C0201404809DE0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25866
+X-archive-position: 25867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Anoop_P.A@pmc-sierra.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, Feb 03, 2010 at 03:34:25AM -0800, Anoop P.A. wrote:
 
-Hi list,
+> I am seeing a address conflict in asm-generic/spaces.h  . in spaces.h (
+> 64 bit)CAC_BASE has been defined as 0x9800000000000000 however see mips
+> run says it is 0x9000000000000000
+> http://books.google.co.in/books?id=kk8G2gK4Tw8C&lpg=PP1&dq=see%20mips%20
+> run&pg=PA51#v=onepage&q=&f=false
+> 
+> Is this intentional?
 
-I am seeing a address conflict in asm-generic/spaces.h  . in spaces.h (
-64 bit)CAC_BASE has been defined as 0x9800000000000000 however see mips
-run says it is 0x9000000000000000
-http://books.google.co.in/books?id=kk8G2gK4Tw8C&lpg=PP1&dq=see%20mips%20
-run&pg=PA51#v=onepage&q=&f=false
+<asm/mach-generic/spaces.h> defines:
 
-Is this intentional?
+#ifndef CAC_BASE
+#ifdef CONFIG_DMA_NONCOHERENT
+#define CAC_BASE                _AC(0x9800000000000000, UL)
+#else
+#define CAC_BASE                _AC(0xa800000000000000, UL)
+#endif
+#endif
 
-Thanks
-Anoop
+No 0x9000000000000000 anywhere - and it would be wrong because it stands
+for uncached.
+
+  Ralf

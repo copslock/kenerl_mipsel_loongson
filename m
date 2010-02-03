@@ -1,64 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 02:29:36 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:60212 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492832Ab0BCB3c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Feb 2010 02:29:32 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o131Tdm5020514;
-        Wed, 3 Feb 2010 02:29:39 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o131TY5h020512;
-        Wed, 3 Feb 2010 02:29:34 +0100
-Date:   Wed, 3 Feb 2010 02:29:34 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Shane McDonald <mcdonald.shane@gmail.com>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
-        David VomLehn <dvomlehn@cisco.com>, mbizon@freebox.fr,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH urgent] MIPS: Fixup of the r4k timer
-Message-ID: <20100203012934.GA20375@linux-mips.org>
-References: <1265015455-32553-1-git-send-email-wuzhangjin@gmail.com>
- <b2b2f2321002011903m7a090481m52d84a664beb5468@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 03:24:29 +0100 (CET)
+Received: from aeryn.fluff.org.uk ([87.194.8.8]:49968 "EHLO
+        kira.home.fluff.org" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1492859Ab0BCCYZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2010 03:24:25 +0100
+Received: from ben by kira.home.fluff.org with local (Exim 4.71)
+        (envelope-from <ben@fluff.org.uk>)
+        id 1NcUuS-0006Mm-JA; Wed, 03 Feb 2010 02:24:04 +0000
+Date:   Wed, 3 Feb 2010 02:24:04 +0000
+From:   Ben Dooks <ben-linux@fluff.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+        linux-i2c@vger.kernel.org, ben-linux@fluff.org, khali@linux-fr.org,
+        rade.bozic.ext@nsn.com,
+        Michael Lawnick <michael.lawnick.ext@nsn.com>
+Subject: Re: [PATCH] I2C: Add driver for Cavium OCTEON I2C ports.
+Message-ID: <20100203022404.GB24325@fluff.org.uk>
+References: <1264711627-24304-1-git-send-email-ddaney@caviumnetworks.com>
+ <20100128234113.GC13143@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b2b2f2321002011903m7a090481m52d84a664beb5468@mail.gmail.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20100128234113.GC13143@linux-mips.org>
+X-Disclaimer: These are my own opinions, so there!
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <ben@fluff.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25863
+X-archive-position: 25864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ben-linux@fluff.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 01, 2010 at 09:03:10PM -0600, Shane McDonald wrote:
-
-> On Mon, Feb 1, 2010 at 3:10 AM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> >
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> >
-> > As reported by Maxime Bizon, the commit "MIPS: PowerTV: Fix support for
-> > timer interrupts with > 64 external IRQs" have broken the r4k timer
-> > since it didn't initialize the cp0_compare_irq_shift variable used in
-> > c0_compare_int_pending() on the architectures whose cpu_has_mips_r2 is
-> > false.
-> >
-> > This patch fixes it via initializing the cp0_compare_irq_shift as the
-> > cp0_compare_irq used in the old c0_compare_int_pending().
-> >
-> > Reported-by: Maxime Bizon <mbizon@freebox.fr>
-> > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+On Fri, Jan 29, 2010 at 12:41:13AM +0100, Ralf Baechle wrote:
+> On Thu, Jan 28, 2010 at 12:47:07PM -0800, David Daney wrote:
 > 
-> When applied to 2.6.33-rc6, this patch fixes the problem on my
-> RM7035C-based system.
-> 
-> Tested-by: Shane McDonald <mcdonald.shane@gmail.com>
+> Thanks, I've replaced the queue patch with this one.
 
-Thanks folks, applied.
+I'd rather avoid a cross-tree merge if possible. Is there anything
+stopping it being added to my next-i2c tree?
+ 
+>   Ralf
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-i2c" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
-  Ralf
+-- 
+Ben (ben@fluff.org, http://www.fluff.org/)
+
+  'a smiley only costs 4 bytes'

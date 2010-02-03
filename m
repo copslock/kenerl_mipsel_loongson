@@ -1,65 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 20:15:29 +0100 (CET)
-Received: from dns1.mips.com ([63.167.95.197]:48920 "EHLO dns1.mips.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 23:21:28 +0100 (CET)
+Received: from imr2.ericy.com ([198.24.6.3]:54448 "EHLO imr2.ericy.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492715Ab0BCTPR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Feb 2010 20:15:17 +0100
-Received: from MTVEXCHANGE.mips.com ([192.168.36.60])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id o13JF6cE009952;
-        Wed, 3 Feb 2010 11:15:06 -0800
-Received: from [192.168.65.41] ([192.168.65.41]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 3 Feb 2010 11:15:06 -0800
-Message-ID: <4B69CB39.1090504@mips.com>
-Date:   Wed, 03 Feb 2010 11:15:05 -0800
-From:   Chris Dearman <chris@mips.com>
-Organization: MIPS Technologies
-User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
+        id S1492841Ab0BCWVV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Feb 2010 23:21:21 +0100
+Received: from eusaamw0707.eamcs.ericsson.se ([147.117.20.32])
+        by imr2.ericy.com (8.13.1/8.13.1) with ESMTP id o13MMH3Z032037
+        for <linux-mips@linux-mips.org>; Wed, 3 Feb 2010 16:22:24 -0600
+Received: from localhost (147.117.20.212) by eusaamw0707.eamcs.ericsson.se
+ (147.117.20.92) with Microsoft SMTP Server id 8.1.375.2; Wed, 3 Feb 2010
+ 17:21:07 -0500
+Date:   Wed, 3 Feb 2010 14:22:50 -0800
+From:   Guenter Roeck <guenter.roeck@ericsson.com>
+To:     linux-mips@linux-mips.org
+Subject: VMALLOC_END, TASK_SIZE and FIXADDR_START for 64 bit MIPS kernels
+Message-ID: <20100203222250.GA21139@ericsson.com>
 MIME-Version: 1.0
-To:     "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Cached Base address difference.
-References: <1265015455-32553-1-git-send-email-wuzhangjin@gmail.com> <b2b2f2321002011903m7a090481m52d84a664beb5468@mail.gmail.com> <20100203012934.GA20375@linux-mips.org> <A7DEA48C84FD0B48AAAE33F328C0201404809DE0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca> <20100203123331.GB20375@linux-mips.org> <A7DEA48C84FD0B48AAAE33F328C0201404809DEA@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <A7DEA48C84FD0B48AAAE33F328C0201404809DEA@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 03 Feb 2010 19:15:06.0228 (UTC) FILETIME=[31CAE340:01CAA505]
-Return-Path: <chris@mips.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <groeck@ericsson.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25872
+X-archive-position: 25873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chris@mips.com
+X-original-sender: guenter.roeck@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 
-Anoop P.A. wrote:
-> Hi Ralf,
-> 
-> I am sorry if it is not clear from my last mail.
-> 
-> What I want to convey is, 
-> 
-> "See MIPS Run" explains "window on physical memory (cached)" will start
-> @ 0x9000_0000_0000_0000.  
-> 
-> You can see "See MIPS Run" page under suspect from this link
-> http://books.google.co.in/books?id=kk8G2gK4Tw8C&lpg=PP1&dq=see%20mips%20
-> run&pg=PA51#v=onepage&q=&f=false
-> 
-> How ever as you mentioned Linux source defines CAC_BASE
-> 0x98000000_00000000
+Hi,
 
-The Linux header file is correct; the cached and uncached regions are 
-swapped in the "See MIPS Run" diagram.
+since it came up during the review of the patch for virtual memory detection
+on 64 bit mips kernels, I looked further into making vmalloc_end
+a variable and TASK_SIZE dependent on the virtual memory size.
+ 
+That turned out to be relatively straightforward, and I have a working patch.
 
-The full MIPS64 memory map is documented in Volume III of the 
-architecture manual which you can download from 
-http://www.mips.com/products/architectures/mips64/
+The one question I still have is about FIXADDR_START.  It is currently
+set to one of 0xff000000, 0xfffe0000, or (0xff000000 - 0x20000),
+depending on the target CPU.
 
-Chris
+Quoting from one of the comments during the review,
+	" ... ensure the value of vmalloc_end is <= FIXADDR_START".
 
--- 
-Chris Dearman               Desk: +1 408 530 5092  Cell: +1 408 398 5531
-MIPS Technologies Inc            955 East Arques Ave, Sunnyvale CA 94085
+Obviously that is currently not the case. Is that a concern, or is it good as it is ?
+
+Thanks,
+Guenter

@@ -1,67 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 03:30:41 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:8623 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492781Ab0BCCag (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Feb 2010 03:30:36 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b68dfd20001>; Tue, 02 Feb 2010 18:30:42 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Tue, 2 Feb 2010 18:29:44 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Tue, 2 Feb 2010 18:29:44 -0800
-Message-ID: <4B68DF98.4080501@caviumnetworks.com>
-Date:   Tue, 02 Feb 2010 18:29:44 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Feb 2010 12:38:06 +0100 (CET)
+Received: from bby1mta02.pmc-sierra.com ([216.241.235.117]:54059 "EHLO
+        bby1mta02.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492308Ab0BCLiC convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Feb 2010 12:38:02 +0100
+Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
+        by localhost (Postfix) with SMTP id AB8168E00A8;
+        Wed,  3 Feb 2010 03:37:49 -0800 (PST)
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
+        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id 9ED538E0090;
+        Wed,  3 Feb 2010 03:37:49 -0800 (PST)
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.158]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 3 Feb 2010 03:38:55 -0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     Ben Dooks <ben-linux@fluff.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-i2c@vger.kernel.org, khali@linux-fr.org,
-        rade.bozic.ext@nsn.com,
-        Michael Lawnick <michael.lawnick.ext@nsn.com>
-Subject: Re: [PATCH] I2C: Add driver for Cavium OCTEON I2C ports.
-References: <1264711627-24304-1-git-send-email-ddaney@caviumnetworks.com> <20100128234113.GC13143@linux-mips.org> <20100203022404.GB24325@fluff.org.uk>
-In-Reply-To: <20100203022404.GB24325@fluff.org.uk>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 03 Feb 2010 02:29:44.0858 (UTC) FILETIME=[BF7447A0:01CAA478]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Cached Base address difference.
+Date:   Wed, 3 Feb 2010 03:34:25 -0800
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C0201404809DE0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+In-Reply-To: <20100203012934.GA20375@linux-mips.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Cached Base address difference.
+Thread-Index: AcqkcGoVEhLVXra2RxuiaAF6KL+WnQAUuWPQ
+References: <1265015455-32553-1-git-send-email-wuzhangjin@gmail.com> <b2b2f2321002011903m7a090481m52d84a664beb5468@mail.gmail.com> <20100203012934.GA20375@linux-mips.org>
+From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:     "Ralf Baechle" <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 03 Feb 2010 11:38:55.0499 (UTC) FILETIME=[779115B0:01CAA4C5]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25865
+X-archive-position: 25866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-Ben Dooks wrote:
-> On Fri, Jan 29, 2010 at 12:41:13AM +0100, Ralf Baechle wrote:
->> On Thu, Jan 28, 2010 at 12:47:07PM -0800, David Daney wrote:
->>
->> Thanks, I've replaced the queue patch with this one.
-> 
-> I'd rather avoid a cross-tree merge if possible. Is there anything
-> stopping it being added to my next-i2c tree?
->  
 
-I can't speak to the logistics, but I would note that there are two 
-related MIPS specific patches that add the platform device and register 
-some i2c_board_info.  I don't know if it would make sense to merge them 
-all via the same path.
+Hi list,
 
-I will let you and Ralf decide that.
+I am seeing a address conflict in asm-generic/spaces.h  . in spaces.h (
+64 bit)CAC_BASE has been defined as 0x9800000000000000 however see mips
+run says it is 0x9000000000000000
+http://books.google.co.in/books?id=kk8G2gK4Tw8C&lpg=PP1&dq=see%20mips%20
+run&pg=PA51#v=onepage&q=&f=false
 
-In any event thanks for looking at the patches,
-David Daney
+Is this intentional?
 
-
-
->>   Ralf
->> --
->> To unsubscribe from this list: send the line "unsubscribe linux-i2c" in
->> the body of a message to majordomo@vger.kernel.org
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+Thanks
+Anoop

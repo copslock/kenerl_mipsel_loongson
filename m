@@ -1,49 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Feb 2010 18:44:59 +0100 (CET)
-Received: from Cpsmtpm-eml109.kpnxchange.com ([195.121.3.13]:62725 "EHLO
-        CPSMTPM-EML109.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492026Ab0BFRow (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Feb 2010 18:44:52 +0100
-Received: from aragorn.fjphome.nl ([77.166.180.99]) by CPSMTPM-EML109.kpnxchange.com with Microsoft SMTPSVC(7.0.6001.18000);
-         Sat, 6 Feb 2010 18:44:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Feb 2010 18:47:34 +0100 (CET)
+Received: from cpsmtpm-eml101.kpnxchange.com ([195.121.3.5]:53183 "EHLO
+        CPSMTPM-EML101.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492067Ab0BFRr3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Feb 2010 18:47:29 +0100
+Received: from elrond.fjphome.nl ([77.166.180.99]) by CPSMTPM-EML101.kpnxchange.com with Microsoft SMTPSVC(7.0.6001.18000);
+         Sat, 6 Feb 2010 18:47:25 +0100
+Received: from aragorn.fjphome.nl ([10.19.66.13])
+        by elrond.fjphome.nl with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.69)
+        (envelope-from <fjp@aragorn.fjphome.nl>)
+        id 1Ndokf-0000X0-11; Sat, 06 Feb 2010 18:47:25 +0100
+Received: from fjp by aragorn.fjphome.nl with local (Exim 4.69)
+        (envelope-from <fjp@aragorn.fjphome.nl>)
+        id 1Ndoke-00085x-AY; Sat, 06 Feb 2010 18:47:24 +0100
 From:   Frans Pop <elendil@planet.nl>
 To:     linux-kernel@vger.kernel.org
-Subject: [PATCH 00/16] remove trailing spaces in messages
-Date:   Sat, 6 Feb 2010 18:44:36 +0100
-User-Agent: KMail/1.9.9
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@elte.hu>,
-        Jeff Dike <jdike@addtoit.com>,
-        Jiri Kosina <trivial@kernel.org>,
-        Kyle McMartin <kyle@mcmartin.ca>, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linux-pm@lists.linux-foundation.org, linuxppc-dev@ozlabs.org,
-        linux-s390@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-        microblaze-uclinux@itee.uq.edu.au,
-        Mike Frysinger <vapier@gentoo.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Rafael J. Wysocki" <rjw@sisk.pl>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Roman Zippel <zippel@linux-m68k.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        sparclinux@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        user-mode-linux-devel@lists.sourceforge.net, x86@kernel.org
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <201002061844.45212.elendil@planet.nl>
-X-OriginalArrivalTime: 06 Feb 2010 17:44:45.0591 (UTC) FILETIME=[12149270:01CAA754]
+Cc:     Frans Pop <elendil@planet.nl>, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 06/16] mips: remove trailing space in messages
+Date:   Sat,  6 Feb 2010 18:47:13 +0100
+Message-Id: <1265478443-31072-6-git-send-email-elendil@planet.nl>
+X-Mailer: git-send-email 1.6.6.1
+In-Reply-To: <201002061844.45212.elendil@planet.nl>
+References: <201002061844.45212.elendil@planet.nl>
+X-OriginalArrivalTime: 06 Feb 2010 17:47:25.0573 (UTC) FILETIME=[716FE350:01CAA754]
 Return-Path: <elendil@planet.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25890
+X-archive-position: 25891
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,36 +36,53 @@ X-original-sender: elendil@planet.nl
 Precedence: bulk
 X-list: linux-mips
 
-This is a first series of patches to remove trailing spaces in messages. 
-Patches cover arch-specific code plus one fix for PM and one in 
-Documentation. Depending on how this series is received I'll continue
-with other parts of the kernel.
+Signed-off-by: Frans Pop <elendil@planet.nl>
+Cc: linux-mips@linux-mips.org
+Cc: Ralf Baechle <ralf@linux-mips.org>
+---
+ arch/mips/alchemy/common/dbdma.c                  |    2 +-
+ arch/mips/cavium-octeon/smp.c                     |    2 +-
+ arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Benefits are:
-- general cleanup and consistency
-- minor reduction in kernel size and user's log file size
-- reduced annoyance for people writing logcheck rules
-
-The patch for m68k has been rebased against linux-next; all other
-patches apply against both mainline and -next (as of 5-2).
-
-Shortstat:
- 74 files changed, 135 insertions(+), 136 deletions(-)
-
-Frans Pop (16):
-      alpha: remove trailing spaces in messages
-      arm: remove trailing spaces in messages
-      ia64: remove trailing space in messages
-      m68k: remove trailing space in messages
-      microblaze: remove trailing space in messages
-      mips: remove trailing space in messages
-      parisc: remove trailing space in messages
-      s390: remove trailing space in messages
-      sparc: remove trailing space in messages
-      x86: remove trailing space in messages
-      blackfin: remove trailing space in messages
-      cris/trivial: remove trailing space in message
-      powerpc: remove trailing space in messages
-      um: remove trailing space in messages
-      PM: remove trailing space in message
-      trivial: remove trailing space in spidev test program
+diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
+index 5c68569..4050640 100644
+--- a/arch/mips/alchemy/common/dbdma.c
++++ b/arch/mips/alchemy/common/dbdma.c
+@@ -903,7 +903,7 @@ void au1xxx_dbdma_dump(u32 chanid)
+ 	dtp = ctp->chan_dest;
+ 	cp = ctp->chan_ptr;
+ 
+-	printk(KERN_DEBUG "Chan %x, stp %x (dev %d)  dtp %x (dev %d) \n",
++	printk(KERN_DEBUG "Chan %x, stp %x (dev %d)  dtp %x (dev %d)\n",
+ 			  (u32)ctp, (u32)stp, stp - dbdev_tab, (u32)dtp,
+ 			  dtp - dbdev_tab);
+ 	printk(KERN_DEBUG "desc base %x, get %x, put %x, cur %x\n",
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index c198efd..51e9802 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -327,7 +327,7 @@ static void octeon_cpu_die(unsigned int cpu)
+ 				   avail_coremask);
+ 	}
+ 
+-	pr_info("Reset core %d. Available Coremask = %x \n", coreid,
++	pr_info("Reset core %d. Available Coremask = %x\n", coreid,
+ 		avail_coremask);
+ 	cvmx_write_csr(CVMX_CIU_PP_RST, 1 << coreid);
+ 	cvmx_write_csr(CVMX_CIU_PP_RST, 0);
+diff --git a/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c b/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
+index fc990cb..d6f8bdf 100644
+--- a/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
++++ b/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
+@@ -127,7 +127,7 @@ static int recv_ack(void)
+ 
+ 	if (ack) {
+ 		do_idle();
+-		printk(KERN_ERR "Error reading the Atmel 24C32/24C64 EEPROM \n");
++		printk(KERN_ERR "Error reading the Atmel 24C32/24C64 EEPROM\n");
+ 		return -1;
+ 	}
+ 
+-- 
+1.6.6.1

@@ -1,88 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Feb 2010 18:47:34 +0100 (CET)
-Received: from cpsmtpm-eml101.kpnxchange.com ([195.121.3.5]:53183 "EHLO
-        CPSMTPM-EML101.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492067Ab0BFRr3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 6 Feb 2010 18:47:29 +0100
-Received: from elrond.fjphome.nl ([77.166.180.99]) by CPSMTPM-EML101.kpnxchange.com with Microsoft SMTPSVC(7.0.6001.18000);
-         Sat, 6 Feb 2010 18:47:25 +0100
-Received: from aragorn.fjphome.nl ([10.19.66.13])
-        by elrond.fjphome.nl with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <fjp@aragorn.fjphome.nl>)
-        id 1Ndokf-0000X0-11; Sat, 06 Feb 2010 18:47:25 +0100
-Received: from fjp by aragorn.fjphome.nl with local (Exim 4.69)
-        (envelope-from <fjp@aragorn.fjphome.nl>)
-        id 1Ndoke-00085x-AY; Sat, 06 Feb 2010 18:47:24 +0100
-From:   Frans Pop <elendil@planet.nl>
-To:     linux-kernel@vger.kernel.org
-Cc:     Frans Pop <elendil@planet.nl>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 06/16] mips: remove trailing space in messages
-Date:   Sat,  6 Feb 2010 18:47:13 +0100
-Message-Id: <1265478443-31072-6-git-send-email-elendil@planet.nl>
-X-Mailer: git-send-email 1.6.6.1
-In-Reply-To: <201002061844.45212.elendil@planet.nl>
-References: <201002061844.45212.elendil@planet.nl>
-X-OriginalArrivalTime: 06 Feb 2010 17:47:25.0573 (UTC) FILETIME=[716FE350:01CAA754]
-Return-Path: <elendil@planet.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2010 00:52:51 +0100 (CET)
+Received: from mail-yw0-f186.google.com ([209.85.211.186]:53625 "EHLO
+        mail-yw0-f186.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491981Ab0BGXwq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2010 00:52:46 +0100
+Received: by ywh16 with SMTP id 16so186365ywh.25
+        for <multiple recipients>; Sun, 07 Feb 2010 15:52:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:in-reply-to:references:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=y390IcCrBl2sao1vDD3GLVAtIxPn+PoXa91I3hMdChI=;
+        b=HkIejIxYj1o5tBJIQKvHq0WD1rfene00SQVcjdwMvUzXNrVCnBssfDq3ZKdQokCUZL
+         DrEOUhaw7YFt9cR97GoVMYjOgIyEKoJmqzxYJngt1FgowdpfbTa69p+wZsORmwMXDC1n
+         mtsUqZQqRuTk5d+6XilovxObrJJahFnN2x608=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
+         :x-mailer:mime-version:content-type:content-transfer-encoding;
+        b=wES0GyyPRJJSFPsPZQwgr67HL7QPbzyNeiTNdbgEcQwKzrZ1zrK4HrD1aDTFuD+8vd
+         AusPenv8Xvnt24iv2wLa4vvp3B8UnnCUUtwbA8jspD5+WL8lhddDlUSw7BoNUG1o/t6b
+         GbqaPJhml5gArhK/IBxQ/dGV8fU4d4qCuNcrg=
+Received: by 10.101.28.3 with SMTP id f3mr7245445anj.68.1265586759555;
+        Sun, 07 Feb 2010 15:52:39 -0800 (PST)
+Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
+        by mx.google.com with ESMTPS id 13sm2482338gxk.5.2010.02.07.15.52.36
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 07 Feb 2010 15:52:38 -0800 (PST)
+Date:   Mon, 8 Feb 2010 08:52:17 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     yuasa@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: add 8250/16550 serial early printk driver
+Message-Id: <20100208085217.ba16b45e.yuasa@linux-mips.org>
+In-Reply-To: <20100206121622.GA8775@alpha.franken.de>
+References: <20100205232857.eb65967f.yuasa@linux-mips.org>
+        <20100206121622.GA8775@alpha.franken.de>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25891
+X-archive-position: 25892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: elendil@planet.nl
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Frans Pop <elendil@planet.nl>
-Cc: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/alchemy/common/dbdma.c                  |    2 +-
- arch/mips/cavium-octeon/smp.c                     |    2 +-
- arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+On Sat, 6 Feb 2010 13:16:22 +0100
+Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote:
 
-diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
-index 5c68569..4050640 100644
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -903,7 +903,7 @@ void au1xxx_dbdma_dump(u32 chanid)
- 	dtp = ctp->chan_dest;
- 	cp = ctp->chan_ptr;
- 
--	printk(KERN_DEBUG "Chan %x, stp %x (dev %d)  dtp %x (dev %d) \n",
-+	printk(KERN_DEBUG "Chan %x, stp %x (dev %d)  dtp %x (dev %d)\n",
- 			  (u32)ctp, (u32)stp, stp - dbdev_tab, (u32)dtp,
- 			  dtp - dbdev_tab);
- 	printk(KERN_DEBUG "desc base %x, get %x, put %x, cur %x\n",
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index c198efd..51e9802 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -327,7 +327,7 @@ static void octeon_cpu_die(unsigned int cpu)
- 				   avail_coremask);
- 	}
- 
--	pr_info("Reset core %d. Available Coremask = %x \n", coreid,
-+	pr_info("Reset core %d. Available Coremask = %x\n", coreid,
- 		avail_coremask);
- 	cvmx_write_csr(CVMX_CIU_PP_RST, 1 << coreid);
- 	cvmx_write_csr(CVMX_CIU_PP_RST, 0);
-diff --git a/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c b/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
-index fc990cb..d6f8bdf 100644
---- a/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
-+++ b/arch/mips/pmc-sierra/yosemite/atmel_read_eeprom.c
-@@ -127,7 +127,7 @@ static int recv_ack(void)
- 
- 	if (ack) {
- 		do_idle();
--		printk(KERN_ERR "Error reading the Atmel 24C32/24C64 EEPROM \n");
-+		printk(KERN_ERR "Error reading the Atmel 24C32/24C64 EEPROM\n");
- 		return -1;
- 	}
- 
--- 
-1.6.6.1
+> On Fri, Feb 05, 2010 at 11:28:57PM +0900, Yoichi Yuasa wrote:
+> > Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+> > ---
+> >  arch/mips/Kconfig.debug              |    8 ++++
+> >  arch/mips/include/asm/setup.h        |    9 ++++
+> >  arch/mips/kernel/Makefile            |    1 +
+> >  arch/mips/kernel/early_printk_8250.c |   68 ++++++++++++++++++++++++++++++++++
+> >  4 files changed, 86 insertions(+), 0 deletions(-)
+> >  create mode 100644 arch/mips/kernel/early_printk_8250.c
+> > 
+> > diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+> > index 32a010d..f5d739c 100644
+> > --- a/arch/mips/Kconfig.debug
+> > +++ b/arch/mips/Kconfig.debug
+> > @@ -20,6 +20,14 @@ config EARLY_PRINTK
+> >  	  doesn't cooperate with an X server. You should normally say N here,
+> >  	  unless you want to debug such a crash.
+> >  
+> > +config EARLY_PRINTK_8250
+> > [..]
+> 
+> have you looked at drivers/serial/8250_early.c ?
+
+Yes, I have.
+
+> It looks like it
+> was invented for some sort of early console on 8250 devices...
+
+The early printk is registered at the early boot stage(in setup_arch()).
+
+Yoichi

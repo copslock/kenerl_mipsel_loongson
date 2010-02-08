@@ -1,99 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2010 11:58:57 +0100 (CET)
-Received: from mail-ew0-f212.google.com ([209.85.219.212]:33309 "EHLO
-        mail-ew0-f212.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491776Ab0BHK6u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2010 11:58:50 +0100
-Received: by ewy4 with SMTP id 4so885319ewy.27
-        for <multiple recipients>; Mon, 08 Feb 2010 02:58:43 -0800 (PST)
-Received: by 10.213.109.129 with SMTP id j1mr5276607ebp.79.1265626723326;
-        Mon, 08 Feb 2010 02:58:43 -0800 (PST)
-Received: from ?192.168.2.2? (ppp91-77-214-141.pppoe.mtu-net.ru [91.77.214.141])
-        by mx.google.com with ESMTPS id 16sm2976222ewy.10.2010.02.08.02.58.41
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Feb 2010 12:54:38 +0100 (CET)
+Received: from mail-yw0-f186.google.com ([209.85.211.186]:63929 "EHLO
+        mail-yw0-f186.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491821Ab0BHLyf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Feb 2010 12:54:35 +0100
+Received: by ywh16 with SMTP id 16so518917ywh.25
+        for <multiple recipients>; Mon, 08 Feb 2010 03:54:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:in-reply-to:references:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=Kt/1Xt+dPYiWhX16Xi4cZAJM1DLCu/XDPZKG7UdKPNA=;
+        b=L+ltBTNT9g5B8SmusNvJVhsvYaOtaSf9o61us0P5abdVQ1fv61nA4BzCQHUSbXmorU
+         eoh2KkukWveLwWbwNXxLGrPn224oa1xxaEHSYzygHuqfquzyRlKH4EVcVmyE8FRhB/vh
+         TCl5mEP2SmHgD9AU6gij8kuSpXAT8p5yb8+QY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
+         :x-mailer:mime-version:content-type:content-transfer-encoding;
+        b=VVf1vGBEb06e2qWmawiPRCsIYIvbs2dSN30BOxt6pg/zEft91p80aamZmJlY+G3PIl
+         07r7IF+CRb1WW4V9bNOKOsFL8/HdNRyZxSBRZDSwgScPyL+zHg+J9eiyAgJ5xqo+dPyj
+         kWBG1cQ9njrGSzFqWLpLNl39QNsqYPlOt9EZA=
+Received: by 10.101.198.37 with SMTP id a37mr8071640anq.11.1265630068752;
+        Mon, 08 Feb 2010 03:54:28 -0800 (PST)
+Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
+        by mx.google.com with ESMTPS id 14sm2851000gxk.14.2010.02.08.03.54.25
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 08 Feb 2010 02:58:42 -0800 (PST)
-Message-ID: <4B6FEE4A.6090504@ru.mvista.com>
-Date:   Mon, 08 Feb 2010 13:58:18 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
-MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 3/4] MIPS: Add TLBP to uasm.
-References: <4B6CA90C.1000609@caviumnetworks.com> <1265412431-28526-3-git-send-email-ddaney@caviumnetworks.com>
-In-Reply-To: <1265412431-28526-3-git-send-email-ddaney@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+        Mon, 08 Feb 2010 03:54:27 -0800 (PST)
+Date:   Mon, 8 Feb 2010 20:54:07 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+Cc:     yuasa@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: add 8250/16550 serial early printk driver
+Message-Id: <20100208205407.cdaa3f21.yuasa@linux-mips.org>
+In-Reply-To: <4B6FE030.1080708@ru.mvista.com>
+References: <20100205232857.eb65967f.yuasa@linux-mips.org>
+        <4B6FE030.1080708@ru.mvista.com>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25894
+X-archive-position: 25895
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hello Sergei,
 
-David Daney wrote:
+On Mon, 08 Feb 2010 12:58:08 +0300
+Sergei Shtylyov <sshtylyov@mvista.com> wrote:
 
-> The soon to follow Read Inhibit/eXecute Inhibit patch needs TLBP
->   
+> Hello.
+> 
+> Yoichi Yuasa wrote:
+> 
+> > Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+> >   
+> [...]
+> > +config EARLY_PRINTK_8250
+> > +	bool "8250/16550 and compatible serial early printk driver"
+> > +	depends on EARLY_PRINTK
+> > +	default n
+> > +	help
+> > +	  If you say Y here, it will be possible to use a 8250/16550 serial
+> > +	  port as the boot console.
+> > +	
+> >   
+> 
+>    Tab not needed here.
 
-  But you're adding TLBR support, not TLBP?
+thanks
 
-> support in uasm.
->
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  arch/mips/include/asm/uasm.h |    1 +
->  arch/mips/mm/uasm.c          |    5 ++++-
->  2 files changed, 5 insertions(+), 1 deletions(-)
->
-> diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-> index 3d153ed..b18588b 100644
-> --- a/arch/mips/include/asm/uasm.h
-> +++ b/arch/mips/include/asm/uasm.h
-> @@ -95,6 +95,7 @@ Ip_u2u1u3(_srl);
->  Ip_u3u1u2(_subu);
->  Ip_u2s3u1(_sw);
->  Ip_0(_tlbp);
-> +Ip_0(_tlbr);
->  Ip_0(_tlbwi);
->  Ip_0(_tlbwr);
->  Ip_u3u1u2(_xor);
-> diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-> index e3ca0f7..8f4f14d 100644
-> --- a/arch/mips/mm/uasm.c
-> +++ b/arch/mips/mm/uasm.c
-> @@ -63,7 +63,8 @@ enum opcode {
->  	insn_jr, insn_ld, insn_ll, insn_lld, insn_lui, insn_lw, insn_mfc0,
->  	insn_mtc0, insn_ori, insn_pref, insn_rfe, insn_sc, insn_scd,
->  	insn_sd, insn_sll, insn_sra, insn_srl, insn_subu, insn_sw,
-> -	insn_tlbp, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori, insn_dins
-> +	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori,
-> +	insn_dins
->  };
->  
->  struct insn {
-> @@ -128,6 +129,7 @@ static struct insn insn_table[] __cpuinitdata = {
->  	{ insn_subu,  M(spec_op, 0, 0, 0, 0, subu_op),  RS | RT | RD },
->  	{ insn_sw,  M(sw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
->  	{ insn_tlbp,  M(cop0_op, cop_op, 0, 0, 0, tlbp_op),  0 },
-> +	{ insn_tlbr,  M(cop0_op, cop_op, 0, 0, 0, tlbr_op),  0 },
->  	{ insn_tlbwi,  M(cop0_op, cop_op, 0, 0, 0, tlbwi_op),  0 },
->  	{ insn_tlbwr,  M(cop0_op, cop_op, 0, 0, 0, tlbwr_op),  0 },
->  	{ insn_xor,  M(spec_op, 0, 0, 0, 0, xor_op),  RS | RT | RD },
-> @@ -381,6 +383,7 @@ I_u2u1u3(_srl)
->  I_u3u1u2(_subu)
->  I_u2s3u1(_sw)
->  I_0(_tlbp)
-> +I_0(_tlbr)
->  I_0(_tlbwi)
->  I_0(_tlbwr)
->  I_u3u1u2(_xor)
->   
+> > diff --git a/arch/mips/kernel/early_printk_8250.c b/arch/mips/kernel/early_printk_8250.c
+> > new file mode 100644
+> > index 0000000..6faf8fd
+> > --- /dev/null
+> > +++ b/arch/mips/kernel/early_printk_8250.c
+[...]
+> > +static unsigned long serial8250_base;
+> > +static unsigned int serial8250_reg_shift;
+> > +static unsigned int serial8250_tx_timeout;
+> > +
+> > +void setup_8250_early_printk_port(unsigned long base, unsigned int reg_shift,
+> > +				  unsigned int timeout)
+> > +{
+> > +	serial8250_base = base;
+> >   
+> 
+>    Why not declare 'serial8250_base' as 'void __iomem *' and only cast 
+> once, here?
 
-WBR, Sergei
+You're right. I'll update it.
+
+Thanks,
+
+Yoichi

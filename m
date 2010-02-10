@@ -1,60 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2010 00:15:54 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:15985 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492382Ab0BJXNx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2010 00:13:53 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b733db60003>; Wed, 10 Feb 2010 15:13:58 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 10 Feb 2010 15:12:54 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 10 Feb 2010 15:12:54 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1ANCoTU005843;
-        Wed, 10 Feb 2010 15:12:50 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1ANCogO005842;
-        Wed, 10 Feb 2010 15:12:50 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 6/6] MIPS: Enable Read Inhibit/eXecute Inhibit for Octeon+ CPUs
-Date:   Wed, 10 Feb 2010 15:12:49 -0800
-Message-Id: <1265843569-5786-6-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.2.5
-In-Reply-To: <4B733C71.8030304@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2010 00:56:57 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:46245 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492412Ab0BJX4y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 11 Feb 2010 00:56:54 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o1ANupEW007981;
+        Thu, 11 Feb 2010 00:56:52 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o1ANuoPG007979;
+        Thu, 11 Feb 2010 00:56:50 +0100
+Date:   Thu, 11 Feb 2010 00:56:49 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 0/6] MIPS Read Inhibit/eXecute Inhibit support (v2).
+Message-ID: <20100210235649.GA7975@linux-mips.org>
 References: <4B733C71.8030304@caviumnetworks.com>
-X-OriginalArrivalTime: 10 Feb 2010 23:12:54.0910 (UTC) FILETIME=[937B39E0:01CAAAA6]
-Return-Path: <David.Daney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4B733C71.8030304@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25909
+X-archive-position: 25910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- .../asm/mach-cavium-octeon/cpu-feature-overrides.h |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+On Wed, Feb 10, 2010 at 03:08:33PM -0800, David Daney wrote:
 
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-index 425e708..bbf0540 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-@@ -58,6 +58,9 @@
- #define cpu_has_vint		0
- #define cpu_has_veic		0
- #define cpu_hwrena_impl_bits	0xc0000000
-+
-+#define kernel_uses_smartmips_rixi (cpu_data[0].cputype == CPU_CAVIUM_OCTEON_PLUS)
-+
- #define ARCH_HAS_READ_CURRENT_TIMER 1
- #define ARCH_HAS_IRQ_PER_CPU	1
- #define ARCH_HAS_SPINLOCK_PREFETCH 1
--- 
-1.6.2.5
+> This patch set adds execute and read inhibit support.  By default glibc
+> based tool chains will create mappings for data areas of a program and
+> shared libraries with PROT_EXEC cleared.  With this patch applied, a
+> SIGSEGV is correctly sent if an attempt is made to execute from data
+> areas.
+> 
+> The first three patch just make a few tweaks in preperation for the
+> main body of the patch in 4/6.  The last two turn on the feature for
+> some Octeon CPUs.
+> 
+> I will reply with the six patches.
+> 
+> David Daney (6):
+>   MIPS: Use 64-bit stores to c0_entrylo on 64-bit kernels.
+>   MIPS: Add accessor functions and bit definitions for c0_PageGrain
+>   MIPS: Add TLBR and ROTR to uasm.
+>   MIPS: Implement Read Inhibit/eXecute Inhibit
+>   MIPS: Give Octeon+ CPUs their own cputype.
+>   MIPS: Enable Read Inhibit/eXecute Inhibit for Octeon+ CPUs
+
+Hangs on IP27 after
+
+[...]
+Calibrating delay loop... 178.17 BogoMIPS (lpj=89088)
+Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes)
+
+  Ralf

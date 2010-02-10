@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2010 00:15:07 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:15983 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2010 00:15:30 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:15984 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492377Ab0BJXNw (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1492380Ab0BJXNw (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2010 00:13:52 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b733db60001>; Wed, 10 Feb 2010 15:13:58 -0800
+        id <B4b733db60002>; Wed, 10 Feb 2010 15:13:58 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
          Wed, 10 Feb 2010 15:12:52 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
          Wed, 10 Feb 2010 15:12:52 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1ANCnvJ005831;
+        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1ANCnkm005823;
         Wed, 10 Feb 2010 15:12:49 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1ANCn86005830;
+        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1ANCnuB005822;
         Wed, 10 Feb 2010 15:12:49 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 3/6] MIPS: Add TLBR and ROTR to uasm.
-Date:   Wed, 10 Feb 2010 15:12:46 -0800
-Message-Id: <1265843569-5786-3-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH 1/6] MIPS: Use 64-bit stores to c0_entrylo on 64-bit kernels.
+Date:   Wed, 10 Feb 2010 15:12:44 -0800
+Message-Id: <1265843569-5786-1-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.6.2.5
 In-Reply-To: <4B733C71.8030304@caviumnetworks.com>
 References: <4B733C71.8030304@caviumnetworks.com>
-X-OriginalArrivalTime: 10 Feb 2010 23:12:52.0410 (UTC) FILETIME=[91FDC1A0:01CAAAA6]
+X-OriginalArrivalTime: 10 Feb 2010 23:12:52.0425 (UTC) FILETIME=[92000B90:01CAAAA6]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25907
+X-archive-position: 25908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,86 +37,77 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-The soon to follow Read Inhibit/eXecute Inhibit patch needs TLBR and
-ROTR support in uasm.  We also add a UASM_i_ROTR macro.
+64-bit CPUs have 64-bit c0_entrylo{0,1} registers.  We should use the
+64-bit dmtc0 instruction to set them.  This becomes important if we
+want to set the RI and XI bits present in some processors.
 
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/include/asm/uasm.h |    4 ++++
- arch/mips/mm/uasm.c          |    9 +++++++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ arch/mips/mm/tlbex.c |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index 3d153ed..b99bd07 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -92,9 +92,11 @@ Ip_u2s3u1(_sd);
- Ip_u2u1u3(_sll);
- Ip_u2u1u3(_sra);
- Ip_u2u1u3(_srl);
-+Ip_u2u1u3(_rotr);
- Ip_u3u1u2(_subu);
- Ip_u2s3u1(_sw);
- Ip_0(_tlbp);
-+Ip_0(_tlbr);
- Ip_0(_tlbwi);
- Ip_0(_tlbwr);
- Ip_u3u1u2(_xor);
-@@ -129,6 +131,7 @@ static inline void __cpuinit uasm_l##lb(struct uasm_label **lab, u32 *addr) \
- # define UASM_i_SLL(buf, rs, rt, sh) uasm_i_dsll(buf, rs, rt, sh)
- # define UASM_i_SRA(buf, rs, rt, sh) uasm_i_dsra(buf, rs, rt, sh)
- # define UASM_i_SRL(buf, rs, rt, sh) uasm_i_dsrl(buf, rs, rt, sh)
-+# define UASM_i_ROTR(buf, rs, rt, sh) uasm_i_drotr(buf, rs, rt, sh)
- # define UASM_i_MFC0(buf, rt, rd...) uasm_i_dmfc0(buf, rt, rd)
- # define UASM_i_MTC0(buf, rt, rd...) uasm_i_dmtc0(buf, rt, rd)
- # define UASM_i_ADDIU(buf, rs, rt, val) uasm_i_daddiu(buf, rs, rt, val)
-@@ -142,6 +145,7 @@ static inline void __cpuinit uasm_l##lb(struct uasm_label **lab, u32 *addr) \
- # define UASM_i_SLL(buf, rs, rt, sh) uasm_i_sll(buf, rs, rt, sh)
- # define UASM_i_SRA(buf, rs, rt, sh) uasm_i_sra(buf, rs, rt, sh)
- # define UASM_i_SRL(buf, rs, rt, sh) uasm_i_srl(buf, rs, rt, sh)
-+# define UASM_i_ROTR(buf, rs, rt, sh) uasm_i_rotr(buf, rs, rt, sh)
- # define UASM_i_MFC0(buf, rt, rd...) uasm_i_mfc0(buf, rt, rd)
- # define UASM_i_MTC0(buf, rt, rd...) uasm_i_mtc0(buf, rt, rd)
- # define UASM_i_ADDIU(buf, rs, rt, val) uasm_i_addiu(buf, rs, rt, val)
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index e3ca0f7..1581e98 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -62,8 +62,9 @@ enum opcode {
- 	insn_dsrl32, insn_drotr, insn_dsubu, insn_eret, insn_j, insn_jal,
- 	insn_jr, insn_ld, insn_ll, insn_lld, insn_lui, insn_lw, insn_mfc0,
- 	insn_mtc0, insn_ori, insn_pref, insn_rfe, insn_sc, insn_scd,
--	insn_sd, insn_sll, insn_sra, insn_srl, insn_subu, insn_sw,
--	insn_tlbp, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori, insn_dins
-+	insn_sd, insn_sll, insn_sra, insn_srl, insn_rotr, insn_subu, insn_sw,
-+	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori,
-+	insn_dins
- };
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 2c68849..35431e1 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -460,14 +460,14 @@ static __cpuinit void build_huge_update_entries(u32 **p,
+ 		uasm_i_lui(p, tmp, HPAGE_SIZE >> (7 + 16));
  
- struct insn {
-@@ -125,9 +126,11 @@ static struct insn insn_table[] __cpuinitdata = {
- 	{ insn_sll,  M(spec_op, 0, 0, 0, 0, sll_op),  RT | RD | RE },
- 	{ insn_sra,  M(spec_op, 0, 0, 0, 0, sra_op),  RT | RD | RE },
- 	{ insn_srl,  M(spec_op, 0, 0, 0, 0, srl_op),  RT | RD | RE },
-+	{ insn_rotr,  M(spec_op, 1, 0, 0, 0, srl_op),  RT | RD | RE },
- 	{ insn_subu,  M(spec_op, 0, 0, 0, 0, subu_op),  RS | RT | RD },
- 	{ insn_sw,  M(sw_op, 0, 0, 0, 0, 0),  RS | RT | SIMM },
- 	{ insn_tlbp,  M(cop0_op, cop_op, 0, 0, 0, tlbp_op),  0 },
-+	{ insn_tlbr,  M(cop0_op, cop_op, 0, 0, 0, tlbr_op),  0 },
- 	{ insn_tlbwi,  M(cop0_op, cop_op, 0, 0, 0, tlbwi_op),  0 },
- 	{ insn_tlbwr,  M(cop0_op, cop_op, 0, 0, 0, tlbwr_op),  0 },
- 	{ insn_xor,  M(spec_op, 0, 0, 0, 0, xor_op),  RS | RT | RD },
-@@ -378,9 +381,11 @@ I_u2s3u1(_sd)
- I_u2u1u3(_sll)
- I_u2u1u3(_sra)
- I_u2u1u3(_srl)
-+I_u2u1u3(_rotr)
- I_u3u1u2(_subu)
- I_u2s3u1(_sw)
- I_0(_tlbp)
-+I_0(_tlbr)
- I_0(_tlbwi)
- I_0(_tlbwr)
- I_u3u1u2(_xor)
+ 	UASM_i_SRL(p, pte, pte, 6); /* convert to entrylo */
+-	uasm_i_mtc0(p, pte, C0_ENTRYLO0); /* load it */
++	UASM_i_MTC0(p, pte, C0_ENTRYLO0); /* load it */
+ 	/* convert to entrylo1 */
+ 	if (small_sequence)
+ 		UASM_i_ADDIU(p, pte, pte, HPAGE_SIZE >> 7);
+ 	else
+ 		UASM_i_ADDU(p, pte, pte, tmp);
+ 
+-	uasm_i_mtc0(p, pte, C0_ENTRYLO1); /* load it */
++	UASM_i_MTC0(p, pte, C0_ENTRYLO1); /* load it */
+ }
+ 
+ static __cpuinit void build_huge_handler_tail(u32 **p,
+@@ -686,18 +686,18 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
+ 		uasm_i_ld(p, tmp, 0, ptep); /* get even pte */
+ 		uasm_i_ld(p, ptep, sizeof(pte_t), ptep); /* get odd pte */
+ 		uasm_i_dsrl(p, tmp, tmp, 6); /* convert to entrylo0 */
+-		uasm_i_mtc0(p, tmp, C0_ENTRYLO0); /* load it */
++		UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
+ 		uasm_i_dsrl(p, ptep, ptep, 6); /* convert to entrylo1 */
+-		uasm_i_mtc0(p, ptep, C0_ENTRYLO1); /* load it */
++		UASM_i_MTC0(p, ptep, C0_ENTRYLO1); /* load it */
+ 	} else {
+ 		int pte_off_even = sizeof(pte_t) / 2;
+ 		int pte_off_odd = pte_off_even + sizeof(pte_t);
+ 
+ 		/* The pte entries are pre-shifted */
+ 		uasm_i_lw(p, tmp, pte_off_even, ptep); /* get even pte */
+-		uasm_i_mtc0(p, tmp, C0_ENTRYLO0); /* load it */
++		UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
+ 		uasm_i_lw(p, ptep, pte_off_odd, ptep); /* get odd pte */
+-		uasm_i_mtc0(p, ptep, C0_ENTRYLO1); /* load it */
++		UASM_i_MTC0(p, ptep, C0_ENTRYLO1); /* load it */
+ 	}
+ #else
+ 	UASM_i_LW(p, tmp, 0, ptep); /* get even pte */
+@@ -706,14 +706,14 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
+ 		build_tlb_probe_entry(p);
+ 	UASM_i_SRL(p, tmp, tmp, 6); /* convert to entrylo0 */
+ 	if (r4k_250MHZhwbug())
+-		uasm_i_mtc0(p, 0, C0_ENTRYLO0);
+-	uasm_i_mtc0(p, tmp, C0_ENTRYLO0); /* load it */
++		UASM_i_MTC0(p, 0, C0_ENTRYLO0);
++	UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
+ 	UASM_i_SRL(p, ptep, ptep, 6); /* convert to entrylo1 */
+ 	if (r45k_bvahwbug())
+ 		uasm_i_mfc0(p, tmp, C0_INDEX);
+ 	if (r4k_250MHZhwbug())
+-		uasm_i_mtc0(p, 0, C0_ENTRYLO1);
+-	uasm_i_mtc0(p, ptep, C0_ENTRYLO1); /* load it */
++		UASM_i_MTC0(p, 0, C0_ENTRYLO1);
++	UASM_i_MTC0(p, ptep, C0_ENTRYLO1); /* load it */
+ #endif
+ }
+ 
 -- 
 1.6.2.5

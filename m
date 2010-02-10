@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2010 00:15:30 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:15984 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2010 00:15:54 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:15985 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492380Ab0BJXNw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2010 00:13:52 +0100
+        by eddie.linux-mips.org with ESMTP id S1492382Ab0BJXNx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2010 00:13:53 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b733db60002>; Wed, 10 Feb 2010 15:13:58 -0800
+        id <B4b733db60003>; Wed, 10 Feb 2010 15:13:58 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 10 Feb 2010 15:12:52 -0800
+         Wed, 10 Feb 2010 15:12:54 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 10 Feb 2010 15:12:52 -0800
+         Wed, 10 Feb 2010 15:12:54 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1ANCnkm005823;
-        Wed, 10 Feb 2010 15:12:49 -0800
+        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1ANCoTU005843;
+        Wed, 10 Feb 2010 15:12:50 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1ANCnuB005822;
-        Wed, 10 Feb 2010 15:12:49 -0800
+        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1ANCogO005842;
+        Wed, 10 Feb 2010 15:12:50 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 1/6] MIPS: Use 64-bit stores to c0_entrylo on 64-bit kernels.
-Date:   Wed, 10 Feb 2010 15:12:44 -0800
-Message-Id: <1265843569-5786-1-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH 6/6] MIPS: Enable Read Inhibit/eXecute Inhibit for Octeon+ CPUs
+Date:   Wed, 10 Feb 2010 15:12:49 -0800
+Message-Id: <1265843569-5786-6-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.6.2.5
 In-Reply-To: <4B733C71.8030304@caviumnetworks.com>
 References: <4B733C71.8030304@caviumnetworks.com>
-X-OriginalArrivalTime: 10 Feb 2010 23:12:52.0425 (UTC) FILETIME=[92000B90:01CAAAA6]
+X-OriginalArrivalTime: 10 Feb 2010 23:12:54.0910 (UTC) FILETIME=[937B39E0:01CAAAA6]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25908
+X-archive-position: 25909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,77 +37,24 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-64-bit CPUs have 64-bit c0_entrylo{0,1} registers.  We should use the
-64-bit dmtc0 instruction to set them.  This becomes important if we
-want to set the RI and XI bits present in some processors.
-
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/mm/tlbex.c |   20 ++++++++++----------
- 1 files changed, 10 insertions(+), 10 deletions(-)
+ .../asm/mach-cavium-octeon/cpu-feature-overrides.h |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 2c68849..35431e1 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -460,14 +460,14 @@ static __cpuinit void build_huge_update_entries(u32 **p,
- 		uasm_i_lui(p, tmp, HPAGE_SIZE >> (7 + 16));
- 
- 	UASM_i_SRL(p, pte, pte, 6); /* convert to entrylo */
--	uasm_i_mtc0(p, pte, C0_ENTRYLO0); /* load it */
-+	UASM_i_MTC0(p, pte, C0_ENTRYLO0); /* load it */
- 	/* convert to entrylo1 */
- 	if (small_sequence)
- 		UASM_i_ADDIU(p, pte, pte, HPAGE_SIZE >> 7);
- 	else
- 		UASM_i_ADDU(p, pte, pte, tmp);
- 
--	uasm_i_mtc0(p, pte, C0_ENTRYLO1); /* load it */
-+	UASM_i_MTC0(p, pte, C0_ENTRYLO1); /* load it */
- }
- 
- static __cpuinit void build_huge_handler_tail(u32 **p,
-@@ -686,18 +686,18 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
- 		uasm_i_ld(p, tmp, 0, ptep); /* get even pte */
- 		uasm_i_ld(p, ptep, sizeof(pte_t), ptep); /* get odd pte */
- 		uasm_i_dsrl(p, tmp, tmp, 6); /* convert to entrylo0 */
--		uasm_i_mtc0(p, tmp, C0_ENTRYLO0); /* load it */
-+		UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
- 		uasm_i_dsrl(p, ptep, ptep, 6); /* convert to entrylo1 */
--		uasm_i_mtc0(p, ptep, C0_ENTRYLO1); /* load it */
-+		UASM_i_MTC0(p, ptep, C0_ENTRYLO1); /* load it */
- 	} else {
- 		int pte_off_even = sizeof(pte_t) / 2;
- 		int pte_off_odd = pte_off_even + sizeof(pte_t);
- 
- 		/* The pte entries are pre-shifted */
- 		uasm_i_lw(p, tmp, pte_off_even, ptep); /* get even pte */
--		uasm_i_mtc0(p, tmp, C0_ENTRYLO0); /* load it */
-+		UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
- 		uasm_i_lw(p, ptep, pte_off_odd, ptep); /* get odd pte */
--		uasm_i_mtc0(p, ptep, C0_ENTRYLO1); /* load it */
-+		UASM_i_MTC0(p, ptep, C0_ENTRYLO1); /* load it */
- 	}
- #else
- 	UASM_i_LW(p, tmp, 0, ptep); /* get even pte */
-@@ -706,14 +706,14 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
- 		build_tlb_probe_entry(p);
- 	UASM_i_SRL(p, tmp, tmp, 6); /* convert to entrylo0 */
- 	if (r4k_250MHZhwbug())
--		uasm_i_mtc0(p, 0, C0_ENTRYLO0);
--	uasm_i_mtc0(p, tmp, C0_ENTRYLO0); /* load it */
-+		UASM_i_MTC0(p, 0, C0_ENTRYLO0);
-+	UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
- 	UASM_i_SRL(p, ptep, ptep, 6); /* convert to entrylo1 */
- 	if (r45k_bvahwbug())
- 		uasm_i_mfc0(p, tmp, C0_INDEX);
- 	if (r4k_250MHZhwbug())
--		uasm_i_mtc0(p, 0, C0_ENTRYLO1);
--	uasm_i_mtc0(p, ptep, C0_ENTRYLO1); /* load it */
-+		UASM_i_MTC0(p, 0, C0_ENTRYLO1);
-+	UASM_i_MTC0(p, ptep, C0_ENTRYLO1); /* load it */
- #endif
- }
- 
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+index 425e708..bbf0540 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+@@ -58,6 +58,9 @@
+ #define cpu_has_vint		0
+ #define cpu_has_veic		0
+ #define cpu_hwrena_impl_bits	0xc0000000
++
++#define kernel_uses_smartmips_rixi (cpu_data[0].cputype == CPU_CAVIUM_OCTEON_PLUS)
++
+ #define ARCH_HAS_READ_CURRENT_TIMER 1
+ #define ARCH_HAS_IRQ_PER_CPU	1
+ #define ARCH_HAS_SPINLOCK_PREFETCH 1
 -- 
 1.6.2.5

@@ -1,101 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Feb 2010 01:53:31 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:17808 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492265Ab0BKAx2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Feb 2010 01:53:28 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b7355040000>; Wed, 10 Feb 2010 16:53:24 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 10 Feb 2010 16:53:11 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 10 Feb 2010 16:53:11 -0800
-Message-ID: <4B7354F5.8080002@caviumnetworks.com>
-Date:   Wed, 10 Feb 2010 16:53:09 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc11 Thunderbird/3.0.1
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Feb 2010 13:37:43 +0100 (CET)
+Received: from mail-yw0-f188.google.com ([209.85.211.188]:56668 "EHLO
+        mail-yw0-f188.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491028Ab0BLMhj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Feb 2010 13:37:39 +0100
+Received: by ywh26 with SMTP id 26so2126051ywh.26
+        for <multiple recipients>; Fri, 12 Feb 2010 04:37:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:x-mailer:mime-version:content-type
+         :content-transfer-encoding;
+        bh=vVqQH+LfNmuiz1nIFKXMHoj83gtCVsSzg4xi6J/cBcA=;
+        b=Jyp8gljxBPBshA4sY1Ijxs7pzx0v37/7inuh/lLYkNxYiw9imugIg15TzjSWdLi/YL
+         tayFeEr4p9n8VbI0fPBJedQsoEkrJ8aHCKmVgwuIHiCERQeuj4vr1ru4fqI6ESC22Zoi
+         8CHAbcsPv5zv1D2kTehiV8z+uAs99GIxA+cow=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        b=PEBub0P4ef1QU23fGhGqaMiwy7w+/I2jC5/HPjyPfPMpZBLkLLQWI28laivJUaL/cG
+         aUjZm9lsHXX99y6WJGoAIDGEvDU5TDTmbxXSU9BfafghzIXua67ZDxTRp7AnyZVfGoi6
+         UQWLskXluL6uR4+PHvaRd9zcAii7V1w877tw8=
+Received: by 10.101.10.2 with SMTP id n2mr1795161ani.189.1265978252473;
+        Fri, 12 Feb 2010 04:37:32 -0800 (PST)
+Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
+        by mx.google.com with ESMTPS id 14sm2431915gxk.2.2010.02.12.04.37.29
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 12 Feb 2010 04:37:31 -0800 (PST)
+Date:   Fri, 12 Feb 2010 21:27:59 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 0/6] MIPS Read Inhibit/eXecute Inhibit support (v2).
-References: <4B733C71.8030304@caviumnetworks.com> <20100210235649.GA7975@linux-mips.org>
-In-Reply-To: <20100210235649.GA7975@linux-mips.org>
-Content-Type: multipart/mixed;
- boundary="------------020709000000020608050108"
-X-OriginalArrivalTime: 11 Feb 2010 00:53:11.0401 (UTC) FILETIME=[9596E590:01CAAAB4]
-Return-Path: <David.Daney@caviumnetworks.com>
+Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH -queue 1/4] MIPS: use generic current.h
+Message-Id: <20100212212759.76f1b52a.yuasa@linux-mips.org>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25911
+X-archive-position: 25912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------020709000000020608050108
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+---
+ arch/mips/include/asm/current.h |   24 +-----------------------
+ 1 files changed, 1 insertions(+), 23 deletions(-)
 
-On 02/10/2010 03:56 PM, Ralf Baechle wrote:
-> On Wed, Feb 10, 2010 at 03:08:33PM -0800, David Daney wrote:
->
->> This patch set adds execute and read inhibit support.  By default glibc
->> based tool chains will create mappings for data areas of a program and
->> shared libraries with PROT_EXEC cleared.  With this patch applied, a
->> SIGSEGV is correctly sent if an attempt is made to execute from data
->> areas.
->>
->> The first three patch just make a few tweaks in preperation for the
->> main body of the patch in 4/6.  The last two turn on the feature for
->> some Octeon CPUs.
->>
->> I will reply with the six patches.
->>
->> David Daney (6):
->>    MIPS: Use 64-bit stores to c0_entrylo on 64-bit kernels.
->>    MIPS: Add accessor functions and bit definitions for c0_PageGrain
->>    MIPS: Add TLBR and ROTR to uasm.
->>    MIPS: Implement Read Inhibit/eXecute Inhibit
->>    MIPS: Give Octeon+ CPUs their own cputype.
->>    MIPS: Enable Read Inhibit/eXecute Inhibit for Octeon+ CPUs
->
-> Hangs on IP27 after
->
-> [...]
-> Calibrating delay loop... 178.17 BogoMIPS (lpj=89088)
-> Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes)
->
-Try the attached patch.
-
-David Daney
-
---------------020709000000020608050108
-Content-Type: text/plain;
- name="rixi-ralf.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename="rixi-ralf.patch"
-
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index ec60bd5..5ea0af8 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -749,11 +749,11 @@ static void __cpuinit build_update_entries(u32 **p, unsigned int tmp,
- 		UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
- 		UASM_i_ROTR(p, ptep, ptep, ilog2(_PAGE_GLOBAL) - ilog2(_PAGE_NO_EXEC));
- 	} else {
--		UASM_i_SRL(p, tmp, tmp, 6); /* convert to entrylo0 */
-+		UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_GLOBAL)); /* convert to entrylo0 */
- 		if (r4k_250MHZhwbug())
- 			UASM_i_MTC0(p, 0, C0_ENTRYLO0);
- 		UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
--		UASM_i_SRL(p, ptep, ptep, 6); /* convert to entrylo1 */
-+		UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_GLOBAL)); /* convert to entrylo1 */
- 		if (r45k_bvahwbug())
- 			uasm_i_mfc0(p, tmp, C0_INDEX);
- 	}
-
---------------020709000000020608050108--
+diff --git a/arch/mips/include/asm/current.h b/arch/mips/include/asm/current.h
+index 559db66..4c51401 100644
+--- a/arch/mips/include/asm/current.h
++++ b/arch/mips/include/asm/current.h
+@@ -1,23 +1 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1998, 2002 Ralf Baechle
+- * Copyright (C) 1999 Silicon Graphics, Inc.
+- */
+-#ifndef _ASM_CURRENT_H
+-#define _ASM_CURRENT_H
+-
+-#include <linux/thread_info.h>
+-
+-struct task_struct;
+-
+-static inline struct task_struct * get_current(void)
+-{
+-	return current_thread_info()->task;
+-}
+-
+-#define current		get_current()
+-
+-#endif /* _ASM_CURRENT_H */
++#include <asm-generic/current.h>
+-- 
+1.6.6.2

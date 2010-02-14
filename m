@@ -1,89 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Feb 2010 13:38:55 +0100 (CET)
-Received: from mail-gx0-f214.google.com ([209.85.217.214]:49933 "EHLO
-        mail-gx0-f214.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491089Ab0BLMhs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Feb 2010 13:37:48 +0100
-Received: by gxk6 with SMTP id 6so1826651gxk.4
-        for <multiple recipients>; Fri, 12 Feb 2010 04:37:41 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Feb 2010 21:16:47 +0100 (CET)
+Received: from mail-fx0-f224.google.com ([209.85.220.224]:59654 "EHLO
+        mail-fx0-f224.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491925Ab0BNUQn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 14 Feb 2010 21:16:43 +0100
+Received: by fxm24 with SMTP id 24so4367317fxm.0
+        for <multiple recipients>; Sun, 14 Feb 2010 12:16:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:date:from:to:cc
-         :subject:message-id:in-reply-to:references:x-mailer:mime-version
-         :content-type:content-transfer-encoding;
-        bh=loSLtQdHIcOqIe9vm12RozVzPsLRDHzKlV3orTOV+gw=;
-        b=pFx7Kf0Jmo61cMJ8BhJFCBJtXRRgr0f1vl45heeUWRQMevdxLpZEsZ5jfBFHhTasdj
-         8rdXGtN0Wy58PGxRR4Z3wlCUynMdKJxctRTgQ21n5nHkb4xpFtHSAwAbDdQYH50PeSfj
-         0gVGOPfpyB243bHf4iPatefz6riw32ELG0gcM=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type;
+        bh=ACDiICNnozgUrUucR3zs1M4OF8MADs+lKC2SlRPX63Q=;
+        b=VqHKavBCsPPYRbjLsYNxR1j4OEe3NMaAKqOmdDmprxGuZft+uVC0l/wYdvWgHuFKBo
+         63gOgSnYCkRBAGPgWHkcDo7/EM9lV2galwjJb1/eu6vjK3DTQOwn0ybiau3UfLgvbrf6
+         4+zR14O3Bf40mQJdm9NF1hgI2OjZ387MoA58M=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
-         :x-mailer:mime-version:content-type:content-transfer-encoding;
-        b=PrtxiM1NEHocYpWQAso/h0t5UhPVMi9KmI3HCwgOgRWQAr39KHIlnWstvJt4uQGQeR
-         IgdJIpVT/8JwW/Ltpmvx4D43LgyuuK+PiXp8TcKXhh7BaZcEgEIc+EcMiBoqVEsf7QM8
-         bm8IM7BF2aXRTeP+25xZJ1tSmmIhbC01pbq3g=
-Received: by 10.101.7.29 with SMTP id k29mr1954461ani.12.1265978261739;
-        Fri, 12 Feb 2010 04:37:41 -0800 (PST)
-Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
-        by mx.google.com with ESMTPS id 16sm2413492gxk.15.2010.02.12.04.37.39
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 12 Feb 2010 04:37:41 -0800 (PST)
-Date:   Fri, 12 Feb 2010 21:33:56 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH -queue 3/4] MIPS: use generic serial.h
-Message-Id: <20100212213356.198e723b.yuasa@linux-mips.org>
-In-Reply-To: <20100212212914.f04a046b.yuasa@linux-mips.org>
-References: <20100212212759.76f1b52a.yuasa@linux-mips.org>
-        <20100212212914.f04a046b.yuasa@linux-mips.org>
-X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa.linux@gmail.com>
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=mQgv7A+F+i9XwbjWLENmhiUVS3+euClDioP2poH06iG5AI59JrKmVB3Q0pbZ4p/tOR
+         5CcydhLHOnrTgUqh/N1VI0aj4k59ciC6FWPcE06og99EaYyrr79DBC9f8Q773jdfb7KU
+         SnAy3K8bmVg9zkSbBsqdM0puDPWXYPc2AtHhk=
+MIME-Version: 1.0
+Received: by 10.223.7.69 with SMTP id c5mr4948085fac.14.1266178596578; Sun, 14 
+        Feb 2010 12:16:36 -0800 (PST)
+In-Reply-To: <1265843569-5786-4-git-send-email-ddaney@caviumnetworks.com>
+References: <4B733C71.8030304@caviumnetworks.com>
+         <1265843569-5786-4-git-send-email-ddaney@caviumnetworks.com>
+Date:   Sun, 14 Feb 2010 21:16:36 +0100
+Message-ID: <f861ec6f1002141216t233fde34t1586bcd50dc051b4@mail.gmail.com>
+Subject: Re: [PATCH 4/6] MIPS: Implement Read Inhibit/eXecute Inhibit
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25915
+X-archive-position: 25916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
----
- arch/mips/include/asm/serial.h |   23 +----------------------
- 1 files changed, 1 insertions(+), 22 deletions(-)
+Hi David,
 
-diff --git a/arch/mips/include/asm/serial.h b/arch/mips/include/asm/serial.h
-index c07ebd8..a0cb0ca 100644
---- a/arch/mips/include/asm/serial.h
-+++ b/arch/mips/include/asm/serial.h
-@@ -1,22 +1 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1999 by Ralf Baechle
-- * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-- */
--#ifndef _ASM_SERIAL_H
--#define _ASM_SERIAL_H
--
--
--/*
-- * This assumes you have a 1.8432 MHz clock for your UART.
-- *
-- * It'd be nice if someone built a serial card with a 24.576 MHz
-- * clock, since the 16550A is capable of handling a top speed of 1.5
-- * megabits/second; but this requires the faster clock.
-- */
--#define BASE_BAUD (1843200 / 16)
--
--#endif /* _ASM_SERIAL_H */
-+#include <asm-generic/serial.h>
--- 
-1.6.6.2
+this patch breaks my Alchemy builds:
+
+  Using /mnt/data/_home/mano/db1200/kernel/linux-2.6.git as source for kernel
+  GEN     /mnt/data/_home/mano/db1200/kernel/kbuild-linux-2.6.git/Makefile
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+  UPD     include/generated/utsrelease.h
+  CC      arch/mips/kernel/asm-offsets.s
+In file included from
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/io.h:25,
+                 from
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/page.h:46,
+                 from
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/include/linux/mm_types.h:15,
+                 from
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/include/linux/sched.h:63,
+                 from
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/kernel/asm-offsets.c:13:
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable-bits.h:
+In function 'pte_to_entrylo':
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable-bits.h:146:
+error: '_PAGE_NO_READ_SHIFT' undeclared (first use in this function)
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable-bits.h:146:
+error: (Each undeclared identifier is reported only once
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable-bits.h:146:
+error: for each function it appears in.)
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable-bits.h:155:
+error: '_PAGE_GLOBAL_SHIFT' undeclared (first use in this function)
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable-bits.h:156:
+error: '_PAGE_NO_EXEC' undeclared (first use in this function)
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable-bits.h:156:
+error: '_PAGE_NO_READ' undeclared (first use in this function)
+In file included from
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/include/linux/mm.h:39,
+                 from
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/kernel/asm-offsets.c:14:
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable.h:
+In function 'pte_modify':
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/include/asm/pgtable.h:351:
+error: '_PFN_MASK' undeclared (first use in this function)
+make[2]: *** [arch/mips/kernel/asm-offsets.s] Error 1
+make[1]: *** [prepare0] Error 2
+make: *** [sub-make] Error 2
+
+Thanks!
+      Manuel Lauss

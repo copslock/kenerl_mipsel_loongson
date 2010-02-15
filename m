@@ -1,119 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2010 20:43:09 +0100 (CET)
-Received: from mail-fx0-f210.google.com ([209.85.220.210]:58847 "EHLO
-        mail-fx0-f210.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492162Ab0BOTnF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2010 20:43:05 +0100
-Received: by fxm2 with SMTP id 2so2276081fxm.27
-        for <multiple recipients>; Mon, 15 Feb 2010 11:42:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=eugNmN2OyxRKYqiSg1FcAVkcbzagt4J1mnEUYH/QI1c=;
-        b=dfkX4ahaN/7RkGG40as9N7yhShxzne5LeO+duh5+n4LjyN4TzY7zEnFQ8yC9YO5Lt9
-         SaO5v7MlaDYnFeqkaYCh9nK6cGtuSNn4jgd4qddRye1WNlQBRZKUfTK77wFQyHqyb0Hf
-         N5B5I6kn3k4cjZHqPowFGku8DZqclypwtMj20=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=Q5qNozqDFfjI/WOIhovsKSHoBkzA1PrbAhhgqWgpIc/9vm6wP2npjTj+ICAITZyCTF
-         6YWwLgibWSh7NzVfvjg4WhkxGlB3w01HJXz7RMqic4w1ebKSJh1NekeBUh7CqScsbaAL
-         KBq2TkHZLbgAg8CnvwaN+pVdgWsDGWRWgWrPc=
-Received: by 10.223.100.150 with SMTP id y22mr6184177fan.99.1266262978161;
-        Mon, 15 Feb 2010 11:42:58 -0800 (PST)
-Received: from localhost.localdomain (p5496BF25.dip.t-dialin.net [84.150.191.37])
-        by mx.google.com with ESMTPS id b17sm10661729fka.16.2010.02.15.11.42.55
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 15 Feb 2010 11:42:55 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>,
-        =?UTF-8?q?Ralf=20B=E4chle?= <ralf@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH -queue] MIPS/net: fix au1000_eth.c build and warnings
-Date:   Mon, 15 Feb 2010 20:43:37 +0100
-Message-Id: <1266263017-6874-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.6.6.1
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2010 21:12:29 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:19937 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492094Ab0BOUMZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2010 21:12:25 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4b79aab00000>; Mon, 15 Feb 2010 12:12:32 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 15 Feb 2010 12:12:22 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 15 Feb 2010 12:12:22 -0800
+Message-ID: <4B79AAA6.60005@caviumnetworks.com>
+Date:   Mon, 15 Feb 2010 12:12:22 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
+MIME-Version: 1.0
+To:     ralf.baechle@gmail.com, linux-mips <linux-mips@linux-mips.org>,
+        Netdev <netdev@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@suse.de>
+Subject: [PATCH 0/4] Improvements to octeon_ethernet.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 15 Feb 2010 20:12:22.0488 (UTC) FILETIME=[2EEB8D80:01CAAE7B]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25922
+X-archive-position: 25923
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-- buildfix: DECLARE_MAC_BUF was removed recently.
-- remove various warnings spit out during build
+Here are a couple of improvements to the octeon_ethernet in
+drivers/staging/octeon.  The first patch is just cleanup, the rest are
+genuine bug fixes.
 
-Only compile-tested.
+I will reply with the four patches.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-Hi Ralf!  Please fold this into the patch titled
-"NET: au1000-eth: convert to platform_driver model"
-in mips-queue, thank you!
+We may want to merge via Ralf's linux-mips.org tree as Octeon is
+infact a MIPS based SOC and he has a bunch of other patches queued
+there that these depend on.
 
- drivers/net/au1000_eth.c |   14 +++++++-------
- 1 files changed, 7 insertions(+), 7 deletions(-)
+David Daney (4):
+   Staging: octeon: remove unneeded includes
+   Staging: Octeon:  Run phy bus accesses on a workqueue.
+   MIPS: Octeon: Do proper acknowledgment of CIU timer interrupts.
+   Staging: Octeon:  Free transmit SKBs in a timely manner.
 
-diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
-index 1acf2c1..6e5a68e 100644
---- a/drivers/net/au1000_eth.c
-+++ b/drivers/net/au1000_eth.c
-@@ -397,11 +397,12 @@ static int mii_probe (struct net_device *dev)
- 				/* find the first (lowest address) non-attached PHY on
- 				 * the MAC0 MII bus */
- 				for (phy_addr = 0; phy_addr < PHY_MAX_ADDR; phy_addr++) {
--					if (aup->mac_id == 1)
--						break;
- 					struct phy_device *const tmp_phydev =
- 							aup->mii_bus->phy_map[phy_addr];
- 
-+					if (aup->mac_id == 1)
-+						break;
-+
- 					if (!tmp_phydev)
- 						continue; /* no PHY here... */
- 
-@@ -650,7 +651,6 @@ static int au1000_init(struct net_device *dev)
- 
- static inline void update_rx_stats(struct net_device *dev, u32 status)
- {
--	struct au1000_private *aup = netdev_priv(dev);
- 	struct net_device_stats *ps = &dev->stats;
- 
- 	ps->rx_packets++;
-@@ -908,7 +908,7 @@ static netdev_tx_t au1000_tx(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	pDB = aup->tx_db_inuse[aup->tx_head];
--	skb_copy_from_linear_data(skb, pDB->vaddr, skb->len);
-+	skb_copy_from_linear_data(skb, (void *)pDB->vaddr, skb->len);
- 	if (skb->len < ETH_ZLEN) {
- 		for (i=skb->len; i<ETH_ZLEN; i++) {
- 			((char *)pDB->vaddr)[i] = 0;
-@@ -1006,7 +1006,7 @@ static int __devinit au1000_probe(struct platform_device *pdev)
- 	db_dest_t *pDB, *pDBfree;
- 	int irq, i, err = 0;
- 	struct resource *base, *macen;
--	DECLARE_MAC_BUF(ethaddr);
-+	char ethaddr[6];
- 
- 	base = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!base) {
-@@ -1207,8 +1207,8 @@ static int __devinit au1000_probe(struct platform_device *pdev)
- 		goto err_out;
- 	}
- 
--	printk("%s: Au1xx0 Ethernet found at 0x%x, irq %d\n",
--					dev->name, base->start, irq);
-+	printk("%s: Au1xx0 Ethernet found at 0x%lx, irq %d\n",
-+			dev->name, (unsigned long)base->start, irq);
- 	if (version_printed++ == 0)
- 		printk("%s version %s %s\n", DRV_NAME, DRV_VERSION, DRV_AUTHOR);
- 
--- 
-1.6.6.1
+  arch/mips/cavium-octeon/octeon-irq.c      |   67 +++++++++++++-
+  drivers/staging/octeon/Kconfig            |    1 -
+  drivers/staging/octeon/ethernet-defines.h |    5 +-
+  drivers/staging/octeon/ethernet-mdio.h    |    1 -
+  drivers/staging/octeon/ethernet-rgmii.c   |   56 +++++++++---
+  drivers/staging/octeon/ethernet-sgmii.c   |    1 -
+  drivers/staging/octeon/ethernet-spi.c     |    1 -
+  drivers/staging/octeon/ethernet-tx.c      |  137 
+++++++++++++++++++++++------
+  drivers/staging/octeon/ethernet-tx.h      |    6 +-
+  drivers/staging/octeon/ethernet-xaui.c    |    1 -
+  drivers/staging/octeon/ethernet.c         |  141 
+++++++++++++++++-------------
+  drivers/staging/octeon/octeon-ethernet.h  |   11 ++-
+  12 files changed, 303 insertions(+), 125 deletions(-)

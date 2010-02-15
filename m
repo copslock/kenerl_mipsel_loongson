@@ -1,100 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2010 19:34:07 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:18438 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492112Ab0BOSeE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2010 19:34:04 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b7993a20000>; Mon, 15 Feb 2010 10:34:11 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 15 Feb 2010 10:34:00 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 15 Feb 2010 10:34:00 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1FIXw90017879;
-        Mon, 15 Feb 2010 10:33:58 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1FIXu0o017878;
-        Mon, 15 Feb 2010 10:33:56 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Fix RIXI patch for au1000 processors.
-Date:   Mon, 15 Feb 2010 10:33:21 -0800
-Message-Id: <1266258801-17841-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.6
-X-OriginalArrivalTime: 15 Feb 2010 18:34:00.0919 (UTC) FILETIME=[714F9670:01CAAE6D]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2010 20:43:09 +0100 (CET)
+Received: from mail-fx0-f210.google.com ([209.85.220.210]:58847 "EHLO
+        mail-fx0-f210.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492162Ab0BOTnF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2010 20:43:05 +0100
+Received: by fxm2 with SMTP id 2so2276081fxm.27
+        for <multiple recipients>; Mon, 15 Feb 2010 11:42:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=eugNmN2OyxRKYqiSg1FcAVkcbzagt4J1mnEUYH/QI1c=;
+        b=dfkX4ahaN/7RkGG40as9N7yhShxzne5LeO+duh5+n4LjyN4TzY7zEnFQ8yC9YO5Lt9
+         SaO5v7MlaDYnFeqkaYCh9nK6cGtuSNn4jgd4qddRye1WNlQBRZKUfTK77wFQyHqyb0Hf
+         N5B5I6kn3k4cjZHqPowFGku8DZqclypwtMj20=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=Q5qNozqDFfjI/WOIhovsKSHoBkzA1PrbAhhgqWgpIc/9vm6wP2npjTj+ICAITZyCTF
+         6YWwLgibWSh7NzVfvjg4WhkxGlB3w01HJXz7RMqic4w1ebKSJh1NekeBUh7CqScsbaAL
+         KBq2TkHZLbgAg8CnvwaN+pVdgWsDGWRWgWrPc=
+Received: by 10.223.100.150 with SMTP id y22mr6184177fan.99.1266262978161;
+        Mon, 15 Feb 2010 11:42:58 -0800 (PST)
+Received: from localhost.localdomain (p5496BF25.dip.t-dialin.net [84.150.191.37])
+        by mx.google.com with ESMTPS id b17sm10661729fka.16.2010.02.15.11.42.55
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 15 Feb 2010 11:42:55 -0800 (PST)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>,
+        =?UTF-8?q?Ralf=20B=E4chle?= <ralf@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH -queue] MIPS/net: fix au1000_eth.c build and warnings
+Date:   Mon, 15 Feb 2010 20:43:37 +0100
+Message-Id: <1266263017-6874-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.6.1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25921
+X-archive-position: 25922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Several macros need to be defined even though they are only used in
-dead code paths.
+- buildfix: DECLARE_MAC_BUF was removed recently.
+- remove various warnings spit out during build
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Only compile-tested.
+
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/mips/include/asm/pgtable-bits.h |   25 ++++++++++++++++++++-----
- 1 files changed, 20 insertions(+), 5 deletions(-)
+Hi Ralf!  Please fold this into the patch titled
+"NET: au1000-eth: convert to platform_driver model"
+in mips-queue, thank you!
 
-diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
-index a2e646f..e9fe7e9 100644
---- a/arch/mips/include/asm/pgtable-bits.h
-+++ b/arch/mips/include/asm/pgtable-bits.h
-@@ -66,7 +66,6 @@
- #define _PAGE_SILENT_WRITE          (1<<10)
- #define _CACHE_UNCACHED             (1<<11)
- #define _CACHE_MASK                 (1<<11)
--#define _PFN_SHIFT                  PAGE_SHIFT
+ drivers/net/au1000_eth.c |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
+index 1acf2c1..6e5a68e 100644
+--- a/drivers/net/au1000_eth.c
++++ b/drivers/net/au1000_eth.c
+@@ -397,11 +397,12 @@ static int mii_probe (struct net_device *dev)
+ 				/* find the first (lowest address) non-attached PHY on
+ 				 * the MAC0 MII bus */
+ 				for (phy_addr = 0; phy_addr < PHY_MAX_ADDR; phy_addr++) {
+-					if (aup->mac_id == 1)
+-						break;
+ 					struct phy_device *const tmp_phydev =
+ 							aup->mii_bus->phy_map[phy_addr];
  
- #else /* 'Normal' r4K case */
- /*
-@@ -129,10 +128,26 @@
- #define _CACHE_MASK		(7 << _CACHE_SHIFT)
- 
- #define _PFN_SHIFT		(PAGE_SHIFT - 12 + _CACHE_SHIFT + 3)
--#define _PFN_MASK		(~((1 << (_PFN_SHIFT)) - 1))
- 
- #endif /* defined(CONFIG_64BIT_PHYS_ADDR && defined(CONFIG_CPU_MIPS32) */
- 
-+#ifndef _PFN_SHIFT
-+#define _PFN_SHIFT                  PAGE_SHIFT
-+#endif
-+#define _PFN_MASK		(~((1 << (_PFN_SHIFT)) - 1))
++					if (aup->mac_id == 1)
++						break;
 +
-+#ifndef _PAGE_NO_READ
-+#define _PAGE_NO_READ ({BUG(); 0; })
-+#define _PAGE_NO_READ_SHIFT ({BUG(); 0; })
-+#endif
-+#ifndef _PAGE_NO_EXEC
-+#define _PAGE_NO_EXEC ({BUG(); 0; })
-+#endif
-+#ifndef _PAGE_GLOBAL_SHIFT
-+#define _PAGE_GLOBAL_SHIFT ilog2(_PAGE_GLOBAL)
-+#endif
-+
-+
- #ifndef __ASSEMBLY__
- /*
-  * pte_to_entrylo converts a page table entry (PTE) into a Mips
-@@ -148,9 +163,9 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
- 		sa = 63 - _PAGE_NO_READ_SHIFT;
- #endif
- 		/*
--		 * C has no way to express that this is a DSRL 5
--		 * followed by a ROTR 2.  Luckily in the fast path
--		 * this is done in assembly
-+		 * C has no way to express that this is a DSRL
-+		 * _PAGE_NO_EXEC_SHIFT followed by a ROTR 2.  Luckily
-+		 * in the fast path this is done in assembly
- 		 */
- 		return (pte_val >> _PAGE_GLOBAL_SHIFT) |
- 			((pte_val & (_PAGE_NO_EXEC | _PAGE_NO_READ)) << sa);
+ 					if (!tmp_phydev)
+ 						continue; /* no PHY here... */
+ 
+@@ -650,7 +651,6 @@ static int au1000_init(struct net_device *dev)
+ 
+ static inline void update_rx_stats(struct net_device *dev, u32 status)
+ {
+-	struct au1000_private *aup = netdev_priv(dev);
+ 	struct net_device_stats *ps = &dev->stats;
+ 
+ 	ps->rx_packets++;
+@@ -908,7 +908,7 @@ static netdev_tx_t au1000_tx(struct sk_buff *skb, struct net_device *dev)
+ 	}
+ 
+ 	pDB = aup->tx_db_inuse[aup->tx_head];
+-	skb_copy_from_linear_data(skb, pDB->vaddr, skb->len);
++	skb_copy_from_linear_data(skb, (void *)pDB->vaddr, skb->len);
+ 	if (skb->len < ETH_ZLEN) {
+ 		for (i=skb->len; i<ETH_ZLEN; i++) {
+ 			((char *)pDB->vaddr)[i] = 0;
+@@ -1006,7 +1006,7 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 	db_dest_t *pDB, *pDBfree;
+ 	int irq, i, err = 0;
+ 	struct resource *base, *macen;
+-	DECLARE_MAC_BUF(ethaddr);
++	char ethaddr[6];
+ 
+ 	base = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!base) {
+@@ -1207,8 +1207,8 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 		goto err_out;
+ 	}
+ 
+-	printk("%s: Au1xx0 Ethernet found at 0x%x, irq %d\n",
+-					dev->name, base->start, irq);
++	printk("%s: Au1xx0 Ethernet found at 0x%lx, irq %d\n",
++			dev->name, (unsigned long)base->start, irq);
+ 	if (version_printed++ == 0)
+ 		printk("%s version %s %s\n", DRV_NAME, DRV_VERSION, DRV_AUTHOR);
+ 
 -- 
-1.6.6
+1.6.6.1

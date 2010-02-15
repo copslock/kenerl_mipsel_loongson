@@ -1,163 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2010 21:14:52 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:19978 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492184Ab0BOUNi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2010 21:13:38 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b79aaf70001>; Mon, 15 Feb 2010 12:13:43 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 15 Feb 2010 12:13:33 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 15 Feb 2010 12:13:32 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1FKDUOU003556;
-        Mon, 15 Feb 2010 12:13:30 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1FKDUoX003555;
-        Mon, 15 Feb 2010 12:13:30 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Feb 2010 21:28:09 +0100 (CET)
+Received: from mail-bw0-f215.google.com ([209.85.218.215]:53412 "EHLO
+        mail-bw0-f215.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492190Ab0BOU2E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Feb 2010 21:28:04 +0100
+Received: by bwz7 with SMTP id 7so4290063bwz.26
+        for <multiple recipients>; Mon, 15 Feb 2010 12:27:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:to:cc
+         :in-reply-to:references:content-type:date:message-id:mime-version
+         :x-mailer:content-transfer-encoding;
+        bh=9TmwcbiFEptboJxWGBqb3xk7p0x8bqiLkREGORZG/yU=;
+        b=PeY4XH2BZpMDN8gvs6aFUFIGE9zp+DK6xsWIX+GYrXKFkME/Zb0T1qg01J/eoiK0Tp
+         1MwF7wf4NSUFaUGhsUyVHMG2v3X9S8Y4mtT251Og02mBZ6ubIqCDPsN4slESzmmUJoHY
+         vN8lNmirjswQYzSZjg3/HHb50eO2C1ErLK/so=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:to:cc:in-reply-to:references:content-type:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=tKr231hEVLTUN3L7xBntxZc4wfghZkJZ1MvlE6lgM7lvlgHdTSK8nKegPIlvWp+Djx
+         2sIqkjksIW//5CBge3vnTyMo3z3x+XxBYJMdx2WoZoTZIHdaWy2JFmGuKt3PcNhYNdfL
+         GXVLa8HpP18EQxs4K6Xwi0Krfc7TRtRYcC7vo=
+Received: by 10.204.49.88 with SMTP id u24mr3607804bkf.44.1266265678493;
+        Mon, 15 Feb 2010 12:27:58 -0800 (PST)
+Received: from ?127.0.0.1? (gw1.cosmosbay.com [212.99.114.194])
+        by mx.google.com with ESMTPS id 16sm2848385bwz.3.2010.02.15.12.27.54
+        (version=SSLv3 cipher=RC4-MD5);
+        Mon, 15 Feb 2010 12:27:55 -0800 (PST)
+Subject: Re: [PATCH 4/4] Staging: Octeon:  Free transmit SKBs in a timely
+ manner.
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
         netdev@vger.kernel.org, gregkh@suse.de
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 3/4] MIPS: Octeon: Do proper acknowledgment of CIU timer interrupts.
-Date:   Mon, 15 Feb 2010 12:13:18 -0800
-Message-Id: <1266264799-3510-3-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.6
-In-Reply-To: <4B79AAA6.60005@caviumnetworks.com>
+In-Reply-To: <1266264799-3510-4-git-send-email-ddaney@caviumnetworks.com>
 References: <4B79AAA6.60005@caviumnetworks.com>
-X-OriginalArrivalTime: 15 Feb 2010 20:13:32.0801 (UTC) FILETIME=[58D47710:01CAAE7B]
-Return-Path: <David.Daney@caviumnetworks.com>
+         <1266264799-3510-4-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Mon, 15 Feb 2010 21:27:53 +0100
+Message-ID: <1266265673.2859.5.camel@edumazet-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 8bit
+Return-Path: <eric.dumazet@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25927
+X-archive-position: 25928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: eric.dumazet@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/cavium-octeon/octeon-irq.c |   67 ++++++++++++++++++++++++++++++++--
- 1 files changed, 63 insertions(+), 4 deletions(-)
+Le lundi 15 février 2010 à 12:13 -0800, David Daney a écrit :
+> If we wait for the once-per-second cleanup to free transmit SKBs,
+> sockets with small transmit buffer sizes might spend most of their
+> time blocked waiting for the cleanup.
+> 
+> Normally we do a cleanup for each transmitted packet.  We add a
+> watchdog type timer so that we also schedule a timeout for 150uS after
+> a packet is transmitted.  The watchdog is reset for each transmitted
+> packet, so for high packet rates, it never expires.  At these high
+> rates, the cleanups are done for each packet so the extra watchdog
+> initiated cleanups are not needed.
 
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index 1460d08..0bc79dc 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -51,9 +51,6 @@ static void octeon_irq_core_eoi(unsigned int irq)
- 	 */
- 	if (desc->status & IRQ_DISABLED)
- 		return;
--
--	/* There is a race here.  We should fix it.  */
--
- 	/*
- 	 * We don't need to disable IRQs to make these atomic since
- 	 * they are already disabled earlier in the low level
-@@ -202,6 +199,29 @@ static void octeon_irq_ciu0_ack_v2(unsigned int irq)
- }
- 
- /*
-+ * CIU timer type interrupts must be acknoleged by writing a '1' bit
-+ * to their sum0 bit.
-+ */
-+static void octeon_irq_ciu0_timer_ack(unsigned int irq)
-+{
-+	int index = cvmx_get_core_num() * 2;
-+	uint64_t mask = 1ull << (irq - OCTEON_IRQ_WORKQ0);
-+	cvmx_write_csr(CVMX_CIU_INTX_SUM0(index), mask);
-+}
-+
-+static void octeon_irq_ciu0_timer_ack_v1(unsigned int irq)
-+{
-+	octeon_irq_ciu0_timer_ack(irq);
-+	octeon_irq_ciu0_ack(irq);
-+}
-+
-+static void octeon_irq_ciu0_timer_ack_v2(unsigned int irq)
-+{
-+	octeon_irq_ciu0_timer_ack(irq);
-+	octeon_irq_ciu0_ack_v2(irq);
-+}
-+
-+/*
-  * Enable the irq on the current core for chips that have the EN*_W1{S,C}
-  * registers.
-  */
-@@ -304,6 +324,28 @@ static struct irq_chip octeon_irq_chip_ciu0 = {
- #endif
- };
- 
-+static struct irq_chip octeon_irq_chip_ciu0_timer_v2 = {
-+	.name = "CIU0-T",
-+	.enable = octeon_irq_ciu0_enable_v2,
-+	.disable = octeon_irq_ciu0_disable_all_v2,
-+	.ack = octeon_irq_ciu0_timer_ack_v2,
-+	.eoi = octeon_irq_ciu0_eoi_v2,
-+#ifdef CONFIG_SMP
-+	.set_affinity = octeon_irq_ciu0_set_affinity_v2,
-+#endif
-+};
-+
-+static struct irq_chip octeon_irq_chip_ciu0_timer = {
-+	.name = "CIU0-T",
-+	.enable = octeon_irq_ciu0_enable,
-+	.disable = octeon_irq_ciu0_disable,
-+	.ack = octeon_irq_ciu0_timer_ack_v1,
-+	.eoi = octeon_irq_ciu0_eoi,
-+#ifdef CONFIG_SMP
-+	.set_affinity = octeon_irq_ciu0_set_affinity,
-+#endif
-+};
-+
- 
- static void octeon_irq_ciu1_ack(unsigned int irq)
- {
-@@ -587,6 +629,7 @@ void __init arch_init_irq(void)
- {
- 	int irq;
- 	struct irq_chip *chip0;
-+	struct irq_chip *chip0_timer;
- 	struct irq_chip *chip1;
- 
- #ifdef CONFIG_SMP
-@@ -602,9 +645,11 @@ void __init arch_init_irq(void)
- 	    OCTEON_IS_MODEL(OCTEON_CN56XX_PASS2_X) ||
- 	    OCTEON_IS_MODEL(OCTEON_CN52XX_PASS2_X)) {
- 		chip0 = &octeon_irq_chip_ciu0_v2;
-+		chip0_timer = &octeon_irq_chip_ciu0_timer_v2;
- 		chip1 = &octeon_irq_chip_ciu1_v2;
- 	} else {
- 		chip0 = &octeon_irq_chip_ciu0;
-+		chip0_timer = &octeon_irq_chip_ciu0_timer;
- 		chip1 = &octeon_irq_chip_ciu1;
- 	}
- 
-@@ -618,7 +663,21 @@ void __init arch_init_irq(void)
- 
- 	/* 24 - 87 CIU_INT_SUM0 */
- 	for (irq = OCTEON_IRQ_WORKQ0; irq <= OCTEON_IRQ_BOOTDMA; irq++) {
--		set_irq_chip_and_handler(irq, chip0, handle_percpu_irq);
-+		switch (irq) {
-+		case OCTEON_IRQ_GMX_DRP0:
-+		case OCTEON_IRQ_GMX_DRP1:
-+		case OCTEON_IRQ_IPD_DRP:
-+		case OCTEON_IRQ_KEY_ZERO:
-+		case OCTEON_IRQ_TIMER0:
-+		case OCTEON_IRQ_TIMER1:
-+		case OCTEON_IRQ_TIMER2:
-+		case OCTEON_IRQ_TIMER3:
-+			set_irq_chip_and_handler(irq, chip0_timer, handle_percpu_irq);
-+			break;
-+		default:
-+			set_irq_chip_and_handler(irq, chip0, handle_percpu_irq);
-+			break;
-+		}
- 	}
- 
- 	/* 88 - 151 CIU_INT_SUM1 */
--- 
-1.6.6
+s/needed/fired/
+
+Hmm, but re-arming a timer for each transmited packet must have a cost ?
+
+> 
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+
+Is there any particular reason periodic is spelled preiodic ?
+
+> ---
+>  }
+>  
+> -static void cvm_oct_tx_clean_worker(struct work_struct *work)
+> +static void cvm_oct_preiodic_worker(struct work_struct *work)
+>  {
+
+
+
+> -			INIT_DELAYED_WORK(&priv->tx_clean_work,
+> -					  cvm_oct_tx_clean_worker);
+> -
+> +			INIT_DELAYED_WORK(&priv->port_periodic_work,
+> +					  cvm_oct_preiodic_worker);

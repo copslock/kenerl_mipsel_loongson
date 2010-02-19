@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Feb 2010 01:14:59 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:9513 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Feb 2010 01:15:26 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:9521 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492152Ab0BSANx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Feb 2010 01:13:53 +0100
+        by eddie.linux-mips.org with ESMTP id S1492157Ab0BSANz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Feb 2010 01:13:55 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b7dd7c70000>; Thu, 18 Feb 2010 16:13:59 -0800
+        id <B4b7dd7c70004>; Thu, 18 Feb 2010 16:13:59 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Thu, 18 Feb 2010 16:13:28 -0800
+         Thu, 18 Feb 2010 16:13:29 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
          Thu, 18 Feb 2010 16:13:28 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1J0DQU9029143;
+        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1J0DQaX029139;
         Thu, 18 Feb 2010 16:13:26 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1J0DQ1c029142;
+        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1J0DQG5029138;
         Thu, 18 Feb 2010 16:13:26 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 2/3] MIPS: Preliminary vdso.
-Date:   Thu, 18 Feb 2010 16:13:04 -0800
-Message-Id: <1266538385-29088-3-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH 1/3] MIPS: Add SYSCALL to uasm.
+Date:   Thu, 18 Feb 2010 16:13:03 -0800
+Message-Id: <1266538385-29088-2-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.6.6
 In-Reply-To: <1266538385-29088-1-git-send-email-ddaney@caviumnetworks.com>
 References: <1266538385-29088-1-git-send-email-ddaney@caviumnetworks.com>
@@ -29,7 +29,7 @@ Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25959
+X-archive-position: 25960
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,288 +37,95 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a preliminary patch to add a vdso to all user processes.
-Still missing are ELF headers and .eh_frame information.  But it is
-enough to allow us to move signal trampolines off of the stack.  Note
-that emulation of branch delay slots in the FPU emulator still
-requires the stack.
-
-We allocate a single page (the vdso) and write all possible signal
-trampolines into it.  The stack is moved down by one page and the vdso
-is mapped into this space.
-
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/include/asm/elf.h         |    4 +
- arch/mips/include/asm/mmu.h         |    5 +-
- arch/mips/include/asm/mmu_context.h |    2 +-
- arch/mips/include/asm/processor.h   |   11 +++-
- arch/mips/include/asm/vdso.h        |   29 +++++++++
- arch/mips/kernel/Makefile           |    2 +-
- arch/mips/kernel/syscall.c          |    6 ++-
- arch/mips/kernel/vdso.c             |  112 +++++++++++++++++++++++++++++++++++
- 8 files changed, 165 insertions(+), 6 deletions(-)
- create mode 100644 arch/mips/include/asm/vdso.h
- create mode 100644 arch/mips/kernel/vdso.c
+ arch/mips/include/asm/uasm.h |    1 +
+ arch/mips/mm/uasm.c          |   19 +++++++++++++++++--
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-index e53d7be..1c3dbf0 100644
---- a/arch/mips/include/asm/elf.h
-+++ b/arch/mips/include/asm/elf.h
-@@ -367,4 +367,8 @@ extern const char *__elf_platform;
- #define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
- #endif
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index b99bd07..32fe2ec 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -102,6 +102,7 @@ Ip_0(_tlbwr);
+ Ip_u3u1u2(_xor);
+ Ip_u2u1u3(_xori);
+ Ip_u2u1msbu3(_dins);
++Ip_u1(_syscall);
  
-+#define ARCH_HAS_SETUP_ADDITIONAL_PAGES 1
-+struct linux_binprm;
-+extern int arch_setup_additional_pages(struct linux_binprm *bprm,
-+				       int uses_interp);
- #endif /* _ASM_ELF_H */
-diff --git a/arch/mips/include/asm/mmu.h b/arch/mips/include/asm/mmu.h
-index 4063edd..c436138 100644
---- a/arch/mips/include/asm/mmu.h
-+++ b/arch/mips/include/asm/mmu.h
-@@ -1,6 +1,9 @@
- #ifndef __ASM_MMU_H
- #define __ASM_MMU_H
+ /* Handle labels. */
+ struct uasm_label {
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index 1581e98..d22d7bc 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -31,7 +31,8 @@ enum fields {
+ 	BIMM = 0x040,
+ 	JIMM = 0x080,
+ 	FUNC = 0x100,
+-	SET = 0x200
++	SET = 0x200,
++	SCIMM = 0x400
+ };
  
--typedef unsigned long mm_context_t[NR_CPUS];
-+typedef struct {
-+	unsigned long asid[NR_CPUS];
-+	void *vdso;
-+} mm_context_t;
+ #define OP_MASK		0x3f
+@@ -52,6 +53,8 @@ enum fields {
+ #define FUNC_SH		0
+ #define SET_MASK	0x7
+ #define SET_SH		0
++#define SCIMM_MASK	0xfffff
++#define SCIMM_SH	6
  
- #endif /* __ASM_MMU_H */
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index ada4975..73a640b 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -109,7 +109,7 @@ extern unsigned long smtc_asid_mask;
+ enum opcode {
+ 	insn_invalid,
+@@ -64,7 +67,7 @@ enum opcode {
+ 	insn_mtc0, insn_ori, insn_pref, insn_rfe, insn_sc, insn_scd,
+ 	insn_sd, insn_sll, insn_sra, insn_srl, insn_rotr, insn_subu, insn_sw,
+ 	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori,
+-	insn_dins
++	insn_dins, insn_syscall
+ };
  
- #endif
+ struct insn {
+@@ -136,6 +139,7 @@ static struct insn insn_table[] __cpuinitdata = {
+ 	{ insn_xor,  M(spec_op, 0, 0, 0, 0, xor_op),  RS | RT | RD },
+ 	{ insn_xori,  M(xori_op, 0, 0, 0, 0, 0),  RS | RT | UIMM },
+ 	{ insn_dins, M(spec3_op, 0, 0, 0, 0, dins_op), RS | RT | RD | RE },
++	{ insn_syscall, M(spec_op, 0, 0, 0, 0, syscall_op), SCIMM},
+ 	{ insn_invalid, 0, 0 }
+ };
  
--#define cpu_context(cpu, mm)	((mm)->context[cpu])
-+#define cpu_context(cpu, mm)	((mm)->context.asid[cpu])
- #define cpu_asid(cpu, mm)	(cpu_context((cpu), (mm)) & ASID_MASK)
- #define asid_cache(cpu)		(cpu_data[cpu].asid_cache)
+@@ -208,6 +212,14 @@ static inline __cpuinit u32 build_jimm(u32 arg)
+ 	return (arg >> 2) & JIMM_MASK;
+ }
  
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 087a888..ab38791 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -33,13 +33,19 @@ extern void (*cpu_wait)(void);
- 
- extern unsigned int vced_count, vcei_count;
- 
-+/*
-+ * A special page (the vdso) is mapped into all processes at the very
-+ * top of the virtual memory space.
-+ */
-+#define SPECIAL_PAGES_SIZE PAGE_SIZE
-+
- #ifdef CONFIG_32BIT
- /*
-  * User space process size: 2GB. This is hardcoded into a few places,
-  * so don't change it unless you know what you are doing.
-  */
- #define TASK_SIZE	0x7fff8000UL
--#define STACK_TOP	TASK_SIZE
-+#define STACK_TOP	((TASK_SIZE & PAGE_MASK) - SPECIAL_PAGES_SIZE)
- 
- /*
-  * This decides where the kernel will search for a free chunk of vm
-@@ -59,7 +65,8 @@ extern unsigned int vced_count, vcei_count;
- #define TASK_SIZE32	0x7fff8000UL
- #define TASK_SIZE	0x10000000000UL
- #define STACK_TOP	\
--      (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE)
-+	(((test_thread_flag(TIF_32BIT_ADDR) ?				\
-+	   TASK_SIZE32 : TASK_SIZE) & PAGE_MASK) - SPECIAL_PAGES_SIZE)
- 
- /*
-  * This decides where the kernel will search for a free chunk of vm
-diff --git a/arch/mips/include/asm/vdso.h b/arch/mips/include/asm/vdso.h
-new file mode 100644
-index 0000000..cca56aa
---- /dev/null
-+++ b/arch/mips/include/asm/vdso.h
-@@ -0,0 +1,29 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2009 Cavium Networks
-+ */
-+
-+#ifndef __ASM_VDSO_H
-+#define __ASM_VDSO_H
-+
-+#include <linux/types.h>
-+
-+
-+#ifdef CONFIG_32BIT
-+struct mips_vdso {
-+	u32 signal_trampoline[2];
-+	u32 rt_signal_trampoline[2];
-+};
-+#else  /* !CONFIG_32BIT */
-+struct mips_vdso {
-+	u32 o32_signal_trampoline[2];
-+	u32 o32_rt_signal_trampoline[2];
-+	u32 rt_signal_trampoline[2];
-+	u32 n32_rt_signal_trampoline[2];
-+};
-+#endif /* CONFIG_32BIT */
-+
-+#endif /* __ASM_VDSO_H */
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 924192b..642ae95 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -6,7 +6,7 @@ extra-y		:= head.o init_task.o vmlinux.lds
- 
- obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
- 		   ptrace.o reset.o setup.o signal.o syscall.o \
--		   time.o topology.o traps.o unaligned.o watch.o
-+		   time.o topology.o traps.o unaligned.o watch.o vdso.o
- 
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_ftrace.o = -pg
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-index e6cb831..d15eb20 100644
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -79,7 +79,11 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
- 	int do_color_align;
- 	unsigned long task_size;
- 
--	task_size = STACK_TOP;
-+#ifdef CONFIG_32BIT
-+	task_size = TASK_SIZE;
-+#else /* Must be CONFIG_64BIT*/
-+	task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
-+#endif
- 
- 	if (len > task_size)
- 		return -ENOMEM;
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-new file mode 100644
-index 0000000..b773c11
---- /dev/null
-+++ b/arch/mips/kernel/vdso.c
-@@ -0,0 +1,112 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2009, 2010 Cavium Networks, Inc.
-+ */
-+
-+
-+#include <linux/kernel.h>
-+#include <linux/err.h>
-+#include <linux/sched.h>
-+#include <linux/mm.h>
-+#include <linux/init.h>
-+#include <linux/binfmts.h>
-+#include <linux/elf.h>
-+#include <linux/vmalloc.h>
-+#include <linux/unistd.h>
-+
-+#include <asm/vdso.h>
-+#include <asm/uasm.h>
-+
-+/*
-+ * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
-+ */
-+#define __NR_O32_sigreturn		4119
-+#define __NR_O32_rt_sigreturn		4193
-+#define __NR_N32_rt_sigreturn		6211
-+
-+static struct page *vdso_page;
-+
-+static void __init install_trampoline(u32 *tramp, unsigned int sigreturn)
++static inline __cpuinit u32 build_scimm(u32 arg)
 +{
-+	uasm_i_addiu(&tramp, 2, 0, sigreturn);	/* li v0, sigreturn */
-+	uasm_i_syscall(&tramp, 0);
++	if (arg & ~SCIMM_MASK)
++		printk(KERN_WARNING "Micro-assembler field overflow\n");
++
++	return (arg & SCIMM_MASK) << SCIMM_SH;
 +}
 +
-+static int __init init_vdso(void)
-+{
-+	struct mips_vdso *vdso;
-+
-+	vdso_page = alloc_page(GFP_KERNEL);
-+	if (!vdso_page)
-+		panic("Cannot allocate vdso");
-+
-+	vdso = vmap(&vdso_page, 1, 0, PAGE_KERNEL);
-+	if (!vdso)
-+		panic("Cannot map vdso");
-+	clear_page(vdso);
-+
-+	install_trampoline(vdso->rt_signal_trampoline, __NR_rt_sigreturn);
-+#ifdef CONFIG_32BIT
-+	install_trampoline(vdso->signal_trampoline, __NR_sigreturn);
-+#else
-+	install_trampoline(vdso->n32_rt_signal_trampoline,
-+			   __NR_N32_rt_sigreturn);
-+	install_trampoline(vdso->o32_signal_trampoline, __NR_O32_sigreturn);
-+	install_trampoline(vdso->o32_rt_signal_trampoline,
-+			   __NR_O32_rt_sigreturn);
-+#endif
-+
-+	vunmap(vdso);
-+
-+	pr_notice("init_vdso successfull\n");
-+
-+	return 0;
-+}
-+device_initcall(init_vdso);
-+
-+static unsigned long vdso_addr(unsigned long start)
-+{
-+	return STACK_TOP;
-+}
-+
-+int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
-+{
-+	int ret;
-+	unsigned long addr;
-+	struct mm_struct *mm = current->mm;
-+
-+	down_write(&mm->mmap_sem);
-+
-+	addr = vdso_addr(mm->start_stack);
-+
-+	addr = get_unmapped_area(NULL, addr, PAGE_SIZE, 0, 0);
-+	if (IS_ERR_VALUE(addr)) {
-+		ret = addr;
-+		goto up_fail;
-+	}
-+
-+	ret = install_special_mapping(mm, addr, PAGE_SIZE,
-+				      VM_READ|VM_EXEC|
-+				      VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC|
-+				      VM_ALWAYSDUMP,
-+				      &vdso_page);
-+
-+	if (ret)
-+		goto up_fail;
-+
-+	mm->context.vdso = (void *)addr;
-+
-+up_fail:
-+	up_write(&mm->mmap_sem);
-+	return ret;
-+}
-+
-+const char *arch_vma_name(struct vm_area_struct *vma)
-+{
-+	if (vma->vm_mm && vma->vm_start == (long)vma->vm_mm->context.vdso)
-+		return "[vdso]";
-+	return NULL;
-+}
+ static inline __cpuinit u32 build_func(u32 arg)
+ {
+ 	if (arg & ~FUNC_MASK)
+@@ -266,6 +278,8 @@ static void __cpuinit build_insn(u32 **buf, enum opcode opc, ...)
+ 		op |= build_func(va_arg(ap, u32));
+ 	if (ip->fields & SET)
+ 		op |= build_set(va_arg(ap, u32));
++	if (ip->fields & SCIMM)
++		op |= build_scimm(va_arg(ap, u32));
+ 	va_end(ap);
+ 
+ 	**buf = op;
+@@ -391,6 +405,7 @@ I_0(_tlbwr)
+ I_u3u1u2(_xor)
+ I_u2u1u3(_xori)
+ I_u2u1msbu3(_dins);
++I_u1(_syscall);
+ 
+ /* Handle labels. */
+ void __cpuinit uasm_build_label(struct uasm_label **lab, u32 *addr, int lid)
 -- 
 1.6.6

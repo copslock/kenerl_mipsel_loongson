@@ -1,35 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Feb 2010 01:15:26 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:9521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Feb 2010 03:03:30 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11250 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492157Ab0BSANz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Feb 2010 01:13:55 +0100
+        by eddie.linux-mips.org with ESMTP id S1492183Ab0BSCDW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Feb 2010 03:03:22 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b7dd7c70004>; Thu, 18 Feb 2010 16:13:59 -0800
+        id <B4b7df1710002>; Thu, 18 Feb 2010 18:03:29 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Thu, 18 Feb 2010 16:13:29 -0800
+         Thu, 18 Feb 2010 18:02:19 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Thu, 18 Feb 2010 16:13:28 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.2) with ESMTP id o1J0DQaX029139;
-        Thu, 18 Feb 2010 16:13:26 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o1J0DQG5029138;
-        Thu, 18 Feb 2010 16:13:26 -0800
+         Thu, 18 Feb 2010 18:02:19 -0800
+Message-ID: <4B7DF12B.6090802@caviumnetworks.com>
+Date:   Thu, 18 Feb 2010 18:02:19 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 1/3] MIPS: Add SYSCALL to uasm.
-Date:   Thu, 18 Feb 2010 16:13:03 -0800
-Message-Id: <1266538385-29088-2-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.6
-In-Reply-To: <1266538385-29088-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
+MIME-Version: 1.0
+To:     David Daney <ddaney@caviumnetworks.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 0/3] MIPS vdso and signal delivery optimization (v2)
 References: <1266538385-29088-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 19 Feb 2010 00:13:28.0838 (UTC) FILETIME=[5CC6A260:01CAB0F8]
+In-Reply-To: <1266538385-29088-1-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 19 Feb 2010 02:02:19.0504 (UTC) FILETIME=[915B2F00:01CAB107]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25960
+X-archive-position: 25961
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,95 +34,68 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/include/asm/uasm.h |    1 +
- arch/mips/mm/uasm.c          |   19 +++++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+Well this patch set does cause gdb to no longer be able to generate 
+stack traces from signal handlers, but that just means gdb needs to be 
+fixed.  We will work on that next.
 
-diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
-index b99bd07..32fe2ec 100644
---- a/arch/mips/include/asm/uasm.h
-+++ b/arch/mips/include/asm/uasm.h
-@@ -102,6 +102,7 @@ Ip_0(_tlbwr);
- Ip_u3u1u2(_xor);
- Ip_u2u1u3(_xori);
- Ip_u2u1msbu3(_dins);
-+Ip_u1(_syscall);
- 
- /* Handle labels. */
- struct uasm_label {
-diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
-index 1581e98..d22d7bc 100644
---- a/arch/mips/mm/uasm.c
-+++ b/arch/mips/mm/uasm.c
-@@ -31,7 +31,8 @@ enum fields {
- 	BIMM = 0x040,
- 	JIMM = 0x080,
- 	FUNC = 0x100,
--	SET = 0x200
-+	SET = 0x200,
-+	SCIMM = 0x400
- };
- 
- #define OP_MASK		0x3f
-@@ -52,6 +53,8 @@ enum fields {
- #define FUNC_SH		0
- #define SET_MASK	0x7
- #define SET_SH		0
-+#define SCIMM_MASK	0xfffff
-+#define SCIMM_SH	6
- 
- enum opcode {
- 	insn_invalid,
-@@ -64,7 +67,7 @@ enum opcode {
- 	insn_mtc0, insn_ori, insn_pref, insn_rfe, insn_sc, insn_scd,
- 	insn_sd, insn_sll, insn_sra, insn_srl, insn_rotr, insn_subu, insn_sw,
- 	insn_tlbp, insn_tlbr, insn_tlbwi, insn_tlbwr, insn_xor, insn_xori,
--	insn_dins
-+	insn_dins, insn_syscall
- };
- 
- struct insn {
-@@ -136,6 +139,7 @@ static struct insn insn_table[] __cpuinitdata = {
- 	{ insn_xor,  M(spec_op, 0, 0, 0, 0, xor_op),  RS | RT | RD },
- 	{ insn_xori,  M(xori_op, 0, 0, 0, 0, 0),  RS | RT | UIMM },
- 	{ insn_dins, M(spec3_op, 0, 0, 0, 0, dins_op), RS | RT | RD | RE },
-+	{ insn_syscall, M(spec_op, 0, 0, 0, 0, syscall_op), SCIMM},
- 	{ insn_invalid, 0, 0 }
- };
- 
-@@ -208,6 +212,14 @@ static inline __cpuinit u32 build_jimm(u32 arg)
- 	return (arg >> 2) & JIMM_MASK;
- }
- 
-+static inline __cpuinit u32 build_scimm(u32 arg)
-+{
-+	if (arg & ~SCIMM_MASK)
-+		printk(KERN_WARNING "Micro-assembler field overflow\n");
-+
-+	return (arg & SCIMM_MASK) << SCIMM_SH;
-+}
-+
- static inline __cpuinit u32 build_func(u32 arg)
- {
- 	if (arg & ~FUNC_MASK)
-@@ -266,6 +278,8 @@ static void __cpuinit build_insn(u32 **buf, enum opcode opc, ...)
- 		op |= build_func(va_arg(ap, u32));
- 	if (ip->fields & SET)
- 		op |= build_set(va_arg(ap, u32));
-+	if (ip->fields & SCIMM)
-+		op |= build_scimm(va_arg(ap, u32));
- 	va_end(ap);
- 
- 	**buf = op;
-@@ -391,6 +405,7 @@ I_0(_tlbwr)
- I_u3u1u2(_xor)
- I_u2u1u3(_xori)
- I_u2u1msbu3(_dins);
-+I_u1(_syscall);
- 
- /* Handle labels. */
- void __cpuinit uasm_build_label(struct uasm_label **lab, u32 *addr, int lid)
--- 
-1.6.6
+libgcc can unwind through signal handlers both with and without the patch.
+
+David Daney
+
+
+On 02/18/2010 04:13 PM, David Daney wrote:
+> This patch set creates a vdso and moves the signal
+> trampolines to it from their previous home on the stack.
+>
+> In the original patch set:
+> http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=49EE3B0F.3040506%40caviumnetworks.com
+>
+> I stated:
+>
+> Tested with a 64-bit kernel on a Cavium Octeon cn3860 where I have the
+> following results from lmbench2:
+>
+> Before:
+> n64 - Signal handler overhead: 14.517 microseconds
+> n32 - Signal handler overhead: 14.497 microseconds
+> o32 - Signal handler overhead: 16.637 microseconds
+>
+> After:
+>
+> n64 - Signal handler overhead: 7.935 microseconds
+> n32 - Signal handler overhead: 7.334 microseconds
+> o32 - Signal handler overhead: 8.628 microsecond
+>
+> All that is still true.
+>
+> Improvements from the first version:
+>
+> * Compiles and runs in 32-bit kernels (on qemu at least).
+>
+> * Updated for linux-queue based 2.6.33-rc8
+>
+> David Daney (3):
+>    MIPS: Add SYSCALL to uasm.
+>    MIPS: Preliminary vdso.
+>    MIPS: Move signal trampolines off of the stack.
+>
+>   arch/mips/include/asm/abi.h         |    6 +-
+>   arch/mips/include/asm/elf.h         |    4 +
+>   arch/mips/include/asm/mmu.h         |    5 +-
+>   arch/mips/include/asm/mmu_context.h |    2 +-
+>   arch/mips/include/asm/processor.h   |   11 +++-
+>   arch/mips/include/asm/uasm.h        |    1 +
+>   arch/mips/include/asm/vdso.h        |   29 +++++++++
+>   arch/mips/kernel/Makefile           |    2 +-
+>   arch/mips/kernel/signal-common.h    |    5 --
+>   arch/mips/kernel/signal.c           |   86 ++++++---------------------
+>   arch/mips/kernel/signal32.c         |   55 ++++-------------
+>   arch/mips/kernel/signal_n32.c       |   26 ++------
+>   arch/mips/kernel/syscall.c          |    6 ++-
+>   arch/mips/kernel/vdso.c             |  112 +++++++++++++++++++++++++++++++++++
+>   arch/mips/mm/uasm.c                 |   19 +++++-
+>   15 files changed, 226 insertions(+), 143 deletions(-)
+>   create mode 100644 arch/mips/include/asm/vdso.h
+>   create mode 100644 arch/mips/kernel/vdso.c
+>
+>

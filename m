@@ -1,63 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Feb 2010 12:31:50 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:44672 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491850Ab0BTLbq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 20 Feb 2010 12:31:46 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o1KBVcxr004265;
-        Sat, 20 Feb 2010 12:31:40 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o1KBVaUI004151;
-        Sat, 20 Feb 2010 12:31:36 +0100
-Date:   Sat, 20 Feb 2010 12:31:34 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org, Yoichi Yuasa <yuasa@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Feb 2010 13:18:29 +0100 (CET)
+Received: from mail-yx0-f193.google.com ([209.85.210.193]:54246 "EHLO
+        mail-yx0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492127Ab0BTMSY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 20 Feb 2010 13:18:24 +0100
+Received: by yxe31 with SMTP id 31so1007447yxe.21
+        for <multiple recipients>; Sat, 20 Feb 2010 04:18:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:in-reply-to:references:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=EXlb4DFlbKNM3wcdVWdVPerT7abKnVz0eXNYVeNpRtY=;
+        b=Yap7fbyFi8QGJXw70Dzn7hWrD5BIiB36AWzWrcAZrYg30OlIeSYk8vKrxe+iAPp+YS
+         UiifQc21ogdy8BhZIxZHDPEBXOAqzzlr5xyb6iTG8FN7HucyHbLuVhXYd84DRR9EkZMx
+         1QJFKf4mZRN45gG3wxQMYqBSCIzL6IWbYEfNE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
+         :x-mailer:mime-version:content-type:content-transfer-encoding;
+        b=JuwztLSRRbGfZO9DIRZrkRCReEnsKTdmtbbQt9EeRWRgUPy/O/G5h5ZG9nehuHg/6B
+         V3dY5FSkpS7aKBw86Xxxxr7g5kY0pTy9nZSebX4am8gpZGe4sEUZl54qq+oDpA4z9TbR
+         slA6+2SV6pAOoBqsoOpHnpOpaxkuOZ0U/8x3w=
+Received: by 10.100.222.5 with SMTP id u5mr6873819ang.247.1266668297636;
+        Sat, 20 Feb 2010 04:18:17 -0800 (PST)
+Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
+        by mx.google.com with ESMTPS id 13sm971072gxk.8.2010.02.20.04.18.14
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 20 Feb 2010 04:18:16 -0800 (PST)
+Date:   Sat, 20 Feb 2010 21:18:05 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     yuasa@linux-mips.org, linux-mips@linux-mips.org,
         Bjorn Helgaas <bjorn.helgaas@hp.com>
-Subject: Reverting old hack
-Message-ID: <20100220113134.GA27194@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Subject: Re: Reverting old hack
+Message-Id: <20100220211805.6a33e9e2.yuasa@linux-mips.org>
+In-Reply-To: <20100220113134.GA27194@linux-mips.org>
+References: <20100220113134.GA27194@linux-mips.org>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25965
+X-archive-position: 25966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Below 9f7670e4ddd940d95e48997c2da51614e5fde2cf, an old hack which I
-committed in December '07 I think mostly for Cobalt machines.  This is
-now getting in the way - in fact the whole loop in
-pcibios_fixup_device_resources() may have to go.  So I wonder if this
-old hack is still necessary.  Only testing can answer so I'm going to
-put a patch to revert this into the -queue tree for 2.6.34.
+Hi Ralf,
 
-  Ralf
+On Sat, 20 Feb 2010 12:31:34 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-[MIPS] PCI: Make pcibios_fixup_device_resources ignore legacy resources.
+> Below 9f7670e4ddd940d95e48997c2da51614e5fde2cf, an old hack which I
+> committed in December '07 I think mostly for Cobalt machines.  This is
+> now getting in the way - in fact the whole loop in
+> pcibios_fixup_device_resources() may have to go.  So I wonder if this
+> old hack is still necessary.  Only testing can answer so I'm going to
+> put a patch to revert this into the -queue tree for 2.6.34.
 
-There might be other reasons why a resource might be marked as fixed
-such as a PCI UART holding the system console but until we use
-IORESOURCE_PCI_FIXED that way also this will work.
+It is still necessary for Cobalt.
+I got the following IDE resource errors.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+pata_via 0000:00:09.1: BAR 0: can't reserve [io  0xf00001f0-0xf00001f7]         
+pata_via 0000:00:09.1: failed to request/iomap BARs for port 0 (errno=-16)      
+pata_via 0000:00:09.1: BAR 2: can't reserve [io  0xf0000170-0xf0000177]         
+pata_via 0000:00:09.1: failed to request/iomap BARs for port 1 (errno=-16)      
+pata_via 0000:00:09.1: no available native port 
 
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 589b745..6e6981f 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -242,6 +242,8 @@ static void pcibios_fixup_device_resources(struct pci_dev *dev,
- 	for (i = 0; i < PCI_NUM_RESOURCES; i++) {
- 		if (!dev->resource[i].start)
- 			continue;
-+		if (dev->resource[i].flags & IORESOURCE_PCI_FIXED)
-+			continue;
- 		if (dev->resource[i].flags & IORESOURCE_IO)
- 			offset = hose->io_offset;
- 		else if (dev->resource[i].flags & IORESOURCE_MEM)
+Yoichi

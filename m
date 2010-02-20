@@ -1,85 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Feb 2010 18:51:38 +0100 (CET)
-Received: from alius.ayous.org ([78.46.213.165]:39211 "EHLO alius.ayous.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491954Ab0BTRvf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 20 Feb 2010 18:51:35 +0100
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1NitUJ-0005fL-Up; Sat, 20 Feb 2010 17:51:32 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1NitUE-00078k-04; Sat, 20 Feb 2010 18:51:26 +0100
-Date:   Sat, 20 Feb 2010 18:51:25 +0100
-From:   Andreas Barth <aba@not.so.argh.org>
-To:     linux-mips@linux-mips.org
-Subject: Problems and workarounds while building octeon kernels
-Message-ID: <20100220175125.GQ27216@mails.so.argh.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aba@not.so.argh.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Feb 2010 19:51:52 +0100 (CET)
+Received: from [193.201.54.104] ([193.201.54.104]:56926 "EHLO hauke-m.de"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492063Ab0BTSvs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 20 Feb 2010 19:51:48 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 3FB1F8587;
+        Sat, 20 Feb 2010 19:51:27 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id uDuCebCU-+31; Sat, 20 Feb 2010 19:51:24 +0100 (CET)
+Received: from localhost.localdomain (host-091-096-211-027.ewe-ip-backbone.de [91.96.211.27])
+        by hauke-m.de (Postfix) with ESMTPSA id EEFB17E29;
+        Sat, 20 Feb 2010 19:51:23 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH] MIPS: Bcm47xx: Fix 128MB RAM support
+Date:   Sat, 20 Feb 2010 19:51:20 +0100
+Message-Id: <1266691880-372-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.6.3.3
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25970
+X-archive-position: 25971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@not.so.argh.org
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Ignoring the last page when ddr size is 128M. Cached
+accesses to last page is causing the processor to prefetch
+using address above 128M stepping out of the ddr address
+space.
 
-I tried to build an recent linux 2.6.33-rc something in an unstable
-Debian chroot. I had the following issues (plus workarounds / fixes) -
-please don't hesitate to ask me if you have further questions.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/bcm47xx/prom.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
 
-
-error:
-arch/mips/cavium-octeon/built-in.o: In function `prom_init':
-(.init.text+0x974): undefined reference to `early_serial_setup'
-arch/mips/cavium-octeon/built-in.o: In function `prom_init':
-(.init.text+0x974): relocation truncated to fit: R_MIPS_26 against `early_serial_setup'
-arch/mips/cavium-octeon/built-in.o: In function `flash_init':
-
-fix: enabled configuration for serial console support
-
-
-error:
-flash_setup.c:(.init.text+0x12dc): undefined reference to `simple_map_init'
-flash_setup.c:(.init.text+0x12dc): relocation truncated to fit: R_MIPS_26 against `simple_map_init'
-flash_setup.c:(.init.text+0x12ec): undefined reference to `do_map_probe'
-flash_setup.c:(.init.text+0x12ec): relocation truncated to fit: R_MIPS_26 against `do_map_probe'
-flash_setup.c:(.init.text+0x1314): undefined reference to `parse_mtd_partitions'
-flash_setup.c:(.init.text+0x1314): relocation truncated to fit: R_MIPS_26 against `parse_mtd_partitions'
-flash_setup.c:(.init.text+0x1330): undefined reference to `add_mtd_partitions'
-flash_setup.c:(.init.text+0x1330): relocation truncated to fit: R_MIPS_26 against `add_mtd_partitions'
-flash_setup.c:(.init.text+0x1340): undefined reference to `add_mtd_device'
-flash_setup.c:(.init.text+0x1340): relocation truncated to fit: R_MIPS_26 against `add_mtd_device'
-
-fix: set drivers/mtd to y (instead of m)
-
-
-
-error:
-arch/mips/cavium-octeon/built-in.o: In function `sched_clock':
-(.text.sched_clock+0x24): undefined reference to `__lshrti3'
-arch/mips/cavium-octeon/built-in.o: In function `sched_clock':
-(.text.sched_clock+0x24): relocation truncated to fit: R_MIPS_26 against `__lshrti3'
-
-workaround: in arch/mips/cavium-octeon/csrc-octeon.c
-#if (__GNUC__ < 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ <= 3))
-replaced by something that always uses "the ugly way"
-
-
-ERROR: "i8253_lock" [drivers/input/misc/pcspkr.ko] undefined!
-fix: disable pc speaker support
-
-
-Cheers,
-Andi
+diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
+index 5efc995..0fa646c 100644
+--- a/arch/mips/bcm47xx/prom.c
++++ b/arch/mips/bcm47xx/prom.c
+@@ -141,6 +141,14 @@ static __init void prom_init_mem(void)
+ 			break;
+ 	}
+ 
++	/* Ignoring the last page when ddr size is 128M. Cached
++	 * accesses to last page is causing the processor to prefetch
++	 * using address above 128M stepping out of the ddr address
++	 * space.
++	 */
++	if (mem == 0x8000000)
++		mem -= 0x1000;
++
+ 	add_memory_region(0, mem, BOOT_MEM_RAM);
+ }
+ 
+-- 
+1.6.3.3

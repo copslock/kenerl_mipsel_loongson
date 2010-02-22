@@ -1,70 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 07:39:54 +0100 (CET)
-Received: from mail-yx0-f194.google.com ([209.85.210.194]:56700 "EHLO
-        mail-yx0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491187Ab0BVGjv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Feb 2010 07:39:51 +0100
-Received: by yxe32 with SMTP id 32so4751241yxe.0
-        for <multiple recipients>; Sun, 21 Feb 2010 22:39:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:date:from:to:cc
-         :subject:message-id:in-reply-to:references:x-mailer:mime-version
-         :content-type:content-transfer-encoding;
-        bh=VwhPodmt+FHzCF+WR+I6AO74ddvjW+H4/uTheuycIRg=;
-        b=OEwS8v1Hb2LP7i2LoLgkJ8xYdJctpFQ74hondwyXpx1lrtYMv7WbJVHIKDzshasfUL
-         6h+Suw6bvXtpjjSU0wcvRriVw5jerY6HlMmjgE1OtlsISI2tnM4w1KfPHTHXSM3se0qX
-         WAKWnqtsGcu4Q0mrSlgfrr1oK3Ab1Pm5mgUOo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
-         :x-mailer:mime-version:content-type:content-transfer-encoding;
-        b=Plxp9z6lmtVAMYtlUsE5T597E/nJvYFZM7t03NTv6sm3q2HaCvoUqxd19YH+woPFjz
-         3eaCn8BV0u8pTskU2vuwgU0ZtW5RsnxWPE65Q3MBVnh3XvRkL2wivNFj3bGEBIEg4R3Z
-         dKeWC0GqfIz+LWcaGEu+XEWnukGu73Ng4t1q0=
-Received: by 10.101.144.1 with SMTP id w1mr2942970ann.61.1266820783149;
-        Sun, 21 Feb 2010 22:39:43 -0800 (PST)
-Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
-        by mx.google.com with ESMTPS id 14sm3058295gxk.7.2010.02.21.22.39.40
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 21 Feb 2010 22:39:42 -0800 (PST)
-Date:   Mon, 22 Feb 2010 15:39:32 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 14:28:43 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:39177 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492310Ab0BVN2j (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Feb 2010 14:28:39 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o1MDSVMQ005506;
+        Mon, 22 Feb 2010 14:28:32 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o1MDSU4l005504;
+        Mon, 22 Feb 2010 14:28:30 +0100
+Date:   Mon, 22 Feb 2010 14:28:30 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Bjorn Helgaas <bjorn.helgaas@hp.com>
-Cc:     yuasa@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
+Cc:     Yoichi Yuasa <yuasa@linux-mips.org>, linux-mips@linux-mips.org
 Subject: Re: Reverting old hack
-Message-Id: <20100222153932.af1ddc58.yuasa@linux-mips.org>
-In-Reply-To: <1266815257.1959.23.camel@dc7800.home>
+Message-ID: <20100222132830.GA5017@linux-mips.org>
 References: <20100220113134.GA27194@linux-mips.org>
-        <20100220211805.6a33e9e2.yuasa@linux-mips.org>
-        <1266815257.1959.23.camel@dc7800.home>
-X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa.linux@gmail.com>
+ <20100220211805.6a33e9e2.yuasa@linux-mips.org>
+ <1266815257.1959.23.camel@dc7800.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1266815257.1959.23.camel@dc7800.home>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25977
+X-archive-position: 25978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Bjorn,
+On Sun, Feb 21, 2010 at 10:07:37PM -0700, Bjorn Helgaas wrote:
 
-On Sun, 21 Feb 2010 22:07:37 -0700
-Bjorn Helgaas <bjorn.helgaas@hp.com> wrote:
-
-> On Sat, 2010-02-20 at 21:18 +0900, Yoichi Yuasa wrote:
-> > Hi Ralf,
-> > 
-> > On Sat, 20 Feb 2010 12:31:34 +0100
-> > Ralf Baechle <ralf@linux-mips.org> wrote:
-> > 
 > > > Below 9f7670e4ddd940d95e48997c2da51614e5fde2cf, an old hack which I
 > > > committed in December '07 I think mostly for Cobalt machines.  This is
 > > > now getting in the way - in fact the whole loop in
@@ -90,46 +62,18 @@ Bjorn Helgaas <bjorn.helgaas@hp.com> wrote:
 > There are a few other places that may set non-zero io_offset values:
 > bcm1480, bcm1480ht. txx9_alloc_pci_controller(), bridge_probe(), and
 > octeon_pcie_setup().  I don't know whether they have similar issues.
-> 
-> 
-> 
-> commit 7378269220d477118257d898bec9173743675f5e
-> Author: Bjorn Helgaas <bjorn.helgaas@hp.com>
-> Date:   Sat Feb 20 07:52:29 2010 -0700
-> 
->     [MIPS] remove Cobalt I/O space offset
->     
->     On Cobalt, "inb(x)" produces an I/O port access to port "x" on the PCI
->     bus, which means the io_offset is zero and CPU (resource) addresses are
->     identical to PCI bus addresses.  Correcting this means we can remove
->     the IORESOURCE_PCI_FIXED check from pcibios_fixup_device_resources().
->     
->     The io_map_base is used internally by pci_iomap(), inb(), and other I/O
->     port access functions to generate an MMIO access to the address that
->     produces the desired I/O port PCI transaction.
->     
->     [Cobalt plat_mem_setup() does this:
->       set_io_port_base(CKSEG1ADDR(GT_DEF_PCI0_IO_BASE));
->     rather than using cobalt_pci_controller.io_map_base, but the value's
->     the same, and I don't know enough to clean that up.]
->     
->     See http://lkml.org/lkml/2007/7/29/27
->     
->     Signed-off-by: Bjorn Helgaas <bjorn.helgaas@hp.com>
-> 
-> diff --git a/arch/mips/cobalt/pci.c b/arch/mips/cobalt/pci.c
-> index cfce7af..84aa205 100644
-> --- a/arch/mips/cobalt/pci.c
-> +++ b/arch/mips/cobalt/pci.c
-> @@ -34,7 +34,6 @@ static struct pci_controller cobalt_pci_controller = {
->  	.pci_ops	= &gt64xxx_pci0_ops,
->  	.mem_resource	= &cobalt_mem_resource,
->  	.io_resource	= &cobalt_io_resource,
-> -	.io_offset	= 0 - GT_DEF_PCI0_IO_BASE,
->  	.io_map_base	= CKSEG1ADDR(GT_DEF_PCI0_IO_BASE),
->  };
 
-io_offset is necessary for DEC tulip on Cobalt. 
-It doesn't work when this patch is applied. 
+It's a while since I last looked into this but here's how things afair
+are working on a MIPS-based Cobalt system.
 
-Yoichi
+The system is based on a MIPS processor and a GT-64111 system controller.
+Addresses within a certain CPU address range are passed to the PCI bus as
+I/O cycles without address cycles.  Since memory is starting at CPU address
+zero (and has to because of the processors used), that address window has
+to get mapped somewhere else.  So a CPU access to some virtual address gets
+translated to physical address 0xf00001f0.  The GT-64111 passes this to the
+PCI bus as I/O port address 0xf00001f0.  Finally the VT82C586 chip which
+only decodes the low 16 bits drops treats this as an I/O port space address
+0x1f0.
+
+  Ralf

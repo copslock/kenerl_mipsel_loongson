@@ -1,71 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Feb 2010 18:46:37 +0100 (CET)
-Received: from mail-ew0-f212.google.com ([209.85.219.212]:54659 "EHLO
-        mail-ew0-f212.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491998Ab0BURqa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Feb 2010 18:46:30 +0100
-Received: by ewy4 with SMTP id 4so565366ewy.27
-        for <multiple recipients>; Sun, 21 Feb 2010 09:46:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:cc:reply-to:content-type
-         :content-transfer-encoding:message-id;
-        bh=HNwnWDKsWc10LSIWnPKgI72RMxfLqyoBZzqW1fOhnv4=;
-        b=koruia2K1efuVBJq1cFmAxX1uKZoztMnGkINd/UIthB6WNZrdPoQ9ylFSMrwuTv3ku
-         3lkUhUeanMbrT9YH/InBe2TXB+hq0b/e9VI0N3nTG9u1HUehW64BlIkfoWZNw/V47Ndg
-         q43khSAHDddNtrnyzZfE2etDeANFHFbwuTWko=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc:reply-to
-         :content-type:content-transfer-encoding:message-id;
-        b=p7G9okdDuG46N9Fuk/4Of+GcflpaDcjGwP/ZymkPn2rgOnAcZJqmcYedwsNpyL1gNQ
-         Y+m1j5S16L3uNLC0hTxpaZG9uNidhqeoUc2v7ZuNSb19pJp+YE0v0p6JKzIcfA6TrYyR
-         bhEnkAQvbdMe7Zu/LK+GdEPMqBlHYKFl+P0mw=
-Received: by 10.213.96.203 with SMTP id i11mr3718654ebn.9.1266774385308;
-        Sun, 21 Feb 2010 09:46:25 -0800 (PST)
-Received: from lenovo.localnet (153.44.69-86.rev.gaoland.net [86.69.44.153])
-        by mx.google.com with ESMTPS id 5sm7103073eyh.16.2010.02.21.09.46.23
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 21 Feb 2010 09:46:24 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-Date:   Sun, 21 Feb 2010 18:46:22 +0100
-Subject: [PATCH -queue] loongson2: fix compile error on arch/mips/oprofile/op_model_loongson2.c
-MIME-Version: 1.0
-X-UID:  170
-X-Length: 1432
-To:     linux-mips@linux-mips.org
-Cc:     wuzhangjin@gmail.com, ralf@linux-mips.org
-Reply-To: Florian Fainelli <florian@openwrt.org>
-Content-Type: text/plain;
-  charset="utf-8"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 01:16:11 +0100 (CET)
+Received: from g6t0184.atlanta.hp.com ([15.193.32.61]:7977 "EHLO
+        g6t0184.atlanta.hp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492130Ab0BVAQI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Feb 2010 01:16:08 +0100
+Received: from g5t0030.atlanta.hp.com (g5t0030.atlanta.hp.com [16.228.8.142])
+        by g6t0184.atlanta.hp.com (Postfix) with ESMTP id 84D24C28A;
+        Mon, 22 Feb 2010 00:16:01 +0000 (UTC)
+Received: from ldl (ldl.fc.hp.com [15.11.146.30])
+        by g5t0030.atlanta.hp.com (Postfix) with ESMTP id 547EF14010;
+        Mon, 22 Feb 2010 00:16:00 +0000 (UTC)
+Received: from localhost (ldl.fc.hp.com [127.0.0.1])
+        by ldl (Postfix) with ESMTP id 25C64CF0013;
+        Sun, 21 Feb 2010 17:16:00 -0700 (MST)
+Received: from ldl ([127.0.0.1])
+        by localhost (ldl.fc.hp.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id nM+AIKgl2rM6; Sun, 21 Feb 2010 17:16:00 -0700 (MST)
+Received: from [192.168.1.2] (squirrel.fc.hp.com [15.11.146.57])
+        by ldl (Postfix) with ESMTP id 9FE12CF0007;
+        Sun, 21 Feb 2010 17:15:59 -0700 (MST)
+Subject: Re: Reverting old hack
+From:   Bjorn Helgaas <bjorn.helgaas@hp.com>
+To:     Yoichi Yuasa <yuasa@linux-mips.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+In-Reply-To: <1266721050.1959.10.camel@dc7800.home>
+References: <20100220113134.GA27194@linux-mips.org>
+         <20100220211805.6a33e9e2.yuasa@linux-mips.org>
+         <1266721050.1959.10.camel@dc7800.home>
+Content-Type: text/plain
+Date:   Sun, 21 Feb 2010 17:09:18 -0700
+Message-Id: <1266797358.1959.12.camel@dc7800.home>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.22.3.1 
 Content-Transfer-Encoding: 7bit
-Message-Id: <201002211846.22504.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <bjorn.helgaas@hp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25974
+X-archive-position: 25975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: bjorn.helgaas@hp.com
 Precedence: bulk
 X-list: linux-mips
 
-flags is now an unused variable, causing a build failure due to -Werror
-being turned on.
+On Sat, 2010-02-20 at 19:57 -0700, Bjorn Helgaas wrote:
+> On Sat, 2010-02-20 at 21:18 +0900, Yoichi Yuasa wrote:
+> > Hi Ralf,
+> > 
+> > On Sat, 20 Feb 2010 12:31:34 +0100
+> > Ralf Baechle <ralf@linux-mips.org> wrote:
+> > 
+> > > Below 9f7670e4ddd940d95e48997c2da51614e5fde2cf, an old hack which I
+> > > committed in December '07 I think mostly for Cobalt machines.  This is
+> > > now getting in the way - in fact the whole loop in
+> > > pcibios_fixup_device_resources() may have to go.  So I wonder if this
+> > > old hack is still necessary.  Only testing can answer so I'm going to
+> > > put a patch to revert this into the -queue tree for 2.6.34.
+> > 
+> > It is still necessary for Cobalt.
+> > I got the following IDE resource errors.
+> > 
+> > pata_via 0000:00:09.1: BAR 0: can't reserve [io  0xf00001f0-0xf00001f7]         
+> > pata_via 0000:00:09.1: failed to request/iomap BARs for port 0 (errno=-16)      
+> > pata_via 0000:00:09.1: BAR 2: can't reserve [io  0xf0000170-0xf0000177]         
+> > pata_via 0000:00:09.1: failed to request/iomap BARs for port 1 (errno=-16)      
+> > pata_via 0000:00:09.1: no available native port 
+> 
+> I think the problem is that cobalt_io_resource contains PCI bus
+> addresses when it should contain CPU addresses:
+> 
+>     static struct resource cobalt_io_resource = {
+>         .start  = 0x1000,
+>         .end    = GT_DEF_PCI0_IO_SIZE - 1,
+>         .name   = "PCI I/O",
+>         .flags  = IORESOURCE_IO,
+>     };
+> 
+> I think .start and .end need to be adjusted by GT_DEF_PCI0_IO_BASE.
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/arch/mips/oprofile/op_model_loongson2.c b/arch/mips/oprofile/op_model_loongson2.c
-index 2ffd47a..29e2326 100644
---- a/arch/mips/oprofile/op_model_loongson2.c
-+++ b/arch/mips/oprofile/op_model_loongson2.c
-@@ -113,7 +113,6 @@ static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id)
- 	uint64_t counter, counter1, counter2;
- 	struct pt_regs *regs = get_irq_regs();
- 	int enabled;
--	unsigned long flags;
- 
- 	/*
- 	 * LOONGSON2 defines two 32-bit performance counters.
+Sorry, this was a half-baked answer.  This would probably fix the
+reservation conflicts, but of course we'll still have a problem when we
+remove the IORESOURCE_PCI_FIXED check.  I'll work on it more and come up
+with a patch.
+
+Bjorn

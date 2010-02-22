@@ -1,54 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 21:36:14 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:42620 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491834Ab0BVUgK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 22 Feb 2010 21:36:10 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o1MKa8ow003761;
-        Mon, 22 Feb 2010 21:36:09 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o1MKa7CE003757;
-        Mon, 22 Feb 2010 21:36:07 +0100
-Date:   Mon, 22 Feb 2010 21:36:07 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Bcm47xx: Fix 128MB RAM support
-Message-ID: <20100222203607.GA1548@linux-mips.org>
-References: <1266691880-372-1-git-send-email-hauke@hauke-m.de>
- <20100222191440.GA12818@linux-mips.org>
- <4B82E827.8030005@hauke-m.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 21:55:41 +0100 (CET)
+Received: from g4t0017.houston.hp.com ([15.201.24.20]:17515 "EHLO
+        g4t0017.houston.hp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491838Ab0BVUzh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Feb 2010 21:55:37 +0100
+Received: from g4t0018.houston.hp.com (g4t0018.houston.hp.com [16.234.32.27])
+        by g4t0017.houston.hp.com (Postfix) with ESMTP id 07B08381CC;
+        Mon, 22 Feb 2010 20:55:31 +0000 (UTC)
+Received: from ldl (ldl.fc.hp.com [15.11.146.30])
+        by g4t0018.houston.hp.com (Postfix) with ESMTP id F1081100B1;
+        Mon, 22 Feb 2010 20:55:29 +0000 (UTC)
+Received: from localhost (ldl.fc.hp.com [127.0.0.1])
+        by ldl (Postfix) with ESMTP id DA5BDCF004A;
+        Mon, 22 Feb 2010 13:55:29 -0700 (MST)
+Received: from ldl ([127.0.0.1])
+        by localhost (ldl.fc.hp.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id a3CuSBrjna+O; Mon, 22 Feb 2010 13:55:29 -0700 (MST)
+Received: from tigger.helgaas (lart.fc.hp.com [15.11.146.31])
+        by ldl (Postfix) with ESMTP id C3820CF0040;
+        Mon, 22 Feb 2010 13:55:29 -0700 (MST)
+From:   Bjorn Helgaas <bjorn.helgaas@hp.com>
+To:     Yoichi Yuasa <yuasa@linux-mips.org>
+Subject: Re: Reverting old hack
+Date:   Mon, 22 Feb 2010 13:55:28 -0700
+User-Agent: KMail/1.9.10
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <20100220113134.GA27194@linux-mips.org> <1266677869.1320.8.camel@dc7800.home> <20100221164531.382b3785.yuasa@linux-mips.org>
+In-Reply-To: <20100221164531.382b3785.yuasa@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <4B82E827.8030005@hauke-m.de>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <201002221355.28939.bjorn.helgaas@hp.com>
+Return-Path: <bjorn.helgaas@hp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25984
+X-archive-position: 25985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bjorn.helgaas@hp.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 22, 2010 at 09:25:11PM +0100, Hauke Mehrtens wrote:
-
-> > Is this a hardware issue prefetching issue?  The kernel should not try
-> > CPU prefetch instructions at all on non-coherent CPUs such as the
-> > BCM47xx.
+On Sunday 21 February 2010 12:45:31 am Yoichi Yuasa wrote:
+> > I'd like to understand the PCI architecture of Cobalt better.  Would you
+> > mind turning on CONFIG_PCI_DEBUG and posting the dmesg log?
 > 
-> This is a hardware issue on the bcm47xx when 128MB ram is present. This
-> workaround is out of broadcom's kernel sources and is included in
-> OpenWRT for some months. Without this patch the kernel does not even
-> print out anything and with this patch it is working.
+> If you want to know what happen, you can see my old e-mail. 
+> 
+> http://marc.info/?l=linux-kernel&m=118792430424186&w=2
 
-Thanks!
+There's not much detail there.  It would save me a lot of time if
+you could collect the complete dmesg log, /proc/iomem, and /proc/ioports.
 
-I was asking to ensure this isn't a workaround for an already solved
-kernel software issue.  Patch applied,
-
-  Ralf
+Thanks,
+  Bjorn

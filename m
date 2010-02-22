@@ -1,210 +1,167 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 23:37:35 +0100 (CET)
-Received: from sj-iport-3.cisco.com ([171.71.176.72]:48790 "EHLO
-        sj-iport-3.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492334Ab0BVWh3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Feb 2010 23:37:29 +0100
-Authentication-Results: sj-iport-3.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAFKWgkurR7H+/2dsb2JhbACbAXOkWJglhGsEgxU
-X-IronPort-AV: E=Sophos;i="4.49,521,1262563200"; 
-   d="scan'208";a="213672066"
-Received: from sj-core-2.cisco.com ([171.71.177.254])
-  by sj-iport-3.cisco.com with ESMTP; 22 Feb 2010 22:37:21 +0000
-Received: from dvomlehn-lnx2.corp.sa.net ([64.101.20.155])
-        by sj-core-2.cisco.com (8.13.8/8.14.3) with ESMTP id o1MMbLoT020398;
-        Mon, 22 Feb 2010 22:37:21 GMT
-Date:   Mon, 22 Feb 2010 14:37:21 -0800
-From:   David VomLehn <dvomlehn@cisco.com>
-To:     to@dvomlehn-lnx2.corp.sa.net,
-        "linux-mips@linux-mips.org"@cisco.com, linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: Eliminate duplicate opcode definition macros
-Message-ID: <20100222223721.GA27005@dvomlehn-lnx2.corp.sa.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <dvomlehn@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 00:52:12 +0100 (CET)
+Received: from mail-bw0-f215.google.com ([209.85.218.215]:43026 "EHLO
+        mail-bw0-f215.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491794Ab0BVXwE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 00:52:04 +0100
+Received: by bwz7 with SMTP id 7so2099133bwz.24
+        for <multiple recipients>; Mon, 22 Feb 2010 15:51:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:in-reply-to:references:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=n3xuzzJyGKeYJbChfb3eiU9M/daetnwDOn1ZGgx05HY=;
+        b=fziYWZkeca2Ytp2fZsoioWVwcSsppCePXMKvhgpxyQPNBjT5s7s+xT7Kp9nQ3ttgwT
+         7TJ9E+jmB0roRptWYxzfok7lriwtnlauqbjzC2YEAeKsnkD7V6cFdM9eNXaoZMCKCz+Y
+         sBsPQ30ol8UwfnW4mYSR92TjEzAFao8jedWKs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
+         :x-mailer:mime-version:content-type:content-transfer-encoding;
+        b=c3exOK+KdjEAw3FYAXLwAV/ai/W0b0qBBBEPZgsK8TXS/YaxQ8IppNkr0cwe64aglP
+         NNgDPTP6IeIaXd5fZGc8vOAaoXZodeMRxtT4nznDl1g3vfU4hg0PiwEB4K0qe49VYLgY
+         SH3+f0fK2EIy0WrBXJJLoZ2yMtAKVVHiklSt4=
+Received: by 10.204.4.150 with SMTP id 22mr3273787bkr.192.1266882717400;
+        Mon, 22 Feb 2010 15:51:57 -0800 (PST)
+Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
+        by mx.google.com with ESMTPS id 14sm1426838bwz.10.2010.02.22.15.51.52
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 22 Feb 2010 15:51:55 -0800 (PST)
+Date:   Tue, 23 Feb 2010 08:51:43 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Bjorn Helgaas <bjorn.helgaas@hp.com>
+Cc:     yuasa@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+Subject: Re: Reverting old hack
+Message-Id: <20100223085143.aeb1fa53.yuasa@linux-mips.org>
+In-Reply-To: <201002221355.28939.bjorn.helgaas@hp.com>
+References: <20100220113134.GA27194@linux-mips.org>
+        <1266677869.1320.8.camel@dc7800.home>
+        <20100221164531.382b3785.yuasa@linux-mips.org>
+        <201002221355.28939.bjorn.helgaas@hp.com>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25989
+X-archive-position: 25990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Change to different macros for assembler macros since the old names in
-powertv_setup.c were co-opted for use in asm/asm.h. This broken the
-build for the powertv platform. This patch introduces new macros based on
-the new macros in asm.h to take the place of the old macro values.
+Hi Bjorn,
 
-Signed-off-by: David VomLehn <dvomlehn@cisco.com>
----
- arch/mips/powertv/powertv_setup.c |   99 ++++++++++++++++++-------------------
- 1 files changed, 48 insertions(+), 51 deletions(-)
+On Mon, 22 Feb 2010 13:55:28 -0700
+Bjorn Helgaas <bjorn.helgaas@hp.com> wrote:
 
-diff --git a/arch/mips/powertv/powertv_setup.c b/arch/mips/powertv/powertv_setup.c
-index 698b1ea..9bac903 100644
---- a/arch/mips/powertv/powertv_setup.c
-+++ b/arch/mips/powertv/powertv_setup.c
-@@ -32,35 +32,32 @@
- #include <asm/mips-boards/generic.h>
- #include <asm/mips-boards/prom.h>
- #include <asm/dma.h>
-+#include <asm/asm.h>
- #include <linux/time.h>
- #include <asm/traps.h>
- #include <asm/asm-offsets.h>
- #include "reset.h"
-+#include <asm/asm.h>
- 
- #define VAL(n)		STR(n)
- 
- /*
-  * Macros for loading addresses and storing registers:
-- * PTR_LA	Load the address into a register
-- * LONG_S	Store the full width of the given register.
-- * LONG_L	Load the full width of the given register
-- * PTR_ADDIU	Add a constant value to a register used as a pointer
-+ * LONG_L_	Stringified version of LONG_L for use in asm() statement
-+ * LONG_S_	Stringified version of LONG_S for use in asm() statement
-+ * PTR_LA_	Stringified version of PTR_LA for use in asm() statement
-  * REG_SIZE	Number of 8-bit bytes in a full width register
-  */
-+#define LONG_L_		VAL(LONG_L) " "
-+#define LONG_S_		VAL(LONG_S) " "
-+#define PTR_LA_		VAL(PTR_LA) " "
-+
- #ifdef CONFIG_64BIT
- #warning TODO: 64-bit code needs to be verified
--#define PTR_LA		"dla	"
--#define LONG_S		"sd	"
--#define LONG_L		"ld	"
--#define PTR_ADDIU	"daddiu	"
- #define REG_SIZE	"8"		/* In bytes */
- #endif
- 
- #ifdef CONFIG_32BIT
--#define PTR_LA		"la	"
--#define LONG_S		"sw	"
--#define LONG_L		"lw	"
--#define PTR_ADDIU	"addiu	"
- #define REG_SIZE	"4"		/* In bytes */
- #endif
- 
-@@ -113,9 +110,9 @@ static int panic_handler(struct notifier_block *notifier_block,
- 		 * structure. */
- 		__asm__ __volatile__ (
- 			".set	noat\n"
--			LONG_S		"$at, %[at]\n"
--			LONG_S		"$2, %[v0]\n"
--			LONG_S		"$3, %[v1]\n"
-+			LONG_S_		"$at, %[at]\n"
-+			LONG_S_		"$2, %[v0]\n"
-+			LONG_S_		"$3, %[v1]\n"
- 		:
- 			[at] "=m" (at),
- 			[v0] "=m" (v0),
-@@ -129,54 +126,54 @@ static int panic_handler(struct notifier_block *notifier_block,
- 			"move		$at, %[pt_regs]\n"
- 
- 			/* Argument registers */
--			LONG_S		"$4, " VAL(PT_R4) "($at)\n"
--			LONG_S		"$5, " VAL(PT_R5) "($at)\n"
--			LONG_S		"$6, " VAL(PT_R6) "($at)\n"
--			LONG_S		"$7, " VAL(PT_R7) "($at)\n"
-+			LONG_S_		"$4, " VAL(PT_R4) "($at)\n"
-+			LONG_S_		"$5, " VAL(PT_R5) "($at)\n"
-+			LONG_S_		"$6, " VAL(PT_R6) "($at)\n"
-+			LONG_S_		"$7, " VAL(PT_R7) "($at)\n"
- 
- 			/* Temporary regs */
--			LONG_S		"$8, " VAL(PT_R8) "($at)\n"
--			LONG_S		"$9, " VAL(PT_R9) "($at)\n"
--			LONG_S		"$10, " VAL(PT_R10) "($at)\n"
--			LONG_S		"$11, " VAL(PT_R11) "($at)\n"
--			LONG_S		"$12, " VAL(PT_R12) "($at)\n"
--			LONG_S		"$13, " VAL(PT_R13) "($at)\n"
--			LONG_S		"$14, " VAL(PT_R14) "($at)\n"
--			LONG_S		"$15, " VAL(PT_R15) "($at)\n"
-+			LONG_S_		"$8, " VAL(PT_R8) "($at)\n"
-+			LONG_S_		"$9, " VAL(PT_R9) "($at)\n"
-+			LONG_S_		"$10, " VAL(PT_R10) "($at)\n"
-+			LONG_S_		"$11, " VAL(PT_R11) "($at)\n"
-+			LONG_S_		"$12, " VAL(PT_R12) "($at)\n"
-+			LONG_S_		"$13, " VAL(PT_R13) "($at)\n"
-+			LONG_S_		"$14, " VAL(PT_R14) "($at)\n"
-+			LONG_S_		"$15, " VAL(PT_R15) "($at)\n"
- 
- 			/* "Saved" registers */
--			LONG_S		"$16, " VAL(PT_R16) "($at)\n"
--			LONG_S		"$17, " VAL(PT_R17) "($at)\n"
--			LONG_S		"$18, " VAL(PT_R18) "($at)\n"
--			LONG_S		"$19, " VAL(PT_R19) "($at)\n"
--			LONG_S		"$20, " VAL(PT_R20) "($at)\n"
--			LONG_S		"$21, " VAL(PT_R21) "($at)\n"
--			LONG_S		"$22, " VAL(PT_R22) "($at)\n"
--			LONG_S		"$23, " VAL(PT_R23) "($at)\n"
-+			LONG_S_		"$16, " VAL(PT_R16) "($at)\n"
-+			LONG_S_		"$17, " VAL(PT_R17) "($at)\n"
-+			LONG_S_		"$18, " VAL(PT_R18) "($at)\n"
-+			LONG_S_		"$19, " VAL(PT_R19) "($at)\n"
-+			LONG_S_		"$20, " VAL(PT_R20) "($at)\n"
-+			LONG_S_		"$21, " VAL(PT_R21) "($at)\n"
-+			LONG_S_		"$22, " VAL(PT_R22) "($at)\n"
-+			LONG_S_		"$23, " VAL(PT_R23) "($at)\n"
- 
- 			/* Add'l temp regs */
--			LONG_S		"$24, " VAL(PT_R24) "($at)\n"
--			LONG_S		"$25, " VAL(PT_R25) "($at)\n"
-+			LONG_S_		"$24, " VAL(PT_R24) "($at)\n"
-+			LONG_S_		"$25, " VAL(PT_R25) "($at)\n"
- 
- 			/* Kernel temp regs */
--			LONG_S		"$26, " VAL(PT_R26) "($at)\n"
--			LONG_S		"$27, " VAL(PT_R27) "($at)\n"
-+			LONG_S_		"$26, " VAL(PT_R26) "($at)\n"
-+			LONG_S_		"$27, " VAL(PT_R27) "($at)\n"
- 
- 			/* Global pointer, stack pointer, frame pointer and
- 			 * return address */
--			LONG_S		"$gp, " VAL(PT_R28) "($at)\n"
--			LONG_S		"$sp, " VAL(PT_R29) "($at)\n"
--			LONG_S		"$fp, " VAL(PT_R30) "($at)\n"
--			LONG_S		"$ra, " VAL(PT_R31) "($at)\n"
-+			LONG_S_		"$gp, " VAL(PT_R28) "($at)\n"
-+			LONG_S_		"$sp, " VAL(PT_R29) "($at)\n"
-+			LONG_S_		"$fp, " VAL(PT_R30) "($at)\n"
-+			LONG_S_		"$ra, " VAL(PT_R31) "($at)\n"
- 
- 			/* Now we can get the $at and v0 registers back and
- 			 * store them */
--			LONG_L		"$8, %[at]\n"
--			LONG_S		"$8, " VAL(PT_R1) "($at)\n"
--			LONG_L		"$8, %[v0]\n"
--			LONG_S		"$8, " VAL(PT_R2) "($at)\n"
--			LONG_L		"$8, %[v1]\n"
--			LONG_S		"$8, " VAL(PT_R3) "($at)\n"
-+			LONG_L_		"$8, %[at]\n"
-+			LONG_S_		"$8, " VAL(PT_R1) "($at)\n"
-+			LONG_L_		"$8, %[v0]\n"
-+			LONG_S_		"$8, " VAL(PT_R2) "($at)\n"
-+			LONG_L_		"$8, %[v1]\n"
-+			LONG_S_		"$8, " VAL(PT_R3) "($at)\n"
- 		:
- 		:
- 			[at] "m" (at),
-@@ -191,8 +188,8 @@ static int panic_handler(struct notifier_block *notifier_block,
- 		__asm__ __volatile__ (
- 			".set	noat\n"
- 		"1:\n"
--			PTR_LA		"$at, 1b\n"
--			LONG_S		"$at, %[cp0_epc]\n"
-+			PTR_LA_		"$at, 1b\n"
-+			LONG_S_		"$at, %[cp0_epc]\n"
- 		:
- 			[cp0_epc] "=m" (my_regs.cp0_epc)
- 		:
+> On Sunday 21 February 2010 12:45:31 am Yoichi Yuasa wrote:
+> > > I'd like to understand the PCI architecture of Cobalt better.  Would you
+> > > mind turning on CONFIG_PCI_DEBUG and posting the dmesg log?
+> > 
+> > If you want to know what happen, you can see my old e-mail. 
+> > 
+> > http://marc.info/?l=linux-kernel&m=118792430424186&w=2
+> 
+> There's not much detail there.  It would save me a lot of time if
+> you could collect the complete dmesg log, /proc/iomem, and /proc/ioports.
+
+It cannot boot without old hack.
+I just got a console capture.
+
+Yoichi
+
+----
+2> execute console=ttyS0,115200 root=/dev/sda2
+elf32: 00080000 - 004220ef (800841f0) (ffffffff.80000000)
+elf32: 80080000 (80080000) 3694756t + 114764t
+net: interface down
+Cobalt board ID: 5
+pci 0000:00:07.0: BAR 6: assigned [mem 0x12000000-0x1203ffff pref]
+pci 0000:00:0c.0: BAR 6: assigned [mem 0x12040000-0x1207ffff pref]
+pci 0000:00:0a.0: BAR 0: assigned [mem 0x12080000-0x12080fff]
+pci 0000:00:0a.0: BAR 0: set to [mem 0x12080000-0x12080fff] (PCI address [0x12080000-0x12080fff]
+pci 0000:00:0a.1: BAR 0: assigned [mem 0x12081000-0x12081fff]
+pci 0000:00:0a.1: BAR 0: set to [mem 0x12081000-0x12081fff] (PCI address [0x12081000-0x12081fff]
+pci 0000:00:07.0: BAR 1: assigned [mem 0x12082000-0x120823ff]
+pci 0000:00:07.0: BAR 1: set to [mem 0x12082000-0x120823ff] (PCI address [0x12082000-0x120823ff]
+pci 0000:00:0c.0: BAR 1: assigned [mem 0x12082400-0x120827ff]
+pci 0000:00:0c.0: BAR 1: set to [mem 0x12082400-0x120827ff] (PCI address [0x12082400-0x120827ff]
+pci 0000:00:0a.2: BAR 0: assigned [mem 0x12082800-0x120828ff]
+pci 0000:00:0a.2: BAR 0: set to [mem 0x12082800-0x120828ff] (PCI address [0x12082800-0x120828ff]
+pci 0000:00:07.0: BAR 0: assigned [io  0x1000-0x107f]
+pci 0000:00:07.0: BAR 0: set to [io  0x1000-0x107f] (PCI address [0x10001000-0x1000107f]
+pci 0000:00:0c.0: BAR 0: assigned [io  0x1080-0x10ff]
+pci 0000:00:0c.0: BAR 0: set to [io  0x1080-0x10ff] (PCI address [0x10001080-0x100010ff]
+pci 0000:00:09.2: BAR 4: assigned [io  0x1400-0x141f]
+pci 0000:00:09.2: BAR 4: set to [io  0x1400-0x141f] (PCI address [0x10001400-0x1000141f]
+pci 0000:00:09.1: BAR 4: assigned [io  0x1420-0x142f]
+pci 0000:00:09.1: BAR 4: set to [io  0x1420-0x142f] (PCI address [0x10001420-0x1000142f]
+Switching to clocksource MIPS
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 4096 (order: 3, 32768 bytes)
+TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
+TCP: Hash tables configured (established 4096 bind 4096)
+TCP reno registered
+UDP hash table entries: 256 (order: 0, 4096 bytes)
+UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+NET: Registered protocol family 1
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+pci 0000:00:09.0: Activating ISA DMA hang workarounds
+Installing knfsd (copyright (C) 1996 okir@monad.swb.de).
+msgmni has been set to 245
+io scheduler noop registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+fb0: Cobalt server LCD frame buffer device
+Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+_serial8250.0: ttyS0 at MMIO 0x1c800000 (irq = 21) is a ST16650V2_console [ttyS0] enabled, bootconsole disabled
+console [ttyS0] enabled, bootconsole disabled
+loop: module loaded
+pata_via 0000:00:09.1: BAR 0: can't reserve [io  0xf00001f0-0xf00001f7]
+pata_via 0000:00:09.1: failed to request/iomap BARs for port 0 (errno=-16)
+pata_via 0000:00:09.1: BAR 2: can't reserve [io  0xf0000170-0xf0000177]
+pata_via 0000:00:09.1: failed to request/iomap BARs for port 1 (errno=-16)
+pata_via 0000:00:09.1: no available native port
+physmap platform flash device: 00080000 at 1fc00000
+Found: AMD AM29F040
+physmap-flash.0: Found 1 x8 devices at 0x0 in 8-bit bank
+number of JEDEC chips: 1
+cmdlinepart partition parsing not available
+RedBoot partition parsing not available
+Using physmap partition information
+Creating 1 MTD partitions on "physmap-flash.0":
+0x000000000000-0x000000080000 : "firmware"
+Linux Tulip driver version 1.1.15 (Feb 27, 2007)
+PCI: Enabling device 0000:00:07.0 (0041 -> 0043)
+tulip0: Old format EEPROM on 'Cobalt Microserver' board.  Using substitute media control info.
+tulip0:  EEPROM default media type Autosense.
+tulip0:  Index #0 - Media MII (#11) described by a 21142 MII PHY (3) block.
+tulip0:  MII transceiver #1 config 1000 status 7809 advertising 01e1.
+eth0: Digital DS21142/43 Tulip rev 65 at Port 0x1000, --:--:--:--:--:--, IRQ 19.
+PCI: Enabling device 0000:00:0c.0 (0005 -> 0007)
+tulip1: Old format EEPROM on 'Cobalt Microserver' board.  Using substitute media control info.
+tulip1:  EEPROM default media type Autosense.
+tulip1:  Index #0 - Media MII (#11) described by a 21142 MII PHY (3) block.
+tulip1:  MII transceiver #1 config 1000 status 7809 advertising 01e1.
+eth1: Digital DS21142/43 Tulip rev 65 at Port 0x1080, --:--:--:--:--:--, IRQ 20.
+input: Cobalt buttons as /devices/platform/Cobalt buttons/input/input0
+rtc_cmos rtc_cmos: rtc core: registered rtc_cmos as rtc0
+rtc0: alarms up to one day, 242 bytes nvram
+Registered led device: qube::front
+TCP cubic registered
+Initializing XFRM netlink socket
+NET: Registered protocol family 17
+NET: Registered protocol family 15
+rtc_cmos rtc_cmos: setting system clock to 2010-02-21 23:19:20 UTC (1266794360)
+VFS: Cannot open root device "sda2" or unknown-block(0,0)
+Please append a correct "root=" boot option; here are the available partitions:
+Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)

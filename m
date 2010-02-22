@@ -1,59 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 21:55:41 +0100 (CET)
-Received: from g4t0017.houston.hp.com ([15.201.24.20]:17515 "EHLO
-        g4t0017.houston.hp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491838Ab0BVUzh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Feb 2010 21:55:37 +0100
-Received: from g4t0018.houston.hp.com (g4t0018.houston.hp.com [16.234.32.27])
-        by g4t0017.houston.hp.com (Postfix) with ESMTP id 07B08381CC;
-        Mon, 22 Feb 2010 20:55:31 +0000 (UTC)
-Received: from ldl (ldl.fc.hp.com [15.11.146.30])
-        by g4t0018.houston.hp.com (Postfix) with ESMTP id F1081100B1;
-        Mon, 22 Feb 2010 20:55:29 +0000 (UTC)
-Received: from localhost (ldl.fc.hp.com [127.0.0.1])
-        by ldl (Postfix) with ESMTP id DA5BDCF004A;
-        Mon, 22 Feb 2010 13:55:29 -0700 (MST)
-Received: from ldl ([127.0.0.1])
-        by localhost (ldl.fc.hp.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id a3CuSBrjna+O; Mon, 22 Feb 2010 13:55:29 -0700 (MST)
-Received: from tigger.helgaas (lart.fc.hp.com [15.11.146.31])
-        by ldl (Postfix) with ESMTP id C3820CF0040;
-        Mon, 22 Feb 2010 13:55:29 -0700 (MST)
-From:   Bjorn Helgaas <bjorn.helgaas@hp.com>
-To:     Yoichi Yuasa <yuasa@linux-mips.org>
-Subject: Re: Reverting old hack
-Date:   Mon, 22 Feb 2010 13:55:28 -0700
-User-Agent: KMail/1.9.10
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <20100220113134.GA27194@linux-mips.org> <1266677869.1320.8.camel@dc7800.home> <20100221164531.382b3785.yuasa@linux-mips.org>
-In-Reply-To: <20100221164531.382b3785.yuasa@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Feb 2010 21:56:05 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:1198 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491884Ab0BVUz6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Feb 2010 21:55:58 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4b82ef650000>; Mon, 22 Feb 2010 12:56:05 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 22 Feb 2010 12:55:29 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 22 Feb 2010 12:55:29 -0800
+Message-ID: <4B82EF41.2050603@caviumnetworks.com>
+Date:   Mon, 22 Feb 2010 12:55:29 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+To:     Andreas Barth <aba@not.so.argh.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: Problems and workarounds while building octeon kernels
+References: <20100220175125.GQ27216@mails.so.argh.org> <4B82C20D.9000302@caviumnetworks.com> <20100222202545.GV27216@mails.so.argh.org>
+In-Reply-To: <20100222202545.GV27216@mails.so.argh.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <201002221355.28939.bjorn.helgaas@hp.com>
-Return-Path: <bjorn.helgaas@hp.com>
+X-OriginalArrivalTime: 22 Feb 2010 20:55:29.0563 (UTC) FILETIME=[5DD41EB0:01CAB401]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25985
+X-archive-position: 25986
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bjorn.helgaas@hp.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sunday 21 February 2010 12:45:31 am Yoichi Yuasa wrote:
-> > I'd like to understand the PCI architecture of Cobalt better.  Would you
-> > mind turning on CONFIG_PCI_DEBUG and posting the dmesg log?
-> 
-> If you want to know what happen, you can see my old e-mail. 
-> 
-> http://marc.info/?l=linux-kernel&m=118792430424186&w=2
+On 02/22/2010 12:25 PM, Andreas Barth wrote:
+> * David Daney (ddaney@caviumnetworks.com) [100222 18:57]:
+>> On 02/20/2010 09:51 AM, Andreas Barth wrote:
+>>> I tried to build an recent linux 2.6.33-rc something in an unstable
+>>> Debian chroot. I had the following issues (plus workarounds / fixes) -
+>>> please don't hesitate to ask me if you have further questions.
+>
+>> Can you supply the .config as well as tell me the version of GCC you are
+>> using?
+>
+> Attached (the compiling variant).
 
-There's not much detail there.  It would save me a lot of time if
-you could collect the complete dmesg log, /proc/iomem, and /proc/ioports.
+It is uninteresting, I already have one that works.  How about the 
+version that provokes all the errors you mention?
+
+
+>
+> gcc is 4.4.3-2.
+>
+
+How about sending me the output of "gcc -x c -dM -E /dev/null" from that 
+compiler?
 
 Thanks,
-  Bjorn
+David Daney

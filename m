@@ -1,98 +1,217 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 01:15:42 +0100 (CET)
-Received: from g5t0007.atlanta.hp.com ([15.192.0.44]:27956 "EHLO
-        g5t0007.atlanta.hp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491970Ab0BWAPc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 01:15:32 +0100
-Received: from g5t0030.atlanta.hp.com (g5t0030.atlanta.hp.com [16.228.8.142])
-        by g5t0007.atlanta.hp.com (Postfix) with ESMTP id 35463143E2;
-        Tue, 23 Feb 2010 00:15:26 +0000 (UTC)
-Received: from ldl (ldl.fc.hp.com [15.11.146.30])
-        by g5t0030.atlanta.hp.com (Postfix) with ESMTP id C770C1407A;
-        Tue, 23 Feb 2010 00:15:25 +0000 (UTC)
-Received: from localhost (ldl.fc.hp.com [127.0.0.1])
-        by ldl (Postfix) with ESMTP id 90DDACF004A;
-        Mon, 22 Feb 2010 17:15:25 -0700 (MST)
-Received: from ldl ([127.0.0.1])
-        by localhost (ldl.fc.hp.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id EFMAYtJ3hrgo; Mon, 22 Feb 2010 17:15:25 -0700 (MST)
-Received: from tigger.helgaas (lart.fc.hp.com [15.11.146.31])
-        by ldl (Postfix) with ESMTP id 7B97ECF0011;
-        Mon, 22 Feb 2010 17:15:25 -0700 (MST)
-From:   Bjorn Helgaas <bjorn.helgaas@hp.com>
-To:     Yoichi Yuasa <yuasa@linux-mips.org>
-Subject: Re: Reverting old hack
-Date:   Mon, 22 Feb 2010 17:15:24 -0700
-User-Agent: KMail/1.9.10
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <20100220113134.GA27194@linux-mips.org> <201002221355.28939.bjorn.helgaas@hp.com> <20100223085143.aeb1fa53.yuasa@linux-mips.org>
-In-Reply-To: <20100223085143.aeb1fa53.yuasa@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 01:31:30 +0100 (CET)
+Received: from sj-iport-5.cisco.com ([171.68.10.87]:55142 "EHLO
+        sj-iport-5.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491888Ab0BWAbW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 01:31:22 +0100
+Authentication-Results: sj-iport-5.cisco.com; dkim=neutral (message not signed) header.i=none
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AvsEAAyxgkurRN+K/2dsb2JhbACbAXOjTpgzhGsEgxU
+X-IronPort-AV: E=Sophos;i="4.49,521,1262563200"; 
+   d="scan'208";a="155131324"
+Received: from sj-core-4.cisco.com ([171.68.223.138])
+  by sj-iport-5.cisco.com with ESMTP; 23 Feb 2010 00:31:13 +0000
+Received: from dvomlehn-lnx2.corp.sa.net ([64.101.20.155])
+        by sj-core-4.cisco.com (8.13.8/8.14.3) with ESMTP id o1N0VDs4007711;
+        Tue, 23 Feb 2010 00:31:13 GMT
+Date:   Mon, 22 Feb 2010 16:31:13 -0800
+From:   David VomLehn <dvomlehn@cisco.com>
+To:     to@dvomlehn-lnx2.corp.sa.net,
+        "linux-mips@linux-mips.org"@cisco.com, linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Subject: [V2] Eliminate duplicate opcode definition macros
+Message-ID: <20100223003113.GA8599@dvomlehn-lnx2.corp.sa.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <201002221715.24674.bjorn.helgaas@hp.com>
-Return-Path: <bjorn.helgaas@hp.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25991
+X-archive-position: 25992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bjorn.helgaas@hp.com
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Monday 22 February 2010 04:51:43 pm Yoichi Yuasa wrote:
-> Hi Bjorn,
-> 
-> On Mon, 22 Feb 2010 13:55:28 -0700
-> Bjorn Helgaas <bjorn.helgaas@hp.com> wrote:
-> 
-> > On Sunday 21 February 2010 12:45:31 am Yoichi Yuasa wrote:
-> > > > I'd like to understand the PCI architecture of Cobalt better.  Would you
-> > > > mind turning on CONFIG_PCI_DEBUG and posting the dmesg log?
-> > > 
-> > > If you want to know what happen, you can see my old e-mail. 
-> > > 
-> > > http://marc.info/?l=linux-kernel&m=118792430424186&w=2
-> > 
-> > There's not much detail there.  It would save me a lot of time if
-> > you could collect the complete dmesg log, /proc/iomem, and /proc/ioports.
-> 
-> It cannot boot without old hack.
+Change to different macros for assembler macros since the old names in
+powertv_setup.c were co-opted for use in asm/asm.h. This broken the
+build for the powertv platform. This patch introduces new macros based on
+the new macros in asm.h to take the place of the old macro values.
 
-I know; I meant that the information from a kernel with the old
-hack would be useful.  But I think I'm starting to understand anyway.
+Signed-off-by: David VomLehn <dvomlehn@cisco.com>
+---
+ arch/mips/powertv/powertv_setup.c |  102 ++++++++++++++++++-------------------
+ 1 files changed, 49 insertions(+), 53 deletions(-)
 
-The Linux I/O port number space is defined here:
-
-    static struct resource cobalt_io_resource = {
-        .start  = 0x1000,
-        .end    = GT_DEF_PCI0_IO_SIZE - 1,  /* 0x1ffffff */
-
-[As an aside, I'm not sure 0x1000 is the correct start -- for example,
-I think Linux I/O port 0x1f0 is forwarded by the host bridge.]
-
-The corresponding PCI I/O port numbers are determined by the PCI
-I/O decoder address, so I agree that we need the io_offset to convert
-between the Linux port numbers and ports that appear on the PCI bus.
-
-I think the IDE device is a problem because pci_setup_device() fills
-in legacy resources with ports 0x1f0-0x1f7, etc.  We expect those
-resources to contain PCI bus addresses at this point, but we could
-never see those addresses on the Cobalt PCI bus (we would only see
-things in the range 0x10000000-0x11ffffff).
-
-When we convert 0x1f0 with pcibios_bus_to_resource() (or with
-pcibios_fixup_device_resources() without the IORESOURCE_PCI_FIXED
-hack), we get 0x1f0 + 0xf0000000 == 0xf00001f0, when we want 0x1f0
-instead.
-
-> pata_via 0000:00:09.1: BAR 0: can't reserve [io  0xf00001f0-0xf00001f7]
-
-I still don't know the best way to fix this, but does this make sense
-so far?
-
-Bjorn
+diff --git a/arch/mips/powertv/powertv_setup.c b/arch/mips/powertv/powertv_setup.c
+index 698b1ea..af2cae0 100644
+--- a/arch/mips/powertv/powertv_setup.c
++++ b/arch/mips/powertv/powertv_setup.c
+@@ -25,14 +25,15 @@
+ #include <linux/etherdevice.h>
+ #include <linux/if_ether.h>
+ #include <linux/ctype.h>
+-
+ #include <linux/cpu.h>
++#include <linux/time.h>
++
+ #include <asm/bootinfo.h>
+ #include <asm/irq.h>
+ #include <asm/mips-boards/generic.h>
+ #include <asm/mips-boards/prom.h>
+ #include <asm/dma.h>
+-#include <linux/time.h>
++#include <asm/asm.h>
+ #include <asm/traps.h>
+ #include <asm/asm-offsets.h>
+ #include "reset.h"
+@@ -41,26 +42,21 @@
+ 
+ /*
+  * Macros for loading addresses and storing registers:
+- * PTR_LA	Load the address into a register
+- * LONG_S	Store the full width of the given register.
+- * LONG_L	Load the full width of the given register
+- * PTR_ADDIU	Add a constant value to a register used as a pointer
++ * LONG_L_	Stringified version of LONG_L for use in asm() statement
++ * LONG_S_	Stringified version of LONG_S for use in asm() statement
++ * PTR_LA_	Stringified version of PTR_LA for use in asm() statement
+  * REG_SIZE	Number of 8-bit bytes in a full width register
+  */
++#define LONG_L_		VAL(LONG_L) " "
++#define LONG_S_		VAL(LONG_S) " "
++#define PTR_LA_		VAL(PTR_LA) " "
++
+ #ifdef CONFIG_64BIT
+ #warning TODO: 64-bit code needs to be verified
+-#define PTR_LA		"dla	"
+-#define LONG_S		"sd	"
+-#define LONG_L		"ld	"
+-#define PTR_ADDIU	"daddiu	"
+ #define REG_SIZE	"8"		/* In bytes */
+ #endif
+ 
+ #ifdef CONFIG_32BIT
+-#define PTR_LA		"la	"
+-#define LONG_S		"sw	"
+-#define LONG_L		"lw	"
+-#define PTR_ADDIU	"addiu	"
+ #define REG_SIZE	"4"		/* In bytes */
+ #endif
+ 
+@@ -113,9 +109,9 @@ static int panic_handler(struct notifier_block *notifier_block,
+ 		 * structure. */
+ 		__asm__ __volatile__ (
+ 			".set	noat\n"
+-			LONG_S		"$at, %[at]\n"
+-			LONG_S		"$2, %[v0]\n"
+-			LONG_S		"$3, %[v1]\n"
++			LONG_S_		"$at, %[at]\n"
++			LONG_S_		"$2, %[v0]\n"
++			LONG_S_		"$3, %[v1]\n"
+ 		:
+ 			[at] "=m" (at),
+ 			[v0] "=m" (v0),
+@@ -129,54 +125,54 @@ static int panic_handler(struct notifier_block *notifier_block,
+ 			"move		$at, %[pt_regs]\n"
+ 
+ 			/* Argument registers */
+-			LONG_S		"$4, " VAL(PT_R4) "($at)\n"
+-			LONG_S		"$5, " VAL(PT_R5) "($at)\n"
+-			LONG_S		"$6, " VAL(PT_R6) "($at)\n"
+-			LONG_S		"$7, " VAL(PT_R7) "($at)\n"
++			LONG_S_		"$4, " VAL(PT_R4) "($at)\n"
++			LONG_S_		"$5, " VAL(PT_R5) "($at)\n"
++			LONG_S_		"$6, " VAL(PT_R6) "($at)\n"
++			LONG_S_		"$7, " VAL(PT_R7) "($at)\n"
+ 
+ 			/* Temporary regs */
+-			LONG_S		"$8, " VAL(PT_R8) "($at)\n"
+-			LONG_S		"$9, " VAL(PT_R9) "($at)\n"
+-			LONG_S		"$10, " VAL(PT_R10) "($at)\n"
+-			LONG_S		"$11, " VAL(PT_R11) "($at)\n"
+-			LONG_S		"$12, " VAL(PT_R12) "($at)\n"
+-			LONG_S		"$13, " VAL(PT_R13) "($at)\n"
+-			LONG_S		"$14, " VAL(PT_R14) "($at)\n"
+-			LONG_S		"$15, " VAL(PT_R15) "($at)\n"
++			LONG_S_		"$8, " VAL(PT_R8) "($at)\n"
++			LONG_S_		"$9, " VAL(PT_R9) "($at)\n"
++			LONG_S_		"$10, " VAL(PT_R10) "($at)\n"
++			LONG_S_		"$11, " VAL(PT_R11) "($at)\n"
++			LONG_S_		"$12, " VAL(PT_R12) "($at)\n"
++			LONG_S_		"$13, " VAL(PT_R13) "($at)\n"
++			LONG_S_		"$14, " VAL(PT_R14) "($at)\n"
++			LONG_S_		"$15, " VAL(PT_R15) "($at)\n"
+ 
+ 			/* "Saved" registers */
+-			LONG_S		"$16, " VAL(PT_R16) "($at)\n"
+-			LONG_S		"$17, " VAL(PT_R17) "($at)\n"
+-			LONG_S		"$18, " VAL(PT_R18) "($at)\n"
+-			LONG_S		"$19, " VAL(PT_R19) "($at)\n"
+-			LONG_S		"$20, " VAL(PT_R20) "($at)\n"
+-			LONG_S		"$21, " VAL(PT_R21) "($at)\n"
+-			LONG_S		"$22, " VAL(PT_R22) "($at)\n"
+-			LONG_S		"$23, " VAL(PT_R23) "($at)\n"
++			LONG_S_		"$16, " VAL(PT_R16) "($at)\n"
++			LONG_S_		"$17, " VAL(PT_R17) "($at)\n"
++			LONG_S_		"$18, " VAL(PT_R18) "($at)\n"
++			LONG_S_		"$19, " VAL(PT_R19) "($at)\n"
++			LONG_S_		"$20, " VAL(PT_R20) "($at)\n"
++			LONG_S_		"$21, " VAL(PT_R21) "($at)\n"
++			LONG_S_		"$22, " VAL(PT_R22) "($at)\n"
++			LONG_S_		"$23, " VAL(PT_R23) "($at)\n"
+ 
+ 			/* Add'l temp regs */
+-			LONG_S		"$24, " VAL(PT_R24) "($at)\n"
+-			LONG_S		"$25, " VAL(PT_R25) "($at)\n"
++			LONG_S_		"$24, " VAL(PT_R24) "($at)\n"
++			LONG_S_		"$25, " VAL(PT_R25) "($at)\n"
+ 
+ 			/* Kernel temp regs */
+-			LONG_S		"$26, " VAL(PT_R26) "($at)\n"
+-			LONG_S		"$27, " VAL(PT_R27) "($at)\n"
++			LONG_S_		"$26, " VAL(PT_R26) "($at)\n"
++			LONG_S_		"$27, " VAL(PT_R27) "($at)\n"
+ 
+ 			/* Global pointer, stack pointer, frame pointer and
+ 			 * return address */
+-			LONG_S		"$gp, " VAL(PT_R28) "($at)\n"
+-			LONG_S		"$sp, " VAL(PT_R29) "($at)\n"
+-			LONG_S		"$fp, " VAL(PT_R30) "($at)\n"
+-			LONG_S		"$ra, " VAL(PT_R31) "($at)\n"
++			LONG_S_		"$gp, " VAL(PT_R28) "($at)\n"
++			LONG_S_		"$sp, " VAL(PT_R29) "($at)\n"
++			LONG_S_		"$fp, " VAL(PT_R30) "($at)\n"
++			LONG_S_		"$ra, " VAL(PT_R31) "($at)\n"
+ 
+ 			/* Now we can get the $at and v0 registers back and
+ 			 * store them */
+-			LONG_L		"$8, %[at]\n"
+-			LONG_S		"$8, " VAL(PT_R1) "($at)\n"
+-			LONG_L		"$8, %[v0]\n"
+-			LONG_S		"$8, " VAL(PT_R2) "($at)\n"
+-			LONG_L		"$8, %[v1]\n"
+-			LONG_S		"$8, " VAL(PT_R3) "($at)\n"
++			LONG_L_		"$8, %[at]\n"
++			LONG_S_		"$8, " VAL(PT_R1) "($at)\n"
++			LONG_L_		"$8, %[v0]\n"
++			LONG_S_		"$8, " VAL(PT_R2) "($at)\n"
++			LONG_L_		"$8, %[v1]\n"
++			LONG_S_		"$8, " VAL(PT_R3) "($at)\n"
+ 		:
+ 		:
+ 			[at] "m" (at),
+@@ -191,8 +187,8 @@ static int panic_handler(struct notifier_block *notifier_block,
+ 		__asm__ __volatile__ (
+ 			".set	noat\n"
+ 		"1:\n"
+-			PTR_LA		"$at, 1b\n"
+-			LONG_S		"$at, %[cp0_epc]\n"
++			PTR_LA_		"$at, 1b\n"
++			LONG_S_		"$at, %[cp0_epc]\n"
+ 		:
+ 			[cp0_epc] "=m" (my_regs.cp0_epc)
+ 		:

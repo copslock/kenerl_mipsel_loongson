@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 21:20:22 +0100 (CET)
-Received: from fg-out-1718.google.com ([72.14.220.155]:43357 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 21:21:22 +0100 (CET)
+Received: from fg-out-1718.google.com ([72.14.220.155]:48952 "EHLO
         fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492104Ab0BWUUP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 21:20:15 +0100
-Received: by fg-out-1718.google.com with SMTP id 22so45362fge.6
-        for <linux-mips@linux-mips.org>; Tue, 23 Feb 2010 12:20:13 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1492110Ab0BWUVR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 21:21:17 +0100
+Received: by fg-out-1718.google.com with SMTP id d23so314792fga.6
+        for <linux-mips@linux-mips.org>; Tue, 23 Feb 2010 12:21:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer;
-        bh=S21CEWUFZPhB51HO7zWdQJo6vlcphoRw3kzkVwpD+vk=;
-        b=ZCjmJcvHL5N3HXswj5tc5EybhxHIw+d3Ciuj+qVpRH9wTOcGKIWSzMBFmZtBWohNoo
-         K3kshVJ9PxXNG8cKgtuF5gl7L+2J0e9hjJc/wF3eTVlVo8nPkSqJowTFq9IB0pToVfD7
-         V03xc7cOKrT1vs1Z5hey64LVmI0PBT9a2Xwww=
+        bh=gCtcVCr7N+VuH/Nv0c0DJXCftx0yJQbI4WHfJh+dIlw=;
+        b=d4XL8ekG/gDO/JstZOMXqYrqZhhY4inNaDj5Ro7M3DV5BI3aWJhKbncpfG6Tdr7cqe
+         AkCtEHO4NGvXpqE+ksFdQ/5hsJLXwSHAbxGQ1LpcRuv1558Cn2zZty94Yu3TcYKOHhkX
+         VeSqMhs9KxUxumi4B7NlMBaZHnwgHiqJGkNdY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        b=g1s2A75DVXzaV4Q+gC0PkIeGh8hh/0mRIVPiDNB4LtxROJKVrnztQcksa4qsV9Dbvo
-         RP/iVU7nmo4laZd0r3Zjjxd/6u1uMZdABHDjbTYKJuIu4KS/A0ko2O60nPxhJLBrg43v
-         9XWlm9qF1evm+xluuKsmx9RYp2wiJtIC18V84=
-Received: by 10.87.5.15 with SMTP id h15mr9661542fgi.43.1266956413408;
-        Tue, 23 Feb 2010 12:20:13 -0800 (PST)
+        b=gViBVzQU6ywqeC/jFUlOjloYMIrt0dWJlPVnilN7HeWw5NZJW8BXsEKvHB93R/kWkn
+         qy3W9MqNa1MIcgZ33vSAkI5CLnSxda0jzrtW7rXmeREO/IrY7wb4FAM0gW+7KOxE2fMg
+         WqPJQzKyyNwJIVEKL2m6STvTIy3gCHBfGOZPE=
+Received: by 10.87.73.23 with SMTP id a23mr187182fgl.76.1266956476306;
+        Tue, 23 Feb 2010 12:21:16 -0800 (PST)
 Received: from localhost.localdomain (p5496C63A.dip.t-dialin.net [84.150.198.58])
-        by mx.google.com with ESMTPS id e3sm706384fga.14.2010.02.23.12.20.11
+        by mx.google.com with ESMTPS id 12sm12175950fgg.3.2010.02.23.12.21.14
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 23 Feb 2010 12:20:12 -0800 (PST)
+        Tue, 23 Feb 2010 12:21:15 -0800 (PST)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH -queue] MIPS: Alchemy: use 36bit addresses for PCMCIA resources.
-Date:   Tue, 23 Feb 2010 21:21:09 +0100
-Message-Id: <1266956469-24724-1-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH -queue v2] MIPS: Alchemy: use 36bit addresses for PCMCIA resources.
+Date:   Tue, 23 Feb 2010 21:22:14 +0100
+Message-Id: <1266956534-24753-1-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.7.0
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26001
+X-archive-position: 26002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,10 +44,10 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Alchemy the PCMCIA area lies at the end of the chips' 36bit sysbus
-area.  Currently, addresses at the far end of the 32bit area are assumed
-to belong to the PCMCIA area and fixed up to the real 36bit address
-before being passed to ioremap().
+On Alchemy the PCMCIA area lies at the end of the chips 36bit system
+bus area.  Currently, addresses at the far end of the 32bit area
+are assumed to belong to the PCMCIA area and fixed up to the real
+36bit address before being passed to ioremap().
 
 A previous commit enabled 64 bit physical size for the resource
 datatype on Alchemy and this allows to use the correct
@@ -62,7 +62,9 @@ ethernet card.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/mips/alchemy/common/setup.c              |   13 ---------
+v2: __fixup_bigphys_addr() is now only required for PCI
+
+ arch/mips/alchemy/common/setup.c              |   32 +++++------------------
  arch/mips/alchemy/devboards/db1200/platform.c |   24 +++++++++---------
  arch/mips/alchemy/devboards/db1x00/platform.c |   24 +++++++++---------
  arch/mips/alchemy/devboards/pb1100/platform.c |   12 ++++----
@@ -72,17 +74,42 @@ Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
  arch/mips/alchemy/devboards/platform.c        |   34 ++++++++++++------------
  arch/mips/alchemy/devboards/platform.h        |   12 ++++----
  arch/mips/include/asm/mach-au1x00/au1000.h    |   14 ----------
+ arch/mips/include/asm/mach-au1x00/ioremap.h   |    2 +-
  drivers/pcmcia/db1xxx_ss.c                    |   25 ++++++-----------
- 11 files changed, 92 insertions(+), 126 deletions(-)
+ 12 files changed, 100 insertions(+), 139 deletions(-)
 
 diff --git a/arch/mips/alchemy/common/setup.c b/arch/mips/alchemy/common/setup.c
-index 193ba16..aee1582 100644
+index 193ba16..561e5da 100644
 --- a/arch/mips/alchemy/common/setup.c
 +++ b/arch/mips/alchemy/common/setup.c
-@@ -89,19 +89,6 @@ phys_t __fixup_bigphys_addr(phys_t phys_addr, phys_t size)
- 	}
- #endif
+@@ -69,38 +69,20 @@ void __init plat_mem_setup(void)
+ 	iomem_resource.end = IOMEM_RESOURCE_END;
+ }
  
+-#if defined(CONFIG_64BIT_PHYS_ADDR)
++#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_PCI)
+ /* This routine should be valid for all Au1x based boards */
+ phys_t __fixup_bigphys_addr(phys_t phys_addr, phys_t size)
+ {
++	u32 start = (u32)Au1500_PCI_MEM_START;
++	u32 end   = (u32)Au1500_PCI_MEM_END;
++
+ 	/* Don't fixup 36-bit addresses */
+ 	if ((phys_addr >> 32) != 0)
+ 		return phys_addr;
+ 
+-#ifdef CONFIG_PCI
+-	{
+-		u32 start = (u32)Au1500_PCI_MEM_START;
+-		u32 end   = (u32)Au1500_PCI_MEM_END;
+-
+-		/* Check for PCI memory window */
+-		if (phys_addr >= start && (phys_addr + size - 1) <= end)
+-			return (phys_t)
+-			       ((phys_addr - start) + Au1500_PCI_MEM_START);
+-	}
+-#endif
+-
 -	/*
 -	 * All Au1xx0 SOCs have a PCMCIA controller.
 -	 * We setup our 32-bit pseudo addresses to be equal to the
@@ -95,10 +122,12 @@ index 193ba16..aee1582 100644
 -	if ((phys_addr >= PCMCIA_ATTR_PSEUDO_PHYS) &&
 -	    (phys_addr < PCMCIA_PSEUDO_END))
 -		return (phys_t)(phys_addr << 4);
--
++	/* Check for PCI memory window */
++	if (phys_addr >= start && (phys_addr + size - 1) <= end)
++		return (phys_t)((phys_addr - start) + Au1500_PCI_MEM_START);
+ 
  	/* default nop */
  	return phys_addr;
- }
 diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
 index d6b3e64..3cb95a9 100644
 --- a/arch/mips/alchemy/devboards/db1200/platform.c
@@ -420,6 +449,19 @@ index 2805fc5..ae07423 100644
 -#define PCMCIA_PSEUDO_END	(0xffffffff)
 -
  #endif
+diff --git a/arch/mips/include/asm/mach-au1x00/ioremap.h b/arch/mips/include/asm/mach-au1x00/ioremap.h
+index 364cea2..75a94ad 100644
+--- a/arch/mips/include/asm/mach-au1x00/ioremap.h
++++ b/arch/mips/include/asm/mach-au1x00/ioremap.h
+@@ -11,7 +11,7 @@
+ 
+ #include <linux/types.h>
+ 
+-#ifdef CONFIG_64BIT_PHYS_ADDR
++#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_PCI)
+ extern phys_t __fixup_bigphys_addr(phys_t, phys_t);
+ #else
+ static inline phys_t __fixup_bigphys_addr(phys_t phys_addr, phys_t size)
 diff --git a/drivers/pcmcia/db1xxx_ss.c b/drivers/pcmcia/db1xxx_ss.c
 index b35b72b..3889cf0 100644
 --- a/drivers/pcmcia/db1xxx_ss.c

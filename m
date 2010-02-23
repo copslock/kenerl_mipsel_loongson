@@ -1,138 +1,173 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 01:51:22 +0100 (CET)
-Received: from mail-bw0-f215.google.com ([209.85.218.215]:63000 "EHLO
-        mail-bw0-f215.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492343Ab0BWAvO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 01:51:14 +0100
-Received: by bwz7 with SMTP id 7so2124599bwz.24
-        for <multiple recipients>; Mon, 22 Feb 2010 16:51:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:date:from:to:cc
-         :subject:message-id:in-reply-to:references:x-mailer:mime-version
-         :content-type:content-transfer-encoding;
-        bh=bck8WG4BGeouzKr2DbFalIksZnp+XuVaH9jZTD6uJaA=;
-        b=xohag6O6tPJS6ITroAofMfRH6yxmVlpBtE5i6e9aJr9ec38XQV7rxK76xqH7idIwYe
-         oFMsNSDcLjf0cNblh9lfoUJ+XppZaPBg0RMAat0XgE9f97YDWVnNJjEpT4rhdO377WKa
-         JbDFE47cvTpjrTifsSAnIfRo97RTmdm+wjzBc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
-         :x-mailer:mime-version:content-type:content-transfer-encoding;
-        b=ObvMbhNPx4CfgRgXoVUpsHBxaXAQ1GoHpcT7nfdMhsj+1lyEE8xd022gmjCLO1a6dG
-         95pXfO0GPJqGMdXLwHV0KaIL7Enj91k5kTmcDvv+tCWJvVUE5bx57ZOMXuSxk3ql1Bxm
-         bv0qzSxGRae+SVlsJNq9Js9/RiCHi7qCgxDTI=
-Received: by 10.204.49.68 with SMTP id u4mr889716bkf.57.1266886265645;
-        Mon, 22 Feb 2010 16:51:05 -0800 (PST)
-Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
-        by mx.google.com with ESMTPS id 15sm1462801bwz.8.2010.02.22.16.51.01
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 22 Feb 2010 16:51:04 -0800 (PST)
-Date:   Tue, 23 Feb 2010 09:50:51 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
-To:     Bjorn Helgaas <bjorn.helgaas@hp.com>
-Cc:     yuasa@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: Re: Reverting old hack
-Message-Id: <20100223095051.26a5049b.yuasa@linux-mips.org>
-In-Reply-To: <201002221715.24674.bjorn.helgaas@hp.com>
-References: <20100220113134.GA27194@linux-mips.org>
-        <201002221355.28939.bjorn.helgaas@hp.com>
-        <20100223085143.aeb1fa53.yuasa@linux-mips.org>
-        <201002221715.24674.bjorn.helgaas@hp.com>
-X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 06:42:57 +0100 (CET)
+Received: from TYO201.gate.nec.co.jp ([202.32.8.193]:56016 "EHLO
+        tyo201.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491039Ab0BWFmt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 06:42:49 +0100
+Received: from relay21.aps.necel.com ([10.29.19.50])
+        by tyo201.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id o1N5gJlM008652;
+        Tue, 23 Feb 2010 14:42:42 +0900 (JST)
+Received: from realmbox31.aps.necel.com ([10.29.19.36] [10.29.19.36]) by relay21.aps.necel.com with ESMTP; Tue, 23 Feb 2010 14:42:42 +0900
+Received: from [10.114.181.193] ([10.114.181.193] [10.114.181.193]) by mbox02.aps.necel.com with ESMTP; Tue, 23 Feb 2010 14:42:42 +0900
+Message-ID: <4B836AD2.20602@necel.com>
+Date:   Tue, 23 Feb 2010 14:42:42 +0900
+From:   Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+MIME-Version: 1.0
+To:     "Kevin D. Kissell" <kevink@paralogos.com>
+CC:     Linux MIPS Org <linux-mips@linux-mips.org>
+Subject: compare_change_hazard (was Re: SMTC Patches [3 of 3])
+References: <48C6DD4D.9090600@paralogos.com>
+In-Reply-To: <48C6DD4D.9090600@paralogos.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <yuasa.linux@gmail.com>
+Return-Path: <shinya.kuribayashi@necel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25993
+X-archive-position: 25994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: shinya.kuribayashi@necel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 22 Feb 2010 17:15:24 -0700
-Bjorn Helgaas <bjorn.helgaas@hp.com> wrote:
+Hi Kevin and folks,
 
-> On Monday 22 February 2010 04:51:43 pm Yoichi Yuasa wrote:
-> > Hi Bjorn,
-> > 
-> > On Mon, 22 Feb 2010 13:55:28 -0700
-> > Bjorn Helgaas <bjorn.helgaas@hp.com> wrote:
-> > 
-> > > On Sunday 21 February 2010 12:45:31 am Yoichi Yuasa wrote:
-> > > > > I'd like to understand the PCI architecture of Cobalt better.  Would you
-> > > > > mind turning on CONFIG_PCI_DEBUG and posting the dmesg log?
-> > > > 
-> > > > If you want to know what happen, you can see my old e-mail. 
-> > > > 
-> > > > http://marc.info/?l=linux-kernel&m=118792430424186&w=2
-> > > 
-> > > There's not much detail there.  It would save me a lot of time if
-> > > you could collect the complete dmesg log, /proc/iomem, and /proc/ioports.
-> > 
-> > It cannot boot without old hack.
-> 
-> I know; I meant that the information from a kernel with the old
-> hack would be useful.  But I think I'm starting to understand anyway.
-> 
-> The Linux I/O port number space is defined here:
-> 
->     static struct resource cobalt_io_resource = {
->         .start  = 0x1000,
->         .end    = GT_DEF_PCI0_IO_SIZE - 1,  /* 0x1ffffff */
-> 
-> [As an aside, I'm not sure 0x1000 is the correct start -- for example,
-> I think Linux I/O port 0x1f0 is forwarded by the host bridge.]
+Recently I have encountered an awkward timer interrupt behavior
+on a MIPS32r2 core running at 500+MHz, and find a useful comment
+left in the kernel.
 
-This is the space(0x0-0xfff) for the fixed address devices(PIC, RTC, DMA(just reserved)...). 
+Here I have some question about compare_change_hazard(), which was
+introduced by the commit.  See below: 
 
-$ cat /proc/ioports                                                      
-00000000-0000001f : reserved                                                    
-00000020-00000021 : pic1                                                        
-00000060-0000006f : reserved                                                    
-00000070-00000077 : rtc_cmos                                                    
-  00000070-00000077 : rtc0                                                      
-00000080-0000008f : reserved                                                    
-000000a0-000000a1 : pic2                                                        
-000000c0-000000df : reserved                                                    
-00000170-00000177 : pata_via                                                    
-000001f0-000001f7 : pata_via                                                    
-00000376-00000376 : pata_via                                                    
-000003f6-000003f6 : pata_via                                                    
-00001000-01ffffff : PCI I/O                                                     
-  00001000-0000107f : 0000:00:07.0                                              
-    00001000-0000107f : tulip                                                   
-  00001080-000010ff : 0000:00:0c.0                                              
-    00001080-000010ff : tulip                                                   
-  00001400-0000141f : 0000:00:09.2                                              
-  00001420-0000142f : 0000:00:09.1                                              
-    00001420-0000142f : pata_via
- 
-> The corresponding PCI I/O port numbers are determined by the PCI
-> I/O decoder address, so I agree that we need the io_offset to convert
-> between the Linux port numbers and ports that appear on the PCI bus.
+Kevin D. Kissell wrote:
+>From ac801c3b5c31eb0d53bf08538965f82f59f5f39d Mon Sep 17 00:00:00 2001
+>From: Kevin D. Kissell <kevink@paralogos.com>
+>Date: Tue, 9 Sep 2008 21:48:52 +0200
+>Subject: [PATCH] Rework of SMTC support to make it work with the new clock event
+> system, allowing "tickless" operation, and to make it compatible
+> with the use of the "wait_irqoff" idle loop.  The new clocking
+> scheme means that the previously optional IPI instant replay
+> mechanism is now required, and has been made more robust.
+> Signed-off-by: Kevin D. Kissell <kevink@paralogos.com>
+>
+>---
+> arch/mips/Kconfig                        |   26 +--
+> arch/mips/kernel/Makefile                |    1 +
+> arch/mips/kernel/cevt-r4k.c              |  173 +++++------------
+> arch/mips/kernel/cevt-smtc.c             |  321 ++++++++++++++++++++++++++++++
+> arch/mips/kernel/cpu-probe.c             |   10 +-
+> arch/mips/kernel/genex.S                 |    4 +-
+> arch/mips/kernel/smtc.c                  |  254 +++++++++++++-----------
+> arch/mips/mips-boards/malta/malta_smtc.c |    9 +-
+> include/asm-mips/cevt-r4k.h              |   46 +++++
+> include/asm-mips/irqflags.h              |   26 ++-
+> include/asm-mips/smtc.h                  |    8 +-
+> 11 files changed, 598 insertions(+), 280 deletions(-)
+> create mode 100644 arch/mips/kernel/cevt-smtc.c
+> create mode 100644 include/asm-mips/cevt-r4k.h
+[snip]
+>diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+>index 24a2d90..4a4c59f 100644
+>--- a/arch/mips/kernel/cevt-r4k.c
+>+++ b/arch/mips/kernel/cevt-r4k.c
+[snip]
+>@@ -177,7 +99,23 @@ static int c0_compare_int_pending(void)
+> 	return (read_c0_cause() >> cp0_compare_irq) & 0x100;
+> }
 > 
-> I think the IDE device is a problem because pci_setup_device() fills
-> in legacy resources with ports 0x1f0-0x1f7, etc.  We expect those
-> resources to contain PCI bus addresses at this point, but we could
-> never see those addresses on the Cobalt PCI bus (we would only see
-> things in the range 0x10000000-0x11ffffff).
-> 
-> When we convert 0x1f0 with pcibios_bus_to_resource() (or with
-> pcibios_fixup_device_resources() without the IORESOURCE_PCI_FIXED
-> hack), we get 0x1f0 + 0xf0000000 == 0xf00001f0, when we want 0x1f0
-> instead.
-> 
-> > pata_via 0000:00:09.1: BAR 0: can't reserve [io  0xf00001f0-0xf00001f7]
-> 
-> I still don't know the best way to fix this, but does this make sense
-> so far?
+>-static int c0_compare_int_usable(void)
+>+/*
+>+ * Compare interrupt can be routed and latched outside the core,
+>+ * so a single execution hazard barrier may not be enough to give
+>+ * it time to clear as seen in the Cause register.  4 time the
+>+ * pipeline depth seems reasonably conservative, and empirically
+>+ * works better in configurations with high CPU/bus clock ratios.
+>+ */
+>+
+>+#define compare_change_hazard() \
+>+	do { \
+>+		irq_disable_hazard(); \
+>+		irq_disable_hazard(); \
+>+		irq_disable_hazard(); \
+>+		irq_disable_hazard(); \
+>+	} while (0)
+>+
+>+int c0_compare_int_usable(void)
+> {
+> 	unsigned int delta;
+> 	unsigned int cnt;
 
-That makes sense.
+Above commets reasonably make sense and do help me, thanks :-)
+On the other hand, the implementation of compare_change_hazard()
+makes me wonder how this hazard works internally.
 
-Yoichi
+For MIPS32r2 cores (except for Octeon), irq_disable_hazard() will
+be translated into "ehb" instruction, so the resulting compare_
+change_hazard() is going to be
+
+compare_change_hazard:
+        ehb
+        ehb
+        ehb
+        ehb
+
+And I wonder how these instructions work.  I think the first ehb
+instruction will clear all execution hazards created by preceding
+instruction(s) at that moment, this is fine.  But I wonder,
+
+* HOW do subsequent three "ehb" instructions work in the pipeline?
+  Do they make any "real" effect, or just work as "nop"?
+
+* Kevin noted that "4 time the pipeline depth seems reasonably
+  convervative."  Is current form of compare_change_hazard()
+  implemented in accordance with his comments?
+
+* How many pipline clokcs are consumed for subsequent "ehb"
+  instruction?
+
+and so on.  I'd like to ask hardware people later, separately, but
+any comments are appreciated.
+
+Thanks in adavance.
+
+  Shinya
+
+
+>@@ -187,7 +125,7 @@ static int c0_compare_int_usable(void)
+> 	 */
+> 	if (c0_compare_int_pending()) {
+> 		write_c0_compare(read_c0_count());
+>-		irq_disable_hazard();
+>+		compare_change_hazard();
+> 		if (c0_compare_int_pending())
+> 			return 0;
+> 	}
+>@@ -196,7 +134,7 @@ static int c0_compare_int_usable(void)
+> 		cnt = read_c0_count();
+> 		cnt += delta;
+> 		write_c0_compare(cnt);
+>-		irq_disable_hazard();
+>+		compare_change_hazard();
+> 		if ((int)(read_c0_count() - cnt) < 0)
+> 		    break;
+> 		/* increase delta if the timer was already expired */
+>@@ -205,11 +143,12 @@ static int c0_compare_int_usable(void)
+> 	while ((int)(read_c0_count() - cnt) <= 0)
+> 		;	/* Wait for expiry  */
+> 
+>+	compare_change_hazard();
+> 	if (!c0_compare_int_pending())
+> 		return 0;
+> 
+> 	write_c0_compare(read_c0_count());
+>-	irq_disable_hazard();
+>+	compare_change_hazard();
+> 	if (c0_compare_int_pending())
+> 		return 0;
+> 
+
+-- 
+Shinya Kuribayashi
+NEC Electronics

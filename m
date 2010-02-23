@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 20:48:10 +0100 (CET)
-Received: from mail-fx0-f217.google.com ([209.85.220.217]:65103 "EHLO
-        mail-fx0-f217.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492101Ab0BWTsG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 20:48:06 +0100
-Received: by fxm9 with SMTP id 9so3925848fxm.24
-        for <linux-mips@linux-mips.org>; Tue, 23 Feb 2010 11:48:00 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 21:20:22 +0100 (CET)
+Received: from fg-out-1718.google.com ([72.14.220.155]:43357 "EHLO
+        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492104Ab0BWUUP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 21:20:15 +0100
+Received: by fg-out-1718.google.com with SMTP id 22so45362fge.6
+        for <linux-mips@linux-mips.org>; Tue, 23 Feb 2010 12:20:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer;
         bh=S21CEWUFZPhB51HO7zWdQJo6vlcphoRw3kzkVwpD+vk=;
-        b=mwtjDJStP017M0faQuQZ/qQpORz/L/hdL6e/PSR8sgOlpZzGyH69axYXggpjS/LG94
-         S+YNXpUGB0+emAqdLw062QNSRxArWBR44Mai7/xUULEtkH7gS6keRrhrM/JoMZIVuuRi
-         MgCwxFwukwSpFS7dTpI9jA5sKSMEA2MPFnv3Y=
+        b=ZCjmJcvHL5N3HXswj5tc5EybhxHIw+d3Ciuj+qVpRH9wTOcGKIWSzMBFmZtBWohNoo
+         K3kshVJ9PxXNG8cKgtuF5gl7L+2J0e9hjJc/wF3eTVlVo8nPkSqJowTFq9IB0pToVfD7
+         V03xc7cOKrT1vs1Z5hey64LVmI0PBT9a2Xwww=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        b=iqFbuTFsWL81xZm5zXnDCExDVL3uEijmFQ4+T+QPhLKhSHXE5wsjX/T0igJa8C9HzQ
-         sFkG6SDBMKCSOGdGl3rnLv5QbaHrHEluCabI3JeTlrZo0AX2OGh4YUYytxLKfqJ6QlZ4
-         epIVJct164v7Ps7T4itq9g0Y6FyIunAYnwhHI=
-Received: by 10.87.73.15 with SMTP id a15mr5453998fgl.50.1266954480175;
-        Tue, 23 Feb 2010 11:48:00 -0800 (PST)
+        b=g1s2A75DVXzaV4Q+gC0PkIeGh8hh/0mRIVPiDNB4LtxROJKVrnztQcksa4qsV9Dbvo
+         RP/iVU7nmo4laZd0r3Zjjxd/6u1uMZdABHDjbTYKJuIu4KS/A0ko2O60nPxhJLBrg43v
+         9XWlm9qF1evm+xluuKsmx9RYp2wiJtIC18V84=
+Received: by 10.87.5.15 with SMTP id h15mr9661542fgi.43.1266956413408;
+        Tue, 23 Feb 2010 12:20:13 -0800 (PST)
 Received: from localhost.localdomain (p5496C63A.dip.t-dialin.net [84.150.198.58])
-        by mx.google.com with ESMTPS id d4sm13807714fga.10.2010.02.23.11.47.57
+        by mx.google.com with ESMTPS id e3sm706384fga.14.2010.02.23.12.20.11
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 23 Feb 2010 11:47:58 -0800 (PST)
+        Tue, 23 Feb 2010 12:20:12 -0800 (PST)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@gmail.com>
 Subject: [PATCH -queue] MIPS: Alchemy: use 36bit addresses for PCMCIA resources.
-Date:   Tue, 23 Feb 2010 20:48:53 +0100
-Message-Id: <1266954533-6983-1-git-send-email-manuel.lauss@gmail.com>
+Date:   Tue, 23 Feb 2010 21:21:09 +0100
+Message-Id: <1266956469-24724-1-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.7.0
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26000
+X-archive-position: 26001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

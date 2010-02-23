@@ -1,68 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 21:40:48 +0100 (CET)
-Received: from mail-fx0-f217.google.com ([209.85.220.217]:40511 "EHLO
-        mail-fx0-f217.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492402Ab0BWUkp convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Feb 2010 21:40:45 +0100
-Received: by fxm9 with SMTP id 9so3978532fxm.24
-        for <multiple recipients>; Tue, 23 Feb 2010 12:40:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=sSZVif38wkxP32cQT9g4m3vqZUZSG1AIKDmMaJXy868=;
-        b=vxY7jx2u0lMBSFPmK1DReKMUwIdXS1v1nIRi+/vWBPu+0G6oorWf6F096AMnoGkbtN
-         JzL67Qd/CQde2XXmsiOKxbY7f4cFMI9iPzKfz8m7x6RVXv1R7eYPrjwezuJqs1HGy6cy
-         /Qp9S0nbhMNaTayMK4A9XoGKrZjMUAaXFgpEw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=btTwvgrA97tYGzphuSdz3lDHmPIKR4hSYhSOR5aumznnnqtgl6uJDAE4CvEgctCByW
-         BRi6VycARTkpKNyrDMHvsG95HTNVhpcurYQUKMHywMJZDc8rKQnPly1IQnLQWDj0osjx
-         AFW5MoqMHZCbR/PS76IEOG3pVh9kor0eo/Bmc=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Feb 2010 22:28:00 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:7848 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492399Ab0BWV14 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Feb 2010 22:27:56 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4b8448630000>; Tue, 23 Feb 2010 13:28:03 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 23 Feb 2010 13:27:51 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 23 Feb 2010 13:27:51 -0800
+Message-ID: <4B844852.6020301@caviumnetworks.com>
+Date:   Tue, 23 Feb 2010 13:27:46 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
 MIME-Version: 1.0
-Received: by 10.223.5.17 with SMTP id 17mr9072402fat.0.1266957638612; Tue, 23 
-        Feb 2010 12:40:38 -0800 (PST)
-In-Reply-To: <1266538385-29088-3-git-send-email-ddaney@caviumnetworks.com>
-References: <1266538385-29088-1-git-send-email-ddaney@caviumnetworks.com>
-         <1266538385-29088-3-git-send-email-ddaney@caviumnetworks.com>
-Date:   Tue, 23 Feb 2010 21:40:38 +0100
-Message-ID: <f861ec6f1002231240l40e1b07di6e751e40a2caa110@mail.gmail.com>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH 2/3] MIPS: Preliminary vdso.
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <manuel.lauss@googlemail.com>
+References: <1266538385-29088-1-git-send-email-ddaney@caviumnetworks.com>        <1266538385-29088-3-git-send-email-ddaney@caviumnetworks.com> <f861ec6f1002231240l40e1b07di6e751e40a2caa110@mail.gmail.com>
+In-Reply-To: <f861ec6f1002231240l40e1b07di6e751e40a2caa110@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 23 Feb 2010 21:27:51.0757 (UTC) FILETIME=[0DE127D0:01CAB4CF]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26003
+X-archive-position: 26004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi David,
-
-On Fri, Feb 19, 2010 at 1:13 AM, David Daney <ddaney@caviumnetworks.com> wrote:
-> This is a preliminary patch to add a vdso to all user processes.
-> Still missing are ELF headers and .eh_frame information.  But it is
-> enough to allow us to move signal trampolines off of the stack.  Note
-> that emulation of branch delay slots in the FPU emulator still
-> requires the stack.
+On 02/23/2010 12:40 PM, Manuel Lauss wrote:
+> Hi David,
 >
-> We allocate a single page (the vdso) and write all possible signal
-> trampolines into it.  The stack is moved down by one page and the vdso
-> is mapped into this space.
+> On Fri, Feb 19, 2010 at 1:13 AM, David Daney<ddaney@caviumnetworks.com>  wrote:
+>> This is a preliminary patch to add a vdso to all user processes.
+>> Still missing are ELF headers and .eh_frame information.  But it is
+>> enough to allow us to move signal trampolines off of the stack.  Note
+>> that emulation of branch delay slots in the FPU emulator still
+>> requires the stack.
+>>
+>> We allocate a single page (the vdso) and write all possible signal
+>> trampolines into it.  The stack is moved down by one page and the vdso
+>> is mapped into this space.
+>
+> Is there anything special required (i.e. special glibc, ..) to make use of these
+> fine patches?
+>
 
-Is there anything special required (i.e. special glibc, ..) to make use of these
-fine patches?
+No.  Quite the opposite really, they are designed for the most part to 
+be transparent to userspace.
 
-Thanks,
-     Manuel Lauss
+There are a couple of changes that shouldn't break anything serious:
+
+1) The  process' VMA will have a [vdso] region at the highest possible 
+address (above the stack).  Most code will not care about this.  However 
+if you mprotect(PROT_WRITE) the region and then clobber it or munmap it, 
+you will likely lose the ability to return from signal handlers.  It is 
+copy-on-write, so this will not affect other processes.
+
+2) The libgcc built by some older versions of GCC will not be able throw 
+exceptions across a signal frame.  This is mostly a problem if you are 
+using libgcj (the GCC java runtime).  Note however that the faulty 
+versions of libgcc would also fail on kernels that need 
+ICACHE_REFILLS_WORKAROUND_WAR (SGI O2).  Most code doesn't try to throw 
+exceptions across signal frames, so it would be unaffected.  Also note 
+that really old versions of libgcc don't support this trans-signal-frame 
+throwing at all.
+
+3) GDB will not show a valid backtrace from a signal handler.  I have 
+submitted a gdb patch, but it has not been accepted yet.
+
+David Daney

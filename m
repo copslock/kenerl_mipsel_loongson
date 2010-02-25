@@ -1,81 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2010 19:49:19 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13223 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492000Ab0BYStP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2010 19:49:15 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4b86c6310001>; Thu, 25 Feb 2010 10:49:21 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Thu, 25 Feb 2010 10:48:12 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Thu, 25 Feb 2010 10:48:12 -0800
-Message-ID: <4B86C5EB.6090303@caviumnetworks.com>
-Date:   Thu, 25 Feb 2010 10:48:11 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2010 22:13:05 +0100 (CET)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:42700 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492128Ab0BYVNC convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Feb 2010 22:13:02 +0100
+Received: by pwj2 with SMTP id 2so4556208pwj.36
+        for <linux-mips@linux-mips.org>; Thu, 25 Feb 2010 13:12:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=ZC04EUPyp0GfL9rGTNRHvFCf1c5tBkzO09pSGK0SA2k=;
+        b=DKapL/kKKBSL8NH7Sk43WFF0vO2Z4/VHsIuCuZi4Skxo2bXDu/0Z02Tz1Fe0IeXt/T
+         9YNLZxDeDFng1sM4Wi38OzCy5ra0qhs5VL6Hl3n5wPOb6lRinYLFhLfyBobgdpNVGIPs
+         cIh7bG5Na+8/usv5cwKJRzUrM/R8VIsBqVHEE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=sV9Kb1b1xMG4xNbmcy+7qjxKshazW8ZgcvDC6D16Lbv+3kQ9XvDaiHstleJxYz52nW
+         D6cq57ybw7uJt0SVlDcMr8+pLdOy1erG+Q0kgH2K63vcFonVC2BptcOWCIrc17YibjJV
+         ntvRI4TX0s+y5vflHW2Kwqviy/tkm8OEGkfVQ=
 MIME-Version: 1.0
-To:     Joel Brobecker <brobecker@adacore.com>
-CC:     gdb-patches@sourceware.org,
-        "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Make mips-linux signal frame unwinding more robust.
-References: <4B82CEC4.2010607@caviumnetworks.com> <20100225174739.GA2851@adacore.com>
-In-Reply-To: <20100225174739.GA2851@adacore.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 25 Feb 2010 18:48:12.0144 (UTC) FILETIME=[14CFB700:01CAB64B]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: by 10.143.21.40 with SMTP id y40mr903759wfi.348.1267132372434; Thu, 
+        25 Feb 2010 13:12:52 -0800 (PST)
+In-Reply-To: <201002250852.09638.florian@openwrt.org>
+References: <4B861890.6090002@gmail.com>
+         <201002250852.09638.florian@openwrt.org>
+Date:   Fri, 26 Feb 2010 07:42:52 +1030
+Message-ID: <6ec4247d1002251312h37f409bdp2384d7fcbddbb321@mail.gmail.com>
+Subject: Re: [PATCH 0/3] XBurst JZ4730 support
+From:   Graham Gower <graham.gower@gmail.com>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     Mirko Vogt <lists@nanl.de>, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <graham.gower@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26052
+X-archive-position: 26053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: graham.gower@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 02/25/2010 09:47 AM, Joel Brobecker wrote:
->> This patch makes gdb follow suit and find the sigcontext_base using
->> the signal frame's SP rather than an offset from the trampoline.
+On 25 February 2010 18:22, Florian Fainelli <florian@openwrt.org> wrote:
+> Hi Graham,
 >
-> Is there a document that explains that the sigcontext structure is
-> always going to be at the frame's SP?
+> On Thursday 25 February 2010 07:28:32 Graham Gower wrote:
+>> This patch set contains support for Ingenic's XBurst cpu, plus basic
+>> support for their JZ4730 reference boards.
+>>
+>>
+>> Graham Gower (3):
+>>   Add XBurst JZ4730 support.
+>>   8250: serial driver changes for XBurst SoCs.
+>>   net: add driver for JZ4730 ethernet controller.
+>
+> Seems like patches 1 and 3 were too big and got retained by the mailing-list
+> program.
 
-No official document, however the principle of maintaining binary 
-compatibility is important, and recognized by the kernel maintainers.
-
-There are several things that constrain the the changes that can be made 
-in the kernel:
-
-1) The glibc setcontext API as discussed here:
-
-http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=alpine.DEB.1.10.0902282326580.4064%40tp.orcam.me.uk
-
-2) libgcc's unwinder:
-
-http://gcc.gnu.org/viewcvs/trunk/gcc/config/mips/linux-unwind.h?revision=145841&view=markup
+They seem to have made it to the list archives now. Thread here:
+http://www.linux-mips.org/archives/linux-mips/2010-02/msg00243.html
 
 >
-> I don't know mips-linux, but something looked funny to me: You avoid
-> the use of SIGFRAME_CODE_OFFSET to compute the address where the sigcontext
-> structure is located, but you still use it to compute the frame base
-> address (used when building the frame ID).  Is the frame base address
-> still a constant offset from FUNC, or does the frame ID base address
-> also needs to be changed.
-
-Right, I missed that part.  When it started working, I stopped patching. 
-  I will take another look at that part.
-
-
->
-> I believe that Daniel J has a good knowledge of mips-linux, and would be
-> an ideal reviewer.  If he doesn't have time, though, I'm OK with approving
-> a patch for the HEAD branch.  For the 7.1 branch, though, I'd rather have
-> a more knowledgeable opinion.
+> Maybe you should work with the OpenWrt and qi-hardware guys to get the jz4740
+> also merged in the same time?
 >
 
-Thanks,
-David Daney
+I've not seen any active attempt to get xburst code merged before and
+assumed there was no interest from others. I'm happy to be wrong on
+this.
+
+My patch does not preclude adding jz4740 support. I don't have any of
+these devices however, so have only included code for the jz4730.
+
+-Graham

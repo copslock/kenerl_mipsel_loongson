@@ -1,133 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2010 08:54:27 +0100 (CET)
-Received: from fg-out-1718.google.com ([72.14.220.154]:52724 "EHLO
-        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491815Ab0BYHyX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2010 08:54:23 +0100
-Received: by fg-out-1718.google.com with SMTP id l26so57463fgb.6
-        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2010 23:54:20 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2010 09:40:22 +0100 (CET)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:64500 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491997Ab0BYIkS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2010 09:40:18 +0100
+Received: by gye5 with SMTP id 5so516769gye.36
+        for <multiple recipients>; Thu, 25 Feb 2010 00:40:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:organization:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=ZvWsWOX0i+YDt/9wZFbg4j7qHWXUqw07ySfMSOf0WD8=;
-        b=H4gVPusO2vhumvPoCUxH/TlY0UEnq2a5XjUQ2vsJ9KQHk/hEhvnVkS10OhKK+ssjw/
-         O6Wvnmvvt5qtpZLQIXmLONRgxs80c5e4Pswe1PeTcIG6al6msnvGk0/muUjhn89l/fmN
-         SafARDhGulcTQqcoqXmBe7o5d5FLYLIb8E1CM=
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:in-reply-to:references:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=Sj3xFY+STfFhX5bvhODvqdO5sFfqrilbU0UFr2hgvFA=;
+        b=nlJPYleyr+LT9oFJ66UbRgqrTCsgy1BsJWa5Ui738jdl0WebMOMh5ZFY2qp5f6wGUH
+         RkKWe1y6AkRX40AETEtztbmyPu2W3UYfJPBrfjV0DOvmS2daB+JEMtqhUtnYKObMw3OT
+         hINHCDyUESyRQJpEM1a5k5pzG7iVbLbS/2mHg=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:organization:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=DOQTxgwPwpfU6fHHxzoGs7qagxmQpvIYaZeEr5OwlLzpCqmx3Cu6wWn8nf4kTXlM7h
-         CMNotC/juA0cz0r98r7BI+oBZhtL2LYea2kc1V6z6JQ78yoIRQ7P2ky07KgJd1siG+bk
-         vq0VE7Xv6BxsQKETiunw1Zx+RJquOOP5yl1EM=
-Received: by 10.87.69.26 with SMTP id w26mr1604947fgk.39.1267084460537;
-        Wed, 24 Feb 2010 23:54:20 -0800 (PST)
-Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by mx.google.com with ESMTPS id e11sm555983fga.21.2010.02.24.23.54.18
-        (version=SSLv3 cipher=RC4-MD5);
-        Wed, 24 Feb 2010 23:54:19 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-To:     Graham Gower <graham.gower@gmail.com>, Mirko Vogt <lists@nanl.de>,
-        "Lars-Peter Clausen" <lars@metafoo.de>
-Subject: Re: [PATCH 0/3] XBurst JZ4730 support
-Date:   Thu, 25 Feb 2010 08:52:09 +0100
-User-Agent: KMail/1.12.2 (Linux/2.6.31-17-server; KDE/4.3.2; x86_64; ; )
-Cc:     linux-mips@linux-mips.org
-References: <4B861890.6090002@gmail.com>
-In-Reply-To: <4B861890.6090002@gmail.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
+        h=sender:date:from:to:cc:subject:message-id:in-reply-to:references
+         :x-mailer:mime-version:content-type:content-transfer-encoding;
+        b=eItI6Nm6p+qsvFkVfKwQgOgBfzzUWotm1Dhpb9JvdsnXqUgx/ST22I/yG4DjXQM1jg
+         gT9jxkEFecDjzU/hJKEK9evcgL/kGt7ZAZz14kq9RHbg9+orT9v13BU7mvFZXNHXgIm2
+         Vyz7qjYxMpOox8pGiDDu5Kgp7SiJ+hOBEApxk=
+Received: by 10.90.38.27 with SMTP id l27mr1224995agl.6.1267087207208;
+        Thu, 25 Feb 2010 00:40:07 -0800 (PST)
+Received: from ypsilon.skybright.jp (sannin29006.nirai.ne.jp [203.160.29.6])
+        by mx.google.com with ESMTPS id 15sm2470438gxk.14.2010.02.25.00.40.04
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 25 Feb 2010 00:40:06 -0800 (PST)
+Date:   Thu, 25 Feb 2010 17:39:56 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     yuasa@linux-mips.org, Bjorn Helgaas <bjorn.helgaas@hp.com>,
+        linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: Re: Reverting old hack
+Message-Id: <20100225173956.65cf8fa3.yuasa@linux-mips.org>
+In-Reply-To: <20100224164100.GD5130@linux-mips.org>
+References: <20100220113134.GA27194@linux-mips.org>
+        <1266815257.1959.23.camel@dc7800.home>
+        <20100222132830.GA5017@linux-mips.org>
+        <201002231601.15136.bjorn.helgaas@hp.com>
+        <20100224090333.44a16d0a.yuasa@linux-mips.org>
+        <20100224164100.GD5130@linux-mips.org>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.16.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <201002250852.09638.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <yuasa.linux@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26041
+X-archive-position: 26042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Graham,
+On Wed, 24 Feb 2010 17:41:00 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-On Thursday 25 February 2010 07:28:32 Graham Gower wrote:
-> This patch set contains support for Ingenic's XBurst cpu, plus basic
-> support for their JZ4730 reference boards.
+> On Wed, Feb 24, 2010 at 09:03:33AM +0900, Yoichi Yuasa wrote:
 > 
+> > > approach Ben suggested long ago:
+> > >     http://marc.info/?l=linux-kernel&m=119733290624544&w=2
+> > 
+> > It works fine with 2.6.34 queue tree.
+> > pci.c change is already committed by Ralf.
 > 
-> Graham Gower (3):
->   Add XBurst JZ4730 support.
->   8250: serial driver changes for XBurst SoCs.
->   net: add driver for JZ4730 ethernet controller.
-
-Seems like patches 1 and 3 were too big and got retained by the mailing-list 
-program.
-
-Maybe you should work with the OpenWrt and qi-hardware guys to get the jz4740 
-also merged in the same time?
-
+> Which I just dropped from queue.  To keep the tree bisectable removal of
+> the old hack and adding the fixup should be done in the same patch so I'd
+> go for Bjorn's patch.
 > 
->  arch/mips/Kconfig                                |   13 +
->  arch/mips/Makefile                               |   14 +-
->  arch/mips/boot/Makefile                          |   15 +-
->  arch/mips/include/asm/bootinfo.h                 |    7 +
->  arch/mips/include/asm/cpu.h                      |    9 +
->  arch/mips/include/asm/mach-generic/irq.h         |    2 +-
->  arch/mips/include/asm/mach-xburst/clock-jz4730.h |   41 +
->  arch/mips/include/asm/mach-xburst/dma-jz4730.h   |  156 +++
->  arch/mips/include/asm/mach-xburst/irq-jz4730.h   |   33 +
->  arch/mips/include/asm/mach-xburst/uart-jz4730.h  |  141 +++
->  arch/mips/include/asm/mach-xburst/war.h          |   25 +
->  arch/mips/include/asm/mach-xburst/xburst.h       |   20 +
->  arch/mips/include/asm/r4kcache.h                 |  240 +++++
->  arch/mips/kernel/cpu-probe.c                     |   21 +
->  arch/mips/mm/c-r4k.c                             |   30 +
->  arch/mips/mm/tlbex.c                             |    5 +
->  arch/mips/xburst/Kconfig                         |   23 +
->  arch/mips/xburst/Makefile                        |    3 +
->  arch/mips/xburst/jz4730/Makefile                 |   11 +
->  arch/mips/xburst/jz4730/board-libra.c            |   32 +
->  arch/mips/xburst/jz4730/board-pmp.c              |   32 +
->  arch/mips/xburst/jz4730/clocks.c                 |  294 +++++
->  arch/mips/xburst/jz4730/irq.c                    |  104 ++
->  arch/mips/xburst/jz4730/platform.c               |   49 +
->  arch/mips/xburst/jz4730/prom.c                   |  104 ++
->  arch/mips/xburst/jz4730/setup.c                  |  136 +++
->  arch/mips/xburst/jz4730/time.c                   |  140 +++
->  drivers/net/Kconfig                              |   10 +
->  drivers/net/Makefile                             |    1 +
->  drivers/net/jz_eth.c                             | 1232
->  ++++++++++++++++++++++ drivers/net/jz_eth.h                             | 
->  403 +++++++
->  drivers/serial/8250.c                            |   12 +
->  32 files changed, 3355 insertions(+), 3 deletions(-)
->  create mode 100644 arch/mips/include/asm/mach-xburst/clock-jz4730.h
->  create mode 100644 arch/mips/include/asm/mach-xburst/dma-jz4730.h
->  create mode 100644 arch/mips/include/asm/mach-xburst/irq-jz4730.h
->  create mode 100644 arch/mips/include/asm/mach-xburst/uart-jz4730.h
->  create mode 100644 arch/mips/include/asm/mach-xburst/war.h
->  create mode 100644 arch/mips/include/asm/mach-xburst/xburst.h
->  create mode 100644 arch/mips/xburst/Kconfig
->  create mode 100644 arch/mips/xburst/Makefile
->  create mode 100644 arch/mips/xburst/jz4730/Makefile
->  create mode 100644 arch/mips/xburst/jz4730/board-libra.c
->  create mode 100644 arch/mips/xburst/jz4730/board-pmp.c
->  create mode 100644 arch/mips/xburst/jz4730/clocks.c
->  create mode 100644 arch/mips/xburst/jz4730/irq.c
->  create mode 100644 arch/mips/xburst/jz4730/platform.c
->  create mode 100644 arch/mips/xburst/jz4730/prom.c
->  create mode 100644 arch/mips/xburst/jz4730/setup.c
->  create mode 100644 arch/mips/xburst/jz4730/time.c
->  create mode 100644 drivers/net/jz_eth.c
->  create mode 100644 drivers/net/jz_eth.h
+> There is another somewhat theoretical correctness issue.  Because the
+> VIA SuperIO chip only decodes 24 bits of address space but port address
+> space currently being configured as 32MB there is the theoretical
+> possibility of I/O port addresses that alias with legacy addresses getting
+> allocated.
 > 
+> The complicated solution is to reserve all address range that potencially
+> could cause such aliases.  But with the PCI spec limiting port allocations
+> for devices to a maximum of 256 bytes 16MB of port address space already is
+> way more than one would ever expect to be used so I suggest to just limit
+> the port address space to 16MB.
+> 
+> Could you test the patch below?
 
--- 
-Regards, Florian
+It has no problem.
+
+$ cat /proc/ioports                                                      
+00000000-0000001f : reserved                                                    
+00000020-00000021 : pic1                                                        
+00000060-0000006f : reserved                                                    
+00000070-00000077 : rtc_cmos                                                    
+  00000070-00000077 : rtc0                                                      
+00000080-0000008f : reserved                                                    
+000000a0-000000a1 : pic2                                                        
+000000c0-000000df : reserved                                                    
+00000170-00000177 : pata_via                                                    
+000001f0-000001f7 : pata_via                                                    
+00000376-00000376 : pata_via                                                    
+000003f6-000003f6 : pata_via                                                    
+00001000-00ffffff : PCI I/O                                                     
+  00001000-0000107f : 0000:00:07.0                                              
+    00001000-0000107f : tulip                                                   
+  00001080-000010ff : 0000:00:0c.0                                              
+    00001080-000010ff : tulip                                                   
+  00001400-0000141f : 0000:00:09.2                                              
+  00001420-0000142f : 0000:00:09.1                                              
+    00001420-0000142f : pata_via
+
+Yoichi

@@ -1,39 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2010 15:52:32 +0100 (CET)
-Received: from mail-yw0-f201.google.com ([209.85.211.201]:44521 "EHLO
-        mail-yw0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492276Ab0BYGb4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2010 07:31:56 +0100
-Received: by ywh39 with SMTP id 39so3394121ywh.21
-        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2010 22:31:49 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Feb 2010 15:52:51 +0100 (CET)
+Received: from mail-gx0-f224.google.com ([209.85.217.224]:38168 "EHLO
+        mail-gx0-f224.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492276Ab0BYGdQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Feb 2010 07:33:16 +0100
+Received: by gxk24 with SMTP id 24so3740116gxk.7
+        for <linux-mips@linux-mips.org>; Wed, 24 Feb 2010 22:33:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:message-id:date:from
          :user-agent:mime-version:to:subject:references:in-reply-to
          :content-type:content-transfer-encoding;
-        bh=CvwFOXPGJ3pRzKZvS3bCjYaWJlbhE5bOegcOG8g6h/4=;
-        b=ipgqgpV4spdFN58hjAq6f7J1MGim1/BHepqjOb9SIyqWdj4fL9KUwoMFA15jtrm1TU
-         UudHbhqgwgyk+ea+bstdpQpTpYfaDEVVD22jaYkmapLwMwbYdRBrsvyDFDnUJGy6WnIx
-         eEmWJpNS12ihTcTcUdS8BKWnI4pr5Tn4v2USk=
+        bh=Ru7pictMCi7unZR6UqzMQAsZUBEfDNzDfdDrAWex8vo=;
+        b=LKn2iF0un8U2RFpZhQ2g9Yx/QN2Zya3elnXfKWcwbywrAZcnHZWfstsnvtt/sfo2qh
+         ZnJLATj4oAx0DdArMNEV0Dn7zEe3hxIn4Z4qdzLHlYcdHfYscJxHf0zNchTLtvl5UXee
+         bs7th9FdR5BZyy6+x1tOjvLSqicq8BSjmVSFw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=message-id:date:from:user-agent:mime-version:to:subject:references
          :in-reply-to:content-type:content-transfer-encoding;
-        b=K7p0ixAfYr+3Sptjy2q7cSaVB11Y5p10pO8w0LjqqA7tM8ZnQhVhlYz3GUyUSVc8XK
-         HvERsdExkYE2k4PKsKpk2u49du692iKR3YpPA/G1ZLZo9CKWkg4MYpWPHhG73F6AWi4y
-         5UXCgSPsKMJfyAQqgN3oCj2QnEBLztVD+deKY=
-Received: by 10.150.194.16 with SMTP id r16mr974007ybf.194.1267079509690;
-        Wed, 24 Feb 2010 22:31:49 -0800 (PST)
+        b=aoiPc/zAFocjYbqgFeyyogjXD47koIxH5Un8eNoyCWAPfts8F9Yd/3v/WP9OzBXUXZ
+         VwiDf9c5KUhUZM7HFJAW9Lb7dHqJhrNT7bAAZOH5qVwJsoXOjQBz2o+hTROHeMz9w6pB
+         WMAm4BajMkY1Wh2sr4uIzMxAl4eCYo3ctlP/Y=
+Received: by 10.151.58.8 with SMTP id l8mr988045ybk.59.1267079589080;
+        Wed, 24 Feb 2010 22:33:09 -0800 (PST)
 Received: from ?10.0.0.13? (eth7090.sa.adsl.internode.on.net [150.101.58.177])
-        by mx.google.com with ESMTPS id 34sm1094500yxf.11.2010.02.24.22.31.44
+        by mx.google.com with ESMTPS id 5sm1098321yxd.53.2010.02.24.22.33.05
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 24 Feb 2010 22:31:48 -0800 (PST)
-Message-ID: <4B8618E4.80804@gmail.com>
-Date:   Thu, 25 Feb 2010 16:59:56 +1030
+        Wed, 24 Feb 2010 22:33:07 -0800 (PST)
+Message-ID: <4B86193D.2010307@gmail.com>
+Date:   Thu, 25 Feb 2010 17:01:25 +1030
 From:   Graham Gower <graham.gower@gmail.com>
 User-Agent: Thunderbird 2.0.0.23 (X11/20090820)
 MIME-Version: 1.0
 To:     linux-mips@linux-mips.org
-Subject: [PATCH 1/3] Add XBurst JZ4730 support.
+Subject: [PATCH 3/3] net: add driver for JZ4730 ethernet controller.
 References: <4B861890.6090002@gmail.com>
 In-Reply-To: <4B861890.6090002@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1
@@ -42,7 +42,7 @@ Return-Path: <graham.gower@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26049
+X-archive-position: 26050
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
@@ -51,2116 +51,1696 @@ X-original-sender: graham.gower@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Provides support for Ingenic's XBurst cpu. With initial support for
-their JZ4730 SoC based PMP reference platform and Libra dev board.
 
 Signed-off-by: Graham Gower <graham.gower@gmail.com>
 ---
- arch/mips/Kconfig                                |   13 +
- arch/mips/Makefile                               |   14 +-
- arch/mips/boot/Makefile                          |   15 +-
- arch/mips/include/asm/bootinfo.h                 |    7 +
- arch/mips/include/asm/cpu.h                      |    9 +
- arch/mips/include/asm/mach-generic/irq.h         |    2 +-
- arch/mips/include/asm/mach-xburst/clock-jz4730.h |   41 +++
- arch/mips/include/asm/mach-xburst/dma-jz4730.h   |  156 ++++++++++++
- arch/mips/include/asm/mach-xburst/irq-jz4730.h   |   33 +++
- arch/mips/include/asm/mach-xburst/uart-jz4730.h  |  141 +++++++++++
- arch/mips/include/asm/mach-xburst/war.h          |   25 ++
- arch/mips/include/asm/mach-xburst/xburst.h       |   20 ++
- arch/mips/include/asm/r5kcache.h                 |  240 ++++++++++++++++++
- arch/mips/kernel/cpu-probe.c                     |   21 ++
- arch/mips/mm/c-r4k.c                             |   30 +++
- arch/mips/mm/tlbex.c                             |    5 +
- arch/mips/xburst/Kconfig                         |   23 ++
- arch/mips/xburst/Makefile                        |    3 +
- arch/mips/xburst/jz4730/Makefile                 |   11 +
- arch/mips/xburst/jz4730/board-libra.c            |   32 +++
- arch/mips/xburst/jz4730/board-pmp.c              |   32 +++
- arch/mips/xburst/jz4730/clocks.c                 |  294 ++++++++++++++++++++++
- arch/mips/xburst/jz4730/irq.c                    |  104 ++++++++
- arch/mips/xburst/jz4730/platform.c               |   49 ++++
- arch/mips/xburst/jz4730/prom.c                   |  104 ++++++++
- arch/mips/xburst/jz4730/setup.c                  |  136 ++++++++++
- arch/mips/xburst/jz4730/time.c                   |  140 ++++++++++
- 27 files changed, 1697 insertions(+), 3 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-xburst/clock-jz4730.h
- create mode 100644 arch/mips/include/asm/mach-xburst/dma-jz4730.h
- create mode 100644 arch/mips/include/asm/mach-xburst/irq-jz4730.h
- create mode 100644 arch/mips/include/asm/mach-xburst/uart-jz4730.h
- create mode 100644 arch/mips/include/asm/mach-xburst/war.h
- create mode 100644 arch/mips/include/asm/mach-xburst/xburst.h
- create mode 100644 arch/mips/xburst/Kconfig
- create mode 100644 arch/mips/xburst/Makefile
- create mode 100644 arch/mips/xburst/jz4730/Makefile
- create mode 100644 arch/mips/xburst/jz4730/board-libra.c
- create mode 100644 arch/mips/xburst/jz4730/board-pmp.c
- create mode 100644 arch/mips/xburst/jz4730/clocks.c
- create mode 100644 arch/mips/xburst/jz4730/irq.c
- create mode 100644 arch/mips/xburst/jz4730/platform.c
- create mode 100644 arch/mips/xburst/jz4730/prom.c
- create mode 100644 arch/mips/xburst/jz4730/setup.c
- create mode 100644 arch/mips/xburst/jz4730/time.c
+ drivers/net/Kconfig  |   10 +
+ drivers/net/Makefile |    1 +
+ drivers/net/jz_eth.c | 1232 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/jz_eth.h |  403 +++++++++++++++++
+ 4 files changed, 1646 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/net/jz_eth.c
+ create mode 100644 drivers/net/jz_eth.h
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8b5d174..ec5bd51 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -679,6 +679,18 @@ config CAVIUM_OCTEON_REFERENCE_BOARD
- 		Hikari
- 	  Say Y here for most Octeon reference boards.
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 7f8ad5d..7e8060a 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -1951,6 +1951,16 @@ config BCM63XX_ENET
+ 	  This driver supports the ethernet MACs in the Broadcom 63xx
+ 	  MIPS chipset family (BCM63XX).
  
-+config XBURST
-+	bool "Ingenic XBurst based machines"
-+	select SYS_HAS_CPU_MIPS32_R1
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select DMA_NONCOHERENT
-+	select IRQ_CPU
-+	select GENERIC_GPIO
-+	select ARCH_REQUIRE_GPIOLIB
-+	select SYS_HAS_EARLY_PRINTK
-+	select BOOT_RAW
-+
- endchoice
- 
- source "arch/mips/alchemy/Kconfig"
-@@ -693,6 +705,7 @@ source "arch/mips/txx9/Kconfig"
- source "arch/mips/vr41xx/Kconfig"
- source "arch/mips/cavium-octeon/Kconfig"
- source "arch/mips/loongson/Kconfig"
-+source "arch/mips/xburst/Kconfig"
- 
- endmenu
- 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 1893efd..f153e23 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -637,6 +637,13 @@ else
- load-$(CONFIG_CPU_CAVIUM_OCTEON) 	+= 0xffffffff81100000
- endif
- 
-+#
-+# Ingenic XBurst
-+#
-+core-$(CONFIG_XBURST)	+= arch/mips/xburst/
-+cflags-$(CONFIG_XBURST)	+= -I$(srctree)/arch/mips/include/asm/mach-xburst
-+load-$(CONFIG_XBURST)	+= 0xffffffff80010000
-+
- cflags-y			+= -I$(srctree)/arch/mips/include/asm/mach-generic
- drivers-$(CONFIG_PCI)		+= arch/mips/pci/
- 
-@@ -711,7 +718,8 @@ vmlinux.32: vmlinux
- vmlinux.64: vmlinux
- 	$(OBJCOPY) -O $(64bit-bfd) $(OBJCOPYFLAGS) $< $@
- 
--makeboot =$(Q)$(MAKE) $(build)=arch/mips/boot VMLINUX=$(vmlinux-32) $(1)
-+makeboot =$(Q)$(MAKE) $(build)=arch/mips/boot VMLINUX=$(vmlinux-32) \
-+	  VMLINUX_LOAD_ADDRESS=$(load-y) $(1)
- makezboot =$(Q)$(MAKE) $(build)=arch/mips/boot/compressed \
- 	   VMLINUX_LOAD_ADDRESS=$(load-y) 32bit-bfd=$(32bit-bfd) $(1)
- 
-@@ -738,6 +746,9 @@ vmlinux.ecoff: $(vmlinux-32)
- vmlinux.srec: $(vmlinux-32)
- 	+@$(call makeboot,$@)
- 
-+uImage: $(vmlinux-32)
-+	+@$(call makeboot,$@)
-+
- CLEAN_FILES += vmlinux.ecoff \
- 	       vmlinux.srec
- 
-@@ -771,6 +782,7 @@ define archhelp
- 	echo '  vmlinuz.ecoff        - ECOFF zboot image'
- 	echo '  vmlinuz.bin          - Raw binary zboot image'
- 	echo '  vmlinuz.srec         - SREC zboot image'
-+	echo '  uImage               - U-Boot image'
- 	echo
- 	echo '  These will be default as apropriate for a configured platform.'
- endef
-diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
-index e39a08e..5215534 100644
---- a/arch/mips/boot/Makefile
-+++ b/arch/mips/boot/Makefile
-@@ -24,6 +24,7 @@ drop-sections	= .reginfo .mdebug .comment .note .pdr .options .MIPS.options
- strip-flags	= $(addprefix --remove-section=,$(drop-sections))
- 
- VMLINUX = vmlinux
-+MKIMAGE := $(srctree)/scripts/mkuboot.sh
- 
- all: vmlinux.ecoff vmlinux.srec
- 
-@@ -39,7 +40,19 @@ vmlinux.bin: $(VMLINUX)
- vmlinux.srec: $(VMLINUX)
- 	$(OBJCOPY) -S -O srec $(strip-flags) $(VMLINUX) $(obj)/vmlinux.srec
- 
-+uImage: vmlinux.bin
-+	rm -f $(obj)/vmlinux.bin.gz
-+	gzip -9 $(obj)/vmlinux.bin
-+	$(CONFIG_SHELL) $(MKIMAGE) \
-+		-A mips -O linux -T kernel -C gzip \
-+		-a $(VMLINUX_LOAD_ADDRESS) -e $(VMLINUX_LOAD_ADDRESS) \
-+		-n 'Linux-$(KERNELRELEASE)' \
-+		-d $(obj)/vmlinux.bin.gz \
-+		$(obj)/uImage
-+
- clean-files += elf2ecoff \
- 	       vmlinux.bin \
-+	       vmlinux.bin.gz \
- 	       vmlinux.ecoff \
--	       vmlinux.srec
-+	       vmlinux.srec \
-+	       uImage
-diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
-index 09eee09..e21c0fb 100644
---- a/arch/mips/include/asm/bootinfo.h
-+++ b/arch/mips/include/asm/bootinfo.h
-@@ -71,6 +71,13 @@
- #define MACH_LEMOTE_LL2F       7
- #define MACH_LOONGSON_END      8
- 
-+/*
-+ * Valid machtype for XBurst
-+ */
-+#define MACH_XBURST_UNKNOWN	0
-+#define MACH_XBURST_JZ4730	1
-+#define MACH_XBURST_JZ4740	2
-+
- extern char *system_type;
- const char *get_system_type(void);
- 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index cf373a9..dd91d72 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -34,6 +34,7 @@
- #define PRID_COMP_LSI		0x080000
- #define PRID_COMP_LEXRA		0x0b0000
- #define PRID_COMP_CAVIUM	0x0d0000
-+#define PRID_COMP_INGENIC	0xd00000
- 
- 
- /*
-@@ -133,6 +134,13 @@
- #define PRID_IMP_CAVIUM_CN52XX 0x0700
- 
- /*
-+ * These are the PRID's for when 23:16 == PRID_COMP_INGENIC
-+ */
-+
-+#define PRID_IMP_XBURST 0x0200
-+
-+
-+/*
-  * Definitions for 7:0 on legacy processors
-  */
- 
-@@ -219,6 +227,7 @@ enum cpu_type_enum {
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BCM3302, CPU_BCM4710,
- 	CPU_BCM6338, CPU_BCM6345, CPU_BCM6348, CPU_BCM6358,
-+	CPU_XBURST,
- 
- 	/*
- 	 * MIPS64 class processors
-diff --git a/arch/mips/include/asm/mach-generic/irq.h b/arch/mips/include/asm/mach-generic/irq.h
-index 70d9a25..73b7a83 100644
---- a/arch/mips/include/asm/mach-generic/irq.h
-+++ b/arch/mips/include/asm/mach-generic/irq.h
-@@ -9,7 +9,7 @@
- #define __ASM_MACH_GENERIC_IRQ_H
- 
- #ifndef NR_IRQS
--#define NR_IRQS	128
-+#define NR_IRQS	256
- #endif
- 
- #ifdef CONFIG_I8259
-diff --git a/arch/mips/include/asm/mach-xburst/clock-jz4730.h b/arch/mips/include/asm/mach-xburst/clock-jz4730.h
-new file mode 100644
-index 0000000..884738c
---- /dev/null
-+++ b/arch/mips/include/asm/mach-xburst/clock-jz4730.h
-@@ -0,0 +1,41 @@
-+/*
-+ *  JZ4730 clocks definition.
-+ *
-+ *  Copyright (C) 2006 - 2007 Ingenic Semiconductor Inc.
-+ *
-+ *  Author: <jlwei@ingenic.cn>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#ifndef __ASM_MACH_XBURST_CLOCK_JZ4730_H__
-+#define __ASM_MACH_XBURST_CLOCK_JZ4730_H__
-+
-+/*
-+ * JZ4730 clocks structure
-+ */
-+struct jz_clocks {
-+	unsigned int extal;
-+	unsigned int extal2;
-+
-+	unsigned int iclk;	/* CPU core clock */
-+	unsigned int sclk;	/* AHB bus clock */
-+	unsigned int mclk;	/* Memory bus clock */
-+	unsigned int pclk;	/* APB bus clock */
-+	unsigned int devclk;	/* Devcie clock to specific modules */
-+	unsigned int rtcclk;	/* RTC module clock */
-+	unsigned int uartclk;	/* UART module clock */
-+	unsigned int lcdclk;	/* LCD module clock */
-+	unsigned int pixclk;	/* LCD pixel clock */
-+	unsigned int usbclk;	/* USB module clock */
-+	unsigned int i2sclk;	/* I2S module clock */
-+	unsigned int mscclk;	/* MMC/SD module clock */
-+};
-+
-+extern struct jz_clocks jz_clocks;
-+
-+void jz_cpm_set_usbclk(int external);
-+
-+#endif /* __ASM_MACH_XBURST_CLOCK_JZ4730_H__ */
-diff --git a/arch/mips/include/asm/mach-xburst/dma-jz4730.h b/arch/mips/include/asm/mach-xburst/dma-jz4730.h
-new file mode 100644
-index 0000000..d02b443
---- /dev/null
-+++ b/arch/mips/include/asm/mach-xburst/dma-jz4730.h
-@@ -0,0 +1,156 @@
-+
-+#ifndef __ASM_MACH_XBURST_DMA_JZ4730_H
-+#define __ASM_MACH_XBURST_DMA_JZ4730_H
-+
-+#define	DMAC_BASE	0xB3020000
-+
-+#define DMAC_DSAR(n)	(DMAC_BASE + (0x00 + (n) * 0x20))
-+#define DMAC_DDAR(n)	(DMAC_BASE + (0x04 + (n) * 0x20))
-+#define DMAC_DTCR(n)	(DMAC_BASE + (0x08 + (n) * 0x20))
-+#define DMAC_DRSR(n)	(DMAC_BASE + (0x0c + (n) * 0x20))
-+#define DMAC_DCCSR(n)	(DMAC_BASE + (0x10 + (n) * 0x20))
-+#define DMAC_DMAIPR	(DMAC_BASE + 0xf8)
-+#define DMAC_DMACR	(DMAC_BASE + 0xfc)
-+
-+#define DMAC_DRSR_RS_BIT	0
-+#define DMAC_DRSR_RS_MASK	(0x1f << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_EXTREXTR		(0 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_PCMCIAOUT	(4 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_PCMCIAIN		(5 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_AUTO		(8 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_DESOUT		(10 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_DESIN		(11 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART3OUT		(14 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART3IN		(15 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART2OUT		(16 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART2IN		(17 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART1OUT		(18 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART1IN		(19 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART0OUT		(20 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_UART0IN		(21 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_SSIOUT		(22 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_SSIIN		(23 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_AICOUT		(24 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_AICIN		(25 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_MSCOUT		(26 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_MSCIN		(27 << DMAC_DRSR_RS_BIT)
-+  #define DMAC_DRSR_RS_OST2		(28 << DMAC_DRSR_RS_BIT)
-+
-+#define DMAC_DCCSR_EACKS	(1 << 31)
-+#define DMAC_DCCSR_EACKM	(1 << 30)
-+#define DMAC_DCCSR_ERDM_BIT	28
-+#define DMAC_DCCSR_ERDM_MASK	(0x03 << DMAC_DCCSR_ERDM_BIT)
-+  #define DMAC_DCCSR_ERDM_LLEVEL	(0 << DMAC_DCCSR_ERDM_BIT)
-+  #define DMAC_DCCSR_ERDM_FEDGE		(1 << DMAC_DCCSR_ERDM_BIT)
-+  #define DMAC_DCCSR_ERDM_HLEVEL	(2 << DMAC_DCCSR_ERDM_BIT)
-+  #define DMAC_DCCSR_ERDM_REDGE		(3 << DMAC_DCCSR_ERDM_BIT)
-+#define DMAC_DCCSR_EOPM		(1 << 27)
-+#define DMAC_DCCSR_SAM		(1 << 23)
-+#define DMAC_DCCSR_DAM		(1 << 22)
-+#define DMAC_DCCSR_RDIL_BIT	16
-+#define DMAC_DCCSR_RDIL_MASK	(0x0f << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_IGN	(0 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_2	(1 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_4	(2 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_8	(3 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_12	(4 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_16	(5 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_20	(6 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_24	(7 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_28	(8 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_32	(9 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_48	(10 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_60	(11 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_64	(12 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_124	(13 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_128	(14 << DMAC_DCCSR_RDIL_BIT)
-+  #define DMAC_DCCSR_RDIL_200	(15 << DMAC_DCCSR_RDIL_BIT)
-+#define DMAC_DCCSR_SWDH_BIT	14
-+#define DMAC_DCCSR_SWDH_MASK	(0x03 << DMAC_DCCSR_SWDH_BIT)
-+  #define DMAC_DCCSR_SWDH_32	(0 << DMAC_DCCSR_SWDH_BIT)
-+  #define DMAC_DCCSR_SWDH_8	(1 << DMAC_DCCSR_SWDH_BIT)
-+  #define DMAC_DCCSR_SWDH_16	(2 << DMAC_DCCSR_SWDH_BIT)
-+#define DMAC_DCCSR_DWDH_BIT	12
-+#define DMAC_DCCSR_DWDH_MASK	(0x03 << DMAC_DCCSR_DWDH_BIT)
-+  #define DMAC_DCCSR_DWDH_32	(0 << DMAC_DCCSR_DWDH_BIT)
-+  #define DMAC_DCCSR_DWDH_8	(1 << DMAC_DCCSR_DWDH_BIT)
-+  #define DMAC_DCCSR_DWDH_16	(2 << DMAC_DCCSR_DWDH_BIT)
-+#define DMAC_DCCSR_DS_BIT	8
-+#define DMAC_DCCSR_DS_MASK	(0x07 << DMAC_DCCSR_DS_BIT)
-+  #define DMAC_DCCSR_DS_32b	(0 << DMAC_DCCSR_DS_BIT)
-+  #define DMAC_DCCSR_DS_8b	(1 << DMAC_DCCSR_DS_BIT)
-+  #define DMAC_DCCSR_DS_16b	(2 << DMAC_DCCSR_DS_BIT)
-+  #define DMAC_DCCSR_DS_16B	(3 << DMAC_DCCSR_DS_BIT)
-+  #define DMAC_DCCSR_DS_32B	(4 << DMAC_DCCSR_DS_BIT)
-+#define DMAC_DCCSR_TM		(1 << 7)
-+#define DMAC_DCCSR_AR		(1 << 4)
-+#define DMAC_DCCSR_TC		(1 << 3)
-+#define DMAC_DCCSR_HLT		(1 << 2)
-+#define DMAC_DCCSR_TCIE		(1 << 1)
-+#define DMAC_DCCSR_CHDE		(1 << 0)
-+
-+#define DMAC_DMAIPR_CINT_BIT	8
-+#define DMAC_DMAIPR_CINT_MASK	(0xff << DMAC_DMAIPR_CINT_BIT)
-+
-+#define DMAC_DMACR_PR_BIT	8
-+#define DMAC_DMACR_PR_MASK	(0x03 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_01234567	(0 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_02314675	(1 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_20136457	(2 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_ROUNDROBIN	(3 << DMAC_DMACR_PR_BIT)
-+#define DMAC_DMACR_HTR		(1 << 3)
-+#define DMAC_DMACR_AER		(1 << 2)
-+#define DMAC_DMACR_DME		(1 << 0)
-+
-+#define IRQ_DMA_0	32
-+#define NUM_DMA		6
-+
-+#define DMAC_DSAR0      DMAC_DSAR(0)
-+#define DMAC_DDAR0      DMAC_DDAR(0)
-+#define DMAC_DTCR0      DMAC_DTCR(0)
-+#define DMAC_DRSR0      DMAC_DRSR(0)
-+#define DMAC_DCCSR0     DMAC_DCCSR(0)
-+
-+#define DMAC_DSAR1      DMAC_DSAR(1)
-+#define DMAC_DDAR1      DMAC_DDAR(1)
-+#define DMAC_DTCR1      DMAC_DTCR(1)
-+#define DMAC_DRSR1      DMAC_DRSR(1)
-+#define DMAC_DCCSR1     DMAC_DCCSR(1)
-+
-+#define DMAC_DSAR2      DMAC_DSAR(2)
-+#define DMAC_DDAR2      DMAC_DDAR(2)
-+#define DMAC_DTCR2      DMAC_DTCR(2)
-+#define DMAC_DRSR2      DMAC_DRSR(2)
-+#define DMAC_DCCSR2     DMAC_DCCSR(2)
-+
-+#define DMAC_DSAR3      DMAC_DSAR(3)
-+#define DMAC_DDAR3      DMAC_DDAR(3)
-+#define DMAC_DTCR3      DMAC_DTCR(3)
-+#define DMAC_DRSR3      DMAC_DRSR(3)
-+#define DMAC_DCCSR3     DMAC_DCCSR(3)
-+
-+#define DMAC_DSAR4      DMAC_DSAR(4)
-+#define DMAC_DDAR4      DMAC_DDAR(4)
-+#define DMAC_DTCR4      DMAC_DTCR(4)
-+#define DMAC_DRSR4      DMAC_DRSR(4)
-+#define DMAC_DCCSR4     DMAC_DCCSR(4)
-+
-+#define DMAC_DSAR5      DMAC_DSAR(5)
-+#define DMAC_DDAR5      DMAC_DDAR(5)
-+#define DMAC_DTCR5      DMAC_DTCR(5)
-+#define DMAC_DRSR5      DMAC_DRSR(5)
-+#define DMAC_DCCSR5     DMAC_DCCSR(5)
-+
-+#define DMAC_DSAR6      DMAC_DSAR(6)
-+#define DMAC_DDAR6      DMAC_DDAR(6)
-+#define DMAC_DTCR6      DMAC_DTCR(6)
-+#define DMAC_DRSR6      DMAC_DRSR(6)
-+#define DMAC_DCCSR6     DMAC_DCCSR(6)
-+
-+#define DMAC_DSAR7      DMAC_DSAR(7)
-+#define DMAC_DDAR7      DMAC_DDAR(7)
-+#define DMAC_DTCR7      DMAC_DTCR(7)
-+#define DMAC_DRSR7      DMAC_DRSR(7)
-+#define DMAC_DCCSR7     DMAC_DCCSR(7)
-+
-+#endif /* __ASM_MACH_XBURST_DMA_JZ4730_H */
-diff --git a/arch/mips/include/asm/mach-xburst/irq-jz4730.h b/arch/mips/include/asm/mach-xburst/irq-jz4730.h
-new file mode 100644
-index 0000000..087b99e
---- /dev/null
-+++ b/arch/mips/include/asm/mach-xburst/irq-jz4730.h
-@@ -0,0 +1,33 @@
-+#ifndef __ASM_MACH_XBURST_IRQ_JZ4730_H
-+#define __ASM_MACH_XBURST_IRQ_JZ4730_H
-+
-+#define IRQ_I2C		1
-+#define IRQ_PS2		2
-+#define IRQ_UPRT	3
-+#define IRQ_CORE	4
-+#define IRQ_UART3	6
-+#define IRQ_UART2	7
-+#define IRQ_UART1	8
-+#define IRQ_UART0	9
-+#define IRQ_SCC1	10
-+#define IRQ_SCC0	11
-+#define IRQ_UDC		12
-+#define IRQ_UHC		13
-+#define IRQ_MSC		14
-+#define IRQ_RTC		15
-+#define IRQ_FIR		16
-+#define IRQ_SSI		17
-+#define IRQ_CIM		18
-+#define IRQ_ETH		19
-+#define IRQ_AIC		20
-+#define IRQ_DMAC	21
-+#define IRQ_OST2	22
-+#define IRQ_OST1	23
-+#define IRQ_OST0	24
-+#define IRQ_GPIO3	25
-+#define IRQ_GPIO2	26
-+#define IRQ_GPIO1	27
-+#define IRQ_GPIO0	28
-+#define IRQ_LCD		30
-+
-+#endif /* __ASM_MACH_XBURST_IRQ_JZ4730_H */
-diff --git a/arch/mips/include/asm/mach-xburst/uart-jz4730.h b/arch/mips/include/asm/mach-xburst/uart-jz4730.h
-new file mode 100644
-index 0000000..f7f6fcd
---- /dev/null
-+++ b/arch/mips/include/asm/mach-xburst/uart-jz4730.h
-@@ -0,0 +1,141 @@
-+/*
-+ *  UART registers for jz4730.
-+ *
-+ *  Copyright (C) 2006 - 2007 Ingenic Semiconductor Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#ifndef __ASM_MACH_XBURST_UART_JZ4730_H
-+#define __ASM_MACH_XBURST_UART_JZ4730_H
-+
-+#define	UART0_BASE	0xB0030000
-+#define	UART1_BASE	0xB0031000
-+#define	UART2_BASE	0xB0032000
-+#define	UART3_BASE	0xB0033000
-+
-+/* register offset */
-+#define OFF_RDR		0x00	/* R  8b H'xx */
-+#define OFF_TDR		0x00	/* W  8b H'xx */
-+#define OFF_DLLR	0x00	/* RW 8b H'00 */
-+#define OFF_DLHR	0x04	/* RW 8b H'00 */
-+#define OFF_IER		0x04	/* RW 8b H'00 */
-+#define OFF_ISR		0x08	/* R  8b H'01 */
-+#define OFF_FCR		0x08	/* W  8b H'00 */
-+#define OFF_LCR		0x0C	/* RW 8b H'00 */
-+#define OFF_MCR		0x10	/* RW 8b H'00 */
-+#define OFF_LSR		0x14	/* R  8b H'00 */
-+#define OFF_MSR		0x18	/* R  8b H'00 */
-+#define OFF_SPR		0x1C	/* RW 8b H'00 */
-+#define OFF_MCR		0x10	/* RW 8b H'00 */
-+#define OFF_SIRCR	0x20	/* RW 8b H'00, UART0 */
-+
-+/*
-+ * Define macros for UARTIER
-+ * UART Interrupt Enable Register
-+ */
-+#define UARTIER_RIE	(1 << 0)	/* 0: receive fifo "full" interrupt disable */
-+#define UARTIER_TIE	(1 << 1)	/* 0: transmit fifo "empty" interrupt disable */
-+#define UARTIER_RLIE	(1 << 2)	/* 0: receive line status interrupt disable */
-+#define UARTIER_MIE	(1 << 3)	/* 0: modem status interrupt disable */
-+#define UARTIER_RTIE	(1 << 4)	/* 0: receive timeout interrupt disable */
-+
-+/*
-+ * Define macros for UARTISR
-+ * UART Interrupt Status Register
-+ */
-+#define UARTISR_IP	(1 << 0)	/* 0: interrupt is pending  1: no interrupt */
-+#define UARTISR_IID	(7 << 1)	/* Source of Interrupt */
-+#define UARTISR_IID_MSI		(0 << 1)	/* Modem status interrupt */
-+#define UARTISR_IID_THRI	(1 << 1)	/* Transmitter holding register empty */
-+#define UARTISR_IID_RDI		(2 << 1)	/* Receiver data interrupt */
-+#define UARTISR_IID_RLSI	(3 << 1)	/* Receiver line status interrupt */
-+#define UARTISR_FFMS	(3 << 6)	/* FIFO mode select, set when UARTFCR.FE is set to 1 */
-+#define UARTISR_FFMS_NO_FIFO	(0 << 6)
-+#define UARTISR_FFMS_FIFO_MODE	(3 << 6)
-+
-+/*
-+ * Define macros for UARTFCR
-+ * UART FIFO Control Register
-+ */
-+#define UARTFCR_FE	(1 << 0)	/* 0: non-FIFO mode  1: FIFO mode */
-+#define UARTFCR_RFLS	(1 << 1)	/* write 1 to flush receive FIFO */
-+#define UARTFCR_TFLS	(1 << 2)	/* write 1 to flush transmit FIFO */
-+#define UARTFCR_DMS	(1 << 3)	/* 0: disable DMA mode */
-+#define UARTFCR_UUE	(1 << 4)	/* 0: disable UART */
-+#define UARTFCR_RTRG	(3 << 6)	/* Receive FIFO Data Trigger */
-+#define UARTFCR_RTRG_1	(0 << 6)
-+#define UARTFCR_RTRG_4	(1 << 6)
-+#define UARTFCR_RTRG_8	(2 << 6)
-+#define UARTFCR_RTRG_15	(3 << 6)
-+
-+/*
-+ * Define macros for UARTLCR
-+ * UART Line Control Register
-+ */
-+#define UARTLCR_WLEN	(3 << 0)	/* word length */
-+#define UARTLCR_WLEN_5	(0 << 0)
-+#define UARTLCR_WLEN_6	(1 << 0)
-+#define UARTLCR_WLEN_7	(2 << 0)
-+#define UARTLCR_WLEN_8	(3 << 0)
-+#define UARTLCR_STOP	(1 << 2)	/* 0: 1 stop bit when word length is 5,6,7,8
-+					   1: 1.5 stop bits when 5; 2 stop bits when 6,7,8 */
-+#define UARTLCR_PE	(1 << 3)	/* 0: parity disable */
-+#define UARTLCR_PROE	(1 << 4)	/* 0: even parity  1: odd parity */
-+#define UARTLCR_SPAR	(1 << 5)	/* 0: sticky parity disable */
-+#define UARTLCR_SBRK	(1 << 6)	/* write 0 normal, write 1 send break */
-+#define UARTLCR_DLAB	(1 << 7)	/* 0: access UARTRDR/TDR/IER  1: access UARTDLLR/DLHR */
-+
-+/*
-+ * Define macros for UARTLSR
-+ * UART Line Status Register
-+ */
-+#define UARTLSR_DR	(1 << 0)	/* 0: receive FIFO is empty  1: receive data is ready */
-+#define UARTLSR_ORER	(1 << 1)	/* 0: no overrun error */
-+#define UARTLSR_PER	(1 << 2)	/* 0: no parity error */
-+#define UARTLSR_FER	(1 << 3)	/* 0; no framing error */
-+#define UARTLSR_BRK	(1 << 4)	/* 0: no break detected  1: receive a break signal */
-+#define UARTLSR_TDRQ	(1 << 5)	/* 1: transmit FIFO half "empty" */
-+#define UARTLSR_TEMT	(1 << 6)	/* 1: transmit FIFO and shift registers empty */
-+#define UARTLSR_RFER	(1 << 7)	/* 0: no receive error  1: receive error in FIFO mode */
-+
-+/*
-+ * Define macros for UARTMCR
-+ * UART Modem Control Register
-+ */
-+#define UARTMCR_DTR	(1 << 0)	/* 0: DTR_ ouput high */
-+#define UARTMCR_RTS	(1 << 1)	/* 0: RTS_ output high */
-+#define UARTMCR_OUT1	(1 << 2)	/* 0: UARTMSR.RI is set to 0 and RI_ input high */
-+#define UARTMCR_OUT2	(1 << 3)	/* 0: UARTMSR.DCD is set to 0 and DCD_ input high */
-+#define UARTMCR_LOOP	(1 << 4)	/* 0: normal  1: loopback mode */
-+#define UARTMCR_MCE	(1 << 7)	/* 0: modem function is disable */
-+
-+/*
-+ * Define macros for UARTMSR
-+ * UART Modem Status Register
-+ */
-+#define UARTMSR_DCTS	(1 << 0)	/* 0: no change on CTS_ pin since last read of UARTMSR */
-+#define UARTMSR_DDSR	(1 << 1)	/* 0: no change on DSR_ pin since last read of UARTMSR */
-+#define UARTMSR_DRI	(1 << 2)	/* 0: no change on RI_ pin since last read of UARTMSR */
-+#define UARTMSR_DDCD	(1 << 3)	/* 0: no change on DCD_ pin since last read of UARTMSR */
-+#define UARTMSR_CTS	(1 << 4)	/* 0: CTS_ pin is high */
-+#define UARTMSR_DSR	(1 << 5)	/* 0: DSR_ pin is high */
-+#define UARTMSR_RI	(1 << 6)	/* 0: RI_ pin is high */
-+#define UARTMSR_DCD	(1 << 7)	/* 0: DCD_ pin is high */
-+
-+/*
-+ * Define macros for SIRCR
-+ * Slow IrDA Control Register
-+ */
-+#define SIRCR_TSIRE	(1 << 0)	/* 0: transmitter is in UART mode  1: IrDA mode */
-+#define SIRCR_RSIRE	(1 << 1)	/* 0: receiver is in UART mode  1: IrDA mode */
-+#define SIRCR_TPWS	(1 << 2)	/* 0: transmit 0 pulse width is 3/16 of bit length
-+					   1: 0 pulse width is 1.6us for 115.2Kbps */
-+#define SIRCR_TXPL	(1 << 3)	/* 0: encoder generates a positive pulse for 0 */
-+#define SIRCR_RXPL	(1 << 4)	/* 0: decoder interprets positive pulse as 0 */
-+
-+
-+
-+#endif /* __ASM_MACH_XBURST_UART_JZ4730_H */
-diff --git a/arch/mips/include/asm/mach-xburst/war.h b/arch/mips/include/asm/mach-xburst/war.h
-new file mode 100644
-index 0000000..5acdf58
---- /dev/null
-+++ b/arch/mips/include/asm/mach-xburst/war.h
-@@ -0,0 +1,25 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
-+ */
-+#ifndef __ASM_MACH_XBURST_WAR_H
-+#define __ASM_MACH_XBURST_WAR_H
-+
-+#define R4600_V1_INDEX_ICACHEOP_WAR	0
-+#define R4600_V1_HIT_CACHEOP_WAR	0
-+#define R4600_V2_HIT_CACHEOP_WAR	0
-+#define R5432_CP0_INTERRUPT_WAR		0
-+#define BCM1250_M3_WAR			0
-+#define SIBYTE_1956_WAR			0
-+#define MIPS4K_ICACHE_REFILL_WAR	0
-+#define MIPS_CACHE_SYNC_WAR		0
-+#define TX49XX_ICACHE_INDEX_INV_WAR	0
-+#define RM9000_CDEX_SMP_WAR		0
-+#define ICACHE_REFILLS_WORKAROUND_WAR	0
-+#define R10000_LLSC_WAR			0
-+#define MIPS34K_MISSED_ITLB_WAR		0
-+
-+#endif /* __ASM_MACH_XBURST_WAR_H */
-diff --git a/arch/mips/include/asm/mach-xburst/xburst.h b/arch/mips/include/asm/mach-xburst/xburst.h
-new file mode 100644
-index 0000000..4b2c40c
---- /dev/null
-+++ b/arch/mips/include/asm/mach-xburst/xburst.h
-@@ -0,0 +1,20 @@
-+/*
-+ * Copyright (C) 2010 Ubiq Technologies <graham.gower@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#ifndef __ASM_XBURST_H
-+#define __ASM_XBURST_H
-+
-+#ifdef CONFIG_XBURST_JZ4730
-+#include "clock-jz4730.h"
-+#include "irq-jz4730.h"
-+#include "uart-jz4730.h"
-+#endif
-+
-+void jz_usb0_set_function(int host);
-+
-+#endif /* __ASM_XBURST_H */
-diff --git a/arch/mips/include/asm/r4kcache.h b/arch/mips/include/asm/r4kcache.h
-index 387bf59..f0bb7c3 100644
---- a/arch/mips/include/asm/r4kcache.h
-+++ b/arch/mips/include/asm/r4kcache.h
-@@ -17,6 +17,59 @@
- #include <asm/cpu-features.h>
- #include <asm/mipsmtregs.h>
- 
-+#ifdef CONFIG_XBURST
-+
-+#define K0_TO_K1()				\
-+do {						\
-+	unsigned long __k0_addr;		\
-+						\
-+	__asm__ __volatile__(			\
-+	"la %0, 1f\n\t"				\
-+	"or	%0, %0, %1\n\t"			\
-+	"jr	%0\n\t"				\
-+	"nop\n\t"				\
-+	"1: nop\n"				\
-+	: "=&r"(__k0_addr)			\
-+	: "r" (0x20000000) );			\
-+} while(0)
-+
-+#define K1_TO_K0()				\
-+do {						\
-+	unsigned long __k0_addr;		\
-+	__asm__ __volatile__(			\
-+	"nop;nop;nop;nop;nop;nop;nop\n\t"	\
-+	"la %0, 1f\n\t"				\
-+	"jr	%0\n\t"				\
-+	"nop\n\t"				\
-+	"1:	nop\n"				\
-+	: "=&r" (__k0_addr));			\
-+} while (0)
-+
-+#define INVALIDATE_BTB()			\
-+do {						\
-+	unsigned long tmp;			\
-+	__asm__ __volatile__(			\
-+	".set mips32\n\t"			\
-+	"mfc0 %0, $16, 7\n\t"			\
-+	"nop\n\t"				\
-+	"ori %0, 2\n\t"				\
-+	"mtc0 %0, $16, 7\n\t"			\
-+	"nop\n\t"				\
-+	: "=&r" (tmp));				\
-+} while (0)
-+
-+#define SYNC_WB() __asm__ __volatile__ ("sync")
-+
-+#else /* CONFIG_XBURST */
-+
-+#define K0_TO_K1() do { } while (0)
-+#define K1_TO_K0() do { } while (0)
-+#define INVALIDATE_BTB() do { } while (0)
-+#define SYNC_WB() do { } while (0)
-+
-+#endif /* CONFIG_XBURST */
-+
-+
- /*
-  * This macro return a properly sign-extended address suitable as base address
-  * for indexed cache operations.  Two issues here:
-@@ -144,6 +197,7 @@ static inline void flush_icache_line_indexed(unsigned long addr)
- {
- 	__iflush_prologue
- 	cache_op(Index_Invalidate_I, addr);
-+	INVALIDATE_BTB();
- 	__iflush_epilogue
- }
- 
-@@ -151,6 +205,7 @@ static inline void flush_dcache_line_indexed(unsigned long addr)
- {
- 	__dflush_prologue
- 	cache_op(Index_Writeback_Inv_D, addr);
-+	SYNC_WB();
- 	__dflush_epilogue
- }
- 
-@@ -163,6 +218,7 @@ static inline void flush_icache_line(unsigned long addr)
- {
- 	__iflush_prologue
- 	cache_op(Hit_Invalidate_I, addr);
-+	INVALIDATE_BTB();
- 	__iflush_epilogue
- }
- 
-@@ -170,6 +226,7 @@ static inline void flush_dcache_line(unsigned long addr)
- {
- 	__dflush_prologue
- 	cache_op(Hit_Writeback_Inv_D, addr);
-+	SYNC_WB();
- 	__dflush_epilogue
- }
- 
-@@ -177,6 +234,7 @@ static inline void invalidate_dcache_line(unsigned long addr)
- {
- 	__dflush_prologue
- 	cache_op(Hit_Invalidate_D, addr);
-+	SYNC_WB();
- 	__dflush_epilogue
- }
- 
-@@ -209,6 +267,7 @@ static inline void flush_scache_line(unsigned long addr)
- static inline void protected_flush_icache_line(unsigned long addr)
- {
- 	protected_cache_op(Hit_Invalidate_I, addr);
-+	INVALIDATE_BTB();
- }
- 
- /*
-@@ -220,6 +279,7 @@ static inline void protected_flush_icache_line(unsigned long addr)
- static inline void protected_writeback_dcache_line(unsigned long addr)
- {
- 	protected_cache_op(Hit_Writeback_Inv_D, addr);
-+	SYNC_WB();
- }
- 
- static inline void protected_writeback_scache_line(unsigned long addr)
-@@ -396,8 +456,12 @@ static inline void blast_##pfx##cache##lsize##_page_indexed(unsigned long page)
- __BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 16)
- __BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 16)
- __BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 16)
-+
-+#ifndef CONFIG_XBURST
- __BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 32)
- __BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 32)
-+#endif
-+
- __BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 32)
- __BUILD_BLAST_CACHE(d, dcache, Index_Writeback_Inv_D, Hit_Writeback_Inv_D, 64)
- __BUILD_BLAST_CACHE(i, icache, Index_Invalidate_I, Hit_Invalidate_I, 64)
-@@ -405,12 +469,124 @@ __BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 64)
- __BUILD_BLAST_CACHE(s, scache, Index_Writeback_Inv_SD, Hit_Writeback_Inv_SD, 128)
- 
- __BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 16)
-+
-+#ifndef CONFIG_XBURST
- __BUILD_BLAST_CACHE(inv_d, dcache, Index_Writeback_Inv_D, Hit_Invalidate_D, 32)
-+#endif
-+
- __BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 16)
- __BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 32)
- __BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 64)
- __BUILD_BLAST_CACHE(inv_s, scache, Index_Writeback_Inv_SD, Hit_Invalidate_SD, 128)
- 
-+#ifdef CONFIG_XBURST
-+
-+static inline void blast_dcache32(void)
-+{
-+	unsigned long start = INDEX_BASE;
-+	unsigned long end = start + current_cpu_data.dcache.waysize;
-+	unsigned long ws_inc = 1UL << current_cpu_data.dcache.waybit;
-+	unsigned long ws_end = current_cpu_data.dcache.ways <<
-+	                       current_cpu_data.dcache.waybit;
-+	unsigned long ws, addr;
-+
-+	for (ws = 0; ws < ws_end; ws += ws_inc)
-+		for (addr = start; addr < end; addr += 0x400)
-+			cache32_unroll32(addr|ws,Index_Writeback_Inv_D);
-+
-+	SYNC_WB();
-+}
-+
-+static inline void blast_dcache32_page(unsigned long page)
-+{
-+	unsigned long start = page;
-+	unsigned long end = page + PAGE_SIZE;
-+
-+	do {
-+		cache32_unroll32(start,Hit_Writeback_Inv_D);
-+		start += 0x400;
-+	} while (start < end);
-+
-+	SYNC_WB();
-+}
-+
-+static inline void blast_dcache32_page_indexed(unsigned long page)
-+{
-+	unsigned long indexmask = current_cpu_data.dcache.waysize - 1;
-+	unsigned long start = INDEX_BASE + (page & indexmask);
-+	unsigned long end = start + PAGE_SIZE;
-+	unsigned long ws_inc = 1UL << current_cpu_data.dcache.waybit;
-+	unsigned long ws_end = current_cpu_data.dcache.ways <<
-+	                       current_cpu_data.dcache.waybit;
-+	unsigned long ws, addr;
-+
-+	for (ws = 0; ws < ws_end; ws += ws_inc)
-+		for (addr = start; addr < end; addr += 0x400)
-+			cache32_unroll32(addr|ws,Index_Writeback_Inv_D);
-+
-+	SYNC_WB();
-+}
-+
-+static inline void blast_icache32(void)
-+{
-+	unsigned long start = INDEX_BASE;
-+	unsigned long end = start + current_cpu_data.icache.waysize;
-+	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
-+	unsigned long ws_end = current_cpu_data.icache.ways <<
-+	                       current_cpu_data.icache.waybit;
-+	unsigned long ws, addr;
-+
-+	K0_TO_K1();
-+
-+	for (ws = 0; ws < ws_end; ws += ws_inc)
-+		for (addr = start; addr < end; addr += 0x400)
-+			cache32_unroll32(addr|ws,Index_Invalidate_I);
-+
-+	INVALIDATE_BTB();
-+
-+	K1_TO_K0();
-+}
-+
-+static inline void blast_icache32_page(unsigned long page)
-+{
-+	unsigned long start = page;
-+	unsigned long end = page + PAGE_SIZE;
-+
-+	K0_TO_K1();
-+
-+	do {
-+		cache32_unroll32(start,Hit_Invalidate_I);
-+		start += 0x400;
-+	} while (start < end);
-+
-+	INVALIDATE_BTB();
-+
-+	K1_TO_K0();
-+}
-+
-+static inline void blast_icache32_page_indexed(unsigned long page)
-+{
-+	unsigned long indexmask = current_cpu_data.icache.waysize - 1;
-+	unsigned long start = INDEX_BASE + (page & indexmask);
-+	unsigned long end = start + PAGE_SIZE;
-+	unsigned long ws_inc = 1UL << current_cpu_data.icache.waybit;
-+	unsigned long ws_end = current_cpu_data.icache.ways <<
-+	                       current_cpu_data.icache.waybit;
-+	unsigned long ws, addr;
-+
-+	K0_TO_K1();
-+
-+	for (ws = 0; ws < ws_end; ws += ws_inc)
-+		for (addr = start; addr < end; addr += 0x400)
-+			cache32_unroll32(addr|ws,Index_Invalidate_I);
-+
-+	INVALIDATE_BTB();
-+
-+	K1_TO_K0();
-+}
-+
-+#endif /* CONFIG_XBURST */
-+
- /* build blast_xxx_range, protected_blast_xxx_range */
- #define __BUILD_BLAST_CACHE_RANGE(pfx, desc, hitop, prot) \
- static inline void prot##blast_##pfx##cache##_range(unsigned long start, \
-@@ -432,13 +608,77 @@ static inline void prot##blast_##pfx##cache##_range(unsigned long start, \
- 	__##pfx##flush_epilogue						\
- }
- 
-+#ifndef CONFIG_XBURST
- __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, protected_)
-+#endif
-+
- __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, protected_)
-+
-+#ifndef CONFIG_XBURST
- __BUILD_BLAST_CACHE_RANGE(i, icache, Hit_Invalidate_I, protected_)
- __BUILD_BLAST_CACHE_RANGE(d, dcache, Hit_Writeback_Inv_D, )
-+#endif
-+
- __BUILD_BLAST_CACHE_RANGE(s, scache, Hit_Writeback_Inv_SD, )
- /* blast_inv_dcache_range */
- __BUILD_BLAST_CACHE_RANGE(inv_d, dcache, Hit_Invalidate_D, )
- __BUILD_BLAST_CACHE_RANGE(inv_s, scache, Hit_Invalidate_SD, )
- 
-+
-+#ifdef CONFIG_XBURST
-+
-+static inline void protected_blast_dcache_range(unsigned long start,
-+						unsigned long end)
-+{
-+	unsigned long lsize = cpu_dcache_line_size();
-+	unsigned long addr = start & ~(lsize - 1);
-+	unsigned long aend = (end - 1) & ~(lsize - 1);
-+
-+	while (1) {
-+		protected_cache_op(Hit_Writeback_Inv_D, addr);
-+		if (addr == aend)
-+			break;
-+		addr += lsize;
-+	}
-+	SYNC_WB();
-+}
-+
-+static inline void protected_blast_icache_range(unsigned long start,
-+						unsigned long end)
-+{
-+	unsigned long lsize = cpu_icache_line_size();
-+	unsigned long addr = start & ~(lsize - 1);
-+	unsigned long aend = (end - 1) & ~(lsize - 1);
-+
-+	K0_TO_K1();
-+
-+	while (1) {
-+		protected_cache_op(Hit_Invalidate_I, addr);
-+		if (addr == aend)
-+			break;
-+		addr += lsize;
-+	}
-+	INVALIDATE_BTB();
-+
-+	K1_TO_K0();
-+}
-+
-+static inline void blast_dcache_range(unsigned long start,
-+				      unsigned long end)
-+{
-+	unsigned long lsize = cpu_dcache_line_size();
-+	unsigned long addr = start & ~(lsize - 1);
-+	unsigned long aend = (end - 1) & ~(lsize - 1);
-+
-+	while (1) {
-+		cache_op(Hit_Writeback_Inv_D, addr);
-+		if (addr == aend)
-+			break;
-+		addr += lsize;
-+	}
-+	SYNC_WB();
-+}
-+
-+#endif /* CONFIG_XBURST */
-+
- #endif /* _ASM_R4KCACHE_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 758ad42..89a9468 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -162,6 +162,7 @@ void __init check_wait(void)
- 	case CPU_BCM6348:
- 	case CPU_BCM6358:
- 	case CPU_CAVIUM_OCTEON:
-+	case CPU_XBURST:
- 		cpu_wait = r4k_wait;
- 		break;
- 
-@@ -913,6 +914,23 @@ static inline void cpu_probe_cavium(struct cpuinfo_mips *c, unsigned int cpu)
- 	}
- }
- 
-+static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
-+{
-+	decode_configs(c);
-+	c->options &= ~MIPS_CPU_COUNTER; /* XBurst has no CP0 counter. */
-+	switch (c->processor_id & 0xff00) {
-+	case PRID_IMP_XBURST:
-+		c->cputype = CPU_XBURST;
-+		c->isa_level = MIPS_CPU_ISA_M32R1;
-+		c->tlbsize = 32;
-+		__cpu_name[cpu] = "Ingenic XBurst";
-+		break;
-+	default:
-+		panic("Unknown Ingenic Processor ID!");
-+		break;
-+	}
-+}
-+
- const char *__cpu_name[NR_CPUS];
- 
- __cpuinit void cpu_probe(void)
-@@ -950,6 +968,9 @@ __cpuinit void cpu_probe(void)
- 	case PRID_COMP_CAVIUM:
- 		cpu_probe_cavium(c, cpu);
- 		break;
-+	case PRID_COMP_INGENIC:
-+		cpu_probe_ingenic(c, cpu);
-+		break;
- 	}
- 
- 	BUG_ON(!__cpu_name[cpu]);
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 6721ee2..8cae4e3 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -928,6 +928,36 @@ static void __cpuinit probe_pcache(void)
- 		c->dcache.waybit = 0;
- 		break;
- 
-+	case CPU_XBURST:
-+		config1 = read_c0_config1();
-+		config1 = (config1 >> 22) & 0x07;
-+		if (config1 == 0x07)
-+			config1 = 10;
-+		else
-+			config1 = config1 + 11;
-+		config1 += 2;
-+		icache_size = (1 << config1);
-+		c->icache.linesz = 32;
-+		c->icache.ways = 4;
-+		c->icache.waybit = __ffs(icache_size / c->icache.ways);
-+
-+		config1 = read_c0_config1();
-+		config1 = (config1 >> 13) & 0x07;
-+		if (config1 == 0x07)
-+			config1 = 10;
-+		else
-+			config1 = config1 + 11;
-+		config1 += 2;
-+		dcache_size = (1 << config1);
-+		c->dcache.linesz = 32;
-+		c->dcache.ways = 4;
-+		c->dcache.waybit = __ffs(dcache_size / c->dcache.ways);
-+
-+		c->dcache.flags = 0;
-+		c->options |= MIPS_CPU_PREFETCH;
-+
-+		break;
-+
- 	default:
- 		if (!(config & MIPS_CONF_M))
- 			panic("Don't know how to probe P-caches on this cpu.");
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index badcf5e..34ef8c9 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -390,6 +390,11 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 		tlbw(p);
- 		break;
- 
-+	case CPU_XBURST:
-+		tlbw(p);
-+		uasm_i_nop(p);
-+		break;
-+
- 	default:
- 		panic("No TLB refill handler yet (CPU type: %d)",
- 		      current_cpu_data.cputype);
-diff --git a/arch/mips/xburst/Kconfig b/arch/mips/xburst/Kconfig
-new file mode 100644
-index 0000000..fc12741
---- /dev/null
-+++ b/arch/mips/xburst/Kconfig
-@@ -0,0 +1,23 @@
-+choice
-+	prompt "XBurst SoC Type"
-+	depends on XBURST
-+
-+config XBURST_JZ4730
-+	bool "Ingenic JZ4730"
-+
-+#config XBURST_JZ4740
-+#	bool "Ingenic JZ4740"
-+
-+endchoice
-+
-+choice
-+	prompt "JZ4730 board"
++config JZ_ETH
++	tristate "JZ4730/JZ5730 On-Chip Ethernet support"
 +	depends on XBURST_JZ4730
++	select MII
++	help
++	  This driver supports the JZ4730/JZ5730 On-Chip Ethernet interface.
 +
-+config JZ4730_PMP
-+	bool "Ingenic PMP reference board"
++	  To compile this driver as a module, choose M here: the module
++	  will be called jz_eth.
 +
-+config JZ4730_LIBRA
-+	bool "Ingenic Libra dev board"
-+
-+endchoice
-diff --git a/arch/mips/xburst/Makefile b/arch/mips/xburst/Makefile
+ source "drivers/net/fs_enet/Kconfig"
+ 
+ source "drivers/net/octeon/Kconfig"
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 657ccc3..da8ff86 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -141,6 +141,7 @@ obj-$(CONFIG_FORCEDETH) += forcedeth.o
+ obj-$(CONFIG_NE_H8300) += ne-h8300.o 8390.o
+ obj-$(CONFIG_AX88796) += ax88796.o
+ obj-$(CONFIG_BCM63XX_ENET) += bcm63xx_enet.o
++obj-$(CONFIG_JZ_ETH) += jz_eth.o
+ 
+ obj-$(CONFIG_TSI108_ETH) += tsi108_eth.o
+ obj-$(CONFIG_MV643XX_ETH) += mv643xx_eth.o
+diff --git a/drivers/net/jz_eth.c b/drivers/net/jz_eth.c
 new file mode 100644
-index 0000000..a96d462
+index 0000000..624c081
 --- /dev/null
-+++ b/arch/mips/xburst/Makefile
-@@ -0,0 +1,3 @@
-+#
-+# jz4730 SoC based systems
-+obj-$(CONFIG_XBURST_JZ4730) += jz4730/
-diff --git a/arch/mips/xburst/jz4730/Makefile b/arch/mips/xburst/jz4730/Makefile
-new file mode 100644
-index 0000000..100c64b
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/Makefile
-@@ -0,0 +1,11 @@
-+#
-+# JZ4730 SoC based systems.
-+#
-+
-+obj-y += irq.o prom.o setup.o time.o clocks.o platform.o
-+
-+# Ingenic's Libra dev board
-+obj-$(CONFIG_JZ4730_LIBRA)	+= board-libra.o
-+
-+# Ingenic's Portable Media Player reference platform
-+obj-$(CONFIG_JZ4730_PMP)	+= board-pmp.o
-diff --git a/arch/mips/xburst/jz4730/board-libra.c b/arch/mips/xburst/jz4730/board-libra.c
-new file mode 100644
-index 0000000..795bdd5
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/board-libra.c
-@@ -0,0 +1,32 @@
++++ b/drivers/net/jz_eth.c
+@@ -0,0 +1,1232 @@
 +/*
-+ * board-libra.c
++ *  Jz4730/Jz5730 On-Chip ethernet driver.
 + *
-+ * Copyright (C) 2010 Ubiq Technologies <graham.gower@gmail.com>
++ *  Copyright (C) 2009, 2010 Ubiq Technologies <graham.gower@gmail.com>
++ *  Copyright (C) 2005 - 2007  Ingenic Semiconductor Inc.
 + *
 + * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
 + */
-+
-+#include <linux/init.h>
-+#include <xburst.h>
-+
-+void __init
-+jz_board_get_extal(struct jz_clocks *cks)
-+{
-+	cks->extal = 3686400;	/* 3.6864 MHz */
-+	cks->extal2 = 32768;	/* 32.768 KHz */
-+}
-+
-+void __init
-+jz_board_setup(void)
-+{
-+	/*
-+	 * USB is much more reliable using the external USB clock,
-+	 * not the PLL divider.
-+	 */
-+	jz_cpm_set_usbclk(1);
-+
-+	/* USB0 as host. */
-+	jz_usb0_set_function(1);
-+}
-diff --git a/arch/mips/xburst/jz4730/board-pmp.c b/arch/mips/xburst/jz4730/board-pmp.c
-new file mode 100644
-index 0000000..90c5692
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/board-pmp.c
-@@ -0,0 +1,32 @@
-+/*
-+ * board-pmp.c
-+ *
-+ * Copyright (C) 2010 Ubiq Technologies <graham.gower@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#include <linux/init.h>
-+#include <xburst.h>
-+
-+void __init
-+jz_board_get_extal(struct jz_clocks *cks)
-+{
-+	cks->extal = 12000000;	/* 12 MHz */
-+	cks->extal2 = 32768;	/* 32.768 KHz */
-+}
-+
-+void __init
-+jz_board_setup(void)
-+{
-+	/*
-+	 * USB is much more reliable using the external USB clock,
-+	 * not the PLL divider.
-+	 */
-+	jz_cpm_set_usbclk(1);
-+
-+	/* USB0 as device. */
-+	jz_usb0_set_function(0);
-+}
-diff --git a/arch/mips/xburst/jz4730/clocks.c b/arch/mips/xburst/jz4730/clocks.c
-new file mode 100644
-index 0000000..abc887f
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/clocks.c
-@@ -0,0 +1,294 @@
-+/*
-+ * Copyright (C) 2010 Ubiq Technologies <graham.gower@gmail.com>
-+ *
-+ * Copyright (C) 2006 - 2007 Ingenic Semiconductor Inc.
-+ * Author: <jlwei@ingenic.cn>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <xburst.h>
-+
-+extern void __init jz_board_get_extal(struct jz_clocks *);
-+
-+struct jz_clocks jz_clocks;
-+EXPORT_SYMBOL(jz_clocks);
-+
-+static void __iomem *cpm_base;
-+
-+#define	CPM_BASE	0x10000000
-+
-+#define CPM_CFCR	0x00
-+#define CPM_LPCR	0x04
-+#define CPM_RSTR	0x08
-+#define CPM_PLCR1	0x10
-+#define CPM_OCR		0x1c
-+#define CPM_MSCR	0x20
-+#define CPM_SCR		0x24
-+#define CPM_WRER	0x28
-+#define CPM_WFER	0x2c
-+#define CPM_WER		0x30
-+#define CPM_WSR		0x34
-+#define CPM_GSR0	0x38
-+#define CPM_GSR1	0x3c
-+#define CPM_GSR2	0x40
-+#define CPM_SPR		0x44
-+#define CPM_GSR3	0x48
-+#define CPM_CFCR2	0x60
-+
-+#define CPM_CFCR_SSI		(1 << 31)
-+#define CPM_CFCR_LCD		(1 << 30)
-+#define CPM_CFCR_I2S		(1 << 29)
-+#define CPM_CFCR_UCS		(1 << 28)
-+#define CPM_CFCR_UFR_BIT	25
-+#define CPM_CFCR_UFR_MASK	(0x07 << CPM_CFCR_UFR_BIT)
-+#define CPM_CFCR_MSC		(1 << 24)
-+#define CPM_CFCR_CKOEN2		(1 << 23)
-+#define CPM_CFCR_CKOEN1		(1 << 22)
-+#define CPM_CFCR_UPE		(1 << 20)
-+#define CPM_CFCR_MFR_BIT	16
-+#define CPM_CFCR_MFR_MASK	(0x0f << CPM_CFCR_MFR_BIT)
-+#define CPM_CFCR_LFR_BIT	12
-+#define CPM_CFCR_LFR_MASK	(0x0f << CPM_CFCR_LFR_BIT)
-+#define CPM_CFCR_PFR_BIT	8
-+#define CPM_CFCR_PFR_MASK	(0x0f << CPM_CFCR_PFR_BIT)
-+#define CPM_CFCR_SFR_BIT	4
-+#define CPM_CFCR_SFR_MASK	(0x0f << CPM_CFCR_SFR_BIT)
-+#define CPM_CFCR_IFR_BIT	0
-+#define CPM_CFCR_IFR_MASK	(0x0f << CPM_CFCR_IFR_BIT)
-+
-+#define CPM_PLCR1_PLL1FD_BIT	23
-+#define CPM_PLCR1_PLL1FD_MASK	(0x1ff << CPM_PLCR1_PLL1FD_BIT)
-+#define CPM_PLCR1_PLL1RD_BIT	18
-+#define CPM_PLCR1_PLL1RD_MASK	(0x1f << CPM_PLCR1_PLL1RD_BIT)
-+#define CPM_PLCR1_PLL1OD_BIT	16
-+#define CPM_PLCR1_PLL1OD_MASK	(0x03 << CPM_PLCR1_PLL1OD_BIT)
-+#define CPM_PLCR1_PLL1S		(1 << 10)
-+#define CPM_PLCR1_PLL1BP	(1 << 9)
-+#define CPM_PLCR1_PLL1EN	(1 << 8)
-+#define CPM_PLCR1_PLL1ST_BIT	0
-+#define CPM_PLCR1_PLL1ST_MASK	(0xff << CPM_PLCR1_PLL1ST_BIT)
-+
-+#define CPM_LPCR_DUTY_BIT	3
-+#define CPM_LPCR_DUTY_MASK	(0x1f << CPM_LPCR_DUTY_BIT)
-+#define CPM_LPCR_DOZE		(1 << 2)
-+#define CPM_LPCR_LPM_BIT	0
-+#define CPM_LPCR_LPM_MASK	(0x03 << CPM_LPCR_LPM_BIT)
-+  #define CPM_LPCR_LPM_IDLE		(0 << CPM_LPCR_LPM_BIT)
-+  #define CPM_LPCR_LPM_SLEEP		(1 << CPM_LPCR_LPM_BIT)
-+  #define CPM_LPCR_LPM_HIBERNATE	(2 << CPM_LPCR_LPM_BIT)
-+
-+
-+static __inline__ unsigned int
-+cpm_get_pllout(void)
-+{
-+	unsigned int nf, nr, no, pllout;
-+	unsigned long plcr = readl(cpm_base + CPM_PLCR1);
-+	unsigned long od[4] = {1, 2, 2, 4};
-+	if (plcr & CPM_PLCR1_PLL1EN) {
-+		nf = (plcr & CPM_PLCR1_PLL1FD_MASK) >> CPM_PLCR1_PLL1FD_BIT;
-+		nr = (plcr & CPM_PLCR1_PLL1RD_MASK) >> CPM_PLCR1_PLL1RD_BIT;
-+		no = od[((plcr & CPM_PLCR1_PLL1OD_MASK) >> CPM_PLCR1_PLL1OD_BIT)];
-+		pllout = (jz_clocks.extal) / ((nr+2) * no) * (nf+2);
-+	} else
-+		pllout = jz_clocks.extal;
-+	return pllout;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_iclk(void)
-+{
-+	unsigned int iclk;
-+	int div[] = {1, 2, 3, 4, 6, 8, 12, 16, 24, 32};
-+	unsigned long cfcr = readl(cpm_base + CPM_CFCR);
-+	unsigned long plcr = readl(cpm_base + CPM_PLCR1);
-+	if (plcr & CPM_PLCR1_PLL1EN)
-+		iclk = cpm_get_pllout() /
-+		       div[(cfcr & CPM_CFCR_IFR_MASK) >> CPM_CFCR_IFR_BIT];
-+	else
-+		iclk = jz_clocks.extal;
-+	return iclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_sclk(void)
-+{
-+	unsigned int sclk;
-+	int div[] = {1, 2, 3, 4, 6, 8, 12, 16, 24, 32};
-+	unsigned long cfcr = readl(cpm_base + CPM_CFCR);
-+	unsigned long plcr = readl(cpm_base + CPM_PLCR1);
-+	if (plcr & CPM_PLCR1_PLL1EN)
-+		sclk = cpm_get_pllout() /
-+		       div[(cfcr & CPM_CFCR_SFR_MASK) >> CPM_CFCR_SFR_BIT];
-+	else
-+		sclk = jz_clocks.extal;
-+	return sclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_mclk(void)
-+{
-+	unsigned int mclk;
-+	int div[] = {1, 2, 3, 4, 6, 8, 12, 16, 24, 32};
-+	unsigned long cfcr = readl(cpm_base + CPM_CFCR);
-+	unsigned long plcr = readl(cpm_base + CPM_PLCR1);
-+	if (plcr & CPM_PLCR1_PLL1EN)
-+		mclk = cpm_get_pllout() /
-+		       div[(cfcr & CPM_CFCR_MFR_MASK) >> CPM_CFCR_MFR_BIT];
-+	else
-+		mclk = jz_clocks.extal;
-+	return mclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_pclk(void)
-+{
-+	unsigned int devclk;
-+	int div[] = {1, 2, 3, 4, 6, 8, 12, 16, 24, 32};
-+	unsigned long cfcr = readl(cpm_base + CPM_CFCR);
-+	unsigned long plcr = readl(cpm_base + CPM_PLCR1);
-+	if (plcr & CPM_PLCR1_PLL1EN)
-+		devclk = cpm_get_pllout() /
-+			 div[(cfcr & CPM_CFCR_PFR_MASK) >> CPM_CFCR_PFR_BIT];
-+	else
-+		devclk = jz_clocks.extal;
-+	return devclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_lcdclk(void)
-+{
-+	unsigned int lcdclk;
-+	unsigned long cfcr = readl(cpm_base + CPM_CFCR);
-+	unsigned long plcr = readl(cpm_base + CPM_PLCR1);
-+	if (plcr & CPM_PLCR1_PLL1EN)
-+		lcdclk = cpm_get_pllout() /
-+			(((cfcr & CPM_CFCR_LFR_MASK) >> CPM_CFCR_LFR_BIT) + 1);
-+	else
-+		lcdclk = jz_clocks.extal;
-+	return lcdclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_pixclk(void)
-+{
-+	unsigned int pixclk;
-+	unsigned long cfcr2 = readl(cpm_base + CPM_CFCR2);
-+	pixclk = cpm_get_pllout() / (cfcr2 + 1);
-+	return pixclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_devclk(void)
-+{
-+	return jz_clocks.extal;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_rtcclk(void)
-+{
-+	return jz_clocks.extal2;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_uartclk(void)
-+{
-+	return jz_clocks.extal;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_usbclk(void)
-+{
-+	unsigned int usbclk;
-+	unsigned long cfcr = readl(cpm_base + CPM_CFCR);
-+	if (cfcr & CPM_CFCR_UCS)
-+		usbclk = 48000000;
-+	else
-+		usbclk = cpm_get_pllout() /
-+			(((cfcr &CPM_CFCR_UFR_MASK) >> CPM_CFCR_UFR_BIT) + 1);
-+	return usbclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_i2sclk(void)
-+{
-+	unsigned int i2sclk;
-+	unsigned long cfcr = readl(cpm_base + CPM_CFCR);
-+	i2sclk = cpm_get_pllout() /
-+		((cfcr & CPM_CFCR_I2S) ? 2: 1);
-+	return i2sclk;
-+}
-+
-+static __inline__ unsigned int
-+cpm_get_mscclk(void)
-+{
-+	if (readl(cpm_base + CPM_CFCR) & CPM_CFCR_MSC)
-+		return 24000000;
-+	else
-+		return 16000000;
-+}
-+
-+
-+void
-+jz_cpm_set_usbclk(int external)
-+{
-+	u32 cfcr = readl(cpm_base + CPM_CFCR);
-+
-+	if (external)
-+		cfcr |= CPM_CFCR_UCS;
-+	else
-+		cfcr &= ~CPM_CFCR_UCS;
-+
-+	writel(cfcr, cpm_base + CPM_CFCR);
-+
-+	jz_clocks.usbclk = cpm_get_usbclk();
-+}
-+
-+void __init
-+jz_cpm_setup(void)
-+{
-+	u32 lcr, cfcr;
-+
-+	cpm_base = ioremap_nocache(CPM_BASE, 0xfff);
-+	if (cpm_base == NULL) {
-+		panic(KERN_ERR "Couldn't map CPM_BASE(0x%x)\n", CPM_BASE);
-+	}
-+
-+	/* Enter idle mode when sleep instruction is executed. */
-+	lcr = readl(cpm_base + CPM_LPCR) & ~CPM_LPCR_LPM_MASK;
-+	lcr |= CPM_LPCR_LPM_IDLE;
-+	writel(lcr, cpm_base + CPM_LPCR);
-+
-+	/* Enable SDRAM clock. */
-+	cfcr = readl(cpm_base + CPM_CFCR) | CPM_CFCR_CKOEN1;
-+	writel(cfcr, cpm_base + CPM_CFCR);
-+
-+	/* Enable all clocks. */
-+	writel(0, cpm_base + CPM_MSCR);
-+
-+	/* Fill in jz_extal, jz_extal2. */
-+	jz_board_get_extal(&jz_clocks);
-+
-+	jz_clocks.iclk = cpm_get_iclk();
-+	jz_clocks.sclk = cpm_get_sclk();
-+	jz_clocks.mclk = cpm_get_mclk();
-+	jz_clocks.pclk = cpm_get_pclk();
-+	jz_clocks.devclk = cpm_get_devclk();
-+	jz_clocks.rtcclk = cpm_get_rtcclk();
-+	jz_clocks.uartclk = cpm_get_uartclk();
-+	jz_clocks.lcdclk = cpm_get_lcdclk();
-+	jz_clocks.pixclk = cpm_get_pixclk();
-+	jz_clocks.usbclk = cpm_get_usbclk();
-+	jz_clocks.i2sclk = cpm_get_i2sclk();
-+	jz_clocks.mscclk = cpm_get_mscclk();
-+
-+	printk("CPU clock: %dMHz, System clock: %dMHz, Memory clock: %dMHz, Peripheral clock: %dMHz\n",
-+		(jz_clocks.iclk + 500000) / 1000000,
-+		(jz_clocks.sclk + 500000) / 1000000,
-+		(jz_clocks.mclk + 500000) / 1000000,
-+		(jz_clocks.pclk + 500000) / 1000000);
-+}
-diff --git a/arch/mips/xburst/jz4730/irq.c b/arch/mips/xburst/jz4730/irq.c
-new file mode 100644
-index 0000000..7e12e69
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/irq.c
-@@ -0,0 +1,104 @@
-+/*
-+ * Copyright (C) 2010 Ubiq Technologies <graham.gower@gmail.com>
-+ *
-+ * Copyright (c) 2006-2007  Ingenic Semiconductor Inc.
-+ * Author: <jlwei@ingenic.cn>
-+ *
-+ * This program is free software; you can redistribute	 it and/or modify it
-+ * under  the terms of	 the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the	License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/irq.h>
-+#include <asm/irq_cpu.h>
-+#include <asm/system.h>
-+#include <xburst.h>
-+
-+#define	INTC_BASE	0x10001000
-+
-+#define INTC_ISR	0x00
-+#define INTC_IMR	0x04
-+#define INTC_IMSR	0x08
-+#define INTC_IMCR	0x0c
-+#define INTC_IPR	0x10
-+
-+static void __iomem *intc_base;
-+
-+static void
-+mask_intc_irq(unsigned int irq)
-+{
-+	writel(1<<irq, intc_base + INTC_IMSR);
-+}
-+
-+static void
-+unmask_intc_irq(unsigned int irq)
-+{
-+	writel(1<<irq, intc_base + INTC_IMCR);
-+}
-+
-+static void
-+ack_intc_irq(unsigned int irq)
-+{
-+	writel(1<<irq, intc_base + INTC_IPR);
-+}
-+
-+static void
-+end_intc_irq(unsigned int irq)
-+{
-+	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS))) {
-+		unmask_intc_irq(irq);
-+	}
-+}
-+
-+static struct irq_chip intc_irq_type = {
-+	.name = "INTC",
-+	.mask = mask_intc_irq,
-+	.unmask = unmask_intc_irq,
-+	.ack = ack_intc_irq,
-+	.end = end_intc_irq,
-+};
-+
-+asmlinkage void
-+plat_irq_dispatch(void)
-+{
-+	int irq;
-+	static u32 pending = 0;
-+
-+	pending |= readl(intc_base + INTC_IPR);
-+
-+	if (!pending)
-+		return;
-+
-+	irq = ffs(pending) - 1;
-+	pending &= ~(1<<irq);
-+
-+	switch (irq) {
-+		case IRQ_GPIO0:
-+		case IRQ_GPIO1:
-+		case IRQ_GPIO2:
-+		case IRQ_GPIO3:
-+		case IRQ_DMAC:
-+			/* unhandled for now */
-+			printk(KERN_WARNING "%s: %d unhandled\n", __FUNCTION__,
-+					irq);
-+			return;
-+	}
-+
-+	generic_handle_irq(irq);
-+}
-+
-+void __init
-+arch_init_irq(void)
-+{
-+	int i;
-+
-+	intc_base = ioremap_nocache(INTC_BASE, 0xfff);
-+
-+	for (i=0; i<32; i++) {
-+		mask_intc_irq(i);
-+		set_irq_chip_and_handler(i, &intc_irq_type, handle_level_irq);
-+	}
-+}
-+
-diff --git a/arch/mips/xburst/jz4730/platform.c b/arch/mips/xburst/jz4730/platform.c
-new file mode 100644
-index 0000000..cff660a
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/platform.c
-@@ -0,0 +1,49 @@
-+/*
-+ * This file is licensed under the terms of the GNU General Public
-+ * License version 2.  This program is licensed "as is" without any
-+ * warranty of any kind, whether express or implied.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/platform_device.h>
-+#include <xburst.h>
-+
-+#define	ETH_BASE	0x13100000
-+
-+static struct resource jz_eth_resources[] = {
-+	[0] = {
-+		.start	= ETH_BASE,
-+		.end	= ETH_BASE + 0xffff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= IRQ_ETH,
-+		.end	= IRQ_ETH,
-+		.flags	= IORESOURCE_IRQ,
-+	}
-+};
-+
-+static u64 jz_eth_dmamask = ~(u32)0;
-+
-+static struct platform_device jz_eth_device = {
-+	.name	= "jz-eth",
-+	.id	= 0,
-+	.dev = {
-+		.dma_mask		= &jz_eth_dmamask,
-+		.coherent_dma_mask	= 0xffffffff,
-+	},
-+	.num_resources	= ARRAY_SIZE(jz_eth_resources),
-+	.resource	= jz_eth_resources,
-+};
-+
-+static struct platform_device *jz4730_devices[] __initdata = {
-+	&jz_eth_device,
-+};
-+
-+static int __init
-+jz4730_platform_init(void)
-+{
-+	return platform_add_devices(jz4730_devices, ARRAY_SIZE(jz4730_devices));
-+}
-+
-+arch_initcall(jz4730_platform_init);
-diff --git a/arch/mips/xburst/jz4730/prom.c b/arch/mips/xburst/jz4730/prom.c
-new file mode 100644
-index 0000000..60c46bc
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/prom.c
-@@ -0,0 +1,104 @@
-+/*
-+ *
-+ * BRIEF MODULE DESCRIPTION
-+ *    PROM library initialisation code, supports YAMON and U-Boot.
-+ *
-+ * Copyright 2000, 2001, 2006 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc.
-+ *         	ppopov@mvista.com or source@mvista.com
-+ *
-+ * This file was derived from Carsten Langgaard's
-+ * arch/mips/mips-boards/xx files.
-+ *
-+ * Carsten Langgaard, carstenl@mips.com
-+ * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ */
-+
 +#include <linux/module.h>
 +#include <linux/kernel.h>
 +#include <linux/init.h>
-+#include <linux/string.h>
-+
-+#include <asm/bootinfo.h>
++#include <linux/kthread.h>
++#include <linux/netdevice.h>
++#include <linux/etherdevice.h>
++#include <linux/ethtool.h>
++#include <linux/mii.h>
++#include <linux/pm.h>
++#include <linux/platform_device.h>
 +#include <xburst.h>
 +
-+int prom_argc;
-+char **prom_argv, **prom_envp;
++#include "jz_eth.h"
 +
-+char *prom_getcmdline(void)
++#define DRV_NAME	"jz_eth"
++#define DRV_VERSION	"1.2"
++
++MODULE_AUTHOR("Peter Wei <jlwei@ingenic.cn>");
++MODULE_DESCRIPTION("JzSOC On-chip Ethernet driver");
++MODULE_LICENSE("GPL");
++
++static void __iomem *jz_eth_base;
++static char *hwaddr = NULL;
++static int debug = -1;
++static struct mii_if_info mii_info;
++
++MODULE_PARM_DESC(debug, "i");
++MODULE_PARM_DESC(hwaddr,"s");
++
++static irqreturn_t jz_eth_interrupt(int irq, void *dev_id);
++
++static int link_check_thread (void *data);
++
++static inline void
++ring_inv(jz_desc_t ring[], int ring_index)
 +{
-+	return &(arcs_cmdline[0]);
++	unsigned long addr = (unsigned long)&ring[ring_index];
++	dma_cache_inv(addr, sizeof(jz_desc_t));
 +}
 +
-+void prom_init_cmdline(void)
++static inline void
++ring_wback(jz_desc_t ring[], int ring_index)
 +{
-+	char *cp;
-+	int actr;
++	unsigned long addr = (unsigned long)&ring[ring_index];
++	dma_cache_wback(addr, sizeof(jz_desc_t));
++}
 +
-+	actr = 1; /* Always ignore argv[0] */
++static inline unsigned char str2hexnum(unsigned char c)
++{
++	if (c >= '0' && c <= '9')
++		return c - '0';
++	if (c >= 'a' && c <= 'f')
++		return c - 'a' + 10;
++	if (c >= 'A' && c <= 'F')
++		return c - 'A' + 10;
++	return 0; /* foo */
++}
 +
-+	cp = &(arcs_cmdline[0]);
-+	while(actr < prom_argc) {
-+	        strcpy(cp, prom_argv[actr]);
-+		cp += strlen(prom_argv[actr]);
-+		*cp++ = ' ';
-+		actr++;
++static inline void str2eaddr(unsigned char *ea, unsigned char *str)
++{
++	int i;
++
++	for (i = 0; i < 6; i++) {
++		unsigned char num;
++
++		if((*str == '.') || (*str == ':'))
++			str++;
++		num = str2hexnum(*str++) << 4;
++		num |= (str2hexnum(*str++));
++		ea[i] = num;
 +	}
-+	if (cp != &(arcs_cmdline[0])) /* get rid of trailing space */
-+		--cp;
-+	if (prom_argc > 1)
-+		*cp = '\0';
 +}
 +
-+void __init prom_free_prom_memory(void)
++static int ethaddr_cmd = 0;
++static unsigned char ethaddr_hex[6];
++
++static int __init ethernet_addr_setup(char *str)
 +{
++	if (!str) {
++	        printk("ethaddr not set in command line\n");
++		return -1;
++	}
++	ethaddr_cmd = 1;
++	str2eaddr(ethaddr_hex, str);
++
++	return 0;
 +}
 +
-+void __init prom_init(void)
++__setup("ethaddr=", ethernet_addr_setup);
++
++static int get_mac_address(struct net_device *dev)
 +{
-+	prom_argc = (int) fw_arg0;
-+	prom_argv = (char **) fw_arg1;
-+	prom_envp = (char **) fw_arg2;
++	int i;
++	unsigned char flag0=0;
++	unsigned char flag1=0xff;
++	
++	dev->dev_addr[0] = 0xff;
++	if (hwaddr != NULL) {
++		/* insmod jz-ethc.o hwaddr=00:ef:a3:c1:00:10 */
++		str2eaddr(dev->dev_addr, hwaddr);
++	} else if (ethaddr_cmd) {
++		/* linux command line: ethaddr=00:ef:a3:c1:00:10 */
++		for (i=0; i<6; i++)
++			dev->dev_addr[i] = ethaddr_hex[i];
++	}
 +
-+	mips_machtype = MACH_XBURST_JZ4730;
-+
-+	prom_init_cmdline();
-+	add_memory_region(0, 0x04000000, BOOT_MEM_RAM);
++	/* check whether valid MAC address */
++	for (i=0; i<6; i++) {
++		flag0 |= dev->dev_addr[i];
++		flag1 &= dev->dev_addr[i];
++	}
++	if ((dev->dev_addr[0] & 0xC0) || (flag0 == 0) || (flag1 == 0xff)) {
++		printk("WARNING: There is not MAC address, use default ..\n");
++		dev->dev_addr[0] = 0x00;
++		dev->dev_addr[1] = 0xef;
++		dev->dev_addr[2] = 0xa3;
++		dev->dev_addr[3] = 0xc1;
++		dev->dev_addr[4] = 0x00;
++		dev->dev_addr[5] = 0x10;
++		dev->dev_addr[5] = 0x03;
++	}
++	memcpy(dev->perm_addr, dev->dev_addr, ETH_ALEN);
++	if (!is_valid_ether_addr(dev->perm_addr))
++		printk(KERN_ERR "%s: ethaddr is b0rken!\n", dev->name);
++	return 0;
 +}
 +
-+/* used by early printk */
-+void prom_putchar(char c)
-+{
-+	volatile u8 *uart_lsr = (volatile u8 *)(UART3_BASE + OFF_LSR);
-+	volatile u8 *uart_tdr = (volatile u8 *)(UART3_BASE + OFF_TDR);
++/*---------------------------------------------------------------------*/
 +
-+	/* Wait for fifo to shift out some bytes */
-+	while ( !((*uart_lsr & (UARTLSR_TDRQ | UARTLSR_TEMT)) == 0x60) );
++static u32 jz_eth_curr_mode(struct net_device *dev);
 +
-+	*uart_tdr = (u8)c;
-+}
-+
-+const char *get_system_type(void)
-+{
-+        return "JZ4730";
-+}
-diff --git a/arch/mips/xburst/jz4730/setup.c b/arch/mips/xburst/jz4730/setup.c
-new file mode 100644
-index 0000000..777ac27
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/setup.c
-@@ -0,0 +1,136 @@
 +/*
-+ * Copyright (C) 2010 Ubiq Technologies <graham.gower@gmail.com>
-+ *
-+ * Copyright (C) 2006-2007  Ingenic Semiconductor Inc.
-+ * Author: <jlwei@ingenic.cn>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * Ethernet START/STOP routines
++ */
++#define START_ETH() \
++	do { \
++		s32 val; \
++		val = readl(jz_eth_base + DMA_OMR); \
++		val |= OMR_ST | OMR_SR; \
++		writel(val, jz_eth_base + DMA_OMR); \
++	} while(0)
++
++#define STOP_ETH() \
++	do { \
++		s32 val; \
++		val = readl(jz_eth_base + DMA_OMR); \
++		val &= ~(OMR_ST|OMR_SR); \
++		writel(val, jz_eth_base + DMA_OMR); \
++	} while(0)
++
++/*
++ * Link check routines
++ */
++static void start_check(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++
++	np->thread_die = 0;
++	init_waitqueue_head(&np->thr_wait);
++	init_completion (&np->thr_exited);
++
++	np->thread = kthread_run(link_check_thread,(void *)dev,
++			"%s-linkcheck", dev->name);
++	if (IS_ERR(np->thread))
++		printk(KERN_ERR "%s: unable to start kernel thread\n", dev->name);
++}
++
++static int close_check(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	int ret = 0;
++
++	if (np->thread != NULL) {
++		np->thread_die = 1;
++		wmb();
++		ret = send_sig(SIGTERM, np->thread, 1);
++		if (ret) {
++			printk(KERN_ERR "%s: unable to signal thread\n", dev->name);
++			return 1;
++		}
++		wait_for_completion (&np->thr_exited);
++	}
++	return 0;
++}
++
++static int link_check_thread(void *data)
++{
++	struct net_device *dev=(struct net_device *)data;
++	struct jz_eth_private *np = netdev_priv(dev);
++	unsigned char current_link;
++	unsigned long timeout;
++
++	while (1) {
++		timeout = 3*HZ;
++		do {
++			timeout = interruptible_sleep_on_timeout (&np->thr_wait, timeout);
++			/* make swsusp happy with our thread */
++//			if (current->flags & PF_FREEZE)
++//				refrigerator(PF_FREEZE);
++		} while (!signal_pending (current) && (timeout > 0));
++
++		if (signal_pending (current)) {
++			spin_lock_irq(&current->sighand->siglock);
++			flush_signals(current);
++			spin_unlock_irq(&current->sighand->siglock);
++		}
++
++		if (np->thread_die)
++			break;
++		
++		current_link=mii_link_ok(&mii_info);
++		if (np->link_state!=current_link) {
++			if (current_link) {
++				printk(KERN_INFO "%s: Ethernet Link OK!\n",dev->name);
++				jz_eth_curr_mode(dev);
++				netif_carrier_on(dev);
++			}
++			else {
++				printk(KERN_WARNING "%s: Ethernet Link offline!\n",dev->name);
++				netif_carrier_off(dev);
++			}
++		}
++		np->link_state=current_link;
++
++	}
++	complete_and_exit (&np->thr_exited, 0);	
++}
++
++
++/*
++ * Reset ethernet device
++ */
++static inline void jz_eth_reset(void)
++{				
++	u32 i;					
++	i = readl(jz_eth_base + DMA_BMR);
++	writel(i | BMR_SWR, jz_eth_base + DMA_BMR);			
++	for(i = 0; i < 1000; i++) {			
++		if(!(readl(jz_eth_base + DMA_BMR) & BMR_SWR)) break;	
++		mdelay(1);			
++	}						
++}
++
++/*
++ * MII operation routines 
++ */
++static inline void mii_wait(void)
++{
++	int i;
++	for(i = 0; i < 10000; i++) {
++		if(!(readl(jz_eth_base + MAC_MIIA) & 0x1)) 
++			break;
++		mdelay(1);
++	}
++	if (i >= 10000)
++		printk("MII wait timeout : %d.\n", i);
++}
++
++static int mdio_read(struct net_device *dev,int phy_id, int location)
++{
++	u32 mii_cmd = (phy_id << 11) | (location << 6) | 1;
++	int retval = 0;
++	
++	writel(mii_cmd, jz_eth_base + MAC_MIIA);
++	mii_wait();
++	retval = readl(jz_eth_base + MAC_MIID) & 0x0000ffff;
++
++	return retval;
++	
++}
++
++static void mdio_write(struct net_device *dev,int phy_id, int location, int data)
++{
++	u32 mii_cmd = (phy_id << 11) | (location << 6) | 0x2 /*| 1*/;
++
++	writel(mii_cmd, jz_eth_base + MAC_MIIA);
++	writel(data & 0x0000ffff, jz_eth_base + MAC_MIID);
++	mii_cmd = (phy_id << 11) | (location << 6) | 0x2 | 1;
++	writel(mii_cmd, jz_eth_base + MAC_MIIA);
++	mii_wait();
++}
++
++
++/*
++ * Search MII phy
++ */
++static int jz_search_mii_phy(struct net_device *dev)
++{
++	
++	struct jz_eth_private *np = netdev_priv(dev);
++	int phy, phy_idx = 0;
++
++	np->valid_phy = 0xff;
++	for (phy = 0; phy < 32; phy++) {
++		int mii_status = mdio_read(dev,phy, 1);
++		if (mii_status != 0xffff  &&  mii_status != 0x0000) {
++			np->phys[phy_idx] = phy;
++			np->ecmds[phy_idx].speed=SPEED_100;
++			np->ecmds[phy_idx].duplex=DUPLEX_FULL;
++			np->ecmds[phy_idx].port=PORT_MII;
++			np->ecmds[phy_idx].transceiver=XCVR_INTERNAL;
++			np->ecmds[phy_idx].phy_address=np->phys[phy_idx];
++			np->ecmds[phy_idx].autoneg=AUTONEG_ENABLE;
++			np->ecmds[phy_idx].advertising=(ADVERTISED_10baseT_Half |
++							ADVERTISED_10baseT_Full |
++							ADVERTISED_100baseT_Half |
++							ADVERTISED_100baseT_Full);
++			phy_idx++;
++			break;
++		}
++	}
++	if (phy_idx == 1) {
++		np->valid_phy = np->phys[0];
++		np->phy_type = 0;
++	}
++	if (phy_idx != 0) {
++		phy = np->valid_phy;
++		np->advertising = mdio_read(dev,phy, 4);
++	}
++	return phy_idx;
++}
++
++/*
++ * CRC calc for Destination Address for gets hashtable index
 + */
 +
-+#include <linux/init.h>
-+#include <linux/serial.h>
-+#include <linux/serial_core.h>
-+#include <linux/serial_8250.h>
-+#include <asm/mips-boards/prom.h>
-+#include <xburst.h>
-+
-+extern void __init jz_board_setup(void);
-+extern void __init jz_cpm_setup(void);
-+
-+/* System Bus Arbiter control*/
-+#define	SBA_CNTL	0x13000000
-+void __iomem *sba_cntl;
-+
-+#define	DMAC_BASE	0x13020000
-+#define DMAC_DMACR	0xfc
-+#define DMAC_DMACR_PR_BIT	8
-+#define DMAC_DMACR_PR_MASK	(0x03 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_01234567	(0 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_02314675	(1 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_20136457	(2 << DMAC_DMACR_PR_BIT)
-+  #define DMAC_DMACR_PR_ROUNDROBIN	(3 << DMAC_DMACR_PR_BIT)
-+#define DMAC_DMACR_HTR		(1 << 3)
-+#define DMAC_DMACR_AER		(1 << 2)
-+#define DMAC_DMACR_DME		(1 << 0)
-+
-+
-+static void __init
-+jz_serial_setup(void)
++#define POLYNOMIAL 0x04c11db7UL
++static u16 jz_hashtable_index(u8 *addr)
 +{
-+#ifdef CONFIG_SERIAL_8250
-+	struct uart_port s;
++	u32 crc = 0xffffffff, msb;
++	int  i, j;
++	u32  byte;
++	for (i = 0; i < 6; i++) {
++		byte = *addr++;
++		for (j = 0; j < 8; j++) {
++			msb = crc >> 31;
++			crc <<= 1;
++			if (msb ^ (byte & 1)) crc ^= POLYNOMIAL;
++			byte >>= 1;
++		}
++	}
++	return ((int)(crc >> 26));
++}
 +
-+	memset(&s, 0, sizeof(s));
++/*
++ * Multicast filter and config multicast hash table
++ */
++#define MULTICAST_FILTER_LIMIT 64
 +
-+	s.flags = UPF_BOOT_AUTOCONF | UPF_SKIP_TEST;
-+	s.iotype = UPIO_MEM;
-+	s.regshift = 2;
-+	s.uartclk = jz_clocks.uartclk;
++static void jz_set_multicast_list(struct net_device *dev)
++{
++	int i, hash_index;
++	u32 mcr, hash_h, hash_l, hash_bit;
++	
++	mcr = readl(jz_eth_base + MAC_MCR);
++	mcr &= ~(MCR_PR | MCR_PM | MCR_HP);
++	
++	if (dev->flags & IFF_PROMISC) {
++		/* Accept any kinds of packets */
++		mcr |= MCR_PR;
++		hash_h = 0xffffffff;
++		hash_l = 0xffffffff;
++	}
++	else  if ((dev->flags & IFF_ALLMULTI) || (dev->mc_count > MULTICAST_FILTER_LIMIT)){
++		/* Accept all multicast packets */
++		mcr |= MCR_PM;
++		hash_h = 0xffffffff;
++		hash_l = 0xffffffff;
++	}
++	else if (dev->flags & IFF_MULTICAST)
++	{
++		/* Update multicast hash table */
++		struct dev_mc_list *mclist;
++		hash_h = readl(jz_eth_base + MAC_HTH);
++		hash_l = readl(jz_eth_base + MAC_HTL);
++		for (i = 0, mclist = dev->mc_list; mclist && i < dev->mc_count;
++		     i++, mclist = mclist->next)
++		{
++			hash_index = jz_hashtable_index(mclist->dmi_addr);
++			hash_bit=0x00000001;
++			hash_bit <<= (hash_index & 0x1f);
++			if (hash_index > 0x1f) 
++				hash_h |= hash_bit;
++			else
++				hash_l |= hash_bit;
++		}
++		writel(hash_h, jz_eth_base + MAC_HTH);
++		writel(hash_l, jz_eth_base + MAC_HTL);
++		mcr |= MCR_HP;
++	}
++	writel(mcr, jz_eth_base + MAC_MCR);
++}
 +
-+	s.line = 0;
-+	s.membase = (u8 *)UART0_BASE;
-+	s.irq = IRQ_UART0;
-+	if (early_serial_setup(&s) != 0) {
-+		printk(KERN_ERR "Serial ttyS0 setup failed!\n");
++static inline int jz_phy_reset(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	unsigned int mii_reg0;
++	int i;
++
++	mii_reg0 = mdio_read(dev,np->valid_phy,MII_BMCR);
++	mii_reg0 |= MII_CR_RST;
++	mdio_write(dev, np->valid_phy, MII_BMCR, mii_reg0);
++
++	for (i=0; i<1000; i++) {
++		mdelay(1);
++		mii_reg0 = mdio_read(dev, np->valid_phy, MII_BMCR);
++		if (!(mii_reg0 & MII_CR_RST))
++			break;
 +	}
 +
-+	s.line = 1;
-+	s.membase = (u8 *)UART1_BASE;
-+	s.irq = IRQ_UART1;
-+	if (early_serial_setup(&s) != 0) {
-+		printk(KERN_ERR "Serial ttyS1 setup failed!\n");
++	if (i >= 1000)
++		/* phy error */
++		return 1;
++
++	return 0;
++}
++
++/*
++ * Start Auto-Negotiation function for PHY 
++ */
++static int jz_autonet_complete(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	int i;
++	u32 mii_reg1, timeout = 3000;
++
++	for (i=0; i<timeout; i++) {
++		mdelay(1);
++		mii_reg1 = mdio_read(dev, np->valid_phy, MII_BMSR);
++		if (mii_reg1 & MII_SR_ASSC)
++			break;
 +	}
 +
-+	s.line = 2;
-+	s.membase = (u8 *)UART2_BASE;
-+	s.irq = IRQ_UART2;
-+	if (early_serial_setup(&s) != 0) {
-+		printk(KERN_ERR "Serial ttyS2 setup failed!\n");
++	if (i >= timeout)
++		/* auto negotiation error */
++		return 1;
++
++	return 0;
++}
++
++/*
++ * Get current mode of eth phy
++ */
++static u32 jz_eth_curr_mode(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	unsigned int mii_reg17;
++	u32 flag = 0;
++
++	mii_reg17 = mdio_read(dev,np->valid_phy,MII_DSCSR); 
++	np->media = mii_reg17>>12;
++	if (np->media==8) {
++		printk(KERN_INFO "%s: Current Mode is [100M Full Duplex]",dev->name);
++		flag = 0;
++		np->full_duplex=1;
++	}
++	if (np->media==4) {
++		printk(KERN_INFO "%s: Current Mode is [100M Half Duplex]",dev->name);
++		flag = 0;
++		np->full_duplex=0;
++	}
++	if (np->media==2) {
++		printk(KERN_INFO "%s: Current Mode is [10M Full Duplex]",dev->name);
++		flag = OMR_TTM;
++		np->full_duplex=1;
++	}
++	if (np->media==1) {
++		printk(KERN_INFO "%s: Current Mode is [10M Half Duplex]",dev->name);
++		flag = OMR_TTM;
++		np->full_duplex=0;
++	}
++	printk("\n");
++	return flag;
++}
++
++/*
++ * Ethernet device hardware init
++ * This routine initializes the ethernet device hardware and PHY
++ */
++static int jz_init_hw(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	struct ethtool_cmd ecmd;
++	u32 mcr, omr;
++	u32 sts, flag = 0;
++	int i;
++
++	jz_eth_reset();
++	STOP_ETH();
++
++	/* Set MAC address */
++	writel(le32_to_cpu(*(unsigned long *)&dev->dev_addr[0]),
++			jz_eth_base + MAC_MAL);
++	writel(le32_to_cpu(*(unsigned long *)&dev->dev_addr[4]),
++			jz_eth_base + MAC_MAH);
++	printk("%s: JZ On-Chip ethernet (MAC ", dev->name);
++	for (i = 0; i < 5; i++) {
++		printk("%2.2x:", dev->dev_addr[i]);
++	}
++	printk("%2.2x, IRQ %d)\n", dev->dev_addr[i], dev->irq);
++
++	if ((np->mii_phy_cnt = jz_search_mii_phy(dev)) == 0) {
++		printk("%s: PHY not found, bailing.\n", dev->name);
++		return -ENXIO;
 +	}
 +
-+	s.line = 3;
-+	s.membase = (u8 *)UART3_BASE;
-+	s.irq = IRQ_UART3;
-+	if (early_serial_setup(&s) != 0) {
-+		printk(KERN_ERR "Serial ttyS3 setup failed!\n");
-+	}
++	printk("%s: Found %d PHY on JZ MAC\n", dev->name, np->mii_phy_cnt);
++
++	mii_info.phy_id = np->valid_phy;
++	mii_info.dev = dev;
++	mii_info.mdio_read = &mdio_read;
++	mii_info.mdio_write = &mdio_write;
++
++	ecmd.speed = SPEED_100;
++	ecmd.duplex = DUPLEX_FULL;
++	ecmd.port = PORT_MII;
++	ecmd.transceiver = XCVR_INTERNAL;
++	ecmd.phy_address = np->valid_phy;
++	ecmd.autoneg = AUTONEG_ENABLE;
++	ecmd.advertising = ADVERTISED_10baseT_Half
++				| ADVERTISED_10baseT_Full
++				| ADVERTISED_100baseT_Half
++				| ADVERTISED_100baseT_Full;
++
++	mii_ethtool_sset(&mii_info,&ecmd);
++
++	if (jz_autonet_complete(dev)) 
++		printk(KERN_WARNING "%s: Ethernet Module AutoNegotiation failed\n",dev->name);
++	mii_ethtool_gset(&mii_info,&ecmd);
++
++	printk(KERN_INFO "%s: Provide Modes: ",dev->name);
++	for (i = 0; i < 5;i++) 
++		if (ecmd.advertising & (1<<i))
++			printk("(%d)%s", i+1, media_types[i]);
++	printk("\n");  
++
++	flag = jz_eth_curr_mode(dev);
++
++	/* Config OMR register */
++	omr = readl(jz_eth_base + DMA_OMR) & ~OMR_TTM;
++	omr |= flag;
++	//omr |= OMR_OSF;
++	omr |= OMR_SF;
++	writel(omr, jz_eth_base + DMA_OMR);
++
++	readl(jz_eth_base + DMA_MFC); //through read operation to clear the register for 0x0000000
++
++	/* Set the programmable burst length (value 1 or 4 is validate)*/
++#if 0 /* __BIG_ENDIAN__ */
++	writel(PBL_4 | DSL_0 | 0x100080, jz_eth_base + DMA_BMR);  /* DSL_0: see DESC_SKIP_LEN and DESC_ALIGN */
++#else /* __LITTLE_ENDIAN__ */
++	writel(PBL_4 | DSL_0, jz_eth_base + DMA_BMR);  /* DSL_0: see DESC_SKIP_LEN and DESC_ALIGN */
 +#endif
++
++	/* Config MCR register*/
++	mcr = (readl(jz_eth_base + MAC_MCR) & ~(MCR_PS | MCR_HBD | MCR_FDX));   
++	if(np->full_duplex)
++		mcr |= MCR_FDX;
++	mcr |= MCR_BFD | MCR_TE | MCR_RE | MCR_OWD|MCR_HBD;
++	writel(mcr, jz_eth_base + MAC_MCR);
++
++	/* Set base address of TX and RX descriptors */
++	writel(np->dma_rx_ring, jz_eth_base + DMA_RRBA);
++	writel(np->dma_tx_ring, jz_eth_base + DMA_TRBA);
++
++	START_ETH();
++
++	/* set interrupt mask */
++	writel(IMR_DEFAULT | IMR_ENABLE, jz_eth_base + DMA_IMR);
++
++	/* Reset any pending (stale) interrupts */
++	sts = readl(jz_eth_base + DMA_STS);
++	writel(sts, jz_eth_base + DMA_STS);
++
++	return 0;
 +}
 +
-+static void __init
-+jz_dma_setup(void)
++static void jz_eth_ring_init(struct net_device *dev)
 +{
-+	void __iomem *dmac_base;
-+	u32 dmacr;
++	struct jz_eth_private *np = netdev_priv(dev);
++	int i;
 +
-+	dmac_base = ioremap_nocache(DMAC_BASE, 0xffff);
-+	if (dmac_base == NULL) {
-+		panic(KERN_ERR "Couldn't map DMAC_BASE(0x%x)\n", DMAC_BASE);
++	for (i = 0; i < NUM_RX_DESCS; i++) {
++		np->rx_ring[i].status = cpu_to_le32(R_OWN);
++		np->rx_ring[i].desc1 = cpu_to_le32(RX_BUF_SIZE | RD_RCH);
++		np->rx_ring[i].buf1_addr = cpu_to_le32(np->dma_rx_buf + i*RX_BUF_SIZE);
++		np->rx_ring[i].next_addr = cpu_to_le32(np->dma_rx_ring + (i+1) * sizeof (jz_desc_t));
++	}
++	np->rx_ring[NUM_RX_DESCS - 1].next_addr = cpu_to_le32(np->dma_rx_ring);
++
++	for (i = 0; i < NUM_TX_DESCS; i++) {
++		np->tx_ring[i].status = cpu_to_le32(0);
++		np->tx_ring[i].desc1  = cpu_to_le32(TD_TCH);
++		np->tx_ring[i].buf1_addr = 0;
++		np->tx_ring[i].next_addr = cpu_to_le32(np->dma_tx_ring + (i+1) * sizeof (jz_desc_t));
++	}
++	np->tx_ring[NUM_TX_DESCS - 1].next_addr = cpu_to_le32(np->dma_tx_ring);
++
++	np->rx_head = 0;
++	np->tx_head = np->tx_tail = 0;
++
++	dma_cache_wback((unsigned long)np->rx_ring, sizeof(jz_desc_t)*NUM_RX_DESCS);
++	dma_cache_wback((unsigned long)np->tx_ring, sizeof(jz_desc_t)*NUM_TX_DESCS);
++}
++
++static int jz_eth_open(struct net_device *dev)
++{
++	int retval;
++
++	jz_eth_ring_init(dev);
++
++	if ((retval = jz_init_hw(dev)) != 0)
++		return retval;
++
++	retval = request_irq(dev->irq, jz_eth_interrupt, 0, dev->name, dev);
++	if (retval) {
++		printk(KERN_WARNING "%s: unable to get IRQ %d .\n", dev->name, dev->irq);
++		return -EAGAIN;
 +	}
 +
-+	/* Set DMA priority and enable all channels. */
-+	dmacr = readl(dmac_base + DMAC_DMACR);
-+	dmacr |= DMAC_DMACR_DME | DMAC_DMACR_PR_ROUNDROBIN;
-+	writel(dmacr, dmac_base + DMAC_DMACR);
++	dev->trans_start = jiffies;
++	netif_start_queue(dev);
++	start_check(dev);
 +
++	return 0;
 +}
 +
-+void
-+jz_usb0_set_function(int host)
++static int jz_eth_close(struct net_device *dev)
 +{
-+	u32 sba = readl(sba_cntl);
-+
-+	if (host)
-+		sba |= (1<<7);
-+	else /* device */
-+		sba &= ~(1<<7);
-+
-+	writel(sba, sba_cntl);
++	netif_stop_queue(dev);
++	close_check(dev);
++	STOP_ETH();
++	free_irq(dev->irq, dev);
++	return 0;
 +}
 +
-+void __init
-+plat_mem_setup(void)
-+{
-+	/* IO/MEM resources. */
-+	set_io_port_base(0);
-+	ioport_resource.start = 0x00000000;
-+	ioport_resource.end = 0xffffffff;
-+	iomem_resource.start = 0x00000000;
-+	iomem_resource.end = 0xffffffff;
-+
-+	jz_cpm_setup();
-+
-+	sba_cntl = ioremap_nocache(SBA_CNTL, 0xffff);
-+	if (sba_cntl == NULL) {
-+		panic(KERN_ERR "Couldn't map SBA_CNTL(0x%x)\n", SBA_CNTL);
-+	}
-+
-+	/* Set bus priority: DMAC > LCD > CIM > ETH > USB > CIM */
-+	writel((readl(sba_cntl) & 0xfffffff0) | 0x08, sba_cntl);
-+
-+	jz_serial_setup();
-+	jz_dma_setup();
-+	jz_board_setup();
-+}
-diff --git a/arch/mips/xburst/jz4730/time.c b/arch/mips/xburst/jz4730/time.c
-new file mode 100644
-index 0000000..c3bd06a
---- /dev/null
-+++ b/arch/mips/xburst/jz4730/time.c
-@@ -0,0 +1,140 @@
 +/*
-+ * Copyright (C) 2010 Ubiq Technologies. <graham.gower@gmail.com>
-+ *
-+ * Copyright (c) 2006-2008  Ingenic Semiconductor Inc.
-+ * Author: <jlwei@ingenic.cn>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * Get the current statistics.
++ * This may be called with the device open or closed.
 + */
-+
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/time.h>
-+#include <linux/clockchips.h>
-+
-+#include <xburst.h>
-+
-+#define	OST_BASE	0x10002000
-+#define OST_TER		0x00	/* 8bit reg */
-+#define OST_TRDR0	0x10
-+#define OST_TCNT0	0x14
-+#define OST_TCSR0	0x18	/* 16bit reg */
-+#define OST_TCRB0	0x1c
-+
-+#define OST_TCSR_BUSY		(1 << 7)
-+#define OST_TCSR_UF		(1 << 6)
-+#define OST_TCSR_UIE		(1 << 5)
-+#define OST_TCSR_CKS_BIT	0
-+#define OST_TCSR_CKS_MASK	(0x07 << OST_TCSR_CKS_BIT)
-+  #define OST_TCSR_CKS_PCLK_4	(0 << OST_TCSR_CKS_BIT)
-+  #define OST_TCSR_CKS_PCLK_16	(1 << OST_TCSR_CKS_BIT)
-+  #define OST_TCSR_CKS_PCLK_64	(2 << OST_TCSR_CKS_BIT)
-+  #define OST_TCSR_CKS_PCLK_256	(3 << OST_TCSR_CKS_BIT)
-+  #define OST_TCSR_CKS_RTCCLK	(4 << OST_TCSR_CKS_BIT)
-+  #define OST_TCSR_CKS_EXTAL	(5 << OST_TCSR_CKS_BIT)
-+
-+static void __iomem *ost_base;
-+static u32 timer_max;
-+
-+static cycle_t
-+jz_get_cycles(struct clocksource *cs)
++static struct net_device_stats * jz_eth_get_stats(struct net_device *dev)
 +{
-+	u32 cnt;
++	struct jz_eth_private *np = netdev_priv(dev);
++	int tmp;
 +
-+	cnt = readl(ost_base + OST_TCNT0);
++	tmp = readl(jz_eth_base + DMA_MFC); // After read clear to zero
++	np->stats.rx_missed_errors += (tmp & MFC_CNT2) + ((tmp & MFC_CNT1) >> 16);
 +
-+	/* Wait for clock sync. */
-+	while ((readw(ost_base + OST_TCSR0) & OST_TCSR_BUSY))
-+		;
-+
-+	cnt = readl(ost_base + OST_TCRB0);
-+
-+	return jiffies*(jz_clocks.extal/HZ) + (timer_max - cnt);
++	return &np->stats;
 +}
 +
-+static void
-+jz_set_mode(enum clock_event_mode mode,
-+		struct clock_event_device *evt)
++/*
++ * ethtool routines
++ */
++static int jz_ethtool_ioctl(struct net_device *dev, void *useraddr)
 +{
++	struct jz_eth_private *np = netdev_priv(dev);
++	u32 ethcmd;
++
++	/* dev_ioctl() in ../../net/core/dev.c has already checked
++	   capable(CAP_NET_ADMIN), so don't bother with that here.  */
++
++	if (get_user(ethcmd, (u32 *)useraddr))
++		return -EFAULT;
++
++	switch (ethcmd) {
++
++	case ETHTOOL_GDRVINFO: {
++		struct ethtool_drvinfo info = { ETHTOOL_GDRVINFO };
++		strcpy (info.driver, DRV_NAME);
++		strcpy (info.version, DRV_VERSION);
++		strcpy (info.bus_info, "OCS");
++		if (copy_to_user (useraddr, &info, sizeof (info)))
++			return -EFAULT;
++		return 0;
++	}
++
++	/* get settings */
++	case ETHTOOL_GSET: {
++		struct ethtool_cmd ecmd = { ETHTOOL_GSET };
++		spin_lock_irq(&np->lock);
++		mii_ethtool_gset(&mii_info, &ecmd);
++		spin_unlock_irq(&np->lock);
++		if (copy_to_user(useraddr, &ecmd, sizeof(ecmd)))
++			return -EFAULT;
++		return 0;
++	}
++	/* set settings */
++	case ETHTOOL_SSET: {
++		int r;
++		struct ethtool_cmd ecmd;
++		if (copy_from_user(&ecmd, useraddr, sizeof(ecmd)))
++			return -EFAULT;
++		spin_lock_irq(&np->lock);
++		r = mii_ethtool_sset(&mii_info, &ecmd);
++		spin_unlock_irq(&np->lock);
++		return r;
++	}
++	/* restart autonegotiation */
++	case ETHTOOL_NWAY_RST: {
++		return mii_nway_restart(&mii_info);
++	}
++	/* get link status */
++	case ETHTOOL_GLINK: {
++		struct ethtool_value edata = {ETHTOOL_GLINK};
++		edata.data = mii_link_ok(&mii_info);
++		if (copy_to_user(useraddr, &edata, sizeof(edata)))
++			return -EFAULT;
++		return 0;
++	}
++
++	/* get message-level */
++	case ETHTOOL_GMSGLVL: {
++		struct ethtool_value edata = {ETHTOOL_GMSGLVL};
++		edata.data = debug;
++		if (copy_to_user(useraddr, &edata, sizeof(edata)))
++			return -EFAULT;
++		return 0;
++	}
++	/* set message-level */
++	case ETHTOOL_SMSGLVL: {
++		struct ethtool_value edata;
++		if (copy_from_user(&edata, useraddr, sizeof(edata)))
++			return -EFAULT;
++		debug = edata.data;
++		return 0;
++	}
++
++
++	default:
++		break;
++	}
++
++	return -EOPNOTSUPP;
++
 +}
 +
-+static irqreturn_t
-+jz_timer_interrupt(int irq, void *dev_id)
++/*
++ * Config device
++ */
++static int jz_eth_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 +{
-+	struct clock_event_device *cd = dev_id;
-+	u16 tcsr0;
++	struct jz_eth_private *np = netdev_priv(dev);
++	struct mii_ioctl_data *data, rdata;
 +
-+	/* ACK timer */
-+	tcsr0 = readw(ost_base + OST_TCSR0);
-+	tcsr0 &= ~OST_TCSR_UF;
-+	writew(tcsr0, ost_base + OST_TCSR0);
++	switch (cmd) {
++	case SIOCETHTOOL:
++		return jz_ethtool_ioctl(dev, (void *) rq->ifr_data);
++	case SIOCGMIIPHY:
++	case SIOCDEVPRIVATE:
++		data = (struct mii_ioctl_data *)&rq->ifr_data;
++		data->phy_id = np->valid_phy;
++	case SIOCGMIIREG:
++	case SIOCDEVPRIVATE+1:
++		data = (struct mii_ioctl_data *)&rq->ifr_data;
++		data->val_out = mdio_read(dev,np->valid_phy, data->reg_num & 0x1f);
++		return 0;
++	case SIOCSMIIREG:
++	case SIOCDEVPRIVATE+2:
++		data = (struct mii_ioctl_data *)&rq->ifr_data;
++		if (!capable(CAP_NET_ADMIN))
++			return -EPERM;
++		mdio_write(dev,np->valid_phy, data->reg_num & 0x1f, data->val_in);
++		return 0;
++	case READ_COMMAND:	
++		data = (struct mii_ioctl_data *)rq->ifr_data;
++		if (copy_from_user(&rdata,data,sizeof(rdata)))
++			return -EFAULT;
++		rdata.val_out = mdio_read(dev,rdata.phy_id, rdata.reg_num & 0x1f);
++		if (copy_to_user(data,&rdata,sizeof(rdata)))
++			return -EFAULT;
++		return 0;
++	case WRITE_COMMAND:
++		if (np->phy_type==1) {
++			data = (struct mii_ioctl_data *)rq->ifr_data;
++			if (!capable(CAP_NET_ADMIN))
++				return -EPERM;
++			if (copy_from_user(&rdata,data,sizeof(rdata)))
++				return -EFAULT;
++			mdio_write(dev,rdata.phy_id, rdata.reg_num & 0x1f, rdata.val_in);
++		}
++		return 0;
++	case GETDRIVERINFO:
++		if (np->phy_type==1) {
++			data = (struct mii_ioctl_data *)rq->ifr_data;
++			if (copy_from_user(&rdata,data,sizeof(rdata)))
++				return -EFAULT;
++			rdata.val_in = 0x1;
++			rdata.val_out = 0x00d0;
++			if (copy_to_user(data,&rdata,sizeof(rdata)))
++				return -EFAULT;
++		}
++		return 0;
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
 +
-+	cd->event_handler(cd);
++/*
++ * Received one packet
++ */
++static void eth_rxready(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	struct sk_buff *skb;
++	unsigned char *pkt_ptr;
++	u32 pkt_len;
++	u32 status;
++
++	ring_inv(np->rx_ring, np->rx_head);
++	status = le32_to_cpu(np->rx_ring[np->rx_head].status);
++	while (!(status & R_OWN)) {               /* owner bit = 0 */
++		if (status & RD_ES) {              /* error summary */
++			np->stats.rx_errors++;    /* Update the error stats. */
++			if (status & (RD_RF | RD_TL))
++				np->stats.rx_frame_errors++;
++			if (status & RD_CE)
++				np->stats.rx_crc_errors++;
++			if (status & RD_TL)
++				np->stats.rx_length_errors++;
++		} else {
++			pkt_ptr = bus_to_virt(le32_to_cpu(np->rx_ring[np->rx_head].buf1_addr));
++			pkt_len = ((status & RD_FL) >> 16) - 4;
++
++			skb = dev_alloc_skb(pkt_len + 2);
++			if (skb == NULL) {
++				printk("%s: Memory squeeze, dropping.\n",
++				       dev->name);
++				np->stats.rx_dropped++;
++				break;
++			}
++			skb->dev = dev;
++			skb_reserve(skb, 2); /* 16 byte align */
++
++			memcpy(skb->data, pkt_ptr, pkt_len);
++			skb_put(skb, pkt_len);
++
++			skb->protocol = eth_type_trans(skb,dev);
++			netif_rx(skb);	/* pass the packet to upper layers */
++			dev->last_rx = jiffies;
++			np->stats.rx_packets++;
++			np->stats.rx_bytes += pkt_len;
++		}
++		np->rx_ring[np->rx_head].status = cpu_to_le32(R_OWN);
++
++		np->rx_head ++;
++		if (np->rx_head >= NUM_RX_DESCS)
++			np->rx_head = 0;
++		ring_inv(np->rx_ring, np->rx_head);
++		status = le32_to_cpu(np->rx_ring[np->rx_head].status);
++	}
++}
++
++/*
++ * Tx timeout routine 
++ */
++static void jz_eth_tx_timeout(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++
++	jz_init_hw(dev);
++	np->stats.tx_errors ++;
++	netif_wake_queue(dev);
++}
++
++/*
++ * One packet was transmitted
++ */
++static void eth_txdone(struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	int tx_tail = np->tx_tail;
++	int entry;
++	u32 status;
++
++	while (tx_tail != np->tx_head) {
++		entry = tx_tail % NUM_TX_DESCS;
++		ring_inv(np->tx_ring, entry);
++		status = le32_to_cpu(np->tx_ring[entry].status);
++		if (status & T_OWN)
++			break;
++		if (status & TD_ES ) {       /* Error summary */
++			np->stats.tx_errors++;
++			if (status & TD_NC) np->stats.tx_carrier_errors++;
++			if (status & TD_LC) np->stats.tx_window_errors++;
++			if (status & TD_UF) np->stats.tx_fifo_errors++;
++			if (status & TD_DE) np->stats.tx_aborted_errors++;
++			if (np->tx_head != np->tx_tail)
++				writel(1, jz_eth_base + DMA_TPD);  /* Restart a stalled TX */
++		} else
++			np->stats.tx_packets++;
++		/* Update the collision counter */
++		np->stats.collisions += ((status & TD_EC) ? 16 : ((status & TD_CC) >> 3));
++		/* Free the original skb */
++		if (np->tx_skb[entry]) {
++			dev_kfree_skb_irq(np->tx_skb[entry]);
++			np->tx_skb[entry] = 0;
++		}
++		tx_tail++;
++	}
++	if (np->tx_full && (tx_tail + NUM_TX_DESCS > np->tx_head + 1)) {
++		/* The ring is no longer full */
++		np->tx_full = 0;
++		netif_wake_queue(dev);
++	}
++	np->tx_tail = tx_tail;
++}
++
++/*
++ * Update the tx descriptor
++ */
++static void load_tx_packet(struct net_device *dev, char *buf, u32 flags, struct sk_buff *skb)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	int entry = np->tx_head % NUM_TX_DESCS;
++
++	np->tx_ring[entry].buf1_addr = cpu_to_le32(virt_to_bus(buf));
++	np->tx_ring[entry].desc1 &= cpu_to_le32((TD_TER | TD_TCH));
++	np->tx_ring[entry].desc1 |= cpu_to_le32(flags);
++	np->tx_ring[entry].status = cpu_to_le32(T_OWN);
++	np->tx_skb[entry] = skb;
++
++	ring_wback(np->tx_ring, entry);
++}
++
++/*
++ * Transmit one packet
++ */
++static int jz_eth_send_packet(struct sk_buff *skb, struct net_device *dev)
++{
++	struct jz_eth_private *np = netdev_priv(dev);
++	u32 length;
++
++	if (np->tx_full) {
++		return 0;
++	}
++
++	length = (skb->len < ETH_ZLEN) ? ETH_ZLEN : skb->len;
++	dma_cache_wback((unsigned long)skb->data, length);
++	load_tx_packet(dev, (char *)skb->data,
++			TD_IC | TD_LS | TD_FS | (length & TD_TBS1), skb);
++
++	spin_lock_irq(&np->lock);
++	np->tx_head ++;
++	np->stats.tx_bytes += length;
++	writel(1, jz_eth_base + DMA_TPD);		/* Start the TX */
++
++	dev->trans_start = jiffies;	/* for timeout */
++	if (np->tx_tail + NUM_TX_DESCS > np->tx_head + 1) {
++		np->tx_full = 0;
++	}
++	else {
++		np->tx_full = 1;
++		netif_stop_queue(dev);
++	}
++	spin_unlock_irq(&np->lock);
++
++	return 0;
++}
++
++/*
++ * Interrupt service routine
++ */
++static irqreturn_t jz_eth_interrupt(int irq, void *dev_id)
++{
++	struct net_device *dev = (struct net_device *)dev_id;
++	struct jz_eth_private *np = netdev_priv(dev);
++	u32 sts;
++	int i;
++
++	spin_lock(&np->lock);
++
++	writel((readl(jz_eth_base + DMA_IMR) & ~IMR_ENABLE),
++			jz_eth_base + DMA_IMR);
++
++	for (i = 0; i < 100; i++) {
++		/* clear status */
++		sts = readl(jz_eth_base + DMA_STS);
++		writel(sts, jz_eth_base + DMA_STS);
++
++		if (!(sts & IMR_DEFAULT))
++			break;
++
++		if (sts & (DMA_INT_RI | DMA_INT_RU))
++			/* Rx IRQ */
++			eth_rxready(dev);
++		if (sts & (DMA_INT_TI | DMA_INT_TU)) {
++			/* Tx IRQ */
++			eth_txdone(dev);
++		}
++
++		/* check error conditions */
++		if (sts & DMA_INT_FB){
++			STOP_ETH();
++			printk(KERN_ERR "%s: Fatal bus error occurred, sts=%#8x, "
++					"device stopped.\n",dev->name, sts);
++			break;
++		}
++
++		/* Transmit underrun */
++		if (sts & DMA_INT_UN) {
++			u32 omr;
++			omr = readl(jz_eth_base + DMA_OMR);
++			if (!(omr & OMR_SF)) {
++				omr &= ~(OMR_ST | OMR_SR);
++				writel(omr, jz_eth_base + DMA_OMR);
++
++				/* wait for stop */
++				while (readl(jz_eth_base + DMA_STS) & STS_TS)
++					;
++
++				/* increase transmit threshold if possible */
++				if ((omr & OMR_TR) < OMR_TR) {
++					omr += TR_24;
++				} else {
++					omr |= OMR_SF;
++				}
++				writel(omr | OMR_ST | OMR_SR,
++						jz_eth_base + DMA_OMR);
++			}
++		}
++	}
++
++	writel(readl(jz_eth_base + DMA_IMR)|IMR_ENABLE, jz_eth_base + DMA_IMR);
++
++	spin_unlock(&np->lock);
++
 +	return IRQ_HANDLED;
 +}
 +
-+static struct clocksource jz_clocksource = {
-+	.name	= "jz4730-ost0",
-+	.rating	= 300,
-+	.read	= jz_get_cycles,
-+	.mask	= CLOCKSOURCE_MASK(32),
-+	.shift	= 10,
-+	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
-+};
-+
-+static struct clock_event_device jz_clockevent_device = {
-+	.name		= "jz4730-ckevent-ost0",
-+	.features	= CLOCK_EVT_FEAT_PERIODIC,
-+	.rating		= 300,
-+	.irq		= IRQ_OST0,
-+	.set_mode	= jz_set_mode,
-+};
-+
-+static struct irqaction jz_irqaction = {
-+	.name		= "jz4730-irq-ost0",
-+	.handler	= jz_timer_interrupt,
-+	.flags		= IRQF_DISABLED | IRQF_PERCPU | IRQF_TIMER,
-+};
-+
-+void __init
-+plat_time_init(void)
++#ifdef CONFIG_PM
++/*
++ * Suspend the ETH interface.
++ */
++static int jz_eth_suspend(struct platform_device *pdev, pm_message_t state)
 +{
-+	ost_base = ioremap_nocache(OST_BASE, 0xfff);
-+	if (ost_base == NULL) {
-+		panic(KERN_ERR "Couldn't map OST_BASE(0x%x)\n", OST_BASE);
++	struct net_device *dev = platform_get_drvdata(pdev);
++	struct jz_eth_private *jep = netdev_priv(dev);
++	unsigned long flags, tmp;
++
++	if (!netif_running(dev))
++		return 0;
++
++	netif_device_detach(dev);
++
++	spin_lock_irqsave(&jep->lock, flags);
++
++	/* Disable interrupts, stop Tx and Rx. */
++	writel(0, jz_eth_base + DMA_IMR);
++	STOP_ETH();
++
++	/* Update the error counts. */
++	tmp = readl(jz_eth_base + DMA_MFC);
++	jep->stats.rx_missed_errors += (tmp & 0x1ffff);
++	jep->stats.rx_fifo_errors += ((tmp >> 17) & 0x7ff);
++
++	spin_unlock_irqrestore(&jep->lock, flags);
++
++	return 0;
++}
++
++/*
++ * Resume the ETH interface.
++ */
++static int jz_eth_resume(struct platform_device *pdev)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++
++	if (!netif_running(dev))
++		return 0;
++
++	jz_eth_ring_init(dev);
++	jz_init_hw(dev);
++
++	netif_device_attach(dev);
++	netif_wake_queue(dev);
++
++	return 0;
++}
++#else
++#define jz_eth_suspend NULL
++#define jz_eth_resume NULL
++#endif /* CONFIG_PM */
++
++static const struct net_device_ops jz_netdev_ops = {
++	.ndo_open = jz_eth_open,
++	.ndo_stop = jz_eth_close,
++	.ndo_start_xmit = jz_eth_send_packet,
++	.ndo_set_multicast_list = jz_set_multicast_list,
++	.ndo_tx_timeout = jz_eth_tx_timeout,
++	.ndo_get_stats = jz_eth_get_stats,
++	.ndo_do_ioctl = jz_eth_ioctl,
++};
++
++static int jz_eth_probe(struct platform_device *pdev)
++{
++	struct net_device *dev;
++	struct jz_eth_private *np;
++	int ret;
++
++	dev = alloc_etherdev(sizeof(struct jz_eth_private));
++	if (!dev) {
++		printk(KERN_ERR "%s: alloc_etherdev failed\n", DRV_NAME);
++		ret = -ENOMEM;
++		goto err0;
 +	}
 +
-+	jz_clockevent_device.cpumask = cpumask_of(0);
-+	clockevents_register_device(&jz_clockevent_device);
++	SET_NETDEV_DEV(dev, &pdev->dev);
 +
-+	jz_irqaction.dev_id = &jz_clockevent_device;
-+	setup_irq(IRQ_OST0, &jz_irqaction);
++	np = netdev_priv(dev);
++	memset(np, 0, sizeof(struct jz_eth_private));
 +
-+	jz_clocksource.mult = clocksource_hz2mult(jz_clocks.extal,
-+					jz_clocksource.shift);
-+	clocksource_register(&jz_clocksource);
++	np->vaddr_rx_buf = (u32)dma_alloc_noncoherent(NULL,
++					NUM_RX_DESCS*RX_BUF_SIZE,
++					&np->dma_rx_buf, 0);
 +
-+	timer_max = (jz_clocks.extal + (HZ>>1)) / HZ;
++	if (!np->vaddr_rx_buf) {
++		printk(KERN_ERR "%s: Cannot alloc dma buffers\n", DRV_NAME);
++		ret = -ENOMEM;
++		goto err1;
++	}
 +
-+	/* Disable timers. */
-+	writeb(0, ost_base + OST_TER);
++	np->dma_rx_ring = virt_to_bus(np->rx_ring);
++	np->dma_tx_ring = virt_to_bus(np->tx_ring);
++	np->full_duplex = 1;
++	np->link_state = 1;
 +
-+	/* Use extal as the clock source, interrupt when timer 0 underflows. */
-+	writew(OST_TCSR_CKS_EXTAL|OST_TCSR_UIE, ost_base + OST_TCSR0);
++	dev->irq = platform_get_irq(pdev, 0);
++	if (dev->irq < 0) {
++		ret = -ENXIO;
++		goto err2;
++	}
 +
-+	/* Set timer 0's reset value upon underflow. */
-+	writel(timer_max, ost_base + OST_TRDR0);
++	np->iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!np->iores) {
++		ret = -ENXIO;
++		goto err2;
++	}
 +
-+	/* Set timer 0's initial value. */
-+	writel(timer_max, ost_base + OST_TCNT0);
++	np->iores = request_mem_region(np->iores->start,
++			resource_size(np->iores), pdev->name);
++	if (!np->iores) {
++		ret = -ENOMEM;
++		goto err2;
++	}
 +
-+	/* Wait for clock sync. */
-+	while ((readw(ost_base + OST_TCSR0) & OST_TCSR_BUSY))
-+		;
++	jz_eth_base = ioremap_nocache(np->iores->start,
++			resource_size(np->iores));
++	if (!jz_eth_base) {
++		ret = -EBUSY;
++		goto err3;
++	}
 +
-+	/* Enable timer 0.*/
-+	writeb(0x1, ost_base + OST_TER);
++	spin_lock_init(&np->lock);
 +
++	dev->netdev_ops = &jz_netdev_ops;
++	dev->watchdog_timeo = ETH_TX_TIMEOUT;
++
++	/* configure MAC address */
++	get_mac_address(dev);
++
++	platform_set_drvdata(pdev, dev);
++
++	if ((ret = register_netdev(dev)) != 0) {
++		printk(KERN_ERR "%s: Cannot register net device, error %d\n",
++				DRV_NAME, ret);
++		goto err4;
++	}
++
++	return 0;
++
++err4:
++	iounmap(jz_eth_base);
++err3:
++	release_mem_region(np->iores->start, 0x10000);
++err2:
++	dma_free_noncoherent(NULL, NUM_RX_DESCS * RX_BUF_SIZE,
++			     (void *)np->vaddr_rx_buf, np->dma_rx_buf);
++err1:
++	free_netdev(dev);
++err0:
++	return ret;
 +}
++
++static int jz_eth_remove(struct platform_device *pdev)
++{
++	struct net_device *dev = platform_get_drvdata(pdev);
++	struct jz_eth_private *np = netdev_priv(dev);
++
++	unregister_netdev(dev);
++	iounmap(jz_eth_base);
++	release_mem_region(np->iores->start, 0x10000);
++	dma_free_noncoherent(NULL, NUM_RX_DESCS * RX_BUF_SIZE,
++			     (void *)np->vaddr_rx_buf, np->dma_rx_buf);
++	free_netdev(dev);
++	return 0;
++}
++
++static struct platform_driver jz_eth_driver = {
++	.driver = {
++		.name = "jz-eth"
++	},
++	.probe = jz_eth_probe,
++	.remove = jz_eth_remove,
++	.suspend = jz_eth_suspend,
++	.resume = jz_eth_resume,
++};
++
++static int __init jz_eth_init(void)
++{
++	return platform_driver_register(&jz_eth_driver);
++}
++
++static void __exit jz_eth_exit(void)
++{
++	platform_driver_unregister(&jz_eth_driver);
++}
++
++module_init(jz_eth_init);
++module_exit(jz_eth_exit);
+diff --git a/drivers/net/jz_eth.h b/drivers/net/jz_eth.h
+new file mode 100644
+index 0000000..62d147c
+--- /dev/null
++++ b/drivers/net/jz_eth.h
+@@ -0,0 +1,403 @@
++/*
++ *  Jz4730/Jz5730 On-Chip ethernet driver.
++ *
++ *  Copyright (C) 2005 - 2007  Ingenic Semiconductor Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++#ifndef __JZ_ETH_H__
++#define __JZ_ETH_H__
++
++/* DMA control and status registers */
++#define DMA_BMR                0x1000 // Bus mode
++#define DMA_TPD                0x1004 // Transmit poll demand register
++#define DMA_RPD                0x1008 // Receieve poll demand register
++#define DMA_RRBA               0x100C // Receieve descriptor base address
++#define DMA_TRBA               0x1010 // Transmit descriptor base address
++#define DMA_STS                0x1014 // Status register
++#define DMA_OMR                0x1018 // Command register
++#define DMA_IMR                0x101C
++#define DMA_MFC                0x1020
++
++/* DMA CSR8-CSR19 reserved */
++#define DMA_CTA                0x1050
++#define DMA_CRA                0x1054
++
++/* Mac control and status registers */
++#define MAC_MCR                0x0000
++#define MAC_MAH                0x0004
++#define MAC_MAL                0x0008
++#define MAC_HTH                0x000C
++#define MAC_HTL                0x0010
++#define MAC_MIIA               0x0014
++#define MAC_MIID               0x0018
++#define MAC_FCR                0x001C
++#define MAC_VTR1               0x0020
++#define MAC_VTR2               0x0024
++
++/*
++ * Bus Mode Register (DMA_BMR)
++ */
++#define BMR_PBL    0x00003f00       /* Programmable Burst Length */
++#define BMR_DSL    0x0000007c       /* Descriptor Skip Length */
++#define BMR_BAR    0x00000002       /* Bus ARbitration */
++#define BMR_SWR    0x00000001       /* Software Reset */
++
++#define PBL_0      0x00000000       /*  DMA burst length = amount in RX FIFO */
++#define PBL_1      0x00000100       /*  1 longword  DMA burst length */
++#define PBL_2      0x00000200       /*  2 longwords DMA burst length */
++#define PBL_4      0x00000400       /*  4 longwords DMA burst length */
++#define PBL_8      0x00000800       /*  8 longwords DMA burst length */
++#define PBL_16     0x00001000       /* 16 longwords DMA burst length */
++#define PBL_32     0x00002000       /* 32 longwords DMA burst length */
++
++#define DSL_0      0x00000000       /*  0 longword  / descriptor */
++#define DSL_1      0x00000004       /*  1 longword  / descriptor */
++#define DSL_2      0x00000008       /*  2 longwords / descriptor */
++#define DSL_4      0x00000010       /*  4 longwords / descriptor */
++#define DSL_8      0x00000020       /*  8 longwords / descriptor */
++#define DSL_16     0x00000040       /* 16 longwords / descriptor */
++#define DSL_32     0x00000080       /* 32 longwords / descriptor */
++
++/*
++ * Status Register (DMA_STS)
++ */
++#define STS_BE     0x03800000       /* Bus Error Bits */
++#define STS_TS     0x00700000       /* Transmit Process State */
++#define STS_RS     0x000e0000       /* Receive Process State */
++
++#define TS_STOP    0x00000000       /* Stopped */
++#define TS_FTD     0x00100000       /* Running Fetch Transmit Descriptor */
++#define TS_WEOT    0x00200000       /* Running Wait for End Of Transmission */
++#define TS_QDAT    0x00300000       /* Running Queue skb data into TX FIFO */
++#define TS_RES     0x00400000       /* Reserved */
++#define TS_SPKT    0x00500000       /* Reserved */
++#define TS_SUSP    0x00600000       /* Suspended */
++#define TS_CLTD    0x00700000       /* Running Close Transmit Descriptor */
++
++#define RS_STOP    0x00000000       /* Stopped */
++#define RS_FRD     0x00020000       /* Running Fetch Receive Descriptor */
++#define RS_CEOR    0x00040000       /* Running Check for End of Receive Packet */
++#define RS_WFRP    0x00060000       /* Running Wait for Receive Packet */
++#define RS_SUSP    0x00080000       /* Suspended */
++#define RS_CLRD    0x000a0000       /* Running Close Receive Descriptor */
++#define RS_FLUSH   0x000c0000       /* Running Flush RX FIFO */
++#define RS_QRFS    0x000e0000       /* Running Queue RX FIFO into RX Skb */
++
++/*
++ * Operation Mode Register (DMA_OMR)
++ */
++#define OMR_TTM    0x00400000       /* Transmit Threshold Mode */
++#define OMR_SF     0x00200000       /* Store and Forward */
++#define OMR_TR     0x0000c000       /* Threshold Control Bits */
++#define OMR_ST     0x00002000       /* Start/Stop Transmission Command */
++#define OMR_OSF    0x00000004       /* Operate on Second Frame */
++#define OMR_SR     0x00000002       /* Start/Stop Receive */
++
++#define TR_18      0x00000000       /* Threshold set to 18 (32) bytes */
++#define TR_24      0x00004000       /* Threshold set to 24 (64) bytes */
++#define TR_32      0x00008000       /* Threshold set to 32 (128) bytes */
++#define TR_40      0x0000c000       /* Threshold set to 40 (256) bytes */
++
++/*
++ * Missed Frames Counters (DMA_MFC)
++ */
++//#define MFC_CNT1   0xffff0000       /* Missed Frames Counter Bits by application */
++#define MFC_CNT1   0x0ffe0000       /* Missed Frames Counter Bits by application */
++#define MFC_CNT2   0x0000ffff       /* Missed Frames Counter Bits by controller */
++
++/*
++ * Mac control  Register (MAC_MCR)
++ */
++#define MCR_RA     0x80000000       /* Receive All */
++#define MCR_HBD    0x10000000       /* HeartBeat Disable */
++#define MCR_PS     0x08000000       /* Port Select */
++#define MCR_OWD    0x00800000       /* Receive own Disable */
++#define MCR_OM     0x00600000       /* Operating(loopback) Mode */
++#define MCR_FDX    0x00100000       /* Full Duplex Mode */
++#define MCR_PM     0x00080000       /* Pass All Multicast */
++#define MCR_PR     0x00040000       /* Promiscuous Mode */
++#define MCR_IF     0x00020000       /* Inverse Filtering */
++#define MCR_PB     0x00010000       /* Pass Bad Frames */
++#define MCR_HO     0x00008000       /* Hash Only Filtering Mode */
++#define MCR_HP     0x00002000       /* Hash/Perfect Receive Filtering Mode */
++#define MCR_FC     0x00001000       /* Late Collision control */
++#define MCR_BFD    0x00000800       /* Boardcast frame Disable */
++#define MCR_RED    0x00000400       /* Retry Disable */
++#define MCR_APS    0x00000100       /* Automatic pad stripping */
++#define MCR_BL     0x000000c0       /* Back off Limit */
++#define MCR_DC     0x00000020       /* Deferral check */
++#define MCR_TE     0x00000008       /* Transmitter enable */
++#define MCR_RE     0x00000004       /* Receiver enable */
++
++#define MCR_MII_10  ( OMR_TTM | MCR_PS)
++#define MCR_MII_100 ( MCR_HBD | MCR_PS)
++
++/* Flow control Register (MAC_FCR) */
++#define FCR_PT     0xffff0000       /* Pause time */
++#define FCR_PCF    0x00000004       /* Pass control frames */
++#define FCR_FCE    0x00000002       /* Flow control enable */
++#define FCR_FCB    0x00000001       /* Flow control busy */
++
++
++/* Constants for the interrupt mask and
++ * interrupt status registers. (DMA_SIS and DMA_IMR)
++ */
++#define DMA_INT_NI             0x00010000       // Normal interrupt summary
++#define DMA_INT_AI             0x00008000       // Abnormal interrupt summary
++#define DMA_INT_ER             0x00004000       // Early receive interrupt
++#define DMA_INT_FB             0x00002000       // Fatal bus error
++#define DMA_INT_ET             0x00000400       // Early transmit interrupt
++#define DMA_INT_RW             0x00000200       // Receive watchdog timeout
++#define DMA_INT_RS             0x00000100       // Receive stop
++#define DMA_INT_RU             0x00000080       // Receive buffer unavailble
++#define DMA_INT_RI             0x00000040       // Receive interrupt
++#define DMA_INT_UN             0x00000020       // Underflow 
++#define DMA_INT_TJ             0x00000008       // Transmit jabber timeout
++#define DMA_INT_TU             0x00000004       // Transmit buffer unavailble 
++#define DMA_INT_TS             0x00000002       // Transmit stop
++#define DMA_INT_TI             0x00000001       // Transmit interrupt
++
++/*
++ * Receive Descriptor Bit Summary
++ */
++#define R_OWN      0x80000000       /* Own Bit */
++#define RD_FF      0x40000000       /* Filtering Fail */
++#define RD_FL      0x3fff0000       /* Frame Length */
++#define RD_ES      0x00008000       /* Error Summary */
++#define RD_DE      0x00004000       /* Descriptor Error */
++#define RD_LE      0x00001000       /* Length Error */
++#define RD_RF      0x00000800       /* Runt Frame */
++#define RD_MF      0x00000400       /* Multicast Frame */
++#define RD_FS      0x00000200       /* First Descriptor */
++#define RD_LS      0x00000100       /* Last Descriptor */
++#define RD_TL      0x00000080       /* Frame Too Long */
++#define RD_CS      0x00000040       /* Collision Seen */
++#define RD_FT      0x00000020       /* Frame Type */
++#define RD_RJ      0x00000010       /* Receive Watchdog timeout*/
++#define RD_RE      0x00000008       /* Report on MII Error */
++#define RD_DB      0x00000004       /* Dribbling Bit */
++#define RD_CE      0x00000002       /* CRC Error */
++
++#define RD_RER     0x02000000       /* Receive End Of Ring */
++#define RD_RCH     0x01000000       /* Second Address Chained */
++#define RD_RBS2    0x003ff800       /* Buffer 2 Size */
++#define RD_RBS1    0x000007ff       /* Buffer 1 Size */
++
++/*
++ * Transmit Descriptor Bit Summary
++ */
++#define T_OWN      0x80000000       /* Own Bit */
++#define TD_ES      0x00008000       /* Frame Aborted (error summary)*/
++#define TD_LO      0x00000800       /* Loss Of Carrier */
++#define TD_NC      0x00000400       /* No Carrier */
++#define TD_LC      0x00000200       /* Late Collision */
++#define TD_EC      0x00000100       /* Excessive Collisions */
++#define TD_HF      0x00000080       /* Heartbeat Fail */
++#define TD_CC      0x0000003c       /* Collision Counter */
++#define TD_UF      0x00000002       /* Underflow Error */
++#define TD_DE      0x00000001       /* Deferred */
++
++#define TD_IC      0x80000000       /* Interrupt On Completion */
++#define TD_LS      0x40000000       /* Last Segment */
++#define TD_FS      0x20000000       /* First Segment */
++#define TD_FT1     0x10000000       /* Filtering Type */
++#define TD_SET     0x08000000       /* Setup Packet */
++#define TD_AC      0x04000000       /* Add CRC Disable */
++#define TD_TER     0x02000000       /* Transmit End Of Ring */
++#define TD_TCH     0x01000000       /* Second Address Chained */
++#define TD_DPD     0x00800000       /* Disabled Padding */
++#define TD_FT0     0x00400000       /* Filtering Type */
++#define TD_TBS2    0x003ff800       /* Buffer 2 Size */
++#define TD_TBS1    0x000007ff       /* Buffer 1 Size */
++
++#define PERFECT_F  0x00000000
++#define HASH_F     TD_FT0
++#define INVERSE_F  TD_FT1
++#define HASH_O_F   (TD_FT1 | TD_F0)
++
++/*
++ * Constant setting
++ */
++
++#define IMR_DEFAULT    ( DMA_INT_TI | DMA_INT_RI |	\
++                         DMA_INT_TS | DMA_INT_RS |	\
++                         DMA_INT_TU | DMA_INT_RU |	\
++                         DMA_INT_FB )
++
++#define IMR_ENABLE     (DMA_INT_NI | DMA_INT_AI)
++
++#define CRC_POLYNOMIAL_BE 0x04c11db7UL  /* Ethernet CRC, big endian */
++#define CRC_POLYNOMIAL_LE 0xedb88320UL  /* Ethernet CRC, little endian */
++
++#define HASH_TABLE_LEN   512       /* Bits */
++#define HASH_BITS        0x01ff    /* 9 LS bits */
++
++#define SETUP_FRAME_LEN  192       /* Bytes */
++#define IMPERF_PA_OFFSET 156       /* Bytes */
++
++/*
++ * Address Filtering Modes
++ */
++#define PERFECT              0     /* 16 perfect physical addresses */
++#define HASH_PERF            1     /* 1 perfect, 512 multicast addresses */
++#define PERFECT_REJ          2     /* Reject 16 perfect physical addresses */
++#define ALL_HASH             3     /* Hashes all physical & multicast addrs */
++
++#define ALL                  0     /* Clear out all the setup frame */
++#define PHYS_ADDR_ONLY       1     /* Update the physical address only */
++
++/* MII register */
++#define MII_BMCR       0x00          /* MII Basic Mode Control Register */
++#define MII_BMSR       0x01          /* MII Basic Mode Status Register */
++#define MII_ID1        0x02          /* PHY Identifier Register 1 */
++#define MII_ID2        0x03          /* PHY Identifier Register 2 */
++#define MII_ANAR       0x04          /* Auto Negotiation Advertisement Register */
++#define MII_ANLPAR     0x05          /* Auto Negotiation Link Partner Ability */
++#define MII_ANER       0x06          /* Auto Negotiation Expansion */
++#define MII_DSCR       0x10          /* Davicom Specified Configration Register */
++#define MII_DSCSR      0x11          /* Davicom Specified Configration/Status Register */
++#define MII_10BTCSR    0x12          /* 10base-T Specified Configration/Status Register */
++
++
++#define MII_PREAMBLE 0xffffffff    /* MII Management Preamble */
++#define MII_TEST     0xaaaaaaaa    /* MII Test Signal */
++#define MII_STRD     0x06          /* Start of Frame+Op Code: use low nibble */
++#define MII_STWR     0x0a          /* Start of Frame+Op Code: use low nibble */
++
++/*
++ * MII Management Control Register
++ */
++#define MII_CR_RST  0x8000         /* RESET the PHY chip */
++#define MII_CR_LPBK 0x4000         /* Loopback enable */
++#define MII_CR_SPD  0x2000         /* 0: 10Mb/s; 1: 100Mb/s */
++#define MII_CR_ASSE 0x1000         /* Auto Speed Select Enable */
++#define MII_CR_PD   0x0800         /* Power Down */
++#define MII_CR_ISOL 0x0400         /* Isolate Mode */
++#define MII_CR_RAN  0x0200         /* Restart Auto Negotiation */
++#define MII_CR_FDM  0x0100         /* Full Duplex Mode */
++#define MII_CR_CTE  0x0080         /* Collision Test Enable */
++
++/*
++ * MII Management Status Register
++ */
++#define MII_SR_T4C  0x8000         /* 100BASE-T4 capable */
++#define MII_SR_TXFD 0x4000         /* 100BASE-TX Full Duplex capable */
++#define MII_SR_TXHD 0x2000         /* 100BASE-TX Half Duplex capable */
++#define MII_SR_TFD  0x1000         /* 10BASE-T Full Duplex capable */
++#define MII_SR_THD  0x0800         /* 10BASE-T Half Duplex capable */
++#define MII_SR_ASSC 0x0020         /* Auto Speed Selection Complete*/
++#define MII_SR_RFD  0x0010         /* Remote Fault Detected */
++#define MII_SR_ANC  0x0008         /* Auto Negotiation capable */
++#define MII_SR_LKS  0x0004         /* Link Status */
++#define MII_SR_JABD 0x0002         /* Jabber Detect */
++#define MII_SR_XC   0x0001         /* Extended Capabilities */
++
++/*
++ * MII Management Auto Negotiation Advertisement Register
++ */
++#define MII_ANA_TAF  0x03e0        /* Technology Ability Field */
++#define MII_ANA_T4AM 0x0200        /* T4 Technology Ability Mask */
++#define MII_ANA_TXAM 0x0180        /* TX Technology Ability Mask */
++#define MII_ANA_FDAM 0x0140        /* Full Duplex Technology Ability Mask */
++#define MII_ANA_HDAM 0x02a0        /* Half Duplex Technology Ability Mask */
++#define MII_ANA_100M 0x0380        /* 100Mb Technology Ability Mask */
++#define MII_ANA_10M  0x0060        /* 10Mb Technology Ability Mask */
++#define MII_ANA_CSMA 0x0001        /* CSMA-CD Capable */
++
++/*
++ * MII Management Auto Negotiation Remote End Register
++ */
++#define MII_ANLPA_NP   0x8000      /* Next Page (Enable) */
++#define MII_ANLPA_ACK  0x4000      /* Remote Acknowledge */
++#define MII_ANLPA_RF   0x2000      /* Remote Fault */
++#define MII_ANLPA_TAF  0x03e0      /* Technology Ability Field */
++#define MII_ANLPA_T4AM 0x0200      /* T4 Technology Ability Mask */
++#define MII_ANLPA_TXAM 0x0180      /* TX Technology Ability Mask */
++#define MII_ANLPA_FDAM 0x0140      /* Full Duplex Technology Ability Mask */
++#define MII_ANLPA_HDAM 0x02a0      /* Half Duplex Technology Ability Mask */
++#define MII_ANLPA_100M 0x0380      /* 100Mb Technology Ability Mask */
++#define MII_ANLPA_10M  0x0060      /* 10Mb Technology Ability Mask */
++#define MII_ANLPA_CSMA 0x0001      /* CSMA-CD Capable */
++
++/*
++ * MII Management DAVICOM Specified Configuration And Status Register
++ */
++#define MII_DSCSR_100FDX       0x8000  /* 100M Full Duplex Operation Mode */    
++#define MII_DSCSR_100HDX       0x4000  /* 100M Half Duplex Operation Mode */
++#define MII_DSCSR_10FDX        0x2000  /* 10M  Full Duplex Operation Mode */
++#define MII_DSCSR_10HDX        0x1000  /* 10M  Half Duplex Operation Mode */
++#define MII_DSCSR_ANMB         0x000f  /* Auto-Negotiation Monitor Bits   */
++
++
++/*
++ * Used by IOCTL
++ */
++#define READ_COMMAND		(SIOCDEVPRIVATE+4)
++#define WRITE_COMMAND		(SIOCDEVPRIVATE+5)
++#define GETDRIVERINFO		(SIOCDEVPRIVATE+6)
++
++/*
++ * Device data and structure
++ */
++
++#define ETH_TX_TIMEOUT		(6*HZ)
++
++#define RX_BUF_SIZE		1536
++
++#define NUM_RX_DESCS		32
++#define NUM_TX_DESCS		16
++
++static const char *media_types[] = {
++	"10BaseT-HD ", "10BaseT-FD ","100baseTx-HD ", 
++	"100baseTx-FD", "100baseT4", 0
++};
++
++typedef struct {
++	unsigned int status;
++	unsigned int desc1;
++	unsigned int buf1_addr;
++	unsigned int next_addr;
++} jz_desc_t;	
++
++struct jz_eth_private {
++	jz_desc_t tx_ring[NUM_TX_DESCS];	/* transmit descriptors */
++	jz_desc_t rx_ring[NUM_RX_DESCS];	/* receive descriptors */
++	dma_addr_t dma_tx_ring;                 /* bus address of tx ring */
++	dma_addr_t dma_rx_ring;                 /* bus address of rx ring */
++	dma_addr_t dma_rx_buf;			/* DMA address of rx buffer  */	
++	unsigned int vaddr_rx_buf;		/* virtual address of rx buffer  */
++
++	unsigned int rx_head;			/* first rx descriptor */
++	unsigned int tx_head;			/* first tx descriptor */
++	unsigned int tx_tail;  			/* last unacked transmit packet */
++	unsigned int tx_full;			/* transmit buffers are full */
++	struct sk_buff *tx_skb[NUM_TX_DESCS];	/* skbuffs for packets to transmit */
++
++	struct net_device_stats stats;
++	spinlock_t lock;
++
++	int media;				/* Media (eg TP), mode (eg 100B)*/
++	int full_duplex;			/* Current duplex setting. */
++	int link_state;
++	char phys[32];				/* List of attached PHY devices */
++	char valid_phy;				/* Current linked phy-id with MAC */
++	int mii_phy_cnt;
++	int phy_type;				/* 1-RTL8309,0-DVCOM */
++	struct ethtool_cmd ecmds[32];
++	u16 advertising;			/* NWay media advertisement */
++
++	struct task_struct *thread;		/* Link check thread */
++	int thread_die;
++	struct completion thr_exited;
++	wait_queue_head_t thr_wait;
++
++	struct pm_dev *pmdev;
++
++	struct resource *iores;
++};
++
++#endif /* __JZ_ETH_H__ */
 -- 
 1.6.4

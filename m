@@ -1,103 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2010 04:34:31 +0100 (CET)
-Received: from mail-pz0-f174.google.com ([209.85.222.174]:60604 "EHLO
-        mail-pz0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490961Ab0BZDe1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2010 04:34:27 +0100
-Received: by pzk4 with SMTP id 4so1024237pzk.21
-        for <linux-mips@linux-mips.org>; Thu, 25 Feb 2010 19:34:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=EXnM8Yc9e+A/XPW3yrbZfQ5zzpsoziEXt7ACt2fVJJA=;
-        b=k1rTfO4PGq62f3FIXsNAlupSHas0s3T268CorEGZ2o01qIjNeoBcuqVNTy2CVKzFag
-         23SdG8g5+EITVlWEkgQD9YzX/Gw93xTtP+5d44NCj1w/4Bc7Wtk62Ob55R7dqwEQOKz5
-         CslAV8YCPo0VH073zx3xeJSfdPp9EiotA6w3I=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=kNzIO0PRik+Q6zCBouh+5p7SVIm7Kwz4cn1jlJOXd7J8gkJX0Z4S4pp+D8+KwXI5FO
-         aU85yi/KV8M3yPy7WTW4cdphqXNHFam/yhE0FApcQVgWynyP3V+ZXKE/hX3GqHq4qeBd
-         5wzDjCh8DgjGvx/y/7EIqslSZBVcOJxcvQe4I=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2010 12:41:48 +0100 (CET)
+Received: from bby1mta03.pmc-sierra.com ([216.241.235.118]:44908 "EHLO
+        bby1mta03.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492050Ab0BZLlo convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Feb 2010 12:41:44 +0100
+Received: from bby1mta03.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
+        by localhost (Postfix) with SMTP id E1F9A107006C
+        for <linux-mips@linux-mips.org>; Fri, 26 Feb 2010 03:41:32 -0800 (PST)
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
+        by bby1mta03.pmc-sierra.bc.ca (Postfix) with SMTP id D8944107006B
+        for <linux-mips@linux-mips.org>; Fri, 26 Feb 2010 03:41:32 -0800 (PST)
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
+         Fri, 26 Feb 2010 03:41:32 -0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Received: by 10.143.25.27 with SMTP id c27mr232620wfj.249.1267155258268; Thu, 
-        25 Feb 2010 19:34:18 -0800 (PST)
-In-Reply-To: <4B872904.6070208@metafoo.de>
-References: <4B861890.6090002@gmail.com>
-         <201002250852.09638.florian@openwrt.org>
-         <6ec4247d1002251312h37f409bdp2384d7fcbddbb321@mail.gmail.com>
-         <4B872904.6070208@metafoo.de>
-Date:   Fri, 26 Feb 2010 14:04:18 +1030
-Message-ID: <6ec4247d1002251934h2168a03fqdcb8e6f0132aa547@mail.gmail.com>
-Subject: Re: [PATCH 0/3] XBurst JZ4730 support
-From:   Graham Gower <graham.gower@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Florian Fainelli <florian@openwrt.org>, Mirko Vogt <lists@nanl.de>,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <graham.gower@gmail.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: blast_dcache32 problem with PREEMPT kernel
+Date:   Fri, 26 Feb 2010 03:41:34 -0800
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C020140497CB0F@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+In-Reply-To: <6ec4247d1002251934h2168a03fqdcb8e6f0132aa547@mail.gmail.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: blast_dcache32 problem with PREEMPT kernel
+Thread-Index: Acq2lLkpzdnh1eOFT7Gknz8fsHfT3gAQu6Eg
+References: <4B861890.6090002@gmail.com>         <201002250852.09638.florian@openwrt.org>         <6ec4247d1002251312h37f409bdp2384d7fcbddbb321@mail.gmail.com>         <4B872904.6070208@metafoo.de> <6ec4247d1002251934h2168a03fqdcb8e6f0132aa547@mail.gmail.com>
+From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:     <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 26 Feb 2010 11:41:32.0773 (UTC) FILETIME=[A4CF7150:01CAB6D8]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26055
+X-archive-position: 26056
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: graham.gower@gmail.com
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On 26 February 2010 12:21, Lars-Peter Clausen <lars@metafoo.de> wrote:
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA1
->
-> Hi
->
-> Graham Gower wrote:
->> On 25 February 2010 18:22, Florian Fainelli <florian@openwrt.org> wrote:
->>> Maybe you should work with the OpenWrt and qi-hardware guys to get the
-> jz4740
->>> also merged in the same time?
->>
->> I've not seen any active attempt to get xburst code merged before and
->> assumed there was no interest from others. I'm happy to be wrong on
->> this.
-> I'm currently working on linux support for a few jz4740 hbased devices.
-> And it's definitely a goal get the code merged upstream once it is in
-> proper shape, but there is still some stuff that needs to be done.
-> Mostly documentation and smaller cleanups.
+Hi list,
 
-I was hoping to get something simple (i.e. bootable with serial) into
-the tree and submit other drivers later, as time permits.
-
->>
->> My patch does not preclude adding jz4740 support. I don't have any of
->> these devices however, so have only included code for the jz4730.
-> Unfortunately I don't have a jz4730 programmers manual to check so I
-> can't say for sure, but I guess there is quite some code that could be
-> shared between between both SoCS(and other jz47xx). I think we don't
-> want to do what Ingenic did with their codebase and copy 'n paste the
-> same file with minor modifications for each soc type.
-
-The 4740 docs are a copy/paste of the 4730 docs with changes here and
-there and lots of register shuffling.
-
->
-> You can find the patches (and files) adding jz4740 support to the
-> linux kernel at [1] and [2].
-> I suggest you take a look at it and see if we could use some of the
-> files(irq, gpio, dma, ...) for a common base between all jz47xx SoCs.
-
-The interrupt controllers look quite similar (the irq numbers have
-been shuffled around). The gpio and dma controllers are quite
-different however.
-
-The MMC and LCD controllers look almost identical. I don't have any
-docs for the nand, but Ingenic's code for the 4730 and 4740 look very
-similar. The USB gadget code differs (udc controller info is missing
-from my 4740 docs) - the jz4730 gadget driver they are shipping is
-broken and they ignored my patch to fix it.
+I am hitting following bug with CONFIG_PREEMP enabled VSMP kernel (
+2.6.24) compiled for mips34K core.
 
 
--Graham
+BUG: using smp_processor_id() in preemptible [00000001] code:
+usb-storage/190
+caller is blast_dcache32+0x30/0x25c
+Call Trace:
+[<8012f338>] vprintk+0x2e8/0x584
+[<8012f354>] vprintk+0x304/0x584
+[<801111a0>] blast_dcache32+0x30/0x25c
+[<80387d5c>] debug_smp_processor_id+0xcc/0xe0
+[<801111a0>] blast_dcache32+0x30/0x25c
+[<80387d5c>] debug_smp_processor_id+0xcc/0xe0
+[<801111a0>] blast_dcache32+0x30/0x25c
+[<8010d9e4>] dma_map_sg+0x128/0x144
+[<80410a84>] urb_destroy+0x0/0x38
+[<801827b0>] kfree+0x8c/0x20c
+[<80411944>] usb_sg_init+0x310/0x324
+[<8042a708>] usb_stor_bulk_transfer_sg+0xd0/0x174
+[<8042a914>] usb_stor_Bulk_transport+0x168/0x324
+[<80121a94>] enqueue_entity+0xcc/0x130
+[<8042a3f4>] usb_stor_invoke_transport+0x38/0x27c
+[<80149ee8>] remove_wait_queue+0x1c/0x60
+[<8054568c>] _spin_unlock_irqrestore+0x24/0x44
+[<805425fc>] __down_interruptible+0x144/0x1e4
+[<801239f0>] default_wake_function+0x0/0x8
+[<8042bd58>] usb_stor_control_thread+0x268/0x320
+[<801497c0>] kthread+0x0/0xa4
+[<80149800>] kthread+0x40/0xa4
+[<801241d8>] complete+0x4c/0x6c
+[<8042baf0>] usb_stor_control_thread+0x0/0x320
+[<80149818>] kthread+0x58/0xa4
+[<8010476c>] kernel_thread_helper+0x10/0x18
+
+Any pointers to debug this / fix this will be greatly appreciated.
+
+Thanking you,
+
+Anoop

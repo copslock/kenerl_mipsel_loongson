@@ -1,86 +1,149 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2010 12:41:48 +0100 (CET)
-Received: from bby1mta03.pmc-sierra.com ([216.241.235.118]:44908 "EHLO
-        bby1mta03.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492050Ab0BZLlo convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Feb 2010 12:41:44 +0100
-Received: from bby1mta03.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
-        by localhost (Postfix) with SMTP id E1F9A107006C
-        for <linux-mips@linux-mips.org>; Fri, 26 Feb 2010 03:41:32 -0800 (PST)
-Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
-        by bby1mta03.pmc-sierra.bc.ca (Postfix) with SMTP id D8944107006B
-        for <linux-mips@linux-mips.org>; Fri, 26 Feb 2010 03:41:32 -0800 (PST)
-Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
-         Fri, 26 Feb 2010 03:41:32 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: blast_dcache32 problem with PREEMPT kernel
-Date:   Fri, 26 Feb 2010 03:41:34 -0800
-Message-ID: <A7DEA48C84FD0B48AAAE33F328C020140497CB0F@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <6ec4247d1002251934h2168a03fqdcb8e6f0132aa547@mail.gmail.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: blast_dcache32 problem with PREEMPT kernel
-Thread-Index: Acq2lLkpzdnh1eOFT7Gknz8fsHfT3gAQu6Eg
-References: <4B861890.6090002@gmail.com>         <201002250852.09638.florian@openwrt.org>         <6ec4247d1002251312h37f409bdp2384d7fcbddbb321@mail.gmail.com>         <4B872904.6070208@metafoo.de> <6ec4247d1002251934h2168a03fqdcb8e6f0132aa547@mail.gmail.com>
-From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-To:     <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 26 Feb 2010 11:41:32.0773 (UTC) FILETIME=[A4CF7150:01CAB6D8]
-Return-Path: <Anoop_P.A@pmc-sierra.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2010 17:21:17 +0100 (CET)
+Received: from mail-bw0-f215.google.com ([209.85.218.215]:64226 "EHLO
+        mail-bw0-f215.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491816Ab0BZQVM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2010 17:21:12 +0100
+Received: by bwz7 with SMTP id 7so214511bwz.24
+        for <multiple recipients>; Fri, 26 Feb 2010 08:21:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer:in-reply-to:references;
+        bh=faevTyH3enUe4WmghMHUmbnnHWZOPODBgl1VFIeTIDY=;
+        b=Y32Rq0GUKcWQLyWpJqB5vv/d2kdK+Yjg0WmQ0Zu1v0qanj7McmXgJqwW/IXWH1MjGD
+         5pkwecxGCHPo+ZvkC14aZWPPYCaySmvAQsYOQ61f4/N2l1uw3/ntq7yzPsppgOGmZUi0
+         R0GE6kPpktoiGG1Uc7SO4pQMocRNNzAPpiJCk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=hS/PHnjiCjs/swFxBzwFnwQlq9Ik3tlfhCQRM9UJw165vkfTf0fr7GJkgdD1MxZhi+
+         mzpYxv46pwUUc/IrfjbF51Lc7Mti2i2cgURh/26IJey11/MDzt1ZyxTlHXZgZSiZhLGW
+         1j0nN/uEekaEeuqlKlnfuL2Aa60cU2q5yvphY=
+Received: by 10.204.32.206 with SMTP id e14mr458845bkd.45.1267201265415;
+        Fri, 26 Feb 2010 08:21:05 -0800 (PST)
+Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
+        by mx.google.com with ESMTPS id 15sm147563bwz.8.2010.02.26.08.21.04
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 26 Feb 2010 08:21:04 -0800 (PST)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH 1/2] MIPS: Alchemy: Repair db1500/bosporus builds
+Date:   Fri, 26 Feb 2010 17:22:01 +0100
+Message-Id: <1267201322-28069-2-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.7.0
+In-Reply-To: <1267201322-28069-1-git-send-email-manuel.lauss@gmail.com>
+References: <1267201322-28069-1-git-send-email-manuel.lauss@gmail.com>
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26056
+X-archive-position: 26057
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Anoop_P.A@pmc-sierra.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi list,
+A few hunks somehow ended up outside their #ifdef/endif blocks,
+leading to -Werror-induces build failures.
 
-I am hitting following bug with CONFIG_PREEMP enabled VSMP kernel (
-2.6.24) compiled for mips34K core.
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+ arch/mips/alchemy/devboards/db1x00/board_setup.c |   52 ++++++++++++----------
+ 1 files changed, 28 insertions(+), 24 deletions(-)
 
-
-BUG: using smp_processor_id() in preemptible [00000001] code:
-usb-storage/190
-caller is blast_dcache32+0x30/0x25c
-Call Trace:
-[<8012f338>] vprintk+0x2e8/0x584
-[<8012f354>] vprintk+0x304/0x584
-[<801111a0>] blast_dcache32+0x30/0x25c
-[<80387d5c>] debug_smp_processor_id+0xcc/0xe0
-[<801111a0>] blast_dcache32+0x30/0x25c
-[<80387d5c>] debug_smp_processor_id+0xcc/0xe0
-[<801111a0>] blast_dcache32+0x30/0x25c
-[<8010d9e4>] dma_map_sg+0x128/0x144
-[<80410a84>] urb_destroy+0x0/0x38
-[<801827b0>] kfree+0x8c/0x20c
-[<80411944>] usb_sg_init+0x310/0x324
-[<8042a708>] usb_stor_bulk_transfer_sg+0xd0/0x174
-[<8042a914>] usb_stor_Bulk_transport+0x168/0x324
-[<80121a94>] enqueue_entity+0xcc/0x130
-[<8042a3f4>] usb_stor_invoke_transport+0x38/0x27c
-[<80149ee8>] remove_wait_queue+0x1c/0x60
-[<8054568c>] _spin_unlock_irqrestore+0x24/0x44
-[<805425fc>] __down_interruptible+0x144/0x1e4
-[<801239f0>] default_wake_function+0x0/0x8
-[<8042bd58>] usb_stor_control_thread+0x268/0x320
-[<801497c0>] kthread+0x0/0xa4
-[<80149800>] kthread+0x40/0xa4
-[<801241d8>] complete+0x4c/0x6c
-[<8042baf0>] usb_stor_control_thread+0x0/0x320
-[<80149818>] kthread+0x58/0xa4
-[<8010476c>] kernel_thread_helper+0x10/0x18
-
-Any pointers to debug this / fix this will be greatly appreciated.
-
-Thanking you,
-
-Anoop
+diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+index 559d9b2..50c9bef 100644
+--- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
++++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+@@ -46,19 +46,25 @@ char irq_tab_alchemy[][5] __initdata = {
+ 	[13] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, AU1500_PCI_INTC, AU1500_PCI_INTD }, /* IDSEL 13 - PCI slot */
+ };
+ 
+-static void bosporus_power_off(void)
+-{
+-	printk(KERN_INFO "It's now safe to turn off power\n");
+-	while (1)
+-		asm volatile (".set mips3 ; wait ; .set mips0");
+-}
++#endif
+ 
+-const char *get_system_type(void)
+-{
+-	return "Alchemy Bosporus Gateway Reference";
+-}
++
++#ifdef CONFIG_MIPS_DB1550
++char irq_tab_alchemy[][5] __initdata = {
++	[11] = { -1, AU1550_PCI_INTC, 0xff, 0xff, 0xff }, /* IDSEL 11 - on-board HPT371 */
++	[12] = { -1, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD, AU1550_PCI_INTA }, /* IDSEL 12 - PCI slot 2 (left) */
++	[13] = { -1, AU1550_PCI_INTA, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD }, /* IDSEL 13 - PCI slot 1 (right) */
++};
+ #endif
+ 
++
++#ifdef CONFIG_MIPS_BOSPORUS
++char irq_tab_alchemy[][5] __initdata = {
++	[11] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, 0xff, 0xff }, /* IDSEL 11 - miniPCI  */
++	[12] = { -1, AU1500_PCI_INTA, 0xff, 0xff, 0xff }, /* IDSEL 12 - SN1741   */
++	[13] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, AU1500_PCI_INTC, AU1500_PCI_INTD }, /* IDSEL 13 - PCI slot */
++};
++
+ /*
+  * Micrel/Kendin 5 port switch attached to MAC0,
+  * MAC0 is associated with PHY address 5 (== WAN port)
+@@ -71,16 +77,20 @@ static struct au1000_eth_platform_data eth0_pdata = {
+ 	.phy_addr		= 5,
+ };
+ 
+-#ifdef CONFIG_MIPS_BOSPORUS
+-char irq_tab_alchemy[][5] __initdata = {
+-	[11] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, 0xff, 0xff }, /* IDSEL 11 - miniPCI  */
+-	[12] = { -1, AU1500_PCI_INTA, 0xff, 0xff, 0xff }, /* IDSEL 12 - SN1741   */
+-	[13] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, AU1500_PCI_INTC, AU1500_PCI_INTD }, /* IDSEL 13 - PCI slot */
+-};
+-
++static void bosporus_power_off(void)
++{
++	printk(KERN_INFO "It's now safe to turn off power\n");
++	while (1)
++		asm volatile (".set mips3 ; wait ; .set mips0");
++}
+ 
++const char *get_system_type(void)
++{
++	return "Alchemy Bosporus Gateway Reference";
++}
+ #endif
+ 
++
+ #ifdef CONFIG_MIPS_MIRAGE
+ char irq_tab_alchemy[][5] __initdata = {
+ 	[11] = { -1, AU1500_PCI_INTD, 0xff, 0xff, 0xff }, /* IDSEL 11 - SMI VGX */
+@@ -99,13 +109,6 @@ const char *get_system_type(void)
+ }
+ #endif
+ 
+-#ifdef CONFIG_MIPS_DB1550
+-char irq_tab_alchemy[][5] __initdata = {
+-	[11] = { -1, AU1550_PCI_INTC, 0xff, 0xff, 0xff }, /* IDSEL 11 - on-board HPT371 */
+-	[12] = { -1, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD, AU1550_PCI_INTA }, /* IDSEL 12 - PCI slot 2 (left) */
+-	[13] = { -1, AU1550_PCI_INTA, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD }, /* IDSEL 13 - PCI slot 1 (right) */
+-};
+-#endif
+ 
+ #if defined(CONFIG_MIPS_BOSPORUS) || defined(CONFIG_MIPS_MIRAGE)
+ static void mips_softreset(void)
+@@ -121,6 +124,7 @@ const char *get_system_type(void)
+ }
+ #endif
+ 
++
+ void __init board_setup(void)
+ {
+ 	unsigned long bcsr1, bcsr2;
+-- 
+1.7.0

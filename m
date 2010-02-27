@@ -1,64 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Feb 2010 21:50:27 +0100 (CET)
-Received: from mail.codesourcery.com ([38.113.113.100]:34196 "EHLO
-        mail.codesourcery.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492067Ab0BZUuX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Feb 2010 21:50:23 +0100
-Received: (qmail 10627 invoked from network); 26 Feb 2010 20:50:20 -0000
-Received: from unknown (HELO caradoc.them.org) (dan@127.0.0.2)
-  by mail.codesourcery.com with ESMTPA; 26 Feb 2010 20:50:20 -0000
-Date:   Fri, 26 Feb 2010 15:50:17 -0500
-From:   Daniel Jacobowitz <dan@codesourcery.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     gdb-patches@sourceware.org, Joel Brobecker <brobecker@adacore.com>,
-        "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Feb 2010 17:56:16 +0100 (CET)
+Received: from mail-bw0-f215.google.com ([209.85.218.215]:57994 "EHLO
+        mail-bw0-f215.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492271Ab0B0Q4I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Feb 2010 17:56:08 +0100
+Received: by bwz7 with SMTP id 7so765004bwz.24
+        for <multiple recipients>; Sat, 27 Feb 2010 08:56:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:cc:subject
+         :date:message-id:x-mailer:in-reply-to:references;
+        bh=vCKjkI8dODhgUKw6/z+aZ/MlIXzLYJuYiT2IYC2+nmU=;
+        b=JAjdkIu2n4mDeFvxUpzezd2PF5qQM2VuPE8lpqw0+/FUzX4ov7bGgvWOm8HKXVOmF5
+         /hR1IIuTDfsNtNci4BsCmwm5LSEJsdhfNzgH/aTVuaVn4Cu5LrD8wXUYwYBWQaKlIjfa
+         4n0yf9kiSgQpvK3MNQHbp/hnebop/Z05aX+f8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references;
+        b=owD3xaXWWS9d1xcGfU4znADXBX7d6pktMgs4eDFYc1v/Z82oOSbMWRnI0qGrPbwrpN
+         IQqrXVuiu8KHiGFxfZouhT0CFJLtgT0PHzKoztYd1KQTmR2OQQe0uR9CnA78W+CcwPyN
+         vayxAaSZAWbMO9+/QnRfu6f2HewA3cDV17xcY=
+Received: by 10.204.5.145 with SMTP id 17mr1395170bkv.40.1267289761939;
+        Sat, 27 Feb 2010 08:56:01 -0800 (PST)
+Received: from localhost (net-93-145-196-35.t2.dsl.vodafone.it [93.145.196.35])
+        by mx.google.com with ESMTPS id 15sm819319bwz.8.2010.02.27.08.56.00
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 27 Feb 2010 08:56:01 -0800 (PST)
+From:   Andrea Gelmini <andrea.gelmini@gelma.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     Andrea Gelmini <andrea.gelmini@gelma.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Make mips-linux signal frame unwinding more robust.
-Message-ID: <20100226205016.GB2630@caradoc.them.org>
-Mail-Followup-To: David Daney <ddaney@caviumnetworks.com>,
-        gdb-patches@sourceware.org, Joel Brobecker <brobecker@adacore.com>,
-        "Pinski, Andrew" <Andrew.Pinski@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-References: <4B82CEC4.2010607@caviumnetworks.com>
- <20100225174739.GA2851@adacore.com>
- <4B86C5EB.6090303@caviumnetworks.com>
- <4B881151.9070300@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4B881151.9070300@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <dan@codesourcery.com>
+        Paul Mundt <lethal@linux-sh.org>, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org
+Subject: [PATCH 42/66] arch/mips/lib/libgcc.h: Checkpatch cleanup
+Date:   Sat, 27 Feb 2010 17:51:23 +0100
+Message-Id: <1267289508-31031-43-git-send-email-andrea.gelmini@gelma.net>
+X-Mailer: git-send-email 1.7.0.90.g251a4
+In-Reply-To: <1267289508-31031-1-git-send-email-andrea.gelmini@gelma.net>
+References: <1267289508-31031-1-git-send-email-andrea.gelmini@gelma.net>
+Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26066
+X-archive-position: 26067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan@codesourcery.com
+X-original-sender: andrea.gelmini@gelma.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 26, 2010 at 10:22:09AM -0800, David Daney wrote:
->   The current signal frame unwinding code in mips-linux-tdep.c assumes
->   a constant offset from the signal return trampoline to the signal
->   frame. The assumption does not hold for all kernels.  Specifically
->   those that have to be compiled with ICACHE_REFILLS_WORKAROUND_WAR
->   set (SGI O2 for example).  In the near future, it is likely that the
->   assumption will cease to hold universally, as we are attempting to
->   move the signal return trampoline off the stack entirely.
+arch/mips/lib/libgcc.h:21: ERROR: open brace '{' following union go on the same line
 
-It's funny, I thought I'd already taught GDB about the WAR workaround,
-but there's no hint of it.  Your patch looks good to me.
+Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
+---
+ arch/mips/lib/libgcc.h |    3 +--
+ arch/sh/lib/libgcc.h   |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-> OK to commit?
-> 
-> How about on the 7.1 branch?
-
-OK both.
-
+diff --git a/arch/mips/lib/libgcc.h b/arch/mips/lib/libgcc.h
+index 3f19d1c..05909d5 100644
+--- a/arch/mips/lib/libgcc.h
++++ b/arch/mips/lib/libgcc.h
+@@ -17,8 +17,7 @@ struct DWstruct {
+ #error I feel sick.
+ #endif
+ 
+-typedef union
+-{
++typedef union {
+ 	struct DWstruct s;
+ 	long long ll;
+ } DWunion;
+diff --git a/arch/sh/lib/libgcc.h b/arch/sh/lib/libgcc.h
+index 3f19d1c..05909d5 100644
+--- a/arch/sh/lib/libgcc.h
++++ b/arch/sh/lib/libgcc.h
+@@ -17,8 +17,7 @@ struct DWstruct {
+ #error I feel sick.
+ #endif
+ 
+-typedef union
+-{
++typedef union {
+ 	struct DWstruct s;
+ 	long long ll;
+ } DWunion;
 -- 
-Daniel Jacobowitz
-CodeSourcery
+1.7.0.90.g251a4

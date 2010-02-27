@@ -1,71 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Feb 2010 18:04:32 +0100 (CET)
-Received: from astoria.ccjclearline.com ([64.235.106.9]:52342 "EHLO
-        astoria.ccjclearline.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492215Ab0B0RE3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Feb 2010 18:04:29 +0100
-Received: from cpe002129c56f16-cm001ceab6425a.cpe.net.cable.rogers.com ([99.235.238.149] helo=crashcourse.ca)
-        by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.69)
-        (envelope-from <rpjday@crashcourse.ca>)
-        id 1NlQ5W-0004a7-AA
-        for linux-mips@linux-mips.org; Sat, 27 Feb 2010 12:04:22 -0500
-Date:   Sat, 27 Feb 2010 12:02:51 -0500 (EST)
-From:   "Robert P. J. Day" <rpjday@crashcourse.ca>
-X-X-Sender: rpjday@localhost
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Initialize an atomic_t properly with ATOMIC_INIT(0).
-Message-ID: <alpine.LFD.2.00.1002271201230.20373@localhost>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Feb 2010 18:57:45 +0100 (CET)
+Received: from smtp2-g21.free.fr ([212.27.42.2]:49285 "EHLO smtp2-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491122Ab0B0R5k (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 27 Feb 2010 18:57:40 +0100
+Received: from smtp2-g21.free.fr (localhost [127.0.0.1])
+        by smtp2-g21.free.fr (Postfix) with ESMTP id 630EF4B01A3;
+        Sat, 27 Feb 2010 18:57:33 +0100 (CET)
+Received: from [192.168.1.234] (cac94-1-81-57-151-96.fbx.proxad.net [81.57.151.96])
+        by smtp2-g21.free.fr (Postfix) with ESMTP id 6A0D74B0163;
+        Sat, 27 Feb 2010 18:57:30 +0100 (CET)
+Message-ID: <4B895D0A.1090401@free.fr>
+Date:   Sat, 27 Feb 2010 18:57:30 +0100
+From:   matthieu castet <castet.matthieu@free.fr>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.8.1.23) Gecko/20090823 SeaMonkey/1.1.18
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - astoria.ccjclearline.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <rpjday@crashcourse.ca>
+To:     linux-mips@linux-mips.org,
+        Linux Kernel list <linux-kernel@vger.kernel.org>
+Subject: merge .text.*/.rel.text.* sections in module build with -ffunction-section
+Content-Type: multipart/mixed;
+ boundary="------------060303070200050206060907"
+Return-Path: <castet.matthieu@free.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26068
+X-archive-position: 26069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpjday@crashcourse.ca
+X-original-sender: castet.matthieu@free.fr
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+--------------060303070200050206060907
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+Hi,
 
----
+mips (and other arch) use -ffunction-section (I am not sure why. It may be to prevent gcc to emit bad relocation).
 
-  AFAIK, the technically correct way to initialize atomic variables is
-with ATOMIC_INIT(n).
+Apart from making the code a bit bigger it :
+- make very difficult to analyze binary kernel dump (without symbol) of module : you can't easily knowing the load address of the module find the symbol of an address.
+- make module bigger (due to alignment between section and bigger section table)
+- make the module loading slower (more section to parse)
+
+I wondering why we doesn't merge all text section in one section when building .ko.
+This can be done with :
+mipsel-openwrt-linux-uclibc-ld -r  -m elf32ltsmip  -o vfat2.ko vfat.ko -T module-common.lds
+
+Why doesn't mips provide a custom module-common.lds that does that ?
 
 
-diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
-index 23499b5..0a5ad2d 100644
---- a/arch/mips/kernel/smtc.c
-+++ b/arch/mips/kernel/smtc.c
-@@ -181,7 +181,7 @@ static int vpemask[2][8] = {
- 	{0, 0, 0, 0, 0, 0, 0, 1}
- };
- int tcnoprog[NR_CPUS];
--static atomic_t idle_hook_initialized = {0};
-+static atomic_t idle_hook_initialized = ATOMIC_INIT(0);
- static int clock_hang_reported[NR_CPUS];
+Matthieu
 
- #endif /* CONFIG_SMTC_IDLE_HOOK_DEBUG */
+PS : could you keep me in CC
 
-========================================================================
-Robert P. J. Day                               Waterloo, Ontario, CANADA
+PS2 : 
+ls -l vfat2.ko vfat.ko
+12881 vfat2.ko
+14748 vfat.ko
 
-            Linux Consulting, Training and Kernel Pedantry.
+we save 13% of module size !
 
-Web page:                                          http://crashcourse.ca
-Twitter:                                       http://twitter.com/rpjday
-========================================================================
+--------------060303070200050206060907
+Content-Type: text/plain;
+ name="module-common.lds"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="module-common.lds"
+
+LyoKICogQ29tbW9uIG1vZHVsZSBsaW5rZXIgc2NyaXB0LCBhbHdheXMgdXNlZCB3aGVuIGxp
+bmtpbmcgYSBtb2R1bGUuCiAqIEFyY2hzIGFyZSBmcmVlIHRvIHN1cHBseSB0aGVpciBvd24g
+bGlua2VyIHNjcmlwdHMuICBsZCB3aWxsCiAqIGNvbWJpbmUgdGhlbSBhdXRvbWF0aWNhbGx5
+LgogKi8KU0VDVElPTlMgewoJLnRleHQgOiB7CgkJKigudGV4dC4qKQoJfQoJLnJlbC50ZXh0
+IDogewoJCSooLnJlbC50ZXh0LiopCgl9CgkvRElTQ0FSRC8gOiB7ICooLmRpc2NhcmQpIH0K
+fQo=
+--------------060303070200050206060907--

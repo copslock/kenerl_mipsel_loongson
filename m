@@ -1,76 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Feb 2010 16:37:05 +0100 (CET)
-Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:33638 "EHLO
-        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492278Ab0B1Pfs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Feb 2010 16:35:48 +0100
-Received: id: bigeasy by Chamillionaire.breakpoint.cc authenticated by bigeasy with local
-        (easymta 1.00 BETA 1)
-        id 1NllBJ-0004M9-9F; Sun, 28 Feb 2010 16:35:45 +0100
-From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, "David S. Miller" <davem@davemloft.net>,
-        linux-ide@vger.kernel.org,
-        Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-Subject: [PATCH 1/3] mips/ide: flush dcache also if icache does not snoop dcache
-Date:   Sun, 28 Feb 2010 16:35:39 +0100
-Message-Id: <1267371341-16684-2-git-send-email-sebastian@breakpoint.cc>
-X-Mailer: git-send-email 1.6.5.2
-In-Reply-To: <1267371341-16684-1-git-send-email-sebastian@breakpoint.cc>
-References: <1267371341-16684-1-git-send-email-sebastian@breakpoint.cc>
-Return-Path: <bigeasy@Chamillionaire.breakpoint.cc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Mar 2010 03:33:55 +0100 (CET)
+Received: from 124x34x33x190.ap124.ftth.ucom.ne.jp ([124.34.33.190]:56179 "EHLO
+        master.linux-sh.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492103Ab0CACdw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Mar 2010 03:33:52 +0100
+Received: from localhost (unknown [127.0.0.1])
+        by master.linux-sh.org (Postfix) with ESMTP id EE7CE63758;
+        Mon,  1 Mar 2010 02:33:16 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at linux-sh.org
+Received: from master.linux-sh.org ([127.0.0.1])
+        by localhost (master.linux-sh.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id mxxupwluW9ax; Mon,  1 Mar 2010 11:33:16 +0900 (JST)
+Received: by master.linux-sh.org (Postfix, from userid 500)
+        id AAA8D6375A; Mon,  1 Mar 2010 11:33:16 +0900 (JST)
+Date:   Mon, 1 Mar 2010 11:33:16 +0900
+From:   Paul Mundt <lethal@linux-sh.org>
+To:     Andrea Gelmini <andrea.gelmini@gelma.net>
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org
+Subject: Re: [PATCH 42/66] arch/mips/lib/libgcc.h: Checkpatch cleanup
+Message-ID: <20100301023316.GB23086@linux-sh.org>
+References: <1267289508-31031-1-git-send-email-andrea.gelmini@gelma.net> <1267289508-31031-43-git-send-email-andrea.gelmini@gelma.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1267289508-31031-43-git-send-email-andrea.gelmini@gelma.net>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <lethal@linux-sh.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26073
+X-archive-position: 26074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebastian@breakpoint.cc
+X-original-sender: lethal@linux-sh.org
 Precedence: bulk
 X-list: linux-mips
 
-If this is not done then the new just read data which remains in dcache
-will not make it into icache on time. Thus the CPU loads invalid data
-and executes crap. The result is that the user is not able to execute
-anything from its IDE based media while reading plain data is still
-working well.
-This problem has been reported as Debian #404951.
-
-Cc: stable@kernel.org
-Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
----
- arch/mips/include/asm/mach-generic/ide.h |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/include/asm/mach-generic/ide.h b/arch/mips/include/asm/mach-generic/ide.h
-index 9c93a5b..e80e47f 100644
---- a/arch/mips/include/asm/mach-generic/ide.h
-+++ b/arch/mips/include/asm/mach-generic/ide.h
-@@ -23,7 +23,7 @@
- static inline void __ide_flush_prologue(void)
- {
- #ifdef CONFIG_SMP
--	if (cpu_has_dc_aliases)
-+	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
- 		preempt_disable();
- #endif
- }
-@@ -31,14 +31,14 @@ static inline void __ide_flush_prologue(void)
- static inline void __ide_flush_epilogue(void)
- {
- #ifdef CONFIG_SMP
--	if (cpu_has_dc_aliases)
-+	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
- 		preempt_enable();
- #endif
- }
- 
- static inline void __ide_flush_dcache_range(unsigned long addr, unsigned long size)
- {
--	if (cpu_has_dc_aliases) {
-+	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc) {
- 		unsigned long end = addr + size;
- 
- 		while (addr < end) {
--- 
-1.6.6
+On Sat, Feb 27, 2010 at 05:51:23PM +0100, Andrea Gelmini wrote:
+> arch/mips/lib/libgcc.h:21: ERROR: open brace '{' following union go on the same line
+> 
+> Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
+> ---
+>  arch/mips/lib/libgcc.h |    3 +--
+>  arch/sh/lib/libgcc.h   |    3 +--
+>  2 files changed, 2 insertions(+), 4 deletions(-)
+> 
+I'll apply the sh part by itself, and I suppose Ralf will do the same for
+MIPS. I'm a bit confused as to why these were lumped together when 65 out
+of 66 oneliner patches made no use of ad-hoc grouping.

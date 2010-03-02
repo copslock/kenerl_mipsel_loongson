@@ -1,73 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Mar 2010 23:37:56 +0100 (CET)
-Received: from mail-bw0-f226.google.com ([209.85.218.226]:39727 "EHLO
-        mail-bw0-f226.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492362Ab0CAWge (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Mar 2010 23:36:34 +0100
-Received: by mail-bw0-f226.google.com with SMTP id 26so2428417bwz.27
-        for <multiple recipients>; Mon, 01 Mar 2010 14:36:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:reply-to:content-type
-         :content-transfer-encoding:message-id;
-        bh=yFpFrflWQiWE+hFwO8KN6XfCxd8+qeREgASUxSqoJsE=;
-        b=RXm/d9LAFbsAQG+ngS9MIx22gV9bsbpTV+TRfFFJWHU8TKaZ7K5EaGmMveXfY1I5R9
-         HruDOWmnyQLnCk8MjePLAh8u/FeaZlmaSB/pHpiStS6bQyPm8OFIxND7AM0/HEHS0s0+
-         /MIJd2t8iIci/GoDfWg7S+urkUE32B/rQueVA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to:reply-to
-         :content-type:content-transfer-encoding:message-id;
-        b=cAvmu3Knz4tQIUvnKKD7CXtRr/unPK/Amzllk2S0TtREUb3lmJImVgTeFA+I9WdMFg
-         iseTiT57BM9cOlNLWyx8kGeQpg+FpfHAJHJYrSRm5ptbsmt32d9QeLJuWoqdWRU7wxjq
-         eOgCAUZ4EuI02ffhvlcALj7RT0Pe6GCi1KMW4=
-Received: by 10.204.138.81 with SMTP id z17mr3508964bkt.49.1267482994577;
-        Mon, 01 Mar 2010 14:36:34 -0800 (PST)
-Received: from lenovo.localnet (153.44.69-86.rev.gaoland.net [86.69.44.153])
-        by mx.google.com with ESMTPS id e18sm1095439bkd.2.2010.03.01.14.36.33
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 01 Mar 2010 14:36:34 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-Date:   Mon, 1 Mar 2010 23:36:32 +0100
-Subject: [PATCH 4/4] bcm63xx: fix BCM6338 and BCM6345 gpio count
-MIME-Version: 1.0
-X-UID:  180
-X-Length: 1415
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Reply-To: Florian Fainelli <florian@openwrt.org>
-Content-Type: text/plain;
-  charset="utf-8"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2010 01:39:47 +0100 (CET)
+Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:45273
+        "EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491139Ab0CBAjm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Mar 2010 01:39:42 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by sunset.davemloft.net (Postfix) with ESMTP id 75C7624C094;
+        Mon,  1 Mar 2010 16:39:59 -0800 (PST)
+Date:   Mon, 01 Mar 2010 16:39:59 -0800 (PST)
+Message-Id: <20100301.163959.177031088.davem@davemloft.net>
+To:     sebastian@breakpoint.cc
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-ide@vger.kernel.org
+Subject: Re: [PATCH 3/3] ide: move dcache flushing to generic ide code
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20100301195858.GA27906@Chamillionaire.breakpoint.cc>
+References: <1267371341-16684-4-git-send-email-sebastian@breakpoint.cc>
+        <20100228.183417.52179576.davem@davemloft.net>
+        <20100301195858.GA27906@Chamillionaire.breakpoint.cc>
+X-Mailer: Mew version 6.3 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <201003012336.32430.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26083
+X-archive-position: 26084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 
-The number of GPIOs on BCM6338 is 8, while BCM6345 has only 16 GPIOs
-available.
+From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+Date: Mon, 1 Mar 2010 20:58:58 +0100
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
-index 76a0b72..43d4da0 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
-@@ -10,6 +10,10 @@ static inline unsigned long bcm63xx_gpio_count(void)
- 	switch (bcm63xx_get_cpu_id()) {
- 	case BCM6358_CPU_ID:
- 		return 40;
-+	case BCM6338_CPU_ID:
-+		return 8;
-+	case BCM6345_CPU_ID:
-+		return 16;
- 	case BCM6348_CPU_ID:
- 	default:
- 		return 37;
+> The part I don't get is why you have to flush dcache after the copy
+> process. I would understand a flush before reading. The dcache alias in
+> kernel shouldn't hurt since it is not used anymore. Unless we read twice
+> from the same page. Is this the trick?
+
+Anything that puts the data into the cache on the kernel
+side is a problem.  The page is still potentially in user
+space, as a result there will be thus two active mappings
+in the cache, one in the kernel side and one in the user
+side.  The user can then do various operations which can
+access either mapping.
+
+Writing to it via write() system call, writing to it via
+mmap(), making the kernel write to it by doing a read()
+with the buffer pointing into the mmap() area.
+
+All we need is a modification on either side for the other
+one to potentially become stale.
+
+>>Secondly, IDE is in deep maintainence mode, if you want to optimize
+>>cache flushing do it in the ATA layer.
+> This patch patch was mostly driven by the fact that the buffer can be a
+> normal kernel mapping or a virtual address. The latter doesn't work with
+> virt_to_page().
+> Anyway I should probably spent more time getting ATA layer wokring than
+> on the IDE layer since it is somehow working since patch#1.
+
+All buffers passed to the architecture IDE ops should be PAGE_OFFSET
+relative kernel virtual addresses for which __pa() works.
+
+Are kmap()'d things ending up here?
+
+It all works out on sparc64 because we don't have highmem and
+kernel stacks are just in normal kernel pages.

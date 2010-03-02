@@ -1,72 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2010 01:39:47 +0100 (CET)
-Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:45273
-        "EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491139Ab0CBAjm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Mar 2010 01:39:42 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by sunset.davemloft.net (Postfix) with ESMTP id 75C7624C094;
-        Mon,  1 Mar 2010 16:39:59 -0800 (PST)
-Date:   Mon, 01 Mar 2010 16:39:59 -0800 (PST)
-Message-Id: <20100301.163959.177031088.davem@davemloft.net>
-To:     sebastian@breakpoint.cc
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-ide@vger.kernel.org
-Subject: Re: [PATCH 3/3] ide: move dcache flushing to generic ide code
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20100301195858.GA27906@Chamillionaire.breakpoint.cc>
-References: <1267371341-16684-4-git-send-email-sebastian@breakpoint.cc>
-        <20100228.183417.52179576.davem@davemloft.net>
-        <20100301195858.GA27906@Chamillionaire.breakpoint.cc>
-X-Mailer: Mew version 6.3 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2010 11:34:27 +0100 (CET)
+Received: from mail-bw0-f215.google.com ([209.85.218.215]:46963 "EHLO
+        mail-bw0-f215.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491000Ab0CBKeW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Mar 2010 11:34:22 +0100
+Received: by bwz7 with SMTP id 7so71660bwz.24
+        for <multiple recipients>; Tue, 02 Mar 2010 02:34:17 -0800 (PST)
+Received: by 10.204.4.139 with SMTP id 11mr4395227bkr.27.1267526057143;
+        Tue, 02 Mar 2010 02:34:17 -0800 (PST)
+Received: from ?192.168.2.2? (ppp91-77-213-207.pppoe.mtu-net.ru [91.77.213.207])
+        by mx.google.com with ESMTPS id 15sm2688896bwz.8.2010.03.02.02.34.15
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 02 Mar 2010 02:34:16 -0800 (PST)
+Message-ID: <4B8CE98D.406@ru.mvista.com>
+Date:   Tue, 02 Mar 2010 13:33:49 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+MIME-Version: 1.0
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/4] bcm63xx: add DWVS0 board
+References: <201003012336.28071.florian@openwrt.org>
+In-Reply-To: <201003012336.28071.florian@openwrt.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26084
+X-archive-position: 26085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-Date: Mon, 1 Mar 2010 20:58:58 +0100
+Hello.
 
-> The part I don't get is why you have to flush dcache after the copy
-> process. I would understand a flush before reading. The dcache alias in
-> kernel shouldn't hurt since it is not used anymore. Unless we read twice
-> from the same page. Is this the trick?
+Florian Fainelli wrote:
 
-Anything that puts the data into the cache on the kernel
-side is a problem.  The page is still potentially in user
-space, as a result there will be thus two active mappings
-in the cache, one in the kernel side and one in the user
-side.  The user can then do various operations which can
-access either mapping.
+> The DWVS0 board is a BCM6358-based board with an on-board OHCI controler.
+>
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> ---
+> diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+> index 0b1d60f..8bf2c01 100644
+> --- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
+> +++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+> @@ -567,6 +567,27 @@ static struct board_info __initdata board_AGPFS0 = {
+>  	.has_ohci0 = 1,
+>  	.has_ehci0 = 1,
+>  };
+> +
+> +static struct board_info __initdata board_DWVS0 = {
+> +	.name				= "DWV-S0",
+> +	.expected_cpu_id		= 0x6358,
+> +
+> +	.has_enet0			= 1,
+> +	.has_enet1			= 1,
+> +	.has_pci			= 1,
+> +
+> +	.enet0 = {
+> +		.has_phy		= 1,
+> +		.use_internal_phy	= 1,
+> +	},
+> +
+> +	.enet1 = {
+> +		.force_speed_100	= 1,
+> +		.force_duplex_full	= 1,
+> +	},
+> +
+> +	.has_ohci0 = 1,
+>   
 
-Writing to it via write() system call, writing to it via
-mmap(), making the kernel write to it by doing a read()
-with the buffer pointing into the mmap() area.
+   Why it's not aligned with the rest of initializers?
 
-All we need is a modification on either side for the other
-one to potentially become stale.
-
->>Secondly, IDE is in deep maintainence mode, if you want to optimize
->>cache flushing do it in the ATA layer.
-> This patch patch was mostly driven by the fact that the buffer can be a
-> normal kernel mapping or a virtual address. The latter doesn't work with
-> virt_to_page().
-> Anyway I should probably spent more time getting ATA layer wokring than
-> on the IDE layer since it is somehow working since patch#1.
-
-All buffers passed to the architecture IDE ops should be PAGE_OFFSET
-relative kernel virtual addresses for which __pa() works.
-
-Are kmap()'d things ending up here?
-
-It all works out on sparc64 because we don't have highmem and
-kernel stacks are just in normal kernel pages.
+WBR, Sergei

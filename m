@@ -1,116 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2010 14:39:04 +0100 (CET)
-Received: from zmc.proxad.net ([212.27.53.206]:35056 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491138Ab0CBNjA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Mar 2010 14:39:00 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 20B413418153;
-        Tue,  2 Mar 2010 14:38:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at 
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id CZNKzExolfNX; Tue,  2 Mar 2010 14:38:55 +0100 (CET)
-Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 8562F341814A;
-        Tue,  2 Mar 2010 14:38:55 +0100 (CET)
-From:   Florian Fainelli <ffainelli@freebox.fr>
-Organization: Freebox
-To:     Maxime Bizon <mbizon@freebox.fr>
-Subject: Re: [PATCH 6/7] MIPS: bcm63xx: call board_register_device from device_initcall()
-Date:   Tue, 2 Mar 2010 14:38:47 +0100
-User-Agent: KMail/1.12.2 (Linux/2.6.31-17-server; KDE/4.3.2; x86_64; ; )
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-References: <1264872898-28149-1-git-send-email-mbizon@freebox.fr> <1264872898-28149-7-git-send-email-mbizon@freebox.fr>
-In-Reply-To: <1264872898-28149-7-git-send-email-mbizon@freebox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2010 14:54:26 +0100 (CET)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:34107 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491868Ab0CBNyX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Mar 2010 14:54:23 +0100
+Received: by pwj2 with SMTP id 2so123886pwj.36
+        for <linux-mips@linux-mips.org>; Tue, 02 Mar 2010 05:54:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=e+7hUrAoTeTQ89bmtRz5Rs9hFOIBbo0LJxgw9wtlCDI=;
+        b=xeki5kE1u0M7QtVk24PoRLSm8knZAZVNvvHadlw34AIMHvMUGAbEUIP6/XBlkYApE9
+         UsZwb8sb1lMH+S5ZUivVtVZJSd/b5PwFy7dCyh47u+ij0IWxTEAMpHEr/Gxft9auAJp3
+         YlCHP4ybScR5tl/zx9MwBKFPZs7TLR5tm4Bl8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=sGlrxz39XJ0nvMH5WbPDJOgxOcfqKnvWCHHfWxlAyDjO4m4Gn4wGMufvlbnp8+FCTy
+         Fb9HeKkkh5Fiol7XA2JwyCQ84K1a/nYXas+NCtOenL/zqPbduLhMD/RWIGafnKAxVHYP
+         lKS8Z5fWXX5QPPGY6hgl+KXq2+TZoQQhccd+A=
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201003021438.47105.ffainelli@freebox.fr>
-Return-Path: <ffainelli@freebox.fr>
+Received: by 10.114.22.12 with SMTP id 12mr252391wav.205.1267538055383; Tue, 
+        02 Mar 2010 05:54:15 -0800 (PST)
+Date:   Tue, 2 Mar 2010 19:24:15 +0530
+Message-ID: <9bde694e1003020554p7c8ff3c2o4ae7cb5d501d1ab9@mail.gmail.com>
+Subject: kmemleak for MIPS
+From:   naveen yadav <yad.naveen@gmail.com>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <yad.naveen@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26086
+X-archive-position: 26087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ffainelli@freebox.fr
+X-original-sender: yad.naveen@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Maxime,
+Hi all,
 
-On Saturday 30 January 2010 18:34:57 Maxime Bizon wrote:
-> Some device registration (eg leds), expect subsystem initcall to be
-> run first, so move board device registration to device_initcall().
-> 
-> Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
-> ---
->  arch/mips/bcm63xx/setup.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
-> index d005659..04a3499 100644
-> --- a/arch/mips/bcm63xx/setup.c
-> +++ b/arch/mips/bcm63xx/setup.c
-> @@ -124,4 +124,4 @@ int __init bcm63xx_register_devices(void)
->  	return board_register_devices();
->  }
-> 
-> -arch_initcall(bcm63xx_register_devices);
-> +device_initcall(bcm63xx_register_devices);
+I want to check kmemleak for both ARM/MIPS. i am able to find kernel
+patch for ARM at
+http://linux.derkeiler.com/Mailing-Lists/Kernel/2009-04/msg11830.html.
+But I could not able to trace patch for MIPS.
 
-This breaks the fallback SPROM registration, that one needs to be set before
-the PCI subsystem is intialized, otherwise b43 gets an empty WLAN MAC
-address. This was the reason to move bcm63xx_register_devices to
-the arch_initcall level in the first place.
-
-Let's use the first stage board callback which also has to be called prior to
-PCI initialization.
-
-From: Florian Fainelli <ffainelli@freebox.fr>
-Subject: [PATCH] bcm63xx: register SSB SPROM fallback in board's first stage callback
-
-Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
----
-diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-index 90faa37..f7e0be1 100644
---- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
-+++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-@@ -676,6 +676,17 @@ void __init board_prom_init(void)
- 	}
- 
- 	bcm_gpio_writel(val, GPIO_MODE_REG);
-+
-+	/* Generate MAC address for WLAN and
-+	 * register our SPROM */
-+#ifdef CONFIG_SSB_PCIHOST
-+	if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
-+		memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-+		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-+		if (ssb_arch_set_fallback_sprom(&bcm63xx_sprom) < 0)
-+			printk(KERN_ERR "failed to register fallback SPROM\n");
-+	}
-+#endif
- }
- 
- /*
-@@ -835,17 +846,6 @@ int __init board_register_devices(void)
- 	if (board.has_dsp)
- 		bcm63xx_dsp_register(&board.dsp);
- 
--	/* Generate MAC address for WLAN and
--	 * register our SPROM */
--#ifdef CONFIG_SSB_PCIHOST
--	if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
--		memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
--		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
--		if (ssb_arch_set_fallback_sprom(&bcm63xx_sprom) < 0)
--			printk(KERN_ERR "failed to register fallback SPROM\n");
--	}
--#endif
--
- 	/* read base address of boot chip select (0) */
- 	if (BCMCPU_IS_6345())
- 		val = 0x1fc00000;
+Kind Regards
+Naveen

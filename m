@@ -1,52 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2010 14:54:26 +0100 (CET)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:34107 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491868Ab0CBNyX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Mar 2010 14:54:23 +0100
-Received: by pwj2 with SMTP id 2so123886pwj.36
-        for <linux-mips@linux-mips.org>; Tue, 02 Mar 2010 05:54:15 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Mar 2010 16:13:15 +0100 (CET)
+Received: from fg-out-1718.google.com ([72.14.220.156]:55846 "EHLO
+        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491868Ab0CBPNM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Mar 2010 16:13:12 +0100
+Received: by fg-out-1718.google.com with SMTP id d23so166329fga.6
+        for <multiple recipients>; Tue, 02 Mar 2010 07:13:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=e+7hUrAoTeTQ89bmtRz5Rs9hFOIBbo0LJxgw9wtlCDI=;
-        b=xeki5kE1u0M7QtVk24PoRLSm8knZAZVNvvHadlw34AIMHvMUGAbEUIP6/XBlkYApE9
-         UsZwb8sb1lMH+S5ZUivVtVZJSd/b5PwFy7dCyh47u+ij0IWxTEAMpHEr/Gxft9auAJp3
-         YlCHP4ybScR5tl/zx9MwBKFPZs7TLR5tm4Bl8=
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type;
+        bh=y6SA0qJy0uuBvYZMW5YE7cDsjIlO3VOpEV7Mo/tWzzM=;
+        b=XMUemizOrxbN71ljOCr/tsmJML2wyNJuK07dZ4sammeqvchBu/7K1m4x7jdl8oC1U9
+         i05oT0Hpe/lg7eatGgSmZ5o9obyemYG6KQrtFGC5Ocm1RztRlKvOtGDIV3kd/1UdMs8W
+         6Is4+Y5LQyDin52Lx7/RfT4fDfJSYjyAAuek8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=sGlrxz39XJ0nvMH5WbPDJOgxOcfqKnvWCHHfWxlAyDjO4m4Gn4wGMufvlbnp8+FCTy
-         Fb9HeKkkh5Fiol7XA2JwyCQ84K1a/nYXas+NCtOenL/zqPbduLhMD/RWIGafnKAxVHYP
-         lKS8Z5fWXX5QPPGY6hgl+KXq2+TZoQQhccd+A=
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        b=PPQ0r/9CHIylOGUv7vbVV1Siz6rw8KKsLvTaNLwrLZQhVai7Zk/5yg/Lp1p1AEmyEm
+         3QCTaFsXR56e0LGblfj5joYGZMmuVG4IGQTupJRAdnjJSfaZdzAkyW6NUHY8xuA6lemT
+         X4eY1bqaOoZroXQIJOWFnsCucpDutspT+QXnY=
 MIME-Version: 1.0
-Received: by 10.114.22.12 with SMTP id 12mr252391wav.205.1267538055383; Tue, 
-        02 Mar 2010 05:54:15 -0800 (PST)
-Date:   Tue, 2 Mar 2010 19:24:15 +0530
-Message-ID: <9bde694e1003020554p7c8ff3c2o4ae7cb5d501d1ab9@mail.gmail.com>
-Subject: kmemleak for MIPS
-From:   naveen yadav <yad.naveen@gmail.com>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <yad.naveen@gmail.com>
+Received: by 10.87.65.9 with SMTP id s9mr9877496fgk.48.1267542791131; Tue, 02 
+        Mar 2010 07:13:11 -0800 (PST)
+In-Reply-To: <20100301023316.GB23086@linux-sh.org>
+References: <1267289508-31031-1-git-send-email-andrea.gelmini@gelma.net>
+         <1267289508-31031-43-git-send-email-andrea.gelmini@gelma.net>
+         <20100301023316.GB23086@linux-sh.org>
+Date:   Tue, 2 Mar 2010 16:13:11 +0100
+X-Google-Sender-Auth: 718d2b274871f915
+Message-ID: <9cdbb57f1003020713x4e897af9ka87e348bf782f380@mail.gmail.com>
+Subject: Re: [PATCH 42/66] arch/mips/lib/libgcc.h: Checkpatch cleanup
+From:   Andrea Gelmini <andrea.gelmini@gelma.net>
+To:     Paul Mundt <lethal@linux-sh.org>
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org, linux-sh@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <andrea.gelmini@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26087
+X-archive-position: 26088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yad.naveen@gmail.com
+X-original-sender: andrea.gelmini@gelma.net
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+2010/3/1 Paul Mundt <lethal@linux-sh.org>:
+Hi Paul,
+   thanks for your reply.
 
-I want to check kmemleak for both ARM/MIPS. i am able to find kernel
-patch for ARM at
-http://linux.derkeiler.com/Mailing-Lists/Kernel/2009-04/msg11830.html.
-But I could not able to trace patch for MIPS.
+> I'll apply the sh part by itself, and I suppose Ralf will do the same for
+> MIPS. I'm a bit confused as to why these were lumped together when 65 out
+> of 66 oneliner patches made no use of ad-hoc grouping.
 
-Kind Regards
-Naveen
+After the experience with GregKH, I was looking for others maintainer
+interested in code cleanup. So I sent some patches over random files.
+If you care, I can checkpatch.pl all mips subtree and send you patches (if any).
+
+Thanks a lot for your work,
+Andrea

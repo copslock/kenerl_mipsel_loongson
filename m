@@ -1,66 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Mar 2010 17:09:04 +0100 (CET)
-Received: from lo.gmane.org ([80.91.229.12]:53087 "EHLO lo.gmane.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492188Ab0CCQI5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Mar 2010 17:08:57 +0100
-Received: from list by lo.gmane.org with local (Exim 4.69)
-        (envelope-from <sgi-linux-mips@m.gmane.org>)
-        id 1Nmr81-0006jF-4S
-        for linux-mips@linux-mips.org; Wed, 03 Mar 2010 17:08:53 +0100
-Received: from chipmunk.wormnet.eu ([195.195.131.226])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 03 Mar 2010 17:08:53 +0100
-Received: from alex by chipmunk.wormnet.eu with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 03 Mar 2010 17:08:53 +0100
-X-Injected-Via-Gmane: http://gmane.org/
-To:     linux-mips@linux-mips.org
-From:   Alexander Clouter <alex@digriz.org.uk>
-Subject: Re: TI AR7 7200 - no boot
-Date:   Wed, 3 Mar 2010 15:54:39 +0000
-Message-ID: <vad267-9it.ln1@chipmunk.wormnet.eu>
-References: <27766331.post@talk.nabble.com> <27766728.post@talk.nabble.com> <27767861.post@talk.nabble.com> <201003031404.53039.florian@openwrt.org>
-X-Complaints-To: usenet@dough.gmane.org
-X-Gmane-NNTP-Posting-Host: chipmunk.wormnet.eu
-User-Agent: tin/1.9.3-20080506 ("Dalintober") (UNIX) (Linux/2.6.26-2-sparc64-smp (sparc64))
-Return-Path: <sgi-linux-mips@m.gmane.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Mar 2010 17:34:34 +0100 (CET)
+Received: from mail-gx0-f224.google.com ([209.85.217.224]:41758 "EHLO
+        mail-gx0-f224.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492180Ab0CCQeb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Mar 2010 17:34:31 +0100
+Received: by gxk24 with SMTP id 24so635484gxk.7
+        for <multiple recipients>; Wed, 03 Mar 2010 08:34:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type;
+        bh=s3ViADiP22IoAQyguDqntN640mhHos1Ss0CiUswtWeA=;
+        b=UqGIDDc3p6pQwaOKXwY7pRBt1wxkNAqEKjkxdTua92xUxg61mB4cjH8xB1hI2E2VRj
+         M/DsqpijUB+aPUQnk9mzE0GaMyvPxYGFleTgY7/85Orga++zelQMZ61ehL9WSKN2F7Aq
+         WYDsaLSDxeN41gzzNp8GmkSlf5bzB1X/19aAA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=ga+qZNo/L2nTT8uk3nRdan/k7+8ONNtZ0l3RfeMEtVNyDIp1o/Irt/zjK+/oiIExIQ
+         xQVS412HRKWOV1zc1ozoXNhP44jAC+gfze8dqCYNIOt8j16CleldGVGTIDZao0hNN0CI
+         f963NWisN53bCwHR389VtYNjEGLYIwdki2Juw=
+MIME-Version: 1.0
+Received: by 10.90.38.27 with SMTP id l27mr4992343agl.6.1267634063016; Wed, 03 
+        Mar 2010 08:34:23 -0800 (PST)
+In-Reply-To: <20100303110527.11233.20400.stgit@muvarov>
+References: <20100303110527.11233.20400.stgit@muvarov>
+Date:   Thu, 4 Mar 2010 00:34:22 +0800
+Message-ID: <e997b7421003030834r7bec3295s7917bb91a3fa2d27@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MIPS kexec,kdump support
+From:   "wilbur.chan" <wilbur512@gmail.com>
+To:     Maxim Uvarov <muvarov@gmail.com>
+Cc:     linux-mips@linux-mips.org, kexec@lists.infradead.org,
+        horms@verge.net.au, ralf@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26109
+X-archive-position: 26110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@digriz.org.uk
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Florian Fainelli <florian@openwrt.org> wrote:
+2010/3/3 Maxim Uvarov <muvarov@gmail.com>:
+> Hello folks,
 >
-> On Wednesday 03 March 2010 13:58:48 Dea_RU wrote:
->> 
->> If delete my debug printk-s kernel stop after first console output
->> "Calibrating delay loop... "
->> 
->> I do not MIPS arch interput specific ..... Can be MIPS need init internel
->> timer and link overflow flag to interput ??
-> 
-> All handlers are not correctly setup, so you should include this patch in your 
-> tree:
-> 
-> http://www.linux-mips.org/archives/linux-mips/2010-01/msg00019.html
-> 
-If I could slip in with some shameless self advertising:
+> Please find here MIPS crash and kdump patches.
+> This is patch set of 3 patches:
+> 1. generic MIPS changes (kernel);
+> 2. MIPS Cavium Octeon board kexec/kdump code (kernel);
+> 3. Kexec user space MIPS changes.
+>
+> Patches were tested on the latest linux-mips@ git kernel and the latest
+> kexec-tools git on Cavium Octeon 50xx board.
+>
+> I also made the same code working on RMI XLR/XLS boards for both
+> mips32 and mips64 kernels.
+>
+> Best regards,
+> Maxim Uvarov.
+>
 
-http://www.digriz.org.uk/wag54g
+> Signed-off-by: Maxim Uvarov <muvarov@gmail.com>
+>
+>
+>
 
-Same(ish) chipset, the 'Creating Firmwares' section should interest you 
-and get you started on your buildroot journey.
+Hi, Maxim
 
-Cheers
+In XLR series ,
 
--- 
-Alexander Clouter
-.sigmonster says: guru, n:
-                  	A computer owner who can read the manual.
+1)How to protect  boardinfo and pass it to second kernel ?
+
+2)If all cpus jumped to same entry point , did you change head.s  ,if so , how ?
+
+
+
+Thank you!

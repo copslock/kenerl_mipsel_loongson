@@ -1,72 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 10:39:47 +0100 (CET)
-Received: from mail.windriver.com ([147.11.1.11]:49564 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491187Ab0CDJjo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Mar 2010 10:39:44 +0100
-Received: from localhost.localdomain (pek-lpgbuild1.wrs.com [128.224.153.29])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o249dXVZ024419;
-        Thu, 4 Mar 2010 01:39:36 -0800 (PST)
-From:   Yang Shi <yang.shi@windriver.com>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Protect current_cpu_data with preempt disable in delay()
-Date:   Thu,  4 Mar 2010 17:39:33 +0800
-Message-Id: <1267695573-27360-1-git-send-email-yang.shi@windriver.com>
-X-Mailer: git-send-email 1.6.0.4
-Return-Path: <yang.shi@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 12:35:47 +0100 (CET)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:46412 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490999Ab0CDLfo convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Mar 2010 12:35:44 +0100
+Received: by gwj21 with SMTP id 21so1207305gwj.36
+        for <multiple recipients>; Thu, 04 Mar 2010 03:35:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=n6BWJSZcHse9VR/zabGgrG6JXxxZ2rfAv/ox4xolTNQ=;
+        b=oanIZCHFDUpKSCP2vr/w8qa7RAN4BPtH9/AvFHzoS7FPfDFmm/MpacOBBoKqWVnlnQ
+         MW6tYN5gRv6sWV4iQ1Stpxb62D+Q333yK3jXqr+4C8P5gVKUYMeiq99ZL9TNMHq2Z8sT
+         X7JFX+Pqa+IvcgkKVxSN7JyGlB1PIfTLY1Zqg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=aZqQ++K1j9vp/CgSqZumIId19i6V835JE9t7f2oKjh7eyjKe6pVWwIEyDB8iPYb8GD
+         kqzSZapna0o7m3QdnUex2qS6yuYtVOwOSP3jI6V4J1kkHdx3Mx1jufnyEGKC+hRpsEaE
+         u2OWTnsD4hAI58c5o0sfwgUXEFVHFKPQ0vPyA=
+MIME-Version: 1.0
+Received: by 10.150.81.5 with SMTP id e5mr2390216ybb.158.1267702537387; Thu, 
+        04 Mar 2010 03:35:37 -0800 (PST)
+In-Reply-To: <4B8E9E0C.4050809@caviumnetworks.com>
+References: <20100303110527.11233.20400.stgit@muvarov>
+         <4B8E9E0C.4050809@caviumnetworks.com>
+Date:   Thu, 4 Mar 2010 14:35:37 +0300
+Message-ID: <572af9171003040335w16434350y60a9f39676dbfa3d@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MIPS kexec,kdump support
+From:   Maxim Uvarov <muvarov@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, kexec@lists.infradead.org,
+        horms@verge.net.au, ralf@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <muvarov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26121
+X-archive-position: 26122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yang.shi@windriver.com
+X-original-sender: muvarov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-During machine restart with reboot command, get the following
-bug info:
+2010/3/3 David Daney <ddaney@caviumnetworks.com>:
+> On 03/03/2010 03:05 AM, Maxim Uvarov wrote:
+>>
+>> Hello folks,
+>>
+>> Please find here MIPS crash and kdump patches.
+>> This is patch set of 3 patches:
+>> 1. generic MIPS changes (kernel);
+>> 2. MIPS Cavium Octeon board kexec/kdump code (kernel);
+>> 3. Kexec user space MIPS changes.
+>>
+>> Patches were tested on the latest linux-mips@ git kernel and the latest
+>> kexec-tools git on Cavium Octeon 50xx board.
+>>
+>> I also made the same code working on RMI XLR/XLS boards for both
+>> mips32 and mips64 kernels.
+>>
+>> Best regards,
+>> Maxim Uvarov.
+>>
+>>
+>> ---
+>>
+>>  arch/mips/Kconfig                  |   24 ++++++++++
+>
+> [...]
+>>
+>>
+>> Signed-off-by: Maxim Uvarov<muvarov@gmail.com>
+>>
+>
+> That Signed-off-by: needs to be just above the '---' not at the end.
+>
+> David Daney
+>
+Thanks David, I corrected stgit email template. I think I don't need
+resend patches with only this change.
 
-BUG: using smp_processor_id() in preemptible [00000000] code: reboot/1989
-caller is __udelay+0x14/0x70
-Call Trace:
-[<ffffffff8110ad28>] dump_stack+0x8/0x34
-[<ffffffff812dde04>] debug_smp_processor_id+0xf4/0x110
-[<ffffffff812d90bc>] __udelay+0x14/0x70
-[<ffffffff81378274>] md_notify_reboot+0x12c/0x148
-[<ffffffff81161054>] notifier_call_chain+0x64/0xc8
-[<ffffffff811614dc>] __blocking_notifier_call_chain+0x64/0xc0
-[<ffffffff8115566c>] kernel_restart_prepare+0x1c/0x38
-[<ffffffff811556cc>] kernel_restart+0x14/0x50
-[<ffffffff8115581c>] SyS_reboot+0x10c/0x1f0
-[<ffffffff81103684>] handle_sysn32+0x44/0x84
 
-The root cause is that current_cpu_data is accessed in preemptible
-context, so protect it with preempt_disable/preempt_enable pair
-in delay().
-
-Signed-off-by: Yang Shi <yang.shi@windriver.com>
----
- arch/mips/lib/delay.c |    6 +++++-
- 1 files changed, 5 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
-index 6b3b1de..dc38064 100644
---- a/arch/mips/lib/delay.c
-+++ b/arch/mips/lib/delay.c
-@@ -41,7 +41,11 @@ EXPORT_SYMBOL(__delay);
- 
- void __udelay(unsigned long us)
- {
--	unsigned int lpj = current_cpu_data.udelay_val;
-+	unsigned int lpj;
-+
-+	preempt_disable();
-+	lpj = current_cpu_data.udelay_val;
-+	preempt_enable();
- 
- 	__delay((us * 0x000010c7ull * HZ * lpj) >> 32);
- }
 -- 
-1.6.3.3
+Best regards,
+Maxim Uvarov

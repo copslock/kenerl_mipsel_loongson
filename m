@@ -1,105 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 04:44:26 +0100 (CET)
-Received: from smtp.gentoo.org ([140.211.166.183]:46747 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490970Ab0CDDoV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Mar 2010 04:44:21 +0100
-Received: by smtp.gentoo.org (Postfix, from userid 2181)
-        id C5A971B4001; Thu,  4 Mar 2010 03:44:09 +0000 (UTC)
-Date:   Thu, 4 Mar 2010 03:44:09 +0000
-From:   Zhang Le <r0bertz@gentoo.org>
-To:     Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, "Rafael J. Wysocki" <rjw@sisk.pl>,
-        linux-mips@linux-mips.org, zhangfx@lemote.com
-Subject: Re: [PATCH v11 0/9] Loongson: YeeLoong: add platform drivers
-Message-ID: <20100304034409.GA11523@woodpecker.gentoo.org>
-Mail-Followup-To: Wu Zhangjin <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, "Rafael J. Wysocki" <rjw@sisk.pl>,
-        linux-mips@linux-mips.org, zhangfx@lemote.com
-References: <cover.1264940063.git.wuzhangjin@gmail.com> <1264940423.21259.2.camel@falcon>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1264940423.21259.2.camel@falcon>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <r0bertz@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 10:39:47 +0100 (CET)
+Received: from mail.windriver.com ([147.11.1.11]:49564 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491187Ab0CDJjo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Mar 2010 10:39:44 +0100
+Received: from localhost.localdomain (pek-lpgbuild1.wrs.com [128.224.153.29])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o249dXVZ024419;
+        Thu, 4 Mar 2010 01:39:36 -0800 (PST)
+From:   Yang Shi <yang.shi@windriver.com>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: Protect current_cpu_data with preempt disable in delay()
+Date:   Thu,  4 Mar 2010 17:39:33 +0800
+Message-Id: <1267695573-27360-1-git-send-email-yang.shi@windriver.com>
+X-Mailer: git-send-email 1.6.0.4
+Return-Path: <yang.shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26120
+X-archive-position: 26121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: yang.shi@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-On 20:20 Sun 31 Jan     , Wu Zhangjin wrote:
-> On Sun, 2010-01-31 at 20:15 +0800, Wu Zhangjin wrote:
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> 
-> (ooh, just re-generate the patchset with "git format-patch" but forgot
-> to put the comments, here it is!)
-> 
-> This patchset adds several platform specific drivers for the YeeLoong
-> netbook
-> made by Lemote.
-> 
-> It is completely based on the v10 revision and with the following
-> changes:
-> 
->   O Rebased on the latest linux-queue git tree of Ralf.
->   O Split the EC revision related handling out of the "input/hotkey"
-> driver.
->   O Rewrite the AC & Battery driver with the new power_supply interface
-> as "Pavel Machek" suggested.
-> 
-> All of them have been tested again.
-> 
-> Best Regards,
-> 	Wu Zhangjin
-> 
-> > 
-> > Wu Zhangjin (9):
-> >   MIPS: add subdirectory for platform extension drivers
-> >   Loongson: YeeLoong: add platform driver
-> >   Loongson: YeeLoong: add backlight driver
-> >   Loongson: YeeLoong: add hardware monitoring driver
-> >   Loongson: YeeLoong: add video output driver
-> >   Loongson: YeeLoong: add suspend support
-> >   Loongson: YeeLoong: add input/hotkey driver
-> >   Loongson: YeeLoong: Co-operate with the revisions of EC
-> >   Loongson: YeeLoong: add power_supply based battery driver
-> > 
-> >  arch/mips/include/asm/mach-loongson/ec_kb3310b.h |  188 ++++
-> >  arch/mips/include/asm/mach-loongson/loongson.h   |    6 +
-> >  arch/mips/loongson/common/cmdline.c              |    8 +
-> >  arch/mips/loongson/lemote-2f/Makefile            |    2 +-
-> >  arch/mips/loongson/lemote-2f/ec_kb3310b.c        |   12 +-
-> >  arch/mips/loongson/lemote-2f/ec_kb3310b.h        |  188 ----
-> >  arch/mips/loongson/lemote-2f/platform.c          |   39 +
-> >  arch/mips/loongson/lemote-2f/pm.c                |    4 +-
-> >  arch/mips/loongson/lemote-2f/reset.c             |    2 +-
-> >  drivers/platform/Kconfig                         |    4 +
-> >  drivers/platform/Makefile                        |    1 +
-> >  drivers/platform/mips/Kconfig                    |   32 +
-> >  drivers/platform/mips/Makefile                   |    5 +
-> >  drivers/platform/mips/yeeloong_laptop.c          | 1192 ++++++++++++++++++++++
-> >  14 files changed, 1483 insertions(+), 200 deletions(-)
-> >  create mode 100644 arch/mips/include/asm/mach-loongson/ec_kb3310b.h
-> >  delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h
-> >  create mode 100644 arch/mips/loongson/lemote-2f/platform.c
-> >  create mode 100644 drivers/platform/mips/Kconfig
-> >  create mode 100644 drivers/platform/mips/Makefile
-> >  create mode 100644 drivers/platform/mips/yeeloong_laptop.c
-> > 
+During machine restart with reboot command, get the following
+bug info:
 
-What's the status of these patches?
+BUG: using smp_processor_id() in preemptible [00000000] code: reboot/1989
+caller is __udelay+0x14/0x70
+Call Trace:
+[<ffffffff8110ad28>] dump_stack+0x8/0x34
+[<ffffffff812dde04>] debug_smp_processor_id+0xf4/0x110
+[<ffffffff812d90bc>] __udelay+0x14/0x70
+[<ffffffff81378274>] md_notify_reboot+0x12c/0x148
+[<ffffffff81161054>] notifier_call_chain+0x64/0xc8
+[<ffffffff811614dc>] __blocking_notifier_call_chain+0x64/0xc0
+[<ffffffff8115566c>] kernel_restart_prepare+0x1c/0x38
+[<ffffffff811556cc>] kernel_restart+0x14/0x50
+[<ffffffff8115581c>] SyS_reboot+0x10c/0x1f0
+[<ffffffff81103684>] handle_sysn32+0x44/0x84
 
-Ralf, any chance for 2.6.34?
-Thanks!
+The root cause is that current_cpu_data is accessed in preemptible
+context, so protect it with preempt_disable/preempt_enable pair
+in delay().
 
-Zhang, Le
+Signed-off-by: Yang Shi <yang.shi@windriver.com>
+---
+ arch/mips/lib/delay.c |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+index 6b3b1de..dc38064 100644
+--- a/arch/mips/lib/delay.c
++++ b/arch/mips/lib/delay.c
+@@ -41,7 +41,11 @@ EXPORT_SYMBOL(__delay);
+ 
+ void __udelay(unsigned long us)
+ {
+-	unsigned int lpj = current_cpu_data.udelay_val;
++	unsigned int lpj;
++
++	preempt_disable();
++	lpj = current_cpu_data.udelay_val;
++	preempt_enable();
+ 
+ 	__delay((us * 0x000010c7ull * HZ * lpj) >> 32);
+ }
+-- 
+1.6.3.3

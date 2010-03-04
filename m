@@ -1,114 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 12:58:45 +0100 (CET)
-Received: from mail-yx0-f179.google.com ([209.85.210.179]:33539 "EHLO
-        mail-yx0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491851Ab0CDL6m convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Mar 2010 12:58:42 +0100
-Received: by yxe9 with SMTP id 9so1225765yxe.22
-        for <multiple recipients>; Thu, 04 Mar 2010 03:58:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=1tRr09/lk/etBJnnzP87tj6O0jjThngLIZg2F+TntPs=;
-        b=rbQiAUTRSdC7763c7f1eZbx0KqeIWtiYpPSn3QZ23oSrsxwcTSH8t/3DrXyBtFEca0
-         EYoVscgQbdZFEMX8PHJH5Yc6hRGPmhwikoUUg+JWeftLqMSBV3ZuYqPRuVtOx6y2juQL
-         eA3yUEuqrVl8gmnb3+ZfbEzPpE+wh8bXbz0BE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=E6idz5oS3qf1TlsbSlkUE0HGoDr5gX/YwLnMm3w4HweVWX7a1g5vAYbCy1L2T3Y3cl
-         /4BeNxMOI2SHL7N8Ythj/7vpzu5hVNdB7sKarjvlGnNdvY06dCN+9SSply2JQwNzx0yR
-         bcScu6cRlwFHaAMOSA6DKbuIEKzVCRyICaMiw=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 19:24:55 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:5396 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492267Ab0CDSYw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Mar 2010 19:24:52 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4b8ffafa0000>; Thu, 04 Mar 2010 10:24:58 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 4 Mar 2010 10:23:53 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 4 Mar 2010 10:23:53 -0800
+Message-ID: <4B8FFAB3.1090409@caviumnetworks.com>
+Date:   Thu, 04 Mar 2010 10:23:47 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.8) Gecko/20100301 Fedora/3.0.3-1.fc12 Thunderbird/3.0.3
 MIME-Version: 1.0
-Received: by 10.150.166.15 with SMTP id o15mr2357347ybe.306.1267703914872; 
-        Thu, 04 Mar 2010 03:58:34 -0800 (PST)
-In-Reply-To: <e997b7421003030834r7bec3295s7917bb91a3fa2d27@mail.gmail.com>
-References: <20100303110527.11233.20400.stgit@muvarov>
-         <e997b7421003030834r7bec3295s7917bb91a3fa2d27@mail.gmail.com>
-Date:   Thu, 4 Mar 2010 14:58:34 +0300
-Message-ID: <572af9171003040358n25bc2462yc8c16a9acdac70db@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MIPS kexec,kdump support
-From:   Maxim Uvarov <muvarov@gmail.com>
-To:     "wilbur.chan" <wilbur512@gmail.com>
-Cc:     linux-mips@linux-mips.org, kexec@lists.infradead.org,
-        horms@verge.net.au, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <muvarov@gmail.com>
+To:     Yang Shi <yang.shi@windriver.com>, ralf@linux-mips.org
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Protect current_cpu_data with preempt disable in
+ delay()
+References: <1267695573-27360-1-git-send-email-yang.shi@windriver.com>
+In-Reply-To: <1267695573-27360-1-git-send-email-yang.shi@windriver.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 04 Mar 2010 18:23:53.0236 (UTC) FILETIME=[D8204540:01CABBC7]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26123
+X-archive-position: 26124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: muvarov@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-2010/3/3 wilbur.chan <wilbur512@gmail.com>:
-> 2010/3/3 Maxim Uvarov <muvarov@gmail.com>:
->> Hello folks,
->>
->> Please find here MIPS crash and kdump patches.
->> This is patch set of 3 patches:
->> 1. generic MIPS changes (kernel);
->> 2. MIPS Cavium Octeon board kexec/kdump code (kernel);
->> 3. Kexec user space MIPS changes.
->>
->> Patches were tested on the latest linux-mips@ git kernel and the latest
->> kexec-tools git on Cavium Octeon 50xx board.
->>
->> I also made the same code working on RMI XLR/XLS boards for both
->> mips32 and mips64 kernels.
->>
->> Best regards,
->> Maxim Uvarov.
->>
+On 03/04/2010 01:39 AM, Yang Shi wrote:
+> During machine restart with reboot command, get the following
+> bug info:
 >
->> Signed-off-by: Maxim Uvarov <muvarov@gmail.com>
->>
->>
->>
+> BUG: using smp_processor_id() in preemptible [00000000] code: reboot/1989
+> caller is __udelay+0x14/0x70
+> Call Trace:
+> [<ffffffff8110ad28>] dump_stack+0x8/0x34
+> [<ffffffff812dde04>] debug_smp_processor_id+0xf4/0x110
+> [<ffffffff812d90bc>] __udelay+0x14/0x70
+> [<ffffffff81378274>] md_notify_reboot+0x12c/0x148
+> [<ffffffff81161054>] notifier_call_chain+0x64/0xc8
+> [<ffffffff811614dc>] __blocking_notifier_call_chain+0x64/0xc0
+> [<ffffffff8115566c>] kernel_restart_prepare+0x1c/0x38
+> [<ffffffff811556cc>] kernel_restart+0x14/0x50
+> [<ffffffff8115581c>] SyS_reboot+0x10c/0x1f0
+> [<ffffffff81103684>] handle_sysn32+0x44/0x84
 >
-> Hi, Maxim
+> The root cause is that current_cpu_data is accessed in preemptible
+> context, so protect it with preempt_disable/preempt_enable pair
+> in delay().
 >
-> In XLR series ,
+> Signed-off-by: Yang Shi<yang.shi@windriver.com>
+> ---
+>   arch/mips/lib/delay.c |    6 +++++-
+>   1 files changed, 5 insertions(+), 1 deletions(-)
 >
-> 1)How to protect  boardinfo and pass it to second kernel ?
+> diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+> index 6b3b1de..dc38064 100644
+> --- a/arch/mips/lib/delay.c
+> +++ b/arch/mips/lib/delay.c
+> @@ -41,7 +41,11 @@ EXPORT_SYMBOL(__delay);
 >
-It is very simple. I just looked at physical addresses  where
-boardinfo is and protect this
-region.  For xls simple add additional exclude region to setup.c
-static struct boot_mem_map_exclude_region static_exclude_regions[] = {
-+	[1] = {0xc000000, 0xd000000 }, /*Bootloader stuctures*/
+>   void __udelay(unsigned long us)
+>   {
+> -	unsigned int lpj = current_cpu_data.udelay_val;
+> +	unsigned int lpj;
+> +
+> +	preempt_disable();
+> +	lpj = current_cpu_data.udelay_val;
+> +	preempt_enable();
+>
+>   	__delay((us * 0x000010c7ull * HZ * lpj)>>  32);
+>   }
 
-To pass it to second kernel copy pointer to original psb_info to
-static variable in beginning of prom_init() and provide this pointer
-as kexec_args[3].
+This doesn't seem like the best approach.
 
-kexec_args[0]  is argc on XLS
-kexec_args[1] is argv on XLS
+Perhaps we should either use raw_current_cpu_data and no 
+preempt_disable(), or if we are concerned about migrating to a CPU with 
+a different lpj value, move the preempt_enable after the call to __delay().
 
-> 2)If all cpus jumped to same entry point , did you change head.s, if so , how ?
->
-Please take a look how other platforms do this. You need write .macro
-kernel_entry_setup which should be located in somewhere is
-include/asm-mips/mach-rmi. Then you write this macro it will be
-executed before kernel_entry. So after kexec all cpus jump to this
-entry point and after they you can do all things what you want:
-- make cpu0 boot new kernel and other cpus go to boot slaves procedure;
-- take first cpu and make it boot, and all others go to boot slaves procedure;
-- boot only cpu0 and infinite loop others  cpus (you might want to do
-this for kdump)
->
->
-> Thank you!
->
-
--- 
-Best regards,
-Maxim Uvarov
+David Daney

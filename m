@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 12:35:47 +0100 (CET)
-Received: from mail-gw0-f49.google.com ([74.125.83.49]:46412 "EHLO
-        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490999Ab0CDLfo convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Mar 2010 12:58:45 +0100 (CET)
+Received: from mail-yx0-f179.google.com ([209.85.210.179]:33539 "EHLO
+        mail-yx0-f179.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491851Ab0CDL6m convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Mar 2010 12:35:44 +0100
-Received: by gwj21 with SMTP id 21so1207305gwj.36
-        for <multiple recipients>; Thu, 04 Mar 2010 03:35:37 -0800 (PST)
+        Thu, 4 Mar 2010 12:58:42 +0100
+Received: by yxe9 with SMTP id 9so1225765yxe.22
+        for <multiple recipients>; Thu, 04 Mar 2010 03:58:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:received:in-reply-to:references
          :date:message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        bh=n6BWJSZcHse9VR/zabGgrG6JXxxZ2rfAv/ox4xolTNQ=;
-        b=oanIZCHFDUpKSCP2vr/w8qa7RAN4BPtH9/AvFHzoS7FPfDFmm/MpacOBBoKqWVnlnQ
-         MW6tYN5gRv6sWV4iQ1Stpxb62D+Q333yK3jXqr+4C8P5gVKUYMeiq99ZL9TNMHq2Z8sT
-         X7JFX+Pqa+IvcgkKVxSN7JyGlB1PIfTLY1Zqg=
+        bh=1tRr09/lk/etBJnnzP87tj6O0jjThngLIZg2F+TntPs=;
+        b=rbQiAUTRSdC7763c7f1eZbx0KqeIWtiYpPSn3QZ23oSrsxwcTSH8t/3DrXyBtFEca0
+         EYoVscgQbdZFEMX8PHJH5Yc6hRGPmhwikoUUg+JWeftLqMSBV3ZuYqPRuVtOx6y2juQL
+         eA3yUEuqrVl8gmnb3+ZfbEzPpE+wh8bXbz0BE=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        b=aZqQ++K1j9vp/CgSqZumIId19i6V835JE9t7f2oKjh7eyjKe6pVWwIEyDB8iPYb8GD
-         kqzSZapna0o7m3QdnUex2qS6yuYtVOwOSP3jI6V4J1kkHdx3Mx1jufnyEGKC+hRpsEaE
-         u2OWTnsD4hAI58c5o0sfwgUXEFVHFKPQ0vPyA=
+        b=E6idz5oS3qf1TlsbSlkUE0HGoDr5gX/YwLnMm3w4HweVWX7a1g5vAYbCy1L2T3Y3cl
+         /4BeNxMOI2SHL7N8Ythj/7vpzu5hVNdB7sKarjvlGnNdvY06dCN+9SSply2JQwNzx0yR
+         bcScu6cRlwFHaAMOSA6DKbuIEKzVCRyICaMiw=
 MIME-Version: 1.0
-Received: by 10.150.81.5 with SMTP id e5mr2390216ybb.158.1267702537387; Thu, 
-        04 Mar 2010 03:35:37 -0800 (PST)
-In-Reply-To: <4B8E9E0C.4050809@caviumnetworks.com>
+Received: by 10.150.166.15 with SMTP id o15mr2357347ybe.306.1267703914872; 
+        Thu, 04 Mar 2010 03:58:34 -0800 (PST)
+In-Reply-To: <e997b7421003030834r7bec3295s7917bb91a3fa2d27@mail.gmail.com>
 References: <20100303110527.11233.20400.stgit@muvarov>
-         <4B8E9E0C.4050809@caviumnetworks.com>
-Date:   Thu, 4 Mar 2010 14:35:37 +0300
-Message-ID: <572af9171003040335w16434350y60a9f39676dbfa3d@mail.gmail.com>
+         <e997b7421003030834r7bec3295s7917bb91a3fa2d27@mail.gmail.com>
+Date:   Thu, 4 Mar 2010 14:58:34 +0300
+Message-ID: <572af9171003040358n25bc2462yc8c16a9acdac70db@mail.gmail.com>
 Subject: Re: [PATCH 1/2] MIPS kexec,kdump support
 From:   Maxim Uvarov <muvarov@gmail.com>
-To:     David Daney <ddaney@caviumnetworks.com>
+To:     "wilbur.chan" <wilbur512@gmail.com>
 Cc:     linux-mips@linux-mips.org, kexec@lists.infradead.org,
         horms@verge.net.au, ralf@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
@@ -41,7 +41,7 @@ Return-Path: <muvarov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26122
+X-archive-position: 26123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,9 +49,8 @@ X-original-sender: muvarov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-2010/3/3 David Daney <ddaney@caviumnetworks.com>:
-> On 03/03/2010 03:05 AM, Maxim Uvarov wrote:
->>
+2010/3/3 wilbur.chan <wilbur512@gmail.com>:
+> 2010/3/3 Maxim Uvarov <muvarov@gmail.com>:
 >> Hello folks,
 >>
 >> Please find here MIPS crash and kdump patches.
@@ -69,24 +68,46 @@ X-list: linux-mips
 >> Best regards,
 >> Maxim Uvarov.
 >>
->>
->> ---
->>
->>  arch/mips/Kconfig                  |   24 ++++++++++
 >
-> [...]
+>> Signed-off-by: Maxim Uvarov <muvarov@gmail.com>
 >>
 >>
->> Signed-off-by: Maxim Uvarov<muvarov@gmail.com>
 >>
 >
-> That Signed-off-by: needs to be just above the '---' not at the end.
+> Hi, Maxim
 >
-> David Daney
+> In XLR series ,
 >
-Thanks David, I corrected stgit email template. I think I don't need
-resend patches with only this change.
+> 1)How to protect  boardinfo and pass it to second kernel ?
+>
+It is very simple. I just looked at physical addresses  where
+boardinfo is and protect this
+region.  For xls simple add additional exclude region to setup.c
+static struct boot_mem_map_exclude_region static_exclude_regions[] = {
++	[1] = {0xc000000, 0xd000000 }, /*Bootloader stuctures*/
 
+To pass it to second kernel copy pointer to original psb_info to
+static variable in beginning of prom_init() and provide this pointer
+as kexec_args[3].
+
+kexec_args[0]  is argc on XLS
+kexec_args[1] is argv on XLS
+
+> 2)If all cpus jumped to same entry point , did you change head.s, if so , how ?
+>
+Please take a look how other platforms do this. You need write .macro
+kernel_entry_setup which should be located in somewhere is
+include/asm-mips/mach-rmi. Then you write this macro it will be
+executed before kernel_entry. So after kexec all cpus jump to this
+entry point and after they you can do all things what you want:
+- make cpu0 boot new kernel and other cpus go to boot slaves procedure;
+- take first cpu and make it boot, and all others go to boot slaves procedure;
+- boot only cpu0 and infinite loop others  cpus (you might want to do
+this for kdump)
+>
+>
+> Thank you!
+>
 
 -- 
 Best regards,

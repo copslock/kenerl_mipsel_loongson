@@ -1,68 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Mar 2010 15:48:30 +0100 (CET)
-Received: from www.linuxtv.org ([130.149.80.248]:34832 "EHLO www.linuxtv.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492103Ab0CFOs0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 6 Mar 2010 15:48:26 +0100
-Received: from mchehab by www.linuxtv.org with local (Exim 4.69)
-        (envelope-from <mchehab@linuxtv.org>)
-        id 1Nnuwe-0000Ld-Ch; Sat, 06 Mar 2010 15:25:32 +0100
-Subject: [git:v4l-dvb/master] MIPS: BCM47xx: Fix 128MB RAM support
-From:   Patch from Hauke Mehrtens <linuxtv-commits-bounces@linuxtv.org>
-To:     linuxtv-commits@linuxtv.org
-Data:   Sat, 20 Feb 2010 19:51:20 +0100
-Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>,
-        Ralf Baechle <ralf@linux-mips.org>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1Nnuwe-0000Ld-Ch@www.linuxtv.org>
-Date:   Sat, 06 Mar 2010 15:25:32 +0100
-Return-Path: <mchehab@linuxtv.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Mar 2010 05:44:12 +0100 (CET)
+Received: from mail.windriver.com ([147.11.1.11]:55982 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1490960Ab0CHEoJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Mar 2010 05:44:09 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o284hnjt015773;
+        Sun, 7 Mar 2010 20:43:49 -0800 (PST)
+Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Sun, 7 Mar 2010 20:43:48 -0800
+Message-ID: <4B948083.6000703@windriver.com>
+Date:   Mon, 08 Mar 2010 12:43:47 +0800
+From:   Yang Shi <yang.shi@windriver.com>
+User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
+MIME-Version: 1.0
+To:     Jean Delvare <khali@linux-fr.org>
+CC:     Michael Lawnick <ml.lawnick@gmx.de>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Octeon: Register EEPROM device on the I2C bus
+References: <1267772895-25409-1-git-send-email-yang.shi@windriver.com>  <20100305071130.GB21925@pengutronix.de> <4B90B341.9000601@windriver.com>        <20100305074155.GD21925@pengutronix.de> <4B90B888.6060005@windriver.com>        <20100305095040.6ab4612c@hyperion.delvare>      <4B90D85E.6040308@gmx.de>       <4B90DF48.50005@windriver.com>  <20100305115213.4b504710@hyperion.delvare>      <4B90E83A.5020106@gmx.de> <20100305124200.6f6eccfc@hyperion.delvare>
+In-Reply-To: <20100305124200.6f6eccfc@hyperion.delvare>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 08 Mar 2010 04:43:49.0127 (UTC) FILETIME=[F1D81170:01CABE79]
+Return-Path: <Yang.Shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26139
+X-archive-position: 26140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linuxtv-commits-bounces@linuxtv.org
+X-original-sender: yang.shi@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Hauke Mehrtens <hauke@hauke-m.de>
+Jean Delvare 写道:
+> Hi Michael,
+>
+> On Fri, 05 Mar 2010 12:17:14 +0100, Michael Lawnick wrote:
+>   
+>> Jean Delvare said the following:
+>>     
+>>> Well, what EEPROM type do you have exactly? 24c64 is for 64 kbit (8
+>>> kByte) EEPROMs using 16-bit addressing. You must use the correct type,
+>>> otherwise the at24 driver will misbehave. I am a little surprised
+>>> because originally you went for "eeprom" which is not compatible with
+>>> "24c64" (8-bit vs. 16-bit addressing).
+>>>       
+>> Furthermore this brings up another issue:
+>> 0x50 typically is SPD-eeprom (DDR initialisation). Corrupting the
+>> contents might make your board unbootable - and using a 16bit driver
+>> instead of an 8-bit one can corrupt your contents already on
+>> (positioned) reading!
+>>     
+>
+> This is totally correct, but better said loud to the list and the
+> original poster than only privately to me ;)
+>   
 
-Ignoring the last page when ddr size is 128M. Cached accesses to last page
-is causing the processor to prefetch using address above 128M stepping out
-of the DDR address space.
+Thanks a lot to point out this.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: linux-mips@linux-mips.org
-Patchwork: http://patchwork.linux-mips.org/patch/981/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+I double checked the manual, the eeprom is SPD of the DIMMs.
 
- arch/mips/bcm47xx/prom.c |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+I will rework my patch, then send V2 soon.
 
----
-
-http://git.linuxtv.org/v4l-dvb.git?a=commitdiff;h=84a6fcb368a080620d12fc4d79e07902dbee7335
-
-diff --git a/arch/mips/bcm47xx/prom.c b/arch/mips/bcm47xx/prom.c
-index c51405e..29d3cbf 100644
---- a/arch/mips/bcm47xx/prom.c
-+++ b/arch/mips/bcm47xx/prom.c
-@@ -141,6 +141,14 @@ static __init void prom_init_mem(void)
- 			break;
- 	}
- 
-+	/* Ignoring the last page when ddr size is 128M. Cached
-+	 * accesses to last page is causing the processor to prefetch
-+	 * using address above 128M stepping out of the ddr address
-+	 * space.
-+	 */
-+	if (mem == 0x8000000)
-+		mem -= 0x1000;
-+
- 	add_memory_region(0, mem, BOOT_MEM_RAM);
- }
- 
+Regards,
+Yang

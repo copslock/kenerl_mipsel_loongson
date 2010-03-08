@@ -1,77 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Mar 2010 07:02:28 +0100 (CET)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:51823 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491143Ab0CHGCY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Mar 2010 07:02:24 +0100
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.69)
-        (envelope-from <wsa@pengutronix.de>)
-        id 1NoW2Z-0004uI-In; Mon, 08 Mar 2010 07:02:07 +0100
-Received: from wsa by octopus.hi.pengutronix.de with local (Exim 4.69)
-        (envelope-from <wsa@pengutronix.de>)
-        id 1NoW2R-0008Nj-Ar; Mon, 08 Mar 2010 07:01:59 +0100
-Date:   Mon, 8 Mar 2010 07:01:59 +0100
-From:   Wolfram Sang <w.sang@pengutronix.de>
-To:     Yang Shi <yang.shi@windriver.com>
-Cc:     ddaney@caviumnetworks.com, ben-linux@fluff.org, khali@linux-fr.org,
-        ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH V2] MIPS: Octeon: Register EEPROM device on the I2C bus
-Message-ID: <20100308060159.GA31209@pengutronix.de>
-References: <1268026190-18300-1-git-send-email-yang.shi@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Mar 2010 10:42:53 +0100 (CET)
+Received: from mail.windriver.com ([147.11.1.11]:63179 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491022Ab0CHJms (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Mar 2010 10:42:48 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o289gaLe024132;
+        Mon, 8 Mar 2010 01:42:36 -0800 (PST)
+Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Mon, 8 Mar 2010 01:42:35 -0800
+Message-ID: <4B94C68A.4000002@windriver.com>
+Date:   Mon, 08 Mar 2010 17:42:34 +0800
+From:   Yang Shi <yang.shi@windriver.com>
+User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
-Content-Disposition: inline
-In-Reply-To: <1268026190-18300-1-git-send-email-yang.shi@windriver.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
-X-SA-Exim-Mail-From: wsa@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <wsa@pengutronix.de>
+To:     Yang Shi <yang.shi@windriver.com>
+CC:     David Daney <ddaney@caviumnetworks.com>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Protect current_cpu_data with preempt disable in
+ delay()
+References: <1267695573-27360-1-git-send-email-yang.shi@windriver.com> <4B8FFAB3.1090409@caviumnetworks.com> <4B9059FE.3090801@windriver.com>
+In-Reply-To: <4B9059FE.3090801@windriver.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 08 Mar 2010 09:42:35.0862 (UTC) FILETIME=[AF02BF60:01CABEA3]
+Return-Path: <Yang.Shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26142
+X-archive-position: 26143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w.sang@pengutronix.de
+X-original-sender: yang.shi@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi folks,
 
---EVF5PPMfhYS0aIcm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Any advice on this topic?
 
-On Mon, Mar 08, 2010 at 01:29:50PM +0800, Yang Shi wrote:
-> An SPD resides on 0x50 of the I2C bus on CN56xx/57xx board,
-> register this device.
->=20
-> Signed-off-by: Yang Shi <yang.shi@windriver.com>
+Thanks,
+Yang
 
-Glad it worked with at24, after all.
-
-Acked-by: Wolfram Sang <w.sang@pengutronix.de>
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---EVF5PPMfhYS0aIcm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkuUktcACgkQD27XaX1/VRv8vACeLbxiqll0Z1KOU+vt/poudlcv
-6y4AnREPFYXDEnuY7Sa/Z1m63DA8Tx6e
-=mFOa
------END PGP SIGNATURE-----
-
---EVF5PPMfhYS0aIcm--
+Yang Shi 写道:
+> David Daney 写道:
+>   
+>> On 03/04/2010 01:39 AM, Yang Shi wrote:
+>>   
+>>     
+>>> During machine restart with reboot command, get the following
+>>> bug info:
+>>>
+>>> BUG: using smp_processor_id() in preemptible [00000000] code: reboot/1989
+>>> caller is __udelay+0x14/0x70
+>>> Call Trace:
+>>> [<ffffffff8110ad28>] dump_stack+0x8/0x34
+>>> [<ffffffff812dde04>] debug_smp_processor_id+0xf4/0x110
+>>> [<ffffffff812d90bc>] __udelay+0x14/0x70
+>>> [<ffffffff81378274>] md_notify_reboot+0x12c/0x148
+>>> [<ffffffff81161054>] notifier_call_chain+0x64/0xc8
+>>> [<ffffffff811614dc>] __blocking_notifier_call_chain+0x64/0xc0
+>>> [<ffffffff8115566c>] kernel_restart_prepare+0x1c/0x38
+>>> [<ffffffff811556cc>] kernel_restart+0x14/0x50
+>>> [<ffffffff8115581c>] SyS_reboot+0x10c/0x1f0
+>>> [<ffffffff81103684>] handle_sysn32+0x44/0x84
+>>>
+>>> The root cause is that current_cpu_data is accessed in preemptible
+>>> context, so protect it with preempt_disable/preempt_enable pair
+>>> in delay().
+>>>
+>>> Signed-off-by: Yang Shi<yang.shi@windriver.com>
+>>> ---
+>>>   arch/mips/lib/delay.c |    6 +++++-
+>>>   1 files changed, 5 insertions(+), 1 deletions(-)
+>>>
+>>> diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+>>> index 6b3b1de..dc38064 100644
+>>> --- a/arch/mips/lib/delay.c
+>>> +++ b/arch/mips/lib/delay.c
+>>> @@ -41,7 +41,11 @@ EXPORT_SYMBOL(__delay);
+>>>
+>>>   void __udelay(unsigned long us)
+>>>   {
+>>> -	unsigned int lpj = current_cpu_data.udelay_val;
+>>> +	unsigned int lpj;
+>>> +
+>>> +	preempt_disable();
+>>> +	lpj = current_cpu_data.udelay_val;
+>>> +	preempt_enable();
+>>>
+>>>   	__delay((us * 0x000010c7ull * HZ * lpj)>>  32);
+>>>   }
+>>>     
+>>>       
+>> This doesn't seem like the best approach.
+>>
+>> Perhaps we should either use raw_current_cpu_data and no 
+>> preempt_disable(), or if we are concerned about migrating to a CPU with 
+>> a different lpj value, move the preempt_enable after the call to __delay().
+>>   
+>>     
+>
+> Thanks David.
+>
+> Yes, actually I also has this concern, so this patch is just a rough 
+> fix. And I tried raw_current_cpu_data as well, but I'm not sure if it's 
+> safe or not. Another proposal is to change cpu_data and current_cpu_data 
+> to per CPU variables, of course this is a big change.
+>
+> Regards,
+> Yang
+>
+>   
+>> David Daney
+>>
+>>   
+>>     
+>
+>
+>
+>   

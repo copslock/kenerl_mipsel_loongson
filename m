@@ -1,61 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2010 17:48:34 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:60683 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492624Ab0CJQs3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Mar 2010 17:48:29 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o2AGmQ71018013;
-        Wed, 10 Mar 2010 17:48:27 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o2AGmOF9018009;
-        Wed, 10 Mar 2010 17:48:24 +0100
-Date:   Wed, 10 Mar 2010 17:48:24 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: Re: [PATCH] MIPS: Alchemy: move MMC driver registration to board
- code.
-Message-ID: <20100310164824.GC15118@linux-mips.org>
-References: <1268076181-29642-1-git-send-email-manuel.lauss@gmail.com>
- <1268076181-29642-3-git-send-email-manuel.lauss@gmail.com>
- <4B963210.7030906@ru.mvista.com>
- <f861ec6f1003090345n53570102je68aef14e8b3f3fb@mail.gmail.com>
- <4B96364E.5050202@mvista.com>
- <f861ec6f1003090403j190d0ddbp7e245d0990a62a51@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2010 18:50:35 +0100 (CET)
+Received: from silver.sucs.swan.ac.uk ([137.44.10.1]:35880 "EHLO
+        silver.sucs.swan.ac.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492389Ab0CJRuc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Mar 2010 18:50:32 +0100
+Received: from [137.44.141.35] (helo=[192.168.10.193])
+        by silver.sucs.swan.ac.uk with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.69)
+        (envelope-from <rollercow@sucs.org>)
+        id 1NpQ0p-00076r-T5; Wed, 10 Mar 2010 17:48:04 +0000
+Message-ID: <4B97DB49.2010009@sucs.org>
+Date:   Wed, 10 Mar 2010 17:47:53 +0000
+From:   Chris Jones <rollercow@sucs.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100204 Lightning/1.0b1 Icedove/3.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f861ec6f1003090403j190d0ddbp7e245d0990a62a51@mail.gmail.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+To:     debian-mips@lists.debian.org, linux-mips@linux-mips.org
+CC:     SUCS Staff <staff@sucs.org>, Steve Whitehouse <rohan@sucs.org>
+Subject: SGI Onyx4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <rollercow@sucs.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26176
+X-archive-position: 26177
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: rollercow@sucs.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 09, 2010 at 01:03:51PM +0100, Manuel Lauss wrote:
+Dear all,
 
-> And on a personal note, that file just bothers me.  It's messy, can
-> cause merge conflicts,
+The Swansea University Computer Society has been given an SGI Onxy4. We
+would very much like to get Linux running on it but don't have any local
+people with both the skills and time.
 
-Eye cancer.
+Would anyone be interested in helping to port Linux to it?
 
-> it references structures defined inside board-specific code. In short,
-> it just plain annoys
-> my sense of aesthetics.
+If so please let me know off list!
 
-Indeed - and I don't think Sergej disagrees with that.  I agree with him
-that device registration code should primarily be done in the SOC code -
-but you'll need to somehow get that code to communicate with the platform
-code about what really needs to be done then register the remainder of
-the truely platform-specific platform devices.  Something like that.
+Many thanks!
 
-  Ralf
+--
+Chris Jones, SUCS Admin
+http://sucs.org

@@ -1,115 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2010 16:33:27 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:54650 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492497Ab0CJPdW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Mar 2010 16:33:22 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o2AFXIpW013636;
-        Wed, 10 Mar 2010 16:33:19 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o2AFXGkS013633;
-        Wed, 10 Mar 2010 16:33:16 +0100
-Date:   Wed, 10 Mar 2010 16:33:15 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Yang Shi <yang.shi@windriver.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Protect current_cpu_data with preempt disable in
- delay()
-Message-ID: <20100310153315.GA12476@linux-mips.org>
-References: <1267695573-27360-1-git-send-email-yang.shi@windriver.com>
- <4B8FFAB3.1090409@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4B8FFAB3.1090409@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2010 16:48:18 +0100 (CET)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:65486 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492106Ab0CJPsN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Mar 2010 16:48:13 +0100
+Received: by pvd12 with SMTP id 12so607605pvd.36
+        for <multiple recipients>; Wed, 10 Mar 2010 07:48:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=JWLzpnpYPckrebmogDGle3A8wRCbjnPKmL8yFWzzO+Q=;
+        b=T6ddnDT2LCVdrSfo+FSXHkvFTse7/zipYcYHxyxwQi4RdzM1DrTb0fRQcBmJWf3Vok
+         fiEPXxfoSI8u5CWahkvQCx2DtuhfMVdJTtu/jzY2nmOwB6JEB+29na9pnP4GvSC6Z+cf
+         pKaV4hhGNheutzg39cwo1hVHxt69o8XLiBCDU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=Z67tBXXXXPRmqVP+G25BGfcDMb2mzSeToAag6i1z8M0TvENi9343F6F9B2MaPuJCJm
+         6p4W9CUjAFoZ743/DTaHScI8vkzxO8tfPuhiuL5ZYrRqNNT9JBltFHv3NT0OW81vBOuF
+         jHhOkrHrFuCtD0y6WSZhmbf0vSx4WPZj5T/Rk=
+Received: by 10.115.100.18 with SMTP id c18mr912427wam.62.1268236086647;
+        Wed, 10 Mar 2010 07:48:06 -0800 (PST)
+Received: from localhost.localdomain ([202.201.12.142])
+        by mx.google.com with ESMTPS id 23sm7483770pzk.10.2010.03.10.07.48.03
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 10 Mar 2010 07:48:05 -0800 (PST)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] Loongson: Lemote-2F: Fixup of _rdmsr and _wrmsr
+Date:   Wed, 10 Mar 2010 23:41:34 +0800
+Message-Id: <7c2dec50764082fafa83895b740f644fc592afa4.1268235182.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.0.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26172
+X-archive-position: 26173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 04, 2010 at 10:23:47AM -0800, David Daney wrote:
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-> On 03/04/2010 01:39 AM, Yang Shi wrote:
-> >During machine restart with reboot command, get the following
-> >bug info:
-> >
-> >BUG: using smp_processor_id() in preemptible [00000000] code: reboot/1989
-> >caller is __udelay+0x14/0x70
-> >Call Trace:
-> >[<ffffffff8110ad28>] dump_stack+0x8/0x34
-> >[<ffffffff812dde04>] debug_smp_processor_id+0xf4/0x110
-> >[<ffffffff812d90bc>] __udelay+0x14/0x70
-> >[<ffffffff81378274>] md_notify_reboot+0x12c/0x148
-> >[<ffffffff81161054>] notifier_call_chain+0x64/0xc8
-> >[<ffffffff811614dc>] __blocking_notifier_call_chain+0x64/0xc0
-> >[<ffffffff8115566c>] kernel_restart_prepare+0x1c/0x38
-> >[<ffffffff811556cc>] kernel_restart+0x14/0x50
-> >[<ffffffff8115581c>] SyS_reboot+0x10c/0x1f0
-> >[<ffffffff81103684>] handle_sysn32+0x44/0x84
-> >
-> >The root cause is that current_cpu_data is accessed in preemptible
-> >context, so protect it with preempt_disable/preempt_enable pair
-> >in delay().
-> >
-> >Signed-off-by: Yang Shi<yang.shi@windriver.com>
-> >---
-> >  arch/mips/lib/delay.c |    6 +++++-
-> >  1 files changed, 5 insertions(+), 1 deletions(-)
-> >
-> >diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
-> >index 6b3b1de..dc38064 100644
-> >--- a/arch/mips/lib/delay.c
-> >+++ b/arch/mips/lib/delay.c
-> >@@ -41,7 +41,11 @@ EXPORT_SYMBOL(__delay);
-> >
-> >  void __udelay(unsigned long us)
-> >  {
-> >-	unsigned int lpj = current_cpu_data.udelay_val;
-> >+	unsigned int lpj;
-> >+
-> >+	preempt_disable();
-> >+	lpj = current_cpu_data.udelay_val;
-> >+	preempt_enable();
-> >
-> >  	__delay((us * 0x000010c7ull * HZ * lpj)>>  32);
-> >  }
-> 
-> This doesn't seem like the best approach.
-> 
-> Perhaps we should either use raw_current_cpu_data and no
-> preempt_disable(), or if we are concerned about migrating to a CPU
-> with a different lpj value, move the preempt_enable after the call
-> to __delay().
+The _rdmsr, _wrmsr operation must be atomic to ensure the accessing to msr
+address is what we want.
 
-Udelay() is supposed to guarantee a minimum delay and when being migrated
-to another CPU with higher bogomips this guarantee might be violated.  So
-it'd even have to be something like:
+Without this patch, in some cases, the reboot operation(fs2f_reboot) defined in
+arch/mips/loongson/lemote-2f/reset.c may fail for it called _rdmsr, _wrmsr but
+may be interrupted/preempted by the other related operations and make the
+_rdmsr get the wrong value or make the _wrmsr write a wrong value to an
+unexpected target.
 
-void __udelay(unsigned long us)
-{
-	unsigned int lpj = current_cpu_data.udelay_val;
-	unsigned int lpj;
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/pci/ops-loongson2.c |    9 +++++++++
+ 1 files changed, 9 insertions(+), 0 deletions(-)
 
-	preempt_disable();
-	lpj = current_cpu_data.udelay_val;
-
-	__delay((us * 0x000010c7ull * HZ * lpj)>>  32);
-	preempt_enable();
-}
-
-But preempt_disable() itself is not atomic, so using it from bh or irq
-context could result in a corrupted preemption counter.  So the raw_
-version will have to do.  I doubt it's much of a problem but at some
-point we will have to revisit the delay by c0_count patch submitted a
-while ago.  The patch wasn't right but the problem it was addressing
-is real.
-
-  Ralf
+diff --git a/arch/mips/pci/ops-loongson2.c b/arch/mips/pci/ops-loongson2.c
+index 2bb4057..1f93dfb 100644
+--- a/arch/mips/pci/ops-loongson2.c
++++ b/arch/mips/pci/ops-loongson2.c
+@@ -180,15 +180,20 @@ struct pci_ops loongson_pci_ops = {
+ };
+ 
+ #ifdef CONFIG_CS5536
++DEFINE_SPINLOCK(msr_lock);
+ void _rdmsr(u32 msr, u32 *hi, u32 *lo)
+ {
+ 	struct pci_bus bus = {
+ 		.number = PCI_BUS_CS5536
+ 	};
+ 	u32 devfn = PCI_DEVFN(PCI_IDSEL_CS5536, 0);
++	unsigned long flags;
++
++	spin_lock_irqsave(&msr_lock, flags);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_ADDR, 4, msr);
+ 	loongson_pcibios_read(&bus, devfn, PCI_MSR_DATA_LO, 4, lo);
+ 	loongson_pcibios_read(&bus, devfn, PCI_MSR_DATA_HI, 4, hi);
++	spin_unlock_irqrestore(&msr_lock, flags);
+ }
+ EXPORT_SYMBOL(_rdmsr);
+ 
+@@ -198,9 +203,13 @@ void _wrmsr(u32 msr, u32 hi, u32 lo)
+ 		.number = PCI_BUS_CS5536
+ 	};
+ 	u32 devfn = PCI_DEVFN(PCI_IDSEL_CS5536, 0);
++	unsigned long flags;
++
++	spin_lock_irqsave(&msr_lock, flags);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_ADDR, 4, msr);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_DATA_LO, 4, lo);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_DATA_HI, 4, hi);
++	spin_unlock_irqrestore(&msr_lock, flags);
+ }
+ EXPORT_SYMBOL(_wrmsr);
+ #endif
+-- 
+1.7.0.1

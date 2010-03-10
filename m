@@ -1,99 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2010 16:30:47 +0100 (CET)
-Received: from mail-pz0-f185.google.com ([209.85.222.185]:33055 "EHLO
-        mail-pz0-f185.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492334Ab0CJPan (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Mar 2010 16:30:43 +0100
-Received: by pzk15 with SMTP id 15so4676588pzk.21
-        for <multiple recipients>; Wed, 10 Mar 2010 07:30:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=SQ+lGJkXfLsBokfGNBa8HG9EaBvcmeC0REL3zP7AGOo=;
-        b=ieqvcBhObZwTt8k5tQmeQ5H2s2/U8Hm50YZOGVB1jf8t28Vis3wra9c4CBYtpnXR1G
-         Pq0OkeEOpiPSAYrA+ILbaNZw8aJI9lvzDtJOT6z7i3nh0DtKsE7zPHQUSUW289GCWu7H
-         hOBR9ZN6mEN1U3RGg3hdXjc+v1jQs7ZcqXtdc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=Em+J66uA+sEgOKw0BIOxRK+riWl+r0CR3tm1ooXjzinzJbFQqwLEjs/U4zTEuXLeXy
-         DcJUcYjTP9xLu1Hwz/3wiySfvsTovVE68PZrWY0vDl6hMG2UYMB/daa1AYlqYqWPAnfd
-         qGwUPFK8Qzol+wQQjSf3AGce9YLXeAv/5RP0E=
-Received: by 10.142.250.19 with SMTP id x19mr522202wfh.23.1268235035282;
-        Wed, 10 Mar 2010 07:30:35 -0800 (PST)
-Received: from [202.201.12.142] ([202.201.12.142])
-        by mx.google.com with ESMTPS id 21sm7513057pzk.4.2010.03.10.07.30.31
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 10 Mar 2010 07:30:34 -0800 (PST)
-Subject: Re: [PATCH 1/3] Loongson-2F: Flush the branch target history such
- as BTB and RAS
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, Greg KH <gregkh@suse.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-In-Reply-To: <4B977815.4000703@ru.mvista.com>
-References: <cover.1268153722.git.wuzhangjin@gmail.com>
-         <d513f16856e499e82f0b4e428c97fe06afb5a426.1268153722.git.wuzhangjin@gmail.com>
-         <4B977815.4000703@ru.mvista.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Wed, 10 Mar 2010 23:24:04 +0800
-Message-ID: <1268234645.19976.1.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Mar 2010 16:33:27 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:54650 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492497Ab0CJPdW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 10 Mar 2010 16:33:22 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o2AFXIpW013636;
+        Wed, 10 Mar 2010 16:33:19 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o2AFXGkS013633;
+        Wed, 10 Mar 2010 16:33:16 +0100
+Date:   Wed, 10 Mar 2010 16:33:15 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Yang Shi <yang.shi@windriver.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Protect current_cpu_data with preempt disable in
+ delay()
+Message-ID: <20100310153315.GA12476@linux-mips.org>
+References: <1267695573-27360-1-git-send-email-yang.shi@windriver.com>
+ <4B8FFAB3.1090409@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4B8FFAB3.1090409@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26171
+X-archive-position: 26172
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, Mar 04, 2010 at 10:23:47AM -0800, David Daney wrote:
 
-Thanks very much for your careful review, will resend a new one later.
+> On 03/04/2010 01:39 AM, Yang Shi wrote:
+> >During machine restart with reboot command, get the following
+> >bug info:
+> >
+> >BUG: using smp_processor_id() in preemptible [00000000] code: reboot/1989
+> >caller is __udelay+0x14/0x70
+> >Call Trace:
+> >[<ffffffff8110ad28>] dump_stack+0x8/0x34
+> >[<ffffffff812dde04>] debug_smp_processor_id+0xf4/0x110
+> >[<ffffffff812d90bc>] __udelay+0x14/0x70
+> >[<ffffffff81378274>] md_notify_reboot+0x12c/0x148
+> >[<ffffffff81161054>] notifier_call_chain+0x64/0xc8
+> >[<ffffffff811614dc>] __blocking_notifier_call_chain+0x64/0xc0
+> >[<ffffffff8115566c>] kernel_restart_prepare+0x1c/0x38
+> >[<ffffffff811556cc>] kernel_restart+0x14/0x50
+> >[<ffffffff8115581c>] SyS_reboot+0x10c/0x1f0
+> >[<ffffffff81103684>] handle_sysn32+0x44/0x84
+> >
+> >The root cause is that current_cpu_data is accessed in preemptible
+> >context, so protect it with preempt_disable/preempt_enable pair
+> >in delay().
+> >
+> >Signed-off-by: Yang Shi<yang.shi@windriver.com>
+> >---
+> >  arch/mips/lib/delay.c |    6 +++++-
+> >  1 files changed, 5 insertions(+), 1 deletions(-)
+> >
+> >diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+> >index 6b3b1de..dc38064 100644
+> >--- a/arch/mips/lib/delay.c
+> >+++ b/arch/mips/lib/delay.c
+> >@@ -41,7 +41,11 @@ EXPORT_SYMBOL(__delay);
+> >
+> >  void __udelay(unsigned long us)
+> >  {
+> >-	unsigned int lpj = current_cpu_data.udelay_val;
+> >+	unsigned int lpj;
+> >+
+> >+	preempt_disable();
+> >+	lpj = current_cpu_data.udelay_val;
+> >+	preempt_enable();
+> >
+> >  	__delay((us * 0x000010c7ull * HZ * lpj)>>  32);
+> >  }
+> 
+> This doesn't seem like the best approach.
+> 
+> Perhaps we should either use raw_current_cpu_data and no
+> preempt_disable(), or if we are concerned about migrating to a CPU
+> with a different lpj value, move the preempt_enable after the call
+> to __delay().
 
-Regards,
-	Wu Zhangjin
+Udelay() is supposed to guarantee a minimum delay and when being migrated
+to another CPU with higher bogomips this guarantee might be violated.  So
+it'd even have to be something like:
 
-On Wed, 2010-03-10 at 13:44 +0300, Sergei Shtylyov wrote:
-[...]
-> > diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-> > index 3b6da33..b84cfda 100644
-> > --- a/arch/mips/include/asm/stackframe.h
-> > +++ b/arch/mips/include/asm/stackframe.h
-> > @@ -121,6 +121,25 @@
-> >  		.endm
-> >  #else
-> >  		.macro	get_saved_sp	/* Uniprocessor variation */
-> > +#ifdef CONFIG_CPU_LOONGSON2F
-> > +		/*
-> > +		 * Clear BTB(branch target buffer), forbid RAS(row address
-> > +		 * strobe)
-> 
->    No spaces before the left paren...
-> 
-> >  to workaround the Out-of-oder Issue in Loongson2F
-> > +		 * via it's diagnostic register.
-> >   
-> 
->    Only "its".
-> 
-> > +		 */
-> > +		move k0, ra
-> >   
-> 
->    Operands misalined...
-> 
-> WBR, Sergei
-> 
-> 
+void __udelay(unsigned long us)
+{
+	unsigned int lpj = current_cpu_data.udelay_val;
+	unsigned int lpj;
+
+	preempt_disable();
+	lpj = current_cpu_data.udelay_val;
+
+	__delay((us * 0x000010c7ull * HZ * lpj)>>  32);
+	preempt_enable();
+}
+
+But preempt_disable() itself is not atomic, so using it from bh or irq
+context could result in a corrupted preemption counter.  So the raw_
+version will have to do.  I doubt it's much of a problem but at some
+point we will have to revisit the delay by c0_count patch submitted a
+while ago.  The patch wasn't right but the problem it was addressing
+is real.
+
+  Ralf

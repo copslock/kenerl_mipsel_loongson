@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 11:06:54 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:36909 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492047Ab0CKKGv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 11 Mar 2010 11:06:51 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o2BA6n1D015743;
-        Thu, 11 Mar 2010 11:06:49 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o2BA6mU5015741;
-        Thu, 11 Mar 2010 11:06:48 +0100
-Date:   Thu, 11 Mar 2010 11:06:48 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Initialize an atomic_t properly with
- ATOMIC_INIT(0).
-Message-ID: <20100311100647.GD18065@linux-mips.org>
-References: <alpine.LFD.2.00.1002271201230.20373@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 16:01:41 +0100 (CET)
+Received: from krynn.se.axis.com ([193.13.178.10]:45131 "EHLO
+        krynn.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492521Ab0CKPBg convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 16:01:36 +0100
+Received: from xmail3.se.axis.com (xmail3.se.axis.com [10.0.5.75])
+        by krynn.se.axis.com (8.14.3/8.14.3/Debian-5) with ESMTP id o2BExqdb019855
+        for <linux-mips@linux-mips.org>; Thu, 11 Mar 2010 16:00:18 +0100
+Received: from xmail3.se.axis.com ([10.0.5.75]) by xmail3.se.axis.com
+ ([10.0.5.75]) with mapi; Thu, 11 Mar 2010 15:59:48 +0100
+From:   Mikael Starvik <mikael.starvik@axis.com>
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Date:   Thu, 11 Mar 2010 15:59:44 +0100
+Subject: MIPS raw_local_irq_restore flags
+Thread-Topic: MIPS raw_local_irq_restore flags
+Thread-Index: AcrBK3wkk2FBNl+9TaOxNHDqJxz80A==
+Message-ID: <4BEA3FF3CAA35E408EA55C7BE2E61D0546AC862322@xmail3.se.axis.com>
+Accept-Language: sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-cr-puzzleid: {BD95551F-236F-4DB5-9BD6-5AABD159E72A}
+x-cr-hashedpuzzle: gyU= Bby3 Bt5Z CS4u ChsQ Co9K D2/n D8Lp EFIC EHOd Eii6
+ FoZ0 HbUU Hpa+ JG0X
+ JPZy;1;bABpAG4AdQB4AC0AbQBpAHAAcwBAAGwAaQBuAHUAeAAtAG0AaQBwAHMALgBvAHIAZwA=;Sosha1_v1;7;{BD95551F-236F-4DB5-9BD6-5AABD159E72A};bQBpAGsAYQBlAGwALgBzAHQAYQByAHYAaQBrAEAAYQB4AGkAcwAuAGMAbwBtAA==;Thu,
+ 11 Mar 2010 14:59:44
+ GMT;TQBJAFAAUwAgAHIAYQB3AF8AbABvAGMAYQBsAF8AaQByAHEAXwByAGUAcwB0AG8AcgBlACAAZgBsAGEAZwBzAA==
+acceptlanguage: sv-SE
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.00.1002271201230.20373@localhost>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <mikael.starvik@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26200
+X-archive-position: 26201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mikael.starvik@axis.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Feb 27, 2010 at 12:02:51PM -0500, Robert P. J. Day wrote:
+For the common case CONFIG_CPU_MIPSR2 && CONFIG_IRQ_CPU raw_local_irq_restore_flags is defined as:
 
->   AFAIK, the technically correct way to initialize atomic variables is
-> with ATOMIC_INIT(n).
+"       beqz    \\flags, 1f                                     \n"
+"       di                                                      \n"
+"       ei                                                      \n"
+"1:                                                             \n"
 
-Indeed, applied.
+Doesn't this imply that you can't do recursive local_irq_save() (with different locks ofcourse)? 
 
-Thanks!
-
-  Ralf
+Best Regards
+/Mikael

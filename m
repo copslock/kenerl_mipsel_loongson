@@ -1,66 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 03:53:54 +0100 (CET)
-Received: from mail.windriver.com ([147.11.1.11]:63161 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492230Ab0CKCxv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 03:53:51 +0100
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o2B2rhM4021231;
-        Wed, 10 Mar 2010 18:53:43 -0800 (PST)
-Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Wed, 10 Mar 2010 18:53:42 -0800
-Message-ID: <4B985B38.1050105@windriver.com>
-Date:   Thu, 11 Mar 2010 10:53:44 +0800
-From:   Yang Shi <yang.shi@windriver.com>
-User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 04:04:26 +0100 (CET)
+Received: from mail-ew0-f224.google.com ([209.85.219.224]:33978 "EHLO
+        mail-ew0-f224.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491867Ab0CKDEW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 04:04:22 +0100
+Received: by ewy24 with SMTP id 24so1842821ewy.27
+        for <multiple recipients>; Wed, 10 Mar 2010 19:04:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=jK+qhN8lHzICC6Jx7pteJ4qsmQU7yV8FGIQ2lYyUWAo=;
+        b=AkgiG8Brv01xXc16ynycx3X4AKQrfEt8eKeAWKsItwNZeijNbg/CdTteWl/hb354t3
+         +NQ+1q+7b/MFypmunDpdjI42fMw2+Il37MoutCj0h9aKIoO3yaS0m8k3Ahj+97aLKQz0
+         pXvb0JjkAOYKgP8vN7EgL9IKYUgKc5zI65g6U=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=hYMtEQs8/r5S8S04SVq1tmxK+ngz4ZK8s7S9PrKqPx5jd1IaCkrc0z9aaw9PPh/lbL
+         tRxmhTRD6ToDWCQmRbk22V36GPUc6Q40Srb5ggk0XAuowmwjHeXKfT4v55/6+E5xZewk
+         EyCZWRodkQHMjosxZm+v6KeFuEQLAy2mOGUwE=
+Received: by 10.213.97.28 with SMTP id j28mr5823117ebn.44.1268276653827;
+        Wed, 10 Mar 2010 19:04:13 -0800 (PST)
+Received: from localhost.localdomain ([202.201.12.142])
+        by mx.google.com with ESMTPS id 14sm4394844ewy.10.2010.03.10.19.04.08
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 10 Mar 2010 19:04:12 -0800 (PST)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     ddaney@caviumnetworks.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Octeon: Fix wrong variable type in smp.c
-References: <1268115862-25976-1-git-send-email-yang.shi@windriver.com> <20100309190309.GA301@linux-mips.org> <20100309191750.GA1960@linux-mips.org>
-In-Reply-To: <20100309191750.GA1960@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 11 Mar 2010 02:53:42.0925 (UTC) FILETIME=[0F7AE3D0:01CAC0C6]
-Return-Path: <Yang.Shi@windriver.com>
+Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH v2] Loongson: Lemote-2F: Fixup of _rdmsr and _wrmsr
+Date:   Thu, 11 Mar 2010 10:57:33 +0800
+Message-Id: <5c63967ed3f891da1f6bc1fc78c272d0407d5d25.1268276186.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.0.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26184
+X-archive-position: 26185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yang.shi@windriver.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle 写道:
-> On Tue, Mar 09, 2010 at 08:03:09PM +0100, Ralf Baechle wrote:
->
->   
->>> @@ -281,7 +281,7 @@ static void octeon_cpu_die(unsigned int cpu)
->>>  
->>>  #ifdef CONFIG_CAVIUM_OCTEON_WATCHDOG
->>>  	/* Disable the watchdog */
->>> -	cvmx_ciu_wdogx_t ciu_wdog;
->>> +	union cvmx_ciu_wdogx ciu_wdog;
->>>  	ciu_wdog.u64 = cvmx_read_csr(CVMX_CIU_WDOGX(cpu));
->>>  	ciu_wdog.s.mode = 0;
->>>  	cvmx_write_csr(CVMX_CIU_WDOGX(cpu), ciu_wdog.u64);
->>>       
->> David,
->>
->> I think this ifdef should be replaced by a notifier called from
->> __cpu_die().
->>     
->
-> Since this is unused I'll just remove it for now.
->   
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This breaks kernel build when HOTPLUG_CPU is enabled.
+Changes from the old version:
+  o Using raw spinlock instead of spinlock as suggested by David Daney.
 
-Regards,
-Yang
+The _rdmsr, _wrmsr operation must be atomic to ensure the accessing to msr
+address is what we want.
 
->   Ralf
->
->   
+Without this patch, in some cases, the reboot operation(fs2f_reboot) defined in
+arch/mips/loongson/lemote-2f/reset.c may fail for it called _rdmsr, _wrmsr but
+may be interrupted/preempted by the other related operations and make the
+_rdmsr get the wrong value or make the _wrmsr write a wrong value to an
+unexpected target.
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/pci/ops-loongson2.c |   10 ++++++++++
+ 1 files changed, 10 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/pci/ops-loongson2.c b/arch/mips/pci/ops-loongson2.c
+index 2bb4057..dc434ec 100644
+--- a/arch/mips/pci/ops-loongson2.c
++++ b/arch/mips/pci/ops-loongson2.c
+@@ -180,15 +180,21 @@ struct pci_ops loongson_pci_ops = {
+ };
+ 
+ #ifdef CONFIG_CS5536
++DEFINE_RAW_SPINLOCK(msr_lock);
++
+ void _rdmsr(u32 msr, u32 *hi, u32 *lo)
+ {
+ 	struct pci_bus bus = {
+ 		.number = PCI_BUS_CS5536
+ 	};
+ 	u32 devfn = PCI_DEVFN(PCI_IDSEL_CS5536, 0);
++	unsigned long flags;
++
++	spin_lock_irqsave(&msr_lock, flags);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_ADDR, 4, msr);
+ 	loongson_pcibios_read(&bus, devfn, PCI_MSR_DATA_LO, 4, lo);
+ 	loongson_pcibios_read(&bus, devfn, PCI_MSR_DATA_HI, 4, hi);
++	spin_unlock_irqrestore(&msr_lock, flags);
+ }
+ EXPORT_SYMBOL(_rdmsr);
+ 
+@@ -198,9 +204,13 @@ void _wrmsr(u32 msr, u32 hi, u32 lo)
+ 		.number = PCI_BUS_CS5536
+ 	};
+ 	u32 devfn = PCI_DEVFN(PCI_IDSEL_CS5536, 0);
++	unsigned long flags;
++
++	spin_lock_irqsave(&msr_lock, flags);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_ADDR, 4, msr);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_DATA_LO, 4, lo);
+ 	loongson_pcibios_write(&bus, devfn, PCI_MSR_DATA_HI, 4, hi);
++	spin_unlock_irqrestore(&msr_lock, flags);
+ }
+ EXPORT_SYMBOL(_wrmsr);
+ #endif
+-- 
+1.7.0.1

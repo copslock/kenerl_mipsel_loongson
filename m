@@ -1,103 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 04:27:49 +0100 (CET)
-Received: from TYO201.gate.nec.co.jp ([202.32.8.193]:38805 "EHLO
-        tyo201.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491124Ab0CKD1p (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 04:27:45 +0100
-Received: from relay11.aps.necel.com ([10.29.19.46])
-        by tyo201.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id o2B3Reo7001313;
-        Thu, 11 Mar 2010 12:27:40 +0900 (JST)
-Received: from realmbox31.aps.necel.com ([10.29.19.36] [10.29.19.36]) by relay11.aps.necel.com with ESMTP; Thu, 11 Mar 2010 12:27:40 +0900
-Received: from [10.114.181.193] ([10.114.181.193] [10.114.181.193]) by mbox02.aps.necel.com with ESMTP; Thu, 11 Mar 2010 12:27:40 +0900
-Message-ID: <4B98632E.70806@necel.com>
-Date:   Thu, 11 Mar 2010 12:27:42 +0900
-From:   Shinya Kuribayashi <shinya.kuribayashi@necel.com>
-User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
-MIME-Version: 1.0
-To:     Wu Zhangjin <wuzhangjin@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, Greg KH <gregkh@suse.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] Loongson-2F: Flush the branch target history such
- as BTB and RAS
-References: <cover.1268153722.git.wuzhangjin@gmail.com> <d513f16856e499e82f0b4e428c97fe06afb5a426.1268153722.git.wuzhangjin@gmail.com>
-In-Reply-To: <d513f16856e499e82f0b4e428c97fe06afb5a426.1268153722.git.wuzhangjin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <shinya.kuribayashi@necel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 04:32:06 +0100 (CET)
+Received: from mail-ww0-f49.google.com ([74.125.82.49]:57169 "EHLO
+        mail-ww0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491124Ab0CKDcD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 04:32:03 +0100
+Received: by wwd20 with SMTP id 20so614877wwd.36
+        for <multiple recipients>; Wed, 10 Mar 2010 19:31:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=MtZfKkdDa1tHbl1XPVKTr+Qj+Qz4oZXFnPa1e35nhPw=;
+        b=MI+tFtiPHoqaT5h80750Bp7ey/Z3kI0JViwM06CpjR6LKbP3tik3rGK0cxVHEKPzbH
+         oevtVHVkq1ZOkqoNUcbeNnFMO9jtBOKyQ/3lEfzTeuthb5Q+2X7SNbKkM8j1a3524AOc
+         6127JV+ZJhH+EaGAJXFoZKKolBfxIxGvhE0qc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=oZZRQjs+oyGoL5iMfEG/HJwt5yuMPAeiGsm+pDeZFnkXtYk5BzI/LqtWD5iwDXwbIn
+         Sz04EprycB+iGcnf6TrKfQ97D7UVBAr5cZfkZqDazcPPW3+x7bwur8I81CPMYOP5mjgJ
+         ZRPUqGyXBiZhkPl14xs2NLcAy0UB/Z0L0k1yw=
+Received: by 10.216.88.5 with SMTP id z5mr202177wee.192.1268278317084;
+        Wed, 10 Mar 2010 19:31:57 -0800 (PST)
+Received: from [202.201.12.142] ([202.201.12.142])
+        by mx.google.com with ESMTPS id p37sm24112100gvf.25.2010.03.10.19.31.53
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 10 Mar 2010 19:31:56 -0800 (PST)
+Subject: Re: [PATCH v2] Loongson: Lemote-2F: Fixup of _rdmsr and _wrmsr
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
+In-Reply-To: <5c63967ed3f891da1f6bc1fc78c272d0407d5d25.1268276186.git.wuzhangjin@gmail.com>
+References: <5c63967ed3f891da1f6bc1fc78c272d0407d5d25.1268276186.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Thu, 11 Mar 2010 11:25:26 +0800
+Message-ID: <1268277926.17798.1.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.2 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26193
+X-archive-position: 26194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shinya.kuribayashi@necel.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Wu Zhangjin wrote:
+On Thu, 2010-03-11 at 10:57 +0800, Wu Zhangjin wrote:
 > From: Wu Zhangjin <wuzhangjin@gmail.com>
 > 
-> As the Chapter 15: "Errata: Issue of Out-of-order in loongson"[1] shows, to
-> workaround the Issue of Loongson-2F，We need to do:
-> 
-> "When switching from user model to kernel model, you should flush the branch
-> target history such as BTB and RAS."
+> Changes from the old version:
+>   o Using raw spinlock instead of spinlock as suggested by David Daney.
+[...]
+> --- a/arch/mips/pci/ops-loongson2.c
+> +++ b/arch/mips/pci/ops-loongson2.c
+> @@ -180,15 +180,21 @@ struct pci_ops loongson_pci_ops = {
+>  };
+>  
+>  #ifdef CONFIG_CS5536
+> +DEFINE_RAW_SPINLOCK(msr_lock);
+> +
+>  void _rdmsr(u32 msr, u32 *hi, u32 *lo)
+>  {
+>  	struct pci_bus bus = {
+>  		.number = PCI_BUS_CS5536
+>  	};
+>  	u32 devfn = PCI_DEVFN(PCI_IDSEL_CS5536, 0);
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&msr_lock, flags);
 
-Just wondered, model or mode?
+Please ignore this patch for the operations should be raw_ too.
 
-> This patch did clear BTB(branch target buffer), forbid RAS(row address strobe)
-> via Loongson-2F's 64bit diagnostic register.
-
-Are you sure that RAS represents "Row Address Strobe", not "Return
-Address Stack?"
-
-By the way, we have a similar local workaround for vr55xx processors
-when switching from kernel mode to user mode.  It's not necessarily
-related to out-of-order issues, but we need to prevent the processor
-from doing instruction prefetch beyond "eret" instruction.
-
-In the long term, it would be appreciated that the kernel has a set
-of hooks when switching KUX-modes, so that each machine could have
-his own, processor-specific treatmens.
-
-  Shinya
-
-> [1] Chinese Version: http://www.loongson.cn/uploadfile/file/200808211
-> [2] English Version of Chapter 15:
-> http://groups.google.com.hk/group/loongson-dev/msg/e0d2e220958f10a6?dmode=source
-> 
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/include/asm/stackframe.h |   19 +++++++++++++++++++
->  1 files changed, 19 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-> index 3b6da33..b84cfda 100644
-> --- a/arch/mips/include/asm/stackframe.h
-> +++ b/arch/mips/include/asm/stackframe.h
-> @@ -121,6 +121,25 @@
->  		.endm
->  #else
->  		.macro	get_saved_sp	/* Uniprocessor variation */
-> +#ifdef CONFIG_CPU_LOONGSON2F
-> +		/*
-> +		 * Clear BTB(branch target buffer), forbid RAS(row address
-> +		 * strobe) to workaround the Out-of-oder Issue in Loongson2F
-> +		 * via it's diagnostic register.
-> +		 */
-> +		move k0, ra
-> +		jal	1f
-> +		nop
-> +1:		jal	1f
-> +		nop
-> +1:		jal	1f
-> +		nop
-> +1:		jal	1f
-> +		nop
-> +1:		move	ra, k0
-> +		li	k0, 3
-> +		mtc0	k0, $22
-> +#endif /* CONFIG_CPU_LOONGSON2F */
->  #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
->  		lui	k1, %hi(kernelsp)
->  #else
+Regards,
+	Wu Zhangjin

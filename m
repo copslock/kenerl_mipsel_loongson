@@ -1,43 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 04:38:44 +0100 (CET)
-Received: from mail-ew0-f224.google.com ([209.85.219.224]:63055 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 04:42:04 +0100 (CET)
+Received: from mail-ew0-f224.google.com ([209.85.219.224]:34393 "EHLO
         mail-ew0-f224.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491124Ab0CKDih (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 04:38:37 +0100
-Received: by ewy24 with SMTP id 24so1849056ewy.27
-        for <multiple recipients>; Wed, 10 Mar 2010 19:38:32 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1492047Ab0CKDmA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 04:42:00 +0100
+Received: by ewy24 with SMTP id 24so1849553ewy.27
+        for <multiple recipients>; Wed, 10 Mar 2010 19:41:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=qjc/R9AHcZY4Jjx5KeBN8cgL43HJmwXdEVWQpnn3xeo=;
-        b=QduLaEs4KjF1HPbcwY0cwWjb6mTTj3KOgbt9dFZ2cOYzUHzj6UXPI3vvjOBzjf6X2b
-         48ehndpayajz12X5YKLGCu7f7UlvXKLLEVfyWkCDQKvWEO5e3VMYsMtgqkbAPB02aIp4
-         SMP5Jq+9IV2Ua6B0ZC2og0mser0s6iJoNitnQ=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=/QwW/Sik4jBsqpPDDxfJPhsLwABrgYfVu9jhw/o9j6Q=;
+        b=WHd6v6xNZYzPdCgbYETsoQMghJMpmaNyiBx8PQ3cNy4IZFi2NnCwJdP5qX34C/VDNP
+         jxLjY93WobhwjhVhAYJO09IdHeaH5Stz2w9udUcPFQ/dJjAdUhR/CI/c712fV7W5AwOk
+         5t7+rw6ER4L7U0ThzZlLq0y34tKSlKbRfkm24=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=P07sxbN9TcE2mIGQf/ajWG/j5xc7BqosVSRX+Cmgu0lKIAJcPg9vs3ogNCQbU1l6Cj
-         zv52oDKI03NjVL40h/Hdmnvadbh20XFusv5MYh8EXNUHTxNCpxRRRnGUlcpqUnDWgbEB
-         j9+nfj1sG3QwSSmnummD4Rphf9q6t1DmLTQJo=
-Received: by 10.213.8.26 with SMTP id f26mr5812818ebf.14.1268278712287;
-        Wed, 10 Mar 2010 19:38:32 -0800 (PST)
-Received: from localhost.localdomain ([202.201.12.142])
-        by mx.google.com with ESMTPS id 14sm4495557ewy.6.2010.03.10.19.38.27
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=qg1y9Qo1ZE+qSEb57dOD2ibzqxCAqqbZej6XAzLCatyrY+LjcBDciAPlWf+zkJVNSn
+         6wHYXXpiD14t2VNJM4zTLGBEw1agBgXz+BZHPCIRAlXIDHPQI9yranhsf8ItGBy82Ts6
+         fe3Z4dl4wCLa4hDPIg+nrvgs+Hg6g9KAmmtmM=
+Received: by 10.213.100.165 with SMTP id y37mr5754300ebn.71.1268278914418;
+        Wed, 10 Mar 2010 19:41:54 -0800 (PST)
+Received: from [202.201.12.142] ([202.201.12.142])
+        by mx.google.com with ESMTPS id 16sm4430477ewy.7.2010.03.10.19.41.47
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 10 Mar 2010 19:38:31 -0800 (PST)
+        Wed, 10 Mar 2010 19:41:52 -0800 (PST)
+Subject: Re: [PATCH 1/3] Loongson-2F: Flush the branch target history such
+ as BTB and RAS
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v3] Loongson: Lemote-2F: Fixup of _rdmsr and _wrmsr
-Date:   Thu, 11 Mar 2010 11:30:50 +0800
-Message-Id: <fe322709a0f6b86545d26cd6fce4f9e271794efa.1268278141.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.0.1
+Reply-To: wuzhangjin@gmail.com
+To:     Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, Greg KH <gregkh@suse.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        zhangfx <zhangfx@lemote.com>, yanh <yanh@lemtoe.com>
+In-Reply-To: <4B98632E.70806@necel.com>
+References: <cover.1268153722.git.wuzhangjin@gmail.com>
+         <d513f16856e499e82f0b4e428c97fe06afb5a426.1268153722.git.wuzhangjin@gmail.com>
+         <4B98632E.70806@necel.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Thu, 11 Mar 2010 11:35:20 +0800
+Message-ID: <1268278520.17798.5.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.2 
+Content-Transfer-Encoding: 8bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26195
+X-archive-position: 26196
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,66 +59,43 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Thu, 2010-03-11 at 12:27 +0900, Shinya Kuribayashi wrote:
+> Wu Zhangjin wrote:
+> > From: Wu Zhangjin <wuzhangjin@gmail.com>
+> > 
+> > As the Chapter 15: "Errata: Issue of Out-of-order in loongson"[1] shows, to
+> > workaround the Issue of Loongson-2F，We need to do:
+> > 
+> > "When switching from user model to kernel model, you should flush the branch
+> > target history such as BTB and RAS."
+> 
+> Just wondered, model or mode?
+> 
 
-v2 --> v3:
-  o Using the right operations for the raw spinlock.
-v1 --> v2:
-  o Using raw spinlock instead of spinlock as suggested by David Daney.
+Hmm, should be mode.
 
-The _rdmsr, _wrmsr operation must be atomic to ensure the accessing to msr
-address is what we want.
+> > This patch did clear BTB(branch target buffer), forbid RAS(row address strobe)
+> > via Loongson-2F's 64bit diagnostic register.
+> 
+> Are you sure that RAS represents "Row Address Strobe", not "Return
+> Address Stack?"
+> 
 
-Without this patch, in some cases, the reboot operation(fs2f_reboot) defined in
-arch/mips/loongson/lemote-2f/reset.c may fail for it called _rdmsr, _wrmsr but
-may be interrupted/preempted by the other related operations and make the
-_rdmsr get the wrong value or make the _wrmsr write a wrong value to an
-unexpected target.
+Hi, Yanhua(from Lemote), can you help to clear this part?
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/pci/ops-loongson2.c |   10 ++++++++++
- 1 files changed, 10 insertions(+), 0 deletions(-)
+> By the way, we have a similar local workaround for vr55xx processors
+> when switching from kernel mode to user mode.  It's not necessarily
+> related to out-of-order issues, but we need to prevent the processor
+> from doing instruction prefetch beyond "eret" instruction.
+> 
+> In the long term, it would be appreciated that the kernel has a set
+> of hooks when switching KUX-modes, so that each machine could have
+> his own, processor-specific treatmens.
+> 
 
-diff --git a/arch/mips/pci/ops-loongson2.c b/arch/mips/pci/ops-loongson2.c
-index 2bb4057..d657ee0 100644
---- a/arch/mips/pci/ops-loongson2.c
-+++ b/arch/mips/pci/ops-loongson2.c
-@@ -180,15 +180,21 @@ struct pci_ops loongson_pci_ops = {
- };
- 
- #ifdef CONFIG_CS5536
-+DEFINE_RAW_SPINLOCK(msr_lock);
-+
- void _rdmsr(u32 msr, u32 *hi, u32 *lo)
- {
- 	struct pci_bus bus = {
- 		.number = PCI_BUS_CS5536
- 	};
- 	u32 devfn = PCI_DEVFN(PCI_IDSEL_CS5536, 0);
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&msr_lock, flags);
- 	loongson_pcibios_write(&bus, devfn, PCI_MSR_ADDR, 4, msr);
- 	loongson_pcibios_read(&bus, devfn, PCI_MSR_DATA_LO, 4, lo);
- 	loongson_pcibios_read(&bus, devfn, PCI_MSR_DATA_HI, 4, hi);
-+	raw_spin_unlock_irqrestore(&msr_lock, flags);
- }
- EXPORT_SYMBOL(_rdmsr);
- 
-@@ -198,9 +204,13 @@ void _wrmsr(u32 msr, u32 hi, u32 lo)
- 		.number = PCI_BUS_CS5536
- 	};
- 	u32 devfn = PCI_DEVFN(PCI_IDSEL_CS5536, 0);
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&msr_lock, flags);
- 	loongson_pcibios_write(&bus, devfn, PCI_MSR_ADDR, 4, msr);
- 	loongson_pcibios_write(&bus, devfn, PCI_MSR_DATA_LO, 4, lo);
- 	loongson_pcibios_write(&bus, devfn, PCI_MSR_DATA_HI, 4, hi);
-+	raw_spin_unlock_irqrestore(&msr_lock, flags);
- }
- EXPORT_SYMBOL(_wrmsr);
- #endif
--- 
-1.7.0.1
+Good idea.
+
+Thanks!
+
+Regards,
+	Wu Zhangjin

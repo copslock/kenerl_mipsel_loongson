@@ -1,44 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 04:18:28 +0100 (CET)
-Received: from mail-bw0-f222.google.com ([209.85.218.222]:38814 "EHLO
-        mail-bw0-f222.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491124Ab0CKDSX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 04:18:23 +0100
-Received: by bwz22 with SMTP id 22so2533181bwz.28
-        for <multiple recipients>; Wed, 10 Mar 2010 19:18:17 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 04:25:19 +0100 (CET)
+Received: from mail-ww0-f49.google.com ([74.125.82.49]:49251 "EHLO
+        mail-ww0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491124Ab0CKDZO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 04:25:14 +0100
+Received: by wwd20 with SMTP id 20so612417wwd.36
+        for <multiple recipients>; Wed, 10 Mar 2010 19:25:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer;
-        bh=OABVKFmG5HfY3FTLMsWsjqgFn/jHClUB6vOaxMo+Lc0=;
-        b=MTl2DU+S5d+6ohamHwyQ3G6/X/3wMoRMGpYxCjdWdHuasH+J1wXKXamrALwi9GQenZ
-         o0GiTyesNuxjJOBg2UaKYsBLHNZh5L+UOAx7u6F6TeHEf/di58qxx6b9Beui5nACLISK
-         9QHU9K7yAglePjk7NVa6bTN4Yen3EYpQrnTi4=
+        bh=l9w/7tNjOl8FO82dYNVNKgQCVlqaPT5qHU9rT0kVhmc=;
+        b=o/sF4aDY7HX+nOgDr6q0xuNPNSd721kJ04kK/5XaJEw2FUurJ969Nmt3PpAzNNDMBn
+         GQ6ryInpCXNXd4uvfNj0wrlA/QRbSj14MM64+8Mw0t3At6JIgPGm9HRFSTD3qs1rtn63
+         KZKHjsfeB3o5RdBS4pqvl8yKBgeA0NtIwkCUg=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        b=cYxQA2aon/NhldDuD9CzWtSxBTTw1NwKTFOlYLMubkyo9AGDrU201O2T/szOV5Vuum
-         e9Af+ZeD8pQPdRuN/dnBHY0/nwTNCzUF2O45N2Ft6KQapVDyVijlkzA6DUMONd9UterU
-         /HeaBRQ940x4xw15OTaopMSKeeMLZ70ACKNa0=
-Received: by 10.204.137.16 with SMTP id u16mr2825308bkt.165.1268277497435;
-        Wed, 10 Mar 2010 19:18:17 -0800 (PST)
+        b=qETP9F5hGz3Fh3/Q5Qv0ZuryRxyoUQ6cHSOF0D/HXkylVS16wGIVJVivMfe/auJ6jN
+         eMDnhu28Pxf1YxKG7EKwzUfv+ix5a6eMnsB4c8feK3MaVRBW9YqZxCP8soGoRzwVSu33
+         E0dklRFf423xlUDPqQ257xWp/9FTFWUe5/lFo=
+Received: by 10.216.86.16 with SMTP id v16mr1578779wee.162.1268277906591;
+        Wed, 10 Mar 2010 19:25:06 -0800 (PST)
 Received: from localhost.localdomain ([202.201.12.142])
-        by mx.google.com with ESMTPS id 24sm30711336bkr.18.2010.03.10.19.18.10
+        by mx.google.com with ESMTPS id j8sm24374600gvb.16.2010.03.10.19.25.01
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 10 Mar 2010 19:18:15 -0800 (PST)
+        Wed, 10 Mar 2010 19:25:05 -0800 (PST)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Pavel Machek <pavel@ucw.cz>, "Rafael J. Wysocki" <rjw@sisk.pl>,
-        linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>,
-        Liu Shiwei <liushiwei@gmail.com>
-Subject: [v12 9/9] Loongson: YeeLoong: add power_supply based battery driver
-Date:   Thu, 11 Mar 2010 11:11:21 +0800
-Message-Id: <c230b3193ecf0d5f10cedc7cd6c53ce2059e3f06.1268276893.git.wuzhangjin@gmail.com>
+Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [-queue v9 3/3] MIPS: r4k: Add a high resolution sched_clock()
+Date:   Thu, 11 Mar 2010 11:18:20 +0800
+Message-Id: <afd0203e1cccc09dc934e24ffe7dfc467fbceb19.1268277164.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.7.0.1
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26191
+X-archive-position: 26192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,316 +47,184 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-(This patch is one of the "yeeloong platform driver" patchset.)
+(This patch is one of the "high resolution sched_clock()" patchset.)
 
-Changes from old revision:
+(v8 -> v9:
+ O Make it depends on 64BIT for the current mips_sched_clock() only
+ support 64bit.
 
-  o Fixes the bugs
-  In the old driver, it didn't show the current charging status and reported
-  the wrong full charge and voltage value.
+ v7 -> v8:
 
-    Capacity = Charge_full_last (Dynamic) / Charge_full_design (Fixed)
-    Percentage Charge = Charge_now (Dyn-Dynamic) / Charge_full_last (Dynamic)
+ O Make it works with the exisiting clocksource_mips.mult,
+ clocksource_mips.shift and copes with the 64bit calculation's overflow
+ problem with the method introduced by David Daney in "MIPS: Octeon: Use
+ non-overflowing arithmetic in sched_clock".
 
-Based on the old emulated APM battery driver and the power_supply class,
-this patch adds a new battery driver.
+ To reduce the duplication, I have abstracted an inline
+ mips_sched_clock() function to arch/mips/include/asm/time.h from
+ arch/mips/cavium-octeon/csrc-octeon.c.
 
-References:
-1. Documentation/power/power_supply_class.txt
-2. drivers/power/
+ v6 -> v7:
 
-Signed-off-by: Liu Shiwei <liushiwei@gmail.com>
+ O Make it depends on !CPU_FREQ and CPU_HAS_FIXED_C0_COUNT
+
+ This sched_clock() is only available with the processor has fixed cp0
+ MIPS count register or even has dynamic cp0 MIPS count register but
+ with CPU_FREQ disabled.
+
+ NOTE: If your processor has fixed c0 count, please select
+ CPU_HAS_FIXED_C0_COUNT for it and send a related patch to Ralf.
+
+ v5 -> v6:
+
+ o hard-codes the cycle2ns_scale_factor as 8 for 30(cs->shift) is too
+ big. With 30, the return value of sched_clock() will also overflow quickly.
+ o moves the sched_clock() back into csrc-r4k.c as David and Sergei
+ recommended.
+ o inits c0 count as zero for PRINTK_TIME=y.
+ o drops the HR_SCHED_CLCOK option for the current sched_clock() is stable
+ enough to replace the jiffies based one.
+)
+
+This patch adds a cnt32_to_63() and MIPS c0 count based sched_clock(),
+which provides high resolution.
+
+Without it, the Ftrace for MIPS will give useless timestamp information.
+
+Because cnt32_to_63() needs to be called at least once per half period
+to work properly, Differ from the old version, this v2 revision set up a
+kernel timer to ensure the requirement of some MIPSs which have short c0
+count period.
+
+And also, we init the c0 count as ZERO(just as jiffies does) in
+time_init() before plat_time_init(), without it, PRINTK_TIME=y will get
+wrong timestamp information. (NOTE: some platforms have initiazlied c0
+count as zero, but some not, this may introduce some duplication,
+perhaps a new patch is needed to remove the initialized of c0 count in
+the platforms later?)
+
+This is originally from arch/arm/plat-orion/time.c
+
+This revision works well for function graph tracer now, and also,
+PRINTK_TIME=y will get normal timestamp informatin.
+
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- drivers/platform/mips/Kconfig           |    1 +
- drivers/platform/mips/yeeloong_laptop.c |  228 +++++++++++++++++++++++++++++++
- 2 files changed, 229 insertions(+), 0 deletions(-)
+ arch/mips/Kconfig           |   13 ++++++++++++
+ arch/mips/kernel/csrc-r4k.c |   45 +++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/time.c     |    5 ++++
+ 3 files changed, 63 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/platform/mips/Kconfig b/drivers/platform/mips/Kconfig
-index 01560b0..cdfccea 100644
---- a/drivers/platform/mips/Kconfig
-+++ b/drivers/platform/mips/Kconfig
-@@ -21,6 +21,7 @@ config LEMOTE_YEELOONG2F
- 	select HWMON
- 	select VIDEO_OUTPUT_CONTROL
- 	select INPUT_SPARSEKMAP
-+	select POWER_SUPPLY
- 	depends on INPUT
- 	help
- 	  YeeLoong netbook is a mini laptop made by Lemote, which is basically
-diff --git a/drivers/platform/mips/yeeloong_laptop.c b/drivers/platform/mips/yeeloong_laptop.c
-index 877257a..ead26e0 100644
---- a/drivers/platform/mips/yeeloong_laptop.c
-+++ b/drivers/platform/mips/yeeloong_laptop.c
-@@ -19,6 +19,7 @@
- #include <linux/input/sparse-keymap.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
-+#include <linux/power_supply.h>	/* for AC & Battery subdriver */
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 591ca0c..791c21f 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1936,6 +1936,19 @@ config NR_CPUS
+ source "kernel/time/Kconfig"
  
- #include <cs5536/cs5536.h>
+ #
++# High Resolution sched_clock() support
++#
++
++config CPU_HAS_FIXED_C0_COUNT
++	bool
++
++config CPU_SUPPORTS_HR_SCHED_CLOCK
++	bool
++	depends on CPU_HAS_FIXED_C0_COUNT || !CPU_FREQ
++	depends on 64BIT
++	default y
++
++#
+ # Timer Interrupt Frequency Configuration
+ #
  
-@@ -349,6 +350,213 @@ static void yeeloong_hwmon_exit(void)
- 	}
- }
+diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
+index e95a3cd..89473ba 100644
+--- a/arch/mips/kernel/csrc-r4k.c
++++ b/arch/mips/kernel/csrc-r4k.c
+@@ -6,7 +6,9 @@
+  * Copyright (C) 2007 by Ralf Baechle
+  */
+ #include <linux/clocksource.h>
++#include <linux/cnt32_to_63.h>
+ #include <linux/init.h>
++#include <linux/timer.h>
  
-+/* AC & Battery subdriver */
-+
-+static struct power_supply yeeloong_ac, yeeloong_bat;
-+
-+#define AC_OFFLINE          0
-+#define AC_ONLINE           1
-+
-+static int yeeloong_get_ac_props(struct power_supply *psy,
-+				enum power_supply_property psp,
-+				union power_supply_propval *val)
-+{
-+	switch (psp) {
-+	case POWER_SUPPLY_PROP_ONLINE:
-+		val->intval = ((ec_read(REG_BAT_POWER)) & BIT_BAT_POWER_ACIN) ?
-+			AC_ONLINE : AC_OFFLINE;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static enum power_supply_property yeeloong_ac_props[] = {
-+	POWER_SUPPLY_PROP_ONLINE,
-+};
-+
-+static struct power_supply yeeloong_ac = {
-+	.name = "yeeloong-ac",
-+	.type = POWER_SUPPLY_TYPE_MAINS,
-+	.properties = yeeloong_ac_props,
-+	.num_properties = ARRAY_SIZE(yeeloong_ac_props),
-+	.get_property = yeeloong_get_ac_props,
-+};
-+
-+#define BAT_CAP_CRITICAL 5
-+#define BAT_CAP_HIGH     99
-+
-+static int yeeloong_bat_get_ex_property(enum power_supply_property psp,
-+				     union power_supply_propval *val)
-+{
-+	int bat_in, curr_cap, cap_level, status, charge, health;
-+
-+	status = ec_read(REG_BAT_STATUS);
-+	bat_in = status & BIT_BAT_STATUS_IN;
-+	curr_cap = get_bat_info(RELATIVE_CAP);
-+	if (status & BIT_BAT_STATUS_FULL)
-+		curr_cap = 100;
-+
-+	switch (psp) {
-+	case POWER_SUPPLY_PROP_PRESENT:
-+		val->intval = bat_in;
-+		break;
-+	case POWER_SUPPLY_PROP_CAPACITY:
-+		val->intval = curr_cap;
-+		break;
-+	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
-+		cap_level = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
-+		if (status & BIT_BAT_STATUS_LOW) {
-+			cap_level = POWER_SUPPLY_CAPACITY_LEVEL_LOW;
-+			if (curr_cap <= BAT_CAP_CRITICAL)
-+				cap_level =
-+					POWER_SUPPLY_CAPACITY_LEVEL_CRITICAL;
-+		} else if (status & BIT_BAT_STATUS_FULL) {
-+			cap_level = POWER_SUPPLY_CAPACITY_LEVEL_FULL;
-+			if (curr_cap >= BAT_CAP_HIGH)
-+				cap_level = POWER_SUPPLY_CAPACITY_LEVEL_HIGH;
-+		} else if (status & BIT_BAT_STATUS_DESTROY)
-+			cap_level = POWER_SUPPLY_CAPACITY_LEVEL_UNKNOWN;
-+		val->intval = cap_level;
-+		break;
-+	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
-+		/* seconds */
-+		val->intval = bat_in ? (curr_cap - 3) * 54 + 142 : 0;
-+		break;
-+	case POWER_SUPPLY_PROP_STATUS:
-+		if (!bat_in)
-+			charge = POWER_SUPPLY_STATUS_UNKNOWN;
-+		else {
-+			if (status & BIT_BAT_STATUS_FULL) {
-+				val->intval = POWER_SUPPLY_STATUS_FULL;
-+				break;
-+			}
-+
-+			charge = ec_read(REG_BAT_CHARGE);
-+			if (charge & FLAG_BAT_CHARGE_DISCHARGE)
-+				charge = POWER_SUPPLY_STATUS_DISCHARGING;
-+			else if (charge & FLAG_BAT_CHARGE_CHARGE)
-+				charge = POWER_SUPPLY_STATUS_CHARGING;
-+			else
-+				charge = POWER_SUPPLY_STATUS_NOT_CHARGING;
-+		}
-+		val->intval = charge;
-+		break;
-+	case POWER_SUPPLY_PROP_HEALTH:
-+		if (!bat_in) /* no battery present */
-+			health = POWER_SUPPLY_HEALTH_UNKNOWN;
-+		else { /* Assume it is good */
-+			health = POWER_SUPPLY_HEALTH_GOOD;
-+			if (status &
-+				(BIT_BAT_STATUS_DESTROY | BIT_BAT_STATUS_LOW))
-+				health = POWER_SUPPLY_HEALTH_DEAD;
-+			if (ec_read(REG_BAT_CHARGE_STATUS) &
-+				BIT_BAT_CHARGE_STATUS_OVERTEMP)
-+				health = POWER_SUPPLY_HEALTH_OVERHEAT;
-+		}
-+		val->intval = health;
-+		break;
-+	case POWER_SUPPLY_PROP_CHARGE_NOW:	/* 1/100(%)*1000 µAh */
-+		val->intval = curr_cap * get_bat_info(FULLCHG_CAP) * 10;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static int yeeloong_get_bat_props(struct power_supply *psy,
-+				     enum power_supply_property psp,
-+				     union power_supply_propval *val)
-+{
-+	switch (psp) {
-+	/* Fixed information */
-+	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-+		val->intval = get_bat_info(DESIGN_VOL) * 1000;	/* mV -> µV */
-+		break;
-+	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
-+		val->intval = get_bat_info(DESIGN_CAP) * 1000;	/*mAh -> µAh*/
-+		break;
-+	case POWER_SUPPLY_PROP_CHARGE_FULL:
-+		val->intval = get_bat_info(FULLCHG_CAP) * 1000;	/* µAh */
-+		break;
-+	case POWER_SUPPLY_PROP_MANUFACTURER:
-+		val->strval =
-+			(ec_read(REG_BAT_VENDOR) == FLAG_BAT_VENDOR_SANYO) ?
-+			"SANYO" : "SIMPLO";
-+		break;
-+	/* Dynamic information */
-+	case POWER_SUPPLY_PROP_CURRENT_NOW:
-+		val->intval = get_battery_current() * 1000;	/* mA -> µA */
-+		break;
-+	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-+		val->intval = get_battery_voltage() * 1000;	/* mV -> µV */
-+		break;
-+	case POWER_SUPPLY_PROP_TEMP:
-+		val->intval = get_battery_temp();	/* Celcius */
-+		break;
-+	/* Dynamic but relative information */
-+	default:
-+		return yeeloong_bat_get_ex_property(psp, val);
-+	}
-+
-+	return 0;
-+}
-+
-+static enum power_supply_property yeeloong_bat_props[] = {
-+	POWER_SUPPLY_PROP_STATUS,
-+	POWER_SUPPLY_PROP_PRESENT,
-+	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-+	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-+	POWER_SUPPLY_PROP_CHARGE_FULL,
-+	POWER_SUPPLY_PROP_CHARGE_NOW,
-+	POWER_SUPPLY_PROP_CURRENT_NOW,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-+	POWER_SUPPLY_PROP_HEALTH,
-+	POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW,
-+	POWER_SUPPLY_PROP_CAPACITY,
-+	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-+	POWER_SUPPLY_PROP_TEMP,
-+	POWER_SUPPLY_PROP_MANUFACTURER,
-+};
-+
-+static struct power_supply yeeloong_bat = {
-+	.name = "yeeloong-bat",
-+	.type = POWER_SUPPLY_TYPE_BATTERY,
-+	.properties = yeeloong_bat_props,
-+	.num_properties = ARRAY_SIZE(yeeloong_bat_props),
-+	.get_property = yeeloong_get_bat_props,
-+};
-+
-+static int ac_bat_initialized;
-+
-+static int yeeloong_bat_init(void)
-+{
-+	int ret;
-+
-+	ret = power_supply_register(NULL, &yeeloong_ac);
-+	if (ret)
-+		return ret;
-+	ret = power_supply_register(NULL, &yeeloong_bat);
-+	if (ret) {
-+		power_supply_unregister(&yeeloong_ac);
-+		return ret;
-+	}
-+	ac_bat_initialized = 1;
-+
-+	return 0;
-+}
-+
-+static void yeeloong_bat_exit(void)
-+{
-+	ac_bat_initialized = 0;
-+
-+	power_supply_unregister(&yeeloong_ac);
-+	power_supply_unregister(&yeeloong_bat);
-+}
-+
- /* video output subdriver */
+ #include <asm/time.h>
  
- static int lcd_video_output_get(struct output_device *od)
-@@ -623,6 +831,15 @@ static int usb0_handler(int status)
- 	return status;
- }
+@@ -22,6 +24,47 @@ static struct clocksource clocksource_mips = {
+ 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+ };
  
-+static int ac_bat_handler(int status)
++#ifdef CONFIG_CPU_SUPPORTS_HR_SCHED_CLOCK
++/*
++ * MIPS sched_clock implementation.
++ *
++ * Because the hardware timer period is quite short and because cnt32_to_63()
++ * needs to be called at least once per half period to work properly, a kernel
++ * timer is set up to ensure this requirement is always met.
++ *
++ * Please refer to include/linux/cnt32_to_63.h, arch/arm/plat-orion/time.c and
++ * arch/mips/include/asm/time.h (mips_sched_clock)
++ */
++unsigned long long notrace sched_clock(void)
 +{
-+	if (ac_bat_initialized) {
-+		power_supply_changed(&yeeloong_ac);
-+		power_supply_changed(&yeeloong_bat);
-+	}
-+	return status;
++	u64 cnt = cnt32_to_63(read_c0_count());
++
++	if (cnt & 0x8000000000000000)
++		cnt &= 0x7fffffffffffffff;
++
++	return mips_sched_clock(&clocksource_mips, cnt);
 +}
 +
- static void do_event_action(int event)
++static struct timer_list cnt32_to_63_keepwarm_timer;
++
++static void cnt32_to_63_keepwarm(unsigned long data)
++{
++	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
++	sched_clock();
++}
++#endif
++
++static inline void setup_hres_sched_clock(unsigned long clock)
++{
++#ifdef CONFIG_CPU_SUPPORTS_HR_SCHED_CLOCK
++	unsigned long data;
++
++	data = 0x80000000UL / clock * HZ;
++	setup_timer(&cnt32_to_63_keepwarm_timer, cnt32_to_63_keepwarm, data);
++	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
++#endif
++}
++
+ int __init init_r4k_clocksource(void)
  {
- 	sci_handler handler;
-@@ -668,6 +885,9 @@ static void do_event_action(int event)
- 	case EVENT_AUDIO_VOLUME:
- 		reg = REG_AUDIO_VOLUME;
- 		break;
-+	case EVENT_AC_BAT:
-+		handler = ac_bat_handler;
-+		break;
- 	default:
- 		break;
- 	}
-@@ -926,6 +1146,13 @@ static int __init yeeloong_init(void)
- 		return ret;
- 	}
+ 	if (!cpu_has_counter || !mips_hpt_frequency)
+@@ -32,6 +75,8 @@ int __init init_r4k_clocksource(void)
  
-+	ret = yeeloong_bat_init();
-+	if (ret) {
-+		pr_err("Fail to register yeeloong battery driver.\n");
-+		yeeloong_bat_exit();
-+		return ret;
-+	}
+ 	clocksource_set_clock(&clocksource_mips, mips_hpt_frequency);
+ 
++	setup_hres_sched_clock(mips_hpt_frequency);
 +
- 	ret = yeeloong_hwmon_init();
- 	if (ret) {
- 		pr_err("Fail to register yeeloong hwmon driver.\n");
-@@ -955,6 +1182,7 @@ static void __exit yeeloong_exit(void)
- 	yeeloong_hotkey_exit();
- 	yeeloong_vo_exit();
- 	yeeloong_hwmon_exit();
-+	yeeloong_bat_exit();
- 	yeeloong_backlight_exit();
- 	platform_driver_unregister(&platform_driver);
+ 	clocksource_register(&clocksource_mips);
  
+ 	return 0;
+diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
+index fb74974..86cf18a 100644
+--- a/arch/mips/kernel/time.c
++++ b/arch/mips/kernel/time.c
+@@ -119,6 +119,11 @@ static __init int cpu_has_mfc0_count_bug(void)
+ 
+ void __init time_init(void)
+ {
++#ifdef CONFIG_CPU_SUPPORTS_HR_SCHED_CLOCK
++	if (!mips_clockevent_init() || !cpu_has_mfc0_count_bug())
++		write_c0_count(0);
++#endif
++
+ 	plat_time_init();
+ 
+ 	if (!mips_clockevent_init() || !cpu_has_mfc0_count_bug())
 -- 
 1.7.0.1

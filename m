@@ -1,93 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 02:22:21 +0100 (CET)
-Received: from mail-ew0-f224.google.com ([209.85.219.224]:42891 "EHLO
-        mail-ew0-f224.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492637Ab0CKBWS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 02:22:18 +0100
-Received: by ewy24 with SMTP id 24so1823947ewy.27
-        for <multiple recipients>; Wed, 10 Mar 2010 17:22:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=2XSk2EvzL9AEe5yNzUbOSYU+LP28vFmq+b97BY+/mZg=;
-        b=Arj8BoDdUi2/5TCqW8DbxVpgkik1962ZgjoxGKPUfVJLH/+qkDBfAWi/sYQW40X6jG
-         pfvxqufslHdYSSGJM7pL2DRQuMd8TdKZa36wR9hFG9SF+SQ0/sjuDFEVzHnaZDCj+q95
-         SGfJ7wJhnhIyy98pZ2fxhDUReRg0rlEznPYdM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=KWQHwAx6kYzcCEjddZ50sYw9vLPl2MgXeVVkq6T/PGtq9DPKK6sj0vvmIlqvQsAVmN
-         Zy4QKqAiDvgFuaM9b01ok6MSbmvEP4PwOyv5IqbSmHK7EBJw9BEBsX2OkZMQ57vKTFzc
-         FjbybnUsnUv/g5/iucn4cljC0oAnPiPgUXiVw=
-Received: by 10.213.51.195 with SMTP id e3mr4787836ebg.96.1268270531994;
-        Wed, 10 Mar 2010 17:22:11 -0800 (PST)
-Received: from [202.201.12.142] ([202.201.12.142])
-        by mx.google.com with ESMTPS id 14sm4333853ewy.10.2010.03.10.17.22.07
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 10 Mar 2010 17:22:10 -0800 (PST)
-Subject: Re: [PATCH] Loongson: Lemote-2F: Fixup of _rdmsr and _wrmsr
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <4B98369F.2060907@caviumnetworks.com>
-References: <7c2dec50764082fafa83895b740f644fc592afa4.1268235182.git.wuzhangjin@gmail.com>
-         <4B98369F.2060907@caviumnetworks.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Thu, 11 Mar 2010 09:15:41 +0800
-Message-ID: <1268270141.12056.7.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Mar 2010 03:53:54 +0100 (CET)
+Received: from mail.windriver.com ([147.11.1.11]:63161 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492230Ab0CKCxv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Mar 2010 03:53:51 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o2B2rhM4021231;
+        Wed, 10 Mar 2010 18:53:43 -0800 (PST)
+Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Wed, 10 Mar 2010 18:53:42 -0800
+Message-ID: <4B985B38.1050105@windriver.com>
+Date:   Thu, 11 Mar 2010 10:53:44 +0800
+From:   Yang Shi <yang.shi@windriver.com>
+User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     ddaney@caviumnetworks.com, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Octeon: Fix wrong variable type in smp.c
+References: <1268115862-25976-1-git-send-email-yang.shi@windriver.com> <20100309190309.GA301@linux-mips.org> <20100309191750.GA1960@linux-mips.org>
+In-Reply-To: <20100309191750.GA1960@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 11 Mar 2010 02:53:42.0925 (UTC) FILETIME=[0F7AE3D0:01CAC0C6]
+Return-Path: <Yang.Shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26183
+X-archive-position: 26184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: yang.shi@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2010-03-10 at 16:17 -0800, David Daney wrote:
-> On 03/10/2010 07:41 AM, Wu Zhangjin wrote:
-> > From: Wu Zhangjin<wuzhangjin@gmail.com>
-> >
-> > The _rdmsr, _wrmsr operation must be atomic to ensure the accessing to msr
-> > address is what we want.
-> >
-> > Without this patch, in some cases, the reboot operation(fs2f_reboot) defined in
-> > arch/mips/loongson/lemote-2f/reset.c may fail for it called _rdmsr, _wrmsr but
-> > may be interrupted/preempted by the other related operations and make the
-> > _rdmsr get the wrong value or make the _wrmsr write a wrong value to an
-> > unexpected target.
-> >
-> > Signed-off-by: Wu Zhangjin<wuzhangjin@gmail.com>
-> > ---
-> >   arch/mips/pci/ops-loongson2.c |    9 +++++++++
-> >   1 files changed, 9 insertions(+), 0 deletions(-)
-> >
-> > diff --git a/arch/mips/pci/ops-loongson2.c b/arch/mips/pci/ops-loongson2.c
-> > index 2bb4057..1f93dfb 100644
-> > --- a/arch/mips/pci/ops-loongson2.c
-> > +++ b/arch/mips/pci/ops-loongson2.c
-> > @@ -180,15 +180,20 @@ struct pci_ops loongson_pci_ops = {
-> >   };
-> >
-> >   #ifdef CONFIG_CS5536
-> > +DEFINE_SPINLOCK(msr_lock);
-> 
-> 
-> Should this be DEFINE_RAW_SPINLOCK instead?
-> 
+Ralf Baechle 写道:
+> On Tue, Mar 09, 2010 at 08:03:09PM +0100, Ralf Baechle wrote:
+>
+>   
+>>> @@ -281,7 +281,7 @@ static void octeon_cpu_die(unsigned int cpu)
+>>>  
+>>>  #ifdef CONFIG_CAVIUM_OCTEON_WATCHDOG
+>>>  	/* Disable the watchdog */
+>>> -	cvmx_ciu_wdogx_t ciu_wdog;
+>>> +	union cvmx_ciu_wdogx ciu_wdog;
+>>>  	ciu_wdog.u64 = cvmx_read_csr(CVMX_CIU_WDOGX(cpu));
+>>>  	ciu_wdog.s.mode = 0;
+>>>  	cvmx_write_csr(CVMX_CIU_WDOGX(cpu), ciu_wdog.u64);
+>>>       
+>> David,
+>>
+>> I think this ifdef should be replaced by a notifier called from
+>> __cpu_die().
+>>     
+>
+> Since this is unused I'll just remove it for now.
+>   
 
-It should be, thanks!
+This breaks kernel build when HOTPLUG_CPU is enabled.
 
 Regards,
-	Wu Zhangjin
+Yang
+
+>   Ralf
+>
+>   

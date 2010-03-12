@@ -1,519 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Mar 2010 18:46:17 +0100 (CET)
-Received: from mail-fx0-f217.google.com ([209.85.220.217]:58675 "EHLO
-        mail-fx0-f217.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492012Ab0CLRqJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Mar 2010 18:46:09 +0100
-Received: by fxm9 with SMTP id 9so1425630fxm.24
-        for <multiple recipients>; Fri, 12 Mar 2010 09:46:03 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Mar 2010 19:35:07 +0100 (CET)
+Received: from fg-out-1718.google.com ([72.14.220.157]:60935 "EHLO
+        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492078Ab0CLSfC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Mar 2010 19:35:02 +0100
+Received: by fg-out-1718.google.com with SMTP id 16so445069fgg.6
+        for <multiple recipients>; Fri, 12 Mar 2010 10:35:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=zVEkbCobBo6yhl1Ev3guW2cFnQflrEqtrMn3YcXZ2e4=;
-        b=DJazElKHRPaqDIA+XHPfrWFD69B/oMFjTT10uizk6wI3u4IHrkJgGbgw27yRDqdQe5
-         S8Pu8eUwdUiv+OKB4ZfEJZeNh7xm1DS0F3gNV+l4lFPNVmneqHOb7aSLCgOxlKEyzH8U
-         SwvjQJS1Cvhx2cD+2JxxMbq+D19u685QW+n30=
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :message-id:references:mime-version:content-type:content-disposition
+         :in-reply-to:user-agent;
+        bh=4EQCixT/lHMIvQCQyw82WpBHcR91whUHkdAKx3Oyzso=;
+        b=U8SuxvII3h1lnsN7mrobQIT18Xfo8imE/xFZU1Jz5diaHIBQwSkHnSQITyTDUOsdwD
+         zIFv6W85SpCWHmWnKb0iNr9hqTpYB8gsGv/oBlkE7DWiAD3yfyIk3mOaSAws2s6ge4PK
+         G47irrZkWcy1OA/y3l155Tv23zns6EVXtGXDY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=KVttlCbtgSQqH33+1ILZb2DYpq59h5n7WWWb9E/eGa+YvTcjI86qdKfaWD0bouFSfH
-         5ynBnhVIHI17JV8S0jm2pQjjpvCZKZdFB9n4di1R8hvaTSZM3VHHE+ZgTwdamY7qnlOl
-         nNhDkdWT3y1xfe1z1DR/yI5XTAJ1lDXns9sqc=
-Received: by 10.223.143.82 with SMTP id t18mr1385126fau.52.1268415963117;
-        Fri, 12 Mar 2010 09:46:03 -0800 (PST)
-Received: from [202.201.12.142] ([202.201.12.142])
-        by mx.google.com with ESMTPS id k29sm3084535fkk.15.2010.03.12.09.45.57
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        b=uuZ3XIUn2LSfnk6VIyEYkzJnmfRfUApdB0GzQVD2QUSLn8kxOJ6hhwLH1stBL+3UYT
+         sLzy5Q4x3UPbYuEkBhatpmcMAoFuqVfBVEg9oIRmaisBXkT/LoCuHe6WYnvG2f4AQj0r
+         1zUM5ahj2pS3SXiMGbWxDV7ciwvCevDTuBoO4=
+Received: by 10.103.4.25 with SMTP id g25mr2195511mui.59.1268418899707;
+        Fri, 12 Mar 2010 10:34:59 -0800 (PST)
+Received: from mailhub.coreip.homeip.net (c-24-6-153-206.hsd1.ca.comcast.net [24.6.153.206])
+        by mx.google.com with ESMTPS id 14sm6357941muo.32.2010.03.12.10.34.57
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 12 Mar 2010 09:46:01 -0800 (PST)
-Subject: Re: [PATCH v3] MIPS: tracing: Optimize the implementation
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Steven Rostedt <srostedt@redhat.com>, linux-mips@linux-mips.org,
-        David Daney <ddaney@caviumnetworks.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-In-Reply-To: <33db7c603507d884eb4e3a27f84deb7eb4c016e8.1268415127.git.wuzhangjin@gmail.com>
-References: <33db7c603507d884eb4e3a27f84deb7eb4c016e8.1268415127.git.wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Sat, 13 Mar 2010 01:39:29 +0800
-Message-ID: <1268415569.20587.3.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+        Fri, 12 Mar 2010 10:34:58 -0800 (PST)
+Date:   Fri, 12 Mar 2010 10:34:51 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Wolfram Sang <w.sang@pengutronix.de>
+Cc:     kernel-janitors@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] arch/mips/txx9/generic: init dynamic bin_attribute
+ structures
+Message-ID: <20100312183450.GC8736@core.coreip.homeip.net>
+References: <1268377431-11671-1-git-send-email-w.sang@pengutronix.de>
+ <1268377431-11671-2-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1268377431-11671-2-git-send-email-w.sang@pengutronix.de>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <dmitry.torokhov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26217
+X-archive-position: 26218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dmitry.torokhov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Fri, Mar 12, 2010 at 08:03:49AM +0100, Wolfram Sang wrote:
+> Commit 6992f5334995af474c2b58d010d08bc597f0f2fe introduced this requirement.
+> Found with coccinelle, but fixed manually. Compile tested on X86 where
+> possible.
+> 
 
-This one fixed the building error ;)
+Regarding all 3 - it looks like these dynamically alocated attributes
+could be converted to statically allocated ones. I'd recommend doing
+that instead (in fact, I posted patch for the firmware_class couple days
+ago).
 
-Regards,
-	Wu Zhangjin
-
-On Sat, 2010-03-13 at 01:32 +0800, Wu Zhangjin wrote:
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
-> 
-> Changes:
-> 
-> v2 -> v3:
-> 
->   + Fixes the buidling error of the changes from v2.
-> 
-> v1 -> v2:
-> 
->   + Fixup the support of -mmcount-ra-address
-> 
->     The offset of "b 1f" instruction should be 20 for leaf-function and
->     24 for non-leaf function when -mmcount-ra-address is enabled. This
->     patch adds a new get_insn_b_1f() function to get the different "b
->     1f" instruction.
-> 
->   (only test without -mmcount-ra-address.)
-> 
-> v1:
-> 
->   + Reduce the runtime overhead
-> 
->     o Uses macros instead of variables for the fixed instructions to
->     reduce memory access
-> 
->     o Moves the Initilization of the instructions which will be fixed
->     after linking from ftrace_make_nop/ftrace_make_call to
->     ftrace_dyn_arch_init() and encodes the instructions through
->     uasm(arch/mips/include/asm/uasm.h).
-> 
->     o A common macro in_module() is defined to determine which space the
->     instruction pointer stays in and several related conditional
->     statements are converted to conditional operator(? :) statement.
-> 
->   + Cleanup the whole stuff
-> 
->     Lots of comments/macros have been cleaned up to let it look better.
-> 
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Eric W. Biederman <ebiederm@xmission.com>
 > ---
->  arch/mips/include/asm/ftrace.h |   12 ++-
->  arch/mips/kernel/ftrace.c      |  237 ++++++++++++++++++++++++----------------
->  2 files changed, 154 insertions(+), 95 deletions(-)
+>  arch/mips/txx9/generic/setup.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
 > 
-> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-> index ce35c9a..6dbfa1e 100644
-> --- a/arch/mips/include/asm/ftrace.h
-> +++ b/arch/mips/include/asm/ftrace.h
-> @@ -3,7 +3,7 @@
->   * License.  See the file "COPYING" in the main directory of this archive for
->   * more details.
->   *
-> - * Copyright (C) 2009 DSLab, Lanzhou University, China
-> + * Copyright (C) 2009, 2010 DSLab, Lanzhou University, China
->   * Author: Wu Zhangjin <wuzhangjin@gmail.com>
->   */
->  
-> @@ -19,6 +19,14 @@
->  extern void _mcount(void);
->  #define mcount _mcount
->  
-> +/*
-> + * If the Instruction Pointer is in module space (0xc0000000), return true;
-> + * otherwise, it is in kernel space (0x80000000), return false.
-> + *
-> + * FIXME: This may not work in some cases.
-> + */
-> +#define in_module(ip) (unlikely((ip) & 0x40000000))
-> +
->  #define safe_load(load, src, dst, error)		\
->  do {							\
->  	asm volatile (					\
-> @@ -83,8 +91,8 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
->  
->  struct dyn_arch_ftrace {
->  };
-> +#endif /* CONFIG_DYNAMIC_FTRACE */
->  
-> -#endif /*  CONFIG_DYNAMIC_FTRACE */
->  #endif /* __ASSEMBLY__ */
->  #endif /* CONFIG_FUNCTION_TRACER */
->  #endif /* _ASM_MIPS_FTRACE_H */
-> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-> index e9e64e0..88e05ae 100644
-> --- a/arch/mips/kernel/ftrace.c
-> +++ b/arch/mips/kernel/ftrace.c
-> @@ -2,7 +2,7 @@
->   * Code for replacing ftrace calls with jumps.
->   *
->   * Copyright (C) 2007-2008 Steven Rostedt <srostedt@redhat.com>
-> - * Copyright (C) 2009 DSLab, Lanzhou University, China
-> + * Copyright (C) 2009, 2010 DSLab, Lanzhou University, China
->   * Author: Wu Zhangjin <wuzhangjin@gmail.com>
->   *
->   * Thanks goes to Steven Rostedt for writing the original x86 version.
-> @@ -15,15 +15,50 @@
->  #include <asm/cacheflush.h>
->  #include <asm/asm.h>
->  #include <asm/asm-offsets.h>
-> +#include <asm/uasm.h>
-> +
-> +#define INSN_S_R_SP	0xafb00000	/* s{d,w} R, offset(sp) */
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE
->  
-> -#define JAL 0x0c000000		/* jump & link: ip --> ra, jump to target */
-> -#define ADDR_MASK 0x03ffffff	/*  op_code|addr : 31...26|25 ....0 */
-> -#define jump_insn_encode(op_code, addr) \
-> -	((unsigned int)((op_code) | (((addr) >> 2) & ADDR_MASK)))
-> +/* Before linking, the following instructions are fixed. */
-> +#ifdef CONFIG_CPU_LOONGSON2F
-> +#define INSN_NOP 0x00200825	/* or at, at, zero */
-> +#else
-> +#define INSN_NOP 0x00000000	/* nop */
-> +#endif
-> +#define INSN_B_1F_16 0x10000004	/* b 1f; offset = (16 >> 2) */
-> +#define INSN_B_1F_20 0x10000005	/* b 1f; offset = (20 >> 2) */
-> +#define INSN_B_1F_24 0x10000006	/* b 1f; offset = (24 >> 2) */
-> +
-> +/* After linking, the following instructions are fixed. */
-> +static unsigned int insn_jal_ftrace_caller __read_mostly;
-> +static unsigned int insn_lui_v1_hi16_mcount __read_mostly;
-> +static unsigned int insn_j_ftrace_graph_caller __read_mostly;
-> +
-> +/* The following instructions are encoded in the run-time */
-> +/* insn: jal func; op_code|addr : 31...26|25 ....0 */
-> +#define INSN_JAL(addr) \
-> +	((unsigned int)(0x0c000000 | (((addr) >> 2) & 0x03ffffff)))
-> +
-> +static inline void ftrace_dyn_arch_init_insns(void)
-> +{
-> +	u32 *buf;
-> +	unsigned int v1;
-> +
-> +	/* lui v1, hi16_mcount */
-> +	v1 = 3;
-> +	buf = (u32 *)&insn_lui_v1_hi16_mcount;
-> +	UASM_i_LA_mostly(&buf, v1, MCOUNT_ADDR);
->  
-> -static unsigned int ftrace_nop = 0x00000000;
-> +	/* jal (ftrace_caller + 8), jump over the first two instruction */
-> +	buf = (u32 *)&insn_jal_ftrace_caller;
-> +	uasm_i_jal(&buf, (FTRACE_ADDR + 8));
-> +
-> +	/* j ftrace_graph_caller */
-> +	buf = (u32 *)&insn_j_ftrace_graph_caller;
-> +	uasm_i_j(&buf, (unsigned long)ftrace_graph_caller);
-> +}
->  
->  static int ftrace_modify_code(unsigned long ip, unsigned int new_code)
->  {
-> @@ -31,7 +66,6 @@ static int ftrace_modify_code(unsigned long ip, unsigned int new_code)
->  
->  	/* *(unsigned int *)ip = new_code; */
->  	safe_store_code(new_code, ip, faulted);
-> -
->  	if (unlikely(faulted))
->  		return -EFAULT;
->  
-> @@ -40,118 +74,132 @@ static int ftrace_modify_code(unsigned long ip, unsigned int new_code)
->  	return 0;
->  }
->  
-> -static int lui_v1;
-> -static int jal_mcount;
-> +static inline unsigned int get_insn_b_1f(unsigned int *insn, unsigned long ip)
-> +{
-> +#ifndef KBUILD_MCOUNT_RA_ADDRESS
-> +	*insn = INSN_B_1F_16;
-> +	return 0;
-> +#else
-> +	int faulted;
-> +	unsigned int code;
-> +
-> +	ip -= 4;
-> +
-> +	/* code = *(unsigned int *)ip; */
-> +	safe_load_code(code, ip, faulted);
-> +	if (unlikely(faulted))
-> +		return -EFAULT;
-> +
-> +	if ((code & INSN_S_R_SP) != INSN_S_R_SP)
-> +		*insn = INSN_B_1F_20;
-> +	else
-> +		*insn = INSN_B_1F_24;
-> +
-> +	return 0;
-> +#endif
-> +}
->  
->  int ftrace_make_nop(struct module *mod,
->  		    struct dyn_ftrace *rec, unsigned long addr)
->  {
->  	unsigned int new;
-> -	int faulted;
->  	unsigned long ip = rec->ip;
->  
-> -	/* We have compiled module with -mlong-calls, but compiled the kernel
-> -	 * without it, we need to cope with them respectively. */
-> -	if (ip & 0x40000000) {
-> -		/* record it for ftrace_make_call */
-> -		if (lui_v1 == 0) {
-> -			/* lui_v1 = *(unsigned int *)ip; */
-> -			safe_load_code(lui_v1, ip, faulted);
-> -
-> -			if (unlikely(faulted))
-> -				return -EFAULT;
-> -		}
-> -
-> -		/* lui v1, hi_16bit_of_mcount        --> b 1f (0x10000004)
-> -		 * addiu v1, v1, low_16bit_of_mcount
-> -		 * move at, ra
-> -		 * jalr v1
-> -		 * nop
-> -		 * 				     1f: (ip + 12)
-> -		 */
-> -		new = 0x10000004;
-> -	} else {
-> -		/* record/calculate it for ftrace_make_call */
-> -		if (jal_mcount == 0) {
-> -			/* We can record it directly like this:
-> -			 *     jal_mcount = *(unsigned int *)ip;
-> -			 * Herein, jump over the first two nop instructions */
-> -			jal_mcount = jump_insn_encode(JAL, (MCOUNT_ADDR + 8));
-> -		}
-> -
-> -		/* move at, ra
-> -		 * jalr v1		--> nop
-> -		 */
-> -		new = ftrace_nop;
-> -	}
-> +	/*
-> +	 * We have compiled modules with -mlong-calls, but compiled kernel
-> +	 * without it, therefore, need to cope with them respectively.
-> +	 *
-> +	 * For module:
-> +	 *
-> +	 *	lui	v1, hi16_mcount		--> b	1f
-> +	 *	addiu	v1, v1, lo16_mcount
-> +	 *	move	at, ra
-> +	 *	jalr	v1
-> +	 *	 nop
-> +	 *					1f: (ip + 16)
-> +	 * For kernel:
-> +	 *
-> +	 *	move	at, ra
-> +	 *	jal	_mcount			--> nop
-> +	 *
-> +	 * And with the -mmcount-ra-address option, the offset may be 20 for
-> +	 * leaf fuction and 24 for non-leaf function.
-> +	 */
-> +
-> +	if (!in_module(ip))
-> +		new = INSN_NOP;
-> +	else if (get_insn_b_1f(&new, ip))
-> +		return -EFAULT;
-> +
->  	return ftrace_modify_code(ip, new);
->  }
->  
-> -static int modified;	/* initialized as 0 by default */
-> -
->  int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
->  {
->  	unsigned int new;
->  	unsigned long ip = rec->ip;
->  
-> -	/* We just need to remove the "b ftrace_stub" at the fist time! */
-> -	if (modified == 0) {
-> -		modified = 1;
-> -		ftrace_modify_code(addr, ftrace_nop);
-> -	}
-> -	/* ip, module: 0xc0000000, kernel: 0x80000000 */
-> -	new = (ip & 0x40000000) ? lui_v1 : jal_mcount;
-> +	new = in_module(ip) ? insn_lui_v1_hi16_mcount : insn_jal_ftrace_caller;
->  
->  	return ftrace_modify_code(ip, new);
->  }
->  
-> -#define FTRACE_CALL_IP ((unsigned long)(&ftrace_call))
-> -
->  int ftrace_update_ftrace_func(ftrace_func_t func)
->  {
->  	unsigned int new;
->  
-> -	new = jump_insn_encode(JAL, (unsigned long)func);
-> +	new = INSN_JAL((unsigned long)func);
->  
-> -	return ftrace_modify_code(FTRACE_CALL_IP, new);
-> +	return ftrace_modify_code((unsigned long)(&ftrace_call), new);
->  }
->  
->  int __init ftrace_dyn_arch_init(void *data)
->  {
-> +	ftrace_dyn_arch_init_insns();
-> +
-> +	/*
-> +	 * We are safe to remove the "b ftrace_stub" for the current
-> +	 * ftrace_caller() is almost empty (only the stack operations), and
-> +	 * most importantly, the calling to mcount will be disabled later in
-> +	 * ftrace_init(), then there is no 'big' overhead. And in the future,
-> +	 * we are hoping the function_trace_stop is initialized as 1 then we
-> +	 * can eventually remove that 'useless' "b ftrace_stub" and the
-> +	 * following nop. Currently, although we can call ftrace_stop() to set
-> +	 * function_trace_stop as 1, but it will change the behavior of the
-> +	 * Function Tracer.
-> +	 */
-> +	ftrace_modify_code(MCOUNT_ADDR, INSN_NOP);
-> +
->  	/* The return code is retured via data */
->  	*(unsigned long *)data = 0;
->  
->  	return 0;
->  }
-> -#endif				/* CONFIG_DYNAMIC_FTRACE */
-> +#endif	/* CONFIG_DYNAMIC_FTRACE */
->  
->  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE
->  
->  extern void ftrace_graph_call(void);
-> -#define JMP	0x08000000	/* jump to target directly */
-> -#define CALL_FTRACE_GRAPH_CALLER \
-> -	jump_insn_encode(JMP, (unsigned long)(&ftrace_graph_caller))
->  #define FTRACE_GRAPH_CALL_IP	((unsigned long)(&ftrace_graph_call))
->  
->  int ftrace_enable_ftrace_graph_caller(void)
->  {
->  	return ftrace_modify_code(FTRACE_GRAPH_CALL_IP,
-> -				  CALL_FTRACE_GRAPH_CALLER);
-> +			insn_j_ftrace_graph_caller);
->  }
->  
->  int ftrace_disable_ftrace_graph_caller(void)
->  {
-> -	return ftrace_modify_code(FTRACE_GRAPH_CALL_IP, ftrace_nop);
-> +	return ftrace_modify_code(FTRACE_GRAPH_CALL_IP, INSN_NOP);
->  }
->  
-> -#endif				/* !CONFIG_DYNAMIC_FTRACE */
-> +#endif	/* !CONFIG_DYNAMIC_FTRACE */
->  
->  #ifndef KBUILD_MCOUNT_RA_ADDRESS
-> -#define S_RA_SP	(0xafbf << 16)	/* s{d,w} ra, offset(sp) */
-> -#define S_R_SP	(0xafb0 << 16)  /* s{d,w} R, offset(sp) */
-> -#define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
-> +#define INSN_S_RA_SP	0xafbf0000	/* s{d,w} ra, offset(sp) */
-> +#define STACK_OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
->  
->  unsigned long ftrace_get_parent_addr(unsigned long self_addr,
->  				     unsigned long parent,
-> @@ -162,35 +210,35 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
->  	unsigned int code;
->  	int faulted;
->  
-> -	/* in module or kernel? */
-> -	if (self_addr & 0x40000000) {
-> -		/* module: move to the instruction "lui v1, HI_16BIT_OF_MCOUNT" */
-> -		ip = self_addr - 20;
-> -	} else {
-> -		/* kernel: move to the instruction "move ra, at" */
-> -		ip = self_addr - 12;
-> -	}
-> +	/*
-> +	 * For module, move the ip from calling site of mcount to the
-> +	 * instruction "lui v1, hi_16bit_of_mcount"(offset is 20), but for
-> +	 * kernel, move to the instruction "move ra, at"(offset is 12)
-> +	 */
-> +	ip = self_addr - (in_module(self_addr) ? 20 : 12);
->  
-> -	/* search the text until finding the non-store instruction or "s{d,w}
-> -	 * ra, offset(sp)" instruction */
-> +	/*
-> +	 * search the text until finding the non-store instruction or "s{d,w}
-> +	 * ra, offset(sp)" instruction
-> +	 */
->  	do {
->  		ip -= 4;
->  
->  		/* get the code at "ip": code = *(unsigned int *)ip; */
->  		safe_load_code(code, ip, faulted);
-> -
->  		if (unlikely(faulted))
->  			return 0;
->  
-> -		/* If we hit the non-store instruction before finding where the
-> +		/*
-> +		 * If we hit the non-store instruction before finding where the
->  		 * ra is stored, then this is a leaf function and it does not
-> -		 * store the ra on the stack. */
-> -		if ((code & S_R_SP) != S_R_SP)
-> +		 * store the ra on the stack.
-> +		 */
-> +		if ((code & INSN_S_R_SP) != INSN_S_R_SP)
->  			return parent_addr;
-> +	} while (((code & INSN_S_RA_SP) != INSN_S_RA_SP));
->  
-> -	} while (((code & S_RA_SP) != S_RA_SP));
-> -
-> -	sp = fp + (code & OFFSET_MASK);
-> +	sp = fp + (code & STACK_OFFSET_MASK);
->  
->  	/* ra = *(unsigned long *)sp; */
->  	safe_load_stack(ra, sp, faulted);
-> @@ -211,16 +259,17 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
->  void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
->  			   unsigned long fp)
->  {
-> +	int faulted;
->  	unsigned long old;
->  	struct ftrace_graph_ent trace;
->  	unsigned long return_hooker = (unsigned long)
->  	    &return_to_handler;
-> -	int faulted;
->  
->  	if (unlikely(atomic_read(&current->tracing_graph_pause)))
->  		return;
->  
-> -	/* "parent" is the stack address saved the return address of the caller
-> +	/*
-> +	 * "parent" is the stack address saved the return address of the caller
->  	 * of _mcount.
->  	 *
->  	 * if the gcc < 4.5, a leaf function does not save the return address
-> @@ -241,12 +290,14 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
->  	if (unlikely(faulted))
->  		goto out;
->  #ifndef KBUILD_MCOUNT_RA_ADDRESS
-> -	parent = (unsigned long *)ftrace_get_parent_addr(self_addr, old,
-> -							 (unsigned long)parent,
-> -							 fp);
-> -	/* If fails when getting the stack address of the non-leaf function's
-> -	 * ra, stop function graph tracer and return */
-> -	if (parent == 0)
-> +	parent = (unsigned long *)ftrace_get_parent_addr(
-> +			self_addr, old, (unsigned long)parent, fp);
-> +
-> +	/*
-> +	 * If fails on getting the stack address of the non-leaf function's ra,
-> +	 * stop function graph tracer and return
-> +	 */
-> +	if (unlikely(parent == 0))
->  		goto out;
->  #endif
->  	/* *parent = return_hooker; */
-> @@ -272,4 +323,4 @@ out:
->  	ftrace_graph_stop();
->  	WARN_ON(1);
->  }
-> -#endif				/* CONFIG_FUNCTION_GRAPH_TRACER */
-> +#endif	/* CONFIG_FUNCTION_GRAPH_TRACER */
+> diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+> index 7174d83..95184a0 100644
+> --- a/arch/mips/txx9/generic/setup.c
+> +++ b/arch/mips/txx9/generic/setup.c
+> @@ -956,6 +956,7 @@ void __init txx9_sramc_init(struct resource *r)
+>  	if (!dev->base)
+>  		goto exit;
+>  	dev->dev.cls = &txx9_sramc_sysdev_class;
+> +	sysfs_bin_attr_init(&dev->bindata_attr);
+>  	dev->bindata_attr.attr.name = "bindata";
+>  	dev->bindata_attr.attr.mode = S_IRUSR | S_IWUSR;
+>  	dev->bindata_attr.read = txx9_sram_read;
+
+-- 
+Dmitry

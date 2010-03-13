@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Mar 2010 05:45:58 +0100 (CET)
-Received: from mail-px0-f189.google.com ([209.85.216.189]:58659 "EHLO
-        mail-px0-f189.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491001Ab0CMEpz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Mar 2010 05:45:55 +0100
-Received: by pxi27 with SMTP id 27so2110016pxi.0
-        for <multiple recipients>; Fri, 12 Mar 2010 20:45:46 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Mar 2010 05:46:22 +0100 (CET)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:44103 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491150Ab0CMEp7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 13 Mar 2010 05:45:59 +0100
+Received: by pvh11 with SMTP id 11so31060pvh.36
+        for <multiple recipients>; Fri, 12 Mar 2010 20:45:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        bh=7ZXouYudrJmeK/+cVsboMRJmXpFppTKTJ7E8DejkODo=;
-        b=bTJcgnAlEa2xWoKMd4NJpINHLIgzeFbEo1jWOZOnmgkLklRwM3+rsfLutVWRs28mDu
-         JsBR3ULHfjhw22WNrAD3MOcnG+RaEU7TD5ay00uE4TQF5aiASAmtzdCFlY9n9KDg8B7H
-         WDiutx3HGZFDf/hdP3wto71bInHEgaVr+lwA0=
+         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
+        bh=P2v0PzTZ8PcrOj5xc9fJWbeIzqwSM6dukdMjQ4UhZUY=;
+        b=bR/lVFy+U6gmgi5IHhWj5Onu6t8qGiXtdyNElfMez9OwXOmpR4m3/7s6ea9gu6lGR7
+         RZ5ecqqp9Ythv++8edNYiJbsNPoMmp5OFfRZsmoG4aBcj3SwowNlCAs5NKW9Fe2ngon5
+         fn55FpMcAOBZ22gCy0CRS3bEd6MJ3mcvRFnsw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
-         :mime-version:content-type:content-transfer-encoding;
-        b=G4sPRG+5/5EkJm/8GTFY4iOJOJb9gKdCaZKmphQNXz248P6FG6OW6goGLD13lQJgcV
-         8VZFBDWljwfXBSzMJ4mD4S0qKtFRKjJeMSBukETCGew9hoFBqR1eyHXpKl60lBlW2/ZV
-         ZvvqoV9We6sjWDsDP783Aocs6kGVwEJZyb9z0=
-Received: by 10.115.64.27 with SMTP id r27mr3381177wak.6.1268455545410;
-        Fri, 12 Mar 2010 20:45:45 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=IlCO7IcZOAgmuLAIv5WTYK3zgUPRNAYNz2L53m/z1t8OKjAraiLJ4oFZQ9GyiXxIGI
+         IX0PjzNuiVCyHdFf3ChIwd+pVhRiBohZUzQldQZYsVZ7MN2n2gxjcVuFffDeJub3z4xc
+         siKXO5lbxYx+YxjygX+8Q8wyZdpgheDiGjkak=
+Received: by 10.142.119.26 with SMTP id r26mr961531wfc.320.1268455552048;
+        Fri, 12 Mar 2010 20:45:52 -0800 (PST)
 Received: from localhost.localdomain ([202.201.12.142])
-        by mx.google.com with ESMTPS id 21sm2172318pzk.0.2010.03.12.20.45.41
+        by mx.google.com with ESMTPS id 21sm2172318pzk.0.2010.03.12.20.45.47
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 12 Mar 2010 20:45:44 -0800 (PST)
+        Fri, 12 Mar 2010 20:45:51 -0800 (PST)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org,
         Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v3 1/3] Loongson-2F: Flush the branch target history such as BTB and RAS
-Date:   Sat, 13 Mar 2010 12:34:15 +0800
-Message-Id: <05e2ba2596f23fa4dda64d63ce2480504b1be4ac.1268453720.git.wuzhangjin@gmail.com>
+        Wu Zhangjin <wuzhangjin@gmail.com>,
+        Zhang Le <r0bertz@gentoo.org>, Wu Zhangjin <wuzj@lemote.com>
+Subject: [PATCH v3 2/3] Loongson-2F: Enable fixups of binutils 2.20.1
+Date:   Sat, 13 Mar 2010 12:34:16 +0800
+Message-Id: <ecc51ee134ab84c95b6b02534544df3731bb9562.1268453720.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.7.0.1
 In-Reply-To: <cover.1268453720.git.wuzhangjin@gmail.com>
 References: <cover.1268453720.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1268453720.git.wuzhangjin@gmail.com>
 References: <cover.1268453720.git.wuzhangjin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26225
+X-archive-position: 26226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,53 +53,43 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-As the Chapter 15: "Errata: Issue of Out-of-order in loongson"[1] shows, to
-workaround the Issue of Loongson-2F，We need to do:
+As the "Fixups of Loongson2F" patch[1] to binutils have been applied
+into binutils 2.20.1. It's time to enable the options provided by the
+patch to compile the kernel.
 
-"When switching from user mode to kernel mode, you should flush the
-branch target history such as BTB and RAS."
+Without these fixups, the system will hang unexpectedly for the bug of
+processor.
 
-This patch did clear BTB(branch target buffer), forbid RAS(return
-address stack) via Loongson-2F's 64bit diagnostic register.
+To learn more about these fixups, please refer to the following
+references.
 
-[1] Chinese Version: http://www.loongson.cn/uploadfile/file/200808211
-[2] English Version of Chapter 15:
+[1] "Fixups of Loongson2F" patch for binutils(actually for gas)
+http://sourceware.org/ml/binutils/2009-11/msg00387.html
+[2] Chapter 15 of "Loongson2F User Manual"(Chinese Version)
+http://www.loongson.cn/uploadfile/file/200808211
+[3] English Version of the above chapter 15
 http://groups.google.com.hk/group/loongson-dev/msg/e0d2e220958f10a6?dmode=source
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+Signed-off-by: Zhang Le <r0bertz@gentoo.org>
+Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
 ---
- arch/mips/include/asm/stackframe.h |   19 +++++++++++++++++++
- 1 files changed, 19 insertions(+), 0 deletions(-)
+ arch/mips/Makefile |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index 3b6da33..c841912 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -121,6 +121,25 @@
- 		.endm
- #else
- 		.macro	get_saved_sp	/* Uniprocessor variation */
-+#ifdef CONFIG_CPU_LOONGSON2F
-+		/*
-+		 * Clear BTB (branch target buffer), forbid RAS (return address
-+		 * stack) to workaround the Out-of-order Issue in Loongson2F
-+		 * via its diagnostic register.
-+		 */
-+		move	k0, ra
-+		jal	1f
-+		 nop
-+1:		jal	1f
-+		 nop
-+1:		jal	1f
-+		 nop
-+1:		jal	1f
-+		 nop
-+1:		move	ra, k0
-+		li	k0, 3
-+		mtc0	k0, $22
-+#endif /* CONFIG_CPU_LOONGSON2F */
- #if defined(CONFIG_32BIT) || defined(KBUILD_64BIT_SYM32)
- 		lui	k1, %hi(kernelsp)
- #else
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 2f2eac2..5ae342e 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -135,7 +135,9 @@ cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
+ cflags-$(CONFIG_CPU_LOONGSON2E) += \
+ 	$(call cc-option,-march=loongson2e,-march=r4600)
+ cflags-$(CONFIG_CPU_LOONGSON2F) += \
+-	$(call cc-option,-march=loongson2f,-march=r4600)
++	$(call cc-option,-march=loongson2f,-march=r4600) \
++	$(call as-option,-Wa$(comma)-mfix-loongson2f-nop,) \
++	$(call as-option,-Wa$(comma)-mfix-loongson2f-jump,)
+ 
+ cflags-$(CONFIG_CPU_MIPS32_R1)	+= $(call cc-option,-march=mips32,-mips32 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
+ 			-Wa,-mips32 -Wa,--trap
 -- 
 1.7.0.1

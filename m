@@ -1,55 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2010 12:30:07 +0100 (CET)
-Received: from mail-qy0-f180.google.com ([209.85.221.180]:62829 "EHLO
-        mail-qy0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491972Ab0CQLaD convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 17 Mar 2010 12:30:03 +0100
-Received: by qyk10 with SMTP id 10so540188qyk.6
-        for <linux-mips@linux-mips.org>; Wed, 17 Mar 2010 04:29:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=nda2sQZEqHrRes3iHgkimqtRd9vN6MwYSZ91qktZ0HE=;
-        b=jJZaBlYwZWZ5FBh8rDkwxnqxiGgyp5puNBVVsLND5w/Iyrs6X1oZPeMefTT/VJaFF1
-         MIM1Zkze7nY/ZkL0BqI/gKaf1aF1rzONBOSddqLtmMJCjGzyycOaUB8cnwg2hEb0ZMNq
-         v7m5huyjsF/dfIH5LneVkx1Pkko0wQIZNZYdg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=LgBMiPVQGFYt5ZlTI3MIGpW2LuK2Zn6L/JHT3YGfAdmDTPZ6bzAV1QoVPpCu4yLEdM
-         B99bdUedYi2jClFrt3s31+UQTrVD9nPgjK+zBHlaffIKlAMTHJ2tu0A9Ee0ycHP4/I9y
-         Rs6ur/q38jWxnA8p83KIW2UAjD6yepGX6jY6U=
-MIME-Version: 1.0
-Received: by 10.224.87.159 with SMTP id w31mr210887qal.50.1268825393655; Wed, 
-        17 Mar 2010 04:29:53 -0700 (PDT)
-In-Reply-To: <6C370B347C3FE8438C9692873287D2E1109DDF015B@SJEXCHCCR01.corp.ad.broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Mar 2010 13:07:16 +0100 (CET)
+Received: from mms3.broadcom.com ([216.31.210.19]:3622 "EHLO MMS3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491768Ab0CQMHN convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Mar 2010 13:07:13 +0100
+Received: from [10.16.192.224] by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Wed, 17 Mar 2010 05:06:50 -0700
+X-Server-Uuid: B55A25B1-5D7D-41F8-BC53-C57E7AD3C201
+Received: from SJEXCHCCR01.corp.ad.broadcom.com ([10.252.49.130]) by
+ SJEXCHHUB01.corp.ad.broadcom.com ([10.16.192.224]) with mapi; Wed, 17
+ Mar 2010 05:06:50 -0700
+From:   "Ramgopal Kota" <rkota@broadcom.com>
+To:     "Adam Jiang" <jiang.adam@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Date:   Wed, 17 Mar 2010 05:06:47 -0700
+Subject: RE: HIGHMEM not working.
+Thread-Topic: HIGHMEM not working.
+Thread-Index: AcrFxTYLt1ryOz20RK+pVqNgRQr2PwAA8FPw
+Message-ID: <6C370B347C3FE8438C9692873287D2E1109DDF01AD@SJEXCHCCR01.corp.ad.broadcom.com>
 References: <4BEA3FF3CAA35E408EA55C7BE2E61D0546AC862322@xmail3.se.axis.com>
-         <6C370B347C3FE8438C9692873287D2E1109DDF0057@SJEXCHCCR01.corp.ad.broadcom.com>
-         <6C370B347C3FE8438C9692873287D2E1109DDF0073@SJEXCHCCR01.corp.ad.broadcom.com>
-         <1864acd31003170006q602602a9j5675964b886b0a55@mail.gmail.com>
-         <6C370B347C3FE8438C9692873287D2E1109DDF015B@SJEXCHCCR01.corp.ad.broadcom.com>
-Date:   Wed, 17 Mar 2010 20:29:53 +0900
-Message-ID: <1864acd31003170429l7b0972fcn46a6404674ad62d9@mail.gmail.com>
-Subject: Re: HIGHMEM not working.
-From:   Adam Jiang <jiang.adam@gmail.com>
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Cc:     Ramgopal Kota <rkota@broadcom.com>
-Content-Type: text/plain; charset=ISO-8859-1
+ <6C370B347C3FE8438C9692873287D2E1109DDF0057@SJEXCHCCR01.corp.ad.broadcom.com>
+ <6C370B347C3FE8438C9692873287D2E1109DDF0073@SJEXCHCCR01.corp.ad.broadcom.com>
+ <1864acd31003170006q602602a9j5675964b886b0a55@mail.gmail.com>
+ <6C370B347C3FE8438C9692873287D2E1109DDF015B@SJEXCHCCR01.corp.ad.broadcom.com>
+ <1864acd31003170429l7b0972fcn46a6404674ad62d9@mail.gmail.com>
+In-Reply-To: <1864acd31003170429l7b0972fcn46a6404674ad62d9@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage: en-US
+MIME-Version: 1.0
+X-WSS-ID: 67BE1A5031G62437712-01-01
+Content-Type: text/plain;
+ charset=iso-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <jiang.adam@gmail.com>
+Return-Path: <rkota@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26249
+X-archive-position: 26250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiang.adam@gmail.com
+X-original-sender: rkota@broadcom.com
 Precedence: bulk
 X-list: linux-mips
+
+Adam, 
+
+The first 128MB of 0x8000_0000 is mapped to 0x0000_0000 address, hence I added them as 2 nodes with 0 & 0x8800_0000 ..
+max_zone_pfns[ZONE_NORMAL] should be assigned with maximum physical address of the memory i.e. address >> page_size ...
+As the physical address is 0x07FF_FFFF .. The ZONE_NORMAL PFN should be 0x07FFF ..
+
+As ZONE_HIGH max address is 0x8FFF_FFFF .. The ZONE_HIGH PFN should be 0x8FFFF .. Why do you think this is wrong ?
+
+I did not get how I can handle with out ZONE_HIGH ?? Can you explain me in more detail please ..
+
+Thanks & Regards,
+Ramgopal Kota
+
+-----Original Message-----
+From: Adam Jiang [mailto:jiang.adam@gmail.com] 
+Sent: Wednesday, March 17, 2010 5:00 PM
+To: linux-mips@linux-mips.org
+Cc: Ramgopal Kota
+Subject: Re: HIGHMEM not working.
 
 2010/3/17 Ramgopal Kota <rkota@broadcom.com>
 >

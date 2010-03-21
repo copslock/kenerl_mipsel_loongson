@@ -1,75 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Mar 2010 12:02:46 +0100 (CET)
-Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:56209 "EHLO
-        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491204Ab0CULCn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Mar 2010 12:02:43 +0100
-Received: id: bigeasy by Chamillionaire.breakpoint.cc with local
-        (easymta 1.00 BETA 1)
-        id 1NtIvZ-0006es-GP; Sun, 21 Mar 2010 12:02:41 +0100
-Date:   Sun, 21 Mar 2010 12:02:41 +0100
-From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH] mips/mm: fix module support on SiByte
-Message-ID: <20100321110241.GA25569@Chamillionaire.breakpoint.cc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Mar 2010 17:00:35 +0100 (CET)
+Received: from apfelkorn.psychaos.be ([195.144.77.38]:39721 "EHLO
+        apfelkorn.psychaos.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492705Ab0CUQAc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Mar 2010 17:00:32 +0100
+Received: from p2 by apfelkorn.psychaos.be with local (Exim 4.69)
+        (envelope-from <p2@psychaos.be>)
+        id 1NtNZk-0000Ab-0J; Sun, 21 Mar 2010 18:00:28 +0200
+Date:   Sun, 21 Mar 2010 18:00:27 +0200
+From:   Peter 'p2' De Schrijver <p2@debian.org>
+To:     David Daney <david.s.daney@gmail.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Jan Rovins <janr@adax.com>, linux-mips@linux-mips.org
+Subject: Re: linux 2.6.33 on movidis x16
+Message-ID: <20100321160027.GJ2437@apfelkorn>
+References: <20100305141113.GD2437@apfelkorn> <4B9EB45D.8050106@adax.com> <20100318181734.GG2437@apfelkorn> <4BA27048.2010707@caviumnetworks.com> <4BA4021B.4010905@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Key-Id: FE3F4706
-X-Key-Fingerprint: FFDA BBBB 3563 1B27 75C9  925B 98D5 5C1C FE3F 4706
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <sebastian@breakpoint.cc>
+In-Reply-To: <4BA4021B.4010905@gmail.com>
+X-Unexpected-Header: The spanish inquisition !
+X-mate: Mate, mann gewohnt sich an alles
+X-Paddo: Munch, Munch
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <p2@psychaos.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26282
+X-archive-position: 26283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebastian@breakpoint.cc
+X-original-sender: p2@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-Since commit 656be92f aka "Load modules to CKSEG0 if
-CONFIG_BUILD_ELF64=n" module support is broken on 64bit. Since then
-modules arr loaded into 32bit compat adresses which are sign extended
-64bit addresses. The SiByte war handler was not updated and those
-addresses were not recognized by the TLB hadling.
-This patch fixes this by shifting away the upper bits including the R
-and Fill bits. Now we compare VPN2 of C0_ENTRYHI against the matching
-bits at C0_BADVADDR.
+>
+> Can you try the attached patch?
+>
+>
+> from the back of the box we have:
+>
+> ---------------------------------------
+> | eth5 | eth7 |  | eth1 | eth3 |
+> ---------------------------------------
+> | eth4 | eth6 |  | eth0 | eth2 |
+> ---------------------------------------
+>
+> I was able to boot 2.6.34-rc1 to a Debian root nfs mounted via eth1.
+>
+> I didn't verify that eth4 - eth7 worked.
+>
 
-Cc: <stable@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
----
- arch/mips/mm/tlbex.c |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+Yes ! That seems to work. We intend to use the machine as buildd, so 1 working 
+ethernet is fine :)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index badcf5e..47faeb4 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -745,6 +745,10 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
- 		UASM_i_MFC0(&p, K1, C0_ENTRYHI);
- 		uasm_i_xor(&p, K0, K0, K1);
- 		UASM_i_SRL(&p, K0, K0, PAGE_SHIFT + 1);
-+#ifdef CONFIG_64BIT
-+		/* Make sure we have here just VPN2 */
-+		uasm_i_dsll32(&p, K0, K0, PAGE_SHIFT + 1 + 24 - 32);
-+#endif
- 		uasm_il_bnez(&p, &r, K0, label_leave);
- 		/* No need for uasm_i_nop */
- 	}
-@@ -1264,6 +1268,10 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
- 		UASM_i_MFC0(&p, K1, C0_ENTRYHI);
- 		uasm_i_xor(&p, K0, K0, K1);
- 		UASM_i_SRL(&p, K0, K0, PAGE_SHIFT + 1);
-+#ifdef CONFIG_64BIT
-+		/* Make sure we have here just VPN2 */
-+		uasm_i_dsll32(&p, K0, K0, PAGE_SHIFT + 1 + 24 - 32);
-+#endif
- 		uasm_il_bnez(&p, &r, K0, label_leave);
- 		/* No need for uasm_i_nop */
- 	}
--- 
-1.6.6
+Thanks,
+
+Peter.

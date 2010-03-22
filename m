@@ -1,74 +1,128 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Mar 2010 18:08:15 +0100 (CET)
-Received: from mail-fx0-f216.google.com ([209.85.220.216]:43334 "EHLO
-        mail-fx0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492428Ab0CURIH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 21 Mar 2010 18:08:07 +0100
-Received: by fxm8 with SMTP id 8so4000945fxm.25
-        for <linux-mips@linux-mips.org>; Sun, 21 Mar 2010 10:08:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:subject:date
-         :user-agent:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        bh=ABnITTmOU2e6D+SffjQ5RmkzU9xomC82KJLJXaD+gw8=;
-        b=cPJ7R6FkTFb25EfOQN6txJ9GAsAmnv8xM3mUfaQp8zhOO2weoixgThPzrzDYNn4vet
-         58yDzSMRq6+RcXucxlGMekzpfMAV5W+D2gPgZAePlFcvF2QTCZ91ZLcqh8F25kN2kU0r
-         ZLkMcQHRjpUZEzPRdiAHDT+QoHk3oGMVUo6xA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:subject:date:user-agent:mime-version:content-type
-         :content-transfer-encoding:message-id;
-        b=JfVYWmMqWrt+8byAgScaO/McwFGCiR1dc2HN1+AC/4xGjUvtqqc6hDaN39etd1euWg
-         l8FYVyr/O3Ol4pEANA1WHUtZKvFJKl2M2F2vHw94VRIc/TYFy+i+GCVwQbfe8t/gszrT
-         NA1Kz3rNYavUIZDtasvbH+S9/A65CClX6+QIc=
-Received: by 10.103.7.31 with SMTP id k31mr9414507mui.132.1269191280861;
-        Sun, 21 Mar 2010 10:08:00 -0700 (PDT)
-Received: from debian.localnet (chello087206211117.chello.pl [87.206.211.117])
-        by mx.google.com with ESMTPS id n7sm17969484mue.15.2010.03.21.10.07.59
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 21 Mar 2010 10:08:00 -0700 (PDT)
-From:   Adrian Byszuk <adebex@gmail.com>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] Fix kexec call on MIPS platform
-Date:   Sun, 21 Mar 2010 17:06:47 +0000
-User-Agent: KMail/1.12.4 (Linux/2.6.33.1-custom; KDE/4.3.4; i686; ; )
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Mar 2010 01:34:13 +0100 (CET)
+Received: from xenotime.net ([72.52.64.118]:58625 "HELO xenotime.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S1492498Ab0CVAeG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Mar 2010 01:34:06 +0100
+Received: from chimera.site ([71.245.98.113]) by xenotime.net for <linux-mips@linux-mips.org>; Sun, 21 Mar 2010 17:33:56 -0700
+Message-ID: <4BA6BAF3.10603@xenotime.net>
+Date:   Sun, 21 Mar 2010 17:33:55 -0700
+From:   Randy Dunlap <rdunlap@xenotime.net>
+Organization: YPO4
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.5) Gecko/20091209 Fedora/3.0-3.fc11 Thunderbird/3.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
+To:     "Justin P. Mattock" <justinmattock@gmail.com>
+CC:     trivial@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-audit@redhat.com, uclinux-dist-devel@blackfin.uclinux.org,
+        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linux-s390@vger.kernel.org, selinux@tycho.nsa.gov,
+        sparclinux@vger.kernel.org, x86@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Cosmetic:Partially remove deprecated __initcall() and
+ change to
+References: <1269028291-9103-1-git-send-email-justinmattock@gmail.com> <4BA40115.2000509@xenotime.net> <4BA407AC.5030506@gmail.com>
+In-Reply-To: <4BA407AC.5030506@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Message-Id: <201003211706.47373.adebex@gmail.com>
-Return-Path: <adebex@gmail.com>
+Return-Path: <rdunlap@xenotime.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26284
+X-archive-position: 26285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adebex@gmail.com
+X-original-sender: rdunlap@xenotime.net
 Precedence: bulk
 X-list: linux-mips
 
-Dear developers,
+On 03/19/10 16:24, Justin P. Mattock wrote:
+> On 03/19/2010 03:56 PM, Randy Dunlap wrote:
+>> On 03/19/10 12:51, Justin P. Mattock wrote:
+>>> After doing some things on a small issue,
+>>> I noticed through web surfing, that there were patches
+>>> submitted pertaining that __initcall is deprecated,
+>>> and device_initcall should be used.
+>>
+>> Where was this discussion?  Do you have any pointers to it?
+>>
+> 
+> The best info on this is scripts/checkpatch.pl
+> line #2664
+> 
+> when I found this I just did a quick search of __initcall
+> (which gives hits here and there)
+> https://patchwork.kernel.org/patch/23344/
+> (also found others at around 2008 or so)
 
-This kernel patch fixes problems with kexec call on some devices.
-I tested it on Asus WL-500gP v2. I suppose it would behave well on all MIPS 
-machines.
-Applicable to 2.6.32 and 2.6.33
+Thanks.  IMO there should be something in the kernel source tree
+that says explicitly that __initcall is deprecated and should be
+replaced by using <whatever should be used>.  That's missing.
 
-Signed-off-by: Adrian Byszuk <adebex_at_gmail.com>
 
----
+>> I don't see any mention of __initcall being deprecated in
+>> Linus' mainline git tree, or in linux-next, or in mmotm.
+>> Where are those patches?
+>>
+> 
+> I don't know(I'm out of the social pipeline when it comes to Linux news,
+> and updates)..
+> like in the explanation part of the patch
+> I was looking into something else, then ran into this,
+> so as a break(from what I was originally doing)
+> decided to do this and submit.
+> 
+>>
+>>> So as a change of subject(since what I was looking at
+>>> was frustrating me),I decided to grep the whole tree
+>>> and make the change(partially).
+>>>
+>>> Currently I'm running this patch on my system, kernel compiles
+>>> without any errors or warnings.(thought there would be a speed increase
+>>> but didn't see much(if any)).
+>>
+>> No, __initcall(x) is just a shorthand version of typing
+>> device_initcall(x).  They do the same thing.
+>>
+> 
+> yep, that's what I found out as well(reason for the cosmetic
+> in the subject line).
+> 
+>>> Biggest problem I have though is testing this on other hardware types
+>>> (I only have a macbook,and an iMac).
+>>> So please if you have the access to other arch/hardware types please
+>>> test.
+>>>
+>>> Now what I mean by partially is the __initcall function is still
+>>> there, so(if any) userspace apps/libs depend on this it's there
+>>> so they dont break and/or any other subsystem, that needs time
+>>> to make the changes.
+>>
+>> The only thing that might be affected is building out-of-tree drivers,
+>> but those are easy to fix.
+>>
+> 
+> alright..main concern is making sure things don't break in the
+> kernel(even though things do).
+> 
+> I can have a go at the header files, submit
+> then if it's something people agree they want to do, then they
+> can go from there(if not it's fine as well).
+> 
+>>> Note:
+>>> the remaining files that still have __initcall in them are:
+>>> (according to grep)
+>>>
+>>> arch/um/include/shared/init.h
+>>> include/linux/init.h
+>>> scripts/checkpatch.pl
+>>>
+>>> either I or somebody else, can change this(although a bit
+>>> concerned about breaking things).
+>>>
+>>> Signed-off-by: Justin P. Mattock<justinmattock@gmail.com>
+>>> ---
 
---- a/arch/mips/kernel/machine_kexec.c	2010-03-15 15:52:04.000000000 +0000
-+++ b/arch/mips/kernel/machine_kexec.c	2010-03-21 15:25:13.953615489 +0000
-@@ -52,7 +52,8 @@
- 	reboot_code_buffer =
- 	  (unsigned long)page_address(image->control_code_page);
- 
--	kexec_start_address = image->start;
-+	kexec_start_address = 
-+		(unsigned long) phys_to_virt(image->start);
- 	kexec_indirection_page =
- 		(unsigned long) phys_to_virt(image->head & PAGE_MASK);
- 
+
+-- 
+~Randy

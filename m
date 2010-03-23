@@ -1,66 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Mar 2010 01:33:24 +0100 (CET)
-Received: from rojo2.usc.es ([193.144.75.10]:33201 "EHLO rojo2.usc.es"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492620Ab0CWAdU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Mar 2010 01:33:20 +0100
-Received: from localhost (rojo2 [127.0.0.1])
-        by rojo2.usc.es (Postfix) with ESMTP id 3E24D488578;
-        Tue, 23 Mar 2010 00:40:34 +0100 (CET)
-X-Virus-Scanned: amavisd-new at usc.es
-Received: from rojo2.usc.es ([127.0.0.1])
-        by localhost (rojo2.usc.es [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id PZMhChrXz0FM; Tue, 23 Mar 2010 00:40:33 +0100 (CET)
-Received: from rojo4.usc.es (rojo4.usc.es [193.144.75.15])
-        by rojo2.usc.es (Postfix) with ESMTP id 22F7C488388;
-        Tue, 23 Mar 2010 00:34:48 +0100 (CET)
-Received: by rojo4.usc.es (Postfix, from userid 33)
-        id 2613234008; Tue, 23 Mar 2010 00:33:11 +0100 (CET)
-Received: from 82.128.112.11 ([82.128.112.11]) by correoweb.usc.es (Horde
-        MIME library) with HTTP; Tue, 23 Mar 2010 00:33:06 +0100
-Message-ID: <20100323003306.otnjwjy4e84wwoow@correoweb.usc.es>
-Date:   Tue, 23 Mar 2010 00:33:06 +0100
-From:   UBS International Holdings BV <carlos.guitian@usc.es>
-Reply-To: hhbeuker@live.nl
-To:     undisclosed-recipients:;
-Subject: 
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Mar 2010 02:04:10 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:32823 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492726Ab0CWBEH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Mar 2010 02:04:07 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o2N1453L008526;
+        Tue, 23 Mar 2010 02:04:05 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o2N144fq008523;
+        Tue, 23 Mar 2010 02:04:04 +0100
+Date:   Tue, 23 Mar 2010 02:04:03 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] mips/mm: fix module support on SiByte
+Message-ID: <20100323010403.GT4554@linux-mips.org>
+References: <20100321110241.GA25569@Chamillionaire.breakpoint.cc>
+ <20100322145918.GR4554@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset=ISO-8859-1;
-        DelSp="Yes";
-        format="flowed"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-User-Agent: Internet Messaging Program (IMP) H3 (4.1.6)
-X-Originating-IP: 82.128.112.11
-X-AuthUser: xosefinarosa.guitian@usc.es
-Return-Path: <carlos.guitian@usc.es>
+In-Reply-To: <20100322145918.GR4554@linux-mips.org>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26293
+X-archive-position: 26294
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: carlos.guitian@usc.es
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-UBS International Holdings BV
-Herengracht 600
-NL-1017 CJ Amsterdam, Netherlands.
-www.ubs.com/investmentbank
+On Mon, Mar 22, 2010 at 03:59:18PM +0100, Ralf Baechle wrote:
 
-Greetings,
+> On Sun, Mar 21, 2010 at 12:02:41PM +0100, Sebastian Andrzej Siewior wrote:
+> 
+> > Since commit 656be92f aka "Load modules to CKSEG0 if
+> > CONFIG_BUILD_ELF64=n" module support is broken on 64bit. Since then
+> > modules arr loaded into 32bit compat adresses which are sign extended
+> > 64bit addresses. The SiByte war handler was not updated and those
+> > addresses were not recognized by the TLB hadling.
+> > This patch fixes this by shifting away the upper bits including the R
+> > and Fill bits. Now we compare VPN2 of C0_ENTRYHI against the matching
+> > bits at C0_BADVADDR.
+> 
+> Good detective work but I'll check against the errata documents (which
+> are non-public, sigh ...) before applying your patch.
+> 
+> The M3 workaround in which you found this bug is currently applied to all
+> Sibyte SB1 cores while probably only a relativly small number of the cores
+> in circulation are affected so we should refine the workaround to be only
+> applied if the System Revision Register indicates a system older than
+> revision C0.  This could get rid of 6 instructions which according to the
+> usual rule of thumb would result in a speedup of ~ 3%.
 
-I am an investment consultant working with UBS International Holdings BV
-in the Netherlands. I will be happy to work a transaction of $8.5million
-out with you if you have a corporate or personal bank Account. I look
-forward to hearing from you as soon as possible via my email;
-hhbeuker@live.nl
+I've just committed a patch on the master branch to handle this issue.
+On cores that are not affected by the M3 bug this also fixes the module
+issue.
 
-Thank you for your time and attention.
-
-Warmest Regards,
-Mr. Beuker Hendrik
-Investment Consultant.
-UBS.
+  Ralf

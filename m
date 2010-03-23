@@ -1,84 +1,211 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Mar 2010 09:47:06 +0100 (CET)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:35421 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491841Ab0CWIrC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Mar 2010 09:47:02 +0100
-Received: by vws13 with SMTP id 13so221168vws.36
-        for <multiple recipients>; Tue, 23 Mar 2010 01:46:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:cc:content-type;
-        bh=62kfMJCg+laX2QqZFDZK2lCizXBLqqnohcpQpLJoJ/A=;
-        b=tAOtxMbTBllvqVawJjvprT2EeW7ZM/bqefxdwkOu3ouVeLJayAehuJoCgRKwLQNWGT
-         ATsgaaY9Xg0eshiKpPiJEQz/wQJm2PdXCUaCt6C2GpwcaT9hXwCxhC3QMpK/wOXZcn0s
-         dr0l+4ny0AW1GABHUrop7luOQ500exkoxtudY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        b=PJOhEaKRE+kMAb++2Yc3QphiaYKLC1UQk37gYC2u/zKSibSAO5RLZ5vZ1Nt3UJo6w9
-         +EhXkWEbWuM0Jisx2l/m79PDa66c+YNiXpNEGnIDL9pw7bGIutAJN4ba0+EL3s2n5HFi
-         TKaQZY2F/uBnSsI+1ZKdRKnkad12LPv5WE7A4=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Mar 2010 10:30:21 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:59800 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491194Ab0CWJaS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Mar 2010 10:30:18 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id BFE4B34180CF;
+        Tue, 23 Mar 2010 10:30:16 +0100 (CET)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 4iQB9MKw0vq8; Tue, 23 Mar 2010 10:30:15 +0100 (CET)
+Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
+        by zmc.proxad.net (Postfix) with ESMTPSA id DF55234180D1;
+        Tue, 23 Mar 2010 10:30:15 +0100 (CET)
+From:   Florian Fainelli <ffainelli@freebox.fr>
+Date:   Tue, 23 Mar 2010 10:30:08 +0100
+Subject: [PATCH] bcm63xx: fix build failure in board_bcm963xx.c
 MIME-Version: 1.0
-Received: by 10.220.116.129 with SMTP id m1mr4067548vcq.7.1269334013290; Tue, 
-        23 Mar 2010 01:46:53 -0700 (PDT)
-Date:   Tue, 23 Mar 2010 17:46:52 +0900
-Message-ID: <28c262361003230146o7bca61e6h3af2062b1172fdb2@mail.gmail.com>
-Subject: data consistency of high page
-From:   Minchan Kim <minchan.kim@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     lkml <linux-kernel@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Namjae Jeon <linkinjeon@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <minchan.kim@gmail.com>
+X-UID:  26208
+X-Length: 4566
+Organization: Freebox
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201003231030.09003.ffainelli@freebox.fr>
+Return-Path: <ffainelli@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26298
+X-archive-position: 26299
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minchan.kim@gmail.com
+X-original-sender: ffainelli@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf.
+Since 2083e832, the SPROM is now registered in the board_prom_init callback,
+but it references variables and functions which are declared below. Move the
+variables and functions above board_prom_init.
 
-Below is thread long time ago.
-At that time, we can't end up the problem by some reason.
-Sorry for that.
-
-The problem would occur, again.
-
-On Fri, Oct 16, 2009 at 6:24 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Oct 16, 2009 at 02:17:19PM +0900, Minchan Kim wrote:
->
->> Many code of kernel fs usually allocate high page and flush.
->> But flush_dcache_page of mips checks PageHighMem to avoid flush
->> so that data consistency is broken, I think.
->
-> What processor and cache configuration?
->
->> I found it's by you and Atsushi-san on 585fa724.
->> Why do we need the check?
->> Could you elaborte please?
->
-> The if statement exists because __flush_dcache_page would crash if a page
-> is not mapped.  This of course isn't correct but that wasn't a problem
-> since highmem still is only supported on machines that don't have aliases.
->
->  Ralf
->
-
-Our system is following as.
-
-mips 34ke
-primary i-cache 32kB VIPT 4way 32 byte line size.
-primary d-cache 32kB 4way  32 bytes linesize
-
-If you have further questions, Namjae, Could you follow question of Ralf?
-
--- 
-Kind regards,
-Minchan Kim
+Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
+---
+diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+index 5addb9c..8dba8cf 100644
+--- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
++++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+@@ -619,6 +619,76 @@ static const struct board_info __initdata *bcm963xx_boards[] = {
+ };
+ 
+ /*
++ * Register a sane SPROMv2 to make the on-board
++ * bcm4318 WLAN work
++ */
++#ifdef CONFIG_SSB_PCIHOST
++static struct ssb_sprom bcm63xx_sprom = {
++	.revision		= 0x02,
++	.board_rev		= 0x17,
++	.country_code		= 0x0,
++	.ant_available_bg 	= 0x3,
++	.pa0b0			= 0x15ae,
++	.pa0b1			= 0xfa85,
++	.pa0b2			= 0xfe8d,
++	.pa1b0			= 0xffff,
++	.pa1b1			= 0xffff,
++	.pa1b2			= 0xffff,
++	.gpio0			= 0xff,
++	.gpio1			= 0xff,
++	.gpio2			= 0xff,
++	.gpio3			= 0xff,
++	.maxpwr_bg		= 0x004c,
++	.itssi_bg		= 0x00,
++	.boardflags_lo		= 0x2848,
++	.boardflags_hi		= 0x0000,
++};
++#endif
++
++/*
++ * return board name for /proc/cpuinfo
++ */
++const char *board_get_name(void)
++{
++	return board.name;
++}
++
++/*
++ * register & return a new board mac address
++ */
++static int board_get_mac_address(u8 *mac)
++{
++	u8 *p;
++	int count;
++
++	if (mac_addr_used >= nvram.mac_addr_count) {
++		printk(KERN_ERR PFX "not enough mac address\n");
++		return -ENODEV;
++	}
++
++	memcpy(mac, nvram.mac_addr_base, ETH_ALEN);
++	p = mac + ETH_ALEN - 1;
++	count = mac_addr_used;
++
++	while (count--) {
++		do {
++			(*p)++;
++			if (*p != 0)
++				break;
++			p--;
++		} while (p != mac);
++	}
++
++	if (p == mac) {
++		printk(KERN_ERR PFX "unable to fetch mac address\n");
++		return -ENODEV;
++	}
++
++	mac_addr_used++;
++	return 0;
++}
++
++/*
+  * early init callback, read nvram data from flash and checksum it
+  */
+ void __init board_prom_init(void)
+@@ -744,49 +814,6 @@ void __init board_setup(void)
+ 		panic("unexpected CPU for bcm963xx board");
+ }
+ 
+-/*
+- * return board name for /proc/cpuinfo
+- */
+-const char *board_get_name(void)
+-{
+-	return board.name;
+-}
+-
+-/*
+- * register & return a new board mac address
+- */
+-static int board_get_mac_address(u8 *mac)
+-{
+-	u8 *p;
+-	int count;
+-
+-	if (mac_addr_used >= nvram.mac_addr_count) {
+-		printk(KERN_ERR PFX "not enough mac address\n");
+-		return -ENODEV;
+-	}
+-
+-	memcpy(mac, nvram.mac_addr_base, ETH_ALEN);
+-	p = mac + ETH_ALEN - 1;
+-	count = mac_addr_used;
+-
+-	while (count--) {
+-		do {
+-			(*p)++;
+-			if (*p != 0)
+-				break;
+-			p--;
+-		} while (p != mac);
+-	}
+-
+-	if (p == mac) {
+-		printk(KERN_ERR PFX "unable to fetch mac address\n");
+-		return -ENODEV;
+-	}
+-
+-	mac_addr_used++;
+-	return 0;
+-}
+-
+ static struct mtd_partition mtd_partitions[] = {
+ 	{
+ 		.name		= "cfe",
+@@ -818,33 +845,6 @@ static struct platform_device mtd_dev = {
+ 	},
+ };
+ 
+-/*
+- * Register a sane SPROMv2 to make the on-board
+- * bcm4318 WLAN work
+- */
+-#ifdef CONFIG_SSB_PCIHOST
+-static struct ssb_sprom bcm63xx_sprom = {
+-	.revision		= 0x02,
+-	.board_rev		= 0x17,
+-	.country_code		= 0x0,
+-	.ant_available_bg 	= 0x3,
+-	.pa0b0			= 0x15ae,
+-	.pa0b1			= 0xfa85,
+-	.pa0b2			= 0xfe8d,
+-	.pa1b0			= 0xffff,
+-	.pa1b1			= 0xffff,
+-	.pa1b2			= 0xffff,
+-	.gpio0			= 0xff,
+-	.gpio1			= 0xff,
+-	.gpio2			= 0xff,
+-	.gpio3			= 0xff,
+-	.maxpwr_bg		= 0x004c,
+-	.itssi_bg		= 0x00,
+-	.boardflags_lo		= 0x2848,
+-	.boardflags_hi		= 0x0000,
+-};
+-#endif
+-
+ static struct gpio_led_platform_data bcm63xx_led_data;
+ 
+ static struct platform_device bcm63xx_gpio_leds = {

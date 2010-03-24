@@ -1,57 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2010 17:27:41 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:15888 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492213Ab0CXQ1h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Mar 2010 17:27:37 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4baa3d820000>; Wed, 24 Mar 2010 09:27:46 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 24 Mar 2010 09:27:08 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 24 Mar 2010 09:27:08 -0700
-Message-ID: <4BAA3D5C.1000202@caviumnetworks.com>
-Date:   Wed, 24 Mar 2010 09:27:08 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.8) Gecko/20100301 Fedora/3.0.3-1.fc12 Thunderbird/3.0.3
-MIME-Version: 1.0
-To:     Zhuang Yuyao <mlistz@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [BUG?] cavium cn56xx and dma_map_single warning
-References: <e732b6801003220001m7e08bbf7w20ba62d42f30a190@mail.gmail.com>        <4BA79E69.1040803@caviumnetworks.com>   <e732b6801003221830y2c2ca423tb67d74f7a3639c22@mail.gmail.com>   <4BA81BC7.5060600@caviumnetworks.com> <e732b6801003221845i4f86ff8ftea56d656bfd20f10@mail.gmail.com>
-In-Reply-To: <e732b6801003221845i4f86ff8ftea56d656bfd20f10@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 24 Mar 2010 16:27:08.0335 (UTC) FILETIME=[D92433F0:01CACB6E]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Mar 2010 18:15:21 +0100 (CET)
+Received: from fg-out-1718.google.com ([72.14.220.154]:54681 "EHLO
+        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492594Ab0CXRPR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Mar 2010 18:15:17 +0100
+Received: by fg-out-1718.google.com with SMTP id e12so1853570fga.6
+        for <linux-mips@linux-mips.org>; Wed, 24 Mar 2010 10:15:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=in/ruWvw+8iw6SlXsUaZcaYqI6LV/Ybf9HYYrWK/BLo=;
+        b=VRngnOIdwHRFPblf1fuAriMHQgtS84prk6ipRJLW6Ph/JlPA6mwcWgmw/p8quvbtHC
+         j7iCqratTfLqx4fjRj01FuaEf3IFOOrz07KagPO66CkoPp6GoD3EbNvaSlZrsyIFTfI+
+         zysQghgbtHrqrfP3d6LaIKfWelsdKnIo5RygY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=paVqpx+mTCu4Kgj6xDWtUzSwJ36D7xT/R7lm2Ewn3XY0V8bpIKoIINcYtUPT9qbLxT
+         kOCtpROtAeATkiM6IFz8mml5ACQGWFGYP05FEI3dk8IRVjG7dKHuH0lEz1n1k+fr7ZzI
+         FX975bGCc7iPIJvPrZUhVCsvuKe+2OmqXZwvY=
+Received: by 10.86.22.2 with SMTP id 2mr227970fgv.17.1269450915287;
+        Wed, 24 Mar 2010 10:15:15 -0700 (PDT)
+Received: from localhost.localdomain (p5496E06D.dip.t-dialin.net [84.150.224.109])
+        by mx.google.com with ESMTPS id 3sm1874576fge.20.2010.03.24.10.15.14
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 24 Mar 2010 10:15:14 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linux-mips@linux-mips.org, Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [RFC PATCH 0/2] serial 8250 platform PM hooks
+Date:   Wed, 24 Mar 2010 18:16:24 +0100
+Message-Id: <1269450986-3714-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.7.0.2
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26303
+X-archive-position: 26304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 03/22/2010 06:45 PM, Zhuang Yuyao wrote:
-> On Tue, Mar 23, 2010 at 9:39 AM, David Daney<ddaney@caviumnetworks.com>  wrote:
->
->> The issue is maintaining mappings for 32-bit PCI devices.  If you only want
->> to support 64-bit devices, it would be easier to address the issue.
->>
->> David Daney
->>
->
-> Wow, that is a great news, I do not known if my adaptec 3045e raid
-> card is a 64bit device, but if I only want to support 64bit devices,
-> Is there a quick fix for it?
->
+The following 2 patches implement a PM hook for platform 8250
+UARTs and a sample PM implementation for a MIPS SoC.
 
-I don't know.  You could try to make all DMA accesses go via BAR2.  That 
-would break many 32-bit devices though.
+Patch #1 hooks a new .pm callback in struct plat_serial8250_port to
+the rest of serial_core's PM infrastructure,
 
-David Daney
+Patch #2 implements uart power gating for Alchemy line of mips socs
+using the new hook.
 
-> Zhuang Yuyao
->
+With these 2 patches serial console on my test system survives
+suspend/resume cycles without having to resort to platform-specific
+hacks in the PM code.
+
+Thanks,
+     Manuel Lauss
+
+Manuel Lauss (2):
+  8250: allow platform uarts to install PM callback.
+  Alchemy: UART PM through serial framework.
+
+ arch/mips/alchemy/common/platform.c |   17 +++++++++++++++++
+ arch/mips/alchemy/common/power.c    |   32 --------------------------------
+ drivers/serial/8250.c               |   31 ++++++++++++++++++++++++++++---
+ include/linux/serial_8250.h         |    6 ++++++
+ 4 files changed, 51 insertions(+), 35 deletions(-)

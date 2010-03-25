@@ -1,169 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2010 19:36:08 +0100 (CET)
-Received: from fg-out-1718.google.com ([72.14.220.159]:19447 "EHLO
-        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492288Ab0CYSgF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Mar 2010 19:36:05 +0100
-Received: by fg-out-1718.google.com with SMTP id 19so1922093fgg.6
-        for <linux-mips@linux-mips.org>; Thu, 25 Mar 2010 11:36:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=y6mf+2XkzYvrqEfIkzGv/gd968K1s2PxSmCMb0pm+KA=;
-        b=j/WIaXhbOkgvUkfa+RMPbOYbkVfz15gnrHakb94Xo/TBRhWq0v0l+JgUKECIEvYh18
-         t5S1mG4ldzO+uoLSeJgeCs1WN4mYAgBKviUoMQHG8EBnVVZKeux7ZUenROal5OWW6PdK
-         GtkQGKENFVB5hBdL1CYvoNcb3GJEDPvD0UtSc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=dhXCL+w6c1Jkxtj5Qr4AyiGzOE87jShaDrj/7nb+cP6YemUin5UvQBray2l8leuFCO
-         bc+TBzB15/HPX3JAjePHl4JPMIVsWq4XKlp5CSWEkAeJxMQzP3KXrBkx1NB9rl/IFNpO
-         dB4c8L9kAGw/aI07d5UsnMXDjxkUOfDL1DdZs=
-Received: by 10.87.58.1 with SMTP id l1mr2439579fgk.75.1269542164236;
-        Thu, 25 Mar 2010 11:36:04 -0700 (PDT)
-Received: from localhost.localdomain (p5496DF61.dip.t-dialin.net [84.150.223.97])
-        by mx.google.com with ESMTPS id l12sm3236388fgb.17.2010.03.25.11.36.03
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 25 Mar 2010 11:36:03 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH] MIPS: Alchemy: fix up residual devboard poweroff/reboot code.
-Date:   Thu, 25 Mar 2010 19:37:17 +0100
-Message-Id: <1269542237-16617-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.7.0.3
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2010 21:48:21 +0100 (CET)
+Received: from ppsw-6.csi.cam.ac.uk ([131.111.8.136]:44799 "EHLO
+        ppsw-6.csi.cam.ac.uk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492838Ab0CYUsP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Mar 2010 21:48:15 +0100
+X-Cam-AntiVirus: no malware found
+X-Cam-SpamDetails: not scanned
+X-Cam-ScannerInfo: http://www.cam.ac.uk/cs/email/scanner/
+Received: from hermes-2.csi.cam.ac.uk ([131.111.8.54]:55087)
+        by ppsw-6.csi.cam.ac.uk (smtp.hermes.cam.ac.uk [131.111.8.156]:25)
+        with esmtpa (EXTERNAL:aia21) id 1NutyO-0000sV-L2 (Exim 4.70)
+        (return-path <aia21@hermes.cam.ac.uk>); Thu, 25 Mar 2010 20:48:12 +0000
+Received: from aia21 (helo=localhost) by hermes-2.csi.cam.ac.uk (hermes.cam.ac.uk)
+        with local-esmtp id 1NutyO-0002As-GP (Exim 4.67)
+        (return-path <aia21@hermes.cam.ac.uk>); Thu, 25 Mar 2010 20:48:12 +0000
+Date:   Thu, 25 Mar 2010 20:48:12 +0000 (GMT)
+From:   Anton Altaparmakov <aia21@cam.ac.uk>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Chris Dearman <chris@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] Fix __vmalloc(), etc on MIPS for non-GPL modules
+Message-ID: <Pine.LNX.4.64.1003252017360.17596@hermes-2.csi.cam.ac.uk>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <aia21@hermes.cam.ac.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26314
+X-archive-position: 26315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: aia21@cam.ac.uk
 Precedence: bulk
 X-list: linux-mips
 
-Clean out stray unused board_reset() calls in pb1x boards,
-the pb1000 is different from the rest and gets private methods.
+Hi,
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
- arch/mips/alchemy/devboards/pb1000/board_setup.c |   16 +++++++++++++++-
- arch/mips/alchemy/devboards/pb1100/board_setup.c |    5 -----
- arch/mips/alchemy/devboards/pb1200/board_setup.c |    6 ------
- arch/mips/alchemy/devboards/pb1500/board_setup.c |    5 -----
- arch/mips/alchemy/devboards/pb1550/board_setup.c |    5 -----
- 5 files changed, 15 insertions(+), 22 deletions(-)
+The commit 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0 which can be seen 
+here:
 
-diff --git a/arch/mips/alchemy/devboards/pb1000/board_setup.c b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-index b5311d8..9fa532c 100644
---- a/arch/mips/alchemy/devboards/pb1000/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-@@ -27,8 +27,10 @@
- #include <linux/gpio.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-+#include <linux/pm.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-pb1x00/pb1000.h>
-+#include <asm/reboot.h>
- #include <prom.h>
- 
- #include "../platform.h"
-@@ -38,8 +40,16 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1000";
- }
- 
--void board_reset(void)
-+static void board_reset(char *c)
- {
-+	asm volatile ("jr %0" : : "r" (0xbfc00000));
-+}
-+
-+static void board_power_off(void)
-+{
-+	printk(KERN_ALERT "It's now safe to remove power\n");
-+	while (1)
-+		asm volatile (".set mips3 ; wait ; .set mips1");
- }
- 
- void __init board_setup(void)
-@@ -177,6 +187,10 @@ void __init board_setup(void)
- 		au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
- 		break;
- 	}
-+
-+	pm_power_off = board_power_off;
-+	 _machine_halt = board_power_off;
-+	 _machine_restart = board_reset;
- }
- 
- static int __init pb1000_init_irq(void)
-diff --git a/arch/mips/alchemy/devboards/pb1100/board_setup.c b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-index c7b4caa..90dda5f 100644
---- a/arch/mips/alchemy/devboards/pb1100/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-@@ -39,11 +39,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1100";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	volatile void __iomem *base = (volatile void __iomem *)0xac000000UL;
-diff --git a/arch/mips/alchemy/devboards/pb1200/board_setup.c b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-index 3184063..8b4466f 100644
---- a/arch/mips/alchemy/devboards/pb1200/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-@@ -48,12 +48,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1200";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_RESETS, 0);
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	printk(KERN_INFO "AMD Alchemy Pb1200 Board\n");
-diff --git a/arch/mips/alchemy/devboards/pb1500/board_setup.c b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-index fa9770a..9cd9dfa 100644
---- a/arch/mips/alchemy/devboards/pb1500/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-@@ -45,11 +45,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1500";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	u32 pin_func;
-diff --git a/arch/mips/alchemy/devboards/pb1550/board_setup.c b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-index 1e8fb3d..9d7d6ed 100644
---- a/arch/mips/alchemy/devboards/pb1550/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-@@ -48,11 +48,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1550";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	u32 pin_func;
+http://kerneltrap.org/mailarchive/git-commits-head/2008/4/28/1639134
+
+Breaks all non-GPL modules that use __vmalloc() or any of the vmap(), 
+vm_map_ram(), etc functions on MIPS architecture.
+
+All those functions are EXPORT_SYMBOL() so are meant to be allowed to be 
+used by non-GPL kernel modules.  These calls all take page protection as 
+an argument which is normally a constant like PAGE_KERNEL.
+
+This commit causes all protection constants like PAGE_KERNEL to not be 
+constants and instead to contain the GPL-only symbol 
+_page_cachable_default.
+
+This means that all calls to __vmalloc(), vmap(), etc, cause non-GPL 
+modules to fail to link with the complaint that they are trying to use the 
+GPL-only symbol _page_cachable_default...
+
+I therefore propose that the EXPORT_SYMBOL_GPL(_page_cachable_default) is 
+changed to EXPORT_SYMBOL(_page_cachable_default) to re-instate the 
+ability for non-GPL modules to call __vmalloc(), vmap(), vm_map_ram(), 
+and such like.
+
+Here is a patch that does this.  If you approve, please apply it.
+
+Thanks a lot in advance for your consideration.
+
+Best regards,
+
+	Anton
 -- 
-1.7.0.3
+Anton Altaparmakov <aia21 at cam.ac.uk> (replace at with @)
+Unix Support, Computing Service, University of Cambridge, CB2 3QH, UK
+Linux NTFS maintainer, http://www.linux-ntfs.org/
+
+---
+[PATCH] Fix __vmalloc(), vmap(), vm_map_ram(), etc on MIPS for non-GPL modules.
+
+Commit 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0 broke these functions for 
+non-GPL modules by causing the page protection constants not to be 
+constants any more and instead to include a GPL-only symbol and as these 
+functions take a page protection argument this causes them to not be 
+callable from non-GPL modules any more even though the functions are 
+EXPORT_SYMBOL().
+
+Signed-off-by: Anton Altaparmakov <aia21@cantab.net>
+
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index be8627b..12af739 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -133,7 +133,7 @@ void __update_cache(struct vm_area_struct *vma, 
+unsigned lon
+ }
+ 
+ unsigned long _page_cachable_default;
+-EXPORT_SYMBOL_GPL(_page_cachable_default);
++EXPORT_SYMBOL(_page_cachable_default);
+ 
+ static inline void setup_protection_map(void)
+ {

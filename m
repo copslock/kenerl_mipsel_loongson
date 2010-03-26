@@ -1,173 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Mar 2010 22:54:37 +0100 (CET)
-Received: from mail-bw0-f215.google.com ([209.85.218.215]:38838 "EHLO
-        mail-bw0-f215.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491818Ab0CYVyd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Mar 2010 22:54:33 +0100
-Received: by bwz7 with SMTP id 7so3701755bwz.24
-        for <linux-mips@linux-mips.org>; Thu, 25 Mar 2010 14:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=U6AzHWBBdohWt4VFX8vqRf7coVUSr1h7r19ko7tjRUw=;
-        b=lmWKriDYfUTscRc/AeyM1VJg2R2tGdqcYtKkY0PjG+Xd3Tq6S+ni0FDDqVeqY56nRS
-         fZ7t9iaDwNX+JYrzVupcDJEZ/SqP/aUAxQV9LifJkLAcG/1TEb3+r9alYaQZkY3LCj7e
-         h/ggjheVR6QWhwQm2z9qbXksuYIDCKH+SgzT0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=efGBK3Omys/4ykNfnbwOt9wcJn0JcWerTqCr8yPhRPloMrTraMKLA0SBUGHPB5JoQE
-         R5cohP7jAn5UZM/ksiuAo10pgLxBZZRBobUuGSdpMPp76/+TxlaFFuuhdrwlvwHsb6dj
-         9MdVj6edVtgW37UHq1a3m9fcPV6+wODu7IyFk=
-Received: by 10.204.136.156 with SMTP id r28mr327987bkt.112.1269554067553;
-        Thu, 25 Mar 2010 14:54:27 -0700 (PDT)
-Received: from localhost.localdomain (p5496DF61.dip.t-dialin.net [84.150.223.97])
-        by mx.google.com with ESMTPS id 16sm177394bwz.5.2010.03.25.14.54.26
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 25 Mar 2010 14:54:27 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v2] MIPS: Alchemy: fix up residual devboard poweroff/reboot code.
-Date:   Thu, 25 Mar 2010 22:55:38 +0100
-Message-Id: <1269554138-4620-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.7.0.3
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2010 15:52:47 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47348 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492070Ab0CZOwn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Mar 2010 15:52:43 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o2QEqeYa026144;
+        Fri, 26 Mar 2010 15:52:41 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o2QEqbbC026143;
+        Fri, 26 Mar 2010 15:52:37 +0100
+Date:   Fri, 26 Mar 2010 15:52:36 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Anton Altaparmakov <aia21@cam.ac.uk>
+Cc:     Chris Dearman <chris@mips.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Fix __vmalloc(), etc on MIPS for non-GPL modules
+Message-ID: <20100326145236.GX4554@linux-mips.org>
+References: <Pine.LNX.4.64.1003252017360.17596@hermes-2.csi.cam.ac.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64.1003252017360.17596@hermes-2.csi.cam.ac.uk>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26317
+X-archive-position: 26318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Clean out stray unused board_reset() calls in pb1x boards,
-the pb1000 is different from the rest and gets private methods.
+On Thu, Mar 25, 2010 at 08:48:12PM +0000, Anton Altaparmakov wrote:
 
-(Cleanup after 32fd6901a6d8d19f94e4de6be4e4b552ab078620)
+> The commit 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0 which can be seen 
+> here:
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-v2: fix formatting as pointed out by Sergei
+Which was in 2.6.26 ...
 
- arch/mips/alchemy/devboards/pb1000/board_setup.c |   16 +++++++++++++++-
- arch/mips/alchemy/devboards/pb1100/board_setup.c |    5 -----
- arch/mips/alchemy/devboards/pb1200/board_setup.c |    6 ------
- arch/mips/alchemy/devboards/pb1500/board_setup.c |    5 -----
- arch/mips/alchemy/devboards/pb1550/board_setup.c |    5 -----
- 5 files changed, 15 insertions(+), 22 deletions(-)
+> I therefore propose that the EXPORT_SYMBOL_GPL(_page_cachable_default) is 
+> changed to EXPORT_SYMBOL(_page_cachable_default) to re-instate the 
+> ability for non-GPL modules to call __vmalloc(), vmap(), vm_map_ram(), 
+> and such like.
+> 
+> Here is a patch that does this.  If you approve, please apply it.
 
-diff --git a/arch/mips/alchemy/devboards/pb1000/board_setup.c b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-index b5311d8..4ef50d8 100644
---- a/arch/mips/alchemy/devboards/pb1000/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-@@ -27,8 +27,10 @@
- #include <linux/gpio.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-+#include <linux/pm.h>
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-pb1x00/pb1000.h>
-+#include <asm/reboot.h>
- #include <prom.h>
- 
- #include "../platform.h"
-@@ -38,8 +40,16 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1000";
- }
- 
--void board_reset(void)
-+static void board_reset(char *c)
- {
-+	asm volatile ("jr %0" : : "r" (0xbfc00000));
-+}
-+
-+static void board_power_off(void)
-+{
-+	printk(KERN_ALERT "It's now safe to remove power\n");
-+	while (1)
-+		asm volatile (".set mips3 ; wait ; .set mips1");
- }
- 
- void __init board_setup(void)
-@@ -177,6 +187,10 @@ void __init board_setup(void)
- 		au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
- 		break;
- 	}
-+
-+	pm_power_off = board_power_off;
-+	_machine_halt = board_power_off;
-+	_machine_restart = board_reset;
- }
- 
- static int __init pb1000_init_irq(void)
-diff --git a/arch/mips/alchemy/devboards/pb1100/board_setup.c b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-index c7b4caa..90dda5f 100644
---- a/arch/mips/alchemy/devboards/pb1100/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-@@ -39,11 +39,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1100";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	volatile void __iomem *base = (volatile void __iomem *)0xac000000UL;
-diff --git a/arch/mips/alchemy/devboards/pb1200/board_setup.c b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-index 3184063..8b4466f 100644
---- a/arch/mips/alchemy/devboards/pb1200/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-@@ -48,12 +48,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1200";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_RESETS, 0);
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	printk(KERN_INFO "AMD Alchemy Pb1200 Board\n");
-diff --git a/arch/mips/alchemy/devboards/pb1500/board_setup.c b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-index fa9770a..9cd9dfa 100644
---- a/arch/mips/alchemy/devboards/pb1500/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-@@ -45,11 +45,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1500";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	u32 pin_func;
-diff --git a/arch/mips/alchemy/devboards/pb1550/board_setup.c b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-index 1e8fb3d..9d7d6ed 100644
---- a/arch/mips/alchemy/devboards/pb1550/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-@@ -48,11 +48,6 @@ const char *get_system_type(void)
- 	return "Alchemy Pb1550";
- }
- 
--void board_reset(void)
--{
--	bcsr_write(BCSR_SYSTEM, 0);
--}
--
- void __init board_setup(void)
- {
- 	u32 pin_func;
--- 
-1.7.0.3
+I approve - but applying would be easier if this patch had not been
+linewrapped ...
+
+Applied to master and -stable.  Thanks!
+
+  Ralf

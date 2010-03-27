@@ -1,73 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 18:21:11 +0100 (CET)
-Received: from smtp.gentoo.org ([140.211.166.183]:53194 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492039Ab0C0RVI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 27 Mar 2010 18:21:08 +0100
-Received: by smtp.gentoo.org (Postfix, from userid 2181)
-        id 5AA1E1B4014; Sat, 27 Mar 2010 17:20:59 +0000 (UTC)
-Date:   Sat, 27 Mar 2010 17:20:59 +0000
-From:   Zhang Le <r0bertz@gentoo.org>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
-        zhangfx@lemote.com
-Subject: Re: [PATCH v3 2/3] Loongson-2F: Enable fixups of binutils 2.20.1
-Message-ID: <20100327172059.GC19154@woodpecker.gentoo.org>
-Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
-        zhangfx@lemote.com
-References: <cover.1268453720.git.wuzhangjin@gmail.com> <ecc51ee134ab84c95b6b02534544df3731bb9562.1268453720.git.wuzhangjin@gmail.com> <20100317135223.GA4554@linux-mips.org> <20100327162900.GA19154@woodpecker.gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 19:20:25 +0100 (CET)
+Received: from mail-ww0-f49.google.com ([74.125.82.49]:43012 "EHLO
+        mail-ww0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492064Ab0C0SUW convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 27 Mar 2010 19:20:22 +0100
+Received: by wwb18 with SMTP id 18so3547102wwb.36
+        for <linux-mips@linux-mips.org>; Sat, 27 Mar 2010 11:20:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date
+         :user-agent:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:message-id;
+        bh=x15+odJjUHy1wZqSdtf9fc6XSRtRj7O6YQpIMKkrbgY=;
+        b=kV6sG89zrlOY82Im0hT3BABJ0p/RDMuSsXx4G+c58owRc9rnM+jwdBd00F0iq3da2+
+         U4ldk2rLD5ac80fRBH8nfqTOKC0H01CorYrIb9uf4ZyfJ7AlMxmjqSlEQKPQw/TaFgKx
+         znz82GdZo5bY2ROf+lbfP3bZDxp3lCAjmbVTE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:references:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:message-id;
+        b=kDwWHR0CQ8J0Fygm+QmTmQ5rGlPilJKWAYlaYYp1ieRyRKfO9TrhKGP3zkKMJKhkpU
+         VbWnbHkZJ4aEXjzQ9LP3wFsjYmuFezv+QUQ2eD4yRTM88F2jno+MOltsK/nRi/1aaf9N
+         4LN3mrsmN0EykScxRnu2d1IdvFXvvEDV95bvs=
+Received: by 10.216.168.203 with SMTP id k53mr1515386wel.120.1269714016905;
+        Sat, 27 Mar 2010 11:20:16 -0700 (PDT)
+Received: from debian.localnet (chello087206211117.chello.pl [87.206.211.117])
+        by mx.google.com with ESMTPS id i35sm9327247gve.26.2010.03.27.11.20.15
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 27 Mar 2010 11:20:16 -0700 (PDT)
+From:   Adrian Byszuk <adebex@gmail.com>
+To:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix kexec call on MIPS platform
+Date:   Sat, 27 Mar 2010 18:19:02 +0000
+User-Agent: KMail/1.12.4 (Linux/2.6.33.1-custom; KDE/4.3.4; i686; ; )
+References: <201003211706.47373.adebex@gmail.com>
+In-Reply-To: <201003211706.47373.adebex@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20100327162900.GA19154@woodpecker.gentoo.org>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <r0bertz@gentoo.org>
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201003271819.02876.adebex@gmail.com>
+Return-Path: <adebex@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26328
+X-archive-position: 26329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: adebex@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 16:29 Sat 27 Mar     , Zhang Le wrote:
-> On 14:52 Wed 17 Mar     , Ralf Baechle wrote:
-> > On Sat, Mar 13, 2010 at 12:34:16PM +0800, Wu Zhangjin wrote:
-> > 
-> > > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > > index 2f2eac2..5ae342e 100644
-> > > --- a/arch/mips/Makefile
-> > > +++ b/arch/mips/Makefile
-> > > @@ -135,7 +135,9 @@ cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
-> > >  cflags-$(CONFIG_CPU_LOONGSON2E) += \
-> > >  	$(call cc-option,-march=loongson2e,-march=r4600)
-> > >  cflags-$(CONFIG_CPU_LOONGSON2F) += \
-> > > -	$(call cc-option,-march=loongson2f,-march=r4600)
-> > > +	$(call cc-option,-march=loongson2f,-march=r4600) \
-> > > +	$(call as-option,-Wa$(comma)-mfix-loongson2f-nop,) \
-> > > +	$(call as-option,-Wa$(comma)-mfix-loongson2f-jump,)
-> > 
-> > Shouldn't these options be used unconditionally?  It seems a kernel build
-> > should rather fail than a possibly unreliable kernel be built - possibly
-> > even without the user noticing the problem.
+Dnia niedziela 21 marca 2010 o 17:06:47 Adrian Byszuk napisał(a):
+> Dear developers,
 > 
-> Zhangjin has been busy preparing for his graduation paper.
-> I just talked to him. He said later batches of 2F processor is not affected by
-> these two problems, according to Zhang Fuxin, manager of Lemote.
+> This kernel patch fixes problems with kexec call on some devices.
+> I tested it on Asus WL-500gP v2. I suppose it would behave well on all MIPS
+> machines.
+> Applicable to 2.6.32 and 2.6.33
 > 
-> I am not sure on which model of Fuloong and Yeeloong these "good" 2F processors
-> have been used. I think Fuxin should know this.
-> 
-> If Fuxin could told us now, we can make a new patch. In this patch, we decide
-> whether to add these options or not base on the model number.
-> 
-> Otherwise, for now, I think we should enable these options unconditionally.
+Hi everyone!
 
-Sorry, I got Zhang Fuxin's email wrong. Now fixed.
+I'd like to know if somebody at least had a look on this patch?
+If it won't get upstream, then I'll try to make it openWRT specific at least.
+Simple answer like no/not yet/yes, applied  will be enough.
 
-Zhang, Le
+Kind regards
+Adrian

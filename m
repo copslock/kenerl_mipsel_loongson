@@ -1,84 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 12:37:20 +0100 (CET)
-Received: from ey-out-1920.google.com ([74.125.78.144]:21574 "EHLO
-        ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491075Ab0C0LhP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Mar 2010 12:37:15 +0100
-Received: by ey-out-1920.google.com with SMTP id 3so845504eyh.52
-        for <linux-mips@linux-mips.org>; Sat, 27 Mar 2010 04:37:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:subject:date
-         :user-agent:mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        bh=Hb/SscA689bcXG56bOFhlLbjCCuHWYxAbr4pYr+H7Go=;
-        b=VDjgOcaihu9wsK1ykyeX1CTyLbv9x9ZmHSHv3OyzhO4sIhAb9lXATgozuRgHiwGVZz
-         IqAwb5Kzq43vFzMQ3FJutcb6rmLOsL0r8UGn4we69DXotImtShRTGb2TlQ2VuvzEqfoW
-         lDNA1uIHGHCd6Iu7shKSDBvOr02BtfC3I4iHc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:subject:date:user-agent:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        b=jC7xJfpJrX6pWpubnbNbiO95C6G4sJmDGc/rfyLbsK6mpXXzUJD3bAbIZcA/lbCf0V
-         LB46vBV5cMBTlxEoc9a58PZCMD2N+w7780WOMhkhpc/cB/s57bF7JeaTvx7eF/Y1+0HV
-         d2kUJJIXDdqjqAbe1ry6uoXdr4ryf8om5+RiQ=
-Received: by 10.213.41.3 with SMTP id m3mr850797ebe.93.1269689834870;
-        Sat, 27 Mar 2010 04:37:14 -0700 (PDT)
-Received: from [192.168.1.2] ([91.196.252.7])
-        by mx.google.com with ESMTPS id 16sm1176238ewy.11.2010.03.27.04.37.10
-        (version=SSLv3 cipher=RC4-MD5);
-        Sat, 27 Mar 2010 04:37:13 -0700 (PDT)
-From:   randrianasulu@gmail.com
-To:     linux-mips@linux-mips.org
-Subject: SGI O2 boot  hang with latest kernels
-Date:   Sat, 27 Mar 2010 14:35:09 +0000
-User-Agent: KMail/1.9.10
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <201003271435.17816.randrianasulu@gmail.com>
-Return-Path: <randrianasulu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 15:06:47 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:33810 "EHLO
+        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491957Ab0C0OGn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Mar 2010 15:06:43 +0100
+Received: from mail.szarvas.hu (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 954CD3E5A15;
+        Sat, 27 Mar 2010 15:06:38 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 27016370003;
+        Sat, 27 Mar 2010 15:06:38 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH] MIPS: use compare_change_hazard in mips_next_event
+Date:   Sat, 27 Mar 2010 15:06:37 +0100
+Message-Id: <1269698797-5004-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.5.3.2
+X-Antivirus: avast! (VPS 100326-0, 2010.03.26), Outbound message
+X-Antivirus-Status: Clean
+X-VBMS: A128977009D | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26324
+X-archive-position: 26325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: randrianasulu@gmail.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-I was testing my r5k, 256 Mb ram SGI O2 again after some inactivity, and found 
-what latest kernel (from LMO git, up to commit 
-9368a0777aa3eaab13dcbd7038041df54885dc32
-   MIPS: Fix __vmalloc() etc. on MIPS for non-GPL modules ) compiled with my 
-usual kernel toolchain (binutils-2.19.1/gcc 4.3.3) will lock up/hang very 
-early, even before  clearing screen.
+The compare_change_hazard() is used between write_c0_compare() and
+read_c0_count() in c0_compare_int_usable(). The mips_next_event() uses
+the same code sequence but without the compare_change_hazard call.
 
-Git bisect point me at some bootmem changes, last working commit for me is
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+---
+ arch/mips/kernel/cevt-r4k.c |   33 +++++++++++++++++----------------
+ 1 files changed, 17 insertions(+), 16 deletions(-)
 
-
-commit a626b46e17d0762d664ce471d40bc506b6e721ab
-Merge: c1dcb4b dce46a0
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed Mar 3 08:15:05 2010 -0800
-
-    Merge branch 'x86-bootmem-for-linus' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip
-
-and bad one:
-
-commit fb7b096d949fa852442ed9d8f982bce526ccfe7e
-Merge: a626b46 fad5399
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed Mar 3 08:15:37 2010 -0800
-
-    Merge branch 'x86-apic-for-linus' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip
-
-
-Sorry for annoy you all on IRC, i'll try to add more interesting details about 
-this hang as fast as my O2 finished some compile job i have running on it 
-currently
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 0b2450c..16cd116 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -16,6 +16,22 @@
+ #include <asm/cevt-r4k.h>
+ 
+ /*
++ * Compare interrupt can be routed and latched outside the core,
++ * so a single execution hazard barrier may not be enough to give
++ * it time to clear as seen in the Cause register.  4 time the
++ * pipeline depth seems reasonably conservative, and empirically
++ * works better in configurations with high CPU/bus clock ratios.
++ */
++
++#define compare_change_hazard() \
++	do { \
++		irq_disable_hazard(); \
++		irq_disable_hazard(); \
++		irq_disable_hazard(); \
++		irq_disable_hazard(); \
++	} while (0)
++
++/*
+  * The SMTC Kernel for the 34K, 1004K, et. al. replaces several
+  * of these routines with SMTC-specific variants.
+  */
+@@ -31,6 +47,7 @@ static int mips_next_event(unsigned long delta,
+ 	cnt = read_c0_count();
+ 	cnt += delta;
+ 	write_c0_compare(cnt);
++	compare_change_hazard();
+ 	res = ((int)(read_c0_count() - cnt) > 0) ? -ETIME : 0;
+ 	return res;
+ }
+@@ -100,22 +117,6 @@ static int c0_compare_int_pending(void)
+ 	return (read_c0_cause() >> cp0_compare_irq_shift) & (1ul << CAUSEB_IP);
+ }
+ 
+-/*
+- * Compare interrupt can be routed and latched outside the core,
+- * so a single execution hazard barrier may not be enough to give
+- * it time to clear as seen in the Cause register.  4 time the
+- * pipeline depth seems reasonably conservative, and empirically
+- * works better in configurations with high CPU/bus clock ratios.
+- */
+-
+-#define compare_change_hazard() \
+-	do { \
+-		irq_disable_hazard(); \
+-		irq_disable_hazard(); \
+-		irq_disable_hazard(); \
+-		irq_disable_hazard(); \
+-	} while (0)
+-
+ int c0_compare_int_usable(void)
+ {
+ 	unsigned int delta;
+-- 
+1.5.3.2

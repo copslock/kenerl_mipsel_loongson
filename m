@@ -1,126 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Mar 2010 23:03:14 +0100 (CET)
-Received: from mgw2.diku.dk ([130.225.96.92]:32868 "EHLO mgw2.diku.dk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492429Ab0CZWDK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Mar 2010 23:03:10 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mgw2.diku.dk (Postfix) with ESMTP id 0E3AE19BC06;
-        Fri, 26 Mar 2010 23:03:09 +0100 (CET)
-Received: from mgw2.diku.dk ([127.0.0.1])
- by localhost (mgw2.diku.dk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 15926-18; Fri, 26 Mar 2010 23:03:07 +0100 (CET)
-Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
-        by mgw2.diku.dk (Postfix) with ESMTP id A3DA919BBFA;
-        Fri, 26 Mar 2010 23:03:07 +0100 (CET)
-Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
-        by nhugin.diku.dk (Postfix) with ESMTP
-        id 950176DFD0B; Fri, 26 Mar 2010 22:57:01 +0100 (CET)
-Received: by ask.diku.dk (Postfix, from userid 3767)
-        id 891FC200B0; Fri, 26 Mar 2010 23:03:07 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by ask.diku.dk (Postfix) with ESMTP id 82902200AF;
-        Fri, 26 Mar 2010 23:03:07 +0100 (CET)
-Date:   Fri, 26 Mar 2010 23:03:07 +0100 (CET)
-From:   Julia Lawall <julia@diku.dk>
-To:     peterz@infradead.org, mingo@elte.hu, tglx@linutronix.de,
-        oleg@redhat.com, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH 4/7] arch/mips/kernel: Use set_cpus_allowed_ptr
-Message-ID: <Pine.LNX.4.64.1003262302480.6480@ask.diku.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 12:37:20 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.144]:21574 "EHLO
+        ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491075Ab0C0LhP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Mar 2010 12:37:15 +0100
+Received: by ey-out-1920.google.com with SMTP id 3so845504eyh.52
+        for <linux-mips@linux-mips.org>; Sat, 27 Mar 2010 04:37:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date
+         :user-agent:mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        bh=Hb/SscA689bcXG56bOFhlLbjCCuHWYxAbr4pYr+H7Go=;
+        b=VDjgOcaihu9wsK1ykyeX1CTyLbv9x9ZmHSHv3OyzhO4sIhAb9lXATgozuRgHiwGVZz
+         IqAwb5Kzq43vFzMQ3FJutcb6rmLOsL0r8UGn4we69DXotImtShRTGb2TlQ2VuvzEqfoW
+         lDNA1uIHGHCd6Iu7shKSDBvOr02BtfC3I4iHc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        b=jC7xJfpJrX6pWpubnbNbiO95C6G4sJmDGc/rfyLbsK6mpXXzUJD3bAbIZcA/lbCf0V
+         LB46vBV5cMBTlxEoc9a58PZCMD2N+w7780WOMhkhpc/cB/s57bF7JeaTvx7eF/Y1+0HV
+         d2kUJJIXDdqjqAbe1ry6uoXdr4ryf8om5+RiQ=
+Received: by 10.213.41.3 with SMTP id m3mr850797ebe.93.1269689834870;
+        Sat, 27 Mar 2010 04:37:14 -0700 (PDT)
+Received: from [192.168.1.2] ([91.196.252.7])
+        by mx.google.com with ESMTPS id 16sm1176238ewy.11.2010.03.27.04.37.10
+        (version=SSLv3 cipher=RC4-MD5);
+        Sat, 27 Mar 2010 04:37:13 -0700 (PDT)
+From:   randrianasulu@gmail.com
+To:     linux-mips@linux-mips.org
+Subject: SGI O2 boot  hang with latest kernels
+Date:   Sat, 27 Mar 2010 14:35:09 +0000
+User-Agent: KMail/1.9.10
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: amavisd-new at diku.dk
-Return-Path: <julia@diku.dk>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <201003271435.17816.randrianasulu@gmail.com>
+Return-Path: <randrianasulu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26323
+X-archive-position: 26324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: julia@diku.dk
+X-original-sender: randrianasulu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Julia Lawall <julia@diku.dk>
+I was testing my r5k, 256 Mb ram SGI O2 again after some inactivity, and found 
+what latest kernel (from LMO git, up to commit 
+9368a0777aa3eaab13dcbd7038041df54885dc32
+   MIPS: Fix __vmalloc() etc. on MIPS for non-GPL modules ) compiled with my 
+usual kernel toolchain (binutils-2.19.1/gcc 4.3.3) will lock up/hang very 
+early, even before  clearing screen.
 
-Use set_cpus_allowed_ptr rather than set_cpus_allowed.
+Git bisect point me at some bootmem changes, last working commit for me is
 
-The semantic patch that makes this change is as follows:
-(http://coccinelle.lip6.fr/)
 
-// <smpl>
-@@
-expression E1,E2;
-@@
+commit a626b46e17d0762d664ce471d40bc506b6e721ab
+Merge: c1dcb4b dce46a0
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Mar 3 08:15:05 2010 -0800
 
-- set_cpus_allowed(E1, cpumask_of_cpu(E2))
-+ set_cpus_allowed_ptr(E1, cpumask_of(E2))
+    Merge branch 'x86-bootmem-for-linus' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip
 
-@@
-expression E;
-identifier I;
-@@
+and bad one:
 
-- set_cpus_allowed(E, I)
-+ set_cpus_allowed_ptr(E, &I)
-// </smpl>
+commit fb7b096d949fa852442ed9d8f982bce526ccfe7e
+Merge: a626b46 fad5399
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Mar 3 08:15:37 2010 -0800
 
-Signed-off-by: Julia Lawall <julia@diku.dk>
+    Merge branch 'x86-apic-for-linus' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip
 
----
- arch/mips/kernel/cpufreq/loongson2_cpufreq.c |    4 ++--
- arch/mips/kernel/mips-mt-fpaff.c             |    4 ++--
- arch/mips/kernel/traps.c                     |    2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff -u -p a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
---- a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-+++ b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
-@@ -65,7 +65,7 @@ static int loongson2_cpufreq_target(stru
- 		return -ENODEV;
- 
- 	cpus_allowed = current->cpus_allowed;
--	set_cpus_allowed(current, cpumask_of_cpu(cpu));
-+	set_cpus_allowed_ptr(current, cpumask_of(cpu));
- 
- 	if (cpufreq_frequency_table_target
- 	    (policy, &loongson2_clockmod_table[0], target_freq, relation,
-@@ -91,7 +91,7 @@ static int loongson2_cpufreq_target(stru
- 	/* notifiers */
- 	cpufreq_notify_transition(&freqs, CPUFREQ_PRECHANGE);
- 
--	set_cpus_allowed(current, cpus_allowed);
-+	set_cpus_allowed_ptr(current, &cpus_allowed);
- 
- 	/* setting the cpu frequency */
- 	clk_set_rate(cpuclk, freq);
-diff -u -p a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
---- a/arch/mips/kernel/mips-mt-fpaff.c
-+++ b/arch/mips/kernel/mips-mt-fpaff.c
-@@ -100,10 +100,10 @@ asmlinkage long mipsmt_sys_sched_setaffi
- 	if (test_ti_thread_flag(ti, TIF_FPUBOUND) &&
- 	    cpus_intersects(new_mask, mt_fpu_cpumask)) {
- 		cpus_and(effective_mask, new_mask, mt_fpu_cpumask);
--		retval = set_cpus_allowed(p, effective_mask);
-+		retval = set_cpus_allowed_ptr(p, &effective_mask);
- 	} else {
- 		clear_ti_thread_flag(ti, TIF_FPUBOUND);
--		retval = set_cpus_allowed(p, new_mask);
-+		retval = set_cpus_allowed_ptr(p, &new_mask);
- 	}
- 
- out_unlock:
-diff -u -p a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -862,7 +862,7 @@ static void mt_ase_fp_affinity(void)
- 				= current->cpus_allowed;
- 			cpus_and(tmask, current->cpus_allowed,
- 				mt_fpu_cpumask);
--			set_cpus_allowed(current, tmask);
-+			set_cpus_allowed_ptr(current, &tmask);
- 			set_thread_flag(TIF_FPUBOUND);
- 		}
- 	}
+Sorry for annoy you all on IRC, i'll try to add more interesting details about 
+this hang as fast as my O2 finished some compile job i have running on it 
+currently

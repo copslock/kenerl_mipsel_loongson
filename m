@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 17:29:18 +0100 (CET)
-Received: from smtp.gentoo.org ([140.211.166.183]:35439 "EHLO smtp.gentoo.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 18:13:19 +0100 (CET)
+Received: from smtp.gentoo.org ([140.211.166.183]:42375 "EHLO smtp.gentoo.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492051Ab0C0Q3M (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 27 Mar 2010 17:29:12 +0100
+        id S1492051Ab0C0RNP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 27 Mar 2010 18:13:15 +0100
 Received: by smtp.gentoo.org (Postfix, from userid 2181)
-        id E32831B4055; Sat, 27 Mar 2010 16:29:00 +0000 (UTC)
-Date:   Sat, 27 Mar 2010 16:29:00 +0000
+        id CED241B400C; Sat, 27 Mar 2010 17:13:02 +0000 (UTC)
+Date:   Sat, 27 Mar 2010 17:13:02 +0000
 From:   Zhang Le <r0bertz@gentoo.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
-        Wu Zhangjin <wuzj@lemote.com>, fxzhang@lemote.com
-Subject: Re: [PATCH v3 2/3] Loongson-2F: Enable fixups of binutils 2.20.1
-Message-ID: <20100327162900.GA19154@woodpecker.gentoo.org>
+        Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+Subject: Re: [PATCH v3 3/3] Loongson-2F: Fixup of problems introduced by
+        -mfix-loongson2f-jump of binutils 2.20.1
+Message-ID: <20100327171302.GB19154@woodpecker.gentoo.org>
 Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
         Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
-        Wu Zhangjin <wuzj@lemote.com>, fxzhang@lemote.com
-References: <cover.1268453720.git.wuzhangjin@gmail.com> <ecc51ee134ab84c95b6b02534544df3731bb9562.1268453720.git.wuzhangjin@gmail.com> <20100317135223.GA4554@linux-mips.org>
+        Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+References: <cover.1268453720.git.wuzhangjin@gmail.com> <169f2daa3d623fe56c5b0be30feeda10bc79a478.1268453720.git.wuzhangjin@gmail.com> <20100317150207.GB4554@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20100317135223.GA4554@linux-mips.org>
+In-Reply-To: <20100317150207.GB4554@linux-mips.org>
 User-Agent: Mutt/1.5.16 (2007-06-09)
 Return-Path: <r0bertz@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26326
+X-archive-position: 26327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,36 +34,31 @@ X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On 14:52 Wed 17 Mar     , Ralf Baechle wrote:
-> On Sat, Mar 13, 2010 at 12:34:16PM +0800, Wu Zhangjin wrote:
-> 
-> > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > index 2f2eac2..5ae342e 100644
-> > --- a/arch/mips/Makefile
-> > +++ b/arch/mips/Makefile
-> > @@ -135,7 +135,9 @@ cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
-> >  cflags-$(CONFIG_CPU_LOONGSON2E) += \
-> >  	$(call cc-option,-march=loongson2e,-march=r4600)
-> >  cflags-$(CONFIG_CPU_LOONGSON2F) += \
-> > -	$(call cc-option,-march=loongson2f,-march=r4600)
-> > +	$(call cc-option,-march=loongson2f,-march=r4600) \
-> > +	$(call as-option,-Wa$(comma)-mfix-loongson2f-nop,) \
-> > +	$(call as-option,-Wa$(comma)-mfix-loongson2f-jump,)
-> 
-> Shouldn't these options be used unconditionally?  It seems a kernel build
-> should rather fail than a possibly unreliable kernel be built - possibly
-> even without the user noticing the problem.
+On 16:02 Wed 17 Mar     , Ralf Baechle wrote:
+> The workaround in http://sourceware.org/ml/binutils/2009-11/msg00387.html
+> will also cause problems calling functions with bits 28..29 set, that is
 
-Zhangjin has been busy preparing for his graduation paper.
-I just talked to him. He said later batches of 2F processor is not affected by
-these two problems, according to Zhang Fuxin, manager of Lemote.
+Yes. If all functions address doesn't have 28..29 set, this patch will not have
+any side effect. That means all functions should reside in two ranges:
+0x80000000..0x8fffffff
+0xc0000000..0xcfffffff
 
-I am not sure on which model of Fuloong and Yeeloong these "good" 2F processors
-have been used. I think Fuxin should know this.
+> in the ranges 0x81000000..0xbffffff and 0xd0000000..0xffffffff.  The
+                ^^^^^^^^^^
+I think you mean 0x90000000, right?
 
-If Fuxin could told us now, we can make a new patch. In this patch, we decide
-whether to add these options or not base on the model number.
+> first range is not much of a problem as only the kernel proper resides
+> there and the kernel load address is manually selected in the Makefile.
+> The 2nd range might be used for under certain circumstances.
 
-Otherwise, for now, I think we should enable these options unconditionally.
+It seems the Loongson kernel I compiled satisfies the requirement I listed
+above:
+
+ffffffff80200000 A _text
+...
+ffffffff8089bbe0 A _end
+
+So, if I understand it correctly, as long as the kernel size is smaller than
+254MB, the patch should be ok. Is there anything I overlooked?
 
 Zhang, Le

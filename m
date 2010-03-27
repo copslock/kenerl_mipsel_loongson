@@ -1,102 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 15:06:47 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:33810 "EHLO
-        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491957Ab0C0OGn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Mar 2010 15:06:43 +0100
-Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 954CD3E5A15;
-        Sat, 27 Mar 2010 15:06:38 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 27016370003;
-        Sat, 27 Mar 2010 15:06:38 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Mar 2010 17:29:18 +0100 (CET)
+Received: from smtp.gentoo.org ([140.211.166.183]:35439 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492051Ab0C0Q3M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 27 Mar 2010 17:29:12 +0100
+Received: by smtp.gentoo.org (Postfix, from userid 2181)
+        id E32831B4055; Sat, 27 Mar 2010 16:29:00 +0000 (UTC)
+Date:   Sat, 27 Mar 2010 16:29:00 +0000
+From:   Zhang Le <r0bertz@gentoo.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH] MIPS: use compare_change_hazard in mips_next_event
-Date:   Sat, 27 Mar 2010 15:06:37 +0100
-Message-Id: <1269698797-5004-1-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.5.3.2
-X-Antivirus: avast! (VPS 100326-0, 2010.03.26), Outbound message
-X-Antivirus-Status: Clean
-X-VBMS: A128977009D | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
-Return-Path: <juhosg@openwrt.org>
+Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
+        Wu Zhangjin <wuzj@lemote.com>, fxzhang@lemote.com
+Subject: Re: [PATCH v3 2/3] Loongson-2F: Enable fixups of binutils 2.20.1
+Message-ID: <20100327162900.GA19154@woodpecker.gentoo.org>
+Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
+        Wu Zhangjin <wuzj@lemote.com>, fxzhang@lemote.com
+References: <cover.1268453720.git.wuzhangjin@gmail.com> <ecc51ee134ab84c95b6b02534544df3731bb9562.1268453720.git.wuzhangjin@gmail.com> <20100317135223.GA4554@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100317135223.GA4554@linux-mips.org>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <r0bertz@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26325
+X-archive-position: 26326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-The compare_change_hazard() is used between write_c0_compare() and
-read_c0_count() in c0_compare_int_usable(). The mips_next_event() uses
-the same code sequence but without the compare_change_hazard call.
+On 14:52 Wed 17 Mar     , Ralf Baechle wrote:
+> On Sat, Mar 13, 2010 at 12:34:16PM +0800, Wu Zhangjin wrote:
+> 
+> > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> > index 2f2eac2..5ae342e 100644
+> > --- a/arch/mips/Makefile
+> > +++ b/arch/mips/Makefile
+> > @@ -135,7 +135,9 @@ cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
+> >  cflags-$(CONFIG_CPU_LOONGSON2E) += \
+> >  	$(call cc-option,-march=loongson2e,-march=r4600)
+> >  cflags-$(CONFIG_CPU_LOONGSON2F) += \
+> > -	$(call cc-option,-march=loongson2f,-march=r4600)
+> > +	$(call cc-option,-march=loongson2f,-march=r4600) \
+> > +	$(call as-option,-Wa$(comma)-mfix-loongson2f-nop,) \
+> > +	$(call as-option,-Wa$(comma)-mfix-loongson2f-jump,)
+> 
+> Shouldn't these options be used unconditionally?  It seems a kernel build
+> should rather fail than a possibly unreliable kernel be built - possibly
+> even without the user noticing the problem.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
- arch/mips/kernel/cevt-r4k.c |   33 +++++++++++++++++----------------
- 1 files changed, 17 insertions(+), 16 deletions(-)
+Zhangjin has been busy preparing for his graduation paper.
+I just talked to him. He said later batches of 2F processor is not affected by
+these two problems, according to Zhang Fuxin, manager of Lemote.
 
-diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
-index 0b2450c..16cd116 100644
---- a/arch/mips/kernel/cevt-r4k.c
-+++ b/arch/mips/kernel/cevt-r4k.c
-@@ -16,6 +16,22 @@
- #include <asm/cevt-r4k.h>
- 
- /*
-+ * Compare interrupt can be routed and latched outside the core,
-+ * so a single execution hazard barrier may not be enough to give
-+ * it time to clear as seen in the Cause register.  4 time the
-+ * pipeline depth seems reasonably conservative, and empirically
-+ * works better in configurations with high CPU/bus clock ratios.
-+ */
-+
-+#define compare_change_hazard() \
-+	do { \
-+		irq_disable_hazard(); \
-+		irq_disable_hazard(); \
-+		irq_disable_hazard(); \
-+		irq_disable_hazard(); \
-+	} while (0)
-+
-+/*
-  * The SMTC Kernel for the 34K, 1004K, et. al. replaces several
-  * of these routines with SMTC-specific variants.
-  */
-@@ -31,6 +47,7 @@ static int mips_next_event(unsigned long delta,
- 	cnt = read_c0_count();
- 	cnt += delta;
- 	write_c0_compare(cnt);
-+	compare_change_hazard();
- 	res = ((int)(read_c0_count() - cnt) > 0) ? -ETIME : 0;
- 	return res;
- }
-@@ -100,22 +117,6 @@ static int c0_compare_int_pending(void)
- 	return (read_c0_cause() >> cp0_compare_irq_shift) & (1ul << CAUSEB_IP);
- }
- 
--/*
-- * Compare interrupt can be routed and latched outside the core,
-- * so a single execution hazard barrier may not be enough to give
-- * it time to clear as seen in the Cause register.  4 time the
-- * pipeline depth seems reasonably conservative, and empirically
-- * works better in configurations with high CPU/bus clock ratios.
-- */
--
--#define compare_change_hazard() \
--	do { \
--		irq_disable_hazard(); \
--		irq_disable_hazard(); \
--		irq_disable_hazard(); \
--		irq_disable_hazard(); \
--	} while (0)
--
- int c0_compare_int_usable(void)
- {
- 	unsigned int delta;
--- 
-1.5.3.2
+I am not sure on which model of Fuloong and Yeeloong these "good" 2F processors
+have been used. I think Fuxin should know this.
+
+If Fuxin could told us now, we can make a new patch. In this patch, we decide
+whether to add these options or not base on the model number.
+
+Otherwise, for now, I think we should enable these options unconditionally.
+
+Zhang, Le

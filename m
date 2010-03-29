@@ -1,93 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Mar 2010 00:18:16 +0100 (CET)
-Received: from mail.lemote.com ([222.92.8.141]:57163 "EHLO lemote.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492208Ab0C0XSM convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Mar 2010 00:18:12 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by lemote.com (Postfix) with ESMTP id B92AE31C96F;
-        Sun, 28 Mar 2010 07:15:12 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-        by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AyF34IhnFHE1; Sun, 28 Mar 2010 07:14:58 +0800 (CST)
-Received: from [172.16.1.86] (unknown [222.92.8.142])
-        by lemote.com (Postfix) with ESMTP id 0AA2931C968;
-        Sun, 28 Mar 2010 07:14:56 +0800 (CST)
-Message-ID: <4BAE920A.90404@lemote.com>
-Date:   Sun, 28 Mar 2010 07:17:30 +0800
-From:   zhangfx <zhangfx@lemote.com>
-User-Agent: Thunderbird 2.0.0.23 (X11/20091120)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Mar 2010 18:54:22 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:3856 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492236Ab0C2QyS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Mar 2010 18:54:18 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4bb0db430000>; Mon, 29 Mar 2010 09:54:27 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 29 Mar 2010 09:54:07 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 29 Mar 2010 09:54:07 -0700
+Message-ID: <4BB0DB2A.9080405@caviumnetworks.com>
+Date:   Mon, 29 Mar 2010 09:54:02 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.8) Gecko/20100301 Fedora/3.0.3-1.fc12 Thunderbird/3.0.3
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        Shinya Kuribayashi <shinya.kuribayashi@necel.com>,
-        zhangfx@lemote.com
-Subject: Re: [PATCH v3 2/3] Loongson-2F: Enable fixups of binutils 2.20.1
-References: <cover.1268453720.git.wuzhangjin@gmail.com> <ecc51ee134ab84c95b6b02534544df3731bb9562.1268453720.git.wuzhangjin@gmail.com> <20100317135223.GA4554@linux-mips.org> <20100327162900.GA19154@woodpecker.gentoo.org> <20100327172059.GC19154@woodpecker.gentoo.org>
-In-Reply-To: <20100327172059.GC19154@woodpecker.gentoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-Return-Path: <zhangfx@lemote.com>
+To:     Andreas Barth <aba@not.so.argh.org>
+CC:     Peter 'p2' De Schrijver <p2@debian.org>, linux-mips@linux-mips.org
+Subject: Re: movidis x16 hard lockup using 2.6.33
+References: <20100326184132.GU2437@apfelkorn> <4BAD03A5.9070701@caviumnetworks.com> <20100327230744.GG27216@mails.so.argh.org>
+In-Reply-To: <20100327230744.GG27216@mails.so.argh.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 29 Mar 2010 16:54:07.0435 (UTC) FILETIME=[724401B0:01CACF60]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26331
+X-archive-position: 26332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zhangfx@lemote.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-The revision with these bugs fixed is 2F03. Up to now all processors 
-used in current products are 2F01/02.
-2F03 is in production and expected in this summer.
+On 03/27/2010 04:07 PM, Andreas Barth wrote:
+> * David Daney (ddaney@caviumnetworks.com) [100326 19:57]:
+>> Also you could try running with the attached patch.  It is not the best
+>> watchdog, but it will print the register state for each core when things
+>> get stuck.  Occasionally that is enough to see where the problem is.
+>
+> Thanks.
+>
+> As our logging has only limited buffer size, I'd be happy about an
+> variant of the patch which doesn't reboot but just let the machine
+> hang after the third occurence.
+>
+> Any chances for it?
+>
 
-Zhang Le wrote:
-> On 16:29 Sat 27 Mar     , Zhang Le wrote:
->   
->> On 14:52 Wed 17 Mar     , Ralf Baechle wrote:
->>     
->>> On Sat, Mar 13, 2010 at 12:34:16PM +0800, Wu Zhangjin wrote:
->>>
->>>       
->>>> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
->>>> index 2f2eac2..5ae342e 100644
->>>> --- a/arch/mips/Makefile
->>>> +++ b/arch/mips/Makefile
->>>> @@ -135,7 +135,9 @@ cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
->>>>  cflags-$(CONFIG_CPU_LOONGSON2E) += \
->>>>  	$(call cc-option,-march=loongson2e,-march=r4600)
->>>>  cflags-$(CONFIG_CPU_LOONGSON2F) += \
->>>> -	$(call cc-option,-march=loongson2f,-march=r4600)
->>>> +	$(call cc-option,-march=loongson2f,-march=r4600) \
->>>> +	$(call as-option,-Wa$(comma)-mfix-loongson2f-nop,) \
->>>> +	$(call as-option,-Wa$(comma)-mfix-loongson2f-jump,)
->>>>         
->>> Shouldn't these options be used unconditionally?  It seems a kernel build
->>> should rather fail than a possibly unreliable kernel be built - possibly
->>> even without the user noticing the problem.
->>>       
->> Zhangjin has been busy preparing for his graduation paper.
->> I just talked to him. He said later batches of 2F processor is not affected by
->> these two problems, according to Zhang Fuxin, manager of Lemote.
->>
->> I am not sure on which model of Fuloong and Yeeloong these "good" 2F processors
->> have been used. I think Fuxin should know this.
->>
->> If Fuxin could told us now, we can make a new patch. In this patch, we decide
->> whether to add these options or not base on the model number.
->>
->> Otherwise, for now, I think we should enable these options unconditionally.
->>     
->
-> Sorry, I got Zhang Fuxin's email wrong. Now fixed.
->
-> Zhang, Le
->
->   
+You could just sit in a loop kicking the watchdog timer after you get to 
+the NMI handler.  That should prevent a reset, but still print the 
+machine state.
 
--- 
-张福新 Zhang Fuxin
-龙芯梦兰 管理部 总经理 Lemote General Manager 
-zhangfx@lemote.com
+David Daney

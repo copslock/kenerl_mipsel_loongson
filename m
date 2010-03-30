@@ -1,50 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Mar 2010 00:24:00 +0200 (CEST)
-Received: from alius.ayous.org ([78.46.213.165]:49486 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Mar 2010 01:17:30 +0200 (CEST)
+Received: from kroah.org ([198.145.64.141]:34778 "EHLO coco.kroah.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492417Ab0C2WX5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 30 Mar 2010 00:23:57 +0200
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1NwNNE-0001f1-33; Mon, 29 Mar 2010 22:23:56 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1NwNN8-0007bT-5Z; Tue, 30 Mar 2010 00:23:50 +0200
-Date:   Tue, 30 Mar 2010 00:23:50 +0200
-From:   Andreas Barth <aba@not.so.argh.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Peter 'p2' De Schrijver <p2@debian.org>, linux-mips@linux-mips.org
-Subject: Re: movidis x16 hard lockup using 2.6.33
-Message-ID: <20100329222350.GL27216@mails.so.argh.org>
-References: <20100326184132.GU2437@apfelkorn> <4BAD03A5.9070701@caviumnetworks.com> <20100327230744.GG27216@mails.so.argh.org> <4BB0DB2A.9080405@caviumnetworks.com> <20100329220223.GK27216@mails.so.argh.org> <4BB12616.5010507@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4BB12616.5010507@caviumnetworks.com>
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aba@not.so.argh.org>
+        id S1492502Ab0C3XR1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 31 Mar 2010 01:17:27 +0200
+Received: from localhost (c-67-168-196-28.hsd1.or.comcast.net [67.168.196.28])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by coco.kroah.org (Postfix) with ESMTPSA id 68E5348DA8;
+        Tue, 30 Mar 2010 16:17:23 -0700 (PDT)
+X-Mailbox-Line: From linux@linux.site Tue Mar 30 15:55:59 2010
+Message-Id: <20100330225558.997618252@linux.site>
+User-Agent: quilt/0.47-14.9
+Date:   Tue, 30 Mar 2010 15:54:43 -0700
+From:   Greg KH <gregkh@suse.de>
+To:     linux-kernel@vger.kernel.org, stable@kernel.org
+Cc:     stable-review@kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, alan@lxorguk.ukuu.org.uk,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        Greg Kroah-Hartman <gregkh@suse.de>
+Subject: [005/116] MIPS: Cleanup forgotten label_module_alloc in tlbex.c
+In-Reply-To: <20100330230600.GA28802@kroah.com>
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26335
+X-archive-position: 26336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@not.so.argh.org
+X-original-sender: gregkh@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-* David Daney (ddaney@caviumnetworks.com) [100330 00:14]:
-> At the end of octeon_watchdog_nmi_stage3, instead of returning, do:
->
-> for(;;) watchdog_poke_irq(0, NULL);
->
-> That should prevent it from rebooting.  The messages will appear on the  
-> serial port, not in syslog.
+2.6.32-stable review patch.  If anyone has any objections, please let us know.
 
-Thanks, trying that now.
+------------------
 
+From: David Daney <ddaney@caviumnetworks.com>
 
-Andi
+commit abbdc3d88aa2d5c937b21044c336bcd056c1732f upstream.
+
+commit c8af165342e83a4eb078c9607d29a7c399d30a53 (lmo) rsp.
+e0cc87f59490d7d62a8ab2a76498dc8a2b64927a (kernel.org) left
+label_module_alloc unused.  Remove it now.
+
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Cc: linux-mips@linux-mips.org
+Patchwork: http://patchwork.linux-mips.org/patch/752/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+
+---
+ arch/mips/mm/tlbex.c |    8 --------
+ 1 file changed, 8 deletions(-)
+
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -73,9 +73,6 @@ static int __cpuinit m4kc_tlbp_war(void)
+ enum label_id {
+ 	label_second_part = 1,
+ 	label_leave,
+-#ifdef MODULE_START
+-	label_module_alloc,
+-#endif
+ 	label_vmalloc,
+ 	label_vmalloc_done,
+ 	label_tlbw_hazard,
+@@ -92,9 +89,6 @@ enum label_id {
+ 
+ UASM_L_LA(_second_part)
+ UASM_L_LA(_leave)
+-#ifdef MODULE_START
+-UASM_L_LA(_module_alloc)
+-#endif
+ UASM_L_LA(_vmalloc)
+ UASM_L_LA(_vmalloc_done)
+ UASM_L_LA(_tlbw_hazard)
+@@ -802,8 +796,6 @@ static void __cpuinit build_r4000_tlb_re
+ 	} else {
+ #if defined(CONFIG_HUGETLB_PAGE)
+ 		const enum label_id ls = label_tlb_huge_update;
+-#elif defined(MODULE_START)
+-		const enum label_id ls = label_module_alloc;
+ #else
+ 		const enum label_id ls = label_vmalloc;
+ #endif

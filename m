@@ -1,53 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Apr 2010 17:04:03 +0200 (CEST)
-Received: from alius.ayous.org ([78.46.213.165]:33636 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Apr 2010 19:05:21 +0200 (CEST)
+Received: from cantor2.suse.de ([195.135.220.15]:51761 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491892Ab0DBPD6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Apr 2010 17:03:58 +0200
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1NxiG8-0004JD-WA; Fri, 02 Apr 2010 14:54:11 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1NxiG1-00052Y-Fa; Fri, 02 Apr 2010 16:54:01 +0200
-Date:   Fri, 2 Apr 2010 16:54:01 +0200
-From:   Andreas Barth <aba@not.so.argh.org>
-To:     Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH v3 1/3] Loongson-2F: Flush the branch target history
-        such as BTB and RAS
-Message-ID: <20100402145401.GS27216@mails.so.argh.org>
-References: <cover.1268453720.git.wuzhangjin@gmail.com> <05e2ba2596f23fa4dda64d63ce2480504b1be4ac.1268453720.git.wuzhangjin@gmail.com>
+        id S1491978Ab0DBRFN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Apr 2010 19:05:13 +0200
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.221.2])
+        by mx2.suse.de (Postfix) with ESMTP id 662CE86391;
+        Fri,  2 Apr 2010 19:05:13 +0200 (CEST)
+Date:   Fri, 2 Apr 2010 10:04:24 -0700
+From:   Greg KH <gregkh@suse.de>
+To:     David Miller <davem@davemloft.net>
+Cc:     ddaney@caviumnetworks.com, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 0/2] Fix ethernet driver for Octeon based Movidis
+        hardware
+Message-ID: <20100402170424.GC32293@suse.de>
+References: <1270171075-12741-1-git-send-email-ddaney@caviumnetworks.com> <20100401.182045.106908204.davem@davemloft.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <05e2ba2596f23fa4dda64d63ce2480504b1be4ac.1268453720.git.wuzhangjin@gmail.com>
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aba@not.so.argh.org>
+In-Reply-To: <20100401.182045.106908204.davem@davemloft.net>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <gregkh@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26342
+X-archive-position: 26343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@not.so.argh.org
+X-original-sender: gregkh@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-* Wu Zhangjin (wuzhangjin@gmail.com) [100313 05:45]:
-> This patch did clear BTB(branch target buffer), forbid RAS(return
-> address stack) via Loongson-2F's 64bit diagnostic register.
+On Thu, Apr 01, 2010 at 06:20:45PM -0700, David Miller wrote:
+> From: David Daney <ddaney@caviumnetworks.com>
+> Date: Thu,  1 Apr 2010 18:17:53 -0700
+> 
+> > The Movidis X16 bootloader doesn't enable the mdio bus.  The first
+> > patch fixes this by enabling the mdio bus when the driver is
+> > initialized.
+> > 
+> > Also the addresses of the PHYs was unknown for this device.  The
+> > second patch adds the corresponding PHY addresses.
+> > 
+> > With both patches applied I can successfully use all eight Ethernet
+> > ports.
+> > 
+> > Please consider for 2.6.34.  Since Octeon is an embedded MIPS SOC it
+> > is unlikely to break the kernel for any workstations.  Any or all of
+> > these could be considered for merging via Ralf's linux-mips.org tree.
+> 
+> Ralf please merge this via your MIPS tree, thanks:
+> 
+> Acked-by: David S. Miller <davem@davemloft.net>
 
-Unfortunatly the Loongson 2F here still fails with this patch,
-compiled with the new binutils and both options enabled.
+I agree, Ralf, please take these and you can add:
+	Acked-by: Greg Kroah-Hartman <gregkh@suse.de>
+to them.
 
-Testcase: plain debian unstable chroot, build binutils in that chroot.
+thanks,
 
-More ideas, codes, whatever welcome.
-
-
-
-Andi
+greg k-h

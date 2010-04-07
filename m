@@ -1,117 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Apr 2010 15:21:10 +0200 (CEST)
-Received: from mail-iw0-f179.google.com ([209.85.223.179]:53313 "EHLO
-        mail-iw0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492147Ab0DGNUE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Apr 2010 15:20:04 +0200
-Received: by iwn9 with SMTP id 9so512980iwn.0
-        for <multiple recipients>; Wed, 07 Apr 2010 06:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=VYUmR+Y4s9bws+/rs2pv3MfiLu/dxIYtiWM+i75a2WU=;
-        b=Lmci2zfECtcBBvcAzfUXbBGtFoFRIJFmrQAvFUumxjIuDRqmGzIJWtYfy74I7rYiw8
-         OFCixeGswaq+VLHsrEb7G/ciyLsOvuPzrydmBD0gPKmlVlfAVHNJ90sYHtUECXEOG4Id
-         mpiiermnMqPe/uGzzlcH/CcHywrWwO/61bYWs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=F24jMXUTBWosYafi6wNfLzOtAMvi1PUOygwIrF3Ngbx45imzue2TBbe05BTn0vcwGB
-         18QzbWsoP45sq/eqp6GdplOzNhfzvG+3WT4kzu5LGlETA3CqUqXkZgX1cn3rJtpI7sjl
-         uoe9J1ldAu7B67LuY+SHWvjeTbwHnqOdM4xXE=
-Received: by 10.142.119.20 with SMTP id r20mr3583447wfc.15.1270646398068;
-        Wed, 07 Apr 2010 06:19:58 -0700 (PDT)
-Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id 20sm3753168pzk.15.2010.04.07.06.19.55
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 07 Apr 2010 06:19:57 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v4 4/4] Loongson-2F: Fixup of problems introduced by -mfix-loongson2f-jump
-Date:   Wed,  7 Apr 2010 21:11:54 +0800
-Message-Id: <6fe942386f96dd1ff085e77494100a38ea02b87c.1270645413.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.0.1
-In-Reply-To: <cover.1270645413.git.wuzhangjin@gmail.com>
-References: <cover.1270645413.git.wuzhangjin@gmail.com>
-In-Reply-To: <cover.1270645413.git.wuzhangjin@gmail.com>
-References: <cover.1270645413.git.wuzhangjin@gmail.com>
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Apr 2010 17:35:15 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:34431 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492357Ab0DGPfK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Apr 2010 17:35:10 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o37FZ07F024941;
+        Wed, 7 Apr 2010 16:35:00 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o37FYuwt024936;
+        Wed, 7 Apr 2010 16:34:56 +0100
+Date:   Wed, 7 Apr 2010 16:34:56 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: Re: [PATCH] MIPS: Alchemy: db1200: remove custom wait implementation
+Message-ID: <20100407153454.GA24682@linux-mips.org>
+References: <1270307223-3825-1-git-send-email-manuel.lauss@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1270307223-3825-1-git-send-email-manuel.lauss@gmail.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26359
+X-archive-position: 26360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Sat, Apr 03, 2010 at 05:07:03PM +0200, Manuel Lauss wrote:
 
-Changes from old revisions:
+> While playing with the out-of-tree MAE driver module, the system
+> would panic after a while in the db1200 custom wait code after
+> wakeup due to a clobbered k0 register being used as target address
+> of a store op.
+> 
+> Remove the custom wait implementation and revert back to the
+> Alchemy-recommended implementation already set as default.
+> 
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
+> I've played a few hours worth of video from a SD card now without
+> a hitch; usually the panic would occur after ~10 minutes.
+> 
+> Please add this to the 2.6.34 queue, Thanks!
 
-  o Incorporated with the feedbacks from Ralf Baechle and used the
-  option CONFIG_CPU_JUMP_WORKAROUNDS introduced by "Loongson: Add
-  CPU_LOONGSON2F_WORKAROUNDS".
+Yes, this use of k0 was definately looking fishy - and I'm not talking
+about the kind of fish in a bouillabaisse ;-)
 
-The -mfix-loongson2f-jump option provided by the latest binutils(in the cvs
-repository) have fixed the Out-of-order Issue of Loongson-2F described in
-Chapter 15 of "Loongson2F User Manual"[1,2], but introduced some problems.
+Applied.  Thanks!
 
-The option changes all of the jumping target to "addr & 0xcfffffff" through the
-at($1) register, but for the REBOOT address of loongson-2F: 0xbfc00000, this is
-totally wrong, so, this patch try to avoid the problem via telling the
-assembler not to use at($1) register.
-
-[1] Loongson2F User Manual(Chinese Version)
-http://www.loongson.cn/uploadfile/file/200808211
-[2] English Version of Chapter 15:
-http://groups.google.com.hk/group/loongson-dev/msg/e0d2e220958f10a6?dmode=source
-
-Reported-and-tested-by: Liu Shiwei <liushiwei@gmail.com>
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/loongson/common/reset.c |   20 +++++++++++++++++++-
- 1 files changed, 19 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/loongson/common/reset.c b/arch/mips/loongson/common/reset.c
-index 4bd9c18..9e10d62 100644
---- a/arch/mips/loongson/common/reset.c
-+++ b/arch/mips/loongson/common/reset.c
-@@ -16,13 +16,31 @@
- 
- #include <loongson.h>
- 
-+static inline void loongson_reboot(void)
-+{
-+#ifndef CONFIG_CPU_JUMP_WORKAROUNDS
-+	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
-+#else
-+	void (*func)(void);
-+
-+	func = (void *)ioremap_nocache(LOONGSON_BOOT_BASE, 4);
-+
-+	__asm__ __volatile__(
-+	"       .set    noat                                            \n"
-+	"       jr      %[func]                                         \n"
-+	"       .set    at                                              \n"
-+	: /* No outputs */
-+	: [func] "r" (func));
-+#endif
-+}
-+
- static void loongson_restart(char *command)
- {
- 	/* do preparation for reboot */
- 	mach_prepare_reboot();
- 
- 	/* reboot via jumping to boot base address */
--	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
-+	loongson_reboot();
- }
- 
- static void loongson_poweroff(void)
--- 
-1.7.0.1
+  Ralf

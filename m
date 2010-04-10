@@ -1,55 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Apr 2010 07:53:37 +0200 (CEST)
-Received: from mail-pz0-f186.google.com ([209.85.222.186]:62637 "EHLO
-        mail-pz0-f186.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491198Ab0DJFxe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Apr 2010 07:53:34 +0200
-Received: by pzk16 with SMTP id 16so1906936pzk.22
-        for <multiple recipients>; Fri, 09 Apr 2010 22:53:26 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Apr 2010 08:57:13 +0200 (CEST)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:64099 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490984Ab0DJG5J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Apr 2010 08:57:09 +0200
+Received: by pvc30 with SMTP id 30so2193336pvc.36
+        for <multiple recipients>; Fri, 09 Apr 2010 23:57:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=/tdnyVjdB6pSd4hkQchcX8/5I9QTxb4uzrrN2Ac6+t0=;
-        b=U/Upc57LVk28iBQX2m3egkmTCjZrjRKq6bAEQeIQ5owDVodVivlRbSJeXkdVodmL+a
-         pgmPaxE2xNufN9vt10W4tITMb9UzmXqNVq8gI5d8IznewSQKaWkSo+CUTXBOqxce0wJb
-         TFz2BZz1xxvmGEKzyNbAgcvCwrG32r7u+JHfc=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=h+1ydAdbF6itO3lddgYiG6ig8+jb7AYoSAft027qwQw=;
+        b=aoJEmdmkBaMv8MzbxskrM+qtUgC/K97MlA5jIdod3xewTBIOhvM+Sb/a8ZqnOS1h24
+         EXvrRNzJ2oxhwkfEBcrLpUq9nrqxgj897VodTA2+yRFgRJZqQaCCb53NrN7irAfKGVRg
+         3uurQc9eoAeryubfPdCjANkLhBs7DnERt4SIg=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=enIu3/xcpJviepLAN5r/Vle+yMedhi6QUxN+5qWWw3pJ/M3UqMqazkFSNxvw2hTky8
-         F5Ihml2IzJa2d0MnJMad8bSAgzA3juLmEl1qTj4nCs7A56FEwyzL1z89f+G5zNQSBOOW
-         VQ82i2N44IgkmQtgOCy+aBQ6hjJ9Ij/jNhr6g=
-Received: by 10.114.186.40 with SMTP id j40mr1397300waf.93.1270878806187;
-        Fri, 09 Apr 2010 22:53:26 -0700 (PDT)
-Received: from [192.168.2.212] ([202.201.14.140])
-        by mx.google.com with ESMTPS id 23sm1599507pzk.2.2010.04.09.22.53.22
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=iPhQZ9ELyHzexh9WHFcztPHgzEDB+jYGNJlkFyPja8qzn5vrA1lV1PiK3Eqm7QrEY3
+         jMX7ZJ/JsweMiCAsO3VoChUVUcqzWSX4BCTJoLLTelOvmkME5hbbUYqjm0vwTVo8yfPe
+         3HadnDPa2aqmZtdsYvShtGBtxUQDb1WwoWahQ=
+Received: by 10.143.25.3 with SMTP id c3mr724269wfj.17.1270882622843;
+        Fri, 09 Apr 2010 23:57:02 -0700 (PDT)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id 21sm1642896pzk.8.2010.04.09.23.57.00
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 09 Apr 2010 22:53:24 -0700 (PDT)
-Subject: Re: [PATCH v2 1/3] MIPS: add a common mips_cyc2ns()
+        Fri, 09 Apr 2010 23:57:02 -0700 (PDT)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Ralf =?ISO-8859-1?Q?R=F6sch?= <roesch.ralf@web.de>
-In-Reply-To: <1270719171.5709.37.camel@falcon>
-References: <cover.1270653461.git.wuzhangjin@gmail.com>
-         <9e1889ed5fa23dfaa1ad432ebb4b8f837f6668b4.1270655886.git.wuzhangjin@gmail.com>
-         <4BBCB7EC.5020403@caviumnetworks.com>  <1270719171.5709.37.camel@falcon>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Sat, 10 Apr 2010 13:46:29 +0800
-Message-ID: <1270878389.17333.39.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
-Content-Transfer-Encoding: 7bit
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        =?UTF-8?q?Ralf=20R=C3=B6sch?= <roesch.ralf@web.de>,
+        linux-mips@linux-mips.org
+Subject: [PATCH v3 0/3] add high resolution sched_clock() for MIPS
+Date:   Sat, 10 Apr 2010 14:49:56 +0800
+Message-Id: <cover.1270881177.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.0.1
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26375
+X-archive-position: 26376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,79 +47,78 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2010-04-08 at 17:32 +0800, Wu Zhangjin wrote:
-> On Wed, 2010-04-07 at 09:50 -0700, David Daney wrote:
-> [...]
-> > > +static inline unsigned long long mips_cyc2ns(u64 cyc, u64 mult, u64 shift)
-> > > +{
-> > > +#ifdef CONFIG_32BIT
-> > > +	/*
-> > > +	 * To balance the overhead of 128bit-arithematic and the precision
-> > > +	 * lost, we choose a smaller shift to avoid the quick overflow as the
-> > > +	 * X86&  ARM does. please refer to arch/x86/kernel/tsc.c and
-> > > +	 * arch/arm/plat-orion/time.c
-> > > +	 */
-> > > +	return (cyc * mult)>>  shift;
-> > 
-> > Have you tested that on a 32-bit kernel?  I think it may overflow for 
-> > many cases.
-> > 
-> 
-> Yes, I have done some basic testing ;)
-> 
-> Since a c0 count with 400MHz clock frequency will overflow after about
-> more than 1 hour with the scaling factor 10,
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-Exactly, with 10, it will overflow after counting 2^51, which means it
-will overflow at 3127 hours(about 130 days), which is enough.
+Hi, Ralf, hi David.
 
->  I think it is enough for
-> the generic debugging, such as Ftrace, If it is not enough, perhaps we
-> can choose a smaller scaling factor, such as 8.
+I have tested it again in the 32bit and 64bit kernel on a Yeeloong netbook,
+both of them work well. so, it should be applicable now.
 
-With 8, it will overflow after 12510 hours(about 521 days).
+BTW: 
 
-So, I will choose 8 in the next revision.
+to David, if the first two patches are ok for you, could you give a
+"Acked-by:"?  thanks!
 
-PS: ...
+to Ralf Rösch, does this 32bit version work for you? If yes, welcome your
+tested-by:, thanks ;)
 
-#include <stdio.h>
+----------------
 
-#define NSEC_PER_SEC 1000000000	/* 10^9 */
-#define CLOCK_FREQ 400000000	/* 400 M*/
-#define CYC2NS_SHIFT 8
+Changes:
 
-int main(void)
-{
-	unsigned long long mult, v;
-	unsigned long long ullint_max = ~0;
-	unsigned long long tmp = 2ULL<<53;
-	double t_ns;
-	int t_h, t_d;
+v2 -> v3:
 
-        v = NSEC_PER_SEC;
-        v <<= CYC2NS_SHIFT;
-        v += CLOCK_FREQ/2;
-        v = v / CLOCK_FREQ;
-        mult = v;
+  o remove the 'easy way' of 128bit arithmatic of mips_cyc2ns().
+  o use 32bit type instead of 64bit for the input arguments(mult and shift) as
+  the 'struct clocksource' does.
+  o use a smaller scaling factor: 8, with this factor, if the clock frequency
+  is 400MHz, it will overflow after about 521 days.
 
-	printf("sizeof(unsigned long long): %d\n", sizeof(unsigned long long));
-	printf("%lld (max of cycles)\n", ullint_max/mult);
-	printf("%lld (2^53)\n", tmp);
+v1 -> v2:
 
-	t_h = (double)tmp / CLOCK_FREQ / 3600;
-	t_d = t_h / 24;
-	printf("%d hours, %d days\n", t_h, t_d);
+  o Adds 32bit support, using a smaller scaling factor(shift) to avoid 128bit
+  arithmatic, of course, it loses some precision.
 
-	return 0;
-}
+  o Adds the testing results of the overhead of sched_clock() in 64bit kernel
 
-$ gcc -o clock clock.c
-$ $ ./clock 
-sizeof(unsigned long long): 8
-28823037615171174 (max of cycles)
-18014398509481984 (2^53)
-12509 hours, 521 days
+  Clock func/overhead(ns) Min Avg Max Jitter Std.Dev.
+  ----------------------------------------------
+  sched_clock(cnt32_to_63) 105 116.2 236 131 9.5
+  getnstimeofday()      160 167.1 437 277 15
+  ----------------------------------------------
+
+  As we can see, the cnt32_to_63() based sched_clock() have lower overhead.
+
+----------------
+
+This patchset adds a high resolution version of sched_clock() for the r4k MIPS.
+
+The generic sched_clock() is jiffies based and has very bad resolution(1ms with
+HZ set as 1000), this one is based on the r4k c0 count, the resolution reaches
+about several ns(2.5ns with 400M clock frequency).
+
+To cope with the overflow problem of the 32bit c0 count, based on the
+cnt32_to_63() method in include/linux/cnt32_to_63.h. we have converted the
+32bit counter to a virtual 63bit counter.
+
+And to fix the overflow problem of the 64bit arithmatic(cycles * mult) in 64bit
+kernel, we use the 128bit arithmatic contributed by David, but for 32bit
+kernel, to balance the overhead of 128bit arithmatic and the precision lost, we
+choose the method used in X86(arch/x86/kernel/tsc.c) and
+ARM(arch/arm/plat-orion/time.c): just use a smaller scaling factor and do 64bit
+arithmatic, of course, it will also overflow but not that quickly.
 
 Regards,
-	Wu Zhangjin
+        Wu Zhangjin
+
+Wu Zhangjin (3):
+  MIPS: add a common mips_cyc2ns()
+  MIPS: cavium-octeon: rewrite the sched_clock() based on mips_cyc2ns()
+  MIPS: r4k: Add a high resolution sched_clock()
+
+ arch/mips/Kconfig                     |   12 +++++
+ arch/mips/cavium-octeon/csrc-octeon.c |   29 +------------
+ arch/mips/include/asm/time.h          |   34 +++++++++++++++
+ arch/mips/kernel/csrc-r4k.c           |   76 +++++++++++++++++++++++++++++++++
+ arch/mips/kernel/time.c               |    5 ++
+ 5 files changed, 129 insertions(+), 27 deletions(-)

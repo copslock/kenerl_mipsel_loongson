@@ -1,74 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Apr 2010 10:10:54 +0200 (CEST)
-Received: from alius.ayous.org ([78.46.213.165]:40934 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Apr 2010 12:22:16 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:55699 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S2097170Ab0DJIKr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 10 Apr 2010 10:10:47 +0200
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1O0Vm9-0005IS-Nt; Sat, 10 Apr 2010 08:10:45 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1O0Vm3-0003zU-UL; Sat, 10 Apr 2010 10:10:39 +0200
-Date:   Sat, 10 Apr 2010 10:10:39 +0200
-From:   Andreas Barth <aba@not.so.argh.org>
-To:     Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH v3 1/3] Loongson-2F: Flush the branch target history
-        such as BTB and RAS
-Message-ID: <20100410081039.GK27216@mails.so.argh.org>
-References: <cover.1268453720.git.wuzhangjin@gmail.com> <05e2ba2596f23fa4dda64d63ce2480504b1be4ac.1268453720.git.wuzhangjin@gmail.com> <20100402145401.GS27216@mails.so.argh.org> <1270258975.23702.18.camel@falcon> <20100406191026.GD27216@mails.so.argh.org> <1270625455.17528.8.camel@falcon>
+        id S1492466Ab0DJKWJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 10 Apr 2010 12:22:09 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o3AALrPE018741;
+        Sat, 10 Apr 2010 11:21:53 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o3AALmoQ018723;
+        Sat, 10 Apr 2010 11:21:48 +0100
+Date:   Sat, 10 Apr 2010 11:21:48 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] mips/txx9: Add missing MODULE_ALIAS definitions for txx9
+ platform devices
+Message-ID: <20100410102148.GA23809@linux-mips.org>
+References: <s2y10f740e81004081152u53d1520fp812bd2defe886220@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1270625455.17528.8.camel@falcon>
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aba@not.so.argh.org>
+In-Reply-To: <s2y10f740e81004081152u53d1520fp812bd2defe886220@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26380
+X-archive-position: 26381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@not.so.argh.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-* Wu Zhangjin (wuzhangjin@gmail.com) [100407 09:38]:
-> On Tue, 2010-04-06 at 21:10 +0200, Andreas Barth wrote:
-> [...]
-> > 
-> > The kernel vmlinuz-2.6.33-lemote2f-bfs inside of
-> > http://www.anheng.com.cn/loongson/install/loongson2_debian6_20100328.tar.lzma
-> > (linked via linux-loongson-community) fails at the same place:
-> > 
-> > touch stamp-picdir
-> > if [ x"-fPIC" != x ]; then \
-> >           gcc -c -DHAVE_CONFIG_H -g -O2  -I. -I../../libiberty/../include  -W -Wall -Wwrite-strings -Wc++-compat -Wstrict-prototypes -pedantic  -fPIC ../../libiberty/regex.c -o pic/regex.o; \
-> >         else true; fi
-> > gcc -c -DHAVE_CONFIG_H -g -O2  -I. -I../../libiberty/../include  -W -Wall -Wwrite-strings -Wc++-compat -Wstrict-prototypes -pedantic  ../../libiberty/regex.c -o regex.o
-> > if [ x"-fPIC" != x ]; then \
-> >           gcc -c -DHAVE_CONFIG_H -g -O2  -I. -I../../libiberty/../include  -W -Wall -Wwrite-strings -Wc++-compat -Wstrict-prototypes -pedantic  -fPIC ../../libiberty/cplus-dem.c -o pic/cplus-dem.o; \
-> >         else true; fi
-> > 
+On Thu, Apr 08, 2010 at 08:52:00PM +0200, Geert Uytterhoeven wrote:
+
+> Hi Nemoto-san, Ralf-san,
 > 
-> When & where did you get the above information?
+> I need the patch below to enable autoloading of the TXx9 sound driver
+> on my RBTX4927.
+> It works very nice as a low-power MPD player.
 > 
-> do you mean the kernel can not boot or there are some other problems
-> after the kernel booting?
+> >From 0902bacfe10db79472c7ecd35ac28f1c02f72101 Mon Sep 17 00:00:00 2001
+> From: Geert Uytterhoeven <geert@linux-m68k.org>
+> Date: Thu, 8 Apr 2010 20:46:28 +0200
+> Subject: [PATCH] mips/txx9: Add missing MODULE_ALIAS definitions for
+> txx9 platform devices
 > 
-> I guess: the whole system crashed when you was compiling something? then
-> please ensure the as & ld is ok via fixing the NOPS with the tool
-> (fix-nop.c) from  http://dev.lemote.com/code/linux-loongson-community :
+> This enables autoloading of the TXx9 sound driver on my RBTX4927.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> ---
+>  drivers/dma/txx9dmac.c            |    2 ++
+>  sound/soc/txx9/txx9aclc-ac97.c    |    1 +
+>  sound/soc/txx9/txx9aclc-generic.c |    1 +
+>  3 files changed, 4 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/dma/txx9dmac.c b/drivers/dma/txx9dmac.c
+> index 3ebc610..75fcf1a 100644
+> --- a/drivers/dma/txx9dmac.c
+> +++ b/drivers/dma/txx9dmac.c
+> @@ -1359,3 +1359,5 @@ module_exit(txx9dmac_exit);
+>  MODULE_LICENSE("GPL");
+>  MODULE_DESCRIPTION("TXx9 DMA Controller driver");
+>  MODULE_AUTHOR("Atsushi Nemoto <anemo@mba.ocn.ne.jp>");
+> +MODULE_ALIAS("platform:txx9dmac");
+> +MODULE_ALIAS("platform:txx9dmac-chan");
+> diff --git a/sound/soc/txx9/txx9aclc-ac97.c b/sound/soc/txx9/txx9aclc-ac97.c
+> index 612e18b..0ec20b6 100644
+> --- a/sound/soc/txx9/txx9aclc-ac97.c
+> +++ b/sound/soc/txx9/txx9aclc-ac97.c
+> @@ -254,3 +254,4 @@ module_exit(txx9aclc_ac97_exit);
+>  MODULE_AUTHOR("Atsushi Nemoto <anemo@mba.ocn.ne.jp>");
+>  MODULE_DESCRIPTION("TXx9 ACLC AC97 driver");
+>  MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:txx9aclc-ac97");
+> diff --git a/sound/soc/txx9/txx9aclc-generic.c
+> b/sound/soc/txx9/txx9aclc-generic.c
+> index 3175de9..95b17f7 100644
+> --- a/sound/soc/txx9/txx9aclc-generic.c
+> +++ b/sound/soc/txx9/txx9aclc-generic.c
+> @@ -96,3 +96,4 @@ module_exit(txx9aclc_generic_exit);
+>  MODULE_AUTHOR("Atsushi Nemoto <anemo@mba.ocn.ne.jp>");
+>  MODULE_DESCRIPTION("Generic TXx9 ACLC ALSA SoC audio driver");
+>  MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:txx9aclc-generic");
 
-The kernel does boot, but the whole machines crashes.
+Will apply.
 
-I know the fixups (I have adjusted binutils), but I need an kernel
-that userland cannot crash (otherwise it gets a bit hard to run that
-as debian buildd).
+A while ago I noticed that all of the MIPS platform device drivers
+I looked at did not have MODULE_ALIAS().
 
-
-Andi
+  Ralf

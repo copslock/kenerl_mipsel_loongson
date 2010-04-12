@@ -1,57 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Apr 2010 14:14:32 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:50328 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492579Ab0DJMOS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Apr 2010 14:14:18 +0200
-Received: by pwj3 with SMTP id 3so3630144pwj.36
-        for <multiple recipients>; Sat, 10 Apr 2010 05:14:09 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Apr 2010 05:35:07 +0200 (CEST)
+Received: from mail-yx0-f200.google.com ([209.85.210.200]:53604 "EHLO
+        mail-yx0-f200.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491197Ab0DLDfD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Apr 2010 05:35:03 +0200
+Received: by yxe38 with SMTP id 38so1871395yxe.22
+        for <multiple recipients>; Sun, 11 Apr 2010 20:34:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        bh=VYUmR+Y4s9bws+/rs2pv3MfiLu/dxIYtiWM+i75a2WU=;
-        b=CmrcKTBSwJ14H15wB1GfrdJzkh+KzaJYRHn3emNfMF4v4wgi9oU2IDOKHvxSVJk3Wx
-         o6TH8TeAT+svRYTGMrGwybRNfAw0LiMJuSnSn4n4uqzhS7wAJaMA4/yKXrcN+YNydwox
-         ofNQ+C8KmHey2aH2to1Sn4qVBd5cCNGl0Khkw=
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=zh72fpVOCjDaNrxDkh4Dnio0mk1NNBZd53oS8Gk4UbI=;
+        b=AF8IndCrw4oKDVutp68vldwlIAEa8eqd/kpKG1u8TE7zaIK5YHgKfEPh7uwqGjU2zj
+         qkgRtLlLaLosNIlFsf1JmBGfZbGkTzXTEjAvmyOjZerx4N9/hIkzKvrlWMewrTgsKpJx
+         U4JH8uTHi0H9BvWpKmLaebI/33+KnscMr5jvE=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=qPqr4EqNAR03hInrKkK+J7KtOqrhqD/4vIPp2+vaeM+tareVUhvZXIlQmYTOA277RR
-         7FIYv4v9WOuqTiIvcxxn7+NWA4e7wC6ueQdC1OuWm/VynRJelDXgydbDUnQ9Y1P4QndK
-         sXtJZUfibc0Lnh7bEkgulFTUxtskr/m4hATKI=
-Received: by 10.115.24.9 with SMTP id b9mr1434585waj.83.1270901649508;
-        Sat, 10 Apr 2010 05:14:09 -0700 (PDT)
+        b=FjDuh/JFlYyAYXcciKybqu7T2amlverhDx5sEjhz5dMsdJ+y6ZnohQaSl50PNGnWuL
+         GhEOoVmJ7djNZxZOMOcvzzTYY/Wg2F9tSXW3KA0p0KjeYWm1pgnSoLZhTU6XfMKCjFWt
+         twuTeqoRATwQEmujvwjDsVtmnv21vGqVlW24g=
+Received: by 10.100.88.10 with SMTP id l10mr5558083anb.184.1271043296063;
+        Sun, 11 Apr 2010 20:34:56 -0700 (PDT)
 Received: from [192.168.2.212] ([202.201.14.140])
-        by mx.google.com with ESMTPS id 22sm1923058pzk.9.2010.04.10.05.14.07
+        by mx.google.com with ESMTPS id 21sm3630818iwn.3.2010.04.11.20.34.52
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 10 Apr 2010 05:14:09 -0700 (PDT)
-Subject: [PATCH v5 4/4] Loongson-2F: Fixup of problems introduced by
- -mfix-loongson2f-jump
+        Sun, 11 Apr 2010 20:34:54 -0700 (PDT)
+Subject: Re: [PATCH v3 1/3] Loongson-2F: Flush the branch target history
+ such as BTB and RAS
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <cover.1270882402.git.wuzhangjin@gmail.com>
-References: <cover.1270882402.git.wuzhangjin@gmail.com>
-In-Reply-To: <cover.1270882402.git.wuzhangjin@gmail.com>
-References: <cover.1270882402.git.wuzhangjin@gmail.com>
+To:     Andreas Barth <aba@not.so.argh.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+In-Reply-To: <20100410081039.GK27216@mails.so.argh.org>
+References: <cover.1268453720.git.wuzhangjin@gmail.com>
+         <05e2ba2596f23fa4dda64d63ce2480504b1be4ac.1268453720.git.wuzhangjin@gmail.com>
+         <20100402145401.GS27216@mails.so.argh.org>
+         <1270258975.23702.18.camel@falcon>
+         <20100406191026.GD27216@mails.so.argh.org>
+         <1270625455.17528.8.camel@falcon>
+         <20100410081039.GK27216@mails.so.argh.org>
 Content-Type: text/plain; charset="UTF-8"
 Organization: DSLab, Lanzhou University, China
-Date:   Sat, 10 Apr 2010 20:07:13 +0800
-Message-ID: <1270901233.14758.9.camel@falcon>
+Date:   Mon, 12 Apr 2010 11:33:59 +0800
+Message-ID: <1271043239.1917.11.camel@falcon>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.28.2 
+X-Mailer: Evolution 2.28.3 
 Content-Transfer-Encoding: 7bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26387
+X-archive-position: 26388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -59,70 +61,52 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Sat, 2010-04-10 at 10:10 +0200, Andreas Barth wrote:
+> * Wu Zhangjin (wuzhangjin@gmail.com) [100407 09:38]:
+> > On Tue, 2010-04-06 at 21:10 +0200, Andreas Barth wrote:
+> > [...]
+> > > 
+> > > The kernel vmlinuz-2.6.33-lemote2f-bfs inside of
+> > > http://www.anheng.com.cn/loongson/install/loongson2_debian6_20100328.tar.lzma
+> > > (linked via linux-loongson-community) fails at the same place:
+> > > 
+> > > touch stamp-picdir
+> > > if [ x"-fPIC" != x ]; then \
+> > >           gcc -c -DHAVE_CONFIG_H -g -O2  -I. -I../../libiberty/../include  -W -Wall -Wwrite-strings -Wc++-compat -Wstrict-prototypes -pedantic  -fPIC ../../libiberty/regex.c -o pic/regex.o; \
+> > >         else true; fi
+> > > gcc -c -DHAVE_CONFIG_H -g -O2  -I. -I../../libiberty/../include  -W -Wall -Wwrite-strings -Wc++-compat -Wstrict-prototypes -pedantic  ../../libiberty/regex.c -o regex.o
+> > > if [ x"-fPIC" != x ]; then \
+> > >           gcc -c -DHAVE_CONFIG_H -g -O2  -I. -I../../libiberty/../include  -W -Wall -Wwrite-strings -Wc++-compat -Wstrict-prototypes -pedantic  -fPIC ../../libiberty/cplus-dem.c -o pic/cplus-dem.o; \
+> > >         else true; fi
+> > > 
+> > 
+> > When & where did you get the above information?
+> > 
+> > do you mean the kernel can not boot or there are some other problems
+> > after the kernel booting?
+> > 
+> > I guess: the whole system crashed when you was compiling something? then
+> > please ensure the as & ld is ok via fixing the NOPS with the tool
+> > (fix-nop.c) from  http://dev.lemote.com/code/linux-loongson-community :
+> 
+> The kernel does boot, but the whole machines crashes.
+> 
+> I know the fixups (I have adjusted binutils), but I need an kernel
+> that userland cannot crash (otherwise it gets a bit hard to run that
+> as debian buildd).
+> 
+> 
 
-Changes from old revisions:
+The userland canot be prevented from crash without user-space fixups,
+that's why we need the fix-nop.c to fix the NOPs in the binaries of
+user-land applications or using the -mfix-loongson-nop to compile the
+user-land applications.
 
-  o Incorporated with the feedbacks from Ralf Baechle and used the
-  option CONFIG_CPU_JUMP_WORKAROUNDS introduced by "Loongson: Add
-  CPU_LOONGSON2F_WORKAROUNDS".
+If you just need to rebuild debian, you just need to fix the NOPs in the
+as and ld with fix-nop.c as I have mentioned before:
 
-The -mfix-loongson2f-jump option provided by the latest binutils(in the cvs
-repository) have fixed the Out-of-order Issue of Loongson-2F described in
-Chapter 15 of "Loongson2F User Manual"[1,2], but introduced some problems.
+$ ./fix-nop $(which as)
+$ ./fix-nop $(which ld)
 
-The option changes all of the jumping target to "addr & 0xcfffffff" through the
-at($1) register, but for the REBOOT address of loongson-2F: 0xbfc00000, this is
-totally wrong, so, this patch try to avoid the problem via telling the
-assembler not to use at($1) register.
-
-[1] Loongson2F User Manual(Chinese Version)
-http://www.loongson.cn/uploadfile/file/200808211
-[2] English Version of Chapter 15:
-http://groups.google.com.hk/group/loongson-dev/msg/e0d2e220958f10a6?dmode=source
-
-Reported-and-tested-by: Liu Shiwei <liushiwei@gmail.com>
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/loongson/common/reset.c |   20 +++++++++++++++++++-
- 1 files changed, 19 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/loongson/common/reset.c b/arch/mips/loongson/common/reset.c
-index 4bd9c18..9e10d62 100644
---- a/arch/mips/loongson/common/reset.c
-+++ b/arch/mips/loongson/common/reset.c
-@@ -16,13 +16,31 @@
- 
- #include <loongson.h>
- 
-+static inline void loongson_reboot(void)
-+{
-+#ifndef CONFIG_CPU_JUMP_WORKAROUNDS
-+	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
-+#else
-+	void (*func)(void);
-+
-+	func = (void *)ioremap_nocache(LOONGSON_BOOT_BASE, 4);
-+
-+	__asm__ __volatile__(
-+	"       .set    noat                                            \n"
-+	"       jr      %[func]                                         \n"
-+	"       .set    at                                              \n"
-+	: /* No outputs */
-+	: [func] "r" (func));
-+#endif
-+}
-+
- static void loongson_restart(char *command)
- {
- 	/* do preparation for reboot */
- 	mach_prepare_reboot();
- 
- 	/* reboot via jumping to boot base address */
--	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
-+	loongson_reboot();
- }
- 
- static void loongson_poweroff(void)
--- 
-1.7.0.1
+Regards,
+	Wu Zhangjin

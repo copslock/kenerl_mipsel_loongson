@@ -1,53 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Apr 2010 07:04:17 +0200 (CEST)
-Received: from mail-yx0-f200.google.com ([209.85.210.200]:47813 "EHLO
-        mail-yx0-f200.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491118Ab0DMFEJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Apr 2010 07:04:09 +0200
-Received: by yxe38 with SMTP id 38so2520735yxe.22
-        for <multiple recipients>; Mon, 12 Apr 2010 22:04:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Apr 2010 07:17:00 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:34883 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491118Ab0DMFQz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Apr 2010 07:16:55 +0200
+Received: by pwj4 with SMTP id 4so1409453pwj.36
+        for <multiple recipients>; Mon, 12 Apr 2010 22:16:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:x-priority:content-type:organization:date
-         :message-id:mime-version:x-mailer:content-transfer-encoding;
-        bh=VCIsg488Y94CsX4qRUs4W4d8c5HkkeO/d7gARqWJld0=;
-        b=Rxh67ftAozcSC4uTfV98nEAHebGmyLZhjDM//IwEYr/AdV6tOGgyJOD2+8OZaNi7ju
-         Lk0sF8voTTeLOEUgqhCk7ipphdbWU/j73EuyidmZosog3jRn6Sxmlwyn9arc1aLI9ACd
-         psZAbriIgH6rOm5JHrV60puMG4Ec7d7IjcHI0=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=rqsLiZC6AB6BNuGZ5mJsCMmlcAVD36zT8K7cQAcK6FY=;
+        b=SuV3aHXGLaKELd33pdy3gt2zpIZRkT62Gv104KsQRmKOeaRCu+mVCoKD/8hHx25mIR
+         o2MtTb+JkS0EeYYuJKzyMM6MVrvk/rlNFpxwVSE2rxS8XWZ6UEzCFRpKACVmTW83kYiZ
+         GxolCWbR0/aY3Z5GyxvgDWA7zUKF/fLQ5Mczk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:x-priority
-         :content-type:organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=aN+V5A//CUw80reeTqZyEcc4YLAiJ/Og58zSWDgZv97Zm8U+xoUCOYTmkYxVH9Xith
-         1p+Hrj611nSiH8l020RBPe3bgb1i7QS2YMHnXaF0tRpT8GfaDAD/Q5SdT1LLNVAlaRw+
-         n4SVmf/IcvPsQm4RAKbUScmCXi08gqueSZeT8=
-Received: by 10.150.103.12 with SMTP id a12mr4356880ybc.112.1271135041714;
-        Mon, 12 Apr 2010 22:04:01 -0700 (PDT)
-Received: from [192.168.2.212] ([202.201.14.140])
-        by mx.google.com with ESMTPS id 22sm4595766iwn.4.2010.04.12.22.03.58
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=yC7VtMg10/5z82MH2ve4Kc8lz5wJVBzB3RMIdc8IinzNcy2CixDwl8TR968ZJlvvWw
+         J32nmwmpn2rufpbxHB0nb5le/HVOWgEhGB8di10+hbUfHPGXvbHRVDvJ7eCAXPgAL4mO
+         lbY2I7EzbhqmqPP0x+HqMkR5xTddtjpPV2e+g=
+Received: by 10.142.1.41 with SMTP id 41mr2277724wfa.289.1271135806948;
+        Mon, 12 Apr 2010 22:16:46 -0700 (PDT)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id 21sm4619421iwn.7.2010.04.12.22.16.44
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 12 Apr 2010 22:04:00 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: Calculate proper ebase value for 64-bit kernels
+        Mon, 12 Apr 2010 22:16:46 -0700 (PDT)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-In-Reply-To: <1270585790-12730-1-git-send-email-ddaney@caviumnetworks.com>
-References: <1270585790-12730-1-git-send-email-ddaney@caviumnetworks.com>
-X-Priority: 1
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Tue, 13 Apr 2010 13:03:54 +0800
-Message-ID: <1271135034.25797.41.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] Loongson: update cpu-feature-overrides.h
+Date:   Tue, 13 Apr 2010 13:16:34 +0800
+Message-Id: <1271135794-19762-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.0
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26390
+X-archive-position: 26391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,58 +45,29 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, David and Ralf
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This patch have broken the support to the MIPS variants whose
-cpu_has_mips_r2 is 0 for the CAC_BASE and CKSEG0 is completely different
-in these MIPSs.
+Loongson doesn't support MIPSR2, therefore, MIPSR2 vectored interrupts
+(cpu_has_vint) and MIPSR2 external interrupt controller mode
+(cpu_has_veic) are 0.
 
-With the patch, the kernel will exit when booting(later after
-trap_init()).
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ .../asm/mach-loongson/cpu-feature-overrides.h      |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-A potential patch to fix the above problem is:
-
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 1a4dd65..d8cb554 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1599,7 +1599,7 @@ void __init trap_init(void)
- 		ebase = (unsigned long)
- 			__alloc_bootmem(size, 1 << fls(size), 0);
- 	} else {
--		ebase = CKSEG0;
-+		ebase = (cpu_has_mips_r2) ? CKSEG0 : CAC_BASE;
- 		if (cpu_has_mips_r2)
- 			ebase += (read_c0_ebase() & 0x3ffff000);
- 	}
-
-Regards,
-	Wu Zhangjin
-
-On Tue, 2010-04-06 at 13:29 -0700, David Daney wrote:
-> The ebase is relative to CKSEG0 not CAC_BASE.  On a 32-bit kernel they
-> are the same thing, for a 64-bit kernel they are not.
-> 
-> It happens to kind of work on a 64-bit kernel as they both reference
-> the same physical memory.  However since the CPU uses the CKSEG0 base,
-> determining if a J instruction will reach always gives the wrong
-> result unless we use the same number the CPU uses.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  arch/mips/kernel/traps.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index 7ce84bb..b122f76 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -1706,7 +1706,7 @@ void __init trap_init(void)
->  		ebase = (unsigned long)
->  			__alloc_bootmem(size, 1 << fls(size), 0);
->  	} else {
-> -		ebase = CAC_BASE;
-> +		ebase = CKSEG0;
->  		if (cpu_has_mips_r2)
->  			ebase += (read_c0_ebase() & 0x3ffff000);
->  	}
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+index 16210ce..675bd86 100644
+--- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -52,6 +52,8 @@
+ #define cpu_has_tx39_cache	0
+ #define cpu_has_userlocal	0
+ #define cpu_has_vce		0
++#define cpu_has_veic		0
++#define cpu_has_vint		0
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_watch		1
+ 
+-- 
+1.7.0

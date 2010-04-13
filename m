@@ -1,73 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Apr 2010 07:17:00 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:34883 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491118Ab0DMFQz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 13 Apr 2010 07:16:55 +0200
-Received: by pwj4 with SMTP id 4so1409453pwj.36
-        for <multiple recipients>; Mon, 12 Apr 2010 22:16:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=rqsLiZC6AB6BNuGZ5mJsCMmlcAVD36zT8K7cQAcK6FY=;
-        b=SuV3aHXGLaKELd33pdy3gt2zpIZRkT62Gv104KsQRmKOeaRCu+mVCoKD/8hHx25mIR
-         o2MtTb+JkS0EeYYuJKzyMM6MVrvk/rlNFpxwVSE2rxS8XWZ6UEzCFRpKACVmTW83kYiZ
-         GxolCWbR0/aY3Z5GyxvgDWA7zUKF/fLQ5Mczk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=yC7VtMg10/5z82MH2ve4Kc8lz5wJVBzB3RMIdc8IinzNcy2CixDwl8TR968ZJlvvWw
-         J32nmwmpn2rufpbxHB0nb5le/HVOWgEhGB8di10+hbUfHPGXvbHRVDvJ7eCAXPgAL4mO
-         lbY2I7EzbhqmqPP0x+HqMkR5xTddtjpPV2e+g=
-Received: by 10.142.1.41 with SMTP id 41mr2277724wfa.289.1271135806948;
-        Mon, 12 Apr 2010 22:16:46 -0700 (PDT)
-Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id 21sm4619421iwn.7.2010.04.12.22.16.44
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 12 Apr 2010 22:16:46 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] Loongson: update cpu-feature-overrides.h
-Date:   Tue, 13 Apr 2010 13:16:34 +0800
-Message-Id: <1271135794-19762-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.0
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Apr 2010 09:35:04 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:33446 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491900Ab0DMHfA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 13 Apr 2010 09:35:00 +0200
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1O1aeB-00077x-00; Tue, 13 Apr 2010 09:34:59 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id 2694E1D2DE; Tue, 13 Apr 2010 09:34:38 +0200 (CEST)
+Date:   Tue, 13 Apr 2010 09:34:38 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+Subject: Re: [PATCH] MIPS: Calculate proper ebase value for 64-bit kernels
+Message-ID: <20100413073435.GA6371@alpha.franken.de>
+References: <1270585790-12730-1-git-send-email-ddaney@caviumnetworks.com> <1271135034.25797.41.camel@falcon>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1271135034.25797.41.camel@falcon>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26391
+X-archive-position: 26392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Tue, Apr 13, 2010 at 01:03:54PM +0800, Wu Zhangjin wrote:
+> This patch have broken the support to the MIPS variants whose
+> cpu_has_mips_r2 is 0 for the CAC_BASE and CKSEG0 is completely different
+> in these MIPSs.
 
-Loongson doesn't support MIPSR2, therefore, MIPSR2 vectored interrupts
-(cpu_has_vint) and MIPSR2 external interrupt controller mode
-(cpu_has_veic) are 0.
+I've checked R4k and R10k manulas and the exception base is at CKSEG0, so
+about CPU we are talking ? And wouldn't it make for senso to have
+an extra define for the exception base then ?
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- .../asm/mach-loongson/cpu-feature-overrides.h      |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+Thomas.
 
-diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-index 16210ce..675bd86 100644
---- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-@@ -52,6 +52,8 @@
- #define cpu_has_tx39_cache	0
- #define cpu_has_userlocal	0
- #define cpu_has_vce		0
-+#define cpu_has_veic		0
-+#define cpu_has_vint		0
- #define cpu_has_vtag_icache	0
- #define cpu_has_watch		1
- 
 -- 
-1.7.0
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

@@ -1,44 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Apr 2010 00:50:00 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:44928 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Apr 2010 03:28:41 +0200 (CEST)
+Received: from imr1.ericy.com ([198.24.6.9]:56952 "EHLO imr1.ericy.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492568Ab0DMWt5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Apr 2010 00:49:57 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o3DMnt3V026717;
-        Tue, 13 Apr 2010 23:49:55 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o3DMnt0O026715;
-        Tue, 13 Apr 2010 23:49:55 +0100
-Date:   Tue, 13 Apr 2010 23:49:55 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Subject: Re: [PATCH v5] MIPS: Alchemy: add sysdev for IRQ PM.
-Message-ID: <20100413224955.GC24077@linux-mips.org>
-References: <1271184554-28058-1-git-send-email-manuel.lauss@gmail.com>
+        id S1492299Ab0DNB2f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Apr 2010 03:28:35 +0200
+Received: from eusaamw0711.eamcs.ericsson.se ([147.117.20.178])
+        by imr1.ericy.com (8.13.1/8.13.1) with ESMTP id o3E1WfAQ005113;
+        Tue, 13 Apr 2010 20:32:46 -0500
+Received: from prattle.redback.com (147.117.20.212) by
+ eusaamw0711.eamcs.ericsson.se (147.117.20.179) with Microsoft SMTP Server id
+ 8.1.375.2; Tue, 13 Apr 2010 21:28:21 -0400
+Received: from localhost (localhost [127.0.0.1])        by prattle.redback.com
+ (Postfix) with ESMTP id 9858AFEFFFE;   Tue, 13 Apr 2010 18:28:21 -0700 (PDT)
+Received: from prattle.redback.com ([127.0.0.1]) by localhost (prattle
+ [127.0.0.1]) (amavisd-new, port 10024) with ESMTP id 01449-09; Tue, 13 Apr
+ 2010 18:28:21 -0700 (PDT)
+Received: from localhost (rbos-pc-13.lab.redback.com [10.12.11.133])    by
+ prattle.redback.com (Postfix) with ESMTP id 87263FEFFFC;       Tue, 13 Apr 2010
+ 18:28:20 -0700 (PDT)
+From:   Guenter Roeck <guenter.roeck@ericsson.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+CC:     Guenter Roeck <guenter.roeck@ericsson.com>
+Subject: [PATCH] Fix sibyte watchdog initialization
+Date:   Tue, 13 Apr 2010 18:28:16 -0700
+Message-ID: <1271208496-30878-1-git-send-email-guenter.roeck@ericsson.com>
+X-Mailer: git-send-email 1.7.0.87.g0901d
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1271184554-28058-1-git-send-email-manuel.lauss@gmail.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain
+Return-Path: <groeck@redback.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26402
+X-archive-position: 26403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: guenter.roeck@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 13, 2010 at 08:49:14PM +0200, Manuel Lauss wrote:
+Watchdog configuration register and timer count register were interchanged,
+causing wrong values to be written into both registers.
+This caused watchdog triggered resets even if the watchdog was reset in time.
 
-Queued for 2.6.35.  There were some line offsets and fuzz when applying
-this patch but I hope that's ok.
+Signed-off-by: Guenter Roeck <guenter.roeck@ericsson.com>
+---
+ drivers/watchdog/sb_wdog.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-Thanks,
-
-  Ralf
+diff --git a/drivers/watchdog/sb_wdog.c b/drivers/watchdog/sb_wdog.c
+index 9748eed..1407cfa 100644
+--- a/drivers/watchdog/sb_wdog.c
++++ b/drivers/watchdog/sb_wdog.c
+@@ -67,8 +67,8 @@ static DEFINE_SPINLOCK(sbwd_lock);
+ void sbwdog_set(char __iomem *wdog, unsigned long t)
+ {
+ 	spin_lock(&sbwd_lock);
+-	__raw_writeb(0, wdog - 0x10);
+-	__raw_writeq(t & 0x7fffffUL, wdog);
++	__raw_writeb(0, wdog);
++	__raw_writeq(t & 0x7fffffUL, wdog - 0x10);
+ 	spin_unlock(&sbwd_lock);
+ }
+ 
+-- 
+1.7.0.87.g0901d

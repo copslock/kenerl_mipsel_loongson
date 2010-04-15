@@ -1,103 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Apr 2010 19:47:36 +0200 (CEST)
-Received: from mail-yx0-f183.google.com ([209.85.210.183]:37240 "EHLO
-        mail-yx0-f183.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492068Ab0DORrd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Apr 2010 19:47:33 +0200
-Received: by yxe13 with SMTP id 13so1032851yxe.0
-        for <multiple recipients>; Thu, 15 Apr 2010 10:47:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=8oBco9Fc+/M5GnPTsgjek1RSvdpr5yWQ09oomFVSXdM=;
-        b=u2PTJNlrUqVBNQwMVKwJDFw1gEQOI5OijIxIEm/bX2Q7n6XMt3B6S+1KBHDwHMNJmj
-         hM0+RaeRe2HFT3vM+HhZMZKtFY4FrZV3D/39P7xxF1Y+Ij6zYQ9nR6myYnQO+68VAK+g
-         NYoSBezMzzYbsv4jDNhs06+PyJPeGH1EWFv+w=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=ttj11XkB7PH4NqrocZxjLreb3G6v3521t3QrVnFe2u9RerizV2RhBVy9rO5j9TZ9pz
-         NK20+DlqfpY+zzZCzy1GGFL8yGDMaaRVg5OhH0XgQ/ZEtzqeXAlK0DrTzgstQCisCHkw
-         65vl6kvOWHQDWj8hpmcy7/jaamA1sbjKq5RvU=
-Received: by 10.101.136.38 with SMTP id o38mr847413ann.146.1271353645427;
-        Thu, 15 Apr 2010 10:47:25 -0700 (PDT)
-Received: from [192.168.2.212] ([202.201.14.140])
-        by mx.google.com with ESMTPS id b10sm3412201ana.16.2010.04.15.10.47.20
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 15 Apr 2010 10:47:24 -0700 (PDT)
-Subject: Re: [PATCH 3/3] MIPS: implement hardware perf event support
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com, jamie.iles@picochip.com
-In-Reply-To: <1271349557.7467.424.camel@fun-lab>
-References: <1271349557.7467.424.camel@fun-lab>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Fri, 16 Apr 2010 01:47:16 +0800
-Message-ID: <1271353636.20625.99.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Apr 2010 20:43:33 +0200 (CEST)
+Received: from alius.ayous.org ([78.46.213.165]:41072 "EHLO alius.ayous.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492138Ab0DOSn1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 15 Apr 2010 20:43:27 +0200
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.69)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1O2U22-000347-CI; Thu, 15 Apr 2010 18:43:18 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1O2U1w-0008Ae-Ot; Thu, 15 Apr 2010 20:43:12 +0200
+Date:   Thu, 15 Apr 2010 20:43:12 +0200
+From:   Andreas Barth <aba@not.so.argh.org>
+To:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
+Subject: irqbalance on movidis crashes the machine (was: movidis x16 hard
+        lockup using 2.6.33)
+Message-ID: <20100415184312.GK2942@mails.so.argh.org>
+References: <20100326184132.GU2437@apfelkorn> <4BAD03A5.9070701@caviumnetworks.com> <20100327230744.GG27216@mails.so.argh.org> <4BB0DB2A.9080405@caviumnetworks.com> <20100402133224.GR27216@mails.so.argh.org> <20100403154312.GY2437@apfelkorn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100403154312.GY2437@apfelkorn>
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <aba@not.so.argh.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26418
+X-archive-position: 26419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: aba@not.so.argh.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Deng-Cheng
+* Peter 'p2' De Schrijver (p2@debian.org) [100403 17:43]:
+> http://zobel.ftbfs.de/.x/lucatelli-nmi-watchdog-output.txt 
+> Dump of one of those hangs. Most cores seem to be stuck in wait 
+> (0xffffffff81100b80), except for core 1 which is in octeon_irq_ciu0_ack 
+> (octeon_irq_ciu0_ack).
 
-Thanks very much for your Perf support of MIPS.
+On further investigation we found out that this happens when
+irqbalance is started. The version of irqbalance being run is 0.55.
 
-On Fri, 2010-04-16 at 00:39 +0800, Deng-Cheng Zhu wrote:
-> This patch is the HW perf event support. To enable this feature, we can not
-> choose the SMTC kernel; Oprofile should be disabled; kernel performance
-> events be selected. Then we can enable it in the Kernel type menu.
-> 
-> Oprofile for MIPS platforms initializes irq at arch init time. Currently we
-> do not change this logic to allow PMU reservation.
-> 
-> If a platform has EIC, we can use the irq base and perf counter irq
-> offset defines for the interrupt controller in mipspmu_get_irq().
-> 
-> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-> ---
->  arch/mips/Kconfig             |    8 +
->  arch/mips/kernel/Makefile     |    2 +
->  arch/mips/kernel/perf_event.c | 1468 +++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 1478 insertions(+), 0 deletions(-)
->  create mode 100644 arch/mips/kernel/perf_event.c
-[...]
-> + * Copied from Oprofile -- BEGIN
-> + */
-[...]
-> +/* Copied from Oprofile -- END */
-> +
+We removed this program from the affected machine, but of course this
+still should be fixed (and we still get a few reboots on another
+machine without irqbalance).
 
-Seems you only copied the contents from
-arch/mips/oprofile/op_model_mipsxx.c and handle the mipsxx, what about
-rm9000(arch/mips/oprofile/op_model_rm9000.c) and
-loongson2(arch/mips/oprofile/op_model_loongson2.c)? 
 
-I think it will not work on rm9000 and loongson2 for their performance
-counters are different from mipsxx. so suggest you only enable this for
-mipsxxx(refer to arch/mips/oprofile/Makefile) via #ifdef and renaming
-the current perf_event.c to perf_event_mipsxx.c.
-
-And to reduce the source code duplication, perhaps we need a solution to
-share the source code between Oprofile and Perf, and also among mipsxx,
-rm9000 and loongson2.
-
-Thanks & Regards,
-	Wu Zhangjin
+Andi

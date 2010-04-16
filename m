@@ -1,193 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Apr 2010 11:19:47 +0200 (CEST)
-Received: from mx1.moondrake.net ([212.85.150.166]:51682 "EHLO
-        mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1492058Ab0DPJTl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Apr 2010 11:19:41 +0200
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-        id D54FA274029; Fri, 16 Apr 2010 11:19:37 +0200 (CEST)
-Received: from office-abk.mandriva.com (unknown [195.7.104.248])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.mandriva.com (Postfix) with ESMTP id 8190C274014;
-        Fri, 16 Apr 2010 11:19:36 +0200 (CEST)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-        by office-abk.mandriva.com (Postfix) with ESMTP id 301F884EF4;
-        Fri, 16 Apr 2010 11:36:40 +0200 (CEST)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-        by anduin.mandriva.com (Postfix) with ESMTP id 54117FF855;
-        Fri, 16 Apr 2010 11:19:52 +0200 (CEST)
-From:   Arnaud Patard <apatard@mandriva.com>
-To:     linux-mips@linux-mips.org, rtc-linux@googlegroups.com
-Cc:     david-b@pacbell.net, a.zummo@towertech.it, ralf@linux-mips.org
-Subject: [PATCH] rtc-cmos: Fix binary mode support
-Organization: Mandriva
-Date:   Fri, 16 Apr 2010 11:19:51 +0200
-Message-ID: <m3iq7rn494.fsf@anduin.mandriva.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="=-=-="
-Return-Path: <arnaud.patard@mandriva.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Apr 2010 19:04:31 +0200 (CEST)
+Received: from mail-bw0-f226.google.com ([209.85.218.226]:36136 "EHLO
+        mail-bw0-f226.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492183Ab0DPRE2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Apr 2010 19:04:28 +0200
+Received: by bwz26 with SMTP id 26so2890980bwz.27
+        for <linux-mips@linux-mips.org>; Fri, 16 Apr 2010 10:04:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=dr8TB6u6fIdLe3vQLBuuDw2g6rpcOfXRlc7Qta4vdlw=;
+        b=Ytfx09RDlkY+/Jsg8+WopJJ39rT7S6/Dv1ctuZ6uykdi6R6fykWKDTp8mUD02rzhzW
+         qNd3EipziTTcewR26FmkW2ChA1Cn/9/KcdZiXgVlxpiOmS0TOdhzrsbX7UyeN2gp+RGA
+         4YEEg+xKc7G4PDjSj5Q+744wzQtEcgbQR34PU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=wFoOoQyzPXrs9JZE3VTLp4UtKrUw3iEzfo5oNpTosmVFfYH/p0REJbXW73jyD5egMh
+         x80V2PKnC0y1YvTFYwxX5bxii595nqloJq7Jltxbnm0HvuMpALqq7pnpDYtXEr6ZhIQc
+         +O8JOU2rOopebdmVvV7hcqsvpM7SRV+0u/Qk8=
+Received: by 10.204.146.148 with SMTP id h20mr1899972bkv.185.1271437462665;
+        Fri, 16 Apr 2010 10:04:22 -0700 (PDT)
+Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
+        by mx.google.com with ESMTPS id 15sm1955345bwz.0.2010.04.16.10.04.20
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 16 Apr 2010 10:04:21 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] MIPS: Alchemy: db1200: PCMCIA carddetects must not be auto-enabled.
+Date:   Fri, 16 Apr 2010 19:04:17 +0200
+Message-Id: <1271437457-26716-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26421
+X-archive-position: 26422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
---=-=-=
+Same issues as SD carddetects:  One of both is always screaming,
+and the handlers take care to shut one up and enable the other.
+To avoid messages about "unbalanced interrupt enable/disable" they
+must not be automatically enabled when initally requested.
 
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+The error it fixes doesn't show with the defconfig but I believe this is
+just because of fortunate timings.
 
+Please apply to 2.6.34-rc if still possible!
 
-As a follow-up to the thread about rtc support for some loongson 2e/2f
-boards, this patch tries to address the "REVISIT"/"FIXME" comments about
-rtc binary mode handling and allow rtc to work with rtc in binary mode.
-I've also raised the message about 24-h mode not supported to warning
-otherwise, one may end up with no rtc without any message in the kernel
-log.
+ arch/mips/alchemy/devboards/db1200/setup.c |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
 
-Signed-off-by: Arnaud Patard <apatard@mandriva.com>
-
---=-=-=
-Content-Type: text/x-patch
-Content-Disposition: inline; filename=rtc_cmos_binary_mode_fix.patch
-
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index e9aa814..9d99408 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -238,31 +238,32 @@ static int cmos_read_alarm(struct device *dev, struct rtc_wkalrm *t)
- 	rtc_control = CMOS_READ(RTC_CONTROL);
- 	spin_unlock_irq(&rtc_lock);
+diff --git a/arch/mips/alchemy/devboards/db1200/setup.c b/arch/mips/alchemy/devboards/db1200/setup.c
+index be7e92e..8876195 100644
+--- a/arch/mips/alchemy/devboards/db1200/setup.c
++++ b/arch/mips/alchemy/devboards/db1200/setup.c
+@@ -66,12 +66,16 @@ static int __init db1200_arch_init(void)
+ 	set_irq_type(AU1200_GPIO7_INT, IRQF_TRIGGER_LOW);
+ 	bcsr_init_irq(DB1200_INT_BEGIN, DB1200_INT_END, AU1200_GPIO7_INT);
  
--	/* REVISIT this assumes PC style usage:  always BCD */
--
--	if (((unsigned)t->time.tm_sec) < 0x60)
--		t->time.tm_sec = bcd2bin(t->time.tm_sec);
--	else
--		t->time.tm_sec = -1;
--	if (((unsigned)t->time.tm_min) < 0x60)
--		t->time.tm_min = bcd2bin(t->time.tm_min);
--	else
--		t->time.tm_min = -1;
--	if (((unsigned)t->time.tm_hour) < 0x24)
--		t->time.tm_hour = bcd2bin(t->time.tm_hour);
--	else
--		t->time.tm_hour = -1;
--
--	if (cmos->day_alrm) {
--		if (((unsigned)t->time.tm_mday) <= 0x31)
--			t->time.tm_mday = bcd2bin(t->time.tm_mday);
-+	if (!(rtc_control & RTC_DM_BINARY) || RTC_ALWAYS_BCD) {
-+		if (((unsigned)t->time.tm_sec) < 0x60)
-+			t->time.tm_sec = bcd2bin(t->time.tm_sec);
- 		else
--			t->time.tm_mday = -1;
--		if (cmos->mon_alrm) {
--			if (((unsigned)t->time.tm_mon) <= 0x12)
--				t->time.tm_mon = bcd2bin(t->time.tm_mon) - 1;
-+			t->time.tm_sec = -1;
-+		if (((unsigned)t->time.tm_min) < 0x60)
-+			t->time.tm_min = bcd2bin(t->time.tm_min);
-+		else
-+			t->time.tm_min = -1;
-+		if (((unsigned)t->time.tm_hour) < 0x24)
-+			t->time.tm_hour = bcd2bin(t->time.tm_hour);
-+		else
-+			t->time.tm_hour = -1;
-+
-+		if (cmos->day_alrm) {
-+			if (((unsigned)t->time.tm_mday) <= 0x31)
-+				t->time.tm_mday = bcd2bin(t->time.tm_mday);
- 			else
--				t->time.tm_mon = -1;
-+				t->time.tm_mday = -1;
-+
-+			if (cmos->mon_alrm) {
-+				if (((unsigned)t->time.tm_mon) <= 0x12)
-+					t->time.tm_mon = bcd2bin(t->time.tm_mon)-1;
-+				else
-+					t->time.tm_mon = -1;
-+			}
- 		}
- 	}
- 	t->time.tm_year = -1;
-@@ -322,29 +323,26 @@ static void cmos_irq_disable(struct cmos_rtc *cmos, unsigned char mask)
- static int cmos_set_alarm(struct device *dev, struct rtc_wkalrm *t)
- {
- 	struct cmos_rtc	*cmos = dev_get_drvdata(dev);
--	unsigned char	mon, mday, hrs, min, sec;
-+       unsigned char   mon, mday, hrs, min, sec, rtc_control;
- 
- 	if (!is_valid_irq(cmos->irq))
- 		return -EIO;
- 
--	/* REVISIT this assumes PC style usage:  always BCD */
--
--	/* Writing 0xff means "don't care" or "match all".  */
--
- 	mon = t->time.tm_mon + 1;
--	mon = (mon <= 12) ? bin2bcd(mon) : 0xff;
--
- 	mday = t->time.tm_mday;
--	mday = (mday >= 1 && mday <= 31) ? bin2bcd(mday) : 0xff;
--
- 	hrs = t->time.tm_hour;
--	hrs = (hrs < 24) ? bin2bcd(hrs) : 0xff;
--
- 	min = t->time.tm_min;
--	min = (min < 60) ? bin2bcd(min) : 0xff;
--
- 	sec = t->time.tm_sec;
--	sec = (sec < 60) ? bin2bcd(sec) : 0xff;
-+
-+	rtc_control = CMOS_READ(RTC_CONTROL);
-+	if (!(rtc_control & RTC_DM_BINARY) || RTC_ALWAYS_BCD) {
-+		/* Writing 0xff means "don't care" or "match all".  */
-+		mon = (mon <= 12) ? bin2bcd(mon) : 0xff;
-+		mday = (mday >= 1 && mday <= 31) ? bin2bcd(mday) : 0xff;
-+		hrs = (hrs < 24) ? bin2bcd(hrs) : 0xff;
-+		min = (min < 60) ? bin2bcd(min) : 0xff;
-+		sec = (sec < 60) ? bin2bcd(sec) : 0xff;
-+	}
- 
- 	spin_lock_irq(&rtc_lock);
- 
-@@ -478,7 +476,7 @@ static int cmos_procfs(struct device *dev, struct seq_file *seq)
- 			"update_IRQ\t: %s\n"
- 			"HPET_emulated\t: %s\n"
- 			// "square_wave\t: %s\n"
--			// "BCD\t\t: %s\n"
-+			"BCD\t\t: %s\n"
- 			"DST_enable\t: %s\n"
- 			"periodic_freq\t: %d\n"
- 			"batt_status\t: %s\n",
-@@ -486,7 +484,7 @@ static int cmos_procfs(struct device *dev, struct seq_file *seq)
- 			(rtc_control & RTC_UIE) ? "yes" : "no",
- 			is_hpet_enabled() ? "yes" : "no",
- 			// (rtc_control & RTC_SQWE) ? "yes" : "no",
--			// (rtc_control & RTC_DM_BINARY) ? "no" : "yes",
-+			(rtc_control & RTC_DM_BINARY) ? "no" : "yes",
- 			(rtc_control & RTC_DST_EN) ? "yes" : "no",
- 			cmos->rtc->irq_freq,
- 			(valid & RTC_VRT) ? "okay" : "dead");
-@@ -749,12 +747,11 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
- 
- 	spin_unlock_irq(&rtc_lock);
- 
--	/* FIXME teach the alarm code how to handle binary mode;
-+	/* FIXME:
- 	 * <asm-generic/rtc.h> doesn't know 12-hour mode either.
+-	/* do not autoenable these: CPLD has broken edge int handling,
+-	 * and the CD handler setup requires manual enabling to work
+-	 * around that.
++	/* insert/eject pairs: one of both is always screaming.  To avoid
++	 * issues they must not be automatically enabled when initially
++	 * requested.
  	 */
--	if (is_valid_irq(rtc_irq) &&
--	    (!(rtc_control & RTC_24H) || (rtc_control & (RTC_DM_BINARY)))) {
--		dev_dbg(dev, "only 24-hr BCD mode supported\n");
-+       if (is_valid_irq(rtc_irq) && !(rtc_control & RTC_24H)) {
-+		dev_warn(dev, "only 24-hr supported\n")
- 		retval = -ENXIO;
- 		goto cleanup1;
- 	}
-
---=-=-=--
+ 	irq_to_desc(DB1200_SD0_INSERT_INT)->status |= IRQ_NOAUTOEN;
+ 	irq_to_desc(DB1200_SD0_EJECT_INT)->status |= IRQ_NOAUTOEN;
++	irq_to_desc(DB1200_PC0_INSERT_INT)->status |= IRQ_NOAUTOEN;
++	irq_to_desc(DB1200_PC0_EJECT_INT)->status |= IRQ_NOAUTOEN;
++	irq_to_desc(DB1200_PC1_INSERT_INT)->status |= IRQ_NOAUTOEN;
++	irq_to_desc(DB1200_PC1_EJECT_INT)->status |= IRQ_NOAUTOEN;
+ 
+ 	return 0;
+ }
+-- 
+1.7.0.4

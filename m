@@ -1,171 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Apr 2010 15:57:17 +0200 (CEST)
-Received: from tomts20.bellnexxia.net ([209.226.175.74]:43257 "EHLO
-        tomts20-srv.bellnexxia.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492772Ab0DTN5J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Apr 2010 15:57:09 +0200
-Received: from toip4.srvr.bell.ca ([209.226.175.87])
-          by tomts20-srv.bellnexxia.net
-          (InterMail vM.5.01.06.13 201-253-122-130-113-20050324) with ESMTP
-          id <20100420135704.HYQQ3465.tomts20-srv.bellnexxia.net@toip4.srvr.bell.ca>
-          for <linux-mips@linux-mips.org>; Tue, 20 Apr 2010 09:57:04 -0400
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAKVOzUtGGNqG/2dsb2JhbACcAXK9S4UPBIZP
-Received: from bas6-montreal19-1176033926.dsl.bell.ca (HELO krystal.dyndns.org) ([70.24.218.134])
-  by toip4.srvr.bell.ca with ESMTP; 20 Apr 2010 10:11:40 -0400
-Received: from localhost (localhost [127.0.0.1])
-  (uid 1000)
-  by krystal.dyndns.org with local; Tue, 20 Apr 2010 09:56:59 -0400
-  id 001B6594.4BCDB2AB.0000727D
-Date:   Tue, 20 Apr 2010 09:56:59 -0400
-From:   Mathieu Desnoyers <compudj@krystal.dyndns.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     ltt-dev@lists.casi.polymtl.ca, linux-mips@linux-mips.org
-Subject: Re: [ltt-dev] [PATCH 3/3] lttng: MIPS: Use 64 bit counter for
-        trace clock on Octeon CPUs.
-Message-ID: <20100420135659.GC25175@Krystal>
-References: <1271722791-27885-1-git-send-email-ddaney@caviumnetworks.com> <1271722791-27885-4-git-send-email-ddaney@caviumnetworks.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Apr 2010 18:26:27 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:15451 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492407Ab0DTQ0X (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Apr 2010 18:26:23 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4bcdd5b90000>; Tue, 20 Apr 2010 09:26:33 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 20 Apr 2010 09:25:56 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 20 Apr 2010 09:25:56 -0700
+Message-ID: <4BCDD58F.7020201@caviumnetworks.com>
+Date:   Tue, 20 Apr 2010 09:25:51 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
+MIME-Version: 1.0
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, jamie.iles@picochip.com
+Subject: Re: [PATCH 1/3] MIPS: use the generic atomic64 operations for perf
+ counter support
+References: <1271349525.7467.420.camel@fun-lab>
+In-Reply-To: <1271349525.7467.420.camel@fun-lab>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-In-Reply-To: <1271722791-27885-4-git-send-email-ddaney@caviumnetworks.com>
-X-Editor: vi
-X-Info: http://krystal.dyndns.org:8080
-X-Operating-System: Linux/2.6.27.31-grsec (i686)
-X-Uptime: 09:56:10 up 12 days, 23:49,  3 users,  load average: 0.33, 0.27,
-        0.20
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <compudj@krystal.dyndns.org>
+X-OriginalArrivalTime: 20 Apr 2010 16:25:56.0828 (UTC) FILETIME=[27AC59C0:01CAE0A6]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26440
+X-archive-position: 26441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: compudj@krystal.dyndns.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-* David Daney (ddaney@caviumnetworks.com) wrote:
-> Cavium Octeon CPUs have a 64-bit cycle counter that is synchronized
-> when the CPUs are brought on-line.  So for this case we don't need any
-> fancy stuff.
+On 04/15/2010 09:38 AM, Deng-Cheng Zhu wrote:
+> Currently we take the generic spinlock'ed atomic64 implementation from the
+> lib. The atomic64 types and related functions are needed for the Linux
+> performance counter subsystem.
+>
+> Signed-off-by: Deng-Cheng Zhu<dengcheng.zhu@gmail.com>
 
-Merged into the LTTng tree, with refactoring of the Octeon-specific
-header file code into a new arch/mips/include/asm/octeon/trace-clock.h
-file.
+NAK.
 
-Thanks!
-
-Mathieu
-
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 > ---
->  arch/mips/Kconfig                   |    4 +-
->  arch/mips/include/asm/trace-clock.h |   39 ++++++++++++++++++++++++++++++++++-
->  arch/mips/kernel/smp.c              |    2 +
->  3 files changed, 42 insertions(+), 3 deletions(-)
-> 
+>   arch/mips/Kconfig              |    1 +
+>   arch/mips/include/asm/atomic.h |    4 ++++
+>   2 files changed, 5 insertions(+), 0 deletions(-)
+>
 > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index a690e9b..9e91e8c 100644
+> index 29e8692..7161751 100644
 > --- a/arch/mips/Kconfig
 > +++ b/arch/mips/Kconfig
-> @@ -1782,8 +1782,8 @@ config HAVE_GET_CYCLES_32
->  	def_bool y
->  	depends on !CPU_R4400_WORKAROUNDS
->  	select HAVE_TRACE_CLOCK
-> -	select HAVE_TRACE_CLOCK_32_TO_64
-> -	select HAVE_UNSYNCHRONIZED_TSC
-> +	select HAVE_TRACE_CLOCK_32_TO_64 if (!CPU_CAVIUM_OCTEON)
-> +	select HAVE_UNSYNCHRONIZED_TSC if (!CPU_CAVIUM_OCTEON)
->  
->  #
->  # Use the generic interrupt handling code in kernel/irq/:
-> diff --git a/arch/mips/include/asm/trace-clock.h b/arch/mips/include/asm/trace-clock.h
-> index 3d8cb0f..a052f42 100644
-> --- a/arch/mips/include/asm/trace-clock.h
-> +++ b/arch/mips/include/asm/trace-clock.h
-> @@ -12,6 +12,43 @@
->  
->  #define TRACE_CLOCK_MIN_PROBE_DURATION 200
->  
-> +#ifdef CONFIG_CPU_CAVIUM_OCTEON
-> +
-> +#include <asm/octeon/octeon.h>
-> +
-> +#define TC_HW_BITS			64
-> +
-> +static inline u32 trace_clock_read32(void)
-> +{
-> +	return (u32)read_c0_cvmcount(); /* only need the 32 LSB */
-> +}
-> +
-> +static inline u64 trace_clock_read64(void)
-> +{
-> +	return read_c0_cvmcount();
-> +}
-> +
-> +static inline u64 trace_clock_frequency(void)
-> +{
-> +	return octeon_get_clock_rate();
-> +}
-> +
-> +static inline u32 trace_clock_freq_scale(void)
-> +{
-> +	return 1;
-> +}
-> +
-> +static inline void get_trace_clock(void)
-> +{
-> +	return;
-> +}
-> +
-> +static inline void put_trace_clock(void)
-> +{
-> +	return;
-> +}
-> +
-> +#else /* !CONFIG_CPU_CAVIUM_OCTEON */
->  /*
->   * Number of hardware clock bits. The higher order bits are expected to be 0.
->   * If the hardware clock source has more than 32 bits, the bits higher than the
-> @@ -65,7 +102,7 @@ static inline void put_trace_clock(void)
->  {
->  	put_synthetic_tsc();
->  }
-> -
-> +#endif /* CONFIG_CPU_CAVIUM_OCTEON */
->  static inline void set_trace_clock_is_sync(int state)
->  {
->  }
-> diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-> index f8c50d1..42083eb 100644
-> --- a/arch/mips/kernel/smp.c
-> +++ b/arch/mips/kernel/smp.c
-> @@ -159,7 +159,9 @@ void __init smp_cpus_done(unsigned int max_cpus)
->  {
->  	mp_ops->cpus_done();
->  	synchronise_count_master();
-> +#ifdef CONFIG_HAVE_UNSYNCHRONIZED_TSC
->  	test_tsc_synchronization();
+> @@ -4,6 +4,7 @@ config MIPS
+>   	select HAVE_GENERIC_DMA_COHERENT
+>   	select HAVE_IDE
+>   	select HAVE_OPROFILE
+> +	select GENERIC_ATOMIC64
+>   	select HAVE_ARCH_KGDB
+>   	select HAVE_FUNCTION_TRACER
+>   	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
+> diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+> index 519197e..b0a932e 100644
+> --- a/arch/mips/include/asm/atomic.h
+> +++ b/arch/mips/include/asm/atomic.h
+> @@ -21,6 +21,10 @@
+>   #include<asm/war.h>
+>   #include<asm/system.h>
+>
+> +#ifdef CONFIG_GENERIC_ATOMIC64
+> +#include<asm-generic/atomic64.h>
 > +#endif
->  }
->  
->  /* called from main before smp_init() */
-> -- 
-> 1.6.6.1
-> 
-> 
-> _______________________________________________
-> ltt-dev mailing list
-> ltt-dev@lists.casi.polymtl.ca
-> http://lists.casi.polymtl.ca/cgi-bin/mailman/listinfo/ltt-dev
-> 
+> +
+>   #define ATOMIC_INIT(i)    { (i) }
+>
+>   /*
 
--- 
-Mathieu Desnoyers
-Operating System Efficiency R&D Consultant
-EfficiOS Inc.
-http://www.efficios.com
+This is incorrect.  For 64-bit kernels, we already have all the 64-bit 
+atomics implemented.  This will break 64-bit kernels.
+
+David Daney

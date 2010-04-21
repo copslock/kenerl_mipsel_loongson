@@ -1,76 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Apr 2010 19:45:45 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:5981 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492207Ab0DURpm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Apr 2010 19:45:42 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4bcf39cf0000>; Wed, 21 Apr 2010 10:45:51 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 21 Apr 2010 10:45:17 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 21 Apr 2010 10:45:17 -0700
-Message-ID: <4BCF39A7.3020708@caviumnetworks.com>
-Date:   Wed, 21 Apr 2010 10:45:11 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Apr 2010 20:55:54 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:37800 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491891Ab0DUSzv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Apr 2010 20:55:51 +0200
+Received: id: bigeasy by Chamillionaire.breakpoint.cc with local
+        (easymta 1.00 BETA 1)
+        id 1O4f5P-00020f-Ax; Wed, 21 Apr 2010 20:55:47 +0200
+Date:   Wed, 21 Apr 2010 20:55:47 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>,
-        linux-mips@linux-mips.org, a.p.zijlstra@chello.nl,
-        paulus@samba.org, mingo@elte.hu, acme@redhat.com,
-        jamie.iles@picochip.com
-Subject: Re: [PATCH 1/3] MIPS: use the generic atomic64 operations for perf
- counter support
-References: <1271349525.7467.420.camel@fun-lab> <4BCDD58F.7020201@caviumnetworks.com> <20100421171915.GA29010@linux-mips.org>
-In-Reply-To: <20100421171915.GA29010@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 Apr 2010 17:45:17.0614 (UTC) FILETIME=[67BC64E0:01CAE17A]
-Return-Path: <David.Daney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org
+Subject: [RFC] mips/swarm: fixup screen_info struct
+Message-ID: <20100421185547.GA7708@Chamillionaire.breakpoint.cc>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Key-Id: FE3F4706
+X-Key-Fingerprint: FFDA BBBB 3563 1B27 75C9  925B 98D5 5C1C FE3F 4706
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <sebastian@breakpoint.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26445
+X-archive-position: 26446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 X-list: linux-mips
 
-On 04/21/2010 10:19 AM, Ralf Baechle wrote:
-[...]
->
-> -#ifdef CONFIG_64BIT
-> +typedef struct {
-> +	long long counter;
-> +} atomic64_t;
->
+|arch/mips/sibyte/swarm/setup.c:153:
+| warning: large integer implicitly truncated to unsigned type
 
-How does this not conflict with the definition in linux/types.h for a 
-64-bit kernel?
+The field was changed in d9b26352 aka ("x86, setup: Store the boot
+cursor state").
+This patch changes the values back they way they were before this extra
+field got introduced. I have no idea who needs it anyway.
 
+Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+---
+Using C99 initializer might be better
 
->   #define ATOMIC64_INIT(i)    { (i) }
->
-> @@ -410,14 +414,44 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
->    * @v: pointer of type atomic64_t
->    *
->    */
-> -#define atomic64_read(v)	((v)->counter)
-> +static long long __inline__ atomic64_read(const atomic64_t *v)
-> +{
-> +	unsigned long flags;
-> +	raw_spinlock_t *lock;
-> +	long long val;
-> +
-> +	if (cpu_has_64bit_gp_regs)	/* 64-bit regs imply 64-bit ld / sd  */
-> +		return v->counter;
-> +
+ arch/mips/sibyte/swarm/setup.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-How is this atomic for the o32 ABI?  counter is now not volatile, in 
-o32, u64 values are often split between two registers.  There is nothing 
-to guarantee that the compiler will use LD.
-
-
-David Daney
+diff --git a/arch/mips/sibyte/swarm/setup.c b/arch/mips/sibyte/swarm/setup.c
+index 5277aac..128b699 100644
+--- a/arch/mips/sibyte/swarm/setup.c
++++ b/arch/mips/sibyte/swarm/setup.c
+@@ -150,7 +150,7 @@ void __init plat_mem_setup(void)
+ 		52,             /* orig_video_page */
+ 		3,              /* orig_video_mode */
+ 		80,             /* orig_video_cols */
+-		4626, 3, 9,     /* unused, ega_bx, unused */
++		12, 12, 3, 9,   /* flags, unused, ega_bx, unused */
+ 		25,             /* orig_video_lines */
+ 		0x22,           /* orig_video_isVGA */
+ 		16              /* orig_video_points */
+-- 
+1.6.6.1

@@ -1,77 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Apr 2010 19:11:02 +0200 (CEST)
-Received: from mail1.adax.com ([208.201.231.104]:7354 "EHLO mail1.adax.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492732Ab0DVRK7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 22 Apr 2010 19:10:59 +0200
-Received: from static-151-204-189-187.pskn.east.verizon.net (static-151-204-189-187.pskn.east.verizon.net [151.204.189.187])
-        by mail1.adax.com (Postfix) with ESMTP id E7890120E71;
-        Thu, 22 Apr 2010 10:10:49 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by static-151-204-189-187.pskn.east.verizon.net (Postfix) with ESMTP id 0AA91400582;
-        Thu, 22 Apr 2010 13:10:49 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at pskn.east.verizon.net
-Received: from static-151-204-189-187.pskn.east.verizon.net ([127.0.0.1])
-        by localhost (static-151-204-189-187.pskn.east.verizon.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id mCHZaBnXtf1W; Thu, 22 Apr 2010 13:10:47 -0400 (EDT)
-Received: from [192.168.1.76] (jr001327.mtl-nj.adax [192.168.1.76])
-        by static-151-204-189-187.pskn.east.verizon.net (Postfix) with ESMTP id 5B27E400431;
-        Thu, 22 Apr 2010 13:10:47 -0400 (EDT)
-Message-ID: <4BD08329.80804@adax.com>
-Date:   Thu, 22 Apr 2010 13:11:05 -0400
-From:   Jan Rovins <janr@adax.com>
-User-Agent: Thunderbird 2.0.0.24 (Windows/20100228)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Apr 2010 19:12:55 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:12370 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492900Ab0DVRMv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Apr 2010 19:12:51 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4bd0839f0001>; Thu, 22 Apr 2010 10:13:03 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 22 Apr 2010 10:11:58 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 22 Apr 2010 10:11:58 -0700
+Message-ID: <4BD0835E.4000209@caviumnetworks.com>
+Date:   Thu, 22 Apr 2010 10:11:58 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
 MIME-Version: 1.0
-To:     Jian Wang <dominicwj@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Ask help:why my 64-bit ELF file could not run at the 64-bit mips
- cpu
-References: <j2sdf5e30c51004172251z9fd01867h562b99c1f1044c26@mail.gmail.com> <q2odf5e30c51004220901l8bfa979ftc9c6a7b633569460@mail.gmail.com>
-In-Reply-To: <q2odf5e30c51004220901l8bfa979ftc9c6a7b633569460@mail.gmail.com>
+To:     Sangeerth yen a pa <sangeerthz@hotmail.com>
+CC:     mlistz@gmail.com, linux-mips@linux-mips.org
+Subject: Re: Need help on CN56XX
+References: <BAY146-w2778D164A298A4C7F3AC31C0080@phx.gbl>
+In-Reply-To: <BAY146-w2778D164A298A4C7F3AC31C0080@phx.gbl>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <janr@adax.com>
+X-OriginalArrivalTime: 22 Apr 2010 17:11:58.0198 (UTC) FILETIME=[EA677960:01CAE23E]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26451
+X-archive-position: 26452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: janr@adax.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Jian Wang wrote:
+On 04/22/2010 01:58 AM, Sangeerth yen a pa wrote:
 > Hi,
 >
->  I have a 64-bit mips cpu, and compiled a 64-bit application, but this
->  application could not run. (the target is running Linux)
->  The details is:
->  1)if I compile the application with -mabi=n64, this program could not
->  run, when I run it in the shell, it prompts "command not found"
->  2)but if I compile the application with -mabi=n32, it runs well and
->  gives the correct result.
->
->  I am wondering why with "-mabi=n64", this program could not run? I
->  checked the CP0(status register), Bit px=0b0, KX=0b1, SX=0b1, UX=0b1,
->  it seems that in User Mode, it accepts 64-bit operation.
->
->  Anybody could give me some help? Any comments is much appreciated!!
->
->  BR/Dominic
->
->   
-Perhaps you do not have the "n64" system libraries set up correctly in 
-userspace.
-I have seen the "command not found" error when some fundamental 
-libraries or the loader was missing.
+> I'm currently working on CN56XX evaluation board ( CN5600-EVB-MB12 ). i
+> need the *Software Development Kit [OS, Tools, Libraries, Drivers, APIs].*
+> **
 
-Do you have a /lib64 & /user/lib64?
-Run the file command on some of those libraries & see if they are n64 or 
-n32 libs.
+I believe this board is also known as EBH5600.
 
-double check your ld.so.conf to make sure it points to every thing you need.
-re run ldconfig if you change something.
+The current Linux kernel from linux-mips.org will run on that board.
+
+You should be able to interact with the U-Boot boot monitor on the 
+bottom plug of j15 at 115200n81.
 
 
-Jan
+> Where can i download this ?
+>
+> Could you please send me that ?
+>
+
+If you need more help than that, I would suggest contacting the 
+sales/support organization of the manufacturer.
+
+See: http://www.caviumnetworks.com/
+
+
+David Daney

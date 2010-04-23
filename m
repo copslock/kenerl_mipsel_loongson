@@ -1,92 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2010 07:54:47 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:47757 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491165Ab0DWFyn convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Apr 2010 07:59:12 +0200 (CEST)
+Received: from mail-bw0-f226.google.com ([209.85.218.226]:42424 "EHLO
+        mail-bw0-f226.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491190Ab0DWF65 convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Apr 2010 07:54:43 +0200
-Received: by gyb11 with SMTP id 11so5075456gyb.36
-        for <linux-mips@linux-mips.org>; Thu, 22 Apr 2010 22:54:36 -0700 (PDT)
+        Fri, 23 Apr 2010 07:58:57 +0200
+Received: by bwz26 with SMTP id 26so9268673bwz.27
+        for <linux-mips@linux-mips.org>; Thu, 22 Apr 2010 22:58:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
+        d=googlemail.com; s=gamma;
         h=domainkey-signature:mime-version:received:in-reply-to:references
          :date:received:message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        bh=rInIZiTCB/eKMDQm4ZIdQvB59DDSdsZ/yNTRnnitrNQ=;
-        b=OgFHVlARrRO0Sc57l4GQutacU9OO4q6Wa26NMZmVOtCKzd7vaUdUCth9JI2dUJFQLF
-         WFfgyI4/BP9JGnusCr6YpViHoBPtdhXjr/ZPxAEOVeb3/YDBkWa7J0RnUhbXmE7wnwLT
-         IWInSGUouOJBBUculoR/mSTFxl0Vr7RlPTgTU=
+        bh=5BIZ2B/mUmw9WPikzDppICX00EpYQ9eZ/U3B32KHZeQ=;
+        b=WmAL92zUibfQeMF3WevHdDCOPgCPUxxm6VqqDvKmGEP0MJXP6tXNrJfyMldyIkj8l/
+         uZQKZt9+M/EgwEvZRmWzrmfEe97eoRcCutYWsqVrz+jZ1DllcHCC8iyQmHX+qI+ZK05W
+         rcUrDt2MSz4iFQW5G8vjLZ7cZNagwTc//IpAs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
+        d=googlemail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        b=QEmTpAQA23fq+w3KSszjfzcR2CrRNUq7YXLa498OtTNxbH0x9KYrbuS/9jG8eNXCyC
-         o10cEyBb/VwRkg5HVGtyGVJHI7jRb/p0HloCIiFrxJHfHUdKNvE+7ZyBXdWRufUI4U10
-         6hkuUzkK/FMuqSEk2DCqGv0EVGvcLAMhgOtnw=
+        b=q7FoU+uPCG3nFy1uJVcZpdv/LeaBg7I2tXBZ1H2dkY9laOqaFYY8QhUzBdnkGiu9Dc
+         EPKrKX/cNVudND1B1xdMmlOKetCjbZpxpE2fLp6CQpK9hDUQHPPEv/kdxPHZ3vNh7Qih
+         YkXZfkimWTNJ2yK5Nve5sdK75akjRvig9nV6w=
 MIME-Version: 1.0
-Received: by 10.231.154.8 with HTTP; Thu, 22 Apr 2010 22:54:36 -0700 (PDT)
+Received: by 10.223.106.12 with HTTP; Thu, 22 Apr 2010 22:58:51 -0700 (PDT)
 In-Reply-To: <5858DE952C53A441BDA3408A0524130104CCE08F@mkegmal01>
 References: <5858DE952C53A441BDA3408A0524130104CCE08F@mkegmal01>
-Date:   Fri, 23 Apr 2010 15:24:36 +0930
-Received: by 10.101.149.17 with SMTP id b17mr27004430ano.80.1272002076539; 
-        Thu, 22 Apr 2010 22:54:36 -0700 (PDT)
-Message-ID: <j2w6ec4247d1004222254j6452d09dvab747378596c66c8@mail.gmail.com>
+Date:   Fri, 23 Apr 2010 07:58:51 +0200
+Received: by 10.103.82.17 with SMTP id j17mr2795819mul.101.1272002331954; Thu, 
+        22 Apr 2010 22:58:51 -0700 (PDT)
+Message-ID: <l2uf861ec6f1004222258tc07032az966b174ebd94e92d@mail.gmail.com>
 Subject: Re: Porting U-boot on MIPS (Au1350)
-From:   Graham Gower <graham.gower@gmail.com>
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Gurumurthy G M <Gurumurthy.Gowdar@gmobis.com>
 Cc:     linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <graham.gower@gmail.com>
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26457
+X-archive-position: 26458
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: graham.gower@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 23 April 2010 15:08, Gurumurthy G M <Gurumurthy.Gowdar@gmobis.com> wrote:
->
->
-> Hi All,
 >       we are porting U-boot 1.2.0 to MIPS32 Au1350 Processor. i am using ELDK 4.1 for MIPS32.
 >
-> Thanks wolfgang now am able to compile toolchain for mips after using ELDK for MIPS.
->
-> Now while porting U-boot to Au1350 MIPS32 we are facing following problems mentioned below.
->
 > We have a MIPS CPU which has reset address 0xBFC00000 , this is mapped to NOR flash with XIP in place. The boot block  ( ie 0xBFC00000) is in the top block of the NOR flash and its of 16KB. U-Boot shall be put from address 0xBFC00000 in the NOR flash for CPU boot up , since it is the last block (16KB only) we cannot put complete U-Boot , some part of the U-Boot should go to lower blocks . To do this u-boot need to be divided into blocks and we shall provide a jump from the top block to other blocks of NOR flash. We have BDI3000 debugger for flashing the NOR flash and bdiGDB for MIPS.
-
-So, your NOR is mapped at: 0xbfc00000 + 16*1024 - 0x00200000 = 0xbfa04000 ?
-Wouldn't it be simpler to get your hardware engineer(s) to map the NOR
-flash to a saner address? e.g. 0xbfc00000.
-
-
 >
 > Is there any NOR flash drivers available which can support the below chip?
 >
 > NOR Flash chip : M29W160ET --> AM29BX16
 > NOR Flash chip size is 0x00200000 --> 2MB
 
-You'll probably have to add an entry for the chip in
-linux/drivers/mtd/chips/jedec_probe.c and create a mapping driver
-(plenty of really simple examples in linux/drivers/mtd/maps/).
+I believe you need to change CS0# decoded range (staddr0 reg) very
+early to enable
+access to the whole chip.  Put init code at bfc00000, and let it load
+the main bootloader
+binary from a predefined ROM address to a predefined RAM address and execute.
 
->
-> MIPS CPU Clock is 660MHz
-> System Bus is 330MHz
-> SDRAM bus clock is 165MHz
->
->
-> please let me know if am going wrong anywhere or missing out something.
->
-> With Regards,
-> Gurumurthy Gowdar
-> KPIT Cummins Infosystems Ltd
->
->
-
--Graham
+Manuel

@@ -1,138 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2010 06:53:42 +0200 (CEST)
-Received: from ppa04.Princeton.EDU ([128.112.128.215]:37523 "EHLO
-        ppa04.Princeton.EDU" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491057Ab0DZExh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Apr 2010 06:53:37 +0200
-Received: from smtpserver1.Princeton.EDU (smtpserver1.Princeton.EDU [128.112.129.65])
-        by ppa04.Princeton.EDU (8.14.3/8.14.3) with ESMTP id o3Q4rZ5r006375;
-        Mon, 26 Apr 2010 00:53:35 -0400
-Received: from tetra.ee.Princeton.EDU (tetra.ee.Princeton.EDU [128.112.49.188])
-        (authenticated bits=0)
-        by smtpserver1.Princeton.EDU (8.12.9/8.12.9) with ESMTP id o3Q4rXiZ008485
-        (version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT);
-        Mon, 26 Apr 2010 00:53:34 -0400 (EDT)
-Received: from penta.localdomain (nat04-resnet-ext.rutgers.edu [192.12.88.4])
-        (authenticated bits=0)
-        by tetra.ee.Princeton.EDU (8.14.3/8.14.3/Debian-9) with ESMTP id o3Q4rUaM025426
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 26 Apr 2010 00:53:32 -0400
-Received: from penta.localdomain (tcp@localhost.localdomain [127.0.0.1])
-        by penta.localdomain (8.14.3/8.14.3/Debian-9.1) with ESMTP id o3Q4rErJ003215;
-        Mon, 26 Apr 2010 00:53:25 -0400
-Date:   Mon, 26 Apr 2010 00:53:10 -0400
-From:   Yury Polyanskiy <ypolyans@princeton.edu>
-To:     ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2010 14:01:06 +0200 (CEST)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:61200 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492475Ab0DZMBD convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 26 Apr 2010 14:01:03 +0200
+Received: by vws16 with SMTP id 16so186958vws.36
+        for <linux-mips@linux-mips.org>; Mon, 26 Apr 2010 05:00:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=OprkUIdpGXVj/LWoT8hEHruiI5xdaQRCUUAutyscCEA=;
+        b=BiPTgTRHxOo1grIje5He7qWKosCfTKECb8gcSExcZXPRbnFBOV22a+6bQX6l3DR4gR
+         Ht9NwDKN4stsart3l/Ytcq5chgZViKyOzwBFJod4oRK7vPmsAT4nMHWkcT4VeDJ7k9Hi
+         vJfS98bg6s9FZ3ts8GDdBBSZO+/lrtw5/uvSM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=Q9CnTF5g3n+X5NLUGTUjIGaHbyICy1RVLRT1kcK97QwFe4yygFZqnLGk6SGOLGiiyh
+         4JR9bSt2SZhtR7XIKc3sEIiNil11f3S9U6y48lUdU4K9Zu5mJoQGMHOfsLDwJTD4WZQm
+         UbuJL83danQCPHou11mAGWz7XAXKwaiEydZFI=
+MIME-Version: 1.0
+Received: by 10.220.124.210 with SMTP id v18mr2693094vcr.106.1272283255638; 
+        Mon, 26 Apr 2010 05:00:55 -0700 (PDT)
+Received: by 10.220.17.141 with HTTP; Mon, 26 Apr 2010 05:00:51 -0700 (PDT)
+In-Reply-To: <v568a7-oj5.ln1@chipmunk.wormnet.eu>
+References: <j2sdf5e30c51004172251z9fd01867h562b99c1f1044c26@mail.gmail.com>
+         <q2odf5e30c51004220901l8bfa979ftc9c6a7b633569460@mail.gmail.com>
+         <4BD08329.80804@adax.com>
+         <h2hdf5e30c51004230142q21184429pffcaa9351510bc2d@mail.gmail.com>
+         <v568a7-oj5.ln1@chipmunk.wormnet.eu>
+Date:   Mon, 26 Apr 2010 20:00:51 +0800
+Message-ID: <q2xdf5e30c51004260500t15cc000g3391808fed24fb95@mail.gmail.com>
+Subject: Re: Ask help:why my 64-bit ELF file could not run at the 64-bit mips 
+        cpu
+From:   Dominic <dominicwj@gmail.com>
+To:     Alexander Clouter <alex@digriz.org.uk>, Jan Rovins <janr@adax.com>,
+        geert@linux-m68k.org
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH] die() does not call die notifier chain
-Message-ID: <20100426005310.0786273f@penta.localdomain>
-X-Mailer: Claws Mail 3.7.5 (GTK+ 2.18.6; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=PGP-SHA1;
- boundary="Sig_/QOxfIid8d50t3C+JA2D/=kE"; protocol="application/pgp-signature"
-Return-Path: <ypolyans@princeton.edu>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <dominicwj@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26469
+X-archive-position: 26470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ypolyans@princeton.edu
+X-original-sender: dominicwj@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---Sig_/QOxfIid8d50t3C+JA2D/=kE
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Alexander, Jan & Greet
 
-Dear Ralf,
+Much thanks for your advice, I have solve this problem, thanks a lot!
 
-I think that the arch/mips implementation of die() forgets to call the
-notify_die() and thus notifiers registered via register_die_notifier()
-are not called.
+BR/Dominic
 
-For example this results in kgdb not being activated on exceptions.
-
-The patch is very simple and attached: the only subtlety is that main
-notify_die declares regs argument w/o const, so I needed to remove const=20
-from mips die() as well.
-
-
-Best wishes,
-Yury.
-
-PS. Please CC me: I am not on the list.
-
-diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
-index ce47118..cdc6a46 100644
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -142,9 +142,9 @@ extern int ptrace_set_watch_regs(struct task_struct *ch=
-ild,
-=20
- extern asmlinkage void do_syscall_trace(struct pt_regs *regs, int entryexi=
-t);
-=20
--extern NORET_TYPE void die(const char *, const struct pt_regs *) ATTRIB_NO=
-RET;
-+extern NORET_TYPE void die(const char *, struct pt_regs *) ATTRIB_NORET;
-=20
--static inline void die_if_kernel(const char *str, const struct pt_regs *re=
-gs)
-+static inline void die_if_kernel(const char *str, struct pt_regs *regs)
- {
- 	if (unlikely(!user_mode(regs)))
- 		die(str, regs);
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 4e00f9b..fdc6773 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -352,9 +352,10 @@ void show_registers(const struct pt_regs *regs)
-=20
- static DEFINE_SPINLOCK(die_lock);
-=20
--void __noreturn die(const char * str, const struct pt_regs * regs)
-+void __noreturn die(const char * str, struct pt_regs * regs)
- {
- 	static int die_counter;
-+	int sig =3D SIGSEGV;
- #ifdef CONFIG_MIPS_MT_SMTC
- 	unsigned long dvpret =3D dvpe();
- #endif /* CONFIG_MIPS_MT_SMTC */
-@@ -365,6 +366,10 @@ void __noreturn die(const char * str, const struct pt_=
-regs * regs)
- #ifdef CONFIG_MIPS_MT_SMTC
- 	mips_mt_regdump(dvpret);
- #endif /* CONFIG_MIPS_MT_SMTC */
-+
-+	if (notify_die(DIE_OOPS, str, regs, 0, current->thread.trap_no, SIGSEGV) =
-=3D=3D NOTIFY_STOP)
-+		sig =3D 0;
-+
- 	printk("%s[#%d]:\n", str, ++die_counter);
- 	show_registers(regs);
- 	add_taint(TAINT_DIE);
-@@ -379,7 +384,7 @@ void __noreturn die(const char * str, const struct pt_r=
-egs * regs)
- 		panic("Fatal exception");
- 	}
-=20
--	do_exit(SIGSEGV);
-+	do_exit(sig);
- }
-=20
- extern struct exception_table_entry __start___dbe_table[];
-
---Sig_/QOxfIid8d50t3C+JA2D/=kE
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Disposition: attachment; filename=signature.asc
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAkvVHDYACgkQemuRe3zuqOS1/ACeIZoaRsF8Jo2KFZFhTL8dUDB3
-Zj8AniZXj9R2r967yFqJWe9PAdacxzyC
-=ng0i
------END PGP SIGNATURE-----
-
---Sig_/QOxfIid8d50t3C+JA2D/=kE--
+On Fri, Apr 23, 2010 at 5:34 PM, Alexander Clouter <alex@digriz.org.uk> wrote:
+> Dominic <dominicwj@gmail.com> wrote:
+>>
+>> Thanks a lot for your precious reply! I try to use -static to compile
+>> the program, then the 64-bit program can run, so it should be the
+>> library related other than 64-bit instruction or addressing related.
+>> Then I stored the 64-bit libraries in nfs, and mount it on the target
+>> board, after adding the path to ld.so.conf and 'ldconfig', the program
+>> compiled without -static still does not run. Shall I miss something?
+>>
+> On your host, you can type something like:
+> ----
+> alex@berk:/usr/src/wag54g$ readelf -d buildroot/output/target/usr/sbin/ip6tables-multi  | grep Shared
+>  0x00000001 (NEEDED)                     Shared library: [libip6tc.so.0]
+>  0x00000001 (NEEDED)                     Shared library: [libxtables.so.4]
+>  0x00000001 (NEEDED)                     Shared library: [libdl.so.0]
+>  0x00000001 (NEEDED)                     Shared library: [libm.so.0]
+>  0x00000001 (NEEDED)                     Shared library: [libc.so.0]
+> ----
+>
+> This will list all the libraries that you need installed[1], I'm guessin
+> you have missed one.
+>
+> You can look at the output of 'readelf -a' to try to see what might be
+> missing.
+>
+> Cheers
+>
+> [1] in addition to the interpreter required (for example 'ld-uClibc')
+>        and the main C library being used:
+>        readelf -l buildroot/output/target/usr/sbin/ip6tables-multi
+>
+> --
+> Alexander Clouter
+> .sigmonster says: "Ninety percent of baseball is half mental."
+>                                -- Yogi Berra
+>
+>
+>

@@ -1,142 +1,263 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2010 19:19:50 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:11973 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492654Ab0DZRTr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Apr 2010 19:19:47 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4bd5cb400000>; Mon, 26 Apr 2010 10:20:00 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 26 Apr 2010 10:19:10 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Mon, 26 Apr 2010 10:19:09 -0700
-Message-ID: <4BD5CB08.7010907@caviumnetworks.com>
-Date:   Mon, 26 Apr 2010 10:19:04 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2010 21:52:35 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:47087 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492005Ab0DZTwa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Apr 2010 21:52:30 +0200
+Received: id: bigeasy by Chamillionaire.breakpoint.cc with local
+        (easymta 1.00 BETA 1)
+        id 1O6UM1-00062N-Ho; Mon, 26 Apr 2010 21:52:29 +0200
+Date:   Mon, 26 Apr 2010 21:52:29 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: [RFC] net/sb1250: setup the pdevice within the soc code
+Message-ID: <20100426195229.GB22245@Chamillionaire.breakpoint.cc>
 MIME-Version: 1.0
-To:     wuzhangjin@gmail.com
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Calculate proper ebase value for 64-bit kernels
-References: <1270585790-12730-1-git-send-email-ddaney@caviumnetworks.com>        <1271135034.25797.41.camel@falcon> <20100413073435.GA6371@alpha.franken.de>     <20100413171610.GA16578@linux-mips.org> <1271232185.25872.142.camel@falcon>
-In-Reply-To: <1271232185.25872.142.camel@falcon>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 26 Apr 2010 17:19:09.0995 (UTC) FILETIME=[956D77B0:01CAE564]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Key-Id: FE3F4706
+X-Key-Fingerprint: FFDA BBBB 3563 1B27 75C9  925B 98D5 5C1C FE3F 4706
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <sebastian@breakpoint.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26475
+X-archive-position: 26476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 X-list: linux-mips
 
-On 04/14/2010 01:03 AM, Wu Zhangjin wrote:
-> On Tue, 2010-04-13 at 18:16 +0100, Ralf Baechle wrote:
->> On Tue, Apr 13, 2010 at 09:34:38AM +0200, Thomas Bogendoerfer wrote:
->>
->>> On Tue, Apr 13, 2010 at 01:03:54PM +0800, Wu Zhangjin wrote:
->>>> This patch have broken the support to the MIPS variants whose
->>>> cpu_has_mips_r2 is 0 for the CAC_BASE and CKSEG0 is completely different
->>>> in these MIPSs.
->>>
->>> I've checked R4k and R10k manulas and the exception base is at CKSEG0, so
->>> about CPU we are talking ? And wouldn't it make for senso to have
->>> an extra define for the exception base then ?
->>
->> C0_ebase's design was a short-sigthed only considering 32-bit processors.
->> So the exception base is in CKSEG0 on every 64-bit processor, be it R2 or
->> older.  So yes, there is a bug as I've verified by testing but the patch
->> is unfortunately incorrect.
->
-> Just debugged it via PMON:
->
-> loaded the kernel and used "g console=tty root=/dev/hda5 init=/bin/bash"
-> to start the kernel, there was a bad address exception.
->
-> the kernel stopped at:
->
-> Exception Cause=address error on store, SR=0x24000002, PC=0x8020526c
-> ...
-> BADVADDR=0x97ffffff80000100, ENTHI=0xfffffe000
-> ...
-> ...
-> __copy_user+0x48  ... sd  t0,0(a0)  # addr = 0x80000100 rt=0x401a8000
->
-> Seems the a0 argument of __copy_user is _bad_.
->
-> And tried to set a break pointer to trap_init() and per_cpu_trap_init(),
-> and then cpu_cache_init() ... r4k_cache_init() and at last found that
-> set_uncached_handler(0x100,&except_vec2_generic, 0x80);
->
-> /*
->   * Install uncached CPU exception handler.
->   * This is suitable only for the cache error exception which is the only
->   * exception handler that is being run uncached.
->   */
-> void __cpuinit set_uncached_handler(unsigned long offset, void *addr,
->          unsigned long size)
-> {
-> #ifdef CONFIG_32BIT
->          unsigned long uncached_ebase = KSEG1ADDR(ebase);
-> #endif
-> #ifdef CONFIG_64BIT
->          unsigned long uncached_ebase = TO_UNCAC(ebase);
-> #endif
->
->          if (!addr)
->                  panic(panic_null_cerr);
->
->          memcpy((void *)(uncached_ebase + offset), addr, size);
-> }
->
-> memcpy() called __copy_user... and the a0 is uncached_ebase + offset,
-> and uncached_ebase is defined by TO_UNCAC:
->
-> #define TO_UNCAC(x)             (UNCAC_BASE | ((x)&  TO_PHYS_MASK))
-> #define TO_PHYS_MASK _CONST64_(0x07ffffffffffffff)
-> #define UNCAC_BASE _AC(0x9000000000000000, UL)
->
-> If using CKSEG0 as the ebase, CKSEG0 is defined as 0xffffffff80000000,
-> then we get the address: 0x97ffffff80000100, is this address ok?
+doing it within the driver does not look good.
 
-I don't think so.  We should fix TO_UNCAC() so that it works with CKSEG0 
-addresses.  It should be at physical address 0.  So 
-TO_UNCAC(0xffffffff80000000), should yield 0x9000000000000000
+Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+---
+Ralf, if you fine with then I'm gonna to post it at netdev.
 
+ arch/mips/sibyte/sb1250/setup.c |   55 ++++++++++++++++++
+ drivers/net/sb1250-mac.c        |  120 +--------------------------------------
+ 2 files changed, 56 insertions(+), 119 deletions(-)
 
-#define TO_UNCAC(x) ({ \
-	u64 a = (u64)(x);     \
-	if (a & 0xffffffffc000000 == 0xffffffff80000000) \
-		a = UNCAC_BASE | (a & 0x30000000); \
-	else \
-		a = UNCAC_BASE | (a & TO_PHYS_MASK) \
-	a; \
-})
-
-David Daney
-
-
->
-> And before, we have used the CAC_BASE as the ebase, the CAC_BASE is
-> defined as following:
->
-> #ifndef CAC_BASE
-> #ifdef CONFIG_DMA_NONCOHERENT
-> #define CAC_BASE                _AC(0x9800000000000000, UL)
-> #else
-> #define CAC_BASE                _AC(0xa800000000000000, UL)
-> #endif
-> #endif
->
-> So, before, the uncached_base is 0x9000000000000000.
->
-> Regards,
-> 	Wu Zhangjin
->
->
+diff --git a/arch/mips/sibyte/sb1250/setup.c b/arch/mips/sibyte/sb1250/setup.c
+index 92da315..915d698 100644
+--- a/arch/mips/sibyte/sb1250/setup.c
++++ b/arch/mips/sibyte/sb1250/setup.c
+@@ -18,6 +18,7 @@
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
++#include <linux/platform_device.h>
+ #include <linux/reboot.h>
+ #include <linux/string.h>
+ 
+@@ -245,3 +246,57 @@ void __init sb1250_setup(void)
+ 		machine_restart(NULL);
+ 	}
+ }
++
++#define sb1250_dev_struct(num) \
++	static struct resource sb1250_res##num = {		\
++		.name = "SB1250 MAC " __stringify(num),		\
++		.flags = IORESOURCE_MEM,		\
++		.start = A_MAC_CHANNEL_BASE(num),	\
++		.end = A_MAC_CHANNEL_BASE(num + 1) -1,	\
++	};\
++	static struct platform_device sb1250_dev##num = {	\
++		.name = "sb1250-mac",			\
++	.id = num,					\
++	.resource = &sb1250_res##num,			\
++	.num_resources = 1,				\
++	}
++
++sb1250_dev_struct(0);
++sb1250_dev_struct(1);
++sb1250_dev_struct(2);
++sb1250_dev_struct(3);
++
++static struct platform_device *sb1250_devs[] __initdata = {
++	&sb1250_dev0,
++	&sb1250_dev1,
++	&sb1250_dev2,
++	&sb1250_dev3,
++};
++
++static int __init sb1250_device_init(void)
++{
++	int ret;
++
++	/* Set the number of available units based on the SOC type.  */
++	switch (soc_type) {
++	case K_SYS_SOC_TYPE_BCM1250:
++	case K_SYS_SOC_TYPE_BCM1250_ALT:
++		ret = platform_add_devices(sb1250_devs, 3);
++		break;
++	case K_SYS_SOC_TYPE_BCM1120:
++	case K_SYS_SOC_TYPE_BCM1125:
++	case K_SYS_SOC_TYPE_BCM1125H:
++	case K_SYS_SOC_TYPE_BCM1250_ALT2:       /* Hybrid */
++		ret = platform_add_devices(sb1250_devs, 2);
++		break;
++	case K_SYS_SOC_TYPE_BCM1x55:
++	case K_SYS_SOC_TYPE_BCM1x80:
++		ret = platform_add_devices(sb1250_devs, 4);
++		break;
++	default:
++		ret = -ENODEV;
++		break;
++	}
++	return ret;
++}
++device_initcall(sb1250_device_init);
+diff --git a/drivers/net/sb1250-mac.c b/drivers/net/sb1250-mac.c
+index fc503a1..459bc59 100644
+--- a/drivers/net/sb1250-mac.c
++++ b/drivers/net/sb1250-mac.c
+@@ -332,7 +332,6 @@ static int sbmac_mii_write(struct mii_bus *bus, int phyaddr, int regidx,
+  ********************************************************************* */
+ 
+ static char sbmac_string[] = "sb1250-mac";
+-static char sbmac_pretty[] = "SB1250 MAC";
+ 
+ static char sbmac_mdio_string[] = "sb1250-mac-mdio";
+ 
+@@ -2668,114 +2667,6 @@ static int __exit sbmac_remove(struct platform_device *pldev)
+ 	return 0;
+ }
+ 
+-
+-static struct platform_device **sbmac_pldev;
+-static int sbmac_max_units;
+-
+-static int __init sbmac_platform_probe_one(int idx)
+-{
+-	struct platform_device *pldev;
+-	struct {
+-		struct resource r;
+-		char name[strlen(sbmac_pretty) + 4];
+-	} *res;
+-	int err;
+-
+-	res = kzalloc(sizeof(*res), GFP_KERNEL);
+-	if (!res) {
+-		printk(KERN_ERR "%s.%d: unable to allocate memory\n",
+-		       sbmac_string, idx);
+-		err = -ENOMEM;
+-		goto out_err;
+-	}
+-
+-	/*
+-	 * This is the base address of the MAC.
+-	 */
+-	snprintf(res->name, sizeof(res->name), "%s %d", sbmac_pretty, idx);
+-	res->r.name = res->name;
+-	res->r.flags = IORESOURCE_MEM;
+-	res->r.start = A_MAC_CHANNEL_BASE(idx);
+-	res->r.end = A_MAC_CHANNEL_BASE(idx + 1) - 1;
+-
+-	pldev = platform_device_register_simple(sbmac_string, idx, &res->r, 1);
+-	if (IS_ERR(pldev)) {
+-		printk(KERN_ERR "%s.%d: unable to register platform device\n",
+-		       sbmac_string, idx);
+-		err = PTR_ERR(pldev);
+-		goto out_kfree;
+-	}
+-
+-	if (!pldev->dev.driver) {
+-		err = 0;		/* No hardware at this address. */
+-		goto out_unregister;
+-	}
+-
+-	sbmac_pldev[idx] = pldev;
+-	return 0;
+-
+-out_unregister:
+-	platform_device_unregister(pldev);
+-
+-out_kfree:
+-	kfree(res);
+-
+-out_err:
+-	return err;
+-}
+-
+-static void __init sbmac_platform_probe(void)
+-{
+-	int i;
+-
+-	/* Set the number of available units based on the SOC type.  */
+-	switch (soc_type) {
+-	case K_SYS_SOC_TYPE_BCM1250:
+-	case K_SYS_SOC_TYPE_BCM1250_ALT:
+-		sbmac_max_units = 3;
+-		break;
+-	case K_SYS_SOC_TYPE_BCM1120:
+-	case K_SYS_SOC_TYPE_BCM1125:
+-	case K_SYS_SOC_TYPE_BCM1125H:
+-	case K_SYS_SOC_TYPE_BCM1250_ALT2:	/* Hybrid */
+-		sbmac_max_units = 2;
+-		break;
+-	case K_SYS_SOC_TYPE_BCM1x55:
+-	case K_SYS_SOC_TYPE_BCM1x80:
+-		sbmac_max_units = 4;
+-		break;
+-	default:
+-		return;				/* none */
+-	}
+-
+-	sbmac_pldev = kcalloc(sbmac_max_units, sizeof(*sbmac_pldev),
+-			      GFP_KERNEL);
+-	if (!sbmac_pldev) {
+-		printk(KERN_ERR "%s: unable to allocate memory\n",
+-		       sbmac_string);
+-		return;
+-	}
+-
+-	/*
+-	 * Walk through the Ethernet controllers and find
+-	 * those who have their MAC addresses set.
+-	 */
+-	for (i = 0; i < sbmac_max_units; i++)
+-		if (sbmac_platform_probe_one(i))
+-			break;
+-}
+-
+-
+-static void __exit sbmac_platform_cleanup(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < sbmac_max_units; i++)
+-		platform_device_unregister(sbmac_pldev[i]);
+-	kfree(sbmac_pldev);
+-}
+-
+-
+ static struct platform_driver sbmac_driver = {
+ 	.probe = sbmac_probe,
+ 	.remove = __exit_p(sbmac_remove),
+@@ -2786,20 +2677,11 @@ static struct platform_driver sbmac_driver = {
+ 
+ static int __init sbmac_init_module(void)
+ {
+-	int err;
+-
+-	err = platform_driver_register(&sbmac_driver);
+-	if (err)
+-		return err;
+-
+-	sbmac_platform_probe();
+-
+-	return err;
++	return platform_driver_register(&sbmac_driver);
+ }
+ 
+ static void __exit sbmac_cleanup_module(void)
+ {
+-	sbmac_platform_cleanup();
+ 	platform_driver_unregister(&sbmac_driver);
+ }
+ 
+-- 
+1.6.6.1

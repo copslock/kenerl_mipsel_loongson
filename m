@@ -1,101 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2010 14:01:06 +0200 (CEST)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:61200 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492475Ab0DZMBD convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 26 Apr 2010 14:01:03 +0200
-Received: by vws16 with SMTP id 16so186958vws.36
-        for <linux-mips@linux-mips.org>; Mon, 26 Apr 2010 05:00:56 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Apr 2010 14:02:39 +0200 (CEST)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:54963 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492498Ab0DZMCg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Apr 2010 14:02:36 +0200
+Received: by gwb1 with SMTP id 1so262039gwb.36
+        for <multiple recipients>; Mon, 26 Apr 2010 05:02:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=OprkUIdpGXVj/LWoT8hEHruiI5xdaQRCUUAutyscCEA=;
-        b=BiPTgTRHxOo1grIje5He7qWKosCfTKECb8gcSExcZXPRbnFBOV22a+6bQX6l3DR4gR
-         Ht9NwDKN4stsart3l/Ytcq5chgZViKyOzwBFJod4oRK7vPmsAT4nMHWkcT4VeDJ7k9Hi
-         vJfS98bg6s9FZ3ts8GDdBBSZO+/lrtw5/uvSM=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=Nl39hrGq5vgdjyZdFaMehAWaos7T0sRl3ua+mi67nTo=;
+        b=j7ZxkMyvmJgsnmjTQWqzRbJVC4YS24tIbDSVSbvpZOnWx5+PpxMovHXFClXsSiRq9k
+         2vbsMR1h6Z7oEUiJe1hEVR3UN4zIDLmOfwU+xgT8dRu6wsmR2NeDEgl4YhGfqaXIAtvK
+         jD1cB1S2w8gfXbAgv3NozDbifEcSvtu74GzDg=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=Q9CnTF5g3n+X5NLUGTUjIGaHbyICy1RVLRT1kcK97QwFe4yygFZqnLGk6SGOLGiiyh
-         4JR9bSt2SZhtR7XIKc3sEIiNil11f3S9U6y48lUdU4K9Zu5mJoQGMHOfsLDwJTD4WZQm
-         UbuJL83danQCPHou11mAGWz7XAXKwaiEydZFI=
-MIME-Version: 1.0
-Received: by 10.220.124.210 with SMTP id v18mr2693094vcr.106.1272283255638; 
-        Mon, 26 Apr 2010 05:00:55 -0700 (PDT)
-Received: by 10.220.17.141 with HTTP; Mon, 26 Apr 2010 05:00:51 -0700 (PDT)
-In-Reply-To: <v568a7-oj5.ln1@chipmunk.wormnet.eu>
-References: <j2sdf5e30c51004172251z9fd01867h562b99c1f1044c26@mail.gmail.com>
-         <q2odf5e30c51004220901l8bfa979ftc9c6a7b633569460@mail.gmail.com>
-         <4BD08329.80804@adax.com>
-         <h2hdf5e30c51004230142q21184429pffcaa9351510bc2d@mail.gmail.com>
-         <v568a7-oj5.ln1@chipmunk.wormnet.eu>
-Date:   Mon, 26 Apr 2010 20:00:51 +0800
-Message-ID: <q2xdf5e30c51004260500t15cc000g3391808fed24fb95@mail.gmail.com>
-Subject: Re: Ask help:why my 64-bit ELF file could not run at the 64-bit mips 
-        cpu
-From:   Dominic <dominicwj@gmail.com>
-To:     Alexander Clouter <alex@digriz.org.uk>, Jan Rovins <janr@adax.com>,
-        geert@linux-m68k.org
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dominicwj@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=heos3bZDEmt1eHSJVslWPKFDz0S/3owRr6xPNs3vdplqoVHBrZLi1PyoTf6ARdDeFy
+         F2zCkmwTjEOgXXa4FjnyBiQ5gIpFz1KPMtKTHrMlGsqBUb8A5n4EfO5gAsb7JRpVZKTF
+         hhn+IdVN/uC7eYT4PE9dGFcViwYw/6j7VrCDU=
+Received: by 10.150.128.3 with SMTP id a3mr3909433ybd.280.1272283341540;
+        Mon, 26 Apr 2010 05:02:21 -0700 (PDT)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id 15sm1856832gxk.10.2010.04.26.05.02.18
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 26 Apr 2010 05:02:21 -0700 (PDT)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] Loongson: Oprofile: Enable it when CONFIG_OPROFILE=m
+Date:   Mon, 26 Apr 2010 20:01:54 +0800
+Message-Id: <eef62a9626aaf083c6dbc472d36abf16bd85e3b6.1272283237.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.0
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26470
+X-archive-position: 26471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dominicwj@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Alexander, Jan & Greet
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-Much thanks for your advice, I have solve this problem, thanks a lot!
+When the oprofile is compiled as a module, the do_IRQ() is not called in
+arch/mips/loongson/lemote-2f/irq.c for the wrong #ifdef there.
 
-BR/Dominic
+This patch fixes it via calling do_IRQ() whenever oprofile is compiled
+as a module(CONFIG_OPROFILE_MODULE is defined) or compiled into the
+kernel(CONFIG_OPROFILE is defined).
 
-On Fri, Apr 23, 2010 at 5:34 PM, Alexander Clouter <alex@digriz.org.uk> wrote:
-> Dominic <dominicwj@gmail.com> wrote:
->>
->> Thanks a lot for your precious reply! I try to use -static to compile
->> the program, then the 64-bit program can run, so it should be the
->> library related other than 64-bit instruction or addressing related.
->> Then I stored the 64-bit libraries in nfs, and mount it on the target
->> board, after adding the path to ld.so.conf and 'ldconfig', the program
->> compiled without -static still does not run. Shall I miss something?
->>
-> On your host, you can type something like:
-> ----
-> alex@berk:/usr/src/wag54g$ readelf -d buildroot/output/target/usr/sbin/ip6tables-multi  | grep Shared
->  0x00000001 (NEEDED)                     Shared library: [libip6tc.so.0]
->  0x00000001 (NEEDED)                     Shared library: [libxtables.so.4]
->  0x00000001 (NEEDED)                     Shared library: [libdl.so.0]
->  0x00000001 (NEEDED)                     Shared library: [libm.so.0]
->  0x00000001 (NEEDED)                     Shared library: [libc.so.0]
-> ----
->
-> This will list all the libraries that you need installed[1], I'm guessin
-> you have missed one.
->
-> You can look at the output of 'readelf -a' to try to see what might be
-> missing.
->
-> Cheers
->
-> [1] in addition to the interpreter required (for example 'ld-uClibc')
->        and the main C library being used:
->        readelf -l buildroot/output/target/usr/sbin/ip6tables-multi
->
-> --
-> Alexander Clouter
-> .sigmonster says: "Ninety percent of baseball is half mental."
->                                -- Yogi Berra
->
->
->
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/loongson/lemote-2f/irq.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/loongson/lemote-2f/irq.c b/arch/mips/loongson/lemote-2f/irq.c
+index 882dfcd..1d8b4d2 100644
+--- a/arch/mips/loongson/lemote-2f/irq.c
++++ b/arch/mips/loongson/lemote-2f/irq.c
+@@ -79,7 +79,7 @@ void mach_irq_dispatch(unsigned int pending)
+ 	if (pending & CAUSEF_IP7)
+ 		do_IRQ(LOONGSON_TIMER_IRQ);
+ 	else if (pending & CAUSEF_IP6) {	/* North Bridge, Perf counter */
+-#ifdef CONFIG_OPROFILE
++#if defined(CONFIG_OPROFILE) || defined(CONFIG_OPROFILE_MODULE)
+ 		do_IRQ(LOONGSON2_PERFCNT_IRQ);
+ #endif
+ 		bonito_irqdispatch();
+-- 
+1.7.0

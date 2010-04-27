@@ -1,98 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2010 18:11:10 +0200 (CEST)
-Received: from mail-wy0-f176.google.com ([74.125.82.176]:43242 "EHLO
-        mail-wy0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492147Ab0D0QLH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Apr 2010 18:11:07 +0200
-Received: by wyb40 with SMTP id 40so3094315wyb.35
-        for <linux-mips@linux-mips.org>; Tue, 27 Apr 2010 09:11:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type;
-        bh=By19QUSI7ibvzTJxgBGh5y38gORZ9V2ObRyy7k38nWk=;
-        b=N6V6KVNs8t91I3Tc3pjCWpMiugr5bywoc6GOf8vr1IZTIQN+N/SMmQB/8j3StuKLIP
-         D+Ar/1wtUbfi5foaJURewAK0+3NcCADQ1HGyrUTFlwDyHfUq0VgCXnZDT7i4zRJfG8zS
-         irXeEysFEKrutVbMMzC6TJEWBoAvZ2OSEAhMQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=Di7CjJyRmh+fU2yFXHYSvmuxBfl5ATYDhZKDPL69SU6pP5hRV/i6Npymw/FpFD/im3
-         yXWD5pjAuySuqnKKOdCEgKJXklp3zJ7denlBrtv0567nXZvvSJKcLodU8WAxpOWliiYU
-         tycNb/msalXDXJ0iaRKwfwK+XgJ38V852RQ+8=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2010 22:53:38 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:42979 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492537Ab0D0Uxe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Apr 2010 22:53:34 +0200
+Received: id: bigeasy by Chamillionaire.breakpoint.cc with local
+        (easymta 1.00 BETA 1)
+        id 1O6rmc-0000Mk-F1; Tue, 27 Apr 2010 22:53:30 +0200
+Date:   Tue, 27 Apr 2010 22:53:30 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Subject: [PATCH] mips/traps: use CKSEG1ADDR for uncache handler
+Message-ID: <20100427205330.GA1390@Chamillionaire.breakpoint.cc>
 MIME-Version: 1.0
-Received: by 10.216.87.80 with SMTP id x58mr8406657wee.96.1272384660733; Tue, 
-        27 Apr 2010 09:11:00 -0700 (PDT)
-Received: by 10.216.166.12 with HTTP; Tue, 27 Apr 2010 09:11:00 -0700 (PDT)
-Date:   Tue, 27 Apr 2010 09:11:00 -0700
-Message-ID: <o2n545ef25e1004270911m5d96ff8by38fa55c7172401a4@mail.gmail.com>
-Subject: issue with gdb load_symbol_file command when loading symbols for MIPS 
-        kernel modules
-From:   David Olien <dmo.lists@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dmo.lists@gmail.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Key-Id: FE3F4706
+X-Key-Fingerprint: FFDA BBBB 3563 1B27 75C9  925B 98D5 5C1C FE3F 4706
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <sebastian@breakpoint.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26487
+X-archive-position: 26488
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmo.lists@gmail.com
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 X-list: linux-mips
 
-I am using gdb version 6.8-1, running on an x86-64 platform with
-kernel version 2.6.26-2-686
-(it's a Debian distrubtion) to debug a remote MIPS kernel, 2.6.22.  I
-have built the gdb on the
-x86 machine, using the configuration parameter
---target=mipsel-unknown-linux-gnu.
+since "MIPS: Calculate proper ebase value for 64-bit kernels" my mips
+toy did not boot anymore.
+Before that commit we always touched xkphys/shared as ebase and computed
+xphsys/unchached for that area. After that commit ebase become 32bit
+compat address and convert does not work anymore. So I guess now want to
+touch the 32bit compat unmapped & uncached area for this. CKSEG1ADDR
+does just in 32bit and 64bit.
 
-After loading the kernel modules on the remote mips machine, I get the
-module load addresses
-from /proc/modules on the remote machine, and try to add them to the
-gdb's symbol table on
- the local machine, using the command:
+Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+---
+ arch/mips/kernel/traps.c |    7 +------
+ 1 files changed, 1 insertions(+), 6 deletions(-)
 
-add-symbol-file {path to local copy of the remote machine's .ko file}
-                 {module load address retreived from remote machine's
-                 /proc/modules}
-
-After I do this, I can see that .text symbols are translated correctly
-to their memory address on the
-remote machine.
-
-But sumbols from the .bss and .data sections are NOT translated
-properly. In fact, the translate to
-addresses that are not even in the range of addresses valid for the kernel.
-
-Since then, I tried calculating which sections are loaded from the
-.ko, and where each section gets
-loaded into kernel memory (I put print statements in the remote
-kernel's kernel/modules.c source file).
-
-If I then give add-symbol-file the address of every loaded section,
-then I get properly translated
-symbols for .data and .bss.
-
-I have noticed that the address caluclation code in gdb's symfile.c is
-similar to but different from
- that in the kernel's module.c file.
-
-I am suspecting that the MIPS compiler tools are producing .ko files
-that are different enough in
-some way to confuse gdb's code in symbfile.c.
-
-Has anyone else encountered this, or have any suggestions?  As a work
-around, I'm planning to
-write a utility with code stolen from kernel/modules.c  that will
-calculate for me the section addresses
- based on the module loading address.  But it would be nice if gdb did
-that calculation for me,
-as I suspect it would for an x86 system.
-
-Any suggestions?
-
-Thanks!
-Dave
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 4e00f9b..1b57f18 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1557,12 +1557,7 @@ static char panic_null_cerr[] __cpuinitdata =
+ void __cpuinit set_uncached_handler(unsigned long offset, void *addr,
+ 	unsigned long size)
+ {
+-#ifdef CONFIG_32BIT
+-	unsigned long uncached_ebase = KSEG1ADDR(ebase);
+-#endif
+-#ifdef CONFIG_64BIT
+-	unsigned long uncached_ebase = TO_UNCAC(ebase);
+-#endif
++	unsigned long uncached_ebase = CKSEG1ADDR(ebase);
+ 
+ 	if (!addr)
+ 		panic(panic_null_cerr);
+-- 
+1.6.6.1

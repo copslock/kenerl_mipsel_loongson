@@ -1,65 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Apr 2010 22:53:38 +0200 (CEST)
-Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:42979 "EHLO
-        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492537Ab0D0Uxe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Apr 2010 22:53:34 +0200
-Received: id: bigeasy by Chamillionaire.breakpoint.cc with local
-        (easymta 1.00 BETA 1)
-        id 1O6rmc-0000Mk-F1; Tue, 27 Apr 2010 22:53:30 +0200
-Date:   Tue, 27 Apr 2010 22:53:30 +0200
-From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH] mips/traps: use CKSEG1ADDR for uncache handler
-Message-ID: <20100427205330.GA1390@Chamillionaire.breakpoint.cc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 01:06:04 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57574 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492697Ab0D0XGA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 01:06:00 +0200
+Date:   Wed, 28 Apr 2010 00:06:00 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+cc:     wuzhangjin@gmail.com, Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Calculate proper ebase value for 64-bit kernels
+In-Reply-To: <4BD5CB08.7010907@caviumnetworks.com>
+Message-ID: <alpine.LFD.2.00.1004272354430.31578@eddie.linux-mips.org>
+References: <1270585790-12730-1-git-send-email-ddaney@caviumnetworks.com>        <1271135034.25797.41.camel@falcon> <20100413073435.GA6371@alpha.franken.de>     <20100413171610.GA16578@linux-mips.org> <1271232185.25872.142.camel@falcon>
+ <4BD5CB08.7010907@caviumnetworks.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-X-Key-Id: FE3F4706
-X-Key-Fingerprint: FFDA BBBB 3563 1B27 75C9  925B 98D5 5C1C FE3F 4706
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <sebastian@breakpoint.cc>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26488
+X-archive-position: 26489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sebastian@breakpoint.cc
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-since "MIPS: Calculate proper ebase value for 64-bit kernels" my mips
-toy did not boot anymore.
-Before that commit we always touched xkphys/shared as ebase and computed
-xphsys/unchached for that area. After that commit ebase become 32bit
-compat address and convert does not work anymore. So I guess now want to
-touch the 32bit compat unmapped & uncached area for this. CKSEG1ADDR
-does just in 32bit and 64bit.
+On Mon, 26 Apr 2010, David Daney wrote:
 
-Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
----
- arch/mips/kernel/traps.c |    7 +------
- 1 files changed, 1 insertions(+), 6 deletions(-)
+> > If using CKSEG0 as the ebase, CKSEG0 is defined as 0xffffffff80000000,
+> > then we get the address: 0x97ffffff80000100, is this address ok?
+> 
+> I don't think so.  We should fix TO_UNCAC() so that it works with CKSEG0
+> addresses.  It should be at physical address 0.  So
+> TO_UNCAC(0xffffffff80000000), should yield 0x9000000000000000
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 4e00f9b..1b57f18 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1557,12 +1557,7 @@ static char panic_null_cerr[] __cpuinitdata =
- void __cpuinit set_uncached_handler(unsigned long offset, void *addr,
- 	unsigned long size)
- {
--#ifdef CONFIG_32BIT
--	unsigned long uncached_ebase = KSEG1ADDR(ebase);
--#endif
--#ifdef CONFIG_64BIT
--	unsigned long uncached_ebase = TO_UNCAC(ebase);
--#endif
-+	unsigned long uncached_ebase = CKSEG1ADDR(ebase);
- 
- 	if (!addr)
- 		panic(panic_null_cerr);
--- 
-1.6.6.1
+ A 0xffffffff80000000 -> 0xffffffffa0000000 translation would make more 
+sense IMHO.  Of course the use of XKPHYS addresses rather than CKSEG ones 
+is preferable for 64-bit kernels in the first place, but then if the 
+compatibility address space has been chosen for some reason (perhaps a 
+virtual address stored in a structure defined by a peripheral is limited 
+to 32 bits; I've seen such cases in DMA descriptor rings for example (not 
+that code doing such things couldn't be converted to use cookies of some 
+sort)), then I think it'll be safer to stick to the space.
+
+  Maciej

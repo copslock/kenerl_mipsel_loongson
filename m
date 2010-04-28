@@ -1,90 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 03:29:38 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:44882 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492705Ab0D1B3f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 03:29:35 +0200
-Received: by gyb11 with SMTP id 11so7153194gyb.36
-        for <linux-mips@linux-mips.org>; Tue, 27 Apr 2010 18:29:28 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 07:02:12 +0200 (CEST)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:51569 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491005Ab0D1FCD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 07:02:03 +0200
+Received: by gwb1 with SMTP id 1so1014006gwb.36
+        for <linux-mips@linux-mips.org>; Tue, 27 Apr 2010 22:01:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type;
-        bh=BHcZ0m0MMKlI3wImDAJ1o8XGrfwa8NKaSq4K3Kgo3Hs=;
-        b=dJ+IpibCbZTJ4a+03npewFm+gbVtKLTTYkHh8Amords43bxPfbByMSawn3GvMoE5gX
-         Jpn3B9CCgjPhTdy3sNQFsqhRGMGdBx8GHqJNUC/AArWenMoVy6QUEQl1oZ6ChNvQ+jyD
-         bFioqLzt87ZHLr0cWEYFXfzXa8KIlbLKQwIps=
+        h=domainkey-signature:received:received:message-id:date:from
+         :user-agent:mime-version:to:cc:subject:references:in-reply-to
+         :content-type:content-transfer-encoding;
+        bh=KsMUWqvDEVSpD35NIUGctgctuZgn6OUUQKo28uCysCg=;
+        b=Oux1vyGkXuDvI+EOc91tuLdVv2zxzfhzCpyOWbuBPfDTQf/J3ghrBZlC0Hkxme9kZ4
+         aWsSN3XUtAIVVnlxXCZY7Cml1aM3ILVEQOP8Y1PrQMx3OmU0dQCm6zcze/XVV22NaBsR
+         XBgCkf+mZ/WSWSUPpyY+zvkKzufO8Pkk+r/9w=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=wSH/pOjmvVmSQTm2YMCkp82Mx2Oa6OBDyCL8WlHj+BI2oESYIgGX/D+WlLfxaKbR/j
-         a3MMr2v5rgPvIkQbVuwBEs6C0CEC75lhbKpEU7LrxaYYWlFCGZ2FgMginWf5f2IrXM+i
-         32luE08oRMhYG6eYTioqZrXm5eutdD8n7MerU=
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        b=F1zdR1G0yFRQdKaVde45n6QwTOL8FnNTkVC/pNZ0ws03RDToDdhE8XfnmEbmGyQBuL
+         IRlEkdFZTEesfVyWr/bu9XaXGiHQ6sgouGfXB2Fso+FfiHEgxxY6UPY7vmDCUbgXh0U5
+         SFYW16TykYvjQ4w2jIR6pwRpNkwljCcZRf7y0=
+Received: by 10.101.175.37 with SMTP id c37mr2172785anp.56.1272430913191;
+        Tue, 27 Apr 2010 22:01:53 -0700 (PDT)
+Received: from dd_xps.caveonetworks.com (adsl-67-127-190-169.dsl.pltn13.pacbell.net [67.127.190.169])
+        by mx.google.com with ESMTPS id 26sm61326763anx.13.2010.04.27.22.01.51
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 27 Apr 2010 22:01:52 -0700 (PDT)
+Message-ID: <4BD7C13D.6060609@gmail.com>
+Date:   Tue, 27 Apr 2010 22:01:49 -0700
+From:   David Daney <david.s.daney@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc11 Thunderbird/3.0.4
 MIME-Version: 1.0
-Received: by 10.91.190.11 with SMTP id s11mr3634008agp.50.1272418167789; Tue, 
-        27 Apr 2010 18:29:27 -0700 (PDT)
-Received: by 10.90.99.14 with HTTP; Tue, 27 Apr 2010 18:29:27 -0700 (PDT)
-Date:   Wed, 28 Apr 2010 09:29:27 +0800
-Message-ID: <r2pe997b7421004271829rffc1e685ic649ce3b53325271@mail.gmail.com>
-Subject: [octeon]segment without execution priviledge,causing system down.
-From:   "wilbur.chan" <wilbur512@gmail.com>
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <wilbur512@gmail.com>
+To:     "wilbur.chan" <wilbur512@gmail.com>
+CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [octeon]segment without execution priviledge,causing system down.
+References: <r2pe997b7421004271829rffc1e685ic649ce3b53325271@mail.gmail.com>
+In-Reply-To: <r2pe997b7421004271829rffc1e685ic649ce3b53325271@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <david.s.daney@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26491
+X-archive-position: 26492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: david.s.daney@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I'm using a modified kernel version derived from 2.6.21.7,and the cpu
-is octeon cn5860. Strangely I found that , when executing
+On 04/27/2010 06:29 PM, wilbur.chan wrote:
+> I'm using a modified kernel version derived from 2.6.21.7,and the cpu
+> is octeon cn5860. Strangely I found that , when executing
+>
+> some instruction in  un-executable segment, the system will hang on,
+> together with console  down, and could not response to ping
+>
+> command.
+>    
+[...]
+> Any one knows why this happened? Thanks
+>    
 
-some instruction in  un-executable segment, the system will hang on,
-together with console  down, and could not response to ping
+I think I know.
 
-command.
+There is a bug in your kernel.  Since execute inhibit support was not 
+added to the upstream kernel until very recently, we must assume you got 
+your kernel from some vendor.  You could either ask the vendor for a 
+fix, or back port it yourself from:
 
-cn5860 has 16 CPUs,  in our system , each non-zero cpu is running a
-real-time user-mode process with 99 priority(network
+http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=6dd9344cfc41bcc60a01cdc828cb278be7a10e01
 
-business) , causing non-zero cpus to 100% cpu-usage.
-
-while cpu 0 ,is in charge of coordinating the whole system ,almost to
-5~6% cpu-usage.
-
-
-
-That is , the following code ,will cause a problem , which hang the
-cpu 0, and then hang the whole system:
-
-#include <stdio.h>
-#include <stdlib.h>
-
-char stack[8*1024] = {0}; // in un-executable segment
-void (*func)(void);
-int main()
-{
- 	func = (void (*)(void))stack;  //convert to function  pointer
- 	func();    //cpu will hang
-    return 0;
-}
-
-In my opinion, the code above should generate a page_fault exception ,
-and caused SIGSEGV error, however in my
-
-system , it hang on directly.
-
-
-Any one knows why this happened? Thanks
-
-
-
-
-regards,
-
-wilbur
+David Daney

@@ -1,105 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 17:45:40 +0200 (CEST)
-Received: from fg-out-1718.google.com ([72.14.220.154]:29497 "EHLO
-        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492549Ab0D1Ppe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 17:45:34 +0200
-Received: by fg-out-1718.google.com with SMTP id e12so1910453fga.6
-        for <multiple recipients>; Wed, 28 Apr 2010 08:45:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=paUDiRkyc4+40o5+sTvZGgbdonxLHpJHcpfJGKC/uAI=;
-        b=neqzIQIXw+QiL/cOYfwmz07bPMev9DxwWD/jcaFsYmhGBFTXz8TvkX3a2SlgeiaAPj
-         KfIlb6DUA7/zxIFyEBFte6qKm+dnmT+gbYDYdwt+C4Fhp3/T29YTWjli1qBQbPYAvgUH
-         KmN9Xgo9yWjuVQu0llq63wLuw+YJ7Vp6CtyLU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=vnPkgZNgHV8D6ztTteIN9xJ6cBc0JQsQKsR6V6nZmT0Zemmz/+QKcZ5RRoK0upBk0y
-         HrB6BURA6k0YrlGwqwfW45kk2LKfNkcedezXyOvh6Bx7gNXzGrx1HKKhEDTWK3JbB53f
-         +9duJVM9PyiRYBEl5A4vLakpGpHGwu8AGviG8=
-Received: by 10.87.74.15 with SMTP id b15mr8228554fgl.11.1272469532577;
-        Wed, 28 Apr 2010 08:45:32 -0700 (PDT)
-Received: from [192.168.2.210] ([202.201.14.140])
-        by mx.google.com with ESMTPS id e11sm8933135fga.18.2010.04.28.08.45.28
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 28 Apr 2010 08:45:30 -0700 (PDT)
-Subject: Re: [PATCH] mips/traps: use CKSEG1ADDR for uncache handler
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <20100427205330.GA1390@Chamillionaire.breakpoint.cc>
-References: <20100427205330.GA1390@Chamillionaire.breakpoint.cc>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Wed, 28 Apr 2010 23:45:22 +0800
-Message-ID: <1272469522.26380.15.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 17:54:46 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:44049 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492572Ab0D1Pyl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Apr 2010 17:54:41 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o3SFseCF022601;
+        Wed, 28 Apr 2010 16:54:40 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o3SFsdoA022599;
+        Wed, 28 Apr 2010 16:54:39 +0100
+Date:   Wed, 28 Apr 2010 16:54:39 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: use bootmem in platform code on MIPS
+Message-ID: <20100428155439.GA19468@linux-mips.org>
+References: <k2lf861ec6f1004270514k199cace5wafd6dd269ded8911@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <k2lf861ec6f1004270514k199cace5wafd6dd269ded8911@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26497
+X-archive-position: 26498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2010-04-27 at 22:53 +0200, Sebastian Andrzej Siewior wrote:
-> since "MIPS: Calculate proper ebase value for 64-bit kernels" my mips
-> toy did not boot anymore.
-> Before that commit we always touched xkphys/shared as ebase and computed
-> xphsys/unchached for that area. After that commit ebase become 32bit
-> compat address and convert does not work anymore. So I guess now want to
-> touch the 32bit compat unmapped & uncached area for this. CKSEG1ADDR
-> does just in 32bit and 64bit.
+On Tue, Apr 27, 2010 at 02:14:32PM +0200, Manuel Lauss wrote:
+
+> I'd like to use bootmem to reserve large chunks of RAM (at a particular physical
+> address; for Au1200 MAE, CIM and framebuffer, and later Au1300 OpenGL block)
+> but it seems that it can't be done:  Doing __alloc_bootmem() in
+> plat_mem_setup() is
+> too early, while an arch_initcall() is too late because by then the
+> slab allocator is
+> already up and handing out random addresses and/or refusing allocations larger
+> than a few MBytes.
+
+The maximum is actually configurable.  CONFIG_FORCE_MAX_ZONEORDER defaults
+to 11 which means with 4kB pages you get 8MB maximum allocation - more for
+larger pages.
+
+CONFIG_FORCE_MAX_ZONEORDER is a tradeoff though.  A smaller value will give
+slightly better performance and safe a bit of memory but I can't really
+quantify these numbers - I assume it's a small difference.
+
+It may actually be preferable to never tell the bootmem allocator about the
+memory you need for these devices that is bypass the mm code entirely.
+
+> Is there another callback I could use which would allow me to use bootmem (short
+> of abusing plat_smp_setup)?
 > 
+> Would a separate callback like this be an acceptable solution?
 
-Just tested it in 32bit and 64bit kernel on my YeeLoong netbook, both of
-them work well.
+Certainly better than using plat_smp_setup which would require enabling
+SMP support for no good reason at all.
 
-BTW: there is another patch[1] sent to this mailing list Yesterday,
-differ from your method, it tries to provide a TO_UNCAC() for 32bit
-kernel, but seems yours is lighter.
+I know we will eventually have to add another platform hooks to run after
+bootmem_init.  The name of plat_mem_setup() already shows what this hook
+originally was meant for but it ended up as the everything-and-the-kitchen-
+sink hook for platform-specific early initialization.  I just dislike
+conditional hooks.  Let's add a call to a new hook function and fix whatever
+breaks or think about what other hooks needs there should be.
 
-[1] http://patchwork.linux-mips.org/project/linux-mips/list/
-  [1/2] MIPS: Fixup and cleanup of TO_PHYS(), TO_CAC(), TO_UNCAC()
-  http://patchwork.linux-mips.org/patch/1146/
-  [2/2] MIPS: Cleanup of set_uncached_handler()
-  http://patchwork.linux-mips.org/patch/1147/
-
-Regards,
-	Wu Zhangjin
-
-> Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
-> ---
->  arch/mips/kernel/traps.c |    7 +------
->  1 files changed, 1 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index 4e00f9b..1b57f18 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -1557,12 +1557,7 @@ static char panic_null_cerr[] __cpuinitdata =
->  void __cpuinit set_uncached_handler(unsigned long offset, void *addr,
->  	unsigned long size)
->  {
-> -#ifdef CONFIG_32BIT
-> -	unsigned long uncached_ebase = KSEG1ADDR(ebase);
-> -#endif
-> -#ifdef CONFIG_64BIT
-> -	unsigned long uncached_ebase = TO_UNCAC(ebase);
-> -#endif
-> +	unsigned long uncached_ebase = CKSEG1ADDR(ebase);
->  
->  	if (!addr)
->  		panic(panic_null_cerr);
+  Ralf

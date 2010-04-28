@@ -1,109 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 13:54:59 +0200 (CEST)
-Received: from mail-pz0-f194.google.com ([209.85.222.194]:37436 "EHLO
-        mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492032Ab0D1Lyy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 13:54:54 +0200
-Received: by pzk32 with SMTP id 32so9736328pzk.21
-        for <multiple recipients>; Wed, 28 Apr 2010 04:54:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=Urea0C5OwSG0P5XgXUturR/rpPSN7yPgqkcsQnmH6+c=;
-        b=YNTa7UhHuR+ey+My0bXGHllb8FsdzeY487Zl/HTyTjj6Xd3IgGDqm/7vbohLiXVmDe
-         R6ythEXItxsZFRHAEBaRz2KhyjNED76mRpjpDLTSCEG8q/XV4pIoY8sVSamaCk8LJ+EB
-         lQpYEUtGEtwTjaaluB6RBY4yNOwJnXxNVfRNE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=xjL9guklraw6kTxfciqA3HLWe1EiN541IAMRnWoACHrCJCN69dkum3DmURUadhzDmr
-         Y96kVVDNN+J3SFAQ6lNnwoDfwrGN/xZUcMR8fEtf6izuLjeGR641SgME7Ip5t9WU443M
-         tlGSpDZ5LPdOvARHWvJKL9D87o3JWigGlvOZ8=
-Received: by 10.140.57.16 with SMTP id f16mr1221532rva.15.1272455685694;
-        Wed, 28 Apr 2010 04:54:45 -0700 (PDT)
-Received: from localhost.localdomain ([114.84.90.248])
-        by mx.google.com with ESMTPS id 23sm1923736ywh.12.2010.04.28.04.54.41
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 28 Apr 2010 04:54:45 -0700 (PDT)
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     ralf@linux-mips.org, ddaney@caviumnetworks.com,
-        linux-mips@linux-mips.org
-Cc:     dengcheng.zhu@gmail.com
-Subject: [PATCH] Perf-tool/MIPS: support cross compiling of tools/perf for MIPS
-Date:   Wed, 28 Apr 2010 19:54:34 +0800
-Message-Id: <1272455674-4725-1-git-send-email-dengcheng.zhu@gmail.com>
-X-Mailer: git-send-email 1.6.3.3
-Return-Path: <dengcheng.zhu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 14:47:37 +0200 (CEST)
+Received: from anti.mobis.co.kr ([211.217.52.67]:35305 "HELO
+        sniper.mobis.co.kr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1492148Ab0D1Mrc convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 14:47:32 +0200
+Received: (snipe 26345 invoked by uid 0); 28 Apr 2010 21:47:19 +0900
+Received: from gurumurthy.gowdar@gmobis.com with  Spamsniper 2.94.22 (Processed in 0.069998 secs);
+Received: from unknown (HELO msmobiweb.mobis.co.kr) (10.240.100.165)
+  by unknown with SMTP; 28 Apr 2010 21:47:19 +0900
+X-RCPTTO: linux-mips@linux-mips.org
+Received: from mkegmal01.global.mobis.co.kr ([10.240.200.82]) by msmobiweb.mobis.co.kr with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 28 Apr 2010 21:47:20 +0900
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: MIPS ROM Exception Handler Error
+Date:   Wed, 28 Apr 2010 21:47:20 +0900
+Message-ID: <5858DE952C53A441BDA3408A0524130104CCE09C@mkegmal01>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: MIPS ROM Exception Handler Error
+Thread-Index: Acrm0PD7TjuMeXpsSp+LA6xj2BvWfg==
+From:   =?iso-8859-1?Q?=A0Gurumurthy_G_M?= <Gurumurthy.Gowdar@gmobis.com>
+To:     <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 28 Apr 2010 12:47:20.0855 (UTC) FILETIME=[F13FB270:01CAE6D0]
+Return-Path: <Gurumurthy.Gowdar@gmobis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26493
+X-archive-position: 26494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: Gurumurthy.Gowdar@gmobis.com
 Precedence: bulk
 X-list: linux-mips
 
-With the kernel facility of Linux performance counters, we want the user
-level tool tools/perf to be cross compiled for MIPS platform. To do this,
-we need to include unistd.h, add rmb() and cpu_relax() in perf.h.
-
-Your review comments are especially required for the definition of rmb():
-In perf.h, we need to have a proper rmb() for _all_ MIPS platforms. And
-we don't have CONFIG_* things for use in here. Looking at barrier.h,
-rmb() goes into barrier() and __sync() for CAVIUM OCTEON and other CPUs,
-respectively. What's more, __sync() has different versions as well.
-Referring to BARRIER() in dump_tlb.c, I propose the "common" definition
-for perf tool rmb() in this patch. Do you have any comments?
-
-In addition, for testing the kernel part code I sent several days
-ago, I was using the "particular" rmb() version for 24K/34K/74K cores:
-
-#define rmb()           asm volatile(                           \
-                                ".set   push\n\t"               \
-                                ".set   noreorder\n\t"          \
-                                ".set   mips2\n\t"              \
-                                "sync\n\t"                      \
-                                ".set   pop"                    \
-                                : /* no output */               \
-                                : /* no input */                \
-                                : "memory")
-
-This is the definition of __sync() for CONFIG_CPU_HAS_SYNC.
 
 
-Thanks,
+Hi all,
+       I am porting U-boot-2010.03 on MIPS32 Architecture ( au1350 processor). u-boot is compiled for little endian and downloaded the u-boot.bin file to NOR Flash.After reset followed by go command , I observe that cpu hangs at 0xbfc00570 (ROM Exception Handler).
 
-Deng-Cheng
+we are using BDI3000 debugger and bdiGDB for programming.
 
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
----
- tools/perf/perf.h |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
+please let me know where is the problem? whether I am missing something.
 
-diff --git a/tools/perf/perf.h b/tools/perf/perf.h
-index 6fb379b..cd05284 100644
---- a/tools/perf/perf.h
-+++ b/tools/perf/perf.h
-@@ -69,6 +69,18 @@
- #define cpu_relax()	asm volatile("":::"memory")
- #endif
- 
-+#ifdef __mips__
-+#include "../../arch/mips/include/asm/unistd.h"
-+#define rmb()		asm volatile(					\
-+				".set	noreorder\n\t"			\
-+				"nop;nop;nop;nop;nop;nop;nop\n\t"	\
-+				".set	reorder"			\
-+				: /* no output */			\
-+				: /* no input */			\
-+				: "memory")
-+#define cpu_relax()	asm volatile("" ::: "memory")
-+#endif
-+
- #include <time.h>
- #include <unistd.h>
- #include <sys/types.h>
--- 
-1.7.0.4
+Regards,
+Gurumurthy

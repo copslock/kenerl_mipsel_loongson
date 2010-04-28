@@ -1,77 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 07:02:12 +0200 (CEST)
-Received: from mail-gw0-f49.google.com ([74.125.83.49]:51569 "EHLO
-        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491005Ab0D1FCD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 07:02:03 +0200
-Received: by gwb1 with SMTP id 1so1014006gwb.36
-        for <linux-mips@linux-mips.org>; Tue, 27 Apr 2010 22:01:53 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Apr 2010 13:54:59 +0200 (CEST)
+Received: from mail-pz0-f194.google.com ([209.85.222.194]:37436 "EHLO
+        mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492032Ab0D1Lyy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Apr 2010 13:54:54 +0200
+Received: by pzk32 with SMTP id 32so9736328pzk.21
+        for <multiple recipients>; Wed, 28 Apr 2010 04:54:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=KsMUWqvDEVSpD35NIUGctgctuZgn6OUUQKo28uCysCg=;
-        b=Oux1vyGkXuDvI+EOc91tuLdVv2zxzfhzCpyOWbuBPfDTQf/J3ghrBZlC0Hkxme9kZ4
-         aWsSN3XUtAIVVnlxXCZY7Cml1aM3ILVEQOP8Y1PrQMx3OmU0dQCm6zcze/XVV22NaBsR
-         XBgCkf+mZ/WSWSUPpyY+zvkKzufO8Pkk+r/9w=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=Urea0C5OwSG0P5XgXUturR/rpPSN7yPgqkcsQnmH6+c=;
+        b=YNTa7UhHuR+ey+My0bXGHllb8FsdzeY487Zl/HTyTjj6Xd3IgGDqm/7vbohLiXVmDe
+         R6ythEXItxsZFRHAEBaRz2KhyjNED76mRpjpDLTSCEG8q/XV4pIoY8sVSamaCk8LJ+EB
+         lQpYEUtGEtwTjaaluB6RBY4yNOwJnXxNVfRNE=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        b=F1zdR1G0yFRQdKaVde45n6QwTOL8FnNTkVC/pNZ0ws03RDToDdhE8XfnmEbmGyQBuL
-         IRlEkdFZTEesfVyWr/bu9XaXGiHQ6sgouGfXB2Fso+FfiHEgxxY6UPY7vmDCUbgXh0U5
-         SFYW16TykYvjQ4w2jIR6pwRpNkwljCcZRf7y0=
-Received: by 10.101.175.37 with SMTP id c37mr2172785anp.56.1272430913191;
-        Tue, 27 Apr 2010 22:01:53 -0700 (PDT)
-Received: from dd_xps.caveonetworks.com (adsl-67-127-190-169.dsl.pltn13.pacbell.net [67.127.190.169])
-        by mx.google.com with ESMTPS id 26sm61326763anx.13.2010.04.27.22.01.51
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=xjL9guklraw6kTxfciqA3HLWe1EiN541IAMRnWoACHrCJCN69dkum3DmURUadhzDmr
+         Y96kVVDNN+J3SFAQ6lNnwoDfwrGN/xZUcMR8fEtf6izuLjeGR641SgME7Ip5t9WU443M
+         tlGSpDZ5LPdOvARHWvJKL9D87o3JWigGlvOZ8=
+Received: by 10.140.57.16 with SMTP id f16mr1221532rva.15.1272455685694;
+        Wed, 28 Apr 2010 04:54:45 -0700 (PDT)
+Received: from localhost.localdomain ([114.84.90.248])
+        by mx.google.com with ESMTPS id 23sm1923736ywh.12.2010.04.28.04.54.41
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 27 Apr 2010 22:01:52 -0700 (PDT)
-Message-ID: <4BD7C13D.6060609@gmail.com>
-Date:   Tue, 27 Apr 2010 22:01:49 -0700
-From:   David Daney <david.s.daney@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc11 Thunderbird/3.0.4
-MIME-Version: 1.0
-To:     "wilbur.chan" <wilbur512@gmail.com>
-CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>
-Subject: Re: [octeon]segment without execution priviledge,causing system down.
-References: <r2pe997b7421004271829rffc1e685ic649ce3b53325271@mail.gmail.com>
-In-Reply-To: <r2pe997b7421004271829rffc1e685ic649ce3b53325271@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <david.s.daney@gmail.com>
+        Wed, 28 Apr 2010 04:54:45 -0700 (PDT)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     ralf@linux-mips.org, ddaney@caviumnetworks.com,
+        linux-mips@linux-mips.org
+Cc:     dengcheng.zhu@gmail.com
+Subject: [PATCH] Perf-tool/MIPS: support cross compiling of tools/perf for MIPS
+Date:   Wed, 28 Apr 2010 19:54:34 +0800
+Message-Id: <1272455674-4725-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.6.3.3
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26492
+X-archive-position: 26493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.s.daney@gmail.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 04/27/2010 06:29 PM, wilbur.chan wrote:
-> I'm using a modified kernel version derived from 2.6.21.7,and the cpu
-> is octeon cn5860. Strangely I found that , when executing
->
-> some instruction in  un-executable segment, the system will hang on,
-> together with console  down, and could not response to ping
->
-> command.
->    
-[...]
-> Any one knows why this happened? Thanks
->    
+With the kernel facility of Linux performance counters, we want the user
+level tool tools/perf to be cross compiled for MIPS platform. To do this,
+we need to include unistd.h, add rmb() and cpu_relax() in perf.h.
 
-I think I know.
+Your review comments are especially required for the definition of rmb():
+In perf.h, we need to have a proper rmb() for _all_ MIPS platforms. And
+we don't have CONFIG_* things for use in here. Looking at barrier.h,
+rmb() goes into barrier() and __sync() for CAVIUM OCTEON and other CPUs,
+respectively. What's more, __sync() has different versions as well.
+Referring to BARRIER() in dump_tlb.c, I propose the "common" definition
+for perf tool rmb() in this patch. Do you have any comments?
 
-There is a bug in your kernel.  Since execute inhibit support was not 
-added to the upstream kernel until very recently, we must assume you got 
-your kernel from some vendor.  You could either ask the vendor for a 
-fix, or back port it yourself from:
+In addition, for testing the kernel part code I sent several days
+ago, I was using the "particular" rmb() version for 24K/34K/74K cores:
 
-http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=6dd9344cfc41bcc60a01cdc828cb278be7a10e01
+#define rmb()           asm volatile(                           \
+                                ".set   push\n\t"               \
+                                ".set   noreorder\n\t"          \
+                                ".set   mips2\n\t"              \
+                                "sync\n\t"                      \
+                                ".set   pop"                    \
+                                : /* no output */               \
+                                : /* no input */                \
+                                : "memory")
 
-David Daney
+This is the definition of __sync() for CONFIG_CPU_HAS_SYNC.
+
+
+Thanks,
+
+Deng-Cheng
+
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+---
+ tools/perf/perf.h |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+diff --git a/tools/perf/perf.h b/tools/perf/perf.h
+index 6fb379b..cd05284 100644
+--- a/tools/perf/perf.h
++++ b/tools/perf/perf.h
+@@ -69,6 +69,18 @@
+ #define cpu_relax()	asm volatile("":::"memory")
+ #endif
+ 
++#ifdef __mips__
++#include "../../arch/mips/include/asm/unistd.h"
++#define rmb()		asm volatile(					\
++				".set	noreorder\n\t"			\
++				"nop;nop;nop;nop;nop;nop;nop\n\t"	\
++				".set	reorder"			\
++				: /* no output */			\
++				: /* no input */			\
++				: "memory")
++#define cpu_relax()	asm volatile("" ::: "memory")
++#endif
++
+ #include <time.h>
+ #include <unistd.h>
+ #include <sys/types.h>
+-- 
+1.7.0.4

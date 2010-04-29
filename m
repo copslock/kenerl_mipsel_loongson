@@ -1,65 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Apr 2010 12:24:43 +0200 (CEST)
-Received: from mail-gx0-f228.google.com ([209.85.217.228]:51098 "EHLO
-        mail-gx0-f228.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492434Ab0D2KYk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Apr 2010 12:24:40 +0200
-Received: by gxk28 with SMTP id 28so67505gxk.7
-        for <multiple recipients>; Thu, 29 Apr 2010 03:24:33 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Apr 2010 13:56:50 +0200 (CEST)
+Received: from mail-yw0-f187.google.com ([209.85.211.187]:52715 "EHLO
+        mail-yw0-f187.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492653Ab0D2L4q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Apr 2010 13:56:46 +0200
+Received: by ywh17 with SMTP id 17so642608ywh.22
+        for <linux-mips@linux-mips.org>; Thu, 29 Apr 2010 04:56:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=eFmv7vlTv7r8aHuvn1l3Qj2cfeaAKM4+5N+OlxeymLw=;
-        b=A50O7CNRiL5Xlo+9lhVhonpn7dqfAJNuQo6FAbX2kOduNBeK3tvc9s4BDBu996yJ51
-         TZPQmn76CQUJRqc6KoHhjZVmo1XF1IBzV4sw14ruaRzkBguhHl33iFCr97vZdDLLKYaL
-         DL7lP1HTtzdoVT/4KSm7KEf7p68onQfp0CbS0=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=cRjlfHseE4Krv82WBHLCnjw+qPRoBHJ3axjpqRwV2bY=;
+        b=PpyqDbnVyC6QB3kHnnjhLn2uXJ1gF1XZDuwqcmWgHeSRxsDyHUnC9O96KnGcg/2dgp
+         6dPrQxLyTM3P1JrTR++iuDz6Qb1QoMeP/0/gU5QY2Mf2IreStbO95wpeuTeMWnrhP3TI
+         I+ZmMh+5X3ehZ9Qhes+m9/0n60z5LRoxIaHOs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=OD3+dFk67do1HLioL47/PeoKrszbHRBqVCxnNwGO2AZP9nMyHjbWGVfCM9sc9IABk1
-         B4KOm9TMPKrqPYbLTQRIfed9QLkbOQAL/uRTVREKr8AWn7mFpsym/V5Xyain0AXlJnMP
-         0OC7dcTnN44ee1/WI/iG23m3XFrT440SmK2WE=
-MIME-Version: 1.0
-Received: by 10.151.59.18 with SMTP id m18mr746133ybk.194.1272536672852; Thu, 
-        29 Apr 2010 03:24:32 -0700 (PDT)
-Received: by 10.150.122.11 with HTTP; Thu, 29 Apr 2010 03:24:32 -0700 (PDT)
-In-Reply-To: <1272514212.24709.18.camel@localhost>
-References: <1272468077-12292-1-git-send-email-wuzhangjin@gmail.com>
-         <o2h1b4d75291004282029m19d46c01hb44bab3893395bae@mail.gmail.com>
-         <1272514212.24709.18.camel@localhost>
-Date:   Thu, 29 Apr 2010 18:24:32 +0800
-Message-ID: <m2x1b4d75291004290324t37d6cffz2b4acc02ad199b13@mail.gmail.com>
-Subject: Re: [PATCH] Loongson2: add a primary perf support (not applicable)
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     wuzhangjin@gmail.com
-Cc:     loongson-dev <loongson-dev@googlegroups.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Zhang Le <r0bertz@gentoo.org>, yajin <yajinzhou@vm-kernel.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dengcheng.zhu@gmail.com>
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=a51tN13gzAbbS1FRU09sWB4L2IXpaHVcL+gNFgSEbSHxPt96QnzFbmrn1VOnnxBsQ1
+         lB1PHDb2poSe5apVwGUUdJuDXwLLaABZp+avlTJehsuHcxn99q8gE8JloCFS/5kf/Szh
+         Ifss4kByfhn72bWoYI7o5NSNH6/HccpA8dsRE=
+Received: by 10.101.202.17 with SMTP id e17mr4259768anq.175.1272542196300;
+        Thu, 29 Apr 2010 04:56:36 -0700 (PDT)
+Received: from [192.168.2.218] ([202.201.14.140])
+        by mx.google.com with ESMTPS id 22sm738821iwn.12.2010.04.29.04.56.33
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 29 Apr 2010 04:56:34 -0700 (PDT)
+Subject: Re: [PATCH] arch/mips/loongson/common/machtype.c: Fix typo
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Arnaud Patard <apatard@mandriva.com>
+Cc:     linux-mips@linux-mips.org
+In-Reply-To: <m3y6g6wpex.fsf@anduin.mandriva.com>
+References: <m3y6g6wpex.fsf@anduin.mandriva.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Thu, 29 Apr 2010 19:56:29 +0800
+Message-ID: <1272542189.30655.131.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26523
+X-archive-position: 26524
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> BTW: After comparing this patch and your
-> arch/mips/kernel/perf_event_mipsxx.c, perhaps we can share more common
-> functions, such as hw_perf_event_destroy(), hw_perf_enable(),
-> hw_perf_disable() and handle_associated_event()...
-hw_perf_event_destroy(): OK, if reset_counters() will be also
-implemented in non-mipsxx.
-hw_perf_enable()/hw_perf_disable(): OK. Initially I thought there
-could be different implementations for these 2 functions in non-mipsxx
-depending on the very different perf control regs and the use of
-saved_ctrl. But you are right, we can, and had better to move these
-up.
-handle_associated_event(): OK.
+On Thu, 2010-04-29 at 11:58 +0200, Arnaud Patard wrote:
+> The gdium name string contains an obvious typo. It's not "gidum" but
+> "gdium".
+> 
 
-Thanks! I'll apply these in v3.
+Thanks, will apply this patch and the others into the rt4ls[1] and
+linux-loongson-community[2] repositories.
+
+Regards,
+	Wu Zhangjin
+
+[1] http://dev.lemote.com/code/rt4ls
+[2] http://dev.lemote.com/code/linux-loongson-community
+
+> Signed-off-by: Arnaud Patard <apatard@mandriva.com>
+> ---
+> differences between files attachment (gdium_fix_name.patch)
+> Index: linux-2.6/arch/mips/loongson/common/machtype.c
+> ===================================================================
+> --- linux-2.6.orig/arch/mips/loongson/common/machtype.c
+> +++ linux-2.6/arch/mips/loongson/common/machtype.c
+> @@ -24,7 +24,7 @@ static const char *system_types[] = {
+>  	[MACH_LEMOTE_FL2F]              "lemote-fuloong-2f-box",
+>  	[MACH_LEMOTE_ML2F7]             "lemote-mengloong-2f-7inches",
+>  	[MACH_LEMOTE_YL2F89]            "lemote-yeeloong-2f-8.9inches",
+> -	[MACH_DEXXON_GDIUM2F10]         "dexxon-gidum-2f-10inches",
+> +	[MACH_DEXXON_GDIUM2F10]         "dexxon-gdium-2f",
+>  	[MACH_LEMOTE_NAS]		"lemote-nas-2f",
+>  	[MACH_LEMOTE_LL2F]              "lemote-lynloong-2f",
+>  	[MACH_LOONGSON_END]             NULL,

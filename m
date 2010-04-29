@@ -1,64 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Apr 2010 03:52:14 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:15661 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491166Ab0D2BwK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Apr 2010 03:52:10 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4bd8e6560000>; Wed, 28 Apr 2010 18:52:22 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 28 Apr 2010 18:52:06 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 28 Apr 2010 18:52:06 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.3) with ESMTP id o3T1q2rl001969;
-        Wed, 28 Apr 2010 18:52:02 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o3T1q1RV001968;
-        Wed, 28 Apr 2010 18:52:01 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Remove leftover declarations.
-Date:   Wed, 28 Apr 2010 18:51:59 -0700
-Message-Id: <1272505919-1932-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.6.1
-X-OriginalArrivalTime: 29 Apr 2010 01:52:06.0650 (UTC) FILETIME=[9291D5A0:01CAE73E]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Apr 2010 04:13:41 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:46132 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490966Ab0D2CNg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 29 Apr 2010 04:13:36 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o3T2DSNq004657;
+        Thu, 29 Apr 2010 03:13:29 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o3T2DQUl004655;
+        Thu, 29 Apr 2010 03:13:26 +0100
+Date:   Thu, 29 Apr 2010 03:13:25 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Remove leftover declarations.
+Message-ID: <20100429021323.GA32586@linux-mips.org>
+References: <1272505919-1932-1-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1272505919-1932-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26512
+X-archive-position: 26513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/mm/tlbex.c |    9 ---------
- 1 files changed, 0 insertions(+), 9 deletions(-)
+On Wed, Apr 28, 2010 at 06:51:59PM -0700, David Daney wrote:
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 5121a5b..e981277 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1003,15 +1003,6 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
- }
- 
- /*
-- * TLB load/store/modify handlers.
-- *
-- * Only the fastpath gets synthesized at runtime, the slowpath for
-- * do_page_fault remains normal asm.
-- */
--extern void tlb_do_page_fault_0(void);
--extern void tlb_do_page_fault_1(void);
--
--/*
-  * 128 instructions for the fastpath handler is generous and should
-  * never be exceeded.
-  */
--- 
-1.6.6.1
+Thanks, applied.
+
+  Ralf

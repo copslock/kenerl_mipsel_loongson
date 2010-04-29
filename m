@@ -1,270 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Apr 2010 11:59:04 +0200 (CEST)
-Received: from mx1.moondrake.net ([212.85.150.166]:41352 "EHLO
-        mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1492579Ab0D2J5C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Apr 2010 11:57:02 +0200
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-        id ACC6627401A; Thu, 29 Apr 2010 11:57:01 +0200 (CEST)
-Received: from office-abk.mandriva.com (unknown [195.7.104.248])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.mandriva.com (Postfix) with ESMTP id 70837274012
-        for <linux-mips@linux-mips.org>; Thu, 29 Apr 2010 11:57:00 +0200 (CEST)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-        by office-abk.mandriva.com (Postfix) with ESMTP id 0CCD584250
-        for <linux-mips@linux-mips.org>; Thu, 29 Apr 2010 12:14:41 +0200 (CEST)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-        by anduin.mandriva.com (Postfix) with ESMTP id 43BFAFF855
-        for <linux-mips@linux-mips.org>; Thu, 29 Apr 2010 11:58:54 +0200 (CEST)
-From:   Arnaud Patard <apatard@mandriva.com>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] loongson 2f: Add gpio/gpioilb support
-Organization: Mandriva
-Date:   Thu, 29 Apr 2010 11:58:54 +0200
-Message-ID: <m3sk6ewpep.fsf@anduin.mandriva.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Apr 2010 12:24:43 +0200 (CEST)
+Received: from mail-gx0-f228.google.com ([209.85.217.228]:51098 "EHLO
+        mail-gx0-f228.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492434Ab0D2KYk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Apr 2010 12:24:40 +0200
+Received: by gxk28 with SMTP id 28so67505gxk.7
+        for <multiple recipients>; Thu, 29 Apr 2010 03:24:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=eFmv7vlTv7r8aHuvn1l3Qj2cfeaAKM4+5N+OlxeymLw=;
+        b=A50O7CNRiL5Xlo+9lhVhonpn7dqfAJNuQo6FAbX2kOduNBeK3tvc9s4BDBu996yJ51
+         TZPQmn76CQUJRqc6KoHhjZVmo1XF1IBzV4sw14ruaRzkBguhHl33iFCr97vZdDLLKYaL
+         DL7lP1HTtzdoVT/4KSm7KEf7p68onQfp0CbS0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=OD3+dFk67do1HLioL47/PeoKrszbHRBqVCxnNwGO2AZP9nMyHjbWGVfCM9sc9IABk1
+         B4KOm9TMPKrqPYbLTQRIfed9QLkbOQAL/uRTVREKr8AWn7mFpsym/V5Xyain0AXlJnMP
+         0OC7dcTnN44ee1/WI/iG23m3XFrT440SmK2WE=
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="=-=-="
-Return-Path: <arnaud.patard@mandriva.com>
+Received: by 10.151.59.18 with SMTP id m18mr746133ybk.194.1272536672852; Thu, 
+        29 Apr 2010 03:24:32 -0700 (PDT)
+Received: by 10.150.122.11 with HTTP; Thu, 29 Apr 2010 03:24:32 -0700 (PDT)
+In-Reply-To: <1272514212.24709.18.camel@localhost>
+References: <1272468077-12292-1-git-send-email-wuzhangjin@gmail.com>
+         <o2h1b4d75291004282029m19d46c01hb44bab3893395bae@mail.gmail.com>
+         <1272514212.24709.18.camel@localhost>
+Date:   Thu, 29 Apr 2010 18:24:32 +0800
+Message-ID: <m2x1b4d75291004290324t37d6cffz2b4acc02ad199b13@mail.gmail.com>
+Subject: Re: [PATCH] Loongson2: add a primary perf support (not applicable)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     wuzhangjin@gmail.com
+Cc:     loongson-dev <loongson-dev@googlegroups.com>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Zhang Le <r0bertz@gentoo.org>, yajin <yajinzhou@vm-kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26522
+X-archive-position: 26523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---=-=-=
+> BTW: After comparing this patch and your
+> arch/mips/kernel/perf_event_mipsxx.c, perhaps we can share more common
+> functions, such as hw_perf_event_destroy(), hw_perf_enable(),
+> hw_perf_disable() and handle_associated_event()...
+hw_perf_event_destroy(): OK, if reset_counters() will be also
+implemented in non-mipsxx.
+hw_perf_enable()/hw_perf_disable(): OK. Initially I thought there
+could be different implementations for these 2 functions in non-mipsxx
+depending on the very different perf control regs and the use of
+saved_ctrl. But you are right, we can, and had better to move these
+up.
+handle_associated_event(): OK.
 
-
-This patch is adding support for the 4 GPIO availables on the ST LS2F
-cpus.
-
-Signed-off-by: Arnaud Patard <apatard@mandriva.com>
----
-
---=-=-=
-Content-Type: text/x-patch
-Content-Disposition: inline; filename=stls2f_gpio.patch
-
- arch/mips/Kconfig                        |    2 	2 +	0 -	0 !
- arch/mips/include/asm/mach-lemote/gpio.h |   33 	33 +	0 -	0 !
- arch/mips/loongson/common/Makefile           |    2 	2 +	0 -	0 !
- arch/mips/loongson/common/gpio.c             |  128 	128 +	0 -	0 !
- arch/mips/loongson/common/platform.c         |   25 	25 +	0 -	0 !
- 5 files changed, 190 insertions(+)
-
-Index: linux-2.6/arch/mips/Kconfig
-===================================================================
---- linux-2.6.orig/arch/mips/Kconfig
-+++ linux-2.6/arch/mips/Kconfig
-@@ -1073,6 +1073,8 @@ config CPU_LOONGSON2F
- 	bool "Loongson 2F"
- 	depends on SYS_HAS_CPU_LOONGSON2F
- 	select CPU_LOONGSON2
-+	select GENERIC_GPIO
-+	select ARCH_REQUIRE_GPIOLIB
- 	help
- 	  The Loongson 2F processor implements the MIPS III instruction set
- 	  with many extensions.
-Index: linux-2.6/arch/mips/loongson/common/gpio.c
-===================================================================
---- /dev/null
-+++ linux-2.6/arch/mips/loongson/common/gpio.c
-@@ -0,0 +1,140 @@
-+/*
-+ *  STLS2F GPIO Support
-+ *
-+ *  Copyright (c) 2008 Richard Liu,  STMicroelectronics  <richard.liu@st.com>
-+ *  Copyright (c) 2008-2010 Arnaud Patard <apatard@mandriva.com>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/spinlock.h>
-+#include <linux/err.h>
-+#include <asm/types.h>
-+#include <loongson.h>
-+#include <linux/gpio.h>
-+
-+#define STLS2F_N_GPIO		4
-+#define STLS2F_GPIO_IN_OFFSET	16
-+
-+static DEFINE_SPINLOCK(gpio_lock);
-+
-+int gpio_get_value(unsigned gpio)
-+{
-+	u32 val;
-+	u32 mask;
-+
-+	if (gpio >= STLS2F_N_GPIO)
-+		return __gpio_get_value(gpio);
-+
-+	mask = 1 << (gpio + STLS2F_GPIO_IN_OFFSET);
-+	spin_lock(&gpio_lock);
-+	val = LOONGSON_GPIODATA;
-+	spin_unlock(&gpio_lock);
-+
-+	return ((val & mask) != 0);
-+}
-+EXPORT_SYMBOL(gpio_get_value);
-+
-+void gpio_set_value(unsigned gpio, int state)
-+{
-+	u32 val;
-+	u32 mask;
-+
-+	if (gpio >= STLS2F_N_GPIO) {
-+		__gpio_set_value(gpio, state);
-+		return ;
-+	}
-+
-+	mask = 1 << gpio;
-+
-+	spin_lock(&gpio_lock);
-+	val = LOONGSON_GPIODATA;
-+	if (state)
-+		val |= mask;
-+	else
-+		val &= (~mask);
-+	LOONGSON_GPIODATA = val;
-+	spin_unlock(&gpio_lock);
-+}
-+EXPORT_SYMBOL(gpio_set_value);
-+
-+int gpio_cansleep(unsigned gpio)
-+{
-+	if (gpio < STLS2F_N_GPIO)
-+		return 0;
-+	else
-+		return __gpio_cansleep(gpio);
-+}
-+EXPORT_SYMBOL(gpio_cansleep);
-+
-+static int ls2f_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
-+{
-+	u32 temp;
-+	u32 mask;
-+
-+	if (gpio >= STLS2F_N_GPIO)
-+		return -EINVAL;
-+
-+	spin_lock(&gpio_lock);
-+	mask = 1 << gpio;
-+	temp = LOONGSON_GPIOIE;
-+	temp |= mask;
-+	LOONGSON_GPIOIE = temp;
-+	spin_unlock(&gpio_lock);
-+
-+	return 0;
-+}
-+
-+static int ls2f_gpio_direction_output(struct gpio_chip *chip,
-+		unsigned gpio, int level)
-+{
-+	u32 temp;
-+	u32 mask;
-+
-+	if (gpio >= STLS2F_N_GPIO)
-+		return -EINVAL;
-+
-+	gpio_set_value(gpio, level);
-+	spin_lock(&gpio_lock);
-+	mask = 1 << gpio;
-+	temp = LOONGSON_GPIOIE;
-+	temp &= (~mask);
-+	LOONGSON_GPIOIE = temp;
-+	spin_unlock(&gpio_lock);
-+
-+	return 0;
-+}
-+
-+static int ls2f_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-+{
-+	return gpio_get_value(gpio);
-+}
-+
-+static void ls2f_gpio_set_value(struct gpio_chip *chip,
-+		unsigned gpio, int value)
-+{
-+	gpio_set_value(gpio, value);
-+}
-+
-+static struct gpio_chip ls2f_chip = {
-+	.label                  = "ls2f",
-+	.direction_input        = ls2f_gpio_direction_input,
-+	.get                    = ls2f_gpio_get_value,
-+	.direction_output       = ls2f_gpio_direction_output,
-+	.set                    = ls2f_gpio_set_value,
-+	.base                   = 0,
-+	.ngpio                  = STLS2F_N_GPIO,
-+};
-+
-+static int __init ls2f_gpio_setup(void)
-+{
-+	return gpiochip_add(&ls2f_chip);
-+}
-+arch_initcall(ls2f_gpio_setup);
-+
-Index: linux-2.6/arch/mips/loongson/common/Makefile
-===================================================================
---- linux-2.6.orig/arch/mips/loongson/common/Makefile
-+++ linux-2.6/arch/mips/loongson/common/Makefile
-@@ -4,6 +4,7 @@
- 
- obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
-     pci.o bonito-irq.o mem.o machtype.o platform.o
-+obj-$(CONFIG_GENERIC_GPIO) += gpio.o
- 
- #
- # Serial port support
-Index: linux-2.6/arch/mips/include/asm/mach-loongson/gpio.h
-===================================================================
---- /dev/null
-+++ linux-2.6/arch/mips/include/asm/mach-loongson/gpio.h
-@@ -0,0 +1,35 @@
-+/*
-+ * STLS2F GPIO Support
-+ *
-+ * Copyright (c) 2008  Richard Liu, STMicroelectronics <richard.liu@st.com>
-+ * Copyright (c) 2008-2010  Arnaud Patard <apatard@mandriva.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
-+
-+#ifndef	__STLS2F_GPIO_H
-+#define	__STLS2F_GPIO_H
-+
-+#include <asm-generic/gpio.h>
-+
-+extern void gpio_set_value(unsigned gpio, int value);
-+extern int gpio_get_value(unsigned gpio);
-+extern int gpio_cansleep(unsigned gpio);
-+
-+/* The chip can do interrupt
-+ * but it has not been tested and doc not clear
-+ */
-+static inline int gpio_to_irq(int gpio)
-+{
-+	return -EINVAL;
-+}
-+
-+static inline int irq_to_gpio(int gpio)
-+{
-+	return -EINVAL;
-+}
-+
-+#endif				/* __STLS2F_GPIO_H */
-
---=-=-=--
+Thanks! I'll apply these in v3.

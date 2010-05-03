@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 May 2010 22:39:58 +0200 (CEST)
-Received: from gateway09.websitewelcome.com ([64.5.50.3]:58294 "HELO
-        gateway09.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492081Ab0ECUjy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 May 2010 22:39:54 +0200
-Received: (qmail 25047 invoked from network); 3 May 2010 20:42:48 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 May 2010 22:47:49 +0200 (CEST)
+Received: from gateway06.websitewelcome.com ([67.18.55.3]:49384 "HELO
+        gateway06.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1492086Ab0ECUrp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 May 2010 22:47:45 +0200
+Received: (qmail 4716 invoked from network); 3 May 2010 20:51:36 -0000
 Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway09.websitewelcome.com with SMTP; 3 May 2010 20:42:48 -0000
+  by gateway06.websitewelcome.com with SMTP; 3 May 2010 20:51:36 -0000
 DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
         h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=Q4Chmt9EMKtS/j8qeQMBhY/sdEVmiIU88sHzOYWZcNUsDKT9gOwO8kyG9PITt9kLgFd6ZoI45HnTiYYuNsKs/h6GgBFA4y8P45ULv7RyCNZmyNgoNQ9VW06hFu4zFpn4;
-Received: from 216-239-45-4.google.com ([216.239.45.4]:40731 helo=epiktistes.mtv.corp.google.com)
+        b=SqLlIE6wVtHL6P/lfTCgpPIsJxbaQlcgEEzbBU4BWNIQKozwI0OPNJAHSRTk9n1XwwVfhtacP3Rw4IWP21xJ8aVtriL1dg/aZazDXgy2+fqcgd8cK7otH8gYv9EtFS3F;
+Received: from 216-239-45-4.google.com ([216.239.45.4]:9164 helo=epiktistes.mtv.corp.google.com)
         by gator750.hostgator.com with esmtpa (Exim 4.69)
         (envelope-from <kevink@paralogos.com>)
-        id 1O92QR-0001GI-9x; Mon, 03 May 2010 15:39:35 -0500
-Message-ID: <4BDF3490.40606@paralogos.com>
-Date:   Mon, 03 May 2010 13:39:44 -0700
+        id 1O92Y9-0004XK-1B; Mon, 03 May 2010 15:47:33 -0500
+Message-ID: <4BDF366E.5000501@paralogos.com>
+Date:   Mon, 03 May 2010 13:47:42 -0700
 From:   "Kevin D. Kissell" <kevink@paralogos.com>
 User-Agent: Thunderbird 2.0.0.24 (X11/20100317)
 MIME-Version: 1.0
@@ -34,13 +34,26 @@ Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26549
+X-archive-position: 26550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
+
+Sorry about my previous message having escaped with no value added.
+
+I think you need to look at just what it is that your feclearexcept() 
+does.  From the strace information, it looks as if it may be that the 
+FPU emulator is erroneously throwing an exception in response to some 
+manipulation of the emulated FPU registers by feclearexcept(), so that 
+it's taking a second FP exception within the signal handler.  That's the 
+simplest explanation for the macroscopic behavior, anyway.
+
+          Regards,
+
+          Kevin K.
 
 Shane McDonald wrote:
 > I have run into some strange behaviour involving using the FPU

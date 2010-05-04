@@ -1,90 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 May 2010 04:04:28 +0200 (CEST)
-Received: from gateway05.websitewelcome.com ([69.93.179.12]:47573 "HELO
-        gateway05.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492540Ab0EDCEX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 May 2010 04:04:23 +0200
-Received: (qmail 26250 invoked from network); 4 May 2010 02:06:29 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway05.websitewelcome.com with SMTP; 4 May 2010 02:06:29 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=woJOuJBQaK+J8aUq0puw0ZRYAFcHkF3lC9LNLJkbza8f8VlU2oAe2juzIsZRS2nZv/dBxDPZPqnMwx3OkYEXR0WL2+aADzC2CJuimEGiFr8lSQVw/iOV2vuueHnELRAy;
-Received: from 216-239-45-4.google.com ([216.239.45.4]:19275 helo=epiktistes.mtv.corp.google.com)
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1O97UE-0000qg-5m; Mon, 03 May 2010 21:03:50 -0500
-Message-ID: <4BDF8092.1060401@paralogos.com>
-Date:   Mon, 03 May 2010 19:04:02 -0700
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100317)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 May 2010 06:36:00 +0200 (CEST)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:52525 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491171Ab0EDEf4 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 4 May 2010 06:35:56 +0200
+Received: by vws8 with SMTP id 8so796972vws.36
+        for <linux-mips@linux-mips.org>; Mon, 03 May 2010 21:35:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=TBYnzKy539UZklv2GxCIIwemDLHJTVl5jXKC+SZBBJ0=;
+        b=Ig1pjOLLby9vunFRaL9W3XL5cFtsDe7+jF4pZsMJKnnRh4Uva+vT2ukdOxU1BtjaCk
+         +SRN/eOZVyhi4M0uhZkGbqSaNGoOoXxxkKr02+W974k9O2jfSBFosLAyvYqCv2byeXyv
+         lKCiJdpbiB4QP4zNPlOLCIpIntfS0GFhnxWxc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=hfvYxiQ4iuaRf04jJxPwtQvx6uTkubWIo6r25WRq8vgLcVnrADH8QlRHPxHUgt9xC4
+         T/hrkBqdipJzIidg0OlFvpinBAeldsNv5nBQ77kVyA5zeJwX0GcsCts8dDyPjwHqWkRX
+         PbEm95Yb04MEyIuGo0ranoWuZNfJXGPvShIn8=
 MIME-Version: 1.0
-To:     Shane McDonald <mcdonald.shane@gmail.com>
-CC:     linux-mips@linux-mips.org
+Received: by 10.220.63.10 with SMTP id z10mr10956827vch.70.1272947749377; Mon, 
+        03 May 2010 21:35:49 -0700 (PDT)
+Received: by 10.220.19.212 with HTTP; Mon, 3 May 2010 21:35:49 -0700 (PDT)
+In-Reply-To: <n2pb2b2f2321005032049h56cd72ceh3ac7120c547b59c5@mail.gmail.com>
+References: <E1O8lDn-0000Sk-86@localhost> <4BDF366E.5000501@paralogos.com>
+         <k2hb2b2f2321005031843l87f39f36h960153cae3ec5020@mail.gmail.com>
+         <4BDF8092.1060401@paralogos.com>
+         <n2pb2b2f2321005032049h56cd72ceh3ac7120c547b59c5@mail.gmail.com>
+Date:   Mon, 3 May 2010 22:35:49 -0600
+Message-ID: <n2rb2b2f2321005032135ze807a2aft8811a7937288de53@mail.gmail.com>
 Subject: Re: Unexpected behaviour when catching SIGFPE on FPU-less system
-References: <E1O8lDn-0000Sk-86@localhost> <4BDF366E.5000501@paralogos.com> <k2hb2b2f2321005031843l87f39f36h960153cae3ec5020@mail.gmail.com>
-In-Reply-To: <k2hb2b2f2321005031843l87f39f36h960153cae3ec5020@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+To:     "Kevin D. Kissell" <kevink@paralogos.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26552
+X-archive-position: 26553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Shane McDonald wrote:
-> Hi Kevin:
->
-> On Mon, May 3, 2010 at 2:47 PM, Kevin D. Kissell <kevink@paralogos.com> wrote:
->   
->> Sorry about my previous message having escaped with no value added.
->>
->> I think you need to look at just what it is that your feclearexcept() does.
->>  From the strace information, it looks as if it may be that the FPU emulator
->> is erroneously throwing an exception in response to some manipulation of the
->> emulated FPU registers by feclearexcept(), so that it's taking a second FP
->> exception within the signal handler.  That's the simplest explanation for
->> the macroscopic behavior, anyway.
->>
->>         Regards,
->>
->>         Kevin K.
->>     
->
-> Commenting out the feclearexcept() line gives the same result:
->
->      old_mmap(NULL, 65536, PROT_READ|PROT_WRITE,
-> MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x2ace9000
->      write(1, "About to try calculation\n"..., 25About to try calculation
->      ) = 25
->      --- SIGFPE (Floating point exception) @ 0 (0) ---
->      --- SIGFPE (Floating point exception) @ 0 (0) ---
->      +++ killed by SIGFPE +++
->
-> So, it must not be the feclearexcept() causing the problem.
->   
-Well, that nested floating point exception must be coming from 
-*somewhere*.  If it's not library code being betrayed by the emulator, 
-perhaps some kernel-mode code is being invoked which is carelessly 
-assuming the existence of a hardware FPU and throwing us back into the 
-exception handler. If it was me, at this point, I'd turn on some kind of 
-logging of FP exception PCs to see where that second one is coming from.
+On Mon, May 3, 2010 at 9:49 PM, Shane McDonald <mcdonald.shane@gmail.com> wrote:
+> Looking at env[0], I see that the __fpc_csr field has a value of 1024,
+> indicating a divide-by-zero.  As soon as that ctc1 instruction
+> is executed, the exception is raised.  I guess that makes
+> sense, but I don't understand why __fpc_csr has a value of 1024.
+> When I step through the call to setjmp(), it gets set to a value of 0.
+> In longjmp(), every other field in env[0] has the value that it was
+> set to in the call to setjmp().
 
-There was a time when I had the necessary equipment on my desk to hunt 
-this down and kill it, out of a lingering sense of responsibility for 
-having bolted that FPE into the kernel way back when.  I no longer have 
-that setup, so I'm free to speculate. ;o)
+Wait, I take that back -- I was looking at the wrong env[0] variable!
+I can see that __fpc_csr actually does have a value of 1024 when
+I call setjmp(), and that's why longjmp() is setting the FCSR
+register to indicate divide-by-zero.  If I comment out my call to
+feenableexcept( FE_DIVBYZERO ), it is set to 0; if I include that call,
+it is set to 1024.
 
-          Regards,
+Looking further, I also see that I confused the Cause bits and the
+Enable bits of the FCSR -- the Enable divide-by-zero bit is set,
+not the Cause bit.  Clearly, the call to feenableexcept() must
+be setting that bit.  But, it no longer makes sense that an exception
+is raised when the FCSR register is restored to the value 1024.
 
-          Kevin K.
+Shane

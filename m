@@ -1,65 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 May 2010 09:13:30 +0200 (CEST)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:41122 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491874Ab0EDHN0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 May 2010 09:13:26 +0200
-Received: by vws8 with SMTP id 8so856549vws.36
-        for <linux-mips@linux-mips.org>; Tue, 04 May 2010 00:13:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 May 2010 10:39:48 +0200 (CEST)
+Received: from mail-ww0-f49.google.com ([74.125.82.49]:65286 "EHLO
+        mail-ww0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491837Ab0EDIjl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 May 2010 10:39:41 +0200
+Received: by wwb39 with SMTP id 39so368395wwb.36
+        for <multiple recipients>; Tue, 04 May 2010 01:39:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=kgd/EWwl8vrQ42caOEectcX3bw7K21iGvt6Pd/kgBg0=;
-        b=pu3c/fWXlvnRGAOe7b1+6gXHPK5fHaNsW4qzEClubgpNWIG3EXVOWVIaSZN8fCYsr+
-         TAITcZb1YJYJWr/IN61e5CVUSqP9J5UXOhpsMtWBXhGm/mWGGvvShaIGO3tmkwetJTap
-         8E67g1/tDmkpFzHrCd80qZc+P4Imrr/nhkHzA=
+        h=domainkey-signature:received:received:sender:from:date:subject
+         :mime-version:x-uid:x-length:to:cc:content-type
+         :content-transfer-encoding:message-id;
+        bh=rbjRXH8tZ58nbX53qOfJTQnl2FUfIRwITprd9yxF9kY=;
+        b=VaOja2U8OPOyH1wOb7nEDFX5QXFR4JBhz0xXmSHX05iSrJU6Li8uLYlFaeWSiCLXb3
+         bCY2taP3DfjqIvKXVaY6GN0nhqRmzgJMjhUkIoxt8hLV7hRco7ywVA0dvs+2oqG3F2iQ
+         y0zrSKDRzhKOABuT1HQeOAv0E/AwXCh13MX3w=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=GztCAWYP73n77ENIcKwkvbFmXfYO9iN8AdBq02TmctcCKbzNXqX/L37J6SEQEp7tIc
-         ADa2U3GEpBUzDdg2XMLcri0XIiurJ1vbAvXF+n69bqvvVYPu+ZZmu0KhphVGSMbFeY3R
-         JauJ4QDs+SYhfMouVE345380FSvThwgVSch5I=
+        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
+         :content-type:content-transfer-encoding:message-id;
+        b=tXoo2ixt1LeZwbbTqo+8ZAE12Nq1fp+gsRFfkmXvvo8YQqAPYYEYGw7VBYl5c9wu2d
+         oxGf5UvucL/WAy41zbB9jeNTqdXmIDHKXs9f4YOPpKXfw5YhawV5TOc/3Prt9KFnuGyI
+         1sPq3U9j3JvV8s9Ur0WdxL0KY2m6r5z6fHbiE=
+Received: by 10.216.89.12 with SMTP id b12mr6793183wef.93.1272962376088;
+        Tue, 04 May 2010 01:39:36 -0700 (PDT)
+Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
+        by mx.google.com with ESMTPS id v59sm1939261wec.3.2010.05.04.01.39.34
+        (version=SSLv3 cipher=RC4-MD5);
+        Tue, 04 May 2010 01:39:35 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+Date:   Tue, 4 May 2010 10:38:57 +0200
+Subject: [PATCH -queue] BCM63xx: avoid namespace clash on GPIO_DIR_{IN,OUT}
 MIME-Version: 1.0
-Received: by 10.220.129.14 with SMTP id m14mr405120vcs.75.1272957200655; Tue, 
-        04 May 2010 00:13:20 -0700 (PDT)
-Received: by 10.220.19.212 with HTTP; Tue, 4 May 2010 00:13:20 -0700 (PDT)
-In-Reply-To: <m2rb2b2f2321005032356j854934d9v42a9e50683b085a8@mail.gmail.com>
-References: <E1O8lDn-0000Sk-86@localhost> <4BDF366E.5000501@paralogos.com>
-         <k2hb2b2f2321005031843l87f39f36h960153cae3ec5020@mail.gmail.com>
-         <4BDF8092.1060401@paralogos.com>
-         <n2pb2b2f2321005032049h56cd72ceh3ac7120c547b59c5@mail.gmail.com>
-         <n2rb2b2f2321005032135ze807a2aft8811a7937288de53@mail.gmail.com>
-         <m2rb2b2f2321005032356j854934d9v42a9e50683b085a8@mail.gmail.com>
-Date:   Tue, 4 May 2010 01:13:20 -0600
-Message-ID: <n2gb2b2f2321005040013ua827a45fq1299d682e5d817@mail.gmail.com>
-Subject: Re: Unexpected behaviour when catching SIGFPE on FPU-less system
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <mcdonald.shane@gmail.com>
+X-UID:  59
+X-Length: 2594
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201005041038.57783.ffainelli@freebox.fr>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26555
+X-archive-position: 26556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Sorry to the list for all the noise...
+This is too generic a name, so prefix it with BCM63XX_ to avoid potential
+namespace clashes when including <asm/gpio.h>.
 
-One final data point:
-
-On Tue, May 4, 2010 at 12:56 AM, Shane McDonald
-<mcdonald.shane@gmail.com> wrote:
-> When I'm inside my handler, I see the FCSR register has the value 0x8420,
-
-On a machine with an FPU, when I'm inside the handler, the FCSR register
-seems to have the value 0x400 (no Causes or Flags bits set),
-rather than the 0x8420 that the FP emulator has.
-
-Shane
+Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
+---
+diff --git a/arch/mips/bcm63xx/gpio.c b/arch/mips/bcm63xx/gpio.c
+index 315bc7f..f560fe7 100644
+--- a/arch/mips/bcm63xx/gpio.c
++++ b/arch/mips/bcm63xx/gpio.c
+@@ -91,7 +91,7 @@ static int bcm63xx_gpio_set_direction(struct gpio_chip *chip,
+ 
+ 	spin_lock_irqsave(&bcm63xx_gpio_lock, flags);
+ 	tmp = bcm_gpio_readl(reg);
+-	if (dir == GPIO_DIR_IN)
++	if (dir == BCM63XX_GPIO_DIR_IN)
+ 		tmp &= ~mask;
+ 	else
+ 		tmp |= mask;
+@@ -103,14 +103,14 @@ static int bcm63xx_gpio_set_direction(struct gpio_chip *chip,
+ 
+ static int bcm63xx_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
+ {
+-	return bcm63xx_gpio_set_direction(chip, gpio, GPIO_DIR_IN);
++	return bcm63xx_gpio_set_direction(chip, gpio, BCM63XX_GPIO_DIR_IN);
+ }
+ 
+ static int bcm63xx_gpio_direction_output(struct gpio_chip *chip,
+ 					 unsigned gpio, int value)
+ {
+ 	bcm63xx_gpio_set(chip, gpio, value);
+-	return bcm63xx_gpio_set_direction(chip, gpio, GPIO_DIR_OUT);
++	return bcm63xx_gpio_set_direction(chip, gpio, BCM63XX_GPIO_DIR_OUT);
+ }
+ 
+ 
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
+index 43d4da0..3999ec0 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
+@@ -20,7 +20,7 @@ static inline unsigned long bcm63xx_gpio_count(void)
+ 	}
+ }
+ 
+-#define GPIO_DIR_OUT	0x0
+-#define GPIO_DIR_IN	0x1
++#define BCM63XX_GPIO_DIR_OUT	0x0
++#define BCM63XX_GPIO_DIR_IN	0x1
+ 
+ #endif /* !BCM63XX_GPIO_H */

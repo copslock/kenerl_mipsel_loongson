@@ -1,90 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 May 2010 23:52:12 +0200 (CEST)
-Received: from gateway09.websitewelcome.com ([69.93.82.29]:59493 "HELO
-        gateway09.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492152Ab0EDVwJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 May 2010 23:52:09 +0200
-Received: (qmail 14289 invoked from network); 4 May 2010 21:55:13 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway09.websitewelcome.com with SMTP; 4 May 2010 21:55:13 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=AcCaa/e/Tmr3PuLkyBa92NB5xPEyotIvu7OGlhxT/z2wFW5sx8utmcYlkRHFyOVqpAI3xLAZeimOtpakCjKeL70AiLCV3ZBBGSHz4h29gKnMlHA+iFfr2kBrXCiKOaye;
-Received: from 216-239-45-4.google.com ([216.239.45.4]:19064 helo=epiktistes.mtv.corp.google.com)
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1O9Q1z-0002C2-0M; Tue, 04 May 2010 16:51:55 -0500
-Message-ID: <4BE09705.6030705@paralogos.com>
-Date:   Tue, 04 May 2010 14:52:05 -0700
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100317)
-MIME-Version: 1.0
-To:     Shane McDonald <mcdonald.shane@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Unexpected behaviour when catching SIGFPE on FPU-less system
-References: <E1O8lDn-0000Sk-86@localhost> <4BDF366E.5000501@paralogos.com>       <k2hb2b2f2321005031843l87f39f36h960153cae3ec5020@mail.gmail.com>        <4BDF8092.1060401@paralogos.com>        <n2pb2b2f2321005032049h56cd72ceh3ac7120c547b59c5@mail.gmail.com>        <n2rb2b2f2321005032135ze807a2aft8811a7937288de53@mail.gmail.com>        <m2rb2b2f2321005032356j854934d9v42a9e50683b085a8@mail.gmail.com>        <4BE00207.6030506@paralogos.com> <m2zb2b2f2321005040556g80eed954p7ac11e2cd05921c6@mail.gmail.com> <4BE0479E.6060506@paralogos.com>
-In-Reply-To: <4BE0479E.6060506@paralogos.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 May 2010 06:02:33 +0200 (CEST)
+Received: from mail-iw0-f177.google.com ([209.85.223.177]:56335 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491047Ab0EEEC1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 May 2010 06:02:27 +0200
+Received: by iwn7 with SMTP id 7so5636791iwn.24
+        for <multiple recipients>; Tue, 04 May 2010 21:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:received:to:subject
+         :message-id:from:date;
+        bh=/HktCbY8dS3hwuiuuFyaSgj9T2ZbceAXK6QENjaVjaM=;
+        b=EZgDyId6QiuCkIlgzJTMkmh6A1Y7WX4xLO7BAgXEMPt1ZDGX6Lgorh/obG1JhOG/2M
+         ogapWvHpObSKO+For0F2Rd94nB4ummjZLeXNZK1aUMXv6r8/TeeSGETkccMO0Qfh+Tes
+         814WOHrqolisuRf7JmJL1QjROfTi2Uzp7q7Ms=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=to:subject:message-id:from:date;
+        b=fmENg3NU8ZBOwRdJlRd5d7O/d65RlofMF97H4mEacg+b0jUjK5xAiMDmU0QDSZ3JSw
+         He2ECEY48Aecoo6QwstZO5cU864tLRy6F/98HbtcY40a2e6alAs507OyJCw7OAPNXeHo
+         6GKteJqXbZ8fQRVfTZrbpNcZTFkl2PHFyXNDo=
+Received: by 10.231.166.8 with SMTP id k8mr1497435iby.93.1273032141416;
+        Tue, 04 May 2010 21:02:21 -0700 (PDT)
+Received: from localhost ([207.47.250.203])
+        by mx.google.com with ESMTPS id 21sm5846176iwn.15.2010.05.04.21.02.20
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 04 May 2010 21:02:20 -0700 (PDT)
+Received: from shane by localhost with local (Exim 4.69)
+        (envelope-from <shane@localhost>)
+        id 1O9VoP-0001Zl-Qw; Tue, 04 May 2010 22:02:17 -0600
+To:     kevink@paralogos.com, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+Subject: [MIPS] FPU emulator: allow Cause bits of FCSR to be writeable by ctc1
+Message-Id: <E1O9VoP-0001Zl-Qw@localhost>
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+Date:   Tue, 04 May 2010 22:02:17 -0600
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26589
+X-archive-position: 26590
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Kevin D. Kissell wrote:
-> Shane McDonald wrote:
->   
->> In the following chunk of code from cp1emu.c:
->>   
->>     
-> [snip]
->   
->> value gets set to an initial value of 0x400, and ctx->fcr31
->> comes in with an initial value of 0x8420.
->> By the time we hit the if statement around the return SIGFPE, ctx->fcr31
->> has been set to 0x8400, not the 0x400 I implied.
->>   
->>     
-> Ah, well that would rather change things, and you *would* get an
-> exception there.  As written, the code doesn't seem to allow the pending
-> exception (.._X) bits to be cleared by the CTC.
->   
->> Nevertheless, that's not the problem.  
->>     
-> Maybe it is. 
-OK, sorry to have been looking at this in fits and starts, but indeed, I 
-submit that the bug is indeed in that ctc_op:  case of the emulator.  
-The Cause bits (17:12) are supposed to be writable by that instruction, 
-but the CTC1 emulation won't let them be updated by the instruction.  I 
-don't have the means to generate, test, and submit a proper patch, but I 
-think that actually if you just completely removed lines 387-388:
+In the FPU emulator code of the MIPS, the Cause bits of the FCSR
+register are not currently writeable by the ctc1 instruction.
+In odd corner cases, this can cause problems.  For example,
+a case existed where a divide-by-zero exception was generated
+by the FPU, and the signal handler attempted to restore the FPU
+registers to their state before the exception occurred.  In this
+particular setup, writing the old value to the FCSR register
+would cause another divide-by-zero exception to occur immediately.
+The solution is to change the ctc1 instruction emulator code to
+allow the Cause bits of the FCSR register to be writeable.
+This is the behaviour of the hardware that the code is emulating.
 
+This problem was found by Shane McDonald, but the credit for the
+fix goes to Kevin Kissell.  In Kevin's words:
 
-value &= (FPU_CSR_FLUSH | FPU_CSR_ALL_E | FPU_CSR_ALL_S | 0x03);
-ctx->fcr31 &= ~(FPU_CSR_FLUSH | FPU_CSR_ALL_E | FPU_CSR_ALL_S |0x03);
+I submit that the bug is indeed in that ctc_op:  case of the emulator.  The
+Cause bits (17:12) are supposed to be writable by that instruction, but the
+CTC1 emulation won't let them be updated by the instruction.  I think that
+actually if you just completely removed lines 387-388 [...]
+things would work a good deal better.  At least, it would be a more accurate
+emulation of the architecturally defined FPU.  If I wanted to be really,
+really pedantic (which I sometimes do), I'd also protect the reserved bits
+that aren't necessarily writable.
 
-Things would work a good deal better.  At least, it would be a more 
-accurate emulation of the architecturally defined FPU.  If I wanted to 
-be really, really
-pedantic (which I sometimes do), I'd also protect the reserved bits that 
-aren't necessarily writable, so we'd nuke those two lines, then have
+Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+---
+ arch/mips/math-emu/cp1emu.c |    9 +++++----
+ 1 files changed, 5 insertions(+), 4 deletions(-)
 
-/* Don't write reserved bits, and convert to ieee library modes */
-ctx->fcr31 = (value & ~0x1c0003) | ieee_rm[value & 0x3];
-
-Note that I've changed the existing |= to a direct assignment here.
-
-Hope this helps.
-
-/K.
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 8f2f8e9..c756fd9 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -384,10 +384,11 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ 					(void *) (xcp->cp0_epc),
+ 					MIPSInst_RT(ir), value);
+ #endif
+-				value &= (FPU_CSR_FLUSH | FPU_CSR_ALL_E | FPU_CSR_ALL_S | 0x03);
+-				ctx->fcr31 &= ~(FPU_CSR_FLUSH | FPU_CSR_ALL_E | FPU_CSR_ALL_S | 0x03);
+-				/* convert to ieee library modes */
+-				ctx->fcr31 |= (value & ~0x3) | ieee_rm[value & 0x3];
++
++				/* Don't write reserved bits,
++				   and convert to ieee library modes */
++				ctx->fcr31 = (value & ~0x1c0003) |
++						ieee_rm[value & 0x3];
+ 			}
+ 			if ((ctx->fcr31 >> 5) & ctx->fcr31 & FPU_CSR_ALL_E) {
+ 				return SIGFPE;
+-- 
+1.6.2.4

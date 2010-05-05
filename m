@@ -1,61 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 May 2010 17:17:10 +0200 (CEST)
-Received: from mail2.picochip.com ([82.111.145.34]:58961 "EHLO
-        thurne.picochip.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491927Ab0EEPRH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 May 2010 17:17:07 +0200
-Received: from localhost (wear.picochip.com [172.17.1.47])
-        by thurne.picochip.com (8.13.8/8.13.8) with ESMTP id o45FGeiZ004274;
-        Wed, 5 May 2010 16:16:40 +0100
-Date:   Wed, 5 May 2010 16:18:25 +0100
-From:   Jamie Iles <jamie.iles@picochip.com>
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com, jamie.iles@picochip.com
-Subject: Re: [PATCH v3 4/4] MIPS: add support for hardware performance
-        events
-Message-ID: <20100505151825.GF5971@wear.picochip.com>
-References: <1273067734-4758-1-git-send-email-dengcheng.zhu@gmail.com> <1273067734-4758-5-git-send-email-dengcheng.zhu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 May 2010 17:20:38 +0200 (CEST)
+Received: from mail.gmx.net ([213.165.64.20]:47422 "HELO mail.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S1491881Ab0EEPUe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 May 2010 17:20:34 +0200
+Received: (qmail invoked by alias); 05 May 2010 15:20:25 -0000
+Received: from dslb-084-056-016-121.pools.arcor-ip.net (EHLO lamer.localnet) [84.56.16.121]
+  by mail.gmx.net (mp051) with SMTP; 05 May 2010 17:20:25 +0200
+X-Authenticated: #12255092
+X-Provags-ID: V01U2FsdGVkX18pY/R/rIIpJ9uiu2JJcJX/dK/00VibGwhRrrD3Pf
+        UT28aMR26MyiFu
+From:   Peter =?iso-8859-1?q?H=FCwe?= <PeterHuewe@gmx.de>
+To:     Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linuxppc-dev@ozlabs.org
+Subject: [PATCH] media/IR: Add missing include file to rc-map.c
+Date:   Wed, 5 May 2010 17:20:21 +0200
+User-Agent: KMail/1.12.4 (Linux/2.6.33.2; KDE/4.3.5; x86_64; ; )
+Cc:     "David =?iso-8859-1?q?H=E4rdeman?=" <david@hardeman.nu>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-m68k@lists.linux-m68k.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1273067734-4758-5-git-send-email-dengcheng.zhu@gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-3.0 (thurne.picochip.com [172.17.0.105]); Wed, 05 May 2010 16:16:47 +0100 (BST)
-X-Virus-Scanned: clamav-milter 0.95.3 at thurne.picochip.com
-X-Virus-Status: Clean
-Return-Path: <jamie.iles@picochip.com>
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201005051720.22617.PeterHuewe@gmx.de>
+X-Y-GMX-Trusted: 0
+Return-Path: <PeterHuewe@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26602
+X-archive-position: 26603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jamie.iles@picochip.com
+X-original-sender: PeterHuewe@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 05, 2010 at 09:55:34PM +0800, Deng-Cheng Zhu wrote:
-> This patch is the HW perf event support. To enable this feature, we can
-> not choose the SMTC kernel; Oprofile should be disabled; kernel
-> performance events be selected. Then we can enable it in Kernel type menu.
-> 
-> Oprofile for MIPS platforms initializes irq at arch init time. Currently
-> we do not change this logic to allow PMU reservation.
-> 
-> If a platform has EIC, we can use the irq base and perf counter irq
-> offset defines for the interrupt controller in mipspmu_get_irq().
-> 
-> Besides generic hardware events and cache events, raw events are also
-> supported by this patch. Please refer to processor core software user's
-> manual and the comments for mipsxx_pmu_map_raw_event() for more details.
+From: Peter Huewe <peterhuewe@gmx.de>
 
-This looks good to me. I'm not familiar with MIPS so I can't offer many
-comments in that respect but as a general question, is there a reason that
-OProfile can't be enabled as well? In ARM we have a method to reserve the PMU
-so that we can build both but only one can run at the same time. Recently,
-Will Deacon has posted a patch series that makes OProfile use perf events
-as the counter backend so you could even use both at the same time.
+This patch adds a missing include linux/delay.h to prevent
+build failures[1-5]
 
-Jamie
+Signed-off-by: Peter Huewe <peterhuewe@gmx.de>
+---
+KernelVersion: linux-next-20100505
+
+References:
+[1] http://kisskb.ellerman.id.au/kisskb/buildresult/2571452/
+[2] http://kisskb.ellerman.id.au/kisskb/buildresult/2571188/
+[3] http://kisskb.ellerman.id.au/kisskb/buildresult/2571479/
+[4] http://kisskb.ellerman.id.au/kisskb/buildresult/2571429/
+[5] http://kisskb.ellerman.id.au/kisskb/buildresult/2571432/
+
+drivers/media/IR/rc-map.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/media/IR/rc-map.c b/drivers/media/IR/rc-map.c
+index caf6a27..46a8f15 100644
+--- a/drivers/media/IR/rc-map.c
++++ b/drivers/media/IR/rc-map.c
+@@ -14,6 +14,7 @@
+ 
+ #include <media/ir-core.h>
+ #include <linux/spinlock.h>
++#include <linux/delay.h>
+ 
+ /* Used to handle IR raw handler extensions */
+ static LIST_HEAD(rc_map_list);
+-- 
+1.6.4.4

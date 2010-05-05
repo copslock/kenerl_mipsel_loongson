@@ -1,66 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 May 2010 15:31:13 +0200 (CEST)
-Received: from mx1.moondrake.net ([212.85.150.166]:37278 "EHLO
-        mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1492083Ab0EENbK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 5 May 2010 15:31:10 +0200
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-        id 9144727C016; Wed,  5 May 2010 15:31:08 +0200 (CEST)
-Received: from office-abk.mandriva.com (unknown [195.7.104.248])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.mandriva.com (Postfix) with ESMTP id A79F827C015;
-        Wed,  5 May 2010 15:31:07 +0200 (CEST)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-        by office-abk.mandriva.com (Postfix) with ESMTP id E44AA8427F;
-        Wed,  5 May 2010 15:49:06 +0200 (CEST)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-        by anduin.mandriva.com (Postfix) with ESMTP id B2203FF855;
-        Wed,  5 May 2010 15:31:14 +0200 (CEST)
-From:   Arnaud Patard <apatard@mandriva.com>
-To:     yajin <yajinzhou@vm-kernel.org>
-Cc:     Ben Dooks <ben@simtec.co.uk>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 10/12] add the sm501fb option to sm501 fb driver
-References: <r2l180e2c241005040255mff483747jcef507aadea0cabd@mail.gmail.com>
-        <4BE1614D.1090008@simtec.co.uk> <m3wrviv8a8.fsf@anduin.mandriva.com>
-        <o2u180e2c241005050617h299beefdm2fd046c94bdf3101@mail.gmail.com>
-Organization: Mandriva
-Date:   Wed, 05 May 2010 15:31:14 +0200
-In-Reply-To: <o2u180e2c241005050617h299beefdm2fd046c94bdf3101@mail.gmail.com> (yajin's message of "Wed, 5 May 2010 21:17:29 +0800")
-Message-ID: <m3sk66v5jx.fsf@anduin.mandriva.com>
-User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <arnaud.patard@mandriva.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 May 2010 15:56:01 +0200 (CEST)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:44386 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492122Ab0EENz5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 May 2010 15:55:57 +0200
+Received: by pvg7 with SMTP id 7so310699pvg.36
+        for <multiple recipients>; Wed, 05 May 2010 06:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=U3jh5kmvVrdQTTJBSvNoPXt/HeLXy10vqdIBQA1Amlw=;
+        b=kgrd6TR97GGBJj/ZBMpq4OVpCdUHwYUPzP3UeIFcyiutTxJ8bXbrPBAkOBzYNPdjfp
+         ogbbiK9XOBAYgBje1RvPjsu8cLnCNoh7jLl5MtapiMBDm5vM5YYyNNn5CetchhYhG0sA
+         ljf+23hasHr/Zm5/VxewFzQ2H7cI+wvuj0rLY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=bgRDphPLANsdHAsvMqomQJroasvgsgvVkhrEqtz+mgMB1S1NMh9LxIHpzuNCR1AeU/
+         37L9/2ynCxebiv+T/N7y8q8xiq5Z0youDsFRALwIw4SWIfbxFhKG5UOeZTnT7mbzKDSn
+         33BTRIb5J86QY+auu6Rk+hjA3yPf0KT67ovrE=
+Received: by 10.142.119.20 with SMTP id r20mr4827063wfc.15.1273067749728;
+        Wed, 05 May 2010 06:55:49 -0700 (PDT)
+Received: from localhost.localdomain ([114.84.73.209])
+        by mx.google.com with ESMTPS id 23sm6598217pzk.2.2010.05.05.06.55.45
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 05 May 2010 06:55:49 -0700 (PDT)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, jamie.iles@picochip.com,
+        Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Subject: [PATCH v3 0/4] MIPS performance event support v3
+Date:   Wed,  5 May 2010 21:55:30 +0800
+Message-Id: <1273067734-4758-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.6.3.3
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26596
+X-archive-position: 26597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-yajin <yajinzhou@vm-kernel.org> writes:
+This patch series implemented the low-level logic for the Linux
+performance counter subsystem on MIPS, which enables the collection of
+all sorts of HW/SW performance events based on per-CPU or per-task. For
+more information, please refer to tools/perf/Documentation/perf.txt.
 
-> Hi,
->
->>> Why not get this added to the main mode database instead of
->>> adding a new one into the sm501 driver?
->
->> fwiw, the original patch is putting it in the main database.
->
-> According to the Documentation/fb/modedb.txt, that's because the
-> modedb.c provides one generic video mode database with a fair amount
-> of standard videomodes. Yes, 1024x600 can be added to maindb, but I am
-> wondering whether it is a generic video mode. If so, there should be
+Development tests were carried out on the Malta-R board. 24K/34K/74K/1004K
+cores and SMVP/UP kernels have been basically tested.
 
-afair it is fairly generic
+CHANGES:
+-----------------------------
+v3 - v2:
+- adding 1004K core support.
+- slightly adjusting the code structure.
+- adding more comments in the code.
+- fixing some small coding style issues.
+v2 - v1:
+- Adjusting code structure as suggested by Wu Zhangjin. With this change,
+hardware performance event support for loongson2 and rm9000 can be
+conveniently implemented by adding and including new files like
+perf_event_loongson2.c; Oprofile and Perf for MIPS are now sharing pmu.h;
+Naming changes were made to some functions.
+- Fixing the generic atomic64 issue reported by David Daney. Currently,
+32bit kernel is using the generic version from lib. When Ralf Baechle's
+common atomic64 version is ready, this may change.
+- Adding raw event support. For more details, please refer to the code
+comments for mipsxx_pmu_map_raw_event().
+- Adding new software events - PERF_COUNT_SW_ALIGNMENT_FAULTS and
+PERF_COUNT_SW_EMULATION_FAULTS.
+- Fixing some small bugs.
+- Adding new comments for the code.
+- Making some code style changes.
+v1:
+- Using generic atomic64 operations from lib.
+- SMVP/UP kernels are supported (not for SMTC).
+- 24K/34K/74K cores are implemented.
+- Currently working when Oprofile is _not_ available.
+- Minimal software perf events are supported.
+-----------------------------
 
-> 1024x600 in main database already.
+Deng-Cheng Zhu (4):
+  MIPS/Oprofile: extract PMU defines/helper functions for sharing
+  MIPS: use generic atomic64 in non-64bit kernels
+  MIPS: add support for software performance events
+  MIPS: add support for hardware performance events
 
-Not seeing a mode is the database doesn't mean it shouldn't go
-there. It may only mean that nobody needed it before.
-
-Arnaud
+ arch/mips/Kconfig                       |   11 +
+ arch/mips/include/asm/atomic.h          |    4 +
+ arch/mips/include/asm/perf_event.h      |   28 +
+ arch/mips/include/asm/pmu.h             |  244 +++++++++
+ arch/mips/kernel/Makefile               |    2 +
+ arch/mips/kernel/perf_event.c           |  604 +++++++++++++++++++++
+ arch/mips/kernel/perf_event_mipsxx.c    |  869 +++++++++++++++++++++++++++++++
+ arch/mips/kernel/traps.c                |   18 +-
+ arch/mips/kernel/unaligned.c            |    5 +
+ arch/mips/math-emu/cp1emu.c             |    3 +
+ arch/mips/mm/fault.c                    |   11 +-
+ arch/mips/oprofile/op_model_loongson2.c |   23 +-
+ arch/mips/oprofile/op_model_mipsxx.c    |  164 +------
+ arch/mips/oprofile/op_model_rm9000.c    |   16 +-
+ 14 files changed, 1797 insertions(+), 205 deletions(-)
+ create mode 100644 arch/mips/include/asm/perf_event.h
+ create mode 100644 arch/mips/include/asm/pmu.h
+ create mode 100644 arch/mips/kernel/perf_event.c
+ create mode 100644 arch/mips/kernel/perf_event_mipsxx.c

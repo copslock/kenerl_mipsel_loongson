@@ -1,141 +1,125 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2010 19:32:28 +0200 (CEST)
-Received: from mail-pz0-f186.google.com ([209.85.222.186]:33357 "EHLO
-        mail-pz0-f186.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492684Ab0EFRaX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 May 2010 19:30:23 +0200
-Received: by mail-pz0-f186.google.com with SMTP id 16so91263pzk.22
-        for <multiple recipients>; Thu, 06 May 2010 10:30:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=yMzvNXuJKNUj5XHgV5B4sd3f5lEpkN5Ftd/gFplTDMk=;
-        b=u0jmIsFnbzXnZZV9z1nn73EDg8j1m66KLeeEi+hzIQrDJt/ZWcH+3E83rLjlu+1daj
-         Ang9zCvdqakmWv68sKDR71cKJ/eTVTtL0wyNlQ3y2u0Fpfuz8s7wxjfTz2iIC1J7t7zs
-         Zbe3LIu78vqMT0oXU9hysAnQyngJ5UPv+s8y0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=iLJwAyzwl5hlpkeiysfQC2fMlXeTbIL4DazTbjalmh/TTnvRXJk8PUXP3u4mfbltcW
-         WgTjk76PnloIgHd4NtDFx+h38DrBdDh+eC9msZ9xagl60TRsSG6VgkkVuoZ1FQb5TS/A
-         grd+2iwxLzE8J0RORRaAT42dzuQPf5Bopl8G4=
-Received: by 10.114.189.14 with SMTP id m14mr1233021waf.12.1273167022895;
-        Thu, 06 May 2010 10:30:22 -0700 (PDT)
-Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id r20sm5257084wam.5.2010.05.06.10.30.20
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 06 May 2010 10:30:21 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH 5/5] Oprofile: Loongson: Cleanup the comments
-Date:   Fri,  7 May 2010 01:29:48 +0800
-Message-Id: <f5683f39548a7bfa6a45cdc154a1885fed95d8d3.1273166351.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.0
-In-Reply-To: <cover.1273165681.git.wuzhangjin@gmail.com>
-References: <cover.1273165681.git.wuzhangjin@gmail.com>
-In-Reply-To: <cover.1273166351.git.wuzhangjin@gmail.com>
-References: <cover.1273166351.git.wuzhangjin@gmail.com>
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2010 20:48:05 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:43918 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492723Ab0EFSr6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 May 2010 20:47:58 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o46IlrIj022536;
+        Thu, 6 May 2010 19:47:54 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o46IlpPB022525;
+        Thu, 6 May 2010 19:47:51 +0100
+Date:   Thu, 6 May 2010 19:47:51 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Shane McDonald <mcdonald.shane@gmail.com>
+Cc:     "Kevin D. Kissell" <kevink@paralogos.com>,
+        Sergei Shtylyov <sshtylyov@mvista.com>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Subject: Re: [MIPS] FPU emulator: allow Cause bits of FCSR to be writeable by
+ ctc1
+Message-ID: <20100506184751.GF28066@linux-mips.org>
+References: <4BE122D1.3000609@paralogos.com>
+ <20100505091159.GA4016@linux-mips.org>
+ <4BE19214.4010209@paralogos.com>
+ <20100506.012240.118951273.anemo@mba.ocn.ne.jp>
+ <4BE1C4EA.1020202@paralogos.com>
+ <4BE2A6EE.80705@mvista.com>
+ <4BE2E445.5050809@paralogos.com>
+ <o2yb2b2f2321005061142v431dbc78n2a21722676a72501@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <o2yb2b2f2321005061142v431dbc78n2a21722676a72501@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26636
+X-archive-position: 26637
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Thu, May 06, 2010 at 12:42:35PM -0600, Shane McDonald wrote:
+> Date:   Thu, 6 May 2010 12:42:35 -0600
+> From: Shane McDonald <mcdonald.shane@gmail.com>
+> To: "Kevin D. Kissell" <kevink@paralogos.com>
+> Cc: Sergei Shtylyov <sshtylyov@mvista.com>,
+> 	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
+> 	linux-mips@linux-mips.org
+> Subject: Re: [MIPS] FPU emulator: allow Cause bits of FCSR to be writeable
+>  by
+>         ctc1
+> Content-Type: text/plain; charset=ISO-8859-1
+> 
+> On Thu, May 6, 2010 at 9:46 AM, Kevin D. Kissell <kevink@paralogos.com> wrote:
+> > Sergei Shtylyov wrote:
+> >> Kevin D. Kissell wrote:
+> >>
+> >>> I'm cool with the patch as is, but in the general spirit of regarding
+> >>> numeric constants other than 0 and 1 as instruments of Satan, it
+> >>> would probably be even better if those reserved bits were defined
+> >>> (FPU_CSR_RSVD, or whatever is compatible with existing convention for
+> >>> such bits) along with the other FCSR bit masks in mipsregs.h, so that
+> >>> the assigment looks like:
+> >>>
+> >>>          ctx->fcr31 = (value & ~(FPU_CSR_RSVD | 0x3)) |
+> >>>                   ieee_rm[value & 0x3];
+> >>
+> >>   0x3 is still neither 0 nor 1, and so remains an instrument of Satan.
+> >> How about #defining it also? :-)
+> >
+> > In some software engineering cultures, that would be considered a good
+> > idea or even mandatory.  This being the Linux kernel, I think it's OK,
+> > because, as Shane remarked, it's a mask that's local to the module and
+> > whose value is "obvious", and such things are pretty commonly handled as
+> > numeric constants in the kernel.
+> >
+> > There actually *is* a #define for that field, FPU_CSR_RD, which could be
+> > used here in place of the 0x3, but I'm a little torn about its use.  On
+> > one hand "value & ~(FPU_CSR_RSVD | FPU_CSR_RD)" is more clear about what
+> > we're doing, but on the other hand, it's less obvious that "value &
+> > FPU_CSR_RD" is generating an integer in the range 0-3 for an index.  So
+> > I'm absolutely fine with the code as written, but wouldn't complain if
+> > someone wanted to make it use the symbolic constant.
+> 
+> I'm torn here, which is why I hadn't changed that at all.  I'd rather not
+> use FPU_CSR_RD, because that defines a value in the rounding mode
+> bits (which happens to have all the bits set), rather than a mask for the
+> bits.  I'd prefer to define a new constant FPU_CSR_RM with the
+> value 0x00000003 -- a better name might be FPU_CSR_RM_MASK,
+> but that's inconsistent with the names of the other FCSR fields.
+> And, as Kevin said, it doesn't make it clear that we're trying to generate
+> an index in the range of 0 - 3.  I guess we could also define a constant
+> for the number of bits to shift to get the RM bits into the low order bits,
+> something like
+> 
+> #define FPU_CSR_RM_SHIFT 0
+> 
+> at which point our code could look like
+> 
+> ctx->fcr31 = (value & ~(FPU_CSR_RSVD | FPU_CSR_RM)) |
+>                    ieee_rm[(value & FPU_CSR_RM) >> FPU_CSR_RM_SHIFT];
+> 
+> I'm a little wary of adding the FPU_CSR_RM_SHIFT, because there aren't
+> any other SHIFT defines for the FCSR, and because the shift value is 0.
+> But, the above code doesn't look as bad as I originally thought it would,
+> and it probably is clearer.
+> 
+> Comments?
+> 
+> There's also use of the 0x3 magic number in a number of other cases
+> in this file.  Do I make a similar change to those cases in this patch,
+> or should I create a separate patch for that?  Or would that just be
+> one of those minor style change patches that no one likes?
 
-This patch removes some out-of-date comments and unneeded blank lines.
+I'd certainly consider it.  It's logically a separate change so I'd
+suggest a separate patch for -queue.  Your earlier patch is 2.6.34 and
+-stable material however and that's another reason why this should be
+separate patches.
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/oprofile/op_model_loongson2.c |   25 +++++--------------------
- 1 files changed, 5 insertions(+), 20 deletions(-)
-
-diff --git a/arch/mips/oprofile/op_model_loongson2.c b/arch/mips/oprofile/op_model_loongson2.c
-index 23f7e13..60d3ea6 100644
---- a/arch/mips/oprofile/op_model_loongson2.c
-+++ b/arch/mips/oprofile/op_model_loongson2.c
-@@ -8,7 +8,6 @@
-  * This file is subject to the terms and conditions of the GNU General Public
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-- *
-  */
- #include <linux/init.h>
- #include <linux/oprofile.h>
-@@ -17,11 +16,6 @@
- #include <loongson.h>			/* LOONGSON2_PERFCNT_IRQ */
- #include "op_impl.h"
- 
--/*
-- * a patch should be sent to oprofile with the loongson-specific support.
-- * otherwise, the oprofile tool will not recognize this and complain about
-- * "cpu_type 'unset' is not valid".
-- */
- #define LOONGSON2_CPU_TYPE	"mips/loongson2"
- 
- #define LOONGSON2_PERFCNT_OVERFLOW		(1ULL   << 31)
-@@ -34,7 +28,6 @@
- #define LOONGSON2_PERFCTRL_EVENT(idx, event) \
- 	(((event) & 0x0f) << ((idx) ? 9 : 5))
- 
--/* Loongson2 performance counter register */
- #define read_c0_perfctrl() __read_64bit_c0_register($24, 0)
- #define write_c0_perfctrl(val) __write_64bit_c0_register($24, 0, val)
- #define read_c0_perfcnt() __read_64bit_c0_register($25, 0)
-@@ -49,7 +42,6 @@ static struct loongson2_register_config {
- 
- static char *oprofid = "LoongsonPerf";
- static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id);
--/* Compute all of the registers in preparation for enabling profiling.  */
- 
- static void reset_counters(void *arg)
- {
-@@ -63,8 +55,11 @@ static void loongson2_reg_setup(struct op_counter_config *cfg)
- 
- 	reg.reset_counter1 = 0;
- 	reg.reset_counter2 = 0;
--	/* Compute the performance counter ctrl word.  */
--	/* For now count kernel and user mode */
-+
-+	/*
-+	 * Compute the performance counter ctrl word.
-+	 * For now, count kernel and user mode.
-+	 */
- 	if (cfg[0].enabled) {
- 		ctrl |= LOONGSON2_PERFCTRL_EVENT(0, cfg[0].event);
- 		reg.reset_counter1 = 0x80000000ULL - cfg[0].count;
-@@ -87,11 +82,8 @@ static void loongson2_reg_setup(struct op_counter_config *cfg)
- 
- 	reg.cnt1_enabled = cfg[0].enabled;
- 	reg.cnt2_enabled = cfg[1].enabled;
--
- }
- 
--/* Program all of the registers in preparation for enabling profiling.  */
--
- static void loongson2_cpu_setup(void *args)
- {
- 	write_c0_perfcnt((reg.reset_counter2 << 32) | reg.reset_counter1);
-@@ -117,13 +109,6 @@ static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id)
- 	struct pt_regs *regs = get_irq_regs();
- 	int enabled;
- 
--	/*
--	 * LOONGSON2 defines two 32-bit performance counters.
--	 * To avoid a race updating the registers we need to stop the counters
--	 * while we're messing with
--	 * them ...
--	 */
--
- 	/* Check whether the irq belongs to me */
- 	enabled = read_c0_perfctrl() & LOONGSON2_PERFCTRL_ENABLE;
- 	if (!enabled)
--- 
-1.7.0
+  Ralf

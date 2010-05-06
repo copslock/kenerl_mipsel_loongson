@@ -1,95 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2010 06:23:52 +0200 (CEST)
-Received: from mail-yw0-f201.google.com ([209.85.211.201]:59195 "EHLO
-        mail-yw0-f201.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491154Ab0EFEXs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 May 2010 06:23:48 +0200
-Received: by ywh39 with SMTP id 39so2475488ywh.21
-        for <multiple recipients>; Wed, 05 May 2010 21:23:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2010 07:45:29 +0200 (CEST)
+Received: from mail-qy0-f172.google.com ([209.85.221.172]:65365 "EHLO
+        mail-qy0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491889Ab0EFFpV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 May 2010 07:45:21 +0200
+Received: by qyk2 with SMTP id 2so8996977qyk.20
+        for <multiple recipients>; Wed, 05 May 2010 22:45:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=3EwXFyCvzPxal1PAC+I1/kIhIf0nk4AYgkQL9nm6BzA=;
-        b=DncThrMtvvIcx0/8d0R8kUowdyeW5G7TI+lwW7tQIwBd5HRQ9RyG4YRfUxCgGbErew
-         AIH/Weul+or6naVcpYi5r6EZnJibvEi/cWIo6518MPpfoqg9tbQw9itS2bsOKNR3CB/X
-         ImA3eZm3zvWZbp267RiIXXYQPnUHQwsT7cFd4=
+        h=domainkey-signature:received:received:received:to:subject
+         :message-id:from:date;
+        bh=d/qfyxPFJrNIOyrMe1AYnthUaHC3k3FDB4DTBlw8p7g=;
+        b=sEm87r9dQaB9pzD4NB3pUcL8u3Giw5wDFbJB4s2kk0q4+sUDIWKWNcDLII7lzKPEWR
+         Luc9ZkQYnaaN5yM3KOboomsug7EZlLuMMsWpQEbPsBJdkKqE66ME080wh28Ym9DEvRHG
+         KBmkLJejhApUbJK94ZSeWax10NQxxr450V5rI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=mCAmN0c8KWcEH0smfHSgCbpEuqAaWBCr/HrWDB9FvAoYqp90uEn9EwsHRpDKLBbOgz
-         B58FpqQM9CL7dlX/kVX9kXTqxuzNQys7umcAFAqwSH8mVJLXDqqqTP5HamhCe4R78ZCj
-         1zLyB7PWg3pPDz0yBnjaqKIJ4xgyHXcIgzsYM=
-MIME-Version: 1.0
-Received: by 10.150.120.35 with SMTP id s35mr721546ybc.224.1273119820416; Wed, 
-        05 May 2010 21:23:40 -0700 (PDT)
-Received: by 10.150.157.8 with HTTP; Wed, 5 May 2010 21:23:40 -0700 (PDT)
-In-Reply-To: <20100505151825.GF5971@wear.picochip.com>
-References: <1273067734-4758-1-git-send-email-dengcheng.zhu@gmail.com>
-         <1273067734-4758-5-git-send-email-dengcheng.zhu@gmail.com>
-         <20100505151825.GF5971@wear.picochip.com>
-Date:   Thu, 6 May 2010 12:23:40 +0800
-Message-ID: <j2i1b4d75291005052123n52131b71h41f919c3f11af826@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] MIPS: add support for hardware performance events
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     Jamie Iles <jamie.iles@picochip.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>, ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, a.p.zijlstra@chello.nl,
-        paulus@samba.org, mingo@elte.hu, acme@redhat.com
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dengcheng.zhu@gmail.com>
+        h=to:subject:message-id:from:date;
+        b=Bo3JYZZ/ggi9zT+mGnUvvUJsfw+WCR2p847gRFkZEge9GcBkaIGZWJNe+oB1p3sJSV
+         n0oagfPQjFqDi8zAygWRq8CKMA9NmrRChRPgaRvngBq9xfheKCaOdRj40bNOJULZ1esV
+         SV8BeA7GukoWRCGz+F8zgW69RcLy1XBcqQTvE=
+Received: by 10.224.79.92 with SMTP id o28mr6405409qak.2.1273124714872;
+        Wed, 05 May 2010 22:45:14 -0700 (PDT)
+Received: from localhost ([207.47.250.203])
+        by mx.google.com with ESMTPS id 22sm400517qyk.10.2010.05.05.22.45.13
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 05 May 2010 22:45:14 -0700 (PDT)
+Received: from shane by localhost with local (Exim 4.69)
+        (envelope-from <shane@localhost>)
+        id 1O9ttX-0002M5-Ku; Wed, 05 May 2010 23:45:11 -0600
+To:     anemo@mba.ocn.ne.jp, kevink@paralogos.com,
+        linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [PATCH v2] MIPS FPU emulator: allow Cause bits of FCSR to be writeable by ctc1
+Message-Id: <E1O9ttX-0002M5-Ku@localhost>
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+Date:   Wed, 05 May 2010 23:45:11 -0600
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26614
+X-archive-position: 26615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-2010/5/5 Jamie Iles <jamie.iles@picochip.com>:
-> On Wed, May 05, 2010 at 09:55:34PM +0800, Deng-Cheng Zhu wrote:
->> This patch is the HW perf event support. To enable this feature, we can
->> not choose the SMTC kernel; Oprofile should be disabled; kernel
->> performance events be selected. Then we can enable it in Kernel type menu.
->>
->> Oprofile for MIPS platforms initializes irq at arch init time. Currently
->> we do not change this logic to allow PMU reservation.
->>
->> If a platform has EIC, we can use the irq base and perf counter irq
->> offset defines for the interrupt controller in mipspmu_get_irq().
->>
->> Besides generic hardware events and cache events, raw events are also
->> supported by this patch. Please refer to processor core software user's
->> manual and the comments for mipsxx_pmu_map_raw_event() for more details.
->
-> This looks good to me. I'm not familiar with MIPS so I can't offer many
-> comments in that respect but as a general question, is there a reason that
-> OProfile can't be enabled as well? In ARM we have a method to reserve the PMU
-> so that we can build both but only one can run at the same time. Recently,
-> Will Deacon has posted a patch series that makes OProfile use perf events
-> as the counter backend so you could even use both at the same time.
->
-> Jamie
->
+In the FPU emulator code of the MIPS, the Cause bits of the FCSR
+register are not currently writeable by the ctc1 instruction.
+In odd corner cases, this can cause problems.  For example,
+a case existed where a divide-by-zero exception was generated
+by the FPU, and the signal handler attempted to restore the FPU
+registers to their state before the exception occurred.  In this
+particular setup, writing the old value to the FCSR register
+would cause another divide-by-zero exception to occur immediately.
+The solution is to change the ctc1 instruction emulator code to
+allow the Cause bits of the FCSR register to be writeable.
+This is the behaviour of the hardware that the code is emulating.
 
-Hi, Jamie
+This problem was found by Shane McDonald, but the credit for the
+fix goes to Kevin Kissell.  In Kevin's words:
 
+I submit that the bug is indeed in that ctc_op:  case of the emulator.  The
+Cause bits (17:12) are supposed to be writable by that instruction, but the
+CTC1 emulation won't let them be updated by the instruction.  I think that
+actually if you just completely removed lines 387-388 [...]
+things would work a good deal better.  At least, it would be a more accurate
+emulation of the architecturally defined FPU.  If I wanted to be really,
+really pedantic (which I sometimes do), I'd also protect the reserved bits
+that aren't necessarily writable.
 
-Thanks for your review!
+Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+---
+v2: Replaced an ugly magic number with a constant for the reserved
+bits of the FPU CSR.
 
-Yes, I noticed ARM had a PMU reservation mechanism between Oprofile
-and Perf. It's a run-time method (irqs are requested/freed in
-start/stop), not an arch init method (requested/freed in init/exit).
-And this mechanism is great for sure. But in current MIPS/Oprofile
-code, this is done in init/exit. MIPS/Oprofile authors may have
-special concerns to do so. So I'm adding Zhangjin and Ralf in the
-TO-list, hoping to hear more comments about this. To reduce the risk
-introduced by changing this mechanism, I didn't add the PMU
-reservation/sharing and placed an extra comment in this patch's
-introduction (see above).
+ arch/mips/include/asm/mipsregs.h |    6 ++++++
+ arch/mips/math-emu/cp1emu.c      |    9 +++++----
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-
-Deng-Cheng
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 49382d5..1b17a21 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -135,6 +135,12 @@
+ #define FPU_CSR_COND7   0x80000000      /* $fcc7 */
+ 
+ /*
++ * Bits 18 - 20 of the FPU Status Register will be read as 0,
++ * and should be written as zero.
++*/
++#define FPU_CSR_RSVD	0x001c0000
++
++/*
+  * X the exception cause indicator
+  * E the exception enable
+  * S the sticky/flag bit
+diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
+index 8f2f8e9..ebecec6 100644
+--- a/arch/mips/math-emu/cp1emu.c
++++ b/arch/mips/math-emu/cp1emu.c
+@@ -384,10 +384,11 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
+ 					(void *) (xcp->cp0_epc),
+ 					MIPSInst_RT(ir), value);
+ #endif
+-				value &= (FPU_CSR_FLUSH | FPU_CSR_ALL_E | FPU_CSR_ALL_S | 0x03);
+-				ctx->fcr31 &= ~(FPU_CSR_FLUSH | FPU_CSR_ALL_E | FPU_CSR_ALL_S | 0x03);
+-				/* convert to ieee library modes */
+-				ctx->fcr31 |= (value & ~0x3) | ieee_rm[value & 0x3];
++
++				/* Don't write reserved bits,
++				   and convert to ieee library modes */
++				ctx->fcr31 = (value & ~(FPU_CSR_RSVD | 0x3)) |
++						ieee_rm[value & 0x3];
+ 			}
+ 			if ((ctx->fcr31 >> 5) & ctx->fcr31 & FPU_CSR_ALL_E) {
+ 				return SIGFPE;
+-- 
+1.6.2.4

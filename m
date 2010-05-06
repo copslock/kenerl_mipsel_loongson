@@ -1,106 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2010 01:06:24 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:1676 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492521Ab0EEXDz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 May 2010 01:03:55 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4be1f9650007>; Wed, 05 May 2010 16:04:05 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 5 May 2010 16:03:24 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 5 May 2010 16:03:24 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.3) with ESMTP id o45N3JTX011107;
-        Wed, 5 May 2010 16:03:19 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o45N3JPa011106;
-        Wed, 5 May 2010 16:03:19 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     netdev@vger.kernel.org
-Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 6/6] netdev: octeon_mgmt: Remove some gratuitous blank lines.
-Date:   Wed,  5 May 2010 16:03:13 -0700
-Message-Id: <1273100593-11043-7-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.6.1
-In-Reply-To: <1273100593-11043-1-git-send-email-ddaney@caviumnetworks.com>
-References: <1273100593-11043-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 05 May 2010 23:03:24.0520 (UTC) FILETIME=[2A339E80:01CAECA7]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 May 2010 06:23:52 +0200 (CEST)
+Received: from mail-yw0-f201.google.com ([209.85.211.201]:59195 "EHLO
+        mail-yw0-f201.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491154Ab0EFEXs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 6 May 2010 06:23:48 +0200
+Received: by ywh39 with SMTP id 39so2475488ywh.21
+        for <multiple recipients>; Wed, 05 May 2010 21:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=3EwXFyCvzPxal1PAC+I1/kIhIf0nk4AYgkQL9nm6BzA=;
+        b=DncThrMtvvIcx0/8d0R8kUowdyeW5G7TI+lwW7tQIwBd5HRQ9RyG4YRfUxCgGbErew
+         AIH/Weul+or6naVcpYi5r6EZnJibvEi/cWIo6518MPpfoqg9tbQw9itS2bsOKNR3CB/X
+         ImA3eZm3zvWZbp267RiIXXYQPnUHQwsT7cFd4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=mCAmN0c8KWcEH0smfHSgCbpEuqAaWBCr/HrWDB9FvAoYqp90uEn9EwsHRpDKLBbOgz
+         B58FpqQM9CL7dlX/kVX9kXTqxuzNQys7umcAFAqwSH8mVJLXDqqqTP5HamhCe4R78ZCj
+         1zLyB7PWg3pPDz0yBnjaqKIJ4xgyHXcIgzsYM=
+MIME-Version: 1.0
+Received: by 10.150.120.35 with SMTP id s35mr721546ybc.224.1273119820416; Wed, 
+        05 May 2010 21:23:40 -0700 (PDT)
+Received: by 10.150.157.8 with HTTP; Wed, 5 May 2010 21:23:40 -0700 (PDT)
+In-Reply-To: <20100505151825.GF5971@wear.picochip.com>
+References: <1273067734-4758-1-git-send-email-dengcheng.zhu@gmail.com>
+         <1273067734-4758-5-git-send-email-dengcheng.zhu@gmail.com>
+         <20100505151825.GF5971@wear.picochip.com>
+Date:   Thu, 6 May 2010 12:23:40 +0800
+Message-ID: <j2i1b4d75291005052123n52131b71h41f919c3f11af826@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] MIPS: add support for hardware performance events
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     Jamie Iles <jamie.iles@picochip.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, a.p.zijlstra@chello.nl,
+        paulus@samba.org, mingo@elte.hu, acme@redhat.com
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26613
+X-archive-position: 26614
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- drivers/net/octeon/octeon_mgmt.c |    7 -------
- 1 files changed, 0 insertions(+), 7 deletions(-)
+2010/5/5 Jamie Iles <jamie.iles@picochip.com>:
+> On Wed, May 05, 2010 at 09:55:34PM +0800, Deng-Cheng Zhu wrote:
+>> This patch is the HW perf event support. To enable this feature, we can
+>> not choose the SMTC kernel; Oprofile should be disabled; kernel
+>> performance events be selected. Then we can enable it in Kernel type menu.
+>>
+>> Oprofile for MIPS platforms initializes irq at arch init time. Currently
+>> we do not change this logic to allow PMU reservation.
+>>
+>> If a platform has EIC, we can use the irq base and perf counter irq
+>> offset defines for the interrupt controller in mipspmu_get_irq().
+>>
+>> Besides generic hardware events and cache events, raw events are also
+>> supported by this patch. Please refer to processor core software user's
+>> manual and the comments for mipsxx_pmu_map_raw_event() for more details.
+>
+> This looks good to me. I'm not familiar with MIPS so I can't offer many
+> comments in that respect but as a general question, is there a reason that
+> OProfile can't be enabled as well? In ARM we have a method to reserve the PMU
+> so that we can build both but only one can run at the same time. Recently,
+> Will Deacon has posted a patch series that makes OProfile use perf events
+> as the counter backend so you could even use both at the same time.
+>
+> Jamie
+>
 
-diff --git a/drivers/net/octeon/octeon_mgmt.c b/drivers/net/octeon/octeon_mgmt.c
-index 1fdc7b3..3924703 100644
---- a/drivers/net/octeon/octeon_mgmt.c
-+++ b/drivers/net/octeon/octeon_mgmt.c
-@@ -380,7 +380,6 @@ done:
- 	mix_ircnt.s.ircnt = 1;
- 	cvmx_write_csr(CVMX_MIXX_IRCNT(port), mix_ircnt.u64);
- 	return rc;
--
- }
- 
- static int octeon_mgmt_receive_packets(struct octeon_mgmt *p, int budget)
-@@ -390,7 +389,6 @@ static int octeon_mgmt_receive_packets(struct octeon_mgmt *p, int budget)
- 	union cvmx_mixx_ircnt mix_ircnt;
- 	int rc;
- 
--
- 	mix_ircnt.u64 = cvmx_read_csr(CVMX_MIXX_IRCNT(port));
- 	while (work_done < budget && mix_ircnt.s.ircnt) {
- 
-@@ -516,7 +514,6 @@ static void octeon_mgmt_set_rx_filtering(struct net_device *netdev)
- 			octeon_mgmt_cam_state_add(&cam_state, ha->addr);
- 	}
- 
--
- 	spin_lock_irqsave(&p->lock, flags);
- 
- 	/* Disable packet I/O. */
-@@ -525,7 +522,6 @@ static void octeon_mgmt_set_rx_filtering(struct net_device *netdev)
- 	agl_gmx_prtx.s.en = 0;
- 	cvmx_write_csr(CVMX_AGL_GMX_PRTX_CFG(port), agl_gmx_prtx.u64);
- 
--
- 	adr_ctl.u64 = 0;
- 	adr_ctl.s.cam_mode = cam_mode;
- 	adr_ctl.s.mcst = multicast_mode;
-@@ -928,7 +924,6 @@ static int octeon_mgmt_stop(struct net_device *netdev)
- 
- 	octeon_mgmt_reset_hw(p);
- 
--
- 	free_irq(p->irq, netdev);
- 
- 	/* dma_unmap is a nop on Octeon, so just free everything.  */
-@@ -945,7 +940,6 @@ static int octeon_mgmt_stop(struct net_device *netdev)
- 			 DMA_BIDIRECTIONAL);
- 	kfree(p->tx_ring);
- 
--
- 	return 0;
- }
- 
-@@ -1112,7 +1106,6 @@ static int __init octeon_mgmt_probe(struct platform_device *pdev)
- 	netdev->netdev_ops = &octeon_mgmt_ops;
- 	netdev->ethtool_ops = &octeon_mgmt_ethtool_ops;
- 
--
- 	/* The mgmt ports get the first N MACs.  */
- 	for (i = 0; i < 6; i++)
- 		netdev->dev_addr[i] = octeon_bootinfo->mac_addr_base[i];
--- 
-1.6.6.1
+Hi, Jamie
+
+
+Thanks for your review!
+
+Yes, I noticed ARM had a PMU reservation mechanism between Oprofile
+and Perf. It's a run-time method (irqs are requested/freed in
+start/stop), not an arch init method (requested/freed in init/exit).
+And this mechanism is great for sure. But in current MIPS/Oprofile
+code, this is done in init/exit. MIPS/Oprofile authors may have
+special concerns to do so. So I'm adding Zhangjin and Ralf in the
+TO-list, hoping to hear more comments about this. To reduce the risk
+introduced by changing this mechanism, I didn't add the PMU
+reservation/sharing and placed an extra comment in this patch's
+introduction (see above).
+
+
+Deng-Cheng

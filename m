@@ -1,114 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 May 2010 08:02:30 +0200 (CEST)
-Received: from mail-qy0-f185.google.com ([209.85.221.185]:60136 "EHLO
-        mail-qy0-f185.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491180Ab0EGGCV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 7 May 2010 08:02:21 +0200
-Received: by qyk15 with SMTP id 15so1273726qyk.6
-        for <multiple recipients>; Thu, 06 May 2010 23:02:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:received:to:subject
-         :message-id:from:date;
-        bh=4yUHrJ8qt1aOug5UzP86hp3fQAQtNvj8K2lKNih/IxI=;
-        b=EZFUKDVx6xbqJBGhlWfgGQwQ3iNLNVG8CwLJjIQlAjYzSaxI6ho3rMj4UXqsS4HNaM
-         2E0JSpqj+7Z9G10bCpIhgaEf2PEg6ykjW3g8AfThcAoUY8udB2wFqZUPqMzdJ1KCmxVt
-         CAvm6iTvE/Dl2aJBKtjyd+u+ffzosMGm59QJg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=to:subject:message-id:from:date;
-        b=nkbvKOTn4R9aq2zgOIZXFcgp+0mSOHfvSbz1IUrqBcgxmHvJkS9KJ94G6ikOiU+tEm
-         HtuwPW0UUD30DNvJV+4mGnbyp6/rtMV+xaFq+ifLVjsL0ao93IZaVQ6YL1iO8My81g7P
-         hVXPEH5vVQNu1kai86aLtIci9sZ1EIs29GeGQ=
-Received: by 10.224.27.1 with SMTP id g1mr4773496qac.212.1273212133385;
-        Thu, 06 May 2010 23:02:13 -0700 (PDT)
-Received: from localhost ([207.47.250.203])
-        by mx.google.com with ESMTPS id 21sm1112829qyk.13.2010.05.06.23.02.11
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 06 May 2010 23:02:12 -0700 (PDT)
-Received: from shane by localhost with local (Exim 4.69)
-        (envelope-from <shane@localhost>)
-        id 1OAGdV-0000MT-J5; Fri, 07 May 2010 00:02:09 -0600
-To:     anemo@mba.ocn.ne.jp, kevink@paralogos.com,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        sshtylyov@mvista.com
-Subject: [PATCH] MIPS: Coding style cleanups of access of FCSR rounding mode bits
-Message-Id: <E1OAGdV-0000MT-J5@localhost>
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-Date:   Fri, 07 May 2010 00:02:09 -0600
-Return-Path: <mcdonald.shane@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 May 2010 10:34:38 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:60814 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491919Ab0EGIed (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 7 May 2010 10:34:33 +0200
+Received: id: bigeasy by Chamillionaire.breakpoint.cc with local
+        (easymta 1.00 BETA 1)
+        id 1OAJ0x-0007iN-0W; Fri, 07 May 2010 10:34:31 +0200
+Date:   Fri, 7 May 2010 10:34:31 +0200
+From:   Sebastian Andrzej Siewior <linux-crypto@ml.breakpoint.cc>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     linux-crypto@vger.kernel.org,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@gmail.com>
+Subject: Re: [RFC PATCH] crypto: Alchemy AES engine driver
+Message-ID: <20100507083430.GB29286@Chamillionaire.breakpoint.cc>
+Reply-To: Sebastian Andrzej Siewior <linux-crypto@ml.breakpoint.cc>
+References: <1273161045-21945-1-git-send-email-manuel.lauss@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <1273161045-21945-1-git-send-email-manuel.lauss@gmail.com>
+X-Key-Id: FE3F4706
+X-Key-Fingerprint: FFDA BBBB 3563 1B27 75C9  925B 98D5 5C1C FE3F 4706
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <linux-crypto@ml.breakpoint.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26641
+X-archive-position: 26642
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: linux-crypto@ml.breakpoint.cc
 Precedence: bulk
 X-list: linux-mips
 
-This patch replaces references to the magic number 0x3 with
-constants and macros indicating the real purpose of those bits.
-They are the rounding mode bits of the FCSR register.
+* Manuel Lauss | 2010-05-06 17:50:45 [+0200]:
 
-Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
----
-NOTE: This patch depends on the patch
-"MIPS FPU emulator: allow Cause bits of FCSR to be writeable by ctc1"
-having already been applied.
+A brief look.
+>lightly "tested" with the tcrypt module on Au1200;  I have no idea whether
+>it really works correctly:
+>
+># modprobe alchemy-aes
+>alg: skcipher: setkey failed on test 2 for ecb-aes-alchemy: flags=200000
+># modprobe tcrypt mode=10
+>alg: skcipher: setkey failed on test 3 for cbc-aes-alchemy: flags=0
+>alg: skcipher: Failed to load transform for cbc(aes): -2
+>alg: skcipher: Failed to load transform for cbc(aes): -2
+>tcrypt: one or more tests failed!
+>FATAL: Error inserting tcrypt (/lib/modules/2.6.34-rc6-db1200-00214-g9f84af9/kernel/crypto/tcrypt.ko): Unknown symbol in module, or unknown parameter (see dmesg)
 
- arch/mips/math-emu/cp1emu.c |   11 ++++++-----
- 1 files changed, 6 insertions(+), 5 deletions(-)
+>The error in "test 3 for cbc-aes-alchemy" probably comes from the inability
+>to process keys larger than 128 bits.
+You have to fix this, you have to be able to handle other keys as well.
+In case your hardware does not support it, you have to handle this in
+software. Look at the geode driver, via  or s390. All of them have
+fallbacks for. If you fail the self test, you driver will no be used
+afaik.
 
-diff --git a/arch/mips/math-emu/cp1emu.c b/arch/mips/math-emu/cp1emu.c
-index f2338d1..47842b7 100644
---- a/arch/mips/math-emu/cp1emu.c
-+++ b/arch/mips/math-emu/cp1emu.c
-@@ -354,7 +354,8 @@ static int cop1Emulate(struct pt_regs *xcp, struct mips_fpu_struct *ctx)
- 
- 			if (MIPSInst_RD(ir) == FPCREG_CSR) {
- 				value = ctx->fcr31;
--				value = (value & ~0x3) | mips_rm[value & 0x3];
-+				value = (value & ~FPU_CSR_RM) |
-+					mips_rm[modeindex(value)];
- #ifdef CSRTRACE
- 				printk("%p gpr[%d]<-csr=%08x\n",
- 					(void *) (xcp->cp0_epc),
-@@ -907,7 +908,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 			ieee754sp fs;
- 
- 			SPFROMREG(fs, MIPSInst_FS(ir));
--			ieee754_csr.rm = ieee_rm[MIPSInst_FUNC(ir) & 0x3];
-+			ieee754_csr.rm = ieee_rm[modeindex(MIPSInst_FUNC(ir))];
- 			rv.w = ieee754sp_tint(fs);
- 			ieee754_csr.rm = oldrm;
- 			rfmt = w_fmt;
-@@ -933,7 +934,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 			ieee754sp fs;
- 
- 			SPFROMREG(fs, MIPSInst_FS(ir));
--			ieee754_csr.rm = ieee_rm[MIPSInst_FUNC(ir) & 0x3];
-+			ieee754_csr.rm = ieee_rm[modeindex(MIPSInst_FUNC(ir))];
- 			rv.l = ieee754sp_tlong(fs);
- 			ieee754_csr.rm = oldrm;
- 			rfmt = l_fmt;
-@@ -1081,7 +1082,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 			ieee754dp fs;
- 
- 			DPFROMREG(fs, MIPSInst_FS(ir));
--			ieee754_csr.rm = ieee_rm[MIPSInst_FUNC(ir) & 0x3];
-+			ieee754_csr.rm = ieee_rm[modeindex(MIPSInst_FUNC(ir))];
- 			rv.w = ieee754dp_tint(fs);
- 			ieee754_csr.rm = oldrm;
- 			rfmt = w_fmt;
-@@ -1107,7 +1108,7 @@ static int fpu_emu(struct pt_regs *xcp, struct mips_fpu_struct *ctx,
- 			ieee754dp fs;
- 
- 			DPFROMREG(fs, MIPSInst_FS(ir));
--			ieee754_csr.rm = ieee_rm[MIPSInst_FUNC(ir) & 0x3];
-+			ieee754_csr.rm = ieee_rm[modeindex(MIPSInst_FUNC(ir))];
- 			rv.l = ieee754dp_tlong(fs);
- 			ieee754_csr.rm = oldrm;
- 			rfmt = l_fmt;
--- 
-1.5.6.5
+>Please have a look.
+> Thanks!
+>
+>diff --git a/drivers/crypto/alchemy-aes.c b/drivers/crypto/alchemy-aes.c
+>new file mode 100644
+>index 0000000..14e8ace
+>--- /dev/null
+>+++ b/drivers/crypto/alchemy-aes.c
+>+static int __init alchemy_aes_load(void)
+>+{
+>+	/* FIXME: hier sollte auch noch der PRId des prozessors getestet
+>+	 * werden; Au1210 (0x0503xxxx) und einige Au1300 haben lt. Daten-
+>+	 * blatt keine AES engine.
+>+	 */
+You German right? You should handle this in SoC code. So if you figure
+out, that you have an engine here you add the device. If you don't have
+it you don't do it and the probe call won't be called. Also the module
+won't be loaded by udev.
+
+>+	/* need to do 8bit accesses to memory to get correct data */
+>+	__alchemy_aes_memid = au1xxx_ddma_add_device(&alchemy_aes_mem_dbdev);
+>+	if (!__alchemy_aes_memid)
+>+		return -ENODEV;
+What does it do? You don't want to add devices here. If you need
+something additional do it in SoC code and pass it via platform_data.
+
+>+
+>+	return platform_driver_register(&alchemy_aes_driver);
+>+}
+>+
+
+Sebastian

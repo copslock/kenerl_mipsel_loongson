@@ -1,115 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 May 2010 22:12:45 +0200 (CEST)
-Received: from anti.mobis.co.kr ([211.217.52.67]:55237 "HELO
-        sniper.mobis.co.kr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1492162Ab0EHUMl convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 May 2010 22:12:41 +0200
-Received: (snipe 13005 invoked by uid 0); 9 May 2010 05:12:29 +0900
-Received: from gurumurthy.gowdar@gmobis.com with  Spamsniper 2.94.22 (Processed in 0.034502 secs);
-Received: from unknown (HELO msmobiweb.mobis.co.kr) (10.240.100.165)
-  by unknown with SMTP; 9 May 2010 05:12:29 +0900
-X-RCPTTO: linux-mips@linux-mips.org
-Received: from mkegmal01.global.mobis.co.kr ([10.240.200.82]) by msmobiweb.mobis.co.kr with Microsoft SMTPSVC(6.0.3790.3959);
-         Sun, 9 May 2010 05:12:30 +0900
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Exception in serial_init MIPS32
-Date:   Sun, 9 May 2010 05:12:29 +0900
-Message-ID: <5858DE952C53A441BDA3408A0524130104CCE0AA@mkegmal01>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Exception in serial_init MIPS32
-Thread-Index: Acru6skf+FuImQx+SNqjUkEZaaPOww==
-From:   =?iso-8859-1?Q?=A0Gurumurthy_G_M?= <Gurumurthy.Gowdar@gmobis.com>
-To:     <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 08 May 2010 20:12:30.0140 (UTC) FILETIME=[C95AA7C0:01CAEEEA]
-Return-Path: <Gurumurthy.Gowdar@gmobis.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 May 2010 03:35:39 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:51081 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492308Ab0EIBfg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 9 May 2010 03:35:36 +0200
+Received: by pwj3 with SMTP id 3so1042732pwj.36
+        for <multiple recipients>; Sat, 08 May 2010 18:35:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=37vauDz7v28zrIZDOUfeJhDjiaePYQ9ZHyA17GriS0I=;
+        b=ZaMBCPm+YL2XxDo/k5iydLt/v18ET5aACK8RfvnSfGjBFw1KBAXMczVv2N8+B8+UiK
+         ZfdkLC7U/irqwCCZa/wgn48e/1EE4BV9lMH9X0swc2V9SxDI8SYFstlMEX/ynPr/5ter
+         HMxTSI9wPGt4QfuB54ZUsYeQOTiOmpEJXTKI0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=gCDhYqjWJtUEyskCsTE2XZhyDBPaKXp+OASQskFdBg42Buac96YvUxwvidU1/fam1D
+         f8YqIw/x/Ftsns6/LqbO1YJ9ok34tKEul3aI/PIe+LbuIsiqoVpYAFMSSnZFccFhAYia
+         zc+6dzMcWvJkTrSDZ+/Z8guJvmdnIMeQ5a/UI=
+Received: by 10.114.10.19 with SMTP id 19mr1589919waj.75.1273368927076;
+        Sat, 08 May 2010 18:35:27 -0700 (PDT)
+Received: from [192.168.2.244] ([202.201.14.140])
+        by mx.google.com with ESMTPS id n32sm17480967wae.22.2010.05.08.18.35.22
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 08 May 2010 18:35:24 -0700 (PDT)
+Subject: Re: [PATCH] Oprofile: Loongson: Fixup of irq handler
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+In-Reply-To: <1273165186-29153-1-git-send-email-wuzhangjin@gmail.com>
+References: <1273165186-29153-1-git-send-email-wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Sun, 09 May 2010 09:35:19 +0800
+Message-ID: <1273368919.4914.0.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26646
+X-archive-position: 26647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Gurumurthy.Gowdar@gmobis.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi, Ralf
 
-Hi All,
-       I am getting a exception in board.c , at the end of serial_init function i.e. when i access to stack pointer (SP).
+This one is urgent, could you please review it, thanks ;)
 
-The return address register ra value is not correct.
+Regards,
+	Wu Zhangjin
 
-I am porting U-boot-2010.03 for MIPS32 Au1350 processor.
-
-board specs:-
-
-CPU Frequency - 396 MHz
-System Bus Frequency - 198 MHz
-SDRAM (DDR2) Frequency - 198 MHz
-
-SDRAM Base address is  - 0x80000000
-SP offset is  - 0x400000
-
-I am able to read and write DDR2 SDRAM from BDI3000, but how to check whether my DDR2 SDRAM Configuration is working or not from U-Boot.
-
-below is the error log file:-
-
-Au1350>bi 0xbfc195c0
-Breakpoint identification is 0
-Au1350>go
-- TARGET: core #0 has entered debug mode
-Au1350>info
-    Core number       : 0
-    Core state        : Debug Mode
-    Debug entry cause : exception
-    Current PC        : 0xbfc195c0
-    Current SR        : 0x00400000
-    Current LR  (r31) : 0xbfc195bc
-    Current SP  (r29) : 0x803fff90
-    Current EPC       : 0x18222521
-Au1350>ti
-    Core number       : 0
-    Core state        : Debug Mode
-    Debug entry cause : single step
-    Current PC        : 0xbfc195c4
-    Current SR        : 0x00400000
-    Current LR  (r31) : 0x440c0050
-    Current SP  (r29) : 0x803fff90
-Au1350>ti
-    Core number       : 0
-    Core state        : Debug Mode
-    Debug entry cause : single step
-    Current PC        : 0xbfc195c8
-    Current SR        : 0x00400000
-    Current LR  (r31) : 0x440c0050
-    Current SP  (r29) : 0x803fff90
-Au1350>ti
-    Core number       : 0
-    Core state        : Debug Mode
-    Debug entry cause : single step
-    Current PC        : 0x440c0050
-    Current SR        : 0x00400000
-    Current LR  (r31) : 0x440c0050
-    Current SP  (r29) : 0x803fffb0
-Au1350>ti
-    Core number       : 0
-    Core state        : Debug Mode
-    Debug entry cause : single step
-    Current PC        : 0xbfc00200
-    Current SR        : 0x00400002
-    Current LR  (r31) : 0x440c0050
-    Current SP  (r29) : 0x803fffb0
-Au1350>
-
-please let me know whether SDRAM DDR2 configuration is wrong or am missing something. why am not able to access SP from U-boot.
-
-Also SDRAM initialzation in YAMON and U-boot is totally different. please let me know which one is working fine.
-
-With Thanks and Regards,
-Gurumurthy Gowdar
-KPIT Cummins Infosystems Pvt Ltd
+On Fri, 2010-05-07 at 00:59 +0800, Wu Zhangjin wrote:
+> The interrupt enable bit of performance counters of Loongson is in the
+> control register($24), not in the counter register, so, in
+> loongson2_perfcount_handler(), we need to use
+> 
+> 	enabled = read_c0_perfctrl() & LOONGSON2_PERFCNT_INT_EN;
+> 
+> instead of
+> 
+> 	enabled = read_c0_perfcnt() & LOONGSON2_PERFCNT_INT_EN;
+> 
+> Reported-by: Xu Hengyang <hengyang@mail.ustc.edu.cn>
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> ---
+>  arch/mips/oprofile/op_model_loongson2.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/mips/oprofile/op_model_loongson2.c b/arch/mips/oprofile/op_model_loongson2.c
+> index 29e2326..fa3bf66 100644
+> --- a/arch/mips/oprofile/op_model_loongson2.c
+> +++ b/arch/mips/oprofile/op_model_loongson2.c
+> @@ -122,7 +122,7 @@ static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id)
+>  	 */
+>  
+>  	/* Check whether the irq belongs to me */
+> -	enabled = read_c0_perfcnt() & LOONGSON2_PERFCNT_INT_EN;
+> +	enabled = read_c0_perfctrl() & LOONGSON2_PERFCNT_INT_EN;
+>  	if (!enabled)
+>  		return IRQ_NONE;
+>  	enabled = reg.cnt1_enabled | reg.cnt2_enabled;

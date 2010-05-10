@@ -1,93 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 May 2010 03:35:39 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:51081 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492308Ab0EIBfg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 9 May 2010 03:35:36 +0200
-Received: by pwj3 with SMTP id 3so1042732pwj.36
-        for <multiple recipients>; Sat, 08 May 2010 18:35:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=37vauDz7v28zrIZDOUfeJhDjiaePYQ9ZHyA17GriS0I=;
-        b=ZaMBCPm+YL2XxDo/k5iydLt/v18ET5aACK8RfvnSfGjBFw1KBAXMczVv2N8+B8+UiK
-         ZfdkLC7U/irqwCCZa/wgn48e/1EE4BV9lMH9X0swc2V9SxDI8SYFstlMEX/ynPr/5ter
-         HMxTSI9wPGt4QfuB54ZUsYeQOTiOmpEJXTKI0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=gCDhYqjWJtUEyskCsTE2XZhyDBPaKXp+OASQskFdBg42Buac96YvUxwvidU1/fam1D
-         f8YqIw/x/Ftsns6/LqbO1YJ9ok34tKEul3aI/PIe+LbuIsiqoVpYAFMSSnZFccFhAYia
-         zc+6dzMcWvJkTrSDZ+/Z8guJvmdnIMeQ5a/UI=
-Received: by 10.114.10.19 with SMTP id 19mr1589919waj.75.1273368927076;
-        Sat, 08 May 2010 18:35:27 -0700 (PDT)
-Received: from [192.168.2.244] ([202.201.14.140])
-        by mx.google.com with ESMTPS id n32sm17480967wae.22.2010.05.08.18.35.22
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 08 May 2010 18:35:24 -0700 (PDT)
-Subject: Re: [PATCH] Oprofile: Loongson: Fixup of irq handler
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 May 2010 16:50:02 +0200 (CEST)
+Received: from mv-drv-hcb003.ocn.ad.jp ([118.23.109.133]:53064 "EHLO
+        mv-drv-hcb003.ocn.ad.jp" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492283Ab0EJOtz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 May 2010 16:49:55 +0200
+Received: from vcmba.ocn.ne.jp (localhost.localdomain [127.0.0.1])
+        by mv-drv-hcb003.ocn.ad.jp (Postfix) with ESMTP id 987E256421D;
+        Mon, 10 May 2010 23:49:49 +0900 (JST)
+Received: from localhost (softbank221040169135.bbtec.net [221.40.169.135])
+        by vcmba.ocn.ne.jp (Postfix) with ESMTP;
+        Mon, 10 May 2010 23:49:49 +0900 (JST)
+Date:   Mon, 10 May 2010 23:49:46 +0900 (JST)
+Message-Id: <20100510.234946.229279777.anemo@mba.ocn.ne.jp>
+To:     chris@mips.com
 Cc:     linux-mips@linux-mips.org
-In-Reply-To: <1273165186-29153-1-git-send-email-wuzhangjin@gmail.com>
-References: <1273165186-29153-1-git-send-email-wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Sun, 09 May 2010 09:35:19 +0800
-Message-ID: <1273368919.4914.0.camel@localhost>
+Subject: Re: [PATCH] Fix abs.[sd] and neg.[sd] emulation for NaN operands
+From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20091012215718.30362.67068.stgit@localhost.localdomain>
+References: <20091012215522.30362.49399.stgit@localhost.localdomain>
+        <20091012215718.30362.67068.stgit@localhost.localdomain>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26647
+X-archive-position: 26648
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf
+Excuse me for too late comment.
 
-This one is urgent, could you please review it, thanks ;)
-
-Regards,
-	Wu Zhangjin
-
-On Fri, 2010-05-07 at 00:59 +0800, Wu Zhangjin wrote:
-> The interrupt enable bit of performance counters of Loongson is in the
-> control register($24), not in the counter register, so, in
-> loongson2_perfcount_handler(), we need to use
+On Mon, 12 Oct 2009 14:57:18 -0700, Chris Dearman <chris@mips.com> wrote:
+> From: Nigel Stephens <nigel@mips.com>
 > 
-> 	enabled = read_c0_perfctrl() & LOONGSON2_PERFCNT_INT_EN;
-> 
-> instead of
-> 
-> 	enabled = read_c0_perfcnt() & LOONGSON2_PERFCNT_INT_EN;
-> 
-> Reported-by: Xu Hengyang <hengyang@mail.ustc.edu.cn>
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/oprofile/op_model_loongson2.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/oprofile/op_model_loongson2.c b/arch/mips/oprofile/op_model_loongson2.c
-> index 29e2326..fa3bf66 100644
-> --- a/arch/mips/oprofile/op_model_loongson2.c
-> +++ b/arch/mips/oprofile/op_model_loongson2.c
-> @@ -122,7 +122,7 @@ static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id)
->  	 */
+> This patch ensures that the sign bit is always updated
+> for NaN operands.
+...
+> @@ -76,15 +74,12 @@ ieee754dp ieee754dp_abs(ieee754dp x)
+>  	CLEARCX;
+>  	FLUSHXDP;
 >  
->  	/* Check whether the irq belongs to me */
-> -	enabled = read_c0_perfcnt() & LOONGSON2_PERFCNT_INT_EN;
-> +	enabled = read_c0_perfctrl() & LOONGSON2_PERFCNT_INT_EN;
->  	if (!enabled)
->  		return IRQ_NONE;
->  	enabled = reg.cnt1_enabled | reg.cnt2_enabled;
+> +	/* Clear sign ALWAYS, irrespective of NaN */
+> +	DPSIGN(x) = 0;
+> +
+>  	if (xc == IEEE754_CLASS_SNAN) {
+> -		SETCX(IEEE754_INVALID_OPERATION);
+> -		return ieee754dp_nanxcpt(ieee754dp_indef(), "neg");
+> +		return ieee754dp_nanxcpt(ieee754dp_indef(), "abs");
+>  	}
+>  
+> -	if (ieee754dp_isnan(x))	/* but not infinity */
+> -		return ieee754dp_nanxcpt(x, "abs", x);
+> -
+> -	/* quick fix up */
+> -	DPSIGN(x) = 0;
+>  	return x;
+>  }
+
+Is there any reason for removal of SETCX(IEEE754_INVALID_OPERATION)
+line here?
+
+The older version of this fix ("Fix absd emulation" by Raghu Gandham)
+did not remove the line.
+
+Without this line, a signaling NaN will not raise a signal.  It seems
+not expected behaviour.
+
+---
+Atsushi Nemoto

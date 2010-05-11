@@ -1,39 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2010 19:22:58 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:37872 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491889Ab0EKRWz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 11 May 2010 19:22:55 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o4BHMrVI005539;
-        Tue, 11 May 2010 18:22:54 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o4BHMrf3005537;
-        Tue, 11 May 2010 18:22:53 +0100
-Date:   Tue, 11 May 2010 18:22:52 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Florian Fainelli <florian@openwrt.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH -queue] BCM63xx: avoid namespace clash on
- GPIO_DIR_{IN,OUT}
-Message-ID: <20100511172252.GA3771@linux-mips.org>
-References: <201005041038.57783.ffainelli@freebox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2010 20:42:37 +0200 (CEST)
+Received: from mail.gmx.net ([213.165.64.20]:36003 "HELO mail.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S1491942Ab0EKSme convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 May 2010 20:42:34 +0200
+Received: (qmail invoked by alias); 11 May 2010 18:42:19 -0000
+Received: from dslb-084-056-028-235.pools.arcor-ip.net (EHLO lamer.localnet) [84.56.28.235]
+  by mail.gmx.net (mp004) with SMTP; 11 May 2010 20:42:19 +0200
+X-Authenticated: #12255092
+X-Provags-ID: V01U2FsdGVkX1/IvmtEpuzI/vNBXd0uWx3n38FlkPDZvnH6PzkcLx
+        vq/2G2oDwrXpa8
+From:   Peter =?iso-8859-1?q?H=FCwe?= <PeterHuewe@gmx.de>
+To:     Mauro Carvalho Chehab <mchehab@infradead.org>
+Subject: Re: [PATCH] media/IR: Add missing include file to rc-map.c
+Date:   Tue, 11 May 2010 20:42:14 +0200
+User-Agent: KMail/1.12.4 (Linux/2.6.33.2; KDE/4.3.5; x86_64; ; )
+Cc:     linuxppc-dev@ozlabs.org,
+        "David =?iso-8859-1?q?H=E4rdeman?=" <david@hardeman.nu>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-m68k@lists.linux-m68k.org
+References: <201005051720.22617.PeterHuewe@gmx.de>
+In-Reply-To: <201005051720.22617.PeterHuewe@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <201005041038.57783.ffainelli@freebox.fr>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201005112042.14889.PeterHuewe@gmx.de>
+X-Y-GMX-Trusted: 0
+Return-Path: <PeterHuewe@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26673
+X-archive-position: 26674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: PeterHuewe@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-Queued for 2.6.35.  Thanks!
+Am Mittwoch 05 Mai 2010 17:20:21 schrieb Peter Hüwe:
+> From: Peter Huewe <peterhuewe@gmx.de>
+> 
+> This patch adds a missing include linux/delay.h to prevent
+> build failures[1-5]
+> 
+> Signed-off-by: Peter Huewe <peterhuewe@gmx.de>
+> ---
+Any updates on this patch?
+Issue still exists with today's linux-next tree
 
-  Ralf
+Thanks,
+Peter

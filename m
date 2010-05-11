@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2010 11:19:44 +0200 (CEST)
-Received: from mail-ww0-f49.google.com ([74.125.82.49]:35411 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2010 11:20:13 +0200 (CEST)
+Received: from mail-ww0-f49.google.com ([74.125.82.49]:38287 "EHLO
         mail-ww0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491111Ab0EKJTk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 May 2010 11:19:40 +0200
-Received: by wwb22 with SMTP id 22so2363042wwb.36
-        for <multiple recipients>; Tue, 11 May 2010 02:19:34 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1491121Ab0EKJTo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 May 2010 11:19:44 +0200
+Received: by wwb22 with SMTP id 22so2363077wwb.36
+        for <multiple recipients>; Tue, 11 May 2010 02:19:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:date:subject
          :mime-version:x-uid:x-length:organization:to:cc:content-type
          :content-transfer-encoding:message-id;
-        bh=pbMVpo5rzswu2AWZFbFrR/dS6QYt5arYI0xs0PJJggg=;
-        b=e3KtdDKBu1VAY/x4by5jhnNa4uOpgcLpIakuQMQNWCH0oMiMOKs0vbcWC+YKRr3Iga
-         BXebz+vRknMkhKlIQxLuyvXorUl9D/5fh82s7hN8h6vEQqK5DfDR61XeIvRAbYjGhbSr
-         SIj+u1vuUWUvo7Jrb5xuWprcFNrRFO0HAhx9I=
+        bh=YzJloH84CeA6gRxYyBaw/R30Nz7cVx7M7JFuAEJKznA=;
+        b=p0mT7kr5pyDHTpXWHN3v14/fyLY3+oCF5BqCIu3+KR77QgGuNeEyRACTkhM3j4Ne82
+         uSyYmGzJuwuhDU3iOsHF6ez/VvM+Pk51WArgWynZ3LX2rY3fYifMtIqp4f6oiBEYvxw/
+         w5iQRKGCh2oMVdg98FjqfX+p3f9KOv+omv0zE=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:date:subject:mime-version:x-uid:x-length:organization
          :to:cc:content-type:content-transfer-encoding:message-id;
-        b=F4Zx5Q7n9FroVDyb4dBw1DtQyrdD/tMRImqvvr4G1bN0U2hHaDIqcUblrVqKgc2xyK
-         ZnvrCBw/FyaGCxc9/vlVa1eKCi3jgX1keTwizihUAFkuSCKppkGV4oP+IsoSJkKA5PlA
-         vFVJ5YdL+JhOBFr6wKcVDJfDdRPTxPfQF0sJ8=
-Received: by 10.216.156.133 with SMTP id m5mr3256589wek.115.1273569574153;
-        Tue, 11 May 2010 02:19:34 -0700 (PDT)
+        b=p/go7OT4tjCuNFhu1WI7sFk4hAqvKDKU7A9/E1ymncxJhiJhF/hBYHj0A4xr0nEdhU
+         IxV52prIcrQ6B+SYyA6acJv64iabi/KDbSgEYimPT5ZqU6CsUL/7HRlk91HEB5aWRxsk
+         WQgp/CCesHKbfs9BTvBu8k7FyglxAIG1CkWPI=
+Received: by 10.216.154.140 with SMTP id h12mr3247273wek.193.1273569578558;
+        Tue, 11 May 2010 02:19:38 -0700 (PDT)
 Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by mx.google.com with ESMTPS id t70sm1990202weq.2.2010.05.11.02.19.32
+        by mx.google.com with ESMTPS id g17sm1990000wee.5.2010.05.11.02.19.37
         (version=SSLv3 cipher=RC4-MD5);
-        Tue, 11 May 2010 02:19:33 -0700 (PDT)
+        Tue, 11 May 2010 02:19:37 -0700 (PDT)
 From:   Florian Fainelli <florian@openwrt.org>
-Date:   Tue, 11 May 2010 11:20:09 +0200
-Subject: [PATCH 1/2] AR7: use ar7_has_high_vlynq() to determine watchdog base address
+Date:   Tue, 11 May 2010 11:20:14 +0200
+Subject: [PATCH 2/2] AR7: prevent race between clock initialization and devices registration
 MIME-Version: 1.0
-X-UID:  64
-X-Length: 1908
+X-UID:  65
+X-Length: 1535
 Organization: OpenWrt
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201005111120.09710.florian@openwrt.org>
+Message-Id: <201005111120.14442.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26659
+X-archive-position: 26660
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,42 +52,22 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Instead of doing yet another switch/case on the chip_id, use existing
-inline function to set the watchdog base address.
+ar7_regiser_devices needs ar7_clocks_init to have been called first, however
+clock.o is currently linked later due to its order in the Makefile, therefore
+ar7_clocks_init always gets called later than ar7_register_devices because both
+have the same initcall level. Fix this by moving ar7_register_devices to the right
+initcall level.
 
+Reported-by: Michael J. Evans <mjevans1983@gmail.com>
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
 diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index 2fafc78..1d4a466 100644
+index 1d4a466..566f2d7 100644
 --- a/arch/mips/ar7/platform.c
 +++ b/arch/mips/ar7/platform.c
-@@ -576,7 +576,6 @@ static int __init ar7_register_devices(void)
- {
- 	void __iomem *bootcr;
- 	u32 val;
--	u16 chip_id;
- 	int res;
+@@ -647,4 +647,4 @@ static int __init ar7_register_devices(void)
  
- 	res = ar7_register_uarts();
-@@ -635,18 +634,10 @@ static int __init ar7_register_devices(void)
- 	val = readl(bootcr);
- 	iounmap(bootcr);
- 	if (val & AR7_WDT_HW_ENA) {
--		chip_id = ar7_chip_id();
--		switch (chip_id) {
--		case AR7_CHIP_7100:
--		case AR7_CHIP_7200:
--			ar7_wdt_res.start = AR7_REGS_WDT;
--			break;
--		case AR7_CHIP_7300:
-+		if (ar7_has_high_vlynq())
- 			ar7_wdt_res.start = UR8_REGS_WDT;
--			break;
--		default:
--			break;
--		}
-+		else
-+			ar7_wdt_res.start = AR7_REGS_WDT;
- 
- 		ar7_wdt_res.end = ar7_wdt_res.start + 0x20;
- 		res = platform_device_register(&ar7_wdt);
+ 	return 0;
+ }
+-arch_initcall(ar7_register_devices);
++device_initcall(ar7_register_devices);

@@ -1,54 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2010 20:42:37 +0200 (CEST)
-Received: from mail.gmx.net ([213.165.64.20]:36003 "HELO mail.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S1491942Ab0EKSme convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 May 2010 20:42:34 +0200
-Received: (qmail invoked by alias); 11 May 2010 18:42:19 -0000
-Received: from dslb-084-056-028-235.pools.arcor-ip.net (EHLO lamer.localnet) [84.56.28.235]
-  by mail.gmx.net (mp004) with SMTP; 11 May 2010 20:42:19 +0200
-X-Authenticated: #12255092
-X-Provags-ID: V01U2FsdGVkX1/IvmtEpuzI/vNBXd0uWx3n38FlkPDZvnH6PzkcLx
-        vq/2G2oDwrXpa8
-From:   Peter =?iso-8859-1?q?H=FCwe?= <PeterHuewe@gmx.de>
-To:     Mauro Carvalho Chehab <mchehab@infradead.org>
-Subject: Re: [PATCH] media/IR: Add missing include file to rc-map.c
-Date:   Tue, 11 May 2010 20:42:14 +0200
-User-Agent: KMail/1.12.4 (Linux/2.6.33.2; KDE/4.3.5; x86_64; ; )
-Cc:     linuxppc-dev@ozlabs.org,
-        "David =?iso-8859-1?q?H=E4rdeman?=" <david@hardeman.nu>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-m68k@lists.linux-m68k.org
-References: <201005051720.22617.PeterHuewe@gmx.de>
-In-Reply-To: <201005051720.22617.PeterHuewe@gmx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 May 2010 20:48:53 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:32878 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491967Ab0EKSst (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 May 2010 20:48:49 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o4BImjmR009215;
+        Tue, 11 May 2010 19:48:46 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o4BImi6T009213;
+        Tue, 11 May 2010 19:48:44 +0100
+Date:   Tue, 11 May 2010 19:48:44 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     wuzhangjin@gmail.com, linux-mips <linux-mips@linux-mips.org>
+Subject: Re: About MIPS specific dma_mmap_coherent()
+Message-ID: <20100511184844.GA7978@linux-mips.org>
+References: <1271134735.25797.35.camel@falcon>
+ <s5hmxx7z4a7.wl%tiwai@suse.de>
+ <1271218889.25872.27.camel@falcon>
+ <s5hzl164kay.wl%tiwai@suse.de>
+ <1271235619.25872.148.camel@falcon>
+ <s5h633uxcje.wl%tiwai@suse.de>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <201005112042.14889.PeterHuewe@gmx.de>
-X-Y-GMX-Trusted: 0
-Return-Path: <PeterHuewe@gmx.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <s5h633uxcje.wl%tiwai@suse.de>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26674
+X-archive-position: 26675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: PeterHuewe@gmx.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Am Mittwoch 05 Mai 2010 17:20:21 schrieb Peter Hüwe:
-> From: Peter Huewe <peterhuewe@gmx.de>
-> 
-> This patch adds a missing include linux/delay.h to prevent
-> build failures[1-5]
-> 
-> Signed-off-by: Peter Huewe <peterhuewe@gmx.de>
-> ---
-Any updates on this patch?
-Issue still exists with today's linux-next tree
+On Wed, Apr 14, 2010 at 05:46:13PM +0200, Takashi Iwai wrote:
 
-Thanks,
-Peter
+> But, I remember vaguely that calling pgprot_noncached()
+> unconditionally is dangerous.  It should be checked somehow, e.g. via
+> platform_device_is_coherent().  And, this found only in
+> dma-coherence.h, and adding it to pcm_native.c would become messy like
+> below...
+> 
+> So, it'd be really better to add dma_mmap_coherent(), indeed.
+
+We agreed that this was only meant as a stop gap meassure.  As such I do
+agree with either of
+
+  http://patchwork.linux-mips.org/patch/1117/
+  http://patchwork.linux-mips.org/patch/1118/
+
+Wu has tested the 1117 patch so that might make it preferable especially
+for 2.6.34 if we should go for that.
+
+  Ralf

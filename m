@@ -1,433 +1,371 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 May 2010 19:22:56 +0200 (CEST)
-Received: from rtp-iport-2.cisco.com ([64.102.122.149]:24169 "EHLO
-        rtp-iport-2.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492228Ab0ELRWu convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 May 2010 19:22:50 +0200
-Authentication-Results: rtp-iport-2.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAGSA6kutJV2Z/2dsb2JhbACeL3GiTZlehRIEg0A
-X-IronPort-AV: E=Sophos;i="4.53,216,1272844800"; 
-   d="scan'208";a="110584679"
-Received: from rcdn-core-2.cisco.com ([173.37.93.153])
-  by rtp-iport-2.cisco.com with ESMTP; 12 May 2010 17:22:43 +0000
-Received: from xbh-rcd-101.cisco.com (xbh-rcd-101.cisco.com [72.163.62.138])
-        by rcdn-core-2.cisco.com (8.14.3/8.14.3) with ESMTP id o4CHMhDZ015671;
-        Wed, 12 May 2010 17:22:43 GMT
-Received: from xmb-rcd-208.cisco.com ([72.163.62.215]) by xbh-rcd-101.cisco.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 12 May 2010 12:22:43 -0500
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 May 2010 19:24:19 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13697 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492221Ab0ELRYO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 12 May 2010 19:24:14 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4beae44d0000>; Wed, 12 May 2010 10:24:29 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 12 May 2010 10:24:09 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 12 May 2010 10:24:08 -0700
+Message-ID: <4BEAE438.7080303@caviumnetworks.com>
+Date:   Wed, 12 May 2010 10:24:08 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: [PATCH resend] Apply kmap_high_get on MIPS
-Date:   Wed, 12 May 2010 12:22:42 -0500
-Message-ID: <7A9214B0DEB2074FBCA688B30B04400DC645D1@XMB-RCD-208.cisco.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [PATCH resend] Apply kmap_high_get on MIPS
-Thread-Index: AcrxXpBfOoNutrGeRxue6FwB8zv2iAAl9VYwAAAwTLA=
-From:   "Dezhong Diao (dediao)" <dediao@cisco.com>
-To:     <linux-mips@linux-mips.org>
-Cc:     "Ralf Baechle" <ralf@linux-mips.org>
-X-OriginalArrivalTime: 12 May 2010 17:22:43.0093 (UTC) FILETIME=[BB0DA450:01CAF1F7]
-Return-Path: <dediao@cisco.com>
+To:     "Dezhong Diao (dediao)" <dediao@cisco.com>
+CC:     linux-mips@linux-mips.org,
+        "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>,
+        "Tony Colclough (colclot)" <colclot@cisco.com>,
+        Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [RFC PATCH 1/2] The Device Tree Patch for MIPS
+References: <7A9214B0DEB2074FBCA688B30B04400DC64136@XMB-RCD-208.cisco.com>
+In-Reply-To: <7A9214B0DEB2074FBCA688B30B04400DC64136@XMB-RCD-208.cisco.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 12 May 2010 17:24:08.0922 (UTC) FILETIME=[EE361BA0:01CAF1F7]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26694
+X-archive-position: 26695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dediao@cisco.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Fix the problem in the patch which got truncated.
+On 05/10/2010 02:34 PM, Dezhong Diao (dediao) wrote:
+> Add common device tree support for MIPS.
+>
 
-Signed-off-by: Dezhong Diao <dediao@cisco.com>
----
- arch/mips/include/asm/highmem.h |    3 +
- arch/mips/mm/dma-default.c      |  156
-++++++++++++++++++++------------------
- arch/mips/mm/highmem.c          |   17 ++++-
- 3 files changed, 101 insertions(+), 75 deletions(-)
+You are missing a 'Signed-off-by:' here.
 
-diff --git a/arch/mips/include/asm/highmem.h
-b/arch/mips/include/asm/highmem.h
-index 25adfb0..2d7f0f2 100644
---- a/arch/mips/include/asm/highmem.h
-+++ b/arch/mips/include/asm/highmem.h
-@@ -42,7 +42,10 @@ extern pte_t *pkmap_page_table;
- #define PKMAP_NR(virt)  ((virt-PKMAP_BASE) >> PAGE_SHIFT)
- #define PKMAP_ADDR(nr)  (PKMAP_BASE + ((nr) << PAGE_SHIFT))
- 
-+#define ARCH_NEEDS_KMAP_HIGH_GET
-+
- extern void * kmap_high(struct page *page);
-+extern void *kmap_high_get(struct page *page);
- extern void kunmap_high(struct page *page);
- 
- extern void *__kmap(struct page *page);
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 9547bc0..7583a3f 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -15,18 +15,18 @@
- #include <linux/scatterlist.h>
- #include <linux/string.h>
- #include <linux/gfp.h>
-+#include <linux/highmem.h>
- 
- #include <asm/cache.h>
- #include <asm/io.h>
- 
- #include <dma-coherence.h>
- 
--static inline unsigned long dma_addr_to_virt(struct device *dev,
-+static inline struct page *dma_addr_to_page(struct device *dev,
- 	dma_addr_t dma_addr)
- {
--	unsigned long addr = plat_dma_addr_to_phys(dev, dma_addr);
--
--	return (unsigned long)phys_to_virt(addr);
-+	return pfn_to_page(
-+		plat_dma_addr_to_phys(dev, dma_addr) >> PAGE_SHIFT);
- }
- 
- /*
-@@ -141,7 +141,7 @@ void dma_free_coherent(struct device *dev, size_t
-size, void *vaddr,
- 
- EXPORT_SYMBOL(dma_free_coherent);
- 
--static inline void __dma_sync(unsigned long addr, size_t size,
-+static inline void __dma_sync_virtual(unsigned long addr, size_t size,
- 	enum dma_data_direction direction)
- {
- 	switch (direction) {
-@@ -162,13 +162,60 @@ static inline void __dma_sync(unsigned long addr,
-size_t size,
- 	}
- }
- 
-+static inline void __dma_sync_contiguous(struct page *page,
-+	unsigned long offset, size_t size, enum dma_data_direction
-direction)
-+{
-+	unsigned long addr;
-+
-+	if (!PageHighMem(page)) {
-+		addr = (unsigned long)page_address(page) + offset;
-+		__dma_sync_virtual(addr, size, direction);
-+	} else {
-+		addr = (unsigned long)kmap_high_get(page);
-+		if (addr) {
-+			addr += offset;
-+			__dma_sync_virtual(addr, size, direction);
-+			kunmap_high(page);
-+		}
-+	}
-+}
-+
-+/*
-+ * A single sg entry may refer to multiple physically contiguous
-+ * pages. But we still need to process highmem pages individually.
-+ * If highmem is not configured then the bulk of this loop gets
-+ * optimized out.
-+ */
-+static inline void __dma_sync(struct page *page,
-+	unsigned long offset, size_t size, enum dma_data_direction
-direction)
-+{
-+	size_t left = size;
-+
-+	BUG_ON(direction == DMA_NONE);
-+
-+	do {
-+		size_t len = left;
-+		if (PageHighMem(page) && (offset + len > PAGE_SIZE)) {
-+			if (offset >= PAGE_SIZE) {
-+				page += offset >> PAGE_SHIFT;
-+				offset &= ~PAGE_MASK;
-+			}
-+			len = PAGE_SIZE - offset;
-+		}
-+		__dma_sync_contiguous(page, offset, len, direction);
-+		offset = 0;
-+		page++;
-+		left -= len;
-+	} while (left);
-+}
-+
- dma_addr_t dma_map_single(struct device *dev, void *ptr, size_t size,
- 	enum dma_data_direction direction)
- {
- 	unsigned long addr = (unsigned long) ptr;
- 
- 	if (!plat_device_is_coherent(dev))
--		__dma_sync(addr, size, direction);
-+		__dma_sync_virtual(addr, size, direction);
- 
- 	return plat_map_dma_mem(dev, ptr, size);
- }
-@@ -179,8 +226,8 @@ void dma_unmap_single(struct device *dev, dma_addr_t
-dma_addr, size_t size,
- 	enum dma_data_direction direction)
- {
- 	if (cpu_is_noncoherent_r10000(dev))
--		__dma_sync(dma_addr_to_virt(dev, dma_addr), size,
--		           direction);
-+		__dma_sync(dma_addr_to_page(dev, dma_addr),
-+			   (dma_addr & ~PAGE_MASK), size, direction);
- 
- 	plat_unmap_dma_mem(dev, dma_addr, size, direction);
- }
-@@ -192,16 +239,12 @@ int dma_map_sg(struct device *dev, struct
-scatterlist *sg, int nents,
- {
- 	int i;
- 
--	BUG_ON(direction == DMA_NONE);
--
- 	for (i = 0; i < nents; i++, sg++) {
--		unsigned long addr;
--
--		addr = (unsigned long) sg_virt(sg);
--		if (!plat_device_is_coherent(dev) && addr)
--			__dma_sync(addr, sg->length, direction);
--		sg->dma_address = plat_map_dma_mem(dev,
--				                   (void *)addr,
-sg->length);
-+		if (!plat_device_is_coherent(dev) )
-+			__dma_sync(sg_page(sg), sg->offset, sg->length,
-+				   direction);
-+		sg->dma_address = plat_map_dma_mem_page(dev,
-sg_page(sg)) +
-+				  sg->offset;
- 	}
- 
- 	return nents;
-@@ -212,14 +255,8 @@ EXPORT_SYMBOL(dma_map_sg);
- dma_addr_t dma_map_page(struct device *dev, struct page *page,
- 	unsigned long offset, size_t size, enum dma_data_direction
-direction)
- {
--	BUG_ON(direction == DMA_NONE);
--
--	if (!plat_device_is_coherent(dev)) {
--		unsigned long addr;
--
--		addr = (unsigned long) page_address(page) + offset;
--		__dma_sync(addr, size, direction);
--	}
-+	if (!plat_device_is_coherent(dev))
-+		__dma_sync(page, offset, size, direction);
- 
- 	return plat_map_dma_mem_page(dev, page) + offset;
- }
-@@ -229,18 +266,13 @@ EXPORT_SYMBOL(dma_map_page);
- void dma_unmap_sg(struct device *dev, struct scatterlist *sg, int
-nhwentries,
- 	enum dma_data_direction direction)
- {
--	unsigned long addr;
- 	int i;
- 
--	BUG_ON(direction == DMA_NONE);
--
- 	for (i = 0; i < nhwentries; i++, sg++) {
- 		if (!plat_device_is_coherent(dev) &&
--		    direction != DMA_TO_DEVICE) {
--			addr = (unsigned long) sg_virt(sg);
--			if (addr)
--				__dma_sync(addr, sg->length, direction);
--		}
-+		    direction != DMA_TO_DEVICE)
-+			__dma_sync(sg_page(sg), sg->offset, sg->length,
-+				   direction);
- 		plat_unmap_dma_mem(dev, sg->dma_address, sg->length,
-direction);
- 	}
- }
-@@ -250,14 +282,9 @@ EXPORT_SYMBOL(dma_unmap_sg);
- void dma_sync_single_for_cpu(struct device *dev, dma_addr_t dma_handle,
- 	size_t size, enum dma_data_direction direction)
- {
--	BUG_ON(direction == DMA_NONE);
--
--	if (cpu_is_noncoherent_r10000(dev)) {
--		unsigned long addr;
--
--		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr, size, direction);
--	}
-+	if (cpu_is_noncoherent_r10000(dev))
-+		__dma_sync(dma_addr_to_page(dev, dma_handle),
-+			   (dma_handle & ~PAGE_MASK), size, direction);
- }
- 
- EXPORT_SYMBOL(dma_sync_single_for_cpu);
-@@ -265,15 +292,10 @@ EXPORT_SYMBOL(dma_sync_single_for_cpu);
- void dma_sync_single_for_device(struct device *dev, dma_addr_t
-dma_handle,
- 	size_t size, enum dma_data_direction direction)
- {
--	BUG_ON(direction == DMA_NONE);
--
- 	plat_extra_sync_for_device(dev);
--	if (!plat_device_is_coherent(dev)) {
--		unsigned long addr;
--
--		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr, size, direction);
--	}
-+	if (!plat_device_is_coherent(dev))
-+		__dma_sync(dma_addr_to_page(dev, dma_handle),
-+			   (dma_handle & ~PAGE_MASK), size, direction);
- }
- 
- EXPORT_SYMBOL(dma_sync_single_for_device);
-@@ -281,14 +303,9 @@ EXPORT_SYMBOL(dma_sync_single_for_device);
- void dma_sync_single_range_for_cpu(struct device *dev, dma_addr_t
-dma_handle,
- 	unsigned long offset, size_t size, enum dma_data_direction
-direction)
- {
--	BUG_ON(direction == DMA_NONE);
--
--	if (cpu_is_noncoherent_r10000(dev)) {
--		unsigned long addr;
--
--		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr + offset, size, direction);
--	}
-+	if (cpu_is_noncoherent_r10000(dev))
-+		__dma_sync(dma_addr_to_page(dev, dma_handle), offset,
-size,
-+			   direction);
- }
- 
- EXPORT_SYMBOL(dma_sync_single_range_for_cpu);
-@@ -296,15 +313,10 @@ EXPORT_SYMBOL(dma_sync_single_range_for_cpu);
- void dma_sync_single_range_for_device(struct device *dev, dma_addr_t
-dma_handle,
- 	unsigned long offset, size_t size, enum dma_data_direction
-direction)
- {
--	BUG_ON(direction == DMA_NONE);
--
- 	plat_extra_sync_for_device(dev);
--	if (!plat_device_is_coherent(dev)) {
--		unsigned long addr;
--
--		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr + offset, size, direction);
--	}
-+	if (!plat_device_is_coherent(dev))
-+		__dma_sync(dma_addr_to_page(dev, dma_handle), offset,
-size,
-+			   direction);
- }
- 
- EXPORT_SYMBOL(dma_sync_single_range_for_device);
-@@ -314,13 +326,11 @@ void dma_sync_sg_for_cpu(struct device *dev,
-struct scatterlist *sg, int nelems,
- {
- 	int i;
- 
--	BUG_ON(direction == DMA_NONE);
--
- 	/* Make sure that gcc doesn't leave the empty loop body.  */
- 	for (i = 0; i < nelems; i++, sg++) {
- 		if (cpu_is_noncoherent_r10000(dev))
--			__dma_sync((unsigned
-long)page_address(sg_page(sg)),
--			           sg->length, direction);
-+			__dma_sync(sg_page(sg), sg->offset, sg->length,
-+				   direction);
- 	}
- }
- 
-@@ -331,13 +341,11 @@ void dma_sync_sg_for_device(struct device *dev,
-struct scatterlist *sg, int nele
- {
- 	int i;
- 
--	BUG_ON(direction == DMA_NONE);
--
- 	/* Make sure that gcc doesn't leave the empty loop body.  */
- 	for (i = 0; i < nelems; i++, sg++) {
- 		if (!plat_device_is_coherent(dev))
--			__dma_sync((unsigned
-long)page_address(sg_page(sg)),
--			           sg->length, direction);
-+			__dma_sync(sg_page(sg), sg->offset, sg->length,
-+				   direction);
- 	}
- }
- 
-@@ -371,7 +379,7 @@ void dma_cache_sync(struct device *dev, void *vaddr,
-size_t size,
- 
- 	plat_extra_sync_for_device(dev);
- 	if (!plat_device_is_coherent(dev))
--		__dma_sync((unsigned long)vaddr, size, direction);
-+		__dma_sync_virtual((unsigned long)vaddr, size,
-direction);
- }
- 
- EXPORT_SYMBOL(dma_cache_sync);
-diff --git a/arch/mips/mm/highmem.c b/arch/mips/mm/highmem.c
-index 127d732..ed27217 100644
---- a/arch/mips/mm/highmem.c
-+++ b/arch/mips/mm/highmem.c
-@@ -45,6 +45,7 @@ void *__kmap_atomic(struct page *page, enum km_type
-type)
- {
- 	enum fixed_addresses idx;
- 	unsigned long vaddr;
-+	void *kmap;
- 
- 	/* even !CONFIG_PREEMPT needs this, for in_atomic in
-do_page_fault */
- 	pagefault_disable();
-@@ -52,6 +53,11 @@ void *__kmap_atomic(struct page *page, enum km_type
-type)
- 		return page_address(page);
- 
- 	debug_kmap_atomic(type);
-+
-+	kmap = kmap_high_get(page);
-+	if (kmap)
-+		return kmap;
-+
- 	idx = type + KM_TYPE_NR*smp_processor_id();
- 	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
- #ifdef CONFIG_DEBUG_HIGHMEM
-@@ -66,10 +72,19 @@ EXPORT_SYMBOL(__kmap_atomic);
- 
- void __kunmap_atomic(void *kvaddr, enum km_type type)
- {
--#ifdef CONFIG_DEBUG_HIGHMEM
- 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
-+#ifdef CONFIG_DEBUG_HIGHMEM
- 	enum fixed_addresses idx = type + KM_TYPE_NR*smp_processor_id();
-+#endif
- 
-+	if (vaddr >= PKMAP_ADDR(0) && vaddr < PKMAP_ADDR(LAST_PKMAP)) {
-+		/* this address was obtained through kmap_high_get() */
-+
-kunmap_high(pte_page(pkmap_page_table[PKMAP_NR(vaddr)]));
-+		pagefault_enable();
-+		return;
-+	}
-+
-+#ifdef CONFIG_DEBUG_HIGHMEM
- 	if (vaddr < FIXADDR_START) { // FIXME
- 		pagefault_enable();
- 		return;
--- 
-1.6.0.6
+
+>
+> ---
+>   arch/mips/Kconfig                   |   20 ++++
+>   arch/mips/include/asm/of_device.h   |    3 +
+>   arch/mips/include/asm/of_platform.h |    9 ++
+>   arch/mips/include/asm/prom.h        |   64 ++++++++++++++
+>   arch/mips/kernel/Makefile           |    2 +
+>   arch/mips/kernel/prom.c             |  164
+> +++++++++++++++++++++++++++++++++++
+>   arch/mips/kernel/setup.c            |    2 +
+>   7 files changed, 264 insertions(+), 0 deletions(-)  create mode 100644
+> arch/mips/include/asm/of_device.h  create mode 100644
+> arch/mips/include/asm/of_platform.h
+>   create mode 100644 arch/mips/include/asm/prom.h  create mode 100644
+> arch/mips/kernel/prom.c
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig index
+> 29e8692..55d8331 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -2052,6 +2052,26 @@ config SECCOMP
+>
+>   	  If unsure, say Y. Only embedded should say N here.
+>
+> +config OF
+> +	bool "Device tree support"
+> +	select OF_FLATTREE
+> +	help
+> +	  Support for OpenFirmware-style device trees
+> +
+> +config PROC_DEVICETREE
+> +	bool "Support for device tree in /proc"
+> +	depends on PROC_FS&&  OF
+> +	help
+> +	  This option adds a device-tree directory under /proc which
+> contains
+> +	  an image of the device tree that the kernel copies from Open
+> +	  Firmware or other boot firmware. If unsure, say Y here.
+> +
+> +config ARCH_HAS_DEVTREE_MEM
+> +	bool "Support user-defined memory scan function in device tree"
+> +	depends on OF
+> +	help
+> +	  The user has a customized function to parse memory nodes.
+> +
+>   endmenu
+>
+>   config LOCKDEP_SUPPORT
+> diff --git a/arch/mips/include/asm/of_device.h
+> b/arch/mips/include/asm/of_device.h
+> new file mode 100644
+> index 0000000..7a83477
+> --- /dev/null
+> +++ b/arch/mips/include/asm/of_device.h
+> @@ -0,0 +1,3 @@
+> +#ifndef _ASM_MIPS_OF_DEVICE_H
+> +#define _ASM_MIPS_OF_DEVICE_H
+> +#endif /* _ASM_MIPS_OF_DEVICE_H */
+> diff --git a/arch/mips/include/asm/of_platform.h
+> b/arch/mips/include/asm/of_platform.h
+> new file mode 100644
+> index 0000000..7a33827
+> --- /dev/null
+> +++ b/arch/mips/include/asm/of_platform.h
+> @@ -0,0 +1,9 @@
+> +#ifndef _ASM_MIPS_OF_PLATFORM_H
+> +#define _ASM_MIPS_OF_PLATFORM_H
+> +
+> +static inline void of_device_make_bus_id(struct device *dev) {
+> +	__of_device_make_bus_id(dev);
+> +}
+> +
+> +#endif /* _ASM_MIPS_OF_PLATFORM_H */
+> diff --git a/arch/mips/include/asm/prom.h b/arch/mips/include/asm/prom.h
+> new file mode 100644 index 0000000..e72b0df
+> --- /dev/null
+> +++ b/arch/mips/include/asm/prom.h
+> @@ -0,0 +1,64 @@
+> +/*
+> + *  arch/mips/include/asm/prom.h
+> + *
+> + *  Copyright (C) 2010 Cisco Systems Inc.<dediao@cisco.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + *
+> + */
+> +#ifndef __ASM_MIPS_PROM_H
+> +#define __ASM_MIPS_PROM_H
+> +
+> +#ifdef CONFIG_OF
+> +#include<linux/init.h>
+> +
+> +#include<asm/setup.h>
+> +#include<asm/irq.h>
+> +#include<asm/bootinfo.h>
+> +
+> +/* _ALIGN expects upwards alignment */
+> +#define _ALIGN(addr, size)	(((addr) + ((size) - 1))&  (~((size) -
+> 1)))
+> +
+> +/* which is compatible with the flattened device tree (FDT) */ #define
+> +cmd_line arcs_cmdline
+
+
+What is this #define floating in space?
+
+
+
+
+> +
+> +/*
+> + * Use this value to indicate lack of interrupt
+> + * capability
+> + */
+> +#ifndef NO_IRQ
+> +#define NO_IRQ  ((unsigned int)(-1))
+> +#endif
+
+
+
+> +
+> +static inline unsigned long pci_address_to_pio(phys_addr_t address) {
+> +	return (unsigned long)-1;
+> +}
+> +
+> +struct device_node;
+> +
+> +static inline int of_node_to_nid(struct device_node *device) {
+> +	return 0;
+> +}
+> +
+> +static inline void __init early_init_dt_scan_chosen_arch(unsigned long
+> node)
+> +{
+> +}
+> +
+> +extern int __init early_init_dt_scan_memory_arch(unsigned long node,
+> +	const char *uname, int depth, void *data);
+> +
+> +extern int __init reserve_mem_mach(unsigned long addr, unsigned long
+> size);
+> +extern void __init free_mem_mach(unsigned long addr, unsigned long
+> size);
+> +
+> +extern void __init device_tree_init(void); #else /* CONFIG_OF */ static
+>
+> +inline void __init device_tree_init(void) { } #endif /* CONFIG_OF */
+> +
+> +#endif /* _ASM_MIPS_PROM_H */
+> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile index
+> ef20957..4b10545 100644
+> --- a/arch/mips/kernel/Makefile
+> +++ b/arch/mips/kernel/Makefile
+> @@ -95,6 +95,8 @@ obj-$(CONFIG_KEXEC)		+= machine_kexec.o
+> relocate_kernel.o
+>   obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
+>   obj-$(CONFIG_SPINLOCK_TEST)	+= spinlock_test.o
+>
+> +obj-$(CONFIG_OF)		+= prom.o
+> +
+>   CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(KBUILD_CFLAGS) -Wa,-mdaddi
+> -c -o /dev/null -xc /dev/null>/dev/null 2>&1; then echo
+> "-DHAVE_AS_SET_DADDI"; fi)
+>
+>   obj-$(CONFIG_HAVE_STD_PC_SERIAL_PORT)	+= 8250-platform.o
+> diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c new file
+> mode 100644 index 0000000..2cbd43f
+> --- /dev/null
+> +++ b/arch/mips/kernel/prom.c
+> @@ -0,0 +1,164 @@
+> +/*
+> + *  linux/arch/mips/kernel/prom.c
+> + *
+> + *  Copyright (C) 2010 Cisco Systems Inc.<dediao@cisco.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + */
+> +
+> +#include<linux/init.h>
+> +#include<linux/module.h>
+> +#include<linux/errno.h>
+> +#include<linux/types.h>
+> +#include<linux/bootmem.h>
+> +#include<linux/initrd.h>
+> +#include<linux/debugfs.h>
+> +#include<linux/of.h>
+> +#include<linux/of_fdt.h>
+> +#include<linux/of_irq.h>
+> +#include<linux/of_platform.h>
+> +
+> +#include<asm/page.h>
+> +#include<asm/prom.h>
+> +
+> +/*
+> + * The list of OF IDs below is used for matching bus types in the
+> + * system whose devices are to be exposed as of_platform_devices.
+> + *
+> + * This is the default list valid for most platforms. This file
+> provides
+> + * functions who can take an explicit list if necessary though
+> + *
+> + * The search is always performed recursively looking for children of
+> + * the provided device_node and recursively if such a children matches
+> + * a bus type in the list
+> + */
+> +const struct of_device_id of_default_bus_ids[] = {
+> +	{},
+> +};
+> +
+> +#ifndef CONFIG_ARCH_HAS_DEVTREE_MEM
+> +int __init early_init_dt_scan_memory_arch(unsigned long node,
+> +					  const char *uname, int depth,
+> +					  void *data)
+> +{
+> +	return early_init_dt_scan_memory(node, uname, depth, data); }
+> +
+> +void __init early_init_dt_add_memory_arch(u64 base, u64 size) {
+> +	return add_memory_region(base, size, BOOT_MEM_RAM); }
+> +
+> +int __init reserve_mem_mach(unsigned long addr, unsigned long size) {
+> +	return reserve_bootmem(addr, size, BOOTMEM_DEFAULT); }
+> +
+> +void __init free_mem_mach(unsigned long addr, unsigned long size) {
+> +	return free_bootmem(addr, size);
+> +}
+> +#endif
+> +
+> +u64 __init early_init_dt_alloc_memory_arch(u64 size, u64 align) {
+> +	return virt_to_phys(
+> +		__alloc_bootmem(size, align, __pa(MAX_DMA_ADDRESS))
+> +		);
+> +}
+> +
+> +#ifdef CONFIG_BLK_DEV_INITRD
+> +void __init early_init_dt_setup_initrd_arch(unsigned long start,
+> +					    unsigned long end)
+> +{
+> +	initrd_start = (unsigned long)__va(start);
+> +	initrd_end = (unsigned long)__va(end);
+> +	initrd_below_start_ok = 1;
+> +}
+> +#endif
+> +
+> +/*
+> + * Interrupt remapper
+> + */
+> +struct device_node *of_irq_find_parent_by_phandle(phandle p) {
+> +	return of_find_node_by_phandle(p);
+> +}
+> +
+> +int of_irq_map_one(struct device_node *device,
+> +		   int index, struct of_irq *out_irq) {
+> +	return __of_irq_map_one(device, index, out_irq); }
+> +EXPORT_SYMBOL_GPL(of_irq_map_one);
+> +
+> +/*
+> + * irq_create_of_mapping - Hook to resolve OF irq specifier into a
+> Linux irq#
+> + *
+> + * Currently the mapping mechanism is trivial; simple flat hwirq
+> numbers are
+> + * mapped 1:1 onto Linux irq numbers.  Cascaded irq controllers are not
+> + * supported.
+> + */
+> +unsigned int irq_create_of_mapping(struct device_node *controller,
+> +				   const u32 *intspec, unsigned int
+> intsize)
+> +{
+> +	return intspec[0];
+> +}
+> +EXPORT_SYMBOL_GPL(irq_create_of_mapping);
+> +
+> +void __init early_init_devtree(void *params) {
+> +	/* Setup flat device-tree pointer */
+> +	initial_boot_params = params;
+> +
+> +	/* Retrieve various informations from the /chosen node of the
+> +	 * device-tree, including the platform type, initrd location and
+> +	 * size, and more ...
+> +	 */
+> +	of_scan_flat_dt(early_init_dt_scan_chosen, NULL);
+> +
+> +	/* Scan memory nodes */
+> +	of_scan_flat_dt(early_init_dt_scan_root, NULL);
+> +	of_scan_flat_dt(early_init_dt_scan_memory_arch, NULL); }
+> +
+> +void __init device_tree_init(void)
+> +{
+> +	unsigned long base, size;
+> +
+> +	if (!initial_boot_params)
+> +		return;
+> +
+> +	base = virt_to_phys((void *)initial_boot_params);
+> +	size = initial_boot_params->totalsize;
+> +
+> +	/* Before we do anything, lets reserve the dt blob */
+> +	reserve_mem_mach(base, size);
+> +
+> +	unflatten_device_tree();
+> +
+> +	/* free the space reserved for the dt blob */
+> +	free_mem_mach(base, size);
+> +}
+> +
+> +#if defined(CONFIG_DEBUG_FS)&&  defined(DEBUG) static struct
+> +debugfs_blob_wrapper flat_dt_blob;
+> +
+
+This looks fubar as well.
+
+
+
+Please make sure that it for the most part passes checkpatch.pl, and 
+test your patch mailing procedure so that things don't get mangled.
+
+Other than that, I would like to say thanks for working on this.  It has 
+been needed for quite some time.
+
+Thanks,
+David Daney

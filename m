@@ -1,58 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 May 2010 19:25:17 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13750 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492229Ab0ELRZN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 12 May 2010 19:25:13 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4beae4890000>; Wed, 12 May 2010 10:25:29 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 12 May 2010 10:25:10 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 12 May 2010 10:25:10 -0700
-Message-ID: <4BEAE476.9060606@caviumnetworks.com>
-Date:   Wed, 12 May 2010 10:25:10 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 May 2010 19:33:36 +0200 (CEST)
+Received: from rtp-iport-1.cisco.com ([64.102.122.148]:23959 "EHLO
+        rtp-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492228Ab0ELRdb convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 May 2010 19:33:31 +0200
+Authentication-Results: rtp-iport-1.cisco.com; dkim=neutral (message not signed) header.i=none
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AiMFAGeD6kutJV2b/2dsb2JhbACRbIxEcaJUmV6FEgSDQA
+X-IronPort-AV: E=Sophos;i="4.53,216,1272844800"; 
+   d="scan'208";a="110448549"
+Received: from rcdn-core-4.cisco.com ([173.37.93.155])
+  by rtp-iport-1.cisco.com with ESMTP; 12 May 2010 17:33:25 +0000
+Received: from xbh-rcd-201.cisco.com (xbh-rcd-201.cisco.com [72.163.62.200])
+        by rcdn-core-4.cisco.com (8.14.3/8.14.3) with ESMTP id o4CHXPR8006866;
+        Wed, 12 May 2010 17:33:25 GMT
+Received: from xmb-rcd-208.cisco.com ([72.163.62.215]) by xbh-rcd-201.cisco.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Wed, 12 May 2010 12:33:24 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     "Dezhong Diao (dediao)" <dediao@cisco.com>
-CC:     linux-mips@linux-mips.org,
-        "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>,
-        "Tony Colclough (colclot)" <colclot@cisco.com>,
-        Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [RFC PATCH 2/2] The Device Tree Patch for MIPS
-References: <7A9214B0DEB2074FBCA688B30B04400DC6413A@XMB-RCD-208.cisco.com>
-In-Reply-To: <7A9214B0DEB2074FBCA688B30B04400DC6413A@XMB-RCD-208.cisco.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 12 May 2010 17:25:10.0563 (UTC) FILETIME=[12F3C730:01CAF1F8]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: [PATCH resend] Apply kmap_high_get on MIPS
+Date:   Wed, 12 May 2010 12:33:23 -0500
+Message-ID: <7A9214B0DEB2074FBCA688B30B04400DC645E2@XMB-RCD-208.cisco.com>
+In-Reply-To: <7A9214B0DEB2074FBCA688B30B04400DC645D1@XMB-RCD-208.cisco.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH resend] Apply kmap_high_get on MIPS
+Thread-Index: AcrxXpBfOoNutrGeRxue6FwB8zv2iAAl9VYwAAAwTLAAAHk4oA==
+From:   "Dezhong Diao (dediao)" <dediao@cisco.com>
+To:     <linux-mips@linux-mips.org>
+Cc:     "Ralf Baechle" <ralf@linux-mips.org>
+X-OriginalArrivalTime: 12 May 2010 17:33:24.0991 (UTC) FILETIME=[39A780F0:01CAF1F9]
+Return-Path: <dediao@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26696
+X-archive-position: 26697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: dediao@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On 05/10/2010 02:35 PM, Dezhong Diao (dediao) wrote:
-> It is the machine-dependent code.
->
+No, it doesn't fix the problem yet. So forget this patch, I will send it
+through another email client.
 
-Missing 'Signed-off-by:'
-
-The change log entry could be a bit more descriptive as well.
-
-David Daney
-
-
-> ---
->   arch/mips/configs/powertv_defconfig        |  174 +++++++++++++++------
->   arch/mips/include/asm/mach-powertv/asic.h  |    8 +-
->   arch/mips/include/asm/mach-powertv/mdesc.h |   51 ++++++
->   arch/mips/powertv/Makefile                 |    2 +-
->   arch/mips/powertv/asic/asic_devices.c      |   22 ---
->   arch/mips/powertv/mdesc.c                  |  224
-[...]
+Dezhong

@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 May 2010 03:30:21 +0200 (CEST)
-Received: from dns1.mips.com ([63.167.95.197]:54824 "EHLO dns1.mips.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 May 2010 03:30:54 +0200 (CEST)
+Received: from dns1.mips.com ([63.167.95.197]:43156 "EHLO dns1.mips.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492152Ab0ELBaS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 12 May 2010 03:30:18 +0200
+        id S1492143Ab0ELBar (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 May 2010 03:30:47 +0200
 Received: from MTVEXCHANGE.mips.com ([192.168.36.60])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id o4C1U9Xi030092;
-        Tue, 11 May 2010 18:30:09 -0700
-Received: from [192.168.65.41] ([192.168.65.41]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Tue, 11 May 2010 18:29:26 -0700
-Message-ID: <4BEA04A1.5030207@mips.com>
-Date:   Tue, 11 May 2010 18:30:09 -0700
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id o4C1UYvH030096
+        for <linux-mips@linux-mips.org>; Tue, 11 May 2010 18:30:39 -0700
+Received: from linux-chris2 ([192.168.65.41]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 11 May 2010 18:29:50 -0700
+Received: from localhost ([127.0.0.1] helo=localhost.localdomain)
+        by linux-chris2 with esmtp (Exim 4.69)
+        (envelope-from <chris@mips.com>)
+        id 1OC0mQ-0001hC-8R; Tue, 11 May 2010 18:30:34 -0700
 From:   Chris Dearman <chris@mips.com>
-Organization: MIPS Technologies
-User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
-MIME-Version: 1.0
-To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix abs.[sd] and neg.[sd] emulation for NaN operands
-References: <20091012215718.30362.67068.stgit@localhost.localdomain>    <20100510.234946.229279777.anemo@mba.ocn.ne.jp> <4BE85256.9010709@mips.com> <20100512.004512.39157093.anemo@mba.ocn.ne.jp>
+Subject: [PATCH] Restore signalling NaN behaviour for abs.[sd]
+To:     linux-mips@linux-mips.org
+Date:   Tue, 11 May 2010 18:30:34 -0700
+Message-ID: <20100512013034.6493.20675.stgit@localhost.localdomain>
 In-Reply-To: <20100512.004512.39157093.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+References: <20100512.004512.39157093.anemo@mba.ocn.ne.jp>
+User-Agent: StGIT/0.14.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 12 May 2010 01:29:26.0298 (UTC) FILETIME=[8F1B57A0:01CAF172]
+X-OriginalArrivalTime: 12 May 2010 01:29:51.0016 (UTC) FILETIME=[9DD70280:01CAF172]
 Return-Path: <chris@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26677
+X-archive-position: 26678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,18 +36,37 @@ X-original-sender: chris@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> 
-> ieee754d/sp_nanxcpt will set the invalid exception bit if its first
-> argument was a signaling NaN.  And ieee754dp/sp_indef() is a quiet
-> NaN.
+Atsushi Nemoto <anemo@mba.ocn.ne.jp> spotted that this had been
+incorrectly removed in a previous patch
 
-You're right! I'll send a separate patch with an appropriate subject to 
-correct this.
+Signed-off-by: Chris Dearman <chris@mips.com>
+---
 
-Thanks
-Chris
+ arch/mips/math-emu/dp_simple.c |    1 +
+ arch/mips/math-emu/sp_simple.c |    1 +
+ 2 files changed, 2 insertions(+), 0 deletions(-)
 
--- 
-Chris Dearman               Desk: +1 408 530 5092  Cell: +1 408 398 5531
-MIPS Technologies Inc            955 East Arques Ave, Sunnyvale CA 94085
+diff --git a/arch/mips/math-emu/dp_simple.c b/arch/mips/math-emu/dp_simple.c
+index d9ae1db..b909742 100644
+--- a/arch/mips/math-emu/dp_simple.c
++++ b/arch/mips/math-emu/dp_simple.c
+@@ -78,6 +78,7 @@ ieee754dp ieee754dp_abs(ieee754dp x)
+ 	DPSIGN(x) = 0;
+ 
+ 	if (xc == IEEE754_CLASS_SNAN) {
++		SETCX(IEEE754_INVALID_OPERATION);
+ 		return ieee754dp_nanxcpt(ieee754dp_indef(), "abs");
+ 	}
+ 
+diff --git a/arch/mips/math-emu/sp_simple.c b/arch/mips/math-emu/sp_simple.c
+index 3175477..2fd53c9 100644
+--- a/arch/mips/math-emu/sp_simple.c
++++ b/arch/mips/math-emu/sp_simple.c
+@@ -78,6 +78,7 @@ ieee754sp ieee754sp_abs(ieee754sp x)
+ 	SPSIGN(x) = 0;
+ 
+ 	if (xc == IEEE754_CLASS_SNAN) {
++		SETCX(IEEE754_INVALID_OPERATION);
+ 		return ieee754sp_nanxcpt(ieee754sp_indef(), "abs");
+ 	}
+ 

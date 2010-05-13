@@ -1,67 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2010 20:50:16 +0200 (CEST)
-Received: from rtp-iport-1.cisco.com ([64.102.122.148]:50668 "EHLO
-        rtp-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492324Ab0EMSuM convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 13 May 2010 20:50:12 +0200
-Authentication-Results: rtp-iport-1.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAHvm60utJV2d/2dsb2JhbACeInGkHpk5hRIEg0A
-X-IronPort-AV: E=Sophos;i="4.53,224,1272844800"; 
-   d="scan'208";a="110835565"
-Received: from rcdn-core-6.cisco.com ([173.37.93.157])
-  by rtp-iport-1.cisco.com with ESMTP; 13 May 2010 18:50:04 +0000
-Received: from xbh-rcd-202.cisco.com (xbh-rcd-202.cisco.com [72.163.62.201])
-        by rcdn-core-6.cisco.com (8.14.3/8.14.3) with ESMTP id o4DIo499004490;
-        Thu, 13 May 2010 18:50:04 GMT
-Received: from xmb-rcd-208.cisco.com ([72.163.62.215]) by xbh-rcd-202.cisco.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Thu, 13 May 2010 13:50:04 -0500
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2010 22:24:47 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:5255 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492088Ab0EMUYn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 May 2010 22:24:43 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4bec60160000>; Thu, 13 May 2010 13:24:54 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 13 May 2010 13:24:16 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 13 May 2010 13:24:16 -0700
+Message-ID: <4BEC5FEA.70101@caviumnetworks.com>
+Date:   Thu, 13 May 2010 13:24:10 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: [RFC PATCH 1/2] The Device Tree Patch for MIPS
-Date:   Thu, 13 May 2010 13:50:04 -0500
-Message-ID: <7A9214B0DEB2074FBCA688B30B04400DC64936@XMB-RCD-208.cisco.com>
-In-Reply-To: <4BEAE438.7080303@caviumnetworks.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [RFC PATCH 1/2] The Device Tree Patch for MIPS
-Thread-Index: Acrx9/Tt8ZhsxHU6Rx+ZPdIrEajDfAA05zKg
-From:   "Dezhong Diao (dediao)" <dediao@cisco.com>
-To:     "David Daney" <ddaney@caviumnetworks.com>
-Cc:     <linux-mips@linux-mips.org>,
+To:     "Dezhong Diao (dediao)" <dediao@cisco.com>
+CC:     linux-mips@linux-mips.org,
         "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>,
         "Tony Colclough (colclot)" <colclot@cisco.com>,
-        "Grant Likely" <grant.likely@secretlab.ca>
-X-OriginalArrivalTime: 13 May 2010 18:50:04.0857 (UTC) FILETIME=[19CD1A90:01CAF2CD]
-Return-Path: <dediao@cisco.com>
+        Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [RFC PATCH 1/2] The Device Tree Patch for MIPS
+References: <7A9214B0DEB2074FBCA688B30B04400DC64936@XMB-RCD-208.cisco.com>
+In-Reply-To: <7A9214B0DEB2074FBCA688B30B04400DC64936@XMB-RCD-208.cisco.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 13 May 2010 20:24:16.0055 (UTC) FILETIME=[422D7C70:01CAF2DA]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26705
+X-archive-position: 26706
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dediao@cisco.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
->> +/* which is compatible with the flattened device tree (FDT) */ 
->> +#define cmd_line arcs_cmdline
+On 05/13/2010 11:50 AM, Dezhong Diao (dediao) wrote:
+>>> +/* which is compatible with the flattened device tree (FDT) */
+>>> +#define cmd_line arcs_cmdline
+>
+>> What is this #define floating in space?
+>
+> The variable "cmd_line" is being used in generic code of device tree,
+> most of platforms (ARM, POWERPC
+> , etc) have its definition, but it isn't present in MIPS. Actually there
+> is a variable "arcs_cmdline" to be used as the same purpose in MIPS,
+> that is the reason "arcs_cmdline" is given a new name.
+>
 
->What is this #define floating in space?
+Really I was referring to the way the patch got horked up when you 
+e-mailed it.  It was very difficult to understand what the intent was.
 
-The variable "cmd_line" is being used in generic code of device tree,
-most of platforms (ARM, POWERPC
-, etc) have its definition, but it isn't present in MIPS. Actually there
-is a variable "arcs_cmdline" to be used as the same purpose in MIPS,
-that is the reason "arcs_cmdline" is given a new name.
-
-
-Thanks
-
-
-Dezhong
+I have no problem using #define, just make sure it doesn't have other 
+garbage preceding the '#'

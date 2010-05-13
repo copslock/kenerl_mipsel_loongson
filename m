@@ -1,73 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2010 18:17:27 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:57053 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491947Ab0EMQRY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 May 2010 18:17:24 +0200
-Received: by pwj6 with SMTP id 6so809736pwj.36
-        for <multiple recipients>; Thu, 13 May 2010 09:17:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=JjWim9+v1ofwPtBhgBPwkynPiwC3QPhKXWSGM+N5fKQ=;
-        b=h6jSIAbJrF+USEzY7VJuWFe8H0/MLX45qcxkC9GGctMO7fVZKhI2/ksjOoM+8A3CGX
-         Z+EKkV33wiyLAfcT6rDJH+LYgIXHKdWEA8pT5mzRgxSfdY/Q8QzdoKFdqcUH0kUy0KCL
-         62Pg+TuqE4HVxWsfDU75+N7KDgplOqdgJJMlk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        b=RdAo5f350ldPQ+AB12aEuKVKqz99YHbkxmFf+d3WkqY4tEdtG4awxAG4Y2F/O/p6xk
-         kjPCXNBXw5MwIbk+fkHEHQgGwjgW27GuK6IKed5rhMW2jBNI+jiQPSVidyLGBYk//l/L
-         60TqDzeyskbpm/5ZyZMbcLPzBuq3eAqsB7hsw=
-Received: by 10.142.248.22 with SMTP id v22mr6477865wfh.276.1273767436391;
-        Thu, 13 May 2010 09:17:16 -0700 (PDT)
-Received: from dd1.caveonetworks.com ([12.108.191.226])
-        by mx.google.com with ESMTPS id 22sm1026427pzk.1.2010.05.13.09.17.14
-        (version=SSLv3 cipher=RC4-MD5);
-        Thu, 13 May 2010 09:17:15 -0700 (PDT)
-Message-ID: <4BEC2609.6040000@gmail.com>
-Date:   Thu, 13 May 2010 09:17:13 -0700
-From:   David Daney <david.s.daney@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2010 20:50:16 +0200 (CEST)
+Received: from rtp-iport-1.cisco.com ([64.102.122.148]:50668 "EHLO
+        rtp-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492324Ab0EMSuM convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 13 May 2010 20:50:12 +0200
+Authentication-Results: rtp-iport-1.cisco.com; dkim=neutral (message not signed) header.i=none
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AvsEAHvm60utJV2d/2dsb2JhbACeInGkHpk5hRIEg0A
+X-IronPort-AV: E=Sophos;i="4.53,224,1272844800"; 
+   d="scan'208";a="110835565"
+Received: from rcdn-core-6.cisco.com ([173.37.93.157])
+  by rtp-iport-1.cisco.com with ESMTP; 13 May 2010 18:50:04 +0000
+Received: from xbh-rcd-202.cisco.com (xbh-rcd-202.cisco.com [72.163.62.201])
+        by rcdn-core-6.cisco.com (8.14.3/8.14.3) with ESMTP id o4DIo499004490;
+        Thu, 13 May 2010 18:50:04 GMT
+Received: from xmb-rcd-208.cisco.com ([72.163.62.215]) by xbh-rcd-202.cisco.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 13 May 2010 13:50:04 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Wu Zhangjin <wuzhangjin@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 9/9] tracing: MIPS: cleanup of the address space checking
-References: <cover.1273669419.git.wuzhangjin@gmail.com> <86404e31ca5c4c33b785bad7f6223ac775f4f879.1273669419.git.wuzhangjin@gmail.com> <4BEAE19D.40502@gmail.com> <20100513161357.GA5810@linux-mips.org>
-In-Reply-To: <20100513161357.GA5810@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <david.s.daney@gmail.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: [RFC PATCH 1/2] The Device Tree Patch for MIPS
+Date:   Thu, 13 May 2010 13:50:04 -0500
+Message-ID: <7A9214B0DEB2074FBCA688B30B04400DC64936@XMB-RCD-208.cisco.com>
+In-Reply-To: <4BEAE438.7080303@caviumnetworks.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [RFC PATCH 1/2] The Device Tree Patch for MIPS
+Thread-Index: Acrx9/Tt8ZhsxHU6Rx+ZPdIrEajDfAA05zKg
+From:   "Dezhong Diao (dediao)" <dediao@cisco.com>
+To:     "David Daney" <ddaney@caviumnetworks.com>
+Cc:     <linux-mips@linux-mips.org>,
+        "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>,
+        "Tony Colclough (colclot)" <colclot@cisco.com>,
+        "Grant Likely" <grant.likely@secretlab.ca>
+X-OriginalArrivalTime: 13 May 2010 18:50:04.0857 (UTC) FILETIME=[19CD1A90:01CAF2CD]
+Return-Path: <dediao@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26704
+X-archive-position: 26705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.s.daney@gmail.com
+X-original-sender: dediao@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On 05/13/2010 09:13 AM, Ralf Baechle wrote:
-> On Wed, May 12, 2010 at 10:13:01AM -0700, David Daney wrote:
->
->> The kernel is always compiled with -msym32, so the patch is a bit pointless.
->
-> Not quite true.  Some systems only have enough memory for the exception
-> vectors in the low 512MB of physical address space, so these can't use
-> an -msym32 kernel.
->
-> My general impression is that hardware designers "design" address maps by
-> throwing darts over their shoulder after a few pints ;-)
->
+>> +/* which is compatible with the flattened device tree (FDT) */ 
+>> +#define cmd_line arcs_cmdline
 
-Well it was mostly a rhetorical point.  Of course -msym32 is not 
-universal, but it is more common than not I would say.  Because of that, 
-we should take a few more minutes and figure out how to make ftrace work 
-well with it.
+>What is this #define floating in space?
 
-David Daney
+The variable "cmd_line" is being used in generic code of device tree,
+most of platforms (ARM, POWERPC
+, etc) have its definition, but it isn't present in MIPS. Actually there
+is a variable "arcs_cmdline" to be used as the same purpose in MIPS,
+that is the reason "arcs_cmdline" is given a new name.
+
+
+Thanks
+
+
+Dezhong

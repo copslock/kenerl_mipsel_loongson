@@ -1,39 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2010 08:04:21 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:43186 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490962Ab0EMGER (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 May 2010 08:04:17 +0200
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o4D648gY013676;
-        Wed, 12 May 2010 23:04:08 -0700 (PDT)
-Received: from ism-mail02.corp.ad.wrs.com ([128.224.200.19]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Wed, 12 May 2010 23:04:08 -0700
-Received: from [128.224.162.71] ([128.224.162.71]) by ism-mail02.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Thu, 13 May 2010 08:04:04 +0200
-Message-ID: <4BEB9644.8040106@windriver.com>
-Date:   Thu, 13 May 2010 14:03:48 +0800
-From:   "tiejun.chen" <tiejun.chen@windriver.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100317)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 May 2010 08:51:14 +0200 (CEST)
+Received: from anti.mobis.co.kr ([211.217.52.67]:48951 "HELO
+        sniper.mobis.co.kr" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1491085Ab0EMGvL convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 May 2010 08:51:11 +0200
+Received: (snipe 31695 invoked by uid 0); 13 May 2010 15:51:00 +0900
+Received: from sanjay.kumar@gmobis.com with  Spamsniper 2.94.22 (Processed in 0.016640 secs);
+Received: from unknown (HELO msmobiweb.mobis.co.kr) (10.240.100.165)
+  by unknown with SMTP; 13 May 2010 15:51:00 +0900
+X-RCPTTO: linux-mips@linux-mips.org,
+        tiejun.chen@windriver.com
+Received: from mkegmal01.global.mobis.co.kr ([10.240.200.82]) by msmobiweb.mobis.co.kr with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 13 May 2010 15:51:01 +0900
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     Sanjay Kumar <sanjay.kumar@gmobis.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Linux on Au1350 using Yamon
-References: <5858DE952C53A441BDA3408A0524130104E05781@mkegmal01>
-In-Reply-To: <5858DE952C53A441BDA3408A0524130104E05781@mkegmal01>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 May 2010 06:04:05.0497 (UTC) FILETIME=[17E34E90:01CAF262]
-Return-Path: <Tiejun.Chen@windriver.com>
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Linux on Au1350 using Yamon
+Date:   Thu, 13 May 2010 15:49:45 +0900
+Message-ID: <5858DE952C53A441BDA3408A0524130104E05782@mkegmal01>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Linux on Au1350 using Yamon
+Thread-Index: AcryYhsUOLGLvZfCRHiiiVRHXjwYzAABl4Nb
+References: <5858DE952C53A441BDA3408A0524130104E05781@mkegmal01> <4BEB9644.8040106@windriver.com>
+From:   "Sanjay Kumar" <sanjay.kumar@gmobis.com>
+To:     "tiejun.chen" <tiejun.chen@windriver.com>
+Cc:     <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 13 May 2010 06:51:01.0614 (UTC) FILETIME=[A66CA8E0:01CAF268]
+Return-Path: <sanjay.kumar@gmobis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26701
+X-archive-position: 26702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiejun.chen@windriver.com
+X-original-sender: sanjay.kumar@gmobis.com
 Precedence: bulk
 X-list: linux-mips
+
+
+
+Hi Tiejun,
+Thanks for the inputs , I will look into this and let you know the outcome.
+
+-Sanjay
+
+
+-----Original Message-----
+From: tiejun.chen [mailto:tiejun.chen@windriver.com]
+Sent: Thu 5/13/2010 3:03 PM
+To: Sanjay Kumar
+Cc: linux-mips@linux-mips.org
+Subject: Re: Linux on Au1350 using Yamon
+ 
 
 Sanjay Kumar wrote:
 > Hi ,

@@ -1,131 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2010 12:29:22 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:38439 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491167Ab0ENK3T (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 May 2010 12:29:19 +0200
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o4EAT89n011583;
-        Fri, 14 May 2010 03:29:11 -0700 (PDT)
-Received: from [128.224.161.192] ([128.224.161.192]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Fri, 14 May 2010 03:29:07 -0700
-Message-ID: <4BED25F3.4010809@windriver.com>
-Date:   Fri, 14 May 2010 18:29:07 +0800
-From:   Yang Shi <yang.shi@windriver.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [Bug report] Got bus error when loading kernel module on SB1250 Rev
- B2 board with 64 bit kernel
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 May 2010 10:29:07.0807 (UTC) FILETIME=[48D0FEF0:01CAF350]
-Return-Path: <Yang.Shi@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2010 13:09:05 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:58672 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491806Ab0ENLJB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 May 2010 13:09:01 +0200
+Received: by pwi3 with SMTP id 3so114515pwi.36
+        for <multiple recipients>; Fri, 14 May 2010 04:08:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=XlUfRYf/UoP+Pe+jhTQpWdrYi3k8GPPW1W1GgwAqMR8=;
+        b=QSLcCVKo5+xnZRDAdKcjLppqQyAOhjjiCH86rn6pb1IXzLhHRmUzPP3LfvTnUsEKhk
+         LVaICn9csRvSuzGbb/UxOJ09ZX/lPNw7QrEaXOOyL4WfQg8ZOacU1H9p/N0KJXWqvCk/
+         PR4r5yJ4NKA610IcDRYMrkQPgNVpsFbqRMC0o=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=n2CwJyuMj+XjYKGgetZAK+4kIkl6j0Kq23G319RUOQkUz/XpA1no+YrbV6JidnNYBZ
+         tSbosdXuS/rdVSUUVGhptfiLOBA8vXdjIqoZBFgRX2k6hAOjLMnDm6E/dLal1NCDTNCk
+         2NeWzzUpUcB9qZ9dOxZTOrvf4a8QYxUpUTo0Y=
+Received: by 10.115.117.40 with SMTP id u40mr989512wam.202.1273835333170;
+        Fri, 14 May 2010 04:08:53 -0700 (PDT)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id c14sm19145160waa.13.2010.05.14.04.08.49
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 14 May 2010 04:08:52 -0700 (PDT)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        David Daney <david.s.daney@gmail.com>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH v7 0/9] tracing: MIPS: add misc fixups and cleanups
+Date:   Fri, 14 May 2010 19:08:25 +0800
+Message-Id: <cover.1273834561.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26708
+X-archive-position: 26709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yang.shi@windriver.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi experts,
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-I'm running 2.6.34-rc7 mainline kernel on SB1250 (Rev B2) board. And, I
-use the default sb1250 kernel config (sb1250-swarm_defconfig). So, 64
-bit kernel is used. During kernel loading module got bus error, see
-below log:
+This patchset adds misc fixups and cleanups for Ftrace of MIPS:
 
-root@bcm1250a-1:/root> insmod firmware_class.ko
-DBE physical address: 0080e87020
-Data bus error, epc == ffffffff801053e0, ra == ffffffff801725d0
-Oops[#1]:
-Cpu 0
-$ 0 : 0000000000000000 0000000014001fe0 ffffffff8051d308 0000000000000000
-$ 4 : a800000080e97000 0000000000000000 0000000000000000 0000000000000002
-$ 8 : ffffffff80515868 0000000000000000 0000000000000001 a80000000fb0c030
-$12 : 0000000000000010 ffffffff804ab728 a80000000f81ba00 0000000000000001
-$16 : 0000000000000001 ffffffffc0001950 0000000000000000 c000000000005000
-$20 : 0000000000000000 a80000000faabd90 c000000000008d18 c000000000007e98
-$24 : 0000000000000000 0000000010010598
-$28 : a80000000faa8000 a80000000faabd50 ffffffffc0001968 ffffffff801725d0
-Hi : ffffffffffffffff
-Lo : fffffffffffffff0
-epc : ffffffff801053e0 memcpy+0x0/0x4
-Not tainted
-ra : ffffffff801725d0 load_module+0x1240/0x1c30
-Status: 14001fe3 KX SX UX KERNEL EXL IE
-Cause : 0080801c
-PrId : 01040102 (SiByte SB1)
-Modules linked in:
-Process insmod (pid: 1799, threadinfo=a80000000faa8000,
-task=a80000000f898800, tls=00000000100a7480)
-Stack : 0000000000000000 ffffffff80484190 ffffffffc0001738 ffffffff00000003
-0000000000000000 0000000000000000 0000000000000000 0000000200000000
-0000017f00000180 c000000000008d58 ffffffff803ec728 0000000000001cf8
-ffffffff80515868 a80000000f8d14a0 0000000000001b60 0000000000000000
-0000000000000029 000000000000002d 000000000000003b 000000000000003a
-c00000000000c008 a80000000f92aa20 c000000000007bba c000000000008a98
-ffffffffc0004d88 ffffffff803ec718 ffffffff803ec718 ffffffff801df1f8
-00000000000076ce 00000000100a0ff8 00000000100a1008 ffffffff804b0000
-000000007f9d0f11 0000000000000003 0000000000000000 00000000100d0bc0
-0000000000000000 ffffffff80173048 00000000100a0ff8 00000000000076ce
-...
-Call Trace:
-[<ffffffff801053e0>] memcpy+0x0/0x4
-[<ffffffff801725d0>] load_module+0x1240/0x1c30
-[<ffffffff80173048>] SyS_init_module+0x88/0x230
-[<ffffffff80102ec4>] handle_sysn32+0x44/0x9c
+  + Fix the support of 32bit support with -mmcount-ra-address of gcc 4.5
+    o tracing: MIPS: mcount.S: Fix the argument passing of the 32bit support with
+      gcc 4.5, The argument is passed by $12 in 32bit, not t0.
+    o tracing: MIPS: Fixup of the 32bit support with -mmcount-ra-address
+      For 32bit kernel, the offset of "b 1f" should be 5 instructions, not only 4.
+ 
+  + Speedup the dynamic function tracer
+    o tracing: MIPS: Reduce the overhead of dynamic Function Tracer
+      In the old implementation, we have encode the 'nop' instruction and the
+      instruction of calling to mcount at run-time, which may add some
+      overhead.  We reduce this overhead via encoding them when initializing
+      the dynamic function tracer.
+
+  + Lots of cleanups
+    o The other patches.
+
+----------------
+v6 -> v7:
+
+  o Apply the feedback from David Daney:
+  define a macro MCOUNT_RA_ADDRESS_REG instead of the magic number $12 for the patch
+  "tracing: MIPS: mcount.S: Fix the argument passing of the 32bit
+    support with gcc 4.5"
+
+v5 -> v6:
+
+  o splits up the old v5 revision into several patches to make the maintainer
+  happier to review it.
+
+Regards,
+        Wu Zhangjin
 
 
-Code: 03e00008 00000000 00000000 <0080102d> cca00000 cc810000 2cca0008
-30890007 cca00020
-Disabling lock debugging due to kernel taint
-Cache error exception on CPU 0:
-Cache error exception on CPU 0:
-c0_errorepc == 800000f0
-c0_errctl == 40000000 dcache
-c0_cerr_d == 88801000 fill/wb, multi-err data-DBE
-c0_cerr_dpa == 0080e87000
-Dcache index 0x1000 [Bank 2 Set 0x00] LRU > 1 2 0 3 > MRU
-0 [PA 00004ad000] [state COH-SHD (0f)] raw tags: 1E724000-00000000004AC400
-00-0000000000000000 9E-FFFFFFFFFFFFFED4 9E-FFFFFFFFFFFFFED4
-4E-0000000000020002
-1 [PA 000050f000] [state COH-SHD (0f)] raw tags: 1E724000-000000000050E400
-EC-3E343C0A30207570 A7-203A202020302024 00-3030303030303030
-00-3030303030303030
-2 [PA 000f93d000] [state COH-SHD (0f)] raw tags: 1E724000-000000000F93C000
-00-0000000000000000 00-FFFFFFFFFFFFFFFF 00-FFFFFFFFFFFFFFFF
-00-FFFFFFFFFFFFFFFF
-3 [PA 000f8db000] [state COH-E-C (16)] raw tags: 2C724000-000000000F8DA000
-84-FFFFFFFF80504000 84-FFFFFFFF80504000 84-FFFFFFFF80504000
-84-FFFFFFFF80504000
-...didn't see indicated dcache problem
-Bus watcher error counters: 00000000 00030000
+Wu Zhangjin (9):
+  tracing: MIPS: mcount.S: merge the same continuous #ifdefs
+  tracing: MIPS: mcount.S: cleanup the arguments of
+    prepare_ftrace_return
+  tracing: MIPS: mcount.S: cleanup of the comments
+  tracing: MIPS: mcount.S: Fix the argument passing of the 32bit
+    support with gcc 4.5
+  tracing: MIPS: Fixup of the 32bit support with -mmcount-ra-address
+  tracing: MIPS: cleanup of the instructions
+  tracing: MIPS: Reduce the overhead of dynamic Function Tracer
+  tracing: MIPS: cleanup of function graph tracer
+  tracing: MIPS: cleanup of the address space checking
 
-Last recorded signature:
-Request 00 from 0, answered by 7 with Dcode 4
-Kernel panic - not syncing: unhandled cache error
-Rebooting in 5 seconds..
-
-It seems bus error occurs when copying module since the memcpy is called
-by percpu_modcopy. I recalled that SB1250 prior C0 version has a TLB M3
-workaround which caused kernel module loading fail, however, it seems
-Ralf committed a patch to solve this issue. See git log:
-
-commit 3d45285dd1ff4d4a1361b95e2d6508579a4402b5
-Author: Ralf Baechle <ralf@linux-mips.org>
-Date: Tue Mar 23 17:56:38 2010 +0100
-
-MIPS: Sibyte: Fix M3 TLB exception handler workaround.
-
-The M3 workaround needs to cmpare the region and VPN2 fields only.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-It seems this patch can't solve the issue, or this is another different bug?
-
-Thanks,
-Yang
+ arch/mips/kernel/ftrace.c |  184 +++++++++++++++++++++++++++------------------
+ arch/mips/kernel/mcount.S |   55 ++++++++-----
+ 2 files changed, 146 insertions(+), 93 deletions(-)

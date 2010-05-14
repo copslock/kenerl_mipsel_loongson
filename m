@@ -1,83 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2010 14:54:06 +0200 (CEST)
-Received: from chilli.pcug.org.au ([203.10.76.44]:56616 "EHLO smtps.tip.net.au"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491937Ab0ENMyB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 May 2010 14:54:01 +0200
-Received: from canb.auug.org.au (ta-1-1.tip.net.au [203.11.71.1])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtps.tip.net.au (Postfix) with ESMTPSA id B4D06144001;
-        Fri, 14 May 2010 22:53:53 +1000 (EST)
-Date:   Fri, 14 May 2010 22:53:48 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Peter =?UTF-8?B?SMO8d2U=?= <PeterHuewe@gmx.de>
-Cc:     linux-next@vger.kernel.org, Paul Mundt <lethal@linux-sh.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        linuxppc-dev@ozlabs.org, "David H?rdeman" <david@hardeman.nu>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-m68k@lists.linux-m68k.org
-Subject: Re: [PATCH] media/IR: Add missing include file to rc-map.c
-Message-Id: <20100514225348.05e25821.sfr@canb.auug.org.au>
-In-Reply-To: <201005141326.52099.PeterHuewe@gmx.de>
-References: <201005051720.22617.PeterHuewe@gmx.de>
-        <201005112042.14889.PeterHuewe@gmx.de>
-        <20100514060240.GD12002@linux-sh.org>
-        <201005141326.52099.PeterHuewe@gmx.de>
-X-Mailer: Sylpheed 3.0.2 (GTK+ 2.20.1; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA1";
- boundary="Signature=_Fri__14_May_2010_22_53_48_+1000_F6ZXC=D=N=F2Vx.l"
-Return-Path: <sfr@canb.auug.org.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2010 19:15:31 +0200 (CEST)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:51807 "EHLO
+        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491913Ab0ENRP0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 May 2010 19:15:26 +0200
+Received: by pxi1 with SMTP id 1so1467472pxi.36
+        for <multiple recipients>; Fri, 14 May 2010 10:15:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from
+         :user-agent:mime-version:to:cc:subject:references:in-reply-to
+         :content-type:content-transfer-encoding;
+        bh=Dyugft45e4/CbvXthVjyYNB+hjH3zPcDWQ3JG1uTvI0=;
+        b=nQSbykjAEiSnIoLxksZMCbDwWD8Tu+uYBo2i/iECnuzSZYAVshO9Hz+RDJXePMz0nL
+         EnvathN6ESGIiaiE6ulTZla+pIEcTvC5rDxIjmNYLQUFDcz5lpuhB5Jlkvbx46hDfbru
+         ENMWFAqh6GxoNaXFrtxDkp73nv5E2nXvOnf0M=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        b=JiJP1fuNUiU2BstrI9B7ljniqea2o4z9guVGoIz6gCYv57nYwaxdMqYjoHO184auce
+         IFL1Qiaj22F5sgkfW9KiHq5tL9/kNgdVNq3T9J5HlFAK0Vrdd5lHtW0DvVSt8xbMsg/x
+         8TmsCGmuCq1nrYVctaagD69w49/H0fWsI23X8=
+Received: by 10.143.85.1 with SMTP id n1mr895945wfl.201.1273857319249;
+        Fri, 14 May 2010 10:15:19 -0700 (PDT)
+Received: from dd1.caveonetworks.com ([12.108.191.226])
+        by mx.google.com with ESMTPS id 21sm1867204pzk.4.2010.05.14.10.15.17
+        (version=SSLv3 cipher=RC4-MD5);
+        Fri, 14 May 2010 10:15:17 -0700 (PDT)
+Message-ID: <4BED8524.8010805@gmail.com>
+Date:   Fri, 14 May 2010 10:15:16 -0700
+From:   David Daney <david.s.daney@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc12 Thunderbird/3.0.4
+MIME-Version: 1.0
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 7/9] tracing: MIPS: Reduce the overhead of dynamic Function
+ Tracer
+References: <cover.1273834561.git.wuzhangjin@gmail.com> <6b4495690164114ff7353c86f6b53b979fca2756.1273834562.git.wuzhangjin@gmail.com>
+In-Reply-To: <6b4495690164114ff7353c86f6b53b979fca2756.1273834562.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <david.s.daney@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26721
+X-archive-position: 26722
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: david.s.daney@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---Signature=_Fri__14_May_2010_22_53_48_+1000_F6ZXC=D=N=F2Vx.l
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Peter,
-
-On Fri, 14 May 2010 13:26:51 +0200 Peter H=C3=BCwe <PeterHuewe@gmx.de> wrot=
-e:
+On 05/14/2010 04:08 AM, Wu Zhangjin wrote:
+> From: Wu Zhangjin<wuzhangjin@gmail.com>
 >
-> From: Peter Huewe <peterhuewe@gmx.de>
->=20
-> This patch adds a missing include linux/delay.h to prevent
-> build failures[1-5]
->=20
-> Signed-off-by: Peter Huewe <peterhuewe@gmx.de>
-> ---
-> Forwarded to linux-next mailing list -=20
-> breakage still exists in linux-next of 20100514 - please apply
+> With the help of uasm, this patch encodes the instructions of dynamic
+> Function Tracer in ftrace_dyn_arch_init() when initializing it.
+>
+[...]
+> +#include<asm/uasm.h>
+>
 
-This patch was included in the v4l-dvb tree (and thus linux-next) today
--see commit 1e19cb4e7d15d724cf2c6ae23f0b871c84a92790.
+All of uasm is _cpuinit, I haven't checked everything, but are you sure 
+you aren't calling if from non-_cpuinit code?
 
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
-http://www.canb.auug.org.au/~sfr/
-
---Signature=_Fri__14_May_2010_22_53_48_+1000_F6ZXC=D=N=F2Vx.l
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAkvtR90ACgkQjjKRsyhoI8wyygCfZDik8epd0H05Npyb+DFFvBOx
-CdwAoJMc/3TgT2LBEXA6b3UoshPylvNm
-=cIoQ
------END PGP SIGNATURE-----
-
---Signature=_Fri__14_May_2010_22_53_48_+1000_F6ZXC=D=N=F2Vx.l--
+David Daney

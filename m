@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2010 13:22:55 +0200 (CEST)
-Received: from mail.gmx.net ([213.165.64.20]:52260 "HELO mail.gmx.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 May 2010 13:27:02 +0200 (CEST)
+Received: from mail.gmx.net ([213.165.64.20]:56342 "HELO mail.gmx.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S1491825Ab0ENLWw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 May 2010 13:22:52 +0200
-Received: (qmail invoked by alias); 14 May 2010 11:22:45 -0000
+        id S1491776Ab0ENL07 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 May 2010 13:26:59 +0200
+Received: (qmail invoked by alias); 14 May 2010 11:26:53 -0000
 Received: from dslb-084-056-063-164.pools.arcor-ip.net (EHLO lamer.localnet) [84.56.63.164]
-  by mail.gmx.net (mp072) with SMTP; 14 May 2010 13:22:45 +0200
+  by mail.gmx.net (mp063) with SMTP; 14 May 2010 13:26:53 +0200
 X-Authenticated: #12255092
-X-Provags-ID: V01U2FsdGVkX1/DzRoU6IvDsVW8Tx8zfZyChf7gGzJvDCYLOsCoyr
-        Z5GwU/sbdBheI5
+X-Provags-ID: V01U2FsdGVkX1+S59AVQFuSK640sL/xQqIuyqz+E7pbh94uukr0Hj
+        NM4CwgyXY/QPGC
 From:   Peter =?iso-8859-1?q?H=FCwe?= <PeterHuewe@gmx.de>
-To:     linux-next@vger.kernel.org.
+To:     linux-next@vger.kernel.org
 Subject: Re: [PATCH] media/IR: Add missing include file to rc-map.c
-Date:   Fri, 14 May 2010 13:22:41 +0200
+Date:   Fri, 14 May 2010 13:26:51 +0200
 User-Agent: KMail/1.12.4 (Linux/2.6.33.2; KDE/4.3.5; x86_64; ; )
 Cc:     Paul Mundt <lethal@linux-sh.org>,
         Mauro Carvalho Chehab <mchehab@infradead.org>,
@@ -26,13 +26,13 @@ MIME-Version: 1.0
 Content-Type: Text/Plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201005141322.41370.PeterHuewe@gmx.de>
+Message-Id: <201005141326.52099.PeterHuewe@gmx.de>
 X-Y-GMX-Trusted: 0
 Return-Path: <PeterHuewe@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26719
+X-archive-position: 26720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

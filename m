@@ -1,87 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 May 2010 18:18:06 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:57041 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491984Ab0EOQSD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 15 May 2010 18:18:03 +0200
-Received: by wyb29 with SMTP id 29so333960wyb.36
-        for <multiple recipients>; Sat, 15 May 2010 09:17:56 -0700 (PDT)
-Received: by 10.227.142.69 with SMTP id p5mr2640436wbu.2.1273940276186;
-        Sat, 15 May 2010 09:17:56 -0700 (PDT)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
-        by mx.google.com with ESMTPS id h22sm2213068wbh.21.2010.05.15.09.17.54
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 15 May 2010 09:17:55 -0700 (PDT)
-Message-ID: <4BEEC902.2080006@mvista.com>
-Date:   Sat, 15 May 2010 20:17:06 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 May 2010 03:54:59 +0200 (CEST)
+Received: from bombadil.infradead.org ([18.85.46.34]:54845 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492140Ab0EPByz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 16 May 2010 03:54:55 +0200
+Received: from 189-18-149-18.dsl.telesp.net.br ([189.18.149.18] helo=[192.168.30.170])
+        by bombadil.infradead.org with esmtpsa (Exim 4.69 #1 (Red Hat Linux))
+        id 1ODT41-0003AI-Nr; Sun, 16 May 2010 01:54:46 +0000
+Message-ID: <4BEF5060.5050105@infradead.org>
+Date:   Sat, 15 May 2010 22:54:40 -0300
+From:   Mauro Carvalho Chehab <mchehab@infradead.org>
+User-Agent: Thunderbird 2.0.0.22 (X11/20090609)
 MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com, jamie.iles@picochip.com, will.deacon@arm.com
-Subject: Re: [PATCH v4 7/9] MIPS/perf-events: allow modules to get pmu number
- of counters
-References: <1273937815-4781-1-git-send-email-dengcheng.zhu@gmail.com> <1273937815-4781-8-git-send-email-dengcheng.zhu@gmail.com>
-In-Reply-To: <1273937815-4781-8-git-send-email-dengcheng.zhu@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+To:     =?ISO-8859-1?Q?Peter_H=FCwe?= <PeterHuewe@gmx.de>
+CC:     linux-next@vger.kernel.org, Paul Mundt <lethal@linux-sh.org>,
+        linuxppc-dev@ozlabs.org, David H?rdeman <david@hardeman.nu>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-m68k@lists.linux-m68k.org
+Subject: Re: [PATCH] media/IR: Add missing include file to rc-map.c
+References: <201005051720.22617.PeterHuewe@gmx.de> <201005112042.14889.PeterHuewe@gmx.de> <20100514060240.GD12002@linux-sh.org> <201005141326.52099.PeterHuewe@gmx.de>
+In-Reply-To: <201005141326.52099.PeterHuewe@gmx.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <mchehab@infradead.org> by bombadil.infradead.org
+        See http://www.infradead.org/rpr.html
+Return-Path: <BATV+0307ec0569c9968e5153+2457+infradead.org+mchehab@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26737
+X-archive-position: 26738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: mchehab@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
-
-Deng-Cheng Zhu wrote:
-
-> Oprofile module needs a function to get the number of pmu counters in its
-> high level interfaces.
->
-> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Peter Hüwe wrote:
+> From: Peter Huewe <peterhuewe@gmx.de>
+> 
+> This patch adds a missing include linux/delay.h to prevent
+> build failures[1-5]
+> 
+> Signed-off-by: Peter Huewe <peterhuewe@gmx.de>
 > ---
->  arch/mips/include/asm/pmu.h   |    1 +
->  arch/mips/kernel/perf_event.c |   11 +++++++++++
->  2 files changed, 12 insertions(+), 0 deletions(-)
->
-> diff --git a/arch/mips/include/asm/pmu.h b/arch/mips/include/asm/pmu.h
-> index 16d4fcd..023a915 100644
-> --- a/arch/mips/include/asm/pmu.h
-> +++ b/arch/mips/include/asm/pmu.h
-> @@ -114,5 +114,6 @@ enum mips_pmu_id {
->  extern const char *mips_pmu_names[];
->  
->  extern enum mips_pmu_id mipspmu_get_pmu_id(void);
-> +extern int mipspmu_get_max_events(void);
->  
->  #endif /* __MIPS_PMU_H__ */
-> diff --git a/arch/mips/kernel/perf_event.c b/arch/mips/kernel/perf_event.c
-> index 67d301d..6f95220 100644
-> --- a/arch/mips/kernel/perf_event.c
-> +++ b/arch/mips/kernel/perf_event.c
-> @@ -145,6 +145,17 @@ enum mips_pmu_id mipspmu_get_pmu_id(void)
->  }
->  EXPORT_SYMBOL_GPL(mipspmu_get_pmu_id);
->  
-> +int mipspmu_get_max_events(void)
-> +{
-> +	int max_events = 0;
-> +
-> +	if (mipspmu)
-> +		max_events = mipspmu->num_counters;
-> +
-> +	return max_events;
->   
+> Forwarded to linux-next mailing list - 
+> breakage still exists in linux-next of 20100514 - please apply
+> 
+> KernelVersion: linux-next-20100505
 
-   Why not simply:
+Sorry for not answer earlier. I was traveling. Anyway, this
+patch got applied on May, 12:
 
-    return mispmu ? mipspmu->num_counters : 0;
+http://git.kernel.org/?p=linux/kernel/git/mchehab/linux-next.git;a=commitdiff;h=4ace7aa2998b2974948f1948a61a5d348ddae472
 
-WBR, Sergei
+> 
+> References:
+> [1] http://kisskb.ellerman.id.au/kisskb/buildresult/2571452/
+> [2] http://kisskb.ellerman.id.au/kisskb/buildresult/2571188/
+> [3] http://kisskb.ellerman.id.au/kisskb/buildresult/2571479/
+> [4] http://kisskb.ellerman.id.au/kisskb/buildresult/2571429/
+> [5] http://kisskb.ellerman.id.au/kisskb/buildresult/2571432/
+> 
+> drivers/media/IR/rc-map.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/media/IR/rc-map.c b/drivers/media/IR/rc-map.c
+> index caf6a27..46a8f15 100644
+> --- a/drivers/media/IR/rc-map.c
+> +++ b/drivers/media/IR/rc-map.c
+> @@ -14,6 +14,7 @@
+>  
+>  #include <media/ir-core.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/delay.h>
+>  
+>  /* Used to handle IR raw handler extensions */
+>  static LIST_HEAD(rc_map_list);
+
+
+-- 
+
+Cheers,
+Mauro

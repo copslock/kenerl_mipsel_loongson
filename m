@@ -1,93 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 May 2010 19:04:22 +0200 (CEST)
-Received: from mail-pv0-f177.google.com ([74.125.83.177]:55437 "EHLO
-        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491827Ab0EPRER (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 16 May 2010 19:04:17 +0200
-Received: by pvg3 with SMTP id 3so1540573pvg.36
-        for <multiple recipients>; Sun, 16 May 2010 10:04:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=PEWxaZuUAZ8WN/WxW39Gp8gGqcvRKmv+jolhKtIBQF8=;
-        b=Fy84+dS0hF/QYQzjxld3w5OdMDYGL+OW/QQcNSyY3VMRB8MhCdZ8BdPiq0NirZi75u
-         k7dHB0YAZ/CNMK3BwzREVIRGytcYdOcpGa7gLB+cmc49uASDOb4njLaNL2YgMpyRD8e6
-         jcHWJXMHxRUGHT3qzHVF/z1xNKlZt7PjLiZgw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        b=qU59JdE9UMz3aTbX5Iuji9jAFh/pyHd7w9T31+f4ZaL5QNTqVAxm42P3B8ZakERoTi
-         bgv3EYb+CC7kUrqHdh/se1SPbR37eb3LLTIiYEfT7+WqKG3EF2dp/X9YMfsyX8d/1rlu
-         B2rs+WC6GWqQjHSJN7C6iMiHALjfUrjZor8hY=
-Received: by 10.115.84.40 with SMTP id m40mr3346649wal.223.1274029450028;
-        Sun, 16 May 2010 10:04:10 -0700 (PDT)
-Received: from dd_xps.caveonetworks.com (adsl-67-127-190-169.dsl.pltn13.pacbell.net [67.127.190.169])
-        by mx.google.com with ESMTPS id c14sm41145537waa.13.2010.05.16.10.04.08
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 16 May 2010 10:04:08 -0700 (PDT)
-Message-ID: <4BF02587.5020303@gmail.com>
-Date:   Sun, 16 May 2010 10:04:07 -0700
-From:   David Daney <david.s.daney@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100330 Fedora/3.0.4-1.fc11 Thunderbird/3.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 May 2010 04:57:34 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:41588 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1490981Ab0EQC5b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 May 2010 04:57:31 +0200
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o4H2vKdd024444;
+        Sun, 16 May 2010 19:57:23 -0700 (PDT)
+Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Sun, 16 May 2010 19:57:20 -0700
+Message-ID: <4BF0B08F.1010305@windriver.com>
+Date:   Mon, 17 May 2010 10:57:19 +0800
+From:   Yang Shi <yang.shi@windriver.com>
+User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
 MIME-Version: 1.0
-To:     wuzhangjin@gmail.com
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 7/9] tracing: MIPS: Reduce the overhead of dynamic Function
- Tracer
-References: <cover.1273834561.git.wuzhangjin@gmail.com>  <6b4495690164114ff7353c86f6b53b979fca2756.1273834562.git.wuzhangjin@gmail.com>  <4BED8524.8010805@gmail.com> <1273891425.8552.12.camel@localhost>
-In-Reply-To: <1273891425.8552.12.camel@localhost>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [Bug report] Got bus error when loading kernel module on SB1250
+ Rev B2 board with 64 bit kernel
+References: <4BED25F3.4010809@windriver.com> <20100514180211.GB32203@linux-mips.org>
+In-Reply-To: <20100514180211.GB32203@linux-mips.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <david.s.daney@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 17 May 2010 02:57:20.0363 (UTC) FILETIME=[AAC28BB0:01CAF56C]
+Return-Path: <Yang.Shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26741
+X-archive-position: 26742
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.s.daney@gmail.com
+X-original-sender: yang.shi@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-On 05/14/2010 07:43 PM, Wu Zhangjin wrote:
-> On Fri, 2010-05-14 at 10:15 -0700, David Daney wrote:
->    
->> On 05/14/2010 04:08 AM, Wu Zhangjin wrote:
->>      
->>> From: Wu Zhangjin<wuzhangjin@gmail.com>
->>>
->>> With the help of uasm, this patch encodes the instructions of dynamic
->>> Function Tracer in ftrace_dyn_arch_init() when initializing it.
->>>
->>>        
->> [...]
->>      
->>> +#include<asm/uasm.h>
->>>
->>>        
->> All of uasm is _cpuinit, I haven't checked everything, but are you sure
->> you aren't calling if from non-_cpuinit code?
->>      
-> The calling tree looks like this:
+Ralf Baechle 写道:
+> On Fri, May 14, 2010 at 06:29:07PM +0800, Yang Shi wrote:
 >
-> start_kernel()  // __init
->    -->  ftrace_init()  // __init
->          -->  ftrace_dyn_arch_init() // __init
->                -->  ftrace_dyn_arch_init_insns() // inline
-> 	            -->  uasm_*/UASM_*
+>   
+>> I'm running 2.6.34-rc7 mainline kernel on SB1250 (Rev B2) board. And, I
+>> use the default sb1250 kernel config (sb1250-swarm_defconfig). So, 64
+>> bit kernel is used. During kernel loading module got bus error, see
+>> below log:
+>>     
 >
-> Nobody else will call uasm_*/UASM_* in this patch, I have checked the
-> uasm usage in arch/mips/kernel/traps.c. Seems the usam functions are
-> also called in the __init *set_except_vector(). so, it will also be safe
-> in this patch, is it?
+> Whops.  Fixes which were supposed to handle exactly this problem went
+> upstream for 2.6.34-rc3 and were tested successfully by others on their
+> systems.
 >
->    
+> I wonder if in arch/mips/sibyte/sb1250/setup.c you can instrument
+> the function sb1250_m3_workaround_needed() and print the values of
+> soc_type, soc_pass and the retun value of that function.  Then let's take
+> it from there.
+>   
 
-Yes, that seems good to me.  I just wanted to make sure that this wasn't 
-being called from non-init code.
+See below log:
 
-David Daney
+Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
+
+And, soc_typs is 0x0 and soc_pass is 0x11, sb1250_m3_workaround_needed 
+should return 1. So, tlb refill handler should go the m3 workaround code 
+path.
+
+Thanks,
+Yang
+
+>   Ralf
+>
+>   

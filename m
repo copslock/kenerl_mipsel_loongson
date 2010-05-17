@@ -1,80 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 May 2010 16:56:17 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:61010 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492018Ab0EQO4O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 May 2010 16:56:14 +0200
-Received: by fxm12 with SMTP id 12so3694291fxm.36
-        for <multiple recipients>; Mon, 17 May 2010 07:56:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=UXofLrlVwIfzBIZRgQ2MGvP9SToZ1SKY1l/mUolSR3k=;
-        b=wvD2yspMvu8duPiC18YPgLyScjER2cjfRpSM9b9cPXNHcBtsrtC82khuZo1fbqHJD7
-         QQXmuQh6Uvqis0Q9qNg8IRPBu+GbSNoFeeERiZDOAOidi44it/Q3gDwYbvmwMHoLcQzb
-         nlU1mpMKedopm9cIaNTm2oS5tnepyvayF/YCA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=tnPKQJOXwo4Zlyxd1M4VpjwoTAhlW5bxoY0FTMYi5RTL4ZKynbyVBjYO9r+1uAeBub
-         wo7YP1nObo/OcijbDco3FbCH63VvlIGj3rYewR8LsRJ6PnJJRcXArGxgRAxRnlUu/dlj
-         OUYihle9ataG39TR2wOBCnl3CmON/dLkanMuk=
-Received: by 10.223.30.10 with SMTP id s10mr6474118fac.4.1274108167103;
-        Mon, 17 May 2010 07:56:07 -0700 (PDT)
-Received: from [192.168.2.218] ([202.201.14.140])
-        by mx.google.com with ESMTPS id 15sm26146469fad.22.2010.05.17.07.56.00
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 17 May 2010 07:56:04 -0700 (PDT)
-Subject: Re: [PATCH] rtc-cmos: Fix binary mode support
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 May 2010 17:04:42 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:34714 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492042Ab0EQPEj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 May 2010 17:04:39 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o4HF3uVJ008381;
+        Mon, 17 May 2010 16:03:57 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o4HF3ss6008378;
+        Mon, 17 May 2010 16:03:54 +0100
+Date:   Mon, 17 May 2010 16:03:53 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
 Cc:     Arnaud Patard <apatard@mandriva.com>, linux-mips@linux-mips.org,
         rtc-linux@googlegroups.com, david-b@pacbell.net,
         a.zummo@towertech.it, akpm@linux-foundation.org
-In-Reply-To: <20100511141039.GG13576@linux-mips.org>
+Subject: Re: [PATCH] rtc-cmos: Fix binary mode support
+Message-ID: <20100517150353.GA15578@linux-mips.org>
 References: <m3zl0mwpez.fsf@anduin.mandriva.com>
-         <20100511141039.GG13576@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Mon, 17 May 2010 22:55:54 +0800
-Message-ID: <1274108154.14193.3.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+ <20100511141039.GG13576@linux-mips.org>
+ <1274108154.14193.3.camel@localhost>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1274108154.14193.3.camel@localhost>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26745
+X-archive-position: 26746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf and Arnaud
+On Mon, May 17, 2010 at 10:55:54PM +0800, Wu Zhangjin wrote:
 
-Just found a bug introduced in this patch, please take a look at the 754
-line after applying it, a ";" is needed to append the "dev_warn(dev,
-"only 24-hr supported\n")".
+> Just found a bug introduced in this patch, please take a look at the 754
+> line after applying it, a ";" is needed to append the "dev_warn(dev,
+> "only 24-hr supported\n")".
 
-Regards,
-	Wu Zhangjin
+I silently fixed this when applying the patch.
 
-On Tue, 2010-05-11 at 15:10 +0100, Ralf Baechle wrote:
-> On Thu, Apr 29, 2010 at 11:58:44AM +0200, Arnaud Patard wrote:
-> 
-> > [ I'm sending again this patch, hoping it'll get reviewed ]
-> 
-> I'm showing mercy for the poor sod of a patch by merging it into -my tree
-> for -next.
-> 
-> Thanks Arnaud,
-> 
->   Ralf
-> 
+Thanks anyway!
+
+  Ralf

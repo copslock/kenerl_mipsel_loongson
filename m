@@ -1,133 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 07:51:01 +0200 (CEST)
-Received: from na3sys009aog102.obsmtp.com ([74.125.149.69]:55118 "HELO
-        na3sys009aog102.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491196Ab0ERFux (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 07:50:53 +0200
-Received: from source ([209.85.214.169]) by na3sys009aob102.postini.com ([74.125.148.12]) with SMTP
-        ID DSNKS/Iqu1gC+78MchXmvX4v3wdg7ritGSLy@postini.com; Mon, 17 May 2010 22:50:53 PDT
-Received: by iwn39 with SMTP id 39so518232iwn.0
-        for <linux-mips@linux-mips.org>; Mon, 17 May 2010 22:50:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 09:28:09 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:56190 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491795Ab0ERH2C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 09:28:02 +0200
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o4I7Rq3P015311;
+        Tue, 18 May 2010 00:27:52 -0700 (PDT)
+Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Tue, 18 May 2010 00:27:51 -0700
+Message-ID: <4BF24177.7090803@windriver.com>
+Date:   Tue, 18 May 2010 15:27:51 +0800
+From:   Yang Shi <yang.shi@windriver.com>
+User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
 MIME-Version: 1.0
-Received: by 10.231.178.132 with SMTP id bm4mr1056881ibb.62.1274161850719; 
-        Mon, 17 May 2010 22:50:50 -0700 (PDT)
-Received: by 10.231.209.71 with HTTP; Mon, 17 May 2010 22:50:50 -0700 (PDT)
-In-Reply-To: <28591517.post@talk.nabble.com>
-References: <28591517.post@talk.nabble.com>
-Date:   Tue, 18 May 2010 10:50:50 +0500
-Message-ID: <AANLkTil1lb3R4g_1eARS8izPOboUZMlDlfRl3iHxZxcA@mail.gmail.com>
-Subject: Re: Kernel not booting in QEMU_SYSTEM_MIPS
-From:   adnan iqbal <adnan.iqbal@seecs.edu.pk>
-To:     soumyasr <Soumya.R@kpitcummins.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=00504502bf637fa4100486d7ec91
-Return-Path: <adnan.iqbal@seecs.edu.pk>
+To:     Yang Shi <yang.shi@windriver.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [Bug report] Got bus error when loading kernel module on SB1250
+ Rev B2 board with 64 bit kernel
+References: <4BED25F3.4010809@windriver.com> <20100514180211.GB32203@linux-mips.org> <4BF0B08F.1010305@windriver.com> <4BF2083B.4000303@windriver.com>
+In-Reply-To: <4BF2083B.4000303@windriver.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 18 May 2010 07:27:52.0072 (UTC) FILETIME=[A0068880:01CAF65B]
+Return-Path: <Yang.Shi@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26751
+X-archive-position: 26752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: adnan.iqbal@seecs.edu.pk
+X-original-sender: yang.shi@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
---00504502bf637fa4100486d7ec91
-Content-Type: text/plain; charset=ISO-8859-1
+Yang Shi 写道:
+> Yang Shi 写道:
+>   
+>> Ralf Baechle 写道:
+>>   
+>>     
+>>> On Fri, May 14, 2010 at 06:29:07PM +0800, Yang Shi wrote:
+>>>
+>>>   
+>>>     
+>>>       
+>>>> I'm running 2.6.34-rc7 mainline kernel on SB1250 (Rev B2) board. And, I
+>>>> use the default sb1250 kernel config (sb1250-swarm_defconfig). So, 64
+>>>> bit kernel is used. During kernel loading module got bus error, see
+>>>> below log:
+>>>>     
+>>>>       
+>>>>         
+>>> Whops.  Fixes which were supposed to handle exactly this problem went
+>>> upstream for 2.6.34-rc3 and were tested successfully by others on their
+>>> systems.
+>>>
+>>> I wonder if in arch/mips/sibyte/sb1250/setup.c you can instrument
+>>> the function sb1250_m3_workaround_needed() and print the values of
+>>> soc_type, soc_pass and the retun value of that function.  Then let's take
+>>> it from there.
+>>>   
+>>>     
+>>>       
+>> See below log:
+>>
+>> Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
+>>
+>> And, soc_typs is 0x0 and soc_pass is 0x11, sb1250_m3_workaround_needed 
+>> should return 1. So, tlb refill handler should go the m3 workaround code 
+>> path.
+>>   
+>>     
+>
+> It seems CPU_PREFETCH caused this issue. See commit:
+>
+> commit 6b4caed2ebff4ee232f227d62eb3180d0b558a31
+> Author: Ralf Baechle <ralf@linux-mips.org>
+> Date:   Wed Jan 28 17:48:40 2009 +0000
+>
+>     MIPS: IP27: Switch from DMA_IP27 to DMA_COHERENT
+>    
+>     commit 0d356eaa6316cbb3e89b4607de20b2f2d0ceda25 from linux-mips
+>    
+>     The special IP27 DMA code selected by DMA_IP27 has been removed a while
+>     ago turning DMA_IP27 into almost a nop.  Also fixup the broken logic of
+>     its last users memcpy.S and memcpy-inatomic.s.
+>    
+>     Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+>   
 
-Dear soumyasr,
+This patch did below fix:
 
-Below are some notes form my experience in Qemu and Mips.
+-#if !defined(CONFIG_DMA_COHERENT) || !defined(CONFIG_DMA_IP27)
++#ifdef CONFIG_DMA_NONCOHERENT
+ #undef CONFIG_CPU_HAS_PREFETCH
 
----------------------------------------------------------------------------------------------------------------------------------------------------------
+Before the fix, CONFIG_DMA_IP27 is undefined for all of boards except 
+IP27, so CONFIG_CPU_HAS_PREFETCH is undefined always.
 
-This document contains information about how to install qemu on linux and
-Mipsel-Linux over Qemu.
+Thanks,
+Yang
 
-Helpful links:
-1.
-http://www.ibm.com/developerworks/linux/library/l-qemu-development/index.html?S_TACT=105AGX03&S_CMP=HP
-2.  http://www.aurel32.net/info/debian_mips_qemu.php
-
-General sequence of installation
-    download initrd.gz, already prepared disk image
-    create new qemu disk
-    install mips-linux on newly created qemu-disk
-
-Command to boot an installed mipsel linux in qemu
-    qemu-system-mipsel -M mips -kernel vmlinux-2.6.18-6-qemu -hda hda.img
--append "root=/dev/hda1 console=ttyS0" -nographic
-
-I started with link 1, but mainly followed link 2 to get the working
-mipsel-linux combination on qemu.
-
-Notes:
-1. the current installation does not have a running network
--- Apt get works fine
--- HTTP (wget, Lynx) does not work
-
-2. Mounting Hard disk that works in both Host/Guest (Done)
-    a. Make/download a hard disk img that may work on both host linux and
-guest linux (from:
-http://blog.famzah.net/2009/11/16/create-a-qemu-image-file-which-you-can-mount-in-both-linux-and-qemu/)
-    b. If you want to mount it in host os (linux) then use:
-        sudo mount -o loop,offset=32256 empty-ext3-2GB.img /mnt/diskimg
-    c. For mounting in qemu guest os use -hdb option at boot time
-        qemu-system-mipsel  -k en-us -localtime -M mips -kernel
-vmlinux-2.6.18-6-qemu -hda hda.img -hdb empty-ext3-2GB.img -append
-"root=/dev/hda1 console=ttyS0" -nographic
-        when system boots, hard disk is available , but not mounted. It can
-be mounted using
-        mount /dev/hdb1 /mnt
-    d. Never FORGET to unmount after use, and never use it in other OS when
-being used in one.
-
-Regards
-Adnan
-
---00504502bf637fa4100486d7ec91
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Dear soumyasr,<br><br>Below are some notes form my experience in Qemu and M=
-ips.<br><div id=3D":3a" class=3D"ii gt"><br>-------------------------------=
----------------------------------------------------------------------------=
------------------------------------------------<br>
-
-<br>This document contains information about how to install qemu on linux a=
-nd <br>Mipsel-Linux over Qemu.<br><br>Helpful links:<br>1.=A0 <a href=3D"ht=
-tp://www.ibm.com/developerworks/linux/library/l-qemu-development/index.html=
-?S_TACT=3D105AGX03&amp;S_CMP=3DHP">http://www.ibm.com/developerworks/linux/=
-library/l-qemu-development/index.html?S_TACT=3D105AGX03&amp;S_CMP=3DHP</a><=
-br>
-2.=A0 <a href=3D"http://www.aurel32.net/info/debian_mips_qemu.php">http://w=
-ww.aurel32.net/info/debian_mips_qemu.php</a><br><br>General sequence of ins=
-tallation<br>=A0=A0=A0 download initrd.gz, already prepared disk image<br>=
-=A0=A0=A0 create new qemu disk<br>
-=A0=A0=A0 install mips-linux on newly created qemu-disk<br><br>Command to b=
-oot an installed mipsel linux in qemu<br>=A0=A0=A0 qemu-system-mipsel -M mi=
-ps -kernel vmlinux-2.6.18-6-qemu -hda hda.img -append &quot;root=3D/dev/hda=
-1 console=3DttyS0&quot; -nographic<br>
-<br>I started with link 1, but mainly followed link 2 to get the working mi=
-psel-linux combination on qemu.<br><br>Notes:<br>1. the current installatio=
-n does not have a running network<br>-- Apt get works fine<br>-- HTTP (wget=
-, Lynx) does not work<br>
-<br>2. Mounting Hard disk that works in both Host/Guest (Done)<br>=A0=A0=A0=
- a. Make/download a hard disk img that may work on both host linux and gues=
-t linux (from: <a href=3D"http://blog.famzah.net/2009/11/16/create-a-qemu-i=
-mage-file-which-you-can-mount-in-both-linux-and-qemu/">http://blog.famzah.n=
-et/2009/11/16/create-a-qemu-image-file-which-you-can-mount-in-both-linux-an=
-d-qemu/</a> )<br>
-=A0=A0=A0 b. If you want to mount it in host os (linux) then use: <br>=A0=
-=A0=A0 =A0=A0=A0 sudo mount -o loop,offset=3D32256 empty-ext3-2GB.img /mnt/=
-diskimg<br>=A0=A0=A0 c. For mounting in qemu guest os use -hdb option at bo=
-ot time <br>=A0=A0=A0 =A0=A0=A0 qemu-system-mipsel=A0 -k en-us -localtime -=
-M mips -kernel vmlinux-2.6.18-6-qemu -hda hda.img -hdb empty-ext3-2GB.img -=
-append &quot;root=3D/dev/hda1 console=3DttyS0&quot; -nographic <br>
-=A0=A0=A0 =A0=A0=A0 when system boots, hard disk is available , but not mou=
-nted. It can be mounted using<br>=A0=A0=A0 =A0=A0=A0 mount /dev/hdb1 /mnt<b=
-r>=A0=A0=A0 d. Never FORGET to unmount after use, and never use it in other=
- OS when being used in one.<br>
-<br>Regards<br>Adnan<br></div>
-
---00504502bf637fa4100486d7ec91--
+> If undef CPU_PREFETCH for SB1250, module can be loaded correctly.
+>
+> Thanks,
+> Yang
+>
+>   
+>> Thanks,
+>> Yang
+>>
+>>   
+>>     
+>>>   Ralf
+>>>
+>>>   
+>>>     
+>>>       
+>>
+>>   
+>>     
+>
+>
+>   

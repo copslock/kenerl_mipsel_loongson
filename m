@@ -1,126 +1,243 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 09:28:09 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:56190 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491795Ab0ERH2C (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 09:28:02 +0200
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o4I7Rq3P015311;
-        Tue, 18 May 2010 00:27:52 -0700 (PDT)
-Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Tue, 18 May 2010 00:27:51 -0700
-Message-ID: <4BF24177.7090803@windriver.com>
-Date:   Tue, 18 May 2010 15:27:51 +0800
-From:   Yang Shi <yang.shi@windriver.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 11:09:33 +0200 (CEST)
+Received: from kuber.nabble.com ([216.139.236.158]:50263 "EHLO
+        kuber.nabble.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491148Ab0ERJJZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 11:09:25 +0200
+Received: from isper.nabble.com ([192.168.236.156])
+        by kuber.nabble.com with esmtp (Exim 4.63)
+        (envelope-from <lists@nabble.com>)
+        id 1OEInh-0005kq-F6
+        for linux-mips@linux-mips.org; Tue, 18 May 2010 02:09:21 -0700
+Message-ID: <28593348.post@talk.nabble.com>
+Date:   Tue, 18 May 2010 02:09:21 -0700 (PDT)
+From:   soumyasr <Soumya.R@kpitcummins.com>
+To:     linux-mips@linux-mips.org
+Subject: How to start with OpenEmbedded for MiPS32 Au1300
 MIME-Version: 1.0
-To:     Yang Shi <yang.shi@windriver.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [Bug report] Got bus error when loading kernel module on SB1250
- Rev B2 board with 64 bit kernel
-References: <4BED25F3.4010809@windriver.com> <20100514180211.GB32203@linux-mips.org> <4BF0B08F.1010305@windriver.com> <4BF2083B.4000303@windriver.com>
-In-Reply-To: <4BF2083B.4000303@windriver.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 18 May 2010 07:27:52.0072 (UTC) FILETIME=[A0068880:01CAF65B]
-Return-Path: <Yang.Shi@windriver.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Nabble-From: Soumya.R@kpitcummins.com
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26752
+X-archive-position: 26753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yang.shi@windriver.com
+X-original-sender: Soumya.R@kpitcummins.com
 Precedence: bulk
 X-list: linux-mips
 
-Yang Shi 写道:
-> Yang Shi 写道:
->   
->> Ralf Baechle 写道:
->>   
->>     
->>> On Fri, May 14, 2010 at 06:29:07PM +0800, Yang Shi wrote:
->>>
->>>   
->>>     
->>>       
->>>> I'm running 2.6.34-rc7 mainline kernel on SB1250 (Rev B2) board. And, I
->>>> use the default sb1250 kernel config (sb1250-swarm_defconfig). So, 64
->>>> bit kernel is used. During kernel loading module got bus error, see
->>>> below log:
->>>>     
->>>>       
->>>>         
->>> Whops.  Fixes which were supposed to handle exactly this problem went
->>> upstream for 2.6.34-rc3 and were tested successfully by others on their
->>> systems.
->>>
->>> I wonder if in arch/mips/sibyte/sb1250/setup.c you can instrument
->>> the function sb1250_m3_workaround_needed() and print the values of
->>> soc_type, soc_pass and the retun value of that function.  Then let's take
->>> it from there.
->>>   
->>>     
->>>       
->> See below log:
->>
->> Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
->>
->> And, soc_typs is 0x0 and soc_pass is 0x11, sb1250_m3_workaround_needed 
->> should return 1. So, tlb refill handler should go the m3 workaround code 
->> path.
->>   
->>     
->
-> It seems CPU_PREFETCH caused this issue. See commit:
->
-> commit 6b4caed2ebff4ee232f227d62eb3180d0b558a31
-> Author: Ralf Baechle <ralf@linux-mips.org>
-> Date:   Wed Jan 28 17:48:40 2009 +0000
->
->     MIPS: IP27: Switch from DMA_IP27 to DMA_COHERENT
->    
->     commit 0d356eaa6316cbb3e89b4607de20b2f2d0ceda25 from linux-mips
->    
->     The special IP27 DMA code selected by DMA_IP27 has been removed a while
->     ago turning DMA_IP27 into almost a nop.  Also fixup the broken logic of
->     its last users memcpy.S and memcpy-inatomic.s.
->    
->     Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
->   
 
-This patch did below fix:
+Hi All,
+    I am new to open embedded build.. 
+I followed the steps which is given in
+http://wiki.openembedded.net/index.php/Getting_started
 
--#if !defined(CONFIG_DMA_COHERENT) || !defined(CONFIG_DMA_IP27)
-+#ifdef CONFIG_DMA_NONCOHERENT
- #undef CONFIG_CPU_HAS_PREFETCH
+$ mkdir -p /home/soumya/project/oe/build/conf
+$ cd /home/soumya/project/oe/ 
 
-Before the fix, CONFIG_DMA_IP27 is undefined for all of boards except 
-IP27, so CONFIG_CPU_HAS_PREFETCH is undefined always.
+Getting the working bitbake
+wget http://download.berlios.de/bitbake/bitbake-1.8.18.tar.gz
 
-Thanks,
-Yang
+To obtain openembedded 
+install git
+$ git clone http://repo.or.cz/r/openembedded.git
+ 
+updating OpenEmbedded using git pull
 
-> If undef CPU_PREFETCH for SB1250, module can be loaded correctly.
->
-> Thanks,
-> Yang
->
->   
->> Thanks,
->> Yang
->>
->>   
->>     
->>>   Ralf
->>>
->>>   
->>>     
->>>       
->>
->>   
->>     
->
->
->   
+Create local configuration file
+$ cd /home/soumya/project/oe/
+$ cp openembedded/conf/local.conf.sample build/conf/local.conf
+$ vi build/conf/local.conf
+
+i edited in local.conf 
+BBFILES = "/home/soumya/project/oe/openembedded/recipes/*/*.bb"
+DISTRO = "avn01"
+MACHINE = "au1300"
+
+I created new distribution and machine as shown below
+
+/*****************au1300.conf*************************/
+# Alchemy au1300
+
+TARGET_ARCH = "mipsel"
+
+PREFERRED_PROVIDERS += "
+virtual/${TARGET_PREFIX}depmod:module-init-tools-cross"
+
+PREFERRED_PROVIDER_virtual/kernel = "linux"
+KERNEL_IMAGETYPE = "vmlinux.srec"
+
+SERIAL_CONSOLE="/dev/ttyS0 115200 vt100"
+USE_VT="0"
+
+TARGET_CC_ARCH="-march=mips32"
+
+FLASH_OFFSET="0xBC000000"
+# The NAND has an eraseblock of 0x4000 (16kB) and NOR with 0x20000 (128kB)
+ERASEBLOCK_SIZE = "0x20000"
+EXTRA_IMAGECMD_jffs2 = "--little-endian --no-cleanmarkers
+--eraseblock=${ERASEBLOCK_SIZE}"
+
+MACHINE_FEATURES = "kernel26 pcmcia usbhost"
+
+/*********************************End of
+au1300.conf***********************************/
+/************************************avn01*****************************************************/
+DISTRO
+
+#@TYPE: Distribution
+#@NAME: MIPSEL Linux
+#@DESCRIPTION: Distribution configuration for the MIPS Linux
+
+DISTRO_NAME = "AVN01"
+DISTRO_VERSION = "0.1-alpha"
+
+TARGET_OS = "linux"
+
+
+PREFERRED_PROVIDERS +=
+"virtual/${TARGET_PREFIX}gcc-initial:gcc-cross-initial"
+PREFERRED_PROVIDERS +=
+"virtual/${TARGET_PREFIX}gcc-intermediate:gcc-cross-intermediate"
+PREFERRED_PROVIDERS += "virtual/${TARGET_PREFIX}gcc:gcc-cross"
+PREFERRED_PROVIDERS += "virtual/${TARGET_PREFIX}g++:gcc-cross"
+
+
+PREFERRED_PROVIDER_dbus-glib = "dbus-glib"
+PREFERRED_PROVIDER_virtual/libsdl       ?= "libsdl-x11"
+PREFERRED_PROVIDER_virtual/libxine      ?= "libxine-x11"
+PREFERRED_PROVIDER_esound 		?= "pulseaudio"
+
+
+# glibc:
+PREFERRED_PROVIDER_virtual/libiconv ?= "glibc"
+PREFERRED_PROVIDER_virtual/libintl ?= "glibc"
+PREFERRED_PROVIDER_virtual/libc ?= "glibc"
+
+
+PREFERRED_PROVIDER_virtual/${TARGET_PREFIX}libc-for-gcc = "glibc"
+PREFERRED_PROVIDER_virtual/arm-oplinux-linux-gnueabi-libc-for-gcc = "glibc"
+PREFERRED_PROVIDER_virtual/armeb-oplinux-linux-gnueabi-libc-for-gcc =
+"glibc"
+PREFERRED_PROVIDER_virtual/arm-linux-libc-for-gcc = "glibc"
+PREFERRED_PROVIDER_virtual/armeb-linux-libc-for-gcc = "glibc"
+PREFERRED_PROVIDER_virtual/powerpc-oplinux-linux-libc-for-gcc = "glibc"
+PREFERRED_PROVIDER_virtual/mipsel-oplinux-linux-libc-for-gcc = "glibc"
+PREFERRED_PROVIDER_virtual/sparc-oplinux-linux-libc-for-gcc = "glibc"
+
+
+
+# Virtuals:
+PREFERRED_PROVIDER_virtual/db ?= "db"
+PREFERRED_PROVIDER_virtual/db-native ?= "db-native"
+PREFERRED_PROVIDER_virtual/xserver ?= "xserver-kdrive"
+
+# Others:
+PREFERRED_PROVIDER_virtual/libx11 ?= "diet-x11"
+PREFERRED_PROVIDER_gconf ?= "gconf-dbus"
+PREFERRED_PROVIDER_gnome-vfs ?= "gnome-vfs"
+PREFERRED_PROVIDER_gnome-vfs-plugin-file ?= "gnome-vfs"
+PREFERRED_PROVIDER_tslib ?= "tslib"
+PREFERRED_PROVIDER_tslib-conf ?= "tslib"
+PREFERRED_PROVIDER_libgpewidget ?= "libgpewidget"
+PREFERRED_PROVIDER_ntp = "ntp"
+PREFERRED_PROVIDER_hotplug = "udev"
+PREFERRED_PROVIDER_libxss = "libxss"
+
+
+PREFERRED_VERSION_gcc ?= "4.1.1"
+PREFERRED_VERSION_gcc-cross ?= "4.1.1"
+PREFERRED_VERSION_gcc-cross-sdk ?= "4.1.1"
+PREFERRED_VERSION_gcc-cross-initial ?= "4.1.1"
+PREFERRED_VERSION_gcc-cross-intermediate ?= "4.1.1"
+
+PREFERRED_VERSION_binutils ?= "2.17.50.0.5"
+PREFERRED_VERSION_binutils-cross ?= "2.17.50.0.5"
+PREFERRED_VERSION_binutils-cross-sdk ?= "2.17.50.0.5"
+
+PREFERRED_VERSION_linux-libc-headers_i486 ?= "2.6.18"
+PREFERRED_VERSION_linux-libc-headers_i586 ?= "2.6.18"
+PREFERRED_VERSION_linux-libc-headers_i686 ?= "2.6.18"
+PREFERRED_VERSION_linux-libc-headers_powerpc ?= "2.6.18"
+PREFERRED_VERSION_linux-libc-headers ?= "2.6.18"
+
+PREFERRED_VERSION_glibc-initial ?= "2.5"
+PREFERRED_VERSION_glibc ?= "2.5"
+
+PCMCIA_MANAGER = "pcmciautils"
+PREFERRED_VERSION_dbus ?= "1.0.2"
+PREFERRED_VERSION_dbus-glib ?= "0.71"
+
+
+#
+# Kernel
+#
+KERNEL = "kernel26"
+MACHINE_KERNEL_VERSION = "2.6"
+
+
+
+#Other packages we need
+#try to keep it minimal :)
+DISTRO_EXTRA_RDEPENDS += "\
+                         nano pciutils"
+
+
+FEED_URIS += " \
+                no-arch##${OPLINUX_URI}/unstable/feed/all \
+                base##${OPLINUX_URI}/unstable/feed/${FEED_ARCH}/base \
+                perl##${OPLINUX_URI}/unstable/feed/${FEED_ARCH}/perl \
+                python##${OPLINUX_URI}/unstable/feed/${FEED_ARCH}/python \
+                debug##${OPLINUX_URI}/unstable/feed/${FEED_ARCH}/debug \
+               
+${MACHINE}##${OPLINUX_URI}/unstable/feed/${FEED_ARCH}/machine/${MACHINE}"
+/**************************************END OF
+avn01(DISTRO)*************************************************************/
+
+Then i set the environment variable
+$ export BBPATH=/home/soumya/project/oe/build:/stuff/openembedded
+$ export PATH=/home/soumya/project/oe/bitbake/bin:$PATH
+
+To start building i just typed bitbake in the command prompt
+cd /build
+$ bitbake
+ERROR:  Openembedded's config sanity checker detected a potential
+misconfiguration.
+	Either fix the cause of this error or at your own risk disable the checker
+(see sanity.conf).
+	Following is the list of potential problems / advisories:
+
+	Please install following missing utilities: help2man,texi2html
+Error, TMPDIR has changed ABI (4 to 2) and you need to either rebuild,
+revert or adjust it at your own risk.
+Error, DISTRO_PR has changed (.5 to ) which means all packages need to
+rebuild. Please remove your TMPDIR so this can happen. For autobuilder
+setups you can avoid this by using a TMPDIR that include DISTRO_PR in the
+path.
+
+    Anybody can help me out to resolve this error..
+If I am doing anything wrong in by build please suggest me.
+Thanks in advance :-)
+
+
+Regards,
+Soumya
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 
+View this message in context: http://old.nabble.com/How-to-start-with-OpenEmbedded-for-MiPS32-Au1300-tp28593348p28593348.html
+Sent from the linux-mips main mailing list archive at Nabble.com.

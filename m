@@ -1,102 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 05:23:55 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:51672 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490959Ab0ERDXs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 05:23:48 +0200
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o4I3Ne5l009240;
-        Mon, 17 May 2010 20:23:40 -0700 (PDT)
-Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Mon, 17 May 2010 20:23:39 -0700
-Message-ID: <4BF2083B.4000303@windriver.com>
-Date:   Tue, 18 May 2010 11:23:39 +0800
-From:   Yang Shi <yang.shi@windriver.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 06:42:21 +0200 (CEST)
+Received: from kuber.nabble.com ([216.139.236.158]:37755 "EHLO
+        kuber.nabble.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491194Ab0EREmN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 06:42:13 +0200
+Received: from isper.nabble.com ([192.168.236.156])
+        by kuber.nabble.com with esmtp (Exim 4.63)
+        (envelope-from <lists@nabble.com>)
+        id 1OEEd7-0005sZ-0p
+        for linux-mips@linux-mips.org; Mon, 17 May 2010 21:42:09 -0700
+Message-ID: <28591517.post@talk.nabble.com>
+Date:   Mon, 17 May 2010 21:42:09 -0700 (PDT)
+From:   soumyasr <Soumya.R@kpitcummins.com>
+To:     linux-mips@linux-mips.org
+Subject: Kernel not booting in QEMU_SYSTEM_MIPS
 MIME-Version: 1.0
-To:     Yang Shi <yang.shi@windriver.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [Bug report] Got bus error when loading kernel module on SB1250
- Rev B2 board with 64 bit kernel
-References: <4BED25F3.4010809@windriver.com> <20100514180211.GB32203@linux-mips.org> <4BF0B08F.1010305@windriver.com>
-In-Reply-To: <4BF0B08F.1010305@windriver.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 18 May 2010 03:23:39.0869 (UTC) FILETIME=[82A1C8D0:01CAF639]
-Return-Path: <Yang.Shi@windriver.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Nabble-From: Soumya.R@kpitcummins.com
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26749
+X-archive-position: 26750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yang.shi@windriver.com
+X-original-sender: Soumya.R@kpitcummins.com
 Precedence: bulk
 X-list: linux-mips
 
-Yang Shi 写道:
-> Ralf Baechle 写道:
->   
->> On Fri, May 14, 2010 at 06:29:07PM +0800, Yang Shi wrote:
->>
->>   
->>     
->>> I'm running 2.6.34-rc7 mainline kernel on SB1250 (Rev B2) board. And, I
->>> use the default sb1250 kernel config (sb1250-swarm_defconfig). So, 64
->>> bit kernel is used. During kernel loading module got bus error, see
->>> below log:
->>>     
->>>       
->> Whops.  Fixes which were supposed to handle exactly this problem went
->> upstream for 2.6.34-rc3 and were tested successfully by others on their
->> systems.
->>
->> I wonder if in arch/mips/sibyte/sb1250/setup.c you can instrument
->> the function sb1250_m3_workaround_needed() and print the values of
->> soc_type, soc_pass and the retun value of that function.  Then let's take
->> it from there.
->>   
->>     
->
-> See below log:
->
-> Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
->
-> And, soc_typs is 0x0 and soc_pass is 0x11, sb1250_m3_workaround_needed 
-> should return 1. So, tlb refill handler should go the m3 workaround code 
-> path.
->   
 
-It seems CPU_PREFETCH caused this issue. See commit:
+Hi all,
 
-commit 6b4caed2ebff4ee232f227d62eb3180d0b558a31
-Author: Ralf Baechle <ralf@linux-mips.org>
-Date:   Wed Jan 28 17:48:40 2009 +0000
+   I am new to qemu as well as mips..
 
-    MIPS: IP27: Switch from DMA_IP27 to DMA_COHERENT
-   
-    commit 0d356eaa6316cbb3e89b4607de20b2f2d0ceda25 from linux-mips
-   
-    The special IP27 DMA code selected by DMA_IP27 has been removed a while
-    ago turning DMA_IP27 into almost a nop.  Also fixup the broken logic of
-    its last users memcpy.S and memcpy-inatomic.s.
-   
-    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+1)   I Downloaded the qemu latest version from
+http://wiki.qemu.org/download/qemu-0.12.3.tar.gz and installed it
+succesfully....
+After that i downladed mips-test-0.2.tar.gz from
+http://wiki.qemu.org/download/mips-test-0.2.tar.gz and followed the below
+commands to boot the kernel
+and root file system ....
 
-If undef CPU_PREFETCH for SB1250, module can be loaded correctly.
+$ tar zxvf mips-test-0.2.tar.gz
+$ cd mips-test
+$ qemu-system-mips -M mips -kernel vmlinux-2.6.18-3-qemu -initrdinitrd.gz
 
-Thanks,
-Yang
+When I run the above command
 
-> Thanks,
-> Yang
->
->   
->>   Ralf
->>
->>   
->>     
->
->
->
->   
+Qemu is launching and nothing else happen. I don't have any error, but I
+don't have prompt... It seems that nothing is booting.. I tried the same
+with ARM
+instead if mips it boots the kernel, rfs and got the login prompt.. Since i
+am not getting any errors i am able to figure out what's the problem is???
+
+
+2)  I tried to build our own customized kernel using the buildroot by
+executing the command :
+    $ makemenuconfig
+
+Here is the buildroot configuration  :
+- Target Architecture => MIPSEL
+- Target architecture variant =>mips I (generic)
+- Target ABI => o32
+- Target Option => default configuration
+- Build option => default configuration
+- Toolchain => Include target utils in cross toolchain  and build gdb server
+for the target
+- Package selection => default configuration
+- Target file system => cpio (gzip compression)
+- Kernel => Same version as linux header
+- config file => .config
+- kernel binary format => zImage
+
+  when i run the command make to build the kernel i get the following error
+message,
+
+rm -rf /home/soumya/buildroot/output/build/buildroot-config
+mkdir -p /home/soumya/buildroot/output/build
+cp -dpRf package/config/buildroot-config
+/home/soumya/buildroot/output/build/buildroot-config
+/usr/bin/make -j1 -C /home/soumya/buildroot/output/toolchain/uClibc-0.9.31 \
+                ARCH="mips" \
+                PREFIX= \
+                DEVEL_PREFIX=/ \
+                RUNTIME_PREFIX=/ \
+                HOSTCC="/usr/lib/ccache/gcc" \
+                all
+make[1]: Entering directory
+`/home/soumya/buildroot/output/toolchain/uClibc-0.9.31'
+  LD ld-uClibc-0.9.31.so
+mipsel-unknown-linux-uclibc-gcc: libgcc.a: No such file or directory
+make[1]: *** [lib/ld-uClibc.so] Error 1
+make[1]: Leaving directory
+`/home/soumya/buildroot/output/toolchain/uClibc-0.9.31'
+make: *** [/home/soumya/buildroot/output/toolchain/uClibc-0.9.31/lib/libc.a]
+Error 2
+
+          Please anybody can help me out to resolve it if I am doing
+anything wrong..
+
+Best Regards,
+Soumya
+
+
+-- 
+View this message in context: http://old.nabble.com/Kernel-not-booting-in-QEMU_SYSTEM_MIPS-tp28591517p28591517.html
+Sent from the linux-mips main mailing list archive at Nabble.com.

@@ -1,109 +1,133 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 06:42:21 +0200 (CEST)
-Received: from kuber.nabble.com ([216.139.236.158]:37755 "EHLO
-        kuber.nabble.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491194Ab0EREmN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 06:42:13 +0200
-Received: from isper.nabble.com ([192.168.236.156])
-        by kuber.nabble.com with esmtp (Exim 4.63)
-        (envelope-from <lists@nabble.com>)
-        id 1OEEd7-0005sZ-0p
-        for linux-mips@linux-mips.org; Mon, 17 May 2010 21:42:09 -0700
-Message-ID: <28591517.post@talk.nabble.com>
-Date:   Mon, 17 May 2010 21:42:09 -0700 (PDT)
-From:   soumyasr <Soumya.R@kpitcummins.com>
-To:     linux-mips@linux-mips.org
-Subject: Kernel not booting in QEMU_SYSTEM_MIPS
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 May 2010 07:51:01 +0200 (CEST)
+Received: from na3sys009aog102.obsmtp.com ([74.125.149.69]:55118 "HELO
+        na3sys009aog102.obsmtp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1491196Ab0ERFux (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 18 May 2010 07:50:53 +0200
+Received: from source ([209.85.214.169]) by na3sys009aob102.postini.com ([74.125.148.12]) with SMTP
+        ID DSNKS/Iqu1gC+78MchXmvX4v3wdg7ritGSLy@postini.com; Mon, 17 May 2010 22:50:53 PDT
+Received: by iwn39 with SMTP id 39so518232iwn.0
+        for <linux-mips@linux-mips.org>; Mon, 17 May 2010 22:50:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Nabble-From: Soumya.R@kpitcummins.com
-Return-Path: <lists@nabble.com>
+Received: by 10.231.178.132 with SMTP id bm4mr1056881ibb.62.1274161850719; 
+        Mon, 17 May 2010 22:50:50 -0700 (PDT)
+Received: by 10.231.209.71 with HTTP; Mon, 17 May 2010 22:50:50 -0700 (PDT)
+In-Reply-To: <28591517.post@talk.nabble.com>
+References: <28591517.post@talk.nabble.com>
+Date:   Tue, 18 May 2010 10:50:50 +0500
+Message-ID: <AANLkTil1lb3R4g_1eARS8izPOboUZMlDlfRl3iHxZxcA@mail.gmail.com>
+Subject: Re: Kernel not booting in QEMU_SYSTEM_MIPS
+From:   adnan iqbal <adnan.iqbal@seecs.edu.pk>
+To:     soumyasr <Soumya.R@kpitcummins.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=00504502bf637fa4100486d7ec91
+Return-Path: <adnan.iqbal@seecs.edu.pk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26750
+X-archive-position: 26751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Soumya.R@kpitcummins.com
+X-original-sender: adnan.iqbal@seecs.edu.pk
 Precedence: bulk
 X-list: linux-mips
 
+--00504502bf637fa4100486d7ec91
+Content-Type: text/plain; charset=ISO-8859-1
 
-Hi all,
+Dear soumyasr,
 
-   I am new to qemu as well as mips..
+Below are some notes form my experience in Qemu and Mips.
 
-1)   I Downloaded the qemu latest version from
-http://wiki.qemu.org/download/qemu-0.12.3.tar.gz and installed it
-succesfully....
-After that i downladed mips-test-0.2.tar.gz from
-http://wiki.qemu.org/download/mips-test-0.2.tar.gz and followed the below
-commands to boot the kernel
-and root file system ....
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-$ tar zxvf mips-test-0.2.tar.gz
-$ cd mips-test
-$ qemu-system-mips -M mips -kernel vmlinux-2.6.18-3-qemu -initrdinitrd.gz
+This document contains information about how to install qemu on linux and
+Mipsel-Linux over Qemu.
 
-When I run the above command
+Helpful links:
+1.
+http://www.ibm.com/developerworks/linux/library/l-qemu-development/index.html?S_TACT=105AGX03&S_CMP=HP
+2.  http://www.aurel32.net/info/debian_mips_qemu.php
 
-Qemu is launching and nothing else happen. I don't have any error, but I
-don't have prompt... It seems that nothing is booting.. I tried the same
-with ARM
-instead if mips it boots the kernel, rfs and got the login prompt.. Since i
-am not getting any errors i am able to figure out what's the problem is???
+General sequence of installation
+    download initrd.gz, already prepared disk image
+    create new qemu disk
+    install mips-linux on newly created qemu-disk
 
+Command to boot an installed mipsel linux in qemu
+    qemu-system-mipsel -M mips -kernel vmlinux-2.6.18-6-qemu -hda hda.img
+-append "root=/dev/hda1 console=ttyS0" -nographic
 
-2)  I tried to build our own customized kernel using the buildroot by
-executing the command :
-    $ makemenuconfig
+I started with link 1, but mainly followed link 2 to get the working
+mipsel-linux combination on qemu.
 
-Here is the buildroot configuration  :
-- Target Architecture => MIPSEL
-- Target architecture variant =>mips I (generic)
-- Target ABI => o32
-- Target Option => default configuration
-- Build option => default configuration
-- Toolchain => Include target utils in cross toolchain  and build gdb server
-for the target
-- Package selection => default configuration
-- Target file system => cpio (gzip compression)
-- Kernel => Same version as linux header
-- config file => .config
-- kernel binary format => zImage
+Notes:
+1. the current installation does not have a running network
+-- Apt get works fine
+-- HTTP (wget, Lynx) does not work
 
-  when i run the command make to build the kernel i get the following error
-message,
+2. Mounting Hard disk that works in both Host/Guest (Done)
+    a. Make/download a hard disk img that may work on both host linux and
+guest linux (from:
+http://blog.famzah.net/2009/11/16/create-a-qemu-image-file-which-you-can-mount-in-both-linux-and-qemu/)
+    b. If you want to mount it in host os (linux) then use:
+        sudo mount -o loop,offset=32256 empty-ext3-2GB.img /mnt/diskimg
+    c. For mounting in qemu guest os use -hdb option at boot time
+        qemu-system-mipsel  -k en-us -localtime -M mips -kernel
+vmlinux-2.6.18-6-qemu -hda hda.img -hdb empty-ext3-2GB.img -append
+"root=/dev/hda1 console=ttyS0" -nographic
+        when system boots, hard disk is available , but not mounted. It can
+be mounted using
+        mount /dev/hdb1 /mnt
+    d. Never FORGET to unmount after use, and never use it in other OS when
+being used in one.
 
-rm -rf /home/soumya/buildroot/output/build/buildroot-config
-mkdir -p /home/soumya/buildroot/output/build
-cp -dpRf package/config/buildroot-config
-/home/soumya/buildroot/output/build/buildroot-config
-/usr/bin/make -j1 -C /home/soumya/buildroot/output/toolchain/uClibc-0.9.31 \
-                ARCH="mips" \
-                PREFIX= \
-                DEVEL_PREFIX=/ \
-                RUNTIME_PREFIX=/ \
-                HOSTCC="/usr/lib/ccache/gcc" \
-                all
-make[1]: Entering directory
-`/home/soumya/buildroot/output/toolchain/uClibc-0.9.31'
-  LD ld-uClibc-0.9.31.so
-mipsel-unknown-linux-uclibc-gcc: libgcc.a: No such file or directory
-make[1]: *** [lib/ld-uClibc.so] Error 1
-make[1]: Leaving directory
-`/home/soumya/buildroot/output/toolchain/uClibc-0.9.31'
-make: *** [/home/soumya/buildroot/output/toolchain/uClibc-0.9.31/lib/libc.a]
-Error 2
+Regards
+Adnan
 
-          Please anybody can help me out to resolve it if I am doing
-anything wrong..
+--00504502bf637fa4100486d7ec91
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Best Regards,
-Soumya
+Dear soumyasr,<br><br>Below are some notes form my experience in Qemu and M=
+ips.<br><div id=3D":3a" class=3D"ii gt"><br>-------------------------------=
+---------------------------------------------------------------------------=
+-----------------------------------------------<br>
 
+<br>This document contains information about how to install qemu on linux a=
+nd <br>Mipsel-Linux over Qemu.<br><br>Helpful links:<br>1.=A0 <a href=3D"ht=
+tp://www.ibm.com/developerworks/linux/library/l-qemu-development/index.html=
+?S_TACT=3D105AGX03&amp;S_CMP=3DHP">http://www.ibm.com/developerworks/linux/=
+library/l-qemu-development/index.html?S_TACT=3D105AGX03&amp;S_CMP=3DHP</a><=
+br>
+2.=A0 <a href=3D"http://www.aurel32.net/info/debian_mips_qemu.php">http://w=
+ww.aurel32.net/info/debian_mips_qemu.php</a><br><br>General sequence of ins=
+tallation<br>=A0=A0=A0 download initrd.gz, already prepared disk image<br>=
+=A0=A0=A0 create new qemu disk<br>
+=A0=A0=A0 install mips-linux on newly created qemu-disk<br><br>Command to b=
+oot an installed mipsel linux in qemu<br>=A0=A0=A0 qemu-system-mipsel -M mi=
+ps -kernel vmlinux-2.6.18-6-qemu -hda hda.img -append &quot;root=3D/dev/hda=
+1 console=3DttyS0&quot; -nographic<br>
+<br>I started with link 1, but mainly followed link 2 to get the working mi=
+psel-linux combination on qemu.<br><br>Notes:<br>1. the current installatio=
+n does not have a running network<br>-- Apt get works fine<br>-- HTTP (wget=
+, Lynx) does not work<br>
+<br>2. Mounting Hard disk that works in both Host/Guest (Done)<br>=A0=A0=A0=
+ a. Make/download a hard disk img that may work on both host linux and gues=
+t linux (from: <a href=3D"http://blog.famzah.net/2009/11/16/create-a-qemu-i=
+mage-file-which-you-can-mount-in-both-linux-and-qemu/">http://blog.famzah.n=
+et/2009/11/16/create-a-qemu-image-file-which-you-can-mount-in-both-linux-an=
+d-qemu/</a> )<br>
+=A0=A0=A0 b. If you want to mount it in host os (linux) then use: <br>=A0=
+=A0=A0 =A0=A0=A0 sudo mount -o loop,offset=3D32256 empty-ext3-2GB.img /mnt/=
+diskimg<br>=A0=A0=A0 c. For mounting in qemu guest os use -hdb option at bo=
+ot time <br>=A0=A0=A0 =A0=A0=A0 qemu-system-mipsel=A0 -k en-us -localtime -=
+M mips -kernel vmlinux-2.6.18-6-qemu -hda hda.img -hdb empty-ext3-2GB.img -=
+append &quot;root=3D/dev/hda1 console=3DttyS0&quot; -nographic <br>
+=A0=A0=A0 =A0=A0=A0 when system boots, hard disk is available , but not mou=
+nted. It can be mounted using<br>=A0=A0=A0 =A0=A0=A0 mount /dev/hdb1 /mnt<b=
+r>=A0=A0=A0 d. Never FORGET to unmount after use, and never use it in other=
+ OS when being used in one.<br>
+<br>Regards<br>Adnan<br></div>
 
--- 
-View this message in context: http://old.nabble.com/Kernel-not-booting-in-QEMU_SYSTEM_MIPS-tp28591517p28591517.html
-Sent from the linux-mips main mailing list archive at Nabble.com.
+--00504502bf637fa4100486d7ec91--

@@ -1,79 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 May 2010 14:05:11 +0200 (CEST)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:36931 "EHLO
-        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491790Ab0EWMFI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 23 May 2010 14:05:08 +0200
-Received: by pxi1 with SMTP id 1so1142461pxi.36
-        for <linux-mips@linux-mips.org>; Sun, 23 May 2010 05:05:00 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 May 2010 15:58:28 +0200 (CEST)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:43723 "EHLO
+        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491859Ab0EWN6Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 23 May 2010 15:58:24 +0200
+Received: by pzk35 with SMTP id 35so1140918pzk.0
+        for <multiple recipients>; Sun, 23 May 2010 06:58:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type;
-        bh=nZ5u3RkBqxpaIbbwpfjprBkKTmjznc9qFWfKhVwA4bQ=;
-        b=N4Mc/a16NWY2rA9p1r82WOaUCjvv4QTK9xL157tclLJCke92hfE/HmX8ViU79NzUgm
-         dX6QqeZY3BvrRFZQtDUOI/HPQ/DMGea4bsQ666DMbVEnejXp8UPuBGPBXsGNfpekGtRC
-         0ZE5FjXFsTkn6RDhYL2tJAfJtSLVucsOP7BU4=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=xQ2tYvkLWgBAy/hQ0BaqgGgT6u1sB1mV/WQtfiG2S4A=;
+        b=NR71q0es5JB5FekrUeOSow/RBpiUoWu1ef/BApHjjwbOS3R4ADOYVWTe71tmfIkGP5
+         sMpWn0n0KGkfeWsXM+wkfdD692e3NwS4AipTBsPP1PO6yYyG9BRgcLa6Jw3cepiiPoqH
+         a0noQVQmr1x5AnrrvWFUxiuYHqFyk7vZXHqe8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=lwLVTghLuXX4wOXlEeiLbJvS4T7sjZlGmpn4torMFCmjJC5s+VvEodwOPPuwvLVMa/
-         aqUuiX7fhpArjuMp7pMl6c23oA8J+37e19eOFt8eb8S7Kp2CLKAkKNZLW7TdyvNZA209
-         WQWdL887FN6QRXsgFEtJJCEPDxwdoQ82WbSUM=
-MIME-Version: 1.0
-Received: by 10.141.100.15 with SMTP id c15mr3008786rvm.221.1274616299675; 
-        Sun, 23 May 2010 05:04:59 -0700 (PDT)
-Received: by 10.140.132.16 with HTTP; Sun, 23 May 2010 05:04:59 -0700 (PDT)
-Date:   Sun, 23 May 2010 22:04:59 +1000
-Message-ID: <AANLkTilyX-Aaxbpok3qh_qr-VGbVyL5ltNkqVZsvuzmU@mail.gmail.com>
-Subject: SGI Indy - HAL2 digital audio
-From:   Tom McAvaney <tjmcavaney@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <tjmcavaney@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=neTuTrt99uQAgXS9YDRzKn00mtrI5aegj12Gh2/v0nX8CBkFRUq5AN00w8w1cYKywd
+         wZ1IyH8/+SvoSxWrPVwqiFSOFu7cFFTXe2Qt3CKt6ifpo+8aYxysK+z4msZ6OEGumyTt
+         3Dt438VDypFyHF+9IwFYKbEP2VrJ1jxo1nJsA=
+Received: by 10.114.33.26 with SMTP id g26mr3648602wag.216.1274623096548;
+        Sun, 23 May 2010 06:58:16 -0700 (PDT)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id r20sm29067398wam.17.2010.05.23.06.58.13
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 23 May 2010 06:58:14 -0700 (PDT)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH v12 0/9] Loongson: YeeLoong: add platform specific driver
+Date:   Sun, 23 May 2010 21:57:56 +0800
+Message-Id: <cover.1274622624.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26796
+X-archive-position: 26797
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tjmcavaney@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello all,
+This patchset adds the platform specific driver for the YeeLoong netbook made
+by Lemote.
 
-I am having some trouble figuring out how to enable digital audio
-output on my R5000 Indy running Debian Squeeze (2.6.32 kernel).
+Changes from v11:
+  o Fixup of the brightness driver (from Zhou Yajin)
+    use the right arguments for the backlight_device_register()
 
-The HAL2 module is loaded and I can get analog audio from the
-headphone jack fine. The problem is that when I try the digital audio
-out jack, I hear the boot tune (hooray!) but then once the system is
-up I only get audio from the internal speaker.
+Wu Zhangjin (9):
+  MIPS: add subdirectory for platform extension drivers
+  Loongson: YeeLoong: add platform driver
+  Loongson: YeeLoong: add backlight driver
+  Loongson: YeeLoong: add hardware monitoring driver
+  Loongson: YeeLoong: add video output driver
+  Loongson: YeeLoong: add suspend support
+  Loongson: YeeLoong: add input/hotkey driver
+  Loongson: YeeLoong: add power_supply based battery driver
+  Loongson: YeeLoong: Co-operate with the revisions of EC
 
-aplay -l gives me the following:
-
-**** List of PLAYBACK Hardware Devices ****
-card 0: Audio [SGI HAL2 Audio], device 0: SGI HAL2 Audio [SGI HAL2]
- Subdevices: 1/1
- Subdevice #0: subdevice #0
-
-cat /proc/asound/devices gives me:
-
- 0: [ 0]   : control
- 16: [ 0- 0]: digital audio playback
- 24: [ 0- 0]: digital audio capture
- 33:        : timer
-
-
-aplay hw:0,0 test.wav   plays audio ... but from the internal speaker (!)
-
-Perhaps as a first step, can someone confirm whether pcm digital audio
-is working on the HAL2?
-
-Many thanks for any pointers!
-
-(I have also posted this to debian-mips, but figured there might be
-more eyeballs here).
-
-Tom
+ arch/mips/include/asm/mach-loongson/ec_kb3310b.h |  190 ++++
+ arch/mips/include/asm/mach-loongson/loongson.h   |    6 +
+ arch/mips/loongson/common/cmdline.c              |    8 +
+ arch/mips/loongson/lemote-2f/Makefile            |    2 +-
+ arch/mips/loongson/lemote-2f/ec_kb3310b.c        |   12 +-
+ arch/mips/loongson/lemote-2f/ec_kb3310b.h        |  188 ----
+ arch/mips/loongson/lemote-2f/platform.c          |   39 +
+ arch/mips/loongson/lemote-2f/pm.c                |    4 +-
+ arch/mips/loongson/lemote-2f/reset.c             |    2 +-
+ drivers/platform/Kconfig                         |    4 +
+ drivers/platform/Makefile                        |    1 +
+ drivers/platform/mips/Kconfig                    |   32 +
+ drivers/platform/mips/Makefile                   |    5 +
+ drivers/platform/mips/yeeloong_laptop.c          | 1200 ++++++++++++++++++++++
+ 14 files changed, 1493 insertions(+), 200 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson/ec_kb3310b.h
+ delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h
+ create mode 100644 arch/mips/loongson/lemote-2f/platform.c
+ create mode 100644 drivers/platform/mips/Kconfig
+ create mode 100644 drivers/platform/mips/Makefile
+ create mode 100644 drivers/platform/mips/yeeloong_laptop.c

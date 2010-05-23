@@ -1,61 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 May 2010 23:26:05 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:36713 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491829Ab0EVV0A (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 May 2010 23:26:00 +0200
-Date:   Sat, 22 May 2010 22:26:00 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     John Kacur <jkacur@redhat.com>, linux-kernel@vger.kernel.org,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Arnd Bergmann <arndbergmann@googlemail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@elte.hu>, linux-mips@linux-mips.org,
-        Paul Mundt <lethal@linux-sh.org>, linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Roman Zippel <zippel@linux-m68k.org>,
-        linux-m68k@vger.kernel.org
-Subject: Re: bkl: Pushdowns for sound/oss ?
-In-Reply-To: <20100521154659.GA2346@linux-mips.org>
-Message-ID: <alpine.LFD.2.00.1005222158340.4344@eddie.linux-mips.org>
-References: <alpine.LFD.2.00.1005211536330.25348@localhost.localdomain> <20100521144055.GB13174@linux-mips.org> <alpine.LFD.2.00.1005211613200.4344@eddie.linux-mips.org> <20100521154659.GA2346@linux-mips.org>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 May 2010 14:05:11 +0200 (CEST)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:36931 "EHLO
+        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491790Ab0EWMFI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 23 May 2010 14:05:08 +0200
+Received: by pxi1 with SMTP id 1so1142461pxi.36
+        for <linux-mips@linux-mips.org>; Sun, 23 May 2010 05:05:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=nZ5u3RkBqxpaIbbwpfjprBkKTmjznc9qFWfKhVwA4bQ=;
+        b=N4Mc/a16NWY2rA9p1r82WOaUCjvv4QTK9xL157tclLJCke92hfE/HmX8ViU79NzUgm
+         dX6QqeZY3BvrRFZQtDUOI/HPQ/DMGea4bsQ666DMbVEnejXp8UPuBGPBXsGNfpekGtRC
+         0ZE5FjXFsTkn6RDhYL2tJAfJtSLVucsOP7BU4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=lwLVTghLuXX4wOXlEeiLbJvS4T7sjZlGmpn4torMFCmjJC5s+VvEodwOPPuwvLVMa/
+         aqUuiX7fhpArjuMp7pMl6c23oA8J+37e19eOFt8eb8S7Kp2CLKAkKNZLW7TdyvNZA209
+         WQWdL887FN6QRXsgFEtJJCEPDxwdoQ82WbSUM=
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: by 10.141.100.15 with SMTP id c15mr3008786rvm.221.1274616299675; 
+        Sun, 23 May 2010 05:04:59 -0700 (PDT)
+Received: by 10.140.132.16 with HTTP; Sun, 23 May 2010 05:04:59 -0700 (PDT)
+Date:   Sun, 23 May 2010 22:04:59 +1000
+Message-ID: <AANLkTilyX-Aaxbpok3qh_qr-VGbVyL5ltNkqVZsvuzmU@mail.gmail.com>
+Subject: SGI Indy - HAL2 digital audio
+From:   Tom McAvaney <tjmcavaney@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <tjmcavaney@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26795
+X-archive-position: 26796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: tjmcavaney@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 21 May 2010, Ralf Baechle wrote:
+Hello all,
 
-> I've patched up what there to build without warnings but that doesn't
-> make any less ugly or wrong.  I'm trying to motivate a few folks to
-> offload the work from you; until that has happened it might be nice if this
-> driver would stick around as some form of documentation.
+I am having some trouble figuring out how to enable digital audio
+output on my R5000 Indy running Debian Squeeze (2.6.32 kernel).
 
- The driver is of less use as an OSS module than it would be with ALSA.  
-It only offers one sample rate of 48kHz (that is the native frequency of 
-the codec) and my experience is 44.1kHz or its aliquots are what most 
-pieces of OSS client software expect (at least such that is not capable of 
-resampling itself).
+The HAL2 module is loaded and I can get analog audio from the
+headphone jack fine. The problem is that when I try the digital audio
+out jack, I hear the boot tune (hooray!) but then once the system is
+up I only get audio from the internal speaker.
 
- I'm not sure it makes a lot of sense to keep this piece around -- the 
-kernel repositories are not meant to lose their history IIUC, so the 
-driver will be available from an older revision for the foreseeable future 
-anyway.  This has happened to other drivers too, even those that were of 
-actual interest to people.
+aplay -l gives me the following:
 
-> As for the grandchildren - is there something I haven't heared of yet?  :)
+**** List of PLAYBACK Hardware Devices ****
+card 0: Audio [SGI HAL2 Audio], device 0: SGI HAL2 Audio [SGI HAL2]
+ Subdevices: 1/1
+ Subdevice #0: subdevice #0
 
- Me neither, but I've thought I could perhaps borrow some from a friend or 
-suchlike and consider the matter ticked off. ;)
+cat /proc/asound/devices gives me:
 
-  Maciej
+ 0: [ 0]   : control
+ 16: [ 0- 0]: digital audio playback
+ 24: [ 0- 0]: digital audio capture
+ 33:        : timer
+
+
+aplay hw:0,0 test.wav   plays audio ... but from the internal speaker (!)
+
+Perhaps as a first step, can someone confirm whether pcm digital audio
+is working on the HAL2?
+
+Many thanks for any pointers!
+
+(I have also posted this to debian-mips, but figured there might be
+more eyeballs here).
+
+Tom

@@ -1,53 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 15:15:59 +0200 (CEST)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:40962 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491912Ab0EXNPz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 May 2010 15:15:55 +0200
-Received: by vws4 with SMTP id 4so1435019vws.36
-        for <linux-mips@linux-mips.org>; Mon, 24 May 2010 06:15:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type;
-        bh=t7dCou9vhJSq97nWBRRcN/MDJB16aoEzEZUxUq5sdJg=;
-        b=tmplEsB5YLCNuYGsLDOGUYajHteDf1mzFfiltKd/uhY/IXQZGytaKfEShZDoWk8LLY
-         o0kn1vsFVVGoIwY2/hl66OXDDvdcag+Fv7aQWXJTx5qNsdcNf87lniki7bjzimHuDvlr
-         O+umYuF0IEgQTEvmaYh+uBJtnmaIKI1cRYkrw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=R7x9Qd9DQ+D877Uu57DGY/8hPgMzDLw+Jv5Ld7MANiXqw2Z4CrKxUxKAzVeQSu7J4q
-         ZbOOsMB4C6wRr21PZny09TSWPeFvplElh4W41vG/f+n5YT+O3/d2A5eu4OP0LDzEgIL0
-         seYVRtGfwbGNYm7xIf+I2DrAMyX3ov2JKKvz4=
-MIME-Version: 1.0
-Received: by 10.220.57.197 with SMTP id d5mr3779969vch.132.1274706949485; Mon, 
-        24 May 2010 06:15:49 -0700 (PDT)
-Received: by 10.220.12.18 with HTTP; Mon, 24 May 2010 06:15:48 -0700 (PDT)
-Date:   Mon, 24 May 2010 21:15:48 +0800
-Message-ID: <AANLkTimFb95H1h2To4pEWw5cgsPpgBJYmsodFNcQnXfD@mail.gmail.com>
-Subject: Ask help for understanding the boot process of Linux Kernel on MIPS
-From:   Dominic <dominicwj@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 16:25:05 +0200 (CEST)
+Received: from mx1-v2.alinto.net ([83.145.109.31]:50660 "EHLO
+        mx1-v2.alinto.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491928Ab0EXOZC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 May 2010 16:25:02 +0200
+Received: from http1alinto.alinto.net (http1alinto.alinto.net [83.145.109.61])
+        by mx1-v2.alinto.net (Postfix) with ESMTP id AA4E2580516
+        for <linux-mips@linux-mips.org>; Mon, 24 May 2010 16:24:54 +0200 (CEST)
+Received: by http1alinto.alinto.net (Postfix, from userid 48)
+        id 95E3ED1EF1; Mon, 24 May 2010 16:24:54 +0200 (CEST)
+Received: from unknown (octane/alinto.com@82.228.201.195); 24 May 2010 16:24:54 -0000
+Message-ID: <1274711094.4bfa8c3675983@www.inmano.com>
+Date:   Mon, 24 May 2010 16:24:54 +0200
 To:     linux-mips@linux-mips.org
+From:   octane indice <octane@alinto.com>
+Subject: Cross compiling MIPS kernel under x86
+MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dominicwj@gmail.com>
+Content-Transfer-Encoding: 8bit
+Return-Path: <octane@alinto.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26833
+X-archive-position: 26834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dominicwj@gmail.com
+X-original-sender: octane@alinto.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-I am trying to understand the boot process of Linux Kernel, especially
-on MIPS, I am pretty new to these. Could anybody introduce some
-documents or the boot logs on some MIPS platform? Any reply is much
-appreciated!
+Hello
 
-Thank you!
+I have an octeon board. I'm trying to use a custom kernel from kernel.org
+instead of the Cavium one.
 
-BR/Dominic
+Under x86, I installed the CrossTools from kegel:
+http://www.kegel.com/crosstool/
+
+I tried to cross compile:
+octane@darkstar:/opt/linux-2.6.34$ make ARCH=mips
+CROSS_COMPILE=/opt/crosstool/gcc-3.4.5-glibc-2.3.6/mips-unknown-linux-gnu/bin/mips-unknown-linux-gnu-
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+  Checking missing-syscalls for N32
+  CALL    scripts/checksyscalls.sh
+  Checking missing-syscalls for O32
+  CALL    scripts/checksyscalls.sh
+  CALL    scripts/checksyscalls.sh
+  CC      scripts/mod/empty.o
+Assembler messages:
+Error: Bad value (octeon) for -march
+make[2]: *** [scripts/mod/empty.o] Error 1
+make[1]: *** [scripts/mod] Error 2
+make: *** [scripts] Error 2
+
+So, I'm obviously missing a thing, but what?
+
+Here is other information:
+octane@darkstar:/opt$ cat world.c 
+#include <stdio.h>
+int main()
+{
+    printf("Hello world!\n");
+    return 0;
+}
+octane@darkstar:/opt$
+/opt/crosstool/gcc-3.4.5-glibc-2.3.6/mips-unknown-linux-gnu/bin/mips-unknown-linux-gnu-gcc
+-march=octeon -o hello world.c 
+world.c:1: error: bad value (octeon) for -march
+octane@darkstar:/opt$
+
+octane@darkstar:/opt$ ls
+/opt/crosstool/gcc-3.4.5-glibc-2.3.6/mips-unknown-linux-gnu/bin/
+fix-embedded-paths*                mips-unknown-linux-gnu-gcov*
+mips-unknown-linux-gnu-addr2line*  mips-unknown-linux-gnu-gprof*
+mips-unknown-linux-gnu-ar*         mips-unknown-linux-gnu-ld*
+mips-unknown-linux-gnu-as*         mips-unknown-linux-gnu-nm*
+mips-unknown-linux-gnu-c++*        mips-unknown-linux-gnu-objcopy*
+mips-unknown-linux-gnu-c++filt*    mips-unknown-linux-gnu-objdump*
+mips-unknown-linux-gnu-cpp*        mips-unknown-linux-gnu-ranlib*
+mips-unknown-linux-gnu-g++*        mips-unknown-linux-gnu-readelf*
+mips-unknown-linux-gnu-gcc*        mips-unknown-linux-gnu-size*
+mips-unknown-linux-gnu-gcc-3.4.5*  mips-unknown-linux-gnu-strings*
+mips-unknown-linux-gnu-gccbug*     mips-unknown-linux-gnu-strip*
+
+So, is it a problem with octeon arch and gcc, or a mips problem?
+
+Thanks
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+
+
+Envoyé avec Inmano, ma messagerie renversante et gratuite : http://www.inmano.com

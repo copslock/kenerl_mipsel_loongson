@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 03:00:22 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:52053 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 03:00:46 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:52056 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491991Ab0EXA77 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 May 2010 02:59:59 +0200
+        id S1492004Ab0EXBAK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 May 2010 03:00:10 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o4O0xvDp010107;
-        Mon, 24 May 2010 01:59:57 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o4O103Ik010114;
+        Mon, 24 May 2010 02:00:03 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o4O0xudL010106;
-        Mon, 24 May 2010 01:59:56 +0100
-Date:   Mon, 24 May 2010 01:59:56 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o4O103o0010113;
+        Mon, 24 May 2010 02:00:03 +0100
+Date:   Mon, 24 May 2010 02:00:03 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Andrea Gelmini <andrea.gelmini@gelma.net>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 164/199] arch/mips/math-emu/dp_modf.c: Checkpatch cleanup
-Message-ID: <20100524005956.GD8522@linux-mips.org>
+Subject: Re: [PATCH 165/199] arch/mips/math-emu/dp_tint.c: Checkpatch cleanup
+Message-ID: <20100524010003.GE8522@linux-mips.org>
 References: <1274644332-23964-1-git-send-email-andrea.gelmini@gelma.net>
- <1274644332-23964-4-git-send-email-andrea.gelmini@gelma.net>
+ <1274644332-23964-5-git-send-email-andrea.gelmini@gelma.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1274644332-23964-4-git-send-email-andrea.gelmini@gelma.net>
+In-Reply-To: <1274644332-23964-5-git-send-email-andrea.gelmini@gelma.net>
 User-Agent: Mutt/1.5.20 (2009-08-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26819
+X-archive-position: 26820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

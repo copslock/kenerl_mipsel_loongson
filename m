@@ -1,66 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 16:33:11 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:54327 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491928Ab0EXOdI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 May 2010 16:33:08 +0200
-Received: by fxm15 with SMTP id 15so2549913fxm.36
-        for <linux-mips@linux-mips.org>; Mon, 24 May 2010 07:33:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=1czh2wJ0ryXYsWb2QkrRQ/XppSQo2Zj+XjMJ5xKYrxM=;
-        b=kNtvLYgALRhLkr+il+bY1CmLq5VnhwIrQTB0GVvYZksFn82kwbG7Of7KGQs6hu3kq7
-         M+0ppk17yOoqsVTb8WyN9v5bsdgrLjbRhXTcMzbEdpEDazx6yaeFVi4Mus6Hj1727C4r
-         rsZSwKb23wIX/egDU4+iK6bVU4ugtO1FRF+Yo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=L6RKDW0A183ZNp9hGtkiFn7v+FaGVjB9QHPJs8sNGtjO/JyIXdmAwNyKFjQvZFR+7Q
-         tyql4k+91iNlNx4aapYEnzSfWWvvssjRrDryl27UbD3HgFksW3x3C2A/i37hf7hIvDIH
-         jYjBJVGabpJI2ccIVbWBVNe1Zv91nkCB98pqA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 18:00:07 +0200 (CEST)
+Received: from bby1mta02.pmc-sierra.com ([216.241.235.117]:37416 "EHLO
+        bby1mta02.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492118Ab0EXP77 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 24 May 2010 17:59:59 +0200
+Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
+        by localhost (Postfix) with SMTP id 16EAF8E0072;
+        Mon, 24 May 2010 08:59:48 -0700 (PDT)
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
+        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id 09C028E005F;
+        Mon, 24 May 2010 08:59:48 -0700 (PDT)
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 24 May 2010 08:59:48 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Received: by 10.223.68.131 with SMTP id v3mr4677624fai.82.1274711581716; Mon, 
-        24 May 2010 07:33:01 -0700 (PDT)
-Received: by 10.223.104.209 with HTTP; Mon, 24 May 2010 07:33:01 -0700 (PDT)
-In-Reply-To: <1274711094.4bfa8c3675983@www.inmano.com>
-References: <1274711094.4bfa8c3675983@www.inmano.com>
-Date:   Mon, 24 May 2010 17:33:01 +0300
-Message-ID: <AANLkTinOaPkOXm128trTQ39jNGWMcvPhVUGWSQz6hLjR@mail.gmail.com>
-Subject: Re: Cross compiling MIPS kernel under x86
-From:   Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-To:     octane indice <octane@alinto.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dmitri.vorobiev@gmail.com>
+Content-Type: text/plain;
+        charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: Kernel unaligned access with 64 bit kernel
+Date:   Mon, 24 May 2010 08:59:45 -0700
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C0201404E2D2B4@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Kernel unaligned access with 64 bit kernel
+Thread-Index: Acr7WiEY35yKI8leQb6vQJZIYmGPfg==
+From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:     "linux-mips" <linux-mips@linux-mips.org>
+Cc:     "Ralf Baechle" <ralf@linux-mips.org>
+X-OriginalArrivalTime: 24 May 2010 15:59:48.0067 (UTC) FILETIME=[22A9EB30:01CAFB5A]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26836
+X-archive-position: 26837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 24, 2010 at 5:24 PM, octane indice <octane@alinto.com> wrote:
->
-> Hello
->
-> I have an octeon board. I'm trying to use a custom kernel from kernel.org
-> instead of the Cavium one.
->
+Hi list,
 
-[skipped]
+I am trying to run 32 bit RFS with a 64 bit kernel on a RM9000 based
+processor board. The board is equipped with 2 GB DIMM.  When ever I
+initiate ftp transfer of 1 GB file I am getting following unaligned
+access error
 
->
-> So, I'm obviously missing a thing, but what?
+ftp> get 1gfile
+local: 1gfile remote: 1gfile
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for 1gfile (1024000000 bytes).
+Unhandled kernel unaligned access[#1]:
+Cpu 0
+$ 0   : 0000000000000000 ffffffff804c7710 0000000000000000
+0000000000000000
+$ 4   : 9a5d9c1483fa8a60 ffffffffdc620000 0000000000000000
+ffffffff8017f1f8
+$ 8   : ffffffffdc620000 9800000001fd7ce0 980000003fa3e310
+980000003fa3e3b0
+$12   : ffffffff9400e0e0 000000001000001e 0000000000000000
+ffffffff8055c000
+$16   : 980000003fe16560 9800000001fd7ce0 980000003fe07810
+0000000000000000
+$20   : 0000000000000070 0000000000000038 0000000000200200
+0000000000100100
+$24   : 0000000000000000 000000002ad6afd8
+$28   : 9800000001fd4000 9800000001fd7cb0 6800000000000000
+ffffffff801041c0
+Hi    : 0000000000000000
+Lo    : 025d9c1482fa8a60
+epc   : ffffffff8010b904 do_ade+0x1c4/0x470     Not tainted
+ra    : ffffffff801041c0 handle_adel_int+0x28/0x48
+Status: 9400e0e2    KX SX UX KERNEL EXL
+Cause : 00000010
+BadVA : 9a5d9c1483fa8a60
+PrId  : 000034c1
+Modules linked in: e1000 aoe bonding block2mtd
+Process events/0 (pid: 4, threadinfo=9800000001fd4000,
+task=9800000001fc0648)
+Stack : 0000000000000000 980000003fe16560 0000000000000000
+980000003fe07810
+        980000003fe16570 ffffffff801041c0 0000000000000000
+ffffffff80820000
+        025d9c1482fa8a60 9a5d9c1483fa8a60 450805dc47954000
+980000003fe07810
+        0000000000000070 0000000000000010 0000000000000000
+980000003f9ff440
+        980000003fa3e310 980000003fa3e3b0 9800000001fd7fe0
+000000000000e000
+        0000000000000000 ffffffff8055c000 980000003fe16560
+0000000000000000
+        980000003fe07810 980000003fe16570 0000000000000070
+0000000000000038
+        0000000000200200 0000000000100100 0000000000000000
+000000002ad6afd8
+        9800000022ddf020 0000000000000000 9800000001fd4000
+9800000001fd7e10
+        6800000000000000 ffffffff8017f584 ffffffff9400e0e2
+0000000000000000
+        ...
+Call Trace:
+[<ffffffff8010b904>] do_ade+0x1c4/0x470
+[<ffffffff801041c0>] handle_adel_int+0x28/0x48
 
-It looks like your toolchain is quite old. I just tried building a
-Cavium Octeon defconfig using my custom toolchain based on GCC 4.3.1
-and binutils 2.19.51.20090304, and the build was successfull. Before
-you ask: yes, GCC did receive `-march=octeon' :)
 
-Dmitri
+Code: 00431024  5440005f  de220100 <68830000> 6c830007  24020000
+08042e1d  00000000  3042001f
+
+FTP of smaller files ( ~100MB) works without any issues.
+
+If I limit memory size to 512MB from command line, ftp transfer of
+bigger files works as expected.
+
+Kindly help me with your pointers to debug the issue. I am running
+2.6.18 kernel.
+
+Thanks
+Anoop  

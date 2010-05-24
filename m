@@ -1,129 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 16:32:05 +0200 (CEST)
-Received: from mail1.adax.com ([208.201.231.104]:16565 "EHLO mail1.adax.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491928Ab0EXOcB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 May 2010 16:32:01 +0200
-Received: from static-151-204-189-187.pskn.east.verizon.net (static-151-204-189-187.pskn.east.verizon.net [151.204.189.187])
-        by mail1.adax.com (Postfix) with ESMTP id 5BDDE2130E;
-        Mon, 24 May 2010 07:31:59 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by static-151-204-189-187.pskn.east.verizon.net (Postfix) with ESMTP id 88AC020868;
-        Mon, 24 May 2010 10:31:58 -0400 (EDT)
-X-Virus-Scanned: Debian amavisd-new at
-        static-151-204-189-187.pskn.east.verizon.net
-Received: from static-151-204-189-187.pskn.east.verizon.net ([127.0.0.1])
-        by localhost (static-151-204-189-187.pskn.east.verizon.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JH3GeAvdP94Y; Mon, 24 May 2010 10:31:53 -0400 (EDT)
-Received: from [192.168.1.76] (jr001327.mtl-nj.adax [192.168.1.76])
-        by static-151-204-189-187.pskn.east.verizon.net (Postfix) with ESMTPS id AABEC200C0;
-        Mon, 24 May 2010 10:31:53 -0400 (EDT)
-Message-ID: <4BFA8DEC.3070808@adax.com>
-Date:   Mon, 24 May 2010 10:32:12 -0400
-From:   Jan Rovins <janr@adax.com>
-Organization: Adax Inc.
-User-Agent: Thunderbird 2.0.0.24 (Windows/20100228)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 May 2010 16:33:11 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:54327 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491928Ab0EXOdI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 May 2010 16:33:08 +0200
+Received: by fxm15 with SMTP id 15so2549913fxm.36
+        for <linux-mips@linux-mips.org>; Mon, 24 May 2010 07:33:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=1czh2wJ0ryXYsWb2QkrRQ/XppSQo2Zj+XjMJ5xKYrxM=;
+        b=kNtvLYgALRhLkr+il+bY1CmLq5VnhwIrQTB0GVvYZksFn82kwbG7Of7KGQs6hu3kq7
+         M+0ppk17yOoqsVTb8WyN9v5bsdgrLjbRhXTcMzbEdpEDazx6yaeFVi4Mus6Hj1727C4r
+         rsZSwKb23wIX/egDU4+iK6bVU4ugtO1FRF+Yo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=L6RKDW0A183ZNp9hGtkiFn7v+FaGVjB9QHPJs8sNGtjO/JyIXdmAwNyKFjQvZFR+7Q
+         tyql4k+91iNlNx4aapYEnzSfWWvvssjRrDryl27UbD3HgFksW3x3C2A/i37hf7hIvDIH
+         jYjBJVGabpJI2ccIVbWBVNe1Zv91nkCB98pqA=
 MIME-Version: 1.0
-To:     octane indice <octane@alinto.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Cross compiling MIPS kernel under x86
-References: <1274711094.4bfa8c3675983@www.inmano.com>
+Received: by 10.223.68.131 with SMTP id v3mr4677624fai.82.1274711581716; Mon, 
+        24 May 2010 07:33:01 -0700 (PDT)
+Received: by 10.223.104.209 with HTTP; Mon, 24 May 2010 07:33:01 -0700 (PDT)
 In-Reply-To: <1274711094.4bfa8c3675983@www.inmano.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <janr@adax.com>
+References: <1274711094.4bfa8c3675983@www.inmano.com>
+Date:   Mon, 24 May 2010 17:33:01 +0300
+Message-ID: <AANLkTinOaPkOXm128trTQ39jNGWMcvPhVUGWSQz6hLjR@mail.gmail.com>
+Subject: Re: Cross compiling MIPS kernel under x86
+From:   Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+To:     octane indice <octane@alinto.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <dmitri.vorobiev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26835
+X-archive-position: 26836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: janr@adax.com
+X-original-sender: dmitri.vorobiev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-octane indice wrote:
+On Mon, May 24, 2010 at 5:24 PM, octane indice <octane@alinto.com> wrote:
+>
 > Hello
 >
 > I have an octeon board. I'm trying to use a custom kernel from kernel.org
 > instead of the Cavium one.
 >
-> Under x86, I installed the CrossTools from kegel:
-> http://www.kegel.com/crosstool/
->
-> I tried to cross compile:
-> octane@darkstar:/opt/linux-2.6.34$ make ARCH=mips
-> CROSS_COMPILE=/opt/crosstool/gcc-3.4.5-glibc-2.3.6/mips-unknown-linux-gnu/bin/mips-unknown-linux-gnu-
->   CHK     include/linux/version.h
->   CHK     include/generated/utsrelease.h
->   Checking missing-syscalls for N32
->   CALL    scripts/checksyscalls.sh
->   Checking missing-syscalls for O32
->   CALL    scripts/checksyscalls.sh
->   CALL    scripts/checksyscalls.sh
->   CC      scripts/mod/empty.o
-> Assembler messages:
-> Error: Bad value (octeon) for -march
-> make[2]: *** [scripts/mod/empty.o] Error 1
-> make[1]: *** [scripts/mod] Error 2
-> make: *** [scripts] Error 2
+
+[skipped]
+
 >
 > So, I'm obviously missing a thing, but what?
->
-> Here is other information:
-> octane@darkstar:/opt$ cat world.c 
-> #include <stdio.h>
-> int main()
-> {
->     printf("Hello world!\n");
->     return 0;
-> }
-> octane@darkstar:/opt$
-> /opt/crosstool/gcc-3.4.5-glibc-2.3.6/mips-unknown-linux-gnu/bin/mips-unknown-linux-gnu-gcc
-> -march=octeon -o hello world.c 
-> world.c:1: error: bad value (octeon) for -march
-> octane@darkstar:/opt$
->
-> octane@darkstar:/opt$ ls
-> /opt/crosstool/gcc-3.4.5-glibc-2.3.6/mips-unknown-linux-gnu/bin/
-> fix-embedded-paths*                mips-unknown-linux-gnu-gcov*
-> mips-unknown-linux-gnu-addr2line*  mips-unknown-linux-gnu-gprof*
-> mips-unknown-linux-gnu-ar*         mips-unknown-linux-gnu-ld*
-> mips-unknown-linux-gnu-as*         mips-unknown-linux-gnu-nm*
-> mips-unknown-linux-gnu-c++*        mips-unknown-linux-gnu-objcopy*
-> mips-unknown-linux-gnu-c++filt*    mips-unknown-linux-gnu-objdump*
-> mips-unknown-linux-gnu-cpp*        mips-unknown-linux-gnu-ranlib*
-> mips-unknown-linux-gnu-g++*        mips-unknown-linux-gnu-readelf*
-> mips-unknown-linux-gnu-gcc*        mips-unknown-linux-gnu-size*
-> mips-unknown-linux-gnu-gcc-3.4.5*  mips-unknown-linux-gnu-strings*
-> mips-unknown-linux-gnu-gccbug*     mips-unknown-linux-gnu-strip*
->
-> So, is it a problem with octeon arch and gcc, or a mips problem?
->
-> Thanks
->
->
->
->
->
->
->
->
-> ------------------------------------------------------------------------------------------
->
->
-> Envoyé avec Inmano, ma messagerie renversante et gratuite : http://www.inmano.com
->
->
->
->   
 
-gcc-3.4.5-glibc-2.3.6
+It looks like your toolchain is quite old. I just tried building a
+Cavium Octeon defconfig using my custom toolchain based on GCC 4.3.1
+and binutils 2.19.51.20090304, and the build was successfull. Before
+you ask: yes, GCC did receive `-march=octeon' :)
 
-
-The recognition of "octeon" as an option does not show up in GCC until mainstream version 4.4.
-looks like your gcc is too old 
-gcc-3.4.5-glibc-2.3.6
-
-
-Jan
+Dmitri

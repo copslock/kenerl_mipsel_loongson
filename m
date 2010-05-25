@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2010 03:37:23 +0200 (CEST)
-Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:56888
-        "EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491903Ab0EYBhU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 May 2010 03:37:20 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by sunset.davemloft.net (Postfix) with ESMTP id 9B10824C08E;
-        Mon, 24 May 2010 18:37:26 -0700 (PDT)
-Date:   Mon, 24 May 2010 18:37:26 -0700 (PDT)
-Message-Id: <20100524.183726.264769230.davem@davemloft.net>
-To:     yuasa@linux-mips.org
-Cc:     linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: net/dccp: expansion of error code size
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20100524154508.10a40589.yuasa@linux-mips.org>
-References: <20100524154508.10a40589.yuasa@linux-mips.org>
-X-Mailer: Mew version 6.3 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2010 05:15:50 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52242 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491093Ab0EYDPq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 May 2010 05:15:46 +0200
+Date:   Tue, 25 May 2010 04:15:46 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+cc:     linux-mips <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: Kernel unaligned access
+In-Reply-To: <A7DEA48C84FD0B48AAAE33F328C0201404E2D299@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+Message-ID: <alpine.LFD.2.00.1005250413430.4344@eddie.linux-mips.org>
+References: <20100524173624.2d3ffc3d.yuasa@linux-mips.org> <A7DEA48C84FD0B48AAAE33F328C0201404E2D299@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26841
+X-archive-position: 26842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Yoichi Yuasa <yuasa@linux-mips.org>
-Date: Mon, 24 May 2010 15:45:08 +0900
+On Mon, 24 May 2010, Anoop P.A. wrote:
 
-> Because MIPS's EDQUOT value is 1133(0x46d).
-> It's larger than u8.
-> 
-> Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+> I am trying to run 32 bit RFS with a 64 bit kernel on a RM9000 based
+> processor board. The board is equipped with 2 GB DIMM.  When ever I
+> initiate ftp transfer of 1 GB file I am getting following unaligned
+> access error
+[...]
+> Kindly help me with your pointers to debug the issue. I am running
+> 2.6.18 kernel.
 
-Applied, thank you.
+ Please try something less rotten.  That version is almost four years old.  
+Lots of issues have been fixed since then.  The current version is 2.6.34.
+
+  Maciej

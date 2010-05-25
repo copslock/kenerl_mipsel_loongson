@@ -1,79 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2010 05:30:52 +0200 (CEST)
-Received: from mail-qy0-f185.google.com ([209.85.221.185]:56723 "EHLO
-        mail-qy0-f185.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491119Ab0EYDas convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 25 May 2010 05:30:48 +0200
-Received: by qyk15 with SMTP id 15so6572484qyk.6
-        for <linux-mips@linux-mips.org>; Mon, 24 May 2010 20:30:41 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.229.227.133 with SMTP id ja5mr1317938qcb.174.1274758241345; 
-        Mon, 24 May 2010 20:30:41 -0700 (PDT)
-Received: by 10.229.33.19 with HTTP; Mon, 24 May 2010 20:30:41 -0700 (PDT)
-In-Reply-To: <4BFB0547.4070607@simtec.co.uk>
-References: <q2u180e2c241005040255n628614a0p828116a04f65a894@mail.gmail.com>
-         <4BFB0547.4070607@simtec.co.uk>
-Date:   Tue, 25 May 2010 11:30:41 +0800
-Message-ID: <AANLkTilfHtKwWrDoEcV8T1GQ_mOekJSOkeR1hDLxIiUA@mail.gmail.com>
-Subject: Re: [PATCH 8/12] gdium uses different freq of mclk&m1xclk of sm501
-From:   yajin <yajinzhou@vm-kernel.org>
-To:     Ben Dooks <ben@simtec.co.uk>
-Cc:     linux-mips@linux-mips.org,
-        loongson-dev <loongson-dev@googlegroups.com>,
-        wuzhangjin@gmail.com, apatard@mandriva.com, vince@simtec.co.uk
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <yajinzhou@vm-kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 May 2010 05:52:08 +0200 (CEST)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:50123 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491119Ab0EYDwF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 May 2010 05:52:05 +0200
+Received: by gwj19 with SMTP id 19so1071776gwj.36
+        for <multiple recipients>; Mon, 24 May 2010 20:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=wSIM3QeOYeuFC2nQcIUAdAl5PiVobB3hc+aks++eRxg=;
+        b=CfCR8odzlJGwgZHGhP7GDfG0sVelgGUNqRe4Pu5jGxieRbxkbKwOegS//B6xp6ZCSn
+         UmZNsihg0E1AKozAXeXe6SyIlEJYjTP1CopHAOec7hUDRleRAOBHWsZK+W6bWoKwSK1q
+         /JvbQ6uoCY+YerqgW63o7m+ndfGPMDojf9P3Q=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=PQ5y4GH2XtMerZvzlASXgGfwk15fckhRfGJfyttuWej/CSB4GiBMC7+wgrWxSdB2vs
+         fCZD5zOaDOw30wXLr89K0WgwuQvlXCroTy5fJE97b3u5b4pMn/DMCiH2ihO90m1+NbJ2
+         ZSLeNNvnQKVGIGIyQFekUeAfBVLn/2zaJYkK0=
+Received: by 10.150.160.18 with SMTP id i18mr7255602ybe.100.1274759518292;
+        Mon, 24 May 2010 20:51:58 -0700 (PDT)
+Received: from [192.168.2.218] ([202.201.14.140])
+        by mx.google.com with ESMTPS id v2sm310165ybh.4.2010.05.24.20.51.54
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 24 May 2010 20:51:56 -0700 (PDT)
+Subject: Re: [PATCH] Oprofile: Loongson: Fixup of loongson2_exit()
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+In-Reply-To: <1273165429-29766-1-git-send-email-wuzhangjin@gmail.com>
+References: <1273165429-29766-1-git-send-email-wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Tue, 25 May 2010 11:51:50 +0800
+Message-ID: <1274759510.10746.3.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26843
+X-archive-position: 26844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yajinzhou@vm-kernel.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi, Ralf
 
+Seems you have accepted this patch but forgot to apply it, could you
+please apply it, thanks ;)
 
-2010/5/25 Ben Dooks <ben@simtec.co.uk>:
-> On 04/05/10 18:55, yajin wrote:
->> Gdium uses different freq of mclk&m1xclk of sm501. This seems a dirty
->> hack. Maybe we need a configuration option for changing the freq of
->> these clocks.
->>
->> Signed-off-by: yajin <yajin@vm-kernel.org>
->> ---
->>  drivers/mfd/sm501.c |    9 +++++++--
->>  1 files changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/mfd/sm501.c b/drivers/mfd/sm501.c
->> index ce5dfce..5e55cbd 100644
->> --- a/drivers/mfd/sm501.c
->> +++ b/drivers/mfd/sm501.c
->> @@ -1606,10 +1606,15 @@ static struct sm501_initdata sm501_pci_initdata = {
->>       .devices        = SM501_USE_ALL,
->>
->>       /* Errata AB-3 says that 72MHz is the fastest available
->> -      * for 33MHZ PCI with proper bus-mastering operation */
->> -
->> +      * for 33MHZ PCI with proper bus-mastering operation
->> +      * For gdium, it works under 84&112M clock freq.*/
->> +#ifdef CONFIG_DEXXON_GDIUM
->> +     .mclk           = 84 * MHZ,
->> +     .m1xclk         = 112 * MHZ,
->> +#else
->
-> I think these frequencies are out of spec for the SM501,
-> Plus, it is a hack.
-> Does it not work at 72/144?
->
+Best Regards,
+	Wu Zhangjin
 
-I have asked the similar question on loongson-dev mail list[1]. If the
-mclk clock freq is set to 72M, the LCD output has some problem. But it
-works well on 84M freq. Maybe Arnaud knows the reason.
-
-
-[1] http://groups.google.com/group/loongson-dev/browse_thread/thread/6233a6cb67dc02d2?hl=en_US
+On Fri, 2010-05-07 at 01:03 +0800, Wu Zhangjin wrote:
+> When exiting from loongson2_exit(), we need to reset the counter
+> register too, this patch adds a function reset_counters() to do it, by
+> the way, this function will be shared by Perf.
+> 
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> ---
+>  arch/mips/oprofile/op_model_loongson2.c |    8 +++++++-
+>  1 files changed, 7 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/mips/oprofile/op_model_loongson2.c b/arch/mips/oprofile/op_model_loongson2.c
+> index fa3bf66..01f91a3 100644
+> --- a/arch/mips/oprofile/op_model_loongson2.c
+> +++ b/arch/mips/oprofile/op_model_loongson2.c
+> @@ -51,6 +51,12 @@ static char *oprofid = "LoongsonPerf";
+>  static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id);
+>  /* Compute all of the registers in preparation for enabling profiling.  */
+>  
+> +static void reset_counters(void *arg)
+> +{
+> +	write_c0_perfctrl(0);
+> +	write_c0_perfcnt(0);
+> +}
+> +
+>  static void loongson2_reg_setup(struct op_counter_config *cfg)
+>  {
+>  	unsigned int ctrl = 0;
+> @@ -157,7 +163,7 @@ static int __init loongson2_init(void)
+>  
+>  static void loongson2_exit(void)
+>  {
+> -	write_c0_perfctrl(0);
+> +	reset_counters(NULL);
+>  	free_irq(LOONGSON2_PERFCNT_IRQ, oprofid);
+>  }
+>  

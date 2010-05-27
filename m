@@ -1,37 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 May 2010 19:38:57 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:58771 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 May 2010 12:55:36 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:52125 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492219Ab0EZRix (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 26 May 2010 19:38:53 +0200
+        id S1491066Ab0E0Kzc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 27 May 2010 12:55:32 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o4QHcImL025211;
-        Wed, 26 May 2010 18:38:18 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o4RAtVaF020320;
+        Thu, 27 May 2010 11:55:31 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o4QHcGmr025209;
-        Wed, 26 May 2010 18:38:16 +0100
-Date:   Wed, 26 May 2010 18:38:15 +0100
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o4RAtV1J020318;
+        Thu, 27 May 2010 11:55:31 +0100
+Date:   Thu, 27 May 2010 11:55:31 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     Julia Lawall <julia@diku.dk>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Ingo Molnar <mingo@elte.hu>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: Affinity Automation (was Re: [PATCH 3/17] arch/mips/kernel: Add
- missing read_unlock)
-Message-ID: <20100526173815.GB17043@linux-mips.org>
-References: <Pine.LNX.4.64.1005261754390.23743@ask.diku.dk>
- <20100526163227.GA17043@linux-mips.org>
- <4BFD5A19.5030602@paralogos.com>
+To:     Yoichi Yuasa <yuasa@linux-mips.org>
+Cc:     linux-mips <linux-mips@linux-mips.org>
+Subject: Re: MIPS: AR7/BCM63xx: fix gpio_to_irq() return value
+Message-ID: <20100527105531.GC16894@linux-mips.org>
+References: <20100524173624.2d3ffc3d.yuasa@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4BFD5A19.5030602@paralogos.com>
+In-Reply-To: <20100524173624.2d3ffc3d.yuasa@linux-mips.org>
 User-Agent: Mutt/1.5.20 (2009-08-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26857
+X-archive-position: 26858
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,76 +33,8 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 26, 2010 at 10:27:53AM -0700, Kevin D. Kissell wrote:
-> Date:   Wed, 26 May 2010 10:27:53 -0700
-> From: "Kevin D. Kissell" <kevink@paralogos.com>
-> To: Ralf Baechle <ralf@linux-mips.org>
-> CC: Julia Lawall <julia@diku.dk>, linux-mips@linux-mips.org,
-> 	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-> Subject: Affinity Automation (was Re: [PATCH 3/17] arch/mips/kernel: Add
->  missing
->  read_unlock)
-> Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-> 
-> Ralf Baechle wrote:
-> >Your patch appears correct - and mipsmt_sys_sched_setaffinity() even
-> >more broken than you thought.  It duplicates some code from kernel/sched.c
-> >and has gotten out of sync.
-> Yeah, that was inevitable.  Since the distribution of the previous
-> message seems to cover concerned developers outside the MIPS
-> community, let me make one final(?) plea to actually do this right.
-> 
-> The MIPS SMTC support for managing a single FPU context on a
-> processor with multiple integer TC contexts involves having the
-> system make automous, real time, decisions about scheduling
-> affinity.  It may be a first, but it can't possibly be the only
-> case, especially as we've started seeing more and more mainstream
-> multi-core, multi-thread designs.  System and chip resources are
-> going to be "closer" to one processor or another.  The current Linux
-> paradigm is that it's the responsibility of programs, or users, to
-> know what the optimal placement of processes should be for a given
-> system platform, and while it's absolutely appropriate to provide
-> that level of control for the cases where the user really does know
-> best, it's mildly insane to make that the only way that thread
-> placement can be optimized.  It's really the OS's job to match
-> demand to resources.
-> 
-> My contention years ago was, and remains, that it would be a bad
-> idea to burden the main scheduler loop with checks for two different
-> levels of affinity, system-automatic and user-specified.  It would
-> add non-trivially to the cache footprint and execution overhead of
-> thread dispatch, and there's no logical need for it.  So the model I
-> proposed, and implemented in the cloned affinity system calls for
-> SMTC, was that a *single* affinity mask continue to be used by the
-> scheduler, but that the per-thread data structures carry two:  The
-> one requested explicitly by the user, and the one actually used by
-> the scheduler.  The idea is that normally those two are the same,
-> but that the system - in the MIPS SMTC case, the FPU emulator - can
-> overlay its constraints with the user's constraints to come up with
-> an intersection-of-sets constraint that satisfies both (there was a
-> clause which prevents system affinity heuristics from restricting
-> the affinity mask to a null set of CPUs, though of course the user
-> can do that if he really wants to).
-> 
-> There's nothing particularly MIPS-specific about the problem or the
-> solution.  Most of the mechanisms should really be in
-> platform-independent code, so we don't get the drift of cloned
-> components.
-> 
-> I don't recall who owned the scheduler at the time, but whoever it
-> was was too busy dealing with mainstream processor problems to even
-> engage in a dialogue about this.  Is it time to raise the question
-> again?
+On Mon, May 24, 2010 at 05:36:24PM +0900, Yoichi Yuasa wrote:
 
-That was Ingo Molnar.  The scheduler is owned by these two guys:
-
-SCHEDULER
-M:      Ingo Molnar <mingo@elte.hu>
-M:      Peter Zijlstra <peterz@infradead.org>
-S:      Maintained
-F:      kernel/sched*
-F:      include/linux/sched.h
-
-I've added them to cc.
+Thanks Yoichi, applied.
 
   Ralf

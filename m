@@ -1,83 +1,31 @@
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sat, 29 May 2010 13:11:08 +0200
-Subject: [PATCH] mips: drop CLEAN_FILES from arch/mips/Makefile
-Message-ID: <20100529111108.y9R6ZyDzGW4hzgjRHAe7LSWCly6lzqXxUNTLNXbkfQ4@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 May 2010 21:57:57 +0200 (CEST)
+Received: from pfepa.post.tele.dk ([195.41.46.235]:53601 "EHLO
+        pfepa.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491860Ab0E2T5x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 29 May 2010 21:57:53 +0200
+Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
+        by pfepa.post.tele.dk (Postfix) with ESMTP id 0176DA50002;
+        Sat, 29 May 2010 21:57:51 +0200 (CEST)
+Date:   Sat, 29 May 2010 21:57:53 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Cc:     Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] mips: refactor arch/mips/boot/Makefile
+Message-ID: <20100529195752.GA19568@merkur.ravnborg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <sam@ravnborg.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 26918
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: sam@ravnborg.org
+Precedence: bulk
+X-list: linux-mips
 
-Fix clean-file usage in arch/mips/boot/compressed/Makefile
-With this fixed there is no need for CLEAN_FILES
-
-Update clean-files in arch/mips/boot/Makefile so
-it only list relevant files.
-
-Include fix from Wu Zhangjin so we do not miss any
-files in arch/mips/boot/compressed
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Wu Zhangjin <wuzhangjin@gmail.com>
----
-
-Hi Wu - thanks for spotting this bug!
-Updated patch below.
-
-	Sam
-
- arch/mips/Makefile                 |   10 ----------
- arch/mips/boot/Makefile            |    5 +----
- arch/mips/boot/compressed/Makefile |    7 ++++---
- 3 files changed, 5 insertions(+), 17 deletions(-)
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 92346d0..9a94dee 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -755,9 +755,6 @@ vmlinux.ecoff: $(vmlinux-32)
- vmlinux.srec: $(vmlinux-32)
- 	+@$(call makeboot,$@)
- 
--CLEAN_FILES += vmlinux.ecoff \
--	       vmlinux.srec
--
- archprepare:
- ifdef CONFIG_MIPS32_N32
- 	@echo '  Checking missing-syscalls for N32'
-@@ -792,10 +789,3 @@ define archhelp
- 	echo '  These will be default as apropriate for a configured platform.'
- endef
- 
--CLEAN_FILES += vmlinux.32 \
--	       vmlinux.64 \
--	       vmlinux.ecoff \
--	       vmlinuz \
--	       vmlinuz.ecoff \
--	       vmlinuz.bin \
--	       vmlinuz.srec
-diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
-index e39a08e..de20e81 100644
---- a/arch/mips/boot/Makefile
-+++ b/arch/mips/boot/Makefile
-@@ -39,7 +39,4 @@ vmlinux.bin: $(VMLINUX)
- vmlinux.srec: $(VMLINUX)
- 	$(OBJCOPY) -S -O srec $(strip-flags) $(VMLINUX) $(obj)/vmlinux.srec
- 
--clean-files += elf2ecoff \
--	       vmlinux.bin \
--	       vmlinux.ecoff \
--	       vmlinux.srec
-+clean-files += elf2ecoff
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index 790ddd3..223dd4d 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -100,6 +100,7 @@ OBJCOPYFLAGS_vmlinuz.srec := $(OBJCOPYFLAGS) -S -O srec
- vmlinuz.srec: vmlinuz
- 	$(call if_changed,objcopy)
- 
--clean:
--clean-files += *.o \
--	       vmlinu*
-+# vmlinu* files created in top-level dir of the kernel
-+clean-files := $(objtree)/vmlinu*
-+# files created in arch/mips/boot/compressed
-+clean-files += vmlinux.* piggy.o
--- 
-1.6.0.6

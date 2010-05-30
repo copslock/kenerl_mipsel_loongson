@@ -1,92 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 May 2010 09:51:00 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:44137 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491169Ab0E3Hud (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 30 May 2010 09:50:33 +0200
-Received: (qmail 19877 invoked from network); 30 May 2010 07:50:30 -0000
-Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 30 May 2010 07:50:30 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sun, 30 May 2010 00:50:30 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Date:   Sun, 30 May 2010 00:35:58 -0700
-Subject: [PATCH 2/2] MIPS: Fix deferred console messages during CPU hotplug
-Message-Id: <526fcbfa605500d9da9b04ac0f93ef2beddca6ed@localhost.localdomain>
-In-Reply-To: <1b31306f28573a4bee56f164b1f74962fced9bc5@localhost.localdomain>
-References: <1b31306f28573a4bee56f164b1f74962fced9bc5@localhost.localdomain>
-User-Agent: vim 7.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 May 2010 11:12:02 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:62355 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490993Ab0E3JL7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 30 May 2010 11:11:59 +0200
+Received: by pwi2 with SMTP id 2so1259799pwi.36
+        for <multiple recipients>; Sun, 30 May 2010 02:11:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=uzBTgsbAsfxIyobaOsQDOm9Iq+lhTwUzb5EcNn4PdFg=;
+        b=kCI6XRzRpgi7zyJSC/hZ9GD0qcSqlKUZ6MlkwJzVX6OI/AJWmNImleYuMX5eTtHrqh
+         cFNCqGF7/y7k0BaXn0+gh2w5+xJyIB6jqssm3TLr9c6X3lQRw9V3C5HsFRJlPC7RZAhJ
+         DHUvsU7OU86DYHf6xWSitmFwC7aqGUD9V7vsg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=lnZR6dPFcKWvVNvfQCkJxdXL/TM1MBvX5X4MrEfuuMEjW9V/IPDMhRgiOMA7otst7E
+         W55c/uPxBPpdM8ZaTq9VqhH4zXjLmNn5ldnvEW58F3a5wGo6QRg+T1wTETb55ExBea6f
+         notBDONJlYgA1Z53PxLu5uQ/D8k6iP2lSTO/c=
+Received: by 10.115.38.6 with SMTP id q6mr2223516waj.207.1275210711308;
+        Sun, 30 May 2010 02:11:51 -0700 (PDT)
+Received: from [192.168.2.226] ([202.201.14.140])
+        by mx.google.com with ESMTPS id c14sm37863022waa.13.2010.05.30.02.11.49
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 30 May 2010 02:11:50 -0700 (PDT)
+Subject: Re: [PATCH] mips: refactor arch/mips/boot/Makefile
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:     Sam Ravnborg <sam@ravnborg.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20100530052304.GA1528@merkur.ravnborg.org>
+References: <20100529195752.GA19568@merkur.ravnborg.org>
+         <1275189085.4258.12.camel@localhost>
+         <20100530052304.GA1528@merkur.ravnborg.org>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:   Sun, 30 May 2010 17:11:45 +0800
+Message-ID: <1275210705.4258.21.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26923
+X-archive-position: 26924
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-When a secondary CPU is booting up in start_secondary(), cpu_probe() and
-calibrate_delay() are called while cpu_online(smp_processor_id()) == 0.
-This means that can_use_console() will return 0 on many systems:
+Hi, Sam & Ralf
 
-static inline int can_use_console(unsigned int cpu)
-{
-	return cpu_online(cpu) || have_callable_console();
-}
+On Sun, 2010-05-30 at 07:23 +0200, Sam Ravnborg wrote:
+[...]
+> > Could you please apply the similar modification to
+> > arch/mips/boot/compressed/Makefile? thanks!
+> 
+> I am working on it.
+> I will post a full (albeit) small serie of patches
+> later today. It will replace the patches I sent yesterday.
 
-If (can_use_console() == 0), printk() will spool its output to log_buf
-and it will be visible in "dmesg", but that output will NOT be echoed to
-the console until somebody calls release_console_sem() from a CPU that
-is online.  Effectively this means that the cpu_probe() and
-calibrate_delay() messages will sit in limbo, and will only get dumped
-to the screen the next time printk() happens to get called.
+I have rewritten the calculation of the VMLINUZ_LOAD_ADDRESS in C and
+removed the suffix_* related parts and plan to send them out later.
 
-At boot time, more printk() messages are invariably generated after SMP
-initialization as the kernel boot proceeds, so this problem is unlikely
-to be noticed.  But when using the CPU hotplug feature to reactivate a
-dormant processor, the new CPU's boot messages could be stuck in limbo
-for quite a while since nothing is necessarily printed to the kernel log
-afterward.
+To avoid my patches conflict with yours, I will wait for yours ;)
 
-The proposed workaround is to acquire and release console_sem from
-__cpu_up(), so any queued messages can be flushed out to the console by
-a CPU that is definitely known to be online.
-
-This issue was seen on 2.6.34.
-
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/kernel/smp.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 6cdca19..bf8923f 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -33,6 +33,7 @@
- #include <linux/cpu.h>
- #include <linux/err.h>
- #include <linux/ftrace.h>
-+#include <linux/console.h>
- 
- #include <asm/atomic.h>
- #include <asm/cpu.h>
-@@ -219,6 +220,10 @@ int __cpuinit __cpu_up(unsigned int cpu)
- 
- 	cpu_set(cpu, cpu_online_map);
- 
-+	/* Flush out any buffered log messages from the new CPU */
-+	if (try_acquire_console_sem() == 0)
-+		release_console_sem();
-+
- 	return 0;
- }
- 
--- 
-1.7.0.4
+Best Regards,
+	Wu Zhangjin

@@ -1,77 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 May 2010 11:12:02 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:62355 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490993Ab0E3JL7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 30 May 2010 11:11:59 +0200
-Received: by pwi2 with SMTP id 2so1259799pwi.36
-        for <multiple recipients>; Sun, 30 May 2010 02:11:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=uzBTgsbAsfxIyobaOsQDOm9Iq+lhTwUzb5EcNn4PdFg=;
-        b=kCI6XRzRpgi7zyJSC/hZ9GD0qcSqlKUZ6MlkwJzVX6OI/AJWmNImleYuMX5eTtHrqh
-         cFNCqGF7/y7k0BaXn0+gh2w5+xJyIB6jqssm3TLr9c6X3lQRw9V3C5HsFRJlPC7RZAhJ
-         DHUvsU7OU86DYHf6xWSitmFwC7aqGUD9V7vsg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=lnZR6dPFcKWvVNvfQCkJxdXL/TM1MBvX5X4MrEfuuMEjW9V/IPDMhRgiOMA7otst7E
-         W55c/uPxBPpdM8ZaTq9VqhH4zXjLmNn5ldnvEW58F3a5wGo6QRg+T1wTETb55ExBea6f
-         notBDONJlYgA1Z53PxLu5uQ/D8k6iP2lSTO/c=
-Received: by 10.115.38.6 with SMTP id q6mr2223516waj.207.1275210711308;
-        Sun, 30 May 2010 02:11:51 -0700 (PDT)
-Received: from [192.168.2.226] ([202.201.14.140])
-        by mx.google.com with ESMTPS id c14sm37863022waa.13.2010.05.30.02.11.49
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 30 May 2010 02:11:50 -0700 (PDT)
-Subject: Re: [PATCH] mips: refactor arch/mips/boot/Makefile
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <20100530052304.GA1528@merkur.ravnborg.org>
-References: <20100529195752.GA19568@merkur.ravnborg.org>
-         <1275189085.4258.12.camel@localhost>
-         <20100530052304.GA1528@merkur.ravnborg.org>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Sun, 30 May 2010 17:11:45 +0800
-Message-ID: <1275210705.4258.21.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 May 2010 16:19:46 +0200 (CEST)
+Received: from pfepa.post.tele.dk ([195.41.46.235]:40738 "EHLO
+        pfepa.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491775Ab0E3OTl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 30 May 2010 16:19:41 +0200
+Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
+        by pfepa.post.tele.dk (Postfix) with ESMTP id 42602A5002D;
+        Sun, 30 May 2010 16:19:39 +0200 (CEST)
+Date:   Sun, 30 May 2010 16:19:39 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     linux-mips <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:     sam@ravnborg.org
+Subject: [PATCH 0/6] mips: diverse Makefile updates
+Message-ID: <20100530141939.GA22153@merkur.ravnborg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26924
+X-archive-position: 26925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Sam & Ralf
+This patchset does the following:
+- introduce arch/mips/Kbuild
+- use -Werror on all core-y files of the mips kernel
+- introduce a distributed way to specify platform definitions
+- refactor a few Makefiles
+- clean up cleaning 
 
-On Sun, 2010-05-30 at 07:23 +0200, Sam Ravnborg wrote:
-[...]
-> > Could you please apply the similar modification to
-> > arch/mips/boot/compressed/Makefile? thanks!
-> 
-> I am working on it.
-> I will post a full (albeit) small serie of patches
-> later today. It will replace the patches I sent yesterday.
+Ralf asked in private mail if I could try to implement
+a working varient of a suggestion I made some time ago.
+The idea was to move platform specific definitions to
+dedicated platfrom files.
 
-I have rewritten the calculation of the VMLINUZ_LOAD_ADDRESS in C and
-removed the suffix_* related parts and plan to send them out later.
+This is implmented in the third patch.
 
-To avoid my patches conflict with yours, I will wait for yours ;)
+The idea is to move the platform definitions from arch/mips/Makefile
+to arch/mips/<platform>/Platfrom
 
-Best Regards,
-	Wu Zhangjin
+The content of this file is used in arch/mips/Makefile
+and arch/mips/Kbuild.
+
+On top of this is a few patches that refactor the
+boot and boot/compressed Makefiles so they are more
+kbuild conformant.
+This beautify the output when we build a kernel.
+
+Wu Zhangjin have pointed out a few bugs in the first
+variants of the patches that hit the mailing list - thanks!
+
+
+Patches will follow.
+
+Note: I tried to test a little with bigsur_defconfig
+but get_user() is buggy. Or at least my gcc thinks that
+first argument may be used uninitialized.
+I think mips needs to fix the 64 bit variant of get_user().
+I took a quick look but ran away.
+
+	Sam
+
+
+Sam Ravnborg (6):
+      mips: introduce arch/mips/Kbuild
+      mips: add -Werror to arch/mips/Kbuild
+      mips: introduce support for Platform definitions
+      mips: refactor arch/mips/boot/Makefile
+      mips: refactor arch/mips/boot/compressed/Makefile
+      mips: clean up arch/mips/Makefile
+
+ arch/mips/Kbuild                   |   15 +++++++++
+ arch/mips/Kbuild.platforms         |    6 ++++
+ arch/mips/Makefile                 |   57 +++++++++---------------------------
+ arch/mips/ar7/Platform             |    7 ++++
+ arch/mips/boot/Makefile            |   49 ++++++++++++++----------------
+ arch/mips/boot/compressed/Makefile |   54 ++++++++++++++++++----------------
+ arch/mips/kernel/Makefile          |    2 -
+ arch/mips/math-emu/Makefile        |    1 -
+ arch/mips/mm/Makefile              |    2 -
+ 9 files changed, 94 insertions(+), 99 deletions(-)

@@ -1,53 +1,33 @@
-From: Sam Ravnborg <sam@ravnborg.org>
-Date: Sun, 30 May 2010 19:49:32 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 May 2010 20:06:32 +0200 (CEST)
+Received: from pfepa.post.tele.dk ([195.41.46.235]:58831 "EHLO
+        pfepa.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491899Ab0E3SG2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 30 May 2010 20:06:28 +0200
+Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
+        by pfepa.post.tele.dk (Postfix) with ESMTP id E5A77A50006;
+        Sun, 30 May 2010 20:06:26 +0200 (CEST)
+Date:   Sun, 30 May 2010 20:06:27 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     linux-mips <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
 Subject: [PATCH] mips: fix uninitialized warning when using get_user()
-Message-ID: <20100530174932.ycTRoMxvCSwYPuHSObSoy3OmWyGd7uStDI_qu4esSuY@z>
+Message-ID: <20100530180627.GA5825@merkur.ravnborg.org>
+References: <20100530141939.GA22153@merkur.ravnborg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100530141939.GA22153@merkur.ravnborg.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <sam@ravnborg.org>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 26934
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: sam@ravnborg.org
+Precedence: bulk
+X-list: linux-mips
 
-Fix following type of warnings:
-arch/mips/kernel/../../../fs/binfmt_elf.c: In function 'vma_dump_size'
-arch/mips/kernel/../../../fs/binfmt_elf.c:1139:
-warning: word may be used uninitialized in this function
-
-The warning was tracked down to the implementation of the get_user()
-macro in uaccess.h.
-Other architectures assign the supplied variable to 0 if
-access check fails - do the same for mips.
-
-This patch intentionally do the minimal fix as the configuration
-I used (bigsur_defconfig) did not produce warnings from
-the other get_user() variants.
-
-This fixes bigsur_defconfig build that other
-failed due to -Werror.
-
-The warnings was triggered with gcc 4.1.2
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
-Well - I complained so I took a closer look.
-This seems to be the correct fix.
-
-I have only build tested this patch.
-As the box I sit on is rather slow I do not have
-before/after number for vmlinux size - sorry!
-
-	Sam
-
- arch/mips/include/asm/uaccess.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index c2d53c1..1cd4bb6 100644
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -248,6 +248,8 @@ do {									\
- 	might_fault();							\
- 	if (likely(access_ok(VERIFY_READ,  __gu_ptr, size)))		\
- 		__get_user_common((x), size, __gu_ptr);			\
-+	else								\
-+		(x) = 0;						\
- 									\
- 	__gu_err;							\
- })
--- 
-1.6.0.6

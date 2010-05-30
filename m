@@ -1,33 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 May 2010 16:28:35 +0200 (CEST)
-Received: from pfepb.post.tele.dk ([195.41.46.236]:59237 "EHLO
-        pfepb.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492075Ab0E3O2b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 30 May 2010 16:28:31 +0200
-Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
-        by pfepb.post.tele.dk (Postfix) with ESMTP id 5D7EFF84018;
-        Sun, 30 May 2010 16:28:31 +0200 (CEST)
-Date:   Sun, 30 May 2010 16:28:31 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     linux-mips <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
+From: Sam Ravnborg <sam@ravnborg.org>
+Date: Sun, 30 May 2010 16:00:38 +0200
 Subject: [PATCH 6/6] mips: clean up arch/mips/Makefile
-Message-ID: <20100530142831.GF22281@merkur.ravnborg.org>
-References: <20100530141939.GA22153@merkur.ravnborg.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20100530141939.GA22153@merkur.ravnborg.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <sam@ravnborg.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26931
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
-Precedence: bulk
-X-list: linux-mips
+Message-ID: <20100530140038.708usIlBID-SlC2nWgg8eVqwfFb23DhKDs2Zgo4CHN4@z>
 
+- Drop CLEAN_FILES assignments that is no longer required
+- Add $(Q) in a few rules
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+ arch/mips/Makefile |   17 ++++-------------
+ 1 files changed, 4 insertions(+), 13 deletions(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index eaed885..c2e1068 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -740,8 +740,7 @@ vmlinuz vmlinuz.bin vmlinuz.ecoff vmlinuz.srec: $(vmlinux-32) FORCE
+ 	   VMLINUX_LOAD_ADDRESS=$(load-y) 32bit-bfd=$(32bit-bfd) $@
+ 
+ 
+-CLEAN_FILES += vmlinux.ecoff \
+-	       vmlinux.srec
++CLEAN_FILES += vmlinux.32 vmlinux.64
+ 
+ archprepare:
+ ifdef CONFIG_MIPS32_N32
+@@ -760,9 +759,9 @@ install:
+ 	$(Q)install -D -m 644 System.map $(INSTALL_PATH)/System.map-$(KERNELRELEASE)
+ 
+ archclean:
+-	@$(MAKE) $(clean)=arch/mips/boot
+-	@$(MAKE) $(clean)=arch/mips/boot/compressed
+-	@$(MAKE) $(clean)=arch/mips/lasat
++	$(Q)$(MAKE) $(clean)=arch/mips/boot
++	$(Q)$(MAKE) $(clean)=arch/mips/boot/compressed
++	$(Q)$(MAKE) $(clean)=arch/mips/lasat
+ 
+ define archhelp
+ 	echo '  install              - install kernel into $(INSTALL_PATH)'
+@@ -776,11 +775,3 @@ define archhelp
+ 	echo
+ 	echo '  These will be default as apropriate for a configured platform.'
+ endef
+-
+-CLEAN_FILES += vmlinux.32 \
+-	       vmlinux.64 \
+-	       vmlinux.ecoff \
+-	       vmlinuz \
+-	       vmlinuz.ecoff \
+-	       vmlinuz.bin \
+-	       vmlinuz.srec
+-- 
+1.6.0.6

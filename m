@@ -1,151 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 May 2010 10:45:51 +0200 (CEST)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:61157 "EHLO
-        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492018Ab0EaIpr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 May 2010 10:45:47 +0200
-Received: by pxi1 with SMTP id 1so1538055pxi.36
-        for <multiple recipients>; Mon, 31 May 2010 01:45:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:x-priority:content-type:organization:date
-         :message-id:mime-version:x-mailer:content-transfer-encoding;
-        bh=jxkrc/IOqqgOGyVGZqecqJEM6v4t6+E+TyEb7VTrc1c=;
-        b=aGuwz2x5z7yglSwLim+JZ1cAs1FLh+4bIUDJcGOLkyH2QhyR6+BcSQwh3GhKlqZKBS
-         nQNImSvgnFPZIGw9II1yjcCbMMB21lJhlrSNC3n9ki1ZYy7Pr0PcA4s1FepXgxgFbci5
-         XjgvPXJaGK5R076zTDcgWRljzYrGk1+kpY5+k=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:x-priority
-         :content-type:organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=xa78KhR28xasUm6vOZ2YzomLAwv2OzFp8tZcKduRFYH/LvA39IgcL52lG9lQCIQfbM
-         ytVx7XDODtM5rukI9hFX+XUz+0hJ0aScheAqcA5ReD/XLYljKPBXykksG7vClK9tH1mW
-         fXoJnMxvTY1k1a0gYkRhQQ0s3jKOUJknioIDg=
-Received: by 10.115.98.12 with SMTP id a12mr3272353wam.55.1275295537775;
-        Mon, 31 May 2010 01:45:37 -0700 (PDT)
-Received: from [192.168.2.226] ([202.201.14.140])
-        by mx.google.com with ESMTPS id c1sm47734045wam.19.2010.05.31.01.45.35
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 31 May 2010 01:45:37 -0700 (PDT)
-Subject: Re: [PATCH 0/6] mips: diverse Makefile updates
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Sam Ravnborg <sam@ravnborg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 May 2010 11:10:58 +0200 (CEST)
+Received: from pfepb.post.tele.dk ([195.41.46.236]:37325 "EHLO
+        pfepb.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492050Ab0EaJKz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 May 2010 11:10:55 +0200
+Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
+        by pfepb.post.tele.dk (Postfix) with ESMTP id E6CB0F8404C;
+        Mon, 31 May 2010 11:10:53 +0200 (CEST)
+Date:   Mon, 31 May 2010 11:10:53 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
 Cc:     linux-mips <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
-In-Reply-To: <20100530141939.GA22153@merkur.ravnborg.org>
-References: <20100530141939.GA22153@merkur.ravnborg.org>
-X-Priority: 1
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Mon, 31 May 2010 16:45:31 +0800
-Message-ID: <1275295531.24461.3.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Subject: Re: [PATCH 0/6] mips: diverse Makefile updates
+Message-ID: <20100531091053.GA15894@merkur.ravnborg.org>
+References: <20100530141939.GA22153@merkur.ravnborg.org> <1275295531.24461.3.camel@localhost>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1275295531.24461.3.camel@localhost>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 26937
+X-archive-position: 26938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Sam & Ralf
+On Mon, May 31, 2010 at 04:45:31PM +0800, Wu Zhangjin wrote:
+> Hi, Sam & Ralf
+> 
+> Perhaps we also need to fix the following stuff:
+> 
+> ...
+>   LD      vmlinux
+>   SYSMAP  System.map
+>   SYSMAP  .tmp_System.map
+> mips64el-unknown-linux-gnu-objcopy -O elf32-tradlittlemips  --remove-section=.reginfo vmlinux vmlinux.32
+>   AS      arch/mips/boot/compressed/head.o
+>   CC      arch/mips/boot/compressed/decompress.o
+>   CC      arch/mips/boot/compressed/dbg.o
+> ...
+> 
+> The related Makefile is arch/mips/Makefile:
+> 
+> > 721 #
+> > 722 # Some machines like the Indy need 32-bit ELF binaries for booting purposes.
+> > 723 # Other need ECOFF, so we build a 32-bit ELF binary for them which we then
+> > 724 # convert to ECOFF using elf2ecoff.
+> > 725 #
+> > 726 vmlinux.32: vmlinux
+> > 727         $(OBJCOPY) -O $(32bit-bfd) $(OBJCOPYFLAGS) $< $@
+> > 728 
+> > 729 #
+> > 730 # The 64-bit ELF tools are pretty broken so at this time we generate 64-bit
+> > 731 # ELF files from 32-bit files by conversion.
+> > 732 #
+> > 733 vmlinux.64: vmlinux
+> > 734         $(OBJCOPY) -O $(64bit-bfd) $(OBJCOPYFLAGS) $< $@
 
-Perhaps we also need to fix the following stuff:
 
-...
-  LD      vmlinux
-  SYSMAP  System.map
-  SYSMAP  .tmp_System.map
-mips64el-unknown-linux-gnu-objcopy -O elf32-tradlittlemips  --remove-section=.reginfo vmlinux vmlinux.32
-  AS      arch/mips/boot/compressed/head.o
-  CC      arch/mips/boot/compressed/decompress.o
-  CC      arch/mips/boot/compressed/dbg.o
-...
+I have looked at it but I was confused.
+vmlinux.64 seems to be used by two SGI machines only.
+I wonder if this is really required - but I did not look to much.
 
-The related Makefile is arch/mips/Makefile:
+vmlinux.32 is even more strange....
+When building a 64 bit kernel vmlinux.32 is used as input to
+boot/Makefile. boot.Makefile uses this file for all of:
+vmlinux.bin, vmlinux.srec, vmlinux.ecoff.
 
-> 721 #
-> 722 # Some machines like the Indy need 32-bit ELF binaries for booting purposes.
-> 723 # Other need ECOFF, so we build a 32-bit ELF binary for them which we then
-> 724 # convert to ECOFF using elf2ecoff.
-> 725 #
-> 726 vmlinux.32: vmlinux
-> 727         $(OBJCOPY) -O $(32bit-bfd) $(OBJCOPYFLAGS) $< $@
-> 728 
-> 729 #
-> 730 # The 64-bit ELF tools are pretty broken so at this time we generate 64-bit
-> 731 # ELF files from 32-bit files by conversion.
-> 732 #
-> 733 vmlinux.64: vmlinux
-> 734         $(OBJCOPY) -O $(64bit-bfd) $(OBJCOPYFLAGS) $< $@
+But boot/compressed produces an own variant of vmlinux.32 and there
+it is _only_ used as input for vmlinuz.ecoff. vmlinuz.bin + vmlinuz.srec
+uses the unmodified vmlinux as input?!?
 
-Best Regards,
-	Wu Zhangjin
+So it all looked messy and I do not have the background knowledge to
+clean it up.
 
-On Sun, 2010-05-30 at 16:19 +0200, Sam Ravnborg wrote:
-> This patchset does the following:
-> - introduce arch/mips/Kbuild
-> - use -Werror on all core-y files of the mips kernel
-> - introduce a distributed way to specify platform definitions
-> - refactor a few Makefiles
-> - clean up cleaning 
-> 
-> Ralf asked in private mail if I could try to implement
-> a working varient of a suggestion I made some time ago.
-> The idea was to move platform specific definitions to
-> dedicated platfrom files.
-> 
-> This is implmented in the third patch.
-> 
-> The idea is to move the platform definitions from arch/mips/Makefile
-> to arch/mips/<platform>/Platfrom
-> 
-> The content of this file is used in arch/mips/Makefile
-> and arch/mips/Kbuild.
-> 
-> On top of this is a few patches that refactor the
-> boot and boot/compressed Makefiles so they are more
-> kbuild conformant.
-> This beautify the output when we build a kernel.
-> 
-> Wu Zhangjin have pointed out a few bugs in the first
-> variants of the patches that hit the mailing list - thanks!
-> 
-> 
-> Patches will follow.
-> 
-> Note: I tried to test a little with bigsur_defconfig
-> but get_user() is buggy. Or at least my gcc thinks that
-> first argument may be used uninitialized.
-> I think mips needs to fix the 64 bit variant of get_user().
-> I took a quick look but ran away.
-> 
-> 	Sam
-> 
-> 
-> Sam Ravnborg (6):
->       mips: introduce arch/mips/Kbuild
->       mips: add -Werror to arch/mips/Kbuild
->       mips: introduce support for Platform definitions
->       mips: refactor arch/mips/boot/Makefile
->       mips: refactor arch/mips/boot/compressed/Makefile
->       mips: clean up arch/mips/Makefile
-> 
->  arch/mips/Kbuild                   |   15 +++++++++
->  arch/mips/Kbuild.platforms         |    6 ++++
->  arch/mips/Makefile                 |   57 +++++++++---------------------------
->  arch/mips/ar7/Platform             |    7 ++++
->  arch/mips/boot/Makefile            |   49 ++++++++++++++----------------
->  arch/mips/boot/compressed/Makefile |   54 ++++++++++++++++++----------------
->  arch/mips/kernel/Makefile          |    2 -
->  arch/mips/math-emu/Makefile        |    1 -
->  arch/mips/mm/Makefile              |    2 -
->  9 files changed, 94 insertions(+), 99 deletions(-)
+My thinking was to do something like this:
+1) move creation of vmlinux.64 to boot/Makefile (or even better to drop it)
+2) let vmlinux.32 be an intermediate step used only
+   for vmlinux.ecoff and thus move it to boot/Makefile
+3) adjust Makefile so thay stop producing targets in the top-level directory
+   Today it is inconsistent. boot/Makefile does it in one way
+   boot/compressed/Makefile does it in another way.
+   Always end a build with "Kernel '...' is ready so user see the path.
+
+Step 1) is simple.
+Step 2) is questionable. Is it the correct approach?
+Step 3) is a visible change but more aligned with other archs.
+
+
+What do you think?
+
+I can obviously just beautify the output by using
+some more kbuild like stuff.
+But I prefer to understand what is going on - at least to some extent.
+
+PS. I have not looked at the lasat specific stuff. Is it relevant to update it?
+
+	Sam

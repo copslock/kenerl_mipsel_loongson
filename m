@@ -1,129 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 19:09:50 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:45961 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491129Ab0FAQsX convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Jun 2010 18:48:23 +0200
-Received: by gyb11 with SMTP id 11so3865343gyb.36
-        for <linux-mips@linux-mips.org>; Tue, 01 Jun 2010 09:48:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 21:07:22 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:57326 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492149Ab0FATHT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jun 2010 21:07:19 +0200
+Received: by fxm15 with SMTP id 15so4079039fxm.36
+        for <linux-mips@linux-mips.org>; Tue, 01 Jun 2010 12:07:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from
+         :user-agent:mime-version:to:subject:content-type
          :content-transfer-encoding;
-        bh=XoITNFhF18q9hj+97cGX4B6o2k1xRQbLjjqSpir84Og=;
-        b=mcnKgnI3UMPeIa0hzzl7sAtyePDOdfdkJanYR5Xd6iFoRpA17f16rn+j/zyUo52iFb
-         q7prnoc+s3COHqpdaGb32/228yWx0Iz/JKcuUdkSol3SzjdqyAUfWTeX58C2U0gc8Sd2
-         i6aL1HndhNS6aaKhDp3YQnyqPG+vPzM+WYbFM=
+        bh=/Qne7c1E9MrAkSZGGbOvmMoJ/+iV3DxXGMyXupWTWOI=;
+        b=T5X0a+9f/nuIUrs00Olb1Kloa4JdSZFkeiYoqR/hfhPQHxj9Y7P7Ba9y/RArRRJ5hF
+         yRQb7HghYX44gh2Y5jUA93pL3kPbSglpq0A4fgpsaPRulTzSs/DWEuDjnXRKo15cE0dF
+         0rIYEcp5QxHeGEGjDBDW1Agx2Rbs2vj032jPI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=QER0DXk45O8SVZ8KNhpYNM+JZUNp8ZQ12+/6FcaZEA5kHGmcrijC0LMWpFyZXAesSz
-         X0bcbl0kzWg2GYHXdrYbOK3Ge4Mhsm010a0ntO4buyt9LivUnkrjD+Di9T6Fb0q8bFBi
-         2NrbTnj8I9E5qBYZDvpMMR0ed4QNncAPZ+MIU=
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:subject
+         :content-type:content-transfer-encoding;
+        b=JY7zSqNbSr6jHieFGfNBb2BFOOIViCbxvyQkubANxW/qvba5+dFfNk/7E7bAZ5gaWJ
+         wx23gZsPk5hH+mRa6u1gaCfD19bssukm/ltc6wsfFs4HZdYVyyUaYOwMSufTyKm2D99U
+         R6dvXzIdvCuKZO8dEchU4hLGnk6zHHrKsx7XM=
+Received: by 10.223.5.89 with SMTP id 25mr7506898fau.87.1275419233858;
+        Tue, 01 Jun 2010 12:07:13 -0700 (PDT)
+Received: from [192.168.2.50] (host-83.2.142.85.tvksmp.pl [83.2.142.85])
+        by mx.google.com with ESMTPS id 13sm48400021fad.7.2010.06.01.12.07.13
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 01 Jun 2010 12:07:13 -0700 (PDT)
+Message-ID: <4C055A60.3000203@gmail.com>
+Date:   Tue, 01 Jun 2010 21:07:12 +0200
+From:   =?UTF-8?B?SXJlbmV1c3ogU3pjemXFm25pYWs=?= 
+        <irek.szczesniak@gmail.com>
+User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
 MIME-Version: 1.0
-Received: by 10.231.169.6 with SMTP id w6mr1168895iby.5.1275410879337; Tue, 01 
-        Jun 2010 09:47:59 -0700 (PDT)
-Received: by 10.231.183.74 with HTTP; Tue, 1 Jun 2010 09:47:59 -0700 (PDT)
-In-Reply-To: <20100601163528.GA5216@merkur.ravnborg.org>
-References: <1275405795-9009-1-git-send-email-manuel.lauss@googlemail.com>
-        <20100601163528.GA5216@merkur.ravnborg.org>
-Date:   Tue, 1 Jun 2010 18:47:59 +0200
-Message-ID: <AANLkTikIiKmqjhuZKnguhyNeuCXnPeBLHSSeolCTf3d0@mail.gmail.com>
-Subject: Re: [PATCH -queue v2] MIPS: Move Alchemy Makefile parts to their own 
-        Platform file.
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 26970
-X-Approved-By: ralf@linux-mips.org
+To:     linux-mips@linux-mips.org
+Subject: MIPS 24Kc
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 26971
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: irek.szczesniak@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 528
+X-UID: 615
 
-On Tue, Jun 1, 2010 at 6:35 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
-> On Tue, Jun 01, 2010 at 05:23:15PM +0200, Manuel Lauss wrote:
->> Cc: Sam Ravnborg <sam@ravnborg.org>
->> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
->> ---
->> On top of latest mips-queue.  The changes to the mtx1/xx1500 Makefiles were
->> necessary to work around vmlinux link failures.
->
-> Was this something the platform patches introduced or
-> is it needed to fix the build?
+Hi,
 
-Maybe.  Link failures with the "lib-y" parts do crop up occasionally.
-Usually, the lib-y parts are built as the last files (along with other
-arch/mips/lib code); with your changes they're built with the other
-files in a directory:
- CC      arch/mips/alchemy/mtx-1/platform.o
-  LD      arch/mips/alchemy/mtx-1/built-in.o
-  CC      arch/mips/alchemy/mtx-1/board_setup.o
-  CC      arch/mips/alchemy/mtx-1/init.o
-  AR      arch/mips/alchemy/mtx-1/lib.a
+I'm writing to inquire about the status of the support for MIPS 24Kc.
 
-That lib.a is apparently not picked up by the linker:
-  LD      .tmp_vmlinux1
-arch/mips/built-in.o: In function `plat_mem_setup':
-/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/common/setup.c:55:
-undefined reference to `board_setup'
-/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/common/setup.c:55:
-relocation truncated to fit: R_MIPS_26 against `board_setup'
-arch/mips/built-in.o: In function `setup_arch':
-/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/kernel/setup.c:550:
-undefined reference to `prom_init'
-/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/kernel/setup.c:550:
-relocation truncated to fit: R_MIPS_26 against `prom_init'
-[...]
-make[1]: *** [.tmp_vmlinux1] Error 1
-make: *** [sub-make] Error 2
-
-Using obj-y is much more reliable.  I have no idea why some boards have
-lib-y code; maybe Ralf knows more.
+I have a RouterBOARD 433 that has the Atheros AR7130 processor with 
+the MIPS 24Kc core.  I would like to compile my kernel with the KGDB 
+enabled, so that I can debug the kernel on the live hardware.
 
 
->> diff --git a/arch/mips/alchemy/Platform b/arch/mips/alchemy/Platform
->> new file mode 100644
->> index 0000000..495cc9a
->> --- /dev/null
->> +++ b/arch/mips/alchemy/Platform
->
-> ...
->> +#
->> +# 4G-Systems eval board
->> +#
->> +platform-$(CONFIG_MIPS_MTX1) += alchemy/mtx-1/
->> +load-$(CONFIG_MIPS_MTX1)     += 0xffffffff80100000
->
->> diff --git a/arch/mips/alchemy/mtx-1/Makefile b/arch/mips/alchemy/mtx-1/Makefile
->> index 4a53815..4d1367e 100644
->> --- a/arch/mips/alchemy/mtx-1/Makefile
->> +++ b/arch/mips/alchemy/mtx-1/Makefile
->> @@ -6,7 +6,6 @@
->>  # Makefile for 4G Systems MTX-1 board.
->>  #
->>
->> -lib-y := init.o board_setup.o
->> -obj-y := platform.o
->> +obj-y := init.o board_setup.o platform.o
->>
->>  EXTRA_CFLAGS += -Werror
->
-> In the above we added alchemy/mtx-1/ to platform-y
-> so mtx-1/ is automatically covered by -Werror by arch/mips/Kbuild
->
-> So the above assignment to EXTRA_CFLAGS is now redundant and can be dropped.
+Thanks,
+Irek
 
-Okay, they're gone.
-
-Thank you,
-     Manuel Lauss
+-- 
+Ireneusz (Irek) Szczesniak
+http://www.irkos.org

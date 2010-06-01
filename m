@@ -1,158 +1,194 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 12:30:21 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:59983 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492455Ab0FAK3c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jun 2010 12:29:32 +0200
-Received: by pwi2 with SMTP id 2so2057117pwi.36
-        for <multiple recipients>; Tue, 01 Jun 2010 03:29:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=DTRM7Z0rUHfTz4mm2pdrcJAfbOb89zG6CKiwcsBUivI=;
-        b=GYoZvKHmYVDVB8v/bQQiB4aL8xYiR/Dff9ATa60bI8LYxnjyCaO+dJftD7Nc1T2V/W
-         vgIQLR6msznspFvRGe4F9v9sr1h30BvGzOLQxnWfZby6xvO2PzedZ1qUcJMckJfC/akB
-         1Ukmr54PMBBI8xNqgPrc4qMaaHCzpoHz1SWs8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=qJLIu7lY9JB8j9PEsv8AWk6nSU7Ymi5fFASftp/BsTeAwUm4woyS43FcF0eBwnAg7H
-         6MVYVwBVrRnwfZ2slagRD6MxqAaefwXF+7sFgFGq1nqinteMb2QLI1qKgbr7iWbvjF2W
-         V/UveauXKblvbqEahKmGa2o1EwmqwAqZ+7Ifo=
-Received: by 10.142.74.3 with SMTP id w3mr3847482wfa.243.1275388165934;
-        Tue, 01 Jun 2010 03:29:25 -0700 (PDT)
-Received: from yeeloong ([202.201.14.140])
-        by mx.google.com with ESMTPS id s21sm1917785wff.0.2010.06.01.03.29.22
-        (version=SSLv3 cipher=RC4-MD5);
-        Tue, 01 Jun 2010 03:29:24 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Cc:     Alexander Clouter <alex@digriz.org.uk>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 12:56:12 +0200 (CEST)
+Received: from chipmunk.wormnet.eu ([195.195.131.226]:49007 "EHLO
+        chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492309Ab0FAK4I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jun 2010 12:56:08 +0200
+Received: by chipmunk.wormnet.eu (Postfix, from userid 1000)
+        id F087383871; Tue,  1 Jun 2010 11:56:06 +0100 (BST)
+Date:   Tue, 1 Jun 2010 11:56:06 +0100
+From:   Alexander Clouter <alex@digriz.org.uk>
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>,
         Manuel Lauss <manuel.lauss@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] MIPS: Move Loongson Makefile parts to their own Platform file
-Date:   Tue,  1 Jun 2010 18:29:04 +0800
-Message-Id: <1275388144-5998-3-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1275388144-5998-1-git-send-email-wuzhangjin@gmail.com>
-References: <1275388144-5998-1-git-send-email-wuzhangjin@gmail.com>
-X-archive-position: 26958
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH] MIPS: Clean up the calculation of VMLINUZ_LOAD_ADDRESS
+Message-ID: <20100601105606.GD2519@chipmunk>
+References: <1275388144-5998-1-git-send-email-wuzhangjin@gmail.com> <1275388144-5998-2-git-send-email-wuzhangjin@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1275388144-5998-2-git-send-email-wuzhangjin@gmail.com>
+Organization: diGriz
+X-URL:  http://www.digriz.org.uk/
+X-JabberID: alex@digriz.org.uk
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 26959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: alex@digriz.org.uk
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 249
+X-UID: 265
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/Kbuild.platforms  |    1 +
- arch/mips/Makefile          |   29 -----------------------------
- arch/mips/loongson/Platform |   32 ++++++++++++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 29 deletions(-)
- create mode 100644 arch/mips/loongson/Platform
+Hi,
 
-diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-index 681b2d4..9784c49 100644
---- a/arch/mips/Kbuild.platforms
-+++ b/arch/mips/Kbuild.platforms
-@@ -1,6 +1,7 @@
- # All platforms listed in alphabetic order
- 
- platforms += ar7
-+platforms += loongson
- 
- # include the platform specific files
- include $(patsubst %, $(srctree)/arch/mips/%/Platform, $(platforms))
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index ff71a54..14b755d 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -130,26 +130,6 @@ cflags-$(CONFIG_CPU_R4300)	+= -march=r4300 -Wa,--trap
- cflags-$(CONFIG_CPU_VR41XX)	+= -march=r4100 -Wa,--trap
- cflags-$(CONFIG_CPU_R4X00)	+= -march=r4600 -Wa,--trap
- cflags-$(CONFIG_CPU_TX49XX)	+= -march=r4600 -Wa,--trap
--# only gcc >= 4.4 have the loongson-specific support
--cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
--cflags-$(CONFIG_CPU_LOONGSON2E) += \
--	$(call cc-option,-march=loongson2e,-march=r4600)
--cflags-$(CONFIG_CPU_LOONGSON2F) += \
--	$(call cc-option,-march=loongson2f,-march=r4600)
--# enable the workarounds for loongson2f
--ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
--  ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-nop,),)
--    $(error only binutils >= 2.20.2 have needed option -mfix-loongson2f-nop)
--  else
--    cflags-$(CONFIG_CPU_NOP_WORKAROUNDS) += -Wa$(comma)-mfix-loongson2f-nop
--  endif
--  ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-jump,),)
--    $(error only binutils >= 2.20.2 have needed option -mfix-loongson2f-jump)
--  else
--    cflags-$(CONFIG_CPU_JUMP_WORKAROUNDS) += -Wa$(comma)-mfix-loongson2f-jump
--  endif
--endif
--
- cflags-$(CONFIG_CPU_MIPS32_R1)	+= $(call cc-option,-march=mips32,-mips32 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
- 			-Wa,-mips32 -Wa,--trap
- cflags-$(CONFIG_CPU_MIPS32_R2)	+= $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-@@ -346,15 +326,6 @@ cflags-$(CONFIG_WR_PPMC)		+= -I$(srctree)/arch/mips/include/asm/mach-wrppmc
- load-$(CONFIG_WR_PPMC)		+= 0xffffffff80100000
- 
- #
--# Loongson family
--#
--core-$(CONFIG_MACH_LOONGSON) += arch/mips/loongson/
--cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson \
--                    -mno-branch-likely
--load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
--load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
--
--#
- # MIPS Malta board
- #
- core-$(CONFIG_MIPS_MALTA)	+= arch/mips/mti-malta/
-diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
-new file mode 100644
-index 0000000..29692e5
---- /dev/null
-+++ b/arch/mips/loongson/Platform
-@@ -0,0 +1,32 @@
-+#
-+# Loongson Processors' Support
-+#
-+
-+# Only gcc >= 4.4 have Loongson specific support
-+cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
-+cflags-$(CONFIG_CPU_LOONGSON2E) += \
-+	$(call cc-option,-march=loongson2e,-march=r4600)
-+cflags-$(CONFIG_CPU_LOONGSON2F) += \
-+	$(call cc-option,-march=loongson2f,-march=r4600)
-+# Enable the workarounds for Loongson2f
-+ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
-+  ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-nop,),)
-+    $(error only binutils >= 2.20.2 have needed option -mfix-loongson2f-nop)
-+  else
-+    cflags-$(CONFIG_CPU_NOP_WORKAROUNDS) += -Wa$(comma)-mfix-loongson2f-nop
-+  endif
-+  ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-jump,),)
-+    $(error only binutils >= 2.20.2 have needed option -mfix-loongson2f-jump)
-+  else
-+    cflags-$(CONFIG_CPU_JUMP_WORKAROUNDS) += -Wa$(comma)-mfix-loongson2f-jump
-+  endif
-+endif
-+
-+#
-+# Loongson Machines' Support
-+#
-+
-+platform-$(CONFIG_MACH_LOONGSON) += loongson/
-+cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson -mno-branch-likely
-+load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
-+load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
+* Wu Zhangjin <wuzhangjin@gmail.com> [2010-06-01 18:29:03+0800]:
+>
+> We have calculated VMLINUZ_LOAD_ADDRESS in shell, which is awful. This patch
+> rewrites it in C.
+> 
+I really feel that going down the C route is even worse....what's more 
+this implementation is broken as it always returns with zero, even when 
+sscanf() fails....and 'return -1' is just plain wrong too (look at 
+sysexits.h for wisdom[1]).
+
+What is so 'awful' about the shell code version?
+
+The shell lump is shorter in implementation size and I am personally not 
+convinced any reasons hinting towards 'clarity' even apply as the shell 
+code is well documented plus it is trivial to step through on any POSIX 
+shell implementation; which cannot be said for the C code.  I am also 
+not too confident 'unsigned long long' is a great idea...maybe 'u64' or 
+'uint64_t' if you are relying on C99[1]?
+
+Wise man says, do not use cannonball to kill mosquito :)
+
+Cheers
+
+[1] http://www.gnu.org/software/libc/manual/html_node/Exit-Status.html
+[2] http://gcc.gnu.org/onlinedocs/gcc/Long-Long.html
+
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> ---
+>  arch/mips/boot/.gitignore                          |    1 +
+>  arch/mips/boot/compressed/Makefile                 |   22 ++++-----
+>  arch/mips/boot/compressed/calc_vmlinuz_load_addr.c |   52 ++++++++++++++++++++
+>  3 files changed, 63 insertions(+), 12 deletions(-)
+>  create mode 100644 arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
+> 
+> diff --git a/arch/mips/boot/.gitignore b/arch/mips/boot/.gitignore
+> index 4667a5f..f210b09 100644
+> --- a/arch/mips/boot/.gitignore
+> +++ b/arch/mips/boot/.gitignore
+> @@ -3,3 +3,4 @@ elf2ecoff
+>  vmlinux.*
+>  zImage
+>  zImage.tmp
+> +calc_vmlinuz_load_addr
+> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+> index 7204dfc..cd9ee04 100644
+> --- a/arch/mips/boot/compressed/Makefile
+> +++ b/arch/mips/boot/compressed/Makefile
+> @@ -12,14 +12,6 @@
+>  # Author: Wu Zhangjin <wuzhangjin@gmail.com>
+>  #
+>  
+> -# compressed kernel load addr: VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
+> -VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | cut -d' ' -f1)
+> -VMLINUX_SIZE := $(shell [ -n "$(VMLINUX_SIZE)" ] && echo -n $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
+> -# VMLINUZ_LOAD_ADDRESS = concat "high32 of VMLINUX_LOAD_ADDRESS" and "(low32 of VMLINUX_LOAD_ADDRESS) + VMLINUX_SIZE"
+> -HIGH32 := $(shell A=$(VMLINUX_LOAD_ADDRESS); [ $${\#A} -gt 10 ] && expr substr "$(VMLINUX_LOAD_ADDRESS)" 3 $$(($${\#A} - 10)))
+> -LOW32 := $(shell [ -n "$(HIGH32)" ] && A=11 || A=3; expr substr "$(VMLINUX_LOAD_ADDRESS)" $${A} 8)
+> -VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" -a -n "$(LOW32)" ] && printf "$(HIGH32)%08x" $$(($(VMLINUX_SIZE) + 0x$(LOW32))))
+> -
+>  # set the default size of the mallocing area for decompressing
+>  BOOT_HEAP_SIZE := 0x400000
+>  
+> @@ -63,9 +55,15 @@ OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.z \
+>  $(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.z FORCE
+>  	$(call if_changed,objcopy)
+>  
+> -LDFLAGS_vmlinuz := $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T
+> -vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/piggy.o
+> -	$(call cmd,ld)
+> +# Calculate the load address of the compressed kernel
+> +hostprogs-y := calc_vmlinuz_load_addr
+> +
+> +vmlinuzobjs-y += $(obj)/piggy.o
+> +
+> +quiet_cmd_zld = LD      $@
+> +      cmd_zld = $(LD) $(LDFLAGS) -Ttext $(shell $(obj)/calc_vmlinuz_load_addr $(objtree)/$(KBUILD_IMAGE) $(VMLINUX_LOAD_ADDRESS)) -T $< $(vmlinuzobjs-y) -o $@
+> +vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/calc_vmlinuz_load_addr
+> +	$(call cmd,zld)
+>  	$(Q)$(OBJCOPY) $(OBJCOPYFLAGS) $@
+>  
+>  #
+> @@ -76,7 +74,7 @@ ifdef CONFIG_MACH_DECSTATION
+>  endif
+>  
+>  # elf2ecoff can only handle 32bit image
+> -hostprogs-y := ../elf2ecoff
+> +hostprogs-y += ../elf2ecoff
+>  
+>  ifdef CONFIG_32BIT
+>  	VMLINUZ = vmlinuz
+> diff --git a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
+> new file mode 100644
+> index 0000000..1787dce
+> --- /dev/null
+> +++ b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
+> @@ -0,0 +1,52 @@
+> +/*
+> + * Copyright (C) 2010 "Wu Zhangjin" <wuzhangjin@gmail.com>
+> + *
+> + * This program is free software; you can redistribute  it and/or modify it
+> + * under  the terms of  the GNU General  Public License as published by the
+> + * Free Software Foundation;  either version 2 of the  License, or (at your
+> + * option) any later version.
+> + */
+> +
+> +#include <sys/types.h>
+> +#include <sys/stat.h>
+> +#include <errno.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	int n;
+> +	struct stat sb;
+> +	unsigned long long vmlinux_size, vmlinux_load_addr, vmlinuz_load_addr;
+> +
+> +	if (argc != 3) {
+> +		fprintf(stderr, "Usage: %s <pathname> <vmlinux_load_addr>\n",
+> +				argv[0]);
+> +		return -1;
+> +	}
+> +
+> +	if (stat(argv[1], &sb) == -1) {
+> +		perror("stat");
+> +		return -1;
+> +	}
+> +
+> +	/* Convert hex characters to dec number */
+> +	errno = 0;
+> +	n = sscanf(argv[2], "%llx", &vmlinux_load_addr);
+> +	if (n != 1) {
+> +		if (errno != 0)
+> +			perror("sscanf");
+> +		else
+> +			fprintf(stderr, "No matching characters\n");
+> +	}
+> +
+> +	vmlinux_size = (unsigned long long)sb.st_size;
+> +	vmlinuz_load_addr = vmlinux_load_addr + vmlinux_size;
+> +
+> +	/* Align with 65536 */
+> +	vmlinuz_load_addr += (65536 - vmlinux_size % 65536);
+> +
+> +	printf("0x%llx\n", vmlinuz_load_addr);
+> +
+> +	return 0;
+> +}
+> -- 
+> 1.6.5
+> 
+
 -- 
-1.6.5
+Alexander Clouter
+.sigmonster says: To teach is to learn twice.
+                  		-- Joseph Joubert

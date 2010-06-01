@@ -1,172 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 22:18:34 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13207 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491801Ab0FAUS1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jun 2010 22:18:27 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4c056b230000>; Tue, 01 Jun 2010 13:18:43 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 1 Jun 2010 13:18:23 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 1 Jun 2010 13:18:22 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.3/8.14.3) with ESMTP id o51KIIvV006786;
-        Tue, 1 Jun 2010 13:18:18 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o51KIG80006785;
-        Tue, 1 Jun 2010 13:18:16 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Octeon: Implement delays with cycle counter.
-Date:   Tue,  1 Jun 2010 13:18:15 -0700
-Message-Id: <1275423495-6751-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.6.1
-X-OriginalArrivalTime: 01 Jun 2010 20:18:22.0809 (UTC) FILETIME=[9579AC90:01CB01C7]
-X-archive-position: 26974
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 22:30:58 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:44968 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491103Ab0FAUaz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jun 2010 22:30:55 +0200
+Received: by fxm15 with SMTP id 15so4160968fxm.36
+        for <linux-mips@linux-mips.org>; Tue, 01 Jun 2010 13:30:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=knv9en/oxDlQuFd0kdlqQ/yERBv4s/HNYyuqmMn8O6E=;
+        b=OU2QQhC3JCdXrcP51caUMMEgo50IiELTBNYmz0LHA/AGQXwi3MiWMHg11nD+GulzRB
+         nxNdJhC4v8yRPvFI9irk2iSQ6YQZP2cAyQIUfVbNzfrFbfHUcyquw56WRHSiNIDg55Ho
+         Z/tRWPZoKwhxMYt2tIBoIuoPz9qA/Ttn9C3io=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=oHbzxdyn/u2QbjgfW4Pk9BjLDOuoRFNgmPv037UBIkxGOlDLFD3DIE27J5tpnMIJOh
+         cE8z51IdmYOSyqJNUIms2bEuIvUOFzBCiVfjdwBmb5JxjAkuHANGmRxybWijjkeSbSrl
+         XTxIFJ4fhMOW8UMQSovjt66U5ft5GNk/tVH2E=
+Received: by 10.223.51.152 with SMTP id d24mr7635654fag.36.1275424249610;
+        Tue, 01 Jun 2010 13:30:49 -0700 (PDT)
+Received: from localhost.localdomain (p5496C36D.dip.t-dialin.net [84.150.195.109])
+        by mx.google.com with ESMTPS id 2sm48702233fav.13.2010.06.01.13.30.47
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 01 Jun 2010 13:30:48 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH -queue 1/2] MIPS: Alchemy: move boards over to obj-y
+Date:   Tue,  1 Jun 2010 22:30:36 +0200
+Message-Id: <1275424237-8120-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 26975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 692
+X-UID: 702
 
-Power throttling make deterministic delay loops impossible.
-Re-implement delays using the cycle counter.  This also allows us to
-get rid of the code that calculates loops per jiffy.
+Preparatory step for moving Alchemy over to new  MIPS Platform
+build system support.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
 ---
- arch/mips/cavium-octeon/csrc-octeon.c              |   55 ++++++++++++++++++++
- arch/mips/cavium-octeon/setup.c                    |    4 +-
- .../asm/mach-cavium-octeon/cpu-feature-overrides.h |   11 ----
- arch/mips/include/asm/octeon/octeon.h              |    1 +
- 4 files changed, 58 insertions(+), 13 deletions(-)
+The other boards no longer use libs, without any ill effects.
+In the past the lib-y code would sometimes not be picked up and
+cause link failures, so this also improves build reliability.
 
-diff --git a/arch/mips/cavium-octeon/csrc-octeon.c b/arch/mips/cavium-octeon/csrc-octeon.c
-index 0bf4bbe..a7d2b39 100644
---- a/arch/mips/cavium-octeon/csrc-octeon.c
-+++ b/arch/mips/cavium-octeon/csrc-octeon.c
-@@ -88,3 +88,58 @@ void __init plat_time_init(void)
- 	clocksource_set_clock(&clocksource_mips, mips_hpt_frequency);
- 	clocksource_register(&clocksource_mips);
- }
-+
-+static u64 octeon_udelay_factor;
-+static u64 octeon_ndelay_factor;
-+
-+void __init octeon_setup_delays(void)
-+{
-+	octeon_udelay_factor = octeon_get_clock_rate() / 1000000;
-+	/*
-+	 * For __ndelay we divide by 2^16, so the factor is multiplied
-+	 * by the same amount.
-+	 */
-+	octeon_ndelay_factor = (octeon_udelay_factor * 0x10000ull) / 1000ull;
-+
-+	preset_lpj = octeon_get_clock_rate() / HZ;
-+}
-+
-+void __udelay(unsigned long us)
-+{
-+	u64 cur, end, inc;
-+
-+	cur = read_c0_cvmcount();
-+
-+	inc = us * octeon_udelay_factor;
-+	end = cur + inc;
-+
-+	while (end > cur)
-+		cur = read_c0_cvmcount();
-+}
-+EXPORT_SYMBOL(__udelay);
-+
-+void __ndelay(unsigned long ns)
-+{
-+	u64 cur, end, inc;
-+
-+	cur = read_c0_cvmcount();
-+
-+	inc = ((ns * octeon_ndelay_factor) >> 16);
-+	end = cur + inc;
-+
-+	while (end > cur)
-+		cur = read_c0_cvmcount();
-+}
-+EXPORT_SYMBOL(__ndelay);
-+
-+void __delay(unsigned long loops)
-+{
-+	u64 cur, end;
-+
-+	cur = read_c0_cvmcount();
-+	end = cur + loops;
-+
-+	while (end > cur)
-+		cur = read_c0_cvmcount();
-+}
-+EXPORT_SYMBOL(__delay);
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index d1b5ffa..6f36bc1 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -598,13 +598,13 @@ void __init prom_init(void)
- 		 * the filesystem. Also specify the calibration delay
- 		 * to avoid calculating it every time.
- 		 */
--		strcat(arcs_cmdline, " rw root=1f00"
--		       " lpj=60176 slram=root,0x40000000,+1073741824");
-+		strcat(arcs_cmdline, " rw root=1f00 slram=root,0x40000000,+1073741824");
- 	}
+ arch/mips/Makefile                 |    4 ++--
+ arch/mips/alchemy/mtx-1/Makefile   |    3 +--
+ arch/mips/alchemy/xxs1500/Makefile |    2 +-
+ 3 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 14b755d..8282152 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -290,13 +290,13 @@ load-$(CONFIG_MIPS_MIRAGE)	+= 0xffffffff80100000
+ #
+ # 4G-Systems eval board
+ #
+-libs-$(CONFIG_MIPS_MTX1)	+= arch/mips/alchemy/mtx-1/
++core-$(CONFIG_MIPS_MTX1)	+= arch/mips/alchemy/mtx-1/
+ load-$(CONFIG_MIPS_MTX1)	+= 0xffffffff80100000
  
- 	mips_hpt_frequency = octeon_get_clock_rate();
+ #
+ # MyCable eval board
+ #
+-libs-$(CONFIG_MIPS_XXS1500)	+= arch/mips/alchemy/xxs1500/
++core-$(CONFIG_MIPS_XXS1500)	+= arch/mips/alchemy/xxs1500/
+ load-$(CONFIG_MIPS_XXS1500)	+= 0xffffffff80100000
  
- 	octeon_init_cvmcount();
-+	octeon_setup_delays();
+ # must be last for Alchemy systems for GPIO to work properly
+diff --git a/arch/mips/alchemy/mtx-1/Makefile b/arch/mips/alchemy/mtx-1/Makefile
+index 4a53815..f912022 100644
+--- a/arch/mips/alchemy/mtx-1/Makefile
++++ b/arch/mips/alchemy/mtx-1/Makefile
+@@ -6,7 +6,6 @@
+ # Makefile for 4G Systems MTX-1 board.
+ #
  
- 	_machine_restart = octeon_restart;
- 	_machine_halt = octeon_halt;
-diff --git a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-index bbf0540..e412777 100644
---- a/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
-@@ -61,22 +61,11 @@
+-lib-y := init.o board_setup.o
+-obj-y := platform.o
++obj-y += init.o board_setup.o platform.o
  
- #define kernel_uses_smartmips_rixi (cpu_data[0].cputype == CPU_CAVIUM_OCTEON_PLUS)
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/alchemy/xxs1500/Makefile b/arch/mips/alchemy/xxs1500/Makefile
+index 4dc81d7..81c516e 100644
+--- a/arch/mips/alchemy/xxs1500/Makefile
++++ b/arch/mips/alchemy/xxs1500/Makefile
+@@ -5,6 +5,6 @@
+ # Makefile for MyCable XXS1500 board.
+ #
  
--#define ARCH_HAS_READ_CURRENT_TIMER 1
- #define ARCH_HAS_IRQ_PER_CPU	1
- #define ARCH_HAS_SPINLOCK_PREFETCH 1
- #define spin_lock_prefetch(x) prefetch(x)
- #define PREFETCH_STRIDE 128
+-lib-y := init.o board_setup.o platform.o
++obj-y += init.o board_setup.o platform.o
  
--static inline int read_current_timer(unsigned long *result)
--{
--	asm volatile ("rdhwr %0,$31\n"
--#ifndef CONFIG_64BIT
--		      "\tsll %0, 0"
--#endif
--		      : "=r" (*result));
--	return 0;
--}
--
- static inline int octeon_has_saa(void)
- {
- 	int id;
-diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index ca6214b..8a3eb3b 100644
---- a/arch/mips/include/asm/octeon/octeon.h
-+++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -50,6 +50,7 @@ extern void octeon_crypto_disable(struct octeon_cop2_state *state,
- extern asmlinkage void octeon_cop2_restore(struct octeon_cop2_state *task);
- 
- extern void octeon_init_cvmcount(void);
-+extern void octeon_setup_delays(void);
- 
- #define OCTEON_ARGV_MAX_ARGS	64
- #define OCTOEN_SERIAL_LEN	20
+ EXTRA_CFLAGS += -Werror
 -- 
-1.6.6.1
+1.7.1

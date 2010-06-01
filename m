@@ -1,72 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 21:44:58 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:50992 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492508Ab0FATox convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Jun 2010 21:44:53 +0200
-Received: by wyj26 with SMTP id 26so1272781wyj.36
-        for <linux-mips@linux-mips.org>; Tue, 01 Jun 2010 12:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:reply-to:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=QgRkPKtOnZOhaNa/qGtNpz0QmojOzAyxCA0jCOBunMw=;
-        b=BEZU/3qUrJptO+nT+9OVinHbP14z7kPKLGVMB4dlAAvfo5+j3p2Q33Q6gDFJdS4bUL
-         SEZwz8PtoSPrdMUxTy4yYBBJIxnKY0DB355dmYfHUhytVwSEnAqSMH2nsFKEQkt/T4eo
-         OgZGDuasrS5BVM9zjzPlvEH+sU5TGcjiAsZaw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=VN9bVrY0KLOCkW4NwlPSCt99nrAn3u76g9mEXFU1k6uTRNJ5kmWa/abDaRwG5B9ivU
-         C4ONy2MsPJsukdxo+p8wJwqIzU0UZ7T5rjpg7les86fSuYIm0CmtI9U7aCAVCEl8xVEf
-         UjJiqhOqNtewqL0BqADkcTkBNp5xmUrVRCBdM=
-Received: by 10.227.127.148 with SMTP id g20mr6566714wbs.192.1275421483932;
-        Tue, 01 Jun 2010 12:44:43 -0700 (PDT)
-Received: from lenovo.localnet (208.59.76-86.rev.gaoland.net [86.76.59.208])
-        by mx.google.com with ESMTPS id l23sm52257313wbb.8.2010.06.01.12.44.42
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 01 Jun 2010 12:44:43 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-Reply-To: Florian Fainelli <florian@openwrt.org>
-To:     Ireneusz =?utf-8?q?Szcze=C5=9Bniak?= <irek.szczesniak@gmail.com>
-Subject: Re: MIPS 24Kc
-Date:   Tue, 1 Jun 2010 21:44:42 +0200
-User-Agent: KMail/1.13.3 (Linux/2.6.34-1-686; KDE/4.4.3; i686; ; )
-Cc:     linux-mips@linux-mips.org
-References: <4C055A60.3000203@gmail.com>
-In-Reply-To: <4C055A60.3000203@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 22:02:06 +0200 (CEST)
+Received: from pfepa.post.tele.dk ([195.41.46.235]:42065 "EHLO
+        pfepa.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492389Ab0FAUCB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jun 2010 22:02:01 +0200
+Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
+        by pfepa.post.tele.dk (Postfix) with ESMTP id 4EAD6A50006;
+        Tue,  1 Jun 2010 22:01:59 +0200 (CEST)
+Date:   Tue, 1 Jun 2010 22:02:00 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH -queue v2] MIPS: Move Alchemy Makefile parts to their
+        own Platform file.
+Message-ID: <20100601200200.GA5438@merkur.ravnborg.org>
+References: <1275405795-9009-1-git-send-email-manuel.lauss@googlemail.com> <20100601163528.GA5216@merkur.ravnborg.org> <AANLkTikIiKmqjhuZKnguhyNeuCXnPeBLHSSeolCTf3d0@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <201006012144.43447.florian@openwrt.org>
-X-archive-position: 26972
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AANLkTikIiKmqjhuZKnguhyNeuCXnPeBLHSSeolCTf3d0@mail.gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 26973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 661
+X-UID: 678
 
-Hi,
-
-Le mardi 1 juin 2010 21:07:12, Ireneusz SzczeÅ›niak a Ã©crit :
-> Hi,
+On Tue, Jun 01, 2010 at 06:47:59PM +0200, Manuel Lauss wrote:
+> On Tue, Jun 1, 2010 at 6:35 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
+> > On Tue, Jun 01, 2010 at 05:23:15PM +0200, Manuel Lauss wrote:
+> >> Cc: Sam Ravnborg <sam@ravnborg.org>
+> >> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+> >> ---
+> >> On top of latest mips-queue.  The changes to the mtx1/xx1500 Makefiles were
+> >> necessary to work around vmlinux link failures.
+> >
+> > Was this something the platform patches introduced or
+> > is it needed to fix the build?
 > 
-> I'm writing to inquire about the status of the support for MIPS 24Kc.
+> Maybe.  Link failures with the "lib-y" parts do crop up occasionally.
+> Usually, the lib-y parts are built as the last files (along with other
+> arch/mips/lib code); with your changes they're built with the other
+> files in a directory:
+>  CC      arch/mips/alchemy/mtx-1/platform.o
+>   LD      arch/mips/alchemy/mtx-1/built-in.o
+>   CC      arch/mips/alchemy/mtx-1/board_setup.o
+>   CC      arch/mips/alchemy/mtx-1/init.o
+>   AR      arch/mips/alchemy/mtx-1/lib.a
 > 
-> I have a RouterBOARD 433 that has the Atheros AR7130 processor with
-> the MIPS 24Kc core.  I would like to compile my kernel with the KGDB
-> enabled, so that I can debug the kernel on the live hardware.
+> That lib.a is apparently not picked up by the linker:
+>   LD      .tmp_vmlinux1
 
-I would recommend checking OpenWr's ar71xx port[1] which supports RB433.
+...
 
-[1]: https://dev.openwrt.org/browser/trunk/target/linux/ar71xx
---
-Florian
+> > ...
+> >> +#
+> >> +# 4G-Systems eval board
+> >> +#
+> >> +platform-$(CONFIG_MIPS_MTX1) += alchemy/mtx-1/
+> >> +load-$(CONFIG_MIPS_MTX1)     += 0xffffffff80100000
+> >
+> >> diff --git a/arch/mips/alchemy/mtx-1/Makefile b/arch/mips/alchemy/mtx-1/Makefile
+> >> index 4a53815..4d1367e 100644
+> >> --- a/arch/mips/alchemy/mtx-1/Makefile
+> >> +++ b/arch/mips/alchemy/mtx-1/Makefile
+> >> @@ -6,7 +6,6 @@
+> >>  # Makefile for 4G Systems MTX-1 board.
+> >>  #
+> >>
+> >> -lib-y := init.o board_setup.o
+> >> -obj-y := platform.o
+> >> +obj-y := init.o board_setup.o platform.o
+> >>
+> >>  EXTRA_CFLAGS += -Werror
+> >
+
+So the original ocde looked like this:
+
+arch/mips/Makefile:
+libs-$(CONFIG_MIPS_MTX1)        += arch/mips/alchemy/mtx-1/
+
+The above is used to tell that it shall look for a lib.a
+in the directory: arch/mips/alchemy/mtx-1/
+It also tell kbuild to build any built-in or modules in the same dir. 
+
+In your conversion this became:
+platform-$(CONFIG_MIPS_MTX1) += alchemy/mtx-1/
+
+The above tells kbuild to build objects as built-in or modules
+in the directory. It does not say anything about libs.
+
+So we loose the information about the lib.a in the directory.
+I know that kbuild will build it - but it happens
+to forget all about it when done.
+
+The right fixs seems to keep the libs-$(...) assignments in
+the Platform files and let kbuild pick them up due to
+the include in arch/mips/Makefile.
+
+This is not optimal and we may address this later.
+But for now this looks like the simplest/safest way forward.
+
+Getting rid of the libs like you did is also an option.
+And if this is OK then this is the niver way to do it.
+But I have not looked into this enough to judge.
+Does the lib files contain stuff that is only used in some
+confgurations or does the content end up being linked
+in always anyway?
+Also are there any linker order constrains to tke care of?
+
+Lots of questions I know - sorry.
+
+	Sam

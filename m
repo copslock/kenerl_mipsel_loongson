@@ -1,128 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 12:28:32 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:59417 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492446Ab0FAK22 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Jun 2010 12:28:28 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o51ASNMN020098;
-        Tue, 1 Jun 2010 11:28:24 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o51ASMem020096;
-        Tue, 1 Jun 2010 11:28:22 +0100
-Date:   Tue, 1 Jun 2010 11:28:22 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 12:29:31 +0200 (CEST)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:39762 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492446Ab0FAK30 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Jun 2010 12:29:26 +0200
+Received: by pvb32 with SMTP id 32so272261pvb.36
+        for <multiple recipients>; Tue, 01 Jun 2010 03:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=7RkLAXuKIo4YJyC8BZN6L4kqn1Uxz5zp+LzdXdzUumE=;
+        b=J20+H5TYzFcECGNKjl2jIlWvy4U9arjQ39ivNpEpCfOaAFrOcERkpRCRPDesqTCU0+
+         OeKe1e9L9QE43zeyspvG/g3rNsv59PXgzncMmybfh9qQqeni0ckpk9KkKfS7Z3JeQomp
+         Dv4rV81QlatsXfnayZEJDvskRgDpVauGj5lhA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=P5x9qKr3AK/ahtevLaOZ7WCoce8EkJv8JQFBiRm8ydY517UD0ys52y73WatjW0WsMa
+         BqlDA3F6UFkppvu6YcffIqCXn/9ywcztID0LQXX1HBUSE/iQrxLqST1dKXQvzghILIsK
+         m/axuON4ZB2X6kUg6PlqJCW9O5Z4+jMifC/wE=
+Received: by 10.142.152.18 with SMTP id z18mr3904649wfd.230.1275388159243;
+        Tue, 01 Jun 2010 03:29:19 -0700 (PDT)
+Received: from yeeloong ([202.201.14.140])
+        by mx.google.com with ESMTPS id s21sm1917785wff.0.2010.06.01.03.29.16
+        (version=SSLv3 cipher=RC4-MD5);
+        Tue, 01 Jun 2010 03:29:18 -0700 (PDT)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Cc:     Alexander Clouter <alex@digriz.org.uk>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
         Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: Re: [PATCH 0/6] mips: diverse Makefile updates
-Message-ID: <20100601102822.GA20578@linux-mips.org>
-References: <20100530141939.GA22153@merkur.ravnborg.org>
- <20100530153939.GA22352@merkur.ravnborg.org>
- <20100530231954.GA318@linux-mips.org>
- <20100531102954.GA12669@linux-mips.org>
- <20100531105550.GA15995@merkur.ravnborg.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20100531105550.GA15995@merkur.ravnborg.org>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-X-archive-position: 26955
+Subject: [PATCH] MIPS: arch/mips/boot/compressed/Makefile: Unify the suffix of compressed vmlinux.bin
+Date:   Tue,  1 Jun 2010 18:29:02 +0800
+Message-Id: <1275388144-5998-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 26956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 243
+X-UID: 247
 
-On Mon, May 31, 2010 at 12:55:50PM +0200, Sam Ravnborg wrote:
+The compressed vmlinux.{gz,bz2,lzo,lzma} are only temp files, we can use the
+same suffix for them to remove several lines and simpify the maintaining.
 
-> > I played with it for a bit.  The warning is present in all gcc 4.1.0 to
-> > 4.1.2 and it is bogus.  When I first looked into this years ago I just
-> > gave up on gcc 4.1 as a newer version was already available.
-> > 
-> > The variable returned by get_user is undefined in case of an error, so
-> > what get_user() is doing is entirely legitimate.  This is different from
-> > copy_from_user() which in case of an error will clear the remainder of
-> > the destination area which couldn't not be copied from userspace.
-> 
-> What I looked at:
-> 
-> 1)	u32 word;
-> 2)	if (unlikely(get_user(word, header)))
-> 3)		word = 0;
-> 4)	if (word == magic.cmp)
-> 5)		return PAGE_SIZE;
-> 
-> If gcc does not see an assignment to word in line 2) then
-> it complains about the use line 4).
-> 
-> If we look at the implementation of get_user it is more or less the
-> following:
-> ({
-> 	int err = -EFAULT;
-> 	if (access_ok(VERIFY_READ, header))
-> 		switch (sizeof(word)) {
-> 		case 4:
-> 			word = *(u32 *)header;
-> 			err = 0;
-> 			break;
-> 		default:
-> 			__get_user_unknown();
-> 			break;
-> 		}
-> 	err;
-> })
-> 
-> Simplified a lot - I know. But it shows my point.
-> (And simplifying the code also helped me understand the macros).
-> 
-> gcc needs to be smart enough to deduce that we always return != 0
-> in the cases where word is not assigned - in which case line 3)
-> will do the assignment.
-> 
-> So gcc is indeed wrong when is sas "uninitialized" but considering
-> the complexity of these macros I think it is excused.
-> 
-> The x86 version has the following assignment
-> 
->     (val) = (__typeof__(*(addr))) __gu_tmp; 
-> 
-> unconditionally - so they avoid the " = 0" thing.
-> sparc has explicit "= 0" assignments.
-> 
-> So refactoring the macros may do the trick too.
-> But I do not think it is worth the effort.
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/boot/compressed/Makefile |   12 ++++--------
+ 1 files changed, 4 insertions(+), 8 deletions(-)
 
-One reason for the being written as they are is also that this allows a
-compiler to generate some useful warnings such as:
-
-	get_user(var, ptr);
-	printk("var is %d\n", var);
-
-Where var indeed can be used uninitialzed.  The return value of get_user()
-being ignored is really a separate problem which should be attacked as
-well.  __must_check would be the obvious way of doing this but it can only
-be used as a function attribute.  Will have to experiment to see if it's
-possible to use it within get_user / put_user in something like:
-
-static inline int __must_check __gu_must_check(int __gu_err)
-{
-	return __gu_err
-}
-
-#define __get_user_check(x, ptr, size)                                  \
-({                                                                      \
-        int __gu_err = -EFAULT;                                         \
-        const __typeof__(*(ptr)) __user * __gu_ptr = (ptr);             \
-                                                                        \
-        might_fault();                                                  \
-        if (likely(access_ok(VERIFY_READ,  __gu_ptr, size)))            \
-                __get_user_common((x), size, __gu_ptr);                 \
-                                                                        \
-        __gu_must_check(__gu_err);					\
-})
-
-  Ralf
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 74a52d7..7204dfc 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -48,23 +48,19 @@ OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary -R .comment -S
+ $(obj)/vmlinux.bin: $(KBUILD_IMAGE) FORCE
+ 	$(call if_changed,objcopy)
+ 
+-suffix_$(CONFIG_KERNEL_GZIP)  = gz
+-suffix_$(CONFIG_KERNEL_BZIP2) = bz2
+-suffix_$(CONFIG_KERNEL_LZMA)  = lzma
+-suffix_$(CONFIG_KERNEL_LZO)   = lzo
+ tool_$(CONFIG_KERNEL_GZIP)    = gzip
+ tool_$(CONFIG_KERNEL_BZIP2)   = bzip2
+ tool_$(CONFIG_KERNEL_LZMA)    = lzma
+ tool_$(CONFIG_KERNEL_LZO)     = lzo
+ 
+-targets += vmlinux.gz vmlinux.bz2 vmlinux.lzma vmlinux.lzo
+-$(obj)/vmlinux.$(suffix_y): $(obj)/vmlinux.bin FORCE
++targets += vmlinux.z
++$(obj)/vmlinux.z: $(obj)/vmlinux.bin FORCE
+ 	$(call if_changed,$(tool_y))
+ 
+ targets += piggy.o
+-OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.$(suffix_y) \
++OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.z \
+                         --set-section-flags=.image=contents,alloc,load,readonly,data
+-$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.$(suffix_y) FORCE
++$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.z FORCE
+ 	$(call if_changed,objcopy)
+ 
+ LDFLAGS_vmlinuz := $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T
+-- 
+1.6.5

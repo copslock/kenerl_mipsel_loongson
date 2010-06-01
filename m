@@ -1,98 +1,128 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 08:23:35 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:55993 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492272Ab0FAGXa convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Jun 2010 08:23:30 +0200
-Received: by gyb11 with SMTP id 11so3401178gyb.36
-        for <linux-mips@linux-mips.org>; Mon, 31 May 2010 23:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=pYnWup1x8h9RmxGpohV8/ahMYJyWhK1vzu09B9nMgEs=;
-        b=lyxqWtC3HFfywp8rM+KZT0olzjeMfrXrWLsyNXtHDFac6d4m0gFRX2E4U3K2+6Qp2G
-         LNTESU8tJM0MEo+HMtfs0me3KzktlJvHfJOkYvnDpDf2wel/vsT+l/vK0Tc2kUP1N7TG
-         bsLjBeQso9VrAKU+3mcZvvXGfx4aEa+Avr8gU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=uPc1Th2R7ZUAGJpfw2Ruo25p3OOTprYh5X4QYAssiLanQMHckbQRLwtJGDOqu0ZPsO
-         ZHOpJYySOKowfHYVUmtj55+m7Q1GUOSNrKwPGnn1fg7zHI8gRSp/VQzY/zj1vsQ0weRY
-         oAa52JlIFGgad21fXAlN6Q4RtpR518Gi8qUWo=
-MIME-Version: 1.0
-Received: by 10.231.148.143 with SMTP id p15mr7200232ibv.15.1275373401998; 
-        Mon, 31 May 2010 23:23:21 -0700 (PDT)
-Received: by 10.231.183.74 with HTTP; Mon, 31 May 2010 23:23:21 -0700 (PDT)
-In-Reply-To: <20100531211842.GA795@merkur.ravnborg.org>
-References: <1275332878-19762-1-git-send-email-manuel.lauss@googlemail.com>
-        <20100531211842.GA795@merkur.ravnborg.org>
-Date:   Tue, 1 Jun 2010 08:23:21 +0200
-Message-ID: <AANLkTilUtwCpTjAdUxLJSjnwUe3i2aKlIrdnQ_ZBH6j5@mail.gmail.com>
-Subject: Re: [PATCH -queue] MIPS: Move Alchemy Makefile parts to their own 
-        Platform file.
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jun 2010 12:28:32 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:59417 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492446Ab0FAK22 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 1 Jun 2010 12:28:28 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o51ASNMN020098;
+        Tue, 1 Jun 2010 11:28:24 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o51ASMem020096;
+        Tue, 1 Jun 2010 11:28:22 +0100
+Date:   Tue, 1 Jun 2010 11:28:22 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 26954
+Cc:     linux-mips <linux-mips@linux-mips.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: Re: [PATCH 0/6] mips: diverse Makefile updates
+Message-ID: <20100601102822.GA20578@linux-mips.org>
+References: <20100530141939.GA22153@merkur.ravnborg.org>
+ <20100530153939.GA22352@merkur.ravnborg.org>
+ <20100530231954.GA318@linux-mips.org>
+ <20100531102954.GA12669@linux-mips.org>
+ <20100531105550.GA15995@merkur.ravnborg.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100531105550.GA15995@merkur.ravnborg.org>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+X-archive-position: 26955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 96
+X-UID: 243
 
-Hi Sam,
-On Mon, May 31, 2010 at 11:18 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
+On Mon, May 31, 2010 at 12:55:50PM +0200, Sam Ravnborg wrote:
 
->> --- a/arch/mips/Kbuild.platforms
->> +++ b/arch/mips/Kbuild.platforms
->> @@ -1,6 +1,6 @@
->>  # All platforms listed in alphabetic order
->>
->> -platforms += ar7
->> +platforms += alchemy ar7
->
-> One line per paltform is better.
-> Then the risk for conflicts are less and merging in easier.
-> Like this:
->
-> platforms += ar7
-> platforms += alchemy
+> > I played with it for a bit.  The warning is present in all gcc 4.1.0 to
+> > 4.1.2 and it is bogus.  When I first looked into this years ago I just
+> > gave up on gcc 4.1 as a newer version was already available.
+> > 
+> > The variable returned by get_user is undefined in case of an error, so
+> > what get_user() is doing is entirely legitimate.  This is different from
+> > copy_from_user() which in case of an error will clear the remainder of
+> > the destination area which couldn't not be copied from userspace.
+> 
+> What I looked at:
+> 
+> 1)	u32 word;
+> 2)	if (unlikely(get_user(word, header)))
+> 3)		word = 0;
+> 4)	if (word == magic.cmp)
+> 5)		return PAGE_SIZE;
+> 
+> If gcc does not see an assignment to word in line 2) then
+> it complains about the use line 4).
+> 
+> If we look at the implementation of get_user it is more or less the
+> following:
+> ({
+> 	int err = -EFAULT;
+> 	if (access_ok(VERIFY_READ, header))
+> 		switch (sizeof(word)) {
+> 		case 4:
+> 			word = *(u32 *)header;
+> 			err = 0;
+> 			break;
+> 		default:
+> 			__get_user_unknown();
+> 			break;
+> 		}
+> 	err;
+> })
+> 
+> Simplified a lot - I know. But it shows my point.
+> (And simplifying the code also helped me understand the macros).
+> 
+> gcc needs to be smart enough to deduce that we always return != 0
+> in the cases where word is not assigned - in which case line 3)
+> will do the assignment.
+> 
+> So gcc is indeed wrong when is sas "uninitialized" but considering
+> the complexity of these macros I think it is excused.
+> 
+> The x86 version has the following assignment
+> 
+>     (val) = (__typeof__(*(addr))) __gu_tmp; 
+> 
+> unconditionally - so they avoid the " = 0" thing.
+> sparc has explicit "= 0" assignments.
+> 
+> So refactoring the macros may do the trick too.
+> But I do not think it is worth the effort.
 
-Done,
+One reason for the being written as they are is also that this allows a
+compiler to generate some useful warnings such as:
 
+	get_user(var, ptr);
+	printk("var is %d\n", var);
 
->> diff --git a/arch/mips/alchemy/Platform b/arch/mips/alchemy/Platform
->> new file mode 100644
->> index 0000000..1994fdc
->> --- /dev/null
->> +++ b/arch/mips/alchemy/Platform
->> @@ -0,0 +1,103 @@
->> +#
->> +# Common Alchemy Au1x00 stuff
->> +#
->> +core-$(CONFIG_SOC_AU1X00)    += arch/mips/alchemy/common/
->
-> The above is actually wrong - despite that it works.
-> You are supposed to use:
->
-> platform-$(CONFIG_SOC_AU1X00) += alchemy/common/
->
-> Then arch/mips/Kbuild will pick it up.
-> And then subdirs-ccflags-y := -Werror will also take effect.
+Where var indeed can be used uninitialzed.  The return value of get_user()
+being ignored is really a separate problem which should be attacked as
+well.  __must_check would be the obvious way of doing this but it can only
+be used as a function attribute.  Will have to experiment to see if it's
+possible to use it within get_user / put_user in something like:
 
-Ah, interesting.  I shall look at the full commandline in the future.
+static inline int __must_check __gu_must_check(int __gu_err)
+{
+	return __gu_err
+}
 
-I'll do a build of all alchemy boards and resend when there are
-no breakages.
+#define __get_user_check(x, ptr, size)                                  \
+({                                                                      \
+        int __gu_err = -EFAULT;                                         \
+        const __typeof__(*(ptr)) __user * __gu_ptr = (ptr);             \
+                                                                        \
+        might_fault();                                                  \
+        if (likely(access_ok(VERIFY_READ,  __gu_ptr, size)))            \
+                __get_user_common((x), size, __gu_ptr);                 \
+                                                                        \
+        __gu_must_check(__gu_err);					\
+})
 
-Thank you!
-     Manuel Lauss
+  Ralf

@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:06:58 +0200 (CEST)
-Received: from smtp-out-182.synserver.de ([212.40.180.182]:1081 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:07:25 +0200 (CEST)
+Received: from smtp-out-182.synserver.de ([212.40.180.182]:1048 "HELO
         smtp-out-182.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492620Ab0FBTEw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:04:52 +0200
-Received: (qmail 29726 invoked by uid 0); 2 Jun 2010 19:04:40 -0000
+        by eddie.linux-mips.org with SMTP id S1492622Ab0FBTEx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:04:53 +0200
+Received: (qmail 29935 invoked by uid 0); 2 Jun 2010 19:04:43 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 28645
 Received: from port-91163.pppoe.wtnet.de (HELO localhost.localdomain) [84.46.68.144]
-  by 217.119.54.73 with SMTP; 2 Jun 2010 19:04:40 -0000
+  by 217.119.54.73 with SMTP; 2 Jun 2010 19:04:42 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [RFC][PATCH 01/26] MIPS: Add base support for Ingenic JZ4740 System-on-a-Chip
-Date:   Wed,  2 Jun 2010 21:02:52 +0200
-Message-Id: <1275505397-16758-2-git-send-email-lars@metafoo.de>
+Subject: [RFC][PATCH 06/26] MIPS: JZ4740: Add power-management and system reset support
+Date:   Wed,  2 Jun 2010 21:02:57 +0200
+Message-Id: <1275505397-16758-7-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <1275505397-16758-1-git-send-email-lars@metafoo.de>
 References: <1275505397-16758-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27009
+X-archive-position: 27010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,200 +28,181 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1598
+X-UID: 1599
 
-This patch adds a new cpu type for the JZ4740 to the Linux MIPS architecture code.
-It also adds the iomem addresses for the different components found on a JZ4740
-SoC.
+This patch adds support for suspend/resume and poweroff/reboot on a JZ4740 SoC.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 ---
- arch/mips/include/asm/bootinfo.h         |    6 ++++++
- arch/mips/include/asm/cpu.h              |    9 ++++++++-
- arch/mips/include/asm/mach-jz4740/base.h |   28 ++++++++++++++++++++++++++++
- arch/mips/include/asm/mach-jz4740/war.h  |   25 +++++++++++++++++++++++++
- arch/mips/kernel/cpu-probe.c             |   20 ++++++++++++++++++++
- arch/mips/mm/tlbex.c                     |    5 +++++
- 6 files changed, 92 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-jz4740/base.h
- create mode 100644 arch/mips/include/asm/mach-jz4740/war.h
+ arch/mips/jz4740/pm.c    |   56 +++++++++++++++++++++++++++++++
+ arch/mips/jz4740/reset.c |   81 ++++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/jz4740/reset.h |    7 ++++
+ 3 files changed, 144 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/jz4740/pm.c
+ create mode 100644 arch/mips/jz4740/reset.c
+ create mode 100644 arch/mips/jz4740/reset.h
 
-diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
-index 09eee09..15a8ef0 100644
---- a/arch/mips/include/asm/bootinfo.h
-+++ b/arch/mips/include/asm/bootinfo.h
-@@ -71,6 +71,12 @@
- #define MACH_LEMOTE_LL2F       7
- #define MACH_LOONGSON_END      8
- 
-+/*
-+ * Valid machtype for group INGENIC
-+ */
-+#define  MACH_INGENIC_JZ4730	0	/* JZ4730 SOC		*/
-+#define  MACH_INGENIC_JZ4740	1	/* JZ4740 SOC		*/
-+
- extern char *system_type;
- const char *get_system_type(void);
- 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index a5acda4..b201a8f 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -34,7 +34,7 @@
- #define PRID_COMP_LSI		0x080000
- #define PRID_COMP_LEXRA		0x0b0000
- #define PRID_COMP_CAVIUM	0x0d0000
--
-+#define PRID_COMP_INGENIC	0xd00000
- 
- /*
-  * Assigned values for the product ID register.  In order to detect a
-@@ -133,6 +133,12 @@
- #define PRID_IMP_CAVIUM_CN52XX 0x0700
- 
- /*
-+ * These are the PRID's for when 23:16 == PRID_COMP_INGENIC
-+ */
-+
-+#define PRID_IMP_JZRISC        0x0200
-+
-+/*
-  * Definitions for 7:0 on legacy processors
-  */
- 
-@@ -219,6 +225,7 @@ enum cpu_type_enum {
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BCM3302, CPU_BCM4710,
- 	CPU_BCM6338, CPU_BCM6345, CPU_BCM6348, CPU_BCM6358,
-+	CPU_JZRISC,
- 
- 	/*
- 	 * MIPS64 class processors
-diff --git a/arch/mips/include/asm/mach-jz4740/base.h b/arch/mips/include/asm/mach-jz4740/base.h
+diff --git a/arch/mips/jz4740/pm.c b/arch/mips/jz4740/pm.c
 new file mode 100644
-index 0000000..cba3aae
+index 0000000..3b78ced
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-jz4740/base.h
-@@ -0,0 +1,28 @@
-+#ifndef __ASM_MACH_JZ4740_BASE_H__
-+#define __ASM_MACH_JZ4740_BASE_H__
-+
-+#define JZ4740_CPM_BASE_ADDR	0xb0000000
-+#define JZ4740_INTC_BASE_ADDR	0xb0001000
-+#define JZ4740_TCU_BASE_ADDR	0xb0002000
-+#define JZ4740_WDT_BASE_ADDR	0xb0002000
-+#define JZ4740_RTC_BASE_ADDR	0xb0003000
-+#define JZ4740_GPIO_BASE_ADDR	0xb0010000
-+#define JZ4740_AIC_BASE_ADDR	0xb0020000
-+#define JZ4740_ICDC_BASE_ADDR	0xb0020000
-+#define JZ4740_MSC_BASE_ADDR	0xb0021000
-+#define JZ4740_UART0_BASE_ADDR	0xb0030000
-+#define JZ4740_UART1_BASE_ADDR	0xb0031000
-+#define JZ4740_I2C_BASE_ADDR	0xb0042000
-+#define JZ4740_SSI_BASE_ADDR	0xb0043000
-+#define JZ4740_SADC_BASE_ADDR	0xb0070000
-+#define JZ4740_EMC_BASE_ADDR	0xb3010000
-+#define JZ4740_DMAC_BASE_ADDR	0xb3020000
-+#define JZ4740_UHC_BASE_ADDR	0xb3030000
-+#define JZ4740_UDC_BASE_ADDR	0xb3040000
-+#define JZ4740_LCD_BASE_ADDR	0xb3050000
-+#define JZ4740_SLCD_BASE_ADDR	0xb3050000
-+#define JZ4740_CIM_BASE_ADDR	0xb3060000
-+#define JZ4740_IPU_BASE_ADDR	0xb3080000
-+#define JZ4740_ETH_BASE_ADDR	0xb3100000
-+
-+#endif
-diff --git a/arch/mips/include/asm/mach-jz4740/war.h b/arch/mips/include/asm/mach-jz4740/war.h
-new file mode 100644
-index 0000000..3a5bc17
---- /dev/null
-+++ b/arch/mips/include/asm/mach-jz4740/war.h
-@@ -0,0 +1,25 @@
++++ b/arch/mips/jz4740/pm.c
+@@ -0,0 +1,56 @@
 +/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
++ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ *		JZ4740 SoC power management support
 + *
-+ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ *  This program is free software; you can redistribute	 it and/or modify it
++ *  under  the terms of	 the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the	License, or (at your
++ *  option) any later version.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
 + */
-+#ifndef __ASM_MIPS_MACH_JZ4740_WAR_H
-+#define __ASM_MIPS_MACH_JZ4740_WAR_H
 +
-+#define R4600_V1_INDEX_ICACHEOP_WAR	0
-+#define R4600_V1_HIT_CACHEOP_WAR	0
-+#define R4600_V2_HIT_CACHEOP_WAR	0
-+#define R5432_CP0_INTERRUPT_WAR		0
-+#define BCM1250_M3_WAR			0
-+#define SIBYTE_1956_WAR			0
-+#define MIPS4K_ICACHE_REFILL_WAR	0
-+#define MIPS_CACHE_SYNC_WAR		0
-+#define TX49XX_ICACHE_INDEX_INV_WAR	0
-+#define RM9000_CDEX_SMP_WAR		0
-+#define ICACHE_REFILLS_WORKAROUND_WAR	0
-+#define R10000_LLSC_WAR			0
-+#define MIPS34K_MISSED_ITLB_WAR		0
++#include <linux/init.h>
++#include <linux/pm.h>
++#include <linux/delay.h>
++#include <linux/suspend.h>
 +
-+#endif /* __ASM_MIPS_MACH_JZ4740_WAR_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 3562b85..9b66331 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -187,6 +187,7 @@ void __init check_wait(void)
- 	case CPU_BCM6358:
- 	case CPU_CAVIUM_OCTEON:
- 	case CPU_CAVIUM_OCTEON_PLUS:
-+	case CPU_JZRISC:
- 		cpu_wait = r4k_wait;
- 		break;
- 
-@@ -956,6 +957,22 @@ platform:
- 	}
- }
- 
-+static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
++#include <asm/mach-jz4740/clock.h>
++
++#include "clock.h"
++#include "irq.h"
++
++static int jz4740_pm_enter(suspend_state_t state)
 +{
-+	decode_configs(c);
-+	/* JZRISC does not implement the CP0 counter. */
-+	c->options &= ~MIPS_CPU_COUNTER;
-+	switch (c->processor_id & 0xff00) {
-+	case PRID_IMP_JZRISC:
-+		c->cputype = CPU_JZRISC;
-+		__cpu_name[cpu] = "Ingenic JZRISC";
-+		break;
-+	default:
-+		panic("Unknown Ingenic Processor ID!");
-+		break;
++	jz4740_intc_suspend();
++	jz4740_clock_suspend();
++
++	jz4740_clock_set_wait_mode(JZ4740_WAIT_MODE_SLEEP);
++
++	__asm__(".set\tmips3\n\t"
++		"wait\n\t"
++		".set\tmips0");
++
++	jz4740_clock_set_wait_mode(JZ4740_WAIT_MODE_IDLE);
++
++	jz4740_clock_resume();
++	jz4740_intc_resume();
++
++	return 0;
++}
++
++static struct platform_suspend_ops jz4740_pm_ops = {
++	.valid		= suspend_valid_only_mem,
++	.enter		= jz4740_pm_enter,
++};
++
++static int __init jz4740_pm_init(void)
++{
++	suspend_set_ops(&jz4740_pm_ops);
++	return 0;
++
++}
++late_initcall(jz4740_pm_init);
+diff --git a/arch/mips/jz4740/reset.c b/arch/mips/jz4740/reset.c
+new file mode 100644
+index 0000000..448a7da
+--- /dev/null
++++ b/arch/mips/jz4740/reset.c
+@@ -0,0 +1,81 @@
++/*
++ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ *
++ *  This program is free software; you can redistribute	 it and/or modify it
++ *  under  the terms of	 the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the	License, or (at your
++ *  option) any later version.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#include <linux/io.h>
++#include <linux/kernel.h>
++#include <linux/pm.h>
++
++#include <linux/delay.h>
++
++#include <asm/reboot.h>
++
++#include <asm/mach-jz4740/base.h>
++#include <asm/mach-jz4740/timer.h>
++
++static void jz4740_halt(void)
++{
++	while (1) {
++		__asm__(".set push;\n"
++			".set mips3;\n"
++			"wait;\n"
++			".set pop;\n"
++		);
 +	}
 +}
 +
- const char *__cpu_name[NR_CPUS];
- const char *__elf_platform;
- 
-@@ -994,6 +1011,9 @@ __cpuinit void cpu_probe(void)
- 	case PRID_COMP_CAVIUM:
- 		cpu_probe_cavium(c, cpu);
- 		break;
-+	case PRID_COMP_INGENIC:
-+		cpu_probe_ingenic(c, cpu);
-+		break;
- 	}
- 
- 	BUG_ON(!__cpu_name[cpu]);
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 86f004d..4510e61 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -409,6 +409,11 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 		tlbw(p);
- 		break;
- 
-+	case CPU_JZRISC:
-+		tlbw(p);
-+		uasm_i_nop(p);
-+		break;
++#define JZ_REG_WDT_DATA 0x00
++#define JZ_REG_WDT_COUNTER_ENABLE 0x04
++#define JZ_REG_WDT_COUNTER 0x08
++#define JZ_REG_WDT_CTRL 0x0c
 +
- 	default:
- 		panic("No TLB refill handler yet (CPU type: %d)",
- 		      current_cpu_data.cputype);
++static void jz4740_restart(char *command)
++{
++	void __iomem *wdt_base = ioremap(CPHYSADDR(JZ4740_WDT_BASE_ADDR), 0x0f);
++
++	jz4740_timer_enable_watchdog();
++
++	writeb(0, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
++
++	writew(0, wdt_base + JZ_REG_WDT_COUNTER);
++	writew(0, wdt_base + JZ_REG_WDT_DATA);
++	writew(BIT(2), wdt_base + JZ_REG_WDT_CTRL);
++
++	writeb(1, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
++	jz4740_halt();
++}
++
++#define JZ_REG_RTC_CTRL		0x00
++#define JZ_REG_RTC_HIBERNATE	0x20
++
++#define JZ_RTC_CTRL_WRDY	BIT(7)
++
++static void jz4740_power_off(void)
++{
++	void __iomem *rtc_base = ioremap(CPHYSADDR(JZ4740_RTC_BASE_ADDR), 0x24);
++	uint32_t ctrl;
++
++	do {
++		ctrl = readl(rtc_base + JZ_REG_RTC_CTRL);
++	} while (!(ctrl & JZ_RTC_CTRL_WRDY));
++
++	writel(1, rtc_base + JZ_REG_RTC_HIBERNATE);
++	jz4740_halt();
++}
++
++void jz4740_reset_init(void)
++{
++	_machine_restart = jz4740_restart;
++	_machine_halt = jz4740_halt;
++	pm_power_off = jz4740_power_off;
++}
+diff --git a/arch/mips/jz4740/reset.h b/arch/mips/jz4740/reset.h
+new file mode 100644
+index 0000000..c57a829
+--- /dev/null
++++ b/arch/mips/jz4740/reset.h
+@@ -0,0 +1,7 @@
++#ifndef __MIPS_JZ4740_RESET_H__
++#define __MIPS_JZ4740_RESET_H__
++
++extern void jz4740_reset_init(void);
++
++#endif
++
 -- 
 1.5.6.5

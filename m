@@ -1,25 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:07:25 +0200 (CEST)
-Received: from smtp-out-182.synserver.de ([212.40.180.182]:1048 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:07:49 +0200 (CEST)
+Received: from smtp-out-182.synserver.de ([212.40.180.182]:1082 "HELO
         smtp-out-182.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492622Ab0FBTEx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:04:53 +0200
-Received: (qmail 29935 invoked by uid 0); 2 Jun 2010 19:04:43 -0000
+        by eddie.linux-mips.org with SMTP id S1492626Ab0FBTEy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:04:54 +0200
+Received: (qmail 29756 invoked by uid 0); 2 Jun 2010 19:04:41 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 28645
 Received: from port-91163.pppoe.wtnet.de (HELO localhost.localdomain) [84.46.68.144]
-  by 217.119.54.73 with SMTP; 2 Jun 2010 19:04:42 -0000
+  by 217.119.54.73 with SMTP; 2 Jun 2010 19:04:40 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [RFC][PATCH 06/26] MIPS: JZ4740: Add power-management and system reset support
-Date:   Wed,  2 Jun 2010 21:02:57 +0200
-Message-Id: <1275505397-16758-7-git-send-email-lars@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [RFC][PATCH 02/26] MIPS: jz4740: Add IRQ handler code
+Date:   Wed,  2 Jun 2010 21:02:53 +0200
+Message-Id: <1275505397-16758-3-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <1275505397-16758-1-git-send-email-lars@metafoo.de>
 References: <1275505397-16758-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27010
+X-archive-position: 27011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,29 +29,30 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1599
+X-UID: 1600
 
-This patch adds support for suspend/resume and poweroff/reboot on a JZ4740 SoC.
+This patch adds support for IRQ handling on a JZ4740 SoC.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/jz4740/pm.c    |   56 +++++++++++++++++++++++++++++++
- arch/mips/jz4740/reset.c |   81 ++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/jz4740/reset.h |    7 ++++
- 3 files changed, 144 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/jz4740/pm.c
- create mode 100644 arch/mips/jz4740/reset.c
- create mode 100644 arch/mips/jz4740/reset.h
+ arch/mips/include/asm/mach-jz4740/irq.h |   55 ++++++++++
+ arch/mips/jz4740/irq.c                  |  170 +++++++++++++++++++++++++++++++
+ arch/mips/jz4740/irq.h                  |   21 ++++
+ 3 files changed, 246 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-jz4740/irq.h
+ create mode 100644 arch/mips/jz4740/irq.c
+ create mode 100644 arch/mips/jz4740/irq.h
 
-diff --git a/arch/mips/jz4740/pm.c b/arch/mips/jz4740/pm.c
+diff --git a/arch/mips/include/asm/mach-jz4740/irq.h b/arch/mips/include/asm/mach-jz4740/irq.h
 new file mode 100644
-index 0000000..3b78ced
+index 0000000..5e27b78
 --- /dev/null
-+++ b/arch/mips/jz4740/pm.c
-@@ -0,0 +1,56 @@
++++ b/arch/mips/include/asm/mach-jz4740/irq.h
+@@ -0,0 +1,55 @@
 +/*
-+ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *		JZ4740 SoC power management support
++ *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
++ *  JZ7420/JZ4740 IRQ definitions
 + *
 + *  This program is free software; you can redistribute	 it and/or modify it
 + *  under  the terms of	 the GNU General  Public License as published by the
@@ -63,146 +65,248 @@ index 0000000..3b78ced
 + *
 + */
 +
-+#include <linux/init.h>
-+#include <linux/pm.h>
-+#include <linux/delay.h>
-+#include <linux/suspend.h>
++#ifndef __ASM_MACH_JZ4740_IRQ_H__
++#define __ASM_MACH_JZ4740_IRQ_H__
 +
-+#include <asm/mach-jz4740/clock.h>
++#define MIPS_CPU_IRQ_BASE 0
++#define JZ4740_IRQ_BASE 8
 +
-+#include "clock.h"
-+#include "irq.h"
++/* 1st-level interrupts */
++#define JZ4740_IRQ(x)	(JZ4740_IRQ_BASE + (x))
++#define JZ4740_IRQ_I2C	JZ4740_IRQ(1)
++#define JZ4740_IRQ_UHC	JZ4740_IRQ(3)
++#define JZ4740_IRQ_UART1	JZ4740_IRQ(8)
++#define JZ4740_IRQ_UART0	JZ4740_IRQ(9)
++#define JZ4740_IRQ_SADC	JZ4740_IRQ(12)
++#define JZ4740_IRQ_MSC	JZ4740_IRQ(14)
++#define JZ4740_IRQ_RTC	JZ4740_IRQ(15)
++#define JZ4740_IRQ_SSI	JZ4740_IRQ(16)
++#define JZ4740_IRQ_CIM	JZ4740_IRQ(17)
++#define JZ4740_IRQ_AIC	JZ4740_IRQ(18)
++#define JZ4740_IRQ_ETH	JZ4740_IRQ(19)
++#define JZ4740_IRQ_DMAC	JZ4740_IRQ(20)
++#define JZ4740_IRQ_TCU2	JZ4740_IRQ(21)
++#define JZ4740_IRQ_TCU1	JZ4740_IRQ(22)
++#define JZ4740_IRQ_TCU0	JZ4740_IRQ(23)
++#define JZ4740_IRQ_UDC	JZ4740_IRQ(24)
++#define JZ4740_IRQ_GPIO3	JZ4740_IRQ(25)
++#define JZ4740_IRQ_GPIO2	JZ4740_IRQ(26)
++#define JZ4740_IRQ_GPIO1	JZ4740_IRQ(27)
++#define JZ4740_IRQ_GPIO0	JZ4740_IRQ(28)
++#define JZ4740_IRQ_IPU	JZ4740_IRQ(29)
++#define JZ4740_IRQ_LCD	JZ4740_IRQ(30)
 +
-+static int jz4740_pm_enter(suspend_state_t state)
-+{
-+	jz4740_intc_suspend();
-+	jz4740_clock_suspend();
++/* 2nd-level interrupts */
++#define JZ4740_IRQ_DMA(x)	((x) + JZ4740_IRQ(32))
 +
-+	jz4740_clock_set_wait_mode(JZ4740_WAIT_MODE_SLEEP);
++#define JZ4740_IRQ_INTC_GPIO(x)	(JZ4740_IRQ_GPIO0 - (x))
++#define JZ4740_IRQ_GPIO(x)		(JZ4740_IRQ(48) + (x))
 +
-+	__asm__(".set\tmips3\n\t"
-+		"wait\n\t"
-+		".set\tmips0");
-+
-+	jz4740_clock_set_wait_mode(JZ4740_WAIT_MODE_IDLE);
-+
-+	jz4740_clock_resume();
-+	jz4740_intc_resume();
-+
-+	return 0;
-+}
-+
-+static struct platform_suspend_ops jz4740_pm_ops = {
-+	.valid		= suspend_valid_only_mem,
-+	.enter		= jz4740_pm_enter,
-+};
-+
-+static int __init jz4740_pm_init(void)
-+{
-+	suspend_set_ops(&jz4740_pm_ops);
-+	return 0;
-+
-+}
-+late_initcall(jz4740_pm_init);
-diff --git a/arch/mips/jz4740/reset.c b/arch/mips/jz4740/reset.c
-new file mode 100644
-index 0000000..448a7da
---- /dev/null
-+++ b/arch/mips/jz4740/reset.c
-@@ -0,0 +1,81 @@
-+/*
-+ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *
-+ *  This program is free software; you can redistribute	 it and/or modify it
-+ *  under  the terms of	 the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the	License, or (at your
-+ *  option) any later version.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/pm.h>
-+
-+#include <linux/delay.h>
-+
-+#include <asm/reboot.h>
-+
-+#include <asm/mach-jz4740/base.h>
-+#include <asm/mach-jz4740/timer.h>
-+
-+static void jz4740_halt(void)
-+{
-+	while (1) {
-+		__asm__(".set push;\n"
-+			".set mips3;\n"
-+			"wait;\n"
-+			".set pop;\n"
-+		);
-+	}
-+}
-+
-+#define JZ_REG_WDT_DATA 0x00
-+#define JZ_REG_WDT_COUNTER_ENABLE 0x04
-+#define JZ_REG_WDT_COUNTER 0x08
-+#define JZ_REG_WDT_CTRL 0x0c
-+
-+static void jz4740_restart(char *command)
-+{
-+	void __iomem *wdt_base = ioremap(CPHYSADDR(JZ4740_WDT_BASE_ADDR), 0x0f);
-+
-+	jz4740_timer_enable_watchdog();
-+
-+	writeb(0, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
-+
-+	writew(0, wdt_base + JZ_REG_WDT_COUNTER);
-+	writew(0, wdt_base + JZ_REG_WDT_DATA);
-+	writew(BIT(2), wdt_base + JZ_REG_WDT_CTRL);
-+
-+	writeb(1, wdt_base + JZ_REG_WDT_COUNTER_ENABLE);
-+	jz4740_halt();
-+}
-+
-+#define JZ_REG_RTC_CTRL		0x00
-+#define JZ_REG_RTC_HIBERNATE	0x20
-+
-+#define JZ_RTC_CTRL_WRDY	BIT(7)
-+
-+static void jz4740_power_off(void)
-+{
-+	void __iomem *rtc_base = ioremap(CPHYSADDR(JZ4740_RTC_BASE_ADDR), 0x24);
-+	uint32_t ctrl;
-+
-+	do {
-+		ctrl = readl(rtc_base + JZ_REG_RTC_CTRL);
-+	} while (!(ctrl & JZ_RTC_CTRL_WRDY));
-+
-+	writel(1, rtc_base + JZ_REG_RTC_HIBERNATE);
-+	jz4740_halt();
-+}
-+
-+void jz4740_reset_init(void)
-+{
-+	_machine_restart = jz4740_restart;
-+	_machine_halt = jz4740_halt;
-+	pm_power_off = jz4740_power_off;
-+}
-diff --git a/arch/mips/jz4740/reset.h b/arch/mips/jz4740/reset.h
-new file mode 100644
-index 0000000..c57a829
---- /dev/null
-+++ b/arch/mips/jz4740/reset.h
-@@ -0,0 +1,7 @@
-+#ifndef __MIPS_JZ4740_RESET_H__
-+#define __MIPS_JZ4740_RESET_H__
-+
-+extern void jz4740_reset_init(void);
++#define NR_IRQS (JZ4740_IRQ_GPIO(127) + 1)
 +
 +#endif
+diff --git a/arch/mips/jz4740/irq.c b/arch/mips/jz4740/irq.c
+new file mode 100644
+index 0000000..46a03ee
+--- /dev/null
++++ b/arch/mips/jz4740/irq.c
+@@ -0,0 +1,170 @@
++/*
++ *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
++ *  JZ4740 platform IRQ support
++ *
++ *  This program is free software; you can redistribute	 it and/or modify it
++ *  under  the terms of	 the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the	License, or (at your
++ *  option) any later version.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
 +
++#include <linux/errno.h>
++#include <linux/init.h>
++#include <linux/types.h>
++#include <linux/interrupt.h>
++#include <linux/ioport.h>
++#include <linux/timex.h>
++#include <linux/slab.h>
++#include <linux/delay.h>
++
++#include <linux/debugfs.h>
++#include <linux/seq_file.h>
++
++#include <asm/io.h>
++#include <asm/mipsregs.h>
++#include <asm/irq_cpu.h>
++
++#include <asm/mach-jz4740/base.h>
++
++static void __iomem *jz_intc_base;
++static uint32_t jz_intc_wakeup;
++static uint32_t jz_intc_saved;
++
++#define JZ_REG_INTC_STATUS	0x00
++#define JZ_REG_INTC_MASK	0x04
++#define JZ_REG_INTC_SET_MASK	0x08
++#define JZ_REG_INTC_CLEAR_MASK	0x0c
++#define JZ_REG_INTC_PENDING	0x10
++
++#define IRQ_BIT(x) BIT((x) - JZ4740_IRQ_BASE)
++
++static void intc_irq_unmask(unsigned int irq)
++{
++	writel(IRQ_BIT(irq), jz_intc_base + JZ_REG_INTC_CLEAR_MASK);
++}
++
++static void intc_irq_mask(unsigned int irq)
++{
++	writel(IRQ_BIT(irq), jz_intc_base + JZ_REG_INTC_SET_MASK);
++}
++
++static int intc_irq_set_wake(unsigned int irq, unsigned int on)
++{
++	if (on)
++		jz_intc_wakeup |= IRQ_BIT(irq);
++	else
++		jz_intc_wakeup &= ~IRQ_BIT(irq);
++
++	return 0;
++}
++
++static struct irq_chip intc_irq_type = {
++	.name =		"INTC",
++	.mask =		intc_irq_mask,
++	.mask_ack =	intc_irq_mask,
++	.unmask =	intc_irq_unmask,
++	.set_wake =	intc_irq_set_wake,
++};
++
++static irqreturn_t jz4740_cascade(int irq, void *data)
++{
++	uint32_t irq_reg;
++	int intc_irq;
++
++	irq_reg = readl(jz_intc_base + JZ_REG_INTC_PENDING);
++
++	intc_irq = ffs(irq_reg);
++	if (intc_irq)
++		generic_handle_irq(intc_irq - 1 + JZ4740_IRQ_BASE);
++
++	return IRQ_HANDLED;
++}
++
++static struct irqaction jz4740_cascade_action = {
++	.handler = jz4740_cascade,
++	.name = "JZ4740 cascade interrupt",
++	.flags = IRQF_DISABLED,
++};
++
++void __init arch_init_irq(void)
++{
++	int i;
++	mips_cpu_irq_init();
++
++	jz_intc_base = ioremap(CPHYSADDR(JZ4740_INTC_BASE_ADDR), 0x14);
++
++	for (i = JZ4740_IRQ_BASE; i < JZ4740_IRQ_BASE + 32; i++) {
++		intc_irq_mask(i);
++		set_irq_chip_and_handler(i, &intc_irq_type, handle_level_irq);
++	}
++
++	setup_irq(2, &jz4740_cascade_action);
++}
++
++asmlinkage void plat_irq_dispatch(void)
++{
++	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
++	if (pending & STATUSF_IP2)
++		do_IRQ(2);
++	else if (pending & STATUSF_IP3)
++		do_IRQ(3);
++	else
++		spurious_interrupt();
++}
++
++void jz4740_intc_suspend(void)
++{
++	jz_intc_saved = readl(jz_intc_base + JZ_REG_INTC_MASK);
++	writel(~jz_intc_wakeup, jz_intc_base + JZ_REG_INTC_SET_MASK);
++	writel(jz_intc_wakeup, jz_intc_base + JZ_REG_INTC_CLEAR_MASK);
++}
++
++void jz4740_intc_resume(void)
++{
++	writel(~jz_intc_saved, jz_intc_base + JZ_REG_INTC_CLEAR_MASK);
++	writel(jz_intc_saved, jz_intc_base + JZ_REG_INTC_SET_MASK);
++}
++
++#ifdef CONFIG_DEBUG_FS
++
++static inline void intc_seq_reg(struct seq_file *s, const char *name,
++	unsigned int reg)
++{
++	seq_printf(s, "%s:\t\t%08x\n", name, readl(jz_intc_base + reg));
++}
++
++static int intc_regs_show(struct seq_file *s, void *unused)
++{
++	intc_seq_reg(s, "Status", JZ_REG_INTC_STATUS);
++	intc_seq_reg(s, "Mask", JZ_REG_INTC_MASK);
++	intc_seq_reg(s, "Pending", JZ_REG_INTC_PENDING);
++
++	return 0;
++}
++
++static int intc_regs_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, intc_regs_show, NULL);
++}
++
++static const struct file_operations intc_regs_operations = {
++	.open		= intc_regs_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++};
++
++static int __init intc_debugfs_init(void)
++{
++	(void) debugfs_create_file("jz_regs_intc", S_IFREG | S_IRUGO,
++				NULL, NULL, &intc_regs_operations);
++	return 0;
++}
++subsys_initcall(intc_debugfs_init);
++
++#endif
+diff --git a/arch/mips/jz4740/irq.h b/arch/mips/jz4740/irq.h
+new file mode 100644
+index 0000000..dadbd5f
+--- /dev/null
++++ b/arch/mips/jz4740/irq.h
+@@ -0,0 +1,21 @@
++/*
++ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ *
++ *  This program is free software; you can redistribute	 it and/or modify it
++ *  under  the terms of	 the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the	License, or (at your
++ *  option) any later version.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#ifndef __MIPS_JZ4740_IRQ_H__
++#define __MIPS_JZ4740_IRQ_H__
++
++extern void jz4740_intc_suspend(void);
++extern void jz4740_intc_resume(void);
++
++#endif
 -- 
 1.5.6.5

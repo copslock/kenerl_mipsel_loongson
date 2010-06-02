@@ -1,72 +1,195 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 16:56:32 +0200 (CEST)
-Received: from fg-out-1718.google.com ([72.14.220.153]:13712 "EHLO
-        fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491790Ab0FBO40 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 16:56:26 +0200
-Received: by fg-out-1718.google.com with SMTP id 16so1312769fgg.6
-        for <linux-mips@linux-mips.org>; Wed, 02 Jun 2010 07:56:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=JsQ5MYAzDQKFv7L0/obW/H1daf+/4W88pF0t/BKdJ54=;
-        b=YyLXHqQRCEWANcut4lYdkrLChzT/0zpTtkMmM25idv7uBPkfPQmqzcUQJQ6th1f1+W
-         nuEwv/dg6saWMwGzrVEMA2fxJ2O4mHlG2FSjb0MzSW2V67taJuGMHmZZUTvIyKuNId39
-         eThakSykcTu/bkRkFZcYlR8+cLvpdr+y8nrMk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        b=G7udwPCWYXzWAuRi07/7gKYFnEveEAL9SenVIx14p7xf9GjOBeWsA0aHgYI0EFBHQu
-         WeHu8RBd79ZuMFWk7c6mE8Tqc8G/QaZcIbMFlcneyWWCDTTe4/cTVbncc/TbofeOu4Ny
-         7pSQuLvedUffT4vaaLAIFIb5aX2wKckvd5QNU=
-Received: by 10.87.45.15 with SMTP id x15mr13736628fgj.42.1275490583886;
-        Wed, 02 Jun 2010 07:56:23 -0700 (PDT)
-Received: from [192.168.2.50] (host-83.2.142.85.tvksmp.pl [83.2.142.85])
-        by mx.google.com with ESMTPS id 4sm121508fgg.27.2010.06.02.07.56.23
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 02 Jun 2010 07:56:23 -0700 (PDT)
-Message-ID: <4C067116.9000907@gmail.com>
-Date:   Wed, 02 Jun 2010 16:56:22 +0200
-From:   =?UTF-8?B?SXJlbmV1c3ogU3pjemXFm25pYWs=?= 
-        <irek.szczesniak@gmail.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
-MIME-Version: 1.0
-To:     Florian Fainelli <florian@openwrt.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: MIPS 24Kc
-References: <4C055A60.3000203@gmail.com> <201006012144.43447.florian@openwrt.org>
-In-Reply-To: <201006012144.43447.florian@openwrt.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 27004
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:05:05 +0200 (CEST)
+Received: from smtp-out-182.synserver.de ([212.40.180.182]:1088 "HELO
+        smtp-out-182.synserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1492617Ab0FBTEu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:04:50 +0200
+Received: (qmail 29873 invoked by uid 0); 2 Jun 2010 19:04:42 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@laprican.de
+X-SynServer-PPID: 28645
+Received: from port-91163.pppoe.wtnet.de (HELO localhost.localdomain) [84.46.68.144]
+  by 217.119.54.73 with SMTP; 2 Jun 2010 19:04:42 -0000
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [RFC][PATCH 05/26] MIPS: JZ4740: Add clocksource/clockevent support.
+Date:   Wed,  2 Jun 2010 21:02:56 +0200
+Message-Id: <1275505397-16758-6-git-send-email-lars@metafoo.de>
+X-Mailer: git-send-email 1.5.6.5
+In-Reply-To: <1275505397-16758-1-git-send-email-lars@metafoo.de>
+References: <1275505397-16758-1-git-send-email-lars@metafoo.de>
+X-archive-position: 27005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: irek.szczesniak@gmail.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1407
+X-UID: 1585
 
-Hi,
+This patch add clocksource and clockevent support for the timer/counter unit on
+JZ4740 SoCs.
 
-> I would recommend checking OpenWr's ar71xx port[1] which supports RB433.
-> 
-> [1]: https://dev.openwrt.org/browser/trunk/target/linux/ar71xx
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+---
+ arch/mips/jz4740/time.c |  144 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 144 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/jz4740/time.c
 
-Thanks for the information.   A few weeks ago I downloaded the most 
-recent Kamikaze release (8.09.2), and I didn't get the option of KGDB 
-for ar71xx, and so I didn't use it.  But now that I checked out the 
-trunk, that you point out, I was able to built OpenWRT with the KGDB 
-support!  That's cool!
-
-
-Best,
-Irek
-
+diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
+new file mode 100644
+index 0000000..da8183f
+--- /dev/null
++++ b/arch/mips/jz4740/time.c
+@@ -0,0 +1,144 @@
++/*
++ *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ *  JZ4740 platform time support
++ *
++ *  This program is free software; you can redistribute	 it and/or modify it
++ *  under  the terms of	 the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the	License, or (at your
++ *  option) any later version.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
++#include <linux/time.h>
++
++#include <linux/clockchips.h>
++
++#include <asm/mach-jz4740/irq.h>
++#include <asm/time.h>
++
++#include "clock.h"
++#include "timer.h"
++
++#define TIMER_CLOCKEVENT 0
++#define TIMER_CLOCKSOURCE 1
++
++static uint16_t jz4740_jiffies_per_tick;
++
++static cycle_t jz4740_clocksource_read(struct clocksource *cs)
++{
++	return jz4740_timer_get_count(TIMER_CLOCKSOURCE);
++}
++
++static struct clocksource jz4740_clocksource = {
++	.name = "jz4740-timer",
++	.rating = 200,
++	.read = jz4740_clocksource_read,
++	.mask = CLOCKSOURCE_MASK(16),
++	.flags = CLOCK_SOURCE_IS_CONTINUOUS,
++};
++
++static irqreturn_t jz4740_clockevent_irq(int irq, void *devid)
++{
++	struct clock_event_device *cd = devid;
++
++	jz4740_timer_ack_full(TIMER_CLOCKEVENT);
++
++	if (cd->mode != CLOCK_EVT_MODE_PERIODIC)
++		jz4740_timer_disable(TIMER_CLOCKEVENT);
++
++	cd->event_handler(cd);
++
++	return IRQ_HANDLED;
++}
++
++static void jz4740_clockevent_set_mode(enum clock_event_mode mode,
++	struct clock_event_device *cd)
++{
++	switch (mode) {
++	case CLOCK_EVT_MODE_PERIODIC:
++		jz4740_timer_set_count(TIMER_CLOCKEVENT, 0);
++		jz4740_timer_set_period(TIMER_CLOCKEVENT, jz4740_jiffies_per_tick);
++	case CLOCK_EVT_MODE_RESUME:
++		jz4740_timer_irq_full_enable(TIMER_CLOCKEVENT);
++		jz4740_timer_enable(TIMER_CLOCKEVENT);
++		break;
++	case CLOCK_EVT_MODE_ONESHOT:
++	case CLOCK_EVT_MODE_SHUTDOWN:
++		jz4740_timer_disable(TIMER_CLOCKEVENT);
++		break;
++	default:
++		break;
++	}
++}
++
++static int jz4740_clockevent_set_next(unsigned long evt,
++	struct clock_event_device *cd)
++{
++	jz4740_timer_set_count(TIMER_CLOCKEVENT, 0);
++	jz4740_timer_set_period(TIMER_CLOCKEVENT, evt);
++	jz4740_timer_enable(TIMER_CLOCKEVENT);
++
++	return 0;
++}
++
++static struct clock_event_device jz4740_clockevent = {
++	.name = "jz4740-timer",
++	.features = CLOCK_EVT_FEAT_PERIODIC,
++	.set_next_event = jz4740_clockevent_set_next,
++	.set_mode = jz4740_clockevent_set_mode,
++	.rating = 200,
++	.irq = JZ4740_IRQ_TCU0,
++};
++
++static struct irqaction timer_irqaction = {
++	.handler	= jz4740_clockevent_irq,
++	.flags		= IRQF_PERCPU | IRQF_TIMER | IRQF_DISABLED,
++	.name		= "jz4740-timerirq",
++	.dev_id		= &jz4740_clockevent,
++};
++
++void __init plat_time_init(void)
++{
++	int ret;
++	uint32_t clk_rate;
++	uint16_t ctrl;
++
++	jz4740_timer_init();
++
++	clk_rate = jz4740_clock_bdata.ext_rate >> 4;
++	jz4740_jiffies_per_tick = DIV_ROUND_CLOSEST(clk_rate, HZ);
++
++	clockevent_set_clock(&jz4740_clockevent, clk_rate);
++	jz4740_clockevent.min_delta_ns = clockevent_delta2ns(100, &jz4740_clockevent);
++	jz4740_clockevent.max_delta_ns = clockevent_delta2ns(0xffff, &jz4740_clockevent);
++	jz4740_clockevent.cpumask = cpumask_of(0);
++
++	clockevents_register_device(&jz4740_clockevent);
++
++	clocksource_set_clock(&jz4740_clocksource, clk_rate);
++	ret = clocksource_register(&jz4740_clocksource);
++
++	if (ret)
++		printk(KERN_ERR "Failed to register clocksource: %d\n", ret);
++
++	setup_irq(JZ4740_IRQ_TCU0, &timer_irqaction);
++
++	ctrl = JZ_TIMER_CTRL_PRESCALE_16 | JZ_TIMER_CTRL_SRC_EXT;
++
++	jz4740_timer_set_ctrl(TIMER_CLOCKEVENT, ctrl);
++	jz4740_timer_set_ctrl(TIMER_CLOCKSOURCE, ctrl);
++
++	jz4740_timer_set_period(TIMER_CLOCKEVENT, jz4740_jiffies_per_tick);
++	jz4740_timer_irq_full_enable(TIMER_CLOCKEVENT);
++
++	jz4740_timer_set_period(TIMER_CLOCKSOURCE, 0xffff);
++
++	jz4740_timer_enable(TIMER_CLOCKEVENT);
++	jz4740_timer_enable(TIMER_CLOCKSOURCE);
++}
 -- 
-Ireneusz (Irek) Szczesniak
-http://www.irkos.org
+1.5.6.5

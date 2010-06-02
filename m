@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 08:32:09 +0200 (CEST)
-Received: from mx1.moondrake.net ([212.85.150.166]:45807 "EHLO
-        mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1492540Ab0FBGbb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 08:31:31 +0200
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-        id 14EFB274038; Wed,  2 Jun 2010 08:31:11 +0200 (CEST)
-Received: from office-abk.mandriva.com (unknown [195.7.104.248])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.mandriva.com (Postfix) with ESMTP id 270F8274015;
-        Wed,  2 Jun 2010 08:31:08 +0200 (CEST)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-        by office-abk.mandriva.com (Postfix) with ESMTP id 043B284A61;
-        Wed,  2 Jun 2010 08:50:21 +0200 (CEST)
-Received: by anduin.mandriva.com (Postfix, from userid 500)
-        id B9215FF869; Wed,  2 Jun 2010 08:31:17 +0200 (CEST)
-Message-Id: <20100601223953.165137063@n5.mandriva.com>
-User-Agent: quilt/0.48-1
-Date:   Wed, 02 Jun 2010 00:39:53 +0200
-From:   apatard@mandriva.com
-To:     linux-mips@linux-mips.org
-Cc:     aba@not.so.argh.org
-Subject: [patch 0/1] loongson: enable rtc on rtc-cmos compatibles systems.
-X-archive-position: 26984
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 09:32:55 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:39170 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491112Ab0FBHcs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Jun 2010 09:32:48 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o527WkZV003731;
+        Wed, 2 Jun 2010 08:32:46 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o527WjJT003729;
+        Wed, 2 Jun 2010 08:32:45 +0100
+Date:   Wed, 2 Jun 2010 08:32:44 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     apatard@mandriva.com
+Cc:     linux-mips@linux-mips.org, aba@not.so.argh.org
+Subject: Re: [patch 1/1] Loongson: define rtc device on mc146818 compatible
+ systems
+Message-ID: <20100602073244.GB1962@linux-mips.org>
+References: <20100601223953.165137063@n5.mandriva.com>
+ <20100601224232.291773884@n5.mandriva.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100601224232.291773884@n5.mandriva.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+X-archive-position: 26985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1041
+X-UID: 1066
 
+On Wed, Jun 02, 2010 at 12:39:54AM +0200, apatard@mandriva.com wrote:
 
-Hi,
+> This patch declare the rtc device present on systems with clock compatible with
+> the mc146818 and handled by rtc-cmos. I've introduced a new Kconfig entry because
+> there are some systems without rtc-cmos compatible clock.
 
-Now that the rtc-cmos patch has been merged, one can use the rtc-cmos driver
-on loongson systems with mc146818 compatible rtc.
+Applied, but:
 
+/home/ralf/src/linux/linux-mips/.git/rebase-apply/patch:87: new blank line at EOF.
++
+warning: 1 line adds whitespace errors.
 
-Arnaud
+Empty lines at end of file, bad karma.  Also to keep log messages in
+"git log" under 80 characters, keep posted log messages to at most 76
+columns.
+
+Anyway, applied.  Thanks for sorting this!
+
+  Ralf

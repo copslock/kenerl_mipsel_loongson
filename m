@@ -1,25 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:16:50 +0200 (CEST)
-Received: from smtp-out-182.synserver.de ([212.40.180.182]:1481 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:17:19 +0200 (CEST)
+Received: from smtp-out-182.synserver.de ([212.40.180.182]:1577 "HELO
         smtp-out-182.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492635Ab0FBTOC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:14:02 +0200
-Received: (qmail 32056 invoked by uid 0); 2 Jun 2010 19:13:12 -0000
+        by eddie.linux-mips.org with SMTP id S1492621Ab0FBTOG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:14:06 +0200
+Received: (qmail 31776 invoked by uid 0); 2 Jun 2010 19:13:09 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 31322
 Received: from port-91163.pppoe.wtnet.de (HELO localhost.localdomain) [84.46.68.144]
-  by 217.119.54.81 with SMTP; 2 Jun 2010 19:13:12 -0000
+  by 217.119.54.81 with SMTP; 2 Jun 2010 19:13:08 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [RFC][PATCH 24/26] MIPS: JZ4740: Add qi_lb60 board support
-Date:   Wed,  2 Jun 2010 21:12:30 +0200
-Message-Id: <1275505950-17334-8-git-send-email-lars@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        linux-usb@vger.kernel.org
+Subject: [RFC][PATCH 19/26] USB: Add JZ4740 ohci support
+Date:   Wed,  2 Jun 2010 21:12:25 +0200
+Message-Id: <1275505950-17334-3-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <1275505397-16758-1-git-send-email-lars@metafoo.de>
 References: <1275505397-16758-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27026
+X-archive-position: 27027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,535 +31,318 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1636
+X-UID: 1637
 
-This patch adds support for the qi_lb60 (a.k.a QI Ben NanoNote) clamshell
-device.
+This patch adds ohci glue code for JZ4740 SoCs ohci module.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: linux-usb@vger.kernel.org
 ---
- arch/mips/jz4740/Kconfig         |    4 +
- arch/mips/jz4740/Makefile        |    2 +
- arch/mips/jz4740/board-qi_lb60.c |  483 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 489 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/jz4740/board-qi_lb60.c
+ drivers/usb/Kconfig            |    1 +
+ drivers/usb/host/ohci-hcd.c    |    5 +
+ drivers/usb/host/ohci-jz4740.c |  264 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 270 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/usb/host/ohci-jz4740.c
 
-diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
-index 8a5e850..3e7141f 100644
---- a/arch/mips/jz4740/Kconfig
-+++ b/arch/mips/jz4740/Kconfig
-@@ -1,6 +1,10 @@
- choice
- 	prompt "Machine type"
- 	depends on MACH_JZ4740
-+	default JZ4740_QI_LB60
+diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
+index 6a58cb1..39a6bfd 100644
+--- a/drivers/usb/Kconfig
++++ b/drivers/usb/Kconfig
+@@ -46,6 +46,7 @@ config USB_ARCH_HAS_OHCI
+ 	default y if PPC_MPC52xx
+ 	# MIPS:
+ 	default y if SOC_AU1X00
++	default y if MACH_JZ4740
+ 	# SH:
+ 	default y if CPU_SUBTYPE_SH7720
+ 	default y if CPU_SUBTYPE_SH7721
+diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+index fc57655..05b071c 100644
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -1095,6 +1095,11 @@ MODULE_LICENSE ("GPL");
+ #define TMIO_OHCI_DRIVER	ohci_hcd_tmio_driver
+ #endif
+ 
++#ifdef CONFIG_MACH_JZ4740
++#include "ohci-jz4740.c"
++#define PLATFORM_DRIVER	ohci_hcd_jz4740_driver
++#endif
 +
-+config JZ4740_QI_LB60
-+	bool "Qi Hardware Ben NanoNote"
- 
- endchoice
- 
-diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index a803ccb..a604eae 100644
---- a/arch/mips/jz4740/Makefile
-+++ b/arch/mips/jz4740/Makefile
-@@ -11,6 +11,8 @@ obj-$(CONFIG_DEBUG_FS) += clock-debugfs.o
- 
- # board specific support
- 
-+obj-$(CONFIG_JZ4740_QI_LB60)	+= board-qi_lb60.o
-+
- # PM support
- 
- obj-$(CONFIG_PM) += pm.o
-diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+ #if	!defined(PCI_DRIVER) &&		\
+ 	!defined(PLATFORM_DRIVER) &&	\
+ 	!defined(OMAP1_PLATFORM_DRIVER) &&	\
+diff --git a/drivers/usb/host/ohci-jz4740.c b/drivers/usb/host/ohci-jz4740.c
 new file mode 100644
-index 0000000..cd7e065
+index 0000000..0371b17
 --- /dev/null
-+++ b/arch/mips/jz4740/board-qi_lb60.c
-@@ -0,0 +1,483 @@
-+/*
-+ * linux/arch/mips/jz4740/board-qi_lb60.c
-+ *
-+ * QI_LB60 board support
-+ *
-+ * Copyright (c) 2009 Qi Hardware inc.,
-+ * Author: Xiangfu Liu <xiangfu@qi-hardware.com>
-+ * Copyright 2010, Lars-Petrer Clausen <lars@metafoo.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 or later
-+ * as published by the Free Software Foundation.
-+ */
++++ b/drivers/usb/host/ohci-jz4740.c
+@@ -0,0 +1,264 @@
 +
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/gpio.h>
++#include <linux/platform_device.h>
++#include <linux/clk.h>
++#include <linux/regulator/consumer.h>
 +
-+#include <linux/input.h>
-+#include <linux/gpio_keys.h>
-+#include <linux/mtd/jz4740_nand.h>
-+#include <linux/jz4740_fb.h>
-+#include <linux/input/matrix_keypad.h>
-+#include <linux/mtd/jz4740_nand.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_gpio.h>
-+#include <linux/power_supply.h>
-+#include <linux/power/jz4740-battery.h>
-+#include <linux/mmc/jz4740_mmc.h>
++struct jz4740_ohci_hcd {
++	struct ohci_hcd ohci_hcd;
 +
-+#include <linux/regulator/fixed.h>
-+#include <linux/regulator/machine.h>
-+
-+#include <linux/leds_pwm.h>
-+
-+#include <asm/mach-jz4740/platform.h>
-+
-+#include "clock.h"
-+
-+static bool is_avt2;
-+
-+/* GPIOs */
-+#define QI_LB60_GPIO_SD_CD		JZ_GPIO_PORTD(0)
-+#define QI_LB60_GPIO_SD_VCC_EN_N	JZ_GPIO_PORTD(2)
-+
-+#define QI_LB60_GPIO_KEYOUT(x)		(JZ_GPIO_PORTC(10) + (x))
-+#define QI_LB60_GPIO_KEYIN(x)		(JZ_GPIO_PORTD(18) + (x))
-+#define QI_LB60_GPIO_KEYIN8		JZ_GPIO_PORTD(26)
-+
-+/* NAND */
-+static struct nand_ecclayout qi_lb60_ecclayout_1gb = {
-+	.eccbytes = 36,
-+	.eccpos = {
-+		6,  7,  8,  9,  10, 11, 12, 13,
-+		14, 15, 16, 17, 18, 19, 20, 21,
-+		22, 23, 24, 25, 26, 27, 28, 29,
-+		30, 31, 32, 33, 34, 35, 36, 37,
-+		38, 39, 40, 41
-+	},
-+	.oobfree = {
-+		{ .offset = 2, .length = 4 },
-+		{ .offset = 42, .length = 22 }
-+	},
++	struct regulator *vbus;
++	bool vbus_enabled;
++	struct clk *clk;
 +};
 +
-+/* Early prototypes of the QI LB60 had only 1GB of NAND.
-+ * In order to support these devices aswell the partition and ecc layout is
-+ * initalized depending on the NAND size */
-+static struct mtd_partition qi_lb60_partitions_1gb[] = {
-+	{
-+		.name = "NAND BOOT partition",
-+		.offset = 0 * 0x100000,
-+		.size = 4 * 0x100000,
-+	},
-+	{
-+		.name = "NAND KERNEL partition",
-+		.offset = 4 * 0x100000,
-+		.size = 4 * 0x100000,
-+	},
-+	{
-+		.name = "NAND ROOTFS partition",
-+		.offset = 8 * 0x100000,
-+		.size = (504 + 512) * 0x100000,
-+	},
-+};
-+
-+static struct nand_ecclayout qi_lb60_ecclayout_2gb = {
-+	.eccbytes = 72,
-+	.eccpos = {
-+		12, 13, 14, 15, 16, 17, 18, 19,
-+		20, 21, 22, 23, 24, 25, 26, 27,
-+		28, 29, 30, 31, 32, 33, 34, 35,
-+		36, 37, 38, 39, 40, 41, 42, 43,
-+		44, 45, 46, 47, 48, 49, 50, 51,
-+		52, 53, 54, 55, 56, 57, 58, 59,
-+		60, 61, 62, 63, 64, 65, 66, 67,
-+		68, 69, 70, 71, 72, 73, 74, 75,
-+		76, 77, 78, 79, 80, 81, 82, 83
-+	},
-+	.oobfree = {
-+		{ .offset = 2, .length = 10 },
-+		{ .offset = 84, .length = 44 },
-+	},
-+};
-+
-+static struct mtd_partition qi_lb60_partitions_2gb[] = {
-+	{
-+		.name = "NAND BOOT partition",
-+		.offset = 0 * 0x100000,
-+		.size = 4 * 0x100000,
-+	},
-+	{
-+		.name = "NAND KERNEL partition",
-+		.offset = 4 * 0x100000,
-+		.size = 4 * 0x100000,
-+	},
-+	{
-+		.name = "NAND ROOTFS partition",
-+		.offset = 8 * 0x100000,
-+		.size = (504 + 512 + 1024) * 0x100000,
-+	},
-+};
-+
-+static void qi_lb60_nand_ident(struct platform_device *pdev,
-+		struct nand_chip *chip, struct mtd_partition **partitions,
-+		int *num_partitions)
++static inline struct jz4740_ohci_hcd *hcd_to_jz4740_hcd(struct usb_hcd *hcd)
 +{
-+	if (chip->page_shift == 12) {
-+		chip->ecc.layout = &qi_lb60_ecclayout_2gb;
-+		*partitions = qi_lb60_partitions_2gb;
-+		*num_partitions = ARRAY_SIZE(qi_lb60_partitions_2gb);
-+	} else {
-+		chip->ecc.layout = &qi_lb60_ecclayout_1gb;
-+		*partitions = qi_lb60_partitions_1gb;
-+		*num_partitions = ARRAY_SIZE(qi_lb60_partitions_1gb);
-+	}
++	return (struct jz4740_ohci_hcd *)(hcd->hcd_priv);
 +}
 +
-+static struct jz_nand_platform_data qi_lb60_nand_pdata = {
-+	.ident_callback = qi_lb60_nand_ident,
-+	.busy_gpio = 94,
-+};
-+
-+/* Keyboard*/
-+
-+#define KEY_QI_QI	KEY_F13
-+#define KEY_QI_UPRED	KEY_RIGHTALT
-+#define KEY_QI_VOLUP	KEY_VOLUMEUP
-+#define KEY_QI_VOLDOWN	KEY_VOLUMEDOWN
-+#define KEY_QI_FN	KEY_LEFTCTRL
-+
-+static const uint32_t qi_lb60_keymap[] = {
-+	KEY(0, 0, KEY_F1),	/* S2 */
-+	KEY(0, 1, KEY_F2),	/* S3 */
-+	KEY(0, 2, KEY_F3),	/* S4 */
-+	KEY(0, 3, KEY_F4),	/* S5 */
-+	KEY(0, 4, KEY_F5),	/* S6 */
-+	KEY(0, 5, KEY_F6),	/* S7 */
-+	KEY(0, 6, KEY_F7),	/* S8 */
-+
-+	KEY(1, 0, KEY_Q),	/* S10 */
-+	KEY(1, 1, KEY_W),	/* S11 */
-+	KEY(1, 2, KEY_E),	/* S12 */
-+	KEY(1, 3, KEY_R),	/* S13 */
-+	KEY(1, 4, KEY_T),	/* S14 */
-+	KEY(1, 5, KEY_Y),	/* S15 */
-+	KEY(1, 6, KEY_U),	/* S16 */
-+	KEY(1, 7, KEY_I),	/* S17 */
-+	KEY(2, 0, KEY_A),	/* S18 */
-+	KEY(2, 1, KEY_S),	/* S19 */
-+	KEY(2, 2, KEY_D),	/* S20 */
-+	KEY(2, 3, KEY_F),	/* S21 */
-+	KEY(2, 4, KEY_G),	/* S22 */
-+	KEY(2, 5, KEY_H),	/* S23 */
-+	KEY(2, 6, KEY_J),	/* S24 */
-+	KEY(2, 7, KEY_K),	/* S25 */
-+	KEY(3, 0, KEY_ESC),	/* S26 */
-+	KEY(3, 1, KEY_Z),	/* S27 */
-+	KEY(3, 2, KEY_X),	/* S28 */
-+	KEY(3, 3, KEY_C),	/* S29 */
-+	KEY(3, 4, KEY_V),	/* S30 */
-+	KEY(3, 5, KEY_B),	/* S31 */
-+	KEY(3, 6, KEY_N),	/* S32 */
-+	KEY(3, 7, KEY_M),	/* S33 */
-+	KEY(4, 0, KEY_TAB),	/* S34 */
-+	KEY(4, 1, KEY_CAPSLOCK),	/* S35 */
-+	KEY(4, 2, KEY_BACKSLASH),	/* S36 */
-+	KEY(4, 3, KEY_APOSTROPHE),	/* S37 */
-+	KEY(4, 4, KEY_COMMA),	/* S38 */
-+	KEY(4, 5, KEY_DOT),	/* S39 */
-+	KEY(4, 6, KEY_SLASH),	/* S40 */
-+	KEY(4, 7, KEY_UP),	/* S41 */
-+	KEY(5, 0, KEY_O),	/* S42 */
-+	KEY(5, 1, KEY_L),	/* S43 */
-+	KEY(5, 2, KEY_EQUAL),	/* S44 */
-+	KEY(5, 3, KEY_QI_UPRED),	/* S45 */
-+	KEY(5, 4, KEY_SPACE),	/* S46 */
-+	KEY(5, 5, KEY_QI_QI),	/* S47 */
-+	KEY(5, 6, KEY_RIGHTCTRL),	/* S48 */
-+	KEY(5, 7, KEY_LEFT),	/* S49 */
-+	KEY(6, 0, KEY_F8),	/* S50 */
-+	KEY(6, 1, KEY_P),	/* S51 */
-+	KEY(6, 2, KEY_BACKSPACE),/* S52 */
-+	KEY(6, 3, KEY_ENTER),	/* S53 */
-+	KEY(6, 4, KEY_QI_VOLUP),	/* S54 */
-+	KEY(6, 5, KEY_QI_VOLDOWN),	/* S55 */
-+	KEY(6, 6, KEY_DOWN),	/* S56 */
-+	KEY(6, 7, KEY_RIGHT),	/* S57 */
-+
-+	KEY(7, 0, KEY_LEFTSHIFT),	/* S58 */
-+	KEY(7, 1, KEY_LEFTALT),	/* S59 */
-+	KEY(7, 2, KEY_QI_FN),	/* S60 */
-+};
-+
-+static const struct matrix_keymap_data qi_lb60_keymap_data = {
-+	.keymap		= qi_lb60_keymap,
-+	.keymap_size	= ARRAY_SIZE(qi_lb60_keymap),
-+};
-+
-+static const unsigned int qi_lb60_keypad_cols[] = {
-+	QI_LB60_GPIO_KEYOUT(0),
-+	QI_LB60_GPIO_KEYOUT(1),
-+	QI_LB60_GPIO_KEYOUT(2),
-+	QI_LB60_GPIO_KEYOUT(3),
-+	QI_LB60_GPIO_KEYOUT(4),
-+	QI_LB60_GPIO_KEYOUT(5),
-+	QI_LB60_GPIO_KEYOUT(6),
-+	QI_LB60_GPIO_KEYOUT(7),
-+};
-+
-+static const unsigned int qi_lb60_keypad_rows[] = {
-+	QI_LB60_GPIO_KEYIN(0),
-+	QI_LB60_GPIO_KEYIN(1),
-+	QI_LB60_GPIO_KEYIN(2),
-+	QI_LB60_GPIO_KEYIN(3),
-+	QI_LB60_GPIO_KEYIN(4),
-+	QI_LB60_GPIO_KEYIN(5),
-+	QI_LB60_GPIO_KEYIN(7),
-+	QI_LB60_GPIO_KEYIN8,
-+};
-+
-+static struct matrix_keypad_platform_data qi_lb60_pdata = {
-+	.keymap_data = &qi_lb60_keymap_data,
-+	.col_gpios	= qi_lb60_keypad_cols,
-+	.row_gpios	= qi_lb60_keypad_rows,
-+	.num_col_gpios	= ARRAY_SIZE(qi_lb60_keypad_cols),
-+	.num_row_gpios	= ARRAY_SIZE(qi_lb60_keypad_rows),
-+	.col_scan_delay_us	= 10,
-+	.debounce_ms		= 10,
-+	.wakeup			= 1,
-+	.active_low		= 1,
-+};
-+
-+static struct platform_device qi_lb60_keypad = {
-+	.name		= "matrix-keypad",
-+	.id		= -1,
-+	.dev		= {
-+		.platform_data = &qi_lb60_pdata,
-+	},
-+};
-+
-+/* Display */
-+static struct fb_videomode qi_lb60_video_modes[] = {
-+	{
-+		.name = "320x240",
-+		.xres = 320,
-+		.yres = 240,
-+		.refresh = 30,
-+		.left_margin = 140,
-+		.right_margin = 273,
-+		.upper_margin = 20,
-+		.lower_margin = 2,
-+		.hsync_len = 1,
-+		.vsync_len = 1,
-+		.sync = 0,
-+		.vmode = FB_VMODE_NONINTERLACED,
-+	},
-+};
-+
-+static struct jz4740_fb_platform_data qi_lb60_fb_pdata = {
-+	.width		= 60,
-+	.height		= 45,
-+	.num_modes	= ARRAY_SIZE(qi_lb60_video_modes),
-+	.modes		= qi_lb60_video_modes,
-+	.bpp		= 24,
-+	.lcd_type	= JZ_LCD_TYPE_8BIT_SERIAL,
-+	.pixclk_falling_edge = 1,
-+};
-+
-+struct spi_gpio_platform_data spigpio_platform_data = {
-+	.sck = JZ_GPIO_PORTC(23),
-+	.mosi = JZ_GPIO_PORTC(22),
-+	.miso = -1,
-+	.num_chipselect = 1,
-+};
-+
-+static struct platform_device spigpio_device = {
-+	.name = "spi_gpio",
-+	.id   = 1,
-+	.dev = {
-+		.platform_data = &spigpio_platform_data,
-+	},
-+};
-+
-+static struct spi_board_info qi_lb60_spi_board_info[] = {
-+	{
-+		.modalias = "ili8960",
-+		.controller_data = (void *)JZ_GPIO_PORTC(21),
-+		.chip_select = 0,
-+		.bus_num = 1,
-+		.max_speed_hz = 30 * 1000,
-+		.mode = SPI_3WIRE,
-+	},
-+};
-+
-+/* Battery */
-+static struct jz_battery_platform_data qi_lb60_battery_pdata = {
-+	.gpio_charge =  JZ_GPIO_PORTC(27),
-+	.gpio_charge_active_low = 1,
-+	.info = {
-+		.name = "battery",
-+		.technology = POWER_SUPPLY_TECHNOLOGY_LIPO,
-+		.voltage_max_design = 4200000,
-+		.voltage_min_design = 3600000,
-+	},
-+};
-+
-+/* GPIO Key: power */
-+static struct gpio_keys_button qi_lb60_gpio_keys_buttons[] = {
-+	[0] = {
-+		.code		= KEY_POWER,
-+		.gpio		= JZ_GPIO_PORTD(29),
-+		.active_low	= 1,
-+		.desc		= "Power",
-+		.wakeup		= 1,
-+	},
-+};
-+
-+static struct gpio_keys_platform_data qi_lb60_gpio_keys_data = {
-+	.nbuttons = ARRAY_SIZE(qi_lb60_gpio_keys_buttons),
-+	.buttons = qi_lb60_gpio_keys_buttons,
-+};
-+
-+static struct platform_device qi_lb60_gpio_keys = {
-+	.name =	"gpio-keys",
-+	.id =	-1,
-+	.dev = {
-+		.platform_data = &qi_lb60_gpio_keys_data,
-+	}
-+};
-+
-+static struct jz4740_mmc_platform_data qi_lb60_mmc_pdata = {
-+	.gpio_card_detect	= QI_LB60_GPIO_SD_CD,
-+	.gpio_read_only		= -1,
-+	.gpio_power		= QI_LB60_GPIO_SD_VCC_EN_N,
-+	.power_active_low	= 1,
-+};
-+
-+/* OHCI */
-+static struct regulator_consumer_supply avt2_usb_regulator_consumer =
-+	REGULATOR_SUPPLY("vbus", "jz4740-ohci");
-+
-+static struct regulator_init_data avt2_usb_regulator_init_data = {
-+	.num_consumer_supplies = 1,
-+	.consumer_supplies = &avt2_usb_regulator_consumer,
-+	.constraints = {
-+		.name = "USB power",
-+		.min_uV = 5000000,
-+		.max_uV = 5000000,
-+		.valid_modes_mask = REGULATOR_MODE_NORMAL,
-+		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-+	},
-+};
-+
-+static struct fixed_voltage_config avt2_usb_regulator_data = {
-+	.supply_name = "USB power",
-+	.microvolts = 5000000,
-+	.gpio = JZ_GPIO_PORTB(17),
-+	.init_data = &avt2_usb_regulator_init_data,
-+};
-+
-+static struct platform_device avt2_usb_regulator_device = {
-+	.name = "reg-fixed-voltage",
-+	.id = -1,
-+	.dev = {
-+		.platform_data = &avt2_usb_regulator_data,
-+	}
-+};
-+
-+/* pizo */
-+static struct led_pwm qi_lb60_pizo_led = {
-+	.name = "nanonote::pizo",
-+	.pwm_id = 4,
-+	.max_brightness = 255,
-+	.pwm_period_ns = 1000000,
-+};
-+
-+static struct led_pwm_platform_data qi_lb60_pizo_data = {
-+	.num_leds = 1,
-+	.leds = &qi_lb60_pizo_led,
-+};
-+
-+static struct platform_device qi_lb60_pizo_device = {
-+	.name = "leds_pwm",
-+	.id = -1,
-+	.dev = {
-+		.platform_data = &qi_lb60_pizo_data,
-+	}
-+};
-+
-+static struct platform_device *jz_platform_devices[] __initdata = {
-+	&jz4740_udc_device,
-+	&jz4740_mmc_device,
-+	&jz4740_nand_device,
-+	&qi_lb60_keypad,
-+	&spigpio_device,
-+	&jz4740_framebuffer_device,
-+	&jz4740_i2s_device,
-+	&jz4740_codec_device,
-+	&jz4740_rtc_device,
-+	&jz4740_adc_device,
-+	&jz4740_battery_device,
-+	&qi_lb60_gpio_keys,
-+	&qi_lb60_pizo_device,
-+};
-+
-+static void __init board_gpio_setup(void)
++static inline struct usb_hcd *jz4740_hcd_to_hcd(struct jz4740_ohci_hcd *jz4740_ohci)
 +{
-+	/* We only need to enable/disable pullup here for pins used in generic
-+	 * drivers. Everything else is done by the drivers themselfs. */
-+	jz_gpio_disable_pullup(QI_LB60_GPIO_SD_VCC_EN_N);
-+	jz_gpio_disable_pullup(QI_LB60_GPIO_SD_CD);
++	return container_of((void *)jz4740_ohci, struct usb_hcd, hcd_priv);
 +}
 +
-+static int __init qi_lb60_init_platform_devices(void)
++static int ohci_jz4740_start(struct usb_hcd *hcd)
 +{
-+	jz4740_framebuffer_device.dev.platform_data = &qi_lb60_fb_pdata;
-+	jz4740_nand_device.dev.platform_data = &qi_lb60_nand_pdata;
-+	jz4740_battery_device.dev.platform_data = &qi_lb60_battery_pdata;
-+	jz4740_mmc_device.dev.platform_data = &qi_lb60_mmc_pdata;
++	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
++	int	ret;
 +
-+	jz4740_serial_device_register();
++	ret = ohci_init(ohci);
++	if (ret < 0)
++		return ret;
 +
-+	spi_register_board_info(qi_lb60_spi_board_info,
-+				ARRAY_SIZE(qi_lb60_spi_board_info));
++	ohci->num_ports = 1;
 +
-+	if (is_avt2) {
-+		platform_device_register(&avt2_usb_regulator_device);
-+		platform_device_register(&jz4740_usb_ohci_device);
++	ret = ohci_run(ohci);
++	if (ret < 0) {
++		dev_err(hcd->self.controller, "Can not start %s",
++			hcd->self.bus_name);
++		ohci_stop(hcd);
++		return ret;
++	}
++	return 0;
++}
++
++static int ohci_jz4740_set_vbus_power(struct jz4740_ohci_hcd *jz4740_ohci,
++	bool enabled)
++{
++	int ret = 0;
++
++	if (!jz4740_ohci->vbus)
++		return 0;
++
++	if (enabled && !jz4740_ohci->vbus_enabled) {
++		ret = regulator_enable(jz4740_ohci->vbus);
++		if (ret)
++			dev_err(jz4740_hcd_to_hcd(jz4740_ohci)->self.controller,
++				"Could not power vbus\n");
++	} else if (!enabled && jz4740_ohci->vbus_enabled) {
++		ret = regulator_disable(jz4740_ohci->vbus);
 +	}
 +
-+	return platform_add_devices(jz_platform_devices,
-+					ARRAY_SIZE(jz_platform_devices));
++	if (ret == 0)
++		jz4740_ohci->vbus_enabled = enabled;
 +
++	return ret;
 +}
 +
-+struct jz4740_clock_board_data jz4740_clock_bdata = {
-+	.ext_rate = 12000000,
-+	.rtc_rate = 32768,
++static int ohci_jz4740_hub_control(struct usb_hcd *hcd, u16 typeReq, u16 wValue,
++	u16 wIndex, char *buf, u16 wLength)
++{
++	struct jz4740_ohci_hcd *jz4740_ohci = hcd_to_jz4740_hcd(hcd);
++	int ret;
++
++	switch (typeReq) {
++	case SetHubFeature:
++		if (wValue == USB_PORT_FEAT_POWER)
++			ret = ohci_jz4740_set_vbus_power(jz4740_ohci, true);
++		break;
++	case ClearHubFeature:
++		if (wValue == USB_PORT_FEAT_POWER)
++			ret = ohci_jz4740_set_vbus_power(jz4740_ohci, false);
++		break;
++	}
++
++	if (ret)
++		return ret;
++
++	return ohci_hub_control(hcd, typeReq, wValue, wIndex, buf, wLength);
++}
++
++
++static const struct hc_driver ohci_jz4740_hc_driver = {
++	.description =		hcd_name,
++	.product_desc =		"JZ4740 OHCI",
++	.hcd_priv_size =	sizeof(struct jz4740_ohci_hcd),
++
++	/*
++	 * generic hardware linkage
++	 */
++	.irq =			ohci_irq,
++	.flags =		HCD_USB11 | HCD_MEMORY,
++
++	/*
++	 * basic lifecycle operations
++	 */
++	.start =		ohci_jz4740_start,
++	.stop =			ohci_stop,
++	.shutdown =		ohci_shutdown,
++
++	/*
++	 * managing i/o requests and associated device resources
++	 */
++	.urb_enqueue =		ohci_urb_enqueue,
++	.urb_dequeue =		ohci_urb_dequeue,
++	.endpoint_disable =	ohci_endpoint_disable,
++
++	/*
++	 * scheduling support
++	 */
++	.get_frame_number =	ohci_get_frame,
++
++	/*
++	 * root hub support
++	 */
++	.hub_status_data =	ohci_hub_status_data,
++	.hub_control =		ohci_jz4740_hub_control,
++#ifdef	CONFIG_PM
++	.bus_suspend =		ohci_bus_suspend,
++	.bus_resume =		ohci_bus_resume,
++#endif
++	.start_port_reset =	ohci_start_port_reset,
 +};
 +
-+static __init int board_avt2(char *str)
-+{
-+	qi_lb60_mmc_pdata.card_detect_active_low = 1;
-+	is_avt2 = true;
 +
-+	return 1;
++static __devinit int jz4740_ohci_probe(struct platform_device *pdev)
++{
++	int ret;
++	struct usb_hcd *hcd;
++	struct jz4740_ohci_hcd *jz4740_ohci;
++	struct resource *res;
++	int irq;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++
++	if (!res) {
++		dev_err(&pdev->dev, "Failed to get platform resource\n");
++		return -ENOENT;
++	}
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(&pdev->dev, "Failed to get platform irq\n");
++		return irq;
++	}
++
++	hcd = usb_create_hcd(&ohci_jz4740_hc_driver, &pdev->dev, "jz4740");
++	if (!hcd) {
++		dev_err(&pdev->dev, "Failed to create hcd.\n");
++		return -ENOMEM;
++	}
++
++	jz4740_ohci = hcd_to_jz4740_hcd(hcd);
++
++	res = request_mem_region(res->start, resource_size(res), hcd_name);
++
++	if (!res) {
++		dev_err(&pdev->dev, "Failed to request mem region.\n");
++		ret = -EBUSY;
++		goto err_free;
++	}
++
++	hcd->rsrc_start = res->start;
++	hcd->rsrc_len = resource_size(res);
++	hcd->regs = ioremap(res->start, resource_size(res));
++
++	if (!hcd->regs) {
++		dev_err(&pdev->dev, "Failed to ioremap registers.\n");
++		ret = -EBUSY;
++		goto err_release_mem;
++	}
++
++	jz4740_ohci->clk = clk_get(&pdev->dev, "uhc");
++	if (IS_ERR(jz4740_ohci->clk)) {
++		ret = PTR_ERR(jz4740_ohci->clk);
++		dev_err(&pdev->dev, "Failed to get clock: %d\n", ret);
++		goto err_iounmap;
++	}
++
++	jz4740_ohci->vbus = regulator_get(&pdev->dev, "vbus");
++	if (IS_ERR(jz4740_ohci->vbus))
++		jz4740_ohci->vbus = NULL;
++
++
++	clk_set_rate(jz4740_ohci->clk, 48000000);
++	clk_enable(jz4740_ohci->clk);
++	if (jz4740_ohci->vbus)
++		ohci_jz4740_set_vbus_power(jz4740_ohci, true);
++
++	platform_set_drvdata(pdev, hcd);
++
++	ohci_hcd_init(hcd_to_ohci(hcd));
++
++	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED);
++	if (ret) {
++		dev_err(&pdev->dev, "Failed to add hcd: %d\n", ret);
++		goto err_disable;
++	}
++
++	return 0;
++
++err_disable:
++	platform_set_drvdata(pdev, NULL);
++	if (jz4740_ohci->vbus) {
++		regulator_disable(jz4740_ohci->vbus);
++		regulator_put(jz4740_ohci->vbus);
++	}
++	clk_disable(jz4740_ohci->clk);
++
++	clk_put(jz4740_ohci->clk);
++err_iounmap:
++	iounmap(hcd->regs);
++err_release_mem:
++	release_mem_region(res->start, resource_size(res));
++err_free:
++	usb_put_hcd(hcd);
++
++	return ret;
 +}
-+__setup("avt2", board_avt2);
 +
-+static int __init qi_lb60_board_setup(void)
++static __devexit int jz4740_ohci_remove(struct platform_device *pdev)
 +{
-+	printk(KERN_INFO "Qi Hardware JZ4740 QI %s setup\n",
-+		is_avt2 ? "AVT2" : "LB60");
++	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++	struct jz4740_ohci_hcd *jz4740_ohci = hcd_to_jz4740_hcd(hcd);
 +
-+	board_gpio_setup();
++	usb_remove_hcd(hcd);
 +
-+	if (qi_lb60_init_platform_devices())
-+		panic("Failed to initalize platform devices\n");
++	platform_set_drvdata(pdev, NULL);
++
++	if (jz4740_ohci->vbus) {
++		regulator_disable(jz4740_ohci->vbus);
++		regulator_put(jz4740_ohci->vbus);
++	}
++
++	clk_disable(jz4740_ohci->clk);
++	clk_put(jz4740_ohci->clk);
++
++	iounmap(hcd->regs);
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++
++	usb_put_hcd(hcd);
 +
 +	return 0;
 +}
-+arch_initcall(qi_lb60_board_setup);
++
++static struct platform_driver ohci_hcd_jz4740_driver = {
++	.probe = jz4740_ohci_probe,
++	.remove = __devexit_p(jz4740_ohci_remove),
++	.driver = {
++		.name = "jz4740-ohci",
++		.owner = THIS_MODULE,
++	},
++};
++
++MODULE_ALIAS("platfrom:jz4740-ohci");
 -- 
 1.5.6.5

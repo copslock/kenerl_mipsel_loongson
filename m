@@ -1,9 +1,9 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:15:59 +0200 (CEST)
-Received: from smtp-out-182.synserver.de ([212.40.180.182]:1587 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:16:22 +0200 (CEST)
+Received: from smtp-out-182.synserver.de ([212.40.180.182]:1208 "HELO
         smtp-out-182.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492629Ab0FBTOB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:14:01 +0200
-Received: (qmail 31956 invoked by uid 0); 2 Jun 2010 19:13:11 -0000
+        by eddie.linux-mips.org with SMTP id S1492631Ab0FBTOC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:14:02 +0200
+Received: (qmail 32007 invoked by uid 0); 2 Jun 2010 19:13:12 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 31322
@@ -12,14 +12,15 @@ Received: from port-91163.pppoe.wtnet.de (HELO localhost.localdomain) [84.46.68.
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>, lm-sensors@lm-sensors.org
-Subject: [RFC][PATCH 22/26] hwmon: Add JZ4740 ADC driver
-Date:   Wed,  2 Jun 2010 21:12:28 +0200
-Message-Id: <1275505950-17334-6-git-send-email-lars@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Anton Vorontsov <cbouatmailru@gmail.com>
+Subject: [RFC][PATCH 23/26] power: Add JZ4740 battery driver.
+Date:   Wed,  2 Jun 2010 21:12:29 +0200
+Message-Id: <1275505950-17334-7-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <1275505397-16758-1-git-send-email-lars@metafoo.de>
 References: <1275505397-16758-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27024
+X-archive-position: 27025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,80 +29,73 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1631
+X-UID: 1635
 
-This patch adds support for the ADC module on JZ4740 SoCs.
+This patch adds support for the battery voltage measurement part of the JZ4740
+ADC unit.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: lm-sensors@lm-sensors.org
+Cc: Anton Vorontsov <cbouatmailru@gmail.com>
 ---
- drivers/hwmon/Kconfig      |   11 ++
- drivers/hwmon/Makefile     |    1 +
- drivers/hwmon/jz4740-adc.c |  423 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/jz4740-adc.h |   25 +++
- 4 files changed, 460 insertions(+), 0 deletions(-)
- create mode 100644 drivers/hwmon/jz4740-adc.c
- create mode 100644 include/linux/jz4740-adc.h
+ drivers/power/Kconfig                |   11 +
+ drivers/power/Makefile               |    1 +
+ drivers/power/jz4740-battery.c       |  359 ++++++++++++++++++++++++++++++++++
+ include/linux/power/jz4740-battery.h |   24 +++
+ 4 files changed, 395 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/power/jz4740-battery.c
+ create mode 100644 include/linux/power/jz4740-battery.h
 
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index e19cf8e..da79ba9 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -446,6 +446,17 @@ config SENSORS_IT87
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called it87.
+diff --git a/drivers/power/Kconfig b/drivers/power/Kconfig
+index 8e9ba17..80bbd0d 100644
+--- a/drivers/power/Kconfig
++++ b/drivers/power/Kconfig
+@@ -142,4 +142,15 @@ config CHARGER_PCF50633
+ 	help
+ 	 Say Y to include support for NXP PCF50633 Main Battery Charger.
  
-+config SENSORS_JZ4740
-+	tristate "Ingenic JZ4740 SoC ADC driver"
++config BATTERY_JZ4740
++	tristate "Ingenic JZ4740 battery"
 +	depends on MACH_JZ4740
-+    help
-+      If you say yes here you get support for the Ingenic JZ4740 SoC ADC core.
-+      It is required for the JZ4740 battery and touchscreen driver and is used
-+      to synchronize access to the adc module between those two.
++	depends on SENSORS_JZ4740
++	help
++	  Say Y to enable support for the battery on Ingenic JZ4740 based
++	  boards.
 +
-+      This driver can also be build as a module. If so, the module will be
-+      called jz4740-adc.
++	  This driver can be build as a module. If so, the module will be
++	  called jz4740-battery.
 +
- config SENSORS_LM63
- 	tristate "National Semiconductor LM63 and LM64"
- 	depends on I2C
-diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
-index 2138ceb..3e772aa 100644
---- a/drivers/hwmon/Makefile
-+++ b/drivers/hwmon/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_SENSORS_I5K_AMB)	+= i5k_amb.o
- obj-$(CONFIG_SENSORS_IBMAEM)	+= ibmaem.o
- obj-$(CONFIG_SENSORS_IBMPEX)	+= ibmpex.o
- obj-$(CONFIG_SENSORS_IT87)	+= it87.o
-+obj-$(CONFIG_SENSORS_JZ4740)	+= jz4740-adc.o
- obj-$(CONFIG_SENSORS_K8TEMP)	+= k8temp.o
- obj-$(CONFIG_SENSORS_K10TEMP)	+= k10temp.o
- obj-$(CONFIG_SENSORS_LIS3LV02D) += lis3lv02d.o hp_accel.o
-diff --git a/drivers/hwmon/jz4740-adc.c b/drivers/hwmon/jz4740-adc.c
+ endif # POWER_SUPPLY
+diff --git a/drivers/power/Makefile b/drivers/power/Makefile
+index 0005080..cf95009 100644
+--- a/drivers/power/Makefile
++++ b/drivers/power/Makefile
+@@ -34,3 +34,4 @@ obj-$(CONFIG_BATTERY_DA9030)	+= da9030_battery.o
+ obj-$(CONFIG_BATTERY_MAX17040)	+= max17040_battery.o
+ obj-$(CONFIG_BATTERY_Z2)	+= z2_battery.o
+ obj-$(CONFIG_CHARGER_PCF50633)	+= pcf50633-charger.o
++obj-$(CONFIG_BATTERY_JZ4740)	+= jz4740-battery.o
+diff --git a/drivers/power/jz4740-battery.c b/drivers/power/jz4740-battery.c
 new file mode 100644
-index 0000000..635dfe9
+index 0000000..9eadb36
 --- /dev/null
-+++ b/drivers/hwmon/jz4740-adc.c
-@@ -0,0 +1,423 @@
++++ b/drivers/power/jz4740-battery.c
+@@ -0,0 +1,359 @@
 +/*
-+ * Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *		JZ4740 SoC ADC driver
++ * Battery measurement code for Ingenic JZ SOC.
 + *
-+ * This program is free software; you can redistribute	 it and/or modify it
-+ * under  the terms of	 the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the	License, or (at your
-+ * option) any later version.
++ * Copyright (C) 2009 Jiejing Zhang <kzjeef@gmail.com>
++ * Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
 + *
-+ * You should have received a copy of the  GNU General Public License along
-+ * with this program; if not, write  to the Free Software Foundation, Inc.,
-+ * 675 Mass Ave, Cambridge, MA 02139, USA.
++ * based on tosa_battery.c
 + *
-+ * This driver is meant to synchronize access to the adc core for the battery
-+ * and touchscreen driver. Thus these drivers should use the adc driver as a
-+ * parent.
++ * Copyright (C) 2008 Marek Vasut <marek.vasut@gmail.com>
++*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
 + */
 +
-+#include <linux/err.h>
 +#include <linux/interrupt.h>
 +#include <linux/kernel.h>
 +#include <linux/module.h>
@@ -109,432 +103,370 @@ index 0000000..635dfe9
 +#include <linux/slab.h>
 +#include <linux/spinlock.h>
 +
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
++#include <linux/delay.h>
++#include <linux/gpio.h>
++#include <linux/power_supply.h>
 +
-+#include <linux/clk.h>
-+
++#include <linux/power/jz4740-battery.h>
 +#include <linux/jz4740-adc.h>
 +
-+#define JZ_REG_ADC_ENABLE	0x00
-+#define JZ_REG_ADC_CFG		0x04
-+#define JZ_REG_ADC_CTRL		0x08
-+#define JZ_REG_ADC_STATUS	0x0C
-+#define JZ_REG_ADC_SAME		0x10
-+#define JZ_REG_ADC_WAIT		0x14
-+#define JZ_REG_ADC_TOUCH	0x18
-+#define JZ_REG_ADC_BATTERY	0x1C
-+#define JZ_REG_ADC_ADCIN	0x20
++struct jz_battery {
++	struct jz_battery_platform_data *pdata;
 +
-+#define JZ_ADC_ENABLE_TOUCH		BIT(2)
-+#define JZ_ADC_ENABLE_BATTERY		BIT(1)
-+#define JZ_ADC_ENABLE_ADCIN		BIT(0)
++	int charge_irq;
 +
-+#define JZ_ADC_CFG_SPZZ			BIT(31)
-+#define JZ_ADC_CFG_EX_IN		BIT(30)
-+#define JZ_ADC_CFG_DNUM_MASK		(0x7 << 16)
-+#define JZ_ADC_CFG_DMA_ENABLE		BIT(15)
-+#define JZ_ADC_CFG_XYZ_MASK		(0x2 << 13)
-+#define JZ_ADC_CFG_SAMPLE_NUM_MASK	(0x7 << 10)
-+#define JZ_ADC_CFG_CLKDIV		(0xf << 5)
-+#define JZ_ADC_CFG_BAT_MB		BIT(4)
++	int status;
++	long voltage;
 +
-+#define JZ_ADC_CFG_DNUM_OFFSET		16
-+#define JZ_ADC_CFG_XYZ_OFFSET		13
-+#define JZ_ADC_CFG_SAMPLE_NUM_OFFSET	10
-+#define JZ_ADC_CFG_CLKDIV_OFFSET	5
-+
-+#define JZ_ADC_IRQ_PENDOWN		BIT(4)
-+#define JZ_ADC_IRQ_PENUP		BIT(3)
-+#define JZ_ADC_IRQ_TOUCH		BIT(2)
-+#define JZ_ADC_IRQ_BATTERY		BIT(1)
-+#define JZ_ADC_IRQ_ADCIN		BIT(0)
-+
-+#define JZ_ADC_TOUCH_TYPE1		BIT(31)
-+#define JZ_ADC_TOUCH_DATA1_MASK		0xfff
-+#define JZ_ADC_TOUCH_TYPE0		BIT(15)
-+#define JZ_ADC_TOUCH_DATA0_MASK		0xfff
-+
-+#define JZ_ADC_BATTERY_MASK		0xfff
-+
-+#define JZ_ADC_ADCIN_MASK		0xfff
-+
-+struct jz4740_adc {
-+	struct resource *mem;
-+	void __iomem *base;
-+
-+	int irq;
-+
-+	struct clk *clk;
-+	unsigned int clk_ref;
-+
-+	struct device *hwmon;
-+
-+	struct completion bat_completion;
-+	struct completion adc_completion;
-+
-+	spinlock_t lock;
++	struct power_supply battery;
++	struct delayed_work work;
 +};
 +
-+static irqreturn_t jz4740_adc_irq(int irq, void *data)
++static inline struct jz_battery *psy_to_jz_battery(struct power_supply *psy)
 +{
-+	struct jz4740_adc *adc = data;
-+	uint8_t status;
-+
-+	status = readb(adc->base + JZ_REG_ADC_STATUS);
-+
-+	if (status & JZ_ADC_IRQ_BATTERY)
-+		complete(&adc->bat_completion);
-+	if (status & JZ_ADC_IRQ_ADCIN)
-+		complete(&adc->adc_completion);
-+
-+	writeb(0xff, adc->base + JZ_REG_ADC_STATUS);
-+
-+	return IRQ_HANDLED;
++	return container_of(psy, struct jz_battery, battery);
 +}
 +
-+static void jz4740_adc_enable_irq(struct jz4740_adc *adc, int irq)
++static long jz_battery_read_voltage(struct jz_battery *jz_battery)
 +{
-+	unsigned long flags;
-+	uint8_t val;
++	struct device *adc = jz_battery->battery.dev->parent->parent;
++	enum jz_adc_battery_scale scale;
 +
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	val = readb(adc->base + JZ_REG_ADC_CTRL);
-+	val &= ~irq;
-+	writeb(val, adc->base + JZ_REG_ADC_CTRL);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static void jz4740_adc_disable_irq(struct jz4740_adc *adc, int irq)
-+{
-+	unsigned long flags;
-+	uint8_t val;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	val = readb(adc->base + JZ_REG_ADC_CTRL);
-+	val |= irq;
-+	writeb(val, adc->base + JZ_REG_ADC_CTRL);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static void jz4740_adc_enable_adc(struct jz4740_adc *adc, int engine)
-+{
-+	unsigned long flags;
-+	uint8_t val;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	val = readb(adc->base + JZ_REG_ADC_ENABLE);
-+	val |= engine;
-+	writeb(val, adc->base + JZ_REG_ADC_ENABLE);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static void jz4740_adc_disable_adc(struct jz4740_adc *adc, int engine)
-+{
-+	unsigned long flags;
-+	uint8_t val;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	val = readb(adc->base + JZ_REG_ADC_ENABLE);
-+	val &= ~engine;
-+	writeb(val, adc->base + JZ_REG_ADC_ENABLE);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static inline void jz4740_adc_set_cfg(struct jz4740_adc *adc, uint32_t mask,
-+uint32_t val)
-+{
-+	unsigned long flags;
-+	uint32_t cfg;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	cfg = readl(adc->base + JZ_REG_ADC_CFG);
-+
-+	cfg &= ~mask;
-+	cfg |= val;
-+
-+	writel(cfg, adc->base + JZ_REG_ADC_CFG);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static inline void jz4740_adc_clk_enable(struct jz4740_adc *adc)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+	if (adc->clk_ref++ == 0)
-+		clk_enable(adc->clk);
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static inline void jz4740_adc_clk_disable(struct jz4740_adc *adc)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+	if (--adc->clk_ref == 0)
-+		clk_disable(adc->clk);
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+long jz4740_adc_read_battery_voltage(struct device *dev,
-+						enum jz_adc_battery_scale scale)
-+{
-+	struct jz4740_adc *adc = dev_get_drvdata(dev);
-+	unsigned long t;
-+	long long voltage;
-+	uint16_t val;
-+
-+	if (!adc)
-+		return -ENODEV;
-+
-+	jz4740_adc_clk_enable(adc);
-+
-+	if (scale == JZ_ADC_BATTERY_SCALE_2V5)
-+		jz4740_adc_set_cfg(adc, JZ_ADC_CFG_BAT_MB, JZ_ADC_CFG_BAT_MB);
++	if (jz_battery->pdata->info.voltage_max_design > 2500000)
++		scale = JZ_ADC_BATTERY_SCALE_7V5;
 +	else
-+		jz4740_adc_set_cfg(adc, JZ_ADC_CFG_BAT_MB, 0);
++		scale = JZ_ADC_BATTERY_SCALE_2V5;
 +
-+	jz4740_adc_enable_irq(adc, JZ_ADC_IRQ_BATTERY);
-+	jz4740_adc_enable_adc(adc, JZ_ADC_ENABLE_BATTERY);
-+
-+	t = wait_for_completion_interruptible_timeout(&adc->bat_completion,
-+							HZ);
-+
-+	jz4740_adc_disable_irq(adc, JZ_ADC_IRQ_BATTERY);
-+
-+	if (t <= 0) {
-+		jz4740_adc_disable_adc(adc, JZ_ADC_ENABLE_BATTERY);
-+		return t ? t : -ETIMEDOUT;
-+	}
-+
-+	val = readw(adc->base + JZ_REG_ADC_BATTERY);
-+
-+	jz4740_adc_clk_disable(adc);
-+
-+	if (scale == JZ_ADC_BATTERY_SCALE_2V5)
-+		voltage = (((long long)val) * 2500000LL) >> 12LL;
-+	else
-+		voltage = ((((long long)val) * 7395000LL) >> 12LL) + 33000LL;
-+
-+	return voltage;
-+}
-+EXPORT_SYMBOL_GPL(jz4740_adc_read_battery_voltage);
-+
-+static ssize_t jz4740_adc_read_adcin(struct device *dev,
-+					struct device_attribute *dev_attr,
-+					char *buf)
-+{
-+	struct jz4740_adc *adc = dev_get_drvdata(dev);
-+	unsigned long t;
-+	uint16_t val;
-+
-+	jz4740_adc_clk_enable(adc);
-+
-+	jz4740_adc_enable_irq(adc, JZ_ADC_IRQ_ADCIN);
-+	jz4740_adc_enable_adc(adc, JZ_ADC_ENABLE_ADCIN);
-+
-+	t = wait_for_completion_interruptible_timeout(&adc->adc_completion,
-+							HZ);
-+
-+	jz4740_adc_disable_irq(adc, JZ_ADC_IRQ_ADCIN);
-+
-+	if (t <= 0) {
-+		jz4740_adc_disable_adc(adc, JZ_ADC_ENABLE_ADCIN);
-+		return t ? t : -ETIMEDOUT;
-+	}
-+
-+	val = readw(adc->base + JZ_REG_ADC_ADCIN);
-+	jz4740_adc_clk_disable(adc);
-+
-+	return sprintf(buf, "%d\n", val);
++	return jz4740_adc_read_battery_voltage(adc, scale);
 +}
 +
-+static SENSOR_DEVICE_ATTR(in0_input, S_IRUGO, jz4740_adc_read_adcin, NULL, 0);
-+
-+static int __devinit jz4740_adc_probe(struct platform_device *pdev)
++static int jz_battery_get_capacity(struct power_supply *psy)
 +{
++	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
++	struct power_supply_info *info = &jz_battery->pdata->info;
++	long voltage;
 +	int ret;
-+	struct jz4740_adc *adc;
++	int voltage_span;
 +
-+	adc = kmalloc(sizeof(*adc), GFP_KERNEL);
++	voltage = jz_battery_read_voltage(jz_battery);
 +
-+	adc->irq = platform_get_irq(pdev, 0);
++	if (voltage < 0)
++		return voltage;
 +
-+	if (adc->irq < 0) {
-+		ret = adc->irq;
-+		dev_err(&pdev->dev, "Failed to get platform irq: %d\n", ret);
-+		goto err_free;
-+	}
++	voltage_span = info->voltage_max_design - info->voltage_min_design;
++	ret = ((voltage - info->voltage_min_design) * 100) / voltage_span;
 +
-+	adc->mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+
-+	if (!adc->mem) {
-+		ret = -ENOENT;
-+		dev_err(&pdev->dev, "Failed to get platform mmio resource\n");
-+		goto err_free;
-+	}
-+
-+	adc->mem = request_mem_region(adc->mem->start, resource_size(adc->mem),
-+					pdev->name);
-+
-+	if (!adc->mem) {
-+		ret = -EBUSY;
-+		dev_err(&pdev->dev, "Failed to request mmio memory region\n");
-+		goto err_free;
-+	}
-+
-+	adc->base = ioremap_nocache(adc->mem->start, resource_size(adc->mem));
-+
-+	if (!adc->base) {
-+		ret = -EBUSY;
-+		dev_err(&pdev->dev, "Failed to ioremap mmio memory\n");
-+		goto err_release_mem_region;
-+	}
-+
-+	adc->clk = clk_get(&pdev->dev, "adc");
-+
-+	if (IS_ERR(adc->clk)) {
-+		ret = PTR_ERR(adc->clk);
-+		dev_err(&pdev->dev, "Failed to get clock: %d\n", ret);
-+		goto err_iounmap;
-+	}
-+
-+	init_completion(&adc->bat_completion);
-+	init_completion(&adc->adc_completion);
-+
-+	spin_lock_init(&adc->lock);
-+
-+	adc->clk_ref = 0;
-+
-+	platform_set_drvdata(pdev, adc);
-+
-+	ret = request_irq(adc->irq, jz4740_adc_irq, 0, pdev->name, adc);
-+
-+	if (ret) {
-+		dev_err(&pdev->dev, "Failed to request irq: %d\n", ret);
-+		goto err_clk_put;
-+	}
-+
-+	ret = device_create_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Failed to create sysfs file: %d\n", ret);
-+		goto err_free_irq;
-+	}
-+
-+	adc->hwmon = hwmon_device_register(&pdev->dev);
-+	if (IS_ERR(adc->hwmon)) {
-+		ret = PTR_ERR(adc->hwmon);
-+		goto err_remove_file;
-+	}
-+
-+	writeb(0x00, adc->base + JZ_REG_ADC_ENABLE);
-+	writeb(0xff, adc->base + JZ_REG_ADC_CTRL);
-+
-+	return 0;
-+
-+err_remove_file:
-+	device_remove_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
-+err_free_irq:
-+	free_irq(adc->irq, adc);
-+err_clk_put:
-+	clk_put(adc->clk);
-+err_iounmap:
-+	platform_set_drvdata(pdev, NULL);
-+	iounmap(adc->base);
-+err_release_mem_region:
-+	release_mem_region(adc->mem->start, resource_size(adc->mem));
-+err_free:
-+	kfree(adc);
++	if (ret > 100)
++		ret = 100;
++	else if (ret < 0)
++		ret = 0;
 +
 +	return ret;
 +}
 +
-+static int __devexit jz4740_adc_remove(struct platform_device *pdev)
++static int jz_battery_get_property(struct power_supply *psy,
++				enum power_supply_property psp,
++				union power_supply_propval *val)
 +{
-+	struct jz4740_adc *adc = platform_get_drvdata(pdev);
++	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
++	struct power_supply_info *info = &jz_battery->pdata->info;
++	long voltage;
 +
-+	hwmon_device_unregister(adc->hwmon);
-+	device_remove_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
++	switch (psp) {
++	case POWER_SUPPLY_PROP_STATUS:
++		val->intval = jz_battery->status;
++		break;
++	case POWER_SUPPLY_PROP_TECHNOLOGY:
++		val->intval = jz_battery->pdata->info.technology;
++		break;
++	case POWER_SUPPLY_PROP_HEALTH:
++		voltage = jz_battery_read_voltage(jz_battery);
++		if (voltage < info->voltage_min_design)
++			val->intval = POWER_SUPPLY_HEALTH_DEAD;
++		else
++			val->intval = POWER_SUPPLY_HEALTH_GOOD;
++		break;
++	case POWER_SUPPLY_PROP_CAPACITY:
++		val->intval = jz_battery_get_capacity(psy);
++		break;
++	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
++		val->intval = jz_battery_read_voltage(jz_battery);
++		if (val->intval < 0)
++			return val->intval;
++		break;
++	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
++		val->intval = info->voltage_max_design;
++		break;
++	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
++		val->intval = info->voltage_min_design;
++		break;
++	case POWER_SUPPLY_PROP_PRESENT:
++		val->intval = 1;
++		break;
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
 +
-+	free_irq(adc->irq, adc);
++static void jz_battery_external_power_changed(struct power_supply *psy)
++{
++	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
 +
-+	iounmap(adc->base);
-+	release_mem_region(adc->mem->start, resource_size(adc->mem));
++	cancel_delayed_work(&jz_battery->work);
++	schedule_delayed_work(&jz_battery->work, 0);
++}
 +
-+	clk_put(adc->clk);
++static irqreturn_t jz_battery_charge_irq(int irq, void *data)
++{
++	struct jz_battery *jz_battery = data;
 +
-+	platform_set_drvdata(pdev, NULL);
++	cancel_delayed_work(&jz_battery->work);
++	schedule_delayed_work(&jz_battery->work, 0);
 +
-+	kfree(adc);
++	return IRQ_HANDLED;
++}
++
++static void jz_battery_update(struct jz_battery *jz_battery)
++{
++	int status;
++	long voltage;
++	long voltage_difference;
++	bool has_changed = 0;
++
++	if (gpio_is_valid(jz_battery->pdata->gpio_charge)) {
++		int is_charging;
++
++		is_charging = gpio_get_value(jz_battery->pdata->gpio_charge);
++		is_charging ^= jz_battery->pdata->gpio_charge_active_low;
++		if (is_charging)
++			status = POWER_SUPPLY_STATUS_CHARGING;
++		else
++			status = POWER_SUPPLY_STATUS_NOT_CHARGING;
++
++		if (status != jz_battery->status) {
++			jz_battery->status = status;
++			has_changed = 1;
++		}
++	}
++
++	voltage = jz_battery_read_voltage(jz_battery);
++	voltage_difference = voltage - jz_battery->voltage;
++	if (voltage_difference > 50000 || voltage_difference < 50000) {
++		jz_battery->voltage = voltage;
++		has_changed = 1;
++	}
++	if (has_changed)
++		power_supply_changed(&jz_battery->battery);
++}
++
++static enum power_supply_property jz_battery_properties[] = {
++	POWER_SUPPLY_PROP_STATUS,
++	POWER_SUPPLY_PROP_TECHNOLOGY,
++	POWER_SUPPLY_PROP_HEALTH,
++	POWER_SUPPLY_PROP_CAPACITY,
++	POWER_SUPPLY_PROP_VOLTAGE_NOW,
++	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
++	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
++	POWER_SUPPLY_PROP_PRESENT,
++};
++
++static void jz_battery_work(struct work_struct *work)
++{
++	/* Too small interval will increase system workload */
++	const int interval = HZ * 30;
++	struct jz_battery *jz_battery = container_of(work, struct jz_battery,
++					    work.work);
++
++	jz_battery_update(jz_battery);
++	schedule_delayed_work(&jz_battery->work, interval);
++}
++
++static int __devinit jz_battery_probe(struct platform_device *pdev)
++{
++	int ret = 0;
++	struct jz_battery_platform_data *pdata = pdev->dev.platform_data;
++	struct jz_battery *jz_battery;
++	struct power_supply *battery;
++
++	if (!pdev->dev.platform_data) {
++		dev_err(&pdev->dev, "No platform data\n");
++		return -EINVAL;
++	}
++
++	jz_battery = kzalloc(sizeof(*jz_battery), GFP_KERNEL);
++
++	if (!jz_battery) {
++		dev_err(&pdev->dev, "Failed to allocate driver structure\n");
++		return -ENOMEM;
++	}
++
++	battery = &jz_battery->battery;
++	battery->name = pdata->info.name;
++	battery->type = POWER_SUPPLY_TYPE_BATTERY;
++	battery->properties	= jz_battery_properties;
++	battery->num_properties	= ARRAY_SIZE(jz_battery_properties);
++	battery->get_property = jz_battery_get_property;
++	battery->external_power_changed = jz_battery_external_power_changed;
++	battery->use_for_apm = 1;
++
++	jz_battery->pdata = pdata;
++
++	INIT_DELAYED_WORK(&jz_battery->work, jz_battery_work);
++
++	if (gpio_is_valid(pdata->gpio_charge)) {
++		ret = gpio_request(pdata->gpio_charge, dev_name(&pdev->dev));
++		if (ret) {
++			dev_err(&pdev->dev, "charger state gpio request failed.\n");
++			goto err_free;
++		}
++		ret = gpio_direction_input(pdata->gpio_charge);
++		if (ret) {
++			dev_err(&pdev->dev, "charger state gpio set direction failed.\n");
++			goto err_free_gpio;
++		}
++
++		jz_battery->charge_irq = gpio_to_irq(pdata->gpio_charge);
++
++		if (jz_battery->charge_irq >= 0) {
++			ret = request_irq(jz_battery->charge_irq,
++				    jz_battery_charge_irq,
++				    IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
++				    dev_name(&pdev->dev), jz_battery);
++			if (ret) {
++				dev_err(&pdev->dev, "Failed to request charge irq: %d\n", ret);
++				goto err_free_gpio;
++			}
++		}
++	} else {
++		jz_battery->charge_irq = -1;
++	}
++
++
++	ret = power_supply_register(&pdev->dev, &jz_battery->battery);
++	if (ret) {
++		dev_err(&pdev->dev, "power supply battery register failed.\n");
++		goto err_free_irq;
++	}
++
++	platform_set_drvdata(pdev, jz_battery);
++	schedule_delayed_work(&jz_battery->work, 0);
++
++	return 0;
++
++err_free_irq:
++	if (jz_battery->charge_irq >= 0)
++		free_irq(jz_battery->charge_irq, jz_battery);
++err_free_gpio:
++	if (gpio_is_valid(pdata->gpio_charge))
++		gpio_free(jz_battery->pdata->gpio_charge);
++err_free:
++	kfree(jz_battery);
++	return ret;
++}
++
++static int __devexit jz_battery_remove(struct platform_device *pdev)
++{
++	struct jz_battery *jz_battery = platform_get_drvdata(pdev);
++
++	cancel_delayed_work_sync(&jz_battery->work);
++
++	if (gpio_is_valid(jz_battery->pdata->gpio_charge)) {
++		if (jz_battery->charge_irq >= 0)
++			free_irq(jz_battery->charge_irq, jz_battery);
++		gpio_free(jz_battery->pdata->gpio_charge);
++	}
++
++	power_supply_unregister(&jz_battery->battery);
 +
 +	return 0;
 +}
 +
-+struct platform_driver jz4740_adc_driver = {
-+	.probe	= jz4740_adc_probe,
-+	.remove = __devexit_p(jz4740_adc_remove),
++#ifdef CONFIG_PM
++static int jz_battery_suspend(struct device *dev)
++{
++	struct jz_battery *jz_battery = dev_get_drvdata(dev);
++
++	cancel_delayed_work_sync(&jz_battery->work);
++	jz_battery->status =  POWER_SUPPLY_STATUS_UNKNOWN;
++
++	return 0;
++}
++
++static int jz_battery_resume(struct device *dev)
++{
++	struct jz_battery *jz_battery = dev_get_drvdata(dev);
++
++	schedule_delayed_work(&jz_battery->work, 0);
++
++	return 0;
++}
++
++static const struct dev_pm_ops jz_battery_pm_ops = {
++	.suspend	= jz_battery_suspend,
++	.resume		= jz_battery_resume,
++};
++
++#define JZ_BATTERY_PM_OPS (&jz_battery_pm_ops)
++
++#else
++#define JZ_BATTERY_PM_OPS NULL
++#endif
++
++static struct platform_driver jz_battery_driver = {
++	.probe		= jz_battery_probe,
++	.remove		= __devexit_p(jz_battery_remove),
 +	.driver = {
-+		.name = "jz4740-adc",
++		.name = "jz4740-battery",
 +		.owner = THIS_MODULE,
++		.pm = JZ_BATTERY_PM_OPS,
 +	},
 +};
 +
-+static int __init jz4740_adc_init(void)
++static int __init jz_battery_init(void)
 +{
-+	return platform_driver_register(&jz4740_adc_driver);
++	return platform_driver_register(&jz_battery_driver);
 +}
-+module_init(jz4740_adc_init);
++module_init(jz_battery_init);
 +
-+static void __exit jz4740_adc_exit(void)
++static void __exit jz_battery_exit(void)
 +{
-+	platform_driver_unregister(&jz4740_adc_driver);
++	platform_driver_unregister(&jz_battery_driver);
 +}
-+module_exit(jz4740_adc_exit);
++module_exit(jz_battery_exit);
 +
-+MODULE_DESCRIPTION("JZ4740 SoC ADC driver");
-+MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
++MODULE_ALIAS("platform:jz4740-battery");
 +MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:jz4740-adc");
-diff --git a/include/linux/jz4740-adc.h b/include/linux/jz4740-adc.h
++MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
++MODULE_DESCRIPTION("JZ4740 SoC battery driver");
+diff --git a/include/linux/power/jz4740-battery.h b/include/linux/power/jz4740-battery.h
 new file mode 100644
-index 0000000..59cfe63
+index 0000000..19c9610
 --- /dev/null
-+++ b/include/linux/jz4740-adc.h
-@@ -0,0 +1,25 @@
-+
-+#ifndef __LINUX_JZ4740_ADC
-+#define __LINUX_JZ4740_ADC
-+
-+#include <linux/device.h>
-+
-+enum jz_adc_battery_scale {
-+	JZ_ADC_BATTERY_SCALE_2V5, /* Mesures voltages up to 2.5V */
-+	JZ_ADC_BATTERY_SCALE_7V5, /* Mesures voltages up to 7.5V */
-+};
-+
++++ b/include/linux/power/jz4740-battery.h
+@@ -0,0 +1,24 @@
 +/*
-+ * jz4740_adc_read_battery_voltage - Read battery voltage from the ADC PBAT pin
-+ * @dev: Pointer to a jz4740-adc device
-+ * @scale: Whether to use 2.5V or 7.5V scale
++ *  Copyright (C) 2009, Jiejing Zhang <kzjeef@gmail.com>
 + *
-+ * Returns: Battery voltage in mircovolts
++ *  This program is free software; you can redistribute	 it and/or modify it
++ *  under  the terms of	 the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the	License, or (at your
++ *  option) any later version.
 + *
-+ * Context: Process
-+*/
-+long jz4740_adc_read_battery_voltage(struct device *dev,
-+					enum jz_adc_battery_scale scale);
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
 +
++#ifndef __JZ4740_BATTERY_H
++#define __JZ4740_BATTERY_H
++
++struct jz_battery_platform_data {
++	struct power_supply_info info;
++	int gpio_charge;	/* GPIO port of Charger state */
++	int gpio_charge_active_low;
++};
 +
 +#endif
 -- 

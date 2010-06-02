@@ -1,204 +1,343 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 10:36:19 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:48357 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490962Ab0FBIfr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 10:35:47 +0200
-Received: by mail-iw0-f177.google.com with SMTP id 34so552102iwn.36
-        for <multiple recipients>; Wed, 02 Jun 2010 01:35:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 10:48:59 +0200 (CEST)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:48175 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491861Ab0FBIsw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 10:48:52 +0200
+Received: by vws7 with SMTP id 7so7507384vws.36
+        for <multiple recipients>; Wed, 02 Jun 2010 01:48:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=s6bXI8dFczbIKVHlS/hHi1Cbq+nZCkxV58jG5LsO2zg=;
-        b=VDl9fRtSU4890Kdk5vNo3IwocrafoSkj55YfzQFFNKggSCIvnruTp7kWWYc/zftj5q
-         Ml7sQ5xIWAE6aRM7FKDBuhT+6BHOXUZxv+sWOOMPpOJ3ufYgK9eNj81cMl/KQTFtpv/u
-         M5mJUIo19Hsqk5zzd6widfZaGrQCRVX1yFnwk=
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:cc:content-type;
+        bh=gjMM8VtptnTKe6tS+gMPmay9MLbKCYnCnu/DT+1QA/o=;
+        b=FHla/9pv3wGJUEexBQhfHTWXeaF6Ckb1agswFv6fM/8Ph+M1N2fe2XYEI7xi48xKr2
+         xj6FPckx1Nw3/5NMVfHgDH1eUvB5lo+ipVhmkPaa0Re+zVB22ioJBoJfTMkF6eCRPsgd
+         rUdJ1OV77l1b8qtg/yroVa9RjJGI1JCegObsI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=laqtQZeRslicxWGk3hdIkTSPYpl6gyc2pf81L9Wgbhz307/nQVJdWIEZa4CEOWE2P4
-         Uk/O9AEaj9Xj2oAFHSLICEvcSy2Adhw48GRUp5ZYEoQWyfxhLfE9KQVv8+r4sjd/8dA+
-         JnFRFvy+Nbpt5JJrSFbYpFe+UlzFXvxYsNQ/A=
-Received: by 10.231.120.69 with SMTP id c5mr9432021ibr.79.1275467746666;
-        Wed, 02 Jun 2010 01:35:46 -0700 (PDT)
-Received: from yeeloong ([202.201.14.140])
-        by mx.google.com with ESMTPS id d9sm35557897ibl.10.2010.06.02.01.35.42
-        (version=SSLv3 cipher=RC4-MD5);
-        Wed, 02 Jun 2010 01:35:46 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Cc:     Alexander Clouter <alex@digriz.org.uk>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v4] MIPS: Clean up the calculation of VMLINUZ_LOAD_ADDRESS
-Date:   Wed,  2 Jun 2010 16:35:25 +0800
-Message-Id: <96f3b48ba7f749c4357760008cdae644aa55b92d.1275438520.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <9890d1383c75ce6df44d357687a9c4e2d6ba4050.1275438553.git.wuzhangjin@gmail.com>
-References: <9890d1383c75ce6df44d357687a9c4e2d6ba4050.1275438553.git.wuzhangjin@gmail.com>
-X-archive-position: 26993
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        b=RwpZeVrSoBHcDM+1NQOs2xq/Hu7gNisAVu4ix7fXp1RXqtXOaPmRPlmhqL2ovuanaH
+         2FqG+QgR/k1xNWw7UtSgkimzZh0o8p8WqtA08RdxNbdbWuHJalip4bUHNtUzCS+bDfY1
+         bLp5eKAWGuJF9e39pLNrE6qizo2Ak2z3id0Tc=
+MIME-Version: 1.0
+Received: by 10.224.41.14 with SMTP id m14mr3021810qae.336.1275468523884; Wed, 
+        02 Jun 2010 01:48:43 -0700 (PDT)
+Received: by 10.229.232.141 with HTTP; Wed, 2 Jun 2010 01:48:43 -0700 (PDT)
+Date:   Wed, 2 Jun 2010 01:48:43 -0700
+Message-ID: <AANLkTilcSFUBHXHHttcXFVToL8waTmlxmts-elClSJar@mail.gmail.com>
+Subject: [loongson2-PATCH] modification of the cpufreq module
+From:   Gang Liang <randomizedthinking@gmail.com>
+To:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:     Zhangjin Wu <wuzhangjin@gmail.com>, Hua Yan <yanh@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 26994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: randomizedthinking@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1109
+X-UID: 1117
 
-We have calculated VMLINUZ_LOAD_ADDRESS in shell, which is indecipherable. This
-patch rewrites it in C.
+This patch updates some aspects of the current implementation of
+cpufreq driver for Loongson2.
 
-Changes:
+1) A default cpu_wait handler is installed such that the cpu will be
+alive at the lowest possible power level when a cpu_wait call is made;
 
-v3 -> v4: (feedback from Sam Ravnborg)
-  o Makefile: Follow the 80 characters' limit and Remove an un-needed objcopy.
-  o calc_vmlinuz_load_addr.c: Use a smaller alignment and Add more comments
+2) The number of frequency levels is reduced to 3, and the lowest
+frequency is capped as a half of the full cpu speed. The "nowait" option
+is removed.
 
-v2 -> v3: (feedback from Alexander Clouter)
-  o Drop the unneeded variable n
-  o Replace the last "unsigned long long" by uint64_t
+Thanks!
 
-v1 -> v2: (feedback from Alexander Clouter)
-  o make it more portable
-    use EXIT_SUCCESS and EXIT_FAILURE as the return value, and use uint64_t
-    instead of "unsigned long long".
-  o add a missing return value
-    return EXIT_FAILURE if sscanf() not return 1
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/boot/.gitignore                          |    1 +
- arch/mips/boot/compressed/Makefile                 |   26 +++++-----
- arch/mips/boot/compressed/calc_vmlinuz_load_addr.c |   57 ++++++++++++++++++++
- 3 files changed, 71 insertions(+), 13 deletions(-)
- create mode 100644 arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
+ arch/mips/include/asm/mach-loongson/loongson.h |    4 +-
+ arch/mips/kernel/cpu-probe.c                   |   21 +++++++++
+ arch/mips/kernel/cpufreq/loongson2_clock.c     |   52 +++--------------------
+ arch/mips/kernel/cpufreq/loongson2_cpufreq.c   |   54 +++++++++---------------
+ 4 files changed, 50 insertions(+), 81 deletions(-)
 
-diff --git a/arch/mips/boot/.gitignore b/arch/mips/boot/.gitignore
-index 4667a5f..f210b09 100644
---- a/arch/mips/boot/.gitignore
-+++ b/arch/mips/boot/.gitignore
-@@ -3,3 +3,4 @@ elf2ecoff
- vmlinux.*
- zImage
- zImage.tmp
-+calc_vmlinuz_load_addr
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index a517f58..9ef6e2f 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -12,14 +12,6 @@
- # Author: Wu Zhangjin <wuzhangjin@gmail.com>
- #
- 
--# compressed kernel load addr: VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
--VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | cut -d' ' -f1)
--VMLINUX_SIZE := $(shell [ -n "$(VMLINUX_SIZE)" ] && echo -n $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
--# VMLINUZ_LOAD_ADDRESS = concat "high32 of VMLINUX_LOAD_ADDRESS" and "(low32 of VMLINUX_LOAD_ADDRESS) + VMLINUX_SIZE"
--HIGH32 := $(shell A=$(VMLINUX_LOAD_ADDRESS); [ $${\#A} -gt 10 ] && expr substr "$(VMLINUX_LOAD_ADDRESS)" 3 $$(($${\#A} - 10)))
--LOW32 := $(shell [ -n "$(HIGH32)" ] && A=11 || A=3; expr substr "$(VMLINUX_LOAD_ADDRESS)" $${A} 8)
--VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" -a -n "$(LOW32)" ] && printf "$(HIGH32)%08x" $$(($(VMLINUX_SIZE) + 0x$(LOW32))))
--
- # set the default size of the mallocing area for decompressing
- BOOT_HEAP_SIZE := 0x400000
- 
-@@ -63,10 +55,18 @@ OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.bin.z \
- $(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE
- 	$(call if_changed,objcopy)
- 
--LDFLAGS_vmlinuz := $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T
--vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/piggy.o
--	$(call cmd,ld)
--	$(Q)$(OBJCOPY) $(OBJCOPYFLAGS) $@
-+# Calculate the load address of the compressed kernel image
-+hostprogs-y := calc_vmlinuz_load_addr
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h
+b/arch/mips/include/asm/mach-loongson/loongson.h
+index 53d0bef..33164b9 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -242,8 +242,8 @@ extern int mach_i8259_irq(void);
+
+ #ifdef CONFIG_CPU_SUPPORTS_CPUFREQ
+ #include <linux/cpufreq.h>
+-extern void loongson2_cpu_wait(void);
+-extern struct cpufreq_frequency_table loongson2_clockmod_table[];
++/* extern void loongson2_cpu_wait(void); */
++/* extern struct cpufreq_frequency_table loongson2_clockmod_table[]; */
+
+ /* Chip Config */
+ #define LOONGSON_CHIPCFG0		LOONGSON_REG(LOONGSON_REGBASE + 0x80)
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index be5bb16..5b3072c 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -25,6 +25,9 @@
+ #include <asm/system.h>
+ #include <asm/watch.h>
+ #include <asm/spram.h>
 +
-+VMLINUZ_LOAD_ADDRESS = $(shell $(obj)/calc_vmlinuz_load_addr \
-+		$(objtree)/$(KBUILD_IMAGE) $(VMLINUX_LOAD_ADDRESS))
++#include <loongson.h>
 +
-+vmlinuzobjs-y += $(obj)/piggy.o
-+
-+quiet_cmd_zld = LD      $@
-+      cmd_zld = $(LD) $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T $< $(vmlinuzobjs-y) -o $@
-+vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/calc_vmlinuz_load_addr
-+	$(call cmd,zld)
- 
- #
- # Some DECstations need all possible sections of an ECOFF executable
-@@ -76,7 +76,7 @@ ifdef CONFIG_MACH_DECSTATION
- endif
- 
- # elf2ecoff can only handle 32bit image
--hostprogs-y := ../elf2ecoff
-+hostprogs-y += ../elf2ecoff
- 
- ifdef CONFIG_32BIT
- 	VMLINUZ = vmlinuz
-diff --git a/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-new file mode 100644
-index 0000000..88c9d96
---- /dev/null
-+++ b/arch/mips/boot/compressed/calc_vmlinuz_load_addr.c
-@@ -0,0 +1,57 @@
-+/*
-+ * Copyright (C) 2010 "Wu Zhangjin" <wuzhangjin@gmail.com>
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <errno.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+int main(int argc, char *argv[])
+ /*
+  * Not all of the MIPS CPUs have the "wait" instruction available. Moreover,
+  * the implementation of the "wait" feature differs between CPU families. This
+@@ -51,6 +54,21 @@ static void r39xx_wait(void)
+
+ extern void r4k_wait(void);
+
++DEFINE_SPINLOCK(loongson2_wait_lock);
++static void loongson2_cpu_wait(void)
 +{
-+	struct stat sb;
-+	uint64_t vmlinux_size, vmlinux_load_addr, vmlinuz_load_addr;
++    u32 cpu_freq;
++    unsigned long flags;
 +
-+	if (argc != 3) {
-+		fprintf(stderr, "Usage: %s <pathname> <vmlinux_load_addr>\n",
-+				argv[0]);
-+		return EXIT_FAILURE;
-+	}
-+
-+	if (stat(argv[1], &sb) == -1) {
-+		perror("stat");
-+		return EXIT_FAILURE;
-+	}
-+
-+	/* Convert hex characters to dec number */
-+	errno = 0;
-+	if (sscanf(argv[2], "%llx", &vmlinux_load_addr) != 1) {
-+		if (errno != 0)
-+			perror("sscanf");
-+		else
-+			fprintf(stderr, "No matching characters\n");
-+
-+		return EXIT_FAILURE;
-+	}
-+
-+	vmlinux_size = (uint64_t)sb.st_size;
-+	vmlinuz_load_addr = vmlinux_load_addr + vmlinux_size;
-+
-+	/*
-+	 * Align with 16 bytes: "greater than that used for any standard data
-+	 * types by a MIPS compiler." -- See MIPS Run Linux (Second Edition).
-+	 */
-+
-+	vmlinuz_load_addr += (16 - vmlinux_size % 16);
-+
-+	printf("0x%llx\n", vmlinuz_load_addr);
-+
-+	return EXIT_SUCCESS;
++    /* enter the lowest power mode available while still alive */
++    /* future work: check cpu freq -- do nothing if no change */
++    /* otherwise, change the frequency and propagate the clock rate */
++    spin_lock_irqsave(&loongson2_wait_lock, flags);
++    cpu_freq = LOONGSON_CHIPCFG0;
++	LOONGSON_CHIPCFG0 = (cpu_freq & ~0x7) | 1;
++    spin_unlock_irqrestore(&loongson2_wait_lock, flags);
 +}
--- 
-1.6.5
++
+ /*
+  * This variant is preferable as it allows testing need_resched and going to
+  * sleep depending on the outcome atomically.  Unfortunately the "It is
+@@ -212,6 +230,9 @@ void __init check_wait(void)
+ 		if ((c->processor_id & 0x00ff) >= 0x40)
+ 			cpu_wait = r4k_wait;
+ 		break;
++    case CPU_LOONGSON2:
++        cpu_wait = loongson2_cpu_wait;
++        break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/arch/mips/kernel/cpufreq/loongson2_clock.c
+b/arch/mips/kernel/cpufreq/loongson2_clock.c
+index cefc6e2..0b30fe9 100644
+--- a/arch/mips/kernel/cpufreq/loongson2_clock.c
++++ b/arch/mips/kernel/cpufreq/loongson2_clock.c
+@@ -18,25 +18,7 @@ static LIST_HEAD(clock_list);
+ static DEFINE_SPINLOCK(clock_lock);
+ static DEFINE_MUTEX(clock_list_sem);
+
+-/* Minimum CLK support */
+-enum {
+-	DC_ZERO, DC_25PT = 2, DC_37PT, DC_50PT, DC_62PT, DC_75PT,
+-	DC_87PT, DC_DISABLE, DC_RESV
+-};
+-
+-struct cpufreq_frequency_table loongson2_clockmod_table[] = {
+-	{DC_RESV, CPUFREQ_ENTRY_INVALID},
+-	{DC_ZERO, CPUFREQ_ENTRY_INVALID},
+-	{DC_25PT, 0},
+-	{DC_37PT, 0},
+-	{DC_50PT, 0},
+-	{DC_62PT, 0},
+-	{DC_75PT, 0},
+-	{DC_87PT, 0},
+-	{DC_DISABLE, 0},
+-	{DC_RESV, CPUFREQ_TABLE_END},
+-};
+-EXPORT_SYMBOL_GPL(loongson2_clockmod_table);
++#define LS2_MAX_CPUFREQ_LEVEL 8
+
+ static struct clk cpu_clk = {
+ 	.name = "cpu_clk",
+@@ -109,21 +91,15 @@ int clk_set_rate_ex(struct clk *clk, unsigned
+long rate, int algo_id)
+ 	if (unlikely(clk->flags & CLK_RATE_PROPAGATES))
+ 		propagate_rate(clk);
+
+-	for (i = 0; loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END;
+-	     i++) {
+-		if (loongson2_clockmod_table[i].frequency ==
+-		    CPUFREQ_ENTRY_INVALID)
+-			continue;
+-		if (rate == loongson2_clockmod_table[i].frequency)
+-			break;
+-	}
+-	if (rate != loongson2_clockmod_table[i].frequency)
+-		return -ENOTSUPP;
++    i = rate * LS2_MAX_CPUFREQ_LEVEL / cpu_clock_freq;
++    if ( i < 1 || i > LS2_MAX_CPUFREQ_LEVEL )
++        return -ENOTSUPP;
+
+-	clk->rate = rate;
++    /* indeed, a rounded rate is assigned */
++	clk->rate = i * (cpu_clock_freq / LS2_MAX_CPUFREQ_LEVEL);
+
+ 	regval = LOONGSON_CHIPCFG0;
+-	regval = (regval & ~0x7) | (loongson2_clockmod_table[i].index - 1);
++	regval = (regval & ~0x7) | i;
+ 	LOONGSON_CHIPCFG0 = regval;
+
+ 	return ret;
+@@ -151,20 +127,6 @@ EXPORT_SYMBOL_GPL(clk_round_rate);
+  * interrupt disabled content
+  */
+
+-DEFINE_SPINLOCK(loongson2_wait_lock);
+-void loongson2_cpu_wait(void)
+-{
+-	u32 cpu_freq;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&loongson2_wait_lock, flags);
+-	cpu_freq = LOONGSON_CHIPCFG0;
+-	LOONGSON_CHIPCFG0 &= ~0x7;	/* Put CPU into wait mode */
+-	LOONGSON_CHIPCFG0 = cpu_freq;	/* Restore CPU state */
+-	spin_unlock_irqrestore(&loongson2_wait_lock, flags);
+-}
+-EXPORT_SYMBOL_GPL(loongson2_cpu_wait);
+-
+ MODULE_AUTHOR("Yanhua <yanh@lemote.com>");
+ MODULE_DESCRIPTION("cpufreq driver for Loongson 2F");
+ MODULE_LICENSE("GPL");
+diff --git a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+index 2f6a0b1..0488945 100644
+--- a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
++++ b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+@@ -21,11 +21,16 @@
+
+ #include <loongson.h>
+
+-static uint nowait;
++#define LS2_CPUFREQ_LEVEL 3
+
+ static struct clk *cpuclk;
+
+-static void (*saved_cpu_wait) (void);
++struct cpufreq_frequency_table loongson2_clockmod_table[] = {
++	{0, 0},
++	{1, 0},
++	{2, 0},
++	{ .frequency = CPUFREQ_TABLE_END },
++};
+
+ static int loongson2_cpu_freq_notifier(struct notifier_block *nb,
+ 					unsigned long val, void *data);
+@@ -67,14 +72,11 @@ static int loongson2_cpufreq_target(struct
+cpufreq_policy *policy,
+ 	cpus_allowed = current->cpus_allowed;
+ 	set_cpus_allowed(current, cpumask_of_cpu(cpu));
+
+-	if (cpufreq_frequency_table_target
+-	    (policy, &loongson2_clockmod_table[0], target_freq, relation,
+-	     &newstate))
++	if (cpufreq_frequency_table_target (policy,
++			&loongson2_clockmod_table[0], target_freq, relation, &newstate))
+ 		return -EINVAL;
+
+-	freq =
+-	    ((cpu_clock_freq / 1000) *
+-	     loongson2_clockmod_table[newstate].index) / 8;
++	freq = loongson2_clockmod_table[newstate].frequency;
+ 	if (freq < policy->min || freq > policy->max)
+ 		return -EINVAL;
+
+@@ -88,15 +90,10 @@ static int loongson2_cpufreq_target(struct
+cpufreq_policy *policy,
+ 	if (freqs.new == freqs.old)
+ 		return 0;
+
+-	/* notifiers */
++	/* change cpu clock between notifier pairs */
+ 	cpufreq_notify_transition(&freqs, CPUFREQ_PRECHANGE);
+-
+ 	set_cpus_allowed(current, cpus_allowed);
+-
+-	/* setting the cpu frequency */
+ 	clk_set_rate(cpuclk, freq);
+-
+-	/* notifiers */
+ 	cpufreq_notify_transition(&freqs, CPUFREQ_POSTCHANGE);
+
+ 	pr_debug("cpufreq: set frequency %u kHz\n", freq);
+@@ -121,11 +118,12 @@ static int loongson2_cpufreq_cpu_init(struct
+cpufreq_policy *policy)
+ 	if (!cpuclk->rate)
+ 		return -EINVAL;
+
+-	/* clock table init */
+-	for (i = 2;
+-	     (loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END);
+-	     i++)
+-		loongson2_clockmod_table[i].frequency = (cpuclk->rate * i) / 8;
++	/* initialize the clock table such that all frequencies */
++	/* evenly span within [cpu_clock_freq/2, cpu_clock_freq] */
++	for (i = 0; i < LS2_CPUFREQ_LEVEL; i++) {
++		loongson2_clockmod_table[i].frequency = cpuclk->rate *
++			(i+LS2_CPUFREQ_LEVEL-1) / (2*LS2_CPUFREQ_LEVEL-2);
++    }
+
+ 	policy->cur = loongson2_cpufreq_get(policy->cpu);
+
+@@ -139,7 +137,7 @@ static int loongson2_cpufreq_cpu_init(struct
+cpufreq_policy *policy)
+ static int loongson2_cpufreq_verify(struct cpufreq_policy *policy)
+ {
+ 	return cpufreq_frequency_table_verify(policy,
+-					      &loongson2_clockmod_table[0]);
++					&loongson2_clockmod_table[0]);
+ }
+
+ static int loongson2_cpufreq_exit(struct cpufreq_policy *policy)
+@@ -185,7 +183,7 @@ static int __init cpufreq_init(void)
+ {
+ 	int ret;
+
+-	/* Register platform stuff */
++	/* Register platform driver */
+ 	ret = platform_driver_register(&platform_driver);
+ 	if (ret)
+ 		return ret;
+@@ -195,20 +193,11 @@ static int __init cpufreq_init(void)
+ 	cpufreq_register_notifier(&loongson2_cpufreq_notifier_block,
+ 				  CPUFREQ_TRANSITION_NOTIFIER);
+
+-	ret = cpufreq_register_driver(&loongson2_cpufreq_driver);
+-
+-	if (!ret && !nowait) {
+-		saved_cpu_wait = cpu_wait;
+-		cpu_wait = loongson2_cpu_wait;
+-	}
+-
+-	return ret;
++	return cpufreq_register_driver(&loongson2_cpufreq_driver);
+ }
+
+ static void __exit cpufreq_exit(void)
+ {
+-	if (!nowait && saved_cpu_wait)
+-		cpu_wait = saved_cpu_wait;
+ 	cpufreq_unregister_driver(&loongson2_cpufreq_driver);
+ 	cpufreq_unregister_notifier(&loongson2_cpufreq_notifier_block,
+ 				    CPUFREQ_TRANSITION_NOTIFIER);
+@@ -219,9 +208,6 @@ static void __exit cpufreq_exit(void)
+ module_init(cpufreq_init);
+ module_exit(cpufreq_exit);
+
+-module_param(nowait, uint, 0644);
+-MODULE_PARM_DESC(nowait, "Disable Loongson-2F specific wait");
+-
+ MODULE_AUTHOR("Yanhua <yanh@lemote.com>");
+ MODULE_DESCRIPTION("cpufreq driver for Loongson2F");
+ MODULE_LICENSE("GPL");
+
+
+
+--
+Gang Liang
+Life is beautiful!

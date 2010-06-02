@@ -1,56 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 16:03:16 +0200 (CEST)
-Received: from bby1mta03.pmc-sierra.com ([216.241.235.118]:46691 "EHLO
-        bby1mta03.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491828Ab0FBODI convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Jun 2010 16:03:08 +0200
-Received: from bby1mta03.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
-        by localhost (Postfix) with SMTP id 66FF3107008B;
-        Wed,  2 Jun 2010 07:02:57 -0700 (PDT)
-Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
-        by bby1mta03.pmc-sierra.bc.ca (Postfix) with SMTP id 56FAE107006A;
-        Wed,  2 Jun 2010 07:02:57 -0700 (PDT)
-Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 2 Jun 2010 07:02:57 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 16:16:00 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:59744 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491790Ab0FBOPx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 Jun 2010 16:15:53 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o52EFpko016456;
+        Wed, 2 Jun 2010 15:15:52 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o52EFpX5016454;
+        Wed, 2 Jun 2010 15:15:51 +0100
+Date:   Wed, 2 Jun 2010 15:15:51 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+Cc:     linux-mips <linux-mips@linux-mips.org>
+Subject: Re: TITAN GE driver
+Message-ID: <20100602141551.GA15753@linux-mips.org>
+References: <A7DEA48C84FD0B48AAAE33F328C0201404E2D834@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+ <20100528162722.GB7148@linux-mips.org>
+ <A7DEA48C84FD0B48AAAE33F328C0201404E2DC94@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+ <20100602083255.GA23868@linux-mips.org>
+ <A7DEA48C84FD0B48AAAE33F328C0201404E2DCA0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="US-ASCII"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: TITAN GE driver
-Date:   Wed, 2 Jun 2010 07:02:55 -0700
-Message-ID: <A7DEA48C84FD0B48AAAE33F328C0201404E2DCC1@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <20100602134810.GC4388@ericsson.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: TITAN GE driver
-Thread-Index: AcsCWkmg+revDixXR1q+Obj5SiPzWwAAJCSw
-References: <A7DEA48C84FD0B48AAAE33F328C0201404E2D834@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca> <20100528162722.GB7148@linux-mips.org> <A7DEA48C84FD0B48AAAE33F328C0201404E2DC94@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca> <20100602083255.GA23868@linux-mips.org> <A7DEA48C84FD0B48AAAE33F328C0201404E2DCA0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca> <20100602134810.GC4388@ericsson.com>
-From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-To:     "Guenter Roeck" <guenter.roeck@ericsson.com>
-Cc:     "Ralf Baechle" <ralf@linux-mips.org>,
-        "linux-mips" <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 02 Jun 2010 14:02:57.0621 (UTC) FILETIME=[4DD48050:01CB025C]
-X-archive-position: 27002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A7DEA48C84FD0B48AAAE33F328C0201404E2DCA0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+X-archive-position: 27003
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Anoop_P.A@pmc-sierra.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1373
+X-UID: 1382
 
-> > > Linux only has flags that allocate below certain addresses;
+On Wed, Jun 02, 2010 at 01:58:06AM -0700, Anoop P.A. wrote:
 
-I am probably confused by this line ( BTW I know there is a flag
-GFP_DMA32 which will force kmalloc to allocate below 4GB) I was just
-wondering if there is a flag to allocate memory below 512MB . 
-
-> >
-> Ralf said "nothing". My reading is that such a flag is _not_
-available.
+> [Anoop P.A.] You mean there are some flags available to force kmalloc to
+> allocate memory below some address? I couldn't find one in kmalloc man
+> pages.
 > 
-> Guenter
+> BTW I am using 64 bit kernel.
+
+There are:
+
+ o GFP_DMA which usually means to allocate memory accessible to ISA DMA
+   devices.
+ o GFP_DMA32 which means memory in the low physical 4GB, that is memory
+   accessible by 32-bit DMA devices.
+ o GFP_HIGHMEM means any type of memory, even highmem.
+
+All need to be explicitly supported by platform code which the existing
+code doesn't.
+
+Passing none of these flags would mean to allocate any non-highmem.  On
+32-bit kernels that would be below 512MB physical but on 64-bit kernels
+where there never is highmem it would just mean to allocate any memory.
+
+I just hope the NIC isn't as braindead as you were describing but I got
+no time to read up the docs again.
+
+  Ralf

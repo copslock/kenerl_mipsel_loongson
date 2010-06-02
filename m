@@ -1,26 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:16:22 +0200 (CEST)
-Received: from smtp-out-182.synserver.de ([212.40.180.182]:1208 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 21:16:50 +0200 (CEST)
+Received: from smtp-out-182.synserver.de ([212.40.180.182]:1481 "HELO
         smtp-out-182.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492631Ab0FBTOC (ORCPT
+        by eddie.linux-mips.org with SMTP id S1492635Ab0FBTOC (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 2 Jun 2010 21:14:02 +0200
-Received: (qmail 32007 invoked by uid 0); 2 Jun 2010 19:13:12 -0000
+Received: (qmail 32056 invoked by uid 0); 2 Jun 2010 19:13:12 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 31322
 Received: from port-91163.pppoe.wtnet.de (HELO localhost.localdomain) [84.46.68.144]
-  by 217.119.54.81 with SMTP; 2 Jun 2010 19:13:11 -0000
+  by 217.119.54.81 with SMTP; 2 Jun 2010 19:13:12 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Anton Vorontsov <cbouatmailru@gmail.com>
-Subject: [RFC][PATCH 23/26] power: Add JZ4740 battery driver.
-Date:   Wed,  2 Jun 2010 21:12:29 +0200
-Message-Id: <1275505950-17334-7-git-send-email-lars@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [RFC][PATCH 24/26] MIPS: JZ4740: Add qi_lb60 board support
+Date:   Wed,  2 Jun 2010 21:12:30 +0200
+Message-Id: <1275505950-17334-8-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <1275505397-16758-1-git-send-email-lars@metafoo.de>
 References: <1275505397-16758-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27025
+X-archive-position: 27026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,445 +28,535 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 1635
+X-UID: 1636
 
-This patch adds support for the battery voltage measurement part of the JZ4740
-ADC unit.
+This patch adds support for the qi_lb60 (a.k.a QI Ben NanoNote) clamshell
+device.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Anton Vorontsov <cbouatmailru@gmail.com>
 ---
- drivers/power/Kconfig                |   11 +
- drivers/power/Makefile               |    1 +
- drivers/power/jz4740-battery.c       |  359 ++++++++++++++++++++++++++++++++++
- include/linux/power/jz4740-battery.h |   24 +++
- 4 files changed, 395 insertions(+), 0 deletions(-)
- create mode 100644 drivers/power/jz4740-battery.c
- create mode 100644 include/linux/power/jz4740-battery.h
+ arch/mips/jz4740/Kconfig         |    4 +
+ arch/mips/jz4740/Makefile        |    2 +
+ arch/mips/jz4740/board-qi_lb60.c |  483 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 489 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/jz4740/board-qi_lb60.c
 
-diff --git a/drivers/power/Kconfig b/drivers/power/Kconfig
-index 8e9ba17..80bbd0d 100644
---- a/drivers/power/Kconfig
-+++ b/drivers/power/Kconfig
-@@ -142,4 +142,15 @@ config CHARGER_PCF50633
- 	help
- 	 Say Y to include support for NXP PCF50633 Main Battery Charger.
+diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
+index 8a5e850..3e7141f 100644
+--- a/arch/mips/jz4740/Kconfig
++++ b/arch/mips/jz4740/Kconfig
+@@ -1,6 +1,10 @@
+ choice
+ 	prompt "Machine type"
+ 	depends on MACH_JZ4740
++	default JZ4740_QI_LB60
++
++config JZ4740_QI_LB60
++	bool "Qi Hardware Ben NanoNote"
  
-+config BATTERY_JZ4740
-+	tristate "Ingenic JZ4740 battery"
-+	depends on MACH_JZ4740
-+	depends on SENSORS_JZ4740
-+	help
-+	  Say Y to enable support for the battery on Ingenic JZ4740 based
-+	  boards.
+ endchoice
+ 
+diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
+index a803ccb..a604eae 100644
+--- a/arch/mips/jz4740/Makefile
++++ b/arch/mips/jz4740/Makefile
+@@ -11,6 +11,8 @@ obj-$(CONFIG_DEBUG_FS) += clock-debugfs.o
+ 
+ # board specific support
+ 
++obj-$(CONFIG_JZ4740_QI_LB60)	+= board-qi_lb60.o
 +
-+	  This driver can be build as a module. If so, the module will be
-+	  called jz4740-battery.
-+
- endif # POWER_SUPPLY
-diff --git a/drivers/power/Makefile b/drivers/power/Makefile
-index 0005080..cf95009 100644
---- a/drivers/power/Makefile
-+++ b/drivers/power/Makefile
-@@ -34,3 +34,4 @@ obj-$(CONFIG_BATTERY_DA9030)	+= da9030_battery.o
- obj-$(CONFIG_BATTERY_MAX17040)	+= max17040_battery.o
- obj-$(CONFIG_BATTERY_Z2)	+= z2_battery.o
- obj-$(CONFIG_CHARGER_PCF50633)	+= pcf50633-charger.o
-+obj-$(CONFIG_BATTERY_JZ4740)	+= jz4740-battery.o
-diff --git a/drivers/power/jz4740-battery.c b/drivers/power/jz4740-battery.c
+ # PM support
+ 
+ obj-$(CONFIG_PM) += pm.o
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
 new file mode 100644
-index 0000000..9eadb36
+index 0000000..cd7e065
 --- /dev/null
-+++ b/drivers/power/jz4740-battery.c
-@@ -0,0 +1,359 @@
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -0,0 +1,483 @@
 +/*
-+ * Battery measurement code for Ingenic JZ SOC.
++ * linux/arch/mips/jz4740/board-qi_lb60.c
 + *
-+ * Copyright (C) 2009 Jiejing Zhang <kzjeef@gmail.com>
-+ * Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
++ * QI_LB60 board support
 + *
-+ * based on tosa_battery.c
++ * Copyright (c) 2009 Qi Hardware inc.,
++ * Author: Xiangfu Liu <xiangfu@qi-hardware.com>
++ * Copyright 2010, Lars-Petrer Clausen <lars@metafoo.de>
 + *
-+ * Copyright (C) 2008 Marek Vasut <marek.vasut@gmail.com>
-+*
 + * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
++ * it under the terms of the GNU General Public License version 2 or later
++ * as published by the Free Software Foundation.
 + */
 +
-+#include <linux/interrupt.h>
 +#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+
-+#include <linux/delay.h>
++#include <linux/init.h>
 +#include <linux/gpio.h>
++
++#include <linux/input.h>
++#include <linux/gpio_keys.h>
++#include <linux/mtd/jz4740_nand.h>
++#include <linux/jz4740_fb.h>
++#include <linux/input/matrix_keypad.h>
++#include <linux/mtd/jz4740_nand.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_gpio.h>
 +#include <linux/power_supply.h>
-+
 +#include <linux/power/jz4740-battery.h>
-+#include <linux/jz4740-adc.h>
++#include <linux/mmc/jz4740_mmc.h>
 +
-+struct jz_battery {
-+	struct jz_battery_platform_data *pdata;
++#include <linux/regulator/fixed.h>
++#include <linux/regulator/machine.h>
 +
-+	int charge_irq;
++#include <linux/leds_pwm.h>
 +
-+	int status;
-+	long voltage;
++#include <asm/mach-jz4740/platform.h>
 +
-+	struct power_supply battery;
-+	struct delayed_work work;
-+};
++#include "clock.h"
 +
-+static inline struct jz_battery *psy_to_jz_battery(struct power_supply *psy)
-+{
-+	return container_of(psy, struct jz_battery, battery);
-+}
++static bool is_avt2;
 +
-+static long jz_battery_read_voltage(struct jz_battery *jz_battery)
-+{
-+	struct device *adc = jz_battery->battery.dev->parent->parent;
-+	enum jz_adc_battery_scale scale;
++/* GPIOs */
++#define QI_LB60_GPIO_SD_CD		JZ_GPIO_PORTD(0)
++#define QI_LB60_GPIO_SD_VCC_EN_N	JZ_GPIO_PORTD(2)
 +
-+	if (jz_battery->pdata->info.voltage_max_design > 2500000)
-+		scale = JZ_ADC_BATTERY_SCALE_7V5;
-+	else
-+		scale = JZ_ADC_BATTERY_SCALE_2V5;
++#define QI_LB60_GPIO_KEYOUT(x)		(JZ_GPIO_PORTC(10) + (x))
++#define QI_LB60_GPIO_KEYIN(x)		(JZ_GPIO_PORTD(18) + (x))
++#define QI_LB60_GPIO_KEYIN8		JZ_GPIO_PORTD(26)
 +
-+	return jz4740_adc_read_battery_voltage(adc, scale);
-+}
-+
-+static int jz_battery_get_capacity(struct power_supply *psy)
-+{
-+	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
-+	struct power_supply_info *info = &jz_battery->pdata->info;
-+	long voltage;
-+	int ret;
-+	int voltage_span;
-+
-+	voltage = jz_battery_read_voltage(jz_battery);
-+
-+	if (voltage < 0)
-+		return voltage;
-+
-+	voltage_span = info->voltage_max_design - info->voltage_min_design;
-+	ret = ((voltage - info->voltage_min_design) * 100) / voltage_span;
-+
-+	if (ret > 100)
-+		ret = 100;
-+	else if (ret < 0)
-+		ret = 0;
-+
-+	return ret;
-+}
-+
-+static int jz_battery_get_property(struct power_supply *psy,
-+				enum power_supply_property psp,
-+				union power_supply_propval *val)
-+{
-+	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
-+	struct power_supply_info *info = &jz_battery->pdata->info;
-+	long voltage;
-+
-+	switch (psp) {
-+	case POWER_SUPPLY_PROP_STATUS:
-+		val->intval = jz_battery->status;
-+		break;
-+	case POWER_SUPPLY_PROP_TECHNOLOGY:
-+		val->intval = jz_battery->pdata->info.technology;
-+		break;
-+	case POWER_SUPPLY_PROP_HEALTH:
-+		voltage = jz_battery_read_voltage(jz_battery);
-+		if (voltage < info->voltage_min_design)
-+			val->intval = POWER_SUPPLY_HEALTH_DEAD;
-+		else
-+			val->intval = POWER_SUPPLY_HEALTH_GOOD;
-+		break;
-+	case POWER_SUPPLY_PROP_CAPACITY:
-+		val->intval = jz_battery_get_capacity(psy);
-+		break;
-+	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-+		val->intval = jz_battery_read_voltage(jz_battery);
-+		if (val->intval < 0)
-+			return val->intval;
-+		break;
-+	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-+		val->intval = info->voltage_max_design;
-+		break;
-+	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-+		val->intval = info->voltage_min_design;
-+		break;
-+	case POWER_SUPPLY_PROP_PRESENT:
-+		val->intval = 1;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static void jz_battery_external_power_changed(struct power_supply *psy)
-+{
-+	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
-+
-+	cancel_delayed_work(&jz_battery->work);
-+	schedule_delayed_work(&jz_battery->work, 0);
-+}
-+
-+static irqreturn_t jz_battery_charge_irq(int irq, void *data)
-+{
-+	struct jz_battery *jz_battery = data;
-+
-+	cancel_delayed_work(&jz_battery->work);
-+	schedule_delayed_work(&jz_battery->work, 0);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void jz_battery_update(struct jz_battery *jz_battery)
-+{
-+	int status;
-+	long voltage;
-+	long voltage_difference;
-+	bool has_changed = 0;
-+
-+	if (gpio_is_valid(jz_battery->pdata->gpio_charge)) {
-+		int is_charging;
-+
-+		is_charging = gpio_get_value(jz_battery->pdata->gpio_charge);
-+		is_charging ^= jz_battery->pdata->gpio_charge_active_low;
-+		if (is_charging)
-+			status = POWER_SUPPLY_STATUS_CHARGING;
-+		else
-+			status = POWER_SUPPLY_STATUS_NOT_CHARGING;
-+
-+		if (status != jz_battery->status) {
-+			jz_battery->status = status;
-+			has_changed = 1;
-+		}
-+	}
-+
-+	voltage = jz_battery_read_voltage(jz_battery);
-+	voltage_difference = voltage - jz_battery->voltage;
-+	if (voltage_difference > 50000 || voltage_difference < 50000) {
-+		jz_battery->voltage = voltage;
-+		has_changed = 1;
-+	}
-+	if (has_changed)
-+		power_supply_changed(&jz_battery->battery);
-+}
-+
-+static enum power_supply_property jz_battery_properties[] = {
-+	POWER_SUPPLY_PROP_STATUS,
-+	POWER_SUPPLY_PROP_TECHNOLOGY,
-+	POWER_SUPPLY_PROP_HEALTH,
-+	POWER_SUPPLY_PROP_CAPACITY,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-+	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-+	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-+	POWER_SUPPLY_PROP_PRESENT,
-+};
-+
-+static void jz_battery_work(struct work_struct *work)
-+{
-+	/* Too small interval will increase system workload */
-+	const int interval = HZ * 30;
-+	struct jz_battery *jz_battery = container_of(work, struct jz_battery,
-+					    work.work);
-+
-+	jz_battery_update(jz_battery);
-+	schedule_delayed_work(&jz_battery->work, interval);
-+}
-+
-+static int __devinit jz_battery_probe(struct platform_device *pdev)
-+{
-+	int ret = 0;
-+	struct jz_battery_platform_data *pdata = pdev->dev.platform_data;
-+	struct jz_battery *jz_battery;
-+	struct power_supply *battery;
-+
-+	if (!pdev->dev.platform_data) {
-+		dev_err(&pdev->dev, "No platform data\n");
-+		return -EINVAL;
-+	}
-+
-+	jz_battery = kzalloc(sizeof(*jz_battery), GFP_KERNEL);
-+
-+	if (!jz_battery) {
-+		dev_err(&pdev->dev, "Failed to allocate driver structure\n");
-+		return -ENOMEM;
-+	}
-+
-+	battery = &jz_battery->battery;
-+	battery->name = pdata->info.name;
-+	battery->type = POWER_SUPPLY_TYPE_BATTERY;
-+	battery->properties	= jz_battery_properties;
-+	battery->num_properties	= ARRAY_SIZE(jz_battery_properties);
-+	battery->get_property = jz_battery_get_property;
-+	battery->external_power_changed = jz_battery_external_power_changed;
-+	battery->use_for_apm = 1;
-+
-+	jz_battery->pdata = pdata;
-+
-+	INIT_DELAYED_WORK(&jz_battery->work, jz_battery_work);
-+
-+	if (gpio_is_valid(pdata->gpio_charge)) {
-+		ret = gpio_request(pdata->gpio_charge, dev_name(&pdev->dev));
-+		if (ret) {
-+			dev_err(&pdev->dev, "charger state gpio request failed.\n");
-+			goto err_free;
-+		}
-+		ret = gpio_direction_input(pdata->gpio_charge);
-+		if (ret) {
-+			dev_err(&pdev->dev, "charger state gpio set direction failed.\n");
-+			goto err_free_gpio;
-+		}
-+
-+		jz_battery->charge_irq = gpio_to_irq(pdata->gpio_charge);
-+
-+		if (jz_battery->charge_irq >= 0) {
-+			ret = request_irq(jz_battery->charge_irq,
-+				    jz_battery_charge_irq,
-+				    IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING,
-+				    dev_name(&pdev->dev), jz_battery);
-+			if (ret) {
-+				dev_err(&pdev->dev, "Failed to request charge irq: %d\n", ret);
-+				goto err_free_gpio;
-+			}
-+		}
-+	} else {
-+		jz_battery->charge_irq = -1;
-+	}
-+
-+
-+	ret = power_supply_register(&pdev->dev, &jz_battery->battery);
-+	if (ret) {
-+		dev_err(&pdev->dev, "power supply battery register failed.\n");
-+		goto err_free_irq;
-+	}
-+
-+	platform_set_drvdata(pdev, jz_battery);
-+	schedule_delayed_work(&jz_battery->work, 0);
-+
-+	return 0;
-+
-+err_free_irq:
-+	if (jz_battery->charge_irq >= 0)
-+		free_irq(jz_battery->charge_irq, jz_battery);
-+err_free_gpio:
-+	if (gpio_is_valid(pdata->gpio_charge))
-+		gpio_free(jz_battery->pdata->gpio_charge);
-+err_free:
-+	kfree(jz_battery);
-+	return ret;
-+}
-+
-+static int __devexit jz_battery_remove(struct platform_device *pdev)
-+{
-+	struct jz_battery *jz_battery = platform_get_drvdata(pdev);
-+
-+	cancel_delayed_work_sync(&jz_battery->work);
-+
-+	if (gpio_is_valid(jz_battery->pdata->gpio_charge)) {
-+		if (jz_battery->charge_irq >= 0)
-+			free_irq(jz_battery->charge_irq, jz_battery);
-+		gpio_free(jz_battery->pdata->gpio_charge);
-+	}
-+
-+	power_supply_unregister(&jz_battery->battery);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM
-+static int jz_battery_suspend(struct device *dev)
-+{
-+	struct jz_battery *jz_battery = dev_get_drvdata(dev);
-+
-+	cancel_delayed_work_sync(&jz_battery->work);
-+	jz_battery->status =  POWER_SUPPLY_STATUS_UNKNOWN;
-+
-+	return 0;
-+}
-+
-+static int jz_battery_resume(struct device *dev)
-+{
-+	struct jz_battery *jz_battery = dev_get_drvdata(dev);
-+
-+	schedule_delayed_work(&jz_battery->work, 0);
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops jz_battery_pm_ops = {
-+	.suspend	= jz_battery_suspend,
-+	.resume		= jz_battery_resume,
-+};
-+
-+#define JZ_BATTERY_PM_OPS (&jz_battery_pm_ops)
-+
-+#else
-+#define JZ_BATTERY_PM_OPS NULL
-+#endif
-+
-+static struct platform_driver jz_battery_driver = {
-+	.probe		= jz_battery_probe,
-+	.remove		= __devexit_p(jz_battery_remove),
-+	.driver = {
-+		.name = "jz4740-battery",
-+		.owner = THIS_MODULE,
-+		.pm = JZ_BATTERY_PM_OPS,
++/* NAND */
++static struct nand_ecclayout qi_lb60_ecclayout_1gb = {
++	.eccbytes = 36,
++	.eccpos = {
++		6,  7,  8,  9,  10, 11, 12, 13,
++		14, 15, 16, 17, 18, 19, 20, 21,
++		22, 23, 24, 25, 26, 27, 28, 29,
++		30, 31, 32, 33, 34, 35, 36, 37,
++		38, 39, 40, 41
++	},
++	.oobfree = {
++		{ .offset = 2, .length = 4 },
++		{ .offset = 42, .length = 22 }
 +	},
 +};
 +
-+static int __init jz_battery_init(void)
-+{
-+	return platform_driver_register(&jz_battery_driver);
-+}
-+module_init(jz_battery_init);
-+
-+static void __exit jz_battery_exit(void)
-+{
-+	platform_driver_unregister(&jz_battery_driver);
-+}
-+module_exit(jz_battery_exit);
-+
-+MODULE_ALIAS("platform:jz4740-battery");
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
-+MODULE_DESCRIPTION("JZ4740 SoC battery driver");
-diff --git a/include/linux/power/jz4740-battery.h b/include/linux/power/jz4740-battery.h
-new file mode 100644
-index 0000000..19c9610
---- /dev/null
-+++ b/include/linux/power/jz4740-battery.h
-@@ -0,0 +1,24 @@
-+/*
-+ *  Copyright (C) 2009, Jiejing Zhang <kzjeef@gmail.com>
-+ *
-+ *  This program is free software; you can redistribute	 it and/or modify it
-+ *  under  the terms of	 the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the	License, or (at your
-+ *  option) any later version.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+#ifndef __JZ4740_BATTERY_H
-+#define __JZ4740_BATTERY_H
-+
-+struct jz_battery_platform_data {
-+	struct power_supply_info info;
-+	int gpio_charge;	/* GPIO port of Charger state */
-+	int gpio_charge_active_low;
++/* Early prototypes of the QI LB60 had only 1GB of NAND.
++ * In order to support these devices aswell the partition and ecc layout is
++ * initalized depending on the NAND size */
++static struct mtd_partition qi_lb60_partitions_1gb[] = {
++	{
++		.name = "NAND BOOT partition",
++		.offset = 0 * 0x100000,
++		.size = 4 * 0x100000,
++	},
++	{
++		.name = "NAND KERNEL partition",
++		.offset = 4 * 0x100000,
++		.size = 4 * 0x100000,
++	},
++	{
++		.name = "NAND ROOTFS partition",
++		.offset = 8 * 0x100000,
++		.size = (504 + 512) * 0x100000,
++	},
 +};
 +
-+#endif
++static struct nand_ecclayout qi_lb60_ecclayout_2gb = {
++	.eccbytes = 72,
++	.eccpos = {
++		12, 13, 14, 15, 16, 17, 18, 19,
++		20, 21, 22, 23, 24, 25, 26, 27,
++		28, 29, 30, 31, 32, 33, 34, 35,
++		36, 37, 38, 39, 40, 41, 42, 43,
++		44, 45, 46, 47, 48, 49, 50, 51,
++		52, 53, 54, 55, 56, 57, 58, 59,
++		60, 61, 62, 63, 64, 65, 66, 67,
++		68, 69, 70, 71, 72, 73, 74, 75,
++		76, 77, 78, 79, 80, 81, 82, 83
++	},
++	.oobfree = {
++		{ .offset = 2, .length = 10 },
++		{ .offset = 84, .length = 44 },
++	},
++};
++
++static struct mtd_partition qi_lb60_partitions_2gb[] = {
++	{
++		.name = "NAND BOOT partition",
++		.offset = 0 * 0x100000,
++		.size = 4 * 0x100000,
++	},
++	{
++		.name = "NAND KERNEL partition",
++		.offset = 4 * 0x100000,
++		.size = 4 * 0x100000,
++	},
++	{
++		.name = "NAND ROOTFS partition",
++		.offset = 8 * 0x100000,
++		.size = (504 + 512 + 1024) * 0x100000,
++	},
++};
++
++static void qi_lb60_nand_ident(struct platform_device *pdev,
++		struct nand_chip *chip, struct mtd_partition **partitions,
++		int *num_partitions)
++{
++	if (chip->page_shift == 12) {
++		chip->ecc.layout = &qi_lb60_ecclayout_2gb;
++		*partitions = qi_lb60_partitions_2gb;
++		*num_partitions = ARRAY_SIZE(qi_lb60_partitions_2gb);
++	} else {
++		chip->ecc.layout = &qi_lb60_ecclayout_1gb;
++		*partitions = qi_lb60_partitions_1gb;
++		*num_partitions = ARRAY_SIZE(qi_lb60_partitions_1gb);
++	}
++}
++
++static struct jz_nand_platform_data qi_lb60_nand_pdata = {
++	.ident_callback = qi_lb60_nand_ident,
++	.busy_gpio = 94,
++};
++
++/* Keyboard*/
++
++#define KEY_QI_QI	KEY_F13
++#define KEY_QI_UPRED	KEY_RIGHTALT
++#define KEY_QI_VOLUP	KEY_VOLUMEUP
++#define KEY_QI_VOLDOWN	KEY_VOLUMEDOWN
++#define KEY_QI_FN	KEY_LEFTCTRL
++
++static const uint32_t qi_lb60_keymap[] = {
++	KEY(0, 0, KEY_F1),	/* S2 */
++	KEY(0, 1, KEY_F2),	/* S3 */
++	KEY(0, 2, KEY_F3),	/* S4 */
++	KEY(0, 3, KEY_F4),	/* S5 */
++	KEY(0, 4, KEY_F5),	/* S6 */
++	KEY(0, 5, KEY_F6),	/* S7 */
++	KEY(0, 6, KEY_F7),	/* S8 */
++
++	KEY(1, 0, KEY_Q),	/* S10 */
++	KEY(1, 1, KEY_W),	/* S11 */
++	KEY(1, 2, KEY_E),	/* S12 */
++	KEY(1, 3, KEY_R),	/* S13 */
++	KEY(1, 4, KEY_T),	/* S14 */
++	KEY(1, 5, KEY_Y),	/* S15 */
++	KEY(1, 6, KEY_U),	/* S16 */
++	KEY(1, 7, KEY_I),	/* S17 */
++	KEY(2, 0, KEY_A),	/* S18 */
++	KEY(2, 1, KEY_S),	/* S19 */
++	KEY(2, 2, KEY_D),	/* S20 */
++	KEY(2, 3, KEY_F),	/* S21 */
++	KEY(2, 4, KEY_G),	/* S22 */
++	KEY(2, 5, KEY_H),	/* S23 */
++	KEY(2, 6, KEY_J),	/* S24 */
++	KEY(2, 7, KEY_K),	/* S25 */
++	KEY(3, 0, KEY_ESC),	/* S26 */
++	KEY(3, 1, KEY_Z),	/* S27 */
++	KEY(3, 2, KEY_X),	/* S28 */
++	KEY(3, 3, KEY_C),	/* S29 */
++	KEY(3, 4, KEY_V),	/* S30 */
++	KEY(3, 5, KEY_B),	/* S31 */
++	KEY(3, 6, KEY_N),	/* S32 */
++	KEY(3, 7, KEY_M),	/* S33 */
++	KEY(4, 0, KEY_TAB),	/* S34 */
++	KEY(4, 1, KEY_CAPSLOCK),	/* S35 */
++	KEY(4, 2, KEY_BACKSLASH),	/* S36 */
++	KEY(4, 3, KEY_APOSTROPHE),	/* S37 */
++	KEY(4, 4, KEY_COMMA),	/* S38 */
++	KEY(4, 5, KEY_DOT),	/* S39 */
++	KEY(4, 6, KEY_SLASH),	/* S40 */
++	KEY(4, 7, KEY_UP),	/* S41 */
++	KEY(5, 0, KEY_O),	/* S42 */
++	KEY(5, 1, KEY_L),	/* S43 */
++	KEY(5, 2, KEY_EQUAL),	/* S44 */
++	KEY(5, 3, KEY_QI_UPRED),	/* S45 */
++	KEY(5, 4, KEY_SPACE),	/* S46 */
++	KEY(5, 5, KEY_QI_QI),	/* S47 */
++	KEY(5, 6, KEY_RIGHTCTRL),	/* S48 */
++	KEY(5, 7, KEY_LEFT),	/* S49 */
++	KEY(6, 0, KEY_F8),	/* S50 */
++	KEY(6, 1, KEY_P),	/* S51 */
++	KEY(6, 2, KEY_BACKSPACE),/* S52 */
++	KEY(6, 3, KEY_ENTER),	/* S53 */
++	KEY(6, 4, KEY_QI_VOLUP),	/* S54 */
++	KEY(6, 5, KEY_QI_VOLDOWN),	/* S55 */
++	KEY(6, 6, KEY_DOWN),	/* S56 */
++	KEY(6, 7, KEY_RIGHT),	/* S57 */
++
++	KEY(7, 0, KEY_LEFTSHIFT),	/* S58 */
++	KEY(7, 1, KEY_LEFTALT),	/* S59 */
++	KEY(7, 2, KEY_QI_FN),	/* S60 */
++};
++
++static const struct matrix_keymap_data qi_lb60_keymap_data = {
++	.keymap		= qi_lb60_keymap,
++	.keymap_size	= ARRAY_SIZE(qi_lb60_keymap),
++};
++
++static const unsigned int qi_lb60_keypad_cols[] = {
++	QI_LB60_GPIO_KEYOUT(0),
++	QI_LB60_GPIO_KEYOUT(1),
++	QI_LB60_GPIO_KEYOUT(2),
++	QI_LB60_GPIO_KEYOUT(3),
++	QI_LB60_GPIO_KEYOUT(4),
++	QI_LB60_GPIO_KEYOUT(5),
++	QI_LB60_GPIO_KEYOUT(6),
++	QI_LB60_GPIO_KEYOUT(7),
++};
++
++static const unsigned int qi_lb60_keypad_rows[] = {
++	QI_LB60_GPIO_KEYIN(0),
++	QI_LB60_GPIO_KEYIN(1),
++	QI_LB60_GPIO_KEYIN(2),
++	QI_LB60_GPIO_KEYIN(3),
++	QI_LB60_GPIO_KEYIN(4),
++	QI_LB60_GPIO_KEYIN(5),
++	QI_LB60_GPIO_KEYIN(7),
++	QI_LB60_GPIO_KEYIN8,
++};
++
++static struct matrix_keypad_platform_data qi_lb60_pdata = {
++	.keymap_data = &qi_lb60_keymap_data,
++	.col_gpios	= qi_lb60_keypad_cols,
++	.row_gpios	= qi_lb60_keypad_rows,
++	.num_col_gpios	= ARRAY_SIZE(qi_lb60_keypad_cols),
++	.num_row_gpios	= ARRAY_SIZE(qi_lb60_keypad_rows),
++	.col_scan_delay_us	= 10,
++	.debounce_ms		= 10,
++	.wakeup			= 1,
++	.active_low		= 1,
++};
++
++static struct platform_device qi_lb60_keypad = {
++	.name		= "matrix-keypad",
++	.id		= -1,
++	.dev		= {
++		.platform_data = &qi_lb60_pdata,
++	},
++};
++
++/* Display */
++static struct fb_videomode qi_lb60_video_modes[] = {
++	{
++		.name = "320x240",
++		.xres = 320,
++		.yres = 240,
++		.refresh = 30,
++		.left_margin = 140,
++		.right_margin = 273,
++		.upper_margin = 20,
++		.lower_margin = 2,
++		.hsync_len = 1,
++		.vsync_len = 1,
++		.sync = 0,
++		.vmode = FB_VMODE_NONINTERLACED,
++	},
++};
++
++static struct jz4740_fb_platform_data qi_lb60_fb_pdata = {
++	.width		= 60,
++	.height		= 45,
++	.num_modes	= ARRAY_SIZE(qi_lb60_video_modes),
++	.modes		= qi_lb60_video_modes,
++	.bpp		= 24,
++	.lcd_type	= JZ_LCD_TYPE_8BIT_SERIAL,
++	.pixclk_falling_edge = 1,
++};
++
++struct spi_gpio_platform_data spigpio_platform_data = {
++	.sck = JZ_GPIO_PORTC(23),
++	.mosi = JZ_GPIO_PORTC(22),
++	.miso = -1,
++	.num_chipselect = 1,
++};
++
++static struct platform_device spigpio_device = {
++	.name = "spi_gpio",
++	.id   = 1,
++	.dev = {
++		.platform_data = &spigpio_platform_data,
++	},
++};
++
++static struct spi_board_info qi_lb60_spi_board_info[] = {
++	{
++		.modalias = "ili8960",
++		.controller_data = (void *)JZ_GPIO_PORTC(21),
++		.chip_select = 0,
++		.bus_num = 1,
++		.max_speed_hz = 30 * 1000,
++		.mode = SPI_3WIRE,
++	},
++};
++
++/* Battery */
++static struct jz_battery_platform_data qi_lb60_battery_pdata = {
++	.gpio_charge =  JZ_GPIO_PORTC(27),
++	.gpio_charge_active_low = 1,
++	.info = {
++		.name = "battery",
++		.technology = POWER_SUPPLY_TECHNOLOGY_LIPO,
++		.voltage_max_design = 4200000,
++		.voltage_min_design = 3600000,
++	},
++};
++
++/* GPIO Key: power */
++static struct gpio_keys_button qi_lb60_gpio_keys_buttons[] = {
++	[0] = {
++		.code		= KEY_POWER,
++		.gpio		= JZ_GPIO_PORTD(29),
++		.active_low	= 1,
++		.desc		= "Power",
++		.wakeup		= 1,
++	},
++};
++
++static struct gpio_keys_platform_data qi_lb60_gpio_keys_data = {
++	.nbuttons = ARRAY_SIZE(qi_lb60_gpio_keys_buttons),
++	.buttons = qi_lb60_gpio_keys_buttons,
++};
++
++static struct platform_device qi_lb60_gpio_keys = {
++	.name =	"gpio-keys",
++	.id =	-1,
++	.dev = {
++		.platform_data = &qi_lb60_gpio_keys_data,
++	}
++};
++
++static struct jz4740_mmc_platform_data qi_lb60_mmc_pdata = {
++	.gpio_card_detect	= QI_LB60_GPIO_SD_CD,
++	.gpio_read_only		= -1,
++	.gpio_power		= QI_LB60_GPIO_SD_VCC_EN_N,
++	.power_active_low	= 1,
++};
++
++/* OHCI */
++static struct regulator_consumer_supply avt2_usb_regulator_consumer =
++	REGULATOR_SUPPLY("vbus", "jz4740-ohci");
++
++static struct regulator_init_data avt2_usb_regulator_init_data = {
++	.num_consumer_supplies = 1,
++	.consumer_supplies = &avt2_usb_regulator_consumer,
++	.constraints = {
++		.name = "USB power",
++		.min_uV = 5000000,
++		.max_uV = 5000000,
++		.valid_modes_mask = REGULATOR_MODE_NORMAL,
++		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
++	},
++};
++
++static struct fixed_voltage_config avt2_usb_regulator_data = {
++	.supply_name = "USB power",
++	.microvolts = 5000000,
++	.gpio = JZ_GPIO_PORTB(17),
++	.init_data = &avt2_usb_regulator_init_data,
++};
++
++static struct platform_device avt2_usb_regulator_device = {
++	.name = "reg-fixed-voltage",
++	.id = -1,
++	.dev = {
++		.platform_data = &avt2_usb_regulator_data,
++	}
++};
++
++/* pizo */
++static struct led_pwm qi_lb60_pizo_led = {
++	.name = "nanonote::pizo",
++	.pwm_id = 4,
++	.max_brightness = 255,
++	.pwm_period_ns = 1000000,
++};
++
++static struct led_pwm_platform_data qi_lb60_pizo_data = {
++	.num_leds = 1,
++	.leds = &qi_lb60_pizo_led,
++};
++
++static struct platform_device qi_lb60_pizo_device = {
++	.name = "leds_pwm",
++	.id = -1,
++	.dev = {
++		.platform_data = &qi_lb60_pizo_data,
++	}
++};
++
++static struct platform_device *jz_platform_devices[] __initdata = {
++	&jz4740_udc_device,
++	&jz4740_mmc_device,
++	&jz4740_nand_device,
++	&qi_lb60_keypad,
++	&spigpio_device,
++	&jz4740_framebuffer_device,
++	&jz4740_i2s_device,
++	&jz4740_codec_device,
++	&jz4740_rtc_device,
++	&jz4740_adc_device,
++	&jz4740_battery_device,
++	&qi_lb60_gpio_keys,
++	&qi_lb60_pizo_device,
++};
++
++static void __init board_gpio_setup(void)
++{
++	/* We only need to enable/disable pullup here for pins used in generic
++	 * drivers. Everything else is done by the drivers themselfs. */
++	jz_gpio_disable_pullup(QI_LB60_GPIO_SD_VCC_EN_N);
++	jz_gpio_disable_pullup(QI_LB60_GPIO_SD_CD);
++}
++
++static int __init qi_lb60_init_platform_devices(void)
++{
++	jz4740_framebuffer_device.dev.platform_data = &qi_lb60_fb_pdata;
++	jz4740_nand_device.dev.platform_data = &qi_lb60_nand_pdata;
++	jz4740_battery_device.dev.platform_data = &qi_lb60_battery_pdata;
++	jz4740_mmc_device.dev.platform_data = &qi_lb60_mmc_pdata;
++
++	jz4740_serial_device_register();
++
++	spi_register_board_info(qi_lb60_spi_board_info,
++				ARRAY_SIZE(qi_lb60_spi_board_info));
++
++	if (is_avt2) {
++		platform_device_register(&avt2_usb_regulator_device);
++		platform_device_register(&jz4740_usb_ohci_device);
++	}
++
++	return platform_add_devices(jz_platform_devices,
++					ARRAY_SIZE(jz_platform_devices));
++
++}
++
++struct jz4740_clock_board_data jz4740_clock_bdata = {
++	.ext_rate = 12000000,
++	.rtc_rate = 32768,
++};
++
++static __init int board_avt2(char *str)
++{
++	qi_lb60_mmc_pdata.card_detect_active_low = 1;
++	is_avt2 = true;
++
++	return 1;
++}
++__setup("avt2", board_avt2);
++
++static int __init qi_lb60_board_setup(void)
++{
++	printk(KERN_INFO "Qi Hardware JZ4740 QI %s setup\n",
++		is_avt2 ? "AVT2" : "LB60");
++
++	board_gpio_setup();
++
++	if (qi_lb60_init_platform_devices())
++		panic("Failed to initalize platform devices\n");
++
++	return 0;
++}
++arch_initcall(qi_lb60_board_setup);
 -- 
 1.5.6.5

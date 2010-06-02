@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 04:31:20 +0200 (CEST)
-Received: from mail-pv0-f177.google.com ([74.125.83.177]:65237 "EHLO
-        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491203Ab0FBCbL convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jun 2010 05:26:18 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:42202 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491753Ab0FBDGl convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Jun 2010 04:31:11 +0200
-Received: by pvb32 with SMTP id 32so712751pvb.36
-        for <multiple recipients>; Tue, 01 Jun 2010 19:31:03 -0700 (PDT)
+        Wed, 2 Jun 2010 05:06:41 +0200
+Received: by pwi2 with SMTP id 2so2510481pwi.36
+        for <multiple recipients>; Tue, 01 Jun 2010 20:06:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:received:received:in-reply-to
          :references:date:message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        bh=s1VSctApP4TXWvj/tQyoalced30bItNZJXOBLFeKle4=;
-        b=ERYeHAjS7p3etAZPA9hoiTjYq8TIdQgW5bDD56DZK0K7/KaqHnWcqEPNT53zcZKDWS
-         TF/0re8fBasArJkYLN8wToUzEcLjKsxw0G/VpVQVkg+JJtCGK1xnIGciKHbkLQsy9Tpj
-         0QMl0hCgwDRulCW+MYWhlnlXgbst5VV8Y71js=
+        bh=7AlnwrCYNGFzbY7Ji2R28wDJFzeqs+AJp13lg4xeTRA=;
+        b=WI1RAnqbI77xF4hVpXtSCN6sKh8FoD1p97rn93415YSiU3mhCQQ4AtDrlwW9Fz/Ftr
+         g1i250nzHBi/tIhW5l6F5307R4p43p6ZYY4wQY/xnucGRsWbjqTQPtj/EcICItWcBCeQ
+         TFQCWf+4cfS9IYA956mSpD4SbTkqaTdC2b+DQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        b=i0sm7G8wyjYGjZLo8ia/boBZLyLBVIU0ydol+ZtbcdBQ20aoQT4DUiiFI/IV9m5jQJ
-         zDcn6eiiN8GpcEE3YZBhnslf7y1ZdfZ/W5WL6J7HeS8aYwRH58soVmpif0igVdwmOhgr
-         hLU5MRJsCmwGhqxHzWvbn4Ul6lcPLoaPC+FKk=
+        b=F4rcIsYxm+pi1+Qp48T+9LLL4Q3nGi8+LNlS/lmk92Jk9Ett4KqZeD/32Re7mY2WbI
+         DNfVpPW9XZCG1qdLZPmocoNDgh1Bzd6wYl98SREBu6hoXpkUIrsB6CnV5LEVOEHNlRsh
+         D1ZSHOcJWnG68TWtSxYn3Hl+gMFVh087PI4ps=
 MIME-Version: 1.0
-Received: by 10.141.90.18 with SMTP id s18mr5631177rvl.297.1275445862212; Tue, 
-        01 Jun 2010 19:31:02 -0700 (PDT)
-Received: by 10.142.179.7 with HTTP; Tue, 1 Jun 2010 19:31:02 -0700 (PDT)
-In-Reply-To: <1275388144-5998-1-git-send-email-wuzhangjin@gmail.com>
-References: <1275388144-5998-1-git-send-email-wuzhangjin@gmail.com>
-Date:   Wed, 2 Jun 2010 10:31:02 +0800
-Message-ID: <AANLkTimphf48ZsNVS29mUNwx4NHSd7FeicoFcHsdmd58@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: arch/mips/boot/compressed/Makefile: Unify the 
-        suffix of compressed vmlinux.bin
+Received: by 10.141.90.18 with SMTP id s18mr5677312rvl.297.1275447993155; Tue, 
+        01 Jun 2010 20:06:33 -0700 (PDT)
+Received: by 10.142.179.7 with HTTP; Tue, 1 Jun 2010 20:06:33 -0700 (PDT)
+In-Reply-To: <20100601152750.GA5131@merkur.ravnborg.org>
+References: <616317d6d889537d03c3c0860231da9a2cce0b69.1275372093.git.wuzhangjin@gmail.com>
+        <20100601152750.GA5131@merkur.ravnborg.org>
+Date:   Wed, 2 Jun 2010 11:06:33 +0800
+Message-ID: <AANLkTikR8qY2NwurQ76R1F-AQ4QcmmqXvoWtlOqCB5Ou@mail.gmail.com>
+Subject: Re: [PATCH v3] MIPS: Clean up the calculation of VMLINUZ_LOAD_ADDRESS
 From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>
-Cc:     Alexander Clouter <alex@digriz.org.uk>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Sam Ravnborg <sam@ravnborg.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Alexander Clouter <alex@digriz.org.uk>,
+        Manuel Lauss <manuel.lauss@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 26980
+X-archive-position: 26981
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,62 +50,103 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 927
+X-UID: 948
 
-Hi,
+Hi, Sam
 
-I will use vmlinux.bin.z in the next revision of this patch.
+On Tue, Jun 1, 2010 at 11:27 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
+[...]
+>
+>> diff --git a/arch/mips/boot/.gitignore b/arch/mips/boot/.gitignore
+>> index 4667a5f..f210b09 100644
+>> --- a/arch/mips/boot/.gitignore
+>> +++ b/arch/mips/boot/.gitignore
+>> @@ -3,3 +3,4 @@ elf2ecoff
+>>  vmlinux.*
+>>  zImage
+>>  zImage.tmp
+>> +calc_vmlinuz_load_addr
+>
+> Does this do any good in this file?
+> I had assumed this covered only the same dir as the .gitignore file
+> is stored. But I may be wrong.
 
-Regards,
+I have tried to add this to boot/compressed/.gitignore, but there was
+no .gitignore there and found the vmlinux.* in boot/.gitignore, it
+worked to hide the vmlinux.* under boot/compressed/, then I put the
+calc_vmlinuz_load_addr to this .gitignore too ;) it really hided the
+calc_vmlinuz_load_addr, that's it.
 
+BTW: I just don't want to add a new file for one line if it is not necessary ;)
 
-On Tue, Jun 1, 2010 at 6:29 PM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> The compressed vmlinux.{gz,bz2,lzo,lzma} are only temp files, we can use the
-> same suffix for them to remove several lines and simpify the maintaining.
 >
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/boot/compressed/Makefile |   12 ++++--------
->  1 files changed, 4 insertions(+), 8 deletions(-)
+>> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+>> index 7204dfc..cd9ee04 100644
+>> --- a/arch/mips/boot/compressed/Makefile
+>> +++ b/arch/mips/boot/compressed/Makefile
+>>
+>> -LDFLAGS_vmlinuz := $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T
+>> -vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/piggy.o
+>> -     $(call cmd,ld)
+>> +# Calculate the load address of the compressed kernel
+>> +hostprogs-y := calc_vmlinuz_load_addr
+>> +
+>> +vmlinuzobjs-y += $(obj)/piggy.o
+>> +
+>> +quiet_cmd_zld = LD      $@
+>> +      cmd_zld = $(LD) $(LDFLAGS) -Ttext $(shell $(obj)/calc_vmlinuz_load_addr $(objtree)/$(KBUILD_IMAGE) $(VMLINUX_LOAD_ADDRESS)) -T $< $(vmlinuzobjs-y) -o $@
 >
-> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-> index 74a52d7..7204dfc 100644
-> --- a/arch/mips/boot/compressed/Makefile
-> +++ b/arch/mips/boot/compressed/Makefile
-> @@ -48,23 +48,19 @@ OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary -R .comment -S
->  $(obj)/vmlinux.bin: $(KBUILD_IMAGE) FORCE
->        $(call if_changed,objcopy)
+> The line seriously fail the 80 char limit.
+> Something like this:
 >
-> -suffix_$(CONFIG_KERNEL_GZIP)  = gz
-> -suffix_$(CONFIG_KERNEL_BZIP2) = bz2
-> -suffix_$(CONFIG_KERNEL_LZMA)  = lzma
-> -suffix_$(CONFIG_KERNEL_LZO)   = lzo
->  tool_$(CONFIG_KERNEL_GZIP)    = gzip
->  tool_$(CONFIG_KERNEL_BZIP2)   = bzip2
->  tool_$(CONFIG_KERNEL_LZMA)    = lzma
->  tool_$(CONFIG_KERNEL_LZO)     = lzo
+> load_addr = $(shell $(obj)/calc_vmlinuz_load_addr \
+>                    $(objtree)/$(KBUILD_IMAGE) $(VMLINUX_LOAD_ADDRESS)
+> quiet_cmd_zld = LD      $@
+>      cmd_zld = $(LD) $(LDFLAGS) -Ttext $(load-addr) -T $< $(vmlinuzobjs-y) -o $@
 >
-> -targets += vmlinux.gz vmlinux.bz2 vmlinux.lzma vmlinux.lzo
-> -$(obj)/vmlinux.$(suffix_y): $(obj)/vmlinux.bin FORCE
-> +targets += vmlinux.z
-> +$(obj)/vmlinux.z: $(obj)/vmlinux.bin FORCE
->        $(call if_changed,$(tool_y))
+> Note: The load_addr local variable _must_ use "=" asignment
+
+This is the _key_ stuff. I  tried to use VMLINUZ_LOAD_ADDR(like your
+load_addr) as the load address, but failed all the time, seems I used
+the ":=" assignment, now with "=", it works, thanks!
+
+And could you please explain their differences?
+
 >
->  targets += piggy.o
-> -OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.$(suffix_y) \
-> +OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.z \
->                         --set-section-flags=.image=contents,alloc,load,readonly,data
-> -$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.$(suffix_y) FORCE
-> +$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.z FORCE
->        $(call if_changed,objcopy)
+>> +vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/calc_vmlinuz_load_addr
+>> +     $(call cmd,zld)
+>>       $(Q)$(OBJCOPY) $(OBJCOPYFLAGS) $@
 >
->  LDFLAGS_vmlinuz := $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T
-> --
-> 1.6.5
+> Does objcopy support equally named input and out files?
+> If this is the case you could use:
+> $(call cmd,objcopy) as the last line.
+
+Just checked the ld.script, and found the .reginfo section have been
+discarded, then it's time to remove this objcopy line(this objcopy
+line only remove the .reginfo section).
+
+[...]
+>> +
+>> +     /* Align with 65536 */
+>> +     vmlinuz_load_addr += (65536 - vmlinux_size % 65536);
 >
+> You have plenty of rooms for a comment about why you do this.
+> Would be good to use this possibility.
 >
 
+The address of "vmlinux_load_addr + vmlinux_size" may be not aligned
+with the standard data type of MIPS, that's why we need the alignment,
+but here 65536, 64k(about several pages), is really a little big, I
+will use 16 bytes in the next revision and add more comments for it:
 
++       /*
++        * Align with 16 bytes: "greater than that used for any standard data
++        * types by a MIPS compiler." -- See MIPS Run Linux (Second Edition).
++        */
++
++       vmlinuz_load_addr += (16 - vmlinux_size % 16);
+
+Thanks & Regards,
 
 -- 
 Studying engineer. Wu Zhangjin

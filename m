@@ -1,97 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jun 2010 20:14:36 +0200 (CEST)
-Received: from smtpauth00.csee.onr.siteprotect.com ([64.26.60.144]:59686 "EHLO
-        smtpauth00.csee.onr.siteprotect.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492380Ab0FCSO3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jun 2010 20:14:29 +0200
-Received: from [192.168.0.251] (unknown [70.96.116.236])
-        (Authenticated sender: troy.kisky@boundarydevices.com)
-        by smtpauth00.csee.onr.siteprotect.com (Postfix) with ESMTPA id 742D9758099;
-        Thu,  3 Jun 2010 13:14:19 -0500 (CDT)
-Message-ID: <4C07F0F3.4090201@boundarydevices.com>
-Date:   Thu, 03 Jun 2010 11:14:11 -0700
-From:   Troy Kisky <troy.kisky@boundarydevices.com>
-User-Agent: Thunderbird 2.0.0.24 (Windows/20100228)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jun 2010 21:28:39 +0200 (CEST)
+Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:56419 "EHLO
+        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491808Ab0FCT2e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jun 2010 21:28:34 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id 82497FF2;
+        Thu,  3 Jun 2010 21:28:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
+Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
+        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id NfEQdZbDlW8H; Thu,  3 Jun 2010 21:28:28 +0200 (CEST)
+Received: from [172.31.16.228] (d078029.adsl.hansenet.de [80.171.78.29])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: 7clausen)
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 8680EFF1;
+        Thu,  3 Jun 2010 21:28:15 +0200 (CEST)
+Message-ID: <4C080230.1070909@metafoo.de>
+Date:   Thu, 03 Jun 2010 21:27:44 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
 MIME-Version: 1.0
-To:     Liam Girdwood <lrg@slimlogic.co.uk>
-CC:     Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org,
-        alsa-devel@alsa-project.org,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [alsa-devel] [RFC][PATCH 21/26] alsa: ASoC: Add JZ4740 ASoC        support
-References: <1275505397-16758-1-git-send-email-lars@metafoo.de> <1275505950-17334-5-git-send-email-lars@metafoo.de>     <1275569309.3593.106.camel@odin>  <4C07DD48.2050503@metafoo.de> <1275584609.3118.26.camel@odin>  <4C07E37A.40502@metafoo.de> <1275585900.3118.29.camel@odin>
-In-Reply-To: <1275585900.3118.29.camel@odin>
-X-Enigmail-Version: 0.96.0
-Content-Type: text/plain; charset=ISO-8859-1
+To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Liam Girdwood <lrg@slimlogic.co.uk>,
+        alsa-devel@alsa-project.org
+Subject: Re: [RFC][PATCH 21/26] alsa: ASoC: Add JZ4740 ASoC support
+References: <1275505397-16758-1-git-send-email-lars@metafoo.de> <1275505950-17334-5-git-send-email-lars@metafoo.de> <20100603175511.GI2762@rakim.wolfsonmicro.main>
+In-Reply-To: <20100603175511.GI2762@rakim.wolfsonmicro.main>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-CTCH-Spam: Unknown
-X-CTCH-RefID: str=0001.0A020206.4C07F103.004F,ss=1,fgs=0
-X-archive-position: 27063
+X-archive-position: 27064
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: troy.kisky@boundarydevices.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2678
+X-UID: 2720
 
-Liam Girdwood wrote:
-> On Thu, 2010-06-03 at 19:16 +0200, Lars-Peter Clausen wrote:
->> Liam Girdwood wrote:
->>> On Thu, 2010-06-03 at 18:50 +0200, Lars-Peter Clausen wrote:
->>>   
->>>>>> +    config = snd_soc_dai_get_dma_data(rtd->dai->cpu_dai,
->>>>>>         
->>>> substream);
->>>>     
->>>>>> +    if (!prtd->dma) {
->>>>>> +            const char *dma_channel_name;
->>>>>> +            if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
->>>>>> +                    dma_channel_name = "PCM Playback";
->>>>>> +            else
->>>>>> +                    dma_channel_name = "PCM Capture";
->>>>>> +
->>>>>> +            prtd->dma = jz4740_dma_request(substream,
->>>>>>         
->>>> dma_channel_name);
->>>>     
->>>>>>     
->>>>>>         
->>>>> dma_channel_name variable is not required here. Just use the const
->>>>>       
->>>> char
->>>>     
->>>>> * directly.
->>>>>
->>>>>   
->>>>>       
->>>> I actually had it like that before, but I think it is much more readable
->>>> in its current form.
->>>>     
->>> I disagree, having the char pointer here just adds an extra level of
->>> indirection and costs an extra two lines of code. 
->>>
->>> Liam 
->>>   
->> Hi
->>
->> Could you give an concrete example of how you would code it?
->>
-> 
-> Sure,
-> 
-> if (!prtd->dma) {
->           if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
->                    prtd->dma = jz4740_dma_request(substream, "PCM Playback");
->           else
->                    prtd->dma = jz4740_dma_request(substream, "PCM Capture");
-> }
-> 
-> Liam
-> 
-or,
+Mark Brown wrote:
+> On Wed, Jun 02, 2010 at 09:12:27PM +0200, Lars-Peter Clausen wrote:
+>
+> Again, overall very good.
+>
+>   
+>> +static int jz4740_i2s_set_clkdiv(struct snd_soc_dai *dai, int div_id, int div)
+>> +{
+>> +	struct jz4740_i2s *i2s = jz4740_dai_to_i2s(dai);
+>> +
+>> +	switch (div_id) {
+>> +	case JZ4740_I2S_BIT_CLK:
+>> +		if (div & 1 || div > 16)
+>> +			return -EINVAL;
+>> +		jz4740_i2s_write(i2s, JZ_REG_AIC_CLK_DIV, div - 1);
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>>     
+>
+> You can probably figure out the bit clock automatically by default...
+>   
+Hm, yes, you are right.
+>   
+>> +	if (dai->active) {
+>> +		conf = jz4740_i2s_read(i2s, JZ_REG_AIC_CONF);
+>> +		conf &= ~JZ_AIC_CONF_ENABLE;
+>> +		jz4740_i2s_write(i2s, JZ_REG_AIC_CONF, conf);
+>> +
+>> +		clk_disable(i2s->clk_i2s);
+>> +	}
+>> +
+>> +	clk_disable(i2s->clk_aic);
+>>     
+>
+> Might make sense to manage this clock dynamically at runtime too for a
+> little extra power saving?
+>   
+I think I tried it once and the power savings were marginal. On the
+other hand each callback would have to make sure the clock is enabled
+before accessing registers and disabling it again if it was disabled.
+>   
+>> +	i2s->clk_aic = clk_get(&pdev->dev, "aic");
+>> +	if (IS_ERR(i2s->clk_aic)) {
+>> +		ret = PTR_ERR(i2s->clk_aic);
+>> +		goto err_iounmap;
+>> +	}
+>> +
+>> +	i2s->clk_i2s = clk_get(&pdev->dev, "i2s");
+>> +	if (IS_ERR(i2s->clk_i2s)) {
+>> +		ret = PTR_ERR(i2s->clk_i2s);
+>> +		goto err_iounmap;
+>> +	}
+>>     
+>
+> Ideally you'd free the AIC clock when unwinding (and later stop it after
+> it was enabled).  Though since you don't do any error checking after
+> this point it's kind of academic :)
+>
+>   
+It should at least freed if the i2s clock is not found.
 
-if (!prtd->dma)
-	prtd->dma = jz4740_dma_request(substream, (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
-		 "PCM Playback" : "PCM Capture");
+- Lars

@@ -1,123 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jun 2010 22:43:41 +0200 (CEST)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:51022 "EHLO
-        smtp1.linux-foundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491848Ab0FCUne (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Jun 2010 22:43:34 +0200
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-        by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id o53KhCrZ011402
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 3 Jun 2010 13:43:13 -0700
-Received: from akpm.mtv.corp.google.com (localhost [127.0.0.1])
-        by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id o53KhAIV014456;
-        Thu, 3 Jun 2010 13:43:10 -0700
-Date:   Thu, 3 Jun 2010 13:43:10 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Paul Mundt <lethal@linux-sh.org>, mingo@elte.hu,
-        simon.kagstrom@netinsight.net, David.Woodhouse@intel.com,
-        rgetz@analog.com, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH v2] printk: fix delayed messages from CPU hotplug events
-Message-Id: <20100603134310.b5bae74e.akpm@linux-foundation.org>
-In-Reply-To: <AANLkTinY8Htz2bb2I_oN5iWtAjxuDkGzAvX_4TbtmKBh@mail.gmail.com>
-References: <ede63b5a20af951c755736f035d1e787772d7c28@localhost>
-        <20100601031528.GC15411@linux-sh.org>
-        <AANLkTinY8Htz2bb2I_oN5iWtAjxuDkGzAvX_4TbtmKBh@mail.gmail.com>
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jun 2010 01:58:02 +0200 (CEST)
+Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:37423 "EHLO
+        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492043Ab0FCX56 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Jun 2010 01:57:58 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id 61D32773;
+        Fri,  4 Jun 2010 01:57:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
+Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
+        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id SeUJXCzGOn5p; Fri,  4 Jun 2010 01:57:51 +0200 (CEST)
+Received: from [172.31.16.228] (d078029.adsl.hansenet.de [80.171.78.29])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: 7clausen)
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id F235C772;
+        Fri,  4 Jun 2010 01:57:40 +0200 (CEST)
+Message-ID: <4C084155.5010503@metafoo.de>
+Date:   Fri, 04 Jun 2010 01:57:09 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
+MIME-Version: 1.0
+To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, Liam Girdwood <lrg@slimlogic.co.uk>,
+        alsa-devel@alsa-project.org
+Subject: Re: [RFC][PATCH 20/26] alsa: ASoC: Add JZ4740 codec driver
+References: <1275505397-16758-1-git-send-email-lars@metafoo.de> <1275505950-17334-4-git-send-email-lars@metafoo.de> <20100603174953.GH2762@rakim.wolfsonmicro.main>
+In-Reply-To: <20100603174953.GH2762@rakim.wolfsonmicro.main>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-X-archive-position: 27065
+X-archive-position: 27066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2773
+X-UID: 2874
 
-On Mon, 31 May 2010 21:04:42 -0700
-Kevin Cernekee <cernekee@gmail.com> wrote:
+Hi
 
-> On Mon, May 31, 2010 at 8:15 PM, Paul Mundt <lethal@linux-sh.org> wrote:
-> > If this is to be entirely restricted to CPU hotplug then you could use
-> > the hotcpu notifier here instead of the open-coded cpu notifier directly,
-> > the former wraps to the latter in the CPU hotplug case and is simply a
-> > nop for the regular SMP case.
-> 
-> I ran some tests and saw the same problem during the regular MIPS SMP
-> boot.  i.e. adding "while (1) { }" at the end of __cpu_up() prevents
-> any of the probing/calibration messages originating on CPU1 from ever
-> being echoed to the console.  Adding the semaphore code before the
-> while loop caused the CPU1 messages to reappear.
-> 
-> Under normal circumstances you won't ever notice the problem at boot
-> time, because printing "Brought up %ld CPUs" has the undocumented side
-> effect of flushing out any messages that got stuck during SMP init.
-> And if that printk() wasn't there, the next one (from NET, PCI, SCSI,
-> ...) would surely take its place.
-> 
-> But in the case of MIPS CPU hotplug, there is no such printk() at the
-> end, and so our luck runs out.
+Mark Brown wrote:
+> On Wed, Jun 02, 2010 at 09:12:26PM +0200, Lars-Peter Clausen wrote:
+>
+>   
+>> This patch adds support for the JZ4740 internal codec.
+>>     
+>
+> This looks very good, there are some issues but nothing too major.  I
+> may be repeating some things others have said but hopefully not too
+> much.
+>
+>   
+>>  snd-soc-wm9712-objs := wm9712.o
+>>  snd-soc-wm9713-objs := wm9713.o
+>>  snd-soc-wm-hubs-objs := wm_hubs.o
+>> +snd-soc-jz4740-codec-objs := jz4740-codec.o
+>>     
+>
+> Keep the devices sorted in both Makefile and Kconfig.
+>
+>   
+>> +static int jz4740_codec_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+>> +{
+>> +	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
+>> +	case SND_SOC_DAIFMT_CBM_CFM:
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>>     
+>
+> This does nothing except validate some parameters.  Is there actually an
+> externally visible DAI for this CODEC?  If it's just integrated into the
+> SoC and there's nothing to configure then just omit the DAI
+> configuration since it's not even useful to document the signal format.
+>   
+Nope, there is no externally visible DAI for the codec, but internally
+it is connected through the i2s controller of the JZ4740 which supports
+different operating modes. And if you'll do
+"snd_soc_dai_set_fmt(codec_dai, BOARD_DAIFMT);
+snd_soc_dai_set_fmt(cpu_dai, BOARD_DAIFMT);" with a wrong dai format it
+will be noticed.
+>> +	.capture = {
+>> +		.stream_name = "Capture",
+>> +		.channels_min = 2,
+>> +		.channels_max = 2,
+>> +		.rates = SNDRV_PCM_RATE_8000_48000,
+>> +		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S8,
+>>     
+>
+> You listed an 18 bit format in hw_params - one or other of this and
+> hw_params is presumably out of date.
+>   
+In theory the codec supports 18 bit for playback, but the i2s controller
+requires it to be 32 bit aligned, while alsa appears to have only
+support for a 24 bit aligned 18 bit format(Correct me if I'm wrong). So
+I dropped it, I'll remove the whole format check in hw_params as Liam
+suggested.
+>> +static int jz4740_codec_set_bias_level(struct snd_soc_codec *codec,
+>> +	enum snd_soc_bias_level level)
+>> +{
+>> +
+>> +	if (codec->bias_level == SND_SOC_BIAS_OFF && level != SND_SOC_BIAS_OFF) {
+>> +		snd_soc_update_bits(codec, JZ4740_REG_CODEC_1,
+>> +			JZ4740_CODEC_1_RESET, JZ4740_CODEC_1_RESET);
+>> +		udelay(2);
+>>     
+>
+> I'd expect to see this as part of the _OFF in the main switch
+> statement.
+>   
+Uhm, actually this code path is taken when switching from _OFF to
+another state. If it is guaranteed that _OFF is always followed by a
+certain other state I could put the reset code in its part of the switch
+statement.
+>   
+>> +	switch (level) {
+>> +	case SND_SOC_BIAS_ON:
+>> +		snd_soc_update_bits(codec, JZ4740_REG_CODEC_1,
+>> +			JZ4740_CODEC_1_VREF_DISABLE |
+>> +			JZ4740_CODEC_1_VREF_AMP_DISABLE |
+>> +			JZ4740_CODEC_1_HEADPHONE_POWER_DOWN_M |
+>> +			JZ4740_CODEC_1_VREF_LOW_CURRENT |
+>> +			JZ4740_CODEC_1_VREF_HIGH_CURRENT,
+>> +			0);
+>>     
+>
+> This looks suspiciously like you should be using DAPM for the headphone
+> at least, though if there's only headphone out that's possibly not worth
+> it.  Also, are you sure that you want both low and high current VREF
+> configuring here?  I'm not clear what these settings do but the way
+> they're being managed both here and in _PREPARE seems odd.
+>   
+Hm, I'll take a look.
+>   
+>> +	codec = &jz4740_codec->codec;
+>> +
+>> +	codec->dev		= &pdev->dev;
+>> +	codec->name		= "jz-codec";
+>>     
+>
+> Seems a bit odd to use the part number in some places and not others.
+>   
+I renamed the driver from jz-codec to jz4740-codec shortly before
+submitting it after I realized that the codec component on other jz47xx
+chips is completely different. Seems like I missed the codec name.
 
-no....  What Paul means is "please use hotcpu_notifier".  It's a
-higher-level interface which yields a smaller vmlinux if
-CONFIG_HOTPLUG_CPU=n.  grep around for some examples...
-
-
-other comments:
- 
->  /**
-> + * console_cpu_notify - print deferred console messages after CPU hotplug
-> + *
-> + * If printk() is called from a CPU that is not online yet, the messages
-> + * will be spooled but will not show up on the console.  This function is
-> + * called when a new CPU comes online and ensures that any such output
-> + * gets printed.
-> + */
-
-It's conventional (although boring and usually useless) to kerneldocify
-the arguments also.
-
-> +static int __cpuinit console_cpu_notify(struct notifier_block *self,
-> +	unsigned long action, void *hcpu)
-> +{
-> +	switch (action) {
-> +	case CPU_ONLINE:
-> +	case CPU_UP_CANCELED:
-> +		if (try_acquire_console_sem() == 0)
-> +			release_console_sem();
-> +	}
-> +	return NOTIFY_OK;
-> +}
-
-Would prefer to see acquire_console_sem() used here.  Because
-try_acquire_console_sem() might simply fail, and the messages still get
-stuck.  Possible?  If "not possible" then "needs a code comment".
-
-> +static struct notifier_block __cpuinitdata console_nb = {
-> +	.notifier_call		= console_cpu_notify,
-> +};
-> +
-> +static int __init console_notifier_init(void)
-> +{
-> +	register_cpu_notifier(&console_nb);
-> +	return 0;
-> +}
-> +late_initcall(console_notifier_init);
-
-We don't really need two late_initcall() functions in printk.c.  We'd
-save a few bytes by renaming disable_boot_consoles() to
-printk_late_init() or something, then adding the hotcpu_notifier() call
-there.
-
-otoh, that's a bit of a reduction in source-level quality.
-
-otoh2, perhaps late_initcall() was inappropriate for
-console_notifier_init().  Why not do it earlier?
-
-I'll let you decide ;)
+Thanks for reviewing the patch
+- Lars

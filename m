@@ -1,141 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Jun 2010 00:13:20 +0200 (CEST)
-Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:42617 "EHLO
-        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492002Ab0FEWNP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 Jun 2010 00:13:15 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id EAC33691;
-        Sun,  6 Jun 2010 00:13:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
-Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
-        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id suIG7NIwPYzB; Sun,  6 Jun 2010 00:13:03 +0200 (CEST)
-Received: from [192.168.37.30] (port-11083.pppoe.wtnet.de [84.46.43.118])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: 7clausen)
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 58691690;
-        Sun,  6 Jun 2010 00:12:53 +0200 (CEST)
-Message-ID: <4C0ACBC6.6050209@metafoo.de>
-Date:   Sun, 06 Jun 2010 00:12:22 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Jun 2010 03:30:57 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:35533 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492229Ab0FFBay (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 6 Jun 2010 03:30:54 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o561U2nY006235;
+        Sun, 6 Jun 2010 02:30:05 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o561Tx7J006233;
+        Sun, 6 Jun 2010 02:29:59 +0100
+Date:   Sun, 6 Jun 2010 02:29:59 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Kevin Cernekee <cernekee@gmail.com>, mingo@elte.hu,
+        simon.kagstrom@netinsight.net, David.Woodhouse@intel.com,
+        lethal@linux-sh.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH v3] printk: fix delayed messages from CPU hotplug events
+Message-ID: <20100606012958.GA6169@linux-mips.org>
+References: <ee1bf4f9c158983acad0a4548229586128afad67@localhost>
+ <20100603225824.8de77fba.akpm@linux-foundation.org>
 MIME-Version: 1.0
-To:     Jonathan Cameron <kernel@jic23.retrosnub.co.uk>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, lm-sensors@lm-sensors.org
-Subject: Re: [lm-sensors] [RFC][PATCH 22/26] hwmon: Add JZ4740 ADC driver
-References: <1275505397-16758-1-git-send-email-lars@metafoo.de> <1275505950-17334-6-git-send-email-lars@metafoo.de>     <4C0A87F1.8000201@jic23.retrosnub.co.uk> <4C0AA0CA.9020808@metafoo.de> <4C0ABC75.9020908@jic23.retrosnub.co.uk>
-In-Reply-To: <4C0ABC75.9020908@jic23.retrosnub.co.uk>
-X-Enigmail-Version: 0.95.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 27079
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100603225824.8de77fba.akpm@linux-foundation.org>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+X-archive-position: 27080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 4024
+X-UID: 4084
 
-Jonathan Cameron wrote:
-> On 06/05/10 20:08, Lars-Peter Clausen wrote:
->   
->> Hi
->>
->> Jonathan Cameron wrote:
->>     
->>> On 06/02/10 20:12, Lars-Peter Clausen wrote:
->>>   
->>>       
->>>> This patch adds support for the ADC module on JZ4740 SoCs.
->>>>
->>>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
->>>> Cc: lm-sensors@lm-sensors.org
->>>> ---
->>>>  drivers/hwmon/Kconfig      |   11 ++
->>>>  drivers/hwmon/Makefile     |    1 +
->>>>  drivers/hwmon/jz4740-adc.c |  423 ++++++++++++++++++++++++++++++++++++++++++++
->>>>  include/linux/jz4740-adc.h |   25 +++
->>>>  4 files changed, 460 insertions(+), 0 deletions(-)
->>>>  create mode 100644 drivers/hwmon/jz4740-adc.c
->>>>  create mode 100644 include/linux/jz4740-adc.h
->>>>     
->>>>         
->>> Hi, I'm just wondering of one wants the majority of this driver to sit in hwmon?
->>>
->>> Looks to me like a fairly classic case for something that might be best implemented
->>> as an mfd with the hwmon, touchscreen and battery drivers separately hanging off that.
->>> You might well have someone who needs the battery driver to work, but doesn't care
->>> about hwmon and so doesn't want to build that bit in... 
->>>
->>> Just an immediate thought.  Perhaps this is the best way to do things...
->>>   
->>>       
->> I've thought about it before and rejected the idea at that time, because
->> I thought it will add more abstraction then actually needed.
->> But at that time the adc driver was not a hwmon driver yet and thus
->> didn't pull in the whole hwmon framework if you only wanted to use the
->> battery driver.
->> But the more I'm thinking about it now it might actually make sense to
->> move the common code to a MFD driver.
->>     
->>> Also after a quick look.  How is it used by the touchscreen driver?
->>> If not, please remove the reference from kconfig until it it is true.
->>>   
->>>       
->> There is no touchscreen driver yet. But if I'm going to remove the
->> reference I'm pretty sure that someone will come up and ask why it
->> actually is necessary to have a separate driver instead of putting all
->> the code into the battery driver.
->>     
-> Fair enough.  Perhaps a comment for the patch rather than in Kconfig
-> as it currently is.  People will enable it then go 'Why can't I now
-> enable the touchscreen driver?'
->
->   
-I guess that will work.
->>> Few other bits and bobs inline.
->>>   
->>>       
->>>> diff --git a/drivers/hwmon/jz4740-adc.c b/drivers/hwmon/jz4740-adc.c
->>>> new file mode 100644
->>>> index 0000000..635dfe9
->>>> --- /dev/null
->>>> +++ b/drivers/hwmon/jz4740-adc.c
->>>> @@ -0,0 +1,423 @@
->>>> + [...]
->>>> +static ssize_t jz4740_adc_read_adcin(struct device *dev,
->>>> +					struct device_attribute *dev_attr,
->>>> +					char *buf)
->>>> +{
->>>> +	struct jz4740_adc *adc = dev_get_drvdata(dev);
->>>> +	unsigned long t;
->>>> +	uint16_t val;
->>>> +
->>>> +	jz4740_adc_clk_enable(adc);
->>>> +
->>>>     
->>>>         
->>> Is there a possible race here?
->>>   
->>>       
->> Where exactly?
->>     
-> I can't recall off the top of my head if sysfs attributes can having multiple
-> simultaneous readers. If they can then thread two is just past the next line.
-> Whilst the earlier thread has passed the t = wait.... line as the interrupt has
-> fired.  The irq is then disabled by thread 1 whilst thread 2 enables the adc.
-> Clearly the timeout will prevent any serious issues but the 2nd thread is going
-> to falsely wait a second I think... ?
->   
-Hm, right. I didn't thought of that. There can be multiple simultaneous
-reads.
-Actually there are multiple issues with concurrent reads from adcin pin,
-I guess the whole function should be protected by a mutex.
-And additionally the clock is not turned off in case of an error.
+On Thu, Jun 03, 2010 at 10:58:24PM -0700, Andrew Morton wrote:
 
-- Lars
+Assuming everybody is happy now I've merged Andrew's patch into Kevin's
+patch and dropped it into the linux-queue tree and my tree for -next.
+If nobody objects I intend to send the patch to Linus in about a week
+or so.
+
+Andrew, your patch had no Signed-off-by ;-)
+
+Thanks everbody,
+
+  Ralf

@@ -1,62 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jun 2010 16:49:00 +0200 (CEST)
-Received: from mx3-v2.alinto.net ([83.145.109.33]:49363 "EHLO
-        mx3-v2.alinto.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491832Ab0FIOs5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jun 2010 16:48:57 +0200
-X-Virus-Scanned: amavisd-new at alinto.net
-Received: from http4alinto.alinto.net (http4alinto.alinto.net [83.145.109.64])
-        by mx3-v2.alinto.net (Postfix) with ESMTP id 99E0574307;
-        Wed,  9 Jun 2010 16:48:46 +0200 (CEST)
-Received: by http4alinto.alinto.net (Postfix, from userid 48)
-        id 81254FDA6F; Wed,  9 Jun 2010 16:48:46 +0200 (CEST)
-Received: from unknown (octane/alinto.com@82.228.201.195); 09 Jun 2010 16:48:46 -0000
-Message-ID: <1276094926.4c0fa9ce566aa@www.inmano.com>
-Date:   Wed, 09 Jun 2010 16:48:46 +0200
-To:     phils@windriver.com, Phil Staub <phils@windriver.com>
-From:   octane indice <octane@alinto.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: Cross compiling MIPS kernel under x86
-In-Reply-To: <op.vdz4mmlornd9a3@poker>
-References: <1274711094.4bfa8c3675983@www.inmano.com> <AANLkTinOaPkOXm128trTQ39jNGWMcvPhVUGWSQz6hLjR@mail.gmail.com> <20100525131341.GA26500@linux-mips.org> <1274795905.4bfbd781a17fa@www.inmano.com> <20100525144400.GA30900@linux-mips.org> <1274879482.4bfd1dfa91e70@www.inmano.com> <AANLkTikbZmTWh8X4KOKLAUaJxKS5-PO39hmiTVICB5Zm@mail.gmail.com> <1274977788.4bfe9dfc7680f@www.inmano.com> <4BFEE551.8000306@gmail.com>
- <op.vdz4mmlornd9a3@poker>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jun 2010 18:54:41 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11969 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491172Ab0FIQyf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jun 2010 18:54:35 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4c0fc75b0000>; Wed, 09 Jun 2010 09:54:51 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 9 Jun 2010 09:54:30 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 9 Jun 2010 09:54:30 -0700
+Message-ID: <4C0FC741.4020505@caviumnetworks.com>
+Date:   Wed, 09 Jun 2010 09:54:25 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100430 Fedora/3.0.4-2.fc12 Thunderbird/3.0.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-archive-position: 27111
+To:     Christoph Egger <siccegge@cs.fau.de>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Yang Shi <yang.shi@windriver.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Tejun Heo <tj@kernel.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, vamos@i4.informatik.uni-erlangen.de
+Subject: Re: [PATCH 2/9] Removing dead CONFIG_GDB_CONSOLE
+References: <cover.1275925108.git.siccegge@cs.fau.de> <598418d662edd83225b8b47ead59a5cf18a26fc6.1275925108.git.siccegge@cs.fau.de>
+In-Reply-To: <598418d662edd83225b8b47ead59a5cf18a26fc6.1275925108.git.siccegge@cs.fau.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 09 Jun 2010 16:54:30.0697 (UTC) FILETIME=[6DDF8190:01CB07F4]
+X-archive-position: 27112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: octane@alinto.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 6475
+X-UID: 6585
 
-En réponse à Phil Staub <phils@windriver.com> :
-> In the top level Makefile, you'll find this:
-> 
-> # Use --build-id when available.
-> LDFLAGS_BUILD_ID = $(patsubst -Wl$(comma)%,%,\
-> 			      $(call cc-ldoption, -Wl$(comma)--build-id,))
-> 
-> Comment that out and it should fix you up.
+On 06/09/2010 04:20 AM, Christoph Egger wrote:
+> CONFIG_GDB_CONSOLE doesn't exist in Kconfig, therefore removing all
+> references for it from the source code.
 >
-Excellent. It boots. It fails next because it can't find
-the root device, but I know how to manage that 
+> Signed-off-by: Christoph Egger<siccegge@cs.fau.de>
 
+Acked-by: David Daney <ddaney@caviumnetworks.com>
 
-> Phil
+> ---
+>   arch/mips/cavium-octeon/serial.c    |    4 ----
+>   arch/mips/cavium-octeon/setup.c     |    4 ----
+>   arch/mips/pmc-sierra/yosemite/irq.c |    4 ----
+>   3 files changed, 0 insertions(+), 12 deletions(-)
 >
-Thanks
- 
-> -- 
-> Phil Staub, Senior Member of Technical Staff, Wind River
-> Direct: 702.290.0470 Fax: 702.982.0085
-> 
-
-
-
-
-
-Envoyé avec Inmano, ma messagerie renversante et gratuite : http://www.inmano.com

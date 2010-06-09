@@ -1,59 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jun 2010 13:24:00 +0200 (CEST)
-Received: from faui40.informatik.uni-erlangen.de ([131.188.34.40]:37319 "EHLO
-        faui40.informatik.uni-erlangen.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S2097166Ab0FILX2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jun 2010 13:23:28 +0200
-Received: from faui49h (faui49h.informatik.uni-erlangen.de [131.188.42.58])
-        by faui40.informatik.uni-erlangen.de (Postfix) with SMTP id 504435F26E;
-        Wed,  9 Jun 2010 13:23:27 +0200 (MEST)
-Received: by faui49h (sSMTP sendmail emulation); Wed, 09 Jun 2010 13:23:27 +0200
-Date:   Wed, 9 Jun 2010 13:23:27 +0200
-From:   Christoph Egger <siccegge@cs.fau.de>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Yoichi Yuasa <yuasa@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     vamos@i4.informatik.uni-erlangen.de
-Subject: [PATCH 9/9] Removing dead CONFIG_MTD_PMC_MSP_RAMROOT
-Message-ID: <2f41f9174bd6ba24b5609e06e87c47d5f44446d1.1275925108.git.siccegge@cs.fau.de>
-References: <cover.1275925108.git.siccegge@cs.fau.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jun 2010 13:47:43 +0200 (CEST)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:46340 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490993Ab0FILrg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Jun 2010 13:47:36 +0200
+Received: by iwn34 with SMTP id 34so6492837iwn.36
+        for <multiple recipients>; Wed, 09 Jun 2010 04:47:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=lDIBrE8CzCQzWP2RmuQogKNhBGw8RqjE3Z0JVXnxZ/0=;
+        b=YO9NPxa6+IKrna0hl1aM9WPga1L7zbjD8rkCiZl9/cQFEtRUc7ywcScakmyD3andA3
+         cWGQQZoVOtVZu9S5OlvAfrkqX6l49F7siwS22oHx6qNg3tA+PJbDKnarryARo9nIVJ2c
+         Arf9hBnM79QENj5xZHIknqPITv8LilJoUtjy4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=R31TXdyvZS88J77bTXoLhngS+5I9fakit8CrjqQzvTCcR2Rgk/IUFXtutjVYbhPeTE
+         hjxIfkiC/TvimljDHFh+3DSr855Clwl8LHKXKp+tVryAfnspiDz3qTUD5lvN2hf2Ct1e
+         EIM2KRfkBOMxMfUvI85o6QnX2YggbKTLGfUIM=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1275925108.git.siccegge@cs.fau.de>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 27109
+Received: by 10.42.3.135 with SMTP id 7mr7178316ico.21.1276084053604; Wed, 09 
+        Jun 2010 04:47:33 -0700 (PDT)
+Received: by 10.231.183.74 with HTTP; Wed, 9 Jun 2010 04:47:33 -0700 (PDT)
+In-Reply-To: <e58860bae0d4571f3932df24fb6db0757bc260fe.1275925108.git.siccegge@cs.fau.de>
+References: <cover.1275925108.git.siccegge@cs.fau.de>
+        <e58860bae0d4571f3932df24fb6db0757bc260fe.1275925108.git.siccegge@cs.fau.de>
+Date:   Wed, 9 Jun 2010 13:47:33 +0200
+Message-ID: <AANLkTind_RjQ5X2zR1fhTgKuLOU4Kbve3uQlgGMI559X@mail.gmail.com>
+Subject: Re: [PATCH 6/9] Removing dead CONFIG_I2C_PNX0105
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Christoph Egger <siccegge@cs.fau.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, vamos@i4.informatik.uni-erlangen.de
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 27110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: siccegge@cs.fau.de
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 6347
+X-UID: 6362
 
-CONFIG_MTD_PMC_MSP_RAMROOT doesn't exist in Kconfig, therefore removing all
-references for it from the source code.
+On Wed, Jun 9, 2010 at 1:22 PM, Christoph Egger <siccegge@cs.fau.de> wrote:
+> CONFIG_I2C_PNX0105 doesn't exist in Kconfig, therefore removing all
+> references for it from the source code.
 
-Signed-off-by: Christoph Egger <siccegge@cs.fau.de>
----
- .../mips/include/asm/pmc-sierra/msp71xx/msp_prom.h |    4 ----
- 1 files changed, 0 insertions(+), 4 deletions(-)
+The code should probably just be adjusted to use the i2c-pnx driver.  According
+to the comments it supports the pnx0105 i2c cell.
 
-diff --git a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h b/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
-index 54ef1a9..786d82d 100644
---- a/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
-+++ b/arch/mips/include/asm/pmc-sierra/msp71xx/msp_prom.h
-@@ -124,10 +124,6 @@ extern void prom_meminit(void);
- extern void prom_fixup_mem_map(unsigned long start_mem,
- 			       unsigned long end_mem);
- 
--#ifdef CONFIG_MTD_PMC_MSP_RAMROOT
--extern bool get_ramroot(void **start, unsigned long *size);
--#endif
--
- extern int get_ethernet_addr(char *ethaddr_name, char *ethernet_addr);
- extern unsigned long get_deviceid(void);
- extern char identify_enet(unsigned long interface_num);
--- 
-1.6.3.3
+Manuel

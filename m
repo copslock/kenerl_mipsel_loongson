@@ -1,109 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jun 2010 19:33:23 +0200 (CEST)
-Received: from gateway13.websitewelcome.com ([67.18.70.11]:59199 "HELO
-        gateway13.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1492167Ab0FKRdR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jun 2010 19:33:17 +0200
-Received: (qmail 2586 invoked from network); 11 Jun 2010 17:38:15 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway13.websitewelcome.com with SMTP; 11 Jun 2010 17:38:15 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=Tko3fcN/8k9jKHRit1TKFtvgPSvWEIzcOmo7sQ6zl4j9omljALrutzoMN2D8auc8pZHIuV2MnP/Q9Ga6unCt6VERB+2T9u27Dgc1+GDYNM6pAfFE9wGjPqy72iN82+cQ;
-Received: from 216-239-45-4.google.com ([216.239.45.4]:19462 helo=epiktistes.mtv.corp.google.com)
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1ON865-00072E-Pq; Fri, 11 Jun 2010 12:32:49 -0500
-Message-ID: <4C127358.3030905@paralogos.com>
-Date:   Fri, 11 Jun 2010 10:33:12 -0700
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100317)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jun 2010 20:28:55 +0200 (CEST)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:56091 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492173Ab0FKS2w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jun 2010 20:28:52 +0200
+Received: by iwn34 with SMTP id 34so1704204iwn.36
+        for <multiple recipients>; Fri, 11 Jun 2010 11:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=5zy6fRjrub2yz4HFpwH/T07Yl1JktnvFCG/YKt34MZY=;
+        b=X+68dRCwrow9Sd/YC4M2DkodYqjJ78itrtzHHNX/qUx9d2xGZ/KIC5nwKQcCZkthAu
+         dnnVD4osfe33+QSbaqUQjkbnNJ8T8n4Ny/mFhI+cVZ9JvCovDUrc1WPPBuFzrdrUkmfq
+         o6+mJR/4ZgcrhRt+oL1LmR6sIFEGSxQcwwO7U=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=uR65LjRKfQvRaUJPxoJpLERstWmxr6hT79pLuiH5r569m1qcfRXTZPGm8VzGcUZBr2
+         hNlo0EsdMkXYlKDsQh+B05u0fRIDO1PhLp73ogYWrpvU1I9bAmWO093vs7JbDLRo+tod
+         v5VNqdbQIL1RZP5O0ovI5GEpjJikPZoEdSvqM=
 MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Manuel Lauss <manuel.lauss@googlemail.com>,
+Received: by 10.231.150.2 with SMTP id w2mr2260814ibv.37.1276280928507; Fri, 
+        11 Jun 2010 11:28:48 -0700 (PDT)
+Received: by 10.231.183.74 with HTTP; Fri, 11 Jun 2010 11:28:48 -0700 (PDT)
+In-Reply-To: <4C127358.3030905@paralogos.com>
+References: <BE430C874DBA6841A75E65151DCC6E1C0407668F@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+        <AANLkTimHTt3jCTPrlIDAkdDc8WheBf7bdEThk3JO8yNO@mail.gmail.com>
+        <4C126D2A.6040305@caviumnetworks.com>
+        <4C127358.3030905@paralogos.com>
+Date:   Fri, 11 Jun 2010 20:28:48 +0200
+Message-ID: <AANLkTikIur8HkXppazHT7AT2oUkNz2Mf3qvDZiLR-r25@mail.gmail.com>
+Subject: Re:
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     "Kevin D. Kissell" <kevink@paralogos.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
         Jabir M <Jabir_M@pmc-sierra.com>, linux-mips@linux-mips.org,
         ralf@linux-mips.org
-Subject: Re: 
-References: <BE430C874DBA6841A75E65151DCC6E1C0407668F@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca> <AANLkTimHTt3jCTPrlIDAkdDc8WheBf7bdEThk3JO8yNO@mail.gmail.com> <4C126D2A.6040305@caviumnetworks.com>
-In-Reply-To: <4C126D2A.6040305@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-archive-position: 27122
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 27123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 8207
+X-UID: 8250
 
-David Daney wrote:
-> On 06/11/2010 07:32 AM, Manuel Lauss wrote:
->> Hi,
->>
->> On Fri, Jun 11, 2010 at 4:06 PM, Jabir M<Jabir_M@pmc-sierra.com>  wrote:
->>>     I am working on a FPU-less 34k MIPS platform with linux-2.6.24
->>> kernel. After running a Darwin media streaming server on the board
->>> for a while, my oprofile results shows high utilization on
->>> fpu_emulator_cop1Handler()&  r4k_wait().
->>>
->
-> r4k_wait() is the idle task, so that indicates there is nothing to do 
-> at those sample points.
-Which suggests that the system is either waiting on I/O data, or 
-crunching it using a lot of floating point computation.  Normally, a 
-high level of idle would indicate that the system is easily keeping up 
-with the data stream, but if you're running the 34K as one of the 
-available flavors of virtual SMP, you may be seeing a lot of wait loop 
-samples because there's only one runnable thread in the job mix.
->
->
->>> wiki page http://www.linux-mips.org/wiki/Floating_point says gcc will
->>> use hard float as default and soft float is best suited model for a
->>> fpu less processor.  Could anyone kindly help me in understanding use
->>> of -msoft-float .
->>> Whether I need to compile
->>>
->>> 1. kernel with -msoft-float ? or
->
-> The kernel doesn't use floating point.  So it doesn't matter.
-It makes no sense to build the kernel -msoft-float, but it should be 
-noted that there are a couple potential places (e.g. ptrace /proc) where 
-the difference in user-mode floating point argument passing ABIs is 
-kernel-visible.
->
->
->>> 2. Glibc ? or
->>> 3. Application ? or
->>> 4. All the above ?
->>
->
-> If you don't want to use the kernel's FP emulator, you need 2 and 3.
->
->
->> I have fought with this in the past; what you need to do is:
->> - build gcc with softfloat support (mipsel-softfloat-linux-gnu triplet
->> for example),
->> - build a libc with this new compiler,
->> - then rebuild all libraries and apps with you new softfloat toolchain.
-Let me be a bit more clear on this.  Because of the ABI difference, you 
-need to either rebuild your application as a static binary, with the 
-main program and *all* constituent libraries likewise rebuilt with 
-softfloat, or, if you absolutely need it to be dynamically linked, you 
-need to rebuild the shared libraries and *all* programs that might use 
-them, which means essentailly a full userland rebuild.
+On Fri, Jun 11, 2010 at 7:33 PM, Kevin D. Kissell <kevink@paralogos.com> wrote:
+> An optimized, assembly-language soft-float library implementation is *much*
+> faster than the kernel emulator, but I benchmarked it once upon a time
+> against a portable gnu soft-float library in C, and the difference wasn't
+> nearly as dramatic.
 
-An optimized, assembly-language soft-float library implementation is 
-*much* faster than the kernel emulator, but I benchmarked it once upon a 
-time against a portable gnu soft-float library in C, and the difference 
-wasn't nearly as dramatic.
+The in-kernel emulator always works.  The float conformance test app Ralf
+pointed out a few weeks ago doesn't run correctly when built with a recent
+softfloat gcc with any optimization higher than O0 (tested with 4.4.4, 4.3.4).
+I'd take correctness over speed any day of the week...
 
-          Regards,
-
-          Kevin K.
+Manuel

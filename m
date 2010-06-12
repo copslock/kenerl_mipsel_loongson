@@ -1,63 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jun 2010 20:28:55 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:56091 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492173Ab0FKS2w (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Jun 2010 20:28:52 +0200
-Received: by iwn34 with SMTP id 34so1704204iwn.36
-        for <multiple recipients>; Fri, 11 Jun 2010 11:28:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=5zy6fRjrub2yz4HFpwH/T07Yl1JktnvFCG/YKt34MZY=;
-        b=X+68dRCwrow9Sd/YC4M2DkodYqjJ78itrtzHHNX/qUx9d2xGZ/KIC5nwKQcCZkthAu
-         dnnVD4osfe33+QSbaqUQjkbnNJ8T8n4Ny/mFhI+cVZ9JvCovDUrc1WPPBuFzrdrUkmfq
-         o6+mJR/4ZgcrhRt+oL1LmR6sIFEGSxQcwwO7U=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=uR65LjRKfQvRaUJPxoJpLERstWmxr6hT79pLuiH5r569m1qcfRXTZPGm8VzGcUZBr2
-         hNlo0EsdMkXYlKDsQh+B05u0fRIDO1PhLp73ogYWrpvU1I9bAmWO093vs7JbDLRo+tod
-         v5VNqdbQIL1RZP5O0ovI5GEpjJikPZoEdSvqM=
-MIME-Version: 1.0
-Received: by 10.231.150.2 with SMTP id w2mr2260814ibv.37.1276280928507; Fri, 
-        11 Jun 2010 11:28:48 -0700 (PDT)
-Received: by 10.231.183.74 with HTTP; Fri, 11 Jun 2010 11:28:48 -0700 (PDT)
-In-Reply-To: <4C127358.3030905@paralogos.com>
-References: <BE430C874DBA6841A75E65151DCC6E1C0407668F@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-        <AANLkTimHTt3jCTPrlIDAkdDc8WheBf7bdEThk3JO8yNO@mail.gmail.com>
-        <4C126D2A.6040305@caviumnetworks.com>
-        <4C127358.3030905@paralogos.com>
-Date:   Fri, 11 Jun 2010 20:28:48 +0200
-Message-ID: <AANLkTikIur8HkXppazHT7AT2oUkNz2Mf3qvDZiLR-r25@mail.gmail.com>
-Subject: Re:
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Jabir M <Jabir_M@pmc-sierra.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 27123
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jun 2010 20:45:29 +0200 (CEST)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:57150 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492025Ab0FLSpY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Jun 2010 20:45:24 +0200
+Received: by pvg12 with SMTP id 12so1794395pvg.36
+        for <multiple recipients>; Sat, 12 Jun 2010 11:45:15 -0700 (PDT)
+Received: by 10.141.214.24 with SMTP id r24mr2746906rvq.273.1276368315763;
+        Sat, 12 Jun 2010 11:45:15 -0700 (PDT)
+Received: from localhost.localdomain ([122.167.28.178])
+        by mx.google.com with ESMTPS id b12sm2671724rvn.10.2010.06.12.11.45.13
+        (version=SSLv3 cipher=RC4-MD5);
+        Sat, 12 Jun 2010 11:45:15 -0700 (PDT)
+From:   Himanshu Chauhan <hschauhan@nulltrace.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH][UPDATED] MIPS: Kprobe support v0.2
+Date:   Sat, 12 Jun 2010 21:50:55 +0530
+Message-Id: <1276359656-2375-1-git-send-email-hschauhan@nulltrace.org>
+X-Mailer: git-send-email 1.7.0.4
+In-Reply-To: <1276359441-1846-1-git-send-email-hschauhan@nulltrace.org>
+References: <1276359441-1846-1-git-send-email-hschauhan@nulltrace.org>
+X-archive-position: 27124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: hschauhan@nulltrace.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 8250
+X-UID: 8710
 
-On Fri, Jun 11, 2010 at 7:33 PM, Kevin D. Kissell <kevink@paralogos.com> wrote:
-> An optimized, assembly-language soft-float library implementation is *much*
-> faster than the kernel emulator, but I benchmarked it once upon a time
-> against a portable gnu soft-float library in C, and the difference wasn't
-> nearly as dramatic.
+This updated version of patch incorporates some of the comments
+from Daney. The list of changes are as follows:
+o Instead of separate handler "do_break", do_bp is used to
+  track and handle kprobe induced breaks. This cleans up ugly
+  ifdef hack.
+o Instead of using 0 and 5 code in break, new kprobe specific
+  defines (515, 516) have been added and handled.
 
-The in-kernel emulator always works.  The float conformance test app Ralf
-pointed out a few weeks ago doesn't run correctly when built with a recent
-softfloat gcc with any optimization higher than O0 (tested with 4.4.4, 4.3.4).
-I'd take correctness over speed any day of the week...
+The use of notify_die could not be dropped because the kprobes
+framework installs handlers on notify_die chain.
 
-Manuel
+Himanshu Chauhan (1):
+  MIPS: Kprobe support v0.2     This incorporates some of the comments
+    from Daney.
+
+ arch/mips/Kconfig               |   13 ++
+ arch/mips/include/asm/break.h   |    2 +
+ arch/mips/include/asm/kdebug.h  |    5 +
+ arch/mips/include/asm/kprobes.h |   86 +++++++++
+ arch/mips/kernel/Makefile       |    2 +
+ arch/mips/kernel/kprobes.c      |  379 +++++++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/traps.c        |   46 +++++-
+ arch/mips/mm/fault.c            |   11 +-
+ 8 files changed, 541 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/include/asm/kprobes.h
+ create mode 100644 arch/mips/kernel/kprobes.c

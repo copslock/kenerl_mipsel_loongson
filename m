@@ -1,83 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jun 2010 13:03:45 +0200 (CEST)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:50311 "EHLO
-        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491144Ab0FNLDk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Jun 2010 13:03:40 +0200
-Received: by pxi18 with SMTP id 18so3010898pxi.36
-        for <linux-mips@linux-mips.org>; Mon, 14 Jun 2010 04:03:32 -0700 (PDT)
-Received: by 10.140.55.16 with SMTP id d16mr4384398rva.26.1276513411887;
-        Mon, 14 Jun 2010 04:03:31 -0700 (PDT)
-Received: from [10.161.2.200] ([122.181.19.78])
-        by mx.google.com with ESMTPS id q10sm4567191rvp.8.2010.06.14.04.03.28
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 14 Jun 2010 04:03:31 -0700 (PDT)
-Subject: [PATCH] mtd: Fix bug using smp_processor_id() in preemptible
- ubi_bgt1d kthread
-From:   Philby John <pjohn@mvista.com>
-Reply-To: pjohn@mvista.com
-To:     linux-mtd@lists.infradead.org
-Cc:     Artem Bityutskiy <dedekind1@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jun 2010 17:04:37 +0200 (CEST)
+Received: from mail2.shareable.org ([80.68.89.115]:45313 "EHLO
+        mail2.shareable.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491821Ab0FNPEd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Jun 2010 17:04:33 +0200
+Received: from jamie by mail2.shareable.org with local (Exim 4.63)
+        (envelope-from <jamie@shareable.org>)
+        id 1OOBD7-0004GG-CK; Mon, 14 Jun 2010 16:04:25 +0100
+Date:   Mon, 14 Jun 2010 16:04:25 +0100
+From:   Jamie Lokier <jamie@shareable.org>
+To:     Philby John <pjohn@mvista.com>
+Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
         David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain
-Date:   Mon, 14 Jun 2010 16:34:17 +0530
-Message-Id: <1276513457.16642.3.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.5 (2.24.5-2.fc10) 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 27129
+        linux-kernel@vger.kernel.org,
+        Artem Bityutskiy <dedekind1@gmail.com>
+Subject: Re: [PATCH] mtd: Fix bug using smp_processor_id() in preemptible ubi_bgt1d kthread
+Message-ID: <20100614150425.GC9550@shareable.org>
+References: <1276513457.16642.3.camel@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1276513457.16642.3.camel@localhost.localdomain>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+X-archive-position: 27130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pjohn@mvista.com
+X-original-sender: jamie@shareable.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 9308
+X-UID: 9505
 
-mtd: Fix bug using smp_processor_id() in preemptible ubi_bgt1d kthread
+Philby John wrote:
+> mtd: Fix bug using smp_processor_id() in preemptible ubi_bgt1d kthread
+> 
+> On a MIPS Cavium Octeon CN5020 when trying to create a UBI volume,
+> on the NOR flash, the kernel thread ubi_bgt1d calls
+> cfi_amdstd_write_buffers() --> do_write_buffer() -->
+> INVALIDATE_CACHE_UDELAY --> __udelay(). Its __udelay() that calls
+> smp_processor_id() in preemptible code, which you are not supposed to.
+> Fix the problem by disabling preemption.
 
-On a MIPS Cavium Octeon CN5020 when trying to create a UBI volume,
-on the NOR flash, the kernel thread ubi_bgt1d calls
-cfi_amdstd_write_buffers() --> do_write_buffer() -->
-INVALIDATE_CACHE_UDELAY --> __udelay(). Its __udelay() that calls
-smp_processor_id() in preemptible code, which you are not supposed to.
-Fix the problem by disabling preemption.
+The MTD code just calls udelay().
+Are you sure it isn't permitted to call udelay() from preemptible code?
+I think it is fine.
 
-The kernel error messages seen when trying to create UBI volume is
-BUG: using smp_processor_id() in preemptible [00000000] code: ubi_bgt1d/843
-caller is __udelay+0x14/0x70
-Call Trace:
-[<ffffffff8110b0d4>] dump_stack+0x8/0x34
-[<ffffffff812ee1ac>] debug_smp_processor_id+0x114/0x130
-[<ffffffff812e9274>] __udelay+0x14/0x70
-[<ffffffff81337c0c>] cfi_amdstd_write_buffers+0xa9c/0xd70
-[<ffffffff8134cab0>] ubi_io_sync_erase+0x248/0x390
-[<ffffffff8134d714>] erase_worker+0x6c/0x4f8
-[<ffffffff8134e4fc>] do_work+0xac/0x138
-[<ffffffff8134e6a0>] ubi_thread+0x118/0x1a8
-[<ffffffff8115ebe0>] kthread+0x88/0x90
-[<ffffffff81115650>] kernel_thread_helper+0x10/0x18
+Perhaps MIPS udelay() should be disabling preemption itself, or
+(as x86 does) using raw_smp_processor_id() instead?  Or perhaps the x86
+version is a bug because the current CPU might change during the delay loop?
 
-Signed-off-by: Philby John <pjohn@mvista.com>
----
- include/linux/mtd/cfi.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+See git commit 5c1ea08215f1f830dfaf4819a5f22efca41c3832
+"x86: enable preemption in delay"
 
-diff --git a/include/linux/mtd/cfi.h b/include/linux/mtd/cfi.h
-index 574d9ee..9673213 100644
---- a/include/linux/mtd/cfi.h
-+++ b/include/linux/mtd/cfi.h
-@@ -495,7 +495,9 @@ static inline void cfi_udelay(int us)
- 	if (us >= 1000) {
- 		msleep((us+999)/1000);
- 	} else {
-+		preempt_disable();
- 		udelay(us);
-+		preempt_enable();
- 		cond_resched();
- 	}
- }
--- 
-1.6.3.3.333.g4d53f
+I don't think it makes sense to disable preemption in all udelay()
+calls in drivers, so my NAK to this MTD patch.  To workaround,
+consider putting the preempt_disable in MIPS udelay(), or using
+raw_smp_processor_id() in it, after reading the above git commit's
+message.  A proper fix would accept a context switch during the delay
+and rescale the remaining count, but even on x86 they haven't done
+that yet :-)
+
+Regards,
+-- Jamie

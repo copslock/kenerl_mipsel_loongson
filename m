@@ -1,69 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jun 2010 02:58:53 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:35577 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jun 2010 14:25:53 +0200 (CEST)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:46090 "EHLO
         mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491897Ab0FOA6t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jun 2010 02:58:49 +0200
-Received: by iwn3 with SMTP id 3so192886iwn.36
-        for <linux-mips@linux-mips.org>; Mon, 14 Jun 2010 17:58:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=QfMIHybHwk8M0gVYvfjdbndsMIelHx16LKJ/b/f/Vjo=;
-        b=jjP7/Pbv5YT0oE5m6oOcGNVNruPkfACjUqhnJQk1iMUyZGdrDeBFVNKGe37HWaRrV0
-         vMrLFZffzpvgnsmp/BYNL5IZfrixGEZoqVgS/i9IukMEMrKTHIwKcDH8FHSFZortnFMg
-         AWQ6pQ0f+jpc5uuf6XrMZwrumA8YLAOAI0jlo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=Kl7Z7+qWdPUavB+9k09cx6il1KNPfwFCVoLYpOlvzOTaZpOQCz/NWlnRveGlPG484w
-         930vG5ouofD4ewixAmEOBbHaoNgzkNIkoH7qPw6j9DaDXQ7D2NIQuypo1fH6lByYxNQU
-         f70WLOnlnqZE+CEScauCp3OwXUcwuB+Rki+Us=
-MIME-Version: 1.0
-Received: by 10.42.8.72 with SMTP id h8mr2231563ich.17.1276563527583; Mon, 14 
-        Jun 2010 17:58:47 -0700 (PDT)
-Received: by 10.42.3.196 with HTTP; Mon, 14 Jun 2010 17:58:47 -0700 (PDT)
-In-Reply-To: <AANLkTikmXmu9uhxnk2OXuCICMpe-hdUJHaB-okhkNf3t@mail.gmail.com>
-References: <AANLkTikmXmu9uhxnk2OXuCICMpe-hdUJHaB-okhkNf3t@mail.gmail.com>
-Date:   Tue, 15 Jun 2010 08:58:47 +0800
-Message-ID: <AANLkTinUV5r8tgVxMiercS4NivtCVNa0vTObQtF8SROm@mail.gmail.com>
-Subject: Re: Do I Need to enable or set l2 cache in mips for linux work
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     loody <miloody@gmail.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 27134
+        by eddie.linux-mips.org with ESMTP id S1490950Ab0FOMZu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Jun 2010 14:25:50 +0200
+Received: by iwn3 with SMTP id 3so740957iwn.36
+        for <linux-mips@linux-mips.org>; Tue, 15 Jun 2010 05:25:47 -0700 (PDT)
+Received: by 10.231.139.66 with SMTP id d2mr7133328ibu.137.1276604747474;
+        Tue, 15 Jun 2010 05:25:47 -0700 (PDT)
+Received: from [10.161.2.200] ([122.181.19.78])
+        by mx.google.com with ESMTPS id r12sm25730690ibi.2.2010.06.15.05.25.43
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 15 Jun 2010 05:25:46 -0700 (PDT)
+Subject: Re: [PATCH] mtd: Fix bug using smp_processor_id() in preemptible
+ ubi_bgt1d kthread
+From:   Philby John <pjohn@mvista.com>
+Reply-To: pjohn@mvista.com
+To:     Jamie Lokier <jamie@shareable.org>
+Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-kernel@vger.kernel.org,
+        Artem Bityutskiy <dedekind1@gmail.com>
+In-Reply-To: <20100614150425.GC9550@shareable.org>
+References: <1276513457.16642.3.camel@localhost.localdomain>
+         <20100614150425.GC9550@shareable.org>
+Content-Type: text/plain
+Date:   Tue, 15 Jun 2010 17:56:34 +0530
+Message-Id: <1276604794.19810.3.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.24.5 (2.24.5-2.fc10) 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 27135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: pjohn@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 9944
+X-UID: 10264
 
-CONFIG_MIPS_CPU_SCACHE is the one you need to set.
+Hello Jamie,
 
-You may try the Perf tool located at tools/perf. For how to build the tool
-and patch the kernel, please refer to:
+On Mon, 2010-06-14 at 16:04 +0100, Jamie Lokier wrote:
+> Philby John wrote:
+> > mtd: Fix bug using smp_processor_id() in preemptible ubi_bgt1d kthread
+> > 
+> > On a MIPS Cavium Octeon CN5020 when trying to create a UBI volume,
+> > on the NOR flash, the kernel thread ubi_bgt1d calls
+> > cfi_amdstd_write_buffers() --> do_write_buffer() -->
+> > INVALIDATE_CACHE_UDELAY --> __udelay(). Its __udelay() that calls
+> > smp_processor_id() in preemptible code, which you are not supposed to.
+> > Fix the problem by disabling preemption.
+> 
+> The MTD code just calls udelay().
+> Are you sure it isn't permitted to call udelay() from preemptible code?
+> I think it is fine.
+> 
+> Perhaps MIPS udelay() should be disabling preemption itself, or
+> (as x86 does) using raw_smp_processor_id() instead?
 
-http://www.linux-mips.org/archives/linux-mips/2010-06/msg00143.html
+Sorry for the noise. I now find that raw_smp_processor_id() has been
+implemented specific to MIPS in the latest kernel, I was using 2.6.32.
 
-BTW, raw events are suggested for your L2$ profiling.
-
-
-Deng-Cheng
-
-
-2010/6/13 loody <miloody@gmail.com>:
-> Dear all:
-> My cpu is 24ke and are there any l2 cache configs I have to take care
-> of, such linux can take advantage of it.
-> BTW, will I can find any tool or test program for measuring the
-> performance of l2 cache under linux?
-> Appreciate your help,
-> miloody
->
->
+Thanks and regards,
+Philby

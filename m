@@ -1,80 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2010 18:01:08 +0200 (CEST)
-Received: from cantor.suse.de ([195.135.220.2]:32968 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491118Ab0FPQBE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 Jun 2010 18:01:04 +0200
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.221.2])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.suse.de (Postfix) with ESMTP id DF9F48D893;
-        Wed, 16 Jun 2010 18:00:59 +0200 (CEST)
-Date:   Wed, 16 Jun 2010 18:00:59 +0200 (CEST)
-From:   Jiri Kosina <jkosina@suse.cz>
-To:     Christoph Egger <siccegge@cs.fau.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Gilles Espinasse <g.esp@free.fr>, Tejun Heo <tj@kernel.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        vamos@i4.informatik.uni-erlangen.de
-Subject: Re: [PATCH 3/9] Removing dead CONFIG_SIBYTE_BCM1480_PROF
-In-Reply-To: <c217f4530c057f4b8030bd14459a0cb2856decde.1275925108.git.siccegge@cs.fau.de>
-Message-ID: <alpine.LNX.2.00.1006161800290.12271@pobox.suse.cz>
-References: <cover.1275925108.git.siccegge@cs.fau.de> <c217f4530c057f4b8030bd14459a0cb2856decde.1275925108.git.siccegge@cs.fau.de>
-User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 27146
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2010 00:00:51 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:17111 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492178Ab0FPWAr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jun 2010 00:00:47 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4c1949a20000>; Wed, 16 Jun 2010 15:01:06 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 16 Jun 2010 15:00:43 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 16 Jun 2010 15:00:43 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.3/8.14.3) with ESMTP id o5GM0fJf008614;
+        Wed, 16 Jun 2010 15:00:41 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o5GM0esA008613;
+        Wed, 16 Jun 2010 15:00:40 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 1/2] MIPS: Get rid of useless 'init_vdso successfully' message.
+Date:   Wed, 16 Jun 2010 15:00:27 -0700
+Message-Id: <1276725628-8572-2-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.6.1
+In-Reply-To: <1276725628-8572-1-git-send-email-ddaney@caviumnetworks.com>
+References: <1276725628-8572-1-git-send-email-ddaney@caviumnetworks.com>
+X-OriginalArrivalTime: 16 Jun 2010 22:00:43.0704 (UTC) FILETIME=[5DEE2380:01CB0D9F]
+X-archive-position: 27147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jkosina@suse.cz
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 11305
+X-UID: 11587
 
-On Wed, 9 Jun 2010, Christoph Egger wrote:
+In addition to being useless, it was mis-spelled.
 
-> CONFIG_SIBYTE_BCM1480_PROF doesn't exist in Kconfig, therefore removing all
-> references for it from the source code.
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/kernel/vdso.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-The patch isn't present in linux-next as of today. I have applied it to my 
-tree, thanks.
-
-> 
-> Signed-off-by: Christoph Egger <siccegge@cs.fau.de>
-> ---
->  arch/mips/sibyte/bcm1480/irq.c |   11 -----------
->  1 files changed, 0 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/mips/sibyte/bcm1480/irq.c b/arch/mips/sibyte/bcm1480/irq.c
-> index 044bbe4..919d2d5 100644
-> --- a/arch/mips/sibyte/bcm1480/irq.c
-> +++ b/arch/mips/sibyte/bcm1480/irq.c
-> @@ -362,19 +362,8 @@ asmlinkage void plat_irq_dispatch(void)
->  	unsigned int cpu = smp_processor_id();
->  	unsigned int pending;
->  
-> -#ifdef CONFIG_SIBYTE_BCM1480_PROF
-> -	/* Set compare to count to silence count/compare timer interrupts */
-> -	write_c0_compare(read_c0_count());
-> -#endif
-> -
->  	pending = read_c0_cause() & read_c0_status();
->  
-> -#ifdef CONFIG_SIBYTE_BCM1480_PROF
-> -	if (pending & CAUSEF_IP7)	/* Cpu performance counter interrupt */
-> -		sbprof_cpu_intr();
-> -	else
-> -#endif
-> -
->  	if (pending & CAUSEF_IP4)
->  		do_IRQ(K_BCM1480_INT_TIMER_0 + cpu);
->  #ifdef CONFIG_SMP
-> -- 
-> 1.6.3.3
-> 
-
+diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
+index 0847279..891c117 100644
+--- a/arch/mips/kernel/vdso.c
++++ b/arch/mips/kernel/vdso.c
+@@ -61,8 +61,6 @@ static int __init init_vdso(void)
+ 
+ 	vunmap(vdso);
+ 
+-	pr_notice("init_vdso successfull\n");
+-
+ 	return 0;
+ }
+ device_initcall(init_vdso);
 -- 
-Jiri Kosina
-SUSE Labs, Novell Inc.
+1.6.6.1

@@ -1,77 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2010 13:35:53 +0200 (CEST)
-Received: from faui40.informatik.uni-erlangen.de ([131.188.34.40]:43813 "EHLO
-        faui40.informatik.uni-erlangen.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492047Ab0FPLfu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jun 2010 13:35:50 +0200
-Received: from faui48a.informatik.uni-erlangen.de (faui48a.informatik.uni-erlangen.de [131.188.34.55])
-        by faui40.informatik.uni-erlangen.de (Postfix) with ESMTP id B2ED95F1C2;
-        Wed, 16 Jun 2010 13:35:48 +0200 (MEST)
-Received: by faui48a.informatik.uni-erlangen.de (Postfix, from userid 31996)
-        id A2845774CF7; Wed, 16 Jun 2010 13:35:48 +0200 (CEST)
-Date:   Wed, 16 Jun 2010 13:35:48 +0200
-From:   Christoph Egger <siccegge@cs.fau.de>
-To:     Shane McDonald <mcdonald.shane@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, vamos@i4.informatik.uni-erlangen.de
-Subject: Re: [PATCH 5/9] Removing dead CONFIG_BLK_DEV_IDE
-Message-ID: <20100616113548.GA10065@faui48a.informatik.uni-erlangen.de>
-References: <cover.1275925108.git.siccegge@cs.fau.de> <73e9e4bd7615488c9567f02f8962825386956365.1275925108.git.siccegge@cs.fau.de> <AANLkTillx50SaxZU2cT9YSlS4uRF_ED5-wlG-JwfXfFT@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2010 14:20:51 +0200 (CEST)
+Received: from cassiel.sirena.org.uk ([80.68.93.111]:42519 "EHLO
+        cassiel.sirena.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492276Ab0FPMUr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jun 2010 14:20:47 +0200
+Received: from broonie by cassiel.sirena.org.uk with local (Exim 4.69)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1OOrbn-0006kl-FC; Wed, 16 Jun 2010 13:20:43 +0100
+Date:   Wed, 16 Jun 2010 13:20:43 +0100
+From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Anton Vorontsov <cbouatmailru@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        lrg@slimlogic.co.uk
+Subject: Re: [RFC][PATCH 23/26] power: Add JZ4740 battery driver.
+Message-ID: <20100616122042.GB31387@sirena.org.uk>
+References: <1275505397-16758-1-git-send-email-lars@metafoo.de> <1275505950-17334-7-git-send-email-lars@metafoo.de> <20100614155108.GA30552@oksana.dev.rtsoft.ru> <20100615173432.GA27904@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AANLkTillx50SaxZU2cT9YSlS4uRF_ED5-wlG-JwfXfFT@mail.gmail.com>
+In-Reply-To: <20100615173432.GA27904@linux-mips.org>
+X-Cookie: Tomorrow, you can be anywhere.
 User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 27144
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+X-SA-Exim-Scanned: No (on cassiel.sirena.org.uk); SAEximRunCond expanded to false
+X-archive-position: 27145
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: siccegge@cs.fau.de
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 11137
+X-UID: 11157
 
-On Thu, Jun 10, 2010 at 12:23:06PM -0600, Shane McDonald wrote:
->   I wonder if, instead of deleting the code, the constant should be
-> changed from CONFIG_BLK_DEV_IDE to CONFIG_IDE.  The original
-> patch that removed CONFIG_BLK_DEV_IDE seemed to make this change:
-> http://kerneltrap.org/mailarchive/linux-kernel/2008/8/13/2929444
-> 
-> Shane
+On Tue, Jun 15, 2010 at 06:34:32PM +0100, Ralf Baechle wrote:
+> On Mon, Jun 14, 2010 at 07:51:08PM +0400, Anton Vorontsov wrote:
 
-You're probably right, updated patch below
+> > Looks good. I see this is an RFC. Do you want me to apply it
+> > or there's a newer version to be submitted?
 
--------
-From: Christoph Egger <siccegge@cs.fau.de>
-Date: Mon, 7 Jun 2010 17:29:48 +0200
-Subject: [PATCH 5/9] Removing dead CONFIG_BLK_DEV_IDE
+> To allow for reasonable testing while this patchset is getting integrated
+> I suggest I apply all the patches that were acked by the respective
+> maintainers to the MIPS tree, feed them to -next for testing  and once
+> that phase is complete send the whole thing to Linus.
 
-CONFIG_BLK_DEV_IDE doesn't exist in Kconfig, therefore removing all
-references for it from the source code.
-
-Signed-off-by: Christoph Egger <siccegge@cs.fau.de>
----
-diff --git a/arch/mips/mti-malta/malta-setup.c
-b/arch/mips/mti-malta/malta-setup.c
-index b7f37d4..f6a5ea8 100644
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -105,7 +105,7 @@ static void __init fd_activate(void)
- }
- #endif
- 
--#ifdef CONFIG_BLK_DEV_IDE
-+#ifdef CONFIG_IDE
- static void __init pci_clock_check(void)
- {
-        unsigned int __iomem *jmpr_p =
-@@ -207,7 +207,7 @@ void __init plat_mem_setup(void)
-        if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
-                bonito_quirks_setup();
- 
--#ifdef CONFIG_BLK_DEV_IDE
-+#ifdef CONFIG_IDE
-        pci_clock_check();
- #endif
- 
+Due to major pending changes in the audio subsystem at least the audio
+subsystem changes will have merge issues in -next from that.  To avoid
+these I suggest putting the audio changes on a branch which can be
+pulled into both trees.

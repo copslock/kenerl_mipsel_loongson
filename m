@@ -1,77 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2010 09:53:35 +0200 (CEST)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:52460 "EHLO
-        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492116Ab0FPHwr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jun 2010 09:52:47 +0200
-Received: by pxi6 with SMTP id 6so763981pxi.36
-        for <multiple recipients>; Wed, 16 Jun 2010 00:52:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=/EFG4AiCrkP//cMiirI+V6fF1hO1J4uq7VvhhpVRWV0=;
-        b=K5IHwbt2XkBzjyLl6fTZ/sKq3/BcRT0SmDRkZsEShb3o0lZ6kschqowWIZRL1zGw9A
-         +/D8uH3B4+EVPsQca8zdySxvtfIQfnqP1vc8O/Xbt43crELI9b/rx9cV+GRRyvc3z6FG
-         CKIYuSGV8+HLg4cgubS/SfTEFH7bTb0ZrcCfg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=H86WDO5jPT0VTxVlQjwu8vyecJJ7REg8nSY9zTA07b2qIfX2VeosJJpte7clK/pwJr
-         dKN+4MliaUMAikfSpDWi4Br+1l2p95OCnI65C0o7YysejrSjwowQsJuh8u+lCnkVwX4a
-         4kOpdsB3yMKw5INhlNYp6AuHrcJKT/fvGpcXo=
-Received: by 10.114.187.29 with SMTP id k29mr6733084waf.208.1276674759774;
-        Wed, 16 Jun 2010 00:52:39 -0700 (PDT)
-Received: from localhost.localdomain ([182.18.29.11])
-        by mx.google.com with ESMTPS id c1sm78670395wam.7.2010.06.16.00.52.36
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 16 Jun 2010 00:52:39 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] MIPS: strip the un-needed sections of vmlinuz
-Date:   Wed, 16 Jun 2010 15:52:21 +0800
-Message-Id: <1276674753-30240-2-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.0.4
-In-Reply-To: <7a966ffadcf2a4600c098c3ac47ef1f645790946.1276674390.git.wuzhangjin@gmail.com>
-References: <7a966ffadcf2a4600c098c3ac47ef1f645790946.1276674390.git.wuzhangjin@gmail.com>
-X-archive-position: 27143
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jun 2010 13:35:53 +0200 (CEST)
+Received: from faui40.informatik.uni-erlangen.de ([131.188.34.40]:43813 "EHLO
+        faui40.informatik.uni-erlangen.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492047Ab0FPLfu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Jun 2010 13:35:50 +0200
+Received: from faui48a.informatik.uni-erlangen.de (faui48a.informatik.uni-erlangen.de [131.188.34.55])
+        by faui40.informatik.uni-erlangen.de (Postfix) with ESMTP id B2ED95F1C2;
+        Wed, 16 Jun 2010 13:35:48 +0200 (MEST)
+Received: by faui48a.informatik.uni-erlangen.de (Postfix, from userid 31996)
+        id A2845774CF7; Wed, 16 Jun 2010 13:35:48 +0200 (CEST)
+Date:   Wed, 16 Jun 2010 13:35:48 +0200
+From:   Christoph Egger <siccegge@cs.fau.de>
+To:     Shane McDonald <mcdonald.shane@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, vamos@i4.informatik.uni-erlangen.de
+Subject: Re: [PATCH 5/9] Removing dead CONFIG_BLK_DEV_IDE
+Message-ID: <20100616113548.GA10065@faui48a.informatik.uni-erlangen.de>
+References: <cover.1275925108.git.siccegge@cs.fau.de> <73e9e4bd7615488c9567f02f8962825386956365.1275925108.git.siccegge@cs.fau.de> <AANLkTillx50SaxZU2cT9YSlS4uRF_ED5-wlG-JwfXfFT@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AANLkTillx50SaxZU2cT9YSlS4uRF_ED5-wlG-JwfXfFT@mail.gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 27144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: siccegge@cs.fau.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 11031
+X-UID: 11137
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Thu, Jun 10, 2010 at 12:23:06PM -0600, Shane McDonald wrote:
+>   I wonder if, instead of deleting the code, the constant should be
+> changed from CONFIG_BLK_DEV_IDE to CONFIG_IDE.  The original
+> patch that removed CONFIG_BLK_DEV_IDE seemed to make this change:
+> http://kerneltrap.org/mailarchive/linux-kernel/2008/8/13/2929444
+> 
+> Shane
 
-This patch use "strip -s" to strip the .symtab and .strtab sections of
-vmlinuz.
+You're probably right, updated patch below
 
-Note: This patch is based on http://patchwork.linux-mips.org/patch/1324/
+-------
+From: Christoph Egger <siccegge@cs.fau.de>
+Date: Mon, 7 Jun 2010 17:29:48 +0200
+Subject: [PATCH 5/9] Removing dead CONFIG_BLK_DEV_IDE
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+CONFIG_BLK_DEV_IDE doesn't exist in Kconfig, therefore removing all
+references for it from the source code.
+
+Signed-off-by: Christoph Egger <siccegge@cs.fau.de>
 ---
- arch/mips/boot/compressed/Makefile |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index 9ef6e2f..1910702 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -65,8 +65,11 @@ vmlinuzobjs-y += $(obj)/piggy.o
+diff --git a/arch/mips/mti-malta/malta-setup.c
+b/arch/mips/mti-malta/malta-setup.c
+index b7f37d4..f6a5ea8 100644
+--- a/arch/mips/mti-malta/malta-setup.c
++++ b/arch/mips/mti-malta/malta-setup.c
+@@ -105,7 +105,7 @@ static void __init fd_activate(void)
+ }
+ #endif
  
- quiet_cmd_zld = LD      $@
-       cmd_zld = $(LD) $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T $< $(vmlinuzobjs-y) -o $@
-+quiet_cmd_strip = STRIP   $@
-+      cmd_strip = $(STRIP) -s $@
- vmlinuz: $(src)/ld.script $(vmlinuzobjs-y) $(obj)/calc_vmlinuz_load_addr
- 	$(call cmd,zld)
-+	$(call cmd,strip)
+-#ifdef CONFIG_BLK_DEV_IDE
++#ifdef CONFIG_IDE
+ static void __init pci_clock_check(void)
+ {
+        unsigned int __iomem *jmpr_p =
+@@ -207,7 +207,7 @@ void __init plat_mem_setup(void)
+        if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
+                bonito_quirks_setup();
  
- #
- # Some DECstations need all possible sections of an ECOFF executable
--- 
-1.7.0.4
+-#ifdef CONFIG_BLK_DEV_IDE
++#ifdef CONFIG_IDE
+        pci_clock_check();
+ #endif
+ 

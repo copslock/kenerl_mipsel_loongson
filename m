@@ -1,89 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2010 13:37:26 +0200 (CEST)
-Received: from TYO202.gate.nec.co.jp ([202.32.8.206]:64162 "EHLO
-        tyo202.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492191Ab0FQLhW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jun 2010 13:37:22 +0200
-Received: from mailgate3.nec.co.jp ([10.7.69.195])
-        by tyo202.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id o5HBbKix010954
-        for <linux-mips@linux-mips.org>; Thu, 17 Jun 2010 20:37:20 +0900 (JST)
-Received: (from root@localhost) by mailgate3.nec.co.jp (8.11.7/3.7W-MAILGATE-NEC)
-        id o5HBbJm19877 for linux-mips@linux-mips.org; Thu, 17 Jun 2010 20:37:19 +0900 (JST)
-Received: from relay41.aps.necel.com ([10.29.19.9]) by vgate01.nec.co.jp (8.11.7/3.7W-MAILSV-NEC) with ESMTP
-        id o5HBbJ420264 for <linux-mips@linux-mips.org>; Thu, 17 Jun 2010 20:37:19 +0900 (JST)
-Received: from realmbox31.aps.necel.com ([10.29.19.36] [10.29.19.36]) by relay41.aps.necel.com with ESMTP; Thu, 17 Jun 2010 20:37:18 +0900
-Received: from [10.114.180.181] ([10.114.180.181] [10.114.180.181]) by mbox02.aps.necel.com with ESMTP; Thu, 17 Jun 2010 20:37:18 +0900
-Message-ID: <4C1A08E9.9030808@renesas.com>
-Date:   Thu, 17 Jun 2010 20:37:13 +0900
-From:   Shinya Kuribayashi <shinya.kuribayashi.px@renesas.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.9) Gecko/20100317 Lightning/1.0b1 Thunderbird/3.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2010 14:21:04 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:38606 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491898Ab0FQMVA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jun 2010 14:21:00 +0200
+Received: by pwj6 with SMTP id 6so4761795pwj.36
+        for <multiple recipients>; Thu, 17 Jun 2010 05:20:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=AKgXbGSU5hFTtpWMkUHnqKs0wz8z35JpQxoDFeam3H0=;
+        b=x4rJrSvdE8PWMFgZWW3Bme1ZpQkFae3ySjAddURRQ0IelbatBLeHpu/dfJnJBs7MG8
+         I7z0s+sFR/KHFFYhxlj3krj0lc1Vi0RiXc+s3hkz5XNwmdoD2IdfP4NYlhyGgwt+PaBP
+         tGFln+f9mNUyV5ThZknhXlizNNVBEP02aSI3Y=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=C6+dwBUgiywIL44BxFfFayHwzbStufA1ZVSaTkJ7Opqd6Np2gZM63/VlKb6c1bfggZ
+         7WK49P5jkL1hcCXjLw7SmTuqfwbl2AxFqDlSHjANrfmAtZTYlJOMUXy6gqFez0yDxq6s
+         fH3WLcqoX06DnQ5VkKeVm82AJSLW9ZaN29xvo=
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: [PATCH 4/4] MIPS: EMMA2RH: Replace EMMA2RH_SW_IRQ_INTxx with EMMA2RH_SW_IRQ(n)
-References: <4C1A0801.60405@renesas.com>
-In-Reply-To: <4C1A0801.60405@renesas.com>
+Received: by 10.143.24.24 with SMTP id b24mr7296039wfj.180.1276777249942; Thu, 
+        17 Jun 2010 05:20:49 -0700 (PDT)
+Received: by 10.142.211.16 with HTTP; Thu, 17 Jun 2010 05:20:49 -0700 (PDT)
+In-Reply-To: <1276179278.21482.16.camel@localhost>
+References: <20100609153831.GA27461@waldemar-brodkorb.de>
+        <1276099374.4510.13.camel@localhost>
+        <20100609172438.GA23116@waldemar-brodkorb.de>
+        <1276179278.21482.16.camel@localhost>
+Date:   Thu, 17 Jun 2010 20:20:49 +0800
+Message-ID: <AANLkTikZc02RQ2zJ4Cj0nxUezYXyVIMxQS2opAWSjOrd@mail.gmail.com>
+Subject: Re: zboot for brcm
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     Waldemar Brodkorb <mail@waldemar-brodkorb.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 27156
+X-archive-position: 27157
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shinya.kuribayashi.px@renesas.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 11958
+X-UID: 11985
 
-Don't duplicate worthless lines.
+Hi,
 
-Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi.px@renesas.com>
----
- arch/mips/include/asm/emma/markeins.h |   33 +--------------------------------
- 1 files changed, 1 insertions(+), 32 deletions(-)
+I just got a bcm1250a board, it also uses the CFE as the bootloader, I
+compiled a compressed vmlinuz-2.6.34 for it and boot with the
+following command, it works well:
 
-diff --git a/arch/mips/include/asm/emma/markeins.h b/arch/mips/include/asm/emma/markeins.h
-index 507f125..bf2d229 100644
---- a/arch/mips/include/asm/emma/markeins.h
-+++ b/arch/mips/include/asm/emma/markeins.h
-@@ -31,38 +31,7 @@
- #define EMMA2RH_SW_IRQ_BASE	(EMMA2RH_IRQ_BASE + NUM_EMMA2RH_IRQ)
- #define EMMA2RH_GPIO_IRQ_BASE	(EMMA2RH_SW_IRQ_BASE + NUM_EMMA2RH_IRQ_SW)
- 
--#define EMMA2RH_SW_IRQ_INT0	(0+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT1	(1+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT2	(2+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT3	(3+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT4	(4+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT5	(5+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT6	(6+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT7	(7+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT8	(8+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT9	(9+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT10	(10+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT11	(11+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT12	(12+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT13	(13+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT14	(14+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT15	(15+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT16	(16+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT17	(17+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT18	(18+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT19	(19+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT20	(20+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT21	(21+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT22	(22+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT23	(23+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT24	(24+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT25	(25+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT26	(26+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT27	(27+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT28	(28+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT29	(29+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT30	(30+EMMA2RH_SW_IRQ_BASE)
--#define EMMA2RH_SW_IRQ_INT31	(31+EMMA2RH_SW_IRQ_BASE)
-+#define EMMA2RH_SW_IRQ_INT(n)	(EMMA2RH_SW_IRQ_BASE + (n))
- 
- #define MARKEINS_PCI_IRQ_INTA	EMMA2RH_GPIO_IRQ_BASE+15
- #define MARKEINS_PCI_IRQ_INTB	EMMA2RH_GPIO_IRQ_BASE+16
+CFE> setenv bootargs root=/dev/nfs rw
+nfsroot=$nfs_server_ip:/path/to/nfs_root_fs ip=dhcp
+CFE> ifconfig -auto eth0
+CFE> boot -elf $tftp_server_ip:/path/to/vmlinuz
+
+With -elf, the boot command of CFE can parse the vmlinuz and boot it
+normally. I think you have used the wrong options of the boot command.
+
+Regards,
+
 -- 
-1.7.1
+Studying engineer. Wu Zhangjin
+Lanzhou University      http://www.lzu.edu.cn
+Distributed & Embedded System Lab      http://dslab.lzu.edu.cn
+School of Information Science and Engeneering         http://xxxy.lzu.edu.cn
+wuzhangjin@gmail.com         http://falcon.oss.lzu.edu.cn
+Address:Tianshui South Road 222,Lanzhou,P.R.China    Zip Code:730000
+Tel:+86-931-8912025

@@ -1,82 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2010 13:06:23 +0200 (CEST)
-Received: from ossa.mas.viperplatform.net.au ([202.147.75.25]:59786 "EHLO
-        ossa.mas.viperplatform.net.au" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491876Ab0FQLGT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jun 2010 13:06:19 +0200
-Received: from mail by ossa.mas.viperplatform.net.au with spam-scanned (Exim 4.43)
-        id 1OPCv9-0004or-Ik
-        for linux-mips@linux-mips.org; Thu, 17 Jun 2010 21:06:09 +1000
-Received: from eryx.mas.viperplatform.net.au ([172.16.5.11])
-        by ossa.mas.viperplatform.net.au with esmtp (Exim 4.43)
-        id 1OPCv9-0004of-Gw
-        for linux-mips@linux-mips.org; Thu, 17 Jun 2010 21:06:07 +1000
-Received: from mail by eryx.mas.viperplatform.net.au with spam-scanned (Exim 4.43)
-        id 1OPCv8-00089d-3U
-        for linux-mips@linux-mips.org; Thu, 17 Jun 2010 21:06:07 +1000
-Received: from [172.16.100.13] (helo=helicon.mas.viperplatform.net.au)
-        by eryx.mas.viperplatform.net.au with esmtp (Exim 4.43)
-        id 1OPCv8-00089a-2K
-        for linux-mips@linux-mips.org; Thu, 17 Jun 2010 21:06:06 +1000
-Received: from [203.94.56.252] (helo=longlandclan.yi.org)
-        by helicon.mas.viperplatform.net.au with esmtp (Exim 4.43)
-        id 1OPCv7-0007p2-Or
-        for linux-mips@linux-mips.org; Thu, 17 Jun 2010 21:06:06 +1000
-Received: (qmail 32611 invoked by uid 1000); 17 Jun 2010 11:06:05 -0000
-Date:   Thu, 17 Jun 2010 21:06:05 +1000
-From:   Stuart Longland <redhatter@gentoo.org>
-To:     Wu <wuzhangjin@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v4 00/16] Cleanup Lemote FuLoong2e Support
-Message-ID: <20100617110605.GA32400@www.longlandclan.yi.org>
-References: <cover.1246546684.git.wuzhangjin@gmail.com>
- <20100617104735.GC24561@www.longlandclan.yi.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jun 2010 13:33:38 +0200 (CEST)
+Received: from TYO201.gate.nec.co.jp ([202.32.8.193]:39640 "EHLO
+        tyo201.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490962Ab0FQLde (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Jun 2010 13:33:34 +0200
+Received: from mailgate3.nec.co.jp ([10.7.69.192])
+        by tyo201.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id o5HBXR2p021466
+        for <linux-mips@linux-mips.org>; Thu, 17 Jun 2010 20:33:27 +0900 (JST)
+Received: (from root@localhost) by mailgate3.nec.co.jp (8.11.7/3.7W-MAILGATE-NEC)
+        id o5HBXRO00121 for linux-mips@linux-mips.org; Thu, 17 Jun 2010 20:33:27 +0900 (JST)
+Received: from relay31.aps.necel.com ([10.29.19.54]) by vgate02.nec.co.jp (8.11.7/3.7W-MAILSV-NEC) with ESMTP
+        id o5HBXR915996 for <linux-mips@linux-mips.org>; Thu, 17 Jun 2010 20:33:27 +0900 (JST)
+Received: from realmbox31.aps.necel.com ([10.29.19.28] [10.29.19.28]) by relay31.aps.necel.com with ESMTP; Thu, 17 Jun 2010 20:33:27 +0900
+Received: from [10.114.180.181] ([10.114.180.181] [10.114.180.181]) by mbox02.aps.necel.com with ESMTP; Thu, 17 Jun 2010 20:33:27 +0900
+Message-ID: <4C1A0801.60405@renesas.com>
+Date:   Thu, 17 Jun 2010 20:33:21 +0900
+From:   Shinya Kuribayashi <shinya.kuribayashi.px@renesas.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.9) Gecko/20100317 Lightning/1.0b1 Thunderbird/3.0.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20100617104735.GC24561@www.longlandclan.yi.org>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-Clarity-Outbound-SpamScanned: YES
-X-archive-position: 27151
+To:     linux-mips@linux-mips.org
+Subject: [PATCH] EMMA2RH: tivial cleanups
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 27152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: redhatter@gentoo.org
+X-original-sender: shinya.kuribayashi.px@renesas.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 11943
+X-UID: 11953
 
-Dropping Cc's to reduce undue noise, I've made enough already. ;-)
+Hi,
 
-On Thu, Jun 17, 2010 at 08:47:35PM +1000, Stuart Longland wrote:
-> Hi,
-> On Thu, Jul 02, 2009 at 11:15:52PM +0800, Wu wrote:
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> >
-> > This patch series is the -v4 version of the loongson-PATCH-v3 series, but it
-> > only include the cleanup for fuloong2e support and necessary preparation for
-> > future fuloong-2f and yeeloong-2f support.
-> >
-> > The git branch of this patch series is:
-> >
-> > 	git://dev.lemote.com/rt4ls.git linux-loongson/dev/fuloong2e
->
-> I can't seem to find a linux-loongson/dev/fuloong2e branch... did I miss
-> the boat?  I'm looking to update the kernels on the two Fulongs 2Es
-> here... as I'm having grief compiling Python 2.6 -- hard locks always at
-> the same point, and I have a feeling it's the
-> kernel+kernel-build-toolchain combo that's possibly to blame.
+Today I was going to prepare a patch titled '[PATCH] MIPS: Move EMMA2RH
+Makefile to its own Platform file', fetched and took a look at -queue
+repo, and found that Ralf already fixed it up!  Many thanks, Ralf :-)
 
-Okay, disregard the above... I should learn to check mail timestamps
-before I hit the reply-all button.  That said... I'd be curious to know
-what the present status is.  Been out of the loop for a while, and only
-just starting to get back in again.
+So here're remaining trivial cleanups supposed to be sent along with
+the Platform patch.  In the future, I'm planning to sort out interrupt
+routines first, PCI driver generization, and more, but I still couldn't
+find enough spare time for it.  I'll try my best (I'd likt to play with
+the latest kernel, anyway).
+
+
+Shinya Kuribayashi (4):
+      MIPS: EMMA2RH: Remove useless CPU_IRQ_BASE
+      MIPS: EMMA2RH: Remove EMMA2RH_CPU_CASCADE
+      MIPS: EMMA2RH: Replace EMMA2RH_IRQ_INTxx with EMMA2RH_IRQ_INT(n)
+      MIPS: EMMA2RH: Replace EMMA2RH_SW_IRQ_INTxx with EMMA2RH_SW_IRQ(n)
+
+ arch/mips/emma/markeins/irq.c         |    8 ++--
+ arch/mips/include/asm/emma/emma2rh.h  |   84 ++++-----------------------------
+ arch/mips/include/asm/emma/markeins.h |   37 +-------------
+ 3 files changed, 16 insertions(+), 113 deletions(-)
+
+P.S. Feel free to squash!
+
 -- 
-Stuart Longland (aka Redhatter, VK4MSL)      .'''.
-Gentoo Linux/MIPS Cobalt and Docs Developer  '.'` :
-. . . . . . . . . . . . . . . . . . . . . .   .'.'
-http://dev.gentoo.org/~redhatter             :.'
-
-I haven't lost my mind...
-  ...it's backed up on a tape somewhere.
+Shinya Kuribayashi
+Renesas Electronics

@@ -1,59 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jun 2010 09:43:11 +0200 (CEST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:60144 "EHLO
-        t111.niisi.ras.ru" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491768Ab0FRHnH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Jun 2010 09:43:07 +0200
-Received: from aa19.niisi.msk.ru (aa19.niisi.msk.ru [172.16.0.19] (may be forged))
-        by t111.niisi.ras.ru (8.13.8/8.13.8) with ESMTP id o5I7gul2016350;
-        Fri, 18 Jun 2010 11:42:56 +0400
-Received: from [192.168.173.2] (aa248 [172.16.0.248])
-        by aa19.niisi.msk.ru (8.13.8/8.13.8) with ESMTP id o5I7RfWh004707;
-        Fri, 18 Jun 2010 11:27:41 +0400
-Message-ID: <4C1B263E.7070906@niisi.msk.ru>
-Date:   Fri, 18 Jun 2010 11:54:38 +0400
-From:   "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.5) Gecko/20091204 Thunderbird/3.0
-MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Jesper Nilsson <jesper@jni.nu>, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jun 2010 12:01:16 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:60831 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491062Ab0FRKBL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Jun 2010 12:01:11 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id o5IA0urZ005406;
+        Fri, 18 Jun 2010 11:00:59 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id o5IA0s5n005404;
+        Fri, 18 Jun 2010 11:00:54 +0100
+Date:   Fri, 18 Jun 2010 11:00:53 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Jesper Nilsson <jesper@jni.nu>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
 Subject: Re: MIPS: return after handling coprocessor 2 exception
-References: <20100617132554.GB24162@jni.nu> <4C1A57AE.9080706@caviumnetworks.com>
-In-Reply-To: <4C1A57AE.9080706@caviumnetworks.com>
-Content-Type: text/plain; charset=KOI8-R; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Antivirus: Dr.Web (R) for Mail Servers on t111.niisi.ras.ru host
-X-Antivirus-Code: 100000
-X-archive-position: 27167
+Message-ID: <20100618100053.GA4466@linux-mips.org>
+References: <20100617132554.GB24162@jni.nu>
+ <4C1A57AE.9080706@caviumnetworks.com>
+ <4C1B263E.7070906@niisi.msk.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4C1B263E.7070906@niisi.msk.ru>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+X-archive-position: 27168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 12658
+X-UID: 12744
 
-On 17.06.2010 21:13, David Daney wrote:
-> On 06/17/2010 06:25 AM, Jesper Nilsson wrote:
->> Breaking here dropped us to the default code which always sends
->> a SIGILL to the current process, no matter what the CU2 notifier says.
->>
->> Signed-off-by: Jesper Nilsson<jesper@jni.nu>
-[...]
->> case 2:
->> raw_notifier_call_chain(&cu2_chain, CU2_EXCEPTION, regs);
->> - break;
->> + return;
->>
->
-> What happens when the call chain is empty, and the proper action *is*
-> SIGILL?
+On Fri, Jun 18, 2010 at 11:54:38AM +0400, Gleb O. Raiko wrote:
 
-It's never empty, in fact. The default notifier declared at top of 
-traps.c sends SIGILL. The problem that current code is sending SIGILL in 
-all cases.
+> >What happens when the call chain is empty, and the proper action *is*
+> >SIGILL?
+> 
+> It's never empty, in fact. The default notifier declared at top of
+> traps.c sends SIGILL. The problem that current code is sending
+> SIGILL in all cases.
 
-Gleb.
+That's not really a problem.  The design idea is that a the default
+notifier has the lowest priority, that is any user notifier installed
+should have higher priority resulting in it getting run first.  To avoid
+the default notifier from getting executed such an extra notifier should
+set NOTIFY_STOP_MASK in its return like:
+
+static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
+        void *data)
+{
+	...
+
+	return NOTIFY_OK | NOTIFY_STOP;
+}
+
+The notifier list could also be used for example by perf but there it
+we'd want the notifier function not to return NOTIFY_STOP as the result;
+
+Arguably sending the signal for CU2 instructions has been delegated to the
+hook so the I agree that the break stateement should be replaced with a
+return and will apply the patch.
+
+  Ralf

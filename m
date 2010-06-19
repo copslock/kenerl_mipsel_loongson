@@ -1,26 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 07:18:51 +0200 (CEST)
-Received: from smtp-out-037.synserver.de ([212.40.180.37]:1051 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 07:19:18 +0200 (CEST)
+Received: from smtp-out-037.synserver.de ([212.40.180.37]:1030 "HELO
         smtp-out-036.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with SMTP id S1492396Ab0FSFLQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 07:11:16 +0200
-Received: (qmail 15333 invoked by uid 0); 19 Jun 2010 05:11:13 -0000
+        by eddie.linux-mips.org with SMTP id S1492397Ab0FSFLT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 07:11:19 +0200
+Received: (qmail 15375 invoked by uid 0); 19 Jun 2010 05:11:19 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 13414
 Received: from d024024.adsl.hansenet.de (HELO localhost.localdomain) [80.171.24.24]
-  by 217.119.54.77 with SMTP; 19 Jun 2010 05:11:12 -0000
+  by 217.119.54.77 with SMTP; 19 Jun 2010 05:11:18 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Samuel Ortiz <sameo@linux.intel.com>
-Subject: [PATCH v2 22/26] MFD: Add JZ4740 ADC driver
-Date:   Sat, 19 Jun 2010 07:08:27 +0200
-Message-Id: <1276924111-11158-23-git-send-email-lars@metafoo.de>
+        Jonathan Cameron <kernel@jic23.retrosnub.co.uk>,
+        lm-sensors@lm-sensors.org
+Subject: [PATCH v2 23/26] hwmon: Add JZ4740 ADC driver
+Date:   Sat, 19 Jun 2010 07:08:28 +0200
+Message-Id: <1276924111-11158-24-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <1276924111-11158-1-git-send-email-lars@metafoo.de>
 References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27196
+X-archive-position: 27197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,60 +30,68 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13390
+X-UID: 13391
 
-This patch adds a MFD driver for the JZ4740 ADC unit. The driver is used to
-demultiplex IRQs and synchronize access to shared registers between the battery,
-hwmon and (future) touchscreen driver.
+This patch adds support for reading the ADCIN pin of ADC unit on JZ4740 SoCs.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Samuel Ortiz <sameo@linux.intel.com>
----
- drivers/mfd/Kconfig        |    8 +
- drivers/mfd/Makefile       |    1 +
- drivers/mfd/jz4740-adc.c   |  392 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/jz4740-adc.h |   32 ++++
- 4 files changed, 433 insertions(+), 0 deletions(-)
- create mode 100644 drivers/mfd/jz4740-adc.c
- create mode 100644 include/linux/jz4740-adc.h
+Cc: Jonathan Cameron <kernel@jic23.retrosnub.co.uk>
+Cc: lm-sensors@lm-sensors.org
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 9da0e50..9cacc39 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -482,6 +482,14 @@ config MFD_JANZ_CMODIO
- 	  host many different types of MODULbus daughterboards, including
- 	  CAN and GPIO controllers.
+---
+Changes since v1
+- Move ADC core access synchronizing from the HWMON driver to a MFD driver. The
+  ADC driver now only reads the adcin value.
+---
+ drivers/hwmon/Kconfig        |   11 +++
+ drivers/hwmon/Makefile       |    1 +
+ drivers/hwmon/jz4740-hwmon.c |  206 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 218 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/hwmon/jz4740-hwmon.c
+
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 569082c..51fc2f6 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -446,6 +446,17 @@ config SENSORS_IT87
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called it87.
  
-+config MFD_JZ4740_ADC
-+	tristate "Support for the JZ4740 SoC ADC core"
-+	select MFD_CORE
++config SENSORS_JZ4740
++	tristate "Ingenic JZ4740 SoC ADC driver"
 +	depends on MACH_JZ4740
-+	help
-+	  Say yes here if you want support for the ADC unit in the JZ4740 SoC.
-+	  This driver is necessary for jz4740-battery and jz4740-hwmon driver.
++    help
++      If you say yes here you get support for the Ingenic JZ4740 SoC ADC core.
++      It is required for the JZ4740 battery and touchscreen driver and is used
++      to synchronize access to the adc module between those two.
 +
- endif # MFD_SUPPORT
- 
- menu "Multimedia Capabilities Port drivers"
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index fb503e7..a1a2765 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -71,3 +71,4 @@ obj-$(CONFIG_PMIC_ADP5520)	+= adp5520.o
- obj-$(CONFIG_LPC_SCH)		+= lpc_sch.o
- obj-$(CONFIG_MFD_RDC321X)	+= rdc321x-southbridge.o
- obj-$(CONFIG_MFD_JANZ_CMODIO)	+= janz-cmodio.o
-+obj-$(CONFIG_MFD_JZ4740_ADC)	+= jz4740-adc.o
-diff --git a/drivers/mfd/jz4740-adc.c b/drivers/mfd/jz4740-adc.c
++      This driver can also be build as a module. If so, the module will be
++      called jz4740-adc.
++
+ config SENSORS_LM63
+ 	tristate "National Semiconductor LM63 and LM64"
+ 	depends on I2C
+diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+index bca0d45..dffbdff 100644
+--- a/drivers/hwmon/Makefile
++++ b/drivers/hwmon/Makefile
+@@ -55,6 +55,7 @@ obj-$(CONFIG_SENSORS_I5K_AMB)	+= i5k_amb.o
+ obj-$(CONFIG_SENSORS_IBMAEM)	+= ibmaem.o
+ obj-$(CONFIG_SENSORS_IBMPEX)	+= ibmpex.o
+ obj-$(CONFIG_SENSORS_IT87)	+= it87.o
++obj-$(CONFIG_SENSORS_JZ4740)	+= jz4740-hwmon.o
+ obj-$(CONFIG_SENSORS_K8TEMP)	+= k8temp.o
+ obj-$(CONFIG_SENSORS_K10TEMP)	+= k10temp.o
+ obj-$(CONFIG_SENSORS_LIS3LV02D) += lis3lv02d.o hp_accel.o
+diff --git a/drivers/hwmon/jz4740-hwmon.c b/drivers/hwmon/jz4740-hwmon.c
 new file mode 100644
-index 0000000..cac8a52
+index 0000000..f53d15e
 --- /dev/null
-+++ b/drivers/mfd/jz4740-adc.c
-@@ -0,0 +1,392 @@
++++ b/drivers/hwmon/jz4740-hwmon.c
+@@ -0,0 +1,206 @@
 +/*
 + * Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-+ * JZ4740 SoC ADC driver
++ * JZ4740 SoC HWMON driver
 + *
 + * This program is free software; you can redistribute it and/or modify it
 + * under  the terms of the GNU General  Public License as published by the
@@ -93,422 +102,198 @@ index 0000000..cac8a52
 + * with this program; if not, write to the Free Software Foundation, Inc.,
 + * 675 Mass Ave, Cambridge, MA 02139, USA.
 + *
-+ * This driver synchronizes access to the JZ4740 ADC core between the
-+ * JZ4740 battery and hwmon drivers.
 + */
 +
 +#include <linux/err.h>
-+#include <linux/irq.h>
 +#include <linux/interrupt.h>
 +#include <linux/kernel.h>
 +#include <linux/module.h>
++#include <linux/mutex.h>
 +#include <linux/platform_device.h>
 +#include <linux/slab.h>
-+#include <linux/spinlock.h>
 +
-+#include <linux/clk.h>
 +#include <linux/mfd/core.h>
 +
-+#include <linux/jz4740-adc.h>
++#include <linux/hwmon.h>
++#include <linux/hwmon-sysfs.h>
 +
-+
-+#define JZ_REG_ADC_ENABLE	0x00
-+#define JZ_REG_ADC_CFG		0x04
-+#define JZ_REG_ADC_CTRL		0x08
-+#define JZ_REG_ADC_STATUS	0x0c
-+
-+#define JZ_REG_ADC_TOUCHSCREEN_BASE	0x10
-+#define JZ_REG_ADC_BATTERY_BASE	0x1c
-+#define JZ_REG_ADC_HWMON_BASE	0x20
-+
-+#define JZ_ADC_ENABLE_TOUCH	BIT(2)
-+#define JZ_ADC_ENABLE_BATTERY	BIT(1)
-+#define JZ_ADC_ENABLE_ADCIN	BIT(0)
-+
-+enum {
-+	JZ_ADC_IRQ_ADCIN = 0,
-+	JZ_ADC_IRQ_BATTERY,
-+	JZ_ADC_IRQ_TOUCH,
-+	JZ_ADC_IRQ_PENUP,
-+	JZ_ADC_IRQ_PENDOWN,
-+};
-+
-+struct jz4740_adc {
++struct jz4740_hwmon {
 +	struct resource *mem;
 +	void __iomem *base;
 +
 +	int irq;
-+	int irq_base;
 +
-+	struct clk *clk;
-+	unsigned int clk_ref;
++	struct mfd_cell *cell;
++	struct device *hwmon;
 +
-+	spinlock_t lock;
++	struct completion read_completion;
++
++	struct mutex lock;
 +};
 +
-+static inline void jz4740_adc_irq_set_masked(struct jz4740_adc *adc, int irq,
-+	bool masked)
++static irqreturn_t jz4740_hwmon_irq(int irq, void *data)
 +{
-+	unsigned long flags;
-+	uint8_t val;
++	struct jz4740_hwmon *hwmon = data;
 +
-+	irq -= adc->irq_base;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	val = readb(adc->base + JZ_REG_ADC_CTRL);
-+	if (masked)
-+		val |= BIT(irq);
-+	else
-+		val &= ~BIT(irq);
-+	writeb(val, adc->base + JZ_REG_ADC_CTRL);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
++	complete(&hwmon->read_completion);
++	return IRQ_HANDLED;
 +}
 +
-+static void jz4740_adc_irq_mask(unsigned int irq)
++static ssize_t jz4740_hwmon_read_adcin(struct device *dev,
++	struct device_attribute *dev_attr, char *buf)
 +{
-+	struct jz4740_adc *adc = get_irq_chip_data(irq);
-+	jz4740_adc_irq_set_masked(adc, irq, true);
-+}
++	struct jz4740_hwmon *hwmon = dev_get_drvdata(dev);
++	unsigned long t;
++	uint16_t val;
++	int ret;
 +
-+static void jz4740_adc_irq_unmask(unsigned int irq)
-+{
-+	struct jz4740_adc *adc = get_irq_chip_data(irq);
-+	jz4740_adc_irq_set_masked(adc, irq, false);
-+}
++	mutex_lock(&hwmon->lock);
 +
-+static void jz4740_adc_irq_ack(unsigned int irq)
-+{
-+	struct jz4740_adc *adc = get_irq_chip_data(irq);
++	INIT_COMPLETION(hwmon->read_completion);
 +
-+	irq -= adc->irq_base;
-+	writeb(BIT(irq), adc->base + JZ_REG_ADC_STATUS);
-+}
++	enable_irq(hwmon->irq);
++	hwmon->cell->enable(to_platform_device(dev));
 +
-+static struct irq_chip jz4740_adc_irq_chip = {
-+	.name = "jz4740-adc",
-+	.mask = jz4740_adc_irq_mask,
-+	.unmask = jz4740_adc_irq_unmask,
-+	.ack = jz4740_adc_irq_ack,
-+};
++	t = wait_for_completion_interruptible_timeout(&hwmon->read_completion, HZ);
 +
-+static void jz4740_adc_irq_demux(unsigned int irq, struct irq_desc *desc)
-+{
-+	struct jz4740_adc *adc = get_irq_desc_data(desc);
-+	uint8_t status;
-+	unsigned int i;
-+
-+	status = readb(adc->base + JZ_REG_ADC_STATUS);
-+
-+	for (i = 0; i < 5; ++i) {
-+		if (status & BIT(i))
-+			generic_handle_irq(adc->irq_base + i);
++	if (t > 0) {
++		val = readw(hwmon->base);
++		ret = sprintf(buf, "%d\n", val);
++	} else {
++		ret = t ? t : -ETIMEDOUT;
 +	}
++
++	hwmon->cell->disable(to_platform_device(dev));
++	disable_irq(hwmon->irq);
++
++	mutex_unlock(&hwmon->lock);
++
++	return ret;
 +}
 +
-+static inline void jz4740_adc_clk_enable(struct jz4740_adc *adc)
-+{
-+	unsigned long flags;
++static SENSOR_DEVICE_ATTR(in0_input, S_IRUGO, jz4740_hwmon_read_adcin, NULL, 0);
 +
-+	spin_lock_irqsave(&adc->lock, flags);
-+	if (adc->clk_ref++ == 0)
-+		clk_enable(adc->clk);
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static inline void jz4740_adc_clk_disable(struct jz4740_adc *adc)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+	if (--adc->clk_ref == 0)
-+		clk_disable(adc->clk);
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+
-+static inline void jz4740_adc_set_enabled(struct jz4740_adc *adc, int engine,
-+	bool enabled)
-+{
-+	unsigned long flags;
-+	uint8_t val;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	val = readb(adc->base + JZ_REG_ADC_ENABLE);
-+	if (enabled)
-+		val |= BIT(engine);
-+	else
-+		val &= BIT(engine);
-+	writeb(val, adc->base + JZ_REG_ADC_ENABLE);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+}
-+
-+static int jz4740_adc_cell_enable(struct platform_device *pdev)
-+{
-+	struct jz4740_adc *adc = dev_get_drvdata(pdev->dev.parent);
-+
-+	jz4740_adc_clk_enable(adc);
-+	jz4740_adc_set_enabled(adc, pdev->id, true);
-+
-+	return 0;
-+}
-+
-+static int jz4740_adc_cell_disable(struct platform_device *pdev)
-+{
-+	struct jz4740_adc *adc = dev_get_drvdata(pdev->dev.parent);
-+
-+	jz4740_adc_set_enabled(adc, pdev->id, false);
-+	jz4740_adc_clk_disable(adc);
-+
-+	return 0;
-+}
-+
-+int jz4740_adc_set_config(struct device *dev, uint32_t mask, uint32_t val)
-+{
-+	struct jz4740_adc *adc = dev_get_drvdata(dev);
-+	unsigned long flags;
-+	uint32_t cfg;
-+
-+	if (!adc)
-+		return -ENODEV;
-+
-+	spin_lock_irqsave(&adc->lock, flags);
-+
-+	cfg = readl(adc->base + JZ_REG_ADC_CFG);
-+
-+	cfg &= ~mask;
-+	cfg |= val;
-+
-+	writel(cfg, adc->base + JZ_REG_ADC_CFG);
-+
-+	spin_unlock_irqrestore(&adc->lock, flags);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(jz4740_adc_set_config);
-+
-+static struct resource jz4740_hwmon_resources[] = {
-+	{
-+		.start = JZ_ADC_IRQ_ADCIN,
-+		.flags = IORESOURCE_IRQ,
-+	},
-+	{
-+		.start	= JZ_REG_ADC_HWMON_BASE,
-+		.end	= JZ_REG_ADC_HWMON_BASE + 3,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct resource jz4740_battery_resources[] = {
-+	{
-+		.start = JZ_ADC_IRQ_BATTERY,
-+		.flags = IORESOURCE_IRQ,
-+	},
-+	{
-+		.start	= JZ_REG_ADC_BATTERY_BASE,
-+		.end	= JZ_REG_ADC_BATTERY_BASE + 3,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+const struct mfd_cell jz4740_adc_cells[] = {
-+	{
-+		.id = 0,
-+		.name = "jz4740-hwmon",
-+		.num_resources = ARRAY_SIZE(jz4740_hwmon_resources),
-+		.resources = jz4740_hwmon_resources,
-+		.platform_data = (void *)&jz4740_adc_cells[0],
-+		.data_size = sizeof(struct mfd_cell),
-+
-+		.enable = jz4740_adc_cell_enable,
-+		.disable = jz4740_adc_cell_disable,
-+	},
-+	{
-+		.id = 1,
-+		.name = "jz4740-battery",
-+		.num_resources = ARRAY_SIZE(jz4740_battery_resources),
-+		.resources = jz4740_battery_resources,
-+		.platform_data = (void *)&jz4740_adc_cells[1],
-+		.data_size = sizeof(struct mfd_cell),
-+
-+		.enable = jz4740_adc_cell_enable,
-+		.disable = jz4740_adc_cell_disable,
-+	},
-+};
-+
-+static int __devinit jz4740_adc_probe(struct platform_device *pdev)
++static int __devinit jz4740_hwmon_probe(struct platform_device *pdev)
 +{
 +	int ret;
-+	struct jz4740_adc *adc;
-+	struct resource *mem_base;
-+	int irq;
++	struct jz4740_hwmon *hwmon;
 +
-+	adc = kmalloc(sizeof(*adc), GFP_KERNEL);
++	hwmon = kmalloc(sizeof(*hwmon), GFP_KERNEL);
 +
-+	adc->irq = platform_get_irq(pdev, 0);
-+	if (adc->irq < 0) {
-+		ret = adc->irq;
++	hwmon->cell = pdev->dev.platform_data;
++
++	hwmon->irq = platform_get_irq(pdev, 0);
++	if (hwmon->irq < 0) {
++		ret = hwmon->irq;
 +		dev_err(&pdev->dev, "Failed to get platform irq: %d\n", ret);
 +		goto err_free;
 +	}
 +
-+	adc->irq_base = platform_get_irq(pdev, 1);
-+	if (adc->irq_base < 0) {
-+		ret = adc->irq_base;
-+		dev_err(&pdev->dev, "Failed to get irq base: %d\n", ret);
-+		goto err_free;
-+	}
-+
-+	mem_base = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!mem_base) {
++	hwmon->mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!hwmon->mem) {
 +		ret = -ENOENT;
 +		dev_err(&pdev->dev, "Failed to get platform mmio resource\n");
 +		goto err_free;
 +	}
 +
-+	/* Only request the shared registers for the MFD driver */
-+	adc->mem = request_mem_region(mem_base->start, JZ_REG_ADC_STATUS,
-+					pdev->name);
-+	if (!adc->mem) {
++	hwmon->mem = request_mem_region(hwmon->mem->start,
++					resource_size(hwmon->mem), pdev->name);
++	if (!hwmon->mem) {
 +		ret = -EBUSY;
 +		dev_err(&pdev->dev, "Failed to request mmio memory region\n");
 +		goto err_free;
 +	}
 +
-+	adc->base = ioremap_nocache(adc->mem->start, resource_size(adc->mem));
-+	if (!adc->base) {
++	hwmon->base = ioremap_nocache(hwmon->mem->start, resource_size(hwmon->mem));
++	if (!hwmon->base) {
 +		ret = -EBUSY;
 +		dev_err(&pdev->dev, "Failed to ioremap mmio memory\n");
 +		goto err_release_mem_region;
 +	}
 +
-+	adc->clk = clk_get(&pdev->dev, "adc");
-+	if (IS_ERR(adc->clk)) {
-+		ret = PTR_ERR(adc->clk);
-+		dev_err(&pdev->dev, "Failed to get clock: %d\n", ret);
++	init_completion(&hwmon->read_completion);
++	mutex_init(&hwmon->lock);
++
++	platform_set_drvdata(pdev, hwmon);
++
++	ret = request_irq(hwmon->irq, jz4740_hwmon_irq, 0, pdev->name, hwmon);
++	if (ret) {
++		dev_err(&pdev->dev, "Failed to request irq: %d\n", ret);
 +		goto err_iounmap;
 +	}
++	disable_irq(hwmon->irq);
 +
-+	spin_lock_init(&adc->lock);
-+
-+	adc->clk_ref = 0;
-+
-+	platform_set_drvdata(pdev, adc);
-+
-+	for (irq = adc->irq_base; irq < adc->irq_base + 5; ++irq) {
-+		set_irq_chip_data(irq, adc);
-+		set_irq_chip_and_handler(irq, &jz4740_adc_irq_chip,
-+		    handle_level_irq);
++	ret = device_create_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
++	if (ret) {
++		dev_err(&pdev->dev, "Failed to create sysfs file: %d\n", ret);
++		goto err_free_irq;
 +	}
 +
-+	set_irq_data(adc->irq, adc);
-+	set_irq_chained_handler(adc->irq, jz4740_adc_irq_demux);
-+
-+	writeb(0x00, adc->base + JZ_REG_ADC_ENABLE);
-+	writeb(0xff, adc->base + JZ_REG_ADC_CTRL);
-+
-+	mfd_add_devices(&pdev->dev, 0, jz4740_adc_cells,
-+		ARRAY_SIZE(jz4740_adc_cells), mem_base, adc->irq_base);
++	hwmon->hwmon = hwmon_device_register(&pdev->dev);
++	if (IS_ERR(hwmon->hwmon)) {
++		ret = PTR_ERR(hwmon->hwmon);
++		goto err_remove_file;
++	}
 +
 +	return 0;
 +
++err_remove_file:
++	device_remove_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
++err_free_irq:
++	free_irq(hwmon->irq, hwmon);
 +err_iounmap:
 +	platform_set_drvdata(pdev, NULL);
-+	iounmap(adc->base);
++	iounmap(hwmon->base);
 +err_release_mem_region:
-+	release_mem_region(adc->mem->start, resource_size(adc->mem));
++	release_mem_region(hwmon->mem->start, resource_size(hwmon->mem));
 +err_free:
-+	kfree(adc);
++	kfree(hwmon);
 +
 +	return ret;
 +}
 +
-+static int __devexit jz4740_adc_remove(struct platform_device *pdev)
++static int __devexit jz4740_hwmon_remove(struct platform_device *pdev)
 +{
-+	struct jz4740_adc *adc = platform_get_drvdata(pdev);
++	struct jz4740_hwmon *hwmon = platform_get_drvdata(pdev);
 +
-+	mfd_remove_devices(&pdev->dev);
++	hwmon_device_unregister(hwmon->hwmon);
++	device_remove_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
 +
-+	set_irq_data(adc->irq, NULL);
-+	set_irq_chained_handler(adc->irq, NULL);
++	free_irq(hwmon->irq, hwmon);
 +
-+	iounmap(adc->base);
-+	release_mem_region(adc->mem->start, resource_size(adc->mem));
-+
-+	clk_put(adc->clk);
++	iounmap(hwmon->base);
++	release_mem_region(hwmon->mem->start, resource_size(hwmon->mem));
 +
 +	platform_set_drvdata(pdev, NULL);
-+
-+	kfree(adc);
++	kfree(hwmon);
 +
 +	return 0;
 +}
 +
-+struct platform_driver jz4740_adc_driver = {
-+	.probe	= jz4740_adc_probe,
-+	.remove = __devexit_p(jz4740_adc_remove),
++struct platform_driver jz4740_hwmon_driver = {
++	.probe	= jz4740_hwmon_probe,
++	.remove = __devexit_p(jz4740_hwmon_remove),
 +	.driver = {
-+		.name = "jz4740-adc",
++		.name = "jz4740-hwmon",
 +		.owner = THIS_MODULE,
 +	},
 +};
 +
-+static int __init jz4740_adc_init(void)
++static int __init jz4740_hwmon_init(void)
 +{
-+	return platform_driver_register(&jz4740_adc_driver);
++	return platform_driver_register(&jz4740_hwmon_driver);
 +}
-+module_init(jz4740_adc_init);
++module_init(jz4740_hwmon_init);
 +
-+static void __exit jz4740_adc_exit(void)
++static void __exit jz4740_hwmon_exit(void)
 +{
-+	platform_driver_unregister(&jz4740_adc_driver);
++	platform_driver_unregister(&jz4740_hwmon_driver);
 +}
-+module_exit(jz4740_adc_exit);
++module_exit(jz4740_hwmon_exit);
 +
-+MODULE_DESCRIPTION("JZ4740 SoC ADC driver");
++MODULE_DESCRIPTION("JZ4740 SoC HWMON driver");
 +MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
 +MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:jz4740-adc");
-diff --git a/include/linux/jz4740-adc.h b/include/linux/jz4740-adc.h
-new file mode 100644
-index 0000000..9053f95
---- /dev/null
-+++ b/include/linux/jz4740-adc.h
-@@ -0,0 +1,32 @@
-+
-+#ifndef __LINUX_JZ4740_ADC
-+#define __LINUX_JZ4740_ADC
-+
-+#include <linux/device.h>
-+
-+/*
-+ * jz4740_adc_set_config - Configure a JZ4740 adc device
-+ * @dev: Pointer to a jz4740-adc device
-+ * @mask: Mask for the config value to be set
-+ * @val: Value to be set
-+ *
-+ * This function can be used by the JZ4740 ADC mfd cells to configure their
-+ * options in the shared config register.
-+*/
-+int jz4740_adc_set_config(struct device *dev, uint32_t mask, uint32_t val);
-+
-+#define JZ_ADC_CONFIG_SPZZ		BIT(31)
-+#define JZ_ADC_CONFIG_EX_IN		BIT(30)
-+#define JZ_ADC_CONFIG_DNUM_MASK		(0x7 << 16)
-+#define JZ_ADC_CONFIG_DMA_ENABLE	BIT(15)
-+#define JZ_ADC_CONFIG_XYZ_MASK		(0x2 << 13)
-+#define JZ_ADC_CONFIG_SAMPLE_NUM_MASK	(0x7 << 10)
-+#define JZ_ADC_CONFIG_CLKDIV_MASK	(0xf << 5)
-+#define JZ_ADC_CONFIG_BAT_MB		BIT(4)
-+
-+#define JZ_ADC_CONFIG_DNUM(dnum)	((dnum) << 16)
-+#define JZ_ADC_CONFIG_XYZ_OFFSET(dnum)	((xyz) << 13)
-+#define JZ_ADC_CONFIG_SAMPLE_NUM(x)	((x) << 10)
-+#define JZ_ADC_CONFIG_CLKDIV(div)	((div) << 5)
-+
-+#endif
++MODULE_ALIAS("platform:jz4740-hwmon");
 -- 
 1.5.6.5

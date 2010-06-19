@@ -1,309 +1,318 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 07:20:35 +0200 (CEST)
-Received: from smtp-out-037.synserver.de ([212.40.180.37]:1054 "HELO
-        smtp-out-036.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with SMTP id S1492371Ab0FSFLk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 07:11:40 +0200
-Received: (qmail 15493 invoked by uid 0); 19 Jun 2010 05:11:37 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@laprican.de
-X-SynServer-PPID: 13414
-Received: from d024024.adsl.hansenet.de (HELO localhost.localdomain) [80.171.24.24]
-  by 217.119.54.77 with SMTP; 19 Jun 2010 05:11:37 -0000
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 10:36:41 +0200 (CEST)
+Received: from bamako.nerim.net ([62.4.17.28]:63089 "EHLO bamako.nerim.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491131Ab0FSIgh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 19 Jun 2010 10:36:37 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bamako.nerim.net (Postfix) with ESMTP id AAF8139DE72;
+        Sat, 19 Jun 2010 10:36:35 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at nerim.net
+Received: from bamako.nerim.net ([127.0.0.1])
+        by localhost (bamako.nerim.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id UuZ72HizTxmb; Sat, 19 Jun 2010 10:36:33 +0200 (CEST)
+Received: from hyperion.delvare (jdelvare.pck.nerim.net [62.212.121.182])
+        by bamako.nerim.net (Postfix) with ESMTP id 6C35F39DE66;
+        Sat, 19 Jun 2010 10:36:33 +0200 (CEST)
+Date:   Sat, 19 Jun 2010 10:36:34 +0200
+From:   Jean Delvare <khali@linux-fr.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Jonathan Cameron <kernel@jic23.retrosnub.co.uk>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Liam Girdwood <lrg@slimlogic.co.uk>,
-        alsa-devel@alsa-project.org
-Subject: [PATCH v2 26/26] alsa: ASoC: JZ4740: Add qi_lb60 board driver
-Date:   Sat, 19 Jun 2010 07:08:31 +0200
-Message-Id: <1276924111-11158-27-git-send-email-lars@metafoo.de>
-X-Mailer: git-send-email 1.5.6.5
-In-Reply-To: <1276924111-11158-1-git-send-email-lars@metafoo.de>
+        linux-kernel@vger.kernel.org, lm-sensors@lm-sensors.org
+Subject: Re: [lm-sensors] [PATCH v2 23/26] hwmon: Add JZ4740 ADC driver
+Message-ID: <20100619103634.3da9c7b3@hyperion.delvare>
+In-Reply-To: <1276924111-11158-24-git-send-email-lars@metafoo.de>
 References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27200
+        <1276924111-11158-24-git-send-email-lars@metafoo.de>
+X-Mailer: Claws Mail 3.5.0 (GTK+ 2.14.4; i586-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-archive-position: 27201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13394
+X-UID: 13428
 
-This patch adds ASoC support for the qi_lb60 board.
+On Sat, 19 Jun 2010 07:08:28 +0200, Lars-Peter Clausen wrote:
+> This patch adds support for reading the ADCIN pin of ADC unit on JZ4740 SoCs.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Jonathan Cameron <kernel@jic23.retrosnub.co.uk>
+> Cc: lm-sensors@lm-sensors.org
+> 
+> ---
+> Changes since v1
+> - Move ADC core access synchronizing from the HWMON driver to a MFD driver. The
+>   ADC driver now only reads the adcin value.
+> ---
+>  drivers/hwmon/Kconfig        |   11 +++
+>  drivers/hwmon/Makefile       |    1 +
+>  drivers/hwmon/jz4740-hwmon.c |  206 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 218 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/hwmon/jz4740-hwmon.c
+> 
+> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> index 569082c..51fc2f6 100644
+> --- a/drivers/hwmon/Kconfig
+> +++ b/drivers/hwmon/Kconfig
+> @@ -446,6 +446,17 @@ config SENSORS_IT87
+>  	  This driver can also be built as a module.  If so, the module
+>  	  will be called it87.
+>  
+> +config SENSORS_JZ4740
+> +	tristate "Ingenic JZ4740 SoC ADC driver"
+> +	depends on MACH_JZ4740
+> +    help
+> +      If you say yes here you get support for the Ingenic JZ4740 SoC ADC core.
+> +      It is required for the JZ4740 battery and touchscreen driver and is used
+> +      to synchronize access to the adc module between those two.
+> +
+> +      This driver can also be build as a module. If so, the module will be
+> +      called jz4740-adc.
+> +
+>  config SENSORS_LM63
+>  	tristate "National Semiconductor LM63 and LM64"
+>  	depends on I2C
+> diff --git a/drivers/hwmon/Makefile b/drivers/hwmon/Makefile
+> index bca0d45..dffbdff 100644
+> --- a/drivers/hwmon/Makefile
+> +++ b/drivers/hwmon/Makefile
+> @@ -55,6 +55,7 @@ obj-$(CONFIG_SENSORS_I5K_AMB)	+= i5k_amb.o
+>  obj-$(CONFIG_SENSORS_IBMAEM)	+= ibmaem.o
+>  obj-$(CONFIG_SENSORS_IBMPEX)	+= ibmpex.o
+>  obj-$(CONFIG_SENSORS_IT87)	+= it87.o
+> +obj-$(CONFIG_SENSORS_JZ4740)	+= jz4740-hwmon.o
+>  obj-$(CONFIG_SENSORS_K8TEMP)	+= k8temp.o
+>  obj-$(CONFIG_SENSORS_K10TEMP)	+= k10temp.o
+>  obj-$(CONFIG_SENSORS_LIS3LV02D) += lis3lv02d.o hp_accel.o
+> diff --git a/drivers/hwmon/jz4740-hwmon.c b/drivers/hwmon/jz4740-hwmon.c
+> new file mode 100644
+> index 0000000..f53d15e
+> --- /dev/null
+> +++ b/drivers/hwmon/jz4740-hwmon.c
+> @@ -0,0 +1,206 @@
+> +/*
+> + * Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
+> + * JZ4740 SoC HWMON driver
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under  the terms of the GNU General  Public License as published by the
+> + * Free Software Foundation;  either version 2 of the License, or (at your
+> + * option) any later version.
+> + *
+> + * You should have received a copy of the GNU General Public License along
+> + * with this program; if not, write to the Free Software Foundation, Inc.,
+> + * 675 Mass Ave, Cambridge, MA 02139, USA.
+> + *
+> + */
+> +
+> +#include <linux/err.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +
+> +#include <linux/mfd/core.h>
+> +
+> +#include <linux/hwmon.h>
+> +#include <linux/hwmon-sysfs.h>
+> +
+> +struct jz4740_hwmon {
+> +	struct resource *mem;
+> +	void __iomem *base;
+> +
+> +	int irq;
+> +
+> +	struct mfd_cell *cell;
+> +	struct device *hwmon;
+> +
+> +	struct completion read_completion;
+> +
+> +	struct mutex lock;
+> +};
+> +
+> +static irqreturn_t jz4740_hwmon_irq(int irq, void *data)
+> +{
+> +	struct jz4740_hwmon *hwmon = data;
+> +
+> +	complete(&hwmon->read_completion);
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static ssize_t jz4740_hwmon_read_adcin(struct device *dev,
+> +	struct device_attribute *dev_attr, char *buf)
+> +{
+> +	struct jz4740_hwmon *hwmon = dev_get_drvdata(dev);
+> +	unsigned long t;
+> +	uint16_t val;
+> +	int ret;
+> +
+> +	mutex_lock(&hwmon->lock);
+> +
+> +	INIT_COMPLETION(hwmon->read_completion);
+> +
+> +	enable_irq(hwmon->irq);
+> +	hwmon->cell->enable(to_platform_device(dev));
+> +
+> +	t = wait_for_completion_interruptible_timeout(&hwmon->read_completion, HZ);
+> +
+> +	if (t > 0) {
+> +		val = readw(hwmon->base);
+> +		ret = sprintf(buf, "%d\n", val);
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Cc: Liam Girdwood <lrg@slimlogic.co.uk>
-Cc: alsa-devel@alsa-project.org
+What is the unit of "val"? The value returned to userspace must be in
+mV, so in most cases a simple conversion is needed in the driver.
 
----
-Changes since v1
-- Refer to AMP gpios always by their define
-- Do not try to set codecs format, since the set_fmt callback for the codec was
-  dropped.
----
- sound/soc/jz4740/Kconfig      |    9 ++
- sound/soc/jz4740/Makefile     |    4 +
- sound/soc/jz4740/jz4740-pcm.c |   25 ++++++-
- sound/soc/jz4740/qi_lb60.c    |  167 +++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 203 insertions(+), 2 deletions(-)
- create mode 100644 sound/soc/jz4740/qi_lb60.c
+> +	} else {
+> +		ret = t ? t : -ETIMEDOUT;
+> +	}
+> +
+> +	hwmon->cell->disable(to_platform_device(dev));
+> +	disable_irq(hwmon->irq);
+> +
+> +	mutex_unlock(&hwmon->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static SENSOR_DEVICE_ATTR(in0_input, S_IRUGO, jz4740_hwmon_read_adcin, NULL, 0);
+> +
+> +static int __devinit jz4740_hwmon_probe(struct platform_device *pdev)
+> +{
+> +	int ret;
+> +	struct jz4740_hwmon *hwmon;
+> +
+> +	hwmon = kmalloc(sizeof(*hwmon), GFP_KERNEL);
+> +
+> +	hwmon->cell = pdev->dev.platform_data;
+> +
+> +	hwmon->irq = platform_get_irq(pdev, 0);
+> +	if (hwmon->irq < 0) {
+> +		ret = hwmon->irq;
+> +		dev_err(&pdev->dev, "Failed to get platform irq: %d\n", ret);
+> +		goto err_free;
+> +	}
+> +
+> +	hwmon->mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!hwmon->mem) {
+> +		ret = -ENOENT;
+> +		dev_err(&pdev->dev, "Failed to get platform mmio resource\n");
+> +		goto err_free;
+> +	}
+> +
+> +	hwmon->mem = request_mem_region(hwmon->mem->start,
+> +					resource_size(hwmon->mem), pdev->name);
+> +	if (!hwmon->mem) {
+> +		ret = -EBUSY;
+> +		dev_err(&pdev->dev, "Failed to request mmio memory region\n");
+> +		goto err_free;
+> +	}
+> +
+> +	hwmon->base = ioremap_nocache(hwmon->mem->start, resource_size(hwmon->mem));
+> +	if (!hwmon->base) {
+> +		ret = -EBUSY;
+> +		dev_err(&pdev->dev, "Failed to ioremap mmio memory\n");
+> +		goto err_release_mem_region;
+> +	}
+> +
+> +	init_completion(&hwmon->read_completion);
+> +	mutex_init(&hwmon->lock);
+> +
+> +	platform_set_drvdata(pdev, hwmon);
+> +
+> +	ret = request_irq(hwmon->irq, jz4740_hwmon_irq, 0, pdev->name, hwmon);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to request irq: %d\n", ret);
+> +		goto err_iounmap;
+> +	}
+> +	disable_irq(hwmon->irq);
+> +
+> +	ret = device_create_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to create sysfs file: %d\n", ret);
+> +		goto err_free_irq;
+> +	}
 
-diff --git a/sound/soc/jz4740/Kconfig b/sound/soc/jz4740/Kconfig
-index 27480f2..5351cba 100644
---- a/sound/soc/jz4740/Kconfig
-+++ b/sound/soc/jz4740/Kconfig
-@@ -12,3 +12,12 @@ config SND_JZ4740_SOC_I2S
- 	help
- 	  Say Y if you want to use I2S protocol and I2S codec on Ingenic JZ4740
- 	  based boards.
-+
-+config SND_JZ4740_SOC_QI_LB60
-+	tristate "SoC Audio support for Qi LB60"
-+	depends on SND_JZ4740_SOC && JZ4740_QI_LB60
-+	select SND_JZ4740_SOC_I2S
-+    select SND_SOC_JZ4740_CODEC
-+	help
-+	  Say Y if you want to add support for ASoC audio on the Qi LB60 board
-+	  a.k.a Qi Ben NanoNote.
-diff --git a/sound/soc/jz4740/Makefile b/sound/soc/jz4740/Makefile
-index 1be8d19..be873c1 100644
---- a/sound/soc/jz4740/Makefile
-+++ b/sound/soc/jz4740/Makefile
-@@ -7,3 +7,7 @@ snd-soc-jz4740-i2s-objs := jz4740-i2s.o
- obj-$(CONFIG_SND_JZ4740_SOC) += snd-soc-jz4740.o
- obj-$(CONFIG_SND_JZ4740_SOC_I2S) += snd-soc-jz4740-i2s.o
- 
-+# Jz4740 Machine Support
-+snd-soc-qi-lb60-objs := qi_lb60.o
-+
-+obj-$(CONFIG_SND_JZ4740_SOC_QI_LB60) += snd-soc-qi-lb60.o
-diff --git a/sound/soc/jz4740/jz4740-pcm.c b/sound/soc/jz4740/jz4740-pcm.c
-index 67b6cf2..ee68d85 100644
---- a/sound/soc/jz4740/jz4740-pcm.c
-+++ b/sound/soc/jz4740/jz4740-pcm.c
-@@ -16,6 +16,7 @@
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- 
- #include <linux/dma-mapping.h>
-@@ -335,15 +336,35 @@ struct snd_soc_platform jz4740_soc_platform = {
- };
- EXPORT_SYMBOL_GPL(jz4740_soc_platform);
- 
--static int __init jz4740_soc_platform_init(void)
-+static int __devinit jz4740_pcm_probe(struct platform_device *pdev)
- {
- 	return snd_soc_register_platform(&jz4740_soc_platform);
- }
-+
-+static int __devexit jz4740_pcm_remove(struct platform_device *pdev)
-+{
-+	snd_soc_unregister_platform(&jz4740_soc_platform);
-+	return 0;
-+}
-+
-+static struct platform_driver jz4740_pcm_driver = {
-+	.probe = jz4740_pcm_probe,
-+	.remove = __devexit_p(jz4740_pcm_remove),
-+	.driver = {
-+		.name = "jz4740-pcm",
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+static int __init jz4740_soc_platform_init(void)
-+{
-+	return platform_driver_register(&jz4740_pcm_driver);
-+}
- module_init(jz4740_soc_platform_init);
- 
- static void __exit jz4740_soc_platform_exit(void)
- {
--	snd_soc_unregister_platform(&jz4740_soc_platform);
-+	return platform_driver_unregister(&jz4740_pcm_driver);
- }
- module_exit(jz4740_soc_platform_exit);
- 
-diff --git a/sound/soc/jz4740/qi_lb60.c b/sound/soc/jz4740/qi_lb60.c
-new file mode 100644
-index 0000000..829bc45
---- /dev/null
-+++ b/sound/soc/jz4740/qi_lb60.c
-@@ -0,0 +1,167 @@
-+/*
-+ * Copyright (C) 2009, Lars-Peter Clausen <lars@metafoo.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/moduleparam.h>
-+#include <linux/timer.h>
-+#include <linux/interrupt.h>
-+#include <linux/platform_device.h>
-+#include <sound/core.h>
-+#include <sound/pcm.h>
-+#include <sound/soc.h>
-+#include <sound/soc-dapm.h>
-+#include <linux/gpio.h>
-+
-+#include "../codecs/jz4740-codec.h"
-+#include "jz4740-pcm.h"
-+#include "jz4740-i2s.h"
-+
-+
-+#define QI_LB60_SND_GPIO JZ_GPIO_PORTB(29)
-+#define QI_LB60_AMP_GPIO JZ_GPIO_PORTD(4)
-+
-+static int qi_lb60_spk_event(struct snd_soc_dapm_widget *widget,
-+			     struct snd_kcontrol *ctrl, int event)
-+{
-+	int on = 0;
-+	if (event & SND_SOC_DAPM_POST_PMU)
-+		on = 1;
-+	else if (event & SND_SOC_DAPM_PRE_PMD)
-+		on = 0;
-+
-+	gpio_set_value(QI_LB60_SND_GPIO, on);
-+	gpio_set_value(QI_LB60_AMP_GPIO, on);
-+
-+	return 0;
-+}
-+
-+static const struct snd_soc_dapm_widget qi_lb60_widgets[] = {
-+	SND_SOC_DAPM_SPK("Speaker", qi_lb60_spk_event),
-+	SND_SOC_DAPM_MIC("Mic", NULL),
-+};
-+
-+static const struct snd_soc_dapm_route qi_lb60_routes[] = {
-+	{"Mic", NULL, "MIC"},
-+	{"Speaker", NULL, "LOUT"},
-+	{"Speaker", NULL, "ROUT"},
-+};
-+
-+#define QI_LB60_DAIFMT (SND_SOC_DAIFMT_I2S | \
-+			SND_SOC_DAIFMT_NB_NF | \
-+			SND_SOC_DAIFMT_CBM_CFM)
-+
-+static int qi_lb60_codec_init(struct snd_soc_codec *codec)
-+{
-+	int ret;
-+	struct snd_soc_dai *cpu_dai = codec->socdev->card->dai_link->cpu_dai;
-+	struct snd_soc_dai *codec_dai = codec->socdev->card->dai_link->codec_dai;
-+
-+	snd_soc_dapm_nc_pin(codec, "LIN");
-+	snd_soc_dapm_nc_pin(codec, "RIN");
-+
-+	ret = snd_soc_dai_set_fmt(cpu_dai, QI_LB60_DAIFMT);
-+	if (ret < 0) {
-+		dev_err(codec->dev, "Failed to set cpu dai format: %d\n", ret);
-+		return ret;
-+	}
-+
-+	snd_soc_dapm_new_controls(codec, qi_lb60_widgets, ARRAY_SIZE(qi_lb60_widgets));
-+	snd_soc_dapm_add_routes(codec, qi_lb60_routes, ARRAY_SIZE(qi_lb60_routes));
-+	snd_soc_dapm_sync(codec);
-+
-+	return 0;
-+}
-+
-+static struct snd_soc_dai_link qi_lb60_dai = {
-+	.name = "jz4740",
-+	.stream_name = "jz4740",
-+	.cpu_dai = &jz4740_i2s_dai,
-+	.codec_dai = &jz4740_codec_dai,
-+	.init = qi_lb60_codec_init,
-+};
-+
-+static struct snd_soc_card qi_lb60 = {
-+	.name = "QI LB60",
-+	.dai_link = &qi_lb60_dai,
-+	.num_links = 1,
-+	.platform = &jz4740_soc_platform,
-+};
-+
-+static struct snd_soc_device qi_lb60_snd_devdata = {
-+	.card = &qi_lb60,
-+	.codec_dev = &soc_codec_dev_jz4740_codec,
-+};
-+
-+static struct platform_device *qi_lb60_snd_device;
-+
-+static int __init qi_lb60_init(void)
-+{
-+	int ret;
-+
-+	qi_lb60_snd_device = platform_device_alloc("soc-audio", -1);
-+
-+	if (!qi_lb60_snd_device)
-+		return -ENOMEM;
-+
-+	ret = gpio_request(QI_LB60_SND_GPIO, "SND");
-+	if (ret) {
-+		pr_err("qi_lb60 snd: Failed to request SND GPIO(%d): %d\n",
-+				QI_LB60_SND_GPIO, ret);
-+		goto err_device_put;
-+	}
-+
-+	ret = gpio_request(QI_LB60_AMP_GPIO, "AMP");
-+	if (ret) {
-+		pr_err("qi_lb60 snd: Failed to request AMP GPIO(%d): %d\n",
-+				QI_LB60_AMP_GPIO, ret);
-+		goto err_gpio_free_snd;
-+	}
-+
-+	gpio_direction_output(QI_LB60_SND_GPIO, 0);
-+	gpio_direction_output(QI_LB60_AMP_GPIO, 0);
-+
-+	platform_set_drvdata(qi_lb60_snd_device, &qi_lb60_snd_devdata);
-+	qi_lb60_snd_devdata.dev = &qi_lb60_snd_device->dev;
-+
-+	ret = platform_device_add(qi_lb60_snd_device);
-+	if (ret) {
-+		pr_err("qi_lb60 snd: Failed to add snd soc device: %d\n", ret);
-+		goto err_unset_pdata;
-+	}
-+
-+	 return 0;
-+
-+err_unset_pdata:
-+	platform_set_drvdata(qi_lb60_snd_device, NULL);
-+/*err_gpio_free_amp:*/
-+	gpio_free(QI_LB60_AMP_GPIO);
-+err_gpio_free_snd:
-+	gpio_free(QI_LB60_SND_GPIO);
-+err_device_put:
-+	platform_device_put(qi_lb60_snd_device);
-+
-+	return ret;
-+}
-+module_init(qi_lb60_init);
-+
-+static void __exit qi_lb60_exit(void)
-+{
-+	gpio_free(QI_LB60_AMP_GPIO);
-+	gpio_free(QI_LB60_SND_GPIO);
-+	platform_device_unregister(qi_lb60_snd_device);
-+}
-+module_exit(qi_lb60_exit);
-+
-+MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
-+MODULE_DESCRIPTION("ALSA SoC QI LB60 Audio support");
-+MODULE_LICENSE("GPL v2");
+You must create a name attribute as well, if you want your device to be
+supported by libsensors.
+
+> +
+> +	hwmon->hwmon = hwmon_device_register(&pdev->dev);
+> +	if (IS_ERR(hwmon->hwmon)) {
+> +		ret = PTR_ERR(hwmon->hwmon);
+> +		goto err_remove_file;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_remove_file:
+> +	device_remove_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
+> +err_free_irq:
+> +	free_irq(hwmon->irq, hwmon);
+> +err_iounmap:
+> +	platform_set_drvdata(pdev, NULL);
+> +	iounmap(hwmon->base);
+> +err_release_mem_region:
+> +	release_mem_region(hwmon->mem->start, resource_size(hwmon->mem));
+> +err_free:
+> +	kfree(hwmon);
+> +
+> +	return ret;
+> +}
+> +
+> +static int __devexit jz4740_hwmon_remove(struct platform_device *pdev)
+> +{
+> +	struct jz4740_hwmon *hwmon = platform_get_drvdata(pdev);
+> +
+> +	hwmon_device_unregister(hwmon->hwmon);
+> +	device_remove_file(&pdev->dev, &sensor_dev_attr_in0_input.dev_attr);
+> +
+> +	free_irq(hwmon->irq, hwmon);
+> +
+> +	iounmap(hwmon->base);
+> +	release_mem_region(hwmon->mem->start, resource_size(hwmon->mem));
+> +
+> +	platform_set_drvdata(pdev, NULL);
+> +	kfree(hwmon);
+> +
+> +	return 0;
+> +}
+> +
+> +struct platform_driver jz4740_hwmon_driver = {
+> +	.probe	= jz4740_hwmon_probe,
+> +	.remove = __devexit_p(jz4740_hwmon_remove),
+> +	.driver = {
+> +		.name = "jz4740-hwmon",
+> +		.owner = THIS_MODULE,
+> +	},
+> +};
+> +
+> +static int __init jz4740_hwmon_init(void)
+> +{
+> +	return platform_driver_register(&jz4740_hwmon_driver);
+> +}
+> +module_init(jz4740_hwmon_init);
+> +
+> +static void __exit jz4740_hwmon_exit(void)
+> +{
+> +	platform_driver_unregister(&jz4740_hwmon_driver);
+> +}
+> +module_exit(jz4740_hwmon_exit);
+> +
+> +MODULE_DESCRIPTION("JZ4740 SoC HWMON driver");
+> +MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:jz4740-hwmon");
+
+
 -- 
-1.5.6.5
+Jean Delvare

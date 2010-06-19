@@ -1,70 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 01:52:01 +0200 (CEST)
-Received: from sj-iport-6.cisco.com ([171.71.176.117]:31027 "EHLO
-        sj-iport-6.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492357Ab0FRXv4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 01:51:56 +0200
-Authentication-Results: sj-iport-6.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApsFAAejG0yrR7Hu/2dsb2JhbACSc4wicagwmkeFGwSDUg
-X-IronPort-AV: E=Sophos;i="4.53,442,1272844800"; 
-   d="scan'208";a="547146279"
-Received: from sj-core-5.cisco.com ([171.71.177.238])
-  by sj-iport-6.cisco.com with ESMTP; 18 Jun 2010 23:51:49 +0000
-Received: from dvomlehn-lnx2.corp.sa.net (dhcp-171-71-47-241.cisco.com [171.71.47.241])
-        by sj-core-5.cisco.com (8.13.8/8.14.3) with ESMTP id o5INpnMF014757;
-        Fri, 18 Jun 2010 23:51:49 GMT
-Date:   Fri, 18 Jun 2010 16:51:49 -0700
-From:   David VomLehn <dvomlehn@cisco.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH][MIPS] powertv: move device address setup before use
-Message-ID: <20100618235149.GA30686@dvomlehn-lnx2.corp.sa.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 05:49:28 +0200 (CEST)
+Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:38492 "EHLO
+        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490970Ab0FSDtX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 05:49:23 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id 1320A34F;
+        Sat, 19 Jun 2010 05:49:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
+Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
+        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id OyxiO3Q0HY9x; Sat, 19 Jun 2010 05:49:13 +0200 (CEST)
+Received: from [172.31.16.226] (d024024.adsl.hansenet.de [80.171.24.24])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: 7clausen)
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 3367334E;
+        Sat, 19 Jun 2010 05:49:06 +0200 (CEST)
+Message-ID: <4C1C3E17.10702@metafoo.de>
+Date:   Sat, 19 Jun 2010 05:48:39 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 27172
+To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Anton Vorontsov <cbouatmailru@gmail.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        lrg@slimlogic.co.uk
+Subject: Re: [RFC][PATCH 23/26] power: Add JZ4740 battery driver.
+References: <1275505397-16758-1-git-send-email-lars@metafoo.de> <1275505950-17334-7-git-send-email-lars@metafoo.de> <20100614155108.GA30552@oksana.dev.rtsoft.ru> <20100615173432.GA27904@linux-mips.org> <20100616122042.GB31387@sirena.org.uk>
+In-Reply-To: <20100616122042.GB31387@sirena.org.uk>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 27173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13279
+X-UID: 13329
 
-Move register setup to before reading registers.
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-The 4600 family code reads registers to differentiate between two ASIC
-variants, but this was being done prior to the register setup. This moves
-register setup before the reading code.
+Hi
+Mark Brown wrote:
+> On Tue, Jun 15, 2010 at 06:34:32PM +0100, Ralf Baechle wrote:
+>> To allow for reasonable testing while this patchset is getting
+>> integrated I suggest I apply all the patches that were acked by
+>> the respective maintainers to the MIPS tree, feed them to -next
+>> for testing  and once that phase is complete send the whole thing
+>> to Linus.
+>
+> Due to major pending changes in the audio subsystem at least the
+> audio subsystem changes will have merge issues in -next from that.
+> To avoid these I suggest putting the audio changes on a branch
+> which can be pulled into both trees.
+In my opinion the ASoC drivers can go through the ASoC tree. The core
+patches will build without the ASoC patches and the ASoC drivers wont
+be selectable without the core patches. Thus we wont see any build
+failures due to merging both parts individually. And given that there
+will be some changes required when the multi-component branch is
+merged it will simplify things if the patches only go through one tree.
+I've talked to Ralf and he said he is ok with it.
 
-Signed-off-by: David VomLehn <dvomlehn@cisco.com>
----
- arch/mips/powertv/asic/asic_devices.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+- - Lars
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
 
-diff --git a/arch/mips/powertv/asic/asic_devices.c b/arch/mips/powertv/asic/asic_devices.c
-index 2276c18..006285c 100644
---- a/arch/mips/powertv/asic/asic_devices.c
-+++ b/arch/mips/powertv/asic/asic_devices.c
-@@ -472,6 +472,9 @@ void __init configure_platform(void)
- 		 * it*/
- 		platform_features = FFS_CAPABLE | DISPLAY_CAPABLE;
- 
-+		/* Cronus and Cronus Lite have the same register map */
-+		set_register_map(CRONUS_IO_BASE, &cronus_register_map);
-+
- 		/* ASIC version will determine if this is a real CronusLite or
- 		 * Castrati(Cronus) */
- 		chipversion  = asic_read(chipver3) << 24;
-@@ -484,8 +487,6 @@ void __init configure_platform(void)
- 		else
- 			asic = ASIC_CRONUSLITE;
- 
--		/* Cronus and Cronus Lite have the same register map */
--		set_register_map(CRONUS_IO_BASE, &cronus_register_map);
- 		gp_resources = non_dvr_cronuslite_resources;
- 		pr_info("Platform: 4600 - %s, NON_DVR_CAPABLE, "
- 			"chipversion=0x%08X\n",
+iEYEARECAAYFAkwcPhcACgkQBX4mSR26RiOJSgCfScB+QFGTbzAqfbmvAVntvqDb
+Xv8An1672tE+ZkLqBBYuhU18AEZdVmkT
+=n6/A
+-----END PGP SIGNATURE-----

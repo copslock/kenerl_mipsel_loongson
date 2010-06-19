@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 07:14:51 +0200 (CEST)
-Received: from smtp-out-037.synserver.de ([212.40.180.37]:1073 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 07:15:16 +0200 (CEST)
+Received: from smtp-out-037.synserver.de ([212.40.180.37]:1027 "HELO
         smtp-out-036.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with SMTP id S1492370Ab0FSFKP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 07:10:15 +0200
-Received: (qmail 14941 invoked by uid 0); 19 Jun 2010 05:10:15 -0000
+        by eddie.linux-mips.org with SMTP id S1491882Ab0FSFKV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 07:10:21 +0200
+Received: (qmail 14982 invoked by uid 0); 19 Jun 2010 05:10:21 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 13414
 Received: from d024024.adsl.hansenet.de (HELO localhost.localdomain) [80.171.24.24]
-  by 217.119.54.77 with SMTP; 19 Jun 2010 05:10:15 -0000
+  by 217.119.54.77 with SMTP; 19 Jun 2010 05:10:20 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v2 13/26] MIPS: JZ4740: Add platform devices
-Date:   Sat, 19 Jun 2010 07:08:18 +0200
-Message-Id: <1276924111-11158-14-git-send-email-lars@metafoo.de>
+Subject: [PATCH v2 14/26] MIPS: JZ4740: Add Kbuild files
+Date:   Sat, 19 Jun 2010 07:08:19 +0200
+Message-Id: <1276924111-11158-15-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <1276924111-11158-1-git-send-email-lars@metafoo.de>
 References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27187
+X-archive-position: 27188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,354 +28,116 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13381
+X-UID: 13382
 
-This patch adds platform devices for all the JZ4740 platform drivers.
+This patch adds the Kbuild files for the JZ4740 architecture and adds JZ4740
+support to the MIPS Kbuild files.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 
 ---
 Changes since v1
-* Add JZ4740 PCM device
-* Add ADC MFD device and remove battery device
+- Adjust to MIPS Kbuild changes
 ---
- arch/mips/include/asm/mach-jz4740/platform.h |   36 ++++
- arch/mips/jz4740/platform.c                  |  284 ++++++++++++++++++++++++++
- 2 files changed, 320 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-jz4740/platform.h
- create mode 100644 arch/mips/jz4740/platform.c
+ arch/mips/Kbuild.platforms |    1 +
+ arch/mips/Kconfig          |   13 +++++++++++++
+ arch/mips/jz4740/Kconfig   |    8 ++++++++
+ arch/mips/jz4740/Makefile  |   18 ++++++++++++++++++
+ arch/mips/jz4740/Platform  |    5 +++++
+ 5 files changed, 45 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/jz4740/Kconfig
+ create mode 100644 arch/mips/jz4740/Makefile
+ create mode 100644 arch/mips/jz4740/Platform
 
-diff --git a/arch/mips/include/asm/mach-jz4740/platform.h b/arch/mips/include/asm/mach-jz4740/platform.h
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index ea3b96c..78439b8 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -9,6 +9,7 @@ platforms += cobalt
+ platforms += dec
+ platforms += emma
+ platforms += jazz
++platforms += jz4740
+ platforms += lasat
+ platforms += loongson
+ platforms += mipssim
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index cdaae94..4d44bad 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -162,6 +162,18 @@ config MACH_JAZZ
+ 	 Members include the Acer PICA, MIPS Magnum 4000, MIPS Millennium and
+ 	 Olivetti M700-10 workstations.
+ 
++config MACH_JZ4740
++	bool "Ingenic JZ4740 based machines"
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select DMA_NONCOHERENT
++	select IRQ_CPU
++	select GENERIC_GPIO
++	select ARCH_REQUIRE_GPIOLIB
++	select SYS_HAS_EARLY_PRINTK
++	select HAVE_PWM
++
+ config LASAT
+ 	bool "LASAT Networks platforms"
+ 	select CEVT_R4K
+@@ -686,6 +698,7 @@ endchoice
+ source "arch/mips/alchemy/Kconfig"
+ source "arch/mips/bcm63xx/Kconfig"
+ source "arch/mips/jazz/Kconfig"
++source "arch/mips/jz4740/Kconfig"
+ source "arch/mips/lasat/Kconfig"
+ source "arch/mips/pmc-sierra/Kconfig"
+ source "arch/mips/powertv/Kconfig"
+diff --git a/arch/mips/jz4740/Kconfig b/arch/mips/jz4740/Kconfig
 new file mode 100644
-index 0000000..8987a76
+index 0000000..8a5e850
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-jz4740/platform.h
-@@ -0,0 +1,36 @@
-+/*
-+ *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *  JZ4740 platform device definitions
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under  the terms of the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the License, or (at your
-+ *  option) any later version.
-+ *
-+ *  You should have received a copy of the GNU General Public License along
-+ *  with this program; if not, write to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
++++ b/arch/mips/jz4740/Kconfig
+@@ -0,0 +1,8 @@
++choice
++	prompt "Machine type"
++	depends on MACH_JZ4740
 +
++endchoice
 +
-+#ifndef __JZ4740_PLATFORM_H
-+#define __JZ4740_PLATFORM_H
-+
-+#include <linux/platform_device.h>
-+
-+extern struct platform_device jz4740_usb_ohci_device;
-+extern struct platform_device jz4740_udc_device;
-+extern struct platform_device jz4740_mmc_device;
-+extern struct platform_device jz4740_rtc_device;
-+extern struct platform_device jz4740_i2c_device;
-+extern struct platform_device jz4740_nand_device;
-+extern struct platform_device jz4740_framebuffer_device;
-+extern struct platform_device jz4740_i2s_device;
-+extern struct platform_device jz4740_pcm_device;
-+extern struct platform_device jz4740_codec_device;
-+extern struct platform_device jz4740_adc_device;
-+
-+void jz4740_serial_device_register(void);
-+
-+#endif
-diff --git a/arch/mips/jz4740/platform.c b/arch/mips/jz4740/platform.c
++config HAVE_PWM
++	bool
+diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
 new file mode 100644
-index 0000000..2abd086
+index 0000000..a803ccb
 --- /dev/null
-+++ b/arch/mips/jz4740/platform.c
-@@ -0,0 +1,284 @@
-+/*
-+ *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *  JZ4740 platform devices
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under  the terms of the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the License, or (at your
-+ *  option) any later version.
-+ *
-+ *  You should have received a copy of the GNU General Public License along
-+ *  with this program; if not, write to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
++++ b/arch/mips/jz4740/Makefile
+@@ -0,0 +1,18 @@
++#
++# Makefile for the Ingenic JZ4740.
++#
 +
-+#include <linux/device.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_device.h>
-+#include <linux/resource.h>
++# Object file lists.
 +
-+#include <linux/dma-mapping.h>
++obj-y += prom.o irq.o time.o reset.o setup.o dma.o \
++	gpio.o clock.o platform.o timer.o pwm.o serial.o
 +
-+#include <asm/mach-jz4740/platform.h>
-+#include <asm/mach-jz4740/base.h>
-+#include <asm/mach-jz4740/irq.h>
++obj-$(CONFIG_DEBUG_FS) += clock-debugfs.o
 +
-+#include <linux/serial_core.h>
-+#include <linux/serial_8250.h>
++# board specific support
 +
-+#include "serial.h"
-+#include "clock.h"
++# PM support
 +
-+/* OHCI controller */
-+static struct resource jz4740_usb_ohci_resources[] = {
-+	{
-+		.start	= JZ4740_UHC_BASE_ADDR,
-+		.end	= JZ4740_UHC_BASE_ADDR + 0x1000 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	{
-+		.start	= JZ4740_IRQ_UHC,
-+		.end	= JZ4740_IRQ_UHC,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
++obj-$(CONFIG_PM) += pm.o
 +
-+struct platform_device jz4740_usb_ohci_device = {
-+	.name		= "jz4740-ohci",
-+	.id		= -1,
-+	.dev = {
-+		.dma_mask = &jz4740_usb_ohci_device.dev.coherent_dma_mask,
-+		.coherent_dma_mask = DMA_BIT_MASK(32),
-+	},
-+	.num_resources	= ARRAY_SIZE(jz4740_usb_ohci_resources),
-+	.resource	= jz4740_usb_ohci_resources,
-+};
-+
-+/* UDC (USB gadget controller) */
-+static struct resource jz4740_usb_gdt_resources[] = {
-+	{
-+		.start	= JZ4740_UDC_BASE_ADDR,
-+		.end	= JZ4740_UDC_BASE_ADDR + 0x1000 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	{
-+		.start	= JZ4740_IRQ_UDC,
-+		.end	= JZ4740_IRQ_UDC,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device jz4740_udc_device = {
-+	.name		= "jz-udc",
-+	.id		= -1,
-+	.dev = {
-+		.dma_mask = &jz4740_udc_device.dev.coherent_dma_mask,
-+		.coherent_dma_mask = DMA_BIT_MASK(32),
-+	},
-+	.num_resources	= ARRAY_SIZE(jz4740_usb_gdt_resources),
-+	.resource	= jz4740_usb_gdt_resources,
-+};
-+
-+/* MMC/SD controller */
-+static struct resource jz4740_mmc_resources[] = {
-+	{
-+		.start	= JZ4740_MSC_BASE_ADDR,
-+		.end	= JZ4740_MSC_BASE_ADDR + 0x1000 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	{
-+		.start	= JZ4740_IRQ_MSC,
-+		.end	= JZ4740_IRQ_MSC,
-+		.flags	= IORESOURCE_IRQ,
-+	}
-+};
-+
-+struct platform_device jz4740_mmc_device = {
-+	.name		= "jz4740-mmc",
-+	.id		= 0,
-+	.dev = {
-+		.dma_mask = &jz4740_mmc_device.dev.coherent_dma_mask,
-+		.coherent_dma_mask = DMA_BIT_MASK(32),
-+	},
-+	.num_resources  = ARRAY_SIZE(jz4740_mmc_resources),
-+	.resource	= jz4740_mmc_resources,
-+};
-+
-+/* RTC controller */
-+static struct resource jz4740_rtc_resources[] = {
-+	{
-+		.start	= JZ4740_RTC_BASE_ADDR,
-+		.end	= JZ4740_RTC_BASE_ADDR + 0x38 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	{
-+		.start  = JZ4740_IRQ_RTC,
-+		.end	= JZ4740_IRQ_RTC,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device jz4740_rtc_device = {
-+	.name		= "jz4740-rtc",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(jz4740_rtc_resources),
-+	.resource	= jz4740_rtc_resources,
-+};
-+
-+/* I2C controller */
-+static struct resource jz4740_i2c_resources[] = {
-+	{
-+		.start	= JZ4740_I2C_BASE_ADDR,
-+		.end	= JZ4740_I2C_BASE_ADDR + 0x1000 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	{
-+		.start	= JZ4740_IRQ_I2C,
-+		.end	= JZ4740_IRQ_I2C,
-+		.flags	= IORESOURCE_IRQ,
-+	}
-+};
-+
-+struct platform_device jz4740_i2c_device = {
-+	.name		= "jz4740-i2c",
-+	.id		= 0,
-+	.num_resources  = ARRAY_SIZE(jz4740_i2c_resources),
-+	.resource	= jz4740_i2c_resources,
-+};
-+
-+/* NAND controller */
-+static struct resource jz4740_nand_resources[] = {
-+	{
-+		.start	= JZ4740_EMC_BASE_ADDR,
-+		.end	= JZ4740_EMC_BASE_ADDR + 0x1000 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+struct platform_device jz4740_nand_device = {
-+	.name = "jz4740-nand",
-+	.num_resources = ARRAY_SIZE(jz4740_nand_resources),
-+	.resource = jz4740_nand_resources,
-+};
-+
-+/* LCD controller */
-+static struct resource jz4740_framebuffer_resources[] = {
-+	{
-+		.start	= JZ4740_LCD_BASE_ADDR,
-+		.end	= JZ4740_LCD_BASE_ADDR + 0x1000 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+struct platform_device jz4740_framebuffer_device = {
-+	.name		= "jz4740-fb",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(jz4740_framebuffer_resources),
-+	.resource	= jz4740_framebuffer_resources,
-+	.dev = {
-+		.dma_mask = &jz4740_framebuffer_device.dev.coherent_dma_mask,
-+		.coherent_dma_mask = DMA_BIT_MASK(32),
-+	},
-+};
-+
-+/* I2S controller */
-+static struct resource jz4740_i2s_resources[] = {
-+	{
-+		.start	= JZ4740_AIC_BASE_ADDR,
-+		.end	= JZ4740_AIC_BASE_ADDR + 0x38 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+struct platform_device jz4740_i2s_device = {
-+	.name		= "jz4740-i2s",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(jz4740_i2s_resources),
-+	.resource	= jz4740_i2s_resources,
-+};
-+
-+/* PCM */
-+struct platform_device jz4740_pcm_device = {
-+	.name		= "jz4740-pcm",
-+	.id		= -1,
-+};
-+
-+/* Codec */
-+static struct resource jz4740_codec_resources[] = {
-+	{
-+		.start	= JZ4740_AIC_BASE_ADDR + 0x80,
-+		.end	= JZ4740_AIC_BASE_ADDR + 0x88 - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+struct platform_device jz4740_codec_device = {
-+	.name		= "jz4740-codec",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(jz4740_codec_resources),
-+	.resource	= jz4740_codec_resources,
-+};
-+
-+/* ADC controller */
-+static struct resource jz4740_adc_resources[] = {
-+	{
-+		.start	= JZ4740_SADC_BASE_ADDR,
-+		.end	= JZ4740_SADC_BASE_ADDR + 0x30,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	{
-+		.start	= JZ4740_IRQ_SADC,
-+		.end	= JZ4740_IRQ_SADC,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+	{
-+		.start	= JZ4740_IRQ_ADC_BASE,
-+		.end	= JZ4740_IRQ_ADC_BASE,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+struct platform_device jz4740_adc_device = {
-+	.name		= "jz4740-adc",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(jz4740_adc_resources),
-+	.resource	= jz4740_adc_resources,
-+};
-+
-+/* Serial */
-+#define JZ4740_UART_DATA(_id) \
-+	{ \
-+		.flags = UPF_SKIP_TEST | UPF_IOREMAP | UPF_FIXED_TYPE, \
-+		.iotype = UPIO_MEM, \
-+		.regshift = 2, \
-+		.serial_out = jz4740_serial_out, \
-+		.type = PORT_16550, \
-+		.mapbase = JZ4740_UART ## _id ## _BASE_ADDR, \
-+		.irq = JZ4740_IRQ_UART ## _id, \
-+	}
-+
-+static struct plat_serial8250_port jz4740_uart_data[] = {
-+	JZ4740_UART_DATA(0),
-+	JZ4740_UART_DATA(1),
-+	{},
-+};
-+
-+static struct platform_device jz4740_uart_device = {
-+	.name = "serial8250",
-+	.id = 0,
-+	.dev = {
-+		.platform_data = jz4740_uart_data,
-+	},
-+};
-+
-+void jz4740_serial_device_register(void)
-+{
-+	struct plat_serial8250_port *p;
-+
-+	for (p = jz4740_uart_data; p->flags != 0; ++p)
-+		p->uartclk = jz4740_clock_bdata.ext_rate;
-+
-+	platform_device_register(&jz4740_uart_device);
-+}
++EXTRA_CFLAGS += -Werror -Wall
+diff --git a/arch/mips/jz4740/Platform b/arch/mips/jz4740/Platform
+new file mode 100644
+index 0000000..540bb35
+--- /dev/null
++++ b/arch/mips/jz4740/Platform
+@@ -0,0 +1,3 @@
++core-$(CONFIG_MACH_JZ4740)	+= arch/mips/jz4740/
++cflags-$(CONFIG_MACH_JZ4740)	+= -I$(srctree)/arch/mips/include/asm/mach-jz4740
++load-$(CONFIG_MACH_JZ4740)	+= 0xffffffff80010000
 -- 
 1.5.6.5

@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 16:51:58 +0200 (CEST)
-Received: from blue-ld-261.synserver.de ([217.119.54.83]:59403 "EHLO
-        smtp-out-036.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491798Ab0FSOvx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 16:51:53 +0200
-Received: (qmail 17607 invoked by uid 0); 19 Jun 2010 14:51:53 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 16:53:31 +0200 (CEST)
+Received: from smtp-out-047.synserver.de ([212.40.180.47]:1075 "HELO
+        smtp-out-047.synserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1492382Ab0FSOx1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 16:53:27 +0200
+Received: (qmail 26051 invoked by uid 0); 19 Jun 2010 14:53:24 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
-X-SynServer-PPID: 17533
+X-SynServer-PPID: 25949
 Received: from port-13469.pppoe.wtnet.de (HELO localhost.localdomain) [84.46.52.209]
-  by 217.119.54.87 with SMTP; 19 Jun 2010 14:51:52 -0000
-From:   1276924111-11158-27-git-send-email-lars@metafoo.de
+  by 217.119.54.81 with SMTP; 19 Jun 2010 14:53:24 -0000
+From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -17,21 +17,21 @@ Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Liam Girdwood <lrg@slimlogic.co.uk>,
         alsa-devel@alsa-project.org
 Subject: [PATCH v3] alsa: ASoC: JZ4740: Add qi_lb60 board driver
-Date:   Sat, 19 Jun 2010 16:51:22 +0200
-Message-Id: <1276959082-9184-1-git-send-email-1276924111-11158-27-git-send-email-lars@metafoo.de>
+Date:   Sat, 19 Jun 2010 16:52:51 +0200
+Message-Id: <1276959171-9261-1-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
-X-archive-position: 27213
+In-Reply-To: <1276924111-11158-27-git-send-email-lars@metafoo.de>
+References: <1276924111-11158-27-git-send-email-lars@metafoo.de>
+X-archive-position: 27214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: 1276924111-11158-27-git-send-email-lars@metafoo.de
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13538
-
-From: Lars-Peter Clausen <lars@metafoo.de>
+X-UID: 13540
 
 This patch adds ASoC support for the qi_lb60 board.
 

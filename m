@@ -1,25 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 07:09:47 +0200 (CEST)
-Received: from smtp-out-037.synserver.de ([212.40.180.37]:1061 "HELO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jun 2010 07:10:14 +0200 (CEST)
+Received: from smtp-out-037.synserver.de ([212.40.180.37]:1063 "HELO
         smtp-out-036.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with SMTP id S1491979Ab0FSFJO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 07:09:14 +0200
-Received: (qmail 13597 invoked by uid 0); 19 Jun 2010 05:09:06 -0000
+        by eddie.linux-mips.org with SMTP id S1492031Ab0FSFJQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Jun 2010 07:09:16 +0200
+Received: (qmail 13478 invoked by uid 0); 19 Jun 2010 05:09:01 -0000
 X-SynServer-TrustedSrc: 1
 X-SynServer-AuthUser: lars@laprican.de
 X-SynServer-PPID: 13414
 Received: from d024024.adsl.hansenet.de (HELO localhost.localdomain) [80.171.24.24]
-  by 217.119.54.77 with SMTP; 19 Jun 2010 05:09:06 -0000
+  by 217.119.54.77 with SMTP; 19 Jun 2010 05:09:00 -0000
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v2 01/26] MIPS: Add base support for Ingenic JZ4740 System-on-a-Chip
-Date:   Sat, 19 Jun 2010 07:08:06 +0200
-Message-Id: <1276924111-11158-2-git-send-email-lars@metafoo.de>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anton Vorontsov <cbouatmailru@gmail.com>,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        Liam Girdwood <lrg@slimlogic.co.uk>,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>,
+        Paul Gortmaker <p_gortmaker@yahoo.com>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        alsa-devel@alsa-project.org, linux-fbdev@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-usb@vger.kernel.org, lm-sensors@lm-sensors.org,
+        rtc-linux@googlegroups.com
+Subject: [PATCH v2 00/26] Add support for the Ingenic JZ4740 System-on-a-Chip
+Date:   Sat, 19 Jun 2010 07:08:05 +0200
+Message-Id: <1276924111-11158-1-git-send-email-lars@metafoo.de>
 X-Mailer: git-send-email 1.5.6.5
-In-Reply-To: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-X-archive-position: 27175
+X-archive-position: 27176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,202 +40,216 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13341
+X-UID: 13342
 
-This patch adds a new cpu type for the JZ4740 to the Linux MIPS architecture code.
-It also adds the iomem addresses for the different components found on a JZ4740
-SoC.
+Foreword:
+Ralf suggested that it might be a good idea in order to allow for reasonable
+testing and to avoid build failures due to two-way dependencies in different
+parts of the kernel, that he applies all the patches once they have been acked
+by their respective maintainers, feeds them into -next and eventually sends the
+whole series to Linus. One exception will be the ASoC patches which will, due to
+major changes in the ASoC subsystem, go through the ASoC tree.
+So if you are a maintainer for one of the subsystem touched by this series and
+would rather see the patch going through your tree (given the patch is ok)
+please tell.
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 
----
-Changes since v1
-- Use physical addresses for the base addresses
----
- arch/mips/include/asm/bootinfo.h         |    6 ++++++
- arch/mips/include/asm/cpu.h              |    9 ++++++++-
- arch/mips/include/asm/mach-jz4740/base.h |   26 ++++++++++++++++++++++++++
- arch/mips/include/asm/mach-jz4740/war.h  |   25 +++++++++++++++++++++++++
- arch/mips/kernel/cpu-probe.c             |   20 ++++++++++++++++++++
- arch/mips/mm/tlbex.c                     |    5 +++++
- 6 files changed, 90 insertions(+), 1 deletions(-)
+This patch series adds support for the Ingenic JZ4740 System-on-a-Chip.
+
+The JZ4740 has a mostly MIPS32 compatible core (no on cpu timers) and many on
+chip peripherals like RTC, NAND, MMC, OHCI, UDC, ADC, I2C, SPI, AC97, I2S, I2S
+Codec, UART and LCD controller.
+
+The JZ4740 is mostly used in eBooks, PMPs and hand-held consoles.
+This series contains patches for the Qi Ben NanoNote clamshell device as the
+inital supported device.
+
+Changes since v1:
+There have been some minor changes since v1, mostly code cleanup and some
+functional changes. One bigger change is that there is now a MFD driver for
+the ADC core which does IRQ demultiplexing for the ADC unit and synchronizes
+access to shared registers between the different users of the ADC core.
+The patch adding a defconfig for the Qi LB60 has been dropped.
+A detailed list of changes is present in each patch.
+
+- Lars
+
+Cc: Alessandro Zummo <a.zummo@towertech.it>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Anton Vorontsov <cbouatmailru@gmail.com>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: Liam Girdwood <lrg@slimlogic.co.uk>
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Cc: Paul Gortmaker <p_gortmaker@yahoo.com>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Cc: alsa-devel@alsa-project.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-mmc@vger.kernel.org
+Cc: linux-mtd@lists.infradead.org
+Cc: linux-usb@vger.kernel.org
+Cc: lm-sensors@lm-sensors.org
+Cc: rtc-linux@googlegroups.com
+
+Lars-Peter Clausen (26):
+  MIPS: Add base support for Ingenic JZ4740 System-on-a-Chip
+  MIPS: jz4740: Add IRQ handler code
+  MIPS: JZ4740: Add clock API support.
+  MIPS: JZ4740: Add timer support
+  MIPS: JZ4740: Add clocksource/clockevent support.
+  MIPS: JZ4740: Add power-management and system reset support
+  MIPS: JZ4740: Add setup code
+  MIPS: JZ4740: Add gpio support
+  MIPS: JZ4740: Add DMA support.
+  MIPS: JZ4740: Add PWM support
+  MIPS: JZ4740: Add serial support
+  MIPS: JZ4740: Add prom support
+  MIPS: JZ4740: Add platform devices
+  MIPS: JZ4740: Add Kbuild files
+  RTC: Add JZ4740 RTC driver
+  fbdev: Add JZ4740 framebuffer driver
+  MTD: Nand: Add JZ4740 NAND driver
+  MMC: Add JZ4740 mmc driver
+  USB: Add JZ4740 ohci support
+  alsa: ASoC: Add JZ4740 codec driver
+  alsa: ASoC: Add JZ4740 ASoC support
+  MFD: Add JZ4740 ADC driver
+  hwmon: Add JZ4740 ADC driver
+  power: Add JZ4740 battery driver.
+  MIPS: JZ4740: Add qi_lb60 board support
+  alsa: ASoC: JZ4740: Add qi_lb60 board driver
+
+ arch/mips/Kbuild.platforms                   |    1 +
+ arch/mips/Kconfig                            |   13 +
+ arch/mips/include/asm/bootinfo.h             |    6 +
+ arch/mips/include/asm/cpu.h                  |    9 +-
+ arch/mips/include/asm/mach-jz4740/base.h     |   26 +
+ arch/mips/include/asm/mach-jz4740/clock.h    |   28 +
+ arch/mips/include/asm/mach-jz4740/dma.h      |   90 +++
+ arch/mips/include/asm/mach-jz4740/gpio.h     |  398 +++++++++++
+ arch/mips/include/asm/mach-jz4740/irq.h      |   57 ++
+ arch/mips/include/asm/mach-jz4740/platform.h |   36 +
+ arch/mips/include/asm/mach-jz4740/timer.h    |   22 +
+ arch/mips/include/asm/mach-jz4740/war.h      |   25 +
+ arch/mips/jz4740/Kconfig                     |   12 +
+ arch/mips/jz4740/Makefile                    |   20 +
+ arch/mips/jz4740/Platform                    |    5 +
+ arch/mips/jz4740/board-qi_lb60.c             |  483 +++++++++++++
+ arch/mips/jz4740/clock-debugfs.c             |  109 +++
+ arch/mips/jz4740/clock.c                     |  920 ++++++++++++++++++++++++
+ arch/mips/jz4740/clock.h                     |   76 ++
+ arch/mips/jz4740/dma.c                       |  289 ++++++++
+ arch/mips/jz4740/gpio.c                      |  601 ++++++++++++++++
+ arch/mips/jz4740/irq.c                       |  169 +++++
+ arch/mips/jz4740/irq.h                       |   21 +
+ arch/mips/jz4740/platform.c                  |  284 ++++++++
+ arch/mips/jz4740/pm.c                        |   56 ++
+ arch/mips/jz4740/prom.c                      |   68 ++
+ arch/mips/jz4740/pwm.c                       |  169 +++++
+ arch/mips/jz4740/reset.c                     |   79 ++
+ arch/mips/jz4740/reset.h                     |    7 +
+ arch/mips/jz4740/serial.c                    |   33 +
+ arch/mips/jz4740/serial.h                    |   21 +
+ arch/mips/jz4740/setup.c                     |   29 +
+ arch/mips/jz4740/time.c                      |  144 ++++
+ arch/mips/jz4740/timer.c                     |   48 ++
+ arch/mips/jz4740/timer.h                     |  136 ++++
+ arch/mips/kernel/cpu-probe.c                 |   20 +
+ arch/mips/mm/tlbex.c                         |    5 +
+ drivers/hwmon/Kconfig                        |   11 +
+ drivers/hwmon/Makefile                       |    1 +
+ drivers/hwmon/jz4740-hwmon.c                 |  206 ++++++
+ drivers/mfd/Kconfig                          |    8 +
+ drivers/mfd/Makefile                         |    1 +
+ drivers/mfd/jz4740-adc.c                     |  392 ++++++++++
+ drivers/mmc/host/Kconfig                     |    8 +
+ drivers/mmc/host/Makefile                    |    1 +
+ drivers/mmc/host/jz4740_mmc.c                |  993 ++++++++++++++++++++++++++
+ drivers/mtd/nand/Kconfig                     |    6 +
+ drivers/mtd/nand/Makefile                    |    1 +
+ drivers/mtd/nand/jz4740_nand.c               |  474 ++++++++++++
+ drivers/power/Kconfig                        |   11 +
+ drivers/power/Makefile                       |    1 +
+ drivers/power/jz4740-battery.c               |  445 ++++++++++++
+ drivers/rtc/Kconfig                          |   11 +
+ drivers/rtc/Makefile                         |    1 +
+ drivers/rtc/rtc-jz4740.c                     |  341 +++++++++
+ drivers/usb/Kconfig                          |    1 +
+ drivers/usb/host/ohci-hcd.c                  |    5 +
+ drivers/usb/host/ohci-jz4740.c               |  276 +++++++
+ drivers/video/Kconfig                        |    9 +
+ drivers/video/Makefile                       |    1 +
+ drivers/video/jz4740_fb.c                    |  817 +++++++++++++++++++++
+ include/linux/jz4740-adc.h                   |   32 +
+ include/linux/jz4740_fb.h                    |   58 ++
+ include/linux/mmc/jz4740_mmc.h               |   15 +
+ include/linux/mtd/jz4740_nand.h              |   34 +
+ include/linux/power/jz4740-battery.h         |   24 +
+ sound/soc/Kconfig                            |    1 +
+ sound/soc/Makefile                           |    1 +
+ sound/soc/codecs/Kconfig                     |    4 +
+ sound/soc/codecs/Makefile                    |    2 +
+ sound/soc/codecs/jz4740-codec.c              |  514 +++++++++++++
+ sound/soc/codecs/jz4740-codec.h              |   20 +
+ sound/soc/jz4740/Kconfig                     |   23 +
+ sound/soc/jz4740/Makefile                    |   13 +
+ sound/soc/jz4740/jz4740-i2s.c                |  540 ++++++++++++++
+ sound/soc/jz4740/jz4740-i2s.h                |   18 +
+ sound/soc/jz4740/jz4740-pcm.c                |  373 ++++++++++
+ sound/soc/jz4740/jz4740-pcm.h                |   22 +
+ sound/soc/jz4740/qi_lb60.c                   |  167 +++++
+ 79 files changed, 10396 insertions(+), 1 deletions(-)
  create mode 100644 arch/mips/include/asm/mach-jz4740/base.h
+ create mode 100644 arch/mips/include/asm/mach-jz4740/clock.h
+ create mode 100644 arch/mips/include/asm/mach-jz4740/dma.h
+ create mode 100644 arch/mips/include/asm/mach-jz4740/gpio.h
+ create mode 100644 arch/mips/include/asm/mach-jz4740/irq.h
+ create mode 100644 arch/mips/include/asm/mach-jz4740/platform.h
+ create mode 100644 arch/mips/include/asm/mach-jz4740/timer.h
  create mode 100644 arch/mips/include/asm/mach-jz4740/war.h
-
-diff --git a/arch/mips/include/asm/bootinfo.h b/arch/mips/include/asm/bootinfo.h
-index 09eee09..15a8ef0 100644
---- a/arch/mips/include/asm/bootinfo.h
-+++ b/arch/mips/include/asm/bootinfo.h
-@@ -71,6 +71,12 @@
- #define MACH_LEMOTE_LL2F       7
- #define MACH_LOONGSON_END      8
- 
-+/*
-+ * Valid machtype for group INGENIC
-+ */
-+#define  MACH_INGENIC_JZ4730	0	/* JZ4730 SOC		*/
-+#define  MACH_INGENIC_JZ4740	1	/* JZ4740 SOC		*/
-+
- extern char *system_type;
- const char *get_system_type(void);
- 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index a5acda4..b201a8f 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -34,7 +34,7 @@
- #define PRID_COMP_LSI		0x080000
- #define PRID_COMP_LEXRA		0x0b0000
- #define PRID_COMP_CAVIUM	0x0d0000
--
-+#define PRID_COMP_INGENIC	0xd00000
- 
- /*
-  * Assigned values for the product ID register.  In order to detect a
-@@ -133,6 +133,12 @@
- #define PRID_IMP_CAVIUM_CN52XX 0x0700
- 
- /*
-+ * These are the PRID's for when 23:16 == PRID_COMP_INGENIC
-+ */
-+
-+#define PRID_IMP_JZRISC        0x0200
-+
-+/*
-  * Definitions for 7:0 on legacy processors
-  */
- 
-@@ -219,6 +225,7 @@ enum cpu_type_enum {
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BCM3302, CPU_BCM4710,
- 	CPU_BCM6338, CPU_BCM6345, CPU_BCM6348, CPU_BCM6358,
-+	CPU_JZRISC,
- 
- 	/*
- 	 * MIPS64 class processors
-diff --git a/arch/mips/include/asm/mach-jz4740/base.h b/arch/mips/include/asm/mach-jz4740/base.h
-new file mode 100644
-index 0000000..f373186
---- /dev/null
-+++ b/arch/mips/include/asm/mach-jz4740/base.h
-@@ -0,0 +1,26 @@
-+#ifndef __ASM_MACH_JZ4740_BASE_H__
-+#define __ASM_MACH_JZ4740_BASE_H__
-+
-+#define JZ4740_CPM_BASE_ADDR	0x10000000
-+#define JZ4740_INTC_BASE_ADDR	0x10001000
-+#define JZ4740_WDT_BASE_ADDR	0x10002000
-+#define JZ4740_TCU_BASE_ADDR	0x10002010
-+#define JZ4740_RTC_BASE_ADDR	0x10003000
-+#define JZ4740_GPIO_BASE_ADDR	0x10010000
-+#define JZ4740_AIC_BASE_ADDR	0x10020000
-+#define JZ4740_MSC_BASE_ADDR	0x10021000
-+#define JZ4740_UART0_BASE_ADDR	0x10030000
-+#define JZ4740_UART1_BASE_ADDR	0x10031000
-+#define JZ4740_I2C_BASE_ADDR	0x10042000
-+#define JZ4740_SSI_BASE_ADDR	0x10043000
-+#define JZ4740_SADC_BASE_ADDR	0x10070000
-+#define JZ4740_EMC_BASE_ADDR	0x13010000
-+#define JZ4740_DMAC_BASE_ADDR	0x13020000
-+#define JZ4740_UHC_BASE_ADDR	0x13030000
-+#define JZ4740_UDC_BASE_ADDR	0x13040000
-+#define JZ4740_LCD_BASE_ADDR	0x13050000
-+#define JZ4740_SLCD_BASE_ADDR	0x13050000
-+#define JZ4740_CIM_BASE_ADDR	0x13060000
-+#define JZ4740_IPU_BASE_ADDR	0x13080000
-+
-+#endif
-diff --git a/arch/mips/include/asm/mach-jz4740/war.h b/arch/mips/include/asm/mach-jz4740/war.h
-new file mode 100644
-index 0000000..3a5bc17
---- /dev/null
-+++ b/arch/mips/include/asm/mach-jz4740/war.h
-@@ -0,0 +1,25 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
-+ */
-+#ifndef __ASM_MIPS_MACH_JZ4740_WAR_H
-+#define __ASM_MIPS_MACH_JZ4740_WAR_H
-+
-+#define R4600_V1_INDEX_ICACHEOP_WAR	0
-+#define R4600_V1_HIT_CACHEOP_WAR	0
-+#define R4600_V2_HIT_CACHEOP_WAR	0
-+#define R5432_CP0_INTERRUPT_WAR		0
-+#define BCM1250_M3_WAR			0
-+#define SIBYTE_1956_WAR			0
-+#define MIPS4K_ICACHE_REFILL_WAR	0
-+#define MIPS_CACHE_SYNC_WAR		0
-+#define TX49XX_ICACHE_INDEX_INV_WAR	0
-+#define RM9000_CDEX_SMP_WAR		0
-+#define ICACHE_REFILLS_WORKAROUND_WAR	0
-+#define R10000_LLSC_WAR			0
-+#define MIPS34K_MISSED_ITLB_WAR		0
-+
-+#endif /* __ASM_MIPS_MACH_JZ4740_WAR_H */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 3562b85..9b66331 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -187,6 +187,7 @@ void __init check_wait(void)
- 	case CPU_BCM6358:
- 	case CPU_CAVIUM_OCTEON:
- 	case CPU_CAVIUM_OCTEON_PLUS:
-+	case CPU_JZRISC:
- 		cpu_wait = r4k_wait;
- 		break;
- 
-@@ -956,6 +957,22 @@ platform:
- 	}
- }
- 
-+static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
-+{
-+	decode_configs(c);
-+	/* JZRISC does not implement the CP0 counter. */
-+	c->options &= ~MIPS_CPU_COUNTER;
-+	switch (c->processor_id & 0xff00) {
-+	case PRID_IMP_JZRISC:
-+		c->cputype = CPU_JZRISC;
-+		__cpu_name[cpu] = "Ingenic JZRISC";
-+		break;
-+	default:
-+		panic("Unknown Ingenic Processor ID!");
-+		break;
-+	}
-+}
-+
- const char *__cpu_name[NR_CPUS];
- const char *__elf_platform;
- 
-@@ -994,6 +1011,9 @@ __cpuinit void cpu_probe(void)
- 	case PRID_COMP_CAVIUM:
- 		cpu_probe_cavium(c, cpu);
- 		break;
-+	case PRID_COMP_INGENIC:
-+		cpu_probe_ingenic(c, cpu);
-+		break;
- 	}
- 
- 	BUG_ON(!__cpu_name[cpu]);
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 86f004d..4510e61 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -409,6 +409,11 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 		tlbw(p);
- 		break;
- 
-+	case CPU_JZRISC:
-+		tlbw(p);
-+		uasm_i_nop(p);
-+		break;
-+
- 	default:
- 		panic("No TLB refill handler yet (CPU type: %d)",
- 		      current_cpu_data.cputype);
--- 
-1.5.6.5
+ create mode 100644 arch/mips/jz4740/Kconfig
+ create mode 100644 arch/mips/jz4740/Makefile
+ create mode 100644 arch/mips/jz4740/Platform
+ create mode 100644 arch/mips/jz4740/board-qi_lb60.c
+ create mode 100644 arch/mips/jz4740/clock-debugfs.c
+ create mode 100644 arch/mips/jz4740/clock.c
+ create mode 100644 arch/mips/jz4740/clock.h
+ create mode 100644 arch/mips/jz4740/dma.c
+ create mode 100644 arch/mips/jz4740/gpio.c
+ create mode 100644 arch/mips/jz4740/irq.c
+ create mode 100644 arch/mips/jz4740/irq.h
+ create mode 100644 arch/mips/jz4740/platform.c
+ create mode 100644 arch/mips/jz4740/pm.c
+ create mode 100644 arch/mips/jz4740/prom.c
+ create mode 100644 arch/mips/jz4740/pwm.c
+ create mode 100644 arch/mips/jz4740/reset.c
+ create mode 100644 arch/mips/jz4740/reset.h
+ create mode 100644 arch/mips/jz4740/serial.c
+ create mode 100644 arch/mips/jz4740/serial.h
+ create mode 100644 arch/mips/jz4740/setup.c
+ create mode 100644 arch/mips/jz4740/time.c
+ create mode 100644 arch/mips/jz4740/timer.c
+ create mode 100644 arch/mips/jz4740/timer.h
+ create mode 100644 drivers/hwmon/jz4740-hwmon.c
+ create mode 100644 drivers/mfd/jz4740-adc.c
+ create mode 100644 drivers/mmc/host/jz4740_mmc.c
+ create mode 100644 drivers/mtd/nand/jz4740_nand.c
+ create mode 100644 drivers/power/jz4740-battery.c
+ create mode 100644 drivers/rtc/rtc-jz4740.c
+ create mode 100644 drivers/usb/host/ohci-jz4740.c
+ create mode 100644 drivers/video/jz4740_fb.c
+ create mode 100644 include/linux/jz4740-adc.h
+ create mode 100644 include/linux/jz4740_fb.h
+ create mode 100644 include/linux/mmc/jz4740_mmc.h
+ create mode 100644 include/linux/mtd/jz4740_nand.h
+ create mode 100644 include/linux/power/jz4740-battery.h
+ create mode 100644 sound/soc/codecs/jz4740-codec.c
+ create mode 100644 sound/soc/codecs/jz4740-codec.h
+ create mode 100644 sound/soc/jz4740/Kconfig
+ create mode 100644 sound/soc/jz4740/Makefile
+ create mode 100644 sound/soc/jz4740/jz4740-i2s.c
+ create mode 100644 sound/soc/jz4740/jz4740-i2s.h
+ create mode 100644 sound/soc/jz4740/jz4740-pcm.c
+ create mode 100644 sound/soc/jz4740/jz4740-pcm.h
+ create mode 100644 sound/soc/jz4740/qi_lb60.c

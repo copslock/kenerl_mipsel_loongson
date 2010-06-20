@@ -1,66 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Jun 2010 11:26:47 +0200 (CEST)
-Received: from elvis.franken.de ([193.175.24.41]:47725 "EHLO elvis.franken.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491108Ab0FTJ0n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 20 Jun 2010 11:26:43 +0200
-Received: from uucp (helo=solo.franken.de)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1OQGnT-0002ti-00; Sun, 20 Jun 2010 11:26:35 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-        id 58E1D1D462; Sun, 20 Jun 2010 11:26:10 +0200 (CEST)
-Date:   Sun, 20 Jun 2010 11:26:10 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Jun 2010 15:11:52 +0200 (CEST)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:54510 "EHLO
+        opensource2.wolfsonmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1490950Ab0FTNLt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 20 Jun 2010 15:11:49 +0200
+Received: from finisterre.wolfsonmicro.main (cpc3-sgyl4-0-0-cust125.sgyl.cable.virginmedia.com [82.41.240.126])
+        by opensource2.wolfsonmicro.com (Postfix) with ESMTPSA id 367331104FA;
+        Sun, 20 Jun 2010 14:11:39 +0100 (BST)
+Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.72)
+        (envelope-from <broonie@opensource.wolfsonmicro.com>)
+        id 1OQKJV-0000do-Ga; Sun, 20 Jun 2010 14:11:53 +0100
+Date:   Sun, 20 Jun 2010 14:11:53 +0100
+From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
 To:     Lars-Peter Clausen <lars@metafoo.de>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Anton Vorontsov <cbouatmailru@gmail.com>,
-        David Brownell <dbrownell@users.sourceforge.net>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Greg Kroah-Hartman <gregkh@suse.de>,
-        Liam Girdwood <lrg@slimlogic.co.uk>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Paul Gortmaker <p_gortmaker@yahoo.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        alsa-devel@alsa-project.org, linux-fbdev@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-usb@vger.kernel.org, lm-sensors@lm-sensors.org,
-        rtc-linux@googlegroups.com
-Subject: Re: [PATCH v2 00/26] Add support for the Ingenic JZ4740
-        System-on-a-Chip
-Message-ID: <20100620092610.GA4950@alpha.franken.de>
-References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
+        linux-kernel@vger.kernel.org, Liam Girdwood <lrg@slimlogic.co.uk>,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH v3] alsa: ASoC: Add JZ4740 codec driver
+Message-ID: <20100620131153.GA2405@opensource.wolfsonmicro.com>
+References: <1276924111-11158-21-git-send-email-lars@metafoo.de>
+ <1276958993-9012-1-git-send-email-lars@metafoo.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 27228
+In-Reply-To: <1276958993-9012-1-git-send-email-lars@metafoo.de>
+X-Cookie: Is this really happening?
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 27229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13738
+X-UID: 13775
 
-On Sat, Jun 19, 2010 at 07:08:05AM +0200, Lars-Peter Clausen wrote:
-> This patch series adds support for the Ingenic JZ4740 System-on-a-Chip.
+On Sat, Jun 19, 2010 at 04:49:53PM +0200, Lars-Peter Clausen wrote:
 
-great stuff. I have a JZ4730 based netbook, for which I started magling
-the provided sources quite some time ago, but I didn't reach the
-point of submitting patches... there are a lot of common stuff between
-JZ4730 and JZ4740 so IMHO it would be a good thing not to nail
-everthing to JZ4740 namewise. It might also a good idea to select
-something like arch/mips/jzrisc as base directory, put the
-factored out code there and add JZ4730/JZ4740 in either seperate
-files or directories.
+This looks good, just one thing:
 
-Thomas.
+> +#ifdef CONFIG_PM_SLEEP
+> +
+> +static int jz4740_codec_suspend(struct device *dev)
+> +{
+> +	struct jz4740_codec *jz4740_codec = dev_get_drvdata(dev);
+> +	return jz4740_codec_set_bias_level(&jz4740_codec->codec,
+> +		SND_SOC_BIAS_OFF);
+> +}
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+You've got these set up on the CODEC platform device rather than the
+ASoC CODEC.  This means that the suspend and resume will happen out of
+sequence with the rest of the ASoC suspend and resume which could result
+in poor performance or bugs if the device is suspended while the core
+still thinks it's active.  For example, ASoC will use DAPM to shut down
+the CODEC and it's possible that the CODEC could be suspended (and
+generate an audible noise) while an external amplifier is still powered,
+worsening the problem.

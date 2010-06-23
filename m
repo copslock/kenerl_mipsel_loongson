@@ -1,90 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jun 2010 18:26:28 +0200 (CEST)
-Received: from sh.osrg.net ([192.16.179.4]:33859 "EHLO sh.osrg.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491973Ab0FWQ0Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jun 2010 18:26:25 +0200
-Received: from localhost (rose.osrg.net [10.76.0.1])
-        by sh.osrg.net (8.14.3/8.14.3/OSRG-NET) with ESMTP id o5NGQ943009169;
-        Thu, 24 Jun 2010 01:26:11 +0900
-Date:   Thu, 24 Jun 2010 01:26:09 +0900
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, manuel.lauss@gmail.com
-Subject: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
-From:   FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20100624012415L.fujita.tomonori@lab.ntt.co.jp>
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-3.0 (sh.osrg.net [192.16.179.4]); Thu, 24 Jun 2010 01:26:11 +0900 (JST)
-X-Virus-Scanned: clamav-milter 0.96.1 at sh
-X-Virus-Status: Clean
-X-archive-position: 27246
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jun 2010 18:31:24 +0200 (CEST)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:45020 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491973Ab0FWQbV convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Jun 2010 18:31:21 +0200
+Received: by iwn6 with SMTP id 6so2723890iwn.36
+        for <multiple recipients>; Wed, 23 Jun 2010 09:31:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=6+mnvSk88cVoStlt6Lwx73nsR2LRUriBfpGOpEX7vys=;
+        b=tcoVD4KToVuME58yc4ms2YHhmUzCBUUtg3721P6fzvq1Gayos1JS6fp0tyyLAGG9im
+         sFmPLicNCaNnUuGvx0dhl40zrj9DjqQtElk3QuGThZfQXobMZF9DSa0F5uWvBTFr0sWX
+         wEzAlNqA6LFcBCTFa7AOB56GSMBiZ9fc3zXFw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=Ng90FJxCMtEMsjAiW7Lpijbdu4mdzf8RwvGbstzUDjCnhbKLnAjPaW5Uw4HPA4tKyt
+         Lhk+ForRrU6TiSEeBlHzjJKkIlmDggJUyWYmafT+gND84UcH7pAPKSZtMNYe0rxDVGJQ
+         trvS0Dwkq1nYNIBwBIE+cvsQUO/8QD8OboeQM=
+MIME-Version: 1.0
+Received: by 10.231.130.162 with SMTP id t34mr8638897ibs.157.1277310678311; 
+        Wed, 23 Jun 2010 09:31:18 -0700 (PDT)
+Received: by 10.231.183.5 with HTTP; Wed, 23 Jun 2010 09:31:18 -0700 (PDT)
+In-Reply-To: <20100624012415L.fujita.tomonori@lab.ntt.co.jp>
+References: <20100624012415L.fujita.tomonori@lab.ntt.co.jp>
+Date:   Wed, 23 Jun 2010 18:31:18 +0200
+Message-ID: <AANLkTimNUemAUf8OI_lQYw4eDRC3uo0rTWORxH1wqHU_@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        manuel.lauss@gmail.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 27247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fujita.tomonori@lab.ntt.co.jp
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16106
+X-UID: 16109
 
-I got the following errors on linux-next. They might be already
-addressed (I've not subscribed to linux-mips@linux-mips), but anyway
-here's a fix.
+On Wed, Jun 23, 2010 at 6:26 PM, FUJITA Tomonori
+<fujita.tomonori@lab.ntt.co.jp> wrote:
+> I got the following errors on linux-next. They might be already
+> addressed (I've not subscribed to linux-mips@linux-mips), but anyway
+> here's a fix.
+>
+> =
+> From: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+> Subject: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
+>
+> replace deprecated DMA_32BIT_MASK with DMA_BIT_MASK.
+>
+> cc1: warnings being treated as errors
+> arch/mips/alchemy/devboards/db1200/platform.c:219: error: 'DMA_nnBIT_MASK' is deprecated
+> arch/mips/alchemy/devboards/db1200/platform.c:226: error: 'DMA_nnBIT_MASK' is deprecated
+> arch/mips/alchemy/devboards/db1200/platform.c:388: error: 'DMA_nnBIT_MASK' is deprecated
+> arch/mips/alchemy/devboards/db1200/platform.c:393: error: 'DMA_nnBIT_MASK' is deprecated
+>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+> ---
+>  arch/mips/alchemy/devboards/db1200/platform.c |    8 ++++----
+>  1 files changed, 4 insertions(+), 4 deletions(-)
 
-=
-From: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-Subject: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
+Acked-by: Manuel Lauss <manuel.lauss@googlemail.com>
 
-replace deprecated DMA_32BIT_MASK with DMA_BIT_MASK.
-
-cc1: warnings being treated as errors
-arch/mips/alchemy/devboards/db1200/platform.c:219: error: 'DMA_nnBIT_MASK' is deprecated
-arch/mips/alchemy/devboards/db1200/platform.c:226: error: 'DMA_nnBIT_MASK' is deprecated
-arch/mips/alchemy/devboards/db1200/platform.c:388: error: 'DMA_nnBIT_MASK' is deprecated
-arch/mips/alchemy/devboards/db1200/platform.c:393: error: 'DMA_nnBIT_MASK' is deprecated
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
----
- arch/mips/alchemy/devboards/db1200/platform.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
-index 3cb95a9..3fa34c3 100644
---- a/arch/mips/alchemy/devboards/db1200/platform.c
-+++ b/arch/mips/alchemy/devboards/db1200/platform.c
-@@ -216,14 +216,14 @@ static struct resource db1200_ide_res[] = {
- 	}
- };
- 
--static u64 ide_dmamask = DMA_32BIT_MASK;
-+static u64 ide_dmamask = DMA_BIT_MASK(32);
- 
- static struct platform_device db1200_ide_dev = {
- 	.name		= "au1200-ide",
- 	.id		= 0,
- 	.dev = {
- 		.dma_mask 		= &ide_dmamask,
--		.coherent_dma_mask	= DMA_32BIT_MASK,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 	},
- 	.num_resources	= ARRAY_SIZE(db1200_ide_res),
- 	.resource	= db1200_ide_res,
-@@ -385,12 +385,12 @@ static struct au1550_spi_info db1200_spi_platdata = {
- 	.activate_cs	= db1200_spi_cs_en,
- };
- 
--static u64 spi_dmamask = DMA_32BIT_MASK;
-+static u64 spi_dmamask = DMA_BIT_MASK(32);
- 
- static struct platform_device db1200_spi_dev = {
- 	.dev	= {
- 		.dma_mask		= &spi_dmamask,
--		.coherent_dma_mask	= DMA_32BIT_MASK,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &db1200_spi_platdata,
- 	},
- 	.name		= "au1550-spi",
--- 
-1.6.5
+Thank you!
+       Manuel Lauss

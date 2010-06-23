@@ -1,64 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jun 2010 17:52:19 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:51524 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491975Ab0FWPwM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Jun 2010 17:52:12 +0200
-Received: by gyb11 with SMTP id 11so4458739gyb.36
-        for <multiple recipients>; Wed, 23 Jun 2010 08:52:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=Y8W2OoERnf/CSXcvKCYXffOuXFYcbrBHYp9ifkwkdsc=;
-        b=DMYOx56Kl/WdUJwrj6zejp41Zij7swRlj089ceKSlFNSj6v8EhIA2d7RHHgXQth8Wv
-         GguGwkYRbFle/NPwGlnrUk0IeLu+WwyzNe++vUhdh7PgvQ1lpy8795dupivVxv75tdBS
-         dqMRlOCHMLdoOgEZTFIF/Ci9N3R7z936QREL4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=mixepZOew0xx1hfmyF5RFhenKvKyqbKqE9J+uZHXw+1cuS85BI3lay6ZFvzJKz8xyE
-         ssdKD+dDB8e3A1IeV3nKqoL7XO/fnL6P+bdVyeBIuHTI3eOwxOMi1neibw+qgM8tXBq5
-         zSY5gpCkkedNfBea34LIrBSNK2g8dpW16cGII=
-MIME-Version: 1.0
-Received: by 10.91.135.11 with SMTP id m11mr4854781agn.2.1277308324110; Wed, 
-        23 Jun 2010 08:52:04 -0700 (PDT)
-Received: by 10.231.183.5 with HTTP; Wed, 23 Jun 2010 08:52:03 -0700 (PDT)
-In-Reply-To: <BE430C874DBA6841A75E65151DCC6E1C04076696@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-References: <BE430C874DBA6841A75E65151DCC6E1C0407668F@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-        <AANLkTimHTt3jCTPrlIDAkdDc8WheBf7bdEThk3JO8yNO@mail.gmail.com>
-        <4C126D2A.6040305@caviumnetworks.com>
-        <4C127358.3030905@paralogos.com>
-        <AANLkTikIur8HkXppazHT7AT2oUkNz2Mf3qvDZiLR-r25@mail.gmail.com>
-        <BE430C874DBA6841A75E65151DCC6E1C04076696@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-Date:   Wed, 23 Jun 2010 17:52:03 +0200
-Message-ID: <AANLkTildDzABHdIOwoQ4_NLv12NfGPfMVXCcl-SflW6V@mail.gmail.com>
-Subject: Re: soft-float
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Jabir M <Jabir_M@pmc-sierra.com>
-Cc:     "Kevin D. Kissell" <kevink@paralogos.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 27245
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jun 2010 18:26:28 +0200 (CEST)
+Received: from sh.osrg.net ([192.16.179.4]:33859 "EHLO sh.osrg.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491973Ab0FWQ0Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Jun 2010 18:26:25 +0200
+Received: from localhost (rose.osrg.net [10.76.0.1])
+        by sh.osrg.net (8.14.3/8.14.3/OSRG-NET) with ESMTP id o5NGQ943009169;
+        Thu, 24 Jun 2010 01:26:11 +0900
+Date:   Thu, 24 Jun 2010 01:26:09 +0900
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, manuel.lauss@gmail.com
+Subject: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
+From:   FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20100624012415L.fujita.tomonori@lab.ntt.co.jp>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-3.0 (sh.osrg.net [192.16.179.4]); Thu, 24 Jun 2010 01:26:11 +0900 (JST)
+X-Virus-Scanned: clamav-milter 0.96.1 at sh
+X-Virus-Status: Clean
+X-archive-position: 27246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: fujita.tomonori@lab.ntt.co.jp
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16087
+X-UID: 16106
 
-On Wed, Jun 23, 2010 at 1:25 PM, Jabir M <Jabir_M@pmc-sierra.com> wrote:
-> Coming back to correctnes , I ran paranoia.c [1] for verification and I got following result
->
-> "No failures, defects nor flaws have been discovered.
-> Rounding appears to conform to the proposed IEEE standard P754.
-> The arithmetic diagnosed appears to be Excellent!"
+I got the following errors on linux-next. They might be already
+addressed (I've not subscribed to linux-mips@linux-mips), but anyway
+here's a fix.
 
-Well, your toolchain seems to work as intended, and mine just sucks :)
+=
+From: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+Subject: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
 
-Thanks,
-        Manuel
+replace deprecated DMA_32BIT_MASK with DMA_BIT_MASK.
+
+cc1: warnings being treated as errors
+arch/mips/alchemy/devboards/db1200/platform.c:219: error: 'DMA_nnBIT_MASK' is deprecated
+arch/mips/alchemy/devboards/db1200/platform.c:226: error: 'DMA_nnBIT_MASK' is deprecated
+arch/mips/alchemy/devboards/db1200/platform.c:388: error: 'DMA_nnBIT_MASK' is deprecated
+arch/mips/alchemy/devboards/db1200/platform.c:393: error: 'DMA_nnBIT_MASK' is deprecated
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+---
+ arch/mips/alchemy/devboards/db1200/platform.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
+index 3cb95a9..3fa34c3 100644
+--- a/arch/mips/alchemy/devboards/db1200/platform.c
++++ b/arch/mips/alchemy/devboards/db1200/platform.c
+@@ -216,14 +216,14 @@ static struct resource db1200_ide_res[] = {
+ 	}
+ };
+ 
+-static u64 ide_dmamask = DMA_32BIT_MASK;
++static u64 ide_dmamask = DMA_BIT_MASK(32);
+ 
+ static struct platform_device db1200_ide_dev = {
+ 	.name		= "au1200-ide",
+ 	.id		= 0,
+ 	.dev = {
+ 		.dma_mask 		= &ide_dmamask,
+-		.coherent_dma_mask	= DMA_32BIT_MASK,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
+ 	},
+ 	.num_resources	= ARRAY_SIZE(db1200_ide_res),
+ 	.resource	= db1200_ide_res,
+@@ -385,12 +385,12 @@ static struct au1550_spi_info db1200_spi_platdata = {
+ 	.activate_cs	= db1200_spi_cs_en,
+ };
+ 
+-static u64 spi_dmamask = DMA_32BIT_MASK;
++static u64 spi_dmamask = DMA_BIT_MASK(32);
+ 
+ static struct platform_device db1200_spi_dev = {
+ 	.dev	= {
+ 		.dma_mask		= &spi_dmamask,
+-		.coherent_dma_mask	= DMA_32BIT_MASK,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
+ 		.platform_data		= &db1200_spi_platdata,
+ 	},
+ 	.name		= "au1550-spi",
+-- 
+1.6.5

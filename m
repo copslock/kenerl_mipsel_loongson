@@ -1,77 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jun 2010 18:31:24 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:45020 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491973Ab0FWQbV convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Jun 2010 18:31:21 +0200
-Received: by iwn6 with SMTP id 6so2723890iwn.36
-        for <multiple recipients>; Wed, 23 Jun 2010 09:31:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=6+mnvSk88cVoStlt6Lwx73nsR2LRUriBfpGOpEX7vys=;
-        b=tcoVD4KToVuME58yc4ms2YHhmUzCBUUtg3721P6fzvq1Gayos1JS6fp0tyyLAGG9im
-         sFmPLicNCaNnUuGvx0dhl40zrj9DjqQtElk3QuGThZfQXobMZF9DSa0F5uWvBTFr0sWX
-         wEzAlNqA6LFcBCTFa7AOB56GSMBiZ9fc3zXFw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=Ng90FJxCMtEMsjAiW7Lpijbdu4mdzf8RwvGbstzUDjCnhbKLnAjPaW5Uw4HPA4tKyt
-         Lhk+ForRrU6TiSEeBlHzjJKkIlmDggJUyWYmafT+gND84UcH7pAPKSZtMNYe0rxDVGJQ
-         trvS0Dwkq1nYNIBwBIE+cvsQUO/8QD8OboeQM=
-MIME-Version: 1.0
-Received: by 10.231.130.162 with SMTP id t34mr8638897ibs.157.1277310678311; 
-        Wed, 23 Jun 2010 09:31:18 -0700 (PDT)
-Received: by 10.231.183.5 with HTTP; Wed, 23 Jun 2010 09:31:18 -0700 (PDT)
-In-Reply-To: <20100624012415L.fujita.tomonori@lab.ntt.co.jp>
-References: <20100624012415L.fujita.tomonori@lab.ntt.co.jp>
-Date:   Wed, 23 Jun 2010 18:31:18 +0200
-Message-ID: <AANLkTimNUemAUf8OI_lQYw4eDRC3uo0rTWORxH1wqHU_@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        manuel.lauss@gmail.com
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 27247
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jun 2010 21:15:07 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:16166 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492303Ab0FXTPC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Jun 2010 21:15:02 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4c23aeca0002>; Thu, 24 Jun 2010 12:15:22 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 24 Jun 2010 12:14:59 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 24 Jun 2010 12:14:59 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.3/8.14.3) with ESMTP id o5OJEsRH026353;
+        Thu, 24 Jun 2010 12:14:54 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.3/8.14.3/Submit) id o5OJEs3m026352;
+        Thu, 24 Jun 2010 12:14:54 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     netdev@vger.kernel.org
+Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 2/2] netdev: mdio-octeon: Fix section mismatch errors.
+Date:   Thu, 24 Jun 2010 12:14:48 -0700
+Message-Id: <1277406888-26309-3-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.6.1
+In-Reply-To: <1277406888-26309-1-git-send-email-ddaney@caviumnetworks.com>
+References: <1277406888-26309-1-git-send-email-ddaney@caviumnetworks.com>
+X-OriginalArrivalTime: 24 Jun 2010 19:14:59.0533 (UTC) FILETIME=[8A0C0FD0:01CB13D1]
+X-archive-position: 27248
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16109
+X-UID: 16955
 
-On Wed, Jun 23, 2010 at 6:26 PM, FUJITA Tomonori
-<fujita.tomonori@lab.ntt.co.jp> wrote:
-> I got the following errors on linux-next. They might be already
-> addressed (I've not subscribed to linux-mips@linux-mips), but anyway
-> here's a fix.
->
-> =
-> From: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-> Subject: [PATCH] MIPS: Alchemy: fix deprecated compile warnings
->
-> replace deprecated DMA_32BIT_MASK with DMA_BIT_MASK.
->
-> cc1: warnings being treated as errors
-> arch/mips/alchemy/devboards/db1200/platform.c:219: error: 'DMA_nnBIT_MASK' is deprecated
-> arch/mips/alchemy/devboards/db1200/platform.c:226: error: 'DMA_nnBIT_MASK' is deprecated
-> arch/mips/alchemy/devboards/db1200/platform.c:388: error: 'DMA_nnBIT_MASK' is deprecated
-> arch/mips/alchemy/devboards/db1200/platform.c:393: error: 'DMA_nnBIT_MASK' is deprecated
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-> ---
->  arch/mips/alchemy/devboards/db1200/platform.c |    8 ++++----
->  1 files changed, 4 insertions(+), 4 deletions(-)
+We started getting:
 
-Acked-by: Manuel Lauss <manuel.lauss@googlemail.com>
+WARNING: vmlinux.o(.data+0x20bd0): Section mismatch in reference from
+the variable octeon_mdiobus_driver to the function
+.init.text:octeon_mdiobus_probe()
 
-Thank you!
-       Manuel Lauss
+This fixes it.
+
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ drivers/net/phy/mdio-octeon.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/phy/mdio-octeon.c b/drivers/net/phy/mdio-octeon.c
+index f443d43..bd12ba9 100644
+--- a/drivers/net/phy/mdio-octeon.c
++++ b/drivers/net/phy/mdio-octeon.c
+@@ -85,7 +85,7 @@ static int octeon_mdiobus_write(struct mii_bus *bus, int phy_id,
+ 	return 0;
+ }
+ 
+-static int __init octeon_mdiobus_probe(struct platform_device *pdev)
++static int __devinit octeon_mdiobus_probe(struct platform_device *pdev)
+ {
+ 	struct octeon_mdiobus *bus;
+ 	union cvmx_smix_en smi_en;
+@@ -143,7 +143,7 @@ err:
+ 	return err;
+ }
+ 
+-static int __exit octeon_mdiobus_remove(struct platform_device *pdev)
++static int __devexit octeon_mdiobus_remove(struct platform_device *pdev)
+ {
+ 	struct octeon_mdiobus *bus;
+ 	union cvmx_smix_en smi_en;
+@@ -163,7 +163,7 @@ static struct platform_driver octeon_mdiobus_driver = {
+ 		.owner		= THIS_MODULE,
+ 	},
+ 	.probe		= octeon_mdiobus_probe,
+-	.remove		= __exit_p(octeon_mdiobus_remove),
++	.remove		= __devexit_p(octeon_mdiobus_remove),
+ };
+ 
+ void octeon_mdiobus_force_mod_depencency(void)
+-- 
+1.6.6.1

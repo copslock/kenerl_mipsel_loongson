@@ -1,98 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jun 2010 08:53:18 +0200 (CEST)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:49154 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491123Ab0F0GxN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Jun 2010 08:53:13 +0200
-Received: by qwe4 with SMTP id 4so353324qwe.36
-        for <linux-mips@linux-mips.org>; Sat, 26 Jun 2010 23:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:cc:content-type;
-        bh=Ikesdfs/zKcMKY7r/Vl3AeoimBLpQCMYIAyna+NGgNQ=;
-        b=TfwUApFRECSW9n1alLld/udVnDM1GW8eiCdKGXyXR4EHw9qrz4BW4flUXVUVQ8rVgc
-         2C5x/LxL81+BRuI8anD7CEPfQo7f/RjWU3/8GoWr8z+H6efu8wD52SW62XJF2uefEUaW
-         TT4AdWwTX8jlUtkQC3OVAClAdqXNvTA8Ehq0o=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        b=NuxEVJ7zAsikjw6QO/WKo6Ymg+SfZzUgKxQcrn5D+EOvSV6mWZmqKCuCrCMYiA6XDy
-         LhinaeeRb4rbkDkYZUEWeFp86zi3kHu18uXWzs9zcpxC2ijUhwGOuR8TFqmuI7MTYp1m
-         BGYrnUvIrphiYNMwQYiKQ9OdQzPBMHGMls1LA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jun 2010 15:44:18 +0200 (CEST)
+Received: from b-pb-sasl-quonix.pobox.com ([208.72.237.35]:55300 "EHLO
+        sasl.smtp.pobox.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491898Ab0F0NoM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Jun 2010 15:44:12 +0200
+Received: from sasl.smtp.pobox.com (unknown [127.0.0.1])
+        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id 5E062B08C3;
+        Sun, 27 Jun 2010 09:44:08 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=message-id
+        :date:from:mime-version:to:cc:subject:content-type
+        :content-transfer-encoding; s=sasl; bh=3YTkrFCINFccsmzTNRNtfVPYC
+        VM=; b=P9+H+g3bDt8uOLiurSqXUAHjt4Mjdbr2D40fLmopr8PItd0jaFpETkDdf
+        ByW1UhjmL+ctxPU5ov9wet+Yu0Kg+DihOoO0OGVctR3Ba5Pd2A5sOHne0ywTaJfW
+        6J0cRGlMOAARrFH+JLzMCv5wraa0QlTA+h7+A7fFdVEiZhxk/0=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=pobox.com; h=message-id:date
+        :from:mime-version:to:cc:subject:content-type
+        :content-transfer-encoding; q=dns; s=sasl; b=DVafIXfwzWYsl0ybzJS
+        UBTmW9Rve751hrbCY0LjHmqS+j050Y2B2WA4j32U9MhtZAqJDzvnWQfHs4ryE7Fo
+        rYffZtvQz5m/K31VVWsQBsNO84v/jj0UHg9XygMhP5VuEEH9ioq87QjDLZZ2x5Fd
+        jdGXum4Y4WYfNDlFiHlYg3zA=
+Received: from b-pb-sasl-quonix. (unknown [127.0.0.1])
+        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id 4CF85B08C2;
+        Sun, 27 Jun 2010 09:44:07 -0400 (EDT)
+Received: from [192.168.11.3] (unknown [114.162.174.29]) (using TLSv1 with
+ cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client certificate requested)
+ by b-sasl-quonix.pobox.com (Postfix) with ESMTPSA id 903F4B08C0; Sun, 27 Jun
+ 2010 09:44:05 -0400 (EDT)
+Message-ID: <4C2755A3.3080600@pobox.com>
+Date:   Sun, 27 Jun 2010 22:44:03 +0900
+From:   Shinya Kuribayashi <skuribay@pobox.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.9)
+ Gecko/20100423 Thunderbird/3.0.4
 MIME-Version: 1.0
-Received: by 10.224.78.41 with SMTP id i41mr2063299qak.176.1277621587130; Sat, 
-        26 Jun 2010 23:53:07 -0700 (PDT)
-Received: by 10.229.3.131 with HTTP; Sat, 26 Jun 2010 23:53:06 -0700 (PDT)
-Date:   Sun, 27 Jun 2010 14:53:06 +0800
-Message-ID: <AANLkTinD3HC-kzTVC0wImsLzXxyZhsF9x2HIyYeU9Ki2@mail.gmail.com>
-Subject: [BUG] Cavium OCTEON strange illegal instruction
-From:   Zhuang Yuyao <mlistz@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ddaney@caviumnetworks.com
+To:     dvomlehn@cisco.com
+CC:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: PowerTV: Use fls() carefully where static optimization
+ is required
 Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 27256
+Content-Transfer-Encoding: 7bit
+X-Pobox-Relay-ID: 0EAFFB8C-81F2-11DF-A6C0-2AC9016DD5F0-47602734!b-pb-sasl-quonix.pobox.com
+X-archive-position: 27257
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlistz@gmail.com
+X-original-sender: skuribay@pobox.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 18075
+X-UID: 18167
 
-Hi,
+fls()/__fls() defined at <asm/bitops.h>, doesn't use CLZ unless it's
+explicitly requested via <cpu-features-overrides.h>.  In other words,
+as long as depending on cpu_data[0].isa_level, CLZ is nerver used for
+fls()/__fls().
 
-I compiled octeon openssl engine libocteon.so based on
-OCTEON-CRYPTO-CORE-1.9.0-60 and OCTEON-ENGINE-LINUX-0.5.0-18.
+Looking at leftover clz() in asic_int.c, PowerTV used to use Malta's
+clz() and irq_ffs() as-is, then for some reason made a decision not to
+use clz().
 
-it works fine under linux-2.6.32.15, but while I upgraded the kernel
-to 2.6.33.5 or 2.6.34, running openssl speed test gives me the
-following error:
+It's MIPS32 machine and luckily clz() is left there, then let's go back
+to the original shape.
 
-~ # openssl speed -engine octeon rsa1024
-Octeon_init success
-engine "octeon" set.
-Illegal instruction
+Signed-off-by: Shinya Kuribayashi <skuribay@pobox.com>
+---
 
-~ # openssl speed -engine octeon -evp des
-Octeon_init success
-engine "octeon" set.
-Doing des-cbc for 3s on 16 size blocks: Illegal instruction
+ Compile checked, and now CLZ is back.
 
-Here is the compiling output:
+ arch/mips/powertv/asic/asic_int.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-make[1]: Entering directory `/root/octcrypto/applications/linux_engine/sample'
-make[1]: Leaving directory `/root/octcrypto/applications/linux_engine/sample'
-mips64-octeon-linux-gnu-gcc -I/root/octcrypto/target/include -Iconfig
--DUSE_RUNTIME_MODEL_CHECKS=1 -DCVMX_ENABLE_PARAMETER_CHECKING=0
--DCVMX_ENABLE_CSR_ADDRESS_CHECKING=0 -DCVMX_ENABLE_POW_CHECKS=0 -g
--DOCTEON_MODEL=OCTEON_CN56XX_PASS2 -DOCTEON_TARGET=linux_64 -mabi=64
--march=octeon -msoft-float -Dmain=appmain
--I/opt/netone/buildfarm/build_mips64_glibc/linux-2.6.33.5x-mips64-o60h/arch/mips/include
--MD -c -o mul_lin.o mul_lin.S
-mips64-octeon-linux-gnu-gcc  -I.
--I/opt/netone/buildfarm/build_mips64_glibc/openssl-0.9.8n//include
--I/root/octcrypto/components/crypto-api/core/cryptolinux
--I/root/octcrypto/executive -O3 -Wall
--I/root/octcrypto/target/include -Iconfig
--DUSE_RUNTIME_MODEL_CHECKS=1 -DCVMX_ENABLE_PARAMETER_CHECKING=0
--DCVMX_ENABLE_CSR_ADDRESS_CHECKING=0 -DCVMX_ENABLE_POW_CHECKS=0
--DOCTEON_MODEL=OCTEON_CN56XX_PASS2 -DOCTEON_TARGET=linux_64 -mabi=64
--march=octeon -msoft-float -Dmain=appmain -MD -c -o e_octeon.o
-e_octeon.c
-mips64-octeon-linux-gnu-gcc -I/root/octcrypto/target/include -Iconfig
--DUSE_RUNTIME_MODEL_CHECKS=1 -DCVMX_ENABLE_PARAMETER_CHECKING=0
--DCVMX_ENABLE_CSR_ADDRESS_CHECKING=0 -DCVMX_ENABLE_POW_CHECKS=0
--DOCTEON_MODEL=OCTEON_CN56XX_PASS2 -DOCTEON_TARGET=linux_64 -mabi=64
--march=octeon -msoft-float -Dmain=appmain -shared -o libocteon.so
-mul_lin.o e_octeon.o
--L/opt/netone/buildfarm/build_mips64_glibc/openssl-0.9.8n/ -lcrypto
-
-
-What's happened in the kernel?
-
-thanks very much.
-
-Best regards,
-Zhuang Yuyao
+diff --git a/arch/mips/powertv/asic/asic_int.c b/arch/mips/powertv/asic/asic_int.c
+index 529c44a..e3c08a2 100644
+--- a/arch/mips/powertv/asic/asic_int.c
++++ b/arch/mips/powertv/asic/asic_int.c
+@@ -86,7 +86,7 @@ static inline int clz(unsigned long x)
+  */
+ static inline unsigned int irq_ffs(unsigned int pending)
+ {
+-	return fls(pending) - 1 + CAUSEB_IP;
++	return -clz(pending) + 31 - CAUSEB_IP;
+ }
+ 
+ /*
+-- 
+1.7.1

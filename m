@@ -1,92 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jun 2010 15:52:17 +0200 (CEST)
-Received: from b-pb-sasl-quonix.pobox.com ([208.72.237.35]:41456 "EHLO
-        sasl.smtp.pobox.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491898Ab0F0NwJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Jun 2010 15:52:09 +0200
-Received: from sasl.smtp.pobox.com (unknown [127.0.0.1])
-        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id BD6B0B097F;
-        Sun, 27 Jun 2010 09:52:05 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=message-id
-        :date:from:mime-version:to:cc:subject:content-type
-        :content-transfer-encoding; s=sasl; bh=oZgv6YAERmHRchoaE9nB0NuuS
-        Nk=; b=WR5QX9Wt+xbuwtbd/e0qTWFs+AyB78MvpRQmp8oyWihadvxNxh4u0TQFX
-        Y2lQdOPt/2rw5hd2KWwhJjh4cE1AUyn3BA9gnfWH2bhGwyCuimnYBSO1a6MMaUgY
-        KE6PQZ546T5uworBEdCdwB8xT2DyIFSP61+EcaSf4Loo8hpAZU=
-DomainKey-Signature: a=rsa-sha1; c=nofws; d=pobox.com; h=message-id:date
-        :from:mime-version:to:cc:subject:content-type
-        :content-transfer-encoding; q=dns; s=sasl; b=A5B3Nc/cdANt5G7p1HF
-        XvQdDgP4gx0ZKavU5xLJGouG5NPD88U4KaDY0NLacLQzb0yBAfNqlXcNpV63p0fq
-        VFHMGwufAC41blREEfR2chyw7S5HI0JkhQ0VximRgujdrm6NTaeHohxzq/1exOT6
-        7D/ptObnNuz7HkASGHkgaRFU=
-Received: from b-pb-sasl-quonix. (unknown [127.0.0.1])
-        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id AB1EAB097D;
-        Sun, 27 Jun 2010 09:52:04 -0400 (EDT)
-Received: from [192.168.11.3] (unknown [114.162.174.29]) (using TLSv1 with
- cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client certificate requested)
- by b-sasl-quonix.pobox.com (Postfix) with ESMTPSA id D2ACEB0978; Sun, 27 Jun
- 2010 09:52:02 -0400 (EDT)
-Message-ID: <4C275781.8000904@pobox.com>
-Date:   Sun, 27 Jun 2010 22:52:01 +0900
-From:   Shinya Kuribayashi <skuribay@pobox.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.9)
- Gecko/20100423 Thunderbird/3.0.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Jun 2010 18:16:17 +0200 (CEST)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:38657 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491947Ab0F0QQM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Jun 2010 18:16:12 +0200
+Received: by gwj21 with SMTP id 21so4191142gwj.36
+        for <linux-mips@linux-mips.org>; Sun, 27 Jun 2010 09:16:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=vc9g6E/OPJcWLZ3Wr6jhtOqhq2BXJc3j5YlJKFXUiAo=;
+        b=WLdqKd/1agj1ZkaQ7tEbbswTKCQd36OYdJK5o14dNrRmQSY6+7pDvdTQ9Be6fzyWSk
+         6+YX10JWw6KSxIBXNK3UpF/kXFkEYPlcUeWk82OQkn4jGqGSzeiZrNelzgeWzfgrGuLB
+         dCjreRc7wrZJK+h/j1XTFajlHpnDGt3DFczos=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=njaSUp4jKepBuXxaTXJjqYH4Fr1YHdvnfiENRlFGzr4RUWyONKIVJwSCjEMqbnSdnW
+         18tKOZtrD9OiN/wUIKDfCppihIeRou/y/PZi35zM5UWe04ovVX9Mihgwb0DLkYVVtRki
+         C2N3LplZWQwkiX92J6QdCnhsyDXAsjHGXrrYY=
 MIME-Version: 1.0
-To:     wuzhangjin@gmail.com
-CC:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Loongson: irq.c: Misc cleanups
+Received: by 10.91.51.6 with SMTP id d6mr3368462agk.85.1277655366605; Sun, 27 
+        Jun 2010 09:16:06 -0700 (PDT)
+Received: by 10.90.63.13 with HTTP; Sun, 27 Jun 2010 09:16:06 -0700 (PDT)
+Date:   Mon, 28 Jun 2010 00:16:06 +0800
+Message-ID: <AANLkTikXife5CaPBQ4k_FUUM6-VD2C7SOOEbyugRhIqG@mail.gmail.com>
+Subject: some question about wmb in mips
+From:   loody <miloody@gmail.com>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Pobox-Relay-ID: 2B3B3DD8-81F3-11DF-AAE0-2AC9016DD5F0-47602734!b-pb-sasl-quonix.pobox.com
-X-archive-position: 27258
+X-archive-position: 27259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skuribay@pobox.com
+X-original-sender: miloody@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 18170
+X-UID: 18205
 
-* Remove unnecessary 'if (int_status & (1 <<10))' statement
-* s/if (foo != 0)/if (foo)/
-* Remove unused 'inst_status &= ~(1 << i);' line
-
-Signed-off-by: Shinya Kuribayashi <skuribay@pobox.com>
----
- Noticed while I'm reworking on interrupt code for EMMA2RH.
- This is not for inclusion, but just for letting Wu-san know.
-
- arch/mips/loongson/common/irq.c |   11 ++++-------
- 1 files changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/arch/mips/loongson/common/irq.c b/arch/mips/loongson/common/irq.c
-index 20e7328..25a11df 100644
---- a/arch/mips/loongson/common/irq.c
-+++ b/arch/mips/loongson/common/irq.c
-@@ -21,19 +21,16 @@ void bonito_irqdispatch(void)
- 
- 	/* workaround the IO dma problem: let cpu looping to allow DMA finish */
- 	int_status = LOONGSON_INTISR;
--	if (int_status & (1 << 10)) {
--		while (int_status & (1 << 10)) {
--			udelay(1);
--			int_status = LOONGSON_INTISR;
--		}
-+	while (int_status & (1 << 10)) {
-+		udelay(1);
-+		int_status = LOONGSON_INTISR;
- 	}
- 
- 	/* Get pending sources, masked by current enables */
- 	int_status = LOONGSON_INTISR & LOONGSON_INTEN;
- 
--	if (int_status != 0) {
-+	if (int_status) {
- 		i = __ffs(int_status);
--		int_status &= ~(1 << i);
- 		do_IRQ(LOONGSON_IRQ_BASE + i);
- 	}
- }
--- 
-1.7.1
+Dear all:
+AFAIK, wmb in mips is implemented by calling sync,
+wmb->fast_wmb->__sync, which makes sure Loads and stores executed
+before the SYNC are completed before loads
+and stores after the SYNC can start
+But will this instruction write the cache back too?
+take usb example, it will call this maco before it let host processing
+the commands on dram, so I wondering whether sync will write the cache
+back to memory.
+appreciate your help,
+miloody

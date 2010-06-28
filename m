@@ -1,153 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jun 2010 07:59:13 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:33403 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492153Ab0F1F67 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jun 2010 07:58:59 +0200
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o5S5wo8a016659;
-        Sun, 27 Jun 2010 22:58:50 -0700 (PDT)
-Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Sun, 27 Jun 2010 22:58:49 -0700
-Message-ID: <4C283A19.1000709@windriver.com>
-Date:   Mon, 28 Jun 2010 13:58:49 +0800
-From:   Yang Shi <yang.shi@windriver.com>
-User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jun 2010 13:44:03 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:53333 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492401Ab0F1LoA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jun 2010 13:44:00 +0200
+Received: by bwz20 with SMTP id 20so808031bwz.36
+        for <multiple recipients>; Mon, 28 Jun 2010 04:43:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :message-id:references:mime-version:content-type:content-disposition
+         :in-reply-to:user-agent;
+        bh=aXYPty3O7ZzXSG7SeD9ju4Q0BMb1OVfik3/hfzj/muk=;
+        b=dXsMjDeyIWM3crDFbwimuU2TsXe3wDlZg3TFUSvAyvp9DW53RzNuYvadVVUkTrWeAu
+         lwtAHks7o5V/qhLgn0fWXK/6W2z7a02KEBo7T7jr/RLfUt3OAyKqNR5KFTXmdZfhgAqX
+         /s/lwnMBdK6NE0OabkrhGgrlo7USfF/tzuorc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        b=rZfDOLcJnB6EfC1Ct3xseHI0uknAy0RgJd76UJ0WFwUbev6KG9Ofb3UXdwWdEaYLZu
+         6B0UvZO6xwp6F7U/9YogSIXohrw2MPKraGYZg7Q6lMOvhYAE3SrclScpCSGYmt0dhUf4
+         I7XyyTzX2i+zJVdBZZ/tnhke3dicMVFoG5xyY=
+Received: by 10.204.47.34 with SMTP id l34mr3476463bkf.77.1277725438935;
+        Mon, 28 Jun 2010 04:43:58 -0700 (PDT)
+Received: from localhost (mail.dev.rtsoft.ru [213.79.90.226])
+        by mx.google.com with ESMTPS id u3sm18227429bkz.12.2010.06.28.04.43.55
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 28 Jun 2010 04:43:56 -0700 (PDT)
+Date:   Mon, 28 Jun 2010 15:43:54 +0400
+From:   Anton Vorontsov <cbouatmailru@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v2 24/26] power: Add JZ4740 battery driver.
+Message-ID: <20100628114354.GA21096@oksana.dev.rtsoft.ru>
+References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
+ <1276924111-11158-25-git-send-email-lars@metafoo.de>
+ <4C26B05C.3030706@metafoo.de>
 MIME-Version: 1.0
-To:     Zhuang Yuyao <mlistz@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [BUG] Cavium OCTEON strange illegal instruction
-References: <AANLkTinD3HC-kzTVC0wImsLzXxyZhsF9x2HIyYeU9Ki2@mail.gmail.com>      <4C280472.6070005@windriver.com> <AANLkTim_pFHPaMdgG23Ijxwv-9EcXPQU5sWeCze2786Q@mail.gmail.com>
-In-Reply-To: <AANLkTim_pFHPaMdgG23Ijxwv-9EcXPQU5sWeCze2786Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 28 Jun 2010 05:58:49.0915 (UTC) FILETIME=[FAC9D0B0:01CB1686]
-X-archive-position: 27270
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4C26B05C.3030706@metafoo.de>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 27271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yang.shi@windriver.com
+X-original-sender: cbouatmailru@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 18392
+X-UID: 18540
 
-Zhuang Yuyao 写道:
-> Thanks, Yang, the patch works. But it seems that this patch is not yet
-> applied to the linux source master branch on
-> http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=summary
->   
+On Sun, Jun 27, 2010 at 03:58:52AM +0200, Lars-Peter Clausen wrote:
+> Hi Anton
+> 
+> You already said that v1 of the patch looked good to you. There are some minor
+> modifications in v2 due to code re-factoring of the ADC driver. If you think this
+> version is good as well an Acked-By would be nice :)
 
-http://git.kernel.org/?p=linux/kernel/git/ralf/linux.git;a=summary
+Acked-by: Anton Vorontsov <cbouatmailru@gmail.com>
 
-Yang
+Thanks,
 
-> On Mon, Jun 28, 2010 at 10:09 AM, Yang Shi <yang.shi@windriver.com> wrote:
->   
->> Zhuang Yuyao 写道:
->>     
->>> Hi,
->>>
->>> I compiled octeon openssl engine libocteon.so based on
->>> OCTEON-CRYPTO-CORE-1.9.0-60 and OCTEON-ENGINE-LINUX-0.5.0-18.
->>>
->>> it works fine under linux-2.6.32.15, but while I upgraded the kernel
->>> to 2.6.33.5 or 2.6.34, running openssl speed test gives me the
->>> following error:
->>>
->>> ~ # openssl speed -engine octeon rsa1024
->>> Octeon_init success
->>> engine "octeon" set.
->>> Illegal instruction
->>>
->>> ~ # openssl speed -engine octeon -evp des
->>> Octeon_init success
->>> engine "octeon" set.
->>> Doing des-cbc for 3s on 16 size blocks: Illegal instruction
->>>
->>>       
->> This should be caused by MIPS CU2 exception handler. You can try Jesper's
->> patch sumbitted one week ago, see below:
->>
->> Breaking here dropped us to the default code which always sends
->> a SIGILL to the current process, no matter what the CU2 notifier says.
->>
->> Signed-off-by: Jesper Nilsson <jesper@jni.nu>
->> ---
->> traps.c
->> <mailbox:///home/yshi/.mozilla-thunderbird/caj8i8s5.default/Mail/Local%20Folders/linux-mips?number=11063936#traps.c>
->> |    2 +-
->> 1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> traps.c
->> =======================================
->>
->> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
->> index 8bdd6a6..8527808 100644
->>
->> --- a/arch/mips/kernel/traps.c
->>
->> +++ b/arch/mips/kernel/traps.c
->>
->> @@ -976,8 +976,8 @@
->>
->> 976asmlinkage·void·do_cpu(struct·pt_regs·*regs)
->> 977
->> 978» case·2:
->> 979» » raw_notifier_call_chain(&cu2_chain,·CU2_EXCEPTION,·regs);
->> -980» » break;
->> +980» » return;
->> 981
->> 982» case·3:
->> 983» » break;
->>
->>
->> Yang
->>
->>     
->>> Here is the compiling output:
->>>
->>> make[1]: Entering directory
->>> `/root/octcrypto/applications/linux_engine/sample'
->>> make[1]: Leaving directory
->>> `/root/octcrypto/applications/linux_engine/sample'
->>> mips64-octeon-linux-gnu-gcc -I/root/octcrypto/target/include -Iconfig
->>> -DUSE_RUNTIME_MODEL_CHECKS=1 -DCVMX_ENABLE_PARAMETER_CHECKING=0
->>> -DCVMX_ENABLE_CSR_ADDRESS_CHECKING=0 -DCVMX_ENABLE_POW_CHECKS=0 -g
->>> -DOCTEON_MODEL=OCTEON_CN56XX_PASS2 -DOCTEON_TARGET=linux_64 -mabi=64
->>> -march=octeon -msoft-float -Dmain=appmain
->>>
->>> -I/opt/netone/buildfarm/build_mips64_glibc/linux-2.6.33.5x-mips64-o60h/arch/mips/include
->>> -MD -c -o mul_lin.o mul_lin.S
->>> mips64-octeon-linux-gnu-gcc  -I.
->>> -I/opt/netone/buildfarm/build_mips64_glibc/openssl-0.9.8n//include
->>> -I/root/octcrypto/components/crypto-api/core/cryptolinux
->>> -I/root/octcrypto/executive -O3 -Wall
->>> -I/root/octcrypto/target/include -Iconfig
->>> -DUSE_RUNTIME_MODEL_CHECKS=1 -DCVMX_ENABLE_PARAMETER_CHECKING=0
->>> -DCVMX_ENABLE_CSR_ADDRESS_CHECKING=0 -DCVMX_ENABLE_POW_CHECKS=0
->>> -DOCTEON_MODEL=OCTEON_CN56XX_PASS2 -DOCTEON_TARGET=linux_64 -mabi=64
->>> -march=octeon -msoft-float -Dmain=appmain -MD -c -o e_octeon.o
->>> e_octeon.c
->>> mips64-octeon-linux-gnu-gcc -I/root/octcrypto/target/include -Iconfig
->>> -DUSE_RUNTIME_MODEL_CHECKS=1 -DCVMX_ENABLE_PARAMETER_CHECKING=0
->>> -DCVMX_ENABLE_CSR_ADDRESS_CHECKING=0 -DCVMX_ENABLE_POW_CHECKS=0
->>> -DOCTEON_MODEL=OCTEON_CN56XX_PASS2 -DOCTEON_TARGET=linux_64 -mabi=64
->>> -march=octeon -msoft-float -Dmain=appmain -shared -o libocteon.so
->>> mul_lin.o e_octeon.o
->>> -L/opt/netone/buildfarm/build_mips64_glibc/openssl-0.9.8n/ -lcrypto
->>>
->>>
->>> What's happened in the kernel?
->>>
->>> thanks very much.
->>>
->>> Best regards,
->>> Zhuang Yuyao
->>>
->>>
->>>
->>>       
->>     
->
->   
+> Lars-Peter Clausen wrote:
+> > This patch adds support for the battery voltage measurement part of the JZ4740
+> > ADC unit.
+> > 
+> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> > Cc: Anton Vorontsov <cbouatmailru@gmail.com>
+> > 
+> > ---
+> > Changes since v1
+> > - Fix voltage difference check in jz_update_battery
+> > - Move get_battery_voltage from the hwmon driver to the battery driver
+> > - The battery driver is now a cell of the ADC MFD driver
+> > ---
+
+-- 
+Anton Vorontsov
+email: cbouatmailru@gmail.com
+irc://irc.freenode.net/bd2

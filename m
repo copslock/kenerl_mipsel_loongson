@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jun 2010 04:08:52 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:59513 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jun 2010 04:10:08 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:59696 "EHLO
         mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490989Ab0F1CIm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jun 2010 04:08:42 +0200
+        with ESMTP id S1490989Ab0F1CKE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Jun 2010 04:10:04 +0200
 Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o5S28YFY008120;
-        Sun, 27 Jun 2010 19:08:34 -0700 (PDT)
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o5S29s58008275;
+        Sun, 27 Jun 2010 19:09:55 -0700 (PDT)
 Received: from [128.224.162.222] ([128.224.162.222]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-         Sun, 27 Jun 2010 19:08:33 -0700
-Message-ID: <4C280421.5050201@windriver.com>
-Date:   Mon, 28 Jun 2010 10:08:33 +0800
+         Sun, 27 Jun 2010 19:09:55 -0700
+Message-ID: <4C280472.6070005@windriver.com>
+Date:   Mon, 28 Jun 2010 10:09:54 +0800
 From:   Yang Shi <yang.shi@windriver.com>
 User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
 MIME-Version: 1.0
@@ -20,8 +20,8 @@ References: <AANLkTinD3HC-kzTVC0wImsLzXxyZhsF9x2HIyYeU9Ki2@mail.gmail.com>
 In-Reply-To: <AANLkTinD3HC-kzTVC0wImsLzXxyZhsF9x2HIyYeU9Ki2@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 28 Jun 2010 02:08:34.0111 (UTC) FILETIME=[CFED6CF0:01CB1666]
-X-archive-position: 27266
+X-OriginalArrivalTime: 28 Jun 2010 02:09:55.0519 (UTC) FILETIME=[00734CF0:01CB1667]
+X-archive-position: 27267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,7 +30,7 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 18356
+X-UID: 18357
 
 Zhuang Yuyao 写道:
 > Hi,

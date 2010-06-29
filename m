@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jun 2010 19:38:55 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:37054 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492468Ab0F2RiZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 29 Jun 2010 19:38:25 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o5SDgfod030299;
-        Mon, 28 Jun 2010 14:42:41 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o5SDgcjv030297;
-        Mon, 28 Jun 2010 14:42:38 +0100
-Date:   Mon, 28 Jun 2010 14:42:38 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Christoph Egger <siccegge@cs.fau.de>,
-        Yang Shi <yang.shi@windriver.com>,
-        Herbert Xu <herbert@gondor.hengli.com.au>,
-        Tejun Heo <tj@kernel.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, vamos@i4.informatik.uni-erlangen.de
-Subject: Re: [PATCH 2/9] Removing dead CONFIG_GDB_CONSOLE
-Message-ID: <20100628134238.GB29229@linux-mips.org>
-References: <cover.1275925108.git.siccegge@cs.fau.de>
- <598418d662edd83225b8b47ead59a5cf18a26fc6.1275925108.git.siccegge@cs.fau.de>
- <4C0FC741.4020505@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jun 2010 22:17:06 +0200 (CEST)
+Received: from arkanian.console-pimps.org ([212.110.184.194]:34148 "EHLO
+        arkanian.console-pimps.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491158Ab0F2URB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jun 2010 22:17:01 +0200
+Received: from localhost (cpc5-brad6-0-0-cust25.barn.cable.virginmedia.com [82.38.64.26])
+        by arkanian.console-pimps.org (Postfix) with ESMTPSA id 6CCD348043;
+        Tue, 29 Jun 2010 21:17:00 +0100 (BST)
+From:   Matt Fleming <matt@console-pimps.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mmc@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v3] MMC: Add JZ4740 mmc driver
+In-Reply-To: <1277688041-23522-1-git-send-email-lars@metafoo.de>
+References: <1276924111-11158-19-git-send-email-lars@metafoo.de> <1277688041-23522-1-git-send-email-lars@metafoo.de>
+User-Agent: Notmuch/0.3.1-61-g3f63bb6 (http://notmuchmail.org) Emacs/23.1.90.2 (x86_64-unknown-linux-gnu)
+Date:   Tue, 29 Jun 2010 21:17:00 +0100
+Message-ID: <87aaqd1tmr.fsf@linux-g6p1.site>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4C0FC741.4020505@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-X-archive-position: 27276
+X-archive-position: 27277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: matt@console-pimps.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 19594
+X-UID: 19722
 
-Thanks folks.  Queued for 2.6.36 as well.
+On Mon, 28 Jun 2010 03:20:41 +0200, Lars-Peter Clausen <lars@metafoo.de> wrote:
+> This patch adds support for the mmc controller on JZ4740 SoCs.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matt Fleming <matt@console-pimps.org>
+> Cc: linux-mmc@vger.kernel.org
+> 
+> ---
+> Changes since v1
+> - Do not request IRQ with IRQF_DISABLED since it is a noop now
+> - Use a generous slack for the timeout timer. It does not need to be accurate.
+> Changes since v2
+> - Use sg_mapping_to iterate over sg elements in mmc read and write functions
+> - Use bitops instead of a spinlock and a variable for testing whether a request
+>   has been finished.
+> - Rework irq and timeout handling in order to get rid of locking in hot paths
 
-  Ralf
+Acked-by: Matt Fleming <matt@console-pimps.org>
+
+Are you planning on maintaining this driver? If so, it'd be a good idea
+to update MAINTAINERS.

@@ -1,55 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jun 2010 22:17:06 +0200 (CEST)
-Received: from arkanian.console-pimps.org ([212.110.184.194]:34148 "EHLO
-        arkanian.console-pimps.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491158Ab0F2URB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Jun 2010 22:17:01 +0200
-Received: from localhost (cpc5-brad6-0-0-cust25.barn.cable.virginmedia.com [82.38.64.26])
-        by arkanian.console-pimps.org (Postfix) with ESMTPSA id 6CCD348043;
-        Tue, 29 Jun 2010 21:17:00 +0100 (BST)
-From:   Matt Fleming <matt@console-pimps.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mmc@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH v3] MMC: Add JZ4740 mmc driver
-In-Reply-To: <1277688041-23522-1-git-send-email-lars@metafoo.de>
-References: <1276924111-11158-19-git-send-email-lars@metafoo.de> <1277688041-23522-1-git-send-email-lars@metafoo.de>
-User-Agent: Notmuch/0.3.1-61-g3f63bb6 (http://notmuchmail.org) Emacs/23.1.90.2 (x86_64-unknown-linux-gnu)
-Date:   Tue, 29 Jun 2010 21:17:00 +0100
-Message-ID: <87aaqd1tmr.fsf@linux-g6p1.site>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jun 2010 08:00:22 +0200 (CEST)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:62259 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492085Ab0F3F7v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jun 2010 07:59:51 +0200
+Received: by vws8 with SMTP id 8so674318vws.36
+        for <linux-mips@linux-mips.org>; Tue, 29 Jun 2010 22:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=3d1596tp6MdENke0aF7f+kto+eRMoCDpc8q5ub6kf6k=;
+        b=EgoiRxSRrP6tdnFE0x7parnnrCjv/WLImqSXSwxCPmbbdqtQhDVY3SSZ8iA620J9qH
+         sD0N51tRBPFhZYu9tVQbU+yxwLMkoJtXPQLOqafrpLQX6k6TvHJy3xXqKorkFUwD/+Tt
+         lqxhKhGnFZUMNozsCE+9h5FTWkY1JWizqRAKw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=t4MkZCvbSZePuZzuulbyT1AWK5CoI/h3Zkt1fuiwoQ5qpRBg6VVZLLveZhiDZGavGJ
+         3dR+vGtpf7kToMq1F7SNg/t7rwT22RMcvviLqBYLJIYY1MyRjdR5DSYYMBN2jlu3KxUi
+         6Q0bR/xudmY0E+FVOPE+FosdgztoGme3DDf+Y=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-archive-position: 27277
+Received: by 10.220.126.197 with SMTP id d5mr4471677vcs.169.1277877582344; 
+        Tue, 29 Jun 2010 22:59:42 -0700 (PDT)
+Received: by 10.220.46.147 with HTTP; Tue, 29 Jun 2010 22:59:42 -0700 (PDT)
+Date:   Wed, 30 Jun 2010 14:59:42 +0900
+Message-ID: <AANLkTimL7YMyb2ahmTgl8dqV_DNfsROjDhLEDm4jyVWE@mail.gmail.com>
+Subject: How to detect STACKOVEFLOW on mips
+From:   Adam Jiang <jiang.adam@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 27278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt@console-pimps.org
+X-original-sender: jiang.adam@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 19722
+X-UID: 19941
 
-On Mon, 28 Jun 2010 03:20:41 +0200, Lars-Peter Clausen <lars@metafoo.de> wrote:
-> This patch adds support for the mmc controller on JZ4740 SoCs.
-> 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Matt Fleming <matt@console-pimps.org>
-> Cc: linux-mmc@vger.kernel.org
-> 
-> ---
-> Changes since v1
-> - Do not request IRQ with IRQF_DISABLED since it is a noop now
-> - Use a generous slack for the timeout timer. It does not need to be accurate.
-> Changes since v2
-> - Use sg_mapping_to iterate over sg elements in mmc read and write functions
-> - Use bitops instead of a spinlock and a variable for testing whether a request
->   has been finished.
-> - Rework irq and timeout handling in order to get rid of locking in hot paths
+Hello, list.
 
-Acked-by: Matt Fleming <matt@console-pimps.org>
+I'm having a problem with kernel mode stack on my box. It seems that
+STACKOVERFLOW happened to Linux kernel. However, I can't prove it
+because the lack of any detection in __do_IRQ() function just like on
+the other architectures. If you know something about, please help me
+on following two questions.
+- Is there any possible to do this on MIPS?
+- or, more simple question, how could I get the address $sp pointed by
+asm() notation in C?
 
-Are you planning on maintaining this driver? If so, it'd be a good idea
-to update MAINTAINERS.
+Any suggestion from you will be appreciated.
+
+Best regards,
+/Adam

@@ -1,121 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jun 2010 22:55:47 +0200 (CEST)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:59238 "EHLO
-        smtp1.linux-foundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492381Ab0F3Uzm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jun 2010 22:55:42 +0200
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-        by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id o5UKtQk7031201
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Wed, 30 Jun 2010 13:55:27 -0700
-Received: from akpm.mtv.corp.google.com (localhost [127.0.0.1])
-        by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id o5UKtPVJ025854;
-        Wed, 30 Jun 2010 13:55:26 -0700
-Date:   Wed, 30 Jun 2010 13:55:25 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Matt Fleming <matt@console-pimps.org>,
-        linux-mmc@vger.kernel.org
-Subject: Re: [PATCH v3] MMC: Add JZ4740 mmc driver
-Message-Id: <20100630135525.1f6a9704.akpm@linux-foundation.org>
-In-Reply-To: <1277688041-23522-1-git-send-email-lars@metafoo.de>
-References: <1276924111-11158-19-git-send-email-lars@metafoo.de>
-        <1277688041-23522-1-git-send-email-lars@metafoo.de>
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-X-archive-position: 27289
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jun 2010 23:57:46 +0200 (CEST)
+Received: from arkanian.console-pimps.org ([212.110.184.194]:41076 "EHLO
+        arkanian.console-pimps.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492021Ab0F3V5m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jun 2010 23:57:42 +0200
+Received: from localhost (cpc5-brad6-0-0-cust25.barn.cable.virginmedia.com [82.38.64.26])
+        by arkanian.console-pimps.org (Postfix) with ESMTPSA id ED6AD48045;
+        Wed, 30 Jun 2010 22:57:41 +0100 (BST)
+From:   Matt Fleming <matt@console-pimps.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Adam Jiang <jiang.adam@gmail.com>
+Subject: Re: How to detect STACKOVEFLOW on mips
+In-Reply-To: <20100630145006.GA31938@linux-mips.org>
+References: <AANLkTimL7YMyb2ahmTgl8dqV_DNfsROjDhLEDm4jyVWE@mail.gmail.com> <20100630145006.GA31938@linux-mips.org>
+User-Agent: Notmuch/0.3.1-61-g3f63bb6 (http://notmuchmail.org) Emacs/23.1.90.2 (x86_64-unknown-linux-gnu)
+Date:   Wed, 30 Jun 2010 22:57:41 +0100
+Message-ID: <87zkycyyi2.fsf@linux-g6p1.site>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-archive-position: 27290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: matt@console-pimps.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 20580
+X-UID: 20620
 
-On Mon, 28 Jun 2010 03:20:41 +0200
-Lars-Peter Clausen <lars@metafoo.de> wrote:
-
-> This patch adds support for the mmc controller on JZ4740 SoCs.
+On Wed, 30 Jun 2010 15:50:06 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
 > 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Matt Fleming <matt@console-pimps.org>
-> Cc: linux-mmc@vger.kernel.org
->
-> ...
->
-> +#define JZ4740_MMC_MAX_TIMEOUT 10000000
+> There used to be some code for other architectures that zeros the stack
+> page and counts how much of that has been overwritten by the stack.  That
+> was never ported to MIPS.
+> 
+> Another helper to find functions that do excessive static allocations is
+> "make checkstack".
 
-That was a really big timeout.  How long do 1e7 readw's take?  Oh well.
-
->
-> ...
->
-> +static void jz4740_mmc_clock_disable(struct jz4740_mmc_host *host)
-> +{
-> +	uint32_t status;
-> +
-> +	writew(JZ_MMC_STRPCL_CLOCK_STOP, host->base + JZ_REG_MMC_STRPCL);
-> +	do {
-> +		status = readl(host->base + JZ_REG_MMC_STATUS);
-> +	} while (status & JZ_MMC_STATUS_CLK_EN);
-> +}
-> +
-> +static void jz4740_mmc_reset(struct jz4740_mmc_host *host)
-> +{
-> +	uint32_t status;
-> +
-> +	writew(JZ_MMC_STRPCL_RESET, host->base + JZ_REG_MMC_STRPCL);
-> +	udelay(10);
-> +	do {
-> +		status = readl(host->base + JZ_REG_MMC_STATUS);
-> +	} while (status & JZ_MMC_STATUS_IS_RESETTING);
-> +}
-
-Maybe these should have a timeout too?
-
->
-> ...
->
-> +static inline unsigned int jz4740_mmc_wait_irq(struct jz4740_mmc_host *host,
-> +	unsigned int irq)
-> +{
-> +	unsigned int timeout = JZ4740_MMC_MAX_TIMEOUT;
-> +	uint16_t status;
-> +
-> +	do {
-> +		status = readw(host->base + JZ_REG_MMC_IREG);
-> +	} while (!(status & irq) && --timeout);
-> +
-> +	return timeout;
-> +}
-
-This guy's too big to inline.  Recent gcc's know that and they tend to
-uninline such things behind your back anwyay.
-
->
-> ...
->
-> +struct jz4740_mmc_platform_data {
-> +	int gpio_power;
-> +	int gpio_card_detect;
-> +	int gpio_read_only;
-> +	unsigned card_detect_active_low:1;
-> +	unsigned read_only_active_low:1;
-> +	unsigned power_active_low:1;
-> +
-> +	unsigned data_1bit:1;
-> +};
-
-The bitfields will all share the same word, so modification of one
-field can race against modification of another field.  Hence some form
-of locking which covers *all* the bitfields is needed.
-
-Is that a problem in this driver?
+Both SH and sparc use the mcount function (enabled with the -pg switch
+to gcc) to check the stack has not overflowed. The relevant code is in
+arch/{sh,sparc}/lib/mcount.S. This checks the stack pointer value on
+every function call. Yeah, it's heavy-weight, but an implementation for
+MIPS should be able to catch almost the exact point at which stack
+overflow occurs.

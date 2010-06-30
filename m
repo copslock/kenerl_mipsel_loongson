@@ -1,28 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jun 2010 22:37:41 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:42940 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jun 2010 22:38:05 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:42979 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492450Ab0F3Ugy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Jun 2010 22:36:54 +0200
+        id S1491938Ab0F3UhK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Jun 2010 22:37:10 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o5UEvPE8004392;
-        Wed, 30 Jun 2010 15:57:25 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o5UFFcGH004912;
+        Wed, 30 Jun 2010 16:15:38 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o5UEvPiV004390;
-        Wed, 30 Jun 2010 15:57:25 +0100
-Date:   Wed, 30 Jun 2010 15:57:25 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o5UFFbaE004906;
+        Wed, 30 Jun 2010 16:15:37 +0100
+Date:   Wed, 30 Jun 2010 16:15:36 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Phil Staub <phils@windriver.com>
-Cc:     Adam Jiang <jiang.adam@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: How to detect STACKOVEFLOW on mips
-Message-ID: <20100630145725.GB31938@linux-mips.org>
-References: <AANLkTimL7YMyb2ahmTgl8dqV_DNfsROjDhLEDm4jyVWE@mail.gmail.com>
- <4C2B543E.2010309@windriver.com>
+To:     Jiri Kosina <jkosina@suse.cz>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Christoph Egger <siccegge@cs.fau.de>,
+        Gilles Espinasse <g.esp@free.fr>, Tejun Heo <tj@kernel.org>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        vamos@i4.informatik.uni-erlangen.de
+Subject: Re: [PATCH 3/9] Removing dead CONFIG_SIBYTE_BCM1480_PROF
+Message-ID: <20100630151536.GA740@linux-mips.org>
+References: <cover.1275925108.git.siccegge@cs.fau.de>
+ <c217f4530c057f4b8030bd14459a0cb2856decde.1275925108.git.siccegge@cs.fau.de>
+ <alpine.LNX.2.00.1006161800290.12271@pobox.suse.cz>
+ <20100628134959.GC29229@linux-mips.org>
+ <alpine.LNX.2.00.1006301133400.13809@pobox.suse.cz>
+ <alpine.LFD.2.00.1006301431210.13070@eddie.linux-mips.org>
+ <alpine.LNX.2.00.1006301538190.13809@pobox.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4C2B543E.2010309@windriver.com>
+In-Reply-To: <alpine.LNX.2.00.1006301538190.13809@pobox.suse.cz>
 User-Agent: Mutt/1.5.20 (2009-08-17)
-X-archive-position: 27287
+X-archive-position: 27288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,62 +40,41 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 20566
+X-UID: 20567
 
-On Wed, Jun 30, 2010 at 07:27:10AM -0700, Phil Staub wrote:
+On Wed, Jun 30, 2010 at 03:38:30PM +0200, Jiri Kosina wrote:
 
-> >I'm having a problem with kernel mode stack on my box. It seems that
-> >STACKOVERFLOW happened to Linux kernel. However, I can't prove it
-> >because the lack of any detection in __do_IRQ() function just like on
-> >the other architectures. If you know something about, please help me
-> >on following two questions.
-> >- Is there any possible to do this on MIPS?
+> > > Well, still it's dead code guarded by ifdef depending on non-exsiting 
+> > > symbol ... I have just quickly tried to get a grip on the zbus thing, but
+> > 
+> >  You've missed...
+> > 
+> > > 	arch/mips/configs/bigsur_defconfig:CONFIG_SIBYTE_HAS_ZBUS_PROFILING=y
+> > > 	arch/mips/configs/sb1250-swarm_defconfig:CONFIG_SIBYTE_HAS_ZBUS_PROFILING=y
+> > > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
+> > > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
+> > > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
+> > > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
+> > > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
+> > > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
+> > > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
+> > 
+> > ... this:
+> > 
+> > 	arch/mips/sibyte/Kconfig:	config SIBYTE_TBPROF
+> > 	arch/mips/sibyte/Kconfig:	tristate "Support for ZBbus profiling"
+> > > 	arch/mips/sibyte/Kconfig:       depends on SIBYTE_HAS_ZBUS_PROFILING
+> > 
+> > ^^^ here.
+> > 
+> > > 	arch/mips/sibyte/Kconfig:config SIBYTE_HAS_ZBUS_PROFILING
+> > > 
+> > > seem to be the only occurences in the whole tree. Another unused symbol?
+> > 
+> >  Not quite so then.
 > 
-> The mechanisms I know about for detecting stack overflow include:
-> 
-> 1. Use of the MMU - stack ends at a page boundary, adjacent page is
-> either unmapped or mapped read-only and causes an exception if violated.
+> Right you are, sorry for the noise.
 
-Won't easily work on MIPS as the stack is allocated in KSEG0 / XKPHYS
-which are unmapped segments.  It would be necessary to relocate the stack
-into a mapped space.
-
-Ultra-ancient Linux/MIPS kernels actually used to do that but that code
-may well even predate everything that still exists on linux-mips.org.
-
-> 2. Hooks inserted into toolchain to cause any stack decrement to be
-> first tested against a limit.
-> 
-> 3. Fill entire stack with a recognizable pattern before first
-> use. After suspected stack overflow, check to see if the pattern has
-> been disturbed in the area of the stack limit.
-
-This was afaik never ported to MIPS though that'd be easy.
-
-> (Disclaimer: I've used all of these in some form on other OSes, but
-> not on Linux. Someone else may have a more directly relevant answer.)
-> 
-> >- or, more simple question, how could I get the address $sp pointed by
-> >asm() notation in C?
-> 
-> How about something like:
-> 
-> {
-> 	long x;
-> 	...
-> 	asm("move %0,$29":"=g"(x));
-> 	...
-> }
-
-That will do.  Or even something portable like:
-
-{
-	unsigned long foo;
-
-	return &foo;
-}
-
-which used to work (GNU alloca and others were using this) but I'm sure
-GCC has learned how to optimize this to shreds.
+So I've dropped this one from my own patch list then.
 
   Ralf

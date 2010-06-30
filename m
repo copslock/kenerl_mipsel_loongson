@@ -1,71 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jun 2010 15:38:41 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:42656 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492499Ab0F3Nib (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Jun 2010 15:38:31 +0200
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.221.2])
-        by mx2.suse.de (Postfix) with ESMTP id 1874586391;
-        Wed, 30 Jun 2010 15:38:31 +0200 (CEST)
-Date:   Wed, 30 Jun 2010 15:38:30 +0200 (CEST)
-From:   Jiri Kosina <jkosina@suse.cz>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Christoph Egger <siccegge@cs.fau.de>,
-        Gilles Espinasse <g.esp@free.fr>, Tejun Heo <tj@kernel.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        vamos@i4.informatik.uni-erlangen.de
-Subject: Re: [PATCH 3/9] Removing dead CONFIG_SIBYTE_BCM1480_PROF
-In-Reply-To: <alpine.LFD.2.00.1006301431210.13070@eddie.linux-mips.org>
-Message-ID: <alpine.LNX.2.00.1006301538190.13809@pobox.suse.cz>
-References: <cover.1275925108.git.siccegge@cs.fau.de> <c217f4530c057f4b8030bd14459a0cb2856decde.1275925108.git.siccegge@cs.fau.de> <alpine.LNX.2.00.1006161800290.12271@pobox.suse.cz> <20100628134959.GC29229@linux-mips.org> <alpine.LNX.2.00.1006301133400.13809@pobox.suse.cz>
- <alpine.LFD.2.00.1006301431210.13070@eddie.linux-mips.org>
-User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jun 2010 16:27:28 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:63647 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492272Ab0F3O1V (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Jun 2010 16:27:21 +0200
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o5UERBoq001100;
+        Wed, 30 Jun 2010 07:27:11 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Wed, 30 Jun 2010 07:27:11 -0700
+Received: from phils-poker.wrs.com ([172.25.35.76]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Wed, 30 Jun 2010 07:27:11 -0700
+Message-ID: <4C2B543E.2010309@windriver.com>
+Date:   Wed, 30 Jun 2010 07:27:10 -0700
+From:   Phil Staub <phils@windriver.com>
+Reply-To: phils@windriver.com
+Organization: Wind River Systems
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.9) Gecko/20100430 Fedora/3.0.4-2.fc11 Thunderbird/3.0.4
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 27281
+To:     Adam Jiang <jiang.adam@gmail.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: How to detect STACKOVEFLOW on mips
+References: <AANLkTimL7YMyb2ahmTgl8dqV_DNfsROjDhLEDm4jyVWE@mail.gmail.com>
+In-Reply-To: <AANLkTimL7YMyb2ahmTgl8dqV_DNfsROjDhLEDm4jyVWE@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 30 Jun 2010 14:27:11.0204 (UTC) FILETIME=[53CCAA40:01CB1860]
+X-archive-position: 27282
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jkosina@suse.cz
+X-original-sender: phils@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 20208
+X-UID: 20245
 
-On Wed, 30 Jun 2010, Maciej W. Rozycki wrote:
+On 06/29/2010 10:59 PM, Adam Jiang wrote:
+> Hello, list.
+>
+> I'm having a problem with kernel mode stack on my box. It seems that
+> STACKOVERFLOW happened to Linux kernel. However, I can't prove it
+> because the lack of any detection in __do_IRQ() function just like on
+> the other architectures. If you know something about, please help me
+> on following two questions.
+> - Is there any possible to do this on MIPS?
 
-> > Well, still it's dead code guarded by ifdef depending on non-exsiting 
-> > symbol ... I have just quickly tried to get a grip on the zbus thing, but
-> 
->  You've missed...
-> 
-> > 	arch/mips/configs/bigsur_defconfig:CONFIG_SIBYTE_HAS_ZBUS_PROFILING=y
-> > 	arch/mips/configs/sb1250-swarm_defconfig:CONFIG_SIBYTE_HAS_ZBUS_PROFILING=y
-> > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
-> > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
-> > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
-> > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
-> > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
-> > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
-> > 	arch/mips/sibyte/Kconfig:       select SIBYTE_HAS_ZBUS_PROFILING
-> 
-> ... this:
-> 
-> 	arch/mips/sibyte/Kconfig:	config SIBYTE_TBPROF
-> 	arch/mips/sibyte/Kconfig:	tristate "Support for ZBbus profiling"
-> > 	arch/mips/sibyte/Kconfig:       depends on SIBYTE_HAS_ZBUS_PROFILING
-> 
-> ^^^ here.
-> 
-> > 	arch/mips/sibyte/Kconfig:config SIBYTE_HAS_ZBUS_PROFILING
-> > 
-> > seem to be the only occurences in the whole tree. Another unused symbol?
-> 
->  Not quite so then.
+The mechanisms I know about for detecting stack overflow include:
 
-Right you are, sorry for the noise.
+1. Use of the MMU - stack ends at a page boundary, adjacent page is
+either unmapped or mapped read-only and causes an exception if violated.
+
+2. Hooks inserted into toolchain to cause any stack decrement to be
+first tested against a limit.
+
+3. Fill entire stack with a recognizable pattern before first
+use. After suspected stack overflow, check to see if the pattern has
+been disturbed in the area of the stack limit.
+
+(Disclaimer: I've used all of these in some form on other OSes, but
+not on Linux. Someone else may have a more directly relevant answer.)
+
+> - or, more simple question, how could I get the address $sp pointed by
+> asm() notation in C?
+
+How about something like:
+
+{
+	long x;
+	...
+	asm("move %0,$29":"=g"(x));
+	...
+}
+
+Phil
+
+>
+> Any suggestion from you will be appreciated.
+>
+> Best regards,
+> /Adam
+>
+>
+
 
 -- 
-Jiri Kosina
-SUSE Labs, Novell Inc.
+Phil Staub, Senior Member of Technical Staff, Wind River
+Direct: 702.290.0470 Fax: 702.982.0085

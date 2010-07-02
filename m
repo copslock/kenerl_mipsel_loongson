@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Jul 2010 23:57:09 +0200 (CEST)
-Received: from rtp-iport-1.cisco.com ([64.102.122.148]:52017 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jul 2010 03:44:20 +0200 (CEST)
+Received: from rtp-iport-1.cisco.com ([64.102.122.148]:52643 "EHLO
         rtp-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491778Ab0GAV5B convert rfc822-to-8bit
+        by eddie.linux-mips.org with ESMTP id S1492124Ab0GBBoQ convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Jul 2010 23:57:01 +0200
+        Fri, 2 Jul 2010 03:44:16 +0200
 Authentication-Results: rtp-iport-1.cisco.com; dkim=neutral (message not signed) header.i=none
 X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAJ2rLEytJV2d/2dsb2JhbACfcHGlC5o+hSUEg3GGXg
-X-IronPort-AV: E=Sophos;i="4.53,522,1272844800"; 
-   d="scan'208";a="127753751"
-Received: from rcdn-core-6.cisco.com ([173.37.93.157])
-  by rtp-iport-1.cisco.com with ESMTP; 01 Jul 2010 21:56:54 +0000
-Received: from xbh-rcd-101.cisco.com (xbh-rcd-101.cisco.com [72.163.62.138])
-        by rcdn-core-6.cisco.com (8.14.3/8.14.3) with ESMTP id o61Lusx3031370;
-        Thu, 1 Jul 2010 21:56:54 GMT
-Received: from xmb-rcd-208.cisco.com ([72.163.62.215]) by xbh-rcd-101.cisco.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 1 Jul 2010 16:56:54 -0500
+X-IronPort-Anti-Spam-Result: AvsEAD/hLEytJV2Y/2dsb2JhbACfcXGkAJowhSUEg3GGXg
+X-IronPort-AV: E=Sophos;i="4.53,524,1272844800"; 
+   d="scan'208";a="127808520"
+Received: from rcdn-core-1.cisco.com ([173.37.93.152])
+  by rtp-iport-1.cisco.com with ESMTP; 02 Jul 2010 01:44:08 +0000
+Received: from xbh-rcd-202.cisco.com (xbh-rcd-202.cisco.com [72.163.62.201])
+        by rcdn-core-1.cisco.com (8.14.3/8.14.3) with ESMTP id o621i892001454;
+        Fri, 2 Jul 2010 01:44:08 GMT
+Received: from xmb-rcd-208.cisco.com ([72.163.62.215]) by xbh-rcd-202.cisco.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 1 Jul 2010 20:44:08 -0500
 X-MimeOLE: Produced By Microsoft Exchange V6.5
 Content-class: urn:content-classes:message
 MIME-Version: 1.0
@@ -23,28 +23,69 @@ Content-Type: text/plain;
         charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
 Subject: RE: [PATCH] Apply kmap_high_get with MIPS
-Date:   Thu, 1 Jul 2010 16:56:54 -0500
-Message-ID: <7A9214B0DEB2074FBCA688B30B04400D0116BA36@XMB-RCD-208.cisco.com>
-In-Reply-To: <AANLkTikIqTozI-VK-U2iSoMjXGJLckZM2-N2xqIGRfBy@mail.gmail.com>
+Date:   Thu, 1 Jul 2010 20:44:07 -0500
+Message-ID: <7A9214B0DEB2074FBCA688B30B04400D0116BADD@XMB-RCD-208.cisco.com>
+In-Reply-To: <7A9214B0DEB2074FBCA688B30B04400D0116BA36@XMB-RCD-208.cisco.com>
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 Thread-Topic: [PATCH] Apply kmap_high_get with MIPS
-Thread-Index: Acr9ycy17NGkqChPReO+gQqYaLC/oAbmU6Kw
+Thread-Index: Acr9ycy17NGkqChPReO+gQqYaLC/oAbmU6KwAAi/quA=
 From:   "Dezhong Diao (dediao)" <dediao@cisco.com>
 To:     "Kevin Cernekee" <cernekee@gmail.com>
 Cc:     <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 01 Jul 2010 21:56:54.0850 (UTC) FILETIME=[51B80A20:01CB1968]
+X-OriginalArrivalTime: 02 Jul 2010 01:44:08.0510 (UTC) FILETIME=[100375E0:01CB1988]
 Return-Path: <dediao@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27297
+X-archive-position: 27298
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: dediao@cisco.com
 Precedence: bulk
 X-list: linux-mips
+
+In terms of my previous email, the changes are intended to be made in
+"__dma_sync_contiguous" so that "addr == 0" case can be satisfied. 
+
+
++static inline void __dma_sync_contiguous(struct page *page,
++	unsigned long offset, size_t size, enum dma_data_direction
+direction) 
++{
++	unsigned long addr;
++
++	if (!PageHighMem(page)) {
++		addr = (unsigned long)page_address(page) + offset;
++		__dma_sync_virtual(addr, size, direction);
++	} else {
++		addr = (unsigned long)kmap_high_get(page);
++		if (addr) {
++			addr += offset;
++			__dma_sync_virtual(addr, size, direction);
++			kunmap_high(page);
++		} else {
++			addr = (unsigned long)kmap_atomic(page,
+KM_MIPS_SYNC_PAGE);
++			flush_data_cache_page(addr + offset);
++			kunmap_atomic((void *)addr, KM_MIPS_SYNC_PAGE);
++           }           
++	} 
++}
++
+
+
+Dezhong
+
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org
+[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Dezhong Diao
+(dediao)
+Sent: Thursday, July 01, 2010 2:57 PM
+To: Kevin Cernekee
+Cc: linux-mips@linux-mips.org
+Subject: RE: [PATCH] Apply kmap_high_get with MIPS
 
 The issue (addr == 0) you mentioned had been discussed before
 (http://www.linux-mips.org/archives/linux-mips/2008-03/msg00011.html).
@@ -60,8 +101,7 @@ resolved in ARM.
 Dezhong
 
 
-void __flush_dcache_page(struct page *page)
-{
+void __flush_dcache_page(struct page *page) {
   struct address_space *mapping = page_mapping(page);
   void *addr;
 

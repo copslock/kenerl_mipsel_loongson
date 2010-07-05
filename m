@@ -1,64 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jul 2010 16:08:21 +0200 (CEST)
-Received: from arkanian.console-pimps.org ([212.110.184.194]:53330 "EHLO
-        arkanian.console-pimps.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492106Ab0GEOIS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Jul 2010 16:08:18 +0200
-Received: by arkanian.console-pimps.org (Postfix, from userid 1000)
-        id 065E148044; Mon,  5 Jul 2010 15:08:17 +0100 (BST)
-Date:   Mon, 5 Jul 2010 15:08:16 +0100
-From:   Matt Fleming <matt@console-pimps.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Adam Jiang <jiang.adam@gmail.com>
-Subject: Re: How to detect STACKOVEFLOW on mips
-Message-ID: <20100705140816.GB2968@console-pimps.org>
-References: <AANLkTimL7YMyb2ahmTgl8dqV_DNfsROjDhLEDm4jyVWE@mail.gmail.com> <20100630145006.GA31938@linux-mips.org> <87zkycyyi2.fsf@linux-g6p1.site> <20100705105627.GA12699@linux-mips.org> <20100705130931.GA2968@console-pimps.org> <20100705133533.GA1262@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jul 2010 16:37:03 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:55253 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490949Ab0GEOg7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 5 Jul 2010 16:36:59 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o65Eav3H003089;
+        Mon, 5 Jul 2010 15:36:58 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o65EatAA003088;
+        Mon, 5 Jul 2010 15:36:55 +0100
+Date:   Mon, 5 Jul 2010 15:36:55 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     adnan iqbal <adnan.iqbal@seecs.edu.pk>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Issue with RLIMIT Identifiers
+Message-ID: <20100705143655.GA3035@linux-mips.org>
+References: <AANLkTilZw7Zc9kfZzd-Xle7W3lHN9MSRaXQjv3SQNafj@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20100705133533.GA1262@linux-mips.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <matt@console-pimps.org>
+In-Reply-To: <AANLkTilZw7Zc9kfZzd-Xle7W3lHN9MSRaXQjv3SQNafj@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27322
+X-archive-position: 27323
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt@console-pimps.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 05, 2010 at 02:35:33PM +0100, Ralf Baechle wrote:
-> On Mon, Jul 05, 2010 at 02:09:31PM +0100, Matt Fleming wrote:
-> 
-> > > Which often isn't so helpful.  The alarm gets triggered on the last stack
-> > > pointer decrement but according to murphy the overflow has happened 10
-> > > levels up in the callchain.
-> > 
-> > Last decrement? The alarm should be triggered the next time the
-> > function in which the overflow occurs makes a function call. I don't
-> > see how you could go down a level of the callchain and not trigger the
-> > alarm if the overflow has happened?
-> 
-> guilt()
-> {
-> 	char array[6000];
-> 
-> 	blurb(&array);
-> }
-> 
-> blurb(void *p)
-> {
-> 	frob(p);
-> }
-> 
-> With the deep nesting of the current kernel there is a good chance a
-> check in mcount will not be triggered in blurb() but possibly in frob
-> or even further down the callchain.
+On Mon, Jul 05, 2010 at 10:27:32AM +0500, adnan iqbal wrote:
 
-Ah, I think I see what you mean. You're saying that you may not find
-the culprit function using the massive amount of stack spac, which
-eventually leads to the overflow? Yeah, that's a fair point. I think
-if the mcount technique was used in conjunction with
-CONFIG_DEBUG_STACK_USAGE it might be more helpful in that situation.
+> In the file /usr/local/asm-generic.h , RLIMIT_NOFILE   is defined to be
+> equal to 7.
+> 
+> In
+> /usr/local/Cavium_Networks/OCTEON-SDK/tools/usr/include/asm/resource.h:#define
+> RLIMIT_NOFILE         5
+> 
+> In
+> /usr/local/Cavium_Networks/OCTEON-SDK/tools/usr/include/asm-generic/resource.h:#
+> define RLIMIT_NOFILE                7
+> i have confirmed through C program that the operating system is using
+> RLIMIT_NOFILE=5. I need help to figure out which header files are actually
+> being used by the kernel to get exact Resource Identifier.
+
+The non-generic definition, that is RLIMIT_NOFILE is defined as 5.
+
+  Ralf

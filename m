@@ -1,184 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jul 2010 14:59:47 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:36466 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492100Ab0GEM7o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 5 Jul 2010 14:59:44 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o65Cxctl031299;
-        Mon, 5 Jul 2010 13:59:38 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o65CxcHM031297;
-        Mon, 5 Jul 2010 13:59:38 +0100
-Date:   Mon, 5 Jul 2010 13:59:38 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     Kulikov Vasiliy <segooon@gmail.com>,
-        Kernel Janitors <kernel-janitors@vger.kernel.org>,
-        Jiri Pirko <jpirko@redhat.com>,
-        Eric Dumazet <eric.dumazet@gmail.com>,
-        Patrick McHardy <kaber@trash.net>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        linux-mips@linux-mips.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [NET] ioc3-eth: Use the instance of net_device_stats from net_device.
-Message-ID: <20100705125938.GB28849@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Jul 2010 15:09:35 +0200 (CEST)
+Received: from arkanian.console-pimps.org ([212.110.184.194]:34271 "EHLO
+        arkanian.console-pimps.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492055Ab0GENJc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Jul 2010 15:09:32 +0200
+Received: by arkanian.console-pimps.org (Postfix, from userid 1000)
+        id 97AB948044; Mon,  5 Jul 2010 14:09:31 +0100 (BST)
+Date:   Mon, 5 Jul 2010 14:09:31 +0100
+From:   Matt Fleming <matt@console-pimps.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Adam Jiang <jiang.adam@gmail.com>
+Subject: Re: How to detect STACKOVEFLOW on mips
+Message-ID: <20100705130931.GA2968@console-pimps.org>
+References: <AANLkTimL7YMyb2ahmTgl8dqV_DNfsROjDhLEDm4jyVWE@mail.gmail.com> <20100630145006.GA31938@linux-mips.org> <87zkycyyi2.fsf@linux-g6p1.site> <20100705105627.GA12699@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20100705105627.GA12699@linux-mips.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <matt@console-pimps.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27318
+X-archive-position: 27319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: matt@console-pimps.org
 Precedence: bulk
 X-list: linux-mips
 
-Since net_device has an instance of net_device_stats, we can remove the
-instance of this from the adapter structure.
+On Mon, Jul 05, 2010 at 11:56:27AM +0100, Ralf Baechle wrote:
+> On Wed, Jun 30, 2010 at 10:57:41PM +0100, Matt Fleming wrote:
+> 
+> > On Wed, 30 Jun 2010 15:50:06 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > > 
+> > > There used to be some code for other architectures that zeros the stack
+> > > page and counts how much of that has been overwritten by the stack.  That
+> > > was never ported to MIPS.
+> > > 
+> > > Another helper to find functions that do excessive static allocations is
+> > > "make checkstack".
+> > 
+> > Both SH and sparc use the mcount function (enabled with the -pg switch
+> > to gcc) to check the stack has not overflowed. The relevant code is in
+> > arch/{sh,sparc}/lib/mcount.S. This checks the stack pointer value on
+> > every function call. Yeah, it's heavy-weight, but an implementation for
+> > MIPS should be able to catch almost the exact point at which stack
+> > overflow occurs.
+> 
+> Which often isn't so helpful.  The alarm gets triggered on the last stack
+> pointer decrement but according to murphy the overflow has happened 10
+> levels up in the callchain.
 
-Based on original patch by Kulikov Vasiliy.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kulikov Vasiliy <segooon@gmail.com>
-
- drivers/net/ioc3-eth.c |   49 ++++++++++++++++++++++++-----------------------
- 1 files changed, 25 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/net/ioc3-eth.c b/drivers/net/ioc3-eth.c
-index e3b5e94..0b3f6df 100644
---- a/drivers/net/ioc3-eth.c
-+++ b/drivers/net/ioc3-eth.c
-@@ -82,7 +82,6 @@ struct ioc3_private {
- 	struct ioc3_etxd *txr;
- 	struct sk_buff *rx_skbs[512];
- 	struct sk_buff *tx_skbs[128];
--	struct net_device_stats stats;
- 	int rx_ci;			/* RX consumer index */
- 	int rx_pi;			/* RX producer index */
- 	int tx_ci;			/* TX consumer index */
-@@ -504,8 +503,8 @@ static struct net_device_stats *ioc3_get_stats(struct net_device *dev)
- 	struct ioc3_private *ip = netdev_priv(dev);
- 	struct ioc3 *ioc3 = ip->regs;
- 
--	ip->stats.collisions += (ioc3_r_etcdc() & ETCDC_COLLCNT_MASK);
--	return &ip->stats;
-+	dev->stats.collisions += (ioc3_r_etcdc() & ETCDC_COLLCNT_MASK);
-+	return &dev->stats;
- }
- 
- static void ioc3_tcpudp_checksum(struct sk_buff *skb, uint32_t hwsum, int len)
-@@ -576,8 +575,9 @@ static void ioc3_tcpudp_checksum(struct sk_buff *skb, uint32_t hwsum, int len)
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- }
- 
--static inline void ioc3_rx(struct ioc3_private *ip)
-+static inline void ioc3_rx(struct net_device *dev)
- {
-+	struct ioc3_private *ip = netdev_priv(dev);
- 	struct sk_buff *skb, *new_skb;
- 	struct ioc3 *ioc3 = ip->regs;
- 	int rx_entry, n_entry, len;
-@@ -598,13 +598,13 @@ static inline void ioc3_rx(struct ioc3_private *ip)
- 		if (err & ERXBUF_GOODPKT) {
- 			len = ((w0 >> ERXBUF_BYTECNT_SHIFT) & 0x7ff) - 4;
- 			skb_trim(skb, len);
--			skb->protocol = eth_type_trans(skb, priv_netdev(ip));
-+			skb->protocol = eth_type_trans(skb, dev);
- 
- 			new_skb = ioc3_alloc_skb(RX_BUF_ALLOC_SIZE, GFP_ATOMIC);
- 			if (!new_skb) {
- 				/* Ouch, drop packet and just recycle packet
- 				   to keep the ring filled.  */
--				ip->stats.rx_dropped++;
-+				dev->stats.rx_dropped++;
- 				new_skb = skb;
- 				goto next;
- 			}
-@@ -622,19 +622,19 @@ static inline void ioc3_rx(struct ioc3_private *ip)
- 			rxb = (struct ioc3_erxbuf *) new_skb->data;
- 			skb_reserve(new_skb, RX_OFFSET);
- 
--			ip->stats.rx_packets++;		/* Statistics */
--			ip->stats.rx_bytes += len;
-+			dev->stats.rx_packets++;		/* Statistics */
-+			dev->stats.rx_bytes += len;
- 		} else {
-- 			/* The frame is invalid and the skb never
--                           reached the network layer so we can just
--                           recycle it.  */
-- 			new_skb = skb;
-- 			ip->stats.rx_errors++;
-+			/* The frame is invalid and the skb never
-+			   reached the network layer so we can just
-+			   recycle it.  */
-+			new_skb = skb;
-+			dev->stats.rx_errors++;
- 		}
- 		if (err & ERXBUF_CRCERR)	/* Statistics */
--			ip->stats.rx_crc_errors++;
-+			dev->stats.rx_crc_errors++;
- 		if (err & ERXBUF_FRAMERR)
--			ip->stats.rx_frame_errors++;
-+			dev->stats.rx_frame_errors++;
- next:
- 		ip->rx_skbs[n_entry] = new_skb;
- 		rxr[n_entry] = cpu_to_be64(ioc3_map(rxb, 1));
-@@ -652,8 +652,9 @@ next:
- 	ip->rx_ci = rx_entry;
- }
- 
--static inline void ioc3_tx(struct ioc3_private *ip)
-+static inline void ioc3_tx(struct net_device *dev)
- {
-+	struct ioc3_private *ip = netdev_priv(dev);
- 	unsigned long packets, bytes;
- 	struct ioc3 *ioc3 = ip->regs;
- 	int tx_entry, o_entry;
-@@ -681,12 +682,12 @@ static inline void ioc3_tx(struct ioc3_private *ip)
- 		tx_entry = (etcir >> 7) & 127;
- 	}
- 
--	ip->stats.tx_packets += packets;
--	ip->stats.tx_bytes += bytes;
-+	dev->stats.tx_packets += packets;
-+	dev->stats.tx_bytes += bytes;
- 	ip->txqlen -= packets;
- 
- 	if (ip->txqlen < 128)
--		netif_wake_queue(priv_netdev(ip));
-+		netif_wake_queue(dev);
- 
- 	ip->tx_ci = o_entry;
- 	spin_unlock(&ip->ioc3_lock);
-@@ -699,9 +700,9 @@ static inline void ioc3_tx(struct ioc3_private *ip)
-  * with such error interrupts if something really goes wrong, so we might
-  * also consider to take the interface down.
-  */
--static void ioc3_error(struct ioc3_private *ip, u32 eisr)
-+static void ioc3_error(struct net_device *dev, u32 eisr)
- {
--	struct net_device *dev = priv_netdev(ip);
-+	struct ioc3_private *ip = netdev_priv(dev);
- 	unsigned char *iface = dev->name;
- 
- 	spin_lock(&ip->ioc3_lock);
-@@ -747,11 +748,11 @@ static irqreturn_t ioc3_interrupt(int irq, void *_dev)
- 
- 	if (eisr & (EISR_RXOFLO | EISR_RXBUFOFLO | EISR_RXMEMERR |
- 	            EISR_RXPARERR | EISR_TXBUFUFLO | EISR_TXMEMERR))
--		ioc3_error(ip, eisr);
-+		ioc3_error(dev, eisr);
- 	if (eisr & EISR_RXTIMERINT)
--		ioc3_rx(ip);
-+		ioc3_rx(dev);
- 	if (eisr & EISR_TXEXPLICIT)
--		ioc3_tx(ip);
-+		ioc3_tx(dev);
- 
- 	return IRQ_HANDLED;
- }
+Last decrement? The alarm should be triggered the next time the
+function in which the overflow occurs makes a function call. I don't
+see how you could go down a level of the callchain and not trigger the
+alarm if the overflow has happened?

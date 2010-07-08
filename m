@@ -1,55 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2010 15:23:55 +0200 (CEST)
-Received: from smtp.nokia.com ([192.100.105.134]:38898 "EHLO
-        mgw-mx09.nokia.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491782Ab0GHNXr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jul 2010 15:23:47 +0200
-Received: from esebh106.NOE.Nokia.com (esebh106.ntc.nokia.com [172.21.138.213])
-        by mgw-mx09.nokia.com (Switch-3.3.3/Switch-3.3.3) with ESMTP id o68DNDnh015684;
-        Thu, 8 Jul 2010 08:23:35 -0500
-Received: from esebh102.NOE.Nokia.com ([172.21.138.183]) by esebh106.NOE.Nokia.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 8 Jul 2010 16:22:58 +0300
-Received: from mgw-sa01.ext.nokia.com ([147.243.1.47]) by esebh102.NOE.Nokia.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 8 Jul 2010 16:22:57 +0300
-Received: from [172.21.41.123] (esdhcp041123.research.nokia.com [172.21.41.123])
-        by mgw-sa01.ext.nokia.com (Switch-3.3.3/Switch-3.3.3) with ESMTP id o68DMujn018098;
-        Thu, 8 Jul 2010 16:22:56 +0300
-Subject: Re: [PATCH v2 17/26] MTD: Nand: Add JZ4740 NAND driver
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org
-In-Reply-To: <4C35D084.7050605@metafoo.de>
-References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-         <1276924111-11158-18-git-send-email-lars@metafoo.de>
-         <1278569214.12733.38.camel@localhost>  <4C35D084.7050605@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Thu, 08 Jul 2010 16:19:02 +0300
-Message-ID: <1278595142.20321.26.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.30.2 (2.30.2-1.fc13) 
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 08 Jul 2010 13:22:58.0219 (UTC) FILETIME=[AE8BCFB0:01CB1EA0]
-X-Nokia-AV: Clean
-Return-Path: <dedekind1@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2010 15:28:38 +0200 (CEST)
+Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:60051 "EHLO
+        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491962Ab0GHN2e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jul 2010 15:28:34 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id A32205B1;
+        Thu,  8 Jul 2010 15:28:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
+Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
+        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id 413-mdlEhrjU; Thu,  8 Jul 2010 15:28:28 +0200 (CEST)
+Received: from [172.31.16.228] (d078161.adsl.hansenet.de [80.171.78.161])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: 7clausen)
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id EB05C5B0;
+        Thu,  8 Jul 2010 15:28:22 +0200 (CEST)
+Message-ID: <4C35D264.7080809@metafoo.de>
+Date:   Thu, 08 Jul 2010 15:28:04 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
+MIME-Version: 1.0
+To:     Andrew Morton <akpm@linux-foundation.org>
+CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v2 16/26] fbdev: Add JZ4740 framebuffer driver
+References: <1276924111-11158-1-git-send-email-lars@metafoo.de>        <1276924111-11158-17-git-send-email-lars@metafoo.de>        <4C310ACD.6040604@metafoo.de> <20100707164148.d2a1f8c4.akpm@linux-foundation.org>
+In-Reply-To: <20100707164148.d2a1f8c4.akpm@linux-foundation.org>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27350
+X-archive-position: 27351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2010-07-08 at 15:20 +0200, Lars-Peter Clausen wrote:
-> On the other hand I'm wondering where on would put headers for non platform specific
-> drivers?
+Andrew Morton wrote:
+> On Mon, 05 Jul 2010 00:27:25 +0200
+> Lars-Peter Clausen <lars@metafoo.de> wrote:
+> 
+>> Hi Andrew
+>>
+>> v2 of this patch has been around for two weeks without any comments. I've fixed all
+>> the issues you had with v1. If you this version is ok, an Acked-By would be nice :)
+> 
+> I don't do acks - I already have enough to be blamed for.
+Hm, ok.
 
-If we are talking about MTD, then drivers/mtd ?
+> Although I might whine about inappropriate use of
+> ENOENT, which means "No such file or directory".
+> 
 
--- 
-Best Regards,
-Artem Bityutskiy (Артём Битюцкий)
+That is due to to many bad examples, I guess. Would using ENXIO instead keep you from
+whining?
+
+- Lars

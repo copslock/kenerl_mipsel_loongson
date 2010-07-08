@@ -1,53 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2010 18:47:10 +0200 (CEST)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:49571 "EHLO
-        smtp1.linux-foundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491797Ab0GHQrH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jul 2010 18:47:07 +0200
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-        by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id o68Gku90005691
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 8 Jul 2010 09:46:57 -0700
-Received: from localhost (localhost [127.0.0.1])
-        by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id o68GksDN014560;
-        Thu, 8 Jul 2010 09:46:55 -0700
-Date:   Thu, 8 Jul 2010 09:46:54 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v2 16/26] fbdev: Add JZ4740 framebuffer driver
-Message-Id: <20100708094654.6fbeefe8.akpm@linux-foundation.org>
-In-Reply-To: <4C35D264.7080809@metafoo.de>
-References: <1276924111-11158-1-git-send-email-lars@metafoo.de>
-        <1276924111-11158-17-git-send-email-lars@metafoo.de>
-        <4C310ACD.6040604@metafoo.de>
-        <20100707164148.d2a1f8c4.akpm@linux-foundation.org>
-        <4C35D264.7080809@metafoo.de>
-X-Mailer: Sylpheed 2.7.1 (GTK+ 2.18.9; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jul 2010 22:46:37 +0200 (CEST)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:63231 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492123Ab0GHUq3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Jul 2010 22:46:29 +0200
+Received: by gwj21 with SMTP id 21so269618gwj.36
+        for <linux-mips@linux-mips.org>; Thu, 08 Jul 2010 13:46:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=8VkSdYJQjkFfwQFJtFzbCnxxxZZHe0LlRV9FAEZc+IM=;
+        b=iowxsxdhV7gA0C/77py6eKkBR6R1XBjvMVlVRRj8SNnUn7cmdBpoHsPUMikULHYCts
+         8P+ssQbu0yhAcIRv28fU4vZ/BzhUJ2Jl0mKFeZ/qgPWBq/Abl60LXv1TQcXC+bUb3wDQ
+         rT1SPiVMDm/y7s6Dw1TpXfyYapk7UhHFS0270=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=bNs3wmRTPOe8E3HfXIXoO0mIvP92iP34YAQSainfONX2wswW0oWRl5KEV9gpBIQlpg
+         XJTCAdnBhuiGaYiy5s/K9dNykgB0yc4FS73C3/7Ti5C8CXEVcVm0bfOBSyVMESp9xniO
+         nD5j99hWCAhWTphWRNeatxMrEPSFSLfuR75Go=
+MIME-Version: 1.0
+Received: by 10.224.112.209 with SMTP id x17mr4946900qap.304.1278621981184; 
+        Thu, 08 Jul 2010 13:46:21 -0700 (PDT)
+Received: by 10.229.37.77 with HTTP; Thu, 8 Jul 2010 13:46:21 -0700 (PDT)
+Date:   Thu, 8 Jul 2010 16:46:21 -0400
+Message-ID: <AANLkTilwCgYls4BesQLZJnZieezRU0WlW0sZ9f9gt08J@mail.gmail.com>
+Subject: Questions about BCM91250A
+From:   Matt Turner <mattst88@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <mattst88@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27354
+X-archive-position: 27355
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 08 Jul 2010 15:28:04 +0200 Lars-Peter Clausen <lars@metafoo.de> wrote:
+Hi,
+I'm trying to figure out how to access a Compact Flash card via a
+PCMCIA->CF adapter on my BCM91250A.
 
-> > Although I might whine about inappropriate use of
-> > ENOENT, which means "No such file or directory".
-> > 
-> 
-> That is due to to many bad examples, I guess. Would using ENXIO instead keep
-> you from whining?
+I've added
+--- PCCard (PCMCIA/CardBus) support
+<*>   16-bit PCMCIA support
+ [*]     Load CIS updates from userspace (EXPERIMENTAL)
+[*]   32-bit CardBus support
+       *** PC-card bridges ***
+<*>   CardBus yenta-compatible bridge support
+[*]     Special initialization for O2Micro bridges
+[*]     Special initialization for Ricoh bridges
+[*]     Special initialization for TI and EnE bridges
+[*]       Auto-tune EnE bridges for CB cards
+[*]     Special initialization for Toshiba ToPIC bridges
+<*>   Cirrus PD6729 compatible bridge support
+<*>   i82092 compatible bridge support
 
-Sounds a bit better.  It's hardly a huge issue though.
+and
+
+--- Serial ATA and Parallel ATA drivers
+<*>     PCMCIA PATA support
+<*>     Generic platform device PATA support
+
+But I see nothing in dmesg about this.
+
+Also, I can't get access to the rtc. I've tried a lot of different
+drivers. Any clues which is the right one?
+
+Thanks!
+Matt

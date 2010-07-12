@@ -1,65 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jul 2010 01:09:00 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:52672 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492058Ab0GKXIw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 12 Jul 2010 01:08:52 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o6BN8pLX008235;
-        Mon, 12 Jul 2010 00:08:52 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o6BN8p7v008233;
-        Mon, 12 Jul 2010 00:08:51 +0100
-Date:   Mon, 12 Jul 2010 00:08:51 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Chris Rhodin <chris@notav8.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: IP22 Debian Install
-Message-ID: <20100711230851.GA8181@linux-mips.org>
-References: <4C36D31A.5000500@notav8.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Jul 2010 02:05:17 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:49164 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492187Ab0GLAFK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Jul 2010 02:05:10 +0200
+Received: by pwj7 with SMTP id 7so1837739pwj.36
+        for <multiple recipients>; Sun, 11 Jul 2010 17:05:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:to:from:cc:date
+         :message-id:user-agent:mime-version:content-type
+         :content-transfer-encoding;
+        bh=k+61SQGnT+K3KBEdPAwmB4ftr4UCfyO2uLhoVcq4ygA=;
+        b=tftE2Rrk6bKNJFBZOkSE0JQ+BoZSsKJH/qZhk1VIAx8hcbpDEbdF8f0fCiZYrGIVEu
+         TyYT+6CC2MaS1GRZrQsVKWBK3jIlsosgcSqBq+XcWiDayi6vJBxop9zaO0loyVAcVO8w
+         junHuf0g/dgw7dcNjzudTNmErGA/5RY8GHT7w=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=subject:to:from:cc:date:message-id:user-agent:mime-version
+         :content-type:content-transfer-encoding;
+        b=xXdsnUGD6/BAsDYQj8I+HvjBaJVsTYFaVZFK5pyqqnJmKd+IPjKty/rOnpFpYpddft
+         uomaEigAMRTGAKkkFSh86linZYCNsflrHEkgxSEBc/gwJmQVFNbnRopzF8mZD+URGS7x
+         z/7y/y+4EHFaXm+CBfVSlC4iaMDMLXcK76pDs=
+Received: by 10.114.159.14 with SMTP id h14mr15094245wae.113.1278893102790;
+        Sun, 11 Jul 2010 17:05:02 -0700 (PDT)
+Received: from [127.0.1.1] (zaq3d2e62b2.zaq.ne.jp [61.46.98.178])
+        by mx.google.com with ESMTPS id d38sm58416358wam.8.2010.07.11.17.05.00
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 11 Jul 2010 17:05:01 -0700 (PDT)
+Subject: [PATCH] MIPS: MTX-1: fix PCI on the MeshCube and related boards
+To:     linux-mips@linux-mips.org, manuel.lauss@googlemail.com,
+        ralf@linux-mips.org
+From:   Bruno Randolf <randolf.bruno@googlemail.com>
+Cc:     stable@kernel.org
+Date:   Mon, 12 Jul 2010 09:04:58 +0900
+Message-ID: <20100712000425.31611.49721.stgit@void>
+User-Agent: StGit/0.15
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4C36D31A.5000500@notav8.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <randolf.bruno@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27371
+X-archive-position: 27372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: randolf.bruno@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 09, 2010 at 12:43:22AM -0700, Chris Rhodin wrote:
+This patch fixes a regression introduced by commit "MIPS: Alchemy: MTX-1: Use
+linux gpio api." (bb706b28bbd647c2fd7f22d6bf03a18b9552be05) which broke PCI bus
+operation. The problem is caused by alchemy_gpio2_enable() which resets the
+GPIO2 block. Two PCI signals (PCI_SERR and PCI_RST) are connected to GPIO2 and
+they obviously do not to like the reset. Since GPIO2 is correctly initialized
+by the boot monitor (YAMON) it is not necessary to call this function, so just
+remove it.
 
-> tip22: IP22 Linux tftpboot loader 0.3.8.6
-> Loading program segment 2 at 0x88002000, size = 0x218000
-> Zeroing memory at 0x8821a000, size = 0x365b0
-> Starting kernel; entry point = 0x881e0040
-> Copied initrd from 0x88aab190 to 0x88251000 (0x1d5ce2 bytes)
-> 
-> Exception: <vector=Normal>
-> Status register: 0x30044803<CU1,CU0,CH,IM7,IM4,IPL=???,MODE=KERNEL,EXL,IE>
-> Cause register: 0x30008010<CE=3,IP8,EXC=RADE>
-> Exception PC: 0x88124c74, Exception RA: 0x881f61b0
-> Read address error exception, bad address: 0x2a
-> Local I/O interrupt register 1: 0x80 <VR/GIO2>
-> Local I/O interrupt register 2: 0xc8 <EISA,SLOT0,SLOT1>
->  Saved user regs in hex (&gpda 0xa8740e48, &_regs 0xa8741048):
->  arg: a8740000 881dffe0 882505ac 88000000
->  tmp: a8740000 2 887fe378 887fe4cc 0 8 887fe7d4 881e0040
->  sve: a8740000 3 400000 8000000 16 3f80 0 c000000
->  t8 a8740000 t9 fffff7ff at bfefff7f v0 ffbff5ef v1 fff71fbf k1 500
->  gp a8740000 fp fefbfeff sp fffdffff ra feeffff7
-> 
-> PANIC: Unexpected exception
-> 
-> It looks like the kernel is loading at 0x88002000 which is more than
-> 128MB away from the beginning of kseg0.
+Also replace gpio_set_value() with alchemy_gpio_set_value() to avoid problems
+in case gpiolib gets initialized after PCI. And since alchemy gpio_set_value()
+calls au_sync() we don't have to au_sync() again later.
 
-Yes and that's correct.  Memory doesn't always start at address zero!
+Cc: stable@kernel.org
+Signed-off-by: Bruno Randolf <br1@einfach.org>
+---
+sending again with stable on cc:
+---
+ arch/mips/alchemy/mtx-1/board_setup.c |    8 +++-----
+ 1 files changed, 3 insertions(+), 5 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/alchemy/mtx-1/board_setup.c b/arch/mips/alchemy/mtx-1/board_setup.c
+index a9f0336..52d883d 100644
+--- a/arch/mips/alchemy/mtx-1/board_setup.c
++++ b/arch/mips/alchemy/mtx-1/board_setup.c
+@@ -67,8 +67,6 @@ static void mtx1_power_off(void)
+ 
+ void __init board_setup(void)
+ {
+-	alchemy_gpio2_enable();
+-
+ #if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
+ 	/* Enable USB power switch */
+ 	alchemy_gpio_direction_output(204, 0);
+@@ -117,11 +115,11 @@ mtx1_pci_idsel(unsigned int devsel, int assert)
+ 
+ 	if (assert && devsel != 0)
+ 		/* Suppress signal to Cardbus */
+-		gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
++		alchemy_gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
+ 	else
+-		gpio_set_value(1, 1);	/* set EXT_IO3 ON */
++		alchemy_gpio_set_value(1, 1);	/* set EXT_IO3 ON */
+ 
+-	au_sync_udelay(1);
++	udelay(1);
+ 	return 1;
+ }
+ 

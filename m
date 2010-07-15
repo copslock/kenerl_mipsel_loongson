@@ -1,13 +1,48 @@
-From: Wolfgang Grandegger <wg@denx.de>
-Date: Wed, 14 Jul 2010 15:42:05 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jul 2010 11:21:36 +0200 (CEST)
+Received: from mail-out.m-online.net ([212.18.0.9]:51372 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491929Ab0GOJV3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Jul 2010 11:21:29 +0200
+Received: from frontend1.mail.m-online.net (unknown [192.168.8.180])
+        by mail-out.m-online.net (Postfix) with ESMTP id 7EC9C1C15D42
+        for <linux-mips@linux-mips.org>; Thu, 15 Jul 2010 11:21:24 +0200 (CEST)
+X-Auth-Info: t6h1BBrFeGHBxFQ4b1pL/f9YvEY+BUQyR7IoSQmVXhQ=
+Received: from mail.denx.de (host-82-135-33-74.customer.m-online.net [82.135.33.74])
+        by smtp-auth.mnet-online.de (Postfix) with ESMTPA id 279D41C00088
+        for <linux-mips@linux-mips.org>; Thu, 15 Jul 2010 11:21:24 +0200 (CEST)
+Received: from pollux.denx.de (pollux [192.168.1.1])
+        by mail.denx.de (Postfix) with ESMTP id 056EE410C03C
+        for <linux-mips@linux-mips.org>; Thu, 15 Jul 2010 11:21:23 +0200 (CEST)
+Received: by pollux.denx.de (Postfix, from userid 504)
+        id D2C5B100E57B7; Thu, 15 Jul 2010 11:21:23 +0200 (CEST)
+From:   Wolfgang Grandegger <wg@grandegger.com>
+To:     linux-mips@linux-mips.org
+Cc:     Wolfgang Grandegger <wg@denx.de>
 Subject: [PATCH v3] mips/alchemy: add basic support for the GPR board
-Message-ID: <20100714134205.V1obZ3zDFhltLFqkYrR-dvpchG2c-NpftXQhJsn1-CM@z>
+Date:   Thu, 15 Jul 2010 11:21:23 +0200
+Message-Id: <1279185683-21037-1-git-send-email-wg@grandegger.com>
+X-Mailer: git-send-email 1.6.2.5
+Return-Path: <wg@denx.de>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 27395
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: wg@grandegger.com
+Precedence: bulk
+X-list: linux-mips
+
+From: Wolfgang Grandegger <wg@denx.de>
 
 This patch adds basic support for the General Purpose Router (GPR)
 board from Trapeze ITS.
 
 Signed-off-by: Wolfgang Grandegger <wg@denx.de>
 ---
+
+Something went wrong with my previous "git send-email", please ignore.
 
 Changes since v1:
   - rebased against the linux-queue git tree.

@@ -1,119 +1,213 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jul 2010 19:49:30 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:61515 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491203Ab0GQRt0 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 17 Jul 2010 19:49:26 +0200
-Received: by wyb38 with SMTP id 38so1446582wyb.36
-        for <linux-mips@linux-mips.org>; Sat, 17 Jul 2010 10:49:21 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jul 2010 21:00:19 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:55753 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492025Ab0GQTAP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Jul 2010 21:00:15 +0200
+Received: by bwz15 with SMTP id 15so2039713bwz.36
+        for <linux-mips@linux-mips.org>; Sat, 17 Jul 2010 12:00:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:reply-to:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=R7gemLKJFKQN9loheEruriXj5gOfoavNbXaXzQ30SlQ=;
-        b=CTE3IlQTbn7hmdwMYzhIwng9c2itU948iQSSAOHd92qHbMiiggUPE2IwYABrUP6w+W
-         F0odPST5RxbTdFfFo21YBLA6QZXkn5MonDlsogJ6vg1ncoeNs8LrLY3IOSxDnvZNrZfi
-         R9Wy8/ODiecCpy6GfqX5a8Qbewaa0Omy4cfNY=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=BMi14MJwR+HcTr9iqMoKHuNdtdCezf3fz3V20TKJrtc=;
+        b=I4rm3Crdge12WBL/ZBFYx5038U08dbMSxPOJFQC2PZ2Bo68VvE9gOFQ0QBDKRDSJy1
+         VdO5o3ED2LmLQaoVLrw9idndD7QTUDIdjbrhaPI/Y6kpwiXmy6nxpmpXBHpLU36+c0Cj
+         E+yDWz+c5G2+Ac4C9+L1K9NBI9YbNeU3p8Wpc=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=DzEdjeFh5Nrk2LcULpQNMdfHmfExNASjqq9Wf4xbMrBMPZIaNhKvVbie1uyRHtnSEK
-         DmM1R6jFMwfMCysFhLzyZlTTJ1BrQ0j/qMOqdwLa1bVZ6z1vXBDkHzIIansoTYJeSTe8
-         GEr3dcfkuw43fdbT7ipmUw7SA6oUdJ+32knyk=
-Received: by 10.227.22.33 with SMTP id l33mr2151739wbb.101.1279388961200;
-        Sat, 17 Jul 2010 10:49:21 -0700 (PDT)
-Received: from lenovo.localnet (florian.mimichou.net [88.178.11.95])
-        by mx.google.com with ESMTPS id p45sm1344673weq.45.2010.07.17.10.49.19
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=YONGN/5yM4WWsH1Q4EOqWZSRwfhrJ7c5VU3g+zsOzk5TGL8BtVmpzRyFNSA5OFLzCR
+         1CM4W9vF9RIbs6kHDzaaD3PNrkq6WUrSgBn41kBiE1GM7v7wO0LcpbGQIctti9O+dFim
+         kJs7mMV+Z8MFKIGCnPR3hPL3kkl7OGDEQQLHg=
+Received: by 10.204.131.132 with SMTP id x4mr2173851bks.50.1279393214252;
+        Sat, 17 Jul 2010 12:00:14 -0700 (PDT)
+Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
+        by mx.google.com with ESMTPS id a9sm17030219bky.23.2010.07.17.12.00.12
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 17 Jul 2010 10:49:19 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-Reply-To: Florian Fainelli <florian@openwrt.org>
-To:     Wolfgang Grandegger <wg@grandegger.com>
-Subject: Re: [PATCH] mips/alchemy: define eth platform devices in the correct order
-Date:   Sat, 17 Jul 2010 19:37:58 +0200
-User-Agent: KMail/1.13.3 (Linux/2.6.34-1-amd64; KDE/4.4.4; x86_64; ; )
+        Sat, 17 Jul 2010 12:00:13 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@googlemail.com>,
-        linux-mips@linux-mips.org, Wolfgang Grandegger <wg@denx.de>
-References: <1279377528-3190-1-git-send-email-wg@grandegger.com> <AANLkTikEjMarWjpMLQYCceRzmr7mL8RZp3-9MZ_tvKO8@mail.gmail.com> <4C41E5C0.9010006@grandegger.com>
-In-Reply-To: <4C41E5C0.9010006@grandegger.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <201007171937.59573.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+        Wolfgang Grandegger <wg@denx.de>,
+        Florian Fainelli <floarian@openwrt.org>
+Subject: [RFC PATCH] au1000_eth: get ethernet address from platform_data
+Date:   Sat, 17 Jul 2010 21:00:08 +0200
+Message-Id: <1279393208-14175-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.1.1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27413
+X-archive-position: 27414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi 
+Modify au1000_eth to receive an ethernet address from platform data,
+or choose a random one.
 
-Le Saturday 17 July 2010 19:17:52, Wolfgang Grandegger a écrit :
-> On 07/17/2010 07:01 PM, Manuel Lauss wrote:
-> > Servus Wolfgang,
-> > 
-> > On Sat, Jul 17, 2010 at 4:38 PM, Wolfgang Grandegger <wg@grandegger.com> 
-wrote:
-> >> From: Wolfgang Grandegger <wg@denx.de>
-> >> 
-> >> Currently, the eth devices are probed in the inverse order, first
-> >> au1xxx_eth1_device and then au1xxx_eth0_device. On the GPR board,
-> >> 
-> >> this makes trouble:
-> >>  # ifconfig|grep HWaddr
-> >>  eth0      Link encap:Ethernet  HWaddr 00:50:C2:0C:30:01
-> >>  eth1      Link encap:Ethernet  HWaddr 66:22:01:80:38:10
-> >> 
-> >> A bogous ethernet hwaddr is assigned to the first device and
-> >> au1xxx_eth0_device is mapped to eth1, which even does not work
+The default address is usually provided by the firmware; modify
+platform device registration to use it if the board code has not
+already overridden it.
 
-Most likely prom_get_ethernet_addr is failing for the first device because 
-pdev->id == 1 that is why you get such an address, take a look at au1000-
-eth.c.
+Cc: Wolfgang Grandegger <wg@denx.de>
+Cc: Florian Fainelli <floarian@openwrt.org>
+Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+---
+IMHO a device driver should not call firmware-specific functions
+(be it MIPS-style prom_get_*(), OF properties or whatever) to
+supply missing information.  Instead this should be done by the
+platform code which sets up the device.  This patch does just that.
 
-> >> 
-> >> properly. With this patch, the problems are gone:
-> >>  # ifconfig|grep HWaddr
-> >>  eth0      Link encap:Ethernet  HWaddr 66:22:11:32:38:10
-> >>  eth1      Link encap:Ethernet  HWaddr 66:22:11:32:38:11
-> > 
-> > Interesting.  I don't disagree with the patch; what do you think about
-> > passing MAC address via platform_data?   I don't particularly like
-> > how the driver is trying to get a MAC address using the prom interface.
+Compile-tested only.  Florian, Wolfgang: could you please give this
+a try on your boards?  If it works and you agree to it, I'll
+resubmit it also to linux-netdev.  Thank you!
 
-The patch is actually good, because there are no reasons to register the 
-second MAC before the first one, sorry about that. However, the real fix also 
-involves au1000-eth,c in au1000_probe(). We currently only handle the case 
-where the pdev->id is 0, not 1. When pdev->id == 1 you end up defaulting to 
-the default au1000-eth defined MAC address. So I would do it that way:
+ arch/mips/alchemy/common/platform.c            |   25 ++++++++++++++++---
+ arch/mips/include/asm/mach-au1x00/au1xxx_eth.h |    1 +
+ drivers/net/au1000_eth.c                       |   31 +++++------------------
+ 3 files changed, 29 insertions(+), 28 deletions(-)
 
-- make the board code get the ethernet MAC address for the given adapter
-- pass it via platform_data
-- au1000-eth checks for its validity or generates a random one
-
-> 
-> Well, I don't think it's a good idea. Each board should have a different
-> mac address and it's nomally stored somewhere in the boards non-volatile
-> storage during board bringup.
-> 
-> > I'll try to cook something up.
-> 
-> But not via platform data, please. Or have I missed something. With the
-> flat device tree (as used for PowerPC) the situation is different
-> because the boot-loader can fixup the MAC address before booting Linux.
-
-MIPS has no mainlined support for DT yet, but still, you would have to cope 
-with existing boards running YAMON as a bootloader, so using prom_getenv() is 
-imho a good solution.
---
-Florian
+diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
+index 7186a02..9166a6a 100644
+--- a/arch/mips/alchemy/common/platform.c
++++ b/arch/mips/alchemy/common/platform.c
+@@ -12,6 +12,7 @@
+  */
+ 
+ #include <linux/dma-mapping.h>
++#include <linux/etherdevice.h>
+ #include <linux/platform_device.h>
+ #include <linux/serial_8250.h>
+ #include <linux/init.h>
+@@ -21,6 +22,8 @@
+ #include <asm/mach-au1x00/au1100_mmc.h>
+ #include <asm/mach-au1x00/au1xxx_eth.h>
+ 
++#include <prom.h>
++
+ static void alchemy_8250_pm(struct uart_port *port, unsigned int state,
+ 			    unsigned int old_state)
+ {
+@@ -450,20 +453,34 @@ static struct platform_device *au1xxx_platform_devices[] __initdata = {
+ static int __init au1xxx_platform_init(void)
+ {
+ 	unsigned int uartclk = get_au1x00_uart_baud_base() * 16;
+-	int i;
++	int i, err;
++	unsigned char ethaddr[6];
+ 
+ 	/* Fill up uartclk. */
+ 	for (i = 0; au1x00_uart_data[i].flags; i++)
+ 		au1x00_uart_data[i].uartclk = uartclk;
+ 
++	/* use firmware-provided mac addr if available and necessary */
++	err = prom_get_ethernet_addr(ethaddr);
++	if (!err && !is_valid_ether_addr(au1xxx_eth0_platform_data.mac))
++		memcpy(au1xxx_eth0_platform_data.mac, ethaddr, 6);
++
++	i = platform_add_devices(au1xxx_platform_devices,
++				 ARRAY_SIZE(au1xxx_platform_devices));
++	if (i)
++		return i;
++
+ #ifndef CONFIG_SOC_AU1100
++	ethaddr[5] += 1;	/* next addr for 2nd MAC */
++	if (!err && !is_valid_ether_addr(au1xxx_eth1_platform_data.mac))
++		memcpy(au1xxx_eth1_platform_data.mac, ethaddr, 6);
++
+ 	/* Register second MAC if enabled in pinfunc */
+ 	if (!(au_readl(SYS_PINFUNC) & (u32)SYS_PF_NI2))
+-		platform_device_register(&au1xxx_eth1_device);
++		err = platform_device_register(&au1xxx_eth1_device);
+ #endif
+ 
+-	return platform_add_devices(au1xxx_platform_devices,
+-				    ARRAY_SIZE(au1xxx_platform_devices));
++	return err;
+ }
+ 
+ arch_initcall(au1xxx_platform_init);
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+index bae9b75..49dc8d9 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+@@ -9,6 +9,7 @@ struct au1000_eth_platform_data {
+ 	int phy_addr;
+ 	int phy_busid;
+ 	int phy_irq;
++	char mac[6];
+ };
+ 
+ void __init au1xxx_override_eth_cfg(unsigned port,
+diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
+index ece6128..17e7e27 100644
+--- a/drivers/net/au1000_eth.c
++++ b/drivers/net/au1000_eth.c
+@@ -104,14 +104,6 @@ MODULE_VERSION(DRV_VERSION);
+  * complete immediately.
+  */
+ 
+-/* These addresses are only used if yamon doesn't tell us what
+- * the mac address is, and the mac address is not passed on the
+- * command line.
+- */
+-static unsigned char au1000_mac_addr[6] __devinitdata = {
+-	0x00, 0x50, 0xc2, 0x0c, 0x30, 0x00
+-};
+-
+ struct au1000_private *au_macs[NUM_ETH_INTERFACES];
+ 
+ /*
+@@ -1002,7 +994,6 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 	db_dest_t *pDB, *pDBfree;
+ 	int irq, i, err = 0;
+ 	struct resource *base, *macen;
+-	char ethaddr[6];
+ 
+ 	base = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!base) {
+@@ -1079,24 +1070,13 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 	}
+ 	aup->mac_id = pdev->id;
+ 
+-	if (pdev->id == 0) {
+-		if (prom_get_ethernet_addr(ethaddr) == 0)
+-			memcpy(au1000_mac_addr, ethaddr, sizeof(au1000_mac_addr));
+-		else {
+-			netdev_info(dev, "No MAC address found\n");
+-				/* Use the hard coded MAC addresses */
+-		}
+-
++	if (pdev->id == 0)
+ 		au1000_setup_hw_rings(aup, MAC0_RX_DMA_ADDR, MAC0_TX_DMA_ADDR);
+-	} else if (pdev->id == 1)
++	else if (pdev->id == 1)
+ 		au1000_setup_hw_rings(aup, MAC1_RX_DMA_ADDR, MAC1_TX_DMA_ADDR);
+ 
+-	/*
+-	 * Assign to the Ethernet ports two consecutive MAC addresses
+-	 * to match those that are printed on their stickers
+-	 */
+-	memcpy(dev->dev_addr, au1000_mac_addr, sizeof(au1000_mac_addr));
+-	dev->dev_addr[5] += pdev->id;
++	/* set a random MAC now in case platform_data doesn't provide one */
++	random_ether_addr(dev->dev_addr);
+ 
+ 	*aup->enable = 0;
+ 	aup->mac_enabled = 0;
+@@ -1106,6 +1086,9 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 		dev_info(&pdev->dev, "no platform_data passed, PHY search on MAC0\n");
+ 		aup->phy1_search_mac0 = 1;
+ 	} else {
++		if (is_valid_ether_addr(pd->mac))
++			memcpy(dev->dev_addr, pd->mac, 6);
++
+ 		aup->phy_static_config = pd->phy_static_config;
+ 		aup->phy_search_highest_addr = pd->phy_search_highest_addr;
+ 		aup->phy1_search_mac0 = pd->phy1_search_mac0;
+-- 
+1.7.1.1

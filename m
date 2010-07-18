@@ -1,81 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jul 2010 21:11:15 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:59719 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492053Ab0GQTLL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Jul 2010 21:11:11 +0200
-Received: by pwj7 with SMTP id 7so1539222pwj.36
-        for <multiple recipients>; Sat, 17 Jul 2010 12:11:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Jul 2010 18:54:23 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:61571 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491937Ab0GRQyS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Jul 2010 18:54:18 +0200
+Received: by fxm3 with SMTP id 3so2066074fxm.36
+        for <multiple recipients>; Sun, 18 Jul 2010 09:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=6d7y1BDHKMq6wKs33M2LFaRmOv2YIqN+Ju5JVdyZ9KY=;
-        b=Rl25S2HHlyl0OVh0o8Zi6yEvm+qWnU6sslItdlsfbVwBAdL5o4AlNz0nJRTiAxmBMQ
-         QDA+D2sWdTM62l0mQtSLMNogQZI0V3Z6i0i4ByDTubOJltjXi+H9T2YIfPTiNPOw6c2C
-         247RReVmmj0pH9nYj1MneMze7gWDSdWc6mw3Y=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:date:message-id:mime-version
+         :x-mailer:content-transfer-encoding;
+        bh=tdkpY03EtAKybHqBsPB2pi80nrm1iESFBo56rn7QgrM=;
+        b=nfXAl5rlF04z4pt1ZrHwioosFeEFnTxjocga63PTaTKf7zhqw5evwikvCxCzMi3f/p
+         9+kXvAd8Z+WIh0AeTKPR1uagenI0ImANG6zxkQqEfsSQQ/qxGVT/Fdne+ATiq4SzypKz
+         WesVggnkaUgjCFSmMjQTYhb65O/rYYoCYD+z8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=EoG3Bx1ZNUejkfFXi8LDTqgmQ/m3KNtL3WuLxbQ8wc9QFLerYDcZ5tZMff41+PsskV
-         7o51yhRnQVaSx6ZAn3rlf8qBGobaFZwu68gsQMs+JD8uWOdtW5Icg5VMfNJnbprliorE
-         VoMW/j+Wsq1H/SRHB6htwU11b0K3VG33hyHb0=
-Received: by 10.142.224.7 with SMTP id w7mr3754279wfg.84.1279393864511;
-        Sat, 17 Jul 2010 12:11:04 -0700 (PDT)
-Received: from localhost.localdomain ([182.18.29.11])
-        by mx.google.com with ESMTPS id c16sm14837754rvn.1.2010.07.17.12.11.02
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 17 Jul 2010 12:11:03 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] MIPS: tracing: Fix the indentation of mcount.S
-Date:   Sun, 18 Jul 2010 03:10:51 +0800
-Message-Id: <1279393851-27153-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.0.4
-Return-Path: <wuzhangjin@gmail.com>
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :date:message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=OALJ818eV69LiRNaeP5xD2QJycy8XC7fJf22PyddaPCnfL4JcpXJsVg4K1ObWV2DNF
+         kN3AE7OmpxkFloBt0kzFVp1Lm8PpZU1BrNghBpzBqgfDS9vkP2FdCRGtJ8qT8FV6hwiG
+         7Jb4K5Wjzu01Menh+JtGmpWr3Q+ouvyMOOmUI=
+Received: by 10.223.104.130 with SMTP id p2mr2733736fao.9.1279472052962;
+        Sun, 18 Jul 2010 09:54:12 -0700 (PDT)
+Received: from [192.168.255.16] (a91-152-69-107.elisa-laajakaista.fi [91.152.69.107])
+        by mx.google.com with ESMTPS id h4sm1655487faj.39.2010.07.18.09.54.10
+        (version=SSLv3 cipher=RC4-MD5);
+        Sun, 18 Jul 2010 09:54:11 -0700 (PDT)
+Subject: Re: [PATCH v3] MTD: Nand: Add JZ4740 NAND driver
+From:   Artem Bityutskiy <dedekind1@gmail.com>
+Reply-To: dedekind1@gmail.com
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        linux-mtd@lists.infradead.org
+In-Reply-To: <1279368929-21193-1-git-send-email-lars@metafoo.de>
+References: <1276924111-11158-18-git-send-email-lars@metafoo.de>
+         <1279368929-21193-1-git-send-email-lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Sun, 18 Jul 2010 19:54:08 +0300
+Message-Id: <1279472048.16247.63.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.3 (2.26.3-1.fc11) 
+Content-Transfer-Encoding: 8bit
+Return-Path: <dedekind1@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27415
+X-archive-position: 27416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dedekind1@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Sat, 2010-07-17 at 14:15 +0200, Lars-Peter Clausen wrote:
+> This patch adds support for the NAND controller on JZ4740 SoCs.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: David Woodhouse <dwmw2@infradead.org>
+> Cc: linux-mtd@lists.infradead.org
+> 
 
-The commit "MIPS: Tracing: Cleanup the arguments passing of
-prepare_ftrace_return" has moved the "jal     prepare_ftrace_return"
-instruction after the handling of the 3rd argument but forgotten
-removing the superfluous space before the related instructions, this
-patch does it.
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/kernel/mcount.S |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 6bfcb7a..4c968e7 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -165,12 +165,12 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
- 
- 	/* arg3: Get frame pointer of current stack */
- #ifdef CONFIG_FRAME_POINTER
--	 move	a2, fp
-+	move	a2, fp
- #else /* ! CONFIG_FRAME_POINTER */
- #ifdef CONFIG_64BIT
--	 PTR_LA	a2, PT_SIZE(sp)
-+	PTR_LA	a2, PT_SIZE(sp)
- #else
--	 PTR_LA	a2, (PT_SIZE+8)(sp)
-+	PTR_LA	a2, (PT_SIZE+8)(sp)
- #endif
- #endif
- 
+Do you expect this patch to go in via the MTD tree? I guess it might be
+better if it was MIPS tree?
 -- 
-1.7.0.4
+Best Regards,
+Artem Bityutskiy (Артём Битюцкий)

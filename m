@@ -1,71 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2010 18:51:01 +0200 (CEST)
-Received: from mail-out.m-online.net ([212.18.0.10]:38425 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492050Ab0GSQu4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jul 2010 18:50:56 +0200
-Received: from frontend1.mail.m-online.net (unknown [192.168.8.180])
-        by mail-out.m-online.net (Postfix) with ESMTP id 81C701C000BC;
-        Mon, 19 Jul 2010 18:50:55 +0200 (CEST)
-X-Auth-Info: EgcEcfZznLWqc0bE9WIkpdkcvvfzNweSxoJKd6MxGm0=
-Received: from lancy.mylan.de (p4FE647BA.dip.t-dialin.net [79.230.71.186])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 314D41C00161;
-        Mon, 19 Jul 2010 18:50:55 +0200 (CEST)
-Message-ID: <4C44827C.8030401@grandegger.com>
-Date:   Mon, 19 Jul 2010 18:51:08 +0200
-From:   Wolfgang Grandegger <wg@grandegger.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.9) Gecko/20100430 Fedora/3.0.4-2.fc12 Thunderbird/3.0.4
-MIME-Version: 1.0
-To:     Manuel Lauss <manuel.lauss@googlemail.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Wolfgang Grandegger <wg@denx.de>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: Re: [RFC PATCH v2] au1000_eth: get ethernet address from platform_data
-References: <1279544125-28104-1-git-send-email-manuel.lauss@googlemail.com>
-In-Reply-To: <1279544125-28104-1-git-send-email-manuel.lauss@googlemail.com>
-X-Enigmail-Version: 1.0.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <wg@grandegger.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2010 22:15:21 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:7334 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492267Ab0GSUPQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jul 2010 22:15:16 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4c44b26c0000>; Mon, 19 Jul 2010 13:15:40 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 19 Jul 2010 13:15:13 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 19 Jul 2010 13:15:13 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o6JKF6mx011095;
+        Mon, 19 Jul 2010 13:15:06 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o6JKExNK011094;
+        Mon, 19 Jul 2010 13:14:59 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 0/2] MIPS memory space randomization
+Date:   Mon, 19 Jul 2010 13:14:55 -0700
+Message-Id: <1279570497-11060-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.1.1
+X-OriginalArrivalTime: 19 Jul 2010 20:15:13.0075 (UTC) FILETIME=[18369030:01CB277F]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27422
+X-archive-position: 27423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wg@grandegger.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On 07/19/2010 02:55 PM, Manuel Lauss wrote:
-> Modify au1000_eth to receive an ethernet address from platform data,
-> or choose a random one.
-> 
-> The default address is usually provided by the firmware; modify
-> platform device registration to use it if the board code has not
-> already overridden it.
-> 
-> Cc: Wolfgang Grandegger <wg@denx.de>
-> Cc: Florian Fainelli <florian@openwrt.org>
-> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
-> ---
-> v2: diffed against linus-git, on top of Wolfgang's patch
->     "mips/alchemy: define eth platform devices in the correct order"
->     This one should actually apply cleanly.
-> 
-> 
-> IMHO a device driver should not call firmware-specific functions
-> (be it MIPS-style prom_get_*(), OF properties or whatever) to
-> get missing information.  Instead this should be done by the
-> platform code which sets up the device.  This patch does just that.
-> 
-> Compile-tested only.  Florian, Wolfgang: could you please give this
-> a try on your boards?  If it works and you agree to it, I'll
-> resubmit it also to linux-netdev.  Thank you! (I don't have
-> accessible au1000-eth hardware).
+x86, PPC and SPARC will randomize the application heap and library
+load addresses depending on the value of randomize_va_space.  This
+patch set implements address space randomization for MIPS.
 
-I will give the patch a try tomorrow morning when I'm back in the office.
+Tested with a 64-bit kernel (OCTEON) and verified, for all three ABIs,
+that the result of 'cat /proc/self/maps' gives different values for
+[heap] and shared libraries with each invocation.  The stack was
+already randomized and also gets a different value for each
+invocation.
 
-Wolfgang.
+Someone may want to test it on a 32-bit kernel, but it should work
+there as well.
+
+I will reply with the two patches.
+
+
+David Daney (2):
+  MIPS: Randomize mmap if randomize_va_space is set
+  MIPS: Enable heap randomization.
+
+ arch/mips/include/asm/elf.h       |    5 ++++
+ arch/mips/include/asm/processor.h |   11 ++++++++
+ arch/mips/kernel/syscall.c        |   49 ++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 64 insertions(+), 1 deletions(-)

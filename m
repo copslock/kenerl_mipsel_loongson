@@ -1,276 +1,209 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2010 06:01:34 +0200 (CEST)
-Received: from smtp.gentoo.org ([140.211.166.183]:50845 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492006Ab0GSEAk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Jul 2010 06:00:40 +0200
-Received: from localhost.localdomain (87-194-206-159.bethere.co.uk [87.194.206.159])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtp.gentoo.org (Postfix) with ESMTPSA id 3F2441B4008;
-        Mon, 19 Jul 2010 04:00:38 +0000 (UTC)
-From:   Ricardo Mendoza <ricmm@gentoo.org>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     Ricardo Mendoza <ricmm@gentoo.org>
-Subject: [PATCH 2/2] MIPS: RM7000: Add support for tertiary cache
-Date:   Mon, 19 Jul 2010 05:00:00 +0100
-Message-Id: <1279512000-9154-3-git-send-email-ricmm@gentoo.org>
-X-Mailer: git-send-email 1.6.4.4
-In-Reply-To: <1279512000-9154-2-git-send-email-ricmm@gentoo.org>
-References: <1279512000-9154-1-git-send-email-ricmm@gentoo.org>
- <1279512000-9154-2-git-send-email-ricmm@gentoo.org>
-Return-Path: <ricmm@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Jul 2010 14:55:37 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:50173 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491819Ab0GSMzc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Jul 2010 14:55:32 +0200
+Received: by bwz15 with SMTP id 15so2723226bwz.36
+        for <linux-mips@linux-mips.org>; Mon, 19 Jul 2010 05:55:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=mzZKVRPf0hJ+8e4GSzBaABZYafMI1A74/uV/IXFUbec=;
+        b=Aw48YLNP7sgtUbZ9GEaOXDwN73AjxHloy7GVh3FaNVNVq1uPLQ/+R0Tr00TdzyprHc
+         oCRH2Gtub1f4rmYasbrYTSkLXmlPUFhz5bE+xDAplFSLCFLjxm8fMc1bc6RSu3nZ1Ewn
+         j9onfUjfuVuL4hU84P5l4mYLSC2GF26fGfUdA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=szx8bIJg9o6dfuhdgeR/qzHY7dZI2BY0B69StBagoG6/bsogoC5qc1n+4SNv/h9oUO
+         FCk5tXzdKcfyZjL1ptVqxq9qXuz1N9YbS/h1A7mSqvH6eEzuWuf5qy8ECXr15tfuP46I
+         2Ly68nOc1SkO75NDF9QyDpXD+jzyPpTMsbWxQ=
+Received: by 10.204.27.20 with SMTP id g20mr3901642bkc.114.1279544131151;
+        Mon, 19 Jul 2010 05:55:31 -0700 (PDT)
+Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
+        by mx.google.com with ESMTPS id a9sm25700061bky.11.2010.07.19.05.55.28
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 19 Jul 2010 05:55:29 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     wg@grandegger.com, Manuel Lauss <manuel.lauss@googlemail.com>,
+        Wolfgang Grandegger <wg@denx.de>,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [RFC PATCH v2] au1000_eth: get ethernet address from platform_data
+Date:   Mon, 19 Jul 2010 14:55:25 +0200
+Message-Id: <1279544125-28104-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.1.1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27420
+X-archive-position: 27421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ricmm@gentoo.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-This adds support for the external tcache interface. Allows for platform
-independent size probing from 512KB to 8MB in powers of two.
+Modify au1000_eth to receive an ethernet address from platform data,
+or choose a random one.
 
-Signed-off-by: Ricardo Mendoza <ricmm@gentoo.org>
+The default address is usually provided by the firmware; modify
+platform device registration to use it if the board code has not
+already overridden it.
+
+Cc: Wolfgang Grandegger <wg@denx.de>
+Cc: Florian Fainelli <florian@openwrt.org>
+Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
 ---
- arch/mips/include/asm/cacheops.h |    2 +
- arch/mips/mm/sc-rm7k.c           |  151 ++++++++++++++++++++++++++++++++------
- 2 files changed, 130 insertions(+), 23 deletions(-)
+v2: diffed against linus-git, on top of Wolfgang's patch
+    "mips/alchemy: define eth platform devices in the correct order"
+    This one should actually apply cleanly.
 
-diff --git a/arch/mips/include/asm/cacheops.h b/arch/mips/include/asm/cacheops.h
-index 256ad2c..4ca68da 100644
---- a/arch/mips/include/asm/cacheops.h
-+++ b/arch/mips/include/asm/cacheops.h
-@@ -62,6 +62,8 @@
-  * RM7000-specific cacheops
+
+IMHO a device driver should not call firmware-specific functions
+(be it MIPS-style prom_get_*(), OF properties or whatever) to
+get missing information.  Instead this should be done by the
+platform code which sets up the device.  This patch does just that.
+
+Compile-tested only.  Florian, Wolfgang: could you please give this
+a try on your boards?  If it works and you agree to it, I'll
+resubmit it also to linux-netdev.  Thank you! (I don't have
+accessible au1000-eth hardware).
+
+ arch/mips/alchemy/common/platform.c            |   15 ++++++++++-
+ arch/mips/include/asm/mach-au1x00/au1xxx_eth.h |    1 +
+ drivers/net/au1000_eth.c                       |   31 +++++------------------
+ 3 files changed, 22 insertions(+), 25 deletions(-)
+
+diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
+index f9e5622..e9c354f 100644
+--- a/arch/mips/alchemy/common/platform.c
++++ b/arch/mips/alchemy/common/platform.c
+@@ -12,6 +12,7 @@
   */
- #define Page_Invalidate_T	0x16
-+#define Index_Store_Tag_T      0x0A
-+#define Index_Load_Tag_T       0x06
  
- /*
-  * R10000-specific cacheops
-diff --git a/arch/mips/mm/sc-rm7k.c b/arch/mips/mm/sc-rm7k.c
-index 85678c4..5b33352 100644
---- a/arch/mips/mm/sc-rm7k.c
-+++ b/arch/mips/mm/sc-rm7k.c
-@@ -16,6 +16,7 @@
- #include <asm/cacheops.h>
- #include <asm/mipsregs.h>
- #include <asm/processor.h>
-+#include <asm/sections.h>
- #include <asm/cacheflush.h> /* for run_uncached() */
+ #include <linux/dma-mapping.h>
++#include <linux/etherdevice.h>
+ #include <linux/platform_device.h>
+ #include <linux/serial_8250.h>
+ #include <linux/init.h>
+@@ -21,6 +22,8 @@
+ #include <asm/mach-au1x00/au1100_mmc.h>
+ #include <asm/mach-au1x00/au1xxx_eth.h>
  
- /* Primary cache parameters. */
-@@ -25,11 +26,15 @@
- /* Secondary cache parameters. */
- #define scache_size	(256*1024)	/* Fixed to 256KiB on RM7000 */
- 
-+/* Tertiary cache parameters */
-+#define tc_lsize	32
++#include <prom.h>
 +
- extern unsigned long icache_way_size, dcache_way_size;
-+unsigned long tcache_size;
- 
- #include <asm/r4kcache.h>
- 
--static int rm7k_tcache_enabled;
-+static int rm7k_tcache_init;
- 
- /*
-  * Writeback and invalidate the primary cache dcache before DMA.
-@@ -46,7 +51,7 @@ static void rm7k_sc_wback_inv(unsigned long addr, unsigned long size)
- 
- 	blast_scache_range(addr, addr + size);
- 
--	if (!rm7k_tcache_enabled)
-+	if (!rm7k_tcache_init)
- 		return;
- 
- 	a = addr & ~(tc_pagesize - 1);
-@@ -70,7 +75,7 @@ static void rm7k_sc_inv(unsigned long addr, unsigned long size)
- 
- 	blast_inv_scache_range(addr, addr + size);
- 
--	if (!rm7k_tcache_enabled)
-+	if (!rm7k_tcache_init)
- 		return;
- 
- 	a = addr & ~(tc_pagesize - 1);
-@@ -83,6 +88,45 @@ static void rm7k_sc_inv(unsigned long addr, unsigned long size)
- 	}
- }
- 
-+static void blast_rm7k_tcache(void)
-+{
-+	unsigned long start = CKSEG0ADDR(0);
-+	unsigned long end = start + tcache_size;
-+
-+	write_c0_taglo(0);
-+
-+	while (start < end) {
-+		cache_op(Page_Invalidate_T, start);
-+		start += tc_pagesize;
-+	}
-+}
-+
-+/*
-+ * This function is executed in uncached address space.
-+ */
-+static __cpuinit void __rm7k_tc_enable(void)
-+{
-+	int i;
-+
-+	set_c0_config(RM7K_CONF_TE);
-+
-+	write_c0_taglo(0);
-+	write_c0_taghi(0);
-+
-+	for (i = 0; i < tcache_size; i += tc_lsize)
-+		cache_op(Index_Store_Tag_T, CKSEG0ADDR(i));
-+}
-+
-+static __cpuinit void rm7k_tc_enable(void)
-+{
-+	if (read_c0_config() & RM7K_CONF_TE)
-+		return;
-+
-+	BUG_ON(tcache_size == 0);
-+
-+	run_uncached(__rm7k_tc_enable);
-+}
-+
- /*
-  * This function is executed in uncached address space.
-  */
-@@ -106,11 +150,27 @@ static __cpuinit void rm7k_sc_enable(void)
- 
- 	printk(KERN_INFO "Enabling secondary cache...\n");
- 	run_uncached(__rm7k_sc_enable);
-+
-+	if (rm7k_tcache_init)
-+		rm7k_tc_enable();
-+}
-+
-+static void rm7k_tc_disable(void)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	blast_rm7k_tcache();
-+	clear_c0_config(RM7K_CONF_TE);
-+	local_irq_save(flags);
- }
- 
- static void rm7k_sc_disable(void)
+ #define PORT(_base, _irq)					\
+ 	{							\
+ 		.mapbase	= _base,			\
+@@ -436,17 +439,27 @@ static int __init au1xxx_platform_init(void)
  {
- 	clear_c0_config(RM7K_CONF_SE);
-+
-+	if (rm7k_tcache_init)
-+		rm7k_tc_disable();
- }
+ 	unsigned int uartclk = get_au1x00_uart_baud_base() * 16;
+ 	int err, i;
++	unsigned char ethaddr[6];
  
- static struct bcache_ops rm7k_sc_ops = {
-@@ -120,6 +180,52 @@ static struct bcache_ops rm7k_sc_ops = {
- 	.bc_inv = rm7k_sc_inv
+ 	/* Fill up uartclk. */
+ 	for (i = 0; au1x00_uart_data[i].flags; i++)
+ 		au1x00_uart_data[i].uartclk = uartclk;
+ 
++	/* use firmware-provided mac addr if available and necessary */
++	i = prom_get_ethernet_addr(ethaddr);
++	if (!i && !is_valid_ether_addr(au1xxx_eth0_platform_data.mac))
++		memcpy(au1xxx_eth0_platform_data.mac, ethaddr, 6);
++
+ 	err = platform_add_devices(au1xxx_platform_devices,
+ 				   ARRAY_SIZE(au1xxx_platform_devices));
+ #ifndef CONFIG_SOC_AU1100
++	ethaddr[5] += 1;	/* next addr for 2nd MAC */
++	if (!i && !is_valid_ether_addr(au1xxx_eth1_platform_data.mac))
++		memcpy(au1xxx_eth1_platform_data.mac, ethaddr, 6);
++
+ 	/* Register second MAC if enabled in pinfunc */
+ 	if (!err && !(au_readl(SYS_PINFUNC) & (u32)SYS_PF_NI2))
+-		platform_device_register(&au1xxx_eth1_device);
++		err = platform_device_register(&au1xxx_eth1_device);
+ #endif
+ 
+ 	return err;
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+index bae9b75..49dc8d9 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+@@ -9,6 +9,7 @@ struct au1000_eth_platform_data {
+ 	int phy_addr;
+ 	int phy_busid;
+ 	int phy_irq;
++	char mac[6];
  };
  
-+/*
-+ * This is a probing function like the one found in c-r4k.c, we look for the
-+ * wrap around point with different addresses.
-+ */
-+static __cpuinit void __probe_tcache(void)
-+{
-+	unsigned long flags, addr, begin, end, pow2;
-+
-+	begin = (unsigned long) &_stext;
-+	begin  &= ~((8 * 1024 * 1024) - 1);
-+	end = begin + (8 * 1024 * 1024);
-+
-+	local_irq_save(flags);
-+
-+	set_c0_config(RM7K_CONF_TE);
-+
-+	/* Fill size-multiple lines with a valid tag */
-+	pow2 = (256 * 1024);
-+	for (addr = begin; addr <= end; addr = (begin + pow2)) {
-+		unsigned long *p = (unsigned long *) addr;
-+		__asm__ __volatile__("nop" : : "r" (*p));
-+		pow2 <<= 1;
-+	}
-+
-+	/* Load first line with a 0 tag, to check after */
-+	write_c0_taglo(0);
-+	write_c0_taghi(0);
-+	cache_op(Index_Store_Tag_T, begin);
-+
-+	/* Look for the wrap-around */
-+	pow2 = (512 * 1024);
-+	for (addr = begin + (512 * 1024); addr <= end; addr = begin + pow2) {
-+		cache_op(Index_Load_Tag_T, addr);
-+		if (!read_c0_taglo())
-+			break;
-+		pow2 <<= 1;
-+	}
-+
-+	addr -= begin;
-+	tcache_size = addr;
-+
-+	clear_c0_config(RM7K_CONF_TE);
-+
-+	local_irq_restore(flags);
-+}
-+
- void __cpuinit rm7k_sc_init(void)
- {
- 	struct cpuinfo_mips *c = &current_cpu_data;
-@@ -139,27 +245,26 @@ void __cpuinit rm7k_sc_init(void)
- 	if (!(config & RM7K_CONF_SE))
- 		rm7k_sc_enable();
+ void __init au1xxx_override_eth_cfg(unsigned port,
+diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
+index ece6128..17e7e27 100644
+--- a/drivers/net/au1000_eth.c
++++ b/drivers/net/au1000_eth.c
+@@ -104,14 +104,6 @@ MODULE_VERSION(DRV_VERSION);
+  * complete immediately.
+  */
  
-+	bcops = &rm7k_sc_ops;
-+
- 	/*
- 	 * While we're at it let's deal with the tertiary cache.
- 	 */
--	if (!(config & RM7K_CONF_TC)) {
+-/* These addresses are only used if yamon doesn't tell us what
+- * the mac address is, and the mac address is not passed on the
+- * command line.
+- */
+-static unsigned char au1000_mac_addr[6] __devinitdata = {
+-	0x00, 0x50, 0xc2, 0x0c, 0x30, 0x00
+-};
 -
--		/*
--		 * We can't enable the L3 cache yet. There may be board-specific
--		 * magic necessary to turn it on, and blindly asking the CPU to
--		 * start using it would may give cache errors.
--		 *
--		 * Also, board-specific knowledge may allow us to use the
--		 * CACHE Flash_Invalidate_T instruction if the tag RAM supports
--		 * it, and may specify the size of the L3 cache so we don't have
--		 * to probe it.
--		 */
--		printk(KERN_INFO "Tertiary cache present, %s enabled\n",
--		       (config & RM7K_CONF_TE) ? "already" : "not (yet)");
--
--		if ((config & RM7K_CONF_TE))
--			rm7k_tcache_enabled = 1;
--	}
+ struct au1000_private *au_macs[NUM_ETH_INTERFACES];
  
--	bcops = &rm7k_sc_ops;
-+	rm7k_tcache_init = 0;
-+	tcache_size = 0;
+ /*
+@@ -1002,7 +994,6 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 	db_dest_t *pDB, *pDBfree;
+ 	int irq, i, err = 0;
+ 	struct resource *base, *macen;
+-	char ethaddr[6];
+ 
+ 	base = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!base) {
+@@ -1079,24 +1070,13 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 	}
+ 	aup->mac_id = pdev->id;
+ 
+-	if (pdev->id == 0) {
+-		if (prom_get_ethernet_addr(ethaddr) == 0)
+-			memcpy(au1000_mac_addr, ethaddr, sizeof(au1000_mac_addr));
+-		else {
+-			netdev_info(dev, "No MAC address found\n");
+-				/* Use the hard coded MAC addresses */
+-		}
+-
++	if (pdev->id == 0)
+ 		au1000_setup_hw_rings(aup, MAC0_RX_DMA_ADDR, MAC0_TX_DMA_ADDR);
+-	} else if (pdev->id == 1)
++	else if (pdev->id == 1)
+ 		au1000_setup_hw_rings(aup, MAC1_RX_DMA_ADDR, MAC1_TX_DMA_ADDR);
+ 
+-	/*
+-	 * Assign to the Ethernet ports two consecutive MAC addresses
+-	 * to match those that are printed on their stickers
+-	 */
+-	memcpy(dev->dev_addr, au1000_mac_addr, sizeof(au1000_mac_addr));
+-	dev->dev_addr[5] += pdev->id;
++	/* set a random MAC now in case platform_data doesn't provide one */
++	random_ether_addr(dev->dev_addr);
+ 
+ 	*aup->enable = 0;
+ 	aup->mac_enabled = 0;
+@@ -1106,6 +1086,9 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 		dev_info(&pdev->dev, "no platform_data passed, PHY search on MAC0\n");
+ 		aup->phy1_search_mac0 = 1;
+ 	} else {
++		if (is_valid_ether_addr(pd->mac))
++			memcpy(dev->dev_addr, pd->mac, 6);
 +
-+	if (config & RM7K_CONF_TC)
-+		return;
-+
-+	/*
-+	 * No efficient way to ask the hardware for the size of the tcache,
-+	 * so must probe for it.
-+	 */
-+	run_uncached(__probe_tcache);
-+	rm7k_tc_enable();
-+	rm7k_tcache_init = 1;
-+	c->tcache.linesz = tc_lsize;
-+	c->tcache.ways = 1;
-+	printk(KERN_INFO "Tertiary cache size %ldK.\n", (tcache_size >> 10));
- }
+ 		aup->phy_static_config = pd->phy_static_config;
+ 		aup->phy_search_highest_addr = pd->phy_search_highest_addr;
+ 		aup->phy1_search_mac0 = pd->phy1_search_mac0;
 -- 
-1.6.4.4
+1.7.1.1

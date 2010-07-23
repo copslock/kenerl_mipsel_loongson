@@ -1,63 +1,279 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jul 2010 19:31:38 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:50021 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491967Ab0GWRbe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Jul 2010 19:31:34 +0200
-Received: by iwn40 with SMTP id 40so455307iwn.36
-        for <multiple recipients>; Fri, 23 Jul 2010 10:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=bFHoxsvORXizc2jFnH09Z94WARxVp1J+a/sVj03JI0c=;
-        b=CR25wj1v7JZY4+w49CFK1osdG3RH+nvKsCUVRSMoytzZQ8GvlNI57nUxyL8NFD0VwM
-         BlhSSqxPI5O6vUw4isX7oKR1DanmuoI9/88ZrsWkqylRSb/KxyuRwS+mURBD75ffhXFP
-         6JWxtkSAAj8Tb53wZZRnyLDip5c6mOiABbNfY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=x8wDihnr5QTuf3sBFcZ0P5i+7DiJ6o4b3QwxE0QSzacxFj/d83Ad1U/lm00eqmb0KU
-         rVK7RVc3Lu/g11ywtrHblm7ADhRlKjY/D6KAvck543mpyz1odc2gEjUmvZRD3pNy2eBg
-         M/d6mo0OjrA7JTrjqKIGMnOALLplqxQlVcvMI=
-MIME-Version: 1.0
-Received: by 10.231.190.149 with SMTP id di21mr3947954ibb.27.1279906292736; 
-        Fri, 23 Jul 2010 10:31:32 -0700 (PDT)
-Received: by 10.231.59.10 with HTTP; Fri, 23 Jul 2010 10:31:32 -0700 (PDT)
-In-Reply-To: <20100723170205.GB3923@linux-mips.org>
-References: <1279223105-23816-1-git-send-email-manuel.lauss@googlemail.com>
-        <1279223105-23816-2-git-send-email-manuel.lauss@googlemail.com>
-        <20100723170205.GB3923@linux-mips.org>
-Date:   Fri, 23 Jul 2010 19:31:32 +0200
-Message-ID: <AANLkTikG_FCh6DgX1Wwn7o6b2+uBRQz9F6JX=vjzba2k@mail.gmail.com>
-Subject: Re: [PATCH 2/2] serial: 8250: remove SERIAL_8250_AU1X00
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Linux-serial <linux-serial@vger.kernel.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Jul 2010 19:44:12 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:9760 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492039Ab0GWRoD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Jul 2010 19:44:03 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4c49d4fc0001>; Fri, 23 Jul 2010 10:44:28 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 23 Jul 2010 10:44:01 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 23 Jul 2010 10:44:01 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o6NHhuPx024113;
+        Fri, 23 Jul 2010 10:43:56 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o6NHhuIb024112;
+        Fri, 23 Jul 2010 10:43:56 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 1/5] MIPS: Octeon: Move MSI code out of octeon-irq.c.
+Date:   Fri, 23 Jul 2010 10:43:45 -0700
+Message-Id: <1279907029-24071-2-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.1.1
+In-Reply-To: <1279907029-24071-1-git-send-email-ddaney@caviumnetworks.com>
+References: <1279907029-24071-1-git-send-email-ddaney@caviumnetworks.com>
+X-OriginalArrivalTime: 23 Jul 2010 17:44:01.0097 (UTC) FILETIME=[A28B9390:01CB2A8E]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27443
+X-archive-position: 27444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 23, 2010 at 7:02 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Thu, Jul 15, 2010 at 09:45:05PM +0200, Manuel Lauss wrote:
->
-> Thanks, queued for 2.6.36.
->
-> It's probably harmless but there was a fairly large line offset in
-> arch/mips/alchemy/common/platform.c so you may want to check that what I
-> queued is ok.
+Put all the MSI code in one place (msi-octeon.c).  This simplifies
+octeon-irq.c and gets rid of some ugly #ifdefs
 
-It's ok, the offset comes from a few pm-related patches I usually work with.
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/cavium-octeon/octeon-irq.c |   93 ----------------------------------
+ arch/mips/pci/msi-octeon.c           |   90 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 88 insertions(+), 95 deletions(-)
 
-Thank you!
-        Manuel
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index c424cd1..f4b901a 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -10,8 +10,6 @@
+ #include <linux/smp.h>
+ 
+ #include <asm/octeon/octeon.h>
+-#include <asm/octeon/cvmx-pexp-defs.h>
+-#include <asm/octeon/cvmx-npi-defs.h>
+ 
+ static DEFINE_RAW_SPINLOCK(octeon_irq_ciu0_lock);
+ static DEFINE_RAW_SPINLOCK(octeon_irq_ciu1_lock);
+@@ -528,90 +526,6 @@ static struct irq_chip octeon_irq_chip_ciu1 = {
+ #endif
+ };
+ 
+-#ifdef CONFIG_PCI_MSI
+-
+-static DEFINE_RAW_SPINLOCK(octeon_irq_msi_lock);
+-
+-static void octeon_irq_msi_ack(unsigned int irq)
+-{
+-	if (!octeon_has_feature(OCTEON_FEATURE_PCIE)) {
+-		/* These chips have PCI */
+-		cvmx_write_csr(CVMX_NPI_NPI_MSI_RCV,
+-			       1ull << (irq - OCTEON_IRQ_MSI_BIT0));
+-	} else {
+-		/*
+-		 * These chips have PCIe. Thankfully the ACK doesn't
+-		 * need any locking.
+-		 */
+-		cvmx_write_csr(CVMX_PEXP_NPEI_MSI_RCV0,
+-			       1ull << (irq - OCTEON_IRQ_MSI_BIT0));
+-	}
+-}
+-
+-static void octeon_irq_msi_eoi(unsigned int irq)
+-{
+-	/* Nothing needed */
+-}
+-
+-static void octeon_irq_msi_enable(unsigned int irq)
+-{
+-	if (!octeon_has_feature(OCTEON_FEATURE_PCIE)) {
+-		/*
+-		 * Octeon PCI doesn't have the ability to mask/unmask
+-		 * MSI interrupts individually.  Instead of
+-		 * masking/unmasking them in groups of 16, we simple
+-		 * assume MSI devices are well behaved.  MSI
+-		 * interrupts are always enable and the ACK is assumed
+-		 * to be enough.
+-		 */
+-	} else {
+-		/* These chips have PCIe.  Note that we only support
+-		 * the first 64 MSI interrupts.  Unfortunately all the
+-		 * MSI enables are in the same register.  We use
+-		 * MSI0's lock to control access to them all.
+-		 */
+-		uint64_t en;
+-		unsigned long flags;
+-		raw_spin_lock_irqsave(&octeon_irq_msi_lock, flags);
+-		en = cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
+-		en |= 1ull << (irq - OCTEON_IRQ_MSI_BIT0);
+-		cvmx_write_csr(CVMX_PEXP_NPEI_MSI_ENB0, en);
+-		cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
+-		raw_spin_unlock_irqrestore(&octeon_irq_msi_lock, flags);
+-	}
+-}
+-
+-static void octeon_irq_msi_disable(unsigned int irq)
+-{
+-	if (!octeon_has_feature(OCTEON_FEATURE_PCIE)) {
+-		/* See comment in enable */
+-	} else {
+-		/*
+-		 * These chips have PCIe.  Note that we only support
+-		 * the first 64 MSI interrupts.  Unfortunately all the
+-		 * MSI enables are in the same register.  We use
+-		 * MSI0's lock to control access to them all.
+-		 */
+-		uint64_t en;
+-		unsigned long flags;
+-		raw_spin_lock_irqsave(&octeon_irq_msi_lock, flags);
+-		en = cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
+-		en &= ~(1ull << (irq - OCTEON_IRQ_MSI_BIT0));
+-		cvmx_write_csr(CVMX_PEXP_NPEI_MSI_ENB0, en);
+-		cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
+-		raw_spin_unlock_irqrestore(&octeon_irq_msi_lock, flags);
+-	}
+-}
+-
+-static struct irq_chip octeon_irq_chip_msi = {
+-	.name = "MSI",
+-	.enable = octeon_irq_msi_enable,
+-	.disable = octeon_irq_msi_disable,
+-	.ack = octeon_irq_msi_ack,
+-	.eoi = octeon_irq_msi_eoi,
+-};
+-#endif
+-
+ void __init arch_init_irq(void)
+ {
+ 	int irq;
+@@ -672,13 +586,6 @@ void __init arch_init_irq(void)
+ 		set_irq_chip_and_handler(irq, chip1, handle_percpu_irq);
+ 	}
+ 
+-#ifdef CONFIG_PCI_MSI
+-	/* 152 - 215 PCI/PCIe MSI interrupts */
+-	for (irq = OCTEON_IRQ_MSI_BIT0; irq <= OCTEON_IRQ_MSI_BIT63; irq++) {
+-		set_irq_chip_and_handler(irq, &octeon_irq_chip_msi,
+-					 handle_percpu_irq);
+-	}
+-#endif
+ 	set_c0_status(0x300 << 2);
+ }
+ 
+diff --git a/arch/mips/pci/msi-octeon.c b/arch/mips/pci/msi-octeon.c
+index 03742e6..1e31526 100644
+--- a/arch/mips/pci/msi-octeon.c
++++ b/arch/mips/pci/msi-octeon.c
+@@ -249,12 +249,99 @@ static irqreturn_t octeon_msi_interrupt(int cpl, void *dev_id)
+ 	return IRQ_NONE;
+ }
+ 
++static DEFINE_RAW_SPINLOCK(octeon_irq_msi_lock);
++
++static void octeon_irq_msi_ack(unsigned int irq)
++{
++	if (!octeon_has_feature(OCTEON_FEATURE_PCIE)) {
++		/* These chips have PCI */
++		cvmx_write_csr(CVMX_NPI_NPI_MSI_RCV,
++			       1ull << (irq - OCTEON_IRQ_MSI_BIT0));
++	} else {
++		/*
++		 * These chips have PCIe. Thankfully the ACK doesn't
++		 * need any locking.
++		 */
++		cvmx_write_csr(CVMX_PEXP_NPEI_MSI_RCV0,
++			       1ull << (irq - OCTEON_IRQ_MSI_BIT0));
++	}
++}
++
++static void octeon_irq_msi_eoi(unsigned int irq)
++{
++	/* Nothing needed */
++}
++
++static void octeon_irq_msi_enable(unsigned int irq)
++{
++	if (!octeon_has_feature(OCTEON_FEATURE_PCIE)) {
++		/*
++		 * Octeon PCI doesn't have the ability to mask/unmask
++		 * MSI interrupts individually.  Instead of
++		 * masking/unmasking them in groups of 16, we simple
++		 * assume MSI devices are well behaved.  MSI
++		 * interrupts are always enable and the ACK is assumed
++		 * to be enough.
++		 */
++	} else {
++		/* These chips have PCIe.  Note that we only support
++		 * the first 64 MSI interrupts.  Unfortunately all the
++		 * MSI enables are in the same register.  We use
++		 * MSI0's lock to control access to them all.
++		 */
++		uint64_t en;
++		unsigned long flags;
++		raw_spin_lock_irqsave(&octeon_irq_msi_lock, flags);
++		en = cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
++		en |= 1ull << (irq - OCTEON_IRQ_MSI_BIT0);
++		cvmx_write_csr(CVMX_PEXP_NPEI_MSI_ENB0, en);
++		cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
++		raw_spin_unlock_irqrestore(&octeon_irq_msi_lock, flags);
++	}
++}
++
++static void octeon_irq_msi_disable(unsigned int irq)
++{
++	if (!octeon_has_feature(OCTEON_FEATURE_PCIE)) {
++		/* See comment in enable */
++	} else {
++		/*
++		 * These chips have PCIe.  Note that we only support
++		 * the first 64 MSI interrupts.  Unfortunately all the
++		 * MSI enables are in the same register.  We use
++		 * MSI0's lock to control access to them all.
++		 */
++		uint64_t en;
++		unsigned long flags;
++		raw_spin_lock_irqsave(&octeon_irq_msi_lock, flags);
++		en = cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
++		en &= ~(1ull << (irq - OCTEON_IRQ_MSI_BIT0));
++		cvmx_write_csr(CVMX_PEXP_NPEI_MSI_ENB0, en);
++		cvmx_read_csr(CVMX_PEXP_NPEI_MSI_ENB0);
++		raw_spin_unlock_irqrestore(&octeon_irq_msi_lock, flags);
++	}
++}
++
++static struct irq_chip octeon_irq_chip_msi = {
++	.name = "MSI",
++	.enable = octeon_irq_msi_enable,
++	.disable = octeon_irq_msi_disable,
++	.ack = octeon_irq_msi_ack,
++	.eoi = octeon_irq_msi_eoi,
++};
+ 
+ /*
+  * Initializes the MSI interrupt handling code
+  */
+-int octeon_msi_initialize(void)
++static int __init octeon_msi_initialize(void)
+ {
++	int irq;
++
++	for (irq = OCTEON_IRQ_MSI_BIT0; irq <= OCTEON_IRQ_MSI_BIT63; irq++) {
++		set_irq_chip_and_handler(irq, &octeon_irq_chip_msi,
++					 handle_percpu_irq);
++	}
++
+ 	if (octeon_has_feature(OCTEON_FEATURE_PCIE)) {
+ 		if (request_irq(OCTEON_IRQ_PCI_MSI0, octeon_msi_interrupt,
+ 				IRQF_SHARED,
+@@ -284,5 +371,4 @@ int octeon_msi_initialize(void)
+ 	}
+ 	return 0;
+ }
+-
+ subsys_initcall(octeon_msi_initialize);
+-- 
+1.7.1.1

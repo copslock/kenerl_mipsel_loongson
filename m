@@ -1,62 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2010 23:29:53 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:10236 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492375Ab0GZV3r (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Jul 2010 23:29:47 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4c4dfe640000>; Mon, 26 Jul 2010 14:30:12 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 26 Jul 2010 14:29:44 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 26 Jul 2010 14:29:44 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o6QLTdeg013475;
-        Mon, 26 Jul 2010 14:29:39 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o6QLTcnn013474;
-        Mon, 26 Jul 2010 14:29:38 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Decode core number for R2 CPUs.
-Date:   Mon, 26 Jul 2010 14:29:37 -0700
-Message-Id: <1280179777-13442-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.1.1
-X-OriginalArrivalTime: 26 Jul 2010 21:29:44.0565 (UTC) FILETIME=[AA520A50:01CB2D09]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jul 2010 23:54:52 +0200 (CEST)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:46364 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492363Ab0GZVys (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Jul 2010 23:54:48 +0200
+Received: by vws11 with SMTP id 11so3202376vws.36
+        for <multiple recipients>; Mon, 26 Jul 2010 14:54:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=DydwOVXDprX2Cc9q6bwTR688qOYxKHt35jG1B3SsvSA=;
+        b=S+KJjbC8+89samHIiL3zHZdUeS/BiT5RI1Nl3p997EOD9KMcI62/kt/b0yBGeoWTRD
+         Ew17ZcpCvCr1uwELmRGAZu1PlbGlr5xCGK6IcTe+K0m9FdaHbj+mUIOpkceHqk5gje0e
+         PyWZ3zk86g2tffjr56qd9qBsK/43xE7IQeZiE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=W/Ca5OKkiPHWtJC8/nVnBQI4wZ9Fu4KR9Eaoqf4c40ZgCuqJWRJD1f1oB9NcEfCLGw
+         dWC0/OvSllkjDy7jNDw1cPK9E7d18OqtXd2MXxM+sB5lNhIek+J6alyapzOv2mL3Essp
+         KfZTrbVKBvcP7LHw8URsPNQFC/Y03OSnSJv/Y=
+MIME-Version: 1.0
+Received: by 10.220.161.201 with SMTP id s9mr4477545vcx.277.1280181282264; 
+        Mon, 26 Jul 2010 14:54:42 -0700 (PDT)
+Received: by 10.220.85.211 with HTTP; Mon, 26 Jul 2010 14:54:42 -0700 (PDT)
+In-Reply-To: <7A9214B0DEB2074FBCA688B30B04400D013F9D97@XMB-RCD-208.cisco.com>
+References: <AANLkTinBb3SN1DRL9Zt8Mu1fAYgsx9VRm4FwBz4oNfdq@mail.gmail.com>
+        <7A9214B0DEB2074FBCA688B30B04400D013F9D97@XMB-RCD-208.cisco.com>
+Date:   Mon, 26 Jul 2010 14:54:42 -0700
+Message-ID: <AANLkTikRzR+a1cymXNkbLJ0Gca+BxtvdNeUJU-gsc0MD@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Apply kmap_high_get on DMA functions.
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     "Dezhong Diao (dediao)" <dediao@cisco.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27491
+X-archive-position: 27492
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-The struct cpuinfo_mips.core field should be populated with the
-physical core number.  For R2 CPUs, this is carried in the low 10 bits
-of Ebase.
+On Mon, Jul 26, 2010 at 1:44 PM, Dezhong Diao (dediao) <dediao@cisco.com> wrote:
+> It is not a problem our hardware supports DMA directly to high memory.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/kernel/cpu-probe.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+Mine too.  The existing dma-default.c does not handle high pages at
+all, but applying your patch did not completely solve the problem on
+my setup so I think something else is still going wrong.  If I figure
+it out I'll post a fix.
 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 9b66331..b1b304e 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -761,6 +761,9 @@ static void __cpuinit decode_configs(struct cpuinfo_mips *c)
- 		ok = decode_config4(c);
- 
- 	mips_probe_watch_registers(c);
-+
-+	if (cpu_has_mips_r2)
-+		c->core = read_c0_ebase() & 0x3ff;
- }
- 
- static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
--- 
-1.7.1.1
+In the meantime could you please consider adding BUG() to the else clause, e.g.
+
++               if (addr) {
++                       addr += offset;
++                       __dma_sync_virtual(addr, size, direction);
++                       kunmap_high(page);
++               } else
++                       BUG()
+
+Thanks.

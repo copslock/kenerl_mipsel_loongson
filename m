@@ -1,48 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jul 2010 03:24:19 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:39170 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492196Ab0G2BYO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jul 2010 03:24:14 +0200
-Received: by pzk3 with SMTP id 3so25830pzk.36
-        for <multiple recipients>; Wed, 28 Jul 2010 18:24:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jul 2010 03:32:45 +0200 (CEST)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:48916 "EHLO
+        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492162Ab0G2Bcm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jul 2010 03:32:42 +0200
+Received: by pxi13 with SMTP id 13so2537pxi.36
+        for <multiple recipients>; Wed, 28 Jul 2010 18:32:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:received:received:in-reply-to
          :references:date:message-id:subject:from:to:cc:content-type;
-        bh=0bi+7STJbxWM6UN1d5SkpF6YhBCp1jTFMq2iQh1BrCY=;
-        b=qL12zKR82S7FGI1Jq6FO/R5wWtxnE81YNessALyKWuBkUfjLmFxcBGeGXmJKkdqmdO
-         qZnCIpGdNfLoHh+tVimRwRooBIiRe48PR5PsjBhIVII3bZzj93/OYJsweSVOSzjlvSNy
-         S7riRZK+YAdWKuXprGOH43WcATQAa/ByZDy5U=
+        bh=LcOQmI+3pp8CFRqx0vwglC3YCVZHMj2kPoBWInoT3CQ=;
+        b=qMM3UwffAxC2/3bIV+FBPUydbdiSxxIbIUxkJ5I1/2jN0yoeQDBTyhqaWXN7KP4Tqu
+         bAWtiIss0lT4OeVLDrwIYfVqUO28g9wFxM3g75OSQdx90L+A8ewB+J5CPBTLXkcPMhZb
+         bGWbwvCCMQie6qemGsSRgJMlXFhhGlGkg5C2A=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type;
-        b=mg/px9v3QVYKnRhGzpsNzBG4cTbhwhpF5DP9l+MFE8OsxiJe2NmR+v4APS4vG6X7KG
-         CIO4oU8nwx4xR5OUMfFtM6Iyy84In1YGzK2iyk8qqnOh6K66aWLYgwvndwU2n477n/Ki
-         CXozJ6wFVnC2ulXjpb1L3vexbof8vLln+0FME=
+        b=bvcrvzP2lHkAholIXOwZXKVPHVDtv7EbUbak0JnFxFTTQppI5mGm5cKWoL0V2Bh0lb
+         UWuTtzrjobxSLoMrEnSXR09A20nx38XBRlx+uHaBTO62lOyiYk6Cafsb8l6wSJ8t+fbx
+         KoNHxmKjhDSrRdfOydUD5fyCDXncaGUohaWzo=
 MIME-Version: 1.0
-Received: by 10.142.231.14 with SMTP id d14mr12531490wfh.129.1280366647578; 
-        Wed, 28 Jul 2010 18:24:07 -0700 (PDT)
-Received: by 10.142.232.14 with HTTP; Wed, 28 Jul 2010 18:24:07 -0700 (PDT)
-In-Reply-To: <503ec883993ca4be3a5680bf52091bf0fcf37357.1270655886.git.wuzhangjin@gmail.com>
-References: <cover.1270655886.git.wuzhangjin@gmail.com>
-        <cover.1270653461.git.wuzhangjin@gmail.com>
-        <503ec883993ca4be3a5680bf52091bf0fcf37357.1270655886.git.wuzhangjin@gmail.com>
-Date:   Thu, 29 Jul 2010 09:24:07 +0800
-Message-ID: <AANLkTikq5_XDmtOz9T9txzfF1nr2bFDXJCvRXiG4_g5r@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] MIPS: cavium-octeon: rewrite the sched_clock() 
-        based on mips_cyc2ns()
+Received: by 10.142.79.1 with SMTP id c1mr12527093wfb.279.1280367155364; Wed, 
+        28 Jul 2010 18:32:35 -0700 (PDT)
+Received: by 10.142.232.14 with HTTP; Wed, 28 Jul 2010 18:32:35 -0700 (PDT)
+In-Reply-To: <9890d1383c75ce6df44d357687a9c4e2d6ba4050.1275438553.git.wuzhangjin@gmail.com>
+References: <9890d1383c75ce6df44d357687a9c4e2d6ba4050.1275438553.git.wuzhangjin@gmail.com>
+Date:   Thu, 29 Jul 2010 09:32:35 +0800
+Message-ID: <AANLkTi=QT+GXLEQ39LvVPyEG9ETRJEho1owr3J5-mjck@mail.gmail.com>
+Subject: Re: [PATCH v2] MIPS: Unify the suffix of compressed vmlinux.bin
 From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        David Daney <ddaney@caviumnetworks.com>,
-        =?ISO-8859-1?Q?Ralf_R=F6sch?= <roesch.ralf@web.de>
-Content-Type: multipart/alternative; boundary=000e0cd29c9c3610be048c7c97de
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Cc:     Alexander Clouter <alex@digriz.org.uk>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Content-Type: multipart/alternative; boundary=001636e0b2fa7a43c2048c7cb59f
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27515
+X-archive-position: 27516
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,86 +49,89 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---000e0cd29c9c3610be048c7c97de
+--001636e0b2fa7a43c2048c7cb59f
 Content-Type: text/plain; charset=ISO-8859-1
 
 Hi, Ralf
 
-This may be not applicable for the original version is changed by
+ping ...
 
-[PATCH] OCTEON: workaround linking failures with gcc-4.4.x 32-bits
-toolchains
+Is it possible to queue the following several cleanups of the compressed
+kernel support to 2.6.36?
 
-from Florian Fainelli.
+1. [v2] MIPS: Unify the suffix of compressed vmlinux.bin
+http://patchwork.linux-mips.org/patch/1323/
+2. [v4] MIPS: Clean up the calculation of VMLINUZ_LOAD_ADDRESS
+http://patchwork.linux-mips.org/patch/1324/
+3. MIPS: Clean up arch/mips/boot/compressed/ld.script
+http://patchwork.linux-mips.org/patch/1381/
+4. MIPS: Clean up arch/mips/boot/compressed/decompress.c
+http://patchwork.linux-mips.org/patch/1382/
+5. MIPS: strip the un-needed sections of vmlinuz
+http://patchwork.linux-mips.org/patch/1383/
 
-Regards,
+All of them only include cleanups, no functional changes.
+
+Seems you need to apply them one by one as the above order.
+
+Best Regards,
 Wu Zhangjin
 
-On Thu, Apr 8, 2010 at 12:05 AM, Wu Zhangin <wuzhangjin@gmail.com> wrote:
+On Wed, Jun 2, 2010 at 4:35 PM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
 
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
+> The compressed vmlinux.bin is only a temp file, we can use the same
+> suffix(.z)
+> for them(.gz,.lzo,.lzma...) to remove several lines and simpify the
+> maintaining(no need to add the "suffix_$(xxx) := suffix" line).
 >
-> Changes from v1:
+> Changes:
 >
->  o use the new interface mips_cyc2ns() intead of the old
->  mips_sched_clock().
->
-> The commit "MIPS: add a common mips_cyc2ns()" have abstracted the
-> solution of the 64bit calculation's overflow problem into a common
-> mips_cyc2ns() function in arch/mips/include/asm/time.h, This patch just
-> rewrites the sched_clock() for cavium-octeon on it.
+>  v1 -> v2:
+>    o Rename vmlinux.z to vmlinux.bin.z for vmlinux.z here is the compressed
+>    vmlinux.bin, not compressed vmlinux.
 >
 > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 > ---
->  arch/mips/cavium-octeon/csrc-octeon.c |   29 ++---------------------------
->  1 files changed, 2 insertions(+), 27 deletions(-)
+>  arch/mips/boot/compressed/Makefile |   12 ++++--------
+>  1 files changed, 4 insertions(+), 8 deletions(-)
 >
-> diff --git a/arch/mips/cavium-octeon/csrc-octeon.c
-> b/arch/mips/cavium-octeon/csrc-octeon.c
-> index 0bf4bbe..bca0004 100644
-> --- a/arch/mips/cavium-octeon/csrc-octeon.c
-> +++ b/arch/mips/cavium-octeon/csrc-octeon.c
-> @@ -52,34 +52,9 @@ static struct clocksource clocksource_mips = {
+> diff --git a/arch/mips/boot/compressed/Makefile
+> b/arch/mips/boot/compressed/Makefile
+> index 74a52d7..a517f58 100644
+> --- a/arch/mips/boot/compressed/Makefile
+> +++ b/arch/mips/boot/compressed/Makefile
+> @@ -48,23 +48,19 @@ OBJCOPYFLAGS_vmlinux.bin := $(OBJCOPYFLAGS) -O binary
+> -R .comment -S
+>  $(obj)/vmlinux.bin: $(KBUILD_IMAGE) FORCE
+>        $(call if_changed,objcopy)
 >
->  unsigned long long notrace sched_clock(void)
->  {
-> -       /* 64-bit arithmatic can overflow, so use 128-bit.  */
-> -#if (__GNUC__ < 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ <= 3))
-> -       u64 t1, t2, t3;
-> -       unsigned long long rv;
-> -       u64 mult = clocksource_mips.mult;
-> -       u64 shift = clocksource_mips.shift;
-> -       u64 cnt = read_c0_cvmcount();
-> +       u64 cyc = read_c0_cvmcount();
+> -suffix_$(CONFIG_KERNEL_GZIP)  = gz
+> -suffix_$(CONFIG_KERNEL_BZIP2) = bz2
+> -suffix_$(CONFIG_KERNEL_LZMA)  = lzma
+> -suffix_$(CONFIG_KERNEL_LZO)   = lzo
+>  tool_$(CONFIG_KERNEL_GZIP)    = gzip
+>  tool_$(CONFIG_KERNEL_BZIP2)   = bzip2
+>  tool_$(CONFIG_KERNEL_LZMA)    = lzma
+>  tool_$(CONFIG_KERNEL_LZO)     = lzo
 >
-> -       asm (
-> -               "dmultu\t%[cnt],%[mult]\n\t"
-> -               "nor\t%[t1],$0,%[shift]\n\t"
-> -               "mfhi\t%[t2]\n\t"
-> -               "mflo\t%[t3]\n\t"
-> -               "dsll\t%[t2],%[t2],1\n\t"
-> -               "dsrlv\t%[rv],%[t3],%[shift]\n\t"
-> -               "dsllv\t%[t1],%[t2],%[t1]\n\t"
-> -               "or\t%[rv],%[t1],%[rv]\n\t"
-> -               : [rv] "=&r" (rv), [t1] "=&r" (t1), [t2] "=&r" (t2), [t3]
-> "=&r" (t3)
-> -               : [cnt] "r" (cnt), [mult] "r" (mult), [shift] "r" (shift)
-> -               : "hi", "lo");
-> -       return rv;
-> -#else
-> -       /* GCC > 4.3 do it the easy way.  */
-> -       unsigned int __attribute__((mode(TI))) t;
-> -       t = read_c0_cvmcount();
-> -       t = t * clocksource_mips.mult;
-> -       return (unsigned long long)(t >> clocksource_mips.shift);
-> -#endif
-> +       return mips_cyc2ns(cyc, clocksource_mips.mult,
-> clocksource_mips.shift);
->  }
+> -targets += vmlinux.gz vmlinux.bz2 vmlinux.lzma vmlinux.lzo
+> -$(obj)/vmlinux.$(suffix_y): $(obj)/vmlinux.bin FORCE
+> +targets += vmlinux.bin.z
+> +$(obj)/vmlinux.bin.z: $(obj)/vmlinux.bin FORCE
+>        $(call if_changed,$(tool_y))
 >
->  void __init plat_time_init(void)
+>  targets += piggy.o
+> -OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.$(suffix_y) \
+> +OBJCOPYFLAGS_piggy.o := --add-section=.image=$(obj)/vmlinux.bin.z \
+>
+> --set-section-flags=.image=contents,alloc,load,readonly,data
+> -$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.$(suffix_y) FORCE
+> +$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE
+>        $(call if_changed,objcopy)
+>
+>  LDFLAGS_vmlinuz := $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T
 > --
-> 1.7.0.1
+> 1.6.5
 >
 >
 
@@ -139,91 +141,89 @@ MSN+Gtalk: wuzhangjin@gmail.com
 Blog: http://falcon.oss.lzu.edu.cn
 Tel:+86-18710032278
 
---000e0cd29c9c3610be048c7c97de
+--001636e0b2fa7a43c2048c7cb59f
 Content-Type: text/html; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Ralf<br><br>This may be not applicable for the original version is chan=
-ged by<br><br>[PATCH] OCTEON: workaround linking failures with gcc-4.4.x 32=
--bits toolchains<br><br>from <span class=3D"gI">Florian Fainelli.<br><br>Re=
-gards,<br>
-Wu Zhangjin<br></span><br><div class=3D"gmail_quote">On Thu, Apr 8, 2010 at=
- 12:05 AM, Wu Zhangin <span dir=3D"ltr">&lt;<a href=3D"mailto:wuzhangjin@gm=
-ail.com">wuzhangjin@gmail.com</a>&gt;</span> wrote:<br><blockquote class=3D=
-"gmail_quote" style=3D"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rg=
-b(204, 204, 204); padding-left: 1ex;">
-From: Wu Zhangjin &lt;<a href=3D"mailto:wuzhangjin@gmail.com">wuzhangjin@gm=
-ail.com</a>&gt;<br>
+Hi, Ralf<br><br>ping ...<br><br>Is it possible to queue the following sever=
+al cleanups of the compressed kernel support to 2.6.36?<br><br>1. [v2] MIPS=
+: Unify the suffix of compressed vmlinux.bin<br><a href=3D"http://patchwork=
+.linux-mips.org/patch/1323/">http://patchwork.linux-mips.org/patch/1323/</a=
+><br>
+2. [v4] MIPS: Clean up the calculation of VMLINUZ_LOAD_ADDRESS<br><a href=
+=3D"http://patchwork.linux-mips.org/patch/1324/">http://patchwork.linux-mip=
+s.org/patch/1324/</a><br>3. MIPS: Clean up arch/mips/boot/compressed/ld.scr=
+ipt<br>
+<a href=3D"http://patchwork.linux-mips.org/patch/1381/">http://patchwork.li=
+nux-mips.org/patch/1381/</a><br>4. MIPS: Clean up arch/mips/boot/compressed=
+/decompress.c<br><a href=3D"http://patchwork.linux-mips.org/patch/1382/">ht=
+tp://patchwork.linux-mips.org/patch/1382/</a><br>
+5. MIPS: strip the un-needed sections of vmlinuz<br><a href=3D"http://patch=
+work.linux-mips.org/patch/1383/">http://patchwork.linux-mips.org/patch/1383=
+/</a><br><br>All of them only include cleanups, no functional changes.<br>
+<br>Seems you need to apply them one by one as the above order.<br><br>Best=
+ Regards,<br>Wu Zhangjin<br><br><div class=3D"gmail_quote">On Wed, Jun 2, 2=
+010 at 4:35 PM, Wu Zhangjin <span dir=3D"ltr">&lt;<a href=3D"mailto:wuzhang=
+jin@gmail.com">wuzhangjin@gmail.com</a>&gt;</span> wrote:<br>
+<blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 0pt 0.8ex; borde=
+r-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;">The compressed vm=
+linux.bin is only a temp file, we can use the same suffix(.z)<br>
+for them(.gz,.lzo,.lzma...) to remove several lines and simpify the<br>
+maintaining(no need to add the &quot;suffix_$(xxx) :=3D suffix&quot; line).=
 <br>
-Changes from v1:<br>
 <br>
- =A0o use the new interface mips_cyc2ns() intead of the old<br>
- =A0mips_sched_clock().<br>
+Changes:<br>
 <br>
-The commit &quot;MIPS: add a common mips_cyc2ns()&quot; have abstracted the=
-<br>
-solution of the 64bit calculation&#39;s overflow problem into a common<br>
-mips_cyc2ns() function in arch/mips/include/asm/time.h, This patch just<br>
-rewrites the sched_clock() for cavium-octeon on it.<br>
+ =A0v1 -&gt; v2:<br>
+ =A0 =A0o Rename vmlinux.z to vmlinux.bin.z for vmlinux.z here is the compr=
+essed<br>
+ =A0 =A0vmlinux.bin, not compressed vmlinux.<br>
 <br>
 Signed-off-by: Wu Zhangjin &lt;<a href=3D"mailto:wuzhangjin@gmail.com">wuzh=
 angjin@gmail.com</a>&gt;<br>
 ---<br>
-=A0arch/mips/cavium-octeon/csrc-octeon.c | =A0 29 ++-----------------------=
-----<br>
-=A01 files changed, 2 insertions(+), 27 deletions(-)<br>
+=A0arch/mips/boot/compressed/Makefile | =A0 12 ++++--------<br>
+=A01 files changed, 4 insertions(+), 8 deletions(-)<br>
 <br>
-diff --git a/arch/mips/cavium-octeon/csrc-octeon.c b/arch/mips/cavium-octeo=
-n/csrc-octeon.c<br>
-index 0bf4bbe..bca0004 100644<br>
---- a/arch/mips/cavium-octeon/csrc-octeon.c<br>
-+++ b/arch/mips/cavium-octeon/csrc-octeon.c<br>
-@@ -52,34 +52,9 @@ static struct clocksource clocksource_mips =3D {<br>
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed=
+/Makefile<br>
+index 74a52d7..a517f58 100644<br>
+--- a/arch/mips/boot/compressed/Makefile<br>
++++ b/arch/mips/boot/compressed/Makefile<br>
+@@ -48,23 +48,19 @@ OBJCOPYFLAGS_vmlinux.bin :=3D $(OBJCOPYFLAGS) -O binary=
+ -R .comment -S<br>
+=A0$(obj)/vmlinux.bin: $(KBUILD_IMAGE) FORCE<br>
+ =A0 =A0 =A0 =A0$(call if_changed,objcopy)<br>
 <br>
-=A0unsigned long long notrace sched_clock(void)<br>
-=A0{<br>
-- =A0 =A0 =A0 /* 64-bit arithmatic can overflow, so use 128-bit. =A0*/<br>
--#if (__GNUC__ &lt; 4) || ((__GNUC__ =3D=3D 4) &amp;&amp; (__GNUC_MINOR__ &=
-lt;=3D 3))<br>
-- =A0 =A0 =A0 u64 t1, t2, t3;<br>
-- =A0 =A0 =A0 unsigned long long rv;<br>
-- =A0 =A0 =A0 u64 mult =3D clocksource_mips.mult;<br>
-- =A0 =A0 =A0 u64 shift =3D clocksource_mips.shift;<br>
-- =A0 =A0 =A0 u64 cnt =3D read_c0_cvmcount();<br>
-+ =A0 =A0 =A0 u64 cyc =3D read_c0_cvmcount();<br>
+-suffix_$(CONFIG_KERNEL_GZIP) =A0=3D gz<br>
+-suffix_$(CONFIG_KERNEL_BZIP2) =3D bz2<br>
+-suffix_$(CONFIG_KERNEL_LZMA) =A0=3D lzma<br>
+-suffix_$(CONFIG_KERNEL_LZO) =A0 =3D lzo<br>
+=A0tool_$(CONFIG_KERNEL_GZIP) =A0 =A0=3D gzip<br>
+=A0tool_$(CONFIG_KERNEL_BZIP2) =A0 =3D bzip2<br>
+=A0tool_$(CONFIG_KERNEL_LZMA) =A0 =A0=3D lzma<br>
+=A0tool_$(CONFIG_KERNEL_LZO) =A0 =A0 =3D lzo<br>
 <br>
-- =A0 =A0 =A0 asm (<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;dmultu\t%[cnt],%[mult]\n\t&quot;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;nor\t%[t1],$0,%[shift]\n\t&quot;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;mfhi\t%[t2]\n\t&quot;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;mflo\t%[t3]\n\t&quot;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;dsll\t%[t2],%[t2],1\n\t&quot;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;dsrlv\t%[rv],%[t3],%[shift]\n\t&quot;<b=
-r>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;dsllv\t%[t1],%[t2],%[t1]\n\t&quot;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 &quot;or\t%[rv],%[t1],%[rv]\n\t&quot;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 : [rv] &quot;=3D&amp;r&quot; (rv), [t1] &quot=
-;=3D&amp;r&quot; (t1), [t2] &quot;=3D&amp;r&quot; (t2), [t3] &quot;=3D&amp;=
-r&quot; (t3)<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 : [cnt] &quot;r&quot; (cnt), [mult] &quot;r&q=
-uot; (mult), [shift] &quot;r&quot; (shift)<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 : &quot;hi&quot;, &quot;lo&quot;);<br>
-- =A0 =A0 =A0 return rv;<br>
--#else<br>
-- =A0 =A0 =A0 /* GCC &gt; 4.3 do it the easy way. =A0*/<br>
-- =A0 =A0 =A0 unsigned int __attribute__((mode(TI))) t;<br>
-- =A0 =A0 =A0 t =3D read_c0_cvmcount();<br>
-- =A0 =A0 =A0 t =3D t * clocksource_mips.mult;<br>
-- =A0 =A0 =A0 return (unsigned long long)(t &gt;&gt; clocksource_mips.shift=
-);<br>
--#endif<br>
-+ =A0 =A0 =A0 return mips_cyc2ns(cyc, clocksource_mips.mult, clocksource_mi=
-ps.shift);<br>
-=A0}<br>
+-targets +=3D vmlinux.gz vmlinux.bz2 vmlinux.lzma vmlinux.lzo<br>
+-$(obj)/vmlinux.$(suffix_y): $(obj)/vmlinux.bin FORCE<br>
++targets +=3D vmlinux.bin.z<br>
++$(obj)/vmlinux.bin.z: $(obj)/vmlinux.bin FORCE<br>
+ =A0 =A0 =A0 =A0$(call if_changed,$(tool_y))<br>
 <br>
-=A0void __init plat_time_init(void)<br>
+=A0targets +=3D piggy.o<br>
+-OBJCOPYFLAGS_piggy.o :=3D --add-section=3D.image=3D$(obj)/vmlinux.$(suffix=
+_y) \<br>
++OBJCOPYFLAGS_piggy.o :=3D --add-section=3D.image=3D$(obj)/vmlinux.bin.z \<=
+br>
+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 --set-section-flags=3D.ima=
+ge=3Dcontents,alloc,load,readonly,data<br>
+-$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.$(suffix_y) FORCE<br>
++$(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE<br>
+ =A0 =A0 =A0 =A0$(call if_changed,objcopy)<br>
+<br>
+=A0LDFLAGS_vmlinuz :=3D $(LDFLAGS) -Ttext $(VMLINUZ_LOAD_ADDRESS) -T<br>
 <font color=3D"#888888">--<br>
-1.7.0.1<br>
+1.6.5<br>
 <br>
 </font></blockquote></div><br><br clear=3D"all"><br>-- <br>MSN+Gtalk: <a hr=
 ef=3D"mailto:wuzhangjin@gmail.com">wuzhangjin@gmail.com</a><br>Blog: <a hre=
@@ -231,4 +231,4 @@ f=3D"http://falcon.oss.lzu.edu.cn">http://falcon.oss.lzu.edu.cn</a><br>Tel:=
 +86-18710032278<br>
 
 
---000e0cd29c9c3610be048c7c97de--
+--001636e0b2fa7a43c2048c7cb59f--

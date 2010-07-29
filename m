@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jul 2010 20:57:01 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:60416 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492843Ab0G2S44 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 29 Jul 2010 20:56:56 +0200
-Received: by yxj4 with SMTP id 4so298512yxj.36
-        for <multiple recipients>; Thu, 29 Jul 2010 11:56:49 -0700 (PDT)
-Received: by 10.150.179.1 with SMTP id b1mr1484483ybf.439.1280429803285; Thu, 
-        29 Jul 2010 11:56:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jul 2010 21:41:02 +0200 (CEST)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:52836 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492104Ab0G2Tk5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Jul 2010 21:40:57 +0200
+Received: by gxk27 with SMTP id 27so321679gxk.36
+        for <multiple recipients>; Thu, 29 Jul 2010 12:40:51 -0700 (PDT)
+Received: by 10.151.63.28 with SMTP id q28mr1722405ybk.183.1280432451157; Thu, 
+        29 Jul 2010 12:40:51 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.151.84.4 with HTTP; Thu, 29 Jul 2010 11:56:23 -0700 (PDT)
-In-Reply-To: <20100727215337.GA29365@dediao-lnx2.corp.sa.net>
-References: <20100727215337.GA29365@dediao-lnx2.corp.sa.net>
+Received: by 10.151.84.4 with HTTP; Thu, 29 Jul 2010 12:40:31 -0700 (PDT)
+In-Reply-To: <7A9214B0DEB2074FBCA688B30B04400D013FA46D@XMB-RCD-208.cisco.com>
+References: <AANLkTi=74zoQziQTmAGo-cNtF9FAT77h+KZagsNEFjEf@mail.gmail.com> 
+        <7A9214B0DEB2074FBCA688B30B04400D013FA46D@XMB-RCD-208.cisco.com>
 From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Thu, 29 Jul 2010 12:56:23 -0600
-X-Google-Sender-Auth: zr_SO9vw3AjY15ShQ4Cq_wA3dlg
-Message-ID: <AANLkTim7MEyGFiedDrbWiNiZb18Qy3a5ZZ=aYBh4Jj7L@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] MIPS: PowerTV: Add device tree support
-To:     Dezhong Diao <dediao@cisco.com>
-Cc:     devicetree-discuss@lists.ozlabs.org, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, dvomlehn@cisco.com
+Date:   Thu, 29 Jul 2010 13:40:31 -0600
+X-Google-Sender-Auth: QVPtM-JrRnFH97OZFACLo5Ey0Fc
+Message-ID: <AANLkTinCcV48iFiPY-iKKb_HqRP4BteG-amaFkwwsiFu@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] MIPS: Add device tree support to MIPS
+To:     "Dezhong Diao (dediao)" <dediao@cisco.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        devicetree-discuss@lists.ozlabs.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org,
+        "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
 Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27518
+X-archive-position: 27519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,97 +35,156 @@ X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-Just noticed something....
-
-On Tue, Jul 27, 2010 at 3:53 PM, Dezhong Diao <dediao@cisco.com> wrote:
-> V2:
->    Synchronize with test-devicetree branch of device tree.
+On Wed, Jul 28, 2010 at 2:47 PM, Dezhong Diao (dediao) <dediao@cisco.com> wrote:
+> Grant,
 >
-> V1:
->    Add device tree support for PowerTV.
->    Customize user-defined memory scan function.
+> I agree with your approach. Please go ahead to make changes and get the patches working with latest code in test tree. Or I am able to make changes in terms of your comments too.
+
+It would be better if you respin and retest.  I can compile MIPS
+kernels, but I don't have any hardware to boot them on.  And I'm busy,
+so there is less likelyhood that I'll get around to reworking it.  :-)
+
+> It is best we can have MIPS OF support in 2.6.36, but I have you and Ralf decide it.
+
+I'd be happy to merge it into 2.6.36.  I've got a concern about the
+2nd patch, but the first one looks pretty sane and should be
+mergeable.
+
+Comments on the .dts file follow...
+
+> /dts-v1/;
 >
-> Signed-off-by: Dezhong Diao <dediao@cisco.com>
-> ---
->  arch/mips/configs/powertv_defconfig        |  293 +++++++++++++++++++++-------
->  arch/mips/include/asm/mach-powertv/asic.h  |    8 +-
->  arch/mips/include/asm/mach-powertv/mdesc.h |   51 +++++
->  arch/mips/powertv/Makefile                 |    2 +-
->  arch/mips/powertv/asic/asic_devices.c      |   22 --
->  arch/mips/powertv/mdesc.c                  |  224 +++++++++++++++++++++
->  arch/mips/powertv/memory.c                 |  242 ++++++++++++++---------
->  7 files changed, 649 insertions(+), 193 deletions(-)
->  create mode 100644 arch/mips/include/asm/mach-powertv/mdesc.h
->  create mode 100644 arch/mips/powertv/mdesc.c
+> / {
+> 	model = "Explorer";
+> 	compatible = "Explorer", "Calliope";
+
+Compatible values must be in the form "<vendor>,<model>", and ideally
+in lowercase.  Also, it is very unlikely that claiming compatibility
+with other parts at the board level is a sane thing to do (what does
+it really mean to be compatible with a different part?  Is the new
+board absolutely 100% backwards compatible with the previous board?).
+
+> 	copyright = "Copyright (c) 2008 Cisco Systems, Inc.  All Rights Reserved.";
+
+Vendor specific property, prefix it with the vendor name:
+
+cisco,copyright = "..."
+
+> 	#address-cells = <0x1>;
+> 	#size-cells = <0x1>;
 >
-> diff --git a/arch/mips/powertv/mdesc.c b/arch/mips/powertv/mdesc.c
-> new file mode 100644
-> index 0000000..8a7b972
-> --- /dev/null
-> +++ b/arch/mips/powertv/mdesc.c
-[...]
-> +static int __init early_init_dt_scan_extent(unsigned long node,
-> +               const char *uname, int depth, void *data)
-> +{
-> +       char buf[8 + log10_extent(MEM_EXTENT_MAX)];
-> +       unsigned long l;
-> +       char *memory_type;
-> +       enum Memory_Type type;
-> +       cell_t *reg, *endp;
-> +       unsigned long phys_base, bus_base;
-> +       unsigned long size;
-> +
-> +       snprintf(buf, sizeof(buf), "memory@%d", num_extent);
-> +
-> +       if (strcmp(uname, buf) != 0)
-> +               return 0;
-> +
-> +       memory_type = of_get_flat_dt_prop(node, "memory_type", &l);
-> +       if (memory_type == NULL || l <= 0)
-> +               return 0;
-> +
-> +       if (strcmp(memory_type, "low") == 0)
-> +               type = MEM_EXTENT_LOW;
-> +       else if (strcmp(memory_type, "high") == 0)
-> +               type = MEM_EXTENT_HIGH;
-> +       else
-> +               type = MEM_EXTENT_OTHER;
-> +
-> +       reg = (cell_t *)of_get_flat_dt_prop(node, "reg", &l);
-> +       if (reg == NULL)
-> +               return 0;
-> +
-> +       endp = reg + (l / sizeof(cell_t));
-> +
-> +       pr_info("memory scan node %s, reg size %ld, data: %x %x %x\n",
-> +               uname, l, reg[0], reg[1], reg[2]);
-> +
-> +       while ((endp - reg) >= (num_addr_cells + num_size_cells)) {
-> +               phys_base = dt_mem_next_cell(1, &reg);
-> +               bus_base = dt_mem_next_cell(1, &reg);
-> +               size = dt_mem_next_cell(1, &reg);
-> +               if (size == 0)
-> +                       continue;
-> +               mem_desc_add(phys_base, bus_base, size, type);
-> +       }
-> +
-> +       return 1;
-> +}
+> 	cpus {
+> 		name = "cpus";
+> 		#address-cells = <0x1>;
+> 		#size-cells = <0x0>;
+>
+> 		24k@0 {
 
-What is the purpose of this function.  Why doesn't the normal memory
-binding work for MIPS?
+follow the generic names recommended practice on node name:
 
-> +int __init early_init_dt_scan_memory_arch(unsigned long node,
-> +               const char *uname, int depth, void *data)
-> +{
-> +       u32 *prop;
-> +
-> +       prop = of_get_flat_dt_prop(node, "#address-cells", NULL);
-> +       num_addr_cells = (prop == NULL) ? 2 : *prop;
-> +
-> +       prop = of_get_flat_dt_prop(node, "#size-cells", NULL);
-> +       num_size_cells = (prop == NULL) ? 1 : *prop;
+cpu@0 {
 
-Nack.  Fix your device tree data.  :-)
+> 			device_type = "cpu";
+> 			reg = <0x0>;
+> 			clock-frequency = <0x5f5e1000>;
+> 			timebase-frequency = <0x1fca055>;
 
+You can specify values in decimal too.  Frequencies are usually best
+represented in base 10:
+
+clock-frequency = <1600000000>;
+timebase-frequency = <33333333>;
+
+> 			i-cache-size = <0x8000>;
+> 			d-cache-size = <0x8000>;
+> 		};
+> 	};
+>
+> 	memories {
+> 		name = "memories";
+
+dtc automatically sets the name property for you.  Drop this line.
+
+> 		device_type = "memory";
+> 		#address-cells = <0x3>;
+> 		#size-cells = <0x0>;
+
+This looks messed up.
+
+>
+> 		memory@0 {
+> 			memory_type = "low";
+> 			reg = <0x10000000 0x20000000 0xfc00000>;
+> 		};
+>
+> 		memory@1 {
+> 			memory_type = "MIPS reset vector";
+> 			reg = <0x1fc00000 0x7fcffff 0x400000>;
+> 		};
+>
+> 		memory@2 {
+> 			memory_type = "gp-sram";
+> 			reg = <0x9040000 0x9040000 0x30000>;
+> 		};
+>
+> 		memory@3 {
+> 			memory_type = "high";
+> 			reg = <0x2fc00000 0x2fc00000 0x400000>;
+> 		};
+>
+> 		memory@4 {
+> 			memory_type = "high";
+> 			reg = <0x60000000 0x60000000 0x10000000>;
+> 		};
+> 	};
+
+I have no idea what is being done here.  I need a description.
+
+>
+> 	options {
+> 		name = "options";
+> 		moca-populated = "true";
+> 		hd-populated = "false";
+> 		ir-protocol = "MOT";
+> 		nvm-size = <0x100>;
+> 		front-panel-button = "button";
+> 		push-button-matrix = "matrix";
+> 		tuning-range = <0x33428f00>;
+> 		rear-usb = "true";
+> 		video-support = "true";
+> 		cable-card = "false";
+> 		ethernet = "true";
+> 		moca-range = "D1-D8";
+> 		usb-20-hub = "false";
+> 		second-qpsk-rx = "true";
+> 		front-panel = "four";
+> 		tuner-ic2-clock-freq = <0x32>;
+> 		memory-encryption-scheme = "fixed-key";
+> 	};
+
+I see what you're doing here, but it is rather baroque.  The node name
+should probably be named something non-generic so that it won't be
+accidentally mistaken for something parsable by common code.
+Prefixing with "cisco," is a good idea.  In fact, you should consider
+moving this stuff into the chosen node and prefixing all of these
+property names with "cisco," because it is very machine/arch specific.
+ Oh, and document what all of these mean on devicetree.org.
+
+Do you plan on replacing any of this with proper device nodes that
+describe each peripheral individually?
+
+> 	chosen {
+> 		name = "chosen";
+
+Drop this line.
+
+> 		bootargs = "root=/dev/sda2";
+> 		linux,platform = "1kg6";
+
+What does linux,platform mean?
+
+> 	};
+> };
+
+Cheers,
 g.

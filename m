@@ -1,93 +1,312 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jul 2010 19:58:03 +0200 (CEST)
-Received: from kroah.org ([198.145.64.141]:56281 "EHLO coco.kroah.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491859Ab0G3R56 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 30 Jul 2010 19:57:58 +0200
-Received: from localhost (c-24-16-163-131.hsd1.wa.comcast.net [24.16.163.131])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by coco.kroah.org (Postfix) with ESMTPSA id 07E5A491B9;
-        Fri, 30 Jul 2010 10:57:56 -0700 (PDT)
-X-Mailbox-Line: From gregkh@clark.site Fri Jul 30 10:51:51 2010
-Message-Id: <20100730175151.675394300@clark.site>
-User-Agent: quilt/0.48-11.2
-Date:   Fri, 30 Jul 2010 10:53:33 -0700
-From:   Greg KH <gregkh@suse.de>
-To:     linux-kernel@vger.kernel.org, stable@kernel.org,
-        linux-mips@linux-mips.org, manuel.lauss@googlemail.com
-Cc:     stable-review@kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, alan@lxorguk.ukuu.org.uk,
-        Bruno Randolf <br1@einfach.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [196/205] MIPS: MTX-1: Fix PCI on the MeshCube and related boards
-In-Reply-To: <20100730175238.GA3924@kroah.com>
-Return-Path: <greg@kroah.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jul 2010 21:18:09 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:33819 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492140Ab0G3TSD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Jul 2010 21:18:03 +0200
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id o6UJHiSg006993;
+        Fri, 30 Jul 2010 12:17:44 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Fri, 30 Jul 2010 12:17:43 -0700
+Received: from localhost.localdomain ([172.25.32.35]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Fri, 30 Jul 2010 12:17:43 -0700
+From:   Jason Wessel <jason.wessel@windriver.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     kgdb-bugreport@lists.sourceforge.net, mingo@elte.hu,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 05/15] mips,kgdb: Individual register get/set for mips
+Date:   Fri, 30 Jul 2010 14:17:26 -0500
+Message-Id: <1280517456-1167-6-git-send-email-jason.wessel@windriver.com>
+X-Mailer: git-send-email 1.6.4.rc1
+In-Reply-To: <1280517456-1167-1-git-send-email-jason.wessel@windriver.com>
+References: <1280517456-1167-1-git-send-email-jason.wessel@windriver.com>
+X-OriginalArrivalTime: 30 Jul 2010 19:17:43.0767 (UTC) FILETIME=[E2CF2E70:01CB301B]
+Return-Path: <jason.wessel@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27524
+X-archive-position: 27525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: jason.wessel@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-2.6.34-stable review patch.  If anyone has any objections, please let us know.
+Implement the ability to individually get and set registers for kdb
+and kgdb for mips.
 
-------------------
-
-From: Bruno Randolf <randolf.bruno@googlemail.com>
-
-commit 98a0f86a54bb195c28ae1ccb5a5f5cda12cf7121 upstream.
-
-This patch fixes a regression introduced by commit "MIPS: Alchemy: MTX-1:
-Use linux gpio api." (bb706b28bbd647c2fd7f22d6bf03a18b9552be05) which broke
-PCI bus operation. The problem is caused by alchemy_gpio2_enable() which
-resets the GPIO2 block. Two PCI signals (PCI_SERR and PCI_RST) are connected
-to GPIO2 and they obviously do not to like the reset. Since GPIO2 is
-correctly initialized by the boot monitor (YAMON) it is not necessary to
-call this function, so just remove it.
-
-Also replace gpio_set_value() with alchemy_gpio_set_value() to avoid
-problems in case gpiolib gets initialized after PCI. And since alchemy
-gpio_set_value() calls au_sync() we don't have to au_sync() again later.
-
-Signed-off-by: Bruno Randolf <br1@einfach.org>
-To: linux-mips@linux-mips.org
-To: manuel.lauss@googlemail.com
-Patchwork: https://patchwork.linux-mips.org/patch/1448/
-Tested-by: Florian Fainelli <florian@openwrt.org>
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
-
+Signed-off-by: Jason Wessel <jason.wessel@windriver.com>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: linux-mips@linux-mips.org
 ---
- arch/mips/alchemy/mtx-1/board_setup.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/kgdb.h |   19 ++--
+ arch/mips/kernel/kgdb.c      |  203 ++++++++++++++++++++++++++++++------------
+ 2 files changed, 154 insertions(+), 68 deletions(-)
 
---- a/arch/mips/alchemy/mtx-1/board_setup.c
-+++ b/arch/mips/alchemy/mtx-1/board_setup.c
-@@ -67,8 +67,6 @@ static void mtx1_power_off(void)
+diff --git a/arch/mips/include/asm/kgdb.h b/arch/mips/include/asm/kgdb.h
+index 19002d6..e6c0b0e 100644
+--- a/arch/mips/include/asm/kgdb.h
++++ b/arch/mips/include/asm/kgdb.h
+@@ -8,28 +8,27 @@
+ #if (_MIPS_ISA == _MIPS_ISA_MIPS1) || (_MIPS_ISA == _MIPS_ISA_MIPS2) || \
+ 	(_MIPS_ISA == _MIPS_ISA_MIPS32)
  
- void __init board_setup(void)
+-#define KGDB_GDB_REG_SIZE 32
++#define KGDB_GDB_REG_SIZE	32
++#define GDB_SIZEOF_REG		sizeof(u32)
+ 
+ #elif (_MIPS_ISA == _MIPS_ISA_MIPS3) || (_MIPS_ISA == _MIPS_ISA_MIPS4) || \
+ 	(_MIPS_ISA == _MIPS_ISA_MIPS64)
+ 
+ #ifdef CONFIG_32BIT
+-#define KGDB_GDB_REG_SIZE 32
++#define KGDB_GDB_REG_SIZE	32
++#define GDB_SIZEOF_REG		sizeof(u32)
+ #else /* CONFIG_CPU_32BIT */
+-#define KGDB_GDB_REG_SIZE 64
++#define KGDB_GDB_REG_SIZE	64
++#define GDB_SIZEOF_REG		sizeof(u64)
+ #endif
+ #else
+ #error "Need to set KGDB_GDB_REG_SIZE for MIPS ISA"
+ #endif /* _MIPS_ISA */
+ 
+ #define BUFMAX			2048
+-#if (KGDB_GDB_REG_SIZE == 32)
+-#define NUMREGBYTES		(90*sizeof(u32))
+-#define NUMCRITREGBYTES		(12*sizeof(u32))
+-#else
+-#define NUMREGBYTES		(90*sizeof(u64))
+-#define NUMCRITREGBYTES		(12*sizeof(u64))
+-#endif
++#define DBG_MAX_REG_NUM		72
++#define NUMREGBYTES		(DBG_MAX_REG_NUM * sizeof(GDB_SIZEOF_REG))
++#define NUMCRITREGBYTES		(12 * sizeof(GDB_SIZEOF_REG))
+ #define BREAK_INSTR_SIZE	4
+ #define CACHE_FLUSH_IS_SAFE	0
+ 
+diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
+index 9b78ff6..5e76c2d 100644
+--- a/arch/mips/kernel/kgdb.c
++++ b/arch/mips/kernel/kgdb.c
+@@ -50,6 +50,151 @@ static struct hard_trap_info {
+ 	{ 0, 0}			/* Must be last */
+ };
+ 
++struct dbg_reg_def_t dbg_reg_def[DBG_MAX_REG_NUM] =
++{
++	{ "zero", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[0]) },
++	{ "at", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[1]) },
++	{ "v0", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[2]) },
++	{ "v1", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[3]) },
++	{ "a0", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[4]) },
++	{ "a1", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[5]) },
++	{ "a2", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[6]) },
++	{ "a3", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[7]) },
++	{ "t0", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[8]) },
++	{ "t1", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[9]) },
++	{ "t2", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[10]) },
++	{ "t3", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[11]) },
++	{ "t4", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[12]) },
++	{ "t5", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[13]) },
++	{ "t6", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[14]) },
++	{ "t7", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[15]) },
++	{ "s0", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[16]) },
++	{ "s1", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[17]) },
++	{ "s2", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[18]) },
++	{ "s3", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[19]) },
++	{ "s4", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[20]) },
++	{ "s5", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[21]) },
++	{ "s6", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[22]) },
++	{ "s7", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[23]) },
++	{ "t8", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[24]) },
++	{ "t9", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[25]) },
++	{ "k0", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[26]) },
++	{ "k1", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[27]) },
++	{ "gp", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[28]) },
++	{ "sp", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[29]) },
++	{ "s8", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[30]) },
++	{ "ra", GDB_SIZEOF_REG, offsetof(struct pt_regs, regs[31]) },
++	{ "sr", GDB_SIZEOF_REG, offsetof(struct pt_regs, cp0_status) },
++	{ "lo", GDB_SIZEOF_REG, offsetof(struct pt_regs, lo) },
++	{ "hi", GDB_SIZEOF_REG, offsetof(struct pt_regs, hi) },
++	{ "bad", GDB_SIZEOF_REG, offsetof(struct pt_regs, cp0_badvaddr) },
++	{ "cause", GDB_SIZEOF_REG, offsetof(struct pt_regs, cp0_cause) },
++	{ "pc", GDB_SIZEOF_REG, offsetof(struct pt_regs, cp0_epc) },
++	{ "f0", GDB_SIZEOF_REG, 0 },
++	{ "f1", GDB_SIZEOF_REG, 1 },
++	{ "f2", GDB_SIZEOF_REG, 2 },
++	{ "f3", GDB_SIZEOF_REG, 3 },
++	{ "f4", GDB_SIZEOF_REG, 4 },
++	{ "f5", GDB_SIZEOF_REG, 5 },
++	{ "f6", GDB_SIZEOF_REG, 6 },
++	{ "f7", GDB_SIZEOF_REG, 7 },
++	{ "f8", GDB_SIZEOF_REG, 8 },
++	{ "f9", GDB_SIZEOF_REG, 9 },
++	{ "f10", GDB_SIZEOF_REG, 10 },
++	{ "f11", GDB_SIZEOF_REG, 11 },
++	{ "f12", GDB_SIZEOF_REG, 12 },
++	{ "f13", GDB_SIZEOF_REG, 13 },
++	{ "f14", GDB_SIZEOF_REG, 14 },
++	{ "f15", GDB_SIZEOF_REG, 15 },
++	{ "f16", GDB_SIZEOF_REG, 16 },
++	{ "f17", GDB_SIZEOF_REG, 17 },
++	{ "f18", GDB_SIZEOF_REG, 18 },
++	{ "f19", GDB_SIZEOF_REG, 19 },
++	{ "f20", GDB_SIZEOF_REG, 20 },
++	{ "f21", GDB_SIZEOF_REG, 21 },
++	{ "f22", GDB_SIZEOF_REG, 22 },
++	{ "f23", GDB_SIZEOF_REG, 23 },
++	{ "f24", GDB_SIZEOF_REG, 24 },
++	{ "f25", GDB_SIZEOF_REG, 25 },
++	{ "f26", GDB_SIZEOF_REG, 26 },
++	{ "f27", GDB_SIZEOF_REG, 27 },
++	{ "f28", GDB_SIZEOF_REG, 28 },
++	{ "f29", GDB_SIZEOF_REG, 29 },
++	{ "f30", GDB_SIZEOF_REG, 30 },
++	{ "f31", GDB_SIZEOF_REG, 31 },
++	{ "fsr", GDB_SIZEOF_REG, 0 },
++	{ "fir", GDB_SIZEOF_REG, 0 },
++};
++
++int dbg_set_reg(int regno, void *mem, struct pt_regs *regs)
++{
++	int fp_reg;
++
++	if (regno < 0 || regno >= DBG_MAX_REG_NUM)
++		return -EINVAL;
++
++	if (dbg_reg_def[regno].offset != -1 && regno < 38) {
++		memcpy((void *)regs + dbg_reg_def[regno].offset, mem,
++		       dbg_reg_def[regno].size);
++	} else if (current && dbg_reg_def[regno].offset != -1 && regno < 72) {
++		/* FP registers 38 -> 69 */
++		if (!(regs->cp0_status & ST0_CU1))
++			return 0;
++		if (regno == 70) {
++			/* Process the fcr31/fsr (register 70) */
++			memcpy((void *)&current->thread.fpu.fcr31, mem,
++			       dbg_reg_def[regno].size);
++			goto out_save;
++		} else if (regno == 71) {
++			/* Ignore the fir (register 71) */
++			goto out_save;
++		}
++		fp_reg = dbg_reg_def[regno].offset;
++		memcpy((void *)&current->thread.fpu.fpr[fp_reg], mem,
++		       dbg_reg_def[regno].size);
++out_save:
++		restore_fp(current);
++	}
++
++	return 0;
++}
++
++char *dbg_get_reg(int regno, void *mem, struct pt_regs *regs)
++{
++	int fp_reg;
++
++	if (regno >= DBG_MAX_REG_NUM || regno < 0)
++		return NULL;
++
++	if (dbg_reg_def[regno].offset != -1 && regno < 38) {
++		/* First 38 registers */
++		memcpy(mem, (void *)regs + dbg_reg_def[regno].offset,
++		       dbg_reg_def[regno].size);
++	} else if (current && dbg_reg_def[regno].offset != -1 && regno < 72) {
++		/* FP registers 38 -> 69 */
++		if (!(regs->cp0_status & ST0_CU1))
++			goto out;
++		save_fp(current);
++		if (regno == 70) {
++			/* Process the fcr31/fsr (register 70) */
++			memcpy(mem, (void *)&current->thread.fpu.fcr31,
++			       dbg_reg_def[regno].size);
++			goto out;
++		} else if (regno == 71) {
++			/* Ignore the fir (register 71) */
++			memset(mem, 0, dbg_reg_def[regno].size);
++			goto out;
++		}
++		fp_reg = dbg_reg_def[regno].offset;
++		memcpy(mem, (void *)&current->thread.fpu.fpr[fp_reg],
++		       dbg_reg_def[regno].size);
++	}
++
++out:
++	return dbg_reg_def[regno].name;
++
++}
++
+ void arch_kgdb_breakpoint(void)
  {
--	alchemy_gpio2_enable();
--
- #if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
- 	/* Enable USB power switch */
- 	alchemy_gpio_direction_output(204, 0);
-@@ -117,11 +115,11 @@ mtx1_pci_idsel(unsigned int devsel, int
- 
- 	if (assert && devsel != 0)
- 		/* Suppress signal to Cardbus */
--		gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
-+		alchemy_gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
- 	else
--		gpio_set_value(1, 1);	/* set EXT_IO3 ON */
-+		alchemy_gpio_set_value(1, 1);	/* set EXT_IO3 ON */
- 
--	au_sync_udelay(1);
-+	udelay(1);
- 	return 1;
+ 	__asm__ __volatile__(
+@@ -84,64 +229,6 @@ static int compute_signal(int tt)
+ 	return SIGHUP;		/* default for things we don't know about */
  }
  
+-void pt_regs_to_gdb_regs(unsigned long *gdb_regs, struct pt_regs *regs)
+-{
+-	int reg;
+-
+-#if (KGDB_GDB_REG_SIZE == 32)
+-	u32 *ptr = (u32 *)gdb_regs;
+-#else
+-	u64 *ptr = (u64 *)gdb_regs;
+-#endif
+-
+-	for (reg = 0; reg < 32; reg++)
+-		*(ptr++) = regs->regs[reg];
+-
+-	*(ptr++) = regs->cp0_status;
+-	*(ptr++) = regs->lo;
+-	*(ptr++) = regs->hi;
+-	*(ptr++) = regs->cp0_badvaddr;
+-	*(ptr++) = regs->cp0_cause;
+-	*(ptr++) = regs->cp0_epc;
+-
+-	/* FP REGS */
+-	if (!(current && (regs->cp0_status & ST0_CU1)))
+-		return;
+-
+-	save_fp(current);
+-	for (reg = 0; reg < 32; reg++)
+-		*(ptr++) = current->thread.fpu.fpr[reg];
+-}
+-
+-void gdb_regs_to_pt_regs(unsigned long *gdb_regs, struct pt_regs *regs)
+-{
+-	int reg;
+-
+-#if (KGDB_GDB_REG_SIZE == 32)
+-	const u32 *ptr = (u32 *)gdb_regs;
+-#else
+-	const u64 *ptr = (u64 *)gdb_regs;
+-#endif
+-
+-	for (reg = 0; reg < 32; reg++)
+-		regs->regs[reg] = *(ptr++);
+-
+-	regs->cp0_status = *(ptr++);
+-	regs->lo = *(ptr++);
+-	regs->hi = *(ptr++);
+-	regs->cp0_badvaddr = *(ptr++);
+-	regs->cp0_cause = *(ptr++);
+-	regs->cp0_epc = *(ptr++);
+-
+-	/* FP REGS from current */
+-	if (!(current && (regs->cp0_status & ST0_CU1)))
+-		return;
+-
+-	for (reg = 0; reg < 32; reg++)
+-		current->thread.fpu.fpr[reg] = *(ptr++);
+-	restore_fp(current);
+-}
+-
+ /*
+  * Similar to regs_to_gdb_regs() except that process is sleeping and so
+  * we may not be able to get all the info.
+-- 
+1.6.4.rc1

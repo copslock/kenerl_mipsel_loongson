@@ -1,54 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2010 14:57:42 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:57254 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492719Ab0HBM5h (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 2 Aug 2010 14:57:37 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o72CvFx3011353;
-        Mon, 2 Aug 2010 13:57:15 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o72Cv9DQ011351;
-        Mon, 2 Aug 2010 13:57:09 +0100
-Date:   Mon, 2 Aug 2010 13:57:08 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Wim Van Sebroeck <wim@iguana.be>
-Cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Tony Lindgren <tony@atomide.com>,
-        Marc Zyngier <maz@misterjones.org>,
-        Thierry Reding <thierry.reding@avionic-design.de>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH] watchdog: Add watchdog driver for OCTEON SOCs (v2).
-Message-ID: <20100802125708.GA5209@linux-mips.org>
-References: <20100724035826.GA27516@merkur.ravnborg.org>
- <1279991765-23962-1-git-send-email-ddaney@caviumnetworks.com>
- <20100802123755.GV30740@infomag.iguana.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2010 15:30:14 +0200 (CEST)
+Received: from bby1mta02.pmc-sierra.com ([216.241.235.117]:48745 "EHLO
+        bby1mta02.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492258Ab0HBNaK convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Aug 2010 15:30:10 +0200
+Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
+        by localhost (Postfix) with SMTP id CC6058E00AE;
+        Mon,  2 Aug 2010 06:29:58 -0700 (PDT)
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
+        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id B8F848E00AD;
+        Mon,  2 Aug 2010 06:29:58 -0700 (PDT)
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 2 Aug 2010 06:29:58 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20100802123755.GV30740@infomag.iguana.be>
-User-Agent: Mutt/1.5.20 (2009-12-10)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+        charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: file corruption with highmem kernel
+Date:   Mon, 2 Aug 2010 06:29:56 -0700
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C020140526FCF5@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: file corruption with highmem kernel
+Thread-Index: AcsyRsvJtdIm2QULSF2xEZbUAQ5rPA==
+From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:     "linux-mips" <linux-mips@linux-mips.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+X-OriginalArrivalTime: 02 Aug 2010 13:29:58.0732 (UTC) FILETIME=[CD84C0C0:01CB3246]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27527
+X-archive-position: 27528
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 02, 2010 at 02:37:55PM +0200, Wim Van Sebroeck wrote:
+List,
 
-> > Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> > Cc: Wim Van Sebroeck <wim@iguana.be>
-> 
-> Signed-off-by: Wim Van Sebroeck <wim@iguana.be>
+I am running 2.6.18 (highmem) kernel in RM9000 based SOC with 2 Gig RAM.
+I have observed file corruption and system hangs (Easily reproducible on
+remounting file system) when doing file copy to SATA disk / USB disk (
+SATA/ USB controller over PCI) . How ever when I limit memory with
+option mem=512M from command line everything seems to be working fine.
 
-Patch updated.  Thanks Wim!
+Issue is reproducible with 2.6.18-stable lmo git sources .
 
-  Ralf
+I have modified dma-noncoherent.c as follows and I am no more
+experiencing system hang. But file's are getting corrupted (observed bus
+error / segmentation fault / illegal instruction error few times)
+occasionally.  One more observation I have made is file corruption is
+more if I use root file system from onboard USB flash, than running a
+NFS root mount.
+
+
+--- arch/mips/mm/dma-noncoherent.c.orig	2010-08-02 23:53:17.000000000
++0530
++++ arch/mips/mm/dma-noncoherent.c	2010-08-02 23:56:19.000000000
++0530
+@@ -132,12 +132,13 @@
+ 	for (i = 0; i < nents; i++, sg++) {
+ 		unsigned long addr;
+ 
+-		addr = (unsigned long) page_address(sg->page);
+-		if (addr) {
+-			__dma_sync(addr + sg->offset, sg->length,
+direction);
+-			sg->dma_address =
+(dma_addr_t)page_to_phys(sg->page)
+-					  + sg->offset;
+-		}
++		addr = (unsigned long) page_address(sg->page) +
+sg->offset;
++		if (addr) 
++			__dma_sync(addr, sg->length, direction);
++		
++		sg->dma_address = (dma_addr_t)page_to_phys(sg->page)
++					+ sg->offset;
++		
+ 	}
+ 
+ 	return nents;
+@@ -187,9 +188,9 @@
+ 		return;
+ 
+ 	for (i = 0; i < nhwentries; i++, sg++) {
+-		addr = (unsigned long) page_address(sg->page);
++		addr = (unsigned long) page_address(sg->page) +
+sg->offset;
+ 		if (addr)
+-			__dma_sync(addr + sg->offset, sg->length,
+direction);
++			__dma_sync(addr , sg->length, direction);
+ 	}
+ }
+
+
+It will be great if any body can give me some pointers / help to fix the
+issue.
+
+Thanks
+Anoop

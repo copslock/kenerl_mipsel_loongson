@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2010 15:30:39 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:60918 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2010 16:37:55 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:37742 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492511Ab0HBNaU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 2 Aug 2010 15:30:20 +0200
+        id S1492563Ab0HBOhv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Aug 2010 16:37:51 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o72DUA4B016749;
-        Mon, 2 Aug 2010 14:30:10 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o72EblIL028601;
+        Mon, 2 Aug 2010 15:37:48 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o72DU8l6016748;
-        Mon, 2 Aug 2010 14:30:08 +0100
-Date:   Mon, 2 Aug 2010 14:30:08 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o72EblKp028599;
+        Mon, 2 Aug 2010 15:37:47 +0100
+Date:   Mon, 2 Aug 2010 15:37:46 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jason Wessel <jason.wessel@windriver.com>
-Cc:     linux-kernel@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net,
-        mingo@elte.hu, linux-mips@linux-mips.org
-Subject: Re: [PATCH 05/15] mips,kgdb: Individual register get/set for mips
-Message-ID: <20100802133008.GB5209@linux-mips.org>
-References: <1280517456-1167-1-git-send-email-jason.wessel@windriver.com>
- <1280517456-1167-6-git-send-email-jason.wessel@windriver.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Fix n32 syscall number comments.
+Message-ID: <20100802143746.GA27360@linux-mips.org>
+References: <1280436184-24092-1-git-send-email-ddaney@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1280517456-1167-6-git-send-email-jason.wessel@windriver.com>
+In-Reply-To: <1280436184-24092-1-git-send-email-ddaney@caviumnetworks.com>
 User-Agent: Mutt/1.5.20 (2009-12-10)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27529
+X-archive-position: 27530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,17 +33,8 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 30, 2010 at 02:17:26PM -0500, Jason Wessel wrote:
+On Thu, Jul 29, 2010 at 01:43:04PM -0700, David Daney wrote:
 
-> Implement the ability to individually get and set registers for kdb
-> and kgdb for mips.
-> 
-> Signed-off-by: Jason Wessel <jason.wessel@windriver.com>
-> CC: Ralf Baechle <ralf@linux-mips.org>
-> CC: linux-mips@linux-mips.org
-
-Looks good; I think this should be be merged with the rest of your stuff.
-
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Thanks, applied.
 
   Ralf

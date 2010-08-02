@@ -1,31 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2010 16:37:55 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:37742 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Aug 2010 16:59:12 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:44171 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492563Ab0HBOhv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 2 Aug 2010 16:37:51 +0200
+        id S1492728Ab0HBO7I (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 2 Aug 2010 16:59:08 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o72EblIL028601;
-        Mon, 2 Aug 2010 15:37:48 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o72Ex5qt006567;
+        Mon, 2 Aug 2010 15:59:06 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o72EblKp028599;
-        Mon, 2 Aug 2010 15:37:47 +0100
-Date:   Mon, 2 Aug 2010 15:37:46 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o72Ex5hw006565;
+        Mon, 2 Aug 2010 15:59:05 +0100
+Date:   Mon, 2 Aug 2010 15:59:04 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Fix n32 syscall number comments.
-Message-ID: <20100802143746.GA27360@linux-mips.org>
-References: <1280436184-24092-1-git-send-email-ddaney@caviumnetworks.com>
+Cc:     Florian Fainelli <florian@openwrt.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] OCTEON: workaround linking failures with gcc-4.4.x
+ 32-bits toolchains
+Message-ID: <20100802145904.GA6123@linux-mips.org>
+References: <201007290013.08797.florian@openwrt.org>
+ <4C50AC0C.9010507@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1280436184-24092-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <4C50AC0C.9010507@caviumnetworks.com>
 User-Agent: Mutt/1.5.20 (2009-12-10)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27530
+X-archive-position: 27531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,8 +35,18 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 29, 2010 at 01:43:04PM -0700, David Daney wrote:
+On Wed, Jul 28, 2010 at 03:15:40PM -0700, David Daney wrote:
 
-Thanks, applied.
+> >executables by default, we will produce __lshrti3 in sched_clock() which is
+> >never resolved so the kernel fails to link. Unconditionally use the inline
+> >assembly version as suggested by David Daney, which works around the issue.
+> >
+> >CC: David Daney<ddaney@caviumnetworks.com>
+> >Signed-off-by: Florian Fainelli<florian@openwrt.org>
+> 
+> Acked-by: David Daney <ddaney@caviumnetworks.com>
+
+Applied - but maybe we should just add lshrti3 instead?  We already have
+ashldi3, ashrdi3 and lshrdi3.
 
   Ralf

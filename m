@@ -1,46 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Aug 2010 22:11:28 +0200 (CEST)
-Received: from mail1.adax.com ([208.201.231.104]:23307 "EHLO mail1.adax.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492081Ab0HCULX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 3 Aug 2010 22:11:23 +0200
-Received: from static-151-204-189-187.pskn.east.verizon.net (static-151-204-189-187.pskn.east.verizon.net [151.204.189.187])
-        by mail1.adax.com (Postfix) with ESMTP id 81F70120C48;
-        Tue,  3 Aug 2010 13:11:12 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by static-151-204-189-187.pskn.east.verizon.net (Postfix) with ESMTP id B48D5201EA;
-        Tue,  3 Aug 2010 16:11:11 -0400 (EDT)
-X-Virus-Scanned: Debian amavisd-new at
-        static-151-204-189-187.pskn.east.verizon.net
-Received: from static-151-204-189-187.pskn.east.verizon.net ([127.0.0.1])
-        by localhost (static-151-204-189-187.pskn.east.verizon.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 4kR5oRwNlE2G; Tue,  3 Aug 2010 16:11:06 -0400 (EDT)
-Received: from [192.168.1.76] (jr001327.mtl-nj.adax [192.168.1.76])
-        by static-151-204-189-187.pskn.east.verizon.net (Postfix) with ESMTPS id 45613201DD;
-        Tue,  3 Aug 2010 16:11:06 -0400 (EDT)
-Message-ID: <4C5877F1.2010004@adax.com>
-Date:   Tue, 03 Aug 2010 16:11:29 -0400
-From:   Jan Rovins <janr@adax.com>
-Organization: Adax Inc.
-User-Agent: Thunderbird 2.0.0.24 (Windows/20100228)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Aug 2010 22:19:33 +0200 (CEST)
+Received: from ausc60ps301.us.dell.com ([143.166.148.206]:50123 "EHLO
+        ausc60ps301.us.dell.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493173Ab0HCUT3 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 Aug 2010 22:19:29 +0200
+X-Loopcount0: from 10.166.62.177
+From:   <Ryan_D_Phillips@Dell.com>
+To:     <janr@adax.com>, <ddaney@caviumnetworks.com>
+CC:     <linux-mips@linux-mips.org>
+Date:   Tue, 3 Aug 2010 15:18:17 -0500
+Subject: RE: mips, eglibc, and toolchain compilation error
+Thread-Topic: mips, eglibc, and toolchain compilation error
+Thread-Index: AcszSAn9YEyRd+ehQHuFjivxFSyQugAANuyQ
+Message-ID: <017987BD9AB15445B9968338EC889BB107D3ECEE33@AUSX7MCPS301.AMER.DELL.COM>
+References: <017987BD9AB15445B9968338EC889BB107D3ECEC72@AUSX7MCPS301.AMER.DELL.COM>
+ <4C586A94.2030409@caviumnetworks.com> <4C5877F1.2010004@adax.com>
+In-Reply-To: <4C5877F1.2010004@adax.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Ryan_D_Phillips@Dell.com, linux-mips@linux-mips.org
-Subject: Re: mips, eglibc, and toolchain compilation error
-References: <017987BD9AB15445B9968338EC889BB107D3ECEC72@AUSX7MCPS301.AMER.DELL.COM> <4C586A94.2030409@caviumnetworks.com>
-In-Reply-To: <4C586A94.2030409@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <janr@adax.com>
+X-OriginalArrivalTime: 03 Aug 2010 20:18:19.0383 (UTC) FILETIME=[03752870:01CB3349]
+Return-Path: <Ryan_D_Phillips@Dell.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27552
+X-archive-position: 27553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: janr@adax.com
+X-original-sender: Ryan_D_Phillips@Dell.com
 Precedence: bulk
 X-list: linux-mips
+
+Thanks Jan. I will try this.
+
+David: For reference the binutils version is 2.20.1.
+
+Regards,
+Ryan
+
+-----Original Message-----
+From: Jan Rovins [mailto:janr@adax.com] 
+Sent: Tuesday, August 03, 2010 3:11 PM
+To: David Daney
+Cc: Phillips, Ryan D; linux-mips@linux-mips.org
+Subject: Re: mips, eglibc, and toolchain compilation error
 
 Looks like a similar problim is documented here:
 http://www.mail-archive.com/openembedded-devel@lists.openembedded.org/msg00090.html

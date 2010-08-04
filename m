@@ -1,111 +1,87 @@
-From: Kevin Cernekee <cernekee@gmail.com>
-Date: Thu, 3 Jun 2010 22:11:25 -0700
-Subject: [PATCH] printk: fix delayed messages from CPU hotplug events
-Message-ID: <20100604051125.86G3yTfOROlchACahkiYtizEUbtcxxtzlutlWglYReQ@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Aug 2010 17:27:02 +0200 (CEST)
+Received: from gateway06.websitewelcome.com ([69.93.164.14]:32940 "HELO
+        gateway06.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1492874Ab0HDP06 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 Aug 2010 17:26:58 +0200
+Received: (qmail 29477 invoked from network); 4 Aug 2010 15:37:17 -0000
+Received: from gator750.hostgator.com (174.132.194.2)
+  by gateway06.websitewelcome.com with SMTP; 4 Aug 2010 15:37:17 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
+        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+        b=HRDlOVT2Auv51Zu/kp+GTcvzZWdMmxFTBKhWFkbPd7ega3N5LQJo7s0Bo7uzvnWh1y9fUBk9anfumSq7/tguvrC6AVIij+6b0QPm5PQUis3BeMl1P1cHlVEi8RvWtRHU;
+Received: from [216.239.45.4] (port=60682 helo=kkissell.mtv.corp.google.com)
+        by gator750.hostgator.com with esmtpa (Exim 4.69)
+        (envelope-from <kevink@paralogos.com>)
+        id 1Ogfrm-0003RN-CK; Wed, 04 Aug 2010 10:26:51 -0500
+Message-ID: <4C5986BC.9000307@paralogos.com>
+Date:   Wed, 04 Aug 2010 08:26:52 -0700
+From:   "Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100713 Thunderbird/3.0.6
+MIME-Version: 1.0
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [Q] enabling FPU for vpe1
+References: <AANLkTinCjSTE7sYa7JdqwAEe-4nZJKAvVfg5q4YVVqC7@mail.gmail.com>      <4C592027.8010902@paralogos.com> <AANLkTinVxFnNzQaHUCqxTQk708MEuUAiEuRGGPN8WcuS@mail.gmail.com>
+In-Reply-To: <AANLkTinVxFnNzQaHUCqxTQk708MEuUAiEuRGGPN8WcuS@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator750.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+Return-Path: <kevink@paralogos.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 27567
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: kevink@paralogos.com
+Precedence: bulk
+X-list: linux-mips
 
-When a secondary CPU is being brought up, it is not uncommon for
-printk() to be invoked when cpu_online(smp_processor_id()) == 0.  The
-case that I witnessed personally was on MIPS:
+You can only set the TC's CU bits if the VPE to which the TC is bound 
+has access to the coprocessor.  See sections 8.2 andf 6.7 of the 
+currently online spec, and read the MIPS MT Principles of Operation 
+document, if you can find it.
 
-http://lkml.org/lkml/2010/5/30/4
-
-If (can_use_console() == 0), printk() will spool its output to log_buf
-and it will be visible in "dmesg", but that output will NOT be echoed to
-the console until somebody calls release_console_sem() from a CPU that
-is online.  Therefore, the boot time messages from the new CPU can get
-stuck in "limbo" for a long time, and might suddenly appear on the
-screen when a completely unrelated event (e.g. "eth0: link is down")
-occurs.
-
-This patch modifies the console code so that any pending messages are
-automatically flushed out to the console whenever a CPU hotplug
-operation completes successfully or aborts.
-
-The issue was seen on 2.6.34.
-
-Original patch by Kevin Cernekee with cleanups by akpm and additional fixes
-by Santosh Shilimkar.  This patch superseeds
-https://patchwork.linux-mips.org/patch/1357/.
-
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-To: <mingo@elte.hu>
-To: <akpm@linux-foundation.org>
-To: <simon.kagstrom@netinsight.net>
-To: <David.Woodhouse@intel.com>
-To: <lethal@linux-sh.org>
-Cc: <linux-kernel@vger.kernel.org>
-Cc: <linux-mips@linux-mips.org>
-Reviewed-by: Paul Mundt <lethal@linux-sh.org>
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-Patchwork: https://patchwork.linux-mips.org/patch/1533/
-LKML-Reference: <ede63b5a20af951c755736f035d1e787772d7c28@localhost>
-LKML-Reference: <EAF47CD23C76F840A9E7FCE10091EFAB02C5DB6D1F@dbde02.ent.ti.com>
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/kernel/printk.c b/kernel/printk.c
-index 444b770..4ab0164 100644
---- a/kernel/printk.c
-+++ b/kernel/printk.c
-@@ -37,6 +37,8 @@
- #include <linux/ratelimit.h>
- #include <linux/kmsg_dump.h>
- #include <linux/syslog.h>
-+#include <linux/cpu.h>
-+#include <linux/notifier.h>
- 
- #include <asm/uaccess.h>
- 
-@@ -985,6 +987,32 @@ void resume_console(void)
- }
- 
- /**
-+ * console_cpu_notify - print deferred console messages after CPU hotplug
-+ * @self: notifier struct
-+ * @action: CPU hotplug event
-+ * @hcpu: unused
-+ *
-+ * If printk() is called from a CPU that is not online yet, the messages
-+ * will be spooled but will not show up on the console.  This function is
-+ * called when a new CPU comes online (or fails to come up), and ensures
-+ * that any such output gets printed.
-+ */
-+static int __cpuinit console_cpu_notify(struct notifier_block *self,
-+	unsigned long action, void *hcpu)
-+{
-+	switch (action) {
-+	case CPU_ONLINE:
-+	case CPU_DEAD:
-+	case CPU_DYING:
-+	case CPU_DOWN_FAILED:
-+	case CPU_UP_CANCELED:
-+		acquire_console_sem();
-+		release_console_sem();
-+	}
-+	return NOTIFY_OK;
-+}
-+
-+/**
-  * acquire_console_sem - lock the console system for exclusive use.
-  *
-  * Acquires a semaphore which guarantees that the caller has
-@@ -1371,7 +1399,7 @@ int unregister_console(struct console *console)
- }
- EXPORT_SYMBOL(unregister_console);
- 
--static int __init disable_boot_consoles(void)
-+static int __init printk_late_init(void)
- {
- 	struct console *con;
- 
-@@ -1382,9 +1410,10 @@ static int __init disable_boot_consoles(void)
- 			unregister_console(con);
- 		}
- 	}
-+	hotcpu_notifier(console_cpu_notify, 0);
- 	return 0;
- }
--late_initcall(disable_boot_consoles);
-+late_initcall(printk_late_init);
- 
- #if defined CONFIG_PRINTK
- 
+On 08/04/10 03:14, Deng-Cheng Zhu wrote:
+> Thanks for looking into this.
+>
+> I did do that. But the CU1 bit of TC#1 (in VPE#1) can not be set by
+> TC#0 or itself. Looks like VPE#1 is not seeing the FPU at all...
+>
+>
+> Deng-Cheng
+>
+>
+> 2010/8/4 Kevin D. Kissell<kevink@paralogos.com>:
+>    
+>> Check the MIPS MT spec.  If I recall correctly, it's possible to enable
+>> access to the FPU by either VPE by setting the right bits while the
+>> processor is in the MT configuration mode.
+>>
+>> Deng-Cheng Zhu wrote:
+>>      
+>>> Hi,
+>>>
+>>>
+>>> I'm working on a 34Kf CPU. I understand that only one TC can use the
+>>> FPU at any given time.
+>>>
+>>> My question is: If a TC is attached to the 2nd VPE (i.e. VPE1), can I
+>>> enable FPU for it?
+>>>
+>>> I experimented on this, but failed to do it. Am I missing something?
+>>>
+>>>
+>>> Thanks
+>>>
+>>> Deng-Cheng
+>>>
+>>>
+>>>        
+>>
+>>      

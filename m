@@ -1,76 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2010 06:50:17 +0200 (CEST)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:44363 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493313Ab0HEEuM convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Aug 2010 06:50:12 +0200
-Received: by wwb22 with SMTP id 22so1411599wwb.24
-        for <linux-mips@linux-mips.org>; Wed, 04 Aug 2010 21:50:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=6Zru05XrM7wnoW5s5j9HX343/PdRTArV8CsMOI6NP2k=;
-        b=WeuuORBOYoNnamAXdBHj4nf0nRKMfYmGDgEZDUnSOi57fppOXCP3VivosTk4rz0aUj
-         we2NCo9L+W7N6UBm2qm9mn7HWrL3IDM5CucJhP43ekbcw3/2TjRK9Z+BIeYr/FzIbYZv
-         +aWjkRMDiVcTbtQYU6z9p7PnHrts7SDcq+qNY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=QOozq2VRHRDaTQNKd9zvRySt75HQaYRFLVgUy3mewOf3Id0VhHct290xrME73QZdY8
-         uXeSeWF9OtKMYNcrE+aREK7kEDWxQfHJ3RJjReY/uc4syv2kuinYzzkSztmWbaXDWQqY
-         AgDQcmVh4oFAmErlAtsGMuZN2B7lXs8szhRb8=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2010 14:28:46 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:48289 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493348Ab0HEM2n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Aug 2010 14:28:43 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o75CSbPj025142;
+        Thu, 5 Aug 2010 13:28:37 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o75CSaUM025140;
+        Thu, 5 Aug 2010 13:28:36 +0100
+Date:   Thu, 5 Aug 2010 13:28:35 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David VomLehn <dvomlehn@cisco.com>
+Cc:     linux-mips@linux-mips.org, greg@kroah.com,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH 2/2][MIPS] USB/PowerTV: Separate PowerTV USB support from
+ non-USB code
+Message-ID: <20100805122835.GA7364@linux-mips.org>
+References: <20100803014058.GA31552@dvomlehn-lnx2.corp.sa.net>
+ <20100805004941.GB28402@linux-mips.org>
+ <20100805023244.GA6780@dvomlehn-lnx2.corp.sa.net>
 MIME-Version: 1.0
-Received: by 10.216.5.4 with SMTP id 4mr2970758wek.20.1280983806906; Wed, 04 
-        Aug 2010 21:50:06 -0700 (PDT)
-Received: by 10.216.159.204 with HTTP; Wed, 4 Aug 2010 21:50:06 -0700 (PDT)
-In-Reply-To: <20100805013221.GE28402@linux-mips.org>
-References: <9890d1383c75ce6df44d357687a9c4e2d6ba4050.1275438553.git.wuzhangjin@gmail.com>
-        <96f3b48ba7f749c4357760008cdae644aa55b92d.1275438520.git.wuzhangjin@gmail.com>
-        <20100805013221.GE28402@linux-mips.org>
-Date:   Thu, 5 Aug 2010 12:50:06 +0800
-Message-ID: <AANLkTikU2jVA_vSo9i+FMANUoB3N=HYRMdfG0Ffr4mBC@mail.gmail.com>
-Subject: Re: [PATCH v4] MIPS: Clean up the calculation of VMLINUZ_LOAD_ADDRESS
-From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Alexander Clouter <alex@digriz.org.uk>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100805023244.GA6780@dvomlehn-lnx2.corp.sa.net>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27591
+X-archive-position: 27592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf
+On Wed, Aug 04, 2010 at 07:32:44PM -0700, David VomLehn wrote:
 
-On Thu, Aug 5, 2010 at 9:32 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> Applied - but there was a fuzz when applying the patch.  Hope that was
-> harmless...
+> > can this patch be safely applied alone until I get an Ack for patch 1/1?
+> 
+> Yes. It's the first time I've submitted something that crosses maintainer
+> lines, so I made sure it would work with USB disabled.
 
-Sorry to disturb you again.
+Thanks, 2/2 applied then.  I had to fix a trivial reject in
+arch/mips/powertv/Makefile.
 
-Just found the key file calc_vmlinuz_load_addr.c is not in your
-upstream-linus.git, I guess a "git add" was missing for it ;)
-
-the commit in upstream:
-
-http://git.linux-mips.org/?p=upstream-linus.git;a=commit;h=af86de3e5347c114afd978fbfc16af9a77e24c47
-
-the original patch:
-
-http://patchwork.linux-mips.org/patch/1324/
-
-Thanks & Regards,
-Wu Zhangjin
+  Ralf

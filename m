@@ -1,71 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2010 15:51:58 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:40536 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492973Ab0HENvy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Aug 2010 15:51:54 +0200
-Received: by wyf19 with SMTP id 19so3505736wyf.36
-        for <multiple recipients>; Thu, 05 Aug 2010 06:51:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:cc:subject
-         :date:message-id:x-mailer;
-        bh=nJBF3vaQwmfvIEEYbYGcDouD3hMOUhLj7ja7u/wGjyk=;
-        b=G9cpO8CKskuqLqNaEDBAWL47cpWSscQ7NqVtZ2GinUv6sbwmMmDCjA3ibrLlCX9CB1
-         Mb+JOum4Mn7P0JkhVGobZf2NV+49gKkZjg6sO1kUMXDgj2QCAd/a/VKCbY4iVDTheA/J
-         iLcBFmdLElY/GLR74SS28D7B0QfVM0qxknq2c=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer;
-        b=ra39CsL+k6N1Lz5xGEej0A3f1s+EWNL60rygtRJsBlck2cWptQblBGDGxjVWDLLtZI
-         7N0KfKdQwUovqSFrlzuUUC3mLO19gtVY0hPoONfI97OdbiUY/f9DAZw64QGMPnn0YMdN
-         JQmGKIypLs7rL8fOT3YWq4NlRBJd0hRMnKgAM=
-Received: by 10.227.72.139 with SMTP id m11mr9016254wbj.30.1281016309096;
-        Thu, 05 Aug 2010 06:51:49 -0700 (PDT)
-Received: from localhost.localdomain (adsl203-161-174.mclink.it [213.203.161.174])
-        by mx.google.com with ESMTPS id w46sm133041weq.43.2010.08.05.06.51.46
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 05 Aug 2010 06:51:47 -0700 (PDT)
-From:   Andrea Gelmini <andrea.gelmini@gelma.net>
-To:     gelma@gelma.net
-Cc:     Andrea Gelmini <andrea.gelmini@gelma.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Martin Hicks <mort@sgi.com>, linux-mips@linux-mips.org
-Subject: [PATCH 01/15] arch: mips: kernel: Fix a typo.
-Date:   Thu,  5 Aug 2010 15:51:25 +0200
-Message-Id: <1281016299-23958-1-git-send-email-andrea.gelmini@gelma.net>
-X-Mailer: git-send-email 1.7.2.1.85.g2d089
-Return-Path: <andrea.gelmini@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2010 16:18:06 +0200 (CEST)
+Received: from [216.241.235.117] ([216.241.235.117]:40623 "EHLO
+        bby1mta02.pmc-sierra.bc.ca" rhost-flags-FAIL-FAIL-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491099Ab0HEOR5 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 5 Aug 2010 16:17:57 +0200
+Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
+        by localhost (Postfix) with SMTP id 097818E0080;
+        Thu,  5 Aug 2010 06:43:52 -0700 (PDT)
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
+        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id 6BD548E001B;
+        Thu,  5 Aug 2010 06:43:52 -0700 (PDT)
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 5 Aug 2010 06:43:52 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: file corruption with highmem kernel
+Date:   Thu, 5 Aug 2010 06:43:50 -0700
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C02014052700A1@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+In-Reply-To: <A7DEA48C84FD0B48AAAE33F328C020140526FCF5@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: file corruption with highmem kernel
+Thread-Index: AcsyRsvJtdIm2QULSF2xEZbUAQ5rPACWmtew
+References: <A7DEA48C84FD0B48AAAE33F328C020140526FCF5@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:     "linux-mips" <linux-mips@linux-mips.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+X-OriginalArrivalTime: 05 Aug 2010 13:43:52.0230 (UTC) FILETIME=[3D8FB460:01CB34A4]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27593
+X-archive-position: 27594
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andrea.gelmini@gelma.net
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-"Userpace" -> "Userspace"
+List,
 
-Signed-off-by: Andrea Gelmini <andrea.gelmini@gelma.net>
----
- arch/mips/kernel/kgdb.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+With a slightly modified patched (copied below) I have reached a point
+where I am no more seeing errors like segmentation fault, bus error
+(which was due to memory corruption I believe).
+How ever I am still seeing some kind of file corruption. 
 
-diff --git a/arch/mips/kernel/kgdb.c b/arch/mips/kernel/kgdb.c
-index 9b78ff6..f0f74f4 100644
---- a/arch/mips/kernel/kgdb.c
-+++ b/arch/mips/kernel/kgdb.c
-@@ -196,7 +196,7 @@ static int kgdb_mips_notify(struct notifier_block *self, unsigned long cmd,
- 	struct pt_regs *regs = args->regs;
- 	int trap = (regs->cp0_cause & 0x7c) >> 2;
+I believe this file corruption happening because cache is not getting
+invalidated before a highmem dma. I am not sure which routine to call to
+invalidate cache for a highmem address. 
+
+Hope to see response from linux-mips gurus
+
+Thank you,
+Anoop   
+
+--- arch/mips/mm/dma-noncoherent.c.orig	2010-08-02 23:53:17.000000000
++0530
++++ arch/mips/mm/dma-noncoherent.c	2010-08-06 00:17:21.000000000
++0530
+@@ -131,13 +131,14 @@
  
--	/* Userpace events, ignore. */
-+	/* Userspace events, ignore. */
- 	if (user_mode(regs))
- 		return NOTIFY_DONE;
+ 	for (i = 0; i < nents; i++, sg++) {
+ 		unsigned long addr;
+-
+-		addr = (unsigned long) page_address(sg->page);
+-		if (addr) {
+-			__dma_sync(addr + sg->offset, sg->length,
+direction);
+-			sg->dma_address =
+(dma_addr_t)page_to_phys(sg->page)
+-					  + sg->offset;
++		if (!PageHighMem(sg->page)){
++			addr = (unsigned long)page_address(sg->page) +
+sg->offset;
++			__dma_sync(addr , sg->length, direction);
+ 		}
++
++		sg->dma_address = (dma_addr_t)page_to_phys(sg->page)
++					+ sg->offset;
++		
+ 	}
  
--- 
-1.7.2.1.85.g2d089
+ 	return nents;
+@@ -187,9 +188,10 @@
+ 		return;
+ 
+ 	for (i = 0; i < nhwentries; i++, sg++) {
+-		addr = (unsigned long) page_address(sg->page);
+-		if (addr)
+-			__dma_sync(addr + sg->offset, sg->length,
+direction);
++		if (!PageHighMem(sg->page)){
++			addr = (unsigned long)page_address(sg->page) +
+sg->offset;
++			__dma_sync(addr , sg->length, direction);
++		}
+ 	}
+ }

@@ -1,54 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2010 04:32:59 +0200 (CEST)
-Received: from sj-iport-5.cisco.com ([171.68.10.87]:35508 "EHLO
-        sj-iport-5.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1493293Ab0HECcx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Aug 2010 04:32:53 +0200
-Authentication-Results: sj-iport-5.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAAa/WUyrR7Hu/2dsb2JhbACgK3GpPpshghqDIQSEHg
-X-IronPort-AV: E=Sophos;i="4.55,318,1278288000"; 
-   d="scan'208";a="235756576"
-Received: from sj-core-5.cisco.com ([171.71.177.238])
-  by sj-iport-5.cisco.com with ESMTP; 05 Aug 2010 02:32:44 +0000
-Received: from dvomlehn-lnx2.corp.sa.net (dhcp-171-71-47-241.cisco.com [171.71.47.241])
-        by sj-core-5.cisco.com (8.13.8/8.14.3) with ESMTP id o752WipP006839;
-        Thu, 5 Aug 2010 02:32:44 GMT
-Date:   Wed, 4 Aug 2010 19:32:44 -0700
-From:   David VomLehn <dvomlehn@cisco.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, greg@kroah.com,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/2][MIPS] USB/PowerTV: Separate PowerTV USB support
-        from non-USB code
-Message-ID: <20100805023244.GA6780@dvomlehn-lnx2.corp.sa.net>
-References: <20100803014058.GA31552@dvomlehn-lnx2.corp.sa.net> <20100805004941.GB28402@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2010 04:42:16 +0200 (CEST)
+Received: from mail-ww0-f41.google.com ([74.125.82.41]:61627 "EHLO
+        mail-ww0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491090Ab0HECmN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Aug 2010 04:42:13 +0200
+Received: by wwa36 with SMTP id 36so295754wwa.0
+        for <linux-mips@linux-mips.org>; Wed, 04 Aug 2010 19:42:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=VDCL8/GNB3IIqEpFLLb6hwKLRynum78h+mSqVlxBY1c=;
+        b=YY7WJMMzCJozi7uhLo2udqld4rTKYwwWETSm6NurXvUZxWcjhy0SfJ5hnLS6nhpMWZ
+         snwMjtA4vJhGVgpBVUiC2zXlwaitVpgW5zbEylck9N1k06WhHfXtYxWdo8rBLMYm1Pxo
+         sxa15HfJLud+N2mHN6SgfV1Rfu50V1wGFkNtA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=lCZ53CCLUvdjyM5lG8GMW3Hkvolc6ymyG046IE9nr0DFCzXLSK2LWHlcWIWW6oDRQ7
+         fe93paqcc+HwjGEuO4z9YwiyKligfzHa1QkbMawWOkwOUsS+kqcpRO32c6WKQvKPyYFZ
+         7Rm42hyvtgYp7xRrAQ7Ee54pAW9YAF7umvKA0=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20100805004941.GB28402@linux-mips.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <dvomlehn@cisco.com>
+Received: by 10.216.235.104 with SMTP id t82mr2769949weq.103.1280976127653; 
+        Wed, 04 Aug 2010 19:42:07 -0700 (PDT)
+Received: by 10.216.159.204 with HTTP; Wed, 4 Aug 2010 19:42:07 -0700 (PDT)
+In-Reply-To: <20100805011343.GC28402@linux-mips.org>
+References: <7a966ffadcf2a4600c098c3ac47ef1f645790946.1276674390.git.wuzhangjin@gmail.com>
+        <20100805011343.GC28402@linux-mips.org>
+Date:   Thu, 5 Aug 2010 10:42:07 +0800
+Message-ID: <AANLkTimHgBvFejM1Kec8rWX-MPOFsV3nYrNdiWStuVJ0@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Clean up arch/mips/boot/compressed/ld.script
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27587
+X-archive-position: 27588
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 05, 2010 at 01:49:41AM +0100, Ralf Baechle wrote:
-> David,
-> 
-> can this patch be safely applied alone until I get an Ack for patch 1/1?
-> 
-> Thanks,
-> 
->   Ralf
+Hi, Ralf
 
-Yes. It's the first time I've submitted something that crosses maintainer
-lines, so I made sure it would work with USB disabled.
--- 
-David VL
+On Thu, Aug 5, 2010 at 9:13 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Applied - but there was an entirely avoidable reject in that file *grrr* :-)
+>
+
+Thanks, Just took a look at your upstream-linus.git git repo and found
+you have applied them in a wrong order and have forgotten applying the
+first one of them ;)
+
+1. [v2] MIPS: Unify the suffix of compressed vmlinux.bin
+http://patchwork.linux-mips.org/patch/1323/
+
+This one should be applied as the first one, but seems this is still
+in the patchwork ;)
+
+2. [v4] MIPS: Clean up the calculation of VMLINUZ_LOAD_ADDRESS
+http://patchwork.linux-mips.org/patch/1324/
+
+3. MIPS: Clean up arch/mips/boot/compressed/ld.script
+http://patchwork.linux-mips.org/patch/1381/
+
+4. MIPS: Clean up arch/mips/boot/compressed/decompress.c
+http://patchwork.linux-mips.org/patch/1382/
+
+5. MIPS: strip the un-needed sections of vmlinuz
+http://patchwork.linux-mips.org/patch/1383/
+
+Sould I resend all of them in one patchset? But I can only do it tonight.
+
+Thanks & Regards,
+Wu Zhangjin

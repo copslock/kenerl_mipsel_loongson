@@ -1,90 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Aug 2010 22:17:32 +0200 (CEST)
-Received: from mgw2.diku.dk ([130.225.96.92]:52713 "EHLO mgw2.diku.dk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2010 11:22:40 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:52490 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493388Ab0HEURZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 Aug 2010 22:17:25 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mgw2.diku.dk (Postfix) with ESMTP id CFF6219BF02;
-        Thu,  5 Aug 2010 22:17:23 +0200 (CEST)
-Received: from mgw2.diku.dk ([127.0.0.1])
- by localhost (mgw2.diku.dk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 29930-20; Thu,  5 Aug 2010 22:17:22 +0200 (CEST)
-Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
-        by mgw2.diku.dk (Postfix) with ESMTP id 9703219BF01;
-        Thu,  5 Aug 2010 22:17:22 +0200 (CEST)
-Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
-        by nhugin.diku.dk (Postfix) with ESMTP
-        id 3CD5B6DFBB6; Thu,  5 Aug 2010 22:16:13 +0200 (CEST)
-Received: by ask.diku.dk (Postfix, from userid 3767)
-        id 7CA2D200C3; Thu,  5 Aug 2010 22:17:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by ask.diku.dk (Postfix) with ESMTP id 72E07200BD;
-        Thu,  5 Aug 2010 22:17:22 +0200 (CEST)
-Date:   Thu, 5 Aug 2010 22:17:22 +0200 (CEST)
-From:   Julia Lawall <julia@diku.dk>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/42] arch/mips/kernel: Adjust confusing if indentation
-Message-ID: <Pine.LNX.4.64.1008052217010.31692@ask.diku.dk>
+        id S1492069Ab0HFJWc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 Aug 2010 11:22:32 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o769MTpA027589;
+        Fri, 6 Aug 2010 10:22:29 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o769MSMQ027587;
+        Fri, 6 Aug 2010 10:22:28 +0100
+Date:   Fri, 6 Aug 2010 10:22:28 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Remove unused task_struct.trap_no field.
+Message-ID: <20100806092227.GA27524@linux-mips.org>
+References: <1280872659-27372-1-git-send-email-ddaney@caviumnetworks.com>
+ <20100804233013.GA28115@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <julia@diku.dk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100804233013.GA28115@linux-mips.org>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27598
+X-archive-position: 27599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: julia@diku.dk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Julia Lawall <julia@diku.dk>
+On Thu, Aug 05, 2010 at 12:30:13AM +0100, Ralf Baechle wrote:
 
-Indent the branch of an if.
+> Thanks, applied.
 
-The semantic match that finds this problem is as follows:
-(http://coccinelle.lip6.fr/)
+Btw, this field was unused since at least Linux 1.1.68, that is late 1994 :-)
 
-// <smpl>
-@r disable braces4@
-position p1,p2;
-statement S1,S2;
-@@
-
-(
-if (...) { ... }
-|
-if (...) S1@p1 S2@p2
-)
-
-@script:python@
-p1 << r.p1;
-p2 << r.p2;
-@@
-
-if (p1[0].column == p2[0].column):
-  cocci.print_main("branch",p1)
-  cocci.print_secs("after",p2)
-// </smpl>
-
-Signed-off-by: Julia Lawall <julia@diku.dk>
-
----
- arch/mips/kernel/kspd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/mips/kernel/kspd.c b/arch/mips/kernel/kspd.c
-index 80e2ba6..29811f0 100644
---- a/arch/mips/kernel/kspd.c
-+++ b/arch/mips/kernel/kspd.c
-@@ -251,7 +251,7 @@ void sp_work_handle_request(void)
-  		memset(&tz, 0, sizeof(tz));
-  		if ((ret.retval = sp_syscall(__NR_gettimeofday, (int)&tv,
- 					     (int)&tz, 0, 0)) == 0)
--		ret.retval = tv.tv_sec;
-+			ret.retval = tv.tv_sec;
- 		break;
- 
-  	case MTSP_SYSCALL_EXIT:
+  Ralf

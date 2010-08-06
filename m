@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2010 18:05:14 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:34502 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Aug 2010 18:11:44 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:46496 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492582Ab0HFQFG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 6 Aug 2010 18:05:06 +0200
+        id S1492463Ab0HFQLk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 Aug 2010 18:11:40 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o76G42pP004153;
-        Fri, 6 Aug 2010 17:04:02 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o76GAtqQ004405;
+        Fri, 6 Aug 2010 17:10:55 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o76G403I004151;
-        Fri, 6 Aug 2010 17:04:00 +0100
-Date:   Fri, 6 Aug 2010 17:04:00 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o76GAsbA004399;
+        Fri, 6 Aug 2010 17:10:54 +0100
+Date:   Fri, 6 Aug 2010 17:10:54 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Andrea Gelmini <andrea.gelmini@gelma.net>
-Cc:     gelma@gelma.net, Jason Wessel <jason.wessel@windriver.com>,
-        Martin Hicks <mort@sgi.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 01/15] arch: mips: kernel: Fix a typo.
-Message-ID: <20100806160400.GA4034@linux-mips.org>
-References: <1281016299-23958-1-git-send-email-andrea.gelmini@gelma.net>
+To:     Julia Lawall <julia@diku.dk>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 2/42] arch/mips/kernel: Adjust confusing if indentation
+Message-ID: <20100806161054.GB4034@linux-mips.org>
+References: <Pine.LNX.4.64.1008052217010.31692@ask.diku.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1281016299-23958-1-git-send-email-andrea.gelmini@gelma.net>
+In-Reply-To: <Pine.LNX.4.64.1008052217010.31692@ask.diku.dk>
 User-Agent: Mutt/1.5.20 (2009-12-10)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27602
+X-archive-position: 27603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,6 +34,6 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thanks, applied.
+Applied.  Thanks Julia,
 
   Ralf

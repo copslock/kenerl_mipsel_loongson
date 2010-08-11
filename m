@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2010 12:12:12 +0200 (CEST)
-Received: from mgw2.diku.dk ([130.225.96.92]:49105 "EHLO mgw2.diku.dk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2010 18:23:36 +0200 (CEST)
+Received: from mgw2.diku.dk ([130.225.96.92]:53923 "EHLO mgw2.diku.dk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492325Ab0HKKMG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Aug 2010 12:12:06 +0200
+        id S1492319Ab0HKQXb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Aug 2010 18:23:31 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by mgw2.diku.dk (Postfix) with ESMTP id 9705D19BEA1;
-        Wed, 11 Aug 2010 12:12:02 +0200 (CEST)
+        by mgw2.diku.dk (Postfix) with ESMTP id B804F19BEA9;
+        Wed, 11 Aug 2010 18:23:29 +0200 (CEST)
 Received: from mgw2.diku.dk ([127.0.0.1])
  by localhost (mgw2.diku.dk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 24288-10; Wed, 11 Aug 2010 12:12:00 +0200 (CEST)
+ id 02245-20; Wed, 11 Aug 2010 18:23:28 +0200 (CEST)
 Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
-        by mgw2.diku.dk (Postfix) with ESMTP id 1F36919BE9F;
-        Wed, 11 Aug 2010 12:12:00 +0200 (CEST)
+        by mgw2.diku.dk (Postfix) with ESMTP id 7A13219BEA7;
+        Wed, 11 Aug 2010 18:23:28 +0200 (CEST)
 Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
         by nhugin.diku.dk (Postfix) with ESMTP
-        id DBDA96DFD0B; Wed, 11 Aug 2010 12:10:41 +0200 (CEST)
+        id CD5CB6DF894; Wed, 11 Aug 2010 18:22:09 +0200 (CEST)
 Received: by ask.diku.dk (Postfix, from userid 3767)
-        id F3959200C3; Wed, 11 Aug 2010 12:11:59 +0200 (CEST)
+        id 55A32200C3; Wed, 11 Aug 2010 18:23:28 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-        by ask.diku.dk (Postfix) with ESMTP id EBEC7200BB;
-        Wed, 11 Aug 2010 12:11:59 +0200 (CEST)
-Date:   Wed, 11 Aug 2010 12:11:59 +0200 (CEST)
+        by ask.diku.dk (Postfix) with ESMTP id 4EE7C200BB;
+        Wed, 11 Aug 2010 18:23:28 +0200 (CEST)
+Date:   Wed, 11 Aug 2010 18:23:28 +0200 (CEST)
 From:   Julia Lawall <julia@diku.dk>
-To:     Pat Gefre <pfg@sgi.com>, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH 5/5] drivers/serial: Return -ENOMEM on memory allocation
+To:     Patrick Gefre <pfg@sgi.com>
+Cc:     linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 5/5] drivers/serial: Return -ENOMEM on memory allocation
  failure
-Message-ID: <Pine.LNX.4.64.1008111211440.8669@ask.diku.dk>
+In-Reply-To: <4C62C8F3.3090405@sgi.com>
+Message-ID: <Pine.LNX.4.64.1008111818380.8669@ask.diku.dk>
+References: <Pine.LNX.4.64.1008111211440.8669@ask.diku.dk> <4C62C8F3.3090405@sgi.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Return-Path: <julia@diku.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27610
+X-archive-position: 27611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,50 +44,46 @@ X-original-sender: julia@diku.dk
 Precedence: bulk
 X-list: linux-mips
 
-From: Julia Lawall <julia@diku.dk>
+> > I believe this code also leaks earlier instances of port, which are only
+> > referenced by card_ptr, which is freed in the error handling code at the
+> > end of the function.  A lot of operations are done on port on each
+> > iteration, however, so I'm not sure whether it is good enough to just free
+> > them.  Perhaps there is some way to call ioc3uart_remove?
+> > 
+> 
+> Yes you are right, there should be something like this for out4:
+> 
+> out4:
+> 	for (phys_port = 0; phys_port < PORTS_PER_CARD; phys_port++) {
+> 		port = card_ptr->ic_port[phys_port].icp_port;
+> 		if (port) {
+> 			pci_free_consistent(port->ip_idd->pdev,
+>                                        TOTAL_RING_BUF_SIZE,
+>                                        (void *)port->ip_cpu_ringbuf,
+>                                        port->ip_dma_ringbuf);
+> 			kfree(port);
+> 		}
+> 	}
+> 	kfree(card_ptr);
+> 	return ret;
 
-In this code, 0 is returned on memory allocation failure, even though other
-failures return -ENOMEM or other similar values.
+Actually, pci_alloc_consistent is only called when phys_port is 0.  In the 
+subsequent cases, the ip_dma_ringbuf field is just initialized to the 
+previous value.  So it could be:
 
-A simplified version of the semantic match that finds this problem is as
-follows: (http://coccinelle.lip6.fr/)
+out4:
+        for (phys_port = 0; phys_port < PORTS_PER_CARD; phys_port++) {
+                port = card_ptr->ic_port[phys_port].icp_port;
+                if (port) {
+			if (phys_port == 0)
+	                        pci_free_consistent(port->ip_idd->pdev,
+                                       TOTAL_RING_BUF_SIZE,
+                                       (void *)port->ip_cpu_ringbuf,
+                                       port->ip_dma_ringbuf);
+                        kfree(port);
+                }
+        }
+        kfree(card_ptr);
+        return ret;
 
-// <smpl>
-@@
-expression ret;
-expression x,e1,e2,e3;
-@@
-
-ret = 0
-... when != ret = e1
-*x = \(kmalloc\|kcalloc\|kzalloc\)(...)
-... when != ret = e2
-if (x == NULL) { ... when != ret = e3
-  return ret;
-}
-// </smpl>
-
-Signed-off-by: Julia Lawall <julia@diku.dk>
-
----
-I believe this code also leaks earlier instances of port, which are only
-referenced by card_ptr, which is freed in the error handling code at the
-end of the function.  A lot of operations are done on port on each
-iteration, however, so I'm not sure whether it is good enough to just free
-them.  Perhaps there is some way to call ioc3uart_remove?
-
- drivers/serial/ioc3_serial.c |    1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/serial/ioc3_serial.c b/drivers/serial/ioc3_serial.c
-index 93de907..800c546 100644
---- a/drivers/serial/ioc3_serial.c
-+++ b/drivers/serial/ioc3_serial.c
-@@ -2044,6 +2044,7 @@ ioc3uart_probe(struct ioc3_submodule *is, struct ioc3_driver_data *idd)
- 		if (!port) {
- 			printk(KERN_WARNING
- 			       "IOC3 serial memory not available for port\n");
-+			ret = -ENOMEM;
- 			goto out4;
- 		}
- 		spin_lock_init(&port->ip_lock);
+julia

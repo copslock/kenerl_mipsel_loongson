@@ -1,77 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Aug 2010 19:41:23 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:6841 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492360Ab0HKRlT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Aug 2010 19:41:19 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4c62d6340001>; Wed, 11 Aug 2010 09:56:21 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 11 Aug 2010 09:55:50 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 11 Aug 2010 09:55:50 -0700
-Message-ID: <4C62D616.9050000@caviumnetworks.com>
-Date:   Wed, 11 Aug 2010 09:55:50 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100720 Fedora/3.0.6-1.fc12 Thunderbird/3.0.6
-MIME-Version: 1.0
-To:     =?UTF-8?B?QW5kcmVhcyBCaWXDn21hbm4=?= <biessmann@corscience.de>
-CC:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] cavium-octeon: determine if helper should build
-References: <1281545393-23690-1-git-send-email-biessmann@corscience.de>
-In-Reply-To: <1281545393-23690-1-git-send-email-biessmann@corscience.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 11 Aug 2010 16:55:50.0573 (UTC) FILETIME=[0D81DDD0:01CB3976]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Aug 2010 09:02:47 +0200 (CEST)
+Received: from sh.osrg.net ([192.16.179.4]:55201 "EHLO sh.osrg.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491097Ab0HNHCm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 14 Aug 2010 09:02:42 +0200
+Received: from localhost (rose.osrg.net [10.76.0.1])
+        by sh.osrg.net (8.14.3/8.14.3/OSRG-NET) with ESMTP id o7E72bxp002949;
+        Sat, 14 Aug 2010 16:02:38 +0900
+Date:   Sat, 14 Aug 2010 16:02:37 +0900
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        anemo@mba.ocn.ne.jp
+Subject: [PATCH] MIPS: TX49xx: rename ARCH_KMALLOC_MINALIGN to
+ ARCH_DMA_MINALIGN
+From:   FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20100814160128H.fujita.tomonori@lab.ntt.co.jp>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-3.0 (sh.osrg.net [192.16.179.4]); Sat, 14 Aug 2010 16:02:38 +0900 (JST)
+X-Virus-Scanned: clamav-milter 0.96.1 at sh
+X-Virus-Status: Clean
+Return-Path: <fujita.tomonori@lab.ntt.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27614
+X-archive-position: 27615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: fujita.tomonori@lab.ntt.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On 08/11/2010 09:49 AM, Andreas Bießmann wrote:
->   This patch adds an config switch to determine if we need to build some
->   workaround helper files.
->
->   The staging driver octeon-ethernet references some symbols which are only
->   built when PCI is enabled. The new config switch enables these symbols in
->   bothe cases.
->
-> Signed-off-by: Andreas Bießmann<biessmann@corscience.de>
+Architectures need to set ARCH_DMA_MINALIGN to the minimum DMA
+alignment (the commit
+a6eb9fe105d5de0053b261148cee56c94b4720ca). Defining
+ARCH_KMALLOC_MINALIGN doesn't work anymore.
 
-Acked-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+---
+ arch/mips/include/asm/mach-tx49xx/kmalloc.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-
-> ---
->   arch/mips/cavium-octeon/Kconfig            |    4 ++++
->   arch/mips/cavium-octeon/executive/Makefile |    2 +-
->   2 files changed, 5 insertions(+), 1 deletions(-)
->
-> diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
-> index 094c17e..47323ca 100644
-> --- a/arch/mips/cavium-octeon/Kconfig
-> +++ b/arch/mips/cavium-octeon/Kconfig
-> @@ -83,3 +83,7 @@ config ARCH_SPARSEMEM_ENABLE
->   	def_bool y
->   	select SPARSEMEM_STATIC
->   	depends on CPU_CAVIUM_OCTEON
-> +
-> +config CAVIUM_OCTEON_HELPER
-> +	def_bool y
-> +	depends on OCTEON_ETHERNET || PCI
-> diff --git a/arch/mips/cavium-octeon/executive/Makefile b/arch/mips/cavium-octeon/executive/Makefile
-> index 2fd66db..7f41c5b 100644
-> --- a/arch/mips/cavium-octeon/executive/Makefile
-> +++ b/arch/mips/cavium-octeon/executive/Makefile
-> @@ -11,4 +11,4 @@
->
->   obj-y += cvmx-bootmem.o cvmx-l2c.o cvmx-sysinfo.o octeon-model.o
->
-> -obj-$(CONFIG_PCI) += cvmx-helper-errata.o cvmx-helper-jtag.o
-> +obj-$(CONFIG_CAVIUM_OCTEON_HELPER) += cvmx-helper-errata.o cvmx-helper-jtag.o
+diff --git a/arch/mips/include/asm/mach-tx49xx/kmalloc.h b/arch/mips/include/asm/mach-tx49xx/kmalloc.h
+index b74caf6..ff9a8b8 100644
+--- a/arch/mips/include/asm/mach-tx49xx/kmalloc.h
++++ b/arch/mips/include/asm/mach-tx49xx/kmalloc.h
+@@ -1,6 +1,6 @@
+ #ifndef __ASM_MACH_TX49XX_KMALLOC_H
+ #define __ASM_MACH_TX49XX_KMALLOC_H
+ 
+-#define ARCH_KMALLOC_MINALIGN	L1_CACHE_BYTES
++#define ARCH_DMA_MINALIGN L1_CACHE_BYTES
+ 
+ #endif /* __ASM_MACH_TX49XX_KMALLOC_H */
+-- 
+1.6.5

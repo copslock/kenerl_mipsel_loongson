@@ -1,58 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Aug 2010 09:02:47 +0200 (CEST)
-Received: from sh.osrg.net ([192.16.179.4]:55201 "EHLO sh.osrg.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491097Ab0HNHCm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 14 Aug 2010 09:02:42 +0200
-Received: from localhost (rose.osrg.net [10.76.0.1])
-        by sh.osrg.net (8.14.3/8.14.3/OSRG-NET) with ESMTP id o7E72bxp002949;
-        Sat, 14 Aug 2010 16:02:38 +0900
-Date:   Sat, 14 Aug 2010 16:02:37 +0900
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        anemo@mba.ocn.ne.jp
-Subject: [PATCH] MIPS: TX49xx: rename ARCH_KMALLOC_MINALIGN to
- ARCH_DMA_MINALIGN
-From:   FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20100814160128H.fujita.tomonori@lab.ntt.co.jp>
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-3.0 (sh.osrg.net [192.16.179.4]); Sat, 14 Aug 2010 16:02:38 +0900 (JST)
-X-Virus-Scanned: clamav-milter 0.96.1 at sh
-X-Virus-Status: Clean
-Return-Path: <fujita.tomonori@lab.ntt.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Aug 2010 05:20:28 +0200 (CEST)
+Received: from mail-qw0-f49.google.com ([209.85.216.49]:48396 "EHLO
+        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491074Ab0HODUX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 15 Aug 2010 05:20:23 +0200
+Received: by qwe4 with SMTP id 4so4464927qwe.36
+        for <linux-mips@linux-mips.org>; Sat, 14 Aug 2010 20:20:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=IVo5kWR7Sjaw3hrcu2Dh2/Kc4+vCz41EeB8q2rPxXKs=;
+        b=FgbX+7F/uVNYWqOXNKL6tcia9qy+aM6bRuNggg90Bek38pPa/+Wq9/TBj0hTpEBfi9
+         RlbCK4k8GQ4I97+1z5dVFB73bWRYabdl/NvOTbdsldr+lvQNsIw8xi2jj7GqmhELCSpy
+         +nO92PkHjs/7enp6lXowUTlgBagWYin9CtLyo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=rQjF/F0LkwSGBH230pIDrcx0xcOCPfwI10lzaFlIk6i8wvqGNev6JCMny5ARaUzif8
+         e2X01amSBOGHZm/QhLeIikfbyUvqO8WyVDkDJf8By7576Jv/7WzNUl2KChnxXThIfo7U
+         +1NAtoP7bNKA8obZKH0bmZX3iEXwJRZzyE1CI=
+MIME-Version: 1.0
+Received: by 10.224.36.209 with SMTP id u17mr2204288qad.328.1281838403265;
+ Sat, 14 Aug 2010 19:13:23 -0700 (PDT)
+Received: by 10.229.55.69 with HTTP; Sat, 14 Aug 2010 19:13:23 -0700 (PDT)
+Date:   Sun, 15 Aug 2010 10:13:23 +0800
+Message-ID: <AANLkTik5o+LsApwvkDTb7z+k=Ls60h9PJugrvM7ozO=p@mail.gmail.com>
+Subject: Clock Source in hrtimer
+From:   "wilbur.chan" <wilbur512@gmail.com>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27615
+X-archive-position: 27616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fujita.tomonori@lab.ntt.co.jp
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Architectures need to set ARCH_DMA_MINALIGN to the minimum DMA
-alignment (the commit
-a6eb9fe105d5de0053b261148cee56c94b4720ca). Defining
-ARCH_KMALLOC_MINALIGN doesn't work anymore.
+I am planning to use  linux 2.6.24  with hrtimer enabled and with
+CONFIG_NO_HZ  on mips xlr 732.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
----
- arch/mips/include/asm/mach-tx49xx/kmalloc.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-tx49xx/kmalloc.h b/arch/mips/include/asm/mach-tx49xx/kmalloc.h
-index b74caf6..ff9a8b8 100644
---- a/arch/mips/include/asm/mach-tx49xx/kmalloc.h
-+++ b/arch/mips/include/asm/mach-tx49xx/kmalloc.h
-@@ -1,6 +1,6 @@
- #ifndef __ASM_MACH_TX49XX_KMALLOC_H
- #define __ASM_MACH_TX49XX_KMALLOC_H
- 
--#define ARCH_KMALLOC_MINALIGN	L1_CACHE_BYTES
-+#define ARCH_DMA_MINALIGN L1_CACHE_BYTES
- 
- #endif /* __ASM_MACH_TX49XX_KMALLOC_H */
--- 
-1.6.5
+As we know, a   monotomic increasing Clock Source is required to
+support hrtimer,  whose cycles could be retrieved  from
+clocksource->read function.
+
+However  on  xlr 732 ,there is only a 32 bits counter register, which
+would overflow in 4s ( 2^32 / 1GHZ = 4).
+
+How to solve this ?
+
+
+Thanks in advance

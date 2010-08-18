@@ -1,38 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2010 16:40:07 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:57579 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2010 16:43:09 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:57593 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491168Ab0HROkD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 18 Aug 2010 16:40:03 +0200
+        id S1491182Ab0HROnF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Aug 2010 16:43:05 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o7IEdTx2028408;
-        Wed, 18 Aug 2010 15:39:29 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o7IEh12t028519;
+        Wed, 18 Aug 2010 15:43:01 +0100
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o7IEdQgT028402;
-        Wed, 18 Aug 2010 15:39:26 +0100
-Date:   Wed, 18 Aug 2010 15:39:26 +0100
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o7IEh1Hk028517;
+        Wed, 18 Aug 2010 15:43:01 +0100
+Date:   Wed, 18 Aug 2010 15:43:01 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Grant Likely <grant.likely@secretlab.ca>,
-        "Dezhong Diao (dediao)" <dediao@cisco.com>,
-        linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
-        David Daney <ddaney@caviumnetworks.com>,
-        "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
-Subject: Re: [PATCH v2 1/2] MIPS: Add device tree support to MIPS
-Message-ID: <20100818143926.GB2849@linux-mips.org>
-References: <AANLkTi=74zoQziQTmAGo-cNtF9FAT77h+KZagsNEFjEf@mail.gmail.com>
- <7A9214B0DEB2074FBCA688B30B04400D013FA46D@XMB-RCD-208.cisco.com>
- <20100816204211.GA17571@angua.secretlab.ca>
- <20100817134039.fc1108c7.sfr@canb.auug.org.au>
+To:     naveen yadav <yad.naveen@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: kmalloc issue on MIPS target
+Message-ID: <20100818144301.GC2849@linux-mips.org>
+References: <AANLkTiniH42L=-DdJ_XHOm1Uo_=YoAqE-j9Jrm45imtG@mail.gmail.com>
+ <20100818133336.GA25740@linux-mips.org>
+ <AANLkTin8LLH3DkX38B93Ap0mmz4hb9e=cEo9U3ZKmavr@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20100817134039.fc1108c7.sfr@canb.auug.org.au>
+In-Reply-To: <AANLkTin8LLH3DkX38B93Ap0mmz4hb9e=cEo9U3ZKmavr@mail.gmail.com>
 User-Agent: Mutt/1.5.20 (2009-12-10)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27638
+X-archive-position: 27639
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,41 +35,39 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 17, 2010 at 01:40:39PM +1000, Stephen Rothwell wrote:
+On Wed, Aug 18, 2010 at 07:56:16PM +0530, naveen yadav wrote:
 
-> On Mon, 16 Aug 2010 14:42:11 -0600 Grant Likely <grant.likely@secretlab.ca> wrote:
-> >
-> > I'll also make sure to start build testing on MIPS.  Ralf, any suggestions on defconfigs I should use?
+> I will give more info.
 > 
-> Linux-next does defconfig, allnoconfig, allmodconfig (which has failed
-> for a long time) and ip32_defconfig for mips and mipsel.  I am not sure
-> if all these are still relevant.
->
-> (http://kisskb.ellerman.id.au/kisskb/branch/9/)
+> CONFIG_MIPS_L1_CACHE_SHIFT=5
+> 
+> CONFIG_DMA_NONCOHERENT=y
+> 
+> mips 34kc is processor
+> 
+> and File we are using is  arch/mips/include/asm/mach-generic/kmalloc.h
+> 
+> #ifndef __ASM_MACH_GENERIC_KMALLOC_H
+> #define __ASM_MACH_GENERIC_KMALLOC_H
+> 
+> 
+> #ifndef CONFIG_DMA_COHERENT
+> /*
+>  * Total overkill for most systems but need as a safe default.
+>  * Set this one if any device in the system might do non-coherent DMA.
+>  */
+> #define ARCH_KMALLOC_MINALIGN   128
+> #endif
+> 
+> #endif /* __ASM_MACH_GENERIC_KMALLOC_H */
+> 
+> 
+> So shall we make value ARCH_KMALLOC_MINALIGN   from 128 to 32. is
+> there any problem ?
 
-Kconfig will pick the default machine which is an IP22 for allyesconfig
-and allmodconfig.  The makefile will then pick the right flags for the
-compiler based on machine, processor and endian selection.  so it'll
-happily build a big endian kernel with a little endian compiler.  All
-that's really different between those compilers are the defaults.  Building
-more different defconfigs is a better investments of CPU cycles.
-
-An issue with very large functionss for which I've posted a patch earlier
-today used to break makeallconfig / makeallmodconfig on MIPS.  I'll sort
-those out but right now I just don't have the CPU cycles to regularly
-build such monster kernel configs.
-
-A suggested set of kernel defconfigs to test:
-
-bigsur_defconfig
-cavium-octeon_defconfig
-ip22_defconfig
-ip27_defconfig
-ip32_defconfig
-malta_defconfig
-allmodconfig
-
-These cover a huge variety of features, UP, SMP & weirdo SMP, flatmem & NUMA,
-32-bit, 64-bit, little and big endian.
+No, that's just what you should do.  You do that by putting a file
+that defines ARCH_KMALLOC_MINALIGN into your platforms's
+arch/mips/include/asm/mach-<yourplatform>/kmalloc.h just like the ip32
+file from your original posting.
 
   Ralf

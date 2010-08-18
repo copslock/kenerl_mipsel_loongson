@@ -1,96 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2010 17:08:26 +0200 (CEST)
-Received: from mxout1.idt.com ([157.165.5.25]:44525 "EHLO mxout1.idt.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2010 17:19:11 +0200 (CEST)
+Received: from chilli.pcug.org.au ([203.10.76.44]:34290 "EHLO smtps.tip.net.au"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491193Ab0HRPIT convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Aug 2010 17:08:19 +0200
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o7IF8Bma027964;
-        Wed, 18 Aug 2010 08:08:11 -0700
-Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o7IF8ATn009454;
-        Wed, 18 Aug 2010 08:08:11 -0700 (PDT)
-Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
-        by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o7IF8AY26010;
-        Wed, 18 Aug 2010 08:08:10 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Does Mips Linux rely on Yamon h/w initialization (other than DDR memory which is strictly necessary)?
-Date:   Wed, 18 Aug 2010 08:08:08 -0700
-Message-ID: <AEA634773855ED4CAD999FBB1A66D076FC3C42@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <20100818135115.GC25740@linux-mips.org>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-thread-topic: Does Mips Linux rely on Yamon h/w initialization (other than DDR memory which is strictly necessary)?
-thread-index: Acs+3BUcAjUYruQ4TUeN15aGwVMTIQACqR4g
-References: <AEA634773855ED4CAD999FBB1A66D076FC3BDF@CORPEXCH1.na.ads.idt.com> <20100818135115.GC25740@linux-mips.org>
-From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-To:     "Ralf Baechle" <ralf@linux-mips.org>
-Cc:     <linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.43
-Return-Path: <Andrei.Ardelean@idt.com>
+        id S1491189Ab0HRPTF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 18 Aug 2010 17:19:05 +0200
+Received: from canb.auug.org.au (ta-1-1.tip.net.au [203.11.71.1])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by smtps.tip.net.au (Postfix) with ESMTPSA id 6BD02144001;
+        Thu, 19 Aug 2010 01:19:01 +1000 (EST)
+Date:   Thu, 19 Aug 2010 01:18:56 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Grant Likely <grant.likely@secretlab.ca>,
+        "Dezhong Diao (dediao)" <dediao@cisco.com>,
+        linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
+        David Daney <ddaney@caviumnetworks.com>,
+        "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
+Subject: Re: [PATCH v2 1/2] MIPS: Add device tree support to MIPS
+Message-Id: <20100819011856.bfef5f65.sfr@canb.auug.org.au>
+In-Reply-To: <20100818143926.GB2849@linux-mips.org>
+References: <AANLkTi=74zoQziQTmAGo-cNtF9FAT77h+KZagsNEFjEf@mail.gmail.com>
+        <7A9214B0DEB2074FBCA688B30B04400D013FA46D@XMB-RCD-208.cisco.com>
+        <20100816204211.GA17571@angua.secretlab.ca>
+        <20100817134039.fc1108c7.sfr@canb.auug.org.au>
+        <20100818143926.GB2849@linux-mips.org>
+X-Mailer: Sylpheed 3.0.2 (GTK+ 2.20.1; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Thu__19_Aug_2010_01_18_56_+1000_j7Y8IpmBi+6UQ0n9"
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27640
+X-archive-position: 27641
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrei.Ardelean@idt.com
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 X-list: linux-mips
 
+--Signature=_Thu__19_Aug_2010_01_18_56_+1000_j7Y8IpmBi+6UQ0n9
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 Hi Ralf,
 
-Could you point me to some files or folder where I can find the h/w
-initialization sequence done by Linux for Malta? I would like to take a
-look maybe I can figure out some details.
+On Wed, 18 Aug 2010 15:39:26 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
+>
+> Kconfig will pick the default machine which is an IP22 for allyesconfig
+> and allmodconfig.  The makefile will then pick the right flags for the
+> compiler based on machine, processor and endian selection.  so it'll
+> happily build a big endian kernel with a little endian compiler.  All
+> that's really different between those compilers are the defaults.  Buildi=
+ng
+> more different defconfigs is a better investments of CPU cycles.
+>=20
+> An issue with very large functionss for which I've posted a patch earlier
+> today used to break makeallconfig / makeallmodconfig on MIPS.  I'll sort
+> those out but right now I just don't have the CPU cycles to regularly
+> build such monster kernel configs.
+>=20
+> A suggested set of kernel defconfigs to test:
+>=20
+> bigsur_defconfig
+> cavium-octeon_defconfig
+> ip22_defconfig
+> ip27_defconfig
+> ip32_defconfig
+> malta_defconfig
+> allmodconfig
+>=20
+> These cover a huge variety of features, UP, SMP & weirdo SMP, flatmem & N=
+UMA,
+> 32-bit, 64-bit, little and big endian.
 
-Thanks,
-Andrei
+OK, I will adjust the MIPS builds tomorrow.  Thanks for the suggestions.
+Just be clear, I only need to build with one compiler (presumably what
+gcc/binutils produces when I ask for a "mips" toolchain) and can drop the
+other ("mipsel"), correct?
 
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+http://www.canb.auug.org.au/~sfr/
 
------Original Message-----
-From: Ralf Baechle [mailto:ralf@linux-mips.org] 
-Sent: Wednesday, August 18, 2010 9:51 AM
-To: Ardelean, Andrei
-Cc: linux-mips@linux-mips.org
-Subject: Re: Does Mips Linux rely on Yamon h/w initialization (other
-than DDR memory which is strictly necessary)?
+--Signature=_Thu__19_Aug_2010_01_18_56_+1000_j7Y8IpmBi+6UQ0n9
+Content-Type: application/pgp-signature
 
-On Wed, Aug 18, 2010 at 06:31:42AM -0700, Ardelean, Andrei wrote:
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-> Malta board has Yamon monitor which initializes the DDR memory and
-other
-> h/w. Does Mips Linux rely on Yamon h/w initialization (except memory)
-> like PCI, NET, UART, etc in order to boot? Does Mips Linux
-re-initialize
-> the h/w again? 
-> I am booting Linux on Malta with a small monitor which initializes
-only
-> the memory. I pass the environment vars array, command line arguments
-> and memory size as Yamon would do. The ASCII display shows "Linux on
-> Malta" scrolling text so Linux kernel it seems that at least it
-started
-> but there is no NET activity and no messages on UART.
+iQEcBAEBAgAGBQJMa/ngAAoJEDMEi1NhKgbsiXMH/2bOR2K7i9XtpX6mPxzDxame
+8CCWt95rYo1+b2e8bKRvHn8gAnjDPVfrXtOMISaodcLdwuvO8PtbD1uOMO93YUej
+dK1krXMUYf1GMHkyeydTM5KrLOALfY2QpOCmGg3oC0h+WERe5REXw4uNHxYZ3jD8
+okNUbMQMT9y+6VodbpfnLK7sksAkJn//F5gdEe+UZCejMzUyLFG4vGpXwpEcvfpQ
+LFCT+mzlIdW7kEIiwBICQXq8N/D6sFIzavx+E43mt+zxRz7YXlTuJMTMVp8gJqaO
+v8HAtkGwhzGsQBDFJkbjqOMqRzUDNvmRsuLEl31qFBzqz45+xbCjwt9ykP4SP/k=
+=FjZK
+-----END PGP SIGNATURE-----
 
-That's a bit of an ugly topic and some black art is involved here.  We
-leave the initialization of CPU, caches and memory controllers entirely
-to the firmware.
-
-For the remainder Linux tries to perform the initilization itself but
-sometimes by accident not intention a register that was already
-initialized by firmware will not be initialized by Linux but the
-omission will not be notized because it already has a correct value.
-
-PCI is particularl problem.  On some platforms firmware initializes the
-bus and re-initializing the bus would break the firmware or be very
-complex.  On such a system Linux will just scan the PCI bus and re-use
-the existing configuration.  On most platforms however Linux will do a
-better job than the existing firmware and fully reinitialize the entire
-PCI bus hierarchy.
-
-  Ralf
+--Signature=_Thu__19_Aug_2010_01_18_56_+1000_j7Y8IpmBi+6UQ0n9--

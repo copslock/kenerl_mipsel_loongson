@@ -1,89 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Aug 2010 18:10:20 +0200 (CEST)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:37344 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491194Ab0HRQKN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Aug 2010 18:10:13 +0200
-Received: by ewy9 with SMTP id 9so539202ewy.36
-        for <multiple recipients>; Wed, 18 Aug 2010 09:10:12 -0700 (PDT)
-Received: by 10.213.48.193 with SMTP id s1mr2241561ebf.20.1282147812739;
-        Wed, 18 Aug 2010 09:10:12 -0700 (PDT)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
-        by mx.google.com with ESMTPS id v8sm741541eeh.8.2010.08.18.09.10.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Aug 2010 13:37:26 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:49833 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490955Ab0HSLhS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Aug 2010 13:37:18 +0200
+Received: by bwz13 with SMTP id 13so1726490bwz.36
+        for <linux-mips@linux-mips.org>; Thu, 19 Aug 2010 04:37:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=HAscM9toEXSPG89OQZJl79Ic1/P2tWJKYEhoPjt2ExI=;
+        b=d1WaUVmmgc/gtozp8P20R84zGzKEmAyj+q31VxNs6HiZZW60nxWJL+VoemyAK29nED
+         VEDybbg4/kfPR0gIIpUbUMwiqRIdwBpRGuy+PBcf0/lZmUcRCSvNv/0Ep7WopZPIhRQI
+         +6m90xiCuoCXb/R31ZZe3uEWBXzrNx2M2JTvI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=orRkRAMl+iuDE0v/+ybgADLUvwh6JZp75IrnDualtUaBlj4sZ1GxpQw4WosJFLA/2J
+         w5saE9HZq1EKZZTIAEgA/JNqhbvUeVoJT9EzkT4tvHw3b+Nf4Ey2klb7GCeCmfcx+XQm
+         QAyGRXv5dIQ9vCJOgvEOre5fILdd2mSXkjkSo=
+Received: by 10.204.39.203 with SMTP id h11mr6471484bke.8.1282217838354;
+        Thu, 19 Aug 2010 04:37:18 -0700 (PDT)
+Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
+        by mx.google.com with ESMTPS id g12sm1028577bkb.2.2010.08.19.04.37.16
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 18 Aug 2010 09:10:11 -0700 (PDT)
-Message-ID: <4C6C05B3.7030908@mvista.com>
-Date:   Wed, 18 Aug 2010 20:09:23 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:     naveen yadav <yad.naveen@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: kmalloc issue on MIPS target
-References: <AANLkTiniH42L=-DdJ_XHOm1Uo_=YoAqE-j9Jrm45imtG@mail.gmail.com>        <20100818133336.GA25740@linux-mips.org>        <AANLkTin8LLH3DkX38B93Ap0mmz4hb9e=cEo9U3ZKmavr@mail.gmail.com>        <20100818144301.GC2849@linux-mips.org> <AANLkTi=zfuEvKCLBj7xuVnjdZXZZ63i2xvVZHKeby+BN@mail.gmail.com>
-In-Reply-To: <AANLkTi=zfuEvKCLBj7xuVnjdZXZZ63i2xvVZHKeby+BN@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+        Thu, 19 Aug 2010 04:37:16 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH] MIPS: Alchemy: resolve prom section mismatches
+Date:   Thu, 19 Aug 2010 13:37:13 +0200
+Message-Id: <1282217833-27119-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.2
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27644
+X-archive-position: 27645
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+The function prom_init_cmdline() references
+the variable __initdata arcs_cmdline.
 
-naveen yadav wrote:
+The function prom_get_ethernet_addr() references
+the variable __initdata arcs_cmdline.
 
-> Hi Ralf,
+Annotate prom_init_cmdline() as __init, unexport and annotate
+prom_get_ethernet_addr() since it's no longer called from
+within driver code.
 
-> I understand that that I need to make kmalloc.h in my arch specific
-> folder. But I could not get answer, what should be appropriate
-> value of  ARCH_KMALLOC_MINALIGN  is it 32 or 128 ?
+Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+---
+ arch/mips/alchemy/common/prom.c |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
 
-    You've been replied already that you should set it to 32.
-
-> Thanks.
-
-> On Wed, Aug 18, 2010 at 8:13 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
->> On Wed, Aug 18, 2010 at 07:56:16PM +0530, naveen yadav wrote:
->>
->>> I will give more info.
->>>
->>> CONFIG_MIPS_L1_CACHE_SHIFT=5
->>>
->>> CONFIG_DMA_NONCOHERENT=y
->>>
->>> mips 34kc is processor
->>>
->>> and File we are using is  arch/mips/include/asm/mach-generic/kmalloc.h
->>>
->>> #ifndef __ASM_MACH_GENERIC_KMALLOC_H
->>> #define __ASM_MACH_GENERIC_KMALLOC_H
->>>
->>>
->>> #ifndef CONFIG_DMA_COHERENT
->>> /*
->>>  * Total overkill for most systems but need as a safe default.
->>>  * Set this one if any device in the system might do non-coherent DMA.
->>>  */
->>> #define ARCH_KMALLOC_MINALIGN   128
->>> #endif
->>>
->>> #endif /* __ASM_MACH_GENERIC_KMALLOC_H */
-
->>> So shall we make value ARCH_KMALLOC_MINALIGN   from 128 to 32. is
->>> there any problem ?
-
->> No, that's just what you should do.  You do that by putting a file
->> that defines ARCH_KMALLOC_MINALIGN into your platforms's
->> arch/mips/include/asm/mach-<yourplatform>/kmalloc.h just like the ip32
->> file from your original posting.
-
->>  Ralf
-
-WBR, Sergei
+diff --git a/arch/mips/alchemy/common/prom.c b/arch/mips/alchemy/common/prom.c
+index c29511b..5340210 100644
+--- a/arch/mips/alchemy/common/prom.c
++++ b/arch/mips/alchemy/common/prom.c
+@@ -43,7 +43,7 @@ int prom_argc;
+ char **prom_argv;
+ char **prom_envp;
+ 
+-void prom_init_cmdline(void)
++void __init prom_init_cmdline(void)
+ {
+ 	int i;
+ 
+@@ -104,7 +104,7 @@ static inline void str2eaddr(unsigned char *ea, unsigned char *str)
+ 	}
+ }
+ 
+-int prom_get_ethernet_addr(char *ethernet_addr)
++int __init prom_get_ethernet_addr(char *ethernet_addr)
+ {
+ 	char *ethaddr_str;
+ 
+@@ -123,7 +123,6 @@ int prom_get_ethernet_addr(char *ethernet_addr)
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(prom_get_ethernet_addr);
+ 
+ void __init prom_free_prom_memory(void)
+ {
+-- 
+1.7.2

@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Aug 2010 11:30:19 +0200 (CEST)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:61885 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Aug 2010 11:32:54 +0200 (CEST)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:40358 "EHLO
         mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491809Ab0H0JaN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Aug 2010 11:30:13 +0200
-Received: by pxi4 with SMTP id 4so1164502pxi.36
-        for <multiple recipients>; Fri, 27 Aug 2010 02:30:07 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1491809Ab0H0Jcu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Aug 2010 11:32:50 +0200
+Received: by pxi4 with SMTP id 4so1165436pxi.36
+        for <multiple recipients>; Fri, 27 Aug 2010 02:32:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
         bh=qsGEjnBSKpml4UIv7ZnA/VEb7qF+OdgxZ6Z8GG+IY3M=;
-        b=Cn33/x+IETh7mOHGPlUDP3J8i+kGrRsrkQgdv0dZPt/z6/V4thEIjrQfRiXfLinarb
-         nIVl2HEr9CCBVaNIROgs1JxTarKeAphq53WMMf+oenyNiMbS70ukYJSLbq6AmsFr7wmm
-         IpmcSJDLXgOjdo0C5G3DK290dGgBAkOhD3iuA=
+        b=Ne+YPG9h5ZRxXct/WdonqBUyza8yDyrj9cx+il+R8WpeI9uVKieRAXAvnQoROhAQT3
+         omCinuhS/LLbjkuv2Yj2SRgZ9bsz21uK1lrIkjjBBGb42w2M9l7EMT1Mgg4TS8ABgLws
+         iyB8MQ4KVzQqg4UR/VNoVrHn+WP+ydoe6VsKo=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=PvcNEdmhCu4lEkDHwy6d/NXIp27vcTkgHojlYvWqKHqbgUQH7Uy53cEIH5w9rYSJQY
-         PMegxt8NdOZ+A9w4geG18eVQtSSGnnTRI1JSejdnaKuaRrzzaVSQXdhQthPERTKkapH6
-         Cw+7sNrYgm6U6casRLMRFMALPwVG2hAyJh+Uw=
-Received: by 10.115.109.6 with SMTP id l6mr175556wam.164.1282901406784;
-        Fri, 27 Aug 2010 02:30:06 -0700 (PDT)
+        b=eUx3hpTjZVXrkokisCnvN3WQR8GVX3j6aGR+YaTPaRBRfbiFniPHSRbqoI5j/6I4th
+         tA5yFHsPSh4Qke8Vm6t6PxjRf3TB7vHW3uTjLksuBVpxgRWX/9Binzpg70XKnHIbDlKG
+         gDHJQn3/Bltme448IxfA+oVjCFaAZO+UkkHZA=
+Received: by 10.142.212.6 with SMTP id k6mr1057036wfg.94.1282901564112;
+        Fri, 27 Aug 2010 02:32:44 -0700 (PDT)
 Received: from localhost (KD113150081245.ppp-bb.dion.ne.jp [113.150.81.245])
-        by mx.google.com with ESMTPS id s5sm6245279wak.0.2010.08.27.02.30.03
+        by mx.google.com with ESMTPS id y16sm4148445wff.14.2010.08.27.02.32.40
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 27 Aug 2010 02:30:05 -0700 (PDT)
+        Fri, 27 Aug 2010 02:32:43 -0700 (PDT)
 From:   jiang.adam@gmail.com
 To:     ralf@linux-mips.org
 Cc:     dmitri.vorobiev@movial.com, wuzhangjin@gmail.com,
@@ -32,9 +32,9 @@ Cc:     dmitri.vorobiev@movial.com, wuzhangjin@gmail.com,
         fweisbec@gmail.com, tj@kernel.org, tglx@linutronix.de,
         mingo@elte.hu, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, Adam Jiang <jiang.adam@gmail.com>
-Subject: [[PATCH V2]] mips: irq: add stackoverflow detection
-Date:   Fri, 27 Aug 2010 18:29:25 +0900
-Message-Id: <1282901365-28364-1-git-send-email-jiang.adam@gmail.com>
+Subject: [PATCH V2] mips: irq: add stackoverflow detection
+Date:   Fri, 27 Aug 2010 18:32:06 +0900
+Message-Id: <1282901526-28405-1-git-send-email-jiang.adam@gmail.com>
 X-Mailer: git-send-email 1.7.2.2
 In-Reply-To: <linux-mips@linux-mips.org>
 References: <linux-mips@linux-mips.org>
@@ -42,7 +42,7 @@ Return-Path: <jiang.adam@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27680
+X-archive-position: 27681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

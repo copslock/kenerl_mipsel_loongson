@@ -1,49 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Aug 2010 19:09:05 +0200 (CEST)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:40423 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491809Ab0H0RJC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Aug 2010 19:09:02 +0200
-Received: by wwb31 with SMTP id 31so3332049wwb.24
-        for <linux-mips@linux-mips.org>; Fri, 27 Aug 2010 10:08:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=IkzR1g3GJQH2W5VUflNaY7sfDl5G3/JKO9GyPuC92cc=;
-        b=GuuqJ3XWANlZwFxTEBI51GJQ7RqRV2/eg8UcPZIYw8aTbmv+L80BX+BjH3lQgcbKzN
-         MePTTXgJ9HTBpiaA48X8SCgzNHhrdFVMvac3B/OL7xWc98p9l/xvLvJImFz48htuvsRu
-         gqqslGVIcy0RwfhfcCm7BBhsd7hLmd9X7o+Zk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=YVdqx65YyZOrFa3WYIsBkFPWB1Da8RH7mNT+q2l0OAMBdSR5kSDac4PR+2+GNf5yxM
-         grFxlFKTG4v+ZHLjTFyrEUEyoHuOB81EVLguzWhPbz8MGR7vjYeqoDvQRs8fzEV6Ve/q
-         N4n+fzRfdbohWCb++h4mgTFUEKRVJjIVr55OE=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Aug 2010 21:07:32 +0200 (CEST)
+Received: from mxout1.idt.com ([157.165.5.25]:44148 "EHLO mxout1.idt.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490959Ab0H0THZ convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Aug 2010 21:07:25 +0200
+Received: from mail.idt.com (localhost [127.0.0.1])
+        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o7RJ7Ekk029153;
+        Fri, 27 Aug 2010 12:07:14 -0700
+Received: from corpml3.corp.idt.com (corpml3.corp.idt.com [157.165.140.25])
+        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o7RJ7CwI016548;
+        Fri, 27 Aug 2010 12:07:13 -0700 (PDT)
+Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
+        by corpml3.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o7RJ7Be02239;
+        Fri, 27 Aug 2010 12:07:11 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Received: by 10.227.37.8 with SMTP id v8mr905826wbd.37.1282928936658; Fri, 27
- Aug 2010 10:08:56 -0700 (PDT)
-Received: by 10.216.166.69 with HTTP; Fri, 27 Aug 2010 10:08:56 -0700 (PDT)
-In-Reply-To: <AEA634773855ED4CAD999FBB1A66D07601005801@CORPEXCH1.na.ads.idt.com>
-References: <AEA634773855ED4CAD999FBB1A66D07601005801@CORPEXCH1.na.ads.idt.com>
-Date:   Sat, 28 Aug 2010 01:08:56 +0800
-Message-ID: <AANLkTin5_3PPUoRocZFZuWhF9kFvmThUHgz3jp5ZaXMU@mail.gmail.com>
-Subject: Re: Does Linux Mips support compressed Kernel?
-From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <wuzhangjin@gmail.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Does Linux Mips support compressed Kernel?
+Date:   Fri, 27 Aug 2010 12:07:09 -0700
+Message-ID: <AEA634773855ED4CAD999FBB1A66D07601005C14@CORPEXCH1.na.ads.idt.com>
+In-Reply-To: <AANLkTin5_3PPUoRocZFZuWhF9kFvmThUHgz3jp5ZaXMU@mail.gmail.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+thread-topic: Does Linux Mips support compressed Kernel?
+thread-index: ActGCzQWBMvHnvnETl2kVd8EAG5Z2gADs0Qw
+References: <AEA634773855ED4CAD999FBB1A66D07601005801@CORPEXCH1.na.ads.idt.com> <AANLkTin5_3PPUoRocZFZuWhF9kFvmThUHgz3jp5ZaXMU@mail.gmail.com>
+From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+To:     "wu zhangjin" <wuzhangjin@gmail.com>
+Cc:     <linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.43
+Return-Path: <Andrei.Ardelean@idt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27686
+X-archive-position: 27687
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: Andrei.Ardelean@idt.com
 Precedence: bulk
 X-list: linux-mips
+
+Hi Wu,
+
+Thanks a lot for all the details.
+
+I am using MALTA board with 74K. 
+From your email I understand that the bootloader must uncompress the
+Kernel before launching it, so the compressed Kernel cannot run and
+decompress itself? Could you confirm? I am asking that because in some
+book I have read that Linux can boot a compressed image and the Kernel
+was able to uncompress itself, but maybe it was my misunderstanding.
+
+Thanks,
+Andrei
+ 
+
+-----Original Message-----
+From: wu zhangjin [mailto:wuzhangjin@gmail.com] 
+Sent: Friday, August 27, 2010 1:09 PM
+To: Ardelean, Andrei
+Cc: linux-mips@linux-mips.org
+Subject: Re: Does Linux Mips support compressed Kernel?
 
 Hi,
 

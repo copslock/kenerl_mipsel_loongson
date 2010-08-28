@@ -1,53 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Aug 2010 09:16:15 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:49641 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490968Ab0H1HQI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Aug 2010 09:16:08 +0200
-Received: by pwj3 with SMTP id 3so1720401pwj.36
-        for <linux-mips@linux-mips.org>; Sat, 28 Aug 2010 00:16:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Aug 2010 18:02:36 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:39425 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491820Ab0H1QCd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Aug 2010 18:02:33 +0200
+Received: by wyb38 with SMTP id 38so3621973wyb.36
+        for <linux-mips@linux-mips.org>; Sat, 28 Aug 2010 09:02:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:date:from:to:subject
-         :message-id:reply-to:mime-version:content-type:content-disposition
-         :user-agent;
-        bh=HUEcTfyw3bvjrQ3QMMAHjnFpmU2CvBYdVlhoUfyucS8=;
-        b=bXaMftd7AMfTzrV30ccVt/PutwDhlXQ+GfBs+gqTFAweNkDiH5uUPnMLvSM+pkjDd4
-         GsrQSRamWPEkSD/aBybUABj1g7Z0k+FZcu8K3ydvWIBlBcP4Eo8WI3NEaWSGew9B0Haz
-         ffpimHLiK2wT3uxCWOsafOQ82jvZYb34iS4O0=
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:content-type;
+        bh=PJablISL68enrRs771C0QNZ9o7e+Ghu1wEcWabZYYYM=;
+        b=h5fhXMQciPnirxEdB8VXC3W94kf1Tusy40RMStyHJeTxNsjAaVfA7Qj+bKyHtxOAtP
+         7DXo0cY1Jm4v6isfhTewJZ7ENZ7zIiOhkyE3qQxkOR07dOJonbthDYOG4VTVRcqeTtSK
+         lGepvdHLxYYZ4NF+TztGDjE9RanlL4BqrK4jc=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=date:from:to:subject:message-id:reply-to:mime-version:content-type
-         :content-disposition:user-agent;
-        b=q8kpKRmtx6+cK8hXbekAztm89dKXHb5PT8Y4T1FrIh79OlvDX8IoDD/M/5ZaTo9KhW
-         OW44sRKXMg5O2X2Zuqr4uad8IkxjriAPiE7fR3lac2pA2P0XwxNaXy7Vpeam3QDNouNi
-         6juO9HkfcO6e4J+cIgK7DI7SCZ4FH1Ol2/xW8=
-Received: by 10.114.132.17 with SMTP id f17mr1701335wad.223.1282979760513;
-        Sat, 28 Aug 2010 00:16:00 -0700 (PDT)
-Received: from localhost (KD118154228076.ppp-bb.dion.ne.jp [118.154.228.76])
-        by mx.google.com with ESMTPS id q6sm8338449waj.10.2010.08.28.00.15.58
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 28 Aug 2010 00:15:59 -0700 (PDT)
-Date:   Sat, 28 Aug 2010 16:18:42 +0900
-From:   Adam Jiang <jiang.adam@gmail.com>
-To:     linux-mips@linux-mips.org
-Subject: How is interrupt handling on MIPS SMP?
-Message-ID: <20100828071842.GB6957@capricorn-x61>
-Reply-To: linux-mips@linux-mips.org
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :content-type;
+        b=Jt7iYvDkzgn4UaSbhvufwCXSZPUWLL3W4yWna47NUgDfAn2B/EhkEy9wrAtosmcPBX
+         Uphc7G114ayS7S9KLAuRuzn77PgRQnyxZWWF2wccZAqAGzcCcxPAXbPL/OJ0qhA9kLgm
+         19e3rbMXFqfCK0Q7TvjEGHxXGYacRdCH0uyCs=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <jiang.adam@gmail.com>
+Received: by 10.227.72.149 with SMTP id m21mr2158447wbj.217.1283011333703;
+ Sat, 28 Aug 2010 09:02:13 -0700 (PDT)
+Received: by 10.216.166.69 with HTTP; Sat, 28 Aug 2010 09:02:13 -0700 (PDT)
+In-Reply-To: <20100828071842.GB6957@capricorn-x61>
+References: <20100828071842.GB6957@capricorn-x61>
+Date:   Sun, 29 Aug 2010 00:02:13 +0800
+Message-ID: <AANLkTimDt2pPxaiKP0WUyYgg3xmYSVsc8Cp2neNET_TA@mail.gmail.com>
+Subject: Re: How is interrupt handling on MIPS SMP?
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27690
+X-archive-position: 27691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiang.adam@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-How dose interrupt be handled on SMP build on MIPS architecture? Does
-mips-linux support SMP?
+Hi, Adam
+
+On 8/28/10, Adam Jiang <jiang.adam@gmail.com> wrote:
+> How dose interrupt be handled on SMP build on MIPS architecture? Does
+> mips-linux support SMP?
+>
+
+$ grep SYS_SUPPORTS_SMP -ur arch/mips/Kconfig | egrep -v "config|depend" | wc -l
+6
+
+You can get more information from the book "See MIPS Run Linux" version 2.
+
+Regards,
+Wu Zhangjin

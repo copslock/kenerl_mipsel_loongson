@@ -1,62 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Sep 2010 10:16:20 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.17.10]:62153 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491079Ab0ICIQQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Sep 2010 10:16:16 +0200
-Received: from corscience.de (DSL01.212.114.252.242.ip-pool.NEFkom.net [212.114.252.242])
-        by mrelayeu.kundenserver.de (node=mreu1) with ESMTP (Nemesis)
-        id 0LupVN-1OioZ53QMz-010Zi7; Fri, 03 Sep 2010 10:15:34 +0200
-Received: from localhost.localdomain (unknown [192.168.102.58])
-        by corscience.de (Postfix) with ESMTP id 54B2651FA1;
-        Fri,  3 Sep 2010 10:15:34 +0200 (CEST)
-From:   Bernhard Walle <walle@corscience.de>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, ddaney@caviumnetworks.com,
-        akpm@linux-foundation.org, ebiederm@xmission.com, hch@lst.de,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: N32: Fix getdents64 syscall for n32
-Date:   Fri,  3 Sep 2010 10:15:34 +0200
-Message-Id: <1283501734-6532-1-git-send-email-walle@corscience.de>
-X-Mailer: git-send-email 1.7.0.4
-X-Provags-ID: V02:K0:80V1Up6k0zdnJ31H8L7+4YcvYB5b3HphSFXeOchfLvB
- PJmxnxjDizFnOMFLZy6OrXoa52hfKBImRO3aRy97PkVqsYVHQl
- X5F+qmtAHvlY89sVlzRbTEED21n0yWVU1XEvDvUrQWjoXsSoTG
- bFGlYRWtVTMZHYxxGigMHmQfUDUn705ztv33ubL24z5IrbSNlm
- +LYQRSUBr+lwyaPK+I6jQ==
-X-archive-position: 27711
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Sep 2010 10:42:25 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.210]:33245 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490999Ab0ICImU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 3 Sep 2010 10:42:20 +0200
+Received: from verein.lst.de (localhost [127.0.0.1])
+        by verein.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id o838gEWY032372
+        (version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+        Fri, 3 Sep 2010 10:42:14 +0200
+Received: (from hch@localhost)
+        by verein.lst.de (8.12.3/8.12.3/Debian-7.2) id o838gDX9032370;
+        Fri, 3 Sep 2010 10:42:13 +0200
+Date:   Fri, 3 Sep 2010 10:42:13 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Bernhard Walle <walle@corscience.de>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        ddaney@caviumnetworks.com, akpm@linux-foundation.org,
+        ebiederm@xmission.com, hch@lst.de, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: N32: Fix getdents64 syscall for n32
+Message-ID: <20100903084213.GA32339@lst.de>
+References: <1283501734-6532-1-git-send-email-walle@corscience.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1283501734-6532-1-git-send-email-walle@corscience.de>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+X-archive-position: 27712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: walle@corscience.de
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2385
+X-UID: 2402
 
-Commit 31c984a5acabea5d8c7224dc226453022be46f33 introduced a new syscall
-getdents64. However, in the syscall table, the new syscall still refers
-to the old getdents which doesn't work.
-
-The problem appeared with a system that uses the eglibc 2.12-r11187
-(that utilizes that new syscall) is very confused. The fix has been
-tested with that eglibc version.
-
-Signed-off-by: Bernhard Walle <walle@corscience.de>
----
- arch/mips/kernel/scall64-n32.S |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index a3d6613..dfa8cbc 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -419,5 +419,5 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_perf_event_open
- 	PTR	sys_accept4
- 	PTR     compat_sys_recvmmsg
--	PTR     sys_getdents
-+	PTR     sys_getdents64
- 	.size	sysn32_call_table,.-sysn32_call_table
--- 
-1.7.0.4
+I'm not sure why people suddenly started Ccing me on utterly random
+patches, but could you guys please bloody stop it?  Thanks!

@@ -1,65 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Sep 2010 10:53:06 +0200 (CEST)
-Received: from mx1.moondrake.net ([212.85.150.166]:55787 "EHLO
-        mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1491068Ab0ICIxD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Sep 2010 10:53:03 +0200
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-        id 1E5B7274128; Fri,  3 Sep 2010 10:53:01 +0200 (CEST)
-Received: from office-abk.mandriva.com (unknown [195.7.104.248])
-        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.mandriva.com (Postfix) with ESMTP id 5DCF2274005;
-        Fri,  3 Sep 2010 10:53:00 +0200 (CEST)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-        by office-abk.mandriva.com (Postfix) with ESMTP id 9E43985701;
-        Fri,  3 Sep 2010 11:14:17 +0200 (CEST)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-        by anduin.mandriva.com (Postfix) with ESMTP id 678CEFF855;
-        Fri,  3 Sep 2010 10:53:31 +0200 (CEST)
-From:   Arnaud Patard <apatard@mandriva.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Bernhard Walle <walle@corscience.de>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, ddaney@caviumnetworks.com,
-        akpm@linux-foundation.org, ebiederm@xmission.com,
-        linux-kernel@vger.kernel.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Sep 2010 10:55:31 +0200 (CEST)
+Received: from verein.lst.de ([213.95.11.210]:58487 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491083Ab0ICIz1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 3 Sep 2010 10:55:27 +0200
+Received: from verein.lst.de (localhost [127.0.0.1])
+        by verein.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id o838tLWY000342
+        (version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+        Fri, 3 Sep 2010 10:55:21 +0200
+Received: (from hch@localhost)
+        by verein.lst.de (8.12.3/8.12.3/Debian-7.2) id o838tL7w000341;
+        Fri, 3 Sep 2010 10:55:21 +0200
+Date:   Fri, 3 Sep 2010 10:55:21 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Arnaud Patard <apatard@mandriva.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Bernhard Walle <walle@corscience.de>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org,
+        ddaney@caviumnetworks.com, akpm@linux-foundation.org,
+        ebiederm@xmission.com, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] MIPS: N32: Fix getdents64 syscall for n32
-References: <1283501734-6532-1-git-send-email-walle@corscience.de>
-        <20100903084213.GA32339@lst.de>
-Organization: Mandriva
-Date:   Fri, 03 Sep 2010 10:53:31 +0200
-In-Reply-To: <20100903084213.GA32339@lst.de> (Christoph Hellwig's message of "Fri, 3 Sep 2010 10:42:13 +0200")
-Message-ID: <m3pqwvb438.fsf@anduin.mandriva.com>
-User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
-MIME-Version: 1.0
+Message-ID: <20100903085521.GA304@lst.de>
+References: <1283501734-6532-1-git-send-email-walle@corscience.de> <20100903084213.GA32339@lst.de> <m3pqwvb438.fsf@anduin.mandriva.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-archive-position: 27713
+Content-Disposition: inline
+In-Reply-To: <m3pqwvb438.fsf@anduin.mandriva.com>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+X-archive-position: 27714
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2408
+X-UID: 2411
 
-Christoph Hellwig <hch@lst.de> writes:
+On Fri, Sep 03, 2010 at 10:53:31AM +0200, Arnaud Patard wrote:
+> Christoph Hellwig <hch@lst.de> writes:
+> 
+> Hi,
+> 
+> > I'm not sure why people suddenly started Ccing me on utterly random
+> > patches, but could you guys please bloody stop it?  Thanks!
+> 
+> I guess the explanation is the one below :
+> 
+> $ ./scripts/get_maintainer.pl -f arch/mips/kernel/scall64-n32.S
 
-Hi,
-
-> I'm not sure why people suddenly started Ccing me on utterly random
-> patches, but could you guys please bloody stop it?  Thanks!
-
-I guess the explanation is the one below :
-
-$ ./scripts/get_maintainer.pl -f arch/mips/kernel/scall64-n32.S
-Ralf Baechle <ralf@linux-mips.org>
-David Daney <ddaney@caviumnetworks.com>
-Andrew Morton <akpm@linux-foundation.org>
-"Eric W. Biederman" <ebiederm@xmission.com>
-Christoph Hellwig <hch@lst.de>
-linux-mips@linux-mips.org
-linux-kernel@vger.kernel.org
-
-
-Arnaud
+I'm certainly not the maintainer of it, nor anything near it.  Whoever
+wrote such a stupid script really needs to be beaten up seriously.

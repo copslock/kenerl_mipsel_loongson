@@ -1,52 +1,211 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Sep 2010 13:27:40 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.126.187]:59814 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491085Ab0ICL1h (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Sep 2010 13:27:37 +0200
-Received: from corscience.de (DSL01.212.114.252.242.ip-pool.NEFkom.net [212.114.252.242])
-        by mrelayeu.kundenserver.de (node=mreu0) with ESMTP (Nemesis)
-        id 0MUAOE-1PIOyq2F98-00R2oP; Fri, 03 Sep 2010 13:27:26 +0200
-Received: from [192.168.102.58] (unknown [192.168.102.58])
-        by corscience.de (Postfix) with ESMTP id 10FC751FA1;
-        Fri,  3 Sep 2010 13:27:26 +0200 (CEST)
-Message-ID: <4C80DB9C.8060403@corscience.de>
-Date:   Fri, 03 Sep 2010 13:27:24 +0200
-From:   Bernhard Walle <walle@corscience.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100713 Thunderbird/3.0.6
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Sep 2010 06:14:35 +0200 (CEST)
+Received: from [69.28.251.93] ([69.28.251.93]:44676 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490963Ab0IGEOc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Sep 2010 06:14:32 +0200
+Received: (qmail 29828 invoked from network); 7 Sep 2010 04:14:26 -0000
+Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 7 Sep 2010 04:14:26 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Mon, 06 Sep 2010 21:14:26 -0700
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Mon, 6 Sep 2010 21:03:42 -0700
+Subject: [PATCH 0/5] MIPS: HIGHMEM DMA on noncoherent MIPS32 processors
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: N32: Fix getdents64 syscall for n32
-References: <1283501734-6532-1-git-send-email-walle@corscience.de> <20100903084213.GA32339@lst.de> <m3pqwvb438.fsf@anduin.mandriva.com> <4C80BC3A.7010406@corscience.de> <20100903100140.GA29187@linux-mips.org>
-In-Reply-To: <20100903100140.GA29187@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V02:K0:qPuc5Y8f3gR++0NuCwaWEf9AH4CK/3cwO8raOiGzX3K
- k10jLq63x4j6y+0vcH88RbKLi7vkJjD/BxBuOQC5fzZdhEBw4n
- sShmSpCv88N1Tuq6vXgiNks6ej3bMcYTWSAt/my8kgjuTxL6no
- AKUmctS6a5pbPpUepEgISBwW3dCoi5WdWaC0C0nyvxCo2MhFz4
- xnUBLPUBrAUdD9bf3guBg==
-X-archive-position: 27717
+Cc:     <dediao@cisco.com>, <dvomlehn@cisco.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Message-Id: <ea0143cf318153e615b660cb0210f464@localhost>
+User-Agent: vim 7.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-archive-position: 27718
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: walle@corscience.de
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 2666
+X-UID: 4954
 
-Am 03.09.2010 12:01, schrieb Ralf Baechle:
->
-> I'm certainly not interested on getting cc'ed half of I2C patches or
-> Itanium framebuffer drivers.  The defaults are idiotic.  Anybody who
-> touched a file in the past year will get spammed.
->
-> Throw in a --nogit to disable the history search and you get:
+I had some time this weekend to revisit an old problem:
 
-Ok, I will use that in the future. But what about the patch itself?
+http://www.linux-mips.org/archives/linux-mips/2010-05/msg00009.html
 
 
-Regards,
-Bernhard
+PROBLEM #1:
+
+When testing Dezhong's patch, I found that un-kmapped pages could get
+passed into dma_map_sg().  The original patch did not handle this case.
+This resulted in serious DMA coherency issues on my system, along the
+lines of "/sbin/init segfaults on boot."
+
+I found that this calling sequence, seen during SATA disk I/O, was the
+culprit:
+
+[<8002b3d4>] dma_map_sg+0x2ac/0x2b8                                             
+[<802cdb70>] ata_qc_issue+0x274/0x37c                                           
+[<802d383c>] ata_scsi_translate+0xb0/0x1e8                                      
+[<802d7274>] ata_scsi_queuecmd+0xc8/0x2b8                                       
+[<802b0630>] scsi_dispatch_cmd+0x118/0x2b8                                      
+[<802b6c64>] scsi_request_fn+0x420/0x4d8                                        
+[<80239550>] __blk_run_queue+0x84/0x19c                                         
+[<802364a0>] elv_insert+0x158/0x2e4                                             
+[<8023a398>] __make_request+0x11c/0x4d0                                         
+[<80238144>] generic_make_request+0x348/0x4a0                                   
+[<80238330>] submit_bio+0x94/0x13c                                              
+[<80114024>] mpage_bio_submit+0x30/0x40                                         
+[<80115a2c>] mpage_readpages+0x134/0x170                                        
+[<800a4fd4>] __do_page_cache_readahead+0x214/0x314                              
+
+__do_page_cache_readahead() allocates a bunch of pages for the I/O
+requests, but I do not see them getting mapped to kernel addresses via
+kmap() / kmap_atomic().  This explains why (PageHighMem(page) &&
+!kmap_high_get(page)) can be true.
+
+I do not think there is anything wrong with this behavior, so it seems
+like dma_map_sg() will need to handle it somehow.  Looking at other
+architectures:
+
+The PPC approach (__dma_sync_page_highmem()) is to disable IRQs and call
+kmap_atomic() to create a temporary mapping for the page.  Disabling
+IRQs is necessary because it is possible (but not required) for the
+dma_* functions to be invoked from interrupt context; it also disables
+preemption.  kmap_atomic() guarantees a unique mapping per CPU.
+
+Interestingly, PPC does not use kmap_high_get() at all.
+
+The ARM approach (kmap_high_l1_vipt()) recognizes that it is not always
+desirable to keep IRQs disabled during DMA flushes, so the ARM
+maintainers implemented a sort of "reentrant kmap_atomic()" that allows
+multiple contexts to share the same pte by saving and restoring whatever
+was there prior to the DMA sync.
+
+Due to its use of kmap_high_get(), the ARM approach suffers from problem
+#2, below.  It is also more complex and harder to test.  I'm not sure
+how to recreate some of the worst corner cases, e.g. hardirq cacheflush
+interrupts a softirq cacheflush which interrupted a user cacheflush.
+
+Dezhong's patch was largely based on the ARM scheme, minus the
+kmap_high_l1_vipt() logic.  I am sending an update to this patch which
+attempts to imitate the PPC approach instead.  There is a considerable
+amount of reuse since both strategies require similar modifications to
+dma-default.c, in order to get that code to pass around "struct page"
+pointers rather than kseg0 addresses.
+
+
+PROBLEM #2:
+
+Consider this sequence:
+
+mm/highmem.c:kmap_high()
+mm/highmem.c:map_new_virtual()
+mm/highmem.c:flush_all_zero_pkmaps()
+arch/mips/kernel/smp.c:flush_tlb_kernel_range()
+kernel/softirq.c:on_each_cpu()
+kernel/smp.c:smp_call_function()
+
+The first thing kmap_high() does is lock_kmap(), which disables
+interrupts on kmap_high_get() architectures:
+
+#ifdef ARCH_NEEDS_KMAP_HIGH_GET
+#define lock_kmap()             spin_lock_irq(&kmap_lock)
+...
+#else
+#define lock_kmap()             spin_lock(&kmap_lock)
+#endif
+
+smp_call_function() may not be called with interrupts disabled:
+
+ * You must not call this function with disabled interrupts or from a
+ * hardware interrupt handler or from a bottom half handler.
+
+So, on SMP, we get warnings like:
+
+------------[ cut here ]------------                                            
+WARNING: at kernel/smp.c:293 smp_call_function_single+0x17c/0x260()             
+Modules linked in:
+Call Trace:                                                                     
+[<800160f0>] dump_stack+0x8/0x34                                                
+[<8004a544>] warn_slowpath_common+0x78/0xa4                                     
+[<8004a588>] warn_slowpath_null+0x18/0x24                                       
+[<800876e4>] smp_call_function_single+0x17c/0x260                               
+[<80087ca8>] smp_call_function+0x28/0x38                                        
+[<800531b4>] on_each_cpu+0x1c/0x80                                              
+[<80026d20>] flush_tlb_kernel_range+0x28/0x34                                   
+[<800b95f4>] kmap_high+0x1dc/0x270                                              
+[<8002a570>] __kmap+0x60/0x7c                                                   
+[<801f15b4>] do_readpage+0x68/0x540                                             
+[<801f218c>] ubifs_write_begin+0xbc/0x53c                                       
+[<8009a558>] generic_perform_write+0xd4/0x1f0                                   
+[<8009a6e4>] generic_file_buffered_write+0x70/0xbc                              
+[<8009dd3c>] __generic_file_aio_write+0x2fc/0x600                               
+[<8009e0b0>] generic_file_aio_write+0x70/0xf4                                   
+[<800da864>] do_sync_write+0xc4/0x13c                                           
+[<800db50c>] vfs_write+0xc0/0x168                                               
+[<800db6ac>] sys_write+0x4c/0xa4                                                
+[<80003d9c>] stack_done+0x20/0x3c                                               
+                                                                                
+---[ end trace 8abde6adefbcc81f ]---
+
+I did some digging and found that ARM runs into the same problem.  For
+processors that cannot "broadcast" TLB operations, SMP + HIGHMEM are
+deemed incompatible:
+
+http://www.spinics.net/lists/arm-kernel/msg74563.html
+
+So, I would opt for the PPC approach in order to avoid this conflict.
+Disabling SMP will result in a much nastier performance problem than
+blocking interrupts during flushes.
+
+
+PROBLEM #3:
+
+Regarding David's flush_data_cache_page() concern:
+
+http://www.linux-mips.org/archives/linux-mips/2008-03/msg00011.html
+
+
+There are at least 4 reasons to flush the cache:
+
+1) Boot time (cache contents are undefined at reset)
+
+2) DMA coherence
+
+3) I$/D$ coherence (self-modifying code)
+
+4) Zap cache aliases
+
+
+My interpretation of the code is that flush_dcache_page() is only called
+for #3 and #4:
+
+#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+static inline void flush_dcache_page(struct page *page)
+{               
+        if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
+                __flush_dcache_page(page);
+                
+}       
+
+
+The fact that the L2 / board cache is not flushed in c-r4k.c leads me to
+believe that #2 is not an intended use of this function:
+
+static inline void local_r4k_flush_data_cache_page(void * addr)
+{
+        r4k_blast_dcache_page((unsigned long) addr);
+}
+
+Besides, we already have a standard, documented DMA API that should be
+used instead.
+
+Since this is not boot time, and HIGHMEM is incompatible with cache
+aliases, that leaves #3 as a possible issue.  Is this function ever used
+for I$/D$ coherence?
+
+I should note that ARM has special handling in __flush_dcache_page() for
+high pages.  IIRC, at one point they tried to support HIGHMEM on systems
+with cache aliases, before deciding it was not feasible.  Maybe this
+code is just a relic - or maybe it's really needed for something.

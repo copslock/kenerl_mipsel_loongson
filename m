@@ -1,66 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Sep 2010 21:11:50 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:14176 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491127Ab0IJTLq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Sep 2010 21:11:46 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4c8a5b8e0000>; Fri, 10 Sep 2010 09:23:42 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 10 Sep 2010 09:23:08 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 10 Sep 2010 09:23:08 -0700
-Message-ID: <4C8A5B6C.5080405@caviumnetworks.com>
-Date:   Fri, 10 Sep 2010 09:23:08 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100720 Fedora/3.0.6-1.fc12 Thunderbird/3.0.6
-MIME-Version: 1.0
-To:     Greg Ungerer <gerg@snapgear.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips: fix start of free memory when using initrd
-References: <201009080550.o885ohjD014188@goober.internal.moreton.com.au> <4C891863.1080602@caviumnetworks.com> <4C89CBDA.1030309@snapgear.com>
-In-Reply-To: <4C89CBDA.1030309@snapgear.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Sep 2010 16:23:08.0583 (UTC) FILETIME=[74767370:01CB5104]
-X-archive-position: 27744
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Sep 2010 15:33:53 +0200 (CEST)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:45970 "EHLO
+        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491016Ab0IKNdr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Sep 2010 15:33:47 +0200
+Received: by eye22 with SMTP id 22so2595888eye.36
+        for <multiple recipients>; Sat, 11 Sep 2010 06:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=oVborOrv6sF1qWewRUmCF/JFKm48zwCfCAMSLlRnau0=;
+        b=sKW9Ub2u3iMWFwD5ySt4GMkyGi/7hws1icU5zJoDfGaUOBbkC+lNnspaOXeNHW6Xps
+         xMiJkfvHJYG4JnkchsSpaoay1fVfLRwxE6mN3ky3syrA6Wim+afwT2gIl12tjaXH0jNu
+         ymgXyG/Q5gHrahyIkG7G4mYV5r59h+o+h7rEM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=cw1AhabBzBAE9w64Rphy+XfmNVEAg83nn1XoRXvmTxqI+RjdLQpoFhynYFCZRPGrgr
+         CSVJ++yfKIC2Dj7qvOezwBkcJ5HcC2s2UxDk5A5cosBnK+m8jXUnjslZH3ZWrzUpHFVa
+         MzxADZNE3azUF7TK0vtxLFlUo86cgZ4STwO4E=
+Received: by 10.213.7.131 with SMTP id d3mr340980ebd.55.1284212024831;
+        Sat, 11 Sep 2010 06:33:44 -0700 (PDT)
+Received: from localhost.localdomain (79-134-110-186.cust.suomicom.fi [79.134.110.186])
+        by mx.google.com with ESMTPS id z55sm5736289eeh.9.2010.09.11.06.33.43
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 11 Sep 2010 06:33:44 -0700 (PDT)
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] arch: mips: use newly introduced hex_to_bin()
+Date:   Sat, 11 Sep 2010 16:33:29 +0300
+Message-Id: <1284212009-25708-1-git-send-email-andy.shevchenko@gmail.com>
+X-Mailer: git-send-email 1.7.2.2
+X-archive-position: 27745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: andy.shevchenko@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 8672
+X-UID: 9019
 
-On 09/09/2010 11:10 PM, Greg Ungerer wrote:
->
-> Hi David,
->
-> David Daney wrote:
-[...]
->> We have the attached patch (plus a few more hacks), I don't think it
->> is universally safe to change the calculation of reserved_end.
->> Although the patch has some code formatting problems you might
->> consider using it as a starting point.>
-> I don't use the Cavium u-boot boot loader on this. (And don't use any
-> of the named blocks, or other data struct passing from the boot loader
-> to the kernel). So the patch is not really useful for me.
->
-> But I am interested, why do you think it is not safe to change
-> reserved_end?
+Remove custom implementation of hex_to_bin().
 
-For Octeon it is probably safe, but there is a reason that this complex 
-logic for restricting the usable memory ranges exists.  Other targets 
-require it, so great care must be taken not to break the non-octeon targets.
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/rb532/devices.c |   24 +++++++++---------------
+ 1 files changed, 9 insertions(+), 15 deletions(-)
 
->
-> There is the possible overlap of the kernels bootmem setup data
-> that is not checked (which sparc does for example). But otherwise
-> what problems do you see here?
->
-
-I lack the imagination necessary to come up with a failing scenario, but 
-I am also paranoid, so I see danger everywhere.
-
-David Daney
+diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+index 041fc1a..a969eb8 100644
+--- a/arch/mips/rb532/devices.c
++++ b/arch/mips/rb532/devices.c
+@@ -251,28 +251,22 @@ static struct platform_device *rb532_devs[] = {
+ 
+ static void __init parse_mac_addr(char *macstr)
+ {
+-	int i, j;
+-	unsigned char result, value;
++	int i, h, l;
+ 
+ 	for (i = 0; i < 6; i++) {
+-		result = 0;
+-
+ 		if (i != 5 && *(macstr + 2) != ':')
+ 			return;
+ 
+-		for (j = 0; j < 2; j++) {
+-			if (isxdigit(*macstr)
+-			    && (value =
+-				isdigit(*macstr) ? *macstr -
+-				'0' : toupper(*macstr) - 'A' + 10) < 16) {
+-				result = result * 16 + value;
+-				macstr++;
+-			} else
+-				return;
+-		}
++		h = hex_to_bin(*macstr++);
++		if (h == -1)
++			return;
++
++		l = hex_to_bin(*macstr++);
++		if (l == -1)
++			return;
+ 
+ 		macstr++;
+-		korina_dev0_data.mac[i] = result;
++		korina_dev0_data.mac[i] = (h << 4) + l;
+ 	}
+ }
+ 
+-- 
+1.7.2.2

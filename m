@@ -1,99 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Sep 2010 15:33:53 +0200 (CEST)
-Received: from mail-ey0-f177.google.com ([209.85.215.177]:45970 "EHLO
-        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491016Ab0IKNdr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Sep 2010 15:33:47 +0200
-Received: by eye22 with SMTP id 22so2595888eye.36
-        for <multiple recipients>; Sat, 11 Sep 2010 06:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=oVborOrv6sF1qWewRUmCF/JFKm48zwCfCAMSLlRnau0=;
-        b=sKW9Ub2u3iMWFwD5ySt4GMkyGi/7hws1icU5zJoDfGaUOBbkC+lNnspaOXeNHW6Xps
-         xMiJkfvHJYG4JnkchsSpaoay1fVfLRwxE6mN3ky3syrA6Wim+afwT2gIl12tjaXH0jNu
-         ymgXyG/Q5gHrahyIkG7G4mYV5r59h+o+h7rEM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=cw1AhabBzBAE9w64Rphy+XfmNVEAg83nn1XoRXvmTxqI+RjdLQpoFhynYFCZRPGrgr
-         CSVJ++yfKIC2Dj7qvOezwBkcJ5HcC2s2UxDk5A5cosBnK+m8jXUnjslZH3ZWrzUpHFVa
-         MzxADZNE3azUF7TK0vtxLFlUo86cgZ4STwO4E=
-Received: by 10.213.7.131 with SMTP id d3mr340980ebd.55.1284212024831;
-        Sat, 11 Sep 2010 06:33:44 -0700 (PDT)
-Received: from localhost.localdomain (79-134-110-186.cust.suomicom.fi [79.134.110.186])
-        by mx.google.com with ESMTPS id z55sm5736289eeh.9.2010.09.11.06.33.43
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 11 Sep 2010 06:33:44 -0700 (PDT)
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH] arch: mips: use newly introduced hex_to_bin()
-Date:   Sat, 11 Sep 2010 16:33:29 +0300
-Message-Id: <1284212009-25708-1-git-send-email-andy.shevchenko@gmail.com>
-X-Mailer: git-send-email 1.7.2.2
-X-archive-position: 27745
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Sep 2010 07:11:17 +0200 (CEST)
+Received: from mail.perches.com ([173.55.12.10]:1757 "EHLO mail.perches.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490984Ab0ILFLO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 12 Sep 2010 07:11:14 +0200
+Received: from Joe-Laptop.home (unknown [192.168.1.162])
+        by mail.perches.com (Postfix) with ESMTP id 260D42436E;
+        Sat, 11 Sep 2010 22:10:56 -0700 (PDT)
+From:   Joe Perches <joe@perches.com>
+To:     Jiri Kosina <trivial@kernel.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 04/11] arch/mips: Remove pr_<level> uses of KERN_<level>
+Date:   Sat, 11 Sep 2010 22:10:52 -0700
+Message-Id: <c3b4d799ec7338f31638d90bef10d3d89208ae89.1284267142.git.joe@perches.com>
+X-Mailer: git-send-email 1.7.3.rc1
+In-Reply-To: <cover.1284267142.git.joe@perches.com>
+References: <cover.1284267142.git.joe@perches.com>
+X-archive-position: 27746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.shevchenko@gmail.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 9019
+X-UID: 9211
 
-Remove custom implementation of hex_to_bin().
-
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
+Signed-off-by: Joe Perches <joe@perches.com>
 ---
- arch/mips/rb532/devices.c |   24 +++++++++---------------
- 1 files changed, 9 insertions(+), 15 deletions(-)
+ arch/mips/kernel/irq-gic.c  |    2 +-
+ arch/mips/pci/pci-rc32434.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
-index 041fc1a..a969eb8 100644
---- a/arch/mips/rb532/devices.c
-+++ b/arch/mips/rb532/devices.c
-@@ -251,28 +251,22 @@ static struct platform_device *rb532_devs[] = {
+diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
+index b181f2f..8d8a6ba 100644
+--- a/arch/mips/kernel/irq-gic.c
++++ b/arch/mips/kernel/irq-gic.c
+@@ -131,7 +131,7 @@ static int gic_set_affinity(unsigned int irq, const struct cpumask *cpumask)
+ 	int		i;
  
- static void __init parse_mac_addr(char *macstr)
- {
--	int i, j;
--	unsigned char result, value;
-+	int i, h, l;
- 
- 	for (i = 0; i < 6; i++) {
--		result = 0;
--
- 		if (i != 5 && *(macstr + 2) != ':')
- 			return;
- 
--		for (j = 0; j < 2; j++) {
--			if (isxdigit(*macstr)
--			    && (value =
--				isdigit(*macstr) ? *macstr -
--				'0' : toupper(*macstr) - 'A' + 10) < 16) {
--				result = result * 16 + value;
--				macstr++;
--			} else
--				return;
--		}
-+		h = hex_to_bin(*macstr++);
-+		if (h == -1)
-+			return;
-+
-+		l = hex_to_bin(*macstr++);
-+		if (l == -1)
-+			return;
- 
- 		macstr++;
--		korina_dev0_data.mac[i] = result;
-+		korina_dev0_data.mac[i] = (h << 4) + l;
+ 	irq -= _irqbase;
+-	pr_debug(KERN_DEBUG "%s(%d) called\n", __func__, irq);
++	pr_debug("%s(%d) called\n", __func__, irq);
+ 	cpumask_and(&tmp, cpumask, cpu_online_mask);
+ 	if (cpus_empty(tmp))
+ 		return -1;
+diff --git a/arch/mips/pci/pci-rc32434.c b/arch/mips/pci/pci-rc32434.c
+index 71f7d27..f31218e 100644
+--- a/arch/mips/pci/pci-rc32434.c
++++ b/arch/mips/pci/pci-rc32434.c
+@@ -118,7 +118,7 @@ static int __init rc32434_pcibridge_init(void)
+ 	if (!((pcicvalue == PCIM_H_EA) ||
+ 	      (pcicvalue == PCIM_H_IA_FIX) ||
+ 	      (pcicvalue == PCIM_H_IA_RR))) {
+-		pr_err(KERN_ERR "PCI init error!!!\n");
++		pr_err("PCI init error!!!\n");
+ 		/* Not in Host Mode, return ERROR */
+ 		return -1;
  	}
- }
- 
 -- 
-1.7.2.2
+1.7.3.rc1

@@ -1,95 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Sep 2010 19:12:26 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:41123 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491075Ab0ILRMX convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 12 Sep 2010 19:12:23 +0200
-Received: by wyb38 with SMTP id 38so5846223wyb.36
-        for <multiple recipients>; Sun, 12 Sep 2010 10:12:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:reply-to:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=xKwZOE9eIcLeIUSBqeuXB+brHfvRKp3XTGMBqvuEK40=;
-        b=Jw38lS64OqbvQO5Yb7VilyHG7FfqzlhIfPYnp80lpHjNaMTEmWBcbKNI9EbvmtQ+Tw
-         LEaot/vTgq1SxhY434fGjs+P2yz52pO3Kd5CfVnfOf2pTgCcBaKCrQhvjfzWK1BKxM+m
-         GJpKhKjL0yUfrAE3CothcVzBOIGDRsAs5YY1c=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=CvrE98wmHRkuXT5z693XqslDWiqdGCU6VgUw1fNSMXyBdUyu+4RpuyTYmlTNEnifIy
-         I+7jY71ihK6Q8w93wNvvL0Zto55wKknI9n3/JyDzq65tNHNEMHWKWjWJ9rk/ij5Radqq
-         Ef/QlQaQIJiuLBZwjrSVE+AzQyYd2Bhsbi5Bo=
-Received: by 10.216.176.83 with SMTP id a61mr3370673wem.47.1284311537205;
-        Sun, 12 Sep 2010 10:12:17 -0700 (PDT)
-Received: from lenovo.localnet (129.199.66-86.rev.gaoland.net [86.66.199.129])
-        by mx.google.com with ESMTPS id k83sm3266568weq.14.2010.09.12.10.12.13
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 12 Sep 2010 10:12:14 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-Reply-To: Florian Fainelli <florian@openwrt.org>
-To:     wuzhangjin@gmail.com
-Subject: Re: zboot for brcm
-Date:   Sun, 12 Sep 2010 19:13:28 +0200
-User-Agent: KMail/1.13.5 (Linux/2.6.35-trunk-amd64; KDE/4.4.5; x86_64; ; )
-Cc:     Waldemar Brodkorb <mail@waldemar-brodkorb.de>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips" <linux-mips@linux-mips.org>
-References: <20100609153831.GA27461@waldemar-brodkorb.de> <201006171438.15832.florian@openwrt.org> <1276781479.4271.8.camel@localhost>
-In-Reply-To: <1276781479.4271.8.camel@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Sep 2010 08:27:34 +0200 (CEST)
+Received: from dalsmrelay2.nai.com ([205.227.136.216]:31070 "HELO
+        dalsmrelay2.nai.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1491093Ab0IMG11 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Sep 2010 08:27:27 +0200
+Received: from (unknown [10.64.5.51]) by dalsmrelay2.nai.com with smtp
+         id 7a50_17dc_f1442bae_beff_11df_acd8_00219b929abd;
+        Mon, 13 Sep 2010 06:27:15 +0000
+Received: from dalexbr1.corp.nai.org (161.69.111.81) by DALEXHT1.corp.nai.org
+ (10.64.5.51) with Microsoft SMTP Server id 8.2.254.0; Mon, 13 Sep 2010
+ 01:26:31 -0500
+Received: from sncexbr1.corp.nai.org ([161.69.5.246]) by dalexbr1.corp.nai.org
+ with Microsoft SMTPSVC(6.0.3790.3959);  Mon, 13 Sep 2010 01:26:30 -0500
+Received: from STPSMTP01.scur.com ([10.96.96.163]) by sncexbr1.corp.nai.org
+ with Microsoft SMTPSVC(6.0.3790.3959);  Sun, 12 Sep 2010 23:26:28 -0700
+Received: from cyberguard.com.au ([10.46.129.16]) by STPSMTP01.scur.com with
+ Microsoft SMTPSVC(6.0.3790.4675);       Mon, 13 Sep 2010 01:26:28 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])    by
+ bne.snapgear.com (Postfix) with ESMTP id 9ADCAEBACC;   Mon, 13 Sep 2010
+ 16:26:26 +1000 (EST)
+X-Virus-Scanned: amavisd-new at snapgear.com
+Received: from bne.snapgear.com ([127.0.0.1])   by localhost (bne.snapgear.com
+ [127.0.0.1]) (amavisd-new, port 10024) with ESMTP id 9PTK4kC2wECb; Mon, 13
+ Sep 2010 16:26:18 +1000 (EST)
+Received: from [172.22.196.222] (bnelabfw.scur.com [10.46.129.16])      by
+ bne.snapgear.com (Postfix) with ESMTP; Mon, 13 Sep 2010 16:26:18 +1000 (EST)
+Message-ID: <4C8DC3CF.6030909@snapgear.com>
+Date:   Mon, 13 Sep 2010 16:25:19 +1000
+From:   Greg Ungerer <gerg@snapgear.com>
+User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <201009121913.29339.florian@openwrt.org>
-X-archive-position: 27748
+To:     David Daney <ddaney@caviumnetworks.com>
+CC:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] mips: fix start of free memory when using initrd
+References: <201009080550.o885ohjD014188@goober.internal.moreton.com.au> <4C891863.1080602@caviumnetworks.com> <4C89CBDA.1030309@snapgear.com> <4C8A5B6C.5080405@caviumnetworks.com>
+In-Reply-To: <4C8A5B6C.5080405@caviumnetworks.com>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 13 Sep 2010 06:26:28.0353 (UTC) FILETIME=[991A1F10:01CB530C]
+X-archive-position: 27749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: gerg@snapgear.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 9368
+X-UID: 9655
 
-Hi Wu,
-
-Le Thursday 17 June 2010 15:31:19, Wu Zhangjin a écrit :
-> Hi,
+David Daney wrote:
+> On 09/09/2010 11:10 PM, Greg Ungerer wrote:
+>>
+>> Hi David,
+>>
+>> David Daney wrote:
+> [...]
+>>> We have the attached patch (plus a few more hacks), I don't think it
+>>> is universally safe to change the calculation of reserved_end.
+>>> Although the patch has some code formatting problems you might
+>>> consider using it as a starting point.>
+>> I don't use the Cavium u-boot boot loader on this. (And don't use any
+>> of the named blocks, or other data struct passing from the boot loader
+>> to the kernel). So the patch is not really useful for me.
+>>
+>> But I am interested, why do you think it is not safe to change
+>> reserved_end?
 > 
-> On Thu, 2010-06-17 at 14:38 +0200, Florian Fainelli wrote:
-> > Hi,
-> > 
-> > On Thursday 17 June 2010 14:20:49 wu zhangjin wrote:
-> > > Hi,
-> > > 
-> > > I just got a bcm1250a board, it also uses the CFE as the bootloader, I
-> > > compiled a compressed vmlinuz-2.6.34 for it and boot with the
-> > > following command, it works well:
-> > > 
-> > > CFE> setenv bootargs root=/dev/nfs rw
-> > > nfsroot=$nfs_server_ip:/path/to/nfs_root_fs ip=dhcp
-> > > CFE> ifconfig -auto eth0
-> > > CFE> boot -elf $tftp_server_ip:/path/to/vmlinuz
-> > > 
-> > > With -elf, the boot command of CFE can parse the vmlinuz and boot it
-> > > normally. I think you have used the wrong options of the boot command.
-> > 
-> > CFE on bcm12xx, on bcm47xx and bcm63xx are all three slightly different
-> > flavors which may not behave exactly the same way wrt the load command.
-> > 
-> > Also, you are on a development board so there are no reasons to restrict
-> > CFE commands, this is not the case with end-user products like WRT54G
-> > and such.
+> For Octeon it is probably safe, but there is a reason that this complex 
+> logic for restricting the usable memory ranges exists.  Other targets 
+> require it, so great care must be taken not to break the non-octeon 
+> targets.
 > 
-> Hmm, Maybe, I have no such products to test, anybody have such products,
-> welcome to test it ;)
+>>
+>> There is the possible overlap of the kernels bootmem setup data
+>> that is not checked (which sparc does for example). But otherwise
+>> what problems do you see here?
+>>
+> 
+> I lack the imagination necessary to come up with a failing scenario, but 
+> I am also paranoid, so I see danger everywhere.
 
-I just ran into the issue described by Waldemar on a BCM6348 board. You 
-mentionned you were writing a patch, do you have one I could test on BCM63xx?
---
-Florian
+Good answer :-)
+
+Regards
+Greg
+
+
+------------------------------------------------------------------------
+Greg Ungerer  --  Principal Engineer        EMAIL:     gerg@snapgear.com
+SnapGear Group, McAfee                      PHONE:       +61 7 3435 2888
+8 Gardner Close                             FAX:         +61 7 3217 5323
+Milton, QLD, 4064, Australia                WEB: http://www.SnapGear.com

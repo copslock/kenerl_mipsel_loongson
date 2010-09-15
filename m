@@ -1,96 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Sep 2010 11:16:47 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:44786 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491095Ab0INJQn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Sep 2010 11:16:43 +0200
-Received: from int-mx08.intmail.prod.int.phx2.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.21])
-        by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id o8E9FElb031305
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Tue, 14 Sep 2010 05:15:14 -0400
-Received: from redhat.com ([10.3.112.2])
-        by int-mx08.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with ESMTP id o8E9EjUt018637;
-        Tue, 14 Sep 2010 05:14:46 -0400
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <cover.1284406638.git.joe@perches.com>
-References: <cover.1284406638.git.joe@perches.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     dhowells@redhat.com, linux-kernel@vger.kernel.org,
-        Amit Kumar Salecha <amit.salecha@qlogic.com>,
-        linux-fbdev@vger.kernel.org, Greg Kroah-Hartman <gregkh@suse.de>,
-        James Smart <james.smart@emulex.com>,
-        linux-mips@linux-mips.org, "VMware, Inc." <pv-drivers@vmware.com>,
-        PJ Waskiewicz <peter.p.waskiewicz.jr@intel.com>,
-        Shreyas Bhatewara <sbhatewara@vmware.com>,
-        alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        "James E.J. Bottomley" <James.Bottomley@suse.de>,
-        Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
-        Brett Rudley <brudley@broadcom.com>,
-        sparclinux@vger.kernel.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-scsi@vger.kernel.org,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        e1000-devel@lists.sourceforge.net,
-        Trond Myklebust <Trond.Myklebust@netapp.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Neil Brown <neilb@suse.de>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        linux-wireless@vger.kernel.org, Ingo Molnar <mingo@elte.hu>,
-        linux-usb@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        Alex Duyck <alexander.h.duyck@intel.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Henry Ptasinski <henryp@broadcom.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        "Jean Delvare \(PC drivers, core\)" <khali@linux-fr.org>,
-        mjpeg-users@lists.sourceforge.net,
-        "Ben Dooks \(embedded platforms\)" <ben-linux@fluff.org>,
-        linux-nfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Neela Syam Kolli <megaraidlinux@lsi.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Linus Walleij <linus.walleij@stericsson.com>,
-        netdev@vger.kernel.org,
-        Anirban Chakraborty <anirban.chakraborty@qlogic.com>,
-        Bruce Allan <bruce.w.allan@intel.com>
-Date:   Tue, 14 Sep 2010 10:14:45 +0100
-Message-ID: <28081.1284455685@redhat.com>
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.21
-X-archive-position: 27752
-Subject: (no subject)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Sep 2010 15:28:16 +0200 (CEST)
+Received: (from localhost user: 'ralf' uid#500 fake: STDIN
+        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S1490951Ab0ION2M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Sep 2010 15:28:12 +0200
+Date:   Wed, 15 Sep 2010 15:28:11 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     wuzhangjin@gmail.com,
+        Waldemar Brodkorb <mail@waldemar-brodkorb.de>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: zboot for brcm
+Message-ID: <20100915132811.GA6704@linux-mips.org>
+References: <20100609153831.GA27461@waldemar-brodkorb.de>
+ <201006171438.15832.florian@openwrt.org>
+ <1276781479.4271.8.camel@localhost>
+ <201009121913.29339.florian@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201009121913.29339.florian@openwrt.org>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+X-archive-position: 27753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 10737
+X-UID: 11783
 
-Joe Perches <joe@perches.com> wrote:
+On Sun, Sep 12, 2010 at 07:13:28PM +0200, Florian Fainelli wrote:
 
-> Using static const char foo[] = "bar" can save some
-> code and text space, so change the places where it's possible.
+Be careful with the firmware.  On Sibyte systems Linux queries the firmware
+for available memory ranges.  The memory ranges are based on the sizes of
+the sizes of the ELF file as loaded.  That means after decompression it
+is possible that the kernel will treat some memory as free even though it
+it is actually used.  Due to various other circumstances this does not
+actually hit all systems.
 
-That's reasonable.
-
-> Also change the places that use
-> 	char foo[] = "barX";
-> 	...
-> 	foo[3] = value + '0';
-> where X is typically changed
-> 	char foo[sizeof("barX")];
-> 	...
-> 	sprintf(foo, "bar%c", value + '0');
-
-You haven't said what this gains.  I can see what it may cost, though
-(depending on how gcc loads foo[]).
-
-David
+  Ralf

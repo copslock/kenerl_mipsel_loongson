@@ -1,24 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Sep 2010 12:35:01 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Sep 2010 01:57:45 +0200 (CEST)
 Received: (from localhost user: 'ralf' uid#500 fake: STDIN
         (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S1491040Ab0IPKes (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Sep 2010 12:34:48 +0200
-Date:   Thu, 16 Sep 2010 11:34:46 +0100
+        id S1491076Ab0IPX5l (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Sep 2010 01:57:41 +0200
+Date:   Fri, 17 Sep 2010 00:57:39 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>,
-        linux-mips@linux-mips.org
-Subject: Re: What is CONFIG_MIPS_MT_SMTC configuration and when is this
- recommended to be used?
-Message-ID: <20100916103446.GA13219@linux-mips.org>
-References: <AEA634773855ED4CAD999FBB1A66D076010CFA3B@CORPEXCH1.na.ads.idt.com>
- <4C9132E9.6060807@paralogos.com>
+To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Porting Linux MIPS issue: maltaint.h files
+Message-ID: <20100916235739.GA16949@linux-mips.org>
+References: <AEA634773855ED4CAD999FBB1A66D076010CFA4E@CORPEXCH1.na.ads.idt.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4C9132E9.6060807@paralogos.com>
+In-Reply-To: <AEA634773855ED4CAD999FBB1A66D076010CFA4E@CORPEXCH1.na.ads.idt.com>
 User-Agent: Mutt/1.5.20 (2009-12-10)
-X-archive-position: 27758
+X-archive-position: 27759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,19 +24,31 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 12645
+X-UID: 13241
 
-On Wed, Sep 15, 2010 at 01:56:09PM -0700, Kevin D. Kissell wrote:
+On Wed, Sep 15, 2010 at 01:04:02PM -0700, Ardelean, Andrei wrote:
 
-> SMTC is a kernel for the 34K (and, just maybe, with some mods,
-> 1004K) that turns TC microthreads into virtual SMP CPUs.  See
-> http://tree.celinuxforum.org/CelfPubWiki/ELC2006Presentations?action=AttachFile&do=view&target=CELF_SMTC_April_2006_v0.3.pdf
+> I am porting LINUX MIPS from MALTA on a new board. The problem is that
+> .../mips-boards/maltaint.h files is included in a non-MALTA specific
+> file, irq-gic.c, without #ifdef CONFIG_MALTA protection. The only need
+> there is for the following constant:
+> #define X			0xdead
 
-The help text provided for the MIPS_MT_SMP (VSMP) and MIPS_MT_SMTC options
-didn't make it easier to understand what SMTC is by incorrectly stating
-that MIPS marketing had renamed both to SMVP.  I used the opportunity to
-rewrite the help text and slightly polish
+That's just poor programming style.  1 character long names in headers are
+begging for conflicts and with few exceptions as the universal loop index
+variables i, j, k are not descriptive.
 
-http://www.linux-mips.org/wiki/SMTC#SMTC
+Including system specific headers hinders code reusability and reusability
+is the reason why most of the irq-*.c files are in arch/mips/kernel and not
+hidden away in some platform specific directory.
+
+> What is the recommended way to follow since I will replace maltaint.h
+> with my new file gdint.h?
+
+Post a patch to cleanup the mess.
+
+In this case (and I haven't looked at it for more than 30s ...) it seems
+that the constant X should be moved into <asm/gic.h> after which the
+inclusion of the Malta header can go away.
 
   Ralf

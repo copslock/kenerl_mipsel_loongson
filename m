@@ -1,150 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Sep 2010 14:55:55 +0200 (CEST)
-Received: from mail-qy0-f170.google.com ([209.85.216.170]:43148 "EHLO
-        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491769Ab0IQMzv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Sep 2010 14:55:51 +0200
-Received: by qyk35 with SMTP id 35so973684qyk.15
-        for <linux-mips@linux-mips.org>; Fri, 17 Sep 2010 05:55:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type;
-        bh=9GlNtSkt+8zU6R0CwxsaAJebwMZBrjUSz2wKRfQlots=;
-        b=KWp2eElQBKvVqSojZXIcQHo7TScvVqpWzGD//KNvbwXX/4eUODcfSVbqoQRU+/Ka7S
-         yc4smW/W8ncMtl2IVoGVRFpzm0nqQtpiDmIVy2eMIwZPPCuwmGrn0candX2iuD0WaaXI
-         auP1Xpv6Lr0+x3Wze4FKpFBKsBlvF0ftgD7/U=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=g9cP7pBLSDUGsF1RL+acWcwzO2ZAl4Zg3I+vfeLHOW9wLY6OUqcaTcgR3iL/L743BR
-         /wCnsOzxKTkDiRSs+ts0dP+L9iGDAjXaF1IawB0/jGZfRRXG9wxeM82Zh1EoIpQUa/iY
-         nGc1OHbkfvb8hLf8KGiyFCjkojuWdeQZdfdqE=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Sep 2010 17:57:14 +0200 (CEST)
+Received: (from localhost user: 'ralf' uid#500 fake: STDIN
+        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S1491078Ab0IQP5L (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Sep 2010 17:57:11 +0200
+Date:   Fri, 17 Sep 2010 16:57:10 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Porting Linux MIPS issue: maltaint.h files
+Message-ID: <20100917155710.GA15030@linux-mips.org>
+References: <AEA634773855ED4CAD999FBB1A66D076010CFA4E@CORPEXCH1.na.ads.idt.com>
+ <20100916235739.GA16949@linux-mips.org>
 MIME-Version: 1.0
-Received: by 10.224.67.65 with SMTP id q1mr3326524qai.243.1284728145700; Fri,
- 17 Sep 2010 05:55:45 -0700 (PDT)
-Received: by 10.229.19.129 with HTTP; Fri, 17 Sep 2010 05:55:43 -0700 (PDT)
-Date:   Fri, 17 Sep 2010 20:55:43 +0800
-Message-ID: <AANLkTimCEAzvya1zH0BRvHtn7=PhZPHgPG2LMzquhjGy@mail.gmail.com>
-Subject: [HELP] Oops when insmod iptable_filter
-From:   arrow zhang <arrow.ebd@gmail.com>
-To:     linux-mips@linux-mips.org,
-        OpenWrt <openwrt-devel@lists.openwrt.org>
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 27760
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100916235739.GA16949@linux-mips.org>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+X-archive-position: 27761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arrow.ebd@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13595
+X-UID: 13754
 
-Here has a difficult problem for me, would like anyone give some advice
+On Fri, Sep 17, 2010 at 12:57:39AM +0100, Ralf Baechle wrote:
 
-On a mips r3000 cpu, here has a kernel crash when doing the insmod
-iptable_filter,
-The phenomenon is same as https://dev.openwrt.org/ticket/6129
+> Post a patch to cleanup the mess.
+> 
+> In this case (and I haven't looked at it for more than 30s ...) it seems
+> that the constant X should be moved into <asm/gic.h> after which the
+> inclusion of the Malta header can go away.
 
-1, the FW is at openwrt versoin r23057
-2, the crash occurs if insmod automatically by preinit
-3, but not has crash if insmod within "failsafe mode"
+So here it is.
 
-4, the crash address is random in the "iptable_filter_init" progress,
-seems the symbol or page address invalidate
-    and sometime may crash at any other modules, (e.g.
-iptable_mangle/raw, but iptable_filter module is crash every time)
+  Ralf
 
-5, refer from the "crash log" "Cause : 00000008", maybe is a TLB
-issue, but I have no idea about the debug direction
-   I have try something as these
-   * check the irq routine
-   * double check file arch/mips/mm/c-r3k.c
-   * double check file arch/mips/mm/tlb-r3k.c
-   * try to remove the patch :
-target/linux/generic/patches-2.6.35/027-mips_module_reloc.patch
-   * try to remove the patch :
-target/linux/generic/patches-2.6.35/028-module_exports.patch
-   * try to remove the patch :
-target/linux/generic/patches-2.6.35/202-mips_mem_functions_performance.patch
-but all can not fix this bug
+ arch/mips/include/asm/gic.h                  |    1 +
+ arch/mips/include/asm/mips-boards/maltaint.h |    3 ---
+ arch/mips/kernel/irq-gic.c                   |    3 +--
+ arch/mips/mti-malta/malta-int.c              |    3 +++
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-next is the crash log (some printk added at sys_init_module)
-{{{
-device eth0 entered promiscuous mode
-br-lan: port 1(eth0) entering forwarding state
-br-lan: port 1(eth0) entering forwarding state
-sys_init_module 2626, name: crc_ccitt
-sys_init_module 2636
-sys_init_module 2641
-sys_init_module 2626, name: slhc
-sys_init_module 2636
-sys_init_module 2641
-sys_init_module 2626, name: ppp_generic
-sys_init_module 2636
-sys_init_module 2638
-PPP generic driver version 2.4.2
-sys_init_module 2641
-sys_init_module 2626, name: ppp_async
-sys_init_module 2636
-sys_init_module 2638
-sys_init_module 2641
-sys_init_module 2626, name: x_tables
-sys_init_module 2636
-sys_init_module 2638
-sys_init_module 2641
-sys_init_module 2626, name: xt_tcpudp
-sys_init_module 2636
-sys_init_module 2638
-sys_init_module 2641
-sys_init_module 2626, name: ip_tables
-sys_init_module 2636
-sys_init_module 2638
-ip_tables: (C) 2000-2006 Netfilter Core Team
-sys_init_module 2641
-sys_init_module 2626, name: iptable_filter
-sys_init_module 2636
-sys_init_module 2638
-CPU 0 Unable to handle kernel paging request at virtual address
-00000000, epc == 81a6e030, ra == 81a6e024
-Oops[#1]:
-Cpu 0
-$ 0   : 00000000 00000000 00000000 00005200
-$ 4   : 000000b0 81a90000 81a9224c 000012ce
-$ 8   : 00000030 800042c0 00000001 00000000
-$12   : 00000003 ffffffff 00000000 745f7375
-$16   : 819e5200 802f3260 81a30000 81a2e174
-$20   : 81a6e090 802b0000 004085c4 00000002
-$24   : 00000000 81a6e000
-$28   : 81a86000 81a87e30 7fbef508 81a6e024
-Hi    : 00000000
-Lo    : 000000c7
-epc   : 81a6e030 __this_module+0x3fea0/0x3ff00 [iptable_filter]
-    Not tainted
-ra    : 81a6e024 __this_module+0x3fe94/0x3ff00 [iptable_filter]
-Status: 1000ff04    IEp
-Cause : 00000008
-BadVA : 00000000
-PrId  : 0000cf01 (rtl)
-Modules linked in: iptable_filter(+) ip_tables xt_tcpudp x_tables
-ppp_async ppp_generic slhc crc_ccitt
-Process insmod (pid: 282, threadinfo=81a86000, task=81a08108, tls=00000000)
-Stack : 802eac4c 81a2e174 802c0000 802e0000 81a2e174 802c0000 802e0000 801b0b1c
-        00000034 8001e944 00000001 00000000 81a2e174 802c0000 802e0000 00000000
-        81a6e090 801b0c94 8025148c 0000002a 0000002a c016c9e8 c016c47c 00000001
-        81a30000 81a6e0c0 00000310 000002f0 0000001a 00000019 1000ff01 00000001
-        81a2e190 80008b50 80280000 80250000 81a2e19c 802b0000 004085c4 00000002
-        ...
-Call Trace:
-[<81a6e030>] __this_module+0x3fea0/0x3ff00 [iptable_filter]
-[<81a6e024>] __this_module+0x3fe94/0x3ff00 [iptable_filter]
-
-
-Code: 10400018  00408021  3c0281a3 <8c43e170> 2645e120  00031827
-ae030188  02202021  0c6a478e
-Disabling lock debugging due to kernel taint
-sys_init_module 2626, name: iptable_mangle
-sys_init_module 2636
-sys_init_module 2638
-}}}
+diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
+index 9b9436a..86548da 100644
+--- a/arch/mips/include/asm/gic.h
++++ b/arch/mips/include/asm/gic.h
+@@ -321,6 +321,7 @@ struct gic_intrmask_regs {
+  */
+ struct gic_intr_map {
+ 	unsigned int cpunum;	/* Directed to this CPU */
++#define GIC_UNUSED		0xdead			/* Dummy data */
+ 	unsigned int pin;	/* Directed to this Pin */
+ 	unsigned int polarity;	/* Polarity : +/-	*/
+ 	unsigned int trigtype;	/* Trigger  : Edge/Levl */
+diff --git a/arch/mips/include/asm/mips-boards/maltaint.h b/arch/mips/include/asm/mips-boards/maltaint.h
+index cea872f..d11aa02 100644
+--- a/arch/mips/include/asm/mips-boards/maltaint.h
++++ b/arch/mips/include/asm/mips-boards/maltaint.h
+@@ -88,9 +88,6 @@
+ 
+ #define GIC_EXT_INTR(x)		x
+ 
+-/* Dummy data */
+-#define X			0xdead
+-
+ /* External Interrupts used for IPI */
+ #define GIC_IPI_EXT_INTR_RESCHED_VPE0	16
+ #define GIC_IPI_EXT_INTR_CALLFNC_VPE0	17
+diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
+index b181f2f..3e57e29 100644
+--- a/arch/mips/kernel/irq-gic.c
++++ b/arch/mips/kernel/irq-gic.c
+@@ -7,7 +7,6 @@
+ #include <asm/io.h>
+ #include <asm/gic.h>
+ #include <asm/gcmpregs.h>
+-#include <asm/mips-boards/maltaint.h>
+ #include <asm/irq.h>
+ #include <linux/hardirq.h>
+ #include <asm-generic/bitops/find.h>
+@@ -222,7 +221,7 @@ static void __init gic_basic_init(int numintrs, int numvpes,
+ 	/* Setup specifics */
+ 	for (i = 0; i < mapsize; i++) {
+ 		cpu = intrmap[i].cpunum;
+-		if (cpu == X)
++		if (cpu == GIC_UNUSED)
+ 			continue;
+ 		if (cpu == 0 && i != 0 && intrmap[i].flags == 0)
+ 			continue;
+diff --git a/arch/mips/mti-malta/malta-int.c b/arch/mips/mti-malta/malta-int.c
+index 15949b0..b79b24a 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -385,6 +385,8 @@ static int __initdata msc_nr_eicirqs = ARRAY_SIZE(msc_eicirqmap);
+  */
+ 
+ #define GIC_CPU_NMI GIC_MAP_TO_NMI_MSK
++#define X GIC_UNUSED
++
+ static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS] = {
+ 	{ X, X,		   X,		X,		0 },
+ 	{ X, X,		   X,	 	X,		0 },
+@@ -404,6 +406,7 @@ static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS] = {
+ 	{ X, X,		   X,		X,	        0 },
+ 	/* The remainder of this table is initialised by fill_ipi_map */
+ };
++#undef X
+ 
+ /*
+  * GCMP needs to be detected before any SMP initialisation

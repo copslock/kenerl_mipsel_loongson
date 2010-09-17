@@ -1,80 +1,147 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Sep 2010 22:27:43 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:17841 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491087Ab0IQU1k (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Sep 2010 22:27:40 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4c93cf570000>; Fri, 17 Sep 2010 13:28:07 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 17 Sep 2010 13:27:36 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 17 Sep 2010 13:27:35 -0700
-Message-ID: <4C93CF37.9030805@caviumnetworks.com>
-Date:   Fri, 17 Sep 2010 13:27:35 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100720 Fedora/3.0.6-1.fc12 Thunderbird/3.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Sep 2010 23:42:01 +0200 (CEST)
+Received: from mxout1.idt.com ([157.165.5.25]:58528 "EHLO mxout1.idt.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491816Ab0IQVl5 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 17 Sep 2010 23:41:57 +0200
+Received: from mail.idt.com (localhost [127.0.0.1])
+        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o8HLfmto001742;
+        Fri, 17 Sep 2010 14:41:49 -0700
+Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
+        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o8HLfl5L004821;
+        Fri, 17 Sep 2010 14:41:47 -0700 (PDT)
+Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
+        by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o8HLfkI26619;
+        Fri, 17 Sep 2010 14:41:46 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     Maciej Drobniuch <maciej@drobniuch.pl>,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: mips64-octeon-linux-gnu
-References: <AANLkTinU_bBu8n9-dW31ATqA-CKX+UHyNOkRHHhZAiro@mail.gmail.com>      <4C93BB61.7000004@caviumnetworks.com> <AANLkTimuovVMgKGEtVLKYj1jmOOnJRxESxaL7RrmJDz4@mail.gmail.com>
-In-Reply-To: <AANLkTimuovVMgKGEtVLKYj1jmOOnJRxESxaL7RrmJDz4@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 17 Sep 2010 20:27:35.0941 (UTC) FILETIME=[C3C7EB50:01CB56A6]
-X-archive-position: 27764
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Porting Linux MIPS issue: maltaint.h files
+Date:   Fri, 17 Sep 2010 14:41:44 -0700
+Message-ID: <AEA634773855ED4CAD999FBB1A66D0760111367B@CORPEXCH1.na.ads.idt.com>
+In-Reply-To: <20100917155710.GA15030@linux-mips.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+thread-topic: Porting Linux MIPS issue: maltaint.h files
+thread-index: ActWgJDdDFH4JZZCSLeMOWUkH1aRsAAMIb0g
+References: <AEA634773855ED4CAD999FBB1A66D076010CFA4E@CORPEXCH1.na.ads.idt.com> <20100916235739.GA16949@linux-mips.org> <20100917155710.GA15030@linux-mips.org>
+From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+To:     "Ralf Baechle" <ralf@linux-mips.org>
+Cc:     <linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.43
+X-archive-position: 27765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: Andrei.Ardelean@idt.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 13939
+X-UID: 13976
 
-On 09/17/2010 12:06 PM, Maciej Drobniuch wrote:
-> 2010/9/17 David Daney<ddaney@caviumnetworks.com>:
->> On 09/17/2010 11:53 AM, Maciej Drobniuch wrote:
->>>
->>> Hi ALL!
->>> I'm new to linux-mips world!
->>> I'm looking for a toolchain called mips64-octeon-linux-gnu
->>> Does anyone know where i could get one ?
->>> BIG THANKS!
->>
->> There are several options:
->>
->> 1) It is supplied as part of the Octeon SDK which may be obtained from the
->> vendor.
->>
-> It is free to download?
-
-No.
+Thanks a lot,
+Andrei
 
 
->> 2) You can build it yourself (How to do this is left as an exercise for the
->> reader).
->>
-> If you could give me a link to the manual/doc/how to it, and tell how
-> to learn about it, it would be great!
+-----Original Message-----
+From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+Sent: Friday, September 17, 2010 11:57 AM
+To: Ardelean, Andrei
+Cc: linux-mips@linux-mips.org
+Subject: Re: Porting Linux MIPS issue: maltaint.h files
 
-http://www.google.com/search?q=cross+Linux+from+scratch
+On Fri, Sep 17, 2010 at 12:57:39AM +0100, Ralf Baechle wrote:
 
+> Post a patch to cleanup the mess.
+> 
+> In this case (and I haven't looked at it for more than 30s ...) it
+seems
+> that the constant X should be moved into <asm/gic.h> after which the
+> inclusion of the Malta header can go away.
 
->> 3) Use mips64-unknown-linux-gnu instead.
->>
-> Where i can find mips64-unknown-linux-gnu?
->
+So here it is.
 
-See #2
+  Ralf
 
+ arch/mips/include/asm/gic.h                  |    1 +
+ arch/mips/include/asm/mips-boards/maltaint.h |    3 ---
+ arch/mips/kernel/irq-gic.c                   |    3 +--
+ arch/mips/mti-malta/malta-int.c              |    3 +++
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-> Sorry for my lame questions!
->
->> David Daney
-> Thanks David!
->>
->
->
->
+diff --git a/arch/mips/include/asm/gic.h b/arch/mips/include/asm/gic.h
+index 9b9436a..86548da 100644
+--- a/arch/mips/include/asm/gic.h
++++ b/arch/mips/include/asm/gic.h
+@@ -321,6 +321,7 @@ struct gic_intrmask_regs {
+  */
+ struct gic_intr_map {
+ 	unsigned int cpunum;	/* Directed to this CPU */
++#define GIC_UNUSED		0xdead			/* Dummy data */
+ 	unsigned int pin;	/* Directed to this Pin */
+ 	unsigned int polarity;	/* Polarity : +/-	*/
+ 	unsigned int trigtype;	/* Trigger  : Edge/Levl */
+diff --git a/arch/mips/include/asm/mips-boards/maltaint.h
+b/arch/mips/include/asm/mips-boards/maltaint.h
+index cea872f..d11aa02 100644
+--- a/arch/mips/include/asm/mips-boards/maltaint.h
++++ b/arch/mips/include/asm/mips-boards/maltaint.h
+@@ -88,9 +88,6 @@
+ 
+ #define GIC_EXT_INTR(x)		x
+ 
+-/* Dummy data */
+-#define X			0xdead
+-
+ /* External Interrupts used for IPI */
+ #define GIC_IPI_EXT_INTR_RESCHED_VPE0	16
+ #define GIC_IPI_EXT_INTR_CALLFNC_VPE0	17
+diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
+index b181f2f..3e57e29 100644
+--- a/arch/mips/kernel/irq-gic.c
++++ b/arch/mips/kernel/irq-gic.c
+@@ -7,7 +7,6 @@
+ #include <asm/io.h>
+ #include <asm/gic.h>
+ #include <asm/gcmpregs.h>
+-#include <asm/mips-boards/maltaint.h>
+ #include <asm/irq.h>
+ #include <linux/hardirq.h>
+ #include <asm-generic/bitops/find.h>
+@@ -222,7 +221,7 @@ static void __init gic_basic_init(int numintrs, int
+numvpes,
+ 	/* Setup specifics */
+ 	for (i = 0; i < mapsize; i++) {
+ 		cpu = intrmap[i].cpunum;
+-		if (cpu == X)
++		if (cpu == GIC_UNUSED)
+ 			continue;
+ 		if (cpu == 0 && i != 0 && intrmap[i].flags == 0)
+ 			continue;
+diff --git a/arch/mips/mti-malta/malta-int.c
+b/arch/mips/mti-malta/malta-int.c
+index 15949b0..b79b24a 100644
+--- a/arch/mips/mti-malta/malta-int.c
++++ b/arch/mips/mti-malta/malta-int.c
+@@ -385,6 +385,8 @@ static int __initdata msc_nr_eicirqs =
+ARRAY_SIZE(msc_eicirqmap);
+  */
+ 
+ #define GIC_CPU_NMI GIC_MAP_TO_NMI_MSK
++#define X GIC_UNUSED
++
+ static struct gic_intr_map gic_intr_map[GIC_NUM_INTRS] = {
+ 	{ X, X,		   X,		X,		0 },
+ 	{ X, X,		   X,	 	X,		0 },
+@@ -404,6 +406,7 @@ static struct gic_intr_map
+gic_intr_map[GIC_NUM_INTRS] = {
+ 	{ X, X,		   X,		X,	        0 },
+ 	/* The remainder of this table is initialised by fill_ipi_map */
+ };
++#undef X
+ 
+ /*
+  * GCMP needs to be detected before any SMP initialisation

@@ -1,133 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Sep 2010 12:11:10 +0200 (CEST)
-Received: (from localhost user: 'ralf' uid#500 fake: STDIN
-        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S1490976Ab0IUKLG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Sep 2010 12:11:06 +0200
-Date:   Tue, 21 Sep 2010 11:11:05 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Shmulik Ladkani <shmulik.ladkani@gmail.com>
-Cc:     wuzhangjin@gmail.com, linux-mips@linux-mips.org,
-        alex@digriz.org.uk, manuel.lauss@googlemail.com, sam@ravnborg.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Fix vmlinuz to flush the caches after kernel
- decompression
-Message-ID: <20100921101105.GA32343@linux-mips.org>
-References: <4c7e1a3a.c83ddf0a.5918.ffffcf6a@mx.google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Sep 2010 15:05:01 +0200 (CEST)
+Received: from mail-qy0-f177.google.com ([209.85.216.177]:47627 "EHLO
+        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491018Ab0IUNE6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Sep 2010 15:04:58 +0200
+Received: by qyk34 with SMTP id 34so6282354qyk.15
+        for <linux-mips@linux-mips.org>; Tue, 21 Sep 2010 06:04:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:content-type;
+        bh=Su8itA51Pf3e8hBd1vuisyyKzDcRgVB+g+JpyomKSic=;
+        b=PazmJdI/8bNChweBqTc2TZq0IrpKJS8vFDX9KYBt2DyHjsYUN0b+tuAZhe7n/A1E6l
+         2PqoVd1eCwMbHp3p4/rMylEnRSQiVA89ahElbcC/eAA6uTIR0+FK0FlTyCE6NDBpKArP
+         fIMF1+hwt4+89vx8fFwYb3W5UtMZr5F9zetA8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :content-type;
+        b=Q4eUpFtZADo5IzdiVNtGErTDoW9/Nr9HIv+QAIv6AYEIU4DhfT/JcEt+gDtL0elOiT
+         r6fy16GImkLbkMsdcCQUe1FwkjStgs47g4BZNhplsYcvWTB8ff12aPkpHiRgmsfFmgdz
+         XcYLTFoMNP7JNpcWF2KjO1uBlS/x9VTjsM4ks=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4c7e1a3a.c83ddf0a.5918.ffffcf6a@mx.google.com>
-User-Agent: Mutt/1.5.20 (2009-12-10)
-X-archive-position: 27778
+Received: by 10.229.232.14 with SMTP id js14mr7254350qcb.103.1285074292564;
+ Tue, 21 Sep 2010 06:04:52 -0700 (PDT)
+Received: by 10.229.25.139 with HTTP; Tue, 21 Sep 2010 06:04:52 -0700 (PDT)
+In-Reply-To: <AANLkTimCEAzvya1zH0BRvHtn7=PhZPHgPG2LMzquhjGy@mail.gmail.com>
+References: <AANLkTimCEAzvya1zH0BRvHtn7=PhZPHgPG2LMzquhjGy@mail.gmail.com>
+Date:   Tue, 21 Sep 2010 21:04:52 +0800
+Message-ID: <AANLkTikVu=LdkiP_beBTbXBz7VjggCW4qcHwJcUupZDg@mail.gmail.com>
+Subject: Re: [HELP] Oops when insmod iptable_filter
+From:   arrow zhang <arrow.ebd@gmail.com>
+To:     linux-mips@linux-mips.org,
+        OpenWrt <openwrt-devel@lists.openwrt.org>
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 27779
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: arrow.ebd@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16183
+X-UID: 16255
 
-On Wed, Sep 01, 2010 at 12:17:43PM +0300, Shmulik Ladkani wrote:
+On Fri, Sep 17, 2010 at 8:55 PM, arrow zhang <arrow.ebd@gmail.com> wrote:
+> Here has a difficult problem for me, would like anyone give some advice
+>
+> On a mips r3000 cpu, here has a kernel crash when doing the insmod
+> iptable_filter,
+> The phenomenon is same as https://dev.openwrt.org/ticket/6129
+>
+> 1, the FW is at openwrt versoin r23057
+> 2, the crash occurs if insmod automatically by preinit
+> 3, but not has crash if insmod within "failsafe mode"
+----
 
-> Flush caches after kernel decompression.
-> 
-> When writing instructions, the D-cache should be written-back, and I-cache
-> should be invalidated.
+good news:
 
-Correct - but it's also a can of worms which is why I intentionally
-ignored the issue so far.  An I-cache is refilled from L2/L3 (if available)
-or memory.  The large amounts of data written by the CPU during
-decompression of the kernel virtually guarantee that all code will be
-written back to L2/L3 or memory and the I-cache has been flushed by
-firmware before the decompressor was entered.
+1, work fine if start "init" without "env, like this:
+    exec $pi_init_cmd 2>&0
+2, test patch:
+{{{
+diff --git a/package/base-files/files/lib/preinit/99_10_run_init
+b/package/base-files/files/lib/preinit/99_10_run_init
+index fef3a50..7db1e72 100644
+--- a/package/base-files/files/lib/preinit/99_10_run_init
++++ b/package/base-files/files/lib/preinit/99_10_run_init
+@@ -6,9 +6,11 @@ run_init() {
+     preinit_echo "- init -"
+     preinit_ip_deconfig
+     if [ "$pi_init_suppress_stderr" = "y" ]; then
+-	exec env - PATH=$pi_init_path $pi_init_env $pi_init_cmd 2>&0
++	#exec env - PATH=$pi_init_path $pi_init_env $pi_init_cmd 2>&0
++	exec $pi_init_cmd 2>&0
+     else
+-	exec env - PATH=$pi_init_path $pi_init_env $pi_init_cmd
++	#exec env - PATH=$pi_init_path $pi_init_env $pi_init_cmd
++	exec $pi_init_cmd
+     fi
+ }
 
-Does this assumption fail for you?
+}}}}
 
-The real can of worms is SMP - none of the other processors have been
-detected etc.  At this early stage we just don't know if and how to flush
-caches of other processors.  The only good news is that we know they
-don't have any not written back kernel code in their D-caches.
-
-> The patch implements L1 cache flushing, for r4k style caches - suitable for
-> all MIPS32 CPUs (and probably for other CPUs too).
-
-No - you only compile the code for MIPS32 CPUs and check for MIPS_CONF_M
-which - at least with this meaning - only exists on MIPS32 and MIPS64 CPUs.
-
-> +#define INDEX_BASE CKSEG0
-> +
-> +extern void puts(const char *s);
-> +extern void puthex(unsigned long long val);
-> +
-> +#define cache_op(op, addr)			\
-> +	__asm__ __volatile__(			\
-> +	"	.set push		\n"	\
-> +	"	.set noreorder		\n"	\
-> +	"	.set mips3		\n"	\
-> +	"	cache %1, 0(%0)		\n"	\
-> +	"	.set pop		\n"	\
-> +	:					\
-> +	: "r" (addr), "i" (op))
-
-This duplicates the definition of arch/mips/include/asm/r4kcache.h.  Why?
-
-> +#define cache_all_index_op(cachesz, linesz, op) do {			\
-> +	unsigned long addr = INDEX_BASE;				\
-> +	for (; addr < INDEX_BASE + (cachesz); addr += (linesz))		\
-> +		cache_op(op, addr);					\
-> +} while (0)
-
-For consistence in formatting please move the "do {" to the beginning of
-the next line.
-
-> +void cache_flush(void)
-> +{
-> +	volatile unsigned long config1;
-
-I don't know why you're using volatile here - but it won't work as you
-intended.  Just drop the keyword.
-
-> +	unsigned long tmp;
-> +	unsigned long line_size;
-> +	unsigned long ways;
-> +	unsigned long sets;
-> +	unsigned long cache_size;
-
-Make these int variables.  The code here is fine for MIPS64 as well but
-there is no point in having 64-bit variables and multiplies.
-
-> +	if (!(read_c0_config() & MIPS_CONF_M)) {
-> +		puts("cache_flush error: Config1 unavailable\n");
-> +		return;
-> +	}
-> +	config1 = read_c0_config1();
-> +
-> +	/* calculate D-cache line-size and cache-size, then writeback */
-> +	tmp = (config1 >> 10) & 7;
-> +	if (tmp) {
-> +		line_size = 2 << tmp;
-> +		sets = 64 << ((config1 >> 13) & 7);
-> +		ways = 1 + ((config1 >> 7) & 7);
-> +		cache_size = sets * ways * line_size;
-> +		dcache_writeback(cache_size, line_size);
-> +	}
-> +
-> +	/* calculate I-cache line-size and cache-size, then invalidate */
-> +	tmp = (config1 >> 19) & 7;
-> +	if (tmp) {
-> +		line_size = 2 << tmp;
-> +		sets = 64 << ((config1 >> 22) & 7);
-> +		ways = 1 + ((config1 >> 16) & 7);
-> +		cache_size = sets * ways * line_size;
-> +		icache_invalidate(cache_size, line_size);
-> +	}
-
-Eww...  You copied (my ...) old sin from c-r4k.c and use all the magic
-numbers.
-
-Anyway, does this actually fix a bug for you or is it more a theoretical
-convern?
-
-  Ralf
+3, I do not know why, I think it's a my mips SOC porting issue, but I
+tried to modify TLB and cache, not find out yet, would like someone
+have advice

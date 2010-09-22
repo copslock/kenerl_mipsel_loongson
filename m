@@ -1,67 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Sep 2010 08:04:17 +0200 (CEST)
-Received: from mail-pv0-f177.google.com ([74.125.83.177]:58204 "EHLO
-        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490968Ab0IVGEO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Sep 2010 08:04:14 +0200
-Received: by pvg12 with SMTP id 12so57161pvg.36
-        for <multiple recipients>; Tue, 21 Sep 2010 23:04:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=cRwt6c7y6APDIaP7pj6J+GmScdBcYfoTipyQQktwMBI=;
-        b=XmwHlkqeFUppigM89VyXab2Q9x0lTDQXlX4ulILmizWZZTvTkAYtMqUJvCKfgk/Nfi
-         +s2I3UnaJ+3hLcxP4GGgU9XD7QQ6Z/SKxEt4vEyOdYaS7JgUbE1Lo1RYqUNOvjZEAdhv
-         yXwdzoAR1/ABYKx9Y/+1uDLa5knMyXlOR10iI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=Odf9SB1hJOKSdj2yWJHufvvaeu8YNWZfufqSAjOmpVuzAuUmCWL8k/vSTOxY1xguqI
-         iHAF/VUPbpN37fz5NqxPigj3MubByKyta9nVLyYkgujv13WfMhHmFPPxzHuqBEhcpIMQ
-         RUQuL5SdOEI2y3YzrizupP8DW4KqT4IKiBHCw=
-Received: by 10.142.251.3 with SMTP id y3mr10090375wfh.140.1285135448127;
-        Tue, 21 Sep 2010 23:04:08 -0700 (PDT)
-Received: from localhost.localdomain ([61.48.59.181])
-        by mx.google.com with ESMTPS id y36sm9216160wfd.18.2010.09.21.23.04.04
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 21 Sep 2010 23:04:06 -0700 (PDT)
-From:   wuzhangjin@gmail.com
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] MIPS: Fixes "make clean"
-Date:   Wed, 22 Sep 2010 14:03:57 +0800
-Message-Id: <1285135437-15783-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.1
-X-archive-position: 27786
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Sep 2010 11:19:10 +0200 (CEST)
+Received: from sh.osrg.net ([192.16.179.4]:57348 "EHLO sh.osrg.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491112Ab0IVJTH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Sep 2010 11:19:07 +0200
+Received: from localhost (rose.osrg.net [10.76.0.1])
+        by sh.osrg.net (8.14.3/8.14.3/OSRG-NET) with ESMTP id o8M9IQoc012248;
+        Wed, 22 Sep 2010 18:18:27 +0900
+Date:   Wed, 22 Sep 2010 18:18:26 +0900
+To:     ralf@linux-mips.org
+Cc:     fujita.tomonori@lab.ntt.co.jp, akpm@linux-foundation.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH -mm 4/8] mips: enable ARCH_DMA_ADDR_T_64BIT with
+ (HIGHMEM && 64BIT_PHYS_ADDR) || 64BIT
+From:   FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+In-Reply-To: <20100920133434.GB15938@linux-mips.org>
+References: <20100903094753S.fujita.tomonori@lab.ntt.co.jp>
+        <1283474956-14710-4-git-send-email-fujita.tomonori@lab.ntt.co.jp>
+        <20100920133434.GB15938@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20100922181454N.fujita.tomonori@lab.ntt.co.jp>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-3.0 (sh.osrg.net [192.16.179.4]); Wed, 22 Sep 2010 18:18:27 +0900 (JST)
+X-Virus-Scanned: clamav-milter 0.96.1 at sh
+X-Virus-Status: Clean
+X-archive-position: 27787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: fujita.tomonori@lab.ntt.co.jp
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 16943
+X-UID: 17051
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Mon, 20 Sep 2010 14:34:35 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-When we do "make clean", vmlinuz will not be cleaned, we need to use
-vmlinuz* instead of vmlinuz.* to include it.
+> On Fri, Sep 03, 2010 at 09:49:12AM +0900, FUJITA Tomonori wrote:
+> 
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+> > Cc: linux-mips@linux-mips.org
+> 
+> Looks good:
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/boot/compressed/Makefile |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Thanks,
 
-diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-index ed9bb70..5c1eb68 100644
---- a/arch/mips/boot/compressed/Makefile
-+++ b/arch/mips/boot/compressed/Makefile
-@@ -105,4 +105,4 @@ OBJCOPYFLAGS_vmlinuz.srec := $(OBJCOPYFLAGS) -S -O srec
- vmlinuz.srec: vmlinuz
- 	$(call cmd,objcopy)
- 
--clean-files := $(objtree)/vmlinuz.*
-+clean-files := $(objtree)/vmlinuz*
--- 
-1.7.1
+
+> As this patch by itself doesn't make any sense in the MIPS tree and would
+> only cry for a janitor to remove it again I suggest you merge this with
+> the rest of the series.
+
+I expect akpm to merge all the patches.

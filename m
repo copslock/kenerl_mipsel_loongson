@@ -1,58 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Sep 2010 11:19:10 +0200 (CEST)
-Received: from sh.osrg.net ([192.16.179.4]:57348 "EHLO sh.osrg.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491112Ab0IVJTH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Sep 2010 11:19:07 +0200
-Received: from localhost (rose.osrg.net [10.76.0.1])
-        by sh.osrg.net (8.14.3/8.14.3/OSRG-NET) with ESMTP id o8M9IQoc012248;
-        Wed, 22 Sep 2010 18:18:27 +0900
-Date:   Wed, 22 Sep 2010 18:18:26 +0900
-To:     ralf@linux-mips.org
-Cc:     fujita.tomonori@lab.ntt.co.jp, akpm@linux-foundation.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH -mm 4/8] mips: enable ARCH_DMA_ADDR_T_64BIT with
- (HIGHMEM && 64BIT_PHYS_ADDR) || 64BIT
-From:   FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-In-Reply-To: <20100920133434.GB15938@linux-mips.org>
-References: <20100903094753S.fujita.tomonori@lab.ntt.co.jp>
-        <1283474956-14710-4-git-send-email-fujita.tomonori@lab.ntt.co.jp>
-        <20100920133434.GB15938@linux-mips.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-Id: <20100922181454N.fujita.tomonori@lab.ntt.co.jp>
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-3.0 (sh.osrg.net [192.16.179.4]); Wed, 22 Sep 2010 18:18:27 +0900 (JST)
-X-Virus-Scanned: clamav-milter 0.96.1 at sh
-X-Virus-Status: Clean
-X-archive-position: 27787
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Sep 2010 12:07:06 +0200 (CEST)
+Received: (from localhost user: 'ralf' uid#500 fake: STDIN
+        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S1491153Ab0IVKHC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 22 Sep 2010 12:07:02 +0200
+Date:   Wed, 22 Sep 2010 11:07:01 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     jiang.adam@gmail.com
+Cc:     dmitri.vorobiev@movial.com, wuzhangjin@gmail.com,
+        ddaney@caviumnetworks.com, peterz@infradead.org,
+        fweisbec@gmail.com, tj@kernel.org, tglx@linutronix.de,
+        mingo@elte.hu, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2] mips: irq: add stackoverflow detection
+Message-ID: <20100922100701.GA4710@linux-mips.org>
+References: <linux-mips@linux-mips.org>
+ <1282901526-28405-1-git-send-email-jiang.adam@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1282901526-28405-1-git-send-email-jiang.adam@gmail.com>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+X-archive-position: 27788
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fujita.tomonori@lab.ntt.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 17051
+X-UID: 17080
 
-On Mon, 20 Sep 2010 14:34:35 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
+On Fri, Aug 27, 2010 at 06:32:06PM +0900, jiang.adam@gmail.com wrote:
 
-> On Fri, Sep 03, 2010 at 09:49:12AM +0900, FUJITA Tomonori wrote:
-> 
-> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-> > Cc: linux-mips@linux-mips.org
-> 
-> Looks good:
-> 
-> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+> index 43dc279..f437cd1 100644
+> --- a/arch/mips/Kconfig.debug
+> +++ b/arch/mips/Kconfig.debug
+> @@ -67,6 +67,15 @@ config CMDLINE_OVERRIDE
+>  
+>  	  Normally, you will choose 'N' here.
+>  
+> +config DEBUG_STACKOVERFLOW
+> +	bool "Check for stack overflows"
+> +	depends on DEBUG_KERNEL
+> +	help
+> +	  This option will cause messages to be printed if free stack space
+> +	  drops below a certain limit(2GB on MIPS). The debugging option
 
-Thanks,
+I better upgrade my meory then.  2GB is a LOTS :)
 
+> +	  provides another way to check stack overflow happened on kernel mode
+> +	  stack usually caused by nested interruption.
+> +
+>  config DEBUG_STACK_USAGE
+>  	bool "Enable stack utilization instrumentation"
+>  	depends on DEBUG_KERNEL
+> diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
+> index c6345f5..d0b924d 100644
+> --- a/arch/mips/kernel/irq.c
+> +++ b/arch/mips/kernel/irq.c
+> @@ -151,6 +151,26 @@ void __init init_IRQ(void)
+>  #endif
+>  }
+>  
+> +#ifdef DEBUG_STACKOVERFLOW
+> +static inline void check_stack_overflow(void)
+> +{
+> +	long sp;
 
-> As this patch by itself doesn't make any sense in the MIPS tree and would
-> only cry for a janitor to remove it again I suggest you merge this with
-> the rest of the series.
+Addresses in Linux should always be unsigned long.
 
-I expect akpm to merge all the patches.
+> +
+> +	__asm__ __volatile__("move %0, $sp" : "=r" (sp));
+> +	sp = sp & (THREAD_SIZE-1);
+
+For THREAD_SIZE - 1 there is the symbol THREAD_MASK.
+
+> +	/* check for stack overflow: is there less than 2KB free? */
+> +	if (unlikely(sp < (sizeof(struct thread_info) + 2048))) {
+
+Looks good otherwise, will queue.
+
+  Ralf

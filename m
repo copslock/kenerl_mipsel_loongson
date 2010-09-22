@@ -1,72 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Sep 2010 15:06:54 +0200 (CEST)
-Received: from ozlabs.org ([203.10.76.45]:51355 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491200Ab0IVNGu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 22 Sep 2010 15:06:50 +0200
-Received: from [192.168.0.126] (ppp121-45-251-169.lns20.per2.internode.on.net [121.45.251.169])
-        (using SSLv3 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        by ozlabs.org (Postfix) with ESMTPSA id C7576B70DA;
-        Wed, 22 Sep 2010 23:06:46 +1000 (EST)
-Subject: Re: [PATCH 1/2 v3]Update broken web addresses.
-From:   Jeremy Kerr <jk@ozlabs.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     patchwork@lists.ozlabs.org, linux-mips@linux-mips.org,
-        Randy Dunlap <rdunlap@xenotime.net>,
-        linux-m32r@ml.linux-m32r.org, trivial@kernel.org,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        linux-laptop@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Finn Thain <fthain@telegraphics.com.au>,
-        linux-m68k@lists.linux-m68k.org,
-        "Justin P. Mattock" <justinmattock@gmail.com>,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20100922105852.GC4710@linux-mips.org>
-References: <1285118957-24965-1-git-send-email-justinmattock@gmail.com>
-         <20100922105852.GC4710@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Wed, 22 Sep 2010 21:06:45 +0800
-Message-ID: <1285160805.2796.0.camel@pororo>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.30.3 
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Sep 2010 18:44:58 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:1146 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491112Ab0IVQoy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Sep 2010 18:44:54 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4c9a32a40000>; Wed, 22 Sep 2010 09:45:24 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 22 Sep 2010 09:44:51 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 22 Sep 2010 09:44:51 -0700
+Message-ID: <4C9A327E.6030109@caviumnetworks.com>
+Date:   Wed, 22 Sep 2010 09:44:46 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100720 Fedora/3.0.6-1.fc12 Thunderbird/3.0.6
+MIME-Version: 1.0
+To:     wuzhangjin@gmail.com
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] MIPS: Make EARLY_PRINTK selectable for !EMBEDDED
+References: <1285135150-14772-1-git-send-email-wuzhangjin@gmail.com>
+In-Reply-To: <1285135150-14772-1-git-send-email-wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 27793
+X-OriginalArrivalTime: 22 Sep 2010 16:44:51.0697 (UTC) FILETIME=[7A22DE10:01CB5A75]
+X-archive-position: 27794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jk@ozlabs.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 17202
+X-UID: 17361
 
-Hi Ralf,
+On 09/21/2010 10:59 PM, wuzhangjin@gmail.com wrote:
+> From: Wu Zhangjin<wuzhangjin@gmail.com>
+>
+> When EMBEDDED is disabled, the EARLY_PRINTK option will be hiden and we
+> have no way to disable it.
+>
+> For EARLY_PRINTK is not necessary for !EMBEDDED, we should make it
+> selectable and only enable it by default for EMBEDDED.
+>
+> Signed-off-by: Wu Zhangjin<wuzhangjin@gmail.com>
+> ---
+>   arch/mips/Kconfig.debug |    4 ++--
+>   1 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+> index 43dc279..77eba81 100644
+> --- a/arch/mips/Kconfig.debug
+> +++ b/arch/mips/Kconfig.debug
+> @@ -7,9 +7,9 @@ config TRACE_IRQFLAGS_SUPPORT
+>   source "lib/Kconfig.debug"
+>
+>   config EARLY_PRINTK
+> -	bool "Early printk" if EMBEDDED
+> +	bool "Early printk"
+>   	depends on SYS_HAS_EARLY_PRINTK
+> -	default y
+> +	default y if EMBEDDED
 
-> On Tue, Sep 21, 2010 at 06:29:16PM -0700, Justin P. Mattock wrote:
-> > Date:   Tue, 21 Sep 2010 18:29:16 -0700
-> > From: "Justin P. Mattock" <justinmattock@gmail.com>
-> > To: trivial@kernel.org
-> > Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-> >  linux-omap@vger.kernel.org, linux-m32r@ml.linux-m32r.org,
-> >  linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-> >  linuxppc-dev@lists.ozlabs.org, linux-laptop@vger.kernel.org, "Justin P.
-> >  Mattock" <justinmattock@gmail.com>, "Maciej W. Rozycki"
-> >  <macro@linux-mips.org>, Finn Thain <fthain@telegraphics.com.au>, Randy
-> >  Dunlap <rdunlap@xenotime.net>
-> > Subject: [PATCH 1/2 v3]Update broken web addresses.
-> > Content-Type: text/plain; charset=UTF-8
-> 
-> Patchwork MIME butchers the subject of this patch, see
-> 
-> https://patchwork.linux-mips.org/patch/1587/
-> https://patchwork.kernel.org/patch/198382/
-> 
+I hate to be a pedant, but how about if we don't make it depend on 
+EMBEDDED at all?  I.E. just: 'default y'
 
-Thanks for the heads-up - I'll see what's happening with the header
-decoding here.
+If the system has SYS_HAS_EARLY_PRINTK, the overhead of enabling 
+EARLY_PRINTK is low, although it may slow down booting.  But it is 
+really not at all related to EMBEDDED.
 
-Cheers,
+David Daney
 
 
-Jeremy
+>   	help
+>   	  This option enables special console drivers which allow the kernel
+>   	  to print messages very early in the bootup process.

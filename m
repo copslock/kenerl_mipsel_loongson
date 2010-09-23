@@ -1,146 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Sep 2010 08:52:04 +0200 (CEST)
-Received: from qmta10.emeryville.ca.mail.comcast.net ([76.96.30.17]:51049 "EHLO
-        qmta10.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490949Ab0IWGwA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Sep 2010 08:52:00 +0200
-Received: from omta07.emeryville.ca.mail.comcast.net ([76.96.30.59])
-        by qmta10.emeryville.ca.mail.comcast.net with comcast
-        id A6k01f0041GXsucAA6rscU; Thu, 23 Sep 2010 06:51:52 +0000
-Received: from haskell.muteddisk.com ([98.239.78.58])
-        by omta07.emeryville.ca.mail.comcast.net with comcast
-        id A6rr1f00A1FUwZe8U6rrUD; Thu, 23 Sep 2010 06:51:52 +0000
-Received: by haskell.muteddisk.com (Postfix, from userid 1000)
-        id A39AE412AC; Wed, 22 Sep 2010 23:51:03 -0700 (PDT)
-From:   matt mooney <mfm@muteddisk.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 10/20] mips: change to new flag variable
-Date:   Wed, 22 Sep 2010 23:51:01 -0700
-Message-Id: <1285224661-29797-1-git-send-email-mfm@muteddisk.com>
-X-Mailer: git-send-email 1.6.4.2
-X-archive-position: 27798
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Sep 2010 09:40:01 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:35516 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491044Ab0IWHj6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Sep 2010 09:39:58 +0200
+Received: by qyk35 with SMTP id 35so7426356qyk.15
+        for <multiple recipients>; Thu, 23 Sep 2010 00:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=nES+7llkeG8pq8652Pa6DRmziB5bSY4s5wVMNlH5TAI=;
+        b=RY7YOt1TNcRqSLuYdqGMc07tlH9JQ+0Gt7JQtcQEWIIKxWUNqUP3UWQWODRN40TUYI
+         d4UaCBtoOE8nsRmip4Rg0kJZWyDRX1FUsjGAUQKYUxVUgN6kgiNip/q4TYjsW5wQZZfd
+         zsDielN2tvICQ0hC3PWYKhdopjlIcOiYx8hlw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=wby6/0Ihak9tIkxCKsgUdUo1WQqVlDryLyVRGLlQgbFLO5Bfip26C4CbZeq+/P5e43
+         YrgM915tIOuOfqZ4HBkfyiMucCycNWFOGFPCB0489EoSs0NEPWFhNyDyDn5NXRCY47V3
+         osLBzqxpNJeUSs/DRdphrzOs43gyHYBeTkT0s=
+MIME-Version: 1.0
+Received: by 10.229.215.76 with SMTP id hd12mr1019630qcb.44.1285227591572;
+ Thu, 23 Sep 2010 00:39:51 -0700 (PDT)
+Received: by 10.229.25.208 with HTTP; Thu, 23 Sep 2010 00:39:51 -0700 (PDT)
+In-Reply-To: <20100922122711.GB6392@console-pimps.org>
+References: <1276058130-25851-1-git-send-email-dengcheng.zhu@gmail.com>
+        <1276058130-25851-5-git-send-email-dengcheng.zhu@gmail.com>
+        <20100922122711.GB6392@console-pimps.org>
+Date:   Thu, 23 Sep 2010 15:39:51 +0800
+Message-ID: <AANLkTinq+2LHgycDGyPgrEfkp3PSYxqagV1TfbjcQTwO@mail.gmail.com>
+Subject: Re: [PATCH v6 4/7] MIPS: add support for hardware performance events (skeleton)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     Matt Fleming <matt@console-pimps.org>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, jamie.iles@picochip.com
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 27799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mfm@muteddisk.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 18017
+X-UID: 18048
 
-Replace EXTRA_CFLAGS with ccflags-y.
+2010/9/22 Matt Fleming <matt@console-pimps.org>:
+> I'm probably just being stupid but I can't figure out what this snippet
+> of code is doing. You're checking to see if the counter has overflowed,
+> and if it has then you just clear the overflow bit? I would have
+> expected you to reset the counter to 0.
+[DC]: Maybe my original code comment for the member msbs of the struct
+cpu_hw_events is too simple. And here is more: Unlike the perf counters in
+some other architectures, a 32bit MIPS perf counter, for example, will
+generate an interrupt after 0x7fffffff. But we want the operation to look
+like: 0x0 -> 0xffffffff -> interrupt. So there's a "pseudo" signal halfway.
+Please also note that the counter value will be brought back to 0 soon
+after it reaches 0x80000000 *each time*.
 
-Signed-off-by: matt mooney <mfm@muteddisk.com>
----
- arch/mips/Makefile                     |    4 ++--
- arch/mips/bcm63xx/boards/Makefile      |    2 +-
- arch/mips/fw/arc/Makefile              |    2 +-
- arch/mips/jz4740/Makefile              |    2 +-
- arch/mips/oprofile/Makefile            |    2 +-
- arch/mips/pmc-sierra/yosemite/Makefile |    2 +-
- arch/mips/powertv/Makefile             |    2 +-
- arch/mips/powertv/asic/Makefile        |    2 +-
- arch/mips/powertv/pci/Makefile         |    2 +-
- 9 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index f4a4b66..c14c392 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -288,11 +288,11 @@ CLEAN_FILES += vmlinux.32 vmlinux.64
- archprepare:
- ifdef CONFIG_MIPS32_N32
- 	@echo '  Checking missing-syscalls for N32'
--	$(Q)$(MAKE) $(build)=. missing-syscalls EXTRA_CFLAGS="-mabi=n32"
-+	$(Q)$(MAKE) $(build)=. missing-syscalls ccflags-y="-mabi=n32"
- endif
- ifdef CONFIG_MIPS32_O32
- 	@echo '  Checking missing-syscalls for O32'
--	$(Q)$(MAKE) $(build)=. missing-syscalls EXTRA_CFLAGS="-mabi=32"
-+	$(Q)$(MAKE) $(build)=. missing-syscalls ccflags-y="-mabi=32"
- endif
- 
- install:
-diff --git a/arch/mips/bcm63xx/boards/Makefile b/arch/mips/bcm63xx/boards/Makefile
-index e5cc86d..9f64fb4 100644
---- a/arch/mips/bcm63xx/boards/Makefile
-+++ b/arch/mips/bcm63xx/boards/Makefile
-@@ -1,3 +1,3 @@
- obj-$(CONFIG_BOARD_BCM963XX)		+= board_bcm963xx.o
- 
--EXTRA_CFLAGS += -Werror
-+ccflags-y := -Werror
-diff --git a/arch/mips/fw/arc/Makefile b/arch/mips/fw/arc/Makefile
-index e0aaad4..5314b37 100644
---- a/arch/mips/fw/arc/Makefile
-+++ b/arch/mips/fw/arc/Makefile
-@@ -9,4 +9,4 @@ lib-$(CONFIG_ARC_MEMORY)	+= memory.o
- lib-$(CONFIG_ARC_CONSOLE)	+= arc_con.o
- lib-$(CONFIG_ARC_PROMLIB)	+= promlib.o
- 
--EXTRA_CFLAGS			+= -Werror
-+ccflags-y			:= -Werror
-diff --git a/arch/mips/jz4740/Makefile b/arch/mips/jz4740/Makefile
-index a604eae..a9dff33 100644
---- a/arch/mips/jz4740/Makefile
-+++ b/arch/mips/jz4740/Makefile
-@@ -17,4 +17,4 @@ obj-$(CONFIG_JZ4740_QI_LB60)	+= board-qi_lb60.o
- 
- obj-$(CONFIG_PM) += pm.o
- 
--EXTRA_CFLAGS += -Werror -Wall
-+ccflags-y := -Werror -Wall
-diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
-index 02cc65e..4b9d704 100644
---- a/arch/mips/oprofile/Makefile
-+++ b/arch/mips/oprofile/Makefile
-@@ -1,4 +1,4 @@
--EXTRA_CFLAGS := -Werror
-+ccflags-y := -Werror
- 
- obj-$(CONFIG_OPROFILE) += oprofile.o
- 
-diff --git a/arch/mips/pmc-sierra/yosemite/Makefile b/arch/mips/pmc-sierra/yosemite/Makefile
-index b16f95c..02f5fb9 100644
---- a/arch/mips/pmc-sierra/yosemite/Makefile
-+++ b/arch/mips/pmc-sierra/yosemite/Makefile
-@@ -6,4 +6,4 @@ obj-y    += irq.o prom.o py-console.o setup.o
- 
- obj-$(CONFIG_SMP)		+= smp.o
- 
--EXTRA_CFLAGS += -Werror
-+ccflags-y := -Werror
-diff --git a/arch/mips/powertv/Makefile b/arch/mips/powertv/Makefile
-index baf6e90..348d2e8 100644
---- a/arch/mips/powertv/Makefile
-+++ b/arch/mips/powertv/Makefile
-@@ -28,4 +28,4 @@ obj-y += init.o ioremap.o memory.o powertv_setup.o reset.o time.o \
- 
- obj-$(CONFIG_USB) += powertv-usb.o
- 
--EXTRA_CFLAGS += -Wall
-+ccflags-y := -Wall
-diff --git a/arch/mips/powertv/asic/Makefile b/arch/mips/powertv/asic/Makefile
-index f0e95dc..d810a33 100644
---- a/arch/mips/powertv/asic/Makefile
-+++ b/arch/mips/powertv/asic/Makefile
-@@ -20,4 +20,4 @@ obj-y += asic-calliope.o asic-cronus.o asic-gaia.o asic-zeus.o \
- 	asic_devices.o asic_int.o irq_asic.o prealloc-calliope.o \
- 	prealloc-cronus.o prealloc-cronuslite.o prealloc-gaia.o prealloc-zeus.o
- 
--EXTRA_CFLAGS += -Wall -Werror
-+ccflags-y := -Wall -Werror
-diff --git a/arch/mips/powertv/pci/Makefile b/arch/mips/powertv/pci/Makefile
-index f5c6246..5783201 100644
---- a/arch/mips/powertv/pci/Makefile
-+++ b/arch/mips/powertv/pci/Makefile
-@@ -18,4 +18,4 @@
- 
- obj-$(CONFIG_PCI)	+= fixup-powertv.o
- 
--EXTRA_CFLAGS += -Wall -Werror
-+ccflags-y := -Wall -Werror
--- 
-1.7.2.1
+> Shouldn't you also clear the overflow bit in ->msbs here?
+[DC]: See my comment above.
+
+
+> Having conditional code like this is a pretty sure sign that you haven't
+> separated support for the various performance hardware properly. Have
+> you had a look at how SH uses a registration interface to register
+> sh_pmus?  Ideally all the internals for each type of perfcounter
+> hardware should be in their own file.
+[DC]: It does look ugly. It should be easy to put conditional code into
+perf_event_[mipsxx|loongson2|rm9000].c. I'll post a patch to fix it when
+the whole thing is accepted.
+
+
+> SH also has this problem that it doesn't have any sort of performance
+> counter interrupt and so can't check for overflow. This lack of
+> interrupt really needs to be solved generically in perf as it's a
+> problem that effects quite a few architectures. I suspect that using a
+> hrtimer instead of piggy-backing the timer interrupt would make the core
+> perf guys happier. Writing support for this is on my ever-growing list
+> of things todo. I've already started on some patches for the perf tool
+> so that it's possible to sample counters even though there is no
+> periodic interrupt (but that's a different problem).
+[DC]: Please add me into your post list when your patches are ready :-)
+Finally, thanks for your time to review the code.
+
+
+Deng-Cheng

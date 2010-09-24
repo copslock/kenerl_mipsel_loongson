@@ -1,49 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2010 18:32:20 +0200 (CEST)
-Received: (from localhost user: 'ralf' uid#500 fake: STDIN
-        (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S1491046Ab0IXQcP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Sep 2010 18:32:15 +0200
-Date:   Fri, 24 Sep 2010 17:32:14 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Sergei Shtylyov <sshtylyov@mvista.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/9] MIPS: Add a platform hook for swiotlb setup.
-Message-ID: <20100924163214.GA29252@linux-mips.org>
-References: <1285281496-24696-1-git-send-email-ddaney@caviumnetworks.com>
- <1285281496-24696-9-git-send-email-ddaney@caviumnetworks.com>
- <4C9CCD1B.506@mvista.com>
- <4C9CCE42.3030309@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4C9CCE42.3030309@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-12-10)
-X-archive-position: 27821
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Sep 2010 18:36:04 +0200 (CEST)
+Received: from kroah.org ([198.145.64.141]:38962 "EHLO coco.kroah.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491105Ab0IXQgB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 24 Sep 2010 18:36:01 +0200
+Received: from localhost (c-24-16-163-131.hsd1.wa.comcast.net [24.16.163.131])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by coco.kroah.org (Postfix) with ESMTPSA id 0893848B0F;
+        Fri, 24 Sep 2010 09:35:56 -0700 (PDT)
+X-Mailbox-Line: From gregkh@clark.site Fri Sep 24 09:33:49 2010
+Message-Id: <20100924163349.429885482@clark.site>
+User-Agent: quilt/0.48-11.2
+Date:   Fri, 24 Sep 2010 09:32:25 -0700
+From:   Greg KH <gregkh@suse.de>
+To:     linux-kernel@vger.kernel.org, stable@kernel.org
+Cc:     stable-review@kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, alan@lxorguk.ukuu.org.uk,
+        Ben Hutchings <ben@decadent.org.uk>, linux-mips@linux-mips.org,
+        Martin Michlmayr <tbm@cyrius.com>,
+        Aurelien Jarno <aurelien@aurel32.net>, 584784@bugs.debian.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [61/68] MIPS: Set io_map_base for several PCI bridges lacking it
+In-Reply-To: <20100924163357.GA15741@kroah.com>
+X-archive-position: 27822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gregkh@suse.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 19473
+X-UID: 19486
 
-On Fri, Sep 24, 2010 at 09:13:54AM -0700, David Daney wrote:
+2.6.32-stable review patch.  If anyone has any objections, please let us know.
 
-> >>+#ifdef CONFIG_SWIOTLB
-> >>+ plat_swiotlb_setup();
-> >>+#endif
-> >
-> >We should avoid #ifdef's in function bodies. Why not defile an empty
-> >'inline' in the header above if CONFIG_SWIOTLB is not defined?
-> >
-> 
-> Good idea.  I will wait several days and collect any more feedback
-> and generate a new patch set.
+------------------
 
-I'd also wait for a few more days so interested parties outside of the MIPS
-world will have a chance to comment.
+From: Ben Hutchings <ben@decadent.org.uk>
 
-  Ralf
+commit 8faf2e6c201d95b780cd3b4674b7a55ede6dcbbb upstream.
+
+Several MIPS platforms don't set pci_controller::io_map_base for their
+PCI bridges.  This results in a panic in pci_iomap().  (The panic is
+conditional on CONFIG_PCI_DOMAINS, but that is now enabled for all PCI
+MIPS systems.)
+
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-mips@linux-mips.org
+Cc: Martin Michlmayr <tbm@cyrius.com>
+Cc: Aurelien Jarno <aurelien@aurel32.net>
+Cc: 584784@bugs.debian.org
+Patchwork: https://patchwork.linux-mips.org/patch/1377/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+
+---
+ arch/mips/mti-malta/malta-pci.c      |    2 ++
+ arch/mips/nxp/pnx8550/common/pci.c   |    1 +
+ arch/mips/nxp/pnx8550/common/setup.c |    2 +-
+ arch/mips/pci/ops-pmcmsp.c           |    1 +
+ arch/mips/pci/pci-yosemite.c         |    1 +
+ 5 files changed, 6 insertions(+), 1 deletion(-)
+
+--- a/arch/mips/mti-malta/malta-pci.c
++++ b/arch/mips/mti-malta/malta-pci.c
+@@ -247,6 +247,8 @@ void __init mips_pcibios_init(void)
+ 	iomem_resource.end &= 0xfffffffffULL;			/* 64 GB */
+ 	ioport_resource.end = controller->io_resource->end;
+ 
++	controller->io_map_base = mips_io_port_base;
++
+ 	register_pci_controller(controller);
+ }
+ 
+--- a/arch/mips/nxp/pnx8550/common/pci.c
++++ b/arch/mips/nxp/pnx8550/common/pci.c
+@@ -44,6 +44,7 @@ extern struct pci_ops pnx8550_pci_ops;
+ 
+ static struct pci_controller pnx8550_controller = {
+ 	.pci_ops	= &pnx8550_pci_ops,
++	.io_map_base	= PNX8550_PORT_BASE,
+ 	.io_resource	= &pci_io_resource,
+ 	.mem_resource	= &pci_mem_resource,
+ };
+--- a/arch/mips/nxp/pnx8550/common/setup.c
++++ b/arch/mips/nxp/pnx8550/common/setup.c
+@@ -113,7 +113,7 @@ void __init plat_mem_setup(void)
+ 	PNX8550_GLB2_ENAB_INTA_O = 0;
+ 
+ 	/* IO/MEM resources. */
+-	set_io_port_base(KSEG1);
++	set_io_port_base(PNX8550_PORT_BASE);
+ 	ioport_resource.start = 0;
+ 	ioport_resource.end = ~0;
+ 	iomem_resource.start = 0;
+--- a/arch/mips/pci/ops-pmcmsp.c
++++ b/arch/mips/pci/ops-pmcmsp.c
+@@ -944,6 +944,7 @@ static struct pci_controller msp_pci_con
+ 	.pci_ops	= &msp_pci_ops,
+ 	.mem_resource	= &pci_mem_resource,
+ 	.mem_offset	= 0,
++	.io_map_base	= MSP_PCI_IOSPACE_BASE,
+ 	.io_resource	= &pci_io_resource,
+ 	.io_offset	= 0
+ };
+--- a/arch/mips/pci/pci-yosemite.c
++++ b/arch/mips/pci/pci-yosemite.c
+@@ -54,6 +54,7 @@ static int __init pmc_yosemite_setup(voi
+ 		panic(ioremap_failed);
+ 
+ 	set_io_port_base(io_v_base);
++	py_controller.io_map_base = io_v_base;
+ 	TITAN_WRITE(RM9000x2_OCD_LKM7, TITAN_READ(RM9000x2_OCD_LKM7) | 1);
+ 
+ 	ioport_resource.end = TITAN_IO_SIZE - 1;

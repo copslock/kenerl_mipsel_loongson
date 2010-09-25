@@ -1,63 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Sep 2010 01:16:42 +0200 (CEST)
-Received: from gateway16.websitewelcome.com ([69.93.82.10]:43630 "HELO
-        gateway16.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491206Ab0IXXQj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Sep 2010 01:16:39 +0200
-Received: (qmail 9254 invoked from network); 24 Sep 2010 23:16:35 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway16.websitewelcome.com with SMTP; 24 Sep 2010 23:16:35 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-        b=bY7+aiRDkdxA+9DGpQsLHa1wRkg0r7oePtrOD4GzO4YbRtSNQCdZUEa/xOLjLzkbeV9ncitkbyTpH9DaxuFCt9rME5bXmfKYUy750J3Lvc0ex6gRMfPnqM6D52gAxmMJ;
-Received: from [216.239.45.4] (port=2037 helo=kkissell.mtv.corp.google.com)
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1OzHVG-0000Vk-Mi; Fri, 24 Sep 2010 18:16:30 -0500
-Message-ID: <4C9D3153.8020901@paralogos.com>
-Date:   Fri, 24 Sep 2010 16:16:35 -0700
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.12) Gecko/20100915 Thunderbird/3.0.8
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Sep 2010 04:53:45 +0200 (CEST)
+Received: from mail-qw0-f49.google.com ([209.85.216.49]:40881 "EHLO
+        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490975Ab0IYCxl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Sep 2010 04:53:41 +0200
+Received: by qwe4 with SMTP id 4so76142qwe.36
+        for <multiple recipients>; Fri, 24 Sep 2010 19:53:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=2k50RZZzSm+r2Nmcou6aEyagI7yhT71Bluuz3iVc2gI=;
+        b=Wtr5Pv5Q5v43FzF9+Y9ibui/PTOnrsoDUoSGjFFf72DUtjiIXimtyNHFSvdpIxIn3M
+         iVw1U/VYiqLoYKaq6bw5YUHiD4H5pisezK1hkzFwKLL0DP0WNdlGqpNoEUNaNawhT04+
+         DkzA9afq3o9Y7upGNkLN0AD7ZSDCVLdhijxm8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=rSny/jN/eecfJO94r/zctSKiQTme6VzuY/owUC4cM56Y5/lG6KECnsS681ZuLAIYIN
+         wJJyhHufgNcDTG9h5ZR9ZALOXdY3mcDNs2TEptZobBxr4l3INNIhSyx35eYEsxo7nbTI
+         K8jztYRbaIKyWMblK+4VUzs7Hy7E/edxLdY5E=
 MIME-Version: 1.0
-To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Does Linux MIPS use scratch pad ram?
-References: <AEA634773855ED4CAD999FBB1A66D07601159CB4@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <AEA634773855ED4CAD999FBB1A66D07601159CB4@CORPEXCH1.na.ads.idt.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-archive-position: 27825
+Received: by 10.224.80.203 with SMTP id u11mr2998720qak.384.1285383214548;
+ Fri, 24 Sep 2010 19:53:34 -0700 (PDT)
+Received: by 10.229.25.208 with HTTP; Fri, 24 Sep 2010 19:53:34 -0700 (PDT)
+In-Reply-To: <20100924083638.GA7503@console-pimps.org>
+References: <1276058130-25851-1-git-send-email-dengcheng.zhu@gmail.com>
+        <1276058130-25851-5-git-send-email-dengcheng.zhu@gmail.com>
+        <20100922122711.GB6392@console-pimps.org>
+        <AANLkTinq+2LHgycDGyPgrEfkp3PSYxqagV1TfbjcQTwO@mail.gmail.com>
+        <20100924083638.GA7503@console-pimps.org>
+Date:   Sat, 25 Sep 2010 10:53:34 +0800
+Message-ID: <AANLkTim16p2GNsUKcqX0JC-BQtaD0qdxvjCdZHy13w1m@mail.gmail.com>
+Subject: Re: [PATCH v6 4/7] MIPS: add support for hardware performance events (skeleton)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     Matt Fleming <matt@console-pimps.org>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, jamie.iles@picochip.com
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 27826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 19946
+X-UID: 20042
 
-I find it hard to believe that you've got Flash responding in place of 
-the CP0 cache tag registers.
+2010/9/24 Matt Fleming <matt@console-pimps.org>:
+> The potential problem with doing a cleanup patch after this series has
+> been merged is that it will modify most of the code in this patch
+> series - essentially rewriting it. I don't have a strong opinion
+> either way but Ralf may.
+[DC]: No, the situation is not that serious. The mips_pmu registration
+mechanism had already been implemented. You may take a look at the
+bottom of perf_event_mipsxx.c (patch #6). The ugly conditional code
+(mips_pmu_irq) could be fixed easily, I suppose.
 
-On 09/24/10 14:45, Ardelean, Andrei wrote:
-> Hi,
->
-> I am using MALTA platform and try to port Linux on a new platform.
-> It seems to me that in spram.c the sprams are probed  if they are
-> available or not but I cannot see Linux really using those afterwards.
-> My platform has no spram so I am trying to avoid this probing. The
-> problem is that spram.c is not MALTA specific but as the comment says in
-> spram.c there are some MALTA specific addresses. Unfortunately I have
-> some Flash at those addresses.
-> How to fix this issue?
->
-> Thanks,
-> Andrei
->
->
->    
+
+Deng-Cheng

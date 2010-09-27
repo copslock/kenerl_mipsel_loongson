@@ -1,84 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Sep 2010 16:00:46 +0200 (CEST)
-Received: from mxout1.idt.com ([157.165.5.25]:42601 "EHLO mxout1.idt.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491919Ab0I0OAn convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Sep 2010 16:00:43 +0200
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o8RE0YGr005593;
-        Mon, 27 Sep 2010 07:00:35 -0700
-Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o8RE0XB9010087;
-        Mon, 27 Sep 2010 07:00:33 -0700 (PDT)
-Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
-        by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o8RE0WQ26568;
-        Mon, 27 Sep 2010 07:00:32 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Sep 2010 18:54:47 +0200 (CEST)
+Received: from rcsinet10.oracle.com ([148.87.113.121]:33982 "EHLO
+        rcsinet10.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491196Ab0I0Qyn (ORCPT
+        <rfc822;<linux-mips@linux-mips.org>>);
+        Mon, 27 Sep 2010 18:54:43 +0200
+Received: from acsinet15.oracle.com (acsinet15.oracle.com [141.146.126.227])
+        by rcsinet10.oracle.com (Switch-3.4.2/Switch-3.4.2) with ESMTP id o8RGs20m019513
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Mon, 27 Sep 2010 16:54:03 GMT
+Received: from acsmt355.oracle.com (acsmt355.oracle.com [141.146.40.155])
+        by acsinet15.oracle.com (Switch-3.4.2/Switch-3.4.1) with ESMTP id o8QNLL7F024019;
+        Mon, 27 Sep 2010 16:54:00 GMT
+Received: from abhmt013.oracle.com by acsmt355.oracle.com
+        with ESMTP id 633788711285606431; Mon, 27 Sep 2010 09:53:51 -0700
+Received: from phenom (/209.6.55.207)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 27 Sep 2010 09:53:46 -0700
+Received: by phenom (Postfix, from userid 1000)
+        id 9F74D1E66; Mon, 27 Sep 2010 12:53:40 -0400 (EDT)
+Date:   Mon, 27 Sep 2010 12:53:40 -0400
+From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
+        Ingo Molnar <mingo@elte.hu>,
+        Andre Goddard Rosa <andre.goddard@gmail.com>
+Subject: Re: [PATCH 6/9] swiotlb: Declare swiotlb_init_with_default_size()
+Message-ID: <20100927165340.GA5644@dumpdata.com>
+References: <1285281496-24696-1-git-send-email-ddaney@caviumnetworks.com>
+ <1285282051-24907-1-git-send-email-ddaney@caviumnetworks.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Does Linux MIPS use scratch pad ram?
-Date:   Mon, 27 Sep 2010 07:00:30 -0700
-Message-ID: <AEA634773855ED4CAD999FBB1A66D07601159E63@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <4C9D3153.8020901@paralogos.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-thread-topic: Does Linux MIPS use scratch pad ram?
-thread-index: ActcPwdQCurd/eumR6WDFFf2IEYQcgCDJpCQ
-References: <AEA634773855ED4CAD999FBB1A66D07601159CB4@CORPEXCH1.na.ads.idt.com> <4C9D3153.8020901@paralogos.com>
-From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     <linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.43
-X-archive-position: 27831
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1285282051-24907-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 27832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrei.Ardelean@idt.com
+X-original-sender: konrad.wilk@oracle.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 21271
+X-UID: 21437
 
-Hi Kevin,
+On Thu, Sep 23, 2010 at 03:47:30PM -0700, David Daney wrote:
+> It comes from swiotlb.c and must be called by external code, so declare it.
+> 
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+> Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+> Cc: Ingo Molnar <mingo@elte.hu>
+> Cc: Andre Goddard Rosa <andre.goddard@gmail.com>
+> ---
+>  include/linux/swiotlb.h |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+> index 8c0e349..dba51fe 100644
+> --- a/include/linux/swiotlb.h
+> +++ b/include/linux/swiotlb.h
+> @@ -23,6 +23,7 @@ extern int swiotlb_force;
+>  #define IO_TLB_SHIFT 11
+>  
+>  extern void swiotlb_init(int verbose);
+> +extern void swiotlb_init_with_default_size(size_t, int);
+>  extern void swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose);
 
-I don't have the new h/w yet so I don't know how the Flash will react.
-In the mem map of the new board I see Flash at 0x1c000000 where MALTA
-Linux probes for spram and my job so far is to port Linux for the new
-board. So, I understand from your email that spram probing will not mess
-up with my Flash and I should ignore it.
-
-Thanks,
-Andrei
-
-
------Original Message-----
-From: Kevin D. Kissell [mailto:kevink@paralogos.com] 
-Sent: Friday, September 24, 2010 7:17 PM
-To: Ardelean, Andrei
-Cc: linux-mips@linux-mips.org
-Subject: Re: Does Linux MIPS use scratch pad ram?
-
-I find it hard to believe that you've got Flash responding in place of 
-the CP0 cache tag registers.
-
-On 09/24/10 14:45, Ardelean, Andrei wrote:
-> Hi,
->
-> I am using MALTA platform and try to port Linux on a new platform.
-> It seems to me that in spram.c the sprams are probed  if they are
-> available or not but I cannot see Linux really using those afterwards.
-> My platform has no spram so I am trying to avoid this probing. The
-> problem is that spram.c is not MALTA specific but as the comment says
-in
-> spram.c there are some MALTA specific addresses. Unfortunately I have
-> some Flash at those addresses.
-> How to fix this issue?
->
-> Thanks,
-> Andrei
->
->
->    
+Just use the swiotlb_init_with_tbl. If you need an example of how it is utilized, take
+a look at how swiotlb-xen.c does it.

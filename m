@@ -1,75 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Sep 2010 18:54:47 +0200 (CEST)
-Received: from rcsinet10.oracle.com ([148.87.113.121]:33982 "EHLO
-        rcsinet10.oracle.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491196Ab0I0Qyn (ORCPT
-        <rfc822;<linux-mips@linux-mips.org>>);
-        Mon, 27 Sep 2010 18:54:43 +0200
-Received: from acsinet15.oracle.com (acsinet15.oracle.com [141.146.126.227])
-        by rcsinet10.oracle.com (Switch-3.4.2/Switch-3.4.2) with ESMTP id o8RGs20m019513
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 27 Sep 2010 16:54:03 GMT
-Received: from acsmt355.oracle.com (acsmt355.oracle.com [141.146.40.155])
-        by acsinet15.oracle.com (Switch-3.4.2/Switch-3.4.1) with ESMTP id o8QNLL7F024019;
-        Mon, 27 Sep 2010 16:54:00 GMT
-Received: from abhmt013.oracle.com by acsmt355.oracle.com
-        with ESMTP id 633788711285606431; Mon, 27 Sep 2010 09:53:51 -0700
-Received: from phenom (/209.6.55.207)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 27 Sep 2010 09:53:46 -0700
-Received: by phenom (Postfix, from userid 1000)
-        id 9F74D1E66; Mon, 27 Sep 2010 12:53:40 -0400 (EDT)
-Date:   Mon, 27 Sep 2010 12:53:40 -0400
-From:   Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
-        Ingo Molnar <mingo@elte.hu>,
-        Andre Goddard Rosa <andre.goddard@gmail.com>
-Subject: Re: [PATCH 6/9] swiotlb: Declare swiotlb_init_with_default_size()
-Message-ID: <20100927165340.GA5644@dumpdata.com>
-References: <1285281496-24696-1-git-send-email-ddaney@caviumnetworks.com>
- <1285282051-24907-1-git-send-email-ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Sep 2010 19:35:21 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:4030 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491931Ab0I0RfS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Sep 2010 19:35:18 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4ca0d5f50000>; Mon, 27 Sep 2010 10:35:49 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 27 Sep 2010 10:35:15 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 27 Sep 2010 10:35:15 -0700
+Message-ID: <4CA0D5D3.3040700@caviumnetworks.com>
+Date:   Mon, 27 Sep 2010 10:35:15 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100720 Fedora/3.0.6-1.fc12 Thunderbird/3.0.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1285282051-24907-1-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 27832
+To:     FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/9] MIPS: Convert DMA to use dma-mapping-common.h
+References: <1285281496-24696-1-git-send-email-ddaney@caviumnetworks.com>       <1285281496-24696-6-git-send-email-ddaney@caviumnetworks.com> <20100927142628X.fujita.tomonori@lab.ntt.co.jp>
+In-Reply-To: <20100927142628X.fujita.tomonori@lab.ntt.co.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 27 Sep 2010 17:35:15.0241 (UTC) FILETIME=[585FD190:01CB5E6A]
+X-archive-position: 27833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: konrad.wilk@oracle.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 21437
+X-UID: 21474
 
-On Thu, Sep 23, 2010 at 03:47:30PM -0700, David Daney wrote:
-> It comes from swiotlb.c and must be called by external code, so declare it.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-> Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-> Cc: Ingo Molnar <mingo@elte.hu>
-> Cc: Andre Goddard Rosa <andre.goddard@gmail.com>
-> ---
->  include/linux/swiotlb.h |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
-> 
-> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> index 8c0e349..dba51fe 100644
-> --- a/include/linux/swiotlb.h
-> +++ b/include/linux/swiotlb.h
-> @@ -23,6 +23,7 @@ extern int swiotlb_force;
->  #define IO_TLB_SHIFT 11
->  
->  extern void swiotlb_init(int verbose);
-> +extern void swiotlb_init_with_default_size(size_t, int);
->  extern void swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose);
+On 09/26/2010 10:30 PM, FUJITA Tomonori wrote:
+> On Thu, 23 Sep 2010 15:38:12 -0700
+> David Daney<ddaney@caviumnetworks.com>  wrote:
+>
+>> Use asm-generic/dma-mapping-common.h to handle all DMA mapping
+>> operations and establish a default get_dma_ops() that forwards all
+>> operations to the existing code.
+>>
+>> Augment dev_archdata to carry a pointer to the struct dma_map_ops,
+>> allowing DMA operations to be overridden on a per device basis.
+>> Currently this is never filled in, so the default dma_map_ops are
+>> used.  A follow-on patch sets this for Octeon PCI devices.
+>>
+>> Also initialize the dma_debug system as it is now used if it is
+>> configured.
+>>
+>> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
+>> ---
+>>   arch/mips/Kconfig                   |    2 +
+>>   arch/mips/include/asm/device.h      |   15 +++-
+>>   arch/mips/include/asm/dma-mapping.h |  125 +++++++++++++++++--------
+>>   arch/mips/mm/dma-default.c          |  179 +++++++++++++---------------------
+>>   4 files changed, 172 insertions(+), 149 deletions(-)
+>>
+>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>> index 6c33709..e68b89f 100644
+>> --- a/arch/mips/Kconfig
+>> +++ b/arch/mips/Kconfig
+>> @@ -14,6 +14,8 @@ config MIPS
+>>   	select HAVE_KRETPROBES
+>>   	select RTC_LIB if !MACH_LOONGSON
+>>   	select GENERIC_ATOMIC64 if !64BIT
+>> +	select HAVE_DMA_ATTRS
+>> +	select HAVE_DMA_API_DEBUG
+>>
+>>   mainmenu "Linux/MIPS Kernel Configuration"
+>>
+>> diff --git a/arch/mips/include/asm/device.h b/arch/mips/include/asm/device.h
+>> index 06746c5..65bf274 100644
+>> --- a/arch/mips/include/asm/device.h
+>> +++ b/arch/mips/include/asm/device.h
+>> @@ -3,4 +3,17 @@
+>>    *
+>>    * This file is released under the GPLv2
+>>    */
+>> -#include<asm-generic/device.h>
+>> +#ifndef _ASM_MIPS_DEVICE_H
+>> +#define _ASM_MIPS_DEVICE_H
+>> +
+>> +struct mips_dma_map_ops;
+>> +
+>> +struct dev_archdata {
+>> +	/* DMA operations on that device */
+>> +	struct mips_dma_map_ops	*dma_ops;
+>> +};
+>> +
+>> +struct pdev_archdata {
+>> +};
+>> +
+>> +#endif /* _ASM_MIPS_DEVICE_H*/
+>> diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+>> index 18fbf7a..9a4c307 100644
+>> --- a/arch/mips/include/asm/dma-mapping.h
+>> +++ b/arch/mips/include/asm/dma-mapping.h
+>> @@ -5,51 +5,67 @@
+>>   #include<asm/cache.h>
+>>   #include<asm-generic/dma-coherent.h>
+>>
+>> -void *dma_alloc_noncoherent(struct device *dev, size_t size,
+>> -			   dma_addr_t *dma_handle, gfp_t flag);
+>> +struct mips_dma_map_ops {
+>> +	struct dma_map_ops dma_map_ops;
+>> +	dma_addr_t (*phys_to_dma)(struct device *dev, phys_addr_t paddr);
+>> +	phys_addr_t (*dma_to_phys)(struct device *dev, dma_addr_t daddr);
+>> +};
+>
+> The above code doesn't look great but we don't want to add phys_to_dma
+> and dma_to_phys to dma_map_ops struct, and these functions on MIPS
+> looks too complicated for ifdef. So I guess that we need to live with
+> the above code.
+>
 
-Just use the swiotlb_init_with_tbl. If you need an example of how it is utilized, take
-a look at how swiotlb-xen.c does it.
+I think you have a point here.  I will attempt to move these two into a 
+chip specific operations vector, and leave the more generic MIPS version 
+with the simplified static definition.
+
+Thanks,
+David Daney

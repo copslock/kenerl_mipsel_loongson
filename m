@@ -1,132 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 18:57:06 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:17046 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491961Ab0I1Q5D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 18:57:03 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4ca21e7f0000>; Tue, 28 Sep 2010 09:57:35 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 28 Sep 2010 09:57:01 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 28 Sep 2010 09:57:01 -0700
-Message-ID: <4CA21E5D.7080905@caviumnetworks.com>
-Date:   Tue, 28 Sep 2010 09:57:01 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.11) Gecko/20100720 Fedora/3.0.6-1.fc12 Thunderbird/3.0.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 19:46:12 +0200 (CEST)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:55057 "EHLO
+        opensource2.wolfsonmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491139Ab0I1RqJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 19:46:09 +0200
+Received: from finisterre.wolfsonmicro.main (216-75-233-70.static.wiline.com [216.75.233.70])
+        by opensource2.wolfsonmicro.com (Postfix) with ESMTPSA id 9B79F114727;
+        Tue, 28 Sep 2010 18:45:59 +0100 (BST)
+Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.72)
+        (envelope-from <broonie@opensource.wolfsonmicro.com>)
+        id 1P0eFu-00030H-90; Tue, 28 Sep 2010 10:46:18 -0700
+Date:   Tue, 28 Sep 2010 10:46:18 -0700
+From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
+To:     Arun Murthy <arun.murthy@stericsson.com>
+Cc:     eric.y.miao@gmail.com, linux@arm.linux.org.uk,
+        grinberg@compulab.co.il, mike@compulab.co.il,
+        robert.jarzmik@free.fr, marek.vasut@gmail.com, drwyrm@gmail.com,
+        stefan@openezx.org, laforge@openezx.org, ospite@studenti.unina.it,
+        philipp.zabel@gmail.com, mad_soft@inbox.ru, maz@misterjones.org,
+        daniel@caiaq.de, haojian.zhuang@marvell.com, timur@freescale.com,
+        ben-linux@fluff.org, support@simtec.co.uk,
+        arnaud.patard@rtp-net.org, dgreenday@gmail.com, anarsoul@gmail.com,
+        akpm@linux-foundation.org, mcuelenaere@gmail.com,
+        kernel@pengutronix.de, andre.goddard@gmail.com, jkosina@suse.cz,
+        tj@kernel.org, hsweeten@visionengravers.com,
+        u.kleine-koenig@pengutronix.de, kgene.kim@samsung.com,
+        ralf@linux-mips.org, lars@metafoo.de, dilinger@collabora.co.uk,
+        mroth@nessie.de, randy.dunlap@oracle.com, lethal@linux-sh.org,
+        rusty@rustcorp.com.au, damm@opensource.se, mst@redhat.com,
+        rpurdie@rpsys.net, sguinot@lacie.co, sameo@linux.intel.com,
+        balajitk@ti.com, rnayak@ti.com, santosh.shilimkar@ti.com,
+        hemanthv@ti.com, michael.hennerich@analog.com, vapier@gentoo.org,
+        khali@linux-fr.org, jic23@cam.ac.uk, re.emese@gmail.com,
+        linux@simtec.co.uk, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linus.walleij@stericsson.com, mattias.wallin@stericsson.com,
+        Bill Gatliff <bgat@billgatliff.com>
+Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
+Message-ID: <20100928174617.GE10739@opensource.wolfsonmicro.com>
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
+ <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
 MIME-Version: 1.0
-To:     "wilbur.chan" <wilbur512@gmail.com>
-CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Why mips eret failed?
-References: <AANLkTi==9kzfqq=Ubdo9Ms_9N=N+7rmcvg01500C4nuc@mail.gmail.com>
-In-Reply-To: <AANLkTi==9kzfqq=Ubdo9Ms_9N=N+7rmcvg01500C4nuc@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Sep 2010 16:57:01.0059 (UTC) FILETIME=[2B592D30:01CB5F2E]
-X-archive-position: 27878
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
+X-Cookie: Excellent day to have a rotten day.
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 27879
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22559
+X-UID: 22616
 
-On 09/28/2010 09:00 AM, wilbur.chan wrote:
-> HI all!
->
-> I'm learning to write a timer interrupt handler by my own on
-> mips32(xls416 with 32bits cross compiled) , but to find that, eret
-> failed to quit.
->
-> detail:
->
-> I took the following steps:
->
-> 1)  copy exception vector to the physical address 0x180, then set ebase with it.
->
->       that is , memcpy these three  instructions to 0x80000180,with
-> size 0x80 bytes:
->
->          lui    k1, HIGH(handle_int)
->         addiu  k1, k1, LOW(handle_int)
->         jr     k1
->
->
->   2)     this is handle_int , which is  the entry of interrupts
->
->      LEAF(handle_int)
->           nop
->           la     t9,do_IRQ
->           nop
->           jalr   t9
->           nop
->          eret
->          nop
->     END(handle_int)
->
->   ps:
->
->   'nop' is used to avoid delay slot,  and I did not add 'SAVE_ALL'  or
-> 'RESTORE_ALL'  in handle_int,
+On Tue, Sep 28, 2010 at 01:10:42PM +0530, Arun Murthy wrote:
 
+> The existing pwm based led and backlight driver makes use of the
+> pwm(include/linux/pwm.h). So all the board specific pwm drivers will
+> be exposing the same set of function name as in include/linux/pwm.h.
+> As a result build fails.
 
-Probably not a good choice.
+As others have said it's *really* not clear what the problem is here...
 
+Please also take a look at the work which Bill Gatliff was doing on a
+similar PWM core API and the resulting discussion - how does your code
+differ from his, and is any of the feedback on his proposal relevant to
+yours?
 
-> because it is just a demo,
+> +void __deprecated pwm_free(struct pwm_device *pwm)
+> +{
+> +}
+> +
 
-If you want your demo to work, you cannot clobber all the registers in 
-an exception handler.  Most ABIs allow you to clobber only k0 and k1.
+Shouldn't this either be an inline function directly in the header or
+exported?
 
-In general any exception handler must save and restore all registers it 
-modifies except for k0 and k1.  That is the function of SAVE_ALL and 
-RESTORE_ALL.
+> +int pwm_config(struct pwm_device *pwm, int duty_ns, int period_ns)
+> +{
+> +	return pwm->pops->pwm_config(pwm, duty_ns, period_ns);
+> +}
+> +EXPORT_SYMBOL(pwm_config);
 
-> I want the
-> interrupt return
->
-> immediately.
->
-> 3) this is do_IRQ
->
->   void do_IRQ(void)
-> {
->      ack_irq();    /* ack with compare register ,which is used to
-> generate timer interrupt*/
->      print("do_irq enter\n");
-> }
->
->
->
-> 4) there is a main loop like  this:
->
->
->      void main_loop()
->    {
->       local_irq_enable(); /* enable timer interrupt*/
->      while(1)
->      {
->           print("loop...\n");
->
->      }
->   }
->
-> I found that , the message in do_IRQ  prints  every 4s (I' ve set
-> timer of 4 seconds),  however, the message in main_loop did not appear
->
->
-> q1:  does that mean, the timer interrupt has never quit to main_loop ,
-> but a nested interrupt?
->
->
->
-> q2:  that is to say, eret in handle_int failed to quit to main_loop?
->
-> q3: why this happend?
->
->
-> Thank you !
->
->
+I'd expect some handling of fixed function PWMs (though I'd expect those
+to be rare).
+
+> +	down_write(&pwm_list_lock);
+> +	pwm = kzalloc(sizeof(struct pwm_dev_info), GFP_KERNEL);
+> +	if (!pwm) {
+> +		up_write(&pwm_list_lock);
+> +		return -ENOMEM;
+> +	}
+
+No need to take the lock until the allocation succeeded.
+
+> +static int __init pwm_init(void)
+> +{
+> +	struct pwm_dev_info *pwm;
+> +
+> +	pwm = kzalloc(sizeof(struct pwm_dev_info), GFP_KERNEL);
+> +	if (!pwm)
+> +		return -ENOMEM;
+> +	INIT_LIST_HEAD(&pwm->list);
+> +	di = pwm;
+> +	return 0;
+
+Why not just use static data for the list head?
+
+> +subsys_initcall(pwm_init);
+> +module_exit(pwm_exit);
+
+Usually these are located next to the functions.

@@ -1,38 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 10:48:55 +0200 (CEST)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:52191 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491049Ab0I1Isv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 10:48:51 +0200
-Received: by bwz19 with SMTP id 19so5478521bwz.36
-        for <multiple recipients>; Tue, 28 Sep 2010 01:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:message-id;
-        bh=AncmpYgrnyE5ZzhwIYTiD8W4S54tK6jVhT0VurwK03U=;
-        b=egQi47Dnb+cOCXShsZFNC59fUNumHJQ3tZ16Jf506IMEGiFAZckqM4SNhmQ5gw6Af5
-         LEC13f/Psmw/stfscOSwDBvqZZuWEF8TAPVQkfjJp0lAQ8EvJQinEW2fZSZZUEYVBJbV
-         cZ9AG8BrLSHE+aBZh6+qCiE4jQYpFnQNVo7wc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding:message-id;
-        b=MgUBfxusFExesGK51bfp/L1rOsx5WqvkneUrpzKRLoxNi08Xmpm/ZRxHcZsw9igvF+
-         nBPJIjyjysrLFsTvoLH5gTgEHNywq032a3ixmdqBKzlsWvEORJlhVOkgBx9/j0sk3T9v
-         moFkY9oymgzHdS0v45hriUdlp6v44aEOrk7tE=
-Received: by 10.204.54.199 with SMTP id r7mr2555640bkg.106.1285663725484;
-        Tue, 28 Sep 2010 01:48:45 -0700 (PDT)
-Received: from anarsoul-laptop.localnet ([86.57.155.118])
-        by mx.google.com with ESMTPS id 24sm5332253bkr.19.2010.09.28.01.48.38
-        (version=SSLv3 cipher=RC4-MD5);
-        Tue, 28 Sep 2010 01:48:43 -0700 (PDT)
-From:   Vasily Khoruzhick <anarsoul@gmail.com>
-To:     Arun MURTHY <arun.murthy@stericsson.com>
-Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
-Date:   Tue, 28 Sep 2010 11:47:20 +0300
-User-Agent: KMail/1.13.5 (Linux/2.6.35-gentoo-r8-anarsoul; KDE/4.5.1; i686; ; )
-Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 10:51:04 +0200 (CEST)
+Received: from arroyo.ext.ti.com ([192.94.94.40]:36183 "EHLO arroyo.ext.ti.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491049Ab0I1IvC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Sep 2010 10:51:02 +0200
+Received: from dlep36.itg.ti.com ([157.170.170.91])
+        by arroyo.ext.ti.com (8.13.7/8.13.7) with ESMTP id o8S8oGsX021111
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Tue, 28 Sep 2010 03:50:18 -0500
+Received: from dbdmail.itg.ti.com (localhost [127.0.0.1])
+        by dlep36.itg.ti.com (8.13.8/8.13.8) with ESMTP id o8S8nv5f027993;
+        Tue, 28 Sep 2010 03:49:58 -0500 (CDT)
+Received: from 10.24.255.18
+        (SquirrelMail authenticated user x0099946);
+        by dbdmail.itg.ti.com with HTTP;
+        Tue, 28 Sep 2010 14:20:15 +0530 (IST)
+Message-ID: <63731.10.24.255.18.1285663815.squirrel@dbdmail.itg.ti.com>
+In-Reply-To: <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.loca
+     l>
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
+    <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
+    <201009281114.31223.anarsoul@gmail.com>
+    <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
+Date:   Tue, 28 Sep 2010 14:20:15 +0530 (IST)
+Subject: RE: [PATCH 1/7] pwm: Add pwm core driver
+From:   "Hemanth V" <hemanthv@ti.com>
+To:     "Arun MURTHY" <arun.murthy@stericsson.com>
+Cc:     "Vasily Khoruzhick" <anarsoul@gmail.com>,
+        "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
         "grinberg@compulab.co.il" <grinberg@compulab.co.il>,
         "mike@compulab.co.il" <mike@compulab.co.il>,
@@ -78,7 +72,6 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "balajitk@ti.com" <balajitk@ti.com>,
         "rnayak@ti.com" <rnayak@ti.com>,
         "santosh.shilimkar@ti.com" <santosh.shilimkar@ti.com>,
-        "hemanthv@ti.com" <hemanthv@ti.com>,
         "michael.hennerich@analog.com" <michael.hennerich@analog.com>,
         "vapier@gentoo.org" <vapier@gentoo.org>,
         "khali@linux-fr.org" <khali@linux-fr.org>,
@@ -89,34 +82,36 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         <linux-arm-kernel@lists.infradead.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Linus WALLEIJ <linus.walleij@stericsson.com>,
-        Mattias WALLIN <mattias.wallin@stericsson.com>
-References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com> <201009281114.31223.anarsoul@gmail.com> <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
-In-Reply-To: <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
+        "Linus WALLEIJ" <linus.walleij@stericsson.com>,
+        "Mattias WALLIN" <mattias.wallin@stericsson.com>
+User-Agent: SquirrelMail/1.4.3a
+X-Mailer: SquirrelMail/1.4.3a
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201009281147.20871.anarsoul@gmail.com>
-X-archive-position: 27848
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Priority: 3 (Normal)
+Importance: Normal
+X-archive-position: 27849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anarsoul@gmail.com
+X-original-sender: hemanthv@ti.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22165
+X-UID: 22169
 
-On 28 of September 2010 11:38:26 Arun MURTHY wrote:
+>
+>> On 28 of September 2010 10:40:42 Arun Murthy wrote:
+>> > The existing pwm based led and backlight driver makes use of the
+>> > pwm(include/linux/pwm.h). So all the board specific pwm drivers will
+>> > be exposing the same set of function name as in include/linux/pwm.h.
+>> > As a result build fails.
+>>
+>> Which build fails? One with multi-SoC support? Please be more specific.
+> Sure will add this in v2.
+>
 
-> > 
-> > Why pwm_free is marked __deprecated? What is its successor?
-> 
-> This function is to be removed.
-
-What should be used as replacement?
-
-Regards
-Vasily
+Could you clarify for the benefit of all, which specific issues you are
+trying to address with this patch series

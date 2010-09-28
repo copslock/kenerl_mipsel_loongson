@@ -1,230 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 20:10:45 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:19705 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491139Ab0I1SKl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 20:10:41 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4ca22fc00000>; Tue, 28 Sep 2010 11:11:12 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 28 Sep 2010 11:10:39 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 28 Sep 2010 11:10:38 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o8SIAaWq029277;
-        Tue, 28 Sep 2010 11:10:36 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o8SIAYuI029276;
-        Tue, 28 Sep 2010 11:10:34 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org, rostedt@goodmis.org,
-        jbaron@redhat.com
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] jump label: Add MIPS support.
-Date:   Tue, 28 Sep 2010 11:10:32 -0700
-Message-Id: <1285697432-29244-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.2.2
-X-OriginalArrivalTime: 28 Sep 2010 18:10:38.0935 (UTC) FILETIME=[749B8E70:01CB5F38]
-X-archive-position: 27881
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 21:42:10 +0200 (CEST)
+Received: from mail.bluewatersys.com ([202.124.120.130]:63315 "EHLO
+        hayes.bluewaternz.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491165Ab0I1TmG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 21:42:06 +0200
+Received: (qmail 22761 invoked by uid 89); 28 Sep 2010 19:40:22 -0000
+Received: from unknown (HELO ?192.168.2.96?) (ryan@192.168.2.96)
+  by 0 with ESMTPA; 28 Sep 2010 19:40:22 -0000
+Message-ID: <4CA2450D.8090104@bluewatersys.com>
+Date:   Wed, 29 Sep 2010 08:42:05 +1300
+From:   Ryan Mallon <ryan@bluewatersys.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100915 Thunderbird/3.0.8
+MIME-Version: 1.0
+To:     Arun Murthy <arun.murthy@stericsson.com>
+CC:     eric.y.miao@gmail.com, linux@arm.linux.org.uk,
+        grinberg@compulab.co.il, mike@compulab.co.il,
+        robert.jarzmik@free.fr, marek.vasut@gmail.com, drwyrm@gmail.com,
+        stefan@openezx.org, laforge@openezx.org, ospite@studenti.unina.it,
+        philipp.zabel@gmail.com, mad_soft@inbox.ru, maz@misterjones.org,
+        daniel@caiaq.de, haojian.zhuang@marvell.com, timur@freescale.com,
+        ben-linux@fluff.org, support@simtec.co.uk,
+        arnaud.patard@rtp-net.org, dgreenday@gmail.com, anarsoul@gmail.com,
+        akpm@linux-foundation.org, mcuelenaere@gmail.com,
+        kernel@pengutronix.de, andre.goddard@gmail.com, jkosina@suse.cz,
+        tj@kernel.org, hsweeten@visionengravers.com,
+        u.kleine-koenig@pengutronix.de, kgene.kim@samsung.com,
+        ralf@linux-mips.org, lars@metafoo.de, dilinger@collabora.co.uk,
+        mroth@nessie.de, randy.dunlap@oracle.com, lethal@linux-sh.org,
+        rusty@rustcorp.com.au, damm@opensource.se, mst@redhat.com,
+        rpurdie@rpsys.net, sguinot@lacie.co, sameo@linux.intel.com,
+        broonie@opensource.wolfsonmicro.com, balajitk@ti.com,
+        rnayak@ti.com, santosh.shilimkar@ti.com, hemanthv@ti.com,
+        michael.hennerich@analog.com, vapier@gentoo.org,
+        khali@linux-fr.org, jic23@cam.ac.uk, re.emese@gmail.com,
+        linux@simtec.co.uk, linux-mips@linux-mips.org,
+        linus.walleij@stericsson.com, linux-kernel@vger.kernel.org,
+        mattias.wallin@stericsson.com, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com> <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
+In-Reply-To: <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
+X-Enigmail-Version: 1.0.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 27882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ryan@bluewatersys.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22649
+X-UID: 22732
 
-When in Rome...
+On 09/28/2010 08:40 PM, Arun Murthy wrote:
+> The existing pwm based led and backlight driver makes use of the
+> pwm(include/linux/pwm.h). So all the board specific pwm drivers will
+> be exposing the same set of function name as in include/linux/pwm.h.
+> As a result build fails.
+> 
+> In order to overcome this issue all the pwm drivers must register to
+> some core pwm driver with function pointers for pwm operations (i.e
+> pwm_config, pwm_enable, pwm_disable).
 
-In order not to be left behind, we add jump label support for MIPS.
+The other major benefit of this patch set is that it allows non-soc
+pwms, such as those provided on an i2c or spi device, to be added easily.
 
-Tested on 64-bit big endian (Octeon), and 32-bit little endian
-(malta/qemu).
+> The clients of pwm device will have to call pwm_request, wherein
+> they will get the pointer to struct pwm_ops. This structure include
+> function pointers for pwm_config, pwm_enable and pwm_disable.
+> 
+> Signed-off-by: Arun Murthy <arun.murthy@stericsson.com>
+> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
+> ---
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Jason Baron <jbaron@redhat.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
----
- arch/mips/Kconfig                  |    1 +
- arch/mips/include/asm/jump_label.h |   48 ++++++++++++++++++++++++++++
- arch/mips/kernel/Makefile          |    3 +-
- arch/mips/kernel/jump_label.c      |   60 ++++++++++++++++++++++++++++++++++++
- arch/mips/kernel/module.c          |    5 +++
- 5 files changed, 116 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/include/asm/jump_label.h
- create mode 100644 arch/mips/kernel/jump_label.c
+> +menuconfig PWM_DEVICES
+> +	bool "PWM devices"
+> +	default y
+> +	---help---
+> +	  Say Y here to get to see options for device drivers from various
+> +	  different categories. This option alone does not add any kernel code.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 3ad59dd..6b3bdb5 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -13,6 +13,7 @@ config MIPS
- 	select HAVE_KPROBES
- 	select HAVE_KRETPROBES
- 	select RTC_LIB if !MACH_LOONGSON
-+	select HAVE_ARCH_JUMP_LABEL
- 
- mainmenu "Linux/MIPS Kernel Configuration"
- 
-diff --git a/arch/mips/include/asm/jump_label.h b/arch/mips/include/asm/jump_label.h
-new file mode 100644
-index 0000000..7622ccf
---- /dev/null
-+++ b/arch/mips/include/asm/jump_label.h
-@@ -0,0 +1,48 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (c) 2010 Cavium Networks, Inc.
-+ */
-+#ifndef _ASM_MIPS_JUMP_LABEL_H
-+#define _ASM_MIPS_JUMP_LABEL_H
-+
-+#include <linux/types.h>
-+
-+#ifdef __KERNEL__
-+
-+#define JUMP_LABEL_NOP_SIZE 4
-+
-+#ifdef CONFIG_64BIT
-+#define WORD_INSN ".dword"
-+#else
-+#define WORD_INSN ".word"
-+#endif
-+
-+#define JUMP_LABEL(key, label)						\
-+	do {								\
-+		asm goto("1:\tnop\n\t"					\
-+			"nop\n\t"					\
-+			".pushsection __jump_table,  \"a\"\n\t"		\
-+			WORD_INSN " 1b, %l[" #label "], %0\n\t"		\
-+			".popsection\n\t"				\
-+			: :  "i" (key) :  : label);			\
-+	} while (0)
-+
-+
-+#endif /* __KERNEL__ */
-+
-+#ifdef CONFIG_64BIT
-+typedef u64 jump_label_t;
-+#else
-+typedef u32 jump_label_t;
-+#endif
-+
-+struct jump_entry {
-+	jump_label_t code;
-+	jump_label_t target;
-+	jump_label_t key;
-+};
-+
-+#endif /* _ASM_MIPS_JUMP_LABEL_H */
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 06f8482..db4feb9 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -6,7 +6,8 @@ extra-y		:= head.o init_task.o vmlinux.lds
- 
- obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
- 		   ptrace.o reset.o setup.o signal.o syscall.o \
--		   time.o topology.o traps.o unaligned.o watch.o vdso.o
-+		   time.o topology.o traps.o unaligned.o watch.o vdso.o \
-+		   jump_label.o
- 
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_ftrace.o = -pg
-diff --git a/arch/mips/kernel/jump_label.c b/arch/mips/kernel/jump_label.c
-new file mode 100644
-index 0000000..3c145a8
---- /dev/null
-+++ b/arch/mips/kernel/jump_label.c
-@@ -0,0 +1,60 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (c) 2010 Cavium Networks, Inc.
-+ */
-+
-+#include <linux/jump_label.h>
-+#include <linux/kernel.h>
-+#include <linux/memory.h>
-+#include <linux/mutex.h>
-+#include <linux/types.h>
-+#include <linux/cpu.h>
-+
-+#include <asm/cacheflush.h>
-+#include <asm/inst.h>
-+
-+#define J_RANGE_MASK ((1ul << 28) - 1)
-+
-+void arch_jump_label_transform(struct jump_entry *e,
-+			       enum jump_label_type type)
-+{
-+	union mips_instruction insn;
-+	union mips_instruction *insn_p =
-+		(union mips_instruction *)(unsigned long)e->code;
-+
-+	/* Jump only works within a 256MB aligned region. */
-+	BUG_ON((e->target & ~J_RANGE_MASK) != (e->code & ~J_RANGE_MASK));
-+
-+	/* Target must have 4 byte alignment. */
-+	BUG_ON((e->target & 3) != 0);
-+
-+	if (type == JUMP_LABEL_ENABLE) {
-+		insn.j_format.opcode = j_op;
-+		insn.j_format.target = (e->target & J_RANGE_MASK) >> 2;
-+	} else {
-+		insn.word = 0; /* nop */
-+	}
-+
-+	get_online_cpus();
-+	mutex_lock(&text_mutex);
-+	*insn_p = insn;
-+
-+	flush_icache_range((unsigned long)insn_p,
-+			   (unsigned long)insn_p + sizeof(*insn_p));
-+
-+	mutex_unlock(&text_mutex);
-+	put_online_cpus();
-+}
-+
-+void arch_jump_label_text_poke_early(jump_label_t addr)
-+{
-+	union mips_instruction *insn_p =
-+		(union mips_instruction *)(unsigned long)addr;
-+
-+	insn_p->word = 0; /* nop */
-+	flush_icache_range((unsigned long)insn_p,
-+			   (unsigned long)insn_p + sizeof(*insn_p));
-+}
-diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
-index 6f51dda..bb9cde4 100644
---- a/arch/mips/kernel/module.c
-+++ b/arch/mips/kernel/module.c
-@@ -30,6 +30,8 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/spinlock.h>
-+#include <linux/jump_label.h>
-+
- #include <asm/pgtable.h>	/* MODULE_START */
- 
- struct mips_hi16 {
-@@ -390,6 +392,9 @@ int module_finalize(const Elf_Ehdr *hdr,
- 	const Elf_Shdr *s;
- 	char *secstrings = (void *)hdr + sechdrs[hdr->e_shstrndx].sh_offset;
- 
-+	/* Make jump label nops. */
-+	jump_label_apply_nops(me);
-+
- 	INIT_LIST_HEAD(&me->arch.dbe_list);
- 	for (s = sechdrs; s < sechdrs + hdr->e_shnum; s++) {
- 		if (strcmp("__dbe_table", secstrings + s->sh_name) != 0)
+This help text doesn't really explain what the option does.
+
+> +struct pwm_device {
+> +	struct pwm_ops *pops;
+> +	int pwm_id;
+> +};
+> +
+> +struct pwm_dev_info {
+> +	struct pwm_device *pwm_dev;
+> +	struct list_head list;
+> +};
+
+These two structures can be merged into one which will make the code
+much simpler.
+
+> +static struct pwm_dev_info *di;
+
+This appears to be used as just a list, and could be replaced by:
+
+static LIST_HEAD(pwm_list);
+
+> +struct pwm_device *pwm_request(int pwm_id, const char *name)
+> +{
+> +	struct pwm_dev_info *pwm;
+> +	struct list_head *pos;
+> +
+> +	down_read(&pwm_list_lock);
+> +	list_for_each(pos, &di->list) {
+> +		pwm = list_entry(pos, struct pwm_dev_info, list);
+> +		if ((!strcmp(pwm->pwm_dev->pops->name, name)) &&
+> +				(pwm->pwm_dev->pwm_id == pwm_id)) {
+> +			up_read(&pwm_list_lock);
+> +			return pwm->pwm_dev;
+> +		}
+> +	}
+> +	up_read(&pwm_list_lock);
+> +	return ERR_PTR(-ENOENT);
+> +}
+
+Is it by design that multiple users can request and use the same pwm or
+should pwms have a use count and return -EBUSY if already requested?
+
+> +static int __init pwm_init(void)
+> +{
+> +	struct pwm_dev_info *pwm;
+> +
+> +	pwm = kzalloc(sizeof(struct pwm_dev_info), GFP_KERNEL);
+> +	if (!pwm)
+> +		return -ENOMEM;
+> +	INIT_LIST_HEAD(&pwm->list);
+> +	di = pwm;
+> +	return 0;
+
+If di is changed to a list as suggested above this function does not
+need to exist.
+
+> +static void __exit pwm_exit(void)
+> +{
+> +	kfree(di);
+
+Do you need to ensure the list is empty first or do module dependencies
+ensure that?
+
+~Ryan
+
 -- 
-1.7.2.2
+Bluewater Systems Ltd - ARM Technology Solution Centre
+
+Ryan Mallon         		5 Amuri Park, 404 Barbadoes St
+ryan@bluewatersys.com         	PO Box 13 889, Christchurch 8013
+http://www.bluewatersys.com	New Zealand
+Phone: +64 3 3779127		Freecall: Australia 1800 148 751
+Fax:   +64 3 3779135			  USA 1800 261 2934

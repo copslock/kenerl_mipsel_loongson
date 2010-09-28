@@ -1,28 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 11:28:27 +0200 (CEST)
-Received: from eu1sys200aog117.obsmtp.com ([207.126.144.143]:52897 "EHLO
-        eu1sys200aog117.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491049Ab0I1J2X convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Sep 2010 11:28:23 +0200
-Received: from source ([138.198.100.35]) (using TLSv1) by eu1sys200aob117.postini.com ([207.126.147.11]) with SMTP
-        ID DSNKTKG07GxtssnrVeJPfLJnrM/H1w0K5g2Y@postini.com; Tue, 28 Sep 2010 09:28:23 UTC
-Received: from zeta.dmz-ap.st.com (ns6.st.com [138.198.234.13])
-        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 12C86FC;
-        Tue, 28 Sep 2010 09:27:03 +0000 (GMT)
-Received: from relay2.stm.gmessaging.net (unknown [10.230.100.18])
-        by zeta.dmz-ap.st.com (STMicroelectronics) with ESMTP id E36A75B8;
-        Tue, 28 Sep 2010 09:27:01 +0000 (GMT)
-Received: from exdcvycastm022.EQ1STM.local (alteon-source-exch [10.230.100.61])
-        (using TLSv1 with cipher RC4-MD5 (128/128 bits))
-        (Client CN "exdcvycastm022", Issuer "exdcvycastm022" (not verified))
-        by relay2.stm.gmessaging.net (Postfix) with ESMTPS id 65BF3A8095;
-        Tue, 28 Sep 2010 11:26:56 +0200 (CEST)
-Received: from EXDCVYMBSTM006.EQ1STM.local ([10.230.100.3]) by
- exdcvycastm022.EQ1STM.local ([10.230.100.30]) with mapi; Tue, 28 Sep 2010
- 11:27:00 +0200
-From:   Arun MURTHY <arun.murthy@stericsson.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 11:36:09 +0200 (CEST)
+Received: from devils.ext.ti.com ([198.47.26.153]:51400 "EHLO
+        devils.ext.ti.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491049Ab0I1JgG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 11:36:06 +0200
+Received: from dlep33.itg.ti.com ([157.170.170.112])
+        by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id o8S9Yios017982
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Tue, 28 Sep 2010 04:34:53 -0500
+Received: from dbdmail.itg.ti.com (localhost [127.0.0.1])
+        by dlep33.itg.ti.com (8.13.7/8.13.7) with ESMTP id o8S9YPX1020463;
+        Tue, 28 Sep 2010 04:34:26 -0500 (CDT)
+Received: from 10.24.255.18
+        (SquirrelMail authenticated user x0099946);
+        by dbdmail.itg.ti.com with HTTP;
+        Tue, 28 Sep 2010 15:04:43 +0530 (IST)
+Message-ID: <19145.10.24.255.18.1285666483.squirrel@dbdmail.itg.ti.com>
+In-Reply-To: <F45880696056844FA6A73F415B568C69532DC2FB21@EXDCVYMBSTM006.EQ1STM.loca
+     l>
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>   
+    <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>   
+    <201009281114.31223.anarsoul@gmail.com>   
+    <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
+    <63731.10.24.255.18.1285663815.squirrel@dbdmail.itg.ti.com>
+    <F45880696056844FA6A73F415B568C69532DC2FB21@EXDCVYMBSTM006.EQ1STM.local>
+Date:   Tue, 28 Sep 2010 15:04:43 +0530 (IST)
+Subject: RE: [PATCH 1/7] pwm: Add pwm core driver
+From:   "Hemanth V" <hemanthv@ti.com>
+To:     "Arun MURTHY" <arun.murthy@stericsson.com>,
+        linux-omap@vger.kernel.org
+Cc:     "Vasily Khoruzhick" <anarsoul@gmail.com>,
+        "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
         "grinberg@compulab.co.il" <grinberg@compulab.co.il>,
         "mike@compulab.co.il" <mike@compulab.co.il>,
@@ -42,7 +49,6 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "support@simtec.co.uk" <support@simtec.co.uk>,
         "arnaud.patard@rtp-net.org" <arnaud.patard@rtp-net.org>,
         "dgreenday@gmail.com" <dgreenday@gmail.com>,
-        "anarsoul@gmail.com" <anarsoul@gmail.com>,
         "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
         "mcuelenaere@gmail.com" <mcuelenaere@gmail.com>,
         "kernel@pengutronix.de" <kernel@pengutronix.de>,
@@ -53,6 +59,7 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
         "kgene.kim@samsung.com" <kgene.kim@samsung.com>,
         "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
         "dilinger@collabora.co.uk" <dilinger@collabora.co.uk>,
         "mroth@nessie.de" <mroth@nessie.de>,
         "randy.dunlap@oracle.com" <randy.dunlap@oracle.com>,
@@ -68,7 +75,6 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "balajitk@ti.com" <balajitk@ti.com>,
         "rnayak@ti.com" <rnayak@ti.com>,
         "santosh.shilimkar@ti.com" <santosh.shilimkar@ti.com>,
-        "hemanthv@ti.com" <hemanthv@ti.com>,
         "michael.hennerich@analog.com" <michael.hennerich@analog.com>,
         "vapier@gentoo.org" <vapier@gentoo.org>,
         "khali@linux-fr.org" <khali@linux-fr.org>,
@@ -79,73 +85,53 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         <linux-arm-kernel@lists.infradead.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Linus WALLEIJ <linus.walleij@stericsson.com>,
-        Mattias WALLIN <mattias.wallin@stericsson.com>
-Date:   Tue, 28 Sep 2010 11:26:59 +0200
-Subject: RE: [PATCH 4/7] pwm: Align existing pwm drivers with pwm-core driver
-Thread-Topic: [PATCH 4/7] pwm: Align existing pwm drivers with pwm-core
- driver
-Thread-Index: Acte61tsF5aNwHgNRsyYLqPwiibNcQAAsuRQ
-Message-ID: <F45880696056844FA6A73F415B568C69532DC2FB98@EXDCVYMBSTM006.EQ1STM.local>
-References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
- <1285659648-21409-5-git-send-email-arun.murthy@stericsson.com>
- <4CA1AE21.8070306@metafoo.de>
-In-Reply-To: <4CA1AE21.8070306@metafoo.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        "Linus WALLEIJ" <linus.walleij@stericsson.com>,
+        "Mattias WALLIN" <mattias.wallin@stericsson.com>
+User-Agent: SquirrelMail/1.4.3a
+X-Mailer: SquirrelMail/1.4.3a
 MIME-Version: 1.0
-X-archive-position: 27855
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Priority: 3 (Normal)
+Importance: Normal
+X-archive-position: 27856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arun.murthy@stericsson.com
+X-original-sender: hemanthv@ti.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22203
+X-UID: 22208
 
-> > mips-jz4740: pwm: Align with new pwm core driver
-> >
-> > PWM core driver has been added and has been enabled only for ARM
-> > platform. The same can be utilised for mips also.
-> > Please align with the pwm core driver(drivers/pwm-core.c).
-> 
-> 
-> Is there any reason for artificially limiting it to ARM?
+>> >> On 28 of September 2010 10:40:42 Arun Murthy wrote:
+>> >> > The existing pwm based led and backlight driver makes use of the
+>> >> > pwm(include/linux/pwm.h). So all the board specific pwm drivers
+>> will
+>> >> > be exposing the same set of function name as in
+>> include/linux/pwm.h.
+>> >> > As a result build fails.
+>> >>
+>> >> Which build fails? One with multi-SoC support? Please be more
+>> specific.
+>> > Sure will add this in v2.
+>> >
+>>
+>> Could you clarify for the benefit of all, which specific issues you are
+>> trying to address with this patch series
+> 1. Now since all the pwm driver export same set of function(pwm_enable, pwm_disable,..), if it happens that there are two pwm driver enabled this
+> leads to re-declaration and results in build failure. The proper way to handle this would be to have a pwm core function, and let all the pwm
+> drivers register to the pwm core driver.
+> 2. The above scenario also occurs in place of multi-soc environment. Lets say OMAP has a pwm module and that is being used for primary lcd backlight
+> and twl has a backlight that is being used for controlling the charging led brightness. In this case there exists 2 pwm drivers and one pwm driver
+> will be used by pwm_bl.c and other by leds-pwm.c
 
-No not at all, right now I have aligned all existing pwm drivers in ARM to make use of the pwm core driver.
-But faced difficulty in aligning the mips-jz4740 pwm driver, without having much knowledge about the device/data sheet.
-Hence I have let it to the maintainer of that driver to align and thereafter this limitation will be removed.
-Have also comments the same as TODO in the driver.
+Speaking specifically of OMAP4, twl6030 supports multiple PWMs i.e for display/keypad backlight, charging
+led. But there should not be need for multiple drivers since twl6030-pwm should be able to support
+all these (currently it doesnot though). So there would single pwm_enable, pwm_disable exported and driver
+internally takes care configuring the correct PWM based on id. Would it not be similar
+situation for other hardware also.
 
-> > diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> > index 5d10106..a88640c 100644
-> > --- a/drivers/pwm/Kconfig
-> > +++ b/drivers/pwm/Kconfig
-> > @@ -4,6 +4,7 @@
-> >
-> >  menuconfig PWM_DEVICES
-> >  	bool "PWM devices"
-> > +	depends on ARM
-> >  	default y
-> >  	---help---
-> >  	  Say Y here to get to see options for device drivers from
-> various
-> > diff --git a/drivers/pwm/pwm-core.c b/drivers/pwm/pwm-core.c
-> > index b84027a..3a0d426 100644
-> 
-> 
-> 
-> Why can't these changes be in the initial patch which adds pwm-core?
-> 
-Since by default this driver is enabled, and if there is some other pwm driver enabled, both happen to export the same function(pwm_enable/pwm_disable,..) After applying the first patch build may fail.
-
-Thanks and Regards,
-Arun R Murthy
--------------
+Thanks
+Hemanth

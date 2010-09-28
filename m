@@ -1,28 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 10:59:12 +0200 (CEST)
-Received: from eu1sys200aog101.obsmtp.com ([207.126.144.111]:61000 "EHLO
-        eu1sys200aog101.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491049Ab0I1I7B convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 11:07:09 +0200 (CEST)
+Received: from eu1sys200aog119.obsmtp.com ([207.126.144.147]:60635 "EHLO
+        eu1sys200aog119.obsmtp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491049Ab0I1JHF convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Sep 2010 10:59:01 +0200
-Received: from source ([164.129.1.35]) (using TLSv1) by eu1sys200aob101.postini.com ([207.126.147.11]) with SMTP
-        ID DSNKTKGuEAlDNVeKDWL80OJXJTPsizfuNZQ0@postini.com; Tue, 28 Sep 2010 08:59:01 UTC
-Received: from zeta.dmz-eu.st.com (ns2.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 8D750C0;
-        Tue, 28 Sep 2010 08:57:18 +0000 (GMT)
-Received: from relay1.stm.gmessaging.net (unknown [10.230.100.17])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 23DA11CFE;
-        Tue, 28 Sep 2010 08:57:17 +0000 (GMT)
+        Tue, 28 Sep 2010 11:07:05 +0200
+Received: from source ([138.198.100.35]) (using TLSv1) by eu1sys200aob119.postini.com ([207.126.147.11]) with SMTP
+        ID DSNKTKGv7Yy7lkR2CLa33MjLl4mjE3rCufCM@postini.com; Tue, 28 Sep 2010 09:07:05 UTC
+Received: from zeta.dmz-ap.st.com (ns6.st.com [138.198.234.13])
+        by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 5BF33156;
+        Tue, 28 Sep 2010 09:03:37 +0000 (GMT)
+Received: from relay2.stm.gmessaging.net (unknown [10.230.100.18])
+        by zeta.dmz-ap.st.com (STMicroelectronics) with ESMTP id AA67D443;
+        Tue, 28 Sep 2010 09:03:35 +0000 (GMT)
 Received: from exdcvycastm004.EQ1STM.local (alteon-source-exch [10.230.100.61])
         (using TLSv1 with cipher RC4-MD5 (128/128 bits))
         (Client CN "exdcvycastm004", Issuer "exdcvycastm004" (not verified))
-        by relay1.stm.gmessaging.net (Postfix) with ESMTPS id DFADC24C2F3;
-        Tue, 28 Sep 2010 10:57:11 +0200 (CEST)
+        by relay2.stm.gmessaging.net (Postfix) with ESMTPS id 539A8A8065;
+        Tue, 28 Sep 2010 11:03:30 +0200 (CEST)
 Received: from EXDCVYMBSTM006.EQ1STM.local ([10.230.100.3]) by
  exdcvycastm004.EQ1STM.local ([10.230.100.2]) with mapi; Tue, 28 Sep 2010
- 10:57:16 +0200
+ 11:03:34 +0200
 From:   Arun MURTHY <arun.murthy@stericsson.com>
-To:     Vasily Khoruzhick <anarsoul@gmail.com>
-Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
+To:     Hemanth V <hemanthv@ti.com>
+Cc:     Vasily Khoruzhick <anarsoul@gmail.com>,
+        "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
         "grinberg@compulab.co.il" <grinberg@compulab.co.il>,
         "mike@compulab.co.il" <mike@compulab.co.il>,
@@ -68,7 +69,6 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "balajitk@ti.com" <balajitk@ti.com>,
         "rnayak@ti.com" <rnayak@ti.com>,
         "santosh.shilimkar@ti.com" <santosh.shilimkar@ti.com>,
-        "hemanthv@ti.com" <hemanthv@ti.com>,
         "michael.hennerich@analog.com" <michael.hennerich@analog.com>,
         "vapier@gentoo.org" <vapier@gentoo.org>,
         "khali@linux-fr.org" <khali@linux-fr.org>,
@@ -81,16 +81,17 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Linus WALLEIJ <linus.walleij@stericsson.com>,
         Mattias WALLIN <mattias.wallin@stericsson.com>
-Date:   Tue, 28 Sep 2010 10:57:15 +0200
+Date:   Tue, 28 Sep 2010 11:03:34 +0200
 Subject: RE: [PATCH 1/7] pwm: Add pwm core driver
 Thread-Topic: [PATCH 1/7] pwm: Add pwm core driver
-Thread-Index: Acte6fbiw3ucXUNBSmSbn8Gxg33PBAAABYaQ
-Message-ID: <F45880696056844FA6A73F415B568C69532DC2FAF7@EXDCVYMBSTM006.EQ1STM.local>
+Thread-Index: Acte6n0b5OsB6Z8wQWiCKhEEjIKoyQAALhOA
+Message-ID: <F45880696056844FA6A73F415B568C69532DC2FB21@EXDCVYMBSTM006.EQ1STM.local>
 References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
- <201009281114.31223.anarsoul@gmail.com>
- <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
- <201009281147.20871.anarsoul@gmail.com>
-In-Reply-To: <201009281147.20871.anarsoul@gmail.com>
+    <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
+    <201009281114.31223.anarsoul@gmail.com>
+    <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
+ <63731.10.24.255.18.1285663815.squirrel@dbdmail.itg.ti.com>
+In-Reply-To: <63731.10.24.255.18.1285663815.squirrel@dbdmail.itg.ti.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -99,7 +100,7 @@ acceptlanguage: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-X-archive-position: 27852
+X-archive-position: 27853
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -108,21 +109,25 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22178
+X-UID: 22186
 
-
-> On 28 of September 2010 11:38:26 Arun MURTHY wrote:
-> 
-> > >
-> > > Why pwm_free is marked __deprecated? What is its successor?
+> >> On 28 of September 2010 10:40:42 Arun Murthy wrote:
+> >> > The existing pwm based led and backlight driver makes use of the
+> >> > pwm(include/linux/pwm.h). So all the board specific pwm drivers
+> will
+> >> > be exposing the same set of function name as in
+> include/linux/pwm.h.
+> >> > As a result build fails.
+> >>
+> >> Which build fails? One with multi-SoC support? Please be more
+> specific.
+> > Sure will add this in v2.
 > >
-> > This function is to be removed.
 > 
-> What should be used as replacement?
-> 
-No replacement, this function is not required.
-In the existing scenario, pwm_request will add to the list and pwm_free will remove the driver from list. Not all the pwm drivers register with the pwm core driver and hence pwm core driver maintains a list, wherein it keeps adding the registered pwm drivers to the list. This is removed from the list by unregistering with the core driver.
-Hence pwm_free is not required.
+> Could you clarify for the benefit of all, which specific issues you are
+> trying to address with this patch series
+1. Now since all the pwm driver export same set of function(pwm_enable, pwm_disable,..), if it happens that there are two pwm driver enabled this leads to re-declaration and results in build failure. The proper way to handle this would be to have a pwm core function, and let all the pwm drivers register to the pwm core driver.
+2. The above scenario also occurs in place of multi-soc environment. Lets say OMAP has a pwm module and that is being used for primary lcd backlight and twl has a backlight that is being used for controlling the charging led brightness. In this case there exists 2 pwm drivers and one pwm driver will be used by pwm_bl.c and other by leds-pwm.c
 
 Thanks and Regards,
 Arun R Murthy

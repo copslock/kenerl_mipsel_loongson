@@ -1,27 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 10:40:52 +0200 (CEST)
-Received: from eu1sys200aog105.obsmtp.com ([207.126.144.119]:48495 "EHLO
-        eu1sys200aog105.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491950Ab0I1Ikq convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Sep 2010 10:40:46 +0200
-Received: from source ([167.4.1.35]) (using TLSv1) by eu1sys200aob105.postini.com ([207.126.147.11]) with SMTP
-        ID DSNKTKGpuTm1VwWt0fxDTPDLOueyCHEHnjvF@postini.com; Tue, 28 Sep 2010 08:40:45 UTC
-Received: from zeta.dmz-us.st.com (ns4.st.com [167.4.80.115])
-        by beta.dmz-us.st.com (STMicroelectronics) with ESMTP id 5DB0BDA;
-        Tue, 28 Sep 2010 08:35:14 +0000 (GMT)
-Received: from relay2.stm.gmessaging.net (unknown [10.230.100.18])
-        by zeta.dmz-us.st.com (STMicroelectronics) with ESMTP id 5E7962F5;
-        Tue, 28 Sep 2010 08:38:29 +0000 (GMT)
-Received: from exdcvycastm003.EQ1STM.local (alteon-source-exch [10.230.100.61])
-        (using TLSv1 with cipher RC4-MD5 (128/128 bits))
-        (Client CN "exdcvycastm003", Issuer "exdcvycastm003" (not verified))
-        by relay2.stm.gmessaging.net (Postfix) with ESMTPS id 7DC0AA80A9;
-        Tue, 28 Sep 2010 10:38:24 +0200 (CEST)
-Received: from EXDCVYMBSTM006.EQ1STM.local ([10.230.100.3]) by
- exdcvycastm003.EQ1STM.local ([10.230.100.1]) with mapi; Tue, 28 Sep 2010
- 10:38:27 +0200
-From:   Arun MURTHY <arun.murthy@stericsson.com>
-To:     Vasily Khoruzhick <anarsoul@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 10:48:55 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:52191 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491049Ab0I1Isv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 10:48:51 +0200
+Received: by bwz19 with SMTP id 19so5478521bwz.36
+        for <multiple recipients>; Tue, 28 Sep 2010 01:48:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:message-id;
+        bh=AncmpYgrnyE5ZzhwIYTiD8W4S54tK6jVhT0VurwK03U=;
+        b=egQi47Dnb+cOCXShsZFNC59fUNumHJQ3tZ16Jf506IMEGiFAZckqM4SNhmQ5gw6Af5
+         LEC13f/Psmw/stfscOSwDBvqZZuWEF8TAPVQkfjJp0lAQ8EvJQinEW2fZSZZUEYVBJbV
+         cZ9AG8BrLSHE+aBZh6+qCiE4jQYpFnQNVo7wc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding:message-id;
+        b=MgUBfxusFExesGK51bfp/L1rOsx5WqvkneUrpzKRLoxNi08Xmpm/ZRxHcZsw9igvF+
+         nBPJIjyjysrLFsTvoLH5gTgEHNywq032a3ixmdqBKzlsWvEORJlhVOkgBx9/j0sk3T9v
+         moFkY9oymgzHdS0v45hriUdlp6v44aEOrk7tE=
+Received: by 10.204.54.199 with SMTP id r7mr2555640bkg.106.1285663725484;
+        Tue, 28 Sep 2010 01:48:45 -0700 (PDT)
+Received: from anarsoul-laptop.localnet ([86.57.155.118])
+        by mx.google.com with ESMTPS id 24sm5332253bkr.19.2010.09.28.01.48.38
+        (version=SSLv3 cipher=RC4-MD5);
+        Tue, 28 Sep 2010 01:48:43 -0700 (PDT)
+From:   Vasily Khoruzhick <anarsoul@gmail.com>
+To:     Arun MURTHY <arun.murthy@stericsson.com>
+Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
+Date:   Tue, 28 Sep 2010 11:47:20 +0300
+User-Agent: KMail/1.13.5 (Linux/2.6.35-gentoo-r8-anarsoul; KDE/4.5.1; i686; ; )
 Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
         "grinberg@compulab.co.il" <grinberg@compulab.co.il>,
@@ -81,52 +91,32 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         Linus WALLEIJ <linus.walleij@stericsson.com>,
         Mattias WALLIN <mattias.wallin@stericsson.com>
-Date:   Tue, 28 Sep 2010 10:38:26 +0200
-Subject: RE: [PATCH 1/7] pwm: Add pwm core driver
-Thread-Topic: [PATCH 1/7] pwm: Add pwm core driver
-Thread-Index: Acte5whwPqrutDCHTLy9xp7mcp09gAAATmFw
-Message-ID: <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
-References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
- <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
- <201009281114.31223.anarsoul@gmail.com>
-In-Reply-To: <201009281114.31223.anarsoul@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com> <201009281114.31223.anarsoul@gmail.com> <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
+In-Reply-To: <F45880696056844FA6A73F415B568C69532DC2FA8F@EXDCVYMBSTM006.EQ1STM.local>
 MIME-Version: 1.0
-X-archive-position: 27847
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201009281147.20871.anarsoul@gmail.com>
+X-archive-position: 27848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arun.murthy@stericsson.com
+X-original-sender: anarsoul@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22161
+X-UID: 22165
 
+On 28 of September 2010 11:38:26 Arun MURTHY wrote:
 
-> On 28 of September 2010 10:40:42 Arun Murthy wrote:
-> > The existing pwm based led and backlight driver makes use of the
-> > pwm(include/linux/pwm.h). So all the board specific pwm drivers will
-> > be exposing the same set of function name as in include/linux/pwm.h.
-> > As a result build fails.
+> > 
+> > Why pwm_free is marked __deprecated? What is its successor?
 > 
-> Which build fails? One with multi-SoC support? Please be more specific.
-Sure will add this in v2.
+> This function is to be removed.
 
-> > +void __deprecated pwm_free(struct pwm_device *pwm)
-> > +{
-> > +}
-> 
-> Why pwm_free is marked __deprecated? What is its successor?
+What should be used as replacement?
 
-This function is to be removed.
-
-Thanks and Regards,
-Arun R Murthy
--------------
+Regards
+Vasily

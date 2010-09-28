@@ -1,82 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 12:48:57 +0200 (CEST)
-Received: from eu1sys200aog109.obsmtp.com ([207.126.144.127]:51933 "EHLO
-        eu1sys200aog109.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491958Ab0I1Ksx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Sep 2010 12:48:53 +0200
-Received: from source ([167.4.1.35]) (using TLSv1) by eu1sys200aob109.postini.com ([207.126.147.11]) with SMTP
-        ID DSNKTKHIBFVjFZzB0DsSl+C+sr2G986NGhQx@postini.com; Tue, 28 Sep 2010 10:48:53 UTC
-Received: from zeta.dmz-us.st.com (ns4.st.com [167.4.80.115])
-        by beta.dmz-us.st.com (STMicroelectronics) with ESMTP id DD62EC3;
-        Tue, 28 Sep 2010 10:45:01 +0000 (GMT)
-Received: from relay2.stm.gmessaging.net (unknown [10.230.100.18])
-        by zeta.dmz-us.st.com (STMicroelectronics) with ESMTP id 0E09734C;
-        Tue, 28 Sep 2010 10:48:16 +0000 (GMT)
-Received: from exdcvycastm003.EQ1STM.local (alteon-source-exch [10.230.100.61])
-        (using TLSv1 with cipher RC4-MD5 (128/128 bits))
-        (Client CN "exdcvycastm003", Issuer "exdcvycastm003" (not verified))
-        by relay2.stm.gmessaging.net (Postfix) with ESMTPS id 4E659A8096;
-        Tue, 28 Sep 2010 12:48:10 +0200 (CEST)
-Received: from EXDCVYMBSTM006.EQ1STM.local ([10.230.100.3]) by
- exdcvycastm003.EQ1STM.local ([10.230.100.1]) with mapi; Tue, 28 Sep 2010
- 12:48:15 +0200
-From:   Arun MURTHY <arun.murthy@stericsson.com>
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-Cc:     "lars@metafoo.de" <lars@metafoo.de>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "philipp.zabel@gmail.com" <philipp.zabel@gmail.com>,
-        "robert.jarzmik@free.fr" <robert.jarzmik@free.fr>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
-        "rpurdie@rpsys.net" <rpurdie@rpsys.net>,
-        "sameo@linux.intel.com" <sameo@linux.intel.com>,
-        "kgene.kim@samsung.com" <kgene.kim@samsung.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        STEricsson_nomadik_linux <STEricsson_nomadik_linux@list.st.com>
-Date:   Tue, 28 Sep 2010 12:48:12 +0200
-Subject: RE: [PATCH 3/7] leds: pwm: add a new element 'name' to platform data
-Thread-Topic: [PATCH 3/7] leds: pwm: add a new element 'name' to platform
- data
-Thread-Index: Acte+jRWeNi88ekyQ5KOTcl29A0fyAAAFG4A
-Message-ID: <F45880696056844FA6A73F415B568C69532DC2FC97@EXDCVYMBSTM006.EQ1STM.local>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 15:06:05 +0200 (CEST)
+Received: from mga01.intel.com ([192.55.52.88]:17698 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491094Ab0I1NGC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Sep 2010 15:06:02 +0200
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP; 28 Sep 2010 06:05:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.57,247,1283756400"; 
+   d="scan'208";a="841620498"
+Received: from unknown (HELO sortiz-mobl) ([10.255.18.134])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Sep 2010 06:05:48 -0700
+Date:   Tue, 28 Sep 2010 15:06:11 +0200
+From:   Samuel Ortiz <sameo@linux.intel.com>
+To:     Hemanth V <hemanthv@ti.com>
+Cc:     Arun Murthy <arun.murthy@stericsson.com>, lars@metafoo.de,
+        Andrew Morton <akpm@linux-foundation.org>,
+        kernel@pengutronix.de, philipp.zabel@gmail.com,
+        robert.jarzmik@free.fr, marek.vasut@gmail.com,
+        eric.y.miao@gmail.com, rpurdie@rpsys.net, kgene.kim@samsung.com,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        STEricsson_nomadik_linux@list.st.com
+Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
+Message-ID: <20100928130610.GB20749@sortiz-mobl>
 References: <1285670134-18063-1-git-send-email-arun.murthy@stericsson.com>
- <1285670134-18063-4-git-send-email-arun.murthy@stericsson.com>
- <4CA1C6C4.20504@mvista.com>
-In-Reply-To: <4CA1C6C4.20504@mvista.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ <1285670134-18063-2-git-send-email-arun.murthy@stericsson.com>
+ <040c01cb5f0c$29bcb3b0$LocalHost@wipblrx0099946>
 MIME-Version: 1.0
-X-archive-position: 27872
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <040c01cb5f0c$29bcb3b0$LocalHost@wipblrx0099946>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 27873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arun.murthy@stericsson.com
+X-original-sender: sameo@linux.intel.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22278
+X-UID: 22350
 
-> > @@ -16,6 +16,7 @@ struct led_pwm {
-> >   struct led_pwm_platform_data {
-> >   	int			num_leds;
-> >   	struct led_pwm	*leds;
-> > +	char *name;
-> >   };
+On Tue, Sep 28, 2010 at 06:23:24PM +0530, Hemanth V wrote:
+> ----- Original Message ----- From: "Arun Murthy"
+> <arun.murthy@stericsson.com>
 > 
->     Shouldn't '*name'be aligned, at least with '*leds'?
-Sure, will take care of this in the v2 patch.
+> 
+> >The existing pwm based led and backlight driver makes use of the
+> >pwm(include/linux/pwm.h). So all the board specific pwm drivers will
+> >be exposing the same set of function name as in include/linux/pwm.h.
+> >As a result build fails in case of multi soc environments where each soc
+> >has a pwm device in it.
+> 
+> This seems very specific to ST environment,  
+No it's not. It's an issue Arun has hit while enabling one of the ST MFD chip,
+but he's tackling a generic issue.
 
-Thanks and Regards,
-Arun R Murthy
--------------
+> looking at the driver list from
+> ( [PATCH 4/7] pwm: Align existing pwm drivers with pwm-core ) it seems
+> most multi SOC environments might support PWM in either one of the SOC.
+> 
+> arch/arm/plat-mxc/pwm.c
+> arch/arm/plat-pxa/pwm.c
+> arch/arm/plat-samsung/pwm.c
+> arch/mips/jz4740/pwm.c
+> drivers/mfd/twl6030-pwm.c
+> 
+> Unless people have examples of other SOCs which might use this,
+> the better approach might be to go for a custom driver rather than changing
+> the framework.
+I wouldn't call the current pwm code a framework. It's a bunch of header
+definitions that happens to work in the specific case of 1 pwm per
+sub architecture.
+What Arun is proposing is an actual framework. And it seems to be clean and
+simple enough.
+
+Cheers,
+Samuel.
+
+-- 
+Intel Open Source Technology Centre
+http://oss.intel.com/

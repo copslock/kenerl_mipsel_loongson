@@ -1,155 +1,189 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 21:42:10 +0200 (CEST)
-Received: from mail.bluewatersys.com ([202.124.120.130]:63315 "EHLO
-        hayes.bluewaternz.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491165Ab0I1TmG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 21:42:06 +0200
-Received: (qmail 22761 invoked by uid 89); 28 Sep 2010 19:40:22 -0000
-Received: from unknown (HELO ?192.168.2.96?) (ryan@192.168.2.96)
-  by 0 with ESMTPA; 28 Sep 2010 19:40:22 -0000
-Message-ID: <4CA2450D.8090104@bluewatersys.com>
-Date:   Wed, 29 Sep 2010 08:42:05 +1300
-From:   Ryan Mallon <ryan@bluewatersys.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100915 Thunderbird/3.0.8
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 23:04:42 +0200 (CEST)
+Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:36765 "EHLO
+        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491165Ab0I1VEi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 23:04:38 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id E7226E3D;
+        Tue, 28 Sep 2010 23:04:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
+Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
+        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
+        with LMTP id 0PTfF5P7tnuq; Tue, 28 Sep 2010 23:04:30 +0200 (CEST)
+Received: from [172.31.16.254] (d125181.adsl.hansenet.de [80.171.125.181])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: 7clausen)
+        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 07059E3C;
+        Tue, 28 Sep 2010 23:04:18 +0200 (CEST)
+Message-ID: <4CA25841.4090702@metafoo.de>
+Date:   Tue, 28 Sep 2010 23:04:01 +0200
+From:   Lars-Peter Clausen <lars@metafoo.de>
+User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
 MIME-Version: 1.0
-To:     Arun Murthy <arun.murthy@stericsson.com>
-CC:     eric.y.miao@gmail.com, linux@arm.linux.org.uk,
-        grinberg@compulab.co.il, mike@compulab.co.il,
-        robert.jarzmik@free.fr, marek.vasut@gmail.com, drwyrm@gmail.com,
-        stefan@openezx.org, laforge@openezx.org, ospite@studenti.unina.it,
-        philipp.zabel@gmail.com, mad_soft@inbox.ru, maz@misterjones.org,
-        daniel@caiaq.de, haojian.zhuang@marvell.com, timur@freescale.com,
-        ben-linux@fluff.org, support@simtec.co.uk,
-        arnaud.patard@rtp-net.org, dgreenday@gmail.com, anarsoul@gmail.com,
-        akpm@linux-foundation.org, mcuelenaere@gmail.com,
-        kernel@pengutronix.de, andre.goddard@gmail.com, jkosina@suse.cz,
-        tj@kernel.org, hsweeten@visionengravers.com,
-        u.kleine-koenig@pengutronix.de, kgene.kim@samsung.com,
-        ralf@linux-mips.org, lars@metafoo.de, dilinger@collabora.co.uk,
-        mroth@nessie.de, randy.dunlap@oracle.com, lethal@linux-sh.org,
-        rusty@rustcorp.com.au, damm@opensource.se, mst@redhat.com,
-        rpurdie@rpsys.net, sguinot@lacie.co, sameo@linux.intel.com,
-        broonie@opensource.wolfsonmicro.com, balajitk@ti.com,
-        rnayak@ti.com, santosh.shilimkar@ti.com, hemanthv@ti.com,
-        michael.hennerich@analog.com, vapier@gentoo.org,
-        khali@linux-fr.org, jic23@cam.ac.uk, re.emese@gmail.com,
-        linux@simtec.co.uk, linux-mips@linux-mips.org,
-        linus.walleij@stericsson.com, linux-kernel@vger.kernel.org,
-        mattias.wallin@stericsson.com, linux-arm-kernel@lists.infradead.org
+To:     Arun MURTHY <arun.murthy@stericsson.com>
+CC:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
+        "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "philipp.zabel@gmail.com" <philipp.zabel@gmail.com>,
+        "robert.jarzmik@free.fr" <robert.jarzmik@free.fr>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        "rpurdie@rpsys.net" <rpurdie@rpsys.net>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        "kgene.kim@samsung.com" <kgene.kim@samsung.com>,
+        linux-omap@vger.kernel.org,
+        "broonie@opensource.wolfsonmicro.com" 
+        <broonie@opensource.wolfsonmicro.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linus WALLEIJ <linus.walleij@stericsson.com>,
+        Mattias WALLIN <mattias.wallin@stericsson.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Arun Murthy <arun.murthy@stericsson.com>,
+        STEricsson_nomadik_linux@list.st.com
 Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
-References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com> <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
-In-Reply-To: <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
-X-Enigmail-Version: 1.0.1
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com> <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com> <4CA1AD2B.8000905@metafoo.de> <F45880696056844FA6A73F415B568C69532DC2FB6B@EXDCVYMBSTM006.EQ1STM.local> <4CA1BC16.3020702@metafoo.de> <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
+In-Reply-To: <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
+X-Enigmail-Version: 0.95.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-archive-position: 27882
+X-archive-position: 27883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ryan@bluewatersys.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22732
+X-UID: 22789
 
-On 09/28/2010 08:40 PM, Arun Murthy wrote:
-> The existing pwm based led and backlight driver makes use of the
-> pwm(include/linux/pwm.h). So all the board specific pwm drivers will
-> be exposing the same set of function name as in include/linux/pwm.h.
-> As a result build fails.
+Arun MURTHY wrote:
+>>>> Shouldn't PWM_DEVICES select HAVE_PWM?
+>>>
+>>> No not required, the entire concept is to remove HAVE_PWM and use
+>> PWM_CORE.
+>>
+>> Well in patch 4 you say that PWM_CORE is currently limited to ARM.
+>> Furthermore you
+>> change the pwm-backlight and pwm-led Kconfig entries to depend on
+>> HAVE_PWM ||
+>> PWM_CORE. Adding a select HAVE_PWM here would make those changes
+>> unnecessary.
+> HAVE_PWM is retained just because the mips pwm driver is not aligned with the pwm core driver.
+> On mips pwm driver aligning to the pwm core driver HAVE_PWM will be replaced by PWM_CORE.
 > 
-> In order to overcome this issue all the pwm drivers must register to
-> some core pwm driver with function pointers for pwm operations (i.e
-> pwm_config, pwm_enable, pwm_disable).
+>> HAVE_PWM should be set, when pwm_* functions are available. When your
+>> pwm-core driver
+>> is selected they are available.
+> On applying this patch set pwm_* function will be exported in pwm_core driver and in mips pwm driver.
+> Since mips pwm driver is not aligned with the pwm core, HAVE_PWM is retained and removed in places where pwm drivers register to pwm core driver.
 
-The other major benefit of this patch set is that it allows non-soc
-pwms, such as those provided on an i2c or spi device, to be added easily.
+pwm_{enable,disable,request,free} are the interface of the pwm api. Your pwm-core is
+one implementation of that interface. A somewhat special though, because it tries to
+be a generic implementation.
+There are still other implementations though. For example right now the mips jz4740 one.
+In my opinion HAVE_PWM should be defined if there is a implementation for the pwm
+interface is available.
+I know that your plan is that in the end pwm-core is the only implementation of the
+pwm interface.
 
-> The clients of pwm device will have to call pwm_request, wherein
-> they will get the pointer to struct pwm_ops. This structure include
-> function pointers for pwm_config, pwm_enable and pwm_disable.
+But right now it is not and on the other hand some SoC implementors might choose that
+they want to provide their own minimal pwm interface implementation.
+Furthermore this would allow you to start with pwm-core for one SoC which you have on
+your desk and where you can properly test things and keep the patches clean from
+clutter changing all the different archs.
+Once pwm-core is in a proper shape you or other people can start porting all the
+different SoC support code to pwm-core.
+
+Similar behavior is for example true for the gpio api. There is gpiolib which is the
+generic implementation which allows having gpio chips outside of the chip. On the
+other hand there are still archs which choose to have their own gpio api implementation.
+
 > 
-> Signed-off-by: Arun Murthy <arun.murthy@stericsson.com>
-> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
-> ---
+>>> pwm_device will be passed to each and every pwm driver that are
+>> registered as client with pwm core.
+>>> The list consists of the registered pwm drivers and is to be handled
+>> by pwm core.
+>>> Why should each and every pwm driver get to know about the entire pwm
+>> driver list?
+>> Declare the list field to be private, by saying that it should only be
+>> touched by the
+>> core. Right now you allocate a rather small additional structure for
+>> each registered
+>> device. This could be easily be avoided by embedding the list field
+>> into the
+>> pwm_device struct.
+> 
+> The one that is being allocated in register is the pwm_device and this has to. Because each pwm driver will have their own data related to ops, pwm_id.
+> Also note that there exists an element "data" that points to the pwm device specific information. Hence this allocation is required.
+> 
+>>>>> +	}
+>>>>> +	pwm->pwm_dev = pwm_dev;
+>>>>> +	list_add_tail(&pwm->list, &di->list);
+>>>>> +	up_write(&pwm_list_lock);
+>>>>> +
+>>>> I guess you only need to lock the list when accessing the list and
+>>>> adding the new
+>>>> pwm_dev.
+>>> Oops, thanks for pointing out, will implement this in the v2 patch.
+> Coming back to this, I guess the locking has to be done while traversing the list also, as my present pointer in the list my get over written by the time I add an element to list. Please let me know if I am wrong.
+> 
+>>>>> +struct pwm_ops {
+>>>>> +	int (*pwm_config)(struct pwm_device *pwm, int duty_ns, int
+>>>> period_ns);
+>>>>> +	int (*pwm_enable)(struct pwm_device *pwm);
+>>>>> +	int (*pwm_disable)(struct pwm_device *pwm);
+>>>>> +	char *name;
+>>>>> +};
+>>>>> +
+>>>> Shouldn't name be part of the pwm_device? That would allow the ops
+>> to
+>>>> be shared
+>>>> between different devices.
+>>> Good catch, the reason being that 2 or more devices can share the
+>> same ops and get registered to pwm core.
+>>> But the catch lies while identifying the pwm device while the clients
+>> are requesting for.
+>>> The pwm backlight will request the pwm driver by name. This is
+>> parameter that distinguishes among different pwm devices irrespective
+>> of same ops or not.
+>> Yes. And thats why it should go into the pwm_device struct itself.
+>>
+>> If an additional ops struct is allocated for each device anyway we
+>> would be better of
+>> embedding it directly into the device struct instead of just holding a
+>> pointer to it.
+> Yes ops structure will be allocated. But how can we get access to the ops structure of another driver?
+> And moreover two pwm driver sharing same ops ideally means a single pwm module. If not everything atleast the pwm registers of two different modules changes. So this scenario can never occur.
+> 
+>>>>>  #endif /* __LINUX_PWM_H */
+>>>> It might be also a good idea to add a device class for pwm devices.
+>>> Sure, but can you please explain with an example the use case.
+>>>
+>> Well, for one it helps to keep data structured.
+>> And there would be functions to traverse all devices of a class, so you
+>> could get rid
+>> of your "di" list.
+> Sorry, I didn't get you can you please elaborate more?
+> 
+Sure. You would create a "struct class" device class for pwm devices. For each
+registered pwm device there would then be a "struct device" representing the pwm
+device whithin the linux device tree.
+This has serveral advantages:
+For one you can use this for keeping track of the all the pwm devices instead of
+having your custom list. You can use class_for_each_device and class_find_device
+instead of traversing your list. This would make the core much simpler and more readable.
+Also you can use the device structure for refcounting of modules and devices. Right
+now if a pwm-core driver, like the twl6040, is build as a module you can remove the
+module while another driver, for example pwm-backlight, is using a pwm device from
+the pwm-core driver. Then upon accessing the pwm device from the pwm-backlight driver
+the code would crash, because it would access already freed memory.
 
-> +menuconfig PWM_DEVICES
-> +	bool "PWM devices"
-> +	default y
-> +	---help---
-> +	  Say Y here to get to see options for device drivers from various
-> +	  different categories. This option alone does not add any kernel code.
+- Lars
 
-This help text doesn't really explain what the option does.
 
-> +struct pwm_device {
-> +	struct pwm_ops *pops;
-> +	int pwm_id;
-> +};
-> +
-> +struct pwm_dev_info {
-> +	struct pwm_device *pwm_dev;
-> +	struct list_head list;
-> +};
-
-These two structures can be merged into one which will make the code
-much simpler.
-
-> +static struct pwm_dev_info *di;
-
-This appears to be used as just a list, and could be replaced by:
-
-static LIST_HEAD(pwm_list);
-
-> +struct pwm_device *pwm_request(int pwm_id, const char *name)
-> +{
-> +	struct pwm_dev_info *pwm;
-> +	struct list_head *pos;
-> +
-> +	down_read(&pwm_list_lock);
-> +	list_for_each(pos, &di->list) {
-> +		pwm = list_entry(pos, struct pwm_dev_info, list);
-> +		if ((!strcmp(pwm->pwm_dev->pops->name, name)) &&
-> +				(pwm->pwm_dev->pwm_id == pwm_id)) {
-> +			up_read(&pwm_list_lock);
-> +			return pwm->pwm_dev;
-> +		}
-> +	}
-> +	up_read(&pwm_list_lock);
-> +	return ERR_PTR(-ENOENT);
-> +}
-
-Is it by design that multiple users can request and use the same pwm or
-should pwms have a use count and return -EBUSY if already requested?
-
-> +static int __init pwm_init(void)
-> +{
-> +	struct pwm_dev_info *pwm;
-> +
-> +	pwm = kzalloc(sizeof(struct pwm_dev_info), GFP_KERNEL);
-> +	if (!pwm)
-> +		return -ENOMEM;
-> +	INIT_LIST_HEAD(&pwm->list);
-> +	di = pwm;
-> +	return 0;
-
-If di is changed to a list as suggested above this function does not
-need to exist.
-
-> +static void __exit pwm_exit(void)
-> +{
-> +	kfree(di);
-
-Do you need to ensure the list is empty first or do module dependencies
-ensure that?
-
-~Ryan
-
--- 
-Bluewater Systems Ltd - ARM Technology Solution Centre
-
-Ryan Mallon         		5 Amuri Park, 404 Barbadoes St
-ryan@bluewatersys.com         	PO Box 13 889, Christchurch 8013
-http://www.bluewatersys.com	New Zealand
-Phone: +64 3 3779127		Freecall: Australia 1800 148 751
-Fax:   +64 3 3779135			  USA 1800 261 2934
+> Thanks and Regards,
+> Arun R Murthy
+> -------------

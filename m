@@ -1,189 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Sep 2010 23:04:42 +0200 (CEST)
-Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:36765 "EHLO
-        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491165Ab0I1VEi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Sep 2010 23:04:38 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id E7226E3D;
-        Tue, 28 Sep 2010 23:04:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
-Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
-        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id 0PTfF5P7tnuq; Tue, 28 Sep 2010 23:04:30 +0200 (CEST)
-Received: from [172.31.16.254] (d125181.adsl.hansenet.de [80.171.125.181])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: 7clausen)
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 07059E3C;
-        Tue, 28 Sep 2010 23:04:18 +0200 (CEST)
-Message-ID: <4CA25841.4090702@metafoo.de>
-Date:   Tue, 28 Sep 2010 23:04:01 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 02:11:45 +0200 (CEST)
+Received: from mail-qy0-f177.google.com ([209.85.216.177]:55525 "EHLO
+        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491166Ab0I2ALm convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 29 Sep 2010 02:11:42 +0200
+Received: by qyk34 with SMTP id 34so367253qyk.15
+        for <linux-mips@linux-mips.org>; Tue, 28 Sep 2010 17:11:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=wDTsIIMvUF7l2oj6FhE3g1/1+W1vqRV0HwShph8+6LM=;
+        b=NUdywmWCb5dWE/+jekCvPcGinxbWhs44bTzzHLtILXGMpGIybpAa1qJo90JaECsgd/
+         MUZCpLI/hd+B09oQ1drNz7YJ1A0OXhtk7G5TZiyMrHWcXVG0jwCMMudNMwNkB57Z12NH
+         gJJnBOgcJlOB+vwlmi0hAvfpkIEYVcA0uKYTM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=lMY7aV06/pnVbb20hwI4mZFQG67JmHGYB/zY8efytTftacdFbBVLe7aDPAcLREapEp
+         4rMvVxO6MZQ6gL6Cf8knQdiFYJPg2qNm9NORfLNrRdC/Gi+d5OhO+yr37aCVLZoU24Ty
+         FB5+h7PoiIx/XDhaZmLPek2i2sjbtAax3hiq4=
 MIME-Version: 1.0
-To:     Arun MURTHY <arun.murthy@stericsson.com>
-CC:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
-        "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "philipp.zabel@gmail.com" <philipp.zabel@gmail.com>,
-        "robert.jarzmik@free.fr" <robert.jarzmik@free.fr>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        "rpurdie@rpsys.net" <rpurdie@rpsys.net>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        "kgene.kim@samsung.com" <kgene.kim@samsung.com>,
-        linux-omap@vger.kernel.org,
-        "broonie@opensource.wolfsonmicro.com" 
-        <broonie@opensource.wolfsonmicro.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus WALLEIJ <linus.walleij@stericsson.com>,
-        Mattias WALLIN <mattias.wallin@stericsson.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Arun Murthy <arun.murthy@stericsson.com>,
-        STEricsson_nomadik_linux@list.st.com
-Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
-References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com> <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com> <4CA1AD2B.8000905@metafoo.de> <F45880696056844FA6A73F415B568C69532DC2FB6B@EXDCVYMBSTM006.EQ1STM.local> <4CA1BC16.3020702@metafoo.de> <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
-In-Reply-To: <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
-X-Enigmail-Version: 0.95.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 27883
+Received: by 10.224.54.85 with SMTP id p21mr527526qag.267.1285719092464; Tue,
+ 28 Sep 2010 17:11:32 -0700 (PDT)
+Received: by 10.229.221.146 with HTTP; Tue, 28 Sep 2010 17:11:32 -0700 (PDT)
+In-Reply-To: <4CA21E5D.7080905@caviumnetworks.com>
+References: <AANLkTi==9kzfqq=Ubdo9Ms_9N=N+7rmcvg01500C4nuc@mail.gmail.com>
+        <4CA21E5D.7080905@caviumnetworks.com>
+Date:   Wed, 29 Sep 2010 08:11:32 +0800
+Message-ID: <AANLkTik6Uv_=G4NR41oiwTai=+pRvLy+t1U9rU3ZD=3c@mail.gmail.com>
+Subject: Re: Why mips eret failed?
+From:   "wilbur.chan" <wilbur512@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        chelly wilbur <wilbur512@gmail.com>
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 27884
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22789
+X-UID: 22899
 
-Arun MURTHY wrote:
->>>> Shouldn't PWM_DEVICES select HAVE_PWM?
->>>
->>> No not required, the entire concept is to remove HAVE_PWM and use
->> PWM_CORE.
->>
->> Well in patch 4 you say that PWM_CORE is currently limited to ARM.
->> Furthermore you
->> change the pwm-backlight and pwm-led Kconfig entries to depend on
->> HAVE_PWM ||
->> PWM_CORE. Adding a select HAVE_PWM here would make those changes
->> unnecessary.
-> HAVE_PWM is retained just because the mips pwm driver is not aligned with the pwm core driver.
-> On mips pwm driver aligning to the pwm core driver HAVE_PWM will be replaced by PWM_CORE.
-> 
->> HAVE_PWM should be set, when pwm_* functions are available. When your
->> pwm-core driver
->> is selected they are available.
-> On applying this patch set pwm_* function will be exported in pwm_core driver and in mips pwm driver.
-> Since mips pwm driver is not aligned with the pwm core, HAVE_PWM is retained and removed in places where pwm drivers register to pwm core driver.
+2010/9/29 David Daney <ddaney@caviumnetworks.com>:
+> On 09/28/2010 09:00 AM, wilbur.chan wrote:
 
-pwm_{enable,disable,request,free} are the interface of the pwm api. Your pwm-core is
-one implementation of that interface. A somewhat special though, because it tries to
-be a generic implementation.
-There are still other implementations though. For example right now the mips jz4740 one.
-In my opinion HAVE_PWM should be defined if there is a implementation for the pwm
-interface is available.
-I know that your plan is that in the end pwm-core is the only implementation of the
-pwm interface.
-
-But right now it is not and on the other hand some SoC implementors might choose that
-they want to provide their own minimal pwm interface implementation.
-Furthermore this would allow you to start with pwm-core for one SoC which you have on
-your desk and where you can properly test things and keep the patches clean from
-clutter changing all the different archs.
-Once pwm-core is in a proper shape you or other people can start porting all the
-different SoC support code to pwm-core.
-
-Similar behavior is for example true for the gpio api. There is gpiolib which is the
-generic implementation which allows having gpio chips outside of the chip. On the
-other hand there are still archs which choose to have their own gpio api implementation.
-
-> 
->>> pwm_device will be passed to each and every pwm driver that are
->> registered as client with pwm core.
->>> The list consists of the registered pwm drivers and is to be handled
->> by pwm core.
->>> Why should each and every pwm driver get to know about the entire pwm
->> driver list?
->> Declare the list field to be private, by saying that it should only be
->> touched by the
->> core. Right now you allocate a rather small additional structure for
->> each registered
->> device. This could be easily be avoided by embedding the list field
->> into the
->> pwm_device struct.
-> 
-> The one that is being allocated in register is the pwm_device and this has to. Because each pwm driver will have their own data related to ops, pwm_id.
-> Also note that there exists an element "data" that points to the pwm device specific information. Hence this allocation is required.
-> 
->>>>> +	}
->>>>> +	pwm->pwm_dev = pwm_dev;
->>>>> +	list_add_tail(&pwm->list, &di->list);
->>>>> +	up_write(&pwm_list_lock);
->>>>> +
->>>> I guess you only need to lock the list when accessing the list and
->>>> adding the new
->>>> pwm_dev.
->>> Oops, thanks for pointing out, will implement this in the v2 patch.
-> Coming back to this, I guess the locking has to be done while traversing the list also, as my present pointer in the list my get over written by the time I add an element to list. Please let me know if I am wrong.
-> 
->>>>> +struct pwm_ops {
->>>>> +	int (*pwm_config)(struct pwm_device *pwm, int duty_ns, int
->>>> period_ns);
->>>>> +	int (*pwm_enable)(struct pwm_device *pwm);
->>>>> +	int (*pwm_disable)(struct pwm_device *pwm);
->>>>> +	char *name;
->>>>> +};
->>>>> +
->>>> Shouldn't name be part of the pwm_device? That would allow the ops
->> to
->>>> be shared
->>>> between different devices.
->>> Good catch, the reason being that 2 or more devices can share the
->> same ops and get registered to pwm core.
->>> But the catch lies while identifying the pwm device while the clients
->> are requesting for.
->>> The pwm backlight will request the pwm driver by name. This is
->> parameter that distinguishes among different pwm devices irrespective
->> of same ops or not.
->> Yes. And thats why it should go into the pwm_device struct itself.
->>
->> If an additional ops struct is allocated for each device anyway we
->> would be better of
->> embedding it directly into the device struct instead of just holding a
->> pointer to it.
-> Yes ops structure will be allocated. But how can we get access to the ops structure of another driver?
-> And moreover two pwm driver sharing same ops ideally means a single pwm module. If not everything atleast the pwm registers of two different modules changes. So this scenario can never occur.
-> 
->>>>>  #endif /* __LINUX_PWM_H */
->>>> It might be also a good idea to add a device class for pwm devices.
->>> Sure, but can you please explain with an example the use case.
->>>
->> Well, for one it helps to keep data structured.
->> And there would be functions to traverse all devices of a class, so you
->> could get rid
->> of your "di" list.
-> Sorry, I didn't get you can you please elaborate more?
-> 
-Sure. You would create a "struct class" device class for pwm devices. For each
-registered pwm device there would then be a "struct device" representing the pwm
-device whithin the linux device tree.
-This has serveral advantages:
-For one you can use this for keeping track of the all the pwm devices instead of
-having your custom list. You can use class_for_each_device and class_find_device
-instead of traversing your list. This would make the core much simpler and more readable.
-Also you can use the device structure for refcounting of modules and devices. Right
-now if a pwm-core driver, like the twl6040, is build as a module you can remove the
-module while another driver, for example pwm-backlight, is using a pwm device from
-the pwm-core driver. Then upon accessing the pwm device from the pwm-backlight driver
-the code would crash, because it would access already freed memory.
-
-- Lars
+>
+> Probably not a good choice.
+>
+>
+>> because it is just a demo,
+>
+> If you want your demo to work, you cannot clobber all the registers in an
+> exception handler.  Most ABIs allow you to clobber only k0 and k1.
+>
+> In general any exception handler must save and restore all registers it
+> modifies except for k0 and k1.  That is the function of SAVE_ALL and
+> RESTORE_ALL.
 
 
-> Thanks and Regards,
-> Arun R Murthy
-> -------------
+OK, I 've added SAVL_ALL and RESTORE_ALL in handle_int,it works.
+
+
+ LEAF(handle_int)
+        print 'A'                 /* add for debug purpose*/
+        SAVE_ALL
+        nop
+        CLI
+        la     t9,do_IRQ
+        nop
+        jalr   t9
+        nop
+       RESTORE_ALL
+       nop
+  END(handle_int)
+
+
+However, a new problem arised :
+
+
+if I modify the main_loop like this:
+
+
+   void main_loop()
+ {
+    local_irq_enable(); /* enable timer interrupt*/
+    while(1)
+    {
+        loop_test1();
+
+   }
+ }
+void loop_test1()
+{
+   loop_test2();
+}
+
+void loop_test2()
+{
+
+}
+
+That is to say, if main_loop invoke a function that do noting but to
+invoke another nop function, the timer interrupt seems
+
+not to work properly£¬  at fisrt few seconds,  'do_irq_enter' print
+every 4 seconds, but after a while ,system print 'A'  from time to
+
+time , but not  print 'do_irq_enter'  any more.   it seemed that ,
+system has not acked the  timer interrupt.
+
+
+If I remove the loop_test1 in main_loop, everything works well.
+
+
+
+
+I don't know why this happened. Any suggestion£¿  Thank you

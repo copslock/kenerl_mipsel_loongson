@@ -1,101 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 18:52:54 +0200 (CEST)
-Received: from mxout1.idt.com ([157.165.5.25]:54264 "EHLO mxout1.idt.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491135Ab0I2Qwv convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Sep 2010 18:52:51 +0200
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o8TGqiZp012288;
-        Wed, 29 Sep 2010 09:52:44 -0700
-Received: from corpml3.corp.idt.com (corpml3.corp.idt.com [157.165.140.25])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o8TGqhWO010334;
-        Wed, 29 Sep 2010 09:52:44 -0700 (PDT)
-Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
-        by corpml3.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o8TGqhJ22784;
-        Wed, 29 Sep 2010 09:52:43 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 18:55:12 +0200 (CEST)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:32969 "EHLO
+        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491135Ab0I2QzK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Sep 2010 18:55:10 +0200
+Received: by pxi4 with SMTP id 4so322849pxi.36
+        for <linux-mips@linux-mips.org>; Wed, 29 Sep 2010 09:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:content-type;
+        bh=bW1FrFF/u43ji5Eu5SIDg5notApQ/JIXn8GyYZ8VPbw=;
+        b=KLvpcMvJ+YGHjt2gsyuK0CfDyAsXZX0AenClPaS9L8NOfJSH+3pqB5I+3+7NXn/qGN
+         yxLuepDcyWpSuSPaQTLtZlzDt96eNqNRvhO+s8IDfxLjuh27o6mZyj7p0cuCCdl8BeNS
+         jTr8SD8MMzChL8CZnzY7bSfNW+llg30CicsZo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :content-type;
+        b=EvRZn+rKtuL9I6F5CjL1yqWGbyhgVW7VW51lKZCM7yuS1jo8GX5o16UYS8cs0L4Ujm
+         N6GV7e3Eq4fg/5prnJyq+8527byv3UczHq7rbOSL5VayN3MWVRmmsqF4lFkQGuk59gJg
+         /TkWwyKHiwZoYVcBo2CgIAu0t+A0DJyQQZixI=
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: How to setup interrupts for a new board?
-Date:   Wed, 29 Sep 2010 09:52:39 -0700
-Message-ID: <AEA634773855ED4CAD999FBB1A66D0760115A691@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <4CA36859.2050506@caviumnetworks.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-thread-topic: How to setup interrupts for a new board?
-thread-index: Actf8nJM26aZ0Bb9SMuMRKhgiT2saQAA2pIg
-References: <AEA634773855ED4CAD999FBB1A66D0760115A5BC@CORPEXCH1.na.ads.idt.com> <4CA36859.2050506@caviumnetworks.com>
-From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-To:     "David Daney" <ddaney@caviumnetworks.com>
-Cc:     <linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.43
-X-archive-position: 27891
+Received: by 10.142.246.10 with SMTP id t10mr1680006wfh.99.1285779299731; Wed,
+ 29 Sep 2010 09:54:59 -0700 (PDT)
+Received: by 10.229.221.146 with HTTP; Wed, 29 Sep 2010 09:54:59 -0700 (PDT)
+In-Reply-To: <20100929031018.GB7999@rcwf64-moto>
+References: <AANLkTi==9kzfqq=Ubdo9Ms_9N=N+7rmcvg01500C4nuc@mail.gmail.com>
+        <4CA21E5D.7080905@caviumnetworks.com>
+        <AANLkTik6Uv_=G4NR41oiwTai=+pRvLy+t1U9rU3ZD=3c@mail.gmail.com>
+        <20100929031018.GB7999@rcwf64-moto>
+Date:   Thu, 30 Sep 2010 00:54:59 +0800
+Message-ID: <AANLkTin-JXGy_qbiX=MZoORCHDyRJeuo2Kq2ew10zLwS@mail.gmail.com>
+Subject: Re: Why mips eret failed?
+From:   "wilbur.chan" <wilbur512@gmail.com>
+To:     Adam Jiang <jiang.adam@gmail.com>,
+        "wilbur.chan" <wilbur512@gmail.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 27892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrei.Ardelean@idt.com
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Keywords:                
-X-UID: 23494
+X-Keywords:                 
+X-UID: 23496
 
-Hi David,
-
-I checked in the MIPS documentation and I couldn't find relevant
-information about this particular way of implementation. Unfortunately
-in the MIPS kernel source there are no enough comments.
-
-Thanks,
-Andrei
-
------Original Message-----
-From: David Daney [mailto:ddaney@caviumnetworks.com] 
-Sent: Wednesday, September 29, 2010 12:25 PM
-To: Ardelean, Andrei
-Cc: linux-mips@linux-mips.org
-Subject: Re: How to setup interrupts for a new board?
-
-On 09/29/2010 07:06 AM, Ardelean, Andrei wrote:
-> Hi,
+2010/9/29, Adam Jiang <jiang.adam@gmail.com>:
+> Quick reply on top
 >
-> I created new board specific files gd_xxxx similar with malta_xxxx and
-I
-> am trying to configure Linux interrupts in gd-int.c.
-> My board has no external interrupt controller like Malta has, it has
-no
-> PCI, I use Vectored interrupt mode and a mux routes the external
-> interrupts to the MIPS h/w interrupts.
-> Wthat is the meaning of the following switches and how to set them:
-> cpu_has_divec		
-> cpu_has_vce		
-> cpu_has_llsc
-> cpu_has_counter
-> cpu_has_vint
+> Take a look at
 >
-> What is the difference between:
-> setup_irq()
-> set_irq_handler()
-> set_vi_handler()
+> https://www.ibm.com/developerworks/mydeveloperworks/blogs/ddou/tags/u-boot?lang=en
 >
-> Can you point me to document regarding interrupts implementation in
-MIPS
-> Linux?
-
-Other than the Linux Kernel source code, make sure you have a copy of:
-
-MD00090-2B-MIPS32PRA-AFP, the "MIPS32(r) Architecture for Programmers 
-Volume III: The MIPS32(r) Privileged Resource Architecture"
-
-It can be downloaded from mips.com
-
-David Daney
-
-
->
-> Thanks,
-> Andrei
+> This may help, I suppose. Why don't forward this message to uboot
+> mailing list?
 >
 >
+
+I found this article  useful ,and found  drawback in my implemtation
+
+
+ That is , I've not fixed  gp before jump to do_IRQ.
+
+   LEAF(handle_int)
+        nop
+        SAVE_ALL
+        CLI
+       /*haven't fix gp*/
+        la     t9,do_IRQ
+        nop
+        jalr   t9
+        nop
+        RESTORE_ALL
+       nop
+  END(handle_int)

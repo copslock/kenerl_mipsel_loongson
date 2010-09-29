@@ -1,148 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 05:12:48 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:52963 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490960Ab0I2DMo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Sep 2010 05:12:44 +0200
-Received: by iwn41 with SMTP id 41so594763iwn.36
-        for <linux-mips@linux-mips.org>; Tue, 28 Sep 2010 20:12:42 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 06:42:16 +0200 (CEST)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:57675 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491000Ab0I2EmM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Sep 2010 06:42:12 +0200
+Received: by pvg12 with SMTP id 12so106982pvg.36
+        for <linux-mips@linux-mips.org>; Tue, 28 Sep 2010 21:42:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:date:from:to:cc:subject
-         :message-id:mail-followup-to:references:mime-version:content-type
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=2PywSe1BkXB7gzJ6TxMRtXQBpR4pjdjH6v2FVymKN0M=;
-        b=Mrj19kOdl01Xjs/p/l8Q7Jy5qqJ4L6s12dRNoGo9EiamFU8L8mEOmPi65A4m6c099E
-         PJCGwtlwRgYXKksKAMsKhtJkIZlix23Z5Fp4RBGw1jjIQ7IauHumWKtFdltGfg2QsVBc
-         sgpxjat0RpWEyziOMPs02gklO/nbHhsOoZmt0=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=ysYj4J9yCT/qAncHDdH2N1OZI+9h2s9grhgqxxt8bME=;
+        b=Ab1mpoI7bHy/BLK4kI6naQO1llzvpMN9qJTDjXcwLc0FmalNQ1trmB5wkbOA9wbLAu
+         mLp9pNSGg5pJF/91MIFPf9c9PCgvMCb+A1nj7DDppnTy9r9D6fYqj/WkQJQh2dgCUZ3w
+         NYKjmF9jL34FSoJyPifTI7Qd1AKJEzSHlmYyI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-type:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        b=c/uLLlWmlv+g1G1nTa6RqbDBNI6elHE+x7XmZy5MNdNZirZ1Joflk7R+WzmmfbdO/g
-         eDK3T/344fqfhp40uQl4gd1HIl3JsMIGg8xxRU4KZffG3QQGKs7Q/SEeuraOniZFR/qp
-         uP294eKnqXVUoI+IvZ6b5iok0TATAl1DGlOiw=
-Received: by 10.231.33.129 with SMTP id h1mr852010ibd.140.1285729961726;
-        Tue, 28 Sep 2010 20:12:41 -0700 (PDT)
-Received: from rcwf64-moto (KD113150081245.ppp-bb.dion.ne.jp [113.150.81.245])
-        by mx.google.com with ESMTPS id u3sm2567383ibu.6.2010.09.28.20.12.39
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=tG5eBfMOj0/cu5BJBetDvMo0aRdodoK63CdnAymJgGZOmX+8aEzNAoliRihcA4T1zx
+         qioACqHgu/X9jU9ybjaduEK7UJB+vTrwZIgzP02SWRcvCgHRVzh8HMGxl9/czxklKdwH
+         4v2kaIWNQXkjjMFBuEEMveWYkNv4igL6HqRpo=
+Received: by 10.114.108.14 with SMTP id g14mr1220396wac.185.1285735325453;
+        Tue, 28 Sep 2010 21:42:05 -0700 (PDT)
+Received: from localhost.localdomain ([122.163.149.155])
+        by mx.google.com with ESMTPS id x9sm13784595waj.15.2010.09.28.21.42.00
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 28 Sep 2010 20:12:40 -0700 (PDT)
-Date:   Wed, 29 Sep 2010 12:10:18 +0900
-From:   Adam Jiang <jiang.adam@gmail.com>
-To:     "wilbur.chan" <wilbur512@gmail.com>
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Why mips eret failed?
-Message-ID: <20100929031018.GB7999@rcwf64-moto>
-Mail-Followup-To: Adam Jiang <jiang.adam@gmail.com>,
-        "wilbur.chan" <wilbur512@gmail.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-References: <AANLkTi==9kzfqq=Ubdo9Ms_9N=N+7rmcvg01500C4nuc@mail.gmail.com>
- <4CA21E5D.7080905@caviumnetworks.com>
- <AANLkTik6Uv_=G4NR41oiwTai=+pRvLy+t1U9rU3ZD=3c@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AANLkTik6Uv_=G4NR41oiwTai=+pRvLy+t1U9rU3ZD=3c@mail.gmail.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 27885
+        Tue, 28 Sep 2010 21:42:04 -0700 (PDT)
+From:   Rahul Ruikar <rahul.ruikar@gmail.com>
+To:     Pat Gefre <pfg@sgi.com>, Greg Kroah-Hartman <gregkh@suse.de>,
+        Alan Cox <alan@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>
+Cc:     linux-mips@linux-mips.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rahul Ruikar <rahul.ruikar@gmail.com>
+Subject: [PATCH] serial: ioc3_serial: release resources in error return path
+Date:   Wed, 29 Sep 2010 10:11:19 +0530
+Message-Id: <1285735279-2952-1-git-send-email-rahul.ruikar@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 27886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiang.adam@gmail.com
+X-original-sender: rahul.ruikar@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 22980
+X-UID: 23013
 
-Quick reply on top
+In ioc3uart_probe()
+resources were not released during error return path
+- ports[phys_port]
 
-Take a look at 
+Signed-off-by: Rahul Ruikar <rahul.ruikar@gmail.com>
+---
+ drivers/serial/ioc3_serial.c |    8 ++++++--
+ 1 files changed, 6 insertions(+), 2 deletions(-)
 
-https://www.ibm.com/developerworks/mydeveloperworks/blogs/ddou/tags/u-boot?lang=en
-
-This may help, I suppose. Why don't forward this message to uboot
-mailing list?
-
-On Wed, Sep 29, 2010 at 08:11:32AM +0800, wilbur.chan wrote:
-> 2010/9/29 David Daney <ddaney@caviumnetworks.com>:
-> > On 09/28/2010 09:00 AM, wilbur.chan wrote:
-> 
-> >
-> > Probably not a good choice.
-> >
-> >
-> >> because it is just a demo,
-> >
-> > If you want your demo to work, you cannot clobber all the registers in an
-> > exception handler.  Most ABIs allow you to clobber only k0 and k1.
-> >
-> > In general any exception handler must save and restore all registers it
-> > modifies except for k0 and k1.  That is the function of SAVE_ALL and
-> > RESTORE_ALL.
-> 
-> 
-> OK, I 've added SAVL_ALL and RESTORE_ALL in handle_int,it works.
-> 
-> 
->  LEAF(handle_int)
->         print 'A'                 /* add for debug purpose*/
->         SAVE_ALL
->         nop
->         CLI
->         la     t9,do_IRQ
->         nop
->         jalr   t9
->         nop
->        RESTORE_ALL
->        nop
->   END(handle_int)
-> 
-> 
-> However, a new problem arised :
-> 
-> 
-> if I modify the main_loop like this:
-> 
-> 
->    void main_loop()
->  {
->     local_irq_enable(); /* enable timer interrupt*/
->     while(1)
->     {
->         loop_test1();
-> 
->    }
->  }
-> void loop_test1()
-> {
->    loop_test2();
-> }
-> 
-> void loop_test2()
-> {
-> 
-> }
-> 
-> That is to say, if main_loop invoke a function that do noting but to
-> invoke another nop function, the timer interrupt seems
-> 
-> not to work properly，  at fisrt few seconds,  'do_irq_enter' print
-> every 4 seconds, but after a while ,system print 'A'  from time to
-> 
-> time , but not  print 'do_irq_enter'  any more.   it seemed that ,
-> system has not acked the  timer interrupt.
-> 
-> 
-> If I remove the loop_test1 in main_loop, everything works well.
-> 
-> 
-> 
-> 
-> I don't know why this happened. Any suggestion？  Thank you
-> 
+diff --git a/drivers/serial/ioc3_serial.c b/drivers/serial/ioc3_serial.c
+index 93de907..1a182cf 100644
+--- a/drivers/serial/ioc3_serial.c
++++ b/drivers/serial/ioc3_serial.c
+@@ -2017,6 +2017,7 @@ ioc3uart_probe(struct ioc3_submodule *is, struct ioc3_driver_data *idd)
+ 	struct ioc3_port *port;
+ 	struct ioc3_port *ports[PORTS_PER_CARD];
+ 	int phys_port;
++	int cnt;
+ 
+ 	DPRINT_CONFIG(("%s (0x%p, 0x%p)\n", __func__, is, idd));
+ 
+@@ -2044,7 +2045,7 @@ ioc3uart_probe(struct ioc3_submodule *is, struct ioc3_driver_data *idd)
+ 		if (!port) {
+ 			printk(KERN_WARNING
+ 			       "IOC3 serial memory not available for port\n");
+-			goto out4;
++			goto out3;
+ 		}
+ 		spin_lock_init(&port->ip_lock);
+ 
+@@ -2138,13 +2139,16 @@ ioc3uart_probe(struct ioc3_submodule *is, struct ioc3_driver_data *idd)
+ 	/* register port with the serial core */
+ 
+ 	if ((ret = ioc3_serial_core_attach(is, idd)))
+-		goto out4;
++		goto out3;
+ 
+ 	Num_of_ioc3_cards++;
+ 
+ 	return ret;
+ 
+ 	/* error exits that give back resources */
++out3:
++	for (cnt = 0; cnt < phys_port; cnt++)
++		kfree(ports[cnt]);
+ out4:
+ 	kfree(card_ptr);
+ 	return ret;
+-- 
+1.7.2.3

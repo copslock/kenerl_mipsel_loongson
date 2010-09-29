@@ -1,80 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 18:55:12 +0200 (CEST)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:32969 "EHLO
-        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491135Ab0I2QzK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Sep 2010 18:55:10 +0200
-Received: by pxi4 with SMTP id 4so322849pxi.36
-        for <linux-mips@linux-mips.org>; Wed, 29 Sep 2010 09:54:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 01:20:44 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:57339 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491099Ab0I2XUl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Sep 2010 01:20:41 +0200
+Received: by fxm15 with SMTP id 15so1191309fxm.36
+        for <linux-mips@linux-mips.org>; Wed, 29 Sep 2010 16:20:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:content-type;
-        bh=bW1FrFF/u43ji5Eu5SIDg5notApQ/JIXn8GyYZ8VPbw=;
-        b=KLvpcMvJ+YGHjt2gsyuK0CfDyAsXZX0AenClPaS9L8NOfJSH+3pqB5I+3+7NXn/qGN
-         yxLuepDcyWpSuSPaQTLtZlzDt96eNqNRvhO+s8IDfxLjuh27o6mZyj7p0cuCCdl8BeNS
-         jTr8SD8MMzChL8CZnzY7bSfNW+llg30CicsZo=
+        h=domainkey-signature:received:received:from:subject:date:user-agent
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:to:message-id;
+        bh=lTfnnJzmn+VVQXW7MadFrjAcXk+7AkengYWm9S9uJqw=;
+        b=MKlQ4CexiSsdR1vMENUddXVJXdwS+S1Wf/TBav+BjE7mLwq15tF6oIzcQ0jHuuR3bL
+         H4L8gMUKo3lZoSfbJpBr+EGgp3clpNKGyBP13fvn2ftW4z5EHPZb7t2oD7XIXrVscYf8
+         68pXEAysm6mIu9EuiuoIkJ7b8l9Hi7cPU4svM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :content-type;
-        b=EvRZn+rKtuL9I6F5CjL1yqWGbyhgVW7VW51lKZCM7yuS1jo8GX5o16UYS8cs0L4Ujm
-         N6GV7e3Eq4fg/5prnJyq+8527byv3UczHq7rbOSL5VayN3MWVRmmsqF4lFkQGuk59gJg
-         /TkWwyKHiwZoYVcBo2CgIAu0t+A0DJyQQZixI=
+        h=from:subject:date:user-agent:mime-version:content-type
+         :content-transfer-encoding:content-disposition:to:message-id;
+        b=Pf5EX+VSQgplx/PkE/fwYOYj0j1xK91cDPvCnxBb73cl0g9myvJNjvZQMtBvRHdr1O
+         EbtDvmSHcYw/nXDLkFD4peStqQOJX2K38KbVzlPradVC9uN865tVfs74cY38y3P+aIY6
+         mOafXsHUa3bfl+hoAuZxBhA4AFklwTVg/3NyA=
+Received: by 10.223.118.73 with SMTP id u9mr2774398faq.36.1285802434746;
+        Wed, 29 Sep 2010 16:20:34 -0700 (PDT)
+Received: from [192.168.1.13] (abwo12.neoplus.adsl.tpnet.pl [83.8.238.12])
+        by mx.google.com with ESMTPS id e17sm4177423faa.15.2010.09.29.16.20.30
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 29 Sep 2010 16:20:32 -0700 (PDT)
+From:   Jakub Narebski <jnareb@gmail.com>
+Subject: [ANNOUNCE] Git User's Survey 2010 is now up!
+Date:   Thu, 30 Sep 2010 01:20:21 +0200
+User-Agent: KMail/1.9.3
 MIME-Version: 1.0
-Received: by 10.142.246.10 with SMTP id t10mr1680006wfh.99.1285779299731; Wed,
- 29 Sep 2010 09:54:59 -0700 (PDT)
-Received: by 10.229.221.146 with HTTP; Wed, 29 Sep 2010 09:54:59 -0700 (PDT)
-In-Reply-To: <20100929031018.GB7999@rcwf64-moto>
-References: <AANLkTi==9kzfqq=Ubdo9Ms_9N=N+7rmcvg01500C4nuc@mail.gmail.com>
-        <4CA21E5D.7080905@caviumnetworks.com>
-        <AANLkTik6Uv_=G4NR41oiwTai=+pRvLy+t1U9rU3ZD=3c@mail.gmail.com>
-        <20100929031018.GB7999@rcwf64-moto>
-Date:   Thu, 30 Sep 2010 00:54:59 +0800
-Message-ID: <AANLkTin-JXGy_qbiX=MZoORCHDyRJeuo2Kq2ew10zLwS@mail.gmail.com>
-Subject: Re: Why mips eret failed?
-From:   "wilbur.chan" <wilbur512@gmail.com>
-To:     Adam Jiang <jiang.adam@gmail.com>,
-        "wilbur.chan" <wilbur512@gmail.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 27892
+Content-Type: text/plain;
+  charset="iso-8859-2"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+To:     Undisclosed.Recipients: ;
+Message-Id: <201009300120.25173.jnareb@gmail.com>
+X-archive-position: 27893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: jnareb@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 23496
+X-UID: 23738
 
-2010/9/29, Adam Jiang <jiang.adam@gmail.com>:
-> Quick reply on top
->
-> Take a look at
->
-> https://www.ibm.com/developerworks/mydeveloperworks/blogs/ddou/tags/u-boot?lang=en
->
-> This may help, I suppose. Why don't forward this message to uboot
-> mailing list?
->
->
+Hello all,
 
-I found this article  useful ,and found  drawback in my implemtation
+This announcement is sent to this mailing list because yout project
+uses Git as a version control system.
+
+We would like to ask you a few questions about your use of the Git
+version control system. This survey is mainly to understand who is
+using Git, how and why.
+
+The results will be published to the Git wiki on the GitSurvey2010
+page (https://git.wiki.kernel.org/index.php/GitSurvey2010) and
+discussed on the git mailing list (git@vger.kernel.org).
 
 
- That is , I've not fixed  gp before jump to do_IRQ.
+The survey would be open from 1 September till 15 October 2010.
 
-   LEAF(handle_int)
-        nop
-        SAVE_ALL
-        CLI
-       /*haven't fix gp*/
-        la     t9,do_IRQ
-        nop
-        jalr   t9
-        nop
-        RESTORE_ALL
-       nop
-  END(handle_int)
+
+Please devote a few minutes of your time to fill this simple
+questionnaire, it will help a lot the git community to understand your
+needs, what you like of Git, and of course what you don't like  of it.
+
+The survey can be found here:
+  http://tinyurl.com/GitSurvey2010
+  https://www.survs.com/survey/MUPYR8UJ4B
+
+
+Git User's Survey 2010 was originally announced on git mailing list
+in the following mail:
+  http://article.gmane.org/gmane.comp.version-control.git/154986
+
+-- 
+Jakub Narebski
+on behalf of
+Git Development Community
+http://git-scm.com

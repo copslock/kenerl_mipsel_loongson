@@ -1,28 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 06:51:55 +0200 (CEST)
-Received: from eu1sys200aog105.obsmtp.com ([207.126.144.119]:58239 "EHLO
-        eu1sys200aog105.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491001Ab0I2Evv convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Sep 2010 06:51:51 +0200
-Received: from source ([167.4.1.35]) (using TLSv1) by eu1sys200aob105.postini.com ([207.126.147.11]) with SMTP
-        ID DSNKTKLFxxDPUFT2J/8ciS2Fa6SL0dq77MNt@postini.com; Wed, 29 Sep 2010 04:51:50 UTC
-Received: from zeta.dmz-us.st.com (ns4.st.com [167.4.80.115])
-        by beta.dmz-us.st.com (STMicroelectronics) with ESMTP id 7BD5268;
-        Wed, 29 Sep 2010 04:46:23 +0000 (GMT)
-Received: from relay1.stm.gmessaging.net (unknown [10.230.100.17])
-        by zeta.dmz-us.st.com (STMicroelectronics) with ESMTP id 516B6465;
-        Wed, 29 Sep 2010 04:49:37 +0000 (GMT)
-Received: from exdcvycastm004.EQ1STM.local (alteon-source-exch [10.230.100.61])
-        (using TLSv1 with cipher RC4-MD5 (128/128 bits))
-        (Client CN "exdcvycastm004", Issuer "exdcvycastm004" (not verified))
-        by relay1.stm.gmessaging.net (Postfix) with ESMTPS id C906F24C075;
-        Wed, 29 Sep 2010 06:49:33 +0200 (CEST)
-Received: from EXDCVYMBSTM006.EQ1STM.local ([10.230.100.3]) by
- exdcvycastm004.EQ1STM.local ([10.230.100.2]) with mapi; Wed, 29 Sep 2010
- 06:49:36 +0200
-From:   Arun MURTHY <arun.murthy@stericsson.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Sep 2010 14:12:42 +0200 (CEST)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:33203 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491082Ab0I2MMi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Sep 2010 14:12:38 +0200
+Received: by yxm34 with SMTP id 34so295559yxm.36
+        for <linux-mips@linux-mips.org>; Wed, 29 Sep 2010 05:12:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=BDb1VoXr0QTpBmdQQlZnJ32JgAA5ubCktBPJfaf38a4=;
+        b=W5UisLfLmu6QOOQIyhNrukRK2lT/kokJDrs1hfFqULhdF7hVDTlKReVCWjHfvTlDI+
+         q9WUI4UalgXVJ9V3bayqBBjlESr8otLJ+dYkFld2y0cmRbVvR+OWY8/tSnOaucqZbFqd
+         JdkxQyTID6sDyDjIExBv3BZavRKEOS2dWsluU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=URJiCDWYde7QVyI/Mgel9xqucXpNCJsnCoEEXRpEpNlMhz+bxZFiZ2YIqPYwWQUs1R
+         R6y87d3hQjmIkDblQrJjwuKfRr+qg/taJXL/byPBPu7st6ZN9JUKunI1mUmYIcwPrIul
+         DQYFmBIuzJ8xdtou65yUtekzr+3gLvfX5VFq4=
+MIME-Version: 1.0
+Received: by 10.42.8.18 with SMTP id g18mr1795405icg.34.1285762351189; Wed, 29
+ Sep 2010 05:12:31 -0700 (PDT)
+Received: by 10.42.164.68 with HTTP; Wed, 29 Sep 2010 05:12:31 -0700 (PDT)
+In-Reply-To: <F45880696056844FA6A73F415B568C69532DC8B7E4@EXDCVYMBSTM006.EQ1STM.local>
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
+        <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
+        <4CA1AD2B.8000905@metafoo.de>
+        <F45880696056844FA6A73F415B568C69532DC2FB6B@EXDCVYMBSTM006.EQ1STM.local>
+        <4CA1BC16.3020702@metafoo.de>
+        <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
+        <4CA25841.4090702@metafoo.de>
+        <F45880696056844FA6A73F415B568C69532DC8B7E4@EXDCVYMBSTM006.EQ1STM.local>
+Date:   Wed, 29 Sep 2010 17:42:31 +0530
+Message-ID: <AANLkTingb8ox5h5rN1YrxONibfrWLicoiS6yqKf_v5bJ@mail.gmail.com>
+Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
+From:   Trilok Soni <soni.trilok@gmail.com>
+To:     Arun MURTHY <arun.murthy@stericsson.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
         Andrew Morton <akpm@linux-foundation.org>,
         "kernel@pengutronix.de" <kernel@pengutronix.de>,
@@ -40,219 +57,41 @@ Cc:     "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         Mattias WALLIN <mattias.wallin@stericsson.com>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        STEricsson_nomadik_linux <STEricsson_nomadik_linux@list.st.com>
-Date:   Wed, 29 Sep 2010 06:49:34 +0200
-Subject: RE: [PATCH 1/7] pwm: Add pwm core driver
-Thread-Topic: [PATCH 1/7] pwm: Add pwm core driver
-Thread-Index: ActfUMFOeVIb8N0jSaO4C/FafBgPbgAP7GfQ
-Message-ID: <F45880696056844FA6A73F415B568C69532DC8B7E4@EXDCVYMBSTM006.EQ1STM.local>
-References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
- <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
- <4CA1AD2B.8000905@metafoo.de>
- <F45880696056844FA6A73F415B568C69532DC2FB6B@EXDCVYMBSTM006.EQ1STM.local>
- <4CA1BC16.3020702@metafoo.de>
- <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
- <4CA25841.4090702@metafoo.de>
-In-Reply-To: <4CA25841.4090702@metafoo.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-archive-position: 27887
+        STEricsson_nomadik_linux <STEricsson_nomadik_linux@list.st.com>,
+        Bill Gatliff <bgat@billgatliff.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 27888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arun.murthy@stericsson.com
+X-original-sender: soni.trilok@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 23017
+X-UID: 23257
 
-> Arun MURTHY wrote:
-> >>>> Shouldn't PWM_DEVICES select HAVE_PWM?
-> >>>
-> >>> No not required, the entire concept is to remove HAVE_PWM and use
-> >> PWM_CORE.
-> >>
-> >> Well in patch 4 you say that PWM_CORE is currently limited to ARM.
-> >> Furthermore you
-> >> change the pwm-backlight and pwm-led Kconfig entries to depend on
-> >> HAVE_PWM ||
-> >> PWM_CORE. Adding a select HAVE_PWM here would make those changes
-> >> unnecessary.
-> > HAVE_PWM is retained just because the mips pwm driver is not aligned
-> with the pwm core driver.
-> > On mips pwm driver aligning to the pwm core driver HAVE_PWM will be
-> replaced by PWM_CORE.
-> >
-> >> HAVE_PWM should be set, when pwm_* functions are available. When
-> your
-> >> pwm-core driver
-> >> is selected they are available.
-> > On applying this patch set pwm_* function will be exported in
-> pwm_core driver and in mips pwm driver.
-> > Since mips pwm driver is not aligned with the pwm core, HAVE_PWM is
-> retained and removed in places where pwm drivers register to pwm core
-> driver.
-> 
-> pwm_{enable,disable,request,free} are the interface of the pwm api.
-> Your pwm-core is
-> one implementation of that interface. A somewhat special though,
-> because it tries to
-> be a generic implementation.
-> There are still other implementations though. For example right now the
-> mips jz4740 one.
-> In my opinion HAVE_PWM should be defined if there is a implementation
-> for the pwm
-> interface is available.
-> I know that your plan is that in the end pwm-core is the only
-> implementation of the
-> pwm interface.
-Yes for that reason, I still have retained the HAVE_PWM, once that is
-also aligned with pwm core, HAVE_PWM will be totally removed.
-I am in the process of doing the same in this series of patch, but was
-blocked by mips jz4740 pwm driver.
-Will do that very soon in near future.
+Hi Arun,
 
-> 
-> But right now it is not and on the other hand some SoC implementors
-> might choose that
-> they want to provide their own minimal pwm interface implementation.
-> Furthermore this would allow you to start with pwm-core for one SoC
-> which you have on
-> your desk and where you can properly test things and keep the patches
-> clean from
-> clutter changing all the different archs.
-> Once pwm-core is in a proper shape you or other people can start
-> porting all the
-> different SoC support code to pwm-core.
-That's the exact reason for me to come up with this core driver, which has
-the minimal part and the one that are common in all pwm drivers.
-Not only common most if not all pwm drivers just make use of only these
-functions.
-Moreover I have aligned all existing pwm driver in my patch 4/7 :-)
+Adding Bill Gatliff (anyway, CC list already crowded)
 
-> 
-> Similar behavior is for example true for the gpio api. There is gpiolib
-> which is the
-> generic implementation which allows having gpio chips outside of the
-> chip. On the
-> other hand there are still archs which choose to have their own gpio
-> api implementation.
-> 
-> >
-> >>> pwm_device will be passed to each and every pwm driver that are
-> >> registered as client with pwm core.
-> >>> The list consists of the registered pwm drivers and is to be
-> handled
-> >> by pwm core.
-> >>> Why should each and every pwm driver get to know about the entire
-> pwm
-> >> driver list?
-> >> Declare the list field to be private, by saying that it should only
-> be
-> >> touched by the
-> >> core. Right now you allocate a rather small additional structure for
-> >> each registered
-> >> device. This could be easily be avoided by embedding the list field
-> >> into the
-> >> pwm_device struct.
-> >
-> > The one that is being allocated in register is the pwm_device and
-> this has to. Because each pwm driver will have their own data related
-> to ops, pwm_id.
-> > Also note that there exists an element "data" that points to the pwm
-> device specific information. Hence this allocation is required.
-> >
-> >>>>> +	}
-> >>>>> +	pwm->pwm_dev = pwm_dev;
-> >>>>> +	list_add_tail(&pwm->list, &di->list);
-> >>>>> +	up_write(&pwm_list_lock);
-> >>>>> +
-> >>>> I guess you only need to lock the list when accessing the list and
-> >>>> adding the new
-> >>>> pwm_dev.
-> >>> Oops, thanks for pointing out, will implement this in the v2 patch.
-> > Coming back to this, I guess the locking has to be done while
-> traversing the list also, as my present pointer in the list my get over
-> written by the time I add an element to list. Please let me know if I
-> am wrong.
-> >
-> >>>>> +struct pwm_ops {
-> >>>>> +	int (*pwm_config)(struct pwm_device *pwm, int duty_ns, int
-> >>>> period_ns);
-> >>>>> +	int (*pwm_enable)(struct pwm_device *pwm);
-> >>>>> +	int (*pwm_disable)(struct pwm_device *pwm);
-> >>>>> +	char *name;
-> >>>>> +};
-> >>>>> +
-> >>>> Shouldn't name be part of the pwm_device? That would allow the ops
-> >> to
-> >>>> be shared
-> >>>> between different devices.
-> >>> Good catch, the reason being that 2 or more devices can share the
-> >> same ops and get registered to pwm core.
-> >>> But the catch lies while identifying the pwm device while the
-> clients
-> >> are requesting for.
-> >>> The pwm backlight will request the pwm driver by name. This is
-> >> parameter that distinguishes among different pwm devices
-> irrespective
-> >> of same ops or not.
-> >> Yes. And thats why it should go into the pwm_device struct itself.
-> >>
-> >> If an additional ops struct is allocated for each device anyway we
-> >> would be better of
-> >> embedding it directly into the device struct instead of just holding
-> a
-> >> pointer to it.
-> > Yes ops structure will be allocated. But how can we get access to the
-> ops structure of another driver?
-> > And moreover two pwm driver sharing same ops ideally means a single
-> pwm module. If not everything atleast the pwm registers of two
-> different modules changes. So this scenario can never occur.
-> >
-> >>>>>  #endif /* __LINUX_PWM_H */
-> >>>> It might be also a good idea to add a device class for pwm
-> devices.
-> >>> Sure, but can you please explain with an example the use case.
-> >>>
-> >> Well, for one it helps to keep data structured.
-> >> And there would be functions to traverse all devices of a class, so
-> you
-> >> could get rid
-> >> of your "di" list.
-> > Sorry, I didn't get you can you please elaborate more?
-> >
-> Sure. You would create a "struct class" device class for pwm devices.
-> For each
-> registered pwm device there would then be a "struct device"
-> representing the pwm
-> device whithin the linux device tree.
-> This has serveral advantages:
-> For one you can use this for keeping track of the all the pwm devices
-> instead of
-> having your custom list. You can use class_for_each_device and
-> class_find_device
-> instead of traversing your list. This would make the core much simpler
-> and more readable.
-> Also you can use the device structure for refcounting of modules and
-> devices. Right
-> now if a pwm-core driver, like the twl6040, is build as a module you
-> can remove the
-> module while another driver, for example pwm-backlight, is using a pwm
-> device from
-> the pwm-core driver. Then upon accessing the pwm device from the pwm-
-> backlight driver
-> the code would crash, because it would access already freed memory.
-> 
-Can this be taken after this patch is merged?
+On Wed, Sep 29, 2010 at 10:19 AM, Arun MURTHY
+<arun.murthy@stericsson.com> wrote:
+>> Arun MURTHY wrote:
+>> >>>> Shouldn't PWM_DEVICES select HAVE_PWM?
+>> >>>
+>> >>> No not required, the entire concept is to remove HAVE_PWM and use
+>> >> PWM_CORE.
 
-Thanks and Regards,
-Arun R Murthy
-------------
+There is already nice and clean framework written by Bill for PWM, if
+you grep the LKML and linux-embedded mailing list archive then you
+will get his patches, and it seems that he had promised to send the
+updated version few week back, but not heard from him (may be because
+he was travelling as per FB status).
+
+Please evaluate that framework too.
+
+-- 
+---Trilok Soni
+http://triloksoni.wordpress.com
+http://www.linkedin.com/in/triloksoni

@@ -1,109 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 15:31:41 +0200 (CEST)
-Received: from mxout1.idt.com ([157.165.5.25]:51312 "EHLO mxout1.idt.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491950Ab0I3Nbi convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Sep 2010 15:31:38 +0200
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o8UDVThk028697;
-        Thu, 30 Sep 2010 06:31:29 -0700
-Received: from corpml3.corp.idt.com (corpml3.corp.idt.com [157.165.140.25])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o8UDVRhv027972;
-        Thu, 30 Sep 2010 06:31:28 -0700 (PDT)
-Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
-        by corpml3.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o8UDVOD01179;
-        Thu, 30 Sep 2010 06:31:24 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 15:38:02 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:59547 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491149Ab0I3Nh7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Sep 2010 15:37:59 +0200
+Received: by pzk32 with SMTP id 32so674343pzk.36
+        for <multiple recipients>; Thu, 30 Sep 2010 06:37:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from
+         :user-agent:mime-version:to:subject:content-type
+         :content-transfer-encoding;
+        bh=CXwo5ruG7ab8zvD3nN6Ng8W0Z/UMob2uynVADBflXjU=;
+        b=No+fH2zix0fxqSr/Quc7ZeVpQE8BI4RApJ4f8WGPHXWAvoNsp/OjVin/o42fyOlA4/
+         +vC17DNmzNp49b7Z2k6cHaRJaUB2ytpBVCuVLwYAwCDAK3JRzcwzqrl9/QfHDpZArYcH
+         a/FC6hUZBEE851122MgccJ8IHkMdMDfSD9oss=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:subject
+         :content-type:content-transfer-encoding;
+        b=tKt+LISmW5tyuPGyGmjgryp1J7xqTO34uPgZndcC2Id6TKkM7Y8zmzqbzrQ46qyuAH
+         gGTS9Xz0JwM6zOVzDUuS3N7aLXTJwzB1645bCf6j5gUOcjyyhhAtotN2ybYPXKNF4EHu
+         Z5vuJT4ed2R8QKfOosehqC2G1wm5nbhF8xF/Y=
+Received: by 10.114.102.20 with SMTP id z20mr4254229wab.133.1285853872342;
+        Thu, 30 Sep 2010 06:37:52 -0700 (PDT)
+Received: from [114.84.80.202] ([114.84.80.202])
+        by mx.google.com with ESMTPS id s5sm16635790wak.12.2010.09.30.06.37.40
+        (version=SSLv3 cipher=RC4-MD5);
+        Thu, 30 Sep 2010 06:37:51 -0700 (PDT)
+Message-ID: <4CA4920C.30401@gmail.com>
+Date:   Thu, 30 Sep 2010 21:35:08 +0800
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.9) Gecko/20100915 Thunderbird/3.1.4
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: How to setup interrupts for a new board?
-Date:   Thu, 30 Sep 2010 06:31:23 -0700
-Message-ID: <AEA634773855ED4CAD999FBB1A66D0760115A95C@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <alpine.LFD.2.00.1009300306230.21189@eddie.linux-mips.org>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-thread-topic: How to setup interrupts for a new board?
-thread-index: ActgR8lIqo7HbQzzQ6ufyhxNt69iXQAWR4JQ
-References: <AEA634773855ED4CAD999FBB1A66D0760115A5BC@CORPEXCH1.na.ads.idt.com> <4CA36859.2050506@caviumnetworks.com> <AEA634773855ED4CAD999FBB1A66D0760115A691@CORPEXCH1.na.ads.idt.com> <alpine.LFD.2.00.1009300306230.21189@eddie.linux-mips.org>
-From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     "David Daney" <ddaney@caviumnetworks.com>,
-        <linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.43
-X-archive-position: 27903
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        ddaney@caviumnetworks.com, a.p.zijlstra@chello.nl,
+        paulus@samba.org, mingo@elte.hu, acme@redhat.com
+Subject: [PATCH resend] Perf-tool/MIPS: support cross compiling of tools/perf
+ for MIPS
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: 7bit
+X-archive-position: 27904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrei.Ardelean@idt.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 24207
+X-UID: 24211
 
-Hi Maciej,
 
-I have read all the books you suggested and I work having all of them on
-my desk. I come back to them frequently to check diverse stuff. My
-problems are: 
-- Why Malta implementation doesn't activate cpu_has_veic although they
-have 8259 external interrupt controller? Malta implementation doesn't
-activate cpu_has_vint too although Vectored interrupt mode should be the
-minimum recommended mode if external controller is not present.
-- Looking at Malta_xxxx specific files, it seems to me that they do not
-follow Linux Porting Guide document I have read on MIPS Linux.
 
-In addition, my company pays Timesys for support and regarding
-cpu-feature.h define switches, they said that they know nothing.
+(Directing this patch to Perf-events maintainers for review.)
 
-What I was hoping was to find a MIPS Linux implementation which uses
-Vectored Interrupt Mode (VI) with few h/w interrupts including the timer
-routed to the MIPS processor or at least some document with some details
-of implementation. That will shorten significantly my porting. Sure, if
-I find nothing, I'll write from scratch as I understand, but it takes
-for sure much longer and is worth to try first finding a close example.
-    
+With the kernel facility of Linux performance counters, we want the user
+level tool tools/perf to be cross compiled for MIPS platform. To do this,
+we need to include unistd.h, add rmb() and cpu_relax() in perf.h.
+
+Your review comments are especially required for the definition of rmb():
+In perf.h, we need to have a proper rmb() for _all_ MIPS platforms. And
+we don't have CONFIG_* things for use in here. Looking at barrier.h,
+rmb() goes into barrier() and __sync() for CAVIUM OCTEON and other CPUs,
+respectively. What's more, __sync() has different versions as well.
+Referring to BARRIER() in dump_tlb.c, I propose the "common" definition
+for perf tool rmb() in this patch. Do you have any comments?
+
+In addition, for testing the kernel part code I sent several days
+ago, I was using the "particular" rmb() version for 24K/34K/74K cores:
+
+#define rmb()           asm volatile(                           \
+                                ".set   push\n\t"               \
+                                ".set   noreorder\n\t"          \
+                                ".set   mips2\n\t"              \
+                                "sync\n\t"                      \
+                                ".set   pop"                    \
+                                : /* no output */               \
+                                : /* no input */                \
+                                : "memory")
+
+This is the definition of __sync() for CONFIG_CPU_HAS_SYNC.
+
+
 Thanks,
-Andrei
 
+Deng-Cheng
 
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+---
+ tools/perf/perf.h |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
 
------Original Message-----
-From: Maciej W. Rozycki [mailto:macro@linux-mips.org] 
-Sent: Wednesday, September 29, 2010 10:32 PM
-To: Ardelean, Andrei
-Cc: David Daney; linux-mips@linux-mips.org
-Subject: RE: How to setup interrupts for a new board?
-
-Hi Andrei,
-
-> I checked in the MIPS documentation and I couldn't find relevant
-> information about this particular way of implementation. Unfortunately
-> in the MIPS kernel source there are no enough comments.
-
- With reasonable understanding what the MIPS architecture features
-covered 
-by these macros, functions, etc. are you should be able to infer from 
-Linux code what it actually does.
-
- May I suggest some reading on the architecture first then?  I realise 
-MIPS Technologies' architecture specifications may not be the best way
-to 
-learn how the architecture works, so why not try a MIPS textbook
-instead, 
-such as Dominic Sweetman's excellent "See MIPS Run Linux" (ISBN 
-978-0-12-088421-6)?  While not covering such details of Linux as you are
-
-looking for, it includes related introductory subjects to get you
-started.  
-And of course it covers the MIPS architecture itself.  You may be able
-to 
-find the book at your nearby (or less near) library.
-
- I think it's about as much as we can help -- you need to get down to 
-understanding the details yourself or you'll be bound to asking around 
-helplessly all the time.
-
-  Maciej
+diff --git a/tools/perf/perf.h b/tools/perf/perf.h
+index 6fb379b..cd05284 100644
+--- a/tools/perf/perf.h
++++ b/tools/perf/perf.h
+@@ -73,6 +73,18 @@
+ #define cpu_relax()	asm volatile("":::"memory")
+ #endif
+ 
++#ifdef __mips__
++#include "../../arch/mips/include/asm/unistd.h"
++#define rmb()		asm volatile(					\
++				".set	noreorder\n\t"			\
++				"nop;nop;nop;nop;nop;nop;nop\n\t"	\
++				".set	reorder"			\
++				: /* no output */			\
++				: /* no input */			\
++				: "memory")
++#define cpu_relax()	asm volatile("" ::: "memory")
++#endif
++
+ #include <time.h>
+ #include <unistd.h>
+ #include <sys/types.h>

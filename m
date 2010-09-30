@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 15:38:02 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:59547 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491149Ab0I3Nh7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Sep 2010 15:37:59 +0200
-Received: by pzk32 with SMTP id 32so674343pzk.36
-        for <multiple recipients>; Thu, 30 Sep 2010 06:37:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 15:39:16 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:45273 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491149Ab0I3NjN convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 30 Sep 2010 15:39:13 +0200
+Received: by bwz19 with SMTP id 19so1812390bwz.36
+        for <multiple recipients>; Thu, 30 Sep 2010 06:39:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:subject:content-type
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        bh=CXwo5ruG7ab8zvD3nN6Ng8W0Z/UMob2uynVADBflXjU=;
-        b=No+fH2zix0fxqSr/Quc7ZeVpQE8BI4RApJ4f8WGPHXWAvoNsp/OjVin/o42fyOlA4/
-         +vC17DNmzNp49b7Z2k6cHaRJaUB2ytpBVCuVLwYAwCDAK3JRzcwzqrl9/QfHDpZArYcH
-         a/FC6hUZBEE851122MgccJ8IHkMdMDfSD9oss=
+        bh=0ipPoBihnMYxmRO9ogErC58U+Mr2DTbGPwLLUIYHkzo=;
+        b=x32ixBkxCH6pVBHKOyJ7yYn5GrINmvS5XNKXtfgPkwN5eAHipKtWjFPdtKL7e6Fig6
+         bMjq0Pv1eP728ZCuil/CV/zNZiWC7XCseJ/+JxNHiHIZ8QjL3JEYYlMuwv0CCuxmzb4W
+         c7nXGXkl0h6e9kX1U43ZA44gJiRZoLqchtcuo=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:subject
-         :content-type:content-transfer-encoding;
-        b=tKt+LISmW5tyuPGyGmjgryp1J7xqTO34uPgZndcC2Id6TKkM7Y8zmzqbzrQ46qyuAH
-         gGTS9Xz0JwM6zOVzDUuS3N7aLXTJwzB1645bCf6j5gUOcjyyhhAtotN2ybYPXKNF4EHu
-         Z5vuJT4ed2R8QKfOosehqC2G1wm5nbhF8xF/Y=
-Received: by 10.114.102.20 with SMTP id z20mr4254229wab.133.1285853872342;
-        Thu, 30 Sep 2010 06:37:52 -0700 (PDT)
-Received: from [114.84.80.202] ([114.84.80.202])
-        by mx.google.com with ESMTPS id s5sm16635790wak.12.2010.09.30.06.37.40
-        (version=SSLv3 cipher=RC4-MD5);
-        Thu, 30 Sep 2010 06:37:51 -0700 (PDT)
-Message-ID: <4CA4920C.30401@gmail.com>
-Date:   Thu, 30 Sep 2010 21:35:08 +0800
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.9) Gecko/20100915 Thunderbird/3.1.4
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=J49lzZfcEmbnavg+BeMpvinK0KE0fqPITzapo9p/J1SdndJ+zQDK9SVI44vNOqISpD
+         TDztJPG7iGeirFRAyDqVx4phkgSgrlkLoAcS5GR6rXgw2JuaQm7BHW5vIEOPhb7kpVmW
+         ZQ/X2bI4dMpAHOi/03qmsppG/5NSl7n+uRXBI=
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        ddaney@caviumnetworks.com, a.p.zijlstra@chello.nl,
-        paulus@samba.org, mingo@elte.hu, acme@redhat.com
-Subject: [PATCH resend] Perf-tool/MIPS: support cross compiling of tools/perf
- for MIPS
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 7bit
-X-archive-position: 27904
+Received: by 10.204.81.203 with SMTP id y11mr2477724bkk.152.1285853952826;
+ Thu, 30 Sep 2010 06:39:12 -0700 (PDT)
+Received: by 10.204.64.212 with HTTP; Thu, 30 Sep 2010 06:39:12 -0700 (PDT)
+In-Reply-To: <20100930092608.GA6059@elte.hu>
+References: <1285837760-10362-1-git-send-email-dengcheng.zhu@gmail.com>
+        <1285837760-10362-7-git-send-email-dengcheng.zhu@gmail.com>
+        <20100930092608.GA6059@elte.hu>
+Date:   Thu, 30 Sep 2010 21:39:12 +0800
+Message-ID: <AANLkTinFV8QWHKS104E0Y3Hzqg6VqNzYZL7AkPDD3yWK@mail.gmail.com>
+Subject: Re: [PATCH v7 6/6] MIPS: add support for hardware performance events (mipsxx)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     Ingo Molnar <mingo@elte.hu>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        a.p.zijlstra@chello.nl, paulus@samba.org, acme@redhat.com,
+        jamie.iles@picochip.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 27905
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,69 +49,35 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 24211
+X-UID: 24212
 
+No problem. It's done.
 
-
-(Directing this patch to Perf-events maintainers for review.)
-
-With the kernel facility of Linux performance counters, we want the user
-level tool tools/perf to be cross compiled for MIPS platform. To do this,
-we need to include unistd.h, add rmb() and cpu_relax() in perf.h.
-
-Your review comments are especially required for the definition of rmb():
-In perf.h, we need to have a proper rmb() for _all_ MIPS platforms. And
-we don't have CONFIG_* things for use in here. Looking at barrier.h,
-rmb() goes into barrier() and __sync() for CAVIUM OCTEON and other CPUs,
-respectively. What's more, __sync() has different versions as well.
-Referring to BARRIER() in dump_tlb.c, I propose the "common" definition
-for perf tool rmb() in this patch. Do you have any comments?
-
-In addition, for testing the kernel part code I sent several days
-ago, I was using the "particular" rmb() version for 24K/34K/74K cores:
-
-#define rmb()           asm volatile(                           \
-                                ".set   push\n\t"               \
-                                ".set   noreorder\n\t"          \
-                                ".set   mips2\n\t"              \
-                                "sync\n\t"                      \
-                                ".set   pop"                    \
-                                : /* no output */               \
-                                : /* no input */                \
-                                : "memory")
-
-This is the definition of __sync() for CONFIG_CPU_HAS_SYNC.
-
-
-Thanks,
 
 Deng-Cheng
 
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
----
- tools/perf/perf.h |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
 
-diff --git a/tools/perf/perf.h b/tools/perf/perf.h
-index 6fb379b..cd05284 100644
---- a/tools/perf/perf.h
-+++ b/tools/perf/perf.h
-@@ -73,6 +73,18 @@
- #define cpu_relax()	asm volatile("":::"memory")
- #endif
- 
-+#ifdef __mips__
-+#include "../../arch/mips/include/asm/unistd.h"
-+#define rmb()		asm volatile(					\
-+				".set	noreorder\n\t"			\
-+				"nop;nop;nop;nop;nop;nop;nop\n\t"	\
-+				".set	reorder"			\
-+				: /* no output */			\
-+				: /* no input */			\
-+				: "memory")
-+#define cpu_relax()	asm volatile("" ::: "memory")
-+#endif
-+
- #include <time.h>
- #include <unistd.h>
- #include <sys/types.h>
+2010/9/30 Ingo Molnar <mingo@elte.hu>:
+>
+> * Deng-Cheng Zhu <dengcheng.zhu@gmail.com> wrote:
+>
+>> To test the functionality of Perf-event, you may want to compile the
+>> tool "perf" for your MIPS platform. You can refer to the following
+>> URL:
+>> http://www.linux-mips.org/archives/linux-mips/2010-04/msg00158.html
+>>
+>> Please note: Before that patch is accepted, you can choose a
+>> "specific" rmb() which is suitable for your platform -- an example is
+>> provided in the description of that patch.
+>>
+>> You also need to customize the CFLAGS and LDFLAGS in
+>> tools/perf/Makefile for your libs, includes, etc.
+>
+> Mind submitting this patch to the perf maintainers as well, so that by
+> the time MIPS kernel-side support hits mainline the tools/perf/ side
+> will be usable 'out of box' ?
+>
+> Thanks,
+>
+>        Ingo
+>

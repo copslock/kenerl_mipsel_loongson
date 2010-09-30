@@ -1,83 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 15:39:16 +0200 (CEST)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:45273 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491149Ab0I3NjN convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Sep 2010 15:39:13 +0200
-Received: by bwz19 with SMTP id 19so1812390bwz.36
-        for <multiple recipients>; Thu, 30 Sep 2010 06:39:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=0ipPoBihnMYxmRO9ogErC58U+Mr2DTbGPwLLUIYHkzo=;
-        b=x32ixBkxCH6pVBHKOyJ7yYn5GrINmvS5XNKXtfgPkwN5eAHipKtWjFPdtKL7e6Fig6
-         bMjq0Pv1eP728ZCuil/CV/zNZiWC7XCseJ/+JxNHiHIZ8QjL3JEYYlMuwv0CCuxmzb4W
-         c7nXGXkl0h6e9kX1U43ZA44gJiRZoLqchtcuo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=J49lzZfcEmbnavg+BeMpvinK0KE0fqPITzapo9p/J1SdndJ+zQDK9SVI44vNOqISpD
-         TDztJPG7iGeirFRAyDqVx4phkgSgrlkLoAcS5GR6rXgw2JuaQm7BHW5vIEOPhb7kpVmW
-         ZQ/X2bI4dMpAHOi/03qmsppG/5NSl7n+uRXBI=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 17:39:04 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57150 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491163Ab0I3PjB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Sep 2010 17:39:01 +0200
+Date:   Thu, 30 Sep 2010 16:39:01 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
+Subject: RE: How to setup interrupts for a new board?
+In-Reply-To: <AEA634773855ED4CAD999FBB1A66D0760115A95C@CORPEXCH1.na.ads.idt.com>
+Message-ID: <alpine.LFD.2.00.1009301557460.21189@eddie.linux-mips.org>
+References: <AEA634773855ED4CAD999FBB1A66D0760115A5BC@CORPEXCH1.na.ads.idt.com> <4CA36859.2050506@caviumnetworks.com> <AEA634773855ED4CAD999FBB1A66D0760115A691@CORPEXCH1.na.ads.idt.com> <alpine.LFD.2.00.1009300306230.21189@eddie.linux-mips.org>
+ <AEA634773855ED4CAD999FBB1A66D0760115A95C@CORPEXCH1.na.ads.idt.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.204.81.203 with SMTP id y11mr2477724bkk.152.1285853952826;
- Thu, 30 Sep 2010 06:39:12 -0700 (PDT)
-Received: by 10.204.64.212 with HTTP; Thu, 30 Sep 2010 06:39:12 -0700 (PDT)
-In-Reply-To: <20100930092608.GA6059@elte.hu>
-References: <1285837760-10362-1-git-send-email-dengcheng.zhu@gmail.com>
-        <1285837760-10362-7-git-send-email-dengcheng.zhu@gmail.com>
-        <20100930092608.GA6059@elte.hu>
-Date:   Thu, 30 Sep 2010 21:39:12 +0800
-Message-ID: <AANLkTinFV8QWHKS104E0Y3Hzqg6VqNzYZL7AkPDD3yWK@mail.gmail.com>
-Subject: Re: [PATCH v7 6/6] MIPS: add support for hardware performance events (mipsxx)
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     Ingo Molnar <mingo@elte.hu>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        a.p.zijlstra@chello.nl, paulus@samba.org, acme@redhat.com,
-        jamie.iles@picochip.com
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 27905
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 27906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 24212
+X-UID: 24313
 
-No problem. It's done.
+Hi Andrei,
 
+> I have read all the books you suggested and I work having all of them on
+> my desk. I come back to them frequently to check diverse stuff. My
+> problems are: 
+> - Why Malta implementation doesn't activate cpu_has_veic although they
+> have 8259 external interrupt controller? Malta implementation doesn't
+> activate cpu_has_vint too although Vectored interrupt mode should be the
+> minimum recommended mode if external controller is not present.
 
-Deng-Cheng
+ I am fairly sure at least some configurations with the Malta do use the 
+VEIC or VINT mode; probably both, though not at a time of course, 
+depending on the exact setup.  Please note however that the Malta supports 
+a diverse set of CPU cards, some of which not even featuring a MIPS 
+architecture processor (such as the QED RM5261 CPU that is only the legacy 
+MIPS IV ISA).  Therefore for the Malta you cannot simply override our 
+default of the dynamic interrupt configuration by hardcoding cpu_has_veic 
+or cpu_has_vint to 1.  The value has to be determined at the run time 
+(note that by default cpu_has_veic, etc. macros expand to variable 
+references).
 
+ The design of the Malta itself (which is from ~2000) also predates the 
+second revision of the MIPS architecture that introduced the VEIC mode and 
+does not allow the 8259 to be used in a manner that would give any 
+advantage for vectored interrupts -- the output of the PIC is simply wired 
+to one of the core card's inputs, that is then routed to one of the CPU 
+interrupt lines, perhaps via the system controller (depending on the exact 
+one used -- they vary significantly between core cards too), and the 
+actual originating source at the 8259 can only be determined either by 
+poking at a special register in the system controller that makes it 
+generate a PCI INTA cycle and returns the vector the 8259 responded with 
+or by the PIC's OCW3 command.
 
-2010/9/30 Ingo Molnar <mingo@elte.hu>:
->
-> * Deng-Cheng Zhu <dengcheng.zhu@gmail.com> wrote:
->
->> To test the functionality of Perf-event, you may want to compile the
->> tool "perf" for your MIPS platform. You can refer to the following
->> URL:
->> http://www.linux-mips.org/archives/linux-mips/2010-04/msg00158.html
->>
->> Please note: Before that patch is accepted, you can choose a
->> "specific" rmb() which is suitable for your platform -- an example is
->> provided in the description of that patch.
->>
->> You also need to customize the CFLAGS and LDFLAGS in
->> tools/perf/Makefile for your libs, includes, etc.
->
-> Mind submitting this patch to the perf maintainers as well, so that by
-> the time MIPS kernel-side support hits mainline the tools/perf/ side
-> will be usable 'out of box' ?
->
-> Thanks,
->
->        Ingo
->
+> - Looking at Malta_xxxx specific files, it seems to me that they do not
+> follow Linux Porting Guide document I have read on MIPS Linux.
+
+ No surprise as I'd expect them to predate the document by many years.
+
+> In addition, my company pays Timesys for support and regarding
+> cpu-feature.h define switches, they said that they know nothing.
+
+ Hmm, change your support provider then?  If I paid someone for support, 
+then I'd expect them to be able to figure out the details I ask them 
+about.  And I wouldn't care if they did that themselves or asked someone 
+else in turn.
+
+> What I was hoping was to find a MIPS Linux implementation which uses
+> Vectored Interrupt Mode (VI) with few h/w interrupts including the timer
+> routed to the MIPS processor or at least some document with some details
+> of implementation. That will shorten significantly my porting. Sure, if
+> I find nothing, I'll write from scratch as I understand, but it takes
+> for sure much longer and is worth to try first finding a close example.
+
+ While a reasonably comprehensive choice, with its complexity and 
+diversity the Malta is certainly not the simplest one to start with.  You 
+may be able to find a simpler one, but I don't know which one that would 
+be (I seem to tend to stick to the complicated bits ;) ) so I cannot point 
+you at that, sorry.  You may be able to figure it out yourself -- I 
+suggest starting by checking platforms that do not hardcode cpu_has_veic 
+to 0 (I'm assuming you have verified none sets it to 1 already as 
+otherwise you wouldn't be asking these questions, would you?).  Also 
+someone else, more familiar with some platforms that we support, may be 
+able to help you with that.
+
+ Anyway, good luck!
+
+  Maciej

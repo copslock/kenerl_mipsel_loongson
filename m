@@ -1,39 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 11:09:00 +0200 (CEST)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:58704 "EHLO
-        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491091Ab0I3JI4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Sep 2010 11:08:56 +0200
-Received: by pxi4 with SMTP id 4so584044pxi.36
-        for <multiple recipients>; Thu, 30 Sep 2010 02:08:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Sep 2010 11:09:24 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:49126 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491149Ab0I3JJE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Sep 2010 11:09:04 +0200
+Received: by pwi5 with SMTP id 5so597054pwi.36
+        for <multiple recipients>; Thu, 30 Sep 2010 02:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=mk37V1fkLNzuRRmHvyHG8/q5Lf3w9jXzmIpMMwC/qiU=;
-        b=fuAjaGAtqlJEHyTB6P16kOoUW+ChPd/qfC60RC5Px9Ii19Zd6i6+XVbyv7VM0D5wGV
-         SmkuP+kR4lPX3Q8bTRR6kXfVU2UjNOb1O0xaOnXOOb4d9FqwL4bCAeCg61Au1FVpgqfX
-         ZXxn0G2Iyi/lD5jZVDJbAnO3ytqTFZIzTgko8=
+         :message-id:x-mailer:in-reply-to:references;
+        bh=Hlmo6tHRLGi4xA2uWS/f1QhakrNdKKMetLduL6GZm7k=;
+        b=Kc2sF9xdSLLZFI3xNecKptp44eUg6704+HtFyTMtZ5rqcr11VqqWFX66g6yIph74XV
+         fc0X5WViK7aNh9PGshJAvhwKtspsMflgbp4MqhbCbxbMXB1/Kw2tpDfIDtJvBN+yIYfg
+         7hA7VrmhPGSYyQKqQzlFYrEHzp4Y+fAWMfOeE=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=wNJxTp6UU7c2kzTEqLmh2tX0TvgnxDuq/jfhi8tFzpD50ZsbPQyHMjtUo5aI+j8K60
-         DXUXHyuC/H8bs9NXAp0NOcBT5uGK8u+3PsykjNLA86WKORiVxpXD/Gkgi2u7JHA1qGnJ
-         N1IAoWlvEdneUsHJk/aQepTi/qK5d5wfNIGgs=
-Received: by 10.114.131.13 with SMTP id e13mr3721392wad.81.1285837729458;
-        Thu, 30 Sep 2010 02:08:49 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=GLi9u4w4+nq1iJw7hzsyizw5gDFJ4bEm94CddF8hPwtCpyIN46yoD2oX/13CSxM32o
+         m2nQdS0uhcr89rdmq5yFRx/+IYPriUu1CKVRgEEomMy9UQerGnejNO1HLDsDJHOpGiYl
+         4j6TcvVZb8uP/KdNEIjQg7G01VEGWNdci5TIU=
+Received: by 10.114.111.12 with SMTP id j12mr3759487wac.95.1285837736970;
+        Thu, 30 Sep 2010 02:08:56 -0700 (PDT)
 Received: from localhost.localdomain ([210.13.118.102])
-        by mx.google.com with ESMTPS id c10sm16210348wam.1.2010.09.30.02.08.26
+        by mx.google.com with ESMTPS id c10sm16210348wam.1.2010.09.30.02.08.49
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 30 Sep 2010 02:08:36 -0700 (PDT)
+        Thu, 30 Sep 2010 02:08:53 -0700 (PDT)
 From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
         acme@redhat.com, jamie.iles@picochip.com, dengcheng.zhu@gmail.com
-Subject: [PATCH v7 0/6] MIPS performance event support v7
-Date:   Thu, 30 Sep 2010 17:09:14 +0800
-Message-Id: <1285837760-10362-1-git-send-email-dengcheng.zhu@gmail.com>
+Subject: [PATCH v7 1/6] MIPS: define local_xchg from xchg_local to atomic_long_xchg
+Date:   Thu, 30 Sep 2010 17:09:15 +0800
+Message-Id: <1285837760-10362-2-git-send-email-dengcheng.zhu@gmail.com>
 X-Mailer: git-send-email 1.7.0.4
-X-archive-position: 27895
+In-Reply-To: <1285837760-10362-1-git-send-email-dengcheng.zhu@gmail.com>
+References: <1285837760-10362-1-git-send-email-dengcheng.zhu@gmail.com>
+X-archive-position: 27896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,45 +44,30 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                 
-X-UID: 24017
+X-UID: 24018
 
-The following changes were made since v6:
-o Remove the conditional code in mipspmu_get_irq(), a new member (irq) is
-added to the struct mips_pmu.
-o Remove function code from pmu.h, keep them duplicated in Oprofile and
-Perf-events. The duplication would be resolved by the idea of using
-Perf-events as the Oprofile backend. I'll submit a separate patchset to
-do this after this one gets merged.
-o The atomic64_read/set/... are replaced with local64_read/set/..., in
-order to keep aligned with the changes of the Perf-events core.
-o The patch order is adjusted.
+Perf-events is now using local_t helper functions internally. There is a
+use of local_xchg(). On MIPS, this is defined to xchg_local() which is
+missing in asm/system.h. This patch re-defines local_xchg() in asm/local.h
+to atomic_long_xchg(). Then Perf-events can pass the build.
 
-v6: http://www.linux-mips.org/archives/linux-mips/2010-06/msg00143.html
+Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+---
+ arch/mips/include/asm/local.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Deng-Cheng Zhu (6):
-  MIPS: define local_xchg from xchg_local to atomic_long_xchg
-  MIPS/Oprofile: extract PMU defines for sharing
-  MIPS: add support for software performance events
-  MIPS: add support for hardware performance events (skeleton)
-  MIPS/Perf-events: add callchain support
-  MIPS: add support for hardware performance events (mipsxx)
-
- arch/mips/Kconfig                       |   10 +
- arch/mips/include/asm/local.h           |    2 +-
- arch/mips/include/asm/perf_event.h      |   25 +
- arch/mips/include/asm/pmu.h             |   94 +++
- arch/mips/kernel/Makefile               |    2 +
- arch/mips/kernel/perf_event.c           |  600 ++++++++++++++++++
- arch/mips/kernel/perf_event_mipsxx.c    | 1020 +++++++++++++++++++++++++++++++
- arch/mips/kernel/traps.c                |   18 +-
- arch/mips/kernel/unaligned.c            |    6 +
- arch/mips/math-emu/cp1emu.c             |    3 +
- arch/mips/mm/fault.c                    |   11 +-
- arch/mips/oprofile/op_model_loongson2.c |   18 +-
- arch/mips/oprofile/op_model_mipsxx.c    |   21 +-
- arch/mips/oprofile/op_model_rm9000.c    |   16 +-
- 14 files changed, 1789 insertions(+), 57 deletions(-)
- create mode 100644 arch/mips/include/asm/perf_event.h
- create mode 100644 arch/mips/include/asm/pmu.h
- create mode 100644 arch/mips/kernel/perf_event.c
- create mode 100644 arch/mips/kernel/perf_event_mipsxx.c
+diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
+index bdcdef0..4d090a0 100644
+--- a/arch/mips/include/asm/local.h
++++ b/arch/mips/include/asm/local.h
+@@ -117,7 +117,7 @@ static __inline__ long local_sub_return(long i, local_t * l)
+ 
+ #define local_cmpxchg(l, o, n) \
+ 	((long)cmpxchg_local(&((l)->a.counter), (o), (n)))
+-#define local_xchg(l, n) (xchg_local(&((l)->a.counter), (n)))
++#define local_xchg(l, n) atomic_long_xchg((&(l)->a), (n))
+ 
+ /**
+  * local_add_unless - add unless the number is a given value
+-- 
+1.7.0.4

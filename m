@@ -1,27 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Oct 2010 05:27:54 +0200 (CEST)
-Received: from eu1sys200aog108.obsmtp.com ([207.126.144.125]:47225 "EHLO
-        eu1sys200aog108.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490968Ab0JAD1v convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Oct 2010 05:27:51 +0200
-Received: from source ([167.4.1.35]) (using TLSv1) by eu1sys200aob108.postini.com ([207.126.147.11]) with SMTP
-        ID DSNKTKVVAoqoRfhVWLwdiaEv/5lFteiDoEQ1@postini.com; Fri, 01 Oct 2010 03:27:50 UTC
-Received: from zeta.dmz-us.st.com (ns4.st.com [167.4.80.115])
-        by beta.dmz-us.st.com (STMicroelectronics) with ESMTP id 487F99E;
-        Fri,  1 Oct 2010 03:22:43 +0000 (GMT)
-Received: from relay1.stm.gmessaging.net (unknown [10.230.100.17])
-        by zeta.dmz-us.st.com (STMicroelectronics) with ESMTP id 0C26E734;
-        Fri,  1 Oct 2010 03:25:58 +0000 (GMT)
-Received: from exdcvycastm003.EQ1STM.local (alteon-source-exch [10.230.100.61])
-        (using TLSv1 with cipher RC4-MD5 (128/128 bits))
-        (Client CN "exdcvycastm003", Issuer "exdcvycastm003" (not verified))
-        by relay1.stm.gmessaging.net (Postfix) with ESMTPS id 2FEDA24C075;
-        Fri,  1 Oct 2010 05:25:55 +0200 (CEST)
-Received: from EXDCVYMBSTM006.EQ1STM.local ([10.230.100.3]) by
- exdcvycastm003.EQ1STM.local ([10.230.100.1]) with mapi; Fri, 1 Oct 2010
- 05:25:57 +0200
-From:   Arun MURTHY <arun.murthy@stericsson.com>
-To:     Trilok Soni <soni.trilok@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Oct 2010 08:47:37 +0200 (CEST)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:61854 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491140Ab0JAGre (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Oct 2010 08:47:34 +0200
+Received: by iwn41 with SMTP id 41so4191909iwn.36
+        for <linux-mips@linux-mips.org>; Thu, 30 Sep 2010 23:47:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=j3BkWMCw2COyHFqcHK9DP5+3b014TCteD+m+AJXS2+o=;
+        b=jXqKLszpO+WRtMkX3rm49SLVzI6GrotGsVLFD+zS9plUDFCzNrv6rVzGu0qu0EK5uL
+         HDXHEzO4Y27xC/LFdVOjhMGCl8vHUnLdCCOcOYTaxxngxxcLqHDNN6aGOTvEkbA3UqRf
+         FK+PeuEilrc0SZyQdO9gD5tM2hjjSSgQVf9BE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=PfhffhfmhEUPk8ITp/km6ROOo62dR2TU8zcScIk0UnJFz0S/jOU7U0u+QZvLsyjRJk
+         Phzu+cJ07wL9HEhvDa9tsJJCqLMP7IKgdoVW8vfl4SDiH2Yji9TZuL6stA/7DGciRkYH
+         QGNKzCBOAEytLhPgEb0+zVaRntxZHpnyHtU40=
+MIME-Version: 1.0
+Received: by 10.42.38.1 with SMTP id a1mr4706287ice.75.1285915652802; Thu, 30
+ Sep 2010 23:47:32 -0700 (PDT)
+Received: by 10.42.164.68 with HTTP; Thu, 30 Sep 2010 23:47:32 -0700 (PDT)
+In-Reply-To: <F45880696056844FA6A73F415B568C69532DCF32BC@EXDCVYMBSTM006.EQ1STM.local>
+References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
+        <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
+        <4CA1AD2B.8000905@metafoo.de>
+        <F45880696056844FA6A73F415B568C69532DC2FB6B@EXDCVYMBSTM006.EQ1STM.local>
+        <4CA1BC16.3020702@metafoo.de>
+        <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
+        <4CA25841.4090702@metafoo.de>
+        <F45880696056844FA6A73F415B568C69532DC8B7E4@EXDCVYMBSTM006.EQ1STM.local>
+        <AANLkTingb8ox5h5rN1YrxONibfrWLicoiS6yqKf_v5bJ@mail.gmail.com>
+        <F45880696056844FA6A73F415B568C69532DCF32BC@EXDCVYMBSTM006.EQ1STM.local>
+Date:   Fri, 1 Oct 2010 12:17:32 +0530
+Message-ID: <AANLkTikTo42Q5-yMEwyQH4mt=qLjaKrtJK3ydZNFyqai@mail.gmail.com>
+Subject: Re: [PATCH 1/7] pwm: Add pwm core driver
+From:   Trilok Soni <soni.trilok@gmail.com>
+To:     Arun MURTHY <arun.murthy@stericsson.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         "eric.y.miao@gmail.com" <eric.y.miao@gmail.com>,
         "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
@@ -43,80 +61,70 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         STEricsson_nomadik_linux <STEricsson_nomadik_linux@list.st.com>,
         Bill Gatliff <bgat@billgatliff.com>
-Date:   Fri, 1 Oct 2010 05:25:54 +0200
-Subject: RE: [PATCH 1/7] pwm: Add pwm core driver
-Thread-Topic: [PATCH 1/7] pwm: Add pwm core driver
-Thread-Index: Actfz5masNZDgiefSeWpuNJKQ5oopwBRtuSg
-Message-ID: <F45880696056844FA6A73F415B568C69532DCF32BC@EXDCVYMBSTM006.EQ1STM.local>
-References: <1285659648-21409-1-git-send-email-arun.murthy@stericsson.com>
-        <1285659648-21409-2-git-send-email-arun.murthy@stericsson.com>
-        <4CA1AD2B.8000905@metafoo.de>
-        <F45880696056844FA6A73F415B568C69532DC2FB6B@EXDCVYMBSTM006.EQ1STM.local>
-        <4CA1BC16.3020702@metafoo.de>
-        <F45880696056844FA6A73F415B568C69532DC2FC60@EXDCVYMBSTM006.EQ1STM.local>
-        <4CA25841.4090702@metafoo.de>
-        <F45880696056844FA6A73F415B568C69532DC8B7E4@EXDCVYMBSTM006.EQ1STM.local>
- <AANLkTingb8ox5h5rN1YrxONibfrWLicoiS6yqKf_v5bJ@mail.gmail.com>
-In-Reply-To: <AANLkTingb8ox5h5rN1YrxONibfrWLicoiS6yqKf_v5bJ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-Return-Path: <arun.murthy@stericsson.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <soni.trilok@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27907
+X-archive-position: 27908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arun.murthy@stericsson.com
+X-original-sender: soni.trilok@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Trilok,
+Hi Arun,
 
-> Hi Arun,
-> 
-> Adding Bill Gatliff (anyway, CC list already crowded)
-> 
-> On Wed, Sep 29, 2010 at 10:19 AM, Arun MURTHY
-> <arun.murthy@stericsson.com> wrote:
-> >> Arun MURTHY wrote:
-> >> >>>> Shouldn't PWM_DEVICES select HAVE_PWM?
-> >> >>>
-> >> >>> No not required, the entire concept is to remove HAVE_PWM and
-> use
-> >> >> PWM_CORE.
-> 
-> There is already nice and clean framework written by Bill for PWM, if
-> you grep the LKML and linux-embedded mailing list archive then you
-> will get his patches, and it seems that he had promised to send the
-> updated version few week back, but not heard from him (may be because
-> he was travelling as per FB status).
-> 
-> Please evaluate that framework too.
-> 
-Thanks for this information, I did search in linux-embedded mailing list
-archive. Below are my views on that patch set.
-Many of the functions that has been defined in pwm core driver
-written by Bill Gatliff is not being used by the most of the pwm drivers
-except Atmel PWM driver. I rather felt the pwm core driver was an attempt
-made to generalize the Atmel pwm driver.
-And moreover this was posted long back somewhere in the beginning of this
-year i.e Feb and the thread is dead thereafter.
+On Fri, Oct 1, 2010 at 8:55 AM, Arun MURTHY <arun.murthy@stericsson.com> wrote:
+> Hi Trilok,
+>
+>> Hi Arun,
+>>
+>> Adding Bill Gatliff (anyway, CC list already crowded)
+>>
+>> On Wed, Sep 29, 2010 at 10:19 AM, Arun MURTHY
+>> <arun.murthy@stericsson.com> wrote:
+>> >> Arun MURTHY wrote:
+>> >> >>>> Shouldn't PWM_DEVICES select HAVE_PWM?
+>> >> >>>
+>> >> >>> No not required, the entire concept is to remove HAVE_PWM and
+>> use
+>> >> >> PWM_CORE.
+>>
+>> There is already nice and clean framework written by Bill for PWM, if
+>> you grep the LKML and linux-embedded mailing list archive then you
+>> will get his patches, and it seems that he had promised to send the
+>> updated version few week back, but not heard from him (may be because
+>> he was travelling as per FB status).
+>>
+>> Please evaluate that framework too.
+>>
+> Thanks for this information, I did search in linux-embedded mailing list
+> archive. Below are my views on that patch set.
+> Many of the functions that has been defined in pwm core driver
+> written by Bill Gatliff is not being used by the most of the pwm drivers
+> except Atmel PWM driver. I rather felt the pwm core driver was an attempt
+> made to generalize the Atmel pwm driver.
+> And moreover this was posted long back somewhere in the beginning of this
+> year i.e Feb and the thread is dead thereafter.
+>
+> This patch has been submitted focusing all the existing pwm drivers and
+> only these are the functions that are being used by pwm drivers.
+> This patch set also included patch to align all the existing pwm driver
+> with the pwm core driver.
+> So it is an attempt to generalize most of the pwm drivers and
+> conclude with a pwm core driver.
 
-This patch has been submitted focusing all the existing pwm drivers and
-only these are the functions that are being used by pwm drivers.
-This patch set also included patch to align all the existing pwm driver
-with the pwm core driver.
-So it is an attempt to generalize most of the pwm drivers and
-conclude with a pwm core driver.
+I don't agree that Bill had only atmel drivers view. The PWM framework
+was discussed in-depth and at that time reviewers also requested once
+to provide more example drivers using these drivers, someone said "we
+atleast need three drivers as rule of thumb". Let's wait until Bill
+reviews your framework, I am sure we don't need to end up the same
+problems faced by Bill while designing that framework in your code
+too.
 
-Thanks and Regards,
-Arun R Murthy
--------------
+-- 
+---Trilok Soni
+http://triloksoni.wordpress.com
+http://www.linkedin.com/in/triloksoni

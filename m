@@ -1,54 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Oct 2010 21:33:32 +0200 (CEST)
-Received: from arkanian.console-pimps.org ([212.110.184.194]:51504 "EHLO
-        arkanian.console-pimps.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491058Ab0JDTda (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Oct 2010 21:33:30 +0200
-Received: by arkanian.console-pimps.org (Postfix, from userid 1000)
-        id 5AD8D4432D; Mon,  4 Oct 2010 20:33:29 +0100 (BST)
-Date:   Mon, 4 Oct 2010 20:33:29 +0100
-From:   Matt Fleming <matt@console-pimps.org>
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com, jamie.iles@picochip.com
-Subject: Re: [PATCH v7 0/6] MIPS performance event support v7
-Message-ID: <20101004193329.GF1670@console-pimps.org>
-References: <1285837760-10362-1-git-send-email-dengcheng.zhu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Oct 2010 22:12:01 +0200 (CEST)
+Received: from Chamillionaire.breakpoint.cc ([85.10.199.196]:40502 "EHLO
+        Chamillionaire.breakpoint.cc" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491105Ab0JDUL6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 4 Oct 2010 22:11:58 +0200
+Received: id: bigeasy by Chamillionaire.breakpoint.cc with local
+        (easymta 1.00 BETA 1)
+        id 1P2rO9-0005pk-B0; Mon, 04 Oct 2010 22:11:57 +0200
+Date:   Mon, 4 Oct 2010 22:11:57 +0200
+From:   Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+        Ben Hutchings <ben@decadent.org.uk>,
+        Aurelien Jarno <aurelien@aurel32.net>
+Subject: mips/ide: flush dcache also if icache does not snoop dcache
+Message-ID: <20101004201157.GA22361@Chamillionaire.breakpoint.cc>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <1285837760-10362-1-git-send-email-dengcheng.zhu@gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <matt@console-pimps.org>
+In-Reply-To: <1286157343.3916.220.camel@localhost>
+X-Key-Id: FE3F4706
+X-Key-Fingerprint: FFDA BBBB 3563 1B27 75C9  925B 98D5 5C1C FE3F 4706
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <sebastian@breakpoint.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27938
+X-archive-position: 27939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matt@console-pimps.org
+X-original-sender: sebastian@breakpoint.cc
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 30, 2010 at 05:09:14PM +0800, Deng-Cheng Zhu wrote:
-> o Remove function code from pmu.h, keep them duplicated in Oprofile and
-> Perf-events. The duplication would be resolved by the idea of using
-> Perf-events as the Oprofile backend. I'll submit a separate patchset to
-> do this after this one gets merged.
+If this is not done then the new just read data which remains in dcache
+will not make it into icache on time. Thus the CPU loads invalid data
+and executes crap. The result is that the user is not able to execute
+anything from its IDE based media while reading plain data is still
+working well.
+This problem has been reported as Debian #404951.
 
-I dunno if you're aware of this but I've been working on a perf
-backend for OProfile. Currently only ARM and SH are making use of it,
+Cc: stable@kernel.org
+Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+---
+ arch/mips/include/asm/mach-generic/ide.h |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-http://marc.info/?l=linux-arm-kernel&m=128435815708349&w=2
-
-It would be trivial to add MIPS support but I suspect that would
-require you to rework this patch series. However, what we should try
-to avoid is duplicating any effort of getting perf and OProfile
-working together.
-
-Would you mind waiting for my patch series to be merged before
-starting work on your perf-OProfile patchset for MIPS? Alternatively,
-you can base your work on,
-
-git://git.kernel.org/pub/scm/linux/kernel/git/mfleming/sh-2.6.git perf-oprofile
+diff --git a/arch/mips/include/asm/mach-generic/ide.h b/arch/mips/include/asm/mach-generic/ide.h
+index 9c93a5b..e80e47f 100644
+--- a/arch/mips/include/asm/mach-generic/ide.h
++++ b/arch/mips/include/asm/mach-generic/ide.h
+@@ -23,7 +23,7 @@
+ static inline void __ide_flush_prologue(void)
+ {
+ #ifdef CONFIG_SMP
+-	if (cpu_has_dc_aliases)
++	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
+ 		preempt_disable();
+ #endif
+ }
+@@ -31,14 +31,14 @@ static inline void __ide_flush_prologue(void)
+ static inline void __ide_flush_epilogue(void)
+ {
+ #ifdef CONFIG_SMP
+-	if (cpu_has_dc_aliases)
++	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
+ 		preempt_enable();
+ #endif
+ }
+ 
+ static inline void __ide_flush_dcache_range(unsigned long addr, unsigned long size)
+ {
+-	if (cpu_has_dc_aliases) {
++	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc) {
+ 		unsigned long end = addr + size;
+ 
+ 		while (addr < end) {
+-- 
+1.6.6

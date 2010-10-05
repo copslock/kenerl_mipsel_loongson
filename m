@@ -1,128 +1,251 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Oct 2010 17:05:19 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:34742 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491024Ab0JEPFQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Oct 2010 17:05:16 +0200
-Received: by pwi5 with SMTP id 5so2277946pwi.36
-        for <linux-mips@linux-mips.org>; Tue, 05 Oct 2010 08:05:09 -0700 (PDT)
-Received: by 10.114.133.15 with SMTP id g15mr13870599wad.72.1286291109689;
-        Tue, 05 Oct 2010 08:05:09 -0700 (PDT)
-Received: from localhost (c-24-18-179-55.hsd1.wa.comcast.net [24.18.179.55])
-        by mx.google.com with ESMTPS id k23sm11568637waf.5.2010.10.05.08.05.04
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 05 Oct 2010 08:05:06 -0700 (PDT)
-From:   Kevin Hilman <khilman@deeprootsystems.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Oct 2010 21:28:17 +0200 (CEST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:51902 "EHLO
+        smtp1.linux-foundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491024Ab0JET2N (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Oct 2010 21:28:13 +0200
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
+        by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id o95JMTcX030337
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Tue, 5 Oct 2010 12:22:29 -0700
+Received: from akpm.mtv.corp.google.com (localhost [127.0.0.1])
+        by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id o95JMP1f014730;
+        Tue, 5 Oct 2010 12:22:25 -0700
+Date:   Tue, 5 Oct 2010 12:22:25 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
 To:     Arun Murthy <arun.murthy@stericsson.com>
-Cc:     <lars@metafoo.de>, <akpm@linux-foundation.org>,
-        <kernel@pengutronix.de>, <philipp.zabel@gmail.com>,
-        <robert.jarzmik@free.fr>, <marek.vasut@gmail.com>,
-        <eric.y.miao@gmail.com>, <rpurdie@rpsys.net>,
-        <sameo@linux.intel.com>, <kgene.kim@samsung.com>,
-        <linux-omap@vger.kernel.org>,
+Cc:     <lars@metafoo.de>, <kernel@pengutronix.de>,
+        <philipp.zabel@gmail.com>, <robert.jarzmik@free.fr>,
+        <marek.vasut@gmail.com>, <eric.y.miao@gmail.com>,
+        <rpurdie@rpsys.net>, <sameo@linux.intel.com>,
+        <kgene.kim@samsung.com>, <linux-omap@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
         <STEricsson_nomadik_linux@list.st.com>, <bgat@billgatliff.com>
-Subject: Re: [PATCHv2 0/7] PWM core driver for pwm based led and backlight driver
-Organization: Deep Root Systems, LLC
+Subject: Re: [PATCHv2 1/7] pwm: Add pwm core driver
+Message-Id: <20101005122225.6dda30ff.akpm@linux-foundation.org>
+In-Reply-To: <1286280002-1636-2-git-send-email-arun.murthy@stericsson.com>
 References: <1286280002-1636-1-git-send-email-arun.murthy@stericsson.com>
-Date:   Tue, 05 Oct 2010 08:05:03 -0700
-In-Reply-To: <1286280002-1636-1-git-send-email-arun.murthy@stericsson.com>
-        (Arun Murthy's message of "Tue, 5 Oct 2010 17:29:55 +0530")
-Message-ID: <87wrpwu1cw.fsf@deeprootsystems.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.1.50 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <khilman@deeprootsystems.com>
+        <1286280002-1636-2-git-send-email-arun.murthy@stericsson.com>
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27951
+X-archive-position: 27952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khilman@deeprootsystems.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-Arun Murthy <arun.murthy@stericsson.com> writes:
+On Tue, 5 Oct 2010 17:29:56 +0530
+Arun Murthy <arun.murthy@stericsson.com> wrote:
 
-> PWM core driver for pwm based led and backlight driver.
-> The intention of the pwm core driver is not to break the build if two or more
-> pwm drivers are enabled.
-> Align the existing pwm drivers to make use of the pwm core driver
+> The existing pwm based led and backlight driver makes use of the
+> pwm(include/linux/pwm.h). So all the board specific pwm drivers will
+> be exposing the same set of function name as in include/linux/pwm.h.
+> Consder a platform with multi Soc or having more than one pwm module, in
+> such a case, there exists more than one pwm driver for a platform. Each
+> of these pwm drivers export the same set of function and hence leads to
+> re-declaration build error.
+> 
+> In order to overcome this issue all the pwm drivers must register to
+> some core pwm driver with function pointers for pwm operations (i.e
+> pwm_config, pwm_enable, pwm_disable).
+> 
+> The clients of pwm device will have to call pwm_request, wherein
+> they will get the pointer to struct pwm_ops. This structure include
+> function pointers for pwm_config, pwm_enable and pwm_disable.
+> 
 
-Hi Arun,
+Have we worked out who will be merging this work, if it gets merged?
 
-Because you have Bill Gatliff on Cc, I'm guessing you've already looked
-at his RFC for a generic PWM framework?
-
-There's recently been a proposal on DaVinci that is similar to yours
-that enables multiple PWM drivers, but it would be nice to have a common
-framework for this, and what Bill has proposed seems to be a good
-solution.
-
-Kevin
-
-> Arun Murthy (7):
->   pwm: Add pwm core driver
->   backlight:pwm: add an element 'name' to platform data
->   leds: pwm: add a new element 'name' to platform data
->   pwm: Align existing pwm drivers with pwm-core driver
->   platform: Update the pwm based led and backlight platform data
->   pwm: move existing pwm driver to drivers/pwm
->   pwm: Modify backlight and led Kconfig aligning to pwm core
 >
->  arch/arm/mach-pxa/cm-x300.c               |    1 +
->  arch/arm/mach-pxa/colibri-pxa270-income.c |    1 +
->  arch/arm/mach-pxa/ezx.c                   |    1 +
->  arch/arm/mach-pxa/hx4700.c                |    1 +
->  arch/arm/mach-pxa/lpd270.c                |    1 +
->  arch/arm/mach-pxa/magician.c              |    1 +
->  arch/arm/mach-pxa/mainstone.c             |    1 +
->  arch/arm/mach-pxa/mioa701.c               |    1 +
->  arch/arm/mach-pxa/palm27x.c               |    1 +
->  arch/arm/mach-pxa/palmtc.c                |    1 +
->  arch/arm/mach-pxa/palmte2.c               |    1 +
->  arch/arm/mach-pxa/pcm990-baseboard.c      |    1 +
->  arch/arm/mach-pxa/raumfeld.c              |    1 +
->  arch/arm/mach-pxa/tavorevb.c              |    2 +
->  arch/arm/mach-pxa/viper.c                 |    1 +
->  arch/arm/mach-pxa/z2.c                    |    2 +
->  arch/arm/mach-pxa/zylonite.c              |    1 +
->  arch/arm/mach-s3c2410/mach-h1940.c        |    1 +
->  arch/arm/mach-s3c2440/mach-rx1950.c       |    1 +
->  arch/arm/mach-s3c64xx/mach-hmt.c          |    1 +
->  arch/arm/mach-s3c64xx/mach-smartq.c       |    1 +
->  arch/arm/plat-mxc/pwm.c                   |  166 +++++++++------------
->  arch/arm/plat-pxa/pwm.c                   |  210 ++++++++++++--------------
->  arch/arm/plat-samsung/pwm.c               |  235 +++++++++++++----------------
->  arch/mips/jz4740/pwm.c                    |    2 +-
->  drivers/Kconfig                           |    2 +
->  drivers/Makefile                          |    1 +
->  drivers/leds/Kconfig                      |    2 +-
->  drivers/leds/leds-pwm.c                   |    4 +-
->  drivers/mfd/Kconfig                       |    9 -
->  drivers/mfd/Makefile                      |    1 -
->  drivers/mfd/twl-core.c                    |   13 ++
->  drivers/mfd/twl6030-pwm.c                 |  163 --------------------
->  drivers/misc/Kconfig                      |    9 -
->  drivers/misc/Makefile                     |    1 -
->  drivers/misc/ab8500-pwm.c                 |  168 --------------------
->  drivers/pwm/Kconfig                       |   35 +++++
->  drivers/pwm/Makefile                      |    4 +
->  drivers/pwm/pwm-ab8500.c                  |  157 +++++++++++++++++++
->  drivers/pwm/pwm-core.c                    |  130 ++++++++++++++++
->  drivers/pwm/pwm-twl6040.c                 |  196 ++++++++++++++++++++++++
->  drivers/video/backlight/Kconfig           |    2 +-
->  drivers/video/backlight/pwm_bl.c          |    4 +-
->  include/linux/leds_pwm.h                  |    3 +-
->  include/linux/pwm.h                       |   31 ++++-
->  include/linux/pwm_backlight.h             |    1 +
->  46 files changed, 876 insertions(+), 696 deletions(-)
->  delete mode 100644 drivers/mfd/twl6030-pwm.c
->  delete mode 100644 drivers/misc/ab8500-pwm.c
->  create mode 100644 drivers/pwm/Kconfig
->  create mode 100644 drivers/pwm/Makefile
->  create mode 100644 drivers/pwm/pwm-ab8500.c
->  create mode 100644 drivers/pwm/pwm-core.c
->  create mode 100644 drivers/pwm/pwm-twl6040.c
+> ...
+>
+> +struct pwm_dev_info {
+> +	struct pwm_device *pwm_dev;
+> +	struct list_head list;
+> +};
+> +static struct pwm_dev_info *di;
+
+We could just do
+
+	static struct pwm_dev_info {
+		...
+	} *di;
+
+> +DECLARE_RWSEM(pwm_list_lock);
+
+This can/should be static.
+
+> +void __deprecated pwm_free(struct pwm_device *pwm)
+> +{
+> +}
+
+Why are we adding a new function and already deprecating it?
+
+Probably this was already addressed in earlier review, but I'm asking
+again, because there's no comment explaining the reasons.  Lesson
+learned, please add a comment.
+
+Oh, I see that pwm_free() already exists.  This patch adds a new copy
+and doesn't remove the old function.  Does this all actually work?
+
+It still needs a comment explaining why it's deprecated.
+
+> +int pwm_config(struct pwm_device *pwm, int duty_ns, int period_ns)
+> +{
+> +	if (!pwm->pops)
+> +		-EFAULT;
+> +	return pwm->pops->pwm_config(pwm, duty_ns, period_ns);
+> +}
+> +EXPORT_SYMBOL(pwm_config);
+> +
+> +int pwm_enable(struct pwm_device *pwm)
+> +{
+> +	if (!pwm->pops)
+> +		-EFAULT;
+> +	return pwm->pops->pwm_enable(pwm);
+> +}
+> +EXPORT_SYMBOL(pwm_enable);
+> +
+> +void pwm_disable(struct pwm_device *pwm)
+> +{
+> +	if (!pwm->pops)
+> +		-EFAULT;
+> +	pwm->pops->pwm_disable(pwm);
+> +}
+> +EXPORT_SYMBOL(pwm_disable);
+> +
+> +int pwm_device_register(struct pwm_device *pwm_dev)
+> +{
+> +	struct pwm_dev_info *pwm;
+> +
+> +	down_write(&pwm_list_lock);
+> +	pwm = kzalloc(sizeof(struct pwm_dev_info), GFP_KERNEL);
+> +	if (!pwm) {
+> +		up_write(&pwm_list_lock);
+> +		return -ENOMEM;
+> +	}
+
+The allocation attempt can be moved outside the lock, making the code
+faster, cleaner and shorter.
+
+> +	pwm->pwm_dev = pwm_dev;
+> +	list_add_tail(&pwm->list, &di->list);
+> +	up_write(&pwm_list_lock);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(pwm_device_register);
+> +
+> +int pwm_device_unregister(struct pwm_device *pwm_dev)
+> +{
+> +	struct pwm_dev_info *tmp;
+> +	struct list_head *pos, *tmp_lst;
+> +
+> +	down_write(&pwm_list_lock);
+> +	list_for_each_safe(pos, tmp_lst, &di->list) {
+> +		tmp = list_entry(pos, struct pwm_dev_info, list);
+> +		if (tmp->pwm_dev == pwm_dev) {
+> +			list_del(pos);
+> +			kfree(tmp);
+> +			up_write(&pwm_list_lock);
+> +			return 0;
+> +		}
+> +	}
+> +	up_write(&pwm_list_lock);
+> +	return -ENOENT;
+> +}
+> +EXPORT_SYMBOL(pwm_device_unregister);
+> +
+> +struct pwm_device *pwm_request(int pwm_id, const char *name)
+> +{
+> +	struct pwm_dev_info *pwm;
+> +	struct list_head *pos;
+> +
+> +	down_read(&pwm_list_lock);
+> +	list_for_each(pos, &di->list) {
+> +		pwm = list_entry(pos, struct pwm_dev_info, list);
+> +		if ((!strcmp(pwm->pwm_dev->pops->name, name)) &&
+> +				(pwm->pwm_dev->pwm_id == pwm_id)) {
+> +			up_read(&pwm_list_lock);
+> +			return pwm->pwm_dev;
+> +		}
+> +	}
+> +	up_read(&pwm_list_lock);
+> +	return ERR_PTR(-ENOENT);
+> +}
+> +EXPORT_SYMBOL(pwm_request);
+
+We have a new kernel-wide exported-to-modules formal API.  We prefer
+that such things be fully documented, please.  kerneldoc is a suitable
+way but please avoid falling into the kerneldoc trap of filling out
+fields with obvious boilerplate and not actually telling people
+anything interesting or useful.
+
+> +static int __init pwm_init(void)
+> +{
+> +	struct pwm_dev_info *pwm;
+> +
+> +	pwm = kzalloc(sizeof(struct pwm_dev_info), GFP_KERNEL);
+> +	if (!pwm)
+> +		return -ENOMEM;
+> +	INIT_LIST_HEAD(&pwm->list);
+> +	di = pwm;
+> +	return 0;
+> +}
+
+OK, this looks wrong.
+
+AFACIT you've created a dummy pwm_dev_info as a singleton, kernel-wide
+anchor for a list of all pwm_dev_info's.  So this "anchor" pwm_dev_info
+never actually gets used for anything.
+
+The way to do this is to remove `di' altogether and instead use a
+singleton, kernel-wide list_head as the anchor for all the
+dynamically-allocated pwm_dev_info's.
+
+> +subsys_initcall(pwm_init);
+> +
+> +static void __exit pwm_exit(void)
+> +{
+> +	kfree(di);
+> +}
+> +
+> +module_exit(pwm_exit);
+> +
+> +MODULE_LICENSE("GPL v2");
+> +MODULE_AUTHOR("Arun R Murthy");
+> +MODULE_ALIAS("core:pwm");
+> +MODULE_DESCRIPTION("Core pwm driver");
+> diff --git a/include/linux/pwm.h b/include/linux/pwm.h
+> index 7c77575..6e7da1f 100644
+> --- a/include/linux/pwm.h
+> +++ b/include/linux/pwm.h
+> @@ -3,6 +3,13 @@
+>  
+>  struct pwm_device;
+>  
+> +struct pwm_ops {
+> +	int (*pwm_config)(struct pwm_device *pwm, int duty_ns, int period_ns);
+> +	int (*pwm_enable)(struct pwm_device *pwm);
+> +	int (*pwm_disable)(struct pwm_device *pwm);
+> +	char *name;
+> +};
+
+This also should be documented.
+
+>
+> ...
+>
+
+I suggest that you work on Kevin's comments before making any code
+changes though.

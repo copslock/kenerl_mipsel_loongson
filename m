@@ -1,77 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2010 18:20:28 +0200 (CEST)
-Received: from mail-qy0-f177.google.com ([209.85.216.177]:38076 "EHLO
-        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490980Ab0JFQUZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Oct 2010 18:20:25 +0200
-Received: by qyk9 with SMTP id 9so573263qyk.15
-        for <linux-mips@linux-mips.org>; Wed, 06 Oct 2010 09:20:19 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2010 21:45:54 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:56721 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491083Ab0JFTpv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Oct 2010 21:45:51 +0200
+Received: by ywh2 with SMTP id 2so2013301ywh.36
+        for <linux-mips@linux-mips.org>; Wed, 06 Oct 2010 12:45:44 -0700 (PDT)
+Received: by 10.42.171.7 with SMTP id h7mr57910icz.103.1286394344549;
+        Wed, 06 Oct 2010 12:45:44 -0700 (PDT)
+Received: from localhost (c-24-18-179-55.hsd1.wa.comcast.net [24.18.179.55])
+        by mx.google.com with ESMTPS id d13sm1266119ibb.2.2010.10.06.12.45.41
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 06 Oct 2010 12:45:42 -0700 (PDT)
+From:   Kevin Hilman <khilman@deeprootsystems.com>
+To:     Arun MURTHY <arun.murthy@stericsson.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "lars\@metafoo.de" <lars@metafoo.de>,
+        "kernel\@pengutronix.de" <kernel@pengutronix.de>,
+        "philipp.zabel\@gmail.com" <philipp.zabel@gmail.com>,
+        "robert.jarzmik\@free.fr" <robert.jarzmik@free.fr>,
+        "marek.vasut\@gmail.com" <marek.vasut@gmail.com>,
+        "eric.y.miao\@gmail.com" <eric.y.miao@gmail.com>,
+        "rpurdie\@rpsys.net" <rpurdie@rpsys.net>,
+        "sameo\@linux.intel.com" <sameo@linux.intel.com>,
+        "kgene.kim\@samsung.com" <kgene.kim@samsung.com>,
+        "linux-omap\@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-arm-kernel\@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
+        STEricsson_nomadik_linux <STEricsson_nomadik_linux@list.st.com>,
+        "bgat\@billgatliff.com" <bgat@billgatliff.com>
+Subject: Re: [PATCHv2 1/7] pwm: Add pwm core driver
+Organization: Deep Root Systems, LLC
+References: <1286280002-1636-1-git-send-email-arun.murthy@stericsson.com>
+        <1286280002-1636-2-git-send-email-arun.murthy@stericsson.com>
+        <20101005122225.6dda30ff.akpm@linux-foundation.org>
+        <F45880696056844FA6A73F415B568C6953571D4F05@EXDCVYMBSTM006.EQ1STM.local>
+Date:   Wed, 06 Oct 2010 12:45:40 -0700
+In-Reply-To: <F45880696056844FA6A73F415B568C6953571D4F05@EXDCVYMBSTM006.EQ1STM.local>
+        (Arun MURTHY's message of "Wed, 6 Oct 2010 06:03:28 +0200")
+Message-ID: <87ocb7jeaj.fsf@deeprootsystems.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.1.50 (gnu/linux)
 MIME-Version: 1.0
-Received: by 10.224.89.80 with SMTP id d16mr9787398qam.88.1286382018841; Wed,
- 06 Oct 2010 09:20:18 -0700 (PDT)
-Received: by 10.229.215.132 with HTTP; Wed, 6 Oct 2010 09:20:15 -0700 (PDT)
-In-Reply-To: <1286380758-14063-1-git-send-email-arun.murthy@stericsson.com>
-References: <1286380758-14063-1-git-send-email-arun.murthy@stericsson.com>
-Date:   Wed, 6 Oct 2010 11:20:15 -0500
-Message-ID: <AANLkTi=5yrcBPqbtDYRsnXTvhmBaYFemNu04P5ZnzJVM@mail.gmail.com>
-Subject: Re: [PATCHv3 0/7] PWM core driver for pwm based led and backlight driver
-From:   Bill Gatliff <bgat@billgatliff.com>
-To:     Arun Murthy <arun.murthy@stericsson.com>
-Cc:     lars@metafoo.de, akpm@linux-foundation.org, kernel@pengutronix.de,
-        philipp.zabel@gmail.com, robert.jarzmik@free.fr,
-        marek.vasut@gmail.com, eric.y.miao@gmail.com, rpurdie@rpsys.net,
-        sameo@linux.intel.com, kgene.kim@samsung.com,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        STEricsson_nomadik_linux@list.st.com, khilman@deeprootsystems.com
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <bgat@billgatliff.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <khilman@deeprootsystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27967
+X-archive-position: 27968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bgat@billgatliff.com
+X-original-sender: khilman@deeprootsystems.com
 Precedence: bulk
 X-list: linux-mips
 
-Arun:
+Arun MURTHY <arun.murthy@stericsson.com> writes:
 
-On Wed, Oct 6, 2010 at 10:59 AM, Arun Murthy <arun.murthy@stericsson.com> wrote:
-> PWM core driver for pwm based led and backlight driver.
+[...]
 
-With all due respect, it looks like you have reinvented portions of my
-RFC for a comprehensive PWM API that has been floating around on
-linux-embedded for over a year--- with an update coming in the last
-two weeks or so.  Why?
+>> 
+>> I suggest that you work on Kevin's comments before making any code
+>> changes though.
+>
+> This pwm driver also supports the Davinci pwm driver as suggested by
+> Kelvin.
 
-To make matters worse, when I posted my original code I was told to
-move the whole discussion to linux-embedded, because as a
-cross-platform API proposal that's where it belongs.  I encourage you
-do likewise.
+My concern isn't whether it supports davinci or not.  Adapting existing
+drivers is the easy part.
 
-I have a terse email style, so I just want to be clear that I'm not
-mad or anything.  Honest!  I'm just disappointed that you've invested
-so much hard work in traveling down the same path I came over a year
-ago.  Bummer for everyone.
+My concern is that there are now two proposals for a generic PWM
+framework, and I would prefer to see that those projects are aligned
+before anything merges.
 
-Can we not combine our efforts?  I haven't reviewed all of your
-patches yet, but you are clearly ahead of me in specific ARM platform
-support.  On the other hand, I think my code is more refined in many
-other areas.  I also have Blackfin, PowerPC, and Cirrus (ARM) support,
-though some of the code is from contributors who are holding it until
-I proffer my final code.
-
-
-What do you think?  Just let me know privately by email, or over on
-linux-embedded.
-
-
-Thanks!
-
-
-b.g.
--- 
-Bill Gatliff
-bgat@billgatliff.com
+Kevin

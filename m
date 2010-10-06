@@ -1,104 +1,348 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2010 17:22:25 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:44943 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491041Ab0JFPWU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Oct 2010 17:22:20 +0200
-Received: by pzk32 with SMTP id 32so3572035pzk.36
-        for <multiple recipients>; Wed, 06 Oct 2010 08:22:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:date:from:to:cc:subject
-         :message-id:mail-followup-to:references:mime-version:content-type
-         :content-disposition:in-reply-to:user-agent;
-        bh=iXp14WBDID+2aGz+eVl4yo3HrS8XLwtdI+PSMgqGtPY=;
-        b=CKN4D2K6DlupTFgn2Zq59zE8wwvwJBLPmFwIIi8oUC+6wPEvRid8hsJ3PGiwU4MzSU
-         puliTNVi6hV2y4SH5oV4DP92dEfrNkStkS8Qle6joPWPqR06cVPtnhQXfiwfHcD29uyP
-         MMJYXJAttDhRBMg3zDzREzEgj31lOG4MAFzk0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        b=IVFy7eugbt3b+epJtEejQoZ7Ai1mgp7RH0i+wRSZUDKnBW3u54F+QDTXtKiCpwHGF7
-         2Ww2WX5qIZmcjSvUeOL8Ijwz4kQ106GmwcxTEO0txqBi6HAEtJ+4swM7Qqs0zLxcd40z
-         tDyOUpzrWU2qq5XRmRn4MUP5yulOMGbxh2AWs=
-Received: by 10.114.79.10 with SMTP id c10mr15518065wab.220.1286378533215;
-        Wed, 06 Oct 2010 08:22:13 -0700 (PDT)
-Received: from localhost (KD118154228076.ppp-bb.dion.ne.jp [118.154.228.76])
-        by mx.google.com with ESMTPS id r37sm1580033wak.11.2010.10.06.08.22.09
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 06 Oct 2010 08:22:11 -0700 (PDT)
-Date:   Thu, 7 Oct 2010 00:25:54 +0900
-From:   Adam Jiang <jiang.adam@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Sergei Shtylyov <sshtylyov@mvista.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mips: irq: add stackoverflow detection
-Message-ID: <20101006152554.GC13400@capricorn-x61>
-Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
-        Sergei Shtylyov <sshtylyov@mvista.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-References: <1286361676-10743-1-git-send-email-jiang.adam@gmail.com>
- <4CAC5537.9040904@mvista.com>
- <20101006112114.GA19856@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Oct 2010 18:00:21 +0200 (CEST)
+Received: from eu1sys200aog113.obsmtp.com ([207.126.144.135]:33616 "EHLO
+        eu1sys200aog113.obsmtp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491115Ab0JFQAQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 6 Oct 2010 18:00:16 +0200
+Received: from source ([164.129.1.35]) (using TLSv1) by eu1sys200aob113.postini.com ([207.126.147.11]) with SMTP
+        ID DSNKTKyc9K1jINF+5/oRCvXap4mZXKAP0Z1I@postini.com; Wed, 06 Oct 2010 16:00:15 UTC
+Received: from zeta.dmz-eu.st.com (ns2.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B7A4E7B;
+        Wed,  6 Oct 2010 15:59:27 +0000 (GMT)
+Received: from relay2.stm.gmessaging.net (unknown [10.230.100.18])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E65E32939;
+        Wed,  6 Oct 2010 15:59:26 +0000 (GMT)
+Received: from exdcvycastm022.EQ1STM.local (alteon-source-exch [10.230.100.61])
+        (using TLSv1 with cipher RC4-MD5 (128/128 bits))
+        (Client CN "exdcvycastm022", Issuer "exdcvycastm022" (not verified))
+        by relay2.stm.gmessaging.net (Postfix) with ESMTPS id 3E0CDA807E;
+        Wed,  6 Oct 2010 17:59:19 +0200 (CEST)
+Received: from localhost (10.201.54.119) by exdcvycastm022.EQ1STM.local
+ (10.230.100.30) with Microsoft SMTP Server (TLS) id 8.1.393.1; Wed, 6 Oct
+ 2010 17:59:25 +0200
+From:   Arun Murthy <arun.murthy@stericsson.com>
+To:     <lars@metafoo.de>, <akpm@linux-foundation.org>,
+        <kernel@pengutronix.de>, <philipp.zabel@gmail.com>,
+        <robert.jarzmik@free.fr>, <marek.vasut@gmail.com>,
+        <eric.y.miao@gmail.com>, <rpurdie@rpsys.net>,
+        <sameo@linux.intel.com>, <kgene.kim@samsung.com>,
+        <linux-omap@vger.kernel.org>
+Cc:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
+        <STEricsson_nomadik_linux@list.st.com>,
+        <arun.murthy@stericsson.com>, <bgat@billgatliff.com>,
+        <khilman@deeprootsystems.com>
+Subject: [PATCHv3 1/7] pwm: Add pwm core driver
+Date:   Wed, 6 Oct 2010 21:29:12 +0530
+Message-ID: <1286380758-14063-2-git-send-email-arun.murthy@stericsson.com>
+X-Mailer: git-send-email 1.7.2.dirty
+In-Reply-To: <1286380758-14063-1-git-send-email-arun.murthy@stericsson.com>
+References: <1286380758-14063-1-git-send-email-arun.murthy@stericsson.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20101006112114.GA19856@linux-mips.org>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <jiang.adam@gmail.com>
+Content-Type: text/plain
+Return-Path: <arun.murthy@stericsson.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27958
+X-archive-position: 27959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jiang.adam@gmail.com
+X-original-sender: arun.murthy@stericsson.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 06, 2010 at 12:21:15PM +0100, Ralf Baechle wrote:
-> On Wed, Oct 06, 2010 at 02:53:43PM +0400, Sergei Shtylyov wrote:
-> 
-> > >Add stackoverflow detection to mips arch
-> > 
-> >    There's no such word: stackoverflow. Space is needed.
-> > 
-> > >This is the 3rd version of the smiple patch. 2K is too big for many
-> > >system, so I Modified the warning line by following Ralf's suggestion.
-> > 
-> > >Signed-off-by: Adam Jiang<jiang.adam@gmail.com>
-> > [...]
-> > 
-> > >diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
-> > >index c6345f5..b43edb7 100644
-> > >--- a/arch/mips/kernel/irq.c
-> > >+++ b/arch/mips/kernel/irq.c
-> > >@@ -151,6 +151,28 @@ void __init init_IRQ(void)
-> > >  #endif
-> > >  }
-> > >
-> > >+#ifdef CONFIG_DEBUG_STACKOVERFLOW
-> > >+static inline void check_stack_overflow(void)
-> > >+{
-> > >+	unsigned long sp;
-> > >+
-> > >+	asm volatile("move %0, $sp" : "=r" (sp));
-> > >+	sp = sp & THREAD_MASK;
-> > 
-> >    Why not:
-> > 
-> > 	sp &= THREAD_MASK;
-> > 
-> >    It's C, after all! :-)
-> 
-> I already had accepted his previous version with minor changes so I've
-> combined the two.
+The existing pwm based led and backlight driver makes use of the
+pwm(include/linux/pwm.h). So all the board specific pwm drivers will
+be exposing the same set of function name as in include/linux/pwm.h.
+Consder a platform with multi Soc or having more than one pwm module, in
+such a case, there exists more than one pwm driver for a platform. Each
+of these pwm drivers export the same set of function and hence leads to
+re-declaration build error.
 
-Thanks Ralf. I am very glad I can do this small piece of code for Linux
-kernel, though with many faults. :) No doubt I will try to do much more
-then.
+In order to overcome this issue all the pwm drivers must register to
+some core pwm driver with function pointers for pwm operations (i.e
+pwm_config, pwm_enable, pwm_disable).
 
-Best regards,
-/Adam
+The clients of pwm device will have to call pwm_request, wherein
+they will get the pointer to struct pwm_ops. This structure include
+function pointers for pwm_config, pwm_enable and pwm_disable.
+
+Signed-off-by: Arun Murthy <arun.murthy@stericsson.com>
+Acked-by: Linus Walleij <linus.walleij@stericsson.com>
+---
+ drivers/Kconfig        |    2 +
+ drivers/Makefile       |    1 +
+ drivers/pwm/Kconfig    |   18 +++++
+ drivers/pwm/Makefile   |    1 +
+ drivers/pwm/pwm-core.c |  171 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/pwm.h    |   12 +++-
+ 6 files changed, 204 insertions(+), 1 deletions(-)
+ create mode 100644 drivers/pwm/Kconfig
+ create mode 100644 drivers/pwm/Makefile
+ create mode 100644 drivers/pwm/pwm-core.c
+
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index a2b902f..e042f27 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -111,4 +111,6 @@ source "drivers/xen/Kconfig"
+ source "drivers/staging/Kconfig"
+ 
+ source "drivers/platform/Kconfig"
++
++source "drivers/pwm/Kconfig"
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 443c4eb..1aec04e 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -116,3 +116,4 @@ obj-$(CONFIG_STAGING)		+= staging/
+ obj-y				+= platform/
+ obj-y				+= ieee802154/
+ obj-y				+= vbus/
++obj-$(CONFIG_PWM_DEVICES)	+= pwm/
+diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+new file mode 100644
+index 0000000..03a9813
+--- /dev/null
++++ b/drivers/pwm/Kconfig
+@@ -0,0 +1,18 @@
++#
++# PWM devices
++#
++
++menuconfig PWM_DEVICES
++	bool "PWM devices"
++	default y
++	---help---
++	  Say Y to enable pwm core driver and see options for various pwm
++	  drivers. This option enables pwm drivers to register with the
++	  pwm core driver and thereby provide a single interface to the
++	  clients using PWM.
++
++	  If you say N, all options in this submenu will be skipped and disabled.
++
++if PWM_DEVICES
++
++endif # PWM_DEVICES
+diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+new file mode 100644
+index 0000000..552f969
+--- /dev/null
++++ b/drivers/pwm/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_PWM_DEVICES)	+= pwm-core.o
+diff --git a/drivers/pwm/pwm-core.c b/drivers/pwm/pwm-core.c
+new file mode 100644
+index 0000000..c323969
+--- /dev/null
++++ b/drivers/pwm/pwm-core.c
+@@ -0,0 +1,171 @@
++/*
++ * Copyright (C) ST-Ericsson SA 2010
++ *
++ * License Terms: GNU General Public License v2
++ * Author: Arun R Murthy <arun.murthy@stericsson.com>
++ */
++#include <linux/init.h>
++#include <linux/device.h>
++#include <linux/slab.h>
++#include <linux/rwsem.h>
++#include <linux/err.h>
++#include <linux/pwm.h>
++
++struct pwm_device {
++	struct pwm_ops *pops;
++	struct device *dev;
++	int pwm_id;
++	const char *name;
++};
++
++static struct class *pwm_class;
++
++/*
++ * TODO: This function is referenced in pwm based led and backlight driver.
++ * This function is no more required with the implementation of pwm core
++ * driver. This is retained as deprecated to make sure that the mips
++ * jz4740 pwm driver works fine as that is not aligned with this pwm core
++ * driver. On aligning the same this has to be removed.
++ */
++void __deprecated pwm_free(struct pwm_device *pwm)
++{
++}
++
++/**
++ * pwm_config() - configure the pwm device
++ * @pwm:	pointer to the struct pwm_device
++ * @period_ns:	period in nano seconds
++ *
++ * This function verifies for the presence of the pops structure and if so
++ * calls the pwm device specific config fucntion.
++ */
++int pwm_config(struct pwm_device *pwm, int duty_ns, int period_ns)
++{
++	if (!pwm->pops)
++		return -EFAULT;
++	return pwm->pops->pwm_config(pwm, duty_ns, period_ns);
++}
++EXPORT_SYMBOL(pwm_config);
++
++/**
++ * pwm_enable() - enable pwm device
++ * @pwm:	pointer to the struct pwm_device
++ *
++ * This function verifies for the presence of the pops structure and if so
++ * calls the pwm device specific enable function.
++ */
++int pwm_enable(struct pwm_device *pwm)
++{
++	if (!pwm->pops)
++		return -EFAULT;
++	return pwm->pops->pwm_enable(pwm);
++}
++EXPORT_SYMBOL(pwm_enable);
++
++/**
++ * pwm_disable() - disable pwm device
++ * @pwm:	pointer to the struct pwm_device
++ *
++ * This function verifies for the presence of the pops structure and if so
++ * calls the pwm device specific disable function.
++ */
++void pwm_disable(struct pwm_device *pwm)
++{
++	if (!pwm->pops)
++		return -EFAULT;
++	pwm->pops->pwm_disable(pwm);
++}
++EXPORT_SYMBOL(pwm_disable);
++
++static int pwm_match_device_by_pwm_id(struct device *dev, void *data)
++{
++	int *pwm_id = data;
++	struct pwm_device *pwm = dev_get_drvdata(dev);
++	const char *name = pwm->name;
++
++	return (strcmp(name, pwm->name) == 0 && pwm->pwm_id == *pwm_id);
++}
++
++static int pwm_match_device_by_name(struct device *dev, void *data)
++{
++	const char *name = data;
++	struct pwm_device *pwm = dev_get_drvdata(dev);
++
++	return strcmp(pwm->name, name) == 0;
++}
++
++/**
++ * pwm_request() - request for a pwm device
++ * @pwm_id:	pwm device id
++ * @name:	pwm device name
++ *
++ * This function searches for the pwm device with the specified name in the
++ * list of pre registered pwm devices and return the pointer to the struct
++ * pwm_device. Clients using pwm device will first have to call this function
++ * to get the pointer to the pwm_device. This pointer to struct pwm_device
++ * will be further be used in all operation(pwm_enable/disable/config).
++ */
++struct pwm_device *pwm_request(int pwm_id, const char *name)
++{
++	struct device *dev = class_find_device(pwm_class, NULL, name,
++			pwm_match_device_by_name);
++	dev = class_find_device(pwm_class, dev, pwm_id,
++			pwm_match_device_by_pwm_id);
++
++	return dev ? dev_get_drvdata(dev) : NULL;
++}
++EXPORT_SYMBOL(pwm_request);
++
++/**
++ * pwm_device_register() - registers pwm driver with the pwm core driver
++ * @parent:	pointer to the parent's device struct
++ * @pwm:	pointer to the struct pwm_device
++ *
++ * This function registers the pwm device with the pwm core driver, thereby
++ * proposing a single interface exposure to the clients using the pwm device.
++ */
++int pwm_device_register(struct device *parent, struct pwm_device *pwm)
++{
++	pwm->dev = device_create(pwm_class, parent, 0, pwm, "%s", pwm->name);
++	if (IS_ERR(pwm->dev))
++		return PTR_ERR(pwm->dev);
++
++	return 0;
++}
++EXPORT_SYMBOL(pwm_device_register);
++
++/**
++ * pwm_device_unregister() - unregisters the pre registered pwm device
++ * @pwm:	pointer to the struct pwm_device
++ * 
++ * This function unregisters the pwm device from the pwm core driver. Clients
++ * can no more use this pwm device.
++ */
++int pwm_device_unregister(struct pwm_device *pwm)
++{
++	device_unregister(pwm->dev);
++	return 0;
++}
++EXPORT_SYMBOL(pwm_device_unregister);
++
++static int __init pwm_init(void)
++{
++	pwm_class = class_create(THIS_MODULE, "pwm_core");
++	if (IS_ERR(pwm_class))
++		return PTR_ERR(pwm_class);
++
++	return 0;
++}
++subsys_initcall(pwm_init);
++
++static void __exit pwm_exit(void)
++{
++	class_destroy(pwm_class);
++}
++
++module_exit(pwm_exit);
++
++MODULE_LICENSE("GPL v2");
++MODULE_AUTHOR("Arun R Murthy");
++MODULE_ALIAS("core:pwm");
++MODULE_DESCRIPTION("Core pwm driver");
+diff --git a/include/linux/pwm.h b/include/linux/pwm.h
+index 7c77575..c41e0da 100644
+--- a/include/linux/pwm.h
++++ b/include/linux/pwm.h
+@@ -3,6 +3,13 @@
+ 
+ struct pwm_device;
+ 
++struct pwm_ops {
++	int (*pwm_config)(struct pwm_device *pwm, int duty_ns, int period_ns);
++	int (*pwm_enable)(struct pwm_device *pwm);
++	int (*pwm_disable)(struct pwm_device *pwm);
++	char *name;
++};
++
+ /*
+  * pwm_request - request a PWM device
+  */
+@@ -11,7 +18,7 @@ struct pwm_device *pwm_request(int pwm_id, const char *label);
+ /*
+  * pwm_free - free a PWM device
+  */
+-void pwm_free(struct pwm_device *pwm);
++void __deprecated pwm_free(struct pwm_device *pwm);
+ 
+ /*
+  * pwm_config - change a PWM device configuration
+@@ -28,4 +35,7 @@ int pwm_enable(struct pwm_device *pwm);
+  */
+ void pwm_disable(struct pwm_device *pwm);
+ 
++int pwm_device_register(struct device *parent, struct pwm_device *pwm);
++int pwm_device_unregister(struct pwm_device *pwm);
++
+ #endif /* __LINUX_PWM_H */
+-- 
+1.7.2.dirty

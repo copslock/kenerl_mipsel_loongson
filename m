@@ -1,60 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Oct 2010 15:32:19 +0200 (CEST)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:39364 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491168Ab0JGNcL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Oct 2010 15:32:11 +0200
-Received: by qwe4 with SMTP id 4so38142qwe.36
-        for <linux-mips@linux-mips.org>; Thu, 07 Oct 2010 06:32:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=c87ZhM/W5ohXAWWM9GpSFmliF2H5nMdVUBgK8K7JPX4=;
-        b=aKjJvNNOEdX2i28Cn7wFjf82HmHsS6tZcw1O+T8IsIsJxgFNRa5b775TMmqFMseexx
-         SgHKXbWIAiOaPlwtoyM2ISGyCONnpGHUXim2NtnDgu7e8GThb3nwmeNdPigkMHWySc68
-         /LbWOqx2LsfpXZ6UXVLeV5pboe5A5rWuTzjwI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=Pdneq9k7waXdfGeueFM5+ft+Gx2TmyeVd2MD7gQFHmG5Q1/4m5+Xlsuc6t15fxGG/y
-         pUlF11bbgjCDQ9juXWVwsUSTigS4OdLhxqps4vdaAZtDcIQAW1tVgiq3elT7hehY9o/s
-         p0nSeYvtdX3GWLqNOK/KM/slW3ozsMQHnA+PE=
-MIME-Version: 1.0
-Received: by 10.224.208.130 with SMTP id gc2mr302630qab.69.1286458323113; Thu,
- 07 Oct 2010 06:32:03 -0700 (PDT)
-Received: by 10.229.221.146 with HTTP; Thu, 7 Oct 2010 06:32:03 -0700 (PDT)
-In-Reply-To: <AANLkTikjZc029TOmzsaPKg7UqzRktMB7JFN44D1MwrAA@mail.gmail.com>
-References: <AANLkTikjZc029TOmzsaPKg7UqzRktMB7JFN44D1MwrAA@mail.gmail.com>
-Date:   Thu, 7 Oct 2010 21:32:03 +0800
-Message-ID: <AANLkTi=Gt4j9j5DOPXtV7OYCnhsKRViM=SSuBJmrqQau@mail.gmail.com>
-Subject: Re: ebase changed, leads to invalid access of data
-From:   "wilbur.chan" <wilbur512@gmail.com>
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Cc:     chelly wilbur <wilbur512@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <wilbur512@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Oct 2010 01:05:03 +0200 (CEST)
+Received: from smtp2.caviumnetworks.com ([209.113.159.134]:18301 "EHLO
+        smtp2.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491186Ab0JGXE7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Oct 2010 01:04:59 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by smtp2.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4cae50d90000>; Thu, 07 Oct 2010 18:59:37 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 7 Oct 2010 16:04:24 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 7 Oct 2010 16:04:24 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o97N4At2026984;
+        Thu, 7 Oct 2010 16:04:10 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o97N49ea026983;
+        Thu, 7 Oct 2010 16:04:09 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        linux-watchdog@vger.kernel.org
+Subject: [PATCH 13/14] watchdog: octeon-wdt: Use I/O clock rate for timing calculations.
+Date:   Thu,  7 Oct 2010 16:03:52 -0700
+Message-Id: <1286492633-26885-14-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1286492633-26885-1-git-send-email-ddaney@caviumnetworks.com>
+References: <1286492633-26885-1-git-send-email-ddaney@caviumnetworks.com>
+X-OriginalArrivalTime: 07 Oct 2010 23:04:24.0324 (UTC) FILETIME=[FBE03C40:01CB6673]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27972
+X-archive-position: 27973
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-2010/10/7 wilbur.chan <wilbur512@gmail.com>:
+The creation of the I/O clock domain requires some adjustments.  Since
+the watchdog counters are clocked by the I/O clock, use its rate for
+timing calculations.
 
-> any suggestions? Thank you in advance.
->
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Cc: Wim Van Sebroeck <wim@iguana.be>
+Cc: linux-watchdog@vger.kernel.org
+---
+ drivers/watchdog/octeon-wdt-main.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-I think maybe I've got the answer: All cpus shared the same exception
-handler, so if it was an invalid address , the linux can fix it
-
-by tlb refilling.  Becasue I have changed the ebase of non-zero cpus
-and did not implement TLB handler for them  , the tlb exception
-
-
-happended from time to time.
+diff --git a/drivers/watchdog/octeon-wdt-main.c b/drivers/watchdog/octeon-wdt-main.c
+index 2a41017..fb0aed0 100644
+--- a/drivers/watchdog/octeon-wdt-main.c
++++ b/drivers/watchdog/octeon-wdt-main.c
+@@ -477,7 +477,7 @@ static void octeon_wdt_calc_parameters(int t)
+ 
+ 	countdown_reset = periods > 2 ? periods - 2 : 0;
+ 	heartbeat = t;
+-	timeout_cnt = ((octeon_get_clock_rate() >> 8) * timeout_sec) >> 8;
++	timeout_cnt = ((octeon_get_io_clock_rate() >> 8) * timeout_sec) >> 8;
+ }
+ 
+ static int octeon_wdt_set_heartbeat(int t)
+@@ -676,7 +676,7 @@ static int __init octeon_wdt_init(void)
+ 	max_timeout_sec = 6;
+ 	do {
+ 		max_timeout_sec--;
+-		timeout_cnt = ((octeon_get_clock_rate() >> 8) * max_timeout_sec) >> 8;
++		timeout_cnt = ((octeon_get_io_clock_rate() >> 8) * max_timeout_sec) >> 8;
+ 	} while (timeout_cnt > 65535);
+ 
+ 	BUG_ON(timeout_cnt == 0);
+-- 
+1.7.2.3

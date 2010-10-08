@@ -1,68 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Oct 2010 12:38:15 +0200 (CEST)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:39552 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491132Ab0JHKiM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Oct 2010 12:38:12 +0200
-Received: by ewy9 with SMTP id 9so484346ewy.36
-        for <multiple recipients>; Fri, 08 Oct 2010 03:38:09 -0700 (PDT)
-Received: by 10.213.54.140 with SMTP id q12mr2369321ebg.71.1286534288946;
-        Fri, 08 Oct 2010 03:38:08 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-76-106-32.pppoe.mtu-net.ru [91.76.106.32])
-        by mx.google.com with ESMTPS id v59sm5146098eeh.10.2010.10.08.03.38.06
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 08 Oct 2010 03:38:07 -0700 (PDT)
-Message-ID: <4CAEF427.9030608@mvista.com>
-Date:   Fri, 08 Oct 2010 14:36:23 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.9) Gecko/20100915 Thunderbird/3.1.4
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Oct 2010 16:27:09 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:36228 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491196Ab0JHO1G (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 8 Oct 2010 16:27:06 +0200
+Received: by pwi5 with SMTP id 5so387321pwi.36
+        for <linux-mips@linux-mips.org>; Fri, 08 Oct 2010 07:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=rr0YZv8VRPB4q2UYkePnCcuNNKAkRvcFcm2pw/nPPsk=;
+        b=hJqyASzfW3HZn+iSkssuzeFQyVm0WPDUSjl/ddqJXNJqVytryg0kuCSJUUORHdFy14
+         Y3RM2fOocsVGQ6kyyqfUAjx4pcbYJQC7fAza6NV3pfEtG507oiMPCoaVciqASthf7uUD
+         T5oyNN+MjLnDSYX+RrERU9XXkOoP/PRUkzWXc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=SZusscw2g5FF6b2cgV7TQj8lVdqmzVckAfJu/sjIJnDVObzYTpLvNZ/T9TTFg1wEqU
+         UqNK69aEHk47uMYxRS1S9Nnu5BDp/Vll1V/6ZUnVppihc/nNo7vR9z19K8zSLpa5O0LS
+         G+E8BP6dIYnm/j50hhfMliYdqqbgvvRthzuIw=
 MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 08/14] MIPS: Octeon: Scale Octeon2 clocks in  octeon_init_cvmcount()
-References: <1286492633-26885-1-git-send-email-ddaney@caviumnetworks.com> <1286492633-26885-9-git-send-email-ddaney@caviumnetworks.com>
-In-Reply-To: <1286492633-26885-9-git-send-email-ddaney@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Received: by 10.142.148.18 with SMTP id v18mr2053882wfd.9.1286547393901; Fri,
+ 08 Oct 2010 07:16:33 -0700 (PDT)
+Received: by 10.231.59.77 with HTTP; Fri, 8 Oct 2010 07:16:33 -0700 (PDT)
+Date:   Fri, 8 Oct 2010 16:16:33 +0200
+Message-ID: <AANLkTikXySeekzpYeGf6wuH5NTMxLCK_oirvBcDu4h63@mail.gmail.com>
+Subject: siginfo difference MIPS and other arches
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27989
+X-archive-position: 27990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hello,
 
-On 08-10-2010 3:03, David Daney wrote:
+current -git build breaks because of upstream commit
+a337fdac7a5622d1e6547f4b476c14dfe5a2c892, which introduced
+an unconditional check for siginfo_._sifields._sifault._si_addr_lsb field.
 
-> The per-CPU clocks are synchronized from IPD_CLK_COUNT, on cn63XX it
-> must be scaled by the clock frequency ratio.
+Is there a reason why MIPS doesn't use the default siginfo_t structure
+as other architectures do?
 
-> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
-[...]
-
-> diff --git a/arch/mips/cavium-octeon/csrc-octeon.c b/arch/mips/cavium-octeon/csrc-octeon.c
-> index b6847c8..c85a681 100644
-> --- a/arch/mips/cavium-octeon/csrc-octeon.c
-> +++ b/arch/mips/cavium-octeon/csrc-octeon.c
-[...]
-> @@ -33,8 +49,20 @@ void octeon_init_cvmcount(void)
->   	 * Loop several times so we are executing from the cache,
->   	 * which should give more deterministic timing.
->   	 */
-> -	while (loops--)
-> -		write_c0_cvmcount(cvmx_read_csr(CVMX_IPD_CLK_COUNT));
-> +	while (loops--) {
-> +		u64 ipd_clk_count = cvmx_read_csr(CVMX_IPD_CLK_COUNT);
-> +		if (rdiv != 0) {
-> +			ipd_clk_count = ipd_clk_count * rdiv;
-
-    Why not:
-
-			ipd_clk_count *= rdiv;
-
-WBR, Sergei
+Manuel

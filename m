@@ -1,27 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Oct 2010 17:58:28 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Oct 2010 19:09:45 +0200 (CEST)
 Received: (from localhost user: 'ralf' uid#500 fake: STDIN
         (ralf@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S1491201Ab0JHP6Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 8 Oct 2010 17:58:25 +0200
-Date:   Fri, 8 Oct 2010 16:58:23 +0100
+        id S1491201Ab0JHRJm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 8 Oct 2010 19:09:42 +0200
+Date:   Fri, 8 Oct 2010 18:09:41 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: siginfo difference MIPS and other arches
-Message-ID: <20101008155823.GB30185@linux-mips.org>
-References: <AANLkTikXySeekzpYeGf6wuH5NTMxLCK_oirvBcDu4h63@mail.gmail.com>
- <20101008155319.GC12107@linux-mips.org>
- <AANLkTimYGDoRovYgbReeBihD2nfYFHE_CmwJjv2_=s7v@mail.gmail.com>
+To:     Andi Kleen <andi@firstfloor.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-kernel@vger.kernel.org, fengguang.wu@intel.com,
+        linux-mm@kvack.org, Andi Kleen <ak@linux.intel.com>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/4] HWPOISON: Copy si_addr_lsb to user
+Message-ID: <20101008170941.GA3025@linux-mips.org>
+References: <1286398141-13749-1-git-send-email-andi@firstfloor.org>
+ <1286398141-13749-3-git-send-email-andi@firstfloor.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AANLkTimYGDoRovYgbReeBihD2nfYFHE_CmwJjv2_=s7v@mail.gmail.com>
+In-Reply-To: <1286398141-13749-3-git-send-email-andi@firstfloor.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 27995
+X-archive-position: 27996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,21 +32,36 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 08, 2010 at 05:55:01PM +0200, Manuel Lauss wrote:
+On Wed, Oct 06, 2010 at 10:48:59PM +0200, Andi Kleen wrote:
 
-> >> current -git build breaks because of upstream commit
-> >> a337fdac7a5622d1e6547f4b476c14dfe5a2c892, which introduced
-> >> an unconditional check for siginfo_._sifields._sifault._si_addr_lsb field.
-> >>
-> >> Is there a reason why MIPS doesn't use the default siginfo_t structure
-> >> as other architectures do?
-> >
-> > History - the MIPS structure is identical to IRIX.
+> The original hwpoison code added a new siginfo field si_addr_lsb to
+> pass the granuality of the fault address to user space. Unfortunately
+> this field was never copied to user space. Fix this here.
 > 
-> Does anyone still run IRIX binaries on current linux?
-> (and Isn't IRIX dead anyway? :)  )
+> I added explicit checks for the MCEERR codes to avoid having
+> to patch all potential callers to initialize the field.
 
-Doesn't matter - you can't change the definition without breaking
-binary compatibility.
+That doesn't fly, see below.
+
+> --- a/kernel/signal.c
+> +++ b/kernel/signal.c
+> @@ -2215,6 +2215,14 @@ int copy_siginfo_to_user(siginfo_t __user *to, siginfo_t *from)
+>  #ifdef __ARCH_SI_TRAPNO
+>  		err |= __put_user(from->si_trapno, &to->si_trapno);
+>  #endif
+> +#ifdef BUS_MCEERR_AO
+> +		/* 
+> +		 * Other callers might not initialize the si_lsb field,
+> +	 	 * so check explicitely for the right codes here.
+> +		 */
+> +		if (from->si_code == BUS_MCEERR_AR || from->si_code == BUS_MCEERR_AO)
+> +			err |= __put_user(from->si_addr_lsb, &to->si_addr_lsb);
+> +#endif
+
+include/asm-generic/siginfo.h defines BUS_MCEERR_AR unconditionally and is
+getting include in all <asm/siginfo.h> so that #ifdef condition is always
+true.  struct siginfo.si_addr_lsb is defined only for the generic struct
+siginfo.  The architectures that define HAVE_ARCH_SIGINFO_T (MIPS and
+IA-64) do not define this field so the build breaks.
 
   Ralf

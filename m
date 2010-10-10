@@ -1,136 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Oct 2010 14:03:35 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:62991 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491205Ab0JIMDc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Oct 2010 14:03:32 +0200
-Received: by iwn2 with SMTP id 2so1220904iwn.36
-        for <multiple recipients>; Sat, 09 Oct 2010 05:03:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Oct 2010 03:17:39 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:61560 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491151Ab0JJBRg convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 10 Oct 2010 03:17:36 +0200
+Received: by qyk34 with SMTP id 34so1673951qyk.15
+        for <multiple recipients>; Sat, 09 Oct 2010 18:17:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:mime-version:received:from:date
-         :message-id:subject:to:content-type;
-        bh=OkDLex9C9cQcM3JFDjktjKBwxOMp2QDyfGMuPIjBvqA=;
-        b=YXD1hYsuva0pnTVkZqIAs1fi65uBFGX1gZp5hBE8z8UzC1Vd/H/Nl+sSVfmq3jpqnM
-         Oz9bLtlgrLv1ZLQ6W/97Cg0G/spR387HvrWZ0tb75xUdLj4SUz/WqciA8hJzn9SrA9KF
-         qO0+N1I1dEHnq/E0OPnBeb7LqfexpoVf4e1GM=
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=aloB0mYiTQ5ln7L/NdG/WD9HjgYaVDlGPmSHkZo48UU=;
+        b=mTobAH/jH0QhlN+s/qM5WF8iCEi281J7aDaiwjkyIBRwesF+wOh3o3IR478Dq63kpP
+         FQYSldVtZlqv9LU4M3fmYjCUICkVOqA2I1G3AQtauAloDyPWmbMFPFeDTnIEutwheX13
+         ksth2Fk8v2f/czi5mSTkJyTD4GUc1tKCSWNYs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:from:date:message-id:subject:to:content-type;
-        b=LhfZ9V4ixXRAnWH0oYCF0JN7aniFDejnDqd75rmiG5wnHvv93jNxv8DtXx9EBrtuAk
-         hH6xbbCsYJ/tXr+NWoJrCrx6e1CcyYDQbFvWcxqGWgdcFyd5OZpEERrRxELK+SCWxMp5
-         DmHsadmH/sxoPsyZQdGl8Cp2kjawCftSp4MD0=
-Received: by 10.231.155.206 with SMTP id t14mr3163004ibw.34.1286625808928;
- Sat, 09 Oct 2010 05:03:28 -0700 (PDT)
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=f1I9juQNkPpocgl6RZnJ4FsC/2Z4rNrEZCetNnMbU1Z1GzpjgepcltEleMoPcO3e9+
+         Z15XvlyROshVFggmguxU+LhHC4Ms19ahqzGK97qPcjJGiyoRSpOYpRiVmjHhq5mLxxq1
+         R561e7oQpKAI0iui7BZveOTQs0LT5ZQt2OZr0=
 MIME-Version: 1.0
-Received: by 10.231.130.132 with HTTP; Sat, 9 Oct 2010 05:03:08 -0700 (PDT)
-From:   Dragos Tatulea <dragos.tatulea@gmail.com>
-Date:   Sat, 9 Oct 2010 14:03:08 +0200
-Message-ID: <AANLkTimhn4JFN+kPsm36qJ6Pu=P0GcNM9RLO3LaN+x0V@mail.gmail.com>
-Subject: RFC: add code to dump the kernel page tables for visual inspection by
- kernel developers
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dragos.tatulea@gmail.com>
+Received: by 10.224.29.16 with SMTP id o16mr537412qac.319.1286673448296; Sat,
+ 09 Oct 2010 18:17:28 -0700 (PDT)
+Received: by 10.224.47.77 with HTTP; Sat, 9 Oct 2010 18:17:28 -0700 (PDT)
+In-Reply-To: <1285964854-28659-7-git-send-email-ddaney@caviumnetworks.com>
+References: <1285964854-28659-1-git-send-email-ddaney@caviumnetworks.com>
+        <1285964854-28659-7-git-send-email-ddaney@caviumnetworks.com>
+Date:   Sat, 9 Oct 2010 18:17:28 -0700
+Message-ID: <AANLkTi=iunuoWEd=cB6i5K7Dn0oGCrN4C3-tfqDz6vJZ@mail.gmail.com>
+Subject: Re: [PATCH 6/8] MIPS: Convert DMA to use dma-mapping-common.h
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>, ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28012
+X-archive-position: 28013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dragos.tatulea@gmail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On the linux-mips.org TODO list, there's the $SUBJ item. Ralf B.
-hinted that a good starting point would be the dump_list_process
-function which was removed in 2.6.23 (during lib-32 & lib-64 merge?).
-This patch is just a copy paste from the lib-64 version of this
-function (with small modifications for 32 bit compatibility).
+On Fri, Oct 1, 2010 at 1:27 PM, David Daney <ddaney@caviumnetworks.com> wrote:
+> diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+> index 8da9807..8259966 100644
+> --- a/arch/mips/include/asm/mach-generic/dma-coherence.h
+> +++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+> @@ -17,12 +17,6 @@ static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+>        return virt_to_phys(addr);
+>  }
+>
+> -static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+> -       struct page *page)
+> -{
+> -       return page_to_phys(page);
+> -}
+> -
 
-Any other interesting "features" that should get in?
+I was attempting to rebase the HIGHMEM DMA patch against mips-queue,
+and ran into a problem with this change:
 
-diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
-index 3f69725..7d705c8 100644
---- a/arch/mips/lib/dump_tlb.c
-+++ b/arch/mips/lib/dump_tlb.c
-@@ -6,6 +6,7 @@
-  */
- #include <linux/kernel.h>
- #include <linux/mm.h>
-+#include <linux/sched.h>
+mips_dma_map_sg() and mips_dma_map_page() now assume that it is
+possible to convert any "struct page" to a VA, then convert that VA to
+a PA.  This is not necessarily true for HIGHMEM pages (it is perfectly
+valid for page_address(page) == NULL).  For cases where we are passed
+a "struct page" instead of a VA, it is desirable to be able to call
+plat_map_dma_mem_page() directly on the struct page.
 
- #include <asm/mipsregs.h>
- #include <asm/page.h>
-@@ -109,3 +110,71 @@ void dump_tlb_all(void)
- {
- 	dump_tlb(0, current_cpu_data.tlbsize - 1);
- }
-+
-+void dump_list_process(struct task_struct *t, void *address)
-+{
-+	pgd_t	*page_dir, *pgd;
-+	pud_t	*pud;
-+	pmd_t	*pmd;
-+	pte_t	*pte, page;
-+	unsigned long addr, val;
-+	int width;
-+
-+#if defined(CONFIG_64BIT)
-+	width = 16;
-+#else
-+	width = 8;
-+#endif
-+
-+	addr = (unsigned long) address;
-+
-+	printk("Addr                 == %0*lx\n", width, addr);
-+	printk("tasks->mm.pgd        == %0*lx\n", width,
-+	       (unsigned long) t->mm->pgd);
-+
-+	page_dir = pgd_offset(t->mm, 0UL);
-+	printk("page_dir == %0*lx\n", width, (unsigned long) page_dir);
-+
-+	pgd = pgd_offset(t->mm, addr);
-+	printk("pgd == %0*lx\n", width, (unsigned long) pgd);
-+
-+	pud = pud_offset(pgd, addr);
-+	printk("pud == %0*lx\n", width, (unsigned long) pud);
-+
-+	pmd = pmd_offset(pud, addr);
-+	printk("pmd == %0*lx\n", width, (unsigned long) pmd);
-+
-+	pte = pte_offset(pmd, addr);
-+	printk("pte == %0*lx\n", width, (long) pte);
-+
-+	page = *pte;
-+	printk("page == %08lx\n", pte_val(page));
-+
-+	val = pte_val(page);
-+	if (val & _PAGE_PRESENT)
-+		printk("present ");
-+	if (val & _PAGE_READ)
-+		printk("read ");
-+	if (val & _PAGE_WRITE)
-+		printk("write ");
-+	if (val & _PAGE_ACCESSED)
-+		printk("accessed ");
-+	if (val & _PAGE_MODIFIED)
-+		printk("modified ");
-+#if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
-+	if (val & _PAGE_R4KBUG)
-+		printk("r4kbug ");
-+#endif
-+	if (val & _PAGE_GLOBAL)
-+		printk("global ");
-+	if (val & _PAGE_VALID)
-+		printk("valid ");
-+	if (val & _PAGE_DIRTY)
-+		printk("dirty ");
-+	printk("\n");
-+}
-+
-+void dump_list_current(void *address)
-+{
-+	dump_list_process(current, address);
-+}
+Since this function is not implemented as a trivial page_to_phys()
+wrapper on all MIPS platforms, I believe it would need to be
+reinstated in order to support direct page->PA translation.

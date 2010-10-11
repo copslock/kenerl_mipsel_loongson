@@ -1,50 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2010 14:54:20 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:47256 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Oct 2010 15:03:26 +0200 (CEST)
+Received: from mx2.mail.elte.hu ([157.181.151.9]:38334 "EHLO mx2.mail.elte.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491027Ab0JKMyR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 11 Oct 2010 14:54:17 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o9BCsFoB030419;
-        Mon, 11 Oct 2010 13:54:15 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o9BCsFkm030418;
-        Mon, 11 Oct 2010 13:54:15 +0100
-Date:   Mon, 11 Oct 2010 13:54:14 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 03/14] MIPS: Octeon: Update L2 Cache code for CN63XX
-Message-ID: <20101011125414.GA30400@linux-mips.org>
-References: <1286492633-26885-1-git-send-email-ddaney@caviumnetworks.com>
- <1286492633-26885-4-git-send-email-ddaney@caviumnetworks.com>
+        id S1491027Ab0JKNDX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 11 Oct 2010 15:03:23 +0200
+Received: from elvis.elte.hu ([157.181.1.14])
+        by mx2.mail.elte.hu with esmtp (Exim)
+        id 1P5I28-0004MN-Gh
+        from <mingo@elte.hu>; Mon, 11 Oct 2010 15:03:18 +0200
+Received: by elvis.elte.hu (Postfix, from userid 1004)
+        id 8CAED3E22F7; Mon, 11 Oct 2010 15:03:12 +0200 (CEST)
+Date:   Mon, 11 Oct 2010 15:03:12 +0200
+From:   Ingo Molnar <mingo@elte.hu>
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Cc:     linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        a.p.zijlstra@chello.nl, paulus@samba.org, acme@redhat.com
+Subject: Re: [PATCH v3] Perf-tool/MIPS: support cross compiling of tools/perf
+ for MIPS
+Message-ID: <20101011130312.GA7482@elte.hu>
+References: <4CB300A2.2070101@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1286492633-26885-4-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <4CB300A2.2070101@gmail.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Received-SPF: neutral (mx2.mail.elte.hu: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
+X-ELTE-SpamScore: 0.5
+X-ELTE-SpamLevel: 
+X-ELTE-SpamCheck: no
+X-ELTE-SpamVersion: ELTE 2.0 
+X-ELTE-SpamCheck-Details: score=0.5 required=5.9 tests=BAYES_40 autolearn=no SpamAssassin version=3.2.5
+        0.5 BAYES_40               BODY: Bayesian spam probability is 20 to 40%
+        [score: 0.3562]
+Return-Path: <mingo@elte.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28023
+X-archive-position: 28024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mingo@elte.hu
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 07, 2010 at 04:03:42PM -0700, David Daney wrote:
 
-> The CN63XX has a different L2 cache architecture.  Update the helper
-> functions to reflect this.
+* Deng-Cheng Zhu <dengcheng.zhu@gmail.com> wrote:
+
 > 
-> Some joining of split lines was also done to improve readability, as
-> well as reformatting of comments.
+> 
+> This version fixed the cosmetic issue pointed out by Ralf. If it looks ok,
+> 
+> Ralf, please help Ack it.
 
-I fixed the trailing blank line the patch added to
-arch/mips/cavium-octeon/executive/cvmx-l2c.c and queued it for 2.6.37.
+Please dont strip changelogs from (re-)submitted patches!
 
-Thanks!
-
-  Ralf
+	Ingo

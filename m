@@ -1,437 +1,171 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Oct 2010 09:23:15 +0200 (CEST)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:50346 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491037Ab0JLHXL convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 12 Oct 2010 09:23:11 +0200
-Received: by wwe15 with SMTP id 15so3850174wwe.24
-        for <multiple recipients>; Tue, 12 Oct 2010 00:23:05 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Oct 2010 13:35:04 +0200 (CEST)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:64491 "EHLO
+        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491012Ab0JLLfB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Oct 2010 13:35:01 +0200
+Received: by pxi12 with SMTP id 12so1155536pxi.36
+        for <multiple recipients>; Tue, 12 Oct 2010 04:34:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=cf/4WkVQP2LaBl+nGiVTWafDTp7QSqIo3XI9kPsTD4s=;
-        b=EsMg4QEds2UM/lXxtR45MSnrjpqZ5xSl7nkc/WnSeZkMjMAvtGTq+u/adFWHExEkpt
-         daSp42Fyg1t6lCk7OiR8VQaDAu2RgpYGapIKpUi5MbZHrY8igSxJHmJf3W6SsUTmbjtX
-         OPF5sXLhBqbLLTOA3ACEHHzIlu/kvJoirrdE4=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=w6CeikiTN3wwFBVj76rTXzBP1yNUdsH2xexUYzqouNw=;
+        b=mJncamtWczBFEs1Iin503JlcAYpAwLbAgab3i1wnNNBkAHDA9VubtiqbLv8YsXWzhC
+         1Kb5V6PXsylAQ1kiK7rkSRA24+OEEXD7EHiQ3boNC3SVjqDIw91eTbBpzKXQJgt4LYRe
+         FaRbZRQOpHCuhzyr2evc7qdGtyq+JF+mxxp8I=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=aPRUkMh/7Oi25x6mzOuBzr0SK9IV2DFiGfnXOroqpQp8dIQbdh9+tNhBhhmpqgx9IK
-         7xYSvN2CE7BwfRK0cL/YaJASl/Kf+ywxtEhCjuKtGPexktPxmc2znmcdJ1b2HEIEpSUG
-         FU7WiDVwC1AtfIiZtqcyDYxAaHjXR3YnABp9w=
-MIME-Version: 1.0
-Received: by 10.227.147.79 with SMTP id k15mr6517001wbv.128.1286868183727;
- Tue, 12 Oct 2010 00:23:03 -0700 (PDT)
-Received: by 10.227.152.7 with HTTP; Tue, 12 Oct 2010 00:23:03 -0700 (PDT)
-In-Reply-To: <1286574473-23098-3-git-send-email-ddaney@caviumnetworks.com>
-References: <1286574473-23098-1-git-send-email-ddaney@caviumnetworks.com>
-        <1286574473-23098-3-git-send-email-ddaney@caviumnetworks.com>
-Date:   Tue, 12 Oct 2010 12:53:03 +0530
-Message-ID: <AANLkTikLhpsV4kTbeHVT9Yw=viha2q0Pk-nUC6z8vAku@mail.gmail.com>
-Subject: Re: [PATCH 2/3] usb: Add EHCI and OHCH glue for OCTEON II SOCs.
-From:   Maulik Mankad <mankad.maulik@gmail.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org, gregkh@suse.de,
-        dbrownell@users.sourceforge.net
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mankad.maulik@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=BUibtXHvsdyGlQAIZc+tWyDPBwQJg72SkVjPl3dVICo2FkyqkiDUlUpJZW9MdYCF+V
+         jXGTHkns5WTkraGmqHPclK1CGVU7wd71seGheSufPlK1PEsHZNIF0lfPv/CTW6bJYe+A
+         1NlzaXwOQBgv2YeHa5nkzZJr8GgtWJz4y5B4A=
+Received: by 10.114.44.7 with SMTP id r7mr2572587war.135.1286883292222;
+        Tue, 12 Oct 2010 04:34:52 -0700 (PDT)
+Received: from localhost.localdomain ([210.13.118.102])
+        by mx.google.com with ESMTPS id p6sm10434885wal.19.2010.10.12.04.34.45
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 12 Oct 2010 04:34:49 -0700 (PDT)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     a.p.zijlstra@chello.nl, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, jamie.iles@picochip.com,
+        ddaney@caviumnetworks.com, matt@console-pimps.org,
+        dengcheng.zhu@gmail.com
+Subject: [PATCH v8 0/5] MIPS performance event support v8
+Date:   Tue, 12 Oct 2010 19:37:19 +0800
+Message-Id: <1286883444-31913-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28043
+X-archive-position: 28044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mankad.maulik@gmail.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+This patchset implements the low-level logic for the Linux performance
+counter subsystem (Perf-events) on MIPS, which enables the collection of
+all sorts of HW/SW performance events based on per-CPU or per-task.
+For more information, please refer to tools/perf/Documentation/perf.txt.
 
-On Sat, Oct 9, 2010 at 3:17 AM, David Daney <ddaney@caviumnetworks.com> wrote:
-> The OCTEON II SOC has USB EHCI and OHCI controllers connected directly
-> to the internal I/O bus.  This patch adds the necessary 'glue' logic
-> to allow ehci-hcd and ohci-hcd drivers to work on OCTEON II.
->
-> The OCTEON normally runs big-endian, and the ehci/ohci internal
-> registers have host endianness, so we need to select
-> USB_EHCI_BIG_ENDIAN_MMIO.
->
-> The ehci and ohci blocks share a common clocking and PHY
-> infrastructure.  Initialization of the host controller and PHY clocks
-> is common between the two and is factored out into the
-> octeon2-common.c file.
->
-> Setting of USB_ARCH_HAS_OHCI and USB_ARCH_HAS_EHCI is done in
-> arch/mips/Kconfig in a following patch.
->
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  drivers/usb/host/Kconfig          |   27 +++++-
->  drivers/usb/host/Makefile         |    1 +
->  drivers/usb/host/ehci-hcd.c       |    5 +
->  drivers/usb/host/ehci-octeon.c    |  207 +++++++++++++++++++++++++++++++++++
->  drivers/usb/host/octeon2-common.c |  185 ++++++++++++++++++++++++++++++++
->  drivers/usb/host/ohci-hcd.c       |    5 +
->  drivers/usb/host/ohci-octeon.c    |  214 +++++++++++++++++++++++++++++++++++++
->  7 files changed, 643 insertions(+), 1 deletions(-)
->  create mode 100644 drivers/usb/host/ehci-octeon.c
->  create mode 100644 drivers/usb/host/octeon2-common.c
->  create mode 100644 drivers/usb/host/ohci-octeon.c
->
+Currently in the Oprofile module, MIPS PMUs are mainly categorized into 3
+(mipsxx, loongson2 and rm9000). This patchset provides the skeleton code
+together with the mipsxx specific code. The other 2 (and maybe more) can
+be supported by adding new C files like the current perf_event_mipsxx.c.
 
-It would be good to have EHCI and OHCI support in separate patches.
+To support mipsxx CPUs other than the implemented 24K/34K/74K/1004K, the
+corresponding general event map, cache event map and raw event macros need
+to be added. Please refer to init_hw_perf_events() for more info.
 
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index 2d926ce..a03d688 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -93,7 +93,7 @@ config USB_EHCI_TT_NEWSCHED
->
->  config USB_EHCI_BIG_ENDIAN_MMIO
->        bool
-> -       depends on USB_EHCI_HCD && (PPC_CELLEB || PPC_PS3 || 440EPX || ARCH_IXP4XX || XPS_USB_HCD_XILINX)
-> +       depends on USB_EHCI_HCD && (PPC_CELLEB || PPC_PS3 || 440EPX || ARCH_IXP4XX || XPS_USB_HCD_XILINX || CPU_CAVIUM_OCTEON)
->        default y
->
->  config USB_EHCI_BIG_ENDIAN_DESC
-> @@ -428,3 +428,28 @@ config USB_IMX21_HCD
->          To compile this driver as a module, choose M here: the
->          module will be called "imx21-hcd".
->
-> +config USB_OCTEON_EHCI
-> +       bool "Octeon on-chip EHCI support"
-> +       depends on USB && USB_EHCI_HCD && CPU_CAVIUM_OCTEON
-> +       default n
-> +       select USB_EHCI_BIG_ENDIAN_MMIO
-> +       help
-> +         Enable support for the Octeon II SOC's on-chip EHCI
-> +         controller.  It is needed for high-speed (480Mbit/sec)
-> +         USB 2.0 device support.  All CN6XXX based chips with USB are
-> +         supported.
-> +
-> +config USB_OCTEON_OHCI
-> +       bool "Octeon on-chip OHCI support"
-> +       depends on USB && USB_OHCI_HCD && CPU_CAVIUM_OCTEON
-> +       default USB_OCTEON_EHCI
-> +       select USB_OHCI_BIG_ENDIAN_MMIO
-> +       select USB_OHCI_LITTLE_ENDIAN
-> +       help
-> +         Enable support for the Octeon II SOC's on-chip OHCI
-> +         controller.  It is needed for low-speed USB 1.0 device
-> +         support.  All CN6XXX based chips with USB are supported.
-> +
-> +config USB_OCTEON2_COMMON
-> +       bool
-> +       default y if USB_OCTEON_EHCI || USB_OCTEON_OHCI
-> diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-> index b6315aa..36099ce 100644
-> --- a/drivers/usb/host/Makefile
-> +++ b/drivers/usb/host/Makefile
-> @@ -33,4 +33,5 @@ obj-$(CONFIG_USB_R8A66597_HCD)        += r8a66597-hcd.o
->  obj-$(CONFIG_USB_ISP1760_HCD)  += isp1760.o
->  obj-$(CONFIG_USB_HWA_HCD)      += hwa-hc.o
->  obj-$(CONFIG_USB_IMX21_HCD)    += imx21-hcd.o
-> +obj-$(CONFIG_USB_OCTEON2_COMMON) += octeon2-common.o
->
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index 34a928d..158a520 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -1197,6 +1197,11 @@ MODULE_LICENSE ("GPL");
->  #define        PLATFORM_DRIVER         ehci_atmel_driver
->  #endif
->
-> +#ifdef CONFIG_USB_OCTEON_EHCI
-> +#include "ehci-octeon.c"
-> +#define PLATFORM_DRIVER                ehci_octeon_driver
-> +#endif
-> +
->  #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
->     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER) && \
->     !defined(XILINX_OF_PLATFORM_DRIVER)
-> diff --git a/drivers/usb/host/ehci-octeon.c b/drivers/usb/host/ehci-octeon.c
-> new file mode 100644
-> index 0000000..a31a031
-> --- /dev/null
-> +++ b/drivers/usb/host/ehci-octeon.c
-> @@ -0,0 +1,207 @@
-> +/*
-> + * EHCI HCD glue for Cavium Octeon II SOCs.
-> + *
-> + * Loosely based on ehci-au1xxx.c
-> + *
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
-> + * Copyright (C) 2010 Cavium Networks
-> + *
-> + */
-> +
-> +#include <linux/platform_device.h>
-> +
-> +#include <asm/octeon/octeon.h>
-> +#include <asm/octeon/cvmx-uctlx-defs.h>
-> +
-> +#define OCTEON_EHCI_HCD_NAME "octeon-ehci"
-> +
-> +/* Common clock init code.  */
-> +void octeon2_usb_clocks_start(void);
-> +void octeon2_usb_clocks_stop(void);
-> +
-> +static void ehci_octeon_start(void)
-> +{
-> +       union cvmx_uctlx_ehci_ctl ehci_ctl;
-> +
-> +       octeon2_usb_clocks_start();
-> +
-> +       ehci_ctl.u64 = cvmx_read_csr(CVMX_UCTLX_EHCI_CTL(0));
-> +       /* Use 64-bit addressing. */
-> +       ehci_ctl.s.ehci_64b_addr_en = 1;
-> +       ehci_ctl.s.l2c_addr_msb = 0;
-> +       ehci_ctl.s.l2c_buff_emod = 1; /* Byte swapped. */
-> +       ehci_ctl.s.l2c_desc_emod = 1; /* Byte swapped. */
-> +       cvmx_write_csr(CVMX_UCTLX_EHCI_CTL(0), ehci_ctl.u64);
-> +}
-> +
-> +static void ehci_octeon_stop(void)
-> +{
-> +       octeon2_usb_clocks_stop();
-> +}
-> +
-> +static const struct hc_driver ehci_octeon_hc_driver = {
-> +       .description            = hcd_name,
-> +       .product_desc           = "Octeon EHCI",
-> +       .hcd_priv_size          = sizeof(struct ehci_hcd),
-> +
-> +       /*
-> +        * generic hardware linkage
-> +        */
-> +       .irq                    = ehci_irq,
-> +       .flags                  = HCD_MEMORY | HCD_USB2,
-> +
-> +       /*
-> +        * basic lifecycle operations
-> +        */
-> +       .reset                  = ehci_init,
-> +       .start                  = ehci_run,
-> +       .stop                   = ehci_stop,
-> +       .shutdown               = ehci_shutdown,
-> +
-> +       /*
-> +        * managing i/o requests and associated device resources
-> +        */
-> +       .urb_enqueue            = ehci_urb_enqueue,
-> +       .urb_dequeue            = ehci_urb_dequeue,
-> +       .endpoint_disable       = ehci_endpoint_disable,
-> +       .endpoint_reset         = ehci_endpoint_reset,
-> +
-> +       /*
-> +        * scheduling support
-> +        */
-> +       .get_frame_number       = ehci_get_frame,
-> +
-> +       /*
-> +        * root hub support
-> +        */
-> +       .hub_status_data        = ehci_hub_status_data,
-> +       .hub_control            = ehci_hub_control,
-> +       .bus_suspend            = ehci_bus_suspend,
-> +       .bus_resume             = ehci_bus_resume,
-> +       .relinquish_port        = ehci_relinquish_port,
-> +       .port_handed_over       = ehci_port_handed_over,
-> +
-> +       .clear_tt_buffer_complete       = ehci_clear_tt_buffer_complete,
-> +};
-> +
-> +static u64 ehci_octeon_dma_mask = DMA_BIT_MASK(64);
-> +
-> +static int ehci_octeon_drv_probe(struct platform_device *pdev)
-> +{
-> +       struct usb_hcd *hcd;
-> +       struct ehci_hcd *ehci;
-> +       struct resource *res_mem;
-> +       int irq;
-> +       int ret;
-> +
-> +       if (usb_disabled())
-> +               return -ENODEV;
-> +
-> +       irq = platform_get_irq(pdev, 0);
-> +       if (irq < 0) {
-> +               dev_err(&pdev->dev, "No irq assigned\n");
-> +               return -ENODEV;
-> +       }
-> +
-> +       res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       if (res_mem == NULL) {
-> +               dev_err(&pdev->dev, "No register space assigned\n");
-> +               return -ENODEV;
-> +       }
-> +
-> +       /*
-> +        * We can DMA from anywhere. But the descriptors must be in
-> +        * the lower 4GB.
-> +        */
-> +       pdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
-> +       pdev->dev.dma_mask = &ehci_octeon_dma_mask;
-> +
-> +       hcd = usb_create_hcd(&ehci_octeon_hc_driver, &pdev->dev, "octeon");
-> +       if (!hcd)
-> +               return -ENOMEM;
-> +
-> +       hcd->rsrc_start = res_mem->start;
-> +       hcd->rsrc_len = res_mem->end - res_mem->start + 1;
+Tests were carried out on the Malta-R board. 24K/34K/74K/1004K cores and
+SMVP/UP kernels have been basically tested. Any more tests are welcome.
 
-You can use resource_size() to compute the length of the resource.
+To do this, you may want to compile the tool "perf" for your MIPS
+platform. You can refer to the following URL:
+http://www.linux-mips.org/archives/linux-mips/2010-10/msg00126.html
 
-> +
-> +       if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len,
-> +                               OCTEON_EHCI_HCD_NAME)) {
-> +               dev_err(&pdev->dev, "request_mem_region failed\n");
-> +               ret = -EBUSY;
-> +               goto err1;
-> +       }
-> +
-> +       hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-> +       if (!hcd->regs) {
-> +               dev_err(&pdev->dev, "ioremap failed\n");
-> +               ret = -ENOMEM;
-> +               goto err2;
-> +       }
-> +
-> +       ehci_octeon_start();
-> +
-> +       ehci = hcd_to_ehci(hcd);
-> +
-> +       /* Octeon EHCI matches CPU endianness. */
-> +#ifdef __BIG_ENDIAN
-> +       ehci->big_endian_mmio = 1;
-> +#endif
-> +
-> +       ehci->caps = hcd->regs;
-> +       ehci->regs = hcd->regs +
-> +               HC_LENGTH(ehci_readl(ehci, &ehci->caps->hc_capbase));
-> +       /* cache this readonly data; minimize chip reads */
-> +       ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
-> +
-> +       ret = usb_add_hcd(hcd, irq, IRQF_DISABLED | IRQF_SHARED);
-> +       if (ret) {
-> +               dev_dbg(&pdev->dev, "failed to add hcd with err %d\n", ret);
-> +               goto err3;
-> +       }
-> +
-> +       platform_set_drvdata(pdev, hcd);
-> +
-> +       /* root ports should always stay powered */
-> +       ehci_port_power(ehci, 1);
-> +
-> +       return 0;
-> +err3:
-> +       ehci_octeon_stop();
-> +
-> +       iounmap(hcd->regs);
-> +err2:
-> +       release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-> +err1:
-> +       usb_put_hcd(hcd);
-> +       return ret;
-> +}
+You also need to customize the CFLAGS and LDFLAGS in tools/perf/Makefile
+for your libs, includes, etc.
 
-[...]
+In case you encounter the boot failure in SMVP kernel on multi-threading
+CPUs, you may take a look at:
+http://www.linux-mips.org/git?p=linux-mti.git;a=commitdiff;h=5460815027d802697b879644c74f0e8365254020
 
-> +static int ohci_octeon_drv_probe(struct platform_device *pdev)
-> +{
-> +       struct usb_hcd *hcd;
-> +       struct ohci_hcd *ohci;
-> +       void *reg_base;
-> +       struct resource *res_mem;
-> +       int irq;
-> +       int ret;
-> +
-> +       if (usb_disabled())
-> +               return -ENODEV;
-> +
-> +       irq = platform_get_irq(pdev, 0);
-> +       if (irq < 0) {
-> +               dev_err(&pdev->dev, "No irq assigned\n");
-> +               return -ENODEV;
-> +       }
-> +
-> +       res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       if (res_mem == NULL) {
-> +               dev_err(&pdev->dev, "No register space assigned\n");
-> +               return -ENODEV;
-> +       }
-> +
-> +       /* Ohci is a 32-bit device. */
-> +       pdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
-> +       pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
-> +
-> +       hcd = usb_create_hcd(&ohci_octeon_hc_driver, &pdev->dev, "octeon");
-> +       if (!hcd)
-> +               return -ENOMEM;
-> +
-> +       hcd->rsrc_start = res_mem->start;
-> +       hcd->rsrc_len = res_mem->end - res_mem->start + 1;
-> +
+CHANGES:
+-----------------------------
+v8 - v7:
+o Remove pmu.h (and hence leave op_model_*.c untouched) --- not sharing
+defines/functions between Perf-events and Oprofile for now, because later
+we'll use Perf-events as the Oprofile backend.
 
-Same here.
+v7 - v6:
+o Remove the conditional code in mipspmu_get_irq(), a new member (irq) is
+added to the struct mips_pmu.
+o Remove function code from pmu.h, keep them duplicated in Oprofile and
+Perf-events. The duplication would be resolved by the idea of using
+Perf-events as the Oprofile backend. I'll submit a separate patchset to
+do this after this one gets merged.
+o The atomic64_read/set/... are replaced with local64_read/set/..., in
+order to keep aligned with the changes of the Perf-events core.
+o The patch order is adjusted.
 
-> +       if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len,
-> +                               OCTEON_OHCI_HCD_NAME)) {
-> +               dev_err(&pdev->dev, "request_mem_region failed\n");
-> +               ret = -EBUSY;
-> +               goto err1;
-> +       }
-> +
-> +       reg_base = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-> +       if (!reg_base) {
-> +               dev_err(&pdev->dev, "ioremap failed\n");
-> +               ret = -ENOMEM;
-> +               goto err2;
-> +       }
-> +
-> +       ohci_octeon_hw_start();
-> +
-> +       hcd->regs = reg_base;
-> +
-> +       ohci = hcd_to_ohci(hcd);
-> +
-> +       /* Octeon OHCI matches CPU endianness. */
-> +#ifdef __BIG_ENDIAN
-> +       ohci->flags |= OHCI_QUIRK_BE_MMIO;
-> +#endif
-> +
-> +       ohci_hcd_init(ohci);
-> +
-> +       ret = usb_add_hcd(hcd, irq, IRQF_DISABLED | IRQF_SHARED);
-> +       if (ret) {
-> +               dev_dbg(&pdev->dev, "failed to add hcd with err %d\n", ret);
-> +               goto err3;
-> +       }
-> +
-> +       platform_set_drvdata(pdev, hcd);
-> +
-> +       return 0;
-> +
-> +err3:
-> +       ohci_octeon_hw_stop();
-> +
-> +       iounmap(hcd->regs);
-> +err2:
-> +       release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-> +err1:
-> +       usb_put_hcd(hcd);
-> +       return ret;
-> +}
-> +
+v6 - v5:
+o leaving the Oprofile framework changes to another patchset.
+o changing the callchain support.
+o re-defining local_xchg() to pass the build (see patch #7).
+o following some of David Daney's suggestions:
+  * CPU #if's removed from pmu.h
+  * Copyright info modified
+  * Removing the perf_irq redefinition
+  * 64bit counters considered
+  * Read/write funcs and register defs separated from event defs
+  * Raw event support merged into the main part
 
-Regards,
-Maulik
+v5 - v4:
+o splitting up Perf-events patches (v4 patches 1~4 are now splitted into
+v5 patches 1~7) for easier review.
+o adding more info into the description of patches (especially how to test
+this patchset).
+o simplifying the 2 small functions mipspmu_get_pmu_id() and
+mipspmu_get_max_events().
+
+v4 - v3:
+o placing the variable save_perf_irq properly (issue found by Wu Zhangjin)
+o the patches 5~9 make Oprofile use Perf-events framework as backend.
+
+v3 - v2:
+o adding 1004K core support.
+o slightly adjusting the code structure.
+o adding more comments in the code.
+o fixing some small coding style issues.
+
+v2 - v1:
+o Adjusting code structure as suggested by Wu Zhangjin. With this change,
+hardware performance event support for loongson2 and rm9000 can be
+conveniently implemented by adding and including new files like
+perf_event_loongson2.c; Oprofile and Perf for MIPS are now sharing pmu.h;
+Naming changes were made to some functions.
+o Fixing the generic atomic64 issue reported by David Daney. Currently,
+32bit kernel is using the generic version from lib. When Ralf Baechle's
+common atomic64 version is ready, this may change.
+o Adding raw event support. For more details, please refer to the code
+comments for mipsxx_pmu_map_raw_event().
+o Adding new software events - PERF_COUNT_SW_ALIGNMENT_FAULTS and
+PERF_COUNT_SW_EMULATION_FAULTS.
+o Fixing some small bugs.
+o Adding new comments for the code.
+o Making some code style changes.
+
+v1:
+o Using generic atomic64 operations from lib.
+o SMVP/UP kernels are supported (not for SMTC).
+o 24K/34K/74K cores are implemented.
+o Currently working when Oprofile is _not_ available.
+o Minimal software perf events are supported.
+-----------------------------
+
+Deng-Cheng Zhu (5):
+  MIPS: define local_xchg from xchg_local to atomic_long_xchg
+  MIPS: add support for software performance events
+  MIPS: add support for hardware performance events (skeleton)
+  MIPS/Perf-events: add callchain support
+  MIPS: add support for hardware performance events (mipsxx)
+
+ arch/mips/Kconfig                    |   10 +
+ arch/mips/include/asm/local.h        |    2 +-
+ arch/mips/include/asm/perf_event.h   |   25 +
+ arch/mips/kernel/Makefile            |    2 +
+ arch/mips/kernel/perf_event.c        |  601 +++++++++++++++++++
+ arch/mips/kernel/perf_event_mipsxx.c | 1052 ++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/traps.c             |   18 +-
+ arch/mips/kernel/unaligned.c         |    6 +
+ arch/mips/math-emu/cp1emu.c          |    3 +
+ arch/mips/mm/fault.c                 |   11 +-
+ 10 files changed, 1724 insertions(+), 6 deletions(-)
+ create mode 100644 arch/mips/include/asm/perf_event.h
+ create mode 100644 arch/mips/kernel/perf_event.c
+ create mode 100644 arch/mips/kernel/perf_event_mipsxx.c

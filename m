@@ -1,87 +1,273 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2010 02:15:08 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:7919 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491123Ab0JNAPF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Oct 2010 02:15:05 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4cb64ba80000>; Wed, 13 Oct 2010 17:15:36 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 13 Oct 2010 17:15:15 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 13 Oct 2010 17:15:15 -0700
-Message-ID: <4CB64B84.2030402@caviumnetworks.com>
-Date:   Wed, 13 Oct 2010 17:15:00 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2010 02:16:35 +0200 (CEST)
+Received: from [69.28.251.93] ([69.28.251.93]:60093 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491123Ab0JNAQb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 14 Oct 2010 02:16:31 +0200
+Received: (qmail 25629 invoked from network); 14 Oct 2010 00:16:26 -0000
+Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 14 Oct 2010 00:16:26 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Wed, 13 Oct 2010 17:16:26 -0700
+From:   Kevin Cernekee <cernekee@gmail.com>
+Date:   Wed, 13 Oct 2010 16:57:35 -0700
+Subject: [PATCH v4] MIPS: HIGHMEM DMA on noncoherent MIPS32 processors
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     <dediao@cisco.com>, <ddaney@caviumnetworks.com>,
+        <dvomlehn@cisco.com>, <sshtylyov@mvista.com>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Message-Id: <002fbbeb01a5a51fff8015af85d5d101@localhost>
+User-Agent: vim 7.2
 MIME-Version: 1.0
-To:     "wilbur.chan" <wilbur512@gmail.com>
-CC:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: va_list implementation on mips64 , with 32bit cross compiled
-References: <AANLkTinJXcpd7rVj4QFY0CpskSiZuJB4y10sbG1Td5n9@mail.gmail.com>
-In-Reply-To: <AANLkTinJXcpd7rVj4QFY0CpskSiZuJB4y10sbG1Td5n9@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Oct 2010 00:15:15.0552 (UTC) FILETIME=[E048A600:01CB6B34]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28061
+X-archive-position: 28062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 10/13/2010 05:06 PM, wilbur.chan wrote:
-> I am planning  to use va_list on a single module, however the
-> following code did not work properly.
->
-> typedef char *	va_list;
-> #define _INTSIZEOF(n)	( (sizeof(n) + sizeof(int) - 1)&  ~(sizeof(int) - 1) )
-> #define va_start(ap,v)	( ap = (va_list)&v + _INTSIZEOF(v) )
-> #define va_arg(ap,t)	( *(t *)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)) )
-> #define va_end(ap)	( ap = (va_list)0 )
->
+[v4: Patch applies to linux-queue.git with kmap_atomic patches:
+ https://patchwork.kernel.org/patch/189932/
+ https://patchwork.kernel.org/patch/194552/
+ https://patchwork.kernel.org/patch/189912/ ]
 
-You cannot arbitrarily define those macros with garbage and expect 
-anything to work.
+The MIPS DMA coherency functions do not work properly (i.e. kernel oops)
+when HIGHMEM pages are passed in as arguments.  Use kmap_atomic() to
+temporarily map high pages for cache maintenance operations.
 
-Replace all the above code with #include <stdarg.h>
+Tested on a 2.6.36-rc7 1GB HIGHMEM SMP no-alias system.
 
-Then do: man stdarg
+Signed-off-by: Dezhong Diao <dediao@cisco.com>
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ arch/mips/mm/dma-default.c |  114 ++++++++++++++++++++++++++------------------
+ 1 files changed, 68 insertions(+), 46 deletions(-)
 
-That documents how it works.
-
-David Daney
-
-
-> void test_val_list()
-> {
-> unsigned long test=0x1234;
-> test_printk("test:0x%x OK\n",aaa);
-> }
->
-> void test_printk(const char *format, ...)
-> {
-> va_list args;
-> va_start(args, format);
-> unsigned int v1 = va_arg(args,unsigned long);
-> printk("v1 is 0x%x\n",v1);
-> unsigned int v2 = va_arg(args,unsigned long);
-> printk("v2 is 0x%x\n",v2);
-> }
->
->
-> The result is :
->
-> v1 is 0x00000013
->
-> v2 is 0x00000019
->
-> Why this happened ? shouldn't v1 be 0x1234 here?
->
-> Thank you
->
->
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 4fc1a0f..1e20758 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -15,18 +15,18 @@
+ #include <linux/scatterlist.h>
+ #include <linux/string.h>
+ #include <linux/gfp.h>
++#include <linux/highmem.h>
+ 
+ #include <asm/cache.h>
+ #include <asm/io.h>
+ 
+ #include <dma-coherence.h>
+ 
+-static inline unsigned long dma_addr_to_virt(struct device *dev,
++static inline struct page *dma_addr_to_page(struct device *dev,
+ 	dma_addr_t dma_addr)
+ {
+-	unsigned long addr = plat_dma_addr_to_phys(dev, dma_addr);
+-
+-	return (unsigned long)phys_to_virt(addr);
++	return pfn_to_page(
++		plat_dma_addr_to_phys(dev, dma_addr) >> PAGE_SHIFT);
+ }
+ 
+ /*
+@@ -148,20 +148,20 @@ static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	free_pages(addr, get_order(size));
+ }
+ 
+-static inline void __dma_sync(unsigned long addr, size_t size,
++static inline void __dma_sync_virtual(void *addr, size_t size,
+ 	enum dma_data_direction direction)
+ {
+ 	switch (direction) {
+ 	case DMA_TO_DEVICE:
+-		dma_cache_wback(addr, size);
++		dma_cache_wback((unsigned long)addr, size);
+ 		break;
+ 
+ 	case DMA_FROM_DEVICE:
+-		dma_cache_inv(addr, size);
++		dma_cache_inv((unsigned long)addr, size);
+ 		break;
+ 
+ 	case DMA_BIDIRECTIONAL:
+-		dma_cache_wback_inv(addr, size);
++		dma_cache_wback_inv((unsigned long)addr, size);
+ 		break;
+ 
+ 	default:
+@@ -169,12 +169,49 @@ static inline void __dma_sync(unsigned long addr, size_t size,
+ 	}
+ }
+ 
++/*
++ * A single sg entry may refer to multiple physically contiguous
++ * pages. But we still need to process highmem pages individually.
++ * If highmem is not configured then the bulk of this loop gets
++ * optimized out.
++ */
++static inline void __dma_sync(struct page *page,
++	unsigned long offset, size_t size, enum dma_data_direction direction)
++{
++	size_t left = size;
++
++	do {
++		size_t len = left;
++
++		if (PageHighMem(page)) {
++			void *addr;
++
++			if (offset + len > PAGE_SIZE) {
++				if (offset >= PAGE_SIZE) {
++					page += offset >> PAGE_SHIFT;
++					offset &= ~PAGE_MASK;
++				}
++				len = PAGE_SIZE - offset;
++			}
++
++			addr = kmap_atomic(page);
++			__dma_sync_virtual(addr + offset, len, direction);
++			kunmap_atomic(addr);
++		} else
++			__dma_sync_virtual(page_address(page) + offset,
++					   size, direction);
++		offset = 0;
++		page++;
++		left -= len;
++	} while (left);
++}
++
+ static void mips_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
+ 	size_t size, enum dma_data_direction direction, struct dma_attrs *attrs)
+ {
+ 	if (cpu_is_noncoherent_r10000(dev))
+-		__dma_sync(dma_addr_to_virt(dev, dma_addr), size,
+-		           direction);
++		__dma_sync(dma_addr_to_page(dev, dma_addr),
++			   dma_addr & ~PAGE_MASK, size, direction);
+ 
+ 	plat_unmap_dma_mem(dev, dma_addr, size, direction);
+ }
+@@ -185,13 +222,11 @@ static int mips_dma_map_sg(struct device *dev, struct scatterlist *sg,
+ 	int i;
+ 
+ 	for (i = 0; i < nents; i++, sg++) {
+-		unsigned long addr;
+-
+-		addr = (unsigned long) sg_virt(sg);
+-		if (!plat_device_is_coherent(dev) && addr)
+-			__dma_sync(addr, sg->length, direction);
+-		sg->dma_address = plat_map_dma_mem(dev,
+-				                   (void *)addr, sg->length);
++		if (!plat_device_is_coherent(dev))
++			__dma_sync(sg_page(sg), sg->offset, sg->length,
++				   direction);
++		sg->dma_address = plat_map_dma_mem_page(dev, sg_page(sg)) +
++				  sg->offset;
+ 	}
+ 
+ 	return nents;
+@@ -201,30 +236,23 @@ static dma_addr_t mips_dma_map_page(struct device *dev, struct page *page,
+ 	unsigned long offset, size_t size, enum dma_data_direction direction,
+ 	struct dma_attrs *attrs)
+ {
+-	unsigned long addr;
+-
+-	addr = (unsigned long) page_address(page) + offset;
+-
+ 	if (!plat_device_is_coherent(dev))
+-		__dma_sync(addr, size, direction);
++		__dma_sync(page, offset, size, direction);
+ 
+-	return plat_map_dma_mem(dev, (void *)addr, size);
++	return plat_map_dma_mem_page(dev, page) + offset;
+ }
+ 
+ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
+ 	int nhwentries, enum dma_data_direction direction,
+ 	struct dma_attrs *attrs)
+ {
+-	unsigned long addr;
+ 	int i;
+ 
+ 	for (i = 0; i < nhwentries; i++, sg++) {
+ 		if (!plat_device_is_coherent(dev) &&
+-		    direction != DMA_TO_DEVICE) {
+-			addr = (unsigned long) sg_virt(sg);
+-			if (addr)
+-				__dma_sync(addr, sg->length, direction);
+-		}
++		    direction != DMA_TO_DEVICE)
++			__dma_sync(sg_page(sg), sg->offset, sg->length,
++				   direction);
+ 		plat_unmap_dma_mem(dev, sg->dma_address, sg->length, direction);
+ 	}
+ }
+@@ -232,24 +260,18 @@ static void mips_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
+ static void mips_dma_sync_single_for_cpu(struct device *dev,
+ 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+ {
+-	if (cpu_is_noncoherent_r10000(dev)) {
+-		unsigned long addr;
+-
+-		addr = dma_addr_to_virt(dev, dma_handle);
+-		__dma_sync(addr, size, direction);
+-	}
++	if (cpu_is_noncoherent_r10000(dev))
++		__dma_sync(dma_addr_to_page(dev, dma_handle),
++			   dma_handle & ~PAGE_MASK, size, direction);
+ }
+ 
+ static void mips_dma_sync_single_for_device(struct device *dev,
+ 	dma_addr_t dma_handle, size_t size, enum dma_data_direction direction)
+ {
+ 	plat_extra_sync_for_device(dev);
+-	if (!plat_device_is_coherent(dev)) {
+-		unsigned long addr;
+-
+-		addr = dma_addr_to_virt(dev, dma_handle);
+-		__dma_sync(addr, size, direction);
+-	}
++	if (!plat_device_is_coherent(dev))
++		__dma_sync(dma_addr_to_page(dev, dma_handle),
++			   dma_handle & ~PAGE_MASK, size, direction);
+ }
+ 
+ static void mips_dma_sync_sg_for_cpu(struct device *dev,
+@@ -260,8 +282,8 @@ static void mips_dma_sync_sg_for_cpu(struct device *dev,
+ 	/* Make sure that gcc doesn't leave the empty loop body.  */
+ 	for (i = 0; i < nelems; i++, sg++) {
+ 		if (cpu_is_noncoherent_r10000(dev))
+-			__dma_sync((unsigned long)page_address(sg_page(sg)),
+-			           sg->length, direction);
++			__dma_sync(sg_page(sg), sg->offset, sg->length,
++				   direction);
+ 	}
+ }
+ 
+@@ -273,8 +295,8 @@ static void mips_dma_sync_sg_for_device(struct device *dev,
+ 	/* Make sure that gcc doesn't leave the empty loop body.  */
+ 	for (i = 0; i < nelems; i++, sg++) {
+ 		if (!plat_device_is_coherent(dev))
+-			__dma_sync((unsigned long)page_address(sg_page(sg)),
+-			           sg->length, direction);
++			__dma_sync(sg_page(sg), sg->offset, sg->length,
++				   direction);
+ 	}
+ }
+ 
+@@ -295,7 +317,7 @@ void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+ 
+ 	plat_extra_sync_for_device(dev);
+ 	if (!plat_device_is_coherent(dev))
+-		__dma_sync((unsigned long)vaddr, size, direction);
++		__dma_sync_virtual(vaddr, size, direction);
+ }
+ 
+ static struct dma_map_ops mips_default_dma_map_ops = {
+-- 
+1.7.0.4

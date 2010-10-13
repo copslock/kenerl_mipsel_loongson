@@ -1,95 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Oct 2010 23:46:17 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4787 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491145Ab0JMVqO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Oct 2010 23:46:14 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4cb628c50000>; Wed, 13 Oct 2010 14:46:45 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 13 Oct 2010 14:46:24 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 13 Oct 2010 14:46:24 -0700
-Message-ID: <4CB628A2.5060705@caviumnetworks.com>
-Date:   Wed, 13 Oct 2010 14:46:10 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2010 00:20:27 +0200 (CEST)
+Received: from mxout1.idt.com ([157.165.5.25]:53186 "EHLO mxout1.idt.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491123Ab0JMWUY convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Oct 2010 00:20:24 +0200
+Received: from mail.idt.com (localhost [127.0.0.1])
+        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o9DMKGcL019027
+        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2010 15:20:17 -0700
+Received: from corpml3.corp.idt.com (corpml3.corp.idt.com [157.165.140.25])
+        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o9DMKGMU022649
+        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2010 15:20:16 -0700 (PDT)
+Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
+        by corpml3.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o9DMKFB00966
+        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2010 15:20:15 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     ralf@linux-mips.org
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH v2] MIPS: Make TASK_SIZE reflect proper size for both
- 32 and 64 bit processes.
-References: <1286992415-21167-1-git-send-email-ddaney@caviumnetworks.com>
-In-Reply-To: <1286992415-21167-1-git-send-email-ddaney@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Oct 2010 21:46:24.0798 (UTC) FILETIME=[1523BBE0:01CB6B20]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: How to configure Platform NAND driver?
+Date:   Wed, 13 Oct 2010 15:20:13 -0700
+Message-ID: <AEA634773855ED4CAD999FBB1A66D076011E6CC3@CORPEXCH1.na.ads.idt.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: How to configure Platform NAND driver?
+Thread-Index: ActrJM6eMRgzSfcTRlWCmixQpFCHDw==
+From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+To:     <linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.43
+Return-Path: <Andrei.Ardelean@idt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28058
+X-archive-position: 28059
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: Andrei.Ardelean@idt.com
 Precedence: bulk
 X-list: linux-mips
 
-On 10/13/2010 10:53 AM, David Daney wrote:
-[...]
->
-> -#define __UA_LIMIT	(- TASK_SIZE)
-> +#define __UA_LIMIT	(1ul<<  63)
->
+Hi,
 
-This doesn't work:
+I am porting MIPS Linux on a new board and I have a MICRON NAND part
+(MT29F4G08). I look in nand-ids.c and it seems that this part is already
+supported. I assume that this support is in the plat_nand.c platform
+driver. How can I configure this platform driver to use my own
+read/write low level functions? How can I configure this driver with my
+own mtd_partition structure?
 
-Unhandled kernel unaligned access[#1]:
-Cpu 7
-$ 0   : 0000000000000000 10c38ca810c38c78 0000000000000000 0000000000000000
-$ 4   : ffffffff811238ac 10c38ca810c38c68 0000000010108ce3 10c38ca810c38c68
-$ 8   : 0000000000000000 10c38ca810c38c68 10c38ca810c38c68 10c38ca810c38c68
-$12   : 0000000010108ce1 000000001000001e ffffffff8117aa08 ffffffff815905c8
-$16   : ffffffffdca80000 a80000009271bcd0 8000000000000000 00000001208d0094
-$20   : 10c38ca810c38c68 0000005558776460 ffffffffffffffa7 0000005558776428
-$24   : 0000000000000000 0000005558aace60
-$28   : a800000092718000 a80000009271bca0 0000005558776420 ffffffff81100880
-Hi    : 0000000000000249
-Lo    : 077c561f20000000
-epc   : ffffffff811238c4 do_ade+0x1f4/0x490
-     Not tainted
-ra    : ffffffff81100880 ret_from_exception+0x0/0x8
-Status: 10108ce3    KX SX UX KERNEL EXL IE
-Cause : 00800010
-BadVA : 10c38ca810c38c68
-PrId  : 000d0409 (Cavium Octeon+)
-Modules linked in:
-Process loop-3.exe (pid: 31583, threadinfo=a800000092718000, 
-task=a8000000b6529fc8, tls=000000555c5ca880)
-Stack : 0000000000000008 0000000000000080 10c38ca810c38c68 0000000000000008
-         00000001208d0094 ffffffff81100880 0000000000000000 10c38ca810c38c78
-         0000000000000000 8000000000000000 a80000009271be38 10c38ca810c38c68
-         0000000000000010 10c38ca810c38c68 0000000000000000 10c38ca810c38c68
-         10c38ca810c38c68 10c38ca810c38c68 0000000000000000 0000000000000000
-         ffffffff8117aa08 ffffffff815905c8 0000000000000080 10c38ca810c38c68
-         0000000000000008 00000001208d0094 10c38ca810c38c68 0000005558776460
-         ffffffffffffffa7 0000005558776428 0000000000000000 0000005558aace60
-         ffffffff814f8ba8 ffffffff81123f14 a800000092718000 a80000009271be30
-         0000005558776420 ffffffff8117aae8 0000000010108ce3 0000000000000249
-         ...
-Call Trace:
-[<ffffffff811238c4>] do_ade+0x1f4/0x490
-[<ffffffff81100880>] ret_from_exception+0x0/0x8
-[<ffffffff81100590>] less_than_4units+0xc/0x5c
-[<ffffffff8117aae8>] SyS_futex+0xe0/0x1c0
-[<ffffffff81102bc4>] handle_sys64+0x44/0x60
+I see some other people wrote their own NAND driver in
+.../drivers/mtd/nand folder. Do I need to do that or can I use
+plat_nand.c driver?
 
-
-
-We are doing a copy_from_user(), with a bad address passed in from 
-userspace.  The access_ok() says it is fine, but when we drop into the 
-memcpy, we get the Address Error Exception because we exceeded SEGBITS.
-
-Really we want to clamp things at the SEGBITS boundry.
-
-David Daney
+Thanks,
+Andrei
+  

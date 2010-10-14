@@ -1,58 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2010 00:20:27 +0200 (CEST)
-Received: from mxout1.idt.com ([157.165.5.25]:53186 "EHLO mxout1.idt.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491123Ab0JMWUY convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Oct 2010 00:20:24 +0200
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o9DMKGcL019027
-        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2010 15:20:17 -0700
-Received: from corpml3.corp.idt.com (corpml3.corp.idt.com [157.165.140.25])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o9DMKGMU022649
-        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2010 15:20:16 -0700 (PDT)
-Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
-        by corpml3.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o9DMKFB00966
-        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2010 15:20:15 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Oct 2010 02:06:55 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:35288 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491191Ab0JNAGv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Oct 2010 02:06:51 +0200
+Received: by qyk35 with SMTP id 35so1159940qyk.15
+        for <linux-mips@linux-mips.org>; Wed, 13 Oct 2010 17:06:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:cc:content-type;
+        bh=6Zz+f5ynx73C//ZSEV23PaGvj4+pUntdq3w/SEsn7uA=;
+        b=ma8VAJhzkxwcUGsm7a+AgYFi6NWi+v5GEu+S6IUHHic5rCApSXLiEY0qS6zUEg5gdX
+         YO0/Hc7DXoTrQGjrUMDQoVOerVfr+UcHYVbERA5F045ukUUNnMrudbng1CV0dKCaPBqn
+         VZubZR5ZhoMTlzWzpPzxXtiRDxNqN+RvzuZBM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        b=ixKXlAfReswIJI9qvKGLEgAhsDxMymcPomaS5F+KmMcwngkrorObPvf7HHLyZvOmGf
+         G+vT4sMd/+hj/nHymuyVHP21KDDcv+Vpyb5YmoK4mAuMSwatqduUcpmJAeDZ4HXxjaBv
+         tZQeBNllIi6a5ekeaOXE8+Plu/C5WSQm+k3Ak=
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: How to configure Platform NAND driver?
-Date:   Wed, 13 Oct 2010 15:20:13 -0700
-Message-ID: <AEA634773855ED4CAD999FBB1A66D076011E6CC3@CORPEXCH1.na.ads.idt.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: How to configure Platform NAND driver?
-Thread-Index: ActrJM6eMRgzSfcTRlWCmixQpFCHDw==
-From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-To:     <linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.43
-Return-Path: <Andrei.Ardelean@idt.com>
+Received: by 10.224.10.204 with SMTP id q12mr1471185qaq.171.1287014802715;
+ Wed, 13 Oct 2010 17:06:42 -0700 (PDT)
+Received: by 10.229.221.146 with HTTP; Wed, 13 Oct 2010 17:06:42 -0700 (PDT)
+Date:   Thu, 14 Oct 2010 08:06:42 +0800
+Message-ID: <AANLkTinJXcpd7rVj4QFY0CpskSiZuJB4y10sbG1Td5n9@mail.gmail.com>
+Subject: va_list implementation on mips64 , with 32bit cross compiled
+From:   "wilbur.chan" <wilbur512@gmail.com>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Cc:     chelly wilbur <wilbur512@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28059
+X-archive-position: 28060
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrei.Ardelean@idt.com
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+I am planning  to use va_list on a single module, however the
+following code did not work properly.
 
-I am porting MIPS Linux on a new board and I have a MICRON NAND part
-(MT29F4G08). I look in nand-ids.c and it seems that this part is already
-supported. I assume that this support is in the plat_nand.c platform
-driver. How can I configure this platform driver to use my own
-read/write low level functions? How can I configure this driver with my
-own mtd_partition structure?
+typedef char *	va_list;
+#define _INTSIZEOF(n)	( (sizeof(n) + sizeof(int) - 1) & ~(sizeof(int) - 1) )
+#define va_start(ap,v)	( ap = (va_list)&v + _INTSIZEOF(v) )
+#define va_arg(ap,t)	( *(t *)((ap += _INTSIZEOF(t)) - _INTSIZEOF(t)) )
+#define va_end(ap)	( ap = (va_list)0 )
 
-I see some other people wrote their own NAND driver in
-.../drivers/mtd/nand folder. Do I need to do that or can I use
-plat_nand.c driver?
+void test_val_list()
+{
+unsigned long test=0x1234;
+test_printk("test:0x%x OK\n",aaa);
+}
 
-Thanks,
-Andrei
-  
+void test_printk(const char *format, ...)
+{
+va_list args;
+va_start(args, format);
+unsigned int v1 = va_arg(args,unsigned long);
+printk("v1 is 0x%x\n",v1);
+unsigned int v2 = va_arg(args,unsigned long);
+printk("v2 is 0x%x\n",v2);
+}
+
+
+The result is :
+
+v1 is 0x00000013
+
+v2 is 0x00000019
+
+Why this happened ? shouldn't v1 be 0x1234 here?
+
+Thank you

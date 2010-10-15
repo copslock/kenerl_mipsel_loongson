@@ -1,86 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2010 06:54:24 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:34951 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490948Ab0JOEyU convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Oct 2010 06:54:20 +0200
-Received: by gyf1 with SMTP id 1so183124gyf.36
-        for <multiple recipients>; Thu, 14 Oct 2010 21:54:14 -0700 (PDT)
-Received: by 10.150.207.20 with SMTP id e20mr776692ybg.398.1287118454024; Thu,
- 14 Oct 2010 21:54:14 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2010 13:09:57 +0200 (CEST)
+Received: from t111.niisi.ras.ru ([193.232.173.111]:42704 "EHLO
+        t111.niisi.ras.ru" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491102Ab0JOLJy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 15 Oct 2010 13:09:54 +0200
+Received: from aa19.niisi.msk.ru (aa19.niisi.msk.ru [172.16.0.19] (may be forged))
+        by t111.niisi.ras.ru (8.13.8/8.13.8) with ESMTP id o9FB9s6o017700;
+        Fri, 15 Oct 2010 15:09:56 +0400
+Received: from [192.168.173.2] (aa248 [172.16.0.248])
+        by aa19.niisi.msk.ru (8.13.8/8.13.8) with ESMTP id o9FB0B8U008124;
+        Fri, 15 Oct 2010 15:00:11 +0400
+Message-ID: <4CB83A24.2050004@niisi.msk.ru>
+Date:   Fri, 15 Oct 2010 15:25:24 +0400
+From:   "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.5) Gecko/20091204 Thunderbird/3.0
 MIME-Version: 1.0
-Received: by 10.150.49.9 with HTTP; Thu, 14 Oct 2010 21:53:53 -0700 (PDT)
-In-Reply-To: <4CB7713C.9040303@caviumnetworks.com>
-References: <20101013064352.2743.80378.stgit@localhost6.localdomain6> <4CB7713C.9040303@caviumnetworks.com>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Thu, 14 Oct 2010 22:53:53 -0600
-X-Google-Sender-Auth: 1PAW9v1u5S68D_JM64ReYpiphzM
-Message-ID: <AANLkTik0mqV08ptsj9CXQxT_Ew2K479-V5r2DUdUXJv9@mail.gmail.com>
-Subject: Re: [PATCH 1/2] of/flattree: Eliminate need to provide early_init_dt_scan_chosen_arch
 To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     ralf@linux-mips.org, benh@kernel.crashing.org, dediao@cisco.com,
-        linux-mips@linux-mips.org, monstr@monstr.eu, dvomlehn@cisco.com,
-        devicetree-discuss@lists.ozlabs.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <glikely@secretlab.ca>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] MIPS: Implement __read_mostly
+References: <1287085009-16445-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1287085009-16445-1-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset=KOI8-R; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Antivirus: Dr.Web (R) for Mail Servers on t111.niisi.ras.ru host
+X-Antivirus-Code: 100000
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28084
+X-archive-position: 28085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 14, 2010 at 3:08 PM, David Daney <ddaney@caviumnetworks.com> wrote:
-> On 10/12/2010 11:44 PM, Grant Likely wrote:
->>
->> This patch refactors the early init parsing of the chosen node so that
->> architectures aren't forced to provide an empty implementation of
->> early_init_dt_scan_chosen_arch.  Instead, if an architecture wants to
->> do something different, it can either use a wrapper function around
->> early_init_dt_scan_chosen(), or it can replace it altogether.
->>
->> This patch was written in preparation to adding device tree support to
->> both x86 ad MIPS.
->>
->> Signed-off-by: Grant Likely<grant.likely@secretlab.ca>
->
-> In conjunction with my 'MIPS: Add some irq definitins required by OF' and
-> the '2/2 of/mips: Add device tree support to MIPS' patches, I can enable
-> CONFIG_USE_OF, and build and run a kernel on my Octeon.  I haven't started
-> using the device tree yet, but this is a good start.
->
-> You can add my...
->
-> Tested-by: David Daney <ddaney@caviumnetworks.com>
+On 14.10.2010 23:36, David Daney wrote:
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -69,7 +69,7 @@ static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
+>    * mips_io_port_base is the begin of the address space to which x86 style
+>    * I/O ports are mapped.
+>    */
+> -const unsigned long mips_io_port_base __read_mostly = -1;
+> +const unsigned long mips_io_port_base = -1;
+>   EXPORT_SYMBOL(mips_io_port_base);
 
-Thanks David.  I'll add your tags.
+While we're here could we eliminate mips_io_port_base for boards that 
+don't need it.
 
-What do you think Ralf?  Should I merge these two patches up for
-2.6.37?  As mentioned on my other reply, David's "MIPS: add some irq
-definitions required by OF" patch isn't needed in my current
-next-devicetree branch.
+Now, it almost might be done by defining something like
+__swizzle_addr_[bwlq](port)	((port) - mips_io_port_base)
 
-g.
+Unfortunately, __swizzle_addr_[bwlq] is also used for memory acceeses 
+too (in read/write[bwlq]), so definition above doesn't work.
 
->
->
->> ---
->>  arch/microblaze/kernel/prom.c |    5 -----
->>  arch/powerpc/kernel/prom.c    |   12 ++++++++++--
->>  drivers/of/fdt.c              |    2 --
->>  include/linux/of_fdt.h        |    2 +-
->>  4 files changed, 11 insertions(+), 10 deletions(-)
->
-> [...]
->
+By providing two variants, e.g. __swizzle_io_addr_[bwlq] and 
+__swizzle_mem_addr_[bwlq] we can eliminate unnecessary loads of 
+mips_io_port_base.
 
+BTW, in recent kernels the trick with mips_io_port_base doesn't work 
+well anyway. The solely purpose of the trick was to prevent loading of 
+mips_io_port_base across function calls. Now drivers tend to use 
+ioread/iowrite that don't use mips_io_port_base at all or use its own 
+wrappers for in/out[bwlq] that _do_ load mips_io_port_base on every call.
 
-
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+Gleb.

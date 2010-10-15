@@ -1,68 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2010 02:32:34 +0200 (CEST)
-Received: from mail-gw0-f49.google.com ([74.125.83.49]:61474 "EHLO
-        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491107Ab0JOAca convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Oct 2010 02:32:30 +0200
-Received: by gwj18 with SMTP id 18so126580gwj.36
-        for <linux-mips@linux-mips.org>; Thu, 14 Oct 2010 17:32:22 -0700 (PDT)
-Received: by 10.150.55.27 with SMTP id d27mr396312yba.284.1287102741167; Thu,
- 14 Oct 2010 17:32:21 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.150.49.9 with HTTP; Thu, 14 Oct 2010 17:32:00 -0700 (PDT)
-In-Reply-To: <4CB79D93.6090500@caviumnetworks.com>
-References: <4CB79D93.6090500@caviumnetworks.com>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Thu, 14 Oct 2010 18:32:00 -0600
-X-Google-Sender-Auth: V3UhQrrc27NsxqXVmqYQLDcDl24
-Message-ID: <AANLkTi=UM2p26JJMqv-cNh8xACS_KPf_dCst5cgmh5VR@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Oct 2010 03:19:55 +0200 (CEST)
+Received: from bsdimp.com ([199.45.160.85]:60064 "EHLO harmony.bsdimp.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491107Ab0JOBTi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Oct 2010 03:19:38 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by harmony.bsdimp.com (8.14.3/8.14.1) with ESMTP id o9F1D912012600;
+        Thu, 14 Oct 2010 19:13:10 -0600 (MDT)
+        (envelope-from imp@bsdimp.com)
+Date:   Thu, 14 Oct 2010 19:13:09 -0600 (MDT)
+Message-Id: <20101014.191309.515504596.imp@bsdimp.com>
+To:     grant.likely@secretlab.ca
+Cc:     ddaney@caviumnetworks.com, prasun.kapoor@caviumnetworks.com,
+        linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org
 Subject: Re: Device Tree questions WRT MIPS/Octeon SOCs.
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     devicetree-discuss@lists.ozlabs.org,
-        linux-mips <linux-mips@linux-mips.org>,
-        Prasun Kapoor <prasun.kapoor@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <glikely@secretlab.ca>
+From:   Warner Losh <imp@bsdimp.com>
+In-Reply-To: <AANLkTi=UM2p26JJMqv-cNh8xACS_KPf_dCst5cgmh5VR@mail.gmail.com>
+References: <4CB79D93.6090500@caviumnetworks.com>
+        <AANLkTi=UM2p26JJMqv-cNh8xACS_KPf_dCst5cgmh5VR@mail.gmail.com>
+X-Mailer: Mew version 6.3 on Emacs 23.2 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <imp@bsdimp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28080
+X-archive-position: 28081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: imp@bsdimp.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi David.
+In message: <AANLkTi=UM2p26JJMqv-cNh8xACS_KPf_dCst5cgmh5VR@mail.gmail.com>
+            Grant Likely <grant.likely@secretlab.ca> writes:
+: Overall the plan makes sense, however I would suggest the following.
+: instead of 'live' modifying the tree, another option is to carry a set
+: of 'stock' device trees in the kernel; one per board.  Of course this
+: assumes that your current ad-hoc code is keying on the specific board.
+:  If it is interpreting data provided by the firmware, then your
+: suggestion of modifying a single stock tree probably makes more sense,
+: or possibly a combination of the too.  In general you should avoid
+: live modification as much as possible.
 
-On Thu, Oct 14, 2010 at 6:17 PM, David Daney <ddaney@caviumnetworks.com> wrote:
-[...]
-> I want to convert this to use the device tree and related functions.
->
-> Since none of the existing hardware has an existing device tree I plan on
-> taking a two pronged approach.
->
-> Modify platform drivers to get configuration information from the device
-> tree.  Then:
->
-> 1) Load and use a dtb blob as specified on the kernel command line.
->
-> 2) If no command line dtb specified, use a default dtb embedded in the
-> kernel image and then edit or patch it using of_attach_node(),
-> of_detach_node(), prom_remove_property(), and prom_add_property() based on
-> some of the the same ad hoc code we currently use.
->
-> Q: As a very high level plan does this make any sense?
+The one draw back on this is that there's lots of different "stock"
+boards that the Cavium Octeon SDK supports.  These will be difficult
+to drag along for every kernel.  And they'd be mostly the same to,
+which is why I think that David is suggesting the live modification
+thing...
 
-Overall the plan makes sense, however I would suggest the following.
-instead of 'live' modifying the tree, another option is to carry a set
-of 'stock' device trees in the kernel; one per board.  Of course this
-assumes that your current ad-hoc code is keying on the specific board.
- If it is interpreting data provided by the firmware, then your
-suggestion of modifying a single stock tree probably makes more sense,
-or possibly a combination of the too.  In general you should avoid
-live modification as much as possible.
+I know that FreeBSD will have exactly the same problem as we move to
+using the FDT for FreeBSD/mips' configuration.
 
-g.
+Warner

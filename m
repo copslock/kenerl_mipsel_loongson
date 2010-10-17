@@ -1,74 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Oct 2010 18:41:57 +0200 (CEST)
-Received: from mail-pv0-f177.google.com ([74.125.83.177]:41691 "EHLO
-        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491144Ab0JQQly (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Oct 2010 18:41:54 +0200
-Received: by pvg3 with SMTP id 3so11353pvg.36
-        for <multiple recipients>; Sun, 17 Oct 2010 09:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=VhLBA0LCkI0hWu7iCxudyWK6mwElJysVDPAd8KsTU5A=;
-        b=ppTwhjswWrCW0JHzyc+odT42oZSHAbQuY3IXhUyDa++ZylZX4CU5D7qu7LrvJw59bH
-         8xA9R+qo7rDUyjbkUzonSiPDFgz+6le1Akl5Yp4pTy37kWLnXankwx+v6/MAGqIODj9j
-         MB2TO+23NU+bIJ1DmgeR1QvhDE6ZE50r+VnRQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=mZTFiqmuuyvLPvwp45xWfpZOY+J0cnQ8VNYClKKyPk1AyI/onxmuI19zuDEEF9QkO5
-         3ziTUYMGOnrgLZcdWWAEUPc2GOnusl/IyB60nPDsaBk68sVd6Kea3nniIRFdhYhGjact
-         xZc8JK/82uGCN0eywJ80MCcYivvEDom68/tkI=
-Received: by 10.142.213.15 with SMTP id l15mr2587332wfg.87.1287333705502;
-        Sun, 17 Oct 2010 09:41:45 -0700 (PDT)
-Received: from localhost.localdomain ([211.201.183.198])
-        by mx.google.com with ESMTPS id e36sm17192731wfj.2.2010.10.17.09.41.42
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 17 Oct 2010 09:41:44 -0700 (PDT)
-From:   Namhyung Kim <namhyung@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: Fix build failure on asm/fcntl.h
-Date:   Mon, 18 Oct 2010 01:41:39 +0900
-Message-Id: <1287333699-1254-1-git-send-email-namhyung@gmail.com>
-X-Mailer: git-send-email 1.7.0.4
-Return-Path: <namhyung@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Oct 2010 18:59:19 +0200 (CEST)
+Received: from zmc.proxad.net ([212.27.53.206]:45293 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491132Ab0JQQ7Q convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Oct 2010 18:59:16 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 7ABB112AF9C;
+        Sun, 17 Oct 2010 18:59:15 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id JbzjNApt7cMs; Sun, 17 Oct 2010 18:59:15 +0200 (CEST)
+Received: from lenovo.localnet (gob75-6-82-236-225-16.fbx.proxad.net [82.236.225.16])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 1EF5C12AF99;
+        Sun, 17 Oct 2010 18:59:15 +0200 (CEST)
+From:   Florian Fainelli <ffainelli@freebox.fr>
+Organization: Freebox
+To:     Kevin Cernekee <cernekee@gmail.com>
+Subject: Re: [PATCH 1/9] MIPS: Decouple BMIPS CPU support from bcm47xx/bcm63xx SoC code
+Date:   Sun, 17 Oct 2010 18:59:43 +0200
+User-Agent: KMail/1.13.5 (Linux/2.6.36-rc6-amd64; KDE/4.4.5; x86_64; ; )
+Cc:     Ralf Baechle <ralf@linux-mips.org>, mbizon@freebox.fr,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+References: <17ebecce124618ddf83ec6fe8e526f93@localhost>
+In-Reply-To: <17ebecce124618ddf83ec6fe8e526f93@localhost>
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201010171859.44942.ffainelli@freebox.fr>
+Return-Path: <ffainelli@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28118
+X-archive-position: 28119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: namhyung@gmail.com
+X-original-sender: ffainelli@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-  CC      security/integrity/ima/ima_fs.o
-In file included from linux/include/linux/fcntl.h:4:0,
-                 from linux/security/integrity/ima/ima_fs.c:18:
-linux/arch/mips/include/asm/fcntl.h:63:2: error: expected specifier-qualifier-list before 'off_t'
-make[3]: *** [security/integrity/ima/ima_fs.o] Error 1
-make[2]: *** [security/integrity/ima/ima_fs.o] Error 2
-make[1]: *** [sub-make] Error 2
-make: *** [all] Error 2
+Hello Kevin,
 
-Signed-off-by: Namhyung Kim <namhyung@gmail.com>
----
- arch/mips/include/asm/fcntl.h |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+Le Saturday 16 October 2010 23:22:30, Kevin Cernekee a écrit :
+> BMIPS processor cores are used in 50+ different chipsets spread across
+> 5+ product lines.  In many cases the chipsets do not share the same
+> peripheral register layouts, the same register blocks, the same
+> interrupt controllers, the same memory maps, or much of anything else.
+> 
+> But, across radically different SoCs that share nothing more than the
+> same BMIPS CPU, a few things are still mostly constant:
+> 
+> SMP operations
+> Access to performance counters
+> DMA cache coherency quirks
+> Cache and memory bus configuration
+> 
+> So, it makes sense to treat each BMIPS processor type as a generic
+> "building block," rather than tying it to a specific SoC.  This makes it
+> easier to support a large number of BMIPS-based chipsets without
+> unnecessary duplication of code, and provides the infrastructure needed
+> to support BMIPS-proprietary features.
+> 
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
-diff --git a/arch/mips/include/asm/fcntl.h b/arch/mips/include/asm/fcntl.h
-index e482fe9..75edded 100644
---- a/arch/mips/include/asm/fcntl.h
-+++ b/arch/mips/include/asm/fcntl.h
-@@ -56,6 +56,7 @@
-  */
- 
- #ifdef CONFIG_32BIT
-+#include <linux/types.h>
- 
- struct flock {
- 	short	l_type;
--- 
-1.7.0.4
+I boot tested all of your nine patches on a BCM6348 system without problems.
+
+Tested-by: Florian Fainelli <ffainelli@freebox.fr>
+--
+Florian

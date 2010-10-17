@@ -1,125 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Oct 2010 20:06:05 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:40960 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491177Ab0JQSGB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 17 Oct 2010 20:06:01 +0200
-Received: (qmail 17593 invoked from network); 17 Oct 2010 18:05:55 -0000
-Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 17 Oct 2010 18:05:55 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sun, 17 Oct 2010 11:05:54 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     <ffainelli@freebox.fr>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 2/9] MIPS: Add BMIPS processor types to Kconfig
-Date:   Sun, 17 Oct 2010 10:56:53 -0700
-Message-Id: <584a8c475b66c7ccdd112fb6afda8491@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Oct 2010 20:57:01 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:40029 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491132Ab0JQS46 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Oct 2010 20:56:58 +0200
+Date:   Sun, 17 Oct 2010 19:56:58 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     "wilbur.chan" <wilbur512@gmail.com>
+cc:     Adam Jiang <jiang.adam@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: Where is the definition of i_j macro ?
+In-Reply-To: <AANLkTimkiwssyA=1Ub3qgekcsqECKPy+uuvFxkATqOmn@mail.gmail.com>
+Message-ID: <alpine.LFD.2.00.1010171948440.15889@eddie.linux-mips.org>
+References: <AANLkTik4BddKpVm0x4EpCKCdUff0L=XiYRjfhJaPmX23@mail.gmail.com>        <20101016155552.GE23119@capricorn-x61> <AANLkTimkiwssyA=1Ub3qgekcsqECKPy+uuvFxkATqOmn@mail.gmail.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28122
+X-archive-position: 28123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-[v2: add "VIPER" marketing name for BMIPS4350]
+On Sun, 17 Oct 2010, wilbur.chan wrote:
 
-Add processor feature definitions for BMIPS3300, BMIPS4350, BMIPS4380,
-and BMIPS5000.
+> I_u1(_j);  They just make up pieces of  asm opt code into a  string
+> and copy them to ebase:
+> 
+> memcpy((void *)ebase, final_handler, 0x100);
+> 
+> 
+> Why they did like this seemed strange to me, maybe in the
+> consideration of portability.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/Kconfig |   63 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 63 insertions(+), 0 deletions(-)
+ This is a performance-critical piece of code that varies vastly across 
+processors supported.  As we started losing control of the original 
+preprocessor-based approach and had no way to keep performance optimal 
+this way anyway, late Thiemo Seufer came up with this brilliant solution 
+of generating this code at the run time, early during bootstrap.  This 
+solution enabled us with tailoring code used specifically for each 
+processor supported, up to including certain processor errata workarounds 
+on the as-needed basis.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 5526faa..f161e9f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1332,6 +1332,57 @@ config CPU_CAVIUM_OCTEON
- 	  can have up to 16 Mips64v2 cores and 8 integrated gigabit ethernets.
- 	  Full details can be found at http://www.caviumnetworks.com.
- 
-+config CPU_BMIPS3300
-+	bool "BMIPS3300"
-+	depends on SYS_HAS_CPU_BMIPS3300
-+	select DMA_NONCOHERENT
-+	select IRQ_CPU
-+	select SWAP_IO_SPACE
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select WEAK_ORDERING
-+	help
-+	  Broadcom BMIPS3300 processors.
-+
-+config CPU_BMIPS4350
-+	bool "BMIPS4350"
-+	depends on SYS_HAS_CPU_BMIPS4350
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select DMA_NONCOHERENT
-+	select IRQ_CPU
-+	select SWAP_IO_SPACE
-+	select SYS_SUPPORTS_SMP
-+	select SYS_SUPPORTS_HOTPLUG_CPU
-+	select WEAK_ORDERING
-+	help
-+	  Broadcom BMIPS4350 ("VIPER") processors.
-+
-+config CPU_BMIPS4380
-+	bool "BMIPS4380"
-+	depends on SYS_HAS_CPU_BMIPS4380
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select DMA_NONCOHERENT
-+	select IRQ_CPU
-+	select SWAP_IO_SPACE
-+	select SYS_SUPPORTS_SMP
-+	select SYS_SUPPORTS_HOTPLUG_CPU
-+	select WEAK_ORDERING
-+	help
-+	  Broadcom BMIPS4380 processors.
-+
-+config CPU_BMIPS5000
-+	bool "BMIPS5000"
-+	depends on SYS_HAS_CPU_BMIPS5000
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select CPU_SUPPORTS_HIGHMEM
-+	select DMA_NONCOHERENT
-+	select IRQ_CPU
-+	select SWAP_IO_SPACE
-+	select SYS_SUPPORTS_SMP
-+	select SYS_SUPPORTS_HOTPLUG_CPU
-+	select WEAK_ORDERING
-+	help
-+	  Broadcom BMIPS5000 processors.
-+
- endchoice
- 
- if CPU_LOONGSON2F
-@@ -1450,6 +1501,18 @@ config SYS_HAS_CPU_SB1
- config SYS_HAS_CPU_CAVIUM_OCTEON
- 	bool
- 
-+config SYS_HAS_CPU_BMIPS3300
-+	bool
-+
-+config SYS_HAS_CPU_BMIPS4350
-+	bool
-+
-+config SYS_HAS_CPU_BMIPS4380
-+	bool
-+
-+config SYS_HAS_CPU_BMIPS5000
-+	bool
-+
- #
- # CPU may reorder R->R, R->W, W->R, W->W
- # Reordering beyond LL and SC is handled in WEAK_REORDERING_BEYOND_LLSC
--- 
-1.7.0.4
+  Maciej

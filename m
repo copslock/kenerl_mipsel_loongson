@@ -1,138 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Oct 2010 18:59:43 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:45302 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491169Ab0JQQ7W convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 17 Oct 2010 18:59:22 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id F326912AF9D;
-        Sun, 17 Oct 2010 18:59:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at 
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id CxXpqSaZ+MC9; Sun, 17 Oct 2010 18:59:15 +0200 (CEST)
-Received: from lenovo.localnet (gob75-6-82-236-225-16.fbx.proxad.net [82.236.225.16])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 59DD812AF9B;
-        Sun, 17 Oct 2010 18:59:15 +0200 (CEST)
-From:   Florian Fainelli <ffainelli@freebox.fr>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Subject: Re: [PATCH 2/9] MIPS: Add BMIPS processor types to Kconfig
-Date:   Sun, 17 Oct 2010 19:01:04 +0200
-User-Agent: KMail/1.13.5 (Linux/2.6.36-rc6-amd64; KDE/4.4.5; x86_64; ; )
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-References: <17ebecce124618ddf83ec6fe8e526f93@localhost> <adc90cbb99148b1f3a1e880caba50fa4@localhost>
-In-Reply-To: <adc90cbb99148b1f3a1e880caba50fa4@localhost>
-Organization: Freebox
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Oct 2010 19:50:43 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:44465 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491179Ab0JQRuj convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 17 Oct 2010 19:50:39 +0200
+Received: by qyk35 with SMTP id 35so3479628qyk.15
+        for <linux-mips@linux-mips.org>; Sun, 17 Oct 2010 10:50:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=mBCp2PwaUB6qiC1i5fVOfUQtyFdUI6ueyZz6fhdy1JY=;
+        b=IjkmLSpAgY1+SjPkMVIn5UNRx2OOD7sValqY6wy+ESKIEUlT+zqFOvdvNJsOkJBf6D
+         Pu83GuqJjR00l4BGK7fTQ86JiOOUkGfeU5CPCFMk2vCTuQmTkw1GZAIL8X1LsnyfhZOc
+         0UJ9XaT38gkg3fiBjQE+pW99ubUjXgQhOsY6w=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=il1Y7XQqAPndZ+guz51AMpp8e5jTyrWrRaNT2+FFC1H3/i62ApzEP174Uaoe+AekpM
+         LPvBO0uVPjzZ0+IPBeI320ayDbvjKai27g325Ls8YoTlUZ0K0tMzMK+UyF/gq7UCYAYj
+         w2G1HCVTwZUbwZllbaEVHGVlHgqWAApMqgIBo=
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
+Received: by 10.224.89.11 with SMTP id c11mr1902612qam.25.1287337830897; Sun,
+ 17 Oct 2010 10:50:30 -0700 (PDT)
+Received: by 10.224.45.148 with HTTP; Sun, 17 Oct 2010 10:50:30 -0700 (PDT)
+In-Reply-To: <AANLkTikP=77Tq=QzFVwexr8fMHg5qmX8fbRjfdkoNSGr@mail.gmail.com>
+References: <AANLkTikP=77Tq=QzFVwexr8fMHg5qmX8fbRjfdkoNSGr@mail.gmail.com>
+Date:   Sun, 17 Oct 2010 10:50:30 -0700
+Message-ID: <AANLkTikbw1F+jBhsFFyX0vT6CCAqckzLHK3MK2WtTZiA@mail.gmail.com>
+Subject: Re: Question about Context register in TLB refilling
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     "wilbur.chan" <wilbur512@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-Message-Id: <201010171901.04581.ffainelli@freebox.fr>
-Return-Path: <ffainelli@freebox.fr>
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28120
+X-archive-position: 28121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ffainelli@freebox.fr
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello Kevin,
+On Sun, Oct 17, 2010 at 8:51 AM, wilbur.chan <wilbur512@gmail.com> wrote:
+> 1) In linux ,esspecially in TLB refilling, Â is Context[PTEBase] used
+> to store cpuid? (refer to build_get_pgde32 in tlbex.c)
 
-Le Saturday 16 October 2010 23:22:31, Kevin Cernekee a écrit :
-> Add processor feature definitions for BMIPS3300, BMIPS4350, BMIPS4380,
-> and BMIPS5000.
-> 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-> ---
->  arch/mips/Kconfig |   63
-> +++++++++++++++++++++++++++++++++++++++++++++++++++++ 1 files changed, 63
-> insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 5526faa..1403926 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1332,6 +1332,57 @@ config CPU_CAVIUM_OCTEON
->  	  can have up to 16 Mips64v2 cores and 8 integrated gigabit ethernets.
->  	  Full details can be found at http://www.caviumnetworks.com.
-> 
-> +config CPU_BMIPS3300
-> +	bool "BMIPS3300"
-> +	depends on SYS_HAS_CPU_BMIPS3300
-> +	select DMA_NONCOHERENT
-> +	select IRQ_CPU
-> +	select SWAP_IO_SPACE
-> +	select SYS_SUPPORTS_32BIT_KERNEL
-> +	select WEAK_ORDERING
-> +	help
-> +	  Broadcom BMIPS3300 processors.
-> +
-> +config CPU_BMIPS4350
-> +	bool "BMIPS4350"
-> +	depends on SYS_HAS_CPU_BMIPS4350
-> +	select CPU_SUPPORTS_32BIT_KERNEL
-> +	select DMA_NONCOHERENT
-> +	select IRQ_CPU
-> +	select SWAP_IO_SPACE
-> +	select SYS_SUPPORTS_SMP
-> +	select SYS_SUPPORTS_HOTPLUG_CPU
-> +	select WEAK_ORDERING
-> +	help
-> +	  Broadcom BMIPS4350 processors.
+On 32-bit systems, PTEBase stores a byte offset that can be added to
+&pgd_current[0].  i.e. smp_processor_id() * sizeof(unsigned long)
 
-May I suggest to include the marketed name "Viper" here to help people know where this CPU block can be found?
+So the TLB refill handler can find pgd for the current CPU using code
+that looks something like this:
 
-> +
-> +config CPU_BMIPS4380
-> +	bool "BMIPS4380"
-> +	depends on SYS_HAS_CPU_BMIPS4380
-> +	select CPU_SUPPORTS_32BIT_KERNEL
-> +	select DMA_NONCOHERENT
-> +	select IRQ_CPU
-> +	select SWAP_IO_SPACE
-> +	select SYS_SUPPORTS_SMP
-> +	select SYS_SUPPORTS_HOTPLUG_CPU
-> +	select WEAK_ORDERING
-> +	help
-> +	  Broadcom BMIPS4380 processors.
-> +
-> +config CPU_BMIPS5000
-> +	bool "BMIPS5000"
-> +	depends on SYS_HAS_CPU_BMIPS5000
-> +	select CPU_SUPPORTS_32BIT_KERNEL
-> +	select CPU_SUPPORTS_HIGHMEM
-> +	select DMA_NONCOHERENT
-> +	select IRQ_CPU
-> +	select SWAP_IO_SPACE
-> +	select SYS_SUPPORTS_SMP
-> +	select SYS_SUPPORTS_HOTPLUG_CPU
-> +	select WEAK_ORDERING
-> +	help
-> +	  Broadcom BMIPS5000 processors.
-> +
->  endchoice
-> 
->  if CPU_LOONGSON2F
-> @@ -1450,6 +1501,18 @@ config SYS_HAS_CPU_SB1
->  config SYS_HAS_CPU_CAVIUM_OCTEON
->  	bool
-> 
-> +config SYS_HAS_CPU_BMIPS3300
-> +	bool
-> +
-> +config SYS_HAS_CPU_BMIPS4350
-> +	bool
-> +
-> +config SYS_HAS_CPU_BMIPS4380
-> +	bool
-> +
-> +config SYS_HAS_CPU_BMIPS5000
-> +	bool
-> +
->  #
->  # CPU may reorder R->R, R->W, W->R, W->W
->  # Reordering beyond LL and SC is handled in WEAK_REORDERING_BEYOND_LLSC
+   0:   401b2000        mfc0    k1,c0_context
+   4:   3c1a8054        lui     k0,0x8054
+   8:   001bddc2        srl     k1,k1,0x17
+   c:   035bd821        addu    k1,k0,k1
+...
+  14:   8f7b5008        lw      k1,20488(k1)
+
+where pgd_current is at 0x8054_5008, and PTEBase is 0, 4, 8, 12, ...
+
+See also: TLBMISS_HANDLER_SETUP().
+
+For 64-bit systems with CONFIG_MIPS_PGD_C0_CONTEXT, it looks like a
+direct pgd pointer is now being stored in Context, to speed up the TLB
+handlers.

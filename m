@@ -1,57 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 12:30:29 +0200 (CEST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:33206 "EHLO
-        t111.niisi.ras.ru" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491205Ab0JRKaZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Oct 2010 12:30:25 +0200
-Received: from aa19.niisi.msk.ru (aa19.niisi.msk.ru [172.16.0.19] (may be forged))
-        by t111.niisi.ras.ru (8.13.8/8.13.8) with ESMTP id o9IAUSve017274;
-        Mon, 18 Oct 2010 14:30:28 +0400
-Received: from [192.168.173.2] (aa248 [172.16.0.248])
-        by aa19.niisi.msk.ru (8.13.8/8.13.8) with ESMTP id o9IAKQ6c017192;
-        Mon, 18 Oct 2010 14:20:26 +0400
-Message-ID: <4CBC256A.7020808@niisi.msk.ru>
-Date:   Mon, 18 Oct 2010 14:46:02 +0400
-From:   "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.5) Gecko/20091204 Thunderbird/3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 12:40:22 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.126.187]:59468 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491091Ab0JRKkT convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Oct 2010 12:40:19 +0200
+Received: from corscience.de (DSL01.212.114.252.242.ip-pool.NEFkom.net [212.114.252.242])
+        by mrelayeu.kundenserver.de (node=mreu0) with ESMTP (Nemesis)
+        id 0MdZN2-1PHmVc3Snc-00PNKO; Mon, 18 Oct 2010 12:40:12 +0200
+Received: from [192.168.102.58] (unknown [192.168.102.58])
+        by corscience.de (Postfix) with ESMTP id 5365552014;
+        Mon, 18 Oct 2010 12:40:12 +0200 (CEST)
+Message-ID: <4CBC240A.3040802@corscience.de>
+Date:   Mon, 18 Oct 2010 12:40:10 +0200
+From:   Bernhard Walle <walle@corscience.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.9) Gecko/20100922 Thunderbird/3.1.4
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        "wilbur.chan" <wilbur512@gmail.com>,
+To:     =?ISO-8859-1?Q?Am=E9rico_Wang?= <xiyou.wangcong@gmail.com>
+CC:     "wilbur.chan" <wilbur512@gmail.com>,
+        linux-kernel <Linux-kernel@zh-kernel.org>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Question about Context register in TLB refilling
-References: <AANLkTikP=77Tq=QzFVwexr8fMHg5qmX8fbRjfdkoNSGr@mail.gmail.com> <AANLkTikbw1F+jBhsFFyX0vT6CCAqckzLHK3MK2WtTZiA@mail.gmail.com> <alpine.LFD.2.00.1010172025110.15889@eddie.linux-mips.org> <20101018000030.GB31080@linux-mips.org>
-In-Reply-To: <20101018000030.GB31080@linux-mips.org>
-Content-Type: text/plain; charset=KOI8-R; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Antivirus: Dr.Web (R) for Mail Servers on t111.niisi.ras.ru host
-X-Antivirus-Code: 100000
-Return-Path: <raiko@niisi.msk.ru>
+Subject: Re: Question about kimage_alloc_page in kexec.c, bug?
+References: <AANLkTi=ST1v55skkQbfsNQsmiBpOARwAnTxCpptsTdtB@mail.gmail.com> <20101018102639.GM5281@cr0.nay.redhat.com>
+In-Reply-To: <20101018102639.GM5281@cr0.nay.redhat.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-Provags-ID: V02:K0:8Lr/VwMVTBaZi3RAqYrPnFUgQddmGfH+vM98Lp716Qu
+ rlVHAPQK96T5dVBY50fVkM3lfJqsfdc/KD3aX961hW/X8NOjau
+ LgGymPnyxkzAXvrzSm+ZR9VfpYGz0ag/cg6vqIzf4+MiF/gjuH
+ pGrsv3ATak9hDyIkGBVMMCidRuQoTsICyRQamFpFkgI4fmd1oB
+ wBmvnCDkXM8mjsLYk0hLg==
+Return-Path: <walle@corscience.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28135
+X-archive-position: 28136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: walle@corscience.de
 Precedence: bulk
 X-list: linux-mips
 
-On 18.10.2010 4:00, Ralf Baechle wrote:
-> The aliasing problem is solvable and it may be worth to revisit that old
-> piece of code again now 15 years later.
+Am 18.10.2010 12:26, schrieb Américo Wang:
+> 
+> You can Cc me on kexec/kdump issues. :)
 
-Before anybody will start to prepare patches, I'd like to note using 
-c0_context allows less than 128 processes (their mm contexts in fact but 
-who cares) to be directly mapped on 32-bit cpus. So, some kind of 
-caching needs to be implemented and it will add overhead on every mm 
-switch. Sure, this overhead might be bounded for a real case where there 
-is a small number of processes, so they all fit in the cache.
---- Beware, wild assumptions here ---
-I'm afraid the cost of such caching still will be higher than loading 
-pgd_current even from main memory on tlb refill.
---- End of wild assumptions ---
+Better (or in addition) cc kexec@lists.infradead.org.
 
-Gleb.
+Regards,
+Bernhard

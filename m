@@ -1,122 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 15:45:07 +0200 (CEST)
-Received: from b-pb-sasl-quonix.pobox.com ([208.72.237.35]:51820 "EHLO
-        sasl.smtp.pobox.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491753Ab0JRNpE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Oct 2010 15:45:04 +0200
-Received: from sasl.smtp.pobox.com (unknown [127.0.0.1])
-        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id 47004D1705;
-        Mon, 18 Oct 2010 09:45:00 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=message-id
-        :date:from:mime-version:to:cc:subject:references:in-reply-to
-        :content-type:content-transfer-encoding; s=sasl; bh=4UzlDqb+GIRh
-        x+CFr1+FX0wrW+c=; b=VGRx9HdK8ygRQV35VC/w3p/8k0EXspNluoTvr3HAziAV
-        gdHWiG+XPPEFGIP88XqFhX0UkqsUyax6yGMWGObncjFCT3guHpp3U2KbXAO7sIzZ
-        jL1DGJbbvAoAj6vuMOrfHjQj1yruZotVjFGBIhvE84Ff18l56FrcCtpxvUvq0Z0=
-DomainKey-Signature: a=rsa-sha1; c=nofws; d=pobox.com; h=message-id:date
-        :from:mime-version:to:cc:subject:references:in-reply-to
-        :content-type:content-transfer-encoding; q=dns; s=sasl; b=CGbMU6
-        gj9fSDC4P+F0OV8gLZQJ95VHBo1Iv70PI3UE3ZW09IuBdyHpC/2xqCFHvziMeJ83
-        /ThNb+yzhZVasualigwhFl1xr3wFBkYkPOKo83rmcevlWXavVbEw/sFOPsOuHp3I
-        NIfk7Ay2/tY+1DlTpL9+MQe7qU0FinNdhtJGM=
-Received: from b-pb-sasl-quonix. (unknown [127.0.0.1])
-        by b-sasl-quonix.pobox.com (Postfix) with ESMTP id 12AE3D1701;
-        Mon, 18 Oct 2010 09:44:57 -0400 (EDT)
-Received: from Shinya-Kuribayashis-MacBook.local (unknown [180.12.66.33])
- (using TLSv1 with cipher AES256-SHA (256/256 bits)) (No client certificate
- requested) by b-sasl-quonix.pobox.com (Postfix) with ESMTPSA id 24179D1700;
- Mon, 18 Oct 2010 09:44:51 -0400 (EDT)
-Message-ID: <4CBC4F4E.5010305@pobox.com>
-Date:   Mon, 18 Oct 2010 22:44:46 +0900
-From:   Shinya Kuribayashi <skuribay@pobox.com>
-User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US;
- rv:1.9.1.14) Gecko/20101005 Thunderbird/3.0.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 15:48:17 +0200 (CEST)
+Received: from t111.niisi.ras.ru ([193.232.173.111]:47178 "EHLO
+        t111.niisi.ras.ru" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491753Ab0JRNsN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Oct 2010 15:48:13 +0200
+Received: from aa19.niisi.msk.ru (aa19.niisi.msk.ru [172.16.0.19] (may be forged))
+        by t111.niisi.ras.ru (8.13.8/8.13.8) with ESMTP id o9IDmHMw010742;
+        Mon, 18 Oct 2010 17:48:17 +0400
+Received: from [192.168.173.2] (aa248 [172.16.0.248])
+        by aa19.niisi.msk.ru (8.13.8/8.13.8) with ESMTP id o9IDcELx030092;
+        Mon, 18 Oct 2010 17:38:14 +0400
+Message-ID: <4CBC53C7.3020204@niisi.msk.ru>
+Date:   Mon, 18 Oct 2010 18:03:51 +0400
+From:   "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.5) Gecko/20091204 Thunderbird/3.0
 MIME-Version: 1.0
-To:     Kevin Cernekee <cernekee@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH resend 5/9] MIPS: sync after cacheflush
-References: <17ebecce124618ddf83ec6fe8e526f93@localhost>
- <17d8d27a2356640a4359f1a7dcbb3b42@localhost>
-In-Reply-To: <17d8d27a2356640a4359f1a7dcbb3b42@localhost>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        "wilbur.chan" <wilbur512@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: Question about Context register in TLB refilling
+References: <AANLkTikP=77Tq=QzFVwexr8fMHg5qmX8fbRjfdkoNSGr@mail.gmail.com> <AANLkTikbw1F+jBhsFFyX0vT6CCAqckzLHK3MK2WtTZiA@mail.gmail.com> <alpine.LFD.2.00.1010172025110.15889@eddie.linux-mips.org> <20101018000030.GB31080@linux-mips.org> <4CBC256A.7020808@niisi.msk.ru> <20101018124838.GF27377@linux-mips.org>
+In-Reply-To: <20101018124838.GF27377@linux-mips.org>
+Content-Type: text/plain; charset=KOI8-R; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Pobox-Relay-ID: E506C1CE-DABD-11DF-94DD-89B3016DD5F0-47602734!b-pb-sasl-quonix.pobox.com
-Return-Path: <skuribay@pobox.com>
+X-Antivirus: Dr.Web (R) for Mail Servers on t111.niisi.ras.ru host
+X-Antivirus-Code: 100000
+Return-Path: <raiko@niisi.msk.ru>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28138
+X-archive-position: 28139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skuribay@pobox.com
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 
-On 10/17/10 6:22 AM, Kevin Cernekee wrote:
-> On processors with deep write buffers, it is likely that many cycles
-> will pass between a CACHE instruction and the time the data actually
-> gets written out to DRAM.  Add a SYNC instruction to ensure that the
-> buffers get emptied before the flush functions return.
->
-> Actual problem seen in the wild:
->
-> 1) dma_alloc_coherent() allocates cached memory
->
-> 2) memset() is called to clear the new pages
->
-> 3) dma_cache_wback_inv() is called to flush the zero data out to memory
->
-> 4) dma_alloc_coherent() returns an uncached (kseg1) pointer to the
-> freshly allocated pages
->
-> 5) Caller writes data through the kseg1 pointer
->
-> 6) Buffered writeback data finally gets flushed out to DRAM
->
-> 7) Part of caller's data is inexplicably zeroed out
->
-> This patch adds SYNC between steps 3 and 4, which fixed the problem.
->
-> Signed-off-by: Kevin Cernekee<cernekee@gmail.com>
-> ---
->   arch/mips/mm/c-r4k.c |    4 ++++
->   1 files changed, 4 insertions(+), 0 deletions(-)
->
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 6721ee2..05c3de3 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -605,6 +605,7 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
->   			r4k_blast_scache();
->   		else
->   			blast_scache_range(addr, addr + size);
-> +		__sync();
->   		return;
->   	}
->
+On 18.10.2010 16:48, Ralf Baechle wrote:
+> On Mon, Oct 18, 2010 at 02:46:02PM +0400, Gleb O. Raiko wrote:
+> 64 context on R2000/R3000, 256 on everything else but R6000 and RM9000
+> series, 4096 contexts on RM9000 and that context caching is already
+> there.  It's fairly lightweight except in the rare case where the
+> PID / ASID number overflows and a full TLB flush becomes necessary.  A
+> mm context switch only needs to reload the one wired TLB entry that maps
+> the pagetables so that's not too bad.
 
-Basically, agreed.  I have similar workarounds when initiating DMA,
-where we need to flush out data to DRAM before starting DMA trans-
-actions.  Looks like similar situations.
+Ralf,
 
-But I have a concern.
+I counted from the opposite side. Size of KSEG2+KSEG3 is 1 GB, flat page 
+table shall be 8 MB aligned to be stored in cp0 context, so we end up 
+with 128 page tables in the theory (we have to reserve some space for 
+other business too in practice).
 
-I suspect that SYNC insn alone is still not enough, insn't it?  In
-such systems with that 'deep' write buffer and data incoherency is
-visibly observed, there sill may be data write transactions floating
-in the internal bus system.
+If we are going to use a "standard" approach when only current page 
+table is mapped, we know the address at compile time and don't need cp0 
+context at all. We can even has as many page tables as number of ASIDs 
+for cpus with multiple page sizes but cp0 context is still out of play 
+anyway.
 
-To make sure that all data (data inside processor's write buffer and
-data floating in the internal bus system), we need the following
-three steps:
-
-1. Flush data cache
-2. Uncached, dummy load operation from _DRAM_ (not somewhere else)
-3. then SYNC instruction
-
-With these steps, data in write buffer will be pushed out of the
-processor's write buffer, wait for uncached load operation to be
-completed, and then finally the pipeline gets cleared.  Thoughts?
-
-   Shinya
+Gleb.

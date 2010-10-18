@@ -1,71 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 21:19:41 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:44760 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491866Ab0JRTTi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Oct 2010 21:19:38 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o9IJJbRv014177;
-        Mon, 18 Oct 2010 20:19:37 +0100
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o9IJJap1014175;
-        Mon, 18 Oct 2010 20:19:36 +0100
-Date:   Mon, 18 Oct 2010 20:19:36 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Shinya Kuribayashi <skuribay@pobox.com>
-Cc:     Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH resend 5/9] MIPS: sync after cacheflush
-Message-ID: <20101018191936.GH27377@linux-mips.org>
-References: <17ebecce124618ddf83ec6fe8e526f93@localhost>
- <17d8d27a2356640a4359f1a7dcbb3b42@localhost>
- <4CBC4F4E.5010305@pobox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 21:41:31 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:45736 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491865Ab0JRTl2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Oct 2010 21:41:28 +0200
+Received: by qyk35 with SMTP id 35so4798040qyk.15
+        for <multiple recipients>; Mon, 18 Oct 2010 12:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=0mIN1987yeYFAlhCuzojHkpWfpfTBKyDsYdAdtsj9pY=;
+        b=ZBwNyUI2xLYOP144teReZEVHoTjSyvT7ejnCPdFOvCY5cCqYioKjBii3LZH2hSG4Np
+         sgPyDJ5LjeKsPtCE4JuEWP7aWf6OD1UMmBKtZKTG92Q9UQgUi3Tz8y7TfJXhQly8TFR4
+         U4zr4WIz+xHHI7f2vksOT37f8Xn/9lqj/pkGg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=Q9OcaT/DwPbc3Rb5oMhPpW0m6vaCQgaeacBDb11ZJEb3mQ2GYGQRidFWHX8DikHSDz
+         40FNF3TUm4HuIvHcMV9pr7lTsUpjt6Q/P1GkCnodqnRJSLVLnYEYHdOCL5VyEYGB2k2A
+         t8HOs/rk2Y9eOXzo61VutKCarQI6FoKUh6mS4=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4CBC4F4E.5010305@pobox.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.224.2.85 with SMTP id 21mr78740qai.288.1287430880234; Mon, 18
+ Oct 2010 12:41:20 -0700 (PDT)
+Received: by 10.224.45.148 with HTTP; Mon, 18 Oct 2010 12:41:20 -0700 (PDT)
+In-Reply-To: <20101018191936.GH27377@linux-mips.org>
+References: <17ebecce124618ddf83ec6fe8e526f93@localhost>
+        <17d8d27a2356640a4359f1a7dcbb3b42@localhost>
+        <4CBC4F4E.5010305@pobox.com>
+        <20101018191936.GH27377@linux-mips.org>
+Date:   Mon, 18 Oct 2010 12:41:20 -0700
+Message-ID: <AANLkTimmatKpOFATCPDxthN-9pZzzXRAOnLGR1_348=r@mail.gmail.com>
+Subject: Re: [PATCH resend 5/9] MIPS: sync after cacheflush
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Shinya Kuribayashi <skuribay@pobox.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28141
+X-archive-position: 28142
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 18, 2010 at 10:44:46PM +0900, Shinya Kuribayashi wrote:
+On Mon, Oct 18, 2010 at 12:19 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> I'm trying to get a statement from the MIPS architecture guys if the
+> necessity to do anything beyond a cache flush is an architecture violation.
 
-> I suspect that SYNC insn alone is still not enough, insn't it?  In
-> such systems with that 'deep' write buffer and data incoherency is
-> visibly observed, there sill may be data write transactions floating
-> in the internal bus system.
+IMO such a requirement would be unnecessarily strict.  Larger flushes
+(e.g. page at a time) tend to benefit from some form of pipelining or
+write gathering.  Forcing the processor to flush exactly 32 bytes at a
+time, synchronously, could really slow things down and thrash the
+memory controller.
 
-A SYNC in theory should ensure global visibilty of preceding writes and
-completion of earlier reads.  That usually works between CPUs but not
-all I/O systems fully participate in that "consistency domain" so more
-or less arbitary shaking of the I/O system may still be required to to
-achieve consistency.
-
-> To make sure that all data (data inside processor's write buffer and
-> data floating in the internal bus system), we need the following
-> three steps:
-> 
-> 1. Flush data cache
-> 2. Uncached, dummy load operation from _DRAM_ (not somewhere else)
-> 3. then SYNC instruction
-> 
-> With these steps, data in write buffer will be pushed out of the
-> processor's write buffer, wait for uncached load operation to be
-> completed, and then finally the pipeline gets cleared.  Thoughts?
-
-I'm trying to get a statement from the MIPS architecture guys if the
-necessity to do anything beyond a cache flush is an architecture violation.
-
-Don't worry, I'm not going to refuse patches for something just because
-it's not complying to a piece of paper as long as the silicon is in the
-wild.
-
-  Ralf
+I have not been able to find any official statement from MIPS that
+says that CACHE + SYNC should be used, but that seems like the most
+intuitive way to implement things on the hardware side.

@@ -1,64 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 15:48:17 +0200 (CEST)
-Received: from t111.niisi.ras.ru ([193.232.173.111]:47178 "EHLO
-        t111.niisi.ras.ru" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491753Ab0JRNsN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Oct 2010 15:48:13 +0200
-Received: from aa19.niisi.msk.ru (aa19.niisi.msk.ru [172.16.0.19] (may be forged))
-        by t111.niisi.ras.ru (8.13.8/8.13.8) with ESMTP id o9IDmHMw010742;
-        Mon, 18 Oct 2010 17:48:17 +0400
-Received: from [192.168.173.2] (aa248 [172.16.0.248])
-        by aa19.niisi.msk.ru (8.13.8/8.13.8) with ESMTP id o9IDcELx030092;
-        Mon, 18 Oct 2010 17:38:14 +0400
-Message-ID: <4CBC53C7.3020204@niisi.msk.ru>
-Date:   Mon, 18 Oct 2010 18:03:51 +0400
-From:   "Gleb O. Raiko" <raiko@niisi.msk.ru>
-Organization: NIISI RAN
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.5) Gecko/20091204 Thunderbird/3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 20:34:47 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:43138 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491871Ab0JRSeo convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Oct 2010 20:34:44 +0200
+Received: by qyk35 with SMTP id 35so4725554qyk.15
+        for <multiple recipients>; Mon, 18 Oct 2010 11:34:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=5ZZDv/m+eXndQvbqyt+0b2WXpGFx5y3/Gk+V4WhZuLs=;
+        b=EN+Njdc8wVdJDEXE+Yx5QcqE5u15P9jrNJ+bx2r4JPCKIb2np621iFyoVKulLWPj0p
+         yv2ITz1zcdSDxekSvWk60TnS878LpMPQho7kWxSHzTx7MDDxpDqdpNHLNMLC79JuYPW7
+         PGMcTjWzSyGH4PqMPQi1SdWtV7v4HzcpuWukc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=cOGEvknTUSRX+epr1d/LjpzokyYArr39IIEngZQDKA84XsYsk7PNWwSXGHZCgOr/We
+         o29rI/DiBS5q0bvoXCcbFBs6l9AkYs8hGio9ME1moAkUpoXiATFmjLKb9qcn20r9YMrk
+         5vSKU0G7UuIj2DjN+f+Cl35ianKyYhv4KrHdU=
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Maciej W. Rozycki" <macro@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        "wilbur.chan" <wilbur512@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Question about Context register in TLB refilling
-References: <AANLkTikP=77Tq=QzFVwexr8fMHg5qmX8fbRjfdkoNSGr@mail.gmail.com> <AANLkTikbw1F+jBhsFFyX0vT6CCAqckzLHK3MK2WtTZiA@mail.gmail.com> <alpine.LFD.2.00.1010172025110.15889@eddie.linux-mips.org> <20101018000030.GB31080@linux-mips.org> <4CBC256A.7020808@niisi.msk.ru> <20101018124838.GF27377@linux-mips.org>
-In-Reply-To: <20101018124838.GF27377@linux-mips.org>
-Content-Type: text/plain; charset=KOI8-R; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Antivirus: Dr.Web (R) for Mail Servers on t111.niisi.ras.ru host
-X-Antivirus-Code: 100000
-Return-Path: <raiko@niisi.msk.ru>
+Received: by 10.224.207.74 with SMTP id fx10mr1322314qab.240.1287426877897;
+ Mon, 18 Oct 2010 11:34:37 -0700 (PDT)
+Received: by 10.224.45.148 with HTTP; Mon, 18 Oct 2010 11:34:37 -0700 (PDT)
+In-Reply-To: <4CBC4F4E.5010305@pobox.com>
+References: <17ebecce124618ddf83ec6fe8e526f93@localhost>
+        <17d8d27a2356640a4359f1a7dcbb3b42@localhost>
+        <4CBC4F4E.5010305@pobox.com>
+Date:   Mon, 18 Oct 2010 11:34:37 -0700
+Message-ID: <AANLkTinpry=XG-ZDgXJK-VB6QkBL2TO4-vrsV5Tc1eEs@mail.gmail.com>
+Subject: Re: [PATCH resend 5/9] MIPS: sync after cacheflush
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Shinya Kuribayashi <skuribay@pobox.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28139
+X-archive-position: 28140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raiko@niisi.msk.ru
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 18.10.2010 16:48, Ralf Baechle wrote:
-> On Mon, Oct 18, 2010 at 02:46:02PM +0400, Gleb O. Raiko wrote:
-> 64 context on R2000/R3000, 256 on everything else but R6000 and RM9000
-> series, 4096 contexts on RM9000 and that context caching is already
-> there.  It's fairly lightweight except in the rare case where the
-> PID / ASID number overflows and a full TLB flush becomes necessary.  A
-> mm context switch only needs to reload the one wired TLB entry that maps
-> the pagetables so that's not too bad.
+On Mon, Oct 18, 2010 at 6:44 AM, Shinya Kuribayashi <skuribay@pobox.com> wrote:
+> I suspect that SYNC insn alone is still not enough, insn't it?  In
+> such systems with that 'deep' write buffer and data incoherency is
+> visibly observed, there sill may be data write transactions floating
+> in the internal bus system.
+>
+> To make sure that all data (data inside processor's write buffer and
+> data floating in the internal bus system), we need the following
+> three steps:
+>
+> 1. Flush data cache
+> 2. Uncached, dummy load operation from _DRAM_ (not somewhere else)
+> 3. then SYNC instruction
 
-Ralf,
+Some systems do require additional steps along those lines, e.g.
 
-I counted from the opposite side. Size of KSEG2+KSEG3 is 1 GB, flat page 
-table shall be 8 MB aligned to be stored in cp0 context, so we end up 
-with 128 page tables in the theory (we have to reserve some space for 
-other business too in practice).
+# ifdef CONFIG_SGI_IP28
+#  define fast_iob()				\
+	__asm__ __volatile__(			\
+		".set	push\n\t"		\
+		".set	noreorder\n\t"		\
+		"lw	$0,%0\n\t"		\
+		"sync\n\t"			\
+		"lw	$0,%0\n\t"		\
+		".set	pop"			\
+		: /* no output */		\
+		: "m" (*(int *)CKSEG1ADDR(0x1fa00004)) \
+		: "memory")
 
-If we are going to use a "standard" approach when only current page 
-table is mapped, we know the address at compile time and don't need cp0 
-context at all. We can even has as many page tables as number of ASIDs 
-for cpus with multiple page sizes but cp0 context is still out of play 
-anyway.
+Maybe it would be better to use iob() instead of __sync() directly, so
+that it is easy to add extra steps for the CPUs that need them.  DEC
+and Loongson have custom __wbflush() implementations, and something
+similar could be added for your processor to implement the uncached
+dummy load.
 
-Gleb.
+What do you think?

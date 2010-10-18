@@ -1,51 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 12:40:22 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.126.187]:59468 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491091Ab0JRKkT convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Oct 2010 12:40:19 +0200
-Received: from corscience.de (DSL01.212.114.252.242.ip-pool.NEFkom.net [212.114.252.242])
-        by mrelayeu.kundenserver.de (node=mreu0) with ESMTP (Nemesis)
-        id 0MdZN2-1PHmVc3Snc-00PNKO; Mon, 18 Oct 2010 12:40:12 +0200
-Received: from [192.168.102.58] (unknown [192.168.102.58])
-        by corscience.de (Postfix) with ESMTP id 5365552014;
-        Mon, 18 Oct 2010 12:40:12 +0200 (CEST)
-Message-ID: <4CBC240A.3040802@corscience.de>
-Date:   Mon, 18 Oct 2010 12:40:10 +0200
-From:   Bernhard Walle <walle@corscience.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.9) Gecko/20100922 Thunderbird/3.1.4
-MIME-Version: 1.0
-To:     =?ISO-8859-1?Q?Am=E9rico_Wang?= <xiyou.wangcong@gmail.com>
-CC:     "wilbur.chan" <wilbur512@gmail.com>,
-        linux-kernel <Linux-kernel@zh-kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Oct 2010 14:48:45 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:42020 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491205Ab0JRMsm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Oct 2010 14:48:42 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id o9ICmd62004002;
+        Mon, 18 Oct 2010 13:48:39 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id o9ICmchn004000;
+        Mon, 18 Oct 2010 13:48:38 +0100
+Date:   Mon, 18 Oct 2010 13:48:38 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Cc:     "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        "wilbur.chan" <wilbur512@gmail.com>,
         Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Question about kimage_alloc_page in kexec.c, bug?
-References: <AANLkTi=ST1v55skkQbfsNQsmiBpOARwAnTxCpptsTdtB@mail.gmail.com> <20101018102639.GM5281@cr0.nay.redhat.com>
-In-Reply-To: <20101018102639.GM5281@cr0.nay.redhat.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-Provags-ID: V02:K0:8Lr/VwMVTBaZi3RAqYrPnFUgQddmGfH+vM98Lp716Qu
- rlVHAPQK96T5dVBY50fVkM3lfJqsfdc/KD3aX961hW/X8NOjau
- LgGymPnyxkzAXvrzSm+ZR9VfpYGz0ag/cg6vqIzf4+MiF/gjuH
- pGrsv3ATak9hDyIkGBVMMCidRuQoTsICyRQamFpFkgI4fmd1oB
- wBmvnCDkXM8mjsLYk0hLg==
-Return-Path: <walle@corscience.de>
+Subject: Re: Question about Context register in TLB refilling
+Message-ID: <20101018124838.GF27377@linux-mips.org>
+References: <AANLkTikP=77Tq=QzFVwexr8fMHg5qmX8fbRjfdkoNSGr@mail.gmail.com>
+ <AANLkTikbw1F+jBhsFFyX0vT6CCAqckzLHK3MK2WtTZiA@mail.gmail.com>
+ <alpine.LFD.2.00.1010172025110.15889@eddie.linux-mips.org>
+ <20101018000030.GB31080@linux-mips.org>
+ <4CBC256A.7020808@niisi.msk.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4CBC256A.7020808@niisi.msk.ru>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28136
+X-archive-position: 28137
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: walle@corscience.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Am 18.10.2010 12:26, schrieb Américo Wang:
+On Mon, Oct 18, 2010 at 02:46:02PM +0400, Gleb O. Raiko wrote:
+
+> On 18.10.2010 4:00, Ralf Baechle wrote:
+> >The aliasing problem is solvable and it may be worth to revisit that old
+> >piece of code again now 15 years later.
 > 
-> You can Cc me on kexec/kdump issues. :)
+> Before anybody will start to prepare patches, I'd like to note using
+> c0_context allows less than 128 processes (their mm contexts in fact
+> but who cares) to be directly mapped on 32-bit cpus. So, some kind
+> of caching needs to be implemented and it will add overhead on every
+> mm switch. Sure, this overhead might be bounded for a real case
+> where there is a small number of processes, so they all fit in the
+> cache.
+> --- Beware, wild assumptions here ---
+> I'm afraid the cost of such caching still will be higher than
+> loading pgd_current even from main memory on tlb refill.
+> --- End of wild assumptions ---
 
-Better (or in addition) cc kexec@lists.infradead.org.
+64 context on R2000/R3000, 256 on everything else but R6000 and RM9000
+series, 4096 contexts on RM9000 and that context caching is already
+there.  It's fairly lightweight except in the rare case where the
+PID / ASID number overflows and a full TLB flush becomes necessary.  A
+mm context switch only needs to reload the one wired TLB entry that maps
+the pagetables so that's not too bad.  The ugly part are the nested
+TLB exceptions.  I dumped that very early on when I realized the cache
+alias issues my implementation had so the earliest usable kernel versions
+had the tree walking reload handlers.  That's why I don't have any
+benchmark results.
 
-Regards,
-Bernhard
+  Ralf

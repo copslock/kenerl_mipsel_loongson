@@ -1,84 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Oct 2010 02:51:42 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:15042 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491869Ab0JSAvf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Oct 2010 02:51:35 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4cbcebb80000>; Mon, 18 Oct 2010 17:52:08 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 18 Oct 2010 17:51:51 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 18 Oct 2010 17:51:51 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o9J0pSTI028399;
-        Mon, 18 Oct 2010 17:51:28 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o9J0pSic028398;
-        Mon, 18 Oct 2010 17:51:28 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH] MIPS: Repair Kbuild make clean breakage.
-Date:   Mon, 18 Oct 2010 17:51:26 -0700
-Message-Id: <1287449486-28366-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 19 Oct 2010 00:51:51.0679 (UTC) FILETIME=[D157C8F0:01CB6F27]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Oct 2010 02:57:46 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:48936 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490978Ab0JSA5n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Oct 2010 02:57:43 +0200
+Date:   Tue, 19 Oct 2010 01:57:43 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+cc:     Shinya Kuribayashi <skuribay@pobox.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH resend 5/9] MIPS: sync after cacheflush
+In-Reply-To: <AANLkTinpry=XG-ZDgXJK-VB6QkBL2TO4-vrsV5Tc1eEs@mail.gmail.com>
+Message-ID: <alpine.LFD.2.00.1010190146360.15889@eddie.linux-mips.org>
+References: <17ebecce124618ddf83ec6fe8e526f93@localhost>        <17d8d27a2356640a4359f1a7dcbb3b42@localhost>        <4CBC4F4E.5010305@pobox.com> <AANLkTinpry=XG-ZDgXJK-VB6QkBL2TO4-vrsV5Tc1eEs@mail.gmail.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28149
+X-archive-position: 28150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-When running make clean, Kbuild doesn't process the .config file, so
-nothing generates a platform-y variable.  We can get it to descend into
-the platform directories by setting $(obj-).
+On Mon, 18 Oct 2010, Kevin Cernekee wrote:
 
-The dec Platform file was unconditionally setting platform-,
-obliterating its previous contents and preventing some directories
-from being cleaned.  This is change to an append operation '+=' to
-allow cavium-octeon to be cleaned.
+> Some systems do require additional steps along those lines, e.g.
+> 
+> # ifdef CONFIG_SGI_IP28
+> #  define fast_iob()				\
+> 	__asm__ __volatile__(			\
+> 		".set	push\n\t"		\
+> 		".set	noreorder\n\t"		\
+> 		"lw	$0,%0\n\t"		\
+> 		"sync\n\t"			\
+> 		"lw	$0,%0\n\t"		\
+> 		".set	pop"			\
+> 		: /* no output */		\
+> 		: "m" (*(int *)CKSEG1ADDR(0x1fa00004)) \
+> 		: "memory")
+> 
+> Maybe it would be better to use iob() instead of __sync() directly, so
+> that it is easy to add extra steps for the CPUs that need them.  DEC
+> and Loongson have custom __wbflush() implementations, and something
+> similar could be added for your processor to implement the uncached
+> dummy load.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
----
- arch/mips/Kbuild       |    4 ++++
- arch/mips/dec/Platform |    2 +-
- 2 files changed, 5 insertions(+), 1 deletions(-)
+ Ah, the old issue of the write-back barrier.  I can't comment on 
+Loongson, but for DEC IIRC the write-back buffer only needs to be taken 
+care of for uncached writes and they take a path separate to cached 
+writes.  I'd have to dig out the details to be sure.  IIRC the most 
+pathological case was the R2020 WB chip, but that was only used on systems 
+that didn't do DMA (namely DECstatation 3100 and 2100 boxes).
 
-diff --git a/arch/mips/Kbuild b/arch/mips/Kbuild
-index e322d65..7dd65cf 100644
---- a/arch/mips/Kbuild
-+++ b/arch/mips/Kbuild
-@@ -7,6 +7,10 @@ subdir-ccflags-y := -Werror
- include arch/mips/Kbuild.platforms
- obj-y := $(platform-y)
- 
-+# make clean traverses $(obj-) without having included .config, so
-+# everything ends up here
-+obj- := $(platform-)
-+
- # mips object files
- # The object files are linked as core-y files would be linked
- 
-diff --git a/arch/mips/dec/Platform b/arch/mips/dec/Platform
-index 3adbcbd..cf55a6f 100644
---- a/arch/mips/dec/Platform
-+++ b/arch/mips/dec/Platform
-@@ -1,7 +1,7 @@
- #
- # DECstation family
- #
--platform-$(CONFIG_MACH_DECSTATION)	= dec/
-+platform-$(CONFIG_MACH_DECSTATION)	+= dec/
- cflags-$(CONFIG_MACH_DECSTATION)	+= \
- 			-I$(srctree)/arch/mips/include/asm/mach-dec
- libs-$(CONFIG_MACH_DECSTATION)		+= arch/mips/dec/prom/
--- 
-1.7.2.3
+  Maciej

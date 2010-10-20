@@ -1,97 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2010 00:50:51 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:8892 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491767Ab0JSWur (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Oct 2010 00:50:47 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4cbe20e80000>; Tue, 19 Oct 2010 15:51:20 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 19 Oct 2010 15:51:04 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 19 Oct 2010 15:51:04 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o9JMocw6031841;
-        Tue, 19 Oct 2010 15:50:38 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o9JMoWtf031839;
-        Tue, 19 Oct 2010 15:50:32 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2010 07:07:04 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:35141 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490983Ab0JTFHB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Oct 2010 07:07:01 +0200
+Received: by ywp6 with SMTP id 6so1924472ywp.36
+        for <multiple recipients>; Tue, 19 Oct 2010 22:06:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=+qvcZczAG3sC+A/nd89KPOi7X4QYIx60fSmqmM8FUc0=;
+        b=IsdoDLvcOpxnyQIMENrIqbEEs3aixBq6qLEm6wF3tlGgpxSmUj2xyF5jYgHHM94GuI
+         1dHd+ZiX5KcVsaiGjOJ+08RM3jHabwsD59hhtsLuYI4s2gTkvt1usrdOcSXBYcEryvGQ
+         KVt5KQW46FSCzKaKwEOZrh7YgU1H5F7fDj3SY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=R2M8rW8++VHnHaZWvKQCJ304Z8jISBRD5BbxdVw9rlMWXQYk/yOQjUacgLuu9pD81W
+         3RHbTJ4gWLgjMvtcH6P0OIuGzhpherLuU5qYrru/qa4Bux4VVkDOmwhfg1cnztNVly8T
+         PQtu2clkdHYwXIA3mO4QsUVZpQeFpjBNM8avI=
+Received: by 10.150.95.13 with SMTP id s13mr504398ybb.146.1287551214500;
+        Tue, 19 Oct 2010 22:06:54 -0700 (PDT)
+Received: from localhost.localdomain ([210.13.118.102])
+        by mx.google.com with ESMTPS id v12sm886191ybk.11.2010.10.19.22.06.50
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 19 Oct 2010 22:06:53 -0700 (PDT)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
-        linux-kernel@vger.kernel.org
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Dezhong Diao <dediao@cisco.com>
-Subject: [PATCH] of/mips: Cleanup some include directives/files.
-Date:   Tue, 19 Oct 2010 15:50:31 -0700
-Message-Id: <1287528631-31797-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 19 Oct 2010 22:51:04.0681 (UTC) FILETIME=[1C356590:01CB6FE0]
-Return-Path: <David.Daney@caviumnetworks.com>
+        kevink@paralogos.com
+Cc:     eyal@mips.com, dengcheng.zhu@gmail.com
+Subject: [PATCH 0/2] MIPS: enable APRP (APSP) and add features
+Date:   Wed, 20 Oct 2010 13:10:29 +0800
+Message-Id: <1287551431-15737-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28164
+X-archive-position: 28166
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-The __init directives should go on the definitions of things, not the
-declaration, also __init is meaningless for inline functions, so
-remove it from prom.h.  This allows us to get rid of a useless
-#include, but most of the rest of them are useless too, so kill them
-as well.
+The APRP model makes it possible that one or more CPUs run the Linux
+kernel whereas a dedicated CPU runs special real-time or signal processing
+program.
 
-If of_i2c.c needs irq definitions, it should include linux/irq.h
-directly, not assume indirect inclusion via asm/prom.h.
+This patchset adds the following to the current APRP support:
+1. Several bug fixes;
+2. Running floating point heavy jobs on the RP side;
+3. Waking up RP side read by interrupt;
+4. CPS multicore APRP support.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Cc: Dezhong Diao <dediao@cisco.com>
----
- arch/mips/include/asm/prom.h |    8 ++------
- drivers/of/of_i2c.c          |    1 +
- 2 files changed, 3 insertions(+), 6 deletions(-)
+A mp3 player program was ported to run in the APRP (APSP exactly) model.
+Considerable performance benefits were observed on the player program.
+Since I encountered a sound card support issue on the current linux-mips
+kernel, I rebased this patchset onto mti-2.6.29.4-1. And for the current
+kernel, I used a simple test program to validate this work.
 
-diff --git a/arch/mips/include/asm/prom.h b/arch/mips/include/asm/prom.h
-index 23f8237..f29b862 100644
---- a/arch/mips/include/asm/prom.h
-+++ b/arch/mips/include/asm/prom.h
-@@ -12,10 +12,6 @@
- #define __ASM_MIPS_PROM_H
- 
- #ifdef CONFIG_OF
--#include <linux/init.h>
--
--#include <asm/setup.h>
--#include <asm/irq.h>
- #include <asm/bootinfo.h>
- 
- /* which is compatible with the flattened device tree (FDT) */
-@@ -27,9 +23,9 @@ extern int early_init_dt_scan_memory_arch(unsigned long node,
- extern int reserve_mem_mach(unsigned long addr, unsigned long size);
- extern void free_mem_mach(unsigned long addr, unsigned long size);
- 
--extern void __init device_tree_init(void);
-+extern void device_tree_init(void);
- #else /* CONFIG_OF */
--static inline void __init device_tree_init(void) { }
-+static inline void device_tree_init(void) { }
- #endif /* CONFIG_OF */
- 
- #endif /* _ASM_MIPS_PROM_H */
-diff --git a/drivers/of/of_i2c.c b/drivers/of/of_i2c.c
-index 0a694de..c85d3c7 100644
---- a/drivers/of/of_i2c.c
-+++ b/drivers/of/of_i2c.c
-@@ -12,6 +12,7 @@
-  */
- 
- #include <linux/i2c.h>
-+#include <linux/irq.h>
- #include <linux/of.h>
- #include <linux/of_i2c.h>
- #include <linux/of_irq.h>
--- 
-1.7.2.3
+Deng-Cheng Zhu (2):
+  MIPS: fix/enrich 34K APRP (APSP) functionalities
+  MIPS: enable CPS multicore APRP (APSP)
+
+ arch/mips/Kconfig                                  |    8 +
+ .../include/asm/mach-malta/cpu-feature-overrides.h |    3 +
+ arch/mips/include/asm/rtlx.h                       |    3 +
+ arch/mips/kernel/kspd.c                            |   26 ++-
+ arch/mips/kernel/rtlx.c                            |  153 +++++++++++++--
+ arch/mips/kernel/vpe.c                             |  217 +++++++++++++++++++-
+ arch/mips/mti-malta/malta-int.c                    |   26 +++-
+ 7 files changed, 409 insertions(+), 27 deletions(-)

@@ -1,85 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2010 19:26:20 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:41817 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491087Ab0JTR0P (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Oct 2010 19:26:15 +0200
-Date:   Wed, 20 Oct 2010 18:26:15 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
-cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Shinya Kuribayashi <skuribay@pobox.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH resend 5/9] MIPS: sync after cacheflush
-In-Reply-To: <4CBEA2D6.6050507@niisi.msk.ru>
-Message-ID: <alpine.LFD.2.00.1010201750060.15889@eddie.linux-mips.org>
-References: <17ebecce124618ddf83ec6fe8e526f93@localhost> <17d8d27a2356640a4359f1a7dcbb3b42@localhost> <4CBC4F4E.5010305@pobox.com> <AANLkTinpry=XG-ZDgXJK-VB6QkBL2TO4-vrsV5Tc1eEs@mail.gmail.com> <alpine.LFD.2.00.1010190146360.15889@eddie.linux-mips.org>
- <20101019123441.GJ27377@linux-mips.org> <alpine.LFD.2.00.1010192039550.15889@eddie.linux-mips.org> <4CBEA2D6.6050507@niisi.msk.ru>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Oct 2010 20:03:49 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:36508 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491104Ab0JTSDo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Oct 2010 20:03:44 +0200
+Received: by pwi2 with SMTP id 2so283134pwi.36
+        for <multiple recipients>; Wed, 20 Oct 2010 11:03:35 -0700 (PDT)
+Received: by 10.142.174.15 with SMTP id w15mr6190530wfe.255.1287597815460;
+        Wed, 20 Oct 2010 11:03:35 -0700 (PDT)
+Received: from angua (S01060002b3d79728.cg.shawcable.net [70.72.87.49])
+        by mx.google.com with ESMTPS id e36sm736655wfj.2.2010.10.20.11.03.33
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 20 Oct 2010 11:03:34 -0700 (PDT)
+Received: by angua (Postfix, from userid 1000)
+        id 705363C00E5; Wed, 20 Oct 2010 12:03:32 -0600 (MDT)
+Date:   Wed, 20 Oct 2010 12:03:32 -0600
+From:   Grant Likely <grant.likely@secretlab.ca>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Dezhong Diao <dediao@cisco.com>
+Subject: Re: [PATCH] of/mips: Cleanup some include directives/files.
+Message-ID: <20101020180332.GO7285@angua.secretlab.ca>
+References: <1287528631-31797-1-git-send-email-ddaney@caviumnetworks.com>
+ <20101020065830.GA12565@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20101020065830.GA12565@linux-mips.org>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28175
+X-archive-position: 28176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 20 Oct 2010, Gleb O. Raiko wrote:
-
-> >   That said, R4k DECstations seem to perform aggressive write buffering in
-> > the chipset and to make sure a write has propagated to an MMIO register a
-> > SYNC and an uncached read operation are necessary.
+On Wed, Oct 20, 2010 at 07:58:30AM +0100, Ralf Baechle wrote:
+> On Tue, Oct 19, 2010 at 03:50:31PM -0700, David Daney wrote:
 > 
-> Just uncached read may be enough. R4k shall pull data from its store buffer on
-> uncached read.
-
- I'm not sure what you mean: whether the processor will snoop the value to 
-read in the store buffer or will it stall until the buffer has drained and 
-issue the load on the external bus?
-
- I can't see the behaviour of uncached loads wrt uncached stores clearly 
-documented anywhere for the R4400 processor (DEC used the SC variation, 
-BTW).  There's no mention of uncached loads to have SYNC properties.  
-Therefore in the context of one or more pending uncached stores I can 
-assume one of the three for an uncached load:
-
-1. If the addresses match, then the value loaded is snooped in (retrieved 
-   from) the store buffer, no external cycle on the bus is seen.  This is 
-   what the R2020 WB did.
-
-2. The load bypasses the stores and therefore reaches the external bus 
-   before the stores.  This is what the R3220 MB did and I believe the 
-   R2020 WB defaulted to in the case of no address match.
-
-3. The load stalls until the outstanding stores have completed and only 
-   then appears on the external bus.
-
-There's no hurt from using SYNC here and its semantics make it clear it 
-enforces the case #3 above even if not otherwise guaranteed.  Otherwise I 
-think the case #2 would be a reasonable default (i.e. one I'd recommend to 
-a processor designer) as draining the store buffer on any uncached load 
-whether needed or not is a waste of performance.
-
-> >   I haven't investigated DMA dependencies and I think we currently only
-> > have one TURBOchannel device/driver only (that is the DEFTA/defxx FDDI
-> > thingy) making use of the generic DMA API on DECstations.  It seemed to
-> > work correctly the last time I tried; presumably either because the API
-> > Does The Right Thing, or by pure luck and right timings.
+> > The __init directives should go on the definitions of things, not the
+> > declaration, also __init is meaningless for inline functions, so
+> > remove it from prom.h.  This allows us to get rid of a useless
+> > #include, but most of the rest of them are useless too, so kill them
+> > as well.
+> > 
+> > If of_i2c.c needs irq definitions, it should include linux/irq.h
+> > directly, not assume indirect inclusion via asm/prom.h.
 > 
-> dfx_writel issues sync after store. BTW, it seems no uncached read issued here
-> (just mb() is used, which seems to do sync only), so either those uncached
-> read is not needed (unlikely) or data from dfx_writel wait somewhere in the
-> chipset for being pulled by subsequent reads or writes.
+> Grant, I assume you're going to merge this one.
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
- Ah, I could have added it myself ;) -- oddly enough even though the 
-driver originated from DEC, they only used/tested it with x86 systems 
-apparently, rather than the obvious choice of the Alpha that implemented a 
-much, much weaker ordering model that any MIPS chip ever did.
+Yes, I'll pick it up.  I'm compile testing now.
 
-  Maciej
+g.
+
+> 
+>   Ralf

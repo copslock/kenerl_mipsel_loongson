@@ -1,173 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2010 21:08:10 +0200 (CEST)
-Received: from tvwna-ip-c-172.princeton.org ([66.180.187.89]:44615 "EHLO
-        localhost.m.enhanced.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491126Ab0JUTIG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Oct 2010 21:08:06 +0200
-Received: from camm by localhost.m.enhanced.com with local (Exim 4.69)
-        (envelope-from <camm@maguirefamily.org>)
-        id 1P90UX-0001pj-Ls; Thu, 21 Oct 2010 15:07:57 -0400
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     debian-mips@lists.debian.org,
-        Frederick Isaac <freddyisaac@gmail.com>, gcl-devel@gnu.org,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: recent SIGBUS/SIGSEGV mips kernel bug
-References: <E1OwbkA-0006gv-Bi@localhost.m.enhanced.com>
-        <4C93993E.7030008@caviumnetworks.com>
-        <8762y49k1k.fsf@maguirefamily.org>
-        <4C93D86D.5090201@caviumnetworks.com>
-        <87fwx4dwu5.fsf@maguirefamily.org>
-        <4C97D9A1.7050102@caviumnetworks.com>
-        <87lj6te9t1.fsf@maguirefamily.org>
-        <4C9A8BC9.1020605@caviumnetworks.com>
-        <4C9A9699.6080908@caviumnetworks.com>
-        <87pqvbs7oa.fsf@maguirefamily.org>
-        <4CB88D2C.8020900@caviumnetworks.com>
-        <87r5fksxby.fsf_-_@maguirefamily.org>
-        <4CBF1B1E.6050804@caviumnetworks.com>
-        <8762wwlfen.fsf@maguirefamily.org>
-        <4CC06826.2070508@caviumnetworks.com>
-        <4CC0787C.2040902@caviumnetworks.com>
-From:   Camm Maguire <camm@maguirefamily.org>
-Date:   Thu, 21 Oct 2010 15:07:57 -0400
-In-Reply-To: <4CC0787C.2040902@caviumnetworks.com> (David Daney's message of "Thu\, 21 Oct 2010 10\:29\:32 -0700")
-Message-ID: <874ocf74aa.fsf@maguirefamily.org>
-User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.2 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2010 01:20:07 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:44321 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491160Ab0JUXUE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Oct 2010 01:20:04 +0200
+Received: by bwz5 with SMTP id 5so555691bwz.36
+        for <multiple recipients>; Thu, 21 Oct 2010 16:20:01 -0700 (PDT)
+Received: by 10.204.67.5 with SMTP id p5mr1294057bki.143.1287703200871;
+        Thu, 21 Oct 2010 16:20:00 -0700 (PDT)
+Received: from notebook.monstr.eu (56.55.96.58.static.exetel.com.au [58.96.55.56])
+        by mx.google.com with ESMTPS id d27sm1618980bkw.2.2010.10.21.16.19.44
+        (version=SSLv3 cipher=RC4-MD5);
+        Thu, 21 Oct 2010 16:19:59 -0700 (PDT)
+Message-ID: <4CC0CA8E.4050600@monstr.eu>
+Date:   Fri, 22 Oct 2010 09:19:42 +1000
+From:   Michal Simek <monstr@monstr.eu>
+Reply-To: monstr@monstr.eu
+User-Agent: Thunderbird 2.0.0.18 (X11/20081120)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <camm@maguirefamily.org>
+To:     Akinobu Mita <akinobu.mita@gmail.com>
+CC:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Roman Zippel <zippel@linux-m68k.org>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        linux-m68k@lists.linux-m68k.org,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, linux-s390@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        microblaze-uclinux@itee.uq.edu.au,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org,
+        Hirokazu Takata <takata@linux-m32r.org>,
+        linux-m32r@ml.linux-m32r.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org, Paul Mundt <lethal@linux-sh.org>,
+        linux-sh@vger.kernel.org, Chris Zankel <chris@zankel.net>
+Subject: Re: [PATCH v2 22/22] bitops: remove minix bitops from asm/bitops.h
+References: <1287672077-5797-1-git-send-email-akinobu.mita@gmail.com> <1287672077-5797-23-git-send-email-akinobu.mita@gmail.com>
+In-Reply-To: <1287672077-5797-23-git-send-email-akinobu.mita@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <monstr@monstr.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28194
+X-archive-position: 28195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: camm@maguirefamily.org
+X-original-sender: monstr@monstr.eu
 Precedence: bulk
 X-list: linux-mips
 
-Greetings!
+Akinobu Mita wrote:
+> minix bit operations are only used by minix filesystem and useless
+> by other modules. Because byte order of inode and block bitmaps is
+> defferent on each architecture like below:
+> 
+> m68k:
+> 	big-endian 16bit indexed bitmaps
+> 
+> h8300, microblaze, s390, sparc, m68knommu:
+> 	big-endian 32 or 64bit indexed bitmaps
 
-David Daney <ddaney@caviumnetworks.com> writes:
+Just one small fix microblaze little endian support is ready for merging
+to mainline which means that microblaze is
+big-endian 32bit  and  little-endian 32bit
 
-> On 10/21/2010 09:19 AM, David Daney wrote:
->> On 10/20/2010 02:31 PM, Camm Maguire wrote:
->>> Greetings!
->>>
->>> Does this suffice?
->>>
->>> (sid)camm@gabrielli:~/maxima-5.22.1/tests$ uname -a
->>> Linux gabrielli 2.6.35.4-dsa-octeon #1 SMP Fri Sep 17 21:15:34 UTC
->>> 2010 mips64 GNU/Linux
->>> (sid)camm@gabrielli:~/maxima-5.22.1/tests$ cat /proc/cpuinfo
->>> system type : CUST_WSX16 (CN3860p3.X-500-EXP)
->>> processor : 0
->>> cpu model : Cavium Octeon V0.3
->> [...]
->>
->> Hah! I have those things piled up all around me.
->>
->> No guarantees, but I will try to reproduce it. If I can reproduce it, it
->> should be easy to fix.
->>
->
-> Definitely a kernel bug.  Consider this program:
->
-> ------------8<--------sigbus.c-------
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <unistd.h>
->
-> #include <sys/mman.h>
->
-> int main(int argc, char *argv[])
-> {
->   int pgsize;
->   float *p1;
->   float *p2;
->   int r;
->
->   pgsize = getpagesize();
->
->   p1 = mmap(NULL, pgsize, PROT_READ | PROT_WRITE,
-> 	    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->
->   if (p1 == MAP_FAILED) {
->     perror("mmap p1 failed");
->     exit(1);
->   }
->
->   p2 = mmap(NULL, pgsize, PROT_READ | PROT_WRITE,
-> 	    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->
->   if (p2 == MAP_FAILED) {
->     perror("mmap p2 failed");
->     exit(1);
->   }
->
->   *p1 = 2.5;
->   *p2 = 3.5;
->
->   r = mprotect(p1, pgsize, PROT_READ);
->   if (r) {
->     perror("mprotect p1 failed");
->     exit(1);
->   }
->
->   r = mprotect(p2, pgsize, PROT_READ);
->   if (r) {
->     perror("mprotect p2 failed");
->     exit(1);
->   }
->
->   *p2 = *p1;
->
->   asm volatile("" ::: "memory");
->
->   puts("All done!");
->
->   exit(0);
-> }
-> ------------8<-----------------------
->
-> $ mips64-octeon-linux-gnu-gcc -Wall -mhard-float -march=mips64 -O3 -o 
-> sigbus sigbus.c
-> $ mips64-octeon-linux-gnu-objdump -d sigbus > sigbus.dis
->
-> The float copy '*p2 = *p1;' dissassembles as:
->
->    120000b30:	c6400000 	lwc1	$f0,0(s2)
->    120000b34:	e6000000 	swc1	$f0,0(s0)
->
-> When run on an FPU-less system I get:
->
-> ~ # ./sigbus
-> Bus error
->
-> When run on my x86_64 workstation:
->
-> $ ./sigbus
-> Segmentation fault (core dumped)
->
-> I will fix this kernel bug.
->
+> 
+> m32r, mips, sh, xtensa:
+> 	big-endian 32 or 64bit indexed bitmaps for big-endian mode
+> 	little-endian bitmaps for little-endian mode
+> 
+> Others:
+> 	little-endian bitmaps
+> 
+> In order to move minix bit operations from asm/bitops.h to
+> architecture independent code in minix file system, this provides two
+> config options.
+> 
+> CONFIG_MINIX_FS_BIG_ENDIAN_16BIT_INDEXED is only selected by m68k.
+> CONFIG_MINIX_FS_NATIVE_ENDIAN is selected by the architectures which
+> use native byte order bitmaps (h8300, microblaze, s390, sparc,
+> m68knommu, m32r, mips, sh, xtensa).
+> The architectures which always use little-endian bitmaps do not select
+> these options.
 
-Great!  Thanks!  If you have time to drop a quick note when done, that
-would be awesome.
+I haven't created any Kconfig option for little/big endian microblaze
+but there should be a little bit different handling for MINIX_FS_NATIVE_ENDIAN
+as you are describing above.
+Anyway I think you don't need to reflect this in your patch because
+we are not using that filesystem and I will write it to my to-do list and
+will fix it later.
 
-Separately, do you know where I can find pre-built gdb binaries for
-mips64, i.e. to debug -mabi=64?  I'm assuming that is the 'official
-one' going foward.  (I have an account on the gcc compile farm.)
-
-Thanks so much!
-
-> David Daney
->
->
->
->
+Thanks,
+Michal
 
 -- 
-Camm Maguire			     		    camm@maguirefamily.org
-==========================================================================
-"The earth is but one country, and mankind its citizens."  --  Baha'u'llah
+Michal Simek, Ing. (M.Eng)
+w: www.monstr.eu p: +42-0-721842854
+Maintainer of Linux kernel 2.6 Microblaze Linux - http://www.monstr.eu/fdt/
+Microblaze U-BOOT custodian

@@ -1,103 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2010 18:07:53 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:43617 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491134Ab0JUQHu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Oct 2010 18:07:50 +0200
-Received: (qmail 22225 invoked from network); 21 Oct 2010 16:07:45 -0000
-Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 21 Oct 2010 16:07:45 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Thu, 21 Oct 2010 09:07:45 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-Subject: [PATCH v3 8/9] MIPS: Honor L2 bypass bit
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Date:   Thu, 21 Oct 2010 08:59:48 -0700
-Message-Id: <2e65c61bf8fd3a7b2aa4e24013cb0dba@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2010 18:19:56 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:7231 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490996Ab0JUQTx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Oct 2010 18:19:53 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4cc0684b0000>; Thu, 21 Oct 2010 09:20:27 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 21 Oct 2010 09:20:12 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 21 Oct 2010 09:20:12 -0700
+Message-ID: <4CC06826.2070508@caviumnetworks.com>
+Date:   Thu, 21 Oct 2010 09:19:50 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+To:     Camm Maguire <camm@maguirefamily.org>
+CC:     debian-mips@lists.debian.org,
+        Frederick Isaac <freddyisaac@gmail.com>, gcl-devel@gnu.org,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: recent SIGBUS/SIGSEGV mips kernel bug
+References: <E1OwbkA-0006gv-Bi@localhost.m.enhanced.com>        <4C93993E.7030008@caviumnetworks.com>   <8762y49k1k.fsf@maguirefamily.org>      <4C93D86D.5090201@caviumnetworks.com>   <87fwx4dwu5.fsf@maguirefamily.org>      <4C97D9A1.7050102@caviumnetworks.com>   <87lj6te9t1.fsf@maguirefamily.org>      <4C9A8BC9.1020605@caviumnetworks.com>   <4C9A9699.6080908@caviumnetworks.com>   <87pqvbs7oa.fsf@maguirefamily.org>      <4CB88D2C.8020900@caviumnetworks.com>   <87r5fksxby.fsf_-_@maguirefamily.org>   <4CBF1B1E.6050804@caviumnetworks.com> <8762wwlfen.fsf@maguirefamily.org>
+In-Reply-To: <8762wwlfen.fsf@maguirefamily.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 21 Oct 2010 16:20:12.0812 (UTC) FILETIME=[D6A1ACC0:01CB713B]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28189
+X-archive-position: 28190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-[v3: Fix build errors]
+On 10/20/2010 02:31 PM, Camm Maguire wrote:
+> Greetings!
+>
+> Does this suffice?
+>
+> (sid)camm@gabrielli:~/maxima-5.22.1/tests$ uname -a
+> Linux gabrielli 2.6.35.4-dsa-octeon #1 SMP Fri Sep 17 21:15:34 UTC 2010 mips64 GNU/Linux
+> (sid)camm@gabrielli:~/maxima-5.22.1/tests$ cat /proc/cpuinfo
+> system type		: CUST_WSX16 (CN3860p3.X-500-EXP)
+> processor		: 0
+> cpu model		: Cavium Octeon V0.3
+[...]
 
-On many of the newer MIPS32 cores, CP0 CONFIG2 bit 12 (L2B) indicates
-that the L2 cache is disabled and therefore Linux should not attempt
-to use it.
+Hah!  I have those things piled up all around me.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-Cc: linux-mips@linux-mips.org>
-Cc: <linux-kernel@vger.kernel.org>
----
- arch/mips/mm/sc-mips.c |   38 ++++++++++++++++++++++++++++++++++----
- 1 files changed, 34 insertions(+), 4 deletions(-)
+No guarantees, but I will try to reproduce it.  If I can reproduce it, 
+it should be easy to fix.
 
-diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-index 5ab5fa8..ef625eb 100644
---- a/arch/mips/mm/sc-mips.c
-+++ b/arch/mips/mm/sc-mips.c
-@@ -57,6 +57,38 @@ static struct bcache_ops mips_sc_ops = {
- 	.bc_inv = mips_sc_inv
- };
- 
-+/*
-+ * Check if the L2 cache controller is activated on a particular platform.
-+ * MTI's L2 controller and the L2 cache controller of Broadcom's BMIPS
-+ * cores both use c0_config2's bit 12 as "L2 Bypass" bit, that is the
-+ * cache being disabled.  However there is no guarantee for this to be
-+ * true on all platforms.  In an act of stupidity the spec defined bits
-+ * 12..15 as implementation defined so below function will eventually have
-+ * to be replaced by a platform specific probe.
-+ */
-+static inline int mips_sc_is_activated(struct cpuinfo_mips *c,
-+	unsigned int config2)
-+{
-+	unsigned int tmp;
-+
-+	/* Check the bypass bit (L2B) */
-+	switch (c->cputype) {
-+	case CPU_34K:
-+	case CPU_74K:
-+	case CPU_1004K:
-+	case CPU_BMIPS5000:
-+		if (config2 & (1 << 12))
-+			return 0;
-+	}
-+
-+	tmp = (config2 >> 4) & 0x0f;
-+	if (0 < tmp && tmp <= 7)
-+		c->scache.linesz = 2 << tmp;
-+	else
-+		return 0;
-+	return 1;
-+}
-+
- static inline int __init mips_sc_probe(void)
- {
- 	struct cpuinfo_mips *c = &current_cpu_data;
-@@ -79,10 +111,8 @@ static inline int __init mips_sc_probe(void)
- 		return 0;
- 
- 	config2 = read_c0_config2();
--	tmp = (config2 >> 4) & 0x0f;
--	if (0 < tmp && tmp <= 7)
--		c->scache.linesz = 2 << tmp;
--	else
-+
-+	if (!mips_sc_is_activated(c, config2))
- 		return 0;
- 
- 	tmp = (config2 >> 8) & 0x0f;
--- 
-1.7.0.4
+David Daney

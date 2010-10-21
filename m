@@ -1,65 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2010 18:26:09 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:42402 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490996Ab0JUQ0G convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Oct 2010 18:26:06 +0200
-Received: by yxl31 with SMTP id 31so2129654yxl.36
-        for <multiple recipients>; Thu, 21 Oct 2010 09:25:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=R3JMMMRtghaIkagBfXQ7xvqDRYVAFXYHTuK+n7MoO04=;
-        b=DqFHR2OMjJNFwkIdeReg6vEq6UP3W43wSHiHkjmCwMeeIccJUl/HLfoP3oxnPf7tKi
-         aXdXPQblF/wwBPntzwYLsiBFsuA7I47N8sDDgp4M8uiYyyknFP9bWcUy0jSpkWcnPA9U
-         WUovO3txW/bGpqQPn9KUAPbF+W6ig314fi/4k=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=eFLQK17mLxpJYA1YOU3Hk5SP2P5amoKPlmheRWIk+H4zF+5nNPl5eEUjRHptpu3awP
-         yZMERCl4WMV7cYTHN846o4+n7pQS1kQ3GOw5quVq2/fm7tk/crtkKPXerQy/6NpakgN8
-         uif6aUJJeeKgB8+8jPXc7KToXn43ZD7UtvuYg=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2010 18:33:14 +0200 (CEST)
+Received: from tvwna-ip-c-172.princeton.org ([66.180.187.89]:58034 "EHLO
+        localhost.m.enhanced.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491133Ab0JUQdK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Oct 2010 18:33:10 +0200
+Received: from camm by localhost.m.enhanced.com with local (Exim 4.69)
+        (envelope-from <camm@maguirefamily.org>)
+        id 1P8y4Z-0001ey-V9; Thu, 21 Oct 2010 12:32:59 -0400
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     debian-mips@lists.debian.org,
+        Frederick Isaac <freddyisaac@gmail.com>, gcl-devel@gnu.org,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: recent SIGBUS/SIGSEGV mips kernel bug
+References: <E1OwbkA-0006gv-Bi@localhost.m.enhanced.com>
+        <4C93993E.7030008@caviumnetworks.com>
+        <8762y49k1k.fsf@maguirefamily.org>
+        <4C93D86D.5090201@caviumnetworks.com>
+        <87fwx4dwu5.fsf@maguirefamily.org>
+        <4C97D9A1.7050102@caviumnetworks.com>
+        <87lj6te9t1.fsf@maguirefamily.org>
+        <4C9A8BC9.1020605@caviumnetworks.com>
+        <4C9A9699.6080908@caviumnetworks.com>
+        <87pqvbs7oa.fsf@maguirefamily.org>
+        <4CB88D2C.8020900@caviumnetworks.com>
+        <87r5fksxby.fsf_-_@maguirefamily.org>
+        <4CBF1B1E.6050804@caviumnetworks.com>
+        <8762wwlfen.fsf@maguirefamily.org>
+        <4CC06826.2070508@caviumnetworks.com>
+From:   Camm Maguire <camm@maguirefamily.org>
+Date:   Thu, 21 Oct 2010 12:32:59 -0400
+In-Reply-To: <4CC06826.2070508@caviumnetworks.com> (David Daney's message of "Thu\, 21 Oct 2010 09\:19\:50 -0700")
+Message-ID: <87tykf7bgk.fsf@maguirefamily.org>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.2 (gnu/linux)
 MIME-Version: 1.0
-Received: by 10.42.222.134 with SMTP id ig6mr970875icb.119.1287678359470; Thu,
- 21 Oct 2010 09:25:59 -0700 (PDT)
-Received: by 10.42.8.4 with HTTP; Thu, 21 Oct 2010 09:25:59 -0700 (PDT)
-In-Reply-To: <20101021125809.GA15031@linux-mips.org>
-References: <74b5d3ba9506b2e6d885546bd6dcdaec@localhost>
-        <20101021125809.GA15031@linux-mips.org>
-Date:   Thu, 21 Oct 2010 09:25:59 -0700
-Message-ID: <AANLkTinJ4wU30AaBhcvJRLZ_iw-eo9tEkds8QA1S=Nqw@mail.gmail.com>
-Subject: Re: [PATCH v2 8/9] MIPS: Honor L2 bypass bit
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <camm@maguirefamily.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28191
+X-archive-position: 28192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: camm@maguirefamily.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 21, 2010 at 5:58 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> I did a bit of research in the meantime.  Turns out that some MIPS
-> customers are using their own L2 cache controller.  That means a simple
-> check by the CPU PrID is not sufficient and we will need some sort of
-> platform-specific probe, sigh.
+Greetings!
 
-FWIW, I did check the software user's manual for each of the four
-processors in the list and verified that L2B is at CONFIG2 bit 12.  It
-would be very rude for an L2 designer to redefine those bits in
-defiance of the SUM, no?
+David Daney <ddaney@caviumnetworks.com> writes:
 
-I also rechecked 24KE just now, and found that L2B is defined in the
-latest rev of the SUM, but in my local copy (Revision 01.02) bit 12 is
-the MSB of SS instead.  Hmmm.
+> On 10/20/2010 02:31 PM, Camm Maguire wrote:
+>> Greetings!
+>>
+>> Does this suffice?
+>>
+>> (sid)camm@gabrielli:~/maxima-5.22.1/tests$ uname -a
+>> Linux gabrielli 2.6.35.4-dsa-octeon #1 SMP Fri Sep 17 21:15:34 UTC 2010 mips64 GNU/Linux
+>> (sid)camm@gabrielli:~/maxima-5.22.1/tests$ cat /proc/cpuinfo
+>> system type		: CUST_WSX16 (CN3860p3.X-500-EXP)
+>> processor		: 0
+>> cpu model		: Cavium Octeon V0.3
+> [...]
+>
+> Hah!  I have those things piled up all around me.
+>
+> No guarantees, but I will try to reproduce it.  If I can reproduce it,
+> it should be easy to fix.
+>
+> David Daney
+>
+
+Thanks so much!  Please keep me posted.
+
+Take care,
+
+>
+>
+>
+>
+
+-- 
+Camm Maguire			     		    camm@maguirefamily.org
+==========================================================================
+"The earth is but one country, and mankind its citizens."  --  Baha'u'llah

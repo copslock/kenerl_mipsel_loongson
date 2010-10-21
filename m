@@ -1,92 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2010 17:09:40 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.126.171]:59789 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491134Ab0JUPJh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Oct 2010 17:09:37 +0200
-Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
-        by mrelayeu.kundenserver.de (node=mreu0) with ESMTP (Nemesis)
-        id 0M3wNK-1OIlac1238-00rZ1I; Thu, 21 Oct 2010 17:09:28 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Akinobu Mita <akinobu.mita@gmail.com>
-Subject: Re: [PATCH v2 22/22] bitops: remove minix bitops from asm/bitops.h
-Date:   Thu, 21 Oct 2010 17:10:10 +0200
-User-Agent: KMail/1.12.2 (Linux/2.6.35-16-generic; KDE/4.3.2; x86_64; ; )
-Cc:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Roman Zippel <zippel@linux-m68k.org>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, linux-s390@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>,
-        microblaze-uclinux@itee.uq.edu.au,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        linux-m32r@ml.linux-m32r.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, Paul Mundt <lethal@linux-sh.org>,
-        linux-sh@vger.kernel.org, Chris Zankel <chris@zankel.net>
-References: <1287672077-5797-1-git-send-email-akinobu.mita@gmail.com> <1287672077-5797-23-git-send-email-akinobu.mita@gmail.com>
-In-Reply-To: <1287672077-5797-23-git-send-email-akinobu.mita@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Oct 2010 18:07:53 +0200 (CEST)
+Received: from [69.28.251.93] ([69.28.251.93]:43617 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491134Ab0JUQHu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 21 Oct 2010 18:07:50 +0200
+Received: (qmail 22225 invoked from network); 21 Oct 2010 16:07:45 -0000
+Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 21 Oct 2010 16:07:45 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Thu, 21 Oct 2010 09:07:45 -0700
+From:   Kevin Cernekee <cernekee@gmail.com>
+Subject: [PATCH v3 8/9] MIPS: Honor L2 bypass bit
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Date:   Thu, 21 Oct 2010 08:59:48 -0700
+Message-Id: <2e65c61bf8fd3a7b2aa4e24013cb0dba@localhost>
+User-Agent: vim 7.2
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201010211710.10736.arnd@arndb.de>
-X-Provags-ID: V02:K0:ZLUM1Q9uuV/6O6UOhJAlAlE/SGeNzOxudOM8cA5EF66
- zOSJB/cXirRPp77YrAde2fPzjbo3yq9Kw3MKuPyvuv3FNIpNiR
- rG38TncmX3WInmf2ERL6CNRGaDMGYyLDymr2Q5BfS+kiDJEL+I
- VAC1TFouLjQOLvIGIAqOtBdw28J4i7Ad6mDfzOV1hhPUShhfmM
- wNQpufBPvIc6m4DAE4xDA==
-Return-Path: <arnd@arndb.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28188
+X-archive-position: 28189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thursday 21 October 2010, Akinobu Mita wrote:
-> minix bit operations are only used by minix filesystem and useless
-> by other modules. Because byte order of inode and block bitmaps is
-> defferent on each architecture like below:
-> 
-> m68k:
-> 	big-endian 16bit indexed bitmaps
-> 
-> h8300, microblaze, s390, sparc, m68knommu:
-> 	big-endian 32 or 64bit indexed bitmaps
-> 
-> m32r, mips, sh, xtensa:
-> 	big-endian 32 or 64bit indexed bitmaps for big-endian mode
-> 	little-endian bitmaps for little-endian mode
-> 
-> Others:
-> 	little-endian bitmaps
-> 
-> In order to move minix bit operations from asm/bitops.h to
-> architecture independent code in minix file system, this provides two
-> config options.
-> 
-> CONFIG_MINIX_FS_BIG_ENDIAN_16BIT_INDEXED is only selected by m68k.
-> CONFIG_MINIX_FS_NATIVE_ENDIAN is selected by the architectures which
-> use native byte order bitmaps (h8300, microblaze, s390, sparc,
-> m68knommu, m32r, mips, sh, xtensa).
-> The architectures which always use little-endian bitmaps do not select
-> these options.
-> 
-> Finally, we can remove minix bit operations from asm/bitops.h for
-> all architectures.
-> 
-> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+[v3: Fix build errors]
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+On many of the newer MIPS32 cores, CP0 CONFIG2 bit 12 (L2B) indicates
+that the L2 cache is disabled and therefore Linux should not attempt
+to use it.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+Cc: linux-mips@linux-mips.org>
+Cc: <linux-kernel@vger.kernel.org>
+---
+ arch/mips/mm/sc-mips.c |   38 ++++++++++++++++++++++++++++++++++----
+ 1 files changed, 34 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
+index 5ab5fa8..ef625eb 100644
+--- a/arch/mips/mm/sc-mips.c
++++ b/arch/mips/mm/sc-mips.c
+@@ -57,6 +57,38 @@ static struct bcache_ops mips_sc_ops = {
+ 	.bc_inv = mips_sc_inv
+ };
+ 
++/*
++ * Check if the L2 cache controller is activated on a particular platform.
++ * MTI's L2 controller and the L2 cache controller of Broadcom's BMIPS
++ * cores both use c0_config2's bit 12 as "L2 Bypass" bit, that is the
++ * cache being disabled.  However there is no guarantee for this to be
++ * true on all platforms.  In an act of stupidity the spec defined bits
++ * 12..15 as implementation defined so below function will eventually have
++ * to be replaced by a platform specific probe.
++ */
++static inline int mips_sc_is_activated(struct cpuinfo_mips *c,
++	unsigned int config2)
++{
++	unsigned int tmp;
++
++	/* Check the bypass bit (L2B) */
++	switch (c->cputype) {
++	case CPU_34K:
++	case CPU_74K:
++	case CPU_1004K:
++	case CPU_BMIPS5000:
++		if (config2 & (1 << 12))
++			return 0;
++	}
++
++	tmp = (config2 >> 4) & 0x0f;
++	if (0 < tmp && tmp <= 7)
++		c->scache.linesz = 2 << tmp;
++	else
++		return 0;
++	return 1;
++}
++
+ static inline int __init mips_sc_probe(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+@@ -79,10 +111,8 @@ static inline int __init mips_sc_probe(void)
+ 		return 0;
+ 
+ 	config2 = read_c0_config2();
+-	tmp = (config2 >> 4) & 0x0f;
+-	if (0 < tmp && tmp <= 7)
+-		c->scache.linesz = 2 << tmp;
+-	else
++
++	if (!mips_sc_is_activated(c, config2))
+ 		return 0;
+ 
+ 	tmp = (config2 >> 8) & 0x0f;
+-- 
+1.7.0.4

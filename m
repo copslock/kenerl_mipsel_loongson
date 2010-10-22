@@ -1,55 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2010 21:31:12 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:7415 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491177Ab0JVTbF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Oct 2010 21:31:05 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4cc1e69b0000>; Fri, 22 Oct 2010 12:31:39 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 22 Oct 2010 12:31:26 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 22 Oct 2010 12:31:26 -0700
-Message-ID: <4CC1E677.1090404@caviumnetworks.com>
-Date:   Fri, 22 Oct 2010 12:31:03 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
-MIME-Version: 1.0
-To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Is it any serial8250 platform driver available?
-References: <AEA634773855ED4CAD999FBB1A66D0760126B496@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <AEA634773855ED4CAD999FBB1A66D0760126B496@CORPEXCH1.na.ads.idt.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Oct 2010 19:31:26.0519 (UTC) FILETIME=[B7E82C70:01CB721F]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2010 22:57:34 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:56534 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491178Ab0JVU5a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Oct 2010 22:57:30 +0200
+Received: by pwj6 with SMTP id 6so177604pwj.36
+        for <multiple recipients>; Fri, 22 Oct 2010 13:57:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=fs5iWtryRhSOQ43S6rVKz57PWIq6QgxmOOAdr7QZxiQ=;
+        b=ZmzRNd1D8NxKPBgh8rfcMXNabhVK5UtbwrMa7Cco7gkd/6ImRCxpz+cKIYZRjkfwVp
+         R3wCAdpkmeMKP1euqUUpnzIJXC4tGCqfmG9S3S8rFaQ1IXl9di1sKQFU8r0au9Jcwov+
+         U0Km5LG4x4WeO0uuBsRcPiByK7LnWR0+EJzzs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=vGh2PoASGz1BjtAxZZyk6Q+Ms1znAP1UC2xYcOS5zgBqNllYU51fWIAonKYRyOPj1v
+         lGVvxy3SgwkIpjnnMBOKxqLeAgYg63ExsuxzXUYByJR+BvJIdNUfamithHxXdgh2HcFp
+         XXXjKhg6WT4ci9JkglqDi3l8kU8xX5GNFtHDQ=
+Received: by 10.142.125.4 with SMTP id x4mr2842304wfc.234.1287781043744;
+        Fri, 22 Oct 2010 13:57:23 -0700 (PDT)
+Received: from localhost.localdomain ([61.48.68.246])
+        by mx.google.com with ESMTPS id x35sm5108441wfd.13.2010.10.22.13.57.19
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 22 Oct 2010 13:57:22 -0700 (PDT)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>, rostedt@goodmis.org,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] MIPS: tracing/ftrace: Speedup a little for function graph tracer
+Date:   Sat, 23 Oct 2010 04:57:01 +0800
+Message-Id: <d64c74f74b7c0d7f98bb7a00a5850ff591c01ff7.1287779009.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28202
+X-archive-position: 28203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 10/22/2010 12:23 PM, Ardelean, Andrei wrote:
-> Hi,
->
-> I am porting MIPS Linux from MALTA to a new board. I ported early
-> console code from malta_console.c and I am looking now to use a
-> interrupt driven driver for TTY. My UART is compatible with 8250 (1 UART
-> port only) but the UART registers are directly mapped in CPU memory map.
-> There is no PCI bus. My problem is that the driver implemented in 8250.c
-> is very complex and it seems to be hardcode for ISA bus, is it any
-> simple platform UART driver available to be directly mapped in the CPU
-> space? Can you give me some advice what would be a good approach for my
-> case?
->
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-Many chips have 8250 compatible ports and use 8250.c.
+This patch removes one "ip -= 4" instruction via the following change:
 
-See arch/mips/cavium-octeon/serial.c
+	ip = x;				ip = x - 4;
 
-David Daeny
+	do {				do {
+		ip -= 4;	==>		foo(ip);
+		foo(ip);			...
+		...				ip -= 4;
+	} while (y);			} while (y);
+
+BTW, the "while (( ))" is cleaned up to "while ()".
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/kernel/ftrace.c |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+index 5a84a1f..65f1949 100644
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -200,19 +200,17 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
+ 	int faulted;
+ 
+ 	/*
+-	 * For module, move the ip from calling site of mcount to the
+-	 * instruction "lui v1, hi_16bit_of_mcount"(offset is 20), but for
+-	 * kernel, move to the instruction "move ra, at"(offset is 12)
++	 * For module, move the ip from calling site of mcount after the
++	 * instruction "lui v1, hi_16bit_of_mcount"(offset is 24), but for
++	 * kernel, move after the instruction "move ra, at"(offset is 16)
+ 	 */
+-	ip = self_addr - (in_module(self_addr) ? 20 : 12);
++	ip = self_addr - (in_module(self_addr) ? 24 : 16);
+ 
+ 	/*
+ 	 * search the text until finding the non-store instruction or "s{d,w}
+ 	 * ra, offset(sp)" instruction
+ 	 */
+ 	do {
+-		ip -= 4;
+-
+ 		/* get the code at "ip": code = *(unsigned int *)ip; */
+ 		safe_load_code(code, ip, faulted);
+ 
+@@ -226,7 +224,9 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
+ 		if ((code & S_R_SP) != S_R_SP)
+ 			return parent_addr;
+ 
+-	} while (((code & S_RA_SP) != S_RA_SP));
++		/* Move to the previous instruction position */
++		ip -= 4;
++	} while ((code & S_RA_SP) != S_RA_SP);
+ 
+ 	sp = fp + (code & OFFSET_MASK);
+ 
+-- 
+1.7.1

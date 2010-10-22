@@ -1,69 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2010 19:33:54 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:44095 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491141Ab0JVRdv convert rfc822-to-8bit
-        (ORCPT <rfc822;Linux-mips@linux-mips.org>);
-        Fri, 22 Oct 2010 19:33:51 +0200
-Received: by fxm15 with SMTP id 15so147825fxm.36
-        for <Linux-mips@linux-mips.org>; Fri, 22 Oct 2010 10:33:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:mime-version:received:in-reply-to
-         :references:from:date:message-id:subject:to:cc:content-type
-         :content-transfer-encoding;
-        bh=PPl4EXRJkYiE1HSmFEWTBV3qOaV1uf8+4dP8PcsZ2mA=;
-        b=jzXqGZW3qWEuy/ff0Vf8WEnqBsnJd+UuZ63awaKBVvOmAcSp4HrDTCNTZMt21b0vGK
-         bGkk2lI4leUnQORgGwRSAdXkDNDQ+rAvMNJpSOZGvc+b/uhu1dw5hJqsD3BHn3MVFw2W
-         928ua9tLImjvyhJZuAW4+EDgwoaoW6pCek7yI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        b=HMmuGT15lKSH72COTZY7Rcwu8/rEEji7BfDbbn1hIE2DVvlhXCWPZWe0yOwja7Zmf0
-         X8aUfId1Dd87TiwWCzIhXSHXdne1ctJQN3356aewjywq28WKEcXwyNi9eAVabQ+aa2R+
-         03Tdm4bhbWN60a3LELPPt+mRoKEnQiVAlm2kk=
-Received: by 10.204.121.84 with SMTP id g20mr1374314bkr.37.1287768826131; Fri,
- 22 Oct 2010 10:33:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Oct 2010 21:25:56 +0200 (CEST)
+Received: from mxout1.idt.com ([157.165.5.25]:44287 "EHLO mxout1.idt.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491065Ab0JVTZx convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Oct 2010 21:25:53 +0200
+Received: from mail.idt.com (localhost [127.0.0.1])
+        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id o9MJPjVZ026827
+        for <linux-mips@linux-mips.org>; Fri, 22 Oct 2010 12:25:46 -0700
+Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
+        by mail.idt.com (8.13.8/8.13.8) with ESMTP id o9MJPhxY014622
+        for <linux-mips@linux-mips.org>; Fri, 22 Oct 2010 12:25:45 -0700 (PDT)
+Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
+        by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id o9MJPgI08171
+        for <linux-mips@linux-mips.org>; Fri, 22 Oct 2010 12:25:43 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Received: by 10.204.47.147 with HTTP; Fri, 22 Oct 2010 10:33:25 -0700 (PDT)
-In-Reply-To: <AANLkTinGrdowGtdxvNp5YAFZNFkW7ZgxrP2CsYs+vWZ-@mail.gmail.com>
-References: <AANLkTinGrdowGtdxvNp5YAFZNFkW7ZgxrP2CsYs+vWZ-@mail.gmail.com>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Fri, 22 Oct 2010 13:33:25 -0400
-Message-ID: <AANLkTi=E57W_hA2Mqgf8eRHY7ukxOKKyb+r-rbFq0A-g@mail.gmail.com>
-Subject: Re: Evaluation boards with 74K/24k
-To:     Anoop P A <an4linu@gmail.com>
-Cc:     Linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain;
+        charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
-Return-Path: <mattst88@gmail.com>
+Subject: Is it any serial8250 platform driver available?
+Date:   Fri, 22 Oct 2010 12:23:49 -0700
+Message-ID: <AEA634773855ED4CAD999FBB1A66D0760126B496@CORPEXCH1.na.ads.idt.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Is it any serial8250 platform driver available?
+Thread-Index: ActyHqeeS096zxxaRLCIqZ0IHsaJvQ==
+From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+To:     <linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.43
+Return-Path: <Andrei.Ardelean@idt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;Linux-mips@linux-mips.org
-Original-Recipient: rfc822;Linux-mips@linux-mips.org
-X-archive-position: 28200
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 28201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: Andrei.Ardelean@idt.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 22, 2010 at 1:29 PM, Anoop P A <an4linu@gmail.com> wrote:
-> Hi list,
->
-> can anybody suggest me an eval board running 74k / 24k core.  we are
-> not much intrested in fpga solution .would be happy to see something
-> runs @ 1 Ghz
->
-> Thanks
-> Ans
-
 Hi,
-There's the "MIPS® Linux Starter Kit" [1] that has a 680 MHz
-(overclockable to 800MHz) 24Kc CPU and 128MB RAM.
 
-I don't have one myself, so I can't comment beyond "it exists."
+I am porting MIPS Linux from MALTA to a new board. I ported early
+console code from malta_console.c and I am looking now to use a
+interrupt driven driver for TTY. My UART is compatible with 8250 (1 UART
+port only) but the UART registers are directly mapped in CPU memory map.
+There is no PCI bus. My problem is that the driver implemented in 8250.c
+is very complex and it seems to be hardcode for ISA bus, is it any
+simple platform UART driver available to be directly mapped in the CPU
+space? Can you give me some advice what would be a good approach for my
+case?
 
-Matt
-
-[1] http://www.mips.com/products/development-kits/linux-starter-kit/
+Thanks,
+Andrei
+  

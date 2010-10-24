@@ -1,17 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2010 04:40:19 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:46922 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2010 07:12:43 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:44882 "EHLO
         localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490946Ab0JXCkP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Oct 2010 04:40:15 +0200
-Date:   Sun, 24 Oct 2010 03:40:15 +0100 (BST)
+        by eddie.linux-mips.org with ESMTP id S1490981Ab0JXFMj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Oct 2010 07:12:39 +0200
+Date:   Sun, 24 Oct 2010 06:12:39 +0100 (BST)
 From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 8/9] MIPS: Honor L2 bypass bit
-In-Reply-To: <AANLkTinJ4wU30AaBhcvJRLZ_iw-eo9tEkds8QA1S=Nqw@mail.gmail.com>
-Message-ID: <alpine.LFD.2.00.1010240325170.15889@eddie.linux-mips.org>
-References: <74b5d3ba9506b2e6d885546bd6dcdaec@localhost>        <20101021125809.GA15031@linux-mips.org> <AANLkTinJ4wU30AaBhcvJRLZ_iw-eo9tEkds8QA1S=Nqw@mail.gmail.com>
+To:     "Gleb O. Raiko" <raiko@niisi.msk.ru>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Shinya Kuribayashi <skuribay@pobox.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH resend 5/9] MIPS: sync after cacheflush
+In-Reply-To: <4CBFFF3F.2050700@niisi.msk.ru>
+Message-ID: <alpine.LFD.2.00.1010240529380.15889@eddie.linux-mips.org>
+References: <17ebecce124618ddf83ec6fe8e526f93@localhost> <17d8d27a2356640a4359f1a7dcbb3b42@localhost> <4CBC4F4E.5010305@pobox.com> <AANLkTinpry=XG-ZDgXJK-VB6QkBL2TO4-vrsV5Tc1eEs@mail.gmail.com> <alpine.LFD.2.00.1010190146360.15889@eddie.linux-mips.org>
+ <20101019123441.GJ27377@linux-mips.org> <alpine.LFD.2.00.1010192039550.15889@eddie.linux-mips.org> <4CBEA2D6.6050507@niisi.msk.ru> <alpine.LFD.2.00.1010201750060.15889@eddie.linux-mips.org> <4CBFFF3F.2050700@niisi.msk.ru>
 User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -19,7 +22,7 @@ Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28214
+X-archive-position: 28215
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,22 +30,88 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 21 Oct 2010, Kevin Cernekee wrote:
+On Thu, 21 Oct 2010, Gleb O. Raiko wrote:
 
-> FWIW, I did check the software user's manual for each of the four
-> processors in the list and verified that L2B is at CONFIG2 bit 12.  It
-> would be very rude for an L2 designer to redefine those bits in
-> defiance of the SUM, no?
+> >   I'm not sure what you mean: whether the processor will snoop the value to
+> > read in the store buffer or will it stall until the buffer has drained and
+> > issue the load on the external bus?
+> I meant the latter.
 
- To err is human -- people do all kinds of weird stuff, not necessarily on 
-purpose.  I think it should be safe to assume the bit is used properly 
-until proved otherwise.
+ OK, I hoped so, but just double-checked to be sure. :)
 
-> I also rechecked 24KE just now, and found that L2B is defined in the
-> latest rev of the SUM, but in my local copy (Revision 01.02) bit 12 is
-> the MSB of SS instead.  Hmmm.
+> > Therefore in the context of one or more pending uncached stores I can
+> > assume one of the three for an uncached load:
+> > 
+> > 1. If the addresses match, then the value loaded is snooped in (retrieved
+> >     from) the store buffer, no external cycle on the bus is seen.  This is
+> >     what the R2020 WB did.
+> > 
+> > 2. The load bypasses the stores and therefore reaches the external bus
+> >     before the stores.  This is what the R3220 MB did and I believe the
+> >     R2020 WB defaulted to in the case of no address match.
+> > 
+> > 3. The load stalls until the outstanding stores have completed and only
+> >     then appears on the external bus.
+> > 
+> > There's no hurt from using SYNC here and its semantics make it clear it
+> > enforces the case #3 above even if not otherwise guaranteed.  Otherwise I
+> > think the case #2 would be a reasonable default (i.e. one I'd recommend to
+> > a processor designer) as draining the store buffer on any uncached load
+> > whether needed or not is a waste of performance.
+> There is no such thing like performance in case of uncached loads.
+> The case #2 requires:
+> 1. sync
+> 2. additional operations (usually just a read) to pull data behind input
+> buffers on an IO bus.
 
- Clearly a documentation bug -- notice how the width of the field 
-disagress with the bit indices quoted.
+ When talking to MMIO you often don't need to force the outstanding writes 
+to complete before you exit some driver's code.  They will eventually 
+reach the device and to their things in due course.
+
+ A notable exception are some kinds of side effects that need to be 
+synchronised to prevent races.  For example to avoid wasting processing 
+time for handling spurious interrupts you do want to make sure a write 
+that acknowledges a pending interrupt has been recorded by the handler 
+reaches the respective device's register before the interrupt has been 
+cleared in the interrupt controller.
+
+ On the other hand you do not need to issue a writeback of a request for 
+the device to look for more data in the outgoing DMA descriptor ring.
+
+> While it's ok to put that in MMIO reads/writes as you've done, it's almost
+> impossible to program X server in that way, for example. This beast considers
+> a frame buffer as an memory array with strong ordering. That's why I'd vote
+> for the case #3. Not because it outperforms #2 in the real life (who cares for
+> 0.0001% gain), but because IO devices requires strong ordering.
+
+ Ah, framebuffers.  The DEC Alpha people somehow managed to get them 
+right. :)  What you say is of course true for a dumb framebuffer -- but 
+who cares about dumb framebuffers these days?
+
+ A half-decent graphics controller will provide a set of typical masked 
+raster operations: STORE, AND, OR, XOR, etc. so that you don't have to 
+issue RMW cycles to framebuffer's memory -- all you need are bulk writes, 
+where the order does not really matter and which can be pipelined (the 
+graphics controller may be able to replicate writes too, such as across 
+the whole scanline -- good for the bandwidth!).
+
+ You may still have to issue some barriers around accesses to 
+framebuffer's control registers, but that's about it.  And the TGA X11 
+driver undobtedly gets these things right or otherwise nobody could have 
+used it and the adapters it supports with an Alpha (as a side note: that 
+graphics chip/software applies to MIPS-based DECstation systems too).  
+This is all early 1990s' technology, no rocket science anymore. :)
+
+ There's a technical report on the techniques used somewhere on the web -- 
+look for "Smart Frame Buffer" (and don't forget to check its date ;) ).
+
+ In general: don't break the CPU because you've got a broken piece of 
+software -- fix the piece instead!
+
+ I stand by my choice -- inefficiency from unnecessary (implicit) ordering 
+barriers accumulates.  These operations are so slow (with latencies 
+possibly counted in hundreds of CPU cycles) it really matters whether you 
+need ten or just one, especially with the speeds of contemporary 
+processors.
 
   Maciej

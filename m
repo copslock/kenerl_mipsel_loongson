@@ -1,123 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2010 16:25:55 +0200 (CEST)
-Received: from bitwagon.com ([74.82.39.175]:39577 "HELO bitwagon.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S1491140Ab0JXOZv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 24 Oct 2010 16:25:51 +0200
-Received: from f11-64.local ([67.171.188.169]) by bitwagon.com for <linux-mips@linux-mips.org>; Sun, 24 Oct 2010 07:25:39 -0700
-Message-ID: <4CC441C9.8070206@bitwagon.com>
-Date:   Sun, 24 Oct 2010 07:25:13 -0700
-From:   John Reiser <jreiser@bitwagon.com>
-Organization: -
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100430 Fedora/3.0.4-2.fc11 Thunderbird/3.0.4
-MIME-Version: 1.0
-To:     wu zhangjin <wuzhangjin@gmail.com>
-CC:     Steven Rostedt <rostedt@goodmis.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [RFC 2/2] ftrace/MIPS: Add support for C version of recordmcount
-References: <AANLkTinwXjLAYACUfhLYaocHD_vBbiErLN3NjwN8JqSy@mail.gmail.com>
-In-Reply-To: <AANLkTinwXjLAYACUfhLYaocHD_vBbiErLN3NjwN8JqSy@mail.gmail.com>
-X-Enigmail-Version: 1.0.1
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Return-Path: <jreiser@bitwagon.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Oct 2010 20:36:49 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:43885 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491107Ab0JXSgq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Oct 2010 20:36:46 +0200
+Received: by wyf22 with SMTP id 22so2735524wyf.36
+        for <linux-mips@linux-mips.org>; Sun, 24 Oct 2010 11:36:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=xknhzXHPpaYK5u0eutc4mfNAUYoO0VxFRKykS7CbqpU=;
+        b=rHhGhrrWc1hxqI/8yLpimFD7cI+N+9S+2OUWPMqxgWuQszlI0Zjytc3aLDQqF2Je7/
+         H29LhgY+RewpGFrSQrlUiLDI0JbX5iNa8GSnGq/vHokWX/hO+VKptA4sCC91zjfO+vlc
+         aMO+q3ovy3as9m/I29nQomTQu/GAEqI51EXck=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=HcFFaRhNS4JGiTRIjwq2Kh693ADb8FCpr0TwikipKTQDenaqCFe8phgMsm0gSlODsm
+         VGIwkvPWnnr+A9pKJaigAPtHAFsFEGAvi7kV514jeaWlpfy/jJ0an+WqbhT35ws2684f
+         aIVLkMSMXNefsvsTlZ+5yWTBo0CLMmAScFbUA=
+Received: by 10.227.138.71 with SMTP id z7mr4738182wbt.23.1287945400012;
+        Sun, 24 Oct 2010 11:36:40 -0700 (PDT)
+Received: from localhost.localdomain (188-22-0-103.adsl.highway.telekom.at [188.22.0.103])
+        by mx.google.com with ESMTPS id i19sm4836481wbe.11.2010.10.24.11.36.37
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 24 Oct 2010 11:36:38 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH RESEND 0/2] Au1300/DB1300 support
+Date:   Sun, 24 Oct 2010 20:36:31 +0200
+Message-Id: <1287945393-10080-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.3.2
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28218
+X-archive-position: 28219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jreiser@bitwagon.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, here is the diagnosis for SIGSEGV in recordmcount.c on MIPS64:
+The following 2 patches implement basic Au1300/DB1300 support.
 
-On 10/23/2010, wu zhangjin wrote:
->   CC      init/main.o
-> /bin/sh: line 1: 21835 Segmentation fault     scripts/recordmcount "init/main.o"
-> make[1]: *** [init/main.o] Error 139
-> make: *** [init] Error 2
-> 
-> I traced the problem and found it was triggered by the 201 line of
-> scripts/recordmcount.h:
-> 
-> 198                 if (!mcountsym) {
-> 199                         Elf_Sym const *const symp =
-> 200                                 &sym0[ELF_R_SYM(_w(relp->r_info))];
-> *201                         char const *symname = &str0[w(symp->st_name)];*
-> 202
-> 203                         if ('.' == symname[0])
-> 204                                 ++symname;  /* ppc64 hack */
-> 
-> Exactly, it was triggered by: symp->st_name, symp is normal address,
-> i.e. 0xa01831f0, but perhaps the content pointed by this address may
-> not exist or is not allocated before?
-> 
-> Did I miss something for MIPS specific support?
+It's possible to boot a filesystem from NFSroot, mount IDE devices
+(CF cards and harddisks; however using a harddisk as a root device
+hangs the system early in the boot process), work with NAND/NOR 
+flashes and use the ddma controller.
 
-The layout of a MIPS structure Elf64_Rela is not described correctly
-by the macros ELF64_R_SYM and ELF64_R_TYPE of <elf.h>:
------
-#define ELF64_R_SYM(i)                  ((i) >> 32)
-#define ELF64_R_TYPE(i)                 ((i) & 0xffffffff)
------
+This is a resend of the patches I sent out earlier this year,
+rebased on latest linus -git.
 
-"readelf main.o" says:
------
-Relocation section '.rela.text' at offset 0x5b68 contains 59 entries:
-  Offset          Info           Type           Sym. Value    Sym. Name + Addend
-000000000020  004200000004 R_MIPS_26         0000000000000000 _mcount + 0
-                    Type2: R_MIPS_NONE
-                    Type3: R_MIPS_NONE
------
+Please consider for 2.6.37.
 
-The actual bytes are [performed on a little-endian machine,
-which is the same as main.o, namely ELFDATA2LSB]:
------
-$ od -Ax -tx8 -j0x5b68 main.o  |  sed 2q
-005b68 0000000000000020 0400000000000042
-005b78 0000000000000000
------
+Thanks,
+      Manuel Lauss
 
-So it looks like the data actually corresponds to:
------
-#define MIPS_ELF64_R_TYPE(i)  (0xff & ((i)>>56))
-#define MIPS_ELF64_R_TYPE2(i) (0xff & ((i)>>48))
-#define MIPS_ELF64_R_TYPE3(i) (0xff & ((i)>>40))
-#define MIPS_ELF64_R_SYM(i)   (0xffffffff & (i))  /* perhaps 40 bits? */
------
+Manuel Lauss (2):
+  MIPS: Alchemy: Au1300 SoC support
+  MIPS: Alchemy: DB1300 support
 
-What this means for recordmcount.c is that ELF_R_SYM and ELF_R_TYPE
-should become pointers to functions with default bodies given by
-the macros in <elf.h>, and which EM_MIPS overrides.
-
-
-> for kernel:
->     #     14:   0c000000        jal     0
->     #                    14: R_MIPS_26   _mcount
-
-> for module:
->     #       c:  3c030000        lui     v1,0x0
->     #                   c: R_MIPS_HI16  _mcount
-
-I suggest that the argv command line for recordcmount.c have an
-optional flag -m or --module, such that the correct reltype can
-be chosen when .e_machine is decoded.
-
-> (Note: The above patch is not enough, for the modules with
-> -mlong-calls, the reltype should be R_MIPS_HI16, and we may also need
-> to add our specific code for sift_rel_mcount() to get the right
-> location of the _mcount calling site)
-
-"-mlong-calls" must set .e_flags, or otherwise provide enough
-description to that the correct reltype can be chosen at the time
-when .e_machine is decoded.  Adjusting the address for the location
-of the call to _mcount should be another function pointer that is
-overridden for EM_MIPS.
-
-Regards,
+ arch/mips/alchemy/Kconfig                        |   17 +
+ arch/mips/alchemy/Platform                       |    7 +
+ arch/mips/alchemy/common/Makefile                |    2 +
+ arch/mips/alchemy/common/dbdma.c                 |   48 ++-
+ arch/mips/alchemy/common/gpioint.c               |  468 +++++++++++++++++
+ arch/mips/alchemy/common/gpiolib-au1300.c        |   54 ++
+ arch/mips/alchemy/common/platform.c              |    9 +
+ arch/mips/alchemy/common/power.c                 |    9 +-
+ arch/mips/alchemy/common/sleeper.S               |   73 +++
+ arch/mips/alchemy/common/time.c                  |    1 +
+ arch/mips/alchemy/devboards/Makefile             |    1 +
+ arch/mips/alchemy/devboards/db1300/Makefile      |    1 +
+ arch/mips/alchemy/devboards/db1300/platform.c    |  608 ++++++++++++++++++++++
+ arch/mips/alchemy/devboards/db1300/setup.c       |  269 ++++++++++
+ arch/mips/alchemy/devboards/prom.c               |    8 +-
+ arch/mips/boot/compressed/uart-alchemy.c         |    5 +-
+ arch/mips/configs/db1300_defconfig               |  298 +++++++++++
+ arch/mips/include/asm/cpu.h                      |    8 +
+ arch/mips/include/asm/mach-au1x00/au1000.h       |  198 +++++++-
+ arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h |   33 ++
+ arch/mips/include/asm/mach-au1x00/gpio-au1300.h  |  250 +++++++++
+ arch/mips/include/asm/mach-au1x00/gpio.h         |    4 +
+ arch/mips/include/asm/mach-db1x00/bcsr.h         |    5 +-
+ arch/mips/include/asm/mach-db1x00/db1300.h       |   40 ++
+ arch/mips/include/asm/mach-db1x00/irq.h          |   23 +
+ arch/mips/kernel/cpu-probe.c                     |   18 +
+ drivers/i2c/busses/Kconfig                       |    6 +-
+ drivers/pcmcia/Kconfig                           |    4 +-
+ drivers/pcmcia/db1xxx_ss.c                       |   30 +-
+ drivers/spi/Kconfig                              |    2 +-
+ drivers/video/Kconfig                            |    8 +-
+ sound/soc/au1x/Kconfig                           |    6 +-
+ 32 files changed, 2483 insertions(+), 30 deletions(-)
+ create mode 100644 arch/mips/alchemy/common/gpioint.c
+ create mode 100644 arch/mips/alchemy/common/gpiolib-au1300.c
+ create mode 100644 arch/mips/alchemy/devboards/db1300/Makefile
+ create mode 100644 arch/mips/alchemy/devboards/db1300/platform.c
+ create mode 100644 arch/mips/alchemy/devboards/db1300/setup.c
+ create mode 100644 arch/mips/configs/db1300_defconfig
+ create mode 100644 arch/mips/include/asm/mach-au1x00/gpio-au1300.h
+ create mode 100644 arch/mips/include/asm/mach-db1x00/db1300.h
+ create mode 100644 arch/mips/include/asm/mach-db1x00/irq.h
 
 -- 
-John Reiser, jreiser@BitWagon.com
+1.7.3.2

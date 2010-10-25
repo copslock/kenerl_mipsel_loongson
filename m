@@ -1,78 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Oct 2010 12:36:47 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:55796 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490949Ab0JYKgo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Oct 2010 12:36:44 +0200
-Received: by wyf22 with SMTP id 22so3299494wyf.36
-        for <multiple recipients>; Mon, 25 Oct 2010 03:36:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=3w0YjTSWAa4CrtmKg1ff7ExyyhB7owe0ROZzqWjGy5o=;
-        b=DQJ3yR1P4R7ClFBwR+0nonX7/JlqXsVo/wyGTBkCDfqvb1GSw9jigVTKbb0mZVkJVi
-         Gq/3pu9eWtIalfzCleRDoFrZKbAOEVGk7L3SN3nbDuv5A7OgtpOjOgjhLQUPANdxMiCd
-         wASVYtJvqgLAE0lhlQCsTO7790pBcSKygIpig=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=MWkNMI1g+VTxFWqjdamaw0yIUw/6bpZUhoauUlTIMQ3munfwCnsFPA2/jDqjtf2x43
-         Re26/ugqhcnC3rZGbDSg4pxjO+7i25K2xvhD63Jymia56KmroNCjlU0KegfAL2MkKkhm
-         zkUyCedM4s7IQaXVwEzaGZiBlFJgq+mC28kBg=
-Received: by 10.216.150.166 with SMTP id z38mr176360wej.6.1288002998625;
-        Mon, 25 Oct 2010 03:36:38 -0700 (PDT)
-Received: from localhost.localdomain (178-191-1-3.adsl.highway.telekom.at [178.191.1.3])
-        by mx.google.com with ESMTPS id x28sm4050103weq.40.2010.10.25.03.36.36
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 25 Oct 2010 03:36:37 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH] MIPS: Alchemy: fix build with SERIAL_8250=n
-Date:   Mon, 25 Oct 2010 12:36:32 +0200
-Message-Id: <1288002992-15585-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: git-send-email 1.7.3.2
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Oct 2010 14:29:10 +0200 (CEST)
+Received: from bitwagon.com ([74.82.39.175]:55126 "HELO bitwagon.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
+        id S1491036Ab0JYM3G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Oct 2010 14:29:06 +0200
+Received: from f11-64.local ([67.171.188.169]) by bitwagon.com for <linux-mips@linux-mips.org>; Mon, 25 Oct 2010 05:28:55 -0700
+Message-ID: <4CC577ED.3070708@bitwagon.com>
+Date:   Mon, 25 Oct 2010 05:28:29 -0700
+From:   John Reiser <jreiser@bitwagon.com>
+Organization: -
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100430 Fedora/3.0.4-2.fc11 Thunderbird/3.0.4
+MIME-Version: 1.0
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+CC:     wu zhangjin <wuzhangjin@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: patch: [RFC 2/2] ftrace/MIPS: Add support for C version of recordmcount
+References: <AANLkTinwXjLAYACUfhLYaocHD_vBbiErLN3NjwN8JqSy@mail.gmail.com> <4CC49A99.1080601@bitwagon.com> <alpine.LFD.2.00.1010250435540.15889@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.00.1010250435540.15889@eddie.linux-mips.org>
+X-Enigmail-Version: 1.0.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <jreiser@bitwagon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28227
+X-archive-position: 28228
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: jreiser@bitwagon.com
 Precedence: bulk
 X-list: linux-mips
 
-In commit 7d172bfefb72a8dae56beff326299c5e21f6f6db I introduced platform
-PM methods which call a function of the 8250 driver;  this patch works
-around link failures when the kernel isn't built with 8250 support.
+On 10/24/2010 08:59 PM, Maciej W. Rozycki wrote:
 
-Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
----
- arch/mips/alchemy/common/platform.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+> Search the web for SGI's "64-bit ELF Object File 
+> Specification" for further details.
+> 
+> [I wish people read the specs and did not rely on guesswork before writing 
+> code like this, sigh...]
 
-diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index 3691630..9e7814d 100644
---- a/arch/mips/alchemy/common/platform.c
-+++ b/arch/mips/alchemy/common/platform.c
-@@ -27,6 +27,7 @@
- static void alchemy_8250_pm(struct uart_port *port, unsigned int state,
- 			    unsigned int old_state)
- {
-+#ifdef CONFIG_SERIAL_8250
- 	switch (state) {
- 	case 0:
- 		if ((__raw_readl(port->membase + UART_MOD_CNTRL) & 3) != 3) {
-@@ -49,6 +50,7 @@ static void alchemy_8250_pm(struct uart_port *port, unsigned int state,
- 		serial8250_do_pm(port, state, old_state);
- 		break;
- 	}
-+#endif
- }
- 
- #define PORT(_base, _irq)					\
+I offered a patch.  Would you care to offer a different patch?
+
+Give the literal URL that you intend.  Include the URL in the patch!
+An actual citation (author, title, URL, date) is more valuable than
+"search the web", even if the URL should be come stale.
+
+There is more than one spec.  <elf.h> is one of them, and it is available
+without searching.  It is a fault on the MIPS milieu that one must search
+for the spec.  The obvious candidate after searching:
+   http://techpubs.sgi.com/library/manuals/4000/007-4658-001/pdf/007-4658-001.pdf
+says only "Draft version 2.5".  Was it ever adopted?  When, and by whom?
+Is there a more-authoritative version?  Has it been superseded?
+
+Patch, please?
+
 -- 
-1.7.3.2
+John Reiser, jreiser@BitWagon.com

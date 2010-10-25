@@ -1,82 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Oct 2010 05:59:09 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:48160 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490949Ab0JYD7D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Oct 2010 05:59:03 +0200
-Date:   Mon, 25 Oct 2010 04:59:03 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     John Reiser <jreiser@bitwagon.com>
-cc:     wu zhangjin <wuzhangjin@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: patch: [RFC 2/2] ftrace/MIPS: Add support for C version of
- recordmcount
-In-Reply-To: <4CC49A99.1080601@bitwagon.com>
-Message-ID: <alpine.LFD.2.00.1010250435540.15889@eddie.linux-mips.org>
-References: <AANLkTinwXjLAYACUfhLYaocHD_vBbiErLN3NjwN8JqSy@mail.gmail.com> <4CC49A99.1080601@bitwagon.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Oct 2010 12:15:54 +0200 (CEST)
+Received: from tundra.namei.org ([65.99.196.166]:48291 "EHLO tundra.namei.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490958Ab0JYKPu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 25 Oct 2010 12:15:50 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by tundra.namei.org (8.13.1/8.13.1) with ESMTP id o9PAFT9E028691;
+        Mon, 25 Oct 2010 06:15:32 -0400
+Date:   Mon, 25 Oct 2010 21:15:29 +1100 (EST)
+From:   James Morris <jmorris@namei.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        KOSAKI Motohiro <kosaki.motohiro@jp.fujitsu.com>
+Subject: Re: [PATCH] MIPS: MT: Fix build error iFPU affinity code
+In-Reply-To: <20101024212350.GA18747@linux-mips.org>
+Message-ID: <alpine.LRH.2.00.1010252115020.28519@tundra.namei.org>
+References: <20101024212350.GA18747@linux-mips.org>
+User-Agent: Alpine 2.00 (LRH 1167 2008-08-23)
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Return-Path: <jmorris@namei.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28225
+X-archive-position: 28226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: jmorris@namei.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 24 Oct 2010, John Reiser wrote:
+On Sun, 24 Oct 2010, Ralf Baechle wrote:
 
-> @@ -212,11 +212,26 @@ is_mcounted_section_name(char const *const txtname)
->  		0 == strcmp(".text.unlikely", txtname);
->  }
->  +
->  /* 32 bit and 64 bit are very similar */
->  #include "recordmcount.h"
->  #define RECORD_MCOUNT_64
->  #include "recordmcount.h"
-> +/* 64-bit EM_MIPS has weird ELF64_Rela.r_info */
-> +static uint64_t MIPS64_r_sym(Elf64_Xword xword)
-> +{
-> +	/* Perhaps this should be 40 bits, but kernel isn't that big. */
-> +	return 0xffffffff & xword;
-> +}
+> > commit b0ae19811375031ae3b3fecc65b702a9c6e5cc28
+> > Author: KOSAKI Motohiro <kosaki.motohiro@jp.fujitsu.com>
+> > Date:   Fri Oct 15 04:21:18 2010 +0900
+> >
+> >     security: remove unused parameter from security_task_setscheduler()
+> 
+> broke the build of arch/mips/kernel/mips-mt-fpaff.c.  The function
+> arguments were unnecessary, not the semicolon ...
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+>  arch/mips/kernel/mips-mt-fpaff.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 
- R_SYM is 32-bit on n64 MIPS, no need for the comment here.  This code 
-looks wrong to me though (i.e. asssuming xword is the integer value of 
-r_info), see below.
+Acked-by: James Morris <jmorris@namei.org>
 
-> +static uint64_t MIPS64_r_info(Elf64_Xword sym, unsigned type)
-> +{
-> +	/* Type2 and Type3 are assumed zero.  [See "readelf --relocs".] */
-> +	return (((uint64_t)type)<<56) | sym;
-> +}
 
- On n64 MIPS the bit alignment of the r_sym and r_type fields within a 
-native 64-bit integer depends on the endianness of the target.  You need 
-to take this into account.
+> 
+> diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
+> index 9a526ba..802e616 100644
+> --- a/arch/mips/kernel/mips-mt-fpaff.c
+> +++ b/arch/mips/kernel/mips-mt-fpaff.c
+> @@ -103,7 +103,7 @@ asmlinkage long mipsmt_sys_sched_setaffinity(pid_t pid, unsigned int len,
+>  	if (!check_same_owner(p) && !capable(CAP_SYS_NICE))
+>  		goto out_unlock;
+>  
+> -	retval = security_task_setscheduler(p)
+> +	retval = security_task_setscheduler(p);
+>  	if (retval)
+>  		goto out_unlock;
+>  
+> 
 
- Note that on n64 MIPS R_INFO effectively is defined like this:
-
-struct {
-	Elf64_Word r_sym;
-	Elf64_Byte r_ssym;
-	Elf64_Byte r_type3;
-	Elf64_Byte r_type2;
-	Elf64_Byte r_type;
-} r_info;
-
-i.e. R_SYM is always a 32-bit value in the native endianness and it's 
-followed by four bytes whose order is the same regardless of the system's 
-endianness.  Search the web for SGI's "64-bit ELF Object File 
-Specification" for further details.
-
-[I wish people read the specs and did not rely on guesswork before writing 
-code like this, sigh...]
-
-  Maciej
+-- 
+James Morris
+<jmorris@namei.org>

@@ -1,67 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2010 19:19:50 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:14293 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491127Ab0JZRTr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Oct 2010 19:19:47 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4cc70dd30000>; Tue, 26 Oct 2010 10:20:19 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 26 Oct 2010 10:20:09 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 26 Oct 2010 10:20:09 -0700
-Message-ID: <4CC70DA9.6000906@caviumnetworks.com>
-Date:   Tue, 26 Oct 2010 10:19:37 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Oct 2010 20:28:20 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:49436 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491122Ab0JZS2Q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Oct 2010 20:28:16 +0200
+Received: by wyf22 with SMTP id 22so4964774wyf.36
+        for <multiple recipients>; Tue, 26 Oct 2010 11:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=MmpufEmUtlILGD0T77KDTEQL3Fpx+tZ3plvRUuwhoXE=;
+        b=HSH+thl6uiP83J6wq5uL7IG/Jg9E7nZrApMAm/d7okH2ZPbb40rRr90JA6+qx8J7PT
+         V003HwzsfUDdfm9c3cSEv7zEPrx2CMzi0nzf5K9ZJMTvIdsi/riEvatPokiXGbtu2K49
+         YsV4jyYdD8Yx7Qds3bd4QJvV4JD9mW/sk8zUI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=MfBVMTIs85IRCxf/gUKXlchc8Ej+BT29uIlHRcXnDBs2BXjQ6IFssBGmXWJ+42x/fA
+         acr0Se1DXbPfnWudzXqKB9gFMMBFzAo8AwnvoRxIkuj8mefWkj7lZUD6fNCYlAnGsEBz
+         C/5Kv164xs3ALkrMuoH0eWYaMir702FJvkYnI=
 MIME-Version: 1.0
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-CC:     Camm Maguire <camm@maguirefamily.org>,
-        debian-mips@lists.debian.org,
-        Frederick Isaac <freddyisaac@gmail.com>, gcl-devel@gnu.org,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: Re: gdb for mips64
-References: <E1OwbkA-0006gv-Bi@localhost.m.enhanced.com>        <4C93993E.7030008@caviumnetworks.com>   <8762y49k1k.fsf@maguirefamily.org>      <4C93D86D.5090201@caviumnetworks.com>   <87fwx4dwu5.fsf@maguirefamily.org>      <4C97D9A1.7050102@caviumnetworks.com>   <87lj6te9t1.fsf@maguirefamily.org>      <4C9A8BC9.1020605@caviumnetworks.com>   <4C9A9699.6080908@caviumnetworks.com>   <87pqvbs7oa.fsf@maguirefamily.org>      <4CB88D2C.8020900@caviumnetworks.com>   <87r5fksxby.fsf_-_@maguirefamily.org>   <4CBF1B1E.6050804@caviumnetworks.com>   <8762wwlfen.fsf@maguirefamily.org>      <4CC06826.2070508@caviumnetworks.com>   <4CC0787C.2040902@caviumnetworks.com> <878w1m3qmn.fsf_-_@maguirefamily.org> <4CC5FA72.6080005@caviumnetworks.com> <alpine.LFD.2.00.1010261323080.15889@eddie.linux-mips.org>
-In-Reply-To: <alpine.LFD.2.00.1010261323080.15889@eddie.linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 26 Oct 2010 17:20:09.0786 (UTC) FILETIME=[0AA919A0:01CB7532]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: by 10.216.176.20 with SMTP id a20mr1267226wem.14.1288117690156; Tue,
+ 26 Oct 2010 11:28:10 -0700 (PDT)
+Received: by 10.216.176.203 with HTTP; Tue, 26 Oct 2010 11:28:10 -0700 (PDT)
+In-Reply-To: <1288038294.18238.4.camel@gandalf.stny.rr.com>
+References: <AANLkTinwXjLAYACUfhLYaocHD_vBbiErLN3NjwN8JqSy@mail.gmail.com>
+        <4CC49A99.1080601@bitwagon.com>
+        <alpine.LFD.2.00.1010250435540.15889@eddie.linux-mips.org>
+        <4CC5B474.9050503@bitwagon.com>
+        <AANLkTin=ym_e8009pHkn+7jtXG1toiKb1O3TS4FNQu3U@mail.gmail.com>
+        <1288038294.18238.4.camel@gandalf.stny.rr.com>
+Date:   Wed, 27 Oct 2010 02:28:10 +0800
+Message-ID: <AANLkTinsRMwtTzdRd89aKxFddcS8fwtOowtB4OT9vqY+@mail.gmail.com>
+Subject: Re: patch v2: [RFC 2/2] ftrace/MIPS: Add support for C version of recordmcount
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     John Reiser <jreiser@bitwagon.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28245
+X-archive-position: 28246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 10/26/2010 05:47 AM, Maciej W. Rozycki wrote:
-> On Mon, 25 Oct 2010, David Daney wrote:
+On Tue, Oct 26, 2010 at 4:24 AM, Steven Rostedt <rostedt@goodmis.org> wrote:
+> On Tue, 2010-10-26 at 02:17 +0800, wu zhangjin wrote:
+>> On 10/26/10, John Reiser <jreiser@bitwagon.com> wrote:
+>> > Here's a second try [discard the first] for handling MIPS64 in
+>> > recordmcount.[ch].
+>>
+>> Just tested the 64bit kernel, it works well.
+>>
+>> Will test the 64bit module and the 32bit kernel and module tomorrow If
+>> time allowed.
+>>
+>> BTW, seems this patch can not be applied directly, suggest you
+>> generate it by "git format" automatically ;-)
 >
->> I don't think a 32-bit gdb can debug 64-bit processes :-(.
 >
->   And it should (assuming ptrace(2) gets things right) -- if what you say
-> is true, then it's a bug rather than a deliberate design decision.  To add
-> some irony, MIPS GDB is always 64-bit internally.
->
->>> (gdb) r
->>> Starting program: /home/camm/gcl-2.6.8pre/unixport/saved_pre_gcl
->>> /home/wingsun/develop/build/gdb/gdb-6.8/gdb/mips-tdep.c:603: internal-error:
->>> bad register size
->>> A problem internal to GDB has been detected,
->>> further debugging may prove unreliable.
->
->   Try a newer version though -- GDB 7.2 has been out for a (short) while
-> now.  You're missing 2.5 years of development.  If still unsuccessful with
-> a pristine release from ftp.gnu.org, then file a bug report at
-> http://sourceware.org/gdb/bugs/.
->
+> Great! If it all passes nicely, can I get a tested-by from you, and a
+> patch that enables it for mips with an Acked-by: from Ralf?
 
-After more though, I think you may have to configure with 
---enable-64-bit-bfd for a 32-bit gdb to work on 64-bit processes. 
-Although I have not actually tested that.  In the past, I have just 
-built a native 64-bit gdb.
+Based on John's patch, I just added the support(no -m or --module for
+recordmcount is needed) for MIPS module and tested it, it works well.
+Will send it out after the testing the 32bit support.
 
-David Daney
+Regards,
+Wu Zhangjin

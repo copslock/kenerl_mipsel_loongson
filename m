@@ -1,50 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2010 13:00:48 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:54223 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491020Ab0J0K7m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Oct 2010 12:59:42 +0200
-Received: by yxi11 with SMTP id 11so277081yxi.36
-        for <multiple recipients>; Wed, 27 Oct 2010 03:59:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2010 13:11:17 +0200 (CEST)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:49162 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490981Ab0J0LLO convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 27 Oct 2010 13:11:14 +0200
+Received: by wwb39 with SMTP id 39so541666wwb.24
+        for <multiple recipients>; Wed, 27 Oct 2010 04:11:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=r88Qf6iFq/22LlMdTcIr2KsKyDhPc241rfoEjVwkJpY=;
-        b=Z54sU3tGn5Us+HCBIQe7w1PClp+RI7CCbvzgwE96i+uacv6lJ1LX+ZO0R9Bi3pfPux
-         wjJ0AdGCTa5PyWUUOvAQ/S8YxUVbp3AHDXlR+IFgCMD4hdEdy8F4uxnTAV702/bVSsSb
-         NDa2a+XEcZ/561gwGbW8oiggkBEer4y3EGv4A=
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=Wj9LU8H0Brie7bN9H7F+XtUL2dBcXLDyXANQlVGVa9o=;
+        b=Qc0DFOMCppJ+Y0IfT5JzFCL0FZvzqwlcW/atPgfEdbEqrY/k1uuaQiJoqWhsXqEQc+
+         +fF4NcRkdlp8/YmFCN4p4FqPczoj1ovzyyUIH8XNm8XzcSPlj/FGCq6sQzFB+ftUG62y
+         Q4XfC82QmHFpR1EkJrodA7ivwdYVzlNOU4cNs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=S1GSJ7MIP2U2uFNnSU+OyhL5uS63iWXNZUExRNXU5vPVEvDQ8JQIRrYQTW2uT+LfRi
-         ztz5oMuC6FgD6Ef8n9fGdLqspLhLDsG2KypaH4/pi2syu34qvR9/wbyWVtruUzTF/bnw
-         e+OSRixW3+gbVfaeShkTIwkfBHd5PCCSCuzcI=
-Received: by 10.42.15.12 with SMTP id j12mr7477788ica.382.1288177175632;
-        Wed, 27 Oct 2010 03:59:35 -0700 (PDT)
-Received: from localhost.localdomain ([61.48.71.2])
-        by mx.google.com with ESMTPS id u6sm10943197ibd.12.2010.10.27.03.59.31
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 27 Oct 2010 03:59:34 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     rostedt@goodmis.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     John Reiser <jreiser@bitwagon.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>,
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=oVVxOj0KXIlm+Gq0c5oYWbOhN6JpI2s9m1UowxCxZpprrm0cBx4pS5Smvsig9qT5+X
+         O6pu4WaeEQztx8PFHHjZboU8lrwY4XchGh9K44rPPz6TgWAwr62WWbkLR9fUuB1V0Kii
+         kuoZw/I7exEuxDXTHZP8/zT70byFpFhalIXm8=
+MIME-Version: 1.0
+Received: by 10.216.62.140 with SMTP id y12mr8794375wec.100.1288177868788;
+ Wed, 27 Oct 2010 04:11:08 -0700 (PDT)
+Received: by 10.216.176.203 with HTTP; Wed, 27 Oct 2010 04:11:08 -0700 (PDT)
+In-Reply-To: <ed5f624f16b4b8ff1ee9fa688b3a5b715a0b913d.1287779153.git.wuzhangjin@gmail.com>
+References: <cover.1287779153.git.wuzhangjin@gmail.com>
+        <ed5f624f16b4b8ff1ee9fa688b3a5b715a0b913d.1287779153.git.wuzhangjin@gmail.com>
+Date:   Wed, 27 Oct 2010 19:11:08 +0800
+Message-ID: <AANLkTin6VT=7wQY9NX2+9E22sQiCP74rMPzxBYN=jRAA@mail.gmail.com>
+Subject: Re: [RFC 1/2] MIPS: tracing/ftrace: Replace in_module() with a
+ generic in_kernel_space()
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>, rostedt@goodmis.org,
         Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH 2/3] ftrace/MIPS: Add module support for C version of recordmcount
-Date:   Wed, 27 Oct 2010 18:59:08 +0800
-Message-Id: <b866f0138224340a132d31861fa3f9300dee30ac.1288176026.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <cover.1288176026.git.wuzhangjin@gmail.com>
-References: <cover.1288176026.git.wuzhangjin@gmail.com>
-In-Reply-To: <cover.1288176026.git.wuzhangjin@gmail.com>
-References: <cover.1288176026.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28258
+X-archive-position: 28259
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,205 +51,198 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+Hi, Ralf
 
-Since MIPS modules' address space differs from the core kernel space, to access
-the _mcount in the core kernel, the kernel functions in modules must use long
-call (-mlong-calls): load the _mcount address into one register and jump to the
-address stored by the register:
+I have sent the [RFC 2/2] patch in another patchset [Add C version of
+recordmcount for MIPS], and this [RFC 1/2] is also needed to discard
+the old assumption on the module address space, so, could you please
+apply it directly? or, should I resend it?
 
- c:  3c030000        lui     v1,0x0  <-------->  b label
-           c: R_MIPS_HI16  _mcount
-           c: R_MIPS_NONE  *ABS*
-           c: R_MIPS_NONE  *ABS*
-10:  64630000        daddiu  v1,v1,0
-          10: R_MIPS_LO16 _mcount
-          10: R_MIPS_NONE *ABS*
-          10: R_MIPS_NONE *ABS*
-14:	03e0082d 	move	at,ra
-18:	0060f809 	jalr	v1
-label:
+You can get it here:
 
-In the old Perl version of recordmcount, we only need to record the position of
-the 1st R_MIPS_HI16 type of _mcount, and later, in ftrace_make_nop(), replace
-the instruction in this position by a "b label" and in ftrace_make_call(),
-replace it back.
+[RFC,1/2] MIPS: tracing/ftrace: Replace in_module() with a generic
+in_kernel_space()
+http://patchwork.linux-mips.org/patch/1730/
 
-But, the default C version of recordmcount records all of the _mcount symbols,
-so, we must filter the 2nd _mcount like the Perl version of recordmcount does.
+And before applying it, you need to apply this mini patch at first,
+otherwise, there will be conflict.
 
-The C version of recordmcount copes with the symbols before they are linked, So
-It doesn't know the type of the symbols and therefore can not filter the
-symbols as the Perl version of recordmcount does. But as we can see above, the
-2nd _mcount symbols of the long call alawys follows the 1st _mcount symbol of
-the same long call, which means the offset from the 1st to the 2nd is fixed, it
-is 0x10-0xc = 4 here, 4 is the length of the 1st load instruciton, for MIPS has
-fixed length of instructions, this offset is always 4.
+MIPS: tracing/ftrace: Speedup a little for function graph tracer
+http://patchwork.linux-mips.org/patch/1728/
 
-And as we know, the _mcount is inserted into the entry of every kernel
-function, the offset between the other _mcount's is expected to be always
-bigger than 4. So, to filter the 2ns _mcount symbol of the long call, we can
-simply check the offset between two _mcount symbols, If it is 4, then, filter
-the 2nd _mcount symbol.
+Regards,
+Wu zhangjin
 
-To avoid touching too much code, an 'empty' function fn_is_fake_mcount() is
-added for all of the archs, and the specific archs can override it via chaning
-the function pointer: is_fake_mcount in do_file() with the e_machine. e.g. This
-patch adds MIPS_is_fake_mcount() to override the default fn_is_fake_mcount()
-pointed by is_fake_mcount.
-
-This fn_is_fake_mcount() checks if the _mcount symbol is fake, e.g. the 2nd
-_mcount symbol of the long call is fake, for there are 2 _mcount symbols mapped
-to one real mcount call, so, one of them is fake and must be filtered.
-
-This fn_is_fake_mcount() is called in sift_rel_mcount() after finding the
-_mcount symbols and before adding the _mcount symbol into mrelp, so, it can
-prevent the fake mcount symbol going into the last __mcount_loc table.
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- scripts/recordmcount.c |    5 +++-
- scripts/recordmcount.h |   56 +++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 57 insertions(+), 4 deletions(-)
-
-diff --git a/scripts/recordmcount.c b/scripts/recordmcount.c
-index 2d32b9c..f2f32ee 100644
---- a/scripts/recordmcount.c
-+++ b/scripts/recordmcount.c
-@@ -325,8 +325,10 @@ do_file(char const *const fname)
- 		}
- 		if (EM_S390 == w2(ehdr->e_machine))
- 			reltype = R_390_32;
--		if (EM_MIPS == w2(ehdr->e_machine))
-+		if (EM_MIPS == w2(ehdr->e_machine)) {
- 			reltype = R_MIPS_32;
-+			is_fake_mcount32 = MIPS32_is_fake_mcount;
-+		}
- 		do32(ehdr, fname, reltype);
- 	} break;
- 	case ELFCLASS64: {
-@@ -343,6 +345,7 @@ do_file(char const *const fname)
- 			reltype = R_MIPS_64;
- 			Elf64_r_sym = MIPS64_r_sym;
- 			Elf64_r_info = MIPS64_r_info;
-+			is_fake_mcount64 = MIPS64_is_fake_mcount;
- 		}
- 		do64(ghdr, fname, reltype);
- 	} break;
-diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
-index 190fd18..58e933a 100644
---- a/scripts/recordmcount.h
-+++ b/scripts/recordmcount.h
-@@ -19,12 +19,16 @@
-  * Licensed under the GNU General Public License, version 2 (GPLv2).
-  */
- #undef append_func
-+#undef is_fake_mcount
-+#undef fn_is_fake_mcount
-+#undef MIPS_is_fake_mcount
- #undef sift_rel_mcount
- #undef find_secsym_ndx
- #undef __has_rel_mcount
- #undef has_rel_mcount
- #undef tot_relsize
- #undef do_func
-+#undef Elf_Addr
- #undef Elf_Ehdr
- #undef Elf_Shdr
- #undef Elf_Rel
-@@ -50,6 +54,10 @@
- # define has_rel_mcount		has64_rel_mcount
- # define tot_relsize		tot64_relsize
- # define do_func		do64
-+# define is_fake_mcount		is_fake_mcount64
-+# define fn_is_fake_mcount	fn_is_fake_mcount64
-+# define MIPS_is_fake_mcount	MIPS64_is_fake_mcount
-+# define Elf_Addr		Elf64_Addr
- # define Elf_Ehdr		Elf64_Ehdr
- # define Elf_Shdr		Elf64_Shdr
- # define Elf_Rel		Elf64_Rel
-@@ -74,6 +82,10 @@
- # define has_rel_mcount		has32_rel_mcount
- # define tot_relsize		tot32_relsize
- # define do_func		do32
-+# define is_fake_mcount		is_fake_mcount32
-+# define fn_is_fake_mcount	fn_is_fake_mcount32
-+# define MIPS_is_fake_mcount	MIPS32_is_fake_mcount
-+# define Elf_Addr		Elf32_Addr
- # define Elf_Ehdr		Elf32_Ehdr
- # define Elf_Shdr		Elf32_Shdr
- # define Elf_Rel		Elf32_Rel
-@@ -92,7 +104,13 @@
- # define _size			4
- #endif
- 
--/* Functions and pointers that 64-bit EM_MIPS can override. */
-+/* Functions and pointers that do_file() may override for specific e_machine. */
-+static int fn_is_fake_mcount(Elf_Rel const *rp)
-+{
-+	return 0;
-+}
-+static int (*is_fake_mcount)(Elf_Rel const *rp) = fn_is_fake_mcount;
-+
- static uint_t fn_ELF_R_SYM(Elf_Rel const *rp)
- {
- 	return ELF_R_SYM(_w(rp->r_info));
-@@ -105,6 +123,39 @@ static void fn_ELF_R_INFO(Elf_Rel *const rp, unsigned sym, unsigned type)
- }
- static void (*Elf_r_info)(Elf_Rel *const rp, unsigned sym, unsigned type) = fn_ELF_R_INFO;
- 
-+/*
-+ * MIPS mcount long call has 2 _mcount symbols, only the position of the 1st
-+ * _mcount symbol is needed for dynamic function tracer, with it, to disable
-+ * tracing(ftrace_make_nop), the instruction in the position is replaced with
-+ * the "b label" instruction, to enable tracing(ftrace_make_call), replace the
-+ * instruction back. So, here, we set the 2nd one as fake and filter it.
-+ *
-+ * c:	3c030000	lui	v1,0x0		<-->	b	label
-+ *		c: R_MIPS_HI16	_mcount
-+ *		c: R_MIPS_NONE	*ABS*
-+ *		c: R_MIPS_NONE	*ABS*
-+ * 10:	64630000	daddiu	v1,v1,0
-+ *		10: R_MIPS_LO16	_mcount
-+ *		10: R_MIPS_NONE	*ABS*
-+ *		10: R_MIPS_NONE	*ABS*
-+ * 14:	03e0082d	move	at,ra
-+ * 18:	0060f809	jalr	v1
-+ * label:
-+ */
-+#define MIPS_FAKEMCOUNT_OFFSET	4
-+
-+static int MIPS_is_fake_mcount(Elf_Rel const *rp)
-+{
-+	static Elf_Addr old_r_offset;
-+	Elf_Addr current_r_offset = _w(rp->r_offset);
-+	int is_fake;
-+
-+	is_fake = old_r_offset &&
-+		(current_r_offset - old_r_offset == MIPS_FAKEMCOUNT_OFFSET);
-+	old_r_offset = current_r_offset;
-+
-+	return is_fake;
-+}
- 
- /* Append the new shstrtab, Elf_Shdr[], __mcount_loc and its relocations. */
- static void append_func(Elf_Ehdr *const ehdr,
-@@ -183,7 +234,6 @@ static void append_func(Elf_Ehdr *const ehdr,
- 	uwrite(fd_map, ehdr, sizeof(*ehdr));
- }
- 
--
- /*
-  * Look at the relocations in order to find the calls to mcount.
-  * Accumulate the section offsets that are found, and their relocation info,
-@@ -233,7 +283,7 @@ static uint_t *sift_rel_mcount(uint_t *mlocp,
- 				mcountsym = Elf_r_sym(relp);
- 		}
- 
--		if (mcountsym == Elf_r_sym(relp)) {
-+		if (mcountsym == Elf_r_sym(relp) && !is_fake_mcount(relp)) {
- 			uint_t const addend = _w(_w(relp->r_offset) - recval);
- 
- 			mrelp->r_offset = _w(offbase
--- 
-1.7.1
+On Sat, Oct 23, 2010 at 4:58 AM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
+>
+> The module space may be the same as the kernel space sometimes(with
+> related kernel config and gcc options), but the current in_module()
+> assume they are always different, so, it should be fixed.
+>
+> As we know, for the limitation of the fixed 32bit long instruction of
+> MIPS, the "jal target" can only jump to an address whose offset from the
+> jal instruction is smaller than 2^28=256M, which means if the address is
+> in kernel space(the kernel image should be always smaller than 256M), no
+> long call is needed to jump from the address to _mcount, and further, if
+> the module use the same space as kernel space, the situation for module
+> will be the same as the kernel. but currently for MIPS, in most of the
+> situations, module has different space(0xc0000000) from the kernel
+> space(0x80000000) and the offset is bigger than 256M, a register is
+> needed to load the address of _mcount and another instruction "jal
+> <register>" is needed to jump from an address to _mcount.
+>
+> The above can be explained as:
+>
+> if (in_kernel_space(addr)) {
+>        jal _mcount;
+> } else {
+>        load the address of _mcount to a register
+>        jalr <register>
+> }
+>
+> As we can see, the above explanation covers all of the situations well
+> and reflect the reality, so, we decide to add a new in_kernel_space()
+> instead of the old in_module().
+>
+> Based on core_kernel_text() from kernel/extable.c, in_kernel_space() is
+> easily to be added. Because all of the functions in the init sections is
+> anotated with notrace, so, differ from core_kernel_text(),
+> in_kernel_space() doesn't care about init section.
+>
+> With this new in_kernel_space(), the ftrace_make_{nop,call} can be
+> explained as following.
+>
+> ftrace_make_call()                                      ftrace_make_nop()
+>
+> if (in_kernel_space(addr)) {
+>        jal _mcount;    (jal ftrace_caller)       <-->  nop
+> } else {
+>        load the address of _mcount to a register <-->  b label
+>        jalr <register>
+>        label:
+> }
+>
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> ---
+>  arch/mips/kernel/ftrace.c |   66 ++++++++++++++++++++++++--------------------
+>  1 files changed, 36 insertions(+), 30 deletions(-)
+>
+> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+> index 65f1949..6ff5a54 100644
+> --- a/arch/mips/kernel/ftrace.c
+> +++ b/arch/mips/kernel/ftrace.c
+> @@ -17,21 +17,7 @@
+>  #include <asm/cacheflush.h>
+>  #include <asm/uasm.h>
+>
+> -/*
+> - * If the Instruction Pointer is in module space (0xc0000000), return true;
+> - * otherwise, it is in kernel space (0x80000000), return false.
+> - *
+> - * FIXME: This will not work when the kernel space and module space are the
+> - * same. If they are the same, we need to modify scripts/recordmcount.pl,
+> - * ftrace_make_nop/call() and the other related parts to ensure the
+> - * enabling/disabling of the calling site to _mcount is right for both kernel
+> - * and module.
+> - */
+> -
+> -static inline int in_module(unsigned long ip)
+> -{
+> -       return ip & 0x40000000;
+> -}
+> +#include <asm-generic/sections.h>
+>
+>  #ifdef CONFIG_DYNAMIC_FTRACE
+>
+> @@ -69,6 +55,20 @@ static inline void ftrace_dyn_arch_init_insns(void)
+>  #endif
+>  }
+>
+> +/*
+> + * Check if the address is in kernel space
+> + *
+> + * Clone core_kernel_text() from kernel/extable.c, but don't call
+> + * init_kernel_text() for Ftrace don't trace functions in init sections.
+> + */
+> +static inline int in_kernel_space(unsigned long ip)
+> +{
+> +       if (ip >= (unsigned long)_stext &&
+> +           ip <= (unsigned long)_etext)
+> +               return 1;
+> +       return 0;
+> +}
+> +
+>  static int ftrace_modify_code(unsigned long ip, unsigned int new_code)
+>  {
+>        int faulted;
+> @@ -91,10 +91,16 @@ int ftrace_make_nop(struct module *mod,
+>        unsigned long ip = rec->ip;
+>
+>        /*
+> -        * We have compiled module with -mlong-calls, but compiled the kernel
+> -        * without it, we need to cope with them respectively.
+> +        * If ip is in kernel space, long call is not needed, otherwise, it is
+> +        * needed.
+>         */
+> -       if (in_module(ip)) {
+> +       if (in_kernel_space(ip)) {
+> +               /*
+> +                * move at, ra
+> +                * jal _mcount          --> nop
+> +                */
+> +               new = INSN_NOP;
+> +       } else {
+>  #if defined(KBUILD_MCOUNT_RA_ADDRESS) && defined(CONFIG_32BIT)
+>                /*
+>                 * lui v1, hi_16bit_of_mcount        --> b 1f (0x10000005)
+> @@ -117,12 +123,6 @@ int ftrace_make_nop(struct module *mod,
+>                 */
+>                new = INSN_B_1F_4;
+>  #endif
+> -       } else {
+> -               /*
+> -                * move at, ra
+> -                * jal _mcount          --> nop
+> -                */
+> -               new = INSN_NOP;
+>        }
+>        return ftrace_modify_code(ip, new);
+>  }
+> @@ -132,8 +132,12 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+>        unsigned int new;
+>        unsigned long ip = rec->ip;
+>
+> -       /* ip, module: 0xc0000000, kernel: 0x80000000 */
+> -       new = in_module(ip) ? insn_lui_v1_hi16_mcount : insn_jal_ftrace_caller;
+> +       /*
+> +        * If ip is in kernel space, long call is not needed, otherwise, it is
+> +        * needed.
+> +        */
+> +       new = in_kernel_space(ip) ? insn_jal_ftrace_caller :
+> +               insn_lui_v1_hi16_mcount;
+>
+>        return ftrace_modify_code(ip, new);
+>  }
+> @@ -200,11 +204,13 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
+>        int faulted;
+>
+>        /*
+> -        * For module, move the ip from calling site of mcount after the
+> -        * instruction "lui v1, hi_16bit_of_mcount"(offset is 24), but for
+> -        * kernel, move after the instruction "move ra, at"(offset is 16)
+> +        * If self_addr is in kernel space, long call is not needed, only need
+> +        * to move ip after the instruction "move ra, at"(offset is 16),
+> +        * otherwise, long call is needed, need to move ip from calling site of
+> +        * mcount after the instruction "lui v1, hi_16bit_of_mcount"(offset is
+> +        * 24).
+>         */
+> -       ip = self_addr - (in_module(self_addr) ? 24 : 16);
+> +       ip = self_addr - (in_kernel_space(self_addr) ? 16 : 24);
+>
+>        /*
+>         * search the text until finding the non-store instruction or "s{d,w}
+> --
+> 1.7.1
+>
+>

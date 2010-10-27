@@ -1,79 +1,128 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2010 10:11:17 +0200 (CEST)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:60503 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491122Ab0J0ILK convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 27 Oct 2010 10:11:10 +0200
-Received: by ywg4 with SMTP id 4so188638ywg.36
-        for <multiple recipients>; Wed, 27 Oct 2010 01:11:02 -0700 (PDT)
-Received: by 10.151.108.9 with SMTP id k9mr16814104ybm.269.1288167061925; Wed,
- 27 Oct 2010 01:11:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2010 11:31:31 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:54527 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491051Ab0J0JbX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Oct 2010 11:31:23 +0200
+Date:   Wed, 27 Oct 2010 10:31:23 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     wu zhangjin <wuzhangjin@gmail.com>
+cc:     John Reiser <jreiser@bitwagon.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: patch v2: [RFC 2/2] ftrace/MIPS: Add support for C version of
+ recordmcount
+In-Reply-To: <AANLkTikRnLefhL0T7f4++qHx8NmXOo4BbjkscKjAW57P@mail.gmail.com>
+Message-ID: <alpine.LFD.2.00.1010270948260.15889@eddie.linux-mips.org>
+References: <AANLkTinwXjLAYACUfhLYaocHD_vBbiErLN3NjwN8JqSy@mail.gmail.com>        <4CC49A99.1080601@bitwagon.com>        <alpine.LFD.2.00.1010250435540.15889@eddie.linux-mips.org>        <4CC5B474.9050503@bitwagon.com>        <alpine.LFD.2.00.1010261409190.15889@eddie.linux-mips.org>
+ <AANLkTikRnLefhL0T7f4++qHx8NmXOo4BbjkscKjAW57P@mail.gmail.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.151.15.4 with HTTP; Wed, 27 Oct 2010 01:10:40 -0700 (PDT)
-In-Reply-To: <4CC753BE.5010705@caviumnetworks.com>
-References: <1287090174-15601-1-git-send-email-ddaney@caviumnetworks.com>
- <AANLkTi=M0Fk5EGy+JB2CZcGxspv3hPde10A-R5sUs3Jq@mail.gmail.com> <4CC753BE.5010705@caviumnetworks.com>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Wed, 27 Oct 2010 09:10:40 +0100
-X-Google-Sender-Auth: v7GJmMXVqfecm8k4QhJ0hHChyUM
-Message-ID: <AANLkTin8QWBOTo1dYxY=vAPj8DM3hvDyFmb-xCc=q5k6@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Add some irq definitins required by OF
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <glikely@secretlab.ca>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28252
+X-archive-position: 28253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 26, 2010 at 11:18 PM, David Daney <ddaney@caviumnetworks.com> wrote:
-> On 10/14/2010 06:27 PM, Grant Likely wrote:
->>
->> On Thu, Oct 14, 2010 at 3:02 PM, David Daney<ddaney@caviumnetworks.com>
->>  wrote:
->
-> [...]
->>>
->>> +#define NO_IRQ UINT_MAX
->>
->> Really?  The verdict came down a long time ago that 0 is to be the
->> value that means no irq, and only a few architectures still define
->> NO_IRQ as -1.  It is assumed that the architectures which do not
->> define NO_IRQ use 0 as the invalid value.  Mostly notably x86 does not
->> define NO_IRQ, and Linus nack'd the patch to add it.
->>
->
-> I was not part of that discussion.
->
-> I would however note, that all the irq functions return unsigned, so a value
-> of -1 is meaningless.  Also my understanding is that 8259 based systems use
-> the values of 0 - 15 as the interrupt numbers, making 0 unavailable for use
-> as NO_IRQ.
+On Wed, 27 Oct 2010, wu zhangjin wrote:
 
-This is an old discussion which has been debated thoroughly and
-ultimately resolved by Linus[1].  NO_IRQ is in the (slow) process of
-being removed entirely.  It is worth reading the entire thread for
-background.
+> will this help?
+> 
+> typedef struct {
+>         Elf64_Addr    r_offset;               /* Address */
+>         union {
+>                 struct {
+>                         Elf64_Word r_sym;
+>                         myElf64_byte r_ssym;  /* Special sym:
+> gp-relative, etc. */
+>                         myElf64_byte r_type3;
+>                         myElf64_byte r_type2;
+>                         myElf64_byte r_type;
+>                 } r_info;
+>                 Elf64_Xword gABI_r_info;
+>         };
+>         Elf64_Sxword  r_addend;               /* Addend */
+> } MIPS64_Rela;
 
-[1] http://lkml.org/lkml/2005/11/21/200
+ More or less, although you need to give your union a name to access its 
+members. ;)  It may be simpler to refer to r_info only, e.g. something 
+along these lines:
 
-An irq value of 0 means no irq, and the correct cross-platform test is
-"if (!irq)".  Note that this is the /linux/ irq number, not the
-hardware irq number.  Of course interrupt controller hardware may
-define an interrupt number zero, it must not be mapped to linux irq
-number zero.
+typedef uint8_t myElf64_Byte;
+union mips_r_info {
+	Elf64_Xword r_info;
+	struct {
+		Elf64_Word r_sym;
+		myElf64_Byte r_ssym;
+		myElf64_Byte r_type3;
+		myElf64_Byte r_type2;
+		myElf64_Byte r_type;
+	} r_mips;
+};
 
-As you note, 8259 systems do define an irq number 0 which is mapped to
-the timer, but it is not exported to driver code.  If an architecture
-wants to use irq 0 directly, then it should be contained in the arch
-code.
+static uint64_t MIPS64_r_sym(Elf64_Rel const *rp)
+{
+	return w(((union mips_r_info){ .r_info = rp->r_info }).r_mips.r_sym);
+}
 
-g.
+static void MIPS64_r_info(Elf64_Rel *const rp,
+			  unsigned int sym, unsigned int type)
+{
+	rp->r_info = ((union mips_r_info){
+		.r_mips = { .r_sym = w(sym), .r_type = type }
+	}).r_info;
+}
+
+Untested, but GCC 4.1.2 seems to turn it into decent big-endian code:
+
+tmp.o:     file format elf64-tradbigmips
+
+Disassembly of section .text:
+
+0000000000000000 <MIPS64_r_sym>:
+   0:	03e00008 	jr	ra
+   4:	9c820008 	lwu	v0,8(a0)
+
+0000000000000008 <MIPS64_r_info>:
+   8:	30c600ff 	andi	a2,a2,0xff
+   c:	0005283c 	dsll32	a1,a1,0x0
+  10:	00a62825 	or	a1,a1,a2
+  14:	03e00008 	jr	ra
+  18:	fc850008 	sd	a1,8(a0)
+
+and not so decent little-endian code (too many shifts):
+
+tmpel.o:     file format elf64-tradlittlemips
+
+Disassembly of section .text:
+
+0000000000000000 <MIPS64_r_sym>:
+   0:	dc820008 	ld	v0,8(a0)
+   4:	00021000 	sll	v0,v0,0x0
+   8:	0002103c 	dsll32	v0,v0,0x0
+   c:	03e00008 	jr	ra
+  10:	0002103e 	dsrl32	v0,v0,0x0
+
+0000000000000018 <MIPS64_r_info>:
+  18:	0005283c 	dsll32	a1,a1,0x0
+  1c:	0006363c 	dsll32	a2,a2,0x18
+  20:	0005283e 	dsrl32	a1,a1,0x0
+  24:	00a62825 	or	a1,a1,a2
+  28:	03e00008 	jr	ra
+  2c:	fc850008 	sd	a1,8(a0)
+
+GCC may have been fixed/improved since though (I'd expect so, but didn't 
+have the resources to upgrade yet, so check yourself).
+
+ Here's my sign-off mark if you'd like to use the code above.
+
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+
+  Maciej

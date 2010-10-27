@@ -1,46 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2010 12:59:34 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Oct 2010 12:59:58 +0200 (CEST)
 Received: from mail-iw0-f177.google.com ([209.85.214.177]:49473 "EHLO
         mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490993Ab0J0K71 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Oct 2010 12:59:27 +0200
-Received: by iwn8 with SMTP id 8so689267iwn.36
-        for <multiple recipients>; Wed, 27 Oct 2010 03:59:25 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1490995Ab0J0K7b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Oct 2010 12:59:31 +0200
+Received: by mail-iw0-f177.google.com with SMTP id 8so689267iwn.36
+        for <multiple recipients>; Wed, 27 Oct 2010 03:59:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=obLivEJjAp4OGs/MlYzxGwS/zBBuJbJobL41Ygf1gZI=;
-        b=NAZV6wHx0AeJp2et+Ag6fEvibR7InXE+xFPRSITVzIsXlo/65GDrsva3tHZ+E/ygPq
-         15WPSvO7FiGoJEtFnqxZp8V/y/DH7TMG9pOLhBoiromte5bh4IpSGDWDtyggsI0C0LH2
-         siZbfG49h89jkWMZsMzCYqg0tYCTBaPaU6z88=
+         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
+        bh=VROtGz49fSNIb4fTKkwDmwFCkb9rw9VFFISzwog2WGk=;
+        b=LKlZFzRAr3avyBLoBmoe5+gjLrOMnlj4LCHVO+Fjdlh6JVH9MQCuZ5Rd5S2+iPuJHz
+         mgQslu0fYCOodYe+7aarjh6+wCM9UtECB46j/e1e2Qu+cTD2Txk9wqc3nDuZBTOOdYAo
+         TKKQFHXOFnJPnAfPI8Gc7t6l0rxSBUDaZReN0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=WAP7FE2dHsgRlOqUSNBSQZl/gkCyL8SqNf2IUmhwE6tESkPebWyqppF/gvP9n56Z0x
-         AepC3IN88hvSPEXg+yYLPAVREB/OSCRm3gtKSaSY77Ze4d9CMVL6tT9lCRS98aSRWON8
-         dDQgQYHdb6g6RdioAOvfLn2pn/vBeTc5/ca3g=
-Received: by 10.231.11.130 with SMTP id t2mr8430844ibt.154.1288177165655;
-        Wed, 27 Oct 2010 03:59:25 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=C12dikx7VVLPmj2k76lZaopmZsNVXMj3kPaEWDvgghzVnWPnHhFjRTXGRmVdXIi5Ch
+         DXndp2d/yyUiZIqzJNutq4QaqCwA4eZSv7HcYoSlDaxFMwziPUrYMkLf0x7bbvpUeX8U
+         4jz/Nis6ebLFKO9CmKkwkh7ZRXomkoSWqp3dk=
+Received: by 10.231.11.66 with SMTP id s2mr8391679ibs.167.1288177170778;
+        Wed, 27 Oct 2010 03:59:30 -0700 (PDT)
 Received: from localhost.localdomain ([61.48.71.2])
-        by mx.google.com with ESMTPS id u6sm10943197ibd.12.2010.10.27.03.59.21
+        by mx.google.com with ESMTPS id u6sm10943197ibd.12.2010.10.27.03.59.26
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 27 Oct 2010 03:59:24 -0700 (PDT)
+        Wed, 27 Oct 2010 03:59:30 -0700 (PDT)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     rostedt@goodmis.org, Ralf Baechle <ralf@linux-mips.org>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:     John Reiser <jreiser@bitwagon.com>,
         "Maciej W. Rozycki" <macro@linux-mips.org>,
         David Daney <ddaney@caviumnetworks.com>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH 0/3] Add C version of recordmcount for MIPS
-Date:   Wed, 27 Oct 2010 18:59:06 +0800
-Message-Id: <cover.1288176026.git.wuzhangjin@gmail.com>
+        Wu Zhangjin <wuzhangjin@gmail.com>,
+        John Reiser <jreiser@BitWagon.com>
+Subject: [PATCH 1/3] ftrace/MIPS: Add MIPS64 support for C version of recordmcount
+Date:   Wed, 27 Oct 2010 18:59:07 +0800
+Message-Id: <910dc2d5ae1ed042df4f96815fe4a433078d1c2a.1288176026.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.7.1
+In-Reply-To: <cover.1288176026.git.wuzhangjin@gmail.com>
+References: <cover.1288176026.git.wuzhangjin@gmail.com>
+In-Reply-To: <cover.1288176026.git.wuzhangjin@gmail.com>
+References: <cover.1288176026.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28255
+X-archive-position: 28256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,169 +55,184 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This patchset adds the C Version of recordmcount for MIPS, it includes the
-necessary fixups for the MIPS64 support and module support of the old
-recordmcount.c.
+MIPS64 has 'weird' Elf64_Rel.r_info[1,2], which must be used instead of
+the generic Elf64_Rel.r_info, otherwise, the C version of recordmcount
+will not work for "segmentation fault".
 
-To add MIPS64 support, John has introduced function pointers which can be
-overriden by specific e_machine(.e.g. EM_MIPS, EM_xx) in do_file() of
-scripts/recordmcount.c. this method helps a lot, when migrating from the old
-Perl recordmcount, the left Archs may possibly apply this method to add their
-specific support. Maciej has simplified the MIPS specific ELF64_Rel.r_info and
-the related functions.
+----
+[1] http://techpubs.sgi.com/library/manuals/4000/007-4658-001/pdf/007-4658-001.pdf
+[2] arch/mips/include/asm/module.h
 
-The module support for MIPS is such a good application of John's method, it
-adds MIPS_is_fake_mcount() to filter one of the two _mcount symbol of the long
-mcount call, a function pointer: is_fake_mcount() points to the default 'empty'
-fn_is_fake_mcount(), we overrides it by MIPS_is_fake_mcount() for EM_MIPS in
-do_file().
+Signed-off-by: John Reiser <jreiser@BitWagon.com>
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+Tested-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ scripts/recordmcount.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ scripts/recordmcount.h |   34 ++++++++++++++++++++++++++++++----
+ 2 files changed, 71 insertions(+), 4 deletions(-)
 
-At last, HAVE_C_RECORDMCOUNT is selected for MIPS to enable the C version of
-recordmcount.
-
-The whole support has been tested on my YeeLoong laptop(MIPS, Litten Endian),
-including: 32bit kernel and moduels, 64bit kernel and modules.
-
-Here is part of the testing log:
-
--------
-
-root@yeeloong:~# lsmod
-Module                  Size  Used by
-yeeloong_laptop        16142  0 
-sparse_keymap           3803  1 yeeloong_laptop
-hwmon                   1841  1 yeeloong_laptop
-backlight               5627  1 yeeloong_laptop
-power_supply            9512  1 yeeloong_laptop
-output                  2524  1 yeeloong_laptop
-
-1. 32bit kernel and module
-
-root@yeeloong:~# uname -a
-Linux yeeloong 2.6.36-ftrace+ #71 PREEMPT Wed Oct 27 15:03:02 CST 2010 mips GNU/Linux
-root@yeeloong:~# mount -t debugfs nodev /debug
-root@yeeloong:~# echo function > /debug/tracing/current_tracer
-root@yeeloong:~# echo 1 > /debug/tracing/tracing_enabled
-root@yeeloong:~# sleep 1
-root@yeeloong:~# echo 0 > /debug/tracing/tracing_enabled
-root@yeeloong:~# head -20 /debug/tracing/trace
-# tracer: function
-#
-#	    TASK-PID	CPU#	TIMESTAMP  FUNCTION
-#	       | |	 |	    |	      |
-	    Xorg-1443  [000]   132.196336: remove_wait_queue <-poll_freewait
-	    Xorg-1443  [000]   132.196337: fput <-poll_freewait
-	    Xorg-1443  [000]   132.196338: remove_wait_queue <-poll_freewait
-	    Xorg-1443  [000]   132.196339: fput <-poll_freewait
-	    Xorg-1443  [000]   132.196340: remove_wait_queue <-poll_freewait
-	    Xorg-1443  [000]   132.196341: fput <-poll_freewait
-	    Xorg-1443  [000]   132.196342: remove_wait_queue <-poll_freewait
-	    Xorg-1443  [000]   132.196343: fput <-poll_freewait
-	    Xorg-1443  [000]   132.196344: remove_wait_queue <-poll_freewait
-	    Xorg-1443  [000]   132.196345: fput <-poll_freewait
-	    Xorg-1443  [000]   132.196346: remove_wait_queue <-poll_freewait
-	    Xorg-1443  [000]   132.196347: fput <-poll_freewait
-	    Xorg-1443  [000]   132.196348: remove_wait_queue <-poll_freewait
-	    Xorg-1443  [000]   132.196349: fput <-poll_freewait
-	    Xorg-1443  [000]   132.196351: poll_select_copy_remaining <-sys_select
-	    Xorg-1443  [000]   132.196352: ktime_get_ts <-poll_select_copy_remaining
-root@yeeloong:~# echo *yeeloong* > /debug/tracing/setKset_ftrace_filter
-root@yeeloong:~# echo 1 > /debug/tracing/tracing_enabled
-root@yeeloong:~# (Press Fn + Up/Down to trigger the functions in yeeloong_laptop module) 
-root@yeeloong:~# echo 0 > /tracing/tracing_enabled
-root@yeeloong:~# head -20 /debug/tracing/trace
-# tracer: function
-#
-#	    TASK-PID	CPU#	TIMESTAMP  FUNCTION
-#	       | |	 |	    |	      |
- hald-addon-gene-1397  [000]   168.904096: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   170.414572: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   170.625428: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   170.806029: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   170.977210: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   171.262519: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   171.271132: yeeloong_set_brightness <-backlight_store_brightness
- hald-addon-gene-1397  [000]   171.545363: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   171.679358: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   171.825652: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   171.996121: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   172.246240: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   172.383859: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   172.532963: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   172.844048: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1397  [000]   172.851410: yeeloong_set_brightness <-backlight_store_brightness
-root@yeeloong:~# exit
-
-2. 64bit kernel and module
-
-root@yeeloong:~# uname -a
-Linux yeeloong 2.6.36-ftrace+ #75 PREEMPT Wed Oct 27 16:12:20 CST 2010 mips64 GNU/Linux
-root@yeeloong:~# mount -t debugfs nodev /debug
-root@yeeloong:~# echo function > /debug/tracing/current_tracer 
-root@yeeloong:~# echo 1 > /debug/tracing/tracing_enabled 
-root@yeeloong:~# ls
-[snip]
-root@yeeloong:~# echo 0 > /debug/tracing/tracing_enabled 
-root@yeeloong:~# cat /debug/tracing/trace | head -20
-# tracer: function
-#
-#           TASK-PID    CPU#    TIMESTAMP  FUNCTION
-#              | |       |          |         |
-          <idle>-0     [000]   389.507465: complete <-usb_stor_blocking_completion
-          <idle>-0     [000]   389.507466: default_wake_function <-complete
-          <idle>-0     [000]   389.507467: try_to_wake_up <-default_wake_function
-          <idle>-0     [000]   389.507468: enqueue_task_fair <-try_to_wake_up
-          <idle>-0     [000]   389.507469: T.1160 <-enqueue_task_fair
-          <idle>-0     [000]   389.507470: check_preempt_curr_idle <-try_to_wake_up
-          <idle>-0     [000]   389.507472: usb_free_urb <-usb_hcd_giveback_urb
-          <idle>-0     [000]   389.507473: dma_pool_free <-qh_completions
-          <idle>-0     [000]   389.507475: mod_timer <-scan_async
-          <idle>-0     [000]   389.507476: usb_hcd_irq <-handle_IRQ_event
-          <idle>-0     [000]   389.507477: ohci_irq <-usb_hcd_irq
-          <idle>-0     [000]   389.507481: note_interrupt <-handle_level_irq
-          <idle>-0     [000]   389.507482: compat_irq_unmask <-handle_level_irq
-          <idle>-0     [000]   389.507483: enable_8259A_irq <-compat_irq_unmask
-          <idle>-0     [000]   389.507484: irq_exit <-do_IRQ
-          <idle>-0     [000]   389.507485: rcu_irq_exit <-irq_exit
-root@yeeloong:~# echo *yeeloong* > /debug/tracing/set_ftrace_filter 
-root@yeeloong:~# echo 1 > /debug/tracing/tracing_enabled 
-root@yeeloong:~# (Press Fn + Up/Down here to trigger the kernel functions called in yeeloong_laptop module) 
-root@yeeloong:~# echo 0 > /debug/tracing/tracing_enabled 
-root@yeeloong:~# cat /debug/tracing/trace | head -20
-# tracer: function
-#
-#           TASK-PID    CPU#    TIMESTAMP  FUNCTION
-#              | |       |          |         |
-            hald-1378  [000]   414.479887: yeeloong_get_bat_props <-power_supply_show_property
-            hald-1378  [000]   414.480143: yeeloong_get_bat_props <-power_supply_show_property
-            hald-1378  [000]   414.480327: yeeloong_get_bat_props <-power_supply_show_property
-            hald-1378  [000]   414.480486: yeeloong_get_bat_props <-power_supply_show_property
-            hald-1378  [000]   414.480602: yeeloong_get_bat_props <-power_supply_show_property
-            hald-1378  [000]   414.480741: yeeloong_get_bat_props <-power_supply_show_property
-            hald-1378  [000]   414.480860: yeeloong_get_bat_props <-power_supply_show_property
-         upowerd-1656  [000]   414.481609: yeeloong_get_bat_props <-power_supply_show_property
-         upowerd-1656  [000]   414.482058: yeeloong_get_bat_props <-power_supply_show_property
-         upowerd-1656  [000]   414.482185: yeeloong_get_bat_props <-power_supply_show_property
-         upowerd-1656  [000]   414.482257: yeeloong_get_bat_props <-power_supply_show_property
-         upowerd-1656  [000]   414.482333: yeeloong_get_bat_props <-power_supply_show_property
-         upowerd-1656  [000]   414.482414: yeeloong_get_bat_props <-power_supply_show_property
- hald-addon-gene-1409  [000]   415.412442: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1409  [000]   416.135571: yeeloong_get_brightness <-backlight_show_actual_brightness
- hald-addon-gene-1409  [000]   416.381292: yeeloong_get_brightness <-backlight_show_actual_brightness
-
---------
-
-Thanks all.
-
-Best Regards,
-	Wu Zhangjin
-
-Wu Zhangjin (3):
-  ftrace/MIPS: Add MIPS64 support for C version of recordmcount
-  ftrace/MIPS: Add module support for C version of recordmcount
-  ftrace/MIPS: Enable C Version of recordmcount
-
- arch/mips/Kconfig      |    1 +
- scripts/recordmcount.c |   44 ++++++++++++++++++++++++
- scripts/recordmcount.h |   86 +++++++++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 126 insertions(+), 5 deletions(-)
+diff --git a/scripts/recordmcount.c b/scripts/recordmcount.c
+index 26e1271..2d32b9c 100644
+--- a/scripts/recordmcount.c
++++ b/scripts/recordmcount.c
+@@ -217,6 +217,39 @@ is_mcounted_section_name(char const *const txtname)
+ #define RECORD_MCOUNT_64
+ #include "recordmcount.h"
+ 
++/* 64-bit EM_MIPS has weird ELF64_Rela.r_info.
++ * http://techpubs.sgi.com/library/manuals/4000/007-4658-001/pdf/007-4658-001.pdf
++ * We interpret Table 29 Relocation Operation (Elf64_Rel, Elf64_Rela) [p.40]
++ * to imply the order of the members; the spec does not say so.
++ *	typedef unsigned char Elf64_Byte;
++ * fails on MIPS64 because their <elf.h> already has it!
++ */
++
++typedef uint8_t myElf64_Byte;		/* Type for a 8-bit quantity.  */
++
++union mips_r_info {
++	Elf64_Xword r_info;
++	struct {
++		Elf64_Word r_sym;		/* Symbol index.  */
++		myElf64_Byte r_ssym;		/* Special symbol.  */
++		myElf64_Byte r_type3;		/* Third relocation.  */
++		myElf64_Byte r_type2;		/* Second relocation.  */
++		myElf64_Byte r_type;		/* First relocation.  */
++	} r_mips;
++};
++
++static uint64_t MIPS64_r_sym(Elf64_Rel const *rp)
++{
++	return w(((union mips_r_info){ .r_info = rp->r_info }).r_mips.r_sym);
++}
++
++static void MIPS64_r_info(Elf64_Rel *const rp, unsigned sym, unsigned type)
++{
++	rp->r_info = ((union mips_r_info){
++		.r_mips = { .r_sym = w(sym), .r_type = type }
++	}).r_info;
++}
++
+ static void
+ do_file(char const *const fname)
+ {
+@@ -268,6 +301,7 @@ do_file(char const *const fname)
+ 	case EM_386:	 reltype = R_386_32;                   break;
+ 	case EM_ARM:	 reltype = R_ARM_ABS32;                break;
+ 	case EM_IA_64:	 reltype = R_IA64_IMM64;   gpfx = '_'; break;
++	case EM_MIPS:	 /* reltype: e_class    */ gpfx = '_'; break;
+ 	case EM_PPC:	 reltype = R_PPC_ADDR32;   gpfx = '_'; break;
+ 	case EM_PPC64:	 reltype = R_PPC64_ADDR64; gpfx = '_'; break;
+ 	case EM_S390:    /* reltype: e_class    */ gpfx = '_'; break;
+@@ -291,6 +325,8 @@ do_file(char const *const fname)
+ 		}
+ 		if (EM_S390 == w2(ehdr->e_machine))
+ 			reltype = R_390_32;
++		if (EM_MIPS == w2(ehdr->e_machine))
++			reltype = R_MIPS_32;
+ 		do32(ehdr, fname, reltype);
+ 	} break;
+ 	case ELFCLASS64: {
+@@ -303,6 +339,11 @@ do_file(char const *const fname)
+ 		}
+ 		if (EM_S390 == w2(ghdr->e_machine))
+ 			reltype = R_390_64;
++		if (EM_MIPS == w2(ghdr->e_machine)) {
++			reltype = R_MIPS_64;
++			Elf64_r_sym = MIPS64_r_sym;
++			Elf64_r_info = MIPS64_r_info;
++		}
+ 		do64(ghdr, fname, reltype);
+ 	} break;
+ 	}  /* end switch */
+diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
+index 7f39d09..190fd18 100644
+--- a/scripts/recordmcount.h
++++ b/scripts/recordmcount.h
+@@ -31,8 +31,12 @@
+ #undef Elf_Rela
+ #undef Elf_Sym
+ #undef ELF_R_SYM
++#undef Elf_r_sym
+ #undef ELF_R_INFO
++#undef Elf_r_info
+ #undef ELF_ST_BIND
++#undef fn_ELF_R_SYM
++#undef fn_ELF_R_INFO
+ #undef uint_t
+ #undef _w
+ #undef _align
+@@ -52,8 +56,12 @@
+ # define Elf_Rela		Elf64_Rela
+ # define Elf_Sym		Elf64_Sym
+ # define ELF_R_SYM		ELF64_R_SYM
++# define Elf_r_sym		Elf64_r_sym
+ # define ELF_R_INFO		ELF64_R_INFO
++# define Elf_r_info		Elf64_r_info
+ # define ELF_ST_BIND		ELF64_ST_BIND
++# define fn_ELF_R_SYM		fn_ELF64_R_SYM
++# define fn_ELF_R_INFO		fn_ELF64_R_INFO
+ # define uint_t			uint64_t
+ # define _w			w8
+ # define _align			7u
+@@ -72,14 +80,32 @@
+ # define Elf_Rela		Elf32_Rela
+ # define Elf_Sym		Elf32_Sym
+ # define ELF_R_SYM		ELF32_R_SYM
++# define Elf_r_sym		Elf32_r_sym
+ # define ELF_R_INFO		ELF32_R_INFO
++# define Elf_r_info		Elf32_r_info
+ # define ELF_ST_BIND		ELF32_ST_BIND
++# define fn_ELF_R_SYM		fn_ELF32_R_SYM
++# define fn_ELF_R_INFO		fn_ELF32_R_INFO
+ # define uint_t			uint32_t
+ # define _w			w
+ # define _align			3u
+ # define _size			4
+ #endif
+ 
++/* Functions and pointers that 64-bit EM_MIPS can override. */
++static uint_t fn_ELF_R_SYM(Elf_Rel const *rp)
++{
++	return ELF_R_SYM(_w(rp->r_info));
++}
++static uint_t (*Elf_r_sym)(Elf_Rel const *rp) = fn_ELF_R_SYM;
++
++static void fn_ELF_R_INFO(Elf_Rel *const rp, unsigned sym, unsigned type)
++{
++	rp->r_info = ELF_R_INFO(sym, type);
++}
++static void (*Elf_r_info)(Elf_Rel *const rp, unsigned sym, unsigned type) = fn_ELF_R_INFO;
++
++
+ /* Append the new shstrtab, Elf_Shdr[], __mcount_loc and its relocations. */
+ static void append_func(Elf_Ehdr *const ehdr,
+ 			Elf_Shdr *const shstr,
+@@ -197,22 +223,22 @@ static uint_t *sift_rel_mcount(uint_t *mlocp,
+ 	for (t = nrel; t; --t) {
+ 		if (!mcountsym) {
+ 			Elf_Sym const *const symp =
+-				&sym0[ELF_R_SYM(_w(relp->r_info))];
++				&sym0[Elf_r_sym(relp)];
+ 			char const *symname = &str0[w(symp->st_name)];
+ 
+ 			if ('.' == symname[0])
+ 				++symname;  /* ppc64 hack */
+ 			if (0 == strcmp((('_' == gpfx) ? "_mcount" : "mcount"),
+ 					symname))
+-				mcountsym = ELF_R_SYM(_w(relp->r_info));
++				mcountsym = Elf_r_sym(relp);
+ 		}
+ 
+-		if (mcountsym == ELF_R_SYM(_w(relp->r_info))) {
++		if (mcountsym == Elf_r_sym(relp)) {
+ 			uint_t const addend = _w(_w(relp->r_offset) - recval);
+ 
+ 			mrelp->r_offset = _w(offbase
+ 				+ ((void *)mlocp - (void *)mloc0));
+-			mrelp->r_info = _w(ELF_R_INFO(recsym, reltype));
++			Elf_r_info(mrelp, recsym, reltype);
+ 			if (sizeof(Elf_Rela) == rel_entsize) {
+ 				((Elf_Rela *)mrelp)->r_addend = addend;
+ 				*mlocp++ = 0;
+-- 
+1.7.1

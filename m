@@ -1,115 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Oct 2010 03:04:04 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4410 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490978Ab0J1BEB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Oct 2010 03:04:01 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4cc8cc240000>; Wed, 27 Oct 2010 18:04:36 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 27 Oct 2010 18:04:27 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 27 Oct 2010 18:04:27 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id o9S13qrj005480;
-        Wed, 27 Oct 2010 18:03:52 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id o9S13oYp005479;
-        Wed, 27 Oct 2010 18:03:50 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
-        linux-kernel@vger.kernel.org
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Jeremy Kerr <jeremy.kerr@canonical.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Dan Carpenter <error27@gmail.com>,
-        Greg Kroah-Hartman <gregkh@suse.de>
-Subject: [PATCH] of: of_mdio: Fix some endianness problems.
-Date:   Wed, 27 Oct 2010 18:03:47 -0700
-Message-Id: <1288227827-5447-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 28 Oct 2010 01:04:27.0075 (UTC) FILETIME=[114FD130:01CB763C]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Oct 2010 12:50:38 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:52964 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491029Ab0J1Kud (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Oct 2010 12:50:33 +0200
+Date:   Thu, 28 Oct 2010 11:50:33 +0100 (BST)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Camm Maguire <camm@maguirefamily.org>
+cc:     David Daney <ddaney@caviumnetworks.com>,
+        linux-mips <linux-mips@linux-mips.org>,
+        debian-mips@lists.debian.org, gcl-devel@gnu.org
+Subject: Re: [Gcl-devel] Re: gdb for mips64
+In-Reply-To: <87vd4or9v9.fsf@maguirefamily.org>
+Message-ID: <alpine.LFD.2.00.1010281109480.25426@eddie.linux-mips.org>
+References: <E1OwbkA-0006gv-Bi@localhost.m.enhanced.com>        <4C93993E.7030008@caviumnetworks.com>        <8762y49k1k.fsf@maguirefamily.org>        <4C93D86D.5090201@caviumnetworks.com>        <87fwx4dwu5.fsf@maguirefamily.org>       
+ <4C97D9A1.7050102@caviumnetworks.com>        <87lj6te9t1.fsf@maguirefamily.org>        <4C9A8BC9.1020605@caviumnetworks.com>        <4C9A9699.6080908@caviumnetworks.com>        <87pqvbs7oa.fsf@maguirefamily.org>        <4CB88D2C.8020900@caviumnetworks.com>
+        <87r5fksxby.fsf_-_@maguirefamily.org>        <4CBF1B1E.6050804@caviumnetworks.com>        <8762wwlfen.fsf@maguirefamily.org>        <4CC06826.2070508@caviumnetworks.com>        <4CC0787C.2040902@caviumnetworks.com>        <878w1m3qmn.fsf_-_@maguirefamily.org>
+        <4CC5FA72.6080005@caviumnetworks.com>        <87k4l52eqb.fsf@maguirefamily.org> <87vd4or9v9.fsf@maguirefamily.org>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28265
+X-archive-position: 28267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-In of_mdiobus_register(), the __be32 *addr variable is dereferenced.
-This will not work on little-endian targets.  Also since it is
-unsigned, checking for less than zero is redundant.
+On Tue, 26 Oct 2010, Camm Maguire wrote:
 
-Fix these two issues.
+> > Why doesn't _IO_getc get a stub on mips64, like say _setjmp?
+> >
+> > readelf -a saved_ansi_gcl |grep  IO_getc
+> >   2812: 0000000000000000   472 FUNC    GLOBAL DEFAULT  UND _IO_getc@GLIBC_2.0 (2)
+> >  15315: 0000000000000000   472 FUNC    GLOBAL DEFAULT  UND _IO_getc@@GLIBC_2.0
+> > readelf -a saved_ansi_gcl |grep  setjmp
+> >   2159: 00000001204b9b40    32 FUNC    GLOBAL DEFAULT  UND _setjmp@GLIBC_2.0 (2)
+> >  15978: 00000001204b9b40    32 FUNC    GLOBAL DEFAULT  UND _setjmp@@GLIBC_2.0
+> >  
+> > Is there anything I can do about this?
+> >
+> 
+> A little more info here.  Latest toolchain on the gcc compile farm
+> does provide a stub, but the slightly older gentoo on a sicortex
+> machine does not.  Clearly not too much to worry about unless you
+> might know of an easy workaround.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Cc: Grant Likely <grant.likely@secretlab.ca>
-Cc: Jeremy Kerr <jeremy.kerr@canonical.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Dan Carpenter <error27@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@suse.de>
----
- drivers/of/of_mdio.c |   23 ++++++++++++++---------
- 1 files changed, 14 insertions(+), 9 deletions(-)
+ Can you quote what `ld --version' says on the affected system?
 
-diff --git a/drivers/of/of_mdio.c b/drivers/of/of_mdio.c
-index 1fce00e..b370306 100644
---- a/drivers/of/of_mdio.c
-+++ b/drivers/of/of_mdio.c
-@@ -52,27 +52,32 @@ int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
- 
- 	/* Loop over the child nodes and register a phy_device for each one */
- 	for_each_child_of_node(np, child) {
--		const __be32 *addr;
-+		const __be32 *paddr;
-+		u32 addr;
- 		int len;
- 
- 		/* A PHY must have a reg property in the range [0-31] */
--		addr = of_get_property(child, "reg", &len);
--		if (!addr || len < sizeof(*addr) || *addr >= 32 || *addr < 0) {
-+		paddr = of_get_property(child, "reg", &len);
-+		if (!paddr || len < sizeof(*paddr)) {
-+addr_err:
- 			dev_err(&mdio->dev, "%s has invalid PHY address\n",
- 				child->full_name);
- 			continue;
- 		}
-+		addr = be32_to_cpup(paddr);
-+		if (addr >= 32)
-+			goto addr_err;
- 
- 		if (mdio->irq) {
--			mdio->irq[*addr] = irq_of_parse_and_map(child, 0);
--			if (!mdio->irq[*addr])
--				mdio->irq[*addr] = PHY_POLL;
-+			mdio->irq[addr] = irq_of_parse_and_map(child, 0);
-+			if (!mdio->irq[addr])
-+				mdio->irq[addr] = PHY_POLL;
- 		}
- 
--		phy = get_phy_device(mdio, be32_to_cpup(addr));
-+		phy = get_phy_device(mdio, addr);
- 		if (!phy || IS_ERR(phy)) {
- 			dev_err(&mdio->dev, "error probing PHY at address %i\n",
--				*addr);
-+				addr);
- 			continue;
- 		}
- 		phy_scan_fixups(phy);
-@@ -91,7 +96,7 @@ int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
- 		}
- 
- 		dev_dbg(&mdio->dev, "registered phy %s at address %i\n",
--			child->name, *addr);
-+			child->name, addr);
- 	}
- 
- 	return 0;
--- 
-1.7.2.3
+ It *might* be a linker bug, though the exact circumstances may be 
+complicated as I have n64 MIPS64 binaries as old as from mid 2005 with a 
+stub for _IO_getc() correctly installed.  Nobody should be using any older 
+binutils, especially with the MIPS64 target as 64-bit support for MIPS was 
+quite immature back then.  I suggest that you switch to binutils 2.20.1; 
+version 2.21 is due out in a couple of weeks too.
+
+ A legitimate cause for a stub to be omitted by the linker are pointer 
+references to the function in question as in this case the symbol has to 
+be fully resolved for pointer comparison to produce reliable results.  It 
+could be that one version of GCC produces code that looks to the linker as 
+if referring to the symbol this way (i.e. the object files presented to 
+the linker contain relocations normally used for data references rather 
+than function calls associated with the symbol in question).  You can 
+determine if that is the case by running `objdump -r' on the program's 
+object files used in the final link and checking if there are any GOT 
+relocations (that'll be a part of their names, e.g. R_MIPS_GOT_PAGE) 
+against _IO_getc.  Again, that *might* be a GCC bug then.
+
+ That said the only impact from a missing stub is a small program startup 
+performance penalty as lazy binding cannot be applied to this single 
+symbol only and the symbol has to be fully resolved at startup.
+
+  Maciej

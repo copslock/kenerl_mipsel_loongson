@@ -1,136 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Oct 2010 08:32:51 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:46199 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490970Ab0J3Gcr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Oct 2010 08:32:47 +0200
-Received: by wyf22 with SMTP id 22so3828913wyf.36
-        for <multiple recipients>; Fri, 29 Oct 2010 23:32:41 -0700 (PDT)
-Received: by 10.216.27.9 with SMTP id d9mr9808353wea.61.1288420361252;
-        Fri, 29 Oct 2010 23:32:41 -0700 (PDT)
-Received: from angua (dyn-247.woodhou.se [90.155.92.247])
-        by mx.google.com with ESMTPS id x15sm2138342weq.31.2010.10.29.23.32.39
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 29 Oct 2010 23:32:40 -0700 (PDT)
-Received: by angua (Postfix, from userid 1000)
-        id 66BEC3C00E5; Sat, 30 Oct 2010 07:32:37 +0100 (BST)
-Date:   Sat, 30 Oct 2010 07:32:37 +0100
-From:   Grant Likely <grant.likely@secretlab.ca>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Jeremy Kerr <jeremy.kerr@canonical.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Dan Carpenter <error27@gmail.com>,
-        Greg Kroah-Hartman <gregkh@suse.de>
-Subject: Re: [PATCH] of: of_mdio: Fix some endianness problems.
-Message-ID: <20101030063237.GC2456@angua.secretlab.ca>
-References: <1288227827-5447-1-git-send-email-ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Oct 2010 10:01:09 +0200 (CEST)
+Received: from mail-ww0-f41.google.com ([74.125.82.41]:61520 "EHLO
+        mail-ww0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490970Ab0J3IBG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Oct 2010 10:01:06 +0200
+Received: by wwe15 with SMTP id 15so3364938wwe.0
+        for <linux-mips@linux-mips.org>; Sat, 30 Oct 2010 01:01:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=SpzZvanYR0dxKwYpKe8maGy55viI9X0sMlMYWl339eI=;
+        b=FVboFJ8PfA35w00X7Pnw3DzZEtjXHsGAx03S+gxFkI7Kdq3Xyd2egAXnYGAvv5aYeV
+         wBPmIIr9lDGYiuCMVZeM0W97zGkpUYvLpQ2NYTHW/qsi6YnxPlyuKzFf78g6qh3XTyI3
+         fqnLC345UVc3CnEb/hMaoiA8JDLYA3rpRcMwE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=P9aKe2bf91wiFMcwsikdvQfTPZlV2sLWDf3X7a5qoI9KzU2P4oLB7zVM0M4ZOoeEaE
+         9jg1z+vatoTVe/HlNHY5fqLjGcD+c0+hvnq15bV0fD+Mkkqj9kexaquVGUqR//thRyZ3
+         4KYx/ZnKlXaVVv3OpiZAIaLxaKKcEjJkIaX9k=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1288227827-5447-1-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <glikely@secretlab.ca>
+Received: by 10.216.48.196 with SMTP id v46mr250089web.28.1288425660699; Sat,
+ 30 Oct 2010 01:01:00 -0700 (PDT)
+Received: by 10.216.176.203 with HTTP; Sat, 30 Oct 2010 01:01:00 -0700 (PDT)
+In-Reply-To: <4CCBC8B1.2080808@in.ibm.com>
+References: <4CCBC8B1.2080808@in.ibm.com>
+Date:   Sat, 30 Oct 2010 16:01:00 +0800
+Message-ID: <AANLkTimE=uzwhDMz_-jVWKyb9NAONGuVvVo5KbjkkZVu@mail.gmail.com>
+Subject: Re: [s390] 2.6.36-git14 build break - fs/compat.c :631
+ (PAGE_CACHE_MASK undeclared)
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     Sachin Sant <sachinp@in.ibm.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-s390@vger.kernel.org, linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28271
+X-archive-position: 28272
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 27, 2010 at 06:03:47PM -0700, David Daney wrote:
-> In of_mdiobus_register(), the __be32 *addr variable is dereferenced.
-> This will not work on little-endian targets.  Also since it is
-> unsigned, checking for less than zero is redundant.
-> 
-> Fix these two issues.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
-> Cc: Jeremy Kerr <jeremy.kerr@canonical.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Dan Carpenter <error27@gmail.com>
-> Cc: Greg Kroah-Hartman <gregkh@suse.de>
-> ---
->  drivers/of/of_mdio.c |   23 ++++++++++++++---------
->  1 files changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/of/of_mdio.c b/drivers/of/of_mdio.c
-> index 1fce00e..b370306 100644
-> --- a/drivers/of/of_mdio.c
-> +++ b/drivers/of/of_mdio.c
-> @@ -52,27 +52,32 @@ int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
->  
->  	/* Loop over the child nodes and register a phy_device for each one */
->  	for_each_child_of_node(np, child) {
-> -		const __be32 *addr;
-> +		const __be32 *paddr;
-> +		u32 addr;
->  		int len;
->  
->  		/* A PHY must have a reg property in the range [0-31] */
-> -		addr = of_get_property(child, "reg", &len);
-> -		if (!addr || len < sizeof(*addr) || *addr >= 32 || *addr < 0) {
-> +		paddr = of_get_property(child, "reg", &len);
-> +		if (!paddr || len < sizeof(*paddr)) {
-> +addr_err:
->  			dev_err(&mdio->dev, "%s has invalid PHY address\n",
->  				child->full_name);
->  			continue;
->  		}
-> +		addr = be32_to_cpup(paddr);
-> +		if (addr >= 32)
-> +			goto addr_err;
+The same problem on MIPS.
 
-goto's are fine for jumping to the end of a function to unwind
-allocations, but please don't use it in this manner.  The original
-structure will actually work just fine if you do it thusly:
+Perhaps this can help:
 
-		if (!paddr || len < sizeof(*paddr) ||
-		    *(addr = be32_to_cpup(paddr)) >= 32) {
-			dev_err(&mdio->dev, "%s has invalid PHY address\n",
-				child->full_name);
-			continue;
-		}
+$ git diff
+diff --git a/fs/compat.c b/fs/compat.c
+index ff66c0d..c580c32 100644
+--- a/fs/compat.c
++++ b/fs/compat.c
+@@ -49,6 +49,7 @@
+ #include <linux/eventpoll.h>
+ #include <linux/fs_struct.h>
+ #include <linux/slab.h>
++#include <linux/pagemap.h>
 
-Otherwise this patch looks good. After you've reworked and retested
-I'll pick it up for 2.6.37 (or dave will).
+ #include <asm/uaccess.h>
+ #include <asm/mmu_context.h>
 
-g.
+I'm not sure if this is a good fixup, because the problem is
+introduced by MAX_RW_COUNT defined in include/linux/fs.h:
 
+#define MAX_RW_COUNT (INT_MAX & PAGE_CACHE_MASK)
 
->  
->  		if (mdio->irq) {
-> -			mdio->irq[*addr] = irq_of_parse_and_map(child, 0);
-> -			if (!mdio->irq[*addr])
-> -				mdio->irq[*addr] = PHY_POLL;
-> +			mdio->irq[addr] = irq_of_parse_and_map(child, 0);
-> +			if (!mdio->irq[addr])
-> +				mdio->irq[addr] = PHY_POLL;
->  		}
->  
-> -		phy = get_phy_device(mdio, be32_to_cpup(addr));
-> +		phy = get_phy_device(mdio, addr);
->  		if (!phy || IS_ERR(phy)) {
->  			dev_err(&mdio->dev, "error probing PHY at address %i\n",
-> -				*addr);
-> +				addr);
->  			continue;
->  		}
->  		phy_scan_fixups(phy);
-> @@ -91,7 +96,7 @@ int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
->  		}
->  
->  		dev_dbg(&mdio->dev, "registered phy %s at address %i\n",
-> -			child->name, *addr);
-> +			child->name, addr);
->  	}
->  
->  	return 0;
-> -- 
-> 1.7.2.3
-> 
+and the PAGE_CACHE_MASK is defined in pagemap.h, we may be possible to
+add <linux/pagemap.h> in include/linux/fs.h but pagemap.h has included
+<linux/fs.h> too ...
+
+Regards,
+Wu Zhangjin
+
+On Sat, Oct 30, 2010 at 3:26 PM, Sachin Sant <sachinp@in.ibm.com> wrote:
+> Latest 2.6.36 git [commit 44234d0c46...] fails to build on s390x with
+> following error :
+>
+> fs/compat.c: In function compat_rw_copy_check_uvector:
+> fs/compat.c:631: error: PAGE_CACHE_MASK undeclared (first use in this
+> function)
+> fs/compat.c:631: error: (Each undeclared identifier is reported only once
+> fs/compat.c:631: error: for each function it appears in.)
+> make[1]: *** [fs/compat.o] Error 1
+>
+> The code in question was added via following commit:
+>
+> commit 435f49a518c78eec8e2edbbadd912737246cbe20
+> readv/writev: do the same MAX_RW_COUNT truncation that read/write does
+>
+> Thanks
+> -Sachin

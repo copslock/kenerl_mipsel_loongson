@@ -1,65 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Oct 2010 15:28:53 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:44211 "EHLO
-        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491033Ab0J3N2t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Oct 2010 15:28:49 +0200
-Date:   Sat, 30 Oct 2010 14:28:49 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, John Reiser <jreiser@bitwagon.com>,
-        David Daney <ddaney@caviumnetworks.com>
-Subject: Re: [PATCH 3/3] ftrace/MIPS: Enable C Version of recordmcount
-In-Reply-To: <1288186564.18238.126.camel@gandalf.stny.rr.com>
-Message-ID: <alpine.LFD.2.00.1010301414060.25426@eddie.linux-mips.org>
-References: <cover.1288176026.git.wuzhangjin@gmail.com>         <bb99009a9ac79d3f55a8c8bf1c8bd2bc0e1f160e.1288176026.git.wuzhangjin@gmail.com> <1288186564.18238.126.camel@gandalf.stny.rr.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Oct 2010 17:18:24 +0200 (CEST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:53166 "EHLO
+        smtp1.linux-foundation.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491079Ab0J3PSV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Oct 2010 17:18:21 +0200
+Received: from mail-iw0-f177.google.com (mail-iw0-f177.google.com [209.85.214.177])
+        (authenticated bits=0)
+        by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id o9UFI30M030858
+        (version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=FAIL)
+        for <linux-mips@linux-mips.org>; Sat, 30 Oct 2010 08:18:13 -0700
+Received: by iwn8 with SMTP id 8so4813426iwn.36
+        for <linux-mips@linux-mips.org>; Sat, 30 Oct 2010 08:18:01 -0700 (PDT)
+Received: by 10.231.30.74 with SMTP id t10mr11997644ibc.171.1288451881786;
+ Sat, 30 Oct 2010 08:18:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: by 10.231.14.134 with HTTP; Sat, 30 Oct 2010 08:17:41 -0700 (PDT)
+In-Reply-To: <AANLkTikXAde1yLZkB80GOjWu-sFZAvv0SL566rWssD1k@mail.gmail.com>
+References: <4CCBC8B1.2080808@in.ibm.com> <AANLkTimE=uzwhDMz_-jVWKyb9NAONGuVvVo5KbjkkZVu@mail.gmail.com>
+ <AANLkTikXAde1yLZkB80GOjWu-sFZAvv0SL566rWssD1k@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 30 Oct 2010 08:17:41 -0700
+Message-ID: <AANLkTinBNAUAh5uZ9V82zjv4uWH1UTXbUA2rPy1d2pCk@mail.gmail.com>
+Subject: Re: [s390] 2.6.36-git14 build break - fs/compat.c :631
+ (PAGE_CACHE_MASK undeclared)
+To:     wu zhangjin <wuzhangjin@gmail.com>
+Cc:     Sachin Sant <sachinp@in.ibm.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-s390@vger.kernel.org, linux-mips <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <torvalds@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28275
+X-archive-position: 28276
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 27 Oct 2010, Steven Rostedt wrote:
+On Sat, Oct 30, 2010 at 1:12 AM, wu zhangjin <wuzhangjin@gmail.com> wrote:
+>
+> (Seems Linus added that patch, add him in this loop)
 
-> On Wed, 2010-10-27 at 18:59 +0800, Wu Zhangjin wrote:
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> > 
-> > Selects HAVE_C_RECORDMCOUNT to use the C version of the recordmcount
-> > intead of the old Perl Version of recordmcount.
-> > 
-> > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> 
-> I'd like to get an Acked-by from Ralf and Maciej on this.
+My bad. It was such a totally obvious and trivial patch, and it
+compiled for me on x86-64. Too bad our header include dependencies are
+such a mess, and actually change from one architecture to another.
 
-Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
+I'd love to fix up the header mess, but that's not going to happen. So
+I'll take the <linux/filemap.h> addition.
 
- I have looked through it and spotted nothing obviously wrong, but I can't 
-afford any further testing, especially at run time, sorry.
+Thanks,
 
- One point to note -- it seems to me the code currently assumes a 32-bit 
-model, i.e. the use of the -msym32 GCC option suitable for a 64-bit kernel 
-loaded to a CKSEG0 address (cf. KBUILD_SYM32 in arch/mips/Makefile), tools 
-support permitting.  That means it does not (correctly) support kernels 
-loaded to an XPHYS address as required for some platforms (or otherwise 
-chosen for testing such a configuration; modulo some processor errata and 
-bootloader limitations, it is generally OK to run the kernel from XPHYS on 
-64-bit chips even if the entire RAM fits into CKSEG0).
-
- For the avoidance of doubt -- I'm just mentioning it to emphasise a 
-possible future direction for improvement of this code -- not an objection 
-against this submission, that is certainly a good foundation for future 
-development.
-
- Thanks to everybody involved.
-
-  Maciej
+                                  Linus

@@ -1,72 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Oct 2010 18:47:36 +0200 (CEST)
-Received: from swampdragon.chaosbits.net ([90.184.90.115]:27892 "EHLO
-        swampdragon.chaosbits.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491095Ab0J3Qrd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Oct 2010 18:47:33 +0200
-Received: by swampdragon.chaosbits.net (Postfix, from userid 1000)
-        id 00BAB94040; Sat, 30 Oct 2010 18:37:16 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by swampdragon.chaosbits.net (Postfix) with ESMTP id F2EE49403F;
-        Sat, 30 Oct 2010 18:37:16 +0200 (CEST)
-Date:   Sat, 30 Oct 2010 18:37:16 +0200 (CEST)
-From:   Jesper Juhl <jj@chaosbits.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] Check vmalloc return value in vpe_open
-Message-ID: <alpine.LNX.2.00.1010301823350.1572@swampdragon.chaosbits.net>
-User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Oct 2010 03:54:35 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:40105 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491017Ab0JaCyb convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 31 Oct 2010 03:54:31 +0100
+Received: by gxk25 with SMTP id 25so2877314gxk.36
+        for <multiple recipients>; Sat, 30 Oct 2010 19:54:24 -0700 (PDT)
+Received: by 10.151.146.8 with SMTP id y8mr25707327ybn.212.1288493664054; Sat,
+ 30 Oct 2010 19:54:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <jj@chaosbits.net>
+Received: by 10.151.15.4 with HTTP; Sat, 30 Oct 2010 19:54:03 -0700 (PDT)
+In-Reply-To: <20101030063237.GC2456@angua.secretlab.ca>
+References: <1288227827-5447-1-git-send-email-ddaney@caviumnetworks.com> <20101030063237.GC2456@angua.secretlab.ca>
+From:   Grant Likely <grant.likely@secretlab.ca>
+Date:   Sat, 30 Oct 2010 22:54:03 -0400
+X-Google-Sender-Auth: ex8Q8GWngSMSh6looT5NHTVQUF4
+Message-ID: <AANLkTi=24H4RNonXu=i3CHhYqbLniDya+BKnj_evw_p6@mail.gmail.com>
+Subject: Re: [PATCH] of: of_mdio: Fix some endianness problems.
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Jeremy Kerr <jeremy.kerr@canonical.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Dan Carpenter <error27@gmail.com>,
+        Greg Kroah-Hartman <gregkh@suse.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28277
+X-archive-position: 28278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jj@chaosbits.net
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sat, Oct 30, 2010 at 2:32 AM, Grant Likely <grant.likely@secretlab.ca> wrote:
+> On Wed, Oct 27, 2010 at 06:03:47PM -0700, David Daney wrote:
+>> In of_mdiobus_register(), the __be32 *addr variable is dereferenced.
+>> This will not work on little-endian targets.  Also since it is
+>> unsigned, checking for less than zero is redundant.
+>>
+>> Fix these two issues.
+>>
+>> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+>> Cc: Grant Likely <grant.likely@secretlab.ca>
+>> Cc: Jeremy Kerr <jeremy.kerr@canonical.com>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Dan Carpenter <error27@gmail.com>
+>> Cc: Greg Kroah-Hartman <gregkh@suse.de>
+>> ---
+>>  drivers/of/of_mdio.c |   23 ++++++++++++++---------
+>>  1 files changed, 14 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/of/of_mdio.c b/drivers/of/of_mdio.c
+>> index 1fce00e..b370306 100644
+>> --- a/drivers/of/of_mdio.c
+>> +++ b/drivers/of/of_mdio.c
+>> @@ -52,27 +52,32 @@ int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+>>
+>>       /* Loop over the child nodes and register a phy_device for each one */
+>>       for_each_child_of_node(np, child) {
+>> -             const __be32 *addr;
+>> +             const __be32 *paddr;
+>> +             u32 addr;
+>>               int len;
+>>
+>>               /* A PHY must have a reg property in the range [0-31] */
+>> -             addr = of_get_property(child, "reg", &len);
+>> -             if (!addr || len < sizeof(*addr) || *addr >= 32 || *addr < 0) {
+>> +             paddr = of_get_property(child, "reg", &len);
+>> +             if (!paddr || len < sizeof(*paddr)) {
+>> +addr_err:
+>>                       dev_err(&mdio->dev, "%s has invalid PHY address\n",
+>>                               child->full_name);
+>>                       continue;
+>>               }
+>> +             addr = be32_to_cpup(paddr);
+>> +             if (addr >= 32)
+>> +                     goto addr_err;
+>
+> goto's are fine for jumping to the end of a function to unwind
+> allocations, but please don't use it in this manner.  The original
+> structure will actually work just fine if you do it thusly:
+>
+>                if (!paddr || len < sizeof(*paddr) ||
+>                    *(addr = be32_to_cpup(paddr)) >= 32) {
+>                        dev_err(&mdio->dev, "%s has invalid PHY address\n",
+>                                child->full_name);
+>                        continue;
+>                }
+>
+> Otherwise this patch looks good. After you've reworked and retested
+> I'll pick it up for 2.6.37 (or dave will).
 
-I noticed that the return value of the 
-vmalloc() call in arch/mips/kernel/vpe.c::vpe_open() is not checked, so we 
-potentially store a null pointer in v->pbuffer. As far as I can tell this 
-will be a problem. However, I don't know the mips code at all, so there 
-may be something, somewhere where I did not look, that handles this in a 
-safe manner but I couldn't find it.
+Actually, I mistyped this.  I think it should be:
 
-To me it looks like we should do what the patch below implements and check 
-for a null return and then return -ENOMEM in that case. Comments?
+               if (!paddr || len < sizeof(*paddr) ||
+                   (addr = be32_to_cpup(paddr)) >= 32) {
+                       dev_err(&mdio->dev, "%s has invalid PHY address\n",
+                               child->full_name);
+                       continue;
+               }
 
-Please CC me on replies as I'm not subscribed to linux-mips.
-
-
-Signed-off-by: Jesper Juhl <jj@chaosbits.net>
----
- vpe.c |    4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index 3eb3cde..22b79f6 100644
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -1092,6 +1092,10 @@ static int vpe_open(struct inode *inode, struct file *filp)
- 
- 	/* this of-course trashes what was there before... */
- 	v->pbuffer = vmalloc(P_SIZE);
-+	if (!v->pbuffer) {
-+		pr_warning("VPE loader: unable to allocate memory\n");
-+		return -ENOMEM;
-+	}
- 	v->plen = P_SIZE;
- 	v->load_addr = NULL;
- 	v->len = 0;
-
-
--- 
-Jesper Juhl <jj@chaosbits.net>             http://www.chaosbits.net/
-Plain text mails only, please      http://www.expita.com/nomime.html
-Don't top-post  http://www.catb.org/~esr/jargon/html/T/top-post.html
+g.

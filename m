@@ -1,122 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Oct 2010 23:48:44 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:51626 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491161Ab0JaWsO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 31 Oct 2010 23:48:14 +0100
-Received: by wyf22 with SMTP id 22so4973737wyf.36
-        for <multiple recipients>; Sun, 31 Oct 2010 15:48:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:cc:subject
-         :date:message-id:x-mailer:in-reply-to:references;
-        bh=XS2Brw6MkX3Btg7uwyUxcGKpTcw9PIxDN2NK/D9nIYs=;
-        b=qUue5O1Mm5ndvzkHF9zXd8feElYzVC+GEHmD2w9yuwm+A3Ub6QjP5ofhh9vySInC72
-         2fQTxA3E2KvEm53ryEh1OH8gzUi5PtgSdSjaqvwuQ9ZztUtZ6/D0F14QeBUKOSJ5NBp3
-         yF2IGPOrA85gBRcnnZsedo09EbPih4sgWq6jU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        b=uvQ8eyWZzGzNJslhfPetoQRR0kzQfQfOmMr6STkEcn7Qq5M3VRvCdnuHxwzS2FBk3a
-         kVyQeEyJ56HYPZvz1KUue7yyBz1CLCTPgRfdh2yyE9Z6sanf09fyOzaH6r0Qp88E/4pr
-         hjr3DEX3Z8E4HkwJAiwlVA3QC2rx7qA0JZ0oY=
-Received: by 10.216.176.8 with SMTP id a8mr1806555wem.93.1288565289069;
-        Sun, 31 Oct 2010 15:48:09 -0700 (PDT)
-Received: from localhost.localdomain (fbx.mimichou.net [82.236.225.16])
-        by mx.google.com with ESMTPS id x59sm3405068weq.38.2010.10.31.15.48.06
-        (version=SSLv3 cipher=RC4-MD5);
-        Sun, 31 Oct 2010 15:48:06 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 2/2] AR7: fix loops per jiffies on TNETD7200 devices
-Date:   Sun, 31 Oct 2010 23:49:58 +0100
-Message-Id: <1288565398-30300-2-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1288565398-30300-1-git-send-email-florian@openwrt.org>
-References: <1288565398-30300-1-git-send-email-florian@openwrt.org>
-Return-Path: <>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Nov 2010 06:17:50 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:46226 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491029Ab0KAFRm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Nov 2010 06:17:42 +0100
+Received: by gxk25 with SMTP id 25so3222781gxk.36
+        for <multiple recipients>; Sun, 31 Oct 2010 22:17:36 -0700 (PDT)
+Received: by 10.229.219.10 with SMTP id hs10mr14454945qcb.238.1288588656574;
+        Sun, 31 Oct 2010 22:17:36 -0700 (PDT)
+Received: from angua ([12.157.84.6])
+        by mx.google.com with ESMTPS id x20sm1395919vcr.47.2010.10.31.22.17.35
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 31 Oct 2010 22:17:35 -0700 (PDT)
+Received: by angua (Postfix, from userid 1000)
+        id 524FB3C00E5; Mon,  1 Nov 2010 05:17:34 +0000 (GMT)
+Date:   Mon, 1 Nov 2010 01:17:34 -0400
+From:   Grant Likely <grant.likely@secretlab.ca>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Wolfram Sang <w.sang@pengutronix.de>,
+        Paul Mackerras <paulus@samba.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Corey Minyard <cminyard@mvista.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Vitaly Bordug <vbordug@ru.mvista.com>,
+        Anatolij Gustschin <agust@denx.de>,
+        John Rigby <jcrigby@gmail.com>, Wolfgang Denk <wd@denx.de>,
+        Anton Vorontsov <avorontsov@mvista.com>,
+        Sandeep Gopalpet <Sandeep.Kumar@freescale.com>,
+        Kumar Gala <galak@kernel.crashing.org>,
+        Li Yang <leoli@freescale.com>,
+        Sergey Matyukevich <geomatsi@gmail.com>,
+        Jiri Pirko <jpirko@redhat.com>,
+        Eric Dumazet <eric.dumazet@gmail.com>,
+        Sean MacLennan <smaclennan@pikatech.com>,
+        Sadanand Mutyala <Sadanand.Mutyala@xilinx.com>,
+        Andres Salomon <dilinger@queued.net>,
+        microblaze-uclinux@itee.uq.edu.au, linuxppc-dev@lists.ozlabs.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH] OF device tree: Move of_get_mac_address() to a common
+ source file.
+Message-ID: <20101101051734.GB17587@angua.secretlab.ca>
+References: <1288130833-16421-1-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1288130833-16421-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28280
+X-archive-position: 28281
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-From: Florian Fainelli <florian@openwrt.org>
+On Tue, Oct 26, 2010 at 03:07:13PM -0700, David Daney wrote:
+> There are two identical implementations of of_get_mac_address(), one
+> each in arch/powerpc/kernel/prom_parse.c and
+> arch/microblaze/kernel/prom_parse.c.  Move this function to a new
+> common file of_net.{c,h} and adjust all the callers to include the new
+> header.
 
-TNETD7200 run their CPU clock faster than the default CPU clock we assume.
-In order to have the correct loops per jiffies settings, initialize clocks right
-before setting mips_hpt_frequency. As a side effect, we can no longer use
-msleep in clocks.c which requires other parts of the kernel to be initialized,
-so replace these with mdelay.
+Applied, thanks; but made some changes to protect this code because it
+does not work on little endian (it can be fixed in a separate patch)
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
+Also...
 
-diff --git a/arch/mips/ar7/clock.c b/arch/mips/ar7/clock.c
-index fc0e715..2ca4ada 100644
---- a/arch/mips/ar7/clock.c
-+++ b/arch/mips/ar7/clock.c
-@@ -239,12 +239,12 @@ static void tnetd7300_set_clock(u32 shift, struct tnetd7300_clock *clock,
- 	calculate(base_clock, frequency, &prediv, &postdiv, &mul);
- 
- 	writel(((prediv - 1) << PREDIV_SHIFT) | (postdiv - 1), &clock->ctrl);
--	msleep(1);
-+	mdelay(1);
- 	writel(4, &clock->pll);
- 	while (readl(&clock->pll) & PLL_STATUS)
- 		;
- 	writel(((mul - 1) << MUL_SHIFT) | (0xff << 3) | 0x0e, &clock->pll);
--	msleep(75);
-+	mdelay(75);
- }
- 
- static void __init tnetd7300_init_clocks(void)
-@@ -456,7 +456,7 @@ void clk_put(struct clk *clk)
- }
- EXPORT_SYMBOL(clk_put);
- 
--int __init ar7_init_clocks(void)
-+void __init ar7_init_clocks(void)
- {
- 	switch (ar7_chip_id()) {
- 	case AR7_CHIP_7100:
-@@ -472,7 +472,4 @@ int __init ar7_init_clocks(void)
- 	}
- 	/* adjust vbus clock rate */
- 	vbus_clk.rate = bus_clk.rate / 2;
--
--	return 0;
- }
--arch_initcall(ar7_init_clocks);
-diff --git a/arch/mips/ar7/time.c b/arch/mips/ar7/time.c
-index 5fb8a01..22c9321 100644
---- a/arch/mips/ar7/time.c
-+++ b/arch/mips/ar7/time.c
-@@ -30,6 +30,9 @@ void __init plat_time_init(void)
- {
- 	struct clk *cpu_clk;
- 
-+	/* Initialize ar7 clocks so the CPU clock frequency is correct */
-+	ar7_init_clocks();
-+
- 	cpu_clk = clk_get(NULL, "cpu");
- 	if (IS_ERR(cpu_clk)) {
- 		printk(KERN_ERR "unable to get cpu clock\n");
-diff --git a/arch/mips/include/asm/mach-ar7/ar7.h b/arch/mips/include/asm/mach-ar7/ar7.h
-index 31c7ff5..07d3fad 100644
---- a/arch/mips/include/asm/mach-ar7/ar7.h
-+++ b/arch/mips/include/asm/mach-ar7/ar7.h
-@@ -201,5 +201,6 @@ static inline void ar7_device_off(u32 bit)
- }
- 
- int __init ar7_gpio_init(void);
-+void __init ar7_init_clocks(void);
- 
- #endif /* __AR7_H__ */
--- 
-1.7.2.3
+> 
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> Cc: Michal Simek <monstr@monstr.eu>
+> Cc: Grant Likely <grant.likely@secretlab.ca>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Wolfram Sang <w.sang@pengutronix.de>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Corey Minyard <cminyard@mvista.com>
+> Cc: Pantelis Antoniou <pantelis.antoniou@gmail.com>
+> Cc: Vitaly Bordug <vbordug@ru.mvista.com>
+> Cc: Anatolij Gustschin <agust@denx.de>
+> Cc: John Rigby <jcrigby@gmail.com>
+> Cc: Wolfgang Denk <wd@denx.de>
+> Cc: Anton Vorontsov <avorontsov@mvista.com>
+> Cc: Sandeep Gopalpet <Sandeep.Kumar@freescale.com>
+> Cc: Kumar Gala <galak@kernel.crashing.org>
+> Cc: Li Yang <leoli@freescale.com>
+> Cc: Sergey Matyukevich <geomatsi@gmail.com>
+> Cc: Jiri Pirko <jpirko@redhat.com>
+> Cc: Eric Dumazet <eric.dumazet@gmail.com>
+> Cc: Sean MacLennan <smaclennan@pikatech.com>
+> Cc: Sadanand Mutyala <Sadanand.Mutyala@xilinx.com>
+> Cc: Andres Salomon <dilinger@queued.net>
+> Cc: microblaze-uclinux@itee.uq.edu.au
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: netdev@vger.kernel.org
+> Cc: devicetree-discuss@lists.ozlabs.org
+
+You don't need to believe everything that get_maintainers is telling
+you.  When you get a large list like this, don't Cc everyone, but
+apply some educated guesses.  You can guess that the PowerPC and
+Microblaze maintainers care because it touches their trees, and you
+can guess that I care because I'm the dt maintainer. David Miller
+isn't a bad guess because of networking.  But 22 people is excessive.
+
+g.

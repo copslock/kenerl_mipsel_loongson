@@ -1,75 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Nov 2010 14:21:15 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:55759 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491805Ab0KBNVL convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 2 Nov 2010 14:21:11 +0100
-Received: by wwi18 with SMTP id 18so1036712wwi.24
-        for <multiple recipients>; Tue, 02 Nov 2010 06:21:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=8rfG5qe4ljN6VnIxN6t04gKawpFfoVyEFwqJYBDYGfc=;
-        b=U2jl2y/awAoi9assjmR7KykpPSauwmh9YARVu/0leyyXmrIQNoqRa0CKeZnb0f5hpQ
-         ATsPfpAfvty9cn3gDfKhYTK+xlHrkuxo4MGbSZ30S3qPutHB1PgHDG2eUiGrQYucPeCV
-         3KSx2kYQ7D1c6bW1FMuNsb8UGDRv+6b/YFArE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=KFPH7E4V0mSsTbLanFF3SDLLopAsil5uPG+jl59ZwzXetX0QHBP/+OV4PHeVhoMWr8
-         dgpY31+K1z/8v45VB+uaRUHQx6ZOx45/eYLRgwPktnyGEqPu1cfMi69gNh/n21qZ7jUM
-         DgQi6zejh1IjyssoBAurz3YO6vZs1SJW0nA8I=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Nov 2010 17:12:27 +0100 (CET)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:46933 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491831Ab0KBQMY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Nov 2010 17:12:24 +0100
+Received: by ewy19 with SMTP id 19so3438797ewy.36
+        for <multiple recipients>; Tue, 02 Nov 2010 09:12:23 -0700 (PDT)
+Received: by 10.213.9.207 with SMTP id m15mr8336971ebm.85.1288714341673;
+        Tue, 02 Nov 2010 09:12:21 -0700 (PDT)
+Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
+        by mx.google.com with ESMTPS id x54sm5559016eeh.11.2010.11.02.09.12.19
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 02 Nov 2010 09:12:20 -0700 (PDT)
+Message-ID: <4CD03817.4050907@mvista.com>
+Date:   Tue, 02 Nov 2010 19:11:03 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Received: by 10.227.147.84 with SMTP id k20mr506282wbv.222.1288704066134; Tue,
- 02 Nov 2010 06:21:06 -0700 (PDT)
-Received: by 10.216.19.213 with HTTP; Tue, 2 Nov 2010 06:21:06 -0700 (PDT)
-In-Reply-To: <20101102125951.GB6570@linux-mips.org>
-References: <AANLkTikAHSitrZkkTtr4u3N3ruwV047S51rq2Nugq3aW@mail.gmail.com>
-        <20101102125951.GB6570@linux-mips.org>
-Date:   Tue, 2 Nov 2010 21:21:06 +0800
-Message-ID: <AANLkTikkY-CMt4yUkPby1-kFk6V9MtZgdEkkd8DR-L+6@mail.gmail.com>
-Subject: Re: where is blast_dcache32 ?
-From:   loody <miloody@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <miloody@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Camm Maguire <camm@maguirefamily.org>
+Subject: Re: [PATCH 2/2] MIPS: Don't clobber personality bits in 32-bit sys_personality().
+References: <1288658588-26801-1-git-send-email-ddaney@caviumnetworks.com> <1288658588-26801-2-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1288658588-26801-2-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28292
+X-archive-position: 28293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: miloody@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-hi ralf:
+Hello.
 
-2010/11/2 Ralf Baechle <ralf@linux-mips.org>:
-> On Tue, Nov 02, 2010 at 08:50:18PM +0800, loody wrote:
->
->> Dear all:
->> I try to grep blast_dcache32 but the results show as below.
->> #pwd
->> linux-2.6.30.9/arch/mips
->> #grep -rnw 'blast_dcache32' *
->> mm/c-r4k.c:140:               r4k_blast_dcache = blast_dcache32;
->> Binary file mm/built-in.o matches
->> mm/.svn/text-base/c-r4k.c.svn-base:140:               r4k_blast_dcache = blast_dcache32;
->> Binary file mm/c-r4k.o matches
->> #
->>
->> Would anyone tell me where I can find it?
->> did I grep the wrong folder?
->
-> You made the mistake of using grep ;-)  The function is generated by a
-> number of pretty ugly macros arch/mips/include/asm/r4kcache.h.
-I found it ~~
-thanks a lot  :-)
-miloody
+David Daney wrote:
+
+> If PER_LINUX32 has been set on a 32-bit kernel, only twiddle with the
+> low-order personality bits, let the upper bits pass through.
+
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> Cc: Camm Maguire <camm@maguirefamily.org>
+> ---
+>  arch/mips/kernel/linux32.c |   12 ++++++------
+>  1 files changed, 6 insertions(+), 6 deletions(-)
+
+> diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
+> index 6343b4a..a63f4e2 100644
+> --- a/arch/mips/kernel/linux32.c
+> +++ b/arch/mips/kernel/linux32.c
+> @@ -252,13 +252,13 @@ SYSCALL_DEFINE5(n32_msgrcv, int, msqid, u32, msgp, size_t, msgsz,
+>  SYSCALL_DEFINE1(32_personality, unsigned long, personality)
+>  {
+>  	int ret;
+> -	personality &= 0xffffffff;
+> +	unsigned int p = personality & 0xffffffff;
+
+    I'd have inserted an empty line here...
+
+>  	if (personality(current->personality) == PER_LINUX32 &&
+> -	    personality == PER_LINUX)
+> -		personality = PER_LINUX32;
+> -	ret = sys_personality(personality);
+> -	if (ret == PER_LINUX32)
+> -		ret = PER_LINUX;
+> +	    personality(p) == PER_LINUX)
+> +		p = (p & ~PER_MASK) | PER_LINUX32;
+> +	ret = sys_personality(p);
+> +	if (ret != -1 && personality(ret) == PER_LINUX32)
+> +		ret = (ret & ~PER_MASK) | PER_LINUX;
+>  	return ret;
+>  }
+
+WBR, Sergei

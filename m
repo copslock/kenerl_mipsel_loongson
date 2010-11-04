@@ -1,80 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2010 19:43:13 +0100 (CET)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:63483 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491876Ab0KDSnK convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Nov 2010 19:43:10 +0100
-Received: by iwn8 with SMTP id 8so1636268iwn.36
-        for <multiple recipients>; Thu, 04 Nov 2010 11:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:sender:received
-         :in-reply-to:references:date:x-google-sender-auth:message-id:subject
-         :from:to:cc:content-type:content-transfer-encoding;
-        bh=MqwrLWR/RP2KyKNgJBo8btO05YQs+f0OejXSwDZyay4=;
-        b=hCUl/HOPRa9yxNCrjpAbY+loNYSw2mwi5rsVW/9qxFOQ8xMJl+f9M8JXIGE9uP6dkz
-         7NWkriVO4EQcWN92itE+rFKSxenPe+dY8AYKYFv+EyI2i5j0wb1wGsdSK3VrXh/e8H5x
-         TzszpOo0p39Tx6Wg5m6qjLh/TqJGQaMIsAM4I=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=HdKjJ9k5xevNUHqbDRqEM16kfaxzuPIPa0+z/TF+9RtC08mV9hBkPzfiHLRyzDavVv
-         7jcW2KdRHRy8GZTum41vHEsEHp4RC1LTZuq4hEiyMANSiChgENYDeCQ4jPoXhl09T2u4
-         NPKgxztg+018fWrEmPLeYegXZcfi/woOtW+Jc=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2010 20:11:19 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:17673 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491118Ab0KDTLQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Nov 2010 20:11:16 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4cd305780000>; Thu, 04 Nov 2010 12:11:52 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 4 Nov 2010 12:11:50 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 4 Nov 2010 12:11:50 -0700
+Message-ID: <4CD30551.1000006@caviumnetworks.com>
+Date:   Thu, 04 Nov 2010 12:11:13 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
 MIME-Version: 1.0
-Received: by 10.231.14.74 with SMTP id f10mr895344iba.185.1288896188394; Thu,
- 04 Nov 2010 11:43:08 -0700 (PDT)
-Received: by 10.231.170.70 with HTTP; Thu, 4 Nov 2010 11:43:08 -0700 (PDT)
-In-Reply-To: <4CD2EE64.5060404@aurel32.net>
-References: <1288873119.12965.1@thorin>
-        <4CD2E2F7.4090701@caviumnetworks.com>
-        <4CD2EE64.5060404@aurel32.net>
-Date:   Thu, 4 Nov 2010 19:43:08 +0100
-X-Google-Sender-Auth: rK2MWbYORQ1uzP74w3hbb-j-Re4
-Message-ID: <AANLkTik3SH8EmhcgY9HNQLLk9Np+E6LGo8jVoGQiQCx4@mail.gmail.com>
-Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
-From:   Robert Millan <rmh@gnu.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+To:     Robert Millan <rmh@gnu.org>
+CC:     Aurelien Jarno <aurelien@aurel32.net>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <rmh.aybabtu@gmail.com>
+Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
+References: <1288873119.12965.1@thorin> <4CD2E2F7.4090701@caviumnetworks.com>   <4CD2EE64.5060404@aurel32.net> <AANLkTik3SH8EmhcgY9HNQLLk9Np+E6LGo8jVoGQiQCx4@mail.gmail.com>
+In-Reply-To: <AANLkTik3SH8EmhcgY9HNQLLk9Np+E6LGo8jVoGQiQCx4@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 04 Nov 2010 19:11:50.0317 (UTC) FILETIME=[2234BDD0:01CB7C54]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28301
+X-archive-position: 28302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmh@gnu.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi!
-
-David Daney a écrit :
-> You are claiming that all loongson2 are loongson-2f.  Is that really
-> true?  Or are there other types of loongson2 that are not loongson-2f?
+On 11/04/2010 11:43 AM, Robert Millan wrote:
+> Hi!
 >
-> You need to be very careful here.  This is part of the userspace ABI, so
-> if you get it wrong, you are stuck with it forever.
+> David Daney a écrit :
+>> You are claiming that all loongson2 are loongson-2f.  Is that really
+>> true?  Or are there other types of loongson2 that are not loongson-2f?
+>>
+>> You need to be very careful here.  This is part of the userspace ABI, so
+>> if you get it wrong, you are stuck with it forever.
+>
+> I'll figure out how to distinguish them and send a new patch.
+>
+>> One question you didn't address is why userspace would care that it is
+>> running on exactly "loongson-2f" instead of just mips4.
+>
+> I think Aurelien answered this.
+>
+>> The __elf_platform gets converted to a directory name by ld.so, so you
+>> may want to choose a value without '-' in it.
+>
+> Well I appreciate consistency with GCC flag names, so I'd rather keep
+> the dash, but then again it's not my decision to make.  In any case,
+> whoever commits this can adjust the name to his/her liking.
 
-I'll figure out how to distinguish them and send a new patch.
+I don't like to put words into Ralf's mouth, but it is easier to work 
+with patches that have been tested and are ready to go, rather than 
+having to re-write everything.
 
-> One question you didn't address is why userspace would care that it is
-> running on exactly "loongson-2f" instead of just mips4.
 
-I think Aurelien answered this.
+Some of the strings in use are "i686", "x86_64", "octeon", "octeon2", 
+"PARISC", "PARISC32", tilegx-m32", "v4l", "v3l", "v4b", and "v3b", these 
+last for for ARM and they don't match the GCC -mcpu= values.
 
-> The __elf_platform gets converted to a directory name by ld.so, so you
-> may want to choose a value without '-' in it.
+So I guess what ever you want.
 
-Well I appreciate consistency with GCC flag names, so I'd rather keep
-the dash, but then again it's not my decision to make.  In any case,
-whoever commits this can adjust the name to his/her liking.
-
--- 
-Robert Millan
+David Daney

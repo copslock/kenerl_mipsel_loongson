@@ -1,81 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2010 18:33:35 +0100 (CET)
-Received: from hall.aurel32.net ([88.191.82.174]:41150 "EHLO hall.aurel32.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491869Ab0KDRdc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Nov 2010 18:33:32 +0100
-Received: from [2001:660:5001:1a:200:5efe:86d6:4cf]
-        by hall.aurel32.net with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <aurelien@aurel32.net>)
-        id 1PE3gn-0000HR-Lz; Thu, 04 Nov 2010 18:33:29 +0100
-Message-ID: <4CD2EE64.5060404@aurel32.net>
-Date:   Thu, 04 Nov 2010 18:33:24 +0100
-From:   Aurelien Jarno <aurelien@aurel32.net>
-User-Agent: Mozilla-Thunderbird 2.0.0.24 (X11/20100329)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2010 19:43:13 +0100 (CET)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:63483 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491876Ab0KDSnK convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 4 Nov 2010 19:43:10 +0100
+Received: by iwn8 with SMTP id 8so1636268iwn.36
+        for <multiple recipients>; Thu, 04 Nov 2010 11:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:sender:received
+         :in-reply-to:references:date:x-google-sender-auth:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=MqwrLWR/RP2KyKNgJBo8btO05YQs+f0OejXSwDZyay4=;
+        b=hCUl/HOPRa9yxNCrjpAbY+loNYSw2mwi5rsVW/9qxFOQ8xMJl+f9M8JXIGE9uP6dkz
+         7NWkriVO4EQcWN92itE+rFKSxenPe+dY8AYKYFv+EyI2i5j0wb1wGsdSK3VrXh/e8H5x
+         TzszpOo0p39Tx6Wg5m6qjLh/TqJGQaMIsAM4I=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=HdKjJ9k5xevNUHqbDRqEM16kfaxzuPIPa0+z/TF+9RtC08mV9hBkPzfiHLRyzDavVv
+         7jcW2KdRHRy8GZTum41vHEsEHp4RC1LTZuq4hEiyMANSiChgENYDeCQ4jPoXhl09T2u4
+         NPKgxztg+018fWrEmPLeYegXZcfi/woOtW+Jc=
 MIME-Version: 1.0
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     Robert Millan <rmh@gnu.org>, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
+Received: by 10.231.14.74 with SMTP id f10mr895344iba.185.1288896188394; Thu,
+ 04 Nov 2010 11:43:08 -0700 (PDT)
+Received: by 10.231.170.70 with HTTP; Thu, 4 Nov 2010 11:43:08 -0700 (PDT)
+In-Reply-To: <4CD2EE64.5060404@aurel32.net>
+References: <1288873119.12965.1@thorin>
+        <4CD2E2F7.4090701@caviumnetworks.com>
+        <4CD2EE64.5060404@aurel32.net>
+Date:   Thu, 4 Nov 2010 19:43:08 +0100
+X-Google-Sender-Auth: rK2MWbYORQ1uzP74w3hbb-j-Re4
+Message-ID: <AANLkTik3SH8EmhcgY9HNQLLk9Np+E6LGo8jVoGQiQCx4@mail.gmail.com>
 Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
-References: <1288873119.12965.1@thorin> <4CD2E2F7.4090701@caviumnetworks.com>
-In-Reply-To: <4CD2E2F7.4090701@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <aurelien@aurel32.net>
+From:   Robert Millan <rmh@gnu.org>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <rmh.aybabtu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28300
+X-archive-position: 28301
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: rmh@gnu.org
 Precedence: bulk
 X-list: linux-mips
 
-David Daney a �crit :
-> On 11/04/2010 05:18 AM, Robert Millan wrote:
->> Please consider this patch, it enables AT_PLATFORM for Loongson 2F CPU.
->>
->>
-> [...]
->> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
->> index 71620e1..504f3b1 100644
->> --- a/arch/mips/kernel/cpu-probe.c
->> +++ b/arch/mips/kernel/cpu-probe.c
->> @@ -614,6 +614,8 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
->>  	case PRID_IMP_LOONGSON2:
->>  		c->cputype = CPU_LOONGSON2;
->>  		__cpu_name[cpu] = "ICT Loongson-2";
->> +		if (cpu == 0)
->> +			__elf_platform = "loongson-2f";
->>  		c->isa_level = MIPS_CPU_ISA_III;
->>  		c->options = R4K_OPTS |
->>  			     MIPS_CPU_FPU | MIPS_CPU_LLSC |
-> 
-> This doesn't look right to me.
-> 
-> You are claiming that all loongson2 are loongson-2f.  Is that really 
-> true?  Or are there other types of loongson2 that are not loongson-2f?
-> 
-> You need to be very careful here.  This is part of the userspace ABI, so 
+Hi!
+
+David Daney a écrit :
+> You are claiming that all loongson2 are loongson-2f.  Is that really
+> true?  Or are there other types of loongson2 that are not loongson-2f?
+>
+> You need to be very careful here.  This is part of the userspace ABI, so
 > if you get it wrong, you are stuck with it forever.
-> 
-> One question you didn't address is why userspace would care that it is 
+
+I'll figure out how to distinguish them and send a new patch.
+
+> One question you didn't address is why userspace would care that it is
 > running on exactly "loongson-2f" instead of just mips4.
-> 
-> The __elf_platform gets converted to a directory name by ld.so, so you 
+
+I think Aurelien answered this.
+
+> The __elf_platform gets converted to a directory name by ld.so, so you
 > may want to choose a value without '-' in it.
-> 
-> My suggestion would be to set "loongson2" for the generic CPU_LOONGSON2, 
-> and if there is a good reason for it, "loongson2f" for the 'f' variant.
-> 
 
-You should definitely define here loongson-2e and loongson-2f
-separately. They have the same instruction set, but different opcodes
-for the loongson specific instructions, hence they are not compatible.
-
+Well I appreciate consistency with GCC flag names, so I'd rather keep
+the dash, but then again it's not my decision to make.  In any case,
+whoever commits this can adjust the name to his/her liking.
 
 -- 
-Aurelien Jarno                          GPG: 1024D/F1BCDB73
-aurelien@aurel32.net                 http://www.aurel32.net
+Robert Millan

@@ -1,84 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Nov 2010 06:32:39 +0100 (CET)
-Received: from [69.28.251.93] ([69.28.251.93]:45853 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490990Ab0KCFcf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Nov 2010 06:32:35 +0100
-Received: (qmail 15360 invoked from network); 3 Nov 2010 05:32:31 -0000
-Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 3 Nov 2010 05:32:31 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Tue, 02 Nov 2010 22:32:30 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] MIPS: Fix build errors in sc-mips.c
-Date:   Tue, 02 Nov 2010 22:28:01 -0700
-Message-Id: <01184c101e5d39225a6380cce3c5bad5@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2010 13:18:52 +0100 (CET)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:54976 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491863Ab0KDMSt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Nov 2010 13:18:49 +0100
+Received: by wyf22 with SMTP id 22so1776747wyf.36
+        for <multiple recipients>; Thu, 04 Nov 2010 05:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:subject:to
+         :x-mailer:message-id:mime-version:content-type;
+        bh=9t9h+kn5cxVamWXw7fiQwbLRKIT2Xfi0vuC/7+4m6WQ=;
+        b=dQRYoTOtffgwuDig2lsKl+6aym52BrwkdK4pCl7i19uo9vcIbFlcNSTmxglLXQ/Vm7
+         pJQKXQjQSXZkSV+KO/9J4zN1D3LeqNZFLpWCleql+wsbUyEhnuWnNJq+UHp/g/BnmijE
+         jH99k1VrD2fJSds+1wov0dTIu3mAOLZ2kNhUQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:subject:to:x-mailer:message-id:mime-version
+         :content-type;
+        b=uXLGwVErYGDPz0AVfuHJJtRIV69Wwm1I7aQ1oOp3TlDhrHIhaeSbl/poVAllbFShy/
+         xrMNecVN17irUZ21ykOY9V2oXng6yFwkSuAVKJg7mzj0C+ikD45MGKWhbqPCvcZlvXmd
+         7Oz23aSAGx7H9hWVGQfx4RDOMWkQUcKLJnHTs=
+Received: by 10.227.32.147 with SMTP id c19mr656671wbd.43.1288873123222;
+        Thu, 04 Nov 2010 05:18:43 -0700 (PDT)
+Received: from thorin ([81.38.198.117])
+        by mx.google.com with ESMTPS id i19sm8498206wbe.17.2010.11.04.05.18.41
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 04 Nov 2010 05:18:42 -0700 (PDT)
+Date:   Thu, 04 Nov 2010 13:18:39 +0100
+From:   Robert Millan <rmh@gnu.org>
+Subject: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+X-Mailer: Balsa 2.4.1
+Message-Id: <1288873119.12965.1@thorin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+Content-Type: multipart/mixed; boundary="=-5GodYgjBcmMHasXlITod"
+Return-Path: <rmh.aybabtu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28295
+X-archive-position: 28296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: rmh@gnu.org
 Precedence: bulk
 X-list: linux-mips
 
-Seen with malta_defconfig on Linus' tree:
+--=-5GodYgjBcmMHasXlITod
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  CC      arch/mips/mm/sc-mips.o
-arch/mips/mm/sc-mips.c: In function 'mips_sc_is_activated':
-arch/mips/mm/sc-mips.c:77: error: 'config2' undeclared (first use in this function)
-arch/mips/mm/sc-mips.c:77: error: (Each undeclared identifier is reported only once
-arch/mips/mm/sc-mips.c:77: error: for each function it appears in.)
-arch/mips/mm/sc-mips.c:81: error: 'tmp' undeclared (first use in this function)
-make[2]: *** [arch/mips/mm/sc-mips.o] Error 1
-make[1]: *** [arch/mips/mm] Error 2
-make: *** [arch/mips] Error 2
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/mm/sc-mips.c |    8 ++++++--
- 1 files changed, 6 insertions(+), 2 deletions(-)
+Please consider this patch, it enables AT_PLATFORM for Loongson 2F CPU.
 
-diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-index 505feca..ef625eb 100644
---- a/arch/mips/mm/sc-mips.c
-+++ b/arch/mips/mm/sc-mips.c
-@@ -66,8 +66,11 @@ static struct bcache_ops mips_sc_ops = {
-  * 12..15 as implementation defined so below function will eventually have
-  * to be replaced by a platform specific probe.
-  */
--static inline int mips_sc_is_activated(struct cpuinfo_mips *c)
-+static inline int mips_sc_is_activated(struct cpuinfo_mips *c,
-+	unsigned int config2)
- {
-+	unsigned int tmp;
-+
- 	/* Check the bypass bit (L2B) */
- 	switch (c->cputype) {
- 	case CPU_34K:
-@@ -83,6 +86,7 @@ static inline int mips_sc_is_activated(struct cpuinfo_mips *c)
- 		c->scache.linesz = 2 << tmp;
- 	else
- 		return 0;
-+	return 1;
- }
- 
- static inline int __init mips_sc_probe(void)
-@@ -108,7 +112,7 @@ static inline int __init mips_sc_probe(void)
- 
- 	config2 = read_c0_config2();
- 
--	if (!mips_sc_is_activated(c))
-+	if (!mips_sc_is_activated(c, config2))
- 		return 0;
- 
- 	tmp = (config2 >> 8) & 0x0f;
--- 
-1.7.0.4
+
+
+--=-5GodYgjBcmMHasXlITod
+Content-Type: text/x-patch; charset=us-ascii; name=loongson-2f.diff
+Content-Disposition: attachment; filename=loongson-2f.diff
+Content-Transfer-Encoding: quoted-printable
+
+
+Enable AT_PLATFORM for Loongson 2F CPU.
+
+Signed-off-by: Robert Millan <rmh@gnu.org>
+
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 71620e1..504f3b1 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -614,6 +614,8 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips=
+ *c, unsigned int cpu)
+ 	case PRID_IMP_LOONGSON2:
+ 		c->cputype =3D CPU_LOONGSON2;
+ 		__cpu_name[cpu] =3D "ICT Loongson-2";
++		if (cpu =3D=3D 0)
++			__elf_platform =3D "loongson-2f";
+ 		c->isa_level =3D MIPS_CPU_ISA_III;
+ 		c->options =3D R4K_OPTS |
+ 			     MIPS_CPU_FPU | MIPS_CPU_LLSC |
+
+
+--=-5GodYgjBcmMHasXlITod--

@@ -1,71 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2010 20:30:06 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:48005 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491876Ab0KDTaD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 4 Nov 2010 20:30:03 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oA4JTiml028529;
-        Thu, 4 Nov 2010 19:29:45 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oA4JThru028526;
-        Thu, 4 Nov 2010 19:29:43 GMT
-Date:   Thu, 4 Nov 2010 19:29:43 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Robert Millan <rmh@gnu.org>, Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
-Message-ID: <20101104192943.GA28245@linux-mips.org>
-References: <1288873119.12965.1@thorin>
- <4CD2E2F7.4090701@caviumnetworks.com>
- <4CD2EE64.5060404@aurel32.net>
- <AANLkTik3SH8EmhcgY9HNQLLk9Np+E6LGo8jVoGQiQCx4@mail.gmail.com>
- <4CD30551.1000006@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4CD30551.1000006@caviumnetworks.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Nov 2010 23:26:38 +0100 (CET)
+Received: from smtp-out-083.synserver.de ([212.40.180.83]:1030 "HELO
+        smtp-out-081.synserver.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with SMTP id S1491881Ab0KDW0f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Nov 2010 23:26:35 +0100
+Received: (qmail 11315 invoked by uid 0); 4 Nov 2010 22:26:27 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@laprican.de
+X-SynServer-PPID: 10773
+Received: from c128026.adsl.hansenet.de (HELO localhost.localdomain) [213.39.128.26]
+  by 217.119.54.81 with SMTP; 4 Nov 2010 22:26:26 -0000
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Lars-Peter Clausen <lars@metafoo.de>,
+        stable@kernel.org
+Subject: [PATCH] MIPS: jz4740: qi_lb60: Fix gpio for the 6th row of the keyboard matrix
+Date:   Thu,  4 Nov 2010 23:25:56 +0100
+Message-Id: <1288909557-20088-1-git-send-email-lars@metafoo.de>
+X-Mailer: git-send-email 1.5.6.5
+Return-Path: <lars@metafoo.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28303
+X-archive-position: 28304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 04, 2010 at 12:11:13PM -0700, David Daney wrote:
+This patch fixes the gpio number for the 6th row of the keyboard matrix.
 
-> >Well I appreciate consistency with GCC flag names, so I'd rather keep
-> >the dash, but then again it's not my decision to make.  In any case,
-> >whoever commits this can adjust the name to his/her liking.
-> 
-> I don't like to put words into Ralf's mouth, but it is easier to
-> work with patches that have been tested and are ready to go, rather
-> than having to re-write everything.
+(And fixes a typo in my name...)
 
-Indeed.  I modify lots of patches that I can't test on my hardware
-collection so any change I have to do also increases of me adding bugs.
-Heck, I do most of my builds on fairly modest dual core machines so I
-can't even afford test builds which is how occasionally the most stupid
-errors end up getting committed.
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Cc: stable@kernel.org
+---
+ arch/mips/jz4740/board-qi_lb60.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)A
+---
+This patch should go into 2.6.36.x stable
 
-Which is why I'm increasingly asking people to do trivial changes to
-patches, not because I'm lazy.
-
-> Some of the strings in use are "i686", "x86_64", "octeon",
-> "octeon2", "PARISC", "PARISC32", tilegx-m32", "v4l", "v3l", "v4b",
-> and "v3b", these last for for ARM and they don't match the GCC
-> -mcpu= values.
-> 
-> So I guess what ever you want.
-
-It's probably reasonable if the names don't diverge too far from each
-other.  Then again with the number of cpu type synonyms accepted by gcc
-that may just be wishful thinking.
-
-  Ralf
+diff --git a/arch/mips/jz4740/board-qi_lb60.c b/arch/mips/jz4740/board-qi_lb60.c
+index 3221846..05297ef 100644
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -5,7 +5,7 @@
+  *
+  * Copyright (c) 2009 Qi Hardware inc.,
+  * Author: Xiangfu Liu <xiangfu@qi-hardware.com>
+- * Copyright 2010, Lars-Petrer Clausen <lars@metafoo.de>
++ * Copyright 2010, Lars-Peter Clausen <lars@metafoo.de>
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License version 2 or later
+@@ -236,7 +236,7 @@ static const unsigned int qi_lb60_keypad_rows[] = {
+ 	QI_LB60_GPIO_KEYIN(3),
+ 	QI_LB60_GPIO_KEYIN(4),
+ 	QI_LB60_GPIO_KEYIN(5),
+-	QI_LB60_GPIO_KEYIN(7),
++	QI_LB60_GPIO_KEYIN(6),
+ 	QI_LB60_GPIO_KEYIN8,
+ };
+ 
+-- 
+1.5.6.5

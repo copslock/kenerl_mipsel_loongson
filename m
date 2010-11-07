@@ -1,58 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Nov 2010 15:29:40 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:46228 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491765Ab0KGO3h (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 7 Nov 2010 15:29:37 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oA7ETY2h001591;
-        Sun, 7 Nov 2010 14:29:34 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oA7ETYiF001589;
-        Sun, 7 Nov 2010 14:29:34 GMT
-Date:   Sun, 7 Nov 2010 14:29:33 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jesper Juhl <jj@chaosbits.net>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Check vmalloc return value in vpe_open
-Message-ID: <20101107142933.GA7999@linux-mips.org>
-References: <alpine.LNX.2.00.1010301823350.1572@swampdragon.chaosbits.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Nov 2010 19:27:15 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:34010 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491828Ab0KGS1L convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 7 Nov 2010 19:27:11 +0100
+Received: by fxm11 with SMTP id 11so3473809fxm.36
+        for <multiple recipients>; Sun, 07 Nov 2010 10:27:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=2NWAvIHGANjKHWGwjifJYmK+ZblCR8LW0bShuUlvTYw=;
+        b=LnJb7/hTdIYprWwZkZQqr3fgKrzRJi95+itaqbAKImSv1c3oG02bDT0ujfB9kXvvRd
+         g1e7BRegbjAeiMYHfJJEFfxEp3A97eS1jZ1E1Qu+KQ+5/zGOMfThCX+iDR3G7/WTAdcJ
+         kKz5W22jfbbg/UQpsRk6iXROjNU57gznJoDBc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=Z9s40Z5SlwCjnIH3/tu5FKG+hVsGee3AIIz8TC6/WMTvkZus9JF66/Nj7YUDx/bI8A
+         F6cgkLSAk1xQvSV7+Bpj49kcBqlszAxBn1I150gLF0FLlhNol7+q3KZXLZlZkR3QylBn
+         vBYJs3Knc0Nf3FWchk5cA5e1O003mnAaiFIt8=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LNX.2.00.1010301823350.1572@swampdragon.chaosbits.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.223.97.13 with SMTP id j13mr2957154fan.146.1289154422724; Sun,
+ 07 Nov 2010 10:27:02 -0800 (PST)
+Received: by 10.223.78.134 with HTTP; Sun, 7 Nov 2010 10:27:02 -0800 (PST)
+In-Reply-To: <20101013075346.GA24052@linux-mips.org>
+References: <f3f140ca90dc9dac2f645748bc3a0150@localhost>
+        <20101013075346.GA24052@linux-mips.org>
+Date:   Sun, 7 Nov 2010 10:27:02 -0800
+Message-ID: <AANLkTinmorJRk+bEvpyQB33sUxsZ=bEWcyiGr3iWpFab@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] MIPS: HIGHMEM DMA on noncoherent MIPS32 processors
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     dediao@cisco.com, ddaney@caviumnetworks.com, dvomlehn@cisco.com,
+        sshtylyov@mvista.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28318
+X-archive-position: 28319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Oct 30, 2010 at 06:37:16PM +0200, Jesper Juhl wrote:
+On Wed, Oct 13, 2010 at 12:53 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> The good news is that Peter Zijlstra has rewritten kmap to make the need
+> for manually allocated kmap types go away and his patches are queued to
+> be merged for 2.6.37.  So I'd like to put this patch on hold until after
+> his patches are merged.
 
-> I noticed that the return value of the 
-> vmalloc() call in arch/mips/kernel/vpe.c::vpe_open() is not checked, so we 
-> potentially store a null pointer in v->pbuffer. As far as I can tell this 
-> will be a problem. However, I don't know the mips code at all, so there 
-> may be something, somewhere where I did not look, that handles this in a 
-> safe manner but I couldn't find it.
-> 
-> To me it looks like we should do what the patch below implements and check 
-> for a null return and then return -ENOMEM in that case. Comments?
+v4 of this patch applies cleanly to 2.6.37-rc1 and tests OK on my hardware:
 
-All users check if the buffer was successfully allocated so the code is
-safe wrt. to that.
+http://patchwork.linux-mips.org/patch/1695/
 
-Doesn't mean that it's not a pukeogenic piece of code.  Look at the use of
-v->pbuffer in vpe_release for example.  First use it the vmalloc'ed memory
-then carefully check the pointer for being non-NULL before calling vfree.
-If the pointer could actually be non-NULL that's too late and vfree does
-that check itself anyway.  And more such gems, general uglyness and
-freedom of concept.  It used to be even worse.
-
-  Ralf
+What do you think about queuing it for 2.6.37?

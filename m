@@ -1,64 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Nov 2010 19:27:15 +0100 (CET)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:34010 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491828Ab0KGS1L convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 7 Nov 2010 19:27:11 +0100
-Received: by fxm11 with SMTP id 11so3473809fxm.36
-        for <multiple recipients>; Sun, 07 Nov 2010 10:27:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=2NWAvIHGANjKHWGwjifJYmK+ZblCR8LW0bShuUlvTYw=;
-        b=LnJb7/hTdIYprWwZkZQqr3fgKrzRJi95+itaqbAKImSv1c3oG02bDT0ujfB9kXvvRd
-         g1e7BRegbjAeiMYHfJJEFfxEp3A97eS1jZ1E1Qu+KQ+5/zGOMfThCX+iDR3G7/WTAdcJ
-         kKz5W22jfbbg/UQpsRk6iXROjNU57gznJoDBc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=Z9s40Z5SlwCjnIH3/tu5FKG+hVsGee3AIIz8TC6/WMTvkZus9JF66/Nj7YUDx/bI8A
-         F6cgkLSAk1xQvSV7+Bpj49kcBqlszAxBn1I150gLF0FLlhNol7+q3KZXLZlZkR3QylBn
-         vBYJs3Knc0Nf3FWchk5cA5e1O003mnAaiFIt8=
-MIME-Version: 1.0
-Received: by 10.223.97.13 with SMTP id j13mr2957154fan.146.1289154422724; Sun,
- 07 Nov 2010 10:27:02 -0800 (PST)
-Received: by 10.223.78.134 with HTTP; Sun, 7 Nov 2010 10:27:02 -0800 (PST)
-In-Reply-To: <20101013075346.GA24052@linux-mips.org>
-References: <f3f140ca90dc9dac2f645748bc3a0150@localhost>
-        <20101013075346.GA24052@linux-mips.org>
-Date:   Sun, 7 Nov 2010 10:27:02 -0800
-Message-ID: <AANLkTinmorJRk+bEvpyQB33sUxsZ=bEWcyiGr3iWpFab@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] MIPS: HIGHMEM DMA on noncoherent MIPS32 processors
-From:   Kevin Cernekee <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Nov 2010 19:59:47 +0100 (CET)
+Received: from swampdragon.chaosbits.net ([90.184.90.115]:20686 "EHLO
+        swampdragon.chaosbits.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491832Ab0KGS7n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Nov 2010 19:59:43 +0100
+Received: by swampdragon.chaosbits.net (Postfix, from userid 1000)
+        id 31F0F94040; Sun,  7 Nov 2010 19:48:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by swampdragon.chaosbits.net (Postfix) with ESMTP id 2A1289403F;
+        Sun,  7 Nov 2010 19:48:25 +0100 (CET)
+Date:   Sun, 7 Nov 2010 19:48:25 +0100 (CET)
+From:   Jesper Juhl <jj@chaosbits.net>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     dediao@cisco.com, ddaney@caviumnetworks.com, dvomlehn@cisco.com,
-        sshtylyov@mvista.com, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <cernekee@gmail.com>
+cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS VPE support module: don't deref potentially null pbuffer
+ and don't do pointless null check before vfree
+In-Reply-To: <20101107142933.GA7999@linux-mips.org>
+Message-ID: <alpine.LNX.2.00.1011071943460.26247@swampdragon.chaosbits.net>
+References: <alpine.LNX.2.00.1010301823350.1572@swampdragon.chaosbits.net> <20101107142933.GA7999@linux-mips.org>
+User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <jj@chaosbits.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28319
+X-archive-position: 28320
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: jj@chaosbits.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 13, 2010 at 12:53 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> The good news is that Peter Zijlstra has rewritten kmap to make the need
-> for manually allocated kmap types go away and his patches are queued to
-> be merged for 2.6.37.  So I'd like to put this patch on hold until after
-> his patches are merged.
+On Sun, 7 Nov 2010, Ralf Baechle wrote:
 
-v4 of this patch applies cleanly to 2.6.37-rc1 and tests OK on my hardware:
+> On Sat, Oct 30, 2010 at 06:37:16PM +0200, Jesper Juhl wrote:
+> 
+> > I noticed that the return value of the 
+> > vmalloc() call in arch/mips/kernel/vpe.c::vpe_open() is not checked, so we 
+> > potentially store a null pointer in v->pbuffer. As far as I can tell this 
+> > will be a problem. However, I don't know the mips code at all, so there 
+> > may be something, somewhere where I did not look, that handles this in a 
+> > safe manner but I couldn't find it.
+> > 
+> > To me it looks like we should do what the patch below implements and check 
+> > for a null return and then return -ENOMEM in that case. Comments?
+> 
+> All users check if the buffer was successfully allocated so the code is
+> safe wrt. to that.
+> 
+> Doesn't mean that it's not a pukeogenic piece of code.  Look at the use of
+> v->pbuffer in vpe_release for example.  First use it the vmalloc'ed memory
+> then carefully check the pointer for being non-NULL before calling vfree.
+> If the pointer could actually be non-NULL that's too late and vfree does
+> that check itself anyway.  And more such gems, general uglyness and
+> freedom of concept.  It used to be even worse.
+> 
+Thanks for looking at the patch and commenting.
 
-http://patchwork.linux-mips.org/patch/1695/
+I've taken a second look. I still have no way at all to test this, so 
+please take a close look before potentially applying it, but how does this 
+look to you?
 
-What do you think about queuing it for 2.6.37?
+
+Don't dereference pbuffer before ttesting it for null.
+Don't do pointless check of pointer passed to vfree for null as vfree does 
+this itself.
+
+
+Signed-off-by: Jesper Juhl <jj@chaosbits.net>
+---
+ vpe.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
+index 3eb3cde..e22f258 100644
+--- a/arch/mips/kernel/vpe.c
++++ b/arch/mips/kernel/vpe.c
+@@ -854,6 +854,9 @@ static int vpe_elfload(struct vpe * v)
+ 	strcpy(mod.name, "VPE loader");
+ 
+ 	hdr = (Elf_Ehdr *) v->pbuffer;
++	if (!hdr)
++		return -ENOMEM;
++
+ 	len = v->plen;
+ 
+ 	/* Sanity checks against insmoding binaries or wrong arch,
+@@ -1129,6 +1132,10 @@ static int vpe_release(struct inode *inode, struct file *filp)
+ 		return -ENODEV;
+ 
+ 	hdr = (Elf_Ehdr *) v->pbuffer;
++	if (!hdr) {
++		ret = -ENOMEM;
++		goto out;
++	}
+ 	if (memcmp(hdr->e_ident, ELFMAG, SELFMAG) == 0) {
+ 		if (vpe_elfload(v) >= 0) {
+ 			vpe_run(v);
+@@ -1141,6 +1148,7 @@ static int vpe_release(struct inode *inode, struct file *filp)
+ 		ret = -ENOEXEC;
+ 	}
+ 
++ out:
+ 	/* It's good to be able to run the SP and if it chokes have a look at
+ 	   the /dev/rt?. But if we reset the pointer to the shared struct we
+ 	   lose what has happened. So perhaps if garbage is sent to the vpe
+@@ -1150,8 +1158,7 @@ static int vpe_release(struct inode *inode, struct file *filp)
+ 		v->shared_ptr = NULL;
+ 
+ 	// cleanup any temp buffers
+-	if (v->pbuffer)
+-		vfree(v->pbuffer);
++	vfree(v->pbuffer);
+ 	v->plen = 0;
+ 	return ret;
+ }
+
+
+
+
+-- 
+Jesper Juhl <jj@chaosbits.net>             http://www.chaosbits.net/
+Don't top-post  http://www.catb.org/~esr/jargon/html/T/top-post.html
+Plain text mails only, please.

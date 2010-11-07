@@ -1,96 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Nov 2010 13:38:44 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:34299 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491099Ab0KGMik (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Nov 2010 13:38:40 +0100
-Received: by wyf22 with SMTP id 22so4499427wyf.36
-        for <linux-mips@linux-mips.org>; Sun, 07 Nov 2010 04:38:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:date:from:subject:to
-         :x-mailer:message-id:mime-version:content-type;
-        bh=qP4lPjzpxuEsSmTHQzOdXrAIBGW8+jrx5WVorUFk6kA=;
-        b=Gq6nckwqFAX/JpZrN57qoR/IiyD+rOWNiiVTxbUjEoGESK9U4WTPswRpbuwGlXtNmZ
-         Czf2fReJKLGB7UMQdUUP+Zq7ixsG0fqsm9lPC+0YVJPSdiQJspkgyorGPcLUPzgs8n0F
-         TjFtsN5BRm/R5lRvV68BvkJSu0vN8m59g9a5U=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:date:from:subject:to:x-mailer:message-id:mime-version
-         :content-type;
-        b=djapiWYLkfILPS/5wR4oOMXKPTMkbp+QSupx+w0nr/usgyPeGbaCTMiYTQtsxNX1oz
-         ghpDtLPAEbWl+BDRgJF8tRaZb7K/IgEsVIQwxFH5W1DpkxDntmbFULr7d30dohe0qXnK
-         J0UGoLvtIjnhzwQrgWHhZNWrJakd8uBzO1bmQ=
-Received: by 10.216.71.66 with SMTP id q44mr4245246wed.44.1289133514424;
-        Sun, 07 Nov 2010 04:38:34 -0800 (PST)
-Received: from thorin ([81.38.198.117])
-        by mx.google.com with ESMTPS id p4sm2353465wer.5.2010.11.07.04.38.32
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 07 Nov 2010 04:38:33 -0800 (PST)
-Date:   Sun, 07 Nov 2010 13:38:29 +0100
-From:   Robert Millan <rmh@gnu.org>
-Subject: [PATCH] removed ad-hoc cmdline default
-To:     linux-mips@linux-mips.org
-X-Mailer: Balsa 2.4.1
-Message-Id: <1289133509.1547.1@thorin>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Nov 2010 15:29:40 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:46228 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491765Ab0KGO3h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 7 Nov 2010 15:29:37 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oA7ETY2h001591;
+        Sun, 7 Nov 2010 14:29:34 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oA7ETYiF001589;
+        Sun, 7 Nov 2010 14:29:34 GMT
+Date:   Sun, 7 Nov 2010 14:29:33 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Jesper Juhl <jj@chaosbits.net>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Check vmalloc return value in vpe_open
+Message-ID: <20101107142933.GA7999@linux-mips.org>
+References: <alpine.LNX.2.00.1010301823350.1572@swampdragon.chaosbits.net>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="=-s9UoF+Gmfng2LtbuSY6p"
-Return-Path: <rmh.aybabtu@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LNX.2.00.1010301823350.1572@swampdragon.chaosbits.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28317
+X-archive-position: 28318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rmh@gnu.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---=-s9UoF+Gmfng2LtbuSY6p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sat, Oct 30, 2010 at 06:37:16PM +0200, Jesper Juhl wrote:
 
+> I noticed that the return value of the 
+> vmalloc() call in arch/mips/kernel/vpe.c::vpe_open() is not checked, so we 
+> potentially store a null pointer in v->pbuffer. As far as I can tell this 
+> will be a problem. However, I don't know the mips code at all, so there 
+> may be something, somewhere where I did not look, that handles this in a 
+> safe manner but I couldn't find it.
+> 
+> To me it looks like we should do what the patch below implements and check 
+> for a null return and then return -ENOMEM in that case. Comments?
 
-Loongson builds have an ad-hoc cmdline default of "console=3DttyS0,115200=20
-root=3D/dev/hda1". These settings come from vendor (I remember builds=20
-from Lemote branch requiring a "console=3Dtty" override in order to get a=20
-working console).
+All users check if the buffer was successfully allocated so the code is
+safe wrt. to that.
 
-At least on my Yeeloong, they're particularly useless: there's no=20
-(external) serial port, and the IDE drive is now recognised as /dev/
-sda.
+Doesn't mean that it's not a pukeogenic piece of code.  Look at the use of
+v->pbuffer in vpe_release for example.  First use it the vmalloc'ed memory
+then carefully check the pointer for being non-NULL before calling vfree.
+If the pointer could actually be non-NULL that's too late and vfree does
+that check itself anyway.  And more such gems, general uglyness and
+freedom of concept.  It used to be even worse.
 
-I recommend removing them. They make sense from a distributor/vendor=20
-POV but otherwise are just a nuissance.
-
-
---=-s9UoF+Gmfng2LtbuSY6p
-Content-Type: text/x-patch; charset=us-ascii; name=loongson_cmdline.diff
-Content-Disposition: attachment; filename=loongson_cmdline.diff
-Content-Transfer-Encoding: quoted-printable
-
-
-Remove ad-hoc cmdline settings.
-
-Signed-off-by: Robert Millan <rmh@gnu.org>
-
-diff --git a/arch/mips/loongson/common/cmdline.c b/arch/mips/loongson/commo=
-n/cmdline.c
-index 1a06def..353e1d2 100644
---- a/arch/mips/loongson/common/cmdline.c
-+++ b/arch/mips/loongson/common/cmdline.c
-@@ -44,10 +44,5 @@ void __init prom_init_cmdline(void)
- 		strcat(arcs_cmdline, " ");
- 	}
-=20
--	if ((strstr(arcs_cmdline, "console=3D")) =3D=3D NULL)
--		strcat(arcs_cmdline, " console=3DttyS0,115200");
--	if ((strstr(arcs_cmdline, "root=3D")) =3D=3D NULL)
--		strcat(arcs_cmdline, " root=3D/dev/hda1");
--
- 	prom_init_machtype();
- }
-
-
---=-s9UoF+Gmfng2LtbuSY6p--
+  Ralf

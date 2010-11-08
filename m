@@ -1,120 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Nov 2010 08:24:38 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:48350 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491076Ab0KHHYe convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 8 Nov 2010 08:24:34 +0100
-Received: by wwb13 with SMTP id 13so3341876wwb.24
-        for <multiple recipients>; Sun, 07 Nov 2010 23:24:28 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Nov 2010 09:25:40 +0100 (CET)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:63758 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491116Ab0KHIZg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Nov 2010 09:25:36 +0100
+Received: by iwn8 with SMTP id 8so5817293iwn.36
+        for <multiple recipients>; Mon, 08 Nov 2010 00:25:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:reply-to:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=zIfKtzG7CnvJINJcbJJv1yfPg8U4PDn6UWTbyqofsMU=;
-        b=L6bbdSqeQ/FiVFUXVS9AgAkxSmUWKx8lpV9fo8h2pG2Tsgj1rjQZok8JC+NfC6WQbD
-         gUpxYl6pK58l7hI68Z2ZUJGqO34hJ3PcPQf5sRuhzyC9DYtnlu3jlDds22wbBjSpKWpg
-         BR53rXrxw3RGO7SNCqZBbKEbn+04Ajy/1msEs=
+        h=domainkey-signature:received:received:sender:date:from:to:cc
+         :subject:message-id:x-mailer:mime-version:content-type
+         :content-transfer-encoding;
+        bh=fjR3ry0Pz6SfGtIR2+Ym1jkbtoCQl0WtKI0R95cWhCk=;
+        b=a+L4an5C3DSIXKEgckvmCxZYOQ6DdTfV2OSpzUNCA+Nujf09XCcWx8oNwH9gRtR1ly
+         9wT9RED1mSKpijG74Iv+9Bm32tiNiVqbZedweK193VaMwDAxeYJ6gZNjPs3eKVCbeIaJ
+         N4izTtYGYkzTtRk1w3ea4MDSuDnExm6ZWYZ1w=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=W29WTeRnhN6o+QRhi3bbYaj7qFYyQC5ioWTmlyLqt0I95UBpNEwgUzeIdOOgFzRz2V
-         CJQ9/Fo4JNeTRcz6JSFtCuCcl1ibZHvrhZN1aea5y8dv1KARFcFLA9HKTfnexdZX9+XY
-         M54P8jfsBBeQU619FtWz5Gacze0cmS7RXw80c=
-Received: by 10.216.176.8 with SMTP id a8mr3603640wem.93.1289201067728;
-        Sun, 07 Nov 2010 23:24:27 -0800 (PST)
-Received: from lenovo.localnet (fbx.mimichou.net [82.236.225.16])
-        by mx.google.com with ESMTPS id w29sm2865478weq.19.2010.11.07.23.24.20
+        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        b=CMKzQxhvDpF89IqUKq1q96HBYmQcJApcO3hBM8KjeRtrzc1Y8K6i5Qe1dPECBNH3yH
+         jyZQJSPHOyuTtbWRtDDr9KuYUvRTkUnWpkYzGrpEbwN9tNnW4vCsPXODJ9+lyGF9+ki1
+         YmjA+FRN4sfySBaU80R8+lI6BQzywGaji5jVw=
+Received: by 10.42.193.135 with SMTP id du7mr3240613icb.321.1289204734255;
+        Mon, 08 Nov 2010 00:25:34 -0800 (PST)
+Received: from stratos (sannin29007.nirai.ne.jp [203.160.29.7])
+        by mx.google.com with ESMTPS id 34sm5712900ibi.8.2010.11.08.00.25.32
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 07 Nov 2010 23:24:22 -0800 (PST)
-From:   Florian Fainelli <florian@openwrt.org>
-Reply-To: Florian Fainelli <florian@openwrt.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH] arch: mips: use newly introduced hex_to_bin()
-Date:   Mon, 8 Nov 2010 08:26:23 +0100
-User-Agent: KMail/1.13.5 (Linux/2.6.36-trunk-amd64; KDE/4.4.5; x86_64; ; )
-Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-References: <1284212009-25708-1-git-send-email-andy.shevchenko@gmail.com> <AANLkTimRVNYMh923+5qS5mifDKgJRwCxeWGMXWYaJXr9@mail.gmail.com>
-In-Reply-To: <AANLkTimRVNYMh923+5qS5mifDKgJRwCxeWGMXWYaJXr9@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <201011080826.25676.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+        Mon, 08 Nov 2010 00:25:33 -0800 (PST)
+Date:   Mon, 8 Nov 2010 17:23:52 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
+Subject: MIPS: alchemy: add return value check for strict_strtoul()
+Message-Id: <20101108172352.db48962c.yuasa@linux-mips.org>
+X-Mailer: Sylpheed 3.0.3 (GTK+ 2.16.6; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yyuasa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28321
+X-archive-position: 28322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Le Monday 11 October 2010 18:34:16, Andy Shevchenko a écrit :
-> Any comments here?
+arch/mips/alchemy/devboards/prom.c: In function 'prom_init':
+arch/mips/alchemy/devboards/prom.c:60: error: ignoring return value of
+'strict_strtoul', declared with attribute warn_unused_result
 
-Acked-by: Florian Fainelli <florian@openwrt.org>
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+---
+ arch/mips/alchemy/devboards/prom.c |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
 
-> 
-> On Sat, Sep 11, 2010 at 4:33 PM, Andy Shevchenko
-> 
-> <andy.shevchenko@gmail.com> wrote:
-> > Remove custom implementation of hex_to_bin().
-> > 
-> > Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > ---
-> >  arch/mips/rb532/devices.c |   24 +++++++++---------------
-> >  1 files changed, 9 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
-> > index 041fc1a..a969eb8 100644
-> > --- a/arch/mips/rb532/devices.c
-> > +++ b/arch/mips/rb532/devices.c
-> > @@ -251,28 +251,22 @@ static struct platform_device *rb532_devs[] = {
-> > 
-> >  static void __init parse_mac_addr(char *macstr)
-> >  {
-> > -       int i, j;
-> > -       unsigned char result, value;
-> > +       int i, h, l;
-> > 
-> >        for (i = 0; i < 6; i++) {
-> > -               result = 0;
-> > -
-> >                if (i != 5 && *(macstr + 2) != ':')
-> >                        return;
-> > 
-> > -               for (j = 0; j < 2; j++) {
-> > -                       if (isxdigit(*macstr)
-> > -                           && (value =
-> > -                               isdigit(*macstr) ? *macstr -
-> > -                               '0' : toupper(*macstr) - 'A' + 10) < 16)
-> > { -                               result = result * 16 + value;
-> > -                               macstr++;
-> > -                       } else
-> > -                               return;
-> > -               }
-> > +               h = hex_to_bin(*macstr++);
-> > +               if (h == -1)
-> > +                       return;
-> > +
-> > +               l = hex_to_bin(*macstr++);
-> > +               if (l == -1)
-> > +                       return;
-> > 
-> >                macstr++;
-> > -               korina_dev0_data.mac[i] = result;
-> > +               korina_dev0_data.mac[i] = (h << 4) + l;
-> >        }
-> >  }
-> > 
-> > --
-> > 1.7.2.2
+diff --git a/arch/mips/alchemy/devboards/prom.c b/arch/mips/alchemy/devboards/prom.c
+index b30df5c..baeb213 100644
+--- a/arch/mips/alchemy/devboards/prom.c
++++ b/arch/mips/alchemy/devboards/prom.c
+@@ -54,10 +54,9 @@ void __init prom_init(void)
+ 
+ 	prom_init_cmdline();
+ 	memsize_str = prom_getenv("memsize");
+-	if (!memsize_str)
++	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
+ 		memsize = ALCHEMY_BOARD_DEFAULT_MEMSIZE;
+-	else
+-		strict_strtoul(memsize_str, 0, &memsize);
++
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+ 
+-- 
+1.7.3.2

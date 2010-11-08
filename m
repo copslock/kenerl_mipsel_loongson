@@ -1,126 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Nov 2010 19:59:47 +0100 (CET)
-Received: from swampdragon.chaosbits.net ([90.184.90.115]:20686 "EHLO
-        swampdragon.chaosbits.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491832Ab0KGS7n (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 7 Nov 2010 19:59:43 +0100
-Received: by swampdragon.chaosbits.net (Postfix, from userid 1000)
-        id 31F0F94040; Sun,  7 Nov 2010 19:48:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by swampdragon.chaosbits.net (Postfix) with ESMTP id 2A1289403F;
-        Sun,  7 Nov 2010 19:48:25 +0100 (CET)
-Date:   Sun, 7 Nov 2010 19:48:25 +0100 (CET)
-From:   Jesper Juhl <jj@chaosbits.net>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS VPE support module: don't deref potentially null pbuffer
- and don't do pointless null check before vfree
-In-Reply-To: <20101107142933.GA7999@linux-mips.org>
-Message-ID: <alpine.LNX.2.00.1011071943460.26247@swampdragon.chaosbits.net>
-References: <alpine.LNX.2.00.1010301823350.1572@swampdragon.chaosbits.net> <20101107142933.GA7999@linux-mips.org>
-User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Nov 2010 08:24:38 +0100 (CET)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:48350 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491076Ab0KHHYe convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 8 Nov 2010 08:24:34 +0100
+Received: by wwb13 with SMTP id 13so3341876wwb.24
+        for <multiple recipients>; Sun, 07 Nov 2010 23:24:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:reply-to:to
+         :subject:date:user-agent:cc:references:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:message-id;
+        bh=zIfKtzG7CnvJINJcbJJv1yfPg8U4PDn6UWTbyqofsMU=;
+        b=L6bbdSqeQ/FiVFUXVS9AgAkxSmUWKx8lpV9fo8h2pG2Tsgj1rjQZok8JC+NfC6WQbD
+         gUpxYl6pK58l7hI68Z2ZUJGqO34hJ3PcPQf5sRuhzyC9DYtnlu3jlDds22wbBjSpKWpg
+         BR53rXrxw3RGO7SNCqZBbKEbn+04Ajy/1msEs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        b=W29WTeRnhN6o+QRhi3bbYaj7qFYyQC5ioWTmlyLqt0I95UBpNEwgUzeIdOOgFzRz2V
+         CJQ9/Fo4JNeTRcz6JSFtCuCcl1ibZHvrhZN1aea5y8dv1KARFcFLA9HKTfnexdZX9+XY
+         M54P8jfsBBeQU619FtWz5Gacze0cmS7RXw80c=
+Received: by 10.216.176.8 with SMTP id a8mr3603640wem.93.1289201067728;
+        Sun, 07 Nov 2010 23:24:27 -0800 (PST)
+Received: from lenovo.localnet (fbx.mimichou.net [82.236.225.16])
+        by mx.google.com with ESMTPS id w29sm2865478weq.19.2010.11.07.23.24.20
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 07 Nov 2010 23:24:22 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+Reply-To: Florian Fainelli <florian@openwrt.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH] arch: mips: use newly introduced hex_to_bin()
+Date:   Mon, 8 Nov 2010 08:26:23 +0100
+User-Agent: KMail/1.13.5 (Linux/2.6.36-trunk-amd64; KDE/4.4.5; x86_64; ; )
+Cc:     linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-mips@linux-mips.org
+References: <1284212009-25708-1-git-send-email-andy.shevchenko@gmail.com> <AANLkTimRVNYMh923+5qS5mifDKgJRwCxeWGMXWYaJXr9@mail.gmail.com>
+In-Reply-To: <AANLkTimRVNYMh923+5qS5mifDKgJRwCxeWGMXWYaJXr9@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <jj@chaosbits.net>
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201011080826.25676.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28320
+X-archive-position: 28321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jj@chaosbits.net
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 7 Nov 2010, Ralf Baechle wrote:
+Le Monday 11 October 2010 18:34:16, Andy Shevchenko a écrit :
+> Any comments here?
 
-> On Sat, Oct 30, 2010 at 06:37:16PM +0200, Jesper Juhl wrote:
+Acked-by: Florian Fainelli <florian@openwrt.org>
+
 > 
-> > I noticed that the return value of the 
-> > vmalloc() call in arch/mips/kernel/vpe.c::vpe_open() is not checked, so we 
-> > potentially store a null pointer in v->pbuffer. As far as I can tell this 
-> > will be a problem. However, I don't know the mips code at all, so there 
-> > may be something, somewhere where I did not look, that handles this in a 
-> > safe manner but I couldn't find it.
+> On Sat, Sep 11, 2010 at 4:33 PM, Andy Shevchenko
+> 
+> <andy.shevchenko@gmail.com> wrote:
+> > Remove custom implementation of hex_to_bin().
 > > 
-> > To me it looks like we should do what the patch below implements and check 
-> > for a null return and then return -ENOMEM in that case. Comments?
-> 
-> All users check if the buffer was successfully allocated so the code is
-> safe wrt. to that.
-> 
-> Doesn't mean that it's not a pukeogenic piece of code.  Look at the use of
-> v->pbuffer in vpe_release for example.  First use it the vmalloc'ed memory
-> then carefully check the pointer for being non-NULL before calling vfree.
-> If the pointer could actually be non-NULL that's too late and vfree does
-> that check itself anyway.  And more such gems, general uglyness and
-> freedom of concept.  It used to be even worse.
-> 
-Thanks for looking at the patch and commenting.
-
-I've taken a second look. I still have no way at all to test this, so 
-please take a close look before potentially applying it, but how does this 
-look to you?
-
-
-Don't dereference pbuffer before ttesting it for null.
-Don't do pointless check of pointer passed to vfree for null as vfree does 
-this itself.
-
-
-Signed-off-by: Jesper Juhl <jj@chaosbits.net>
----
- vpe.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index 3eb3cde..e22f258 100644
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -854,6 +854,9 @@ static int vpe_elfload(struct vpe * v)
- 	strcpy(mod.name, "VPE loader");
- 
- 	hdr = (Elf_Ehdr *) v->pbuffer;
-+	if (!hdr)
-+		return -ENOMEM;
-+
- 	len = v->plen;
- 
- 	/* Sanity checks against insmoding binaries or wrong arch,
-@@ -1129,6 +1132,10 @@ static int vpe_release(struct inode *inode, struct file *filp)
- 		return -ENODEV;
- 
- 	hdr = (Elf_Ehdr *) v->pbuffer;
-+	if (!hdr) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
- 	if (memcmp(hdr->e_ident, ELFMAG, SELFMAG) == 0) {
- 		if (vpe_elfload(v) >= 0) {
- 			vpe_run(v);
-@@ -1141,6 +1148,7 @@ static int vpe_release(struct inode *inode, struct file *filp)
- 		ret = -ENOEXEC;
- 	}
- 
-+ out:
- 	/* It's good to be able to run the SP and if it chokes have a look at
- 	   the /dev/rt?. But if we reset the pointer to the shared struct we
- 	   lose what has happened. So perhaps if garbage is sent to the vpe
-@@ -1150,8 +1158,7 @@ static int vpe_release(struct inode *inode, struct file *filp)
- 		v->shared_ptr = NULL;
- 
- 	// cleanup any temp buffers
--	if (v->pbuffer)
--		vfree(v->pbuffer);
-+	vfree(v->pbuffer);
- 	v->plen = 0;
- 	return ret;
- }
-
-
-
-
--- 
-Jesper Juhl <jj@chaosbits.net>             http://www.chaosbits.net/
-Don't top-post  http://www.catb.org/~esr/jargon/html/T/top-post.html
-Plain text mails only, please.
+> > Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Cc: Ralf Baechle <ralf@linux-mips.org>
+> > Cc: linux-mips@linux-mips.org
+> > ---
+> >  arch/mips/rb532/devices.c |   24 +++++++++---------------
+> >  1 files changed, 9 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+> > index 041fc1a..a969eb8 100644
+> > --- a/arch/mips/rb532/devices.c
+> > +++ b/arch/mips/rb532/devices.c
+> > @@ -251,28 +251,22 @@ static struct platform_device *rb532_devs[] = {
+> > 
+> >  static void __init parse_mac_addr(char *macstr)
+> >  {
+> > -       int i, j;
+> > -       unsigned char result, value;
+> > +       int i, h, l;
+> > 
+> >        for (i = 0; i < 6; i++) {
+> > -               result = 0;
+> > -
+> >                if (i != 5 && *(macstr + 2) != ':')
+> >                        return;
+> > 
+> > -               for (j = 0; j < 2; j++) {
+> > -                       if (isxdigit(*macstr)
+> > -                           && (value =
+> > -                               isdigit(*macstr) ? *macstr -
+> > -                               '0' : toupper(*macstr) - 'A' + 10) < 16)
+> > { -                               result = result * 16 + value;
+> > -                               macstr++;
+> > -                       } else
+> > -                               return;
+> > -               }
+> > +               h = hex_to_bin(*macstr++);
+> > +               if (h == -1)
+> > +                       return;
+> > +
+> > +               l = hex_to_bin(*macstr++);
+> > +               if (l == -1)
+> > +                       return;
+> > 
+> >                macstr++;
+> > -               korina_dev0_data.mac[i] = result;
+> > +               korina_dev0_data.mac[i] = (h << 4) + l;
+> >        }
+> >  }
+> > 
+> > --
+> > 1.7.2.2

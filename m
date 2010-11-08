@@ -1,77 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Nov 2010 14:25:48 +0100 (CET)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:49430 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491772Ab0KHNZp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Nov 2010 14:25:45 +0100
-Received: by pzk27 with SMTP id 27so1002917pzk.36
-        for <multiple recipients>; Mon, 08 Nov 2010 05:25:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=43siHbyWZfWjGPlOnVBwrNHsQplPu65XcR1Pc6+tl+k=;
-        b=BodpivRfNIk6R/GGhjct7YCDhSq1SmyPtFhxz6kxorOfQP8Vu+T+5ApDtMOioy160g
-         8caStu841rCqy7hgU5qdJbXB8Jb9wPa3RvkZzJ8pZsMWdRTcuUnvdcnvaW+N/yPPuUyB
-         wpnohX0e5KYhPL+axZE9aeqGu9W4RNekc+a9I=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=Zj5a94Sa4i+1zyFoepqIaqrCCgtULP4tDKBysN3kvNYAwndIp8h9v/oBuCjrHL3/Xl
-         9hnkni24oCJC9p7DUbxnHttnQmZ47eb+2lT8uCogIoT1zr11czBiVRT0Uv1ulQ/k9z+a
-         tmyrgl6IPxio5FjlVOne1R7jt8V0ZqksjAqLY=
-Received: by 10.142.229.19 with SMTP id b19mr4559332wfh.217.1289222738359;
-        Mon, 08 Nov 2010 05:25:38 -0800 (PST)
-Received: from localhost.localdomain ([221.220.250.231])
-        by mx.google.com with ESMTPS id q13sm8104622wfc.5.2010.11.08.05.25.34
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 08 Nov 2010 05:25:37 -0800 (PST)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] MIPS: Loongson: add return value check for strict_strtoul()
-Date:   Mon,  8 Nov 2010 21:25:24 +0800
-Message-Id: <1289222724-8237-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.1
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 08 Nov 2010 20:13:54 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11727 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491995Ab0KHTNv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 8 Nov 2010 20:13:51 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4cd84c120000>; Mon, 08 Nov 2010 11:14:26 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 8 Nov 2010 11:14:27 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 8 Nov 2010 11:14:27 -0800
+Message-ID: <4CD84BEA.6010607@caviumnetworks.com>
+Date:   Mon, 08 Nov 2010 11:13:46 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+MIME-Version: 1.0
+To:     Robert Millan <rmh@gnu.org>
+CC:     Aurelien Jarno <aurelien@aurel32.net>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
+References: <1289133059.1547.0@thorin>
+In-Reply-To: <1289133059.1547.0@thorin>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 08 Nov 2010 19:14:27.0520 (UTC) FILETIME=[298F0400:01CB7F79]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28323
+X-archive-position: 28324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-cc1: warnings being treated as errors
-arch/mips/loongson/common/env.c: In function 'prom_init_env':
-arch/mips/loongson/common/env.c:49: error: ignoring return value of 'strict_strtol', declared with attribute warn_unused_result
-arch/mips/loongson/common/env.c:50: error: ignoring return value of 'strict_strtol', declared with attribute warn_unused_result
-arch/mips/loongson/common/env.c:51: error: ignoring return value of 'strict_strtol', declared with attribute warn_unused_result
-arch/mips/loongson/common/env.c:52: error: ignoring return value of 'strict_strtol', declared with attribute warn_unused_result
+On 11/07/2010 04:30 AM, Robert Millan wrote:
+> El 04/11/10 19:43:08, en/na Robert Millan va escriure:
+>> David Daney a écrit :
+>>> You are claiming that all loongson2 are loongson-2f.  Is that
+>>> really true?  Or are there other types of loongson2 that are not
+>>> loongson-2f?
+>>
+>> I'll figure out how to distinguish them and send a new patch.
+>
+> I looked at details about CPU identification, and this
+> seems to be broken.
+>
+> See the the notes about PRId in pages 72 and 66, respectively:
+> http://dev.lemote.com/files/resource/documents/Loongson/ls2f/Loongson2FUserGuide.pdf
+>
+> In both 2E and 2F, the implementation field is the same (0x63).
+>
+> Revision field is the same too, according to docs, and it can't
+> be used anyway (no garantee of consistency).
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/loongson/common/env.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+I seems weird to me that you cannot get this information from the PRId 
+register.  Perhaps the documentation is defective.
 
-diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
-index ae4cff9..11b193f 100644
---- a/arch/mips/loongson/common/env.c
-+++ b/arch/mips/loongson/common/env.c
-@@ -29,9 +29,9 @@ unsigned long memsize, highmemsize;
- 
- #define parse_even_earlier(res, option, p)				\
- do {									\
-+	int ret;							\
- 	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
--			strict_strtol((char *)p + strlen(option"="),	\
--					10, &res);			\
-+		ret = strict_strtol((char *)p + strlen(option"="), 10, &res); \
- } while (0)
- 
- void __init prom_init_env(void)
--- 
-1.7.1
+The Chinese version of the Loongson2E user guide seems to say something 
+about the two lower nibbles of the PRId, but being a non-chinese reader, 
+I have no idea if it would be relevant.
+
+I would think that the low order bits of the register can reliably 
+differentiate these two parts.
+
+David Daney
+
+
+
+>
+> I'm sending a new patch that uses machtype instead. Yes, I know
+> it's a bit of a kludge, but it really seems to be the only way.
+>
+>> Well I appreciate consistency with GCC flag names,
+>
+> Actually, I missread GCC flag (it's dashless).  I'm using
+> "loongson2f" as David requested.
+>

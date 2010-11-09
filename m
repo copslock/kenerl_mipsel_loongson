@@ -1,85 +1,223 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2010 17:27:03 +0100 (CET)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:64650 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492028Ab0KIQ0y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Nov 2010 17:26:54 +0100
-Received: by pwj8 with SMTP id 8so476324pwj.36
-        for <multiple recipients>; Tue, 09 Nov 2010 08:26:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=mcMfl7EPLUxEcSTUwYi0XXAG2azpdI74kuft3weCIrA=;
-        b=YHHHGb5nfcEJYq0Z5O8mY379g1dfCcJOHHjysk/6g/r1cBWf/J0mYVAP9pFreJHgz3
-         yIV19AquQeOnC540jlLuwrxevfN6yZ4g2YQItSIqTBxnQ3tiifoYMCTVCXxco39/rPiZ
-         m1ryReYOskJJ5p2Dmb71gUzJ0hoteQzB3bfsQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=CK3gIQ2xUS1a1JSr6vfm2y7qG34EQPt81QZjLe6OkqhKUqn/eH6k4s+5ZDAFTQWQ/H
-         qTdz2+ni/vZ1/LPuLc2O4bPoSmOoytXr6Szcos6tWHF6IktvlgzBaq3FUVHWdsAGIDdb
-         05/OL6zXvC0fOQOsGXqHwWwIWwjUTH/lx1T9w=
-Received: by 10.142.163.6 with SMTP id l6mr1676522wfe.406.1289320007633;
-        Tue, 09 Nov 2010 08:26:47 -0800 (PST)
-Received: from localhost.localdomain ([221.220.250.231])
-        by mx.google.com with ESMTPS id x4sm1872040wfd.21.2010.11.09.08.26.43
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 09 Nov 2010 08:26:46 -0800 (PST)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Sam Ravnborg <sam@ravnborg.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH 2/2] MIPS: Quiet the building output of vmlinux.32 and vmlinux.64
-Date:   Wed, 10 Nov 2010 00:26:34 +0800
-Message-Id: <6f2125c69f79f864518a20af44568f81ce309c77.1289319749.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <81fc5055a5980ee2877004944553387ed8bdb2b8.1289319749.git.wuzhangjin@gmail.com>
-References: <81fc5055a5980ee2877004944553387ed8bdb2b8.1289319749.git.wuzhangjin@gmail.com>
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2010 21:36:01 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11327 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492057Ab0KIUfz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Nov 2010 21:35:55 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4cd9b0cf0000>; Tue, 09 Nov 2010 12:36:31 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 9 Nov 2010 12:36:33 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 9 Nov 2010 12:36:32 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id oA9KZkAO022141;
+        Tue, 9 Nov 2010 12:35:46 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id oA9KZhFx022140;
+        Tue, 9 Nov 2010 12:35:43 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Jason Baron <jbaron@redhat.com>
+Subject: [PATCH v3] jump label: Add MIPS support.
+Date:   Tue,  9 Nov 2010 12:35:41 -0800
+Message-Id: <1289334941-22107-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 09 Nov 2010 20:36:33.0015 (UTC) FILETIME=[CBCBA870:01CB804D]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28345
+X-archive-position: 28346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Based on quiet_cmd_X and cmd_X, this patch quiets the building output of
-vmlinux.32 and vmlinux.64.
+When in Rome...
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+In order not to be left behind, we add jump label support for MIPS.
+
+Tested on 64-bit big endian (Octeon), and 32-bit little endian
+(malta/qemu).
+
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Jason Baron <jbaron@redhat.com>
 ---
- arch/mips/Makefile |    8 ++++++--
- 1 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 4a7bfa7..d1f132d 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -256,15 +256,19 @@ endif
- # Other need ECOFF, so we build a 32-bit ELF binary for them which we then
- # convert to ECOFF using elf2ecoff.
- #
-+quiet_cmd_32 = OBJCOPY $@
-+      cmd_32 = $(OBJCOPY) -O $(32bit-bfd) $(OBJCOPYFLAGS) $< $@
- vmlinux.32: vmlinux
--	$(OBJCOPY) -O $(32bit-bfd) $(OBJCOPYFLAGS) $< $@
-+	$(call cmd,32)
+Now that the core jump label support has been merged, this patch
+easily go via Ralf's tree.
+
+The only changes from v2 are Makefile and Kconfig improvements.
+
+ arch/mips/Kconfig                  |    1 +
+ arch/mips/include/asm/jump_label.h |   48 ++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/Makefile          |    2 +
+ arch/mips/kernel/jump_label.c      |   50 ++++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/module.c          |    5 +++
+ 5 files changed, 106 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/jump_label.h
+ create mode 100644 arch/mips/kernel/jump_label.c
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7fc6bd1..4419e83 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -21,6 +21,7 @@ config MIPS
+ 	select HAVE_DMA_API_DEBUG
+ 	select HAVE_GENERIC_HARDIRQS
+ 	select GENERIC_IRQ_PROBE
++	select HAVE_ARCH_JUMP_LABEL
  
- #
- # The 64-bit ELF tools are pretty broken so at this time we generate 64-bit
- # ELF files from 32-bit files by conversion.
- #
-+quiet_cmd_64 = OBJCOPY $@
-+      cmd_64 = $(OBJCOPY) -O $(64bit-bfd) $(OBJCOPYFLAGS) $< $@
- vmlinux.64: vmlinux
--	$(OBJCOPY) -O $(64bit-bfd) $(OBJCOPYFLAGS) $< $@
-+	$(call cmd,64)
+ menu "Machine selection"
  
- all:	$(all-y)
+diff --git a/arch/mips/include/asm/jump_label.h b/arch/mips/include/asm/jump_label.h
+new file mode 100644
+index 0000000..7622ccf
+--- /dev/null
++++ b/arch/mips/include/asm/jump_label.h
+@@ -0,0 +1,48 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (c) 2010 Cavium Networks, Inc.
++ */
++#ifndef _ASM_MIPS_JUMP_LABEL_H
++#define _ASM_MIPS_JUMP_LABEL_H
++
++#include <linux/types.h>
++
++#ifdef __KERNEL__
++
++#define JUMP_LABEL_NOP_SIZE 4
++
++#ifdef CONFIG_64BIT
++#define WORD_INSN ".dword"
++#else
++#define WORD_INSN ".word"
++#endif
++
++#define JUMP_LABEL(key, label)						\
++	do {								\
++		asm goto("1:\tnop\n\t"					\
++			"nop\n\t"					\
++			".pushsection __jump_table,  \"a\"\n\t"		\
++			WORD_INSN " 1b, %l[" #label "], %0\n\t"		\
++			".popsection\n\t"				\
++			: :  "i" (key) :  : label);			\
++	} while (0)
++
++
++#endif /* __KERNEL__ */
++
++#ifdef CONFIG_64BIT
++typedef u64 jump_label_t;
++#else
++typedef u32 jump_label_t;
++#endif
++
++struct jump_entry {
++	jump_label_t code;
++	jump_label_t target;
++	jump_label_t key;
++};
++
++#endif /* _ASM_MIPS_JUMP_LABEL_H */
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 22b2e0e..35ce5a5 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -106,4 +106,6 @@ obj-$(CONFIG_MIPS_CPUFREQ)	+= cpufreq/
  
+ obj-$(CONFIG_HW_PERF_EVENTS)	+= perf_event.o
+ 
++obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
++
+ CPPFLAGS_vmlinux.lds		:= $(KBUILD_CFLAGS)
+diff --git a/arch/mips/kernel/jump_label.c b/arch/mips/kernel/jump_label.c
+new file mode 100644
+index 0000000..52d3c70
+--- /dev/null
++++ b/arch/mips/kernel/jump_label.c
+@@ -0,0 +1,50 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (c) 2010 Cavium Networks, Inc.
++ */
++
++#include <linux/jump_label.h>
++#include <linux/kernel.h>
++#include <linux/memory.h>
++#include <linux/mutex.h>
++#include <linux/types.h>
++#include <linux/cpu.h>
++
++#include <asm/cacheflush.h>
++#include <asm/inst.h>
++
++#define J_RANGE_MASK ((1ul << 28) - 1)
++
++void arch_jump_label_transform(struct jump_entry *e,
++			       enum jump_label_type type)
++{
++	union mips_instruction insn;
++	union mips_instruction *insn_p =
++		(union mips_instruction *)(unsigned long)e->code;
++
++	/* Jump only works within a 256MB aligned region. */
++	BUG_ON((e->target & ~J_RANGE_MASK) != (e->code & ~J_RANGE_MASK));
++
++	/* Target must have 4 byte alignment. */
++	BUG_ON((e->target & 3) != 0);
++
++	if (type == JUMP_LABEL_ENABLE) {
++		insn.j_format.opcode = j_op;
++		insn.j_format.target = (e->target & J_RANGE_MASK) >> 2;
++	} else {
++		insn.word = 0; /* nop */
++	}
++
++	get_online_cpus();
++	mutex_lock(&text_mutex);
++	*insn_p = insn;
++
++	flush_icache_range((unsigned long)insn_p,
++			   (unsigned long)insn_p + sizeof(*insn_p));
++
++	mutex_unlock(&text_mutex);
++	put_online_cpus();
++}
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index 6f51dda..bb9cde4 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -30,6 +30,8 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/spinlock.h>
++#include <linux/jump_label.h>
++
+ #include <asm/pgtable.h>	/* MODULE_START */
+ 
+ struct mips_hi16 {
+@@ -390,6 +392,9 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 	const Elf_Shdr *s;
+ 	char *secstrings = (void *)hdr + sechdrs[hdr->e_shstrndx].sh_offset;
+ 
++	/* Make jump label nops. */
++	jump_label_apply_nops(me);
++
+ 	INIT_LIST_HEAD(&me->arch.dbe_list);
+ 	for (s = sechdrs; s < sechdrs + hdr->e_shnum; s++) {
+ 		if (strcmp("__dbe_table", secstrings + s->sh_name) != 0)
 -- 
-1.7.1
+1.7.2.3

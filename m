@@ -1,47 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2010 14:26:33 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:49931 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492018Ab0KIN01 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 9 Nov 2010 14:26:27 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oA9DQOH8027440;
-        Tue, 9 Nov 2010 13:26:24 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oA9DQOIP027438;
-        Tue, 9 Nov 2010 13:26:24 GMT
-Date:   Tue, 9 Nov 2010 13:26:23 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Tony Wu <tung7970@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Separate two consecutive loads in memset.S
-Message-ID: <20101109132623.GA27392@linux-mips.org>
-References: <AANLkTimuGUjcCsnmO3ZgQL-2vD7iD3bgg5V2tDbA_TpU@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2010 15:05:37 +0100 (CET)
+Received: from bombadil.infradead.org ([18.85.46.34]:55843 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492018Ab0KIOFd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Nov 2010 15:05:33 +0100
+Received: from hch by bombadil.infradead.org with local (Exim 4.72 #1 (Red Hat Linux))
+        id 1PFopE-0004tc-1P; Tue, 09 Nov 2010 14:05:28 +0000
+Date:   Tue, 9 Nov 2010 09:05:28 -0500
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Ajeet Yadav <ajeet.yadav.77@gmail.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        "xfs@oss.sgi.com" <xfs@oss.sgi.com>, linux-mips@linux-mips.org
+Subject: Re: XFS mounting fails on MIPS
+Message-ID: <20101109140527.GA13041@infradead.org>
+References: <AANLkTi=mLwQ0N_cErHzES1ZWvOa8jQspeYwKgn9sU4Jm@mail.gmail.com>
+ <20101104125052.GA22429@infradead.org>
+ <AANLkTinqK-HvuHPeaTgxJOJuWMfomP2C12G=uVcqhWdn@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AANLkTimuGUjcCsnmO3ZgQL-2vD7iD3bgg5V2tDbA_TpU@mail.gmail.com>
+In-Reply-To: <AANLkTinqK-HvuHPeaTgxJOJuWMfomP2C12G=uVcqhWdn@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org
+        See http://www.infradead.org/rpr.html
+Return-Path: <BATV+59881b75a86bc7c2a8cd+2634+infradead.org+hch@bombadil.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28341
+X-archive-position: 28342
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: hch@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 09, 2010 at 03:48:03PM +0800, Tony Wu wrote:
+Hi Ajeet,
 
-> partial_fixup is used in noreorder block.
-> 
-> Separating two consecutive loads can save one cycle on processors with
-> GPR intrelock and can fix load-use on processors that need a load delay slot.
-> 
-> Also do so for fwd_fixup.
+On Tue, Nov 09, 2010 at 04:43:04PM +0530, Ajeet Yadav wrote:
+> True, its the same system and you were right it was cache VIPT cache problem
+> the cache hold the stale value even after xlog_bread() update the buffer.
+> I do not know whether its correct ways to resolve the problem, but the
+> problem no longer occur.
 
-Patch is whitespace mangled; please resend.
+It seems like you more less re-implemented the vmap coherency hooks
+inside XFS, hardcoded to the mips implementation.
 
-  Ralf
+The actual helpers would looks something like:
+
+static inline void flush_kernel_vmap_range(void *addr, int size)
+{
+	dma_cache_inv(addr, size);
+}
+
+static inline void invalidate_kernel_vmap_range(void *addr, int size)
+{
+	dma_cache_inv(addr, size);
+}
+
+For some reason the kernel also expects flush_dcache_page to be
+implemented by an architecture if we want to implement these two
+(it's keyed off ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE).
+
+Can someone of the mips folks helps with this?
+
+The testcase is easy, mounting an xfs filesystem after an unclean
+shutdown on a machine with virtually indexed caches.

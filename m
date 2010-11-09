@@ -1,92 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2010 10:48:47 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:47215 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492031Ab0KIJsk convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 9 Nov 2010 10:48:40 +0100
-Received: by wwb31 with SMTP id 31so679017wwb.24
-        for <multiple recipients>; Tue, 09 Nov 2010 01:48:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Nov 2010 13:24:28 +0100 (CET)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:63404 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490989Ab0KIMYV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 9 Nov 2010 13:24:21 +0100
+Received: by ewy19 with SMTP id 19so3349762ewy.36
+        for <multiple recipients>; Tue, 09 Nov 2010 04:24:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=s8vCMx5meCHvTAnPiEWEPxirybPRF0Lbt3zw408zF1U=;
-        b=q+FNxMJ9G0TYIXZkQ6Dq76C1qfxPWi1kbByAW2N86xELIh+xHtTNqaUINx2MxOl0qo
-         DhqWd33iKhRnegfqtmP3s0uXtFCgCKsXOCCenqnzJ+TKUYbzEiAiIDA9gsbXBfq7HEVo
-         SOVLhowta9mFT8oXaX+0eQ/Oitx+BfWoWXWmI=
+        h=domainkey-signature:received:received:sender:date:from:subject:to
+         :cc:references:in-reply-to:x-mailer:message-id:mime-version
+         :content-type;
+        bh=KhepWFfgNBsyvGhKfSBe4KtulHN0sFWpQBzWrZYlpMA=;
+        b=wR/DcIMtcreZseqtuGyyB6cBVw+2dsZzpNqn+7tWbW/C8GFjS8+M4bt3u6TcYUNsIA
+         KYnn5NIc7ZBzWz9tl1b7CKTpOCAUHbNEoHkDmYn7PTt3tChLYfJvdRLOl/xwJPk3h1bp
+         QZlv4JAn1CtAielkF1RU/gWwRuC9iJVAaVNB4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=Kf9+GSF8dGj7a0gp6mUYPvgdTRF6A+puFBSxBNSbMSgbDRD9uT38P/itM88b+MnkMP
-         2KdecqYFUt/IaUw/RF1m9iKlxTf6QxoZd5Kr1q5vhgeSTSu0Hx38G/1u8I5z6ztYUg2u
-         yUxgX9mg6T27G4Tg8021E/bB2/DZjsVcFRtls=
-MIME-Version: 1.0
-Received: by 10.216.51.21 with SMTP id a21mr6552244wec.50.1289296114315; Tue,
- 09 Nov 2010 01:48:34 -0800 (PST)
-Received: by 10.216.131.88 with HTTP; Tue, 9 Nov 2010 01:48:34 -0800 (PST)
-In-Reply-To: <AANLkTi=HjVCbghbH3LYHQfzh=qAPBV-0q_JnfkGPXyS1@mail.gmail.com>
-References: <1289133059.1547.0@thorin>
-        <4CD84BEA.6010607@caviumnetworks.com>
-        <AANLkTikCD_HjshMiP0ubyYZkPDoRb8nkFScUPE3GB2F4@mail.gmail.com>
-        <4CD87EC3.2060405@caviumnetworks.com>
-        <AANLkTi=HjVCbghbH3LYHQfzh=qAPBV-0q_JnfkGPXyS1@mail.gmail.com>
-Date:   Tue, 9 Nov 2010 17:48:34 +0800
-Message-ID: <AANLkTimbPpVmbrk13+KSF_DbBmfwjpeuzr2i7DMAKHbO@mail.gmail.com>
+        h=sender:date:from:subject:to:cc:references:in-reply-to:x-mailer
+         :message-id:mime-version:content-type;
+        b=dLJjiBRZ4IqMZAXzbzvM6DHF92+Vc+cFIEvBbHa8TpfEewwcpQ1rIaN0W/ljYVRz7g
+         LIxJvgwAZTdw1+wvrob5OVWNHl3xtRyLJDJpRVoWNPxGyj7T2a5gBhvyv6CruU/IjRhs
+         4SDfz17U6moCHZ4HrQZxUw7JFvU+hPcRWfNqM=
+Received: by 10.213.16.69 with SMTP id n5mr5400762eba.26.1289305460984;
+        Tue, 09 Nov 2010 04:24:20 -0800 (PST)
+Received: from thorin ([83.45.77.222])
+        by mx.google.com with ESMTPS id b52sm1108629eei.7.2010.11.09.04.24.18
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 09 Nov 2010 04:24:20 -0800 (PST)
+Date:   Tue, 09 Nov 2010 13:24:02 +0100
+From:   Robert Millan <rmh@gnu.org>
 Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
-From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     Robert Millan <rmh@gnu.org>
+To:     wu zhangjin <wuzhangjin@gmail.com>
 Cc:     David Daney <ddaney@caviumnetworks.com>,
         Aurelien Jarno <aurelien@aurel32.net>,
         Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wuzhangjin@gmail.com>
+References: <AANLkTi=HjVCbghbH3LYHQfzh=qAPBV-0q_JnfkGPXyS1@mail.gmail.com>
+        <AANLkTimbPpVmbrk13+KSF_DbBmfwjpeuzr2i7DMAKHbO@mail.gmail.com>
+In-Reply-To: <AANLkTimbPpVmbrk13+KSF_DbBmfwjpeuzr2i7DMAKHbO@mail.gmail.com>
+        (from wuzhangjin@gmail.com on Tue Nov  9 10:48:34 2010)
+X-Mailer: Balsa 2.4.1
+Message-Id: <1289305442.31389.0@thorin>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-S8j8ieXtJRiiHPDhJPxR"
+Return-Path: <rmh.aybabtu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28339
+X-archive-position: 28340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: rmh@gnu.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Robert
+--=-S8j8ieXtJRiiHPDhJPxR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 9, 2010 at 7:02 AM, Robert Millan <rmh@gnu.org> wrote:
-> 2010/11/8 David Daney <ddaney@caviumnetworks.com>:
->> Look at the description of the register in this document:
->>
->> http://dev.lemote.com/files/resource/documents/Loongson/ls2e/godson2e.user.manual.pdf
->>
->> On page 49, it says that bits 0-3 contain the minor version number and bits
->> 4-7 are the major version number (according to a workmate that reads
->> Chinese).
->>
->> I don't know for certain, but it seems plausible that the 2E and 2F will
->> differ in bits 4-7, and bits 0-3 can be ignored.
->
-> Thanks for investigating, but ignoring bits 0-3 doesn't
-> really change anything.  Our problem was that bits 0-7
-> are the same on 2E and 2F (0x02).  If we ignore bits 0-3,
-> then our problem is that bits 4-7 are the same on 2E
-> and 2F (0x2).
+El 09/11/10 10:48:34, en/na wu zhangjin va escriure:
+> Just rechecked this with a friend from Lemote, in reality, the
+> revision id of Loongson-2F is 0x3, so, my old code should be a
+> reference for you:
+>=20
+> arch/mips/loongson/common/platform.c
+>=20
+> PRID_REV_LOONGSON2F and PRID_REV_LOONGSON2E has already been defined
+> in arch/mips/include/asm/cpu.h
+>=20
+> So, the manual is buggy, perhaps the editors of the manuals did copy
+> and paste for I have found the title of the 2F manual is the same as
+> the 2E manual ;-)
 
-Just rechecked this with a friend from Lemote, in reality, the
-revision id of Loongson-2F is 0x3, so, my old code should be a
-reference for you:
+Thank you!  Then I suppose this will do it.
 
-arch/mips/loongson/common/platform.c
 
-PRID_REV_LOONGSON2F and PRID_REV_LOONGSON2E has already been defined
-in arch/mips/include/asm/cpu.h
+--=-S8j8ieXtJRiiHPDhJPxR
+Content-Type: text/x-patch; charset=us-ascii; name=loongson2f.diff
+Content-Disposition: attachment; filename=loongson2f.diff
+Content-Transfer-Encoding: quoted-printable
 
-So, the manual is buggy, perhaps the editors of the manuals did copy
-and paste for I have found the title of the 2F manual is the same as
-the 2E manual ;-)
 
-Best Regards,
-Wu Zhangjin
+Signed-off-by: Robert Millan <rmh@gnu.org>
+
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 71620e1..4341950 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -613,7 +613,20 @@ static inline void cpu_probe_legacy(struct cpuinfo_mip=
+s *c, unsigned int cpu)
+ 		break;
+ 	case PRID_IMP_LOONGSON2:
+ 		c->cputype =3D CPU_LOONGSON2;
+-		__cpu_name[cpu] =3D "ICT Loongson-2";
++		switch (c->processor_id & PRID_REV_MASK) {
++		case PRID_REV_LOONGSON2E:
++			__cpu_name[cpu] =3D "ICT Loongson-2E";
++			if (cpu =3D=3D 0)
++				__elf_platform =3D "loongson2e";
++			break;
++		case PRID_REV_LOONGSON2F:
++			__cpu_name[cpu] =3D "ICT Loongson-2F";
++			if (cpu =3D=3D 0)
++				__elf_platform =3D "loongson2f";
++			break;
++		default:
++			__cpu_name[cpu] =3D "ICT Loongson-2";
++		}
+ 		c->isa_level =3D MIPS_CPU_ISA_III;
+ 		c->options =3D R4K_OPTS |
+ 			     MIPS_CPU_FPU | MIPS_CPU_LLSC |
+
+
+--=-S8j8ieXtJRiiHPDhJPxR--

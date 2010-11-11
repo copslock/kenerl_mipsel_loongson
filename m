@@ -1,103 +1,152 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Nov 2010 08:43:11 +0100 (CET)
-Received: from eurymedon.net.ttu.edu ([129.118.1.225]:18927 "EHLO
-        eurymedon.net.ttu.edu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491187Ab0KKHnI convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 11 Nov 2010 08:43:08 +0100
-Received: from hippolytus.net.ttu.edu (129.118.1.212) by tmrc.ttu.edu
- (129.118.1.179) with Microsoft SMTP Server id 8.2.254.0; Thu, 11 Nov 2010
- 01:42:59 -0600
-Received: from CALYPSO.ttu.edu ([129.118.1.208]) by hippolytus.net.ttu.edu
- ([129.118.1.212]) with mapi; Thu, 11 Nov 2010 01:42:54 -0600
-From:   "Owens-Malett, Shannon" <shannon.owens-malett@ttu.edu>
-Date:   Thu, 11 Nov 2010 01:42:52 -0600
-Subject: I am Dr. Paul Wizman, reply to (dr.paul.wizman@9.cn)
-Thread-Topic: I am Dr. Paul Wizman, reply to (dr.paul.wizman@9.cn)
-Thread-Index: AQHLgXQLDttGuh6WyUS24iQGzXliTg==
-Message-ID: <F5E8F801014A374A845B8EA291AE58CE8D2A949BE2@CALYPSO.ttu.edu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Nov 2010 15:47:58 +0100 (CET)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:60826 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491032Ab0KKOrz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Nov 2010 15:47:55 +0100
+Received: by ewy19 with SMTP id 19so1069118ewy.36
+        for <multiple recipients>; Thu, 11 Nov 2010 06:47:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:subject:to
+         :cc:references:in-reply-to:x-mailer:message-id:mime-version
+         :content-type;
+        bh=CF+CDz0EY6LLLYN6cvWUD9FP7j7zAXobvo9oOGwTjHc=;
+        b=R9/2FjO8NUys0fPHYEqmxndHj0p012l6ERADux7nG0EI2O8wmY7K+DULWuA3QfJ5zq
+         wshf4KVW1JByCNNqNbauAXmGzfBEjCbYWtESTYojZuLuVWkeMp3CSo11qziVn+FtNO/i
+         3/nOJgZaj5JiDGj/DSnElThn3xFJMm3vE2lyU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:subject:to:cc:references:in-reply-to:x-mailer
+         :message-id:mime-version:content-type;
+        b=XuazlcYThTdoK/wQ5mkdqLUfhZjr9dwhtdA44iDCBtQAxWlOzeu/6Ozah5vyVRdS6/
+         FwPAyP91tsZEydyFv//aGi33T81/rksy2XKvIAuGmOMBo5OORrMhdv7Qdj64NhUQDipQ
+         vSG0uRuns7ADJ4ybWdlxYww3ZhC5k6J1qRhe4=
+Received: by 10.213.3.80 with SMTP id 16mr1883055ebm.11.1289486874302;
+        Thu, 11 Nov 2010 06:47:54 -0800 (PST)
+Received: from thorin ([83.45.77.222])
+        by mx.google.com with ESMTPS id x54sm1994573eeh.23.2010.11.11.06.47.50
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 11 Nov 2010 06:47:52 -0800 (PST)
+Date:   Thu, 11 Nov 2010 15:47:35 +0100
+From:   Robert Millan <rmh@gnu.org>
+Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     wu zhangjin <wuzhangjin@gmail.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org
+References: <1289305442.31389.0@thorin>
+        <20101109154055.GD10799@linux-mips.org>
+In-Reply-To: <20101109154055.GD10799@linux-mips.org> (from
+        ralf@linux-mips.org on Tue Nov  9 16:40:55 2010)
+X-Mailer: Balsa 2.4.1
+Message-Id: <1289486855.14828.0@thorin>
 MIME-Version: 1.0
-To:     Undisclosed recipients:;
-Received-SPF: Pass (eurymedon.net.ttu.edu: domain of
- shannon.owens-malett@ttu.edu designates 129.118.1.212 as permitted sender)
- receiver=eurymedon.net.ttu.edu; client-ip=129.118.1.212;
- helo=hippolytus.net.ttu.edu;
-X-TechMail-Edge-Route: TTU
-Return-Path: <shannon.owens-malett@ttu.edu>
+Content-Type: multipart/mixed; boundary="=-JmLzlPP0kTVobA4+X7Q2"
+Return-Path: <rmh.aybabtu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28354
+X-archive-position: 28356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shannon.owens-malett@ttu.edu
+X-original-sender: rmh@gnu.org
 Precedence: bulk
 X-list: linux-mips
 
-
-
-
-I am Dr. Paul Wizman , a diagnosed glandular cancer patient on bed is willing to donate her funds to help you as her last gift from God. reply to my private email (dr.paul.wizman@9.cn)
-From BATV+ecf49ddc94d187cb2a78+2636+infradead.org+hch@bombadil.srs.infradead.org Thu Nov 11 13:49:58 2010
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Nov 2010 13:50:02 +0100 (CET)
-Received: from bombadil.infradead.org ([18.85.46.34]:54044 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491827Ab0KKMt6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Nov 2010 13:49:58 +0100
-Received: from hch by bombadil.infradead.org with local (Exim 4.72 #1 (Red Hat Linux))
-        id 1PGWbB-0002u0-09; Thu, 11 Nov 2010 12:49:53 +0000
-Date:   Thu, 11 Nov 2010 07:49:52 -0500
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Ajeet Yadav <ajeet.yadav.77@gmail.com>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        "xfs@oss.sgi.com" <xfs@oss.sgi.com>, linux-mips@linux-mips.org
-Subject: Re: XFS mounting fails on MIPS
-Message-ID: <20101111124952.GA11052@infradead.org>
-References: <AANLkTi=mLwQ0N_cErHzES1ZWvOa8jQspeYwKgn9sU4Jm@mail.gmail.com>
- <20101104125052.GA22429@infradead.org>
- <AANLkTinqK-HvuHPeaTgxJOJuWMfomP2C12G=uVcqhWdn@mail.gmail.com>
- <20101109140527.GA13041@infradead.org>
- <AANLkTik09-0udnrpAJ-mTxMx8iKZ5UTq-ucduQJOZkws@mail.gmail.com>
- <AANLkTik=-jiE5xeJCTQZnbf7AFk7Wzap5ToBDceqsEdH@mail.gmail.com>
-MIME-Version: 1.0
+--=-JmLzlPP0kTVobA4+X7Q2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AANLkTik=-jiE5xeJCTQZnbf7AFk7Wzap5ToBDceqsEdH@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org
-        See http://www.infradead.org/rpr.html
-Return-Path: <BATV+ecf49ddc94d187cb2a78+2636+infradead.org+hch@bombadil.srs.infradead.org>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28355
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@infradead.org
-Precedence: bulk
-X-list: linux-mips
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 11, 2010 at 11:10:33AM +0530, Ajeet Yadav wrote:
-> I think mips folks agree with the change. I really wish to have there
-> comment.
-> 
-> I also wish to know do we really need fix in XFS for virtual indexed
-> architecture, I think its generic issue as many architecture now use VIVT or
-> VIPT caches. Do we want to say XFS is relatively unstable with virtual
-> indexed architecture ?
+El 09/11/10 16:40:55, en/na Ralf Baechle va escriure:
+> Cavium introduced this idion first.  Now your patch is repeating it
+> and I'm
+> sure other SMP platforms will soon use it.   I don't want a thousand
+> if (cpu =3D=3D 0) in that file, so can you cook a patch that introduces a
+> helper, something like
+>=20
+> static void set_elf_platform(const char *plat)
+> {
+> 	if (cpu =3D=3D 0)
+> 		__elf_platform =3D plat;
+> }
+>=20
+> Then use that for all assignments to __elf_platform?  Thanks.
 
-The vmap flushing APIs I repeatedly pointed you at are the generic
-solution.  They've been implement for arm, parisc and sh already, it's
-just that no one has bothered to do it for mips yet.
+Here.
 
-Without the proper flushing anything that uses vmap, which includes
-XFS is not "relatively unstable" but in fact not usable on systems
-with virtually indexed caches.
+
+--=-JmLzlPP0kTVobA4+X7Q2
+Content-Type: text/x-patch; charset=us-ascii; name=loongson2f.diff
+Content-Disposition: attachment; filename=loongson2f.diff
+Content-Transfer-Encoding: quoted-printable
+
+
+Signed-off-by: Robert Millan <rmh@gnu.org>
+
+diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
+index fd1d39e..58844f6 100644
+--- a/arch/mips/include/asm/elf.h
++++ b/arch/mips/include/asm/elf.h
+@@ -344,6 +344,12 @@ extern int dump_task_fpu(struct task_struct *, elf_fpr=
+egset_t *);
+ #define ELF_PLATFORM  __elf_platform
+ extern const char *__elf_platform;
+=20
++static inline void set_elf_platform(int cpu, const char *plat)
++{
++	if (cpu =3D=3D 0)
++		__elf_platform =3D plat;
++}
++
+ /*
+  * See comments in asm-alpha/elf.h, this is the same thing
+  * on the MIPS.
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 71620e1..7e547ca 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -613,7 +613,18 @@ static inline void cpu_probe_legacy(struct cpuinfo_mip=
+s *c, unsigned int cpu)
+ 		break;
+ 	case PRID_IMP_LOONGSON2:
+ 		c->cputype =3D CPU_LOONGSON2;
+-		__cpu_name[cpu] =3D "ICT Loongson-2";
++		switch (c->processor_id & PRID_REV_MASK) {
++		case PRID_REV_LOONGSON2E:
++			__cpu_name[cpu] =3D "ICT Loongson-2E";
++			set_elf_platform(cpu, "loongson2e");
++			break;
++		case PRID_REV_LOONGSON2F:
++			__cpu_name[cpu] =3D "ICT Loongson-2F";
++			set_elf_platform(cpu, "loongson2f");
++			break;
++		default:
++			__cpu_name[cpu] =3D "ICT Loongson-2";
++		}
+ 		c->isa_level =3D MIPS_CPU_ISA_III;
+ 		c->options =3D R4K_OPTS |
+ 			     MIPS_CPU_FPU | MIPS_CPU_LLSC |
+@@ -957,14 +968,12 @@ static inline void cpu_probe_cavium(struct cpuinfo_mi=
+ps *c, unsigned int cpu)
+ 		c->cputype =3D CPU_CAVIUM_OCTEON_PLUS;
+ 		__cpu_name[cpu] =3D "Cavium Octeon+";
+ platform:
+-		if (cpu =3D=3D 0)
+-			__elf_platform =3D "octeon";
++		set_elf_platform(cpu, "octeon");
+ 		break;
+ 	case PRID_IMP_CAVIUM_CN63XX:
+ 		c->cputype =3D CPU_CAVIUM_OCTEON2;
+ 		__cpu_name[cpu] =3D "Cavium Octeon II";
+-		if (cpu =3D=3D 0)
+-			__elf_platform =3D "octeon2";
++		set_elf_platform(cpu, "octeon2");
+ 		break;
+ 	default:
+ 		printk(KERN_INFO "Unknown Octeon chip!\n");
+
+
+--=-JmLzlPP0kTVobA4+X7Q2--

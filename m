@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:52:53 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:56910 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:53:18 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:56918 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492159Ab0KLVvy (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1492160Ab0KLVvy (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 12 Nov 2010 22:51:54 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 7A6E241C003;
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id B40BF41C004;
         Fri, 12 Nov 2010 22:51:49 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id AAB62270001;
-        Fri, 12 Nov 2010 22:51:48 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 06351270002;
+        Fri, 12 Nov 2010 22:51:49 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, "Luis R. Rodriguez" <mcgrof@gmail.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Imre Kaloz <kaloz@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        David Brownell <dbrownell@users.sourceforge.net>
-Subject: [RFC 02/18] MIPS: ath79: add GPIOLIB support
-Date:   Fri, 12 Nov 2010 22:51:08 +0100
-Message-Id: <1289598684-30624-3-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [RFC 03/18] MIPS: add generic support for multiple machines within a single kernel
+Date:   Fri, 12 Nov 2010 22:51:09 +0100
+Message-Id: <1289598684-30624-4-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
 References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A1226201715 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A122653DA52 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28368
+X-archive-position: 28369
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,353 +34,243 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch implements generic GPIO routines for the built-in
-GPIO controllers of the Atheros AR71XX/AR724X/AR913X SoCs.
+This patch adds a generic solution to support multiple machines based on
+a given SoC within a single kernel image. It is implemented already for
+several other architectures but MIPS has no generic support for that yet.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Cc: David Brownell <dbrownell@users.sourceforge.net>
 ---
- arch/mips/Kconfig                              |    1 +
- arch/mips/ath79/Makefile                       |    2 +-
- arch/mips/ath79/common.h                       |    5 +
- arch/mips/ath79/gpio.c                         |  196 ++++++++++++++++++++++++
- arch/mips/ath79/setup.c                        |    2 +-
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   21 +++
- arch/mips/include/asm/mach-ath79/gpio.h        |   26 +++
- 7 files changed, 251 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/ath79/gpio.c
- create mode 100644 arch/mips/include/asm/mach-ath79/gpio.h
+ arch/mips/Kconfig                    |    3 +
+ arch/mips/include/asm/mips_machine.h |   54 +++++++++++++++++++++
+ arch/mips/kernel/Makefile            |    1 +
+ arch/mips/kernel/mips_machine.c      |   86 ++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/proc.c              |    7 ++-
+ arch/mips/kernel/vmlinux.lds.S       |    7 +++
+ 6 files changed, 157 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/include/asm/mips_machine.h
+ create mode 100644 arch/mips/kernel/mips_machine.c
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 5da5f81..a738966 100644
+index a738966..436fc24 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -60,6 +60,7 @@ config AR7
+@@ -889,6 +889,9 @@ config MIPS_DISABLE_OBSOLETE_IDE
+ config SYNC_R4K
+ 	bool
  
- config ATH79
- 	bool "Atheros AR71XX/AR724X/AR913X based boards"
-+	select ARCH_REQUIRE_GPIOLIB
- 	select BOOT_RAW
- 	select CEVT_R4K
- 	select CSRC_R4K
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 438929f..6914685 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -8,7 +8,7 @@
- # under the terms of the GNU General Public License version 2 as published
- # by the Free Software Foundation.
- 
--obj-y	:= prom.o setup.o irq.o common.o
-+obj-y	:= prom.o setup.o irq.o common.o gpio.o
- 
- obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- 
-diff --git a/arch/mips/ath79/common.h b/arch/mips/ath79/common.h
-index 62d7503..041ca7e 100644
---- a/arch/mips/ath79/common.h
-+++ b/arch/mips/ath79/common.h
-@@ -59,4 +59,9 @@ static inline int soc_is_ar913x(void)
- 		ath79_soc == ATH79_SOC_AR9132);
- }
- 
-+void ath79_gpio_function_enable(u32 mask);
-+void ath79_gpio_function_disable(u32 mask);
-+void ath79_gpio_function_setup(u32 set, u32 clear);
-+void ath79_gpio_init(void) __init;
++config MIPS_MACHINE
++	def_bool n
 +
- #endif /* __ATH79_COMMON_H */
-diff --git a/arch/mips/ath79/gpio.c b/arch/mips/ath79/gpio.c
+ config NO_IOPORT
+ 	def_bool n
+ 
+diff --git a/arch/mips/include/asm/mips_machine.h b/arch/mips/include/asm/mips_machine.h
 new file mode 100644
-index 0000000..fd88c64
+index 0000000..363bb35
 --- /dev/null
-+++ b/arch/mips/ath79/gpio.c
-@@ -0,0 +1,196 @@
++++ b/arch/mips/include/asm/mips_machine.h
+@@ -0,0 +1,54 @@
 +/*
-+ *  Atheros AR71XX/AR724X/AR913X GPIO API support
-+ *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
++ *
 + */
 +
-+#include <linux/kernel.h>
++#ifndef __ASM_MIPS_MACHINE_H
++#define __ASM_MIPS_MACHINE_H
++
 +#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/spinlock.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <linux/gpio.h>
++#include <linux/stddef.h>
 +
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "common.h"
++#include <asm/bootinfo.h>
 +
-+static void __iomem *ath79_gpio_base;
-+static unsigned long ath79_gpio_count;
-+static DEFINE_SPINLOCK(ath79_gpio_lock);
-+
-+static void __ath79_gpio_set_value(unsigned gpio, int value)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+
-+	if (value)
-+		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_SET);
-+	else
-+		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_CLEAR);
-+}
-+
-+static int __ath79_gpio_get_value(unsigned gpio)
-+{
-+	return (__raw_readl(ath79_gpio_base + AR71XX_GPIO_REG_IN) >> gpio) & 1;
-+}
-+
-+static int ath79_gpio_get_value(struct gpio_chip *chip, unsigned offset)
-+{
-+	return __ath79_gpio_get_value(offset);
-+}
-+
-+static void ath79_gpio_set_value(struct gpio_chip *chip,
-+				  unsigned offset, int value)
-+{
-+	__ath79_gpio_set_value(offset, value);
-+}
-+
-+static int ath79_gpio_direction_input(struct gpio_chip *chip,
-+				       unsigned offset)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) & ~(1 << offset),
-+		     base + AR71XX_GPIO_REG_OE);
-+
-+	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+
-+	return 0;
-+}
-+
-+static int ath79_gpio_direction_output(struct gpio_chip *chip,
-+					unsigned offset, int value)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+
-+	if (value)
-+		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_SET);
-+	else
-+		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_CLEAR);
-+
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) | (1 << offset),
-+		     base + AR71XX_GPIO_REG_OE);
-+
-+	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+
-+	return 0;
-+}
-+
-+static struct gpio_chip ath79_gpio_chip = {
-+	.label			= "ath79",
-+	.get			= ath79_gpio_get_value,
-+	.set			= ath79_gpio_set_value,
-+	.direction_input	= ath79_gpio_direction_input,
-+	.direction_output	= ath79_gpio_direction_output,
-+	.base			= 0,
++struct mips_machine {
++	unsigned long		mach_type;
++	const char		*mach_id;
++	const char		*mach_name;
++	void			(*mach_setup)(void);
 +};
 +
-+void ath79_gpio_function_enable(u32 mask)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+	unsigned long flags;
++#define MIPS_MACHINE(_type, _id, _name, _setup)			\
++static const char machine_name_##_type[] __initconst		\
++			__aligned(1) = _name;			\
++static const char machine_id_##_type[] __initconst		\
++			__aligned(1) = _id;			\
++static struct mips_machine machine_##_type			\
++		__used __section(.mips.machines.init) =		\
++{								\
++	.mach_type	= _type,				\
++	.mach_id	= machine_id_##_type,			\
++	.mach_name	= machine_name_##_type,			\
++	.mach_setup	= _setup,				\
++};
 +
-+	spin_lock_irqsave(&ath79_gpio_lock, flags);
++extern long __mips_machines_start;
++extern long __mips_machines_end;
 +
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_FUNC) | mask,
-+		     base + AR71XX_GPIO_REG_FUNC);
-+	/* flush write */
-+	__raw_readl(base + AR71XX_GPIO_REG_FUNC);
++#ifdef CONFIG_MIPS_MACHINE
++int  mips_machtype_setup(char *id) __init;
++void mips_machine_setup(void) __init;
++void mips_set_machine_name(const char *name) __init;
++char *mips_get_machine_name(void);
++#else
++static inline int mips_machtype_setup(char *id) { return 1; }
++static inline void mips_machine_setup(void) { }
++static inline void mips_set_machine_name(const char *name) { }
++static inline char *mips_get_machine_name(void) { return NULL; }
++#endif /* CONFIG_MIPS_MACHINE */
 +
-+	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+}
-+
-+void ath79_gpio_function_disable(u32 mask)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_FUNC) & ~mask,
-+		     base + AR71XX_GPIO_REG_FUNC);
-+	/* flush write */
-+	__raw_readl(base + AR71XX_GPIO_REG_FUNC);
-+
-+	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+}
-+
-+void ath79_gpio_function_setup(u32 set, u32 clear)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+
-+	__raw_writel((__raw_readl(base + AR71XX_GPIO_REG_FUNC) & ~clear) | set,
-+		     base + AR71XX_GPIO_REG_FUNC);
-+	/* flush write */
-+	__raw_readl(base + AR71XX_GPIO_REG_FUNC);
-+
-+	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+}
-+
-+void __init ath79_gpio_init(void)
-+{
-+	int err;
-+
-+	if (soc_is_ar71xx())
-+		ath79_gpio_count = AR71XX_GPIO_COUNT;
-+	else if (soc_is_ar724x())
-+		ath79_gpio_count = AR724X_GPIO_COUNT;
-+	else if (soc_is_ar913x())
-+		ath79_gpio_count = AR913X_GPIO_COUNT;
-+	else
-+		BUG();
-+
-+	ath79_gpio_base = ioremap_nocache(AR71XX_GPIO_BASE, AR71XX_GPIO_SIZE);
-+	ath79_gpio_chip.ngpio = ath79_gpio_count;
-+
-+	err = gpiochip_add(&ath79_gpio_chip);
-+	if (err)
-+		panic("cannot add AR71xx GPIO chip, error=%d", err);
-+}
-+
-+int gpio_get_value(unsigned gpio)
-+{
-+	if (gpio < ath79_gpio_count)
-+		return __ath79_gpio_get_value(gpio);
-+
-+	return __gpio_get_value(gpio);
-+}
-+EXPORT_SYMBOL(gpio_get_value);
-+
-+void gpio_set_value(unsigned gpio, int value)
-+{
-+	if (gpio < ath79_gpio_count)
-+		__ath79_gpio_set_value(gpio, value);
-+	else
-+		__gpio_set_value(gpio, value);
-+}
-+EXPORT_SYMBOL(gpio_set_value);
-+
-+int gpio_to_irq(unsigned gpio)
-+{
-+	/* FIXME */
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(gpio_to_irq);
-+
-+int irq_to_gpio(unsigned irq)
-+{
-+	/* FIXME */
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(irq_to_gpio);
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index 63896b9..c1a95e1 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -230,7 +230,6 @@ void __init plat_mem_setup(void)
- 					   AR71XX_RESET_SIZE);
- 	ath79_pll_base = ioremap_nocache(AR71XX_PLL_BASE,
- 					 AR71XX_PLL_SIZE);
--
- 	ath79_ddr_base = ioremap_nocache(AR71XX_DDR_CTRL_BASE,
- 					 AR71XX_DDR_CTRL_SIZE);
++#endif /* __ASM_MIPS_MACHINE_H */
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 8088498..3b26371 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -95,6 +95,7 @@ obj-$(CONFIG_GPIO_TXX9)		+= gpio_txx9.o
+ obj-$(CONFIG_KEXEC)		+= machine_kexec.o relocate_kernel.o
+ obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
+ obj-$(CONFIG_SPINLOCK_TEST)	+= spinlock_test.o
++obj-$(CONFIG_MIPS_MACHINE)	+= mips_machine.o
  
-@@ -256,6 +255,7 @@ void __init plat_time_init(void)
+ obj-$(CONFIG_OF)		+= prom.o
  
- static int __init ath79_setup(void)
- {
-+	ath79_gpio_init();
- 	ath79_register_uart();
- 	return 0;
- }
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 5a9e5e1..7f2933d 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -25,6 +25,8 @@
- #define AR71XX_DDR_CTRL_SIZE	0x100
- #define AR71XX_UART_BASE	(AR71XX_APB_BASE + 0x00020000)
- #define AR71XX_UART_SIZE	0x100
-+#define AR71XX_GPIO_BASE        (AR71XX_APB_BASE + 0x00040000)
-+#define AR71XX_GPIO_SIZE        0x100
- #define AR71XX_PLL_BASE		(AR71XX_APB_BASE + 0x00050000)
- #define AR71XX_PLL_SIZE		0x100
- #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
-@@ -204,4 +206,23 @@
- #define AR71XX_SPI_IOC_CS_ALL	(AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1 | \
- 				 AR71XX_SPI_IOC_CS2)
- 
-+/*
-+ * GPIO block
-+ */
-+#define AR71XX_GPIO_REG_OE		0x00
-+#define AR71XX_GPIO_REG_IN		0x04
-+#define AR71XX_GPIO_REG_OUT		0x08
-+#define AR71XX_GPIO_REG_SET		0x0c
-+#define AR71XX_GPIO_REG_CLEAR		0x10
-+#define AR71XX_GPIO_REG_INT_MODE	0x14
-+#define AR71XX_GPIO_REG_INT_TYPE	0x18
-+#define AR71XX_GPIO_REG_INT_POLARITY	0x1c
-+#define AR71XX_GPIO_REG_INT_PENDING	0x20
-+#define AR71XX_GPIO_REG_INT_ENABLE	0x24
-+#define AR71XX_GPIO_REG_FUNC		0x28
-+
-+#define AR71XX_GPIO_COUNT		16
-+#define AR724X_GPIO_COUNT		18
-+#define AR913X_GPIO_COUNT		22
-+
- #endif /* __ASM_MACH_AR71XX_REGS_H */
-diff --git a/arch/mips/include/asm/mach-ath79/gpio.h b/arch/mips/include/asm/mach-ath79/gpio.h
+diff --git a/arch/mips/kernel/mips_machine.c b/arch/mips/kernel/mips_machine.c
 new file mode 100644
-index 0000000..60dcb62
+index 0000000..411a058
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-ath79/gpio.h
-@@ -0,0 +1,26 @@
++++ b/arch/mips/kernel/mips_machine.c
+@@ -0,0 +1,86 @@
 +/*
-+ *  Atheros AR71XX/AR724X/AR913X GPIO API definitions
-+ *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + *
 + */
++#include <linux/mm.h>
++#include <linux/string.h>
++#include <linux/slab.h>
 +
-+#ifndef __ASM_MACH_ATH79_GPIO_H
-+#define __ASM_MACH_ATH79_GPIO_H
++#include <asm/mips_machine.h>
 +
-+#define ARCH_NR_GPIOS	64
-+#include <asm-generic/gpio.h>
++static struct mips_machine *mips_machine __initdata;
++static char *mips_machine_name = "Unknown";
 +
-+int gpio_to_irq(unsigned gpio);
-+int irq_to_gpio(unsigned irq);
-+int gpio_get_value(unsigned gpio);
-+void gpio_set_value(unsigned gpio, int value);
++#define for_each_machine(mach) \
++	for ((mach) = (struct mips_machine *)&__mips_machines_start; \
++	     (mach) && \
++	     (unsigned long)(mach) < (unsigned long)&__mips_machines_end; \
++	     (mach)++)
 +
-+#define gpio_cansleep	__gpio_cansleep
++__init void mips_set_machine_name(const char *name)
++{
++	char *p;
 +
-+#endif /* __ASM_MACH_ATH79_GPIO_H */
++	if (name == NULL)
++		return;
++
++	p = kstrdup(name, GFP_KERNEL);
++	if (!p)
++		pr_err("MIPS: no memory for machine_name\n");
++
++	mips_machine_name = p;
++}
++
++char *mips_get_machine_name(void)
++{
++	return mips_machine_name;
++}
++
++__init int mips_machtype_setup(char *id)
++{
++	struct mips_machine *mach;
++
++	for_each_machine(mach) {
++		if (mach->mach_id == NULL)
++			continue;
++
++		if (strcmp(mach->mach_id, id) == 0) {
++			mips_machtype = mach->mach_type;
++			return 0;
++		}
++	}
++
++	pr_err("MIPS: no machine found for id '%s', supported machines:\n", id);
++	pr_err("%-24s %s\n", "id", "name");
++	for_each_machine(mach)
++		pr_err("%-24s %s\n", mach->mach_id, mach->mach_name);
++
++	return 1;
++}
++
++__setup("machtype=", mips_machtype_setup);
++
++__init void mips_machine_setup(void)
++{
++	struct mips_machine *mach;
++
++	for_each_machine(mach) {
++		if (mips_machtype == mach->mach_type) {
++			mips_machine = mach;
++			break;
++		}
++	}
++
++	if (!mips_machine)
++		return;
++
++	mips_set_machine_name(mips_machine->mach_name);
++	pr_info("MIPS: machine is %s\n", mips_machine_name);
++
++	if (mips_machine->mach_setup)
++		mips_machine->mach_setup();
++}
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 26109c4..4195abb 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -12,6 +12,7 @@
+ #include <asm/cpu-features.h>
+ #include <asm/mipsregs.h>
+ #include <asm/processor.h>
++#include <asm/mips_machine.h>
+ 
+ unsigned int vced_count, vcei_count;
+ 
+@@ -31,8 +32,12 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 	/*
+ 	 * For the first processor also print the system type
+ 	 */
+-	if (n == 0)
++	if (n == 0) {
+ 		seq_printf(m, "system type\t\t: %s\n", get_system_type());
++		if (mips_get_machine_name())
++			seq_printf(m, "machine\t\t\t: %s\n",
++				   mips_get_machine_name());
++	}
+ 
+ 	seq_printf(m, "processor\t\t: %ld\n", n);
+ 	sprintf(fmt, "cpu model\t\t: %%s V%%d.%%d%s\n",
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index f25df73..570607b 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -98,6 +98,13 @@ SECTIONS
+ 	INIT_TEXT_SECTION(PAGE_SIZE)
+ 	INIT_DATA_SECTION(16)
+ 
++	. = ALIGN(4);
++	.mips.machines.init : AT(ADDR(.mips.machines.init) - LOAD_OFFSET) {
++		__mips_machines_start = .;
++		*(.mips.machines.init)
++		__mips_machines_end = .;
++	}
++
+ 	/* .exit.text is discarded at runtime, not link time, to deal with
+ 	 * references from .rodata
+ 	 */
 -- 
 1.7.2.1

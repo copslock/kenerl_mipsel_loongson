@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:57:29 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:57014 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:57:55 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:57018 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492170Ab0KLVv7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Nov 2010 22:51:59 +0100
+        by eddie.linux-mips.org with ESMTP id S1492173Ab0KLVwA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Nov 2010 22:52:00 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 6298041C00A;
-        Fri, 12 Nov 2010 22:51:51 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id D408E41C00E;
+        Fri, 12 Nov 2010 22:51:52 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 8D69B270001;
-        Fri, 12 Nov 2010 22:51:50 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 163DE270001;
+        Fri, 12 Nov 2010 22:51:52 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, "Luis R. Rodriguez" <mcgrof@gmail.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Imre Kaloz <kaloz@openwrt.org>,
         Gabor Juhos <juhosg@openwrt.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>, linux-input@vger.kernel.org
-Subject: [RFC 09/18] input: add input driver for polled GPIO buttons
-Date:   Fri, 12 Nov 2010 22:51:15 +0100
-Message-Id: <1289598684-30624-10-git-send-email-juhosg@openwrt.org>
+        David Brownell <dbrownell@users.sourceforge.net>,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org
+Subject: [RFC 13/18] USB: ehci: add workaround for Synopsys HC bug
+Date:   Fri, 12 Nov 2010 22:51:19 +0100
+Message-Id: <1289598684-30624-14-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
 References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A1228FDC681 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A122A2500A7 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28379
+X-archive-position: 28380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,338 +36,81 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-The existing gpio-keys driver can be usable only for GPIO lines with
-interrupt support. Several devices have buttons connected to a GPIO
-line which is not capable to generate interrupts. This patch adds a
-new input driver using the generic GPIO layer and the input-polldev
-to support such buttons.
+A Synopsys USB core used in various SoCs has a bug which might cause
+that the host controller not issuing ping.
+
+When software uses the Doorbell mechanism to remove queue heads, the
+host controller still has references to the removed queue head even
+after indicating an Interrupt on Async Advance. This happens if the last
+executed queue head's Next Link queue head is removed.
+
+Consequences of the defect:
+The Host controller fetches the removed queue head, using memory that
+would otherwise be deallocated.This results in incorrect transactions on
+both the USB and system memory. This may result in undefined behavior.
+
+Workarounds:
+
+1) If no queue head is active (no Status field's Active bit is set)
+after removing the queue heads, the software can write one of the valid
+queue head addresses to the ASYNCLISTADDR register and deallocate the
+removed queue head's memory after 2 microframes.
+
+If one or more of the queue heads is active (the Active bit is set in
+the Status field) after removing the queue heads, the software can delay
+memory deallocation after time X, where X is the time required for the
+Host Controller to go through all the queue heads once. X varies with
+the number of queue heads and the time required to process periodic
+transactions: if more periodic transactions must be performed, the Host
+Controller has less time to process asynchronous transaction processing.
+
+2) Do not use the Doorbell mechanism to remove the queue heads. Disable
+the Asynchronous Schedule Enable bit instead.
+
+The bug has been discussed on the linux-usb-devel mailing-list
+four years ago, the original thread can be found here:
+http://www.mail-archive.com/linux-usb-devel@lists.sourceforge.net/msg45345.html
+
+This patch implements the first workaround as suggested by David Brownell.
+The built-in USB host controller of the Atheros AR7130/AR7141/AR7161 SoCs
+requires this to work properly.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Mike Frysinger <vapier@gentoo.org>
-Cc: linux-input@vger.kernel.org
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: linux-usb@vger.kernel.org
 ---
 Sorry for sending this twice, i forgot to add some CCs in the first round.
 
- drivers/input/misc/Kconfig        |   16 +++
- drivers/input/misc/Makefile       |    1 +
- drivers/input/misc/gpio_buttons.c |  232 +++++++++++++++++++++++++++++++++++++
- include/linux/gpio_buttons.h      |   33 +++++
- 4 files changed, 282 insertions(+), 0 deletions(-)
- create mode 100644 drivers/input/misc/gpio_buttons.c
- create mode 100644 include/linux/gpio_buttons.h
+ drivers/usb/host/ehci-q.c |    3 +++
+ drivers/usb/host/ehci.h   |    1 +
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/input/misc/Kconfig b/drivers/input/misc/Kconfig
-index b99b8cb..3439b79 100644
---- a/drivers/input/misc/Kconfig
-+++ b/drivers/input/misc/Kconfig
-@@ -448,4 +448,20 @@ config INPUT_ADXL34X_SPI
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called adxl34x-spi.
+diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
+index 233c288..343b8de 100644
+--- a/drivers/usb/host/ehci-q.c
++++ b/drivers/usb/host/ehci-q.c
+@@ -1193,6 +1193,9 @@ static void end_unlink_async (struct ehci_hcd *ehci)
+ 		ehci->reclaim = NULL;
+ 		start_unlink_async (ehci, next);
+ 	}
++
++	if (ehci->has_synopsys_hc_bug)
++		writel((u32)ehci->async->qh_dma, &ehci->regs->async_next);
+ }
  
-+config INPUT_GPIO_BUTTONS
-+	tristate "Polled GPIO buttons interface"
-+	depends on GENERIC_GPIO
-+	select INPUT_POLLDEV
-+	help
-+	  This driver implements support for buttons connected
-+	  to GPIO pins of various CPUs (and some other chips).
-+
-+	  Say Y here if your device has buttons connected
-+	  directly to such GPIO pins.  Your board-specific
-+	  setup logic must also provide a platform device,
-+	  with configuration data saying which GPIOs are used.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called gpio-buttons.
-+
- endif
-diff --git a/drivers/input/misc/Makefile b/drivers/input/misc/Makefile
-index 1fe1f6c..3791050 100644
---- a/drivers/input/misc/Makefile
-+++ b/drivers/input/misc/Makefile
-@@ -42,4 +42,5 @@ obj-$(CONFIG_INPUT_WINBOND_CIR)		+= winbond-cir.o
- obj-$(CONFIG_INPUT_WISTRON_BTNS)	+= wistron_btns.o
- obj-$(CONFIG_INPUT_WM831X_ON)		+= wm831x-on.o
- obj-$(CONFIG_INPUT_YEALINK)		+= yealink.o
-+obj-$(CONFIG_INPUT_GPIO_BUTTONS)	+= gpio_buttons.o
+ /* makes sure the async qh will become idle */
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index bde823f..7c0151a 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -131,6 +131,7 @@ struct ehci_hcd {			/* one per controller */
+ 	unsigned		need_io_watchdog:1;
+ 	unsigned		broken_periodic:1;
+ 	unsigned		fs_i_thresh:1;	/* Intel iso scheduling */
++	unsigned		has_synopsys_hc_bug:1; /* Synopsys HC */
  
-diff --git a/drivers/input/misc/gpio_buttons.c b/drivers/input/misc/gpio_buttons.c
-new file mode 100644
-index 0000000..51288a3
---- /dev/null
-+++ b/drivers/input/misc/gpio_buttons.c
-@@ -0,0 +1,232 @@
-+/*
-+ *  Driver for buttons on GPIO lines not capable of generating interrupts
-+ *
-+ *  Copyright (C) 2007-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2010 Nuno Goncalves <nunojpg@gmail.com>
-+ *
-+ *  This file was based on: /drivers/input/misc/cobalt_btns.c
-+ *	Copyright (C) 2007 Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *
-+ *  also was based on: /drivers/input/keyboard/gpio_keys.c
-+ *	Copyright 2005 Phil Blundell
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License version 2 as
-+ *  published by the Free Software Foundation.
-+ *
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/slab.h>
-+#include <linux/input.h>
-+#include <linux/input-polldev.h>
-+#include <linux/ioport.h>
-+#include <linux/platform_device.h>
-+#include <linux/gpio.h>
-+#include <linux/gpio_buttons.h>
-+
-+#define DRV_NAME	"gpio-buttons"
-+
-+struct gpio_button_data {
-+	int last_state;
-+	int count;
-+	int can_sleep;
-+};
-+
-+struct gpio_buttons_dev {
-+	struct input_polled_dev *poll_dev;
-+	struct gpio_buttons_platform_data *pdata;
-+	struct gpio_button_data *data;
-+};
-+
-+static void gpio_buttons_check_state(struct input_dev *input,
-+				      struct gpio_button *button,
-+				      struct gpio_button_data *bdata)
-+{
-+	int state;
-+
-+	if (bdata->can_sleep)
-+		state = !!gpio_get_value_cansleep(button->gpio);
-+	else
-+		state = !!gpio_get_value(button->gpio);
-+
-+	if (state != bdata->last_state) {
-+		unsigned int type = button->type ?: EV_KEY;
-+
-+		input_event(input, type, button->code,
-+			    !!(state ^ button->active_low));
-+		input_sync(input);
-+		bdata->count = 0;
-+		bdata->last_state = state;
-+	}
-+}
-+
-+static void gpio_buttons_poll(struct input_polled_dev *dev)
-+{
-+	struct gpio_buttons_dev *bdev = dev->private;
-+	struct gpio_buttons_platform_data *pdata = bdev->pdata;
-+	struct input_dev *input = dev->input;
-+	int i;
-+
-+	for (i = 0; i < bdev->pdata->nbuttons; i++) {
-+		struct gpio_button *button = &pdata->buttons[i];
-+		struct gpio_button_data *bdata = &bdev->data[i];
-+
-+		if (bdata->count < button->threshold)
-+			bdata->count++;
-+		else
-+			gpio_buttons_check_state(input, button, bdata);
-+
-+	}
-+}
-+
-+static int __devinit gpio_buttons_probe(struct platform_device *pdev)
-+{
-+	struct gpio_buttons_platform_data *pdata = pdev->dev.platform_data;
-+	struct device *dev = &pdev->dev;
-+	struct gpio_buttons_dev *bdev;
-+	struct input_polled_dev *poll_dev;
-+	struct input_dev *input;
-+	int error;
-+	int i;
-+
-+	if (!pdata)
-+		return -ENXIO;
-+
-+	bdev = kzalloc(sizeof(struct gpio_buttons_dev) +
-+		       pdata->nbuttons * sizeof(struct gpio_button_data),
-+		       GFP_KERNEL);
-+	if (!bdev) {
-+		dev_err(dev, "no memory for private data\n");
-+		return -ENOMEM;
-+	}
-+
-+	bdev->data = (struct gpio_button_data *) &bdev[1];
-+
-+	poll_dev = input_allocate_polled_device();
-+	if (!poll_dev) {
-+		dev_err(dev, "no memory for polled device\n");
-+		error = -ENOMEM;
-+		goto err_free_bdev;
-+	}
-+
-+	poll_dev->private = bdev;
-+	poll_dev->poll = gpio_buttons_poll;
-+	poll_dev->poll_interval = pdata->poll_interval;
-+
-+	input = poll_dev->input;
-+
-+	input->evbit[0] = BIT(EV_KEY);
-+	input->name = pdev->name;
-+	input->phys = "gpio-buttons/input0";
-+	input->dev.parent = &pdev->dev;
-+
-+	input->id.bustype = BUS_HOST;
-+	input->id.vendor = 0x0001;
-+	input->id.product = 0x0001;
-+	input->id.version = 0x0100;
-+
-+	for (i = 0; i < pdata->nbuttons; i++) {
-+		struct gpio_button *button = &pdata->buttons[i];
-+		unsigned int gpio = button->gpio;
-+		unsigned int type = button->type ?: EV_KEY;
-+
-+		error = gpio_request(gpio,
-+				     button->desc ? button->desc : DRV_NAME);
-+		if (error) {
-+			dev_err(dev, "unable to claim gpio %u, err=%d\n",
-+				gpio, error);
-+			goto err_free_gpio;
-+		}
-+
-+		error = gpio_direction_input(gpio);
-+		if (error) {
-+			dev_err(dev,
-+				"unable to set direction on gpio %u, err=%d\n",
-+				gpio, error);
-+			goto err_free_gpio;
-+		}
-+
-+		bdev->data[i].can_sleep = gpio_cansleep(gpio);
-+		bdev->data[i].last_state = -1;
-+
-+		input_set_capability(input, type, button->code);
-+	}
-+
-+	bdev->poll_dev = poll_dev;
-+	bdev->pdata = pdata;
-+	platform_set_drvdata(pdev, bdev);
-+
-+	error = input_register_polled_device(poll_dev);
-+	if (error) {
-+		dev_err(dev, "unable to register polled device, err=%d\n",
-+			error);
-+		goto err_free_gpio;
-+	}
-+
-+	/* report initial state of the buttons */
-+	for (i = 0; i < pdata->nbuttons; i++)
-+		gpio_buttons_check_state(input, &pdata->buttons[i],
-+					 &bdev->data[i]);
-+
-+	return 0;
-+
-+err_free_gpio:
-+	for (i = i - 1; i >= 0; i--)
-+		gpio_free(pdata->buttons[i].gpio);
-+
-+	input_free_polled_device(poll_dev);
-+
-+err_free_bdev:
-+	kfree(bdev);
-+
-+	platform_set_drvdata(pdev, NULL);
-+	return error;
-+}
-+
-+static int __devexit gpio_buttons_remove(struct platform_device *pdev)
-+{
-+	struct gpio_buttons_dev *bdev = platform_get_drvdata(pdev);
-+	struct gpio_buttons_platform_data *pdata = bdev->pdata;
-+	int i;
-+
-+	input_unregister_polled_device(bdev->poll_dev);
-+
-+	for (i = 0; i < pdata->nbuttons; i++)
-+		gpio_free(pdata->buttons[i].gpio);
-+
-+	input_free_polled_device(bdev->poll_dev);
-+
-+	kfree(bdev);
-+	platform_set_drvdata(pdev, NULL);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver gpio_buttons_driver = {
-+	.probe	= gpio_buttons_probe,
-+	.remove	= __devexit_p(gpio_buttons_remove),
-+	.driver	= {
-+		.name	= DRV_NAME,
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+static int __init gpio_buttons_init(void)
-+{
-+	return platform_driver_register(&gpio_buttons_driver);
-+}
-+
-+static void __exit gpio_buttons_exit(void)
-+{
-+	platform_driver_unregister(&gpio_buttons_driver);
-+}
-+
-+module_init(gpio_buttons_init);
-+module_exit(gpio_buttons_exit);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org>");
-+MODULE_DESCRIPTION("Polled GPIO Buttons driver");
-diff --git a/include/linux/gpio_buttons.h b/include/linux/gpio_buttons.h
-new file mode 100644
-index 0000000..f85b993
---- /dev/null
-+++ b/include/linux/gpio_buttons.h
-@@ -0,0 +1,33 @@
-+/*
-+ *  Definitions for the GPIO buttons interface driver
-+ *
-+ *  Copyright (C) 2007-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *
-+ *  This file was based on: /include/linux/gpio_keys.h
-+ *	The original gpio_keys.h seems not to have a license.
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License version 2 as
-+ *  published by the Free Software Foundation.
-+ *
-+ */
-+
-+#ifndef _GPIO_BUTTONS_H_
-+#define _GPIO_BUTTONS_H_
-+
-+struct gpio_button {
-+	int	gpio;		/* GPIO line number */
-+	int	active_low;
-+	char	*desc;		/* button description */
-+	int	type;		/* input event type (EV_KEY, EV_SW) */
-+	int	code;		/* input event code (KEY_*, SW_*) */
-+	int	threshold;	/* count threshold */
-+};
-+
-+struct gpio_buttons_platform_data {
-+	struct gpio_button *buttons;
-+	int	nbuttons;		/* number of buttons */
-+	int	poll_interval;		/* polling interval */
-+};
-+
-+#endif /* _GPIO_BUTTONS_H_ */
+ 	/* required for usb32 quirk */
+ 	#define OHCI_CTRL_HCFS          (3 << 6)
 -- 
 1.7.2.1

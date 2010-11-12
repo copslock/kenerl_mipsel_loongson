@@ -1,221 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:59:35 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:57021 "EHLO
-        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492176Ab0KLVwE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Nov 2010 22:52:04 +0100
-Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 33AF041C012;
-        Fri, 12 Nov 2010 22:51:54 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 747F8270002;
-        Fri, 12 Nov 2010 22:51:53 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, "Luis R. Rodriguez" <mcgrof@gmail.com>,
-        Cliff Holden <Cliff.Holden@Atheros.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [RFC 18/18] MIPS: ath79: add common WMAC device for AR913X based boards
-Date:   Fri, 12 Nov 2010 22:51:24 +0100
-Message-Id: <1289598684-30624-19-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.2.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 23:01:32 +0100 (CET)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:52880 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492173Ab0KLWB0 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 12 Nov 2010 23:01:26 +0100
+Received: by gwb11 with SMTP id 11so175446gwb.36
+        for <multiple recipients>; Fri, 12 Nov 2010 14:01:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:mime-version:received:in-reply-to
+         :references:from:date:message-id:subject:to:cc:content-type
+         :content-transfer-encoding;
+        bh=qFLhrmdTE+YCdbDtmePaJfcWdb2tsW6igdjCkNVs9no=;
+        b=MIRXGztMvjAtrLn+K9HWd4+3G02QahLvnB40c4IvJjX26Si4+EwZxwd3Wn+mMR70zY
+         vg7DvF3GCL4bl20qyw8qxRfEAJd9jG+W1zJQZaWeFfzhL7M7K24cxhtVeQevgxaBTxo9
+         RPsTUwd7FdZRzyzUHUmnLLSAyI/917dD3yUf8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding;
+        b=pHGeDoEtz4FSyd6T5+FaBZXAZk5qib7owlyWkOeZM1SzvbQOFJt6i3hE0DFSiU3ZMs
+         p82Zro6QLg+HdPXEgH5veuaGVSGANE6bP23AM/c8SAyAVN5WfMJYJvs5yynZ2d4bvuc8
+         NqvyH4K+nSpKE9YpJ7PX9gm3Td4resH9zITpg=
+Received: by 10.42.204.17 with SMTP id fk17mr2594963icb.324.1289599279313;
+ Fri, 12 Nov 2010 14:01:19 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.231.174.209 with HTTP; Fri, 12 Nov 2010 14:00:56 -0800 (PST)
 In-Reply-To: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
 References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A122C3B3269 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
-Return-Path: <juhosg@openwrt.org>
+From:   "Luis R. Rodriguez" <mcgrof@gmail.com>
+Date:   Fri, 12 Nov 2010 14:00:56 -0800
+Message-ID: <AANLkTinR6QCdf5hvT6H+a6M=NKoY5qaGjt+5OOyizHCk@mail.gmail.com>
+Subject: Re: [RFC 00/18] MIPS: initial support for the Atheros
+ AR71XX/AR724X/AR913X SoCs
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Cliff Holden <Cliff.Holden@atheros.com>,
+        Imre Kaloz <kaloz@openwrt.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mcgrof@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28384
+X-archive-position: 28385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: mcgrof@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Add common platform_device and helper code to make the registration
-of the built-in wireless MAC easier on the Atheros AR9130/AR9132
-based boards. Also register the WMA controller on the AR81 board.
+On Fri, Nov 12, 2010 at 1:51 PM, Gabor Juhos <juhosg@openwrt.org> wrote:
+> This patch set contains initial support for the
+> Atheros AR71XX/AR724X/AR913X SoCs.
+>
+> Gabor Juhos (18):
+>  MIPS: add initial support for the Atheros AR71XX/AR724X/AR931X SoCs
+>  MIPS: ath79: add GPIOLIB support
+>  MIPS: add generic support for multiple machines within a single kernel
+>  MIPS: ath79: utilize the MIPS multi-machine support
+>  MIPS: ath79: add initial support for the Atheros PB44 reference board
+>  MIPS: ath79: add common GPIO LEDs device
+>  watchdog: add driver for the Atheros AR71XX/AR724X/AR913X SoCs
+>  MIPS: ath79: add common watchdog device
+>  input: add input driver for polled GPIO buttons
+>  MIPS: ath79: add common GPIO buttons device
+>  spi: add SPI controller driver for the Atheros AR71XX/AR724X/AR913X SoCs
+>  MIPS: ath79: add common SPI controller device
+>  USB: ehci: add workaround for Synopsys HC bug
+>  USB: ehci: add bus glue for the Atheros AR71XX/AR724X/AR913X SoCs
+>  USB: ohci: add bus glue for the Atheros AR71XX/AR7240 SoCs
+>  MIPS: ath79: add common USB Host Controller device
+>  MIPS: ath79: add initial support for the Atheros AP81 reference board
+>  MIPS: ath79: add common WMAC device for AR913X based boards
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
- arch/mips/ath79/Kconfig                        |    4 ++
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/dev-ar913x-wmac.c              |   60 ++++++++++++++++++++++++
- arch/mips/ath79/dev-ar913x-wmac.h              |   17 +++++++
- arch/mips/ath79/mach-ap81.c                    |    5 ++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 +
- 6 files changed, 90 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.c
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.h
+Awesome, thanks a lot!
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 53d9b39..bcaf948 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -38,6 +38,10 @@ config SOC_AR724X
- config SOC_AR913X
- 	def_bool n
- 
-+config ATH79_DEV_AR913X_WMAC
-+	depends on SOC_AR913X
-+	def_bool n
-+
- config ATH79_DEV_GPIO_BUTTONS
- 	def_bool n
- 
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 107f1e8..6f18c0a 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -12,6 +12,7 @@ obj-y	:= prom.o setup.o irq.o common.o gpio.o
- 
- obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- 
-+obj-$(CONFIG_ATH79_DEV_AR913X_WMAC)	+= dev-ar913x-wmac.o
- obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
- obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.c b/arch/mips/ath79/dev-ar913x-wmac.c
-new file mode 100644
-index 0000000..ad2a39f
---- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.c
-@@ -0,0 +1,60 @@
-+/*
-+ *  Atheros AR913X SoC built-in WMAC device support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/irq.h>
-+#include <linux/platform_device.h>
-+#include <linux/ath9k_platform.h>
-+
-+#include <asm/mach-ath79/ath79.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "dev-ar913x-wmac.h"
-+
-+static struct ath9k_platform_data ar913x_wmac_data;
-+
-+static struct resource ar913x_wmac_resources[] = {
-+	{
-+		.start	= AR913X_WMAC_BASE,
-+		.end	= AR913X_WMAC_BASE + AR913X_WMAC_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	}, {
-+		.start	= ATH79_CPU_IRQ_IP2,
-+		.end	= ATH79_CPU_IRQ_IP2,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct platform_device ar913x_wmac_device = {
-+	.name		= "ath9k",
-+	.id		= -1,
-+	.resource	= ar913x_wmac_resources,
-+	.num_resources	= ARRAY_SIZE(ar913x_wmac_resources),
-+	.dev = {
-+		.platform_data = &ar913x_wmac_data,
-+	},
-+};
-+
-+void __init ath79_register_ar913x_wmac(u8 *cal_data)
-+{
-+	if (cal_data)
-+		memcpy(ar913x_wmac_data.eeprom_data, cal_data,
-+		       sizeof(ar913x_wmac_data.eeprom_data));
-+
-+	/* reset the WMAC */
-+	ath79_device_stop(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
-+
-+	ath79_device_start(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
-+
-+	platform_device_register(&ar913x_wmac_device);
-+}
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.h b/arch/mips/ath79/dev-ar913x-wmac.h
-new file mode 100644
-index 0000000..5df653f
---- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.h
-@@ -0,0 +1,17 @@
-+/*
-+ *  Atheros AR913X SoC built-in WMAC device support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#ifndef _ATH79_DEV_AR913X_WMAC_H
-+#define _ATH79_DEV_AR913X_WMAC_H
-+
-+void ath79_register_ar913x_wmac(u8 *cal_data) __init;
-+
-+#endif /* _ATH79_DEV_AR913X_WMAC_H */
-diff --git a/arch/mips/ath79/mach-ap81.c b/arch/mips/ath79/mach-ap81.c
-index 9cfaff3..00ef1cd 100644
---- a/arch/mips/ath79/mach-ap81.c
-+++ b/arch/mips/ath79/mach-ap81.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include "machtypes.h"
-+#include "dev-ar913x-wmac.h"
- #include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
- #include "dev-spi.h"
-@@ -24,6 +25,7 @@
- #define AP81_GPIO_BTN_SW1	21
- 
- #define AP81_BUTTONS_POLL_INTERVAL	20
-+#define AP81_CAL_DATA_ADDR	0x1fff1000
- 
- static struct gpio_led ap81_leds_gpio[] __initdata = {
- 	{
-@@ -79,6 +81,8 @@ static struct ath79_spi_platform_data ap81_spi_data = {
- 
- static void __init ap81_setup(void)
- {
-+	u8 *cal_data = (u8 *) KSEG1ADDR(AP81_CAL_DATA_ADDR);
-+
- 	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap81_leds_gpio),
- 				 ap81_leds_gpio);
- 	ath79_register_gpio_buttons(-1, AP81_BUTTONS_POLL_INTERVAL,
-@@ -87,6 +91,7 @@ static void __init ap81_setup(void)
- 	ath79_register_spi(&ap81_spi_data, ap81_spi_info,
- 			   ARRAY_SIZE(ap81_spi_info));
- 	ath79_register_usb();
-+	ath79_register_ar913x_wmac(cal_data);
- }
- 
- MIPS_MACHINE(ATH79_MACH_AP81, "AP81", "Atheros AP81 reference board",
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 95be423..e8b0e2f 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -43,6 +43,9 @@
- #define AR7240_OHCI_BASE	0x1b000000
- #define AR7240_OHCI_SIZE	0x1000
- 
-+#define AR913X_WMAC_BASE	(AR71XX_APB_BASE + 0x000C0000)
-+#define AR913X_WMAC_SIZE	0x30000
-+
- /*
-  * DDR_CTRL block
-  */
--- 
-1.7.2.1
+ Luis

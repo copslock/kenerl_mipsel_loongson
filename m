@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:56:38 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:57011 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:57:03 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:57016 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492168Ab0KLVv7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Nov 2010 22:51:59 +0100
+        by eddie.linux-mips.org with ESMTP id S1492171Ab0KLVwA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 12 Nov 2010 22:52:00 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id F3C5A41C009;
-        Fri, 12 Nov 2010 22:51:50 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 0653D41C00C;
+        Fri, 12 Nov 2010 22:51:52 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 50EA1270002;
-        Fri, 12 Nov 2010 22:51:50 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 32294270001;
+        Fri, 12 Nov 2010 22:51:51 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, "Luis R. Rodriguez" <mcgrof@gmail.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Imre Kaloz <kaloz@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [RFC 08/18] MIPS: ath79: add common watchdog device
-Date:   Fri, 12 Nov 2010 22:51:14 +0100
-Message-Id: <1289598684-30624-9-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        spi-devel-general@lists.sourceforge.net
+Subject: [RFC 11/18] spi: add SPI controller driver for the Atheros AR71XX/AR724X/AR913X SoCs
+Date:   Fri, 12 Nov 2010 22:51:17 +0100
+Message-Id: <1289598684-30624-12-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
 References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A1228985E73 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A122987B96B | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28377
+X-archive-position: 28378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,123 +36,375 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-All supported SoCs have a built-in hardware watchdog driver. This patch
-registers a platform_device for that to make it usable.
+The Atheros AR71XX/AR724X/AR913X SoCs have a built-in SPI controller. This
+patch implements a driver for that.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: spi-devel-general@lists.sourceforge.net
 ---
- arch/mips/ath79/Kconfig   |    3 +++
- arch/mips/ath79/Makefile  |    1 +
- arch/mips/ath79/dev-wdt.c |   30 ++++++++++++++++++++++++++++++
- arch/mips/ath79/dev-wdt.h |   17 +++++++++++++++++
- arch/mips/ath79/setup.c   |    2 ++
- 5 files changed, 53 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-wdt.c
- create mode 100644 arch/mips/ath79/dev-wdt.h
+Sorry for sending this twice, i forgot to add some CCs in the first round.
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 2bd35ef..79bb528 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -28,4 +28,7 @@ config ATH79_DEV_LEDS_GPIO
- config ATH79_DEV_UART
- 	def_bool y
- 
-+config ATH79_DEV_WDT
-+	def_bool y
-+
- endif
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index a231967..1b01868 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- 
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
- obj-$(CONFIG_ATH79_DEV_UART)		+= dev-uart.o
-+obj-$(CONFIG_ATH79_DEV_WDT)		+= dev-wdt.o
- 
- #
- # Machines
-diff --git a/arch/mips/ath79/dev-wdt.c b/arch/mips/ath79/dev-wdt.c
+ .../include/asm/mach-ath79/ath79_spi_platform.h    |   19 ++
+ drivers/spi/Kconfig                                |    8 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/ath79_spi.c                            |  291 ++++++++++++++++++++
+ 4 files changed, 319 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+ create mode 100644 drivers/spi/ath79_spi.c
+
+diff --git a/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h b/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
 new file mode 100644
-index 0000000..ba6b8bd
+index 0000000..aa71216
 --- /dev/null
-+++ b/arch/mips/ath79/dev-wdt.c
-@@ -0,0 +1,30 @@
++++ b/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+@@ -0,0 +1,19 @@
 +/*
-+ *  Atheros AR71XX/AR724X/AR913X watchdog device
++ *  Platform data definition for Atheros AR71XX/AR724X/AR913X SPI controller
 + *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  Parts of this file are based on Atheros' 2.6.15 BSP
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
++ */
++
++#ifndef _ATH79_SPI_PLATFORM_H
++#define _ATH79_SPI_PLATFORM_H
++
++struct ath79_spi_platform_data {
++	unsigned	bus_num;
++	unsigned	num_chipselect;
++};
++
++#endif /* _ATH79_SPI_PLATFORM_H */
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 78f9fd0..f2093e1 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -53,6 +53,14 @@ if SPI_MASTER
+ 
+ comment "SPI Master Controller Drivers"
+ 
++config SPI_ATH79
++	tristate "Atheros AR71XX/AR724X/AR913X SPI controller driver"
++	depends on ATH79 && GENERIC_GPIO
++	select SPI_BITBANG
++	help
++	  This enables support for the SPI controller present on the
++	  Atheros AR71XX/AR724X/AR913X SoCs.
++
+ config SPI_ATMEL
+ 	tristate "Atmel SPI Controller"
+ 	depends on (ARCH_AT91 || AVR32)
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 8bc1a5a..875bc3d 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_SPI_MASTER)		+= spi.o
+ 
+ # SPI master controller drivers (bus)
+ obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
++obj-$(CONFIG_SPI_ATH79)			+= ath79_spi.o
+ obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.o
+ obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
+ obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
+diff --git a/drivers/spi/ath79_spi.c b/drivers/spi/ath79_spi.c
+new file mode 100644
+index 0000000..9b9f9cf
+--- /dev/null
++++ b/drivers/spi/ath79_spi.c
+@@ -0,0 +1,291 @@
++/*
++ * SPI controller driver for the Atheros AR71XX/AR724X/AR913X SoCs
++ *
++ * Copyright (C) 2009-2010 Gabor Juhos <juhosg@openwrt.org>
++ *
++ * This driver has been based on the spi-gpio.c:
++ *	Copyright (C) 2006,2008 David Brownell
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
 + */
 +
 +#include <linux/kernel.h>
 +#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/spinlock.h>
++#include <linux/workqueue.h>
 +#include <linux/platform_device.h>
++#include <linux/io.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++#include <linux/bitops.h>
++#include <linux/gpio.h>
 +
 +#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "common.h"
-+#include "dev-wdt.h"
++#include <asm/mach-ath79/ath79_spi_platform.h>
 +
-+static struct platform_device ath79_wdt_device = {
-+	.name		= "ath79-wdt",
-+	.id		= -1,
++#define DRV_DESC	"SPI controller driver for Atheros AR71XX/AR724X/AR91X"
++#define DRV_NAME	"ath79-spi"
++
++struct ath79_spi {
++	struct	spi_bitbang	bitbang;
++	u32			ioc_base;
++	u32			reg_ctrl;
++
++	void __iomem		*base;
++
++	struct platform_device	*pdev;
 +};
 +
-+void __init ath79_register_wdt(void)
++static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned reg)
 +{
-+	platform_device_register(&ath79_wdt_device);
++	return __raw_readl(sp->base + reg);
 +}
-diff --git a/arch/mips/ath79/dev-wdt.h b/arch/mips/ath79/dev-wdt.h
-new file mode 100644
-index 0000000..2546415
---- /dev/null
-+++ b/arch/mips/ath79/dev-wdt.h
-@@ -0,0 +1,17 @@
-+/*
-+ *  Atheros AR71XX/AR724X/AR913X watchdog device
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
 +
-+#ifndef _ATH_DEV_WDT_H
-+#define _ATH_DEV_WDT_H
++static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned reg, u32 val)
++{
++	__raw_writel(val, sp->base + reg);
++}
 +
-+void ath79_register_wdt(void) __init;
++static inline struct ath79_spi *spidev_to_sp(struct spi_device *spi)
++{
++	return spi_master_get_devdata(spi->master);
++}
 +
-+#endif
-diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-index b36f9f2..693a9e6 100644
---- a/arch/mips/ath79/setup.c
-+++ b/arch/mips/ath79/setup.c
-@@ -24,6 +24,7 @@
- #include <asm/mach-ath79/ar71xx_regs.h>
- #include "common.h"
- #include "dev-uart.h"
-+#include "dev-wdt.h"
- #include "machtypes.h"
- 
- #define ATH79_SYS_TYPE_LEN	64
-@@ -259,6 +260,7 @@ static int __init ath79_setup(void)
- {
- 	ath79_gpio_init();
- 	ath79_register_uart();
-+	ath79_register_wdt();
- 
- 	mips_machine_setup();
- 
++static void ath79_spi_chipselect(struct spi_device *spi, int is_active)
++{
++	struct ath79_spi *sp = spidev_to_sp(spi);
++	int cs_high = (spi->mode & SPI_CS_HIGH) ? is_active : !is_active;
++
++	if (is_active) {
++		/* set initial clock polarity */
++		if (spi->mode & SPI_CPOL)
++			sp->ioc_base |= AR71XX_SPI_IOC_CLK;
++		else
++			sp->ioc_base &= ~AR71XX_SPI_IOC_CLK;
++
++		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
++	}
++
++	if (spi->chip_select) {
++		unsigned long gpio = (unsigned long) spi->controller_data;
++
++		/* SPI is normally active-low */
++		gpio_set_value(gpio, cs_high);
++	} else {
++		if (cs_high)
++			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
++		else
++			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
++
++		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
++	}
++
++}
++
++static int ath79_spi_setup_cs(struct spi_device *spi)
++{
++	struct ath79_spi *sp = spidev_to_sp(spi);
++
++	/* enable GPIO mode */
++	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, AR71XX_SPI_FS_GPIO);
++
++	/* save CTRL register */
++	sp->reg_ctrl = ath79_spi_rr(sp, AR71XX_SPI_REG_CTRL);
++	sp->ioc_base = ath79_spi_rr(sp, AR71XX_SPI_REG_IOC);
++
++	/* TODO: setup speed? */
++	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, 0x43);
++
++	if (spi->chip_select) {
++		unsigned long gpio = (unsigned long) spi->controller_data;
++		int status = 0;
++
++		status = gpio_request(gpio, dev_name(&spi->dev));
++		if (status)
++			return status;
++
++		status = gpio_direction_output(gpio, spi->mode & SPI_CS_HIGH);
++		if (status) {
++			gpio_free(gpio);
++			return status;
++		}
++	} else {
++		if (spi->mode & SPI_CS_HIGH)
++			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
++		else
++			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
++		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
++	}
++
++	return 0;
++}
++
++static void ath79_spi_cleanup_cs(struct spi_device *spi)
++{
++	struct ath79_spi *sp = spidev_to_sp(spi);
++
++	if (spi->chip_select) {
++		unsigned long gpio = (unsigned long) spi->controller_data;
++		gpio_free(gpio);
++	}
++
++	/* restore CTRL register */
++	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, sp->reg_ctrl);
++	/* disable GPIO mode */
++	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, 0);
++}
++
++static int ath79_spi_setup(struct spi_device *spi)
++{
++	int status = 0;
++
++	if (spi->bits_per_word > 32)
++		return -EINVAL;
++
++	if (!spi->controller_state) {
++		status = ath79_spi_setup_cs(spi);
++		if (status)
++			return status;
++	}
++
++	status = spi_bitbang_setup(spi);
++	if (status && !spi->controller_state)
++		ath79_spi_cleanup_cs(spi);
++
++	return status;
++}
++
++static void ath79_spi_cleanup(struct spi_device *spi)
++{
++	ath79_spi_cleanup_cs(spi);
++	spi_bitbang_cleanup(spi);
++}
++
++static u32 ath79_spi_txrx_mode0(struct spi_device *spi, unsigned nsecs,
++			       u32 word, u8 bits)
++{
++	struct ath79_spi *sp = spidev_to_sp(spi);
++	u32 ioc = sp->ioc_base;
++
++	/* clock starts at inactive polarity */
++	for (word <<= (32 - bits); likely(bits); bits--) {
++		u32 out;
++
++		if (word & (1 << 31))
++			out = ioc | AR71XX_SPI_IOC_DO;
++		else
++			out = ioc & ~AR71XX_SPI_IOC_DO;
++
++		/* setup MSB (to slave) on trailing edge */
++		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, out);
++		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, out | AR71XX_SPI_IOC_CLK);
++
++		word <<= 1;
++	}
++
++	return ath79_spi_rr(sp, AR71XX_SPI_REG_RDS);
++}
++
++static int ath79_spi_probe(struct platform_device *pdev)
++{
++	struct spi_master *master;
++	struct ath79_spi *sp;
++	struct ath79_spi_platform_data *pdata;
++	struct resource	*r;
++	int ret;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*sp));
++	if (master == NULL) {
++		dev_err(&pdev->dev, "failed to allocate spi master\n");
++		return -ENOMEM;
++	}
++
++	sp = spi_master_get_devdata(master);
++	platform_set_drvdata(pdev, sp);
++
++	pdata = pdev->dev.platform_data;
++
++	master->setup = ath79_spi_setup;
++	master->cleanup = ath79_spi_cleanup;
++	if (pdata) {
++		master->bus_num = pdata->bus_num;
++		master->num_chipselect = pdata->num_chipselect;
++	} else {
++		master->bus_num = 0;
++		master->num_chipselect = 1;
++	}
++
++	sp->bitbang.master = spi_master_get(master);
++	sp->bitbang.chipselect = ath79_spi_chipselect;
++	sp->bitbang.txrx_word[SPI_MODE_0] = ath79_spi_txrx_mode0;
++	sp->bitbang.setup_transfer = spi_bitbang_setup_transfer;
++	sp->bitbang.flags = SPI_CS_HIGH;
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (r == NULL) {
++		ret = -ENOENT;
++		goto err_put_master;
++	}
++
++	sp->base = ioremap(r->start, r->end - r->start + 1);
++	if (!sp->base) {
++		ret = -ENXIO;
++		goto err_put_master;
++	}
++
++	ret = spi_bitbang_start(&sp->bitbang);
++	if (ret)
++		goto err_unmap;
++
++	return 0;
++
++err_unmap:
++	iounmap(sp->base);
++err_put_master:
++	platform_set_drvdata(pdev, NULL);
++	spi_master_put(sp->bitbang.master);
++
++	return ret;
++}
++
++static int ath79_spi_remove(struct platform_device *pdev)
++{
++	struct ath79_spi *sp = platform_get_drvdata(pdev);
++
++	spi_bitbang_stop(&sp->bitbang);
++	iounmap(sp->base);
++	platform_set_drvdata(pdev, NULL);
++	spi_master_put(sp->bitbang.master);
++
++	return 0;
++}
++
++static struct platform_driver ath79_spi_drv = {
++	.probe		= ath79_spi_probe,
++	.remove		= ath79_spi_remove,
++	.driver		= {
++		.name	= DRV_NAME,
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init ath79_spi_init(void)
++{
++	return platform_driver_register(&ath79_spi_drv);
++}
++module_init(ath79_spi_init);
++
++static void __exit ath79_spi_exit(void)
++{
++	platform_driver_unregister(&ath79_spi_drv);
++}
++module_exit(ath79_spi_exit);
++
++MODULE_DESCRIPTION(DRV_DESC);
++MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org>");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:" DRV_NAME);
 -- 
 1.7.2.1

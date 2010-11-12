@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:56:14 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:57015 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Nov 2010 22:56:38 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:57011 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492169Ab0KLVv7 (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1492168Ab0KLVv7 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 12 Nov 2010 22:51:59 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id A120941C00B;
-        Fri, 12 Nov 2010 22:51:51 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id F3C5A41C009;
+        Fri, 12 Nov 2010 22:51:50 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id E0E07270002;
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 50EA1270002;
         Fri, 12 Nov 2010 22:51:50 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -15,18 +15,18 @@ Cc:     linux-mips@linux-mips.org, "Luis R. Rodriguez" <mcgrof@gmail.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Imre Kaloz <kaloz@openwrt.org>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [RFC 10/18] MIPS: ath79: add common GPIO buttons device
-Date:   Fri, 12 Nov 2010 22:51:16 +0100
-Message-Id: <1289598684-30624-11-git-send-email-juhosg@openwrt.org>
+Subject: [RFC 08/18] MIPS: ath79: add common watchdog device
+Date:   Fri, 12 Nov 2010 22:51:14 +0100
+Message-Id: <1289598684-30624-9-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
 References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A122942C7B7 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A1228985E73 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28376
+X-archive-position: 28377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,129 +34,89 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Almost all boards have one or more push buttons connected to GPIO lines.
-This patch adds common code to register a platform_device for them.
-
-The patch also adds support for the buttons on the PB44 board.
+All supported SoCs have a built-in hardware watchdog driver. This patch
+registers a platform_device for that to make it usable.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
 ---
- arch/mips/ath79/Kconfig            |    4 ++
- arch/mips/ath79/Makefile           |    1 +
- arch/mips/ath79/dev-gpio-buttons.c |   58 ++++++++++++++++++++++++++++++++++++
- arch/mips/ath79/dev-gpio-buttons.h |   23 ++++++++++++++
- arch/mips/ath79/mach-pb44.c        |   26 ++++++++++++++++
- 5 files changed, 112 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-gpio-buttons.c
- create mode 100644 arch/mips/ath79/dev-gpio-buttons.h
+ arch/mips/ath79/Kconfig   |    3 +++
+ arch/mips/ath79/Makefile  |    1 +
+ arch/mips/ath79/dev-wdt.c |   30 ++++++++++++++++++++++++++++++
+ arch/mips/ath79/dev-wdt.h |   17 +++++++++++++++++
+ arch/mips/ath79/setup.c   |    2 ++
+ 5 files changed, 53 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/ath79/dev-wdt.c
+ create mode 100644 arch/mips/ath79/dev-wdt.h
 
 diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 79bb528..0c34db1 100644
+index 2bd35ef..79bb528 100644
 --- a/arch/mips/ath79/Kconfig
 +++ b/arch/mips/ath79/Kconfig
-@@ -5,6 +5,7 @@ menu "Atheros AR71XX/AR724X/AR913X machine selection"
- config ATH79_MACH_PB44
- 	bool "Atheros PB44 reference board"
- 	select SOC_AR71XX
-+	select ATH79_DEV_GPIO_BUTTONS
- 	select ATH79_DEV_LEDS_GPIO
- 	default n
- 	help
-@@ -22,6 +23,9 @@ config SOC_AR724X
- config SOC_AR913X
- 	def_bool n
+@@ -28,4 +28,7 @@ config ATH79_DEV_LEDS_GPIO
+ config ATH79_DEV_UART
+ 	def_bool y
  
-+config ATH79_DEV_GPIO_BUTTONS
-+	def_bool n
++config ATH79_DEV_WDT
++	def_bool y
 +
- config ATH79_DEV_LEDS_GPIO
- 	def_bool n
- 
+ endif
 diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 1b01868..c604f46 100644
+index a231967..1b01868 100644
 --- a/arch/mips/ath79/Makefile
 +++ b/arch/mips/ath79/Makefile
-@@ -12,6 +12,7 @@ obj-y	:= prom.o setup.o irq.o common.o gpio.o
+@@ -14,6 +14,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
  
- obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- 
-+obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
  obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
  obj-$(CONFIG_ATH79_DEV_UART)		+= dev-uart.o
- obj-$(CONFIG_ATH79_DEV_WDT)		+= dev-wdt.o
-diff --git a/arch/mips/ath79/dev-gpio-buttons.c b/arch/mips/ath79/dev-gpio-buttons.c
++obj-$(CONFIG_ATH79_DEV_WDT)		+= dev-wdt.o
+ 
+ #
+ # Machines
+diff --git a/arch/mips/ath79/dev-wdt.c b/arch/mips/ath79/dev-wdt.c
 new file mode 100644
-index 0000000..3bc4a18
+index 0000000..ba6b8bd
 --- /dev/null
-+++ b/arch/mips/ath79/dev-gpio-buttons.c
-@@ -0,0 +1,58 @@
++++ b/arch/mips/ath79/dev-wdt.c
+@@ -0,0 +1,30 @@
 +/*
-+ *  Atheros AR71XX/AR724X/AR913X GPIO button support
++ *  Atheros AR71XX/AR724X/AR913X watchdog device
 + *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
 + *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  Parts of this file are based on Atheros' 2.6.15 BSP
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + */
 +
-+#include "linux/init.h"
-+#include "linux/slab.h"
++#include <linux/kernel.h>
++#include <linux/init.h>
 +#include <linux/platform_device.h>
 +
-+#include "dev-gpio-buttons.h"
++#include <asm/mach-ath79/ar71xx_regs.h>
++#include "common.h"
++#include "dev-wdt.h"
 +
-+void __init ath79_register_gpio_buttons(int id,
-+					unsigned poll_interval,
-+					unsigned nbuttons,
-+					struct gpio_button *buttons)
++static struct platform_device ath79_wdt_device = {
++	.name		= "ath79-wdt",
++	.id		= -1,
++};
++
++void __init ath79_register_wdt(void)
 +{
-+	struct platform_device *pdev;
-+	struct gpio_buttons_platform_data pdata;
-+	struct gpio_button *p;
-+	int err;
-+
-+	p = kmalloc(nbuttons * sizeof(*p), GFP_KERNEL);
-+	if (!p)
-+		return;
-+
-+	memcpy(p, buttons, nbuttons * sizeof(*p));
-+
-+	pdev = platform_device_alloc("gpio-buttons", id);
-+	if (!pdev)
-+		goto err_free_buttons;
-+
-+	memset(&pdata, 0, sizeof(pdata));
-+	pdata.poll_interval = poll_interval;
-+	pdata.nbuttons = nbuttons;
-+	pdata.buttons = p;
-+
-+	err = platform_device_add_data(pdev, &pdata, sizeof(pdata));
-+	if (err)
-+		goto err_put_pdev;
-+
-+	err = platform_device_add(pdev);
-+	if (err)
-+		goto err_put_pdev;
-+
-+	return;
-+
-+err_put_pdev:
-+	platform_device_put(pdev);
-+
-+err_free_buttons:
-+	kfree(p);
++	platform_device_register(&ath79_wdt_device);
 +}
-diff --git a/arch/mips/ath79/dev-gpio-buttons.h b/arch/mips/ath79/dev-gpio-buttons.h
+diff --git a/arch/mips/ath79/dev-wdt.h b/arch/mips/ath79/dev-wdt.h
 new file mode 100644
-index 0000000..57bf1d6f
+index 0000000..2546415
 --- /dev/null
-+++ b/arch/mips/ath79/dev-gpio-buttons.h
-@@ -0,0 +1,23 @@
++++ b/arch/mips/ath79/dev-wdt.h
+@@ -0,0 +1,17 @@
 +/*
-+ *  Atheros AR71XX/AR724X/AR913X GPIO button support
++ *  Atheros AR71XX/AR724X/AR913X watchdog device
 + *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
 + *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
@@ -166,77 +126,31 @@ index 0000000..57bf1d6f
 + *  by the Free Software Foundation.
 + */
 +
-+#ifndef _ATH79_DEV_GPIO_BUTTONS_H
-+#define _ATH79_DEV_GPIO_BUTTONS_H
++#ifndef _ATH_DEV_WDT_H
++#define _ATH_DEV_WDT_H
 +
-+#include <linux/input.h>
-+#include <linux/gpio_buttons.h>
++void ath79_register_wdt(void) __init;
 +
-+void ath79_register_gpio_buttons(int id,
-+				 unsigned poll_interval,
-+				 unsigned nbuttons,
-+				 struct gpio_button *buttons) __init;
-+
-+#endif /* _ATH79_DEV_GPIO_BUTTONS_H */
-diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
-index e176779..5e7b544 100644
---- a/arch/mips/ath79/mach-pb44.c
-+++ b/arch/mips/ath79/mach-pb44.c
-@@ -15,15 +15,20 @@
- #include <linux/i2c/pcf857x.h>
- 
++#endif
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index b36f9f2..693a9e6 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -24,6 +24,7 @@
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ #include "common.h"
+ #include "dev-uart.h"
++#include "dev-wdt.h"
  #include "machtypes.h"
-+#include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
  
- #define PB44_GPIO_I2C_SCL	0
- #define PB44_GPIO_I2C_SDA	1
- 
- #define PB44_GPIO_EXP_BASE	16
-+#define PB44_GPIO_SW_RESET	(PB44_GPIO_EXP_BASE + 6)
-+#define PB44_GPIO_SW_JUMP	(PB44_GPIO_EXP_BASE + 8)
- #define PB44_GPIO_LED_JUMP1	(PB44_GPIO_EXP_BASE + 9)
- #define PB44_GPIO_LED_JUMP2	(PB44_GPIO_EXP_BASE + 10)
- 
-+#define PB44_BUTTONS_POLL_INTERVAL	20
-+
- static struct i2c_gpio_platform_data pb44_i2c_gpio_data = {
- 	.sda_pin        = PB44_GPIO_I2C_SDA,
- 	.scl_pin        = PB44_GPIO_I2C_SCL,
-@@ -60,6 +65,24 @@ static struct gpio_led pb44_leds_gpio[] __initdata = {
- 	},
- };
- 
-+static struct gpio_button pb44_gpio_buttons[] __initdata = {
-+	{
-+		.desc		= "soft_reset",
-+		.type		= EV_KEY,
-+		.code		= KEY_RESTART,
-+		.threshold	= 3,
-+		.gpio		= PB44_GPIO_SW_RESET,
-+		.active_low	= 1,
-+	} , {
-+		.desc		= "jumpstart",
-+		.type		= EV_KEY,
-+		.code		= KEY_WPS_BUTTON,
-+		.threshold	= 3,
-+		.gpio		= PB44_GPIO_SW_JUMP,
-+		.active_low	= 1,
-+	}
-+};
-+
- static void __init pb44_init(void)
+ #define ATH79_SYS_TYPE_LEN	64
+@@ -259,6 +260,7 @@ static int __init ath79_setup(void)
  {
- 	i2c_register_board_info(0, pb44_i2c_board_info,
-@@ -68,6 +91,9 @@ static void __init pb44_init(void)
+ 	ath79_gpio_init();
+ 	ath79_register_uart();
++	ath79_register_wdt();
  
- 	ath79_register_leds_gpio(-1, ARRAY_SIZE(pb44_leds_gpio),
- 				 pb44_leds_gpio);
-+	ath79_register_gpio_buttons(-1, PB44_BUTTONS_POLL_INTERVAL,
-+				    ARRAY_SIZE(pb44_gpio_buttons),
-+				    pb44_gpio_buttons);
- }
+ 	mips_machine_setup();
  
- MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
 -- 
 1.7.2.1

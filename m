@@ -1,92 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2010 17:28:38 +0100 (CET)
-Received: from mail-gx0-f177.google.com ([209.85.161.177]:37819 "EHLO
-        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492227Ab0KOQ2c convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Nov 2010 17:28:32 +0100
-Received: by gxk25 with SMTP id 25so3389433gxk.36
-        for <multiple recipients>; Mon, 15 Nov 2010 08:28:26 -0800 (PST)
-Received: by 10.42.167.9 with SMTP id q9mr2369955icy.76.1289838506140; Mon, 15
- Nov 2010 08:28:26 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Nov 2010 00:50:46 +0100 (CET)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:34712 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492263Ab0KOXul (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Nov 2010 00:50:41 +0100
+Received: by ewy19 with SMTP id 19so27107ewy.36
+        for <multiple recipients>; Mon, 15 Nov 2010 15:50:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:date:from:subject:to
+         :cc:references:in-reply-to:x-mailer:message-id:mime-version
+         :content-type;
+        bh=dEA7e5sH5ys0mV71RRyRLQ2cfgXuvWLrNN4jUOz9ZKc=;
+        b=kD6YYWHGFDzEysTOxPqCxpHT04Sz/S7FP4Mi9yOhMGrV4iTYrBWAY6Q/GS/ir/ek1x
+         sdi180ABz/2ObO5sVkJi08198k4VtSpLiFFQNlV104E22eRwzpZH8djE1l+8EyMHFNhq
+         5o4gDdl0988P8I/7TJSjrMCEv6+4ZN15B1xL0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:subject:to:cc:references:in-reply-to:x-mailer
+         :message-id:mime-version:content-type;
+        b=wpaUVIoRkY7tbiDp4d9lQGCNCsNgkPN+IBZ2ndvUGFGZ3RI9x5OYCirYLc11HYLj45
+         P8gw0mjfGrTLUE5YQpx4p8Gl1t2tk8fNvFpuGZQHIPFqTuk3OTJvL5ekd3BM5zlWxmlU
+         Q3Aj0cRMSY7LVo2oHG76PzkJfO54XIUUQVCwY=
+Received: by 10.213.8.136 with SMTP id h8mr5314304ebh.36.1289865039884;
+        Mon, 15 Nov 2010 15:50:39 -0800 (PST)
+Received: from thorin ([83.45.77.222])
+        by mx.google.com with ESMTPS id x54sm500933eeh.11.2010.11.15.15.50.36
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 15 Nov 2010 15:50:37 -0800 (PST)
+Date:   Tue, 16 Nov 2010 00:50:28 +0100
+From:   Robert Millan <rmh@gnu.org>
+Subject: Re: [PATCH] Enable AT_PLATFORM for Loongson 2F CPU
+To:     Robert Millan <rmh@gnu.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        wu zhangjin <wuzhangjin@gmail.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org
+References: <20101109154055.GD10799@linux-mips.org>
+        <1289486855.14828.0@thorin>
+In-Reply-To: <1289486855.14828.0@thorin> (from rmh@gnu.org on Thu Nov 11
+        15:47:35 2010)
+X-Mailer: Balsa 2.4.1
+Message-Id: <1289865028.9277.0@thorin>
 MIME-Version: 1.0
-Received: by 10.231.5.194 with HTTP; Mon, 15 Nov 2010 08:28:05 -0800 (PST)
-In-Reply-To: <4CE0F8D1.8000704@openwrt.org>
-References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
- <1289598684-30624-12-git-send-email-juhosg@openwrt.org> <20101114082242.GA3137@angua.secretlab.ca>
- <4CE04EBC.4080701@openwrt.org> <20101115040456.GB19965@angua.secretlab.ca> <4CE0F8D1.8000704@openwrt.org>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Mon, 15 Nov 2010 09:28:05 -0700
-X-Google-Sender-Auth: v7XhZ4mWHk7J19QmZ8hNKFf2JRc
-Message-ID: <AANLkTiknq2Rdzp-xb-xTm5c_1QwBsq_vsS1N3iAL_Xn7@mail.gmail.com>
-Subject: Re: [RFC 11/18] spi: add SPI controller driver for the Atheros
- AR71XX/AR724X/AR913X SoCs
-To:     Gabor Juhos <juhosg@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, "Luis R. Rodriguez" <mcgrof@gmail.com>,
-        Cliff Holden <Cliff.Holden@atheros.com>,
-        David Brownell <dbrownell@users.sourceforge.net>,
-        spi-devel-general@lists.sourceforge.net,
-        Imre Kaloz <kaloz@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <glikely@secretlab.ca>
+Content-Type: multipart/mixed; boundary="=-TrgpL6pPRRG/T6pcLOqM"
+Return-Path: <rmh.aybabtu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28400
+X-archive-position: 28401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: rmh@gnu.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 15, 2010 at 2:09 AM, Gabor Juhos <juhosg@openwrt.org> wrote:
-> 2010.11.15. 5:04 keltezéssel, Grant Likely írta:
->> On Sun, Nov 14, 2010 at 10:03:56PM +0100, Gabor Juhos wrote:
->>>>> +static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned reg)
->>>>> +{
->>>>> +  return __raw_readl(sp->base + reg);
->>>>> +}
->>>>> +
->>>>> +static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned reg, u32 val)
->>>>> +{
->>>>> +  __raw_writel(val, sp->base + reg);
->>>>> +}
->>>>
->>>> This is suspect.  Why is __raw_{readl,writel} being used instead of
->>>> ioread32/iowrite32?  The __raw versions don't provide any kind of
->>>> ordering barriers.
->>>
->>> Mainly because the resulting code is smaller, and the performance is a bit
->>> better with the use of the __raw versions. The controller is embedded into the
->>> SoC and the registers are memory mapped, so i think it is safe to access them
->>> with __raw_{readl,writel}. However I can change it if that is the preferred method.
->>>
->>
->> Smaller, yes, because it doesn't have any io barriers; but is it safe?
->> Do you know whether or not the CPU will reorder the instructions on
->> you?  Being embedded into the SoC doesn't really mean anything in this
->> regard.  Unless you really understand all the behaviour of the CPU and
->> bus, then the safe versions must be used.
->>
->> If you *do* really understand all the behaviour and decide it is safe
->> to use the __raw versions, then the driver needs to be well documented
->> as to the reasons why the __raw versions are safe to use.
->
-> These SoCs are using the MIPS 24K core. This core is based on an in-order
-> architecture, so it is safe to use the __raw versions from the CPU's side.
->
-> To be honest, I have no informations about that the completion of the request is
-> always in order that the request are received on the AHB bus between the CPU and
-> the SPI controller. However the Atheros' reference code uses the __raw versions
-> everywhere to access the registers of the built-in devices, so I assume that no
-> out-of-order completion is allowed on that bus.
+--=-TrgpL6pPRRG/T6pcLOqM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Ralf, what say you?  I personally don't like this, and it makes for a
-bad example of driver code, but I'll accept it if you say that it is
-the right thing to do for MIPS device drivers.  (Although I retain my
-requirement that the use of __raw accessors needs to be well
-documented).
+El 11/11/10 15:47:35, en/na Robert Millan va escriure:
+> -		__cpu_name[cpu] =3D "ICT Loongson-2";
+> +		switch (c->processor_id & PRID_REV_MASK) {
+> +		case PRID_REV_LOONGSON2E:
+> +			__cpu_name[cpu] =3D "ICT Loongson-2E";
 
-g.
+Actually, the V0.2 / V0.3 that follows in cpuinfo output
+already indicates revision.  And I noticed that appending
+the 'E' or 'F' breaks GCC's -march=3Dnative option (which
+works by parsing /proc/cpuinfo).
+
+Please use this patch instead.
+
+
+--=-TrgpL6pPRRG/T6pcLOqM
+Content-Type: text/x-patch; charset=us-ascii; name=loongson2f.diff
+Content-Disposition: attachment; filename=loongson2f.diff
+Content-Transfer-Encoding: quoted-printable
+
+
+Signed-off-by: Robert Millan <rmh@gnu.org>
+
+diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
+index fd1d39e..58844f6 100644
+--- a/arch/mips/include/asm/elf.h
++++ b/arch/mips/include/asm/elf.h
+@@ -344,6 +344,12 @@ extern int dump_task_fpu(struct task_struct *, elf_fpr=
+egset_t *);
+ #define ELF_PLATFORM  __elf_platform
+ extern const char *__elf_platform;
+=20
++static inline void set_elf_platform(int cpu, const char *plat)
++{
++	if (cpu =3D=3D 0)
++		__elf_platform =3D plat;
++}
++
+ /*
+  * See comments in asm-alpha/elf.h, this is the same thing
+  * on the MIPS.
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 71620e1..accde65 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -614,6 +614,14 @@ static inline void cpu_probe_legacy(struct cpuinfo_mip=
+s *c, unsigned int cpu)
+ 	case PRID_IMP_LOONGSON2:
+ 		c->cputype =3D CPU_LOONGSON2;
+ 		__cpu_name[cpu] =3D "ICT Loongson-2";
++		switch (c->processor_id & PRID_REV_MASK) {
++		case PRID_REV_LOONGSON2E:
++			set_elf_platform(cpu, "loongson2e");
++			break;
++		case PRID_REV_LOONGSON2F:
++			set_elf_platform(cpu, "loongson2f");
++			break;
++		}
+ 		c->isa_level =3D MIPS_CPU_ISA_III;
+ 		c->options =3D R4K_OPTS |
+ 			     MIPS_CPU_FPU | MIPS_CPU_LLSC |
+@@ -957,14 +965,12 @@ static inline void cpu_probe_cavium(struct cpuinfo_mi=
+ps *c, unsigned int cpu)
+ 		c->cputype =3D CPU_CAVIUM_OCTEON_PLUS;
+ 		__cpu_name[cpu] =3D "Cavium Octeon+";
+ platform:
+-		if (cpu =3D=3D 0)
+-			__elf_platform =3D "octeon";
++		set_elf_platform(cpu, "octeon");
+ 		break;
+ 	case PRID_IMP_CAVIUM_CN63XX:
+ 		c->cputype =3D CPU_CAVIUM_OCTEON2;
+ 		__cpu_name[cpu] =3D "Cavium Octeon II";
+-		if (cpu =3D=3D 0)
+-			__elf_platform =3D "octeon2";
++		set_elf_platform(cpu, "octeon2");
+ 		break;
+ 	default:
+ 		printk(KERN_INFO "Unknown Octeon chip!\n");
+
+
+--=-TrgpL6pPRRG/T6pcLOqM--

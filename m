@@ -1,55 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2010 11:13:21 +0100 (CET)
-Received: from mailrelay012.isp.belgacom.be ([195.238.6.179]:61005 "EHLO
-        mailrelay012.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491962Ab0KOKNP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Nov 2010 11:13:15 +0100
-X-Belgacom-Dynamic: yes
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEANeU4ExR8Ieb/2dsb2JhbACiVXK7TQ2FPQQ
-Received: from 155.135-240-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.240.135.155])
-  by relay.skynet.be with ESMTP; 15 Nov 2010 11:13:07 +0100
-Received: from wim by infomag with local (Exim 4.69)
-        (envelope-from <wim@infomag.iguana.be>)
-        id 1PHw3e-0005vL-MP; Mon, 15 Nov 2010 11:13:06 +0100
-Date:   Mon, 15 Nov 2010 11:13:06 +0100
-From:   Wim Van Sebroeck <wim@iguana.be>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2010 11:30:42 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:34878 "EHLO
+        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492197Ab0KOKag (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Nov 2010 11:30:36 +0100
+Received: from mail.szarvas.hu (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 0E20F45C033;
+        Mon, 15 Nov 2010 11:30:29 +0100 (CET)
+Received: from [192.168.254.10] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 0BB9B1F0001;
+        Mon, 15 Nov 2010 11:30:27 +0100 (CET)
+Message-ID: <4CE10BC0.6090002@openwrt.org>
+Date:   Mon, 15 Nov 2010 11:30:24 +0100
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; hu-HU; rv:1.9.2.12) Gecko/20101027 Thunderbird/3.1.6
+MIME-Version: 1.0
+To:     Wim Van Sebroeck <wim@iguana.be>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         "Luis R. Rodriguez" <mcgrof@gmail.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Imre Kaloz <kaloz@openwrt.org>, linux-watchdog@vger.kernel.org
-Subject: Re: [RFC 07/18] watchdog: add driver for the Atheros
-        AR71XX/AR724X/AR913X SoCs
-Message-ID: <20101115101306.GE4046@infomag.iguana.be>
-References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org> <1289598684-30624-8-git-send-email-juhosg@openwrt.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1289598684-30624-8-git-send-email-juhosg@openwrt.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <wim@iguana.be>
+Subject: Re: [RFC 07/18] watchdog: add driver for the Atheros   AR71XX/AR724X/AR913X
+ SoCs
+References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org> <1289598684-30624-8-git-send-email-juhosg@openwrt.org> <20101115101306.GE4046@infomag.iguana.be>
+In-Reply-To: <20101115101306.GE4046@infomag.iguana.be>
+X-Enigmail-Version: 1.1.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-VBMS: A12B9CE606C | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28398
+X-archive-position: 28399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Gabor,
+Hi Wim,
 
-> This patch adds a driver for the built-in hardware watchdog device
-> of the Atheros AR71XX/AR724X/AR913X SoCs.
+>> This patch adds a driver for the built-in hardware watchdog device
+>> of the Atheros AR71XX/AR724X/AR913X SoCs.
+>>
+>> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+>> Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+>> Cc: Wim Van Sebroeck <wim@iguana.be>
+>> Cc: linux-watchdog@vger.kernel.org
 > 
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-> Cc: Wim Van Sebroeck <wim@iguana.be>
-> Cc: linux-watchdog@vger.kernel.org
+> Driver queud for review.
 
-Driver queud for review.
+Thank you!
 
-Kind regards,
-Wim.
+Regards,
+Gabor

@@ -1,87 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2010 10:09:50 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:36351 "EHLO
-        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491955Ab0KOJJr convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Nov 2010 10:09:47 +0100
-Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 2C0FC45C030;
-        Mon, 15 Nov 2010 10:09:40 +0100 (CET)
-Received: from [192.168.254.10] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id BCF57370001;
-        Mon, 15 Nov 2010 10:09:39 +0100 (CET)
-Message-ID: <4CE0F8D1.8000704@openwrt.org>
-Date:   Mon, 15 Nov 2010 10:09:37 +0100
-From:   Gabor Juhos <juhosg@openwrt.org>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; hu-HU; rv:1.9.2.12) Gecko/20101027 Thunderbird/3.1.6
-MIME-Version: 1.0
-To:     Grant Likely <grant.likely@secretlab.ca>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Nov 2010 11:13:21 +0100 (CET)
+Received: from mailrelay012.isp.belgacom.be ([195.238.6.179]:61005 "EHLO
+        mailrelay012.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491962Ab0KOKNP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 15 Nov 2010 11:13:15 +0100
+X-Belgacom-Dynamic: yes
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AvsEANeU4ExR8Ieb/2dsb2JhbACiVXK7TQ2FPQQ
+Received: from 155.135-240-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.240.135.155])
+  by relay.skynet.be with ESMTP; 15 Nov 2010 11:13:07 +0100
+Received: from wim by infomag with local (Exim 4.69)
+        (envelope-from <wim@infomag.iguana.be>)
+        id 1PHw3e-0005vL-MP; Mon, 15 Nov 2010 11:13:06 +0100
+Date:   Mon, 15 Nov 2010 11:13:06 +0100
+From:   Wim Van Sebroeck <wim@iguana.be>
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         "Luis R. Rodriguez" <mcgrof@gmail.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
-        David Brownell <dbrownell@users.sourceforge.net>,
-        spi-devel-general@lists.sourceforge.net,
-        Imre Kaloz <kaloz@openwrt.org>
-Subject: Re: [RFC 11/18] spi: add SPI controller driver for the Atheros AR71XX/AR724X/AR913X
- SoCs
-References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org> <1289598684-30624-12-git-send-email-juhosg@openwrt.org> <20101114082242.GA3137@angua.secretlab.ca> <4CE04EBC.4080701@openwrt.org> <20101115040456.GB19965@angua.secretlab.ca>
-In-Reply-To: <20101115040456.GB19965@angua.secretlab.ca>
-X-Enigmail-Version: 1.1.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-VBMS: A1577CF2F7C | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
-Return-Path: <juhosg@openwrt.org>
+        Imre Kaloz <kaloz@openwrt.org>, linux-watchdog@vger.kernel.org
+Subject: Re: [RFC 07/18] watchdog: add driver for the Atheros
+        AR71XX/AR724X/AR913X SoCs
+Message-ID: <20101115101306.GE4046@infomag.iguana.be>
+References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org> <1289598684-30624-8-git-send-email-juhosg@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1289598684-30624-8-git-send-email-juhosg@openwrt.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <wim@iguana.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28397
+X-archive-position: 28398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: wim@iguana.be
 Precedence: bulk
 X-list: linux-mips
 
-2010.11.15. 5:04 keltezéssel, Grant Likely írta:
-> On Sun, Nov 14, 2010 at 10:03:56PM +0100, Gabor Juhos wrote:
->>>> +static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned reg)
->>>> +{
->>>> +	return __raw_readl(sp->base + reg);
->>>> +}
->>>> +
->>>> +static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned reg, u32 val)
->>>> +{
->>>> +	__raw_writel(val, sp->base + reg);
->>>> +}
->>>
->>> This is suspect.  Why is __raw_{readl,writel} being used instead of
->>> ioread32/iowrite32?  The __raw versions don't provide any kind of
->>> ordering barriers.
->>
->> Mainly because the resulting code is smaller, and the performance is a bit
->> better with the use of the __raw versions. The controller is embedded into the
->> SoC and the registers are memory mapped, so i think it is safe to access them
->> with __raw_{readl,writel}. However I can change it if that is the preferred method.
->>
+Hi Gabor,
+
+> This patch adds a driver for the built-in hardware watchdog device
+> of the Atheros AR71XX/AR724X/AR913X SoCs.
 > 
-> Smaller, yes, because it doesn't have any io barriers; but is it safe?
-> Do you know whether or not the CPU will reorder the instructions on
-> you?  Being embedded into the SoC doesn't really mean anything in this
-> regard.  Unless you really understand all the behaviour of the CPU and
-> bus, then the safe versions must be used.
-> 
-> If you *do* really understand all the behaviour and decide it is safe
-> to use the __raw versions, then the driver needs to be well documented
-> as to the reasons why the __raw versions are safe to use.
+> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+> Cc: Wim Van Sebroeck <wim@iguana.be>
+> Cc: linux-watchdog@vger.kernel.org
 
-These SoCs are using the MIPS 24K core. This core is based on an in-order
-architecture, so it is safe to use the __raw versions from the CPU's side.
+Driver queud for review.
 
-To be honest, I have no informations about that the completion of the request is
-always in order that the request are received on the AHB bus between the CPU and
-the SPI controller. However the Atheros' reference code uses the __raw versions
-everywhere to access the registers of the built-in devices, so I assume that no
-out-of-order completion is allowed on that bus.
-
-Regards,
-Gabor
+Kind regards,
+Wim.

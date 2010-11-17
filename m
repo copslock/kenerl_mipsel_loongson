@@ -1,96 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Nov 2010 07:24:25 +0100 (CET)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:49150 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490991Ab0KQGYV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Nov 2010 07:24:21 +0100
-Received: by ywf7 with SMTP id 7so997062ywf.36
-        for <multiple recipients>; Tue, 16 Nov 2010 22:24:15 -0800 (PST)
-Received: by 10.100.119.13 with SMTP id r13mr5893615anc.153.1289975055523;
-        Tue, 16 Nov 2010 22:24:15 -0800 (PST)
-Received: from angua (S01060002b3d79728.cg.shawcable.net [70.72.87.49])
-        by mx.google.com with ESMTPS id w15sm6006681anw.33.2010.11.16.22.24.13
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 16 Nov 2010 22:24:14 -0800 (PST)
-Received: by angua (Postfix, from userid 1000)
-        id 474AD3C00E5; Tue, 16 Nov 2010 23:24:12 -0700 (MST)
-Date:   Tue, 16 Nov 2010 23:24:12 -0700
-From:   Grant Likely <grant.likely@secretlab.ca>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] of: Request module by alias in of_i2c.c
-Message-ID: <20101117062412.GK12813@angua.secretlab.ca>
-References: <1289947334-14375-1-git-send-email-ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Nov 2010 19:49:18 +0100 (CET)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:37336 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491979Ab0KQStP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Nov 2010 19:49:15 +0100
+Received: by yxj4 with SMTP id 4so1011814yxj.36
+        for <multiple recipients>; Wed, 17 Nov 2010 10:49:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=oVBZz93BdDpTlmmXtAJGUAXJaXcUcKVPmRlxN9Pp/f4=;
+        b=GXRC522MHjKfwfR2TpDs8cx8o08flgx6saHvHYHhvg5sI6lT6+nJFO+QMsYE+mcsUr
+         C28SLcIbw6xYvTOi0sPOjmuTrMrrcNteSdXa2iK4/soZcCjtYWoCQlbrMSbv/9g5OR44
+         ph1Ovp8d8Gg+CgROsQtf+gQOIIaq2CaAVffok=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=YhQQMtJnhLhL7U3x1Afiiofb6kwmKts4ebMLhhTrXZcHekpOyGcVbneLFRIR+hZST+
+         IMn6DYvnbMRsqDWHrwSiDYWAE6mXBlWWwgl35Yz2syilUo44mb552l5gefoSeFSJ6SPy
+         hRx85xcGkVyQ3VxA45Q8N4LuLRTkSUfy4tPi8=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1289947334-14375-1-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <glikely@secretlab.ca>
+Received: by 10.100.17.4 with SMTP id 4mr6408000anq.119.1290019749723; Wed, 17
+ Nov 2010 10:49:09 -0800 (PST)
+Received: by 10.100.7.13 with HTTP; Wed, 17 Nov 2010 10:49:09 -0800 (PST)
+Date:   Wed, 17 Nov 2010 10:49:09 -0800
+Message-ID: <AANLkTi=yHm72=sM=QwLpm=aDRnxVf7ZM5=W6eNzgVoTN@mail.gmail.com>
+Subject: [PATCH] MIPS: ASID conflict after CPU hotplug
+From:   Maksim Rayskiy <maksim.rayskiy@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <maksim.rayskiy@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28405
+X-archive-position: 28406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: maksim.rayskiy@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 16, 2010 at 02:42:14PM -0800, David Daney wrote:
-> If we are registering an i2c device that has a device tree node like
-> this real-world example:
-> 
->       rtc@68 {
->         compatible = "dallas,ds1337";
->         reg = <0x68>;
->       };
-> 
-> of_i2c_register_devices() will try to load a module called ds1337.ko.
-> There is no such module, so it will fail.  If we look in modules.alias
-> we will find entries like these:
-> 
-> .
-> .
-> .
-> alias i2c:ds1339 rtc_ds1307
-> alias i2c:ds1338 rtc_ds1307
-> alias i2c:ds1337 rtc_ds1307
-> alias i2c:ds1307 rtc_ds1307
-> alias i2c:ds1374 rtc_ds1374
-> .
-> .
-> .
-> 
-> The module we want is really called rtc_ds1307.ko.  If we request a
-> module called "i2c:ds1337", the userspace module loader will do the
-> right thing (unless it is busybox) and load rtc_ds1307.ko.  So we add
-> the I2C_MODULE_PREFIX to the request_module() string.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+This is a repost of my original message which somehow did not reach
+the mailing list (filtered out?).
 
-Applied, thanks.
+Hello,
 
-g.
+I am running SMP Linux 2.6.37-rc1 on BMIPS5000 (single core dual
+thread) and observe some abnormalities when doing system
+suspend/resume which I narrowed down to cpu hotplugging. The suspend
+brings the second thread processor down and then restarts it, after
+which I see memory corruption in userspace. I started digging and
+found out that problem occurs because while doing execve() the child
+process is getting the same ASID as the parent, which obviously
+corrupts parent's address space.
 
-> ---
->  drivers/of/of_i2c.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/of/of_i2c.c b/drivers/of/of_i2c.c
-> index c85d3c7..f37fbeb 100644
-> --- a/drivers/of/of_i2c.c
-> +++ b/drivers/of/of_i2c.c
-> @@ -61,7 +61,7 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
->  		info.of_node = of_node_get(node);
->  		info.archdata = &dev_ad;
->  
-> -		request_module("%s", info.type);
-> +		request_module("%s%s", I2C_MODULE_PREFIX, info.type);
->  
->  		result = i2c_new_device(adap, &info);
->  		if (result == NULL) {
-> -- 
-> 1.7.2.3
-> 
+Further digging showed that:
+activate_mm() calls get_new_mmu_context() to get a new ASID, but at
+this time ASID field in entryHi is 1, and asid_cache(cpu) is 0x100 (it
+was just reset to ASID_FIRST_VERSION when the secondary TP was
+booting).
+So, get_new_mmu_context() increments the asid_cache(cpu) value to
+0x101, and thus puts 0x01 into entryHi. The result - ASID field does
+not get changed as it was supposed to.
+
+My solution was very simple - do not reset asid_cache(cpu) on TP warm
+restart. But I would welcome any comments because my understanding of
+the code is somewhat fuzzy.
+
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index d83f325..ccf9272 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1577,7 +1577,8 @@ void __cpuinit per_cpu_trap_init(void)
+        }
+ #endif /* CONFIG_MIPS_MT_SMTC */
+
+-       cpu_data[cpu].asid_cache = ASID_FIRST_VERSION;
++       if (!cpu_data[cpu].asid_cache)
++               cpu_data[cpu].asid_cache = ASID_FIRST_VERSION;
+        TLBMISS_HANDLER_SETUP();
+
+        atomic_inc(&init_mm.mm_count);
+
+Regards,
+Max Rayskiy.

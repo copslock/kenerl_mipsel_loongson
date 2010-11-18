@@ -1,87 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Nov 2010 19:49:18 +0100 (CET)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:37336 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491979Ab0KQStP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Nov 2010 19:49:15 +0100
-Received: by yxj4 with SMTP id 4so1011814yxj.36
-        for <multiple recipients>; Wed, 17 Nov 2010 10:49:09 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Nov 2010 08:01:37 +0100 (CET)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:52603 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492040Ab0KRHBe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Nov 2010 08:01:34 +0100
+Received: by pzk3 with SMTP id 3so602449pzk.36
+        for <multiple recipients>; Wed, 17 Nov 2010 23:01:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type;
-        bh=oVBZz93BdDpTlmmXtAJGUAXJaXcUcKVPmRlxN9Pp/f4=;
-        b=GXRC522MHjKfwfR2TpDs8cx8o08flgx6saHvHYHhvg5sI6lT6+nJFO+QMsYE+mcsUr
-         C28SLcIbw6xYvTOi0sPOjmuTrMrrcNteSdXa2iK4/soZcCjtYWoCQlbrMSbv/9g5OR44
-         ph1Ovp8d8Gg+CgROsQtf+gQOIIaq2CaAVffok=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=2WeiCj9vXGc7SwD6nQIQ9dJ9Y/ijZceXjGv1cKAQz/E=;
+        b=nTWDdSXWFWV3G8MlpQYxICIGgU5jWJHiCNBPgRT1d8Izb33yP24vjUqG/EAosAJm+8
+         DtKL3DlOBkI8smTE6jOOX0vG6xZb59oEhmCUUtt5RxQ/5W6fLP8oRlJJDtPadO4bx6AT
+         jHjG25Owfz6zC/RSgCa+K1gIAZbl5qmeZP+p0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=YhQQMtJnhLhL7U3x1Afiiofb6kwmKts4ebMLhhTrXZcHekpOyGcVbneLFRIR+hZST+
-         IMn6DYvnbMRsqDWHrwSiDYWAE6mXBlWWwgl35Yz2syilUo44mb552l5gefoSeFSJ6SPy
-         hRx85xcGkVyQ3VxA45Q8N4LuLRTkSUfy4tPi8=
-MIME-Version: 1.0
-Received: by 10.100.17.4 with SMTP id 4mr6408000anq.119.1290019749723; Wed, 17
- Nov 2010 10:49:09 -0800 (PST)
-Received: by 10.100.7.13 with HTTP; Wed, 17 Nov 2010 10:49:09 -0800 (PST)
-Date:   Wed, 17 Nov 2010 10:49:09 -0800
-Message-ID: <AANLkTi=yHm72=sM=QwLpm=aDRnxVf7ZM5=W6eNzgVoTN@mail.gmail.com>
-Subject: [PATCH] MIPS: ASID conflict after CPU hotplug
-From:   Maksim Rayskiy <maksim.rayskiy@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <maksim.rayskiy@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=sHf0X8h9onw/YrR7qmU6W02bKhoK7EmZoAsGSnbypFilEpC9F3dFeo6nJFHvoFpgAf
+         iwBiU9w4Bnqp0Icrqc6AnxpXi4Nr6dYNguqz7xx9yQFIvaeE0UiT+8Qf085F5e37SAw2
+         1h5yCe9AYNb9dkyxA7MVNlrsEcv6EmIN+jYf4=
+Received: by 10.142.213.11 with SMTP id l11mr179587wfg.278.1290063687037;
+        Wed, 17 Nov 2010 23:01:27 -0800 (PST)
+Received: from localhost.localdomain ([210.13.118.102])
+        by mx.google.com with ESMTPS id w27sm81044wfd.14.2010.11.17.23.01.20
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 17 Nov 2010 23:01:24 -0800 (PST)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, fweisbec@gmail.com,
+        will.deacon@arm.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, dengcheng.zhu@gmail.com
+Subject: [PATCH 0/5] MIPS/Perf-events: Sync with mainline upper layer
+Date:   Thu, 18 Nov 2010 14:56:36 +0800
+Message-Id: <1290063401-25440-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.7.1
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28406
+X-archive-position: 28407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maksim.rayskiy@gmail.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a repost of my original message which somehow did not reach
-the mailing list (filtered out?).
+Current MIPS Perf-events uses older interfaces to the generic layer. So it
+will not work. This patch set fixes this issue by adding MIPS counterparts
+for a list of previous commits that went to mainline earlier.
 
-Hello,
+Deng-Cheng Zhu (5):
+  MIPS/Perf-events: Work with irq_work
+  MIPS/Perf-events: Work with the new PMU interface
+  MIPS/Perf-events: Check event state in validate_event()
+  MIPS/Perf-events: Work with the new callchain interface
+  MIPS/Perf-events: Use unsigned delta for right shift in event update
 
-I am running SMP Linux 2.6.37-rc1 on BMIPS5000 (single core dual
-thread) and observe some abnormalities when doing system
-suspend/resume which I narrowed down to cpu hotplugging. The suspend
-brings the second thread processor down and then restarts it, after
-which I see memory corruption in userspace. I started digging and
-found out that problem occurs because while doing execve() the child
-process is getting the same ASID as the parent, which obviously
-corrupts parent's address space.
-
-Further digging showed that:
-activate_mm() calls get_new_mmu_context() to get a new ASID, but at
-this time ASID field in entryHi is 1, and asid_cache(cpu) is 0x100 (it
-was just reset to ASID_FIRST_VERSION when the secondary TP was
-booting).
-So, get_new_mmu_context() increments the asid_cache(cpu) value to
-0x101, and thus puts 0x01 into entryHi. The result - ASID field does
-not get changed as it was supposed to.
-
-My solution was very simple - do not reset asid_cache(cpu) on TP warm
-restart. But I would welcome any comments because my understanding of
-the code is somewhat fuzzy.
-
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index d83f325..ccf9272 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1577,7 +1577,8 @@ void __cpuinit per_cpu_trap_init(void)
-        }
- #endif /* CONFIG_MIPS_MT_SMTC */
-
--       cpu_data[cpu].asid_cache = ASID_FIRST_VERSION;
-+       if (!cpu_data[cpu].asid_cache)
-+               cpu_data[cpu].asid_cache = ASID_FIRST_VERSION;
-        TLBMISS_HANDLER_SETUP();
-
-        atomic_inc(&init_mm.mm_count);
-
-Regards,
-Max Rayskiy.
+ arch/mips/Kconfig                    |    1 +
+ arch/mips/include/asm/perf_event.h   |   12 +-
+ arch/mips/kernel/perf_event.c        |  342 ++++++++++++++++------------------
+ arch/mips/kernel/perf_event_mipsxx.c |    4 +-
+ 4 files changed, 169 insertions(+), 190 deletions(-)

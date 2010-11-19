@@ -1,84 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Nov 2010 15:04:31 +0100 (CET)
-Received: from mxout1.idt.com ([157.165.5.25]:56155 "EHLO mxout1.idt.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491872Ab0KSOE2 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Nov 2010 15:04:28 +0100
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id oAJE4Iem030438;
-        Fri, 19 Nov 2010 06:04:18 -0800
-Received: from corpml3.corp.idt.com (corpml3.corp.idt.com [157.165.140.25])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id oAJE4HSr022869;
-        Fri, 19 Nov 2010 06:04:17 -0800 (PST)
-Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
-        by corpml3.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id oAJE4Gm26236;
-        Fri, 19 Nov 2010 06:04:16 -0800 (PST)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Nov 2010 15:34:28 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:34312 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491875Ab0KSOeZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Nov 2010 15:34:25 +0100
+Received: by bwz5 with SMTP id 5so4048862bwz.36
+        for <multiple recipients>; Fri, 19 Nov 2010 06:34:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:received:date:from:to:cc
+         :subject:message-id:references:mime-version:content-type
+         :content-disposition:in-reply-to:user-agent;
+        bh=QfppuqDMucQuvSJAK5drXEMCdaWXZKatI+E5xOBrIY8=;
+        b=mrAAZllHeLDOHWKLvLpMgR9CIX70xYmLEheWqYbPYi719EP97fd0fkhc7dZaliVAxh
+         7HPOOSYZI2ZvLfvYXbC0btjDtRX5bRyP0qqkOkq/uWLohDNq56aolpQtqcRdCEUb1/e9
+         +whsvOQdSQ6WbUh1t0/Gln4TzFRo2Qc4rpw8c=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        b=AzOY2aM4+eGMCCQuAADWy6nZmxnNXguAxLc0yhVEX9oG+QBvFF2f9a3m+ZGVOgazr4
+         ICfyGi6oywQzsuSOqmxi3LwWpBVzVTu9eTT/RPuclaKAM5rsGJvx0g/ZQ/19SUMd0o7i
+         JkjkiVvQJcTmaswWiJ3K0P349OqcFf2cY5oCI=
+Received: by 10.204.136.70 with SMTP id q6mr2120991bkt.208.1290177265312;
+        Fri, 19 Nov 2010 06:34:25 -0800 (PST)
+Received: from nowhere (p549AACDD.dip.t-dialin.net [84.154.172.221])
+        by mx.google.com with ESMTPS id v20sm402564bku.22.2010.11.19.06.34.22
+        (version=SSLv3 cipher=RC4-MD5);
+        Fri, 19 Nov 2010 06:34:23 -0800 (PST)
+Received: by nowhere (nbSMTP-1.00) for uid 1000
+        (using TLSv1/SSLv3 with cipher RC4-MD5 (128/128 bits))
+        fweisbec@gmail.com; Fri, 19 Nov 2010 15:34:23 +0100 (CET)
+Date:   Fri, 19 Nov 2010 15:34:21 +0100
+From:   Frederic Weisbecker <fweisbec@gmail.com>
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Cc:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, will.deacon@arm.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com
+Subject: Re: [PATCH 4/5] MIPS/Perf-events: Work with the new callchain
+        interface
+Message-ID: <20101119143416.GA5558@nowhere>
+References: <1290063401-25440-1-git-send-email-dengcheng.zhu@gmail.com> <1290063401-25440-5-git-send-email-dengcheng.zhu@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: The new "real" console doesn't display printk() messages like "early" console!
-Date:   Fri, 19 Nov 2010 06:04:07 -0800
-Message-ID: <AEA634773855ED4CAD999FBB1A66D0760136A2F5@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <AANLkTimqF-Zy6eQurPRq5m71waB=n4zyRfRbpxyCsWgn@mail.gmail.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: The new "real" console doesn't display printk() messages like "early" console!
-Thread-Index: AcuHf5ATiEo4mLPfSaesmCyQSEQaSgAcbkZA
-References: <AEA634773855ED4CAD999FBB1A66D0760136A102@CORPEXCH1.na.ads.idt.com><4CE57C92.6030705@mvista.com><AEA634773855ED4CAD999FBB1A66D0760136A151@CORPEXCH1.na.ads.idt.com><AANLkTinEXDoXQFa1gN6prRQYjqkvc9vSA_H7JOXPLsPw@mail.gmail.com><AEA634773855ED4CAD999FBB1A66D0760136A1F3@CORPEXCH1.na.ads.idt.com> <AANLkTimqF-Zy6eQurPRq5m71waB=n4zyRfRbpxyCsWgn@mail.gmail.com>
-From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-To:     "Ricardo Mendoza" <ricmm@gentoo.org>
-Cc:     <linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.43
-Return-Path: <Andrei.Ardelean@idt.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1290063401-25440-5-git-send-email-dengcheng.zhu@gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <fweisbec@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28433
+X-archive-position: 28434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrei.Ardelean@idt.com
+X-original-sender: fweisbec@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ricardo,
-
-I used Octeon just as a model, I added my own PORT_GD and my own
-serial_in/out driver functions which work well, I have some messages on
-the screen. My problem is that I can see messages like "Freeing unused
-kernel memory..." but I cannot see printk() error/warning/debug
-messages, like the messages printed by die().
-
-Thanks,
-Andrei
-
-
-
------Original Message-----
-From: mendoza.ricardo@gmail.com [mailto:mendoza.ricardo@gmail.com] On
-Behalf Of Ricardo Mendoza
-Sent: Thursday, November 18, 2010 6:58 PM
-To: Ardelean, Andrei
-Cc: linux-mips@linux-mips.org
-Subject: Re: The new "real" console doesn't display printk() messages
-like "early" console!
-
-On Thu, Nov 18, 2010 at 10:01 PM, Ardelean, Andrei
-<Andrei.Ardelean@idt.com> wrote:
-
-> Hi Ricardo,
->
-> I implemented serial platform driver taking as model serial.c from
-> cavium-octeon.
->
-> Here is my code:
->
-> ...
-
-Why use the Octeon code which has platform specific bits that might
-have nothing to do with your platform? Build up from the simple ones.
+On Thu, Nov 18, 2010 at 02:56:40PM +0800, Deng-Cheng Zhu wrote:
+> This is the MIPS part of the following commits by Frederic Weisbecker:
+> 
+> f72c1a931e311bb7780fee19e41a89ac42cab50e
+> 	perf: Factorize callchain context handling
+> 56962b4449af34070bb1994621ef4f0265eed4d8
+> 	perf: Generalize some arch callchain code
+> 70791ce9ba68a5921c9905ef05d23f62a90bc10c
+> 	perf: Generalize callchain_store()
+> c1a65932fd7216fdc9a0db8bbffe1d47842f862c
+> 	perf: Drop unappropriate tests on arch callchains
+> 
+> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+> ---
 
 
-     Ricardo
+Acked-by: Frederic Weisbecker <fweisbec@gmail.com>
+
+Why did I miss this arch? I did a grep on HAVE_PERF_EVENT or something,
+may be it hadn't it at that time?
+
+Thanks!

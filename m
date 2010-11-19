@@ -1,76 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Nov 2010 10:43:59 +0100 (CET)
-Received: from cam-admin0.cambridge.arm.com ([217.140.96.50]:56299 "EHLO
-        cam-admin0.cambridge.arm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491181Ab0KSJnz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Nov 2010 10:43:55 +0100
-Received: from cam-owa1.Emea.Arm.com (cam-owa1.emea.arm.com [10.1.255.62])
-        by cam-admin0.cambridge.arm.com (8.12.6/8.12.6) with ESMTP id oAJ9biF9003366;
-        Fri, 19 Nov 2010 09:37:44 GMT
-Received: from [10.1.68.185] ([10.1.255.212]) by cam-owa1.Emea.Arm.com with Microsoft SMTPSVC(6.0.3790.0);
-         Fri, 19 Nov 2010 09:43:30 +0000
-Subject: Re: [PATCH 3/5] MIPS/Perf-events: Check event state in
- validate_event()
-From:   Will Deacon <will.deacon@arm.com>
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-Cc:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, fweisbec@gmail.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com
-In-Reply-To: <1290063401-25440-4-git-send-email-dengcheng.zhu@gmail.com>
-References: <1290063401-25440-1-git-send-email-dengcheng.zhu@gmail.com>
-         <1290063401-25440-4-git-send-email-dengcheng.zhu@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Fri, 19 Nov 2010 09:43:26 +0000
-Message-ID: <1290159806.9342.7.camel@e102144-lin.cambridge.arm.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Nov 2010 09:43:30.0259 (UTC) FILETIME=[392F1230:01CB87CE]
-Return-Path: <Will.Deacon@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Nov 2010 11:28:39 +0100 (CET)
+Received: from mail-out.m-online.net ([212.18.0.9]:37854 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491178Ab0KSK2g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Nov 2010 11:28:36 +0100
+Received: from frontend1.mail.m-online.net (unknown [192.168.8.180])
+        by mail-out.m-online.net (Postfix) with ESMTP id 1746C1C089C9;
+        Fri, 19 Nov 2010 11:28:30 +0100 (CET)
+X-Auth-Info: JHjCkpAFC7/MXyyWJRH+e2qIAfE/frdUMdUZRTclbK8=
+Received: from lancy.mylan.de (p4FE63FAF.dip.t-dialin.net [79.230.63.175])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 8F0C61C00436;
+        Fri, 19 Nov 2010 11:28:30 +0100 (CET)
+Message-ID: <4CE65199.7030007@grandegger.com>
+Date:   Fri, 19 Nov 2010 11:29:45 +0100
+From:   Wolfgang Grandegger <wg@grandegger.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
+MIME-Version: 1.0
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>, Netdev@vger.kernel.org
+Subject: Re: alchemy/gpr: au1000_eth regression with v2.6.37rc2
+References: <4CE58593.50509@grandegger.com> <201011182330.08488.florian@openwrt.org>
+In-Reply-To: <201011182330.08488.florian@openwrt.org>
+X-Enigmail-Version: 1.0.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <wg@grandegger.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28425
+X-archive-position: 28426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: will.deacon@arm.com
+X-original-sender: wg@grandegger.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Deng-Cheng,
+Hello Florian,
 
-On Thu, 2010-11-18 at 06:56 +0000, Deng-Cheng Zhu wrote:
-> Ignore events that are not for this PMU or are in off/error state.
+On 11/18/2010 11:30 PM, Florian Fainelli wrote:
+> Hello Wolfgang,
 > 
-Sorry I didn't see this before, thanks for pointing out that you
-had included it for MIPS.
-
-> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-> ---
->  arch/mips/kernel/perf_event.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
+> Le Thursday 18 November 2010 20:59:15, Wolfgang Grandegger a écrit :
+>> Hello,
+>>
+>> I just realized that the v2.6.37-rc2 kernel does not boot any more on
+>> the Alchemy GPR board. It works fine with v2.6.36. It hangs in the
+>> probe function of the au1000_eth driver when probing the second
+>> ethernet port (eth1):
+>>
+>>   au1000_eth_mii: probed
+>>   au1000-eth au1000-eth.0: (unregistered net_device): attached PHY driver
+>> [Generic PHY] (mii_bus:phy_addr=0:00, irq=-1) au1000-eth au1000-eth.0:
+>> eth0: Au1xx0 Ethernet found at 0x10500000, irq 35 au1000_eth: au1000_eth
+>> version 1.7 Pete Popov <ppopov@embeddedalley.com> ... hangs ...
+>>
+>> Similar messages should follow for eth1. I narrowed down (bisect'ed) the
+>> problem to commit:
+>>
+>>   commit d0e7cb5d401695809ba8c980124ab1d8c66efc8b
+>>   Author: Florian Fainelli <florian@openwrt.org>
+>>   Date:   Wed Sep 8 11:15:13 2010 +0000
+>>
+>>     au1000-eth: remove volatiles, switch to I/O accessors
+>>
+>>     Remove all the volatile keywords where they were used, switch to using
+>> the proper readl/writel accessors.
+>>
+>>     Signed-off-by: Florian Fainelli <florian@openwrt.org>
+>>     Signed-off-by: David S. Miller <davem@davemloft.net>
+>>
+>> The kernel actually hangs when accessing "&aup->mac->mii_control" in
+>> au1000_mdio_read(), but only for eth1. Any idea what does go wrong?
 > 
-> diff --git a/arch/mips/kernel/perf_event.c b/arch/mips/kernel/perf_event.c
-> index 1ee44a3..9c6442a 100644
-> --- a/arch/mips/kernel/perf_event.c
-> +++ b/arch/mips/kernel/perf_event.c
-> @@ -486,7 +486,7 @@ static int validate_event(struct cpu_hw_events *cpuc,
->  {
->         struct hw_perf_event fake_hwc = event->hw;
+> I do not understand so far while it hangs only for eth1. My device only has 
+> one ethernet MAC, so I could not notice the problem. Looking at this close, 
+> there are a couple of u32 const* usages in au1000_mdio_{read,write} which are 
+> looking wrong to me now. Can you try to remove these?
+
+That did not help.
+
+>> In principle, I do not want to access the MII regs of the MAC because
+>> eth0 and eth1 are connected to switches. But that's not possible, even
+>> with "aup->phy_static_config=1" and "aup->phy_addr=0".
 > 
-> -       if (event->pmu && event->pmu != &pmu)
-> +       if (event->pmu != &pmu || event->state <= PERF_EVENT_STATE_OFF)
->                 return 0;
-> 
->         return mipspmu->alloc_counter(cpuc, &fake_hwc) >= 0;
+> If you think this is another issue, I will fix it in another patch.
 
-So this is the opposite of what we're doing on ARM. Our
-approach is to ignore events that are OFF (or in the ERROR
-state) or that belong to a different PMU. We do this by
-allowing them to *pass* validation (i.e. by returning 1 above).
-This means that we won't unconditionally fail a mixed event group.
+Accessing the MII registers of the MAC should not hang the system even
+if I do not need to. First I want to  understand why. Looks like a wired
+optimizer issue.
 
-x86 does something similar in the collect_events function.
+BTW: why do you use readl() and writel() instead of the usual au_readl()
+and au_writel() to access memory mapped cpu registers? It did not help,
+anyway.
 
-Will
+Wolfgang

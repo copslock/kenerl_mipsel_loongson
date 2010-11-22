@@ -1,88 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2010 04:41:48 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:47949 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490962Ab0KVDlp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 22 Nov 2010 04:41:45 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oAM3fgOj026642;
-        Mon, 22 Nov 2010 03:41:42 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oAM3ff08026640;
-        Mon, 22 Nov 2010 03:41:41 GMT
-Date:   Mon, 22 Nov 2010 03:41:41 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Maksim Rayskiy <maksim.rayskiy@gmail.com>,
-        "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: ASID conflict after CPU hotplug
-Message-ID: <20101122034141.GA13138@linux-mips.org>
-References: <AANLkTi=yHm72=sM=QwLpm=aDRnxVf7ZM5=W6eNzgVoTN@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2010 12:42:12 +0100 (CET)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:48751 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491958Ab0KVLmJ convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Nov 2010 12:42:09 +0100
+Received: by wyf22 with SMTP id 22so7063520wyf.36
+        for <linux-mips@linux-mips.org>; Mon, 22 Nov 2010 03:42:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=BfOXwt7hHTThjkDxr8aOOQ/lIpYGmZbqDsQInOHIYL8=;
+        b=dx0mRfc3/ckQLOUrERBh0sYfkjT0SX6PdhLEcxCQ3yRGSv+VC+sGkgtFbNSIhndoPk
+         oFTXvx/kEmhB5Jj/vWXu/AjxqNt6x0OSo1nieEGRtamCXYLEgm3tTroSH6yn6x22yD/R
+         zAnbTZUZ9u0B7Rk+bWgGrjrb/a2z8ul+pW5+g=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=i9uGoP+D4WmteRP8BdkAO+QQbZHrOHwV1u5XS2VJSvdcDXqDS2Yx7rhOVgTC0+j6I0
+         7IROGSvpYjMEjITp+11LSBsvgcvGHlil+KISRh2KDDrSgltiFQF+j/PP8M8IYukeyT1b
+         ugZ96keJL9ewYx4GzD8GAnbA6LKz1mKcQhyoM=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AANLkTi=yHm72=sM=QwLpm=aDRnxVf7ZM5=W6eNzgVoTN@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.216.142.131 with SMTP id i3mr3956048wej.5.1290426122883; Mon,
+ 22 Nov 2010 03:42:02 -0800 (PST)
+Received: by 10.216.131.88 with HTTP; Mon, 22 Nov 2010 03:42:02 -0800 (PST)
+In-Reply-To: <AANLkTikjbP89qp24u1Pw6zcsyV7WcYYtmR0Yt3yCaXoh@mail.gmail.com>
+References: <AANLkTikjbP89qp24u1Pw6zcsyV7WcYYtmR0Yt3yCaXoh@mail.gmail.com>
+Date:   Mon, 22 Nov 2010 19:42:02 +0800
+Message-ID: <AANLkTim-+1csKoCc7kqXERmLZRSt9LAAB=JPK+0gaYPo@mail.gmail.com>
+Subject: Re: Build failure triggered by recordmcount
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     Arnaud Lacombe <lacombar@gmail.com>
+Cc:     John Reiser <jreiseer@bitwagon.com>,
+        Steven Rostedt <srosteedt@redhat.com>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28442
+X-archive-position: 28443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 17, 2010 at 10:49:09AM -0800, Maksim Rayskiy wrote:
+Hi, Arnaud
 
-> This is a repost of my original message which somehow did not reach
-> the mailing list (filtered out?).
+This only happen at 32bit + big endian, so, perhaps, the symbol
+reltype of bitendian 32bit differs from little endian 32bit, I will
+check it later, thanks!
 
-Yes indeed.  In particular the previous posting was HTML which the list
-robot is configured to exterminate.
+Regards,
+Wu Zhangjin
 
-> I am running SMP Linux 2.6.37-rc1 on BMIPS5000 (single core dual
-> thread) and observe some abnormalities when doing system
-> suspend/resume which I narrowed down to cpu hotplugging. The suspend
-> brings the second thread processor down and then restarts it, after
-> which I see memory corruption in userspace. I started digging and
-> found out that problem occurs because while doing execve() the child
-> process is getting the same ASID as the parent, which obviously
-> corrupts parent's address space.
-> 
-> Further digging showed that:
-> activate_mm() calls get_new_mmu_context() to get a new ASID, but at
-> this time ASID field in entryHi is 1, and asid_cache(cpu) is 0x100 (it
-> was just reset to ASID_FIRST_VERSION when the secondary TP was
-> booting).
-> So, get_new_mmu_context() increments the asid_cache(cpu) value to
-> 0x101, and thus puts 0x01 into entryHi. The result - ASID field does
-> not get changed as it was supposed to.
-> 
-> My solution was very simple - do not reset asid_cache(cpu) on TP warm
-> restart. But I would welcome any comments because my understanding of
-> the code is somewhat fuzzy.
-
-Unfortunately I haven't yet found a BMIPS board or manual in my mailbox
-so I can't really give a definitate answer.  But let me describe how
-the MIPS34K handles it.
-
-The 34K supports two TLB modes, shared and split TLB.  The VSMP kernel
-uses the TLB in split mode in which half of the TLB entries is available
-to each of the two threads aka VPEs.  So with a 64 entry TLB that's 32
-entries per VPE then.  Each VPE (or rather TC but see further down) has
-it's own c0_entryhi register, thus it's own ASID.  So no ASID collisions
-possible, ever.  This is the same as on a conventional SMP system where
-TLB and ASID number space are also per CPU.
-
-The SMTC kernel model (usually) uses the shared model, that is all the 64
-entries are now available to all threads and the ASID space is shared.
-This means allocation of the same ASID to multiple TCs needs to be avoided.
-
-It seems BMIPS falls into the latter class?
-
-Need to think a little about potencial consequences of your suggested
-patch.  It seems ok.  Kevin, what do you think?
-
-  Ralf
+On Mon, Nov 22, 2010 at 11:04 AM, Arnaud Lacombe <lacombar@gmail.com> wrote:
+> Hi,
+>
+> The build of an `allyesconfig' configuration from v2.6.37-rc3 is
+> failing relatively soon on the following:
+>
+> [...]
+>  LD      init/mounts.o
+> /OpenWrt-SDK-ar71xx-for-Linux-i686/staging_dir/toolchain-mips_gcc4.1.2/bin/mips-linux-ld:
+> init/do_mounts.o: bad reloc symbol index (0x20200 >= 0x84) for offset
+> 0x0 in section `__mcount_loc'
+>
+> /OpenWrt-SDK-ar71xx-for-Linux-i686/staging_dir/toolchain-mips_gcc4.1.2/bin/mips-linux-ld
+> -v
+> GNU ld version 2.17
+>
+> The toolchain originated from OpenWRT Kamikaze and is available on their FTP[0].
+>
+> I've not been able to locate the exact point of failure.
+>
+>  - Arnaud
+>
+> [0]: http://downloads.openwrt.org/kamikaze/8.09.2/ar71xx/
+>
+>

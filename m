@@ -1,227 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2010 17:38:14 +0100 (CET)
-Received: from mxout1.idt.com ([157.165.5.25]:56179 "EHLO mxout1.idt.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491981Ab0KVQiH convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 22 Nov 2010 17:38:07 +0100
-Received: from mail.idt.com (localhost [127.0.0.1])
-        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id oAMGbuPM031895;
-        Mon, 22 Nov 2010 08:37:58 -0800
-Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
-        by mail.idt.com (8.13.8/8.13.8) with ESMTP id oAMGbtLd029838;
-        Mon, 22 Nov 2010 08:37:56 -0800 (PST)
-Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
-        by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id oAMGbs213378;
-        Mon, 22 Nov 2010 08:37:54 -0800 (PST)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2010 19:39:04 +0100 (CET)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:61698 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492049Ab0KVSi5 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Nov 2010 19:38:57 +0100
+Received: by gyg8 with SMTP id 8so236245gyg.36
+        for <multiple recipients>; Mon, 22 Nov 2010 10:38:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=Dg4wyOokvUfrWP3M1Y8b88c+WZO+V1NhrP0nmBdvRlE=;
+        b=UKwS97ILb0C1wfkFnsBlWtDCUVaz2R2vm9FyR3kh3q1GB/hRgiYdvftn+arXZTsG8m
+         KEcKJyzYwL72/HJ5ZaRR7N0MxpLt42mgz5aJUQKCC53u/8hNAs+6jOJh52VE4bageCy+
+         8tt0C0NkYDic1nModiVXqRcK6YOoPQNPNWfjo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=wC0QCH+91AIDO3pAXg51Sv87dQVeqE7X2KlI6bC3fbXFL2FIasrfetLzeP4uoyADCW
+         nYdjq2SGe40EzjVmyRT3L2Bohi+TTDvZfP7H6sofUcrXvVfLDeb+7pzJfcLv9cO+FYhZ
+         MsITSoJnkh4NUPa7E5PEDnV4g400kuwj8wGGk=
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
+Received: by 10.100.255.8 with SMTP id c8mr4338063ani.154.1290451130484; Mon,
+ 22 Nov 2010 10:38:50 -0800 (PST)
+Received: by 10.100.209.10 with HTTP; Mon, 22 Nov 2010 10:38:50 -0800 (PST)
+In-Reply-To: <20101122034141.GA13138@linux-mips.org>
+References: <AANLkTi=yHm72=sM=QwLpm=aDRnxVf7ZM5=W6eNzgVoTN@mail.gmail.com>
+        <20101122034141.GA13138@linux-mips.org>
+Date:   Mon, 22 Nov 2010 10:38:50 -0800
+Message-ID: <AANLkTin7GE+t6HLBq-JAt4=_+zu2U7TM3We=jccfY3Y=@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: ASID conflict after CPU hotplug
+From:   Maksim Rayskiy <maksim.rayskiy@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "Kevin D. Kissell" <kevink@paralogos.com>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Subject: RE: The new "real" console doesn't display printk() messages like "early" console!
-Date:   Mon, 22 Nov 2010 08:37:53 -0800
-Message-ID: <AEA634773855ED4CAD999FBB1A66D0760136A7D3@CORPEXCH1.na.ads.idt.com>
-In-Reply-To: <4CE6A103.8030009@mvista.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: The new "real" console doesn't display printk() messages like "early" console!
-Thread-Index: AcuIBEWDEyxDvHP6TbaTKBiFLvofTACXasVA
-References: <AEA634773855ED4CAD999FBB1A66D0760136A102@CORPEXCH1.na.ads.idt.com><4CE57C92.6030705@mvista.com><AEA634773855ED4CAD999FBB1A66D0760136A151@CORPEXCH1.na.ads.idt.com> <AANLkTinEXDoXQFa1gN6prRQYjqkvc9vSA_H7JOXPLsPw@mail.gmail.com> <AEA634773855ED4CAD999FBB1A66D0760136A1F3@CORPEXCH1.na.ads.idt.com> <4CE6A103.8030009@mvista.com>
-From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-To:     "Sergei Shtylyov" <sshtylyov@mvista.com>
-Cc:     "Ricardo Mendoza" <ricmm@gentoo.org>, <linux-mips@linux-mips.org>
-X-Scanned-By: MIMEDefang 2.43
-Return-Path: <Andrei.Ardelean@idt.com>
+Return-Path: <maksim.rayskiy@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28448
+X-archive-position: 28449
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Andrei.Ardelean@idt.com
+X-original-sender: maksim.rayskiy@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Sergei,
+On Sun, Nov 21, 2010 at 7:41 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Unfortunately I haven't yet found a BMIPS board or manual in my mailbox
+> so I can't really give a definitate answer.  But let me describe how
+> the MIPS34K handles it.
+>
+> The 34K supports two TLB modes, shared and split TLB.  The VSMP kernel
+> uses the TLB in split mode in which half of the TLB entries is available
+> to each of the two threads aka VPEs.  So with a 64 entry TLB that's 32
+> entries per VPE then.  Each VPE (or rather TC but see further down) has
+> it's own c0_entryhi register, thus it's own ASID.  So no ASID collisions
+> possible, ever.  This is the same as on a conventional SMP system where
+> TLB and ASID number space are also per CPU.
+>
+> The SMTC kernel model (usually) uses the shared model, that is all the 64
+> entries are now available to all threads and the ASID space is shared.
+> This means allocation of the same ASID to multiple TCs needs to be avoided.
+>
+> It seems BMIPS falls into the latter class?
+>
 
-- I will clean up the things you highlighted in the code, they come from
-octeon code.
-- Regarding PORT_GD, I added it in driver/serial/8250.c like octeon
-model:
+No, each thread has a separate TLB and all TLB-related registers are
+also per thread. The conflict I have found was the same ASID for two
+different processes on the second TP.
 
-	[PORT_OCTEON] = {
-		.name		= "OCTEON",
-		.fifo_size	= 64,
-		.tx_loadsz	= 64,
-		.fcr		= UART_FCR_ENABLE_FIFO |
-UART_FCR_R_TRIG_10,
-		.flags		= UART_CAP_FIFO,
-	},
-	[PORT_GD] = {
-		.name		= "GD",
-		.fifo_size	= 16,
-		.tx_loadsz	= 16,
-		.fcr		= UART_FCR_ENABLE_FIFO |
-UART_FCR_R_TRIG_10,
-		.flags		= UART_CAP_FIFO,
-	},
+I still do not understand all the details, but what I saw was after
+the second TP is brought back online init process runs on (migrates to
+?) it with entryHi=1. If it tries to spawn another process, the child
+gets the same ASID, because current asid_cache value is 0 (well it is
+actually 0x100, but only lower 8 bits matter).
 
+> Need to think a little about potencial consequences of your suggested
+> patch.  It seems ok.  Kevin, what do you think?
+>
+>  Ralf
+>
 
 Thanks,
-Andrei
-
-
------Original Message-----
-From: Sergei Shtylyov [mailto:sshtylyov@mvista.com] 
-Sent: Friday, November 19, 2010 11:09 AM
-To: Ardelean, Andrei
-Cc: Ricardo Mendoza; linux-mips@linux-mips.org
-Subject: Re: The new "real" console doesn't display printk() messages
-like "early" console!
-
-Ardelean, Andrei wrote:
-
-> Hi Ricardo,
-
-> I implemented serial platform driver taking as model serial.c from
-> cavium-octeon.
-
-    I think you should really have used something simpler as an example.
-
-> Here is my code:
-
-
-> /*
->  * This file is subject to the terms and conditions of the GNU General
-> Public
->  * License.  See the file "COPYING" in the main directory of this
-> archive
->  * for more details.
->  *
->  * Copyright (C) 2004-2007 Cavium Networks
->  */
->  
-> #include <linux/console.h>
-> #include <linux/module.h>
-> #include <linux/init.h>
-> #include <linux/platform_device.h>
-> #include <linux/serial.h>
-> #include <linux/serial_8250.h>
-> #include <linux/serial_reg.h>
-> #include <linux/tty.h>
-> #include <asm/time.h>
-> #include <sys_defs.h>
-> 
-> 
-> #ifdef CONFIG_GDB_CONSOLE
-
-    This is never defined for MIPS. And there shouldn't be such
-dependencies.
-
-> #define DEBUG_UART 0
-> #else
-> #define DEBUG_UART 1
-> #endif
-> 
-> unsigned int gd_serial_in(struct uart_port *up, int offset)
-> {
-> 	int rv = inl((unsigned int)(up->membase + (offset << 2)));
-
-    Should be an empty line here.
-
-> 	if (offset == UART_IIR && (rv & 0xf) == 7) {
-
-    Are you sure this Octeon specific quirk also allpies to your UART?
-
-> 		/* Busy interrupt, read the USR (39) and try again. */
-> 		inl((unsigned int)(up->membase + (39 << 2)));
-> 		rv = inl((unsigned int)(up->membase + (offset << 2)));
-> 	}
-> 	return rv;
-> }
-> 
-> void gd_serial_out(struct uart_port *up, int offset, int value)
-> {
-> 	outl( value & 0xff, (unsigned int)(up->membase + (offset <<
-
-    No spaces allowed after (.
-
-> 2)));
-> }
-> 
-> /*
->  * Allocated in .bss, so it is all zeroed.
->  */
-> #define GD_MAX_UARTS 1
-
-    Then how DEBUG_UART can be 1?
-
-> static struct plat_serial8250_port gd_uart8250_data[GD_MAX_UARTS + 1];
-> static struct platform_device gd_uart8250_device = {
-> 	.name			= "serial8250",
-> 	.id			= PLAT8250_DEV_PLATFORM,
-> 	.dev			= {
-> 		.platform_data	= gd_uart8250_data,
-
-    Where is 'gd_uart8250_data'?
-
-> 	},
-> };
-
-> static void __init gd_uart_set_common(struct plat_serial8250_port *p)
-> {
-> 	p->flags = ASYNC_SKIP_TEST | UPF_SHARE_IRQ | UPF_FIXED_TYPE;
-> 	p->type = PORT_GD;
-
-    What is PORT_GD?
-
-> 	p->iotype = UPIO_MEM;
-
-    Judging from your code, it should be UPIO_MEM32.
-
-> 	p->regshift = 2;	/* I/O addresses are every 4 bytes */
-> 	p->uartclk = UART_CLK;  
-> 	p->serial_in = gd_serial_in;
-> 	p->serial_out = gd_serial_out;
-> }
-> 
-> static int __init gd_serial_init(void)
-> {
-> 	int enable_uart0;
-> 	struct plat_serial8250_port *p;
-> 
-> 	enable_uart0 = 1;
-
-    What's the point in existence of this variable?
-
-> 	p = gd_uart8250_data;
-> 	if (enable_uart0) {
-> 		/* Add a ttyS device for hardware uart 0 */
-> 		gd_uart_set_common(p);
-> 		p->membase = (void *) offMCU_UART_THR_OR_RBR_OR_DLL;
-> 		p->mapbase = offMCU_UART_THR_OR_RBR_OR_DLL;
-
-     Are your UART registers identity mapped to virtual address space?
-You are not obliged to pass 'membase', unless you have pre-existing
-mapping but 
-in this case you also need to pass UPF_IOREMAP in 'flags'.
-
-> 		p->irq = MIPSCPU_INT_UART;
-> 		p++;
-> 	}
-
-> 	return platform_device_register(&gd_uart8250_device);
-> }
-> 
-> device_initcall(gd_serial_init);
-
-
->
-------------------------------------------------------------------------
-> -----------------------
-> 
-> Thanks,
-> Andrei
-
-WBR, Sergei
+Maksim.

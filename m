@@ -1,48 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2010 16:00:23 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:42590 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492018Ab0KVPAQ convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Nov 2010 16:00:48 +0100 (CET)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:48646 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492023Ab0KVPAm convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 22 Nov 2010 16:00:16 +0100
-Received: by wwb31 with SMTP id 31so240927wwb.24
-        for <linux-mips@linux-mips.org>; Mon, 22 Nov 2010 07:00:11 -0800 (PST)
+        Mon, 22 Nov 2010 16:00:42 +0100
+Received: by wyf22 with SMTP id 22so7270660wyf.36
+        for <linux-mips@linux-mips.org>; Mon, 22 Nov 2010 07:00:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:received:received:in-reply-to
          :references:date:message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
         bh=n68ec5zlJ8wkw+C2EAx3Lo7tsuo1Rw6AhyfVL0OwHJg=;
-        b=fRtfoe6XG3gM69oeWeDm3ezZnfQGnWE6kGXN8x4otjr6+0YZ3rz9xQBJVQssVqJyE7
-         FwMssrO09dmRyClsT99QVHqFIrhW80SnfWuauMtlNnt5BYzh3l6gN037nG9BckLS3X9b
-         TlYg2CRK03Ybx6hOxteTGgaEmZfcfXika/8bI=
+        b=Q/x/EPZ9RQeLxXxzAE5rxkgf+sZiVJPtz3c/HXoEWJBY4uFTDi37hI3jCwAgb1TjgC
+         O3awsqjk+6+7v8LUCuyUlPFsajaZka6yNqZGWq9uYeZwZ2TIGKRS0VCvx/gRPjJ5wVh0
+         t+jA5sep0t+aZvER9114xw8PhRaQUweZaPBus=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        b=LEsi2Obu/dmUxql7xV9UPdHk0irwQdj/8GnuYh+yyQS1AeUiDeht1dFS5bdHfca+MF
-         fQz8AU5x5dOG035QprdxU4laMRo9bsCvIVoOYcu1S3txRGQ8fpBriJZYof3Jnlx5fzQ4
-         EiR5cfRt1LpZ1J+XCmlkHpaqH6t6kRV6FAJEU=
+        b=gHS4XfaBZYPBu34XnvNsmBmzi57Q4fdq5cDhqt92M3hORnpTunb57KiyWpNfBBTUyl
+         HdGyA0aFUNX3wfDbsmOfwV3dBor3effa39OVQ6/Z1EaR24gpL/B3b+6d+8CRehjIv/+q
+         Khyn4VliuM4uSIr2nNRqduMY8j8xOdHqNsKGU=
 MIME-Version: 1.0
-Received: by 10.216.173.7 with SMTP id u7mr4170125wel.50.1290438006535; Mon,
- 22 Nov 2010 07:00:06 -0800 (PST)
-Received: by 10.216.131.88 with HTTP; Mon, 22 Nov 2010 07:00:06 -0800 (PST)
+Received: by 10.216.157.6 with SMTP id n6mr5234393wek.35.1290438031553; Mon,
+ 22 Nov 2010 07:00:31 -0800 (PST)
+Received: by 10.216.131.88 with HTTP; Mon, 22 Nov 2010 07:00:31 -0800 (PST)
 In-Reply-To: <AANLkTikaUxKqsqXKYpETOnWAMuCi5gp30ANux0RQuK6Z@mail.gmail.com>
 References: <AANLkTikjbP89qp24u1Pw6zcsyV7WcYYtmR0Yt3yCaXoh@mail.gmail.com>
         <AANLkTim-+1csKoCc7kqXERmLZRSt9LAAB=JPK+0gaYPo@mail.gmail.com>
         <AANLkTikaUxKqsqXKYpETOnWAMuCi5gp30ANux0RQuK6Z@mail.gmail.com>
-Date:   Mon, 22 Nov 2010 23:00:06 +0800
-Message-ID: <AANLkTi=z4pBJvEV-n7EFYW8_HjyiAyce9B71FCWQWtK1@mail.gmail.com>
+Date:   Mon, 22 Nov 2010 23:00:31 +0800
+Message-ID: <AANLkTimDSXhUH40moczVoCLgxsJhrwpiPWALLcPENhQ+@mail.gmail.com>
 Subject: Re: Build failure triggered by recordmcount
 From:   wu zhangjin <wuzhangjin@gmail.com>
 To:     Arnaud Lacombe <lacombar@gmail.com>
-Cc:     Steven Rostedt <rostedt@goodmis.org>, linux-mips@linux-mips.org
+Cc:     John Reiser <jreiser@BitWagon.com>,
+        Steven Rostedt <rostedt@goodmis.org>, linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28446
+X-archive-position: 28447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

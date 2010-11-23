@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:14:09 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43997 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:14:36 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43999 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492069Ab0KWPHC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:07:02 +0100
+        by eddie.linux-mips.org with ESMTP id S1491914Ab0KWPHF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:07:05 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 4C5C14DC01F;
-        Tue, 23 Nov 2010 16:06:55 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 214224DC020;
+        Tue, 23 Nov 2010 16:06:56 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id BAFC01F0001;
-        Tue, 23 Nov 2010 16:06:54 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 9D9721F0001;
+        Tue, 23 Nov 2010 16:06:52 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, kaloz@openwrt.org,
         "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Gabor Juhos <juhosg@openwrt.org>,
-        David Brownell <dbrownell@users.sourceforge.net>,
-        Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org
-Subject: [PATCH 14/18] USB: ehci: add bus glue for the Atheros AR71XX/AR724X/AR913X SoCs
-Date:   Tue, 23 Nov 2010 16:06:36 +0100
-Message-Id: <1290524800-21419-15-git-send-email-juhosg@openwrt.org>
+        Wim Van Sebroeck <wim@iguana.be>,
+        linux-watchdog@vger.kernel.org
+Subject: [PATCH 07/18] watchdog: add driver for the Atheros AR71XX/AR724X/AR913X SoCs
+Date:   Tue, 23 Nov 2010 16:06:29 +0100
+Message-Id: <1290524800-21419-8-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
 References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A14B6619DBF | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A14B40E1F48 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28480
+X-archive-position: 28481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,291 +36,352 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-The Atheros AR71XX/AR724X/AR913X SoCs have a built-in EHCI controller.
-This patch adds the necessary glue code to make the generic EHCI driver
-usable for them.
+This patch adds a driver for the built-in hardware watchdog device
+of the Atheros AR71XX/AR724X/AR913X SoCs.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Cc: David Brownell <dbrownell@users.sourceforge.net>
-Cc: Greg Kroah-Hartman <gregkh@suse.de>
-Cc: linux-usb@vger.kernel.org
+Cc: Wim Van Sebroeck <wim@iguana.be>
+Cc: linux-watchdog@vger.kernel.org
 ---
 
-Changes since RFC:
-    - don't use 'default y if SOC_*', select USB_ARCH_HAS_EHCI option in the
-      platform specific Kconfig file instead
-    - add missing 'ath79_ehci_platform.h' file
+Changes since RFC: ---
 
- arch/mips/ath79/Kconfig                            |    3 +
- .../include/asm/mach-ath79/ath79_ehci_platform.h   |   18 ++
- drivers/usb/host/Kconfig                           |    8 +
- drivers/usb/host/ehci-ath79.c                      |  176 ++++++++++++++++++++
- drivers/usb/host/ehci-hcd.c                        |    5 +
- 5 files changed, 210 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
- create mode 100644 drivers/usb/host/ehci-ath79.c
+ drivers/watchdog/Kconfig     |    8 +
+ drivers/watchdog/Makefile    |    1 +
+ drivers/watchdog/ath79_wdt.c |  293 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 302 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/watchdog/ath79_wdt.c
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index cd6c738..647f535 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -15,12 +15,15 @@ config ATH79_MACH_PB44
- endmenu
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 4a29104..998eed3 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -927,6 +927,14 @@ config BCM63XX_WDT
+ 	  To compile this driver as a loadable module, choose M here.
+ 	  The module will be called bcm63xx_wdt.
  
- config SOC_AR71XX
-+	select USB_ARCH_HAS_EHCI
- 	def_bool n
++config ATH79_WDT
++	tristate "Atheros AR71XX/AR724X/AR913X hardware watchdog"
++	depends on ATH79
++	help
++	  Hardware driver for the built-in watchdog timer on the Atheros
++	  AR71XX/AR724X/AR913X SoCs.
++
++
+ # PARISC Architecture
  
- config SOC_AR724X
-+	select USB_ARCH_HAS_EHCI
- 	def_bool n
+ # POWERPC Architecture
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 4b0ef38..6d7af07 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -117,6 +117,7 @@ obj-$(CONFIG_PNX833X_WDT) += pnx833x_wdt.o
+ obj-$(CONFIG_SIBYTE_WDOG) += sb_wdog.o
+ obj-$(CONFIG_AR7_WDT) += ar7_wdt.o
+ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
++obj-$(CONFIG_ATH79_WDT) += ath79_wdt.o
+ obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+ octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
  
- config SOC_AR913X
-+	select USB_ARCH_HAS_EHCI
- 	def_bool n
- 
- config ATH79_DEV_GPIO_BUTTONS
-diff --git a/arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h b/arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
+diff --git a/drivers/watchdog/ath79_wdt.c b/drivers/watchdog/ath79_wdt.c
 new file mode 100644
-index 0000000..6ee075f
+index 0000000..f8e027b
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
-@@ -0,0 +1,18 @@
++++ b/drivers/watchdog/ath79_wdt.c
+@@ -0,0 +1,293 @@
 +/*
-+ *  Platform data definition for Atheros AR71XX/AR913X EHCI controller
++ * Atheros AR71XX/AR724X/AR913X built-in hardware watchdog timer.
 + *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ * Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ * This driver was based on: drivers/watchdog/ixp4xx_wdt.c
++ *	Author: Deepak Saxena <dsaxena@plexity.net>
++ *	Copyright 2004 (c) MontaVista, Software, Inc.
++ *
++ * which again was based on sa1100 driver,
++ *	Copyright (C) 2000 Oleg Drokin <green@crimea.edu>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
 + */
 +
-+#ifndef _ATH79_EHCI_PLATFORM_H
-+#define _ATH79_EHCI_PLATFORM_H
-+
-+struct ath79_ehci_platform_data {
-+	u8	is_ar913x;
-+};
-+
-+#endif /* _ATH79_EHCI_PLATFORM_H */
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 6f4f8e6..3a2667a 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -147,6 +147,14 @@ config USB_W90X900_EHCI
- 	---help---
- 		Enables support for the W90X900 USB controller
- 
-+config USB_EHCI_ATH79
-+	bool "EHCI support for AR71XX/AR724X/AR913X SoCs"
-+	depends on USB_EHCI_HCD && ATH79
-+	select USB_EHCI_ROOT_HUB_TT
-+	---help---
-+	  Enables support for the built-in EHCI controller present
-+	  on the Atheros AR71XX/AR724X/AR913X SoCs.
-+
- config USB_OXU210HP_HCD
- 	tristate "OXU210HP HCD support"
- 	depends on USB
-diff --git a/drivers/usb/host/ehci-ath79.c b/drivers/usb/host/ehci-ath79.c
-new file mode 100644
-index 0000000..43a728f
---- /dev/null
-+++ b/drivers/usb/host/ehci-ath79.c
-@@ -0,0 +1,176 @@
-+/*
-+ *  Bus Glue for Atheros AR71XX/AR913X built-in EHCI controller.
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  Parts of this file are based on Atheros' 2.6.15 BSP
-+ *	Copyright (C) 2007 Atheros Communications, Inc.
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
++#include <linux/bitops.h>
++#include <linux/errno.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/miscdevice.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
 +#include <linux/platform_device.h>
-+#include <asm/mach-ath79/ath79_ehci_platform.h>
++#include <linux/types.h>
++#include <linux/reboot.h>
++#include <linux/watchdog.h>
 +
-+static int ehci_ath79_init(struct usb_hcd *hcd)
++#include <asm/mach-ath79/ath79.h>
++#include <asm/mach-ath79/ar71xx_regs.h>
++
++#define DRIVER_NAME	"ath79-wdt"
++#define DRIVER_DESC	"Atheros AR71XX/AR724X/AR913X hardware watchdog driver"
++
++#define WDT_TIMEOUT	15	/* seconds */
++
++#define WDOG_CTRL_LAST_RESET	BIT(31)
++#define WDOG_CTRL_ACTION_MASK	3
++#define WDOG_CTRL_ACTION_NONE	0	/* no action */
++#define WDOG_CTRL_ACTION_GPI	1	/* general purpose interrupt */
++#define WDOG_CTRL_ACTION_NMI	2	/* NMI */
++#define WDOG_CTRL_ACTION_FCR	3	/* full chip reset */
++
++static int nowayout = WATCHDOG_NOWAYOUT;
++
++#ifdef CONFIG_WATCHDOG_NOWAYOUT
++module_param(nowayout, int, 0);
++MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started "
++			   "(default=" __MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
++#endif
++
++static unsigned long wdt_flags;
++
++#define WDT_FLAGS_BUSY		0
++#define WDT_FLAGS_EXPECT_CLOSE	1
++
++static int wdt_timeout = WDT_TIMEOUT;
++static int boot_status;
++static int max_timeout;
++
++static inline void ath79_wdt_keepalive(void)
 +{
-+	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-+	struct ath79_ehci_platform_data *pdata;
-+	int ret;
-+
-+	pdata = hcd->self.controller->platform_data;
-+
-+	if (pdata->is_ar913x) {
-+		hcd->has_tt = 1;
-+
-+		ehci->caps = hcd->regs + 0x100;
-+		ehci->regs = hcd->regs + 0x100 +
-+			HC_LENGTH(ehci_readl(ehci, &ehci->caps->hc_capbase));
-+	} else {
-+		ehci->has_synopsys_hc_bug = 1;
-+
-+		ehci->caps = hcd->regs;
-+		ehci->regs = hcd->regs +
-+			HC_LENGTH(ehci_readl(ehci, &ehci->caps->hc_capbase));
-+	}
-+
-+	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
-+	ehci->sbrn = 0x20;
-+
-+	ehci_reset(ehci);
-+
-+	ret = ehci_init(hcd);
-+	if (ret)
-+		return ret;
-+
-+	ehci_port_power(ehci, 0);
-+
-+	return 0;
++	ath79_reset_wr(AR71XX_RESET_REG_WDOG, ath79_ahb_freq * wdt_timeout);
 +}
 +
-+static const struct hc_driver ehci_ath79_hc_driver = {
-+	.description		= hcd_name,
-+	.product_desc		= "Atheros built-in EHCI controller",
-+	.hcd_priv_size		= sizeof(struct ehci_hcd),
-+	.irq			= ehci_irq,
-+	.flags			= HCD_MEMORY | HCD_USB2,
-+
-+	.reset			= ehci_ath79_init,
-+	.start			= ehci_run,
-+	.stop			= ehci_stop,
-+	.shutdown		= ehci_shutdown,
-+
-+	.urb_enqueue		= ehci_urb_enqueue,
-+	.urb_dequeue		= ehci_urb_dequeue,
-+	.endpoint_disable	= ehci_endpoint_disable,
-+	.endpoint_reset		= ehci_endpoint_reset,
-+
-+	.get_frame_number	= ehci_get_frame,
-+
-+	.hub_status_data	= ehci_hub_status_data,
-+	.hub_control		= ehci_hub_control,
-+#ifdef CONFIG_PM
-+	.hub_suspend		= ehci_hub_suspend,
-+	.hub_resume		= ehci_hub_resume,
-+#endif
-+	.relinquish_port	= ehci_relinquish_port,
-+	.port_handed_over	= ehci_port_handed_over,
-+
-+	.clear_tt_buffer_complete = ehci_clear_tt_buffer_complete,
-+};
-+
-+static int ehci_ath79_probe(struct platform_device *pdev)
++static inline void ath79_wdt_enable(void)
 +{
-+	struct ath79_ehci_platform_data *pdata;
-+	struct usb_hcd *hcd;
-+	struct resource *res;
-+	int irq;
-+	int ret;
++	ath79_wdt_keepalive();
++	ath79_reset_wr(AR71XX_RESET_REG_WDOG_CTRL, WDOG_CTRL_ACTION_FCR);
++}
 +
-+	if (usb_disabled())
-+		return -ENODEV;
++static inline void ath79_wdt_disable(void)
++{
++	ath79_reset_wr(AR71XX_RESET_REG_WDOG_CTRL, WDOG_CTRL_ACTION_NONE);
++}
 +
-+	pdata = pdev->dev.platform_data;
-+	if (!pdata) {
-+		dev_dbg(&pdev->dev, "no platform data specified for %s\n",
-+			dev_name(&pdev->dev));
++static int ath79_wdt_set_timeout(int val)
++{
++	if (val < 1 || val > max_timeout)
 +		return -EINVAL;
-+	}
 +
-+	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!res) {
-+		dev_dbg(&pdev->dev, "no IRQ specified for %s\n",
-+			dev_name(&pdev->dev));
-+		return -ENODEV;
-+	}
-+	irq = res->start;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_dbg(&pdev->dev, "no base address specified for %s\n",
-+			dev_name(&pdev->dev));
-+		return -ENODEV;
-+	}
-+
-+	hcd = usb_create_hcd(&ehci_ath79_hc_driver, &pdev->dev,
-+			     dev_name(&pdev->dev));
-+	if (!hcd)
-+		return -ENOMEM;
-+
-+	hcd->rsrc_start	= res->start;
-+	hcd->rsrc_len	= res->end - res->start + 1;
-+
-+	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-+		dev_dbg(&pdev->dev, "controller already in use\n");
-+		ret = -EBUSY;
-+		goto err_put_hcd;
-+	}
-+
-+	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-+	if (!hcd->regs) {
-+		dev_dbg(&pdev->dev, "error mapping memory\n");
-+		ret = -EFAULT;
-+		goto err_release_region;
-+	}
-+
-+	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED | IRQF_SHARED);
-+	if (ret)
-+		goto err_iounmap;
++	wdt_timeout = val;
++	ath79_wdt_keepalive();
 +
 +	return 0;
-+
-+err_iounmap:
-+	iounmap(hcd->regs);
-+
-+err_release_region:
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+err_put_hcd:
-+	usb_put_hcd(hcd);
-+	return ret;
 +}
 +
-+static int ehci_ath79_remove(struct platform_device *pdev)
++static int ath79_wdt_open(struct inode *inode, struct file *file)
 +{
-+	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++	if (test_and_set_bit(WDT_FLAGS_BUSY, &wdt_flags))
++		return -EBUSY;
 +
-+	usb_remove_hcd(hcd);
-+	iounmap(hcd->regs);
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	usb_put_hcd(hcd);
++	clear_bit(WDT_FLAGS_EXPECT_CLOSE, &wdt_flags);
++	ath79_wdt_enable();
++
++	return nonseekable_open(inode, file);
++}
++
++static int ath79_wdt_release(struct inode *inode, struct file *file)
++{
++	if (test_bit(WDT_FLAGS_EXPECT_CLOSE, &wdt_flags))
++		ath79_wdt_disable();
++	else
++		pr_crit(DRIVER_NAME ": device closed unexpectedly, "
++			"watchdog timer will not stop!\n");
++
++	clear_bit(WDT_FLAGS_BUSY, &wdt_flags);
++	clear_bit(WDT_FLAGS_EXPECT_CLOSE, &wdt_flags);
 +
 +	return 0;
 +}
 +
-+static struct platform_driver ehci_ath79_driver = {
-+	.probe		= ehci_ath79_probe,
-+	.remove		= ehci_ath79_remove,
-+	.driver = {
-+		.owner	= THIS_MODULE,
-+		.name	= "ath79-ehci",
++static ssize_t ath79_wdt_write(struct file *file, const char *data,
++				size_t len, loff_t *ppos)
++{
++	if (len) {
++		if (!nowayout) {
++			size_t i;
++
++			clear_bit(WDT_FLAGS_EXPECT_CLOSE, &wdt_flags);
++
++			for (i = 0; i != len; i++) {
++				char c;
++
++				if (get_user(c, data + i))
++					return -EFAULT;
++
++				if (c == 'V')
++					set_bit(WDT_FLAGS_EXPECT_CLOSE,
++						&wdt_flags);
++			}
++		}
++
++		ath79_wdt_keepalive();
 +	}
++
++	return len;
++}
++
++static const struct watchdog_info ath79_wdt_info = {
++	.options		= WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING |
++				  WDIOF_MAGICCLOSE | WDIOF_CARDRESET,
++	.firmware_version	= 0,
++	.identity		= "ATH79 watchdog",
 +};
 +
-+MODULE_ALIAS("platform:ath79-ehci");
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 502a7e6..82f74aa 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -1216,6 +1216,11 @@ MODULE_LICENSE ("GPL");
- #define PLATFORM_DRIVER		ehci_octeon_driver
- #endif
- 
-+#ifdef CONFIG_USB_EHCI_ATH79
-+#include "ehci-ath79.c"
-+#define PLATFORM_DRIVER		ehci_ath79_driver
-+#endif
++static long ath79_wdt_ioctl(struct file *file, unsigned int cmd,
++			    unsigned long arg)
++{
++	void __user *argp = (void __user *)arg;
++	int __user *p = argp;
++	int err;
++	int t;
 +
- #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
-     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER) && \
-     !defined(XILINX_OF_PLATFORM_DRIVER)
++	switch (cmd) {
++	case WDIOC_GETSUPPORT:
++		err = copy_to_user(argp, &ath79_wdt_info,
++				   sizeof(ath79_wdt_info)) ? -EFAULT : 0;
++		break;
++
++	case WDIOC_GETSTATUS:
++		err = put_user(0, p);
++		break;
++
++	case WDIOC_GETBOOTSTATUS:
++		err = put_user(boot_status, p);
++		break;
++
++	case WDIOC_KEEPALIVE:
++		ath79_wdt_keepalive();
++		err = 0;
++		break;
++
++	case WDIOC_SETTIMEOUT:
++		err = get_user(t, p);
++		if (err)
++			break;
++
++		err = ath79_wdt_set_timeout(t);
++		if (err)
++			break;
++
++		/* fallthrough */
++	case WDIOC_GETTIMEOUT:
++		err = put_user(wdt_timeout, p);
++		break;
++
++	default:
++		err = -ENOTTY;
++		break;
++	}
++
++	return err;
++}
++
++static const struct file_operations ath79_wdt_fops = {
++	.owner		= THIS_MODULE,
++	.llseek		= no_llseek,
++	.write		= ath79_wdt_write,
++	.unlocked_ioctl	= ath79_wdt_ioctl,
++	.open		= ath79_wdt_open,
++	.release	= ath79_wdt_release,
++};
++
++static int ath79_wdt_notify_sys(struct notifier_block *this,
++				unsigned long code, void *unused)
++{
++	if (code == SYS_DOWN || code == SYS_HALT)
++		ath79_wdt_disable();
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block ath79_wdt_notifier = {
++	.notifier_call = ath79_wdt_notify_sys,
++};
++
++static struct miscdevice ath79_wdt_miscdev = {
++	.minor = WATCHDOG_MINOR,
++	.name = "watchdog",
++	.fops = &ath79_wdt_fops,
++};
++
++static int __init ath79_wdt_probe(struct platform_device *pdev)
++{
++	u32 ctrl;
++	int err;
++
++	max_timeout = (0xfffffffful / ath79_ahb_freq);
++	wdt_timeout = (max_timeout < WDT_TIMEOUT) ? max_timeout : WDT_TIMEOUT;
++
++	ctrl = ath79_reset_rr(AR71XX_RESET_REG_WDOG_CTRL);
++	boot_status = (ctrl & WDOG_CTRL_LAST_RESET) ? WDIOF_CARDRESET : 0;
++
++	err = register_reboot_notifier(&ath79_wdt_notifier);
++	if (err) {
++		dev_err(&pdev->dev,
++			"unable to register reboot notifier, err=%d\n", err);
++		goto err;
++	}
++
++	err = misc_register(&ath79_wdt_miscdev);
++	if (err) {
++		dev_err(&pdev->dev,
++			"unable to register misc device, err=%d\n", err);
++		goto err_unregister;
++	}
++
++	return 0;
++
++err_unregister:
++	unregister_reboot_notifier(&ath79_wdt_notifier);
++
++err:
++	return err;
++}
++
++static int __exit ath79_wdt_remove(struct platform_device *pdev)
++{
++	misc_deregister(&ath79_wdt_miscdev);
++	return 0;
++}
++
++static struct platform_driver ath79_wdt_driver = {
++	.remove		= __exit_p(ath79_wdt_remove),
++	.driver		= {
++		.name	= DRIVER_NAME,
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init ath79_wdt_init(void)
++{
++	return platform_driver_probe(&ath79_wdt_driver, ath79_wdt_probe);
++}
++module_init(ath79_wdt_init);
++
++static void __exit ath79_wdt_exit(void)
++{
++	platform_driver_unregister(&ath79_wdt_driver);
++}
++module_exit(ath79_wdt_exit);
++
++MODULE_DESCRIPTION(DRIVER_DESC);
++MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org");
++MODULE_AUTHOR("Imre Kaloz <kaloz@openwrt.org");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:" DRIVER_NAME);
++MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);
 -- 
 1.7.2.1

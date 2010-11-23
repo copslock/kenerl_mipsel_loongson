@@ -1,47 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 19:18:52 +0100 (CET)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:47320 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492096Ab0KWSSn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 19:18:43 +0100
-Received: by pzk30 with SMTP id 30so174545pzk.36
-        for <multiple recipients>; Tue, 23 Nov 2010 10:18:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 19:30:00 +0100 (CET)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:41915 "EHLO
+        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492012Ab0KWS34 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Nov 2010 19:29:56 +0100
+Received: by pxi7 with SMTP id 7so2282251pxi.36
+        for <multiple recipients>; Tue, 23 Nov 2010 10:29:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=nju9qKTnHQrNnbjC48N17DBLOPZOpO6rLULwgj69KI8=;
-        b=YXoE5452Rh0WP98IDCEZtziR6+CRaEj+2ZWOVcaY5FVfzo4oOtaqo7IHyOQTHM67mW
-         poKTTL6FYiGIrFlUsReL0YfHhKv/6x+1TQvsDzJSFsxEsdfDrr6xL04/eJ1V65s4ijm9
-         REdusfh+MP4A2ZKDTqOxcZomdbPcFaykPtE+E=
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=Yu0+ZmFYlZjdEguLX9iC/k12dJjE8ae+7hFakrw3Kp4=;
+        b=dXYLXqeB5JeLaTWwfphzzsdh/+Ci/dcsWYj2BQLJUs4kTlGl1fHE8W4DIhTI81WzMA
+         nihbUMKRllbY04+TJ/v7h+8C7zh0gg4as3ICjFohhEInxgbhTqw3W91vk2b/I4lU9bg5
+         2/L1PD4cZOnScXWWmLzXTMX9DWFmRNuPp3SYA=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=g4cX6e3MO1i+GAIMf8nFFU1hrz24x6/asRzutUpKI96rXpMrAbXAk3UgE51msWxy9v
-         qWJKhoRD90arkh28Bs6BAVuzSBx+hjcK6WzS/1B3yTl79cLefyqm0AKeyiiVONEJi7jn
-         PKcruG3nTmswUy3ogSwpStW8JkWcTJIGTcxi0=
+         :cc:content-type:content-transfer-encoding;
+        b=dfUMZPdFpFEIc02EmrPAVqbLgMNn27pMcyu1lfz/m/5vad1pdT0ESJlgla8WhO4lnn
+         cBZhSFosJ3T6s/PjKgjGeSuPSEEhhy1bY3HPtlzslzKnAUzKgiGJznikbw6tRWzCAeXA
+         CfN6/AGk1gK3CvTCKFiVa7V7XkboKjD/58WYs=
 MIME-Version: 1.0
-Received: by 10.229.80.77 with SMTP id s13mr6604951qck.186.1290536312845; Tue,
- 23 Nov 2010 10:18:32 -0800 (PST)
-Received: by 10.229.182.3 with HTTP; Tue, 23 Nov 2010 10:18:32 -0800 (PST)
-In-Reply-To: <AANLkTi=qvMHZu7xZz8Rjr2TcKZj0rNKsKZz6D8Re0_0T@mail.gmail.com>
+Received: by 10.229.246.82 with SMTP id lx18mr6577869qcb.0.1290536989124; Tue,
+ 23 Nov 2010 10:29:49 -0800 (PST)
+Received: by 10.229.182.3 with HTTP; Tue, 23 Nov 2010 10:29:49 -0800 (PST)
+In-Reply-To: <1290524800-21419-4-git-send-email-juhosg@openwrt.org>
 References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-        <AANLkTi=qvMHZu7xZz8Rjr2TcKZj0rNKsKZz6D8Re0_0T@mail.gmail.com>
-Date:   Tue, 23 Nov 2010 13:18:32 -0500
-Message-ID: <AANLkTinTC9_XteCb-ojRwAmeaRyvTYVr6Phfxj4vXcUV@mail.gmail.com>
-Subject: Re: [PATCH 00/18] MIPS: initial support for the Atheros
- AR71XX/AR724X/AR913X SoCs
+        <1290524800-21419-4-git-send-email-juhosg@openwrt.org>
+Date:   Tue, 23 Nov 2010 13:29:49 -0500
+Message-ID: <AANLkTikMwNqd507sPSTQOXt4KYkr9v61H=4_ESo7xFdj@mail.gmail.com>
+Subject: Re: [PATCH 03/18] MIPS: add generic support for multiple machines
+ within a single kernel
 From:   Arnaud Lacombe <lacombar@gmail.com>
-To:     Gabor Juhos <juhosg@openwrt.org>
+To:     Gabor Juhos <juhosg@openwrt.org>, Felix Fietkau <nbd@openwrt.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         kaloz@openwrt.org, "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@atheros.com>
 Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Return-Path: <lacombar@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28488
+X-archive-position: 28489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,17 +54,258 @@ X-list: linux-mips
 
 Hi,
 
-On Tue, Nov 23, 2010 at 1:16 PM, Arnaud Lacombe <lacombar@gmail.com> wrote:
-> Hi,
+On Tue, Nov 23, 2010 at 10:06 AM, Gabor Juhos <juhosg@openwrt.org> wrote:
+> This patch adds a generic solution to support multiple machines based on
+> a given SoC within a single kernel image. It is implemented already for
+> several other architectures but MIPS has no generic support for that yet.
 >
-> On Tue, Nov 23, 2010 at 10:06 AM, Gabor Juhos <juhosg@openwrt.org> wrote:
->> This patch set contains initial support for the
->> Atheros AR71XX/AR724X/AR913X SoCs.
->>
-> Could you maybe describe what changed between the first submission and
-> this serie ? AFAIK, there has been private review/discussions going
-> on, so this would give a hit of the evolution.
->
-Please forget about that, it's included in each patch :)
+Is this the way `arch/mips' wants to go to support multiple machine
+within a same kernel image ? Flattened Device Tree is the other way to
+achieve that. I remind the latter being proposed by Felix Fietkau on
+#openwrt.
 
+Thanks,
  - Arnaud
+
+> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> ---
+>
+> Changes since RFC: ---
+>
+>  arch/mips/Kconfig                    |    3 +
+>  arch/mips/include/asm/mips_machine.h |   54 +++++++++++++++++++++
+>  arch/mips/kernel/Makefile            |    1 +
+>  arch/mips/kernel/mips_machine.c      |   86 ++++++++++++++++++++++++++++++++++
+>  arch/mips/kernel/proc.c              |    7 ++-
+>  arch/mips/kernel/vmlinux.lds.S       |    7 +++
+>  6 files changed, 157 insertions(+), 1 deletions(-)
+>  create mode 100644 arch/mips/include/asm/mips_machine.h
+>  create mode 100644 arch/mips/kernel/mips_machine.c
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index ec69df5..307c2e4 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -899,6 +899,9 @@ config MIPS_DISABLE_OBSOLETE_IDE
+>  config SYNC_R4K
+>        bool
+>
+> +config MIPS_MACHINE
+> +       def_bool n
+> +
+>  config NO_IOPORT
+>        def_bool n
+>
+> diff --git a/arch/mips/include/asm/mips_machine.h b/arch/mips/include/asm/mips_machine.h
+> new file mode 100644
+> index 0000000..363bb35
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mips_machine.h
+> @@ -0,0 +1,54 @@
+> +/*
+> + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+> + *
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License version 2 as published
+> + *  by the Free Software Foundation.
+> + *
+> + */
+> +
+> +#ifndef __ASM_MIPS_MACHINE_H
+> +#define __ASM_MIPS_MACHINE_H
+> +
+> +#include <linux/init.h>
+> +#include <linux/stddef.h>
+> +
+> +#include <asm/bootinfo.h>
+> +
+> +struct mips_machine {
+> +       unsigned long           mach_type;
+> +       const char              *mach_id;
+> +       const char              *mach_name;
+> +       void                    (*mach_setup)(void);
+> +};
+> +
+> +#define MIPS_MACHINE(_type, _id, _name, _setup)                        \
+> +static const char machine_name_##_type[] __initconst           \
+> +                       __aligned(1) = _name;                   \
+> +static const char machine_id_##_type[] __initconst             \
+> +                       __aligned(1) = _id;                     \
+> +static struct mips_machine machine_##_type                     \
+> +               __used __section(.mips.machines.init) =         \
+> +{                                                              \
+> +       .mach_type      = _type,                                \
+> +       .mach_id        = machine_id_##_type,                   \
+> +       .mach_name      = machine_name_##_type,                 \
+> +       .mach_setup     = _setup,                               \
+> +};
+> +
+> +extern long __mips_machines_start;
+> +extern long __mips_machines_end;
+> +
+> +#ifdef CONFIG_MIPS_MACHINE
+> +int  mips_machtype_setup(char *id) __init;
+> +void mips_machine_setup(void) __init;
+> +void mips_set_machine_name(const char *name) __init;
+> +char *mips_get_machine_name(void);
+> +#else
+> +static inline int mips_machtype_setup(char *id) { return 1; }
+> +static inline void mips_machine_setup(void) { }
+> +static inline void mips_set_machine_name(const char *name) { }
+> +static inline char *mips_get_machine_name(void) { return NULL; }
+> +#endif /* CONFIG_MIPS_MACHINE */
+> +
+> +#endif /* __ASM_MIPS_MACHINE_H */
+> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+> index 22b2e0e..3977397 100644
+> --- a/arch/mips/kernel/Makefile
+> +++ b/arch/mips/kernel/Makefile
+> @@ -95,6 +95,7 @@ obj-$(CONFIG_GPIO_TXX9)               += gpio_txx9.o
+>  obj-$(CONFIG_KEXEC)            += machine_kexec.o relocate_kernel.o
+>  obj-$(CONFIG_EARLY_PRINTK)     += early_printk.o
+>  obj-$(CONFIG_SPINLOCK_TEST)    += spinlock_test.o
+> +obj-$(CONFIG_MIPS_MACHINE)     += mips_machine.o
+>
+>  obj-$(CONFIG_OF)               += prom.o
+>
+> diff --git a/arch/mips/kernel/mips_machine.c b/arch/mips/kernel/mips_machine.c
+> new file mode 100644
+> index 0000000..411a058
+> --- /dev/null
+> +++ b/arch/mips/kernel/mips_machine.c
+> @@ -0,0 +1,86 @@
+> +/*
+> + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
+> + *
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License version 2 as published
+> + *  by the Free Software Foundation.
+> + *
+> + */
+> +#include <linux/mm.h>
+> +#include <linux/string.h>
+> +#include <linux/slab.h>
+> +
+> +#include <asm/mips_machine.h>
+> +
+> +static struct mips_machine *mips_machine __initdata;
+> +static char *mips_machine_name = "Unknown";
+> +
+> +#define for_each_machine(mach) \
+> +       for ((mach) = (struct mips_machine *)&__mips_machines_start; \
+> +            (mach) && \
+> +            (unsigned long)(mach) < (unsigned long)&__mips_machines_end; \
+> +            (mach)++)
+> +
+> +__init void mips_set_machine_name(const char *name)
+> +{
+> +       char *p;
+> +
+> +       if (name == NULL)
+> +               return;
+> +
+> +       p = kstrdup(name, GFP_KERNEL);
+> +       if (!p)
+> +               pr_err("MIPS: no memory for machine_name\n");
+> +
+> +       mips_machine_name = p;
+> +}
+> +
+> +char *mips_get_machine_name(void)
+> +{
+> +       return mips_machine_name;
+> +}
+> +
+> +__init int mips_machtype_setup(char *id)
+> +{
+> +       struct mips_machine *mach;
+> +
+> +       for_each_machine(mach) {
+> +               if (mach->mach_id == NULL)
+> +                       continue;
+> +
+> +               if (strcmp(mach->mach_id, id) == 0) {
+> +                       mips_machtype = mach->mach_type;
+> +                       return 0;
+> +               }
+> +       }
+> +
+> +       pr_err("MIPS: no machine found for id '%s', supported machines:\n", id);
+> +       pr_err("%-24s %s\n", "id", "name");
+> +       for_each_machine(mach)
+> +               pr_err("%-24s %s\n", mach->mach_id, mach->mach_name);
+> +
+> +       return 1;
+> +}
+> +
+> +__setup("machtype=", mips_machtype_setup);
+> +
+> +__init void mips_machine_setup(void)
+> +{
+> +       struct mips_machine *mach;
+> +
+> +       for_each_machine(mach) {
+> +               if (mips_machtype == mach->mach_type) {
+> +                       mips_machine = mach;
+> +                       break;
+> +               }
+> +       }
+> +
+> +       if (!mips_machine)
+> +               return;
+> +
+> +       mips_set_machine_name(mips_machine->mach_name);
+> +       pr_info("MIPS: machine is %s\n", mips_machine_name);
+> +
+> +       if (mips_machine->mach_setup)
+> +               mips_machine->mach_setup();
+> +}
+> diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+> index 26109c4..4195abb 100644
+> --- a/arch/mips/kernel/proc.c
+> +++ b/arch/mips/kernel/proc.c
+> @@ -12,6 +12,7 @@
+>  #include <asm/cpu-features.h>
+>  #include <asm/mipsregs.h>
+>  #include <asm/processor.h>
+> +#include <asm/mips_machine.h>
+>
+>  unsigned int vced_count, vcei_count;
+>
+> @@ -31,8 +32,12 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+>        /*
+>         * For the first processor also print the system type
+>         */
+> -       if (n == 0)
+> +       if (n == 0) {
+>                seq_printf(m, "system type\t\t: %s\n", get_system_type());
+> +               if (mips_get_machine_name())
+> +                       seq_printf(m, "machine\t\t\t: %s\n",
+> +                                  mips_get_machine_name());
+> +       }
+>
+>        seq_printf(m, "processor\t\t: %ld\n", n);
+>        sprintf(fmt, "cpu model\t\t: %%s V%%d.%%d%s\n",
+> diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+> index f25df73..570607b 100644
+> --- a/arch/mips/kernel/vmlinux.lds.S
+> +++ b/arch/mips/kernel/vmlinux.lds.S
+> @@ -98,6 +98,13 @@ SECTIONS
+>        INIT_TEXT_SECTION(PAGE_SIZE)
+>        INIT_DATA_SECTION(16)
+>
+> +       . = ALIGN(4);
+> +       .mips.machines.init : AT(ADDR(.mips.machines.init) - LOAD_OFFSET) {
+> +               __mips_machines_start = .;
+> +               *(.mips.machines.init)
+> +               __mips_machines_end = .;
+> +       }
+> +
+>        /* .exit.text is discarded at runtime, not link time, to deal with
+>         * references from .rodata
+>         */
+> --
+> 1.7.2.1
+>
+>
+>

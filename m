@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:10:37 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43968 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:11:05 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43990 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492048Ab0KWPHA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:07:00 +0100
+        by eddie.linux-mips.org with ESMTP id S1492055Ab0KWPHB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:07:01 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 2E6E04DC021;
-        Tue, 23 Nov 2010 16:06:56 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id B2A864DC019;
+        Tue, 23 Nov 2010 16:06:53 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id B97091F0001;
-        Tue, 23 Nov 2010 16:06:55 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 23FF71F0001;
+        Tue, 23 Nov 2010 16:06:53 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, kaloz@openwrt.org,
         "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 17/18] MIPS: ath79: add initial support for the Atheros AP81 reference board
-Date:   Tue, 23 Nov 2010 16:06:39 +0100
-Message-Id: <1290524800-21419-18-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mike Frysinger <vapier@gentoo.org>, linux-input@vger.kernel.org
+Subject: [PATCH 09/18] input: add input driver for polled GPIO buttons
+Date:   Tue, 23 Nov 2010 16:06:31 +0100
+Message-Id: <1290524800-21419-10-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
 References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A14B78EB2B1 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A14B487783D | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28472
+X-archive-position: 28473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,162 +36,339 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
+The existing gpio-keys driver can be usable only for GPIO lines with
+interrupt support. Several devices have buttons connected to a GPIO
+line which is not capable to generate interrupts. This patch adds a
+new input driver using the generic GPIO layer and the input-polldev
+to support such buttons.
+
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Mike Frysinger <vapier@gentoo.org>
+Cc: linux-input@vger.kernel.org
 ---
 
-Changes since RFC:
-    - don't use 'default n' for the ATH79_MACH_AP81 Kconfig option
+Changes since RFC: ---
 
- arch/mips/ath79/Kconfig     |   11 +++++
- arch/mips/ath79/Makefile    |    1 +
- arch/mips/ath79/mach-ap81.c |   93 +++++++++++++++++++++++++++++++++++++++++++
- arch/mips/ath79/machtypes.h |    1 +
- 4 files changed, 106 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/mach-ap81.c
+ drivers/input/misc/Kconfig        |   16 +++
+ drivers/input/misc/Makefile       |    1 +
+ drivers/input/misc/gpio_buttons.c |  232 +++++++++++++++++++++++++++++++++++++
+ include/linux/gpio_buttons.h      |   33 +++++
+ 4 files changed, 282 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/input/misc/gpio_buttons.c
+ create mode 100644 include/linux/gpio_buttons.h
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 5d67942..1912d54 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -2,6 +2,17 @@ if ATH79
+diff --git a/drivers/input/misc/Kconfig b/drivers/input/misc/Kconfig
+index b99b8cb..3439b79 100644
+--- a/drivers/input/misc/Kconfig
++++ b/drivers/input/misc/Kconfig
+@@ -448,4 +448,20 @@ config INPUT_ADXL34X_SPI
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called adxl34x-spi.
  
- menu "Atheros AR71XX/AR724X/AR913X machine selection"
- 
-+config ATH79_MACH_AP81
-+	bool "Atheros AP81 reference board"
-+	select SOC_AR913X
-+	select ATH79_DEV_GPIO_BUTTONS
-+	select ATH79_DEV_LEDS_GPIO
-+	select ATH79_DEV_SPI
-+	select ATH79_DEV_USB
++config INPUT_GPIO_BUTTONS
++	tristate "Polled GPIO buttons interface"
++	depends on GENERIC_GPIO
++	select INPUT_POLLDEV
 +	help
-+	  Say 'Y' here if you want your kernel to support the
-+	  Atheros AP81 reference board.
++	  This driver implements support for buttons connected
++	  to GPIO pins of various CPUs (and some other chips).
 +
- config ATH79_MACH_PB44
- 	bool "Atheros PB44 reference board"
- 	select SOC_AR71XX
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 494d106..1b111d8 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -24,4 +24,5 @@ obj-$(CONFIG_ATH79_DEV_USB)		+= dev-usb.o
- #
- # Machines
- #
-+obj-$(CONFIG_ATH79_MACH_AP81)		+= mach-ap81.o
- obj-$(CONFIG_ATH79_MACH_PB44)		+= mach-pb44.o
-diff --git a/arch/mips/ath79/mach-ap81.c b/arch/mips/ath79/mach-ap81.c
++	  Say Y here if your device has buttons connected
++	  directly to such GPIO pins.  Your board-specific
++	  setup logic must also provide a platform device,
++	  with configuration data saying which GPIOs are used.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called gpio-buttons.
++
+ endif
+diff --git a/drivers/input/misc/Makefile b/drivers/input/misc/Makefile
+index 1fe1f6c..3791050 100644
+--- a/drivers/input/misc/Makefile
++++ b/drivers/input/misc/Makefile
+@@ -42,4 +42,5 @@ obj-$(CONFIG_INPUT_WINBOND_CIR)		+= winbond-cir.o
+ obj-$(CONFIG_INPUT_WISTRON_BTNS)	+= wistron_btns.o
+ obj-$(CONFIG_INPUT_WM831X_ON)		+= wm831x-on.o
+ obj-$(CONFIG_INPUT_YEALINK)		+= yealink.o
++obj-$(CONFIG_INPUT_GPIO_BUTTONS)	+= gpio_buttons.o
+ 
+diff --git a/drivers/input/misc/gpio_buttons.c b/drivers/input/misc/gpio_buttons.c
 new file mode 100644
-index 0000000..9cfaff3
+index 0000000..51288a3
 --- /dev/null
-+++ b/arch/mips/ath79/mach-ap81.c
-@@ -0,0 +1,93 @@
++++ b/drivers/input/misc/gpio_buttons.c
+@@ -0,0 +1,232 @@
 +/*
-+ *  Atheros AP81 board support
++ *  Driver for buttons on GPIO lines not capable of generating interrupts
 + *
-+ *  Copyright (C) 2009-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2009 Imre Kaloz <kaloz@openwrt.org>
++ *  Copyright (C) 2007-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2010 Nuno Goncalves <nunojpg@gmail.com>
 + *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ *  This file was based on: /drivers/input/misc/cobalt_btns.c
++ *	Copyright (C) 2007 Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
++ *
++ *  also was based on: /drivers/input/keyboard/gpio_keys.c
++ *	Copyright 2005 Phil Blundell
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License version 2 as
++ *  published by the Free Software Foundation.
++ *
 + */
 +
-+#include "machtypes.h"
-+#include "dev-gpio-buttons.h"
-+#include "dev-leds-gpio.h"
-+#include "dev-spi.h"
-+#include "dev-usb.h"
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/slab.h>
++#include <linux/input.h>
++#include <linux/input-polldev.h>
++#include <linux/ioport.h>
++#include <linux/platform_device.h>
++#include <linux/gpio.h>
++#include <linux/gpio_buttons.h>
 +
-+#define AP81_GPIO_LED_STATUS	1
-+#define AP81_GPIO_LED_AOSS	3
-+#define AP81_GPIO_LED_WLAN	6
-+#define AP81_GPIO_LED_POWER	14
++#define DRV_NAME	"gpio-buttons"
 +
-+#define AP81_GPIO_BTN_SW4	12
-+#define AP81_GPIO_BTN_SW1	21
-+
-+#define AP81_BUTTONS_POLL_INTERVAL	20
-+
-+static struct gpio_led ap81_leds_gpio[] __initdata = {
-+	{
-+		.name		= "ap81:green:status",
-+		.gpio		= AP81_GPIO_LED_STATUS,
-+		.active_low	= 1,
-+	}, {
-+		.name		= "ap81:amber:aoss",
-+		.gpio		= AP81_GPIO_LED_AOSS,
-+		.active_low	= 1,
-+	}, {
-+		.name		= "ap81:green:wlan",
-+		.gpio		= AP81_GPIO_LED_WLAN,
-+		.active_low	= 1,
-+	}, {
-+		.name		= "ap81:green:power",
-+		.gpio		= AP81_GPIO_LED_POWER,
-+		.active_low	= 1,
-+	}
++struct gpio_button_data {
++	int last_state;
++	int count;
++	int can_sleep;
 +};
 +
-+static struct gpio_button ap81_gpio_buttons[] __initdata = {
-+	{
-+		.desc		= "sw1",
-+		.type		= EV_KEY,
-+		.code		= BTN_0,
-+		.threshold	= 3,
-+		.gpio		= AP81_GPIO_BTN_SW1,
-+		.active_low	= 1,
-+	} , {
-+		.desc		= "sw4",
-+		.type		= EV_KEY,
-+		.code		= BTN_1,
-+		.threshold	= 3,
-+		.gpio		= AP81_GPIO_BTN_SW4,
-+		.active_low	= 1,
-+	}
++struct gpio_buttons_dev {
++	struct input_polled_dev *poll_dev;
++	struct gpio_buttons_platform_data *pdata;
++	struct gpio_button_data *data;
 +};
 +
-+static struct spi_board_info ap81_spi_info[] = {
-+	{
-+		.bus_num	= 0,
-+		.chip_select	= 0,
-+		.max_speed_hz	= 25000000,
-+		.modalias	= "m25p64",
-+	}
-+};
-+
-+static struct ath79_spi_platform_data ap81_spi_data = {
-+	.bus_num	= 0,
-+	.num_chipselect	= 1,
-+};
-+
-+static void __init ap81_setup(void)
++static void gpio_buttons_check_state(struct input_dev *input,
++				      struct gpio_button *button,
++				      struct gpio_button_data *bdata)
 +{
-+	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap81_leds_gpio),
-+				 ap81_leds_gpio);
-+	ath79_register_gpio_buttons(-1, AP81_BUTTONS_POLL_INTERVAL,
-+				    ARRAY_SIZE(ap81_gpio_buttons),
-+				    ap81_gpio_buttons);
-+	ath79_register_spi(&ap81_spi_data, ap81_spi_info,
-+			   ARRAY_SIZE(ap81_spi_info));
-+	ath79_register_usb();
++	int state;
++
++	if (bdata->can_sleep)
++		state = !!gpio_get_value_cansleep(button->gpio);
++	else
++		state = !!gpio_get_value(button->gpio);
++
++	if (state != bdata->last_state) {
++		unsigned int type = button->type ?: EV_KEY;
++
++		input_event(input, type, button->code,
++			    !!(state ^ button->active_low));
++		input_sync(input);
++		bdata->count = 0;
++		bdata->last_state = state;
++	}
 +}
 +
-+MIPS_MACHINE(ATH79_MACH_AP81, "AP81", "Atheros AP81 reference board",
-+	     ap81_setup);
-diff --git a/arch/mips/ath79/machtypes.h b/arch/mips/ath79/machtypes.h
-index a796fa3..3940fe4 100644
---- a/arch/mips/ath79/machtypes.h
-+++ b/arch/mips/ath79/machtypes.h
-@@ -16,6 +16,7 @@
- 
- enum ath79_mach_type {
- 	ATH79_MACH_GENERIC = 0,
-+	ATH79_MACH_AP81,		/* Atheros AP81 reference board */
- 	ATH79_MACH_PB44,		/* Atheros PB44 reference board */
- };
- 
++static void gpio_buttons_poll(struct input_polled_dev *dev)
++{
++	struct gpio_buttons_dev *bdev = dev->private;
++	struct gpio_buttons_platform_data *pdata = bdev->pdata;
++	struct input_dev *input = dev->input;
++	int i;
++
++	for (i = 0; i < bdev->pdata->nbuttons; i++) {
++		struct gpio_button *button = &pdata->buttons[i];
++		struct gpio_button_data *bdata = &bdev->data[i];
++
++		if (bdata->count < button->threshold)
++			bdata->count++;
++		else
++			gpio_buttons_check_state(input, button, bdata);
++
++	}
++}
++
++static int __devinit gpio_buttons_probe(struct platform_device *pdev)
++{
++	struct gpio_buttons_platform_data *pdata = pdev->dev.platform_data;
++	struct device *dev = &pdev->dev;
++	struct gpio_buttons_dev *bdev;
++	struct input_polled_dev *poll_dev;
++	struct input_dev *input;
++	int error;
++	int i;
++
++	if (!pdata)
++		return -ENXIO;
++
++	bdev = kzalloc(sizeof(struct gpio_buttons_dev) +
++		       pdata->nbuttons * sizeof(struct gpio_button_data),
++		       GFP_KERNEL);
++	if (!bdev) {
++		dev_err(dev, "no memory for private data\n");
++		return -ENOMEM;
++	}
++
++	bdev->data = (struct gpio_button_data *) &bdev[1];
++
++	poll_dev = input_allocate_polled_device();
++	if (!poll_dev) {
++		dev_err(dev, "no memory for polled device\n");
++		error = -ENOMEM;
++		goto err_free_bdev;
++	}
++
++	poll_dev->private = bdev;
++	poll_dev->poll = gpio_buttons_poll;
++	poll_dev->poll_interval = pdata->poll_interval;
++
++	input = poll_dev->input;
++
++	input->evbit[0] = BIT(EV_KEY);
++	input->name = pdev->name;
++	input->phys = "gpio-buttons/input0";
++	input->dev.parent = &pdev->dev;
++
++	input->id.bustype = BUS_HOST;
++	input->id.vendor = 0x0001;
++	input->id.product = 0x0001;
++	input->id.version = 0x0100;
++
++	for (i = 0; i < pdata->nbuttons; i++) {
++		struct gpio_button *button = &pdata->buttons[i];
++		unsigned int gpio = button->gpio;
++		unsigned int type = button->type ?: EV_KEY;
++
++		error = gpio_request(gpio,
++				     button->desc ? button->desc : DRV_NAME);
++		if (error) {
++			dev_err(dev, "unable to claim gpio %u, err=%d\n",
++				gpio, error);
++			goto err_free_gpio;
++		}
++
++		error = gpio_direction_input(gpio);
++		if (error) {
++			dev_err(dev,
++				"unable to set direction on gpio %u, err=%d\n",
++				gpio, error);
++			goto err_free_gpio;
++		}
++
++		bdev->data[i].can_sleep = gpio_cansleep(gpio);
++		bdev->data[i].last_state = -1;
++
++		input_set_capability(input, type, button->code);
++	}
++
++	bdev->poll_dev = poll_dev;
++	bdev->pdata = pdata;
++	platform_set_drvdata(pdev, bdev);
++
++	error = input_register_polled_device(poll_dev);
++	if (error) {
++		dev_err(dev, "unable to register polled device, err=%d\n",
++			error);
++		goto err_free_gpio;
++	}
++
++	/* report initial state of the buttons */
++	for (i = 0; i < pdata->nbuttons; i++)
++		gpio_buttons_check_state(input, &pdata->buttons[i],
++					 &bdev->data[i]);
++
++	return 0;
++
++err_free_gpio:
++	for (i = i - 1; i >= 0; i--)
++		gpio_free(pdata->buttons[i].gpio);
++
++	input_free_polled_device(poll_dev);
++
++err_free_bdev:
++	kfree(bdev);
++
++	platform_set_drvdata(pdev, NULL);
++	return error;
++}
++
++static int __devexit gpio_buttons_remove(struct platform_device *pdev)
++{
++	struct gpio_buttons_dev *bdev = platform_get_drvdata(pdev);
++	struct gpio_buttons_platform_data *pdata = bdev->pdata;
++	int i;
++
++	input_unregister_polled_device(bdev->poll_dev);
++
++	for (i = 0; i < pdata->nbuttons; i++)
++		gpio_free(pdata->buttons[i].gpio);
++
++	input_free_polled_device(bdev->poll_dev);
++
++	kfree(bdev);
++	platform_set_drvdata(pdev, NULL);
++
++	return 0;
++}
++
++static struct platform_driver gpio_buttons_driver = {
++	.probe	= gpio_buttons_probe,
++	.remove	= __devexit_p(gpio_buttons_remove),
++	.driver	= {
++		.name	= DRV_NAME,
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init gpio_buttons_init(void)
++{
++	return platform_driver_register(&gpio_buttons_driver);
++}
++
++static void __exit gpio_buttons_exit(void)
++{
++	platform_driver_unregister(&gpio_buttons_driver);
++}
++
++module_init(gpio_buttons_init);
++module_exit(gpio_buttons_exit);
++
++MODULE_LICENSE("GPL v2");
++MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org>");
++MODULE_DESCRIPTION("Polled GPIO Buttons driver");
+diff --git a/include/linux/gpio_buttons.h b/include/linux/gpio_buttons.h
+new file mode 100644
+index 0000000..f85b993
+--- /dev/null
++++ b/include/linux/gpio_buttons.h
+@@ -0,0 +1,33 @@
++/*
++ *  Definitions for the GPIO buttons interface driver
++ *
++ *  Copyright (C) 2007-2010 Gabor Juhos <juhosg@openwrt.org>
++ *
++ *  This file was based on: /include/linux/gpio_keys.h
++ *	The original gpio_keys.h seems not to have a license.
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License version 2 as
++ *  published by the Free Software Foundation.
++ *
++ */
++
++#ifndef _GPIO_BUTTONS_H_
++#define _GPIO_BUTTONS_H_
++
++struct gpio_button {
++	int	gpio;		/* GPIO line number */
++	int	active_low;
++	char	*desc;		/* button description */
++	int	type;		/* input event type (EV_KEY, EV_SW) */
++	int	code;		/* input event code (KEY_*, SW_*) */
++	int	threshold;	/* count threshold */
++};
++
++struct gpio_buttons_platform_data {
++	struct gpio_button *buttons;
++	int	nbuttons;		/* number of buttons */
++	int	poll_interval;		/* polling interval */
++};
++
++#endif /* _GPIO_BUTTONS_H_ */
 -- 
 1.7.2.1

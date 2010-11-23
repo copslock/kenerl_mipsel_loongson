@@ -1,13 +1,13 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:09:18 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43967 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:09:46 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43968 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492042Ab0KWPHA (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1492020Ab0KWPHA (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:07:00 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 7D9594DC016;
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id C5BC14DC017;
         Tue, 23 Nov 2010 16:06:52 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 164721F0001;
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 55E831F0001;
         Tue, 23 Nov 2010 16:06:52 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
@@ -15,18 +15,18 @@ Cc:     linux-mips@linux-mips.org, kaloz@openwrt.org,
         "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 05/18] MIPS: ath79: add initial support for the Atheros PB44 reference board
-Date:   Tue, 23 Nov 2010 16:06:27 +0100
-Message-Id: <1290524800-21419-6-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 06/18] MIPS: ath79: add common GPIO LEDs device
+Date:   Tue, 23 Nov 2010 16:06:28 +0100
+Message-Id: <1290524800-21419-7-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
 References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A14B3850ED7 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A14B3C97CCF | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28469
+X-archive-position: 28470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,63 +34,69 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
+Almost all boards have one or more LEDs connected to GPIO lines. This
+patch adds common code to register a platform_device for them.
+
+The patch also adds support for the LEDs on the PB44 board.
+
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
 ---
 
-Changes since RFC:
-    - don't use 'default n' for the ATH79_MACH_PB44 Kconfig option
+Changes since RFC: ---
 
- arch/mips/ath79/Kconfig     |   11 ++++++++
- arch/mips/ath79/Makefile    |    5 ++++
- arch/mips/ath79/mach-pb44.c |   56 +++++++++++++++++++++++++++++++++++++++++++
- arch/mips/ath79/machtypes.h |    1 +
- 4 files changed, 73 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/mach-pb44.c
+ arch/mips/ath79/Kconfig         |    4 +++
+ arch/mips/ath79/Makefile        |    1 +
+ arch/mips/ath79/dev-leds-gpio.c |   56 +++++++++++++++++++++++++++++++++++++++
+ arch/mips/ath79/dev-leds-gpio.h |   21 ++++++++++++++
+ arch/mips/ath79/mach-pb44.c     |   18 ++++++++++++
+ 5 files changed, 100 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/ath79/dev-leds-gpio.c
+ create mode 100644 arch/mips/ath79/dev-leds-gpio.h
 
 diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 50b9334..fabb2b0 100644
+index fabb2b0..5bc480e 100644
 --- a/arch/mips/ath79/Kconfig
 +++ b/arch/mips/ath79/Kconfig
-@@ -1,5 +1,16 @@
- if ATH79
- 
-+menu "Atheros AR71XX/AR724X/AR913X machine selection"
-+
-+config ATH79_MACH_PB44
-+	bool "Atheros PB44 reference board"
-+	select SOC_AR71XX
-+	help
-+	  Say 'Y' here if you want your kernel to support the
-+	  Atheros PB44 reference board.
-+
-+endmenu
-+
- config SOC_AR71XX
+@@ -5,6 +5,7 @@ menu "Atheros AR71XX/AR724X/AR913X machine selection"
+ config ATH79_MACH_PB44
+ 	bool "Atheros PB44 reference board"
+ 	select SOC_AR71XX
++	select ATH79_DEV_LEDS_GPIO
+ 	help
+ 	  Say 'Y' here if you want your kernel to support the
+ 	  Atheros PB44 reference board.
+@@ -20,4 +21,7 @@ config SOC_AR724X
+ config SOC_AR913X
  	def_bool n
  
++config ATH79_DEV_LEDS_GPIO
++	def_bool n
++
+ endif
 diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index facbb70..a9ba120 100644
+index a9ba120..d14b597 100644
 --- a/arch/mips/ath79/Makefile
 +++ b/arch/mips/ath79/Makefile
-@@ -16,3 +16,8 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
+@@ -16,6 +16,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
  # Devices
  #
  obj-y					+= dev-common.o
-+
-+#
-+# Machines
-+#
-+obj-$(CONFIG_ATH79_MACH_PB44)		+= mach-pb44.o
-diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
++obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
+ 
+ #
+ # Machines
+diff --git a/arch/mips/ath79/dev-leds-gpio.c b/arch/mips/ath79/dev-leds-gpio.c
 new file mode 100644
-index 0000000..ffc24d7
+index 0000000..cdade68
 --- /dev/null
-+++ b/arch/mips/ath79/mach-pb44.c
++++ b/arch/mips/ath79/dev-leds-gpio.c
 @@ -0,0 +1,56 @@
 +/*
-+ *  Atheros PB44 reference board support
++ *  Atheros AR71XX/AR724X/AR913X common GPIO LEDs support
 + *
-+ *  Copyright (C) 2009-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
@@ -98,62 +104,122 @@ index 0000000..ffc24d7
 + */
 +
 +#include <linux/init.h>
++#include <linux/slab.h>
 +#include <linux/platform_device.h>
-+#include <linux/i2c.h>
-+#include <linux/i2c-gpio.h>
-+#include <linux/i2c/pcf857x.h>
 +
-+#include "machtypes.h"
++#include "dev-leds-gpio.h"
 +
-+#define PB44_GPIO_I2C_SCL	0
-+#define PB44_GPIO_I2C_SDA	1
++void __init ath79_register_leds_gpio(int id,
++				     unsigned num_leds,
++				     struct gpio_led *leds)
++{
++	struct platform_device *pdev;
++	struct gpio_led_platform_data pdata;
++	struct gpio_led *p;
++	int err;
 +
-+#define PB44_GPIO_EXP_BASE	16
++	p = kmalloc(num_leds * sizeof(*p), GFP_KERNEL);
++	if (!p)
++		return;
 +
-+static struct i2c_gpio_platform_data pb44_i2c_gpio_data = {
-+	.sda_pin        = PB44_GPIO_I2C_SDA,
-+	.scl_pin        = PB44_GPIO_I2C_SCL,
-+};
++	memcpy(p, leds, num_leds * sizeof(*p));
 +
-+static struct platform_device pb44_i2c_gpio_device = {
-+	.name		= "i2c-gpio",
-+	.id		= 0,
-+	.dev = {
-+		.platform_data	= &pb44_i2c_gpio_data,
-+	}
-+};
++	pdev = platform_device_alloc("leds-gpio", id);
++	if (!pdev)
++		goto err_free_leds;
 +
-+static struct pcf857x_platform_data pb44_pcf857x_data = {
-+	.gpio_base	= PB44_GPIO_EXP_BASE,
-+};
++	memset(&pdata, 0, sizeof(pdata));
++	pdata.num_leds = num_leds;
++	pdata.leds = p;
 +
-+static struct i2c_board_info pb44_i2c_board_info[] __initdata = {
++	err = platform_device_add_data(pdev, &pdata, sizeof(pdata));
++	if (err)
++		goto err_put_pdev;
++
++	err = platform_device_add(pdev);
++	if (err)
++		goto err_put_pdev;
++
++	return;
++
++err_put_pdev:
++	platform_device_put(pdev);
++
++err_free_leds:
++	kfree(p);
++}
+diff --git a/arch/mips/ath79/dev-leds-gpio.h b/arch/mips/ath79/dev-leds-gpio.h
+new file mode 100644
+index 0000000..0fb0ed1
+--- /dev/null
++++ b/arch/mips/ath79/dev-leds-gpio.h
+@@ -0,0 +1,21 @@
++/*
++ *  Atheros AR71XX/AR724X/AR913X common GPIO LEDs support
++ *
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#ifndef _ATH79_DEV_LEDS_GPIO_H
++#define _ATH79_DEV_LEDS_GPIO_H
++
++#include <linux/leds.h>
++
++void ath79_register_leds_gpio(int id,
++			      unsigned num_leds,
++			      struct gpio_led *leds) __init;
++
++#endif /* _ATH79_DEV_LEDS_GPIO_H */
+diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
+index ffc24d7..e176779 100644
+--- a/arch/mips/ath79/mach-pb44.c
++++ b/arch/mips/ath79/mach-pb44.c
+@@ -15,11 +15,14 @@
+ #include <linux/i2c/pcf857x.h>
+ 
+ #include "machtypes.h"
++#include "dev-leds-gpio.h"
+ 
+ #define PB44_GPIO_I2C_SCL	0
+ #define PB44_GPIO_I2C_SDA	1
+ 
+ #define PB44_GPIO_EXP_BASE	16
++#define PB44_GPIO_LED_JUMP1	(PB44_GPIO_EXP_BASE + 9)
++#define PB44_GPIO_LED_JUMP2	(PB44_GPIO_EXP_BASE + 10)
+ 
+ static struct i2c_gpio_platform_data pb44_i2c_gpio_data = {
+ 	.sda_pin        = PB44_GPIO_I2C_SDA,
+@@ -45,11 +48,26 @@ static struct i2c_board_info pb44_i2c_board_info[] __initdata = {
+ 	},
+ };
+ 
++static struct gpio_led pb44_leds_gpio[] __initdata = {
 +	{
-+		I2C_BOARD_INFO("pcf8575", 0x20),
-+		.platform_data  = &pb44_pcf857x_data,
++		.name		= "pb44:amber:jump1",
++		.gpio		= PB44_GPIO_LED_JUMP1,
++		.active_low	= 1,
++	}, {
++		.name		= "pb44:green:jump2",
++		.gpio		= PB44_GPIO_LED_JUMP2,
++		.active_low	= 1,
 +	},
 +};
 +
-+static void __init pb44_init(void)
-+{
-+	i2c_register_board_info(0, pb44_i2c_board_info,
-+				ARRAY_SIZE(pb44_i2c_board_info));
-+	platform_device_register(&pb44_i2c_gpio_device);
-+}
+ static void __init pb44_init(void)
+ {
+ 	i2c_register_board_info(0, pb44_i2c_board_info,
+ 				ARRAY_SIZE(pb44_i2c_board_info));
+ 	platform_device_register(&pb44_i2c_gpio_device);
 +
-+MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
-+	     pb44_init);
-diff --git a/arch/mips/ath79/machtypes.h b/arch/mips/ath79/machtypes.h
-index fac0e26..a796fa3 100644
---- a/arch/mips/ath79/machtypes.h
-+++ b/arch/mips/ath79/machtypes.h
-@@ -16,6 +16,7 @@
++	ath79_register_leds_gpio(-1, ARRAY_SIZE(pb44_leds_gpio),
++				 pb44_leds_gpio);
+ }
  
- enum ath79_mach_type {
- 	ATH79_MACH_GENERIC = 0,
-+	ATH79_MACH_PB44,		/* Atheros PB44 reference board */
- };
- 
- #endif /* _ATH79_MACHTYPE_H */
+ MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
 -- 
 1.7.2.1

@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:13:20 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43995 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:13:45 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43996 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492062Ab0KWPHC (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1492065Ab0KWPHC (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:07:02 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id A74434DC01D;
-        Tue, 23 Nov 2010 16:06:54 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 9777041C001;
+        Tue, 23 Nov 2010 16:06:55 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 2F4341F0001;
-        Tue, 23 Nov 2010 16:06:54 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 1DC861F0001;
+        Tue, 23 Nov 2010 16:06:55 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, kaloz@openwrt.org,
         "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 12/18] MIPS: ath79: add common SPI controller device
-Date:   Tue, 23 Nov 2010 16:06:34 +0100
-Message-Id: <1290524800-21419-13-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org
+Subject: [PATCH 15/18] USB: ohci: add bus glue for the Atheros AR71XX/AR7240 SoCs
+Date:   Tue, 23 Nov 2010 16:06:37 +0100
+Message-Id: <1290524800-21419-16-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
 References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A14B5873DEF | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A14B6D61362 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28478
+X-archive-position: 28479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,69 +36,81 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Several boards are using the built-in SPI controller of the
-AR71XX/AR724X/AR913X SoCs. This patch adds common platform_device
-and helper code to register it. Additionally, the patch registers
-the SPI bus on the PB44 board.
+The Atheros AR71XX/AR7240 SoCs have a built-in OHCI controller.
+This patch adds the necessary glue code to make the generic OHCI
+driver usable for them.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: linux-usb@vger.kernel.org
 ---
 
-Changes since RFC: ---
+Changes since RFC:
+    - don't use 'defauly y if SOC_*', select the USB_ARCH_HAS_OHCI option
+      in the platform specific Kconfig file instead
+    - remove ath79_ehci_platform.h, it belongs to the EHCI patch
 
- arch/mips/ath79/Kconfig                        |    4 ++
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/dev-spi.c                      |   38 ++++++++++++++++++++++++
- arch/mips/ath79/dev-spi.h                      |   22 ++++++++++++++
- arch/mips/ath79/mach-pb44.c                    |   17 ++++++++++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    2 +
- 6 files changed, 84 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-spi.c
- create mode 100644 arch/mips/ath79/dev-spi.h
+ arch/mips/ath79/Kconfig       |    2 +
+ drivers/usb/host/Kconfig      |    8 ++
+ drivers/usb/host/ohci-ath79.c |  162 +++++++++++++++++++++++++++++++++++++++++
+ drivers/usb/host/ohci-hcd.c   |    5 +
+ 4 files changed, 177 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/usb/host/ohci-ath79.c
 
 diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 185a8d6..cd6c738 100644
+index 647f535..d4456ce 100644
 --- a/arch/mips/ath79/Kconfig
 +++ b/arch/mips/ath79/Kconfig
-@@ -7,6 +7,7 @@ config ATH79_MACH_PB44
- 	select SOC_AR71XX
- 	select ATH79_DEV_GPIO_BUTTONS
- 	select ATH79_DEV_LEDS_GPIO
-+	select ATH79_DEV_SPI
- 	help
- 	  Say 'Y' here if you want your kernel to support the
- 	  Atheros PB44 reference board.
-@@ -28,4 +29,7 @@ config ATH79_DEV_GPIO_BUTTONS
- config ATH79_DEV_LEDS_GPIO
+@@ -16,10 +16,12 @@ endmenu
+ 
+ config SOC_AR71XX
+ 	select USB_ARCH_HAS_EHCI
++	select USB_ARCH_HAS_OHCI
  	def_bool n
  
-+config ATH79_DEV_SPI
-+	def_bool n
-+
- endif
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 0ceb45e..a8de078 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -18,6 +18,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- obj-y					+= dev-common.o
- obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
-+obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
+ config SOC_AR724X
+ 	select USB_ARCH_HAS_EHCI
++	select USB_ARCH_HAS_OHCI
+ 	def_bool n
  
- #
- # Machines
-diff --git a/arch/mips/ath79/dev-spi.c b/arch/mips/ath79/dev-spi.c
+ config SOC_AR913X
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 3a2667a..39ed353 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -240,6 +240,14 @@ config USB_OHCI_HCD_OMAP3
+ 	  Enables support for the on-chip OHCI controller on
+ 	  OMAP3 and later chips.
+ 
++config USB_OHCI_ATH79
++	bool "USB OHCI support for the Atheros AR71XX/AR724X SoCs"
++	depends on USB_OHCI_HCD && (SOC_AR71XX || SOC_AR724X)
++	default y
++	help
++	  Enables support for the uilt-in OHCI controller present on the
++	  Atheros AR71XX/AR724X SoCs.
++
+ config USB_OHCI_HCD_PPC_SOC
+ 	bool "OHCI support for on-chip PPC USB controller"
+ 	depends on USB_OHCI_HCD && (STB03xxx || PPC_MPC52xx)
+diff --git a/drivers/usb/host/ohci-ath79.c b/drivers/usb/host/ohci-ath79.c
 new file mode 100644
-index 0000000..aa30163
+index 0000000..6e864bf
 --- /dev/null
-+++ b/arch/mips/ath79/dev-spi.c
-@@ -0,0 +1,38 @@
++++ b/drivers/usb/host/ohci-ath79.c
+@@ -0,0 +1,162 @@
 +/*
-+ *  Atheros AR71XX/AR724X/AR913X SPI controller device
++ *  OHCI HCD (Host Controller Driver) for USB.
++ *
++ *  Bus Glue for Atheros AR71XX/AR724X built-in OHCI controller.
 + *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
 + *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  Parts of this file are based on Atheros' 2.6.15 BSP
++ *	Copyright (C) 2007 Atheros Communications, Inc.
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
@@ -104,114 +118,166 @@ index 0000000..aa30163
 + */
 +
 +#include <linux/platform_device.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "dev-spi.h"
 +
-+static struct resource ath79_spi_resources[] = {
-+	{
-+		.start	= AR71XX_SPI_BASE,
-+		.end	= AR71XX_SPI_BASE + AR71XX_SPI_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct platform_device ath79_spi_device = {
-+	.name		= "ath79-spi",
-+	.id		= -1,
-+	.resource	= ath79_spi_resources,
-+	.num_resources	= ARRAY_SIZE(ath79_spi_resources),
-+};
-+
-+void __init ath79_register_spi(struct ath79_spi_platform_data *pdata,
-+			       struct spi_board_info const *info,
-+			       unsigned n)
++static int usb_hcd_ath79_probe(const struct hc_driver *driver,
++			       struct platform_device *pdev)
 +{
-+	spi_register_board_info(info, n);
-+	ath79_spi_device.dev.platform_data = pdata;
-+	platform_device_register(&ath79_spi_device);
++	struct usb_hcd *hcd;
++	struct resource *res;
++	int irq;
++	int ret;
++
++	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!res) {
++		dev_dbg(&pdev->dev, "no IRQ specified for %s\n",
++			dev_name(&pdev->dev));
++		return -ENODEV;
++	}
++	irq = res->start;
++
++	hcd = usb_create_hcd(driver, &pdev->dev, dev_name(&pdev->dev));
++	if (!hcd)
++		return -ENOMEM;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res) {
++		dev_dbg(&pdev->dev, "no base address specified for %s\n",
++			dev_name(&pdev->dev));
++		ret = -ENODEV;
++		goto err_put_hcd;
++	}
++	hcd->rsrc_start	= res->start;
++	hcd->rsrc_len	= res->end - res->start + 1;
++
++	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
++		dev_dbg(&pdev->dev, "controller already in use\n");
++		ret = -EBUSY;
++		goto err_put_hcd;
++	}
++
++	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
++	if (!hcd->regs) {
++		dev_dbg(&pdev->dev, "error mapping memory\n");
++		ret = -EFAULT;
++		goto err_release_region;
++	}
++
++	ohci_hcd_init(hcd_to_ohci(hcd));
++
++	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED);
++	if (ret)
++		goto err_stop_hcd;
++
++	return 0;
++
++err_stop_hcd:
++	iounmap(hcd->regs);
++err_release_region:
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++err_put_hcd:
++	usb_put_hcd(hcd);
++	return ret;
 +}
-diff --git a/arch/mips/ath79/dev-spi.h b/arch/mips/ath79/dev-spi.h
-new file mode 100644
-index 0000000..9a98333
---- /dev/null
-+++ b/arch/mips/ath79/dev-spi.h
-@@ -0,0 +1,22 @@
-+/*
-+ *  Atheros AR71XX/AR724X/AR913X SPI controller device
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
 +
-+#ifndef _ATH79_DEV_SPI_H
-+#define _ATH79_DEV_SPI_H
++void usb_hcd_ath79_remove(struct usb_hcd *hcd, struct platform_device *pdev)
++{
++	usb_remove_hcd(hcd);
++	iounmap(hcd->regs);
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++	usb_put_hcd(hcd);
++}
 +
-+#include <linux/spi/spi.h>
-+#include <asm/mach-ath79/ath79_spi_platform.h>
++static int __devinit ohci_ath79_start(struct usb_hcd *hcd)
++{
++	struct ohci_hcd	*ohci = hcd_to_ohci(hcd);
++	int ret;
 +
-+void __init ath79_register_spi(struct ath79_spi_platform_data *pdata,
-+			       struct spi_board_info const *info,
-+			       unsigned n);
++	ret = ohci_init(ohci);
++	if (ret < 0)
++		return ret;
 +
-+#endif /* _ATH79_DEV_SPI_H */
-diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
-index 5e7b544..257815e 100644
---- a/arch/mips/ath79/mach-pb44.c
-+++ b/arch/mips/ath79/mach-pb44.c
-@@ -17,6 +17,7 @@
- #include "machtypes.h"
- #include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
-+#include "dev-spi.h"
- 
- #define PB44_GPIO_I2C_SCL	0
- #define PB44_GPIO_I2C_SDA	1
-@@ -83,6 +84,20 @@ static struct gpio_button pb44_gpio_buttons[] __initdata = {
- 	}
- };
- 
-+static struct spi_board_info pb44_spi_info[] = {
-+	{
-+		.bus_num	= 0,
-+		.chip_select	= 0,
-+		.max_speed_hz	= 25000000,
-+		.modalias	= "m25p64",
++	ret = ohci_run(ohci);
++	if (ret < 0)
++		goto err;
++
++	return 0;
++
++err:
++	ohci_stop(hcd);
++	return ret;
++}
++
++static const struct hc_driver ohci_ath79_hc_driver = {
++	.description		= hcd_name,
++	.product_desc		= "Atheros built-in OHCI controller",
++	.hcd_priv_size		= sizeof(struct ohci_hcd),
++
++	.irq			= ohci_irq,
++	.flags			= HCD_USB11 | HCD_MEMORY,
++
++	.start			= ohci_ath79_start,
++	.stop			= ohci_stop,
++	.shutdown		= ohci_shutdown,
++
++	.urb_enqueue		= ohci_urb_enqueue,
++	.urb_dequeue		= ohci_urb_dequeue,
++	.endpoint_disable	= ohci_endpoint_disable,
++
++	/*
++	 * scheduling support
++	 */
++	.get_frame_number	= ohci_get_frame,
++
++	/*
++	 * root hub support
++	 */
++	.hub_status_data	= ohci_hub_status_data,
++	.hub_control		= ohci_hub_control,
++	.start_port_reset	= ohci_start_port_reset,
++};
++
++static int ohci_hcd_ath79_drv_probe(struct platform_device *pdev)
++{
++	if (usb_disabled())
++		return -ENODEV;
++
++	return usb_hcd_ath79_probe(&ohci_ath79_hc_driver, pdev);
++}
++
++static int ohci_hcd_ath79_drv_remove(struct platform_device *pdev)
++{
++	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++
++	usb_hcd_ath79_remove(hcd, pdev);
++	return 0;
++}
++
++static struct platform_driver ohci_hcd_ath79_driver = {
++	.probe		= ohci_hcd_ath79_drv_probe,
++	.remove		= ohci_hcd_ath79_drv_remove,
++	.shutdown	= usb_hcd_platform_shutdown,
++	.driver		= {
++		.name	= "ath79-ohci",
++		.owner	= THIS_MODULE,
 +	},
 +};
 +
-+static struct ath79_spi_platform_data pb44_spi_data = {
-+	.bus_num		= 0,
-+	.num_chipselect		= 1,
-+};
++MODULE_ALIAS("platform:ath79-ohci");
+diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+index 5179acb..6daeb68 100644
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -1111,6 +1111,11 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		ohci_octeon_driver
+ #endif
+ 
++#ifdef CONFIG_USB_OHCI_ATH79
++#include "ohci-ath79.c"
++#define PLATFORM_DRIVER		ohci_hcd_ath79_driver
++#endif
 +
- static void __init pb44_init(void)
- {
- 	i2c_register_board_info(0, pb44_i2c_board_info,
-@@ -94,6 +109,8 @@ static void __init pb44_init(void)
- 	ath79_register_gpio_buttons(-1, PB44_BUTTONS_POLL_INTERVAL,
- 				    ARRAY_SIZE(pb44_gpio_buttons),
- 				    pb44_gpio_buttons);
-+	ath79_register_spi(&pb44_spi_data, pb44_spi_info,
-+			   ARRAY_SIZE(pb44_spi_info));
- }
- 
- MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 7f2933d..4f2b621 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -20,6 +20,8 @@
- #include <linux/bitops.h>
- 
- #define AR71XX_APB_BASE		0x18000000
-+#define AR71XX_SPI_BASE		0x1f000000
-+#define AR71XX_SPI_SIZE		0x01000000
- 
- #define AR71XX_DDR_CTRL_BASE	(AR71XX_APB_BASE + 0x00000000)
- #define AR71XX_DDR_CTRL_SIZE	0x100
+ #if	!defined(PCI_DRIVER) &&		\
+ 	!defined(PLATFORM_DRIVER) &&	\
+ 	!defined(OMAP1_PLATFORM_DRIVER) &&	\
 -- 
 1.7.2.1

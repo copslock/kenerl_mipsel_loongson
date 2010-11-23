@@ -1,92 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 17:39:16 +0100 (CET)
-Received: from mail-out.m-online.net ([212.18.0.10]:47846 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492072Ab0KWQjJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 17:39:09 +0100
-Received: from frontend1.mail.m-online.net (frontend1.mail.intern.m-online.net [192.168.8.180])
-        by mail-out.m-online.net (Postfix) with ESMTP id E4A4F18059D5;
-        Tue, 23 Nov 2010 17:39:08 +0100 (CET)
-X-Auth-Info: 8BqNJvG9/TNXeSDMbWwqVFAhPoMGWnOhvUT+Hbb5w9k=
-Received: from lancy.mylan.de (p4FF05130.dip.t-dialin.net [79.240.81.48])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 50F761C001E3;
-        Tue, 23 Nov 2010 17:39:08 +0100 (CET)
-Message-ID: <4CEBEE79.8040507@grandegger.com>
-Date:   Tue, 23 Nov 2010 17:40:25 +0100
-From:   Wolfgang Grandegger <wg@grandegger.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
-MIME-Version: 1.0
-To:     Netdev@vger.kernel.org
-CC:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH] au1000_eth: fix invalid address accessing the MAC enable
- register
-X-Enigmail-Version: 1.0.1
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 18:09:40 +0100 (CET)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:36929 "EHLO
+        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492090Ab0KWRJd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 18:09:33 +0100
+X-Authority-Analysis: v=1.1 cv=+c36koQ5Dcj/1qolKHjtkYAGXvrVJRRiKMp+84F5sLg= c=1 sm=0 a=ClBoAdZ3F6cA:10 a=Q9fys5e9bTEA:10 a=OPBmh+XkhLl+Enan7BmTLg==:17 a=Dgq5Ti-FtMxgDvvqsXQA:9 a=DbpSK5KL0a4fbQDPLC0A:7 a=31ebPECljZMgOMw7qc9MWHxb7JgA:4 a=PUjeQqilurYA:10 a=OPBmh+XkhLl+Enan7BmTLg==:117
+X-Cloudmark-Score: 0
+X-Originating-IP: 67.242.120.143
+Received: from [67.242.120.143] ([67.242.120.143:55548] helo=[192.168.23.10])
+        by hrndva-oedge03.mail.rr.com (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 2.2.3.46 r()) with ESMTP
+        id 59/A1-24070-545FBEC4; Tue, 23 Nov 2010 17:09:26 +0000
+Subject: Re: Build failure triggered by recordmcount
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     John Reiser <jreiser@bitwagon.com>
+Cc:     Arnaud Lacombe <lacombar@gmail.com>, linux-mips@linux-mips.org,
+        wu zhangjin <wuzhangjin@gmail.com>
+In-Reply-To: <4CEB37F8.1050504@bitwagon.com>
+References: <AANLkTikjbP89qp24u1Pw6zcsyV7WcYYtmR0Yt3yCaXoh@mail.gmail.com>
+         <AANLkTim-+1csKoCc7kqXERmLZRSt9LAAB=JPK+0gaYPo@mail.gmail.com>
+         <AANLkTikaUxKqsqXKYpETOnWAMuCi5gp30ANux0RQuK6Z@mail.gmail.com>
+         <AANLkTinr1bU+_YCTW9xyJ9H0qiSOifBMsxC6iujszMvs@mail.gmail.com>
+         <4CEB37F8.1050504@bitwagon.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+Date:   Tue, 23 Nov 2010 12:09:25 -0500
+Message-ID: <1290532165.30543.374.camel@gandalf.stny.rr.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
 Content-Transfer-Encoding: 7bit
-Return-Path: <wg@grandegger.com>
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28484
+X-archive-position: 28485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wg@grandegger.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-"aup->enable" holds already the address pointing to the MAC enable
-register. The bug was introduced by commit d0e7cb:
+On Mon, 2010-11-22 at 19:41 -0800, John Reiser wrote:
+> It looks to me like the change which introduced "virtual functions"
+> forgot about cross-platform endianness.  Can anyone please test this patch?
+> Thank you to Arnaud for supplying before+after data files do_mounts*.o.
+> 
+> 
+> recordmcount: Honor endianness in fn_ELF_R_INFO
 
-"au1000-eth: remove volatiles, switch to I/O accessors".
+Arnaud, can I get a "Tested-by" from you.
 
-CC: Florian Fainelli <florian@openwrt.org>
-Signed-off-by: Wolfgang Grandegger <wg@denx.de>
-Acked-by: Florian Fainelli <florian@openwrt.org>
+Wu, can you give me your Acked-by:
 
----
- drivers/net/au1000_eth.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+Thanks,
 
-diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
-index 43489f8..53eff9b 100644
---- a/drivers/net/au1000_eth.c
-+++ b/drivers/net/au1000_eth.c
-@@ -155,10 +155,10 @@ static void au1000_enable_mac(struct net_device *dev, int force_reset)
- 	spin_lock_irqsave(&aup->lock, flags);
- 
- 	if (force_reset || (!aup->mac_enabled)) {
--		writel(MAC_EN_CLOCK_ENABLE, &aup->enable);
-+		writel(MAC_EN_CLOCK_ENABLE, aup->enable);
- 		au_sync_delay(2);
- 		writel((MAC_EN_RESET0 | MAC_EN_RESET1 | MAC_EN_RESET2
--				| MAC_EN_CLOCK_ENABLE), &aup->enable);
-+				| MAC_EN_CLOCK_ENABLE), aup->enable);
- 		au_sync_delay(2);
- 
- 		aup->mac_enabled = 1;
-@@ -503,9 +503,9 @@ static void au1000_reset_mac_unlocked(struct net_device *dev)
- 
- 	au1000_hard_stop(dev);
- 
--	writel(MAC_EN_CLOCK_ENABLE, &aup->enable);
-+	writel(MAC_EN_CLOCK_ENABLE, aup->enable);
- 	au_sync_delay(2);
--	writel(0, &aup->enable);
-+	writel(0, aup->enable);
- 	au_sync_delay(2);
- 
- 	aup->tx_full = 0;
-@@ -1119,7 +1119,7 @@ static int __devinit au1000_probe(struct platform_device *pdev)
- 	/* set a random MAC now in case platform_data doesn't provide one */
- 	random_ether_addr(dev->dev_addr);
- 
--	writel(0, &aup->enable);
-+	writel(0, aup->enable);
- 	aup->mac_enabled = 0;
- 
- 	pd = pdev->dev.platform_data;
--- 
-1.7.2.3
+-- Steve
+
+> 
+> ---
+>  scripts/recordmcount.h |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
+> index 58e933a..3966717 100644
+> --- a/scripts/recordmcount.h
+> +++ b/scripts/recordmcount.h
+> @@ -119,7 +119,7 @@ static uint_t (*Elf_r_sym)(Elf_Rel const *rp) = fn_ELF_R_SYM;
+>   static void fn_ELF_R_INFO(Elf_Rel *const rp, unsigned sym, unsigned type)
+>  {
+> -	rp->r_info = ELF_R_INFO(sym, type);
+> +	rp->r_info = _w(ELF_R_INFO(sym, type));
+>  }
+>  static void (*Elf_r_info)(Elf_Rel *const rp, unsigned sym, unsigned type) = fn_ELF_R_INFO;
+>  -- 1.7.3.2
+> 
+> 

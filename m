@@ -1,232 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:15:01 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:44000 "EHLO
-        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492072Ab0KWPHG (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:07:06 +0100
-Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 71EC44DC022;
-        Tue, 23 Nov 2010 16:06:56 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id EFA961F0001;
-        Tue, 23 Nov 2010 16:06:55 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, kaloz@openwrt.org,
-        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
-        Cliff Holden <Cliff.Holden@Atheros.com>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 18/18] MIPS: ath79: add common WMAC device for AR913X based boards
-Date:   Tue, 23 Nov 2010 16:06:40 +0100
-Message-Id: <1290524800-21419-19-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.2.1
-In-Reply-To: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A14B7F3EAA8 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
-Return-Path: <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:34:22 +0100 (CET)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:54088 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491914Ab0KWPeP convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 23 Nov 2010 16:34:15 +0100
+Received: by wwb29 with SMTP id 29so1093224wwb.24
+        for <linux-mips@linux-mips.org>; Tue, 23 Nov 2010 07:34:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:organization:to
+         :subject:date:user-agent:cc:references:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:message-id;
+        bh=LBRsukrIbSLC69F+rCMbK0bRdqGGhcQMP5Mkj8hT1M0=;
+        b=YcFkpnZ0MS9BcsJccuHOWxLBMmCdH+jKjR5jQqDrIaYZa72ZrdvjA/NAeiauMK41Hi
+         lqgiuqvVW7mH5q8zyql9KdjqTS3tZ3JCapm8283Pwh7qQQ2u2b+Yinz/d8JHFTaq54uK
+         oydVNCiWGIVgXl6pYaEOn604PQufGUdPyddPY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:organization:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        b=dMgIImK+VsDgaQWJE9tcYbDxT+kzdj/nGL7Veb7cDvk9nEzLpNCOHihnZprL8uAB8q
+         aC68CLUqYP01lO+qOu7NyxjAA7QtKdBCPvlQPF1PGsftLf0RWGAglbcQIKphamfm/UOg
+         5ihUkb4SU1VI8R+oRj+IhnJQC5COmqReZkE6k=
+Received: by 10.216.35.133 with SMTP id u5mr6285861wea.72.1290526449764;
+        Tue, 23 Nov 2010 07:34:09 -0800 (PST)
+Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
+        by mx.google.com with ESMTPS id w29sm2920515weq.19.2010.11.23.07.33.59
+        (version=SSLv3 cipher=RC4-MD5);
+        Tue, 23 Nov 2010 07:34:03 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+To:     Wolfgang Grandegger <wg@grandegger.com>
+Subject: Re: alchemy/gpr: au1000_eth regression with v2.6.37rc2
+Date:   Tue, 23 Nov 2010 16:33:49 +0100
+User-Agent: KMail/1.13.5 (Linux/2.6.35-22-server; KDE/4.5.1; x86_64; ; )
+Cc:     "Linux-MIPS" <linux-mips@linux-mips.org>, Netdev@vger.kernel.org
+References: <4CE58593.50509@grandegger.com> <201011191146.01454.florian@openwrt.org> <4CEBD751.7090807@grandegger.com>
+In-Reply-To: <4CEBD751.7090807@grandegger.com>
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201011231633.50040.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28482
+X-archive-position: 28483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Add common platform_device and helper code to make the registration
-of the built-in wireless MAC easier on the Atheros AR9130/AR9132
-based boards. Also register the WMAC device on the AR81 board.
+Hello Wolfgang,
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
+On Tuesday 23 November 2010 16:01:37 Wolfgang Grandegger wrote:
+> Hi Florian,
+> 
+> On 11/19/2010 11:46 AM, Florian Fainelli wrote:
+> > Hello Wolfgang,
+> > 
+> > On Friday 19 November 2010 11:29:45 Wolfgang Grandegger wrote:
+> >> Hello Florian,
+> >> 
+> >> On 11/18/2010 11:30 PM, Florian Fainelli wrote:
+> >>> Hello Wolfgang,
+> >>> 
+> >>> Le Thursday 18 November 2010 20:59:15, Wolfgang Grandegger a écrit :
+> >>>> Hello,
+> >>>> 
+> >>>> I just realized that the v2.6.37-rc2 kernel does not boot any more on
+> >>>> the Alchemy GPR board. It works fine with v2.6.36. It hangs in the
+> >>>> probe function of the au1000_eth driver when probing the second
+> >>>> 
+> >>>> ethernet port (eth1):
+> >>>>   au1000_eth_mii: probed
+> >>>>   au1000-eth au1000-eth.0: (unregistered net_device): attached PHY
+> >>>>   driver
+> >>>> 
+> >>>> [Generic PHY] (mii_bus:phy_addr=0:00, irq=-1) au1000-eth au1000-eth.0:
+> >>>> eth0: Au1xx0 Ethernet found at 0x10500000, irq 35 au1000_eth:
+> >>>> au1000_eth version 1.7 Pete Popov <ppopov@embeddedalley.com> ...
+> >>>> hangs ...
+> >>>> 
+> >>>> Similar messages should follow for eth1. I narrowed down (bisect'ed)
+> >>>> the
+> >>>> 
+> >>>> problem to commit:
+> >>>>   commit d0e7cb5d401695809ba8c980124ab1d8c66efc8b
+> >>>>   Author: Florian Fainelli <florian@openwrt.org>
+> >>>>   Date:   Wed Sep 8 11:15:13 2010 +0000
+> >>>>   
+> >>>>     au1000-eth: remove volatiles, switch to I/O accessors
+> >>>>     
+> >>>>     Remove all the volatile keywords where they were used, switch to
+> >>>>     using
+> >>>> 
+> >>>> the proper readl/writel accessors.
+> >>>> 
+> >>>>     Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> >>>>     Signed-off-by: David S. Miller <davem@davemloft.net>
+> >>>> 
+> >>>> The kernel actually hangs when accessing "&aup->mac->mii_control" in
+> >>>> au1000_mdio_read(), but only for eth1. Any idea what does go wrong?
+> >>> 
+> >>> I do not understand so far while it hangs only for eth1. My device only
+> >>> has one ethernet MAC, so I could not notice the problem. Looking at
+> >>> this close, there are a couple of u32 const* usages in
+> >>> au1000_mdio_{read,write} which are looking wrong to me now. Can you try
+> >>> to remove these?
+> >> 
+> >> That did not help.
+> > 
+> > I suspected it, but thanks for the confirmation.
+> > 
+> >>>> In principle, I do not want to access the MII regs of the MAC because
+> >>>> eth0 and eth1 are connected to switches. But that's not possible, even
+> >>>> with "aup->phy_static_config=1" and "aup->phy_addr=0".
+> >>> 
+> >>> If you think this is another issue, I will fix it in another patch.
+> >> 
+> >> Accessing the MII registers of the MAC should not hang the system even
+> >> if I do not need to. First I want to  understand why. Looks like a wired
+> >> optimizer issue.
+> > 
+> > I definitively agree, furthermore since there is a timeout for read and
+> > write operations. I will look at the assembly and see if I can see
+> > anything different.
+> 
+> The attached patch fixes the issue. It's caused by a simple porting
+> error. I'm going to prepare a proper patch later today.
 
-Changes since RFC: ---
+Nasty and simple enough not to be noticed at compile time. Thanks for 
+debugging this. Feel free to add my:
 
- arch/mips/ath79/Kconfig                        |    5 ++
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/dev-ar913x-wmac.c              |   60 ++++++++++++++++++++++++
- arch/mips/ath79/dev-ar913x-wmac.h              |   17 +++++++
- arch/mips/ath79/mach-ap81.c                    |    5 ++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 +
- 6 files changed, 91 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.c
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.h
-
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 1912d54..af01669 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -5,6 +5,7 @@ menu "Atheros AR71XX/AR724X/AR913X machine selection"
- config ATH79_MACH_AP81
- 	bool "Atheros AP81 reference board"
- 	select SOC_AR913X
-+	select ATH79_DEV_AR913X_WMAC
- 	select ATH79_DEV_GPIO_BUTTONS
- 	select ATH79_DEV_LEDS_GPIO
- 	select ATH79_DEV_SPI
-@@ -40,6 +41,10 @@ config SOC_AR913X
- 	select USB_ARCH_HAS_EHCI
- 	def_bool n
- 
-+config ATH79_DEV_AR913X_WMAC
-+	depends on SOC_AR913X
-+	def_bool n
-+
- config ATH79_DEV_GPIO_BUTTONS
- 	def_bool n
- 
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 1b111d8..48398561 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- # Devices
- #
- obj-y					+= dev-common.o
-+obj-$(CONFIG_ATH79_DEV_AR913X_WMAC)	+= dev-ar913x-wmac.o
- obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
- obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.c b/arch/mips/ath79/dev-ar913x-wmac.c
-new file mode 100644
-index 0000000..ad2a39f
---- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.c
-@@ -0,0 +1,60 @@
-+/*
-+ *  Atheros AR913X SoC built-in WMAC device support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/irq.h>
-+#include <linux/platform_device.h>
-+#include <linux/ath9k_platform.h>
-+
-+#include <asm/mach-ath79/ath79.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "dev-ar913x-wmac.h"
-+
-+static struct ath9k_platform_data ar913x_wmac_data;
-+
-+static struct resource ar913x_wmac_resources[] = {
-+	{
-+		.start	= AR913X_WMAC_BASE,
-+		.end	= AR913X_WMAC_BASE + AR913X_WMAC_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	}, {
-+		.start	= ATH79_CPU_IRQ_IP2,
-+		.end	= ATH79_CPU_IRQ_IP2,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct platform_device ar913x_wmac_device = {
-+	.name		= "ath9k",
-+	.id		= -1,
-+	.resource	= ar913x_wmac_resources,
-+	.num_resources	= ARRAY_SIZE(ar913x_wmac_resources),
-+	.dev = {
-+		.platform_data = &ar913x_wmac_data,
-+	},
-+};
-+
-+void __init ath79_register_ar913x_wmac(u8 *cal_data)
-+{
-+	if (cal_data)
-+		memcpy(ar913x_wmac_data.eeprom_data, cal_data,
-+		       sizeof(ar913x_wmac_data.eeprom_data));
-+
-+	/* reset the WMAC */
-+	ath79_device_stop(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
-+
-+	ath79_device_start(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
-+
-+	platform_device_register(&ar913x_wmac_device);
-+}
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.h b/arch/mips/ath79/dev-ar913x-wmac.h
-new file mode 100644
-index 0000000..5df653f
---- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.h
-@@ -0,0 +1,17 @@
-+/*
-+ *  Atheros AR913X SoC built-in WMAC device support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#ifndef _ATH79_DEV_AR913X_WMAC_H
-+#define _ATH79_DEV_AR913X_WMAC_H
-+
-+void ath79_register_ar913x_wmac(u8 *cal_data) __init;
-+
-+#endif /* _ATH79_DEV_AR913X_WMAC_H */
-diff --git a/arch/mips/ath79/mach-ap81.c b/arch/mips/ath79/mach-ap81.c
-index 9cfaff3..00ef1cd 100644
---- a/arch/mips/ath79/mach-ap81.c
-+++ b/arch/mips/ath79/mach-ap81.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include "machtypes.h"
-+#include "dev-ar913x-wmac.h"
- #include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
- #include "dev-spi.h"
-@@ -24,6 +25,7 @@
- #define AP81_GPIO_BTN_SW1	21
- 
- #define AP81_BUTTONS_POLL_INTERVAL	20
-+#define AP81_CAL_DATA_ADDR	0x1fff1000
- 
- static struct gpio_led ap81_leds_gpio[] __initdata = {
- 	{
-@@ -79,6 +81,8 @@ static struct ath79_spi_platform_data ap81_spi_data = {
- 
- static void __init ap81_setup(void)
- {
-+	u8 *cal_data = (u8 *) KSEG1ADDR(AP81_CAL_DATA_ADDR);
-+
- 	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap81_leds_gpio),
- 				 ap81_leds_gpio);
- 	ath79_register_gpio_buttons(-1, AP81_BUTTONS_POLL_INTERVAL,
-@@ -87,6 +91,7 @@ static void __init ap81_setup(void)
- 	ath79_register_spi(&ap81_spi_data, ap81_spi_info,
- 			   ARRAY_SIZE(ap81_spi_info));
- 	ath79_register_usb();
-+	ath79_register_ar913x_wmac(cal_data);
- }
- 
- MIPS_MACHINE(ATH79_MACH_AP81, "AP81", "Atheros AP81 reference board",
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 95be423..e8b0e2f 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -43,6 +43,9 @@
- #define AR7240_OHCI_BASE	0x1b000000
- #define AR7240_OHCI_SIZE	0x1000
- 
-+#define AR913X_WMAC_BASE	(AR71XX_APB_BASE + 0x000C0000)
-+#define AR913X_WMAC_SIZE	0x30000
-+
- /*
-  * DDR_CTRL block
-  */
--- 
-1.7.2.1
+Acked-by: Florian Fainelli <florian@openwrt.org>
+--
+Florian

@@ -1,89 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 08:06:31 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:59699 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491121Ab0KWHGX convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 23 Nov 2010 08:06:23 +0100
-Received: by wyf22 with SMTP id 22so8113344wyf.36
-        for <multiple recipients>; Mon, 22 Nov 2010 23:06:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=fa5+JN7Vnmc6ILXELWRTUdO/QRPi0Gj7o3hFjuTtmfE=;
-        b=VvYd4tAeqogKcz7zwMu42/sc8MaL/oSzCk1I+Y8rClJCH+5c7j6qlAmX9IvsItVS2/
-         u3nSFAXnDSgS/KBRajdpspue+bb4FK5bKxu+EOtjg6B3w1PKQRYq9U9vSk0O/iwKmvua
-         OYGYT3hHPgowktWNcLgPJfLOYoua0W/e4T4iU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=OojGxKHTZeDKqf/CzjWgh/rE0Sj7lkQBpo+Zx7pWsiUv3wWCJNnQ6PqiiKIAudyfWS
-         F1pG1pw3+hQYbuqUZeJT6anzQuyUXr/qpNkAST/3USXRuVPDopO2loodZQHAwDmwDdxL
-         Kw5U4VKTajnmKR9HyASrrVr0dAg9IYra0R+6o=
-MIME-Version: 1.0
-Received: by 10.216.54.147 with SMTP id i19mr544641wec.59.1290495977373; Mon,
- 22 Nov 2010 23:06:17 -0800 (PST)
-Received: by 10.216.236.138 with HTTP; Mon, 22 Nov 2010 23:06:17 -0800 (PST)
-In-Reply-To: <20101119143416.GA5558@nowhere>
-References: <1290063401-25440-1-git-send-email-dengcheng.zhu@gmail.com>
-        <1290063401-25440-5-git-send-email-dengcheng.zhu@gmail.com>
-        <20101119143416.GA5558@nowhere>
-Date:   Tue, 23 Nov 2010 15:06:17 +0800
-Message-ID: <AANLkTi=xZZMGdS62tdY62ifgEEV8Jpo5y5=MrCb5HvaK@mail.gmail.com>
-Subject: Re: [PATCH 4/5] MIPS/Perf-events: Work with the new callchain interface
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     Frederic Weisbecker <fweisbec@gmail.com>
-Cc:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, will.deacon@arm.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dengcheng.zhu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 12:33:02 +0100 (CET)
+Received: from smtp-68.nebula.fi ([83.145.220.68]:42036 "EHLO
+        smtp-68.nebula.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491894Ab0KWLcz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 12:32:55 +0100
+Received: from localhost.localdomain (dyn-xdsl-83-150-115-228.nebulazone.fi [83.150.115.228])
+        by smtp-68.nebula.fi (Postfix) with ESMTP id BE41A43F0497;
+        Tue, 23 Nov 2010 13:32:43 +0200 (EET)
+From:   Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+Subject: [PATCH] MIPS: Fix build failure for IP22
+Date:   Tue, 23 Nov 2010 13:32:28 +0200
+Message-Id: <1290511948-10347-1-git-send-email-dmitri.vorobiev@movial.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <dmitri.vorobiev@movial.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28459
+X-archive-position: 28460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: dmitri.vorobiev@movial.com
 Precedence: bulk
 X-list: linux-mips
 
-Yes, MIPS Perf-events got added in recently and missed some important
-commits.
+Commit 48e1fd5a81416a037f5a48120bf281102f2584e2 changed the name
+of the MIPS-specific dma_cache_sync() routine by prefixing it with
+`mips_', and removed the export for its symbol. Two drivers, which
+did use dma_cache_sync(), namely, sgiseeq and sgiwd93, were not
+converted to use the new function, which led to build failure for
+the IP22 platform.
 
+This patch fixes the build failure by fixing the call sites of
+mips_dma_cache_sync() and exporting the symbol for this routine as
+a GPL symbol. While at it, some minor changes to improve Kconfig
+help entries were done.
 
-Thanks!
+Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+---
+ arch/mips/include/asm/dma-mapping.h |    2 +-
+ arch/mips/mm/dma-default.c          |    1 +
+ drivers/net/Kconfig                 |    3 +++
+ drivers/net/sgiseeq.c               |    8 ++++----
+ drivers/scsi/Kconfig                |    3 +++
+ drivers/scsi/sgiwd93.c              |    2 +-
+ 6 files changed, 13 insertions(+), 6 deletions(-)
 
-Deng-Cheng
-
-
-2010/11/19 Frederic Weisbecker <fweisbec@gmail.com>:
-> On Thu, Nov 18, 2010 at 02:56:40PM +0800, Deng-Cheng Zhu wrote:
->> This is the MIPS part of the following commits by Frederic Weisbecker:
->>
->> f72c1a931e311bb7780fee19e41a89ac42cab50e
->>       perf: Factorize callchain context handling
->> 56962b4449af34070bb1994621ef4f0265eed4d8
->>       perf: Generalize some arch callchain code
->> 70791ce9ba68a5921c9905ef05d23f62a90bc10c
->>       perf: Generalize callchain_store()
->> c1a65932fd7216fdc9a0db8bbffe1d47842f862c
->>       perf: Drop unappropriate tests on arch callchains
->>
->> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
->> ---
->
->
-> Acked-by: Frederic Weisbecker <fweisbec@gmail.com>
->
-> Why did I miss this arch? I did a grep on HAVE_PERF_EVENT or something,
-> may be it hadn't it at that time?
->
-> Thanks!
->
->
+diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+index 655f849..ecf669d 100644
+--- a/arch/mips/include/asm/dma-mapping.h
++++ b/arch/mips/include/asm/dma-mapping.h
+@@ -52,7 +52,7 @@ dma_set_mask(struct device *dev, u64 mask)
+ 	return 0;
+ }
+ 
+-extern void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
++extern void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+ 	       enum dma_data_direction direction);
+ 
+ static inline void *dma_alloc_coherent(struct device *dev, size_t size,
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 4fc1a0f..114e9bb 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -297,6 +297,7 @@ void mips_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+ 	if (!plat_device_is_coherent(dev))
+ 		__dma_sync((unsigned long)vaddr, size, direction);
+ }
++EXPORT_SYMBOL_GPL(mips_dma_cache_sync);
+ 
+ static struct dma_map_ops mips_default_dma_map_ops = {
+ 	.alloc_coherent = mips_dma_alloc_coherent,
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index f6668cd..fe64edc 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -1925,6 +1925,9 @@ config SGISEEQ
+ 	  Say Y here if you have an Seeq based Ethernet network card. This is
+ 	  used in many Silicon Graphics machines.
+ 
++	  To compile this driver as a module, choose M here: the module
++	  will be called sgiseeq.
++
+ config DECLANCE
+ 	tristate "DEC LANCE ethernet controller support"
+ 	depends on MACH_DECSTATION
+diff --git a/drivers/net/sgiseeq.c b/drivers/net/sgiseeq.c
+index 3a0cc63..6ecefd2 100644
+--- a/drivers/net/sgiseeq.c
++++ b/drivers/net/sgiseeq.c
+@@ -111,14 +111,14 @@ struct sgiseeq_private {
+ 
+ static inline void dma_sync_desc_cpu(struct net_device *dev, void *addr)
+ {
+-	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
+-		       DMA_FROM_DEVICE);
++	mips_dma_cache_sync(dev->dev.parent, addr,
++		sizeof(struct sgiseeq_rx_desc), DMA_FROM_DEVICE);
+ }
+ 
+ static inline void dma_sync_desc_dev(struct net_device *dev, void *addr)
+ {
+-	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
+-		       DMA_TO_DEVICE);
++	mips_dma_cache_sync(dev->dev.parent, addr,
++		sizeof(struct sgiseeq_rx_desc), DMA_TO_DEVICE);
+ }
+ 
+ static inline void hpc3_eth_reset(struct hpc3_ethregs *hregs)
+diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
+index 8616496..2d868bf 100644
+--- a/drivers/scsi/Kconfig
++++ b/drivers/scsi/Kconfig
+@@ -390,6 +390,9 @@ config SGIWD93_SCSI
+ 	  If you have a Western Digital WD93 SCSI controller on
+ 	  an SGI MIPS system, say Y.  Otherwise, say N.
+ 
++	  To compile this driver as a module, choose M here: the
++	  module will be called sgiwd93.
++
+ config BLK_DEV_3W_XXXX_RAID
+ 	tristate "3ware 5/6/7/8xxx ATA-RAID support"
+ 	depends on PCI && SCSI
+diff --git a/drivers/scsi/sgiwd93.c b/drivers/scsi/sgiwd93.c
+index fef0e3c..be9fc40 100644
+--- a/drivers/scsi/sgiwd93.c
++++ b/drivers/scsi/sgiwd93.c
+@@ -95,7 +95,7 @@ void fill_hpc_entries(struct ip22_hostdata *hd, struct scsi_cmnd *cmd, int din)
+ 	 */
+ 	hcp->desc.pbuf = 0;
+ 	hcp->desc.cntinfo = HPCDMA_EOX;
+-	dma_cache_sync(hd->dev, hd->cpu,
++	mips_dma_cache_sync(hd->dev, hd->cpu,
+ 		       (unsigned long)(hcp + 1) - (unsigned long)hd->cpu,
+ 		       DMA_TO_DEVICE);
+ }
+-- 
+1.7.0.4

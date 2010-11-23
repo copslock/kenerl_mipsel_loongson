@@ -1,170 +1,163 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:00:30 +0100 (CET)
-Received: from mail-out.m-online.net ([212.18.0.10]:40970 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491914Ab0KWPAW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:00:22 +0100
-Received: from frontend1.mail.m-online.net (frontend1.mail.intern.m-online.net [192.168.8.180])
-        by mail-out.m-online.net (Postfix) with ESMTP id 1CCAE186DECA;
-        Tue, 23 Nov 2010 16:00:20 +0100 (CET)
-X-Auth-Info: tAqK5jgpP1sZqrDOl7Xf7VkI4rmaPnN3sPn2j2EbyJU=
-Received: from lancy.mylan.de (p4FF05130.dip.t-dialin.net [79.240.81.48])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 77D191C001E1;
-        Tue, 23 Nov 2010 16:00:20 +0100 (CET)
-Message-ID: <4CEBD751.7090807@grandegger.com>
-Date:   Tue, 23 Nov 2010 16:01:37 +0100
-From:   Wolfgang Grandegger <wg@grandegger.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
-MIME-Version: 1.0
-To:     Florian Fainelli <florian@openwrt.org>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>, Netdev@vger.kernel.org
-Subject: Re: alchemy/gpr: au1000_eth regression with v2.6.37rc2
-References: <4CE58593.50509@grandegger.com> <201011182330.08488.florian@openwrt.org> <4CE65199.7030007@grandegger.com> <201011191146.01454.florian@openwrt.org>
-In-Reply-To: <201011191146.01454.florian@openwrt.org>
-X-Enigmail-Version: 1.0.1
-Content-Type: multipart/mixed;
- boundary="------------080703020109020809040101"
-Return-Path: <wg@grandegger.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Nov 2010 16:06:59 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43882 "EHLO
+        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491925Ab0KWPGz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Nov 2010 16:06:55 +0100
+Received: from mail.szarvas.hu (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 26BD741C001;
+        Tue, 23 Nov 2010 16:06:50 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id A09731F0001;
+        Tue, 23 Nov 2010 16:06:49 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, kaloz@openwrt.org,
+        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
+        Cliff Holden <Cliff.Holden@Atheros.com>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH 00/18] MIPS: initial support for the Atheros AR71XX/AR724X/AR913X SoCs
+Date:   Tue, 23 Nov 2010 16:06:22 +0100
+Message-Id: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.2.1
+X-VBMS: A14B1AE5A1A | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28463
+X-archive-position: 28464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wg@grandegger.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------080703020109020809040101
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
+This patch set contains initial support for the 
+Atheros AR71XX/AR724X/AR913X SoCs.
 
-Hi Florian,
+Gabor Juhos (18):
+  MIPS: add initial support for the Atheros AR71XX/AR724X/AR931X SoCs
+  MIPS: ath79: add GPIOLIB support
+  MIPS: add generic support for multiple machines within a single
+    kernel
+  MIPS: ath79: utilize the MIPS multi-machine support
+  MIPS: ath79: add initial support for the Atheros PB44 reference board
+  MIPS: ath79: add common GPIO LEDs device
+  watchdog: add driver for the Atheros AR71XX/AR724X/AR913X SoCs
+  MIPS: ath79: add common watchdog device
+  input: add input driver for polled GPIO buttons
+  MIPS: ath79: add common GPIO buttons device
+  spi: add SPI controller driver for the Atheros AR71XX/AR724X/AR913X
+    SoCs
+  MIPS: ath79: add common SPI controller device
+  USB: ehci: add workaround for Synopsys HC bug
+  USB: ehci: add bus glue for the Atheros AR71XX/AR724X/AR913X SoCs
+  USB: ohci: add bus glue for the Atheros AR71XX/AR7240 SoCs
+  MIPS: ath79: add common USB Host Controller device
+  MIPS: ath79: add initial support for the Atheros AP81 reference board
+  MIPS: ath79: add common WMAC device for AR913X based boards
 
-On 11/19/2010 11:46 AM, Florian Fainelli wrote:
-> Hello Wolfgang,
-> 
-> On Friday 19 November 2010 11:29:45 Wolfgang Grandegger wrote:
->> Hello Florian,
->>
->> On 11/18/2010 11:30 PM, Florian Fainelli wrote:
->>> Hello Wolfgang,
->>>
->>> Le Thursday 18 November 2010 20:59:15, Wolfgang Grandegger a écrit :
->>>> Hello,
->>>>
->>>> I just realized that the v2.6.37-rc2 kernel does not boot any more on
->>>> the Alchemy GPR board. It works fine with v2.6.36. It hangs in the
->>>> probe function of the au1000_eth driver when probing the second
->>>>
->>>> ethernet port (eth1):
->>>>   au1000_eth_mii: probed
->>>>   au1000-eth au1000-eth.0: (unregistered net_device): attached PHY
->>>>   driver
->>>>
->>>> [Generic PHY] (mii_bus:phy_addr=0:00, irq=-1) au1000-eth au1000-eth.0:
->>>> eth0: Au1xx0 Ethernet found at 0x10500000, irq 35 au1000_eth: au1000_eth
->>>> version 1.7 Pete Popov <ppopov@embeddedalley.com> ... hangs ...
->>>>
->>>> Similar messages should follow for eth1. I narrowed down (bisect'ed) the
->>>>
->>>> problem to commit:
->>>>   commit d0e7cb5d401695809ba8c980124ab1d8c66efc8b
->>>>   Author: Florian Fainelli <florian@openwrt.org>
->>>>   Date:   Wed Sep 8 11:15:13 2010 +0000
->>>>   
->>>>     au1000-eth: remove volatiles, switch to I/O accessors
->>>>     
->>>>     Remove all the volatile keywords where they were used, switch to
->>>>     using
->>>>
->>>> the proper readl/writel accessors.
->>>>
->>>>     Signed-off-by: Florian Fainelli <florian@openwrt.org>
->>>>     Signed-off-by: David S. Miller <davem@davemloft.net>
->>>>
->>>> The kernel actually hangs when accessing "&aup->mac->mii_control" in
->>>> au1000_mdio_read(), but only for eth1. Any idea what does go wrong?
->>>
->>> I do not understand so far while it hangs only for eth1. My device only
->>> has one ethernet MAC, so I could not notice the problem. Looking at this
->>> close, there are a couple of u32 const* usages in
->>> au1000_mdio_{read,write} which are looking wrong to me now. Can you try
->>> to remove these?
->>
->> That did not help.
-> 
-> I suspected it, but thanks for the confirmation.
-> 
->>
->>>> In principle, I do not want to access the MII regs of the MAC because
->>>> eth0 and eth1 are connected to switches. But that's not possible, even
->>>> with "aup->phy_static_config=1" and "aup->phy_addr=0".
->>>
->>> If you think this is another issue, I will fix it in another patch.
->>
->> Accessing the MII registers of the MAC should not hang the system even
->> if I do not need to. First I want to  understand why. Looks like a wired
->> optimizer issue.
-> 
-> I definitively agree, furthermore since there is a timeout for read and write 
-> operations. I will look at the assembly and see if I can see anything 
-> different.
+ arch/mips/Kbuild.platforms                         |    1 +
+ arch/mips/Kconfig                                  |   20 ++
+ arch/mips/ath79/Kconfig                            |   60 ++++
+ arch/mips/ath79/Makefile                           |   29 ++
+ arch/mips/ath79/Platform                           |    7 +
+ arch/mips/ath79/common.c                           |  113 ++++++++
+ arch/mips/ath79/common.h                           |   67 +++++
+ arch/mips/ath79/dev-ar913x-wmac.c                  |   60 ++++
+ arch/mips/ath79/dev-ar913x-wmac.h                  |   17 ++
+ arch/mips/ath79/dev-common.c                       |   69 +++++
+ arch/mips/ath79/dev-common.h                       |   18 ++
+ arch/mips/ath79/dev-gpio-buttons.c                 |   58 ++++
+ arch/mips/ath79/dev-gpio-buttons.h                 |   23 ++
+ arch/mips/ath79/dev-leds-gpio.c                    |   56 ++++
+ arch/mips/ath79/dev-leds-gpio.h                    |   21 ++
+ arch/mips/ath79/dev-spi.c                          |   38 +++
+ arch/mips/ath79/dev-spi.h                          |   22 ++
+ arch/mips/ath79/dev-usb.c                          |  192 +++++++++++++
+ arch/mips/ath79/dev-usb.h                          |   17 ++
+ arch/mips/ath79/early_printk.c                     |   36 +++
+ arch/mips/ath79/gpio.c                             |  196 +++++++++++++
+ arch/mips/ath79/irq.c                              |  187 +++++++++++++
+ arch/mips/ath79/mach-ap81.c                        |   98 +++++++
+ arch/mips/ath79/mach-pb44.c                        |  119 ++++++++
+ arch/mips/ath79/machtypes.h                        |   23 ++
+ arch/mips/ath79/prom.c                             |   57 ++++
+ arch/mips/ath79/setup.c                            |  279 +++++++++++++++++++
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h     |  248 +++++++++++++++++
+ arch/mips/include/asm/mach-ath79/ath79.h           |   50 ++++
+ .../include/asm/mach-ath79/ath79_ehci_platform.h   |   18 ++
+ .../include/asm/mach-ath79/ath79_spi_platform.h    |   19 ++
+ .../include/asm/mach-ath79/cpu-feature-overrides.h |   56 ++++
+ arch/mips/include/asm/mach-ath79/gpio.h            |   26 ++
+ arch/mips/include/asm/mach-ath79/irq.h             |   36 +++
+ .../include/asm/mach-ath79/kernel-entry-init.h     |   32 +++
+ arch/mips/include/asm/mach-ath79/war.h             |   25 ++
+ arch/mips/include/asm/mips_machine.h               |   54 ++++
+ arch/mips/kernel/Makefile                          |    1 +
+ arch/mips/kernel/mips_machine.c                    |   86 ++++++
+ arch/mips/kernel/proc.c                            |    7 +-
+ arch/mips/kernel/vmlinux.lds.S                     |    7 +
+ drivers/input/misc/Kconfig                         |   16 +
+ drivers/input/misc/Makefile                        |    1 +
+ drivers/input/misc/gpio_buttons.c                  |  232 ++++++++++++++++
+ drivers/spi/Kconfig                                |    8 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/ath79_spi.c                            |  290 +++++++++++++++++++
+ drivers/usb/host/Kconfig                           |   16 +
+ drivers/usb/host/ehci-ath79.c                      |  176 ++++++++++++
+ drivers/usb/host/ehci-hcd.c                        |    5 +
+ drivers/usb/host/ehci-q.c                          |    3 +
+ drivers/usb/host/ehci.h                            |    1 +
+ drivers/usb/host/ohci-ath79.c                      |  162 +++++++++++
+ drivers/usb/host/ohci-hcd.c                        |    5 +
+ drivers/watchdog/Kconfig                           |    8 +
+ drivers/watchdog/Makefile                          |    1 +
+ drivers/watchdog/ath79_wdt.c                       |  293 ++++++++++++++++++++
+ include/linux/gpio_buttons.h                       |   33 +++
+ 58 files changed, 3798 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/ath79/Kconfig
+ create mode 100644 arch/mips/ath79/Makefile
+ create mode 100644 arch/mips/ath79/Platform
+ create mode 100644 arch/mips/ath79/common.c
+ create mode 100644 arch/mips/ath79/common.h
+ create mode 100644 arch/mips/ath79/dev-ar913x-wmac.c
+ create mode 100644 arch/mips/ath79/dev-ar913x-wmac.h
+ create mode 100644 arch/mips/ath79/dev-common.c
+ create mode 100644 arch/mips/ath79/dev-common.h
+ create mode 100644 arch/mips/ath79/dev-gpio-buttons.c
+ create mode 100644 arch/mips/ath79/dev-gpio-buttons.h
+ create mode 100644 arch/mips/ath79/dev-leds-gpio.c
+ create mode 100644 arch/mips/ath79/dev-leds-gpio.h
+ create mode 100644 arch/mips/ath79/dev-spi.c
+ create mode 100644 arch/mips/ath79/dev-spi.h
+ create mode 100644 arch/mips/ath79/dev-usb.c
+ create mode 100644 arch/mips/ath79/dev-usb.h
+ create mode 100644 arch/mips/ath79/early_printk.c
+ create mode 100644 arch/mips/ath79/gpio.c
+ create mode 100644 arch/mips/ath79/irq.c
+ create mode 100644 arch/mips/ath79/mach-ap81.c
+ create mode 100644 arch/mips/ath79/mach-pb44.c
+ create mode 100644 arch/mips/ath79/machtypes.h
+ create mode 100644 arch/mips/ath79/prom.c
+ create mode 100644 arch/mips/ath79/setup.c
+ create mode 100644 arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/gpio.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/irq.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/kernel-entry-init.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/war.h
+ create mode 100644 arch/mips/include/asm/mips_machine.h
+ create mode 100644 arch/mips/kernel/mips_machine.c
+ create mode 100644 drivers/input/misc/gpio_buttons.c
+ create mode 100644 drivers/spi/ath79_spi.c
+ create mode 100644 drivers/usb/host/ehci-ath79.c
+ create mode 100644 drivers/usb/host/ohci-ath79.c
+ create mode 100644 drivers/watchdog/ath79_wdt.c
+ create mode 100644 include/linux/gpio_buttons.h
 
-The attached patch fixes the issue. It's caused by a simple porting
-error. I'm going to prepare a proper patch later today.
-
-Wolfgang.
-
-
-
---------------080703020109020809040101
-Content-Type: text/x-diff;
- name="au1000-eth-mac-enable.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename="au1000-eth-mac-enable.patch"
-
-diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
-index 43489f8..53eff9b 100644
---- a/drivers/net/au1000_eth.c
-+++ b/drivers/net/au1000_eth.c
-@@ -155,10 +155,10 @@ static void au1000_enable_mac(struct net_device *dev, int force_reset)
- 	spin_lock_irqsave(&aup->lock, flags);
- 
- 	if (force_reset || (!aup->mac_enabled)) {
--		writel(MAC_EN_CLOCK_ENABLE, &aup->enable);
-+		writel(MAC_EN_CLOCK_ENABLE, aup->enable);
- 		au_sync_delay(2);
- 		writel((MAC_EN_RESET0 | MAC_EN_RESET1 | MAC_EN_RESET2
--				| MAC_EN_CLOCK_ENABLE), &aup->enable);
-+				| MAC_EN_CLOCK_ENABLE), aup->enable);
- 		au_sync_delay(2);
- 
- 		aup->mac_enabled = 1;
-@@ -503,9 +503,9 @@ static void au1000_reset_mac_unlocked(struct net_device *dev)
- 
- 	au1000_hard_stop(dev);
- 
--	writel(MAC_EN_CLOCK_ENABLE, &aup->enable);
-+	writel(MAC_EN_CLOCK_ENABLE, aup->enable);
- 	au_sync_delay(2);
--	writel(0, &aup->enable);
-+	writel(0, aup->enable);
- 	au_sync_delay(2);
- 
- 	aup->tx_full = 0;
-@@ -1119,7 +1119,7 @@ static int __devinit au1000_probe(struct platform_device *pdev)
- 	/* set a random MAC now in case platform_data doesn't provide one */
- 	random_ether_addr(dev->dev_addr);
- 
--	writel(0, &aup->enable);
-+	writel(0, aup->enable);
- 	aup->mac_enabled = 0;
- 
- 	pd = pdev->dev.platform_data;
-
---------------080703020109020809040101--
+-- 
+1.7.2.1

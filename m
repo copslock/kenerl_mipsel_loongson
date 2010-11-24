@@ -1,173 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2010 18:24:23 +0100 (CET)
-Received: from na3sys009aog107.obsmtp.com ([74.125.149.197]:47858 "HELO
-        na3sys009aog107.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491050Ab0KXRYT convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2010 19:03:12 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:45604 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491050Ab0KXSDJ convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Nov 2010 18:24:19 +0100
-Received: from source ([209.85.216.41]) by na3sys009aob107.postini.com ([74.125.148.12]) with SMTP
-        ID DSNKTO1KQL48HCDA6lLB4d2YDDaoPOf+tVc5@postini.com; Wed, 24 Nov 2010 09:24:19 PST
-Received: by mail-qw0-f41.google.com with SMTP id 7so123200qwf.28
-        for <multiple recipients>; Wed, 24 Nov 2010 09:24:16 -0800 (PST)
+        Wed, 24 Nov 2010 19:03:09 +0100
+Received: by gxk26 with SMTP id 26so4857gxk.36
+        for <linux-mips@linux-mips.org>; Wed, 24 Nov 2010 10:03:02 -0800 (PST)
+Received: by 10.151.143.12 with SMTP id v12mr1515814ybn.35.1290621782160; Wed,
+ 24 Nov 2010 10:03:02 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.224.185.129 with SMTP id co1mr6907370qab.232.1290619455259;
- Wed, 24 Nov 2010 09:24:15 -0800 (PST)
-Received: by 10.220.194.74 with HTTP; Wed, 24 Nov 2010 09:24:15 -0800 (PST)
-In-Reply-To: <1290524800-21419-10-git-send-email-juhosg@openwrt.org>
-References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-        <1290524800-21419-10-git-send-email-juhosg@openwrt.org>
-Date:   Wed, 24 Nov 2010 12:24:15 -0500
-Message-ID: <AANLkTikQ=oen3jmz=BfY7y=s6Qo7R8DQ1-79puby-Snt@mail.gmail.com>
-Subject: Re: [PATCH 09/18] input: add input driver for polled GPIO buttons
-From:   Ben Gardiner <bengardiner@nanometrics.ca>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kaloz@openwrt.org, "Luis R. Rodriguez" <lrodriguez@atheros.com>,
-        Cliff Holden <Cliff.Holden@atheros.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>, linux-input@vger.kernel.org
+Received: by 10.231.196.10 with HTTP; Wed, 24 Nov 2010 10:02:41 -0800 (PST)
+In-Reply-To: <4CED48CE.5060300@caviumnetworks.com>
+References: <1290607413.12457.44.camel@concordia> <fa44e045-9600-4c46-939a-af246afab4f6@VA3EHSMHS019.ehs.local>
+ <4CED48CE.5060300@caviumnetworks.com>
+From:   Grant Likely <grant.likely@secretlab.ca>
+Date:   Wed, 24 Nov 2010 11:02:41 -0700
+X-Google-Sender-Auth: UrwBy-eprr41B2l28Wms4mgGJew
+Message-ID: <AANLkTim+cmxtkw28aeW6ZrspTaiad+w_FHKTys7_NEfR@mail.gmail.com>
+Subject: Re: Mega rename of device tree routines from of_*() to dt_*()
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     Stephen Neuendorffer <stephen.neuendorffer@xilinx.com>,
+        michael@ellerman.id.au, LKML <linux-kernel@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        microblaze-uclinux@itee.uq.edu.au,
+        devicetree-discuss@lists.ozlabs.org,
+        linuxppc-dev list <linuxppc-dev@ozlabs.org>,
+        sparclinux@vger.kernel.org
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <bengardiner@nanometrics.ca>
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28516
+X-archive-position: 28517
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bengardiner@nanometrics.ca
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-Hello Gabor,
+On Wed, Nov 24, 2010 at 10:18 AM, David Daney <ddaney@caviumnetworks.com> wrote:
+> On 11/24/2010 09:02 AM, Stephen Neuendorffer wrote:
+>>
+>>
+>>> -----Original Message-----
+>>> From: linuxppc-dev-bounces+stephen=neuendorffer.name@lists.ozlabs.org
+>>> [mailto:linuxppc-dev-
+>>> bounces+stephen=neuendorffer.name@lists.ozlabs.org] On Behalf Of Michael
+>>> Ellerman
+>>> Sent: Wednesday, November 24, 2010 6:04 AM
+>>> To: LKML
+>>> Cc: linux-mips; microblaze-uclinux@itee.uq.edu.au;
+>>> devicetree-discuss@lists.ozlabs.org; linuxppc-dev
+>>> list; sparclinux@vger.kernel.org
+>>> Subject: RFC: Mega rename of device tree routines from of_*() to dt_*()
+>>>
+>>> Hi all,
+>>>
+>>> There were some murmurings on IRC last week about renaming the of_*()
+>>> routines. I was procrastinating at the time and said I'd have a look at
+>>> it, so here I am.
+>>>
+>>> The thinking is that on many platforms that use the of_() routines
+>>> OpenFirmware is not involved at all, this is true even on many powerpc
+>>> platforms. Also for folks who don't know the OpenFirmware connection it
+>>> reads as "of", as in "a can of worms".
+>>>
+>>> Personally I'm a bit ambivalent about it, the OF name is a bit wrong so
+>>> it would be nice to get rid of, but it's a lot of churn.
+>>>
+>>> So I'm hoping people with either say "YES this is a great idea", or "NO
+>>> this is stupid".
+>>
+>> Personally, I think it's a great idea, if only because I stared long and
+>> hard
+>> at the code once upon a time trying to figure out what is really
+>> OF-related
+>> and what isn't.  It's somewhat clearer now that drivers/of has been
+>> factored
+>> out (although, shouldn't it be drivers/dt???)
 
-On Tue, Nov 23, 2010 at 10:06 AM, Gabor Juhos <juhosg@openwrt.org> wrote:
-> The existing gpio-keys driver can be usable only for GPIO lines with
-> interrupt support. Several devices have buttons connected to a GPIO
-> line which is not capable to generate interrupts. This patch adds a
-> new input driver using the generic GPIO layer and the input-polldev
-> to support such buttons.
+Yes, the directory name should change, as should the CONFIG_OF* defines.
+
+>>
+>> That said, it *is* alot of code churn.  If it's going to be done, I think
+>> it should be
+>> done in concert with fixing a bunch of the function names which don't
+>> really follow any
+>> sane naming convention, so that the backporting discontinuity only happens
+>> once.
+>>
 >
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Mike Frysinger <vapier@gentoo.org>
-> Cc: linux-input@vger.kernel.org
-> ---
+> Oh, you mean things like:
+>
+> of_{,un}register_platform_driver vs. platform_driver_{,un}register
+>
+> That one is particularly annoying to me.
 
-I've tested this driver with the da850-evm pushbuttons and switches
-connected to i2c gpio expanders. It works well. The changes to the
-patch series were straightforward: .config, "gpio-keys" ->
-"gpio-buttons", struct gpio_key -> struct gpio_button etc.
+Ignore that one.  of_{,un}platform_driver is deprecated and users will
+all be converted to platform_drivers.
 
-I do have some comments about this patch. But the new driver is
-functional as-is.
-
-Tested-by: Ben Gardiner <bengardiner@nanometrics.ca>
-
->  drivers/input/misc/Kconfig        |   16 +++
->  drivers/input/misc/Makefile       |    1 +
->  drivers/input/misc/gpio_buttons.c |  232 +++++++++++++++++++++++++++++++++++++
-
-Since the new gpio_buttons.c driver presents the same input event
-device as the gpio_keys.c driver, I think it should also be a
-drivers/input/keys device.
-
->  [...]
-> diff --git a/drivers/input/misc/gpio_buttons.c b/drivers/input/misc/gpio_buttons.c
-
-When I was converting the da850-evm platform code to use the new
-driver I felt that the changes did not indicate a switch to a polled
-driver as seems to be the intent with the introduction of a separate
-driver. All that was different in the platform code was 'button' where
-there use to be 'key' and button does not itself convey the knowledge
-that it is a polled input device.
-
-I know names of drivers can be contentions but I will propose
-regardless that this driver be called gpio-polled-keys /
-gpio_polled_keys.c
-
-> new file mode 100644
-> index 0000000..51288a3
-> --- /dev/null
-> +++ b/drivers/input/misc/gpio_buttons.c
-> [...]
-> +static void gpio_buttons_poll(struct input_polled_dev *dev)
-> +{
-> +       struct gpio_buttons_dev *bdev = dev->private;
-> +       struct gpio_buttons_platform_data *pdata = bdev->pdata;
-> +       struct input_dev *input = dev->input;
-> +       int i;
-> +
-> +       for (i = 0; i < bdev->pdata->nbuttons; i++) {
-> +               struct gpio_button *button = &pdata->buttons[i];
-> +               struct gpio_button_data *bdata = &bdev->data[i];
-> +
-> +               if (bdata->count < button->threshold)
-> +                       bdata->count++;
-> +               else
-> +                       gpio_buttons_check_state(input, button, bdata);
-
-I think that a count-theshold can still be performed here, but using
-the debounce_interval and polling_interval field specified in the
-gpio_button and gpio_buttons_platform_data structures, respectively,
-to calculate a threshold value.
-
-In this way the gpio_button and gpio_keys_button structs are made more
-similar -- differing only in the presence of .wakeup in
-gpio_keys_button but not in gpio_button. Which may make it possible to
-re-use the gpio_keys_button structure.
-
-> [...]
-> diff --git a/include/linux/gpio_buttons.h b/include/linux/gpio_buttons.h
-> new file mode 100644
-> index 0000000..f85b993
-> --- /dev/null
-> +++ b/include/linux/gpio_buttons.h
-> @@ -0,0 +1,33 @@
-> +/*
-> + *  Definitions for the GPIO buttons interface driver
-> + *
-> + *  Copyright (C) 2007-2010 Gabor Juhos <juhosg@openwrt.org>
-> + *
-> + *  This file was based on: /include/linux/gpio_keys.h
-> + *     The original gpio_keys.h seems not to have a license.
-> + *
-> + *  This program is free software; you can redistribute it and/or modify
-> + *  it under the terms of the GNU General Public License version 2 as
-> + *  published by the Free Software Foundation.
-> + *
-> + */
-> +
-> +#ifndef _GPIO_BUTTONS_H_
-> +#define _GPIO_BUTTONS_H_
-> +
-> +struct gpio_button {
-> +       int     gpio;           /* GPIO line number */
-> +       int     active_low;
-> +       char    *desc;          /* button description */
-> +       int     type;           /* input event type (EV_KEY, EV_SW) */
-> +       int     code;           /* input event code (KEY_*, SW_*) */
-> +       int     threshold;      /* count threshold */
-
-Could we instead use the existing struct gpio_keys_button; we could
-transform debounce_interval into a threshold as described above and
-add an error when a gpio_button_probe() sees a gpio_key with .wakeup
-== TRUE? It seems that this structure duplicates alot of the
-gpio_keys_button structure.
-
-> [...]
-> +struct gpio_buttons_platform_data {
-> +       struct gpio_button *buttons;
-> +       int     nbuttons;               /* number of buttons */
-> +       int     poll_interval;          /* polling interval */
-> +};
-
-I think the units of poll_interval should be included in the comment.
-i.e. /* polling interval in msecs */
-
-Best Regards,
-Ben Gardiner
-
----
-Nanometrics Inc.
-http://www.nanometrics.ca
+g.

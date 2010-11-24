@@ -1,101 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2010 10:26:25 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:43552 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491165Ab0KXJ0R convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Nov 2010 10:26:17 +0100
-Received: by wyf22 with SMTP id 22so489308wyf.36
-        for <linux-mips@linux-mips.org>; Wed, 24 Nov 2010 01:26:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=Zc3zaNXM4hAdvjd/gvpCuZd07zoWdd1E5g76HUP5LbI=;
-        b=F/9fWJaS2CJEuUfxgHDrImIF0lBVyGDeDKPDWmqun2pcABZoKOWbHw4n/fT/vd5WH6
-         Ur+IvQAsPjJrFveA1fQMODb1lDDpES9LuuytXqHgq29JNX5FcxGVaQ4eV4XynzhTl8MY
-         nX0ki6hlA06cgrOWkTpMHvAl+NG0w15g8N3NU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=YPD5ydUbBPHS0YyFHMHH2dohG+I2+dpva9+S3y48LxxNztrTAVpOO8nPGW7E1WhfTk
-         FcoAo6mu/XCfhQjl+4mu47J32mfEz6T1LLGUIoCwD+GjY2/0Usiwc5wov8oTJXOkX/0H
-         hsIkfFsET1i4AXZBshM9P0xLJCwkPjxDvRDFU=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2010 12:34:14 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:37623 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491180Ab0KXLeI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 24 Nov 2010 12:34:08 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oAOBY6q9030866;
+        Wed, 24 Nov 2010 11:34:06 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oAOBY5m4030846;
+        Wed, 24 Nov 2010 11:34:05 GMT
+Date:   Wed, 24 Nov 2010 11:34:05 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/7] MIPS: Fix CP0 COUNTER clockevent race
+Message-ID: <20101124113404.GA30204@linux-mips.org>
+References: <8a8eee995454c8b271cceb440e31699a@localhost>
+ <444ef6c4bbb47d55c700452d8cd23229@localhost>
 MIME-Version: 1.0
-Received: by 10.216.30.65 with SMTP id j43mr7836332wea.20.1290590771484; Wed,
- 24 Nov 2010 01:26:11 -0800 (PST)
-Received: by 10.216.131.88 with HTTP; Wed, 24 Nov 2010 01:26:11 -0800 (PST)
-In-Reply-To: <1290532165.30543.374.camel@gandalf.stny.rr.com>
-References: <AANLkTikjbP89qp24u1Pw6zcsyV7WcYYtmR0Yt3yCaXoh@mail.gmail.com>
-        <AANLkTim-+1csKoCc7kqXERmLZRSt9LAAB=JPK+0gaYPo@mail.gmail.com>
-        <AANLkTikaUxKqsqXKYpETOnWAMuCi5gp30ANux0RQuK6Z@mail.gmail.com>
-        <AANLkTinr1bU+_YCTW9xyJ9H0qiSOifBMsxC6iujszMvs@mail.gmail.com>
-        <4CEB37F8.1050504@bitwagon.com>
-        <1290532165.30543.374.camel@gandalf.stny.rr.com>
-Date:   Wed, 24 Nov 2010 17:26:11 +0800
-Message-ID: <AANLkTinkxprgKVMOpYbUkxe0xou8183SD1=_DOdsTF4M@mail.gmail.com>
-Subject: Re: Build failure triggered by recordmcount
-From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     John Reiser <jreiser@bitwagon.com>,
-        Arnaud Lacombe <lacombar@gmail.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <444ef6c4bbb47d55c700452d8cd23229@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28506
+X-archive-position: 28507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 24, 2010 at 1:09 AM, Steven Rostedt <rostedt@goodmis.org> wrote:
-> On Mon, 2010-11-22 at 19:41 -0800, John Reiser wrote:
->> It looks to me like the change which introduced "virtual functions"
->> forgot about cross-platform endianness.  Can anyone please test this patch?
->> Thank you to Arnaud for supplying before+after data files do_mounts*.o.
->>
->>
->> recordmcount: Honor endianness in fn_ELF_R_INFO
->
-> Arnaud, can I get a "Tested-by" from you.
->
-> Wu, can you give me your Acked-by:
+On Tue, Nov 23, 2010 at 10:26:44AM -0800, Kevin Cernekee wrote:
 
-Acked-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> write_c0_compare(read_c0_count());
+> 
+> Even if the counter doesn't increment during execution, this might not
+> generate an interrupt until the counter wraps around.  The CPU may
+> perform the comparison each time CP0 COUNT increments, not when CP0
+> COMPARE is written.
+> 
+> If mips_next_event() is called with a very small delta, and CP0 COUNT
+> increments during the calculation of "cnt += delta", it is possible
+> that CP0 COMPARE will be written with the current value of CP0 COUNT.
+> If this is detected, the function should return -ETIME, to indicate
+> that the interrupt might not have actually gotten scheduled.
 
-Thanks & Regards,
-Wu Zhangjin
+Good catch - though on real hardware it should be theoretical as the
+minimum timer interval is 300ns.  So it should only be trigerable on
+a very slow system like a hardware emulator or maybe if a software
+emulator like qemu gets rescheduled between the update and the read-back.
 
->
-> Thanks,
->
-> -- Steve
->
->>
->> ---
->>  scripts/recordmcount.h |    2 +-
->>  1 files changed, 1 insertions(+), 1 deletions(-)
->>
->> diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
->> index 58e933a..3966717 100644
->> --- a/scripts/recordmcount.h
->> +++ b/scripts/recordmcount.h
->> @@ -119,7 +119,7 @@ static uint_t (*Elf_r_sym)(Elf_Rel const *rp) = fn_ELF_R_SYM;
->>   static void fn_ELF_R_INFO(Elf_Rel *const rp, unsigned sym, unsigned type)
->>  {
->> -     rp->r_info = ELF_R_INFO(sym, type);
->> +     rp->r_info = _w(ELF_R_INFO(sym, type));
->>  }
->>  static void (*Elf_r_info)(Elf_Rel *const rp, unsigned sym, unsigned type) = fn_ELF_R_INFO;
->>  -- 1.7.3.2
->>
->>
->
->
->
+Applied,
+
+  Ralf

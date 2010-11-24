@@ -1,117 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2010 19:33:39 +0100 (CET)
-Received: from sg2ehsobe001.messaging.microsoft.com ([207.46.51.75]:28981 "EHLO
-        SG2EHSOBE001.bigfish.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491050Ab0KXSdf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Nov 2010 19:33:35 +0100
-Received: from mail204-sin-R.bigfish.com (10.210.100.249) by
- SG2EHSOBE001.bigfish.com (10.210.112.21) with Microsoft SMTP Server id
- 14.1.225.8; Wed, 24 Nov 2010 18:33:18 +0000
-Received: from mail204-sin (localhost.localdomain [127.0.0.1])  by
- mail204-sin-R.bigfish.com (Postfix) with ESMTP id 0D624A7005B; Wed, 24 Nov
- 2010 18:33:18 +0000 (UTC)
-X-SpamScore: -36
-X-BigFish: VPS-36(zzbb2dK542N1432N98dN14ffO9371Pzz1202hzz8275dhz2dh95h691h668h67dh685h61h)
-X-Forefront-Antispam-Report: KIP:(null);UIP:(null);IPVD:NLI;H:xsj-gw1;RD:unknown-60-83.xilinx.com;EFVD:NLI
-Received: from mail204-sin (localhost.localdomain [127.0.0.1]) by mail204-sin
- (MessageSwitch) id 1290623597550139_25476; Wed, 24 Nov 2010 18:33:17 +0000
- (UTC)
-Received: from SG2EHSMHS007.bigfish.com (unknown [10.210.100.250])      by
- mail204-sin.bigfish.com (Postfix) with ESMTP id 3CF6077804E;   Wed, 24 Nov 2010
- 18:33:17 +0000 (UTC)
-Received: from xsj-gw1 (149.199.60.83) by SG2EHSMHS007.bigfish.com
- (10.210.125.17) with Microsoft SMTP Server id 14.1.225.8; Wed, 24 Nov 2010
- 18:33:16 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66]
- helo=xsj-smtp1.xilinx.com)     by xsj-gw1 with esmtp (Exim 4.63)       (envelope-from
- <stephen.neuendorffer@xilinx.com>)     id 1PLK9b-0006NZ-S9; Wed, 24 Nov 2010
- 10:33:15 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-Class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2010 19:55:20 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:60837 "EHLO
+        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491050Ab0KXSzR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Nov 2010 19:55:17 +0100
+Received: from mail.szarvas.hu (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 23D434DC03A;
+        Wed, 24 Nov 2010 19:55:08 +0100 (CET)
+Received: from [192.168.254.10] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 7721F270001;
+        Wed, 24 Nov 2010 19:55:06 +0100 (CET)
+Message-ID: <4CED5F83.6070301@openwrt.org>
+Date:   Wed, 24 Nov 2010 19:54:59 +0100
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; hu-HU; rv:1.9.2.12) Gecko/20101027 Thunderbird/3.1.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Subject: RE: Mega rename of device tree routines from of_*() to dt_*()
-Date:   Wed, 24 Nov 2010 10:32:11 -0800
-In-Reply-To: <4CED48CE.5060300@caviumnetworks.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Mega rename of device tree routines from of_*() to dt_*()
-Thread-Index: AcuL+5MExKaPVux0RsiMeMP0dz+DbQACj7rQ
-References: <1290607413.12457.44.camel@concordia> <fa44e045-9600-4c46-939a-af246afab4f6@VA3EHSMHS019.ehs.local> <4CED48CE.5060300@caviumnetworks.com>
-From:   Stephen Neuendorffer <stephen.neuendorffer@xilinx.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     <michael@ellerman.id.au>, LKML <linux-kernel@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        <microblaze-uclinux@itee.uq.edu.au>,
-        <devicetree-discuss@lists.ozlabs.org>,
-        linuxppc-dev list <linuxppc-dev@ozlabs.org>,
-        <sparclinux@vger.kernel.org>
-X-OriginalArrivalTime: 24 Nov 2010 18:33:14.0966 (UTC) FILETIME=[0E693760:01CB8C06]
-X-RCIS-Action: ALLOW
-Message-ID: <ee487d0b-ec9d-42a9-9c8e-39f83858cffc@SG2EHSMHS007.ehs.local>
-X-OriginatorOrg: xilinx.com
-Return-Path: <stephen.neuendorffer@xilinx.com>
+To:     Ben Gardiner <bengardiner@nanometrics.ca>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        kaloz@openwrt.org, "Luis R. Rodriguez" <lrodriguez@atheros.com>,
+        Cliff Holden <Cliff.Holden@atheros.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mike Frysinger <vapier@gentoo.org>, linux-input@vger.kernel.org
+Subject: Re: [PATCH 09/18] input: add input driver for polled GPIO buttons
+References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>      <1290524800-21419-10-git-send-email-juhosg@openwrt.org> <AANLkTikQ=oen3jmz=BfY7y=s6Qo7R8DQ1-79puby-Snt@mail.gmail.com>
+In-Reply-To: <AANLkTikQ=oen3jmz=BfY7y=s6Qo7R8DQ1-79puby-Snt@mail.gmail.com>
+X-Enigmail-Version: 1.1.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-VBMS: A11332D0C9D | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28519
+X-archive-position: 28520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stephen.neuendorffer@xilinx.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGF2aWQgRGFuZXkgW21h
-aWx0bzpkZGFuZXlAY2F2aXVtbmV0d29ya3MuY29tXQ0KPiBTZW50OiBXZWRuZXNkYXksIE5vdmVt
-YmVyIDI0LCAyMDEwIDk6MTggQU0NCj4gVG86IFN0ZXBoZW4gTmV1ZW5kb3JmZmVyDQo+IENjOiBt
-aWNoYWVsQGVsbGVybWFuLmlkLmF1OyBMS01MOyBsaW51eC1taXBzOyBtaWNyb2JsYXplLXVjbGlu
-dXhAaXRlZS51cS5lZHUuYXU7IGRldmljZXRyZWUtDQo+IGRpc2N1c3NAbGlzdHMub3psYWJzLm9y
-ZzsgbGludXhwcGMtZGV2IGxpc3Q7IHNwYXJjbGludXhAdmdlci5rZXJuZWwub3JnDQo+IFN1Ympl
-Y3Q6IFJlOiBNZWdhIHJlbmFtZSBvZiBkZXZpY2UgdHJlZSByb3V0aW5lcyBmcm9tIG9mXyooKSB0
-byBkdF8qKCkNCj4gDQo+IE9uIDExLzI0LzIwMTAgMDk6MDIgQU0sIFN0ZXBoZW4gTmV1ZW5kb3Jm
-ZmVyIHdyb3RlOg0KPiA+DQo+ID4NCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4g
-Pj4gRnJvbTogbGludXhwcGMtZGV2LWJvdW5jZXMrc3RlcGhlbj1uZXVlbmRvcmZmZXIubmFtZUBs
-aXN0cy5vemxhYnMub3JnIFttYWlsdG86bGludXhwcGMtZGV2LQ0KPiA+PiBib3VuY2VzK3N0ZXBo
-ZW49bmV1ZW5kb3JmZmVyLm5hbWVAbGlzdHMub3psYWJzLm9yZ10gT24gQmVoYWxmIE9mIE1pY2hh
-ZWwgRWxsZXJtYW4NCj4gPj4gU2VudDogV2VkbmVzZGF5LCBOb3ZlbWJlciAyNCwgMjAxMCA2OjA0
-IEFNDQo+ID4+IFRvOiBMS01MDQo+ID4+IENjOiBsaW51eC1taXBzOyBtaWNyb2JsYXplLXVjbGlu
-dXhAaXRlZS51cS5lZHUuYXU7IGRldmljZXRyZWUtZGlzY3Vzc0BsaXN0cy5vemxhYnMub3JnOyBs
-aW51eHBwYy0NCj4gZGV2DQo+ID4+IGxpc3Q7IHNwYXJjbGludXhAdmdlci5rZXJuZWwub3JnDQo+
-ID4+IFN1YmplY3Q6IFJGQzogTWVnYSByZW5hbWUgb2YgZGV2aWNlIHRyZWUgcm91dGluZXMgZnJv
-bSBvZl8qKCkgdG8gZHRfKigpDQo+ID4+DQo+ID4+IEhpIGFsbCwNCj4gPj4NCj4gPj4gVGhlcmUg
-d2VyZSBzb21lIG11cm11cmluZ3Mgb24gSVJDIGxhc3Qgd2VlayBhYm91dCByZW5hbWluZyB0aGUg
-b2ZfKigpDQo+ID4+IHJvdXRpbmVzLiBJIHdhcyBwcm9jcmFzdGluYXRpbmcgYXQgdGhlIHRpbWUg
-YW5kIHNhaWQgSSdkIGhhdmUgYSBsb29rIGF0DQo+ID4+IGl0LCBzbyBoZXJlIEkgYW0uDQo+ID4+
-DQo+ID4+IFRoZSB0aGlua2luZyBpcyB0aGF0IG9uIG1hbnkgcGxhdGZvcm1zIHRoYXQgdXNlIHRo
-ZSBvZl8oKSByb3V0aW5lcw0KPiA+PiBPcGVuRmlybXdhcmUgaXMgbm90IGludm9sdmVkIGF0IGFs
-bCwgdGhpcyBpcyB0cnVlIGV2ZW4gb24gbWFueSBwb3dlcnBjDQo+ID4+IHBsYXRmb3Jtcy4gQWxz
-byBmb3IgZm9sa3Mgd2hvIGRvbid0IGtub3cgdGhlIE9wZW5GaXJtd2FyZSBjb25uZWN0aW9uIGl0
-DQo+ID4+IHJlYWRzIGFzICJvZiIsIGFzIGluICJhIGNhbiBvZiB3b3JtcyIuDQo+ID4+DQo+ID4+
-IFBlcnNvbmFsbHkgSSdtIGEgYml0IGFtYml2YWxlbnQgYWJvdXQgaXQsIHRoZSBPRiBuYW1lIGlz
-IGEgYml0IHdyb25nIHNvDQo+ID4+IGl0IHdvdWxkIGJlIG5pY2UgdG8gZ2V0IHJpZCBvZiwgYnV0
-IGl0J3MgYSBsb3Qgb2YgY2h1cm4uDQo+ID4+DQo+ID4+IFNvIEknbSBob3BpbmcgcGVvcGxlIHdp
-dGggZWl0aGVyIHNheSAiWUVTIHRoaXMgaXMgYSBncmVhdCBpZGVhIiwgb3IgIk5PDQo+ID4+IHRo
-aXMgaXMgc3R1cGlkIi4NCj4gPg0KPiA+IFBlcnNvbmFsbHksIEkgdGhpbmsgaXQncyBhIGdyZWF0
-IGlkZWEsIGlmIG9ubHkgYmVjYXVzZSBJIHN0YXJlZCBsb25nIGFuZCBoYXJkDQo+ID4gYXQgdGhl
-IGNvZGUgb25jZSB1cG9uIGEgdGltZSB0cnlpbmcgdG8gZmlndXJlIG91dCB3aGF0IGlzIHJlYWxs
-eSBPRi1yZWxhdGVkDQo+ID4gYW5kIHdoYXQgaXNuJ3QuICBJdCdzIHNvbWV3aGF0IGNsZWFyZXIg
-bm93IHRoYXQgZHJpdmVycy9vZiBoYXMgYmVlbiBmYWN0b3JlZA0KPiA+IG91dCAoYWx0aG91Z2gs
-IHNob3VsZG4ndCBpdCBiZSBkcml2ZXJzL2R0Pz8/KQ0KPiA+DQo+ID4gVGhhdCBzYWlkLCBpdCAq
-aXMqIGFsb3Qgb2YgY29kZSBjaHVybi4gIElmIGl0J3MgZ29pbmcgdG8gYmUgZG9uZSwgSSB0aGlu
-ayBpdCBzaG91bGQgYmUNCj4gPiBkb25lIGluIGNvbmNlcnQgd2l0aCBmaXhpbmcgYSBidW5jaCBv
-ZiB0aGUgZnVuY3Rpb24gbmFtZXMgd2hpY2ggZG9uJ3QgcmVhbGx5IGZvbGxvdyBhbnkNCj4gPiBz
-YW5lIG5hbWluZyBjb252ZW50aW9uLCBzbyB0aGF0IHRoZSBiYWNrcG9ydGluZyBkaXNjb250aW51
-aXR5IG9ubHkgaGFwcGVucyBvbmNlLg0KPiA+DQo+IA0KPiBPaCwgeW91IG1lYW4gdGhpbmdzIGxp
-a2U6DQo+IA0KPiBvZl97LHVufXJlZ2lzdGVyX3BsYXRmb3JtX2RyaXZlciB2cy4gcGxhdGZvcm1f
-ZHJpdmVyX3ssdW59cmVnaXN0ZXINCj4gDQo+IFRoYXQgb25lIGlzIHBhcnRpY3VsYXJseSBhbm5v
-eWluZyB0byBtZS4NCj4gDQo+IERhdmlkIERhbmV5DQoNCkFjdHVhbGx5LCBJIHdhcyBwYXJ0aWN1
-bGFybHkgdGhpbmtpbmcgb2YgZHJpdmVycy9vZi9mZHQuYywgd2hpY2ggSSB3YXMgcmVjZW50bHkg
-aGFja2luZyBhcm91bmQgd2l0aCwNCmJ1dCBJJ20gc3VyZSB0aGVyZSBhcmUgb3RoZXJzLi4uIDop
-DQoNClN0ZXZlDQoKVGhpcyBlbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIGFyZSBpbnRlbmRlZCBm
-b3IgdGhlIHNvbGUgdXNlIG9mIHRoZSBuYW1lZCByZWNpcGllbnQocykgYW5kIGNvbnRhaW4ocykg
-Y29uZmlkZW50aWFsIGluZm9ybWF0aW9uIHRoYXQgbWF5IGJlIHByb3ByaWV0YXJ5LCBwcml2aWxl
-Z2VkIG9yIGNvcHlyaWdodGVkIHVuZGVyIGFwcGxpY2FibGUgbGF3LiBJZiB5b3UgYXJlIG5vdCB0
-aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBkbyBub3QgcmVhZCwgY29weSwgb3IgZm9yd2FyZCB0aGlz
-IGVtYWlsIG1lc3NhZ2Ugb3IgYW55IGF0dGFjaG1lbnRzLiBEZWxldGUgdGhpcyBlbWFpbCBtZXNz
-YWdlIGFuZCBhbnkgYXR0YWNobWVudHMgaW1tZWRpYXRlbHkuCg==
+Hi Ben,
+
+> <...>
+> I've tested this driver with the da850-evm pushbuttons and switches
+> connected to i2c gpio expanders. It works well. The changes to the
+> patch series were straightforward: .config, "gpio-keys" ->
+> "gpio-buttons", struct gpio_key -> struct gpio_button etc.
+> 
+> I do have some comments about this patch. But the new driver is
+> functional as-is.
+> 
+> Tested-by: Ben Gardiner <bengardiner@nanometrics.ca>
+
+Thanks!
+
+>><...>
+> 
+> Since the new gpio_buttons.c driver presents the same input event
+> device as the gpio_keys.c driver, I think it should also be a
+> drivers/input/keys device.
+
+Makes sense.
+
+> 
+>>  [...]
+>> diff --git a/drivers/input/misc/gpio_buttons.c b/drivers/input/misc/gpio_buttons.c
+> 
+> When I was converting the da850-evm platform code to use the new
+> driver I felt that the changes did not indicate a switch to a polled
+> driver as seems to be the intent with the introduction of a separate
+> driver. All that was different in the platform code was 'button' where
+> there use to be 'key' and button does not itself convey the knowledge
+> that it is a polled input device.
+> 
+> I know names of drivers can be contentions but I will propose
+> regardless that this driver be called gpio-polled-keys /
+> gpio_polled_keys.c
+
+I agree, this would be more informative.
+
+>> <...>
+>> +       for (i = 0; i < bdev->pdata->nbuttons; i++) {
+>> +               struct gpio_button *button = &pdata->buttons[i];
+>> +               struct gpio_button_data *bdata = &bdev->data[i];
+>> +
+>> +               if (bdata->count < button->threshold)
+>> +                       bdata->count++;
+>> +               else
+>> +                       gpio_buttons_check_state(input, button, bdata);
+> 
+> I think that a count-theshold can still be performed here, but using
+> the debounce_interval and polling_interval field specified in the
+> gpio_button and gpio_buttons_platform_data structures, respectively,
+> to calculate a threshold value.
+
+Good idea. We don't even have to compute a threshold value, we can use the
+debounce_interval and poll_interval fields directly. I mean something similar to
+this:
+
+<...>
+	if (bdata->interval < button->debounce_interval)
+		bdata->interval += pdata->poll_interval;
+	else
+		gpio_buttons_check_state(input, button, bdata);
+<...>
+
+> In this way the gpio_button and gpio_keys_button structs are made more
+> similar -- differing only in the presence of .wakeup in
+> gpio_keys_button but not in gpio_button. Which may make it possible to
+> re-use the gpio_keys_button structure.
+> 
+>> <...>
+>> +struct gpio_button {
+>> +       int     gpio;           /* GPIO line number */
+>> +       int     active_low;
+>> +       char    *desc;          /* button description */
+>> +       int     type;           /* input event type (EV_KEY, EV_SW) */
+>> +       int     code;           /* input event code (KEY_*, SW_*) */
+>> +       int     threshold;      /* count threshold */
+> 
+> Could we instead use the existing struct gpio_keys_button; we could
+> transform debounce_interval into a threshold as described above
+
+Sure, we can use that...
+
+> and add an error when a gpio_button_probe() sees a gpio_key with .wakeup ==
+> TRUE?
+
+I don't think we should check that, we can simply ignore this field. Maybe we
+should add a comment to the .wakeup field to state that the polled driver does
+not use that.
+
+> It seems that this structure duplicates alot of the gpio_keys_button
+> structure.
+
+Yes, it is almost the same.
+
+>> [...]
+>> +struct gpio_buttons_platform_data {
+>> +       struct gpio_button *buttons;
+>> +       int     nbuttons;               /* number of buttons */
+>> +       int     poll_interval;          /* polling interval */
+>> +};
+> 
+> I think the units of poll_interval should be included in the comment.
+> i.e. /* polling interval in msecs */
+
+Yes, you are right. Additionally, we should move this structure into
+gpio_keys.h, so we can get rid of the gpio_buttons.h file.
+
+Thank you for the valuable comments. I will create a new patch.
+
+Regards,
+Gabor

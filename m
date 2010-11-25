@@ -1,67 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Nov 2010 21:29:02 +0100 (CET)
-Received: from na3sys009aog102.obsmtp.com ([74.125.149.69]:41249 "EHLO
-        na3sys009aog102.obsmtp.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491050Ab0KXU2m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Nov 2010 21:28:42 +0100
-Received: from source ([209.85.216.170]) (using TLSv1) by na3sys009aob102.postini.com ([74.125.148.12]) with SMTP
-        ID DSNKTO11cbmIaIv+20ohfyxYiDH/DyWkX5Jc@postini.com; Wed, 24 Nov 2010 12:28:42 PST
-Received: by mail-qy0-f170.google.com with SMTP id 10so3568272qyk.15
-        for <multiple recipients>; Wed, 24 Nov 2010 12:28:33 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.229.91.194 with SMTP id o2mr7950058qcm.250.1290630512831; Wed,
- 24 Nov 2010 12:28:32 -0800 (PST)
-Received: by 10.220.194.74 with HTTP; Wed, 24 Nov 2010 12:28:32 -0800 (PST)
-In-Reply-To: <4CED5F83.6070301@openwrt.org>
-References: <1290524800-21419-1-git-send-email-juhosg@openwrt.org>
-        <1290524800-21419-10-git-send-email-juhosg@openwrt.org>
-        <AANLkTikQ=oen3jmz=BfY7y=s6Qo7R8DQ1-79puby-Snt@mail.gmail.com>
-        <4CED5F83.6070301@openwrt.org>
-Date:   Wed, 24 Nov 2010 15:28:32 -0500
-Message-ID: <AANLkTinjRRkpzEmgCzNpKTkSNwTr30M5KdHHEQ33Y11R@mail.gmail.com>
-Subject: Re: [PATCH 09/18] input: add input driver for polled GPIO buttons
-From:   Ben Gardiner <bengardiner@nanometrics.ca>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        kaloz@openwrt.org, "Luis R. Rodriguez" <lrodriguez@atheros.com>,
-        Cliff Holden <Cliff.Holden@atheros.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>, linux-input@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <bengardiner@nanometrics.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Nov 2010 08:18:16 +0100 (CET)
+Received: from canuck.infradead.org ([134.117.69.58]:44966 "EHLO
+        canuck.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1490963Ab0KYHSL convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Nov 2010 08:18:11 +0100
+Received: from f199130.upc-f.chello.nl ([80.56.199.130] helo=laptop)
+        by canuck.infradead.org with esmtpsa (Exim 4.72 #1 (Red Hat Linux))
+        id 1PLW5f-0008Kb-U9; Thu, 25 Nov 2010 07:18:00 +0000
+Received: by laptop (Postfix, from userid 1000)
+        id 83FAF10327613; Thu, 25 Nov 2010 08:01:09 +0100 (CET)
+Subject: Re: [PATCH 2/5] MIPS/Perf-events: Work with the new PMU interface
+From:   Peter Zijlstra <a.p.zijlstra@chello.nl>
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Cc:     ralf@linux-mips.org, fweisbec@gmail.com, will.deacon@arm.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com
+In-Reply-To: <1290063401-25440-3-git-send-email-dengcheng.zhu@gmail.com>
+References: <1290063401-25440-1-git-send-email-dengcheng.zhu@gmail.com>
+         <1290063401-25440-3-git-send-email-dengcheng.zhu@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Date:   Thu, 25 Nov 2010 08:01:09 +0100
+Message-ID: <1290668469.2072.550.camel@laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
+Return-Path: <a.p.zijlstra@chello.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28521
+X-archive-position: 28522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bengardiner@nanometrics.ca
+X-original-sender: a.p.zijlstra@chello.nl
 Precedence: bulk
 X-list: linux-mips
 
-Hi Gabor,
-
-On Wed, Nov 24, 2010 at 1:54 PM, Gabor Juhos <juhosg@openwrt.org> wrote:
-> Hi Ben,
->> [...]
->> Tested-by: Ben Gardiner <bengardiner@nanometrics.ca>
->
-> Thanks!
-
-You are most welcome.
-
->[...]
->
-> Thank you for the valuable comments. I will create a new patch.
-
-Actually, I've done a little hacking on the patch here while
-integrating with the da850-evm changes. I will post the series here,
-feel free to pick an choose the changes as you see fit -- hopefully it
-can save you some time.
-
-Best Regards,
-Ben Gardiner
-
----
-Nanometrics Inc.
-http://www.nanometrics.ca
+On Thu, 2010-11-18 at 14:56 +0800, Deng-Cheng Zhu wrote:
+> 
+> This is the MIPS part of the following commits by Peter Zijlstra:
+> 
+> a4eaf7f14675cb512d69f0c928055e73d0c6d252
+>         perf: Rework the PMU methods
+> 33696fc0d141bbbcb12f75b69608ea83282e3117
+>         perf: Per PMU disable
+> 24cd7f54a0d47e1d5b3de29e2456bfbd2d8447b7
+>         perf: Reduce perf_disable() usage
+> b0a873ebbf87bf38bf70b5e39a7cadc96099fa13
+>         perf: Register PMU implementations
+> 51b0fe39549a04858001922919ab355dee9bdfcf
+>         perf: Deconstify struct pmu
+> 
+> 
+I'll not ACK this as I've no clue how the MIPS PMU(s) work, but the
+shape looks ok :-)

@@ -1,60 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 08:37:01 +0100 (CET)
-Received: from rs35.luxsci.com ([66.216.127.90]:35289 "EHLO rs35.luxsci.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492021Ab0KZHgy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Nov 2010 08:36:54 +0100
-Received: from [10.20.0.14] (user-118btu4.cable.mindspring.com [66.133.247.196])
-        (authenticated bits=0)
-        by rs35.luxsci.com (8.13.1/8.13.7) with ESMTP id oAQ7aOl8023288
-        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=NOT);
-        Fri, 26 Nov 2010 01:36:25 -0600
-Message-ID: <4CEF6373.60105@firmworks.com>
-Date:   Thu, 25 Nov 2010 21:36:19 -1000
-From:   Mitch Bradley <wmb@firmworks.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.12) Gecko/20101027 Lightning/1.0b2 Thunderbird/3.1.6
-MIME-Version: 1.0
-To:     michael@ellerman.id.au
-CC:     Grant Likely <grant.likely@secretlab.ca>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        microblaze-uclinux@itee.uq.edu.au,
-        devicetree-discuss@lists.ozlabs.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linuxppc-dev list <linuxppc-dev@ozlabs.org>,
-        sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrea Scian <andrea.scian@dave.eu>
-Subject: Re: RFC: Mega rename of device tree routines from of_*() to dt_*()
-References: <1290607413.12457.44.camel@concordia>        <1290692075.689.20.camel@concordia>     <AANLkTiknyKi1pzvUP2WnasudZwH27-a0FxCX0BSHBdQp@mail.gmail.com>  <1290741341.9453.377.camel@concordia>  <4CEF3AB1.9060200@firmworks.com> <1290750606.9453.394.camel@concordia>
-In-Reply-To: <1290750606.9453.394.camel@concordia>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <wmb@firmworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 10:37:34 +0100 (CET)
+Received: from service87.mimecast.com ([94.185.240.25]:55537 "HELO
+        service87.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1492149Ab0KZJhb convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Nov 2010 10:37:31 +0100
+Received: from cam-owa1.Emea.Arm.com (fw-tnat.cambridge.arm.com [217.140.96.21])
+        by service87.mimecast.com;
+        Fri, 26 Nov 2010 09:37:21 +0000
+Received: from [10.1.68.185] ([10.1.255.212]) by cam-owa1.Emea.Arm.com with Microsoft SMTPSVC(6.0.3790.0);
+         Fri, 26 Nov 2010 09:37:18 +0000
+Subject: Re: [PATCH v2 3/5] MIPS/Perf-events: Fix event check in
+ validate_event()
+From:   Will Deacon <will.deacon@arm.com>
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Cc:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, fweisbec@gmail.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com
+In-Reply-To: <1290740707-32586-4-git-send-email-dengcheng.zhu@gmail.com>
+References: <1290740707-32586-1-git-send-email-dengcheng.zhu@gmail.com>
+         <1290740707-32586-4-git-send-email-dengcheng.zhu@gmail.com>
+Date:   Fri, 26 Nov 2010 09:37:14 +0000
+Message-ID: <1290764234.24565.1.camel@e102144-lin.cambridge.arm.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1
+X-OriginalArrivalTime: 26 Nov 2010 09:37:18.0615 (UTC) FILETIME=[848EF270:01CB8D4D]
+X-MC-Unique: 110112609372102701
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <will.deacon@arm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28540
+X-archive-position: 28541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wmb@firmworks.com
+X-original-sender: will.deacon@arm.com
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, 2010-11-26 at 03:05 +0000, Deng-Cheng Zhu wrote:
+> Ignore events that are in off/error state or belong to a different PMU.
+> 
+> This patch originates from the following commit for ARM by Will Deacon:
+> 
+> 65b4711ff513767341aa1915c822de6ec0de65cb
+>         ARM: 6352/1: perf: fix event validation
+> 
+> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+> ---
+>  arch/mips/kernel/perf_event.c |    5 +++--
+>  1 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/perf_event.c b/arch/mips/kernel/perf_event.c
+> index 1ee44a3..3d55761 100644
+> --- a/arch/mips/kernel/perf_event.c
+> +++ b/arch/mips/kernel/perf_event.c
+> @@ -486,8 +486,9 @@ static int validate_event(struct cpu_hw_events *cpuc,
+>  {
+>         struct hw_perf_event fake_hwc = event->hw;
+> 
+> -       if (event->pmu && event->pmu != &pmu)
+> -               return 0;
+> +       /* Allow mixed event group. So return 1 to pass validation. */
+> +       if (event->pmu != &pmu || event->state <= PERF_EVENT_STATE_OFF)
+> +               return 1;
+> 
+>         return mipspmu->alloc_counter(cpuc, &fake_hwc) >= 0;
+>  }
 
->> One Laptop Per Child ships real Open Firmware on its x86 Linux systems,
->> of which approximately 2 million have been shipped or ordered.  An ARM
->> version, also with OFW, is in the works.
->
-> OK. I don't see any code under arch/x86 or arch/arm that uses of_()
-> routines though? Or is it under drivers or something?
->
 
-Andres Salomon has been working for some time to get some Open Firmware 
-support for x86 upstream.  As you can probably imagine, it has been slow 
-going, but seems to be getting close.
+This looks better,
 
-The OLPC ARM work is just beginning, so nothing has been submitted yet. 
-  The first hardware prototypes are still being debugged. Lennert 
-Buytenhek is the key OS person who will be involved.
+Acked-by: Will Deacon <will.deacon@arm.com>
+
+Will

@@ -1,26 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 08:15:59 +0100 (CET)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:59582 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491772Ab0KZHPz convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Nov 2010 08:15:55 +0100
-Received: by iwn36 with SMTP id 36so473557iwn.36
-        for <linux-mips@linux-mips.org>; Thu, 25 Nov 2010 23:15:54 -0800 (PST)
-Received: by 10.231.16.67 with SMTP id n3mr1079822iba.113.1290755754252; Thu,
- 25 Nov 2010 23:15:54 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 08:37:01 +0100 (CET)
+Received: from rs35.luxsci.com ([66.216.127.90]:35289 "EHLO rs35.luxsci.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492021Ab0KZHgy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Nov 2010 08:36:54 +0100
+Received: from [10.20.0.14] (user-118btu4.cable.mindspring.com [66.133.247.196])
+        (authenticated bits=0)
+        by rs35.luxsci.com (8.13.1/8.13.7) with ESMTP id oAQ7aOl8023288
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=NOT);
+        Fri, 26 Nov 2010 01:36:25 -0600
+Message-ID: <4CEF6373.60105@firmworks.com>
+Date:   Thu, 25 Nov 2010 21:36:19 -1000
+From:   Mitch Bradley <wmb@firmworks.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.12) Gecko/20101027 Lightning/1.0b2 Thunderbird/3.1.6
 MIME-Version: 1.0
-Received: by 10.231.196.10 with HTTP; Thu, 25 Nov 2010 23:15:34 -0800 (PST)
-In-Reply-To: <1290750606.9453.394.camel@concordia>
-References: <1290607413.12457.44.camel@concordia> <1290692075.689.20.camel@concordia>
- <AANLkTiknyKi1pzvUP2WnasudZwH27-a0FxCX0BSHBdQp@mail.gmail.com>
- <1290741341.9453.377.camel@concordia> <4CEF3AB1.9060200@firmworks.com> <1290750606.9453.394.camel@concordia>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Fri, 26 Nov 2010 00:15:34 -0700
-X-Google-Sender-Auth: QrwfgkSlsvcgEV8WlGyrl5hLzyI
-Message-ID: <AANLkTi=XmuWMzmtCNtswkUBgDt3k1FWAcUVhv7WJjA4j@mail.gmail.com>
-Subject: Re: RFC: Mega rename of device tree routines from of_*() to dt_*()
 To:     michael@ellerman.id.au
-Cc:     Mitch Bradley <wmb@firmworks.com>,
+CC:     Grant Likely <grant.likely@secretlab.ca>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-mips <linux-mips@linux-mips.org>,
         microblaze-uclinux@itee.uq.edu.au,
@@ -29,98 +23,38 @@ Cc:     Mitch Bradley <wmb@firmworks.com>,
         linuxppc-dev list <linuxppc-dev@ozlabs.org>,
         sparclinux@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <glikely@secretlab.ca>
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrea Scian <andrea.scian@dave.eu>
+Subject: Re: RFC: Mega rename of device tree routines from of_*() to dt_*()
+References: <1290607413.12457.44.camel@concordia>        <1290692075.689.20.camel@concordia>     <AANLkTiknyKi1pzvUP2WnasudZwH27-a0FxCX0BSHBdQp@mail.gmail.com>  <1290741341.9453.377.camel@concordia>  <4CEF3AB1.9060200@firmworks.com> <1290750606.9453.394.camel@concordia>
+In-Reply-To: <1290750606.9453.394.camel@concordia>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <wmb@firmworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28539
+X-archive-position: 28540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: wmb@firmworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 25, 2010 at 10:50 PM, Michael Ellerman
-<michael@ellerman.id.au> wrote:
-> On Thu, 2010-11-25 at 18:42 -1000, Mitch Bradley wrote:
->> On 11/25/2010 5:15 PM, Michael Ellerman wrote:
->> > On Thu, 2010-11-25 at 09:17 -0700, Grant Likely wrote:
->> >> On Thu, Nov 25, 2010 at 6:34 AM, Michael Ellerman
->> >> <michael@ellerman.id.au>  wrote:
->> >>> On Thu, 2010-11-25 at 01:03 +1100, Michael Ellerman wrote:
->> >>>> Hi all,
->> >>>>
->> >>>> There were some murmurings on IRC last week about renaming the of_*()
->> >>>> routines.
->> >>> ...
->> >>>> The thinking is that on many platforms that use the of_() routines
->> >>>> OpenFirmware is not involved at all, this is true even on many powerpc
->> >>>> platforms. Also for folks who don't know the OpenFirmware connection
->> >>>> it reads as "of", as in "a can of worms".
->> >>> ...
->> >>>> So I'm hoping people with either say "YES this is a great idea", or "NO
->> >>>> this is stupid".
->> >>>
->> >>> I'm still hoping, but so far it seems most people have got better things
->> >>> to do, and of those that do have an opinion the balance is slightly
->> >>> positive.
->> >>
->> >> I assume you'll be also publishing the script that you use for
->> >> generating the massive patch.  I expect that there will be a few
->> >> iterations of running the rename script to convert over all the
->> >> stragglers.
->> >
->> > Yep sure, I'll just make it less crap first.
->> >
->> >> It should also be negotiated with Linus about when this
->> >> patch should get applied.  I do NOT want to cause massive merge pain
->> >> during the merge window.
->> >
->> > Obviously.
->> >
->> >> Andrew/Linus: Before Michael proceeds too far with this rename, are
->> >> you okay with a mass rename of the device tree functions from of_* to
->> >> dt_*?  Nobody likes the ambiguous 'of_' prefix ("of?  of what?"), but
->> >> to fix it means large cross-tree patches and potential merge
->> >> conflicts.
->> >
->> > It'd also be good to hear from DaveM, sparc is the platform with the
->> > strongest link to real OF AFAIK, so the of_() names make more sense
->> > there.
->>
->>
+
 >> One Laptop Per Child ships real Open Firmware on its x86 Linux systems,
->> of which approximately 2 million have been shipped or ordered.  An ARM
+>> of which approximately 2 million have been shipped or ordered.  An ARM
 >> version, also with OFW, is in the works.
 >
 > OK. I don't see any code under arch/x86 or arch/arm that uses of_()
 > routines though? Or is it under drivers or something?
 >
->> That said, I don't particularly like the abbreviation "of" either; I
->> abbreviate Open Firmware as "OFW".
->>
->> I don't mind using "dt_" to apply to device tree things; I think it's
->> clearer than "of_".   Ideally, it would be nice to acknowledge the
->> historical connection in some way, but confusing nomenclature probably
->> is not the way to go about it.
 
-Yes, I like the ofw_ prefix too, and briefly considered renaming to
-that, but decide that dt_ was better due to the number of systems
-using the device tree without real openfirmware.
+Andres Salomon has been working for some time to get some Open Firmware 
+support for x86 upstream.  As you can probably imagine, it has been slow 
+going, but seems to be getting close.
 
-However, the ofw_ prefix would make sense if any of the promtree code
-is renamed.
-
-> Cool. I think there will still be a few things that have OF in the name,
-> at least for a while, and I'm sure the doco will still mention OF, so I
-> don't think the connection will be lost.
-
-Considering that pretty much all the documentation makes some
-reference back to the openfirmware origins, I'm pretty sure the ofw
-legacy is safe.  :-)
-
-g.
+The OLPC ARM work is just beginning, so nothing has been submitted yet. 
+  The first hardware prototypes are still being debugged. Lennert 
+Buytenhek is the key OS person who will be involved.

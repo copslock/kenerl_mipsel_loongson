@@ -1,181 +1,181 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 04:06:22 +0100 (CET)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:51858 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492143Ab0KZDET (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Nov 2010 04:04:19 +0100
-Received: by yxm34 with SMTP id 34so788183yxm.36
-        for <multiple recipients>; Thu, 25 Nov 2010 19:04:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=HEop/i91j5ZPtb3ir4v6pAPbTBWkSSE2V7ugFibL6Ug=;
-        b=RpVAVpb9rimV3HwERfN5wLQEtvy64677rpwLeWpCZ4leh3skxkOintwPOpOCOFGxRc
-         3ep5UfoZjenDJR5Lp4tZhMuIJnQf2GSu2prvNRMpqZCNN3sCvugnDZodplgRGJGAfc7u
-         te97k+zgZWzLwNOdsGQezXAEvaQCDRygVnDcY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=OFvuhl1TVulokkZsDTEa7EE6k1aUqHQ6zNZ940NXbE+fpZ7nrqVvUsUCmJwICj9Jd8
-         l6+Ol5U5LgcKiF8h42uz970s97k3zBwcU60DP8uTAqV8gocFt7E9PJP5O3TwnziWr5L8
-         8dUuO6yeeLjZ2D8GAmqaypj2ZSTDUn0IeBOpw=
-Received: by 10.90.4.26 with SMTP id 26mr3692286agd.84.1290740652577;
-        Thu, 25 Nov 2010 19:04:12 -0800 (PST)
-Received: from localhost.localdomain ([210.13.118.102])
-        by mx.google.com with ESMTPS id 43sm933046yhl.37.2010.11.25.19.04.07
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 25 Nov 2010 19:04:11 -0800 (PST)
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, fweisbec@gmail.com,
-        will.deacon@arm.com
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com, dengcheng.zhu@gmail.com
-Subject: [PATCH v2 4/5] MIPS/Perf-events: Work with the new callchain interface
-Date:   Fri, 26 Nov 2010 11:05:06 +0800
-Message-Id: <1290740707-32586-5-git-send-email-dengcheng.zhu@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1290740707-32586-1-git-send-email-dengcheng.zhu@gmail.com>
-References: <1290740707-32586-1-git-send-email-dengcheng.zhu@gmail.com>
-Return-Path: <dengcheng.zhu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 04:15:50 +0100 (CET)
+Received: from ozlabs.org ([203.10.76.45]:42618 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491003Ab0KZDPr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Nov 2010 04:15:47 +0100
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        by ozlabs.org (Postfix) with ESMTP id F225DB70CC;
+        Fri, 26 Nov 2010 14:15:41 +1100 (EST)
+Subject: Re: RFC: Mega rename of device tree routines from of_*() to dt_*()
+From:   Michael Ellerman <michael@ellerman.id.au>
+Reply-To: michael@ellerman.id.au
+To:     Grant Likely <grant.likely@secretlab.ca>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        microblaze-uclinux@itee.uq.edu.au,
+        devicetree-discuss@lists.ozlabs.org,
+        linuxppc-dev list <linuxppc-dev@ozlabs.org>,
+        sparclinux@vger.kernel.org,
+        Stephen Neuendorffer <stephen.neuendorffer@xilinx.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+In-Reply-To: <AANLkTiknyKi1pzvUP2WnasudZwH27-a0FxCX0BSHBdQp@mail.gmail.com>
+References: <1290607413.12457.44.camel@concordia>
+         <1290692075.689.20.camel@concordia>
+         <AANLkTiknyKi1pzvUP2WnasudZwH27-a0FxCX0BSHBdQp@mail.gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-GlVwWdOcqwVkCGJF3oUu"
+Date:   Fri, 26 Nov 2010 14:15:41 +1100
+Message-ID: <1290741341.9453.377.camel@concordia>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
+Return-Path: <michael@ellerman.id.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28535
+X-archive-position: 28536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: michael@ellerman.id.au
 Precedence: bulk
 X-list: linux-mips
 
-This is the MIPS part of the following commits by Frederic Weisbecker:
 
-f72c1a931e311bb7780fee19e41a89ac42cab50e
-        perf: Factorize callchain context handling
-56962b4449af34070bb1994621ef4f0265eed4d8
-        perf: Generalize some arch callchain code
-70791ce9ba68a5921c9905ef05d23f62a90bc10c
-        perf: Generalize callchain_store()
-c1a65932fd7216fdc9a0db8bbffe1d47842f862c
-        perf: Drop unappropriate tests on arch callchains
+--=-GlVwWdOcqwVkCGJF3oUu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reported-by: Wu Zhangjin <wuzhangjin@gmail.com>
-Acked-by: Frederic Weisbecker <fweisbec@gmail.com>
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
----
- arch/mips/kernel/perf_event.c |   63 ++++-------------------------------------
- 1 files changed, 6 insertions(+), 57 deletions(-)
+On Thu, 2010-11-25 at 09:17 -0700, Grant Likely wrote:
+> On Thu, Nov 25, 2010 at 6:34 AM, Michael Ellerman
+> <michael@ellerman.id.au> wrote:
+> > On Thu, 2010-11-25 at 01:03 +1100, Michael Ellerman wrote:
+> >> Hi all,
+> >>
+> >> There were some murmurings on IRC last week about renaming the of_*()
+> >> routines.
+> > ...
+> >> The thinking is that on many platforms that use the of_() routines
+> >> OpenFirmware is not involved at all, this is true even on many powerpc
+> >> platforms. Also for folks who don't know the OpenFirmware connection
+> >> it reads as "of", as in "a can of worms".
+> > ...
+> >> So I'm hoping people with either say "YES this is a great idea", or "N=
+O
+> >> this is stupid".
+> >
+> > I'm still hoping, but so far it seems most people have got better thing=
+s
+> > to do, and of those that do have an opinion the balance is slightly
+> > positive.
+>=20
+> I assume you'll be also publishing the script that you use for
+> generating the massive patch.  I expect that there will be a few
+> iterations of running the rename script to convert over all the
+> stragglers.=20
 
-diff --git a/arch/mips/kernel/perf_event.c b/arch/mips/kernel/perf_event.c
-index 3d55761..8f7d2f8 100644
---- a/arch/mips/kernel/perf_event.c
-+++ b/arch/mips/kernel/perf_event.c
-@@ -534,21 +534,13 @@ handle_associated_event(struct cpu_hw_events *cpuc,
- #include "perf_event_mipsxx.c"
- 
- /* Callchain handling code. */
--static inline void
--callchain_store(struct perf_callchain_entry *entry,
--		u64 ip)
--{
--	if (entry->nr < PERF_MAX_STACK_DEPTH)
--		entry->ip[entry->nr++] = ip;
--}
- 
- /*
-  * Leave userspace callchain empty for now. When we find a way to trace
-  * the user stack callchains, we add here.
-  */
--static void
--perf_callchain_user(struct pt_regs *regs,
--		    struct perf_callchain_entry *entry)
-+void perf_callchain_user(struct perf_callchain_entry *entry,
-+		    struct pt_regs *regs)
- {
- }
- 
-@@ -561,23 +553,21 @@ static void save_raw_perf_callchain(struct perf_callchain_entry *entry,
- 	while (!kstack_end(sp)) {
- 		addr = *sp++;
- 		if (__kernel_text_address(addr)) {
--			callchain_store(entry, addr);
-+			perf_callchain_store(entry, addr);
- 			if (entry->nr >= PERF_MAX_STACK_DEPTH)
- 				break;
- 		}
- 	}
- }
- 
--static void
--perf_callchain_kernel(struct pt_regs *regs,
--		      struct perf_callchain_entry *entry)
-+void perf_callchain_kernel(struct perf_callchain_entry *entry,
-+		      struct pt_regs *regs)
- {
- 	unsigned long sp = regs->regs[29];
- #ifdef CONFIG_KALLSYMS
- 	unsigned long ra = regs->regs[31];
- 	unsigned long pc = regs->cp0_epc;
- 
--	callchain_store(entry, PERF_CONTEXT_KERNEL);
- 	if (raw_show_trace || !__kernel_text_address(pc)) {
- 		unsigned long stack_page =
- 			(unsigned long)task_stack_page(current);
-@@ -587,53 +577,12 @@ perf_callchain_kernel(struct pt_regs *regs,
- 		return;
- 	}
- 	do {
--		callchain_store(entry, pc);
-+		perf_callchain_store(entry, pc);
- 		if (entry->nr >= PERF_MAX_STACK_DEPTH)
- 			break;
- 		pc = unwind_stack(current, &sp, pc, &ra);
- 	} while (pc);
- #else
--	callchain_store(entry, PERF_CONTEXT_KERNEL);
- 	save_raw_perf_callchain(entry, sp);
- #endif
- }
--
--static void
--perf_do_callchain(struct pt_regs *regs,
--		  struct perf_callchain_entry *entry)
--{
--	int is_user;
--
--	if (!regs)
--		return;
--
--	is_user = user_mode(regs);
--
--	if (!current || !current->pid)
--		return;
--
--	if (is_user && current->state != TASK_RUNNING)
--		return;
--
--	if (!is_user) {
--		perf_callchain_kernel(regs, entry);
--		if (current->mm)
--			regs = task_pt_regs(current);
--		else
--			regs = NULL;
--	}
--	if (regs)
--		perf_callchain_user(regs, entry);
--}
--
--static DEFINE_PER_CPU(struct perf_callchain_entry, pmc_irq_entry);
--
--struct perf_callchain_entry *
--perf_callchain(struct pt_regs *regs)
--{
--	struct perf_callchain_entry *entry = &__get_cpu_var(pmc_irq_entry);
--
--	entry->nr = 0;
--	perf_do_callchain(regs, entry);
--	return entry;
--}
--- 
-1.7.1
+Yep sure, I'll just make it less crap first.
+
+> It should also be negotiated with Linus about when this
+> patch should get applied.  I do NOT want to cause massive merge pain
+> during the merge window.
+
+Obviously.
+
+> Andrew/Linus: Before Michael proceeds too far with this rename, are
+> you okay with a mass rename of the device tree functions from of_* to
+> dt_*?  Nobody likes the ambiguous 'of_' prefix ("of?  of what?"), but
+> to fix it means large cross-tree patches and potential merge
+> conflicts.
+
+It'd also be good to hear from DaveM, sparc is the platform with the
+strongest link to real OF AFAIK, so the of_() names make more sense
+there.
+
+> > So here's a first cut of a patch to add the new names. I've not touched
+> > of_platform because that is supposed to go away. That will lead to some
+> > odd looking code in the interim, but I think is the right approach.
+>=20
+> I would split it up into separate dt*.h files, one for each of*.h file
+> so that the #include lines can be changed in the C code at the same
+> time.  Each dt*.h file would include it's of*.h counterpart.  Then
+> after the code is renamed, and a release or two has passed to catch
+> the majority of users, the old definitions can be moved into the dt*.h
+> files.
+
+Yep that sounds like a plan. I did it as a single header for starters so
+I could autogenerate the rename script easily.
+
+> However, it may be better to move and rename the definitions
+> immediately, and leave "#define of_*  dt_*" macros in the old of*.h
+> files which can be removed with a simple patch after all the users are
+> converted.  That would have a smaller impact in the cleanup stage.
+
+True, though a bigger impact to start with. I did that originally but
+decided it might be better to start with the minimal patch to add the
+new names. That way Linus might accept it this release, meaning we'd
+have the new names in place for code in -next.
+
+> > Most of these are straight renames, but some have changed more
+> > substantially. The routines for the flat tree have all become fdt_foo()=
+.
+> > I'd be inclined to drop "early_init" from them too, because they're
+> > basically all about early init, but Grant said he'd prefer not to I
+> > think. I've also renamed the flat tree tag constants to match libfdt.
+>=20
+> It is all about early init now in Linus' tree, but Stephen
+> Neuendorffer has patches that use the fdt code at driver probe time
+> for parsing device tree fragments that describe an FPGA add-in board.
+
+OK fair enough.
+
+> > I've left for_each_child_of_node(), because I read it as "of", but mayb=
+e
+> > it's "OF"?
+>=20
+> hahaha!  I never considered that it might be OF, but now I probably
+> won't be able to help but read it that way!  I like Geert's suggestion
+> of dt_for_each_child_node
+
+OK, I like it the way it is, but if the consensus is to change it then
+we can. There's a bunch actually:
+
+for_each_node_by_name(dn, name) \
+for_each_node_by_type(dn, type) \
+for_each_compatible_node(dn, type, compatible) \
+for_each_matching_node(dn, matches) \
+for_each_child_of_node(parent, child) \
+for_each_node_with_property(dn, prop_name) \
+
+So either dt_for_each_blah(), or for_each_dt_node_blah() ?
+
+> > /* include/linux/device.h */
+> > #define dt_match_table                  of_match_table
+> > #define dt_node                         of_node
+>=20
+> This could be very messy.  I've nervous about using #define to rename
+> structure members.  You'll need to check that any structure members
+> that use the same name as a global symbol are handled appropriately.
+
+I'm not sure what you mean about global symbols.
+
+I think it's fairly safe, in that direction, ie. defining the dt_*
+names. Neither of those strings appears anywhere in the tree at the
+moment (as a token).
+
+cheers
+
+
+--=-GlVwWdOcqwVkCGJF3oUu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEABECAAYFAkzvJlkACgkQdSjSd0sB4dIooQCfRRz7T14YSVuTboPlo0hHWbMy
+evgAn1wLJE6Bv64gvdeEQ5sr30ko5Mgv
+=NtRb
+-----END PGP SIGNATURE-----
+
+--=-GlVwWdOcqwVkCGJF3oUu--

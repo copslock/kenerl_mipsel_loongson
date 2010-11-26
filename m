@@ -1,49 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Nov 2010 21:52:41 +0100 (CET)
-Received: from gate.crashing.org ([63.228.1.57]:48659 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492094Ab0KYUwf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Nov 2010 21:52:35 +0100
-Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id oAPKq5Jq029744;
-        Thu, 25 Nov 2010 14:52:06 -0600
-Subject: Re: RFC: Mega rename of device tree routines from of_*() to dt_*()
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     michael@ellerman.id.au, linux-arch <linux-arch@vger.kernel.org>,
-        linux-mips <linux-mips@linux-mips.org>,
-        microblaze-uclinux@itee.uq.edu.au,
-        devicetree-discuss@lists.ozlabs.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        linuxppc-dev list <linuxppc-dev@ozlabs.org>,
-        sparclinux@vger.kernel.org
-In-Reply-To: <AANLkTim9fPPWO-240dmavng+j=70G8Y4P-+j3Y+OZTL0@mail.gmail.com>
-References: <1290607413.12457.44.camel@concordia>
-         <1290692075.689.20.camel@concordia>
-         <AANLkTim9fPPWO-240dmavng+j=70G8Y4P-+j3Y+OZTL0@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Fri, 26 Nov 2010 07:52:04 +1100
-Message-ID: <1290718324.32570.127.camel@pasglop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.30.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <benh@kernel.crashing.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 04:04:00 +0100 (CET)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:64922 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492134Ab0KZDD4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Nov 2010 04:03:56 +0100
+Received: by gwj20 with SMTP id 20so788382gwj.36
+        for <multiple recipients>; Thu, 25 Nov 2010 19:03:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=cx4KKLGrT2eiFfZ8fIFGNhFp+cat4h871ytX4jWYy+Q=;
+        b=V8ubIAn2jkxAmu9S5kDDOOY5W6WgjQvj625riYmrt1J1pdE/kER11kFgB9H2Aw5q2w
+         SKtMokkL9rVvbwrjdYPOyCpxxkrUmmUZD1/gexKfRLVys0tbAwhm2JVlcu4kDqff1R08
+         ZxOcqNp4GhAq6vDKJJHz7GAaF/I6LhrJInJQs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=QDFtyoqyJwQplEVYNcCU4ymRnE7BcqHOZ0aidgisuFlzSUovjs5y5ZoYrMoxNUIAy8
+         Ddb7/0h1Lv1PO3p8AlP84jAO8WjP0o/47i/RUqkVEZgynsk1NkiZyNkf4HczYJhdHZfE
+         Yl2/7YVidCFQAiyWHbPSUfmXpCe0rl0aHUrl8=
+Received: by 10.90.37.28 with SMTP id k28mr3727298agk.53.1290740629250;
+        Thu, 25 Nov 2010 19:03:49 -0800 (PST)
+Received: from localhost.localdomain ([210.13.118.102])
+        by mx.google.com with ESMTPS id 43sm933046yhl.37.2010.11.25.19.03.42
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 25 Nov 2010 19:03:47 -0800 (PST)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, fweisbec@gmail.com,
+        will.deacon@arm.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, dengcheng.zhu@gmail.com
+Subject: [PATCH v2 0/5] MIPS/Perf-events: Sync with mainline upper layer (v2)
+Date:   Fri, 26 Nov 2010 11:05:02 +0800
+Message-Id: <1290740707-32586-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.7.1
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28529
+X-archive-position: 28530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2010-11-25 at 15:01 +0100, Geert Uytterhoeven wrote:
-> 
-> I always read it as "for each child-OF-node", so I would rename it to
-> "dt_for_each_child_node".
+Current MIPS Perf-events uses older interfaces to the generic layer. So it
+will not work. This patch set fixes this issue (reported by Wu Zhangjin) by
+adding MIPS counterparts for a list of previous commits that went to
+mainline earlier.
 
-Well, it was meant to be for_child_of_node not _OF_node :-)
+Changes:
+v2 - v1:
+o Corrected the return value of the event check in validate_event().
 
-Cheers,
-Ben.
+Deng-Cheng Zhu (5):
+  MIPS/Perf-events: Work with irq_work
+  MIPS/Perf-events: Work with the new PMU interface
+  MIPS/Perf-events: Fix event check in validate_event()
+  MIPS/Perf-events: Work with the new callchain interface
+  MIPS/Perf-events: Use unsigned delta for right shift in event update
+
+ arch/mips/Kconfig                    |    1 +
+ arch/mips/include/asm/perf_event.h   |   12 +-
+ arch/mips/kernel/perf_event.c        |  345 ++++++++++++++++------------------
+ arch/mips/kernel/perf_event_mipsxx.c |    4 +-
+ 4 files changed, 171 insertions(+), 191 deletions(-)

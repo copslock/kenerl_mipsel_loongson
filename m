@@ -1,16 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 06:50:18 +0100 (CET)
-Received: from ozlabs.org ([203.10.76.45]:43678 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491077Ab0KZFuL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Nov 2010 06:50:11 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        by ozlabs.org (Postfix) with ESMTP id A3B2DB70D4;
-        Fri, 26 Nov 2010 16:50:06 +1100 (EST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Nov 2010 08:15:59 +0100 (CET)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:59582 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491772Ab0KZHPz convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Nov 2010 08:15:55 +0100
+Received: by iwn36 with SMTP id 36so473557iwn.36
+        for <linux-mips@linux-mips.org>; Thu, 25 Nov 2010 23:15:54 -0800 (PST)
+Received: by 10.231.16.67 with SMTP id n3mr1079822iba.113.1290755754252; Thu,
+ 25 Nov 2010 23:15:54 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.231.196.10 with HTTP; Thu, 25 Nov 2010 23:15:34 -0800 (PST)
+In-Reply-To: <1290750606.9453.394.camel@concordia>
+References: <1290607413.12457.44.camel@concordia> <1290692075.689.20.camel@concordia>
+ <AANLkTiknyKi1pzvUP2WnasudZwH27-a0FxCX0BSHBdQp@mail.gmail.com>
+ <1290741341.9453.377.camel@concordia> <4CEF3AB1.9060200@firmworks.com> <1290750606.9453.394.camel@concordia>
+From:   Grant Likely <grant.likely@secretlab.ca>
+Date:   Fri, 26 Nov 2010 00:15:34 -0700
+X-Google-Sender-Auth: QrwfgkSlsvcgEV8WlGyrl5hLzyI
+Message-ID: <AANLkTi=XmuWMzmtCNtswkUBgDt3k1FWAcUVhv7WJjA4j@mail.gmail.com>
 Subject: Re: RFC: Mega rename of device tree routines from of_*() to dt_*()
-From:   Michael Ellerman <michael@ellerman.id.au>
-Reply-To: michael@ellerman.id.au
-To:     Mitch Bradley <wmb@firmworks.com>
-Cc:     Grant Likely <grant.likely@secretlab.ca>,
+To:     michael@ellerman.id.au
+Cc:     Mitch Bradley <wmb@firmworks.com>,
         linux-arch <linux-arch@vger.kernel.org>,
         linux-mips <linux-mips@linux-mips.org>,
         microblaze-uclinux@itee.uq.edu.au,
@@ -20,119 +30,97 @@ Cc:     Grant Likely <grant.likely@secretlab.ca>,
         sparclinux@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>
-In-Reply-To: <4CEF3AB1.9060200@firmworks.com>
-References: <1290607413.12457.44.camel@concordia>
-         <1290692075.689.20.camel@concordia>
-         <AANLkTiknyKi1pzvUP2WnasudZwH27-a0FxCX0BSHBdQp@mail.gmail.com>
-         <1290741341.9453.377.camel@concordia>  <4CEF3AB1.9060200@firmworks.com>
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-RjdHicf3+TnoU3RV7KT8"
-Date:   Fri, 26 Nov 2010 16:50:06 +1100
-Message-ID: <1290750606.9453.394.camel@concordia>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.30.3 
-Return-Path: <michael@ellerman.id.au>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28538
+X-archive-position: 28539
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: michael@ellerman.id.au
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, Nov 25, 2010 at 10:50 PM, Michael Ellerman
+<michael@ellerman.id.au> wrote:
+> On Thu, 2010-11-25 at 18:42 -1000, Mitch Bradley wrote:
+>> On 11/25/2010 5:15 PM, Michael Ellerman wrote:
+>> > On Thu, 2010-11-25 at 09:17 -0700, Grant Likely wrote:
+>> >> On Thu, Nov 25, 2010 at 6:34 AM, Michael Ellerman
+>> >> <michael@ellerman.id.au>  wrote:
+>> >>> On Thu, 2010-11-25 at 01:03 +1100, Michael Ellerman wrote:
+>> >>>> Hi all,
+>> >>>>
+>> >>>> There were some murmurings on IRC last week about renaming the of_*()
+>> >>>> routines.
+>> >>> ...
+>> >>>> The thinking is that on many platforms that use the of_() routines
+>> >>>> OpenFirmware is not involved at all, this is true even on many powerpc
+>> >>>> platforms. Also for folks who don't know the OpenFirmware connection
+>> >>>> it reads as "of", as in "a can of worms".
+>> >>> ...
+>> >>>> So I'm hoping people with either say "YES this is a great idea", or "NO
+>> >>>> this is stupid".
+>> >>>
+>> >>> I'm still hoping, but so far it seems most people have got better things
+>> >>> to do, and of those that do have an opinion the balance is slightly
+>> >>> positive.
+>> >>
+>> >> I assume you'll be also publishing the script that you use for
+>> >> generating the massive patch.  I expect that there will be a few
+>> >> iterations of running the rename script to convert over all the
+>> >> stragglers.
+>> >
+>> > Yep sure, I'll just make it less crap first.
+>> >
+>> >> It should also be negotiated with Linus about when this
+>> >> patch should get applied.  I do NOT want to cause massive merge pain
+>> >> during the merge window.
+>> >
+>> > Obviously.
+>> >
+>> >> Andrew/Linus: Before Michael proceeds too far with this rename, are
+>> >> you okay with a mass rename of the device tree functions from of_* to
+>> >> dt_*?  Nobody likes the ambiguous 'of_' prefix ("of?  of what?"), but
+>> >> to fix it means large cross-tree patches and potential merge
+>> >> conflicts.
+>> >
+>> > It'd also be good to hear from DaveM, sparc is the platform with the
+>> > strongest link to real OF AFAIK, so the of_() names make more sense
+>> > there.
+>>
+>>
+>> One Laptop Per Child ships real Open Firmware on its x86 Linux systems,
+>> of which approximately 2 million have been shipped or ordered.  An ARM
+>> version, also with OFW, is in the works.
+>
+> OK. I don't see any code under arch/x86 or arch/arm that uses of_()
+> routines though? Or is it under drivers or something?
+>
+>> That said, I don't particularly like the abbreviation "of" either; I
+>> abbreviate Open Firmware as "OFW".
+>>
+>> I don't mind using "dt_" to apply to device tree things; I think it's
+>> clearer than "of_".   Ideally, it would be nice to acknowledge the
+>> historical connection in some way, but confusing nomenclature probably
+>> is not the way to go about it.
 
---=-RjdHicf3+TnoU3RV7KT8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yes, I like the ofw_ prefix too, and briefly considered renaming to
+that, but decide that dt_ was better due to the number of systems
+using the device tree without real openfirmware.
 
-On Thu, 2010-11-25 at 18:42 -1000, Mitch Bradley wrote:
-> On 11/25/2010 5:15 PM, Michael Ellerman wrote:
-> > On Thu, 2010-11-25 at 09:17 -0700, Grant Likely wrote:
-> >> On Thu, Nov 25, 2010 at 6:34 AM, Michael Ellerman
-> >> <michael@ellerman.id.au>  wrote:
-> >>> On Thu, 2010-11-25 at 01:03 +1100, Michael Ellerman wrote:
-> >>>> Hi all,
-> >>>>
-> >>>> There were some murmurings on IRC last week about renaming the of_*(=
-)
-> >>>> routines.
-> >>> ...
-> >>>> The thinking is that on many platforms that use the of_() routines
-> >>>> OpenFirmware is not involved at all, this is true even on many power=
-pc
-> >>>> platforms. Also for folks who don't know the OpenFirmware connection
-> >>>> it reads as "of", as in "a can of worms".
-> >>> ...
-> >>>> So I'm hoping people with either say "YES this is a great idea", or =
-"NO
-> >>>> this is stupid".
-> >>>
-> >>> I'm still hoping, but so far it seems most people have got better thi=
-ngs
-> >>> to do, and of those that do have an opinion the balance is slightly
-> >>> positive.
-> >>
-> >> I assume you'll be also publishing the script that you use for
-> >> generating the massive patch.  I expect that there will be a few
-> >> iterations of running the rename script to convert over all the
-> >> stragglers.
-> >
-> > Yep sure, I'll just make it less crap first.
-> >
-> >> It should also be negotiated with Linus about when this
-> >> patch should get applied.  I do NOT want to cause massive merge pain
-> >> during the merge window.
-> >
-> > Obviously.
-> >
-> >> Andrew/Linus: Before Michael proceeds too far with this rename, are
-> >> you okay with a mass rename of the device tree functions from of_* to
-> >> dt_*?  Nobody likes the ambiguous 'of_' prefix ("of?  of what?"), but
-> >> to fix it means large cross-tree patches and potential merge
-> >> conflicts.
-> >
-> > It'd also be good to hear from DaveM, sparc is the platform with the
-> > strongest link to real OF AFAIK, so the of_() names make more sense
-> > there.
->=20
->=20
-> One Laptop Per Child ships real Open Firmware on its x86 Linux systems,=
-=20
-> of which approximately 2 million have been shipped or ordered.  An ARM=
-=20
-> version, also with OFW, is in the works.
+However, the ofw_ prefix would make sense if any of the promtree code
+is renamed.
 
-OK. I don't see any code under arch/x86 or arch/arm that uses of_()
-routines though? Or is it under drivers or something?
+> Cool. I think there will still be a few things that have OF in the name,
+> at least for a while, and I'm sure the doco will still mention OF, so I
+> don't think the connection will be lost.
 
-> That said, I don't particularly like the abbreviation "of" either; I=20
-> abbreviate Open Firmware as "OFW".
->=20
-> I don't mind using "dt_" to apply to device tree things; I think it's=20
-> clearer than "of_".   Ideally, it would be nice to acknowledge the=20
-> historical connection in some way, but confusing nomenclature probably=
-=20
-> is not the way to go about it.
+Considering that pretty much all the documentation makes some
+reference back to the openfirmware origins, I'm pretty sure the ofw
+legacy is safe.  :-)
 
-Cool. I think there will still be a few things that have OF in the name,
-at least for a while, and I'm sure the doco will still mention OF, so I
-don't think the connection will be lost.
-
-cheers
-
-
---=-RjdHicf3+TnoU3RV7KT8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEABECAAYFAkzvSo4ACgkQdSjSd0sB4dKAFgCfZ/XVl0IpdzYDesUlbE8qBCw+
-ruAAnjUMgjlQFEEreJ3xCjQfwY9duecT
-=uzOw
------END PGP SIGNATURE-----
-
---=-RjdHicf3+TnoU3RV7KT8--
+g.

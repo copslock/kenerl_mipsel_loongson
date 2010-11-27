@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Nov 2010 17:47:11 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:53695 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Nov 2010 17:47:35 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:53696 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492332Ab0K0QqW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Nov 2010 17:46:22 +0100
+        with ESMTP id S1492333Ab0K0QqX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 27 Nov 2010 17:46:23 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id E07388799;
-        Sat, 27 Nov 2010 17:46:21 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id F2DBA8799;
+        Sat, 27 Nov 2010 17:46:22 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 2rZS2J2QPo+n; Sat, 27 Nov 2010 17:46:18 +0100 (CET)
+        with ESMTP id t0xzRX+V+-Nc; Sat, 27 Nov 2010 17:46:20 +0100 (CET)
 Received: from localhost.localdomain (host-091-097-248-055.ewe-ip-backbone.de [91.97.248.55])
-        by hauke-m.de (Postfix) with ESMTPSA id 7210587AB;
+        by hauke-m.de (Postfix) with ESMTPSA id D1DB287AC;
         Sat, 27 Nov 2010 17:46:14 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, linux-mips@linux-mips.org
 Cc:     Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 3/4] MIPS: BCM47xx: Use sscanf for parsing mac address
-Date:   Sat, 27 Nov 2010 17:46:00 +0100
-Message-Id: <1290876361-4297-3-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 4/4] MIPS: BCM47xx: Swap serial console if ttyS1 was specified.
+Date:   Sat, 27 Nov 2010 17:46:01 +0100
+Message-Id: <1290876361-4297-4-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1290876361-4297-1-git-send-email-hauke@hauke-m.de>
 References: <1290876361-4297-1-git-send-email-hauke@hauke-m.de>
@@ -26,7 +26,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28547
+X-archive-position: 28548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,80 +34,47 @@ X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 
-Instead of writing own function for parsing the mac address we now
-use sscanf.
+Some devices like the Netgear WGT634U are using ttyS1 for default
+console output. We should switch to that console if it was given in
+the kernel_args parameters.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/setup.c                  |   23 +++--------------------
- arch/mips/include/asm/mach-bcm47xx/nvram.h |    7 +++++++
- 2 files changed, 10 insertions(+), 20 deletions(-)
+ arch/mips/bcm47xx/setup.c |   16 ++++++++++++++++
+ 1 files changed, 16 insertions(+), 0 deletions(-)
 
 diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 1f61dfd..87a3055 100644
+index 87a3055..c95f90b 100644
 --- a/arch/mips/bcm47xx/setup.c
 +++ b/arch/mips/bcm47xx/setup.c
-@@ -56,23 +56,6 @@ static void bcm47xx_machine_halt(void)
- 		cpu_relax();
- }
+@@ -169,12 +169,28 @@ static int bcm47xx_get_invariants(struct ssb_bus *bus,
+ void __init plat_mem_setup(void)
+ {
+ 	int err;
++	char buf[100];
++	struct ssb_mipscore *mcore;
  
--static void str2eaddr(char *str, char *dest)
--{
--	int i = 0;
--
--	if (str == NULL) {
--		memset(dest, 0, 6);
--		return;
--	}
--
--	for (;;) {
--		dest[i++] = (char) simple_strtoul(str, NULL, 16);
--		str += 2;
--		if (!*str++ || i == 6)
--			break;
--	}
--}
--
- #define READ_FROM_NVRAM(_outvar, name, buf) \
- 	if (nvram_getenv(name, buf, sizeof(buf)) >= 0)\
- 		sprom->_outvar = simple_strtoul(buf, NULL, 0);
-@@ -87,11 +70,11 @@ static void bcm47xx_fill_sprom(struct ssb_sprom *sprom)
- 	sprom->revision = 1; /* Fallback: Old hardware does not define this. */
- 	READ_FROM_NVRAM(revision, "sromrev", buf);
- 	if (nvram_getenv("il0macaddr", buf, sizeof(buf)) >= 0)
--		str2eaddr(buf, sprom->il0mac);
-+		nvram_parse_macaddr(buf, sprom->il0mac);
- 	if (nvram_getenv("et0macaddr", buf, sizeof(buf)) >= 0)
--		str2eaddr(buf, sprom->et0mac);
-+		nvram_parse_macaddr(buf, sprom->et0mac);
- 	if (nvram_getenv("et1macaddr", buf, sizeof(buf)) >= 0)
--		str2eaddr(buf, sprom->et1mac);
-+		nvram_parse_macaddr(buf, sprom->et1mac);
- 	READ_FROM_NVRAM(et0phyaddr, "et0phyaddr", buf);
- 	READ_FROM_NVRAM(et1phyaddr, "et1phyaddr", buf);
- 	READ_FROM_NVRAM(et0mdcport, "et0mdcport", buf);
-diff --git a/arch/mips/include/asm/mach-bcm47xx/nvram.h b/arch/mips/include/asm/mach-bcm47xx/nvram.h
-index c58ebd8..9759588 100644
---- a/arch/mips/include/asm/mach-bcm47xx/nvram.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/nvram.h
-@@ -12,6 +12,7 @@
- #define __NVRAM_H
+ 	err = ssb_bus_ssbbus_register(&ssb_bcm47xx, SSB_ENUM_BASE,
+ 				      bcm47xx_get_invariants);
+ 	if (err)
+ 		panic("Failed to initialize SSB bus (err %d)\n", err);
  
- #include <linux/types.h>
-+#include <linux/kernel.h>
- 
- struct nvram_header {
- 	u32 magic;
-@@ -36,4 +37,10 @@ struct nvram_header {
- 
- extern int nvram_getenv(char *name, char *val, size_t val_len);
- 
-+static inline void nvram_parse_macaddr(char *buf, u8 *macaddr)
-+{
-+	sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &macaddr[0], &macaddr[1],
-+	       &macaddr[2], &macaddr[3], &macaddr[4], &macaddr[5]);
-+}
++	mcore = &ssb_bcm47xx.mipscore;
++	if (nvram_getenv("kernel_args", buf, sizeof(buf)) >= 0) {
++		if (strstr(buf, "console=ttyS1")) {
++			struct ssb_serial_port port;
 +
- #endif
++			printk(KERN_DEBUG "Swapping serial ports!\n");
++			/* swap serial ports */
++			memcpy(&port, &mcore->serial_ports[0], sizeof(port));
++			memcpy(&mcore->serial_ports[0], &mcore->serial_ports[1],
++			       sizeof(port));
++			memcpy(&mcore->serial_ports[1], &port, sizeof(port));
++		}
++	}
++
+ 	_machine_restart = bcm47xx_machine_restart;
+ 	_machine_halt = bcm47xx_machine_halt;
+ 	pm_power_off = bcm47xx_machine_halt;
 -- 
 1.7.1

@@ -1,47 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Nov 2010 20:31:16 +0100 (CET)
-Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:51135
-        "EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492418Ab0K1TbN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Nov 2010 20:31:13 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by sunset.davemloft.net (Postfix) with ESMTP id 0268924C088;
-        Sun, 28 Nov 2010 11:31:36 -0800 (PST)
-Date:   Sun, 28 Nov 2010 11:31:35 -0800 (PST)
-Message-Id: <20101128.113135.242124850.davem@davemloft.net>
-To:     wg@grandegger.com
-Cc:     Netdev@vger.kernel.org, linux-mips@linux-mips.org,
-        florian@openwrt.org
-Subject: Re: [PATCH] au1000_eth: fix invalid address accessing the MAC
- enable register
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <4CEBEE79.8040507@grandegger.com>
-References: <4CEBEE79.8040507@grandegger.com>
-X-Mailer: Mew version 6.3 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Nov 2010 22:19:35 +0100 (CET)
+Received: from mail-out.m-online.net ([212.18.0.10]:38574 "EHLO
+        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490996Ab0K1VTc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 28 Nov 2010 22:19:32 +0100
+Received: from frontend1.mail.m-online.net (frontend1.mail.intern.m-online.net [192.168.8.180])
+        by mail-out.m-online.net (Postfix) with ESMTP id D119F1805951
+        for <linux-mips@linux-mips.org>; Sun, 28 Nov 2010 22:19:31 +0100 (CET)
+X-Auth-Info: CBdgC5wpAhwEGtpaKxdoiwXdXAdtobBBF8uxiDz1SB8=
+Received: from lancy.mylan.de (p4FE62A09.dip.t-dialin.net [79.230.42.9])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by smtp-auth.mnet-online.de (Postfix) with ESMTPSA id 725FF1C001CE
+        for <linux-mips@linux-mips.org>; Sun, 28 Nov 2010 22:19:31 +0100 (CET)
+Message-ID: <4CF2C7B1.5030007@grandegger.com>
+Date:   Sun, 28 Nov 2010 22:20:49 +0100
+From:   Wolfgang Grandegger <wg@grandegger.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100907 Fedora/3.0.7-1.fc12 Thunderbird/3.0.7
+MIME-Version: 1.0
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Can't read from mmaped PCI memory space
+X-Enigmail-Version: 1.0.1
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Return-Path: <wg@grandegger.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28554
+X-archive-position: 28555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: wg@grandegger.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wolfgang Grandegger <wg@grandegger.com>
-Date: Tue, 23 Nov 2010 17:40:25 +0100
+Hello,
 
-> "aup->enable" holds already the address pointing to the MAC enable
-> register. The bug was introduced by commit d0e7cb:
-> 
-> "au1000-eth: remove volatiles, switch to I/O accessors".
-> 
-> CC: Florian Fainelli <florian@openwrt.org>
-> Signed-off-by: Wolfgang Grandegger <wg@denx.de>
-> Acked-by: Florian Fainelli <florian@openwrt.org>
+I'm trying to read from mmapped PCI memory space on an alchemy board,
+but I can't get it to work. Here's the lspci output of the PCI card:
 
-Applied, thanks.
+  bash-3.00# lspci -v
+  00:00.0 Class 0200: 168c:001b (rev 01)
+	Subsystem: 168c:2063
+	Flags: bus master, medium devsel, latency 168, IRQ 9
+	Memory at 0000000040000000 (32-bit, non-prefetchable) [size=64K]
+	Capabilities: [44] Power Management version 2
+
+I used mmap on "/dev/mem" and "/sys/bus/pci/.../resource0", but I do not
+read the expected values using "*(volatile u32 *)mmap_addr" from that
+region. The value also changes from read to read. Reading from kernel
+space just work fine. Am I doing something illegal? Any idea why it does
+not work?
+
+TIA,
+
+Wolfgang.

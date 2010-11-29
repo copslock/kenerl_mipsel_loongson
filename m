@@ -1,99 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2010 10:19:26 +0100 (CET)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:63446 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491170Ab0K2JRs (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Nov 2010 10:17:48 +0100
-Received: by gyg4 with SMTP id 4so2075276gyg.36
-        for <multiple recipients>; Mon, 29 Nov 2010 01:17:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=1H44GJxZMsHLYhomtTQpfjvbGgnMug5DFHNE1+nc85I=;
-        b=ZWK9E3Wgqk1b4kQntVIfUaAEB7labtR1wwSXfEJcuS9ajTk+TQxG278KFGw2pfLBRZ
-         P15utVdUrDJi20PT+XhjwvjOylWRsTVEeMAH57RyErnJHT1lRfaeXYlkZTLCRMKoZ+0k
-         ipLMeQaY2K/PCwHM4fTk8Tx5aCdT1eC6jmSRQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=p9mAD+4AyXr4Ax3+eIUWk8RORYy493g85+h1fzzSyAlosGUvfwj5rK0RKzbI8rSWqH
-         cIcbgUL0moAcUhyKzgrjDJBgrERud7uew4kp9oVrLZHmQr2Ga/gh6dRHSt2T7OyGwkpv
-         +vw1MRA858NqRdn/huiOUJ1LaeRvem4QFmmZw=
-Received: by 10.150.201.7 with SMTP id y7mr9844602ybf.406.1291022262051;
-        Mon, 29 Nov 2010 01:17:42 -0800 (PST)
-Received: from localhost.localdomain ([210.13.118.102])
-        by mx.google.com with ESMTPS id u68sm522697yhc.47.2010.11.29.01.17.36
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 29 Nov 2010 01:17:41 -0800 (PST)
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, fweisbec@gmail.com,
-        will.deacon@arm.com
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
-        acme@redhat.com, dengcheng.zhu@gmail.com, matt@console-pimps.org,
-        sshtylyov@mvista.com
-Subject: [PATCH v3 5/5] MIPS/Perf-events: Use unsigned delta for right shift in event update
-Date:   Mon, 29 Nov 2010 17:19:11 +0800
-Message-Id: <1291022351-13152-6-git-send-email-dengcheng.zhu@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1291022351-13152-1-git-send-email-dengcheng.zhu@gmail.com>
-References: <1291022351-13152-1-git-send-email-dengcheng.zhu@gmail.com>
-Return-Path: <dengcheng.zhu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Nov 2010 11:25:06 +0100 (CET)
+Received: from mail.windriver.com ([147.11.1.11]:35855 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492485Ab0K2KZD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 29 Nov 2010 11:25:03 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id oATAOqjX013911;
+        Mon, 29 Nov 2010 02:24:52 -0800 (PST)
+Received: from ism-mail02.corp.ad.wrs.com ([128.224.200.19]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Mon, 29 Nov 2010 02:24:51 -0800
+Received: from [128.224.162.71] ([128.224.162.71]) by ism-mail02.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+         Mon, 29 Nov 2010 11:24:48 +0100
+Message-ID: <4CF37F5D.9070709@windriver.com>
+Date:   Mon, 29 Nov 2010 18:24:29 +0800
+From:   "tiejun.chen" <tiejun.chen@windriver.com>
+User-Agent: Thunderbird 2.0.0.24 (X11/20101027)
+MIME-Version: 1.0
+To:     Wolfgang Grandegger <wg@grandegger.com>
+CC:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: Can't read from mmaped PCI memory space
+References: <4CF2C7B1.5030007@grandegger.com>
+In-Reply-To: <4CF2C7B1.5030007@grandegger.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 29 Nov 2010 10:24:49.0187 (UTC) FILETIME=[A6DEF730:01CB8FAF]
+Return-Path: <Tiejun.Chen@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28563
+X-archive-position: 28564
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: tiejun.chen@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Leverage the commit for ARM by Will Deacon:
+Wolfgang Grandegger wrote:
+> Hello,
+> 
+> I'm trying to read from mmapped PCI memory space on an alchemy board,
+> but I can't get it to work. Here's the lspci output of the PCI card:
+> 
+>   bash-3.00# lspci -v
+>   00:00.0 Class 0200: 168c:001b (rev 01)
+> 	Subsystem: 168c:2063
+> 	Flags: bus master, medium devsel, latency 168, IRQ 9
+> 	Memory at 0000000040000000 (32-bit, non-prefetchable) [size=64K]
+> 	Capabilities: [44] Power Management version 2
+> 
+> I used mmap on "/dev/mem" and "/sys/bus/pci/.../resource0", but I do not
+> read the expected values using "*(volatile u32 *)mmap_addr" from that
+> region. The value also changes from read to read. Reading from kernel
+> space just work fine. Am I doing something illegal? Any idea why it does
+> not work?
 
-- 446a5a8b1eb91a6990e5c8fe29f14e7a95b69132
-    ARM: 6205/1: perf: ensure counter delta is treated as unsigned
+Form here I'm not sure how you did exactly.
 
-    Hardware performance counters on ARM are 32-bits wide but atomic64_t
-    variables are used to represent counter data in the hw_perf_event structure.
+Theoretically, you can mmap() directly that at least from the sys resource. But
+I think you have to notice the aligning requirement for a page. I means you
+should firstly map one given base_address & ~(PAGE_SIZE - 1). Then access the
+last destination address with adding the corresponding offset as you want.
 
-    The armpmu_event_update function right-shifts a signed 64-bit delta variable
-    and adds the result to the event count. This can lead to shifting in sign-bits
-    if the MSB of the 32-bit counter value is set. This results in perf output
-    such as:
+Hope its useful.
 
-     Performance counter stats for 'sleep 20':
+Tiejun
 
-     18446744073460670464  cycles             <-- 0xFFFFFFFFF12A6000
-            7783773  instructions             #      0.000 IPC
-                465  context-switches
-                161  page-faults
-            1172393  branches
-
-       20.154242147  seconds time elapsed
-
-    This patch ensures that the delta value is treated as unsigned so that the
-    right shift sets the upper bits to zero.
-
-Acked-by: Will Deacon <will.deacon@arm.com>
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
----
- arch/mips/kernel/perf_event.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/kernel/perf_event.c b/arch/mips/kernel/perf_event.c
-index 8f7d2f8..a824485 100644
---- a/arch/mips/kernel/perf_event.c
-+++ b/arch/mips/kernel/perf_event.c
-@@ -169,7 +169,7 @@ static void mipspmu_event_update(struct perf_event *event,
- 	unsigned long flags;
- 	int shift = 64 - TOTAL_BITS;
- 	s64 prev_raw_count, new_raw_count;
--	s64 delta;
-+	u64 delta;
- 
- again:
- 	prev_raw_count = local64_read(&hwc->prev_count);
--- 
-1.7.1
+> 
+> TIA,
+> 
+> Wolfgang.
+> 
+> 

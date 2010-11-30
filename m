@@ -1,49 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Dec 2010 20:05:00 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:64621 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491039Ab0L2TE4 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Dec 2010 20:04:56 +0100
-Received: by iyj21 with SMTP id 21so10063166iyj.36
-        for <multiple recipients>; Wed, 29 Dec 2010 11:04:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type:content-transfer-encoding;
-        bh=sdS+9Tb9CMMuLaCtjOmvUpvAUZSSusEs21gxhy1ATfE=;
-        b=QcdPA0TxTc5vyIY4w3Akz/nEoquYMFqhQkMwegghDNdsQc45ZE0WrfooXfUfX0+YaY
-         ewX2HOH6wg0CzsSDJYps63acNIkxaIEv0IvNKy8HlSfj8bztfhM87z9p6QKJOP7X3wyw
-         dHx8debBb9/7IP1dY7K61AbBrFXImsoHynsyE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type
-         :content-transfer-encoding;
-        b=sKlKcjqsM4+bSNtl9BkYbZ9ESmAAPOlUmKBXXvxbWPnSZ3zgDSYqMsPjwsVpa7TkBo
-         yHyiObS1/Qgdw9xv4rtmWYtMNFYqpOXnUe5c65v3uxPtMWB+JyC5FDqeRKAgetUYGZWA
-         urD2pSLXNRCJIdXuGc6JqhsNP4dHZSSqXf4Ak=
-MIME-Version: 1.0
-Received: by 10.231.10.141 with SMTP id p13mr14941968ibp.131.1293649489472;
- Wed, 29 Dec 2010 11:04:49 -0800 (PST)
-Received: by 10.231.161.84 with HTTP; Wed, 29 Dec 2010 11:04:49 -0800 (PST)
-Date:   Wed, 29 Dec 2010 11:04:49 -0800
-Message-ID: <AANLkTimKSauYdv-cfSmc3cxQo3-YE4sOpLQ7sepwJf==@mail.gmail.com>
-Subject: [PATCH RESEND] MIPS: Add local_flush_tlb_all_mm to clear all mm
- contexts on calling cpu
-From:   Maksim Rayskiy <maksim.rayskiy@gmail.com>
-To:     linux-mips <linux-mips@linux-mips.org>,
-        "Kevin D. Kissell" <kevink@paralogos.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <maksim.rayskiy@gmail.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28770
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maksim.rayskiy@gmail.com
-Precedence: bulk
-X-list: linux-mips
+From: Maksim Rayskiy <maksim.rayskiy@gmail.com>
+Date: Tue, 30 Nov 2010 11:34:31 -0800
+Subject: [PATCH] MIPS: Add local_flush_tlb_all_mm to clear all mm
+contexts on calling cpu
+Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20101130193431.1ZYDJTZU0A2KJ1j8hueFPON_-LiPRAtFhmjVn32uekw@z>
 
+When hotplug removing a cpu, all mm context TLB entries must be cleared
+to avoid ASID conflict when cpu is restarted.
+New functions local_flush_tlb_all_mm() and all-cpu version
+flush_tlb_all_mm() are added.
+To function properly, local_flush_tlb_all_mm() must be called when
+mm_cpumask for all mm context on given cpu is cleared.
+
+Signed-off-by: Maksim Rayskiy <maksim.rayskiy@gmail.com>
+---
+ arch/mips/include/asm/tlbflush.h |    4 ++++
+ arch/mips/kernel/smp.c           |   10 ++++++++++
+ arch/mips/mm/tlb-r4k.c           |   12 ++++++++++++
+ 3 files changed, 26 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/include/asm/tlbflush.h b/arch/mips/include/asm/tlbflush.h
+index 86b21de..d7b75e6 100644
+--- a/arch/mips/include/asm/tlbflush.h
++++ b/arch/mips/include/asm/tlbflush.h
+@@ -8,12 +8,14 @@
+ *
+ *  - flush_tlb_all() flushes all processes TLB entries
+ *  - flush_tlb_mm(mm) flushes the specified mm context TLB entries
++ *  - flush_tlb_all_mm() flushes all mm context TLB entries
+ *  - flush_tlb_page(vma, vmaddr) flushes one page
+ *  - flush_tlb_range(vma, start, end) flushes a range of pages
+ *  - flush_tlb_kernel_range(start, end) flushes a range of kernel pages
+ */
+ extern void local_flush_tlb_all(void);
+ extern void local_flush_tlb_mm(struct mm_struct *mm);
++extern void local_flush_tlb_all_mm(void);
+ extern void local_flush_tlb_range(struct vm_area_struct *vma,
+       unsigned long start, unsigned long end);
+ extern void local_flush_tlb_kernel_range(unsigned long start,
+@@ -26,6 +28,7 @@ extern void local_flush_tlb_one(unsigned long vaddr);
+
+ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm(struct mm_struct *);
++extern void flush_tlb_all_mm(void);
+ extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long,
+       unsigned long);
+ extern void flush_tlb_kernel_range(unsigned long, unsigned long);
+@@ -36,6 +39,7 @@ extern void flush_tlb_one(unsigned long vaddr);
+
+ #define flush_tlb_all()                        local_flush_tlb_all()
+ #define flush_tlb_mm(mm)               local_flush_tlb_mm(mm)
++#define flush_tlb_all_mm()             local_flush_tlb_all_mm()
+ #define flush_tlb_range(vma, vmaddr, end)
+local_flush_tlb_range(vma, vmaddr, end)
+ #define flush_tlb_kernel_range(vmaddr,end) \
+       local_flush_tlb_kernel_range(vmaddr, end)
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 383aeb9..535231f 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -242,6 +242,16 @@ void flush_tlb_all(void)
+       on_each_cpu(flush_tlb_all_ipi, NULL, 1);
+ }
+
++static void flush_tlb_all_mm_ipi(void *info)
++{
++       local_flush_tlb_all_mm();
++}
++
++void flush_tlb_all_mm(void)
++{
++       on_each_cpu(flush_tlb_all_mm_ipi, NULL, 1);
++}
++
+ static void flush_tlb_mm_ipi(void *mm)
+ {
+       local_flush_tlb_mm((struct mm_struct *)mm);
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index c618eed..5c03218 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -66,6 +66,18 @@ extern void build_tlb_refill_handler(void);
+
+ #endif
+
++/* This function will clear all mm contexts on calling cpu
++ * To produce desired effect it must be called
++ * when mm_cpumask for all mm contexts is cleared
++ */
++void local_flush_tlb_all_mm(void)
++{
++       struct task_struct *p;
++       for_each_process(p)
++               if (p->mm)
++                       local_flush_tlb_mm(p->mm);
++}
++
+ void local_flush_tlb_all(void)
+ {
+       unsigned long flags;
+--
+1.7.0.4

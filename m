@@ -1,85 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 12:24:27 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:37600 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492952Ab0LALYZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Dec 2010 12:24:25 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oB1BOCgN031109;
-        Wed, 1 Dec 2010 11:24:13 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oB1BOBsg031101;
-        Wed, 1 Dec 2010 11:24:11 GMT
-Date:   Wed, 1 Dec 2010 11:24:10 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Anoop P <anoop.pa@gmail.com>
-Cc:     linux-mips@linux-mips.org, dvomlehn@cisco.com,
-        David Howells <dhowells@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] Allow setup_irq call for VPE1 timer.
-Message-ID: <20101201112410.GL2916@linux-mips.org>
-References: <1290697632-6139-1-git-send-email-anoop.pa@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 12:53:00 +0100 (CET)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:57743 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492959Ab0LALw4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Dec 2010 12:52:56 +0100
+Received: by ewy20 with SMTP id 20so3367231ewy.36
+        for <multiple recipients>; Wed, 01 Dec 2010 03:52:56 -0800 (PST)
+Received: by 10.213.9.83 with SMTP id k19mr3526855ebk.47.1291204376092;
+        Wed, 01 Dec 2010 03:52:56 -0800 (PST)
+Received: from [192.168.2.2] ([91.79.91.95])
+        by mx.google.com with ESMTPS id q58sm7438848eeh.9.2010.12.01.03.52.53
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 01 Dec 2010 03:52:54 -0800 (PST)
+Message-ID: <4CF636A7.1030809@mvista.com>
+Date:   Wed, 01 Dec 2010 14:51:03 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.12) Gecko/20101027 Thunderbird/3.1.6
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1290697632-6139-1-git-send-email-anoop.pa@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     Maksim Rayskiy <maksim.rayskiy@gmail.com>
+CC:     "Kevin D. Kissell" <kevink@paralogos.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: ASID conflict after CPU hotplug
+References: <AANLkTi=yHm72=sM=QwLpm=aDRnxVf7ZM5=W6eNzgVoTN@mail.gmail.com>        <20101122034141.GA13138@linux-mips.org>        <4CEAE1EE.9020406@paralogos.com>        <AANLkTimuJLxG2KoibRxzcHkX3LoKsTWqJSF_e=ouFi+b@mail.gmail.com>        <4CEE877C.7020309@paralogos.com>        <AANLkTinUSjvjwHVJoRW-Fr75WDfheq3hSM_hEBMsEUXK@mail.gmail.com>        <4CF46741.9060902@paralogos.com>        <AANLkTikb32T_c7iu6aa0mXDDqC4ncsV9iQAqyVKHy1_y@mail.gmail.com>        <4CF4CC6B.9090603@paralogos.com> <AANLkTinQKfeYockOBYQOasJ0-C3T106Qe95hV23pfqKg@mail.gmail.com>
+In-Reply-To: <AANLkTinQKfeYockOBYQOasJ0-C3T106Qe95hV23pfqKg@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28578
+X-archive-position: 28579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 25, 2010 at 08:37:12PM +0530, Anoop P wrote:
+Hello.
 
-> From: Anoop P A <anoop.pa@gmail.com>
-> 
-> VSMP configuration can have seperate timer interrupts for each VPE.Need to setup IRQ for VPE1 timer.
+On 30-11-2010 22:49, Maksim Rayskiy wrote:
 
-> +#ifndef CONFIG_MIPS_MT_SMP
->  	if (cp0_timer_irq_installed)
->  		return 0;
-> -
-> +#endif
->  	cp0_timer_irq_installed = 1;
->  
->  	setup_irq(irq, &c0_compare_irqaction);
+> From 9a03661a40407e14ee75295f5541f371f0a7cdda Mon Sep 17 00:00:00 2001
+> From: Maksim Rayskiy<maksim.rayskiy@gmail.com>
+> Date: Tue, 30 Nov 2010 11:34:31 -0800
+> Subject: [PATCH] MIPS: Added local_flush_tlb_all_mm to clear all mm
+> contexts on calling cpu
 
-On the stylistic side adding an #ifdef gives me wrinkles.
+> When hotplug removing a cpu, all mm context TLB entries must be cleared
+> to avoid ASID conflict when cpu is restarted.
+> New functions local_flush_tlb_all_mm() and all-cpu version
+> flush_tlb_all_mm() are added.
+> To function properly, local_flush_tlb_all_mm() must be called when
+> mm_cpumask for all
+> mm context on given cpu is cleared.
 
-With CONFIG_MIPS_MT_SMP this patch results in sharing c0_compare_irqaction
-between multiple interrupts which is broken.  Struct irqaction contains
-the interrupt number, all registered irqaction structs are part of a chained
-list via its ->next member and also there is a per interrupt proc directory.
+> Signed-off-by: Maksim Rayskiy<maksim.rayskiy@gmail.com>
+[...]
 
-To fix this properly you'll have to introduce do a bit of bookkeeping - you
-want to register each interrupt only once - and allocate a struct irqaction
-per registered timer interrupt.
+> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+> index c618eed..5c03218 100644
+> --- a/arch/mips/mm/tlb-r4k.c
+> +++ b/arch/mips/mm/tlb-r4k.c
+> @@ -66,6 +66,18 @@ extern void build_tlb_refill_handler(void);
+>
+>   #endif
+>
+> +/* This function will clear all mm contexts on calling cpu
+> + * To produce desired effect it must be called
+> + * when mm_cpumask for all mm contexts is cleared
+> + */
+> +void local_flush_tlb_all_mm(void)
+> +{
+> +	struct task_struct *p;
 
-The allocation is made a little trickier by kmalloc not being available
-yet by the time this code is getting invoked via time_init() so you'll
-have to move it to run via the late_time_init hook like x86:
+    An empty line wouldn't hurt here...
 
-static __init void x86_late_time_init(void)
-{
-	... do the real work ...
-}
+> +	for_each_process(p)
+> +		if (p->mm)
+> +			local_flush_tlb_mm(p->mm);
+> +}
+> +
 
-/* ... */
-
-void __init time_init(void)
-{
-        late_time_init = x86_late_time_init;
-}
-
-Which makes me wonder if there is a reason why we need to have both
-time_init() and late_time_init() - can't we just move the time_init()?
-
-  Ralf
+WBR, Sergei

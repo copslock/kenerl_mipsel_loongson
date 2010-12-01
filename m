@@ -1,103 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 17:34:58 +0100 (CET)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:47541 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493026Ab0LAQez (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Dec 2010 17:34:55 +0100
-Received: by pwj8 with SMTP id 8so1387749pwj.36
-        for <multiple recipients>; Wed, 01 Dec 2010 08:34:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=MroLykGlReq/tIZgiDgM9slRnup+A+Uqn1Cm2l9Yzx8=;
-        b=uJoU+uKxgd0f6r9I7a/CL461xRwVOOldHCQY1cfXHvlVILCINbw4ORokDRdCUR65gL
-         b2/TkvbeAUUu9uUb0B9aGPML4lMxQnCbMez6Z8G7KzZVV+0/e5hrGk3bZF/irZEexNd9
-         vyNqhpucvJNtWIFHRx2NwGPS2ijRm3iuJr8lc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=SBtUKUia2YBPC4CIwIbhFobNk0zJdx+znFY0N4Kr4rKMa73OkfAwFlX+uKzNk0ItLX
-         +GYYzath/CacsPl7b2NRz/F+WaFxnb+ayFZFiFHEHkFPD1SXl9ODsaDRtZgO5Apvz9zu
-         3mmwjNdg7Oeok11QJqzu7eY6QxkfAyZpYoTss=
-Received: by 10.142.192.20 with SMTP id p20mr9104526wff.42.1291221288617;
-        Wed, 01 Dec 2010 08:34:48 -0800 (PST)
-Received: from localhost.localdomain ([211.201.183.198])
-        by mx.google.com with ESMTPS id w42sm183330wfh.15.2010.12.01.08.34.45
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 01 Dec 2010 08:34:47 -0800 (PST)
-From:   Namhyung Kim <namhyung@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 17:55:22 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47484 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493029Ab0LAQzT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Dec 2010 17:55:19 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oB1GtHt0007366;
+        Wed, 1 Dec 2010 16:55:17 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oB1GtHUf007363;
+        Wed, 1 Dec 2010 16:55:17 GMT
+Date:   Wed, 1 Dec 2010 16:55:17 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Namhyung Kim <namhyung@gmail.com>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] MIPS: Fix build failure on mips_sc_is_activated()
-Date:   Thu,  2 Dec 2010 01:34:42 +0900
-Message-Id: <1291221282-9056-1-git-send-email-namhyung@gmail.com>
-X-Mailer: git-send-email 1.7.0.4
-Return-Path: <namhyung@gmail.com>
+Subject: Re: [PATCH] MIPS: Fix build failure on mips_sc_is_activated()
+Message-ID: <20101201165517.GA5560@linux-mips.org>
+References: <1291221282-9056-1-git-send-email-namhyung@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1291221282-9056-1-git-send-email-namhyung@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28590
+X-archive-position: 28591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: namhyung@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-The commit ea31a6b20371 ("MIPS: Honor L2 bypass bit") breaks
-malta build as follows. Looks like not compile-tested :(
+On Thu, Dec 02, 2010 at 01:34:42AM +0900, Namhyung Kim wrote:
 
-  CC      arch/mips/mm/sc-mips.o
-arch/mips/mm/sc-mips.c: In function 'mips_sc_is_activated':
-arch/mips/mm/sc-mips.c:77:7 error: 'config2' undeclared (first use in this function)
-arch/mips/mm/sc-mips.c:77:7 note: each undeclared identifier is reported only once
-arch/mips/mm/sc-mips.c:77:7       for each function it appears in
-arch/mips/mm/sc-mips.c:81:2 error: 'tmp' undeclared (first use in this function)
-arch/mips/mm/sc-mips.c:86:1 warning: control reaches end of non-void function
-make[3]: *** [arch/mips/mm/sc-mips.o] Error 1
-make[2]: *** [arch/mips/mm/sc-mips.o] Error 2
-make[1]: *** [sub-make] Error 2
-make: *** [all] Error 2
+> The commit ea31a6b20371 ("MIPS: Honor L2 bypass bit") breaks
+> malta build as follows. Looks like not compile-tested :(
 
-Signed-off-by: Namhyung Kim <namhyung@gmail.com>
----
- arch/mips/mm/sc-mips.c |    9 +++++++--
- 1 files changed, 7 insertions(+), 2 deletions(-)
+Already fixed in the linux-mips git tree by an identical patch in
+commit 9a3475880131752d3d78ac25516fd3eab3fca871.
 
-diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-index 505feca..a168f52 100644
---- a/arch/mips/mm/sc-mips.c
-+++ b/arch/mips/mm/sc-mips.c
-@@ -66,8 +66,11 @@ static struct bcache_ops mips_sc_ops = {
-  * 12..15 as implementation defined so below function will eventually have
-  * to be replaced by a platform specific probe.
-  */
--static inline int mips_sc_is_activated(struct cpuinfo_mips *c)
-+static inline int mips_sc_is_activated(struct cpuinfo_mips *c,
-+				       unsigned int config2)
- {
-+	unsigned int tmp;
-+
- 	/* Check the bypass bit (L2B) */
- 	switch (c->cputype) {
- 	case CPU_34K:
-@@ -83,6 +86,8 @@ static inline int mips_sc_is_activated(struct cpuinfo_mips *c)
- 		c->scache.linesz = 2 << tmp;
- 	else
- 		return 0;
-+
-+	return 1;
- }
- 
- static inline int __init mips_sc_probe(void)
-@@ -108,7 +113,7 @@ static inline int __init mips_sc_probe(void)
- 
- 	config2 = read_c0_config2();
- 
--	if (!mips_sc_is_activated(c))
-+	if (!mips_sc_is_activated(c, config2))
- 		return 0;
- 
- 	tmp = (config2 >> 8) & 0x0f;
--- 
-1.7.0.4
+Thanks anyway!
+
+  Ralf

@@ -1,91 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 16:54:35 +0100 (CET)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:62734 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493013Ab0LAPyb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Dec 2010 16:54:31 +0100
-Received: by yxm34 with SMTP id 34so3760750yxm.36
-        for <multiple recipients>; Wed, 01 Dec 2010 07:54:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:to:cc
-         :in-reply-to:references:content-type:date:message-id:mime-version
-         :x-mailer:content-transfer-encoding;
-        bh=rb32R6kPzmkl7XoC233HzMmkJvuDgUwfVOJ9g3ASc+c=;
-        b=cfpoJwbpXfwoLkgDf174Keqf7s6cSzPwB7aOXVyHXhAhdj+AFn1BkkKrbcro2TqEZt
-         9FXoMQR8OyqhAfBADy2MzPKvy8tYbu8S6EZwPgAgStnRK+t2nzSWYksZFnhAR004nQaP
-         SNnwTazI+4Zn/h5Do88s2ygw3XrD57T4Xnwbo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:to:cc:in-reply-to:references:content-type:date
-         :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=dH+LlP3GKlSSVZwuNV1+gjH7HclQM2YRVBwZZz9Q8CxaANG8hPcRGJm4XZ9Dso6nbG
-         Dm9bzHi9nizY4hsddl0yPfEYjsdj+pklc8sfIBGdKkUMjey9n+bq9Z8GjaIJoGgcdGYi
-         7yEMy5dpMX4CAsqPlYNqcQjgFthStN5Dc/jWQ=
-Received: by 10.91.67.10 with SMTP id u10mr183945agk.187.1291218863612;
-        Wed, 01 Dec 2010 07:54:23 -0800 (PST)
-Received: from [192.168.10.102] ([211.201.183.198])
-        by mx.google.com with ESMTPS id 31sm67747yhl.30.2010.12.01.07.54.19
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 01 Dec 2010 07:54:22 -0800 (PST)
-Subject: Re: [PATCH RESEND] MIPS: Define dummy MAX_DMA_CHANNELS to fix
- build failure
-From:   Namhyung Kim <namhyung@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-In-Reply-To: <1289918840-13434-1-git-send-email-namhyung@gmail.com>
-References: <1289918840-13434-1-git-send-email-namhyung@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Thu, 02 Dec 2010 00:54:13 +0900
-Message-ID: <1291218853.1684.35.camel@leonhard>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 8bit
-Return-Path: <namhyung@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 17:06:45 +0100 (CET)
+Received: from mail96.messagelabs.com ([216.82.254.19]:47330 "EHLO
+        mail96.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493015Ab0LAQGm convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Dec 2010 17:06:42 +0100
+X-VirusChecked: Checked
+X-Env-Sender: Viral.Mehta@lntinfotech.com
+X-Msg-Ref: server-12.tower-96.messagelabs.com!1291219592!71160213!1
+X-StarScan-Version: 6.2.9; banners=lntinfotech.com,-,-
+X-Originating-IP: [203.199.118.205]
+Received: (qmail 30912 invoked from network); 1 Dec 2010 16:06:35 -0000
+Received: from unknown (HELO VSHINMSHTCAS01.vshodc.lntinfotech.com) (203.199.118.205)
+  by server-12.tower-96.messagelabs.com with AES128-SHA encrypted SMTP; 1 Dec 2010 16:06:35 -0000
+Received: from vshinmsmbx01.vshodc.lntinfotech.com ([172.17.24.117]) by
+ VSHINMSHTCAS01.vshodc.lntinfotech.com ([172.17.24.112]) with mapi; Wed, 1 Dec
+ 2010 21:36:31 +0530
+From:   Viral Mehta <Viral.Mehta@lntinfotech.com>
+To:     naveen yadav <yad.naveen@gmail.com>,
+        "kernelnewbies@nl.linux.org" <kernelnewbies@nl.linux.org>,
+        "linux-arm-kernel-request@lists.arm.linux.org.uk" 
+        <linux-arm-kernel-request@lists.arm.linux.org.uk>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Date:   Wed, 1 Dec 2010 21:36:31 +0530
+Subject: RE: Change of Default kernel page size i.e 4KB
+Thread-Topic: Change of Default kernel page size i.e 4KB
+Thread-Index: AcuRMnA5Kidnzr40Rg2OCnrUNQ3tNAAPF7wM
+Message-ID: <D69C90565D53114396BF743585AF5A09122E61E8C3@VSHINMSMBX01.vshodc.lntinfotech.com>
+References: <AANLkTi=4gtEC9fZyvc9g6uHecvjPrr0dDc==KsDOvq2Q@mail.gmail.com>
+In-Reply-To: <AANLkTi=4gtEC9fZyvc9g6uHecvjPrr0dDc==KsDOvq2Q@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <Viral.Mehta@lntinfotech.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28582
+X-archive-position: 28583
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: namhyung@gmail.com
+X-original-sender: Viral.Mehta@lntinfotech.com
 Precedence: bulk
 X-list: linux-mips
 
-2010-11-16 (화), 23:47 +0900, Namhyung Kim:
-> allmodconfig build failes like following:
-> 
->   CC [M]  sound/oss/soundcard.o
-> sound/oss/soundcard.c:68: error: 'MAX_DMA_CHANNELS' undeclared here (not in a function)
-> make[3]: *** [sound/oss/soundcard.o] Error 1
-> make[2]: *** [sound/oss] Error 2
-> make[1]: *** [sub-make] Error 2
-> make: *** [all] Error 2
-> 
-> Signed-off-by: Namhyung Kim <namhyung@gmail.com>
-> ---
->  arch/mips/include/asm/dma.h |    4 +++-
->  1 files changed, 3 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/dma.h b/arch/mips/include/asm/dma.h
-> index 2d47da6..c601cff 100644
-> --- a/arch/mips/include/asm/dma.h
-> +++ b/arch/mips/include/asm/dma.h
-> @@ -74,7 +74,9 @@
->   *
->   */
->  
-> -#ifndef CONFIG_GENERIC_ISA_DMA_SUPPORT_BROKEN
-> +#ifdef CONFIG_GENERIC_ISA_DMA_SUPPORT_BROKEN
-> +#define MAX_DMA_CHANNELS	0
-> +#else
->  #define MAX_DMA_CHANNELS	8
->  #endif
->  
+________________________________________
+From: kernelnewbies-bounce@nl.linux.org [kernelnewbies-bounce@nl.linux.org] On Behalf Of naveen yadav
+Hi,
 
-Ping. Any comments?
+>Hi All,
+>
+>I have few drivers and very big application running on ARM and MIPS target.
+>I want to check the performance by changing the page size ie.
 
+I remember it is possible on powerpc.
+There is config option like CONFIG_PPC_64K_PAGES.
+Not sure about ARM/MIPS archs, but you can certianly grep for something like 4K_PAGE all around defconfigs
 
--- 
-Regards,
-Namhyung Kim
+>8K, 16K, 32K etc.
+>
+>Is it possile, If yes then what all care i need to take .
+>
+>Thanks.
+
+--
+Viral
+
+This Email may contain confidential or privileged information for the intended recipient (s) If you are not the intended recipient, please do not use or disseminate the information, notify the sender and delete it from your system.
+
+______________________________________________________________________

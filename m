@@ -1,55 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 09:20:24 +0100 (CET)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:41290 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491988Ab0LAIUV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Dec 2010 09:20:21 +0100
-Received: by qwh6 with SMTP id 6so2312282qwh.36
-        for <linux-mips@linux-mips.org>; Wed, 01 Dec 2010 00:20:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:date:message-id
-         :subject:from:to:content-type;
-        bh=fuqbgted2eneNrvsr/w1ALfbQgIhg3aEIDEUFGf8Dg4=;
-        b=EWkoev9kad8cIyVqFbL8dy0yqRsNm6CDhP9zXwF94iJ8lSnFnsEZMotZcz4KMgaQVg
-         MXBCWKE2p2R+2u4Y67CTu4EGhq/cYIlkewxRDMClUHrMfKWxuNHYEbs5FYY2TifycK+F
-         SGAAAwjUW3WvsxAVRCPIXmsZWk4YYBWRBWKlM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=oSR+oRl3IxQ5O04SWbZpt/MJBjQjdWobCfH4X0lixxv7WrFBjVldt938hhxysaEZLe
-         q+TTtQjg4AhRpweoYeMeFgsI0MGSWa9LZmpzJL7Qjwf1a2Fqj7xJ45k7Ys4k0YhUkDTZ
-         DFhExCCQ8n5fpEjyZxRrlqXD5Jl6Q8o0pJ25E=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 12:24:27 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:37600 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492952Ab0LALYZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Dec 2010 12:24:25 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oB1BOCgN031109;
+        Wed, 1 Dec 2010 11:24:13 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oB1BOBsg031101;
+        Wed, 1 Dec 2010 11:24:11 GMT
+Date:   Wed, 1 Dec 2010 11:24:10 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Anoop P <anoop.pa@gmail.com>
+Cc:     linux-mips@linux-mips.org, dvomlehn@cisco.com,
+        David Howells <dhowells@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] Allow setup_irq call for VPE1 timer.
+Message-ID: <20101201112410.GL2916@linux-mips.org>
+References: <1290697632-6139-1-git-send-email-anoop.pa@gmail.com>
 MIME-Version: 1.0
-Received: by 10.229.216.201 with SMTP id hj9mr7094921qcb.58.1291191613912;
- Wed, 01 Dec 2010 00:20:13 -0800 (PST)
-Received: by 10.229.96.148 with HTTP; Wed, 1 Dec 2010 00:20:13 -0800 (PST)
-Date:   Wed, 1 Dec 2010 13:50:13 +0530
-Message-ID: <AANLkTi=4gtEC9fZyvc9g6uHecvjPrr0dDc==KsDOvq2Q@mail.gmail.com>
-Subject: Change of Default kernel page size i.e 4KB
-From:   naveen yadav <yad.naveen@gmail.com>
-To:     kernelnewbies@nl.linux.org,
-        linux-arm-kernel-request@lists.arm.linux.org.uk,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <yad.naveen@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1290697632-6139-1-git-send-email-anoop.pa@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28577
+X-archive-position: 28578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yad.naveen@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi All,
+On Thu, Nov 25, 2010 at 08:37:12PM +0530, Anoop P wrote:
 
-I have few drivers and very big application running on ARM and MIPS target.
-I want to check the performance by changing the page size ie.
+> From: Anoop P A <anoop.pa@gmail.com>
+> 
+> VSMP configuration can have seperate timer interrupts for each VPE.Need to setup IRQ for VPE1 timer.
 
-8K, 16K, 32K etc.
+> +#ifndef CONFIG_MIPS_MT_SMP
+>  	if (cp0_timer_irq_installed)
+>  		return 0;
+> -
+> +#endif
+>  	cp0_timer_irq_installed = 1;
+>  
+>  	setup_irq(irq, &c0_compare_irqaction);
 
-Is it possile, If yes then what all care i need to take .
+On the stylistic side adding an #ifdef gives me wrinkles.
 
-Thanks.
+With CONFIG_MIPS_MT_SMP this patch results in sharing c0_compare_irqaction
+between multiple interrupts which is broken.  Struct irqaction contains
+the interrupt number, all registered irqaction structs are part of a chained
+list via its ->next member and also there is a per interrupt proc directory.
+
+To fix this properly you'll have to introduce do a bit of bookkeeping - you
+want to register each interrupt only once - and allocate a struct irqaction
+per registered timer interrupt.
+
+The allocation is made a little trickier by kmalloc not being available
+yet by the time this code is getting invoked via time_init() so you'll
+have to move it to run via the late_time_init hook like x86:
+
+static __init void x86_late_time_init(void)
+{
+	... do the real work ...
+}
+
+/* ... */
+
+void __init time_init(void)
+{
+        late_time_init = x86_late_time_init;
+}
+
+Which makes me wonder if there is a reason why we need to have both
+time_init() and late_time_init() - can't we just move the time_init()?
+
+  Ralf

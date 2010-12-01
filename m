@@ -1,84 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 12:53:00 +0100 (CET)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:57743 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492959Ab0LALw4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Dec 2010 12:52:56 +0100
-Received: by ewy20 with SMTP id 20so3367231ewy.36
-        for <multiple recipients>; Wed, 01 Dec 2010 03:52:56 -0800 (PST)
-Received: by 10.213.9.83 with SMTP id k19mr3526855ebk.47.1291204376092;
-        Wed, 01 Dec 2010 03:52:56 -0800 (PST)
-Received: from [192.168.2.2] ([91.79.91.95])
-        by mx.google.com with ESMTPS id q58sm7438848eeh.9.2010.12.01.03.52.53
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 01 Dec 2010 03:52:54 -0800 (PST)
-Message-ID: <4CF636A7.1030809@mvista.com>
-Date:   Wed, 01 Dec 2010 14:51:03 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.12) Gecko/20101027 Thunderbird/3.1.6
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Dec 2010 14:24:43 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:60323 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492979Ab0LANYk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Dec 2010 14:24:40 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id oB1DOciE002341;
+        Wed, 1 Dec 2010 13:24:38 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id oB1DObIB002339;
+        Wed, 1 Dec 2010 13:24:37 GMT
+Date:   Wed, 1 Dec 2010 13:24:37 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     naveen yadav <yad.naveen@gmail.com>
+Cc:     kernelnewbies@nl.linux.org,
+        linux-arm-kernel@lists.arm.linux.org.uk, linux-mips@linux-mips.org
+Subject: Re: Change of Default kernel page size i.e 4KB
+Message-ID: <20101201132437.GA32555@linux-mips.org>
+References: <AANLkTi=4gtEC9fZyvc9g6uHecvjPrr0dDc==KsDOvq2Q@mail.gmail.com>
 MIME-Version: 1.0
-To:     Maksim Rayskiy <maksim.rayskiy@gmail.com>
-CC:     "Kevin D. Kissell" <kevink@paralogos.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: ASID conflict after CPU hotplug
-References: <AANLkTi=yHm72=sM=QwLpm=aDRnxVf7ZM5=W6eNzgVoTN@mail.gmail.com>        <20101122034141.GA13138@linux-mips.org>        <4CEAE1EE.9020406@paralogos.com>        <AANLkTimuJLxG2KoibRxzcHkX3LoKsTWqJSF_e=ouFi+b@mail.gmail.com>        <4CEE877C.7020309@paralogos.com>        <AANLkTinUSjvjwHVJoRW-Fr75WDfheq3hSM_hEBMsEUXK@mail.gmail.com>        <4CF46741.9060902@paralogos.com>        <AANLkTikb32T_c7iu6aa0mXDDqC4ncsV9iQAqyVKHy1_y@mail.gmail.com>        <4CF4CC6B.9090603@paralogos.com> <AANLkTinQKfeYockOBYQOasJ0-C3T106Qe95hV23pfqKg@mail.gmail.com>
-In-Reply-To: <AANLkTinQKfeYockOBYQOasJ0-C3T106Qe95hV23pfqKg@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AANLkTi=4gtEC9fZyvc9g6uHecvjPrr0dDc==KsDOvq2Q@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28579
+X-archive-position: 28580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Wed, Dec 01, 2010 at 01:50:13PM +0530, naveen yadav wrote:
 
-On 30-11-2010 22:49, Maksim Rayskiy wrote:
+> Cc: kernelnewbies@nl.linux.org,
+> 	linux-arm-kernel-request@lists.arm.linux.org.uk,
+                        ^^^^^^^^ WTF?
+> 	linux-mips@linux-mips.org
 
-> From 9a03661a40407e14ee75295f5541f371f0a7cdda Mon Sep 17 00:00:00 2001
-> From: Maksim Rayskiy<maksim.rayskiy@gmail.com>
-> Date: Tue, 30 Nov 2010 11:34:31 -0800
-> Subject: [PATCH] MIPS: Added local_flush_tlb_all_mm to clear all mm
-> contexts on calling cpu
+> I have few drivers and very big application running on ARM and MIPS target.
+> I want to check the performance by changing the page size ie.
+> 
+> 8K, 16K, 32K etc.
+> 
+> Is it possile, If yes then what all care i need to take .
 
-> When hotplug removing a cpu, all mm context TLB entries must be cleared
-> to avoid ASID conflict when cpu is restarted.
-> New functions local_flush_tlb_all_mm() and all-cpu version
-> flush_tlb_all_mm() are added.
-> To function properly, local_flush_tlb_all_mm() must be called when
-> mm_cpumask for all
-> mm context on given cpu is cleared.
+For MIPS: Rebuild kernel with support for the new kernel size.  Few MIPS
+cores.  Note that the `odd´ page sizes, that those that aren't a power
+of 4 are only supported by Cavium while all MIPS III and newer processors
+support even `even´ sizes 4KB, 16KB and 64KB.
 
-> Signed-off-by: Maksim Rayskiy<maksim.rayskiy@gmail.com>
-[...]
+Aside of rebuilding the kernel you also need a suitable userland; older
+versions of binutils will produce binaries that only run
+for 4kB page sizes.
 
-> diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-> index c618eed..5c03218 100644
-> --- a/arch/mips/mm/tlb-r4k.c
-> +++ b/arch/mips/mm/tlb-r4k.c
-> @@ -66,6 +66,18 @@ extern void build_tlb_refill_handler(void);
->
->   #endif
->
-> +/* This function will clear all mm contexts on calling cpu
-> + * To produce desired effect it must be called
-> + * when mm_cpumask for all mm contexts is cleared
-> + */
-> +void local_flush_tlb_all_mm(void)
-> +{
-> +	struct task_struct *p;
+For ARM the page size is fixed at 4kB which will simplify your benchmarking
+efforts ;)
 
-    An empty line wouldn't hurt here...
+Performance gains very much depends on the workload but in general larger
+sizes are beneficial except maybe for systems with very little memory.
 
-> +	for_each_process(p)
-> +		if (p->mm)
-> +			local_flush_tlb_mm(p->mm);
-> +}
-> +
-
-WBR, Sergei
+  Ralf

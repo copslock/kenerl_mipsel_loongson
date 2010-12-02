@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2010 13:00:48 +0100 (CET)
-Received: from mail-ey0-f177.google.com ([209.85.215.177]:55454 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2010 13:03:21 +0100 (CET)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:54632 "EHLO
         mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493201Ab0LBMAl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Dec 2010 13:00:41 +0100
-Received: by eyd9 with SMTP id 9so4155593eyd.36
-        for <multiple recipients>; Thu, 02 Dec 2010 04:00:41 -0800 (PST)
-Received: by 10.213.26.15 with SMTP id b15mr652720ebc.13.1291291241409;
-        Thu, 02 Dec 2010 04:00:41 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1493203Ab0LBMDT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Dec 2010 13:03:19 +0100
+Received: by eyd9 with SMTP id 9so4156988eyd.36
+        for <linux-mips@linux-mips.org>; Thu, 02 Dec 2010 04:03:18 -0800 (PST)
+Received: by 10.213.32.9 with SMTP id a9mr2508593ebd.60.1291291398526;
+        Thu, 02 Dec 2010 04:03:18 -0800 (PST)
 Received: from [192.168.2.2] ([91.79.87.12])
-        by mx.google.com with ESMTPS id v56sm412806eeh.2.2010.12.02.04.00.39
+        by mx.google.com with ESMTPS id v56sm414729eeh.2.2010.12.02.04.03.16
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 02 Dec 2010 04:00:40 -0800 (PST)
-Message-ID: <4CF789F9.2030608@mvista.com>
-Date:   Thu, 02 Dec 2010 14:58:49 +0300
+        Thu, 02 Dec 2010 04:03:17 -0800 (PST)
+Message-ID: <4CF78A96.8000109@mvista.com>
+Date:   Thu, 02 Dec 2010 15:01:26 +0300
 From:   Sergei Shtylyov <sshtylyov@mvista.com>
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.12) Gecko/20101027 Thunderbird/3.1.6
 MIME-Version: 1.0
-To:     Anoop P A <anoop.pa@gmail.com>
-CC:     kevink@paralogos.com, linux-mips@linux-mips.org,
-        David Howells <dhowells@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [RFC 3/3] VSMP support for MSP71xx family
-References: <1291220637.31413.20.camel@paanoop1-desktop>
-In-Reply-To: <1291220637.31413.20.camel@paanoop1-desktop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Arnaud Lacombe <lacombar@gmail.com>
+CC:     John Reiser <jreiser@bitwagon.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-mips@linux-mips.org, wu zhangjin <wuzhangjin@gmail.com>
+Subject: Re: Build failure triggered by recordmcount
+References: <AANLkTikjbP89qp24u1Pw6zcsyV7WcYYtmR0Yt3yCaXoh@mail.gmail.com>        <AANLkTim-+1csKoCc7kqXERmLZRSt9LAAB=JPK+0gaYPo@mail.gmail.com>        <AANLkTikaUxKqsqXKYpETOnWAMuCi5gp30ANux0RQuK6Z@mail.gmail.com>        <AANLkTinr1bU+_YCTW9xyJ9H0qiSOifBMsxC6iujszMvs@mail.gmail.com>        <4CEB37F8.1050504@bitwagon.com> <AANLkTikUZ=kQbWEtSNpw27pBPX-cSs2J+NaLODHG6T7O@mail.gmail.com>
+In-Reply-To: <AANLkTikUZ=kQbWEtSNpw27pBPX-cSs2J+NaLODHG6T7O@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28595
+X-archive-position: 28596
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,87 +37,38 @@ X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On 02.12.2010 7:54, Arnaud Lacombe wrote:
 
-On 01-12-2010 19:23, Anoop P A wrote:
+>> It looks to me like the change which introduced "virtual functions"
+>> forgot about cross-platform endianness.  Can anyone please test this patch?
+>> Thank you to Arnaud for supplying before+after data files do_mounts*.o.
 
->> From 5bfd3ba210e521df2b493862446b4535bcdb0cdf Mon Sep 17 00:00:00 2001
-> Message-Id:
-> <5bfd3ba210e521df2b493862446b4535bcdb0cdf.1291219118.git.anoop.pa@gmail.com>
-> In-Reply-To:<cover.1291219118.git.anoop.pa@gmail.com>
-> References:<cover.1291219118.git.anoop.pa@gmail.com>
-> From: Anoop P A<anoop.pa@gmail.com>
-> Date: Wed, 1 Dec 2010 21:08:37 +0530
-> Subject: [RFC 3/3] VSMP support for MSP71xx family.
-> Cc: anoop.pa@gmail.com
 
-    Don't include this header please -- it will have to be edited out anyway 
-when applying the patch.
+>> recordmcount: Honor endianness in fn_ELF_R_INFO
 
-> followig
+>> ---
+>>   scripts/recordmcount.h |    2 +-
+>>   1 files changed, 1 insertions(+), 1 deletions(-)
 
-    Following.
+>> diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
+>> index 58e933a..3966717 100644
+>> --- a/scripts/recordmcount.h
+>> +++ b/scripts/recordmcount.h
+>> @@ -119,7 +119,7 @@ static uint_t (*Elf_r_sym)(Elf_Rel const *rp) = fn_ELF_R_SYM;
+>>   static void fn_ELF_R_INFO(Elf_Rel *const rp, unsigned sym, unsigned type)
+>>   {
+>> -       rp->r_info = ELF_R_INFO(sym, type);
+>> +       rp->r_info = _w(ELF_R_INFO(sym, type));
+>>   }
+>>   static void (*Elf_r_info)(Elf_Rel *const rp, unsigned sym, unsigned type) = fn_ELF_R_INFO;
+>>   -- 1.7.3.2
 
-> patches
+> This patch does not seems to have made its way up to Linus tree, has
+> it been picked by anyone ?
 
-    Patches? I see only one.
+    It was not signed off, so couldn't be applied.
 
-> setup vectored interrupt in msp_irq.c and
-> register vsmp_ops from msp_setup.c.
-> It also changes get_c0_compare_int to return corresponding vpe timer
-> interrupt.
-
-> Signed-off-by: Anoop P A<anoop.pa@gmail.com>
-[...]
-
-> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq.c
-> b/arch/mips/pmc-sierra/msp71xx/msp_irq.c
-> index 734d598..e9144c8 100644
-> --- a/arch/mips/pmc-sierra/msp71xx/msp_irq.c
-> +++ b/arch/mips/pmc-sierra/msp71xx/msp_irq.c
-[...]
-> @@ -29,6 +27,19 @@ extern void msp_slp_irq_dispatch(void);
->   extern void msp_cic_irq_init(void);
->   extern void msp_cic_irq_dispatch(void);
->
-> +/* VSMP support init */
-> +extern void msp_vsmp_int_init(void);
-> +
-> +/* vectored interrupt implementation */
-> +
-> +/* SW0/1 interrupts are used for SMP/SMTC */
-> +static inline void mac0_int_dispatch(void) { do_IRQ(MSP_INT_MAC0); }
-> +static inline void mac1_int_dispatch(void) { do_IRQ(MSP_INT_MAC1); }
-> +static inline void mac2_int_dispatch(void) { do_IRQ(MSP_INT_SAR); }
-
-    You probably forgot a space here...
-
-> +static inline void usb_int_dispatch(void)  { do_IRQ(MSP_INT_USB);  }
-> +static inline void sec_int_dispatch(void)  { do_IRQ(MSP_INT_SEC);  }
-> +
-> +
->   /*
->    * The PMC-Sierra MSP interrupts are arranged in a 3 level cascaded
->    * hierarchical system.  The first level are the direct MIPS interrupts
-> @@ -96,29 +107,51 @@ asmlinkage void plat_irq_dispatch(struct pt_regs
-> *regs)
-
-    Your patch is line wrapped.
-
->   void __init arch_init_irq(void)
->   {
-> +	/* assume we'll be using vectored interrupt mode except in UP mode*/
-
-    You forgot a spce before */.
-
->   	/* setup the 2nd-level SLP register based interrupt controller */
-> +	/* VSMP /SMTC support support is not enabled for SLP */
-
-    The preferred style for the multiline comments is this:
-
-/*
-  * bla
-  * bla
-  */
+> Thanks,
+>   - Arnaud
 
 WBR, Sergei

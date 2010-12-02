@@ -1,78 +1,128 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2010 17:15:22 +0100 (CET)
-Received: from p02c12o147.mxlogic.net ([208.65.145.80]:49218 "EHLO
-        p02c12o147.mxlogic.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493242Ab0LBQPP convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Dec 2010 18:34:08 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:51530 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492335Ab0LBReA convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Dec 2010 17:15:15 +0100
-Received: from unknown [76.164.174.81]
-        by p02c12o147.mxlogic.net(mxl_mta-6.8.0-0)
-        with SMTP id 016c7fc4.0.19668.00-326.45958.p02c12o147.mxlogic.net (envelope-from <andy.kennedy@adtran.com>);
-        Thu, 02 Dec 2010 09:15:14 -0700 (MST)
-X-MXL-Hash: 4cf7c6126834398f-c61c2af4c688db07a175be72adc7d11ef9bf9fa4
-Received: from corp-exfr2.corp.adtran.com (172.23.101.22) by
- ex-hc1.corp.adtran.com (172.22.50.71) with Microsoft SMTP Server id
- 14.1.255.0; Thu, 2 Dec 2010 10:15:01 -0600
-Received: from EXV1.corp.adtran.com ([172.22.48.215]) by
- corp-exfr2.corp.adtran.com with Microsoft SMTPSVC(6.0.3790.3959);       Thu, 2 Dec
- 2010 10:15:00 -0600
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-Class: urn:content-classes:message
+        Thu, 2 Dec 2010 18:34:00 +0100
+Received: by fxm19 with SMTP id 19so3474129fxm.36
+        for <multiple recipients>; Thu, 02 Dec 2010 09:33:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=yydP2uiy442hR+TIm/kShJP+obcsROR/MsBao3CxDZc=;
+        b=HWfiutyxl3oDpVvgsQH8aJ9A7GwYGQOHJi7Egez+ZZwI3HgR8jVoNucSXeEPP/HnbS
+         kXdDhm5eKN8dXEMcWbR5lTefkzX7VqTlsRvKFudKb/8bRCleLvuTAVhzCso/IeTE8Sio
+         PUPX5DGR0mtspSoFDF2G35yFCTNVrdzVNXMco=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=wTIsszDExjYw8lHlPnIDUzYQva2I6AhdUOpP9bXgz2hSGP2ZcRHIgGHGptIPZK8vvn
+         4YIk9ntlpQRvpc8+QRyJAP+Go2FxMt8vWN8n9gTgq+FGOnePMm+x+O98yY9hQQK52EFX
+         bfhB9vg4HDt0Jx5VkKP1V0Wgcw9fy2sSL97WU=
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Received: by 10.223.79.72 with SMTP id o8mr878180fak.83.1291310849161; Thu, 02
+ Dec 2010 09:27:29 -0800 (PST)
+Received: by 10.223.101.198 with HTTP; Thu, 2 Dec 2010 09:27:29 -0800 (PST)
+In-Reply-To: <4CF78755.2070109@mvista.com>
+References: <1291220307.31413.14.camel@paanoop1-desktop>
+        <4CF78755.2070109@mvista.com>
+Date:   Thu, 2 Dec 2010 22:57:29 +0530
+Message-ID: <AANLkTinkF8_2hO7Ko=S6w2NPPX8oGTcdbRyd=7N0mUbM@mail.gmail.com>
+Subject: Re: [RFC 1/3] VSMP support for msp71xx family of platforms.
+From:   anoop pa <anoop.pa@gmail.com>
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        mcdonald.shane@gmail.com
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Subject: Issues attempting to boot vmlinuz
-Date:   Thu, 2 Dec 2010 10:15:39 -0600
-Message-ID: <9AC3F0E75060224C8BBC5BA2DDC8853A1E4E035F@EXV1.corp.adtran.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Issues attempting to boot vmlinuz
-Thread-Index: AcuSPCk1yeKNcWT/Q4Srhj6LbAm64w==
-From:   ANDY KENNEDY <ANDY.KENNEDY@adtran.com>
-To:     <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 02 Dec 2010 16:15:00.0725 (UTC) FILETIME=[11F67A50:01CB923C]
-X-Spam: [F=0.2000000000; CM=0.500; S=0.200(2010120101)]
-X-MAIL-FROM: <andy.kennedy@adtran.com>
-X-SOURCE-IP: [(unknown)]
-X-AnalysisOut: [v=1.0 c=1 a=PjMH8U03xLAA:10 a=BLceEmwcHowA:10 a=kj9zAlcOel]
-X-AnalysisOut: [0A:10 a=0XgpNN2/4a34ymu16SVwsQ==:17 a=zTZC_Sm-60neGbu33w8A]
-X-AnalysisOut: [:9 a=N288De-YdjTRnJcXb0sA:7 a=7aqQGRpnWVA6h7vrVcxRLJbpmdUA]
-X-AnalysisOut: [:4 a=CjuIK1q_8ugA:10]
-Return-Path: <andy.kennedy@adtran.com>
+Return-Path: <anoop.pa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28602
+X-archive-position: 28603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ANDY.KENNEDY@adtran.com
+X-original-sender: anoop.pa@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I create a vmlinux kernel and boot it just fine.  The boot loader loads
-the kernel to 0x80404210 and I can execute from there.  I next attempted
-to adjust the Kconfig files to allow me to build a vmlinuz.  The boot
-loader puts the kernel image at 0x8075e8b0 which is the computed
-location of where the zipped kernel should go (I think).  What happens
-next is an exception is returned to the boot loader and I end up back at
-the boot loader prompt:
+On Thu, Dec 2, 2010 at 5:17 PM, Sergei Shtylyov <sshtylyov@mvista.com> wrote:
+> On 01.12.2010 19:18, Anoop P A wrote:
+>
+>   Don't include this into the patch, or Ralf will have to hand edit it out.
+>
 
-* Exception 0x0a (user) : Reserved instruction *
+Sure. Will take care in next patch series onwards.
 
-* in address: 8075e8b0
+>> Cc: anoop.pa@gmail.com
+>
+>   This should be in the signoff section.
+>
+OK
 
-__initcall_pm_qos_power_init7+0x48054:
+>> msp_smp.c initiliase IPI call and resched irq.
+>
+>   Only "initializes".
+>
 
-[8075e8b0] 9cda39f9 lwu         r26,0x39f9(r6)
+Sorry my bad.
+
+>> -obj-$(CONFIG_IRQ_MSP_CIC) += msp_irq_cic.o
+>> +obj-$(CONFIG_IRQ_MSP_CIC) += msp_irq_cic.o msp_irq_per.o
+>
+>   What does this change have to do with the rest of the patch?
+>
+This change is required for next patch in this. series.Is this
+potentially wrong .
+ Do I want to move this to next patch?
+
+>   Your patch is line-wrapped.
+>
+
+Will take care while creating next set of patches.
 
 
-So, I'm attempting now to hack around this issue, though I don't really
-know where to begin (I've been working with mips for about 4 wks now).
-I did find that the boot loader is configuring itself as the exception
-handler and it catches 0x0a (Reserved instruction exception - according
-to the mips documentation).  But what does this mean?
+>> +#define MIPS_CPU_IPI_CALL_IRQ 1                /* SW int 1 for call */
+>
+>   Align the comments please, and align the macro values with a tab.
+>
+Ok
 
-Any help you provide would be greatly appreciated.
+>> +static struct irqaction irq_resched = {
+>> +       .handler        = ipi_resched_interrupt,
+>> +       .flags          = IRQF_DISABLED|IRQF_PERCPU,
+>
+>   Need spaces around |.
+>
 
-Thanks,
-Andy
+O.k
+
+>   Need an empty line here.
+>
+
+Ok
+
+>> +       set_vi_handler (MIPS_CPU_IPI_CALL_IRQ, ipi_call_dispatch);
+>
+>   Spaces between the function name and ( are not allowed -- run your patch
+> thru scripts/checkpatch.pl.
+Not sure what went wrong. I had checked it before sending .
+
+linux.git$ ./scripts/checkpatch.pl
+0001-VSMP-support-for-msp71xx-family-of-platforms.patch
+total: 0 errors, 0 warnings, 84 lines checked
+
+0001-VSMP-support-for-msp71xx-family-of-platforms.patch has no obvious
+style problems and is ready for submission.
+
+>
+> WBR, Sergei
+>
+Sergei Thank you very much reviewing the code.
+
+Regards,
+Anoop

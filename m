@@ -1,104 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2010 14:13:16 +0100 (CET)
-Received: from mail-ew0-f54.google.com ([209.85.215.54]:47273 "EHLO
-        mail-ew0-f54.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491138Ab0LKNNN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Dec 2010 14:13:13 +0100
-Received: by ewy24 with SMTP id 24so3180780ewy.27
-        for <multiple recipients>; Sat, 11 Dec 2010 05:13:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=v0cTdGci7cw4E8rob7CoM0vvgFVfikIE3L+mg7WJ8xE=;
-        b=wjD0RQhugVDTwYeqzblk1KNvWo4JLN2xIdttMRipTH08cfrm94wM2BUQqa3qis7mn/
-         8x5xscYCCjM8eFp0t0cK60pfGq7ZCVXI04B6LKrmkl0ejy8Xn/9jkjrBpFDzYGHcmrSN
-         o2JpLQ7MpVmOQXuji+DVhht3/zjHq30ALjqEU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=jNOspWbK1vb4U0bxlcEP7kBmFZLSEz3bvgWTiW20p9GWHSFaBKJ/KXtO8cbR5hnxLY
-         QJwftADsYsqHrvM/1nWV353Kwh0GNkcfL8DDBRLMI2EZgdN5fSJWNnok2mgmOg/fYxl2
-         mJOAlzDdk7KYzOVgSBHvceyD4Veu8t+q7egWI=
-Received: by 10.213.108.72 with SMTP id e8mr515613ebp.70.1292073192742;
-        Sat, 11 Dec 2010 05:13:12 -0800 (PST)
-Received: from localhost.localdomain (178-191-12-185.adsl.highway.telekom.at [178.191.12.185])
-        by mx.google.com with ESMTPS id u1sm918517eeh.22.2010.12.11.05.13.11
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 11 Dec 2010 05:13:12 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH v3] MIPS: Alchemy: fix build with SERIAL_8250=n
-Date:   Sat, 11 Dec 2010 14:13:04 +0100
-Message-Id: <1292073184-24117-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: git-send-email 1.7.3.3
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2010 21:35:05 +0100 (CET)
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:50558 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491910Ab0LKUfC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Dec 2010 21:35:02 +0100
+Received: from [192.168.4.185] (helo=localhost)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.69)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1PRW9h-0004nR-3f; Sat, 11 Dec 2010 20:34:57 +0000
+Received: from ben by localhost with local (Exim 4.72)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1PRW9g-0002nH-KI; Sat, 11 Dec 2010 20:34:56 +0000
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Namhyung Kim <namhyung@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20101201165517.GA5560@linux-mips.org>
+References: <1291221282-9056-1-git-send-email-namhyung@gmail.com>
+         <20101201165517.GA5560@linux-mips.org>
+Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-2vJGUNZKTMiI2T/S4QNl"
+Date:   Sat, 11 Dec 2010 20:34:56 +0000
+Message-ID: <1292099696.3136.46.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
+X-SA-Exim-Connect-IP: 192.168.4.185
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+Subject: Re: [PATCH] MIPS: Fix build failure on mips_sc_is_activated()
+X-SA-Exim-Version: 4.2.1 (built Wed, 25 Jun 2008 17:14:11 +0000)
+X-SA-Exim-Scanned: Yes (on shadbolt.decadent.org.uk)
+Return-Path: <ben@decadent.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28635
+X-archive-position: 28636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ben@decadent.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-In commit 7d172bfe ("Alchemy: Add UART PM methods") I introduced
-platform PM methods which call a function of the 8250 driver;
-this patch works around link failures when the kernel is built
-without 8250 support.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
----
-Run-tested on DB1200.
+--=-2vJGUNZKTMiI2T/S4QNl
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-v3: account for modular 8250 code.
-v2: added commit name to patch description as per Sergei's suggestion.
+On Wed, 2010-12-01 at 16:55 +0000, Ralf Baechle wrote:
+> On Thu, Dec 02, 2010 at 01:34:42AM +0900, Namhyung Kim wrote:
+>=20
+> > The commit ea31a6b20371 ("MIPS: Honor L2 bypass bit") breaks
+> > malta build as follows. Looks like not compile-tested :(
+>=20
+> Already fixed in the linux-mips git tree by an identical patch in
+> commit 9a3475880131752d3d78ac25516fd3eab3fca871.
+>=20
+> Thanks anyway!
 
- arch/mips/alchemy/common/platform.c |   14 +++++++++++---
- 1 files changed, 11 insertions(+), 3 deletions(-)
+This isn't in Linus's tree yet; please ask him to pull it in time for
+2.6.37.
 
-diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index 3691630..66ca7c5 100644
---- a/arch/mips/alchemy/common/platform.c
-+++ b/arch/mips/alchemy/common/platform.c
-@@ -27,6 +27,12 @@
- static void alchemy_8250_pm(struct uart_port *port, unsigned int state,
- 			    unsigned int old_state)
- {
-+	/* account for 8250.c built as module.  This code can only be called
-+	 * by 8250.c so symbol_get should never fail.
-+	 */
-+	void(*pm_func)(struct uart_port *, unsigned int, unsigned int);
-+	pm_func = symbol_get(serial8250_do_pm);
-+
- 	switch (state) {
- 	case 0:
- 		if ((__raw_readl(port->membase + UART_MOD_CNTRL) & 3) != 3) {
-@@ -38,17 +44,19 @@ static void alchemy_8250_pm(struct uart_port *port, unsigned int state,
- 		}
- 		__raw_writel(3, port->membase + UART_MOD_CNTRL); /* full on */
- 		wmb();
--		serial8250_do_pm(port, state, old_state);
-+		pm_func(port, state, old_state);
- 		break;
- 	case 3:		/* power off */
--		serial8250_do_pm(port, state, old_state);
-+		pm_func(port, state, old_state);
- 		__raw_writel(0, port->membase + UART_MOD_CNTRL);
- 		wmb();
- 		break;
- 	default:
--		serial8250_do_pm(port, state, old_state);
-+		pm_func(port, state, old_state);
- 		break;
- 	}
-+
-+	symbol_put(pm_func);
- }
- 
- #define PORT(_base, _irq)					\
--- 
-1.7.3.3
+Ben.
+
+--=20
+Ben Hutchings
+Once a job is fouled up, anything done to improve it makes it worse.
+
+--=-2vJGUNZKTMiI2T/S4QNl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iQIVAwUATQPga+e/yOyVhhEJAQJstg/+PaQfDbvpEoEPGWBdQaVuoPUPdmbrzKrN
+E0TYmeKD9S+B/YcvTgMB/moprKyjkuHuG+1Az4IUDlMvuyEg5nzDocd5LWoBqB1Y
+pkMLb8BurcMwD2rS192MlkSjgEfJolwyiusGzw4mu2YUKnrMfqbAZNymLQoSFVWz
+ytN2wBQlQ5D0MfFIgncY9f9J70TiAZkMeBVFOgfBJWKj3c8lRWXQVbFjBbI7Spmd
+E/d/2j76XQrb2sJRWCNRIr+ZRsDqiPJIDI8pRbveAZCtXKPXg8/mi1iVNq1XOsG+
+CaDdos+U9vfgl+/2djF65nWcX8xQW4ls2+5Fkbv5eN8Po/Bqil8wRYfdrnYD5398
+49ufElAs6YypenoaqLP17pvVij62y1DftuvHui5I2SlFCrwSUYrz6ckQvmPFjx0i
+VfRCgonwPtSn5Sse5udmwmUScr+ZHcZL4jr/irg3xD5k87my6TOh4nttsdHR0upo
+4pRiIuQbEqSp64GX94DpmnT7wiEwWMtL+MdrUspIst0wP4HERRGlxJbjViRML7A3
+CSUg4iA8Xn9W944Xo24Q3PxniSWMs/zD4/KM16r+K/LdLLcRLh5uUeyqR9M7IRmc
+2tbRxyKBBZeRx+8SEzxUhWoEPzhmhUDoRRGI377R923s3B0LYDWAR23JN42e9x0V
+NBePjmAZLJc=
+=o547
+-----END PGP SIGNATURE-----
+
+--=-2vJGUNZKTMiI2T/S4QNl--

@@ -1,90 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Dec 2010 21:35:05 +0100 (CET)
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:50558 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491910Ab0LKUfC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 11 Dec 2010 21:35:02 +0100
-Received: from [192.168.4.185] (helo=localhost)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1PRW9h-0004nR-3f; Sat, 11 Dec 2010 20:34:57 +0000
-Received: from ben by localhost with local (Exim 4.72)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1PRW9g-0002nH-KI; Sat, 11 Dec 2010 20:34:56 +0000
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Namhyung Kim <namhyung@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20101201165517.GA5560@linux-mips.org>
-References: <1291221282-9056-1-git-send-email-namhyung@gmail.com>
-         <20101201165517.GA5560@linux-mips.org>
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-2vJGUNZKTMiI2T/S4QNl"
-Date:   Sat, 11 Dec 2010 20:34:56 +0000
-Message-ID: <1292099696.3136.46.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.30.3 
-X-SA-Exim-Connect-IP: 192.168.4.185
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-Subject: Re: [PATCH] MIPS: Fix build failure on mips_sc_is_activated()
-X-SA-Exim-Version: 4.2.1 (built Wed, 25 Jun 2008 17:14:11 +0000)
-X-SA-Exim-Scanned: Yes (on shadbolt.decadent.org.uk)
-Return-Path: <ben@decadent.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Dec 2010 14:04:35 +0100 (CET)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:35225 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491173Ab0LLNEc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Dec 2010 14:04:32 +0100
+Received: by wyf22 with SMTP id 22so5021707wyf.36
+        for <linux-mips@linux-mips.org>; Sun, 12 Dec 2010 05:04:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:date:message-id
+         :subject:from:to:content-type;
+        bh=CGOkekYRzU8rSMcVyzD4qicQ4V+UW6oJBOYgDlx1Vfs=;
+        b=oMM9tkUGaYLZtKluPa5VGWAhXPx+e7oYfdJDYweCpsiIISrVn28bWd1/sy+VksRAtf
+         qIew5Q2U0pyBEbNrpkLgyHXK2CGicyqOQfd4FZo0J3qApeJT2SnLoSxBcw+SnaNBouYv
+         GNNgI7nwj85UI6cPcGBtew5O+QGLefqpGilxw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=G7IjUIw6pN+7VfFgpw/PWu0H3r2Fbxnt1d/pFjqPDgnU8jwZWHVqFTbRxDov/xP/7/
+         VsNc2wTU+2K38GH26gGaEjf+tUsApVGW4ljecBBqmMjTXB+Cn1f17EAJ8Zm9oHyqpGUs
+         A+7eBS8ouF1kKjzW3eu2YmycEM58vCduRp6xY=
+MIME-Version: 1.0
+Received: by 10.216.3.144 with SMTP id 16mr1980023weh.45.1292159066773; Sun,
+ 12 Dec 2010 05:04:26 -0800 (PST)
+Received: by 10.216.157.146 with HTTP; Sun, 12 Dec 2010 05:04:26 -0800 (PST)
+Date:   Sun, 12 Dec 2010 18:34:26 +0530
+Message-ID: <AANLkTim56SgZLMHySxDNwU3=23+enyv_8StBbKoo8De9@mail.gmail.com>
+Subject: Re MIPS-DSP-ASE Instructions
+From:   Asutosh Das <das.asutosh@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <das.asutosh@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28636
+X-archive-position: 28638
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ben@decadent.org.uk
+X-original-sender: das.asutosh@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi ,
+We are trying to use the MIPS-DSP-ASE instructions to extract bits
+from a bit-stream.
+The version is MIPS-32 rev 1. (Little Endian) (Linux 2.6.30.9)
+The problem is that, the extp and its variants extract the bits from
+left-most i.e. MSB.
+So each time we have to load to the accumulator, we have to reverse
+the stream and then load,
+and extract and then reverse. This in-turn is reducing the perfomance
+rather than increasing it.
 
---=-2vJGUNZKTMiI2T/S4QNl
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+For instance,
+Stream -> 111011011
+extract 3-bits in C code => 011 (x = (unsigned) stream& ((1<<3 )-1) )
+Load this stream to accumulator and extract 3 bits => 111
 
-On Wed, 2010-12-01 at 16:55 +0000, Ralf Baechle wrote:
-> On Thu, Dec 02, 2010 at 01:34:42AM +0900, Namhyung Kim wrote:
->=20
-> > The commit ea31a6b20371 ("MIPS: Honor L2 bypass bit") breaks
-> > malta build as follows. Looks like not compile-tested :(
->=20
-> Already fixed in the linux-mips git tree by an identical patch in
-> commit 9a3475880131752d3d78ac25516fd3eab3fca871.
->=20
-> Thanks anyway!
+====
+Now reverse the stream and load to accumulator => 110110111
+extract 3 bits from accumulator => 110
+Now reverse the extracted bits =>011
 
-This isn't in Linus's tree yet; please ask him to pull it in time for
-2.6.37.
+So we have to reverse the stream before loading to the accumulator and
+reverse it again after extracting from
+accumulator which reduces the performance drastically.
+we guess the MIPS engineers would definitely have thought about it but
+we are unable to figure out a way to use these
+instructions without reversing the bit-streams.
 
-Ben.
+Please can you let us know a way to use these instructions without reversing.
 
---=20
-Ben Hutchings
-Once a job is fouled up, anything done to improve it makes it worse.
-
---=-2vJGUNZKTMiI2T/S4QNl
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iQIVAwUATQPga+e/yOyVhhEJAQJstg/+PaQfDbvpEoEPGWBdQaVuoPUPdmbrzKrN
-E0TYmeKD9S+B/YcvTgMB/moprKyjkuHuG+1Az4IUDlMvuyEg5nzDocd5LWoBqB1Y
-pkMLb8BurcMwD2rS192MlkSjgEfJolwyiusGzw4mu2YUKnrMfqbAZNymLQoSFVWz
-ytN2wBQlQ5D0MfFIgncY9f9J70TiAZkMeBVFOgfBJWKj3c8lRWXQVbFjBbI7Spmd
-E/d/2j76XQrb2sJRWCNRIr+ZRsDqiPJIDI8pRbveAZCtXKPXg8/mi1iVNq1XOsG+
-CaDdos+U9vfgl+/2djF65nWcX8xQW4ls2+5Fkbv5eN8Po/Bqil8wRYfdrnYD5398
-49ufElAs6YypenoaqLP17pvVij62y1DftuvHui5I2SlFCrwSUYrz6ckQvmPFjx0i
-VfRCgonwPtSn5Sse5udmwmUScr+ZHcZL4jr/irg3xD5k87my6TOh4nttsdHR0upo
-4pRiIuQbEqSp64GX94DpmnT7wiEwWMtL+MdrUspIst0wP4HERRGlxJbjViRML7A3
-CSUg4iA8Xn9W944Xo24Q3PxniSWMs/zD4/KM16r+K/LdLLcRLh5uUeyqR9M7IRmc
-2tbRxyKBBZeRx+8SEzxUhWoEPzhmhUDoRRGI377R923s3B0LYDWAR23JN42e9x0V
-NBePjmAZLJc=
-=o547
------END PGP SIGNATURE-----
-
---=-2vJGUNZKTMiI2T/S4QNl--
+-- 
+Thank you,
+Warm Regards,
+Asutosh Das
+# (91) 9818 4494 69

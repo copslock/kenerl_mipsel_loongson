@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Dec 2010 21:37:28 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:37566 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Dec 2010 21:37:51 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:37576 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491101Ab0LVUba (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Dec 2010 21:31:30 +0100
+        by eddie.linux-mips.org with ESMTP id S1491102Ab0LVUbd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 22 Dec 2010 21:31:33 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 9FB7F80F4;
-        Wed, 22 Dec 2010 21:31:25 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 5E7E98102;
+        Wed, 22 Dec 2010 21:31:26 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 072751F0001;
-        Wed, 22 Dec 2010 21:31:24 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 79CE31F0001;
+        Wed, 22 Dec 2010 21:31:25 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
@@ -16,18 +16,18 @@ Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Kathy Giori <Kathy.Giori@Atheros.com>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH v2 14/16] MIPS: ath79: add common USB Host Controller device
-Date:   Wed, 22 Dec 2010 21:30:59 +0100
-Message-Id: <1293049861-28913-15-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH v2 15/16] MIPS: ath79: add initial support for the Atheros AP81 reference board
+Date:   Wed, 22 Dec 2010 21:31:00 +0100
+Message-Id: <1293049861-28913-16-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1293049861-28913-1-git-send-email-juhosg@openwrt.org>
 References: <1293049861-28913-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A10F7069C5A | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A10F7533D2E | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28698
+X-archive-position: 28699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,369 +35,166 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Add common platform_device and helper code to make the registration of
-the built-in USB controllers easier on the board which are using them.
-Also register the USB controller on the PB44 board.
-
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
 ---
 
-Changes since RFC: ---
+Changes since RFC:
+    - don't use 'default n' for the ATH79_MACH_AP81 Kconfig option
 
 Changes since v1:
     - rebased against 2.6.37-rc7
 
- arch/mips/ath79/Kconfig                        |    4 +
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/dev-usb.c                      |  194 ++++++++++++++++++++++++
- arch/mips/ath79/dev-usb.h                      |   17 ++
- arch/mips/ath79/mach-pb44.c                    |    2 +
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   22 +++-
- 6 files changed, 239 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/ath79/dev-usb.c
- create mode 100644 arch/mips/ath79/dev-usb.h
+ arch/mips/ath79/Kconfig     |   11 +++++
+ arch/mips/ath79/Makefile    |    1 +
+ arch/mips/ath79/mach-ap81.c |   94 +++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/ath79/machtypes.h |    1 +
+ 4 files changed, 107 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/ath79/mach-ap81.c
 
 diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index d4456ce..5d67942 100644
+index 5d67942..1912d54 100644
 --- a/arch/mips/ath79/Kconfig
 +++ b/arch/mips/ath79/Kconfig
-@@ -8,6 +8,7 @@ config ATH79_MACH_PB44
- 	select ATH79_DEV_GPIO_BUTTONS
- 	select ATH79_DEV_LEDS_GPIO
- 	select ATH79_DEV_SPI
-+	select ATH79_DEV_USB
- 	help
- 	  Say 'Y' here if you want your kernel to support the
- 	  Atheros PB44 reference board.
-@@ -37,4 +38,7 @@ config ATH79_DEV_LEDS_GPIO
- config ATH79_DEV_SPI
- 	def_bool n
+@@ -2,6 +2,17 @@ if ATH79
  
-+config ATH79_DEV_USB
-+	def_bool n
+ menu "Atheros AR71XX/AR724X/AR913X machine selection"
+ 
++config ATH79_MACH_AP81
++	bool "Atheros AP81 reference board"
++	select SOC_AR913X
++	select ATH79_DEV_GPIO_BUTTONS
++	select ATH79_DEV_LEDS_GPIO
++	select ATH79_DEV_SPI
++	select ATH79_DEV_USB
++	help
++	  Say 'Y' here if you want your kernel to support the
++	  Atheros AP81 reference board.
 +
- endif
+ config ATH79_MACH_PB44
+ 	bool "Atheros PB44 reference board"
+ 	select SOC_AR71XX
 diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index a8de078..494d106 100644
+index 494d106..1b111d8 100644
 --- a/arch/mips/ath79/Makefile
 +++ b/arch/mips/ath79/Makefile
-@@ -19,6 +19,7 @@ obj-y					+= dev-common.o
- obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
- obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
-+obj-$(CONFIG_ATH79_DEV_USB)		+= dev-usb.o
- 
+@@ -24,4 +24,5 @@ obj-$(CONFIG_ATH79_DEV_USB)		+= dev-usb.o
  #
  # Machines
-diff --git a/arch/mips/ath79/dev-usb.c b/arch/mips/ath79/dev-usb.c
+ #
++obj-$(CONFIG_ATH79_MACH_AP81)		+= mach-ap81.o
+ obj-$(CONFIG_ATH79_MACH_PB44)		+= mach-pb44.o
+diff --git a/arch/mips/ath79/mach-ap81.c b/arch/mips/ath79/mach-ap81.c
 new file mode 100644
-index 0000000..fb7033f
+index 0000000..909ca5d
 --- /dev/null
-+++ b/arch/mips/ath79/dev-usb.c
-@@ -0,0 +1,194 @@
++++ b/arch/mips/ath79/mach-ap81.c
+@@ -0,0 +1,94 @@
 +/*
-+ *  Atheros AR71XX/AR724X/AR913X USB Host Controller support
++ *  Atheros AP81 board support
 + *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  Parts of this file are based on Atheros' 2.6.15 BSP
++ *  Copyright (C) 2009-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2009 Imre Kaloz <kaloz@openwrt.org>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + */
 +
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/irq.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/platform_device.h>
-+
-+#include <asm/mach-ath79/ath79.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include <asm/mach-ath79/ath79_ehci_platform.h>
-+#include "common.h"
++#include "machtypes.h"
++#include "dev-gpio-buttons.h"
++#include "dev-leds-gpio.h"
++#include "dev-spi.h"
 +#include "dev-usb.h"
 +
-+static void __iomem *ath79_usb_ctrl_base;
++#define AP81_GPIO_LED_STATUS	1
++#define AP81_GPIO_LED_AOSS	3
++#define AP81_GPIO_LED_WLAN	6
++#define AP81_GPIO_LED_POWER	14
 +
-+static struct resource ar71xx_ohci_resources[] = {
-+	[0] = {
-+		.start	= AR71XX_OHCI_BASE,
-+		.end	= AR71XX_OHCI_BASE + AR71XX_OHCI_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= ATH79_MISC_IRQ_OHCI,
-+		.end	= ATH79_MISC_IRQ_OHCI,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
++#define AP81_GPIO_BTN_SW4	12
++#define AP81_GPIO_BTN_SW1	21
 +
-+static struct resource ar724x_usb_resources[] = {
-+	[0] = {
-+		.start	= AR7240_OHCI_BASE,
-+		.end	= AR7240_OHCI_BASE + AR7240_OHCI_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= ATH79_CPU_IRQ_USB,
-+		.end	= ATH79_CPU_IRQ_USB,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
++#define AP81_KEYS_POLL_INTERVAL		20	/* msecs */
++#define AP81_KEYS_DEBOUNCE_INTERVAL	(3 * AP81_KEYS_POLL_INTERVAL)
 +
-+static u64 ath79_ohci_dmamask = DMA_BIT_MASK(32);
-+static struct platform_device ath79_ohci_device = {
-+	.name		= "ath79-ohci",
-+	.id		= -1,
-+	.resource	= ar71xx_ohci_resources,
-+	.num_resources	= ARRAY_SIZE(ar71xx_ohci_resources),
-+	.dev = {
-+		.dma_mask		= &ath79_ohci_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+	},
-+};
-+
-+static struct resource ar71xx_ehci_resources[] = {
-+	[0] = {
-+		.start	= AR71XX_EHCI_BASE,
-+		.end	= AR71XX_EHCI_BASE + AR71XX_EHCI_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= ATH79_CPU_IRQ_USB,
-+		.end	= ATH79_CPU_IRQ_USB,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static u64 ath79_ehci_dmamask = DMA_BIT_MASK(32);
-+static struct ath79_ehci_platform_data ath79_ehci_data;
-+
-+static struct platform_device ath79_ehci_device = {
-+	.name		= "ath79-ehci",
-+	.id		= -1,
-+	.resource	= ar71xx_ehci_resources,
-+	.num_resources	= ARRAY_SIZE(ar71xx_ehci_resources),
-+	.dev = {
-+		.dma_mask		= &ath79_ehci_dmamask,
-+		.coherent_dma_mask	= DMA_BIT_MASK(32),
-+		.platform_data		= &ath79_ehci_data,
-+	},
-+};
-+
-+#define AR71XX_USB_RESET_MASK	(AR71XX_RESET_USB_HOST | \
-+				 AR71XX_RESET_USB_PHY | \
-+				 AR71XX_RESET_USB_OHCI_DLL)
-+
-+static void __init ar71xx_usb_setup(void)
-+{
-+	ath79_device_reset_set(AR71XX_USB_RESET_MASK);
-+	mdelay(1000);
-+	ath79_device_reset_clear(AR71XX_USB_RESET_MASK);
-+
-+	/* Turning on the Buff and Desc swap bits */
-+	__raw_writel(0xf0000, ath79_usb_ctrl_base + AR71XX_USB_CTRL_REG_CONFIG);
-+
-+	/* WAR for HW bug. Here it adjusts the duration between two SOFS */
-+	__raw_writel(0x20c00, ath79_usb_ctrl_base + AR71XX_USB_CTRL_REG_FLADJ);
-+
-+	mdelay(900);
-+
-+	platform_device_register(&ath79_ohci_device);
-+	platform_device_register(&ath79_ehci_device);
-+}
-+
-+static void __init ar7240_usb_setup(void)
-+{
-+	ath79_device_reset_clear(AR7240_RESET_OHCI_DLL);
-+	ath79_device_reset_set(AR7240_RESET_USB_HOST);
-+	mdelay(1000);
-+	ath79_device_reset_set(AR7240_RESET_OHCI_DLL);
-+	ath79_device_reset_clear(AR7240_RESET_USB_HOST);
-+
-+	/* WAR for HW bug. Here it adjusts the duration between two SOFS */
-+	__raw_writel(0x3, ath79_usb_ctrl_base + AR71XX_USB_CTRL_REG_FLADJ);
-+
-+	ath79_ohci_device.resource = ar724x_usb_resources;
-+	ath79_ohci_device.num_resources = ARRAY_SIZE(ar724x_usb_resources);
-+	platform_device_register(&ath79_ohci_device);
-+}
-+
-+static void __init ar724x_usb_setup(void)
-+{
-+	ath79_device_reset_set(AR724X_RESET_USBSUS_OVERRIDE);
-+	mdelay(10);
-+
-+	ath79_device_reset_clear(AR724X_RESET_USB_HOST);
-+	mdelay(10);
-+
-+	ath79_device_reset_clear(AR724X_RESET_USB_PHY);
-+	mdelay(10);
-+
-+	ath79_ehci_data.is_ar913x = 1;
-+	ath79_ehci_device.resource = ar724x_usb_resources;
-+	ath79_ehci_device.num_resources = ARRAY_SIZE(ar724x_usb_resources);
-+	platform_device_register(&ath79_ehci_device);
-+}
-+
-+static void __init ar913x_usb_setup(void)
-+{
-+	ath79_device_reset_set(AR71XX_RESET_USBSUS_OVERRIDE);
-+	mdelay(10);
-+
-+	ath79_device_reset_clear(AR71XX_RESET_USB_HOST);
-+	mdelay(10);
-+
-+	ath79_device_reset_clear(AR71XX_RESET_USB_PHY);
-+	mdelay(10);
-+
-+	ath79_ehci_data.is_ar913x = 1;
-+	platform_device_register(&ath79_ehci_device);
-+}
-+
-+void __init ath79_register_usb(void)
-+{
-+	ath79_usb_ctrl_base = ioremap(AR71XX_USB_CTRL_BASE,
-+				      AR71XX_USB_CTRL_SIZE);
-+
-+	switch (ath79_soc) {
-+	case ATH79_SOC_AR7130:
-+	case ATH79_SOC_AR7141:
-+	case ATH79_SOC_AR7161:
-+		ar71xx_usb_setup();
-+		break;
-+
-+	case ATH79_SOC_AR7240:
-+		ar7240_usb_setup();
-+		break;
-+
-+	case ATH79_SOC_AR7241:
-+	case ATH79_SOC_AR7242:
-+		ar724x_usb_setup();
-+		break;
-+
-+	case ATH79_SOC_AR9130:
-+	case ATH79_SOC_AR9132:
-+		ar913x_usb_setup();
-+		break;
-+
-+	default:
-+		BUG();
++static struct gpio_led ap81_leds_gpio[] __initdata = {
++	{
++		.name		= "ap81:green:status",
++		.gpio		= AP81_GPIO_LED_STATUS,
++		.active_low	= 1,
++	}, {
++		.name		= "ap81:amber:aoss",
++		.gpio		= AP81_GPIO_LED_AOSS,
++		.active_low	= 1,
++	}, {
++		.name		= "ap81:green:wlan",
++		.gpio		= AP81_GPIO_LED_WLAN,
++		.active_low	= 1,
++	}, {
++		.name		= "ap81:green:power",
++		.gpio		= AP81_GPIO_LED_POWER,
++		.active_low	= 1,
 +	}
-+}
-diff --git a/arch/mips/ath79/dev-usb.h b/arch/mips/ath79/dev-usb.h
-new file mode 100644
-index 0000000..dbe6d3d
---- /dev/null
-+++ b/arch/mips/ath79/dev-usb.h
-@@ -0,0 +1,17 @@
-+/*
-+ *  Atheros AR71XX/AR724X/AR913X USB Host Controller support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
++};
 +
-+#ifndef _ATH79_DEV_USB_H
-+#define _ATH79_DEV_USB_H
++static struct gpio_keys_button ap81_gpio_keys[] __initdata = {
++	{
++		.desc		= "sw1",
++		.type		= EV_KEY,
++		.code		= BTN_0,
++		.debounce_interval = AP81_KEYS_DEBOUNCE_INTERVAL,
++		.gpio		= AP81_GPIO_BTN_SW1,
++		.active_low	= 1,
++	} , {
++		.desc		= "sw4",
++		.type		= EV_KEY,
++		.code		= BTN_1,
++		.debounce_interval = AP81_KEYS_DEBOUNCE_INTERVAL,
++		.gpio		= AP81_GPIO_BTN_SW4,
++		.active_low	= 1,
++	}
++};
 +
-+void ath79_register_usb(void) __init;
++static struct spi_board_info ap81_spi_info[] = {
++	{
++		.bus_num	= 0,
++		.chip_select	= 0,
++		.max_speed_hz	= 25000000,
++		.modalias	= "m25p64",
++	}
++};
 +
-+#endif /* _ATH79_DEV_USB_H */
-diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
-index ec7b7a1..fe9701a 100644
---- a/arch/mips/ath79/mach-pb44.c
-+++ b/arch/mips/ath79/mach-pb44.c
-@@ -18,6 +18,7 @@
- #include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
- #include "dev-spi.h"
-+#include "dev-usb.h"
- 
- #define PB44_GPIO_I2C_SCL	0
- #define PB44_GPIO_I2C_SDA	1
-@@ -112,6 +113,7 @@ static void __init pb44_init(void)
- 					pb44_gpio_keys);
- 	ath79_register_spi(&pb44_spi_data, pb44_spi_info,
- 			   ARRAY_SIZE(pb44_spi_info));
++static struct ath79_spi_platform_data ap81_spi_data = {
++	.bus_num	= 0,
++	.num_chipselect	= 1,
++};
++
++static void __init ap81_setup(void)
++{
++	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap81_leds_gpio),
++				 ap81_leds_gpio);
++	ath79_register_gpio_keys_polled(-1, AP81_KEYS_POLL_INTERVAL,
++					ARRAY_SIZE(ap81_gpio_keys),
++					ap81_gpio_keys);
++	ath79_register_spi(&ap81_spi_data, ap81_spi_info,
++			   ARRAY_SIZE(ap81_spi_info));
 +	ath79_register_usb();
- }
- 
- MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 4f2b621..f125f1e 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -20,6 +20,10 @@
- #include <linux/bitops.h>
- 
- #define AR71XX_APB_BASE		0x18000000
-+#define AR71XX_EHCI_BASE	0x1b000000
-+#define AR71XX_EHCI_SIZE	0x1000
-+#define AR71XX_OHCI_BASE	0x1c000000
-+#define AR71XX_OHCI_SIZE	0x1000
- #define AR71XX_SPI_BASE		0x1f000000
- #define AR71XX_SPI_SIZE		0x01000000
- 
-@@ -27,6 +31,8 @@
- #define AR71XX_DDR_CTRL_SIZE	0x100
- #define AR71XX_UART_BASE	(AR71XX_APB_BASE + 0x00020000)
- #define AR71XX_UART_SIZE	0x100
-+#define AR71XX_USB_CTRL_BASE	(AR71XX_APB_BASE + 0x00030000)
-+#define AR71XX_USB_CTRL_SIZE	0x100
- #define AR71XX_GPIO_BASE        (AR71XX_APB_BASE + 0x00040000)
- #define AR71XX_GPIO_SIZE        0x100
- #define AR71XX_PLL_BASE		(AR71XX_APB_BASE + 0x00050000)
-@@ -34,6 +40,9 @@
- #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
- #define AR71XX_RESET_SIZE	0x100
- 
-+#define AR7240_OHCI_BASE	0x1b000000
-+#define AR7240_OHCI_SIZE	0x1000
++}
 +
- /*
-  * DDR_CTRL block
-  */
-@@ -102,6 +111,12 @@
- #define AR913X_AHB_DIV_MASK		0x1
++MIPS_MACHINE(ATH79_MACH_AP81, "AP81", "Atheros AP81 reference board",
++	     ap81_setup);
+diff --git a/arch/mips/ath79/machtypes.h b/arch/mips/ath79/machtypes.h
+index a796fa3..3940fe4 100644
+--- a/arch/mips/ath79/machtypes.h
++++ b/arch/mips/ath79/machtypes.h
+@@ -16,6 +16,7 @@
  
- /*
-+ * USB_CONFIG block
-+ */
-+#define AR71XX_USB_CTRL_REG_FLADJ	0x00
-+#define AR71XX_USB_CTRL_REG_CONFIG	0x04
-+
-+/*
-  * RESET block
-  */
- #define AR71XX_RESET_REG_TIMER			0x00
-@@ -155,12 +170,17 @@
- #define AR71XX_RESET_PCI_BUS		BIT(1)
- #define AR71XX_RESET_PCI_CORE		BIT(0)
- 
-+#define AR7240_RESET_USB_HOST		BIT(5)
-+#define AR7240_RESET_OHCI_DLL		BIT(3)
-+
- #define AR724X_RESET_GE1_MDIO		BIT(23)
- #define AR724X_RESET_GE0_MDIO		BIT(22)
- #define AR724X_RESET_PCIE_PHY_SERIAL	BIT(10)
- #define AR724X_RESET_PCIE_PHY		BIT(7)
- #define AR724X_RESET_PCIE		BIT(6)
--#define AR724X_RESET_OHCI_DLL		BIT(3)
-+#define AR724X_RESET_USB_HOST		BIT(5)
-+#define AR724X_RESET_USB_PHY		BIT(4)
-+#define AR724X_RESET_USBSUS_OVERRIDE	BIT(3)
- 
- #define AR913X_RESET_AMBA2WMAC		BIT(22)
+ enum ath79_mach_type {
+ 	ATH79_MACH_GENERIC = 0,
++	ATH79_MACH_AP81,		/* Atheros AP81 reference board */
+ 	ATH79_MACH_PB44,		/* Atheros PB44 reference board */
+ };
  
 -- 
 1.7.2.1

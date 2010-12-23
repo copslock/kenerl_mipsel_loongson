@@ -1,65 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Dec 2010 11:42:43 +0100 (CET)
-Received: from mail-ey0-f177.google.com ([209.85.215.177]:38701 "EHLO
-        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491019Ab0LWKmk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Dec 2010 11:42:40 +0100
-Received: by eyd9 with SMTP id 9so4106932eyd.36
-        for <multiple recipients>; Thu, 23 Dec 2010 02:42:37 -0800 (PST)
-Received: by 10.213.13.14 with SMTP id z14mr6508543ebz.52.1293100957466;
-        Thu, 23 Dec 2010 02:42:37 -0800 (PST)
-Received: from [192.168.2.2] ([91.79.89.129])
-        by mx.google.com with ESMTPS id u1sm5482943eeh.10.2010.12.23.02.42.34
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 23 Dec 2010 02:42:35 -0800 (PST)
-Message-ID: <4D13275D.8010204@mvista.com>
-Date:   Thu, 23 Dec 2010 13:41:33 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Dec 2010 17:08:43 +0100 (CET)
+Received: from netrider.rowland.org ([192.131.102.5]:33567 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1491031Ab0LWQIk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Dec 2010 17:08:40 +0100
+Received: (qmail 6003 invoked by uid 500); 23 Dec 2010 11:08:36 -0500
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 23 Dec 2010 11:08:36 -0500
+Date:   Thu, 23 Dec 2010 11:08:36 -0500 (EST)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@netrider.rowland.org
+To:     Anoop P A <anoop.pa@gmail.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        Anatolij Gustschin <agust@denx.de>,
+        Anand Gadiyar <gadiyar@ti.com>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        Sarah Sharp <sarah.a.sharp@linux.intel.com>,
+        Oliver Neukum <oneukum@suse.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Paul Mortier <mortier@btinternet.com>,
+        Andiry Xu <andiry.xu@amd.com>
+Subject: Re: [PATCH V2 2/2] MSP onchip root hub over current quirk.
+In-Reply-To: <1293096541.27661.46.camel@paanoop1-desktop>
+Message-ID: <Pine.LNX.4.44L0.1012231104060.5617-100000@netrider.rowland.org>
 MIME-Version: 1.0
-To:     Gabor Juhos <juhosg@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Imre Kaloz <kaloz@openwrt.org>,
-        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
-        Cliff Holden <Cliff.Holden@Atheros.com>,
-        Kathy Giori <Kathy.Giori@Atheros.com>
-Subject: Re: [PATCH v2 07/16] MIPS: ath79: add common watchdog device
-References: <1293049861-28913-1-git-send-email-juhosg@openwrt.org> <1293049861-28913-8-git-send-email-juhosg@openwrt.org>
-In-Reply-To: <1293049861-28913-8-git-send-email-juhosg@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <stern+4d08bae8@rowland.harvard.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28704
+X-archive-position: 28705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Thu, 23 Dec 2010, Anoop P A wrote:
 
-On 22-12-2010 23:30, Gabor Juhos wrote:
+> > > +				usb_detect_quirks(hdev);
+> > 
+> > This line is wrong.  usb_detect_quirks() gets called only once per 
+> > device, when the device is initialized.  Besides, you probably want to 
+> > use a hub-specific flag for this rather than a device-specific flag.
+> 
+> Can you point me to an example for the recommended way of doing the
+> hack. I don't have much exposure to USB subsystem.
 
-> All supported SoCs have a built-in hardware watchdog driver. This patch
-> registers a platform_device for that to make it usable.
+One example, suitable for PCI devices, can be found in 
+drivers/usb/host/ehci-pci.c:ehci_pci_setup().
 
-> Signed-off-by: Gabor Juhos<juhosg@openwrt.org>
-> Signed-off-by: Imre Kaloz<kaloz@openwrt.org>
-[...]
+However the best approach would be for you to avoid adding any
+special-purpose code at all.  Is it possible to handle
+overcurrent-change events in a way that will work just as well for
+normal hubs as for your MSP root hub?
 
-> diff --git a/arch/mips/ath79/dev-common.h b/arch/mips/ath79/dev-common.h
-> index 1cec894..65bf400 100644
-> --- a/arch/mips/ath79/dev-common.h
-> +++ b/arch/mips/ath79/dev-common.h
-> @@ -13,5 +13,6 @@
->   #define _ATH79_DEV_COMMON_H
->
->  void ath79_register_uart(void) __init;
-> +void ath79_register_wdt(void) __init;
-
-    '__init' not needed with declarations.
-
-WBR, Sergei
+Alan Stern

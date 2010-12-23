@@ -1,124 +1,150 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Dec 2010 01:31:01 +0100 (CET)
-Received: from cantor2.suse.de ([195.135.220.15]:58369 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491102Ab0LWAa5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Dec 2010 01:30:57 +0100
-Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.221.2])
-        by mx2.suse.de (Postfix) with ESMTP id 133E888B6C;
-        Thu, 23 Dec 2010 01:30:56 +0100 (CET)
-Date:   Wed, 22 Dec 2010 16:30:48 -0800
-From:   Greg KH <gregkh@suse.de>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Imre Kaloz <kaloz@openwrt.org>,
-        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
-        Cliff Holden <Cliff.Holden@Atheros.com>,
-        Kathy Giori <Kathy.Giori@Atheros.com>,
-        David Brownell <dbrownell@users.sourceforge.net>,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH v2 11/16] USB: ehci: add workaround for Synopsys HC bug
-Message-ID: <20101223003048.GB9811@suse.de>
-References: <1293049861-28913-1-git-send-email-juhosg@openwrt.org>
- <1293049861-28913-12-git-send-email-juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Dec 2010 03:18:28 +0100 (CET)
+Received: from netrider.rowland.org ([192.131.102.5]:51833 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1490992Ab0LWCSY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Dec 2010 03:18:24 +0100
+Received: (qmail 27175 invoked by uid 500); 22 Dec 2010 21:18:20 -0500
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 22 Dec 2010 21:18:20 -0500
+Date:   Wed, 22 Dec 2010 21:18:20 -0500 (EST)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@netrider.rowland.org
+To:     "Anoop P.A" <anoop.pa@gmail.com>
+cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        Anatolij Gustschin <agust@denx.de>,
+        Anand Gadiyar <gadiyar@ti.com>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        Sarah Sharp <sarah.a.sharp@linux.intel.com>,
+        Oliver Neukum <oneukum@suse.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Paul Mortier <mortier@btinternet.com>,
+        Andiry Xu <andiry.xu@amd.com>
+Subject: Re: [PATCH V2 2/2] MSP onchip root hub over current quirk.
+In-Reply-To: <1293028610-22233-1-git-send-email-anoop.pa@gmail.com>
+Message-ID: <Pine.LNX.4.44L0.1012222112200.26667-100000@netrider.rowland.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1293049861-28913-12-git-send-email-juhosg@openwrt.org>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <gregkh@suse.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <stern+4d08bae8@rowland.harvard.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28700
+X-archive-position: 28701
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 22, 2010 at 09:30:56PM +0100, Gabor Juhos wrote:
-> A Synopsys USB core used in various SoCs has a bug which might cause
-> that the host controller not issuing ping.
+On Wed, 22 Dec 2010, Anoop P.A wrote:
+
+> From: Anoop P A <anoop.pa@gmail.com>
 > 
-> When software uses the Doorbell mechanism to remove queue heads, the
-> host controller still has references to the removed queue head even
-> after indicating an Interrupt on Async Advance. This happens if the last
-> executed queue head's Next Link queue head is removed.
-> 
-> Consequences of the defect:
-> The Host controller fetches the removed queue head, using memory that
-> would otherwise be deallocated.This results in incorrect transactions on
-> both the USB and system memory. This may result in undefined behavior.
-> 
-> Workarounds:
-> 
-> 1) If no queue head is active (no Status field's Active bit is set)
-> after removing the queue heads, the software can write one of the valid
-> queue head addresses to the ASYNCLISTADDR register and deallocate the
-> removed queue head's memory after 2 microframes.
-> 
-> If one or more of the queue heads is active (the Active bit is set in
-> the Status field) after removing the queue heads, the software can delay
-> memory deallocation after time X, where X is the time required for the
-> Host Controller to go through all the queue heads once. X varies with
-> the number of queue heads and the time required to process periodic
-> transactions: if more periodic transactions must be performed, the Host
-> Controller has less time to process asynchronous transaction processing.
-> 
-> 2) Do not use the Doorbell mechanism to remove the queue heads. Disable
-> the Asynchronous Schedule Enable bit instead.
-> 
-> The bug has been discussed on the linux-usb-devel mailing-list
-> four years ago, the original thread can be found here:
-> http://www.mail-archive.com/linux-usb-devel@lists.sourceforge.net/msg45345.html
-> 
-> This patch implements the first workaround as suggested by David Brownell.
-> The built-in USB host controller of the Atheros AR7130/AR7141/AR7161 SoCs
-> requires this to work properly.
-> 
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> Cc: David Brownell <dbrownell@users.sourceforge.net>
-> Cc: Greg Kroah-Hartman <gregkh@suse.de>
-> Cc: linux-usb@vger.kernel.org
+> Adding chip specific code under quirk.
+
+NAK.  See below.
+
+> Signed-off-by: Anoop P A <anoop.pa@gmail.com>
 > ---
+>  drivers/usb/core/hub.c     |   45 ++++++++++++++++++++++++++++++++++++++-----
+>  drivers/usb/core/quirks.c  |    3 ++
+>  include/linux/usb/quirks.h |    3 ++
+>  3 files changed, 45 insertions(+), 6 deletions(-)
 > 
-> Changes since RFC: ---
-> 
-> Changes since v1:
->     - rebased against 2.6.37-rc7
-> 
->  drivers/usb/host/ehci-q.c |    3 +++
->  drivers/usb/host/ehci.h   |    1 +
->  2 files changed, 4 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
-> index 233c288..343b8de 100644
-> --- a/drivers/usb/host/ehci-q.c
-> +++ b/drivers/usb/host/ehci-q.c
-> @@ -1193,6 +1193,9 @@ static void end_unlink_async (struct ehci_hcd *ehci)
->  		ehci->reclaim = NULL;
->  		start_unlink_async (ehci, next);
->  	}
+> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> index 27115b4..4bff994 100644
+> --- a/drivers/usb/core/hub.c
+> +++ b/drivers/usb/core/hub.c
+> @@ -3377,12 +3377,45 @@ static void hub_events(void)
+>  			}
+>  			
+>  			if (portchange & USB_PORT_STAT_C_OVERCURRENT) {
+> -				dev_err (hub_dev,
+> -					"over-current change on port %d\n",
+> -					i);
+> -				clear_port_feature(hdev, i,
+> -					USB_PORT_FEAT_C_OVER_CURRENT);
+> -				hub_power_on(hub, true);
+> +				usb_detect_quirks(hdev);
+
+This line is wrong.  usb_detect_quirks() gets called only once per 
+device, when the device is initialized.  Besides, you probably want to 
+use a hub-specific flag for this rather than a device-specific flag.
+
+> +				if (hdev->quirks & USB_QUIRK_MSP_OVERCURRENT) {
+
+Also, it would be better to put this code in a separate subroutine 
+instead of indenting it so far.
+
+> +					/* clear OCC bit */
+> +					clear_port_feature(hdev, i,
+> +						USB_PORT_FEAT_C_OVER_CURRENT);
 > +
-> +	if (ehci->has_synopsys_hc_bug)
-> +		writel((u32)ehci->async->qh_dma, &ehci->regs->async_next);
->  }
+> +					/* This step is required to toggle the
+> +					* PP bit to 0 and 1 (by hub_power_on)
+> +					* in order the CSC bit to be
+> +					* transitioned properly for device
+> +					* hotplug
+> +					*/
+> +					/* clear PP bit */
+> +					clear_port_feature(hdev, i,
+> +						USB_PORT_FEAT_POWER);
+> +
+> +					/* resume power */
+> +					hub_power_on(hub, true);
+> +
+> +					/* delay 100 usec */
+> +					udelay(100);
+> +
+> +					/* read OCA bit */
+> +					if (portstatus &
+> +					(1<<USB_PORT_FEAT_OVER_CURRENT)) {
+> +						/* declare overcurrent */
+> +						dev_err(hub_dev,
+> +						"over-current change \
+> +							on port %d\n", i);
+> +					}
+> +				} else {
+> +					dev_err(hub_dev,
+> +						"over-current change \
+> +							on port %d\n", i);
+> +					clear_port_feature(hdev, i,
+> +						USB_PORT_FEAT_C_OVER_CURRENT);
+> +					hub_power_on(hub, true);
+> +				}
+> +
+>  			}
 >  
->  /* makes sure the async qh will become idle */
-> diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-> index ba8eab3..6da85b2 100644
-> --- a/drivers/usb/host/ehci.h
-> +++ b/drivers/usb/host/ehci.h
-> @@ -133,6 +133,7 @@ struct ehci_hcd {			/* one per controller */
->  	unsigned		broken_periodic:1;
->  	unsigned		fs_i_thresh:1;	/* Intel iso scheduling */
->  	unsigned		use_dummy_qh:1;	/* AMD Frame List table quirk*/
-> +	unsigned		has_synopsys_hc_bug:1; /* Synopsys HC */
+>  			if (portchange & USB_PORT_STAT_C_RESET) {
+> diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+> index 25719da..59843b9 100644
+> --- a/drivers/usb/core/quirks.c
+> +++ b/drivers/usb/core/quirks.c
+> @@ -88,6 +88,9 @@ static const struct usb_device_id usb_quirk_list[] = {
+>  	/* INTEL VALUE SSD */
+>  	{ USB_DEVICE(0x8086, 0xf1a5), .driver_info = USB_QUIRK_RESET_RESUME },
+>  
+> +	/* PMC MSP over current quirk */
+> +	{ USB_DEVICE(0x1d6b, 0x0002), .driver_info = USB_QUIRK_MSP_OVERCURRENT },
+> +
 
-That's fine, but who sets this value to 1?  I don't see any code that
-does that, so why add this at all?  :)
+This implementation is completely wrong.  It applies to all USB-2.0
+root hubs in Linux, not just the PMC MSP.
 
-thanks,
-
-greg k-h
+>  	{ }  /* terminating entry must be last */
+>  };
+>  
+> diff --git a/include/linux/usb/quirks.h b/include/linux/usb/quirks.h
+> index 3e93de7..97ab168 100644
+> --- a/include/linux/usb/quirks.h
+> +++ b/include/linux/usb/quirks.h
+> @@ -30,4 +30,7 @@
+>     descriptor */
+>  #define USB_QUIRK_DELAY_INIT		0x00000040
+>  
+> +/*MSP SoC onchip EHCI overcurrent issue */
+> +#define USB_QUIRK_MSP_OVERCURRENT	0x00000080
+> +
+>  #endif /* __LINUX_USB_QUIRKS_H */
+> 

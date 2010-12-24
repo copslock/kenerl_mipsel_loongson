@@ -1,78 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2010 10:44:41 +0100 (CET)
-Received: from mail-qy0-f170.google.com ([209.85.216.170]:63924 "EHLO
-        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491041Ab0LXJoi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Dec 2010 10:44:38 +0100
-Received: by qyk10 with SMTP id 10so8923743qyk.15
-        for <multiple recipients>; Fri, 24 Dec 2010 01:44:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type;
-        bh=Hxf2F6gbQLfn0Nq8udECe0JE4vwQrVvzvFOOt5+5cGI=;
-        b=YZdt+3TdHc75J68JlozhCw7/OWWylohim49SY6GdItaEqVvGmAB/8YkERuprYvMXTP
-         4nSEBPTlIWe+G1vPk/VlqQf0JW07ttbwRsjY87i5WqTrtmu2LjAmkuoSxLEVTWC4Cxgl
-         J5QTqYRr1jPmBYRlpg3FLyytmhtDDIv44d19k=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=dAO7ct11FZ2vPCERKcFsxKGXN6Ccou/PgE88P5ABQv07N3h2xxosUNq/Vsnp7kz0SK
-         YkKbKrVHRWBGH8UtYDXQ8V8j5PY6O1XkJFk/DKrxKrGJE4msq7A1HmikwqNTwGGgegqc
-         7DMOmOADY5VkYYmiH1s8WbGIZxy7wEhY+fWZ8=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2010 12:32:40 +0100 (CET)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:60106 "EHLO
+        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491066Ab0LXLch (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Dec 2010 12:32:37 +0100
+Received: by eyd9 with SMTP id 9so4465204eyd.36
+        for <multiple recipients>; Fri, 24 Dec 2010 03:32:37 -0800 (PST)
+Received: by 10.213.4.11 with SMTP id 11mr8734297ebp.3.1293190356595;
+        Fri, 24 Dec 2010 03:32:36 -0800 (PST)
+Received: from [192.168.2.2] ([91.79.84.9])
+        by mx.google.com with ESMTPS id x54sm6377083eeh.23.2010.12.24.03.32.34
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 24 Dec 2010 03:32:35 -0800 (PST)
+Message-ID: <4D148495.4030703@mvista.com>
+Date:   Fri, 24 Dec 2010 14:31:33 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
 MIME-Version: 1.0
-Received: by 10.229.84.135 with SMTP id j7mr8114640qcl.186.1293183871722; Fri,
- 24 Dec 2010 01:44:31 -0800 (PST)
-Received: by 10.229.107.10 with HTTP; Fri, 24 Dec 2010 01:44:31 -0800 (PST)
-In-Reply-To: <1293028561-22125-1-git-send-email-anoop.pa@gmail.com>
-References: <1292929580-5829-1-git-send-email-anoop.pa@gmail.com>
-        <1293028561-22125-1-git-send-email-anoop.pa@gmail.com>
-Date:   Fri, 24 Dec 2010 03:44:31 -0600
-Message-ID: <AANLkTimu_gzsd3NY+HDp7jV+EMtrHGZq7qNc3OedyT3C@mail.gmail.com>
-Subject: Re: [PATCH V2 1/2] EHCI support for on-chip PMC MSP USB controller.
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-To:     "Anoop P.A" <anoop.pa@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Greg Kroah-Hartman <gregkh@suse.de>,
-        Anatolij Gustschin <agust@denx.de>,
-        Anand Gadiyar <gadiyar@ti.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <mcdonald.shane@gmail.com>
+To:     Anoop P A <anoop.pa@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Select R4K timer lib for all MSP platforms
+References: <1290067948.9091.14.camel@paanoop1-desktop>
+In-Reply-To: <1290067948.9091.14.camel@paanoop1-desktop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28709
+X-archive-position: 28710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Anoop:
+Hello.
 
-On Wed, Dec 22, 2010 at 8:36 AM, Anoop P.A <anoop.pa@gmail.com> wrote:
-> From: Anoop P A <anoop.pa@gmail.com>
->
-> This patch includes.
->
-> 1. USB host driver for MSP71xx family SoC on-chip USB controller.
-> 2. Platform support for USB controller.
->
-> Signed-off-by: Anoop P A <anoop.pa@gmail.com>
+On 18-11-2010 11:12, Anoop P A wrote:
 
-I tried to apply this patch to a pristine linux-mips.org 2.6.37-rc6 kernel,
-but the patch failed on arch/mips/pmc-sierra/msp71xx/Makefile.
-I think you must have applied an SMP patch to your tree before
-generating this patch.  That was easy to fix, and once I did that,
-I tried testing this on a PMC-Sierra MSP7120 Garibaldi evaluation
-board.  Using your original changes to drivers/usb/core/hub.c in
-addition to this patch, I was able to boot a system, plug a USB hard
-drive in, and that drive was recognized by the Garibaldi.
+>> From c872cbbe5f475d3bb3cb7f821270cb466eead1f7 Mon Sep 17 00:00:00 2001
+> From: Anoop P A<anoop.pa@gmail.com>
+> Signed-off-by: Anoop P A<anoop.pa@gmail.com>
+> Date: Thu, 18 Nov 2010 01:33:36 +0530
+> Subject: [PATCH] Select R4K timer lib for all MSP platforms
 
-You can add my:
+    Please don't include this header (except the signoff line) -- Ralf will 
+have to manually edit it out.
 
-Tested-by: Shane McDonald <mcdonald.shane@gmail.com>
+WBR, Sergei

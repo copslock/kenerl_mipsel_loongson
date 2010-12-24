@@ -1,52 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2010 12:32:40 +0100 (CET)
-Received: from mail-ey0-f177.google.com ([209.85.215.177]:60106 "EHLO
-        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491066Ab0LXLch (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Dec 2010 12:32:37 +0100
-Received: by eyd9 with SMTP id 9so4465204eyd.36
-        for <multiple recipients>; Fri, 24 Dec 2010 03:32:37 -0800 (PST)
-Received: by 10.213.4.11 with SMTP id 11mr8734297ebp.3.1293190356595;
-        Fri, 24 Dec 2010 03:32:36 -0800 (PST)
-Received: from [192.168.2.2] ([91.79.84.9])
-        by mx.google.com with ESMTPS id x54sm6377083eeh.23.2010.12.24.03.32.34
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 24 Dec 2010 03:32:35 -0800 (PST)
-Message-ID: <4D148495.4030703@mvista.com>
-Date:   Fri, 24 Dec 2010 14:31:33 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Dec 2010 13:32:42 +0100 (CET)
+Received: from gateway13.websitewelcome.com ([69.41.255.6]:56427 "HELO
+        gateway13.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with SMTP id S1491041Ab0LXMcj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Dec 2010 13:32:39 +0100
+Received: (qmail 14377 invoked from network); 24 Dec 2010 12:31:44 -0000
+Received: from gator750.hostgator.com (174.132.194.2)
+  by gateway13.websitewelcome.com with SMTP; 24 Dec 2010 12:31:44 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
+        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Source:X-Source-Args:X-Source-Dir;
+        b=bMCOdYk+LNHyzC9RtW5zbZbr0GPD9jzkvQ3bFM03X3NiuySiszFgtkEykgYD846rPzka34FR4+jWx18YlZFf7Qw6XziE2NeVZf28aqV4Q5L+boBHtPwzeieaVgSoa19P;
+Received: from [74.125.122.49] (port=10059 helo=kkissell-macbookpro.local)
+        by gator750.hostgator.com with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.69)
+        (envelope-from <kevink@paralogos.com>)
+        id 1PW6oz-00068p-TP; Fri, 24 Dec 2010 06:32:34 -0600
+Message-ID: <4D1492E0.5090407@paralogos.com>
+Date:   Fri, 24 Dec 2010 04:32:32 -0800
+From:   "Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
 MIME-Version: 1.0
-To:     Anoop P A <anoop.pa@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Select R4K timer lib for all MSP platforms
-References: <1290067948.9091.14.camel@paanoop1-desktop>
-In-Reply-To: <1290067948.9091.14.camel@paanoop1-desktop>
+To:     STUART VENTERS <stuart.venters@adtran.com>
+CC:     "Anoop P.A." <Anoop_P.A@pmc-sierra.com>, linux-mips@linux-mips.org,
+        Anoop P A <anoop.pa@gmail.com>
+Subject: Re: SMTC support status in latest git head.
+References: <8F242B230AD6474C8E7815DE0B4982D7179FB88D@EXV1.corp.adtran.com>
+In-Reply-To: <8F242B230AD6474C8E7815DE0B4982D7179FB88D@EXV1.corp.adtran.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator750.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28710
+X-archive-position: 28711
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Thank you, Stuart!  I've spotted some definite breakage to SMTC between 
+those versions.  In arch/mips/include/asm/stackframe.h, someone moved 
+the store of the Status register value in SAVE_SOME (line 169 or 204, 
+depending on the version) from two instructions after the mfc0 to a 
+point after the #ifdef for SMTC, presumably to get better pipelining of 
+the register access.  Unfortunately, the v1 register is also used in the 
+SMTC-specific fragment to save TCStatus, so the Status value gets 
+clobbered before it gets stored.  This will eventually result in the 
+Status register getting a TCStatus value, which has some bits on common, 
+but isn't identical and sooner or later Bad Things will happen.
 
-On 18-11-2010 11:12, Anoop P A wrote:
+I'm a little surprised this wasn't caught by visual inspection of the patch.
 
->> From c872cbbe5f475d3bb3cb7f821270cb466eead1f7 Mon Sep 17 00:00:00 2001
-> From: Anoop P A<anoop.pa@gmail.com>
-> Signed-off-by: Anoop P A<anoop.pa@gmail.com>
-> Date: Thu, 18 Nov 2010 01:33:36 +0530
-> Subject: [PATCH] Select R4K timer lib for all MSP platforms
+Possible solutions would include reverting the store of the CP0_STATUS 
+value to the block above the #ifdef, or, to retain whatever performance 
+advantage was obtained by moving the store downward, to use v0/$2 
+instead of v1/$3, as the staging register for the TCStatus value.  I'd 
+lean toward the second option, but I'm not in a position to test and 
+submit a patch just now.
 
-    Please don't include this header (except the signoff line) -- Ralf will 
-have to manually edit it out.
+             Regards,
 
-WBR, Sergei
+             Kevin K.
+
+On 12/23/10 1:09 PM, STUART VENTERS wrote:
+> Kevin,
+>
+> I'm not sure if it's useful,
+>     but finally I got the time to look at the two kernel versions Anoop pointed out.
+>      works   2.6.32-stable with patch 804
+>      works_not 2.6.33-stable
+>
+> greping for files with CONFIG_MIPS_MT_SMTC
+>     and looking for timer interrupt related stuff found the following differences:
+>
+>
+> arch/mips/include/asm/irq.h
+> arch/mips/kernel/irq.c
+>    do_IRQ
+>
+> arch/mips/include/asm/stackframe.h
+>    SAVE_SOME SAVE_TEMP get/set_saved_sp
+>
+> arch/mips/include/asm/time.h
+>    clocksource_set_clock
+>
+> arch/mips/kernel/process.c
+>    cpu_idle
+>
+> arch/mips/kernel/smtc.c
+>    __irq_entry
+>    ipi_decode
+>        SMTC_CLOCK_TICK
+>
+>
+> Enclosed are the two subsets of files for a more expert look.
+>
+> I'll try to look in more detail after Christmas.
+>
+>
+> Cheers,
+>
+> Stuart
+>
+>
+>
+>

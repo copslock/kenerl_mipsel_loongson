@@ -1,146 +1,242 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2010 16:49:13 +0100 (CET)
-Received: from p02c11o145.mxlogic.net ([208.65.144.78]:60789 "EHLO
-        p02c11o145.mxlogic.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491000Ab0L0PtJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Dec 2010 16:49:09 +0100
-Received: from unknown [76.164.174.81] (EHLO ex-hc1.corp.adtran.com)
-        by p02c11o145.mxlogic.net(mxl_mta-6.8.0-0) over TLS secured channel
-        with ESMTP id 275b81d4.0.2516.00-378.5964.p02c11o145.mxlogic.net (envelope-from <stuart.venters@adtran.com>);
-        Mon, 27 Dec 2010 08:49:08 -0700 (MST)
-X-MXL-Hash: 4d18b574752daffd-35ffdcbea47bc387287c12df8e1e41db1b3aecd2
-Received: from corp-exfr2.corp.adtran.com (172.23.101.22) by
- ex-hc1.corp.adtran.com (172.22.50.71) with Microsoft SMTP Server id
- 14.1.255.0; Mon, 27 Dec 2010 09:49:05 -0600
-Received: from EXV1.corp.adtran.com ([172.22.48.215]) by
- corp-exfr2.corp.adtran.com with Microsoft SMTPSVC(6.0.3790.3959);       Mon, 27
- Dec 2010 09:49:05 -0600
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-Class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2010 18:10:50 +0100 (CET)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:35410 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491005Ab0L0RKr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Dec 2010 18:10:47 +0100
+Received: by vws5 with SMTP id 5so3477151vws.36
+        for <linux-mips@linux-mips.org>; Mon, 27 Dec 2010 09:10:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:to:cc
+         :in-reply-to:references:content-type:date:message-id:mime-version
+         :x-mailer:content-transfer-encoding;
+        bh=yRXcmhw0DBuO0N95gTcmVLKNHIs5TyS6lbn03ooxlIM=;
+        b=PCCSiyt/O/ydUUUyJyzixppzNOZK+XxZnwaS0SMjkC3q/dAGb2O49pWez/XRud4Pm5
+         syeHlgbml+4HJCyWP1AtGVuZeyAmIgHn8wzonhT3PZhYUp7tZjy/LoArbAX42jCHbS7B
+         HIBGA/XB1giUNOR6kc0aJmY1DZA8uxqu8EszU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:to:cc:in-reply-to:references:content-type:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=EVGzFSfpY1LkQSDQKjEekeRFvknpfy6xI7mSz5p5pAWhn88lacAS+v62xMFuC3krLA
+         w7tFcTl7wMEU4dFZrJ3o45ZhNegSDt72rz5nbUsX0M4oFuy0jQ0AYEEK7spDpmQ2oKIn
+         7crZdvYfAxXJd682T3NER6XKN3zVAH6g/62hg=
+Received: by 10.220.202.134 with SMTP id fe6mr3377917vcb.245.1293469839044;
+        Mon, 27 Dec 2010 09:10:39 -0800 (PST)
+Received: from [172.16.48.51] ([59.160.135.215])
+        by mx.google.com with ESMTPS id e10sm271126vch.19.2010.12.27.09.10.34
+        (version=SSLv3 cipher=RC4-MD5);
+        Mon, 27 Dec 2010 09:10:37 -0800 (PST)
 Subject: RE: SMTC support status in latest git head.
-Date:   Mon, 27 Dec 2010 09:49:04 -0600
-Message-ID: <8F242B230AD6474C8E7815DE0B4982D7179FB88F@EXV1.corp.adtran.com>
-In-Reply-To: <4D152DFA.5090504@paralogos.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: SMTC support status in latest git head.
-Thread-Index: AcujwxlKXjEWzoi+TGWAa29nghmQwgCF/syg
-From:   STUART VENTERS <stuart.venters@adtran.com>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>,
-        Anoop P A <anoop.pa@gmail.com>
-CC:     Anoop P.A. <Anoop_P.A@pmc-sierra.com>, <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 27 Dec 2010 15:49:05.0778 (UTC) FILETIME=[97782520:01CBA5DD]
-X-Spam: [F=0.2000000000; CM=0.500; S=0.200(2010121501)]
-X-MAIL-FROM: <stuart.venters@adtran.com>
-X-SOURCE-IP: [76.164.174.81]
-X-AnalysisOut: [v=1.0 c=1 a=fMTePymILGAA:10 a=BLceEmwcHowA:10 a=IkcTkHD0fZ]
-X-AnalysisOut: [MA:10 a=0XgpNN2/4a34ymu16SVwsQ==:17 a=GD5LJJB7AAAA:8 a=WPy]
-X-AnalysisOut: [IoOwQAAAA:8 a=ftmEPGAYt0qNLiiQ0zMA:9 a=7etVjqQ0KNDkcb1RyZg]
-X-AnalysisOut: [A:7 a=KnUl2jyRi4wxCzkwPJcFLoPogfsA:4 a=QEXdDO2ut3YA:10 a=b]
-X-AnalysisOut: [vPO4xL1mq4A:10 a=1DbiqZag68YA:10]
-Return-Path: <stuart.venters@adtran.com>
+From:   Anoop P A <anoop.pa@gmail.com>
+To:     STUART VENTERS <stuart.venters@adtran.com>
+Cc:     "Kevin D. Kissell" <kevink@paralogos.com>,
+        "Anoop P.A." <Anoop_P.A@pmc-sierra.com>, linux-mips@linux-mips.org
+In-Reply-To: <8F242B230AD6474C8E7815DE0B4982D7179FB88F@EXV1.corp.adtran.com>
+References: <8F242B230AD6474C8E7815DE0B4982D7179FB88F@EXV1.corp.adtran.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Mon, 27 Dec 2010 22:49:52 +0530
+Message-ID: <1293470392.27661.202.camel@paanoop1-desktop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <anoop.pa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28726
+X-archive-position: 28727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stuart.venters@adtran.com
+X-original-sender: anoop.pa@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-S2V2aW4sDQoNCk91dHN0YW5kaW5nLCBzb21ldGltZXMgaXQncyBiZXR0ZXIgdG8gYmUgbHVja3kg
-dGhhbiBnb29kLg0KDQoNCkFub29wLA0KDQpNYXliZSB3ZSBjYW4gZ2V0IGx1Y2t5IGFnYWluLg0K
-DQpJZiB5b3UgY2FuIGlzb2xhdGUgdGhlIC4zMyB3b3Jrcy8uMzcgd29ya3Nfbm90IGJ1ZyB0byBh
-IHNwZWNpZmljIHBhaXIgb2YgdmVyc2lvbnMsIA0KICAgSSdsbCBiZSBoYXBweSB0byBkbyBhbm90
-aGVyIGRpZmYuDQoNCg0KSG9wZSB5b3UnbGwgaGF2ZSBoYWQgYSBnb29kIENocmlzdG1hcyBhcyB3
-ZWxsLg0KICBXZSd2ZSBoYWQgc25vdyBpbiBBbGFiYW1hIHNpbmNlIENocmlzdG1hcyBldmUhDQoN
-Cg0KUmVnYXJkcywNCg0KU3R1YXJ0DQoNCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZy
-b206IEtldmluIEQuIEtpc3NlbGwgW21haWx0bzprZXZpbmtAcGFyYWxvZ29zLmNvbV0NClNlbnQ6
-IEZyaWRheSwgRGVjZW1iZXIgMjQsIDIwMTAgNTozNCBQTQ0KVG86IEFub29wIFAgQQ0KQ2M6IFNU
-VUFSVCBWRU5URVJTOyBBbm9vcCBQLkEuOyBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnDQpTdWJq
-ZWN0OiBSZTogU01UQyBzdXBwb3J0IHN0YXR1cyBpbiBsYXRlc3QgZ2l0IGhlYWQuDQoNCg0KQWgs
-IHdlbGwsIGF0IGxlYXN0IHdlIGhhdmUgYSBzdGFja2ZyYW1lLmggZml4IHRoYXQgcHJlc2VydmVz
-IERhdmlkJ3MgDQpwZXJmb3JtYW5jZSB0d2VhayBmb3IgdGhlIGRlZXBlciBwaXBlbGluZWQgcHJv
-Y2Vzc29ycy4gIEluIGxvb2tpbmcgZm9yIA0KdGhpcywgSSBkaWQgbm90aWNlIHRoYXQgc29tZW9u
-ZSBkaWQgc29tZSBtb2RpZmljYXRpb24gdG8gdGhlIFNNVEMgY2xvY2sgDQp0aWNrIGxvZ2ljIHRo
-YXQgSSB3YXMgc2tlcHRpY2FsIGhhZCBldmVyIGJlZW4gdGVzdGVkLiAgSWYgeW91J3ZlIHN0aWxs
-IA0KZ290IHRoYXQga2VybmVsIGJpbmFyeSBoYW5keSwgeW91IG1pZ2h0IGNoZWNrIHRvIHNlZSBp
-ZiBpdCBib290cyB3aXRoIA0KbWF4dGNzPTEgbWF4dnBlcz0xLCBtYXh0Y3M9MiBtYXh2cGVzPTEs
-IGFuZC9vciBtYXh0Y3M9MiBtYXh2cGVzPTIuDQoNCk9oLCB5ZXMsIGFuZCBNZXJyeSBDaHJpc3Rt
-YXMgb25lIGFuZCBhbGwhDQoNCiAgICAgICAgICAgICBSZWdhcmRzLA0KDQogICAgICAgICAgICAg
-S2V2aW4gSy4NCg0KT24gMTIvMjQvMTAgODowMiBBTSwgQW5vb3AgUCBBIHdyb3RlOg0KPiBPbiBG
-cmksIDIwMTAtMTItMjQgYXQgMDY6NTMgLTA4MDAsIEtldmluIEQuIEtpc3NlbGwgd3JvdGU6DQo+
-PiBFeGNlbGxlbnQhICBOb3csIGRvZXMgdGhlIGF0dGFjaGVkIHBhdGNoIChyZWxhdGl2ZSB0byAy
-LjYuMzcuMTEpIGFsc28NCj4+IGZpeCB0aGluZ3MsIHdoaWxlIHByZXNlcnZpbmcgdGhlIG90aGVy
-IGZpeGVzIGFuZCBwZXJmb3JtYW5jZSBlbmhhbmNlbWVudHM/DQo+Pg0KPiBJIGhhdmUgdGVzdGVk
-IHRoYXQgcGF0Y2ggd2l0aCAyLjYuMzcgYnJhbmNoIGl0IHdlbGwgcGFzc2VzIGNhbGlicmF0aW9u
-DQo+IGxvb3AgYnV0IGhhbmdzIGFmdGVyIHN3aXRjaGluZyB0byBtaXBzIGNsb3NvdXJjZQ0KPg0K
-PiBUQyA2IGdvaW5nIG9uLWxpbmUgYXMgQ1BVIDYNCj4gQnJvdWdodCB1cCA3IENQVXMNCj4gYmlv
-OiBjcmVhdGUgc2xhYjxiaW8tMD4gIGF0IDANCj4gU0NTSSBzdWJzeXN0ZW0gaW5pdGlhbGl6ZWQN
-Cj4gU3dpdGNoaW5nIHRvIGNsb2Nrc291cmNlIE1JUFMNCj4NCj4gSSBQcmVzdW1lIHRoaXMgaXMg
-YSBkaWZmZXJlbnQgaXNzdWUgYXMgcmVzdG9yaW5nIG9sZGVyIGZpbGUgZGlkbid0IGhlbHANCj4g
-bXVjaCB0byBnZXQgcmlkIG9mIHRoaXMgaGFuZy4NCj4NCj4gZGlmZiAtLWdpdCBhL2FyY2gvbWlw
-cy9pbmNsdWRlL2FzbS9zdGFja2ZyYW1lLmgNCj4gYi9hcmNoL21pcHMvaW5jbHVkZS9hc20vc3Rh
-Y2tmcmFtZS5oDQo+IGluZGV4IDU4NzMwYzUuLjdmYzlmMTAgMTAwNjQ0DQo+IC0tLSBhL2FyY2gv
-bWlwcy9pbmNsdWRlL2FzbS9zdGFja2ZyYW1lLmgNCj4gKysrIGIvYXJjaC9taXBzL2luY2x1ZGUv
-YXNtL3N0YWNrZnJhbWUuaA0KPiBAQCAtMTk1LDkgKzE5NSw5IEBADQo+ICAgCQkgKiB0byBjb3Zl
-ciB0aGUgcGlwZWxpbmUgZGVsYXkuDQo+ICAgCQkgKi8NCj4gICAJCS5zZXQJbWlwczMyDQo+IC0J
-CW1mYzAJdjEsIENQMF9UQ1NUQVRVUw0KPiArCQltZmMwCXYwLCBDUDBfVENTVEFUVVMNCj4gICAJ
-CS5zZXQJbWlwczANCj4gLQkJTE9OR19TCXYxLCBQVF9UQ1NUQVRVUyhzcCkNCj4gKwkJTE9OR19T
-CXYwLCBQVF9UQ1NUQVRVUyhzcCkNCj4gICAjZW5kaWYgLyogQ09ORklHX01JUFNfTVRfU01UQyAq
-Lw0KPiAgIAkJTE9OR19TCSQ0LCBQVF9SNChzcCkNCj4gICAJCUxPTkdfUwkkNSwgUFRfUjUoc3Ap
-DQo+DQo+DQo+PiAvSy4NCj4+DQo+PiBPbiAxMi8yNC8xMCA2OjM5IEFNLCBBbm9vcCBQIEEgd3Jv
-dGU6DQo+Pj4gSGkgS2V2aW4sIFN0dWFydCAsDQo+Pj4NCj4+PiBXb29ob29vIFlvdSBndXlzIHNw
-b3R0ZWQgIS4NCj4+Pg0KPj4+ICAgIGh0dHA6Ly9naXQubGludXgtbWlwcy5vcmcvP3A9bGludXgu
-Z2l0O2E9Y29tbWl0O2g9ZDVlYzZlM2Mgc2VlbXMgdG8gYmUNCj4+PiB0aGUgY3VscHJpdA0KPj4+
-DQo+Pj4gT25jZSBJIHJlc3RvcmVkIHByZXZpb3VzIHZlcnNpb24gb2Ygc3RhY2tmcmFtZS5oIDIu
-Ni4zMy1zdGFibGUgc3RhcnRlZA0KPj4+IGJvb3RpbmcgIS4NCj4+Pg0KPj4+IFRoYW5rcywNCj4+
-PiBBbm9vcA0KPj4+DQo+Pj4gT24gRnJpLCAyMDEwLTEyLTI0IGF0IDA0OjMyIC0wODAwLCBLZXZp
-biBELiBLaXNzZWxsIHdyb3RlOg0KPj4+PiBUaGFuayB5b3UsIFN0dWFydCEgIEkndmUgc3BvdHRl
-ZCBzb21lIGRlZmluaXRlIGJyZWFrYWdlIHRvIFNNVEMgYmV0d2Vlbg0KPj4+PiB0aG9zZSB2ZXJz
-aW9ucy4gIEluIGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9zdGFja2ZyYW1lLmgsIHNvbWVvbmUgbW92
-ZWQNCj4+Pj4gdGhlIHN0b3JlIG9mIHRoZSBTdGF0dXMgcmVnaXN0ZXIgdmFsdWUgaW4gU0FWRV9T
-T01FIChsaW5lIDE2OSBvciAyMDQsDQo+Pj4+IGRlcGVuZGluZyBvbiB0aGUgdmVyc2lvbikgZnJv
-bSB0d28gaW5zdHJ1Y3Rpb25zIGFmdGVyIHRoZSBtZmMwIHRvIGENCj4+Pj4gcG9pbnQgYWZ0ZXIg
-dGhlICNpZmRlZiBmb3IgU01UQywgcHJlc3VtYWJseSB0byBnZXQgYmV0dGVyIHBpcGVsaW5pbmcg
-b2YNCj4+Pj4gdGhlIHJlZ2lzdGVyIGFjY2Vzcy4gIFVuZm9ydHVuYXRlbHksIHRoZSB2MSByZWdp
-c3RlciBpcyBhbHNvIHVzZWQgaW4gdGhlDQo+Pj4+IFNNVEMtc3BlY2lmaWMgZnJhZ21lbnQgdG8g
-c2F2ZSBUQ1N0YXR1cywgc28gdGhlIFN0YXR1cyB2YWx1ZSBnZXRzDQo+Pj4+IGNsb2JiZXJlZCBi
-ZWZvcmUgaXQgZ2V0cyBzdG9yZWQuICBUaGlzIHdpbGwgZXZlbnR1YWxseSByZXN1bHQgaW4gdGhl
-DQo+Pj4+IFN0YXR1cyByZWdpc3RlciBnZXR0aW5nIGEgVENTdGF0dXMgdmFsdWUsIHdoaWNoIGhh
-cyBzb21lIGJpdHMgb24gY29tbW9uLA0KPj4+PiBidXQgaXNuJ3QgaWRlbnRpY2FsIGFuZCBzb29u
-ZXIgb3IgbGF0ZXIgQmFkIFRoaW5ncyB3aWxsIGhhcHBlbi4NCj4+Pj4NCj4+Pj4gSSdtIGEgbGl0
-dGxlIHN1cnByaXNlZCB0aGlzIHdhc24ndCBjYXVnaHQgYnkgdmlzdWFsIGluc3BlY3Rpb24gb2Yg
-dGhlIHBhdGNoLg0KPj4+Pg0KPj4+PiBQb3NzaWJsZSBzb2x1dGlvbnMgd291bGQgaW5jbHVkZSBy
-ZXZlcnRpbmcgdGhlIHN0b3JlIG9mIHRoZSBDUDBfU1RBVFVTDQo+Pj4+IHZhbHVlIHRvIHRoZSBi
-bG9jayBhYm92ZSB0aGUgI2lmZGVmLCBvciwgdG8gcmV0YWluIHdoYXRldmVyIHBlcmZvcm1hbmNl
-DQo+Pj4+IGFkdmFudGFnZSB3YXMgb2J0YWluZWQgYnkgbW92aW5nIHRoZSBzdG9yZSBkb3dud2Fy
-ZCwgdG8gdXNlIHYwLyQyDQo+Pj4+IGluc3RlYWQgb2YgdjEvJDMsIGFzIHRoZSBzdGFnaW5nIHJl
-Z2lzdGVyIGZvciB0aGUgVENTdGF0dXMgdmFsdWUuICBJJ2QNCj4+Pj4gbGVhbiB0b3dhcmQgdGhl
-IHNlY29uZCBvcHRpb24sIGJ1dCBJJ20gbm90IGluIGEgcG9zaXRpb24gdG8gdGVzdCBhbmQNCj4+
-Pj4gc3VibWl0IGEgcGF0Y2gganVzdCBub3cuDQo+Pj4+DQo+Pj4+ICAgICAgICAgICAgICAgIFJl
-Z2FyZHMsDQo+Pj4+DQo+Pj4+ICAgICAgICAgICAgICAgIEtldmluIEsuDQo+Pj4+DQo+Pj4+IE9u
-IDEyLzIzLzEwIDE6MDkgUE0sIFNUVUFSVCBWRU5URVJTIHdyb3RlOg0KPj4+Pj4gS2V2aW4sDQo+
-Pj4+Pg0KPj4+Pj4gSSdtIG5vdCBzdXJlIGlmIGl0J3MgdXNlZnVsLA0KPj4+Pj4gICAgICAgYnV0
-IGZpbmFsbHkgSSBnb3QgdGhlIHRpbWUgdG8gbG9vayBhdCB0aGUgdHdvIGtlcm5lbCB2ZXJzaW9u
-cyBBbm9vcCBwb2ludGVkIG91dC4NCj4+Pj4+ICAgICAgICB3b3JrcyAgIDIuNi4zMi1zdGFibGUg
-d2l0aCBwYXRjaCA4MDQNCj4+Pj4+ICAgICAgICB3b3Jrc19ub3QgMi42LjMzLXN0YWJsZQ0KPj4+
-Pj4NCj4+Pj4+IGdyZXBpbmcgZm9yIGZpbGVzIHdpdGggQ09ORklHX01JUFNfTVRfU01UQw0KPj4+
-Pj4gICAgICAgYW5kIGxvb2tpbmcgZm9yIHRpbWVyIGludGVycnVwdCByZWxhdGVkIHN0dWZmIGZv
-dW5kIHRoZSBmb2xsb3dpbmcgZGlmZmVyZW5jZXM6DQo+Pj4+Pg0KPj4+Pj4NCj4+Pj4+IGFyY2gv
-bWlwcy9pbmNsdWRlL2FzbS9pcnEuaA0KPj4+Pj4gYXJjaC9taXBzL2tlcm5lbC9pcnEuYw0KPj4+
-Pj4gICAgICBkb19JUlENCj4+Pj4+DQo+Pj4+PiBhcmNoL21pcHMvaW5jbHVkZS9hc20vc3RhY2tm
-cmFtZS5oDQo+Pj4+PiAgICAgIFNBVkVfU09NRSBTQVZFX1RFTVAgZ2V0L3NldF9zYXZlZF9zcA0K
-Pj4+Pj4NCj4+Pj4+IGFyY2gvbWlwcy9pbmNsdWRlL2FzbS90aW1lLmgNCj4+Pj4+ICAgICAgY2xv
-Y2tzb3VyY2Vfc2V0X2Nsb2NrDQo+Pj4+Pg0KPj4+Pj4gYXJjaC9taXBzL2tlcm5lbC9wcm9jZXNz
-LmMNCj4+Pj4+ICAgICAgY3B1X2lkbGUNCj4+Pj4+DQo+Pj4+PiBhcmNoL21pcHMva2VybmVsL3Nt
-dGMuYw0KPj4+Pj4gICAgICBfX2lycV9lbnRyeQ0KPj4+Pj4gICAgICBpcGlfZGVjb2RlDQo+Pj4+
-PiAgICAgICAgICBTTVRDX0NMT0NLX1RJQ0sNCj4+Pj4+DQo+Pj4+Pg0KPj4+Pj4gRW5jbG9zZWQg
-YXJlIHRoZSB0d28gc3Vic2V0cyBvZiBmaWxlcyBmb3IgYSBtb3JlIGV4cGVydCBsb29rLg0KPj4+
-Pj4NCj4+Pj4+IEknbGwgdHJ5IHRvIGxvb2sgaW4gbW9yZSBkZXRhaWwgYWZ0ZXIgQ2hyaXN0bWFz
-Lg0KPj4+Pj4NCj4+Pj4+DQo+Pj4+PiBDaGVlcnMsDQo+Pj4+Pg0KPj4+Pj4gU3R1YXJ0DQo+Pj4+
-Pg0KPj4+Pj4NCj4+Pj4+DQo+Pj4+Pg0KPg0KDQo=
+Hi Kevin,
+
+It is very unlikely that the patch you pointed has any impact on the the
+hang I am seeing. The patch you have mentioned got into kernel around
+2.6.32 timeframe. I am able to boot both 2.6.32 and  2.6.33 kernel ( +
+stackframe patch) . 
+
+Hi Stuart,
+
+I haven't got much time to spend on this today.
+
+I had got 2.6.36-stable(+ stack frame patch) booting last day and I have
+observed hang issue with 2.6.37-rc1 ( Same as rc6 and current git head)
+
+So probably some patches in 2.6.37 branch introduced this hang.
+
+Hopefully I will get some free slot tomorrow so that I can look into
+code diff .
+
+Thanks
+Anoop
+
+On Mon, 2010-12-27 at 09:49 -0600, STUART VENTERS wrote:
+> Kevin,
+> 
+> Outstanding, sometimes it's better to be lucky than good.
+> 
+> 
+> Anoop,
+> 
+> Maybe we can get lucky again.
+> 
+> If you can isolate the .33 works/.37 works_not bug to a specific pair of versions, 
+>    I'll be happy to do another diff.
+> 
+> 
+> Hope you'll have had a good Christmas as well.
+>   We've had snow in Alabama since Christmas eve!
+> 
+> 
+> Regards,
+> 
+> Stuart
+> 
+> 
+> -----Original Message-----
+> From: Kevin D. Kissell [mailto:kevink@paralogos.com]
+> Sent: Friday, December 24, 2010 5:34 PM
+> To: Anoop P A
+> Cc: STUART VENTERS; Anoop P.A.; linux-mips@linux-mips.org
+> Subject: Re: SMTC support status in latest git head.
+> 
+> 
+> Ah, well, at least we have a stackframe.h fix that preserves David's 
+> performance tweak for the deeper pipelined processors.  In looking for 
+> this, I did notice that someone did some modification to the SMTC clock 
+> tick logic that I was skeptical had ever been tested.  If you've still 
+> got that kernel binary handy, you might check to see if it boots with 
+> maxtcs=1 maxvpes=1, maxtcs=2 maxvpes=1, and/or maxtcs=2 maxvpes=2.
+> 
+> Oh, yes, and Merry Christmas one and all!
+> 
+>              Regards,
+> 
+>              Kevin K.
+> 
+> On 12/24/10 8:02 AM, Anoop P A wrote:
+> > On Fri, 2010-12-24 at 06:53 -0800, Kevin D. Kissell wrote:
+> >> Excellent!  Now, does the attached patch (relative to 2.6.37.11) also
+> >> fix things, while preserving the other fixes and performance enhancements?
+> >>
+> > I have tested that patch with 2.6.37 branch it well passes calibration
+> > loop but hangs after switching to mips closource
+> >
+> > TC 6 going on-line as CPU 6
+> > Brought up 7 CPUs
+> > bio: create slab<bio-0>  at 0
+> > SCSI subsystem initialized
+> > Switching to clocksource MIPS
+> >
+> > I Presume this is a different issue as restoring older file didn't help
+> > much to get rid of this hang.
+> >
+> > diff --git a/arch/mips/include/asm/stackframe.h
+> > b/arch/mips/include/asm/stackframe.h
+> > index 58730c5..7fc9f10 100644
+> > --- a/arch/mips/include/asm/stackframe.h
+> > +++ b/arch/mips/include/asm/stackframe.h
+> > @@ -195,9 +195,9 @@
+> >   		 * to cover the pipeline delay.
+> >   		 */
+> >   		.set	mips32
+> > -		mfc0	v1, CP0_TCSTATUS
+> > +		mfc0	v0, CP0_TCSTATUS
+> >   		.set	mips0
+> > -		LONG_S	v1, PT_TCSTATUS(sp)
+> > +		LONG_S	v0, PT_TCSTATUS(sp)
+> >   #endif /* CONFIG_MIPS_MT_SMTC */
+> >   		LONG_S	$4, PT_R4(sp)
+> >   		LONG_S	$5, PT_R5(sp)
+> >
+> >
+> >> /K.
+> >>
+> >> On 12/24/10 6:39 AM, Anoop P A wrote:
+> >>> Hi Kevin, Stuart ,
+> >>>
+> >>> Woohooo You guys spotted !.
+> >>>
+> >>>    http://git.linux-mips.org/?p=linux.git;a=commit;h=d5ec6e3c seems to be
+> >>> the culprit
+> >>>
+> >>> Once I restored previous version of stackframe.h 2.6.33-stable started
+> >>> booting !.
+> >>>
+> >>> Thanks,
+> >>> Anoop
+> >>>
+> >>> On Fri, 2010-12-24 at 04:32 -0800, Kevin D. Kissell wrote:
+> >>>> Thank you, Stuart!  I've spotted some definite breakage to SMTC between
+> >>>> those versions.  In arch/mips/include/asm/stackframe.h, someone moved
+> >>>> the store of the Status register value in SAVE_SOME (line 169 or 204,
+> >>>> depending on the version) from two instructions after the mfc0 to a
+> >>>> point after the #ifdef for SMTC, presumably to get better pipelining of
+> >>>> the register access.  Unfortunately, the v1 register is also used in the
+> >>>> SMTC-specific fragment to save TCStatus, so the Status value gets
+> >>>> clobbered before it gets stored.  This will eventually result in the
+> >>>> Status register getting a TCStatus value, which has some bits on common,
+> >>>> but isn't identical and sooner or later Bad Things will happen.
+> >>>>
+> >>>> I'm a little surprised this wasn't caught by visual inspection of the patch.
+> >>>>
+> >>>> Possible solutions would include reverting the store of the CP0_STATUS
+> >>>> value to the block above the #ifdef, or, to retain whatever performance
+> >>>> advantage was obtained by moving the store downward, to use v0/$2
+> >>>> instead of v1/$3, as the staging register for the TCStatus value.  I'd
+> >>>> lean toward the second option, but I'm not in a position to test and
+> >>>> submit a patch just now.
+> >>>>
+> >>>>                Regards,
+> >>>>
+> >>>>                Kevin K.
+> >>>>
+> >>>> On 12/23/10 1:09 PM, STUART VENTERS wrote:
+> >>>>> Kevin,
+> >>>>>
+> >>>>> I'm not sure if it's useful,
+> >>>>>       but finally I got the time to look at the two kernel versions Anoop pointed out.
+> >>>>>        works   2.6.32-stable with patch 804
+> >>>>>        works_not 2.6.33-stable
+> >>>>>
+> >>>>> greping for files with CONFIG_MIPS_MT_SMTC
+> >>>>>       and looking for timer interrupt related stuff found the following differences:
+> >>>>>
+> >>>>>
+> >>>>> arch/mips/include/asm/irq.h
+> >>>>> arch/mips/kernel/irq.c
+> >>>>>      do_IRQ
+> >>>>>
+> >>>>> arch/mips/include/asm/stackframe.h
+> >>>>>      SAVE_SOME SAVE_TEMP get/set_saved_sp
+> >>>>>
+> >>>>> arch/mips/include/asm/time.h
+> >>>>>      clocksource_set_clock
+> >>>>>
+> >>>>> arch/mips/kernel/process.c
+> >>>>>      cpu_idle
+> >>>>>
+> >>>>> arch/mips/kernel/smtc.c
+> >>>>>      __irq_entry
+> >>>>>      ipi_decode
+> >>>>>          SMTC_CLOCK_TICK
+> >>>>>
+> >>>>>
+> >>>>> Enclosed are the two subsets of files for a more expert look.
+> >>>>>
+> >>>>> I'll try to look in more detail after Christmas.
+> >>>>>
+> >>>>>
+> >>>>> Cheers,
+> >>>>>
+> >>>>> Stuart
+> >>>>>
+> >>>>>
+> >>>>>
+> >>>>>
+> >
+> 

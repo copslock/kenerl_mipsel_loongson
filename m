@@ -1,252 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Dec 2010 21:43:41 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:41484 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491147Ab0LYUnh convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 25 Dec 2010 21:43:37 +0100
-Received: by wyf22 with SMTP id 22so7635010wyf.36
-        for <multiple recipients>; Sat, 25 Dec 2010 12:43:32 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2010 15:01:02 +0100 (CET)
+Received: from mail-qw0-f49.google.com ([209.85.216.49]:35131 "EHLO
+        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490996Ab0L0OA7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Dec 2010 15:00:59 +0100
+Received: by qwj9 with SMTP id 9so8628192qwj.36
+        for <linux-mips@linux-mips.org>; Mon, 27 Dec 2010 06:00:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=+8COppeov40B/4FWeTj4xY1jmEXWgjSOEn9NFUd815Y=;
-        b=K1mDukkWCY7MBl9fQozbRyl7FGYk0Z+t6wxIVJZLOjbQxYq8wUJFtEvYY5fLysMPyZ
-         sLldKm0j9FOhBWQxV0WsTGWoKQoCaOO7bR3exj6ekOWFx1/GEcc1o3+pZNE+hZKVW/Oi
-         j2julFc7vFrF5MWZeXw5V6Rzj9EfGtFdqn77o=
+         :references:date:message-id:subject:from:to:content-type;
+        bh=7oJMEzcl8s4upHe6PVBacmTTHziHpkuiHjog8M8pOpc=;
+        b=TLJDYMirKhdNKMVxZy8V5cqdZb7Gnbp1h45IGON/nwXtNj0rffE3fhEVfy48HEQxUH
+         5Mh/S1aMifpXzaQoP6omFB0LWQbBZTLeRih4VpYfUgAMPT+GzfNC8qS8lkzIw6NC0Amc
+         hxYj4dH9o18b/oHtS6nlOHs/++bxI0CNRGc8E=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=et2WFLZYzuIiHFD8RUh62JCqOwZuZKCG7C8Z/74hOejo7+CJlSv26pOegSwo6gnlGm
-         CwC3LTg963f7UHcN2XQX1YthglnRo0S9Ub8KbCMQ+ps0ME7VxPuf1G/bG+WVcvNFIbmy
-         NxZxCu9H9nYYel0ug5QeR8IYiESfksK0q+ofk=
+         :content-type;
+        b=Zv+88mA0jl6xEN9eAXGOr6naLqzUEjfrwQ80xmXrwXfRa4qgkomxtvxUH4sXtl0slf
+         vEzne09/PiS1V9b627jM9QCQCX1wKGJude2mpRYSUwleLQkZ5nfHgQrAyKnzJWozFcgB
+         QH1wSiOKsvqqRN2ccelxsiAZ0Hg6IDDS7bc+o=
 MIME-Version: 1.0
-Received: by 10.216.82.9 with SMTP id n9mr11798261wee.35.1293309812241; Sat,
- 25 Dec 2010 12:43:32 -0800 (PST)
-Received: by 10.216.131.88 with HTTP; Sat, 25 Dec 2010 12:43:32 -0800 (PST)
-In-Reply-To: <8c3fb090a937ba193dcdf83196a0ada38025b20d.1293309744.git.wuzhangjin@gmail.com>
-References: <8c3fb090a937ba193dcdf83196a0ada38025b20d.1293309744.git.wuzhangjin@gmail.com>
-Date:   Sun, 26 Dec 2010 04:43:32 +0800
-Message-ID: <AANLkTin01=_JfW75B2Q3dHL2qcfCqXyt9yrY2nGo1BeC@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Use current_cpu_type() instead of c->cputype
-From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wuzhangjin@gmail.com>
+Received: by 10.229.242.77 with SMTP id lh13mr10319402qcb.194.1293458452801;
+ Mon, 27 Dec 2010 06:00:52 -0800 (PST)
+Received: by 10.229.111.99 with HTTP; Mon, 27 Dec 2010 06:00:52 -0800 (PST)
+In-Reply-To: <AANLkTinhM4PUmLbWeAyavf-JPM1Xpu9pJVkXDq4c-f0C@mail.gmail.com>
+References: <AANLkTinhM4PUmLbWeAyavf-JPM1Xpu9pJVkXDq4c-f0C@mail.gmail.com>
+Date:   Mon, 27 Dec 2010 22:00:52 +0800
+Message-ID: <AANLkTinsQrZJsXt0SKRfe3S0cNGT+uuW-t3Jo4Ob4=B4@mail.gmail.com>
+Subject: Re: Problem About Vectored interrupt
+From:   "Dennis.Yxun" <dennis.yxun@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: multipart/mixed; boundary=00163630ffe39c6af2049864c3f4
+Return-Path: <dennis.yxun@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28723
+X-archive-position: 28725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dennis.yxun@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This should be applied after "MIPS: Add current_cpu_prid() to optimize
-the code generation".
+--00163630ffe39c6af2049864c3f4
+Content-Type: multipart/alternative; boundary=00163630ffe39c6aeb049864c3f2
 
-On Sun, Dec 26, 2010 at 4:42 AM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> If current_cpu_type() is pre-defined in cpu-feature-overrides.h, This
-> may save about 10k for the compressed kernel image(vmlinuz).
+--00163630ffe39c6aeb049864c3f2
+Content-Type: text/plain; charset=UTF-8
+
+HI:
+   Here is my patch which hacked set_vi_srs_handler, with this I could
+successfully bring timer(compare/counter),
+   But I still not reach the root problem,
+Could someone shine some lights on me.
+   Thanks
+
+Dennis
+
+
+On Mon, Dec 27, 2010 at 4:40 PM, Dennis.Yxun <dennis.yxun@gmail.com> wrote:
+
+> HI ALL:
+>     I'm try to porting kernel-2.6.36 to one mips24kc board, seems it can't
+> bind vectored irq 7 to timer interrupt.
+> The hardware wired IP7 to timer interrupt (CP0 compare/counter interrupt)
+>     I implemented my own time.c, use set_vi_handler to map
+> cp0_compare_irq(value: 7) to mips_timer_dispatch,
+>  but weird problem, it didn't successfully map to mips_timer_dispatch, but
+> print out "Caught unexpected vectored interrupt."
+> which means it still use " static asmlinkage void do_default_vi(void)"  [1]
 >
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/bcm63xx/cpu.c                            |    3 +--
->  .../asm/mach-loongson/cpu-feature-overrides.h      |    3 +++
->  arch/mips/kernel/cpu-probe.c                       |    8 ++------
->  arch/mips/kernel/spram.c                           |    2 +-
->  arch/mips/kernel/traps.c                           |    2 +-
->  arch/mips/mm/c-octeon.c                            |    2 +-
->  arch/mips/mm/c-r4k.c                               |   10 +++++-----
->  arch/mips/mm/sc-mips.c                             |    2 +-
->  arch/mips/mm/tlbex.c                               |    2 +-
->  9 files changed, 16 insertions(+), 18 deletions(-)
+>    My question is : why first call to "set_vi_srs_handler" successfully
+> mapped to vectored irq7 [2]
+> but later is fail[3], see my attached file, bad_kernel.txt
 >
-> diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
-> index 7bd5176..760831f 100644
-> --- a/arch/mips/bcm63xx/cpu.c
-> +++ b/arch/mips/bcm63xx/cpu.c
-> @@ -291,13 +291,12 @@ static unsigned int detect_memory_size(void)
->  void __init bcm63xx_cpu_init(void)
->  {
->        unsigned int tmp, expected_cpu_id;
-> -       struct cpuinfo_mips *c = &current_cpu_data;
->        unsigned int cpu = smp_processor_id();
->
->        /* soc registers location depends on cpu type */
->        expected_cpu_id = 0;
->
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_BMIPS3300:
->                if (cpu_prid_imp() == PRID_IMP_BMIPS3300_ALT) {
->                        expected_cpu_id = BCM6348_CPU_ID;
-> diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> index a941bcc..17c9867 100644
-> --- a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> +++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-> @@ -17,6 +17,9 @@
->  #define __ASM_MACH_LOONGSON_CPU_FEATURE_OVERRIDES_H
->
->  #ifdef CONFIG_CPU_LOONGSON2
-> +
-> +#define current_cpu_type()     CPU_LOONGSON2
-> +
->  #define cpu_prid_loongson2() \
->        cpu_prid_encode(PRID_COMP_LEGACY, PRID_IMP_LOONGSON2, 0)
->
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index 34cb533..cb14f1e 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -153,14 +153,12 @@ __setup("nodsp", dsp_disable);
->
->  void __init check_wait(void)
->  {
-> -       struct cpuinfo_mips *c = &current_cpu_data;
-> -
->        if (nowait) {
->                printk("Wait instruction disabled.\n");
->                return;
->        }
->
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_R3081:
->        case CPU_R3081E:
->                cpu_wait = r3081_wait;
-> @@ -247,9 +245,7 @@ void __init check_wait(void)
->
->  static inline void check_errata(void)
->  {
-> -       struct cpuinfo_mips *c = &current_cpu_data;
-> -
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_34K:
->                /*
->                 * Erratum "RPS May Cause Incorrect Instruction Execution"
-> diff --git a/arch/mips/kernel/spram.c b/arch/mips/kernel/spram.c
-> index 1821d12..76649b5 100644
-> --- a/arch/mips/kernel/spram.c
-> +++ b/arch/mips/kernel/spram.c
-> @@ -202,7 +202,7 @@ void __cpuinit spram_config(void)
->        struct cpuinfo_mips *c = &current_cpu_data;
->        unsigned int config0;
->
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_24K:
->        case CPU_34K:
->        case CPU_74K:
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index 38a7ccd..a03fae2 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -617,7 +617,7 @@ static int simulate_rdhwr(struct pt_regs *regs, unsigned int opcode)
->                        regs->regs[rt] = read_c0_count();
->                        return 0;
->                case 3:         /* Count register resolution */
-> -                       switch (current_cpu_data.cputype) {
-> +                       switch (current_cpu_type()) {
->                        case CPU_20KC:
->                        case CPU_25KF:
->                                regs->regs[rt] = 1;
-> diff --git a/arch/mips/mm/c-octeon.c b/arch/mips/mm/c-octeon.c
-> index 16c4d25..8182758 100644
-> --- a/arch/mips/mm/c-octeon.c
-> +++ b/arch/mips/mm/c-octeon.c
-> @@ -182,7 +182,7 @@ static void __cpuinit probe_octeon(void)
->        struct cpuinfo_mips *c = &current_cpu_data;
->
->        config1 = read_c0_config1();
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_CAVIUM_OCTEON:
->        case CPU_CAVIUM_OCTEON_PLUS:
->                c->icache.linesz = 2 << ((config1 >> 19) & 7);
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 4407dd0..a7a6545 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -758,7 +758,7 @@ static void __cpuinit probe_pcache(void)
->        unsigned long config1;
->        unsigned int lsize;
->
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_R4600:                 /* QED style two way caches? */
->        case CPU_R4700:
->        case CPU_R5000:
-> @@ -998,7 +998,7 @@ static void __cpuinit probe_pcache(void)
->         * normally they'd suffer from aliases but magic in the hardware deals
->         * with that for us so we don't need to take care ourselves.
->         */
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_20KC:
->        case CPU_25KF:
->        case CPU_SB1:
-> @@ -1026,7 +1026,7 @@ static void __cpuinit probe_pcache(void)
->                        c->dcache.flags |= MIPS_CACHE_ALIASES;
->        }
->
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_20KC:
->                /*
->                 * Some older 20Kc chips doesn't have the 'VI' bit in
-> @@ -1157,7 +1157,7 @@ static void __cpuinit setup_scache(void)
->         * processors don't have a S-cache that would be relevant to the
->         * Linux memory management.
->         */
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_R4000SC:
->        case CPU_R4000MC:
->        case CPU_R4400SC:
-> @@ -1352,7 +1352,7 @@ void __cpuinit r4k_cache_init(void)
->        extern char __weak except_vec2_sb1;
->        struct cpuinfo_mips *c = &current_cpu_data;
->
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_SB1:
->        case CPU_SB1A:
->                set_uncached_handler(0x100, &except_vec2_sb1, 0x80);
-> diff --git a/arch/mips/mm/sc-mips.c b/arch/mips/mm/sc-mips.c
-> index 9cca8de..0e633db 100644
-> --- a/arch/mips/mm/sc-mips.c
-> +++ b/arch/mips/mm/sc-mips.c
-> @@ -72,7 +72,7 @@ static inline int mips_sc_is_activated(struct cpuinfo_mips *c)
->        unsigned int tmp;
->
->        /* Check the bypass bit (L2B) */
-> -       switch (c->cputype) {
-> +       switch (current_cpu_type()) {
->        case CPU_34K:
->        case CPU_74K:
->        case CPU_1004K:
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index af08461..c9a9b6b 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -415,7 +415,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
->
->        default:
->                panic("No TLB refill handler yet (CPU type: %d)",
-> -                     current_cpu_data.cputype);
-> +                     current_cpu_type());
->                break;
->        }
->  }
-> --
-> 1.7.1
+> Dennis
 >
 >
+> [1] arch/mips/kernel/traps.c 1339
+> [2] arch/mips/kernel/traps.c  1436, when addr == NULL
+> [3] my attached file time.c get_c0_compare_int
+>
+>
+
+--00163630ffe39c6aeb049864c3f2
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+HI:<div>=C2=A0=C2=A0 Here is my patch which hacked set_vi_srs_handler, with=
+ this I could successfully bring timer(compare/counter),</div><div>=C2=A0=
+=C2=A0 But I still not reach the root problem,</div><div>Could someone shin=
+e some lights on me.</div>
+<div>=C2=A0=C2=A0 Thanks</div><div><br></div><div>Dennis</div><div><br><br>=
+<div class=3D"gmail_quote">On Mon, Dec 27, 2010 at 4:40 PM, Dennis.Yxun <sp=
+an dir=3D"ltr">&lt;<a href=3D"mailto:dennis.yxun@gmail.com">dennis.yxun@gma=
+il.com</a>&gt;</span> wrote:<br>
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex;">HI ALL:<br>=C2=A0=C2=A0=C2=A0 I&#39;m try t=
+o porting kernel-2.6.36 to one mips24kc board, seems it can&#39;t bind vect=
+ored irq 7 to timer interrupt.<br>
+The hardware wired IP7 to timer interrupt (CP0 compare/counter interrupt)<b=
+r>=C2=A0=C2=A0=C2=A0 I implemented my own time.c, use set_vi_handler to map=
+ cp0_compare_irq(value: 7) to mips_timer_dispatch,<br>
+=C2=A0but weird problem, it didn&#39;t successfully map to mips_timer_dispa=
+tch, but print out &quot;Caught unexpected vectored interrupt.&quot;<br>whi=
+ch means it still use &quot; static asmlinkage void do_default_vi(void)&quo=
+t;=C2=A0 [1]<br>
+
+<br>=C2=A0=C2=A0 My question is : why first call to &quot;set_vi_srs_handle=
+r&quot; successfully mapped to vectored irq7 [2]<br>but later is fail[3], s=
+ee my attached file, bad_kernel.txt<br><br>Dennis<br><br><br>[1] arch/mips/=
+kernel/traps.c 1339<br>
+
+[2] arch/mips/kernel/traps.c=C2=A0 1436, when addr =3D=3D NULL<br>[3] my at=
+tached file time.c get_c0_compare_int<br><br>
+</blockquote></div><br></div>
+
+--00163630ffe39c6aeb049864c3f2--
+--00163630ffe39c6af2049864c3f4
+Content-Type: text/x-patch; charset=US-ASCII; name="mips_timer.patch"
+Content-Disposition: attachment; filename="mips_timer.patch"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_gi7fw7yv2
+
+ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9rZXJuZWwvdHJhcHMuYyBiL2FyY2gvbWlwcy9rZXJuZWwv
+dHJhcHMuYwppbmRleCBlOTcxMDQzLi5lYWQ4NzUwIDEwMDY0NAotLS0gYS9hcmNoL21pcHMva2Vy
+bmVsL3RyYXBzLmMKKysrIGIvYXJjaC9taXBzL2tlcm5lbC90cmFwcy5jCkBAIC0xMzc3LDYgKzEz
+NzcsMTEgQEAgc3RhdGljIGFzbWxpbmthZ2Ugdm9pZCBkb19kZWZhdWx0X3ZpKHZvaWQpCiAJcGFu
+aWMoIkNhdWdodCB1bmV4cGVjdGVkIHZlY3RvcmVkIGludGVycnVwdC4iKTsKIH0KIAorc3RhdGlj
+IGFzbWxpbmthZ2Ugdm9pZCBtaXBzX3RpbWVyX2Rpc3BhdGNoKHZvaWQpCit7CisJZG9fSVJRKDcp
+OworfQorCiBzdGF0aWMgdm9pZCAqc2V0X3ZpX3Nyc19oYW5kbGVyKGludCBuLCB2aV9oYW5kbGVy
+X3QgYWRkciwgaW50IHNycykKIHsKIAl1bnNpZ25lZCBsb25nIGhhbmRsZXI7CkBAIC0xMzg4LDcg
+KzEzOTMsMTQgQEAgc3RhdGljIHZvaWQgKnNldF92aV9zcnNfaGFuZGxlcihpbnQgbiwgdmlfaGFu
+ZGxlcl90IGFkZHIsIGludCBzcnMpCiAJQlVHX09OKCFjcHVfaGFzX3ZlaWMgJiYgIWNwdV9oYXNf
+dmludCk7CiAKIAlpZiAoYWRkciA9PSBOVUxMKSB7Ci0JCWhhbmRsZXIgPSAodW5zaWduZWQgbG9u
+ZykgZG9fZGVmYXVsdF92aTsKKwkJc3dpdGNoKG4pIHsKKwkJY2FzZSA3OgorCQkJaGFuZGxlciA9
+ICh1bnNpZ25lZCBsb25nKSBtaXBzX3RpbWVyX2Rpc3BhdGNoOworCQkJYnJlYWs7CisJCWRlZmF1
+bHQ6CisJCQloYW5kbGVyID0gKHVuc2lnbmVkIGxvbmcpIGRvX2RlZmF1bHRfdmk7CisJCQlicmVh
+azsKKwkJfQogCQlzcnMgPSAwOwogCX0gZWxzZQogCQloYW5kbGVyID0gKHVuc2lnbmVkIGxvbmcp
+IGFkZHI7Cg==
+--00163630ffe39c6af2049864c3f4--

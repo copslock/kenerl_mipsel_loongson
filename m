@@ -1,144 +1,146 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2010 15:01:02 +0100 (CET)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:35131 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490996Ab0L0OA7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Dec 2010 15:00:59 +0100
-Received: by qwj9 with SMTP id 9so8628192qwj.36
-        for <linux-mips@linux-mips.org>; Mon, 27 Dec 2010 06:00:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:received:in-reply-to
-         :references:date:message-id:subject:from:to:content-type;
-        bh=7oJMEzcl8s4upHe6PVBacmTTHziHpkuiHjog8M8pOpc=;
-        b=TLJDYMirKhdNKMVxZy8V5cqdZb7Gnbp1h45IGON/nwXtNj0rffE3fhEVfy48HEQxUH
-         5Mh/S1aMifpXzaQoP6omFB0LWQbBZTLeRih4VpYfUgAMPT+GzfNC8qS8lkzIw6NC0Amc
-         hxYj4dH9o18b/oHtS6nlOHs/++bxI0CNRGc8E=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :content-type;
-        b=Zv+88mA0jl6xEN9eAXGOr6naLqzUEjfrwQ80xmXrwXfRa4qgkomxtvxUH4sXtl0slf
-         vEzne09/PiS1V9b627jM9QCQCX1wKGJude2mpRYSUwleLQkZ5nfHgQrAyKnzJWozFcgB
-         QH1wSiOKsvqqRN2ccelxsiAZ0Hg6IDDS7bc+o=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Dec 2010 16:49:13 +0100 (CET)
+Received: from p02c11o145.mxlogic.net ([208.65.144.78]:60789 "EHLO
+        p02c11o145.mxlogic.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491000Ab0L0PtJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Dec 2010 16:49:09 +0100
+Received: from unknown [76.164.174.81] (EHLO ex-hc1.corp.adtran.com)
+        by p02c11o145.mxlogic.net(mxl_mta-6.8.0-0) over TLS secured channel
+        with ESMTP id 275b81d4.0.2516.00-378.5964.p02c11o145.mxlogic.net (envelope-from <stuart.venters@adtran.com>);
+        Mon, 27 Dec 2010 08:49:08 -0700 (MST)
+X-MXL-Hash: 4d18b574752daffd-35ffdcbea47bc387287c12df8e1e41db1b3aecd2
+Received: from corp-exfr2.corp.adtran.com (172.23.101.22) by
+ ex-hc1.corp.adtran.com (172.22.50.71) with Microsoft SMTP Server id
+ 14.1.255.0; Mon, 27 Dec 2010 09:49:05 -0600
+Received: from EXV1.corp.adtran.com ([172.22.48.215]) by
+ corp-exfr2.corp.adtran.com with Microsoft SMTPSVC(6.0.3790.3959);       Mon, 27
+ Dec 2010 09:49:05 -0600
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-Class: urn:content-classes:message
 MIME-Version: 1.0
-Received: by 10.229.242.77 with SMTP id lh13mr10319402qcb.194.1293458452801;
- Mon, 27 Dec 2010 06:00:52 -0800 (PST)
-Received: by 10.229.111.99 with HTTP; Mon, 27 Dec 2010 06:00:52 -0800 (PST)
-In-Reply-To: <AANLkTinhM4PUmLbWeAyavf-JPM1Xpu9pJVkXDq4c-f0C@mail.gmail.com>
-References: <AANLkTinhM4PUmLbWeAyavf-JPM1Xpu9pJVkXDq4c-f0C@mail.gmail.com>
-Date:   Mon, 27 Dec 2010 22:00:52 +0800
-Message-ID: <AANLkTinsQrZJsXt0SKRfe3S0cNGT+uuW-t3Jo4Ob4=B4@mail.gmail.com>
-Subject: Re: Problem About Vectored interrupt
-From:   "Dennis.Yxun" <dennis.yxun@gmail.com>
-To:     linux-mips@linux-mips.org
-Content-Type: multipart/mixed; boundary=00163630ffe39c6af2049864c3f4
-Return-Path: <dennis.yxun@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Subject: RE: SMTC support status in latest git head.
+Date:   Mon, 27 Dec 2010 09:49:04 -0600
+Message-ID: <8F242B230AD6474C8E7815DE0B4982D7179FB88F@EXV1.corp.adtran.com>
+In-Reply-To: <4D152DFA.5090504@paralogos.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: SMTC support status in latest git head.
+Thread-Index: AcujwxlKXjEWzoi+TGWAa29nghmQwgCF/syg
+From:   STUART VENTERS <stuart.venters@adtran.com>
+To:     "Kevin D. Kissell" <kevink@paralogos.com>,
+        Anoop P A <anoop.pa@gmail.com>
+CC:     Anoop P.A. <Anoop_P.A@pmc-sierra.com>, <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 27 Dec 2010 15:49:05.0778 (UTC) FILETIME=[97782520:01CBA5DD]
+X-Spam: [F=0.2000000000; CM=0.500; S=0.200(2010121501)]
+X-MAIL-FROM: <stuart.venters@adtran.com>
+X-SOURCE-IP: [76.164.174.81]
+X-AnalysisOut: [v=1.0 c=1 a=fMTePymILGAA:10 a=BLceEmwcHowA:10 a=IkcTkHD0fZ]
+X-AnalysisOut: [MA:10 a=0XgpNN2/4a34ymu16SVwsQ==:17 a=GD5LJJB7AAAA:8 a=WPy]
+X-AnalysisOut: [IoOwQAAAA:8 a=ftmEPGAYt0qNLiiQ0zMA:9 a=7etVjqQ0KNDkcb1RyZg]
+X-AnalysisOut: [A:7 a=KnUl2jyRi4wxCzkwPJcFLoPogfsA:4 a=QEXdDO2ut3YA:10 a=b]
+X-AnalysisOut: [vPO4xL1mq4A:10 a=1DbiqZag68YA:10]
+Return-Path: <stuart.venters@adtran.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28725
+X-archive-position: 28726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dennis.yxun@gmail.com
+X-original-sender: stuart.venters@adtran.com
 Precedence: bulk
 X-list: linux-mips
 
---00163630ffe39c6af2049864c3f4
-Content-Type: multipart/alternative; boundary=00163630ffe39c6aeb049864c3f2
-
---00163630ffe39c6aeb049864c3f2
-Content-Type: text/plain; charset=UTF-8
-
-HI:
-   Here is my patch which hacked set_vi_srs_handler, with this I could
-successfully bring timer(compare/counter),
-   But I still not reach the root problem,
-Could someone shine some lights on me.
-   Thanks
-
-Dennis
-
-
-On Mon, Dec 27, 2010 at 4:40 PM, Dennis.Yxun <dennis.yxun@gmail.com> wrote:
-
-> HI ALL:
->     I'm try to porting kernel-2.6.36 to one mips24kc board, seems it can't
-> bind vectored irq 7 to timer interrupt.
-> The hardware wired IP7 to timer interrupt (CP0 compare/counter interrupt)
->     I implemented my own time.c, use set_vi_handler to map
-> cp0_compare_irq(value: 7) to mips_timer_dispatch,
->  but weird problem, it didn't successfully map to mips_timer_dispatch, but
-> print out "Caught unexpected vectored interrupt."
-> which means it still use " static asmlinkage void do_default_vi(void)"  [1]
->
->    My question is : why first call to "set_vi_srs_handler" successfully
-> mapped to vectored irq7 [2]
-> but later is fail[3], see my attached file, bad_kernel.txt
->
-> Dennis
->
->
-> [1] arch/mips/kernel/traps.c 1339
-> [2] arch/mips/kernel/traps.c  1436, when addr == NULL
-> [3] my attached file time.c get_c0_compare_int
->
->
-
---00163630ffe39c6aeb049864c3f2
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-HI:<div>=C2=A0=C2=A0 Here is my patch which hacked set_vi_srs_handler, with=
- this I could successfully bring timer(compare/counter),</div><div>=C2=A0=
-=C2=A0 But I still not reach the root problem,</div><div>Could someone shin=
-e some lights on me.</div>
-<div>=C2=A0=C2=A0 Thanks</div><div><br></div><div>Dennis</div><div><br><br>=
-<div class=3D"gmail_quote">On Mon, Dec 27, 2010 at 4:40 PM, Dennis.Yxun <sp=
-an dir=3D"ltr">&lt;<a href=3D"mailto:dennis.yxun@gmail.com">dennis.yxun@gma=
-il.com</a>&gt;</span> wrote:<br>
-<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-x #ccc solid;padding-left:1ex;">HI ALL:<br>=C2=A0=C2=A0=C2=A0 I&#39;m try t=
-o porting kernel-2.6.36 to one mips24kc board, seems it can&#39;t bind vect=
-ored irq 7 to timer interrupt.<br>
-The hardware wired IP7 to timer interrupt (CP0 compare/counter interrupt)<b=
-r>=C2=A0=C2=A0=C2=A0 I implemented my own time.c, use set_vi_handler to map=
- cp0_compare_irq(value: 7) to mips_timer_dispatch,<br>
-=C2=A0but weird problem, it didn&#39;t successfully map to mips_timer_dispa=
-tch, but print out &quot;Caught unexpected vectored interrupt.&quot;<br>whi=
-ch means it still use &quot; static asmlinkage void do_default_vi(void)&quo=
-t;=C2=A0 [1]<br>
-
-<br>=C2=A0=C2=A0 My question is : why first call to &quot;set_vi_srs_handle=
-r&quot; successfully mapped to vectored irq7 [2]<br>but later is fail[3], s=
-ee my attached file, bad_kernel.txt<br><br>Dennis<br><br><br>[1] arch/mips/=
-kernel/traps.c 1339<br>
-
-[2] arch/mips/kernel/traps.c=C2=A0 1436, when addr =3D=3D NULL<br>[3] my at=
-tached file time.c get_c0_compare_int<br><br>
-</blockquote></div><br></div>
-
---00163630ffe39c6aeb049864c3f2--
---00163630ffe39c6af2049864c3f4
-Content-Type: text/x-patch; charset=US-ASCII; name="mips_timer.patch"
-Content-Disposition: attachment; filename="mips_timer.patch"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_gi7fw7yv2
-
-ZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9rZXJuZWwvdHJhcHMuYyBiL2FyY2gvbWlwcy9rZXJuZWwv
-dHJhcHMuYwppbmRleCBlOTcxMDQzLi5lYWQ4NzUwIDEwMDY0NAotLS0gYS9hcmNoL21pcHMva2Vy
-bmVsL3RyYXBzLmMKKysrIGIvYXJjaC9taXBzL2tlcm5lbC90cmFwcy5jCkBAIC0xMzc3LDYgKzEz
-NzcsMTEgQEAgc3RhdGljIGFzbWxpbmthZ2Ugdm9pZCBkb19kZWZhdWx0X3ZpKHZvaWQpCiAJcGFu
-aWMoIkNhdWdodCB1bmV4cGVjdGVkIHZlY3RvcmVkIGludGVycnVwdC4iKTsKIH0KIAorc3RhdGlj
-IGFzbWxpbmthZ2Ugdm9pZCBtaXBzX3RpbWVyX2Rpc3BhdGNoKHZvaWQpCit7CisJZG9fSVJRKDcp
-OworfQorCiBzdGF0aWMgdm9pZCAqc2V0X3ZpX3Nyc19oYW5kbGVyKGludCBuLCB2aV9oYW5kbGVy
-X3QgYWRkciwgaW50IHNycykKIHsKIAl1bnNpZ25lZCBsb25nIGhhbmRsZXI7CkBAIC0xMzg4LDcg
-KzEzOTMsMTQgQEAgc3RhdGljIHZvaWQgKnNldF92aV9zcnNfaGFuZGxlcihpbnQgbiwgdmlfaGFu
-ZGxlcl90IGFkZHIsIGludCBzcnMpCiAJQlVHX09OKCFjcHVfaGFzX3ZlaWMgJiYgIWNwdV9oYXNf
-dmludCk7CiAKIAlpZiAoYWRkciA9PSBOVUxMKSB7Ci0JCWhhbmRsZXIgPSAodW5zaWduZWQgbG9u
-ZykgZG9fZGVmYXVsdF92aTsKKwkJc3dpdGNoKG4pIHsKKwkJY2FzZSA3OgorCQkJaGFuZGxlciA9
-ICh1bnNpZ25lZCBsb25nKSBtaXBzX3RpbWVyX2Rpc3BhdGNoOworCQkJYnJlYWs7CisJCWRlZmF1
-bHQ6CisJCQloYW5kbGVyID0gKHVuc2lnbmVkIGxvbmcpIGRvX2RlZmF1bHRfdmk7CisJCQlicmVh
-azsKKwkJfQogCQlzcnMgPSAwOwogCX0gZWxzZQogCQloYW5kbGVyID0gKHVuc2lnbmVkIGxvbmcp
-IGFkZHI7Cg==
---00163630ffe39c6af2049864c3f4--
+S2V2aW4sDQoNCk91dHN0YW5kaW5nLCBzb21ldGltZXMgaXQncyBiZXR0ZXIgdG8gYmUgbHVja3kg
+dGhhbiBnb29kLg0KDQoNCkFub29wLA0KDQpNYXliZSB3ZSBjYW4gZ2V0IGx1Y2t5IGFnYWluLg0K
+DQpJZiB5b3UgY2FuIGlzb2xhdGUgdGhlIC4zMyB3b3Jrcy8uMzcgd29ya3Nfbm90IGJ1ZyB0byBh
+IHNwZWNpZmljIHBhaXIgb2YgdmVyc2lvbnMsIA0KICAgSSdsbCBiZSBoYXBweSB0byBkbyBhbm90
+aGVyIGRpZmYuDQoNCg0KSG9wZSB5b3UnbGwgaGF2ZSBoYWQgYSBnb29kIENocmlzdG1hcyBhcyB3
+ZWxsLg0KICBXZSd2ZSBoYWQgc25vdyBpbiBBbGFiYW1hIHNpbmNlIENocmlzdG1hcyBldmUhDQoN
+Cg0KUmVnYXJkcywNCg0KU3R1YXJ0DQoNCg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZy
+b206IEtldmluIEQuIEtpc3NlbGwgW21haWx0bzprZXZpbmtAcGFyYWxvZ29zLmNvbV0NClNlbnQ6
+IEZyaWRheSwgRGVjZW1iZXIgMjQsIDIwMTAgNTozNCBQTQ0KVG86IEFub29wIFAgQQ0KQ2M6IFNU
+VUFSVCBWRU5URVJTOyBBbm9vcCBQLkEuOyBsaW51eC1taXBzQGxpbnV4LW1pcHMub3JnDQpTdWJq
+ZWN0OiBSZTogU01UQyBzdXBwb3J0IHN0YXR1cyBpbiBsYXRlc3QgZ2l0IGhlYWQuDQoNCg0KQWgs
+IHdlbGwsIGF0IGxlYXN0IHdlIGhhdmUgYSBzdGFja2ZyYW1lLmggZml4IHRoYXQgcHJlc2VydmVz
+IERhdmlkJ3MgDQpwZXJmb3JtYW5jZSB0d2VhayBmb3IgdGhlIGRlZXBlciBwaXBlbGluZWQgcHJv
+Y2Vzc29ycy4gIEluIGxvb2tpbmcgZm9yIA0KdGhpcywgSSBkaWQgbm90aWNlIHRoYXQgc29tZW9u
+ZSBkaWQgc29tZSBtb2RpZmljYXRpb24gdG8gdGhlIFNNVEMgY2xvY2sgDQp0aWNrIGxvZ2ljIHRo
+YXQgSSB3YXMgc2tlcHRpY2FsIGhhZCBldmVyIGJlZW4gdGVzdGVkLiAgSWYgeW91J3ZlIHN0aWxs
+IA0KZ290IHRoYXQga2VybmVsIGJpbmFyeSBoYW5keSwgeW91IG1pZ2h0IGNoZWNrIHRvIHNlZSBp
+ZiBpdCBib290cyB3aXRoIA0KbWF4dGNzPTEgbWF4dnBlcz0xLCBtYXh0Y3M9MiBtYXh2cGVzPTEs
+IGFuZC9vciBtYXh0Y3M9MiBtYXh2cGVzPTIuDQoNCk9oLCB5ZXMsIGFuZCBNZXJyeSBDaHJpc3Rt
+YXMgb25lIGFuZCBhbGwhDQoNCiAgICAgICAgICAgICBSZWdhcmRzLA0KDQogICAgICAgICAgICAg
+S2V2aW4gSy4NCg0KT24gMTIvMjQvMTAgODowMiBBTSwgQW5vb3AgUCBBIHdyb3RlOg0KPiBPbiBG
+cmksIDIwMTAtMTItMjQgYXQgMDY6NTMgLTA4MDAsIEtldmluIEQuIEtpc3NlbGwgd3JvdGU6DQo+
+PiBFeGNlbGxlbnQhICBOb3csIGRvZXMgdGhlIGF0dGFjaGVkIHBhdGNoIChyZWxhdGl2ZSB0byAy
+LjYuMzcuMTEpIGFsc28NCj4+IGZpeCB0aGluZ3MsIHdoaWxlIHByZXNlcnZpbmcgdGhlIG90aGVy
+IGZpeGVzIGFuZCBwZXJmb3JtYW5jZSBlbmhhbmNlbWVudHM/DQo+Pg0KPiBJIGhhdmUgdGVzdGVk
+IHRoYXQgcGF0Y2ggd2l0aCAyLjYuMzcgYnJhbmNoIGl0IHdlbGwgcGFzc2VzIGNhbGlicmF0aW9u
+DQo+IGxvb3AgYnV0IGhhbmdzIGFmdGVyIHN3aXRjaGluZyB0byBtaXBzIGNsb3NvdXJjZQ0KPg0K
+PiBUQyA2IGdvaW5nIG9uLWxpbmUgYXMgQ1BVIDYNCj4gQnJvdWdodCB1cCA3IENQVXMNCj4gYmlv
+OiBjcmVhdGUgc2xhYjxiaW8tMD4gIGF0IDANCj4gU0NTSSBzdWJzeXN0ZW0gaW5pdGlhbGl6ZWQN
+Cj4gU3dpdGNoaW5nIHRvIGNsb2Nrc291cmNlIE1JUFMNCj4NCj4gSSBQcmVzdW1lIHRoaXMgaXMg
+YSBkaWZmZXJlbnQgaXNzdWUgYXMgcmVzdG9yaW5nIG9sZGVyIGZpbGUgZGlkbid0IGhlbHANCj4g
+bXVjaCB0byBnZXQgcmlkIG9mIHRoaXMgaGFuZy4NCj4NCj4gZGlmZiAtLWdpdCBhL2FyY2gvbWlw
+cy9pbmNsdWRlL2FzbS9zdGFja2ZyYW1lLmgNCj4gYi9hcmNoL21pcHMvaW5jbHVkZS9hc20vc3Rh
+Y2tmcmFtZS5oDQo+IGluZGV4IDU4NzMwYzUuLjdmYzlmMTAgMTAwNjQ0DQo+IC0tLSBhL2FyY2gv
+bWlwcy9pbmNsdWRlL2FzbS9zdGFja2ZyYW1lLmgNCj4gKysrIGIvYXJjaC9taXBzL2luY2x1ZGUv
+YXNtL3N0YWNrZnJhbWUuaA0KPiBAQCAtMTk1LDkgKzE5NSw5IEBADQo+ICAgCQkgKiB0byBjb3Zl
+ciB0aGUgcGlwZWxpbmUgZGVsYXkuDQo+ICAgCQkgKi8NCj4gICAJCS5zZXQJbWlwczMyDQo+IC0J
+CW1mYzAJdjEsIENQMF9UQ1NUQVRVUw0KPiArCQltZmMwCXYwLCBDUDBfVENTVEFUVVMNCj4gICAJ
+CS5zZXQJbWlwczANCj4gLQkJTE9OR19TCXYxLCBQVF9UQ1NUQVRVUyhzcCkNCj4gKwkJTE9OR19T
+CXYwLCBQVF9UQ1NUQVRVUyhzcCkNCj4gICAjZW5kaWYgLyogQ09ORklHX01JUFNfTVRfU01UQyAq
+Lw0KPiAgIAkJTE9OR19TCSQ0LCBQVF9SNChzcCkNCj4gICAJCUxPTkdfUwkkNSwgUFRfUjUoc3Ap
+DQo+DQo+DQo+PiAvSy4NCj4+DQo+PiBPbiAxMi8yNC8xMCA2OjM5IEFNLCBBbm9vcCBQIEEgd3Jv
+dGU6DQo+Pj4gSGkgS2V2aW4sIFN0dWFydCAsDQo+Pj4NCj4+PiBXb29ob29vIFlvdSBndXlzIHNw
+b3R0ZWQgIS4NCj4+Pg0KPj4+ICAgIGh0dHA6Ly9naXQubGludXgtbWlwcy5vcmcvP3A9bGludXgu
+Z2l0O2E9Y29tbWl0O2g9ZDVlYzZlM2Mgc2VlbXMgdG8gYmUNCj4+PiB0aGUgY3VscHJpdA0KPj4+
+DQo+Pj4gT25jZSBJIHJlc3RvcmVkIHByZXZpb3VzIHZlcnNpb24gb2Ygc3RhY2tmcmFtZS5oIDIu
+Ni4zMy1zdGFibGUgc3RhcnRlZA0KPj4+IGJvb3RpbmcgIS4NCj4+Pg0KPj4+IFRoYW5rcywNCj4+
+PiBBbm9vcA0KPj4+DQo+Pj4gT24gRnJpLCAyMDEwLTEyLTI0IGF0IDA0OjMyIC0wODAwLCBLZXZp
+biBELiBLaXNzZWxsIHdyb3RlOg0KPj4+PiBUaGFuayB5b3UsIFN0dWFydCEgIEkndmUgc3BvdHRl
+ZCBzb21lIGRlZmluaXRlIGJyZWFrYWdlIHRvIFNNVEMgYmV0d2Vlbg0KPj4+PiB0aG9zZSB2ZXJz
+aW9ucy4gIEluIGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9zdGFja2ZyYW1lLmgsIHNvbWVvbmUgbW92
+ZWQNCj4+Pj4gdGhlIHN0b3JlIG9mIHRoZSBTdGF0dXMgcmVnaXN0ZXIgdmFsdWUgaW4gU0FWRV9T
+T01FIChsaW5lIDE2OSBvciAyMDQsDQo+Pj4+IGRlcGVuZGluZyBvbiB0aGUgdmVyc2lvbikgZnJv
+bSB0d28gaW5zdHJ1Y3Rpb25zIGFmdGVyIHRoZSBtZmMwIHRvIGENCj4+Pj4gcG9pbnQgYWZ0ZXIg
+dGhlICNpZmRlZiBmb3IgU01UQywgcHJlc3VtYWJseSB0byBnZXQgYmV0dGVyIHBpcGVsaW5pbmcg
+b2YNCj4+Pj4gdGhlIHJlZ2lzdGVyIGFjY2Vzcy4gIFVuZm9ydHVuYXRlbHksIHRoZSB2MSByZWdp
+c3RlciBpcyBhbHNvIHVzZWQgaW4gdGhlDQo+Pj4+IFNNVEMtc3BlY2lmaWMgZnJhZ21lbnQgdG8g
+c2F2ZSBUQ1N0YXR1cywgc28gdGhlIFN0YXR1cyB2YWx1ZSBnZXRzDQo+Pj4+IGNsb2JiZXJlZCBi
+ZWZvcmUgaXQgZ2V0cyBzdG9yZWQuICBUaGlzIHdpbGwgZXZlbnR1YWxseSByZXN1bHQgaW4gdGhl
+DQo+Pj4+IFN0YXR1cyByZWdpc3RlciBnZXR0aW5nIGEgVENTdGF0dXMgdmFsdWUsIHdoaWNoIGhh
+cyBzb21lIGJpdHMgb24gY29tbW9uLA0KPj4+PiBidXQgaXNuJ3QgaWRlbnRpY2FsIGFuZCBzb29u
+ZXIgb3IgbGF0ZXIgQmFkIFRoaW5ncyB3aWxsIGhhcHBlbi4NCj4+Pj4NCj4+Pj4gSSdtIGEgbGl0
+dGxlIHN1cnByaXNlZCB0aGlzIHdhc24ndCBjYXVnaHQgYnkgdmlzdWFsIGluc3BlY3Rpb24gb2Yg
+dGhlIHBhdGNoLg0KPj4+Pg0KPj4+PiBQb3NzaWJsZSBzb2x1dGlvbnMgd291bGQgaW5jbHVkZSBy
+ZXZlcnRpbmcgdGhlIHN0b3JlIG9mIHRoZSBDUDBfU1RBVFVTDQo+Pj4+IHZhbHVlIHRvIHRoZSBi
+bG9jayBhYm92ZSB0aGUgI2lmZGVmLCBvciwgdG8gcmV0YWluIHdoYXRldmVyIHBlcmZvcm1hbmNl
+DQo+Pj4+IGFkdmFudGFnZSB3YXMgb2J0YWluZWQgYnkgbW92aW5nIHRoZSBzdG9yZSBkb3dud2Fy
+ZCwgdG8gdXNlIHYwLyQyDQo+Pj4+IGluc3RlYWQgb2YgdjEvJDMsIGFzIHRoZSBzdGFnaW5nIHJl
+Z2lzdGVyIGZvciB0aGUgVENTdGF0dXMgdmFsdWUuICBJJ2QNCj4+Pj4gbGVhbiB0b3dhcmQgdGhl
+IHNlY29uZCBvcHRpb24sIGJ1dCBJJ20gbm90IGluIGEgcG9zaXRpb24gdG8gdGVzdCBhbmQNCj4+
+Pj4gc3VibWl0IGEgcGF0Y2gganVzdCBub3cuDQo+Pj4+DQo+Pj4+ICAgICAgICAgICAgICAgIFJl
+Z2FyZHMsDQo+Pj4+DQo+Pj4+ICAgICAgICAgICAgICAgIEtldmluIEsuDQo+Pj4+DQo+Pj4+IE9u
+IDEyLzIzLzEwIDE6MDkgUE0sIFNUVUFSVCBWRU5URVJTIHdyb3RlOg0KPj4+Pj4gS2V2aW4sDQo+
+Pj4+Pg0KPj4+Pj4gSSdtIG5vdCBzdXJlIGlmIGl0J3MgdXNlZnVsLA0KPj4+Pj4gICAgICAgYnV0
+IGZpbmFsbHkgSSBnb3QgdGhlIHRpbWUgdG8gbG9vayBhdCB0aGUgdHdvIGtlcm5lbCB2ZXJzaW9u
+cyBBbm9vcCBwb2ludGVkIG91dC4NCj4+Pj4+ICAgICAgICB3b3JrcyAgIDIuNi4zMi1zdGFibGUg
+d2l0aCBwYXRjaCA4MDQNCj4+Pj4+ICAgICAgICB3b3Jrc19ub3QgMi42LjMzLXN0YWJsZQ0KPj4+
+Pj4NCj4+Pj4+IGdyZXBpbmcgZm9yIGZpbGVzIHdpdGggQ09ORklHX01JUFNfTVRfU01UQw0KPj4+
+Pj4gICAgICAgYW5kIGxvb2tpbmcgZm9yIHRpbWVyIGludGVycnVwdCByZWxhdGVkIHN0dWZmIGZv
+dW5kIHRoZSBmb2xsb3dpbmcgZGlmZmVyZW5jZXM6DQo+Pj4+Pg0KPj4+Pj4NCj4+Pj4+IGFyY2gv
+bWlwcy9pbmNsdWRlL2FzbS9pcnEuaA0KPj4+Pj4gYXJjaC9taXBzL2tlcm5lbC9pcnEuYw0KPj4+
+Pj4gICAgICBkb19JUlENCj4+Pj4+DQo+Pj4+PiBhcmNoL21pcHMvaW5jbHVkZS9hc20vc3RhY2tm
+cmFtZS5oDQo+Pj4+PiAgICAgIFNBVkVfU09NRSBTQVZFX1RFTVAgZ2V0L3NldF9zYXZlZF9zcA0K
+Pj4+Pj4NCj4+Pj4+IGFyY2gvbWlwcy9pbmNsdWRlL2FzbS90aW1lLmgNCj4+Pj4+ICAgICAgY2xv
+Y2tzb3VyY2Vfc2V0X2Nsb2NrDQo+Pj4+Pg0KPj4+Pj4gYXJjaC9taXBzL2tlcm5lbC9wcm9jZXNz
+LmMNCj4+Pj4+ICAgICAgY3B1X2lkbGUNCj4+Pj4+DQo+Pj4+PiBhcmNoL21pcHMva2VybmVsL3Nt
+dGMuYw0KPj4+Pj4gICAgICBfX2lycV9lbnRyeQ0KPj4+Pj4gICAgICBpcGlfZGVjb2RlDQo+Pj4+
+PiAgICAgICAgICBTTVRDX0NMT0NLX1RJQ0sNCj4+Pj4+DQo+Pj4+Pg0KPj4+Pj4gRW5jbG9zZWQg
+YXJlIHRoZSB0d28gc3Vic2V0cyBvZiBmaWxlcyBmb3IgYSBtb3JlIGV4cGVydCBsb29rLg0KPj4+
+Pj4NCj4+Pj4+IEknbGwgdHJ5IHRvIGxvb2sgaW4gbW9yZSBkZXRhaWwgYWZ0ZXIgQ2hyaXN0bWFz
+Lg0KPj4+Pj4NCj4+Pj4+DQo+Pj4+PiBDaGVlcnMsDQo+Pj4+Pg0KPj4+Pj4gU3R1YXJ0DQo+Pj4+
+Pg0KPj4+Pj4NCj4+Pj4+DQo+Pj4+Pg0KPg0KDQo=

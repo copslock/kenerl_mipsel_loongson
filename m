@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2010 19:26:50 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:41594 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2010 19:27:14 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:41595 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491054Ab0L1SUy (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491051Ab0L1SUy (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 28 Dec 2010 19:20:54 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id ADEA8808F;
-        Tue, 28 Dec 2010 19:20:48 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 3388E8085;
+        Tue, 28 Dec 2010 19:20:47 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 1F41D1F0001;
-        Tue, 28 Dec 2010 19:20:48 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 8FF2C1F0001;
+        Tue, 28 Dec 2010 19:20:46 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
         "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Kathy Giori <Kathy.Giori@Atheros.com>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH v3 16/16] MIPS: ath79: add common WMAC device for AR913X based boards
-Date:   Tue, 28 Dec 2010 19:20:37 +0100
-Message-Id: <1293560437-7967-17-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org
+Subject: [PATCH v3 12/16] USB: ehci: add bus glue for the Atheros AR71XX/AR724X/AR913X SoCs
+Date:   Tue, 28 Dec 2010 19:20:33 +0100
+Message-Id: <1293560437-7967-13-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
 References: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A120AE77292 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A12096F3643 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28758
+X-archive-position: 28759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,206 +37,296 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Add common platform_device and helper code to make the registration
-of the built-in wireless MAC easier on the Atheros AR9130/AR9132
-based boards. Also register the WMAC device on the AR81 board.
+The Atheros AR71XX/AR724X/AR913X SoCs have a built-in EHCI controller.
+This patch adds the necessary glue code to make the generic EHCI driver
+usable for them.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: linux-usb@vger.kernel.org
 ---
 
-Changes since RFC: ---
+Changes since RFC:
+    - don't use 'default y if SOC_*', select USB_ARCH_HAS_EHCI option in the
+      platform specific Kconfig file instead
+    - add missing 'ath79_ehci_platform.h' file
 
 Changes since v1:
     - rebased against 2.6.37-rc7
 
-Changes since v2:
-    - don't use __init for function declarations
+Changes since v2: ---
 
- arch/mips/ath79/Kconfig                        |    5 ++
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/dev-ar913x-wmac.c              |   60 ++++++++++++++++++++++++
- arch/mips/ath79/dev-ar913x-wmac.h              |   17 +++++++
- arch/mips/ath79/mach-ap81.c                    |    6 ++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 +
- 6 files changed, 92 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.c
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.h
+ arch/mips/ath79/Kconfig                            |    3 +
+ .../include/asm/mach-ath79/ath79_ehci_platform.h   |   18 ++
+ drivers/usb/host/Kconfig                           |    8 +
+ drivers/usb/host/ehci-ath79.c                      |  176 ++++++++++++++++++++
+ drivers/usb/host/ehci-hcd.c                        |    5 +
+ 5 files changed, 210 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
+ create mode 100644 drivers/usb/host/ehci-ath79.c
 
 diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 1912d54..af01669 100644
+index cd6c738..647f535 100644
 --- a/arch/mips/ath79/Kconfig
 +++ b/arch/mips/ath79/Kconfig
-@@ -5,6 +5,7 @@ menu "Atheros AR71XX/AR724X/AR913X machine selection"
- config ATH79_MACH_AP81
- 	bool "Atheros AP81 reference board"
- 	select SOC_AR913X
-+	select ATH79_DEV_AR913X_WMAC
- 	select ATH79_DEV_GPIO_BUTTONS
- 	select ATH79_DEV_LEDS_GPIO
- 	select ATH79_DEV_SPI
-@@ -40,6 +41,10 @@ config SOC_AR913X
- 	select USB_ARCH_HAS_EHCI
+@@ -15,12 +15,15 @@ config ATH79_MACH_PB44
+ endmenu
+ 
+ config SOC_AR71XX
++	select USB_ARCH_HAS_EHCI
  	def_bool n
  
-+config ATH79_DEV_AR913X_WMAC
-+	depends on SOC_AR913X
-+	def_bool n
-+
+ config SOC_AR724X
++	select USB_ARCH_HAS_EHCI
+ 	def_bool n
+ 
+ config SOC_AR913X
++	select USB_ARCH_HAS_EHCI
+ 	def_bool n
+ 
  config ATH79_DEV_GPIO_BUTTONS
- 	def_bool n
- 
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 1b111d8..48398561 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- # Devices
- #
- obj-y					+= dev-common.o
-+obj-$(CONFIG_ATH79_DEV_AR913X_WMAC)	+= dev-ar913x-wmac.o
- obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
- obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.c b/arch/mips/ath79/dev-ar913x-wmac.c
+diff --git a/arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h b/arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
 new file mode 100644
-index 0000000..48f425a
+index 0000000..6ee075f
 --- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.c
-@@ -0,0 +1,60 @@
++++ b/arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
+@@ -0,0 +1,18 @@
 +/*
-+ *  Atheros AR913X SoC built-in WMAC device support
++ *  Platform data definition for Atheros AR71XX/AR913X EHCI controller
 + *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + */
 +
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/irq.h>
++#ifndef _ATH79_EHCI_PLATFORM_H
++#define _ATH79_EHCI_PLATFORM_H
++
++struct ath79_ehci_platform_data {
++	u8	is_ar913x;
++};
++
++#endif /* _ATH79_EHCI_PLATFORM_H */
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 6f4f8e6..3a2667a 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -147,6 +147,14 @@ config USB_W90X900_EHCI
+ 	---help---
+ 		Enables support for the W90X900 USB controller
+ 
++config USB_EHCI_ATH79
++	bool "EHCI support for AR71XX/AR724X/AR913X SoCs"
++	depends on USB_EHCI_HCD && ATH79
++	select USB_EHCI_ROOT_HUB_TT
++	---help---
++	  Enables support for the built-in EHCI controller present
++	  on the Atheros AR71XX/AR724X/AR913X SoCs.
++
+ config USB_OXU210HP_HCD
+ 	tristate "OXU210HP HCD support"
+ 	depends on USB
+diff --git a/drivers/usb/host/ehci-ath79.c b/drivers/usb/host/ehci-ath79.c
+new file mode 100644
+index 0000000..43a728f
+--- /dev/null
++++ b/drivers/usb/host/ehci-ath79.c
+@@ -0,0 +1,176 @@
++/*
++ *  Bus Glue for Atheros AR71XX/AR913X built-in EHCI controller.
++ *
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  Parts of this file are based on Atheros' 2.6.15 BSP
++ *	Copyright (C) 2007 Atheros Communications, Inc.
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
 +#include <linux/platform_device.h>
-+#include <linux/ath9k_platform.h>
++#include <asm/mach-ath79/ath79_ehci_platform.h>
 +
-+#include <asm/mach-ath79/ath79.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "dev-ar913x-wmac.h"
-+
-+static struct ath9k_platform_data ar913x_wmac_data;
-+
-+static struct resource ar913x_wmac_resources[] = {
-+	{
-+		.start	= AR913X_WMAC_BASE,
-+		.end	= AR913X_WMAC_BASE + AR913X_WMAC_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	}, {
-+		.start	= ATH79_CPU_IRQ_IP2,
-+		.end	= ATH79_CPU_IRQ_IP2,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct platform_device ar913x_wmac_device = {
-+	.name		= "ath9k",
-+	.id		= -1,
-+	.resource	= ar913x_wmac_resources,
-+	.num_resources	= ARRAY_SIZE(ar913x_wmac_resources),
-+	.dev = {
-+		.platform_data = &ar913x_wmac_data,
-+	},
-+};
-+
-+void __init ath79_register_ar913x_wmac(u8 *cal_data)
++static int ehci_ath79_init(struct usb_hcd *hcd)
 +{
-+	if (cal_data)
-+		memcpy(ar913x_wmac_data.eeprom_data, cal_data,
-+		       sizeof(ar913x_wmac_data.eeprom_data));
++	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
++	struct ath79_ehci_platform_data *pdata;
++	int ret;
 +
-+	/* reset the WMAC */
-+	ath79_device_reset_set(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
++	pdata = hcd->self.controller->platform_data;
 +
-+	ath79_device_reset_clear(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
++	if (pdata->is_ar913x) {
++		hcd->has_tt = 1;
 +
-+	platform_device_register(&ar913x_wmac_device);
++		ehci->caps = hcd->regs + 0x100;
++		ehci->regs = hcd->regs + 0x100 +
++			HC_LENGTH(ehci_readl(ehci, &ehci->caps->hc_capbase));
++	} else {
++		ehci->has_synopsys_hc_bug = 1;
++
++		ehci->caps = hcd->regs;
++		ehci->regs = hcd->regs +
++			HC_LENGTH(ehci_readl(ehci, &ehci->caps->hc_capbase));
++	}
++
++	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
++	ehci->sbrn = 0x20;
++
++	ehci_reset(ehci);
++
++	ret = ehci_init(hcd);
++	if (ret)
++		return ret;
++
++	ehci_port_power(ehci, 0);
++
++	return 0;
 +}
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.h b/arch/mips/ath79/dev-ar913x-wmac.h
-new file mode 100644
-index 0000000..5df653f
---- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.h
-@@ -0,0 +1,17 @@
-+/*
-+ *  Atheros AR913X SoC built-in WMAC device support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
 +
-+#ifndef _ATH79_DEV_AR913X_WMAC_H
-+#define _ATH79_DEV_AR913X_WMAC_H
++static const struct hc_driver ehci_ath79_hc_driver = {
++	.description		= hcd_name,
++	.product_desc		= "Atheros built-in EHCI controller",
++	.hcd_priv_size		= sizeof(struct ehci_hcd),
++	.irq			= ehci_irq,
++	.flags			= HCD_MEMORY | HCD_USB2,
 +
-+void ath79_register_ar913x_wmac(u8 *cal_data);
++	.reset			= ehci_ath79_init,
++	.start			= ehci_run,
++	.stop			= ehci_stop,
++	.shutdown		= ehci_shutdown,
 +
-+#endif /* _ATH79_DEV_AR913X_WMAC_H */
-diff --git a/arch/mips/ath79/mach-ap81.c b/arch/mips/ath79/mach-ap81.c
-index 909ca5d..03719b8 100644
---- a/arch/mips/ath79/mach-ap81.c
-+++ b/arch/mips/ath79/mach-ap81.c
-@@ -10,6 +10,7 @@
-  */
++	.urb_enqueue		= ehci_urb_enqueue,
++	.urb_dequeue		= ehci_urb_dequeue,
++	.endpoint_disable	= ehci_endpoint_disable,
++	.endpoint_reset		= ehci_endpoint_reset,
++
++	.get_frame_number	= ehci_get_frame,
++
++	.hub_status_data	= ehci_hub_status_data,
++	.hub_control		= ehci_hub_control,
++#ifdef CONFIG_PM
++	.hub_suspend		= ehci_hub_suspend,
++	.hub_resume		= ehci_hub_resume,
++#endif
++	.relinquish_port	= ehci_relinquish_port,
++	.port_handed_over	= ehci_port_handed_over,
++
++	.clear_tt_buffer_complete = ehci_clear_tt_buffer_complete,
++};
++
++static int ehci_ath79_probe(struct platform_device *pdev)
++{
++	struct ath79_ehci_platform_data *pdata;
++	struct usb_hcd *hcd;
++	struct resource *res;
++	int irq;
++	int ret;
++
++	if (usb_disabled())
++		return -ENODEV;
++
++	pdata = pdev->dev.platform_data;
++	if (!pdata) {
++		dev_dbg(&pdev->dev, "no platform data specified for %s\n",
++			dev_name(&pdev->dev));
++		return -EINVAL;
++	}
++
++	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!res) {
++		dev_dbg(&pdev->dev, "no IRQ specified for %s\n",
++			dev_name(&pdev->dev));
++		return -ENODEV;
++	}
++	irq = res->start;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res) {
++		dev_dbg(&pdev->dev, "no base address specified for %s\n",
++			dev_name(&pdev->dev));
++		return -ENODEV;
++	}
++
++	hcd = usb_create_hcd(&ehci_ath79_hc_driver, &pdev->dev,
++			     dev_name(&pdev->dev));
++	if (!hcd)
++		return -ENOMEM;
++
++	hcd->rsrc_start	= res->start;
++	hcd->rsrc_len	= res->end - res->start + 1;
++
++	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
++		dev_dbg(&pdev->dev, "controller already in use\n");
++		ret = -EBUSY;
++		goto err_put_hcd;
++	}
++
++	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
++	if (!hcd->regs) {
++		dev_dbg(&pdev->dev, "error mapping memory\n");
++		ret = -EFAULT;
++		goto err_release_region;
++	}
++
++	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED | IRQF_SHARED);
++	if (ret)
++		goto err_iounmap;
++
++	return 0;
++
++err_iounmap:
++	iounmap(hcd->regs);
++
++err_release_region:
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++err_put_hcd:
++	usb_put_hcd(hcd);
++	return ret;
++}
++
++static int ehci_ath79_remove(struct platform_device *pdev)
++{
++	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++
++	usb_remove_hcd(hcd);
++	iounmap(hcd->regs);
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++	usb_put_hcd(hcd);
++
++	return 0;
++}
++
++static struct platform_driver ehci_ath79_driver = {
++	.probe		= ehci_ath79_probe,
++	.remove		= ehci_ath79_remove,
++	.driver = {
++		.owner	= THIS_MODULE,
++		.name	= "ath79-ehci",
++	}
++};
++
++MODULE_ALIAS("platform:ath79-ehci");
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index e906280..b1313af 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1216,6 +1216,11 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		ehci_octeon_driver
+ #endif
  
- #include "machtypes.h"
-+#include "dev-ar913x-wmac.h"
- #include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
- #include "dev-spi.h"
-@@ -26,6 +27,8 @@
- #define AP81_KEYS_POLL_INTERVAL		20	/* msecs */
- #define AP81_KEYS_DEBOUNCE_INTERVAL	(3 * AP81_KEYS_POLL_INTERVAL)
- 
-+#define AP81_CAL_DATA_ADDR	0x1fff1000
++#ifdef CONFIG_USB_EHCI_ATH79
++#include "ehci-ath79.c"
++#define PLATFORM_DRIVER		ehci_ath79_driver
++#endif
 +
- static struct gpio_led ap81_leds_gpio[] __initdata = {
- 	{
- 		.name		= "ap81:green:status",
-@@ -80,6 +83,8 @@ static struct ath79_spi_platform_data ap81_spi_data = {
- 
- static void __init ap81_setup(void)
- {
-+	u8 *cal_data = (u8 *) KSEG1ADDR(AP81_CAL_DATA_ADDR);
-+
- 	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap81_leds_gpio),
- 				 ap81_leds_gpio);
- 	ath79_register_gpio_keys_polled(-1, AP81_KEYS_POLL_INTERVAL,
-@@ -88,6 +93,7 @@ static void __init ap81_setup(void)
- 	ath79_register_spi(&ap81_spi_data, ap81_spi_info,
- 			   ARRAY_SIZE(ap81_spi_info));
- 	ath79_register_usb();
-+	ath79_register_ar913x_wmac(cal_data);
- }
- 
- MIPS_MACHINE(ATH79_MACH_AP81, "AP81", "Atheros AP81 reference board",
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index f125f1e..9beb073 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -43,6 +43,9 @@
- #define AR7240_OHCI_BASE	0x1b000000
- #define AR7240_OHCI_SIZE	0x1000
- 
-+#define AR913X_WMAC_BASE	(AR71XX_APB_BASE + 0x000C0000)
-+#define AR913X_WMAC_SIZE	0x30000
-+
- /*
-  * DDR_CTRL block
-  */
+ #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
+     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER) && \
+     !defined(XILINX_OF_PLATFORM_DRIVER)
 -- 
 1.7.2.1

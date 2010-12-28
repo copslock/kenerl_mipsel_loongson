@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2010 19:22:10 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:41508 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2010 19:22:38 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:41523 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491024Ab0L1SUt (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491035Ab0L1SUt (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 28 Dec 2010 19:20:49 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 5E5E645C001;
-        Tue, 28 Dec 2010 19:20:41 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 89E734DC005;
+        Tue, 28 Dec 2010 19:20:44 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id BAFD01F0001;
-        Tue, 28 Dec 2010 19:20:40 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 1478D1F0001;
+        Tue, 28 Dec 2010 19:20:44 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
@@ -16,16 +16,18 @@ Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Kathy Giori <Kathy.Giori@Atheros.com>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH v3 00/16] MIPS: initial support for the Atheros AR71XX/AR724X/AR913X SoCs
-Date:   Tue, 28 Dec 2010 19:20:21 +0100
-Message-Id: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH v3 05/16] MIPS: ath79: add common GPIO LEDs device
+Date:   Tue, 28 Dec 2010 19:20:26 +0100
+Message-Id: <1293560437-7967-6-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
-X-VBMS: A1204C25F55 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+In-Reply-To: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
+References: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
+X-VBMS: A1206A5D288 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28747
+X-archive-position: 28748
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,127 +35,198 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch set contains initial support for the 
-Atheros AR71XX/AR724X/AR913X SoCs.
+Almost all boards have one or more LEDs connected to GPIO lines. This
+patch adds common code to register a platform_device for them.
 
-Generic changes since v1:
+The patch also adds support for the LEDs on the PB44 board.
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+---
+
+Changes since RFC: ---
+
+Changes since v1:
     - rebased against 2.6.37-rc7
-    - the 'MIPS: Add generic support for multiple machines within a single kernel' 
-      patch has been removed, because that is in the mips-queue tree already
-    - the 'input: add input driver for polled GPIO buttons' patch has been removed, 
-      because a slightly different version of that driver is present in 2.6.37-rc7 
-      already as 'gpio_keys_polled'
-
-Generic changes since v2:
+    
+Changes since v2:
     - don't use __init for function declarations
 
-Gabor Juhos (16):
-  MIPS: add initial support for the Atheros AR71XX/AR724X/AR931X SoCs
-  MIPS: ath79: add GPIOLIB support
-  MIPS: ath79: utilize the MIPS multi-machine support
-  MIPS: ath79: add initial support for the Atheros PB44 reference board
-  MIPS: ath79: add common GPIO LEDs device
-  watchdog: add driver for the Atheros AR71XX/AR724X/AR913X SoCs
-  MIPS: ath79: add common watchdog device
-  MIPS: ath79: add common GPIO buttons device
-  spi: add SPI controller driver for the Atheros AR71XX/AR724X/AR913X
-    SoCs
-  MIPS: ath79: add common SPI controller device
-  USB: ehci: add workaround for Synopsys HC bug
-  USB: ehci: add bus glue for the Atheros AR71XX/AR724X/AR913X SoCs
-  USB: ohci: add bus glue for the Atheros AR71XX/AR7240 SoCs
-  MIPS: ath79: add common USB Host Controller device
-  MIPS: ath79: add initial support for the Atheros AP81 reference board
-  MIPS: ath79: add common WMAC device for AR913X based boards
-
- arch/mips/Kbuild.platforms                         |    1 +
- arch/mips/Kconfig                                  |   17 ++
- arch/mips/ath79/Kconfig                            |   60 ++++
- arch/mips/ath79/Makefile                           |   29 ++
- arch/mips/ath79/Platform                           |    7 +
- arch/mips/ath79/common.c                           |   97 +++++++
- arch/mips/ath79/common.h                           |   30 ++
- arch/mips/ath79/dev-ar913x-wmac.c                  |   60 ++++
- arch/mips/ath79/dev-ar913x-wmac.h                  |   17 ++
- arch/mips/ath79/dev-common.c                       |   69 +++++
- arch/mips/ath79/dev-common.h                       |   18 ++
- arch/mips/ath79/dev-gpio-buttons.c                 |   58 ++++
- arch/mips/ath79/dev-gpio-buttons.h                 |   23 ++
- arch/mips/ath79/dev-leds-gpio.c                    |   56 ++++
- arch/mips/ath79/dev-leds-gpio.h                    |   21 ++
- arch/mips/ath79/dev-spi.c                          |   38 +++
- arch/mips/ath79/dev-spi.h                          |   22 ++
- arch/mips/ath79/dev-usb.c                          |  194 +++++++++++++
- arch/mips/ath79/dev-usb.h                          |   17 ++
- arch/mips/ath79/early_printk.c                     |   36 +++
- arch/mips/ath79/gpio.c                             |  197 +++++++++++++
- arch/mips/ath79/irq.c                              |  187 +++++++++++++
- arch/mips/ath79/mach-ap81.c                        |  100 +++++++
- arch/mips/ath79/mach-pb44.c                        |  120 ++++++++
- arch/mips/ath79/machtypes.h                        |   23 ++
- arch/mips/ath79/prom.c                             |   57 ++++
- arch/mips/ath79/setup.c                            |  279 +++++++++++++++++++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h     |  253 +++++++++++++++++
- arch/mips/include/asm/mach-ath79/ath79.h           |  100 +++++++
- .../include/asm/mach-ath79/ath79_ehci_platform.h   |   18 ++
- .../include/asm/mach-ath79/ath79_spi_platform.h    |   19 ++
- .../include/asm/mach-ath79/cpu-feature-overrides.h |   56 ++++
- arch/mips/include/asm/mach-ath79/gpio.h            |   26 ++
- arch/mips/include/asm/mach-ath79/irq.h             |   36 +++
- .../include/asm/mach-ath79/kernel-entry-init.h     |   32 +++
- arch/mips/include/asm/mach-ath79/war.h             |   25 ++
- drivers/spi/Kconfig                                |    8 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/ath79_spi.c                            |  290 +++++++++++++++++++
- drivers/usb/host/Kconfig                           |   16 +
- drivers/usb/host/ehci-ath79.c                      |  176 ++++++++++++
- drivers/usb/host/ehci-hcd.c                        |    5 +
- drivers/usb/host/ehci-q.c                          |    3 +
- drivers/usb/host/ehci.h                            |    1 +
- drivers/usb/host/ohci-ath79.c                      |  162 +++++++++++
- drivers/usb/host/ohci-hcd.c                        |    5 +
- drivers/watchdog/Kconfig                           |    8 +
- drivers/watchdog/Makefile                          |    1 +
- drivers/watchdog/ath79_wdt.c                       |  293 ++++++++++++++++++++
- 49 files changed, 3367 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/Kconfig
- create mode 100644 arch/mips/ath79/Makefile
- create mode 100644 arch/mips/ath79/Platform
- create mode 100644 arch/mips/ath79/common.c
- create mode 100644 arch/mips/ath79/common.h
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.c
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.h
- create mode 100644 arch/mips/ath79/dev-common.c
- create mode 100644 arch/mips/ath79/dev-common.h
- create mode 100644 arch/mips/ath79/dev-gpio-buttons.c
- create mode 100644 arch/mips/ath79/dev-gpio-buttons.h
+ arch/mips/ath79/Kconfig         |    4 +++
+ arch/mips/ath79/Makefile        |    1 +
+ arch/mips/ath79/dev-leds-gpio.c |   56 +++++++++++++++++++++++++++++++++++++++
+ arch/mips/ath79/dev-leds-gpio.h |   21 ++++++++++++++
+ arch/mips/ath79/mach-pb44.c     |   18 ++++++++++++
+ 5 files changed, 100 insertions(+), 0 deletions(-)
  create mode 100644 arch/mips/ath79/dev-leds-gpio.c
  create mode 100644 arch/mips/ath79/dev-leds-gpio.h
- create mode 100644 arch/mips/ath79/dev-spi.c
- create mode 100644 arch/mips/ath79/dev-spi.h
- create mode 100644 arch/mips/ath79/dev-usb.c
- create mode 100644 arch/mips/ath79/dev-usb.h
- create mode 100644 arch/mips/ath79/early_printk.c
- create mode 100644 arch/mips/ath79/gpio.c
- create mode 100644 arch/mips/ath79/irq.c
- create mode 100644 arch/mips/ath79/mach-ap81.c
- create mode 100644 arch/mips/ath79/mach-pb44.c
- create mode 100644 arch/mips/ath79/machtypes.h
- create mode 100644 arch/mips/ath79/prom.c
- create mode 100644 arch/mips/ath79/setup.c
- create mode 100644 arch/mips/include/asm/mach-ath79/ar71xx_regs.h
- create mode 100644 arch/mips/include/asm/mach-ath79/ath79.h
- create mode 100644 arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
- create mode 100644 arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
- create mode 100644 arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
- create mode 100644 arch/mips/include/asm/mach-ath79/gpio.h
- create mode 100644 arch/mips/include/asm/mach-ath79/irq.h
- create mode 100644 arch/mips/include/asm/mach-ath79/kernel-entry-init.h
- create mode 100644 arch/mips/include/asm/mach-ath79/war.h
- create mode 100644 drivers/spi/ath79_spi.c
- create mode 100644 drivers/usb/host/ehci-ath79.c
- create mode 100644 drivers/usb/host/ohci-ath79.c
- create mode 100644 drivers/watchdog/ath79_wdt.c
 
+diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
+index fabb2b0..5bc480e 100644
+--- a/arch/mips/ath79/Kconfig
++++ b/arch/mips/ath79/Kconfig
+@@ -5,6 +5,7 @@ menu "Atheros AR71XX/AR724X/AR913X machine selection"
+ config ATH79_MACH_PB44
+ 	bool "Atheros PB44 reference board"
+ 	select SOC_AR71XX
++	select ATH79_DEV_LEDS_GPIO
+ 	help
+ 	  Say 'Y' here if you want your kernel to support the
+ 	  Atheros PB44 reference board.
+@@ -20,4 +21,7 @@ config SOC_AR724X
+ config SOC_AR913X
+ 	def_bool n
+ 
++config ATH79_DEV_LEDS_GPIO
++	def_bool n
++
+ endif
+diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
+index a9ba120..d14b597 100644
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
+ # Devices
+ #
+ obj-y					+= dev-common.o
++obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
+ 
+ #
+ # Machines
+diff --git a/arch/mips/ath79/dev-leds-gpio.c b/arch/mips/ath79/dev-leds-gpio.c
+new file mode 100644
+index 0000000..cdade68
+--- /dev/null
++++ b/arch/mips/ath79/dev-leds-gpio.c
+@@ -0,0 +1,56 @@
++/*
++ *  Atheros AR71XX/AR724X/AR913X common GPIO LEDs support
++ *
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#include <linux/init.h>
++#include <linux/slab.h>
++#include <linux/platform_device.h>
++
++#include "dev-leds-gpio.h"
++
++void __init ath79_register_leds_gpio(int id,
++				     unsigned num_leds,
++				     struct gpio_led *leds)
++{
++	struct platform_device *pdev;
++	struct gpio_led_platform_data pdata;
++	struct gpio_led *p;
++	int err;
++
++	p = kmalloc(num_leds * sizeof(*p), GFP_KERNEL);
++	if (!p)
++		return;
++
++	memcpy(p, leds, num_leds * sizeof(*p));
++
++	pdev = platform_device_alloc("leds-gpio", id);
++	if (!pdev)
++		goto err_free_leds;
++
++	memset(&pdata, 0, sizeof(pdata));
++	pdata.num_leds = num_leds;
++	pdata.leds = p;
++
++	err = platform_device_add_data(pdev, &pdata, sizeof(pdata));
++	if (err)
++		goto err_put_pdev;
++
++	err = platform_device_add(pdev);
++	if (err)
++		goto err_put_pdev;
++
++	return;
++
++err_put_pdev:
++	platform_device_put(pdev);
++
++err_free_leds:
++	kfree(p);
++}
+diff --git a/arch/mips/ath79/dev-leds-gpio.h b/arch/mips/ath79/dev-leds-gpio.h
+new file mode 100644
+index 0000000..0fb0ed1
+--- /dev/null
++++ b/arch/mips/ath79/dev-leds-gpio.h
+@@ -0,0 +1,21 @@
++/*
++ *  Atheros AR71XX/AR724X/AR913X common GPIO LEDs support
++ *
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#ifndef _ATH79_DEV_LEDS_GPIO_H
++#define _ATH79_DEV_LEDS_GPIO_H
++
++#include <linux/leds.h>
++
++void ath79_register_leds_gpio(int id,
++			      unsigned num_leds,
++			      struct gpio_led *leds);
++
++#endif /* _ATH79_DEV_LEDS_GPIO_H */
+diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
+index ffc24d7..e176779 100644
+--- a/arch/mips/ath79/mach-pb44.c
++++ b/arch/mips/ath79/mach-pb44.c
+@@ -15,11 +15,14 @@
+ #include <linux/i2c/pcf857x.h>
+ 
+ #include "machtypes.h"
++#include "dev-leds-gpio.h"
+ 
+ #define PB44_GPIO_I2C_SCL	0
+ #define PB44_GPIO_I2C_SDA	1
+ 
+ #define PB44_GPIO_EXP_BASE	16
++#define PB44_GPIO_LED_JUMP1	(PB44_GPIO_EXP_BASE + 9)
++#define PB44_GPIO_LED_JUMP2	(PB44_GPIO_EXP_BASE + 10)
+ 
+ static struct i2c_gpio_platform_data pb44_i2c_gpio_data = {
+ 	.sda_pin        = PB44_GPIO_I2C_SDA,
+@@ -45,11 +48,26 @@ static struct i2c_board_info pb44_i2c_board_info[] __initdata = {
+ 	},
+ };
+ 
++static struct gpio_led pb44_leds_gpio[] __initdata = {
++	{
++		.name		= "pb44:amber:jump1",
++		.gpio		= PB44_GPIO_LED_JUMP1,
++		.active_low	= 1,
++	}, {
++		.name		= "pb44:green:jump2",
++		.gpio		= PB44_GPIO_LED_JUMP2,
++		.active_low	= 1,
++	},
++};
++
+ static void __init pb44_init(void)
+ {
+ 	i2c_register_board_info(0, pb44_i2c_board_info,
+ 				ARRAY_SIZE(pb44_i2c_board_info));
+ 	platform_device_register(&pb44_i2c_gpio_device);
++
++	ath79_register_leds_gpio(-1, ARRAY_SIZE(pb44_leds_gpio),
++				 pb44_leds_gpio);
+ }
+ 
+ MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
 -- 
 1.7.2.1

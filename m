@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2010 19:23:25 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:41594 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Dec 2010 19:23:49 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:41593 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491043Ab0L1SUy (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491037Ab0L1SUy (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 28 Dec 2010 19:20:54 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 58DD88073;
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id C6D748076;
         Tue, 28 Dec 2010 19:20:46 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id DABF01F0001;
-        Tue, 28 Dec 2010 19:20:45 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 332F61F0001;
+        Tue, 28 Dec 2010 19:20:46 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
         "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Kathy Giori <Kathy.Giori@Atheros.com>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH v3 10/16] MIPS: ath79: add common SPI controller device
-Date:   Tue, 28 Dec 2010 19:20:31 +0100
-Message-Id: <1293560437-7967-11-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org
+Subject: [PATCH v3 11/16] USB: ehci: add workaround for Synopsys HC bug
+Date:   Tue, 28 Dec 2010 19:20:32 +0100
+Message-Id: <1293560437-7967-12-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
 References: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A120852AF5D | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A120898A0C3 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28750
+X-archive-position: 28751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,12 +37,49 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Several boards are using the built-in SPI controller of the
-AR71XX/AR724X/AR913X SoCs. This patch adds common platform_device
-and helper code to register it. Additionally, the patch registers
-the SPI bus on the PB44 board.
+A Synopsys USB core used in various SoCs has a bug which might cause
+that the host controller not issuing ping.
+
+When software uses the Doorbell mechanism to remove queue heads, the
+host controller still has references to the removed queue head even
+after indicating an Interrupt on Async Advance. This happens if the last
+executed queue head's Next Link queue head is removed.
+
+Consequences of the defect:
+The Host controller fetches the removed queue head, using memory that
+would otherwise be deallocated.This results in incorrect transactions on
+both the USB and system memory. This may result in undefined behavior.
+
+Workarounds:
+
+1) If no queue head is active (no Status field's Active bit is set)
+after removing the queue heads, the software can write one of the valid
+queue head addresses to the ASYNCLISTADDR register and deallocate the
+removed queue head's memory after 2 microframes.
+
+If one or more of the queue heads is active (the Active bit is set in
+the Status field) after removing the queue heads, the software can delay
+memory deallocation after time X, where X is the time required for the
+Host Controller to go through all the queue heads once. X varies with
+the number of queue heads and the time required to process periodic
+transactions: if more periodic transactions must be performed, the Host
+Controller has less time to process asynchronous transaction processing.
+
+2) Do not use the Doorbell mechanism to remove the queue heads. Disable
+the Asynchronous Schedule Enable bit instead.
+
+The bug has been discussed on the linux-usb-devel mailing-list
+four years ago, the original thread can be found here:
+http://www.mail-archive.com/linux-usb-devel@lists.sourceforge.net/msg45345.html
+
+This patch implements the first workaround as suggested by David Brownell.
+The built-in USB host controller of the Atheros AR7130/AR7141/AR7161 SoCs
+requires this to work properly.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: linux-usb@vger.kernel.org
 ---
 
 Changes since RFC: ---
@@ -48,177 +87,37 @@ Changes since RFC: ---
 Changes since v1:
     - rebased against 2.6.37-rc7
 
-Changes since v2:
-    - don't use __init for function declarations
+Changes since v2: ---
 
- arch/mips/ath79/Kconfig                        |    4 ++
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/dev-spi.c                      |   38 ++++++++++++++++++++++++
- arch/mips/ath79/dev-spi.h                      |   22 ++++++++++++++
- arch/mips/ath79/mach-pb44.c                    |   17 ++++++++++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    2 +
- 6 files changed, 84 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-spi.c
- create mode 100644 arch/mips/ath79/dev-spi.h
+ drivers/usb/host/ehci-q.c |    3 +++
+ drivers/usb/host/ehci.h   |    1 +
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 185a8d6..cd6c738 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -7,6 +7,7 @@ config ATH79_MACH_PB44
- 	select SOC_AR71XX
- 	select ATH79_DEV_GPIO_BUTTONS
- 	select ATH79_DEV_LEDS_GPIO
-+	select ATH79_DEV_SPI
- 	help
- 	  Say 'Y' here if you want your kernel to support the
- 	  Atheros PB44 reference board.
-@@ -28,4 +29,7 @@ config ATH79_DEV_GPIO_BUTTONS
- config ATH79_DEV_LEDS_GPIO
- 	def_bool n
- 
-+config ATH79_DEV_SPI
-+	def_bool n
-+
- endif
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 0ceb45e..a8de078 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -18,6 +18,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- obj-y					+= dev-common.o
- obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
-+obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
- 
- #
- # Machines
-diff --git a/arch/mips/ath79/dev-spi.c b/arch/mips/ath79/dev-spi.c
-new file mode 100644
-index 0000000..aa30163
---- /dev/null
-+++ b/arch/mips/ath79/dev-spi.c
-@@ -0,0 +1,38 @@
-+/*
-+ *  Atheros AR71XX/AR724X/AR913X SPI controller device
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include <linux/platform_device.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "dev-spi.h"
-+
-+static struct resource ath79_spi_resources[] = {
-+	{
-+		.start	= AR71XX_SPI_BASE,
-+		.end	= AR71XX_SPI_BASE + AR71XX_SPI_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct platform_device ath79_spi_device = {
-+	.name		= "ath79-spi",
-+	.id		= -1,
-+	.resource	= ath79_spi_resources,
-+	.num_resources	= ARRAY_SIZE(ath79_spi_resources),
-+};
-+
-+void __init ath79_register_spi(struct ath79_spi_platform_data *pdata,
-+			       struct spi_board_info const *info,
-+			       unsigned n)
-+{
-+	spi_register_board_info(info, n);
-+	ath79_spi_device.dev.platform_data = pdata;
-+	platform_device_register(&ath79_spi_device);
-+}
-diff --git a/arch/mips/ath79/dev-spi.h b/arch/mips/ath79/dev-spi.h
-new file mode 100644
-index 0000000..9a98333
---- /dev/null
-+++ b/arch/mips/ath79/dev-spi.h
-@@ -0,0 +1,22 @@
-+/*
-+ *  Atheros AR71XX/AR724X/AR913X SPI controller device
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#ifndef _ATH79_DEV_SPI_H
-+#define _ATH79_DEV_SPI_H
-+
-+#include <linux/spi/spi.h>
-+#include <asm/mach-ath79/ath79_spi_platform.h>
-+
-+void ath79_register_spi(struct ath79_spi_platform_data *pdata,
-+			 struct spi_board_info const *info,
-+			 unsigned n);
-+
-+#endif /* _ATH79_DEV_SPI_H */
-diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
-index 3dc5080..ec7b7a1 100644
---- a/arch/mips/ath79/mach-pb44.c
-+++ b/arch/mips/ath79/mach-pb44.c
-@@ -17,6 +17,7 @@
- #include "machtypes.h"
- #include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
-+#include "dev-spi.h"
- 
- #define PB44_GPIO_I2C_SCL	0
- #define PB44_GPIO_I2C_SDA	1
-@@ -84,6 +85,20 @@ static struct gpio_keys_button pb44_gpio_keys[] __initdata = {
+diff --git a/drivers/usb/host/ehci-q.c b/drivers/usb/host/ehci-q.c
+index 233c288..343b8de 100644
+--- a/drivers/usb/host/ehci-q.c
++++ b/drivers/usb/host/ehci-q.c
+@@ -1193,6 +1193,9 @@ static void end_unlink_async (struct ehci_hcd *ehci)
+ 		ehci->reclaim = NULL;
+ 		start_unlink_async (ehci, next);
  	}
- };
- 
-+static struct spi_board_info pb44_spi_info[] = {
-+	{
-+		.bus_num	= 0,
-+		.chip_select	= 0,
-+		.max_speed_hz	= 25000000,
-+		.modalias	= "m25p64",
-+	},
-+};
 +
-+static struct ath79_spi_platform_data pb44_spi_data = {
-+	.bus_num		= 0,
-+	.num_chipselect		= 1,
-+};
-+
- static void __init pb44_init(void)
- {
- 	i2c_register_board_info(0, pb44_i2c_board_info,
-@@ -95,6 +110,8 @@ static void __init pb44_init(void)
- 	ath79_register_gpio_keys_polled(-1, PB44_KEYS_POLL_INTERVAL,
- 					ARRAY_SIZE(pb44_gpio_keys),
- 					pb44_gpio_keys);
-+	ath79_register_spi(&pb44_spi_data, pb44_spi_info,
-+			   ARRAY_SIZE(pb44_spi_info));
++	if (ehci->has_synopsys_hc_bug)
++		writel((u32)ehci->async->qh_dma, &ehci->regs->async_next);
  }
  
- MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 7f2933d..4f2b621 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -20,6 +20,8 @@
- #include <linux/bitops.h>
+ /* makes sure the async qh will become idle */
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index ba8eab3..6da85b2 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -133,6 +133,7 @@ struct ehci_hcd {			/* one per controller */
+ 	unsigned		broken_periodic:1;
+ 	unsigned		fs_i_thresh:1;	/* Intel iso scheduling */
+ 	unsigned		use_dummy_qh:1;	/* AMD Frame List table quirk*/
++	unsigned		has_synopsys_hc_bug:1; /* Synopsys HC */
  
- #define AR71XX_APB_BASE		0x18000000
-+#define AR71XX_SPI_BASE		0x1f000000
-+#define AR71XX_SPI_SIZE		0x01000000
- 
- #define AR71XX_DDR_CTRL_BASE	(AR71XX_APB_BASE + 0x00000000)
- #define AR71XX_DDR_CTRL_SIZE	0x100
+ 	/* required for usb32 quirk */
+ 	#define OHCI_CTRL_HCFS          (3 << 6)
 -- 
 1.7.2.1

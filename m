@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jan 2011 20:02:29 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43432 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Jan 2011 20:02:54 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:43433 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491955Ab1ABS4z (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491956Ab1ABS4z (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 2 Jan 2011 19:56:55 +0100
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 459E63FC04A;
-        Sun,  2 Jan 2011 19:56:49 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 05E913FC03B;
+        Sun,  2 Jan 2011 19:56:50 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 8B3BD1F0001;
-        Sun,  2 Jan 2011 19:56:48 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 1AC191F0001;
+        Sun,  2 Jan 2011 19:56:49 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
         "Luis R. Rodriguez" <lrodriguez@atheros.com>,
         Cliff Holden <Cliff.Holden@Atheros.com>,
         Kathy Giori <Kathy.Giori@Atheros.com>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        David Brownell <dbrownell@users.sourceforge.net>,
-        Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org
-Subject: [PATCH v4 13/16] USB: ohci: add bus glue for the Atheros AR71XX/AR7240 SoCs
-Date:   Sun,  2 Jan 2011 19:56:26 +0100
-Message-Id: <1293994589-6794-14-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH v4 14/16] MIPS: ath79: add common USB Host Controller device
+Date:   Sun,  2 Jan 2011 19:56:27 +0100
+Message-Id: <1293994589-6794-15-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
 In-Reply-To: <1293994589-6794-1-git-send-email-juhosg@openwrt.org>
 References: <1293994589-6794-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A17F0C0ED59 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-VBMS: A17F12C11C8 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
 Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28801
+X-archive-position: 28802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,255 +35,374 @@ X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-The Atheros AR71XX/AR7240 SoCs have a built-in OHCI controller.
-This patch adds the necessary glue code to make the generic OHCI
-driver usable for them.
+Add common platform_device and helper code to make the registration of
+the built-in USB controllers easier on the board which are using them.
+Also register the USB controller on the PB44 board.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Cc: David Brownell <dbrownell@users.sourceforge.net>
-Cc: Greg Kroah-Hartman <gregkh@suse.de>
-Cc: linux-usb@vger.kernel.org
 ---
-Changes since RFC:
-    - don't use 'defauly y if SOC_*', select the USB_ARCH_HAS_OHCI option
-      in the platform specific Kconfig file instead
-    - remove ath79_ehci_platform.h, it belongs to the EHCI patch
+Changes since RFC: ---
 
 Changes since v1:
     - rebased against 2.6.37-rc7
 
-Changes since v2: ---
+Changes since v2:
+    - don't use __init for function declarations
 
 Changes since v3:
     - rebased against 2.6.37-rc8
 
- arch/mips/ath79/Kconfig       |    2 +
- drivers/usb/host/Kconfig      |    8 ++
- drivers/usb/host/ohci-ath79.c |  162 +++++++++++++++++++++++++++++++++++++++++
- drivers/usb/host/ohci-hcd.c   |    5 +
- 4 files changed, 177 insertions(+), 0 deletions(-)
- create mode 100644 drivers/usb/host/ohci-ath79.c
+ arch/mips/ath79/Kconfig                        |    4 +
+ arch/mips/ath79/Makefile                       |    1 +
+ arch/mips/ath79/dev-usb.c                      |  194 ++++++++++++++++++++++++
+ arch/mips/ath79/dev-usb.h                      |   17 ++
+ arch/mips/ath79/mach-pb44.c                    |    2 +
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   22 +++-
+ 6 files changed, 239 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/ath79/dev-usb.c
+ create mode 100644 arch/mips/ath79/dev-usb.h
 
 diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 647f535..d4456ce 100644
+index d4456ce..5d67942 100644
 --- a/arch/mips/ath79/Kconfig
 +++ b/arch/mips/ath79/Kconfig
-@@ -16,10 +16,12 @@ endmenu
- 
- config SOC_AR71XX
- 	select USB_ARCH_HAS_EHCI
-+	select USB_ARCH_HAS_OHCI
+@@ -8,6 +8,7 @@ config ATH79_MACH_PB44
+ 	select ATH79_DEV_GPIO_BUTTONS
+ 	select ATH79_DEV_LEDS_GPIO
+ 	select ATH79_DEV_SPI
++	select ATH79_DEV_USB
+ 	help
+ 	  Say 'Y' here if you want your kernel to support the
+ 	  Atheros PB44 reference board.
+@@ -37,4 +38,7 @@ config ATH79_DEV_LEDS_GPIO
+ config ATH79_DEV_SPI
  	def_bool n
  
- config SOC_AR724X
- 	select USB_ARCH_HAS_EHCI
-+	select USB_ARCH_HAS_OHCI
- 	def_bool n
- 
- config SOC_AR913X
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 3a2667a..39ed353 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -240,6 +240,14 @@ config USB_OHCI_HCD_OMAP3
- 	  Enables support for the on-chip OHCI controller on
- 	  OMAP3 and later chips.
- 
-+config USB_OHCI_ATH79
-+	bool "USB OHCI support for the Atheros AR71XX/AR724X SoCs"
-+	depends on USB_OHCI_HCD && (SOC_AR71XX || SOC_AR724X)
-+	default y
-+	help
-+	  Enables support for the uilt-in OHCI controller present on the
-+	  Atheros AR71XX/AR724X SoCs.
++config ATH79_DEV_USB
++	def_bool n
 +
- config USB_OHCI_HCD_PPC_SOC
- 	bool "OHCI support for on-chip PPC USB controller"
- 	depends on USB_OHCI_HCD && (STB03xxx || PPC_MPC52xx)
-diff --git a/drivers/usb/host/ohci-ath79.c b/drivers/usb/host/ohci-ath79.c
+ endif
+diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
+index a8de078..494d106 100644
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -19,6 +19,7 @@ obj-y					+= dev-common.o
+ obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
+ obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
+ obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
++obj-$(CONFIG_ATH79_DEV_USB)		+= dev-usb.o
+ 
+ #
+ # Machines
+diff --git a/arch/mips/ath79/dev-usb.c b/arch/mips/ath79/dev-usb.c
 new file mode 100644
-index 0000000..6e864bf
+index 0000000..fb7033f
 --- /dev/null
-+++ b/drivers/usb/host/ohci-ath79.c
-@@ -0,0 +1,162 @@
++++ b/arch/mips/ath79/dev-usb.c
+@@ -0,0 +1,194 @@
 +/*
-+ *  OHCI HCD (Host Controller Driver) for USB.
-+ *
-+ *  Bus Glue for Atheros AR71XX/AR724X built-in OHCI controller.
++ *  Atheros AR71XX/AR724X/AR913X USB Host Controller support
 + *
 + *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
 + *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 + *
 + *  Parts of this file are based on Atheros' 2.6.15 BSP
-+ *	Copyright (C) 2007 Atheros Communications, Inc.
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + */
 +
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/irq.h>
++#include <linux/dma-mapping.h>
 +#include <linux/platform_device.h>
 +
-+static int usb_hcd_ath79_probe(const struct hc_driver *driver,
-+			       struct platform_device *pdev)
-+{
-+	struct usb_hcd *hcd;
-+	struct resource *res;
-+	int irq;
-+	int ret;
++#include <asm/mach-ath79/ath79.h>
++#include <asm/mach-ath79/ar71xx_regs.h>
++#include <asm/mach-ath79/ath79_ehci_platform.h>
++#include "common.h"
++#include "dev-usb.h"
 +
-+	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!res) {
-+		dev_dbg(&pdev->dev, "no IRQ specified for %s\n",
-+			dev_name(&pdev->dev));
-+		return -ENODEV;
-+	}
-+	irq = res->start;
++static void __iomem *ath79_usb_ctrl_base;
 +
-+	hcd = usb_create_hcd(driver, &pdev->dev, dev_name(&pdev->dev));
-+	if (!hcd)
-+		return -ENOMEM;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_dbg(&pdev->dev, "no base address specified for %s\n",
-+			dev_name(&pdev->dev));
-+		ret = -ENODEV;
-+		goto err_put_hcd;
-+	}
-+	hcd->rsrc_start	= res->start;
-+	hcd->rsrc_len	= res->end - res->start + 1;
-+
-+	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-+		dev_dbg(&pdev->dev, "controller already in use\n");
-+		ret = -EBUSY;
-+		goto err_put_hcd;
-+	}
-+
-+	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-+	if (!hcd->regs) {
-+		dev_dbg(&pdev->dev, "error mapping memory\n");
-+		ret = -EFAULT;
-+		goto err_release_region;
-+	}
-+
-+	ohci_hcd_init(hcd_to_ohci(hcd));
-+
-+	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED);
-+	if (ret)
-+		goto err_stop_hcd;
-+
-+	return 0;
-+
-+err_stop_hcd:
-+	iounmap(hcd->regs);
-+err_release_region:
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+err_put_hcd:
-+	usb_put_hcd(hcd);
-+	return ret;
-+}
-+
-+void usb_hcd_ath79_remove(struct usb_hcd *hcd, struct platform_device *pdev)
-+{
-+	usb_remove_hcd(hcd);
-+	iounmap(hcd->regs);
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	usb_put_hcd(hcd);
-+}
-+
-+static int __devinit ohci_ath79_start(struct usb_hcd *hcd)
-+{
-+	struct ohci_hcd	*ohci = hcd_to_ohci(hcd);
-+	int ret;
-+
-+	ret = ohci_init(ohci);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ohci_run(ohci);
-+	if (ret < 0)
-+		goto err;
-+
-+	return 0;
-+
-+err:
-+	ohci_stop(hcd);
-+	return ret;
-+}
-+
-+static const struct hc_driver ohci_ath79_hc_driver = {
-+	.description		= hcd_name,
-+	.product_desc		= "Atheros built-in OHCI controller",
-+	.hcd_priv_size		= sizeof(struct ohci_hcd),
-+
-+	.irq			= ohci_irq,
-+	.flags			= HCD_USB11 | HCD_MEMORY,
-+
-+	.start			= ohci_ath79_start,
-+	.stop			= ohci_stop,
-+	.shutdown		= ohci_shutdown,
-+
-+	.urb_enqueue		= ohci_urb_enqueue,
-+	.urb_dequeue		= ohci_urb_dequeue,
-+	.endpoint_disable	= ohci_endpoint_disable,
-+
-+	/*
-+	 * scheduling support
-+	 */
-+	.get_frame_number	= ohci_get_frame,
-+
-+	/*
-+	 * root hub support
-+	 */
-+	.hub_status_data	= ohci_hub_status_data,
-+	.hub_control		= ohci_hub_control,
-+	.start_port_reset	= ohci_start_port_reset,
-+};
-+
-+static int ohci_hcd_ath79_drv_probe(struct platform_device *pdev)
-+{
-+	if (usb_disabled())
-+		return -ENODEV;
-+
-+	return usb_hcd_ath79_probe(&ohci_ath79_hc_driver, pdev);
-+}
-+
-+static int ohci_hcd_ath79_drv_remove(struct platform_device *pdev)
-+{
-+	struct usb_hcd *hcd = platform_get_drvdata(pdev);
-+
-+	usb_hcd_ath79_remove(hcd, pdev);
-+	return 0;
-+}
-+
-+static struct platform_driver ohci_hcd_ath79_driver = {
-+	.probe		= ohci_hcd_ath79_drv_probe,
-+	.remove		= ohci_hcd_ath79_drv_remove,
-+	.shutdown	= usb_hcd_platform_shutdown,
-+	.driver		= {
-+		.name	= "ath79-ohci",
-+		.owner	= THIS_MODULE,
++static struct resource ar71xx_ohci_resources[] = {
++	[0] = {
++		.start	= AR71XX_OHCI_BASE,
++		.end	= AR71XX_OHCI_BASE + AR71XX_OHCI_SIZE - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= ATH79_MISC_IRQ_OHCI,
++		.end	= ATH79_MISC_IRQ_OHCI,
++		.flags	= IORESOURCE_IRQ,
 +	},
 +};
 +
-+MODULE_ALIAS("platform:ath79-ohci");
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 5179acb..6daeb68 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -1111,6 +1111,11 @@ MODULE_LICENSE ("GPL");
- #define PLATFORM_DRIVER		ohci_octeon_driver
- #endif
- 
-+#ifdef CONFIG_USB_OHCI_ATH79
-+#include "ohci-ath79.c"
-+#define PLATFORM_DRIVER		ohci_hcd_ath79_driver
-+#endif
++static struct resource ar724x_usb_resources[] = {
++	[0] = {
++		.start	= AR7240_OHCI_BASE,
++		.end	= AR7240_OHCI_BASE + AR7240_OHCI_SIZE - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= ATH79_CPU_IRQ_USB,
++		.end	= ATH79_CPU_IRQ_USB,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
 +
- #if	!defined(PCI_DRIVER) &&		\
- 	!defined(PLATFORM_DRIVER) &&	\
- 	!defined(OMAP1_PLATFORM_DRIVER) &&	\
++static u64 ath79_ohci_dmamask = DMA_BIT_MASK(32);
++static struct platform_device ath79_ohci_device = {
++	.name		= "ath79-ohci",
++	.id		= -1,
++	.resource	= ar71xx_ohci_resources,
++	.num_resources	= ARRAY_SIZE(ar71xx_ohci_resources),
++	.dev = {
++		.dma_mask		= &ath79_ohci_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++	},
++};
++
++static struct resource ar71xx_ehci_resources[] = {
++	[0] = {
++		.start	= AR71XX_EHCI_BASE,
++		.end	= AR71XX_EHCI_BASE + AR71XX_EHCI_SIZE - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= ATH79_CPU_IRQ_USB,
++		.end	= ATH79_CPU_IRQ_USB,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++static u64 ath79_ehci_dmamask = DMA_BIT_MASK(32);
++static struct ath79_ehci_platform_data ath79_ehci_data;
++
++static struct platform_device ath79_ehci_device = {
++	.name		= "ath79-ehci",
++	.id		= -1,
++	.resource	= ar71xx_ehci_resources,
++	.num_resources	= ARRAY_SIZE(ar71xx_ehci_resources),
++	.dev = {
++		.dma_mask		= &ath79_ehci_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &ath79_ehci_data,
++	},
++};
++
++#define AR71XX_USB_RESET_MASK	(AR71XX_RESET_USB_HOST | \
++				 AR71XX_RESET_USB_PHY | \
++				 AR71XX_RESET_USB_OHCI_DLL)
++
++static void __init ar71xx_usb_setup(void)
++{
++	ath79_device_reset_set(AR71XX_USB_RESET_MASK);
++	mdelay(1000);
++	ath79_device_reset_clear(AR71XX_USB_RESET_MASK);
++
++	/* Turning on the Buff and Desc swap bits */
++	__raw_writel(0xf0000, ath79_usb_ctrl_base + AR71XX_USB_CTRL_REG_CONFIG);
++
++	/* WAR for HW bug. Here it adjusts the duration between two SOFS */
++	__raw_writel(0x20c00, ath79_usb_ctrl_base + AR71XX_USB_CTRL_REG_FLADJ);
++
++	mdelay(900);
++
++	platform_device_register(&ath79_ohci_device);
++	platform_device_register(&ath79_ehci_device);
++}
++
++static void __init ar7240_usb_setup(void)
++{
++	ath79_device_reset_clear(AR7240_RESET_OHCI_DLL);
++	ath79_device_reset_set(AR7240_RESET_USB_HOST);
++	mdelay(1000);
++	ath79_device_reset_set(AR7240_RESET_OHCI_DLL);
++	ath79_device_reset_clear(AR7240_RESET_USB_HOST);
++
++	/* WAR for HW bug. Here it adjusts the duration between two SOFS */
++	__raw_writel(0x3, ath79_usb_ctrl_base + AR71XX_USB_CTRL_REG_FLADJ);
++
++	ath79_ohci_device.resource = ar724x_usb_resources;
++	ath79_ohci_device.num_resources = ARRAY_SIZE(ar724x_usb_resources);
++	platform_device_register(&ath79_ohci_device);
++}
++
++static void __init ar724x_usb_setup(void)
++{
++	ath79_device_reset_set(AR724X_RESET_USBSUS_OVERRIDE);
++	mdelay(10);
++
++	ath79_device_reset_clear(AR724X_RESET_USB_HOST);
++	mdelay(10);
++
++	ath79_device_reset_clear(AR724X_RESET_USB_PHY);
++	mdelay(10);
++
++	ath79_ehci_data.is_ar913x = 1;
++	ath79_ehci_device.resource = ar724x_usb_resources;
++	ath79_ehci_device.num_resources = ARRAY_SIZE(ar724x_usb_resources);
++	platform_device_register(&ath79_ehci_device);
++}
++
++static void __init ar913x_usb_setup(void)
++{
++	ath79_device_reset_set(AR71XX_RESET_USBSUS_OVERRIDE);
++	mdelay(10);
++
++	ath79_device_reset_clear(AR71XX_RESET_USB_HOST);
++	mdelay(10);
++
++	ath79_device_reset_clear(AR71XX_RESET_USB_PHY);
++	mdelay(10);
++
++	ath79_ehci_data.is_ar913x = 1;
++	platform_device_register(&ath79_ehci_device);
++}
++
++void __init ath79_register_usb(void)
++{
++	ath79_usb_ctrl_base = ioremap(AR71XX_USB_CTRL_BASE,
++				      AR71XX_USB_CTRL_SIZE);
++
++	switch (ath79_soc) {
++	case ATH79_SOC_AR7130:
++	case ATH79_SOC_AR7141:
++	case ATH79_SOC_AR7161:
++		ar71xx_usb_setup();
++		break;
++
++	case ATH79_SOC_AR7240:
++		ar7240_usb_setup();
++		break;
++
++	case ATH79_SOC_AR7241:
++	case ATH79_SOC_AR7242:
++		ar724x_usb_setup();
++		break;
++
++	case ATH79_SOC_AR9130:
++	case ATH79_SOC_AR9132:
++		ar913x_usb_setup();
++		break;
++
++	default:
++		BUG();
++	}
++}
+diff --git a/arch/mips/ath79/dev-usb.h b/arch/mips/ath79/dev-usb.h
+new file mode 100644
+index 0000000..4b86a69
+--- /dev/null
++++ b/arch/mips/ath79/dev-usb.h
+@@ -0,0 +1,17 @@
++/*
++ *  Atheros AR71XX/AR724X/AR913X USB Host Controller support
++ *
++ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#ifndef _ATH79_DEV_USB_H
++#define _ATH79_DEV_USB_H
++
++void ath79_register_usb(void);
++
++#endif /* _ATH79_DEV_USB_H */
+diff --git a/arch/mips/ath79/mach-pb44.c b/arch/mips/ath79/mach-pb44.c
+index ec7b7a1..fe9701a 100644
+--- a/arch/mips/ath79/mach-pb44.c
++++ b/arch/mips/ath79/mach-pb44.c
+@@ -18,6 +18,7 @@
+ #include "dev-gpio-buttons.h"
+ #include "dev-leds-gpio.h"
+ #include "dev-spi.h"
++#include "dev-usb.h"
+ 
+ #define PB44_GPIO_I2C_SCL	0
+ #define PB44_GPIO_I2C_SDA	1
+@@ -112,6 +113,7 @@ static void __init pb44_init(void)
+ 					pb44_gpio_keys);
+ 	ath79_register_spi(&pb44_spi_data, pb44_spi_info,
+ 			   ARRAY_SIZE(pb44_spi_info));
++	ath79_register_usb();
+ }
+ 
+ MIPS_MACHINE(ATH79_MACH_PB44, "PB44", "Atheros PB44 reference board",
+diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+index 4f2b621..f125f1e 100644
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -20,6 +20,10 @@
+ #include <linux/bitops.h>
+ 
+ #define AR71XX_APB_BASE		0x18000000
++#define AR71XX_EHCI_BASE	0x1b000000
++#define AR71XX_EHCI_SIZE	0x1000
++#define AR71XX_OHCI_BASE	0x1c000000
++#define AR71XX_OHCI_SIZE	0x1000
+ #define AR71XX_SPI_BASE		0x1f000000
+ #define AR71XX_SPI_SIZE		0x01000000
+ 
+@@ -27,6 +31,8 @@
+ #define AR71XX_DDR_CTRL_SIZE	0x100
+ #define AR71XX_UART_BASE	(AR71XX_APB_BASE + 0x00020000)
+ #define AR71XX_UART_SIZE	0x100
++#define AR71XX_USB_CTRL_BASE	(AR71XX_APB_BASE + 0x00030000)
++#define AR71XX_USB_CTRL_SIZE	0x100
+ #define AR71XX_GPIO_BASE        (AR71XX_APB_BASE + 0x00040000)
+ #define AR71XX_GPIO_SIZE        0x100
+ #define AR71XX_PLL_BASE		(AR71XX_APB_BASE + 0x00050000)
+@@ -34,6 +40,9 @@
+ #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
+ #define AR71XX_RESET_SIZE	0x100
+ 
++#define AR7240_OHCI_BASE	0x1b000000
++#define AR7240_OHCI_SIZE	0x1000
++
+ /*
+  * DDR_CTRL block
+  */
+@@ -102,6 +111,12 @@
+ #define AR913X_AHB_DIV_MASK		0x1
+ 
+ /*
++ * USB_CONFIG block
++ */
++#define AR71XX_USB_CTRL_REG_FLADJ	0x00
++#define AR71XX_USB_CTRL_REG_CONFIG	0x04
++
++/*
+  * RESET block
+  */
+ #define AR71XX_RESET_REG_TIMER			0x00
+@@ -155,12 +170,17 @@
+ #define AR71XX_RESET_PCI_BUS		BIT(1)
+ #define AR71XX_RESET_PCI_CORE		BIT(0)
+ 
++#define AR7240_RESET_USB_HOST		BIT(5)
++#define AR7240_RESET_OHCI_DLL		BIT(3)
++
+ #define AR724X_RESET_GE1_MDIO		BIT(23)
+ #define AR724X_RESET_GE0_MDIO		BIT(22)
+ #define AR724X_RESET_PCIE_PHY_SERIAL	BIT(10)
+ #define AR724X_RESET_PCIE_PHY		BIT(7)
+ #define AR724X_RESET_PCIE		BIT(6)
+-#define AR724X_RESET_OHCI_DLL		BIT(3)
++#define AR724X_RESET_USB_HOST		BIT(5)
++#define AR724X_RESET_USB_PHY		BIT(4)
++#define AR724X_RESET_USBSUS_OVERRIDE	BIT(3)
+ 
+ #define AR913X_RESET_AMBA2WMAC		BIT(22)
+ 
 -- 
 1.7.2.1

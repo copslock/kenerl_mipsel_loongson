@@ -1,83 +1,167 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jan 2011 19:33:26 +0100 (CET)
-Received: from gateway08.websitewelcome.com ([69.56.170.25]:49822 "HELO
-        gateway08.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1490957Ab1ADSdX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jan 2011 19:33:23 +0100
-Received: (qmail 28074 invoked from network); 4 Jan 2011 18:32:51 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway08.websitewelcome.com with SMTP; 4 Jan 2011 18:32:51 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Source:X-Source-Args:X-Source-Dir;
-        b=MBSdT+E6CMUU0qZxxCeafgqxIJQUfrgZ4ZHJ+sI1pA1OE4voVmBQl3NpIWlHGPnsYG0DD11Luv+uMcqn8TNqCSULIc7m/WZrIEshnFA4uXBd0xUWJEbh1CW7ovIAKLKU;
-Received: from [216.239.45.4] (port=41407 helo=kkissell.mtv.corp.google.com)
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1PaBh6-00051n-86; Tue, 04 Jan 2011 12:33:16 -0600
-Message-ID: <4D2367EE.7000702@paralogos.com>
-Date:   Tue, 04 Jan 2011 10:33:18 -0800
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101208 Thunderbird/3.1.7
-MIME-Version: 1.0
-To:     Anoop P A <anoop.pa@gmail.com>
-CC:     STUART VENTERS <stuart.venters@adtran.com>,
-        "Anoop P.A." <Anoop_P.A@pmc-sierra.com>, linux-mips@linux-mips.org
-Subject: Re: SMTC support status in latest git head.
-References: <8F242B230AD6474C8E7815DE0B4982D7179FB88F@EXV1.corp.adtran.com>      <1293470392.27661.202.camel@paanoop1-desktop>   <1293524389.27661.210.camel@paanoop1-desktop>   <4D19A31E.1090905@paralogos.com>        <1293798476.27661.279.camel@paanoop1-desktop>   <4D1EE913.1070203@paralogos.com>        <1294067561.27661.293.camel@paanoop1-desktop>   <4D21F5D3.50604@paralogos.com>  <1294082426.27661.330.camel@paanoop1-desktop>   <4D22D7B3.2050609@paralogos.com>        <1294146165.27661.361.camel@paanoop1-desktop>   <1294151822.27661.375.camel@paanoop1-desktop>   <4D235717.1000603@paralogos.com> <1294163657.27661.386.camel@paanoop1-desktop>
-In-Reply-To: <1294163657.27661.386.camel@paanoop1-desktop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <kevink@paralogos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jan 2011 21:29:10 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:48500 "EHLO
+        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490978Ab1ADU3H (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jan 2011 21:29:07 +0100
+Received: from mail.szarvas.hu (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id BD38345C016;
+        Tue,  4 Jan 2011 21:29:01 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 369A21F0001;
+        Tue,  4 Jan 2011 21:29:01 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
+        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
+        Cliff Holden <Cliff.Holden@Atheros.com>,
+        Kathy Giori <Kathy.Giori@Atheros.com>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH v5 00/16] MIPS: initial support for the Atheros AR71XX/AR724X/AR913X SoCs
+Date:   Tue,  4 Jan 2011 21:28:13 +0100
+Message-Id: <1294172909-1309-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.2.1
+X-VBMS: A1089B7A9F5 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+Return-Path: <juhosg@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28823
+X-archive-position: 28824
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On 01/04/11 09:54, Anoop P A wrote:
-> On Tue, 2011-01-04 at 09:21 -0800, Kevin D. Kissell wrote:
->> I'm trying to figure out a reason why your change below should help, and
->> offhand, modulo tool bugs, I don't see it.  I'm assuming that your diff
->> below is a diff relative to the pre-patch stackframe.h.   I wouldn't
-> Yes patch created against stock code .
->
->> bless it as an alternative because it moves code and comments
->> unnecessarily - all you should really have to do is to move the
->>
->>
->>    190                 mfc0    v1, CP0_STATUS
->>    191                 LONG_S  $2, PT_R2(sp)
->>
->> to be just after the #endif /* CONFIG_MIPS_MT_SMTC */ at around line 201.
-> Actually I just moved code under CONFIG_MIPS_MT_SMTC to previous block
-> of code ( which store $0 ) . git diff did the rest on behalf of me :)
->
->> If moving the save of zero to PT_R0(sp) actually makes a difference,
->> it's evidence that you've got problems in your toolchain (or, heaven
->> forbid, your pipeline)!
-> In previous version of patch usage of V0 was creating issue. I have
-> verified this with previous version of code ( working code before
-> David's instruction rearrangement patch.) .
+This patch set contains initial support for the 
+Atheros AR71XX/AR724X/AR913X SoCs.
 
-Argh.  It's not very clearly commented, but it looks as if the system 
-call trap handler has an implicit assumption that v0 has never been 
-changed by SAVE_SOME, TRACE_IRQS_ON_RELOAD, or STI.  So yeah, moving the 
-code around to fix the v1 conflict ends up being better than using v0 - 
-otherwise, we'd need to add a LONG_L v0, PT_R2(sp) somewhere after the 
-LONG_S v0, PT_TCSTATUS(sp) of the original patch.
+Generic changes since v1:
+    - rebased against 2.6.37-rc7
+    - the 'MIPS: Add generic support for multiple machines within a single kernel' 
+      patch has been removed, because that is in the mips-queue tree already
+    - the 'input: add input driver for polled GPIO buttons' patch has been removed, 
+      because a slightly different version of that driver is present in 2.6.37-rc7 
+      already as 'gpio_keys_polled'
 
-             Regards,
+Generic changes since v2:
+    - don't use __init for function declarations
 
-             Kevin K.
+Generic changes since v3:
+    - rebased against 2.6.37-rc8
+    
+Generic changes since v4:
+    - implement clock API
+
+Gabor Juhos (16):
+  MIPS: add initial support for the Atheros AR71XX/AR724X/AR931X SoCs
+  MIPS: ath79: add GPIOLIB support
+  MIPS: ath79: utilize the MIPS multi-machine support
+  MIPS: ath79: add initial support for the Atheros PB44 reference board
+  MIPS: ath79: add common GPIO LEDs device
+  watchdog: add driver for the Atheros AR71XX/AR724X/AR913X SoCs
+  MIPS: ath79: add common watchdog device
+  MIPS: ath79: add common GPIO buttons device
+  spi: add SPI controller driver for the Atheros AR71XX/AR724X/AR913X
+    SoCs
+  MIPS: ath79: add common SPI controller device
+  USB: ehci: add workaround for Synopsys HC bug
+  USB: ehci: add bus glue for the Atheros AR71XX/AR724X/AR913X SoCs
+  USB: ohci: add bus glue for the Atheros AR71XX/AR7240 SoCs
+  MIPS: ath79: add common USB Host Controller device
+  MIPS: ath79: add initial support for the Atheros AP81 reference board
+  MIPS: ath79: add common WMAC device for AR913X based boards
+
+ arch/mips/Kbuild.platforms                         |    1 +
+ arch/mips/Kconfig                                  |   17 ++
+ arch/mips/ath79/Kconfig                            |   60 ++++
+ arch/mips/ath79/Makefile                           |   29 ++
+ arch/mips/ath79/Platform                           |    7 +
+ arch/mips/ath79/clock.c                            |  183 ++++++++++++
+ arch/mips/ath79/common.c                           |   97 +++++++
+ arch/mips/ath79/common.h                           |   31 ++
+ arch/mips/ath79/dev-ar913x-wmac.c                  |   60 ++++
+ arch/mips/ath79/dev-ar913x-wmac.h                  |   17 ++
+ arch/mips/ath79/dev-common.c                       |   77 +++++
+ arch/mips/ath79/dev-common.h                       |   18 ++
+ arch/mips/ath79/dev-gpio-buttons.c                 |   58 ++++
+ arch/mips/ath79/dev-gpio-buttons.h                 |   23 ++
+ arch/mips/ath79/dev-leds-gpio.c                    |   56 ++++
+ arch/mips/ath79/dev-leds-gpio.h                    |   21 ++
+ arch/mips/ath79/dev-spi.c                          |   38 +++
+ arch/mips/ath79/dev-spi.h                          |   22 ++
+ arch/mips/ath79/dev-usb.c                          |  194 +++++++++++++
+ arch/mips/ath79/dev-usb.h                          |   17 ++
+ arch/mips/ath79/early_printk.c                     |   36 +++
+ arch/mips/ath79/gpio.c                             |  197 +++++++++++++
+ arch/mips/ath79/irq.c                              |  187 ++++++++++++
+ arch/mips/ath79/mach-ap81.c                        |  100 +++++++
+ arch/mips/ath79/mach-pb44.c                        |  120 ++++++++
+ arch/mips/ath79/machtypes.h                        |   23 ++
+ arch/mips/ath79/prom.c                             |   57 ++++
+ arch/mips/ath79/setup.c                            |  206 +++++++++++++
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h     |  253 ++++++++++++++++
+ arch/mips/include/asm/mach-ath79/ath79.h           |   96 ++++++
+ .../include/asm/mach-ath79/ath79_ehci_platform.h   |   18 ++
+ .../include/asm/mach-ath79/ath79_spi_platform.h    |   23 ++
+ .../include/asm/mach-ath79/cpu-feature-overrides.h |   56 ++++
+ arch/mips/include/asm/mach-ath79/gpio.h            |   26 ++
+ arch/mips/include/asm/mach-ath79/irq.h             |   36 +++
+ .../include/asm/mach-ath79/kernel-entry-init.h     |   32 ++
+ arch/mips/include/asm/mach-ath79/war.h             |   25 ++
+ drivers/spi/Kconfig                                |    8 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/ath79_spi.c                            |  292 +++++++++++++++++++
+ drivers/usb/host/Kconfig                           |   16 +
+ drivers/usb/host/ehci-ath79.c                      |  176 +++++++++++
+ drivers/usb/host/ehci-hcd.c                        |    5 +
+ drivers/usb/host/ehci-q.c                          |    3 +
+ drivers/usb/host/ehci.h                            |    1 +
+ drivers/usb/host/ohci-ath79.c                      |  162 +++++++++++
+ drivers/usb/host/ohci-hcd.c                        |    5 +
+ drivers/watchdog/Kconfig                           |    7 +
+ drivers/watchdog/Makefile                          |    1 +
+ drivers/watchdog/ath79_wdt.c                       |  305 ++++++++++++++++++++
+ 50 files changed, 3499 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/ath79/Kconfig
+ create mode 100644 arch/mips/ath79/Makefile
+ create mode 100644 arch/mips/ath79/Platform
+ create mode 100644 arch/mips/ath79/clock.c
+ create mode 100644 arch/mips/ath79/common.c
+ create mode 100644 arch/mips/ath79/common.h
+ create mode 100644 arch/mips/ath79/dev-ar913x-wmac.c
+ create mode 100644 arch/mips/ath79/dev-ar913x-wmac.h
+ create mode 100644 arch/mips/ath79/dev-common.c
+ create mode 100644 arch/mips/ath79/dev-common.h
+ create mode 100644 arch/mips/ath79/dev-gpio-buttons.c
+ create mode 100644 arch/mips/ath79/dev-gpio-buttons.h
+ create mode 100644 arch/mips/ath79/dev-leds-gpio.c
+ create mode 100644 arch/mips/ath79/dev-leds-gpio.h
+ create mode 100644 arch/mips/ath79/dev-spi.c
+ create mode 100644 arch/mips/ath79/dev-spi.h
+ create mode 100644 arch/mips/ath79/dev-usb.c
+ create mode 100644 arch/mips/ath79/dev-usb.h
+ create mode 100644 arch/mips/ath79/early_printk.c
+ create mode 100644 arch/mips/ath79/gpio.c
+ create mode 100644 arch/mips/ath79/irq.c
+ create mode 100644 arch/mips/ath79/mach-ap81.c
+ create mode 100644 arch/mips/ath79/mach-pb44.c
+ create mode 100644 arch/mips/ath79/machtypes.h
+ create mode 100644 arch/mips/ath79/prom.c
+ create mode 100644 arch/mips/ath79/setup.c
+ create mode 100644 arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79_ehci_platform.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/gpio.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/irq.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/kernel-entry-init.h
+ create mode 100644 arch/mips/include/asm/mach-ath79/war.h
+ create mode 100644 drivers/spi/ath79_spi.c
+ create mode 100644 drivers/usb/host/ehci-ath79.c
+ create mode 100644 drivers/usb/host/ohci-ath79.c
+ create mode 100644 drivers/watchdog/ath79_wdt.c
+
+-- 
+1.7.2.1

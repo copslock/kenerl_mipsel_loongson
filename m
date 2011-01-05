@@ -1,17 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2011 20:58:08 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:35686 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2011 20:58:32 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:35692 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490989Ab1AETzi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Jan 2011 20:55:38 +0100
+        id S1490990Ab1AETzj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 Jan 2011 20:55:39 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
-Subject: [PATCH 06/10] MIPS: lantiq: add NOR flash support
-Date:   Wed,  5 Jan 2011 20:56:15 +0100
-Message-Id: <1294257379-417-7-git-send-email-blogic@openwrt.org>
+        linux-mips@linux-mips.org
+Subject: [PATCH 08/10] MIPS: lantiq: add platform device support
+Date:   Wed,  5 Jan 2011 20:56:17 +0100
+Message-Id: <1294257379-417-9-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1294257379-417-1-git-send-email-blogic@openwrt.org>
 References: <1294257379-417-1-git-send-email-blogic@openwrt.org>
@@ -19,7 +18,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28850
+X-archive-position: 28851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,236 +26,288 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-NOR flash is attached to the same EBU (External Bus Unit) as PCI. As described
-in the PCI patch, the EBU is a little obscure, resulting in the upper and lower
-16 bit of the data on a 32 bit read are swapped. (essentially we have a addr^=2)
-This only happens on the read of data. In order to not have to high an impact
-on the read performance from the EBU we store all data on the flash with
-addr^=2. This allows us to do generic reads without having to do any swapping.
-For the write to now work we need to swizzle the the 0x2 bit of the addr.
-However this write swizzle needs to only happen when doing a CMD and not a DATA
-write.
-
-As the MTD layer currently makes no difference between a CMD and DATA read when
-using complex maps, the map driver does not know when the swizzle and when not
-to swizzle. The next patch in the series adds a hack to the MTD to workaround
-this problem. I am sending these 2 patches to the mtd list aswell. There are
-several ways to solve this generically in the mtd layer in a much better way.
-This will have minor impact on the actual map code provided in this patch.
+This patch adds the wrappers for registering our platform devices.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-mtd@lists.infradead.org
 ---
- drivers/mtd/maps/Kconfig  |    7 ++
- drivers/mtd/maps/Makefile |    1 +
- drivers/mtd/maps/lantiq.c |  169 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 177 insertions(+), 0 deletions(-)
- create mode 100644 drivers/mtd/maps/lantiq.c
+ arch/mips/lantiq/Makefile       |    2 +-
+ arch/mips/lantiq/devices.c      |  127 +++++++++++++++++++++++++++++++++++++++
+ arch/mips/lantiq/devices.h      |   20 ++++++
+ arch/mips/lantiq/xway/Makefile  |    2 +-
+ arch/mips/lantiq/xway/devices.c |   55 +++++++++++++++++
+ arch/mips/lantiq/xway/devices.h |   16 +++++
+ 6 files changed, 220 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/lantiq/devices.c
+ create mode 100644 arch/mips/lantiq/devices.h
+ create mode 100644 arch/mips/lantiq/xway/devices.c
+ create mode 100644 arch/mips/lantiq/xway/devices.h
 
-diff --git a/drivers/mtd/maps/Kconfig b/drivers/mtd/maps/Kconfig
-index a0dd7bb..ca69a7f 100644
---- a/drivers/mtd/maps/Kconfig
-+++ b/drivers/mtd/maps/Kconfig
-@@ -260,6 +260,13 @@ config MTD_BCM963XX
- 	  Support for parsing CFE image tag and creating MTD partitions on
- 	  Broadcom BCM63xx boards.
+diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
+index a268391..e5dae0e 100644
+--- a/arch/mips/lantiq/Makefile
++++ b/arch/mips/lantiq/Makefile
+@@ -4,7 +4,7 @@
+ # under the terms of the GNU General Public License version 2 as published
+ # by the Free Software Foundation.
  
-+config MTD_LANTIQ
-+	bool "Lantiq SoC NOR support"
-+	depends on LANTIQ && MTD_PARTITIONS
-+	help
-+	  Support for NOR flash chips on Lantiq SoC. The Chips are connected
-+	  to the SoCs EBU (External Bus Unit)
-+
- config MTD_DILNETPC
- 	tristate "CFI Flash device mapped on DIL/Net PC"
- 	depends on X86 && MTD_CONCAT && MTD_PARTITIONS && MTD_CFI_INTELEXT && BROKEN
-diff --git a/drivers/mtd/maps/Makefile b/drivers/mtd/maps/Makefile
-index c7869c7..bb2ce2f 100644
---- a/drivers/mtd/maps/Makefile
-+++ b/drivers/mtd/maps/Makefile
-@@ -59,3 +59,4 @@ obj-$(CONFIG_MTD_RBTX4939)	+= rbtx4939-flash.o
- obj-$(CONFIG_MTD_VMU)		+= vmu-flash.o
- obj-$(CONFIG_MTD_GPIO_ADDR)	+= gpio-addr-flash.o
- obj-$(CONFIG_MTD_BCM963XX)	+= bcm963xx-flash.o
-+obj-$(CONFIG_MTD_LANTIQ)	+= lantiq.o
-diff --git a/drivers/mtd/maps/lantiq.c b/drivers/mtd/maps/lantiq.c
+-obj-y := irq.o setup.o clk.o prom.o
++obj-y := irq.o setup.o clk.o prom.o devices.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ 
+diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
 new file mode 100644
-index 0000000..e5a361e
+index 0000000..2c68d8e
 --- /dev/null
-+++ b/drivers/mtd/maps/lantiq.c
-@@ -0,0 +1,169 @@
++++ b/arch/mips/lantiq/devices.c
+@@ -0,0 +1,127 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + *
-+ *  Copyright (C) 2004 Liu Peng Infineon IFAP DC COM CPE
 + *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
 + */
 +
++#include <linux/init.h>
 +#include <linux/module.h>
 +#include <linux/types.h>
++#include <linux/string.h>
 +#include <linux/kernel.h>
-+#include <linux/io.h>
-+#include <linux/init.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/map.h>
-+#include <linux/mtd/partitions.h>
-+#include <linux/mtd/cfi.h>
-+#include <linux/magic.h>
++#include <linux/reboot.h>
 +#include <linux/platform_device.h>
-+#include <linux/mtd/physmap.h>
++#include <linux/leds.h>
++#include <linux/etherdevice.h>
++#include <linux/reboot.h>
++#include <linux/time.h>
++#include <linux/io.h>
++#include <linux/gpio.h>
++#include <linux/leds.h>
++
++#include <asm/bootinfo.h>
++#include <asm/irq.h>
 +
 +#include <lantiq_soc.h>
++
++#include "devices.h"
++
++#define IRQ_RES(resname, irq) \
++	{.name = #resname, .start = (irq), .flags = IORESOURCE_IRQ}
++
++/* nor flash */
++static struct resource ltq_nor_resource = {
++	.name	= "nor",
++	.start	= LTQ_FLASH_START,
++	.end	= LTQ_FLASH_START + LTQ_FLASH_MAX - 1,
++	.flags  = IORESOURCE_MEM,
++};
++
++static struct platform_device ltq_nor = {
++	.name			= "ltq_nor",
++	.resource		= &ltq_nor_resource,
++	.num_resources	= 1,
++};
++
++void __init
++ltq_register_nor(struct physmap_flash_data *data)
++{
++	ltq_nor.dev.platform_data = data;
++	platform_device_register(&ltq_nor);
++}
++
++/* watchdog */
++static struct resource ltq_wdt_resource = {
++	.name	= "watchdog",
++	.start  = LTQ_WDT_BASE,
++	.end    = LTQ_WDT_BASE + LTQ_WDT_SIZE - 1,
++	.flags  = IORESOURCE_MEM,
++};
++
++void __init
++ltq_register_wdt(void)
++{
++	platform_device_register_simple("ltq_wdt", 0, &ltq_wdt_resource, 1);
++}
++
++/* asc ports */
++static struct resource ltq_asc0_resources[] = {
++	{
++		.start  = LTQ_ASC0_BASE,
++		.end    = LTQ_ASC0_BASE + LTQ_ASC_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	},
++	IRQ_RES(tx, LTQ_ASC_TIR(0)),
++	IRQ_RES(rx, LTQ_ASC_RIR(0)),
++	IRQ_RES(err, LTQ_ASC_EIR(0)),
++};
++
++static struct resource ltq_asc1_resources[] = {
++	{
++		.start  = LTQ_ASC1_BASE,
++		.end    = LTQ_ASC1_BASE + LTQ_ASC_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	},
++	IRQ_RES(tx, LTQ_ASC_TIR(1)),
++	IRQ_RES(rx, LTQ_ASC_RIR(1)),
++	IRQ_RES(err, LTQ_ASC_EIR(1)),
++};
++
++void __init
++ltq_register_asc(int port)
++{
++	switch (port) {
++	case 0:
++		platform_device_register_simple("ltq_asc", 0,
++			ltq_asc0_resources, ARRAY_SIZE(ltq_asc0_resources));
++		break;
++	case 1:
++		platform_device_register_simple("ltq_asc", 1,
++			ltq_asc1_resources, ARRAY_SIZE(ltq_asc1_resources));
++		break;
++	default:
++		break;
++	}
++}
++
++#ifdef CONFIG_PCI
++/* pci */
++static struct platform_device ltq_pci = {
++	.name			= "ltq_pci",
++	.num_resources	= 0,
++};
++
++void __init
++ltq_register_pci(struct ltq_pci_data *data)
++{
++	ltq_pci.dev.platform_data = data;
++	platform_device_register(&ltq_pci);
++}
++#else
++void __init
++ltq_register_pci(struct ltq_pci_data *data)
++{
++}
++#endif
+diff --git a/arch/mips/lantiq/devices.h b/arch/mips/lantiq/devices.h
+new file mode 100644
+index 0000000..069006c
+--- /dev/null
++++ b/arch/mips/lantiq/devices.h
+@@ -0,0 +1,20 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LTQ_DEVICES_H__
++#define _LTQ_DEVICES_H__
++
++#include <lantiq_platform.h>
++#include <linux/mtd/physmap.h>
++
++extern void ltq_register_nor(struct physmap_flash_data *data);
++extern void ltq_register_wdt(void);
++extern void ltq_register_asc(int port);
++extern void ltq_register_pci(struct ltq_pci_data *data);
++
++#endif
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 64730d5..7b36708 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,4 +1,4 @@
+-obj-y := pmu.o reset.o gpio.o
++obj-y := pmu.o reset.o gpio.o devices.o
+ 
+ obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
+ obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
+diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
+new file mode 100644
+index 0000000..c2be742
+--- /dev/null
++++ b/arch/mips/lantiq/xway/devices.c
+@@ -0,0 +1,55 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/string.h>
++#include <linux/mtd/physmap.h>
++#include <linux/kernel.h>
++#include <linux/reboot.h>
++#include <linux/platform_device.h>
++#include <linux/leds.h>
++#include <linux/etherdevice.h>
++#include <linux/reboot.h>
++#include <linux/time.h>
++#include <linux/io.h>
++#include <linux/gpio.h>
++#include <linux/leds.h>
++
++#include <asm/bootinfo.h>
++#include <asm/irq.h>
++
++#include <lantiq_soc.h>
++#include <lantiq_irq.h>
 +#include <lantiq_platform.h>
 +
-+static map_word
-+ltq_read16(struct map_info *map, unsigned long adr)
-+{
-+	unsigned long flags;
-+	map_word temp;
-+	spin_lock_irqsave(&ebu_lock, flags);
-+	adr ^= 2;
-+	temp.x[0] = *((__u16 *)(map->virt + adr));
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+	return temp;
-+}
 +
-+static void
-+ltq_write16(struct map_info *map, map_word d, unsigned long adr)
-+{
-+	unsigned long flags;
-+	spin_lock_irqsave(&ebu_lock, flags);
-+	adr ^= 2;
-+	*((__u16 *)(map->virt + adr)) = d.x[0];
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+}
-+
-+void
-+ltq_copy_from(struct map_info *map, void *to,
-+	unsigned long from, ssize_t len)
-+{
-+	unsigned char *p;
-+	unsigned char *to_8;
-+	unsigned long flags;
-+	spin_lock_irqsave(&ebu_lock, flags);
-+	from = (unsigned long)(from + map->virt);
-+	p = (unsigned char *) from;
-+	to_8 = (unsigned char *) to;
-+	while (len--)
-+		*to_8++ = *p++;
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+}
-+
-+void
-+ltq_copy_to(struct map_info *map, unsigned long to,
-+	const void *from, ssize_t len)
-+{
-+	unsigned char *p =  (unsigned char *)from;
-+	unsigned char *to_8;
-+	unsigned long flags;
-+	spin_lock_irqsave(&ebu_lock, flags);
-+	to += (unsigned long) map->virt;
-+	to_8 = (unsigned char *)to;
-+	while (len--)
-+		*p++ = *to_8++;
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+}
-+
-+static const char * const part_probe_types[] = {
-+	"cmdlinepart", NULL };
-+
-+static struct map_info ltq_map = {
-+	.name = "ltq_nor",
-+	.bankwidth = 2,
-+	.read = ltq_read16,
-+	.write = ltq_write16,
-+	.copy_from = ltq_copy_from,
-+	.copy_to = ltq_copy_to,
++/* gpio */
++static struct resource ltq_gpio_resource[] = {
++	{
++		.name	= "gpio0",
++		.start  = LTQ_GPIO0_BASE_ADDR,
++		.end    = LTQ_GPIO0_BASE_ADDR + LTQ_GPIO_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	}, {
++		.name	= "gpio1",
++		.start  = LTQ_GPIO1_BASE_ADDR,
++		.end    = LTQ_GPIO1_BASE_ADDR + LTQ_GPIO_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	}
 +};
 +
-+static int
-+ltq_mtd_probe(struct platform_device *pdev)
++void __init
++ltq_register_gpio(void)
 +{
-+	struct physmap_flash_data *ltq_mtd_data =
-+		(struct physmap_flash_data *) dev_get_platdata(&pdev->dev);
-+	struct mtd_info *ltq_mtd = NULL;
-+	struct mtd_partition *parts = NULL;
-+	struct resource *res = 0;
-+	int nr_parts = 0;
++	platform_device_register_simple("ltq_gpio", 0,
++		&ltq_gpio_resource[0], 1);
++	platform_device_register_simple("ltq_gpio", 1,
++		&ltq_gpio_resource[1], 1);
++}
+diff --git a/arch/mips/lantiq/xway/devices.h b/arch/mips/lantiq/xway/devices.h
+new file mode 100644
+index 0000000..d248bf3
+--- /dev/null
++++ b/arch/mips/lantiq/xway/devices.h
+@@ -0,0 +1,16 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
 +
-+#ifdef CONFIG_SOC_TYPE_XWAY
-+	ltq_w32(ltq_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
++#ifndef _LTQ_DEVICES_XWAY_H__
++#define _LTQ_DEVICES_XWAY_H__
++
++#include "../devices.h"
++
++extern void ltq_register_gpio(void);
++
 +#endif
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev, "failed to get memory resource");
-+		return -ENOENT;
-+	}
-+	res = request_mem_region(res->start, resource_size(res),
-+		dev_name(&pdev->dev));
-+	if (!res) {
-+		dev_err(&pdev->dev, "failed to request mem resource");
-+		return -EBUSY;
-+	}
-+
-+	ltq_map.phys = res->start;
-+	ltq_map.size = resource_size(res);
-+	ltq_map.virt = ioremap_nocache(ltq_map.phys, ltq_map.size);
-+
-+	if (!ltq_map.virt) {
-+		dev_err(&pdev->dev, "failed to ioremap!\n");
-+		return -EIO;
-+	}
-+
-+	ltq_mtd = (struct mtd_info *) do_map_probe("cfi_probe", &ltq_map);
-+	if (!ltq_mtd) {
-+		iounmap(ltq_map.virt);
-+		dev_err(&pdev->dev, "probing failed\n");
-+		return -ENXIO;
-+	}
-+
-+	ltq_mtd->owner = THIS_MODULE;
-+
-+	nr_parts = parse_mtd_partitions(ltq_mtd, part_probe_types, &parts, 0);
-+	if (nr_parts > 0) {
-+		dev_info(&pdev->dev,
-+			"using %d partitions from cmdline", nr_parts);
-+	} else {
-+		nr_parts = ltq_mtd_data->nr_parts;
-+		parts = ltq_mtd_data->parts;
-+	}
-+
-+	add_mtd_partitions(ltq_mtd, parts, nr_parts);
-+	return 0;
-+}
-+
-+static struct platform_driver ltq_mtd_driver = {
-+	.probe = ltq_mtd_probe,
-+	.driver = {
-+		.name = "ltq_nor",
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+int __init
-+init_ltq_mtd(void)
-+{
-+	int ret = platform_driver_register(&ltq_mtd_driver);
-+	if (ret)
-+		printk(KERN_INFO "ltq_nor: error registering platfom driver");
-+	return ret;
-+}
-+
-+module_init(init_ltq_mtd);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
-+MODULE_DESCRIPTION("Lantiq SoC NOR");
 -- 
 1.7.2.3

@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2011 20:57:44 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:35678 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2011 20:58:08 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:35686 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490987Ab1AETzh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Jan 2011 20:55:37 +0100
+        id S1490989Ab1AETzi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 Jan 2011 20:55:38 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
-        linux-watchdog@vger.kernel.org
-Subject: [PATCH 05/10] MIPS: lantiq: add watchdog support
-Date:   Wed,  5 Jan 2011 20:56:14 +0100
-Message-Id: <1294257379-417-6-git-send-email-blogic@openwrt.org>
+        David Woodhouse <dwmw2@infradead.org>,
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
+Subject: [PATCH 06/10] MIPS: lantiq: add NOR flash support
+Date:   Wed,  5 Jan 2011 20:56:15 +0100
+Message-Id: <1294257379-417-7-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1294257379-417-1-git-send-email-blogic@openwrt.org>
 References: <1294257379-417-1-git-send-email-blogic@openwrt.org>
@@ -19,7 +19,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28849
+X-archive-position: 28850
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,262 +27,236 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds the driver for the watchdog found inside the Lantiq SoC family.
+NOR flash is attached to the same EBU (External Bus Unit) as PCI. As described
+in the PCI patch, the EBU is a little obscure, resulting in the upper and lower
+16 bit of the data on a 32 bit read are swapped. (essentially we have a addr^=2)
+This only happens on the read of data. In order to not have to high an impact
+on the read performance from the EBU we store all data on the flash with
+addr^=2. This allows us to do generic reads without having to do any swapping.
+For the write to now work we need to swizzle the the 0x2 bit of the addr.
+However this write swizzle needs to only happen when doing a CMD and not a DATA
+write.
+
+As the MTD layer currently makes no difference between a CMD and DATA read when
+using complex maps, the map driver does not know when the swizzle and when not
+to swizzle. The next patch in the series adds a hack to the MTD to workaround
+this problem. I am sending these 2 patches to the mtd list aswell. There are
+several ways to solve this generically in the mtd layer in a much better way.
+This will have minor impact on the actual map code provided in this patch.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-Cc: Wim Van Sebroeck <wim@iguana.be>
+Cc: David Woodhouse <dwmw2@infradead.org>
 Cc: linux-mips@linux-mips.org
-Cc: linux-watchdog@vger.kernel.org
+Cc: linux-mtd@lists.infradead.org
 ---
- drivers/watchdog/Kconfig      |    6 +
- drivers/watchdog/Makefile     |    1 +
- drivers/watchdog/lantiq_wdt.c |  208 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 215 insertions(+), 0 deletions(-)
- create mode 100644 drivers/watchdog/lantiq_wdt.c
+ drivers/mtd/maps/Kconfig  |    7 ++
+ drivers/mtd/maps/Makefile |    1 +
+ drivers/mtd/maps/lantiq.c |  169 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 177 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/mtd/maps/lantiq.c
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index a5ad77e..3e0733e 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -930,6 +930,12 @@ config BCM63XX_WDT
- 	  To compile this driver as a loadable module, choose M here.
- 	  The module will be called bcm63xx_wdt.
+diff --git a/drivers/mtd/maps/Kconfig b/drivers/mtd/maps/Kconfig
+index a0dd7bb..ca69a7f 100644
+--- a/drivers/mtd/maps/Kconfig
++++ b/drivers/mtd/maps/Kconfig
+@@ -260,6 +260,13 @@ config MTD_BCM963XX
+ 	  Support for parsing CFE image tag and creating MTD partitions on
+ 	  Broadcom BCM63xx boards.
  
-+config LANTIQ_WDT
-+	tristate "Lantiq SoC watchdog"
-+	depends on LANTIQ
++config MTD_LANTIQ
++	bool "Lantiq SoC NOR support"
++	depends on LANTIQ && MTD_PARTITIONS
 +	help
-+	  Hardware driver for the Lantiq SoC Watchdog Timer.
++	  Support for NOR flash chips on Lantiq SoC. The Chips are connected
++	  to the SoCs EBU (External Bus Unit)
 +
- # PARISC Architecture
- 
- # POWERPC Architecture
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index 4b0ef38..d845e47 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -119,6 +119,7 @@ obj-$(CONFIG_AR7_WDT) += ar7_wdt.o
- obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
- obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
- octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
-+obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
- 
- # PARISC Architecture
- 
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+ config MTD_DILNETPC
+ 	tristate "CFI Flash device mapped on DIL/Net PC"
+ 	depends on X86 && MTD_CONCAT && MTD_PARTITIONS && MTD_CFI_INTELEXT && BROKEN
+diff --git a/drivers/mtd/maps/Makefile b/drivers/mtd/maps/Makefile
+index c7869c7..bb2ce2f 100644
+--- a/drivers/mtd/maps/Makefile
++++ b/drivers/mtd/maps/Makefile
+@@ -59,3 +59,4 @@ obj-$(CONFIG_MTD_RBTX4939)	+= rbtx4939-flash.o
+ obj-$(CONFIG_MTD_VMU)		+= vmu-flash.o
+ obj-$(CONFIG_MTD_GPIO_ADDR)	+= gpio-addr-flash.o
+ obj-$(CONFIG_MTD_BCM963XX)	+= bcm963xx-flash.o
++obj-$(CONFIG_MTD_LANTIQ)	+= lantiq.o
+diff --git a/drivers/mtd/maps/lantiq.c b/drivers/mtd/maps/lantiq.c
 new file mode 100644
-index 0000000..543bcf1
+index 0000000..e5a361e
 --- /dev/null
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -0,0 +1,208 @@
++++ b/drivers/mtd/maps/lantiq.c
+@@ -0,0 +1,169 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + *
++ *  Copyright (C) 2004 Liu Peng Infineon IFAP DC COM CPE
 + *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ *  Based on EP93xx wdt driver
 + */
 +
 +#include <linux/module.h>
-+#include <linux/fs.h>
-+#include <linux/miscdevice.h>
-+#include <linux/miscdevice.h>
-+#include <linux/watchdog.h>
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/io.h>
++#include <linux/init.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/map.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/cfi.h>
++#include <linux/magic.h>
 +#include <linux/platform_device.h>
-+#include <linux/uaccess.h>
-+#include <linux/clk.h>
++#include <linux/mtd/physmap.h>
 +
-+#include <lantiq.h>
++#include <lantiq_soc.h>
++#include <lantiq_platform.h>
 +
-+#define LTQ_WDT_PW1			0x00BE0000
-+#define LTQ_WDT_PW2			0x00DC0000
-+
-+#define LTQ_BIU_WDT_CR		0x3F0
-+#define LTQ_BIU_WDT_SR		0x3F8
-+
-+#ifndef CONFIG_WATCHDOG_NOWAYOUT
-+static int wdt_ok_to_close;
-+#endif
-+
-+static int wdt_timeout = 30;
-+static __iomem void *wdt_membase;
-+static unsigned long io_region_clk;
-+
-+static int
-+ltq_wdt_enable(unsigned int timeout)
++static map_word
++ltq_read16(struct map_info *map, unsigned long adr)
 +{
-+	ltq_w32(LTQ_WDT_PW1, wdt_membase + LTQ_BIU_WDT_CR);
-+	ltq_w32(LTQ_WDT_PW2 |
-+		(0x3 << 26) | /* PWL */
-+		(0x3 << 24) | /* CLKDIV */
-+		(0x1 << 31) | /* enable */
-+		((timeout * (io_region_clk / 0x40000)) + 0x1000), /* reload */
-+			wdt_membase + LTQ_BIU_WDT_CR);
-+	return 0;
++	unsigned long flags;
++	map_word temp;
++	spin_lock_irqsave(&ebu_lock, flags);
++	adr ^= 2;
++	temp.x[0] = *((__u16 *)(map->virt + adr));
++	spin_unlock_irqrestore(&ebu_lock, flags);
++	return temp;
 +}
 +
 +static void
-+ltq_wdt_disable(void)
++ltq_write16(struct map_info *map, map_word d, unsigned long adr)
 +{
-+#ifndef CONFIG_WATCHDOG_NOWAYOUT
-+	wdt_ok_to_close = 0;
-+#endif
-+	ltq_w32(LTQ_WDT_PW1, wdt_membase + LTQ_BIU_WDT_CR);
-+	ltq_w32(LTQ_WDT_PW2, wdt_membase + LTQ_BIU_WDT_CR);
++	unsigned long flags;
++	spin_lock_irqsave(&ebu_lock, flags);
++	adr ^= 2;
++	*((__u16 *)(map->virt + adr)) = d.x[0];
++	spin_unlock_irqrestore(&ebu_lock, flags);
 +}
 +
-+static ssize_t
-+ltq_wdt_write(struct file *file, const char __user *data,
-+		size_t len, loff_t *ppos)
++void
++ltq_copy_from(struct map_info *map, void *to,
++	unsigned long from, ssize_t len)
 +{
-+	size_t i;
-+	if (!len)
-+		return 0;
-+#ifndef CONFIG_WATCHDOG_NOWAYOUT
-+	for (i = 0; i != len; i++) {
-+		char c;
-+		if (get_user(c, data + i))
-+			return -EFAULT;
-+		if (c == 'V')
-+			wdt_ok_to_close = 1;
-+	}
-+#endif
-+	ltq_wdt_enable(wdt_timeout);
-+	return len;
++	unsigned char *p;
++	unsigned char *to_8;
++	unsigned long flags;
++	spin_lock_irqsave(&ebu_lock, flags);
++	from = (unsigned long)(from + map->virt);
++	p = (unsigned char *) from;
++	to_8 = (unsigned char *) to;
++	while (len--)
++		*to_8++ = *p++;
++	spin_unlock_irqrestore(&ebu_lock, flags);
 +}
 +
-+static struct watchdog_info ident = {
-+	.options = WDIOF_MAGICCLOSE,
-+	.identity = "ltq_wdt",
-+};
-+
-+static long
-+ltq_wdt_ioctl(struct file *file,
-+		unsigned int cmd, unsigned long arg)
++void
++ltq_copy_to(struct map_info *map, unsigned long to,
++	const void *from, ssize_t len)
 +{
-+	int ret = -ENOTTY;
-+	switch (cmd) {
-+	case WDIOC_GETSUPPORT:
-+		ret = copy_to_user((struct watchdog_info __user *)arg, &ident,
-+				sizeof(ident)) ? -EFAULT : 0;
-+		break;
-+
-+	case WDIOC_GETTIMEOUT:
-+		ret = put_user(wdt_timeout, (int __user *)arg);
-+		break;
-+
-+	case WDIOC_SETTIMEOUT:
-+		ret = get_user(wdt_timeout, (int __user *)arg);
-+		break;
-+
-+	case WDIOC_KEEPALIVE:
-+		ltq_wdt_enable(wdt_timeout);
-+		ret = 0;
-+		break;
-+	}
-+	return ret;
++	unsigned char *p =  (unsigned char *)from;
++	unsigned char *to_8;
++	unsigned long flags;
++	spin_lock_irqsave(&ebu_lock, flags);
++	to += (unsigned long) map->virt;
++	to_8 = (unsigned char *)to;
++	while (len--)
++		*p++ = *to_8++;
++	spin_unlock_irqrestore(&ebu_lock, flags);
 +}
 +
-+static int
-+ltq_wdt_open(struct inode *inode, struct file *file)
-+{
-+	ltq_wdt_enable(wdt_timeout);
-+	return nonseekable_open(inode, file);
-+}
++static const char * const part_probe_types[] = {
++	"cmdlinepart", NULL };
 +
-+static int
-+ltq_wdt_release(struct inode *inode, struct file *file)
-+{
-+#ifndef CONFIG_WATCHDOG_NOWAYOUT
-+	if (wdt_ok_to_close)
-+		ltq_wdt_disable();
-+	else
-+#endif
-+		printk(KERN_ERR "ltq_wdt: watchdog closed without warning,"
-+			" rebooting system\n");
-+	return 0;
-+}
-+
-+static const struct file_operations ltq_wdt_fops = {
-+	.owner			= THIS_MODULE,
-+	.write			= ltq_wdt_write,
-+	.unlocked_ioctl	= ltq_wdt_ioctl,
-+	.open			= ltq_wdt_open,
-+	.release		= ltq_wdt_release,
-+};
-+
-+static struct miscdevice ltq_wdt_miscdev = {
-+	.minor		= WATCHDOG_MINOR,
-+	.name		= "watchdog",
-+	.fops		= &ltq_wdt_fops,
++static struct map_info ltq_map = {
++	.name = "ltq_nor",
++	.bankwidth = 2,
++	.read = ltq_read16,
++	.write = ltq_write16,
++	.copy_from = ltq_copy_from,
++	.copy_to = ltq_copy_to,
 +};
 +
 +static int
-+ltq_wdt_probe(struct platform_device *pdev)
++ltq_mtd_probe(struct platform_device *pdev)
 +{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	struct clk *clk;
-+	int ret = 0;
-+	if (!res)
++	struct physmap_flash_data *ltq_mtd_data =
++		(struct physmap_flash_data *) dev_get_platdata(&pdev->dev);
++	struct mtd_info *ltq_mtd = NULL;
++	struct mtd_partition *parts = NULL;
++	struct resource *res = 0;
++	int nr_parts = 0;
++
++#ifdef CONFIG_SOC_TYPE_XWAY
++	ltq_w32(ltq_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
++#endif
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res) {
++		dev_err(&pdev->dev, "failed to get memory resource");
 +		return -ENOENT;
++	}
 +	res = request_mem_region(res->start, resource_size(res),
 +		dev_name(&pdev->dev));
-+	if (!res)
++	if (!res) {
++		dev_err(&pdev->dev, "failed to request mem resource");
 +		return -EBUSY;
-+	wdt_membase = ioremap_nocache(res->start, resource_size(res));
-+	if (!wdt_membase) {
-+		ret = -ENOMEM;
-+		goto err_release_mem_region;
 +	}
-+	clk = clk_get(&pdev->dev, "io");
-+	io_region_clk = clk_get_rate(clk);;
-+	ret = misc_register(&ltq_wdt_miscdev);
-+	if (!ret)
-+		return 0;
 +
-+	iounmap(wdt_membase);
-+err_release_mem_region:
-+	release_mem_region(res->start, resource_size(res));
-+	return ret;
-+}
++	ltq_map.phys = res->start;
++	ltq_map.size = resource_size(res);
++	ltq_map.virt = ioremap_nocache(ltq_map.phys, ltq_map.size);
 +
-+static int
-+ltq_wdt_remove(struct platform_device *dev)
-+{
-+	ltq_wdt_disable();
-+	misc_deregister(&ltq_wdt_miscdev);
++	if (!ltq_map.virt) {
++		dev_err(&pdev->dev, "failed to ioremap!\n");
++		return -EIO;
++	}
++
++	ltq_mtd = (struct mtd_info *) do_map_probe("cfi_probe", &ltq_map);
++	if (!ltq_mtd) {
++		iounmap(ltq_map.virt);
++		dev_err(&pdev->dev, "probing failed\n");
++		return -ENXIO;
++	}
++
++	ltq_mtd->owner = THIS_MODULE;
++
++	nr_parts = parse_mtd_partitions(ltq_mtd, part_probe_types, &parts, 0);
++	if (nr_parts > 0) {
++		dev_info(&pdev->dev,
++			"using %d partitions from cmdline", nr_parts);
++	} else {
++		nr_parts = ltq_mtd_data->nr_parts;
++		parts = ltq_mtd_data->parts;
++	}
++
++	add_mtd_partitions(ltq_mtd, parts, nr_parts);
 +	return 0;
 +}
 +
-+static struct platform_driver ltq_wdt_driver = {
-+	.probe = ltq_wdt_probe,
-+	.remove = ltq_wdt_remove,
++static struct platform_driver ltq_mtd_driver = {
++	.probe = ltq_mtd_probe,
 +	.driver = {
-+		.name = "ltq_wdt",
++		.name = "ltq_nor",
 +		.owner = THIS_MODULE,
 +	},
 +};
 +
-+static int __init
-+init_ltq_wdt(void)
++int __init
++init_ltq_mtd(void)
 +{
-+	return platform_driver_register(&ltq_wdt_driver);
++	int ret = platform_driver_register(&ltq_mtd_driver);
++	if (ret)
++		printk(KERN_INFO "ltq_nor: error registering platfom driver");
++	return ret;
 +}
 +
-+static void __exit
-+exit_ltq_wdt(void)
-+{
-+	platform_driver_unregister(&ltq_wdt_driver);
-+}
++module_init(init_ltq_mtd);
 +
-+module_init(init_ltq_wdt);
-+module_exit(exit_ltq_wdt);
-+
-+MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
-+MODULE_DESCRIPTION("Lantiq Watchdog");
 +MODULE_LICENSE("GPL");
-+MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
++MODULE_DESCRIPTION("Lantiq SoC NOR");
 -- 
 1.7.2.3

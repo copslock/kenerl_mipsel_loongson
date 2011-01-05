@@ -1,244 +1,394 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Jan 2011 21:35:39 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:48596 "EHLO
-        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491042Ab1ADU3R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 4 Jan 2011 21:29:17 +0100
-Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 6BA8945C028;
-        Tue,  4 Jan 2011 21:29:08 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id D72DF1F0001;
-        Tue,  4 Jan 2011 21:29:07 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
-        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
-        Cliff Holden <Cliff.Holden@Atheros.com>,
-        Kathy Giori <Kathy.Giori@Atheros.com>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH v5 16/16] MIPS: ath79: add common WMAC device for AR913X based boards
-Date:   Tue,  4 Jan 2011 21:28:29 +0100
-Message-Id: <1294172909-1309-17-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.2.1
-In-Reply-To: <1294172909-1309-1-git-send-email-juhosg@openwrt.org>
-References: <1294172909-1309-1-git-send-email-juhosg@openwrt.org>
-X-VBMS: A108F5330BE | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
-Return-Path: <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2011 13:58:10 +0100 (CET)
+Received: from mail-qy0-f177.google.com ([209.85.216.177]:53999 "EHLO
+        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490979Ab1AEM6H (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 5 Jan 2011 13:58:07 +0100
+Received: by qyk27 with SMTP id 27so17921867qyk.15
+        for <linux-mips@linux-mips.org>; Wed, 05 Jan 2011 04:57:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:to:cc
+         :in-reply-to:references:content-type:date:message-id:mime-version
+         :x-mailer;
+        bh=Mrfhkv6WpyKQg5S9CWaJmkXATOdV/n53Q+DBfOmOqZE=;
+        b=rXMl2If0xWpVbYH0qCVXgJoIP+4w4m3mOayZkiLfKydf5oUEYntg5F69oEFEmDxW0l
+         peoLsrEleEcwdQfr2Rq8QbtJ+jtR5fyX/gncOU0NBU+HZCnrOYEARiyQDePFa6WODeWb
+         pYgJLwAdPjbZ/LtJzDAdnCV0/yZOB78mk2tOA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:to:cc:in-reply-to:references:content-type:date
+         :message-id:mime-version:x-mailer;
+        b=TgDeu6YBLu57guBicMuj7kNkRINQ01WJk5YIFqGHP/TgIljDKagnEH4sC0d+iPw00e
+         D4rUaWZFRmjVos/o9uzouOvHMyp5zPoKeQjd/Bdn6AzFYhvrw6v83binelkhf+jBTglR
+         rvJoX1IYCKbpN6lYqBuRYgfS3CbkoufKGv+kw=
+Received: by 10.224.11.130 with SMTP id t2mr6237478qat.231.1294232277081;
+        Wed, 05 Jan 2011 04:57:57 -0800 (PST)
+Received: from [172.16.48.51] ([59.160.135.215])
+        by mx.google.com with ESMTPS id q12sm13543818qcu.30.2011.01.05.04.57.50
+        (version=SSLv3 cipher=RC4-MD5);
+        Wed, 05 Jan 2011 04:57:53 -0800 (PST)
+Subject: Re: SMTC support status in latest git head.
+From:   Anoop P A <anoop.pa@gmail.com>
+To:     "Kevin D. Kissell" <kevink@paralogos.com>
+Cc:     STUART VENTERS <stuart.venters@adtran.com>,
+        "Anoop P.A." <Anoop_P.A@pmc-sierra.com>, linux-mips@linux-mips.org
+In-Reply-To: <4D235B8D.2070306@paralogos.com>
+References: <8F242B230AD6474C8E7815DE0B4982D7179FB88F@EXV1.corp.adtran.com>
+         <1293470392.27661.202.camel@paanoop1-desktop>
+         <1293524389.27661.210.camel@paanoop1-desktop>
+         <4D19A31E.1090905@paralogos.com>
+         <1293798476.27661.279.camel@paanoop1-desktop>
+         <4D1EE913.1070203@paralogos.com>
+         <1294067561.27661.293.camel@paanoop1-desktop>
+         <4D21F5D3.50604@paralogos.com>
+         <1294082426.27661.330.camel@paanoop1-desktop>
+         <4D22D7B3.2050609@paralogos.com>
+         <1294146165.27661.361.camel@paanoop1-desktop>
+         <4D235B8D.2070306@paralogos.com>
+Content-Type: multipart/mixed; boundary="=-Qqs3Zx4HpWKhg0KdYC5/"
+Date:   Wed, 05 Jan 2011 18:39:17 +0530
+Message-ID: <1294232957.27661.389.camel@paanoop1-desktop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Return-Path: <anoop.pa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28840
+X-archive-position: 28841
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: anoop.pa@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Add common platform_device and helper code to make the registration
-of the built-in wireless MAC easier on the Atheros AR9130/AR9132
-based boards. Also register the WMAC device on the AR81 board.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
-Changes since RFC: ---
+--=-Qqs3Zx4HpWKhg0KdYC5/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-Changes since v1:
-    - rebased against 2.6.37-rc7
+On Tue, 2011-01-04 at 09:40 -0800, Kevin D. Kissell wrote:
+> On 01/04/11 05:02, Anoop P A wrote:
+> > On Tue, 2011-01-04 at 00:17 -0800, Kevin D. Kissell wrote:
+> >> Those interrupt counters show that IPIs are being taken everywhere,
+> >> though very few by CPUs 5 and 6.  If I understand the configuration
+> >> correctly, CPU 4 is a TC in VPE 1, and it's getting a reasonable IPI
+> > Yes CPU4 is in second VPE
+> >
+> >> rate, *if* we're looking at a tickless kernel under low load.  But there
+> > No it was not the tickless kernel.I had selected 250 MHz timer. can't we
+> > expect IPI / timer interrupt for all the threads in this case ?.
+> 
+> In that case, you should expect a distribution of timer interrupts that 
+> favors the low-numbered TCs within the VPE, as you do in VPE0, and a 
+> distribution of IPIs that is sort-of the inverse, as you do in VPE0.  
+> But the low counts on VPE1 are indeed suspicious, as you note.
+> 
+> >> may be a clue there to part of your problem.  I have no idea why the
+> >> behavior would have changed from 2.6.36 to 2.6.37, but it looks as if
+> >> you're getting your clock interrupts through the MSP CIC interrupt
+> >> controller on VPE 0.  There's nothing symmetric for VPE1. The Malta
+> >> example code is perhaps deceptively simple, in that both VPEs have their
+> >> count/compare indication wired directly to the 2 clock interrupt inputs,
+> >> so that having both of them running with only a single set of irq state
+> >> just works.  I don't know whether the MSP CIC timer interrupt is a
+> > In my case it is separate irq. MSP_INT_VPE1_TIMER (34) and
+> > MSP_INT_VPE0_TIMER (25) are wired to CIC . CIC interrupt has been
+> > connected to cpu irq 6.
+> >
+> > I can reproduce cpu stall in VSMP mode If I don't setup VPE1 timer
+> > interrupt . Don't we have support for separate irq in SMTC
+> > implementation ?..
+> 
+> There are hooks for platform-specific SMTC support, which is implemented 
+> for the Malta in arch/mips/mti-malta/malta-smtc.c.  See 
+> msmtc_init_secondary(), for example, where the clock/compare, profile, 
+> and IPI interrupts are armed for VPE 1, while I/O peripheral interrupts 
+> are inhibited.
+> 
+> >> gating of the VPE0 count/compare output, or whether it's it's own
+> >> interval timer, but I suspect that you may need to do some further
+> >> low-level initialization in the platform-specific code to set up an
+> >> interrupt on the VPE1 side.  I don't think the snippet you've got below
+> >> would work as written.
+> > The routine which I copied works fine for VSMP mode .
+> >
+> > / # cat /proc/interrupts
+> >             CPU0       CPU1
+> >    0:        187        254            MIPS  IPI_resched
+> >    1:         77        174            MIPS  IPI_call
+> >    6:          0          0            MIPS  MSP CIC cascade
+> >    8:          0          0         MSP_CIC  Softreset button
+> >    9:          0          0         MSP_CIC  Standby switch
+> >   21:          0          0         MSP_CIC  MSP PER cascade
+> >   25:      37077          0         MSP_CIC  timer
+> >   27:        188          0         MSP_CIC  serial
+> >   34:          0      36986         MSP_CIC  timer
+> >
+> > Do I want to change anything specific for SMTC ? .
+> 
+> If it works (which I doubt), then we can critique stylistic points like 
+> using
+> 
+> 		if ((1==get_current_vpe())
+> 
+> Instead of the more readable and general
+> 
+> 		if (get_current_vpe()>  0)
+> 
+> 
+> But I think you're generally looking in the wrong place.  Look at the 
+> Malta code and see what's done where.  The initial SMTC code had a lot 
+> of Malta assumptions in the main line that I pushed out to platform code 
+> in later patches.  I can see how things could be made even more modular, 
+> but for the moment I think it's just that there's some stuff that ought 
+> to be done in a "msp_smtc.c" file that doesn't exist in 2.6.37.
+Yes , I am doing similar stuff in msp_smtc.c . Attaching code for your
+reference. I am not seeing a VPE1 timer interrupt.
 
-Changes since v2:
-    - don't use __init for function declarations
+> 
+>              Regards,
+> 
+>              Kevin K.
+> >
+> >
+> >> If it's purely an issue with clock distribution on VPE1, then a boot
+> >> with maxvpes=1 maxtcs=4 should be stable.
+> > Yes the kernel seems to be stable if I boot with maxvpes=1 maxtcs=4 .
+> >
+> >> /K.
+> >>
+> >> On 1/3/2011 11:20 AM, Anoop P A wrote:
+> >>> Hi Kevin,
+> >>>
+> >>> On Mon, 2011-01-03 at 08:14 -0800, Kevin D. Kissell wrote:
+> >>>> The very first SMTC implementations didn't support full kernel-mode
+> >>>> preemption, which anyway wasn't a priority, given the hardware event
+> >>>> response support in MIPS MT.  I believe it was later made compatible,
+> >>>> but it was never extensively exercised.  Since SMTC has fingers in some
+> >>>> pretty low-level atomicity mechanisms, if a new, parallel set was
+> >>>> implemented for RCU, I can easily imagine that nobody has yet
+> >>>> implemented SMTC-ified variants of that set.
+> >>>>
+> >>>> Your last statement isn't very clear, though.  Are you saying that if
+> >>>> you configure for no forced preemption and with TREE_CPU, the 2.6.37
+> >>>> kernel boots all the way up, or that it simply hangs later?   What's the
+> >>>> last rev kernel that actually boots all the way up?
+> >>> I have debugged this a bit more. It seems that kernel getting stalled
+> >>> while executing on TC's of second VPE .
+> >>> INFO: rcu_sched_state detected stalls on CPUs/tasks: { 4 5 6} (detected
+> >>> by 1, t=2504 jiffies)
+> >>> INFO: rcu_sched_state detected stalls on CPUs/tasks: { 4 5 6} (detected
+> >>> by 1, t=10036 jiffies)
+> >>> INFO: rcu_sched_state detected stalls on CPUs/tasks: { 4 5 6} (detected
+> >>> by 1, t=17568 jiffies)
+> >>> INFO: rcu_sched_state detected stalls on CPUs/tasks: { 4 5 6} (detected
+> >>> by 1, t=25100 jiffies)
+> >>> INFO: rcu_sched_state detected stalls on CPUs/tasks: { 4 5 6} (detected
+> >>> by 1, t=32632 jiffies)
+> >>> INFO: rcu_sched_state detected stalls on CPUs/tasks: { 4 5 6} (detected
+> >>> by 1, t=40164 jiffies)
+> >>>
+> >>> With CONFIG_TREE_CPU we were not hitting this scenario very often.
+> >>> However with CONFIG_PREEMPT_TREE_CPU stall happens most of the time.
+> >>>
+> >>> I presume some issue in my timer setup . I am not seeing timer interrupt
+> >>> (or IPI interrupt) getting  incremented for VPE1 tcs on a completely
+> >>> booted 2.6.32-stable kernel.
+> >>>
+> >>> / # cat /proc/interrupts
+> >>>             CPU0       CPU1       CPU2       CPU3       CPU4       CPU5
+> >>> CPU6
+> >>>    1:        148      15023      15140      15093       3779          8
+> >>> 2            MIPS  SMTC_IPI
+> >>>    6:          0          0          0          0          0          0
+> >>> 0            MIPS  MSP CIC cascade
+> >>>    8:          0          0          0          0          0          0
+> >>> 0         MSP_CIC  Softreset button
+> >>>    9:          0          0          0          0          0          0
+> >>> 0         MSP_CIC  Standby switch
+> >>>   21:          0          0          0          0          0          0
+> >>> 0         MSP_CIC  MSP PER cascade
+> >>>   25:      15113        341          4          7          0          0
+> >>> 0         MSP_CIC  timer
+> >>>   27:        260          9          0          1          0          0
+> >>> 0         MSP_CIC  serial
+> >>>   34:          0          0          0          0          0          0
+> >>> 0         MSP_CIC  timer
+> >>>
+> >>> Can't we use separate timer interrupts for VPE1 and VPE0 in SMTC ?.
+> >>>
+> >>> I have tried setting up VPE1 timer from get_co_compare_int as follows
+> >>>
+> >>> unsigned int __cpuinit get_c0_compare_int(void)
+> >>> {
+> >>> 	if ((1==get_current_vpe())&&  !vpe1_timr_installed){
+> >>> 	
+> >>> 	memcpy(&timer_vpe1,&c0_compare_irqaction,sizeof(timer_vpe1));
+> >>> 	
+> >>> 	setup_irq(MSP_INT_VPE1_TIMER,&timer_vpe1);
+> >>>                    vpe1_timr_installed++;
+> >>>            }
+> >>>            return (get_current_vpe() ? MSP_INT_VPE1_TIMER :
+> >>> MSP_INT_VPE0_TIMER);
+> >>> }
+> >>>
+> >>> Thanks
+> >>> Anoop
+> 
 
-Changes since v3:
-    - rebased against 2.6.37-rc8
 
-Changes since v4: ---
+--=-Qqs3Zx4HpWKhg0KdYC5/
+Content-Disposition: attachment; filename="msp_smtc.c"
+Content-Type: text/x-csrc; name="msp_smtc.c"; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
- arch/mips/ath79/Kconfig                        |    5 ++
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/dev-ar913x-wmac.c              |   60 ++++++++++++++++++++++++
- arch/mips/ath79/dev-ar913x-wmac.h              |   17 +++++++
- arch/mips/ath79/mach-ap81.c                    |    6 ++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 +
- 6 files changed, 92 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.c
- create mode 100644 arch/mips/ath79/dev-ar913x-wmac.h
+/*
+ * MSP71xx Platform-specific hooks for SMP operation.
+ * Started from malta-smtc.c.
+ */
+#include <linux/irq.h>
+#include <linux/init.h>
+#include <linux/sched.h>
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 1912d54..af01669 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -5,6 +5,7 @@ menu "Atheros AR71XX/AR724X/AR913X machine selection"
- config ATH79_MACH_AP81
- 	bool "Atheros AP81 reference board"
- 	select SOC_AR913X
-+	select ATH79_DEV_AR913X_WMAC
- 	select ATH79_DEV_GPIO_BUTTONS
- 	select ATH79_DEV_LEDS_GPIO
- 	select ATH79_DEV_SPI
-@@ -40,6 +41,10 @@ config SOC_AR913X
- 	select USB_ARCH_HAS_EHCI
- 	def_bool n
- 
-+config ATH79_DEV_AR913X_WMAC
-+	depends on SOC_AR913X
-+	def_bool n
-+
- config ATH79_DEV_GPIO_BUTTONS
- 	def_bool n
- 
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 3d74e1c..57188b6 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
- # Devices
- #
- obj-y					+= dev-common.o
-+obj-$(CONFIG_ATH79_DEV_AR913X_WMAC)	+= dev-ar913x-wmac.o
- obj-$(CONFIG_ATH79_DEV_GPIO_BUTTONS)	+= dev-gpio-buttons.o
- obj-$(CONFIG_ATH79_DEV_LEDS_GPIO)	+= dev-leds-gpio.o
- obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.c b/arch/mips/ath79/dev-ar913x-wmac.c
-new file mode 100644
-index 0000000..48f425a
---- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.c
-@@ -0,0 +1,60 @@
-+/*
-+ *  Atheros AR913X SoC built-in WMAC device support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/irq.h>
-+#include <linux/platform_device.h>
-+#include <linux/ath9k_platform.h>
-+
-+#include <asm/mach-ath79/ath79.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include "dev-ar913x-wmac.h"
-+
-+static struct ath9k_platform_data ar913x_wmac_data;
-+
-+static struct resource ar913x_wmac_resources[] = {
-+	{
-+		.start	= AR913X_WMAC_BASE,
-+		.end	= AR913X_WMAC_BASE + AR913X_WMAC_SIZE - 1,
-+		.flags	= IORESOURCE_MEM,
-+	}, {
-+		.start	= ATH79_CPU_IRQ_IP2,
-+		.end	= ATH79_CPU_IRQ_IP2,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct platform_device ar913x_wmac_device = {
-+	.name		= "ath9k",
-+	.id		= -1,
-+	.resource	= ar913x_wmac_resources,
-+	.num_resources	= ARRAY_SIZE(ar913x_wmac_resources),
-+	.dev = {
-+		.platform_data = &ar913x_wmac_data,
-+	},
-+};
-+
-+void __init ath79_register_ar913x_wmac(u8 *cal_data)
-+{
-+	if (cal_data)
-+		memcpy(ar913x_wmac_data.eeprom_data, cal_data,
-+		       sizeof(ar913x_wmac_data.eeprom_data));
-+
-+	/* reset the WMAC */
-+	ath79_device_reset_set(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
-+
-+	ath79_device_reset_clear(AR913X_RESET_AMBA2WMAC);
-+	mdelay(10);
-+
-+	platform_device_register(&ar913x_wmac_device);
-+}
-diff --git a/arch/mips/ath79/dev-ar913x-wmac.h b/arch/mips/ath79/dev-ar913x-wmac.h
-new file mode 100644
-index 0000000..579d562
---- /dev/null
-+++ b/arch/mips/ath79/dev-ar913x-wmac.h
-@@ -0,0 +1,17 @@
-+/*
-+ *  Atheros AR913X SoC built-in WMAC device support
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#ifndef _ATH79_DEV_AR913X_WMAC_H
-+#define _ATH79_DEV_AR913X_WMAC_H
-+
-+void ath79_register_ar913x_wmac(u8 *cal_data);
-+
-+#endif /* _ATH79_DEV_AR913X_WMAC_H */
-diff --git a/arch/mips/ath79/mach-ap81.c b/arch/mips/ath79/mach-ap81.c
-index 909ca5d..03719b8 100644
---- a/arch/mips/ath79/mach-ap81.c
-+++ b/arch/mips/ath79/mach-ap81.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include "machtypes.h"
-+#include "dev-ar913x-wmac.h"
- #include "dev-gpio-buttons.h"
- #include "dev-leds-gpio.h"
- #include "dev-spi.h"
-@@ -26,6 +27,8 @@
- #define AP81_KEYS_POLL_INTERVAL		20	/* msecs */
- #define AP81_KEYS_DEBOUNCE_INTERVAL	(3 * AP81_KEYS_POLL_INTERVAL)
- 
-+#define AP81_CAL_DATA_ADDR	0x1fff1000
-+
- static struct gpio_led ap81_leds_gpio[] __initdata = {
- 	{
- 		.name		= "ap81:green:status",
-@@ -80,6 +83,8 @@ static struct ath79_spi_platform_data ap81_spi_data = {
- 
- static void __init ap81_setup(void)
- {
-+	u8 *cal_data = (u8 *) KSEG1ADDR(AP81_CAL_DATA_ADDR);
-+
- 	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap81_leds_gpio),
- 				 ap81_leds_gpio);
- 	ath79_register_gpio_keys_polled(-1, AP81_KEYS_POLL_INTERVAL,
-@@ -88,6 +93,7 @@ static void __init ap81_setup(void)
- 	ath79_register_spi(&ap81_spi_data, ap81_spi_info,
- 			   ARRAY_SIZE(ap81_spi_info));
- 	ath79_register_usb();
-+	ath79_register_ar913x_wmac(cal_data);
- }
- 
- MIPS_MACHINE(ATH79_MACH_AP81, "AP81", "Atheros AP81 reference board",
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index f125f1e..9beb073 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -43,6 +43,9 @@
- #define AR7240_OHCI_BASE	0x1b000000
- #define AR7240_OHCI_SIZE	0x1000
- 
-+#define AR913X_WMAC_BASE	(AR71XX_APB_BASE + 0x000C0000)
-+#define AR913X_WMAC_SIZE	0x30000
-+
- /*
-  * DDR_CTRL block
-  */
--- 
-1.7.2.1
+#include <asm/mipsregs.h>
+#include <asm/mipsmtregs.h>
+#include <asm/smtc.h>
+#include <asm/smtc_ipi.h>
+
+/* VPE/SMP Prototype implements platform interfaces directly */
+
+/*
+ * Cause the specified action to be performed on a targeted "CPU"
+ */
+
+static void msp_smtc_send_ipi_single(int cpu, unsigned int action)
+{
+	/* "CPU" may be TC of same VPE, VPE of same CPU, or different CPU */
+	smtc_send_ipi(cpu, LINUX_SMP_IPI, action);
+}
+
+static void msp_smtc_send_ipi_mask(const struct cpumask *mask, unsigned int action)
+{
+	unsigned int i;
+
+	for_each_cpu(i, mask)
+		msp_smtc_send_ipi_single(i, action);
+}
+
+/*
+ * Post-config but pre-boot cleanup entry point
+ */
+static int prev_vpe;
+static void __cpuinit msp_smtc_init_secondary(void)
+{
+	void smtc_init_secondary(void);
+	int myvpe;
+
+	myvpe = read_c0_tcbind() & TCBIND_CURVPE;
+	/* Change status register when we switch to new VPE*/
+	if ((myvpe != prev_vpe) && (myvpe > 0)) {
+		change_c0_status(ST0_IM, STATUSF_IP0 | STATUSF_IP1 |
+					 STATUSF_IP6 | STATUSF_IP7);
+	}
+	prev_vpe = myvpe;
+	
+	smtc_init_secondary();
+}
+
+/*
+ * Platform "CPU" startup hook
+ */
+static void __cpuinit msp_smtc_boot_secondary(int cpu, struct task_struct *idle)
+{
+	
+	smtc_boot_secondary(cpu, idle);
+}
+
+/*
+ * SMP initialization finalization entry point
+ */
+static void __cpuinit msp_smtc_smp_finish(void)
+{
+	smtc_smp_finish();
+}
+
+/*
+ * Hook for after all CPUs are online
+ */
+
+static void msp_smtc_cpus_done(void)
+{
+}
+
+/*
+ * Platform SMP pre-initialization
+ *
+ * As noted above, we can assume a single CPU for now
+ * but it may be multithreaded.
+ */
+
+static void __init msp_smtc_smp_setup(void)
+{
+	/*
+	 * we won't get the definitive value until
+	 * we've run smtc_prepare_cpus later, but
+	 */
+	if (read_c0_config3() & (1 << 2))
+	smp_num_siblings = smtc_build_cpu_map(0);
+}
+
+static void __init msp_smtc_prepare_cpus(unsigned int max_cpus)
+{
+	smtc_prepare_cpus(max_cpus);
+}
+
+struct plat_smp_ops msp_smtc_smp_ops = {
+	.send_ipi_single	= msp_smtc_send_ipi_single,
+	.send_ipi_mask		= msp_smtc_send_ipi_mask,
+	.init_secondary		= msp_smtc_init_secondary,
+	.smp_finish		= msp_smtc_smp_finish,
+	.cpus_done		= msp_smtc_cpus_done,
+	.boot_secondary		= msp_smtc_boot_secondary,
+	.smp_setup		= msp_smtc_smp_setup,
+	.prepare_cpus		= msp_smtc_prepare_cpus,
+};
+
+#if 0
+/* TODO */
+#ifdef CONFIG_MIPS_MT_SMTC_IRQAFF
+/*
+ * IRQ affinity hook
+ */
+
+
+int plat_set_irq_affinity(unsigned int irq, const struct cpumask *affinity)
+{
+	cpumask_t tmask;
+	int cpu = 0;
+	void smtc_set_irq_affinity(unsigned int irq, cpumask_t aff);
+
+	cpumask_copy(&tmask, affinity);
+	for_each_cpu(cpu, affinity) {
+		if ((cpu_data[cpu].vpe_id != 0) || !cpu_online(cpu))
+			cpu_clear(cpu, tmask);
+	}
+	cpumask_copy(irq_desc[irq].affinity, &tmask);
+
+	if (cpus_empty(tmask))
+		/*
+		 * We could restore a default mask here, but the
+		 * runtime code can anyway deal with the null set
+		 */
+		printk(KERN_WARNING
+			"IRQ affinity leaves no legal CPU for IRQ %d\n", irq);
+
+	/* Do any generic SMTC IRQ affinity setup */
+	smtc_set_irq_affinity(irq, tmask);
+
+	return 0;
+}
+#endif /* CONFIG_MIPS_MT_SMTC_IRQAFF */
+#endif
+
+--=-Qqs3Zx4HpWKhg0KdYC5/--

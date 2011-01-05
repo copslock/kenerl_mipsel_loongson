@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2011 20:56:52 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:35669 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Jan 2011 20:57:20 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:35672 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490983Ab1AETze (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 5 Jan 2011 20:55:34 +0100
+        id S1490984Ab1AETzg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 5 Jan 2011 20:55:36 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mips@linux-mips.org
-Subject: [PATCH 03/10] MIPS: lantiq: add PCI controller support.
-Date:   Wed,  5 Jan 2011 20:56:12 +0100
-Message-Id: <1294257379-417-4-git-send-email-blogic@openwrt.org>
+        Felix Fietkau <nbd@openwrt.org>, linux-mips@linux-mips.org
+Subject: [PATCH 04/10] MIPS: lantiq: add serial port support
+Date:   Wed,  5 Jan 2011 20:56:13 +0100
+Message-Id: <1294257379-417-5-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1294257379-417-1-git-send-email-blogic@openwrt.org>
 References: <1294257379-417-1-git-send-email-blogic@openwrt.org>
@@ -18,7 +18,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28847
+X-archive-position: 28848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,513 +26,826 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-The Lantiq family of SoCs have a EBU (External Bus Unit). This patch adds
-the driver that allows us to use the EBU as a PCI controller. In order for
-PCI to work the EBU is set to endianess swap all the data. In addition we
-need to make use of SWAP_IO_SPACE for device->host DMA to work.
-
-The clock of the PCI works in several modes (internal/external). If this
-is not configured correctly the SoC will hang.
-
-Currently only 1 pci irq pin is supported.
+This patch adds the driver for the 2 serial ports found inside the Lantiq SoC family
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Cc: linux-mips@linux-mips.org
 ---
- .../mips/include/asm/mach-lantiq/lantiq_platform.h |   25 ++
- arch/mips/pci/Makefile                             |    1 +
- arch/mips/pci/ops-lantiq.c                         |  118 ++++++++
- arch/mips/pci/pci-lantiq.c                         |  286 ++++++++++++++++++++
- arch/mips/pci/pci-lantiq.h                         |   18 ++
- 5 files changed, 448 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-lantiq/lantiq_platform.h
- create mode 100644 arch/mips/pci/ops-lantiq.c
- create mode 100644 arch/mips/pci/pci-lantiq.c
- create mode 100644 arch/mips/pci/pci-lantiq.h
+ drivers/serial/Kconfig  |    8 +
+ drivers/serial/Makefile |    1 +
+ drivers/serial/lantiq.c |  774 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 783 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/serial/lantiq.c
 
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h b/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
-new file mode 100644
-index 0000000..c0d4c6c
---- /dev/null
-+++ b/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
-@@ -0,0 +1,25 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#ifndef _LANTIQ_PLATFORM_H__
-+#define _LANTIQ_PLATFORM_H__
-+
-+#include <linux/mtd/partitions.h>
-+
-+/* struct used to pass info to the pci core */
-+enum {
-+	PCI_CLOCK_INT = 0,
-+	PCI_CLOCK_EXT
-+};
-+
-+struct ltq_pci_data {
-+	int clock;
-+	int req_mask;
-+};
-+
-+#endif
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index c9209ca..4a5d1ae 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_ZAO_CAPCELLA)	+= fixup-capcella.o
- obj-$(CONFIG_WR_PPMC)		+= fixup-wrppmc.o
- obj-$(CONFIG_MIKROTIK_RB532)	+= pci-rc32434.o ops-rc32434.o fixup-rc32434.o
- obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= pci-octeon.o pcie-octeon.o
-+obj-$(CONFIG_SOC_XWAY)	+= pci-lantiq.o ops-lantiq.o
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index aff9dcd..e3a45ff 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -1454,6 +1454,14 @@ config SERIAL_OF_PLATFORM_NWPSERIAL_CONSOLE
+ 	help
+ 	  Support for Console on the NWP serial ports.
  
- ifdef CONFIG_PCI_MSI
- obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= msi-octeon.o
-diff --git a/arch/mips/pci/ops-lantiq.c b/arch/mips/pci/ops-lantiq.c
++config SERIAL_LANTIQ
++	bool "Lantiq serial driver"
++	depends on LANTIQ
++	select SERIAL_CORE
++	select SERIAL_CORE_CONSOLE
++	help
++	  Support for console and UART on Lantiq SoCs.
++
+ config SERIAL_QE
+ 	tristate "Freescale QUICC Engine serial port support"
+ 	depends on QUICC_ENGINE
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index c570576..434e0e0 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -89,3 +89,4 @@ obj-$(CONFIG_SERIAL_ALTERA_UART) += altera_uart.o
+ obj-$(CONFIG_SERIAL_MRST_MAX3110)	+= mrst_max3110.o
+ obj-$(CONFIG_SERIAL_MFD_HSU)	+= mfd.o
+ obj-$(CONFIG_SERIAL_OMAP) += omap-serial.o
++obj-$(CONFIG_SERIAL_LANTIQ) += lantiq.o
+diff --git a/drivers/serial/lantiq.c b/drivers/serial/lantiq.c
 new file mode 100644
-index 0000000..457c9f1
+index 0000000..c08e0a6
 --- /dev/null
-+++ b/arch/mips/pci/ops-lantiq.c
-@@ -0,0 +1,118 @@
++++ b/drivers/serial/lantiq.c
+@@ -0,0 +1,774 @@
 +/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts'o.
 + *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ *
++ * Copyright (C) 2004 Infineon IFAP DC COM CPE
++ * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2007 John Crispin <blogic@openwrt.org>
++ * Copyright (C) 2010 Thomas Langer, <thomas.langer@lantiq.com>
 + */
 +
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/module.h>
++#include <linux/ioport.h>
 +#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/mm.h>
-+#include <asm/addrspace.h>
-+#include <linux/vmalloc.h>
++#include <linux/console.h>
++#include <linux/sysrq.h>
++#include <linux/device.h>
++#include <linux/tty.h>
++#include <linux/tty_flip.h>
++#include <linux/serial_core.h>
++#include <linux/serial.h>
++#include <linux/platform_device.h>
++#include <linux/io.h>
++#include <linux/clk.h>
 +
-+#include <lantiq_soc.h>
++#define ltq_r32(reg)			__raw_readl(reg)
++#define ltq_r8(reg)			__raw_readb(reg)
++#define ltq_w32(val, reg)	__raw_writel(val, reg)
++#define ltq_w8(val, reg)		__raw_writeb(val, reg)
++#define ltq_w32_mask(clear, set, reg)	\
++	ltq_w32((ltq_r32(reg) & ~(clear)) | (set), reg)
 +
-+#include "pci-lantiq.h"
++#define PORT_LTQ_ASC		111
++#define MAXPORTS		2
 +
-+#define LTQ_PCI_CFG_BUSNUM_SHF 16
-+#define LTQ_PCI_CFG_DEVNUM_SHF 11
-+#define LTQ_PCI_CFG_FUNNUM_SHF 8
++#define UART_DUMMY_UER_RX 1
 +
-+#define PCI_ACCESS_READ  0
-+#define PCI_ACCESS_WRITE 1
++#define DRVNAME "ltq_asc"
++
++#ifdef __BIG_ENDIAN
++#define LTQ_ASC_TBUF		(0x0020 + 3)
++#define LTQ_ASC_RBUF		(0x0024 + 3)
++#else
++#define LTQ_ASC_TBUF		0x0020
++#define LTQ_ASC_RBUF		0x0024
++#endif
++
++#define LTQ_ASC_FSTAT		0x0048
++#define LTQ_ASC_WHBSTATE	0x0018
++#define LTQ_ASC_STATE		0x0014
++#define LTQ_ASC_IRNCR		0x00F8
++#define LTQ_ASC_CLC			0x0000
++#define LTQ_ASC_ID			0x0008
++#define LTQ_ASC_PISEL		0x0004
++#define LTQ_ASC_TXFCON		0x0044
++#define LTQ_ASC_RXFCON		0x0040
++#define LTQ_ASC_CON			0x0010
++#define LTQ_ASC_BG			0x0050
++#define LTQ_ASC_IRNREN		0x00F4
++
++#define ASC_IRNREN_TX			0x1
++#define ASC_IRNREN_RX			0x2
++#define ASC_IRNREN_ERR			0x4
++#define ASC_IRNREN_TX_BUF		0x8
++#define ASC_IRNCR_TIR			0x1
++#define ASC_IRNCR_RIR			0x2
++#define ASC_IRNCR_EIR			0x4
++
++#define ASCOPT_CSIZE			0x3
++#define ASCOPT_CS7				0x1
++#define ASCOPT_CS8				0x2
++#define ASCOPT_PARENB			0x4
++#define ASCOPT_STOPB			0x8
++#define ASCOPT_PARODD			0x0
++#define ASCOPT_CREAD			0x20
++#define TXFIFO_FL				1
++#define RXFIFO_FL				1
++#define ASCCLC_DISS				0x2
++#define ASCCLC_RMCMASK			0x0000FF00
++#define ASCCLC_RMCOFFSET		8
++#define ASCCON_M_8ASYNC			0x0
++#define ASCCON_M_7ASYNC			0x2
++#define ASCCON_ODD				0x00000020
++#define ASCCON_STP				0x00000080
++#define ASCCON_BRS				0x00000100
++#define ASCCON_FDE				0x00000200
++#define ASCCON_R				0x00008000
++#define ASCCON_FEN				0x00020000
++#define ASCCON_ROEN				0x00080000
++#define ASCCON_TOEN				0x00100000
++#define ASCSTATE_PE				0x00010000
++#define ASCSTATE_FE				0x00020000
++#define ASCSTATE_ROE			0x00080000
++#define ASCSTATE_ANY			(ASCSTATE_ROE|ASCSTATE_PE|ASCSTATE_FE)
++#define ASCWHBSTATE_CLRREN		0x00000001
++#define ASCWHBSTATE_SETREN		0x00000002
++#define ASCWHBSTATE_CLRPE		0x00000004
++#define ASCWHBSTATE_CLRFE		0x00000008
++#define ASCWHBSTATE_CLRROE		0x00000020
++#define ASCTXFCON_TXFEN			0x0001
++#define ASCTXFCON_TXFFLU		0x0002
++#define ASCTXFCON_TXFITLMASK	0x3F00
++#define ASCTXFCON_TXFITLOFF		8
++#define ASCRXFCON_RXFEN			0x0001
++#define ASCRXFCON_RXFFLU		0x0002
++#define ASCRXFCON_RXFITLMASK	0x3F00
++#define ASCRXFCON_RXFITLOFF		8
++#define ASCFSTAT_RXFFLMASK		0x003F
++#define ASCFSTAT_TXFFLMASK		0x3F00
++#define ASCFSTAT_TXFFLOFF		8
++#define ASCFSTAT_RXFREEMASK		0x003F0000
++#define ASCFSTAT_RXFREEOFF		16
++#define ASCFSTAT_TXFREEMASK		0x3F000000
++#define ASCFSTAT_TXFREEOFF		24
++
++static void lqasc_tx_chars(struct uart_port *port);
++static struct ltq_uart_port *lqasc_port[2];
++static struct uart_driver lqasc_reg;
++
++struct ltq_uart_port {
++	struct uart_port	port;
++	struct clk			*clk;
++	unsigned int		tx_irq;
++	unsigned int		rx_irq;
++	unsigned int		err_irq;
++};
++
++static inline struct
++ltq_uart_port *to_ltq_uart_port(struct uart_port *port)
++{
++	return container_of(port, struct ltq_uart_port, port);
++}
++
++static void
++lqasc_stop_tx(struct uart_port *port)
++{
++	return;
++}
++
++static void
++lqasc_start_tx(struct uart_port *port)
++{
++	unsigned long flags;
++	local_irq_save(flags);
++	lqasc_tx_chars(port);
++	local_irq_restore(flags);
++	return;
++}
++
++static void
++lqasc_stop_rx(struct uart_port *port)
++{
++	ltq_w32(ASCWHBSTATE_CLRREN, port->membase + LTQ_ASC_WHBSTATE);
++}
++
++static void
++lqasc_enable_ms(struct uart_port *port)
++{
++}
++
++static void
++lqasc_rx_chars(struct uart_port *port)
++{
++	struct tty_struct *tty = port->state->port.tty;
++	unsigned int ch = 0, rsr = 0, fifocnt;
++
++	fifocnt =
++		ltq_r32(port->membase + LTQ_ASC_FSTAT) & ASCFSTAT_RXFFLMASK;
++	while (fifocnt--) {
++		u8 flag = TTY_NORMAL;
++		ch = ltq_r8(port->membase + LTQ_ASC_RBUF);
++		rsr = (ltq_r32(port->membase + LTQ_ASC_STATE)
++			& ASCSTATE_ANY) | UART_DUMMY_UER_RX;
++		tty_flip_buffer_push(tty);
++		port->icount.rx++;
++
++		/*
++		 * Note that the error handling code is
++		 * out of the main execution path
++		 */
++		if (rsr & ASCSTATE_ANY) {
++			if (rsr & ASCSTATE_PE) {
++				port->icount.parity++;
++				ltq_w32_mask(0, ASCWHBSTATE_CLRPE,
++					port->membase + LTQ_ASC_WHBSTATE);
++			} else if (rsr & ASCSTATE_FE) {
++				port->icount.frame++;
++				ltq_w32_mask(0, ASCWHBSTATE_CLRFE,
++					port->membase + LTQ_ASC_WHBSTATE);
++			}
++			if (rsr & ASCSTATE_ROE) {
++				port->icount.overrun++;
++				ltq_w32_mask(0, ASCWHBSTATE_CLRROE,
++					port->membase + LTQ_ASC_WHBSTATE);
++			}
++
++			rsr &= port->read_status_mask;
++
++			if (rsr & ASCSTATE_PE)
++				flag = TTY_PARITY;
++			else if (rsr & ASCSTATE_FE)
++				flag = TTY_FRAME;
++		}
++
++		if ((rsr & port->ignore_status_mask) == 0)
++			tty_insert_flip_char(tty, ch, flag);
++
++		if (rsr & ASCSTATE_ROE)
++			/*
++			 * Overrun is special, since it's reported
++			 * immediately, and doesn't affect the current
++			 * character
++			 */
++			tty_insert_flip_char(tty, 0, TTY_OVERRUN);
++	}
++	if (ch != 0)
++		tty_flip_buffer_push(tty);
++	return;
++}
++
++static void
++lqasc_tx_chars(struct uart_port *port)
++{
++	struct circ_buf *xmit = &port->state->xmit;
++	if (uart_tx_stopped(port)) {
++		lqasc_stop_tx(port);
++		return;
++	}
++
++	while (((ltq_r32(port->membase + LTQ_ASC_FSTAT) &
++		ASCFSTAT_TXFREEMASK) >> ASCFSTAT_TXFREEOFF) != 0) {
++		if (port->x_char) {
++			ltq_w8(port->x_char, port->membase + LTQ_ASC_TBUF);
++			port->icount.tx++;
++			port->x_char = 0;
++			continue;
++		}
++
++		if (uart_circ_empty(xmit))
++			break;
++
++		ltq_w8(port->state->xmit.buf[port->state->xmit.tail],
++			port->membase + LTQ_ASC_TBUF);
++		xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
++		port->icount.tx++;
++	}
++
++	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
++		uart_write_wakeup(port);
++}
++
++static irqreturn_t
++lqasc_tx_int(int irq, void *_port)
++{
++	struct uart_port *port = (struct uart_port *)_port;
++	ltq_w32(ASC_IRNCR_TIR, port->membase + LTQ_ASC_IRNCR);
++	lqasc_start_tx(port);
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t
++lqasc_err_int(int irq, void *_port)
++{
++	struct uart_port *port = (struct uart_port *)_port;
++	/* clear any pending interrupts */
++	ltq_w32_mask(0, ASCWHBSTATE_CLRPE | ASCWHBSTATE_CLRFE |
++		ASCWHBSTATE_CLRROE, port->membase + LTQ_ASC_WHBSTATE);
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t
++lqasc_rx_int(int irq, void *_port)
++{
++	struct uart_port *port = (struct uart_port *)_port;
++	ltq_w32(ASC_IRNCR_RIR, port->membase + LTQ_ASC_IRNCR);
++	lqasc_rx_chars(port);
++	return IRQ_HANDLED;
++}
++
++static unsigned int
++lqasc_tx_empty(struct uart_port *port)
++{
++	int status;
++	status = ltq_r32(port->membase + LTQ_ASC_FSTAT) & ASCFSTAT_TXFFLMASK;
++	return status ? 0 : TIOCSER_TEMT;
++}
++
++static unsigned int
++lqasc_get_mctrl(struct uart_port *port)
++{
++	return TIOCM_CTS | TIOCM_CAR | TIOCM_DSR;
++}
++
++static void
++lqasc_set_mctrl(struct uart_port *port, u_int mctrl)
++{
++}
++
++static void
++lqasc_break_ctl(struct uart_port *port, int break_state)
++{
++}
 +
 +static int
-+ltq_pci_config_access(unsigned char access_type, struct pci_bus *bus,
-+	unsigned int devfn, unsigned int where, u32 *data)
++lqasc_startup(struct uart_port *port)
 +{
-+	unsigned long cfg_base;
++	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
++	int retval;
++
++	port->uartclk = clk_get_rate(ltq_port->clk);
++
++	ltq_w32_mask(ASCCLC_DISS | ASCCLC_RMCMASK, (1 << ASCCLC_RMCOFFSET),
++		port->membase + LTQ_ASC_CLC);
++
++	ltq_w32(0, port->membase + LTQ_ASC_PISEL);
++	ltq_w32(
++		((TXFIFO_FL << ASCTXFCON_TXFITLOFF) & ASCTXFCON_TXFITLMASK) |
++		ASCTXFCON_TXFEN | ASCTXFCON_TXFFLU,
++		port->membase + LTQ_ASC_TXFCON);
++	ltq_w32(
++		((RXFIFO_FL << ASCRXFCON_RXFITLOFF) & ASCRXFCON_RXFITLMASK)
++		| ASCRXFCON_RXFEN | ASCRXFCON_RXFFLU,
++		port->membase + LTQ_ASC_RXFCON);
++	/* make sure other settings are written to hardware before
++	   setting enable bits */
++	wmb();
++	ltq_w32_mask(0, ASCCON_M_8ASYNC | ASCCON_FEN | ASCCON_TOEN |
++		ASCCON_ROEN, port->membase + LTQ_ASC_CON);
++
++	retval = request_irq(ltq_port->tx_irq, lqasc_tx_int,
++		IRQF_DISABLED, "asc_tx", port);
++	if (retval) {
++		pr_err("failed to request lqasc_tx_int\n");
++		return retval;
++	}
++
++	retval = request_irq(ltq_port->rx_irq, lqasc_rx_int,
++		IRQF_DISABLED, "asc_rx", port);
++	if (retval) {
++		pr_err("failed to request lqasc_rx_int\n");
++		goto err1;
++	}
++
++	retval = request_irq(ltq_port->err_irq, lqasc_err_int,
++		IRQF_DISABLED, "asc_err", port);
++	if (retval) {
++		pr_err("failed to request lqasc_err_int\n");
++		goto err2;
++	}
++
++	ltq_w32(ASC_IRNREN_RX | ASC_IRNREN_ERR | ASC_IRNREN_TX,
++		port->membase + LTQ_ASC_IRNREN);
++	return 0;
++
++err2:
++	free_irq(ltq_port->rx_irq, port);
++err1:
++	free_irq(ltq_port->tx_irq, port);
++	return retval;
++}
++
++static void
++lqasc_shutdown(struct uart_port *port)
++{
++	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
++	free_irq(ltq_port->tx_irq, port);
++	free_irq(ltq_port->rx_irq, port);
++	free_irq(ltq_port->err_irq, port);
++
++	ltq_w32(0, port->membase + LTQ_ASC_CON);
++	ltq_w32_mask(ASCRXFCON_RXFEN, ASCRXFCON_RXFFLU,
++		port->membase + LTQ_ASC_RXFCON);
++	ltq_w32_mask(ASCTXFCON_TXFEN, ASCTXFCON_TXFFLU,
++		port->membase + LTQ_ASC_TXFCON);
++}
++
++static void
++lqasc_set_termios(struct uart_port *port,
++	struct ktermios *new, struct ktermios *old)
++{
++	unsigned int cflag;
++	unsigned int iflag;
++	unsigned int quot;
++	unsigned int baud;
++	unsigned int con = 0;
 +	unsigned long flags;
 +
-+	u32 temp;
++	cflag = new->c_cflag;
++	iflag = new->c_iflag;
 +
-+	/* we support slot from 0 to 15 */
-+	/* dev_fn 0&0x68 (AD29) is ifxmips itself */
-+	if ((bus->number != 0) || ((devfn & 0xf8) > 0x78)
-+			|| ((devfn & 0xf8) == 0) || ((devfn & 0xf8) == 0x68))
-+		return 1;
++	switch (cflag & CSIZE) {
++	case CS7:
++		con = ASCCON_M_7ASYNC;
++		break;
 +
-+	spin_lock_irqsave(&ebu_lock, flags);
-+
-+	cfg_base = ltq_pci_mapped_cfg;
-+	cfg_base |= (bus->number << LTQ_PCI_CFG_BUSNUM_SHF) | (devfn <<
-+			LTQ_PCI_CFG_FUNNUM_SHF) | (where & ~0x3);
-+
-+	/* Perform access */
-+	if (access_type == PCI_ACCESS_WRITE) {
-+		ltq_w32(swab32(*data), ((u32 *)cfg_base));
-+	} else {
-+		*data = ltq_r32(((u32 *)(cfg_base)));
-+		*data = swab32(*data);
++	case CS5:
++	case CS6:
++	default:
++		con = ASCCON_M_8ASYNC;
++		break;
 +	}
-+	wmb();
 +
-+	/* clean possible Master abort */
-+	cfg_base = (ltq_pci_mapped_cfg | (0x0 << LTQ_PCI_CFG_FUNNUM_SHF)) + 4;
-+	temp = ltq_r32(((u32 *)(cfg_base)));
-+	temp = swab32(temp);
-+	cfg_base = (ltq_pci_mapped_cfg | (0x68 << LTQ_PCI_CFG_FUNNUM_SHF)) + 4;
-+	ltq_w32(temp, ((u32 *)cfg_base));
++	if (cflag & CSTOPB)
++		con |= ASCCON_STP;
 +
-+	spin_unlock_irqrestore(&ebu_lock, flags);
++	if (cflag & PARENB) {
++		if (!(cflag & PARODD))
++			con &= ~ASCCON_ODD;
++		else
++			con |= ASCCON_ODD;
++	}
 +
-+	if (((*data) == 0xffffffff) && (access_type == PCI_ACCESS_READ))
-+		return 1;
++	port->read_status_mask = ASCSTATE_ROE;
++	if (iflag & INPCK)
++		port->read_status_mask |= ASCSTATE_FE | ASCSTATE_PE;
 +
-+	return 0;
++	port->ignore_status_mask = 0;
++	if (iflag & IGNPAR)
++		port->ignore_status_mask |= ASCSTATE_FE | ASCSTATE_PE;
++
++	if (iflag & IGNBRK) {
++		/*
++		 * If we're ignoring parity and break indicators,
++		 * ignore overruns too (for real raw support).
++		 */
++		if (iflag & IGNPAR)
++			port->ignore_status_mask |= ASCSTATE_ROE;
++	}
++
++	if ((cflag & CREAD) == 0)
++		port->ignore_status_mask |= UART_DUMMY_UER_RX;
++
++	/* set error signals  - framing, parity  and overrun, enable receiver */
++	con |= ASCCON_FEN | ASCCON_TOEN | ASCCON_ROEN;
++
++	local_irq_save(flags);
++
++	/* set up CON */
++	ltq_w32_mask(0, con, port->membase + LTQ_ASC_CON);
++
++	/* Set baud rate - take a divider of 2 into account */
++	baud = uart_get_baud_rate(port, new, old, 0, port->uartclk / 16);
++	quot = uart_get_divisor(port, baud);
++	quot = quot / 2 - 1;
++
++	/* disable the baudrate generator */
++	ltq_w32_mask(ASCCON_R, 0, port->membase + LTQ_ASC_CON);
++
++	/* make sure the fractional divider is off */
++	ltq_w32_mask(ASCCON_FDE, 0, port->membase + LTQ_ASC_CON);
++
++	/* set up to use divisor of 2 */
++	ltq_w32_mask(ASCCON_BRS, 0, port->membase + LTQ_ASC_CON);
++
++	/* now we can write the new baudrate into the register */
++	ltq_w32(quot, port->membase + LTQ_ASC_BG);
++
++	/* turn the baudrate generator back on */
++	ltq_w32_mask(0, ASCCON_R, port->membase + LTQ_ASC_CON);
++
++	/* enable rx */
++	ltq_w32(ASCWHBSTATE_SETREN, port->membase + LTQ_ASC_WHBSTATE);
++
++	local_irq_restore(flags);
 +}
 +
-+int
-+ltq_pci_read_config_dword(struct pci_bus *bus, unsigned int devfn,
-+		int where, int size, u32 *val)
++static const char*
++lqasc_type(struct uart_port *port)
 +{
-+	u32 data = 0;
-+
-+	if (ltq_pci_config_access(PCI_ACCESS_READ, bus, devfn, where, &data))
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	if (size == 1)
-+		*val = (data >> ((where & 3) << 3)) & 0xff;
-+	else if (size == 2)
-+		*val = (data >> ((where & 3) << 3)) & 0xffff;
++	if (port->type == PORT_LTQ_ASC)
++		return DRVNAME;
 +	else
-+		*val = data;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+int
-+ltq_pci_write_config_dword(struct pci_bus *bus, unsigned int devfn,
-+		int where, int size, u32 val)
-+{
-+	u32 data = 0;
-+
-+	if (size == 4) {
-+		data = val;
-+	} else {
-+		if (ltq_pci_config_access(PCI_ACCESS_READ, bus,
-+				devfn, where, &data))
-+			return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+		if (size == 1)
-+			data = (data & ~(0xff << ((where & 3) << 3))) |
-+				(val << ((where & 3) << 3));
-+		else if (size == 2)
-+			data = (data & ~(0xffff << ((where & 3) << 3))) |
-+				(val << ((where & 3) << 3));
-+	}
-+
-+	if (ltq_pci_config_access(PCI_ACCESS_WRITE, bus, devfn, where, &data))
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
-new file mode 100644
-index 0000000..70f7c0f
---- /dev/null
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -0,0 +1,286 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/mm.h>
-+#include <linux/vmalloc.h>
-+#include <linux/platform_device.h>
-+
-+#include <asm/pci.h>
-+#include <asm/gpio.h>
-+#include <asm/addrspace.h>
-+
-+#include <lantiq_soc.h>
-+#include <lantiq_irq.h>
-+#include <lantiq_platform.h>
-+
-+#include "pci-lantiq.h"
-+
-+#define LTQ_PCI_CFG_BASE		0x17000000
-+#define LTQ_PCI_CFG_SIZE		0x00008000
-+#define LTQ_PCI_MEM_BASE		0x18000000
-+#define LTQ_PCI_MEM_SIZE		0x02000000
-+#define LTQ_PCI_IO_BASE		0x1AE00000
-+#define LTQ_PCI_IO_SIZE		0x00200000
-+
-+#define PCI_CR_FCI_ADDR_MAP0	((u32 *)(PCI_CR_BASE_ADDR + 0x00C0))
-+#define PCI_CR_FCI_ADDR_MAP1	((u32 *)(PCI_CR_BASE_ADDR + 0x00C4))
-+#define PCI_CR_FCI_ADDR_MAP2	((u32 *)(PCI_CR_BASE_ADDR + 0x00C8))
-+#define PCI_CR_FCI_ADDR_MAP3	((u32 *)(PCI_CR_BASE_ADDR + 0x00CC))
-+#define PCI_CR_FCI_ADDR_MAP4	((u32 *)(PCI_CR_BASE_ADDR + 0x00D0))
-+#define PCI_CR_FCI_ADDR_MAP5	((u32 *)(PCI_CR_BASE_ADDR + 0x00D4))
-+#define PCI_CR_FCI_ADDR_MAP6	((u32 *)(PCI_CR_BASE_ADDR + 0x00D8))
-+#define PCI_CR_FCI_ADDR_MAP7	((u32 *)(PCI_CR_BASE_ADDR + 0x00DC))
-+#define PCI_CR_CLK_CTRL			((u32 *)(PCI_CR_BASE_ADDR + 0x0000))
-+#define PCI_CR_PCI_MOD			((u32 *)(PCI_CR_BASE_ADDR + 0x0030))
-+#define PCI_CR_PC_ARB			((u32 *)(PCI_CR_BASE_ADDR + 0x0080))
-+#define PCI_CR_FCI_ADDR_MAP11hg	((u32 *)(PCI_CR_BASE_ADDR + 0x00E4))
-+#define PCI_CR_BAR11MASK		((u32 *)(PCI_CR_BASE_ADDR + 0x0044))
-+#define PCI_CR_BAR12MASK		((u32 *)(PCI_CR_BASE_ADDR + 0x0048))
-+#define PCI_CR_BAR13MASK		((u32 *)(PCI_CR_BASE_ADDR + 0x004C))
-+#define PCI_CS_BASE_ADDR1		((u32 *)(PCI_CS_BASE_ADDR + 0x0010))
-+#define PCI_CR_PCI_ADDR_MAP11	((u32 *)(PCI_CR_BASE_ADDR + 0x0064))
-+#define PCI_CR_FCI_BURST_LENGTH	((u32 *)(PCI_CR_BASE_ADDR + 0x00E8))
-+#define PCI_CR_PCI_EOI			((u32 *)(PCI_CR_BASE_ADDR + 0x002C))
-+#define PCI_CS_STS_CMD			((u32 *)(PCI_CS_BASE_ADDR + 0x0004))
-+
-+#define PCI_MASTER0_REQ_MASK_2BITS	8
-+#define PCI_MASTER1_REQ_MASK_2BITS	10
-+#define PCI_MASTER2_REQ_MASK_2BITS	12
-+#define INTERNAL_ARB_ENABLE_BIT		0
-+
-+#define LTQ_CGU_IFCCR	((u32 *)(LTQ_CGU_BASE_ADDR + 0x0018))
-+#define LTQ_CGU_PCICR	((u32 *)(LTQ_CGU_BASE_ADDR + 0x0034))
-+
-+u32 ltq_pci_mapped_cfg;
-+
-+int (*ltqpci_plat_dev_init)(struct pci_dev *dev) = NULL;
-+
-+/* Since the PCI REQ pins can be reused for other functionality, make it
-+   possible to exclude those from interpretation by the PCI controller */
-+static int ltq_pci_req_mask = 0xf;
-+
-+struct pci_ops ltq_pci_ops = {
-+	.read = ltq_pci_read_config_dword,
-+	.write = ltq_pci_write_config_dword
-+};
-+
-+static struct resource pci_io_resource = {
-+	.name = "pci io space",
-+	.start = LTQ_PCI_IO_BASE,
-+	.end = LTQ_PCI_IO_BASE + LTQ_PCI_IO_SIZE - 1,
-+	.flags = IORESOURCE_IO
-+};
-+
-+static struct resource pci_mem_resource = {
-+	.name = "pci memory space",
-+	.start = LTQ_PCI_MEM_BASE,
-+	.end = LTQ_PCI_MEM_BASE + LTQ_PCI_MEM_SIZE - 1,
-+	.flags = IORESOURCE_MEM
-+};
-+
-+static struct pci_controller ltq_pci_controller = {
-+	.pci_ops = &ltq_pci_ops,
-+	.mem_resource = &pci_mem_resource,
-+	.mem_offset	= 0x00000000UL,
-+	.io_resource = &pci_io_resource,
-+	.io_offset	= 0x00000000UL,
-+};
-+
-+int
-+pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	u8 pin;
-+
-+	pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
-+	switch (pin) {
-+	case 0:
-+		break;
-+	case 1:
-+		/* falling edge level triggered:0x4
-+		   low level:0xc, rising edge:0x2 */
-+		ltq_w32(ltq_r32(LTQ_EBU_PCC_CON) | 0xc, LTQ_EBU_PCC_CON);
-+		ltq_w32(ltq_r32(LTQ_EBU_PCC_IEN) | 0x10, LTQ_EBU_PCC_IEN);
-+		break;
-+	case 2:
-+	case 3:
-+	case 4:
-+		printk(KERN_WARNING "interrupt pin %d not supported yet!\n",
-+			pin);
-+	default:
-+		printk(KERN_WARNING "invalid interrupt pin %d\n", pin);
-+		return 1;
-+	}
-+
-+	if (ltqpci_plat_dev_init)
-+		return ltqpci_plat_dev_init(dev);
-+
-+	return 0;
-+}
-+
-+static u32
-+ltq_calc_bar11mask(void)
-+{
-+	u32 mem, bar11mask;
-+
-+	/* BAR11MASK value depends on available memory on system. */
-+	mem = num_physpages * PAGE_SIZE;
-+	bar11mask = (0x0ffffff0 & ~((1 << (fls(mem) - 1)) - 1)) | 8;
-+
-+	return bar11mask;
++		return NULL;
 +}
 +
 +static void
-+ltq_pci_setup_clk(int external_clock)
++lqasc_release_port(struct uart_port *port)
 +{
-+	/* set clock to 33Mhz */
-+	ltq_w32(ltq_r32(LTQ_CGU_IFCCR) & ~0xf00000, LTQ_CGU_IFCCR);
-+	ltq_w32(ltq_r32(LTQ_CGU_IFCCR) | 0x800000,	LTQ_CGU_IFCCR);
-+	if (external_clock) {
-+		ltq_w32(ltq_r32(LTQ_CGU_IFCCR) & ~(1 << 16), LTQ_CGU_IFCCR);
-+		ltq_w32((1 << 30), LTQ_CGU_PCICR);
-+	} else {
-+		ltq_w32(ltq_r32(LTQ_CGU_IFCCR) | (1 << 16), LTQ_CGU_IFCCR);
-+		ltq_w32((1 << 31) | (1 << 30), LTQ_CGU_PCICR);
++	if (port->flags & UPF_IOREMAP) {
++		iounmap(port->membase);
++		port->membase = NULL;
 +	}
++}
++
++static int
++lqasc_request_port(struct uart_port *port)
++{
++	struct platform_device *pdev = to_platform_device(port->dev);
++	struct resource *mmres;
++	int size;
++
++	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!mmres)
++		return -ENODEV;
++	size = resource_size(mmres);
++
++	if (port->flags & UPF_IOREMAP) {
++		port->membase = ioremap_nocache(port->mapbase, size);
++		if (port->membase == NULL)
++			return -ENOMEM;
++	}
++	return 0;
 +}
 +
 +static void
-+ltq_pci_setup_gpio(void)
++lqasc_config_port(struct uart_port *port, int flags)
 +{
-+	/* PCI reset line is gpio driven */
-+	ltq_gpio_request(21, 0, 0, 1, "pci-reset");
-+
-+	/* PCI_REQ line */
-+	ltq_gpio_request(29, 1, 0, 0, "pci-req");
-+
-+	/* PCI_GNT line */
-+	ltq_gpio_request(30, 1, 0, 1, "pci-gnt");
-+}
-+
-+static int __devinit
-+ltq_pci_startup(void)
-+{
-+	u32 temp_buffer;
-+
-+	/* setup pci clock and gpis used by pci */
-+	ltq_pci_setup_gpio();
-+
-+	/* enable auto-switching between PCI and EBU */
-+	ltq_w32(0xa, PCI_CR_CLK_CTRL);
-+
-+	/* busy, i.e. configuration is not done, PCI access has to be retried */
-+	ltq_w32(ltq_r32(PCI_CR_PCI_MOD) & ~(1 << 24), PCI_CR_PCI_MOD);
-+	wmb();
-+	/* BUS Master/IO/MEM access */
-+	ltq_w32(ltq_r32(PCI_CS_STS_CMD) | 7, PCI_CS_STS_CMD);
-+
-+	/* enable external 2 PCI masters */
-+	temp_buffer = ltq_r32(PCI_CR_PC_ARB);
-+	temp_buffer &= (~(ltq_pci_req_mask << 16));
-+	/* enable internal arbiter */
-+	temp_buffer |= (1 << INTERNAL_ARB_ENABLE_BIT);
-+	/* enable internal PCI master reqest */
-+	temp_buffer &= (~(3 << PCI_MASTER0_REQ_MASK_2BITS));
-+
-+	/* enable EBU request */
-+	temp_buffer &= (~(3 << PCI_MASTER1_REQ_MASK_2BITS));
-+
-+	/* enable all external masters request */
-+	temp_buffer &= (~(3 << PCI_MASTER2_REQ_MASK_2BITS));
-+	ltq_w32(temp_buffer, PCI_CR_PC_ARB);
-+	wmb();
-+
-+	/* setup BAR memory regions */
-+	ltq_w32(0x18000000, PCI_CR_FCI_ADDR_MAP0);
-+	ltq_w32(0x18400000, PCI_CR_FCI_ADDR_MAP1);
-+	ltq_w32(0x18800000, PCI_CR_FCI_ADDR_MAP2);
-+	ltq_w32(0x18c00000, PCI_CR_FCI_ADDR_MAP3);
-+	ltq_w32(0x19000000, PCI_CR_FCI_ADDR_MAP4);
-+	ltq_w32(0x19400000, PCI_CR_FCI_ADDR_MAP5);
-+	ltq_w32(0x19800000, PCI_CR_FCI_ADDR_MAP6);
-+	ltq_w32(0x19c00000, PCI_CR_FCI_ADDR_MAP7);
-+	ltq_w32(0x1ae00000, PCI_CR_FCI_ADDR_MAP11hg);
-+	ltq_w32(ltq_calc_bar11mask(), PCI_CR_BAR11MASK);
-+	ltq_w32(0, PCI_CR_PCI_ADDR_MAP11);
-+	ltq_w32(0, PCI_CS_BASE_ADDR1);
-+	/* both TX and RX endian swap are enabled */
-+	ltq_w32(ltq_r32(PCI_CR_PCI_EOI) | 3, PCI_CR_PCI_EOI);
-+	wmb();
-+	ltq_w32(ltq_r32(PCI_CR_BAR12MASK) | 0x80000000, PCI_CR_BAR12MASK);
-+	ltq_w32(ltq_r32(PCI_CR_BAR13MASK) | 0x80000000, PCI_CR_BAR13MASK);
-+	/*use 8 dw burst length */
-+	ltq_w32(0x303, PCI_CR_FCI_BURST_LENGTH);
-+	ltq_w32(ltq_r32(PCI_CR_PCI_MOD) | (1 << 24), PCI_CR_PCI_MOD);
-+	wmb();
-+
-+	/* toggle reset pin */
-+	__gpio_set_value(21, 0);
-+	wmb();
-+	mdelay(1);
-+	__gpio_set_value(21, 1);
-+	return 0;
-+}
-+
-+int __init
-+pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	switch (slot) {
-+	case 13:
-+		/* IDSEL = AD29 --> USB Host Controller */
-+		return INT_NUM_IM1_IRL0 + 17;
-+	case 14:
-+		/* IDSEL = AD30 --> mini PCI connector */
-+		return INT_NUM_IM0_IRL0 + 22;
-+	default:
-+		printk(KERN_INFO "ltq_pci: no IRQ found for slot %d, pin %d\n",
-+			slot, pin);
-+		return 0;
++	if (flags & UART_CONFIG_TYPE) {
++		port->type = PORT_LTQ_ASC;
++		lqasc_request_port(port);
 +	}
 +}
 +
-+static int __devinit
-+ltq_pci_probe(struct platform_device *pdev)
++static int
++lqasc_verify_port(struct uart_port *port,
++	struct serial_struct *ser)
 +{
-+	struct ltq_pci_data *ltq_pci_data =
-+		(struct ltq_pci_data *) pdev->dev.platform_data;
-+	pci_probe_only = 0;
-+	ltq_pci_req_mask = ltq_pci_data->req_mask;
-+	ltq_pci_setup_clk(ltq_pci_data->clock);
-+	ltq_pci_startup();
-+	ltq_pci_mapped_cfg =
-+		(u32)ioremap_nocache(LTQ_PCI_CFG_BASE, LTQ_PCI_CFG_BASE);
-+	ltq_pci_controller.io_map_base =
-+		(unsigned long)ioremap(LTQ_PCI_IO_BASE, LTQ_PCI_IO_SIZE - 1);
-+	register_pci_controller(&ltq_pci_controller);
++	int ret = 0;
++	if (ser->type != PORT_UNKNOWN && ser->type != PORT_LTQ_ASC)
++		ret = -EINVAL;
++	if (ser->irq < 0 || ser->irq >= NR_IRQS)
++		ret = -EINVAL;
++	if (ser->baud_base < 9600)
++		ret = -EINVAL;
++	return ret;
++}
++
++static struct uart_ops lqasc_pops = {
++	.tx_empty =	lqasc_tx_empty,
++	.set_mctrl =	lqasc_set_mctrl,
++	.get_mctrl =	lqasc_get_mctrl,
++	.stop_tx =	lqasc_stop_tx,
++	.start_tx =	lqasc_start_tx,
++	.stop_rx =	lqasc_stop_rx,
++	.enable_ms =	lqasc_enable_ms,
++	.break_ctl =	lqasc_break_ctl,
++	.startup =	lqasc_startup,
++	.shutdown =	lqasc_shutdown,
++	.set_termios =	lqasc_set_termios,
++	.type =		lqasc_type,
++	.release_port =	lqasc_release_port,
++	.request_port =	lqasc_request_port,
++	.config_port =	lqasc_config_port,
++	.verify_port =	lqasc_verify_port,
++};
++
++static void
++lqasc_console_putchar(struct uart_port *port, int ch)
++{
++	int fifofree;
++
++	if (!port->membase)
++		return;
++
++	do {
++		fifofree = (ltq_r32(port->membase + LTQ_ASC_FSTAT)
++			& ASCFSTAT_TXFREEMASK) >> ASCFSTAT_TXFREEOFF;
++	} while (fifofree == 0);
++	ltq_w8(ch, port->membase + LTQ_ASC_TBUF);
++}
++
++
++static void
++lqasc_console_write(struct console *co, const char *s, u_int count)
++{
++	struct ltq_uart_port *ltq_port;
++	struct uart_port *port;
++	unsigned long flags;
++
++	if (co->index >= MAXPORTS)
++		return;
++
++	ltq_port = lqasc_port[co->index];
++	if (!ltq_port)
++		return;
++
++	port = &ltq_port->port;
++
++	local_irq_save(flags);
++	uart_console_write(port, s, count, lqasc_console_putchar);
++	local_irq_restore(flags);
++}
++
++static int __init
++lqasc_console_setup(struct console *co, char *options)
++{
++	struct ltq_uart_port *ltq_port;
++	struct uart_port *port;
++	int baud = 115200;
++	int bits = 8;
++	int parity = 'n';
++	int flow = 'n';
++
++	if (co->index >= MAXPORTS)
++		return -ENODEV;
++
++	ltq_port = lqasc_port[co->index];
++	if (!ltq_port)
++		return -ENODEV;
++
++	port = &ltq_port->port;
++
++	port->uartclk = clk_get_rate(ltq_port->clk);
++
++	if (options)
++		uart_parse_options(options, &baud, &parity, &bits, &flow);
++	return uart_set_options(port, co, baud, parity, bits, flow);
++}
++
++static struct console lqasc_console = {
++	.name =		"ttyS",
++	.write =	lqasc_console_write,
++	.device =	uart_console_device,
++	.setup =	lqasc_console_setup,
++	.flags =	CON_PRINTBUFFER,
++	.index =	-1,
++	.data =		&lqasc_reg,
++};
++
++static int __init
++lqasc_console_init(void)
++{
++	register_console(&lqasc_console);
++	return 0;
++}
++console_initcall(lqasc_console_init);
++
++static struct uart_driver lqasc_reg = {
++	.owner =	THIS_MODULE,
++	.driver_name =	DRVNAME,
++	.dev_name =	"ttyS",
++	.major =	TTY_MAJOR,
++	.minor =	64,
++	.nr =		MAXPORTS,
++	.cons =		&lqasc_console,
++};
++
++static int __devinit
++lqasc_probe(struct platform_device *pdev)
++{
++	struct ltq_uart_port *ltq_port;
++	struct uart_port *port;
++	struct resource *mmres, *irqres;
++	int tx_irq, rx_irq, err_irq;
++	struct clk *clk;
++	int ret;
++
++	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	irqres = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!mmres || !irqres)
++		return -ENODEV;
++
++	if (pdev->id >= MAXPORTS)
++		return -EBUSY;
++
++	if (lqasc_port[pdev->id] != NULL)
++		return -EBUSY;
++
++	clk = clk_get(&pdev->dev, "fpi");
++	if (IS_ERR(clk)) {
++		pr_err("failed to get fpi clk\n");
++		return -ENOENT;
++	}
++
++	tx_irq = platform_get_irq_byname(pdev, "tx");
++	if (tx_irq < 0) {
++		/* without named resources: assume standard irq scheme */
++		tx_irq = irqres->start;
++		rx_irq = irqres->start+2;
++		err_irq = irqres->start+3;
++	} else {
++		/* other irqs must be named also! */
++		rx_irq = platform_get_irq_byname(pdev, "rx");
++		err_irq = platform_get_irq_byname(pdev, "err");
++		if ((rx_irq < 0) | (err_irq < 0))
++			return -ENODEV;
++	}
++
++	ltq_port = kzalloc(sizeof(struct ltq_uart_port), GFP_KERNEL);
++	if (!ltq_port)
++		return -ENOMEM;
++
++	port = &ltq_port->port;
++
++	port->iotype	= SERIAL_IO_MEM;
++	port->flags	= ASYNC_BOOT_AUTOCONF | UPF_IOREMAP;
++	port->ops	= &lqasc_pops;
++	port->fifosize	= 16;
++	port->type	= PORT_LTQ_ASC,
++	port->line	= pdev->id;
++	port->dev	= &pdev->dev;
++
++	port->irq	= tx_irq; /* unused, just to be backward-compatibe */
++	port->mapbase	= mmres->start;
++
++	ltq_port->clk	= clk;
++
++	ltq_port->tx_irq = tx_irq;
++	ltq_port->rx_irq = rx_irq;
++	ltq_port->err_irq = err_irq;
++
++	lqasc_port[pdev->id] = ltq_port;
++	platform_set_drvdata(pdev, ltq_port);
++
++	ret = uart_add_one_port(&lqasc_reg, port);
++
++	return ret;
++}
++
++static int __devexit
++lqasc_remove(struct platform_device *pdev)
++{
++	struct ltq_uart_port *ltq_port = platform_get_drvdata(pdev);
++	int ret;
++
++	clk_put(ltq_port->clk);
++	platform_set_drvdata(pdev, NULL);
++	lqasc_port[pdev->id] = NULL;
++	ret = uart_remove_one_port(&lqasc_reg, &ltq_port->port);
++	kfree(ltq_port);
++
 +	return 0;
 +}
 +
-+static struct platform_driver
-+ltq_pci_driver = {
-+	.probe = ltq_pci_probe,
-+	.driver = {
-+		.name = "ltq_pci",
-+		.owner = THIS_MODULE,
++static struct platform_driver lqasc_driver = {
++	.probe		= lqasc_probe,
++	.remove		= __devexit_p(lqasc_remove),
++
++	.driver		= {
++		.name	= DRVNAME,
++		.owner	= THIS_MODULE,
 +	},
 +};
 +
 +int __init
-+pcibios_init(void)
++init_lqasc(void)
 +{
-+	int ret = platform_driver_register(&ltq_pci_driver);
-+	if (ret)
-+		printk(KERN_INFO "ltq_pci: Error registering platfom driver!");
++	int ret;
++
++	ret = uart_register_driver(&lqasc_reg);
++	if (ret != 0)
++		return ret;
++
++	ret = platform_driver_register(&lqasc_driver);
++	if (ret != 0)
++		uart_unregister_driver(&lqasc_reg);
++
 +	return ret;
 +}
 +
-+arch_initcall(pcibios_init);
-diff --git a/arch/mips/pci/pci-lantiq.h b/arch/mips/pci/pci-lantiq.h
-new file mode 100644
-index 0000000..de75dd7
---- /dev/null
-+++ b/arch/mips/pci/pci-lantiq.h
-@@ -0,0 +1,18 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
++void __exit
++exit_lqasc(void)
++{
++	platform_driver_unregister(&lqasc_driver);
++	uart_unregister_driver(&lqasc_reg);
++}
 +
-+#ifndef _LTQ_PCI_H__
-+#define _LTQ_PCI_H__
++module_init(init_lqasc);
++module_exit(exit_lqasc);
 +
-+extern u32 ltq_pci_mapped_cfg;
-+extern int ltq_pci_read_config_dword(struct pci_bus *bus,
-+	unsigned int devfn, int where, int size, u32 *val);
-+extern int ltq_pci_write_config_dword(struct pci_bus *bus,
-+	unsigned int devfn, int where, int size, u32 val);
-+
-+#endif
++MODULE_DESCRIPTION("Lantiq serial port driver");
++MODULE_LICENSE("GPL");
 -- 
 1.7.2.3

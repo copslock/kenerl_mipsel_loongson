@@ -1,90 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2011 08:41:19 +0100 (CET)
-Received: from [69.28.251.93] ([69.28.251.93]:37753 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490987Ab1AFHjZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Jan 2011 08:39:25 +0100
-Received: (qmail 3900 invoked from network); 6 Jan 2011 07:39:22 -0000
-Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 6 Jan 2011 07:39:22 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Wed, 05 Jan 2011 23:39:22 -0800
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6/6] MIPS: Limit fixrange_init() to the FIXMAP region
-Date:   Wed, 05 Jan 2011 23:31:30 -0800
-Message-Id: <e19154ae0e4900405b6e8586a31fa878@localhost>
-In-Reply-To: <8eec0c63f92528c501c0e6a0c8396359@localhost>
-References: <8eec0c63f92528c501c0e6a0c8396359@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2011 10:50:11 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:59035 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490980Ab1AFJuI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Jan 2011 10:50:08 +0100
+Message-ID: <4D25908E.9070509@openwrt.org>
+Date:   Thu, 06 Jan 2011 10:51:10 +0100
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100913 Icedove/3.0.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+To:     Jamie Iles <jamie@jamieiles.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Ralph Hempel <ralph.hempel@lantiq.com>,
+        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH 05/10] MIPS: lantiq: add watchdog support
+References: <1294257379-417-1-git-send-email-blogic@openwrt.org> <1294257379-417-6-git-send-email-blogic@openwrt.org> <20110105234910.GD2112@gallagher>
+In-Reply-To: <20110105234910.GD2112@gallagher>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28863
+X-archive-position: 28864
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-fixrange_init() allocates page tables for all addresses higher than
-FIXADDR_TOP.  On processors that override the default FIXADDR_TOP
-address of 0xfffe_0000, this can consume up to 4 pages (1 page per 4MB)
-for pgd's that are never used.
+On 06/01/11 00:49, Jamie Iles wrote:
+> I think you need a clk_put() here too to balance the clk_get() in the 
+> probe method so you'll need to keep a reference to the clk.
+>
+>   
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/mm/init.c       |    6 +++---
- arch/mips/mm/pgtable-32.c |    2 +-
- arch/mips/mm/pgtable-64.c |    2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+Hi Jamie,
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 2efcbd2..deb8b3a 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -279,11 +279,11 @@ void __init fixrange_init(unsigned long start, unsigned long end,
- 	k = __pmd_offset(vaddr);
- 	pgd = pgd_base + i;
- 
--	for ( ; (i < PTRS_PER_PGD) && (vaddr != end); pgd++, i++) {
-+	for ( ; (i < PTRS_PER_PGD) && (vaddr < end); pgd++, i++) {
- 		pud = (pud_t *)pgd;
--		for ( ; (j < PTRS_PER_PUD) && (vaddr != end); pud++, j++) {
-+		for ( ; (j < PTRS_PER_PUD) && (vaddr < end); pud++, j++) {
- 			pmd = (pmd_t *)pud;
--			for (; (k < PTRS_PER_PMD) && (vaddr != end); pmd++, k++) {
-+			for (; (k < PTRS_PER_PMD) && (vaddr < end); pmd++, k++) {
- 				if (pmd_none(*pmd)) {
- 					pte = (pte_t *) alloc_bootmem_low_pages(PAGE_SIZE);
- 					set_pmd(pmd, __pmd((unsigned long)pte));
-diff --git a/arch/mips/mm/pgtable-32.c b/arch/mips/mm/pgtable-32.c
-index 575e401..adc6911 100644
---- a/arch/mips/mm/pgtable-32.c
-+++ b/arch/mips/mm/pgtable-32.c
-@@ -52,7 +52,7 @@ void __init pagetable_init(void)
- 	 * Fixed mappings:
- 	 */
- 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, 0, pgd_base);
-+	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
- 
- #ifdef CONFIG_HIGHMEM
- 	/*
-diff --git a/arch/mips/mm/pgtable-64.c b/arch/mips/mm/pgtable-64.c
-index 78eaa4f..cda4e30 100644
---- a/arch/mips/mm/pgtable-64.c
-+++ b/arch/mips/mm/pgtable-64.c
-@@ -76,5 +76,5 @@ void __init pagetable_init(void)
- 	 * Fixed mappings:
- 	 */
- 	vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
--	fixrange_init(vaddr, 0, pgd_base);
-+	fixrange_init(vaddr, vaddr + FIXADDR_SIZE, pgd_base);
- }
--- 
-1.7.0.4
+i will fold your suggestions into the series.
+
+the clk.c/h implementation on the lantiq target is very simple. it only
+allows to read the static rates of the 3 clocks. clk_put is implemented
+as follows
+
+void
+clk_put(struct clk *clk)
+{
+    /* not used */
+}
+EXPORT_SYMBOL(clk_put);
+
+so in theory you are right and we should call that function, however as
+it is only a stub and the driver is only used by the lantiq target i
+think it is save to leave out the clk_put(); call. we could however put
+a commet in the code to make this clear (same as with the clk_enable()
+not being needed as the clocks are always running)
+
+Thanks,
+John

@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2011 10:50:11 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:59035 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2011 11:05:23 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:35323 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490980Ab1AFJuI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 6 Jan 2011 10:50:08 +0100
-Message-ID: <4D25908E.9070509@openwrt.org>
-Date:   Thu, 06 Jan 2011 10:51:10 +0100
+        id S1490980Ab1AFKFU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Jan 2011 11:05:20 +0100
+Message-ID: <4D25941E.80702@openwrt.org>
+Date:   Thu, 06 Jan 2011 11:06:22 +0100
 From:   John Crispin <blogic@openwrt.org>
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100913 Icedove/3.0.7
 MIME-Version: 1.0
-To:     Jamie Iles <jamie@jamieiles.com>
+To:     David Woodhouse <dwmw2@infradead.org>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 05/10] MIPS: lantiq: add watchdog support
-References: <1294257379-417-1-git-send-email-blogic@openwrt.org> <1294257379-417-6-git-send-email-blogic@openwrt.org> <20110105234910.GD2112@gallagher>
-In-Reply-To: <20110105234910.GD2112@gallagher>
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
+Subject: Re: [PATCH 07/10] MIPS: lantiq: add NOR flash CFI address swizzle
+References: <1294257379-417-1-git-send-email-blogic@openwrt.org> <1294257379-417-8-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1294257379-417-8-git-send-email-blogic@openwrt.org>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28864
+X-archive-position: 28865
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,32 +29,32 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On 06/01/11 00:49, Jamie Iles wrote:
-> I think you need a clk_put() here too to balance the clk_get() in the 
-> probe method so you'll need to keep a reference to the clk.
->
+On 05/01/11 20:56, John Crispin wrote:
+>  
+>  	adr += chip->start;
+> +#ifdef CONFIG_MTD_CFI_CMD_SWIZZLE
+> +	adr ^= 2;
+> +#endif
+>  
+>  	mutex_lock(&chip->mutex);
+>  	ret = get_chip(map, chip, adr, FL_WRITING);
 >   
 
-Hi Jamie,
+Hi,
 
-i will fold your suggestions into the series.
+What this patch essentially does is to make sure to pass a addr with the
+^=2 hack already applied, so that the complex map ends up with an un
+swizzled addr as it applies the hack internally again.
 
-the clk.c/h implementation on the lantiq target is very simple. it only
-allows to read the static rates of the 3 clocks. clk_put is implemented
-as follows
+I think it would be cleanest to extend the read/write callbacks of
+struct map_info; with a flag indicating whether we are doing a CMD or
+DATA action. as the 2 following macros are used anyway, it should not be
+too hard to implement this.
 
-void
-clk_put(struct clk *clk)
-{
-    /* not used */
-}
-EXPORT_SYMBOL(clk_put);
+#define map_read(map, ofs) (map)->read(map, ofs)
+#define map_write(map, datum, ofs) (map)->write(map, datum, ofs)
 
-so in theory you are right and we should call that function, however as
-it is only a stub and the driver is only used by the lantiq target i
-think it is save to leave out the clk_put(); call. we could however put
-a commet in the code to make this clear (same as with the clk_enable()
-not being needed as the clocks are always running)
+I am not sure however if this is the correct fix.
 
 Thanks,
 John

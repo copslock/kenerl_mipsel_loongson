@@ -1,327 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2011 00:49:24 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:62818 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490998Ab1AEXtU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 6 Jan 2011 00:49:20 +0100
-Received: by wwi17 with SMTP id 17so15960004wwi.24
-        for <multiple recipients>; Wed, 05 Jan 2011 15:49:14 -0800 (PST)
-Received: by 10.216.141.75 with SMTP id f53mr10556824wej.16.1294271353514;
-        Wed, 05 Jan 2011 15:49:13 -0800 (PST)
-Received: from localhost (cpc1-chap8-2-0-cust102.aztw.cable.virginmedia.com [94.169.120.103])
-        by mx.google.com with ESMTPS id n11sm11485128wej.43.2011.01.05.15.49.11
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 05 Jan 2011 15:49:12 -0800 (PST)
-Date:   Wed, 5 Jan 2011 23:49:10 +0000
-From:   Jamie Iles <jamie@jamieiles.com>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Ralph Hempel <ralph.hempel@lantiq.com>,
-        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 05/10] MIPS: lantiq: add watchdog support
-Message-ID: <20110105234910.GD2112@gallagher>
-References: <1294257379-417-1-git-send-email-blogic@openwrt.org>
- <1294257379-417-6-git-send-email-blogic@openwrt.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1294257379-417-6-git-send-email-blogic@openwrt.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <jamie@jamieiles.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Jan 2011 01:30:32 +0100 (CET)
+Received: from kroah.org ([198.145.64.141]:54461 "EHLO coco.kroah.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490979Ab1AFAa3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Jan 2011 01:30:29 +0100
+Received: from localhost (c-71-227-141-191.hsd1.wa.comcast.net [71.227.141.191])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by coco.kroah.org (Postfix) with ESMTPSA id C30AE4898F;
+        Wed,  5 Jan 2011 16:30:24 -0800 (PST)
+X-Mailbox-Line: From gregkh@clark.site Wed Jan  5 16:23:05 2011
+Message-Id: <20110106002304.923508592@clark.site>
+User-Agent: quilt/0.48-11.2
+Date:   Wed, 05 Jan 2011 16:23:05 -0800
+From:   Greg KH <gregkh@suse.de>
+To:     linux-kernel@vger.kernel.org, stable@kernel.org
+Cc:     stable-review@kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, alan@lxorguk.ukuu.org.uk,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [086/152] MIPS: jz4740: qi_lb60: Fix gpio for the 6th row of the keyboard matrix
+In-Reply-To: <20110106002500.GA3172@kroah.com>
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28856
+X-archive-position: 28857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jamie@jamieiles.com
+X-original-sender: gregkh@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi John,
+2.6.36-stable review patch.  If anyone has any objections, please let us know.
 
-A few nitpicks inline, but otherwise looks good to me.
+------------------
 
-Jamie
+From: Lars-Peter Clausen <lars@metafoo.de>
 
-On Wed, Jan 05, 2011 at 08:56:14PM +0100, John Crispin wrote:
-> This patch adds the driver for the watchdog found inside the Lantiq SoC family.
-> 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-> Cc: Wim Van Sebroeck <wim@iguana.be>
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-watchdog@vger.kernel.org
-> ---
->  drivers/watchdog/Kconfig      |    6 +
->  drivers/watchdog/Makefile     |    1 +
->  drivers/watchdog/lantiq_wdt.c |  208 +++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 215 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/watchdog/lantiq_wdt.c
-[...]
-> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-> new file mode 100644
-> index 0000000..543bcf1
-> --- /dev/null
-> +++ b/drivers/watchdog/lantiq_wdt.c
-> @@ -0,0 +1,208 @@
-> +/*
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License version 2 as published
-> + *  by the Free Software Foundation.
-> + *
-> + *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-> + *  Based on EP93xx wdt driver
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/fs.h>
-> +#include <linux/miscdevice.h>
-> +#include <linux/miscdevice.h>
+commit fe749aab1d21cbb4d87527a7df8799583c233496 upstream.
 
-Duplicated include of linux/miscdevice.h
+This patch fixes the gpio number for the 6th row of the keyboard matrix.
 
-> +#include <linux/watchdog.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/uaccess.h>
-> +#include <linux/clk.h>
-> +
-> +#include <lantiq.h>
-> +
-> +#define LTQ_WDT_PW1			0x00BE0000
-> +#define LTQ_WDT_PW2			0x00DC0000
-> +
-> +#define LTQ_BIU_WDT_CR		0x3F0
-> +#define LTQ_BIU_WDT_SR		0x3F8
+(And fixes a typo in my name...)
 
-It's not obvious to me what these defines actually mean. A couple of 
-short comments to describe what they are?
-> +
-> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
-> +static int wdt_ok_to_close;
-> +#endif
-> +
-> +static int wdt_timeout = 30;
-> +static __iomem void *wdt_membase;
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
 
-I think this would normally be "static void __iomem" rather than "static 
-__iomem void". Also these could do with the ltq_ prefix for namespacing.
+---
+ arch/mips/jz4740/board-qi_lb60.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +static unsigned long io_region_clk;
-
-Better to name this io_region_clk_rate?
-
-> +
-> +static int
-> +ltq_wdt_enable(unsigned int timeout)
-> +{
-> +	ltq_w32(LTQ_WDT_PW1, wdt_membase + LTQ_BIU_WDT_CR);
-> +	ltq_w32(LTQ_WDT_PW2 |
-> +		(0x3 << 26) | /* PWL */
-> +		(0x3 << 24) | /* CLKDIV */
-> +		(0x1 << 31) | /* enable */
-> +		((timeout * (io_region_clk / 0x40000)) + 0x1000), /* reload */
-> +			wdt_membase + LTQ_BIU_WDT_CR);
-
-Perhaps a comment describing the how this value is calculated? What does 
-PWL mean and what are the significance of 0x40000 and 0x1000? Also, do 
-you need to check that the timeout won't overflow the bits for the 
-reload value?
-
-> +	return 0;
-> +}
-> +
-> +static void
-> +ltq_wdt_disable(void)
-> +{
-> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
-> +	wdt_ok_to_close = 0;
-> +#endif
-> +	ltq_w32(LTQ_WDT_PW1, wdt_membase + LTQ_BIU_WDT_CR);
-> +	ltq_w32(LTQ_WDT_PW2, wdt_membase + LTQ_BIU_WDT_CR);
-> +}
-> +
-> +static ssize_t
-> +ltq_wdt_write(struct file *file, const char __user *data,
-> +		size_t len, loff_t *ppos)
-> +{
-> +	size_t i;
-> +	if (!len)
-> +		return 0;
-> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
-> +	for (i = 0; i != len; i++) {
-> +		char c;
-> +		if (get_user(c, data + i))
-> +			return -EFAULT;
-> +		if (c == 'V')
-> +			wdt_ok_to_close = 1;
-> +	}
-> +#endif
-> +	ltq_wdt_enable(wdt_timeout);
-> +	return len;
-> +}
-> +
-> +static struct watchdog_info ident = {
-> +	.options = WDIOF_MAGICCLOSE,
-
-I think you can also add WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING.
-
-> +	.identity = "ltq_wdt",
-> +};
-> +
-> +static long
-> +ltq_wdt_ioctl(struct file *file,
-> +		unsigned int cmd, unsigned long arg)
-> +{
-> +	int ret = -ENOTTY;
-> +	switch (cmd) {
-> +	case WDIOC_GETSUPPORT:
-> +		ret = copy_to_user((struct watchdog_info __user *)arg, &ident,
-> +				sizeof(ident)) ? -EFAULT : 0;
-> +		break;
-> +
-> +	case WDIOC_GETTIMEOUT:
-> +		ret = put_user(wdt_timeout, (int __user *)arg);
-> +		break;
-> +
-> +	case WDIOC_SETTIMEOUT:
-> +		ret = get_user(wdt_timeout, (int __user *)arg);
-
-Should you reset the WDT with the new timeout here rather than waiting 
-for the next keepalive?
-
-> +		break;
-> +
-> +	case WDIOC_KEEPALIVE:
-> +		ltq_wdt_enable(wdt_timeout);
-> +		ret = 0;
-> +		break;
-> +	}
-> +	return ret;
-> +}
-> +
-> +static int
-> +ltq_wdt_open(struct inode *inode, struct file *file)
-> +{
-> +	ltq_wdt_enable(wdt_timeout);
-> +	return nonseekable_open(inode, file);
-> +}
-> +
-> +static int
-> +ltq_wdt_release(struct inode *inode, struct file *file)
-> +{
-> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
-> +	if (wdt_ok_to_close)
-> +		ltq_wdt_disable();
-> +	else
-> +#endif
-> +		printk(KERN_ERR "ltq_wdt: watchdog closed without warning,"
-> +			" rebooting system\n");
-> +	return 0;
-> +}
-> +
-> +static const struct file_operations ltq_wdt_fops = {
-> +	.owner			= THIS_MODULE,
-> +	.write			= ltq_wdt_write,
-> +	.unlocked_ioctl	= ltq_wdt_ioctl,
-
-Align the .unlocked_ioctl assignment with the others?
-
-> +	.open			= ltq_wdt_open,
-> +	.release		= ltq_wdt_release,
-
-Add ".llseek = no_llseek"?
-
-> +};
-> +
-> +static struct miscdevice ltq_wdt_miscdev = {
-> +	.minor		= WATCHDOG_MINOR,
-> +	.name		= "watchdog",
-> +	.fops		= &ltq_wdt_fops,
-> +};
-> +
-> +static int
-> +ltq_wdt_probe(struct platform_device *pdev)
-> +{
-> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	struct clk *clk;
-> +	int ret = 0;
-> +	if (!res)
-> +		return -ENOENT;
-> +	res = request_mem_region(res->start, resource_size(res),
-> +		dev_name(&pdev->dev));
-> +	if (!res)
-> +		return -EBUSY;
-> +	wdt_membase = ioremap_nocache(res->start, resource_size(res));
-> +	if (!wdt_membase) {
-> +		ret = -ENOMEM;
-> +		goto err_release_mem_region;
-> +	}
-
-You can use devm_request_mem_region() and devm_ioremap_nocache() to 
-simplify the error handling and removal.
-
-> +	clk = clk_get(&pdev->dev, "io");
-
-Do you need a clk_enable() here too? Or a comment explaining it's always 
-enabled (if it is)?
-
-> +	io_region_clk = clk_get_rate(clk);;
-> +	ret = misc_register(&ltq_wdt_miscdev);
-> +	if (!ret)
-> +		return 0;
-> +
-> +	iounmap(wdt_membase);
-> +err_release_mem_region:
-> +	release_mem_region(res->start, resource_size(res));
-> +	return ret;
-> +}
-> +
-> +static int
-> +ltq_wdt_remove(struct platform_device *dev)
-> +{
-> +	ltq_wdt_disable();
-> +	misc_deregister(&ltq_wdt_miscdev);
-
-I think you need a clk_put() here too to balance the clk_get() in the 
-probe method so you'll need to keep a reference to the clk.
-
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver ltq_wdt_driver = {
-> +	.probe = ltq_wdt_probe,
-> +	.remove = ltq_wdt_remove,
-> +	.driver = {
-> +		.name = "ltq_wdt",
-> +		.owner = THIS_MODULE,
-> +	},
-> +};
-> +
-> +static int __init
-> +init_ltq_wdt(void)
-> +{
-> +	return platform_driver_register(&ltq_wdt_driver);
-> +}
-> +
-> +static void __exit
-> +exit_ltq_wdt(void)
-> +{
-> +	platform_driver_unregister(&ltq_wdt_driver);
-> +}
-> +
-> +module_init(init_ltq_wdt);
-> +module_exit(exit_ltq_wdt);
-> +
-> +MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
-> +MODULE_DESCRIPTION("Lantiq Watchdog");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);
-> -- 
-> 1.7.2.3
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-watchdog" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--- a/arch/mips/jz4740/board-qi_lb60.c
++++ b/arch/mips/jz4740/board-qi_lb60.c
+@@ -5,7 +5,7 @@
+  *
+  * Copyright (c) 2009 Qi Hardware inc.,
+  * Author: Xiangfu Liu <xiangfu@qi-hardware.com>
+- * Copyright 2010, Lars-Petrer Clausen <lars@metafoo.de>
++ * Copyright 2010, Lars-Peter Clausen <lars@metafoo.de>
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License version 2 or later
+@@ -235,7 +235,7 @@ static const unsigned int qi_lb60_keypad
+ 	QI_LB60_GPIO_KEYIN(3),
+ 	QI_LB60_GPIO_KEYIN(4),
+ 	QI_LB60_GPIO_KEYIN(5),
+-	QI_LB60_GPIO_KEYIN(7),
++	QI_LB60_GPIO_KEYIN(6),
+ 	QI_LB60_GPIO_KEYIN8,
+ };
+ 

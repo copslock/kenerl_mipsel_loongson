@@ -1,98 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jan 2011 19:40:58 +0100 (CET)
-Received: from gateway13.websitewelcome.com ([67.18.22.80]:43687 "HELO
-        gateway13.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491026Ab1AHSkz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 8 Jan 2011 19:40:55 +0100
-Received: (qmail 32457 invoked from network); 8 Jan 2011 18:39:49 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway13.websitewelcome.com with SMTP; 8 Jan 2011 18:39:49 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:Subject:Content-Type:Content-Transfer-Encoding:X-Source:X-Source-Args:X-Source-Dir;
-        b=SQN9rpsavQuvnjBeKD8tE9PHawPGQ1OgZwoy6WyiAYoJH9U0skS1XZIg7MVTqrGk/SoG9m03YhweBEAmwP1Z3Fs7txKWXDvY+3qlh5kL8qMX9QV2SAEce3sioDzb/dtK;
-Received: from c-98-207-157-135.hsd1.ca.comcast.net ([98.207.157.135]:1442 helo=[127.0.0.1])
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1Pbdia-0005ix-UG; Sat, 08 Jan 2011 12:40:49 -0600
-Message-ID: <4D28AFB4.7090108@paralogos.com>
-Date:   Sat, 08 Jan 2011 10:40:52 -0800
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Jan 2011 20:34:03 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:41674 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491026Ab1AHTeA convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 8 Jan 2011 20:34:00 +0100
+Received: by fxm19 with SMTP id 19so17220132fxm.36
+        for <linux-mips@linux-mips.org>; Sat, 08 Jan 2011 11:33:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=s3x+vER1dHBDK5f6jr2dRooywVSNQNKrAMpNtHlyLaw=;
+        b=CB3Df+MY/Hu9VqfUK5Jy3dFUpiwRJ0zNaApaCqF+VZpaEN97qJsxnArfC8QMdA/2ii
+         RUYRwT2tQ5BmEbxpP1N3c/VLr3IwQd7GNSJ3f55C8TMvLYTkumaXXtxlDbV27eOxjjTY
+         WO4CvP1TGMPhlYqzw09k4ck5VpW6JfaRf7QjQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=aRCBSJ8EHQbUNniuZs+vA5YKSU+BJBRktG+dc1kUP94NZwbul3w1LmfYf86paymPEz
+         LcqNNCkJ4liuJ0gtPLCUFhMUww2XAuh60bnRbvki2uci+t7U4L303V/28j/pxXhLMZlM
+         hg2RLyBiS0JP0CrYtMtir+5daHrJ/U7rAzMHA=
 MIME-Version: 1.0
-To:     Linux MIPS org <linux-mips@linux-mips.org>,
-        tsbogend@alpha.franken.de
-Subject: MIPS Malta and PCNet32 Driver
+Received: by 10.223.100.16 with SMTP id w16mr181825fan.85.1294515233261; Sat,
+ 08 Jan 2011 11:33:53 -0800 (PST)
+Received: by 10.223.74.136 with HTTP; Sat, 8 Jan 2011 11:33:53 -0800 (PST)
+In-Reply-To: <4D275F80.2000307@paralogos.com>
+References: <8F242B230AD6474C8E7815DE0B4982D7179FB88F@EXV1.corp.adtran.com>
+        <1293470392.27661.202.camel@paanoop1-desktop>
+        <1293524389.27661.210.camel@paanoop1-desktop>
+        <4D19A31E.1090905@paralogos.com>
+        <1293798476.27661.279.camel@paanoop1-desktop>
+        <4D1EE913.1070203@paralogos.com>
+        <1294067561.27661.293.camel@paanoop1-desktop>
+        <4D21F5D3.50604@paralogos.com>
+        <1294082426.27661.330.camel@paanoop1-desktop>
+        <4D22D7B3.2050609@paralogos.com>
+        <1294146165.27661.361.camel@paanoop1-desktop>
+        <1294151822.27661.375.camel@paanoop1-desktop>
+        <4D235717.1000603@paralogos.com>
+        <1294163657.27661.386.camel@paanoop1-desktop>
+        <4D2367EE.7000702@paralogos.com>
+        <1294233097.27661.391.camel@paanoop1-desktop>
+        <4D24C525.5000306@paralogos.com>
+        <1294345396.27661.422.camel@paanoop1-desktop>
+        <4D2650D6.4030102@paralogos.com>
+        <1294387019.27661.458.camel@paanoop1-desktop>
+        <4D275F80.2000307@paralogos.com>
+Date:   Sun, 9 Jan 2011 01:03:53 +0530
+Message-ID: <AANLkTi=CD+RmXNsukqmpH5xwTbwfnEr5LK92tJf-FsSn@mail.gmail.com>
+Subject: Re: SMTC support status in latest git head.
+From:   Anoop P A <anoop.pa@gmail.com>
+To:     "Kevin D. Kissell" <kevink@paralogos.com>
+Cc:     STUART VENTERS <stuart.venters@adtran.com>,
+        "Anoop P.A." <Anoop_P.A@pmc-sierra.com>, linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <kevink@paralogos.com>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <anoop.pa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28885
+X-archive-position: 28886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: anoop.pa@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-As per an email to the linux-mips group from Thomas Schwinge on July 30,
-2010, there's a problem using current (post 2.6.29) sources for a kernel
-with the pcnet32 driver with the PCNet32 chip on the MIPS Malta platform
-in some configurations.  The probe1 routine fails the test below and
-spits out the "No access methods" diagnostic:
+On Sat, Jan 8, 2011 at 12:16 AM, Kevin D. Kissell <kevink@paralogos.com> wrote:
+> On 01/06/11 23:56, Anoop P A wrote:
+>>
+>> On Thu, 2011-01-06 at 15:31 -0800, Kevin D. Kissell wrote:
+>>>
+>>> I'm sure I've said this before, and it's in various comments in the SMTC
+>>> code, but...
+>
+> As an aside to this conversation, would it be possible to create a
+> Documentation/mips/SMTC.txt file that would actually propagate
+> upstream, so that I'd stop being the sole repository of SMTC folklore?
+> I only maintain it as a hobby.
+>>
+>> Ok. Well thanks much for your detailed explanation. Well I hope I found
+>> the root cause . smtc_clockevent_init() was overriding irq_hwmask even
+>> if are using platform specific get_c0_compare_int. With following patch
+>> everything seems to be working for me.
+>> ------------------------------------------------------------------------
+>> diff --git a/arch/mips/kernel/cevt-smtc.c b/arch/mips/kernel/cevt-smtc.c
+>> index 2e72d30..a25fc59 100644
+>> --- a/arch/mips/kernel/cevt-smtc.c
+>> +++ b/arch/mips/kernel/cevt-smtc.c
+>> @@ -310,9 +310,14 @@ int __cpuinit smtc_clockevent_init(void)
+>>                return 0;
+>>        /*
+>>         * And we need the hwmask associated with the c0_compare
+>> -        * vector to be initialized.
+>> +        * vector to be initialized. However incase of platform
+>> +        * specific get_co_compare_int, don't override irq_hwmask
+>> +        * expect platform code to set a valid mask value.
+>>         */
+>> -       irq_hwmask[irq] = (0x100<<  cp0_compare_irq);
+>> +
+>> +       if (!get_c0_compare_int)
+>> +               irq_hwmask[irq] = (0x100<<  cp0_compare_irq);
+>> +
+>>        if (cp0_timer_irq_installed)
+>>                return 0;
+>> -----------------------------------------------------------------------
+>
+> I'm still not clear on one point that, to me, is pretty important when
+> engineering a fix here.  Are you, in fact, using the Count/Compare
+> interrupt system, but having the externalization of the compare
+> interrupt routed back through an intervening interrupt controller,
+> or is your timer coming from another source?
+>
+> In the former case, I think you're on the right track as to the
+> possible cause of a problem, but the fix should actually be simpler
+> and rather more elegant.  Why can't you simply see to it that
+> cp0_compare_irq is set to the right value, either at compile time,
+> or in your earliest platform initialization of the interrupt controller?
+> That would be a one-line, inline change and spare us another
+> cryptic conditional.
 
-...
-        /* NOTE: 16-bit check is first, otherwise some older PCnet chips
-fail */
-        if (pcnet32_wio_read_csr(ioaddr, 0) == 4 &&
-pcnet32_wio_check(ioaddr)) {
-                a = &pcnet32_wio;
-        } else {
-                pcnet32_dwio_reset(ioaddr);
-                if (pcnet32_dwio_read_csr(ioaddr, 0) == 4
-                    && pcnet32_dwio_check(ioaddr)) {
-                        a = &pcnet32_dwio;
-                } else {
-                        if (pcnet32_debug & NETIF_MSG_PROBE)
-                                printk(KERN_ERR PFX "No access methods\n");
-                        goto err_release_region;
-                }
-        }
+Yes ,it is first case.
 
-The chip is visible to the kernel and turns up in lspci:
+http://git.linux-mips.org/?p=linux.git;a=commit;h=38760d40ca61b18b2809e9c28df8b3ff9af8a02b
 
--bash-3.1# lspci -tv
--[0000:00]-+-0a.0  Intel Corporation 82371AB/EB/MB PIIX4 ISA
-           +-0a.1  Intel Corporation 82371AB/EB/MB PIIX4 IDE
-           +-0a.2  Intel Corporation 82371AB/EB/MB PIIX4 USB
-           +-0a.3  Intel Corporation 82371AB/EB/MB PIIX4 ACPI
-           +-0b.0  Advanced Micro Devices [AMD] 79c970 [PCnet32 LANCE]
-           +-0c.0  Cirrus Logic Crystal CS4281 PCI Audio
-           +-11.0  MIPS Technologies, Inc. SOC-it 101 System Controller
-           \-13.0-[0000:01]----00.0  Matrox Graphics, Inc. G400/G450
--bash-3.1# lspci -n
-00:0a.0 0601: 8086:7110 (rev 02)
-00:0a.1 0101: 8086:7111 (rev 01)
-00:0a.2 0c03: 8086:7112 (rev 01)
-00:0a.3 0680: 8086:7113 (rev 02)
-00:0b.0 0200: 1022:2000 (rev 44)
-00:0c.0 0401: 1013:6005 (rev 01)
-00:11.0 0600: 153f:0001 (rev 01)
-00:13.0 0604: 3388:0021 (rev 13)
-01:00.0 0300: 102b:0525 (rev 85)
+Above mentioned patch enables platforms to utilize 4k timer code with
+platform specific timer interrupts. cevt-smtc also had ( copied from cevt-r4k)
+referred code. Given the specific irq  support in cevt-smtc we should add
+support for specific hwmask , IMHO.
 
-I'm suspecting that the problem is at least as likely to be in the Malta
-PCI support as in the PCNet driver itself.  Is this phenomenon
-understood? Has there been a fix circulated for it?
-
-            Regards,
-
-            Kevin K.
+>
+> In the later case, you'll presumably be having lots of other problems,
+> as cevt-smtc.c is intertwined with cevt-r4k.c and the Count/Compare
+> paradigm.
+>
+>            Regards,
+>
+>            Kevin K.
+>
+>

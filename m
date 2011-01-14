@@ -1,121 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2011 02:56:42 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13504 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492830Ab1ANBz4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Jan 2011 02:55:56 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d2fad5a0000>; Thu, 13 Jan 2011 17:56:42 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 13 Jan 2011 17:55:54 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 13 Jan 2011 17:55:54 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p0E1tnt4016168;
-        Thu, 13 Jan 2011 17:55:49 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p0E1tm81016167;
-        Thu, 13 Jan 2011 17:55:48 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 2/2] MIPS: Octeon: Add initrd from named block support.
-Date:   Thu, 13 Jan 2011 17:55:43 -0800
-Message-Id: <1294970143-16124-3-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1294970143-16124-1-git-send-email-ddaney@caviumnetworks.com>
-References: <1294970143-16124-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 14 Jan 2011 01:55:54.0370 (UTC) FILETIME=[2DB42620:01CBB38E]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Jan 2011 02:57:07 +0100 (CET)
+Received: from [69.28.251.93] ([69.28.251.93]:54488 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492828Ab1ANB4R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 14 Jan 2011 02:56:17 +0100
+Received: (qmail 11739 invoked from network); 14 Jan 2011 01:56:13 -0000
+Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 14 Jan 2011 01:56:13 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Thu, 13 Jan 2011 17:56:13 -0800
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     <macro@linux-mips.org>, <skuribay@pobox.com>, <raiko@niisi.msk.ru>,
+        <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 1/6] MIPS: Sync after cacheflush on BMIPS processors
+Date:   Thu, 13 Jan 2011 17:52:12 -0800
+Message-Id: <491015d51e5d3d36c517da09e038ecaf@localhost>
+User-Agent: vim 7.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28909
+X-archive-position: 28910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Many Octeon bootloaders have the ability to create named blocks of
-memory.  Add the ability to use an initrd loaded into such a block.
-Since the block may be anywhere in memory, set initrd_not_reserved and
-add it as BOOT_MEM_INIT_RAM region, allowing the memory to be reused.
+On BMIPS processors, cache writeback operations may complete before the
+data has actually been written out to memory.  Subsequent uncached reads
+(or I/O operations) may see stale data unless a sync instruction is
+executed after the writeback loop.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- arch/mips/cavium-octeon/setup.c |   30 ++++++++++++++++++++++++++----
- 1 files changed, 26 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/hazards.h |   21 +++++++++++++++++++++
+ arch/mips/mm/c-r4k.c            |    5 +++++
+ 2 files changed, 26 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index b4a977b..2c3c439 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -20,6 +20,9 @@
- #include <linux/platform_device.h>
- #include <linux/serial_core.h>
- #include <linux/serial_8250.h>
-+#ifdef CONFIG_BLK_DEV_INITRD
-+#include <linux/initrd.h>
-+#endif
- 
- #include <asm/processor.h>
- #include <asm/reboot.h>
-@@ -64,6 +67,9 @@ static int octeon_uart;
- extern asmlinkage void handle_int(void);
- extern asmlinkage void plat_irq_dispatch(void);
- 
-+/* If an initrd named block is specified, its name goes here. */
-+static char __initdata rd_name[64];
-+
- /**
-  * Return non zero if we are currently running in the Octeon simulator
-  *
-@@ -585,13 +591,18 @@ void __init prom_init(void)
- 			MAX_MEMORY <<= 20;
- 			if (MAX_MEMORY == 0)
- 				MAX_MEMORY = 32ull << 30;
--		} else if (strcmp(arg, "ecc_verbose") == 0) {
-+		} else if (strncmp(arg, "rd_name=", 8) == 0) {
-+			strncpy(rd_name, arg + 8, sizeof(rd_name));
-+			rd_name[sizeof(rd_name) - 1] = 0;
-+		}
- #ifdef CONFIG_CAVIUM_REPORT_SINGLE_BIT_ECC
-+		else if (strcmp(arg, "ecc_verbose") == 0) {
- 			__cvmx_interrupt_ecc_report_single_bit_errors = 1;
- 			pr_notice("Reporting of single bit ECC errors is "
- 				  "turned on\n");
-+		}
+diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
+index 4e33216..655da05 100644
+--- a/arch/mips/include/asm/hazards.h
++++ b/arch/mips/include/asm/hazards.h
+@@ -270,4 +270,25 @@ ASMMACRO(disable_fpu_hazard,
+ )
  #endif
--		} else if (strlen(arcs_cmdline) + strlen(arg) + 1 <
-+		else if (strlen(arcs_cmdline) + strlen(arg) + 1 <
- 			   sizeof(arcs_cmdline) - 1) {
- 			strcat(arcs_cmdline, " ");
- 			strcat(arcs_cmdline, arg);
-@@ -649,11 +660,22 @@ static __init void memory_exclude_page(u64 addr, u64 *mem, u64 *size)
- void __init plat_mem_setup(void)
- {
- 	uint64_t mem_alloc_size;
--	uint64_t total;
-+	uint64_t total = 0;
- 	int64_t memory;
  
--	total = 0;
- 
-+#ifdef CONFIG_BLK_DEV_INITRD
-+	const struct cvmx_bootmem_named_block_desc *initrd_block;
++/*
++ * Some processors will "pipeline" cache writeback operations, and need an
++ * extra sync instruction to ensure that they are actually flushed out to
++ * memory.  Performing an uncached read (or an I/O operation) without the
++ * flush may cause stale data to be fetched.
++ */
 +
-+	if (rd_name[0] &&
-+	    (initrd_block = cvmx_bootmem_find_named_block(rd_name)) != NULL) {
-+		initrd_start = initrd_block->base_addr + PAGE_OFFSET;
-+		initrd_end = initrd_start + initrd_block->size;
-+		add_memory_region(initrd_block->base_addr, initrd_block->size,
-+				  BOOT_MEM_INIT_RAM);
-+		initrd_not_reserved = 1;
-+	}
++#if defined(CONFIG_CPU_BMIPS3300) || defined(CONFIG_CPU_BMIPS4350) || \
++    defined(CONFIG_CPU_BMIPS4380) || defined(CONFIG_CPU_BMIPS5000)
++
++#define cacheflush_hazard()						\
++do {									\
++	__sync();							\
++} while (0)
++
++#else
++
++#define cacheflush_hazard() do { } while (0)
++
 +#endif
- 	/*
- 	 * The Mips memory init uses the first memory location for
- 	 * some memory vectors. When SPARSEMEM is in use, it doesn't
++
+ #endif /* _ASM_HAZARDS_H */
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index b4923a7..6c113cd 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -33,6 +33,7 @@
+ #include <asm/mmu_context.h>
+ #include <asm/war.h>
+ #include <asm/cacheflush.h> /* for run_uncached() */
++#include <asm/hazards.h>
+ 
+ 
+ /*
+@@ -604,6 +605,7 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ 			r4k_blast_scache();
+ 		else
+ 			blast_scache_range(addr, addr + size);
++		cacheflush_hazard();
+ 		return;
+ 	}
+ 
+@@ -620,6 +622,7 @@ static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
+ 	}
+ 
+ 	bc_wback_inv(addr, size);
++	cacheflush_hazard();
+ }
+ 
+ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+@@ -647,6 +650,7 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 				 (addr + size - 1) & almask);
+ 			blast_inv_scache_range(addr, addr + size);
+ 		}
++		cacheflush_hazard();
+ 		return;
+ 	}
+ 
+@@ -663,6 +667,7 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ 	}
+ 
+ 	bc_inv(addr, size);
++	cacheflush_hazard();
+ }
+ #endif /* CONFIG_DMA_NONCOHERENT */
+ 
 -- 
-1.7.2.3
+1.7.0.4

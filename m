@@ -1,104 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 19:23:57 +0100 (CET)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:40332 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493541Ab1AQSXy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jan 2011 19:23:54 +0100
-Received: by iwn38 with SMTP id 38so5148185iwn.36
-        for <linux-mips@linux-mips.org>; Mon, 17 Jan 2011 10:23:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=5qQmBUpE0VoAqQ9U9o4mSN5up5UhUEswYlKbo3lb3yo=;
-        b=MEHH5QkeeF2ZRdyF2MIAw2S6rYRXXtavUzNKxoNl1PN26+nh8wp4ZveKforoFBSCUN
-         tagGpMlOvc3jEBvvNtvc1enG6h+44Z7Vnne5blKmDYivv5vB+iznGtiDa3a8Dk7xFDFk
-         sztrMVB/EhzgFtoirAruGK9IjtC20xvARZ+ZA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=mKe8MbsRitaKk5b1b5r+Q+U/VexDIrLALse18Sq2wcqzJTkzIw6dQXwvPXLixr47lP
-         mo0CYlIoXJRNpbXuyCDG8MUn3NoY6x2oerWntYtKXo5geiGQ4WU8MUP/UjlTUISEfarl
-         2iwdbsLXoBYw32WwsQPL/D3zyYeQuj7GBP2Bk=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 20:19:16 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:18862 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493555Ab1AQTTN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jan 2011 20:19:13 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4d3496530000>; Mon, 17 Jan 2011 11:19:47 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 17 Jan 2011 11:18:58 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 17 Jan 2011 11:18:58 -0800
+Message-ID: <4D349621.1040603@caviumnetworks.com>
+Date:   Mon, 17 Jan 2011 11:18:57 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.42.225.137 with SMTP id is9mr4804017icb.264.1295288633570;
- Mon, 17 Jan 2011 10:23:53 -0800 (PST)
-Received: by 10.42.221.136 with HTTP; Mon, 17 Jan 2011 10:23:53 -0800 (PST)
-In-Reply-To: <AANLkTimrKjk4FPSOhKBXZocG-ezH6eYR2mFzMUfiSVTS@mail.gmail.com>
-References: <1295255224-19408-1-git-send-email-xiangfu@sharism.cc>
-        <AANLkTimrKjk4FPSOhKBXZocG-ezH6eYR2mFzMUfiSVTS@mail.gmail.com>
-Date:   Mon, 17 Jan 2011 20:23:53 +0200
-Message-ID: <AANLkTim7kVjSpm2Td0QH4177o=M60GSJdUEjOHUa-jZn@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: add U-boot uImage build target to arch Makefile
-From:   Sergey Kvachonok <ravenexp@gmail.com>
-To:     wu zhangjin <wuzhangjin@gmail.com>
-Cc:     Xiangfu Liu <xiangfu@sharism.cc>, linux-mips@linux-mips.org,
-        lars@metafoo.de
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <ravenexp@gmail.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+CC:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Mike Frysinger <vapier@gentoo.org>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Hirokazu Takata <takata@linux-m32r.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Kyle McMartin <kyle@mcmartin.ca>, Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
+        linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net,
+        xen-devel@lists.xensource.com, virtualization@lists.osdl.org,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH] sched: provide scheduler_ipi() callback in response to
+ smp_send_reschedule()
+References: <1295262433.30950.53.camel@laptop>
+In-Reply-To: <1295262433.30950.53.camel@laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 17 Jan 2011 19:18:58.0314 (UTC) FILETIME=[63E166A0:01CBB67B]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28945
+X-archive-position: 28946
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ravenexp@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 17, 2011 at 6:34 PM, wu zhangjin <wuzhangjin@gmail.com> wrote:
+On 01/17/2011 03:07 AM, Peter Zijlstra wrote:
+> For future rework of try_to_wake_up() we'd like to push part of that
+> onto the CPU the task is actually going to run on, in order to do so we
+> need a generic callback from the existing scheduler IPI.
+>
+> This patch introduces such a generic callback: scheduler_ipi() and
+> implements it as a NOP.
+>
+> I visited existing smp_send_reschedule() implementations and tried to
+> add a call to scheduler_ipi() in their handler part, but esp. for MIPS
+> I'm not quite sure I actually got all of them.
+>
+> Also, while reading through all this, I noticed the blackfin SMP code
+> looks to be broken, it simply discards any IPI when low on memory.
+>
+> Signed-off-by: Peter Zijlstra<a.p.zijlstra@chello.nl>
+> ---
+>   arch/alpha/kernel/smp.c         |    1 +
+>   arch/arm/kernel/smp.c           |    1 +
+>   arch/blackfin/mach-common/smp.c |    3 ++-
+>   arch/cris/arch-v32/kernel/smp.c |   13 ++++++++-----
+>   arch/ia64/kernel/irq_ia64.c     |    2 ++
+>   arch/ia64/xen/irq_xen.c         |   10 +++++++++-
+>   arch/m32r/kernel/smp.c          |    2 +-
+>   arch/mips/kernel/smtc.c         |    1 +
+>   arch/mips/sibyte/bcm1480/smp.c  |    7 +++----
+>   arch/mips/sibyte/sb1250/smp.c   |    7 +++----
+[...]
 
-> Just a friendly reminder: no need to add the algo options in Kconfig
-> for we already have them in init/Kconfig, you can search LZMA, BZIP2
-> ... there.
+Peter,
 
-No, I don't have these since my platform (jz4740) does not define
-SYS_SUPPORTS_ZBOOT. I don't know whether SFX-style compressed kernels
-work on it, probably nobody tried.
-U-boot uses it's own decompressor, so it's completely independent of
-zboot framework (piggy.o building, in-kernel algos). That's why I'm
-reluctant to merge vmlinuz and uImage build stages: these do
-completely different things. U-boot may support compression algos not
-included in the kernel and vice versa. Or some evil perverted person
-might want to build (un)compressed u-boot image from vmlinuz kernel,
-and it will probably work. ;)
+You will also have to patch the mailbox_interrupt() function in 
+arch/mips/cavium-octeon/smp.c
 
-Should I create SYS_SUPPORTS_UBOOT then?
-Like this:
-
-arch/mips/Kconfig:
-
-+config SYS_SUPPORTS_UBOOT
-+        bool
-+        select HAVE_KERNEL_GZIP
-+        select HAVE_KERNEL_BZIP2
-+        select HAVE_KERNEL_LZMA
-+        select HAVE_KERNEL_LZO
-
-arch/mips/Makefile:
-
-+all-$(CONFIG_SYS_SUPPORTS_UBOOT)+= uImage
-
-...
-
-+# u-boot
-+uImage: vmlinux.bin FORCE
-+       $(Q)$(MAKE) $(build)=arch/mips/boot/u-boot \
-+         VMLINUX=$(vmlinux-32) VMLINUXBIN=arch/mips/boot/vmlinux.bin \
-+         VMLINUX_LOAD_ADDRESS=$(load-y) arch/mips/boot/u-boot/$@
-
-Of course install and clean targets will be added as well.
-This will prevent vmlinuz from building and build uImage with chosen
-compression algo instead.
-
-I intend to keep u-boot/Makefile separate still. Of course it creates
-some code duplication, but I believe proper functional decoupling is
-more important in this case.
-u-boot/Makefile is (almost) architecture independent and can be easily
-adopted by other arch if such need arises.
-
-Comments and suggestions welcome.
-
-Regards,
-Sergey
+David Daney.

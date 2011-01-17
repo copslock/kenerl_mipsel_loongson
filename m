@@ -1,64 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Jan 2011 17:35:32 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:56328 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493222Ab1APQf3 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 16 Jan 2011 17:35:29 +0100
-Received: by wwi17 with SMTP id 17so4273385wwi.24
-        for <linux-mips@linux-mips.org>; Sun, 16 Jan 2011 08:35:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=Jfc8klZss2VbcQ24IF1t6Pjw0lq39PWSTxLq89P2wgQ=;
-        b=Jt/7cx3iaLSzvMfvbBXEV9blZcmUXkwRViX0XKx4GS4kzTzzibjIvWjvZ3Ns3QI6/P
-         i8Sq4bGP5Z+4ogWQikQ/Syyd3XAWxqp0mHvkUqPEbnK1sV5iavehqZXKu3l3qQOaWsiq
-         PWqJMdANlyvUGTNXLNphYHvqlYwQb5PXmxng8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=nQh0eHVOr0qGXtp1BR+2j9dLHFC4u0y1D08K7XeFRQt5DH2S/jsny8iAWipM4vErbC
-         rM+DjOr+0rUiR1gKECoulYRyw1QtUwAmw+tZ0dmgogR4UVyUQggLwq2JWaY2kzlcWl1Q
-         Km341Iet0C4JIXYBJxvQX4dA7NXpfcYbRQiwg=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 09:20:01 +0100 (CET)
+Received: from mail.servus.at ([193.170.194.20]:53333 "EHLO mail.servus.at"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493329Ab1AQIT4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Jan 2011 09:19:56 +0100
+Received: from localhost (mail.servus.at [127.0.0.1])
+        by mail.servus.at (Postfix) with ESMTP id 69C182156AC;
+        Mon, 17 Jan 2011 09:19:56 +0100 (CET)
+X-Virus-Scanned: amavisd-new at servus.at
+Received: from mail.servus.at ([127.0.0.1])
+        by localhost (mail.servus.at [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id M9uKT9O57LC8; Mon, 17 Jan 2011 09:19:56 +0100 (CET)
+Received: from stefan-l.obssys.loc (85-127-133-21.dynamic.xdsl-line.inode.at [85.127.133.21])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: oh_stefan)
+        by mail.servus.at (Postfix) with ESMTP id 8664D2156A7;
+        Mon, 17 Jan 2011 09:19:55 +0100 (CET)
+Message-ID: <4D33FBA9.9080503@obssys.com>
+Date:   Mon, 17 Jan 2011 09:19:53 +0100
+From:   Stefan Oberhumer <stefan@obssys.com>
+Organization: obssys.com
+User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.13) Gecko/20101207 Lightning/1.0b2 Thunderbird/3.1.7
 MIME-Version: 1.0
-Received: by 10.216.164.14 with SMTP id b14mr2910735wel.33.1295195663683; Sun,
- 16 Jan 2011 08:34:23 -0800 (PST)
-Received: by 10.216.93.137 with HTTP; Sun, 16 Jan 2011 08:34:23 -0800 (PST)
-In-Reply-To: <AANLkTikpUBtg2zz8tcbcz2rcG-O+fTFwb_pTi88uZe0h@mail.gmail.com>
-References: <AANLkTinvdEPwQ=DmcF8nnTAa0Py_O=+p7x1pobcTNHom@mail.gmail.com>
-        <AANLkTik8hQfd8cvNj=qeq5U=6zpQHw33a9hfK-q8+x1Z@mail.gmail.com>
-        <AANLkTikpUBtg2zz8tcbcz2rcG-O+fTFwb_pTi88uZe0h@mail.gmail.com>
-Date:   Mon, 17 Jan 2011 00:34:23 +0800
-Message-ID: <AANLkTinz0GKr0Thy6mqK06-B6c6_22c8Jboos6QsVEX-@mail.gmail.com>
-Subject: Re: about udelay in mips
-From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     loody <miloody@gmail.com>
-Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org
+Subject: MIPS: Clear the correct flag in sysmips(MIPS_FIXADE, ...).
+Content-Type: multipart/mixed;
+ boundary="------------090304010704090001000407"
+Return-Path: <stefan@obssys.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28919
+X-archive-position: 28920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: stefan@obssys.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jan 16, 2011 at 10:38 PM, loody <miloody@gmail.com> wrote:
-[...]
-> (us  *   0x000010c7   *   HZ   *   lpj   )) >> 32)
-> I cannot figure out why we need to multiply 0x10c7, and what lpj mean?
-> Does lpj mean if jiffies increase 1, how many "subu    %0, 1" may need?
+This is a multi-part message in MIME format.
+--------------090304010704090001000407
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Yep, lpj is calculated in init/calibrate.c
 
-> Regards,
-> miloody
->
->
+The sysmips(MIPS_FIXADE, ...) case contains an obvious copy-and-paste
+error in the handling of the TIF_LOGADE flag. Fix that
+---
+ arch/mips/kernel/syscall.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+
+
+--------------090304010704090001000407
+Content-Type: text/x-patch;
+ name="0001-MIPS-Clear-the-correct-flag-in-sysmips-MIPS_FIXADE.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0001-MIPS-Clear-the-correct-flag-in-sysmips-MIPS_FIXADE.patc";
+ filename*1="h"
+
+diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
+index 1dc6edf..cde2a32 100644
+--- a/arch/mips/kernel/syscall.c
++++ b/arch/mips/kernel/syscall.c
+@@ -405,7 +405,7 @@ _sys_sysmips(nabi_no_regargs struct pt_regs regs)
+ 		if (arg1 & 2)
+ 			set_thread_flag(TIF_LOGADE);
+ 		else
+-			clear_thread_flag(TIF_FIXADE);
++			clear_thread_flag(TIF_LOGADE);
+ 
+ 		return 0;
+ 
+
+
+--------------090304010704090001000407--

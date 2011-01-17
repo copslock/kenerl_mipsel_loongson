@@ -1,83 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 22:21:55 +0100 (CET)
-Received: from casper.infradead.org ([85.118.1.10]:57416 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1493594Ab1AQVVv convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jan 2011 22:21:51 +0100
-Received: from j77219.upc-j.chello.nl ([24.132.77.219] helo=laptop)
-        by casper.infradead.org with esmtpsa (Exim 4.72 #1 (Red Hat Linux))
-        id 1PevU3-0000Df-MU; Mon, 17 Jan 2011 20:15:23 +0000
-Received: by laptop (Postfix, from userid 1000)
-        id 26CCD1033A271; Mon, 17 Jan 2011 21:16:04 +0100 (CET)
-Subject: Re: [uclinux-dist-devel] [PATCH] sched: provide scheduler_ipi()
- callback in response to smp_send_reschedule()
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Mike Frysinger <vapier@gentoo.org>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        Kyle McMartin <kyle@mcmartin.ca>, Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
-        linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net,
-        xen-devel@lists.xensource.com, virtualization@lists.osdl.org,
-        Linux-Arch <linux-arch@vger.kernel.org>
-In-Reply-To: <AANLkTik3hE=_34Lbs944MzKpkNzqY+kCxpxmncUM2HB7@mail.gmail.com>
-References: <1295262433.30950.53.camel@laptop>
-         <AANLkTik3hE=_34Lbs944MzKpkNzqY+kCxpxmncUM2HB7@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Date:   Mon, 17 Jan 2011 21:16:03 +0100
-Message-ID: <1295295363.30950.318.camel@laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.30.3 
-Return-Path: <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jan 2011 00:27:41 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:42660 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491197Ab1AQX1i (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 18 Jan 2011 00:27:38 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.4/8.14.3) with ESMTP id p0HNRZ4h012675;
+        Tue, 18 Jan 2011 00:27:36 +0100
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.4/8.14.4/Submit) id p0HNRXFx012673;
+        Tue, 18 Jan 2011 00:27:33 +0100
+Date:   Tue, 18 Jan 2011 00:27:33 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
+        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
+        Cliff Holden <Cliff.Holden@atheros.com>,
+        Kathy Giori <Kathy.Giori@atheros.com>
+Subject: Re: [PATCH v5 01/16] MIPS: add initial support for the Atheros
+ AR71XX/AR724X/AR931X SoCs
+Message-ID: <20110117232733.GA12626@linux-mips.org>
+References: <1294172909-1309-1-git-send-email-juhosg@openwrt.org>
+ <1294172909-1309-2-git-send-email-juhosg@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1294172909-1309-2-git-send-email-juhosg@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28950
+X-archive-position: 28951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: peterz@infradead.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2011-01-17 at 14:49 -0500, Mike Frysinger wrote:
-> On Mon, Jan 17, 2011 at 06:07, Peter Zijlstra wrote:
-> > Also, while reading through all this, I noticed the blackfin SMP code
-> > looks to be broken, it simply discards any IPI when low on memory.
-> 
-> not really.  see changelog of commit 73a400646b8e26615f3ef1a0a4bc0cd0d5bd284c.
+Thanks, applied.
 
-Ah, indeed, it appears my tree was simply out of date, very good!
+  Ralf

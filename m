@@ -1,97 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 12:58:02 +0100 (CET)
-Received: from 80-190-117-144.ip-home.de ([80.190.117.144]:56898 "EHLO
-        bu3sch.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493399Ab1AQL57 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 17 Jan 2011 12:57:59 +0100
-Received: by bu3sch.de with esmtpsa (Exim 4.69)
-        (envelope-from <mb@bu3sch.de>)
-        id 1Penic-0008I0-IW; Mon, 17 Jan 2011 12:57:54 +0100
-Subject: Re: Merging SSB and HND/AI support
-From:   Michael =?ISO-8859-1?Q?B=FCsch?= <mb@bu3sch.de>
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-In-Reply-To: <AANLkTikJcug7LUTgX_YDD4Z8ZBrdkAdLq8_Epa6TkA5f@mail.gmail.com> (sfid-20110117_122135_343461_FFFFFFFFFA00D75F)
-References: <AANLkTi=GDcy50zsC6=Dgv1-Ty3cYK2qpx9o=q3JdXuCh@mail.gmail.com>
-         <1295261783.24530.3.camel@maggie>
-         <AANLkTikJcug7LUTgX_YDD4Z8ZBrdkAdLq8_Epa6TkA5f@mail.gmail.com>
-         (sfid-20110117_122135_343461_FFFFFFFFFA00D75F)
-Content-Type: text/plain; charset="UTF-8"
-Date:   Mon, 17 Jan 2011 12:57:48 +0100
-Message-ID: <1295265468.24530.23.camel@maggie>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.30.3 
-Content-Transfer-Encoding: 8bit
-Return-Path: <mb@bu3sch.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 13:00:38 +0100 (CET)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:53632 "EHLO
+        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493402Ab1AQMAf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jan 2011 13:00:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=7AKuFHemzEnJi+i4xATR5kcPnaWlSIRczl7azc6AofU=;
+        b=RmA2l1K16s4CX9DI/ZvKJHtxE9CJqPxjfCuNj2RslMfCoRce9tfhMTkO6Fw4f26ipjcXW6Ut6rEaT3KfRuEPyLX5T+G6HP6Y0D8NLCZ5LM7NbkE6BpyC3KMnFc6sZNiCdVnOD8K9qCS5DJp+dhc1NrX9adCDqO2825+HpyPqeRA=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86])
+        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1PeniZ-0002KC-4C; Mon, 17 Jan 2011 11:57:51 +0000
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.72)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1PeniW-0005QM-Uw; Mon, 17 Jan 2011 11:57:48 +0000
+Date:   Mon, 17 Jan 2011 11:57:48 +0000
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Mike Frysinger <vapier@gentoo.org>,
+        Mikael Starvik <starvik@axis.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Hirokazu Takata <takata@linux-m32r.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Howells <dhowells@redhat.com>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Kyle McMartin <kyle@mcmartin.ca>, Helge Deller <deller@gmx.de>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Jeff Dike <jdike@addtoit.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net,
+        xen-devel@lists.xensource.com, virtualization@lists.osdl.org,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH] sched: provide scheduler_ipi() callback in response to
+        smp_send_reschedule()
+Message-ID: <20110117115748.GA20615@n2100.arm.linux.org.uk>
+References: <1295262433.30950.53.camel@laptop> <20110117112637.GA18599@n2100.arm.linux.org.uk> <1295263884.30950.54.camel@laptop> <1295264509.30950.59.camel@laptop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1295264509.30950.59.camel@laptop>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28932
+X-archive-position: 28933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mb@bu3sch.de
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2011-01-17 at 12:21 +0100, Jonas Gorski wrote: 
-> On 17 January 2011 11:56, Michael Büsch <mb@bu3sch.de> wrote:
-> > On Mon, 2011-01-17 at 11:46 +0100, Jonas Gorski wrote:
-> >> a) Merge the HND/AI code into the current SSB code, or
-> >>
-> >> b) add the missing code for SoCs to brcm80211 and replace the SSB code with it.
-> >
-> > Why can't we keep those two platforms separated?
-> > Is there really a lot of shared code between SSB and HND/AI?
-> 
-> Yes, as far as I understand the AI bus behaves mostly like a SSB bus
-> except for places like enabling/disabling cores. E.g. the AI bus also
-> has a common core, which has a bit for telling whether its a SSB or AI
-> bus, and has the mostly the same registers as the SSB common cores (so
-> most driver_chipcommon_* stuff also applies for the AI bus).
+On Mon, Jan 17, 2011 at 12:41:49PM +0100, Peter Zijlstra wrote:
+> ===================================================================
+> --- linux-2.6.orig/arch/arm/kernel/smp.c
+> +++ linux-2.6/arch/arm/kernel/smp.c
+> @@ -575,10 +575,7 @@ asmlinkage void __exception do_IPI(struc
+>  				break;
+>  
+>  			case IPI_RESCHEDULE:
+> -				/*
+> -				 * nothing more to do - eveything is
+> -				 * done on the interrupt return path
+> -				 */
+> +				scheduler_ipi();
+>  				break;
+>  
+>  			case IPI_CALL_FUNC:
 
-Well... I don't really like the idea of running one driver and
-subsystem implementation on completely distinct types of silicon.
-We will end up with the same mess that broadcom ended up with in
-their "SB" code (broadcom's SSB backplane implementation).
-For example, in their code the driver calls pci_enable_device() and
-related PCI functions, even if there is no PCI device at all. The calls
-are magically re-routed to the actual SB backplane.
-You'd have to do the same mess with SSB. Calling ssb_device_enable()
-will mean "enable the SSB device", if the backplane is SSB, and will
-mean "enable the HND/AI" device, if the backplane is HND/AI.
-
-So I'm still in favor of doing a separate HND/AI bus implementation,
-even if
-that means duplicating a few lines of code. I think that compared to the
-workarounds and conditionals needed for getting SSB to run on HND/AI
-hardware, it will be a net win.
-
-> > So why do we need to replace or merge SSB in the first place? Can't
-> > it co-exist with HND/AI?
-> 
-> It probably can, but then the SSB code must be at least made AI aware
-> so it doesn't try to attach itself if it finds one.
-
-SSB doesn't search for SSB busses in the system, because there's no
-way to do so. The architecture (or the PCI/PCMCIA/SDIO device) registers
-the bus,
-if it detected an SSB device. So for the embedded case, it's hardcoded
-in the arch code. For the PCI case it simply depends on the PCI IDs.
-I don't see a problem here. Your arch code will already have to know
-what machine it is running on. So it will have to decide whether to
-register a SSB or HND/AI bus.
-
-It's like a platform_device. However, it doesn't use the platform_device
-mechanism. There's no technical reason. It would be trivial to port the
-SSB bus registration to use platform_device, however.
-
-> Also I don't know
-> if it is a good idea to let arch-specific code depend on code in
-> staging.
-
-Sure. The code needs to be cleaned up and moved to the mainline kernel
-_anyway_. You don't get around this.
-
--- 
-Greetings Michael.
+Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>

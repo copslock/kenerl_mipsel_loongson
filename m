@@ -1,95 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 13:00:38 +0100 (CET)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:53632 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493402Ab1AQMAf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jan 2011 13:00:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=7AKuFHemzEnJi+i4xATR5kcPnaWlSIRczl7azc6AofU=;
-        b=RmA2l1K16s4CX9DI/ZvKJHtxE9CJqPxjfCuNj2RslMfCoRce9tfhMTkO6Fw4f26ipjcXW6Ut6rEaT3KfRuEPyLX5T+G6HP6Y0D8NLCZ5LM7NbkE6BpyC3KMnFc6sZNiCdVnOD8K9qCS5DJp+dhc1NrX9adCDqO2825+HpyPqeRA=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86])
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1PeniZ-0002KC-4C; Mon, 17 Jan 2011 11:57:51 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.72)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1PeniW-0005QM-Uw; Mon, 17 Jan 2011 11:57:48 +0000
-Date:   Mon, 17 Jan 2011 11:57:48 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        Kyle McMartin <kyle@mcmartin.ca>, Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net,
-        xen-devel@lists.xensource.com, virtualization@lists.osdl.org,
-        Linux-Arch <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] sched: provide scheduler_ipi() callback in response to
-        smp_send_reschedule()
-Message-ID: <20110117115748.GA20615@n2100.arm.linux.org.uk>
-References: <1295262433.30950.53.camel@laptop> <20110117112637.GA18599@n2100.arm.linux.org.uk> <1295263884.30950.54.camel@laptop> <1295264509.30950.59.camel@laptop>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1295264509.30950.59.camel@laptop>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 13:10:36 +0100 (CET)
+Received: from 80-190-117-144.ip-home.de ([80.190.117.144]:59614 "EHLO
+        bu3sch.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493405Ab1AQMKd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Jan 2011 13:10:33 +0100
+Received: by bu3sch.de with esmtpsa (Exim 4.69)
+        (envelope-from <mb@bu3sch.de>)
+        id 1Penun-0008JB-4H; Mon, 17 Jan 2011 13:10:29 +0100
+Subject: Re: Merging SSB and HND/AI support
+From:   Michael =?ISO-8859-1?Q?B=FCsch?= <mb@bu3sch.de>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     Jonas Gorski <jonas.gorski@gmail.com>, linux-mips@linux-mips.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <201101171220.52292.florian@openwrt.org> (sfid-20110117_122124_233292_51C2DD96)
+References: <AANLkTi=GDcy50zsC6=Dgv1-Ty3cYK2qpx9o=q3JdXuCh@mail.gmail.com>
+         <1295261783.24530.3.camel@maggie>  <201101171220.52292.florian@openwrt.org>
+         (sfid-20110117_122124_233292_51C2DD96)
+Content-Type: text/plain; charset="UTF-8"
+Date:   Mon, 17 Jan 2011 13:00:09 +0100
+Message-ID: <1295265609.24530.25.camel@maggie>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
+Content-Transfer-Encoding: 8bit
+Return-Path: <mb@bu3sch.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28933
+X-archive-position: 28934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: mb@bu3sch.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 17, 2011 at 12:41:49PM +0100, Peter Zijlstra wrote:
-> ===================================================================
-> --- linux-2.6.orig/arch/arm/kernel/smp.c
-> +++ linux-2.6/arch/arm/kernel/smp.c
-> @@ -575,10 +575,7 @@ asmlinkage void __exception do_IPI(struc
->  				break;
->  
->  			case IPI_RESCHEDULE:
-> -				/*
-> -				 * nothing more to do - eveything is
-> -				 * done on the interrupt return path
-> -				 */
-> +				scheduler_ipi();
->  				break;
->  
->  			case IPI_CALL_FUNC:
+On Mon, 2011-01-17 at 12:20 +0100, Florian Fainelli wrote: 
+> On Monday 17 January 2011 11:56:23 Michael Büsch wrote:
+> > On Mon, 2011-01-17 at 11:46 +0100, Jonas Gorski wrote:
+> > > Hello,
+> > > 
+> > > I am currently looking into adding support for the newer Broadcom
+> > > BCM47xx/53xx SoCs. They require having HND/AI support, which probably
+> > > means merging the current SSB code and the HND/AI code from the
+> > > brcm80211 driver. Is anyone already working on this?
+> > > 
+> > > As far as I can see, there are two possibilities:
+> > > 
+> > > a) Merge the HND/AI code into the current SSB code, or
+> > > 
+> > > b) add the missing code for SoCs to brcm80211 and replace the SSB code
+> > > with it.
+> > 
+> > Why can't we keep those two platforms separated?
+> 
+> That is also what I am wondering about. Considering that previous BCM47xx 
+> platforms use a MIPS4k core and newer one use MIPS74k or later, you would not 
+> be able to build a single kernel for both which takes advantages of compile-
+> time optimizations targetting MIPS74k. If this ist not a big concern, then 
+> let's target a single kernel.
 
-Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
+Ok, but it should be easily possible to compile both SSB and HND/AI
+bus support into one kernel anyway. Nothing prevents drivers from having
+an SSB and an HND/AI probe callback.
+
+-- 
+Greetings Michael.

@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 16:58:33 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:54063 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 17:38:11 +0100 (CET)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:54353 "EHLO
         mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493495Ab1AQP6a (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jan 2011 16:58:30 +0100
-Received: by wyf22 with SMTP id 22so5153933wyf.36
-        for <linux-mips@linux-mips.org>; Mon, 17 Jan 2011 07:58:20 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1493515Ab1AQQiI convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Jan 2011 17:38:08 +0100
+Received: by wyf22 with SMTP id 22so5192294wyf.36
+        for <linux-mips@linux-mips.org>; Mon, 17 Jan 2011 08:38:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=FcM3DFeRLsSijTYKspeg948AiuDu/Vp0V3MP707GEyg=;
-        b=ocHsvR54DEqGYrYybU5KuJuR2XElYOjayd5OT27w+pZWXcfJ3tQs0J59fGECW2FqIP
-         6UjbMi5aleXZ1uQowM5QG/bBaYqzxG22B4sQRn5zNxwioGLfEJhULk2peNXMemCF9TSY
-         rDxKoq/UB6jLE7X8E3qWvUAznPHpMQ3e9HojU=
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=GS+Apv3UEUT6K1ck9kaoScuw9fQTV0SObzLiB6q8/yk=;
+        b=Nimze1WhIJdlDGMORqfHiOQ0+0OD0rFIIEJZXWnEGbzO2C8GNw2691Urca2NHCwPCF
+         HYqn5FK/cF8+Cbqf75GpsPxrmw+rtCdhJcPNZkn87hinfd+X1qArBIxEXvxA60/CMzDi
+         PVQAOwjTV3JnM9mg8ArwdBwJKwj0qvNCJAdJY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=alUQXBoib+nkMW2PgDGmodSCFtalW/pK/62r7+TBSGfpjEp/59aOet79a2qzvwH/m9
-         gAVpHVPRUO0GnSvDgHqilvwKXtZvABh2faJGuyWLFUHVS7l80JQkQLwIFwl7QEPg8J26
-         6dmngl2k8gMUipjjSzzQ9ziOGxObrUkMO4fDs=
+         :cc:content-type:content-transfer-encoding;
+        b=gQgT8xBTqvbVXeXAuPSf1cA7sw34pay/8/Hhf6078HC6yGvYACA3maHszGGJ/1NI1C
+         YY2Q4ummSpinfn1DnrjAlq/j1qx3lTG8BmD2DVViz0zvUXjVMvmN8y1A53lYGn8D0GuL
+         oGHF7H4ELBV3XVTh3chwKK0Rt9wzl4Z6hepow=
 MIME-Version: 1.0
-Received: by 10.216.180.76 with SMTP id i54mr20045wem.33.1295279877954; Mon,
- 17 Jan 2011 07:57:57 -0800 (PST)
-Received: by 10.216.93.137 with HTTP; Mon, 17 Jan 2011 07:57:57 -0800 (PST)
-In-Reply-To: <AANLkTinMEFjXQZapVTZ=LgdXhNEEpYqpr7Pb1ong7_cp@mail.gmail.com>
+Received: by 10.216.180.76 with SMTP id i54mr74975wem.33.1295282055074; Mon,
+ 17 Jan 2011 08:34:15 -0800 (PST)
+Received: by 10.216.93.137 with HTTP; Mon, 17 Jan 2011 08:34:14 -0800 (PST)
+In-Reply-To: <1295255224-19408-1-git-send-email-xiangfu@sharism.cc>
 References: <1295255224-19408-1-git-send-email-xiangfu@sharism.cc>
-        <AANLkTimN4mTxSJiBD2cNs-pOTQBTHysFQYyYiU5ZSBsQ@mail.gmail.com>
-        <AANLkTinMEFjXQZapVTZ=LgdXhNEEpYqpr7Pb1ong7_cp@mail.gmail.com>
-Date:   Mon, 17 Jan 2011 23:57:57 +0800
-Message-ID: <AANLkTiksML_H7aBfWp2cZ4PBtQ0ZnaFg3pkA4u=W14yp@mail.gmail.com>
+Date:   Tue, 18 Jan 2011 00:34:14 +0800
+Message-ID: <AANLkTimrKjk4FPSOhKBXZocG-ezH6eYR2mFzMUfiSVTS@mail.gmail.com>
 Subject: Re: [PATCH] MIPS: add U-boot uImage build target to arch Makefile
 From:   wu zhangjin <wuzhangjin@gmail.com>
-To:     Sergey Kvachonok <ravenexp@gmail.com>
-Cc:     Xiangfu Liu <xiangfu@sharism.cc>, linux-mips@linux-mips.org,
-        lars@metafoo.de
+To:     Xiangfu Liu <xiangfu@sharism.cc>
+Cc:     linux-mips@linux-mips.org, ravenexp@gmail.com, lars@metafoo.de
 Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28943
+X-archive-position: 28944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,69 +48,123 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Sergey
+More comments below:
 
-On Mon, Jan 17, 2011 at 10:43 PM, Sergey Kvachonok <ravenexp@gmail.com> wrote:
+On Mon, Jan 17, 2011 at 5:07 PM, Xiangfu Liu <xiangfu@sharism.cc> wrote:
 [...]
->>
->> Perhaps add more compression algos support and make them configurable
->> will be better. lzma/xz has higher compression rate, lzo has faster
->> decompression speed. and bzip2 is between lzo and gzip.
->>
 >
-> Ok, I'll try to make compression algo into Kconfig option then.
+> +# u-boot
+> +uImage: vmlinux.bin FORCE
+> +       $(Q)$(MAKE) $(build)=arch/mips/boot/u-boot \
+> +         VMLINUX=$(vmlinux-32) VMLINUXBIN=arch/mips/boot/vmlinux.bin \
+> +         VMLINUX_LOAD_ADDRESS=$(load-y) arch/mips/boot/u-boot/$@
+>
 
-Just a friendly reminder: no need to add the algo options in Kconfig
-for we already have them in init/Kconfig, you can search LZMA, BZIP2
-... there.
+As the comments in my previous reply, we may be possible to add the
+uImage target to the line for vmlinuz, then, only one line need to be
+changed.
 
-With "make menuconfig", you can find them like this:
+>  CLEAN_FILES += vmlinux.32 vmlinux.64
+>
+> @@ -313,6 +318,7 @@ define archhelp
+>        echo '  vmlinuz.ecoff        - ECOFF zboot image'
+>        echo '  vmlinuz.bin          - Raw binary zboot image'
+>        echo '  vmlinuz.srec         - SREC zboot image'
+> +       echo '  uImage               - U-boot image (gzip)'
 
-$ make menuconfig
+If more compression algos added, then, above "(gzip)" can be removed.
+and seems we forgot adding uImage to the "install:" and "archclean:"
+target ;-)
 
-General setup  --->
-Kernel compression mode (LZMA)  --->
+arch/mips/Makefile:
 
-and then, like the Makefile of vmlinuz under
-arch/mips/boot/compressed/, you can simply use the following method to
-choose the compression tools:
+install:
+        here....
 
-tool_$(CONFIG_KERNEL_GZIP)    = gzip
-tool_$(CONFIG_KERNEL_BZIP2)   = bzip2
-tool_$(CONFIG_KERNEL_LZMA)    = lzma
-tool_$(CONFIG_KERNEL_LZO)     = lzo
+archclean:
+        and here ....
 
-But to avoid adding this again, we can simply share this for uImage
-and move the content from arch/mips/boot/u-boot/Makefile to
-arch/mips/boot/compressed/Makefile for vmlinuz also need to compress
-the vmlinux.bin, so, they can share the same vmlinux.bin.z.
+If we move arch/mips/boot/u-boot/Makefile to
+arch/mips/boot/compressed/Makefile, then, we can simply and uImage to
+the last line of that Makefile:
 
-and to add the uImage target, we can simply add it in
-arch/mips/Makefile like this:
+clean-files := .... uImage
 
- # boot/compressed
--vmlinuz vmlinuz.bin vmlinuz.ecoff vmlinuz.srec: $(vmlinux-32) FORCE
-+vmlinuz vmlinuz.bin vmlinuz.ecoff vmlinuz.srec uImage: $(vmlinux-32) FORCE
-        $(Q)$(MAKE) $(build)=arch/mips/boot/compressed \
-           VMLINUX_LOAD_ADDRESS=$(load-y) 32bit-bfd=$(32bit-bfd) $@
+>        echo
+>        echo '  These will be default as apropriate for a configured platform.'
+>  endef
+> diff --git a/arch/mips/boot/u-boot/.gitignore b/arch/mips/boot/u-boot/.gitignore
+> new file mode 100644
+> index 0000000..1080c94
+> --- /dev/null
+> +++ b/arch/mips/boot/u-boot/.gitignore
+> @@ -0,0 +1,2 @@
+> +vmlinux.bin.gz
+> +uImage
 
-But we may need to check if this is compatible for the uImage target
-in your old patch.
+If we move the uImage target to arch/mips/boot/compressed/Makefile,
+the uImage ignore can be added to arch/mips/boot/.gitignore
 
-> And maybe unify with existing avr32 u-boot target, e.g. make use of
-> scripts/mkuboot.sh.
+> diff --git a/arch/mips/boot/u-boot/Makefile b/arch/mips/boot/u-boot/Makefile
+> new file mode 100644
+> index 0000000..318dc50
+> --- /dev/null
+> +++ b/arch/mips/boot/u-boot/Makefile
+> @@ -0,0 +1,15 @@
+> +targets += vmlinux.bin.gz
+> +quiet_cmd_gzip = GZIP $@
+> +cmd_gzip = gzip -c9 $(VMLINUXBIN) $(obj)/vmlinux.bin.gz
+> +$(obj)/vmlinux.bin.gz: $(obj)/../vmlinux.bin FORCE
+> +       $(call if_changed,gzip)
 
-Yeah, scripts/mkuboot.sh have checked the existence of the 'mkimage'
-tool, so, it should be better.
+If we share the vmlinux.bin.z with vmlinuz, then, the above can be removed.
 
-> Will resubmit directly to this list when (if) it's done.
+> +
+> +MKIMAGE = mkimage
 
-Welcome and thanks very much for your effort.
+As your previous reply, the above line can be replaced with
+$(srctree)/scripts/mkuboot.sh
+
+> +
+> +targets += uImage
+> +quiet_cmd_uImage = MKIMAGE $@
+> +cmd_uImage = $(MKIMAGE) -A mips -O linux -T kernel -C gzip -a $(VMLINUX_LOAD_ADDRESS) \
+
+We can align it with quiet_cmd_uImage above ;-)
+
+quiet_cmd_uImage =  ...
+         cmd_uImage = ...
+
+And we can substitute "$(tool_y)" for the 'hardcoded' gzip above.
+
+> +-e 0x$(shell $(NM) $(VMLINUX) | grep ' kernel_entry' | cut -f1 -d ' ') \
+
+Seems this duplicates the KERNEL_ENTRY calculation of kernel_entry
+address, perhaps we can make a common one and share them, here is a
+minimal change of the old Makefile:
+
+-KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS) \
+-       -DKERNEL_ENTRY=0x$(shell $(NM) $(objtree)/$(KBUILD_IMAGE)
+2>/dev/null | grep " kernel_entry" | cut -f1 -d \ )
++KERNEL_ENTRY=0x$(shell $(NM) $(objtree)/$(KBUILD_IMAGE) 2>/dev/null |
+grep " kernel_entry" | cut -f1 -d ' ')
++
++KBUILD_AFLAGS := $(LINUXINCLUDE) $(KBUILD_AFLAGS)
+-DKERNEL_ENTRY=$(KERNEL_ENTRY)
+
+Then, we can use $(KERNEL_ENTRY) directly.
+
+> +-n MIPS -d $(obj)/vmlinux.bin.gz $(obj)/uImage
+
+Here, $(obj)/vmlinux.bin.z can be replaced with $(obj)/vmlinux.bin.z,
+or we can simply use $< to simplify it.
+
+> +$(obj)/uImage: $(obj)/vmlinux.bin.gz FORCE
+
+$(obj)/vmlinux.bin.gz -> $(obj)/vmlinux.bin.z, and perhaps we can use
+uImage instead of $(obj)/uImage too ;-)
+
+> +       $(call if_changed,uImage)
 
 Regards,
 Wu Zhangjin
-
->
-> Regards,
-> Sergey
->

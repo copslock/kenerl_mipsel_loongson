@@ -1,94 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 14:52:38 +0100 (CET)
-Received: from usmamail.tilera.com ([206.83.70.70]:58254 "EHLO
-        USMAMAIL.TILERA.COM" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1493451Ab1AQNwf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 17 Jan 2011 14:52:35 +0100
-Received: from [192.168.1.103] (24.34.76.130) by
- USMAExch2.tad.internal.tilera.com (10.3.0.33) with Microsoft SMTP Server id
- 14.0.694.0; Mon, 17 Jan 2011 08:52:26 -0500
-Message-ID: <4D344995.80701@tilera.com>
-Date:   Mon, 17 Jan 2011 08:52:21 -0500
-From:   Chris Metcalf <cmetcalf@tilera.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101207 Lightning/1.0b2 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Jan 2011 14:54:35 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:37566 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493451Ab1AQNyc convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 17 Jan 2011 14:54:32 +0100
+Received: by fxm19 with SMTP id 19so6052271fxm.36
+        for <linux-mips@linux-mips.org>; Mon, 17 Jan 2011 05:54:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=lUcBKaoVOnQqedyjNMI7R+WIjjYfW3QC4LdIO0BmbIY=;
+        b=lENoMGI7gFNifFBbruqLORBBkKROc9uGj1RcjqeeuSy0Gf9JXd880OXt46oHBzRNk5
+         L5tx6WoSm7LggwBKPuQRxuehaJgFKR01dy0QtxqNldjF+1fg06umcKt91N7yRJBj39mv
+         A57WqxQevxVSClHpesM4O0IXuDy8LWqWPPW80=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=utBKNppHDcFmyRDPkMQIZo0MO7LVW7B3QYWLaS0KrGqeRQtlJvG34t03zOpfUFBNbe
+         P0kvGrflfCu3OMzdMesqLDRK0nCZgxmHdbAOQcZdSc4OJw2R6jN6CSngIcoxv3BU3N6H
+         9XdUPNcrl6VpmnfTrcDuJjcseyjxWpqMWw/p0=
 MIME-Version: 1.0
-To:     Peter Zijlstra <peterz@infradead.org>
-CC:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        Kyle McMartin <kyle@mcmartin.ca>, Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        <linux390@de.ibm.com>, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jeff Dike <jdike@addtoit.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, <x86@kernel.org>,
-        Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        <linux-alpha@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <uclinux-dist-devel@blackfin.uclinux.org>,
-        <linux-cris-kernel@axis.com>, <linux-ia64@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linux-parisc@vger.kernel.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <user-mode-linux-devel@lists.sourceforge.net>,
-        <user-mode-linux-user@lists.sourceforge.net>,
-        <xen-devel@lists.xensource.com>, <virtualization@lists.osdl.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] sched: provide scheduler_ipi() callback in response to
- smp_send_reschedule()
-References: <1295262433.30950.53.camel@laptop>   <20110117112637.GA18599@n2100.arm.linux.org.uk>         <1295263884.30950.54.camel@laptop> <1295264509.30950.59.camel@laptop>
-In-Reply-To: <1295264509.30950.59.camel@laptop>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Return-Path: <cmetcalf@tilera.com>
+Received: by 10.223.71.197 with SMTP id i5mr4772390faj.127.1295272464786; Mon,
+ 17 Jan 2011 05:54:24 -0800 (PST)
+Received: by 10.223.75.194 with HTTP; Mon, 17 Jan 2011 05:54:24 -0800 (PST)
+In-Reply-To: <AANLkTims0DPfG+u9qynuuj_-0WjUr1nAGLuFz3k706T-@mail.gmail.com>
+References: <AANLkTi=GDcy50zsC6=Dgv1-Ty3cYK2qpx9o=q3JdXuCh@mail.gmail.com>
+        <1295261783.24530.3.camel@maggie>
+        <AANLkTikJcug7LUTgX_YDD4Z8ZBrdkAdLq8_Epa6TkA5f@mail.gmail.com>
+        <1295265468.24530.23.camel@maggie>
+        <AANLkTims0DPfG+u9qynuuj_-0WjUr1nAGLuFz3k706T-@mail.gmail.com>
+Date:   Mon, 17 Jan 2011 14:54:24 +0100
+X-Google-Sender-Auth: ltPfdPjREbIT91mqEaY6o58yog8
+Message-ID: <AANLkTinwGaqg8ahGWd3+_dfhrCNTQNOfO1E-EUepFJ+C@mail.gmail.com>
+Subject: Re: Merging SSB and HND/AI support
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     =?UTF-8?Q?Michael_B=C3=BCsch?= <mb@bu3sch.de>,
+        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28937
+X-archive-position: 28938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cmetcalf@tilera.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On 1/17/2011 6:41 AM, Peter Zijlstra wrote:
-> Index: linux-2.6/arch/tile/kernel/smp.c
-> ===================================================================
-> --- linux-2.6.orig/arch/tile/kernel/smp.c
-> +++ linux-2.6/arch/tile/kernel/smp.c
-> @@ -184,12 +184,8 @@ void flush_icache_range(unsigned long st
->  /* Called when smp_send_reschedule() triggers IRQ_RESCHEDULE. */
->  static irqreturn_t handle_reschedule_ipi(int irq, void *token)
->  {
-> -       /*
-> -        * Nothing to do here; when we return from interrupt, the
-> -        * rescheduling will occur there. But do bump the interrupt
-> -        * profiler count in the meantime.
-> -        */
->         __get_cpu_var(irq_stat).irq_resched_count++;
-> +       scheduler_ipi();
->
->         return IRQ_HANDLED;
->  }
+On Mon, Jan 17, 2011 at 14:43, Jonas Gorski <jonas.gorski@gmail.com> wrote:
+> On 17 January 2011 12:57, Michael Büsch <mb@bu3sch.de> wrote:
+>> Well... I don't really like the idea of running one driver and
+>> subsystem implementation on completely distinct types of silicon.
+>> We will end up with the same mess that broadcom ended up with in
+>> their "SB" code (broadcom's SSB backplane implementation).
+>> For example, in their code the driver calls pci_enable_device() and
+>> related PCI functions, even if there is no PCI device at all. The calls
+>> are magically re-routed to the actual SB backplane.
+>> You'd have to do the same mess with SSB. Calling ssb_device_enable()
+>> will mean "enable the SSB device", if the backplane is SSB, and will
+>> mean "enable the HND/AI" device, if the backplane is HND/AI.
 
-Acked-by: Chris Metcalf <cmetcalf@tilera.com>
+> P.S: Any suggestions for the name? Would be "ai" okay? Technically
+> it's "AMBA Interconnect", but "amba" is already taken.
 
--- 
-Chris Metcalf, Tilera Corp.
-http://www.tilera.com
+If it's AMBA, can it be integrated with the existing code in drivers/amba/?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

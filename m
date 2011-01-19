@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 20:31:44 +0100 (CET)
-Received: from mail-px0-f177.google.com ([209.85.212.177]:52059 "EHLO
-        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491156Ab1AST3H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jan 2011 20:29:07 +0100
-Received: by mail-px0-f177.google.com with SMTP id 7so231768pxi.36
-        for <multiple recipients>; Wed, 19 Jan 2011 11:29:06 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 20:32:11 +0100 (CET)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:52567 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491146Ab1AST3M (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jan 2011 20:29:12 +0100
+Received: by mail-pw0-f49.google.com with SMTP id 8so239269pwj.36
+        for <multiple recipients>; Wed, 19 Jan 2011 11:29:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer
          :in-reply-to:references:in-reply-to:references;
-        bh=9PXrUxBEefBaa6CWd5TKX4L7HYPGO/xVgynAynDOjy4=;
-        b=dCP9wOy9Sv4DHZM13tyKjnEDrR6KM49kMAlu1hbX7oi6yE6uz/kTPBczlDp8NQiG/1
-         VyOLKImgmZTQWombX4jmlPMB27ECaa95HnPbEQCgD6lVGzmjCec5UyvmvitJXUXbr+PQ
-         TKMbGVwwksejLXuNpVGtmfj4+TLH9vqRsJ+0k=
+        bh=g32QTUwRU4bQ2W/HIW9iYw37APdWvdw9ompzM3SLn9Q=;
+        b=YfzJERFYvc2xkW0kPflKCVRySnqrDBFrwjmkFOBop0LaNe8GcAemVB9IfE3OjJw8f/
+         bzMukfD+vZTSjIS27vdHnVQaA+BMoxH0KJs3WuP5/tDQ1DsRlM96576YAtKiACxvAjOU
+         Uak4ewHeg8su+hJWZb31yVUb7JrGDqKt4Vsgo=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=AyVHOPTjUBnCjiOr6fF+vX0BED3EPj6qpQ2rZh/xLIunq/vnMRPs0cYZnADb3Urpob
-         rXsoCTTV41muzHqRcahXHDH7ACootQSFrOwBuyHVx3ou3w+0qtKqZxbLeaLljwfwcVHO
-         XI8y8mk++rdt/UnwIzKO27UDoAP09fQFx/UJY=
-Received: by 10.142.203.12 with SMTP id a12mr1123130wfg.122.1295465346604;
-        Wed, 19 Jan 2011 11:29:06 -0800 (PST)
+        b=niTDMbM5XVymvBoiZ33GoKXtd3x3BGt4AS2U42iJnqtfcouAs6di7Tn3gln94Ff6B3
+         MDyIKHnWVM1MjBZjYN2vLXlk/iGiGaJoi7lpPWwn0UvPiP/HACX0x1HH3DcD2ocZYXEn
+         8ixuEfDDQLHPafvKEMv578PjZ9pHOTd2yNfzc=
+Received: by 10.142.43.12 with SMTP id q12mr1137345wfq.34.1295465350524;
+        Wed, 19 Jan 2011 11:29:10 -0800 (PST)
 Received: from localhost.localdomain ([221.220.250.179])
-        by mx.google.com with ESMTPS id v19sm9985333wfh.12.2011.01.19.11.29.03
+        by mx.google.com with ESMTPS id v19sm9985333wfh.12.2011.01.19.11.29.06
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 19 Jan 2011 11:29:05 -0800 (PST)
+        Wed, 19 Jan 2011 11:29:09 -0800 (PST)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
         Steven Rostedt <srostedt@redhat.com>, linux-mips@linux-mips.org
-Subject: [PATCH 4/5] tracing, MIPS: Clean up ftrace_make_nop()
-Date:   Thu, 20 Jan 2011 03:28:31 +0800
-Message-Id: <1294349774393cf262bbad304207db40333d807d.1295464855.git.wuzhangjin@gmail.com>
+Subject: [PATCH 5/5] tracing, MIPS: Fix set_graph_function of function graph tracer
+Date:   Thu, 20 Jan 2011 03:28:32 +0800
+Message-Id: <9967898043e58db7b311d35695e9422e67cef5f6.1295464855.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <cover.1295464855.git.wuzhangjin@gmail.com>
 References: <cover.1295464855.git.wuzhangjin@gmail.com>
@@ -41,7 +41,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28980
+X-archive-position: 28981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,109 +49,49 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This moves the comments out of ftrace_make_nop() and make it cleaner.
-At the same time, a macro MCOUNT_OFFSET_INSNS is defined for sharing
-with the next patch.
+trace.func should be set to the recorded ip of the mcount calling site
+in the __mcount_loc section to filter the function entries configured
+through the tracing/set_graph_function interface, but before, this is
+set to the self_ra(the return address of mcount), which has made
+set_graph_function not work as expects.
 
+This fixes it via calculating the right recorded ip in the __mcount_loc
+section and assign it to trace.func.
+
+Reported-by: Zhiping Zhong <xzhong86@163.com>
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/kernel/ftrace.c |   70 ++++++++++++++++++++++++--------------------
- 1 files changed, 38 insertions(+), 32 deletions(-)
+ arch/mips/kernel/ftrace.c |   11 +++++++++--
+ 1 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-index 40ef34c..bc91e4a 100644
+index bc91e4a..62775d7 100644
 --- a/arch/mips/kernel/ftrace.c
 +++ b/arch/mips/kernel/ftrace.c
-@@ -24,8 +24,6 @@
- #define JAL 0x0c000000		/* jump & link: ip --> ra, jump to target */
- #define ADDR_MASK 0x03ffffff	/*  op_code|addr : 31...26|25 ....0 */
+@@ -257,7 +257,7 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+ 	struct ftrace_graph_ent trace;
+ 	unsigned long return_hooker = (unsigned long)
+ 	    &return_to_handler;
+-	int faulted;
++	int faulted, insns;
  
--#define INSN_B_1F_4 0x10000004	/* b 1f; offset = 4 */
--#define INSN_B_1F_5 0x10000005	/* b 1f; offset = 5 */
- #define INSN_NOP 0x00000000	/* nop */
- #define INSN_JAL(addr)	\
- 	((unsigned int)(JAL | (((addr) >> 2) & ADDR_MASK)))
-@@ -84,6 +82,42 @@ static int ftrace_modify_code(unsigned long ip, unsigned int new_code)
- 	return 0;
- }
+ 	if (unlikely(atomic_read(&current->tracing_graph_pause)))
+ 		return;
+@@ -304,7 +304,14 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+ 		return;
+ 	}
  
-+/*
-+ * The details about the calling site of mcount on MIPS
-+ *
-+ * 1. For kernel:
-+ *
-+ * move at, ra
-+ * jal _mcount		--> nop
-+ *
-+ * 2. For modules:
-+ *
-+ * 2.1 For KBUILD_MCOUNT_RA_ADDRESS and CONFIG_32BIT
-+ *
-+ * lui v1, hi_16bit_of_mcount        --> b 1f (0x10000005)
-+ * addiu v1, v1, low_16bit_of_mcount
-+ * move at, ra
-+ * move $12, ra_address
-+ * jalr v1
-+ *  sub sp, sp, 8
-+ *                                  1: offset = 5 instructions
-+ * 2.2 For the Other situations
-+ *
-+ * lui v1, hi_16bit_of_mcount        --> b 1f (0x10000004)
-+ * addiu v1, v1, low_16bit_of_mcount
-+ * move at, ra
-+ * jalr v1
-+ *  nop | move $12, ra_address | sub sp, sp, 8
-+ *                                  1: offset = 4 instructions
-+ */
+-	trace.func = self_ra;
++	/*
++	 * Get the recorded ip of the current mcount calling site in the
++	 * __mcount_loc section, which will be used to filter the function
++	 * entries configured through the tracing/set_graph_function interface.
++	 */
 +
-+#if defined(KBUILD_MCOUNT_RA_ADDRESS) && defined(CONFIG_32BIT)
-+#define MCOUNT_OFFSET_INSNS 5
-+#else
-+#define MCOUNT_OFFSET_INSNS 4
-+#endif
-+#define INSN_B_1F (0x10000000 | MCOUNT_OFFSET_INSNS)
-+
- int ftrace_make_nop(struct module *mod,
- 		    struct dyn_ftrace *rec, unsigned long addr)
- {
-@@ -94,36 +128,8 @@ int ftrace_make_nop(struct module *mod,
- 	 * If ip is in kernel space, no long call, otherwise, long call is
- 	 * needed.
- 	 */
--	if (in_kernel_space(ip)) {
--		/*
--		 * move at, ra
--		 * jal _mcount		--> nop
--		 */
--		new = INSN_NOP;
--	} else {
--#if defined(KBUILD_MCOUNT_RA_ADDRESS) && defined(CONFIG_32BIT)
--		/*
--		 * lui v1, hi_16bit_of_mcount        --> b 1f (0x10000005)
--		 * addiu v1, v1, low_16bit_of_mcount
--		 * move at, ra
--		 * move $12, ra_address
--		 * jalr v1
--		 *  sub sp, sp, 8
--		 *                                  1: offset = 5 instructions
--		 */
--		new = INSN_B_1F_5;
--#else
--		/*
--		 * lui v1, hi_16bit_of_mcount        --> b 1f (0x10000004)
--		 * addiu v1, v1, low_16bit_of_mcount
--		 * move at, ra
--		 * jalr v1
--		 *  nop | move $12, ra_address | sub sp, sp, 8
--		 *                                  1: offset = 4 instructions
--		 */
--		new = INSN_B_1F_4;
--#endif
--	}
-+	new = in_kernel_space(ip) ? INSN_NOP : INSN_B_1F;
-+
- 	return ftrace_modify_code(ip, new);
- }
++	insns = (in_kernel_space(self_ra)) ? 2 : (MCOUNT_OFFSET_INSNS + 1);
++	trace.func = self_ra - (MCOUNT_INSN_SIZE * insns);
  
+ 	/* Only trace if the calling function expects to */
+ 	if (!ftrace_graph_entry(&trace)) {
 -- 
 1.7.1

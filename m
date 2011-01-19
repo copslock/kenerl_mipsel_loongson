@@ -1,60 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 15:30:59 +0100 (CET)
-Received: from verein.lst.de ([213.95.11.210]:56005 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491061Ab1ASOa4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 19 Jan 2011 15:30:56 +0100
-Received: from verein.lst.de (localhost [127.0.0.1])
-        by verein.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id p0JEUnE5004876
-        (version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-        Wed, 19 Jan 2011 15:30:49 +0100
-Received: (from hch@localhost)
-        by verein.lst.de (8.12.3/8.12.3/Debian-7.2) id p0JEUnFR004875;
-        Wed, 19 Jan 2011 15:30:49 +0100
-Date:   Wed, 19 Jan 2011 15:30:49 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Aurelien Jarno <aurelien@aurel32.net>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 1/2] MIPS: add CONFIG_VIRTUALIZATION for virtio support
-Message-ID: <20110119143049.GA4820@lst.de>
-References: <1295349645-16805-1-git-send-email-aurelien@aurel32.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1295349645-16805-1-git-send-email-aurelien@aurel32.net>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 20:28:56 +0100 (CET)
+Received: from mail-px0-f177.google.com ([209.85.212.177]:52059 "EHLO
+        mail-px0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491142Ab1AST2v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jan 2011 20:28:51 +0100
+Received: by pxi7 with SMTP id 7so231768pxi.36
+        for <multiple recipients>; Wed, 19 Jan 2011 11:28:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=SuDJ50M+xhOBvr5Vs0Tpmpgg/oH8J1HbTuQ7mxBuuU4=;
+        b=pA9rpbf47V51mn6w0P7O7FZexr/Z6jn89IpxBtXFnl8VC40MpNHf4zLPtM49fHhNxn
+         S2lzKco7vN0ktfKErW/npXFO4u1zeK4WlTHdtY+CdFqhwdfaXCNIuJjV10srn3g06i3U
+         A/2fWEWHKLxC0PlzJObd0AeDpqqgKmiD3UH8s=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=XG9OmeyzaiD+AFcXPiR8fn36Cm8CHJqU8ApT8NVegKm6H0KXXJwOqGHGek5P+3257N
+         NlaVrlqN/Z7NZ9XFQ9/Z7V9cCpvjFyRubfwp6Crta1ZbNjvp4HLmHJkBjKk4GUVBRy9G
+         5xaEmZ9flU7/qAVLUk3kIXpy4sxjSPcLnf3RQ=
+Received: by 10.142.133.17 with SMTP id g17mr1119640wfd.167.1295465323466;
+        Wed, 19 Jan 2011 11:28:43 -0800 (PST)
+Received: from localhost.localdomain ([221.220.250.179])
+        by mx.google.com with ESMTPS id v19sm9985333wfh.12.2011.01.19.11.28.39
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 19 Jan 2011 11:28:42 -0800 (PST)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
+        Steven Rostedt <srostedt@redhat.com>,
+        linux-mips@linux-mips.org, xzhong86@163.com
+Subject: [PATCH 0/5] Misc updates for Ftrace of MIPS
+Date:   Thu, 20 Jan 2011 03:28:25 +0800
+Message-Id: <cover.1295464855.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.7.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28973
+X-archive-position: 28974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 18, 2011 at 12:20:44PM +0100, Aurelien Jarno wrote:
-> Add CONFIG_VIRTUALIZATION to the MIPS architecture and include the
-> the virtio code there. Used to enable the virtio drivers under QEMU.
-> 
-> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-> ---
->  arch/mips/Kconfig |   16 ++++++++++++++++
+Hi, Ralf and Steve
 
-> +menuconfig VIRTUALIZATION
-> +	bool "Virtualization"
-> +	default n
-> +	---help---
-> +	  Say Y here to get to see options for using your Linux host to run other
-> +	  operating systems inside virtual machines (guests).
-> +	  This option alone does not add any kernel code.
-> +
-> +	  If you say N, all options in this submenu will be skipped and disabled.
+This adds several patches for Ftrace of MIPS, most of them are trivial
+cleanups, the last one fixes the useful set_graph_function interface provided
+by function graph tracer.
 
-This item seems rather misleading as you're using virtio drivers as a
-guest.  I think the right fix is to just remove the VIRTUALIZATION
-dependency for the qemu drivers and just include them from
-drivers/Kconfig for all architectures.  There aren't a whole lot Linux
-architectures that don't have a qemu emulation these days.
+The 1st two patches has been sent before, here just resend them.
+
+Thanks very much to Zhiping for reporting the set_graph_function problem.
+
+Regards,
+	Wu Zhangjin
+
+Wu Zhangjin (5):
+  tracing, MIPS: Speed up function graph tracer
+  tracing, MIPS: Substitute in_kernel_space() for in_module()
+  tracing, MIPS: Clean up prepare_ftrace_return()
+  tracing, MIPS: Clean up ftrace_make_nop()
+  tracing, MIPS: Fix set_graph_function of function graph tracer
+
+ arch/mips/kernel/ftrace.c |  179 ++++++++++++++++++++++++---------------------
+ 1 files changed, 95 insertions(+), 84 deletions(-)

@@ -1,74 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 20:35:56 +0100 (CET)
-Received: from mail-qy0-f177.google.com ([209.85.216.177]:39835 "EHLO
-        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491137Ab1ASTfu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jan 2011 20:35:50 +0100
-Received: by qyk27 with SMTP id 27so1393319qyk.15
-        for <multiple recipients>; Wed, 19 Jan 2011 11:35:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=l3do2g7UFAYJ4sofgcftQNprh/1Ujv/h/7ZEJnZo8+I=;
-        b=wMjl4rjGvPHbsyFYHZIfhMEA3Yz5TTYxqsy4dkxI8id+IT8vWXTwN18UOYwv+xcpTk
-         UCcvsMqpfL8LjI9kTPijXGYfV7Ts1m4No9rWKWJwFovXgQDquazAmYaxxi6y+QYyQUev
-         vzB4rjj3RsgMCeHlv4SZibNPsPIIMcTXayWFc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        b=ZE9TRJ+w1jH5x5jxqFGmx6EWAuXvWnC/N6u5cgUatv/zud9yefukTryXn7mseroIJ3
-         cza6tID8pucibZr9u9Q57x1aiXsGVp2/0GA3aaVdamWtPWwEj+c8xnppH5iX3nUzhBHm
-         rd5rB2G6rU6i5Ww3gkiMFo7D00ZgBRd44+UC0=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 20:41:42 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:6335 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491137Ab1ASTlY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jan 2011 20:41:24 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4d373e910000>; Wed, 19 Jan 2011 11:42:09 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 19 Jan 2011 11:41:20 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 19 Jan 2011 11:41:20 -0800
+Message-ID: <4D373E5B.5010303@caviumnetworks.com>
+Date:   Wed, 19 Jan 2011 11:41:15 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.229.96.133 with SMTP id h5mr940377qcn.147.1295465743928; Wed,
- 19 Jan 2011 11:35:43 -0800 (PST)
-Received: by 10.229.39.9 with HTTP; Wed, 19 Jan 2011 11:35:43 -0800 (PST)
-In-Reply-To: <1293502077-9196-3-git-send-email-ddaney@caviumnetworks.com>
-References: <1293502077-9196-1-git-send-email-ddaney@caviumnetworks.com>
-        <1293502077-9196-3-git-send-email-ddaney@caviumnetworks.com>
-Date:   Wed, 19 Jan 2011 20:35:43 +0100
-X-Google-Sender-Auth: qx_cJjf1I_wVmrS6MH61D_fY2OM
-Message-ID: <AANLkTinZZ2TziwkiBfhqV-3-VfXwU+EPx3OHsnTRVChT@mail.gmail.com>
+To:     Jonas Gorski <jonas.gorski+openwrt@gmail.com>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH 2/2] MIPS: Optimize TLB handlers for Octeon CPUs
-From:   Jonas Gorski <jonas.gorski+openwrt@gmail.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jonas.gorski@gmail.com>
+References: <1293502077-9196-1-git-send-email-ddaney@caviumnetworks.com>        <1293502077-9196-3-git-send-email-ddaney@caviumnetworks.com> <AANLkTinZZ2TziwkiBfhqV-3-VfXwU+EPx3OHsnTRVChT@mail.gmail.com>
+In-Reply-To: <AANLkTinZZ2TziwkiBfhqV-3-VfXwU+EPx3OHsnTRVChT@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 19 Jan 2011 19:41:20.0735 (UTC) FILETIME=[D8DA16F0:01CBB810]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28984
+X-archive-position: 28985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski+openwrt@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On 28/12/2010, David Daney <ddaney@caviumnetworks.com> wrote:
-> +#if defined(CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE) && \
-> +    CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE > 0
-> (...)
-> +#else
-> +static bool scratchpad_available(void)
-> +{
-> +	return false;
-> +}
-> +static int scratchpad_offset(int i)
-> +{
-> +	BUG();
-> +}
-> +#endif
+On 01/19/2011 11:35 AM, Jonas Gorski wrote:
+> On 28/12/2010, David Daney<ddaney@caviumnetworks.com>  wrote:
+>> +#if defined(CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE)&&  \
+>> +    CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE>  0
+>> (...)
+>> +#else
+>> +static bool scratchpad_available(void)
+>> +{
+>> +	return false;
+>> +}
+>> +static int scratchpad_offset(int i)
+>> +{
+>> +	BUG();
+>> +}
+>> +#endif
+>
+> This seems to have broken the build for any non-octeon mips build:
+>
+>    CC      arch/mips/mm/tlbex.o
+> cc1: warnings being treated as errors
+> arch/mips/mm/tlbex.c: In function 'scratchpad_offset':
+> arch/mips/mm/tlbex.c:112: error: no return statement in function
+> returning non-void
+>
 
-This seems to have broken the build for any non-octeon mips build:
+Can you tell me which version of GCC you are using?
 
-  CC      arch/mips/mm/tlbex.o
-cc1: warnings being treated as errors
-arch/mips/mm/tlbex.c: In function 'scratchpad_offset':
-arch/mips/mm/tlbex.c:112: error: no return statement in function
-returning non-void
+I tested it with gcc-4.5.x, BUG() may have problems if 
+builtin_unreachable is not available.
 
-Regards,
-Jonas
+David Daney

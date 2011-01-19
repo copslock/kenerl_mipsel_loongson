@@ -1,60 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 21:45:18 +0100 (CET)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:65428 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491044Ab1ASUpP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 19 Jan 2011 21:45:15 +0100
-Received: by vws5 with SMTP id 5so570125vws.36
-        for <multiple recipients>; Wed, 19 Jan 2011 12:45:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type;
-        bh=uFXEAugw2BaHWUDOHGQ2xU4pCi4V9z4Jo/QS9V2St1k=;
-        b=AwU0doBvk1QWBifGSF6yyjIGQ3kBnB2VaeO3lK0yagVS8Qy9f6QJe1WpUwkh5WY7sN
-         RSLa754oksvIghT5Avfz+YHuAEqCr9GfMblJ9Gi8e3xJttV+mlDNRVIbg63hLh2rNlgj
-         vz90QhZd4sZcWXA1xYQJs7KHUN9ukkMF3FsE0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        b=UCphZkeghW5ZGD1ImCeBQlYu1ek5TIMSlNcpwisthOGdAUj4DuoqKsYriWSmp9MUzw
-         k9zZztL4uVIHctYC24NzmePASJCs3QSYyS8C4lgKSX/V5iihaEQqbBg5h/GmZPQX/oNg
-         jhDz7hvan/XDZ9hbwSCfzLhzwWooqyToK5WJU=
-Received: by 10.229.85.208 with SMTP id p16mr991457qcl.71.1295469907852; Wed,
- 19 Jan 2011 12:45:07 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.229.39.9 with HTTP; Wed, 19 Jan 2011 12:44:47 -0800 (PST)
-In-Reply-To: <4D3743FF.1080201@caviumnetworks.com>
-References: <1293502077-9196-1-git-send-email-ddaney@caviumnetworks.com>
- <1293502077-9196-3-git-send-email-ddaney@caviumnetworks.com>
- <AANLkTinZZ2TziwkiBfhqV-3-VfXwU+EPx3OHsnTRVChT@mail.gmail.com>
- <4D373E5B.5010303@caviumnetworks.com> <AANLkTi=aZSwQCVudjZrUoOZYGJscER8R3vOsRcgadw-_@mail.gmail.com>
- <4D3743FF.1080201@caviumnetworks.com>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 19 Jan 2011 21:44:47 +0100
-Message-ID: <AANLkTimfmvrBfGY1AAuGky3aKKWqxuDiPak3jVc_9Dvw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: Optimize TLB handlers for Octeon CPUs
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <jonas.gorski@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2011 00:25:01 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:12489 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491071Ab1ASXY6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jan 2011 00:24:58 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4d3772f60000>; Wed, 19 Jan 2011 15:25:42 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 19 Jan 2011 15:24:53 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 19 Jan 2011 15:24:53 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p0JNOltj028803;
+        Wed, 19 Jan 2011 15:24:48 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p0JNOivj028802;
+        Wed, 19 Jan 2011 15:24:44 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Add an unreachable return statement to satisfy buggy GCCs.
+Date:   Wed, 19 Jan 2011 15:24:42 -0800
+Message-Id: <1295479482-28769-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 19 Jan 2011 23:24:53.0742 (UTC) FILETIME=[13A088E0:01CBB830]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28988
+X-archive-position: 28989
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On 19/01/2011, David Daney <ddaney@caviumnetworks.com> wrote:
-> It is a bug in GCC-4.3.  The proper fix is to add 'return 0;' after that
-> BUG() statement.
->
-> I will prepare a patch.
+It was reported that GCC-4.3.3 (with CodeSourcery extensions) fails
+without this.
 
-Yes, that works. Thanks for the quick response.
+Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/mm/tlbex.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-Jonas
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 083d341..04f9e17 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -109,6 +109,8 @@ static bool scratchpad_available(void)
+ static int scratchpad_offset(int i)
+ {
+ 	BUG();
++	/* Really unreachable, but evidently some GCC want this. */
++	return 0;
+ }
+ #endif
+ /*
+-- 
+1.7.2.3

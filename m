@@ -1,63 +1,130 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Jan 2011 19:19:11 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:10441 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491062Ab1ARSTE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 18 Jan 2011 19:19:04 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d35d9c50000>; Tue, 18 Jan 2011 10:19:49 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 18 Jan 2011 10:19:00 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 18 Jan 2011 10:19:00 -0800
-Message-ID: <4D35D98F.60407@caviumnetworks.com>
-Date:   Tue, 18 Jan 2011 10:18:55 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Jan 2011 15:23:41 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:58346 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491076Ab1ASOXh convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 19 Jan 2011 15:23:37 +0100
+Received: by iyj21 with SMTP id 21so827167iyj.36
+        for <linux-mips@linux-mips.org>; Wed, 19 Jan 2011 06:23:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:cc:content-type:content-transfer-encoding;
+        bh=KIz0Ez3/Xk3bHMW+Hr/rKaiRkIljgGRUY12lSN/B0i8=;
+        b=o23qWhdZT++9TOfchYSeO0fgT8GC6iHqNcXpDLS/n2WND0LWCI7kRzlpRAUZbY86FG
+         sdkE7d845vK+7gxf2VGtIQOa+Wo4Kv5UycURgrI7bMEGGZlc4jVD4pE7h+fVNk55W/cF
+         y6l1aSNoLz8jguSp5AtRq3j4bGdq27hd3N8mQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:cc
+         :content-type:content-transfer-encoding;
+        b=FM9/A1uhcaXwr7lrTTbIKt7ikq4G1ltMmLrloxf9KXpkGj5cqYc5MfS2+rt/rg44ss
+         fhP+NSNFmkxE52TWq728fboeGBk12xEDdzklCk5J66VnQQhlMIwveaaWWrPXhxIm4Vzm
+         AAW7fIvKQPVshCDLS+DAiN4bIatRkwR7SD3Iw=
 MIME-Version: 1.0
-To:     "Amker.Cheng" <amker.cheng@gmail.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: about oprofile callgraph on linux-mips
-References: <AANLkTin+TzF2QtbfRi8Ltqwp97ME-JtuwwEBn8cYt1zS@mail.gmail.com>
-In-Reply-To: <AANLkTin+TzF2QtbfRi8Ltqwp97ME-JtuwwEBn8cYt1zS@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 18 Jan 2011 18:19:00.0408 (UTC) FILETIME=[2DC64380:01CBB73C]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: by 10.42.172.67 with SMTP id m3mr911168icz.231.1295447001186; Wed,
+ 19 Jan 2011 06:23:21 -0800 (PST)
+Received: by 10.42.195.199 with HTTP; Wed, 19 Jan 2011 06:23:21 -0800 (PST)
+In-Reply-To: <AANLkTi=zfr5YuwBCcvH2Jas50UxnUtvzp_CDyN25sT5h@mail.gmail.com>
+References: <AANLkTinvdEPwQ=DmcF8nnTAa0Py_O=+p7x1pobcTNHom@mail.gmail.com>
+        <AANLkTik8hQfd8cvNj=qeq5U=6zpQHw33a9hfK-q8+x1Z@mail.gmail.com>
+        <AANLkTikpUBtg2zz8tcbcz2rcG-O+fTFwb_pTi88uZe0h@mail.gmail.com>
+        <AANLkTi=zfr5YuwBCcvH2Jas50UxnUtvzp_CDyN25sT5h@mail.gmail.com>
+Date:   Wed, 19 Jan 2011 22:23:21 +0800
+Message-ID: <AANLkTim_swh58fCUxZ4e6MDrM9Lqrbm+1ufnp8W767JL@mail.gmail.com>
+Subject: Re: about udelay in mips
+From:   loody <miloody@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+To:     unlisted-recipients:; (no To-header on input)
+Return-Path: <miloody@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28971
+X-archive-position: 28972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: miloody@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 01/17/2011 07:01 PM, Amker.Cheng wrote:
-> Hi,
->      Previously I have run oprofile on linux-mips and have two
-> questions about it.
->      It seems that oprofile does not support callgraph on linux-mips
-> currently, since there is no
-> backtrace function in oprofile kernel module for mips target.
->      Is it possible or easy to support callgraph on mips target? If I
-> am right, it's some kind of
-> difficult to calculate stack frames of interrupted user space
-> programs, at least for O32 ABI.
+hi all:
+thanks for your kind help :)
+
+2011/1/17 Winfred Lu <winfred.lu@gmail.com>:
+> 2011/1/16 loody <miloody@gmail.com>
+>>
+>> below is the formula about calculating the delay
+>> (us  *   0x000010c7   *   HZ   *   lpj   )) >> 32)
+>> I cannot figure out why we need to multiply 0x10c7, and what lpj mean?
 >
+> 0x10c7 is the rounded up value of (2 ^ 32) / 1,000,000.
+>
+> The 1,000,000 comes from that 1 second is equal to 1,000,000 micro seconds.
+> That the value multiplied by (2 ^ 32) and shifted 32 bit right after is
+> equal to
+> that the value multiplied by 1.
+I found my kernel will compile udelay(xx) as zero no matter what xx I filled in.
+below are the dis-assemblies:
+(as you can see the v0 = v1 = zero.)
+My version is 2.6.30.9:
+void __udelay(unsigned long us)
+{
+        unsigned int lpj = current_cpu_data.udelay_val;
 
-By default, most MIPS code doesn't use frame pointers.  This makes 
-generating an accurate stack trace either very difficult or impossible.
+        __delay(((unsigned long long)(us * 0x000010c7 * HZ * lpj)) >> 32);
+80306ed0:       00001821        move    v1,zero
+80306ed4:       00601021        move    v0,v1
+#include <asm/compiler.h>
+#include <asm/war.h>
 
-If you compile *all* your user space code with -fno-omit-framepointer, 
-you could write a fairly simple stack walker.  Otherwise you have to do 
-code analysis to try to get a stack trace, and that is quite complex, 
-and at in some cases impossible.
+inline void __delay(unsigned int loops)
+{
+        __asm__ __volatile__ (
+80306ed8:       1440ffff        bnez    v0,80306ed8 <__udelay+0x8>
+80306edc:       2442ffff        addiu   v0,v0,-1
+void __udelay(unsigned long us)
 
-> Any tips would be appriciated. thanks.
+I have double checked the __delay source code of 2.6.33.4
+and the dis-assemblies:
 
-I wrote a userspace o32 stack trace generator once and posted it to 
-java-patches@gcc.gnu.org.  If you search for it you might find it.
+void __udelay(unsigned long us)
+{
+        unsigned int lpj = current_cpu_data.udelay_val;
 
-David Daney
+        __delay((us * 0x000010c7ull * HZ * lpj) >> 32);
+802f7310:       3c02804f        lui     v0,0x804f
+802f7314:       8c429360        lw      v0,-27808(v0)
+802f7318:       3c050010        lui     a1,0x10
+802f731c:       34a56256        ori     a1,a1,0x6256
+802f7320:       00450019        multu   v0,a1
+802f7324:       00002821        move    a1,zero
+802f7328:       00001012        mflo    v0
+802f732c:       00001810        mfhi    v1
+802f7330:       00a20018        mult    a1,v0
+802f7334:       70640000        madd    v1,a0
+802f7338:       00003012        mflo    a2
+802f733c:       00440019        multu   v0,a0
+802f7340:       00001810        mfhi    v1
+802f7344:       00c31021        addu    v0,a2,v1
+#include <asm/compiler.h>
+#include <asm/war.h>
+
+inline void __delay(unsigned int loops)
+{
+        __asm__ __volatile__ (
+802f7348:       1440ffff        bnez    v0,802f7348 <__udelay+0x38>
+802f734c:       2442ffff        addiu   v0,v0,-1
+void __udelay(unsigned long us)
+{
+        unsigned int lpj = current_cpu_data.udelay_val;
+
+        __delay((us * 0x000010c7ull * HZ * lpj) >> 32);
+}
+802f7350:       03e00008        jr      ra
+
+Does that mean "unsigned long long" not workable?
+appreciate your help,
+miloody

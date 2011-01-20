@@ -1,61 +1,163 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2011 00:25:01 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:12489 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491071Ab1ASXY6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jan 2011 00:24:58 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d3772f60000>; Wed, 19 Jan 2011 15:25:42 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 19 Jan 2011 15:24:53 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 19 Jan 2011 15:24:53 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p0JNOltj028803;
-        Wed, 19 Jan 2011 15:24:48 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p0JNOivj028802;
-        Wed, 19 Jan 2011 15:24:44 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Add an unreachable return statement to satisfy buggy GCCs.
-Date:   Wed, 19 Jan 2011 15:24:42 -0800
-Message-Id: <1295479482-28769-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 19 Jan 2011 23:24:53.0742 (UTC) FILETIME=[13A088E0:01CBB830]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2011 10:59:58 +0100 (CET)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:53695 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491178Ab1ATJ7z convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Jan 2011 10:59:55 +0100
+Received: by wyf22 with SMTP id 22so434078wyf.36
+        for <multiple recipients>; Thu, 20 Jan 2011 01:59:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=dbL/HBujDoP+5JDMEBaaEhEagQIqKKaSC0TBxoWEIHI=;
+        b=k+Vshbococv9ixoU4JqKFbDjC7aranheYAZ3sTcgFVPZNSBNjinaPOZu7RIm1XwrYH
+         w41SboL/DAvopBMK1g37DyNvmMYCqJMTF2FhHHFJ/Ei8TwBPLwk407TiAH3QtKM2qxlD
+         qpd14zKV6GzY5cBpzHmoTye2VQ7UeOPA3+0fc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=DraEUoHw7A9yDxuG3dmXXzXRYAUHGsE61btY0Z8DmEEFySsGPIK1TI6mQ0oDO67aws
+         sufeH/3YgZhYo5SZj/TJwWVSMEA+WoYKnHey9qi0w1rt414NKZxL4OQw7g+2VW2E6VPI
+         DEeAFF5A5DssVql4GsJiRFuat2e+Ffm8q257s=
+MIME-Version: 1.0
+Received: by 10.216.177.9 with SMTP id c9mr1707066wem.34.1295517589581; Thu,
+ 20 Jan 2011 01:59:49 -0800 (PST)
+Received: by 10.216.63.200 with HTTP; Thu, 20 Jan 2011 01:59:49 -0800 (PST)
+In-Reply-To: <1294367707-2593-1-git-send-email-ddaney@caviumnetworks.com>
+References: <1294367707-2593-1-git-send-email-ddaney@caviumnetworks.com>
+Date:   Thu, 20 Jan 2011 17:59:49 +0800
+Message-ID: <AANLkTimZKz_Epg8DOvwkWWcS0viUa2V2TygUS80osEwh@mail.gmail.com>
+Subject: Re: [PATCH 0/6] MIPS: perf: Make perf work for 64-bit/Octeon counters.
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28989
+X-archive-position: 28990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-It was reported that GCC-4.3.3 (with CodeSourcery extensions) fails
-without this.
+Hi, David
 
-Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/mm/tlbex.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 083d341..04f9e17 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -109,6 +109,8 @@ static bool scratchpad_available(void)
- static int scratchpad_offset(int i)
- {
- 	BUG();
-+	/* Really unreachable, but evidently some GCC want this. */
-+	return 0;
- }
- #endif
- /*
--- 
-1.7.2.3
+Today I did a quick test against your patch set on my MIPS32 Malta board.
+After fixing a small compiling issue (see my comment for patch #5), I
+successfully built the kernel based on my previous mainline-sync changes.
+And when doing the test, I was using the an previously compiled 'perf'
+tool, because the latest perf tool needs arch specific DWARF register
+mapping definitions (and currently we have not yet submitted this patch).
+
+And here's the test result:
+
+# When this patch set is built in, the simple 'perf stat' command takes
+very long time (182 seconds for the ls command). See following:
+
+-sh-4.0# perf stat -e cycles -e instructions ls /
+bin   dev  home  lost+found  opt   root  share  tmp    usr
+boot  etc  lib   mnt         proc  sbin  sys    trans  var
+
+ Performance counter stats for 'ls /':
+
+         2825998290  cycles
+         2148970283  instructions             #      0.760 IPC
+
+      181.901999444  seconds time elapsed
+
+# When this patch is NOT used, namely, only the mainline-sync changes are
+built in, the time looks reasonable:
+
+-sh-4.0# perf stat -e cycles -e instructions ls /
+bin   dev  home  lost+found  opt   root  share  tmp    usr
+boot  etc  lib   mnt         proc  sbin  sys    trans  var
+
+ Performance counter stats for 'ls /':
+
+            2051461  cycles
+            1041512  instructions             #      0.508 IPC
+
+        0.046426513  seconds time elapsed
+
+I noticed that you changed quite a lot of original logics in MIPS
+Perf-events, including the deletion of the 'msbs' member in the struct
+cpu_hw_events. Honestly speaking, I have not yet taken a careful look into
+the patch set to find out how you deal with the MIPS specific 0x80000000
+counter overflow (certainly, the value is for MIPS32), instead of
+0xffffffff. But maybe this code logic could be related to the test result.
+
+
+Deng-Cheng
+
+
+2011/1/7 David Daney <ddaney@caviumnetworks.com>:
+> The existing MIPS perf hardware counter support only handles 32-bit
+> wide counters.  Some CPUs (like Octeon) have the 64-bit wide variety.
+> This patch set allows perf to work on Octeon, and I hope not break
+> existing systems.  I have not tested it on non-Octeon systems, so it
+> would be good if someone could test that.
+>
+> Summary of the patches:
+>
+> 1) Fix faulty Octeon interrupt controller code.
+>
+> 2) Add some register definitions.
+>
+> 3,4) Clean up existing code.
+>
+> 5) 64-bit perf counter support.
+>
+> 6) Octeon perf event bindings.
+>
+> Patch 4/6 is the biggest and has the highest chance of having broken
+> something.
+>
+> This patch set depends on a couple of others that have previously been
+> sent to Ralf:
+>
+> http://patchwork.linux-mips.org/patch/1927/
+> http://patchwork.linux-mips.org/patch/1850/
+> http://patchwork.linux-mips.org/patch/1851/
+> http://patchwork.linux-mips.org/patch/1852/
+> http://patchwork.linux-mips.org/patch/1853/
+> http://patchwork.linux-mips.org/patch/1854/
+>
+> David Daney (6):
+>  MIPS: Octeon: Enable per-CPU IRQs on all CPUs.
+>  MIPS: Add accessor macros for 64-bit performance counter registers.
+>  MIPS: perf: Cleanup formatting in arch/mips/kernel/perf_event.c
+>  MIPS: perf: Reorganize contents of perf support files.
+>  MIPS: perf: Add support for 64-bit perf counters.
+>  MIPS: perf: Add Octeon support for hardware perf.
+>
+>  arch/mips/Kconfig                    |    2 +-
+>  arch/mips/cavium-octeon/octeon-irq.c |   30 +-
+>  arch/mips/cavium-octeon/smp.c        |   10 +
+>  arch/mips/include/asm/mipsregs.h     |    8 +
+>  arch/mips/kernel/Makefile            |    5 +-
+>  arch/mips/kernel/perf_event.c        |  521 +--------------
+>  arch/mips/kernel/perf_event_mipsxx.c | 1265 +++++++++++++++++++++++++---------
+>  7 files changed, 977 insertions(+), 864 deletions(-)
+>
+> Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Ingo Molnar <mingo@elte.hu>
+> Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+> Cc: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+> --
+> 1.7.2.3
+>
+>

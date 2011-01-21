@@ -1,33 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2011 00:32:37 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13953 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Jan 2011 00:33:01 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13954 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491831Ab1AUXcJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Jan 2011 00:32:09 +0100
+        by eddie.linux-mips.org with ESMTP id S1491835Ab1AUXcL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 22 Jan 2011 00:32:11 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d3a17a70001>; Fri, 21 Jan 2011 15:32:55 -0800
+        id <B4d3a17aa0000>; Fri, 21 Jan 2011 15:32:58 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 21 Jan 2011 15:32:06 -0800
+         Fri, 21 Jan 2011 15:32:09 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 21 Jan 2011 15:32:06 -0800
+         Fri, 21 Jan 2011 15:32:09 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p0LNW2Ve029168;
-        Fri, 21 Jan 2011 15:32:02 -0800
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p0LNW42r029177;
+        Fri, 21 Jan 2011 15:32:04 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p0LNW1mK029166;
-        Fri, 21 Jan 2011 15:32:01 -0800
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p0LNW3Ye029175;
+        Fri, 21 Jan 2011 15:32:03 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH v2 0/3] MIPS: Octeon: Add perf support.
-Date:   Fri, 21 Jan 2011 15:31:57 -0800
-Message-Id: <1295652720-29131-1-git-send-email-ddaney@caviumnetworks.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH v2 2/3] MIPS: Octeon: Enable per-CPU IRQs on all CPUs.
+Date:   Fri, 21 Jan 2011 15:31:59 -0800
+Message-Id: <1295652720-29131-3-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 21 Jan 2011 23:32:06.0640 (UTC) FILETIME=[6A7B0700:01CBB9C3]
+In-Reply-To: <1295652720-29131-1-git-send-email-ddaney@caviumnetworks.com>
+References: <1295652720-29131-1-git-send-email-ddaney@caviumnetworks.com>
+X-OriginalArrivalTime: 21 Jan 2011 23:32:09.0140 (UTC) FILETIME=[6BF87F40:01CBB9C3]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29019
+X-archive-position: 29020
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,29 +38,95 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-The first two patches fix the Octeon interrupt support so that the
-perf interrupts work right.
+We cannot use on_each_cpu() from low-level irq code, as it ends up
+being run with interrupts disabled (a no-no).  Instead use some direct
+IPI message bits to enable and disable the MIPS CPU interrupts.
 
-The last patch actually adds support for the Octeon hardware perf counters.
+Also, enable the irq on all CPUs for MIPS CPU interrupts.
 
-Change from v1:
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+---
+ arch/mips/cavium-octeon/octeon-irq.c |   30 +++++++++++++++++++++++++++---
+ arch/mips/cavium-octeon/smp.c        |   10 ++++++++++
+ 2 files changed, 37 insertions(+), 3 deletions(-)
 
-o Remove these patches from the set for 64-bit counters.
-
-Chandrakala Chavva (1):
-  MIPS: Octeon: Fix interrupt irq settings for performance counters.
-
-David Daney (2):
-  MIPS: Octeon: Enable per-CPU IRQs on all CPUs.
-  MIPS: perf: Add Octeon support for hardware perf.
-
- arch/mips/Kconfig                                  |    2 +-
- arch/mips/cavium-octeon/octeon-irq.c               |   30 ++++-
- arch/mips/cavium-octeon/setup.c                    |    7 -
- arch/mips/cavium-octeon/smp.c                      |   10 ++
- .../asm/mach-cavium-octeon/kernel-entry-init.h     |    5 +
- arch/mips/kernel/perf_event_mipsxx.c               |  147 ++++++++++++++++++++
- 6 files changed, 190 insertions(+), 11 deletions(-)
-
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index ce7500c..023cf04 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -56,7 +56,7 @@ static void octeon_irq_core_eoi(unsigned int irq)
+ 	set_c0_status(0x100 << bit);
+ }
+ 
+-static void octeon_irq_core_enable(unsigned int irq)
++static void octeon_irq_core_enable_local(unsigned int irq)
+ {
+ 	unsigned long flags;
+ 	unsigned int bit = irq - OCTEON_IRQ_SW0;
+@@ -83,16 +83,40 @@ static void octeon_irq_core_disable_local(unsigned int irq)
+ 	local_irq_restore(flags);
+ }
+ 
++extern void octeon_send_ipi_single(int cpu, unsigned int action);
++
+ static void octeon_irq_core_disable(unsigned int irq)
+ {
+ #ifdef CONFIG_SMP
+-	on_each_cpu((void (*)(void *)) octeon_irq_core_disable_local,
+-		    (void *) (long) irq, 1);
++	unsigned int bit = irq - OCTEON_IRQ_SW0;
++	int cpu;
++	for_each_online_cpu(cpu) {
++		if (cpu == smp_processor_id())
++			octeon_irq_core_disable_local(irq);
++		else
++			octeon_send_ipi_single(cpu, 0x100 << bit);
++	}
+ #else
+ 	octeon_irq_core_disable_local(irq);
+ #endif
+ }
+ 
++static void octeon_irq_core_enable(unsigned int irq)
++{
++#ifdef CONFIG_SMP
++	unsigned int bit = irq - OCTEON_IRQ_SW0;
++	int cpu;
++	for_each_online_cpu(cpu) {
++		if (cpu == smp_processor_id())
++			octeon_irq_core_enable_local(irq);
++		else
++			octeon_send_ipi_single(cpu, 0x10000 << bit);
++	}
++#else
++	octeon_irq_core_enable_local(irq);
++#endif
++}
++
+ static struct irq_chip octeon_irq_chip_core = {
+ 	.name = "Core",
+ 	.enable = octeon_irq_core_enable,
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 391cefe..92d819b 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -48,6 +48,16 @@ static irqreturn_t mailbox_interrupt(int irq, void *dev_id)
+ 	/* Check if we've been told to flush the icache */
+ 	if (action & SMP_ICACHE_FLUSH)
+ 		asm volatile ("synci 0($0)\n");
++	if (action & 0xff00) {
++		/* Disable MIPS CPU irq*/
++		unsigned int mask = action & 0xff00;
++		clear_c0_status(mask);
++	}
++	if (action & 0xff0000) {
++		/* Enable MIPS CPU irq*/
++		unsigned int mask = (action >> 8) & 0xff00;
++		set_c0_status(mask);
++	}
+ 	return IRQ_HANDLED;
+ }
+ 
 -- 
 1.7.2.3

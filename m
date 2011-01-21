@@ -1,172 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Jan 2011 18:55:43 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:15271 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491779Ab1ATRzj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Jan 2011 18:55:39 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d38774a0000>; Thu, 20 Jan 2011 09:56:26 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 20 Jan 2011 09:55:37 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 20 Jan 2011 09:55:37 -0800
-Message-ID: <4D387719.5030508@caviumnetworks.com>
-Date:   Thu, 20 Jan 2011 09:55:37 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: Re: [PATCH 0/6] MIPS: perf: Make perf work for 64-bit/Octeon counters.
-References: <1294367707-2593-1-git-send-email-ddaney@caviumnetworks.com> <AANLkTimZKz_Epg8DOvwkWWcS0viUa2V2TygUS80osEwh@mail.gmail.com>
-In-Reply-To: <AANLkTimZKz_Epg8DOvwkWWcS0viUa2V2TygUS80osEwh@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 Jan 2011 17:55:37.0609 (UTC) FILETIME=[3E779F90:01CBB8CB]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2011 09:19:53 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:57964 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491141Ab1AUITu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jan 2011 09:19:50 +0100
+Received: by iyj21 with SMTP id 21so1442488iyj.36
+        for <multiple recipients>; Fri, 21 Jan 2011 00:19:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=/tRAMJoBNJzJM/j1Cop9gbkb6cyy0DcZyYnqv3drAqA=;
+        b=d1Ogxz4ceURnn12sDYzCdssyJmhGiGNDBLDiEG+B25q1DIrKauhtKGjMKLfcYMBeTu
+         PsB0cueTpDgn3wxD7Ym7jZaaeki4d44YqiGSiq37340fvs246HhtpCOl/D72I1I7QWU0
+         agFbhnXTGEA0DiLve+PFkG/CkQWDEt3aPNmh8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=mqNJ8bqsns/XC9ktgozVw6ysiAsKS3mC76wmdI96fMYxT+7eR58dYrn15DxTIV+mj3
+         qoBT2RCdKqAU+J8Dw5vx2TflyzRDHNChuZjSUYmrpOmHjV9L1h4QJUHJecE+iIMpuLhC
+         k6ifQhUcf6181ELJ3kAeU4+vqXL+mUKDBWYGk=
+Received: by 10.42.230.137 with SMTP id jm9mr361261icb.282.1295597983399;
+        Fri, 21 Jan 2011 00:19:43 -0800 (PST)
+Received: from localhost.localdomain ([210.13.118.102])
+        by mx.google.com with ESMTPS id he5sm6836460icb.22.2011.01.21.00.19.36
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 21 Jan 2011 00:19:41 -0800 (PST)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     ralf@linux-mips.org, a.p.zijlstra@chello.nl, fweisbec@gmail.com,
+        will.deacon@arm.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        wuzhangjin@gmail.com, paulus@samba.org, mingo@elte.hu,
+        acme@redhat.com, dengcheng.zhu@gmail.com, matt@console-pimps.org,
+        sshtylyov@mvista.com, ddaney@caviumnetworks.com
+Subject: [PATCH v4 0/5] MIPS/Perf-events: Sync with mainline upper layer (v4)
+Date:   Fri, 21 Jan 2011 16:19:16 +0800
+Message-Id: <1295597961-7565-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+Return-Path: <dengcheng.zhu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 28998
+X-archive-position: 28999
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 01/20/2011 01:59 AM, Deng-Cheng Zhu wrote:
-> Hi, David
->
->
-> Today I did a quick test against your patch set on my MIPS32 Malta board.
-> After fixing a small compiling issue (see my comment for patch #5), I
-> successfully built the kernel based on my previous mainline-sync changes.
-> And when doing the test, I was using the an previously compiled 'perf'
-> tool, because the latest perf tool needs arch specific DWARF register
-> mapping definitions (and currently we have not yet submitted this patch).
->
-> And here's the test result:
->
-> # When this patch set is built in, the simple 'perf stat' command takes
-> very long time (182 seconds for the ls command). See following:
->
-> -sh-4.0# perf stat -e cycles -e instructions ls /
-> bin   dev  home  lost+found  opt   root  share  tmp    usr
-> boot  etc  lib   mnt         proc  sbin  sys    trans  var
->
->   Performance counter stats for 'ls /':
->
->           2825998290  cycles
->           2148970283  instructions             #      0.760 IPC
->
->        181.901999444  seconds time elapsed
->
-> # When this patch is NOT used, namely, only the mainline-sync changes are
-> built in, the time looks reasonable:
->
-> -sh-4.0# perf stat -e cycles -e instructions ls /
-> bin   dev  home  lost+found  opt   root  share  tmp    usr
-> boot  etc  lib   mnt         proc  sbin  sys    trans  var
->
->   Performance counter stats for 'ls /':
->
->              2051461  cycles
->              1041512  instructions             #      0.508 IPC
->
->          0.046426513  seconds time elapsed
->
-> I noticed that you changed quite a lot of original logics in MIPS
-> Perf-events, including the deletion of the 'msbs' member in the struct
-> cpu_hw_events. Honestly speaking, I have not yet taken a careful look into
-> the patch set to find out how you deal with the MIPS specific 0x80000000
-> counter overflow (certainly, the value is for MIPS32), instead of
-> 0xffffffff. But maybe this code logic could be related to the test result.
->
+Current MIPS Perf-events uses older interfaces to the generic layer. So it
+will not work. This patch set fixes this issue (reported by Wu Zhangjin) by
+adding MIPS counterparts for a list of previous commits that went to
+mainline earlier.
 
+Changes:
+v4 - v3:
+o Rebase this patch set to have early_initcall instead of arch_initcall for
+init_hw_perf_events.
+o Change the arguments of perf_pmu_register() in Patch #2.
+v3 - v2:
+o Keep all mentioned commits in the form of number + title + original
+summary + (MIPS specific info when needed).
+v2 - v1:
+o Corrected the return value of the event check in validate_event().
 
-I will try to figure out what is happening.  Most of my testing was done 
-with an explicit '-c' argument to the perf tool.
+Deng-Cheng Zhu (5):
+  MIPS/Perf-events: Work with irq_work
+  MIPS/Perf-events: Work with the new PMU interface
+  MIPS/Perf-events: Fix event check in validate_event()
+  MIPS/Perf-events: Work with the new callchain interface
+  MIPS/Perf-events: Use unsigned delta for right shift in event update
 
-Thanks for testing it.
-
-If it is OK with you, and once we have tested it, we could use the last 
-patch set you posted to lmo 
-(http://patchwork.linux-mips.org/patch/1850/), and add mine on top of it.
-
-David Daney
-
-
-
-
-
-
-
-
-
->
-> Deng-Cheng
->
->
-> 2011/1/7 David Daney<ddaney@caviumnetworks.com>:
->> The existing MIPS perf hardware counter support only handles 32-bit
->> wide counters.  Some CPUs (like Octeon) have the 64-bit wide variety.
->> This patch set allows perf to work on Octeon, and I hope not break
->> existing systems.  I have not tested it on non-Octeon systems, so it
->> would be good if someone could test that.
->>
->> Summary of the patches:
->>
->> 1) Fix faulty Octeon interrupt controller code.
->>
->> 2) Add some register definitions.
->>
->> 3,4) Clean up existing code.
->>
->> 5) 64-bit perf counter support.
->>
->> 6) Octeon perf event bindings.
->>
->> Patch 4/6 is the biggest and has the highest chance of having broken
->> something.
->>
->> This patch set depends on a couple of others that have previously been
->> sent to Ralf:
->>
->> http://patchwork.linux-mips.org/patch/1927/
->> http://patchwork.linux-mips.org/patch/1850/
->> http://patchwork.linux-mips.org/patch/1851/
->> http://patchwork.linux-mips.org/patch/1852/
->> http://patchwork.linux-mips.org/patch/1853/
->> http://patchwork.linux-mips.org/patch/1854/
->>
->> David Daney (6):
->>   MIPS: Octeon: Enable per-CPU IRQs on all CPUs.
->>   MIPS: Add accessor macros for 64-bit performance counter registers.
->>   MIPS: perf: Cleanup formatting in arch/mips/kernel/perf_event.c
->>   MIPS: perf: Reorganize contents of perf support files.
->>   MIPS: perf: Add support for 64-bit perf counters.
->>   MIPS: perf: Add Octeon support for hardware perf.
->>
->>   arch/mips/Kconfig                    |    2 +-
->>   arch/mips/cavium-octeon/octeon-irq.c |   30 +-
->>   arch/mips/cavium-octeon/smp.c        |   10 +
->>   arch/mips/include/asm/mipsregs.h     |    8 +
->>   arch/mips/kernel/Makefile            |    5 +-
->>   arch/mips/kernel/perf_event.c        |  521 +--------------
->>   arch/mips/kernel/perf_event_mipsxx.c | 1265 +++++++++++++++++++++++++---------
->>   7 files changed, 977 insertions(+), 864 deletions(-)
->>
->> Cc: Peter Zijlstra<a.p.zijlstra@chello.nl>
->> Cc: Paul Mackerras<paulus@samba.org>
->> Cc: Ingo Molnar<mingo@elte.hu>
->> Cc: Arnaldo Carvalho de Melo<acme@redhat.com>
->> Cc: Deng-Cheng Zhu<dengcheng.zhu@gmail.com>
->> --
->> 1.7.2.3
->>
->>
->
+ arch/mips/Kconfig                    |    1 +
+ arch/mips/include/asm/perf_event.h   |   12 +-
+ arch/mips/kernel/perf_event.c        |  345 ++++++++++++++++------------------
+ arch/mips/kernel/perf_event_mipsxx.c |    4 +-
+ 4 files changed, 171 insertions(+), 191 deletions(-)

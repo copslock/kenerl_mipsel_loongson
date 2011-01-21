@@ -1,173 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2011 22:56:01 +0100 (CET)
-Received: from rtp-iport-1.cisco.com ([64.102.122.148]:42650 "EHLO
-        rtp-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491833Ab1AUVz5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jan 2011 22:55:57 +0100
-Authentication-Results: rtp-iport-1.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAIOPOU2tJXG9/2dsb2JhbACkanOhVZsZhVAEhG+JWw
-Received: from rcdn-core2-2.cisco.com ([173.37.113.189])
-  by rtp-iport-1.cisco.com with ESMTP; 21 Jan 2011 21:55:50 +0000
-Received: from xbh-rcd-101.cisco.com (xbh-rcd-101.cisco.com [72.163.62.138])
-        by rcdn-core2-2.cisco.com (8.14.3/8.14.3) with ESMTP id p0LLto6C028594;
-        Fri, 21 Jan 2011 21:55:50 GMT
-Received: from xmb-rcd-208.cisco.com ([72.163.62.215]) by xbh-rcd-101.cisco.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 21 Jan 2011 15:55:50 -0600
-x-mimeole: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="----_=_NextPart_001_01CBB9B5.F74B8172"
-Subject: RE: 24k data cache, PIPT or VIPT?
-Date:   Fri, 21 Jan 2011 15:54:35 -0600
-Message-ID: <7A9214B0DEB2074FBCA688B30B04400D1756AB@XMB-RCD-208.cisco.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: 24k data cache, PIPT or VIPT?
-Thread-Index: AQHLuUbVXlaQIiHjVkiVJGPYIadBqJPb+Qgg
-References: <AB43F607AA1BE0439402E9061AC9519D011EF513EB8D@rtitmbs7.realtek.com.tw>
-From:   "David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
-To:     "COLin" <colin@realtek.com>, <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 21 Jan 2011 21:55:50.0297 (UTC) FILETIME=[F7830890:01CBB9B5]
-Return-Path: <dvomlehn@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2011 23:59:59 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13203 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491833Ab1AUW7z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jan 2011 23:59:55 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4d3a10180000>; Fri, 21 Jan 2011 15:00:40 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 21 Jan 2011 14:59:51 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 21 Jan 2011 14:59:51 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p0LMxhZO028482;
+        Fri, 21 Jan 2011 14:59:43 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p0LMxdjR028480;
+        Fri, 21 Jan 2011 14:59:39 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Dezhong Diao <dediao@cisco.com>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Subject: [PATCH v2 0/4] MIPS: perf: Add support for 64-bit MIPS hardware counters.
+Date:   Fri, 21 Jan 2011 14:59:32 -0800
+Message-Id: <1295650776-28444-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 21 Jan 2011 22:59:51.0688 (UTC) FILETIME=[E928C880:01CBB9BE]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29012
+X-archive-position: 29013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+MIPS hardware performance counters may have either 32-bit or 64-bit
+wide counter registers.  The current implementation only supports the
+32-bit variety.
 
-------_=_NextPart_001_01CBB9B5.F74B8172
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+These patches aim to add support for 64-bit wide counters while
+mantaining support for 32-bit.
 
-No, it just means that there is special hardware to detect aliases and =
-handle them as if the addresses were not aliased.
+Changes from v1:
 
+o Removed Octeon processor support to a separate patch set.
 
------Original Message-----
-From: linux-mips-bounce@linux-mips.org on behalf of COLin
-Sent: Fri 1/21/2011 12:52 AM
-To: ralf@linux-mips.org; linux-mips@linux-mips.org
-Subject: 24k data cache, PIPT or VIPT?
-=20
+o Rebased against v5 of Deng-Cheng Zhu's cleanups:
+      http://patchwork.linux-mips.org/patch/2011/
+      http://patchwork.linux-mips.org/patch/2012/
+      http://patchwork.linux-mips.org/patch/2013/
+      http://patchwork.linux-mips.org/patch/2014/
+      http://patchwork.linux-mips.org/patch/2015/
 
-Hi all,
-I found that there is this information while Linux is booting:
-    [Primary data cache 32kB, 4-way, PIPT, no aliases, linesize 32 =
-bytes]
-I thought the latest MIPS CPUs all use VIPT. I didn't find anything =
-about PIPT on 24k Software User's Manual, either.
-The code related to this is here:
-        case CPU_24K:
-        case CPU_34K:
-        case CPU_74K:
-        case CPU_1004K:
-                if ((read_c0_config7() & (1 << 16))) {
-                        /* effectively physically indexed dcache,
-                           thus no virtual aliases. */=20
-                        c->dcache.flags |=3D MIPS_CACHE_PINDEX;
-                        break;
+o Tried to fix problem where 32-bit counters generated way too many
+  interrupts.
 
-The 16's bit of config 7 register:
-    [Alias removed: This bit indicates that the data cache is organized =
-to
-avoid virtual aliasing problems. This bit is only set if the data cache
-config and MMU type would normally cause aliasing - i.e., only for
-the 32KB and larger data cache and TLB-based MMU.]
+David Daney (4):
+  MIPS: Add accessor macros for 64-bit performance counter registers.
+  MIPS: perf: Cleanup formatting in arch/mips/kernel/perf_event.c
+  MIPS: perf: Reorganize contents of perf support files.
+  MIPS: perf: Add support for 64-bit perf counters.
 
-Does it imply that the CPU is using PIPT?
+ arch/mips/Kconfig                    |    2 +-
+ arch/mips/include/asm/mipsregs.h     |    8 +
+ arch/mips/kernel/Makefile            |    5 +-
+ arch/mips/kernel/perf_event.c        |  521 +----------------
+ arch/mips/kernel/perf_event_mipsxx.c | 1104 ++++++++++++++++++++++++----------
+ 5 files changed, 785 insertions(+), 855 deletions(-)
 
-Thanks and regards,
-Colin
-
-
-
-
-
-
-------_=_NextPart_001_01CBB9B5.F74B8172
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<HTML>
-<HEAD>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Diso-8859-1">
-<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
-6.5.7655.10">
-<TITLE>RE: 24k data cache, PIPT or VIPT?</TITLE>
-</HEAD>
-<BODY>
-<!-- Converted from text/plain format -->
-
-<P><FONT SIZE=3D2>No, it just means that there is special hardware to =
-detect aliases and handle them as if the addresses were not aliased.<BR>
-<BR>
-<BR>
------Original Message-----<BR>
-From: linux-mips-bounce@linux-mips.org on behalf of COLin<BR>
-Sent: Fri 1/21/2011 12:52 AM<BR>
-To: ralf@linux-mips.org; linux-mips@linux-mips.org<BR>
-Subject: 24k data cache, PIPT or VIPT?<BR>
-<BR>
-<BR>
-Hi all,<BR>
-I found that there is this information while Linux is booting:<BR>
-&nbsp;&nbsp;&nbsp; [Primary data cache 32kB, 4-way, PIPT, no aliases, =
-linesize 32 bytes]<BR>
-I thought the latest MIPS CPUs all use VIPT. I didn't find anything =
-about PIPT on 24k Software User's Manual, either.<BR>
-The code related to this is here:<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case CPU_24K:<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case CPU_34K:<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case CPU_74K:<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case CPU_1004K:<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp; if ((read_c0_config7() &amp; (1 &lt;&lt; 16))) {<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* =
-effectively physically indexed dcache,<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp; thus no virtual aliases. */<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
-c-&gt;dcache.flags |=3D MIPS_CACHE_PINDEX;<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
-break;<BR>
-<BR>
-The 16's bit of config 7 register:<BR>
-&nbsp;&nbsp;&nbsp; [Alias removed: This bit indicates that the data =
-cache is organized to<BR>
-avoid virtual aliasing problems. This bit is only set if the data =
-cache<BR>
-config and MMU type would normally cause aliasing - i.e., only for<BR>
-the 32KB and larger data cache and TLB-based MMU.]<BR>
-<BR>
-Does it imply that the CPU is using PIPT?<BR>
-<BR>
-Thanks and regards,<BR>
-Colin<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-</FONT>
-</P>
-
-</BODY>
-</HTML>
-------_=_NextPart_001_01CBB9B5.F74B8172--
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Ingo Molnar <mingo@elte.hu>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Dezhong Diao <dediao@cisco.com>
+Cc: Gabor Juhos <juhosg@openwrt.org>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+-- 
+1.7.2.3

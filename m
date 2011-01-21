@@ -1,79 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2011 18:37:45 +0100 (CET)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:44423 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491815Ab1AURhl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Jan 2011 18:37:41 +0100
-Received: by ewy20 with SMTP id 20so965306ewy.36
-        for <multiple recipients>; Fri, 21 Jan 2011 09:37:40 -0800 (PST)
-Received: by 10.213.22.142 with SMTP id n14mr1295612ebb.57.1295631422946;
-        Fri, 21 Jan 2011 09:37:02 -0800 (PST)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
-        by mx.google.com with ESMTPS id b52sm7658697eei.1.2011.01.21.09.37.00
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 21 Jan 2011 09:37:01 -0800 (PST)
-Message-ID: <4D39C3ED.4020401@mvista.com>
-Date:   Fri, 21 Jan 2011 20:35:41 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Jan 2011 19:00:31 +0100 (CET)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:34860 "EHLO
+        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491763Ab1AUSA2 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Jan 2011 19:00:28 +0100
+Received: by eyd9 with SMTP id 9so1002030eyd.36
+        for <multiple recipients>; Fri, 21 Jan 2011 10:00:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=3XZDYq+O5NsATQqR6HMKj64/XtU/NsaRr/BPBGK7dCE=;
+        b=HsqPEfdpCDCHTyIDqEc87G6plMOK4h/SU+BQxncR6zm1P5lrZsN5YeV0IZhvQWEN4t
+         iAqoCALb72EXMb3ACE31dmeLlC/0F5AmffDXk60k4kccdMY/71IJCER52n4422GFFpJe
+         neSeqEvbYXkd0GdXrTomhOgGbsICQu+NNv0IU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=TXoPoWpZYPkRH/3rltnWugVHLLkiy8oUCyHeyVba/1jzKft7MpGeXH+JkY91rCKlRd
+         6dn1mKprh52f97hPsgbyhbmq/UPUJqSBobccTKkL6njtuk8HNZrWWUCqmnr7QVMlsle4
+         5+KWEj+F6tkrmxwCcTSJyOuqqNVTjnVHUUHnU=
 MIME-Version: 1.0
-To:     Wu Zhangjin <wuzhangjin@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Steven Rostedt <srostedt@redhat.com>, linux-mips@linux-mips.org
+Received: by 10.216.191.160 with SMTP id g32mr18421wen.18.1295632827810; Fri,
+ 21 Jan 2011 10:00:27 -0800 (PST)
+Received: by 10.216.93.137 with HTTP; Fri, 21 Jan 2011 10:00:27 -0800 (PST)
+In-Reply-To: <4D39C3ED.4020401@mvista.com>
+References: <1295630970-32044-1-git-send-email-wuzhangjin@gmail.com>
+        <4D39C3ED.4020401@mvista.com>
+Date:   Sat, 22 Jan 2011 02:00:27 +0800
+Message-ID: <AANLkTimKN_kGoxgA85AJMN-N1hLfTsSPBoDW0bZTXk5c@mail.gmail.com>
 Subject: Re: [v2 PATCH 5/5] tracing, MIPS: Fix set_graph_function of function
  graph tracer
-References: <1295630970-32044-1-git-send-email-wuzhangjin@gmail.com>
-In-Reply-To: <1295630970-32044-1-git-send-email-wuzhangjin@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Steven Rostedt <srostedt@redhat.com>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29009
+X-archive-position: 29010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Sat, Jan 22, 2011 at 1:35 AM, Sergei Shtylyov <sshtylyov@mvista.com> wrote:
+>> +
+>> +       insns = (in_kernel_space(self_ra)) ? 2 : MCOUNT_OFFSET_INSNS + 1;
+>
+>   You're still keeping the parens around the function call. Why? :-)
 
-Wu Zhangjin wrote:
+I even didn't notice there was parens there, may be parens mania, new
+one will be out immediately ;-)
 
-> trace.func should be set to the recorded ip of the mcount calling site
-> in the __mcount_loc section to filter the function entries configured
-> through the tracing/set_graph_function interface, but before, this is
-> set to the self_ra(the return address of mcount), which has made
-> set_graph_function not work as expected.
-
-> This fixes it via calculating the right recorded ip in the __mcount_loc
-> section and assign it to trace.func.
-
-> Reported-by: Zhiping Zhong <xzhong86@163.com>
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/kernel/ftrace.c |   11 +++++++++--
->  1 files changed, 9 insertions(+), 2 deletions(-)
-
-> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-> index bc91e4a..be3fa7a 100644
-> --- a/arch/mips/kernel/ftrace.c
-> +++ b/arch/mips/kernel/ftrace.c
-[...]
-> @@ -304,7 +304,14 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
->  		return;
->  	}
->  
-> -	trace.func = self_ra;
-> +	/*
-> +	 * Get the recorded ip of the current mcount calling site in the
-> +	 * __mcount_loc section, which will be used to filter the function
-> +	 * entries configured through the tracing/set_graph_function interface.
-> +	 */
-> +
-> +	insns = (in_kernel_space(self_ra)) ? 2 : MCOUNT_OFFSET_INSNS + 1;
-
-    You're still keeping the parens around the function call. Why? :-)
-
-WBR, Sergei
+>
+> WBR, Sergei
+>

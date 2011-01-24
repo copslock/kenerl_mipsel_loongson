@@ -1,100 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2011 22:07:57 +0100 (CET)
-Received: from pfepa.post.tele.dk ([195.41.46.235]:60104 "EHLO
-        pfepa.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491092Ab1AXVHy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jan 2011 22:07:54 +0100
-Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
-        by pfepa.post.tele.dk (Postfix) with ESMTP id B92F8A50029;
-        Mon, 24 Jan 2011 22:07:51 +0100 (CET)
-Date:   Mon, 24 Jan 2011 22:07:52 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
-        Yoichi Yuasa <yuasa@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fix build error when CONFIG_SWAP is not set
-Message-ID: <20110124210752.GA10819@merkur.ravnborg.org>
-References: <20110124210813.ba743fc5.yuasa@linux-mips.org> <4D3DD366.8000704@mvista.com> <20110124124412.69a7c814.akpm@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110124124412.69a7c814.akpm@linux-foundation.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <sam@ravnborg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Jan 2011 23:51:53 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:7309 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491092Ab1AXWvu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Jan 2011 23:51:50 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4d3e02b40000>; Mon, 24 Jan 2011 14:52:36 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 24 Jan 2011 14:51:47 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 24 Jan 2011 14:51:46 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p0OMpfTs023354;
+        Mon, 24 Jan 2011 14:51:42 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p0OMpctS023353;
+        Mon, 24 Jan 2011 14:51:38 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 0/4] MIPS specific GCC-4.6 fixes.
+Date:   Mon, 24 Jan 2011 14:51:33 -0800
+Message-Id: <1295909497-23317-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 24 Jan 2011 22:51:46.0862 (UTC) FILETIME=[476B74E0:01CBBC19]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29049
+X-archive-position: 29050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 24, 2011 at 12:44:12PM -0800, Andrew Morton wrote:
-> On Mon, 24 Jan 2011 22:30:46 +0300
-> Sergei Shtylyov <sshtylyov@mvista.com> wrote:
-> 
-> > Hello.
-> > 
-> > Yoichi Yuasa wrote:
-> > 
-> > > In file included from
-> > > linux-2.6/arch/mips/include/asm/tlb.h:21,
-> > >                  from mm/pgtable-generic.c:9:
-> > > include/asm-generic/tlb.h: In function 'tlb_flush_mmu':
-> > > include/asm-generic/tlb.h:76: error: implicit declaration of function
-> > > 'release_pages'
-> > > include/asm-generic/tlb.h: In function 'tlb_remove_page':
-> > > include/asm-generic/tlb.h:105: error: implicit declaration of function
-> > > 'page_cache_release'
-> > > make[1]: *** [mm/pgtable-generic.o] Error 1
-> > > 
-> > > Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
-> > [...]
-> > 
-> > > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > > index 4d55932..92c1be6 100644
-> > > --- a/include/linux/swap.h
-> > > +++ b/include/linux/swap.h
-> > > @@ -8,6 +8,7 @@
-> > >  #include <linux/memcontrol.h>
-> > >  #include <linux/sched.h>
-> > >  #include <linux/node.h>
-> > > +#include <linux/pagemap.h>
-> > 
-> >     Hm, if the errors are in <asm-generic/tlb.h>, why add #include in 
-> > <linux/swap.h>?
-> > 
-> 
-> The build error is caused by macros which are defined in swap.h.
-> 
-> I worry about the effects of the patch - I don't know which of swap.h
-> and pagemap.h is the "innermost" header file.  There's potential for
-> new build errors due to strange inclusion graphs.
-> 
-> err, there's also this, in swap.h:
-> 
-> /* only sparc can not include linux/pagemap.h in this file
->  * so leave page_cache_release and release_pages undeclared... */
+These are the patches to MIPS specific code needed to build the kernel
+with GCC-4.6 (not yet released).
 
-I just checked.
-sparc32 with a defconfig barfed out like this:
-  CC      arch/sparc/kernel/traps_32.o
-In file included from /home/sam/kernel/linux-2.6.git/include/linux/pagemap.h:7:0,
-                 from /home/sam/kernel/linux-2.6.git/include/linux/swap.h:11,
-                 from /home/sam/kernel/linux-2.6.git/arch/sparc/include/asm/pgtable_32.h:15,
-                 from /home/sam/kernel/linux-2.6.git/arch/sparc/include/asm/pgtable.h:6,
-                 from /home/sam/kernel/linux-2.6.git/arch/sparc/kernel/traps_32.c:23:
-/home/sam/kernel/linux-2.6.git/include/linux/mm.h: In function 'is_vmalloc_addr':
-/home/sam/kernel/linux-2.6.git/include/linux/mm.h:301:17: error: 'VMALLOC_START' undeclared (first use in this function)
-/home/sam/kernel/linux-2.6.git/include/linux/mm.h:301:17: note: each undeclared identifier is reported only once for each function it appears in
-/home/sam/kernel/linux-2.6.git/include/linux/mm.h:301:41: error: 'VMALLOC_END' undeclared (first use in this function)
-/home/sam/kernel/linux-2.6.git/include/linux/mm.h: In function 'maybe_mkwrite':
-/home/sam/kernel/linux-2.6.git/include/linux/mm.h:483:3: error: implicit declaration of function 'pte_mkwrite'
+There is a separate patch so fs/binfmt_elf.c I will send separately.
 
-When I removed the include it could build again.
+David Daney (4):
+  MIPS: Fix GCC-4.6 'set but not used' warning in signal*.c
+  MIPS: Remove unused code from arch/mips/kernel/syscall.c
+  MIPS: Fix GCC-4.6 'set but not used' warning in ieee754int.h
+  MIPS: Fix GCC-4.6 'set but not used' warning in arch/mips/mm/init.c
 
-	Sam
+ arch/mips/kernel/signal.c       |    2 +-
+ arch/mips/kernel/signal32.c     |    2 +-
+ arch/mips/kernel/syscall.c      |    3 +--
+ arch/mips/math-emu/ieee754int.h |    4 ++--
+ arch/mips/mm/init.c             |    2 +-
+ 5 files changed, 6 insertions(+), 7 deletions(-)
+
+-- 
+1.7.2.3

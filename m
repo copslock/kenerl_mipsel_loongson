@@ -1,42 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jan 2011 09:04:12 +0100 (CET)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:53493 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491152Ab1AYIEI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jan 2011 09:04:08 +0100
-Received: by ywf7 with SMTP id 7so1622310ywf.36
-        for <multiple recipients>; Tue, 25 Jan 2011 00:04:01 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jan 2011 09:05:05 +0100 (CET)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:43199 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491162Ab1AYIFC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jan 2011 09:05:02 +0100
+Received: by yxd30 with SMTP id 30so1243731yxd.36
+        for <multiple recipients>; Tue, 25 Jan 2011 00:04:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=Pg2gKRqhW69/7aKNbIWmd3fK8Kk8zTgklpXuHmjFxmU=;
-        b=ArZn9M4Gop/WoeEwj7R8HZi8yJ7QmmVhZ0sYP3NTecVnlMeypQO1cWejjFK23rsg9H
-         fVIPgV3Emo3VXrZu1LVFJWjA4KDKbTqRKwU/WCarmIcxW2QPlp2WgMK1JQ+U2yPwYwD/
-         XdwPPLnCVsTSErPzfv7qiZd0KMBaLXiOuecSM=
+        bh=lWO2keU+gDL6p4JGMSZEireba4gWDuTcmcywaoZw66Y=;
+        b=oShHsVGfwXZA4Zhi+QcA4DDNgnoOzQCpBUvnRZFUFZOZNjlD5TZeRlbn0IJvFEv7gy
+         /KJQ5vY91B6ZwEszWWkAhgAyOD9Zzom2nJZGTLfq2vR59m+RLPj1/r1fop8EI7GQ+Y/x
+         kaf9x8blr6NWbeLMAMaF4MzOFXodblRQ+Kc9s=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        b=HwnFyCNk/GOH5mPL7J6HvXBZSaDE32Sv6rL6CLOdDnO2hvdnqsFzvXVQmZlnZqZKT+
-         zu82ggSN4dLUoQibL52lOw8fmkm1mij/tB1zJHFifKLnbacPZk1DZ+N0Hb0Z3f1mE1pA
-         PGgc/XPZ+W01gaOt93w7c57G863YaqZUqj3lE=
-Received: by 10.150.145.7 with SMTP id s7mr5932875ybd.126.1295942641847;
-        Tue, 25 Jan 2011 00:04:01 -0800 (PST)
+        b=QINodzk6RT3WxNASNKzt2ax6BwCn8/Dt6y/OE8MykTWqZVHmLfukZ0b3qqvMuc5eBj
+         HhhZP788ufQBGMVPL/rOhs7kbdqHEHKaLWetHwa2/0MghFRY4NISSDQnJDfAM99qZhP4
+         4D7pULNxAMe472YuGBPeOC24zc+V7SiArqem8=
+Received: by 10.150.191.18 with SMTP id o18mr4392786ybf.312.1295942696321;
+        Tue, 25 Jan 2011 00:04:56 -0800 (PST)
 Received: from localhost.localdomain ([59.160.135.215])
-        by mx.google.com with ESMTPS id v39sm3590325yba.19.2011.01.25.00.03.57
+        by mx.google.com with ESMTPS id q4sm3574551yba.2.2011.01.25.00.04.53
         (version=SSLv3 cipher=RC4-MD5);
-        Tue, 25 Jan 2011 00:04:00 -0800 (PST)
+        Tue, 25 Jan 2011 00:04:55 -0800 (PST)
 From:   "Anoop P.A" <anoop.pa@gmail.com>
 To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, dhowells@redhat.com
+        linux-kernel@vger.kernel.org
 Cc:     Anoop P A <anoop.pa@gmail.com>
-Subject: [PATCH 2/6] Vectored interrupt support.
-Date:   Tue, 25 Jan 2011 13:50:10 +0530
-Message-Id: <1295943610-20099-1-git-send-email-anoop.pa@gmail.com>
+Subject: [PATCH 3/6] MIPS MT kernel modes ( VSMP/SMTC ) support for MSP platforms.
+Date:   Tue, 25 Jan 2011 13:51:03 +0530
+Message-Id: <1295943663-20192-1-git-send-email-anoop.pa@gmail.com>
 X-Mailer: git-send-email 1.7.0.4
 Return-Path: <anoop.pa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29071
+X-archive-position: 29072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,616 +46,251 @@ X-list: linux-mips
 
 From: Anoop P A <anoop.pa@gmail.com>
 
-This patch will add vectored interrupt setups required for MIPS MT modes.
-irq_cic has been restructured and moved per irq handler to different file.
-irq_cic has been re wrote to support mips MT modes ( VSMP / SMTC )
+Following patch will add VSMP and SMTC platform specific hooks.
 
 Signed-off-by: Anoop P A <anoop.pa@gmail.com>
 ---
- arch/mips/pmc-sierra/msp71xx/Makefile      |    2 +-
- arch/mips/pmc-sierra/msp71xx/msp_irq.c     |   56 ++++++-
- arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c |  248 +++++++++++++++++++---------
- arch/mips/pmc-sierra/msp71xx/msp_irq_per.c |  179 ++++++++++++++++++++
- 4 files changed, 397 insertions(+), 88 deletions(-)
- create mode 100644 arch/mips/pmc-sierra/msp71xx/msp_irq_per.c
+ arch/mips/pmc-sierra/msp71xx/Makefile    |    2 +
+ arch/mips/pmc-sierra/msp71xx/msp_setup.c |   10 +++
+ arch/mips/pmc-sierra/msp71xx/msp_smp.c   |   77 +++++++++++++++++++++
+ arch/mips/pmc-sierra/msp71xx/msp_smtc.c  |  107 ++++++++++++++++++++++++++++++
+ 4 files changed, 196 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/pmc-sierra/msp71xx/msp_smp.c
+ create mode 100644 arch/mips/pmc-sierra/msp71xx/msp_smtc.c
 
 diff --git a/arch/mips/pmc-sierra/msp71xx/Makefile b/arch/mips/pmc-sierra/msp71xx/Makefile
-index e107f79..b25f354 100644
+index b25f354..a002fa2 100644
 --- a/arch/mips/pmc-sierra/msp71xx/Makefile
 +++ b/arch/mips/pmc-sierra/msp71xx/Makefile
-@@ -6,7 +6,7 @@ obj-y += msp_prom.o msp_setup.o msp_irq.o \
- obj-$(CONFIG_HAVE_GPIO_LIB) += gpio.o gpio_extended.o
- obj-$(CONFIG_PMC_MSP7120_GW) += msp_hwbutton.o
- obj-$(CONFIG_IRQ_MSP_SLP) += msp_irq_slp.o
--obj-$(CONFIG_IRQ_MSP_CIC) += msp_irq_cic.o
-+obj-$(CONFIG_IRQ_MSP_CIC) += msp_irq_cic.o msp_irq_per.o
+@@ -10,3 +10,5 @@ obj-$(CONFIG_IRQ_MSP_CIC) += msp_irq_cic.o msp_irq_per.o
  obj-$(CONFIG_PCI) += msp_pci.o
  obj-$(CONFIG_MSPETH) += msp_eth.o
  obj-$(CONFIG_USB_MSP71XX) += msp_usb.o
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq.c b/arch/mips/pmc-sierra/msp71xx/msp_irq.c
-index 734d598..4531c4a 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_irq.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_irq.c
-@@ -19,8 +19,6 @@
- 
- #include <msp_int.h>
- 
--extern void msp_int_handle(void);
--
- /* SLP bases systems */
- extern void msp_slp_irq_init(void);
- extern void msp_slp_irq_dispatch(void);
-@@ -29,6 +27,18 @@ extern void msp_slp_irq_dispatch(void);
- extern void msp_cic_irq_init(void);
- extern void msp_cic_irq_dispatch(void);
- 
-+/* VSMP support init */
-+extern void msp_vsmp_int_init(void);
-+
-+/* vectored interrupt implementation */
-+
-+/* SW0/1 interrupts are used for SMP/SMTC */
-+static inline void mac0_int_dispatch(void) { do_IRQ(MSP_INT_MAC0); }
-+static inline void mac1_int_dispatch(void) { do_IRQ(MSP_INT_MAC1); }
-+static inline void mac2_int_dispatch(void) { do_IRQ(MSP_INT_SAR); }
-+static inline void usb_int_dispatch(void)  { do_IRQ(MSP_INT_USB);  }
-+static inline void sec_int_dispatch(void)  { do_IRQ(MSP_INT_SEC);  }
-+
- /*
-  * The PMC-Sierra MSP interrupts are arranged in a 3 level cascaded
-  * hierarchical system.  The first level are the direct MIPS interrupts
-@@ -96,29 +106,57 @@ asmlinkage void plat_irq_dispatch(struct pt_regs *regs)
- 		do_IRQ(MSP_INT_SW1);
++obj-$(CONFIG_MIPS_MT_SMP) += msp_smp.o
++obj-$(CONFIG_MIPS_MT_SMTC) += msp_smtc.o
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+index a54e85b..fb37a10 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+@@ -146,6 +146,8 @@ void __init plat_mem_setup(void)
+ 	pm_power_off = msp_power_off;
  }
  
--static struct irqaction cascade_msp = {
-+static struct irqaction cic_cascade_msp = {
- 	.handler = no_action,
--	.name	 = "MSP cascade"
-+	.name	 = "MSP CIC cascade"
- };
- 
-+static struct irqaction per_cascade_msp = {
-+	.handler = no_action,
-+	.name	 = "MSP PER cascade"
-+};
- 
- void __init arch_init_irq(void)
++extern struct plat_smp_ops msp_smtc_smp_ops;
++
+ void __init prom_init(void)
  {
-+	/* assume we'll be using vectored interrupt mode except in UP mode*/
-+#ifdef CONFIG_MIPS_MT
-+	BUG_ON(!cpu_has_vint);
-+#endif
- 	/* initialize the 1st-level CPU based interrupt controller */
- 	mips_cpu_irq_init();
+ 	unsigned long family;
+@@ -226,6 +228,14 @@ void __init prom_init(void)
+ 	 */
+ 	msp_serial_setup();
  
- #ifdef CONFIG_IRQ_MSP_CIC
- 	msp_cic_irq_init();
--
-+#ifdef CONFIG_MIPS_MT
-+	set_vi_handler(MSP_INT_CIC, msp_cic_irq_dispatch);
-+	set_vi_handler(MSP_INT_MAC0, mac0_int_dispatch);
-+	set_vi_handler(MSP_INT_MAC1, mac1_int_dispatch);
-+	set_vi_handler(MSP_INT_SAR, mac2_int_dispatch);
-+	set_vi_handler(MSP_INT_USB, usb_int_dispatch);
-+	set_vi_handler(MSP_INT_SEC, sec_int_dispatch);
 +#ifdef CONFIG_MIPS_MT_SMP
-+	msp_vsmp_int_init();
-+#elif defined CONFIG_MIPS_MT_SMTC
-+	/*Set hwmask for all platform devices */
-+	irq_hwmask[MSP_INT_MAC0] = C_IRQ0;
-+	irq_hwmask[MSP_INT_MAC1] = C_IRQ1;
-+	irq_hwmask[MSP_INT_USB] = C_IRQ2;
-+	irq_hwmask[MSP_INT_SAR] = C_IRQ3;
-+	irq_hwmask[MSP_INT_SEC] = C_IRQ5;
-+
-+#endif	/* CONFIG_MIPS_MT_SMP */
-+#endif	/* CONFIG_MIPS_MT */
- 	/* setup the cascaded interrupts */
--	setup_irq(MSP_INT_CIC, &cascade_msp);
--	setup_irq(MSP_INT_PER, &cascade_msp);
-+	setup_irq(MSP_INT_CIC, &cic_cascade_msp);
-+	setup_irq(MSP_INT_PER, &per_cascade_msp);
-+
- #else
- 	/* setup the 2nd-level SLP register based interrupt controller */
-+	/* VSMP /SMTC support support is not enabled for SLP */
- 	msp_slp_irq_init();
- 
- 	/* setup the cascaded SLP/PER interrupts */
--	setup_irq(MSP_INT_SLP, &cascade_msp);
--	setup_irq(MSP_INT_PER, &cascade_msp);
-+	setup_irq(MSP_INT_SLP, &cic_cascade_msp);
-+	setup_irq(MSP_INT_PER, &per_cascade_msp);
- #endif
- }
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c
-index 07e71ff..e64458a 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_cic.c
-@@ -1,8 +1,7 @@
- /*
-- * This file define the irq handler for MSP SLM subsystem interrupts.
-+ * Copyright 2010 PMC-Sierra, Inc, derived from irq_cpu.c
-  *
-- * Copyright 2005-2007 PMC-Sierra, Inc, derived from irq_cpu.c
-- * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
-+ * This file define the irq handler for MSP CIC subsystem interrupts.
-  *
-  * This program is free software; you can redistribute  it and/or modify it
-  * under  the terms of  the GNU General  Public License as published by the
-@@ -16,119 +15,212 @@
- #include <linux/bitops.h>
- #include <linux/irq.h>
- 
-+#include <asm/mipsregs.h>
- #include <asm/system.h>
- 
- #include <msp_cic_int.h>
- #include <msp_regs.h>
- 
- /*
-- * NOTE: We are only enabling support for VPE0 right now.
-+ * External API
-  */
-+extern void msp_per_irq_init(void);
-+extern void msp_per_irq_dispatch(void);
- 
--static inline void unmask_msp_cic_irq(unsigned int irq)
-+
-+/*
-+ * Convenience Macro.  Should be somewhere generic.
-+ */
-+#define get_current_vpe()   \
-+	((read_c0_tcbind() >> TCBIND_CURVPE_SHIFT) & TCBIND_CURVPE)
-+
-+#ifdef CONFIG_SMP
-+
-+#define LOCK_VPE(flags, mtflags) \
-+do {				\
-+	local_irq_save(flags);	\
-+	mtflags = dmt();	\
-+} while (0)
-+
-+#define UNLOCK_VPE(flags, mtflags) \
-+do {				\
-+	emt(mtflags);		\
-+	local_irq_restore(flags);\
-+} while (0)
-+
-+#define LOCK_CORE(flags, mtflags) \
-+do {				\
-+	local_irq_save(flags);	\
-+	mtflags = dvpe();	\
-+} while (0)
-+
-+#define UNLOCK_CORE(flags, mtflags)		\
-+do {				\
-+	evpe(mtflags);		\
-+	local_irq_restore(flags);\
-+} while (0)
-+
-+#else
-+
-+#define LOCK_VPE(flags, mtflags)
-+#define UNLOCK_VPE(flags, mtflags)
++	register_smp_ops(&vsmp_smp_ops);
 +#endif
 +
-+/* ensure writes to cic are completed */
-+static inline void cic_wmb(void)
- {
-+	const volatile void __iomem *cic_mem = CIC_VPE0_MSK_REG;
-+	volatile u32 dummy_read;
- 
--	/* check for PER interrupt range */
--	if (irq < MSP_PER_INTBASE)
--		*CIC_VPE0_MSK_REG |= (1 << (irq - MSP_CIC_INTBASE));
--	else
--		*PER_INT_MSK_REG |= (1 << (irq - MSP_PER_INTBASE));
-+	wmb();
-+	dummy_read = __raw_readl(cic_mem);
-+	dummy_read++;
- }
- 
--static inline void mask_msp_cic_irq(unsigned int irq)
-+static inline void unmask_cic_irq(unsigned int irq)
- {
--	/* check for PER interrupt range */
--	if (irq < MSP_PER_INTBASE)
--		*CIC_VPE0_MSK_REG &= ~(1 << (irq - MSP_CIC_INTBASE));
--	else
--		*PER_INT_MSK_REG &= ~(1 << (irq - MSP_PER_INTBASE));
-+	volatile u32   *cic_msk_reg = CIC_VPE0_MSK_REG;
-+	int vpe;
-+#ifdef CONFIG_SMP
-+	unsigned int mtflags;
-+	unsigned long  flags;
-+
-+	/*
-+	* Make sure we have IRQ affinity.  It may have changed while
-+	* we were processing the IRQ.
-+	*/
-+	if (!cpumask_test_cpu(smp_processor_id(), irq_desc[irq].affinity))
-+		return;
-+#endif
-+
-+	vpe = get_current_vpe();
-+	LOCK_VPE(flags, mtflags);
-+	cic_msk_reg[vpe] |= (1 << (irq - MSP_CIC_INTBASE));
-+	UNLOCK_VPE(flags, mtflags);
-+	cic_wmb();
- }
- 
--/*
-- * While we ack the interrupt interrupts are disabled and thus we don't need
-- * to deal with concurrency issues.  Same for msp_cic_irq_end.
-- */
--static inline void ack_msp_cic_irq(unsigned int irq)
-+static inline void mask_cic_irq(unsigned int irq)
- {
--	mask_msp_cic_irq(irq);
--
-+	volatile u32 *cic_msk_reg = CIC_VPE0_MSK_REG;
-+	int	vpe = get_current_vpe();
-+#ifdef CONFIG_SMP
-+	unsigned long flags, mtflags;
-+#endif
-+	LOCK_VPE(flags, mtflags);
-+	cic_msk_reg[vpe] &= ~(1 << (irq - MSP_CIC_INTBASE));
-+	UNLOCK_VPE(flags, mtflags);
-+	cic_wmb();
-+}
-+static inline void msp_cic_irq_ack(unsigned int irq)
-+{
-+	mask_cic_irq(irq);
- 	/*
--	 * only really necessary for 18, 16-14 and sometimes 3:0 (since
--	 * these can be edge sensitive) but it doesn't hurt for the others.
--	 */
--
--	/* check for PER interrupt range */
--	if (irq < MSP_PER_INTBASE)
--		*CIC_STS_REG = (1 << (irq - MSP_CIC_INTBASE));
--	else
--		*PER_INT_STS_REG = (1 << (irq - MSP_PER_INTBASE));
-+	* Only really necessary for 18, 16-14 and sometimes 3:0
-+	* (since these can be edge sensitive) but it doesn't
-+	* hurt for the others
-+	*/
-+	*CIC_STS_REG = (1 << (irq - MSP_CIC_INTBASE));
-+	smtc_im_ack_irq(irq);
-+}
-+
-+static void msp_cic_irq_end(unsigned int irq)
-+{
-+	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
-+		unmask_cic_irq(irq);
-+}
-+
-+/*Note: Limiting to VSMP . Not tested in SMTC */
-+
-+#ifdef CONFIG_MIPS_MT_SMP
-+static inline int msp_cic_irq_set_affinity(unsigned int irq,
-+					const struct cpumask *cpumask)
-+{
-+	int cpu;
-+	unsigned long flags;
-+	unsigned int  mtflags;
-+	unsigned long imask = (1 << (irq - MSP_CIC_INTBASE));
-+	volatile u32 *cic_mask = (volatile u32 *)CIC_VPE0_MSK_REG;
-+
-+	/* timer balancing should be disabled in kernel code */
-+	BUG_ON(irq == MSP_INT_VPE0_TIMER || irq == MSP_INT_VPE1_TIMER);
-+
-+	LOCK_CORE(flags, mtflags);
-+	/* enable if any of each VPE's TCs require this IRQ */
-+	for_each_online_cpu(cpu) {
-+		if (cpumask_test_cpu(cpu, cpumask))
-+			cic_mask[cpu] |= imask;
-+		else
-+			cic_mask[cpu] &= ~imask;
-+
-+	}
-+
-+	UNLOCK_CORE(flags, mtflags);
-+	return 0;
-+
- }
-+#endif
- 
- static struct irq_chip msp_cic_irq_controller = {
- 	.name = "MSP_CIC",
--	.ack = ack_msp_cic_irq,
--	.mask = ack_msp_cic_irq,
--	.mask_ack = ack_msp_cic_irq,
--	.unmask = unmask_msp_cic_irq,
-+	.mask = mask_cic_irq,
-+	.mask_ack = msp_cic_irq_ack,
-+	.unmask = unmask_cic_irq,
-+	.ack = msp_cic_irq_ack,
-+	.end = msp_cic_irq_end,
-+#ifdef CONFIG_MIPS_MT_SMP
-+	.set_affinity = msp_cic_irq_set_affinity,
-+#endif
- };
- 
--
- void __init msp_cic_irq_init(void)
- {
- 	int i;
--
- 	/* Mask/clear interrupts. */
- 	*CIC_VPE0_MSK_REG = 0x00000000;
--	*PER_INT_MSK_REG  = 0x00000000;
-+	*CIC_VPE1_MSK_REG = 0x00000000;
- 	*CIC_STS_REG      = 0xFFFFFFFF;
--	*PER_INT_STS_REG  = 0xFFFFFFFF;
--
--#if defined(CONFIG_PMC_MSP7120_GW) || \
--    defined(CONFIG_PMC_MSP7120_EVAL)
- 	/*
--	 * The MSP7120 RG and EVBD boards use IRQ[6:4] for PCI.
--	 * These inputs map to EXT_INT_POL[6:4] inside the CIC.
--	 * They are to be active low, level sensitive.
--	 */
-+	* The MSP7120 RG and EVBD boards use IRQ[6:4] for PCI.
-+	* These inputs map to EXT_INT_POL[6:4] inside the CIC.
-+	* They are to be active low, level sensitive.
-+	*/
- 	*CIC_EXT_CFG_REG &= 0xFFFF8F8F;
--#endif
- 
- 	/* initialize all the IRQ descriptors */
--	for (i = MSP_CIC_INTBASE; i < MSP_PER_INTBASE + 32; i++)
-+	for (i = MSP_CIC_INTBASE ; i < MSP_CIC_INTBASE + 32 ; i++) {
- 		set_irq_chip_and_handler(i, &msp_cic_irq_controller,
- 					 handle_level_irq);
 +#ifdef CONFIG_MIPS_MT_SMTC
-+		/* Mask of CIC interrupt */
-+		irq_hwmask[i] = C_IRQ4;
++	register_smp_ops(&msp_smtc_smp_ops);
 +#endif
-+	}
 +
-+	/* Initialize the PER interrupt sub-system */
-+	 msp_per_irq_init();
- }
- 
-+/* CIC masked by CIC vector processing before dispatch called */
- void msp_cic_irq_dispatch(void)
- {
--	u32 pending;
--	int intbase;
--
--	intbase = MSP_CIC_INTBASE;
--	pending = *CIC_STS_REG & *CIC_VPE0_MSK_REG;
--
--	/* check for PER interrupt */
--	if (pending == (1 << (MSP_INT_PER - MSP_CIC_INTBASE))) {
--		intbase = MSP_PER_INTBASE;
--		pending = *PER_INT_STS_REG & *PER_INT_MSK_REG;
--	}
--
--	/* check for spurious interrupt */
--	if (pending == 0x00000000) {
--		printk(KERN_ERR
--			"Spurious %s interrupt? status %08x, mask %08x\n",
--			(intbase == MSP_CIC_INTBASE) ? "CIC" : "PER",
--			(intbase == MSP_CIC_INTBASE) ?
--				*CIC_STS_REG : *PER_INT_STS_REG,
--			(intbase == MSP_CIC_INTBASE) ?
--				*CIC_VPE0_MSK_REG : *PER_INT_MSK_REG);
--		return;
--	}
--
--	/* check for the timer and dispatch it first */
--	if ((intbase == MSP_CIC_INTBASE) &&
--	    (pending & (1 << (MSP_INT_VPE0_TIMER - MSP_CIC_INTBASE))))
-+	volatile u32	*cic_msk_reg = (volatile u32 *)CIC_VPE0_MSK_REG;
-+	u32	cic_mask;
-+	u32	 pending;
-+	int	cic_status = *CIC_STS_REG;
-+	cic_mask = cic_msk_reg[get_current_vpe()];
-+	pending = cic_status & cic_mask;
-+	if (pending & (1 << (MSP_INT_VPE0_TIMER - MSP_CIC_INTBASE))) {
- 		do_IRQ(MSP_INT_VPE0_TIMER);
--	else
--		do_IRQ(ffs(pending) + intbase - 1);
-+	} else if (pending & (1 << (MSP_INT_VPE1_TIMER - MSP_CIC_INTBASE))) {
-+		do_IRQ(MSP_INT_VPE1_TIMER);
-+	} else if (pending & (1 << (MSP_INT_PER - MSP_CIC_INTBASE))) {
-+		msp_per_irq_dispatch();
-+	} else if (pending) {
-+		do_IRQ(ffs(pending) + MSP_CIC_INTBASE - 1);
-+	} else{
-+		spurious_interrupt();
-+		/* Re-enable the CIC cascaded interrupt. */
-+		irq_desc[MSP_INT_CIC].chip->end(MSP_INT_CIC);
-+	}
- }
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_per.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_per.c
+ #ifdef CONFIG_PMCTWILED
+ 	/*
+ 	 * Setup LED states before the subsys_initcall loads other
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_smp.c b/arch/mips/pmc-sierra/msp71xx/msp_smp.c
 new file mode 100644
-index 0000000..949fd14
+index 0000000..43a9e26
 --- /dev/null
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_per.c
-@@ -0,0 +1,179 @@
++++ b/arch/mips/pmc-sierra/msp71xx/msp_smp.c
+@@ -0,0 +1,77 @@
 +/*
-+ * Copyright 2010 PMC-Sierra, Inc, derived from irq_cpu.c
++ * Copyright (C) 2000, 2001, 2004 MIPS Technologies, Inc.
++ * Copyright (C) 2001 Ralf Baechle
++ * Copyright (C) 2010 PMC-Sierra, Inc.
 + *
-+ * This file define the irq handler for MSP PER subsystem interrupts.
++ *  VSMP support for MSP platforms . Derived from malta vsmp support.
 + *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
 + */
-+
-+#include <linux/init.h>
++#include <linux/smp.h>
 +#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/spinlock.h>
-+#include <linux/bitops.h>
 +
-+#include <asm/mipsregs.h>
-+#include <asm/system.h>
-+
-+#include <msp_cic_int.h>
-+#include <msp_regs.h>
++#ifdef CONFIG_MIPS_MT_SMP
++#define MIPS_CPU_IPI_RESCHED_IRQ 0	/* SW int 0 for resched */
++#define MIPS_CPU_IPI_CALL_IRQ 1		/* SW int 1 for call */
 +
 +
-+/*
-+ * Convenience Macro.  Should be somewhere generic.
-+ */
-+#define get_current_vpe()	\
-+	((read_c0_tcbind() >> TCBIND_CURVPE_SHIFT) & TCBIND_CURVPE)
-+
-+#ifdef CONFIG_SMP
-+/*
-+ * The PER registers must be protected from concurrent access.
-+ */
-+
-+static DEFINE_SPINLOCK(per_lock);
-+#endif
-+
-+/* ensure writes to per are completed */
-+
-+static inline void per_wmb(void)
++static void ipi_resched_dispatch(void)
 +{
-+	const volatile void __iomem *per_mem = PER_INT_MSK_REG;
-+	volatile u32 dummy_read;
-+
-+	wmb();
-+	dummy_read = __raw_readl(per_mem);
-+	dummy_read++;
++	do_IRQ(MIPS_CPU_IPI_RESCHED_IRQ);
 +}
 +
-+static inline void unmask_per_irq(unsigned int irq)
++static void ipi_call_dispatch(void)
 +{
-+#ifdef CONFIG_SMP
-+	unsigned long flags;
-+	spin_lock_irqsave(&per_lock, flags);
-+	*PER_INT_MSK_REG |= (1 << (irq - MSP_PER_INTBASE));
-+	spin_unlock_irqrestore(&per_lock, flags);
-+#else
-+	*PER_INT_MSK_REG |= (1 << (irq - MSP_PER_INTBASE));
-+#endif
-+	per_wmb();
++	do_IRQ(MIPS_CPU_IPI_CALL_IRQ);
 +}
 +
-+static inline void mask_per_irq(unsigned int irq)
++static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
 +{
-+#ifdef CONFIG_SMP
-+	unsigned long flags;
-+	spin_lock_irqsave(&per_lock, flags);
-+	*PER_INT_MSK_REG &= ~(1 << (irq - MSP_PER_INTBASE));
-+	spin_unlock_irqrestore(&per_lock, flags);
-+#else
-+	*PER_INT_MSK_REG &= ~(1 << (irq - MSP_PER_INTBASE));
-+#endif
-+	per_wmb();
++	return IRQ_HANDLED;
 +}
 +
-+static inline void msp_per_irq_enable(unsigned int irq)
++static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
 +{
-+	unmask_per_irq(irq);
++	smp_call_function_interrupt();
++
++	return IRQ_HANDLED;
 +}
 +
-+static inline void msp_per_irq_disable(unsigned int irq)
-+{
-+	 mask_per_irq(irq);
-+}
-+
-+static unsigned int msp_per_irq_startup(unsigned int irq)
-+{
-+	msp_per_irq_enable(irq);
-+	return 0;
-+}
-+
-+#define    msp_per_irq_shutdown    msp_per_irq_disable
-+
-+static inline void msp_per_irq_ack(unsigned int irq)
-+{
-+	mask_per_irq(irq);
-+	/*
-+	 * In the PER interrupt controller, only bits 11 and 10
-+	 * are write-to-clear, (SPI TX complete, SPI RX complete).
-+	 * It does nothing for any others.
-+	 */
-+
-+	*PER_INT_STS_REG = (1 << (irq - MSP_PER_INTBASE));
-+
-+	/* Re-enable the CIC cascaded interrupt and return */
-+	irq_desc[MSP_INT_CIC].chip->end(MSP_INT_CIC);
-+}
-+
-+static void msp_per_irq_end(unsigned int irq)
-+{
-+	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
-+	unmask_per_irq(irq);
-+}
-+
-+#ifdef CONFIG_SMP
-+static inline int msp_per_irq_set_affinity(unsigned int irq,
-+				const struct cpumask *affinity)
-+{
-+	unsigned long flags;
-+	/*
-+	 * Calls to ack, end, startup, enable are spinlocked in setup_irq and
-+	 * __do_IRQ.Callers of this function do not spinlock,so we need to
-+	 * do so ourselves.
-+	 */
-+	raw_spin_lock_irqsave(&irq_desc[irq].lock, flags);
-+	msp_per_irq_enable(irq);
-+	raw_spin_unlock_irqrestore(&irq_desc[irq].lock, flags);
-+	return 0;
-+
-+}
-+#endif
-+
-+static struct irq_chip msp_per_irq_controller = {
-+	.name = "MSP_PER",
-+	.startup = msp_per_irq_startup,
-+	.shutdown = msp_per_irq_shutdown,
-+	.enable = msp_per_irq_enable,
-+	.disable = msp_per_irq_disable,
-+#ifdef CONFIG_SMP
-+	.set_affinity = msp_per_irq_set_affinity,
-+#endif
-+	.ack = msp_per_irq_ack,
-+	.end = msp_per_irq_end,
++static struct irqaction irq_resched = {
++	.handler	= ipi_resched_interrupt,
++	.flags		= IRQF_DISABLED | IRQF_PERCPU,
++	.name		= "IPI_resched"
 +};
 +
-+void __init msp_per_irq_init(void)
++static struct irqaction irq_call = {
++	.handler	= ipi_call_interrupt,
++	.flags		= IRQF_DISABLED | IRQF_PERCPU,
++	.name		= "IPI_call"
++};
++
++void __init arch_init_ipiirq(int irq, struct irqaction *action)
 +{
-+	int i;
-+	/* Mask/clear interrupts. */
-+	*PER_INT_MSK_REG  = 0x00000000;
-+	*PER_INT_STS_REG  = 0xFFFFFFFF;
-+	/* initialize all the IRQ descriptors */
-+	for (i = MSP_PER_INTBASE; i < MSP_PER_INTBASE + 32; i++) {
-+		irq_desc[i].status = IRQ_DISABLED;
-+		irq_desc[i].action = NULL;
-+		irq_desc[i].depth = 1;
-+		irq_desc[i].chip = &msp_per_irq_controller;
-+#ifdef CONFIG_MIPS_MT_SMTC
-+		irq_hwmask[i] = C_IRQ4;
-+#endif
-+	}
++	setup_irq(irq, action);
++	set_irq_handler(irq, handle_percpu_irq);
 +}
 +
-+void msp_per_irq_dispatch(void)
++void __init msp_vsmp_int_init(void)
 +{
-+	u32	per_mask = *PER_INT_MSK_REG;
-+	u32	per_status = *PER_INT_STS_REG;
-+	u32	pending;
-+
-+	pending = per_status & per_mask;
-+	if (pending) {
-+		do_IRQ(ffs(pending) + MSP_PER_INTBASE - 1);
-+	} else {
-+		spurious_interrupt();
-+	/* Re-enable the CIC cascaded interrupt and return */
-+	irq_desc[MSP_INT_CIC].chip->end(MSP_INT_CIC);
-+	}
++	set_vi_handler(MIPS_CPU_IPI_RESCHED_IRQ, ipi_resched_dispatch);
++	set_vi_handler(MIPS_CPU_IPI_CALL_IRQ, ipi_call_dispatch);
++	arch_init_ipiirq(MIPS_CPU_IPI_RESCHED_IRQ, &irq_resched);
++	arch_init_ipiirq(MIPS_CPU_IPI_CALL_IRQ, &irq_call);
 +}
++#endif /* CONFIG_MIPS_MT_SMP */
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_smtc.c b/arch/mips/pmc-sierra/msp71xx/msp_smtc.c
+new file mode 100644
+index 0000000..1504c76
+--- /dev/null
++++ b/arch/mips/pmc-sierra/msp71xx/msp_smtc.c
+@@ -0,0 +1,107 @@
++/*
++ * MSP71xx Platform-specific hooks for SMP operation
++ */
++#include <linux/irq.h>
++#include <linux/init.h>
++#include <linux/sched.h>
++
++#include <asm/mipsregs.h>
++#include <asm/mipsmtregs.h>
++#include <asm/smtc.h>
++#include <asm/smtc_ipi.h>
++
++/* VPE/SMP Prototype implements platform interfaces directly */
++
++/*
++ * Cause the specified action to be performed on a targeted "CPU"
++ */
++
++static void msp_smtc_send_ipi_single(int cpu, unsigned int action)
++{
++	/* "CPU" may be TC of same VPE, VPE of same CPU, or different CPU */
++	smtc_send_ipi(cpu, LINUX_SMP_IPI, action);
++}
++
++static void msp_smtc_send_ipi_mask(const struct cpumask *mask,
++						unsigned int action)
++{
++	unsigned int i;
++
++	for_each_cpu(i, mask)
++		msp_smtc_send_ipi_single(i, action);
++}
++
++/*
++ * Post-config but pre-boot cleanup entry point
++ */
++static void __cpuinit msp_smtc_init_secondary(void)
++{
++	void smtc_init_secondary(void);
++	int myvpe;
++
++	/* Don't enable Malta I/O interrupts (IP2) for secondary VPEs */
++	myvpe = read_c0_tcbind() & TCBIND_CURVPE;
++	if (myvpe > 0)
++		change_c0_status(ST0_IM, STATUSF_IP0 | STATUSF_IP1 |
++				STATUSF_IP6 | STATUSF_IP7);
++	smtc_init_secondary();
++}
++
++/*
++ * Platform "CPU" startup hook
++ */
++static void __cpuinit msp_smtc_boot_secondary(int cpu,
++					struct task_struct *idle)
++{
++	smtc_boot_secondary(cpu, idle);
++}
++
++/*
++ * SMP initialization finalization entry point
++ */
++static void __cpuinit msp_smtc_smp_finish(void)
++{
++	smtc_smp_finish();
++}
++
++/*
++ * Hook for after all CPUs are online
++ */
++
++static void msp_smtc_cpus_done(void)
++{
++}
++
++/*
++ * Platform SMP pre-initialization
++ *
++ * As noted above, we can assume a single CPU for now
++ * but it may be multithreaded.
++ */
++
++static void __init msp_smtc_smp_setup(void)
++{
++	/*
++	 * we won't get the definitive value until
++	 * we've run smtc_prepare_cpus later, but
++	 */
++
++	if (read_c0_config3() & (1 << 2))
++		smp_num_siblings = smtc_build_cpu_map(0);
++}
++
++static void __init msp_smtc_prepare_cpus(unsigned int max_cpus)
++{
++	smtc_prepare_cpus(max_cpus);
++}
++
++struct plat_smp_ops msp_smtc_smp_ops = {
++	.send_ipi_single	= msp_smtc_send_ipi_single,
++	.send_ipi_mask		= msp_smtc_send_ipi_mask,
++	.init_secondary		= msp_smtc_init_secondary,
++	.smp_finish		= msp_smtc_smp_finish,
++	.cpus_done		= msp_smtc_cpus_done,
++	.boot_secondary		= msp_smtc_boot_secondary,
++	.smp_setup		= msp_smtc_smp_setup,
++	.prepare_cpus		= msp_smtc_prepare_cpus,
++};
 -- 
 1.7.0.4

@@ -1,110 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jan 2011 07:34:45 +0100 (CET)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:54028 "EHLO
-        smtp1.linux-foundation.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491101Ab1AYGem (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jan 2011 07:34:42 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-        by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id p0P6XmbH015829
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Mon, 24 Jan 2011 22:33:48 -0800
-Received: from localhost (localhost [127.0.0.1])
-        by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id p0P6Xlno002353;
-        Mon, 24 Jan 2011 22:33:47 -0800
-Date:   Mon, 24 Jan 2011 22:33:47 -0800
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Sam Ravnborg <sam@ravnborg.org>,
-        Sergei Shtylyov <sshtylyov@mvista.com>,
-        Yoichi Yuasa <yuasa@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>, linux-mm@kvack.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jan 2011 07:53:34 +0100 (CET)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:54682 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491129Ab1AYGxb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jan 2011 07:53:31 +0100
+Received: by ywf7 with SMTP id 7so1604789ywf.36
+        for <multiple recipients>; Mon, 24 Jan 2011 22:53:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=QSc6cL9bFBw1WnwfS+Jpd+bmaeaG2fPGwDFgFZYWF7c=;
+        b=Dly7NCgfUWBcztYVqDPSEa4it3sY0MhN0tTHmVoDGVAXlA9BNdacsje/nZ0+We+2Vs
+         J2VrI/4rZoyD5KhvGuNkwEmRLR2fhh/h0RriRKglp++PzGmclaX2bFKupN26SarCREEp
+         K/KzWgDZaEqHBrefvtf4i+U6zzgOkdDUG8QwQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=s4rHZNEri1m/iVgo4uf9GDrKpC+H6Ot2TAr5hX6GOZ7sPnsAYqkhNNFvKFZ+1GpqW9
+         lGQHAM40O4BTMJySLpmEMT0rE26ipJDw1A77K5fAfs2KX09Vnh9Uq9BRwOJAskdHmrt8
+         Sm7PCuDpGCZDzKK4ucOPOAH0Iye85Ysham+Pc=
+Received: by 10.151.111.17 with SMTP id o17mr5938211ybm.294.1295938405174;
+        Mon, 24 Jan 2011 22:53:25 -0800 (PST)
+Received: from localhost.localdomain ([59.160.135.215])
+        by mx.google.com with ESMTPS id q4sm3552150ybe.12.2011.01.24.22.53.19
+        (version=SSLv3 cipher=RC4-MD5);
+        Mon, 24 Jan 2011 22:53:22 -0800 (PST)
+From:   "Anoop P.A" <anoop.pa@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fix build error when CONFIG_SWAP is not set
-Message-Id: <20110124223347.ad6072f1.akpm@linux-foundation.org>
-In-Reply-To: <AANLkTimdgYVpwbCAL96=1F+EtXyNxz5Swv32GN616mqP@mail.gmail.com>
-References: <20110124210813.ba743fc5.yuasa@linux-mips.org>
-        <4D3DD366.8000704@mvista.com>
-        <20110124124412.69a7c814.akpm@linux-foundation.org>
-        <20110124210752.GA10819@merkur.ravnborg.org>
-        <AANLkTimdgYVpwbCAL96=1F+EtXyNxz5Swv32GN616mqP@mail.gmail.com>
-X-Mailer: Sylpheed 2.7.1 (GTK+ 2.18.9; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-Return-Path: <akpm@linux-foundation.org>
+Cc:     Anoop P A <anoop.pa@gmail.com>
+Subject: [PATCH] Fix build error for non-malta VSMP kernel.
+Date:   Tue, 25 Jan 2011 12:39:15 +0530
+Message-Id: <1295939355-7281-1-git-send-email-anoop.pa@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <anoop.pa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29066
+X-archive-position: 29067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: anoop.pa@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 25 Jan 2011 07:24:09 +0100 Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+From: Anoop P A <anoop.pa@gmail.com>
 
-> > I just checked.
-> > sparc32 with a defconfig barfed out like this:
-> > __CC __ __ __arch/sparc/kernel/traps_32.o
-> > In file included from /home/sam/kernel/linux-2.6.git/include/linux/pagemap.h:7:0,
-> > __ __ __ __ __ __ __ __ from /home/sam/kernel/linux-2.6.git/include/linux/swap.h:11,
-> > __ __ __ __ __ __ __ __ from /home/sam/kernel/linux-2.6.git/arch/sparc/include/asm/pgtable_32.h:15,
-> > __ __ __ __ __ __ __ __ from /home/sam/kernel/linux-2.6.git/arch/sparc/include/asm/pgtable.h:6,
-> > __ __ __ __ __ __ __ __ from /home/sam/kernel/linux-2.6.git/arch/sparc/kernel/traps_32.c:23:
-> > /home/sam/kernel/linux-2.6.git/include/linux/mm.h: In function 'is_vmalloc_addr':
-> > /home/sam/kernel/linux-2.6.git/include/linux/mm.h:301:17: error: 'VMALLOC_START' undeclared (first use in this function)
-> > /home/sam/kernel/linux-2.6.git/include/linux/mm.h:301:17: note: each undeclared identifier is reported only once for each function it appears in
-> > /home/sam/kernel/linux-2.6.git/include/linux/mm.h:301:41: error: 'VMALLOC_END' undeclared (first use in this function)
-> > /home/sam/kernel/linux-2.6.git/include/linux/mm.h: In function 'maybe_mkwrite':
-> > /home/sam/kernel/linux-2.6.git/include/linux/mm.h:483:3: error: implicit declaration of function 'pte_mkwrite'
-> >
-> > When I removed the include it could build again.
-> 
-> ... and so it is. Good to know, thanks for checking!
+VSMP kernel build for non-malta platforms fails with following error
 
-meanwhile I suppose someone should fix the error ;)
+  LD      init/built-in.o
+  LD      .tmp_vmlinux1
+arch/mips/built-in.o: In function `vsmp_init_secondary':
+smp-mt.c:(.cpuinit.text+0x23cc): undefined reference to `gic_present'
+smp-mt.c:(.cpuinit.text+0x23d0): undefined reference to `gic_present'
+make: *** [.tmp_vmlinux1] Error 1
 
+gic_present variable is declared only if IRQ_GIC is selected.
 
-From: Andrew Morton <akpm@linux-foundation.org>
-
-mips:
-
-In file included from arch/mips/include/asm/tlb.h:21,
-                 from mm/pgtable-generic.c:9:
-include/asm-generic/tlb.h: In function `tlb_flush_mmu':
-include/asm-generic/tlb.h:76: error: implicit declaration of function `release_pages'
-include/asm-generic/tlb.h: In function `tlb_remove_page':
-include/asm-generic/tlb.h:105: error: implicit declaration of function `page_cache_release'
-
-free_pages_and_swap_cache() and free_page_and_swap_cache() are macros
-which call release_pages() and page_cache_release().  The obvious fix is
-to include pagemap.h in swap.h, where those macros are defined.  But that
-breaks sparc for weird reasons.
-
-So fix it within mm/pgtable-generic.c instead.
-
-Reported-by: Yoichi Yuasa <yuasa@linux-mips.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Sergei Shtylyov <sshtylyov@mvista.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Anoop P A <anoop.pa@gmail.com>
 ---
+ arch/mips/kernel/smp-mt.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
- mm/pgtable-generic.c |    1 +
- 1 file changed, 1 insertion(+)
-
-diff -puN mm/pgtable-generic.c~mm-pgtable-genericc-fix-config_swap=n-build mm/pgtable-generic.c
---- a/mm/pgtable-generic.c~mm-pgtable-genericc-fix-config_swap=n-build
-+++ a/mm/pgtable-generic.c
-@@ -6,6 +6,7 @@
-  *  Copyright (C) 2010  Linus Torvalds
-  */
+diff --git a/arch/mips/kernel/smp-mt.c b/arch/mips/kernel/smp-mt.c
+index c0e8141..54235b5 100644
+--- a/arch/mips/kernel/smp-mt.c
++++ b/arch/mips/kernel/smp-mt.c
+@@ -151,6 +151,7 @@ static void vsmp_send_ipi_mask(const struct cpumask *mask, unsigned int action)
  
-+#include <linux/pagemap.h>
- #include <asm/tlb.h>
- #include <asm-generic/pgtable.h>
+ static void __cpuinit vsmp_init_secondary(void)
+ {
++#ifdef CONFIG_IRQ_GIC
+ 	extern int gic_present;
  
-_
+ 	/* This is Malta specific: IPI,performance and timer interrupts */
+@@ -158,6 +159,7 @@ static void __cpuinit vsmp_init_secondary(void)
+ 		change_c0_status(ST0_IM, STATUSF_IP3 | STATUSF_IP4 |
+ 					 STATUSF_IP6 | STATUSF_IP7);
+ 	else
++#endif
+ 		change_c0_status(ST0_IM, STATUSF_IP0 | STATUSF_IP1 |
+ 					 STATUSF_IP6 | STATUSF_IP7);
+ }
+-- 
+1.7.0.4

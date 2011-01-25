@@ -1,68 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jan 2011 08:42:03 +0100 (CET)
-Received: from pfepb.post.tele.dk ([195.41.46.236]:50382 "EHLO
-        pfepb.post.tele.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491149Ab1AYHmA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jan 2011 08:42:00 +0100
-Received: from merkur.ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
-        by pfepb.post.tele.dk (Postfix) with ESMTP id EE671F84027;
-        Tue, 25 Jan 2011 08:41:56 +0100 (CET)
-Date:   Tue, 25 Jan 2011 08:41:56 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sergei Shtylyov <sshtylyov@mvista.com>,
-        Yoichi Yuasa <yuasa@linux-mips.org>,
-        linux-mips <linux-mips@linux-mips.org>, linux-mm@kvack.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Jan 2011 09:02:44 +0100 (CET)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:47768 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491152Ab1AYICl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 25 Jan 2011 09:02:41 +0100
+Received: by gyg4 with SMTP id 4so1621585gyg.36
+        for <multiple recipients>; Tue, 25 Jan 2011 00:02:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=sxUBwgszrrEu43ZdgL04UolW/l3zKsI/REB7F1WpqiU=;
+        b=XmXcnXPaXY8viTVGgLQ3QOFspc+qgoCHzSZb2zgHEQo8ija4S+QyzzMh1KVprDzLyV
+         qQEmsk6V7DG870Y2MmpcdufC431JexFCUUaw0+83wlbnjQF88QAK0W8ongH1BL23mOsf
+         SCTGdUrZlKl1Tz7/l8FBrd24HDgX+IJ8iDxxA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=QSmDHaYLFtkz77o7pstURZEBD+8uwtIM24u8eKZtm28bTI2o4SOmXl7ZKnnDOkwExE
+         lBL87nTYDyn6mtO7c+TQ8h8naXF8E5YGVWGGSn7rb/l/VgDzlPaZHcvB7MrsLe3ucFvp
+         4szh0PhFbizrIPfw7BgdpJ8taGMyCAyvGk/Og=
+Received: by 10.151.106.19 with SMTP id i19mr5493516ybm.324.1295942554231;
+        Tue, 25 Jan 2011 00:02:34 -0800 (PST)
+Received: from localhost.localdomain ([59.160.135.215])
+        by mx.google.com with ESMTPS id v8sm9304940yba.14.2011.01.25.00.02.30
+        (version=SSLv3 cipher=RC4-MD5);
+        Tue, 25 Jan 2011 00:02:33 -0800 (PST)
+From:   "Anoop P.A" <anoop.pa@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fix build error when CONFIG_SWAP is not set
-Message-ID: <20110125074156.GA29709@merkur.ravnborg.org>
-References: <20110124210813.ba743fc5.yuasa@linux-mips.org> <4D3DD366.8000704@mvista.com> <20110124124412.69a7c814.akpm@linux-foundation.org> <20110124210752.GA10819@merkur.ravnborg.org> <AANLkTimdgYVpwbCAL96=1F+EtXyNxz5Swv32GN616mqP@mail.gmail.com> <20110124223347.ad6072f1.akpm@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110124223347.ad6072f1.akpm@linux-foundation.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <sam@ravnborg.org>
+Cc:     Anoop P A <anoop.pa@gmail.com>
+Subject: [PATCH 0/6] Various Enhancements for PMC-Sierra MSP SoC support
+Date:   Tue, 25 Jan 2011 13:48:32 +0530
+Message-Id: <1295943512-19900-1-git-send-email-anoop.pa@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+Return-Path: <anoop.pa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29068
+X-archive-position: 29069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
+X-original-sender: anoop.pa@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> 
-> mips:
-> 
-> In file included from arch/mips/include/asm/tlb.h:21,
->                  from mm/pgtable-generic.c:9:
-> include/asm-generic/tlb.h: In function `tlb_flush_mmu':
-> include/asm-generic/tlb.h:76: error: implicit declaration of function `release_pages'
-> include/asm-generic/tlb.h: In function `tlb_remove_page':
-> include/asm-generic/tlb.h:105: error: implicit declaration of function `page_cache_release'
-> 
-> free_pages_and_swap_cache() and free_page_and_swap_cache() are macros
-> which call release_pages() and page_cache_release().  The obvious fix is
-> to include pagemap.h in swap.h, where those macros are defined.  But that
-> breaks sparc for weird reasons.
-> 
-> So fix it within mm/pgtable-generic.c instead.
-> 
-> Reported-by: Yoichi Yuasa <yuasa@linux-mips.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Sergei Shtylyov <sshtylyov@mvista.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+From: Anoop P A <anoop.pa@gmail.com>
 
-I have succesfully build sparc32 allnoconfig + defconfig with this patch.
-Can you expand the changelog to specify that this fixes sparc32 allnoconfig
-as well?
+Following Series of patches add various enahancements for PMC-Sierra
+MSP71xx family of SoC's platform hooks, including MIPS MT mode support
+and support for various onchip devices like USB and Ethernet.  
 
-Consider it:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-
-	Sam
+Anoop P A (6):
+  set up MSP VPE1 timer.
+  Vectored interrupt support.
+  MIPS MT kernel modes ( VSMP/SMTC ) support for MSP platforms.
+  Platform support MSP onchip USB controller.
+  Platform support for On-chip MSP ethernet devices.
+  Cpu features overrides for msp platforms.

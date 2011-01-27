@@ -1,141 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jan 2011 19:41:59 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:1811 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491098Ab1A0Sly (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Jan 2011 19:41:54 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d41bca20000>; Thu, 27 Jan 2011 10:42:42 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 27 Jan 2011 10:41:52 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 27 Jan 2011 10:41:52 -0800
-Message-ID: <4D41BC6B.8010408@caviumnetworks.com>
-Date:   Thu, 27 Jan 2011 10:41:47 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jan 2011 22:35:26 +0100 (CET)
+Received: from smtp-out.google.com ([216.239.44.51]:4589 "EHLO
+        smtp-out.google.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491853Ab1A0VfX convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Jan 2011 22:35:23 +0100
+Received: from wpaz17.hot.corp.google.com (wpaz17.hot.corp.google.com [172.24.198.81])
+        by smtp-out.google.com with ESMTP id p0RLZLkf029923
+        for <linux-mips@linux-mips.org>; Thu, 27 Jan 2011 13:35:21 -0800
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=google.com; s=beta;
+        t=1296164121; bh=6lBbDGwCP9nCuKjZD+SzFVJruIQ=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+         MIME-Version:Content-Type:Content-Transfer-Encoding;
+        b=vWKlsFy2rZnzOmEL9PhYkgfOPqOlL058tfb1OTY1rO7JwTp7OsaStiBwbjQcVUJmQ
+         g116b8oz5XrzrC+4m7aLQ==
+Received: from gyh3 (gyh3.prod.google.com [10.243.50.195])
+        by wpaz17.hot.corp.google.com with ESMTP id p0RLZIsu020974
+        (version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)
+        for <linux-mips@linux-mips.org>; Thu, 27 Jan 2011 13:35:20 -0800
+Received: by gyh3 with SMTP id 3so900662gyh.12
+        for <linux-mips@linux-mips.org>; Thu, 27 Jan 2011 13:35:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=beta;
+        h=domainkey-signature:from:to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version:content-type
+         :content-transfer-encoding;
+        bh=H045wxJqKdfLCFcLgGgbmOjTHaafT5TTkK+DCnaXn3o=;
+        b=WK+YXQpE69whJCW2cPY/mJMrT9ro3OpGtWEw9+dY0tHS9XR7lH1t5OAmQif0HltUe6
+         86xtgDCSUW+ZBokzKKrw==
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=google.com; s=beta;
+        h=from:to:cc:subject:references:date:in-reply-to:message-id
+         :user-agent:mime-version:content-type:content-transfer-encoding;
+        b=HfJZambmbuos4tL/13Uz3uR+T8ELDmhPv308on4R90fQt5D9m49TF/f7STY5A1jGBM
+         TpJPErkatEbPXORBOpNg==
+Received: by 10.90.233.9 with SMTP id f9mr3707853agh.78.1296164117873;
+        Thu, 27 Jan 2011 13:35:17 -0800 (PST)
+Received: from coign.google.com ([216.239.45.130])
+        by mx.google.com with ESMTPS id f10sm20875365anh.5.2011.01.27.13.35.16
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 27 Jan 2011 13:35:17 -0800 (PST)
+From:   Ian Lance Taylor <iant@google.com>
+To:     loody <miloody@gmail.com>
+Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
+        gcc-help <gcc-help@gcc.gnu.org>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: Fwd: about udelay in mips
+References: <AANLkTinvdEPwQ=DmcF8nnTAa0Py_O=+p7x1pobcTNHom@mail.gmail.com>
+        <AANLkTik8hQfd8cvNj=qeq5U=6zpQHw33a9hfK-q8+x1Z@mail.gmail.com>
+        <AANLkTikpUBtg2zz8tcbcz2rcG-O+fTFwb_pTi88uZe0h@mail.gmail.com>
+        <AANLkTi=zfr5YuwBCcvH2Jas50UxnUtvzp_CDyN25sT5h@mail.gmail.com>
+        <AANLkTim_swh58fCUxZ4e6MDrM9Lqrbm+1ufnp8W767JL@mail.gmail.com>
+        <AANLkTim+Dy1_MFoMcXK3aPCKUcz6hpJY7B5kKY_nXNnP@mail.gmail.com>
+        <4D4156CF.1040909@mvista.com>
+        <AANLkTimdXa9WS7WLuKgD4iOCXcwvi5gPf5fQ2_eMsiW_@mail.gmail.com>
+Date:   Thu, 27 Jan 2011 13:35:14 -0800
+In-Reply-To: <AANLkTimdXa9WS7WLuKgD4iOCXcwvi5gPf5fQ2_eMsiW_@mail.gmail.com>
+        (loody's message of "Thu, 27 Jan 2011 20:28:34 +0800")
+Message-ID: <mcrlj26owrx.fsf@google.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.1 (gnu/linux)
 MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: Re: [PATCH v2 4/4] MIPS: perf: Add support for 64-bit perf counters.
-References: <1295650776-28444-1-git-send-email-ddaney@caviumnetworks.com>       <1295650776-28444-5-git-send-email-ddaney@caviumnetworks.com>   <AANLkTimFnBJeU7BT6ARM=+KSod0UB-XFZTxgWWh1N=i2@mail.gmail.com>  <4D3F68BE.5080803@caviumnetworks.com> <AANLkTim54xV64utR0GdS1r4_LBoAjEOHH9_=TYSLSqMF@mail.gmail.com>
-In-Reply-To: <AANLkTim54xV64utR0GdS1r4_LBoAjEOHH9_=TYSLSqMF@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 Jan 2011 18:41:52.0288 (UTC) FILETIME=[DD324A00:01CBBE51]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-System-Of-Record: true
+Return-Path: <iant@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29101
+X-archive-position: 29102
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: iant@google.com
 Precedence: bulk
 X-list: linux-mips
 
-On 01/26/2011 10:24 PM, Deng-Cheng Zhu wrote:
-> Using your attached patch, I experimented -c and -F by 'ls /'. The numbers
-> I used are 10, 1000 and 100000 for both -c and -F.
->
-> The number of samples I got was 24 all the way. That means the event period
-> to sample and the profiling frequency do not affect the results on MIPS32
-> platform. While working on the old code, the system had the following
-> results:
->
-> -c 10: The system seems busy dealing with interrupts. And the following log
->         was printed out:
->         ================================================
->         hda: ide_dma_sff_timer_expiry: DMA status (0x24)
->         hda: DMA interrupt recovery
->         hda: lost interrupt
->         ================================================
->         This does need to be fixed later on.
-> -c 1000: ~11085 samples
-> -c 100000: ~48 samples ('perf report' still showed some data.)
-> -F 10: ~118 samples
-> -F 1000: ~352 samples
-> -F 100000: ~379 samples
->
-> I'll try to take time to look into the patch to see if anything can be
-> changed.
->
+loody <miloody@gmail.com> writes:
 
-I have found it useful to enable tracing, and then placing 
-trace_printk() in mipspmu_event_set_period() to look at the values of:
-
-sample_period, period_left that are being used.
-
-Also you could use a trace_printk() in mipsxx_pmu_write_counter() to 
-check the value being written to the register.
-
-What hardware are you using to test this?  I wonder if there is a board 
-with a 32-bit CPU that I could get access to.
-
-David Daney
-
-
+>>   Probably because in 2.6.30 you only cast the result of 32-bit multiplies
+>> to 64 bits. In the 2.6.33 kernel, the mutliplies are 64-bit as the
+>> 0x000010c7ull constant is 64-bit...
 >
-> Deng-Cheng
->
->
-> 2011/1/26 David Daney<ddaney@caviumnetworks.com>:
->> On 01/24/2011 07:42 PM, Deng-Cheng Zhu wrote:
+>>> void __udelay(unsigned long us)
+>>> {
+>>>        unsigned int lpj = current_cpu_data.udelay_val;
 >>>
->>> Hi, David
->>>
->>>
->>> This version does fix the problem with 'perf stat'. However, when working
->>> with 'perf record', the following happened:
->>>
->>> -sh-4.0# perf record -f -e cycles -e instructions -e branches \
->>>>
->>>> -e branch-misses -e r12 find / -name "*sys*">/dev/null
->>>
->>> [ perf record: Woken up 1 times to write data ]
->>> [ perf record: Captured and wrote 0.001 MB perf.data (~53 samples) ]
->>
->>
->> I get the same thing.  What happens if you supply either '-c xxx' or '-f
->> xxx'?
->>
->> I get:octeon:~/linux/tools/perf# ./perf record -e cycles /bin/ls -l /
->> total 100
->> drwxr-xr-x   2 root root  4096 2010-11-12 11:39 bin
->> [...]
->> drwxr-xr-x  13 root root  4096 2007-05-25 12:28 var
->> [ perf record: Woken up 1 times to write data ]
->> [ perf record: Captured and wrote 0.002 MB perf.data (~82 samples) ]
->>
->> Almost no samples as you got.
->>
->> But if I do:
->>
->> octeon:~/linux/tools/perf# ./perf record -F 100000 -e cycles /bin/ls -l /
->> total 100
->> drwxr-xr-x   2 root root  4096 2010-11-12 11:39 bin
->> [...]
->> drwxr-xr-x  13 root root  4096 2007-05-25 12:28 var
->> [ perf record: Woken up 1 times to write data ]
->> [ perf record: Captured and wrote 0.404 MB perf.data (~17653 samples) ]
->>
->> Look many more samples!
->>
->> The question is, what is it supposed to do?
->>
->> If you can get a reasonable number of samples out if you supply -c or
->> -F, then I would argue that it is working and the default settings for
->> -F are not a good fit for your test case.
->>
->> I have slightly changed the patch.  You could try the attached version
->> instead and tell me the results.
->>
->>
->> David Daney
->>
->>
->>
->
+>>>        __delay(((unsigned long long)(us * 0x000010c7 * HZ * lpj)) >> 32);
+> so that means (us * 0x000010c7 * HZ * lpj)  is calculated at 32-bits and finally
+> (unsigned long long) cast it as 64-bits?
+> if i remember correctly, "64bit cast to 32-bits" is possible get 0
+> value, since high bits cast out.
+> But how 34-bits cast to 64-bits will make the value as 0 if original
+> low 32-bits value is non-zero?
+
+I don't know the type of HZ.  But assuming it is a constant, then the
+rules of C are that the expression
+    us * 0x000010c7 * HZ * lpj
+gets evaluated in the type "unsigned long".  The fact that you then cast
+that "unsigned long" value to "unsigned long long" does not cause the
+multiplication to be done in the type "unsigned long long".
+
+You need to write something like
+    (unsigned long long) us * 0x000010c7 * HZ * (unsigned long long) lpj
+to get the multiplication to be done in the "unsigned long long" type.
+
+This questoin has nothing to do with gcc, by the way, it's a C language
+question.
+
+Ian

@@ -1,133 +1,176 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jan 2011 13:28:44 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:51507 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491010Ab1A0M2l convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Jan 2011 15:55:22 +0100 (CET)
+Received: from mail-qw0-f49.google.com ([209.85.216.49]:35423 "EHLO
+        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491074Ab1A0OzT convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 27 Jan 2011 13:28:41 +0100
-Received: by iyj21 with SMTP id 21so1467131iyj.36
-        for <linux-mips@linux-mips.org>; Thu, 27 Jan 2011 04:28:35 -0800 (PST)
+        Thu, 27 Jan 2011 15:55:19 +0100
+Received: by qwj9 with SMTP id 9so2155546qwj.36
+        for <linux-mips@linux-mips.org>; Thu, 27 Jan 2011 06:55:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        bh=W0MzHKS86RW5/7SobPSGVt9y1cXpWuBq/WAWvR4o8uc=;
-        b=vkIcZ957giJXkDOEEWIkUfFsIv+e044lKdgZEKot74qINaBROcaOPFEsvwpToKhmBu
-         axK+omn7tEVZ2a3DO6OoouO8I7o3PLapn5wAgiOHtaQ5zWaSXYqEvQQHzVs07aCDuA5B
-         J7ZJWJHZ6fq+X1bc6Xrh95/IPHT4frUkeWJzc=
+        bh=rWpc4bltdel3X3LgTfNXcghtQaVRrC9jZsWWp1q4vgg=;
+        b=mfzjCQKCqOs6l6Z45vQGj1eJfjLZCUQjdfhMKWlkKmOgD0n1z/xCSfKOVr4gOWjn/6
+         V8Ierq9qcz87trWRGOUeskuFAce7FJTuVOQfIigytp7G93Y5BKwLXNkxdoYnsBzUfPtd
+         pihr6dYzlGve5tynpfAlmRCKvMS9wENG0+jBY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        b=fRRxNe7m9kYOO4P5+YDoTJkkKdC9ckS7FtNbsAz0FVsrTDDtmpPkm3IeZHpHD3geF5
-         JP4tzL22z5GRfl7yvx8hiqZGPhCIsWndy24/nXCxzGi4myFHhCGFhAHKBwtAt7UowLe6
-         wj0eNhV76LLIoxAtj2X2opXCePmIYP8rBCFQU=
+        b=gE1Aamb4wnEPa1W+zJ07nWrqE8645e2Ubapnym24IzyHA4GFoXSsVxVWypXmVPCiNz
+         dR2eXnmecWIkGCsSwr+9wvKQWGzFRJssFOPwkN12/WS7jIz+rcnWtN4TGcoqqRhPxSl2
+         veRWc7jhgNisV4o22qgeW8F52uaG5r/CTMCxw=
 MIME-Version: 1.0
-Received: by 10.42.230.67 with SMTP id jl3mr2112069icb.30.1296131314943; Thu,
- 27 Jan 2011 04:28:34 -0800 (PST)
-Received: by 10.42.195.199 with HTTP; Thu, 27 Jan 2011 04:28:34 -0800 (PST)
-In-Reply-To: <4D4156CF.1040909@mvista.com>
-References: <AANLkTinvdEPwQ=DmcF8nnTAa0Py_O=+p7x1pobcTNHom@mail.gmail.com>
-        <AANLkTik8hQfd8cvNj=qeq5U=6zpQHw33a9hfK-q8+x1Z@mail.gmail.com>
-        <AANLkTikpUBtg2zz8tcbcz2rcG-O+fTFwb_pTi88uZe0h@mail.gmail.com>
-        <AANLkTi=zfr5YuwBCcvH2Jas50UxnUtvzp_CDyN25sT5h@mail.gmail.com>
-        <AANLkTim_swh58fCUxZ4e6MDrM9Lqrbm+1ufnp8W767JL@mail.gmail.com>
-        <AANLkTim+Dy1_MFoMcXK3aPCKUcz6hpJY7B5kKY_nXNnP@mail.gmail.com>
-        <4D4156CF.1040909@mvista.com>
-Date:   Thu, 27 Jan 2011 20:28:34 +0800
-Message-ID: <AANLkTimdXa9WS7WLuKgD4iOCXcwvi5gPf5fQ2_eMsiW_@mail.gmail.com>
-Subject: Re: Fwd: about udelay in mips
-From:   loody <miloody@gmail.com>
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-Cc:     gcc-help <gcc-help@gcc.gnu.org>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Received: by 10.229.232.85 with SMTP id jt21mr1613252qcb.164.1296140112850;
+ Thu, 27 Jan 2011 06:55:12 -0800 (PST)
+Received: by 10.229.51.130 with HTTP; Thu, 27 Jan 2011 06:55:12 -0800 (PST)
+In-Reply-To: <4D3DCB5A.6060107@caviumnetworks.com>
+References: <AANLkTik+vpiWR4Xk4Pu+uCHq3XO=BZMGVka8-B9vuQew@mail.gmail.com>
+        <4D3DCB5A.6060107@caviumnetworks.com>
+Date:   Thu, 27 Jan 2011 20:25:12 +0530
+Message-ID: <AANLkTi=mbof+GbRuS-0hezDpj+XmA+jL7mE+kdjKJzd5@mail.gmail.com>
+Subject: Re: page size change on MIPS
+From:   naveen yadav <yad.naveen@gmail.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, kernelnewbies@nl.linux.org
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <miloody@gmail.com>
+Return-Path: <yad.naveen@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29096
+X-archive-position: 29097
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: miloody@gmail.com
+X-original-sender: yad.naveen@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-hi:
->   Probably because in 2.6.30 you only cast the result of 32-bit multiplies
-> to 64 bits. In the 2.6.33 kernel, the mutliplies are 64-bit as the
-> 0x000010c7ull constant is 64-bit...
+Hi David,
 
->> void __udelay(unsigned long us)
->> {
->>        unsigned int lpj = current_cpu_data.udelay_val;
->>
->>        __delay(((unsigned long long)(us * 0x000010c7 * HZ * lpj)) >> 32);
-so that means (us * 0x000010c7 * HZ * lpj)  is calculated at 32-bits and finally
-(unsigned long long) cast it as 64-bits?
-if i remember correctly, "64bit cast to 32-bits" is possible get 0
-value, since high bits cast out.
-But how 34-bits cast to 64-bits will make the value as 0 if original
-low 32-bits value is non-zero?
-appreciate your reply,
-miloody
+thanks for your response.
 
->> 80306ed0:       00001821        move    v1,zero
->> 80306ed4:       00601021        move    v0,v1
->> #include<asm/compiler.h>
->> #include<asm/war.h>
+I check and found that kernel is booting with 16KB page size with
+ramdisk booting. But when I change to 64KB it give me
+
+: applet not found
+                  Kernel panic - not syncing: Attempted to kill init!
+so I check and found that it is not able to execute well the system
+call in kernel_execve function.
+I am using codesourcercy toolchain(4.3.1). So is there a way to debug
+this problem or how to debug below function.
+
+int kernel_execve(const char *filename, char *const argv[], char *const envp[])
+{
+	register unsigned long __a0 asm("$4") = (unsigned long) filename;
+	register unsigned long __a1 asm("$5") = (unsigned long) argv;
+	register unsigned long __a2 asm("$6") = (unsigned long) envp;
+	register unsigned long __a3 asm("$7");
+	unsigned long __v0;
+	__asm__ volatile ("					\n"
+	"	.set	noreorder				\n"
+	"	li	$2, %5		# __NR_execve		\n"
+	"	syscall						\n"
+	"	move	%0, $2					\n"
+	"	.set	reorder					\n"
+	: "=&r" (__v0), "=r" (__a3)
+	: "r" (__a0), "r" (__a1), "r" (__a2), "i" (__NR_execve)
+	: "$2", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24",
+	  "memory");
+	
+
+	if (__a3 == 0)			
+		return __v0;
+	return -__v0;
+}
+
+
+On Tue, Jan 25, 2011 at 12:26 AM, David Daney <ddaney@caviumnetworks.com> wrote:
+> On 01/24/2011 07:02 AM, naveen yadav wrote:
 >>
->> inline void __delay(unsigned int loops)
->> {
->>        __asm__ __volatile__ (
->> 80306ed8:       1440ffff        bnez    v0,80306ed8 <__udelay+0x8>
->> 80306edc:       2442ffff        addiu   v0,v0,-1
->> void __udelay(unsigned long us)
+>> Hi All,
+>>
+>>
+>> we are using mips32r2  so I want to know which all pages size it can
+>> support?
+>> When I modify arch/mips/Kconfig.  it boot sucessfully on 16KB page
+>> size. but hang/not boot crash when change page size to 8KB,32KB and 64
+>> KB.
 >
->> I have double checked the __delay source code of 2.6.33.4
->> and the dis-assemblies:
+> I don't think 8KB and 32KB work on most mips32r2 processors.  You would have
+> to check the processor manual to be sure.
 >
->> void __udelay(unsigned long us)
->> {
->>        unsigned int lpj = current_cpu_data.udelay_val;
->>
->>        __delay((us * 0x000010c7ull * HZ * lpj) >> 32);
->> 802f7310:       3c02804f        lui     v0,0x804f
->> 802f7314:       8c429360        lw      v0,-27808(v0)
->> 802f7318:       3c050010        lui     a1,0x10
->> 802f731c:       34a56256        ori     a1,a1,0x6256
->> 802f7320:       00450019        multu   v0,a1
->> 802f7324:       00002821        move    a1,zero
->> 802f7328:       00001012        mflo    v0
->> 802f732c:       00001810        mfhi    v1
->> 802f7330:       00a20018        mult    a1,v0
->> 802f7334:       70640000        madd    v1,a0
->> 802f7338:       00003012        mflo    a2
->> 802f733c:       00440019        multu   v0,a0
->> 802f7340:       00001810        mfhi    v1
->> 802f7344:       00c31021        addu    v0,a2,v1
->> #include<asm/compiler.h>
->> #include<asm/war.h>
->>
->> inline void __delay(unsigned int loops)
->> {
->>        __asm__ __volatile__ (
->> 802f7348:       1440ffff        bnez    v0,802f7348 <__udelay+0x38>
->> 802f734c:       2442ffff        addiu   v0,v0,-1
->> void __udelay(unsigned long us)
->> {
->>        unsigned int lpj = current_cpu_data.udelay_val;
->>
->>        __delay((us * 0x000010c7ull * HZ * lpj)>>  32);
->> }
->> 802f7350:       03e00008        jr      ra
 >
-> WBR, Sergei
+>>
+>> We are using 2.6.30 kernel.
+>>
+>> At Page Size 8KB and 32KB  it hang in unpack_to_rootfs() function of
+>> init/initramfs.c
+>>
+>> 64KB it hangs when execute init  Kernel panic - not syncing: Attempted
+>> to kill init!
 >
-
-
-
--- 
-Regards,
+> I regularly run 4K, 16K, and 64K page sizes with a Debian rootfs.  If you
+> run with a broken uClibc toolchain that doesn't support larger pages, it
+> will of course fail.  In this case the problem is with your toolchain, not
+> the kernel.
+>
+> David Daney
+>
+>
+>>
+>> config PAGE_SIZE_4KB
+>>         bool "4kB"
+>>         help
+>>          This option select the standard 4kB Linux page size.  On some
+>>          R3000-family processors this is the only available page size.
+>>  Using
+>>          4kB page size will minimize memory consumption and is therefore
+>>          recommended for low memory systems.
+>>
+>> config PAGE_SIZE_8KB
+>>         bool "8kB"
+>>        depends on (EXPERIMENTAL&&  CPU_R8000) || CPU_CAVIUM_OCTEON
+>>         help
+>>           Using 8kB page size will result in higher performance kernel at
+>>           the price of higher memory consumption.  This option is
+>> available
+>>           only on R8000 and cnMIPS processors.  Note that you will need a
+>>           suitable Linux distribution to support this.
+>>
+>> config PAGE_SIZE_16KB
+>>         bool "16kB"
+>>        depends on !CPU_R3000&&  !CPU_TX39XX
+>>         help
+>>           Using 16kB page size will result in higher performance kernel at
+>>           the price of higher memory consumption.  This option is
+>> available on
+>>           all non-R3000 family processors.  Note that you will need a
+>> suitable
+>>           Linux distribution to support this.
+>>
+>> config PAGE_SIZE_32KB
+>>         bool "32kB"
+>>         help
+>>           Using 32kB page size will result in higher performance kernel at
+>>           the price of higher memory consumption.  This option is
+>> available
+>>           only on cnMIPS cores.  Note that you will need a suitable Linux
+>>           distribution to support this.
+>>
+>> config PAGE_SIZE_64KB
+>>         bool "64kB"
+>>        depends on EXPERIMENTAL&&  !CPU_R3000&&  !CPU_TX39XX
+>>         help
+>>           Using 64kB page size will result in higher performance kernel at
+>>           the price of higher memory consumption.  This option is
+>> available on
+>>           all non-R3000 family processor.  Not that at the time of this
+>>           writing this option is still high experimental.
+>>
+>>
+>
+>

@@ -1,73 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Jan 2011 17:05:15 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:58323 "EHLO
-        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491142Ab1A3QFL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 30 Jan 2011 17:05:11 +0100
-Received: from duck.linux-mips.net (duck [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p0UG4kh8031801;
-        Sun, 30 Jan 2011 17:04:46 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p0UG4ikx031799;
-        Sun, 30 Jan 2011 17:04:44 +0100
-Date:   Sun, 30 Jan 2011 17:04:44 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org
-Subject: Re: mips allmodconfig
-Message-ID: <20110130160444.GA2876@linux-mips.org>
-References: <20110125143113.55aea198.akpm@linux-foundation.org>
- <s5hfwsdcwht.wl%tiwai@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <s5hfwsdcwht.wl%tiwai@suse.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Jan 2011 21:42:00 +0100 (CET)
+Received: from moutng.kundenserver.de ([212.227.126.187]:53922 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491197Ab1A3Ul5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 30 Jan 2011 21:41:57 +0100
+Received: from flocke.fritz.box (p5086E681.dip.t-dialin.net [80.134.230.129])
+        by mrelayeu.kundenserver.de (node=mreu1) with ESMTP (Nemesis)
+        id 0MUASM-1PbMeR3KoE-00QXfx; Sun, 30 Jan 2011 21:41:46 +0100
+Received: from stefan by flocke.fritz.box with local (Exim 4.72)
+        (envelope-from <stefan@weilnetz.de>)
+        id 1Pje5g-0001U6-Qq; Sun, 30 Jan 2011 21:41:44 +0100
+From:   Stefan Weil <weil@mail.berlios.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Stefan Weil <weil@mail.berlios.de>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>,
+        Arnaud Patard <apatard@mandriva.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] MIPS: Loongson: Fix potentially wrong string handling
+Date:   Sun, 30 Jan 2011 21:41:44 +0100
+Message-Id: <1296420104-5679-1-git-send-email-weil@mail.berlios.de>
+X-Mailer: git-send-email 1.7.2.3
+X-Provags-ID: V02:K0:nG43jotu6AUcUO34iS9wi7Ehk4HnpJ3hzy75Q5gd4sj
+ jEy5Ja7ZDIVLYnc5lIN/TLb/cNZzHT0l3rFM2Z3FtO1HCkq71B
+ mtcvMLjPSQfPbH87WXjCybtr6MOJB+neMqCP2FtWVegte6Ez4T
+ oYB+psAv01LhrVN8AFrWvj7MMsbDa9HfEUEY0yzd9bWpKHDHZn
+ Y6gVx3LDD0PUKMzGmkdkB9QgbUOc+0FXU9X67ulf5u+we3mIAh
+ PDgJFI4CtmHP1
+Return-Path: <stefan@weilnetz.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29114
+X-archive-position: 29115
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: weil@mail.berlios.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jan 28, 2011 at 08:34:22AM +0100, Takashi Iwai wrote:
+This error was reported by cppcheck:
+arch/mips/loongson/common/machtype.c:56: error: Dangerous usage of 'str' (strncpy doesn't always 0-terminate it)
 
-> > sound/oss/soundcard.c:69: error: `MAX_DMA_CHANNELS' undeclared here (not in a function)
-> > sound/oss/soundcard.c:69: error: storage size of `dma_alloc_map' isn't known
-> > sound/oss/soundcard.c:69: warning: 'dma_alloc_map' defined but not used         
-> > 
-> > In case you happen to be interested in oss drivers ;)
-> 
-> I took a quick look.  The only case where no MAX_DMA_CHANNELS is
-> defined is only MIPS with CONFIG_GENERIC_ISA_DMA_SUPPORT_BROKEN.
-> In arch/mips/include/asm/dma.h:
-> 
-> #ifndef CONFIG_GENERIC_ISA_DMA_SUPPORT_BROKEN
-> #define MAX_DMA_CHANNELS	8
-> #endif
-> 
-> What is the intention of this ifdef?
+If strncpy copied MACHTYPE_LEN bytes, the destination string str
+was not terminated.
 
-Uh...  It's a while, took a little headscratching until I remembered
-again and I think the comment of aa414dff4f7bef29457592414551becdca72dd6b
-is bogus ...
+The patch adds one more byte to str and makes sure that this byte is
+always 0.
 
-CONFIG_GENERIC_ISA_DMA enabled but MAX_DMA_CHANNELS disabled selects a
-dummy version of the ISA DMA controller API.  Some drivers don't have
-correct dependencies or ifdefs on CONFIG_GENERIC_ISA_DMA or don't
-have correct fallback strategies in case of CONFIG_GENERIC_ISA_DMA=n.
-In those cases just leaving MAX_DMA_CHANNELS undefined is useful.  This
-is used on SGI Indigo² systems which have EISA slots but ISA DMA isn't
-supported yet by Linux.
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: Wu Zhangjin <wuzhangjin@gmail.com>
+Cc: Arnaud Patard <apatard@mandriva.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Stefan Weil <weil@mail.berlios.de>
+---
+ arch/mips/loongson/common/machtype.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-> Takashi  (not interested but just bored ;)
-
-Very interested boredom ;-)
-
-  Ralf
+diff --git a/arch/mips/loongson/common/machtype.c b/arch/mips/loongson/common/machtype.c
+index 81fbe6b..2efd5d9 100644
+--- a/arch/mips/loongson/common/machtype.c
++++ b/arch/mips/loongson/common/machtype.c
+@@ -41,7 +41,7 @@ void __weak __init mach_prom_init_machtype(void)
+ 
+ void __init prom_init_machtype(void)
+ {
+-	char *p, str[MACHTYPE_LEN];
++	char *p, str[MACHTYPE_LEN + 1];
+ 	int machtype = MACH_LEMOTE_FL2E;
+ 
+ 	mips_machtype = LOONGSON_MACHTYPE;
+@@ -53,6 +53,7 @@ void __init prom_init_machtype(void)
+ 	}
+ 	p += strlen("machtype=");
+ 	strncpy(str, p, MACHTYPE_LEN);
++	str[MACHTYPE_LEN] = '\0';
+ 	p = strstr(str, " ");
+ 	if (p)
+ 		*p = '\0';
+-- 
+1.7.2.3

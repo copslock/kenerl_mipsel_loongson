@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jan 2011 03:40:56 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:54392 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Jan 2011 14:08:51 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52232 "EHLO
         duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491768Ab1AaCkm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Jan 2011 03:40:42 +0100
+        by eddie.linux-mips.org with ESMTP id S1491815Ab1AaNIr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Jan 2011 14:08:47 +0100
 Received: from duck.linux-mips.net (duck [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p0V2eIMu015735;
-        Mon, 31 Jan 2011 03:40:18 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p0VD8MDb028729;
+        Mon, 31 Jan 2011 14:08:22 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p0V2eGBG015733;
-        Mon, 31 Jan 2011 03:40:16 +0100
-Date:   Mon, 31 Jan 2011 03:40:16 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p0VD8Kf7028727;
+        Mon, 31 Jan 2011 14:08:20 +0100
+Date:   Mon, 31 Jan 2011 14:08:20 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Stefan Weil <weil@mail.berlios.de>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
-        Arnaud Patard <apatard@mandriva.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Loongson: Fix potentially wrong string handling
-Message-ID: <20110131024016.GA12961@linux-mips.org>
-References: <1296420104-5679-1-git-send-email-weil@mail.berlios.de>
+To:     Himanshu Aggarwal <lkml.himanshu@gmail.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>,
+        naveen yadav <yad.naveen@gmail.com>,
+        kernelnewbies@nl.linux.org, linux-mips@linux-mips.org
+Subject: Re: page size change on MIPS
+Message-ID: <20110131130820.GB26217@linux-mips.org>
+References: <AANLkTik+vpiWR4Xk4Pu+uCHq3XO=BZMGVka8-B9vuQew@mail.gmail.com>
+ <4D3DCB5A.6060107@caviumnetworks.com>
+ <AANLkTin6GkKeJATbafP-k9YNcSTHeT8ohDpUD2RLDZ1J@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1296420104-5679-1-git-send-email-weil@mail.berlios.de>
+In-Reply-To: <AANLkTin6GkKeJATbafP-k9YNcSTHeT8ohDpUD2RLDZ1J@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@localhost.localdomain>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29116
+X-archive-position: 29117
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,6 +37,13 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Applied.  Thanks,
+On Sun, Jan 30, 2011 at 08:32:43PM +0530, Himanshu Aggarwal wrote:
+
+> Why should the application or the toolchains depend on pagesize? I am
+> not very clear on this. Can someone explain it?
+
+To allow loading directly with mmap the executable file's layout must
+be such that it's it's segments are on offsets that are a multiple of
+the page size so in turn the linker must know that alignment.
 
   Ralf

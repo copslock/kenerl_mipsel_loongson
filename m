@@ -1,109 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Feb 2011 00:29:16 +0100 (CET)
-Received: from gate.crashing.org ([63.228.1.57]:40023 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491843Ab1BFX3N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Feb 2011 00:29:13 +0100
-Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id p16NQXoc023703;
-        Sun, 6 Feb 2011 17:26:35 -0600
-Subject: Re: [PATCH] sched: provide scheduler_ipi() callback in response to
- smp_send_reschedule()
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Mike Frysinger <vapier@gentoo.org>,
-        Mikael Starvik <starvik@axis.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Hirokazu Takata <takata@linux-m32r.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David Howells <dhowells@redhat.com>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        Kyle McMartin <kyle@mcmartin.ca>, Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
-        linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
-        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net,
-        xen-devel@lists.xensource.com, virtualization@lists.osdl.org,
-        Linux-Arch <linux-arch@vger.kernel.org>
-In-Reply-To: <1295262433.30950.53.camel@laptop>
-References: <1295262433.30950.53.camel@laptop>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Mon, 07 Feb 2011 10:26:32 +1100
-Message-ID: <1297034792.14982.10.camel@pasglop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Feb 2011 03:31:51 +0100 (CET)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:33318 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491851Ab1BGCbs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Feb 2011 03:31:48 +0100
+Received: by yxd30 with SMTP id 30so1618117yxd.36
+        for <multiple recipients>; Sun, 06 Feb 2011 18:31:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:sender:date:from:to:cc:subject:message-id
+         :x-mailer:mime-version:content-type:content-transfer-encoding;
+        bh=A+H0c80Ljkdhh6hKRHCd5xseh/v3LeAGVzpJS37j0Qk=;
+        b=dDN9FkjyEo2rzcFAY3Se8JD+XPiiSeekpm+1V9Uf+V4xHRJFrB1FPM7/QWgWEx3wX1
+         Y4ja3CCG+FMMWBMyFc+ze+fZxrHuuBKUDMMSmRxfkg8l4DyCGLYG5urb/5TOhGJOSi0+
+         FzXRcDJaHwt+icWN/1gA5a3n3E8JB867qaHr4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        b=S/6lvSUdEjbvou6d/AGZXnD0GlV1gVR9683ilLE+aAbn1eLK1dNxDah94JBN/KYQQd
+         Z+FRgdR8JErKSemaqz45163Z/xqwLO74n9SUGE1zBTF15IEAIQC6Nlg5xjmvojGJAghE
+         ITIBjpBFQIi1tOge8rY4ufae5ai3plPqVvAUc=
+Received: by 10.236.109.131 with SMTP id s3mr28855637yhg.92.1297045902012;
+        Sun, 06 Feb 2011 18:31:42 -0800 (PST)
+Received: from stratos (sannin29007.nirai.ne.jp [203.160.29.7])
+        by mx.google.com with ESMTPS id a11sm2515618yhd.36.2011.02.06.18.31.39
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 06 Feb 2011 18:31:41 -0800 (PST)
+Date:   Mon, 7 Feb 2011 11:31:36 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     yuasa@linux-mips.org, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: fix always CONFIG_LOONGSON_UART_BASE=y
+Message-Id: <20110207113136.2179ffc9.yuasa@linux-mips.org>
+X-Mailer: Sylpheed 3.1.0beta7 (GTK+ 2.22.0; x86_64-redhat-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.30.3 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <benh@kernel.crashing.org>
+Return-Path: <yyuasa@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29127
+X-archive-position: 29128
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2011-01-17 at 12:07 +0100, Peter Zijlstra wrote:
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 68034bb..7ee0fc3 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -128,6 +128,7 @@ static irqreturn_t call_function_action(int irq, void *data)
->  static irqreturn_t reschedule_action(int irq, void *data)
->  {
->         /* we just need the return path side effect of checking need_resched */
-> +       scheduler_ipi();
->         return IRQ_HANDLED;
->  }
->   
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+---
+ arch/mips/loongson/Kconfig |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
 
-You missed:
-
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 9813605..467d122 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -98,6 +98,7 @@ void smp_message_recv(int msg)
-                break;
-        case PPC_MSG_RESCHEDULE:
-                /* we notice need_resched on exit */
-+               scheduler_ipi();
-                break;
-        case PPC_MSG_CALL_FUNC_SINGLE:
-                generic_smp_call_function_single_interrupt();
-
-Fold that in and add:
-
-Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-
-(We have two variants of the IPIs)
-
-Cheers,
-Ben.
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 6e1b77f..aca93ee 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -1,6 +1,7 @@
++if MACH_LOONGSON
++
+ choice
+ 	prompt "Machine Type"
+-	depends on MACH_LOONGSON
+ 
+ config LEMOTE_FULOONG2E
+ 	bool "Lemote Fuloong(2e) mini-PC"
+@@ -87,3 +88,5 @@ config LOONGSON_UART_BASE
+ config LOONGSON_MC146818
+ 	bool
+ 	default n
++
++endif # MACH_LOONGSON
+-- 
+1.7.4

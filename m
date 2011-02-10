@@ -1,66 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Feb 2011 19:27:12 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:64255 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491123Ab1BJS1J (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Feb 2011 19:27:09 +0100
-Received: by bwz5 with SMTP id 5so2246801bwz.36
-        for <linux-mips@linux-mips.org>; Thu, 10 Feb 2011 10:27:04 -0800 (PST)
-Received: by 10.204.102.19 with SMTP id e19mr14519203bko.35.1297362423959;
-        Thu, 10 Feb 2011 10:27:03 -0800 (PST)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
-        by mx.google.com with ESMTPS id u23sm208798bkw.21.2011.02.10.10.27.02
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 10 Feb 2011 10:27:02 -0800 (PST)
-Message-ID: <4D542DA1.5020705@mvista.com>
-Date:   Thu, 10 Feb 2011 21:25:37 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Feb 2011 00:23:05 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47599 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491172Ab1BJXXC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Feb 2011 00:23:02 +0100
+Received: from duck.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p1ANNgM4017865;
+        Fri, 11 Feb 2011 00:23:42 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p1ANNfOJ017861;
+        Fri, 11 Feb 2011 00:23:41 +0100
+Date:   Fri, 11 Feb 2011 00:23:40 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Mikael Starvik <mikael.starvik@axis.com>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: Highmem in architechtures with cache alias
+Message-ID: <20110210232340.GA13731@linux-mips.org>
+References: <4BEA3FF3CAA35E408EA55C7BE2E61D055C60823A4F@xmail3.se.axis.com>
 MIME-Version: 1.0
-To:     Manuel Lauss <manuel.lauss@googlemail.com>
-CC:     Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: DB1200: Set Config_OD for improved stability.
-References: <1297347429-18215-1-git-send-email-manuel.lauss@googlemail.com> <1297347429-18215-2-git-send-email-manuel.lauss@googlemail.com> <4D542B1D.1060407@mvista.com>
-In-Reply-To: <4D542B1D.1060407@mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4BEA3FF3CAA35E408EA55C7BE2E61D055C60823A4F@xmail3.se.axis.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@duck.linux-mips.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29156
+X-archive-position: 29157
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I wrote:
+On Mon, Feb 07, 2011 at 10:02:34AM +0100, Mikael Starvik wrote:
 
->> Setting Config_OD gets rid of a _LOT_ of spurious CPLD interrupts,
->> but also decreases overall performance a bit.
+> It is clearly stated in http://www.linux-mips.org/wiki/Highmem that the
+> MIPS kernel can´t user highmem on machines with cache aliasing and I
+> understand the reason. So, what is the solution here? Switch to 16k
+> pages? Or are there other ways to get more memory on a machine with cache
+> aliases?
 
->> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
-> [...]
+This is an implementation restriction.  I did the original MIPS highmem
+work in early 2002 for a company which didn't want to be the first through
+the 64-bit minefield; I was using a Sibyte Swarm evaluation board back then
+and its SB1 cores happen not to have aliases so I was able to take a few
+short cuts.
 
->> diff --git a/arch/mips/alchemy/devboards/db1200/setup.c 
->> b/arch/mips/alchemy/devboards/db1200/setup.c
->> index 8876195..a3729c9 100644
->> --- a/arch/mips/alchemy/devboards/db1200/setup.c
->> +++ b/arch/mips/alchemy/devboards/db1200/setup.c
->> @@ -23,6 +23,13 @@ void __init board_setup(void)
->>      unsigned long freq0, clksrc, div, pfc;
->>      unsigned short whoami;
->>  
->> +    /* Set Config_OD (disable overlapping bus transaction):
+For many years after this virtually everybody was wise enough to go for
+64-bit hardware and kernel for large memory systems so interest in
+removing this restriction only came up like last year.
 
->    The bit is called Config[OD] by other Alchemy code.
->    You just should add your Au1200 revision to 
-> au1xxx_cpu_needs_config_od() in <asm/mach-au1x00.h> so that 
-> plat_mem_setup() automatically sets the bit (just after it calls 
-> board_setup()); Au1200 rev. AC should have it set already...
+16k pages are probably a good idea anyway; in most cases they provide a
+significant performance boost.  Details depend on the exact workload.
 
-    Forgot to add that if you don't do it, the code in plat_mem_setup() will 
-clear the bit after you've set it.
+However I should mention that the combination of page sizes other than 4k
+with highmem also is untested afaics.
 
-WBR, Sergei
+The solution for the alias problem is the right mix of cacheflushes at
+the right places and a strategy to avoid aliases where possible - business
+as usual.  ARM already supports highmem with aliases.
+
+  Ralf

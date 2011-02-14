@@ -1,42 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Feb 2011 05:48:25 +0100 (CET)
-Received: from silver.sucs.swan.ac.uk ([137.44.10.1]:52549 "EHLO
-        silver.sucs.swan.ac.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491002Ab1BNEsW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Feb 2011 05:48:22 +0100
-Received: from [137.44.122.83] (helo=[127.0.0.1])
-        by silver.sucs.swan.ac.uk with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.69)
-        (envelope-from <kais58@sucs.org>)
-        id 1PoqMB-000644-3x
-        for linux-mips@linux-mips.org; Mon, 14 Feb 2011 04:48:15 +0000
-Message-ID: <4D58B3F8.6000902@sucs.org>
-Date:   Mon, 14 Feb 2011 04:47:52 +0000
-From:   Callum Massey <kais58@sucs.org>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Feb 2011 09:27:11 +0100 (CET)
+Received: from cpsmtp-fia02.kpnxchange.com ([195.121.247.5]:1207 "EHLO
+        cpsmtp-fia02.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491177Ab1BNI1I (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 14 Feb 2011 09:27:08 +0100
+Received: from mouse.matrix.dare.nl ([217.166.125.17]) by cpsmtp-fia02.kpnxchange.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 14 Feb 2011 09:26:58 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by mouse.matrix.dare.nl (Postfix) with ESMTP id 34363AA1F8
+        for <linux-mips@linux-mips.org>; Mon, 14 Feb 2011 09:26:53 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at dare.nl
+Received: from mouse.matrix.dare.nl ([127.0.0.1])
+        by localhost (mouse.matrix.dare.nl [127.0.0.1]) (amavisd-new, port 10024)
+        with SMTP id Q6FSrSCeeaDg for <linux-mips@linux-mips.org>;
+        Mon, 14 Feb 2011 09:26:44 +0100 (CET)
+Received: from [192.168.8.199] (id6721.matrix.dare.nl [192.168.8.199])
+        by mouse.matrix.dare.nl (Postfix) with ESMTP id 834BAAA1DF
+        for <linux-mips@linux-mips.org>; Mon, 14 Feb 2011 09:26:44 +0100 (CET)
+Message-ID: <4D58E745.9090003@dare.nl>
+Date:   Mon, 14 Feb 2011 09:26:45 +0100
+From:   Robert Bon <robo@dare.nl>
+Organization: D.A.R.E!! Development
+User-Agent: Thunderbird 2.0.0.24 (Windows/20100228)
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: SGI Onyx4
+To:     linux-mips <linux-mips@linux-mips.org>
+Subject: alchemy au1100 where is the MMC card
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Antivirus: avast! (VPS 110213-1, 13/02/2011), Outbound message
-X-Antivirus-Status: Clean
-Return-Path: <kais58@sucs.org>
+X-OriginalArrivalTime: 14 Feb 2011 08:26:58.0357 (UTC) FILETIME=[F222AE50:01CBCC20]
+Return-Path: <robo@dare.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29174
+X-archive-position: 29175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kais58@sucs.org
+X-original-sender: robo@dare.nl
 Precedence: bulk
 X-list: linux-mips
 
-Dear all,
-Swansea University Computer Society is currently in possesion of an SGI 
-Onyx4 and are willing to offer essentially complete access to the 
-machine to help in the creation of a MIPS IP35 Linux, if so let me know 
-and It's currently running OpenBSD.
+Hello,
 
-Callum Massey, SUCS President
-http://sucs.org
+Kernel 2.6.37
+Where is the support for a MMC card for the Alchemy AU1100 processor?
+Is is only supported  for the AU1200?
+
+See file: "drivers/mmc/host/Kconfig
+config MMC_AU1X
+   tristate "Alchemy AU1XX0 MMC Card Interface support"
+   depends on SOC_AU1200
+
+
+Robert Bon
+
+
+
+__________ Information from ESET NOD32 Antivirus, version of virus signature database 5871 (20110213) __________
+
+The message was checked by ESET NOD32 Antivirus.
+
+http://www.eset.com

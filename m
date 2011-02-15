@@ -1,69 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Feb 2011 19:08:51 +0100 (CET)
-Received: from smtp2.caviumnetworks.com ([209.113.159.134]:14485 "EHLO
-        smtp2.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491031Ab1BOSIt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Feb 2011 19:08:49 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by smtp2.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d5ac1350000>; Tue, 15 Feb 2011 13:08:53 -0500
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 15 Feb 2011 10:08:46 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 15 Feb 2011 10:08:46 -0800
-Message-ID: <4D5AC12D.3080108@caviumnetworks.com>
-Date:   Tue, 15 Feb 2011 10:08:45 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Feb 2011 23:16:40 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:33537 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491060Ab1BOWQh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 15 Feb 2011 23:16:37 +0100
+Received: by bwz5 with SMTP id 5so926403bwz.36
+        for <multiple recipients>; Tue, 15 Feb 2011 14:16:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:x-enigmail-version:content-type
+         :content-transfer-encoding;
+        bh=PEplgnLS1fXrsaKRy99CZkvG2sTcsdwhyYkNzRt8eOY=;
+        b=PFnTnjHyNy2DwJaAZVLOgC40r21ooQUZbLTtBOSD2wLdZxh80O4BWI7jnYo4n8Mw4W
+         +Ct5i4YXVrGQhZA/srNXrfuJHQBhqGpT4yzlNmY1bFNRkjwE+gcVLi5DWL40tjzWXtog
+         k2o/Sjf7neuUoygUQRXqErWaVKWi08phzJwiE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:x-enigmail-version:content-type
+         :content-transfer-encoding;
+        b=jj+w2h3+xC8ayFIAc62tWgE3oroeoVZpil/s7pjXavnp4M0Tir0hQXIaGEb6Vwv3h1
+         qDs/tdswXqMns5wh05Y+GqNV6Zfq1Xq9vNcXr59cKtp345tKK5YTIr8o6fOXN8PjRdqw
+         fa4Jvy0g1vXgsfTIfR1sUkgcD769xoR7KpgWU=
+Received: by 10.204.121.73 with SMTP id g9mr5019570bkr.37.1297808191876;
+        Tue, 15 Feb 2011 14:16:31 -0800 (PST)
+Received: from [192.168.2.129] ([217.66.174.142])
+        by mx.google.com with ESMTPS id u23sm2975855bkw.9.2011.02.15.14.16.29
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 15 Feb 2011 14:16:31 -0800 (PST)
+Message-ID: <4D5AFB3B.6080407@gmail.com>
+Date:   Tue, 15 Feb 2011 23:16:27 +0100
+From:   Jiri Slaby <jirislaby@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; cs-CZ; rv:1.9.2.13) Gecko/20101206 SUSE/3.1.7 Thunderbird/3.1.7
 MIME-Version: 1.0
-To:     Alexandre Oliva <aoliva@redhat.com>
-CC:     linux-mips <linux-mips@linux-mips.org>, GCC <gcc@gcc.gnu.org>,
-        binutils <binutils@sourceware.org>,
-        Prasun Kapoor <prasun.kapoor@caviumnetworks.com>
-Subject: Re: RFC: A new MIPS64 ABI
-References: <4D5990A4.2050308@caviumnetworks.com> <orzkpx6v2m.fsf@livre.localdomain>
-In-Reply-To: <orzkpx6v2m.fsf@livre.localdomain>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:     Nikolay Ledovskikh <nledovskikh@gmail.com>
+CC:     "John W. Linville" <linville@tuxdriver.com>,
+        linux-wireless@vger.kernel.org, lrodriguez@atheros.com,
+        mickflemm@gmail.com, me@bobcopeland.com,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] ath5k: Use mips generic dma-mapping functions to avoid
+ seqfault on AHB chips
+References: <20110215220929.1cc6e9d4.nledovskikh@gmail.com>     <4D5AD6A6.8090505@gmail.com>    <AANLkTiks9rG2CzM2LabNerK3zgJ+R+weytQgvXxDbNe7@mail.gmail.com>  <4D5AE52B.80002@gmail.com> <AANLkTinnCOEXF835yhNeJDfBdKjx_dss6TFeUmjL-Yk2@mail.gmail.com>
+In-Reply-To: <AANLkTinnCOEXF835yhNeJDfBdKjx_dss6TFeUmjL-Yk2@mail.gmail.com>
+X-Enigmail-Version: 1.1.2
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 15 Feb 2011 18:08:46.0219 (UTC) FILETIME=[634175B0:01CBCD3B]
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <jirislaby@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29187
+X-archive-position: 29188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: jirislaby@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 02/15/2011 09:56 AM, Alexandre Oliva wrote:
-> On Feb 14, 2011, David Daney<ddaney@caviumnetworks.com>  wrote:
->
->> Current MIPS 32-bit ABIs (both o32 and n32) are restricted to 2GB of
->> user virtual memory space.  This is due the way MIPS32 memory space is
->> segmented.  Only the range from 0..2^31-1 is available.  Pointer
->> values are always sign extended.
->
->> The proposed new ABI would only be available on MIPS64 platforms.  It
->> would be identical to the current MIPS n32 ABI *except* that pointers
->> would be zero-extended rather than sign-extended when resident in
->> registers.
->
-> FTR, I don't really know why my Yeeloong is limited to 31-bit addresses,
-> and I kind of hoped an n32 userland would improve that WRT o32, without
-> wasting memory with longer pointers like n64 would.
->
-> So, sorry if this is a dumb question, but wouldn't it be much easier to
-> keep on using sign-extended addresses, and just make sure the kernel
-> never allocates a virtual memory range that crosses a sign-bit change,
-> or whatever other reason there is for addresses to be limited to the
-> positive 2GB range in n32?
->
+On 02/15/2011 10:39 PM, Nikolay Ledovskikh wrote:
+>> Maybe the address you got from the platform side was already ored by
+>> KSEG1...
+> 
+> I took a look at openwrt atheros platform code and suppose you are right.
+> So what we should do for now? Add pointer cast (void __iomem *)?
+> Because ioremap_nocache doesn't work as expected. I think it's better
+> to rewrote the openwrt
+> code, but not now.
 
-No, it is not possible.  The MIPS (and MIPS64) hardware architecture 
-does not allow userspace access to addresses with the high bit (two bits 
-for mips64) set.
+So I've found:
+http://www.google.com/codesearch/p?hl=en#sayuPQDVf4c/trunk/openwrt/target/linux/atheros/patches-2.6.32/100-board.patch&q=ar231x-wmac&sa=N&cd=4&ct=rc
 
-Your complaint is a good summary of why I am thinking about n32-big.
+There, the res->start may be either of the following:
+AR531X_WLAN0 .. 0x18000000
+AR531X_WLAN1 .. 0x18500000
+AR2315_WLAN0 .. 0xB0000000
 
-David Daney
+I suppose you have the 3rd otherwise it should die without ORing KSEG1?
+
+Or maybe MIPS guys will correct me? (The problem is that ioremap of one
+of the addresses above kills the box. If Nikolaj removes the ioremap and
+uses the address directly, it works for him. I'm saying it will die for
+the first 2 addresses if we remove ioremap completely -- from what I
+found in MIPS specs.)
+
+I _think_ there should be (instead of ioremap):
+sc->iobase = (void __iomem *)KSEG1ADDR(res->start);
+
+Then we do readl(sc->iobase) et al. in ath5k.
+
+thanks,
+-- 
+js

@@ -1,143 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 12:44:33 +0100 (CET)
-Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:43421 "EHLO
-        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491075Ab1BQLoa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 12:44:30 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id B4E022BE;
-        Thu, 17 Feb 2011 12:44:20 +0100 (CET)
-X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
-Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
-        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id wL3PQOQCSVle; Thu, 17 Feb 2011 12:44:20 +0100 (CET)
-Received: from [192.168.88.141] (unknown [213.172.107.226])
-        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: 7clausen)
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id CC7622BB;
-        Thu, 17 Feb 2011 12:44:09 +0100 (CET)
-Message-ID: <4D5D09FF.6010005@metafoo.de>
-Date:   Thu, 17 Feb 2011 12:43:59 +0100
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.16) Gecko/20101226 Icedove/3.0.11
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 14:36:26 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:59135 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491115Ab1BQNgX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 14:36:23 +0100
+Received: from duck.linux-mips.net (localhost.localdomain [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p1HDa30g021423;
+        Thu, 17 Feb 2011 14:36:03 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p1HDa0aM021419;
+        Thu, 17 Feb 2011 14:36:00 +0100
+Date:   Thu, 17 Feb 2011 14:36:00 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: Re: [PATCH v2 4/4] MIPS: perf: Add support for 64-bit perf counters.
+Message-ID: <20110217133559.GA12732@linux-mips.org>
+References: <1295650776-28444-1-git-send-email-ddaney@caviumnetworks.com>
+ <1295650776-28444-5-git-send-email-ddaney@caviumnetworks.com>
+ <AANLkTimFnBJeU7BT6ARM=+KSod0UB-XFZTxgWWh1N=i2@mail.gmail.com>
+ <4D3F68BE.5080803@caviumnetworks.com>
+ <AANLkTim54xV64utR0GdS1r4_LBoAjEOHH9_=TYSLSqMF@mail.gmail.com>
+ <4D41BC6B.8010408@caviumnetworks.com>
+ <AANLkTi=R86zBH8ZY+CdGyeXsSd0-yHdRVVx0ZWTJf4qe@mail.gmail.com>
+ <AANLkTikTV-=A8H=h_F+025VB37tHSmxpsNCGndi_dAFW@mail.gmail.com>
 MIME-Version: 1.0
-To:     Kumba <kumba@gentoo.org>
-CC:     Linux MIPS List <linux-mips@linux-mips.org>,
-        rtc-linux@googlegroups.com
-Subject: Re: [PATCH 1/2]: Add support for Dallas/Maxim DS1685/1687 RTC
-References: <4D5A65E3.1050707@gentoo.org> <4D5C5C66.6060205@metafoo.de> <4D5CF0EE.7000308@gentoo.org>
-In-Reply-To: <4D5CF0EE.7000308@gentoo.org>
-X-Enigmail-Version: 1.0.1
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <lars@metafoo.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AANLkTikTV-=A8H=h_F+025VB37tHSmxpsNCGndi_dAFW@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29205
+X-archive-position: 29206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 02/17/2011 10:57 AM, Kumba wrote:
-> On 02/16/2011 18:23, Lars-Peter Clausen wrote:
-> 
->> Just pass the error up to rtc core.
-> 
-> How?  I looked at a few other drivers, but they, too, call dev_err() or
-> dev_dbg().  Others don't appear to send any kind of string-based error
-> value anywhere, they just return a -E* value.
+On Thu, Feb 17, 2011 at 06:46:39PM +0800, Deng-Cheng Zhu wrote:
 
-That is what I meant. Pass the return value of rtc_valid_tm on, instead of
-setting the time to 0 and pretend everything went fine.
-You can still keep the dev_err though, no problem with that.
+> The reason of the perf-record failure on 32bit platforms is that the 32bit
+> counter read function mipsxx_pmu_read_counter() returns wrong 64bit values.
+> For example, the counter value 0x12345678 will be returned as
+> 0xffffffff12345678. So in mipspmu_event_update(), the delta will be wrong.
+> So here's a possible fix for your reference:
+> 
+> --- a/arch/mips/kernel/perf_event_mipsxx.c
+> +++ b/arch/mips/kernel/perf_event_mipsxx.c
+> @@ -184,19 +184,21 @@ static unsigned int
+> mipsxx_pmu_swizzle_perf_idx(unsigned int idx)
+>         return idx;
+>  }
+> 
+> +#define U32_MASK 0xffffffff
+> +
+>  static u64 mipsxx_pmu_read_counter(unsigned int idx)
+>  {
+>         idx = mipsxx_pmu_swizzle_perf_idx(idx);
+> 
+>         switch (idx) {
+>         case 0:
+> -               return read_c0_perfcntr0();
+> +               return read_c0_perfcntr0() & U32_MASK;
+>         case 1:
+> -               return read_c0_perfcntr1();
+> +               return read_c0_perfcntr1() & U32_MASK;
+>         case 2:
+> -               return read_c0_perfcntr2();
+> +               return read_c0_perfcntr2() & U32_MASK;
+>         case 3:
+> -               return read_c0_perfcntr3();
+> +               return read_c0_perfcntr3() & U32_MASK;
 
-> 
-> 
->> There is no need for these checks the core takes care that the values
->> are valid.
-> 
-> I've seen a few other RTC drivers implement these checks.  It's really
-> hard to tell what drivers are, I guess, "right" and which ones are
-> "wrong" in their approach when you've got already-accepted drivers in
-> the tree doing things that I'm trying to fix in this driver.
-> 
-> That said, how is the core running these checks when I quickly turn
-> around and write the values back to the RTC?
-> 
+read_c0_perfctrl0 etc. are defined in mipsregs.h as 32-bit reads returning
+a signed int.  That was ok on 32-bit kernels.  To support the optional
+64-bit counters the code will have to be changed to something like:
 
-What do you mean by 'quickly turning around and writing the values back'?
-The rtc_time struct passed to the set_time callback is supposed to contain only
-valid values.
+static u64 mipsxx_pmu_read_counter(unsigned int idx)
+{
+	idx = mipsxx_pmu_swizzle_perf_idx(idx);
 
-> 
-> 
->> There doesn't seem to be any code inside this file which is used
->> outside of
->> ds1685.c so it might be a good idea to merge the two files, or at
->> least move
->> this file to drivers/rtc/
-> 
-> I wasn't quite sure where headers typically went.  include/linux/rtc
-> already existed, so I thought it was created at some point for holding
-> .h files for RTC drivers.  IP32 will need to reference this header down
-> the road anyways.  No harm if it has to look into drivers/rtc?
+	switch (idx) {
+	case 0:
+		if (read_c0_perfctrl0() & M_PERFCTL_WIDE)
+			return read_c0_64_bit_perfcntr0();
+		else
+			return read_c0_32_bit_perfcntr0();
+	case 1:
+		if (read_c0_perfctrl1() & M_PERFCTL_WIDE)
+			return read_c0_64_bit_perfcntr1();
+		else
+			return read_c0_32_bit_perfcntr1();
+...
 
-Well, if it is going to be shared it should probably remain somewhere in
-include/, but everything thats not shared should be moved to rtc-ds1685.c like
-for example ds1685_priv.
+And read_c0_32_bit_perfcntrX need to zero-extend their return value.
 
-
-> 
-> 
->> Just use BIT(x) instead of adding these defines
-> 
-> Noted, will research.
-> 
-> 
->> I think you should really use readb(pdata->regs + REG) instead of the
->> following
->> structs. Maybe add a helper function in the form of:
->> static uint8_t ds1685_read(struct ds1685_priv *ds1685, unsigned int
->> reg) {
->>     return readb(pdata->regs + REG);
->> }
->>
->> That should also help with the different paddings introduced in patch 2.
-> 
-> Working on this now.  Ran into some road blocks with gcc and inlining,
-> but I worked around it.
-> 
-> 
->> All these macros that follow should really be functions.
-> 
-> Even the large ds1685_begin_data_access macro?  I can stick it into a
-> inlined function, but I thought a macro was better.  Or am I trying to
-> outfox the compiler by doing so?
-
-I don't know what you are trying to do, but the current code is extremely
-unreadable.
-You have all those variables declared in your functions which are on first
-sight not used, because they are only referenced from the macros. Furthermore
-the invocation of the macro has not the syntax of a function call, although
-semantically that is what it is.
-And especially ds1685_rtc_begin_data_access is dangerous, because of the
-'return 1', there is no indication when you read the code that a function could
-magically exit upon invoking that macro.
-
-> 
-> If I do inline it, I need a fix for passing errors back to the RTC
-> core.  I can't use dev_err() because it needs the device struct to work
-> with, and I want to avoid passing too many arguments to an inlinable
-> function.
-Why? The compiled code will probably be exactly the same as now.
-
-> 
-> Thoughts?  The rest should be easy to convert into inlined functions.
-> 
-> 
-> Thanks!,
-> 
+  Ralf

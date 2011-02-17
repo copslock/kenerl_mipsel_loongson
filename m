@@ -1,92 +1,137 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 10:47:30 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:53170 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491075Ab1BQJr0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 10:47:26 +0100
-Received: by bwz5 with SMTP id 5so2354778bwz.36
-        for <multiple recipients>; Thu, 17 Feb 2011 01:47:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=D5tgj5KzTIb6DOk3FRF4Cc1IijZ85NxWILc0uwe0LE0=;
-        b=i2tFK7gBOl5XRYgMA/Mnbfz5cGgOkKetdQ9xlWzO0049vv9Xx/2XOM5M/RUfHaYahd
-         /srh4PQIUXg3Er+2eADT0TYXljUeqaqg6npjC2zNuiNJuGaXuzktqw8kbsNt/uT7UbXW
-         I8csqc/m24epYmslhBxo00rAJh6WpuRAtgYTQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=CaaJet74ZidobqEcIWR7udtcbrbz+hLcnTuqDqbQ/9gKrikGgMQpYgyKgx5yPMP3Pe
-         rnlnPziI2pmdv1jZcMLHALii3akwMnJlZDv3iJhez3vClp+KVR7HNUx40Ti/3eHy1wjK
-         MtVImI7n3ReOxXYmOKHInPE9wKQoOCb+dEyPE=
-Received: by 10.204.101.81 with SMTP id b17mr1447273bko.126.1297936041147;
-        Thu, 17 Feb 2011 01:47:21 -0800 (PST)
-Received: from localhost.localdomain (t35.niisi.ras.ru [193.232.173.35])
-        by mx.google.com with ESMTPS id w3sm509983bkt.5.2011.02.17.01.47.19
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 17 Feb 2011 01:47:20 -0800 (PST)
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [PATCH] MIPS: Loongson: Kconfig: add MACH_LOONGSON dependency
-Date:   Thu, 17 Feb 2011 12:55:44 +0300
-Message-Id: <1297936544-24369-1-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 1.7.1
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 10:57:38 +0100 (CET)
+Received: from qmta12.westchester.pa.mail.comcast.net ([76.96.59.227]:46355
+        "EHLO qmta12.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491075Ab1BQJ5f (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 10:57:35 +0100
+Received: from omta04.westchester.pa.mail.comcast.net ([76.96.62.35])
+        by qmta12.westchester.pa.mail.comcast.net with comcast
+        id 8xx61g0010ldTLk5CxxTRU; Thu, 17 Feb 2011 09:57:27 +0000
+Received: from [192.168.1.13] ([69.251.104.163])
+        by omta04.westchester.pa.mail.comcast.net with comcast
+        id 8xxR1g00H3XYSBH3QxxSuK; Thu, 17 Feb 2011 09:57:27 +0000
+Message-ID: <4D5CF0EE.7000308@gentoo.org>
+Date:   Thu, 17 Feb 2011 04:57:02 -0500
+From:   Kumba <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.2.13) Gecko/20101207 Lightning/1.0b2 Thunderbird/3.1.7
+MIME-Version: 1.0
+To:     Lars-Peter Clausen <lars@metafoo.de>
+CC:     Linux MIPS List <linux-mips@linux-mips.org>,
+        rtc-linux@googlegroups.com
+Subject: Re: [PATCH 1/2]: Add support for Dallas/Maxim DS1685/1687 RTC
+References: <4D5A65E3.1050707@gentoo.org> <4D5C5C66.6060205@metafoo.de>
+In-Reply-To: <4D5C5C66.6060205@metafoo.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29201
+X-archive-position: 29202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-The options LOONGSON_SUSPEND, LOONGSON_UART_BASE et al. don't depend
-on MACH_LOONGSON option.
-So my configuration file (.config) for MIPS Malta board contains
+On 02/16/2011 18:23, Lars-Peter Clausen wrote:
 
- # CONFIG_MACH_LOONGSON is not set
- CONFIG_MIPS_MALTA=y
+> Just pass the error up to rtc core.
 
- ...
+How?  I looked at a few other drivers, but they, too, call dev_err() or 
+dev_dbg().  Others don't appear to send any kind of string-based error value 
+anywhere, they just return a -E* value.
 
- CONFIG_LOONGSON_UART_BASE=y
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/loongson/Kconfig |    6 ++++--
- 1 files changed, 4 insertions(+), 2 deletions(-)
+> There is no need for these checks the core takes care that the values are valid.
 
-diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
-index 6e1b77f..4f2cf08 100644
---- a/arch/mips/loongson/Kconfig
-+++ b/arch/mips/loongson/Kconfig
-@@ -61,6 +61,7 @@ endchoice
- 
- config CS5536
- 	bool
-+	depends on MACH_LOONGSON
- 
- config CS5536_MFGPT
- 	bool "CS5536 MFGPT Timer"
-@@ -77,13 +78,14 @@ config CS5536_MFGPT
- config LOONGSON_SUSPEND
- 	bool
- 	default y
--	depends on CPU_SUPPORTS_CPUFREQ && SUSPEND
-+	depends on MACH_LOONGSON && CPU_SUPPORTS_CPUFREQ && SUSPEND
- 
- config LOONGSON_UART_BASE
- 	bool
- 	default y
--	depends on EARLY_PRINTK || SERIAL_8250
-+	depends on MACH_LOONGSON && (EARLY_PRINTK || SERIAL_8250)
- 
- config LOONGSON_MC146818
- 	bool
- 	default n
-+	depends on MACH_LOONGSON
+I've seen a few other RTC drivers implement these checks.  It's really hard to 
+tell what drivers are, I guess, "right" and which ones are "wrong" in their 
+approach when you've got already-accepted drivers in the tree doing things that 
+I'm trying to fix in this driver.
+
+That said, how is the core running these checks when I quickly turn around and 
+write the values back to the RTC?
+
+
+> 	return rtc_valid_tm(&arlm->time);
+
+Noted -- Probably form when I copied one of the time read functions or such. 
+Alarm support wasn't in the original version of this driver when I found it.
+
+
+> Why has 'enabled' to be a pointer?
+
+No idea to be honest.  I think I copied it from another driver.  I'll re-review 
+it when I get to that point in fixing things.
+
+
+> resource_size(res) instead of res->end - res->start + 1
+> and it would be easier to just save the pointer to res instead of saving both
+> size and start;
+
+Noted, I see a few drivers using this syntax, so I'll adapt to it.
+
+
+> If CONFIG_SYSFS is not defined you'll get an compile error.
+
+Noted, thanks!
+
+
+> Since the irq handler references the rtc device it should be freed before the
+> rtc device.
+
+Noted, thanks!
+
+
+> There doesn't seem to be any code inside this file which is used outside of
+> ds1685.c so it might be a good idea to merge the two files, or at least move
+> this file to drivers/rtc/
+
+I wasn't quite sure where headers typically went.  include/linux/rtc already 
+existed, so I thought it was created at some point for holding .h files for RTC 
+drivers.  IP32 will need to reference this header down the road anyways.  No 
+harm if it has to look into drivers/rtc?
+
+
+> Just use BIT(x) instead of adding these defines
+
+Noted, will research.
+
+
+> I think you should really use readb(pdata->regs + REG) instead of the following
+> structs. Maybe add a helper function in the form of:
+> static uint8_t ds1685_read(struct ds1685_priv *ds1685, unsigned int reg) {
+> 	return readb(pdata->regs + REG);
+> }
+>
+> That should also help with the different paddings introduced in patch 2.
+
+Working on this now.  Ran into some road blocks with gcc and inlining, but I 
+worked around it.
+
+
+> All these macros that follow should really be functions.
+
+Even the large ds1685_begin_data_access macro?  I can stick it into a inlined 
+function, but I thought a macro was better.  Or am I trying to outfox the 
+compiler by doing so?
+
+If I do inline it, I need a fix for passing errors back to the RTC core.  I 
+can't use dev_err() because it needs the device struct to work with, and I want 
+to avoid passing too many arguments to an inlinable function.
+
+Thoughts?  The rest should be easy to convert into inlined functions.
+
+
+Thanks!,
+
 -- 
-1.7.1
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+
+"The past tempts us, the present confuses us, the future frightens us.  And our 
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

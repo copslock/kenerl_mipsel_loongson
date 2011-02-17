@@ -1,83 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 09:39:46 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:65150 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491101Ab1BQIjn convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Feb 2011 09:39:43 +0100
-Received: by wwi17 with SMTP id 17so2161611wwi.24
-        for <linux-mips@linux-mips.org>; Thu, 17 Feb 2011 00:39:38 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 10:47:05 +0100 (CET)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:61335 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491075Ab1BQJrC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 10:47:02 +0100
+Received: by wyf22 with SMTP id 22so2162227wyf.36
+        for <multiple recipients>; Thu, 17 Feb 2011 01:46:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
+        d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=uBGbesRT3AmxjIYyfe4f/CxTtpcN2dL5g8qt3RbudQM=;
-        b=AYbTuwuFgtVXkDvV3ygAv2N9B/+aNrg5+nKklt0oVpK4JfhAicXEBbF8yekIy13JEy
-         bcEr38uN/SRREP5ba8m/tsMpigba2VJlrMnne06AwwqIl5dgeDoJdNxTSuzoIOwrLDt3
-         7i8G10lhkLSC2+n/EjhYgcI50uF5+HR+AGx3s=
+         :message-id:subject:from:to:cc:content-type;
+        bh=aprv5tCK4uqXmtfan0pY1IWK6XZnYhYGgzNgrH8qLz0=;
+        b=H/qgx/ilhafyeIanG0GfcfcrnIOIP2kRl3fwlQebONm8NyBEab3NWK3KNmtfWCc/2Y
+         eeMZQFcDKvdCkNIY2EpSaehzX8Z99ddwOgx/AK4XRHXtZ0cwqIYD0iCrO4ubMUyymxu3
+         ku75wSRyFGlltNzrwH+q7Ph8/Ecb9Vm8Ft6wQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
+        d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=UfNthOvxuwZt0J2UeBeXeucz2Q4YRNrM56IMkdXCNF68XoxrQruEWlUT/h81FYlHB4
-         p0ALoY49dRWgTUMOBoyKIZ+fr4Vttn1cCLv4Bo2VAg9MGiojrVRNQMqP3qrQ4I7TgMIJ
-         6z6qY7fDM+Ku5on16SCzaVN/GRQTYKGbb2eK0=
+         :cc:content-type;
+        b=tN+7o0tp/AAUt/GXsr0BcVU2v4pitRwDNtQTy8hy611wakOOuV4ThSK9S02J8tcqUI
+         mgdwl77vw4YYHpS0neioIhsYurAv5qVVNLKgc/xpgfo/hHgp7oncf8sav1kmDq1KBFeM
+         y9YdyZLRzxNUmAQxw87nKLU0YLbdIN9Lc8KdY=
 MIME-Version: 1.0
-Received: by 10.216.17.202 with SMTP id j52mr67452wej.36.1297931977850; Thu,
- 17 Feb 2011 00:39:37 -0800 (PST)
-Received: by 10.216.193.195 with HTTP; Thu, 17 Feb 2011 00:39:37 -0800 (PST)
-In-Reply-To: <4D5CD99E.6030300@gentoo.org>
-References: <4D5A65E3.1050707@gentoo.org>
-        <4D5C5C66.6060205@metafoo.de>
-        <4D5CB5FB.20305@gentoo.org>
-        <AANLkTimLjhY+sNuMh_gOXNuxZuFOvi25KMYFU4Xp1hbY@mail.gmail.com>
-        <4D5CD99E.6030300@gentoo.org>
-Date:   Thu, 17 Feb 2011 09:39:37 +0100
-Message-ID: <AANLkTinwhfZ1Vv=gVa2pgqd4FEcTpQtTzVFE5HX6sCcG@mail.gmail.com>
-Subject: Re: [PATCH 1/2]: Add support for Dallas/Maxim DS1685/1687 RTC
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Kumba <kumba@gentoo.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Linux MIPS List <linux-mips@linux-mips.org>,
-        rtc-linux@googlegroups.com
+Received: by 10.216.166.68 with SMTP id f46mr120089wel.26.1297936016937; Thu,
+ 17 Feb 2011 01:46:56 -0800 (PST)
+Received: by 10.216.220.199 with HTTP; Thu, 17 Feb 2011 01:46:56 -0800 (PST)
+In-Reply-To: <1297931166-23957-1-git-send-email-antonynpavlov@gmail.com>
+References: <1297931166-23957-1-git-send-email-antonynpavlov@gmail.com>
+Date:   Thu, 17 Feb 2011 12:46:56 +0300
+Message-ID: <AANLkTint742iP6y9eaupHywby-WbYk542B4GVdd6gJaX@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Loongson: Kconfig: add MACH_LOONGSON dependency
+From:   =?KOI8-R?B?4c7Uz84g8MHXzM/X?= <antonynpavlov@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <manuel.lauss@googlemail.com>
+Return-Path: <antonynpavlov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29199
+X-archive-position: 29200
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: antonynpavlov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 17, 2011 at 9:17 AM, Kumba <kumba@gentoo.org> wrote:
-> On 02/17/2011 02:31, Manuel Lauss wrote:
->>
->> Have a look at i2c-ocores.c:    Basically you use platform_data to specify
->> register spacing on the bus.
->>
->> Manuel
->
-> I think I get most of it here.  i2c-ocores.c defines `struct ocores_i2c`,
-> which has regstep in it.  I assume the equivalent to this in the RTC driver
-> is going to be ds1685_priv.  But in i2c_ocores.h, `struct
-> ocores_i2c_platform_data` is defined, which also carries a regstep.  In
-> i2c-ocores.c, this struct becomes *pdata while ocores_i2c becomes *i2c, and
-> *i2c is used to access the registers.
->
-> I don't think I have an equivalent to either of these two with the way the
-> driver was originally written and how I modified it.  The ds1685_priv kinda
-> does both right now.  I assume platform_data is not really defined...I have
-> to implement one specific to this RTC driver, giving it specific variables
-> that need to be customizable at the platform level, and then set those in
-> the machine-specific areas, i.e., somewhere in IP32's platform file.
->
-> Sound correct?
+Sorry, the mail adresses in fields "From" and "Signed-off-by" are different.
 
-Yep.
+I shall resend the patch in a few minutes.
 
-Manuel
+2011/2/17, Antony Pavlov <antonynpavlov@gmail.com>:
+> From: Antony Pavlov <antony@niisi.msk.ru>
+>
+> The options LOONGSON_SUSPEND, LOONGSON_UART_BASE et al. don't depend
+> on MACH_LOONGSON option.
+> So my configuration file (.config) for MIPS Malta board contains
+>
+>  # CONFIG_MACH_LOONGSON is not set
+>  CONFIG_MIPS_MALTA=y
+>
+>  ...
+>
+>  CONFIG_LOONGSON_UART_BASE=y
+>
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/loongson/Kconfig |    6 ++++--
+>  1 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+> index 6e1b77f..4f2cf08 100644
+> --- a/arch/mips/loongson/Kconfig
+> +++ b/arch/mips/loongson/Kconfig
+> @@ -61,6 +61,7 @@ endchoice
+>
+>  config CS5536
+>  	bool
+> +	depends on MACH_LOONGSON
+>
+>  config CS5536_MFGPT
+>  	bool "CS5536 MFGPT Timer"
+> @@ -77,13 +78,14 @@ config CS5536_MFGPT
+>  config LOONGSON_SUSPEND
+>  	bool
+>  	default y
+> -	depends on CPU_SUPPORTS_CPUFREQ && SUSPEND
+> +	depends on MACH_LOONGSON && CPU_SUPPORTS_CPUFREQ && SUSPEND
+>
+>  config LOONGSON_UART_BASE
+>  	bool
+>  	default y
+> -	depends on EARLY_PRINTK || SERIAL_8250
+> +	depends on MACH_LOONGSON && (EARLY_PRINTK || SERIAL_8250)
+>
+>  config LOONGSON_MC146818
+>  	bool
+>  	default n
+> +	depends on MACH_LOONGSON
+> --
+> 1.7.1
+>
+>

@@ -1,95 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 09:17:50 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:38808 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491101Ab1BQIRr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 09:17:47 +0100
-Received: by bwz5 with SMTP id 5so2303258bwz.36
-        for <multiple recipients>; Thu, 17 Feb 2011 00:17:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=JDHCV/N5Y74wXxAkogU9yT1HdzOAnJYvgmg+/Lftrts=;
-        b=kKjokFwWh4rpf3lmruS9YKtU6H1fbOeB++iaG6AJo80MqMhxU9Op9triuS1YuUCyfQ
-         5maX/Ic6awSF5p9Zjeh+TYLfQnI3gfcgcgS4Y6pRiRNJx3CMRgyacvJkZWawegcJ7DdB
-         YKK8DQ5Pa2VFfMtJVCie3UMnqKRCwFROVfmIA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=pH2pUdL1SbQ0eWwz7EvVTRO7pYe6irvvg2vZo1G+HnYo+vWNOlR/Jk2C1jEmvO2qJH
-         z12xp9y1/N6TjdP3tGqMz4rhF2cIOnoraFUDKDmg8Cr9BPPSLIJBm3hvdr7L9bQMIezN
-         sdngxJZ9hokOaVZCGKcR8g4D7LXP5FjZRBA/o=
-Received: by 10.204.70.134 with SMTP id d6mr1378559bkj.21.1297930661265;
-        Thu, 17 Feb 2011 00:17:41 -0800 (PST)
-Received: from localhost.localdomain (t35.niisi.ras.ru [193.232.173.35])
-        by mx.google.com with ESMTPS id q18sm447859bka.15.2011.02.17.00.17.40
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 17 Feb 2011 00:17:40 -0800 (PST)
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Antony Pavlov <antony@niisi.msk.ru>,
-        Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [PATCH] MIPS: Loongson: Kconfig: add MACH_LOONGSON dependency
-Date:   Thu, 17 Feb 2011 11:26:06 +0300
-Message-Id: <1297931166-23957-1-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 1.7.1
-Return-Path: <antonynpavlov@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 09:18:12 +0100 (CET)
+Received: from qmta12.emeryville.ca.mail.comcast.net ([76.96.27.227]:33269
+        "EHLO qmta12.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491103Ab1BQISD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 09:18:03 +0100
+Received: from omta13.emeryville.ca.mail.comcast.net ([76.96.30.52])
+        by qmta12.emeryville.ca.mail.comcast.net with comcast
+        id 8wHi1g00517UAYkACwHv8l; Thu, 17 Feb 2011 08:17:55 +0000
+Received: from [192.168.1.13] ([69.251.104.163])
+        by omta13.emeryville.ca.mail.comcast.net with comcast
+        id 8wHq1g0053XYSBH8ZwHsFR; Thu, 17 Feb 2011 08:17:54 +0000
+Message-ID: <4D5CD99E.6030300@gentoo.org>
+Date:   Thu, 17 Feb 2011 03:17:34 -0500
+From:   Kumba <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.2.13) Gecko/20101207 Lightning/1.0b2 Thunderbird/3.1.7
+MIME-Version: 1.0
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linux MIPS List <linux-mips@linux-mips.org>,
+        rtc-linux@googlegroups.com
+Subject: Re: [PATCH 1/2]: Add support for Dallas/Maxim DS1685/1687 RTC
+References: <4D5A65E3.1050707@gentoo.org>       <4D5C5C66.6060205@metafoo.de>   <4D5CB5FB.20305@gentoo.org> <AANLkTimLjhY+sNuMh_gOXNuxZuFOvi25KMYFU4Xp1hbY@mail.gmail.com>
+In-Reply-To: <AANLkTimLjhY+sNuMh_gOXNuxZuFOvi25KMYFU4Xp1hbY@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29197
+X-archive-position: 29198
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Antony Pavlov <antony@niisi.msk.ru>
+On 02/17/2011 02:31, Manuel Lauss wrote:
+>
+> Have a look at i2c-ocores.c:    Basically you use platform_data to specify
+> register spacing on the bus.
+>
+> Manuel
 
-The options LOONGSON_SUSPEND, LOONGSON_UART_BASE et al. don't depend
-on MACH_LOONGSON option.
-So my configuration file (.config) for MIPS Malta board contains
+I think I get most of it here.  i2c-ocores.c defines `struct ocores_i2c`, which 
+has regstep in it.  I assume the equivalent to this in the RTC driver is going 
+to be ds1685_priv.  But in i2c_ocores.h, `struct ocores_i2c_platform_data` is 
+defined, which also carries a regstep.  In i2c-ocores.c, this struct becomes 
+*pdata while ocores_i2c becomes *i2c, and *i2c is used to access the registers.
 
- # CONFIG_MACH_LOONGSON is not set
- CONFIG_MIPS_MALTA=y
+I don't think I have an equivalent to either of these two with the way the 
+driver was originally written and how I modified it.  The ds1685_priv kinda does 
+both right now.  I assume platform_data is not really defined...I have to 
+implement one specific to this RTC driver, giving it specific variables that 
+need to be customizable at the platform level, and then set those in the 
+machine-specific areas, i.e., somewhere in IP32's platform file.
 
- ...
+Sound correct?
 
- CONFIG_LOONGSON_UART_BASE=y
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/loongson/Kconfig |    6 ++++--
- 1 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
-index 6e1b77f..4f2cf08 100644
---- a/arch/mips/loongson/Kconfig
-+++ b/arch/mips/loongson/Kconfig
-@@ -61,6 +61,7 @@ endchoice
- 
- config CS5536
- 	bool
-+	depends on MACH_LOONGSON
- 
- config CS5536_MFGPT
- 	bool "CS5536 MFGPT Timer"
-@@ -77,13 +78,14 @@ config CS5536_MFGPT
- config LOONGSON_SUSPEND
- 	bool
- 	default y
--	depends on CPU_SUPPORTS_CPUFREQ && SUSPEND
-+	depends on MACH_LOONGSON && CPU_SUPPORTS_CPUFREQ && SUSPEND
- 
- config LOONGSON_UART_BASE
- 	bool
- 	default y
--	depends on EARLY_PRINTK || SERIAL_8250
-+	depends on MACH_LOONGSON && (EARLY_PRINTK || SERIAL_8250)
- 
- config LOONGSON_MC146818
- 	bool
- 	default n
-+	depends on MACH_LOONGSON
 -- 
-1.7.1
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+
+"The past tempts us, the present confuses us, the future frightens us.  And our 
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

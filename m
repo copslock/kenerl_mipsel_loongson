@@ -1,35 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 20:24:00 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4300 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Feb 2011 22:34:02 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:8730 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491109Ab1BQTX5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 20:23:57 +0100
+        by eddie.linux-mips.org with ESMTP id S1491116Ab1BQVd5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Feb 2011 22:33:57 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d5d75fc0000>; Thu, 17 Feb 2011 11:24:44 -0800
+        id <B4d5d94750001>; Thu, 17 Feb 2011 13:34:45 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 17 Feb 2011 11:23:52 -0800
+         Thu, 17 Feb 2011 13:33:53 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 17 Feb 2011 11:23:52 -0800
-Message-ID: <4D5D75C7.8020302@caviumnetworks.com>
-Date:   Thu, 17 Feb 2011 11:23:51 -0800
+         Thu, 17 Feb 2011 13:33:53 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p1HLXjb5025348;
+        Thu, 17 Feb 2011 13:33:46 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p1HLXfhN025345;
+        Thu, 17 Feb 2011 13:33:41 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>,
         Peter Zijlstra <a.p.zijlstra@chello.nl>,
         Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: Re: [PATCH v2 4/4] MIPS: perf: Add support for 64-bit perf counters.
-References: <1295650776-28444-1-git-send-email-ddaney@caviumnetworks.com>       <1295650776-28444-5-git-send-email-ddaney@caviumnetworks.com>   <AANLkTimFnBJeU7BT6ARM=+KSod0UB-XFZTxgWWh1N=i2@mail.gmail.com>  <4D3F68BE.5080803@caviumnetworks.com>   <AANLkTim54xV64utR0GdS1r4_LBoAjEOHH9_=TYSLSqMF@mail.gmail.com>  <4D41BC6B.8010408@caviumnetworks.com>   <AANLkTi=R86zBH8ZY+CdGyeXsSd0-yHdRVVx0ZWTJf4qe@mail.gmail.com> <AANLkTikTV-=A8H=h_F+025VB37tHSmxpsNCGndi_dAFW@mail.gmail.com>
-In-Reply-To: <AANLkTikTV-=A8H=h_F+025VB37tHSmxpsNCGndi_dAFW@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 17 Feb 2011 19:23:52.0469 (UTC) FILETIME=[36042450:01CBCED8]
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Dezhong Diao <dediao@cisco.com>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Subject: [PATCH v3 0/4] MIPS: perf: Add support for 64-bit MIPS hardware counters.
+Date:   Thu, 17 Feb 2011 13:33:35 -0800
+Message-Id: <1297978419-25309-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 17 Feb 2011 21:33:53.0191 (UTC) FILETIME=[5F9BDB70:01CBCEEA]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29213
+X-archive-position: 29214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,25 +42,53 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On 02/17/2011 02:46 AM, Deng-Cheng Zhu wrote:
-> Hi, David
-[...]
->
-> And here's a general comment: You are putting the majority of the
-> implementation in perf_event_mipsxx.c. This will require other CPUs like
-> Loongson2 to replicate quite a lot code in their corresponding files.
+MIPS hardware performance counters may have either 32-bit or 64-bit
+wide counter registers.  The current implementation only supports the
+32-bit variety.
 
-There is no such implementation.  But if someone were to create one, I 
-would suggest they move common code to a separate file that would be 
-shared among the implementations that need it.
+These patches aim to add support for 64-bit wide counters while
+mantaining support for 32-bit.
 
-> I
-> personally think the original "skeleton + #include perf_event_$cpu.c" is a
-> better choice. I understand you prefer not using code like
-> "#if defined(CONFIG_CPU_MIPS32)" on the top of perf_event_$cpu.c, but that
-> is what other architectures (X86/ARM etc) are doing.
->
+Changes from v2:
 
-Existing poor practice is not a good reason to do this.
+o Quit sign extending 32-bit counter values.
 
-David Daney
+o Remove usless local_irq_save() in several places.
+
+Changes from v1:
+
+o Removed Octeon processor support to a separate patch set.
+
+o Rebased against v5 of Deng-Cheng Zhu's cleanups:
+      http://patchwork.linux-mips.org/patch/2011/
+      http://patchwork.linux-mips.org/patch/2012/
+      http://patchwork.linux-mips.org/patch/2013/
+      http://patchwork.linux-mips.org/patch/2014/
+      http://patchwork.linux-mips.org/patch/2015/
+
+o Tried to fix problem where 32-bit counters generated way too many
+  interrupts.
+
+David Daney (4):
+  MIPS: Add accessor macros for 64-bit performance counter registers.
+  MIPS: perf: Cleanup formatting in arch/mips/kernel/perf_event.c
+  MIPS: perf: Reorganize contents of perf support files.
+  MIPS: perf: Add support for 64-bit perf counters.
+
+ arch/mips/Kconfig                    |    2 +-
+ arch/mips/include/asm/mipsregs.h     |    8 +
+ arch/mips/kernel/Makefile            |    5 +-
+ arch/mips/kernel/perf_event.c        |  521 +----------------
+ arch/mips/kernel/perf_event_mipsxx.c | 1100 +++++++++++++++++++++++-----------
+ 5 files changed, 778 insertions(+), 858 deletions(-)
+
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Ingo Molnar <mingo@elte.hu>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Dezhong Diao <dediao@cisco.com>
+Cc: Gabor Juhos <juhosg@openwrt.org>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+-- 
+1.7.2.3

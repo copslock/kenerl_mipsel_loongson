@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Feb 2011 02:02:55 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13882 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Feb 2011 02:52:31 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:14818 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491116Ab1BRBCw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Feb 2011 02:02:52 +0100
+        by eddie.linux-mips.org with ESMTP id S1491120Ab1BRBw2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Feb 2011 02:52:28 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d5dc56d0000>; Thu, 17 Feb 2011 17:03:41 -0800
+        id <B4d5dd10d0000>; Thu, 17 Feb 2011 17:53:17 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 17 Feb 2011 17:02:48 -0800
+         Thu, 17 Feb 2011 17:52:24 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 17 Feb 2011 17:02:48 -0800
-Message-ID: <4D5DC538.1090606@caviumnetworks.com>
-Date:   Thu, 17 Feb 2011 17:02:48 -0800
+         Thu, 17 Feb 2011 17:52:24 -0800
+Message-ID: <4D5DD0D8.4030104@caviumnetworks.com>
+Date:   Thu, 17 Feb 2011 17:52:24 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-To:     linux-mips <linux-mips@linux-mips.org>
-CC:     GCC <gcc@gcc.gnu.org>, binutils <binutils@sourceware.org>,
-        Prasun Kapoor <prasun.kapoor@caviumnetworks.com>
-Subject: Re: RFC: A new MIPS64 ABI
-References: <4D5990A4.2050308@caviumnetworks.com>
-In-Reply-To: <4D5990A4.2050308@caviumnetworks.com>
+To:     ralf@linux-mips.org
+CC:     linux-mips@linux-mips.org, Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] MIPS: Only include arch/mips/cavium-octeon/Kconfig if
+ CPU_CAVIUM_OCTEON
+References: <1297965723-26059-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1297965723-26059-1-git-send-email-ddaney@caviumnetworks.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 18 Feb 2011 01:02:48.0891 (UTC) FILETIME=[8F77E0B0:01CBCF07]
+X-OriginalArrivalTime: 18 Feb 2011 01:52:24.0535 (UTC) FILETIME=[7D171E70:01CBCF0E]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29225
+X-archive-position: 29226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,86 +35,64 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On 02/14/2011 12:29 PM, David Daney wrote:
-> Background:
+On 02/17/2011 10:02 AM, David Daney wrote:
+> Instead of making each Octeon specific option depend on
+> CPU_CAVIUM_OCTEON, just quit including cavium-octeon/Kconfig if it is
+> not applicable.
 >
-> Current MIPS 32-bit ABIs (both o32 and n32) are restricted to 2GB of
-> user virtual memory space. This is due the way MIPS32 memory space is
-> segmented. Only the range from 0..2^31-1 is available. Pointer
-> values are always sign extended.
+> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
+> Cc: Antony Pavlov<antonynpavlov@gmail.com>
+> ---
+>   arch/mips/Kconfig               |    4 ++++
+>   arch/mips/cavium-octeon/Kconfig |    3 ---
+>   2 files changed, 4 insertions(+), 3 deletions(-)
 >
-> Because there are not already enough MIPS ABIs, I present the ...
->
-> Proposal: A new ABI to support 4GB of address space with 32-bit
-> pointers.
->
-> The proposed new ABI would only be available on MIPS64 platforms. It
-> would be identical to the current MIPS n32 ABI *except* that pointers
-> would be zero-extended rather than sign-extended when resident in
-> registers. In the remainder of this document I will call it
-> 'n32-big'. As a result, applications would have access to a full 4GB
-> of virtual address space. The operating environment would be
-> configured such that the entire lower 4GB of the virtual address space
-> was available to the program.
->
->
-> At a low level here is how it would work:
->
-> 1) Load a pointer to a register from memory:
->
-> n32:
-> LW $reg, offset($reg)
->
-> n32-big:
-> LWU $reg, offset($reg)
->
-> 2) Load an address constant into a register:
->
-> n32:
-> LUI $reg, high_part
-> ORI $reg, low_part
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index bd7b64d..b0a1cb3 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -748,7 +748,11 @@ source "arch/mips/sgi-ip27/Kconfig"
+>   source "arch/mips/sibyte/Kconfig"
+>   source "arch/mips/txx9/Kconfig"
+>   source "arch/mips/vr41xx/Kconfig"
+> +
+> +if CPU_CAVIUM_OCTEON
+>   source "arch/mips/cavium-octeon/Kconfig"
+> +endif
+> +
 
-That is not reality.  Really it is:
+Ralf pointed out that nobody else has the IFs here.  I will create a new 
+patch that moves them into arch/mips/cavium-octeon/Kconfig
 
-LUI $reg, R_MIPS_HI16
-ADDIU $reg, R_MIPS_LO16
+David Daney
 
 
+>   source "arch/mips/loongson/Kconfig"
 >
-> n32-big:
-> ORI $reg, high_part
-> DSLL $reg, $reg, 16
-> ORI $reg, low_part
+>   endmenu
+> diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+> index caae228..3dab0ec 100644
+> --- a/arch/mips/cavium-octeon/Kconfig
+> +++ b/arch/mips/cavium-octeon/Kconfig
+> @@ -1,6 +1,5 @@
+>   config CAVIUM_OCTEON_SPECIFIC_OPTIONS
+>   	bool "Enable Octeon specific options"
+> -	depends on CPU_CAVIUM_OCTEON
+>   	default "y"
 >
-
-This one would really be:
-
-ORI $reg, R_MIPS_HI16
-DSLL $reg, $reg, 16
-ADDIU $reg, R_MIPS_LO16
-
-
+>   config CAVIUM_CN63XXP1
+> @@ -93,7 +92,6 @@ config CAVIUM_OCTEON_LOCK_L2_MEMCPY
+>   config ARCH_SPARSEMEM_ENABLE
+>   	def_bool y
+>   	select SPARSEMEM_STATIC
+> -	depends on CPU_CAVIUM_OCTEON
 >
-> Q: What would have to change to make this work?
+>   config CAVIUM_OCTEON_HELPER
+>   	def_bool y
+> @@ -107,6 +105,5 @@ config NEED_SG_DMA_LENGTH
 >
-> o A new ELF header flag to denote the ABI.
->
-> o Linker support to use proper library search paths, and linker scrips
-> to set the INTERP program header, etc.
->
-> o GCC has to emit code for the new ABI.
->
-> o Could all existing n32 relocation types be used? I think so.
->
-> o Runtime libraries would have to be placed in a new location
-> (/lib32big, /usr/lib32big ...)
->
-> o The C library's ld.so would have to use a distinct LD_LIBRARY_PATH
-> for n32-big code.
->
-> o What would the Linux system call interface be? I would propose
-> using the existing Linux n32 system call interface. Most system
-> calls would just work. Some, that pass pointers in in-memory
-> structures, might require kernel modifications (sigaction() for
-> example).
->
+>   config SWIOTLB
+>   	def_bool y
+> -	depends on CPU_CAVIUM_OCTEON
+>   	select IOMMU_HELPER
+>   	select NEED_SG_DMA_LENGTH

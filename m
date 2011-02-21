@@ -1,89 +1,177 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Feb 2011 13:39:48 +0100 (CET)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:52837 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491045Ab1BTMjo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 20 Feb 2011 13:39:44 +0100
-Received: by ewy23 with SMTP id 23so205407ewy.36
-        for <multiple recipients>; Sun, 20 Feb 2011 04:39:37 -0800 (PST)
-Received: by 10.213.14.20 with SMTP id e20mr154551eba.28.1298205577285;
-        Sun, 20 Feb 2011 04:39:37 -0800 (PST)
-Received: from [192.168.2.2] ([91.79.106.47])
-        by mx.google.com with ESMTPS id t50sm3857121eeh.6.2011.02.20.04.39.34
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 20 Feb 2011 04:39:35 -0800 (PST)
-Message-ID: <4D610B3A.5070705@mvista.com>
-Date:   Sun, 20 Feb 2011 15:38:18 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2011 14:07:38 +0100 (CET)
+Received: from mail-vx0-f177.google.com ([209.85.220.177]:39583 "EHLO
+        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491178Ab1BUNHd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Feb 2011 14:07:33 +0100
+Received: by vxg33 with SMTP id 33so1856991vxg.36
+        for <linux-mips@linux-mips.org>; Mon, 21 Feb 2011 05:07:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:date:message-id:subject:from:to
+         :content-type;
+        bh=TFVNJFzNwQSFH6U/jiOA8qyRj2ppi670p7I8SgzYMM4=;
+        b=PJwLzOxgf1kcYX60ea9ZY7K+Zph/q6ThNpd1ymvSCnsHYubkKHk+y0KfhMoie1tdzx
+         pTklDi61i9vr995tp2LxYuzWqze9aJ2OND8JbDoinvLTHOEx2D+Pv+EO15rMyQf0NqRl
+         hm0jPtfLi52ZSL+jC7RBz4mjS2F0E4yQSLmzw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=n2eXccWPnMOrF9bfmpQzOEjkmHEnhJb8reItBJEIZi6B5DYXwQe31Gz47sPLHJBk2g
+         R15j6GxJEekt2E5k1zRb76bWwI+ZafU1SWPb/7cHWg4kmdHiq6Shvqj+lmQTBQPZvjQm
+         rdXq/4ee10yC9WsCMkxfoS06UMZG2ZIczMlnI=
 MIME-Version: 1.0
-To:     "Anoop P.A" <anoop.pa@gmail.com>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+Received: by 10.52.158.196 with SMTP id ww4mr1762122vdb.220.1298293646492;
+ Mon, 21 Feb 2011 05:07:26 -0800 (PST)
+Received: by 10.52.161.104 with HTTP; Mon, 21 Feb 2011 05:07:26 -0800 (PST)
+Date:   Mon, 21 Feb 2011 18:37:26 +0530
+Message-ID: <AANLkTimvEQEwewMDw+KiXGv2vrMbj6C4BW8A3WRzD7BG@mail.gmail.com>
+Subject: Issue on 2.6.35.9 kernel with module insertion when Rootfs is NFS mounted
+From:   naveen yadav <yad.naveen@gmail.com>
+To:     kernelnewbies@nl.linux.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Make msp7120_reset generic
-References: <1298037329-13683-1-git-send-email-anoop.pa@gmail.com>
-In-Reply-To: <1298037329-13683-1-git-send-email-anoop.pa@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <yad.naveen@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29233
+X-archive-position: 29234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: yad.naveen@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hi All,
 
-On 18-02-2011 16:55, Anoop P.A wrote:
+When I am trying to insert some modules on 2.6.35.9, I am getting some
+random crash's.
+There are 2 scenarios:-
 
-> From: Anoop P A<anoop.pa@gmail.com>
+1) When my rootfs is NFS mounted.
 
-> Remove platform dependency code from msp7120 reset code and make it generic.
-> Now the code can be reused for other boards running msp71xx family SoC.
+In this case, when I insmod modules some get inserted and some gives crash.
+I have tried with following modules :-
+a)	ext2.ko ; size 93K ; status - successfully inserted
+b)	ext3.ko ; size 188K ; status - insertion failed
+c)	xfs.ko ; size 823K ; status - insertion failed
+d)	usbcore.ko ; size 243K ; status - insertion failed
 
-> Signed-off-by: Anoop P A<anoop.pa@gmail.com>
-[...]
+2) When I created kernel Image using Initramfs, hence making all
+modules part of ramfs image
+all insertions are successfull
 
-> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-> index fb37a10..4a6cc0d 100644
-> --- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-> +++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-> @@ -18,30 +18,33 @@
->
->   #include<msp_prom.h>
->   #include<msp_regs.h>
-> +#include<msp_gpio_macros.h>
->
->   #if defined(CONFIG_PMC_MSP7120_GW)
-> -#include<msp_regops.h>
-> +	/* GPIO 9 is the 4th GPIO of register 3
-> +	 */
+In case of rootfs as NFS mounted here are some of the crash logs :-
+Crash 1
+Linux#> insmod usbcore.ko
+Module len 238547 truncated
+insmod: can't insert 'usbcore.ko': invalid module format
+Crash 2
+Linux#> insmod  usbcore.ko
+CPU 0 Unable to handle kernel paging request at virtual address
+00100100, epc == 8008fb00, ra == 8008cf9c
+Oops[#1]:
+Cpu 0
+$ 0   : 00000000 00000001 84166e00 00100100
+$ 4   : 84166e00 8415e870 84166e00 8415e870
+$ 8   : 84086720 83c12178 00000000 000081a4
+$12   : 00000000 00000000 01a0c43d 00000000
+$16   : 84166e00 83c12120 8410de58 00000000
+$20   : 84166100 83c0b380 00000024 00002001
+$24   : 00000000 800f058c
+$28   : 8410c000 8410ddb8 00000000 8008cf9c
+Hi    : 000bf0c5
+Lo    : 6ab94a84
+epc   : 8008fb00 file_move+0x20/0x68
+    Not tainted
+ra    : 8008cf9c __dentry_open+0x110/0x278
+Status: 11008c03    KERNEL EXL IE
+Cause : 0080000c
+BadVA : 00100100
+PrId  : 00019555 (MIPS 34Kc)
+Modules linked in:
+Process insmod (pid: 260, threadinfo=8410c000, task=84136b20, tls=005c9470)
+Stack : 8410de58 8410de68 83c0b380 00000001 8410de58 84166e00 00000000 8410de58
+        8410de68 00000000 00002000 8008d1ec 83c06080 8410de58 00000000 83c06080
+        84086720 00000000 00000000 80099f4c ebb5351b 80380000 84086720 803177a0
+        8410de68 800900c0 ffffffe9 00000003 00002000 8410de68 ffffff9c 00000024
+        00000002 8009c23c 000003fc 00000000 84150420 84136b20 00000000 8400a000
+        ...
+Call Trace:
+[<8008fb00>] file_move+0x20/0x68
+[<8008cf9c>] __dentry_open+0x110/0x278
+[<8008d1ec>] nameidata_to_filp+0x38/0x5c
+[<80099f4c>] do_last+0x58c/0x6fc
+[<8009c23c>] do_filp_open+0x1c0/0x62c
+[<8008ce04>] do_sys_open+0x6c/0xc8
+[<80002164>] stack_done+0x20/0x3c
 
-    Not clear why you're using a multi-line comment where a single-one line 
-one (and not indented) would be enough?
 
-> @@ -78,49 +81,56 @@ void msp7120_reset(void)
->   	/* Wait a bit for the DDRC to settle */
->   	for (i = 0; i < 100000000; i++);
->
-> -#if defined(CONFIG_PMC_MSP7120_GW)
-> +#if defined MSP_BOARD_RESET_GPIO
+Code: af820014  8c830004  8c820000 <ac620000> 8ce40000  ac430004
+acc40000  ac860004  ace60000
+Disabling lock debugging due to kernel taint
+note: insmod[260] exited with preempt_count 1
+BUG: scheduling while atomic: insmod/260/0x10000002
+Modules linked in:
+Call Trace:
+[<800051b4>] dump_stack+0x8/0x34
+[<800054e0>] schedule+0x9c/0x4b4
+[<80005a20>] _cond_resched+0x3c/0x60
+[<80077788>] unmap_vmas+0x594/0x690
+[<8007bf2c>] exit_mmap+0xc0/0x1a4
+[<80024474>] mmput+0x3c/0x118
+[<80028a88>] exit_mm+0x130/0x164
+[<8002a89c>] do_exit+0x1b4/0x624
+[<8000e3e8>] default_cu2_call+0x0/0x4c
 
-    Hm, didn't know that the 'defined' syntax without parens is valid too...
+Segmentation fault
 
-> @@ -141,9 +151,7 @@ void msp_power_off(void)
->
->   void __init plat_mem_setup(void)
->   {
-> -	_machine_restart = msp_restart;
-> -	_machine_halt = msp_halt;
-> -	pm_power_off = msp_power_off;
-> +/*TODO: Move mem setup here */
+I tried to debug myself and put some print in kernel/module.c function
+load_module, printing the length and offset of each section header.
+I found that on some sections the values are wrongly shown
 
-    This line should be indented.
+Linux#> insmod usbcore.ko
+load_module: umod=2aaa8008, len=238950, uargs=005c2f70
+hdr->e_shnum 601 <= number of sections shown correctly
+header type sechdrs[i].sh_type =7 sechdrs[i].sh_offset=52
+sechdrs[i].sh_size=36  <= correct
+header type sechdrs[i].sh_type =1 sechdrs[i].sh_offset=96
+sechdrs[i].sh_size=0 <= correct
+header type sechdrs[i].sh_type =1 sechdrs[i].sh_offset=96
+sechdrs[i].sh_size=72 <= correct
+header type sechdrs[i].sh_type =9 sechdrs[i].sh_offset=154448
+sechdrs[i].sh_size=8 <= correct
+header type sechdrs[i].sh_type =1 sechdrs[i].sh_offset=168
+sechdrs[i].sh_size=64 <= correct
+header type sechdrs[i].sh_type =9 sechdrs[i].sh_offset=154456
+sechdrs[i].sh_size=8 <= correct
+header type sechdrs[i].sh_type =1 sechdrs[i].sh_offset=232
+sechdrs[i].sh_size=64 <= correct
+header type sechdrs[i].sh_type =2136364925
+sechdrs[i].sh_offset=4286298862  sechdrs[i].sh_size=1602090478  <=
+Incorrect
+header type sechdrs[i].sh_type =-1386227977
+sechdrs[i].sh_offset=4293914174  sechdrs[i].sh_size=1429526523  <=
+Incorrect
+header type sechdrs[i].sh_type =-780708260
+sechdrs[i].sh_offset=1579921686  sechdrs[i].sh_size=1562763221  <=
+Incorrect
+header type sechdrs[i].sh_type =-571181733
+sechdrs[i].sh_offset=1875703162  sechdrs[i].sh_size=3600104807  <=
+Incorrect
+header type sechdrs[i].sh_type =9 sechdrs[i].sh_offset=182792
+sechdrs[i].sh_size=32 <= correct
+header type sechdrs[i].sh_type =1 sechdrs[i].sh_offset=69044
+sechdrs[i].sh_size=32 <= correct
+header type sechdrs[i].sh_type =9 sechdrs[i].sh_offset=182824
+sechdrs[i].sh_size=32 <= correct
+header type sechdrs[i].sh_type =1 sechdrs[i].sh_offset=69076
+sechdrs[i].sh_size=48 <= correct
 
-WBR, Sergei
+The prints goes on this way and lastly the insertion failed with this message :-
+CPU 0 Unable to handle kernel paging request at virtual address
+ed79cc5b, epc == 80054254, ra == 800541d8
+Oops[#1]:
+
+Please suggest me some ideas to debug as to why when rootfs is NFS
+mounted I am not able to load modules.

@@ -1,71 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2011 20:45:56 +0100 (CET)
-Received: from mail-ew0-f53.google.com ([209.85.215.53]:54967 "EHLO
-        mail-ew0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491079Ab1BUTpx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Feb 2011 20:45:53 +0100
-Received: by ewy7 with SMTP id 7so704896ewy.26
-        for <linux-mips@linux-mips.org>; Mon, 21 Feb 2011 11:45:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:from:to:mail-followup-to:cc:subject:references
-         :date:in-reply-to:message-id:user-agent:mime-version:content-type;
-        bh=wylP01Qfd/4b9W2GtKTd3CXo6gPJ/zAGdUD3QXzwDOs=;
-        b=tr1Meluh5YuwqpADNef6gCcS6HXUZlNqGXc+zENx/I0QBOOgA9DgAO4dEVgTe/wnd6
-         0wCJzRemQ8GhrgKYfwo1zPeznw38sgL8JYz1O9d1lUtOE+k6KYC4Gj1YfkpjfByorq19
-         1pIcHVAQnmcY9epAfPmKcZfSbf9U1eGD2MWvM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:mail-followup-to:cc:subject:references:date:in-reply-to
-         :message-id:user-agent:mime-version:content-type;
-        b=rgve48zksyopJdQDGYjlXdeGEd2NNoY9kaDPdWwjPCdhkSfB15laRLIeKDcxAg/VWy
-         jBw3/dTBojwWb6grpcSfZfTyXpCQ8biu1wjWn03sP3ajyFyb/MzERNNxYHgYZLKPZIep
-         5idEPEHdcFULyANVH9NbBJB2hzktLxgn8/TQw=
-Received: by 10.213.17.133 with SMTP id s5mr315888eba.76.1298317547858;
-        Mon, 21 Feb 2011 11:45:47 -0800 (PST)
-Received: from localhost (rsandifo.gotadsl.co.uk [82.133.89.107])
-        by mx.google.com with ESMTPS id t5sm5209579eeh.2.2011.02.21.11.45.45
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 21 Feb 2011 11:45:46 -0800 (PST)
-From:   Richard Sandiford <rdsandiford@googlemail.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Mail-Followup-To: David Daney <ddaney@caviumnetworks.com>,linux-mips <linux-mips@linux-mips.org>,  GCC <gcc@gcc.gnu.org>,  binutils <binutils@sourceware.org>,  Prasun Kapoor <prasun.kapoor@caviumnetworks.com>, rdsandiford@googlemail.com
-Cc:     linux-mips <linux-mips@linux-mips.org>, GCC <gcc@gcc.gnu.org>,
-        binutils <binutils@sourceware.org>,
-        Prasun Kapoor <prasun.kapoor@caviumnetworks.com>
-Subject: Re: RFC: A new MIPS64 ABI
-References: <4D5990A4.2050308__41923.1521235362$1297715435$gmane$org@caviumnetworks.com>
-Date:   Mon, 21 Feb 2011 19:45:41 +0000
-In-Reply-To: <4D5990A4.2050308__41923.1521235362$1297715435$gmane$org@caviumnetworks.com>
-        (David Daney's message of "Mon, 14 Feb 2011 12:29:24 -0800")
-Message-ID: <87hbbxqihm.fsf@firetop.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.2 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Feb 2011 21:38:37 +0100 (CET)
+Received: from postler.einfach.org ([86.59.21.14]:47200 "EHLO home.einfach.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491083Ab1BUUie (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Feb 2011 21:38:34 +0100
+Received: from home.einfach.org (localhost [127.0.0.1])
+        by home.einfach.org (Postfix) with ESMTP id 78EF3A2513;
+        Mon, 21 Feb 2011 21:38:27 +0100 (CET)
+Received: from webmail.einfach.org (localhost [127.0.0.1])
+        by home.einfach.org (Postfix) with ESMTP id 5F8B17A577;
+        Mon, 21 Feb 2011 21:38:27 +0100 (CET)
+Received: from 186.42.233.164
+        (SquirrelMail authenticated user br1@einfach.org)
+        by webmail.einfach.org with HTTP;
+        Mon, 21 Feb 2011 21:38:27 +0100
+Message-ID: <02e6152682aed8348b84dac4508bef70.squirrel@webmail.einfach.org>
+In-Reply-To: <201102211428.02125.florian@openwrt.org>
+References: <201102211428.02125.florian@openwrt.org>
+Date:   Mon, 21 Feb 2011 21:38:27 +0100
+Subject: Re: [PATCH] Alchemy: fix reset for MTX-1 and XXS1500
+From:   br1@einfach.org
+To:     "Florian Fainelli" <florian@openwrt.org>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org, br1@einfach.org
+User-Agent: SquirrelMail/1.4.21
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rdsandiford@googlemail.com>
+Content-Type: text/plain;charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <br1@einfach.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29236
+X-archive-position: 29237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdsandiford@googlemail.com
+X-original-sender: br1@einfach.org
 Precedence: bulk
 X-list: linux-mips
 
-David Daney <ddaney@caviumnetworks.com> writes:
-> Background:
->
-> Current MIPS 32-bit ABIs (both o32 and n32) are restricted to 2GB of
-> user virtual memory space.  This is due the way MIPS32 memory space is
-> segmented.  Only the range from 0..2^31-1 is available.  Pointer
-> values are always sign extended.
->
-> Because there are not already enough MIPS ABIs, I present the ...
->
-> Proposal: A new ABI to support 4GB of address space with 32-bit
-> pointers.
+> Since commit 32fd6901 (MIPS: Alchemy: get rid of common/reset.c)
+> Alchemy-based boards use their own reset function. For MTX-1 and XXS1500,
+> the reset function pokes at the BCSR.SYSTEM_RESET register, but this does
+> not work. According to Bruno Randolf, this was not tested when written.
 
-FWIW, I'd be happy to see this go into GCC.
+Well, I don&#180;t know wether it was tested or not, but since it
+doesn&#180;t work i think we can assume it wasn&#180;t.
 
-Richard
+> Previously, the generic au1000_restart() routine called the board specific
+> reset function, which for MTX-1 and XXS1500 did not work, but finally made
+> a jump to the reset vector, which really triggers a system restart. Fix
+> reboot for both targets by jumping to the reset vector.
+>
+> CC: Bruno Randolf <br1@einfach.org>
+> CC: stable@kernel.org
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> ---
+> Stable: 2.6.34+
+>
+> diff --git a/arch/mips/alchemy/mtx-1/board_setup.c
+> b/arch/mips/alchemy/mtx-1/board_setup.c
+> index 6398fa9..40b84b9 100644
+> --- a/arch/mips/alchemy/mtx-1/board_setup.c
+> +++ b/arch/mips/alchemy/mtx-1/board_setup.c
+> @@ -54,8 +54,8 @@ int mtx1_pci_idsel(unsigned int devsel, int assert);
+>
+>  static void mtx1_reset(char *c)
+>  {
+> -	/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+> -	au_writel(0x00000000, 0xAE00001C);
+> +	/* Jump to the reset vector */
+> +	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
+>  }
+>
+>  static void mtx1_power_off(void)
+> diff --git a/arch/mips/alchemy/xxs1500/board_setup.c
+> b/arch/mips/alchemy/xxs1500/board_setup.c
+> index b43c918..80c521e 100644
+> --- a/arch/mips/alchemy/xxs1500/board_setup.c
+> +++ b/arch/mips/alchemy/xxs1500/board_setup.c
+> @@ -36,8 +36,8 @@
+>
+>  static void xxs1500_reset(char *c)
+>  {
+> -	/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+> -	au_writel(0x00000000, 0xAE00001C);
+> +	/* Jump to the reset vector */
+> +	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
+>  }
+>
+>  static void xxs1500_power_off(void)
+> --
+> 1.7.1
+>
+>
+
+Acked-by: Bruno Randolf <br1@einfach.org>

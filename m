@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Feb 2011 22:00:22 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13999 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Feb 2011 22:00:47 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:14003 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491773Ab1BVU6X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Feb 2011 21:58:23 +0100
+        by eddie.linux-mips.org with ESMTP id S1491774Ab1BVU6Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Feb 2011 21:58:24 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d6423a20000>; Tue, 22 Feb 2011 12:59:14 -0800
+        id <B4d6423a30000>; Tue, 22 Feb 2011 12:59:15 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 22 Feb 2011 12:58:21 -0800
+         Tue, 22 Feb 2011 12:58:23 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 22 Feb 2011 12:58:21 -0800
+         Tue, 22 Feb 2011 12:58:22 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p1MKwG4H020919;
-        Tue, 22 Feb 2011 12:58:16 -0800
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p1MKwHME020923;
+        Tue, 22 Feb 2011 12:58:17 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p1MKwFlc020918;
-        Tue, 22 Feb 2011 12:58:15 -0800
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p1MKwHC4020922;
+        Tue, 22 Feb 2011 12:58:17 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
         linux-kernel@vger.kernel.org
 Cc:     David Daney <ddaney@caviumnetworks.com>
-Subject: [RFC PATCH 05/10] MIPS: Octeon: Rearrance CVMX files in preperation for device tree
-Date:   Tue, 22 Feb 2011 12:57:49 -0800
-Message-Id: <1298408274-20856-6-git-send-email-ddaney@caviumnetworks.com>
+Subject: [RFC PATCH 06/10] MIPS: Octeon: Initialize and fixup device tree.
+Date:   Tue, 22 Feb 2011 12:57:50 -0800
+Message-Id: <1298408274-20856-7-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com>
 References: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 22 Feb 2011 20:58:21.0754 (UTC) FILETIME=[3D3D21A0:01CBD2D3]
+X-OriginalArrivalTime: 22 Feb 2011 20:58:22.0941 (UTC) FILETIME=[3DF240D0:01CBD2D3]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29248
+X-archive-position: 29249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,350 +41,364 @@ X-list: linux-mips
 
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- .../cavium-octeon/executive/cvmx-helper-sgmii.c    |    6 +-
- .../mips/cavium-octeon/executive/cvmx-helper-spi.c |   10 ++
- .../cavium-octeon/executive/cvmx-helper-xaui.c     |   22 +++--
- arch/mips/cavium-octeon/executive/cvmx-helper.c    |   93 ++++++++++++++++---
- arch/mips/include/asm/octeon/cvmx-helper-loop.h    |    1 +
- arch/mips/include/asm/octeon/cvmx-helper-npi.h     |    1 +
- arch/mips/include/asm/octeon/cvmx-helper-rgmii.h   |    1 +
- arch/mips/include/asm/octeon/cvmx-helper-sgmii.h   |    1 +
- arch/mips/include/asm/octeon/cvmx-helper-spi.h     |    1 +
- arch/mips/include/asm/octeon/cvmx-helper-xaui.h    |    1 +
- arch/mips/include/asm/octeon/cvmx-helper.h         |    1 +
- 11 files changed, 114 insertions(+), 24 deletions(-)
+ arch/mips/Kconfig                         |    2 +
+ arch/mips/cavium-octeon/octeon-platform.c |  280 +++++++++++++++++++++++++++++
+ arch/mips/cavium-octeon/setup.c           |   17 ++
+ 3 files changed, 299 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-index 464347f..0c0bf5d 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-sgmii.c
-@@ -326,6 +326,10 @@ static int __cvmx_helper_sgmii_hardware_init(int interface, int num_ports)
- 	return 0;
- }
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4baf7f2..a8fc970 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -699,6 +699,7 @@ config CAVIUM_OCTEON_SIMULATOR
+ 	select SYS_SUPPORTS_HIGHMEM
+ 	select SYS_SUPPORTS_HOTPLUG_CPU
+ 	select SYS_HAS_CPU_CAVIUM_OCTEON
++	select OF_DYNAMIC
+ 	help
+ 	  The Octeon simulator is software performance model of the Cavium
+ 	  Octeon Processor. It supports simulating Octeon processors on x86
+@@ -715,6 +716,7 @@ config CAVIUM_OCTEON_REFERENCE_BOARD
+ 	select SYS_SUPPORTS_HOTPLUG_CPU
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select SYS_HAS_CPU_CAVIUM_OCTEON
++	select OF_DYNAMIC
+ 	select SWAP_IO_SPACE
+ 	select HW_HAS_PCI
+ 	select ARCH_SUPPORTS_MSI
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index cecaf62..428de0d 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -13,10 +13,14 @@
+ #include <linux/usb.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
++#include <linux/slab.h>
+ #include <linux/platform_device.h>
++#include <linux/of_platform.h>
  
-+int __cvmx_helper_sgmii_enumerate(int interface)
+ #include <asm/octeon/octeon.h>
+ #include <asm/octeon/cvmx-rnm-defs.h>
++#include <asm/octeon/cvmx-helper.h>
++#include <asm/octeon/cvmx-helper-board.h>
+ 
+ static struct octeon_cf_data octeon_cf_data;
+ 
+@@ -440,6 +444,282 @@ device_initcall(octeon_ohci_device_init);
+ 
+ #endif /* CONFIG_USB */
+ 
++static struct of_device_id __initdata octeon_ids[] = {
++	{ .type = "soc", },
++	{ .compatible = "simple-bus", },
++	{},
++};
++
++static int __init set_phy_addr_prop(struct device_node *n, int phy)
 +{
-+	return 4;
++	u32 *vp;
++	struct property *old_p;
++	struct property *p = kzalloc(sizeof(struct device_node) + sizeof(u32), GFP_KERNEL);
++	if (!p)
++		return -ENOMEM;
++	/* The value will immediatly follow the node in memory. */
++	vp = (u32 *)(&p[1]);
++	p->name = "reg";
++	p->length = sizeof(u32);
++	p->value = vp;
++
++	*vp = cpu_to_be32((u32)phy);
++
++	old_p = of_find_property(n, "reg", NULL);
++	if (old_p)
++		prom_remove_property(n, old_p);
++	return prom_add_property(n, p);
 +}
- /**
-  * Probe a SGMII interface and determine the number of ports
-  * connected to it. The SGMII interface should still be down after
-@@ -347,7 +351,7 @@ int __cvmx_helper_sgmii_probe(int interface)
- 	mode.u64 = cvmx_read_csr(CVMX_GMXX_INF_MODE(interface));
- 	mode.s.en = 1;
- 	cvmx_write_csr(CVMX_GMXX_INF_MODE(interface), mode.u64);
--	return 4;
-+	return __cvmx_helper_sgmii_enumerate(interface);
- }
- 
- /**
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
-index 02a4442..2830e4b 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-spi.c
-@@ -51,6 +51,16 @@ void __cvmx_interrupt_stxx_int_msk_enable(int index);
- #define CVMX_HELPER_SPI_TIMEOUT 10
- #endif
- 
-+int __cvmx_helper_spi_enumerate(int interface)
++
++static int __init set_mac_addr_prop(struct device_node *n, u64 mac)
 +{
-+	if ((cvmx_sysinfo_get()->board_type != CVMX_BOARD_TYPE_SIM) &&
-+	    cvmx_spi4000_is_present(interface)) {
-+		return 10;
-+	} else {
-+		return 16;
++	u8 *vp;
++	struct property *old_p;
++	struct property *p = kzalloc(sizeof(struct device_node) + 6, GFP_KERNEL);
++	if (!p)
++		return -ENOMEM;
++	/* The value will immediatly follow the node in memory. */
++	vp = (u8 *)(&p[1]);
++	p->name = "local-mac-address";
++	p->length = 6;
++	p->value = vp;
++
++	vp[0] = (mac >> 40) & 0xff;
++	vp[1] = (mac >> 32) & 0xff;
++	vp[2] = (mac >> 24) & 0xff;
++	vp[3] = (mac >> 16) & 0xff;
++	vp[4] = (mac >> 8) & 0xff;
++	vp[5] = mac & 0xff;
++
++	old_p = of_find_property(n, "local-mac-address", NULL);
++	if (old_p)
++		prom_remove_property(n, old_p);
++	return prom_add_property(n, p);
++}
++
++static struct device_node * __init octeon_of_get_child(const struct device_node *parent,
++						       int reg_val)
++{
++	struct device_node *node = NULL;
++	int size;
++	const __be32 *addr;
++
++	for (;;) {
++		node = of_get_next_child(parent, node);
++		if (!node)
++			break;
++		addr = of_get_property(node, "reg", &size);
++		if (addr && (be32_to_cpu(*addr) == reg_val))
++			break;
 +	}
++	return node;
 +}
 +
- /**
-  * Probe a SPI interface and determine the number of ports
-  * connected to it. The SPI interface should still be down after
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-index 667a8e3..1723248e 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-xaui.c
-@@ -44,6 +44,19 @@
- void __cvmx_interrupt_gmxx_enable(int interface);
- void __cvmx_interrupt_pcsx_intx_en_reg_enable(int index, int block);
- void __cvmx_interrupt_pcsxx_int_en_reg_enable(int index);
-+
-+int __cvmx_helper_xaui_enumerate(int interface)
++int __init octeon_prune_device_tree(void)
 +{
-+	union cvmx_gmxx_hg2_control gmx_hg2_control;
++	int i, p, max_port;
++	const char *node_path;
++	char name_buffer[20];
++	struct device_node *aliases;
++	struct device_node *pip;
++	struct device_node *iface;
++	struct device_node *eth;
++	struct device_node *node;
 +
-+	/* If HiGig2 is enabled return 16 ports, otherwise return 1 port */
-+	gmx_hg2_control.u64 = cvmx_read_csr(CVMX_GMXX_HG2_CONTROL(interface));
-+	if (gmx_hg2_control.s.hg2tx_en)
-+		return 16;
++	aliases = of_find_node_by_path("/aliases");
++	if (!aliases) {
++		pr_err("Error: No /aliases node in device tree.");
++		return -EINVAL;
++	}
++
++	if (OCTEON_IS_MODEL(OCTEON_CN52XX) || OCTEON_IS_MODEL(OCTEON_CN63XX))
++		max_port = 2;
++	else if (OCTEON_IS_MODEL(OCTEON_CN56XX))
++		max_port = 1;
 +	else
-+		return 1;
-+}
++		max_port = 0;
 +
- /**
-  * Probe a XAUI interface and determine the number of ports
-  * connected to it. The XAUI interface should still be down
-@@ -56,7 +69,6 @@ void __cvmx_interrupt_pcsxx_int_en_reg_enable(int index);
- int __cvmx_helper_xaui_probe(int interface)
- {
- 	int i;
--	union cvmx_gmxx_hg2_control gmx_hg2_control;
- 	union cvmx_gmxx_inf_mode mode;
- 
- 	/*
-@@ -90,13 +102,7 @@ int __cvmx_helper_xaui_probe(int interface)
- 		pko_mem_port_ptrs.s.pid = interface * 16 + i;
- 		cvmx_write_csr(CVMX_PKO_MEM_PORT_PTRS, pko_mem_port_ptrs.u64);
- 	}
--
--	/* If HiGig2 is enabled return 16 ports, otherwise return 1 port */
--	gmx_hg2_control.u64 = cvmx_read_csr(CVMX_GMXX_HG2_CONTROL(interface));
--	if (gmx_hg2_control.s.hg2tx_en)
--		return 16;
--	else
--		return 1;
-+	return __cvmx_helper_xaui_enumerate(interface);
- }
- 
- /**
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper.c b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-index 6238a22..bea6ab6 100644
---- a/arch/mips/cavium-octeon/executive/cvmx-helper.c
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper.c
-@@ -234,21 +234,16 @@ static int __cvmx_helper_port_setup_ipd(int ipd_port)
- }
- 
- /**
-- * This function probes an interface to determine the actual
-- * number of hardware ports connected to it. It doesn't setup the
-- * ports or enable them. The main goal here is to set the global
-- * interface_port_count[interface] correctly. Hardware setup of the
-- * ports will be performed later.
-+ * This function sets the interface_port_count[interface] correctly,
-+ * without modifying any hardware configuration.  Hardware setup of
-+ * the ports will be performed later.
-  *
-  * @interface: Interface to probe
-  *
-  * Returns Zero on success, negative on failure
-  */
--int cvmx_helper_interface_probe(int interface)
-+int cvmx_helper_interface_enumerate(int interface)
- {
--	/* At this stage in the game we don't want packets to be moving yet.
--	   The following probe calls should perform hardware setup
--	   needed to determine port counts. Receive must still be disabled */
- 	switch (cvmx_helper_interface_get_mode(interface)) {
- 		/* These types don't support ports to IPD/PKO */
- 	case CVMX_HELPER_INTERFACE_MODE_DISABLED:
-@@ -258,7 +253,7 @@ int cvmx_helper_interface_probe(int interface)
- 		/* XAUI is a single high speed port */
- 	case CVMX_HELPER_INTERFACE_MODE_XAUI:
- 		interface_port_count[interface] =
--		    __cvmx_helper_xaui_probe(interface);
-+		    __cvmx_helper_xaui_enumerate(interface);
- 		break;
- 		/*
- 		 * RGMII/GMII/MII are all treated about the same. Most
-@@ -267,7 +262,7 @@ int cvmx_helper_interface_probe(int interface)
- 	case CVMX_HELPER_INTERFACE_MODE_RGMII:
- 	case CVMX_HELPER_INTERFACE_MODE_GMII:
- 		interface_port_count[interface] =
--		    __cvmx_helper_rgmii_probe(interface);
-+		    __cvmx_helper_rgmii_enumerate(interface);
- 		break;
- 		/*
- 		 * SPI4 can have 1-16 ports depending on the device at
-@@ -275,7 +270,7 @@ int cvmx_helper_interface_probe(int interface)
- 		 */
- 	case CVMX_HELPER_INTERFACE_MODE_SPI:
- 		interface_port_count[interface] =
--		    __cvmx_helper_spi_probe(interface);
-+		    __cvmx_helper_spi_enumerate(interface);
- 		break;
- 		/*
- 		 * SGMII can have 1-4 ports depending on how many are
-@@ -284,12 +279,12 @@ int cvmx_helper_interface_probe(int interface)
- 	case CVMX_HELPER_INTERFACE_MODE_SGMII:
- 	case CVMX_HELPER_INTERFACE_MODE_PICMG:
- 		interface_port_count[interface] =
--		    __cvmx_helper_sgmii_probe(interface);
-+		    __cvmx_helper_sgmii_enumerate(interface);
- 		break;
- 		/* PCI target Network Packet Interface */
- 	case CVMX_HELPER_INTERFACE_MODE_NPI:
- 		interface_port_count[interface] =
--		    __cvmx_helper_npi_probe(interface);
-+		    __cvmx_helper_npi_enumerate(interface);
- 		break;
- 		/*
- 		 * Special loopback only ports. These are not the same
-@@ -297,7 +292,7 @@ int cvmx_helper_interface_probe(int interface)
- 		 */
- 	case CVMX_HELPER_INTERFACE_MODE_LOOP:
- 		interface_port_count[interface] =
--		    __cvmx_helper_loop_probe(interface);
-+		    __cvmx_helper_loop_enumerate(interface);
- 		break;
- 	}
- 
-@@ -313,6 +308,74 @@ int cvmx_helper_interface_probe(int interface)
- }
- 
- /**
-+ * This function probes an interface to determine the actual
-+ * number of hardware ports connected to it. It doesn't setup the
-+ * ports or enable them. The main goal here is to set the global
-+ * interface_port_count[interface] correctly. Hardware setup of the
-+ * ports will be performed later.
-+ *
-+ * @interface: Interface to probe
-+ *
-+ * Returns Zero on success, negative on failure
-+ */
-+int cvmx_helper_interface_probe(int interface)
-+{
-+	cvmx_helper_interface_enumerate(interface);
-+	/* At this stage in the game we don't want packets to be moving yet.
-+	   The following probe calls should perform hardware setup
-+	   needed to determine port counts. Receive must still be disabled */
-+	switch (cvmx_helper_interface_get_mode(interface)) {
-+		/* These types don't support ports to IPD/PKO */
-+	case CVMX_HELPER_INTERFACE_MODE_DISABLED:
-+	case CVMX_HELPER_INTERFACE_MODE_PCIE:
-+		break;
-+		/* XAUI is a single high speed port */
-+	case CVMX_HELPER_INTERFACE_MODE_XAUI:
-+		__cvmx_helper_xaui_probe(interface);
-+		break;
-+		/*
-+		 * RGMII/GMII/MII are all treated about the same. Most
-+		 * functions refer to these ports as RGMII.
-+		 */
-+	case CVMX_HELPER_INTERFACE_MODE_RGMII:
-+	case CVMX_HELPER_INTERFACE_MODE_GMII:
-+		__cvmx_helper_rgmii_probe(interface);
-+		break;
-+		/*
-+		 * SPI4 can have 1-16 ports depending on the device at
-+		 * the other end.
-+		 */
-+	case CVMX_HELPER_INTERFACE_MODE_SPI:
-+		__cvmx_helper_spi_probe(interface);
-+		break;
-+		/*
-+		 * SGMII can have 1-4 ports depending on how many are
-+		 * hooked up.
-+		 */
-+	case CVMX_HELPER_INTERFACE_MODE_SGMII:
-+	case CVMX_HELPER_INTERFACE_MODE_PICMG:
-+		__cvmx_helper_sgmii_probe(interface);
-+		break;
-+		/* PCI target Network Packet Interface */
-+	case CVMX_HELPER_INTERFACE_MODE_NPI:
-+		__cvmx_helper_npi_probe(interface);
-+		break;
-+		/*
-+		 * Special loopback only ports. These are not the same
-+		 * as other ports in loopback mode.
-+		 */
-+	case CVMX_HELPER_INTERFACE_MODE_LOOP:
-+		__cvmx_helper_loop_probe(interface);
-+		break;
++	for (i = 0; i < 2; i++) {
++		struct device_node *mgmt;
++		snprintf(name_buffer, sizeof(name_buffer),
++			 "ethernet-mgmt%d", i);
++		node_path = of_get_property(aliases, name_buffer, NULL);
++		if (node_path) {
++			mgmt = of_find_node_by_path(node_path);
++			if (!mgmt)
++				continue;
++			if (i >= max_port) {
++				pr_notice("Deleting mgmt%d\n", i);
++				node = of_parse_phandle(mgmt, "phy-handle", 0);
++				if (node) {
++					of_detach_node(node);
++					of_node_put(node);
++				}
++				of_node_put(node);
++
++				of_detach_node(mgmt);
++				of_node_put(mgmt);
++			}
++			of_node_put(mgmt);
++		}
 +	}
 +
-+	/* Make sure all global variables propagate to other cores */
-+	CVMX_SYNCWS;
++	node_path = of_get_property(aliases, "pip", NULL);
++	if (node_path && (pip = of_find_node_by_path(node_path))) {
++		for (i = 0; i < 4; i++) {
++			cvmx_helper_interface_enumerate(i);
++			iface = octeon_of_get_child(pip, i);
++			if (!iface)
++				continue;
++			for (p = 0; p < 4; p++) {
++				eth = octeon_of_get_child(iface, p);
++				if (!eth)
++					continue;
++				node = of_parse_phandle(eth, "phy-handle", 0);
++				if (p < cvmx_helper_ports_on_interface(i)) {
++					int phy = cvmx_helper_board_get_mii_address(16 * i + p);
++					if (node && phy < 0) {
++						struct property *p = of_find_property(eth, "phy-handle", NULL);
++						of_detach_node(node);
++						of_node_put(node);
++						prom_remove_property(eth, p);
++					}
++				} else {
++					pr_notice("Deleting Ethernet %x:%x\n", i, p);
++					if (node) {
++						of_detach_node(node);
++						of_node_put(node);
++					}
++					of_detach_node(eth);
++					of_node_put(eth);
++				}
++				of_node_put(node);
++				of_node_put(eth);
++			}
++			of_node_put(iface);
++		}
++		of_node_put(pip);
++	}
 +
++	/* I2C */
++	if (OCTEON_IS_MODEL(OCTEON_CN52XX) ||
++	    OCTEON_IS_MODEL(OCTEON_CN63XX) ||
++	    OCTEON_IS_MODEL(OCTEON_CN56XX))
++		max_port = 2;
++	else
++		max_port = 1;
++
++	for (i = 0; i < 2; i++) {
++		struct device_node *i2c;
++		snprintf(name_buffer, sizeof(name_buffer),
++			 "i2c%d", i);
++		node_path = of_get_property(aliases, name_buffer, NULL);
++		if (node_path) {
++			i2c = of_find_node_by_path(node_path);
++			if (!i2c)
++				continue;
++			if (i >= max_port) {
++				pr_notice("Deleting i2c%d\n", i);
++
++				of_detach_node(i2c);
++				of_node_put(i2c);
++			}
++			of_node_put(i2c);
++		}
++	}
++
++	of_node_put(aliases);
 +	return 0;
 +}
 +
-+/**
-  * Setup the IPD/PIP for the ports on an interface. Packet
-  * classification and tagging are set for every port on the
-  * interface. The number of ports on the interface must already
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-loop.h b/arch/mips/include/asm/octeon/cvmx-helper-loop.h
-index e646a6c..0a2488e 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper-loop.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-loop.h
-@@ -44,6 +44,7 @@
-  * Returns Number of ports on the interface. Zero to disable.
-  */
- extern int __cvmx_helper_loop_probe(int interface);
-+static inline int __cvmx_helper_loop_enumerate(int interface) {return 4;}
- 
- /**
-  * Bringup and enable a LOOP interface. After this call packet
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-npi.h b/arch/mips/include/asm/octeon/cvmx-helper-npi.h
-index 908e7b0..8df4c7f 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper-npi.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-npi.h
-@@ -45,6 +45,7 @@
-  * Returns Number of ports on the interface. Zero to disable.
-  */
- extern int __cvmx_helper_npi_probe(int interface);
-+#define __cvmx_helper_npi_enumerate __cvmx_helper_npi_probe
- 
- /**
-  * Bringup and enable a NPI interface. After this call packet
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-rgmii.h b/arch/mips/include/asm/octeon/cvmx-helper-rgmii.h
-index ea26526..78295ba 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper-rgmii.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-rgmii.h
-@@ -43,6 +43,7 @@
-  * Returns Number of RGMII/GMII/MII ports (0-4).
-  */
- extern int __cvmx_helper_rgmii_probe(int interface);
-+#define __cvmx_helper_rgmii_enumerate __cvmx_helper_rgmii_probe
- 
- /**
-  * Put an RGMII interface in loopback mode. Internal packets sent
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-sgmii.h b/arch/mips/include/asm/octeon/cvmx-helper-sgmii.h
-index 19b48d6..9a9b6c1 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper-sgmii.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-sgmii.h
-@@ -45,6 +45,7 @@
-  * Returns Number of ports on the interface. Zero to disable.
-  */
- extern int __cvmx_helper_sgmii_probe(int interface);
-+extern int __cvmx_helper_sgmii_enumerate(int interface);
- 
- /**
-  * Bringup and enable a SGMII interface. After this call packet
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-spi.h b/arch/mips/include/asm/octeon/cvmx-helper-spi.h
-index 69bac03..9f1c6b9 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper-spi.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-spi.h
-@@ -42,6 +42,7 @@
-  * Returns Number of ports on the interface. Zero to disable.
-  */
- extern int __cvmx_helper_spi_probe(int interface);
-+extern int __cvmx_helper_spi_enumerate(int interface);
- 
- /**
-  * Bringup and enable a SPI interface. After this call packet I/O
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-xaui.h b/arch/mips/include/asm/octeon/cvmx-helper-xaui.h
-index 4b4db2f..f6fbc4f 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper-xaui.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-xaui.h
-@@ -45,6 +45,7 @@
-  * Returns Number of ports on the interface. Zero to disable.
-  */
- extern int __cvmx_helper_xaui_probe(int interface);
-+extern int __cvmx_helper_xaui_enumerate(int interface);
- 
- /**
-  * Bringup and enable a XAUI interface. After this call packet
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper.h b/arch/mips/include/asm/octeon/cvmx-helper.h
-index 51916f3..3169cd7 100644
---- a/arch/mips/include/asm/octeon/cvmx-helper.h
-+++ b/arch/mips/include/asm/octeon/cvmx-helper.h
-@@ -207,6 +207,7 @@ extern int cvmx_helper_link_set(int ipd_port,
-  * Returns Zero on success, negative on failure
-  */
- extern int cvmx_helper_interface_probe(int interface);
-+extern int cvmx_helper_interface_enumerate(int interface);
- 
- /**
-  * Configure a port for internal and/or external loopback. Internal loopback
++int __init octeon_fix_device_tree(void)
++{
++	int i, p;
++	int rv;
++	const char *node_path;
++	char name_buffer[20];
++	u64 mac_addr_base;
++	struct device_node *aliases;
++	struct device_node *pip;
++	struct device_node *iface;
++	struct device_node *eth;
++	struct device_node *node;
++
++	/*
++	 * Edit the device tree to reflect known board
++	 * configurations.
++	 */
++	mac_addr_base =
++		((octeon_bootinfo->mac_addr_base[0] & 0xffull)) << 40 |
++		((octeon_bootinfo->mac_addr_base[1] & 0xffull)) << 32 |
++		((octeon_bootinfo->mac_addr_base[2] & 0xffull)) << 24 |
++		((octeon_bootinfo->mac_addr_base[3] & 0xffull)) << 16 |
++		((octeon_bootinfo->mac_addr_base[4] & 0xffull)) << 8 |
++		(octeon_bootinfo->mac_addr_base[5] & 0xffull);
++
++	aliases = of_find_node_by_path("/aliases");
++	if (!aliases) {
++		pr_err("Error: No /aliases node in device tree.");
++		return -EINVAL;
++	}
++
++	for (i = 0; i < 2; i++) {
++		struct device_node *mgmt;
++		snprintf(name_buffer, sizeof(name_buffer),
++			 "ethernet-mgmt%d", i);
++		node_path = of_get_property(aliases, name_buffer, NULL);
++		if (node_path) {
++			mgmt = of_find_node_by_path(node_path);
++			if (!mgmt)
++				continue;
++			/* Set the ethernet address */
++			rv = set_mac_addr_prop(mgmt, mac_addr_base);
++			if (rv)
++				goto err;
++			mac_addr_base++;
++
++			of_node_put(mgmt);
++		}
++	}
++
++	node_path = of_get_property(aliases, "pip", NULL);
++	if (node_path && (pip = of_find_node_by_path(node_path))) {
++		for (i = 0; i < 4; i++) {
++			iface = octeon_of_get_child(pip, i);
++			if (!iface)
++				continue;
++			for (p = 0; p < 4; p++) {
++				int phy = cvmx_helper_board_get_mii_address(16 * i + p);
++				eth = octeon_of_get_child(iface, p);
++				if (!eth)
++					continue;
++				node = of_parse_phandle(eth, "phy-handle", 0);
++				rv = set_mac_addr_prop(eth, mac_addr_base);
++				mac_addr_base++;
++				if (node && phy >= 0)
++					set_phy_addr_prop(node, cvmx_helper_board_get_mii_address(16 * i + p));
++				of_node_put(node);
++				of_node_put(eth);
++			}
++			of_node_put(iface);
++		}
++		of_node_put(pip);
++	}
++
++	of_node_put(aliases);
++	return 0;
++err:
++	return rv;
++}
++arch_initcall(octeon_fix_device_tree);
++
++static int __init octeon_publish_devices(void)
++{
++	return of_platform_bus_probe(NULL, octeon_ids, NULL);
++}
++device_initcall(octeon_publish_devices);
++
++
+ MODULE_AUTHOR("David Daney <ddaney@caviumnetworks.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Platform driver for Octeon SOC");
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index ab1a106..818f66d5 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -20,6 +20,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/serial_core.h>
+ #include <linux/serial_8250.h>
++#include <linux/of_fdt.h>
+ #ifdef CONFIG_BLK_DEV_INITRD
+ #include <linux/initrd.h>
+ #endif
+@@ -797,3 +798,19 @@ void prom_free_prom_memory(void)
+ 	}
+ #endif
+ }
++
++int octeon_prune_device_tree(void);
++
++extern const char __dtb_octeon_3xxx_begin;
++extern const char __dtb_octeon_3xxx_end;
++void __init device_tree_init(void)
++{
++	int dt_size = &__dtb_octeon_3xxx_end - &__dtb_octeon_3xxx_begin;
++	/* Copy the default tree from init memory. */
++	initial_boot_params = early_init_dt_alloc_memory_arch(dt_size, 8);
++	if (initial_boot_params == NULL)
++		panic("Could not allocate initial_boot_params\n");
++	memcpy(initial_boot_params, &__dtb_octeon_3xxx_begin, dt_size);
++	unflatten_device_tree();
++	octeon_prune_device_tree();
++}
 -- 
 1.7.2.3

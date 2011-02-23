@@ -1,75 +1,149 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2011 17:59:37 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4651 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491773Ab1BWQ7e (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Feb 2011 17:59:34 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d653d270000>; Wed, 23 Feb 2011 09:00:23 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 23 Feb 2011 08:59:30 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 23 Feb 2011 08:59:30 -0800
-Message-ID: <4D653CF1.30009@caviumnetworks.com>
-Date:   Wed, 23 Feb 2011 08:59:29 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2011 18:02:37 +0100 (CET)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:54705 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491782Ab1BWRCd (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Feb 2011 18:02:33 +0100
+Received: by ewy23 with SMTP id 23so1622936ewy.36
+        for <multiple recipients>; Wed, 23 Feb 2011 09:02:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-type
+         :content-disposition:in-reply-to:user-agent;
+        bh=oqxQA25NT65q1wUjogJsD9qQyTS73eKfZRCxut7fo6g=;
+        b=amN7twK6nZq9JI9eRxKxDKx8DfgtTi+aX95AsozrzBoIJ6IpBlvohzBBhIfMS9CdP1
+         Ff1j0FmXF2F35eoIiqigk/Qiy1QNPo9GIhEOsbNOHfehADeea7WBqO2ESdAZ2wW1Glh8
+         Krty22/lGqfmTbbjo3SmSGegUwATVhs9WIyJE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        b=IHVt4Rd77CWDo3LzWi3AVSTrb+WtXtVnYkFzq93sAV9mhP/RmS3qGBxnd60ZJhK0lV
+         QzH3qhOh4WzdzrQWT5INfmA/It2nm7yqQ871THUwCi3SQ0fXQfgCDNtvyuI+3EnTPDi8
+         rCgGzwCdOl3B1GyUUoBjoN0UxJSpojRvpirbU=
+Received: by 10.14.45.75 with SMTP id o51mr4458240eeb.49.1298480547224;
+        Wed, 23 Feb 2011 09:02:27 -0800 (PST)
+Received: from bicker ([212.49.88.34])
+        by mx.google.com with ESMTPS id q52sm7242552eei.9.2011.02.23.09.02.17
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 23 Feb 2011 09:02:25 -0800 (PST)
+Date:   Wed, 23 Feb 2011 20:02:05 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Anoop P A <anoop.pa@gmail.com>
+Cc:     "gregkh @ suse . de" <gregkh@suse.de>,
+        "dbrownell @ users . sourceforge . net" 
+        <dbrownell@users.sourceforge.net>,
+        "stern @ rowland . harvard . edu" <stern@rowland.harvard.edu>,
+        "pkondeti @ codeaurora . org" <pkondeti@codeaurora.org>,
+        "jacob . jun . pan @ intel . com" <jacob.jun.pan@intel.com>,
+        "linux-usb @ vger . kernel . org" <linux-usb@vger.kernel.org>,
+        "alek . du @ intel . com" <alek.du@intel.com>,
+        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
+        "gadiyar @ ti . com" <gadiyar@ti.com>,
+        "ralf @ linux-mips . org" <ralf@linux-mips.org>,
+        "linux-mips @ linux-mips . org" <linux-mips@linux-mips.org>,
+        Greg KH <greg@kroah.com>
+Subject: Re: [PATCH v5] EHCI bus glue for on-chip PMC MSP USB controller
+Message-ID: <20110223170205.GE19898@bicker>
+Mail-Followup-To: Dan Carpenter <error27@gmail.com>,
+        Anoop P A <anoop.pa@gmail.com>,
+        "gregkh @ suse . de" <gregkh@suse.de>,
+        "dbrownell @ users . sourceforge . net" <dbrownell@users.sourceforge.net>,
+        "stern @ rowland . harvard . edu" <stern@rowland.harvard.edu>,
+        "pkondeti @ codeaurora . org" <pkondeti@codeaurora.org>,
+        "jacob . jun . pan @ intel . com" <jacob.jun.pan@intel.com>,
+        "linux-usb @ vger . kernel . org" <linux-usb@vger.kernel.org>,
+        "alek . du @ intel . com" <alek.du@intel.com>,
+        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
+        "gadiyar @ ti . com" <gadiyar@ti.com>,
+        "ralf @ linux-mips . org" <ralf@linux-mips.org>,
+        "linux-mips @ linux-mips . org" <linux-mips@linux-mips.org>,
+        Greg KH <greg@kroah.com>
+References: <4D5ABB65.3090101@parrot.com>
+ <1298388933-13707-1-git-send-email-anoop.pa@gmail.com>
+ <20110222200427.GB1966@bicker>
+ <1298467343.9950.119.camel@paanoop1-desktop>
 MIME-Version: 1.0
-To:     David Gibson <david@gibson.dropbear.id.au>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 02/10] MIPS: Octeon: Add device tree source files.
-References: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com> <1298408274-20856-3-git-send-email-ddaney@caviumnetworks.com> <20110223000759.GA26300@yookeroo>
-In-Reply-To: <20110223000759.GA26300@yookeroo>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 23 Feb 2011 16:59:30.0139 (UTC) FILETIME=[0957FAB0:01CBD37B]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1298467343.9950.119.camel@paanoop1-desktop>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <error27@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29262
+X-archive-position: 29263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: error27@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 02/22/2011 04:07 PM, David Gibson wrote:
-> On Tue, Feb 22, 2011 at 12:57:46PM -0800, David Daney wrote:
->> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
->> ---
->>   arch/mips/cavium-octeon/.gitignore      |    2 +
->>   arch/mips/cavium-octeon/Makefile        |   13 ++
->>   arch/mips/cavium-octeon/octeon_3xxx.dts |  314 +++++++++++++++++++++++++++++++
->>   arch/mips/cavium-octeon/octeon_68xx.dts |   99 ++++++++++
->>   4 files changed, 428 insertions(+), 0 deletions(-)
->>   create mode 100644 arch/mips/cavium-octeon/.gitignore
->>   create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
->>   create mode 100644 arch/mips/cavium-octeon/octeon_68xx.dts
->>
-[...]
+On Wed, Feb 23, 2011 at 06:52:23PM +0530, Anoop P A wrote:
+> > Cannot find the msp_usb.h in linux-next.  Doesn't compile.
+> msp_usb.h has made it's way to linux-mips queue tree along with the
+> platform code
 
->> +    };
->> +  };
->
-> Uh.. where are the CPUs?
->
+Hm...  Ralf is on the CC list.  Ralf, why are the "Patches queued for
+the next Linux kernel release." not included in linux-next?
 
-The number and type of CPUs can be (and is) probed.  There is an 
-existing mechanism for the bootloader to communicate which CPUs should 
-be used.
+> > > +	val = ehci_readl(ehci, (u32 *)base);
+> > 
+> > It doesn't compile so I can't test this, but I think that this will
+> > cause a sparse warning.  "base" should have an __iomem tag.  Please
+> > run sparse on this driver.
+> Looks like mips platform build has been broken on linux-next ( unable to
+> configure) . However I have tested code with linux-queue tree ( mips)
+> and didn't see any such warnings
 
-Likewise for memory, there is an existing mechanism for the bootloader 
-to communicate which memory should be used.
+Sparse is an external tool.  You have to install it and build with
+make C=1 drivers/usb/file.o
 
-It is possible that in the future, we would want to put CPUs and Memory 
-in the Device Tree.  If we do, we can add that without having to disturb 
-the 'soc' device bindings.
+> > > +	temp = HCS_N_CC(ehci->hcs_params) * HCS_N_PCC(ehci->hcs_params);
+> > > +	temp &= 0x0f;
+> > 
+> > companion HCs * ports per CC & 0xf?
+> > 
+> > What's the &= 0x0f for?  It's left out of the printk.
+> Code got carried forward from ehci-pci.c . Is that says ehci-pci.c is
+> uptodate? .  
 
-My main motivation for this first patch set is to get sane bindings for 
-all the 'soc' devices  And to that end, your feedback has been quite useful.
+My guess is that ehci-pci.c is buggy.  Anyway this is just a work around
+to handle buggy hardware.  Since the code here just prints some debug
+output and doesn't do the work arounds we might as well remove the whole
+thing?  It seems unlikely that your mips hardware will have the same
+bug.
 
-Thanks,
-David Daney
+> > > +static int ehci_msp_suspend(struct device *dev)
+> > > +{
+> > > +	struct usb_hcd *hcd = dev_get_drvdata(dev);
+> > > +	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
+> > > +	unsigned long flags;
+> > > +	int rc;
+> > > +
+> > > +	return 0;
+> > > +	rc = 0;
+> > > +
+> > > +	if (time_before(jiffies, ehci->next_statechange))
+> > > +		usleep(10000);
+> > 
+> > Is there still a usleep() function?  Either way, can you send us
+> > something that compiles on linux-next?
+> Again code got carried from ehci-pci.c .(changed msleep to usleep as
+> checkpatch complained about it). I am unable to compile mips targets in
+> linux-next tree . However this patch is tested with both linux-stable
+> and linux-queue tree of l-m-o
+
+checkpatch.pl complains because msleep() is not accurate for tiny
+amounts of time.  There is no usleep() function because trying to be
+that accurate is a lot of work and causes a lot of interrupts.  There
+is a usleep_range() function instead which lets the scheduler group
+wakeups together.  This is documented in
+Documentation/timers/timers-howto.txt
+
+Also this is dead code.  No one will complain, if you just delete it.
+
+regards,
+dan carpenter

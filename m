@@ -1,149 +1,182 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2011 18:02:37 +0100 (CET)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:54705 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491782Ab1BWRCd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Feb 2011 18:02:33 +0100
-Received: by ewy23 with SMTP id 23so1622936ewy.36
-        for <multiple recipients>; Wed, 23 Feb 2011 09:02:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-type
-         :content-disposition:in-reply-to:user-agent;
-        bh=oqxQA25NT65q1wUjogJsD9qQyTS73eKfZRCxut7fo6g=;
-        b=amN7twK6nZq9JI9eRxKxDKx8DfgtTi+aX95AsozrzBoIJ6IpBlvohzBBhIfMS9CdP1
-         Ff1j0FmXF2F35eoIiqigk/Qiy1QNPo9GIhEOsbNOHfehADeea7WBqO2ESdAZ2wW1Glh8
-         Krty22/lGqfmTbbjo3SmSGegUwATVhs9WIyJE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-type:content-disposition:in-reply-to
-         :user-agent;
-        b=IHVt4Rd77CWDo3LzWi3AVSTrb+WtXtVnYkFzq93sAV9mhP/RmS3qGBxnd60ZJhK0lV
-         QzH3qhOh4WzdzrQWT5INfmA/It2nm7yqQ871THUwCi3SQ0fXQfgCDNtvyuI+3EnTPDi8
-         rCgGzwCdOl3B1GyUUoBjoN0UxJSpojRvpirbU=
-Received: by 10.14.45.75 with SMTP id o51mr4458240eeb.49.1298480547224;
-        Wed, 23 Feb 2011 09:02:27 -0800 (PST)
-Received: from bicker ([212.49.88.34])
-        by mx.google.com with ESMTPS id q52sm7242552eei.9.2011.02.23.09.02.17
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 23 Feb 2011 09:02:25 -0800 (PST)
-Date:   Wed, 23 Feb 2011 20:02:05 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Anoop P A <anoop.pa@gmail.com>
-Cc:     "gregkh @ suse . de" <gregkh@suse.de>,
-        "dbrownell @ users . sourceforge . net" 
-        <dbrownell@users.sourceforge.net>,
-        "stern @ rowland . harvard . edu" <stern@rowland.harvard.edu>,
-        "pkondeti @ codeaurora . org" <pkondeti@codeaurora.org>,
-        "jacob . jun . pan @ intel . com" <jacob.jun.pan@intel.com>,
-        "linux-usb @ vger . kernel . org" <linux-usb@vger.kernel.org>,
-        "alek . du @ intel . com" <alek.du@intel.com>,
-        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
-        "gadiyar @ ti . com" <gadiyar@ti.com>,
-        "ralf @ linux-mips . org" <ralf@linux-mips.org>,
-        "linux-mips @ linux-mips . org" <linux-mips@linux-mips.org>,
-        Greg KH <greg@kroah.com>
-Subject: Re: [PATCH v5] EHCI bus glue for on-chip PMC MSP USB controller
-Message-ID: <20110223170205.GE19898@bicker>
-Mail-Followup-To: Dan Carpenter <error27@gmail.com>,
-        Anoop P A <anoop.pa@gmail.com>,
-        "gregkh @ suse . de" <gregkh@suse.de>,
-        "dbrownell @ users . sourceforge . net" <dbrownell@users.sourceforge.net>,
-        "stern @ rowland . harvard . edu" <stern@rowland.harvard.edu>,
-        "pkondeti @ codeaurora . org" <pkondeti@codeaurora.org>,
-        "jacob . jun . pan @ intel . com" <jacob.jun.pan@intel.com>,
-        "linux-usb @ vger . kernel . org" <linux-usb@vger.kernel.org>,
-        "alek . du @ intel . com" <alek.du@intel.com>,
-        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
-        "gadiyar @ ti . com" <gadiyar@ti.com>,
-        "ralf @ linux-mips . org" <ralf@linux-mips.org>,
-        "linux-mips @ linux-mips . org" <linux-mips@linux-mips.org>,
-        Greg KH <greg@kroah.com>
-References: <4D5ABB65.3090101@parrot.com>
- <1298388933-13707-1-git-send-email-anoop.pa@gmail.com>
- <20110222200427.GB1966@bicker>
- <1298467343.9950.119.camel@paanoop1-desktop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2011 18:36:20 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:6122 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491784Ab1BWRgR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Feb 2011 18:36:17 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4d6545c20000>; Wed, 23 Feb 2011 09:37:06 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 23 Feb 2011 09:36:13 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 23 Feb 2011 09:36:13 -0800
+Message-ID: <4D65458D.5080908@caviumnetworks.com>
+Date:   Wed, 23 Feb 2011 09:36:13 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1298467343.9950.119.camel@paanoop1-desktop>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <error27@gmail.com>
+To:     Grant Likely <grant.likely@secretlab.ca>
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 01/10] MIPS: Octeon: Move some Ethernet support files
+ out of staging.
+References: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com> <1298408274-20856-2-git-send-email-ddaney@caviumnetworks.com> <20110223144805.GC3143@angua.secretlab.ca>
+In-Reply-To: <20110223144805.GC3143@angua.secretlab.ca>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 23 Feb 2011 17:36:13.0523 (UTC) FILETIME=[2AA9B230:01CBD380]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29263
+X-archive-position: 29264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: error27@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 23, 2011 at 06:52:23PM +0530, Anoop P A wrote:
-> > Cannot find the msp_usb.h in linux-next.  Doesn't compile.
-> msp_usb.h has made it's way to linux-mips queue tree along with the
-> platform code
+On 02/23/2011 06:48 AM, Grant Likely wrote:
+> On Tue, Feb 22, 2011 at 12:57:45PM -0800, David Daney wrote:
+>> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
+>
+> If this is an Ethernet driver, then it belongs in drivers/net and you
+> should cc both netdev and Dave Miller.
+>
 
-Hm...  Ralf is on the CC list.  Ralf, why are the "Patches queued for
-the next Linux kernel release." not included in linux-next?
+Eventually the files need to go somewhere other than drivers/staging. 
+They are not all Ethernet related, so sorting out exactly where they all 
+go is not so simple.  This subject has been a thorn in my side for quite 
+some time.
 
-> > > +	val = ehci_readl(ehci, (u32 *)base);
-> > 
-> > It doesn't compile so I can't test this, but I think that this will
-> > cause a sparse warning.  "base" should have an __iomem tag.  Please
-> > run sparse on this driver.
-> Looks like mips platform build has been broken on linux-next ( unable to
-> configure) . However I have tested code with linux-queue tree ( mips)
-> and didn't see any such warnings
+For the sake of getting the Device Tree patching code working and to 
+generate Device Tree related feedback, I moved them to be with their kin 
+in arch/mips/cavium-octeon/executive.
 
-Sparse is an external tool.  You have to install it and build with
-make C=1 drivers/usb/file.o
+In the context of this patch set, I consider this to be a somewhat minor 
+detail.
 
-> > > +	temp = HCS_N_CC(ehci->hcs_params) * HCS_N_PCC(ehci->hcs_params);
-> > > +	temp &= 0x0f;
-> > 
-> > companion HCs * ports per CC & 0xf?
-> > 
-> > What's the &= 0x0f for?  It's left out of the printk.
-> Code got carried forward from ehci-pci.c . Is that says ehci-pci.c is
-> uptodate? .  
+David Daney
 
-My guess is that ehci-pci.c is buggy.  Anyway this is just a work around
-to handle buggy hardware.  Since the code here just prints some debug
-output and doesn't do the work arounds we might as well remove the whole
-thing?  It seems unlikely that your mips hardware will have the same
-bug.
-
-> > > +static int ehci_msp_suspend(struct device *dev)
-> > > +{
-> > > +	struct usb_hcd *hcd = dev_get_drvdata(dev);
-> > > +	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-> > > +	unsigned long flags;
-> > > +	int rc;
-> > > +
-> > > +	return 0;
-> > > +	rc = 0;
-> > > +
-> > > +	if (time_before(jiffies, ehci->next_statechange))
-> > > +		usleep(10000);
-> > 
-> > Is there still a usleep() function?  Either way, can you send us
-> > something that compiles on linux-next?
-> Again code got carried from ehci-pci.c .(changed msleep to usleep as
-> checkpatch complained about it). I am unable to compile mips targets in
-> linux-next tree . However this patch is tested with both linux-stable
-> and linux-queue tree of l-m-o
-
-checkpatch.pl complains because msleep() is not accurate for tiny
-amounts of time.  There is no usleep() function because trying to be
-that accurate is a lot of work and causes a lot of interrupts.  There
-is a usleep_range() function instead which lets the scheduler group
-wakeups together.  This is documented in
-Documentation/timers/timers-howto.txt
-
-Also this is dead code.  No one will complain, if you just delete it.
-
-regards,
-dan carpenter
+> g.
+>
+>> ---
+>>   arch/mips/cavium-octeon/executive/Makefile         |    5 +
+>>   .../mips/cavium-octeon/executive}/cvmx-cmd-queue.c |    8 +-
+>>   .../mips/cavium-octeon/executive}/cvmx-fpa.c       |    0
+>>   .../cavium-octeon/executive}/cvmx-helper-board.c   |   18 +--
+>>   .../cavium-octeon/executive}/cvmx-helper-fpa.c     |    0
+>>   .../cavium-octeon/executive}/cvmx-helper-loop.c    |    6 +-
+>>   .../cavium-octeon/executive}/cvmx-helper-npi.c     |    6 +-
+>>   .../cavium-octeon/executive}/cvmx-helper-rgmii.c   |   17 +-
+>>   .../cavium-octeon/executive}/cvmx-helper-sgmii.c   |   12 +-
+>>   .../cavium-octeon/executive}/cvmx-helper-spi.c     |   10 +-
+>>   .../cavium-octeon/executive}/cvmx-helper-util.c    |   16 +-
+>>   .../cavium-octeon/executive}/cvmx-helper-xaui.c    |   10 +-
+>>   .../mips/cavium-octeon/executive}/cvmx-helper.c    |   27 ++--
+>>   .../executive}/cvmx-interrupt-decodes.c            |   10 +-
+>>   .../cavium-octeon/executive}/cvmx-interrupt-rsl.c  |    4 +-
+>>   .../mips/cavium-octeon/executive}/cvmx-pko.c       |    6 +-
+>>   .../mips/cavium-octeon/executive}/cvmx-spi.c       |   12 +-
+>>   .../mips/include/asm}/octeon/cvmx-address.h        |    0
+>>   .../mips/include/asm}/octeon/cvmx-asxx-defs.h      |    0
+>>   .../mips/include/asm}/octeon/cvmx-cmd-queue.h      |    0
+>>   .../mips/include/asm}/octeon/cvmx-config.h         |    0
+>>   .../mips/include/asm}/octeon/cvmx-dbg-defs.h       |    0
+>>   .../mips/include/asm}/octeon/cvmx-fau.h            |    0
+>>   .../mips/include/asm}/octeon/cvmx-fpa-defs.h       |    0
+>>   .../mips/include/asm}/octeon/cvmx-fpa.h            |    0
+>>   .../mips/include/asm}/octeon/cvmx-gmxx-defs.h      |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-board.h   |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-fpa.h     |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-loop.h    |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-npi.h     |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-rgmii.h   |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-sgmii.h   |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-spi.h     |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-util.h    |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper-xaui.h    |    0
+>>   .../mips/include/asm}/octeon/cvmx-helper.h         |    0
+>>   .../mips/include/asm}/octeon/cvmx-ipd.h            |    0
+>>   .../mips/include/asm}/octeon/cvmx-mdio.h           |    0
+>>   .../mips/include/asm}/octeon/cvmx-pcsx-defs.h      |    0
+>>   .../mips/include/asm}/octeon/cvmx-pcsxx-defs.h     |    0
+>>   .../mips/include/asm}/octeon/cvmx-pip-defs.h       |    0
+>>   .../mips/include/asm}/octeon/cvmx-pip.h            |    0
+>>   .../mips/include/asm}/octeon/cvmx-pko-defs.h       |    0
+>>   .../mips/include/asm}/octeon/cvmx-pko.h            |    0
+>>   .../mips/include/asm}/octeon/cvmx-pow.h            |    0
+>>   .../mips/include/asm}/octeon/cvmx-scratch.h        |    0
+>>   .../mips/include/asm}/octeon/cvmx-spi.h            |    0
+>>   .../mips/include/asm}/octeon/cvmx-spxx-defs.h      |    0
+>>   .../mips/include/asm}/octeon/cvmx-srxx-defs.h      |    0
+>>   .../mips/include/asm}/octeon/cvmx-stxx-defs.h      |    0
+>>   .../mips/include/asm}/octeon/cvmx-wqe.h            |    0
+>>   drivers/staging/octeon/Makefile                    |    5 -
+>>   drivers/staging/octeon/cvmx-packet.h               |   65 -------
+>>   drivers/staging/octeon/cvmx-smix-defs.h            |  178 --------------------
+>>   drivers/staging/octeon/ethernet-defines.h          |    2 +-
+>>   drivers/staging/octeon/ethernet-mdio.c             |    4 +-
+>>   drivers/staging/octeon/ethernet-mem.c              |    2 +-
+>>   drivers/staging/octeon/ethernet-rgmii.c            |    4 +-
+>>   drivers/staging/octeon/ethernet-rx.c               |   14 +-
+>>   drivers/staging/octeon/ethernet-rx.h               |    2 +-
+>>   drivers/staging/octeon/ethernet-sgmii.c            |    4 +-
+>>   drivers/staging/octeon/ethernet-spi.c              |    6 +-
+>>   drivers/staging/octeon/ethernet-tx.c               |   12 +-
+>>   drivers/staging/octeon/ethernet-xaui.c             |    4 +-
+>>   drivers/staging/octeon/ethernet.c                  |   14 +-
+>>   65 files changed, 116 insertions(+), 367 deletions(-)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-cmd-queue.c (98%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-fpa.c (100%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-board.c (98%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-fpa.c (100%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-loop.c (95%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-npi.c (96%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-rgmii.c (97%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-sgmii.c (98%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-spi.c (97%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-util.c (97%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper-xaui.c (98%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-helper.c (98%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-interrupt-decodes.c (98%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-interrupt-rsl.c (97%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-pko.c (99%)
+>>   rename {drivers/staging/octeon =>  arch/mips/cavium-octeon/executive}/cvmx-spi.c (99%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-address.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-asxx-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-cmd-queue.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-config.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-dbg-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-fau.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-fpa-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-fpa.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-gmxx-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-board.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-fpa.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-loop.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-npi.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-rgmii.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-sgmii.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-spi.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-util.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper-xaui.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-helper.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-ipd.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-mdio.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-pcsx-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-pcsxx-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-pip-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-pip.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-pko-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-pko.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-pow.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-scratch.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-spi.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-spxx-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-srxx-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-stxx-defs.h (100%)
+>>   rename {drivers/staging =>  arch/mips/include/asm}/octeon/cvmx-wqe.h (100%)
+>>   delete mode 100644 drivers/staging/octeon/cvmx-packet.h
+>>   delete mode 100644 drivers/staging/octeon/cvmx-smix-defs.h
+>>

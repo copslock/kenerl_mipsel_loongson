@@ -1,284 +1,290 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Feb 2011 22:02:30 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:14040 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491766Ab1BVU6b (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Feb 2011 21:58:31 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d6423ab0000>; Tue, 22 Feb 2011 12:59:23 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 22 Feb 2011 12:58:30 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 22 Feb 2011 12:58:30 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p1MKwOYh020942;
-        Tue, 22 Feb 2011 12:58:25 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p1MKwOHl020941;
-        Tue, 22 Feb 2011 12:58:24 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Feb 2011 01:37:06 +0100 (CET)
+Received: from ozlabs.org ([203.10.76.45]:38324 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491115Ab1BWAgn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Feb 2011 01:36:43 +0100
+Received: by ozlabs.org (Postfix, from userid 1007)
+        id AEA75B70E2; Wed, 23 Feb 2011 11:36:37 +1100 (EST)
+Date:   Wed, 23 Feb 2011 11:07:59 +1100
+From:   David Gibson <david@gibson.dropbear.id.au>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
         linux-kernel@vger.kernel.org
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Subject: [RFC PATCH 10/10] staging: octeon_ethernet: Convert to use device tree.
-Date:   Tue, 22 Feb 2011 12:57:54 -0800
-Message-Id: <1298408274-20856-11-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com>
+Subject: Re: [RFC PATCH 02/10] MIPS: Octeon: Add device tree source files.
+Message-ID: <20110223000759.GA26300@yookeroo>
+Mail-Followup-To: David Gibson <david@gibson.dropbear.id.au>,
+        David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
+        grant.likely@secretlab.ca, linux-kernel@vger.kernel.org
 References: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 22 Feb 2011 20:58:30.0082 (UTC) FILETIME=[4233E220:01CBD2D3]
-Return-Path: <David.Daney@caviumnetworks.com>
+ <1298408274-20856-3-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1298408274-20856-3-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <dgibson@ozlabs.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29253
+X-archive-position: 29254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: david@gibson.dropbear.id.au
 Precedence: bulk
 X-list: linux-mips
 
-Get MAC address and PHY connection from the device tree.
+On Tue, Feb 22, 2011 at 12:57:46PM -0800, David Daney wrote:
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> ---
+>  arch/mips/cavium-octeon/.gitignore      |    2 +
+>  arch/mips/cavium-octeon/Makefile        |   13 ++
+>  arch/mips/cavium-octeon/octeon_3xxx.dts |  314 +++++++++++++++++++++++++++++++
+>  arch/mips/cavium-octeon/octeon_68xx.dts |   99 ++++++++++
+>  4 files changed, 428 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/mips/cavium-octeon/.gitignore
+>  create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
+>  create mode 100644 arch/mips/cavium-octeon/octeon_68xx.dts
+> 
+> diff --git a/arch/mips/cavium-octeon/.gitignore b/arch/mips/cavium-octeon/.gitignore
+> new file mode 100644
+> index 0000000..39c9686
+> --- /dev/null
+> +++ b/arch/mips/cavium-octeon/.gitignore
+> @@ -0,0 +1,2 @@
+> +*.dtb.S
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: netdev@vger.kernel.org
----
- drivers/staging/octeon/ethernet-mdio.c   |   27 +++++----
- drivers/staging/octeon/ethernet.c        |  101 +++++++++++++++++++-----------
- drivers/staging/octeon/octeon-ethernet.h |    3 +
- 3 files changed, 82 insertions(+), 49 deletions(-)
+.dtb.S?
 
-diff --git a/drivers/staging/octeon/ethernet-mdio.c b/drivers/staging/octeon/ethernet-mdio.c
-index 0e5dab7..38a0153 100644
---- a/drivers/staging/octeon/ethernet-mdio.c
-+++ b/drivers/staging/octeon/ethernet-mdio.c
-@@ -27,6 +27,7 @@
- #include <linux/kernel.h>
- #include <linux/ethtool.h>
- #include <linux/phy.h>
-+#include <linux/of_mdio.h>
- 
- #include <net/dst.h>
- 
-@@ -162,22 +163,24 @@ static void cvm_oct_adjust_link(struct net_device *dev)
- int cvm_oct_phy_setup_device(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
-+	struct device_node *phy_node;
- 
--	int phy_addr = cvmx_helper_board_get_mii_address(priv->port);
--	if (phy_addr != -1) {
--		char phy_id[20];
-+	if (!priv->of_node)
-+		return 0;
- 
--		snprintf(phy_id, sizeof(phy_id), PHY_ID_FMT, "0", phy_addr);
-+	phy_node = of_parse_phandle(priv->of_node, "phy-handle", 0);
-+	if (!phy_node)
-+		return 0;
- 
--		priv->phydev = phy_connect(dev, phy_id, cvm_oct_adjust_link, 0,
--					PHY_INTERFACE_MODE_GMII);
-+	priv->phydev = of_phy_connect(dev, phy_node, cvm_oct_adjust_link, 0,
-+				      PHY_INTERFACE_MODE_GMII);
- 
--		if (IS_ERR(priv->phydev)) {
--			priv->phydev = NULL;
--			return -1;
--		}
--		priv->last_link = 0;
--		phy_start_aneg(priv->phydev);
-+	if (IS_ERR(priv->phydev)) {
-+		priv->phydev = NULL;
-+		return -1;
- 	}
-+	priv->last_link = 0;
-+	phy_start_aneg(priv->phydev);
-+
- 	return 0;
- }
-diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/ethernet.c
-index 042adf7..87f8956 100644
---- a/drivers/staging/octeon/ethernet.c
-+++ b/drivers/staging/octeon/ethernet.c
-@@ -31,6 +31,7 @@
- #include <linux/etherdevice.h>
- #include <linux/phy.h>
- #include <linux/slab.h>
-+#include <linux/of_net.h>
- 
- #include <net/dst.h>
- 
-@@ -112,15 +113,6 @@ int rx_napi_weight = 32;
- module_param(rx_napi_weight, int, 0444);
- MODULE_PARM_DESC(rx_napi_weight, "The NAPI WEIGHT parameter.");
- 
--/*
-- * The offset from mac_addr_base that should be used for the next port
-- * that is configured.  By convention, if any mgmt ports exist on the
-- * chip, they get the first mac addresses, The ports controlled by
-- * this driver are numbered sequencially following any mgmt addresses
-- * that may exist.
-- */
--static unsigned int cvm_oct_mac_addr_offset;
--
- /**
-  * cvm_oct_poll_queue - Workqueue for polling operations.
-  */
-@@ -447,26 +439,13 @@ static int cvm_oct_common_set_mac_address(struct net_device *dev, void *addr)
- int cvm_oct_common_init(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
--	struct sockaddr sa;
--	u64 mac = ((u64)(octeon_bootinfo->mac_addr_base[0] & 0xff) << 40) |
--		((u64)(octeon_bootinfo->mac_addr_base[1] & 0xff) << 32) |
--		((u64)(octeon_bootinfo->mac_addr_base[2] & 0xff) << 24) |
--		((u64)(octeon_bootinfo->mac_addr_base[3] & 0xff) << 16) |
--		((u64)(octeon_bootinfo->mac_addr_base[4] & 0xff) << 8) |
--		(u64)(octeon_bootinfo->mac_addr_base[5] & 0xff);
--
--	mac += cvm_oct_mac_addr_offset;
--	sa.sa_data[0] = (mac >> 40) & 0xff;
--	sa.sa_data[1] = (mac >> 32) & 0xff;
--	sa.sa_data[2] = (mac >> 24) & 0xff;
--	sa.sa_data[3] = (mac >> 16) & 0xff;
--	sa.sa_data[4] = (mac >> 8) & 0xff;
--	sa.sa_data[5] = mac & 0xff;
--
--	if (cvm_oct_mac_addr_offset >= octeon_bootinfo->mac_addr_count)
--		printk(KERN_DEBUG "%s: Using MAC outside of the assigned range:"
--			" %pM\n", dev->name, sa.sa_data);
--	cvm_oct_mac_addr_offset++;
-+	struct sockaddr sa = {0};
-+
-+	if (priv->of_node) {
-+		const u8 *mac = of_get_mac_address(priv->of_node);
-+		if (mac)
-+			memcpy(sa.sa_data, mac, 6);
-+	}
- 
- 	/*
- 	 * Force the interface to use the POW send if always_use_pow
-@@ -594,22 +573,68 @@ static const struct net_device_ops cvm_oct_pow_netdev_ops = {
- 
- extern void octeon_mdiobus_force_mod_depencency(void);
- 
-+static struct device_node * __init cvm_oct_of_get_child(const struct device_node *parent,
-+							int reg_val)
-+{
-+	struct device_node *node = NULL;
-+	int size;
-+	const __be32 *addr;
-+
-+	for (;;) {
-+		node = of_get_next_child(parent, node);
-+		if (!node)
-+			break;
-+		addr = of_get_property(node, "reg", &size);
-+		if (addr && (be32_to_cpu(*addr) == reg_val))
-+			break;
-+	}
-+	return node;
-+}
-+
-+static struct device_node * __init cvm_oct_node_for_port(struct device_node *pip,
-+							 int interface, int port)
-+{
-+	struct device_node *ni, *np;
-+
-+	ni = cvm_oct_of_get_child(pip, interface);
-+	if (!ni)
-+		return NULL;
-+
-+	np = cvm_oct_of_get_child(ni, port);
-+	of_node_put(ni);
-+
-+	return np;
-+}
-+
- static int __init cvm_oct_init_module(void)
- {
- 	int num_interfaces;
- 	int interface;
- 	int fau = FAU_NUM_PACKET_BUFFERS_TO_FREE;
- 	int qos;
-+	struct device_node *aliases;
-+	const char *node_path;
-+	struct device_node *pip;
- 
- 	octeon_mdiobus_force_mod_depencency();
- 	pr_notice("cavium-ethernet %s\n", OCTEON_ETHERNET_VERSION);
- 
--	if (OCTEON_IS_MODEL(OCTEON_CN52XX))
--		cvm_oct_mac_addr_offset = 2; /* First two are the mgmt ports. */
--	else if (OCTEON_IS_MODEL(OCTEON_CN56XX))
--		cvm_oct_mac_addr_offset = 1; /* First one is the mgmt port. */
--	else
--		cvm_oct_mac_addr_offset = 0;
-+
-+	aliases = of_find_node_by_path("/aliases");
-+	if (!aliases) {
-+		pr_err("Error: No /aliases node in device tree.");
-+		return -EINVAL;
-+	}
-+	node_path = of_get_property(aliases, "pip", NULL);
-+	if (!node_path) {
-+		pr_err("Error: No /aliases/pip node in device tree.");
-+		return -EINVAL;
-+	}
-+	pip = of_find_node_by_path(node_path);
-+	if (!pip) {
-+		pr_err("Error: No %s in device tree.", node_path);
-+		return -EINVAL;
-+	}
- 
- 	cvm_oct_poll_queue = create_singlethread_workqueue("octeon-ethernet");
- 	if (cvm_oct_poll_queue == NULL) {
-@@ -688,10 +713,11 @@ static int __init cvm_oct_init_module(void)
- 		    cvmx_helper_interface_get_mode(interface);
- 		int num_ports = cvmx_helper_ports_on_interface(interface);
- 		int port;
-+		int port_index;
- 
--		for (port = cvmx_helper_get_ipd_port(interface, 0);
-+		for (port_index = 0, port = cvmx_helper_get_ipd_port(interface, 0);
- 		     port < cvmx_helper_get_ipd_port(interface, num_ports);
--		     port++) {
-+		     port_index++, port++) {
- 			struct octeon_ethernet *priv;
- 			struct net_device *dev =
- 			    alloc_etherdev(sizeof(struct octeon_ethernet));
-@@ -702,6 +728,7 @@ static int __init cvm_oct_init_module(void)
- 
- 			/* Initialize the device private structure. */
- 			priv = netdev_priv(dev);
-+			priv->of_node = cvm_oct_node_for_port(pip, interface, port_index);
- 
- 			INIT_DELAYED_WORK(&priv->port_periodic_work,
- 					  cvm_oct_periodic_worker);
-diff --git a/drivers/staging/octeon/octeon-ethernet.h b/drivers/staging/octeon/octeon-ethernet.h
-index d581925..9360e22 100644
---- a/drivers/staging/octeon/octeon-ethernet.h
-+++ b/drivers/staging/octeon/octeon-ethernet.h
-@@ -31,6 +31,8 @@
- #ifndef OCTEON_ETHERNET_H
- #define OCTEON_ETHERNET_H
- 
-+#include <linux/of.h>
-+
- /**
-  * This is the definition of the Ethernet driver's private
-  * driver state stored in netdev_priv(dev).
-@@ -59,6 +61,7 @@ struct octeon_ethernet {
- 	void (*poll) (struct net_device *dev);
- 	struct delayed_work	port_periodic_work;
- 	struct work_struct	port_work;	/* may be unused. */
-+	struct device_node	*of_node;
- };
- 
- int cvm_oct_free_work(void *work_queue_entry);
+[snip]
+> +/dts-v1/;
+> +/* OCTEON 3XXX, 5XXX, 63XX device tree skeleton. */
+> +/ {
+> +  model = "OCTEON";
+
+1 tab indents are the usual convention for device trees.
+
+> +  compatible = "octeon,octeon";
+
+There's no model number at all for this board?
+
+> +  #address-cells = <2>;
+> +  #size-cells = <2>;
+> +
+> +  soc@0 {
+> +    device_type = "soc";
+
+Drop this device_type.
+
+> +    compatible = "simple-bus";
+> +    #address-cells = <2>;
+> +    #size-cells = <2>;
+> +    ranges; /* Direct mapping */
+> +
+> +    ciu: ciu-3xxx@1070000000000 {
+> +      compatible = "octeon,ciu-3xxx";
+
+So, names or compatible values with "wildcards" like 3xxx should be
+avoided.  Instead, use the specific model number of this device, then
+future devices can claim compatibility with the earlier one.
+
+But, in addition the generic names convention means that the node name
+should be "interrupt-controller" rather than something model specific.
+
+> +      interrupt-controller;
+> +      #address-cells = <0>;
+> +      #interrupt-cells = <2>;
+> +      reg = <0x10700 0x00000000 0x0 0x7000>;
+> +    };
+> +
+> +    /* SMI0 */
+> +    mdio0: mdio@1180000001800 {
+
+If SMI0 is the name generally used in the documentation, using that in
+the label instead of mdio0 might be more useful.
+
+> +      compatible = "octeon,mdio";
+
+No model or revision number?
+
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      reg = <0x11800 0x00001800 0x0 0x40>;
+> +      device_type = "mdio";
+
+Drop this device_type.
+
+> +
+> +      phy0: ethernet-phy@0 {
+> +	reg = <0>;
+> +      };
+> +
+> +      phy1: ethernet-phy@1 {
+> +	reg = <1>;
+> +      };
+> +
+> +      phy2: ethernet-phy@2 {
+> +	reg = <2>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +      phy3: ethernet-phy@3 {
+> +	reg = <3>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +      phy4: ethernet-phy@4 {
+> +	reg = <4>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +      phy5: ethernet-phy@5 {
+> +	reg = <5>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +
+> +      phy6: ethernet-phy@6 {
+> +	reg = <6>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +      phy7: ethernet-phy@7 {
+> +	reg = <7>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +      phy8: ethernet-phy@8 {
+> +	reg = <8>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +      phy9: ethernet-phy@9 {
+> +	reg = <9>;
+> +	marvell,reg-init = <3 0x10 0 0x5777>,
+> +			   <3 0x11 0 0x00aa>,
+> +                           <3 0x12 0 0x4105>,
+> +                           <3 0x13 0 0x0a60>;
+> +      };
+> +    };
+> +
+> +    /* SMI1 */
+> +    mdio1: mdio@1180000001900 {
+> +      compatible = "octeon,mdio";
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      reg = <0x11800 0x00001900 0x0 0x40>;
+> +      device_type = "mdio";
+> +    };
+> +
+> +    mgmt0: ethernet@1070000100000 {
+> +      compatible = "octeon,mgmt";
+> +      device_type = "network";
+> +      model = "mgmt";
+> +      reg = <0x10700 0x00100000 0x0 0x100>, /* MIX */
+> +            <0x11800 0xE0000000 0x0 0x300>, /* AGL */
+> +            <0x11800 0xE0000400 0x0 0x400>, /* AGL_SHARED  */
+> +            <0x11800 0xE0002000 0x0 0x8>;   /* AGL_PRT_CTL */
+> +      unit-number = <0>;
+
+What is this 'unit-number' property for?
+
+> +      interrupt-parent = <&ciu>;
+> +      interrupts = <0 62>, <1 46>;
+> +      local-mac-address = [ 00 00 00 00 00 00 ];
+
+That's not a valid MAC address of course.  If this has to be patched
+in by the bootloader / later processing, you should add a comment to
+that effect.
+
+> +      phy-handle = <&phy0>;
+> +    };
+> +
+> +    mgmt1: ethernet@1070000100800 {
+> +      compatible = "octeon,mgmt";
+> +      device_type = "network";
+> +      model = "mgmt";
+> +      reg = <0x10700 0x00100800 0x0 0x100>, /* MIX */
+> +            <0x11800 0xE0000800 0x0 0x300>, /* AGL */
+> +            <0x11800 0xE0000400 0x0 0x400>, /* AGL_SHARED  */
+> +            <0x11800 0xE0002008 0x0 0x8>;   /* AGL_PRT_CTL */
+> +      unit-number = <1>;
+> +      interrupt-parent = <&ciu>;
+> +      interrupts = <1 18>, < 1 46>;
+> +      local-mac-address = [ 00 00 00 00 00 00 ];
+> +      phy-handle = <&phy1>;
+> +    };
+> +
+> +    pip: pip@11800a0000000 {
+> +      compatible = "octeon,pip";
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      reg = <0x11800 0xa0000000 0x0 0x2000>;
+> +
+> +      interface@0 {
+
+These subnodes and subsubnodes should have compatible values too, even
+if it's just "octeon,pip-interface" and "octeon,pip-ethernet".
+
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        reg = <0>; /* interface */
+> +
+> +        ethernet@0 {
+> +          device_type = "network";
+> +          model = "pip";
+
+This model property doesn't look very useful.
+
+[snip]
+> +    /* TWSI 0 */
+> +    i2c0: i2c@1180000001000 {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      compatible = "octeon,twsi";
+> +      reg = <0x11800 0x00001000 0x0 0x200>;
+> +      interrupt-parent = <&ciu>;
+> +      interrupts = <0 45>;
+> +      clock-rate = <100000>;
+> +
+> +      rtc@68 {
+> +        compatible = "dallas,ds1337";
+> +        reg = <0x68>;
+> +      };
+> +    };
+> +
+> +    /* TWSI 1 */
+> +    i2c1: i2c@1180000001200 {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      compatible = "octeon,twsi";
+> +      reg = <0x11800 0x00001200 0x0 0x200>;
+> +      interrupt-parent = <&ciu>;
+> +      interrupts = <0 59>;
+> +      clock-rate = <100000>;
+> +    };
+> +  };
+
+Uh.. where are the CPUs?
+
 -- 
-1.7.2.3
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson

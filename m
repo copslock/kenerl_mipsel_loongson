@@ -1,75 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Feb 2011 22:44:08 +0100 (CET)
-Received: from gateway14.websitewelcome.com ([67.18.22.82]:40389 "HELO
-        gateway14.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491834Ab1BXVoF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Feb 2011 22:44:05 +0100
-Received: (qmail 27611 invoked from network); 24 Feb 2011 21:47:28 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway14.websitewelcome.com with SMTP; 24 Feb 2011 21:47:28 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Source:X-Source-Args:X-Source-Dir;
-        b=WdYHIlaCy7V2ChT+yFoR8Jq8CwNbRScPmVFMoi/ZLfTzrxL5ydCw7eGy+ppWzCrJatPg1oX7NIvqPXPLuQJC4zkHsUH3n2haWuiLhfaK3DxrUVqYipWRf9aMbr4rq1h3;
-Received: from [216.239.45.4] (port=21982 helo=kkissell.mtv.corp.google.com)
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1Psiyg-0001t1-3N; Thu, 24 Feb 2011 15:44:02 -0600
-Message-ID: <4D66D121.7070405@paralogos.com>
-Date:   Thu, 24 Feb 2011 13:44:01 -0800
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.13) Gecko/20101208 Thunderbird/3.1.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Feb 2011 00:44:43 +0100 (CET)
+Received: from ozlabs.org ([203.10.76.45]:44976 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491836Ab1BXXoU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 25 Feb 2011 00:44:20 +0100
+Received: by ozlabs.org (Postfix, from userid 1007)
+        id 7CFE1B711C; Fri, 25 Feb 2011 10:44:15 +1100 (EST)
+Date:   Fri, 25 Feb 2011 10:19:23 +1100
+From:   David Gibson <david@gibson.dropbear.id.au>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 02/10] MIPS: Octeon: Add device tree source files.
+Message-ID: <20110224231923.GB18233@yookeroo>
+Mail-Followup-To: David Gibson <david@gibson.dropbear.id.au>,
+        David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
+        grant.likely@secretlab.ca, linux-kernel@vger.kernel.org
+References: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com>
+ <1298408274-20856-3-git-send-email-ddaney@caviumnetworks.com>
+ <20110223000759.GA26300@yookeroo>
+ <4D653CF1.30009@caviumnetworks.com>
 MIME-Version: 1.0
-To:     Himanshu Chauhan <hschauhan@nulltrace.org>
-CC:     linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Kernel link address assumption
-References: <4D669FCE.8000601@nulltrace.org> <4D66A08F.7050605@paralogos.com> <4D66A1AC.2090007@nulltrace.org>
-In-Reply-To: <4D66A1AC.2090007@nulltrace.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4D653CF1.30009@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <dgibson@ozlabs.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29286
+X-archive-position: 29287
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: david@gibson.dropbear.id.au
 Precedence: bulk
 X-list: linux-mips
 
-On 02/24/11 10:21, Himanshu Chauhan wrote:
-> On Thursday 24 February 2011 11:46 PM, Kevin D. Kissell wrote:
->> On 02/24/11 10:13, Himanshu Chauhan wrote:
->>> Hi,
->>>
->>> Does Linux kernel for MIPS assumes that its link address is always 
->>> in Kseg0?
->>> What if I change the link address to somewhere in useg?
->> Your page fault handlers will be in for an interesting time. ;o)
->>
->> What you describe can be, and is done, for virtualized kernels 
->> running on top
->> of a hypervisor, but there's a bit more involved than just changing 
->> the link address.
->
-> You just caught that. Thats what I am trying to evaluate. What all I 
-> would need to do apart from changing the link address. I am working on 
-> a bare metal hypervisor for MIPS architecture.
->
-> Any pointers?
->
-I've done a design of something like this for a non-MIPS architecture, 
-but I'd prefer someone who's done this for MIPS (and I know that there 
-are people out there who have) advise you.
+On Wed, Feb 23, 2011 at 08:59:29AM -0800, David Daney wrote:
+> On 02/22/2011 04:07 PM, David Gibson wrote:
+> >On Tue, Feb 22, 2011 at 12:57:46PM -0800, David Daney wrote:
+> >>Signed-off-by: David Daney<ddaney@caviumnetworks.com>
+> >>---
+> >>  arch/mips/cavium-octeon/.gitignore      |    2 +
+> >>  arch/mips/cavium-octeon/Makefile        |   13 ++
+> >>  arch/mips/cavium-octeon/octeon_3xxx.dts |  314 +++++++++++++++++++++++++++++++
+> >>  arch/mips/cavium-octeon/octeon_68xx.dts |   99 ++++++++++
+> >>  4 files changed, 428 insertions(+), 0 deletions(-)
+> >>  create mode 100644 arch/mips/cavium-octeon/.gitignore
+> >>  create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
+> >>  create mode 100644 arch/mips/cavium-octeon/octeon_68xx.dts
+> >>
+> [...]
+> 
+> >>+    };
+> >>+  };
+> >
+> >Uh.. where are the CPUs?
+> >
+> 
+> The number and type of CPUs can be (and is) probed.  There is an
+> existing mechanism for the bootloader to communicate which CPUs
+> should be used.
 
-             Regards,
+Hrm, ok.
 
-             Kevin K.
+Grant,
+
+We've seen this now on both MIPS and ARM - dts files with no cpus, on
+the grounds that those can be runtime probed.  I guess it makes sense,
+although a dts without cpus looks very, very odd to me.  What are your
+thoughts on this?
+
+-- 
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson

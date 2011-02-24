@@ -1,91 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Feb 2011 03:22:53 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:3459 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491820Ab1BXCWu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Feb 2011 03:22:50 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d65c12d0000>; Wed, 23 Feb 2011 18:23:41 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 23 Feb 2011 18:22:48 -0800
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 23 Feb 2011 18:22:48 -0800
-Message-ID: <4D65C0F3.8030503@caviumnetworks.com>
-Date:   Wed, 23 Feb 2011 18:22:43 -0800
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Feb 2011 09:27:38 +0100 (CET)
+Received: from bby1mta02.pmc-sierra.com ([216.241.235.117]:44870 "EHLO
+        bby1mta02.pmc-sierra.bc.ca" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490978Ab1BXI1f convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Feb 2011 09:27:35 +0100
+Received: from bby1mta02.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
+        by localhost (Postfix) with SMTP id D13038E00EB
+        for <linux-mips@linux-mips.org>; Thu, 24 Feb 2011 00:27:23 -0800 (PST)
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (bby1exg02 [216.241.231.167])
+        by bby1mta02.pmc-sierra.bc.ca (Postfix) with SMTP id C49A68E00DD
+        for <linux-mips@linux-mips.org>; Thu, 24 Feb 2011 00:27:23 -0800 (PST)
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.159]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 24 Feb 2011 00:27:23 -0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     David Gibson <david@gibson.dropbear.id.au>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 02/10] MIPS: Octeon: Add device tree source files.
-References: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com> <1298408274-20856-3-git-send-email-ddaney@caviumnetworks.com> <20110223000759.GA26300@yookeroo> <4D655AB6.80400@caviumnetworks.com> <20110223234923.GA4932@yookeroo> <4D65BB17.4060703@caviumnetworks.com> <20110224021440.GD26300@yookeroo>
-In-Reply-To: <20110224021440.GD26300@yookeroo>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 24 Feb 2011 02:22:48.0534 (UTC) FILETIME=[BAC1C760:01CBD3C9]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: "make C=1" for mips target seems to broken
+Date:   Thu, 24 Feb 2011 00:27:22 -0800
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C0201405C10AE0@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: "make C=1" for mips target seems to broken
+Thread-Index: AcvT+5l19iylSWISRFGzww+qVi/XrQ==
+From:   "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:     "linux-mips @ linux-mips . org" <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 24 Feb 2011 08:27:23.0665 (UTC) FILETIME=[A959E010:01CBD3FC]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29274
+X-archive-position: 29275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
-On 02/23/2011 06:14 PM, David Gibson wrote:
-> On Wed, Feb 23, 2011 at 05:57:43PM -0800, David Daney wrote:
->> On 02/23/2011 03:49 PM, David Gibson wrote:
->>> On Wed, Feb 23, 2011 at 11:06:30AM -0800, David Daney wrote:
->>>> On 02/22/2011 04:07 PM, David Gibson wrote:
->>>>> On Tue, Feb 22, 2011 at 12:57:46PM -0800, David Daney wrote:
->>>>>> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
->>>>>> ---
->>>>>>   arch/mips/cavium-octeon/.gitignore      |    2 +
->>>>>>   arch/mips/cavium-octeon/Makefile        |   13 ++
->>>>>>   arch/mips/cavium-octeon/octeon_3xxx.dts |  314 +++++++++++++++++++++++++++++++
->>>>>>   arch/mips/cavium-octeon/octeon_68xx.dts |   99 ++++++++++
->>>>>>   4 files changed, 428 insertions(+), 0 deletions(-)
->>>>>>   create mode 100644 arch/mips/cavium-octeon/.gitignore
->>>>>>   create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
->>>>>>   create mode 100644 arch/mips/cavium-octeon/octeon_68xx.dts
->>>>>>
->>>>>> diff --git a/arch/mips/cavium-octeon/.gitignore b/arch/mips/cavium-octeon/.gitignore
->>>>>> new file mode 100644
->>>>>> index 0000000..39c9686
->>>>>> --- /dev/null
->>>>>> +++ b/arch/mips/cavium-octeon/.gitignore
->>>>>> @@ -0,0 +1,2 @@
->>>>>> +*.dtb.S
->>>>>
->>>>> .dtb.S?
->>>>
->>>> I think I have the correct .gitignore syntax.
->>>
->>> What I meant was, where are you generating .dtb.S files that you need
->>> to ignore them?
->>>
->>
->> They are a byproduct of $(call cmd,dtc).
->>
->> Normally make removes them automatically, but if you abort at just
->> the right time, they can be left around.
->>
->> If it is objectionable, I can just remove that .gitignore bit.
->
-> No, if they're byproducts of cmd,dtc they should be there.  I'm just a
-> bit baffled as to why cmd,dtc would produce such byproducts.  dtc
-> itself will convert dts ->  dtb without any extraneous intermediate
-> steps.
->
+Hi list,
 
-I misspoke.
+Sparse check for mips targets seems to be broken . I think issue lies in
+CHECKFLAGS . ( Probably 'sed' expression of arch/mips/Makefile ) . 
 
-$(call cmd,dtc) does indeed just do the direct conversion.  There are 
-other rules in scripts/Makefile.lib that convert the .dtb into a .dtb.o 
-file that generate the .dtb.S files.
+Test Environment
 
-David Daney
+Host: Ubuntu 10.04
+cross-gcc: gcc-4.5.1
+
+Thanks
+Anoop

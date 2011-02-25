@@ -1,80 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Feb 2011 00:44:43 +0100 (CET)
-Received: from ozlabs.org ([203.10.76.45]:44976 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491836Ab1BXXoU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Feb 2011 00:44:20 +0100
-Received: by ozlabs.org (Postfix, from userid 1007)
-        id 7CFE1B711C; Fri, 25 Feb 2011 10:44:15 +1100 (EST)
-Date:   Fri, 25 Feb 2011 10:19:23 +1100
-From:   David Gibson <david@gibson.dropbear.id.au>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 02/10] MIPS: Octeon: Add device tree source files.
-Message-ID: <20110224231923.GB18233@yookeroo>
-Mail-Followup-To: David Gibson <david@gibson.dropbear.id.au>,
-        David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
-        grant.likely@secretlab.ca, linux-kernel@vger.kernel.org
-References: <1298408274-20856-1-git-send-email-ddaney@caviumnetworks.com>
- <1298408274-20856-3-git-send-email-ddaney@caviumnetworks.com>
- <20110223000759.GA26300@yookeroo>
- <4D653CF1.30009@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Feb 2011 04:56:14 +0100 (CET)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:44243 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491000Ab1BYD4L (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Feb 2011 04:56:11 +0100
+Received: by yxh35 with SMTP id 35so627545yxh.36
+        for <linux-mips@linux-mips.org>; Thu, 24 Feb 2011 19:56:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:message-id:date:from:user-agent:mime-version:to
+         :subject:content-type:content-transfer-encoding;
+        bh=H/6G3yxNdSWT/9jN7rIZL7v4Wq2rprRh78LZN8qI/G8=;
+        b=iB2K6J7DFHJpRy2MAyAEZDrau+kP+vWyJ1yCNTGme5Fn3pmu2o5JXQ7QHFaOVc36ES
+         YDO/CsF5Hq4kMyFJJ035re/1wB3JTVH092/fBRq5drDjNFRRRAfLQ9rxzbep4c7l7Ask
+         n4Pm8ya+ap/IsB6NNHC3BOChjre4FD136ElZw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:subject
+         :content-type:content-transfer-encoding;
+        b=ST0Y13MV+nd5gVVnDFfRPU8NeCci9oWDADiyxwS20mncGdaIhLAuv/EkTaNSNnexFt
+         WYAxJgvOmDBslyUgL4WGDkJlVaHZQQUkoCyWwbAVDmsnjI2QsD+/o84cwHZ7w4cUcWCa
+         9mhpRgxiVcBsu6RQrEE0r+zXT9awd6U120hSs=
+Received: by 10.150.49.19 with SMTP id w19mr2954573ybw.157.1298606164764;
+        Thu, 24 Feb 2011 19:56:04 -0800 (PST)
+Received: from [192.168.100.231] ([220.232.195.195])
+        by mx.google.com with ESMTPS id w24sm5127984ybk.21.2011.02.24.19.56.03
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 24 Feb 2011 19:56:04 -0800 (PST)
+Message-ID: <4D672850.80902@gmail.com>
+Date:   Fri, 25 Feb 2011 11:56:00 +0800
+From:   Jacky Lam <lamshuyin@gmail.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4D653CF1.30009@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <dgibson@ozlabs.org>
+To:     linux-mips <linux-mips@linux-mips.org>
+Subject: Memory needed for hibernation too much
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <lamshuyin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29287
+X-archive-position: 29288
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david@gibson.dropbear.id.au
+X-original-sender: lamshuyin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 23, 2011 at 08:59:29AM -0800, David Daney wrote:
-> On 02/22/2011 04:07 PM, David Gibson wrote:
-> >On Tue, Feb 22, 2011 at 12:57:46PM -0800, David Daney wrote:
-> >>Signed-off-by: David Daney<ddaney@caviumnetworks.com>
-> >>---
-> >>  arch/mips/cavium-octeon/.gitignore      |    2 +
-> >>  arch/mips/cavium-octeon/Makefile        |   13 ++
-> >>  arch/mips/cavium-octeon/octeon_3xxx.dts |  314 +++++++++++++++++++++++++++++++
-> >>  arch/mips/cavium-octeon/octeon_68xx.dts |   99 ++++++++++
-> >>  4 files changed, 428 insertions(+), 0 deletions(-)
-> >>  create mode 100644 arch/mips/cavium-octeon/.gitignore
-> >>  create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
-> >>  create mode 100644 arch/mips/cavium-octeon/octeon_68xx.dts
-> >>
-> [...]
-> 
-> >>+    };
-> >>+  };
-> >
-> >Uh.. where are the CPUs?
-> >
-> 
-> The number and type of CPUs can be (and is) probed.  There is an
-> existing mechanism for the bootloader to communicate which CPUs
-> should be used.
+Hi all,
 
-Hrm, ok.
+     I try the hibernation feature with my MIPS box which has 128MB RAM. 
+After boot up, it remains to have 110MB something. Then I mount ramfs on 
+a directory, create a file 100MB from /dev/urandom and enter 
+hibernation. The process failed because of no memory. Then, I continue 
+to cut the data file size and not success until 20MB.
 
-Grant,
+     I want to make sure if it is an expected behavior or I am doing 
+some wrong?
 
-We've seen this now on both MIPS and ARM - dts files with no cpus, on
-the grounds that those can be runtime probed.  I guess it makes sense,
-although a dts without cpus looks very, very odd to me.  What are your
-thoughts on this?
+     Thanks.
 
--- 
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+BR,
+Jacky

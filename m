@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2011 17:13:51 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:51015 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2011 17:14:17 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:51016 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491940Ab1CAQM2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1491941Ab1CAQM2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Tue, 1 Mar 2011 17:12:28 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        Felix Fietkau <nbd@openwrt.org>, linux-mips@linux-mips.org
-Subject: [PATCH V2 04/10] MIPS: lantiq: add serial port support
-Date:   Tue,  1 Mar 2011 17:13:20 +0100
-Message-Id: <1298996006-15960-5-git-send-email-blogic@openwrt.org>
+        linux-mips@linux-mips.org
+Subject: [PATCH V2 01/10] MIPS: lantiq: add initial support for Lantiq SoCs
+Date:   Tue,  1 Mar 2011 17:13:17 +0100
+Message-Id: <1298996006-15960-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1298996006-15960-1-git-send-email-blogic@openwrt.org>
 References: <1298996006-15960-1-git-send-email-blogic@openwrt.org>
@@ -18,7 +18,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29305
+X-archive-position: 29306
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,832 +26,891 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds the driver for the 2 serial ports found inside the Lantiq SoC family
+Add initial support for Mips based SoCs made by Lantiq. This series will add
+support for the XWAY family.
+
+The series allows booting a minimal system using a initramfs or NOR. Missing
+drivers and support for Amazon and GPON family will be provided in a later
+series.
+
+Changes in V2
+* handle external interrup sources
+* properly set io_base
+* handle CMDLINE properly
+* remove custom early_printf
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Cc: linux-mips@linux-mips.org
-
-Changes in V2
-* small cleanups
-* use global register access macros
-* properly register memory resources
 ---
- drivers/tty/serial/Kconfig  |    8 +
- drivers/tty/serial/Makefile |    1 +
- drivers/tty/serial/lantiq.c |  775 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 784 insertions(+), 0 deletions(-)
- create mode 100644 drivers/tty/serial/lantiq.c
+ arch/mips/Kbuild.platforms                 |    1 +
+ arch/mips/Kconfig                          |   17 ++
+ arch/mips/include/asm/mach-lantiq/lantiq.h |   58 +++++
+ arch/mips/include/asm/mach-lantiq/war.h    |   24 +++
+ arch/mips/lantiq/Makefile                  |    9 +
+ arch/mips/lantiq/Platform                  |    7 +
+ arch/mips/lantiq/clk.c                     |  132 ++++++++++++
+ arch/mips/lantiq/clk.h                     |   18 ++
+ arch/mips/lantiq/early_printk.c            |   33 +++
+ arch/mips/lantiq/irq.c                     |  311 ++++++++++++++++++++++++++++
+ arch/mips/lantiq/prom.c                    |   74 +++++++
+ arch/mips/lantiq/prom.h                    |   24 +++
+ arch/mips/lantiq/setup.c                   |   47 +++++
+ 13 files changed, 755 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-lantiq/lantiq.h
+ create mode 100644 arch/mips/include/asm/mach-lantiq/war.h
+ create mode 100644 arch/mips/lantiq/Makefile
+ create mode 100644 arch/mips/lantiq/Platform
+ create mode 100644 arch/mips/lantiq/clk.c
+ create mode 100644 arch/mips/lantiq/clk.h
+ create mode 100644 arch/mips/lantiq/early_printk.c
+ create mode 100644 arch/mips/lantiq/irq.c
+ create mode 100644 arch/mips/lantiq/prom.c
+ create mode 100644 arch/mips/lantiq/prom.h
+ create mode 100644 arch/mips/lantiq/setup.c
 
-diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-index 2b83346..8f286eb 100644
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -1402,6 +1402,14 @@ config SERIAL_OF_PLATFORM_NWPSERIAL_CONSOLE
- 	help
- 	  Support for Console on the NWP serial ports.
+diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
+index 7ff9b54..aef6c91 100644
+--- a/arch/mips/Kbuild.platforms
++++ b/arch/mips/Kbuild.platforms
+@@ -11,6 +11,7 @@ platforms += dec
+ platforms += emma
+ platforms += jazz
+ platforms += jz4740
++platforms += lantiq
+ platforms += lasat
+ platforms += loongson
+ platforms += mipssim
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index bd7b64d..f975932 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -210,6 +210,23 @@ config MACH_JZ4740
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select HAVE_PWM
  
-+config SERIAL_LANTIQ
-+	bool "Lantiq serial driver"
-+	depends on LANTIQ
-+	select SERIAL_CORE
-+	select SERIAL_CORE_CONSOLE
-+	help
-+	  Support for console and UART on Lantiq SoCs.
++config LANTIQ
++	bool "Lantiq based platforms"
++	select DMA_NONCOHERENT
++	select IRQ_CPU
++	select CEVT_R4K
++	select CSRC_R4K
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_SUPPORTS_BIG_ENDIAN
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_MULTITHREADING
++	select SYS_HAS_EARLY_PRINTK
++	select ARCH_REQUIRE_GPIOLIB
++	select SWAP_IO_SPACE
++	select BOOT_RAW
++	select HAVE_CLK
 +
- config SERIAL_QE
- 	tristate "Freescale QUICC Engine serial port support"
- 	depends on QUICC_ENGINE
-diff --git a/drivers/tty/serial/Makefile b/drivers/tty/serial/Makefile
-index 8ea92e9..1aebd4d 100644
---- a/drivers/tty/serial/Makefile
-+++ b/drivers/tty/serial/Makefile
-@@ -92,3 +92,4 @@ obj-$(CONFIG_SERIAL_MRST_MAX3110)	+= mrst_max3110.o
- obj-$(CONFIG_SERIAL_MFD_HSU)	+= mfd.o
- obj-$(CONFIG_SERIAL_IFX6X60)  	+= ifx6x60.o
- obj-$(CONFIG_SERIAL_PCH_UART)	+= pch_uart.o
-+obj-$(CONFIG_SERIAL_LANTIQ)	+= lantiq.o
-diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+ config LASAT
+ 	bool "LASAT Networks platforms"
+ 	select CEVT_R4K
+diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
 new file mode 100644
-index 0000000..4c22642
+index 0000000..f7f4516
 --- /dev/null
-+++ b/drivers/tty/serial/lantiq.c
-@@ -0,0 +1,775 @@
++++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
+@@ -0,0 +1,58 @@
 +/*
-+ *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts'o.
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
 + *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ *
-+ * Copyright (C) 2004 Infineon IFAP DC COM CPE
-+ * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
-+ * Copyright (C) 2007 John Crispin <blogic@openwrt.org>
-+ * Copyright (C) 2010 Thomas Langer, <thomas.langer@lantiq.com>
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
 + */
 +
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/ioport.h>
-+#include <linux/init.h>
-+#include <linux/console.h>
-+#include <linux/sysrq.h>
-+#include <linux/device.h>
-+#include <linux/tty.h>
-+#include <linux/tty_flip.h>
-+#include <linux/serial_core.h>
-+#include <linux/serial.h>
-+#include <linux/platform_device.h>
++#ifndef _LANTIQ_H__
++#define _LANTIQ_H__
++
++/* generic reg access functions */
++#define ltq_r32(reg)		__raw_readl(reg)
++#define ltq_w32(val, reg)	__raw_writel(val, reg)
++#define ltq_w32_mask(clear, set, reg)	\
++	ltq_w32((ltq_r32(reg) & ~(clear)) | (set), reg)
++#define ltq_r8(reg)		__raw_readb(reg)
++#define ltq_w8(val, reg)	__raw_writeb(val, reg)
++
++/* register access macros for EBU and CGU */
++#define ltq_ebu_w32(x, y)	ltq_w32((x), ltq_ebu_membase + (y))
++#define ltq_ebu_r32(x)		ltq_r32(ltq_ebu_membase + (x))
++#define ltq_cgu_w32(x, y)	ltq_w32((x), ltq_cgu_membase + (y))
++#define ltq_cgu_r32(x)		ltq_r32(ltq_cgu_membase + (x))
++
++extern __iomem void *ltq_ebu_membase;
++extern __iomem void *ltq_cgu_membase;
++
++extern unsigned int ltq_get_cpu_ver(void);
++extern unsigned int ltq_get_soc_type(void);
++
++/* clock speeds */
++#define CLOCK_60M	60000000
++#define CLOCK_83M	83333333
++#define CLOCK_111M	111111111
++#define CLOCK_133M	133333333
++#define CLOCK_167M	166666667
++#define CLOCK_200M	200000000
++#define CLOCK_266M	266666666
++#define CLOCK_333M	333333333
++#define CLOCK_400M	400000000
++
++/* spinlock all ebu i/o */
++extern spinlock_t ebu_lock;
++
++/* some irq helpers */
++extern void ltq_disable_irq(unsigned int irq_nr);
++extern void ltq_mask_and_ack_irq(unsigned int irq_nr);
++extern void ltq_enable_irq(unsigned int irq_nr);
++
++#define IOPORT_RESOURCE_START	0x10000000
++#define IOPORT_RESOURCE_END	0xffffffff
++#define IOMEM_RESOURCE_START	0x10000000
++#define IOMEM_RESOURCE_END	0xffffffff
++#define LTQ_FLASH_START		0x10000000
++#define LTQ_FLASH_MAX		0x04000000
++
++#endif
+diff --git a/arch/mips/include/asm/mach-lantiq/war.h b/arch/mips/include/asm/mach-lantiq/war.h
+new file mode 100644
+index 0000000..01b08ef
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lantiq/war.h
+@@ -0,0 +1,24 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ */
++#ifndef __ASM_MIPS_MACH_LANTIQ_WAR_H
++#define __ASM_MIPS_MACH_LANTIQ_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR     0
++#define R4600_V1_HIT_CACHEOP_WAR        0
++#define R4600_V2_HIT_CACHEOP_WAR        0
++#define R5432_CP0_INTERRUPT_WAR         0
++#define BCM1250_M3_WAR                  0
++#define SIBYTE_1956_WAR                 0
++#define MIPS4K_ICACHE_REFILL_WAR        0
++#define MIPS_CACHE_SYNC_WAR             0
++#define TX49XX_ICACHE_INDEX_INV_WAR     0
++#define RM9000_CDEX_SMP_WAR             0
++#define ICACHE_REFILLS_WORKAROUND_WAR   0
++#define R10000_LLSC_WAR                 0
++#define MIPS34K_MISSED_ITLB_WAR         0
++
++#endif
+diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
+new file mode 100644
+index 0000000..6a30de6
+--- /dev/null
++++ b/arch/mips/lantiq/Makefile
+@@ -0,0 +1,9 @@
++# Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++#
++# This program is free software; you can redistribute it and/or modify it
++# under the terms of the GNU General Public License version 2 as published
++# by the Free Software Foundation.
++
++obj-y := irq.o setup.o clk.o prom.o
++
++obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+diff --git a/arch/mips/lantiq/Platform b/arch/mips/lantiq/Platform
+new file mode 100644
+index 0000000..eef587f
+--- /dev/null
++++ b/arch/mips/lantiq/Platform
+@@ -0,0 +1,7 @@
++#
++# Lantiq
++#
++
++platform-$(CONFIG_LANTIQ)	+= lantiq/
++cflags-$(CONFIG_LANTIQ)		+= -I$(srctree)/arch/mips/include/asm/mach-lantiq
++load-$(CONFIG_LANTIQ)		= 0xffffffff80002000
+diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
+new file mode 100644
+index 0000000..cffca96
+--- /dev/null
++++ b/arch/mips/lantiq/clk.c
+@@ -0,0 +1,132 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
 +#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/types.h>
 +#include <linux/clk.h>
++#include <linux/err.h>
++#include <linux/list.h>
++
++#include <asm/time.h>
++#include <asm/irq.h>
++#include <asm/div64.h>
 +
 +#include <lantiq_soc.h>
 +
-+#define PORT_LTQ_ASC		111
-+#define MAXPORTS		2
-+#define UART_DUMMY_UER_RX	1
-+#define DRVNAME			"ltq_asc"
-+#ifdef __BIG_ENDIAN
-+#define LTQ_ASC_TBUF		(0x0020 + 3)
-+#define LTQ_ASC_RBUF		(0x0024 + 3)
-+#else
-+#define LTQ_ASC_TBUF		0x0020
-+#define LTQ_ASC_RBUF		0x0024
-+#endif
-+#define LTQ_ASC_FSTAT		0x0048
-+#define LTQ_ASC_WHBSTATE	0x0018
-+#define LTQ_ASC_STATE		0x0014
-+#define LTQ_ASC_IRNCR		0x00F8
-+#define LTQ_ASC_CLC		0x0000
-+#define LTQ_ASC_ID		0x0008
-+#define LTQ_ASC_PISEL		0x0004
-+#define LTQ_ASC_TXFCON		0x0044
-+#define LTQ_ASC_RXFCON		0x0040
-+#define LTQ_ASC_CON		0x0010
-+#define LTQ_ASC_BG		0x0050
-+#define LTQ_ASC_IRNREN		0x00F4
++#include "clk.h"
 +
-+#define ASC_IRNREN_TX		0x1
-+#define ASC_IRNREN_RX		0x2
-+#define ASC_IRNREN_ERR		0x4
-+#define ASC_IRNREN_TX_BUF	0x8
-+#define ASC_IRNCR_TIR		0x1
-+#define ASC_IRNCR_RIR		0x2
-+#define ASC_IRNCR_EIR		0x4
-+
-+#define ASCOPT_CSIZE		0x3
-+#define ASCOPT_CS7		0x1
-+#define ASCOPT_CS8		0x2
-+#define ASCOPT_PARENB		0x4
-+#define ASCOPT_STOPB		0x8
-+#define ASCOPT_PARODD		0x0
-+#define ASCOPT_CREAD		0x20
-+#define TXFIFO_FL		1
-+#define RXFIFO_FL		1
-+#define ASCCLC_DISS		0x2
-+#define ASCCLC_RMCMASK		0x0000FF00
-+#define ASCCLC_RMCOFFSET	8
-+#define ASCCON_M_8ASYNC		0x0
-+#define ASCCON_M_7ASYNC		0x2
-+#define ASCCON_ODD		0x00000020
-+#define ASCCON_STP		0x00000080
-+#define ASCCON_BRS		0x00000100
-+#define ASCCON_FDE		0x00000200
-+#define ASCCON_R		0x00008000
-+#define ASCCON_FEN		0x00020000
-+#define ASCCON_ROEN		0x00080000
-+#define ASCCON_TOEN		0x00100000
-+#define ASCSTATE_PE		0x00010000
-+#define ASCSTATE_FE		0x00020000
-+#define ASCSTATE_ROE		0x00080000
-+#define ASCSTATE_ANY		(ASCSTATE_ROE|ASCSTATE_PE|ASCSTATE_FE)
-+#define ASCWHBSTATE_CLRREN	0x00000001
-+#define ASCWHBSTATE_SETREN	0x00000002
-+#define ASCWHBSTATE_CLRPE	0x00000004
-+#define ASCWHBSTATE_CLRFE	0x00000008
-+#define ASCWHBSTATE_CLRROE	0x00000020
-+#define ASCTXFCON_TXFEN		0x0001
-+#define ASCTXFCON_TXFFLU	0x0002
-+#define ASCTXFCON_TXFITLMASK	0x3F00
-+#define ASCTXFCON_TXFITLOFF	8
-+#define ASCRXFCON_RXFEN		0x0001
-+#define ASCRXFCON_RXFFLU	0x0002
-+#define ASCRXFCON_RXFITLMASK	0x3F00
-+#define ASCRXFCON_RXFITLOFF	8
-+#define ASCFSTAT_RXFFLMASK	0x003F
-+#define ASCFSTAT_TXFFLMASK	0x3F00
-+#define ASCFSTAT_TXFFLOFF	8
-+#define ASCFSTAT_RXFREEMASK	0x003F0000
-+#define ASCFSTAT_RXFREEOFF	16
-+#define ASCFSTAT_TXFREEMASK	0x3F000000
-+#define ASCFSTAT_TXFREEOFF	24
-+
-+static void lqasc_tx_chars(struct uart_port *port);
-+static struct ltq_uart_port *lqasc_port[2];
-+static struct uart_driver lqasc_reg;
-+
-+struct ltq_uart_port {
-+	struct uart_port	port;
-+	struct clk			*clk;
-+	unsigned int		tx_irq;
-+	unsigned int		rx_irq;
-+	unsigned int		err_irq;
++struct clk {
++	const char *name;
++	unsigned long rate;
++	unsigned long (*get_rate) (void);
 +};
 +
-+static inline struct
-+ltq_uart_port *to_ltq_uart_port(struct uart_port *port)
-+{
-+	return container_of(port, struct ltq_uart_port, port);
-+}
-+
-+static void
-+lqasc_stop_tx(struct uart_port *port)
-+{
-+	return;
-+}
-+
-+static void
-+lqasc_start_tx(struct uart_port *port)
-+{
-+	unsigned long flags;
-+	local_irq_save(flags);
-+	lqasc_tx_chars(port);
-+	local_irq_restore(flags);
-+	return;
-+}
-+
-+static void
-+lqasc_stop_rx(struct uart_port *port)
-+{
-+	ltq_w32(ASCWHBSTATE_CLRREN, port->membase + LTQ_ASC_WHBSTATE);
-+}
-+
-+static void
-+lqasc_enable_ms(struct uart_port *port)
-+{
-+}
-+
-+static void
-+lqasc_rx_chars(struct uart_port *port)
-+{
-+	struct tty_struct *tty = port->state->port.tty;
-+	unsigned int ch = 0, rsr = 0, fifocnt;
-+
-+	fifocnt =
-+		ltq_r32(port->membase + LTQ_ASC_FSTAT) & ASCFSTAT_RXFFLMASK;
-+	while (fifocnt--) {
-+		u8 flag = TTY_NORMAL;
-+		ch = ltq_r8(port->membase + LTQ_ASC_RBUF);
-+		rsr = (ltq_r32(port->membase + LTQ_ASC_STATE)
-+			& ASCSTATE_ANY) | UART_DUMMY_UER_RX;
-+		tty_flip_buffer_push(tty);
-+		port->icount.rx++;
-+
-+		/*
-+		 * Note that the error handling code is
-+		 * out of the main execution path
-+		 */
-+		if (rsr & ASCSTATE_ANY) {
-+			if (rsr & ASCSTATE_PE) {
-+				port->icount.parity++;
-+				ltq_w32_mask(0, ASCWHBSTATE_CLRPE,
-+					port->membase + LTQ_ASC_WHBSTATE);
-+			} else if (rsr & ASCSTATE_FE) {
-+				port->icount.frame++;
-+				ltq_w32_mask(0, ASCWHBSTATE_CLRFE,
-+					port->membase + LTQ_ASC_WHBSTATE);
-+			}
-+			if (rsr & ASCSTATE_ROE) {
-+				port->icount.overrun++;
-+				ltq_w32_mask(0, ASCWHBSTATE_CLRROE,
-+					port->membase + LTQ_ASC_WHBSTATE);
-+			}
-+
-+			rsr &= port->read_status_mask;
-+
-+			if (rsr & ASCSTATE_PE)
-+				flag = TTY_PARITY;
-+			else if (rsr & ASCSTATE_FE)
-+				flag = TTY_FRAME;
-+		}
-+
-+		if ((rsr & port->ignore_status_mask) == 0)
-+			tty_insert_flip_char(tty, ch, flag);
-+
-+		if (rsr & ASCSTATE_ROE)
-+			/*
-+			 * Overrun is special, since it's reported
-+			 * immediately, and doesn't affect the current
-+			 * character
-+			 */
-+			tty_insert_flip_char(tty, 0, TTY_OVERRUN);
-+	}
-+	if (ch != 0)
-+		tty_flip_buffer_push(tty);
-+	return;
-+}
-+
-+static void
-+lqasc_tx_chars(struct uart_port *port)
-+{
-+	struct circ_buf *xmit = &port->state->xmit;
-+	if (uart_tx_stopped(port)) {
-+		lqasc_stop_tx(port);
-+		return;
-+	}
-+
-+	while (((ltq_r32(port->membase + LTQ_ASC_FSTAT) &
-+		ASCFSTAT_TXFREEMASK) >> ASCFSTAT_TXFREEOFF) != 0) {
-+		if (port->x_char) {
-+			ltq_w8(port->x_char, port->membase + LTQ_ASC_TBUF);
-+			port->icount.tx++;
-+			port->x_char = 0;
-+			continue;
-+		}
-+
-+		if (uart_circ_empty(xmit))
-+			break;
-+
-+		ltq_w8(port->state->xmit.buf[port->state->xmit.tail],
-+			port->membase + LTQ_ASC_TBUF);
-+		xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
-+		port->icount.tx++;
-+	}
-+
-+	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
-+		uart_write_wakeup(port);
-+}
-+
-+static irqreturn_t
-+lqasc_tx_int(int irq, void *_port)
-+{
-+	struct uart_port *port = (struct uart_port *)_port;
-+	ltq_w32(ASC_IRNCR_TIR, port->membase + LTQ_ASC_IRNCR);
-+	lqasc_start_tx(port);
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t
-+lqasc_err_int(int irq, void *_port)
-+{
-+	struct uart_port *port = (struct uart_port *)_port;
-+	/* clear any pending interrupts */
-+	ltq_w32_mask(0, ASCWHBSTATE_CLRPE | ASCWHBSTATE_CLRFE |
-+		ASCWHBSTATE_CLRROE, port->membase + LTQ_ASC_WHBSTATE);
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t
-+lqasc_rx_int(int irq, void *_port)
-+{
-+	struct uart_port *port = (struct uart_port *)_port;
-+	ltq_w32(ASC_IRNCR_RIR, port->membase + LTQ_ASC_IRNCR);
-+	lqasc_rx_chars(port);
-+	return IRQ_HANDLED;
-+}
-+
-+static unsigned int
-+lqasc_tx_empty(struct uart_port *port)
-+{
-+	int status;
-+	status = ltq_r32(port->membase + LTQ_ASC_FSTAT) & ASCFSTAT_TXFFLMASK;
-+	return status ? 0 : TIOCSER_TEMT;
-+}
-+
-+static unsigned int
-+lqasc_get_mctrl(struct uart_port *port)
-+{
-+	return TIOCM_CTS | TIOCM_CAR | TIOCM_DSR;
-+}
-+
-+static void
-+lqasc_set_mctrl(struct uart_port *port, u_int mctrl)
-+{
-+}
-+
-+static void
-+lqasc_break_ctl(struct uart_port *port, int break_state)
-+{
-+}
-+
-+static int
-+lqasc_startup(struct uart_port *port)
-+{
-+	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
-+	int retval;
-+
-+	port->uartclk = clk_get_rate(ltq_port->clk);
-+
-+	ltq_w32_mask(ASCCLC_DISS | ASCCLC_RMCMASK, (1 << ASCCLC_RMCOFFSET),
-+		port->membase + LTQ_ASC_CLC);
-+
-+	ltq_w32(0, port->membase + LTQ_ASC_PISEL);
-+	ltq_w32(
-+		((TXFIFO_FL << ASCTXFCON_TXFITLOFF) & ASCTXFCON_TXFITLMASK) |
-+		ASCTXFCON_TXFEN | ASCTXFCON_TXFFLU,
-+		port->membase + LTQ_ASC_TXFCON);
-+	ltq_w32(
-+		((RXFIFO_FL << ASCRXFCON_RXFITLOFF) & ASCRXFCON_RXFITLMASK)
-+		| ASCRXFCON_RXFEN | ASCRXFCON_RXFFLU,
-+		port->membase + LTQ_ASC_RXFCON);
-+	/* make sure other settings are written to hardware before
-+	   setting enable bits */
-+	wmb();
-+	ltq_w32_mask(0, ASCCON_M_8ASYNC | ASCCON_FEN | ASCCON_TOEN |
-+		ASCCON_ROEN, port->membase + LTQ_ASC_CON);
-+
-+	retval = request_irq(ltq_port->tx_irq, lqasc_tx_int,
-+		IRQF_DISABLED, "asc_tx", port);
-+	if (retval) {
-+		pr_err("failed to request lqasc_tx_int\n");
-+		return retval;
-+	}
-+
-+	retval = request_irq(ltq_port->rx_irq, lqasc_rx_int,
-+		IRQF_DISABLED, "asc_rx", port);
-+	if (retval) {
-+		pr_err("failed to request lqasc_rx_int\n");
-+		goto err1;
-+	}
-+
-+	retval = request_irq(ltq_port->err_irq, lqasc_err_int,
-+		IRQF_DISABLED, "asc_err", port);
-+	if (retval) {
-+		pr_err("failed to request lqasc_err_int\n");
-+		goto err2;
-+	}
-+
-+	ltq_w32(ASC_IRNREN_RX | ASC_IRNREN_ERR | ASC_IRNREN_TX,
-+		port->membase + LTQ_ASC_IRNREN);
-+	return 0;
-+
-+err2:
-+	free_irq(ltq_port->rx_irq, port);
-+err1:
-+	free_irq(ltq_port->tx_irq, port);
-+	return retval;
-+}
-+
-+static void
-+lqasc_shutdown(struct uart_port *port)
-+{
-+	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
-+	free_irq(ltq_port->tx_irq, port);
-+	free_irq(ltq_port->rx_irq, port);
-+	free_irq(ltq_port->err_irq, port);
-+
-+	ltq_w32(0, port->membase + LTQ_ASC_CON);
-+	ltq_w32_mask(ASCRXFCON_RXFEN, ASCRXFCON_RXFFLU,
-+		port->membase + LTQ_ASC_RXFCON);
-+	ltq_w32_mask(ASCTXFCON_TXFEN, ASCTXFCON_TXFFLU,
-+		port->membase + LTQ_ASC_TXFCON);
-+}
-+
-+static void
-+lqasc_set_termios(struct uart_port *port,
-+	struct ktermios *new, struct ktermios *old)
-+{
-+	unsigned int cflag;
-+	unsigned int iflag;
-+	unsigned int quot;
-+	unsigned int baud;
-+	unsigned int con = 0;
-+	unsigned long flags;
-+
-+	cflag = new->c_cflag;
-+	iflag = new->c_iflag;
-+
-+	switch (cflag & CSIZE) {
-+	case CS7:
-+		con = ASCCON_M_7ASYNC;
-+		break;
-+
-+	case CS5:
-+	case CS6:
-+	default:
-+		con = ASCCON_M_8ASYNC;
-+		break;
-+	}
-+
-+	if (cflag & CSTOPB)
-+		con |= ASCCON_STP;
-+
-+	if (cflag & PARENB) {
-+		if (!(cflag & PARODD))
-+			con &= ~ASCCON_ODD;
-+		else
-+			con |= ASCCON_ODD;
-+	}
-+
-+	port->read_status_mask = ASCSTATE_ROE;
-+	if (iflag & INPCK)
-+		port->read_status_mask |= ASCSTATE_FE | ASCSTATE_PE;
-+
-+	port->ignore_status_mask = 0;
-+	if (iflag & IGNPAR)
-+		port->ignore_status_mask |= ASCSTATE_FE | ASCSTATE_PE;
-+
-+	if (iflag & IGNBRK) {
-+		/*
-+		 * If we're ignoring parity and break indicators,
-+		 * ignore overruns too (for real raw support).
-+		 */
-+		if (iflag & IGNPAR)
-+			port->ignore_status_mask |= ASCSTATE_ROE;
-+	}
-+
-+	if ((cflag & CREAD) == 0)
-+		port->ignore_status_mask |= UART_DUMMY_UER_RX;
-+
-+	/* set error signals  - framing, parity  and overrun, enable receiver */
-+	con |= ASCCON_FEN | ASCCON_TOEN | ASCCON_ROEN;
-+
-+	local_irq_save(flags);
-+
-+	/* set up CON */
-+	ltq_w32_mask(0, con, port->membase + LTQ_ASC_CON);
-+
-+	/* Set baud rate - take a divider of 2 into account */
-+	baud = uart_get_baud_rate(port, new, old, 0, port->uartclk / 16);
-+	quot = uart_get_divisor(port, baud);
-+	quot = quot / 2 - 1;
-+
-+	/* disable the baudrate generator */
-+	ltq_w32_mask(ASCCON_R, 0, port->membase + LTQ_ASC_CON);
-+
-+	/* make sure the fractional divider is off */
-+	ltq_w32_mask(ASCCON_FDE, 0, port->membase + LTQ_ASC_CON);
-+
-+	/* set up to use divisor of 2 */
-+	ltq_w32_mask(ASCCON_BRS, 0, port->membase + LTQ_ASC_CON);
-+
-+	/* now we can write the new baudrate into the register */
-+	ltq_w32(quot, port->membase + LTQ_ASC_BG);
-+
-+	/* turn the baudrate generator back on */
-+	ltq_w32_mask(0, ASCCON_R, port->membase + LTQ_ASC_CON);
-+
-+	/* enable rx */
-+	ltq_w32(ASCWHBSTATE_SETREN, port->membase + LTQ_ASC_WHBSTATE);
-+
-+	local_irq_restore(flags);
-+}
-+
-+static const char*
-+lqasc_type(struct uart_port *port)
-+{
-+	if (port->type == PORT_LTQ_ASC)
-+		return DRVNAME;
-+	else
-+		return NULL;
-+}
-+
-+static void
-+lqasc_release_port(struct uart_port *port)
-+{
-+	if (port->flags & UPF_IOREMAP) {
-+		iounmap(port->membase);
-+		port->membase = NULL;
-+	}
-+}
-+
-+static int
-+lqasc_request_port(struct uart_port *port)
-+{
-+	struct platform_device *pdev = to_platform_device(port->dev);
-+	struct resource *res;
-+	int size;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev, "cannot obtain I/O memory region");
-+		return -ENODEV;
-+	}
-+	size = resource_size(res);
-+
-+	res = devm_request_mem_region(&pdev->dev, res->start,
-+		size, dev_name(&pdev->dev));
-+	if (!res) {
-+		dev_err(&pdev->dev, "cannot request I/O memory region");
-+		return -EBUSY;
-+	}
-+
-+	if (port->flags & UPF_IOREMAP) {
-+		port->membase = devm_ioremap_nocache(&pdev->dev,
-+			port->mapbase, size);
-+		if (port->membase == NULL)
-+			return -ENOMEM;
-+	}
-+	return 0;
-+}
-+
-+static void
-+lqasc_config_port(struct uart_port *port, int flags)
-+{
-+	if (flags & UART_CONFIG_TYPE) {
-+		port->type = PORT_LTQ_ASC;
-+		lqasc_request_port(port);
-+	}
-+}
-+
-+static int
-+lqasc_verify_port(struct uart_port *port,
-+	struct serial_struct *ser)
-+{
-+	int ret = 0;
-+	if (ser->type != PORT_UNKNOWN && ser->type != PORT_LTQ_ASC)
-+		ret = -EINVAL;
-+	if (ser->irq < 0 || ser->irq >= NR_IRQS)
-+		ret = -EINVAL;
-+	if (ser->baud_base < 9600)
-+		ret = -EINVAL;
-+	return ret;
-+}
-+
-+static struct uart_ops lqasc_pops = {
-+	.tx_empty =	lqasc_tx_empty,
-+	.set_mctrl =	lqasc_set_mctrl,
-+	.get_mctrl =	lqasc_get_mctrl,
-+	.stop_tx =	lqasc_stop_tx,
-+	.start_tx =	lqasc_start_tx,
-+	.stop_rx =	lqasc_stop_rx,
-+	.enable_ms =	lqasc_enable_ms,
-+	.break_ctl =	lqasc_break_ctl,
-+	.startup =	lqasc_startup,
-+	.shutdown =	lqasc_shutdown,
-+	.set_termios =	lqasc_set_termios,
-+	.type =		lqasc_type,
-+	.release_port =	lqasc_release_port,
-+	.request_port =	lqasc_request_port,
-+	.config_port =	lqasc_config_port,
-+	.verify_port =	lqasc_verify_port,
-+};
-+
-+static void
-+lqasc_console_putchar(struct uart_port *port, int ch)
-+{
-+	int fifofree;
-+
-+	if (!port->membase)
-+		return;
-+
-+	do {
-+		fifofree = (ltq_r32(port->membase + LTQ_ASC_FSTAT)
-+			& ASCFSTAT_TXFREEMASK) >> ASCFSTAT_TXFREEOFF;
-+	} while (fifofree == 0);
-+	ltq_w8(ch, port->membase + LTQ_ASC_TBUF);
-+}
-+
-+
-+static void
-+lqasc_console_write(struct console *co, const char *s, u_int count)
-+{
-+	struct ltq_uart_port *ltq_port;
-+	struct uart_port *port;
-+	unsigned long flags;
-+
-+	if (co->index >= MAXPORTS)
-+		return;
-+
-+	ltq_port = lqasc_port[co->index];
-+	if (!ltq_port)
-+		return;
-+
-+	port = &ltq_port->port;
-+
-+	local_irq_save(flags);
-+	uart_console_write(port, s, count, lqasc_console_putchar);
-+	local_irq_restore(flags);
-+}
-+
-+static int __init
-+lqasc_console_setup(struct console *co, char *options)
-+{
-+	struct ltq_uart_port *ltq_port;
-+	struct uart_port *port;
-+	int baud = 115200;
-+	int bits = 8;
-+	int parity = 'n';
-+	int flow = 'n';
-+
-+	if (co->index >= MAXPORTS)
-+		return -ENODEV;
-+
-+	ltq_port = lqasc_port[co->index];
-+	if (!ltq_port)
-+		return -ENODEV;
-+
-+	port = &ltq_port->port;
-+
-+	port->uartclk = clk_get_rate(ltq_port->clk);
-+
-+	if (options)
-+		uart_parse_options(options, &baud, &parity, &bits, &flow);
-+	return uart_set_options(port, co, baud, parity, bits, flow);
-+}
-+
-+static struct console lqasc_console = {
-+	.name =		"ttyS",
-+	.write =	lqasc_console_write,
-+	.device =	uart_console_device,
-+	.setup =	lqasc_console_setup,
-+	.flags =	CON_PRINTBUFFER,
-+	.index =	-1,
-+	.data =		&lqasc_reg,
-+};
-+
-+static int __init
-+lqasc_console_init(void)
-+{
-+	register_console(&lqasc_console);
-+	return 0;
-+}
-+console_initcall(lqasc_console_init);
-+
-+static struct uart_driver lqasc_reg = {
-+	.owner =	THIS_MODULE,
-+	.driver_name =	DRVNAME,
-+	.dev_name =	"ttyS",
-+	.major =	TTY_MAJOR,
-+	.minor =	64,
-+	.nr =		MAXPORTS,
-+	.cons =		&lqasc_console,
-+};
-+
-+static int __devinit
-+lqasc_probe(struct platform_device *pdev)
-+{
-+	struct ltq_uart_port *ltq_port;
-+	struct uart_port *port;
-+	struct resource *mmres, *irqres;
-+	int tx_irq, rx_irq, err_irq;
-+	struct clk *clk;
-+	int ret;
-+
-+	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	irqres = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!mmres || !irqres)
-+		return -ENODEV;
-+
-+	if (pdev->id >= MAXPORTS)
-+		return -EBUSY;
-+
-+	if (lqasc_port[pdev->id] != NULL)
-+		return -EBUSY;
-+
-+	clk = clk_get(&pdev->dev, "fpi");
-+	if (IS_ERR(clk)) {
-+		pr_err("failed to get fpi clk\n");
-+		return -ENOENT;
-+	}
-+
-+	tx_irq = platform_get_irq_byname(pdev, "tx");
-+	if (tx_irq < 0) {
-+		/* without named resources: assume standard irq scheme */
-+		tx_irq = irqres->start;
-+		rx_irq = irqres->start+2;
-+		err_irq = irqres->start+3;
-+	} else {
-+		/* other irqs must be named also! */
-+		rx_irq = platform_get_irq_byname(pdev, "rx");
-+		err_irq = platform_get_irq_byname(pdev, "err");
-+		if ((rx_irq < 0) | (err_irq < 0))
-+			return -ENODEV;
-+	}
-+
-+	ltq_port = kzalloc(sizeof(struct ltq_uart_port), GFP_KERNEL);
-+	if (!ltq_port)
-+		return -ENOMEM;
-+
-+	port = &ltq_port->port;
-+
-+	port->iotype	= SERIAL_IO_MEM;
-+	port->flags	= ASYNC_BOOT_AUTOCONF | UPF_IOREMAP;
-+	port->ops	= &lqasc_pops;
-+	port->fifosize	= 16;
-+	port->type	= PORT_LTQ_ASC,
-+	port->line	= pdev->id;
-+	port->dev	= &pdev->dev;
-+
-+	port->irq	= tx_irq; /* unused, just to be backward-compatibe */
-+	port->mapbase	= mmres->start;
-+
-+	ltq_port->clk	= clk;
-+
-+	ltq_port->tx_irq = tx_irq;
-+	ltq_port->rx_irq = rx_irq;
-+	ltq_port->err_irq = err_irq;
-+
-+	lqasc_port[pdev->id] = ltq_port;
-+	platform_set_drvdata(pdev, ltq_port);
-+
-+	ret = uart_add_one_port(&lqasc_reg, port);
-+
-+	return ret;
-+}
-+
-+static int __devexit
-+lqasc_remove(struct platform_device *pdev)
-+{
-+	struct ltq_uart_port *ltq_port = platform_get_drvdata(pdev);
-+	int ret;
-+
-+	clk_put(ltq_port->clk);
-+	platform_set_drvdata(pdev, NULL);
-+	lqasc_port[pdev->id] = NULL;
-+	ret = uart_remove_one_port(&lqasc_reg, &ltq_port->port);
-+	kfree(ltq_port);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver lqasc_driver = {
-+	.probe		= lqasc_probe,
-+	.remove		= __devexit_p(lqasc_remove),
-+
-+	.driver		= {
-+		.name	= DRVNAME,
-+		.owner	= THIS_MODULE,
++static struct clk *cpu_clk;
++static int cpu_clk_cnt;
++
++/* lantiq socs have 3 static clocks */
++static struct clk cpu_clk_generic[] = {
++	{
++		.name = "cpu",
++		.get_rate = ltq_get_cpu_hz,
++	}, {
++		.name = "fpi",
++		.get_rate = ltq_get_fpi_hz,
++	}, {
++		.name = "io",
++		.get_rate = ltq_get_io_region_clock,
 +	},
 +};
 +
-+int __init
-+init_lqasc(void)
++/* remapped clock register range */
++__iomem void *ltq_cgu_membase;
++
++void
++clk_init(void)
 +{
-+	int ret;
-+
-+	ret = uart_register_driver(&lqasc_reg);
-+	if (ret != 0)
-+		return ret;
-+
-+	ret = platform_driver_register(&lqasc_driver);
-+	if (ret != 0)
-+		uart_unregister_driver(&lqasc_reg);
-+
-+	return ret;
++	cpu_clk = cpu_clk_generic;
++	cpu_clk_cnt = ARRAY_SIZE(cpu_clk_generic);
 +}
 +
-+void __exit
-+exit_lqasc(void)
++static inline int
++clk_good(struct clk *clk)
 +{
-+	platform_driver_unregister(&lqasc_driver);
-+	uart_unregister_driver(&lqasc_reg);
++	return clk && !IS_ERR(clk);
 +}
 +
-+module_init(init_lqasc);
-+module_exit(exit_lqasc);
++unsigned long
++clk_get_rate(struct clk *clk)
++{
++	if (unlikely(!clk_good(clk)))
++		return 0;
 +
-+MODULE_DESCRIPTION("Lantiq serial port driver");
-+MODULE_LICENSE("GPL");
++	if (clk->rate != 0)
++		return clk->rate;
++
++	if (clk->get_rate != NULL)
++		return clk->get_rate();
++
++	return 0;
++}
++EXPORT_SYMBOL(clk_get_rate);
++
++struct clk*
++clk_get(struct device *dev, const char *id)
++{
++	int i;
++	for (i = 0; i < cpu_clk_cnt; i++)
++		if (!strcmp(id, cpu_clk[i].name))
++			return &cpu_clk[i];
++	BUG();
++	return ERR_PTR(-ENOENT);
++}
++EXPORT_SYMBOL(clk_get);
++
++void
++clk_put(struct clk *clk)
++{
++	/* not used */
++}
++EXPORT_SYMBOL(clk_put);
++
++static inline u32
++ltq_get_counter_resolution(void)
++{
++	u32 res;
++	__asm__ __volatile__(
++		".set   push\n"
++		".set   mips32r2\n"
++		".set   noreorder\n"
++		"rdhwr  %0, $3\n"
++		"ehb\n"
++		".set pop\n"
++		: "=&r" (res)
++		: /* no input */
++		: "memory");
++	instruction_hazard();
++	return res;
++}
++
++void __init
++plat_time_init(void)
++{
++	struct clk *clk;
++	ltq_cgu_membase = ioremap_nocache(LTQ_CGU_BASE_ADDR, LTQ_CGU_SIZE);
++	if (!ltq_cgu_membase) {
++		printk(KERN_ERR "Failed to remap cgu memory\n");
++		unreachable();
++	}
++	clk = clk_get(0, "cpu");
++	mips_hpt_frequency = clk_get_rate(clk) / ltq_get_counter_resolution();
++	write_c0_compare(read_c0_count());
++	clk_put(clk);
++}
+diff --git a/arch/mips/lantiq/clk.h b/arch/mips/lantiq/clk.h
+new file mode 100644
+index 0000000..3328925
+--- /dev/null
++++ b/arch/mips/lantiq/clk.h
+@@ -0,0 +1,18 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LTQ_CLK_H__
++#define _LTQ_CLK_H__
++
++extern void clk_init(void);
++
++extern unsigned long ltq_get_cpu_hz(void);
++extern unsigned long ltq_get_fpi_hz(void);
++extern unsigned long ltq_get_io_region_clock(void);
++
++#endif
+diff --git a/arch/mips/lantiq/early_printk.c b/arch/mips/lantiq/early_printk.c
+new file mode 100644
+index 0000000..195b3b6
+--- /dev/null
++++ b/arch/mips/lantiq/early_printk.c
+@@ -0,0 +1,33 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/cpu.h>
++
++#include <lantiq.h>
++#include <lantiq_soc.h>
++
++/* no ioremap possible at this early stage, lets use KSEG1 instead  */
++#define LTQ_ASC_BASE	KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
++#define ASC_BUF		1024
++#define LTQ_ASC_FSTAT	((u32 *)(LTQ_ASC_BASE + 0x0048))
++#define LTQ_ASC_TBUF	((u32 *)(LTQ_ASC_BASE + 0x0020))
++#define TXMASK		0x3F00
++#define TXOFFSET	8
++
++void
++prom_putchar(char c)
++{
++	unsigned long flags;
++	local_irq_save(flags);
++	do { } while ((ltq_r32(LTQ_ASC_FSTAT) & TXMASK) >> TXOFFSET);
++	if (c == '\n')
++		ltq_w32('\r', LTQ_ASC_TBUF);
++	ltq_w32(c, LTQ_ASC_TBUF);
++	local_irq_restore(flags);
++}
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+new file mode 100644
+index 0000000..ecec87b
+--- /dev/null
++++ b/arch/mips/lantiq/irq.c
+@@ -0,0 +1,311 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ * Copyright (C) 2010 Thomas Langer <thomas.langer@lantiq.com>
++ */
++
++#include <linux/interrupt.h>
++#include <linux/ioport.h>
++
++#include <asm/bootinfo.h>
++#include <asm/irq_cpu.h>
++
++#include <lantiq_soc.h>
++#include <irq.h>
++
++/* register definitions */
++#define LTQ_ICU_IM0_ISR		0x0000
++#define LTQ_ICU_IM0_IER		0x0008
++#define LTQ_ICU_IM0_IOSR	0x0010
++#define LTQ_ICU_IM0_IRSR	0x0018
++#define LTQ_ICU_IM0_IMR		0x0020
++#define LTQ_ICU_IM1_ISR		0x0028
++#define LTQ_ICU_OFFSET		(LTQ_ICU_IM1_ISR - LTQ_ICU_IM0_ISR)
++
++#define LTQ_EIU_EXIN_C		0x0000
++#define LTQ_EIU_EXIN_INIC	0x0004
++#define LTQ_EIU_EXIN_INEN	0x000C
++
++/* irq numbers used by the external interrupt unit (EIU) */
++#define LTQ_EIU_IR0		INT_NUM_IM4_IRL0 + 30
++#define LTQ_EIU_IR1		INT_NUM_IM3_IRL0 + 31
++#define LTQ_EIU_IR2		INT_NUM_IM1_IRL0 + 26
++#define LTQ_EIU_IR3		INT_NUM_IM1_IRL0
++#define LTQ_EIU_IR4		INT_NUM_IM1_IRL0 + 1
++#define LTQ_EIU_IR5		INT_NUM_IM1_IRL0 + 2
++#define LTQ_EIU_IR6		INT_NUM_IM2_IRL0 + 30
++
++#define MAX_EIU			6
++
++/* irqs generated by device attached to the EBU need to be acked in
++   a special manner */
++#define LTQ_ICU_EBU_IRQ		22
++
++#define ltq_icu_w32(x, y)	ltq_w32((x), ltq_icu_membase + (y))
++#define ltq_icu_r32(x)		ltq_r32(ltq_icu_membase + (x))
++
++#define ltq_eiu_w32(x, y)	ltq_w32((x), ltq_eiu_membase + (y))
++#define ltq_eiu_r32(x)		ltq_r32(ltq_eiu_membase + (x))
++
++static unsigned short ltq_eiu_irq[MAX_EIU] = {
++	LTQ_EIU_IR0,
++	LTQ_EIU_IR1,
++	LTQ_EIU_IR2,
++	LTQ_EIU_IR3,
++	LTQ_EIU_IR4,
++	LTQ_EIU_IR5,
++};
++
++static __iomem void *ltq_icu_membase;
++static __iomem void *ltq_eiu_membase;
++
++void
++ltq_disable_irq(unsigned int irq_nr)
++{
++	u32 ier = LTQ_ICU_IM0_IER;
++	irq_nr -= INT_NUM_IRQ0;
++	ier += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
++	irq_nr %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32(ltq_icu_r32(ier) & ~(1 << irq_nr), ier);
++}
++
++void
++ltq_mask_and_ack_irq(unsigned int irq_nr)
++{
++	u32 ier = LTQ_ICU_IM0_IER;
++	u32 isr = LTQ_ICU_IM0_ISR;
++	irq_nr -= INT_NUM_IRQ0;
++	ier += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
++	isr += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
++	irq_nr %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32(ltq_icu_r32(ier) & ~(1 << irq_nr), ier);
++	ltq_icu_w32((1 << irq_nr), isr);
++}
++
++static void
++ltq_ack_irq(unsigned int irq_nr)
++{
++	u32 isr = LTQ_ICU_IM0_ISR;
++	irq_nr -= INT_NUM_IRQ0;
++	isr += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
++	irq_nr %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32((1 << irq_nr), isr);
++}
++
++void
++ltq_enable_irq(unsigned int irq_nr)
++{
++	u32 ier = LTQ_ICU_IM0_IER;
++	irq_nr -= INT_NUM_IRQ0;
++	ier += LTQ_ICU_OFFSET  * (irq_nr / INT_NUM_IM_OFFSET);
++	irq_nr %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32(ltq_icu_r32(ier) | (1 << irq_nr), ier);
++}
++
++static unsigned int
++ltq_startup_eiu_irq(unsigned int irq)
++{
++	int i;
++	ltq_enable_irq(irq);
++	for (i = 0; i < MAX_EIU; i++) {
++		if (irq == ltq_eiu_irq[i]) {
++			/* low level - we should really handle set_type */
++			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_C) | (0x6 << (i * 4)),
++				LTQ_EIU_EXIN_C);
++			/* clear all pending */
++			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INIC) & ~(1 << i),
++				LTQ_EIU_EXIN_INIC);
++			/* enable */
++			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INEN) | (1 << i),
++				LTQ_EIU_EXIN_INEN);
++			break;
++		}
++	}
++	return 0;
++}
++
++static void
++ltq_shutdown_eiu_irq(unsigned int irq)
++{
++	int i;
++	ltq_disable_irq(irq);
++	for (i = 0; i < MAX_EIU; i++) {
++		if (irq == ltq_eiu_irq[i]) {
++			/* disable */
++			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INEN) & ~(1 << i),
++				LTQ_EIU_EXIN_INEN);
++			break;
++		}
++	}
++}
++
++static void
++ltq_end_irq(unsigned int irq)
++{
++	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
++		ltq_enable_irq(irq);
++}
++
++static struct irq_chip
++ltq_irq_type = {
++	"ltq_irq",
++	.enable = ltq_enable_irq,
++	.disable = ltq_disable_irq,
++	.unmask = ltq_enable_irq,
++	.ack = ltq_ack_irq,
++	.mask = ltq_disable_irq,
++	.mask_ack = ltq_mask_and_ack_irq,
++	.end = ltq_end_irq,
++};
++
++static struct irq_chip
++ltq_eiu_type = {
++	"ltq_eiu_irq",
++	.startup = ltq_startup_eiu_irq,
++	.shutdown = ltq_shutdown_eiu_irq,
++	.enable = ltq_enable_irq,
++	.disable = ltq_disable_irq,
++	.unmask = ltq_enable_irq,
++	.ack = ltq_ack_irq,
++	.mask = ltq_disable_irq,
++	.mask_ack = ltq_mask_and_ack_irq,
++	.end = ltq_end_irq,
++};
++
++static void
++ltq_hw_irqdispatch(int module)
++{
++	u32 irq;
++
++	irq = ltq_icu_r32(LTQ_ICU_IM0_IOSR + (module * LTQ_ICU_OFFSET));
++	if (irq == 0)
++		return;
++
++	/* silicon bug causes only the msb set to 1 to be valid. all
++	   other bits might be bogus */
++	irq = __fls(irq);
++	do_IRQ((int)irq + INT_NUM_IM0_IRL0 + (INT_NUM_IM_OFFSET * module));
++
++	/* if this is a EBU irq, we need to ack it or get a deadlock */
++	if ((irq == LTQ_ICU_EBU_IRQ) && (module == 0))
++		ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_PCC_ISTAT) | 0x10,
++			LTQ_EBU_PCC_ISTAT);
++}
++
++#define DEFINE_HWx_IRQDISPATCH(x) \
++static void ltq_hw ## x ## _irqdispatch(void)\
++{\
++	ltq_hw_irqdispatch(x); \
++}
++DEFINE_HWx_IRQDISPATCH(0)
++DEFINE_HWx_IRQDISPATCH(1)
++DEFINE_HWx_IRQDISPATCH(2)
++DEFINE_HWx_IRQDISPATCH(3)
++DEFINE_HWx_IRQDISPATCH(4)
++
++static void ltq_hw5_irqdispatch(void)
++{
++	do_IRQ(MIPS_CPU_TIMER_IRQ);
++}
++
++asmlinkage void
++plat_irq_dispatch(void)
++{
++	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
++	unsigned int i;
++
++	if (pending & CAUSEF_IP7) {
++		do_IRQ(MIPS_CPU_TIMER_IRQ);
++		goto out;
++	} else {
++		for (i = 0; i < 5; i++) {
++			if (pending & (CAUSEF_IP2 << i)) {
++				ltq_hw_irqdispatch(i);
++				goto out;
++			}
++		}
++	}
++	printk(KERN_ALERT "Spurious IRQ: CAUSE=0x%08x\n", read_c0_status());
++
++out:
++	return;
++}
++
++static struct irqaction
++cascade = {
++	.handler = no_action,
++	.flags = IRQF_DISABLED,
++	.name = "cascade",
++};
++
++void __init
++arch_init_irq(void)
++{
++	int i;
++
++	ltq_icu_membase = ioremap_nocache(LTQ_ICU_BASE_ADDR, LTQ_ICU_SIZE);
++	if (!ltq_icu_membase) {
++		printk(KERN_ERR "Failed to remap irq memory\n");
++		unreachable();
++	}
++
++	ltq_eiu_membase = ioremap_nocache(LTQ_EIU_BASE_ADDR, LTQ_EIU_SIZE);
++	if (!ltq_eiu_membase) {
++		printk(KERN_ERR "Failed to remap eiu memory\n");
++		unreachable();
++	}
++
++	/* make sure all irqs are turned off by default */
++	for (i = 0; i < 5; i++)
++		ltq_icu_w32(0, LTQ_ICU_IM0_IER + (i * LTQ_ICU_OFFSET));
++
++	/* clear all possibly pending interrupts */
++	ltq_icu_w32(~0, LTQ_ICU_IM0_ISR + (i * LTQ_ICU_OFFSET));
++
++	mips_cpu_irq_init();
++
++	for (i = 2; i <= 6; i++)
++		setup_irq(i, &cascade);
++
++	if (cpu_has_vint) {
++		printk(KERN_INFO "Setting up vectored interrupts\n");
++		set_vi_handler(2, ltq_hw0_irqdispatch);
++		set_vi_handler(3, ltq_hw1_irqdispatch);
++		set_vi_handler(4, ltq_hw2_irqdispatch);
++		set_vi_handler(5, ltq_hw3_irqdispatch);
++		set_vi_handler(6, ltq_hw4_irqdispatch);
++		set_vi_handler(7, ltq_hw5_irqdispatch);
++	}
++
++	for (i = INT_NUM_IRQ0;
++		i <= (INT_NUM_IRQ0 + (5 * INT_NUM_IM_OFFSET)); i++)
++		if ((i == LTQ_EIU_IR0) || (i == LTQ_EIU_IR1) ||
++			(i == LTQ_EIU_IR2))
++			set_irq_chip_and_handler(i, &ltq_eiu_type,
++				handle_level_irq);
++		/* EIU3-5 only exist on ar9 and vr9 */
++		else if (((i == LTQ_EIU_IR3) || (i == LTQ_EIU_IR4) ||
++			(i == LTQ_EIU_IR5)) && (ltq_is_ar9() || ltq_is_vr9()))
++			set_irq_chip_and_handler(i, &ltq_eiu_type,
++				handle_level_irq);
++		else
++			set_irq_chip_and_handler(i, &ltq_irq_type,
++				handle_level_irq);
++
++#if !defined(CONFIG_MIPS_MT_SMP) && !defined(CONFIG_MIPS_MT_SMTC)
++	set_c0_status(IE_IRQ0 | IE_IRQ1 | IE_IRQ2 |
++		IE_IRQ3 | IE_IRQ4 | IE_IRQ5);
++#else
++	set_c0_status(IE_SW0 | IE_SW1 | IE_IRQ0 | IE_IRQ1 |
++		IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5);
++#endif
++}
++
++unsigned int __cpuinit
++get_c0_compare_int(void)
++{
++	return CP0_LEGACY_COMPARE_IRQ;
++}
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+new file mode 100644
+index 0000000..c00df3e
+--- /dev/null
++++ b/arch/mips/lantiq/prom.c
+@@ -0,0 +1,74 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/module.h>
++#include <linux/clk.h>
++#include <asm/bootinfo.h>
++#include <asm/time.h>
++
++#include <lantiq.h>
++
++#include "prom.h"
++#include "clk.h"
++
++static struct ltq_soc_info soc_info;
++
++unsigned int
++ltq_get_cpu_ver(void)
++{
++	return soc_info.rev;
++}
++EXPORT_SYMBOL(ltq_get_cpu_ver);
++
++unsigned int
++ltq_get_soc_type(void)
++{
++	return soc_info.type;
++}
++EXPORT_SYMBOL(ltq_get_soc_type);
++
++const char*
++get_system_type(void)
++{
++	return soc_info.sys_type;
++}
++
++void
++prom_free_prom_memory(void)
++{
++}
++
++static void __init
++prom_init_cmdline(void)
++{
++	int argc = fw_arg0;
++	char **argv = (char **) KSEG1ADDR(fw_arg1);
++	int i;
++	for (i = 0; i < argc; i++) {
++		char *p = (char *)  KSEG1ADDR(argv[i]);
++		if (p && *p) {
++			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
++			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
++		}
++	}
++}
++
++void __init
++prom_init(void)
++{
++	struct clk *clk;
++	ltq_soc_detect(&soc_info);
++	clk_init();
++	clk = clk_get(0, "cpu");
++	snprintf(soc_info.sys_type, LTQ_SYS_TYPE_LEN - 1, "%s rev1.%d",
++		soc_info.name, soc_info.rev);
++	clk_put(clk);
++	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
++	printk(KERN_INFO "SoC: %s\n", soc_info.sys_type);
++	prom_init_cmdline();
++}
+diff --git a/arch/mips/lantiq/prom.h b/arch/mips/lantiq/prom.h
+new file mode 100644
+index 0000000..b9d6562
+--- /dev/null
++++ b/arch/mips/lantiq/prom.h
+@@ -0,0 +1,24 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LTQ_PROM_H__
++#define _LTQ_PROM_H__
++
++#define LTQ_SYS_TYPE_LEN	0x100
++
++struct ltq_soc_info {
++	unsigned char *name;
++	unsigned int rev;
++	unsigned int partnum;
++	unsigned int type;
++	unsigned char sys_type[LTQ_SYS_TYPE_LEN];
++};
++
++void ltq_soc_detect(struct ltq_soc_info *i);
++
++#endif
+diff --git a/arch/mips/lantiq/setup.c b/arch/mips/lantiq/setup.c
+new file mode 100644
+index 0000000..edeb076
+--- /dev/null
++++ b/arch/mips/lantiq/setup.c
+@@ -0,0 +1,47 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <asm/bootinfo.h>
++
++#include <lantiq_soc.h>
++
++void __init
++plat_mem_setup(void)
++{
++	/* assume 16M as default incase uboot fails to pass proper ramsize */
++	unsigned long memsize = 16;
++	char **envp = (char **) KSEG1ADDR(fw_arg2);
++	u32 status;
++
++	/* make sure to have no "reverse endian" for user mode */
++	status = read_c0_status();
++	status &= (~(1<<25));
++	write_c0_status(status);
++
++	ioport_resource.start = IOPORT_RESOURCE_START;
++	ioport_resource.end = IOPORT_RESOURCE_END;
++	iomem_resource.start = IOMEM_RESOURCE_START;
++	iomem_resource.end = IOMEM_RESOURCE_END;
++
++	set_io_port_base((unsigned long) KSEG1);
++
++	while (*envp) {
++		char *e = (char *)KSEG1ADDR(*envp);
++		if (!strncmp(e, "memsize=", 8)) {
++			e += 8;
++			strict_strtoul(e, 0, &memsize);
++		}
++		envp++;
++	}
++	memsize *= 1024 * 1024;
++	add_memory_region(0x00000000, memsize, BOOT_MEM_RAM);
++}
 -- 
 1.7.2.3

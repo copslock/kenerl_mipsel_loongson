@@ -1,349 +1,256 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Mar 2011 17:17:40 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:54381 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491942Ab1CAQRg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 1 Mar 2011 17:17:36 +0100
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <blogic@openwrt.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2011 12:23:53 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:56005 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491054Ab1CBLXt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2011 12:23:49 +0100
+Received: by bwz1 with SMTP id 1so51926bwz.36
+        for <multiple recipients>; Wed, 02 Mar 2011 03:23:42 -0800 (PST)
+Received: by 10.204.22.16 with SMTP id l16mr7249947bkb.198.1299065021994;
+        Wed, 02 Mar 2011 03:23:41 -0800 (PST)
+Received: from [192.168.2.2] ([91.79.108.232])
+        by mx.google.com with ESMTPS id b16sm4073689bkw.2.2011.03.02.03.23.39
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 02 Mar 2011 03:23:40 -0800 (PST)
+Message-ID: <4D6E286D.9050100@mvista.com>
+Date:   Wed, 02 Mar 2011 14:22:21 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+MIME-Version: 1.0
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mips@linux-mips.org
-Subject: [PATCH V2 10/10] MIPS: lantiq: add more gpio drivers
-Date:   Tue,  1 Mar 2011 17:13:26 +0100
-Message-Id: <1298996006-15960-11-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1298996006-15960-1-git-send-email-blogic@openwrt.org>
-References: <1298996006-15960-1-git-send-email-blogic@openwrt.org>
-Return-Path: <blogic@openwrt.org>
+        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH V2 05/10] MIPS: lantiq: add watchdog support
+References: <1298996006-15960-1-git-send-email-blogic@openwrt.org> <1298996006-15960-6-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1298996006-15960-6-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29312
+X-archive-position: 29313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-The XWAY family allows to extend the number of gpios by using shift registers or latches. This patch adds the 2 drivers needed for this. The extended gpios are output only.
+Hello.
 
-Added in V2
+On 01-03-2011 19:13, John Crispin wrote:
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
-Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/lantiq/xway/Makefile   |    2 +-
- arch/mips/lantiq/xway/gpio_ebu.c |  125 ++++++++++++++++++++++++++++++
- arch/mips/lantiq/xway/gpio_stp.c |  157 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 283 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/lantiq/xway/gpio_ebu.c
- create mode 100644 arch/mips/lantiq/xway/gpio_stp.c
+> This patch adds the driver for the watchdog found inside the Lantiq SoC family.
 
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index 08dcc10..a021def 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1,4 +1,4 @@
--obj-y := pmu.o ebu.o reset.o gpio.o devices.o
-+obj-y := pmu.o ebu.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o
- 
- obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
- obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
-diff --git a/arch/mips/lantiq/xway/gpio_ebu.c b/arch/mips/lantiq/xway/gpio_ebu.c
-new file mode 100644
-index 0000000..74c3837
---- /dev/null
-+++ b/arch/mips/lantiq/xway/gpio_ebu.c
-@@ -0,0 +1,125 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/platform_device.h>
-+#include <linux/mutex.h>
-+#include <linux/gpio.h>
-+#include <linux/io.h>
-+
-+#include <lantiq_soc.h>
-+
-+/* By attaching hardware latches to the EBU it is possible to create output
-+ * only gpios. This driver configures a special memory address, which when
-+ * written to outputs 16 bit to the latches.
-+ */
-+
-+#define LTQ_EBU_BUSCON	0x1e7ff		/* 16 bit access, slowest timing */
-+#define LTQ_EBU_WP	0x80000000	/* write protect bit */
-+
-+/* we keep a ltq_ebu_gpio_shadow value of the last value written to the ebu */
-+static int ltq_ebu_gpio_shadow = 0x0;
-+static __iomem void *ltq_ebu_gpio_membase;
-+
-+static void
-+ltq_ebu_apply(void)
-+{
-+	unsigned long flags;
-+	spin_lock_irqsave(&ebu_lock, flags);
-+	ltq_ebu_w32(LTQ_EBU_BUSCON, LTQ_EBU_BUSCON1);
-+	*((__u16 *)ltq_ebu_gpio_membase) = ltq_ebu_gpio_shadow;
-+	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+}
-+
-+static void
-+ltq_ebu_set(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	if (value)
-+		ltq_ebu_gpio_shadow |= (1 << offset);
-+	else
-+		ltq_ebu_gpio_shadow &= ~(1 << offset);
-+	ltq_ebu_apply();
-+}
-+
-+static int
-+ltq_ebu_direction_output(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	ltq_ebu_set(chip, offset, value);
-+	return 0;
-+}
-+
-+static struct gpio_chip
-+ltq_ebu_chip = {
-+	.label = "ltq_ebu",
-+	.direction_output = ltq_ebu_direction_output,
-+	.set = ltq_ebu_set,
-+	.base = 72,
-+	.ngpio = 16,
-+	.can_sleep = 1,
-+	.owner = THIS_MODULE,
-+};
-+
-+static int __devinit
-+ltq_ebu_probe(struct platform_device *pdev)
-+{
-+	int ret = 0;
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+
-+	if (!res) {
-+		dev_err(&pdev->dev, "failed to get memory resource\n");
-+		return -ENOENT;
-+	}
-+
-+	res = devm_request_mem_region(&pdev->dev, res->start,
-+		resource_size(res), dev_name(&pdev->dev));
-+	if (!res) {
-+		dev_err(&pdev->dev, "failed to request memory resource\n");
-+		return -EBUSY;
-+	}
-+
-+	ltq_ebu_gpio_membase = devm_ioremap_nocache(&pdev->dev, res->start,
-+		resource_size(res));
-+	if (!ltq_ebu_gpio_membase) {
-+		dev_err(&pdev->dev, "Failed to ioremap mem region\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* grab the default shadow value passed form the platform code */
-+	ltq_ebu_gpio_shadow = (unsigned int) pdev->dev.platform_data;
-+
-+	/* tell the ebu controller which mem addr we will be using */
-+	ltq_ebu_w32(pdev->resource->start | 0x1, LTQ_EBU_ADDRSEL1);
-+
-+	/* write protect the region */
-+	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
-+
-+	ret = gpiochip_add(&ltq_ebu_chip);
-+	if (!ret)
-+		ltq_ebu_apply();
-+	return ret;
-+}
-+
-+static struct platform_driver
-+ltq_ebu_driver = {
-+	.probe = ltq_ebu_probe,
-+	.driver = {
-+		.name = "ltq_ebu",
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+static int __init
-+ltq_ebu_init(void)
-+{
-+	return platform_driver_register(&ltq_ebu_driver);
-+}
-+
-+postcore_initcall(ltq_ebu_init);
-diff --git a/arch/mips/lantiq/xway/gpio_stp.c b/arch/mips/lantiq/xway/gpio_stp.c
-new file mode 100644
-index 0000000..97e724a
---- /dev/null
-+++ b/arch/mips/lantiq/xway/gpio_stp.c
-@@ -0,0 +1,157 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2007 John Crispin <blogic@openwrt.org>
-+ *
-+ */
-+
-+#include <linux/slab.h>
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/platform_device.h>
-+#include <linux/mutex.h>
-+#include <linux/io.h>
-+#include <linux/gpio.h>
-+
-+#include <lantiq_soc.h>
-+
-+#define LTQ_STP_CON0		0x00
-+#define LTQ_STP_CON1		0x04
-+#define LTQ_STP_CPU0		0x08
-+#define LTQ_STP_CPU1		0x0C
-+#define LTQ_STP_AR		0x10
-+
-+#define STP_CON0_SWU		(1 << 31)
-+#define LTQ_STP_2HZ		(0)
-+#define LTQ_STP_4HZ		(1 << 23)
-+#define LTQ_STP_8HZ		(2 << 23)
-+#define LTQ_STP_10HZ		(3 << 23)
-+#define LTQ_STP_MASK		(0xf << 23)
-+#define LTQ_STP_UPD_SRC_FPI	(1 << 31)
-+#define LTQ_STP_UPD_MASK	(3 << 30)
-+#define LTQ_STP_ADSL_SRC	(3 << 24)
-+
-+#define LTQ_STP_GROUP0		(1 << 0)
-+
-+#define LTQ_STP_RISING		0
-+#define LTQ_STP_FALLING		(1 << 26)
-+#define LTQ_STP_EDGE_MASK	(1 << 26)
-+
-+#define ltq_stp_r32(reg)	__raw_readl(ltq_stp_membase + reg)
-+#define ltq_stp_w32(val, reg)	__raw_writel(val, ltq_stp_membase + reg)
-+#define ltq_stp_w32_mask(clear, set, reg) \
-+	ltq_w32((ltq_r32(ltq_stp_membase + reg) & ~(clear)) | (set), \
-+	ltq_stp_membase + (reg))
-+
-+static int ltq_stp_shadow = 0xffff;
-+static __iomem void *ltq_stp_membase;
-+
-+static void
-+ltq_stp_set(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	if (value)
-+		ltq_stp_shadow |= (1 << offset);
-+	else
-+		ltq_stp_shadow &= ~(1 << offset);
-+	ltq_stp_w32(ltq_stp_shadow, LTQ_STP_CPU0);
-+}
-+
-+static int
-+ltq_stp_direction_output(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	ltq_stp_set(chip, offset, value);
-+	return 0;
-+}
-+
-+static struct gpio_chip ltq_stp_chip = {
-+	.label = "ltq_stp",
-+	.direction_output = ltq_stp_direction_output,
-+	.set = ltq_stp_set,
-+	.base = 48,
-+	.ngpio = 24,
-+	.can_sleep = 1,
-+	.owner = THIS_MODULE,
-+};
-+
-+static int
-+ltq_stp_hw_init(void)
-+{
-+	/* the 3 pins used to control the external stp */
-+	ltq_gpio_request(4, 1, 0, 1, "stp-st");
-+	ltq_gpio_request(5, 1, 0, 1, "stp-d");
-+	ltq_gpio_request(6, 1, 0, 1, "stp-sh");
-+
-+	/* sane defaults */
-+	ltq_stp_w32(0, LTQ_STP_AR);
-+	ltq_stp_w32(0, LTQ_STP_CPU0);
-+	ltq_stp_w32(0, LTQ_STP_CPU1);
-+	ltq_stp_w32(STP_CON0_SWU, LTQ_STP_CON0);
-+	ltq_stp_w32(0, LTQ_STP_CON1);
-+
-+	/* rising or falling edge */
-+	ltq_stp_w32_mask(LTQ_STP_EDGE_MASK, LTQ_STP_FALLING, LTQ_STP_CON0);
-+
-+	/* per default stp 15-0 are set */
-+	ltq_stp_w32_mask(0, LTQ_STP_GROUP0, LTQ_STP_CON1);
-+
-+	/* stp are update periodically by the FPID */
-+	ltq_stp_w32_mask(LTQ_STP_UPD_MASK, LTQ_STP_UPD_SRC_FPI, LTQ_STP_CON1);
-+
-+	/* set stp update speed */
-+	ltq_stp_w32_mask(LTQ_STP_MASK, LTQ_STP_8HZ, LTQ_STP_CON1);
-+
-+	/* adsl 0 and 1 stp are updated by the arc */
-+	ltq_stp_w32_mask(0, LTQ_STP_ADSL_SRC, LTQ_STP_CON0);
-+
-+	ltq_pmu_enable(PMU_LED);
-+	return 0;
-+}
-+
-+static int
-+ltq_stp_probe(struct platform_device *pdev)
-+{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	int ret = 0;
-+	if (!res)
-+		return -ENOENT;
-+	res = devm_request_mem_region(&pdev->dev, res->start,
-+		resource_size(res), dev_name(&pdev->dev));
-+	if (!res) {
-+		dev_err(&pdev->dev, "failed to request STP memory\n");
-+		return -EBUSY;
-+	}
-+	ltq_stp_membase = devm_ioremap_nocache(&pdev->dev, res->start,
-+		resource_size(res));
-+	if (!ltq_stp_membase) {
-+		dev_err(&pdev->dev, "failed to remap STP memory\n");
-+		return -ENOMEM;
-+	}
-+	ret = gpiochip_add(&ltq_stp_chip);
-+	if (!ret)
-+		ret = ltq_stp_hw_init();
-+
-+	return ret;
-+}
-+
-+static struct platform_driver ltq_stp_driver = {
-+	.probe = ltq_stp_probe,
-+	.driver = {
-+		.name = "ltq_stp",
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+int __init
-+ltq_stp_init(void)
-+{
-+	int ret = platform_driver_register(&ltq_stp_driver);
-+	if (ret)
-+		printk(KERN_INFO
-+			"ltq_stp: error registering platfom driver");
-+	return ret;
-+}
-+
-+postcore_initcall(ltq_stp_init);
--- 
-1.7.2.3
+> Changes in V2
+> * add comments to explain register access
+> * cleanup resource allocation
+> * cleanup clock handling
+> * whitespace fixes
+
+    The patch revision history is normally put under --- tearline.
+
+> Signed-off-by: John Crispin<blogic@openwrt.org>
+> Signed-off-by: Ralph Hempel<ralph.hempel@lantiq.com>
+> Cc: Wim Van Sebroeck<wim@iguana.be>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-watchdog@vger.kernel.org
+[...]
+
+> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+> new file mode 100644
+> index 0000000..8515c1f
+> --- /dev/null
+> +++ b/drivers/watchdog/lantiq_wdt.c
+> @@ -0,0 +1,233 @@
+> +/*
+> + *  This program is free software; you can redistribute it and/or modify it
+> + *  under the terms of the GNU General Public License version 2 as published
+> + *  by the Free Software Foundation.
+> + *
+> + *  Copyright (C) 2010 John Crispin<blogic@openwrt.org>
+> + *  Based on EP93xx wdt driver
+> + */
+> +
+> +#include<linux/module.h>
+> +#include<linux/fs.h>
+> +#include<linux/miscdevice.h>
+> +#include<linux/watchdog.h>
+> +#include<linux/platform_device.h>
+> +#include<linux/uaccess.h>
+> +#include<linux/clk.h>
+> +#include<linux/io.h>
+> +
+> +#include<lantiq.h>
+> +
+> +/* Section 3.4 of the datasheet
+> +   The password sequence protects the WDT control register from unintended
+> +   write actions, which might cause malfunction of the WDT.
+> +
+> +   essentially the following two magic passwords need to be written to allow
+> +   io access to the wdt core */
+
+    The preferred style for the multi-line comments is this:
+
+/*
+  * bla
+  * bla
+  */
+
+> +#define LTQ_WDT_CR		0x03F0	/* watchdog control register */
+> +#define LTQ_WDT_SR		0x03F8	/* watchdog status register */
+> +
+> +#define LTQ_WDT_SR_EN		(0x1 << 31) /* enable bit */
+> +#define LTQ_WDT_SR_PWD		(0x3 << 26) /* turn on power */
+> +#define LTQ_WDT_SR_CLKDIV	(0x3 << 24) /* turn on clock and set */
+> +					    /* divider to 0x40000 */
+> +#define LTQ_WDT_DIVIDER		0x40000
+> +#define LTQ_MAX_TIMEOUT		((1 << 16) - 1)	/* the reload field is 16 bit */
+
+    Should align like the above...
+
+> +
+> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
+> +static int ltq_wdt_ok_to_close;
+> +#endif
+> +
+> +static int ltq_wdt_timeout = 30;
+> +static __iomem void *ltq_wdt_membase;
+
+    It's normally "void __iomem *".
+
+> +static unsigned long ltq_io_region_clk_rate;
+> +
+> +static int
+> +ltq_wdt_enable(unsigned int timeout)
+> +{
+> +	timeout = ((timeout * (ltq_io_region_clk_rate / LTQ_WDT_DIVIDER))
+> +		+ 0x1000);
+> +	if (timeout > LTQ_MAX_TIMEOUT)
+> +		timeout = LTQ_MAX_TIMEOUT;
+> +
+> +	/* write the first paswword magic */
+
+    s/paswword/password/.
+
+> +	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
+> +	/* write the second magic plus the configuration and new timeout */
+> +	ltq_w32(LTQ_WDT_SR_EN | LTQ_WDT_SR_PWD | LTQ_WDT_SR_CLKDIV |
+> +		LTQ_WDT_PW2 | timeout, ltq_wdt_membase + LTQ_WDT_CR);
+> +	return 0;
+
+    This function should be *void* -- you alway return 0 and never check the 
+result.
+
+> +}
+> +
+> +static void
+> +ltq_wdt_disable(void)
+> +{
+> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
+> +	ltq_wdt_ok_to_close = 0;
+> +#endif
+> +	/* write the first paswword magic */
+> +	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
+> +	/* write the second paswword magic with no config
+> +	   this turns the watchdog off */
+
+    Multi-line comment style...
+
+> +	ltq_w32(LTQ_WDT_PW2, ltq_wdt_membase + LTQ_WDT_CR);
+> +}
+> +
+> +static ssize_t
+> +ltq_wdt_write(struct file *file, const char __user *data,
+> +		size_t len, loff_t *ppos)
+> +{
+> +	size_t i;
+
+    Empty line between the variables and code won't hurt...
+
+> +	if (!len)
+> +		return 0;
+> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
+> +	for (i = 0; i != len; i++) {
+> +		char c;
+
+    Here too...
+
+> +		if (get_user(c, data + i))
+> +			return -EFAULT;
+> +		if (c == 'V')
+> +			ltq_wdt_ok_to_close = 1;
+> +	}
+> +#endif
+[...]
+> +static long
+> +ltq_wdt_ioctl(struct file *file,
+> +		unsigned int cmd, unsigned long arg)
+> +{
+> +	int ret = -ENOTTY;
+
+    Empty line between the variables and code won't hurt...
+
+> +	switch (cmd) {
+> +	case WDIOC_GETSUPPORT:
+> +		ret = copy_to_user((struct watchdog_info __user *)arg, &ident,
+> +				sizeof(ident)) ? -EFAULT : 0;
+
+    Doesn't copy_to_user() return 0 or -EFAULT?
+
+> +static int
+> +ltq_wdt_release(struct inode *inode, struct file *file)
+> +{
+> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
+> +	if (ltq_wdt_ok_to_close)
+> +		ltq_wdt_disable();
+> +	else
+> +#endif
+> +		printk(KERN_ERR "ltq_wdt: watchdog closed without warning\n");
+
+    Use pr_err() instead.
+
+> +static int
+> +ltq_wdt_probe(struct platform_device *pdev)
+> +{
+> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	struct clk *clk;
+> +	int ret = 0;
+
+    Empty line between the variables and code won't hurt...
+
+> +	/* we do not need to enable the clock as it is always running */
+> +	clk = clk_get(&pdev->dev, "io");
+
+    clk_get() may fail...
+
+> +	ret = misc_register(&ltq_wdt_miscdev);
+> +	if (ret)
+> +		return 0;
+
+    Er, didn't you mean:
+
+	if (!ret)
+		return 0;
+
+> +	return ret;
+
+    'ret' is always 0 here with your code.
+
+> +}
+> +
+> +static int
+> +ltq_wdt_remove(struct platform_device *dev)
+
+    __exit?
+
+> +static int __init
+> +init_ltq_wdt(void)
+> +{
+> +	return platform_driver_register(&ltq_wdt_driver);
+
+    Why not platfrom_driver_probe()? It's hardly a hotplug device...
+
+WBR, Sergei

@@ -1,186 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2011 21:48:32 +0100 (CET)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:51966 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491203Ab1CBUs3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2011 21:48:29 +0100
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1Pusxq-0005ki-Dp; Wed, 02 Mar 2011 21:48:06 +0100
-Received: from ukl by octopus.hi.pengutronix.de with local (Exim 4.69)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1Pusxn-0001HK-SF; Wed, 02 Mar 2011 21:48:03 +0100
-Date:   Wed, 2 Mar 2011 21:48:03 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     linux-arm-kernel@lists.infradead.org,
-        Hans-Christian Egtvedt <hans-christian.egtvedt@atmel.com>,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        linux-ia64@vger.kernel.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        Borislav Petkov <bp@alien8.de>,
-        Mike Frysinger <vapier@gentoo.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     kernel@pengutronix.de
-Subject: about MISC_DEVICES not being enabled in many defconfigs
-Message-ID: <20110302204803.GI22310@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2011 00:54:30 +0100 (CET)
+Received: from chipmunk.wormnet.eu ([195.195.131.226]:34805 "EHLO
+        chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491753Ab1CBXy2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 3 Mar 2011 00:54:28 +0100
+Received: from [10.150.1.116] (lentinj.plus.com [80.229.158.163])
+        by chipmunk.wormnet.eu (Postfix) with ESMTPSA id 08B028262D
+        for <linux-mips@linux-mips.org>; Wed,  2 Mar 2011 23:54:22 +0000 (GMT)
+Date:   Wed, 2 Mar 2011 23:54:21 +0000 (GMT)
+From:   Jamie Lentin <jm@lentin.co.uk>
+X-X-Sender: lentinj@gonzo
+To:     linux-mips@linux-mips.org
+Subject: BCM47xx: Serial port swapping
+Message-ID: <alpine.DEB.2.02.1103022314160.3579@gonzo>
+User-Agent: Alpine 2.02 (DEB 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <ukl@pengutronix.de>
+Content-Type: TEXT/PLAIN; format=flowed; charset=US-ASCII
+X-Virus-Scanned: clamav-milter 0.96.5 at chipmunk
+X-Virus-Status: Clean
+Return-Path: <jm@lentin.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29320
+X-archive-position: 29321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ukl@pengutronix.de
+X-original-sender: jm@lentin.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Hi,
 
-while working on an defconfig (arm/mx27) I noticed that just updating
-it[1] results in removing CONFIG_EEPROM_AT24=y.  The reason is that
-since commit
+I am running Debian on a Netgear WGT634U with a ~mainline 2.6.37 kernel. 
+Upon upgrading from .32 I noticed this patch:-
 
-	v2.6.36-5965-g5f2365d (misc devices: do not enable by default)
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 87a3055..c95f90b 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -169,12 +169,28 @@ static int bcm47xx_get_invariants(struct ssb_bus 
+*bus,
+  void __init plat_mem_setup(void)
+  {
+  	int err;
++	char buf[100];
++	struct ssb_mipscore *mcore;
 
-MISC_DEVICES isn't enabled anymore by default.  So all defconfigs that
-have CONFIG_SOME_SYMBOL=y (or =m) (with SOME_SYMBOL depending on
-MISC_DEVICES) but not CONFIG_MISC_DEVICES=y suffer from the same
-problem.
+  	err = ssb_bus_ssbbus_register(&ssb_bcm47xx, SSB_ENUM_BASE,
+  				      bcm47xx_get_invariants);
+  	if (err)
+  		panic("Failed to initialize SSB bus (err %d)\n", err);
 
-As a defconfig that was reduced before 5f2365d obviously didn't have
-CONFIG_MISC_DEVICES=y many defconfigs have that problem.
++	mcore = &ssb_bcm47xx.mipscore;
++	if (nvram_getenv("kernel_args", buf, sizeof(buf)) >= 0) {
++		if (strstr(buf, "console=ttyS1")) {
++			struct ssb_serial_port port;
++
++			printk(KERN_DEBUG "Swapping serial ports!\n");
++			/* swap serial ports */
++			memcpy(&port, &mcore->serial_ports[0], sizeof(port));
++			memcpy(&mcore->serial_ports[0], &mcore->serial_ports[1],
++			       sizeof(port));
++			memcpy(&mcore->serial_ports[1], &port, sizeof(port));
++		}
 
-I did the following to (hopefully) find all affected defconfigs:
+A WGT634U only has the header on the second serial port, this is where 
+CFE outputs it's console by default, and where I have my serial cable 
+attached.
 
-	$ git describe
-	v2.6.38-rc7
-	$ git ls-files drivers/misc | grep Kconfig | xargs grep -h ^config | sed 's/config \(.*\)/CONFIG_\1=/' > miscsymbols
-	$ git ls-files *defconfig | xargs grep -L CONFIG_MISC_DEVICES= | xargs grep -F -f miscsymbols
-	arch/arm/configs/afeb9260_defconfig:CONFIG_ATMEL_SSC=y
-	arch/arm/configs/afeb9260_defconfig:CONFIG_EEPROM_AT24=y
-	arch/arm/configs/at572d940hfek_defconfig:CONFIG_ATMEL_TCLIB=y
-	arch/arm/configs/at572d940hfek_defconfig:CONFIG_ATMEL_SSC=m
-	arch/arm/configs/at572d940hfek_defconfig:CONFIG_SENSORS_TSL2550=m
-	arch/arm/configs/at572d940hfek_defconfig:CONFIG_DS1682=m
-	arch/arm/configs/at91cap9adk_defconfig:CONFIG_ATMEL_SSC=y
-	arch/arm/configs/at91rm9200_defconfig:CONFIG_ATMEL_TCLIB=y
-	arch/arm/configs/at91rm9200_defconfig:CONFIG_EEPROM_LEGACY=m
-	arch/arm/configs/at91sam9260ek_defconfig:CONFIG_ATMEL_SSC=y
-	arch/arm/configs/at91sam9261ek_defconfig:CONFIG_ATMEL_SSC=y
-	arch/arm/configs/at91sam9263ek_defconfig:CONFIG_ATMEL_SSC=y
-	arch/arm/configs/at91sam9g20ek_defconfig:CONFIG_ATMEL_SSC=y
-	arch/arm/configs/at91sam9rlek_defconfig:CONFIG_ATMEL_SSC=y
-	arch/arm/configs/da8xx_omapl_defconfig:CONFIG_EEPROM_AT24=y
-	arch/arm/configs/davinci_all_defconfig:CONFIG_EEPROM_AT24=y
-	arch/arm/configs/ep93xx_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/arm/configs/ixp2000_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/arm/configs/ixp23xx_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/arm/configs/ixp4xx_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/arm/configs/mini2440_defconfig:CONFIG_SENSORS_TSL2550=m
-	arch/arm/configs/mx27_defconfig:CONFIG_EEPROM_AT24=y
-	arch/arm/configs/mx3_defconfig:CONFIG_EEPROM_AT24=y
-	arch/arm/configs/neocore926_defconfig:CONFIG_ATMEL_PWM=y
-	arch/arm/configs/neocore926_defconfig:CONFIG_ATMEL_TCLIB=y
-	arch/arm/configs/omap2plus_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/arm/configs/pcontrol_g20_defconfig:CONFIG_ATMEL_TCLIB=y
-	arch/arm/configs/pcontrol_g20_defconfig:CONFIG_EEPROM_AT24=m
-	arch/arm/configs/pnx4008_defconfig:CONFIG_EEPROM_LEGACY=m
-	arch/arm/configs/raumfeld_defconfig:CONFIG_ISL29003=y
-	arch/arm/configs/raumfeld_defconfig:CONFIG_TI_DAC7512=y
-	arch/arm/configs/realview-smp_defconfig:CONFIG_ARM_CHARLCD=y
-	arch/arm/configs/realview_defconfig:CONFIG_ARM_CHARLCD=y
-	arch/arm/configs/s3c2410_defconfig:CONFIG_EEPROM_AT25=m
-	arch/arm/configs/s3c2410_defconfig:CONFIG_EEPROM_LEGACY=m
-	arch/arm/configs/s3c2410_defconfig:CONFIG_EEPROM_93CX6=m
-	arch/arm/configs/s3c6400_defconfig:CONFIG_EEPROM_AT24=y
-	arch/arm/configs/s5pc100_defconfig:CONFIG_EEPROM_AT24=y
-	arch/arm/configs/versatile_defconfig:CONFIG_EEPROM_LEGACY=m
-	arch/arm/configs/zeus_defconfig:CONFIG_EEPROM_AT24=m
-	arch/avr32/configs/atngw100_mrmt_defconfig:CONFIG_ATMEL_PWM=y
-	arch/avr32/configs/favr-32_defconfig:CONFIG_ATMEL_PWM=m
-	arch/avr32/configs/favr-32_defconfig:CONFIG_ATMEL_TCLIB=y
-	arch/avr32/configs/favr-32_defconfig:CONFIG_ATMEL_SSC=m
-	arch/avr32/configs/hammerhead_defconfig:CONFIG_ATMEL_TCLIB=y
-	arch/avr32/configs/merisc_defconfig:CONFIG_ATMEL_PWM=y
-	arch/avr32/configs/merisc_defconfig:CONFIG_ATMEL_SSC=y
-	arch/avr32/configs/mimc200_defconfig:CONFIG_ATMEL_TCLIB=y
-	arch/avr32/configs/mimc200_defconfig:CONFIG_EEPROM_AT24=y
-	arch/avr32/configs/mimc200_defconfig:CONFIG_EEPROM_AT25=y
-	arch/blackfin/configs/BlackStamp_defconfig:CONFIG_EEPROM_AT25=y
-	arch/blackfin/configs/H8606_defconfig:CONFIG_EEPROM_AT25=y
-	arch/blackfin/configs/SRV1_defconfig:CONFIG_EEPROM_AT25=m
-	arch/ia64/configs/generic_defconfig:CONFIG_SGI_IOC4=y
-	arch/ia64/configs/generic_defconfig:CONFIG_SGI_XP=m
-	arch/ia64/configs/gensparse_defconfig:CONFIG_SGI_IOC4=y
-	arch/mips/configs/bigsur_defconfig:CONFIG_SGI_IOC4=m
-	arch/mips/configs/bigsur_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/mips/configs/bigsur_defconfig:CONFIG_EEPROM_MAX6875=y
-	arch/mips/configs/gpr_defconfig:CONFIG_TIFM_CORE=m
-	arch/mips/configs/ip32_defconfig:CONFIG_SGI_IOC4=y
-	arch/mips/configs/markeins_defconfig:CONFIG_SGI_IOC4=m
-	arch/mips/configs/pnx8550-jbs_defconfig:CONFIG_SGI_IOC4=m
-	arch/mips/configs/rm200_defconfig:CONFIG_SGI_IOC4=m
-	arch/mips/configs/sb1250-swarm_defconfig:CONFIG_SGI_IOC4=m
-	arch/mips/configs/wrppmc_defconfig:CONFIG_SGI_IOC4=m
-	arch/mips/configs/yosemite_defconfig:CONFIG_SGI_IOC4=m
-	arch/powerpc/configs/44x/warp_defconfig:CONFIG_EEPROM_AT24=y
-	arch/powerpc/configs/52xx/motionpro_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/powerpc/configs/86xx/gef_ppc9a_defconfig:CONFIG_DS1682=y
-	arch/powerpc/configs/86xx/gef_sbc310_defconfig:CONFIG_DS1682=y
-	arch/powerpc/configs/86xx/gef_sbc610_defconfig:CONFIG_DS1682=y
-	arch/powerpc/configs/86xx/mpc8641_hpcn_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/powerpc/configs/e55xx_smp_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/powerpc/configs/linkstation_defconfig:CONFIG_EEPROM_LEGACY=m
-	arch/powerpc/configs/mpc512x_defconfig:CONFIG_EEPROM_AT24=y
-	arch/powerpc/configs/mpc5200_defconfig:CONFIG_EEPROM_AT24=y
-	arch/powerpc/configs/mpc85xx_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/powerpc/configs/mpc85xx_smp_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/powerpc/configs/mpc86xx_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/powerpc/configs/pasemi_defconfig:CONFIG_EEPROM_LEGACY=y
-	arch/powerpc/configs/ppc6xx_defconfig:CONFIG_ENCLOSURE_SERVICES=m
-	arch/powerpc/configs/ppc6xx_defconfig:CONFIG_SENSORS_TSL2550=m
-	arch/powerpc/configs/ppc6xx_defconfig:CONFIG_EEPROM_AT24=m
-	arch/powerpc/configs/ppc6xx_defconfig:CONFIG_EEPROM_LEGACY=m
-	arch/powerpc/configs/ppc6xx_defconfig:CONFIG_EEPROM_MAX6875=m
-	arch/powerpc/configs/ppc6xx_defconfig:CONFIG_EEPROM_93CX6=m
-	arch/sh/configs/se7206_defconfig:CONFIG_EEPROM_93CX6=y
+If I specify console=ttyS1, then the above kicks in and the serial port I 
+am attached to becomes ttyS0 early in the boot process, and I loose 
+console output. If I specify console=ttyS0, the above doesn't do anything 
+so the kernel continues to use the unattached serial port. Either way I 
+cannot get any console output without some hacking.
 
-(For those wondering about the commands above: A line 
+Currently I have removed the block, specified "console=ttyS1" in the 
+commandline, and this gives me working console all the way through boot. 
+I'm happy to test/supply any further patches, solutions I can think of 
+are:-
 
-	arch/$arch/configs/xyz_defconfig:CONFIG_SOME_DEVICE=y
+* Remove it entirely: I think this code has it's origins in OpenWRT 
+code that swapped ports so the userland didn't have to use ttyS1 for a 
+bunch of devices, ttyS0 for another. It's certainly not required to get 
+console output on my device, not tested any other variants of this 
+platform.
 
-means here, that running
+* Invert the strstr logic, so that the swap happens if I don't specify 
+ttyS1 as my console. Then regardless of whether I use ttyS0 or ttyS1, I 
+get a console.
 
-	make ARCH=$arch xyz_defconfig
+* Have a more explict "swap_serial_ports" kernel parameter
 
-results in a config without SOME_DEVICE.
-
-I don't know if that bothers you, but if it does, you should add
-
-	CONFIG_MISC_DEVICES=y
-
-to your defconfig.
-
-Just to let you know ...
-
-Best regards
-Uwe
-
-[1] make mx27_defconfig
-    make savedefconfig
-    mv defconfig arch/arm/configs/mx27_defconfig
+Cheers,
 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Jamie Lentin

@@ -1,53 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2011 16:42:53 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:60820 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491174Ab1CBPmu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Mar 2011 16:42:50 +0100
-Message-ID: <4D6E65C8.4020500@openwrt.org>
-Date:   Wed, 02 Mar 2011 16:44:08 +0100
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100913 Icedove/3.0.7
-MIME-Version: 1.0
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2011 17:27:49 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58567 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491180Ab1CBQ1q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2011 17:27:46 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p22GRWSx030766;
+        Wed, 2 Mar 2011 17:27:32 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p22GRUWc030761;
+        Wed, 2 Mar 2011 17:27:30 +0100
+Date:   Wed, 2 Mar 2011 17:27:30 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
         Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
         linux-watchdog@vger.kernel.org
 Subject: Re: [PATCH V2 05/10] MIPS: lantiq: add watchdog support
-References: <1298996006-15960-1-git-send-email-blogic@openwrt.org> <1298996006-15960-6-git-send-email-blogic@openwrt.org> <4D6E286D.9050100@mvista.com>
-In-Reply-To: <4D6E286D.9050100@mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+Message-ID: <20110302162730.GA23666@linux-mips.org>
+References: <1298996006-15960-1-git-send-email-blogic@openwrt.org>
+ <1298996006-15960-6-git-send-email-blogic@openwrt.org>
+ <4D6E286D.9050100@mvista.com>
+ <20110302142933.GA18221@linux-mips.org>
+ <4D6E5CA9.5090201@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4D6E5CA9.5090201@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29316
+X-archive-position: 29317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Sergei,
+On Wed, Mar 02, 2011 at 04:05:13PM +0100, John Crispin wrote:
 
-thanks for the comments, one question below
->> +    /* we do not need to enable the clock as it is always running */
->> +    clk = clk_get(&pdev->dev, "io");
->
->    clk_get() may fail...
->
+> Hi Ralf,
+> > While nitpicking - there should be one space between include and < in
+> > #include <blah.h>.
+> >
+> >   
+> where did you see that ?
 
-lantiq socs have 2 static clock that are always running. so i think it
-is safe to assume that this wont fail unless someone renames the clocks.
+> +#include<linux/module.h>
+> +#include<linux/fs.h>
+> +#include<linux/miscdevice.h>
+> +#include<linux/watchdog.h>
+> +#include<linux/platform_device.h>
+> +#include<linux/uaccess.h>
+> +#include<linux/clk.h>
+> +#include<linux/io.h>
+> +
+> +#include<lantiq.h>
 
-alternatively i could add a
+But that only seems to have happened to the code quoted in Sergei's mail.
 
-if (!clk)
-   BUG();
-
-but i am not sure if it is required.
-
-thanks,
-John
+  Ralf

@@ -1,65 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2011 17:27:49 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:58567 "EHLO
-        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491180Ab1CBQ1q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2011 17:27:46 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p22GRWSx030766;
-        Wed, 2 Mar 2011 17:27:32 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p22GRUWc030761;
-        Wed, 2 Mar 2011 17:27:30 +0100
-Date:   Wed, 2 Mar 2011 17:27:30 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Mar 2011 18:36:33 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:44153 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491182Ab1CBRga (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Mar 2011 18:36:30 +0100
+Received: by bwz1 with SMTP id 1so394569bwz.36
+        for <multiple recipients>; Wed, 02 Mar 2011 09:36:23 -0800 (PST)
+Received: by 10.204.61.10 with SMTP id r10mr251899bkh.195.1299087383496;
+        Wed, 02 Mar 2011 09:36:23 -0800 (PST)
+Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
+        by mx.google.com with ESMTPS id x6sm138173bkv.0.2011.03.02.09.36.21
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 02 Mar 2011 09:36:22 -0800 (PST)
+Message-ID: <4D6E7FBC.6040805@mvista.com>
+Date:   Wed, 02 Mar 2011 20:34:52 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
         Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
         linux-watchdog@vger.kernel.org
 Subject: Re: [PATCH V2 05/10] MIPS: lantiq: add watchdog support
-Message-ID: <20110302162730.GA23666@linux-mips.org>
-References: <1298996006-15960-1-git-send-email-blogic@openwrt.org>
- <1298996006-15960-6-git-send-email-blogic@openwrt.org>
- <4D6E286D.9050100@mvista.com>
- <20110302142933.GA18221@linux-mips.org>
- <4D6E5CA9.5090201@openwrt.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4D6E5CA9.5090201@openwrt.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+References: <1298996006-15960-1-git-send-email-blogic@openwrt.org> <1298996006-15960-6-git-send-email-blogic@openwrt.org> <4D6E286D.9050100@mvista.com> <20110302142933.GA18221@linux-mips.org>
+In-Reply-To: <20110302142933.GA18221@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29317
+X-archive-position: 29318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 02, 2011 at 04:05:13PM +0100, John Crispin wrote:
+Hello.
 
-> Hi Ralf,
-> > While nitpicking - there should be one space between include and < in
-> > #include <blah.h>.
-> >
-> >   
-> where did you see that ?
+Ralf Baechle wrote:
 
-> +#include<linux/module.h>
-> +#include<linux/fs.h>
-> +#include<linux/miscdevice.h>
-> +#include<linux/watchdog.h>
-> +#include<linux/platform_device.h>
-> +#include<linux/uaccess.h>
-> +#include<linux/clk.h>
-> +#include<linux/io.h>
-> +
-> +#include<lantiq.h>
+>>> +	switch (cmd) {
+>>> +	case WDIOC_GETSUPPORT:
+>>> +		ret = copy_to_user((struct watchdog_info __user *)arg, &ident,
+>>> +				sizeof(ident)) ? -EFAULT : 0;
 
-But that only seems to have happened to the code quoted in Sergei's mail.
+>>    Doesn't copy_to_user() return 0 or -EFAULT?
 
-  Ralf
+> No and that's a common cause of bugs.  copy_{from,to}_user returns the
+> number of characters that could be be copied so the conversion to an
+> error code is needed here.
+
+    But then the code above would be wrong. Actually, it returns the number of 
+bytes that could NOT be copied as I now see.
+
+> The function takes a void argument and there is no benefit from casting
+> to the full struct watchdog_info __user * pointer type other than maybe
+> clarity to the human reader.
+
+    Indeed.
+
+>   Ralf
+
+WBR, Sergei

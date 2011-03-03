@@ -1,16 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2011 11:03:57 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:57613 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2011 11:04:25 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:57614 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491872Ab1CCKCc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1491881Ab1CCKCc (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 3 Mar 2011 11:02:32 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mips@linux-mips.org
-Subject: [PATCH V3 07/10] MIPS: lantiq: add platform device support
-Date:   Thu,  3 Mar 2011 11:03:43 +0100
-Message-Id: <1299146626-17428-8-git-send-email-blogic@openwrt.org>
+        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
+        linux-watchdog@vger.kernel.org
+Subject: [PATCH V3 05/10] MIPS: lantiq: add watchdog support
+Date:   Thu,  3 Mar 2011 11:03:41 +0100
+Message-Id: <1299146626-17428-6-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1299146626-17428-1-git-send-email-blogic@openwrt.org>
 References: <1299146626-17428-1-git-send-email-blogic@openwrt.org>
@@ -18,7 +19,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29325
+X-archive-position: 29326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,318 +27,302 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds the wrappers for registering our platform devices.
+This patch adds the driver for the watchdog found inside the Lantiq SoC family.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
+Cc: Wim Van Sebroeck <wim@iguana.be>
 Cc: linux-mips@linux-mips.org
-
+Cc: linux-watchdog@vger.kernel.org
 ---
+Changes in V2
+* add comments to explain register access
+* cleanup resource allocation
+* cleanup clock handling
+* whitespace fixes
+
 Changes in V3
-* use pr_* macros instead of printk
+* whitespace
+* change __iomem void to void __iomem
+* typo fixes
+* comment style
+* fix exit path in init function
 
- arch/mips/lantiq/Makefile       |    2 +-
- arch/mips/lantiq/devices.c      |  128 +++++++++++++++++++++++++++++++++++++++
- arch/mips/lantiq/devices.h      |   20 ++++++
- arch/mips/lantiq/xway/Makefile  |    2 +-
- arch/mips/lantiq/xway/devices.c |   79 ++++++++++++++++++++++++
- arch/mips/lantiq/xway/devices.h |   17 +++++
- 6 files changed, 246 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/lantiq/devices.c
- create mode 100644 arch/mips/lantiq/devices.h
- create mode 100644 arch/mips/lantiq/xway/devices.c
- create mode 100644 arch/mips/lantiq/xway/devices.h
+ drivers/watchdog/Kconfig      |    6 +
+ drivers/watchdog/Makefile     |    1 +
+ drivers/watchdog/lantiq_wdt.c |  235 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 242 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/watchdog/lantiq_wdt.c
 
-diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
-index a268391..e5dae0e 100644
---- a/arch/mips/lantiq/Makefile
-+++ b/arch/mips/lantiq/Makefile
-@@ -4,7 +4,7 @@
- # under the terms of the GNU General Public License version 2 as published
- # by the Free Software Foundation.
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 2e2400e..c64f8c3 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -972,6 +972,12 @@ config BCM63XX_WDT
+ 	  To compile this driver as a loadable module, choose M here.
+ 	  The module will be called bcm63xx_wdt.
  
--obj-y := irq.o setup.o clk.o prom.o
-+obj-y := irq.o setup.o clk.o prom.o devices.o
++config LANTIQ_WDT
++	tristate "Lantiq SoC watchdog"
++	depends on LANTIQ
++	help
++	  Hardware driver for the Lantiq SoC Watchdog Timer.
++
+ # PARISC Architecture
  
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ # POWERPC Architecture
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index dd77665..68299db 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -121,6 +121,7 @@ obj-$(CONFIG_AR7_WDT) += ar7_wdt.o
+ obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
+ obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
+ octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
++obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
  
-diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
+ # PARISC Architecture
+ 
+diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
 new file mode 100644
-index 0000000..6dfaffd
+index 0000000..d49ddaa
 --- /dev/null
-+++ b/arch/mips/lantiq/devices.c
-@@ -0,0 +1,128 @@
++++ b/drivers/watchdog/lantiq_wdt.c
+@@ -0,0 +1,235 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + *
 + *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ *  Based on EP93xx wdt driver
 + */
 +
-+#include <linux/init.h>
 +#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/string.h>
-+#include <linux/kernel.h>
-+#include <linux/reboot.h>
++#include <linux/fs.h>
++#include <linux/miscdevice.h>
++#include <linux/watchdog.h>
 +#include <linux/platform_device.h>
-+#include <linux/leds.h>
-+#include <linux/etherdevice.h>
-+#include <linux/reboot.h>
-+#include <linux/time.h>
++#include <linux/uaccess.h>
++#include <linux/clk.h>
 +#include <linux/io.h>
-+#include <linux/gpio.h>
-+#include <linux/leds.h>
 +
-+#include <asm/bootinfo.h>
-+#include <asm/irq.h>
++#include <lantiq.h>
 +
-+#include <lantiq_soc.h>
++/* Section 3.4 of the datasheet
++ * The password sequence protects the WDT control register from unintended
++ * write actions, which might cause malfunction of the WDT.
++ *
++ * essentially the following two magic passwords need to be written to allow
++ * io access to the wdt core
++ */
++#define LTQ_WDT_PW1		0x00BE0000
++#define LTQ_WDT_PW2		0x00DC0000
 +
-+#include "devices.h"
++#define LTQ_WDT_CR		0x03F0	/* watchdog control register */
++#define LTQ_WDT_SR		0x03F8	/* watchdog status register */
 +
-+#define IRQ_RES(resname, irq) \
-+	{.name = #resname, .start = (irq), .flags = IORESOURCE_IRQ}
++#define LTQ_WDT_SR_EN		(0x1 << 31)	/* enable bit */
++#define LTQ_WDT_SR_PWD		(0x3 << 26)	/* turn on power */
++#define LTQ_WDT_SR_CLKDIV	(0x3 << 24)	/* turn on clock and set */
++						/* divider to 0x40000 */
++#define LTQ_WDT_DIVIDER		0x40000
++#define LTQ_MAX_TIMEOUT		((1 << 16) - 1)	/* the reload field is 16 bit */
 +
-+/* nor flash */
-+static struct resource ltq_nor_resource = {
-+	.name	= "nor",
-+	.start	= LTQ_FLASH_START,
-+	.end	= LTQ_FLASH_START + LTQ_FLASH_MAX - 1,
-+	.flags  = IORESOURCE_MEM,
-+};
++#ifndef CONFIG_WATCHDOG_NOWAYOUT
++static int ltq_wdt_ok_to_close;
++#endif
 +
-+static struct platform_device ltq_nor = {
-+	.name		= "ltq_nor",
-+	.resource	= &ltq_nor_resource,
-+	.num_resources	= 1,
-+};
++static int ltq_wdt_timeout = 30;
++static void __iomem *ltq_wdt_membase;
++static unsigned long ltq_io_region_clk_rate;
 +
-+void __init
-+ltq_register_nor(struct physmap_flash_data *data)
++static void
++ltq_wdt_enable(unsigned int timeout)
 +{
-+	ltq_nor.dev.platform_data = data;
-+	platform_device_register(&ltq_nor);
++	timeout = ((timeout * (ltq_io_region_clk_rate / LTQ_WDT_DIVIDER))
++		+ 0x1000);
++	if (timeout > LTQ_MAX_TIMEOUT)
++		timeout = LTQ_MAX_TIMEOUT;
++
++	/* write the first password magic */
++	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
++	/* write the second magic plus the configuration and new timeout */
++	ltq_w32(LTQ_WDT_SR_EN | LTQ_WDT_SR_PWD | LTQ_WDT_SR_CLKDIV |
++		LTQ_WDT_PW2 | timeout, ltq_wdt_membase + LTQ_WDT_CR);
 +}
 +
-+/* watchdog */
-+static struct resource ltq_wdt_resource = {
++static void
++ltq_wdt_disable(void)
++{
++#ifndef CONFIG_WATCHDOG_NOWAYOUT
++	ltq_wdt_ok_to_close = 0;
++#endif
++	/* write the first paswword magic */
++	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
++	/* write the second paswword magic with no config
++	 * this turns the watchdog off 
++	 */
++	ltq_w32(LTQ_WDT_PW2, ltq_wdt_membase + LTQ_WDT_CR);
++}
++
++static ssize_t
++ltq_wdt_write(struct file *file, const char __user *data,
++		size_t len, loff_t *ppos)
++{
++	size_t i;
++
++	if (!len)
++		return 0;
++#ifndef CONFIG_WATCHDOG_NOWAYOUT
++	for (i = 0; i != len; i++) {
++		char c;
++
++		if (get_user(c, data + i))
++			return -EFAULT;
++		if (c == 'V')
++			ltq_wdt_ok_to_close = 1;
++	}
++#endif
++	ltq_wdt_enable(ltq_wdt_timeout);
++	return len;
++}
++
++static struct watchdog_info ident = {
++	.options = WDIOF_MAGICCLOSE | WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING,
++	.identity = "ltq_wdt",
++};
++
++static long
++ltq_wdt_ioctl(struct file *file,
++		unsigned int cmd, unsigned long arg)
++{
++	int ret = -ENOTTY;
++
++	switch (cmd) {
++	case WDIOC_GETSUPPORT:
++		ret = copy_to_user((struct watchdog_info __user *)arg, &ident,
++				sizeof(ident)) ? -EFAULT : 0;
++		break;
++
++	case WDIOC_GETTIMEOUT:
++		ret = put_user(ltq_wdt_timeout, (int __user *)arg);
++		break;
++
++	case WDIOC_SETTIMEOUT:
++		ret = get_user(ltq_wdt_timeout, (int __user *)arg);
++		if (!ret)
++			ltq_wdt_enable(ltq_wdt_timeout);
++		break;
++
++	case WDIOC_KEEPALIVE:
++		ltq_wdt_enable(ltq_wdt_timeout);
++		ret = 0;
++		break;
++	}
++	return ret;
++}
++
++static int
++ltq_wdt_open(struct inode *inode, struct file *file)
++{
++	ltq_wdt_enable(ltq_wdt_timeout);
++	return nonseekable_open(inode, file);
++}
++
++static int
++ltq_wdt_release(struct inode *inode, struct file *file)
++{
++#ifndef CONFIG_WATCHDOG_NOWAYOUT
++	if (ltq_wdt_ok_to_close)
++		ltq_wdt_disable();
++	else
++#endif
++		pr_err("ltq_wdt: watchdog closed without warning\n");
++	return 0;
++}
++
++static const struct file_operations ltq_wdt_fops = {
++	.owner		= THIS_MODULE,
++	.write		= ltq_wdt_write,
++	.unlocked_ioctl	= ltq_wdt_ioctl,
++	.open		= ltq_wdt_open,
++	.release	= ltq_wdt_release,
++	.llseek		= no_llseek,
++};
++
++static struct miscdevice ltq_wdt_miscdev = {
++	.minor	= WATCHDOG_MINOR,
 +	.name	= "watchdog",
-+	.start  = LTQ_WDT_BASE_ADDR,
-+	.end    = LTQ_WDT_BASE_ADDR + LTQ_WDT_SIZE - 1,
-+	.flags  = IORESOURCE_MEM,
++	.fops	= &ltq_wdt_fops,
 +};
 +
-+void __init
-+ltq_register_wdt(void)
++static int
++ltq_wdt_probe(struct platform_device *pdev)
 +{
-+	platform_device_register_simple("ltq_wdt", 0, &ltq_wdt_resource, 1);
++	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	struct clk *clk;
++
++	if (!res) {
++		dev_err(&pdev->dev, "cannot obtain I/O memory region");
++		return -ENOENT;
++	}
++	res = devm_request_mem_region(&pdev->dev, res->start,
++		resource_size(res), dev_name(&pdev->dev));
++	if (!res) {
++		dev_err(&pdev->dev, "cannot request I/O memory region");
++		return -EBUSY;
++	}
++	ltq_wdt_membase = devm_ioremap_nocache(&pdev->dev, res->start,
++		resource_size(res));
++	if (!ltq_wdt_membase) {
++		dev_err(&pdev->dev, "cannot remap I/O memory region\n");
++		return -ENOMEM;
++	}
++	/* we do not need to enable the clock as it is always running */
++	clk = clk_get(&pdev->dev, "io");
++	if (!clk)
++		BUG();
++	ltq_io_region_clk_rate = clk_get_rate(clk);
++	clk_put(clk);
++	return misc_register(&ltq_wdt_miscdev);
 +}
 +
-+/* asc ports */
-+static struct resource ltq_asc0_resources[] = {
-+	{
-+		.start  = LTQ_ASC0_BASE_ADDR,
-+		.end    = LTQ_ASC0_BASE_ADDR + LTQ_ASC_SIZE - 1,
-+		.flags  = IORESOURCE_MEM,
++static int __exit
++ltq_wdt_remove(struct platform_device *dev)
++{
++	ltq_wdt_disable();
++	misc_deregister(&ltq_wdt_miscdev);
++	return 0;
++}
++
++static struct platform_driver ltq_wdt_driver = {
++	.probe = ltq_wdt_probe,
++	.remove = ltq_wdt_remove,
++	.driver = {
++		.name = "ltq_wdt",
++		.owner = THIS_MODULE,
 +	},
-+	IRQ_RES(tx, LTQ_ASC_TIR(0)),
-+	IRQ_RES(rx, LTQ_ASC_RIR(0)),
-+	IRQ_RES(err, LTQ_ASC_EIR(0)),
 +};
 +
-+static struct resource ltq_asc1_resources[] = {
-+	{
-+		.start  = LTQ_ASC1_BASE_ADDR,
-+		.end    = LTQ_ASC1_BASE_ADDR + LTQ_ASC_SIZE - 1,
-+		.flags  = IORESOURCE_MEM,
-+	},
-+	IRQ_RES(tx, LTQ_ASC_TIR(1)),
-+	IRQ_RES(rx, LTQ_ASC_RIR(1)),
-+	IRQ_RES(err, LTQ_ASC_EIR(1)),
-+};
-+
-+void __init
-+ltq_register_asc(int port)
++static int __init
++init_ltq_wdt(void)
 +{
-+	switch (port) {
-+	case 0:
-+		platform_device_register_simple("ltq_asc", 0,
-+			ltq_asc0_resources, ARRAY_SIZE(ltq_asc0_resources));
-+		break;
-+	case 1:
-+		platform_device_register_simple("ltq_asc", 1,
-+			ltq_asc1_resources, ARRAY_SIZE(ltq_asc1_resources));
-+		break;
-+	default:
-+		break;
-+	}
++	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
 +}
 +
-+#ifdef CONFIG_PCI
-+/* pci */
-+static struct platform_device ltq_pci = {
-+	.name		= "ltq_pci",
-+	.num_resources	= 0,
-+};
-+
-+void __init
-+ltq_register_pci(struct ltq_pci_data *data)
++static void __exit
++exit_ltq_wdt(void)
 +{
-+	ltq_pci.dev.platform_data = data;
-+	platform_device_register(&ltq_pci);
-+}
-+#else
-+void __init
-+ltq_register_pci(struct ltq_pci_data *data)
-+{
-+	pr_err("kernel is compiled without PCI support\n");
-+}
-+#endif
-diff --git a/arch/mips/lantiq/devices.h b/arch/mips/lantiq/devices.h
-new file mode 100644
-index 0000000..069006c
---- /dev/null
-+++ b/arch/mips/lantiq/devices.h
-@@ -0,0 +1,20 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#ifndef _LTQ_DEVICES_H__
-+#define _LTQ_DEVICES_H__
-+
-+#include <lantiq_platform.h>
-+#include <linux/mtd/physmap.h>
-+
-+extern void ltq_register_nor(struct physmap_flash_data *data);
-+extern void ltq_register_wdt(void);
-+extern void ltq_register_asc(int port);
-+extern void ltq_register_pci(struct ltq_pci_data *data);
-+
-+#endif
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index 9c85ff9..74ce438 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1,4 +1,4 @@
--obj-y := pmu.o ebu.o reset.o gpio.o
-+obj-y := pmu.o ebu.o reset.o gpio.o devices.o
- 
- obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
- obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
-diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
-new file mode 100644
-index 0000000..37543f8
---- /dev/null
-+++ b/arch/mips/lantiq/xway/devices.c
-@@ -0,0 +1,79 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/string.h>
-+#include <linux/mtd/physmap.h>
-+#include <linux/kernel.h>
-+#include <linux/reboot.h>
-+#include <linux/platform_device.h>
-+#include <linux/leds.h>
-+#include <linux/etherdevice.h>
-+#include <linux/reboot.h>
-+#include <linux/time.h>
-+#include <linux/io.h>
-+#include <linux/gpio.h>
-+#include <linux/leds.h>
-+
-+#include <asm/bootinfo.h>
-+#include <asm/irq.h>
-+
-+#include <lantiq_soc.h>
-+#include <lantiq_irq.h>
-+#include <lantiq_platform.h>
-+
-+/* gpio */
-+static struct resource ltq_gpio_resource[] = {
-+	{
-+		.name	= "gpio0",
-+		.start  = LTQ_GPIO0_BASE_ADDR,
-+		.end    = LTQ_GPIO0_BASE_ADDR + LTQ_GPIO_SIZE - 1,
-+		.flags  = IORESOURCE_MEM,
-+	}, {
-+		.name	= "gpio1",
-+		.start  = LTQ_GPIO1_BASE_ADDR,
-+		.end    = LTQ_GPIO1_BASE_ADDR + LTQ_GPIO_SIZE - 1,
-+		.flags  = IORESOURCE_MEM,
-+	}, {
-+		.name	= "gpio2",
-+		.start  = LTQ_GPIO2_BASE_ADDR,
-+		.end    = LTQ_GPIO2_BASE_ADDR + LTQ_GPIO_SIZE - 1,
-+		.flags  = IORESOURCE_MEM,
-+	}
-+};
-+
-+void __init
-+ltq_register_gpio(void)
-+{
-+	platform_device_register_simple("ltq_gpio", 0,
-+		&ltq_gpio_resource[0], 1);
-+	platform_device_register_simple("ltq_gpio", 1,
-+		&ltq_gpio_resource[1], 1);
-+
-+	/* AR9 and VR9 have an extra gpio block */
-+	if (ltq_is_ar9() || ltq_is_vr9()) {
-+		platform_device_register_simple("ltq_gpio", 2,
-+			&ltq_gpio_resource[2], 1);
-+	}
++	platform_driver_unregister(&ltq_wdt_driver);
 +}
 +
-+/* serial to parallel conversion */
-+static struct resource ltq_stp_resource = {
-+	.name   = "stp",
-+	.start  = LTQ_STP_BASE_ADDR,
-+	.end    = LTQ_STP_BASE_ADDR + LTQ_STP_SIZE - 1,
-+	.flags  = IORESOURCE_MEM,
-+};
++module_init(init_ltq_wdt);
++module_exit(exit_ltq_wdt);
 +
-+void __init
-+ltq_register_gpio_stp(void)
-+{
-+	platform_device_register_simple("ltq_stp", 0, &ltq_stp_resource, 1);
-+}
-diff --git a/arch/mips/lantiq/xway/devices.h b/arch/mips/lantiq/xway/devices.h
-new file mode 100644
-index 0000000..87ba61e
---- /dev/null
-+++ b/arch/mips/lantiq/xway/devices.h
-@@ -0,0 +1,17 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#ifndef _LTQ_DEVICES_XWAY_H__
-+#define _LTQ_DEVICES_XWAY_H__
-+
-+#include "../devices.h"
-+
-+extern void ltq_register_gpio(void);
-+extern void ltq_register_gpio_stp(void);
-+
-+#endif
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
++MODULE_DESCRIPTION("Lantiq Watchdog");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);
 -- 
 1.7.2.3

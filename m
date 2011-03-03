@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2011 11:05:40 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:57621 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2011 11:06:05 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:57625 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491886Ab1CCKCd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1491887Ab1CCKCd (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 3 Mar 2011 11:02:33 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org
-Subject: [PATCH V3 08/10] MIPS: lantiq: add mips_machine support
-Date:   Thu,  3 Mar 2011 11:03:44 +0100
-Message-Id: <1299146626-17428-9-git-send-email-blogic@openwrt.org>
+        linux-mips@linux-mips.org
+Subject: [PATCH V3 09/10] MIPS: lantiq: add machtypes for lantiq eval kits
+Date:   Thu,  3 Mar 2011 11:03:45 +0100
+Message-Id: <1299146626-17428-10-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1299146626-17428-1-git-send-email-blogic@openwrt.org>
 References: <1299146626-17428-1-git-send-email-blogic@openwrt.org>
@@ -18,7 +18,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29329
+X-archive-position: 29330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,37 +26,102 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds support for Gabor's mips_machine patch.
+This patch adds mach specific code for the Lantiq EASY50712/50601 evaluation
+boards
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-Cc: Gabor Juhos <juhosg@openwrt.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/Kconfig            |    1 +
- arch/mips/lantiq/machtypes.h |   18 ++++++++++++++++++
- arch/mips/lantiq/setup.c     |   25 +++++++++++++++++++++++++
- 3 files changed, 44 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/lantiq/machtypes.h
+Changes in V2
+* fix pci platform_device data
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 756e67a..90f405c 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -226,6 +226,7 @@ config LANTIQ
- 	select SWAP_IO_SPACE
- 	select BOOT_RAW
- 	select HAVE_CLK
-+	select MIPS_MACHINE
+Changes in V3
+* fix Mips -> MIPS typo
+
+ arch/mips/lantiq/Kconfig               |    2 +
+ arch/mips/lantiq/machtypes.h           |    2 +
+ arch/mips/lantiq/xway/Kconfig          |   25 +++++++++++
+ arch/mips/lantiq/xway/Makefile         |    3 +
+ arch/mips/lantiq/xway/mach-easy50601.c |   70 +++++++++++++++++++++++++++++
+ arch/mips/lantiq/xway/mach-easy50712.c |   75 ++++++++++++++++++++++++++++++++
+ 6 files changed, 177 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/lantiq/xway/Kconfig
+ create mode 100644 arch/mips/lantiq/xway/mach-easy50601.c
+ create mode 100644 arch/mips/lantiq/xway/mach-easy50712.c
+
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 2780461..3fccf21 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -18,4 +18,6 @@ config SOC_XWAY
+ 	select HW_HAS_PCI
+ endchoice
  
- config LASAT
- 	bool "LASAT Networks platforms"
++source "arch/mips/lantiq/xway/Kconfig"
++
+ endif
 diff --git a/arch/mips/lantiq/machtypes.h b/arch/mips/lantiq/machtypes.h
-new file mode 100644
-index 0000000..ffcacfc
---- /dev/null
+index ffcacfc..7e01b8c 100644
+--- a/arch/mips/lantiq/machtypes.h
 +++ b/arch/mips/lantiq/machtypes.h
-@@ -0,0 +1,18 @@
+@@ -13,6 +13,8 @@
+ 
+ enum lantiq_mach_type {
+ 	LTQ_MACH_GENERIC = 0,
++	LTQ_MACH_EASY50712,	/* Danube evaluation board */
++	LTQ_MACH_EASY50601,	/* Amazon SE evaluation board */
+ };
+ 
+ #endif
+diff --git a/arch/mips/lantiq/xway/Kconfig b/arch/mips/lantiq/xway/Kconfig
+new file mode 100644
+index 0000000..f8a5e3b
+--- /dev/null
++++ b/arch/mips/lantiq/xway/Kconfig
+@@ -0,0 +1,25 @@
++if SOC_XWAY
++
++menu "MIPS Machine"
++
++config LANTIQ_MACH_EASY50712
++	bool "Easy50712 - Danube"
++	default y
++
++endmenu
++
++endif
++
++if SOC_AMAZON_SE
++
++menu "MIPS Machine"
++
++config LANTIQ_MACH_EASY50601
++	bool "Easy50601 - Amazon SE"
++	default y
++
++endmenu
++
++endif
++
++
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 74ce438..08dcc10 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -2,3 +2,6 @@ obj-y := pmu.o ebu.o reset.o gpio.o devices.o
+ 
+ obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
+ obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
++
++obj-$(CONFIG_LANTIQ_MACH_EASY50712) += mach-easy50712.o
++obj-$(CONFIG_LANTIQ_MACH_EASY50601) += mach-easy50601.o
+diff --git a/arch/mips/lantiq/xway/mach-easy50601.c b/arch/mips/lantiq/xway/mach-easy50601.c
+new file mode 100644
+index 0000000..ce081d7
+--- /dev/null
++++ b/arch/mips/lantiq/xway/mach-easy50601.c
+@@ -0,0 +1,70 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
@@ -65,55 +130,148 @@ index 0000000..ffcacfc
 + *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
 + */
 +
-+#ifndef _LANTIQ_MACH_H__
-+#define _LANTIQ_MACH_H__
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/physmap.h>
++#include <linux/input.h>
 +
-+#include <asm/mips_machine.h>
++#include <lantiq.h>
 +
-+enum lantiq_mach_type {
-+	LTQ_MACH_GENERIC = 0,
-+};
-+
-+#endif
-diff --git a/arch/mips/lantiq/setup.c b/arch/mips/lantiq/setup.c
-index edeb076..bf35435 100644
---- a/arch/mips/lantiq/setup.c
-+++ b/arch/mips/lantiq/setup.c
-@@ -14,6 +14,9 @@
- 
- #include <lantiq_soc.h>
- 
-+#include "machtypes.h"
++#include "../machtypes.h"
 +#include "devices.h"
 +
- void __init
- plat_mem_setup(void)
- {
-@@ -45,3 +48,25 @@ plat_mem_setup(void)
- 	memsize *= 1024 * 1024;
- 	add_memory_region(0x00000000, memsize, BOOT_MEM_RAM);
- }
++#ifdef CONFIG_MTD_PARTITIONS
++static struct mtd_partition easy50601_partitions[] = {
++	{
++		.name	= "uboot",
++		.offset	= 0x0,
++		.size	= 0x10000,
++	},
++	{
++		.name	= "uboot_env",
++		.offset	= 0x10000,
++		.size	= 0x10000,
++	},
++	{
++		.name	= "linux",
++		.offset	= 0x20000,
++		.size	= 0xE0000,
++	},
++	{
++		.name	= "rootfs",
++		.offset	= 0x100000,
++		.size	= 0x300000,
++	},
++};
++#endif
 +
-+static int __init
-+lantiq_setup(void)
-+{
-+	ltq_register_asc(0);
-+	ltq_register_asc(1);
-+	mips_machine_setup();
-+	return 0;
-+}
++static struct physmap_flash_data easy50601_flash_data = {
++#ifdef CONFIG_MTD_PARTITIONS
++	.nr_parts	= ARRAY_SIZE(easy50601_partitions),
++	.parts		= easy50601_partitions,
++#endif
++};
 +
-+arch_initcall(lantiq_setup);
++static struct ltq_pci_data ltq_pci_data = {
++	.clock		= PCI_CLOCK_INT,
++	.req_mask	= 0xf,
++};
 +
 +static void __init
-+lantiq_generic_init(void)
++easy50601_init(void)
 +{
-+	/* Nothing to do */
++	ltq_register_gpio();
++	ltq_register_nor(&easy50601_flash_data);
++	ltq_register_wdt();
++	ltq_register_pci(&ltq_pci_data);
 +}
 +
-+MIPS_MACHINE(LTQ_MACH_GENERIC,
-+	     "Generic",
-+	     "Generic Lantiq based board",
-+	     lantiq_generic_init);
++MIPS_MACHINE(LTQ_MACH_EASY50601,
++			"EASY50601",
++			"EASY50601 Eval Board",
++			easy50601_init);
+diff --git a/arch/mips/lantiq/xway/mach-easy50712.c b/arch/mips/lantiq/xway/mach-easy50712.c
+new file mode 100644
+index 0000000..d7963c6
+--- /dev/null
++++ b/arch/mips/lantiq/xway/mach-easy50712.c
+@@ -0,0 +1,75 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/physmap.h>
++#include <linux/input.h>
++
++#include <lantiq_soc.h>
++#include <irq.h>
++
++#include "../machtypes.h"
++#include "devices.h"
++
++#ifdef CONFIG_MTD_PARTITIONS
++static struct mtd_partition easy50712_partitions[] = {
++	{
++		.name	= "uboot",
++		.offset	= 0x0,
++		.size	= 0x10000,
++	},
++	{
++		.name	= "uboot_env",
++		.offset	= 0x10000,
++		.size	= 0x10000,
++	},
++	{
++		.name	= "linux",
++		.offset	= 0x20000,
++		.size	= 0xe0000,
++	},
++	{
++		.name	= "rootfs",
++		.offset	= 0x100000,
++		.size	= 0x300000,
++	},
++};
++#endif
++
++static struct physmap_flash_data easy50712_flash_data = {
++#ifdef CONFIG_MTD_PARTITIONS
++	.nr_parts	= ARRAY_SIZE(easy50712_partitions),
++	.parts		= easy50712_partitions,
++#endif
++};
++
++static struct ltq_pci_data ltq_pci_data = {
++	.clock	= PCI_CLOCK_INT,
++	.gpio	= PCI_GNT1 | PCI_REQ1,
++	.irq	= {
++		[14] = INT_NUM_IM0_IRL0 + 22,
++	},
++};
++
++static void __init
++easy50712_init(void)
++{
++	ltq_register_gpio();
++	ltq_register_gpio_stp();
++	ltq_register_nor(&easy50712_flash_data);
++	ltq_register_wdt();
++	ltq_register_pci(&ltq_pci_data);
++}
++
++MIPS_MACHINE(LTQ_MACH_EASY50712,
++			"EASY50712",
++			"EASY50712 Eval Board",
++			easy50712_init);
 -- 
 1.7.2.3

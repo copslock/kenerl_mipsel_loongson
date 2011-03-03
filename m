@@ -1,22 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2011 11:03:30 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:57610 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Mar 2011 11:03:57 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:57613 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491864Ab1CCKCc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1491872Ab1CCKCc (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 3 Mar 2011 11:02:32 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
         linux-mips@linux-mips.org
-Subject: [PATCH V3 00/10] MIPS: add initial support for the Lantiq SoCs
-Date:   Thu,  3 Mar 2011 11:03:36 +0100
-Message-Id: <1299146626-17428-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V3 07/10] MIPS: lantiq: add platform device support
+Date:   Thu,  3 Mar 2011 11:03:43 +0100
+Message-Id: <1299146626-17428-8-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1299146626-17428-1-git-send-email-blogic@openwrt.org>
+References: <1299146626-17428-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29324
+X-archive-position: 29325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -24,121 +26,318 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This series will add support for the Lantiq/XWAY family of SoCs.
+This patch adds the wrappers for registering our platform devices.
 
-you can find the public gitweb at :
-http://nbd.name/gitweb.cgi?p=lantiq.git;a=summary
-
-and the tree at :
-git@nbd.name:lantiq
-
-Cc: Ralph Hempel <ralph.hempel@lantiq.com>
+Signed-off-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
 Cc: linux-mips@linux-mips.org
 
-John Crispin (10):
-  MIPS: lantiq: add initial support for Lantiq SoCs
-  MIPS: lantiq: add SoC specific code for XWAY family
-  MIPS: lantiq: add PCI controller support.
-  MIPS: lantiq: add serial port support
-  MIPS: lantiq: add watchdog support
-  MIPS: lantiq: add NOR flash support
-  MIPS: lantiq: add platform device support
-  MIPS: lantiq: add mips_machine support
-  MIPS: lantiq: add machtypes for lantiq eval kits
-  MIPS: lantiq: add more gpio drivers
+---
+Changes in V3
+* use pr_* macros instead of printk
 
- arch/mips/Kbuild.platforms                         |    1 +
- arch/mips/Kconfig                                  |   19 +
- arch/mips/include/asm/mach-lantiq/lantiq.h         |   58 ++
- .../mips/include/asm/mach-lantiq/lantiq_platform.h |   46 ++
- arch/mips/include/asm/mach-lantiq/war.h            |   24 +
- arch/mips/include/asm/mach-lantiq/xway/irq.h       |   18 +
- .../mips/include/asm/mach-lantiq/xway/lantiq_irq.h |   62 ++
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |  145 ++++
- arch/mips/lantiq/Kconfig                           |   23 +
- arch/mips/lantiq/Makefile                          |   11 +
- arch/mips/lantiq/Platform                          |    8 +
- arch/mips/lantiq/clk.c                             |  135 ++++
- arch/mips/lantiq/clk.h                             |   18 +
- arch/mips/lantiq/devices.c                         |  128 ++++
- arch/mips/lantiq/devices.h                         |   20 +
- arch/mips/lantiq/early_printk.c                    |   34 +
- arch/mips/lantiq/irq.c                             |  319 ++++++++
- arch/mips/lantiq/machtypes.h                       |   20 +
- arch/mips/lantiq/prom.c                            |   77 ++
- arch/mips/lantiq/prom.h                            |   24 +
- arch/mips/lantiq/setup.c                           |   72 ++
- arch/mips/lantiq/xway/Kconfig                      |   25 +
- arch/mips/lantiq/xway/Makefile                     |    7 +
- arch/mips/lantiq/xway/clk-ase.c                    |   52 ++
- arch/mips/lantiq/xway/clk-xway.c                   |  232 ++++++
- arch/mips/lantiq/xway/devices.c                    |   79 ++
- arch/mips/lantiq/xway/devices.h                    |   17 +
- arch/mips/lantiq/xway/ebu.c                        |   36 +
- arch/mips/lantiq/xway/gpio.c                       |  203 +++++
- arch/mips/lantiq/xway/gpio_ebu.c                   |  126 ++++
- arch/mips/lantiq/xway/gpio_stp.c                   |  158 ++++
- arch/mips/lantiq/xway/mach-easy50601.c             |   70 ++
- arch/mips/lantiq/xway/mach-easy50712.c             |   75 ++
- arch/mips/lantiq/xway/pmu.c                        |   57 ++
- arch/mips/lantiq/xway/prom-ase.c                   |   40 +
- arch/mips/lantiq/xway/prom-xway.c                  |   55 ++
- arch/mips/lantiq/xway/reset.c                      |   67 ++
- arch/mips/pci/Makefile                             |    1 +
- arch/mips/pci/ops-lantiq.c                         |  119 +++
- arch/mips/pci/pci-lantiq.c                         |  303 ++++++++
- arch/mips/pci/pci-lantiq.h                         |   18 +
- drivers/mtd/maps/Kconfig                           |    7 +
- drivers/mtd/maps/Makefile                          |    1 +
- drivers/mtd/maps/lantiq.c                          |  190 +++++
- drivers/tty/serial/Kconfig                         |    8 +
- drivers/tty/serial/Makefile                        |    1 +
- drivers/tty/serial/lantiq.c                        |  775 ++++++++++++++++++++
- drivers/watchdog/Kconfig                           |    6 +
- drivers/watchdog/Makefile                          |    1 +
- drivers/watchdog/lantiq_wdt.c                      |  235 ++++++
- 50 files changed, 4226 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-lantiq/lantiq.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/lantiq_platform.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/war.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/xway/irq.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
- create mode 100644 arch/mips/lantiq/Kconfig
- create mode 100644 arch/mips/lantiq/Makefile
- create mode 100644 arch/mips/lantiq/Platform
- create mode 100644 arch/mips/lantiq/clk.c
- create mode 100644 arch/mips/lantiq/clk.h
+ arch/mips/lantiq/Makefile       |    2 +-
+ arch/mips/lantiq/devices.c      |  128 +++++++++++++++++++++++++++++++++++++++
+ arch/mips/lantiq/devices.h      |   20 ++++++
+ arch/mips/lantiq/xway/Makefile  |    2 +-
+ arch/mips/lantiq/xway/devices.c |   79 ++++++++++++++++++++++++
+ arch/mips/lantiq/xway/devices.h |   17 +++++
+ 6 files changed, 246 insertions(+), 2 deletions(-)
  create mode 100644 arch/mips/lantiq/devices.c
  create mode 100644 arch/mips/lantiq/devices.h
- create mode 100644 arch/mips/lantiq/early_printk.c
- create mode 100644 arch/mips/lantiq/irq.c
- create mode 100644 arch/mips/lantiq/machtypes.h
- create mode 100644 arch/mips/lantiq/prom.c
- create mode 100644 arch/mips/lantiq/prom.h
- create mode 100644 arch/mips/lantiq/setup.c
- create mode 100644 arch/mips/lantiq/xway/Kconfig
- create mode 100644 arch/mips/lantiq/xway/Makefile
- create mode 100644 arch/mips/lantiq/xway/clk-ase.c
- create mode 100644 arch/mips/lantiq/xway/clk-xway.c
  create mode 100644 arch/mips/lantiq/xway/devices.c
  create mode 100644 arch/mips/lantiq/xway/devices.h
- create mode 100644 arch/mips/lantiq/xway/ebu.c
- create mode 100644 arch/mips/lantiq/xway/gpio.c
- create mode 100644 arch/mips/lantiq/xway/gpio_ebu.c
- create mode 100644 arch/mips/lantiq/xway/gpio_stp.c
- create mode 100644 arch/mips/lantiq/xway/mach-easy50601.c
- create mode 100644 arch/mips/lantiq/xway/mach-easy50712.c
- create mode 100644 arch/mips/lantiq/xway/pmu.c
- create mode 100644 arch/mips/lantiq/xway/prom-ase.c
- create mode 100644 arch/mips/lantiq/xway/prom-xway.c
- create mode 100644 arch/mips/lantiq/xway/reset.c
- create mode 100644 arch/mips/pci/ops-lantiq.c
- create mode 100644 arch/mips/pci/pci-lantiq.c
- create mode 100644 arch/mips/pci/pci-lantiq.h
- create mode 100644 drivers/mtd/maps/lantiq.c
- create mode 100644 drivers/tty/serial/lantiq.c
- create mode 100644 drivers/watchdog/lantiq_wdt.c
 
+diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
+index a268391..e5dae0e 100644
+--- a/arch/mips/lantiq/Makefile
++++ b/arch/mips/lantiq/Makefile
+@@ -4,7 +4,7 @@
+ # under the terms of the GNU General Public License version 2 as published
+ # by the Free Software Foundation.
+ 
+-obj-y := irq.o setup.o clk.o prom.o
++obj-y := irq.o setup.o clk.o prom.o devices.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ 
+diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
+new file mode 100644
+index 0000000..6dfaffd
+--- /dev/null
++++ b/arch/mips/lantiq/devices.c
+@@ -0,0 +1,128 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/string.h>
++#include <linux/kernel.h>
++#include <linux/reboot.h>
++#include <linux/platform_device.h>
++#include <linux/leds.h>
++#include <linux/etherdevice.h>
++#include <linux/reboot.h>
++#include <linux/time.h>
++#include <linux/io.h>
++#include <linux/gpio.h>
++#include <linux/leds.h>
++
++#include <asm/bootinfo.h>
++#include <asm/irq.h>
++
++#include <lantiq_soc.h>
++
++#include "devices.h"
++
++#define IRQ_RES(resname, irq) \
++	{.name = #resname, .start = (irq), .flags = IORESOURCE_IRQ}
++
++/* nor flash */
++static struct resource ltq_nor_resource = {
++	.name	= "nor",
++	.start	= LTQ_FLASH_START,
++	.end	= LTQ_FLASH_START + LTQ_FLASH_MAX - 1,
++	.flags  = IORESOURCE_MEM,
++};
++
++static struct platform_device ltq_nor = {
++	.name		= "ltq_nor",
++	.resource	= &ltq_nor_resource,
++	.num_resources	= 1,
++};
++
++void __init
++ltq_register_nor(struct physmap_flash_data *data)
++{
++	ltq_nor.dev.platform_data = data;
++	platform_device_register(&ltq_nor);
++}
++
++/* watchdog */
++static struct resource ltq_wdt_resource = {
++	.name	= "watchdog",
++	.start  = LTQ_WDT_BASE_ADDR,
++	.end    = LTQ_WDT_BASE_ADDR + LTQ_WDT_SIZE - 1,
++	.flags  = IORESOURCE_MEM,
++};
++
++void __init
++ltq_register_wdt(void)
++{
++	platform_device_register_simple("ltq_wdt", 0, &ltq_wdt_resource, 1);
++}
++
++/* asc ports */
++static struct resource ltq_asc0_resources[] = {
++	{
++		.start  = LTQ_ASC0_BASE_ADDR,
++		.end    = LTQ_ASC0_BASE_ADDR + LTQ_ASC_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	},
++	IRQ_RES(tx, LTQ_ASC_TIR(0)),
++	IRQ_RES(rx, LTQ_ASC_RIR(0)),
++	IRQ_RES(err, LTQ_ASC_EIR(0)),
++};
++
++static struct resource ltq_asc1_resources[] = {
++	{
++		.start  = LTQ_ASC1_BASE_ADDR,
++		.end    = LTQ_ASC1_BASE_ADDR + LTQ_ASC_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	},
++	IRQ_RES(tx, LTQ_ASC_TIR(1)),
++	IRQ_RES(rx, LTQ_ASC_RIR(1)),
++	IRQ_RES(err, LTQ_ASC_EIR(1)),
++};
++
++void __init
++ltq_register_asc(int port)
++{
++	switch (port) {
++	case 0:
++		platform_device_register_simple("ltq_asc", 0,
++			ltq_asc0_resources, ARRAY_SIZE(ltq_asc0_resources));
++		break;
++	case 1:
++		platform_device_register_simple("ltq_asc", 1,
++			ltq_asc1_resources, ARRAY_SIZE(ltq_asc1_resources));
++		break;
++	default:
++		break;
++	}
++}
++
++#ifdef CONFIG_PCI
++/* pci */
++static struct platform_device ltq_pci = {
++	.name		= "ltq_pci",
++	.num_resources	= 0,
++};
++
++void __init
++ltq_register_pci(struct ltq_pci_data *data)
++{
++	ltq_pci.dev.platform_data = data;
++	platform_device_register(&ltq_pci);
++}
++#else
++void __init
++ltq_register_pci(struct ltq_pci_data *data)
++{
++	pr_err("kernel is compiled without PCI support\n");
++}
++#endif
+diff --git a/arch/mips/lantiq/devices.h b/arch/mips/lantiq/devices.h
+new file mode 100644
+index 0000000..069006c
+--- /dev/null
++++ b/arch/mips/lantiq/devices.h
+@@ -0,0 +1,20 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LTQ_DEVICES_H__
++#define _LTQ_DEVICES_H__
++
++#include <lantiq_platform.h>
++#include <linux/mtd/physmap.h>
++
++extern void ltq_register_nor(struct physmap_flash_data *data);
++extern void ltq_register_wdt(void);
++extern void ltq_register_asc(int port);
++extern void ltq_register_pci(struct ltq_pci_data *data);
++
++#endif
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 9c85ff9..74ce438 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,4 +1,4 @@
+-obj-y := pmu.o ebu.o reset.o gpio.o
++obj-y := pmu.o ebu.o reset.o gpio.o devices.o
+ 
+ obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
+ obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
+diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
+new file mode 100644
+index 0000000..37543f8
+--- /dev/null
++++ b/arch/mips/lantiq/xway/devices.c
+@@ -0,0 +1,79 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/string.h>
++#include <linux/mtd/physmap.h>
++#include <linux/kernel.h>
++#include <linux/reboot.h>
++#include <linux/platform_device.h>
++#include <linux/leds.h>
++#include <linux/etherdevice.h>
++#include <linux/reboot.h>
++#include <linux/time.h>
++#include <linux/io.h>
++#include <linux/gpio.h>
++#include <linux/leds.h>
++
++#include <asm/bootinfo.h>
++#include <asm/irq.h>
++
++#include <lantiq_soc.h>
++#include <lantiq_irq.h>
++#include <lantiq_platform.h>
++
++/* gpio */
++static struct resource ltq_gpio_resource[] = {
++	{
++		.name	= "gpio0",
++		.start  = LTQ_GPIO0_BASE_ADDR,
++		.end    = LTQ_GPIO0_BASE_ADDR + LTQ_GPIO_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	}, {
++		.name	= "gpio1",
++		.start  = LTQ_GPIO1_BASE_ADDR,
++		.end    = LTQ_GPIO1_BASE_ADDR + LTQ_GPIO_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	}, {
++		.name	= "gpio2",
++		.start  = LTQ_GPIO2_BASE_ADDR,
++		.end    = LTQ_GPIO2_BASE_ADDR + LTQ_GPIO_SIZE - 1,
++		.flags  = IORESOURCE_MEM,
++	}
++};
++
++void __init
++ltq_register_gpio(void)
++{
++	platform_device_register_simple("ltq_gpio", 0,
++		&ltq_gpio_resource[0], 1);
++	platform_device_register_simple("ltq_gpio", 1,
++		&ltq_gpio_resource[1], 1);
++
++	/* AR9 and VR9 have an extra gpio block */
++	if (ltq_is_ar9() || ltq_is_vr9()) {
++		platform_device_register_simple("ltq_gpio", 2,
++			&ltq_gpio_resource[2], 1);
++	}
++}
++
++/* serial to parallel conversion */
++static struct resource ltq_stp_resource = {
++	.name   = "stp",
++	.start  = LTQ_STP_BASE_ADDR,
++	.end    = LTQ_STP_BASE_ADDR + LTQ_STP_SIZE - 1,
++	.flags  = IORESOURCE_MEM,
++};
++
++void __init
++ltq_register_gpio_stp(void)
++{
++	platform_device_register_simple("ltq_stp", 0, &ltq_stp_resource, 1);
++}
+diff --git a/arch/mips/lantiq/xway/devices.h b/arch/mips/lantiq/xway/devices.h
+new file mode 100644
+index 0000000..87ba61e
+--- /dev/null
++++ b/arch/mips/lantiq/xway/devices.h
+@@ -0,0 +1,17 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LTQ_DEVICES_XWAY_H__
++#define _LTQ_DEVICES_XWAY_H__
++
++#include "../devices.h"
++
++extern void ltq_register_gpio(void);
++extern void ltq_register_gpio_stp(void);
++
++#endif
 -- 
 1.7.2.3

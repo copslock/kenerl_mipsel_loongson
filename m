@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2011 16:49:41 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:49353 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2011 17:13:40 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:60723 "EHLO
         duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491800Ab1CDPth (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2011 16:49:37 +0100
+        by eddie.linux-mips.org with ESMTP id S1491800Ab1CDQNh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2011 17:13:37 +0100
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p24FnFSr026722;
-        Fri, 4 Mar 2011 16:49:15 +0100
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p24GDF1Y028989;
+        Fri, 4 Mar 2011 17:13:16 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p24FnCX3026719;
-        Fri, 4 Mar 2011 16:49:12 +0100
-Date:   Fri, 4 Mar 2011 16:49:12 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p24GDFu1028987;
+        Fri, 4 Mar 2011 17:13:15 +0100
+Date:   Fri, 4 Mar 2011 17:13:15 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Maurus Cuelenaere <mcuelenaere@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Jz4740: Add HAVE_CLK
-Message-ID: <20110304154912.GA24966@linux-mips.org>
-References: <4d6c2da3.cc7e0e0a.2116.ffffde18@mx.google.com>
- <4D6CB9C4.8000609@metafoo.de>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH] MTX-1: make au1000_eth probes all PHY addresses
+Message-ID: <20110304161315.GB24966@linux-mips.org>
+References: <201102271953.54065.florian@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4D6CB9C4.8000609@metafoo.de>
+In-Reply-To: <201102271953.54065.florian@openwrt.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29344
+X-archive-position: 29345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,16 +33,22 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 01, 2011 at 10:17:56AM +0100, Lars-Peter Clausen wrote:
+On Sun, Feb 27, 2011 at 07:53:53PM +0100, Florian Fainelli wrote:
 
-> On 03/01/2011 12:20 AM, Maurus Cuelenaere wrote:
-> > Jz4740 supports the clock framework but doesn't have HAVE_CLK defined, so define
-> > it!
-> > 
-> > Signed-off-by: Maurus Cuelenaere <mcuelenaere@gmail.com>
+> From: Florian Fainelli <florian@openwrt.org>
 > 
-> Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+> When au1000_eth probes the MII bus for PHY address, if we do not set au1000_eth
+> platform data's phy_search_highest_address, the MII probing logic will exit
+> early and will assume a valid PHY is found at address 0. For MTX-1, the PHY is
+> at address 31, and without this patch, the link detection/speed/duplex would not
+> work correctly.
+> 
+> CC: stable@kernel.org
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> ---
+> Stable: 2.6.34+
 
-Thanks folks.  Applied,
+Thanks, applied to 2.6.34+.  Note that while you added a
+CC stable@kernel.org that address was not actually on the mail's cc list!
 
   Ralf

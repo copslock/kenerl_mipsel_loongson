@@ -1,105 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2011 16:12:16 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:33903 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491154Ab1CDPMN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2011 16:12:13 +0100
-Received: by bwz1 with SMTP id 1so2235555bwz.36
-        for <multiple recipients>; Fri, 04 Mar 2011 07:12:03 -0800 (PST)
-Received: by 10.204.233.15 with SMTP id jw15mr684226bkb.48.1299251523453;
-        Fri, 04 Mar 2011 07:12:03 -0800 (PST)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
-        by mx.google.com with ESMTPS id b16sm1621228bkw.2.2011.03.04.07.12.01
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 04 Mar 2011 07:12:02 -0800 (PST)
-Message-ID: <4D7100E8.101@mvista.com>
-Date:   Fri, 04 Mar 2011 18:10:32 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2011 16:49:41 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:49353 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491800Ab1CDPth (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2011 16:49:37 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p24FnFSr026722;
+        Fri, 4 Mar 2011 16:49:15 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p24FnCX3026719;
+        Fri, 4 Mar 2011 16:49:12 +0100
+Date:   Fri, 4 Mar 2011 16:49:12 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Maurus Cuelenaere <mcuelenaere@gmail.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Jz4740: Add HAVE_CLK
+Message-ID: <20110304154912.GA24966@linux-mips.org>
+References: <4d6c2da3.cc7e0e0a.2116.ffffde18@mx.google.com>
+ <4D6CB9C4.8000609@metafoo.de>
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Ralph Hempel <ralph.hempel@lantiq.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>,
-        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH V3 06/10] MIPS: lantiq: add NOR flash support
-References: <1299146626-17428-1-git-send-email-blogic@openwrt.org> <1299146626-17428-7-git-send-email-blogic@openwrt.org> <4D70DDEA.2050308@mvista.com>
-In-Reply-To: <4D70DDEA.2050308@mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4D6CB9C4.8000609@metafoo.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29343
+X-archive-position: 29344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I wrote:
+On Tue, Mar 01, 2011 at 10:17:56AM +0100, Lars-Peter Clausen wrote:
 
->> NOR flash is attached to the same EBU (External Bus Unit) as PCI. As 
->> described
->> in the PCI patch, the EBU is a little buggy, resulting in the upper 
->> and lower
->> 16 bit of the data on a 32 bit read are swapped. (essentially we have 
->> a addr^=2)
+> On 03/01/2011 12:20 AM, Maurus Cuelenaere wrote:
+> > Jz4740 supports the clock framework but doesn't have HAVE_CLK defined, so define
+> > it!
+> > 
+> > Signed-off-by: Maurus Cuelenaere <mcuelenaere@gmail.com>
+> 
+> Acked-by: Lars-Peter Clausen <lars@metafoo.de>
 
->    "Are" not needed.
+Thanks folks.  Applied,
 
->> To work around this we do a addr^=2 during the probe. Once probed we 
->> adapt
->> cfi->addr_unlock1 and cfi->addr_unlock2 to represent the endianess bug.
-
->> Signed-off-by: John Crispin<blogic@openwrt.org>
->> Signed-off-by: Ralph Hempel<ralph.hempel@lantiq.com>
->> Cc: David Woodhouse<dwmw2@infradead.org>
->> Cc: Daniel Schwierzeck<daniel.schwierzeck@googlemail.com>
->> Cc: linux-mips@linux-mips.org
->> Cc: linux-mtd@lists.infradead.org
-> [...]
-
->> diff --git a/drivers/mtd/maps/lantiq.c b/drivers/mtd/maps/lantiq.c
->> new file mode 100644
->> index 0000000..674be0a
->> --- /dev/null
->> +++ b/drivers/mtd/maps/lantiq.c
->> @@ -0,0 +1,190 @@
-[...]
->> +void
->> +ltq_copy_from(struct map_info *map, void *to,
->  > +    unsigned long from, ssize_t len)
-
->    Shouldn't it be static?
-
->> +{
->> +    unsigned char *p;
->> +    unsigned char *to_8;
->> +    unsigned long flags;
->> +
->> +    spin_lock_irqsave(&ebu_lock, flags);
->> +    from = (unsigned long) (map->virt + from);
-
->    Why not:
-
->     from += (unsigned long) map->virt;
-
-> like you do in ltq_copy_to()?
-
->> +    p = (unsigned char *) from;
-
->    Could be done in initializer, like in ltq_copy_to().
-
->> +    to_8 = (unsigned char *) to;
->> +    while (len--)
->> +        *to_8++ = *p++;
-
->    BTW, you could use memcpy_fromio().
-
-    Actually not, as on MIPS it's implemented via memcpy(). On ARM it doesn 
-byte-by-byte copying -- that's why I remembered about it...
-
-WBR, Sergei
+  Ralf

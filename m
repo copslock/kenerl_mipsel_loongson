@@ -1,40 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2011 20:46:27 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:11837 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Mar 2011 20:46:50 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11853 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491994Ab1CDTnA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2011 20:43:00 +0100
+        by eddie.linux-mips.org with ESMTP id S1491997Ab1CDTnB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Mar 2011 20:43:01 +0100
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d7140f80000>; Fri, 04 Mar 2011 11:43:52 -0800
+        id <B4d7140fa0000>; Fri, 04 Mar 2011 11:43:54 -0800
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 4 Mar 2011 11:42:58 -0800
+         Fri, 4 Mar 2011 11:42:59 -0800
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 4 Mar 2011 11:42:58 -0800
+         Fri, 4 Mar 2011 11:42:59 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p24JgoPl017370;
-        Fri, 4 Mar 2011 11:42:50 -0800
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p24Jgs5F017374;
+        Fri, 4 Mar 2011 11:42:54 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p24JgmwH017369;
-        Fri, 4 Mar 2011 11:42:48 -0800
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p24JgsGd017373;
+        Fri, 4 Mar 2011 11:42:54 -0800
 From:   David Daney <ddaney@caviumnetworks.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
         linux-kernel@vger.kernel.org
 Cc:     David Daney <ddaney@caviumnetworks.com>,
-        "Jean Delvare (PC drivers, core)" <khali@linux-fr.org>,
-        "Ben Dooks (embedded platforms)" <ben-linux@fluff.org>,
-        linux-i2c@vger.kernel.org
-Subject: [RFC PATCH v2 09/12] i2c: Convert i2c-octeon.c to use device tree.
-Date:   Fri,  4 Mar 2011 11:42:21 -0800
-Message-Id: <1299267744-17278-10-git-send-email-ddaney@caviumnetworks.com>
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Subject: [RFC PATCH v2 10/12] netdev: mdio-octeon.c: Convert to use device tree.
+Date:   Fri,  4 Mar 2011 11:42:22 -0800
+Message-Id: <1299267744-17278-11-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1299267744-17278-1-git-send-email-ddaney@caviumnetworks.com>
 References: <1299267744-17278-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 04 Mar 2011 19:42:58.0451 (UTC) FILETIME=[5D455E30:01CBDAA4]
+X-OriginalArrivalTime: 04 Mar 2011 19:42:59.0872 (UTC) FILETIME=[5E1E3200:01CBDAA4]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29355
+X-archive-position: 29356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,306 +40,259 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
+Get the MDIO bus controller addresses from the device tree.
+
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Cc: "Jean Delvare (PC drivers, core)" <khali@linux-fr.org>
-Cc: "Ben Dooks (embedded platforms)" <ben-linux@fluff.org>
-Cc: linux-i2c@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: netdev@vger.kernel.org
 ---
- arch/mips/cavium-octeon/octeon-platform.c |   84 -----------------------------
- arch/mips/include/asm/octeon/octeon.h     |    5 --
- drivers/i2c/busses/i2c-octeon.c           |   69 ++++++++++++++----------
- 3 files changed, 41 insertions(+), 117 deletions(-)
+ arch/mips/cavium-octeon/octeon-platform.c |   30 ---------
+ drivers/net/phy/mdio-octeon.c             |   92 +++++++++++++++++++---------
+ 2 files changed, 62 insertions(+), 60 deletions(-)
 
 diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 87512c5..0533351 100644
+index 0533351..ce471bd 100644
 --- a/arch/mips/cavium-octeon/octeon-platform.c
 +++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -168,90 +168,6 @@ out:
+@@ -168,36 +168,6 @@ out:
  }
  device_initcall(octeon_rng_device_init);
  
--static struct i2c_board_info __initdata octeon_i2c_devices[] = {
--	{
--		I2C_BOARD_INFO("ds1337", 0x68),
--	},
--};
--
--static int __init octeon_i2c_devices_init(void)
--{
--	return i2c_register_board_info(0, octeon_i2c_devices,
--				       ARRAY_SIZE(octeon_i2c_devices));
--}
--arch_initcall(octeon_i2c_devices_init);
--
--#define OCTEON_I2C_IO_BASE 0x1180000001000ull
--#define OCTEON_I2C_IO_UNIT_OFFSET 0x200
--
--static struct octeon_i2c_data octeon_i2c_data[2];
--
--static int __init octeon_i2c_device_init(void)
+-/* Octeon SMI/MDIO interface.  */
+-static int __init octeon_mdiobus_device_init(void)
 -{
 -	struct platform_device *pd;
 -	int ret = 0;
--	int port, num_ports;
 -
--	struct resource i2c_resources[] = {
--		{
--			.flags	= IORESOURCE_MEM,
--		}, {
--			.flags	= IORESOURCE_IRQ,
--		}
--	};
+-	if (octeon_is_simulation())
+-		return 0; /* No mdio in the simulator. */
 -
--	if (OCTEON_IS_MODEL(OCTEON_CN56XX) || OCTEON_IS_MODEL(OCTEON_CN52XX))
--		num_ports = 2;
--	else
--		num_ports = 1;
--
--	for (port = 0; port < num_ports; port++) {
--		octeon_i2c_data[port].sys_freq = octeon_get_io_clock_rate();
--		/*FIXME: should be examined. At the moment is set for 100Khz */
--		octeon_i2c_data[port].i2c_freq = 100000;
--
--		pd = platform_device_alloc("i2c-octeon", port);
--		if (!pd) {
--			ret = -ENOMEM;
--			goto out;
--		}
--
--		pd->dev.platform_data = octeon_i2c_data + port;
--
--		i2c_resources[0].start =
--			OCTEON_I2C_IO_BASE + (port * OCTEON_I2C_IO_UNIT_OFFSET);
--		i2c_resources[0].end = i2c_resources[0].start + 0x1f;
--		switch (port) {
--		case 0:
--			i2c_resources[1].start = OCTEON_IRQ_TWSI;
--			i2c_resources[1].end = OCTEON_IRQ_TWSI;
--			break;
--		case 1:
--			i2c_resources[1].start = OCTEON_IRQ_TWSI2;
--			i2c_resources[1].end = OCTEON_IRQ_TWSI2;
--			break;
--		default:
--			BUG();
--		}
--
--		ret = platform_device_add_resources(pd,
--						    i2c_resources,
--						    ARRAY_SIZE(i2c_resources));
--		if (ret)
--			goto fail;
--
--		ret = platform_device_add(pd);
--		if (ret)
--			goto fail;
+-	/* The bus number is the platform_device id.  */
+-	pd = platform_device_alloc("mdio-octeon", 0);
+-	if (!pd) {
+-		ret = -ENOMEM;
+-		goto out;
 -	}
+-
+-	ret = platform_device_add(pd);
+-	if (ret)
+-		goto fail;
+-
 -	return ret;
 -fail:
 -	platform_device_put(pd);
+-
 -out:
 -	return ret;
+-
 -}
--device_initcall(octeon_i2c_device_init);
+-device_initcall(octeon_mdiobus_device_init);
 -
- /* Octeon SMI/MDIO interface.  */
- static int __init octeon_mdiobus_device_init(void)
+ /* Octeon mgmt port Ethernet interface.  */
+ static int __init octeon_mgmt_device_init(void)
  {
-diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index f72f768..1e2486e 100644
---- a/arch/mips/include/asm/octeon/octeon.h
-+++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -215,11 +215,6 @@ struct octeon_cf_data {
- 	int		dma_engine;	/* -1 for no DMA */
- };
- 
--struct octeon_i2c_data {
--	unsigned int	sys_freq;
--	unsigned int	i2c_freq;
--};
--
- extern void octeon_write_lcd(const char *s);
- extern void octeon_check_cpu_bist(void);
- extern int octeon_get_boot_debug_flag(void);
-diff --git a/drivers/i2c/busses/i2c-octeon.c b/drivers/i2c/busses/i2c-octeon.c
-index 56dbe54..cb34725 100644
---- a/drivers/i2c/busses/i2c-octeon.c
-+++ b/drivers/i2c/busses/i2c-octeon.c
-@@ -2,7 +2,7 @@
-  * (C) Copyright 2009-2010
-  * Nokia Siemens Networks, michael.lawnick.ext@nsn.com
+diff --git a/drivers/net/phy/mdio-octeon.c b/drivers/net/phy/mdio-octeon.c
+index bd12ba9..dd33023 100644
+--- a/drivers/net/phy/mdio-octeon.c
++++ b/drivers/net/phy/mdio-octeon.c
+@@ -3,13 +3,15 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
   *
-- * Portions Copyright (C) 2010 Cavium Networks, Inc.
-+ * Portions Copyright (C) 2010, 2011 Cavium Networks, Inc.
-  *
-  * This is a driver for the i2c adapter in Cavium Networks' OCTEON processors.
-  *
-@@ -11,17 +11,18 @@
-  * warranty of any kind, whether express or implied.
+- * Copyright (C) 2009 Cavium Networks
++ * Copyright (C) 2009, 2010, 2011 Cavium Networks
   */
  
-+#include <linux/platform_device.h>
-+#include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of_i2c.h>
+-#include <linux/gfp.h>
+-#include <linux/init.h>
+-#include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/of_mdio.h>
 +#include <linux/delay.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/init.h>
--
--#include <linux/io.h>
- #include <linux/i2c.h>
--#include <linux/interrupt.h>
--#include <linux/delay.h>
--#include <linux/platform_device.h>
-+#include <linux/io.h>
-+#include <linux/of.h>
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/gfp.h>
+ #include <linux/phy.h>
  
  #include <asm/octeon/octeon.h>
+@@ -18,9 +20,17 @@
+ #define DRV_VERSION "1.0"
+ #define DRV_DESCRIPTION "Cavium Networks Octeon SMI/MDIO driver"
  
-@@ -121,10 +122,8 @@ static u8 octeon_i2c_read_sw(struct octeon_i2c *i2c, u64 eop_reg)
-  */
- static void octeon_i2c_write_int(struct octeon_i2c *i2c, u64 data)
++#define SMI_CMD		0x0
++#define SMI_WR_DAT	0x8
++#define SMI_RD_DAT	0x10
++#define SMI_CLK		0x18
++#define SMI_EN		0x20
++
+ struct octeon_mdiobus {
+ 	struct mii_bus *mii_bus;
+-	int unit;
++	u64 register_base;
++	resource_size_t mdio_phys;
++	resource_size_t regsize;
+ 	int phy_irq[PHY_MAX_ADDR];
+ };
+ 
+@@ -35,15 +45,15 @@ static int octeon_mdiobus_read(struct mii_bus *bus, int phy_id, int regnum)
+ 	smi_cmd.s.phy_op = 1; /* MDIO_CLAUSE_22_READ */
+ 	smi_cmd.s.phy_adr = phy_id;
+ 	smi_cmd.s.reg_adr = regnum;
+-	cvmx_write_csr(CVMX_SMIX_CMD(p->unit), smi_cmd.u64);
++	cvmx_write_csr(p->register_base + SMI_CMD, smi_cmd.u64);
+ 
+ 	do {
+ 		/*
+ 		 * Wait 1000 clocks so we don't saturate the RSL bus
+ 		 * doing reads.
+ 		 */
+-		cvmx_wait(1000);
+-		smi_rd.u64 = cvmx_read_csr(CVMX_SMIX_RD_DAT(p->unit));
++		__delay(1000);
++		smi_rd.u64 = cvmx_read_csr(p->register_base + SMI_RD_DAT);
+ 	} while (smi_rd.s.pending && --timeout);
+ 
+ 	if (smi_rd.s.val)
+@@ -62,21 +72,21 @@ static int octeon_mdiobus_write(struct mii_bus *bus, int phy_id,
+ 
+ 	smi_wr.u64 = 0;
+ 	smi_wr.s.dat = val;
+-	cvmx_write_csr(CVMX_SMIX_WR_DAT(p->unit), smi_wr.u64);
++	cvmx_write_csr(p->register_base + SMI_WR_DAT, smi_wr.u64);
+ 
+ 	smi_cmd.u64 = 0;
+ 	smi_cmd.s.phy_op = 0; /* MDIO_CLAUSE_22_WRITE */
+ 	smi_cmd.s.phy_adr = phy_id;
+ 	smi_cmd.s.reg_adr = regnum;
+-	cvmx_write_csr(CVMX_SMIX_CMD(p->unit), smi_cmd.u64);
++	cvmx_write_csr(p->register_base + SMI_CMD, smi_cmd.u64);
+ 
+ 	do {
+ 		/*
+ 		 * Wait 1000 clocks so we don't saturate the RSL bus
+ 		 * doing reads.
+ 		 */
+-		cvmx_wait(1000);
+-		smi_wr.u64 = cvmx_read_csr(CVMX_SMIX_WR_DAT(p->unit));
++		__delay(1000);
++		smi_wr.u64 = cvmx_read_csr(p->register_base + SMI_WR_DAT);
+ 	} while (smi_wr.s.pending && --timeout);
+ 
+ 	if (timeout <= 0)
+@@ -88,8 +98,8 @@ static int octeon_mdiobus_write(struct mii_bus *bus, int phy_id,
+ static int __devinit octeon_mdiobus_probe(struct platform_device *pdev)
  {
--	u64 tmp;
--
- 	__raw_writeq(data, i2c->twsi_base + TWSI_INT);
--	tmp = __raw_readq(i2c->twsi_base + TWSI_INT);
-+	__raw_readq(i2c->twsi_base + TWSI_INT);
+ 	struct octeon_mdiobus *bus;
++	struct resource *res_mem;
+ 	union cvmx_smix_en smi_en;
+-	int i;
+ 	int err = -ENOENT;
+ 
+ 	bus = devm_kzalloc(&pdev->dev, sizeof(*bus), GFP_KERNEL);
+@@ -97,28 +107,36 @@ static int __devinit octeon_mdiobus_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	/* The platform_device id is our unit number.  */
+-	bus->unit = pdev->id;
++	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++
++	if (res_mem == NULL) {
++		dev_err(&pdev->dev, "found no memory resource\n");
++		err = -ENXIO;
++		goto fail_region;
++	}
++	bus->mdio_phys = res_mem->start;
++	bus->regsize = resource_size(res_mem);
++	if (!devm_request_mem_region(&pdev->dev, bus->mdio_phys, bus->regsize,
++				     res_mem->name)) {
++		dev_err(&pdev->dev, "request_mem_region failed\n");
++		goto fail_region;
++	}
++	bus->register_base = (u64)ioremap(bus->mdio_phys, bus->regsize);
+ 
+ 	bus->mii_bus = mdiobus_alloc();
+ 
+ 	if (!bus->mii_bus)
+-		goto err;
++		goto fail_mdio_alloc;
+ 
+ 	smi_en.u64 = 0;
+ 	smi_en.s.en = 1;
+-	cvmx_write_csr(CVMX_SMIX_EN(bus->unit), smi_en.u64);
++	cvmx_write_csr(bus->register_base + SMI_EN, smi_en.u64);
+ 
+-	/*
+-	 * Standard Octeon evaluation boards don't support phy
+-	 * interrupts, we need to poll.
+-	 */
+-	for (i = 0; i < PHY_MAX_ADDR; i++)
+-		bus->phy_irq[i] = PHY_POLL;
+ 
+ 	bus->mii_bus->priv = bus;
+ 	bus->mii_bus->irq = bus->phy_irq;
+ 	bus->mii_bus->name = "mdio-octeon";
+-	snprintf(bus->mii_bus->id, MII_BUS_ID_SIZE, "%x", bus->unit);
++	snprintf(bus->mii_bus->id, MII_BUS_ID_SIZE, "%llx", bus->register_base);
+ 	bus->mii_bus->parent = &pdev->dev;
+ 
+ 	bus->mii_bus->read = octeon_mdiobus_read;
+@@ -126,20 +144,23 @@ static int __devinit octeon_mdiobus_probe(struct platform_device *pdev)
+ 
+ 	dev_set_drvdata(&pdev->dev, bus);
+ 
+-	err = mdiobus_register(bus->mii_bus);
++	err = of_mdiobus_register(bus->mii_bus, pdev->dev.of_node);
+ 	if (err)
+-		goto err_register;
++		goto fail_register;
+ 
+ 	dev_info(&pdev->dev, "Version " DRV_VERSION "\n");
+ 
+ 	return 0;
+-err_register:
++fail_register:
+ 	mdiobus_free(bus->mii_bus);
+ 
+-err:
+-	devm_kfree(&pdev->dev, bus);
++fail_mdio_alloc:
++	devm_release_mem_region(&pdev->dev, bus->mdio_phys, bus->regsize);
++
++fail_region:
+ 	smi_en.u64 = 0;
+-	cvmx_write_csr(CVMX_SMIX_EN(bus->unit), smi_en.u64);
++	cvmx_write_csr(bus->register_base + SMI_EN, smi_en.u64);
++	devm_kfree(&pdev->dev, bus);
+ 	return err;
  }
  
- /**
-@@ -515,22 +514,22 @@ static int __devinit octeon_i2c_probe(struct platform_device *pdev)
- {
- 	int irq, result = 0;
- 	struct octeon_i2c *i2c;
--	struct octeon_i2c_data *i2c_data;
- 	struct resource *res_mem;
-+	const __be32 *data;
-+	int len;
+@@ -152,15 +173,26 @@ static int __devexit octeon_mdiobus_remove(struct platform_device *pdev)
  
- 	/* All adaptors have an irq.  */
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
- 
--	i2c = kzalloc(sizeof(*i2c), GFP_KERNEL);
-+	i2c = devm_kzalloc(&pdev->dev, sizeof(*i2c), GFP_KERNEL);
- 	if (!i2c) {
- 		dev_err(&pdev->dev, "kzalloc failed\n");
- 		result = -ENOMEM;
- 		goto out;
- 	}
- 	i2c->dev = &pdev->dev;
--	i2c_data = pdev->dev.platform_data;
- 
- 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 
-@@ -539,19 +538,22 @@ static int __devinit octeon_i2c_probe(struct platform_device *pdev)
- 		result = -ENXIO;
- 		goto fail_region;
- 	}
-+	i2c->twsi_phys = res_mem->start;
-+	i2c->regsize = resource_size(res_mem);
- 
--	if (i2c_data == NULL) {
--		dev_err(i2c->dev, "no I2C frequency data\n");
-+	data = of_get_property(pdev->dev.of_node, "clock-rate", &len);
-+	if (data && len == sizeof(*data)) {
-+		i2c->twsi_freq = be32_to_cpup(data);
-+	} else {
-+		dev_err(i2c->dev, "no I2C 'clock-rate' property\n");
- 		result = -ENXIO;
- 		goto fail_region;
- 	}
- 
--	i2c->twsi_phys = res_mem->start;
--	i2c->regsize = resource_size(res_mem);
--	i2c->twsi_freq = i2c_data->i2c_freq;
--	i2c->sys_freq = i2c_data->sys_freq;
-+	i2c->sys_freq = octeon_get_io_clock_rate();
- 
--	if (!request_mem_region(i2c->twsi_phys, i2c->regsize, res_mem->name)) {
-+	if (!devm_request_mem_region(&pdev->dev, i2c->twsi_phys, i2c->regsize,
-+				      res_mem->name)) {
- 		dev_err(i2c->dev, "request_mem_region failed\n");
- 		goto fail_region;
- 	}
-@@ -581,28 +583,31 @@ static int __devinit octeon_i2c_probe(struct platform_device *pdev)
- 
- 	i2c->adap = octeon_i2c_ops;
- 	i2c->adap.dev.parent = &pdev->dev;
--	i2c->adap.nr = pdev->id >= 0 ? pdev->id : 0;
-+	i2c->adap.dev.of_node = pdev->dev.of_node;
- 	i2c_set_adapdata(&i2c->adap, i2c);
- 	platform_set_drvdata(pdev, i2c);
- 
--	result = i2c_add_numbered_adapter(&i2c->adap);
-+	result = i2c_add_adapter(&i2c->adap);
- 	if (result < 0) {
- 		dev_err(i2c->dev, "failed to add adapter\n");
- 		goto fail_add;
- 	}
--
- 	dev_info(i2c->dev, "version %s\n", DRV_VERSION);
- 
--	return result;
-+	of_i2c_register_devices(&i2c->adap);
-+
-+	return 0;
- 
- fail_add:
- 	platform_set_drvdata(pdev, NULL);
- 	free_irq(i2c->irq, i2c);
- fail_irq:
- 	iounmap(i2c->twsi_base);
--	release_mem_region(i2c->twsi_phys, i2c->regsize);
-+
-+	devm_release_mem_region(&pdev->dev, i2c->twsi_phys, i2c->regsize);
- fail_region:
--	kfree(i2c);
-+
-+	devm_kfree(&pdev->dev, i2c);
- out:
- 	return result;
- };
-@@ -615,17 +620,26 @@ static int __devexit octeon_i2c_remove(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, NULL);
- 	free_irq(i2c->irq, i2c);
- 	iounmap(i2c->twsi_base);
--	release_mem_region(i2c->twsi_phys, i2c->regsize);
--	kfree(i2c);
-+	devm_release_mem_region(&pdev->dev, i2c->twsi_phys, i2c->regsize);
-+	devm_kfree(&pdev->dev, i2c);
+ 	mdiobus_unregister(bus->mii_bus);
+ 	mdiobus_free(bus->mii_bus);
++	devm_release_mem_region(&pdev->dev, bus->mdio_phys, bus->regsize);
+ 	smi_en.u64 = 0;
+-	cvmx_write_csr(CVMX_SMIX_EN(bus->unit), smi_en.u64);
++	cvmx_write_csr(bus->register_base + SMI_EN, smi_en.u64);
++	devm_kfree(&pdev->dev, bus);
  	return 0;
- };
+ }
  
-+static struct of_device_id octeon_i2c_match[] = {
++static struct of_device_id octeon_mdiobus_match[] = {
 +	{
-+		.compatible = "cavium,octeon-3860-twsi",
++		.compatible = "cavium,octeon-3860-mdio",
 +	},
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, octeon_i2c_match);
++MODULE_DEVICE_TABLE(of, octeon_mdiobus_match);
 +
- static struct platform_driver octeon_i2c_driver = {
- 	.probe		= octeon_i2c_probe,
- 	.remove		= __devexit_p(octeon_i2c_remove),
- 	.driver		= {
- 		.owner	= THIS_MODULE,
- 		.name	= DRV_NAME,
-+		.of_match_table = octeon_i2c_match,
+ static struct platform_driver octeon_mdiobus_driver = {
+ 	.driver = {
+ 		.name		= "mdio-octeon",
+ 		.owner		= THIS_MODULE,
++		.of_match_table = octeon_mdiobus_match,
  	},
- };
- 
-@@ -646,7 +660,6 @@ MODULE_AUTHOR("Michael Lawnick <michael.lawnick.ext@nsn.com>");
- MODULE_DESCRIPTION("I2C-Bus adapter for Cavium OCTEON processors");
- MODULE_LICENSE("GPL");
- MODULE_VERSION(DRV_VERSION);
--MODULE_ALIAS("platform:" DRV_NAME);
- 
- module_init(octeon_i2c_init);
- module_exit(octeon_i2c_exit);
+ 	.probe		= octeon_mdiobus_probe,
+ 	.remove		= __devexit_p(octeon_mdiobus_remove),
 -- 
 1.7.2.3

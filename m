@@ -1,35 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2011 01:59:56 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:46112 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491981Ab1CEA7x convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 5 Mar 2011 01:59:53 +0100
-Received: by iyf40 with SMTP id 40so2622678iyf.36
-        for <multiple recipients>; Fri, 04 Mar 2011 16:59:47 -0800 (PST)
-Received: by 10.231.64.144 with SMTP id e16mr6428ibi.22.1299286787092; Fri, 04
- Mar 2011 16:59:47 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.231.166.130 with HTTP; Fri, 4 Mar 2011 16:59:27 -0800 (PST)
-In-Reply-To: <20110305005750.GC7579@angua.secretlab.ca>
-References: <1299267744-17278-1-git-send-email-ddaney@caviumnetworks.com>
- <1299267744-17278-3-git-send-email-ddaney@caviumnetworks.com> <20110305005750.GC7579@angua.secretlab.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2011 02:07:59 +0100 (CET)
+Received: from mail-iw0-f177.google.com ([209.85.214.177]:51755 "EHLO
+        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492009Ab1CEBH4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Mar 2011 02:07:56 +0100
+Received: by iwn36 with SMTP id 36so2643173iwn.36
+        for <multiple recipients>; Fri, 04 Mar 2011 17:07:49 -0800 (PST)
+Received: by 10.43.55.9 with SMTP id vw9mr1474833icb.259.1299287269854;
+        Fri, 04 Mar 2011 17:07:49 -0800 (PST)
+Received: from angua (S01060002b3d79728.cg.shawcable.net [70.72.87.49])
+        by mx.google.com with ESMTPS id xa8sm2059017icb.10.2011.03.04.17.07.48
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 04 Mar 2011 17:07:49 -0800 (PST)
+Received: by angua (Postfix, from userid 1000)
+        id BC1033C00D3; Fri,  4 Mar 2011 18:07:46 -0700 (MST)
+Date:   Fri, 4 Mar 2011 18:07:46 -0700
 From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Fri, 4 Mar 2011 17:59:27 -0700
-X-Google-Sender-Auth: CjfYjSpyKbXjanJlnCU2ZiUxxMA
-Message-ID: <AANLkTimHkOuO=wyyBNiPeMCq=JYMmT0_fsZ00yyDNNJn@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/12] of: Allow scripts/dtc/libfdt to be used from
- kernel code
 To:     David Daney <ddaney@caviumnetworks.com>
 Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        David Gibson <dwg@au1.ibm.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 06/12] MIPS: Octeon: Add a
+ irq_create_of_mapping() implementation.
+Message-ID: <20110305010746.GD7579@angua.secretlab.ca>
+References: <1299267744-17278-1-git-send-email-ddaney@caviumnetworks.com>
+ <1299267744-17278-7-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1299267744-17278-7-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
 Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29365
+X-archive-position: 29366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,153 +40,69 @@ X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-[actually cc'ing David Gibson this time]
+On Fri, Mar 04, 2011 at 11:42:18AM -0800, David Daney wrote:
+> This is needed for Octeon to use the Device Tree.
+> 
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> ---
+>  arch/mips/cavium-octeon/octeon-irq.c |   25 +++++++++++++++++++++++++
+>  1 files changed, 25 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+> index b365710..b0a9261 100644
+> --- a/arch/mips/cavium-octeon/octeon-irq.c
+> +++ b/arch/mips/cavium-octeon/octeon-irq.c
+> @@ -8,7 +8,9 @@
+>  
+>  #include <linux/interrupt.h>
+>  #include <linux/bitops.h>
+> +#include <linux/module.h>
+>  #include <linux/percpu.h>
+> +#include <linux/of_irq.h>
+>  #include <linux/irq.h>
+>  #include <linux/smp.h>
+>  
+> @@ -64,6 +66,29 @@ static void __init octeon_irq_set_ciu_mapping(int irq, int line, int bit,
+>  	octeon_irq_ciu_to_irq[line][bit] = irq;
+>  }
+>  
+> +/*
+> + * irq_create_of_mapping - Hook to resolve OF irq specifier into a Linux irq#
+> + *
+> + * Octeon irq maps are a pair of indexes.  The first selects either
+> + * ciu0 or ciu1, the second is the bit within the ciu register.
+> + */
 
-On Fri, Mar 4, 2011 at 5:57 PM, Grant Likely <grant.likely@secretlab.ca> wrote:
-> [cc'ing David Gibson]
-> On Fri, Mar 04, 2011 at 11:42:14AM -0800, David Daney wrote:
->> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
->> ---
->>  include/linux/libfdt.h      |    3 +++
->>  lib/Kconfig                 |    6 ++++++
->>  lib/Makefile                |    2 ++
->>  lib/libfdt/Makefile         |    7 +++++++
->>  lib/libfdt/libfdt_env.h     |   21 +++++++++++++++++++++
->>  scripts/dtc/libfdt/libfdt.h |    4 ++--
->>  6 files changed, 41 insertions(+), 2 deletions(-)
->>  create mode 100644 include/linux/libfdt.h
->>  create mode 100644 lib/libfdt/Makefile
->>  create mode 100644 lib/libfdt/libfdt_env.h
->>
->> diff --git a/include/linux/libfdt.h b/include/linux/libfdt.h
->> new file mode 100644
->> index 0000000..10bce91
->> --- /dev/null
->> +++ b/include/linux/libfdt.h
->> @@ -0,0 +1,3 @@
->> +#include "../../lib/libfdt/libfdt_env.h"
->
-> libfdt_env.h should be in include/linux
->
->> +#include "../../scripts/dtc/libfdt/fdt.h"
->> +#include "../../scripts/dtc/libfdt/libfdt.h"
->
-> Hmmm... I wonder if there is a better way to do this.  I don't much
-> care for the relative path references.
->
-> Also, need to have #ifdef _INCLUDE_LIBFDT_H_ protection
->
->> diff --git a/lib/Kconfig b/lib/Kconfig
->> index 0ee67e0..e8a2638 100644
->> --- a/lib/Kconfig
->> +++ b/lib/Kconfig
->> @@ -219,4 +219,10 @@ config LRU_CACHE
->>  config AVERAGE
->>       bool
->>
->> +#
->> +# The Flattened Device Tree manipulation library
->> +#
->> +config LIBFDT
->> +     bool
->> +
->
-> This should be in drivers/of/Kconfig
->
->>  endmenu
->> diff --git a/lib/Makefile b/lib/Makefile
->> index cbb774f..5840115 100644
->> --- a/lib/Makefile
->> +++ b/lib/Makefile
->> @@ -110,6 +110,8 @@ obj-$(CONFIG_ATOMIC64_SELFTEST) += atomic64_test.o
->>
->>  obj-$(CONFIG_AVERAGE) += average.o
->>
->> +obj-$(CONFIG_LIBFDT) += libfdt/
->> +
->
-> Ditto here; drivers/of/libfdt
->
->>  hostprogs-y  := gen_crc32table
->>  clean-files  := crc32table.h
->>
->> diff --git a/lib/libfdt/Makefile b/lib/libfdt/Makefile
->> new file mode 100644
->> index 0000000..6c1a496
->> --- /dev/null
->> +++ b/lib/libfdt/Makefile
->> @@ -0,0 +1,7 @@
->> +obj-y = fdt.o fdt_wip.o fdt_ro.o
->> +
->> +EXTRA_CFLAGS += -include $(src)/libfdt_env.h -I$(src)/../../scripts/dtc/libfdt
->> +
->> +$(obj)/%.o: $(src)/../../scripts/dtc/libfdt/%.c FORCE
->> +     $(call cmd,force_checksrc)
->> +     $(call if_changed_rule,cc_o_c)
->> diff --git a/lib/libfdt/libfdt_env.h b/lib/libfdt/libfdt_env.h
->> new file mode 100644
->> index 0000000..d977b8b
->> --- /dev/null
->> +++ b/lib/libfdt/libfdt_env.h
->> @@ -0,0 +1,21 @@
->> +#ifndef _LIBFDT_ENV_H
->> +#define _LIBFDT_ENV_H
->> +
->> +#include <linux/string.h>
->> +
->> +#define _B(n)        ((unsigned long long)((uint8_t *)&x)[n])
->> +static inline uint32_t fdt32_to_cpu(uint32_t x)
->> +{
->> +     return (_B(0) << 24) | (_B(1) << 16) | (_B(2) << 8) | _B(3);
->> +}
->> +#define cpu_to_fdt32(x) fdt32_to_cpu(x)
->> +
->> +static inline uint64_t fdt64_to_cpu(uint64_t x)
->> +{
->> +     return (_B(0) << 56) | (_B(1) << 48) | (_B(2) << 40) | (_B(3) << 32)
->> +             | (_B(4) << 24) | (_B(5) << 16) | (_B(6) << 8) | _B(7);
->> +}
->> +#define cpu_to_fdt64(x) fdt64_to_cpu(x)
->> +#undef _B
->> +
->
-> This isn't necessary, the kernel already has efficient architecture
-> macros for converting endianess.
->
-> #define fdt32_to_cpu(x) be32_to_cpu(x)
-> #define cpu_to_fdt32(x) cpu_to_be32(x)
-> #define fdt64_to_cpu(x) be64_to_cpu(x)
-> #define cpu_to_fdt64(x) cpu_to_be64(x)
->
->> +#endif /* _LIBFDT_ENV_H */
->> diff --git a/scripts/dtc/libfdt/libfdt.h b/scripts/dtc/libfdt/libfdt.h
->> index ce80e4f..33a0c4d 100644
->> --- a/scripts/dtc/libfdt/libfdt.h
->> +++ b/scripts/dtc/libfdt/libfdt.h
->> @@ -51,8 +51,8 @@
->>   *     EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
->>   */
->>
->> -#include <libfdt_env.h>
->> -#include <fdt.h>
->> +#include "libfdt_env.h"
->> +#include "fdt.h"
->
-> This causes problems.  libfdt is an external library that is
-> periodically copied into the kernel tree.  It would be better to add
-> "-Iscripts/dtc/libfdt" to CFLAGS for .c files that want to call libfdt
-> routines.
->
->>
->>  #define FDT_FIRST_SUPPORTED_VERSION  0x10
->>  #define FDT_LAST_SUPPORTED_VERSION   0x11
->> --
->> 1.7.2.3
->>
->
+Is each 'ciu' an interrupt controller, or a 'bank' within the
+controller?  Also, it is typical to have another cell for specifying
+flags if there is any kind of configuration for each irq line, like
+edge vs. level and active high or active low.  (the counter example is
+PCI which doesn't use a flags cell because all PCI irqs are level
+active.
 
+You'll need to supply documentation for the ciu binding to
+Documentation/devicetree/bindings before this patch gets merged.
 
-
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+> +unsigned int irq_create_of_mapping(struct device_node *controller,
+> +				   const u32 *intspec, unsigned int intsize)
+> +{
+> +	int ciu, bit;
+> +	unsigned int irq = 0;
+> +
+> +	ciu = be32_to_cpup(intspec);
+> +	bit = be32_to_cpup(intspec + 1);
+> +
+> +	if (ciu < 8 && bit < 64)
+> +		irq = octeon_irq_ciu_to_irq[ciu][bit];
+> +
+> +	return irq;
+> +}
+> +EXPORT_SYMBOL_GPL(irq_create_of_mapping);
+> +
+> +
+>  static int octeon_coreid_for_cpu(int cpu)
+>  {
+>  #ifdef CONFIG_SMP
+> -- 
+> 1.7.2.3
+> 

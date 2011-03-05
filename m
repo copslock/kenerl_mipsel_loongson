@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2011 02:07:59 +0100 (CET)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:51755 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492009Ab1CEBH4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Mar 2011 02:07:56 +0100
-Received: by iwn36 with SMTP id 36so2643173iwn.36
-        for <multiple recipients>; Fri, 04 Mar 2011 17:07:49 -0800 (PST)
-Received: by 10.43.55.9 with SMTP id vw9mr1474833icb.259.1299287269854;
-        Fri, 04 Mar 2011 17:07:49 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Mar 2011 02:15:40 +0100 (CET)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:55925 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491981Ab1CEBPh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Mar 2011 02:15:37 +0100
+Received: by yxh35 with SMTP id 35so1045289yxh.36
+        for <multiple recipients>; Fri, 04 Mar 2011 17:15:30 -0800 (PST)
+Received: by 10.101.211.6 with SMTP id n6mr49159anq.253.1299287730469;
+        Fri, 04 Mar 2011 17:15:30 -0800 (PST)
 Received: from angua (S01060002b3d79728.cg.shawcable.net [70.72.87.49])
-        by mx.google.com with ESMTPS id xa8sm2059017icb.10.2011.03.04.17.07.48
+        by mx.google.com with ESMTPS id w6sm12663anf.6.2011.03.04.17.15.28
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 04 Mar 2011 17:07:49 -0800 (PST)
+        Fri, 04 Mar 2011 17:15:29 -0800 (PST)
 Received: by angua (Postfix, from userid 1000)
-        id BC1033C00D3; Fri,  4 Mar 2011 18:07:46 -0700 (MST)
-Date:   Fri, 4 Mar 2011 18:07:46 -0700
+        id E361F3C00D3; Fri,  4 Mar 2011 18:15:26 -0700 (MST)
+Date:   Fri, 4 Mar 2011 18:15:26 -0700
 From:   Grant Likely <grant.likely@secretlab.ca>
 To:     David Daney <ddaney@caviumnetworks.com>
 Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 06/12] MIPS: Octeon: Add a
- irq_create_of_mapping() implementation.
-Message-ID: <20110305010746.GD7579@angua.secretlab.ca>
+Subject: Re: [RFC PATCH v2 04/12] MIPS: Octeon: Add device tree source
+ files.
+Message-ID: <20110305011526.GE7579@angua.secretlab.ca>
 References: <1299267744-17278-1-git-send-email-ddaney@caviumnetworks.com>
- <1299267744-17278-7-git-send-email-ddaney@caviumnetworks.com>
+ <1299267744-17278-5-git-send-email-ddaney@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1299267744-17278-7-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1299267744-17278-5-git-send-email-ddaney@caviumnetworks.com>
 User-Agent: Mutt/1.5.20 (2009-06-14)
 Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29366
+X-archive-position: 29367
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,69 +40,526 @@ X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 04, 2011 at 11:42:18AM -0800, David Daney wrote:
-> This is needed for Octeon to use the Device Tree.
-> 
+On Fri, Mar 04, 2011 at 11:42:16AM -0800, David Daney wrote:
 > Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 > ---
->  arch/mips/cavium-octeon/octeon-irq.c |   25 +++++++++++++++++++++++++
->  1 files changed, 25 insertions(+), 0 deletions(-)
+>  arch/mips/cavium-octeon/.gitignore      |    2 +
+>  arch/mips/cavium-octeon/Makefile        |   13 ++
+>  arch/mips/cavium-octeon/octeon_3xxx.dts |  330 +++++++++++++++++++++++++++++++
+>  arch/mips/cavium-octeon/octeon_68xx.dts |  116 +++++++++++
+>  4 files changed, 461 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/mips/cavium-octeon/.gitignore
+>  create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
+>  create mode 100644 arch/mips/cavium-octeon/octeon_68xx.dts
 > 
-> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-> index b365710..b0a9261 100644
-> --- a/arch/mips/cavium-octeon/octeon-irq.c
-> +++ b/arch/mips/cavium-octeon/octeon-irq.c
-> @@ -8,7 +8,9 @@
+> diff --git a/arch/mips/cavium-octeon/.gitignore b/arch/mips/cavium-octeon/.gitignore
+> new file mode 100644
+> index 0000000..39c9686
+> --- /dev/null
+> +++ b/arch/mips/cavium-octeon/.gitignore
+> @@ -0,0 +1,2 @@
+> +*.dtb.S
+> +*.dtb
+> diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+> index 19eb043..5e25dce 100644
+> --- a/arch/mips/cavium-octeon/Makefile
+> +++ b/arch/mips/cavium-octeon/Makefile
+> @@ -15,3 +15,16 @@ obj-y += octeon-memcpy.o
+>  obj-y += executive/
 >  
->  #include <linux/interrupt.h>
->  #include <linux/bitops.h>
-> +#include <linux/module.h>
->  #include <linux/percpu.h>
-> +#include <linux/of_irq.h>
->  #include <linux/irq.h>
->  #include <linux/smp.h>
->  
-> @@ -64,6 +66,29 @@ static void __init octeon_irq_set_ciu_mapping(int irq, int line, int bit,
->  	octeon_irq_ciu_to_irq[line][bit] = irq;
->  }
->  
+>  obj-$(CONFIG_SMP)                     += smp.o
+> +
+> +DTS_FILES = octeon_3xxx.dts octeon_68xx.dts
+> +DTB_FILES = $(patsubst %.dts, %.dtb, $(DTS_FILES))
+> +
+> +obj-y += $(patsubst %.dts, %.dtb.o, $(DTS_FILES))
+> +
+> +$(obj)/%.dtb: $(src)/%.dts
+> +	$(call cmd,dtc)
+> +
+> +# Let's keep the .dtb files around in case we want to look at them.
+> +.SECONDARY:  $(addprefix $(obj)/, $(DTB_FILES))
+> +
+> +clean-files += $(DTB_FILES) $(patsubst %.dtb, %.dtb.S, $(DTB_FILES))
+> diff --git a/arch/mips/cavium-octeon/octeon_3xxx.dts b/arch/mips/cavium-octeon/octeon_3xxx.dts
+> new file mode 100644
+> index 0000000..6910d9d
+> --- /dev/null
+> +++ b/arch/mips/cavium-octeon/octeon_3xxx.dts
+> @@ -0,0 +1,330 @@
+> +/dts-v1/;
 > +/*
-> + * irq_create_of_mapping - Hook to resolve OF irq specifier into a Linux irq#
+> + * OCTEON 3XXX, 5XXX, 63XX device tree skeleton.
 > + *
-> + * Octeon irq maps are a pair of indexes.  The first selects either
-> + * ciu0 or ciu1, the second is the bit within the ciu register.
+> + * This device tree is pruned and patched by early boot code before
+> + * use.  Because of this, it contains a super-set of the available
+> + * devices and properties.
 > + */
+> +/ {
+> +	model = "OCTEON";
 
-Is each 'ciu' an interrupt controller, or a 'bank' within the
-controller?  Also, it is typical to have another cell for specifying
-flags if there is any kind of configuration for each irq line, like
-edge vs. level and active high or active low.  (the counter example is
-PCI which doesn't use a flags cell because all PCI irqs are level
-active.
+Be more specific in the model property.  What is the full (human
+readable) name of this board?  Since your using this simply as a
+template, it may be better to just omit this property entirely.
 
-You'll need to supply documentation for the ciu binding to
-Documentation/devicetree/bindings before this patch gets merged.
+> +	compatible = "cavium,octeon-3860";
 
-> +unsigned int irq_create_of_mapping(struct device_node *controller,
-> +				   const u32 *intspec, unsigned int intsize)
-> +{
-> +	int ciu, bit;
-> +	unsigned int irq = 0;
+All of the new compatible values in this file need to be documented in
+Documentation/devicetree/bindings.
+
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
 > +
-> +	ciu = be32_to_cpup(intspec);
-> +	bit = be32_to_cpup(intspec + 1);
+> +	soc@0 {
+> +		compatible = "simple-bus";
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges; /* Direct mapping */
 > +
-> +	if (ciu < 8 && bit < 64)
-> +		irq = octeon_irq_ciu_to_irq[ciu][bit];
+> +		ciu: interrupt-controller@1070000000000 {
+> +			compatible = "cavium,octeon-3860-ciu";
+> +			interrupt-controller;
+> +			#address-cells = <0>;
+> +			/* Interrupts are specified by three parts:
+> +			 * 1) Controller register (0 or 1)
+> +			 * 2) Bit within the register (0..63)
+> +			 * 3) Triggering (0 - level active high
+> +			 *		  1 - level active low
+> +			 *		  2 - edge rising
+> +			 *		  3 - edge falling
+> +			 *
+> +			 * For non-GPIO sources, the triggering cannot be
+> +			 * changed and is ignored.
+> +			 */
+> +			#interrupt-cells = <3>;
+> +			reg = <0x10700 0x00000000 0x0 0x7000>;
+> +		};
 > +
-> +	return irq;
-> +}
-> +EXPORT_SYMBOL_GPL(irq_create_of_mapping);
+> +		smi0: mdio@1180000001800 {
+> +			compatible = "cavium,octeon-3860-mdio";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0x11800 0x00001800 0x0 0x40>;
 > +
+> +			phy0: ethernet-phy@0 {
+> +				reg = <0>;
+
+Should have a compatible property for each of the phys
+
+> +			};
 > +
->  static int octeon_coreid_for_cpu(int cpu)
->  {
->  #ifdef CONFIG_SMP
+> +			phy1: ethernet-phy@1 {
+> +				reg = <1>;
+> +			};
+> +
+> +			phy2: ethernet-phy@2 {
+> +				reg = <2>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +			phy3: ethernet-phy@3 {
+> +				reg = <3>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +			phy4: ethernet-phy@4 {
+> +				reg = <4>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +			phy5: ethernet-phy@5 {
+> +				reg = <5>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +
+> +			phy6: ethernet-phy@6 {
+> +				reg = <6>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +			phy7: ethernet-phy@7 {
+> +				reg = <7>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +			phy8: ethernet-phy@8 {
+> +				reg = <8>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +			phy9: ethernet-phy@9 {
+> +				reg = <9>;
+> +				marvell,reg-init = <3 0x10 0 0x5777>,
+> +					<3 0x11 0 0x00aa>,
+> +					<3 0x12 0 0x4105>,
+> +					<3 0x13 0 0x0a60>;
+> +			};
+> +		};
+> +
+> +		smi1: mdio@1180000001900 {
+> +			compatible = "cavium,octeon-3860-mdio";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0x11800 0x00001900 0x0 0x40>;
+> +		};
+> +
+> +		mix0: ethernet@1070000100000 {
+> +			compatible = "cavium,octeon-5750-mix";
+> +			device_type = "network";
+
+Drop 'device_type' property.  It only makes sense if you have a real
+OpenFirmware implementation.  Ditto through the rest of the file.
+
+> +			reg = <0x10700 0x00100000 0x0 0x100>, /* MIX */
+> +			      <0x11800 0xE0000000 0x0 0x300>, /* AGL */
+> +			      <0x11800 0xE0000400 0x0 0x400>, /* AGL_SHARED  */
+> +			      <0x11800 0xE0002000 0x0 0x8>;   /* AGL_PRT_CTL */
+> +			cell-index = <0>;
+> +			interrupt-parent = <&ciu>;
+
+If you put this property up in the root node, then you can omit it
+from everywhere else because they'll pick it up as the default
+interrupt controller.
+
+> +			interrupts = <0 62 0>, <1 46 0>;
+> +			local-mac-address = [ 00 00 00 00 00 00 ];
+> +			phy-handle = <&phy0>;
+> +		};
+> +
+> +		mix1: ethernet@1070000100800 {
+> +			compatible = "cavium,octeon-5750-mix";
+> +			device_type = "network";
+> +			reg = <0x10700 0x00100800 0x0 0x100>, /* MIX */
+> +			      <0x11800 0xE0000800 0x0 0x300>, /* AGL */
+> +			      <0x11800 0xE0000400 0x0 0x400>, /* AGL_SHARED  */
+> +			      <0x11800 0xE0002008 0x0 0x8>;   /* AGL_PRT_CTL */
+> +			cell-index = <1>;
+> +			interrupt-parent = <&ciu>;
+> +			interrupts = <1 18 0>, < 1 46 0>;
+> +			local-mac-address = [ 00 00 00 00 00 00 ];
+> +			phy-handle = <&phy1>;
+> +		};
+> +
+> +		pip: pip@11800a0000000 {
+> +			compatible = "cavium,octeon-3860-pip";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0x11800 0xa0000000 0x0 0x2000>;
+> +
+> +			interface@0 {
+> +				compatible = "cavium,octeon-3860-pip-interface";
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				reg = <0>; /* interface */
+> +
+> +				ethernet@0 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x0>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy2>;
+> +				};
+> +				ethernet@1 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x1>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy3>;
+> +				};
+> +				ethernet@2 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x2>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy4>;
+> +				};
+> +				ethernet@3 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x3>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy5>;
+> +				};
+> +			};
+> +
+> +			interface@1 {
+> +				compatible = "cavium,octeon-3860-pip-interface";
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				reg = <1>; /* interface */
+> +
+> +				ethernet@0 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x0>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy6>;
+> +				};
+> +				ethernet@1 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x1>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy7>;
+> +				};
+> +				ethernet@2 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x2>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy8>;
+> +				};
+> +				ethernet@3 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x3>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +					phy-handle = <&phy9>;
+> +				};
+> +			};
+> +
+> +			interface@2 { /* DPI interface. */
+> +				compatible = "cavium,octeon-3860-pip-interface";
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				reg = <2>; /* interface */
+> +
+> +				ethernet@0 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x0>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +				ethernet@1 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x1>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +				ethernet@2 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x2>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +				ethernet@3 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x3>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +			};
+> +
+> +			interface@3 { /* Loop interface. */
+> +				compatible = "cavium,octeon-3860-pip-interface";
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				reg = <3>; /* interface */
+> +
+> +				ethernet@0 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x0>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +				ethernet@1 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x1>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +				ethernet@2 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x2>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +				ethernet@3 {
+> +					compatible = "cavium,octeon-3860-pip-port";
+> +					device_type = "network";
+> +					reg = <0x3>; /* Port */
+> +					local-mac-address = [ 00 00 00 00 00 00 ];
+> +				};
+> +			};
+> +		};
+> +
+> +		twsi0: i2c@1180000001000 {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			compatible = "cavium,octeon-3860-twsi";
+> +			reg = <0x11800 0x00001000 0x0 0x200>;
+> +			interrupt-parent = <&ciu>;
+> +			interrupts = <0 45 0>;
+> +			clock-rate = <100000>;
+> +
+> +			rtc@68 {
+> +				compatible = "dallas,ds1337";
+> +				reg = <0x68>;
+> +			};
+> +			tmp@4c {
+> +				compatible = "ti,tmp421";
+> +				reg = <0x4c>;
+> +			};
+> +		};
+> +
+> +		twsi1: i2c@1180000001200 {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			compatible = "cavium,octeon-3860-twsi";
+> +			reg = <0x11800 0x00001200 0x0 0x200>;
+> +			interrupt-parent = <&ciu>;
+> +			interrupts = <0 59 0>;
+> +			clock-rate = <100000>;
+> +		};
+> +	};
+> +
+> +	aliases {
+> +		mix0 = &mix0;
+> +		mix1 = &mix1;
+> +		pip = &pip;
+> +		smi0 = &smi0;
+> +		smi1 = &smi1;
+> +		twsi0 = &twsi0;
+> +		twsi1 = &twsi1;
+> +	};
+> + };
+> diff --git a/arch/mips/cavium-octeon/octeon_68xx.dts b/arch/mips/cavium-octeon/octeon_68xx.dts
+> new file mode 100644
+> index 0000000..f2a8eab
+> --- /dev/null
+> +++ b/arch/mips/cavium-octeon/octeon_68xx.dts
+> @@ -0,0 +1,116 @@
+> +/dts-v1/;
+> +/*
+> + * OCTEON 68XX device tree skeleton.
+> + */
+> +/ {
+> +	model = "OCTEON";
+> +	compatible = "cavium,octeon-6880";
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
+> +
+> +	soc@0 {
+> +		compatible = "simple-bus";
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges; /* Direct mapping */
+> +
+> +		ciu2: interrupt-controller@1070100000000 {
+> +			compatible = "cavium,octeon-6880-ciu2";
+> +			interrupt-controller;
+> +			#address-cells = <0>;
+> +			#interrupt-cells = <2>;
+> +			reg = <0x10701 0x00000000 0x0 0x4000000>;
+> +		};
+> +
+> +		smi0: mdio@1180000003800 {
+> +			compatible = "cavium,octeon-3860-mdio";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0x11800 0x00003800 0x0 0x40>;
+> +
+> +		phy0: ethernet-phy@0 {
+> +				reg = <0>;
+> +				device_type = "ethernet-phy";
+> +			};
+> +
+> +		phy1: ethernet-phy@1 {
+> +				reg = <1>;
+> +				device_type = "ethernet-phy";
+> +			};
+> +
+> +		phy3: ethernet-phy@3 {
+> +				reg = <3>;
+> +				device_type = "ethernet-phy";
+> +			};
+> +		};
+> +
+> +		smi1: mdio@1180000003880 {
+> +			compatible = "cavium,octeon-3860-mdio";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0x11800 0x00003880 0x0 0x40>;
+> +		};
+> +
+> +		smi2: mdio@1180000003900 {
+> +			compatible = "cavium,octeon-3860-mdio";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0x11800 0x00003900 0x0 0x40>;
+> +		};
+> +
+> +		smi3: mdio@1180000003980 {
+> +			compatible = "cavium,octeon-3860-mdio";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0x11800 0x00003980 0x0 0x40>;
+> +		};
+> +
+> +		mix0: ethernet@1070000100000 {
+> +			compatible = "cavium,octeon-5750-mix";
+> +			device_type = "network";
+> +			reg = <0x10700 0x00100000 0x0 0x100>, /* MIX */
+> +			      <0x11800 0xE0000000 0x0 0x300>, /* AGL */
+> +			      <0x11800 0xE0000400 0x0 0x400>, /* AGL_SHARED  */
+> +			      <0x11800 0xE0002000 0x0 0x8>;   /* AGL_PRT_CTL */
+> +			cell-index = <0>;
+> +			interrupt-parent = <&ciu2>;
+> +			interrupts = <0 62>, <1 46>;
+> +			local-mac-address = [ 00 00 00 00 00 00 ];
+> +			phy-handle = <&phy0>;
+> +		};
+> +
+> +		twsi0: i2c@1180000001000 {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			compatible = "cavium,octeon-3860-twsi";
+> +			reg = <0x11800 0x00001000 0x0 0x200>;
+> +			interrupt-parent = <&ciu2>;
+> +			interrupts = <0 45>;
+> +			clock-rate = <100000>;
+> +
+> +			rtc@68 {
+> +				compatible = "dallas,ds1337";
+> +				reg = <0x68>;
+> +			};
+> +		};
+> +
+> +		twsi1: i2c@1180000001200 {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			compatible = "cavium,octeon-3860-twsi";
+> +			reg = <0x11800 0x00001200 0x0 0x200>;
+> +			interrupt-parent = <&ciu2>;
+> +			interrupts = <0 59>;
+> +			clock-rate = <100000>;
+> +		};
+> +	};
+> +	aliases {
+> +		mix0 = &mix0;
+> +		smi0 = &smi0;
+> +		smi1 = &smi1;
+> +		smi2 = &smi2;
+> +		smi3 = &smi3;
+> +		twsi0 = &twsi0;
+> +		twsi1 = &twsi1;
+> +	};
+> + };
 > -- 
 > 1.7.2.3
 > 

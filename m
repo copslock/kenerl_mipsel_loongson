@@ -1,68 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Mar 2011 18:16:40 +0100 (CET)
-Received: from mx1.netlogicmicro.com ([12.49.93.86]:3055 "EHLO
-        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491109Ab1CPRQh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Mar 2011 18:16:37 +0100
-X-TM-IMSS-Message-ID: <25b6493300014da2@netlogicmicro.com>
-Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 25b6493300014da2 ; Wed, 16 Mar 2011 10:16:30 -0700
-Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 16 Mar 2011 10:17:26 -0700
-Date:   Wed, 16 Mar 2011 22:52:33 +0530
-From:   "Jayachandran C." <jayachandranc@netlogicmicro.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 3/7] Add XLR/XLS cache and TLB support
-Message-ID: <20110316172232.GG15774@jayachandranc.netlogicmicro.com>
-References: <cover.1300275485.git.jayachandranc@netlogicmicro.com>
- <cadf7ed67683e96d920fedc87d8fc5d6dbdccdc7.1300275485.git.jayachandranc@netlogicmicro.com>
- <4D80EA02.9030605@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4D80EA02.9030605@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-OriginalArrivalTime: 16 Mar 2011 17:17:26.0679 (UTC) FILETIME=[05AFB270:01CBE3FE]
-Return-Path: <jayachandranc@netlogicmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2011 22:46:48 +0100 (CET)
+Received: from kroah.org ([198.145.64.141]:54897 "EHLO coco.kroah.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491167Ab1CQVqo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Mar 2011 22:46:44 +0100
+Received: from localhost (c-76-121-69-168.hsd1.wa.comcast.net [76.121.69.168])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by coco.kroah.org (Postfix) with ESMTPSA id 99E824896A;
+        Thu, 17 Mar 2011 14:46:42 -0700 (PDT)
+X-Mailbox-Line: From gregkh@clark.kroah.org Thu Mar 17 14:29:27 2011
+Message-Id: <20110317212927.798598536@clark.kroah.org>
+User-Agent: quilt/0.48-16.4
+Date:   Thu, 17 Mar 2011 14:28:00 -0700
+From:   Greg KH <gregkh@suse.de>
+To:     stable-review@kernel.org, linux-mips@linux-mips.org
+Cc:     Florian Fainelli <florian@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [430/474] MIPS: MTX-1: Make au1000_eth probe all PHY addresses
+In-Reply-To: <20110317213822.GA27980@kroah.com>
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29393
+X-archive-position: 29394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jayachandranc@netlogicmicro.com
+X-original-sender: gregkh@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 16, 2011 at 09:49:06AM -0700, David Daney wrote:
-> On 03/16/2011 04:57 AM, Jayachandran C wrote:
-> [...]
-> >diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-> >new file mode 100644
-> >index 0000000..7740401
-> >--- /dev/null
-> >+++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-> >@@ -0,0 +1,9 @@
-> >+#ifndef __ASM_MACH_NETLOGIC_CPU_FEATURE_OVERRIDES_H
-> >+#define __ASM_MACH_NETLOGIC_CPU_FEATURE_OVERRIDES_H
-> >+
-> >+/*
-> >+ * Most of the properties are in cpu->options
-> >+ */
-> >+#define cpu_has_netlogic_cache	1
-> >+
-> >+#endif /* __ASM_MACH_NETLOGIC_CPU_FEATURE_OVERRIDES_H */
-> 
-> Although this will probably work, you will likely get better
-> performance if you supply static default values for as many
-> overrides as possible.
+2.6.33-longterm review patch.  If anyone has any objections, please let us know.
 
-True, we will miss possible compile-time optimizations, will 
-look at this.
+------------------
+Content-Length: 1478
+Lines: 50
 
-Thanks!
-JC.
--- 
-Jayachandran C.
-jayachandranc@netlogicmicro.com                  (Netlogic Microsystems)
-jchandra@freebsd.org                               (The FreeBSD Project)
+From: Florian Fainelli <florian@openwrt.org>
+
+commit bf3a1eb85967dcbaae42f4fcb53c2392cec32677 upstream.
+
+When au1000_eth probes the MII bus for PHY address, if we do not set
+au1000_eth platform data's phy_search_highest_address, the MII probing
+logic will exit early and will assume a valid PHY is found at address 0.
+For MTX-1, the PHY is at address 31, and without this patch, the link
+detection/speed/duplex would not work correctly.
+
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+To: linux-mips@linux-mips.org
+Patchwork: https://patchwork.linux-mips.org/patch/2111/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+
+---
+ arch/mips/alchemy/mtx-1/platform.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+--- a/arch/mips/alchemy/mtx-1/platform.c
++++ b/arch/mips/alchemy/mtx-1/platform.c
+@@ -28,6 +28,8 @@
+ #include <linux/mtd/physmap.h>
+ #include <mtd/mtd-abi.h>
+ 
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
+ static struct gpio_keys_button mtx1_gpio_button[] = {
+ 	{
+ 		.gpio = 207,
+@@ -140,10 +142,17 @@ static struct __initdata platform_device
+ 	&mtx1_mtd,
+ };
+ 
++static struct au1000_eth_platform_data mtx1_au1000_eth0_pdata = {
++	.phy_search_highest_addr	= 1,
++	.phy1_search_mac0 		= 1,
++};
++
+ static int __init mtx1_register_devices(void)
+ {
+ 	int rc;
+ 
++	au1xxx_override_eth_cfg(0, &mtx1_au1000_eth0_pdata);
++
+ 	rc = gpio_request(mtx1_gpio_button[0].gpio,
+ 					mtx1_gpio_button[0].desc);
+ 	if (rc < 0) {

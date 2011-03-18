@@ -1,87 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Mar 2011 22:46:48 +0100 (CET)
-Received: from kroah.org ([198.145.64.141]:54897 "EHLO coco.kroah.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491167Ab1CQVqo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Mar 2011 22:46:44 +0100
-Received: from localhost (c-76-121-69-168.hsd1.wa.comcast.net [76.121.69.168])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by coco.kroah.org (Postfix) with ESMTPSA id 99E824896A;
-        Thu, 17 Mar 2011 14:46:42 -0700 (PDT)
-X-Mailbox-Line: From gregkh@clark.kroah.org Thu Mar 17 14:29:27 2011
-Message-Id: <20110317212927.798598536@clark.kroah.org>
-User-Agent: quilt/0.48-16.4
-Date:   Thu, 17 Mar 2011 14:28:00 -0700
-From:   Greg KH <gregkh@suse.de>
-To:     stable-review@kernel.org, linux-mips@linux-mips.org
-Cc:     Florian Fainelli <florian@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: [430/474] MIPS: MTX-1: Make au1000_eth probe all PHY addresses
-In-Reply-To: <20110317213822.GA27980@kroah.com>
-Return-Path: <greg@kroah.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2011 04:26:15 +0100 (CET)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:62484 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490947Ab1CRD0L convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Mar 2011 04:26:11 +0100
+Received: by ywa8 with SMTP id 8so1512897ywa.36
+        for <linux-mips@linux-mips.org>; Thu, 17 Mar 2011 20:26:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=bIiQKlWKc6wKg7HdOs3k5fVhDQLq2bmJc+4ygoRk4cc=;
+        b=fm5DrrG4RxdM4dVILM9E2DBWQUcaRrSwHzFiJwuJj4WvfIRt3PSqwyjcBToIyKdOH4
+         V+gxI0Q21KV/BJMTVI3q9YbiO7Vmqdkje3SFrggh2aQcdDKyyvi1RHXDq6Ij2baW6pkX
+         aT+Pq2q1ejMlgmXyqNZrmJiaE1p4KIK0n1el8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=bqXmcjVv5OIiflp9lNH9x6Z5ZtWTcl3h0QzLDju5ml9e7KAQev5QfLidb35MuxINB3
+         XqMsH+F9pf7YB5Cbq27r4zooYoJk3eiwZh1DF7Q3Ua9vqFBBAq6uMv9Uz/0+kb3U0w5w
+         C6pFoBOoqbOakWOg8833hlDxxq6CwWKnwwI8w=
+MIME-Version: 1.0
+Received: by 10.146.144.8 with SMTP id r8mr600683yad.9.1300418765086; Thu, 17
+ Mar 2011 20:26:05 -0700 (PDT)
+Received: by 10.147.82.6 with HTTP; Thu, 17 Mar 2011 20:26:05 -0700 (PDT)
+In-Reply-To: <20110314142927.GA18480@jayachandranc.netlogicmicro.com>
+References: <20110312182714.GC2217@jayachandranc.netlogicmicro.com>
+        <AANLkTime__o2bGyUn1-CsY4O=VhniN14u_fHYYxYz=VQ@mail.gmail.com>
+        <20110314142927.GA18480@jayachandranc.netlogicmicro.com>
+Date:   Fri, 18 Mar 2011 11:26:05 +0800
+Message-ID: <AANLkTi=5-zOAXUr95S-KS3kT4Nm2F8H=6Y9AKGg09iv=@mail.gmail.com>
+Subject: Re: [PATCH] Support for Netlogic XLR/XLS processors
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
+Cc:     "wilbur.chan" <wilbur512@gmail.com>,
+        Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29394
+X-archive-position: 29395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-2.6.33-longterm review patch.  If anyone has any objections, please let us know.
+On Mon, Mar 14, 2011 at 10:29 PM, Jayachandran C.
+<jayachandranc@netlogicmicro.com> wrote:
+> On Mon, Mar 14, 2011 at 08:19:22PM +0800, wilbur.chan wrote:
+>> Will kexec be supported on XLS/XLR/XLP ?
+>
+> The patches I have does not support it. I haven't really looked at what
+> is needed in XLR platform code to support kexec, so I'm not sure what it
+> takes to support it for XLR either. Any pointers?
 
-------------------
-Content-Length: 1478
-Lines: 50
+You can get some information here:
 
-From: Florian Fainelli <florian@openwrt.org>
+http://dev.lemote.com/code/linux-loongson-community/wiki/kexec-loongson
 
-commit bf3a1eb85967dcbaae42f4fcb53c2392cec32677 upstream.
+And here:
 
-When au1000_eth probes the MII bus for PHY address, if we do not set
-au1000_eth platform data's phy_search_highest_address, the MII probing
-logic will exit early and will assume a valid PHY is found at address 0.
-For MTX-1, the PHY is at address 31, and without this patch, the link
-detection/speed/duplex would not work correctly.
+http://patchwork.linux-mips.org/project/linux-mips/list/?q=kexec
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
-To: linux-mips@linux-mips.org
-Patchwork: https://patchwork.linux-mips.org/patch/2111/
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+BTW: what about the cpu hotplug support for XL{R, S, P} ?
 
----
- arch/mips/alchemy/mtx-1/platform.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+Regards,
+Wu Zhangjin
 
---- a/arch/mips/alchemy/mtx-1/platform.c
-+++ b/arch/mips/alchemy/mtx-1/platform.c
-@@ -28,6 +28,8 @@
- #include <linux/mtd/physmap.h>
- #include <mtd/mtd-abi.h>
- 
-+#include <asm/mach-au1x00/au1xxx_eth.h>
-+
- static struct gpio_keys_button mtx1_gpio_button[] = {
- 	{
- 		.gpio = 207,
-@@ -140,10 +142,17 @@ static struct __initdata platform_device
- 	&mtx1_mtd,
- };
- 
-+static struct au1000_eth_platform_data mtx1_au1000_eth0_pdata = {
-+	.phy_search_highest_addr	= 1,
-+	.phy1_search_mac0 		= 1,
-+};
-+
- static int __init mtx1_register_devices(void)
- {
- 	int rc;
- 
-+	au1xxx_override_eth_cfg(0, &mtx1_au1000_eth0_pdata);
-+
- 	rc = gpio_request(mtx1_gpio_button[0].gpio,
- 					mtx1_gpio_button[0].desc);
- 	if (rc < 0) {
+>
+> JC.
+> --
+> Jayachandran C.
+> jayachandranc@netlogicmicro.com                  (Netlogic Microsystems)
+> jchandra@freebsd.org                               (The FreeBSD Project)
+>
+>

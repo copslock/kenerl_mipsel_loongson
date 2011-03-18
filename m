@@ -1,102 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2011 17:17:54 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:11348 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491784Ab1CRQRv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Mar 2011 17:17:51 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d8385e30000>; Fri, 18 Mar 2011 09:18:43 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 18 Mar 2011 09:17:47 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 18 Mar 2011 09:17:47 -0700
-Message-ID: <4D8385AA.605@caviumnetworks.com>
-Date:   Fri, 18 Mar 2011 09:17:46 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2011 17:34:55 +0100 (CET)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:43662 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491925Ab1CRQew (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Mar 2011 17:34:52 +0100
+Received: by qyk32 with SMTP id 32so931316qyk.15
+        for <linux-mips@linux-mips.org>; Fri, 18 Mar 2011 09:34:46 -0700 (PDT)
 MIME-Version: 1.0
-To:     Heiher <admin@heiher.info>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fixup personality in different ABI.
+Received: by 10.229.42.142 with SMTP id s14mr1165935qce.174.1300466085750;
+ Fri, 18 Mar 2011 09:34:45 -0700 (PDT)
+Received: by 10.229.27.70 with HTTP; Fri, 18 Mar 2011 09:34:45 -0700 (PDT)
+X-Originating-IP: [74.117.61.21]
+In-Reply-To: <4D8385AA.605@caviumnetworks.com>
 References: <AANLkTimsVcPtJHrV+UMcXAMcqDRpm3ZbbXqSuupx0Uq5@mail.gmail.com>
-In-Reply-To: <AANLkTimsVcPtJHrV+UMcXAMcqDRpm3ZbbXqSuupx0Uq5@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 18 Mar 2011 16:17:47.0220 (UTC) FILETIME=[04FD1940:01CBE588]
-Return-Path: <David.Daney@caviumnetworks.com>
+        <4D8385AA.605@caviumnetworks.com>
+Date:   Sat, 19 Mar 2011 00:34:45 +0800
+Message-ID: <AANLkTi=xoZpT7KyOhrsFpWqi2bRKMJqHuAOtmfFTTDL+@mail.gmail.com>
+Subject: Re: [PATCH] Fixup personality in different ABI.
+From:   Heiher <admin@heiher.info>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Return-Path: <admin@heiher.info>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29407
+X-archive-position: 29408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: admin@heiher.info
 Precedence: bulk
 X-list: linux-mips
 
-On 03/17/2011 09:59 PM, Heiher wrote:
-> Hello,
-
-Why, hello to you too.
-
-
-Can you explain what problem you are trying to solve?
-
-Presumably if someone has set the personality, they had a reason for 
-doing so.  On what grounds do you think it is a good idea to override 
-the explicit desires of the user and restore a default personality?
-
-This patch would break many software build systems.
-
-Unless you can explain why this is needed, I have to say:
-
-NAK to this patch.
-
-Thanks,
-David Daney
-
->
->> From bf3637153bc5e3d0e3f1c2982c323057a8e04801 Mon Sep 17 00:00:00 2001
-> From: Heiher<admin@heiher.info>
-> Date: Fri, 18 Mar 2011 12:51:08 +0800
-> Subject: [PATCH] Fixup personality in different ABI.
->
-> * 'arch' output:
-> 	o32 : mips
-> 	n32 : mips64
-> 	64  : mips64
-> ---
->   arch/mips/include/asm/elf.h |    5 +++++
->   1 files changed, 5 insertions(+), 0 deletions(-)
->
-> diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-> index 455c0ac..01510d4 100644
-> --- a/arch/mips/include/asm/elf.h
-> +++ b/arch/mips/include/asm/elf.h
-> @@ -262,6 +262,7 @@ do {									\
->   #ifdef CONFIG_MIPS32_N32
->   #define __SET_PERSONALITY32_N32()					\
->   	do {								\
-> +		set_personality(PER_LINUX);				\
->   		set_thread_flag(TIF_32BIT_ADDR);			\
->   		current->thread.abi =&mips_abi_n32;			\
->   	} while (0)
-> @@ -273,6 +274,7 @@ do {									\
->   #ifdef CONFIG_MIPS32_O32
->   #define __SET_PERSONALITY32_O32()					\
->   	do {								\
-> +		set_personality(PER_LINUX32);			\
->   		set_thread_flag(TIF_32BIT_REGS);			\
->   		set_thread_flag(TIF_32BIT_ADDR);			\
->   		current->thread.abi =&mips_abi_32;			\
-> @@ -305,7 +307,10 @@ do {									\
->   	if ((ex).e_ident[EI_CLASS] == ELFCLASS32)			\
->   		__SET_PERSONALITY32(ex);				\
->   	else								\
-> +	{								\
-> +		set_personality(PER_LINUX);				\
->   		current->thread.abi =&mips_abi;			\
-> +	}								\
->   									\
->   	p = personality(current->personality);				\
->   	if (p != PER_LINUX32&&  p != PER_LINUX)				\
+SGVsbG8sCgpJIHRoaW5rIHRoZSBvMzIgcHJvY2VzcyBwZXJzb25hbGl0eSBkZWZhdWx0IHZhbHVl
+IGlzIFBFUl9MSU5VWDMyLCBuMzIKJiBuNjQgYWJpIHByb2Nlc3MgaXMgUEVSX0xJTlVYIGluIDY0
+LWJpdCBLZXJuZWwuIFRoZSBrZXJuZWwgc2hvdWxkCmF1dG9tYXRpYyBzZXQgYSAncmlnaHQnIHBl
+cnNvbmFsaXR5IHRvIGV2ZXJ5IHByb2Nlc3MgZm9yIGRpZmZlcmVudAphYmkuIElzbid0IGl0PwoK
+T24gU2F0LCBNYXIgMTksIDIwMTEgYXQgMTI6MTcgQU0sIERhdmlkIERhbmV5IDxkZGFuZXlAY2F2
+aXVtbmV0d29ya3MuY29tPiB3cm90ZToKPiBPbiAwMy8xNy8yMDExIDA5OjU5IFBNLCBIZWloZXIg
+d3JvdGU6Cj4+Cj4+IEhlbGxvLAo+Cj4gV2h5LCBoZWxsbyB0byB5b3UgdG9vLgo+Cj4KPiBDYW4g
+eW91IGV4cGxhaW4gd2hhdCBwcm9ibGVtIHlvdSBhcmUgdHJ5aW5nIHRvIHNvbHZlPwo+Cj4gUHJl
+c3VtYWJseSBpZiBzb21lb25lIGhhcyBzZXQgdGhlIHBlcnNvbmFsaXR5LCB0aGV5IGhhZCBhIHJl
+YXNvbiBmb3IgZG9pbmcKPiBzby4gwqBPbiB3aGF0IGdyb3VuZHMgZG8geW91IHRoaW5rIGl0IGlz
+IGEgZ29vZCBpZGVhIHRvIG92ZXJyaWRlIHRoZSBleHBsaWNpdAo+IGRlc2lyZXMgb2YgdGhlIHVz
+ZXIgYW5kIHJlc3RvcmUgYSBkZWZhdWx0IHBlcnNvbmFsaXR5Pwo+Cj4gVGhpcyBwYXRjaCB3b3Vs
+ZCBicmVhayBtYW55IHNvZnR3YXJlIGJ1aWxkIHN5c3RlbXMuCj4KPiBVbmxlc3MgeW91IGNhbiBl
+eHBsYWluIHdoeSB0aGlzIGlzIG5lZWRlZCwgSSBoYXZlIHRvIHNheToKPgo+IE5BSyB0byB0aGlz
+IHBhdGNoLgo+Cj4gVGhhbmtzLAo+IERhdmlkIERhbmV5Cj4KPj4KPj4+IEZyb20gYmYzNjM3MTUz
+YmM1ZTNkMGUzZjFjMjk4MmMzMjMwNTdhOGUwNDgwMSBNb24gU2VwIDE3IDAwOjAwOjAwIDIwMDEK
+Pj4KPj4gRnJvbTogSGVpaGVyPGFkbWluQGhlaWhlci5pbmZvPgo+PiBEYXRlOiBGcmksIDE4IE1h
+ciAyMDExIDEyOjUxOjA4ICswODAwCj4+IFN1YmplY3Q6IFtQQVRDSF0gRml4dXAgcGVyc29uYWxp
+dHkgaW4gZGlmZmVyZW50IEFCSS4KPj4KPj4gKiAnYXJjaCcgb3V0cHV0Ogo+PiDCoCDCoCDCoCDC
+oG8zMiA6IG1pcHMKPj4gwqAgwqAgwqAgwqBuMzIgOiBtaXBzNjQKPj4gwqAgwqAgwqAgwqA2NCDC
+oDogbWlwczY0Cj4+IC0tLQo+PiDCoGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9lbGYuaCB8IMKgIMKg
+NSArKysrKwo+PiDCoDEgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9u
+cygtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2luY2x1ZGUvYXNtL2VsZi5oIGIvYXJj
+aC9taXBzL2luY2x1ZGUvYXNtL2VsZi5oCj4+IGluZGV4IDQ1NWMwYWMuLjAxNTEwZDQgMTAwNjQ0
+Cj4+IC0tLSBhL2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9lbGYuaAo+PiArKysgYi9hcmNoL21pcHMv
+aW5jbHVkZS9hc20vZWxmLmgKPj4gQEAgLTI2Miw2ICsyNjIsNyBAQCBkbyB7Cj4+IMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgXAo+PiDCoCNpZmRlZiBDT05GSUdfTUlQUzMyX04zMgo+
+PiDCoCNkZWZpbmUgX19TRVRfUEVSU09OQUxJVFkzMl9OMzIoKSDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBcCj4+IMKgIMKgIMKgIMKgZG8geyDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoFwKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCBzZXRfcGVyc29uYWxpdHkoUEVSX0xJTlVYKTsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgXAo+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHNldF90aHJlYWRfZmxh
+ZyhUSUZfMzJCSVRfQUREUik7IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgXAo+
+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGN1cnJlbnQtPnRocmVhZC5hYmkgPSZtaXBzX2FiaV9u
+MzI7IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIFwKPj4gwqAgwqAgwqAgwqB9IHdoaWxl
+ICgwKQo+PiBAQCAtMjczLDYgKzI3NCw3IEBAIGRvIHsKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqBcCj4+IMKgI2lmZGVmIENPTkZJR19NSVBTMzJfTzMyCj4+IMKgI2RlZmluZSBf
+X1NFVF9QRVJTT05BTElUWTMyX08zMigpIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIFwKPj4gwqAgwqAgwqAgwqBkbyB7IMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgXAo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNldF9wZXJzb25h
+bGl0eShQRVJfTElOVVgzMik7IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIFwKPj4gwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqBzZXRfdGhyZWFkX2ZsYWcoVElGXzMyQklUX1JFR1MpOyDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoFwKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBz
+ZXRfdGhyZWFkX2ZsYWcoVElGXzMyQklUX0FERFIpOyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoFwKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBjdXJyZW50LT50aHJlYWQuYWJp
+ID0mbWlwc19hYmlfMzI7IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgXAo+PiBAQCAt
+MzA1LDcgKzMwNywxMCBAQCBkbyB7Cj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IFwKPj4gwqAgwqAgwqAgwqBpZiAoKGV4KS5lX2lkZW50W0VJX0NMQVNTXSA9PSBFTEZDTEFTUzMy
+KSDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBcCj4+IMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgX19TRVRfUEVSU09OQUxJVFkzMihleCk7IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgXAo+PiDCoCDCoCDCoCDCoGVsc2UgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqBcCj4+ICsgwqAgwqAgwqAgeyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCBcCj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgc2V0X3BlcnNvbmFsaXR5
+KFBFUl9MSU5VWCk7IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIFwK
+Pj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBjdXJyZW50LT50aHJlYWQuYWJpID0mbWlwc19hYmk7
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIFwKPj4gKyDCoCDCoCDCoCB9IMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIFwKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqBcCj4+IMKgIMKgIMKgIMKgcCA9IHBlcnNvbmFsaXR5KGN1cnJl
+bnQtPnBlcnNvbmFsaXR5KTsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBc
+Cj4+IMKgIMKgIMKgIMKgaWYgKHAgIT0gUEVSX0xJTlVYMzImJiDCoHAgIT0gUEVSX0xJTlVYKSDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBcCj4KPgoKLS0gCkJlc3QgcmVnYXJk
+cyEKSGVpaGVyCg==

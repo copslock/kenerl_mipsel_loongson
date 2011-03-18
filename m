@@ -1,72 +1,175 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2011 11:18:24 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:59293 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491146Ab1CRKSU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Mar 2011 11:18:20 +0100
-Received: by wwb17 with SMTP id 17so4107960wwb.24
-        for <linux-mips@linux-mips.org>; Fri, 18 Mar 2011 03:18:14 -0700 (PDT)
-Received: by 10.227.177.199 with SMTP id bj7mr1005366wbb.140.1300443494796;
-        Fri, 18 Mar 2011 03:18:14 -0700 (PDT)
-Received: from [192.168.2.2] ([91.79.74.94])
-        by mx.google.com with ESMTPS id bd8sm1251521wbb.18.2011.03.18.03.18.12
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 18 Mar 2011 03:18:13 -0700 (PDT)
-Message-ID: <4D833110.8020306@mvista.com>
-Date:   Fri, 18 Mar 2011 13:16:48 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.15) Gecko/20110303 Thunderbird/3.1.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Mar 2011 14:27:48 +0100 (CET)
+Received: from mx1.netlogicmicro.com ([12.49.93.86]:4554 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491819Ab1CRN1o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Mar 2011 14:27:44 +0100
+X-TM-IMSS-Message-ID: <2f3161520001a99d@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 2f3161520001a99d ; Fri, 18 Mar 2011 06:27:33 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Fri, 18 Mar 2011 06:22:45 -0700
+Date:   Fri, 18 Mar 2011 18:58:02 +0530
+From:   Jayachandran C <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [PATCH 1/7] Netlogic XLR/XLS processor IDs.
+Message-ID: <82409e0e9e91d1589afa1d6fb1375da89b8854b3.1300452150.git.jayachandranc@netlogicmicro.com>
+References: <cover.1300452150.git.jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
-To:     Heiher <admin@heiher.info>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fixup personality in different ABI.
-References: <AANLkTimsVcPtJHrV+UMcXAMcqDRpm3ZbbXqSuupx0Uq5@mail.gmail.com>
-In-Reply-To: <AANLkTimsVcPtJHrV+UMcXAMcqDRpm3ZbbXqSuupx0Uq5@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1300452150.git.jayachandranc@netlogicmicro.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-OriginalArrivalTime: 18 Mar 2011 13:22:46.0035 (UTC) FILETIME=[91CB6E30:01CBE56F]
+Return-Path: <jayachandranc@netlogicmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29398
+X-archive-position: 29399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Add Netlogic Microsystems company ID and processor IDs for XLR
+and XLS processors for CPU probe. Add CPU_XLR to cpu_type_enum.
 
-On 18-03-2011 7:59, Heiher wrote:
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+ arch/mips/include/asm/cpu.h  |   27 ++++++++++++++++++++
+ arch/mips/kernel/cpu-probe.c |   55 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 82 insertions(+), 0 deletions(-)
 
-> Hello,
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 8687753..34c0d3c 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -33,6 +33,7 @@
+ #define PRID_COMP_TOSHIBA	0x070000
+ #define PRID_COMP_LSI		0x080000
+ #define PRID_COMP_LEXRA		0x0b0000
++#define PRID_COMP_NETLOGIC	0x0c0000
+ #define PRID_COMP_CAVIUM	0x0d0000
+ #define PRID_COMP_INGENIC	0xd00000
+ 
+@@ -142,6 +143,31 @@
+ #define PRID_IMP_JZRISC        0x0200
+ 
+ /*
++ * These are the PRID's for when 23:16 == PRID_COMP_NETLOGIC
++ */
++#define PRID_IMP_NETLOGIC_XLR732	0x0000
++#define PRID_IMP_NETLOGIC_XLR716	0x0200
++#define PRID_IMP_NETLOGIC_XLR532	0x0900
++#define PRID_IMP_NETLOGIC_XLR308	0x0600
++#define PRID_IMP_NETLOGIC_XLR532C	0x0800
++#define PRID_IMP_NETLOGIC_XLR516C	0x0a00
++#define PRID_IMP_NETLOGIC_XLR508C	0x0b00
++#define PRID_IMP_NETLOGIC_XLR308C	0x0f00
++#define PRID_IMP_NETLOGIC_XLS608	0x8000
++#define PRID_IMP_NETLOGIC_XLS408	0x8800
++#define PRID_IMP_NETLOGIC_XLS404	0x8c00
++#define PRID_IMP_NETLOGIC_XLS208	0x8e00
++#define PRID_IMP_NETLOGIC_XLS204	0x8f00
++#define PRID_IMP_NETLOGIC_XLS108	0xce00
++#define PRID_IMP_NETLOGIC_XLS104	0xcf00
++#define PRID_IMP_NETLOGIC_XLS616B	0x4000
++#define PRID_IMP_NETLOGIC_XLS608B	0x4a00
++#define PRID_IMP_NETLOGIC_XLS416B	0x4400
++#define PRID_IMP_NETLOGIC_XLS412B	0x4c00
++#define PRID_IMP_NETLOGIC_XLS408B	0x4e00
++#define PRID_IMP_NETLOGIC_XLS404B	0x4f00
++
++/*
+  * Definitions for 7:0 on legacy processors
+  */
+ 
+@@ -234,6 +260,7 @@ enum cpu_type_enum {
+ 	 */
+ 	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
+ 	CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
++	CPU_XLR,
+ 
+ 	CPU_LAST
+ };
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index f65d4c8..a995d56 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -988,6 +988,59 @@ static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
+ 	}
+ }
+ 
++static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
++{
++	decode_configs(c);
++
++	c->options = (MIPS_CPU_TLB     |
++			MIPS_CPU_4KEX    |
++			MIPS_CPU_COUNTER |
++			MIPS_CPU_DIVEC   |
++			MIPS_CPU_WATCH   |
++			MIPS_CPU_EJTAG   |
++			MIPS_CPU_LLSC);
++
++	switch (c->processor_id & 0xff00) {
++	case PRID_IMP_NETLOGIC_XLR732:
++	case PRID_IMP_NETLOGIC_XLR716:
++	case PRID_IMP_NETLOGIC_XLR532:
++	case PRID_IMP_NETLOGIC_XLR308:
++	case PRID_IMP_NETLOGIC_XLR532C:
++	case PRID_IMP_NETLOGIC_XLR516C:
++	case PRID_IMP_NETLOGIC_XLR508C:
++	case PRID_IMP_NETLOGIC_XLR308C:
++		c->cputype = CPU_XLR;
++		__cpu_name[cpu] = "Netlogic XLR";
++		break;
++
++	case PRID_IMP_NETLOGIC_XLS608:
++	case PRID_IMP_NETLOGIC_XLS408:
++	case PRID_IMP_NETLOGIC_XLS404:
++	case PRID_IMP_NETLOGIC_XLS208:
++	case PRID_IMP_NETLOGIC_XLS204:
++	case PRID_IMP_NETLOGIC_XLS108:
++	case PRID_IMP_NETLOGIC_XLS104:
++	case PRID_IMP_NETLOGIC_XLS616B:
++	case PRID_IMP_NETLOGIC_XLS608B:
++	case PRID_IMP_NETLOGIC_XLS416B:
++	case PRID_IMP_NETLOGIC_XLS412B:
++	case PRID_IMP_NETLOGIC_XLS408B:
++	case PRID_IMP_NETLOGIC_XLS404B:
++		c->cputype = CPU_XLR;
++		__cpu_name[cpu] = "Netlogic XLS";
++		break;
++
++	default:
++		printk(KERN_INFO "Unknown Netlogic chip id [%02x]!\n",
++		       c->processor_id);
++		c->cputype = CPU_XLR;
++		break;
++	}
++
++	c->isa_level = MIPS_CPU_ISA_M64R1;
++	c->tlbsize = ((read_c0_config1() >> 25) & 0x3f) + 1;
++}
++
+ #ifdef CONFIG_64BIT
+ /* For use by uaccess.h */
+ u64 __ua_limit;
+@@ -1034,6 +1087,8 @@ __cpuinit void cpu_probe(void)
+ 		break;
+ 	case PRID_COMP_INGENIC:
+ 		cpu_probe_ingenic(c, cpu);
++	case PRID_COMP_NETLOGIC:
++		cpu_probe_netlogic(c, cpu);
+ 		break;
+ 	}
+ 
+-- 
+1.7.1
 
->  From bf3637153bc5e3d0e3f1c2982c323057a8e04801 Mon Sep 17 00:00:00 2001
-> From: Heiher<admin@heiher.info>
-> Date: Fri, 18 Mar 2011 12:51:08 +0800
-> Subject: [PATCH] Fixup personality in different ABI.
 
-    This header (and "Hello") should be omitted, or the maintainer will have 
-to hand edit it out of the patch...
-
-> * 'arch' output:
-> 	o32 : mips
-> 	n32 : mips64
-> 	64  : mips64
-
-    You should sign off the patch (with your real name) for it to be applied.
-
-> diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-> index 455c0ac..01510d4 100644
-> --- a/arch/mips/include/asm/elf.h
-> +++ b/arch/mips/include/asm/elf.h
-[...]
-> @@ -305,7 +307,10 @@ do {									\
->   	if ((ex).e_ident[EI_CLASS] == ELFCLASS32)			\
->   		__SET_PERSONALITY32(ex);				\
->   	else								\
-> +	{								\
-
-    { should be on the same line with *else*.
-
-WBR, Sergei
+-- 
+Jayachandran C.
+jayachandranc@netlogicmicro.com                  (Netlogic Microsystems)
+jchandra@freebsd.org                               (The FreeBSD Project)

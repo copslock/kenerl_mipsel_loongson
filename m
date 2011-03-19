@@ -1,68 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Mar 2011 18:23:18 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:46052 "EHLO
-        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491824Ab1CSRXO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Mar 2011 18:23:14 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2JHMuDl023859;
-        Sat, 19 Mar 2011 18:22:56 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2JHMsd3023856;
-        Sat, 19 Mar 2011 18:22:54 +0100
-Date:   Sat, 19 Mar 2011 18:22:54 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Dennis.Yxun" <dennis.yxun@gmail.com>
-Cc:     linux-mips@linux-mips.org, "Anoop P.A." <Anoop_P.A@pmc-sierra.com>
-Subject: Re: Problem About Vectored interrupt
-Message-ID: <20110319172254.GA11550@linux-mips.org>
-References: <AANLkTinhM4PUmLbWeAyavf-JPM1Xpu9pJVkXDq4c-f0C@mail.gmail.com>
- <AANLkTinsQrZJsXt0SKRfe3S0cNGT+uuW-t3Jo4Ob4=B4@mail.gmail.com>
- <A7DEA48C84FD0B48AAAE33F328C02014033DADEC@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
- <AANLkTikWUehOmyD6Nk3Abz=u7FEb8NMtX2-N4r5HHuY9@mail.gmail.com>
- <AANLkTimK1xpHwvfE95rEMCikk8-0EkGjn4b5DwYWyN-E@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Mar 2011 21:51:25 +0100 (CET)
+Received: from www.tglx.de ([62.245.132.106]:46461 "EHLO www.tglx.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491827Ab1CSUvX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 19 Mar 2011 21:51:23 +0100
+Received: from localhost (www.tglx.de [127.0.0.1])
+        by www.tglx.de (8.13.8/8.13.8/TGLX-2007100201) with ESMTP id p2JKpDW5027010
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Sat, 19 Mar 2011 21:51:14 +0100
+Date:   Sat, 19 Mar 2011 21:51:13 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     David Daney <ddaney@caviumnetworks.com>
+cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] genirq: Add chip hooks for taking CPUs on/off
+ line.
+In-Reply-To: <1300484916-11133-2-git-send-email-ddaney@caviumnetworks.com>
+Message-ID: <alpine.LFD.2.00.1103192050400.2787@localhost6.localdomain6>
+References: <1300484916-11133-1-git-send-email-ddaney@caviumnetworks.com> <1300484916-11133-2-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AANLkTimK1xpHwvfE95rEMCikk8-0EkGjn4b5DwYWyN-E@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: clamav-milter 0.95.3 at www.tglx.de
+X-Virus-Status: Clean
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29418
+X-archive-position: 29419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Mar 19, 2011 at 08:42:17AM +0800, Dennis.Yxun wrote:
+On Fri, 18 Mar 2011, David Daney wrote:
+> --- a/include/linux/irqdesc.h
+> +++ b/include/linux/irqdesc.h
+> @@ -178,6 +178,12 @@ static inline int irq_has_action(unsigned int irq)
+>  	return desc->action != NULL;
+>  }
+>  
+> +/* Test to see if the irq is currently enabled */
+> +static inline int irq_desc_is_enabled(struct irq_desc *desc)
+> +{
+> +	return desc->depth == 0;
+> +}
 
-> HI ALL:
->   Again, found that when come to set vect irq 7, do additional data flush
-> fix my problem, here is the patch
-> 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index e971043..850ce58 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -1451,6 +1451,9 @@ static void *set_vi_srs_handler(int n, vi_handler_t
-> addr, int srs)
->                 *w = (*w & 0xffff0000) | (((u32)handler >> 16) & 0xffff);
->                 w = (u32 *)(b + ori_offset);
->                 *w = (*w & 0xffff0000) | ((u32)handler & 0xffff);
-> +               /* FIXME: need flash data cache, for timer irq */
-> +               if (n == 7)
-> +                       flush_data_cache_page((unsigned int)b);
->                 local_flush_icache_range((unsigned long)b,
->                                          (unsigned long)(b+handler_len));
+That want's to go into kernel/irq/internal.h
 
-The call local_flush_icache_range should already flushes the cache and
-there should be no reason why a 2nd range makes it any better - or why
-it would only be needed for irq 7 - and the timer isn't necessarily
-always irq 7.
+>  #ifndef CONFIG_GENERIC_HARDIRQS_NO_COMPAT
+>  static inline int irq_balancing_disabled(unsigned int irq)
+>  {
+> diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+> index c9c0601..40736f7 100644
+> --- a/kernel/irq/chip.c
+> +++ b/kernel/irq/chip.c
+> @@ -689,3 +689,38 @@ void irq_modify_status(unsigned int irq, unsigned long clr, unsigned long set)
+>  
+>  	irq_put_desc_unlock(desc, flags);
+>  }
+> +
+> +void irq_cpu_online(unsigned int irq)
 
-What is your hardware platform and processor?
+Odd function name. It does not reflect that this is for per cpu
+interrupts. So something like irq_xxx_per_cpu_irq(irq)
+might be a bit more descriptive.
 
-  Ralf
+> +{
+
+So that's called on the cpu which goes online, right?
+
+I wonder whether we can add any sanity check to verify this.
+
+Though I would not worry too much about it. Calling that from a cpu
+which is not going offline should have enough nasty side effects that
+it's noticed during development. :)
+
+> +	unsigned long flags;
+> +	struct irq_chip *chip;
+> +	struct irq_desc *desc = irq_to_desc(irq);
+
+Needs to check !desc
+
+> +	raw_spin_lock_irqsave(&desc->lock, flags);
+> +
+> +	chip = irq_data_get_irq_chip(&desc->irq_data);
+> +
+> +	if (chip && chip->irq_cpu_online)
+> +		chip->irq_cpu_online(&desc->irq_data,
+> +				     irq_desc_is_enabled(desc));
+> +
+> +	raw_spin_unlock_irqrestore(&desc->lock, flags);
+> +}
+> +
+> +void irq_cpu_offline(unsigned int irq)
+> +{
+> +	unsigned long flags;
+> +	struct irq_chip *chip;
+> +	struct irq_desc *desc = irq_to_desc(irq);
+
+See above. 
+
+Style nit: I prefer ordering:
+
++	struct irq_desc *desc = irq_to_desc(irq);
++	struct irq_chip *chip;
++	unsigned long flags;
+
+For some reason, probably because I'm used to it, that's easier to
+parse. But don't worry about that, I'll turn it around before sticking
+it into git. :)
+
+Otherwise I'm fine with the approach itself. 
+
+Though one question remains: should we just iterate over the irq space
+and call the online/offline callbacks when available instead of having
+the arch code do the iteration.
+
+Thanks,
+
+	tglx

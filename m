@@ -1,61 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 23:09:42 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:46171 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491933Ab1CWWJj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 23:09:39 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <tglx@linutronix.de>)
-        id 1Q2WFB-0002IO-MM; Wed, 23 Mar 2011 23:09:33 +0100
-Date:   Wed, 23 Mar 2011 23:09:32 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     David Daney <ddaney.cavm@gmail.com>
-cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] genirq: Add chip hooks for taking CPUs on/off
- line.
-In-Reply-To: <4D8A6E38.7020203@gmail.com>
-Message-ID: <alpine.LFD.2.00.1103232304240.31464@localhost6.localdomain6>
-References: <1300484916-11133-1-git-send-email-ddaney@caviumnetworks.com> <1300484916-11133-2-git-send-email-ddaney@caviumnetworks.com> <alpine.LFD.2.00.1103192050400.2787@localhost6.localdomain6> <4D879869.8060405@caviumnetworks.com>
- <alpine.LFD.2.00.1103212136430.24415@localhost6.localdomain6> <4D8A6E38.7020203@gmail.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 23:42:17 +0100 (CET)
+Received: from wolverine02.qualcomm.com ([199.106.114.251]:38730 "EHLO
+        wolverine02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491903Ab1CWWmN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 23:42:13 +0100
+X-IronPort-AV: E=McAfee;i="5400,1158,6294"; a="81489850"
+Received: from pdmz-ns-mip.qualcomm.com (HELO mostssh02.qualcomm.com) ([199.106.114.10])
+  by wolverine02.qualcomm.com with ESMTP/TLS/AES256-SHA; 23 Mar 2011 15:42:08 -0700
+Received: from localhost.qualcomm.com ([127.0.0.1] helo=huya.qualcomm.com)
+        by mostssh02.qualcomm.com with esmtp (Exim 4.71)
+        (envelope-from <davidb@codeaurora.org>)
+        id 1Q2WkE-0006gX-W5; Wed, 23 Mar 2011 15:41:39 -0700
+From:   David Brown <davidb@codeaurora.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Jiri Kosina <trivial@kernel.org>,
+        Srinidhi Kasagar <srinidhi.kasagar@stericsson.com>,
+        Linus Walleij <linus.walleij@stericsson.com>,
+        Daniel Walker <dwalker@fifo99.com>,
+        Bryan Huntsman <bryanh@codeaurora.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org
+Subject: Re: [trivial PATCH 1/2] treewide: Fix iomap resource size miscalculations
+References: <cover.1300909445.git.joe@perches.com>
+        <c4422b4a8ee132d3adac95fd86237c61b2f8b364.1300909446.git.joe@perches.com>
+Date:   Wed, 23 Mar 2011 15:42:47 -0700
+In-Reply-To: <c4422b4a8ee132d3adac95fd86237c61b2f8b364.1300909446.git.joe@perches.com>
+        (Joe Perches's message of "Wed, 23 Mar 2011 12:55:36 -0700")
+Message-ID: <8ya39md7920.fsf@huya.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <davidb@codeaurora.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29470
+X-archive-position: 29471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: davidb@codeaurora.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 23 Mar 2011, David Daney wrote:
-> On 03/21/2011 02:13 PM, Thomas Gleixner wrote:
-> > I can't imagine any other purpose for that.
-> 
-> Modifying the affinity of non-per-cpu IRQs to use the new CPU?
+On Wed, Mar 23 2011, Joe Perches wrote:
 
-Hmm. Good point. Ok, go ahead with that name.
+> Convert off-by-1 r->end - r->start to resource_size(r)
+>
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+>  drivers/video/msm/mddi.c          |    2 +-
 
-> > Hmm. The offline fixup_irq() code is arch specific and usually calls
-> > desc->irq_data.chip->irq_set_affinity under desc->lock. I have not yet
-> > found an arch independent way to do that. Any ideas welcome.
-> > 
-> 
-> There are all the new affinity callbacks, and the things shown in procfs?  Are
-> those handled properly if I call chip->irq_set_affinity?  I think not.
+Acked-by: David Brown <davidb@codeaurora.org>
 
-If the arch code updates irq_data.affinity then yes. I still need to
-go through all that maze and figure out what all the archs really want
-to do in that case.
-
-Thanks,
-
-	tglx
+-- 
+Sent by an employee of the Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum.

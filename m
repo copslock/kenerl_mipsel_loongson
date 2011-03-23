@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:10:05 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47408 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:10:29 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:47411 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491895Ab1CWVIw (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:08:52 +0100
+        by eddie.linux-mips.org with ESMTP id S1491898Ab1CWVIx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:08:53 +0100
 Received: from localhost ([127.0.0.1] helo=localhost6.localdomain6)
         by Galois.linutronix.de with esmtp (Exim 4.72)
         (envelope-from <tglx@linutronix.de>)
-        id 1Q2VIN-0001vO-CA; Wed, 23 Mar 2011 22:08:47 +0100
-Message-Id: <20110323210534.857562090@linutronix.de>
+        id 1Q2VIO-0001vR-5F; Wed, 23 Mar 2011 22:08:48 +0100
+Message-Id: <20110323210534.952010129@linutronix.de>
 User-Agent: quilt/0.48-1
 Date:   Wed, 23 Mar 2011 21:08:47 -0000
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [patch 03/38] mips: ath79: Convert to new irq_chip functions
+Subject: [patch 04/38] mips: bcm63xx: Convert to new irq_chip functions
 References: <20110323210437.398062704@linutronix.de>
-Content-Disposition: inline; filename=mips-ath79.patch
+Content-Disposition: inline; filename=mips-bcm63xx.patch
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
@@ -23,7 +23,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29432
+X-archive-position: 29433
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,81 +33,169 @@ X-list: linux-mips
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/ath79/irq.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ arch/mips/bcm63xx/irq.c |   77 +++++++++++++++++++-----------------------------
+ 1 file changed, 32 insertions(+), 45 deletions(-)
 
-Index: linux-mips-next/arch/mips/ath79/irq.c
+Index: linux-mips-next/arch/mips/bcm63xx/irq.c
 ===================================================================
---- linux-mips-next.orig/arch/mips/ath79/irq.c
-+++ linux-mips-next/arch/mips/ath79/irq.c
-@@ -62,13 +62,12 @@ static void ath79_misc_irq_handler(unsig
- 		spurious_interrupt();
+--- linux-mips-next.orig/arch/mips/bcm63xx/irq.c
++++ linux-mips-next/arch/mips/bcm63xx/irq.c
+@@ -76,88 +76,80 @@ asmlinkage void plat_irq_dispatch(void)
+  * internal IRQs operations: only mask/unmask on PERF irq mask
+  * register.
+  */
+-static inline void bcm63xx_internal_irq_mask(unsigned int irq)
++static inline void bcm63xx_internal_irq_mask(struct irq_data *d)
+ {
++	unsigned int irq = d->irq - IRQ_INTERNAL_BASE;
+ 	u32 mask;
+ 
+-	irq -= IRQ_INTERNAL_BASE;
+ 	mask = bcm_perf_readl(PERF_IRQMASK_REG);
+ 	mask &= ~(1 << irq);
+ 	bcm_perf_writel(mask, PERF_IRQMASK_REG);
  }
  
--static void ar71xx_misc_irq_unmask(unsigned int irq)
-+static void ar71xx_misc_irq_unmask(struct irq_data *d)
+-static void bcm63xx_internal_irq_unmask(unsigned int irq)
++static void bcm63xx_internal_irq_unmask(struct irq_data *d)
  {
-+	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
- 	void __iomem *base = ath79_reset_base;
- 	u32 t;
++	unsigned int irq = d->irq - IRQ_INTERNAL_BASE;
+ 	u32 mask;
  
--	irq -= ATH79_MISC_IRQ_BASE;
--
- 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
- 	__raw_writel(t | (1 << irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
- 
-@@ -76,13 +75,12 @@ static void ar71xx_misc_irq_unmask(unsig
- 	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-	irq -= IRQ_INTERNAL_BASE;
+ 	mask = bcm_perf_readl(PERF_IRQMASK_REG);
+ 	mask |= (1 << irq);
+ 	bcm_perf_writel(mask, PERF_IRQMASK_REG);
  }
  
--static void ar71xx_misc_irq_mask(unsigned int irq)
-+static void ar71xx_misc_irq_mask(struct irq_data *d)
- {
-+	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
- 	void __iomem *base = ath79_reset_base;
- 	u32 t;
- 
--	irq -= ATH79_MISC_IRQ_BASE;
+-static unsigned int bcm63xx_internal_irq_startup(unsigned int irq)
+-{
+-	bcm63xx_internal_irq_unmask(irq);
+-	return 0;
+-}
 -
- 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
- 	__raw_writel(t & ~(1 << irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+ /*
+  * external IRQs operations: mask/unmask and clear on PERF external
+  * irq control register.
+  */
+-static void bcm63xx_external_irq_mask(unsigned int irq)
++static void bcm63xx_external_irq_mask(struct irq_data *d)
+ {
++	unsigned int irq = d->irq - IRQ_EXT_BASE;
+ 	u32 reg;
  
-@@ -90,13 +88,12 @@ static void ar71xx_misc_irq_mask(unsigne
- 	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+-	irq -= IRQ_EXT_BASE;
+ 	reg = bcm_perf_readl(PERF_EXTIRQ_CFG_REG);
+ 	reg &= ~EXTIRQ_CFG_MASK(irq);
+ 	bcm_perf_writel(reg, PERF_EXTIRQ_CFG_REG);
  }
  
--static void ar724x_misc_irq_ack(unsigned int irq)
-+static void ar724x_misc_irq_ack(struct irq_data *d)
+-static void bcm63xx_external_irq_unmask(unsigned int irq)
++static void bcm63xx_external_irq_unmask(struct irq_data *d)
  {
-+	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
- 	void __iomem *base = ath79_reset_base;
- 	u32 t;
++	unsigned int irq = d->irq - IRQ_EXT_BASE;
+ 	u32 reg;
  
--	irq -= ATH79_MISC_IRQ_BASE;
+-	irq -= IRQ_EXT_BASE;
+ 	reg = bcm_perf_readl(PERF_EXTIRQ_CFG_REG);
+ 	reg |= EXTIRQ_CFG_MASK(irq);
+ 	bcm_perf_writel(reg, PERF_EXTIRQ_CFG_REG);
+ }
+ 
+-static void bcm63xx_external_irq_clear(unsigned int irq)
++static void bcm63xx_external_irq_clear(struct irq_data *d)
+ {
++	unsigned int irq = d->irq - IRQ_EXT_BASE;
+ 	u32 reg;
+ 
+-	irq -= IRQ_EXT_BASE;
+ 	reg = bcm_perf_readl(PERF_EXTIRQ_CFG_REG);
+ 	reg |= EXTIRQ_CFG_CLEAR(irq);
+ 	bcm_perf_writel(reg, PERF_EXTIRQ_CFG_REG);
+ }
+ 
+-static unsigned int bcm63xx_external_irq_startup(unsigned int irq)
++static unsigned int bcm63xx_external_irq_startup(struct irq_data *d)
+ {
+-	set_c0_status(0x100 << (irq - IRQ_MIPS_BASE));
++	set_c0_status(0x100 << (d->irq - IRQ_MIPS_BASE));
+ 	irq_enable_hazard();
+-	bcm63xx_external_irq_unmask(irq);
++	bcm63xx_external_irq_unmask(d);
+ 	return 0;
+ }
+ 
+-static void bcm63xx_external_irq_shutdown(unsigned int irq)
++static void bcm63xx_external_irq_shutdown(struct irq_data *d)
+ {
+-	bcm63xx_external_irq_mask(irq);
+-	clear_c0_status(0x100 << (irq - IRQ_MIPS_BASE));
++	bcm63xx_external_irq_mask(d);
++	clear_c0_status(0x100 << (d->irq - IRQ_MIPS_BASE));
+ 	irq_disable_hazard();
+ }
+ 
+-static int bcm63xx_external_irq_set_type(unsigned int irq,
++static int bcm63xx_external_irq_set_type(struct irq_data *d,
+ 					 unsigned int flow_type)
+ {
++	unsigned int irq = d->irq - IRQ_EXT_BASE;
+ 	u32 reg;
+-	struct irq_desc *desc = irq_desc + irq;
 -
- 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS);
- 	__raw_writel(t & ~(1 << irq), base + AR71XX_RESET_REG_MISC_INT_STATUS);
+-	irq -= IRQ_EXT_BASE;
  
-@@ -106,8 +103,8 @@ static void ar724x_misc_irq_ack(unsigned
+ 	flow_type &= IRQ_TYPE_SENSE_MASK;
  
- static struct irq_chip ath79_misc_irq_chip = {
- 	.name		= "MISC",
--	.unmask		= ar71xx_misc_irq_unmask,
--	.mask		= ar71xx_misc_irq_mask,
-+	.irq_unmask	= ar71xx_misc_irq_unmask,
-+	.irq_mask	= ar71xx_misc_irq_mask,
+@@ -199,37 +191,32 @@ static int bcm63xx_external_irq_set_type
+ 	}
+ 	bcm_perf_writel(reg, PERF_EXTIRQ_CFG_REG);
+ 
+-	if (flow_type & (IRQ_TYPE_LEVEL_LOW | IRQ_TYPE_LEVEL_HIGH))  {
+-		desc->status |= IRQ_LEVEL;
+-		desc->handle_irq = handle_level_irq;
+-	} else {
+-		desc->handle_irq = handle_edge_irq;
+-	}
++	irqd_set_trigger_type(d, flow_type);
++	if (flow_type & (IRQ_TYPE_LEVEL_LOW | IRQ_TYPE_LEVEL_HIGH))
++		__irq_set_handler_locked(d->irq, handle_level_irq);
++	else
++		__irq_set_handler_locked(d->irq, handle_edge_irq);
+ 
+-	return 0;
++	return IRQ_SET_MASK_OK_NOCOPY;
+ }
+ 
+ static struct irq_chip bcm63xx_internal_irq_chip = {
+ 	.name		= "bcm63xx_ipic",
+-	.startup	= bcm63xx_internal_irq_startup,
+-	.shutdown	= bcm63xx_internal_irq_mask,
+-
+-	.mask		= bcm63xx_internal_irq_mask,
+-	.mask_ack	= bcm63xx_internal_irq_mask,
+-	.unmask		= bcm63xx_internal_irq_unmask,
++	.irq_mask	= bcm63xx_internal_irq_mask,
++	.irq_unmask	= bcm63xx_internal_irq_unmask,
  };
  
- static void __init ath79_misc_irq_init(void)
-@@ -119,9 +116,9 @@ static void __init ath79_misc_irq_init(v
- 	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
+ static struct irq_chip bcm63xx_external_irq_chip = {
+ 	.name		= "bcm63xx_epic",
+-	.startup	= bcm63xx_external_irq_startup,
+-	.shutdown	= bcm63xx_external_irq_shutdown,
++	.irq_startup	= bcm63xx_external_irq_startup,
++	.irq_shutdown	= bcm63xx_external_irq_shutdown,
  
- 	if (soc_is_ar71xx() || soc_is_ar913x())
--		ath79_misc_irq_chip.mask_ack = ar71xx_misc_irq_mask;
-+		ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
- 	else if (soc_is_ar724x())
--		ath79_misc_irq_chip.ack = ar724x_misc_irq_ack;
-+		ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
- 	else
- 		BUG();
+-	.ack		= bcm63xx_external_irq_clear,
++	.irq_ack	= bcm63xx_external_irq_clear,
  
+-	.mask		= bcm63xx_external_irq_mask,
+-	.unmask		= bcm63xx_external_irq_unmask,
++	.irq_mask	= bcm63xx_external_irq_mask,
++	.irq_unmask	= bcm63xx_external_irq_unmask,
+ 
+-	.set_type	= bcm63xx_external_irq_set_type,
++	.irq_set_type	= bcm63xx_external_irq_set_type,
+ };
+ 
+ static struct irqaction cpu_ip2_cascade_action = {

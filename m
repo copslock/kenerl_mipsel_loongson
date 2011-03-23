@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:21:47 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47501 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:22:11 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:47504 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491938Ab1CWVJU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:09:20 +0100
+        by eddie.linux-mips.org with ESMTP id S1491936Ab1CWVJV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:09:21 +0100
 Received: from localhost ([127.0.0.1] helo=localhost6.localdomain6)
         by Galois.linutronix.de with esmtp (Exim 4.72)
         (envelope-from <tglx@linutronix.de>)
-        id 1Q2VIo-0001x1-Iy; Wed, 23 Mar 2011 22:09:15 +0100
-Message-Id: <20110323210537.691899621@linutronix.de>
+        id 1Q2VIp-0001x4-Kj; Wed, 23 Mar 2011 22:09:16 +0100
+Message-Id: <20110323210537.785661392@linutronix.de>
 User-Agent: quilt/0.48-1
-Date:   Wed, 23 Mar 2011 21:09:14 -0000
+Date:   Wed, 23 Mar 2011 21:09:15 -0000
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [patch 33/38] mips: sybyte: Convert to new irq_chip functions
+Subject: [patch 34/38] mips: sni: Convert to new irq_chip functions
 References: <20110323210437.398062704@linutronix.de>
-Content-Disposition: inline; filename=mips-sybyte.patch
+Content-Disposition: inline; filename=mips-sni.patch
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
@@ -23,7 +23,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29462
+X-archive-position: 29463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,211 +33,243 @@ X-list: linux-mips
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/sibyte/bcm1480/irq.c |   55 ++++++++++++++---------------------------
- arch/mips/sibyte/sb1250/irq.c  |   53 +++++++++++----------------------------
- 2 files changed, 35 insertions(+), 73 deletions(-)
+ arch/mips/sni/a20r.c  |   23 ++++++-----------------
+ arch/mips/sni/pcimt.c |   21 ++++++---------------
+ arch/mips/sni/pcit.c  |   21 ++++++---------------
+ arch/mips/sni/rm200.c |   42 +++++++++++++++---------------------------
+ 4 files changed, 33 insertions(+), 74 deletions(-)
 
-Index: linux-mips-next/arch/mips/sibyte/bcm1480/irq.c
+Index: linux-mips-next/arch/mips/sni/a20r.c
 ===================================================================
---- linux-mips-next.orig/arch/mips/sibyte/bcm1480/irq.c
-+++ linux-mips-next/arch/mips/sibyte/bcm1480/irq.c
-@@ -44,31 +44,10 @@
-  * for interrupt lines
-  */
- 
--
--static void end_bcm1480_irq(unsigned int irq);
--static void enable_bcm1480_irq(unsigned int irq);
--static void disable_bcm1480_irq(unsigned int irq);
--static void ack_bcm1480_irq(unsigned int irq);
--#ifdef CONFIG_SMP
--static int bcm1480_set_affinity(unsigned int irq, const struct cpumask *mask);
--#endif
--
- #ifdef CONFIG_PCI
- extern unsigned long ht_eoi_space;
- #endif
- 
--static struct irq_chip bcm1480_irq_type = {
--	.name = "BCM1480-IMR",
--	.ack = ack_bcm1480_irq,
--	.mask = disable_bcm1480_irq,
--	.mask_ack = ack_bcm1480_irq,
--	.unmask = enable_bcm1480_irq,
--	.end = end_bcm1480_irq,
--#ifdef CONFIG_SMP
--	.set_affinity = bcm1480_set_affinity
--#endif
--};
--
- /* Store the CPU id (not the logical number) */
- int bcm1480_irq_owner[BCM1480_NR_IRQS];
- 
-@@ -109,12 +88,13 @@ void bcm1480_unmask_irq(int cpu, int irq
+--- linux-mips-next.orig/arch/mips/sni/a20r.c
++++ linux-mips-next/arch/mips/sni/a20r.c
+@@ -168,33 +168,22 @@ static u32 a20r_ack_hwint(void)
+ 	return status;
  }
  
- #ifdef CONFIG_SMP
--static int bcm1480_set_affinity(unsigned int irq, const struct cpumask *mask)
-+static int bcm1480_set_affinity(struct irq_data *d, const struct cpumask *mask,
-+				bool force)
+-static inline void unmask_a20r_irq(unsigned int irq)
++static inline void unmask_a20r_irq(struct irq_data *d)
  {
-+	unsigned int irq_dirty, irq = d->irq;
- 	int i = 0, old_cpu, cpu, int_on, k;
- 	u64 cur_ints;
+-	set_c0_status(0x100 << (irq - SNI_A20R_IRQ_BASE));
++	set_c0_status(0x100 << (d->irq - SNI_A20R_IRQ_BASE));
+ 	irq_enable_hazard();
+ }
+ 
+-static inline void mask_a20r_irq(unsigned int irq)
++static inline void mask_a20r_irq(struct irq_data *d)
+ {
+-	clear_c0_status(0x100 << (irq - SNI_A20R_IRQ_BASE));
++	clear_c0_status(0x100 << (d->irq - SNI_A20R_IRQ_BASE));
+ 	irq_disable_hazard();
+ }
+ 
+-static void end_a20r_irq(unsigned int irq)
+-{
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
+-		a20r_ack_hwint();
+-		unmask_a20r_irq(irq);
+-	}
+-}
+-
+ static struct irq_chip a20r_irq_type = {
+ 	.name		= "A20R",
+-	.ack		= mask_a20r_irq,
+-	.mask		= mask_a20r_irq,
+-	.mask_ack	= mask_a20r_irq,
+-	.unmask		= unmask_a20r_irq,
+-	.end		= end_a20r_irq,
++	.irq_mask	= mask_a20r_irq,
++	.irq_unmask	= unmask_a20r_irq,
+ };
+ 
+ /*
+Index: linux-mips-next/arch/mips/sni/pcimt.c
+===================================================================
+--- linux-mips-next.orig/arch/mips/sni/pcimt.c
++++ linux-mips-next/arch/mips/sni/pcimt.c
+@@ -194,33 +194,24 @@ static struct pci_controller sni_control
+ 	.io_map_base    = SNI_PORT_BASE
+ };
+ 
+-static void enable_pcimt_irq(unsigned int irq)
++static void enable_pcimt_irq(struct irq_data *d)
+ {
+-	unsigned int mask = 1 << (irq - PCIMT_IRQ_INT2);
++	unsigned int mask = 1 << (d->irq - PCIMT_IRQ_INT2);
+ 
+ 	*(volatile u8 *) PCIMT_IRQSEL |= mask;
+ }
+ 
+-void disable_pcimt_irq(unsigned int irq)
++void disable_pcimt_irq(struct irq_data *d)
+ {
+-	unsigned int mask = ~(1 << (irq - PCIMT_IRQ_INT2));
++	unsigned int mask = ~(1 << (d->irq - PCIMT_IRQ_INT2));
+ 
+ 	*(volatile u8 *) PCIMT_IRQSEL &= mask;
+ }
+ 
+-static void end_pcimt_irq(unsigned int irq)
+-{
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
+-		enable_pcimt_irq(irq);
+-}
+-
+ static struct irq_chip pcimt_irq_type = {
+ 	.name = "PCIMT",
+-	.ack = disable_pcimt_irq,
+-	.mask = disable_pcimt_irq,
+-	.mask_ack = disable_pcimt_irq,
+-	.unmask = enable_pcimt_irq,
+-	.end = end_pcimt_irq,
++	.irq_mask = disable_pcimt_irq,
++	.irq_unmask = enable_pcimt_irq,
+ };
+ 
+ /*
+Index: linux-mips-next/arch/mips/sni/pcit.c
+===================================================================
+--- linux-mips-next.orig/arch/mips/sni/pcit.c
++++ linux-mips-next/arch/mips/sni/pcit.c
+@@ -156,33 +156,24 @@ static struct pci_controller sni_pcit_co
+ 	.io_map_base    = SNI_PORT_BASE
+ };
+ 
+-static void enable_pcit_irq(unsigned int irq)
++static void enable_pcit_irq(struct irq_data *d)
+ {
+-	u32 mask = 1 << (irq - SNI_PCIT_INT_START + 24);
++	u32 mask = 1 << (d->irq - SNI_PCIT_INT_START + 24);
+ 
+ 	*(volatile u32 *)SNI_PCIT_INT_REG |= mask;
+ }
+ 
+-void disable_pcit_irq(unsigned int irq)
++void disable_pcit_irq(struct irq_data *d)
+ {
+-	u32 mask = 1 << (irq - SNI_PCIT_INT_START + 24);
++	u32 mask = 1 << (d->irq - SNI_PCIT_INT_START + 24);
+ 
+ 	*(volatile u32 *)SNI_PCIT_INT_REG &= ~mask;
+ }
+ 
+-void end_pcit_irq(unsigned int irq)
+-{
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
+-		enable_pcit_irq(irq);
+-}
+-
+ static struct irq_chip pcit_irq_type = {
+ 	.name = "PCIT",
+-	.ack = disable_pcit_irq,
+-	.mask = disable_pcit_irq,
+-	.mask_ack = disable_pcit_irq,
+-	.unmask = enable_pcit_irq,
+-	.end = end_pcit_irq,
++	.irq_mask = disable_pcit_irq,
++	.irq_unmask = enable_pcit_irq,
+ };
+ 
+ static void pcit_hwint1(void)
+Index: linux-mips-next/arch/mips/sni/rm200.c
+===================================================================
+--- linux-mips-next.orig/arch/mips/sni/rm200.c
++++ linux-mips-next/arch/mips/sni/rm200.c
+@@ -155,12 +155,11 @@ static __iomem u8 *rm200_pic_slave;
+ #define cached_master_mask	(rm200_cached_irq_mask)
+ #define cached_slave_mask	(rm200_cached_irq_mask >> 8)
+ 
+-static void sni_rm200_disable_8259A_irq(unsigned int irq)
++static void sni_rm200_disable_8259A_irq(struct irq_data *d)
+ {
+-	unsigned int mask;
++	unsigned int mask, irq = d->irq - RM200_I8259A_IRQ_BASE;
  	unsigned long flags;
--	unsigned int irq_dirty;
  
- 	i = cpumask_first(mask);
- 
-@@ -156,21 +136,25 @@ static int bcm1480_set_affinity(unsigned
- 
- /*****************************************************************************/
- 
--static void disable_bcm1480_irq(unsigned int irq)
-+static void disable_bcm1480_irq(struct irq_data *d)
- {
-+	unsigned int irq = d->irq;
-+
- 	bcm1480_mask_irq(bcm1480_irq_owner[irq], irq);
+-	irq -= RM200_I8259A_IRQ_BASE;
+ 	mask = 1 << irq;
+ 	raw_spin_lock_irqsave(&sni_rm200_i8259A_lock, flags);
+ 	rm200_cached_irq_mask |= mask;
+@@ -171,12 +170,11 @@ static void sni_rm200_disable_8259A_irq(
+ 	raw_spin_unlock_irqrestore(&sni_rm200_i8259A_lock, flags);
  }
  
--static void enable_bcm1480_irq(unsigned int irq)
-+static void enable_bcm1480_irq(struct irq_data *d)
+-static void sni_rm200_enable_8259A_irq(unsigned int irq)
++static void sni_rm200_enable_8259A_irq(struct irq_data *d)
  {
-+	unsigned int irq = d->irq;
-+
- 	bcm1480_unmask_irq(bcm1480_irq_owner[irq], irq);
- }
+-	unsigned int mask;
++	unsigned int mask, irq = d->irq - RM200_I8259A_IRQ_BASE;
+ 	unsigned long flags;
  
- 
--static void ack_bcm1480_irq(unsigned int irq)
-+static void ack_bcm1480_irq(struct irq_data *d)
+-	irq -= RM200_I8259A_IRQ_BASE;
+ 	mask = ~(1 << irq);
+ 	raw_spin_lock_irqsave(&sni_rm200_i8259A_lock, flags);
+ 	rm200_cached_irq_mask &= mask;
+@@ -210,12 +208,11 @@ static inline int sni_rm200_i8259A_irq_r
+  * first, _then_ send the EOI, and the order of EOI
+  * to the two 8259s is important!
+  */
+-void sni_rm200_mask_and_ack_8259A(unsigned int irq)
++void sni_rm200_mask_and_ack_8259A(struct irq_data *d)
  {
-+	unsigned int irq_dirty, irq = d->irq;
- 	u64 pending;
--	unsigned int irq_dirty;
- 	int k;
+-	unsigned int irqmask;
++	unsigned int irqmask, irq = d->irq - RM200_I8259A_IRQ_BASE;
+ 	unsigned long flags;
  
+-	irq -= RM200_I8259A_IRQ_BASE;
+ 	irqmask = 1 << irq;
+ 	raw_spin_lock_irqsave(&sni_rm200_i8259A_lock, flags);
  	/*
-@@ -217,14 +201,15 @@ static void ack_bcm1480_irq(unsigned int
- 	bcm1480_mask_irq(bcm1480_irq_owner[irq], irq);
+@@ -285,9 +282,9 @@ spurious_8259A_irq:
+ 
+ static struct irq_chip sni_rm200_i8259A_chip = {
+ 	.name		= "RM200-XT-PIC",
+-	.mask		= sni_rm200_disable_8259A_irq,
+-	.unmask		= sni_rm200_enable_8259A_irq,
+-	.mask_ack	= sni_rm200_mask_and_ack_8259A,
++	.irq_mask	= sni_rm200_disable_8259A_irq,
++	.irq_unmask	= sni_rm200_enable_8259A_irq,
++	.irq_mask_ack	= sni_rm200_mask_and_ack_8259A,
+ };
+ 
+ /*
+@@ -429,33 +426,24 @@ void __init sni_rm200_i8259_irqs(void)
+ #define SNI_RM200_INT_START  24
+ #define SNI_RM200_INT_END    28
+ 
+-static void enable_rm200_irq(unsigned int irq)
++static void enable_rm200_irq(struct irq_data *d)
+ {
+-	unsigned int mask = 1 << (irq - SNI_RM200_INT_START);
++	unsigned int mask = 1 << (d->irq - SNI_RM200_INT_START);
+ 
+ 	*(volatile u8 *)SNI_RM200_INT_ENA_REG &= ~mask;
  }
  
--
--static void end_bcm1480_irq(unsigned int irq)
+-void disable_rm200_irq(unsigned int irq)
++void disable_rm200_irq(struct irq_data *d)
+ {
+-	unsigned int mask = 1 << (irq - SNI_RM200_INT_START);
++	unsigned int mask = 1 << (d->irq - SNI_RM200_INT_START);
+ 
+ 	*(volatile u8 *)SNI_RM200_INT_ENA_REG |= mask;
+ }
+ 
+-void end_rm200_irq(unsigned int irq)
 -{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		bcm1480_unmask_irq(bcm1480_irq_owner[irq], irq);
--	}
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
+-		enable_rm200_irq(irq);
 -}
 -
-+static struct irq_chip bcm1480_irq_type = {
-+	.name = "BCM1480-IMR",
-+	.irq_mask_ack = ack_bcm1480_irq,
-+	.irq_mask = disable_bcm1480_irq,
-+	.irq_unmask = enable_bcm1480_irq,
-+#ifdef CONFIG_SMP
-+	.irq_set_affinity = bcm1480_set_affinity
-+#endif
-+};
+ static struct irq_chip rm200_irq_type = {
+ 	.name = "RM200",
+-	.ack = disable_rm200_irq,
+-	.mask = disable_rm200_irq,
+-	.mask_ack = disable_rm200_irq,
+-	.unmask = enable_rm200_irq,
+-	.end = end_rm200_irq,
++	.irq_mask = disable_rm200_irq,
++	.irq_unmask = enable_rm200_irq,
+ };
  
- void __init init_bcm1480_irqs(void)
- {
-Index: linux-mips-next/arch/mips/sibyte/sb1250/irq.c
-===================================================================
---- linux-mips-next.orig/arch/mips/sibyte/sb1250/irq.c
-+++ linux-mips-next/arch/mips/sibyte/sb1250/irq.c
-@@ -43,31 +43,10 @@
-  * for interrupt lines
-  */
- 
--
--static void end_sb1250_irq(unsigned int irq);
--static void enable_sb1250_irq(unsigned int irq);
--static void disable_sb1250_irq(unsigned int irq);
--static void ack_sb1250_irq(unsigned int irq);
--#ifdef CONFIG_SMP
--static int sb1250_set_affinity(unsigned int irq, const struct cpumask *mask);
--#endif
--
- #ifdef CONFIG_SIBYTE_HAS_LDT
- extern unsigned long ldt_eoi_space;
- #endif
- 
--static struct irq_chip sb1250_irq_type = {
--	.name = "SB1250-IMR",
--	.ack = ack_sb1250_irq,
--	.mask = disable_sb1250_irq,
--	.mask_ack = ack_sb1250_irq,
--	.unmask = enable_sb1250_irq,
--	.end = end_sb1250_irq,
--#ifdef CONFIG_SMP
--	.set_affinity = sb1250_set_affinity
--#endif
--};
--
- /* Store the CPU id (not the logical number) */
- int sb1250_irq_owner[SB1250_NR_IRQS];
- 
-@@ -102,9 +81,11 @@ void sb1250_unmask_irq(int cpu, int irq)
- }
- 
- #ifdef CONFIG_SMP
--static int sb1250_set_affinity(unsigned int irq, const struct cpumask *mask)
-+static int sb1250_set_affinity(struct irq_data *d, const struct cpumask *mask,
-+			       bool force)
- {
- 	int i = 0, old_cpu, cpu, int_on;
-+	unsigned int irq = d->irq;
- 	u64 cur_ints;
- 	unsigned long flags;
- 
-@@ -142,21 +123,17 @@ static int sb1250_set_affinity(unsigned 
- }
- #endif
- 
--/*****************************************************************************/
--
--static void disable_sb1250_irq(unsigned int irq)
-+static void enable_sb1250_irq(struct irq_data *d)
- {
--	sb1250_mask_irq(sb1250_irq_owner[irq], irq);
--}
-+	unsigned int irq = d->irq;
- 
--static void enable_sb1250_irq(unsigned int irq)
--{
- 	sb1250_unmask_irq(sb1250_irq_owner[irq], irq);
- }
- 
- 
--static void ack_sb1250_irq(unsigned int irq)
-+static void ack_sb1250_irq(struct irq_data *d)
- {
-+	unsigned int irq = d->irq;
- #ifdef CONFIG_SIBYTE_HAS_LDT
- 	u64 pending;
- 
-@@ -199,14 +176,14 @@ static void ack_sb1250_irq(unsigned int 
- 	sb1250_mask_irq(sb1250_irq_owner[irq], irq);
- }
- 
--
--static void end_sb1250_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		sb1250_unmask_irq(sb1250_irq_owner[irq], irq);
--	}
--}
--
-+static struct irq_chip sb1250_irq_type = {
-+	.name = "SB1250-IMR",
-+	.irq_mask_ack = ack_sb1250_irq,
-+	.irq_unmask = enable_sb1250_irq,
-+#ifdef CONFIG_SMP
-+	.irq_set_affinity = sb1250_set_affinity
-+#endif
-+};
- 
- void __init init_sb1250_irqs(void)
- {
+ static void sni_rm200_hwint(void)

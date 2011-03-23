@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:09:41 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47405 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:10:05 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:47408 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491894Ab1CWVIw (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491895Ab1CWVIw (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:08:52 +0100
 Received: from localhost ([127.0.0.1] helo=localhost6.localdomain6)
         by Galois.linutronix.de with esmtp (Exim 4.72)
         (envelope-from <tglx@linutronix.de>)
-        id 1Q2VIM-0001vL-J5; Wed, 23 Mar 2011 22:08:46 +0100
-Message-Id: <20110323210534.763405783@linutronix.de>
+        id 1Q2VIN-0001vO-CA; Wed, 23 Mar 2011 22:08:47 +0100
+Message-Id: <20110323210534.857562090@linutronix.de>
 User-Agent: quilt/0.48-1
-Date:   Wed, 23 Mar 2011 21:08:46 -0000
+Date:   Wed, 23 Mar 2011 21:08:47 -0000
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [patch 02/38] mips: ar7: Convert to new irq_chip functions
+Subject: [patch 03/38] mips: ath79: Convert to new irq_chip functions
 References: <20110323210437.398062704@linutronix.de>
-Content-Disposition: inline; filename=mipsar7.patch
+Content-Disposition: inline; filename=mips-ath79.patch
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
@@ -23,7 +23,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29431
+X-archive-position: 29432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,83 +33,81 @@ X-list: linux-mips
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/ar7/irq.c |   42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ arch/mips/ath79/irq.c |   23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-Index: linux-mips-next/arch/mips/ar7/irq.c
+Index: linux-mips-next/arch/mips/ath79/irq.c
 ===================================================================
---- linux-mips-next.orig/arch/mips/ar7/irq.c
-+++ linux-mips-next/arch/mips/ar7/irq.c
-@@ -49,51 +49,51 @@
- 
- static int ar7_irq_base;
- 
--static void ar7_unmask_irq(unsigned int irq)
-+static void ar7_unmask_irq(struct irq_data *d)
- {
--	writel(1 << ((irq - ar7_irq_base) % 32),
--	       REG(ESR_OFFSET(irq - ar7_irq_base)));
-+	writel(1 << ((d->irq - ar7_irq_base) % 32),
-+	       REG(ESR_OFFSET(d->irq - ar7_irq_base)));
+--- linux-mips-next.orig/arch/mips/ath79/irq.c
++++ linux-mips-next/arch/mips/ath79/irq.c
+@@ -62,13 +62,12 @@ static void ath79_misc_irq_handler(unsig
+ 		spurious_interrupt();
  }
  
--static void ar7_mask_irq(unsigned int irq)
-+static void ar7_mask_irq(struct irq_data *d)
+-static void ar71xx_misc_irq_unmask(unsigned int irq)
++static void ar71xx_misc_irq_unmask(struct irq_data *d)
  {
--	writel(1 << ((irq - ar7_irq_base) % 32),
--	       REG(ECR_OFFSET(irq - ar7_irq_base)));
-+	writel(1 << ((d->irq - ar7_irq_base) % 32),
-+	       REG(ECR_OFFSET(d->irq - ar7_irq_base)));
++	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
+ 	void __iomem *base = ath79_reset_base;
+ 	u32 t;
+ 
+-	irq -= ATH79_MISC_IRQ_BASE;
+-
+ 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+ 	__raw_writel(t | (1 << irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+ 
+@@ -76,13 +75,12 @@ static void ar71xx_misc_irq_unmask(unsig
+ 	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
  }
  
--static void ar7_ack_irq(unsigned int irq)
-+static void ar7_ack_irq(struct irq_data *d)
+-static void ar71xx_misc_irq_mask(unsigned int irq)
++static void ar71xx_misc_irq_mask(struct irq_data *d)
  {
--	writel(1 << ((irq - ar7_irq_base) % 32),
--	       REG(CR_OFFSET(irq - ar7_irq_base)));
-+	writel(1 << ((d->irq - ar7_irq_base) % 32),
-+	       REG(CR_OFFSET(d->irq - ar7_irq_base)));
++	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
+ 	void __iomem *base = ath79_reset_base;
+ 	u32 t;
+ 
+-	irq -= ATH79_MISC_IRQ_BASE;
+-
+ 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+ 	__raw_writel(t & ~(1 << irq), base + AR71XX_RESET_REG_MISC_INT_ENABLE);
+ 
+@@ -90,13 +88,12 @@ static void ar71xx_misc_irq_mask(unsigne
+ 	__raw_readl(base + AR71XX_RESET_REG_MISC_INT_ENABLE);
  }
  
--static void ar7_unmask_sec_irq(unsigned int irq)
-+static void ar7_unmask_sec_irq(struct irq_data *d)
+-static void ar724x_misc_irq_ack(unsigned int irq)
++static void ar724x_misc_irq_ack(struct irq_data *d)
  {
--	writel(1 << (irq - ar7_irq_base - 40), REG(SEC_ESR_OFFSET));
-+	writel(1 << (d->irq - ar7_irq_base - 40), REG(SEC_ESR_OFFSET));
- }
++	unsigned int irq = d->irq - ATH79_MISC_IRQ_BASE;
+ 	void __iomem *base = ath79_reset_base;
+ 	u32 t;
  
--static void ar7_mask_sec_irq(unsigned int irq)
-+static void ar7_mask_sec_irq(struct irq_data *d)
- {
--	writel(1 << (irq - ar7_irq_base - 40), REG(SEC_ECR_OFFSET));
-+	writel(1 << (d->irq - ar7_irq_base - 40), REG(SEC_ECR_OFFSET));
- }
+-	irq -= ATH79_MISC_IRQ_BASE;
+-
+ 	t = __raw_readl(base + AR71XX_RESET_REG_MISC_INT_STATUS);
+ 	__raw_writel(t & ~(1 << irq), base + AR71XX_RESET_REG_MISC_INT_STATUS);
  
--static void ar7_ack_sec_irq(unsigned int irq)
-+static void ar7_ack_sec_irq(struct irq_data *d)
- {
--	writel(1 << (irq - ar7_irq_base - 40), REG(SEC_CR_OFFSET));
-+	writel(1 << (d->irq - ar7_irq_base - 40), REG(SEC_CR_OFFSET));
- }
+@@ -106,8 +103,8 @@ static void ar724x_misc_irq_ack(unsigned
  
- static struct irq_chip ar7_irq_type = {
- 	.name = "AR7",
--	.unmask = ar7_unmask_irq,
--	.mask = ar7_mask_irq,
--	.ack = ar7_ack_irq
-+	.irq_unmask = ar7_unmask_irq,
-+	.irq_mask = ar7_mask_irq,
-+	.irq_ack = ar7_ack_irq
+ static struct irq_chip ath79_misc_irq_chip = {
+ 	.name		= "MISC",
+-	.unmask		= ar71xx_misc_irq_unmask,
+-	.mask		= ar71xx_misc_irq_mask,
++	.irq_unmask	= ar71xx_misc_irq_unmask,
++	.irq_mask	= ar71xx_misc_irq_mask,
  };
  
- static struct irq_chip ar7_sec_irq_type = {
- 	.name = "AR7",
--	.unmask = ar7_unmask_sec_irq,
--	.mask = ar7_mask_sec_irq,
--	.ack = ar7_ack_sec_irq,
-+	.irq_unmask = ar7_unmask_sec_irq,
-+	.irq_mask = ar7_mask_sec_irq,
-+	.irq_ack = ar7_ack_sec_irq,
- };
+ static void __init ath79_misc_irq_init(void)
+@@ -119,9 +116,9 @@ static void __init ath79_misc_irq_init(v
+ 	__raw_writel(0, base + AR71XX_RESET_REG_MISC_INT_STATUS);
  
- static struct irqaction ar7_cascade_action = {
+ 	if (soc_is_ar71xx() || soc_is_ar913x())
+-		ath79_misc_irq_chip.mask_ack = ar71xx_misc_irq_mask;
++		ath79_misc_irq_chip.irq_mask_ack = ar71xx_misc_irq_mask;
+ 	else if (soc_is_ar724x())
+-		ath79_misc_irq_chip.ack = ar724x_misc_irq_ack;
++		ath79_misc_irq_chip.irq_ack = ar724x_misc_irq_ack;
+ 	else
+ 		BUG();
+ 

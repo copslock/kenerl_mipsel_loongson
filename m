@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:22:11 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47504 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:22:35 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:47507 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491936Ab1CWVJV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:09:21 +0100
+        by eddie.linux-mips.org with ESMTP id S1491939Ab1CWVJW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:09:22 +0100
 Received: from localhost ([127.0.0.1] helo=localhost6.localdomain6)
         by Galois.linutronix.de with esmtp (Exim 4.72)
         (envelope-from <tglx@linutronix.de>)
-        id 1Q2VIp-0001x4-Kj; Wed, 23 Mar 2011 22:09:16 +0100
-Message-Id: <20110323210537.785661392@linutronix.de>
+        id 1Q2VIq-0001x7-Nh; Wed, 23 Mar 2011 22:09:17 +0100
+Message-Id: <20110323210537.879365885@linutronix.de>
 User-Agent: quilt/0.48-1
-Date:   Wed, 23 Mar 2011 21:09:15 -0000
+Date:   Wed, 23 Mar 2011 21:09:16 -0000
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [patch 34/38] mips: sni: Convert to new irq_chip functions
+Subject: [patch 35/38] mips: txx9: Convert to new irq_chip functions
 References: <20110323210437.398062704@linutronix.de>
-Content-Disposition: inline; filename=mips-sni.patch
+Content-Disposition: inline; filename=mips-txx9.patch
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
@@ -23,7 +23,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29463
+X-archive-position: 29464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,243 +33,348 @@ X-list: linux-mips
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/sni/a20r.c  |   23 ++++++-----------------
- arch/mips/sni/pcimt.c |   21 ++++++---------------
- arch/mips/sni/pcit.c  |   21 ++++++---------------
- arch/mips/sni/rm200.c |   42 +++++++++++++++---------------------------
- 4 files changed, 33 insertions(+), 74 deletions(-)
+ arch/mips/txx9/generic/irq_tx4939.c |   28 ++++++++---------
+ arch/mips/txx9/jmr3927/irq.c        |   14 +++-----
+ arch/mips/txx9/rbtx4927/irq.c       |   58 ++++++++++++++++--------------------
+ arch/mips/txx9/rbtx4938/irq.c       |   54 ++++++++++++++-------------------
+ arch/mips/txx9/rbtx4939/irq.c       |   14 +++-----
+ 5 files changed, 75 insertions(+), 93 deletions(-)
 
-Index: linux-mips-next/arch/mips/sni/a20r.c
+Index: linux-mips-next/arch/mips/txx9/generic/irq_tx4939.c
 ===================================================================
---- linux-mips-next.orig/arch/mips/sni/a20r.c
-+++ linux-mips-next/arch/mips/sni/a20r.c
-@@ -168,33 +168,22 @@ static u32 a20r_ack_hwint(void)
- 	return status;
- }
+--- linux-mips-next.orig/arch/mips/txx9/generic/irq_tx4939.c
++++ linux-mips-next/arch/mips/txx9/generic/irq_tx4939.c
+@@ -50,9 +50,9 @@ static struct {
+ 	unsigned char mode;
+ } tx4939irq[TX4939_NUM_IR] __read_mostly;
  
--static inline void unmask_a20r_irq(unsigned int irq)
-+static inline void unmask_a20r_irq(struct irq_data *d)
+-static void tx4939_irq_unmask(unsigned int irq)
++static void tx4939_irq_unmask(struct irq_data *d)
  {
--	set_c0_status(0x100 << (irq - SNI_A20R_IRQ_BASE));
-+	set_c0_status(0x100 << (d->irq - SNI_A20R_IRQ_BASE));
- 	irq_enable_hazard();
+-	unsigned int irq_nr = irq - TXX9_IRQ_BASE;
++	unsigned int irq_nr = d->irq - TXX9_IRQ_BASE;
+ 	u32 __iomem *lvlp;
+ 	int ofs;
+ 	if (irq_nr < 32) {
+@@ -68,9 +68,9 @@ static void tx4939_irq_unmask(unsigned i
+ 		     lvlp);
  }
  
--static inline void mask_a20r_irq(unsigned int irq)
-+static inline void mask_a20r_irq(struct irq_data *d)
+-static inline void tx4939_irq_mask(unsigned int irq)
++static inline void tx4939_irq_mask(struct irq_data *d)
  {
--	clear_c0_status(0x100 << (irq - SNI_A20R_IRQ_BASE));
-+	clear_c0_status(0x100 << (d->irq - SNI_A20R_IRQ_BASE));
- 	irq_disable_hazard();
+-	unsigned int irq_nr = irq - TXX9_IRQ_BASE;
++	unsigned int irq_nr = d->irq - TXX9_IRQ_BASE;
+ 	u32 __iomem *lvlp;
+ 	int ofs;
+ 	if (irq_nr < 32) {
+@@ -87,11 +87,11 @@ static inline void tx4939_irq_mask(unsig
+ 	mmiowb();
  }
  
--static void end_a20r_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
--		a20r_ack_hwint();
--		unmask_a20r_irq(irq);
--	}
--}
--
- static struct irq_chip a20r_irq_type = {
- 	.name		= "A20R",
--	.ack		= mask_a20r_irq,
--	.mask		= mask_a20r_irq,
--	.mask_ack	= mask_a20r_irq,
--	.unmask		= unmask_a20r_irq,
--	.end		= end_a20r_irq,
-+	.irq_mask	= mask_a20r_irq,
-+	.irq_unmask	= unmask_a20r_irq,
+-static void tx4939_irq_mask_ack(unsigned int irq)
++static void tx4939_irq_mask_ack(struct irq_data *d)
+ {
+-	unsigned int irq_nr = irq - TXX9_IRQ_BASE;
++	unsigned int irq_nr = d->irq - TXX9_IRQ_BASE;
+ 
+-	tx4939_irq_mask(irq);
++	tx4939_irq_mask(d);
+ 	if (TXx9_IRCR_EDGE(tx4939irq[irq_nr].mode)) {
+ 		irq_nr--;
+ 		/* clear edge detection */
+@@ -101,9 +101,9 @@ static void tx4939_irq_mask_ack(unsigned
+ 	}
+ }
+ 
+-static int tx4939_irq_set_type(unsigned int irq, unsigned int flow_type)
++static int tx4939_irq_set_type(struct irq_data *d, unsigned int flow_type)
+ {
+-	unsigned int irq_nr = irq - TXX9_IRQ_BASE;
++	unsigned int irq_nr = d->irq - TXX9_IRQ_BASE;
+ 	u32 cr;
+ 	u32 __iomem *crp;
+ 	int ofs;
+@@ -145,11 +145,11 @@ static int tx4939_irq_set_type(unsigned 
+ 
+ static struct irq_chip tx4939_irq_chip = {
+ 	.name		= "TX4939",
+-	.ack		= tx4939_irq_mask_ack,
+-	.mask		= tx4939_irq_mask,
+-	.mask_ack	= tx4939_irq_mask_ack,
+-	.unmask		= tx4939_irq_unmask,
+-	.set_type	= tx4939_irq_set_type,
++	.irq_ack	= tx4939_irq_mask_ack,
++	.irq_mask	= tx4939_irq_mask,
++	.irq_mask_ack	= tx4939_irq_mask_ack,
++	.irq_unmask	= tx4939_irq_unmask,
++	.irq_set_type	= tx4939_irq_set_type,
  };
  
- /*
-Index: linux-mips-next/arch/mips/sni/pcimt.c
+ static int tx4939_irq_set_pri(int irc_irq, int new_pri)
+Index: linux-mips-next/arch/mips/txx9/jmr3927/irq.c
 ===================================================================
---- linux-mips-next.orig/arch/mips/sni/pcimt.c
-+++ linux-mips-next/arch/mips/sni/pcimt.c
-@@ -194,33 +194,24 @@ static struct pci_controller sni_control
- 	.io_map_base    = SNI_PORT_BASE
- };
- 
--static void enable_pcimt_irq(unsigned int irq)
-+static void enable_pcimt_irq(struct irq_data *d)
- {
--	unsigned int mask = 1 << (irq - PCIMT_IRQ_INT2);
-+	unsigned int mask = 1 << (d->irq - PCIMT_IRQ_INT2);
- 
- 	*(volatile u8 *) PCIMT_IRQSEL |= mask;
- }
- 
--void disable_pcimt_irq(unsigned int irq)
-+void disable_pcimt_irq(struct irq_data *d)
- {
--	unsigned int mask = ~(1 << (irq - PCIMT_IRQ_INT2));
-+	unsigned int mask = ~(1 << (d->irq - PCIMT_IRQ_INT2));
- 
- 	*(volatile u8 *) PCIMT_IRQSEL &= mask;
- }
- 
--static void end_pcimt_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_pcimt_irq(irq);
--}
--
- static struct irq_chip pcimt_irq_type = {
- 	.name = "PCIMT",
--	.ack = disable_pcimt_irq,
--	.mask = disable_pcimt_irq,
--	.mask_ack = disable_pcimt_irq,
--	.unmask = enable_pcimt_irq,
--	.end = end_pcimt_irq,
-+	.irq_mask = disable_pcimt_irq,
-+	.irq_unmask = enable_pcimt_irq,
- };
- 
- /*
-Index: linux-mips-next/arch/mips/sni/pcit.c
-===================================================================
---- linux-mips-next.orig/arch/mips/sni/pcit.c
-+++ linux-mips-next/arch/mips/sni/pcit.c
-@@ -156,33 +156,24 @@ static struct pci_controller sni_pcit_co
- 	.io_map_base    = SNI_PORT_BASE
- };
- 
--static void enable_pcit_irq(unsigned int irq)
-+static void enable_pcit_irq(struct irq_data *d)
- {
--	u32 mask = 1 << (irq - SNI_PCIT_INT_START + 24);
-+	u32 mask = 1 << (d->irq - SNI_PCIT_INT_START + 24);
- 
- 	*(volatile u32 *)SNI_PCIT_INT_REG |= mask;
- }
- 
--void disable_pcit_irq(unsigned int irq)
-+void disable_pcit_irq(struct irq_data *d)
- {
--	u32 mask = 1 << (irq - SNI_PCIT_INT_START + 24);
-+	u32 mask = 1 << (d->irq - SNI_PCIT_INT_START + 24);
- 
- 	*(volatile u32 *)SNI_PCIT_INT_REG &= ~mask;
- }
- 
--void end_pcit_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_pcit_irq(irq);
--}
--
- static struct irq_chip pcit_irq_type = {
- 	.name = "PCIT",
--	.ack = disable_pcit_irq,
--	.mask = disable_pcit_irq,
--	.mask_ack = disable_pcit_irq,
--	.unmask = enable_pcit_irq,
--	.end = end_pcit_irq,
-+	.irq_mask = disable_pcit_irq,
-+	.irq_unmask = enable_pcit_irq,
- };
- 
- static void pcit_hwint1(void)
-Index: linux-mips-next/arch/mips/sni/rm200.c
-===================================================================
---- linux-mips-next.orig/arch/mips/sni/rm200.c
-+++ linux-mips-next/arch/mips/sni/rm200.c
-@@ -155,12 +155,11 @@ static __iomem u8 *rm200_pic_slave;
- #define cached_master_mask	(rm200_cached_irq_mask)
- #define cached_slave_mask	(rm200_cached_irq_mask >> 8)
- 
--static void sni_rm200_disable_8259A_irq(unsigned int irq)
-+static void sni_rm200_disable_8259A_irq(struct irq_data *d)
- {
--	unsigned int mask;
-+	unsigned int mask, irq = d->irq - RM200_I8259A_IRQ_BASE;
- 	unsigned long flags;
- 
--	irq -= RM200_I8259A_IRQ_BASE;
- 	mask = 1 << irq;
- 	raw_spin_lock_irqsave(&sni_rm200_i8259A_lock, flags);
- 	rm200_cached_irq_mask |= mask;
-@@ -171,12 +170,11 @@ static void sni_rm200_disable_8259A_irq(
- 	raw_spin_unlock_irqrestore(&sni_rm200_i8259A_lock, flags);
- }
- 
--static void sni_rm200_enable_8259A_irq(unsigned int irq)
-+static void sni_rm200_enable_8259A_irq(struct irq_data *d)
- {
--	unsigned int mask;
-+	unsigned int mask, irq = d->irq - RM200_I8259A_IRQ_BASE;
- 	unsigned long flags;
- 
--	irq -= RM200_I8259A_IRQ_BASE;
- 	mask = ~(1 << irq);
- 	raw_spin_lock_irqsave(&sni_rm200_i8259A_lock, flags);
- 	rm200_cached_irq_mask &= mask;
-@@ -210,12 +208,11 @@ static inline int sni_rm200_i8259A_irq_r
-  * first, _then_ send the EOI, and the order of EOI
-  * to the two 8259s is important!
+--- linux-mips-next.orig/arch/mips/txx9/jmr3927/irq.c
++++ linux-mips-next/arch/mips/txx9/jmr3927/irq.c
+@@ -47,20 +47,20 @@
+  * CP0_STATUS is a thread's resource (saved/restored on context switch).
+  * So disable_irq/enable_irq MUST handle IOC/IRC registers.
   */
--void sni_rm200_mask_and_ack_8259A(unsigned int irq)
-+void sni_rm200_mask_and_ack_8259A(struct irq_data *d)
+-static void mask_irq_ioc(unsigned int irq)
++static void mask_irq_ioc(struct irq_data *d)
  {
--	unsigned int irqmask;
-+	unsigned int irqmask, irq = d->irq - RM200_I8259A_IRQ_BASE;
- 	unsigned long flags;
+ 	/* 0: mask */
+-	unsigned int irq_nr = irq - JMR3927_IRQ_IOC;
++	unsigned int irq_nr = d->irq - JMR3927_IRQ_IOC;
+ 	unsigned char imask = jmr3927_ioc_reg_in(JMR3927_IOC_INTM_ADDR);
+ 	unsigned int bit = 1 << irq_nr;
+ 	jmr3927_ioc_reg_out(imask & ~bit, JMR3927_IOC_INTM_ADDR);
+ 	/* flush write buffer */
+ 	(void)jmr3927_ioc_reg_in(JMR3927_IOC_REV_ADDR);
+ }
+-static void unmask_irq_ioc(unsigned int irq)
++static void unmask_irq_ioc(struct irq_data *d)
+ {
+ 	/* 0: mask */
+-	unsigned int irq_nr = irq - JMR3927_IRQ_IOC;
++	unsigned int irq_nr = d->irq - JMR3927_IRQ_IOC;
+ 	unsigned char imask = jmr3927_ioc_reg_in(JMR3927_IOC_INTM_ADDR);
+ 	unsigned int bit = 1 << irq_nr;
+ 	jmr3927_ioc_reg_out(imask | bit, JMR3927_IOC_INTM_ADDR);
+@@ -95,10 +95,8 @@ static int jmr3927_irq_dispatch(int pend
  
--	irq -= RM200_I8259A_IRQ_BASE;
- 	irqmask = 1 << irq;
- 	raw_spin_lock_irqsave(&sni_rm200_i8259A_lock, flags);
- 	/*
-@@ -285,9 +282,9 @@ spurious_8259A_irq:
- 
- static struct irq_chip sni_rm200_i8259A_chip = {
- 	.name		= "RM200-XT-PIC",
--	.mask		= sni_rm200_disable_8259A_irq,
--	.unmask		= sni_rm200_enable_8259A_irq,
--	.mask_ack	= sni_rm200_mask_and_ack_8259A,
-+	.irq_mask	= sni_rm200_disable_8259A_irq,
-+	.irq_unmask	= sni_rm200_enable_8259A_irq,
-+	.irq_mask_ack	= sni_rm200_mask_and_ack_8259A,
+ static struct irq_chip jmr3927_irq_ioc = {
+ 	.name = "jmr3927_ioc",
+-	.ack = mask_irq_ioc,
+-	.mask = mask_irq_ioc,
+-	.mask_ack = mask_irq_ioc,
+-	.unmask = unmask_irq_ioc,
++	.irq_mask = mask_irq_ioc,
++	.irq_unmask = unmask_irq_ioc,
  };
  
- /*
-@@ -429,33 +426,24 @@ void __init sni_rm200_i8259_irqs(void)
- #define SNI_RM200_INT_START  24
- #define SNI_RM200_INT_END    28
+ void __init jmr3927_irq_setup(void)
+Index: linux-mips-next/arch/mips/txx9/rbtx4927/irq.c
+===================================================================
+--- linux-mips-next.orig/arch/mips/txx9/rbtx4927/irq.c
++++ linux-mips-next/arch/mips/txx9/rbtx4927/irq.c
+@@ -117,18 +117,6 @@
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/rbtx4927.h>
  
--static void enable_rm200_irq(unsigned int irq)
-+static void enable_rm200_irq(struct irq_data *d)
+-static void toshiba_rbtx4927_irq_ioc_enable(unsigned int irq);
+-static void toshiba_rbtx4927_irq_ioc_disable(unsigned int irq);
+-
+-#define TOSHIBA_RBTX4927_IOC_NAME "RBTX4927-IOC"
+-static struct irq_chip toshiba_rbtx4927_irq_ioc_type = {
+-	.name = TOSHIBA_RBTX4927_IOC_NAME,
+-	.ack = toshiba_rbtx4927_irq_ioc_disable,
+-	.mask = toshiba_rbtx4927_irq_ioc_disable,
+-	.mask_ack = toshiba_rbtx4927_irq_ioc_disable,
+-	.unmask = toshiba_rbtx4927_irq_ioc_enable,
+-};
+-
+ static int toshiba_rbtx4927_irq_nested(int sw_irq)
  {
--	unsigned int mask = 1 << (irq - SNI_RM200_INT_START);
-+	unsigned int mask = 1 << (d->irq - SNI_RM200_INT_START);
- 
- 	*(volatile u8 *)SNI_RM200_INT_ENA_REG &= ~mask;
+ 	u8 level3;
+@@ -139,41 +127,47 @@ static int toshiba_rbtx4927_irq_nested(i
+ 	return RBTX4927_IRQ_IOC + __fls8(level3);
  }
  
--void disable_rm200_irq(unsigned int irq)
-+void disable_rm200_irq(struct irq_data *d)
- {
--	unsigned int mask = 1 << (irq - SNI_RM200_INT_START);
-+	unsigned int mask = 1 << (d->irq - SNI_RM200_INT_START);
- 
- 	*(volatile u8 *)SNI_RM200_INT_ENA_REG |= mask;
- }
- 
--void end_rm200_irq(unsigned int irq)
+-static void __init toshiba_rbtx4927_irq_ioc_init(void)
 -{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED|IRQ_INPROGRESS)))
--		enable_rm200_irq(irq);
+-	int i;
+-
+-	/* mask all IOC interrupts */
+-	writeb(0, rbtx4927_imask_addr);
+-	/* clear SoftInt interrupts */
+-	writeb(0, rbtx4927_softint_addr);
+-
+-	for (i = RBTX4927_IRQ_IOC;
+-	     i < RBTX4927_IRQ_IOC + RBTX4927_NR_IRQ_IOC; i++)
+-		set_irq_chip_and_handler(i, &toshiba_rbtx4927_irq_ioc_type,
+-					 handle_level_irq);
+-	set_irq_chained_handler(RBTX4927_IRQ_IOCINT, handle_simple_irq);
 -}
 -
- static struct irq_chip rm200_irq_type = {
- 	.name = "RM200",
--	.ack = disable_rm200_irq,
--	.mask = disable_rm200_irq,
--	.mask_ack = disable_rm200_irq,
--	.unmask = enable_rm200_irq,
--	.end = end_rm200_irq,
-+	.irq_mask = disable_rm200_irq,
-+	.irq_unmask = enable_rm200_irq,
+-static void toshiba_rbtx4927_irq_ioc_enable(unsigned int irq)
++static void toshiba_rbtx4927_irq_ioc_enable(struct irq_data *d)
+ {
+ 	unsigned char v;
+ 
+ 	v = readb(rbtx4927_imask_addr);
+-	v |= (1 << (irq - RBTX4927_IRQ_IOC));
++	v |= (1 << (d->irq - RBTX4927_IRQ_IOC));
+ 	writeb(v, rbtx4927_imask_addr);
+ }
+ 
+-static void toshiba_rbtx4927_irq_ioc_disable(unsigned int irq)
++static void toshiba_rbtx4927_irq_ioc_disable(struct irq_data *d)
+ {
+ 	unsigned char v;
+ 
+ 	v = readb(rbtx4927_imask_addr);
+-	v &= ~(1 << (irq - RBTX4927_IRQ_IOC));
++	v &= ~(1 << (d->irq - RBTX4927_IRQ_IOC));
+ 	writeb(v, rbtx4927_imask_addr);
+ 	mmiowb();
+ }
+ 
++#define TOSHIBA_RBTX4927_IOC_NAME "RBTX4927-IOC"
++static struct irq_chip toshiba_rbtx4927_irq_ioc_type = {
++	.name = TOSHIBA_RBTX4927_IOC_NAME,
++	.irq_mask = toshiba_rbtx4927_irq_ioc_disable,
++	.irq_unmask = toshiba_rbtx4927_irq_ioc_enable,
++};
++
++static void __init toshiba_rbtx4927_irq_ioc_init(void)
++{
++	int i;
++
++	/* mask all IOC interrupts */
++	writeb(0, rbtx4927_imask_addr);
++	/* clear SoftInt interrupts */
++	writeb(0, rbtx4927_softint_addr);
++
++	for (i = RBTX4927_IRQ_IOC;
++	     i < RBTX4927_IRQ_IOC + RBTX4927_NR_IRQ_IOC; i++)
++		set_irq_chip_and_handler(i, &toshiba_rbtx4927_irq_ioc_type,
++					 handle_level_irq);
++	set_irq_chained_handler(RBTX4927_IRQ_IOCINT, handle_simple_irq);
++}
+ 
+ static int rbtx4927_irq_dispatch(int pending)
+ {
+Index: linux-mips-next/arch/mips/txx9/rbtx4938/irq.c
+===================================================================
+--- linux-mips-next.orig/arch/mips/txx9/rbtx4938/irq.c
++++ linux-mips-next/arch/mips/txx9/rbtx4938/irq.c
+@@ -69,18 +69,6 @@
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/rbtx4938.h>
+ 
+-static void toshiba_rbtx4938_irq_ioc_enable(unsigned int irq);
+-static void toshiba_rbtx4938_irq_ioc_disable(unsigned int irq);
+-
+-#define TOSHIBA_RBTX4938_IOC_NAME "RBTX4938-IOC"
+-static struct irq_chip toshiba_rbtx4938_irq_ioc_type = {
+-	.name = TOSHIBA_RBTX4938_IOC_NAME,
+-	.ack = toshiba_rbtx4938_irq_ioc_disable,
+-	.mask = toshiba_rbtx4938_irq_ioc_disable,
+-	.mask_ack = toshiba_rbtx4938_irq_ioc_disable,
+-	.unmask = toshiba_rbtx4938_irq_ioc_enable,
+-};
+-
+ static int toshiba_rbtx4938_irq_nested(int sw_irq)
+ {
+ 	u8 level3;
+@@ -92,41 +80,33 @@ static int toshiba_rbtx4938_irq_nested(i
+ 	return RBTX4938_IRQ_IOC + __fls8(level3);
+ }
+ 
+-static void __init
+-toshiba_rbtx4938_irq_ioc_init(void)
+-{
+-	int i;
+-
+-	for (i = RBTX4938_IRQ_IOC;
+-	     i < RBTX4938_IRQ_IOC + RBTX4938_NR_IRQ_IOC; i++)
+-		set_irq_chip_and_handler(i, &toshiba_rbtx4938_irq_ioc_type,
+-					 handle_level_irq);
+-
+-	set_irq_chained_handler(RBTX4938_IRQ_IOCINT, handle_simple_irq);
+-}
+-
+-static void
+-toshiba_rbtx4938_irq_ioc_enable(unsigned int irq)
++static void toshiba_rbtx4938_irq_ioc_enable(struct irq_data *d)
+ {
+ 	unsigned char v;
+ 
+ 	v = readb(rbtx4938_imask_addr);
+-	v |= (1 << (irq - RBTX4938_IRQ_IOC));
++	v |= (1 << (d->irq - RBTX4938_IRQ_IOC));
+ 	writeb(v, rbtx4938_imask_addr);
+ 	mmiowb();
+ }
+ 
+-static void
+-toshiba_rbtx4938_irq_ioc_disable(unsigned int irq)
++static void toshiba_rbtx4938_irq_ioc_disable(struct irq_data *d)
+ {
+ 	unsigned char v;
+ 
+ 	v = readb(rbtx4938_imask_addr);
+-	v &= ~(1 << (irq - RBTX4938_IRQ_IOC));
++	v &= ~(1 << (d->irq - RBTX4938_IRQ_IOC));
+ 	writeb(v, rbtx4938_imask_addr);
+ 	mmiowb();
+ }
+ 
++#define TOSHIBA_RBTX4938_IOC_NAME "RBTX4938-IOC"
++static struct irq_chip toshiba_rbtx4938_irq_ioc_type = {
++	.name = TOSHIBA_RBTX4938_IOC_NAME,
++	.irq_mask = toshiba_rbtx4938_irq_ioc_disable,
++	.irq_unmask = toshiba_rbtx4938_irq_ioc_enable,
++};
++
+ static int rbtx4938_irq_dispatch(int pending)
+ {
+ 	int irq;
+@@ -146,6 +126,18 @@ static int rbtx4938_irq_dispatch(int pen
+ 	return irq;
+ }
+ 
++static void __init toshiba_rbtx4938_irq_ioc_init(void)
++{
++	int i;
++
++	for (i = RBTX4938_IRQ_IOC;
++	     i < RBTX4938_IRQ_IOC + RBTX4938_NR_IRQ_IOC; i++)
++		set_irq_chip_and_handler(i, &toshiba_rbtx4938_irq_ioc_type,
++					 handle_level_irq);
++
++	set_irq_chained_handler(RBTX4938_IRQ_IOCINT, handle_simple_irq);
++}
++
+ void __init rbtx4938_irq_setup(void)
+ {
+ 	txx9_irq_dispatch = rbtx4938_irq_dispatch;
+Index: linux-mips-next/arch/mips/txx9/rbtx4939/irq.c
+===================================================================
+--- linux-mips-next.orig/arch/mips/txx9/rbtx4939/irq.c
++++ linux-mips-next/arch/mips/txx9/rbtx4939/irq.c
+@@ -19,16 +19,16 @@
+  * RBTX4939 IOC controller definition
+  */
+ 
+-static void rbtx4939_ioc_irq_unmask(unsigned int irq)
++static void rbtx4939_ioc_irq_unmask(struct irq_data *d)
+ {
+-	int ioc_nr = irq - RBTX4939_IRQ_IOC;
++	int ioc_nr = d->irq - RBTX4939_IRQ_IOC;
+ 
+ 	writeb(readb(rbtx4939_ien_addr) | (1 << ioc_nr), rbtx4939_ien_addr);
+ }
+ 
+-static void rbtx4939_ioc_irq_mask(unsigned int irq)
++static void rbtx4939_ioc_irq_mask(struct irq_data *d)
+ {
+-	int ioc_nr = irq - RBTX4939_IRQ_IOC;
++	int ioc_nr = d->irq - RBTX4939_IRQ_IOC;
+ 
+ 	writeb(readb(rbtx4939_ien_addr) & ~(1 << ioc_nr), rbtx4939_ien_addr);
+ 	mmiowb();
+@@ -36,10 +36,8 @@ static void rbtx4939_ioc_irq_mask(unsign
+ 
+ static struct irq_chip rbtx4939_ioc_irq_chip = {
+ 	.name		= "IOC",
+-	.ack		= rbtx4939_ioc_irq_mask,
+-	.mask		= rbtx4939_ioc_irq_mask,
+-	.mask_ack	= rbtx4939_ioc_irq_mask,
+-	.unmask		= rbtx4939_ioc_irq_unmask,
++	.irq_mask	= rbtx4939_ioc_irq_mask,
++	.irq_unmask	= rbtx4939_ioc_irq_unmask,
  };
  
- static void sni_rm200_hwint(void)
+ 

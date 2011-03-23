@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:20:14 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47488 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:20:37 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:47491 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491931Ab1CWVJQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:09:16 +0100
+        by eddie.linux-mips.org with ESMTP id S1491932Ab1CWVJR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:09:17 +0100
 Received: from localhost ([127.0.0.1] helo=localhost6.localdomain6)
         by Galois.linutronix.de with esmtp (Exim 4.72)
         (envelope-from <tglx@linutronix.de>)
-        id 1Q2VIk-0001wn-Q6; Wed, 23 Mar 2011 22:09:11 +0100
-Message-Id: <20110323210537.314501714@linutronix.de>
+        id 1Q2VIl-0001wq-I5; Wed, 23 Mar 2011 22:09:12 +0100
+Message-Id: <20110323210537.407889905@linutronix.de>
 User-Agent: quilt/0.48-1
-Date:   Wed, 23 Mar 2011 21:09:10 -0000
+Date:   Wed, 23 Mar 2011 21:09:11 -0000
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [patch 29/38] mips: rb532: Convert to new irq_chip functions
+Subject: [patch 30/38] mips: sgi-ip22: Convert to new irq_chip functions
 References: <20110323210437.398062704@linutronix.de>
-Content-Disposition: inline; filename=mips-rb532.patch
+Content-Disposition: inline; filename=mips-sgi-ip22.patch
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
@@ -23,7 +23,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29458
+X-archive-position: 29459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,79 +33,125 @@ X-list: linux-mips
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/rb532/irq.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ arch/mips/sgi-ip22/ip22-int.c |   60 ++++++++++++++++++------------------------
+ 1 file changed, 26 insertions(+), 34 deletions(-)
 
-Index: linux-mips-next/arch/mips/rb532/irq.c
+Index: linux-mips-next/arch/mips/sgi-ip22/ip22-int.c
 ===================================================================
---- linux-mips-next.orig/arch/mips/rb532/irq.c
-+++ linux-mips-next/arch/mips/rb532/irq.c
-@@ -111,10 +111,10 @@ static inline void ack_local_irq(unsigne
- 	clear_c0_cause(ipnum);
+--- linux-mips-next.orig/arch/mips/sgi-ip22/ip22-int.c
++++ linux-mips-next/arch/mips/sgi-ip22/ip22-int.c
+@@ -31,88 +31,80 @@ static char lc3msk_to_irqnr[256];
+ 
+ extern int ip22_eisa_init(void);
+ 
+-static void enable_local0_irq(unsigned int irq)
++static void enable_local0_irq(struct irq_data *d)
+ {
+ 	/* don't allow mappable interrupt to be enabled from setup_irq,
+ 	 * we have our own way to do so */
+-	if (irq != SGI_MAP_0_IRQ)
+-		sgint->imask0 |= (1 << (irq - SGINT_LOCAL0));
++	if (d->irq != SGI_MAP_0_IRQ)
++		sgint->imask0 |= (1 << (d->irq - SGINT_LOCAL0));
  }
  
--static void rb532_enable_irq(unsigned int irq_nr)
-+static void rb532_enable_irq(struct irq_data *d)
+-static void disable_local0_irq(unsigned int irq)
++static void disable_local0_irq(struct irq_data *d)
  {
-+	unsigned int group, intr_bit, irq_nr = d->irq;
- 	int ip = irq_nr - GROUP0_IRQ_BASE;
--	unsigned int group, intr_bit;
- 	volatile unsigned int *addr;
- 
- 	if (ip < 0)
-@@ -132,10 +132,10 @@ static void rb532_enable_irq(unsigned in
- 	}
+-	sgint->imask0 &= ~(1 << (irq - SGINT_LOCAL0));
++	sgint->imask0 &= ~(1 << (d->irq - SGINT_LOCAL0));
  }
  
--static void rb532_disable_irq(unsigned int irq_nr)
-+static void rb532_disable_irq(struct irq_data *d)
- {
-+	unsigned int group, intr_bit, mask, irq_nr = d->irq;
- 	int ip = irq_nr - GROUP0_IRQ_BASE;
--	unsigned int group, intr_bit, mask;
- 	volatile unsigned int *addr;
- 
- 	if (ip < 0) {
-@@ -163,18 +163,18 @@ static void rb532_disable_irq(unsigned i
- 	}
- }
- 
--static void rb532_mask_and_ack_irq(unsigned int irq_nr)
-+static void rb532_mask_and_ack_irq(struct irq_data *d)
- {
--	rb532_disable_irq(irq_nr);
--	ack_local_irq(group_to_ip(irq_to_group(irq_nr)));
-+	rb532_disable_irq(d);
-+	ack_local_irq(group_to_ip(irq_to_group(d->irq)));
- }
- 
--static int rb532_set_type(unsigned int irq_nr, unsigned type)
-+static int rb532_set_type(struct irq_data *d,  unsigned type)
- {
--	int gpio = irq_nr - GPIO_MAPPED_IRQ_BASE;
--	int group = irq_to_group(irq_nr);
-+	int gpio = d->irq - GPIO_MAPPED_IRQ_BASE;
-+	int group = irq_to_group(d->irq);
- 
--	if (group != GPIO_MAPPED_IRQ_GROUP || irq_nr > (GROUP4_IRQ_BASE + 13))
-+	if (group != GPIO_MAPPED_IRQ_GROUP || d->irq > (GROUP4_IRQ_BASE + 13))
- 		return (type == IRQ_TYPE_LEVEL_HIGH) ? 0 : -EINVAL;
- 
- 	switch (type) {
-@@ -193,11 +193,11 @@ static int rb532_set_type(unsigned int i
- 
- static struct irq_chip rc32434_irq_type = {
- 	.name		= "RB532",
--	.ack		= rb532_disable_irq,
--	.mask		= rb532_disable_irq,
--	.mask_ack	= rb532_mask_and_ack_irq,
--	.unmask		= rb532_enable_irq,
--	.set_type	= rb532_set_type,
-+	.irq_ack	= rb532_disable_irq,
-+	.irq_mask	= rb532_disable_irq,
-+	.irq_mask_ack	= rb532_mask_and_ack_irq,
-+	.irq_unmask	= rb532_enable_irq,
-+	.irq_set_type	= rb532_set_type,
+ static struct irq_chip ip22_local0_irq_type = {
+ 	.name		= "IP22 local 0",
+-	.ack		= disable_local0_irq,
+-	.mask		= disable_local0_irq,
+-	.mask_ack	= disable_local0_irq,
+-	.unmask		= enable_local0_irq,
++	.irq_mask	= disable_local0_irq,
++	.irq_unmask	= enable_local0_irq,
  };
  
- void __init arch_init_irq(void)
+-static void enable_local1_irq(unsigned int irq)
++static void enable_local1_irq(struct irq_data *d)
+ {
+ 	/* don't allow mappable interrupt to be enabled from setup_irq,
+ 	 * we have our own way to do so */
+-	if (irq != SGI_MAP_1_IRQ)
+-		sgint->imask1 |= (1 << (irq - SGINT_LOCAL1));
++	if (d->irq != SGI_MAP_1_IRQ)
++		sgint->imask1 |= (1 << (d->irq - SGINT_LOCAL1));
+ }
+ 
+-static void disable_local1_irq(unsigned int irq)
++static void disable_local1_irq(struct irq_data *d)
+ {
+-	sgint->imask1 &= ~(1 << (irq - SGINT_LOCAL1));
++	sgint->imask1 &= ~(1 << (d->irq - SGINT_LOCAL1));
+ }
+ 
+ static struct irq_chip ip22_local1_irq_type = {
+ 	.name		= "IP22 local 1",
+-	.ack		= disable_local1_irq,
+-	.mask		= disable_local1_irq,
+-	.mask_ack	= disable_local1_irq,
+-	.unmask		= enable_local1_irq,
++	.irq_mask	= disable_local1_irq,
++	.irq_unmask	= enable_local1_irq,
+ };
+ 
+-static void enable_local2_irq(unsigned int irq)
++static void enable_local2_irq(struct irq_data *d)
+ {
+ 	sgint->imask0 |= (1 << (SGI_MAP_0_IRQ - SGINT_LOCAL0));
+-	sgint->cmeimask0 |= (1 << (irq - SGINT_LOCAL2));
++	sgint->cmeimask0 |= (1 << (d->irq - SGINT_LOCAL2));
+ }
+ 
+-static void disable_local2_irq(unsigned int irq)
++static void disable_local2_irq(struct irq_data *d)
+ {
+-	sgint->cmeimask0 &= ~(1 << (irq - SGINT_LOCAL2));
++	sgint->cmeimask0 &= ~(1 << (d->irq - SGINT_LOCAL2));
+ 	if (!sgint->cmeimask0)
+ 		sgint->imask0 &= ~(1 << (SGI_MAP_0_IRQ - SGINT_LOCAL0));
+ }
+ 
+ static struct irq_chip ip22_local2_irq_type = {
+ 	.name		= "IP22 local 2",
+-	.ack		= disable_local2_irq,
+-	.mask		= disable_local2_irq,
+-	.mask_ack	= disable_local2_irq,
+-	.unmask		= enable_local2_irq,
++	.irq_mask	= disable_local2_irq,
++	.irq_unmask	= enable_local2_irq,
+ };
+ 
+-static void enable_local3_irq(unsigned int irq)
++static void enable_local3_irq(struct irq_data *d)
+ {
+ 	sgint->imask1 |= (1 << (SGI_MAP_1_IRQ - SGINT_LOCAL1));
+-	sgint->cmeimask1 |= (1 << (irq - SGINT_LOCAL3));
++	sgint->cmeimask1 |= (1 << (d->irq - SGINT_LOCAL3));
+ }
+ 
+-static void disable_local3_irq(unsigned int irq)
++static void disable_local3_irq(struct irq_data *d)
+ {
+-	sgint->cmeimask1 &= ~(1 << (irq - SGINT_LOCAL3));
++	sgint->cmeimask1 &= ~(1 << (d->irq - SGINT_LOCAL3));
+ 	if (!sgint->cmeimask1)
+ 		sgint->imask1 &= ~(1 << (SGI_MAP_1_IRQ - SGINT_LOCAL1));
+ }
+ 
+ static struct irq_chip ip22_local3_irq_type = {
+ 	.name		= "IP22 local 3",
+-	.ack		= disable_local3_irq,
+-	.mask		= disable_local3_irq,
+-	.mask_ack	= disable_local3_irq,
+-	.unmask		= enable_local3_irq,
++	.irq_mask	= disable_local3_irq,
++	.irq_unmask	= enable_local3_irq,
+ };
+ 
+ static void indy_local0_irqdispatch(void)

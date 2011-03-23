@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:11:18 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:47417 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:11:41 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:47420 "EHLO
         Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491904Ab1CWVI5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:08:57 +0100
+        by eddie.linux-mips.org with ESMTP id S1491905Ab1CWVI6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:08:58 +0100
 Received: from localhost ([127.0.0.1] helo=localhost6.localdomain6)
         by Galois.linutronix.de with esmtp (Exim 4.72)
         (envelope-from <tglx@linutronix.de>)
-        id 1Q2VIR-0001vX-DM; Wed, 23 Mar 2011 22:08:51 +0100
-Message-Id: <20110323210535.149703003@linutronix.de>
+        id 1Q2VIS-0001va-AO; Wed, 23 Mar 2011 22:08:52 +0100
+Message-Id: <20110323210535.242147087@linutronix.de>
 User-Agent: quilt/0.48-1
 Date:   Wed, 23 Mar 2011 21:08:51 -0000
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     linux-mips@linux-mips.org
 Cc:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [patch 06/38] mips: dec: Convert to new irq_chip functions
+Subject: [patch 07/38] mips: emma: Convert to new irq_chip functions
 References: <20110323210437.398062704@linutronix.de>
-Content-Disposition: inline; filename=mips-dec.patch
+Content-Disposition: inline; filename=mips-emma.patch
 X-Linutronix-Spam-Score: -1.0
 X-Linutronix-Spam-Level: -
 X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
@@ -23,7 +23,7 @@ Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29435
+X-archive-position: 29436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,164 +33,162 @@ X-list: linux-mips
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- arch/mips/dec/ioasic-irq.c |   60 ++++++++++-----------------------------------
- arch/mips/dec/kn02-irq.c   |   23 +++++++----------
- 2 files changed, 24 insertions(+), 59 deletions(-)
+ arch/mips/emma/markeins/irq.c |   67 ++++++++++++++++--------------------------
+ 1 file changed, 27 insertions(+), 40 deletions(-)
 
-Index: linux-mips-next/arch/mips/dec/ioasic-irq.c
+Index: linux-mips-next/arch/mips/emma/markeins/irq.c
 ===================================================================
---- linux-mips-next.orig/arch/mips/dec/ioasic-irq.c
-+++ linux-mips-next/arch/mips/dec/ioasic-irq.c
-@@ -17,80 +17,48 @@
- #include <asm/dec/ioasic_addrs.h>
- #include <asm/dec/ioasic_ints.h>
+--- linux-mips-next.orig/arch/mips/emma/markeins/irq.c
++++ linux-mips-next/arch/mips/emma/markeins/irq.c
+@@ -34,13 +34,10 @@
  
--
- static int ioasic_irq_base;
+ #include <asm/emma/emma2rh.h>
  
--
--static inline void unmask_ioasic_irq(unsigned int irq)
-+static void unmask_ioasic_irq(struct irq_data *d)
+-static void emma2rh_irq_enable(unsigned int irq)
++static void emma2rh_irq_enable(struct irq_data *d)
  {
- 	u32 simr;
+-	u32 reg_value;
+-	u32 reg_bitmask;
+-	u32 reg_index;
+-
+-	irq -= EMMA2RH_IRQ_BASE;
++	unsigned int irq = d->irq - EMMA2RH_IRQ_BASE;
++	u32 reg_value, reg_bitmask, reg_index;
  
- 	simr = ioasic_read(IO_REG_SIMR);
--	simr |= (1 << (irq - ioasic_irq_base));
-+	simr |= (1 << (d->irq - ioasic_irq_base));
- 	ioasic_write(IO_REG_SIMR, simr);
+ 	reg_index = EMMA2RH_BHIF_INT_EN_0 +
+ 		    (EMMA2RH_BHIF_INT_EN_1 - EMMA2RH_BHIF_INT_EN_0) * (irq / 32);
+@@ -49,13 +46,10 @@ static void emma2rh_irq_enable(unsigned 
+ 	emma2rh_out32(reg_index, reg_value | reg_bitmask);
  }
  
--static inline void mask_ioasic_irq(unsigned int irq)
-+static void mask_ioasic_irq(struct irq_data *d)
+-static void emma2rh_irq_disable(unsigned int irq)
++static void emma2rh_irq_disable(struct irq_data *d)
  {
- 	u32 simr;
- 
- 	simr = ioasic_read(IO_REG_SIMR);
--	simr &= ~(1 << (irq - ioasic_irq_base));
-+	simr &= ~(1 << (d->irq - ioasic_irq_base));
- 	ioasic_write(IO_REG_SIMR, simr);
- }
- 
--static inline void clear_ioasic_irq(unsigned int irq)
-+static void ack_ioasic_irq(struct irq_data *d)
- {
--	u32 sir;
+-	u32 reg_value;
+-	u32 reg_bitmask;
+-	u32 reg_index;
 -
--	sir = ~(1 << (irq - ioasic_irq_base));
--	ioasic_write(IO_REG_SIR, sir);
--}
--
--static inline void ack_ioasic_irq(unsigned int irq)
--{
--	mask_ioasic_irq(irq);
-+	mask_ioasic_irq(d);
- 	fast_iob();
- }
+-	irq -= EMMA2RH_IRQ_BASE;
++	unsigned int irq = d->irq - EMMA2RH_IRQ_BASE;
++	u32 reg_value, reg_bitmask, reg_index;
  
--static inline void end_ioasic_irq(unsigned int irq)
--{
--	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS)))
--		unmask_ioasic_irq(irq);
--}
--
- static struct irq_chip ioasic_irq_type = {
- 	.name = "IO-ASIC",
--	.ack = ack_ioasic_irq,
--	.mask = mask_ioasic_irq,
--	.mask_ack = ack_ioasic_irq,
--	.unmask = unmask_ioasic_irq,
-+	.irq_ack = ack_ioasic_irq,
-+	.irq_mask = mask_ioasic_irq,
-+	.irq_mask_ack = ack_ioasic_irq,
-+	.irq_unmask = unmask_ioasic_irq,
+ 	reg_index = EMMA2RH_BHIF_INT_EN_0 +
+ 		    (EMMA2RH_BHIF_INT_EN_1 - EMMA2RH_BHIF_INT_EN_0) * (irq / 32);
+@@ -66,10 +60,8 @@ static void emma2rh_irq_disable(unsigned
+ 
+ struct irq_chip emma2rh_irq_controller = {
+ 	.name = "emma2rh_irq",
+-	.ack = emma2rh_irq_disable,
+-	.mask = emma2rh_irq_disable,
+-	.mask_ack = emma2rh_irq_disable,
+-	.unmask = emma2rh_irq_enable,
++	.irq_mask = emma2rh_irq_disable,
++	.irq_unmask = emma2rh_irq_enable,
  };
  
+ void emma2rh_irq_init(void)
+@@ -82,23 +74,21 @@ void emma2rh_irq_init(void)
+ 					      handle_level_irq, "level");
+ }
+ 
+-static void emma2rh_sw_irq_enable(unsigned int irq)
++static void emma2rh_sw_irq_enable(struct irq_data *d)
+ {
++	unsigned int irq = d->irq - EMMA2RH_SW_IRQ_BASE;
+ 	u32 reg;
+ 
+-	irq -= EMMA2RH_SW_IRQ_BASE;
 -
--#define unmask_ioasic_dma_irq unmask_ioasic_irq
+ 	reg = emma2rh_in32(EMMA2RH_BHIF_SW_INT_EN);
+ 	reg |= 1 << irq;
+ 	emma2rh_out32(EMMA2RH_BHIF_SW_INT_EN, reg);
+ }
+ 
+-static void emma2rh_sw_irq_disable(unsigned int irq)
++static void emma2rh_sw_irq_disable(struct irq_data *d)
+ {
++	unsigned int irq = d->irq - EMMA2RH_SW_IRQ_BASE;
+ 	u32 reg;
+ 
+-	irq -= EMMA2RH_SW_IRQ_BASE;
 -
--#define mask_ioasic_dma_irq mask_ioasic_irq
--
--#define ack_ioasic_dma_irq ack_ioasic_irq
--
--static inline void end_ioasic_dma_irq(unsigned int irq)
--{
--	clear_ioasic_irq(irq);
--	fast_iob();
--	end_ioasic_irq(irq);
--}
--
- static struct irq_chip ioasic_dma_irq_type = {
- 	.name = "IO-ASIC-DMA",
--	.ack = ack_ioasic_dma_irq,
--	.mask = mask_ioasic_dma_irq,
--	.mask_ack = ack_ioasic_dma_irq,
--	.unmask = unmask_ioasic_dma_irq,
--	.end = end_ioasic_dma_irq,
-+	.irq_ack = ack_ioasic_irq,
-+	.irq_mask = mask_ioasic_irq,
-+	.irq_mask_ack = ack_ioasic_irq,
-+	.irq_unmask = unmask_ioasic_irq,
+ 	reg = emma2rh_in32(EMMA2RH_BHIF_SW_INT_EN);
+ 	reg &= ~(1 << irq);
+ 	emma2rh_out32(EMMA2RH_BHIF_SW_INT_EN, reg);
+@@ -106,10 +96,8 @@ static void emma2rh_sw_irq_disable(unsig
+ 
+ struct irq_chip emma2rh_sw_irq_controller = {
+ 	.name = "emma2rh_sw_irq",
+-	.ack = emma2rh_sw_irq_disable,
+-	.mask = emma2rh_sw_irq_disable,
+-	.mask_ack = emma2rh_sw_irq_disable,
+-	.unmask = emma2rh_sw_irq_enable,
++	.irq_mask = emma2rh_sw_irq_disable,
++	.irq_unmask = emma2rh_sw_irq_enable,
  };
  
--
- void __init init_ioasic_irqs(int base)
- {
- 	int i;
-Index: linux-mips-next/arch/mips/dec/kn02-irq.c
-===================================================================
---- linux-mips-next.orig/arch/mips/dec/kn02-irq.c
-+++ linux-mips-next/arch/mips/dec/kn02-irq.c
-@@ -27,43 +27,40 @@
-  */
- u32 cached_kn02_csr;
- 
--
- static int kn02_irq_base;
- 
--
--static inline void unmask_kn02_irq(unsigned int irq)
-+static void unmask_kn02_irq(struct irq_data *d)
- {
- 	volatile u32 *csr = (volatile u32 *)CKSEG1ADDR(KN02_SLOT_BASE +
- 						       KN02_CSR);
- 
--	cached_kn02_csr |= (1 << (irq - kn02_irq_base + 16));
-+	cached_kn02_csr |= (1 << (d->irq - kn02_irq_base + 16));
- 	*csr = cached_kn02_csr;
+ void emma2rh_sw_irq_init(void)
+@@ -122,39 +110,38 @@ void emma2rh_sw_irq_init(void)
+ 					      handle_level_irq, "level");
  }
  
--static inline void mask_kn02_irq(unsigned int irq)
-+static void mask_kn02_irq(struct irq_data *d)
+-static void emma2rh_gpio_irq_enable(unsigned int irq)
++static void emma2rh_gpio_irq_enable(struct irq_data *d)
  {
- 	volatile u32 *csr = (volatile u32 *)CKSEG1ADDR(KN02_SLOT_BASE +
- 						       KN02_CSR);
++	unsigned int irq = d->irq - EMMA2RH_GPIO_IRQ_BASE;
+ 	u32 reg;
  
--	cached_kn02_csr &= ~(1 << (irq - kn02_irq_base + 16));
-+	cached_kn02_csr &= ~(1 << (d->irq - kn02_irq_base + 16));
- 	*csr = cached_kn02_csr;
+-	irq -= EMMA2RH_GPIO_IRQ_BASE;
+-
+ 	reg = emma2rh_in32(EMMA2RH_GPIO_INT_MASK);
+ 	reg |= 1 << irq;
+ 	emma2rh_out32(EMMA2RH_GPIO_INT_MASK, reg);
  }
  
--static void ack_kn02_irq(unsigned int irq)
-+static void ack_kn02_irq(struct irq_data *d)
+-static void emma2rh_gpio_irq_disable(unsigned int irq)
++static void emma2rh_gpio_irq_disable(struct irq_data *d)
  {
--	mask_kn02_irq(irq);
-+	mask_kn02_irq(d);
- 	iob();
++	unsigned int irq = d->irq - EMMA2RH_GPIO_IRQ_BASE;
+ 	u32 reg;
+ 
+-	irq -= EMMA2RH_GPIO_IRQ_BASE;
+-
+ 	reg = emma2rh_in32(EMMA2RH_GPIO_INT_MASK);
+ 	reg &= ~(1 << irq);
+ 	emma2rh_out32(EMMA2RH_GPIO_INT_MASK, reg);
  }
  
- static struct irq_chip kn02_irq_type = {
- 	.name = "KN02-CSR",
--	.ack = ack_kn02_irq,
--	.mask = mask_kn02_irq,
--	.mask_ack = ack_kn02_irq,
--	.unmask = unmask_kn02_irq,
-+	.irq_ack = ack_kn02_irq,
-+	.irq_mask = mask_kn02_irq,
-+	.irq_mask_ack = ack_kn02_irq,
-+	.irq_unmask = unmask_kn02_irq,
+-static void emma2rh_gpio_irq_ack(unsigned int irq)
++static void emma2rh_gpio_irq_ack(struct irq_data *d)
+ {
+-	irq -= EMMA2RH_GPIO_IRQ_BASE;
++	unsigned int irq = d->irq - EMMA2RH_GPIO_IRQ_BASE;
++
+ 	emma2rh_out32(EMMA2RH_GPIO_INT_ST, ~(1 << irq));
+ }
+ 
+-static void emma2rh_gpio_irq_mask_ack(unsigned int irq)
++static void emma2rh_gpio_irq_mask_ack(struct irq_data *d)
+ {
++	unsigned int irq = d->irq - EMMA2RH_GPIO_IRQ_BASE;
+ 	u32 reg;
+ 
+-	irq -= EMMA2RH_GPIO_IRQ_BASE;
+ 	emma2rh_out32(EMMA2RH_GPIO_INT_ST, ~(1 << irq));
+ 
+ 	reg = emma2rh_in32(EMMA2RH_GPIO_INT_MASK);
+@@ -164,10 +151,10 @@ static void emma2rh_gpio_irq_mask_ack(un
+ 
+ struct irq_chip emma2rh_gpio_irq_controller = {
+ 	.name = "emma2rh_gpio_irq",
+-	.ack = emma2rh_gpio_irq_ack,
+-	.mask = emma2rh_gpio_irq_disable,
+-	.mask_ack = emma2rh_gpio_irq_mask_ack,
+-	.unmask = emma2rh_gpio_irq_enable,
++	.irq_ack = emma2rh_gpio_irq_ack,
++	.irq_mask = emma2rh_gpio_irq_disable,
++	.irq_mask_ack = emma2rh_gpio_irq_mask_ack,
++	.irq_unmask = emma2rh_gpio_irq_enable,
  };
  
--
- void __init init_kn02_irqs(int base)
- {
- 	volatile u32 *csr = (volatile u32 *)CKSEG1ADDR(KN02_SLOT_BASE +
+ void emma2rh_gpio_irq_init(void)

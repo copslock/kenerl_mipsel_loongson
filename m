@@ -1,145 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 21:30:07 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:55165 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491891Ab1CWUaE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 21:30:04 +0100
-Received: by wyb28 with SMTP id 28so8823242wyb.36
-        for <multiple recipients>; Wed, 23 Mar 2011 13:29:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:sender:from:to:subject:date:user-agent:cc
-         :references:in-reply-to:organization:mime-version:content-type
-         :content-transfer-encoding:message-id;
-        bh=JS22pmBZRRvsNbclmSLz8WPaXDTRz2YVIa1QpXYBkEM=;
-        b=xLVgCvlU+j/OG1AEFHdoXOdzCADWVkaRmGpxJ7yH1JqAPB+zXBdOPNy+ht7AYEYkZE
-         G3w/2IlorjCTdrf6WhbujtlnE6sqOOvM6ls/PLHVqnFPtsknRUzgcMqf+eN1v7Sn2XH5
-         zQFxPIBj1tTcnhscbSPqvInVQvDd5UTErbN6A=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :organization:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=lNeyKpdqBl6u1b0M6zz4JTKWQHLoSJLkJRFJVYgDYYrP0CQRzYuVK2JzJWxPAmI0EK
-         7UeW2b5sVr0wPPi3UvomEjGQWiT+eDNVRX/slNxrNf6tPNRdh8PH3XMVoKzQtDqI+b7k
-         mDAkT70pktA/5XlkfxHJl/cZT5Wthj7+2puG4=
-Received: by 10.227.130.203 with SMTP id u11mr6780091wbs.219.1300912198364;
-        Wed, 23 Mar 2011 13:29:58 -0700 (PDT)
-Received: from bender.localnet (fbx.mimichou.net [82.236.225.16])
-        by mx.google.com with ESMTPS id b20sm3971202wbb.67.2011.03.23.13.29.55
-        (version=SSLv3 cipher=OTHER);
-        Wed, 23 Mar 2011 13:29:56 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     Joe Perches <joe@perches.com>
-Subject: Re: [trivial PATCH 1/2] treewide: Fix iomap resource size miscalculations
-Date:   Wed, 23 Mar 2011 21:29:52 +0100
-User-Agent: KMail/1.13.5 (Linux/2.6.35-28-generic; KDE/4.5.1; x86_64; ; )
-Cc:     Jiri Kosina <trivial@kernel.org>,
-        Srinidhi Kasagar <srinidhi.kasagar@stericsson.com>,
-        Linus Walleij <linus.walleij@stericsson.com>,
-        David Brown <davidb@codeaurora.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        Bryan Huntsman <bryanh@codeaurora.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-arm-msm@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org
-References: <cover.1300909445.git.joe@perches.com> <c4422b4a8ee132d3adac95fd86237c61b2f8b364.1300909446.git.joe@perches.com>
-In-Reply-To: <c4422b4a8ee132d3adac95fd86237c61b2f8b364.1300909446.git.joe@perches.com>
-Organization: OpenWrt
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201103232129.53053.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Mar 2011 22:08:53 +0100 (CET)
+Received: from www.linutronix.de ([62.245.132.108]:47401 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491880Ab1CWVIv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Mar 2011 22:08:51 +0100
+Received: from localhost ([127.0.0.1] helo=localhost6.localdomain6)
+        by Galois.linutronix.de with esmtp (Exim 4.72)
+        (envelope-from <tglx@linutronix.de>)
+        id 1Q2VIK-0001vE-CH; Wed, 23 Mar 2011 22:08:44 +0100
+Message-Id: <20110323210437.398062704@linutronix.de>
+User-Agent: quilt/0.48-1
+Date:   Wed, 23 Mar 2011 21:08:44 -0000
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>
+Subject: [patch 00/38] mips: irq chip overhaul and cleanup
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29428
+X-archive-position: 29429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 23 March 2011 20:55:36 Joe Perches wrote:
-> Convert off-by-1 r->end - r->start to resource_size(r)
-> 
-> Signed-off-by: Joe Perches <joe@perches.com>
+Ralf,
 
-Acked-by: Florian Fainelli <florian@openwrt.org>
-(for rb532 and bcm63xx_wdt)
+the following series converts all mips irq chips to the new callbacks
+and makes use of the enhancements which were made in the genirq core
+code. That series includes two patches from Lars which do the initial
+conversion of jz4740.
 
-> ---
->  arch/arm/mach-ux500/mbox-db5500.c |    6 ++----
->  arch/mips/rb532/gpio.c            |    2 +-
->  drivers/video/msm/mddi.c          |    2 +-
->  drivers/watchdog/bcm63xx_wdt.c    |    2 +-
->  4 files changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm/mach-ux500/mbox-db5500.c
-> b/arch/arm/mach-ux500/mbox-db5500.c index a4ffb9f..2b2d51c 100644
-> --- a/arch/arm/mach-ux500/mbox-db5500.c
-> +++ b/arch/arm/mach-ux500/mbox-db5500.c
-> @@ -416,8 +416,7 @@ struct mbox *mbox_setup(u8 mbox_id, mbox_recv_cb_t
-> *mbox_cb, void *priv) dev_dbg(&(mbox->pdev->dev),
->  		"Resource name: %s start: 0x%X, end: 0x%X\n",
->  		resource->name, resource->start, resource->end);
-> -	mbox->virtbase_peer =
-> -		ioremap(resource->start, resource->end - resource->start);
-> +	mbox->virtbase_peer = ioremap(resource->start, resource_size(resource));
->  	if (!mbox->virtbase_peer) {
->  		dev_err(&(mbox->pdev->dev), "Unable to ioremap peer mbox\n");
->  		mbox = NULL;
-> @@ -440,8 +439,7 @@ struct mbox *mbox_setup(u8 mbox_id, mbox_recv_cb_t
-> *mbox_cb, void *priv) dev_dbg(&(mbox->pdev->dev),
->  		"Resource name: %s start: 0x%X, end: 0x%X\n",
->  		resource->name, resource->start, resource->end);
-> -	mbox->virtbase_local =
-> -		ioremap(resource->start, resource->end - resource->start);
-> +	mbox->virtbase_local = ioremap(resource->start, resource_size(resource));
->  	if (!mbox->virtbase_local) {
->  		dev_err(&(mbox->pdev->dev), "Unable to ioremap local mbox\n");
->  		mbox = NULL;
-> diff --git a/arch/mips/rb532/gpio.c b/arch/mips/rb532/gpio.c
-> index 37de05d..6c47dfe 100644
-> --- a/arch/mips/rb532/gpio.c
-> +++ b/arch/mips/rb532/gpio.c
-> @@ -185,7 +185,7 @@ int __init rb532_gpio_init(void)
->  	struct resource *r;
-> 
->  	r = rb532_gpio_reg0_res;
-> -	rb532_gpio_chip->regbase = ioremap_nocache(r->start, r->end - r->start);
-> +	rb532_gpio_chip->regbase = ioremap_nocache(r->start, resource_size(r));
-> 
->  	if (!rb532_gpio_chip->regbase) {
->  		printk(KERN_ERR "rb532: cannot remap GPIO register 0\n");
-> diff --git a/drivers/video/msm/mddi.c b/drivers/video/msm/mddi.c
-> index b66d86a..178b072 100644
-> --- a/drivers/video/msm/mddi.c
-> +++ b/drivers/video/msm/mddi.c
-> @@ -679,7 +679,7 @@ static int __devinit mddi_probe(struct platform_device
-> *pdev) printk(KERN_ERR "mddi: no associated mem resource!\n");
->  		return -ENOMEM;
->  	}
-> -	mddi->base = ioremap(resource->start, resource->end - resource->start);
-> +	mddi->base = ioremap(resource->start, resource_size(resource));
->  	if (!mddi->base) {
->  		printk(KERN_ERR "mddi: failed to remap base!\n");
->  		ret = -EINVAL;
-> diff --git a/drivers/watchdog/bcm63xx_wdt.c
-> b/drivers/watchdog/bcm63xx_wdt.c index 3c5045a..5064e83 100644
-> --- a/drivers/watchdog/bcm63xx_wdt.c
-> +++ b/drivers/watchdog/bcm63xx_wdt.c
-> @@ -248,7 +248,7 @@ static int __devinit bcm63xx_wdt_probe(struct
-> platform_device *pdev) return -ENODEV;
->  	}
-> 
-> -	bcm63xx_wdt_device.regs = ioremap_nocache(r->start, r->end - r->start);
-> +	bcm63xx_wdt_device.regs = ioremap_nocache(r->start, resource_size(r));
->  	if (!bcm63xx_wdt_device.regs) {
->  		dev_err(&pdev->dev, "failed to remap I/O resources\n");
->  		return -ENXIO;
+It requires two patches which are in
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip irq/for-mips
+
+Please pull that branch into your tree.
+
+The series is compile tested as far as the defconfigs compile. Some of
+them refuse to build before that series, so I ignored them.
+
+tarball of the quilt series can be found here for your conveniance:
+
+	http://master.kernel.org/~tglx/patches.tar.bz2
+
+Thanks,
+
+	tglx
+---
+
+ Kconfig                          |    2 
+ alchemy/common/irq.c             |   98 ++++++++--------
+ alchemy/devboards/bcsr.c         |   18 +-
+ ar7/irq.c                        |   42 +++---
+ ath79/irq.c                      |   23 +--
+ bcm63xx/irq.c                    |   77 +++++-------
+ cavium-octeon/octeon-irq.c       |  237 ++++++++++++++++++---------------------
+ dec/ioasic-irq.c                 |   60 ++-------
+ dec/kn02-irq.c                   |   23 +--
+ emma/markeins/irq.c              |   67 ++++-------
+ include/asm/irq.h                |   64 +++++-----
+ jazz/irq.c                       |   14 --
+ jz4740/gpio.c                    |  111 ++++++++----------
+ jz4740/irq.c                     |   32 +++--
+ kernel/i8259.c                   |   37 ++----
+ kernel/irq-gic.c                 |   44 ++-----
+ kernel/irq-gt641xx.c             |   26 ++--
+ kernel/irq-msc01.c               |   51 +++-----
+ kernel/irq-rm7000.c              |   18 +-
+ kernel/irq-rm9000.c              |   49 +++-----
+ kernel/irq.c                     |   49 --------
+ kernel/irq_cpu.c                 |   46 +++----
+ kernel/irq_txx9.c                |   28 ++--
+ kernel/smtc.c                    |   13 --
+ lasat/interrupt.c                |   16 +-
+ loongson/common/bonito-irq.c     |   16 +-
+ mti-malta/malta-smtc.c           |    9 -
+ pci/msi-octeon.c                 |   20 +--
+ pmc-sierra/msp71xx/msp_irq_cic.c |   41 ++----
+ pmc-sierra/msp71xx/msp_irq_per.c |   80 ++-----------
+ pmc-sierra/msp71xx/msp_irq_slp.c |   18 +-
+ pnx833x/common/interrupts.c      |   98 ++--------------
+ pnx8550/common/int.c             |   18 +-
+ powertv/asic/irq_asic.c          |   13 --
+ rb532/irq.c                      |   32 ++---
+ sgi-ip22/ip22-int.c              |   60 ++++-----
+ sgi-ip27/ip27-irq.c              |   38 ++----
+ sgi-ip27/ip27-timer.c            |   11 -
+ sgi-ip32/ip32-irq.c              |  134 ++++++----------------
+ sibyte/bcm1480/irq.c             |   55 +++------
+ sibyte/sb1250/irq.c              |   53 ++------
+ sni/a20r.c                       |   23 ---
+ sni/pcimt.c                      |   21 ---
+ sni/pcit.c                       |   21 ---
+ sni/rm200.c                      |   42 ++----
+ txx9/generic/irq_tx4939.c        |   28 ++--
+ txx9/jmr3927/irq.c               |   14 --
+ txx9/rbtx4927/irq.c              |   58 ++++-----
+ txx9/rbtx4938/irq.c              |   54 +++-----
+ txx9/rbtx4939/irq.c              |   14 --
+ vr41xx/common/icu.c              |   72 +++++------
+ vr41xx/common/irq.c              |   19 +--
+ 52 files changed, 944 insertions(+), 1363 deletions(-)

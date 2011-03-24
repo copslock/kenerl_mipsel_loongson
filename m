@@ -1,52 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Mar 2011 20:30:04 +0100 (CET)
-Received: from www.linutronix.de ([62.245.132.108]:44315 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491885Ab1CXT35 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Mar 2011 20:29:57 +0100
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <tglx@linutronix.de>)
-        id 1Q2qE9-0007aA-LK; Thu, 24 Mar 2011 20:29:49 +0100
-Date:   Thu, 24 Mar 2011 20:29:48 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [patch 06/38] mips: dec: Convert to new irq_chip functions
-In-Reply-To: <alpine.LFD.2.00.1103241808300.18858@eddie.linux-mips.org>
-Message-ID: <alpine.LFD.2.00.1103242024470.31464@localhost6.localdomain6>
-References: <20110323210437.398062704@linutronix.de> <20110323210535.149703003@linutronix.de> <20110324141815.GG30990@linux-mips.org> <alpine.LFD.2.00.1103241513140.18858@eddie.linux-mips.org> <alpine.LFD.2.00.1103241709430.31464@localhost6.localdomain6>
- <alpine.LFD.2.00.1103241808300.18858@eddie.linux-mips.org>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Mar 2011 23:27:37 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:36061 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491906Ab1CXW1e (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Mar 2011 23:27:34 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2OMRAZI030461;
+        Thu, 24 Mar 2011 23:27:10 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2OMR5PT030460;
+        Thu, 24 Mar 2011 23:27:05 +0100
+Date:   Thu, 24 Mar 2011 23:27:05 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Jiri Kosina <trivial@kernel.org>,
+        Srinidhi Kasagar <srinidhi.kasagar@stericsson.com>,
+        Linus Walleij <linus.walleij@stericsson.com>,
+        David Brown <davidb@codeaurora.org>,
+        Daniel Walker <dwalker@fifo99.com>,
+        Bryan Huntsman <bryanh@codeaurora.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Russell King <linux@arm.linux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org
+Subject: Re: [trivial PATCH 1/2] treewide: Fix iomap resource size
+ miscalculations
+Message-ID: <20110324222705.GA19339@linux-mips.org>
+References: <cover.1300909445.git.joe@perches.com>
+ <c4422b4a8ee132d3adac95fd86237c61b2f8b364.1300909446.git.joe@perches.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1
-Return-Path: <tglx@linutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4422b4a8ee132d3adac95fd86237c61b2f8b364.1300909446.git.joe@perches.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29529
+X-archive-position: 29530
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 24 Mar 2011, Maciej W. Rozycki wrote:
-> On Thu, 24 Mar 2011, Thomas Gleixner wrote:
-> > So the .ack pointer is filled with ack_ioasic_irq, right ?
-> 
->  The ack used to be made in clear_ioasic_irq(), that was called from 
-> end_ioasic_dma_irq(), that was used as the .end handler.  This semantics 
-> has to be preserved or hardware won't work anymore as expected.  This is a 
-> regression.
+On Wed, Mar 23, 2011 at 12:55:36PM -0700, Joe Perches wrote:
 
-Then that code was broken before. Since MIPS was converted to the flow
-handlers nothing ever called .end(). I seem to miss something.
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Thanks,
-
-	tglx
+  Ralf

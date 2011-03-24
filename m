@@ -1,64 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Mar 2011 10:55:55 +0100 (CET)
-Received: from service87.mimecast.com ([94.185.240.25]:54112 "HELO
-        service87.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491045Ab1CXJzx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Mar 2011 10:55:53 +0100
-Received: from cam-owa2.Emea.Arm.com (fw-tnat.cambridge.arm.com
- [217.140.96.21]) by service87.mimecast.com; Thu, 24 Mar 2011 09:55:48 +0000
-Received: from [10.1.77.95] ([10.1.255.212]) by cam-owa2.Emea.Arm.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Thu, 24 Mar 2011 09:55:43 +0000
-Subject: Re: kmemleak for MIPS
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Daniel Baluta <dbaluta@ixiacom.com>
-Cc:     naveen yadav <yad.naveen@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <AANLkTinnqtXf5DE+qxkTyZ9p9Mb8dXai6UxWP2HaHY3D@mail.gmail.com>
-References: <9bde694e1003020554p7c8ff3c2o4ae7cb5d501d1ab9@mail.gmail.com>
-         <AANLkTinnqtXf5DE+qxkTyZ9p9Mb8dXai6UxWP2HaHY3D@mail.gmail.com>
-Organization: ARM Limited
-Date:   Thu, 24 Mar 2011 09:55:40 +0000
-Message-ID: <1300960540.32158.13.camel@e102109-lin.cambridge.arm.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1
-X-OriginalArrivalTime: 24 Mar 2011 09:55:43.0877 (UTC) FILETIME=[A4170B50:01CBEA09]
-X-MC-Unique: 111032409554800601
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <catalin.marinas@arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Mar 2011 13:03:37 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:44638 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491112Ab1CXMDe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Mar 2011 13:03:34 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2OC3BEW021196;
+        Thu, 24 Mar 2011 13:03:11 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2OC37pw021194;
+        Thu, 24 Mar 2011 13:03:07 +0100
+Date:   Thu, 24 Mar 2011 13:03:07 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Heiher <admin@heiher.info>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        David Daney <ddaney@caviumnetworks.com>, akmp@linux-mips.org
+Subject: Re: [PATCH] Fixup personality in different ABI.
+Message-ID: <20110324120307.GA20408@linux-mips.org>
+References: <AANLkTikuBxnd0bFsO5NP2GQYDZmGFP9kLruWVpjZ7+UQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AANLkTikuBxnd0bFsO5NP2GQYDZmGFP9kLruWVpjZ7+UQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29476
+X-archive-position: 29477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: catalin.marinas@arm.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2011-03-24 at 09:27 +0000, Daniel Baluta wrote:
-> > I want to check kmemleak for both ARM/MIPS. i am able to find kernel
-> > patch for ARM at
-> > http://linux.derkeiler.com/Mailing-Lists/Kernel/2009-04/msg11830.html.
-> > But I could not able to trace patch for MIPS.
-> 
-> It seems that kmemleak is not supported on MIPS.
-> 
-> According to 'depends on' config entry it is supported on:
-> x86, arm, ppc, s390, sparc64, superh, microblaze and tile.
-> 
-> Cătălin, can you confirm this? I will send a patch to update
-> Documentation/kmemleak.txt.
-> 
-> Also, looking forward to work on making kmemleak available on MIPS.
+On Fri, Mar 18, 2011 at 12:58:23PM +0800, Heiher wrote:
+> Date:   Fri, 18 Mar 2011 12:58:23 +0800
+> From: Heiher <admin@heiher.info>
+> To: linux-kernel@vger.kernel.org
 
-It's not supported probably because no-one tried it, kmemleak is pretty
-architecture-independent. You may need to add some standard symbols to
-the vmlinux.lds.S if the linker complains and possibly annotate some
-false positives if you get any.
+Please don't post a patch seperately to multiple lists.  Cc is prefered
+so everybody gets to see all replies.
 
-Just add "depends on MIPS" and give it a try.
+> >From bf3637153bc5e3d0e3f1c2982c323057a8e04801 Mon Sep 17 00:00:00 2001
+> From: Heiher <admin@heiher.info>
+> Date: Fri, 18 Mar 2011 12:51:08 +0800
+> Subject: [PATCH] Fixup personality in different ABI.
+> 
+> * 'arch' output:
+> 	o32 : mips
+> 	n32 : mips64
+> 	64  : mips64
 
--- 
-Catalin
+That's the correct behaviour - the personality gets inherited by the parent.
+If you want to invoke a process with a different personality you can do this
+with a utility like arch32 or setarch.
+
+  Ralf

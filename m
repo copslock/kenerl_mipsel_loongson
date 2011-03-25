@@ -1,98 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 10:08:22 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:50354 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491068Ab1CYJIT convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Mar 2011 10:08:19 +0100
-Received: by bwz1 with SMTP id 1so918588bwz.36
-        for <linux-mips@linux-mips.org>; Fri, 25 Mar 2011 02:08:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:date:message-id:subject:from:to
-         :content-type:content-transfer-encoding;
-        bh=rYD40/jETXEeKKLbGAEn4Q8JhIk7GnJ4NgnW6JikXiE=;
-        b=TtPZP0xkOuM4X5lp3IvWEf7gy6aJStSwwTHb9XlaDp0bT6iLyZe9JW7TV25wSHl3YP
-         2cVL1mmRSm8uKK1YEI8dGLMJ140q5f0st6i4BWOkmQDmqbrU5fvZClfVpT2JQi4LsKk5
-         gg7ZIG1YS9Ct+GF2HAou/e0rl4NAUF6cOwfd0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type
-         :content-transfer-encoding;
-        b=dsN0S/CeHxxFd0MEn9w+tSqDfkuCG8XiKCdVMySRQOuQuzxpiNEwwOahiHShlt5K29
-         +dh4HVf9ScpzTGi5pRd555tw9tTPPWiLGnbGlu3H0rIby7B6UNIG/8JX46y6mEOq6b8P
-         gGt5R22RckTwTet7RdhlMR7zR6V2dQBYSpZWE=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 12:28:36 +0100 (CET)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:48642 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491077Ab1CYL2c (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Mar 2011 12:28:32 +0100
+Received: by ewy3 with SMTP id 3so531299ewy.36
+        for <multiple recipients>; Fri, 25 Mar 2011 04:28:26 -0700 (PDT)
+Received: by 10.14.126.204 with SMTP id b52mr291327eei.9.1301052506369;
+        Fri, 25 Mar 2011 04:28:26 -0700 (PDT)
+Received: from [192.168.2.2] ([91.79.93.46])
+        by mx.google.com with ESMTPS id w59sm678898eeh.3.2011.03.25.04.28.23
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 25 Mar 2011 04:28:24 -0700 (PDT)
+Message-ID: <4D8C7C01.9080107@mvista.com>
+Date:   Fri, 25 Mar 2011 14:26:57 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.15) Gecko/20110303 Thunderbird/3.1.9
 MIME-Version: 1.0
-Received: by 10.204.126.147 with SMTP id c19mr473301bks.60.1301044093728; Fri,
- 25 Mar 2011 02:08:13 -0700 (PDT)
-Received: by 10.204.157.13 with HTTP; Fri, 25 Mar 2011 02:08:13 -0700 (PDT)
-Date:   Fri, 25 Mar 2011 14:38:13 +0530
-Message-ID: <AANLkTimkh2QLvupu+62NGrKfqRb_gC7KLCAKkEoS9N9N@mail.gmail.com>
-Subject: flush_kernel_vmap_range() invalidate_kernel_vmap_range() API not
- exists for MIPS
-From:   naveen yadav <yad.naveen@gmail.com>
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <yad.naveen@gmail.com>
+To:     Jayachandran C <jayachandranc@netlogicmicro.com>
+CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/7] Netlogic XLR/XLS processor IDs.
+References: <cover.1301028080.git.jayachandranc@netlogicmicro.com> <bf492d3d03640f86bdd9963d892545423567451d.1301028081.git.jayachandranc@netlogicmicro.com>
+In-Reply-To: <bf492d3d03640f86bdd9963d892545423567451d.1301028081.git.jayachandranc@netlogicmicro.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29547
+X-archive-position: 29548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yad.naveen@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Dear All,
+Hello.
 
-We are working on 2.6.35.9 linux kernel on MIPS 34kce core and our
-cache is VIVT having cache aliasing .
-When I check the implementation on ARM I can check the implemenation
-exists , but there is not similar implementation exists on MIPS.
-These API's are used by XFS module:
+On 25-03-2011 7:57, Jayachandran C wrote:
 
-static inline void flush_kernel_vmap_range(void *vaddr, int size)
-static inline void invalidate_kernel_vmap_range(void *vaddr, int size)
-static inline void flush_kernel_dcache_page(struct page *page)
+> Add Netlogic Microsystems company ID and processor IDs for XLR
+> and XLS processors for CPU probe. Add CPU_XLR to cpu_type_enum.
 
+> Signed-off-by: Jayachandran C<jayachandranc@netlogicmicro.com>
+[...]
 
-I can check implementation on ARM at
-http://git.kernel.org/?p=linux/kernel/git/longterm/linux-2.6.34.y.git;a=commit;h=252a9afff76097667429b583e8b5b170b47665a4
- and
-----------------------------------------------------------------------------------------------------------------------------
---- a/arch/arm/include/asm/cacheflush.h+++ b/arch/arm/include/asm/cacheflush.h
-@@ -432,6 +432,16
- @@ static inline void __flush_icache_all(void)
-  : "r" (0)); #endif }
-+static inline void flush_kernel_vmap_range(void *addr, int size)
-+{
-+       if ((cache_is_vivt() || cache_is_vipt_aliasing()))
-+         __cpuc_flush_dcache_area(addr, (size_t)size);
-+}
-+static inline void invalidate_kernel_vmap_range(void *addr, int size)
-+{
-+       if ((cache_is_vivt() || cache_is_vipt_aliasing()))
-+         __cpuc_flush_dcache_area(addr, (size_t)size);
-+}
--------------------------------------------------------------------------------------------------------------------------------------
+> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+> index f65d4c8..a995d56 100644
+> --- a/arch/mips/kernel/cpu-probe.c
+> +++ b/arch/mips/kernel/cpu-probe.c
+> @@ -988,6 +988,59 @@ static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
+>   	}
+>   }
+>
+> +static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
+> +{
+> +	decode_configs(c);
+> +
+> +	c->options = (MIPS_CPU_TLB     |
 
+    Perhaps should align | with others...
 
-http://git.kernel.org/?p=linux/kernel/git/longterm/linux-2.6.34.y.git;a=blobdiff;f=arch/arm/include/asm/cacheflush.h;h=1a711ea8418b6045c581a576caa3f85496ee2673;hp=bb7d695f3900f70d635a3597cd19d7cb68c0d732;hb=73be1591579084a8103a7005dd3172f3e9dd7362;hpb=44b7532b8b464f606053562400719c9c21276037
+> +			MIPS_CPU_4KEX    |
+> +			MIPS_CPU_COUNTER |
+> +			MIPS_CPU_DIVEC   |
+> +			MIPS_CPU_WATCH   |
+> +			MIPS_CPU_EJTAG   |
+> +			MIPS_CPU_LLSC);
+[...]
+> +	default:
+> +		printk(KERN_INFO "Unknown Netlogic chip id [%02x]!\n",
 
-======================================================
-+#define ARCH_HAS_FLUSH_KERNEL_DCACHE_PAGE
-+static inline void flush_kernel_dcache_page(struct page *page)
-+{
-+       /* highmem pages are always flushed upon kunmap already */
-+       if ((cache_is_vivt() || cache_is_vipt_aliasing()) && !PageHighMem(page))
-+               __cpuc_flush_dcache_page(page_address(page));
-+}
-+
-==========================================================
+    Not %04x?
 
+> +		       c->processor_id);
+> +		c->cputype = CPU_XLR;
+> +		break;
+> +	}
+> +
+> +	c->isa_level = MIPS_CPU_ISA_M64R1;
+> +	c->tlbsize = ((read_c0_config1() >> 25) & 0x3f) + 1;
+> +}
+> +
+>   #ifdef CONFIG_64BIT
+>   /* For use by uaccess.h */
+>   u64 __ua_limit;
 
-Is there any similar API exists for MIPS.  I want to use for XFS these API's
-
-thanks
+WBR, Sergei

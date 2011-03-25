@@ -1,49 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 16:41:06 +0100 (CET)
-Received: from mx1.netlogicmicro.com ([12.49.93.86]:1277 "EHLO
-        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491083Ab1CYPlD convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Mar 2011 16:41:03 +0100
-X-TM-IMSS-Message-ID: <53b7e7260002be99@netlogicmicro.com>
-Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 53b7e7260002be99 ; Fri, 25 Mar 2011 08:40:55 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 18:27:32 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:46796 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491097Ab1CYR13 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Mar 2011 18:27:29 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2PHRAfV012754;
+        Fri, 25 Mar 2011 18:27:10 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2PHR94t012753;
+        Fri, 25 Mar 2011 18:27:09 +0100
+Date:   Fri, 25 Mar 2011 18:27:09 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     naveen yadav <yad.naveen@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: flush_kernel_vmap_range() invalidate_kernel_vmap_range() API not
+ exists for MIPS
+Message-ID: <20110325172709.GC8483@linux-mips.org>
+References: <AANLkTimkh2QLvupu+62NGrKfqRb_gC7KLCAKkEoS9N9N@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: XLR/XLS drivers?
-Date:   Fri, 25 Mar 2011 08:41:37 -0700
-Message-ID: <9F4F5E1D3FF7D94388F341BE8819BA3D88A83E@orion8.netlogicmicro.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: XLR/XLS drivers?
-Thread-Index: Acvq/TEk3r6/mMJiRK6/j+q1e2Os4AABIpUj
-References: <20110325145745.GA8483@linux-mips.org>
-From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
-To:     "Ralf Baechle" <ralf@linux-mips.org>
-Cc:     <linux-mips@linux-mips.org>
-Return-Path: <jayachandranc@netlogicmicro.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AANLkTimkh2QLvupu+62NGrKfqRb_gC7KLCAKkEoS9N9N@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29561
+X-archive-position: 29562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jayachandranc@netlogicmicro.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle [mailto:ralf@linux-mips.org] wrote:
- 
-> What are your plans for merging all the XLR and XLS specific drivers?
+On Fri, Mar 25, 2011 at 02:38:13PM +0530, naveen yadav wrote:
 
-The immediate plan is to start with the fast messaging network, USB and then PCI.
-The on chip network driver code needs major cleanup and that should be the next
-in line.
+> We are working on 2.6.35.9 linux kernel on MIPS 34kce core and our
+> cache is VIVT having cache aliasing .
 
-I have been working on the XLP code meanwhile, and the first cut will be available
-in a week or so.
+No, they're VIPT unless you successfully modified your 34K core to
+change it from a less than perfect cache design to the most lunatic
+cache policy known to man kind ...
 
-JC.
+> When I check the implementation on ARM I can check the implemenation
+> exists , but there is not similar implementation exists on MIPS.
+> These API's are used by XFS module:
+> 
+> static inline void flush_kernel_vmap_range(void *vaddr, int size)
+> static inline void invalidate_kernel_vmap_range(void *vaddr, int size)
+> static inline void flush_kernel_dcache_page(struct page *page)
+
+A known problem for (too ...) long.  I'll finally take care of it.
+
+  Ralf

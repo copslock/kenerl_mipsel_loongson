@@ -1,89 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 12:28:36 +0100 (CET)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:48642 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491077Ab1CYL2c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Mar 2011 12:28:32 +0100
-Received: by ewy3 with SMTP id 3so531299ewy.36
-        for <multiple recipients>; Fri, 25 Mar 2011 04:28:26 -0700 (PDT)
-Received: by 10.14.126.204 with SMTP id b52mr291327eei.9.1301052506369;
-        Fri, 25 Mar 2011 04:28:26 -0700 (PDT)
-Received: from [192.168.2.2] ([91.79.93.46])
-        by mx.google.com with ESMTPS id w59sm678898eeh.3.2011.03.25.04.28.23
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 25 Mar 2011 04:28:24 -0700 (PDT)
-Message-ID: <4D8C7C01.9080107@mvista.com>
-Date:   Fri, 25 Mar 2011 14:26:57 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.15) Gecko/20110303 Thunderbird/3.1.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 13:31:18 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33845 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491082Ab1CYMbP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Mar 2011 13:31:15 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2PCUvL2024773;
+        Fri, 25 Mar 2011 13:30:57 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2PCUuvL024765;
+        Fri, 25 Mar 2011 13:30:56 +0100
+Date:   Fri, 25 Mar 2011 13:30:55 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: JZ4740: qi_lb60: Add gpio-charger device
+Message-ID: <20110325123055.GA18212@linux-mips.org>
+References: <1297133034-17586-1-git-send-email-lars@metafoo.de>
 MIME-Version: 1.0
-To:     Jayachandran C <jayachandranc@netlogicmicro.com>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/7] Netlogic XLR/XLS processor IDs.
-References: <cover.1301028080.git.jayachandranc@netlogicmicro.com> <bf492d3d03640f86bdd9963d892545423567451d.1301028081.git.jayachandranc@netlogicmicro.com>
-In-Reply-To: <bf492d3d03640f86bdd9963d892545423567451d.1301028081.git.jayachandranc@netlogicmicro.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1297133034-17586-1-git-send-email-lars@metafoo.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29548
+X-archive-position: 29549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Queued for 2.6.39.  Thanks,
 
-On 25-03-2011 7:57, Jayachandran C wrote:
-
-> Add Netlogic Microsystems company ID and processor IDs for XLR
-> and XLS processors for CPU probe. Add CPU_XLR to cpu_type_enum.
-
-> Signed-off-by: Jayachandran C<jayachandranc@netlogicmicro.com>
-[...]
-
-> diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-> index f65d4c8..a995d56 100644
-> --- a/arch/mips/kernel/cpu-probe.c
-> +++ b/arch/mips/kernel/cpu-probe.c
-> @@ -988,6 +988,59 @@ static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
->   	}
->   }
->
-> +static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
-> +{
-> +	decode_configs(c);
-> +
-> +	c->options = (MIPS_CPU_TLB     |
-
-    Perhaps should align | with others...
-
-> +			MIPS_CPU_4KEX    |
-> +			MIPS_CPU_COUNTER |
-> +			MIPS_CPU_DIVEC   |
-> +			MIPS_CPU_WATCH   |
-> +			MIPS_CPU_EJTAG   |
-> +			MIPS_CPU_LLSC);
-[...]
-> +	default:
-> +		printk(KERN_INFO "Unknown Netlogic chip id [%02x]!\n",
-
-    Not %04x?
-
-> +		       c->processor_id);
-> +		c->cputype = CPU_XLR;
-> +		break;
-> +	}
-> +
-> +	c->isa_level = MIPS_CPU_ISA_M64R1;
-> +	c->tlbsize = ((read_c0_config1() >> 25) & 0x3f) + 1;
-> +}
-> +
->   #ifdef CONFIG_64BIT
->   /* For use by uaccess.h */
->   u64 __ua_limit;
-
-WBR, Sergei
+  Ralf

@@ -1,45 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 00:44:33 +0100 (CET)
-Received: from mms2.broadcom.com ([216.31.210.18]:4367 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491909Ab1CXXoa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 25 Mar 2011 00:44:30 +0100
-Received: from [10.9.200.133] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Thu, 24 Mar 2011 16:46:44 -0700
-X-Server-Uuid: D3C04415-6FA8-4F2C-93C1-920E106A2031
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Thu, 24 Mar 2011 16:44:00 -0700
-Received: from [10.28.6.13] (lab-mhtb-013.and.broadcom.com [10.28.6.13])
- by mail-irva-13.broadcom.com (Postfix) with ESMTP id CE0C274D05 for
- <linux-mips@linux-mips.org>; Thu, 24 Mar 2011 16:44:02 -0700 (PDT)
-Subject: gdb 7.2 mdi support
-From:   "Jon Fraser" <jfraser@broadcom.com>
-Reply-to: jfraser@broadcom.com
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Organization: Broadcom CEG
-Date:   Thu, 24 Mar 2011 19:44:02 -0400
-Message-ID: <1301010242.974.1.camel@chaos.and.broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Mar 2011 01:33:26 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58626 "EHLO
+        localhost.localdomain" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491911Ab1CYAdX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Mar 2011 01:33:23 +0100
+Date:   Fri, 25 Mar 2011 00:33:22 +0000 (GMT)
+From:   "Maciej W. Rozycki" <macro@linux-mips.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [patch 06/38] mips: dec: Convert to new irq_chip functions
+In-Reply-To: <alpine.LFD.2.00.1103242024470.31464@localhost6.localdomain6>
+Message-ID: <alpine.LFD.2.00.1103250005470.18858@eddie.linux-mips.org>
+References: <20110323210437.398062704@linutronix.de> <20110323210535.149703003@linutronix.de> <20110324141815.GG30990@linux-mips.org> <alpine.LFD.2.00.1103241513140.18858@eddie.linux-mips.org> <alpine.LFD.2.00.1103241709430.31464@localhost6.localdomain6>
+ <alpine.LFD.2.00.1103241808300.18858@eddie.linux-mips.org> <alpine.LFD.2.00.1103242024470.31464@localhost6.localdomain6>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-X-Mailer: Evolution 2.32.2 (2.32.2-1.fc14)
-X-WSS-ID: 6195086E3CK5821894-01-01
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <jfraser@broadcom.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29533
+X-archive-position: 29534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jfraser@broadcom.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, 24 Mar 2011, Thomas Gleixner wrote:
 
-Does anyone have mdi support working for gdb 7.2?
-I can't find a remote-mdi.c for this version anywhere.
+> >  The ack used to be made in clear_ioasic_irq(), that was called from 
+> > end_ioasic_dma_irq(), that was used as the .end handler.  This semantics 
+> > has to be preserved or hardware won't work anymore as expected.  This is a 
+> > regression.
+> 
+> Then that code was broken before. Since MIPS was converted to the flow
+> handlers nothing ever called .end(). I seem to miss something.
 
-Thanks,
-Jon Fraser
+ Hmm, me too then.  Whoever did the conversion failed to adjust this piece 
+or at least notify responsible people that such a change is needed -- if 
+.end was going away, then all users should have been checked and the 
+respective maintainers queried.  And given these DMA interrupts are really 
+only in regular use by Linux with the onboard SCSI driver, chances are the 
+breakage could be left unnoticed for a long time (I tend to run these 
+systems NFS-rooted for once).
+
+ Note these effectively are edge-triggered interrupts and may only be 
+acked in hardware once all higher-level processing has been done as 
+otherwise a DMA transfer will resume prematurely and all the hell will 
+break loose.  I don't particularly like this double purpose these bits 
+have, but there you go -- I can understand the hw engineers saw no reason 
+to waste silicon for separate interrupt-ack and DMA-inhibit bits.
+
+ I'll see what I can do about it, but I need a pointer to the offending 
+change -- Ralf or anyone, can you provide me with one?
+
+  Maciej

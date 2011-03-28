@@ -1,76 +1,367 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Mar 2011 16:13:54 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:58119 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Mar 2011 16:16:28 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:48763 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491765Ab1C1ONv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Mar 2011 16:13:51 +0200
-Message-ID: <4D909800.50701@phrozen.org>
-Date:   Mon, 28 Mar 2011 16:15:28 +0200
-From:   John Crispin <john@phrozen.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100913 Icedove/3.0.7
-MIME-Version: 1.0
-To:     dedekind1@gmail.com
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        id S1491765Ab1C1OQY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Mar 2011 16:16:24 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mtd@lists.infradead.org,
-        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH V2 06/10] MIPS: lantiq: add NOR flash support
-References: <1298996006-15960-1-git-send-email-blogic@openwrt.org>         <1298996006-15960-7-git-send-email-blogic@openwrt.org> <1299488320.2746.5.camel@localhost> <4D74CEC2.4040506@openwrt.org>
-In-Reply-To: <4D74CEC2.4040506@openwrt.org>
-X-Enigmail-Version: 1.0.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <john@phrozen.org>
+        linux-mips@linux-mips.org
+Subject: [PATCH V4 10/10] MIPS: lantiq: add more gpio drivers
+Date:   Mon, 28 Mar 2011 16:07:57 +0200
+Message-Id: <1301321277-6700-11-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1301321277-6700-1-git-send-email-blogic@openwrt.org>
+References: <1301321277-6700-1-git-send-email-blogic@openwrt.org>
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29596
+X-archive-position: 29597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john@phrozen.org
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On 07/03/11 13:25, John Crispin wrote:
-> On 07/03/11 09:58, Artem Bityutskiy wrote:
->> On Tue, 2011-03-01 at 17:13 +0100, John Crispin wrote:
->>   
->>> NOR flash is attached to the same EBU (External Bus Unit) as PCI. As described
->>> in the PCI patch, the EBU is a little buggy, resulting in the upper and lower
->>> 16 bit of the data on a 32 bit read are swapped. (essentially we have a addr^=2)
->>>
->>> To work around this we do a addr^=2 during the probe. Once probed we adapt
->>> cfi->addr_unlock1 and cfi->addr_unlock2 to represent the endianess bug.
->>>
->>> Changes in V2
->>> * handle the endianess bug inside the map code and not in the generic cfi code
->>> * remove the addr swizzle patch
->>>
->>> Signed-off-by: John Crispin <blogic@openwrt.org>
->>> Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
->>> Cc: David Woodhouse <dwmw2@infradead.org>
->>> Cc: Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>
->>> Cc: linux-mips@linux-mips.org
->>> Cc: linux-mtd@lists.infradead.org
->>>     
->> There are a couple checkpatch.pl warnings, would you please address them
->> and resend?
->>
->>   
-> Hi,
-> 
-> of course.
-> 
-> thanks,
-> John
-> 
-> 
+The XWAY family allows to extend the number of gpios by using shift registers or latches. This patch adds the 2 drivers needed for this. The extended gpios are output only.
 
-Hi,
+Signed-off-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
+Cc: linux-mips@linux-mips.org
+---
+Added in V2
 
-i fixed one of the warnings. the remaining warning wants me to put at
-least 4 lines into the help section in the Kconfig. However 3 lines were
-enough to explain what the driver does.
+Changes in V3
+* whitespace
+* change __iomem void to void __iomem
+* multiline comments
+* use pr_* macros instead of printk
 
-John
+Changes in V4
+* whitespace fixes
+* properly insert and request all memory ranges
+
+ arch/mips/lantiq/xway/Makefile   |    2 +-
+ arch/mips/lantiq/xway/gpio_ebu.c |  130 +++++++++++++++++++++++++++++++
+ arch/mips/lantiq/xway/gpio_stp.c |  160 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 291 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/lantiq/xway/gpio_ebu.c
+ create mode 100644 arch/mips/lantiq/xway/gpio_stp.c
+
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 08dcc10..a021def 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,4 +1,4 @@
+-obj-y := pmu.o ebu.o reset.o gpio.o devices.o
++obj-y := pmu.o ebu.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o
+ 
+ obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
+ obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
+diff --git a/arch/mips/lantiq/xway/gpio_ebu.c b/arch/mips/lantiq/xway/gpio_ebu.c
+new file mode 100644
+index 0000000..8ebc1a4
+--- /dev/null
++++ b/arch/mips/lantiq/xway/gpio_ebu.c
+@@ -0,0 +1,130 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/platform_device.h>
++#include <linux/mutex.h>
++#include <linux/gpio.h>
++#include <linux/io.h>
++
++#include <lantiq_soc.h>
++
++/* By attaching hardware latches to the EBU it is possible to create output
++ * only gpios. This driver configures a special memory address, which when
++ * written to outputs 16 bit to the latches.
++ */
++
++#define LTQ_EBU_BUSCON	0x1e7ff		/* 16 bit access, slowest timing */
++#define LTQ_EBU_WP	0x80000000	/* write protect bit */
++
++/* we keep a shadow value of the last value written to the ebu */
++static int ltq_ebu_gpio_shadow = 0x0;
++static void __iomem *ltq_ebu_gpio_membase;
++
++static void
++ltq_ebu_apply(void)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&ebu_lock, flags);
++	ltq_ebu_w32(LTQ_EBU_BUSCON, LTQ_EBU_BUSCON1);
++	*((__u16 *)ltq_ebu_gpio_membase) = ltq_ebu_gpio_shadow;
++	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
++	spin_unlock_irqrestore(&ebu_lock, flags);
++}
++
++static void
++ltq_ebu_set(struct gpio_chip *chip, unsigned offset, int value)
++{
++	if (value)
++		ltq_ebu_gpio_shadow |= (1 << offset);
++	else
++		ltq_ebu_gpio_shadow &= ~(1 << offset);
++	ltq_ebu_apply();
++}
++
++static int
++ltq_ebu_direction_output(struct gpio_chip *chip, unsigned offset, int value)
++{
++	ltq_ebu_set(chip, offset, value);
++	return 0;
++}
++
++static struct gpio_chip
++ltq_ebu_chip = {
++	.label = "ltq_ebu",
++	.direction_output = ltq_ebu_direction_output,
++	.set = ltq_ebu_set,
++	.base = 72,
++	.ngpio = 16,
++	.can_sleep = 1,
++	.owner = THIS_MODULE,
++};
++
++static int
++ltq_ebu_probe(struct platform_device *pdev)
++{
++	int ret = 0;
++	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++
++	if (!res) {
++		dev_err(&pdev->dev, "failed to get memory resource\n");
++		return -ENOENT;
++	}
++
++	res = devm_request_mem_region(&pdev->dev, res->start,
++		resource_size(res), dev_name(&pdev->dev));
++	if (!res) {
++		dev_err(&pdev->dev, "failed to request memory resource\n");
++		return -EBUSY;
++	}
++
++	ltq_ebu_gpio_membase = devm_ioremap_nocache(&pdev->dev, res->start,
++		resource_size(res));
++	if (!ltq_ebu_gpio_membase) {
++		dev_err(&pdev->dev, "Failed to ioremap mem region\n");
++		return -ENOMEM;
++	}
++
++	/* grab the default shadow value passed form the platform code */
++	ltq_ebu_gpio_shadow = (unsigned int) pdev->dev.platform_data;
++
++	/* tell the ebu controller which memory address we will be using */
++	ltq_ebu_w32(pdev->resource->start | 0x1, LTQ_EBU_ADDRSEL1);
++
++	/* write protect the region */
++	ltq_ebu_w32(LTQ_EBU_BUSCON | LTQ_EBU_WP, LTQ_EBU_BUSCON1);
++
++	ret = gpiochip_add(&ltq_ebu_chip);
++	if (!ret)
++		ltq_ebu_apply();
++	return ret;
++}
++
++static struct platform_driver
++ltq_ebu_driver = {
++	.probe = ltq_ebu_probe,
++	.driver = {
++		.name = "ltq_ebu",
++		.owner = THIS_MODULE,
++	},
++};
++
++static int __init
++ltq_ebu_init(void)
++{
++	int ret = platform_driver_register(&ltq_ebu_driver);
++
++	if (ret)
++		pr_info("ltq_ebu : Error registering platfom driver!");
++	return ret;
++}
++
++postcore_initcall(ltq_ebu_init);
+diff --git a/arch/mips/lantiq/xway/gpio_stp.c b/arch/mips/lantiq/xway/gpio_stp.c
+new file mode 100644
+index 0000000..4bd7c3e
+--- /dev/null
++++ b/arch/mips/lantiq/xway/gpio_stp.c
+@@ -0,0 +1,160 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2007 John Crispin <blogic@openwrt.org>
++ *
++ */
++
++#include <linux/slab.h>
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/platform_device.h>
++#include <linux/mutex.h>
++#include <linux/io.h>
++#include <linux/gpio.h>
++
++#include <lantiq_soc.h>
++
++#define LTQ_STP_CON0		0x00
++#define LTQ_STP_CON1		0x04
++#define LTQ_STP_CPU0		0x08
++#define LTQ_STP_CPU1		0x0C
++#define LTQ_STP_AR		0x10
++
++#define LTQ_STP_CON_SWU		(1 << 31)
++#define LTQ_STP_2HZ		0
++#define LTQ_STP_4HZ		(1 << 23)
++#define LTQ_STP_8HZ		(2 << 23)
++#define LTQ_STP_10HZ		(3 << 23)
++#define LTQ_STP_SPEED_MASK	(0xf << 23)
++#define LTQ_STP_UPD_FPI		(1 << 31)
++#define LTQ_STP_UPD_MASK	(3 << 30)
++#define LTQ_STP_ADSL_SRC	(3 << 24)
++
++#define LTQ_STP_GROUP0		(1 << 0)
++
++#define LTQ_STP_RISING		0
++#define LTQ_STP_FALLING		(1 << 26)
++#define LTQ_STP_EDGE_MASK	(1 << 26)
++
++#define ltq_stp_r32(reg)	__raw_readl(ltq_stp_membase + reg)
++#define ltq_stp_w32(val, reg)	__raw_writel(val, ltq_stp_membase + reg)
++#define ltq_stp_w32_mask(clear, set, reg) \
++		ltq_w32((ltq_r32(ltq_stp_membase + reg) & ~(clear)) | (set), \
++		ltq_stp_membase + (reg))
++
++static int ltq_stp_shadow = 0xffff;
++static void __iomem *ltq_stp_membase;
++
++static void
++ltq_stp_set(struct gpio_chip *chip, unsigned offset, int value)
++{
++	if (value)
++		ltq_stp_shadow |= (1 << offset);
++	else
++		ltq_stp_shadow &= ~(1 << offset);
++	ltq_stp_w32(ltq_stp_shadow, LTQ_STP_CPU0);
++}
++
++static int
++ltq_stp_direction_output(struct gpio_chip *chip, unsigned offset, int value)
++{
++	ltq_stp_set(chip, offset, value);
++	return 0;
++}
++
++static struct gpio_chip ltq_stp_chip = {
++	.label = "ltq_stp",
++	.direction_output = ltq_stp_direction_output,
++	.set = ltq_stp_set,
++	.base = 48,
++	.ngpio = 24,
++	.can_sleep = 1,
++	.owner = THIS_MODULE,
++};
++
++static int
++ltq_stp_hw_init(void)
++{
++	/* the 3 pins used to control the external stp */
++	ltq_gpio_request(4, 1, 0, 1, "stp-st");
++	ltq_gpio_request(5, 1, 0, 1, "stp-d");
++	ltq_gpio_request(6, 1, 0, 1, "stp-sh");
++
++	/* sane defaults */
++	ltq_stp_w32(0, LTQ_STP_AR);
++	ltq_stp_w32(0, LTQ_STP_CPU0);
++	ltq_stp_w32(0, LTQ_STP_CPU1);
++	ltq_stp_w32(LTQ_STP_CON_SWU, LTQ_STP_CON0);
++	ltq_stp_w32(0, LTQ_STP_CON1);
++
++	/* rising or falling edge */
++	ltq_stp_w32_mask(LTQ_STP_EDGE_MASK, LTQ_STP_FALLING, LTQ_STP_CON0);
++
++	/* per default stp 15-0 are set */
++	ltq_stp_w32_mask(0, LTQ_STP_GROUP0, LTQ_STP_CON1);
++
++	/* stp are update periodically by the FPI bus */
++	ltq_stp_w32_mask(LTQ_STP_UPD_MASK, LTQ_STP_UPD_FPI, LTQ_STP_CON1);
++
++	/* set stp update speed */
++	ltq_stp_w32_mask(LTQ_STP_SPEED_MASK, LTQ_STP_8HZ, LTQ_STP_CON1);
++
++	/* tell the hardware that pin (led) 0 and 1 are controlled
++	 *  by the dsl arc
++	 */
++	ltq_stp_w32_mask(0, LTQ_STP_ADSL_SRC, LTQ_STP_CON0);
++
++	ltq_pmu_enable(PMU_LED);
++	return 0;
++}
++
++static int __init
++ltq_stp_probe(struct platform_device *pdev)
++{
++	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	int ret = 0;
++
++	if (!res)
++		return -ENOENT;
++	res = devm_request_mem_region(&pdev->dev, res->start,
++		resource_size(res), dev_name(&pdev->dev));
++	if (!res) {
++		dev_err(&pdev->dev, "failed to request STP memory\n");
++		return -EBUSY;
++	}
++	ltq_stp_membase = devm_ioremap_nocache(&pdev->dev, res->start,
++		resource_size(res));
++	if (!ltq_stp_membase) {
++		dev_err(&pdev->dev, "failed to remap STP memory\n");
++		return -ENOMEM;
++	}
++	ret = gpiochip_add(&ltq_stp_chip);
++	if (!ret)
++		ret = ltq_stp_hw_init();
++
++	return ret;
++}
++
++static struct platform_driver ltq_stp_driver = {
++	.probe = ltq_stp_probe,
++	.driver = {
++		.name = "ltq_stp",
++		.owner = THIS_MODULE,
++	},
++};
++
++int __init
++ltq_stp_init(void)
++{
++	int ret = platform_driver_register(&ltq_stp_driver);
++
++	if (ret)
++		pr_info("ltq_stp: error registering platfom driver");
++	return ret;
++}
++
++postcore_initcall(ltq_stp_init);
+-- 
+1.7.2.3

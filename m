@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Mar 2011 16:07:17 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:60627 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Mar 2011 16:07:42 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:60632 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491156Ab1C1OGq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 28 Mar 2011 16:06:46 +0200
+        id S1491175Ab1C1OGr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 28 Mar 2011 16:06:47 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
         linux-mips@linux-mips.org
-Subject: [PATCH V4 02/10] MIPS: lantiq: add SoC specific code for XWAY family
-Date:   Mon, 28 Mar 2011 16:07:49 +0200
-Message-Id: <1301321277-6700-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V4 03/10] MIPS: lantiq: add PCI controller support.
+Date:   Mon, 28 Mar 2011 16:07:50 +0200
+Message-Id: <1301321277-6700-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1301321277-6700-1-git-send-email-blogic@openwrt.org>
 References: <1301321277-6700-1-git-send-email-blogic@openwrt.org>
@@ -18,7 +18,7 @@ Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29588
+X-archive-position: 29589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,97 +26,539 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Add support for the Lantiq XWAY family of Mips24KEc SoCs.
+The Lantiq family of SoCs have a EBU (External Bus Unit). This patch adds
+the driver that allows us to use the EBU as a PCI controller. In order for
+PCI to work the EBU is set to endianess swap all the data. In addition we
+need to make use of SWAP_IO_SPACE for device->host DMA to work.
 
-* Danube (PSB50702)
-* Twinpass (PSB4000)
-* AR9 (PSB50802)
-* Amazon SE (PSB5061)
-
-The Amazon SE is a lightweight SoC and has no PCI as well as a different
-clock. We split the code out into seperate files to handle this.
-
-The GPIO pins on the SoCs are multi function and there are several bits
-we can use to configure the pins. To be as compatible as possible to
-GPIOLIB we add a function
-
-int lq_gpio_request(unsigned int pin, unsigned int alt0,
-        unsigned int alt1, unsigned int dir, const char *name);
-
-which lets you configure the 2 "alternate function" bits. This way drivers like
-PCI can make use of GPIOLIB without a cubersome wrapper.
-
-The pll code inside arch/mips/lantiq/xway/clk-xway.c is voodoo to me. It was
-taken from a 2.4.20 source tree and was never really changed by me since then.
+The clock of the PCI works in several modes (internal/external). If this
+is not configured correctly the SoC will hang.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
 Cc: linux-mips@linux-mips.org
 ---
 Changes in V2
-* properly ioremap all register regions and provide accessor macros (pmu,ebu,cgu)
-* add handling for EXIN irq sources
-* small cleanups
+* add handling for more than 1 pci device
+* add properly handling and registration of gpios
+* properly remap the memory regions
 
-Changes in V3
-* whitespace
-* change __iomem void to void __iomem
-* multiline comments
-* use pr_* macros instead of printk
+Chanegs in V4
+* whitespace fixes
 
-Changes in V4
-* properly insert and request all memory ranges
-* make watchdog memory window smaller
-* remove old prototype of ltq_gpio_setconfig()
+ .../mips/include/asm/mach-lantiq/lantiq_platform.h |   46 +++
+ arch/mips/pci/Makefile                             |    1 +
+ arch/mips/pci/ops-lantiq.c                         |  119 ++++++++
+ arch/mips/pci/pci-lantiq.c                         |  302 ++++++++++++++++++++
+ arch/mips/pci/pci-lantiq.h                         |   18 ++
+ 5 files changed, 486 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-lantiq/lantiq_platform.h
+ create mode 100644 arch/mips/pci/ops-lantiq.c
+ create mode 100644 arch/mips/pci/pci-lantiq.c
+ create mode 100644 arch/mips/pci/pci-lantiq.h
 
- arch/mips/Kconfig                                  |    1 +
- arch/mips/include/asm/mach-lantiq/xway/irq.h       |   18 ++
- .../mips/include/asm/mach-lantiq/xway/lantiq_irq.h |   62 ++++++
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |  142 ++++++++++++
- arch/mips/lantiq/Kconfig                           |   21 ++
- arch/mips/lantiq/Makefile                          |    2 +
- arch/mips/lantiq/Platform                          |    1 +
- arch/mips/lantiq/xway/Makefile                     |    4 +
- arch/mips/lantiq/xway/clk-ase.c                    |   52 +++++
- arch/mips/lantiq/xway/clk-xway.c                   |  232 ++++++++++++++++++++
- arch/mips/lantiq/xway/ebu.c                        |   54 +++++
- arch/mips/lantiq/xway/gpio.c                       |  203 +++++++++++++++++
- arch/mips/lantiq/xway/pmu.c                        |   73 ++++++
- arch/mips/lantiq/xway/prom-ase.c                   |   40 ++++
- arch/mips/lantiq/xway/prom-xway.c                  |   55 +++++
- arch/mips/lantiq/xway/reset.c                      |   82 +++++++
- 16 files changed, 1042 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-lantiq/xway/irq.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
- create mode 100644 arch/mips/lantiq/Kconfig
- create mode 100644 arch/mips/lantiq/xway/Makefile
- create mode 100644 arch/mips/lantiq/xway/clk-ase.c
- create mode 100644 arch/mips/lantiq/xway/clk-xway.c
- create mode 100644 arch/mips/lantiq/xway/ebu.c
- create mode 100644 arch/mips/lantiq/xway/gpio.c
- create mode 100644 arch/mips/lantiq/xway/pmu.c
- create mode 100644 arch/mips/lantiq/xway/prom-ase.c
- create mode 100644 arch/mips/lantiq/xway/prom-xway.c
- create mode 100644 arch/mips/lantiq/xway/reset.c
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f975932..756e67a 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -758,6 +758,7 @@ source "arch/mips/ath79/Kconfig"
- source "arch/mips/bcm63xx/Kconfig"
- source "arch/mips/jazz/Kconfig"
- source "arch/mips/jz4740/Kconfig"
-+source "arch/mips/lantiq/Kconfig"
- source "arch/mips/lasat/Kconfig"
- source "arch/mips/pmc-sierra/Kconfig"
- source "arch/mips/powertv/Kconfig"
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/irq.h b/arch/mips/include/asm/mach-lantiq/xway/irq.h
+diff --git a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h b/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
 new file mode 100644
-index 0000000..a1471d2
+index 0000000..1f1dba6
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-lantiq/xway/irq.h
++++ b/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
+@@ -0,0 +1,46 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LANTIQ_PLATFORM_H__
++#define _LANTIQ_PLATFORM_H__
++
++#include <linux/mtd/partitions.h>
++
++/* struct used to pass info to the pci core */
++enum {
++	PCI_CLOCK_INT = 0,
++	PCI_CLOCK_EXT
++};
++
++#define PCI_EXIN0	0x0001
++#define PCI_EXIN1	0x0002
++#define PCI_EXIN2	0x0004
++#define PCI_EXIN3	0x0008
++#define PCI_EXIN4	0x0010
++#define PCI_EXIN5	0x0020
++#define PCI_EXIN_MAX	6
++
++#define PCI_GNT1	0x0040
++#define PCI_GNT2	0x0080
++#define PCI_GNT3	0x0100
++#define PCI_GNT4	0x0200
++
++#define PCI_REQ1	0x0400
++#define PCI_REQ2	0x0800
++#define PCI_REQ3	0x1000
++#define PCI_REQ4	0x2000
++#define PCI_REQ_SHIFT	10
++#define PCI_REQ_MASK	0xf
++
++struct ltq_pci_data {
++	int clock;
++	int gpio;
++	int irq[16];
++};
++
++#endif
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index c9209ca..4a5d1ae 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -55,6 +55,7 @@ obj-$(CONFIG_ZAO_CAPCELLA)	+= fixup-capcella.o
+ obj-$(CONFIG_WR_PPMC)		+= fixup-wrppmc.o
+ obj-$(CONFIG_MIKROTIK_RB532)	+= pci-rc32434.o ops-rc32434.o fixup-rc32434.o
+ obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= pci-octeon.o pcie-octeon.o
++obj-$(CONFIG_SOC_XWAY)	+= pci-lantiq.o ops-lantiq.o
+ 
+ ifdef CONFIG_PCI_MSI
+ obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= msi-octeon.o
+diff --git a/arch/mips/pci/ops-lantiq.c b/arch/mips/pci/ops-lantiq.c
+new file mode 100644
+index 0000000..ee28018
+--- /dev/null
++++ b/arch/mips/pci/ops-lantiq.c
+@@ -0,0 +1,119 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/mm.h>
++#include <asm/addrspace.h>
++#include <linux/vmalloc.h>
++
++#include <lantiq_soc.h>
++
++#include "pci-lantiq.h"
++
++#define LTQ_PCI_CFG_BUSNUM_SHF 16
++#define LTQ_PCI_CFG_DEVNUM_SHF 11
++#define LTQ_PCI_CFG_FUNNUM_SHF 8
++
++#define PCI_ACCESS_READ  0
++#define PCI_ACCESS_WRITE 1
++
++static int
++ltq_pci_config_access(unsigned char access_type, struct pci_bus *bus,
++	unsigned int devfn, unsigned int where, u32 *data)
++{
++	unsigned long cfg_base;
++	unsigned long flags;
++	u32 temp;
++
++	/* we support slot from 0 to 15 dev_fn & 0x68 (AD29) is the
++	   SoC itself */
++	if ((bus->number != 0) || ((devfn & 0xf8) > 0x78)
++		|| ((devfn & 0xf8) == 0) || ((devfn & 0xf8) == 0x68))
++		return 1;
++
++	spin_lock_irqsave(&ebu_lock, flags);
++
++	cfg_base = (unsigned long) ltq_pci_mapped_cfg;
++	cfg_base |= (bus->number << LTQ_PCI_CFG_BUSNUM_SHF) | (devfn <<
++			LTQ_PCI_CFG_FUNNUM_SHF) | (where & ~0x3);
++
++	/* Perform access */
++	if (access_type == PCI_ACCESS_WRITE) {
++		ltq_w32(swab32(*data), ((u32 *)cfg_base));
++	} else {
++		*data = ltq_r32(((u32 *)(cfg_base)));
++		*data = swab32(*data);
++	}
++	wmb();
++
++	/* clean possible Master abort */
++	cfg_base = (unsigned long) ltq_pci_mapped_cfg;
++	cfg_base |= (0x0 << LTQ_PCI_CFG_FUNNUM_SHF) + 4;
++	temp = ltq_r32(((u32 *)(cfg_base)));
++	temp = swab32(temp);
++	cfg_base = (unsigned long) ltq_pci_mapped_cfg;
++	cfg_base |= (0x68 << LTQ_PCI_CFG_FUNNUM_SHF) + 4;
++	ltq_w32(temp, ((u32 *)cfg_base));
++
++	spin_unlock_irqrestore(&ebu_lock, flags);
++
++	if (((*data) == 0xffffffff) && (access_type == PCI_ACCESS_READ))
++		return 1;
++
++	return 0;
++}
++
++int
++ltq_pci_read_config_dword(struct pci_bus *bus, unsigned int devfn,
++		int where, int size, u32 *val)
++{
++	u32 data = 0;
++
++	if (ltq_pci_config_access(PCI_ACCESS_READ, bus, devfn, where, &data))
++		return PCIBIOS_DEVICE_NOT_FOUND;
++
++	if (size == 1)
++		*val = (data >> ((where & 3) << 3)) & 0xff;
++	else if (size == 2)
++		*val = (data >> ((where & 3) << 3)) & 0xffff;
++	else
++		*val = data;
++
++	return PCIBIOS_SUCCESSFUL;
++}
++
++int
++ltq_pci_write_config_dword(struct pci_bus *bus, unsigned int devfn,
++		int where, int size, u32 val)
++{
++	u32 data = 0;
++
++	if (size == 4) {
++		data = val;
++	} else {
++		if (ltq_pci_config_access(PCI_ACCESS_READ, bus,
++				devfn, where, &data))
++			return PCIBIOS_DEVICE_NOT_FOUND;
++
++		if (size == 1)
++			data = (data & ~(0xff << ((where & 3) << 3))) |
++				(val << ((where & 3) << 3));
++		else if (size == 2)
++			data = (data & ~(0xffff << ((where & 3) << 3))) |
++				(val << ((where & 3) << 3));
++	}
++
++	if (ltq_pci_config_access(PCI_ACCESS_WRITE, bus, devfn, where, &data))
++		return PCIBIOS_DEVICE_NOT_FOUND;
++
++	return PCIBIOS_SUCCESSFUL;
++}
+diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
+new file mode 100644
+index 0000000..cb54dd7
+--- /dev/null
++++ b/arch/mips/pci/pci-lantiq.c
+@@ -0,0 +1,302 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/mm.h>
++#include <linux/vmalloc.h>
++#include <linux/platform_device.h>
++
++#include <asm/pci.h>
++#include <asm/gpio.h>
++#include <asm/addrspace.h>
++
++#include <lantiq_soc.h>
++#include <lantiq_irq.h>
++#include <lantiq_platform.h>
++
++#include "pci-lantiq.h"
++
++#define LTQ_PCI_CFG_BASE		0x17000000
++#define LTQ_PCI_CFG_SIZE		0x00008000
++#define LTQ_PCI_MEM_BASE		0x18000000
++#define LTQ_PCI_MEM_SIZE		0x02000000
++#define LTQ_PCI_IO_BASE			0x1AE00000
++#define LTQ_PCI_IO_SIZE			0x00200000
++
++#define PCI_CR_FCI_ADDR_MAP0		0x00C0
++#define PCI_CR_FCI_ADDR_MAP1		0x00C4
++#define PCI_CR_FCI_ADDR_MAP2		0x00C8
++#define PCI_CR_FCI_ADDR_MAP3		0x00CC
++#define PCI_CR_FCI_ADDR_MAP4		0x00D0
++#define PCI_CR_FCI_ADDR_MAP5		0x00D4
++#define PCI_CR_FCI_ADDR_MAP6		0x00D8
++#define PCI_CR_FCI_ADDR_MAP7		0x00DC
++#define PCI_CR_CLK_CTRL			0x0000
++#define PCI_CR_PCI_MOD			0x0030
++#define PCI_CR_PC_ARB			0x0080
++#define PCI_CR_FCI_ADDR_MAP11hg		0x00E4
++#define PCI_CR_BAR11MASK		0x0044
++#define PCI_CR_BAR12MASK		0x0048
++#define PCI_CR_BAR13MASK		0x004C
++#define PCI_CS_BASE_ADDR1		0x0010
++#define PCI_CR_PCI_ADDR_MAP11		0x0064
++#define PCI_CR_FCI_BURST_LENGTH		0x00E8
++#define PCI_CR_PCI_EOI			0x002C
++#define PCI_CS_STS_CMD			0x0004
++
++#define PCI_MASTER0_REQ_MASK_2BITS	8
++#define PCI_MASTER1_REQ_MASK_2BITS	10
++#define PCI_MASTER2_REQ_MASK_2BITS	12
++#define INTERNAL_ARB_ENABLE_BIT		0
++
++#define LTQ_CGU_IFCCR		0x0018
++#define LTQ_CGU_PCICR		0x0034
++
++#define ltq_pci_w32(x, y)	ltq_w32((x), ltq_pci_membase + (y))
++#define ltq_pci_r32(x)		ltq_r32(ltq_pci_membase + (x))
++
++#define ltq_pci_cfg_w32(x, y)	ltq_w32((x), ltq_pci_mapped_cfg + (y))
++#define ltq_pci_cfg_r32(x)	ltq_r32(ltq_pci_mapped_cfg + (x))
++
++struct ltq_pci_gpio_map {
++	int pin;
++	int alt0;
++	int alt1;
++	int dir;
++	char *name;
++};
++
++/* the pci core can make use of the following gpios */
++static struct ltq_pci_gpio_map ltq_pci_gpio_map[] = {
++	{ 0, 1, 0, 0, "pci-exin0" },
++	{ 1, 1, 0, 0, "pci-exin1" },
++	{ 2, 1, 0, 0, "pci-exin2" },
++	{ 39, 1, 0, 0, "pci-exin3" },
++	{ 10, 1, 0, 0, "pci-exin4" },
++	{ 9, 1, 0, 0, "pci-exin5" },
++	{ 30, 1, 0, 1, "pci-gnt1" },
++	{ 23, 1, 0, 1, "pci-gnt2" },
++	{ 19, 1, 0, 1, "pci-gnt3" },
++	{ 38, 1, 0, 1, "pci-gnt4" },
++	{ 29, 1, 0, 0, "pci-req1" },
++	{ 31, 1, 0, 0, "pci-req2" },
++	{ 3, 1, 0, 0, "pci-req3" },
++	{ 37, 1, 0, 0, "pci-req4" },
++};
++
++__iomem void *ltq_pci_mapped_cfg;
++static __iomem void *ltq_pci_membase;
++
++int (*ltqpci_plat_dev_init)(struct pci_dev *dev) = NULL;
++
++/* Since the PCI REQ pins can be reused for other functionality, make it
++   possible to exclude those from interpretation by the PCI controller */
++static int ltq_pci_req_mask = 0xf;
++
++static int *ltq_pci_irq_map;
++
++struct pci_ops ltq_pci_ops = {
++	.read	= ltq_pci_read_config_dword,
++	.write	= ltq_pci_write_config_dword
++};
++
++static struct resource pci_io_resource = {
++	.name	= "pci io space",
++	.start	= LTQ_PCI_IO_BASE,
++	.end	= LTQ_PCI_IO_BASE + LTQ_PCI_IO_SIZE - 1,
++	.flags	= IORESOURCE_IO
++};
++
++static struct resource pci_mem_resource = {
++	.name	= "pci memory space",
++	.start	= LTQ_PCI_MEM_BASE,
++	.end	= LTQ_PCI_MEM_BASE + LTQ_PCI_MEM_SIZE - 1,
++	.flags	= IORESOURCE_MEM
++};
++
++static struct pci_controller ltq_pci_controller = {
++	.pci_ops	= &ltq_pci_ops,
++	.mem_resource	= &pci_mem_resource,
++	.mem_offset	= 0x00000000UL,
++	.io_resource	= &pci_io_resource,
++	.io_offset	= 0x00000000UL,
++};
++
++int
++pcibios_plat_dev_init(struct pci_dev *dev)
++{
++	if (ltqpci_plat_dev_init)
++		return ltqpci_plat_dev_init(dev);
++
++	return 0;
++}
++
++static u32
++ltq_calc_bar11mask(void)
++{
++	u32 mem, bar11mask;
++
++	/* BAR11MASK value depends on available memory on system. */
++	mem = num_physpages * PAGE_SIZE;
++	bar11mask = (0x0ffffff0 & ~((1 << (fls(mem) - 1)) - 1)) | 8;
++
++	return bar11mask;
++}
++
++static void
++ltq_pci_setup_gpio(int gpio)
++{
++	int i;
++	for (i = 0; i < ARRAY_SIZE(ltq_pci_gpio_map); i++) {
++		if (gpio & (1 << i)) {
++			ltq_gpio_request(ltq_pci_gpio_map[i].pin,
++				ltq_pci_gpio_map[i].alt0,
++				ltq_pci_gpio_map[i].alt1,
++				ltq_pci_gpio_map[i].dir,
++				ltq_pci_gpio_map[i].name);
++		}
++	}
++	ltq_gpio_request(21, 0, 0, 1, "pci-reset");
++	ltq_pci_req_mask = (gpio >> PCI_REQ_SHIFT) & PCI_REQ_MASK;
++}
++
++static int __devinit
++ltq_pci_startup(struct ltq_pci_data *conf)
++{
++	u32 temp_buffer;
++
++	/* set clock to 33Mhz */
++	ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) & ~0xf00000, LTQ_CGU_IFCCR);
++	ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) | 0x800000, LTQ_CGU_IFCCR);
++
++	/* external or internal clock ? */
++	if (conf->clock) {
++		ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) & ~(1 << 16),
++			LTQ_CGU_IFCCR);
++		ltq_cgu_w32((1 << 30), LTQ_CGU_PCICR);
++	} else {
++		ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) | (1 << 16),
++			LTQ_CGU_IFCCR);
++		ltq_cgu_w32((1 << 31) | (1 << 30), LTQ_CGU_PCICR);
++	}
++
++	/* setup pci clock and gpis used by pci */
++	ltq_pci_setup_gpio(conf->gpio);
++
++	/* enable auto-switching between PCI and EBU */
++	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
++
++	/* busy, i.e. configuration is not done, PCI access has to be retried */
++	ltq_pci_w32(ltq_pci_r32(PCI_CR_PCI_MOD) & ~(1 << 24), PCI_CR_PCI_MOD);
++	wmb();
++	/* BUS Master/IO/MEM access */
++	ltq_pci_cfg_w32(ltq_pci_cfg_r32(PCI_CS_STS_CMD) | 7, PCI_CS_STS_CMD);
++
++	/* enable external 2 PCI masters */
++	temp_buffer = ltq_pci_r32(PCI_CR_PC_ARB);
++	temp_buffer &= (~(ltq_pci_req_mask << 16));
++	/* enable internal arbiter */
++	temp_buffer |= (1 << INTERNAL_ARB_ENABLE_BIT);
++	/* enable internal PCI master reqest */
++	temp_buffer &= (~(3 << PCI_MASTER0_REQ_MASK_2BITS));
++
++	/* enable EBU request */
++	temp_buffer &= (~(3 << PCI_MASTER1_REQ_MASK_2BITS));
++
++	/* enable all external masters request */
++	temp_buffer &= (~(3 << PCI_MASTER2_REQ_MASK_2BITS));
++	ltq_pci_w32(temp_buffer, PCI_CR_PC_ARB);
++	wmb();
++
++	/* setup BAR memory regions */
++	ltq_pci_w32(0x18000000, PCI_CR_FCI_ADDR_MAP0);
++	ltq_pci_w32(0x18400000, PCI_CR_FCI_ADDR_MAP1);
++	ltq_pci_w32(0x18800000, PCI_CR_FCI_ADDR_MAP2);
++	ltq_pci_w32(0x18c00000, PCI_CR_FCI_ADDR_MAP3);
++	ltq_pci_w32(0x19000000, PCI_CR_FCI_ADDR_MAP4);
++	ltq_pci_w32(0x19400000, PCI_CR_FCI_ADDR_MAP5);
++	ltq_pci_w32(0x19800000, PCI_CR_FCI_ADDR_MAP6);
++	ltq_pci_w32(0x19c00000, PCI_CR_FCI_ADDR_MAP7);
++	ltq_pci_w32(0x1ae00000, PCI_CR_FCI_ADDR_MAP11hg);
++	ltq_pci_w32(ltq_calc_bar11mask(), PCI_CR_BAR11MASK);
++	ltq_pci_w32(0, PCI_CR_PCI_ADDR_MAP11);
++	ltq_pci_w32(0, PCI_CS_BASE_ADDR1);
++	/* both TX and RX endian swap are enabled */
++	ltq_pci_w32(ltq_pci_r32(PCI_CR_PCI_EOI) | 3, PCI_CR_PCI_EOI);
++	wmb();
++	ltq_pci_w32(ltq_pci_r32(PCI_CR_BAR12MASK) | 0x80000000,
++		PCI_CR_BAR12MASK);
++	ltq_pci_w32(ltq_pci_r32(PCI_CR_BAR13MASK) | 0x80000000,
++		PCI_CR_BAR13MASK);
++	/*use 8 dw burst length */
++	ltq_pci_w32(0x303, PCI_CR_FCI_BURST_LENGTH);
++	ltq_pci_w32(ltq_pci_r32(PCI_CR_PCI_MOD) | (1 << 24), PCI_CR_PCI_MOD);
++	wmb();
++
++	/* setup irq line */
++	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_PCC_CON) | 0xc, LTQ_EBU_PCC_CON);
++	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_PCC_IEN) | 0x10, LTQ_EBU_PCC_IEN);
++
++	/* toggle reset pin */
++	__gpio_set_value(21, 0);
++	wmb();
++	mdelay(1);
++	__gpio_set_value(21, 1);
++	return 0;
++}
++
++int __init
++pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++{
++	if (ltq_pci_irq_map[slot])
++		return ltq_pci_irq_map[slot];
++	printk(KERN_ERR "lq_pci: trying to map irq for unknown slot %d\n",
++		slot);
++	return 0;
++}
++
++static int __devinit
++ltq_pci_probe(struct platform_device *pdev)
++{
++	struct ltq_pci_data *ltq_pci_data =
++		(struct ltq_pci_data *) pdev->dev.platform_data;
++	pci_probe_only = 0;
++	ltq_pci_irq_map = ltq_pci_data->irq;
++	ltq_pci_membase = ioremap_nocache(PCI_CR_BASE_ADDR, PCI_CR_SIZE);
++	ltq_pci_mapped_cfg =
++		ioremap_nocache(LTQ_PCI_CFG_BASE, LTQ_PCI_CFG_BASE);
++	ltq_pci_controller.io_map_base =
++		(unsigned long)ioremap(LTQ_PCI_IO_BASE, LTQ_PCI_IO_SIZE - 1);
++	ltq_pci_startup(ltq_pci_data);
++	register_pci_controller(&ltq_pci_controller);
++	return 0;
++}
++
++static struct platform_driver
++ltq_pci_driver = {
++	.probe = ltq_pci_probe,
++	.driver = {
++		.name = "ltq_pci",
++		.owner = THIS_MODULE,
++	},
++};
++
++int __init
++pcibios_init(void)
++{
++	int ret = platform_driver_register(&ltq_pci_driver);
++	if (ret)
++		printk(KERN_INFO "ltq_pci: Error registering platfom driver!");
++	return ret;
++}
++
++arch_initcall(pcibios_init);
+diff --git a/arch/mips/pci/pci-lantiq.h b/arch/mips/pci/pci-lantiq.h
+new file mode 100644
+index 0000000..66bf6cd
+--- /dev/null
++++ b/arch/mips/pci/pci-lantiq.h
 @@ -0,0 +1,18 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
@@ -126,1126 +568,15 @@ index 0000000..a1471d2
 + *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
 + */
 +
-+#ifndef __LANTIQ_IRQ_H
-+#define __LANTIQ_IRQ_H
++#ifndef _LTQ_PCI_H__
++#define _LTQ_PCI_H__
 +
-+#include <lantiq_irq.h>
-+
-+#define NR_IRQS 256
-+
-+#include_next <irq.h>
-+
-+#endif
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
-new file mode 100644
-index 0000000..5c81c98
---- /dev/null
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
-@@ -0,0 +1,62 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#ifndef _LANTIQ_XWAY_IRQ_H__
-+#define _LANTIQ_XWAY_IRQ_H__
-+
-+#define INT_NUM_IRQ0		8
-+#define INT_NUM_IM0_IRL0	(INT_NUM_IRQ0 + 0)
-+#define INT_NUM_IM1_IRL0	(INT_NUM_IRQ0 + 32)
-+#define INT_NUM_IM2_IRL0	(INT_NUM_IRQ0 + 64)
-+#define INT_NUM_IM3_IRL0	(INT_NUM_IRQ0 + 96)
-+#define INT_NUM_IM4_IRL0	(INT_NUM_IRQ0 + 128)
-+#define INT_NUM_IM_OFFSET	(INT_NUM_IM1_IRL0 - INT_NUM_IM0_IRL0)
-+
-+#define LTQ_ASC_TIR(x)		(INT_NUM_IM3_IRL0 + (x * 8))
-+#define LTQ_ASC_RIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 1)
-+#define LTQ_ASC_EIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 2)
-+
-+#define LTQ_SSC_TIR		(INT_NUM_IM0_IRL0 + 15)
-+#define LTQ_SSC_RIR		(INT_NUM_IM0_IRL0 + 14)
-+#define LTQ_SSC_EIR		(INT_NUM_IM0_IRL0 + 16)
-+
-+#define LTQ_MEI_DYING_GASP_INT	(INT_NUM_IM1_IRL0 + 21)
-+#define LTQ_MEI_INT		(INT_NUM_IM1_IRL0 + 23)
-+
-+#define LTQ_TIMER6_INT		(INT_NUM_IM1_IRL0 + 23)
-+#define LTQ_USB_INT		(INT_NUM_IM1_IRL0 + 22)
-+#define LTQ_USB_OC_INT		(INT_NUM_IM4_IRL0 + 23)
-+
-+#define MIPS_CPU_TIMER_IRQ		7
-+
-+#define LTQ_DMA_CH0_INT		(INT_NUM_IM2_IRL0)
-+#define LTQ_DMA_CH1_INT		(INT_NUM_IM2_IRL0 + 1)
-+#define LTQ_DMA_CH2_INT		(INT_NUM_IM2_IRL0 + 2)
-+#define LTQ_DMA_CH3_INT		(INT_NUM_IM2_IRL0 + 3)
-+#define LTQ_DMA_CH4_INT		(INT_NUM_IM2_IRL0 + 4)
-+#define LTQ_DMA_CH5_INT		(INT_NUM_IM2_IRL0 + 5)
-+#define LTQ_DMA_CH6_INT		(INT_NUM_IM2_IRL0 + 6)
-+#define LTQ_DMA_CH7_INT		(INT_NUM_IM2_IRL0 + 7)
-+#define LTQ_DMA_CH8_INT		(INT_NUM_IM2_IRL0 + 8)
-+#define LTQ_DMA_CH9_INT		(INT_NUM_IM2_IRL0 + 9)
-+#define LTQ_DMA_CH10_INT	(INT_NUM_IM2_IRL0 + 10)
-+#define LTQ_DMA_CH11_INT	(INT_NUM_IM2_IRL0 + 11)
-+#define LTQ_DMA_CH12_INT	(INT_NUM_IM2_IRL0 + 25)
-+#define LTQ_DMA_CH13_INT	(INT_NUM_IM2_IRL0 + 26)
-+#define LTQ_DMA_CH14_INT	(INT_NUM_IM2_IRL0 + 27)
-+#define LTQ_DMA_CH15_INT	(INT_NUM_IM2_IRL0 + 28)
-+#define LTQ_DMA_CH16_INT	(INT_NUM_IM2_IRL0 + 29)
-+#define LTQ_DMA_CH17_INT	(INT_NUM_IM2_IRL0 + 30)
-+#define LTQ_DMA_CH18_INT	(INT_NUM_IM2_IRL0 + 16)
-+#define LTQ_DMA_CH19_INT	(INT_NUM_IM2_IRL0 + 21)
-+
-+#define LTQ_PPE_MBOX_INT	(INT_NUM_IM2_IRL0 + 24)
-+
-+#define INT_NUM_IM4_IRL14	(INT_NUM_IM4_IRL0 + 14)
++extern __iomem void *ltq_pci_mapped_cfg;
++extern int ltq_pci_read_config_dword(struct pci_bus *bus,
++	unsigned int devfn, int where, int size, u32 *val);
++extern int ltq_pci_write_config_dword(struct pci_bus *bus,
++	unsigned int devfn, int where, int size, u32 val);
 +
 +#endif
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-new file mode 100644
-index 0000000..0991f5a
---- /dev/null
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -0,0 +1,142 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#ifdef CONFIG_SOC_TYPE_XWAY
-+
-+#ifndef _LTQ_XWAY_H__
-+#define _LTQ_XWAY_H__
-+
-+#include <lantiq.h>
-+
-+/* Chip IDs */
-+#define SOC_ID_DANUBE1		0x129
-+#define SOC_ID_DANUBE2		0x12B
-+#define SOC_ID_TWINPASS		0x12D
-+#define SOC_ID_AMAZON_SE	0x152
-+#define SOC_ID_ARX188		0x16C
-+#define SOC_ID_ARX168		0x16D
-+#define SOC_ID_ARX182		0x16F
-+
-+/* SoC Types */
-+#define SOC_TYPE_DANUBE		0x01
-+#define SOC_TYPE_TWINPASS	0x02
-+#define SOC_TYPE_AR9		0x03
-+#define SOC_TYPE_VR9		0x04
-+#define SOC_TYPE_AMAZON_SE	0x05
-+
-+/* ASC0/1 - serial port */
-+#define LTQ_ASC0_BASE_ADDR	0x1E100400
-+#define LTQ_ASC1_BASE_ADDR	0x1E100C00
-+#define LTQ_ASC_SIZE		0x400
-+
-+/* RCU - reset control unit */
-+#define LTQ_RCU_BASE_ADDR	0x1F203000
-+#define LTQ_RCU_SIZE		0x1000
-+
-+/* GPTU - general purpose timer unit */
-+#define LTQ_GPTU_BASE_ADDR	0x18000300
-+
-+/* EBU - external bus unit */
-+#define LTQ_EBU_GPIO_START	0x14000000
-+#define LTQ_EBU_GPIO_SIZE	0x1000
-+
-+#define LTQ_EBU_BASE_ADDR	0x1E105300
-+#define LTQ_EBU_SIZE		0x100
-+
-+#define LTQ_EBU_BUSCON0		0x0060
-+#define LTQ_EBU_PCC_CON		0x0090
-+#define LTQ_EBU_PCC_IEN		0x00A4
-+#define LTQ_EBU_PCC_ISTAT	0x00A0
-+#define LTQ_EBU_BUSCON1		0x0064
-+#define LTQ_EBU_ADDRSEL1	0x0024
-+#define EBU_WRDIS		0x80000000
-+
-+/* CGU - clock generation unit */
-+#define LTQ_CGU_BASE_ADDR	0x1F103000
-+#define LTQ_CGU_SIZE		0x1000
-+
-+/* ICU - interrupt control unit */
-+#define LTQ_ICU_BASE_ADDR	0x1F880200
-+#define LTQ_ICU_SIZE		0x100
-+
-+/* EIU - external interrupt unit */
-+#define LTQ_EIU_BASE_ADDR	0x1F101000
-+#define LTQ_EIU_SIZE		0x1000
-+
-+/* PMU - power management unit */
-+#define LTQ_PMU_BASE_ADDR	0x1F102000
-+#define LTQ_PMU_SIZE		0x1000
-+
-+#define PMU_DMA			0x0020
-+#define PMU_USB			0x8041
-+#define PMU_LED			0x0800
-+#define PMU_GPT			0x1000
-+#define PMU_PPE			0x2000
-+#define PMU_FPI			0x4000
-+#define PMU_SWITCH		0x10000000
-+
-+/* ETOP - ethernet */
-+#define LTQ_PPE32_BASE_ADDR	0xBE180000
-+#define LTQ_PPE32_SIZE		0x40000
-+
-+/* DMA */
-+#define LTQ_DMA_BASE_ADDR	0xBE104100
-+
-+/* PCI */
-+#define PCI_CR_BASE_ADDR	0x1E105400
-+#define PCI_CR_SIZE		0x400
-+
-+/* WDT */
-+#define LTQ_WDT_BASE_ADDR	0x1F8803F0
-+#define LTQ_WDT_SIZE		0x10
-+
-+/* STP - serial to parallel conversion unit */
-+#define LTQ_STP_BASE_ADDR	0x1E100BB0
-+#define LTQ_STP_SIZE		0x40
-+
-+/* GPIO */
-+#define LTQ_GPIO0_BASE_ADDR	0x1E100B10
-+#define LTQ_GPIO1_BASE_ADDR	0x1E100B40
-+#define LTQ_GPIO2_BASE_ADDR	0x1E100B70
-+#define LTQ_GPIO_SIZE		0x30
-+
-+/* SSC */
-+#define LTQ_SSC_BASE_ADDR	0x1e100800
-+#define LTQ_SSC_SIZE		0x100
-+
-+/* MEI - dsl core */
-+#define LTQ_MEI_BASE_ADDR	0x1E116000
-+
-+/* DEU - data encryption unit */
-+#define LTQ_DEU_BASE_ADDR	0x1E103100
-+
-+/* MPS - multi processor unit (voice) */
-+#define LTQ_MPS_BASE_ADDR	(KSEG1 + 0x1F107000)
-+#define LTQ_MPS_CHIPID		((u32 *)(LTQ_MPS_BASE_ADDR + 0x0344))
-+
-+/* request a non-gpio and set the PIO config */
-+extern int  ltq_gpio_request(unsigned int pin, unsigned int alt0,
-+	unsigned int alt1, unsigned int dir, const char *name);
-+extern void ltq_pmu_enable(unsigned int module);
-+extern void ltq_pmu_disable(unsigned int module);
-+
-+static inline int
-+ltq_is_ar9(void)
-+{
-+	return (ltq_get_soc_type() == SOC_TYPE_AR9);
-+}
-+
-+static inline int
-+ltq_is_vr9(void)
-+{
-+	return (ltq_get_soc_type() == SOC_TYPE_VR9);
-+}
-+
-+#endif
-+
-+#endif
-diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
-new file mode 100644
-index 0000000..2780461
---- /dev/null
-+++ b/arch/mips/lantiq/Kconfig
-@@ -0,0 +1,21 @@
-+if LANTIQ
-+
-+config SOC_TYPE_XWAY
-+	bool
-+	default n
-+
-+choice
-+	prompt "SoC Type"
-+	default SOC_XWAY
-+
-+config SOC_AMAZON_SE
-+	bool "Amazon SE"
-+	select SOC_TYPE_XWAY
-+
-+config SOC_XWAY
-+	bool "XWAY"
-+	select SOC_TYPE_XWAY
-+	select HW_HAS_PCI
-+endchoice
-+
-+endif
-diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
-index 6a30de6..a268391 100644
---- a/arch/mips/lantiq/Makefile
-+++ b/arch/mips/lantiq/Makefile
-@@ -7,3 +7,5 @@
- obj-y := irq.o setup.o clk.o prom.o
- 
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
-+
-+obj-$(CONFIG_SOC_TYPE_XWAY) += xway/
-diff --git a/arch/mips/lantiq/Platform b/arch/mips/lantiq/Platform
-index eef587f..f3dff05 100644
---- a/arch/mips/lantiq/Platform
-+++ b/arch/mips/lantiq/Platform
-@@ -5,3 +5,4 @@
- platform-$(CONFIG_LANTIQ)	+= lantiq/
- cflags-$(CONFIG_LANTIQ)		+= -I$(srctree)/arch/mips/include/asm/mach-lantiq
- load-$(CONFIG_LANTIQ)		= 0xffffffff80002000
-+cflags-$(CONFIG_SOC_TYPE_XWAY)	+= -I$(srctree)/arch/mips/include/asm/mach-lantiq/xway
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-new file mode 100644
-index 0000000..9c85ff9
---- /dev/null
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -0,0 +1,4 @@
-+obj-y := pmu.o ebu.o reset.o gpio.o
-+
-+obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
-+obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
-diff --git a/arch/mips/lantiq/xway/clk-ase.c b/arch/mips/lantiq/xway/clk-ase.c
-new file mode 100644
-index 0000000..5444917
---- /dev/null
-+++ b/arch/mips/lantiq/xway/clk-ase.c
-@@ -0,0 +1,52 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/clk.h>
-+
-+#include <asm/time.h>
-+#include <asm/irq.h>
-+#include <asm/div64.h>
-+
-+#include <lantiq_soc.h>
-+
-+/* cgu registers */
-+#define LTQ_CGU_SYS	0x0010
-+
-+unsigned int
-+ltq_get_io_region_clock(void)
-+{
-+	return CLOCK_133M;
-+}
-+EXPORT_SYMBOL(ltq_get_io_region_clock);
-+
-+unsigned int
-+ltq_get_fpi_bus_clock(int fpi)
-+{
-+	return CLOCK_133M;
-+}
-+EXPORT_SYMBOL(ltq_get_fpi_bus_clock);
-+
-+unsigned int
-+ltq_get_cpu_hz(void)
-+{
-+	if (ltq_cgu_r32(LTQ_CGU_SYS) & (1 << 5))
-+		return CLOCK_266M;
-+	else
-+		return CLOCK_133M;
-+}
-+EXPORT_SYMBOL(ltq_get_cpu_hz);
-+
-+unsigned int
-+ltq_get_fpi_hz(void)
-+{
-+	return CLOCK_133M;
-+}
-+EXPORT_SYMBOL(ltq_get_fpi_hz);
-diff --git a/arch/mips/lantiq/xway/clk-xway.c b/arch/mips/lantiq/xway/clk-xway.c
-new file mode 100644
-index 0000000..89246be
---- /dev/null
-+++ b/arch/mips/lantiq/xway/clk-xway.c
-@@ -0,0 +1,232 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/clk.h>
-+
-+#include <asm/time.h>
-+#include <asm/irq.h>
-+#include <asm/div64.h>
-+
-+#include <lantiq_soc.h>
-+
-+static unsigned int ltq_ram_clocks[] = {
-+	CLOCK_167M, CLOCK_133M, CLOCK_111M, CLOCK_83M };
-+#define DDR_HZ ltq_ram_clocks[ltq_cgu_r32(LTQ_CGU_SYS) & 0x3]
-+
-+#define BASIC_FREQUENCY_1	35328000
-+#define BASIC_FREQUENCY_2	36000000
-+#define BASIS_REQUENCY_USB	12000000
-+
-+#define GET_BITS(x, msb, lsb) \
-+	(((x) & ((1 << ((msb) + 1)) - 1)) >> (lsb))
-+
-+#define LTQ_CGU_PLL0_CFG	0x0004
-+#define LTQ_CGU_PLL1_CFG	0x0008
-+#define LTQ_CGU_PLL2_CFG	0x000C
-+#define LTQ_CGU_SYS		0x0010
-+#define LTQ_CGU_UPDATE		0x0014
-+#define LTQ_CGU_IF_CLK		0x0018
-+#define LTQ_CGU_OSC_CON		0x001C
-+#define LTQ_CGU_SMD		0x0020
-+#define LTQ_CGU_CT1SR		0x0028
-+#define LTQ_CGU_CT2SR		0x002C
-+#define LTQ_CGU_PCMCR		0x0030
-+#define LTQ_CGU_PCI_CR		0x0034
-+#define LTQ_CGU_PD_PC		0x0038
-+#define LTQ_CGU_FMR		0x003C
-+
-+#define CGU_PLL0_PHASE_DIVIDER_ENABLE	\
-+	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 31))
-+#define CGU_PLL0_BYPASS			\
-+	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 30))
-+#define CGU_PLL0_CFG_DSMSEL		\
-+	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 28))
-+#define CGU_PLL0_CFG_FRAC_EN		\
-+	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 27))
-+#define CGU_PLL1_SRC			\
-+	(ltq_cgu_r32(LTQ_CGU_PLL1_CFG) & (1 << 31))
-+#define CGU_PLL2_PHASE_DIVIDER_ENABLE	\
-+	(ltq_cgu_r32(LTQ_CGU_PLL2_CFG) & (1 << 20))
-+#define CGU_SYS_FPI_SEL			(1 << 6)
-+#define CGU_SYS_DDR_SEL			0x3
-+#define CGU_PLL0_SRC			(1 << 29)
-+
-+#define CGU_PLL0_CFG_PLLK	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 26, 17)
-+#define CGU_PLL0_CFG_PLLN	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 12, 6)
-+#define CGU_PLL0_CFG_PLLM	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 5, 2)
-+#define CGU_PLL2_SRC		GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL2_CFG), 18, 17)
-+#define CGU_PLL2_CFG_INPUT_DIV	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL2_CFG), 16, 13)
-+
-+static unsigned int ltq_get_pll0_fdiv(void);
-+
-+static inline unsigned int
-+get_input_clock(int pll)
-+{
-+	switch (pll) {
-+	case 0:
-+		if (ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & CGU_PLL0_SRC)
-+			return BASIS_REQUENCY_USB;
-+		else if (CGU_PLL0_PHASE_DIVIDER_ENABLE)
-+			return BASIC_FREQUENCY_1;
-+		else
-+			return BASIC_FREQUENCY_2;
-+	case 1:
-+		if (CGU_PLL1_SRC)
-+			return BASIS_REQUENCY_USB;
-+		else if (CGU_PLL0_PHASE_DIVIDER_ENABLE)
-+			return BASIC_FREQUENCY_1;
-+		else
-+			return BASIC_FREQUENCY_2;
-+	case 2:
-+		switch (CGU_PLL2_SRC) {
-+		case 0:
-+			return ltq_get_pll0_fdiv();
-+		case 1:
-+			return CGU_PLL2_PHASE_DIVIDER_ENABLE ?
-+				BASIC_FREQUENCY_1 :
-+				BASIC_FREQUENCY_2;
-+		case 2:
-+			return BASIS_REQUENCY_USB;
-+		}
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static inline unsigned int
-+cal_dsm(int pll, unsigned int num, unsigned int den)
-+{
-+	u64 res, clock = get_input_clock(pll);
-+
-+	res = num * clock;
-+	do_div(res, den);
-+	return res;
-+}
-+
-+static inline unsigned int
-+mash_dsm(int pll, unsigned int M, unsigned int N, unsigned int K)
-+{
-+	unsigned int num = ((N + 1) << 10) + K;
-+	unsigned int den = (M + 1) << 10;
-+
-+	return cal_dsm(pll, num, den);
-+}
-+
-+static inline unsigned int
-+ssff_dsm_1(int pll, unsigned int M, unsigned int N,	unsigned int K)
-+{
-+	unsigned int num = ((N + 1) << 11) + K + 512;
-+	unsigned int den = (M + 1) << 11;
-+
-+	return cal_dsm(pll, num, den);
-+}
-+
-+static inline unsigned int
-+ssff_dsm_2(int pll, unsigned int M, unsigned int N, unsigned int K)
-+{
-+	unsigned int num = K >= 512 ?
-+		((N + 1) << 12) + K - 512 : ((N + 1) << 12) + K + 3584;
-+	unsigned int den = (M + 1) << 12;
-+
-+	return cal_dsm(pll, num, den);
-+}
-+
-+static inline unsigned int
-+dsm(int pll, unsigned int M, unsigned int N, unsigned int K,
-+	unsigned int dsmsel, unsigned int phase_div_en)
-+{
-+	if (!dsmsel)
-+		return mash_dsm(pll, M, N, K);
-+	else if (!phase_div_en)
-+		return mash_dsm(pll, M, N, K);
-+	else
-+		return ssff_dsm_2(pll, M, N, K);
-+}
-+
-+static inline unsigned int
-+ltq_get_pll0_fosc(void)
-+{
-+	if (CGU_PLL0_BYPASS)
-+		return get_input_clock(0);
-+	else
-+		return !CGU_PLL0_CFG_FRAC_EN
-+			? dsm(0, CGU_PLL0_CFG_PLLM, CGU_PLL0_CFG_PLLN, 0,
-+				CGU_PLL0_CFG_DSMSEL,
-+				CGU_PLL0_PHASE_DIVIDER_ENABLE)
-+			: dsm(0, CGU_PLL0_CFG_PLLM, CGU_PLL0_CFG_PLLN,
-+				CGU_PLL0_CFG_PLLK, CGU_PLL0_CFG_DSMSEL,
-+				CGU_PLL0_PHASE_DIVIDER_ENABLE);
-+}
-+
-+static unsigned int
-+ltq_get_pll0_fdiv(void)
-+{
-+	unsigned int div = CGU_PLL2_CFG_INPUT_DIV + 1;
-+
-+	return (ltq_get_pll0_fosc() + (div >> 1)) / div;
-+}
-+
-+unsigned int
-+ltq_get_io_region_clock(void)
-+{
-+	unsigned int ret = ltq_get_pll0_fosc();
-+
-+	switch (ltq_cgu_r32(LTQ_CGU_PLL2_CFG) & CGU_SYS_DDR_SEL) {
-+	default:
-+	case 0:
-+		return (ret + 1) / 2;
-+	case 1:
-+		return (ret * 2 + 2) / 5;
-+	case 2:
-+		return (ret + 1) / 3;
-+	case 3:
-+		return (ret + 2) / 4;
-+	}
-+}
-+EXPORT_SYMBOL(ltq_get_io_region_clock);
-+
-+unsigned int
-+ltq_get_fpi_bus_clock(int fpi)
-+{
-+	unsigned int ret = ltq_get_io_region_clock();
-+
-+	if ((fpi == 2) && (ltq_cgu_r32(LTQ_CGU_SYS) & CGU_SYS_FPI_SEL))
-+		ret >>= 1;
-+	return ret;
-+}
-+EXPORT_SYMBOL(ltq_get_fpi_bus_clock);
-+
-+unsigned int
-+ltq_get_cpu_hz(void)
-+{
-+	switch (ltq_cgu_r32(LTQ_CGU_SYS) & 0xc) {
-+	case 0:
-+		return CLOCK_333M;
-+	case 4:
-+		return DDR_HZ;
-+	case 8:
-+		return DDR_HZ << 1;
-+	default:
-+		return DDR_HZ >> 1;
-+	}
-+}
-+EXPORT_SYMBOL(ltq_get_cpu_hz);
-+
-+unsigned int
-+ltq_get_fpi_hz(void)
-+{
-+	unsigned int ddr_clock = DDR_HZ;
-+
-+	if (ltq_cgu_r32(LTQ_CGU_SYS) & 0x40)
-+		return ddr_clock >> 1;
-+	return ddr_clock;
-+}
-+EXPORT_SYMBOL(ltq_get_fpi_hz);
-diff --git a/arch/mips/lantiq/xway/ebu.c b/arch/mips/lantiq/xway/ebu.c
-new file mode 100644
-index 0000000..169d17d
---- /dev/null
-+++ b/arch/mips/lantiq/xway/ebu.c
-@@ -0,0 +1,54 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  EBU - the external bus unit attaches PCI, NOR and NAND
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/version.h>
-+#include <linux/ioport.h>
-+
-+#include <lantiq_soc.h>
-+
-+/* all access to the ebu must be locked */
-+DEFINE_SPINLOCK(ebu_lock);
-+EXPORT_SYMBOL_GPL(ebu_lock);
-+
-+static struct resource ltq_ebu_resource = {
-+	.name	= "ebu",
-+	.start	= LTQ_EBU_BASE_ADDR,
-+	.end	= LTQ_EBU_BASE_ADDR + LTQ_EBU_SIZE - 1,
-+	.flags	= IORESOURCE_MEM,
-+};
-+
-+/* remapped base addr of the clock unit and external bus unit */
-+void __iomem *ltq_ebu_membase;
-+
-+static int __init
-+lantiq_ebu_init(void)
-+{
-+	/* insert and request the memory region */
-+	if (insert_resource(&iomem_resource, &ltq_ebu_resource) < 0)
-+		panic("Failed to insert ebu memory\n");
-+
-+	if (request_mem_region(ltq_ebu_resource.start,
-+			resource_size(&ltq_ebu_resource), "ebu") < 0)
-+		panic("Failed to request ebu memory\n");
-+
-+	/* remap ebu register range */
-+	ltq_ebu_membase = ioremap_nocache(ltq_ebu_resource.start,
-+				resource_size(&ltq_ebu_resource));
-+	if (!ltq_ebu_membase)
-+		panic("Failed to remap ebu memory\n");
-+
-+	/* make sure to unprotect the memory region where flash is located */
-+	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
-+	return 0;
-+}
-+
-+postcore_initcall(lantiq_ebu_init);
-diff --git a/arch/mips/lantiq/xway/gpio.c b/arch/mips/lantiq/xway/gpio.c
-new file mode 100644
-index 0000000..f9ff776
---- /dev/null
-+++ b/arch/mips/lantiq/xway/gpio.c
-@@ -0,0 +1,203 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/gpio.h>
-+#include <linux/ioport.h>
-+#include <linux/io.h>
-+
-+#include <lantiq_soc.h>
-+
-+#define LTQ_GPIO_OUT		0x00
-+#define LTQ_GPIO_IN		0x04
-+#define LTQ_GPIO_DIR		0x08
-+#define LTQ_GPIO_ALTSEL0	0x0C
-+#define LTQ_GPIO_ALTSEL1	0x10
-+#define LTQ_GPIO_OD		0x14
-+
-+#define PINS_PER_PORT		16
-+#define MAX_PORTS		3
-+
-+#define ltq_gpio_getbit(m, r, p)	(!!(ltq_r32(m + r) & (1 << p)))
-+#define ltq_gpio_setbit(m, r, p)	ltq_w32_mask(0, (1 << p), m + r)
-+#define ltq_gpio_clearbit(m, r, p)	ltq_w32_mask((1 << p), 0, m + r)
-+
-+struct ltq_gpio {
-+	void __iomem *membase;
-+	struct gpio_chip chip;
-+};
-+
-+static struct ltq_gpio ltq_gpio_port[MAX_PORTS];
-+
-+int
-+gpio_to_irq(unsigned int gpio)
-+{
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(gpio_to_irq);
-+
-+int
-+irq_to_gpio(unsigned int gpio)
-+{
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(irq_to_gpio);
-+
-+int
-+ltq_gpio_request(unsigned int pin, unsigned int alt0,
-+	unsigned int alt1, unsigned int dir, const char *name)
-+{
-+	int id = 0;
-+
-+	if (pin >= (MAX_PORTS * PINS_PER_PORT))
-+		return -EINVAL;
-+	if (gpio_request(pin, name)) {
-+		pr_err("failed to setup lantiq gpio: %s\n", name);
-+		return -EBUSY;
-+	}
-+	if (dir)
-+		gpio_direction_output(pin, 1);
-+	else
-+		gpio_direction_input(pin);
-+	while (pin >= PINS_PER_PORT) {
-+		pin -= PINS_PER_PORT;
-+		id++;
-+	}
-+	if (alt0)
-+		ltq_gpio_setbit(ltq_gpio_port[id].membase,
-+			LTQ_GPIO_ALTSEL0, pin);
-+	else
-+		ltq_gpio_clearbit(ltq_gpio_port[id].membase,
-+			LTQ_GPIO_ALTSEL0, pin);
-+	if (alt1)
-+		ltq_gpio_setbit(ltq_gpio_port[id].membase,
-+			LTQ_GPIO_ALTSEL1, pin);
-+	else
-+		ltq_gpio_clearbit(ltq_gpio_port[id].membase,
-+			LTQ_GPIO_ALTSEL1, pin);
-+	return 0;
-+}
-+EXPORT_SYMBOL(ltq_gpio_request);
-+
-+static void
-+ltq_gpio_set(struct gpio_chip *chip, unsigned int offset, int value)
-+{
-+	struct ltq_gpio *ltq_gpio = container_of(chip, struct ltq_gpio, chip);
-+
-+	if (value)
-+		ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_OUT, offset);
-+	else
-+		ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_OUT, offset);
-+}
-+
-+static int
-+ltq_gpio_get(struct gpio_chip *chip, unsigned int offset)
-+{
-+	struct ltq_gpio *ltq_gpio = container_of(chip, struct ltq_gpio, chip);
-+
-+	return ltq_gpio_getbit(ltq_gpio->membase, LTQ_GPIO_IN, offset);
-+}
-+
-+static int
-+ltq_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
-+{
-+	struct ltq_gpio *ltq_gpio = container_of(chip, struct ltq_gpio, chip);
-+
-+	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_OD, offset);
-+	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_DIR, offset);
-+	return 0;
-+}
-+
-+static int
-+ltq_gpio_direction_output(struct gpio_chip *chip,
-+	unsigned int offset, int value)
-+{
-+	struct ltq_gpio *ltq_gpio = container_of(chip, struct ltq_gpio, chip);
-+
-+	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_OD, offset);
-+	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_DIR, offset);
-+	ltq_gpio_set(chip, offset, value);
-+	return 0;
-+}
-+
-+static int
-+ltq_gpio_req(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct ltq_gpio *ltq_gpio = container_of(chip, struct ltq_gpio, chip);
-+
-+	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_ALTSEL0, offset);
-+	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_ALTSEL1, offset);
-+	return 0;
-+}
-+
-+static int
-+ltq_gpio_probe(struct platform_device *pdev)
-+{
-+	struct resource *res;
-+
-+	if (pdev->id >= MAX_PORTS) {
-+		dev_err(&pdev->dev, "invalid gpio port %d\n",
-+			pdev->id);
-+		return -EINVAL;
-+	}
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev, "failed to get memory for gpio port %d\n",
-+			pdev->id);
-+		return -ENOENT;
-+	}
-+	res = devm_request_mem_region(&pdev->dev, res->start,
-+		resource_size(res), dev_name(&pdev->dev));
-+	if (!res) {
-+		dev_err(&pdev->dev,
-+			"failed to request memory for gpio port %d\n",
-+			pdev->id);
-+		return -EBUSY;
-+	}
-+	ltq_gpio_port[pdev->id].membase = devm_ioremap_nocache(&pdev->dev,
-+		res->start, resource_size(res));
-+	if (!ltq_gpio_port[pdev->id].membase) {
-+		dev_err(&pdev->dev, "failed to remap memory for gpio port %d\n",
-+			pdev->id);
-+		return -ENOMEM;
-+	}
-+	ltq_gpio_port[pdev->id].chip.label = "ltq_gpio";
-+	ltq_gpio_port[pdev->id].chip.direction_input = ltq_gpio_direction_input;
-+	ltq_gpio_port[pdev->id].chip.direction_output =
-+		ltq_gpio_direction_output;
-+	ltq_gpio_port[pdev->id].chip.get = ltq_gpio_get;
-+	ltq_gpio_port[pdev->id].chip.set = ltq_gpio_set;
-+	ltq_gpio_port[pdev->id].chip.request = ltq_gpio_req;
-+	ltq_gpio_port[pdev->id].chip.base = PINS_PER_PORT * pdev->id;
-+	ltq_gpio_port[pdev->id].chip.ngpio = PINS_PER_PORT;
-+	platform_set_drvdata(pdev, &ltq_gpio_port[pdev->id]);
-+	return gpiochip_add(&ltq_gpio_port[pdev->id].chip);
-+}
-+
-+static struct platform_driver
-+ltq_gpio_driver = {
-+	.probe = ltq_gpio_probe,
-+	.driver = {
-+		.name = "ltq_gpio",
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+int __init
-+ltq_gpio_init(void)
-+{
-+	int ret = platform_driver_register(&ltq_gpio_driver);
-+
-+	if (ret)
-+		pr_info("ltq_gpio : Error registering platfom driver!");
-+	return ret;
-+}
-+
-+postcore_initcall(ltq_gpio_init);
-diff --git a/arch/mips/lantiq/xway/pmu.c b/arch/mips/lantiq/xway/pmu.c
-new file mode 100644
-index 0000000..c981055
---- /dev/null
-+++ b/arch/mips/lantiq/xway/pmu.c
-@@ -0,0 +1,73 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/version.h>
-+#include <linux/ioport.h>
-+
-+#include <lantiq_soc.h>
-+
-+/* PMU - the power management unit allows us to turn part of the core
-+ * on and off
-+ */
-+
-+/* the enable / disable registers */
-+#define LTQ_PMU_PWDCR	0x1C
-+#define LTQ_PMU_PWDSR	0x20
-+
-+#define ltq_pmu_w32(x, y)	ltq_w32((x), ltq_pmu_membase + (y))
-+#define ltq_pmu_r32(x)		ltq_r32(ltq_pmu_membase + (x))
-+
-+static struct resource ltq_pmu_resource = {
-+	.name	= "pmu",
-+	.start	= LTQ_PMU_BASE_ADDR,
-+	.end	= LTQ_PMU_BASE_ADDR + LTQ_PMU_SIZE - 1,
-+	.flags	= IORESOURCE_MEM,
-+};
-+
-+static void __iomem *ltq_pmu_membase;
-+
-+void
-+ltq_pmu_enable(unsigned int module)
-+{
-+	int err = 1000000;
-+
-+	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) & ~module, LTQ_PMU_PWDCR);
-+	do {} while (--err && (ltq_pmu_r32(LTQ_PMU_PWDSR) & module));
-+
-+	if (!err)
-+		panic("activating PMU module failed!\n");
-+}
-+EXPORT_SYMBOL(ltq_pmu_enable);
-+
-+void
-+ltq_pmu_disable(unsigned int module)
-+{
-+	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) | module, LTQ_PMU_PWDCR);
-+}
-+EXPORT_SYMBOL(ltq_pmu_disable);
-+
-+int __init
-+ltq_pmu_init(void)
-+{
-+	if (insert_resource(&iomem_resource, &ltq_pmu_resource) < 0)
-+		panic("Failed to insert pmu memory\n");
-+
-+	if (request_mem_region(ltq_pmu_resource.start,
-+			resource_size(&ltq_pmu_resource), "pmu") < 0)
-+		panic("Failed to request pmu memory\n");
-+
-+	ltq_pmu_membase = ioremap_nocache(ltq_pmu_resource.start,
-+				resource_size(&ltq_pmu_resource));
-+	if (!ltq_pmu_membase)
-+		panic("Failed to remap pmu memory\n");
-+	return 0;
-+}
-+
-+core_initcall(ltq_pmu_init);
-diff --git a/arch/mips/lantiq/xway/prom-ase.c b/arch/mips/lantiq/xway/prom-ase.c
-new file mode 100644
-index 0000000..a7faf77
---- /dev/null
-+++ b/arch/mips/lantiq/xway/prom-ase.c
-@@ -0,0 +1,40 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/clk.h>
-+#include <asm/bootinfo.h>
-+#include <asm/time.h>
-+
-+#include <lantiq_soc.h>
-+
-+#include "../prom.h"
-+
-+#define SOC_AMAZON_SE	"Amazon_SE"
-+
-+#define PART_SHIFT	12
-+#define PART_MASK	0x0FFFFFFF
-+#define REV_SHIFT	28
-+#define REV_MASK	0xF0000000
-+
-+void __init
-+ltq_soc_detect(struct ltq_soc_info *i)
-+{
-+	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
-+	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
-+	switch (i->partnum) {
-+	case SOC_ID_AMAZON_SE:
-+		i->name = SOC_AMAZON_SE;
-+		i->type = SOC_TYPE_AMAZON_SE;
-+		break;
-+
-+	default:
-+		unreachable();
-+		break;
-+	}
-+}
-diff --git a/arch/mips/lantiq/xway/prom-xway.c b/arch/mips/lantiq/xway/prom-xway.c
-new file mode 100644
-index 0000000..e7270e5
---- /dev/null
-+++ b/arch/mips/lantiq/xway/prom-xway.c
-@@ -0,0 +1,55 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/clk.h>
-+#include <asm/bootinfo.h>
-+#include <asm/time.h>
-+
-+#include <lantiq_soc.h>
-+
-+#include "../prom.h"
-+
-+#define SOC_DANUBE	"Danube"
-+#define SOC_TWINPASS	"Twinpass"
-+#define SOC_AR9		"AR9"
-+
-+#define PART_SHIFT	12
-+#define PART_MASK	0x0FFFFFFF
-+#define REV_SHIFT	28
-+#define REV_MASK	0xF0000000
-+
-+void __init
-+ltq_soc_detect(struct ltq_soc_info *i)
-+{
-+	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
-+	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
-+	switch (i->partnum) {
-+	case SOC_ID_DANUBE1:
-+	case SOC_ID_DANUBE2:
-+		i->name = SOC_DANUBE;
-+		i->type = SOC_TYPE_DANUBE;
-+		break;
-+
-+	case SOC_ID_TWINPASS:
-+		i->name = SOC_TWINPASS;
-+		i->type = SOC_TYPE_DANUBE;
-+		break;
-+
-+	case SOC_ID_ARX188:
-+	case SOC_ID_ARX168:
-+	case SOC_ID_ARX182:
-+		i->name = SOC_AR9;
-+		i->type = SOC_TYPE_AR9;
-+		break;
-+
-+	default:
-+		unreachable();
-+		break;
-+	}
-+}
-diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-new file mode 100644
-index 0000000..c5c1cba
---- /dev/null
-+++ b/arch/mips/lantiq/xway/reset.c
-@@ -0,0 +1,82 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <linux/pm.h>
-+#include <asm/reboot.h>
-+
-+#include <lantiq_soc.h>
-+
-+#define ltq_rcu_w32(x, y)	ltq_w32((x), ltq_rcu_membase + (y))
-+#define ltq_rcu_r32(x)		ltq_r32(ltq_rcu_membase + (x))
-+
-+/* register definitions */
-+#define LTQ_RCU_RST		0x0010
-+#define LTQ_RCU_RST_ALL		0x40000000
-+
-+static struct resource ltq_rcu_resource = {
-+	.name   = "rcu",
-+	.start  = LTQ_RCU_BASE_ADDR,
-+	.end    = LTQ_RCU_BASE_ADDR + LTQ_RCU_SIZE - 1,
-+	.flags  = IORESOURCE_MEM,
-+};
-+
-+/* remapped base addr of the reset control unit */
-+static void __iomem *ltq_rcu_membase;
-+
-+static void
-+ltq_machine_restart(char *command)
-+{
-+	pr_notice("System restart\n");
-+	local_irq_disable();
-+	ltq_rcu_w32(ltq_rcu_r32(LTQ_RCU_RST) | LTQ_RCU_RST_ALL, LTQ_RCU_RST);
-+	unreachable();
-+}
-+
-+static void
-+ltq_machine_halt(void)
-+{
-+	pr_notice("System halted.\n");
-+	local_irq_disable();
-+	unreachable();
-+}
-+
-+static void
-+ltq_machine_power_off(void)
-+{
-+	pr_notice("Please turn off the power now.\n");
-+	local_irq_disable();
-+	unreachable();
-+}
-+
-+static int __init
-+mips_reboot_setup(void)
-+{
-+	/* insert and request the memory region */
-+	if (insert_resource(&iomem_resource, &ltq_rcu_resource) < 0)
-+		panic("Failed to insert rcu memory\n");
-+
-+	if (request_mem_region(ltq_rcu_resource.start,
-+			resource_size(&ltq_rcu_resource), "rcu") < 0)
-+		panic("Failed to request rcu memory\n");
-+
-+	/* remap rcu register range */
-+	ltq_rcu_membase = ioremap_nocache(ltq_rcu_resource.start,
-+				resource_size(&ltq_rcu_resource));
-+	if (!ltq_rcu_membase)
-+		panic("Failed to remap rcu memory\n");
-+
-+	_machine_restart = ltq_machine_restart;
-+	_machine_halt = ltq_machine_halt;
-+	pm_power_off = ltq_machine_power_off;
-+	return 0;
-+}
-+
-+arch_initcall(mips_reboot_setup);
 -- 
 1.7.2.3

@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2011 16:00:34 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:54795 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Mar 2011 16:10:48 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:59972 "EHLO
         duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S2100774Ab1C2OAb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2011 16:00:31 +0200
+        by eddie.linux-mips.org with ESMTP id S2100780Ab1C2OKp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Mar 2011 16:10:45 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2TE0U5V018626;
-        Tue, 29 Mar 2011 16:00:30 +0200
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2TEAixX019473;
+        Tue, 29 Mar 2011 16:10:44 +0200
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2TE0TLT018624;
-        Tue, 29 Mar 2011 16:00:29 +0200
-Date:   Tue, 29 Mar 2011 16:00:29 +0200
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2TEAia5019472;
+        Tue, 29 Mar 2011 16:10:44 +0200
+Date:   Tue, 29 Mar 2011 16:10:44 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Yoichi Yuasa <yuasa@linux-mips.org>
-Cc:     linux-mips <linux-mips@linux-mips.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH 2/2] MIPS: msp71xx: fix typo in msp_per_irq_controller
-Message-ID: <20110329140029.GA18334@linux-mips.org>
+Cc:     linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/2] MIPS: msp71xx: fix msp_time build error
+Message-ID: <20110329141044.GA13538@linux-mips.org>
 References: <20110329155223.08fbef97.yuasa@linux-mips.org>
- <20110329155356.bda3c255.yuasa@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20110329155356.bda3c255.yuasa@linux-mips.org>
+In-Reply-To: <20110329155223.08fbef97.yuasa@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29616
+X-archive-position: 29617
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,6 +33,26 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Applied.  Thanks, Yoichi-San,
+On Tue, Mar 29, 2011 at 03:52:23PM +0900, Yoichi Yuasa wrote:
+
+> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+> index 8b42f30..9e58c3d 100644
+> --- a/arch/mips/pmc-sierra/msp71xx/msp_time.c
+> +++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+> @@ -28,10 +28,11 @@
+>  #include <linux/spinlock.h>
+>  #include <linux/module.h>
+>  #include <linux/ptrace.h>
+> +#include <linux/clockchips.h>
+>  
+> +#include <asm/time.h>
+>  #include <asm/cevt-r4k.h>
+>  #include <asm/mipsregs.h>
+> -#include <asm/time.h>
+>  
+>  #include <msp_prom.h>
+>  #include <msp_int.h>
+
+I went for a different patch.  Thanks Yoichi-San!
 
   Ralf

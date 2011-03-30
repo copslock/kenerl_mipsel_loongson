@@ -1,79 +1,190 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2011 11:15:17 +0200 (CEST)
-Received: from service87.mimecast.com ([94.185.240.25]:60781 "HELO
-        service87.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491063Ab1C3JPO convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 30 Mar 2011 11:15:14 +0200
-Received: from cam-owa2.Emea.Arm.com (fw-tnat.cambridge.arm.com
- [217.140.96.21]) by service87.mimecast.com; Wed, 30 Mar 2011 10:15:08 +0100
-Received: from [10.1.77.95] ([10.1.255.212]) by cam-owa2.Emea.Arm.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Wed, 30 Mar 2011 10:15:06 +0100
-Subject: Re: kmemleak for MIPS
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Maxin John <maxin.john@gmail.com>
-Cc:     Daniel Baluta <dbaluta@ixiacom.com>,
-        naveen yadav <yad.naveen@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <AANLkTi=gMP6jQuQFovfsOX=7p-SSnwXoVLO_DVEpV63h@mail.gmail.com>
-References: <9bde694e1003020554p7c8ff3c2o4ae7cb5d501d1ab9@mail.gmail.com>
-         <AANLkTinnqtXf5DE+qxkTyZ9p9Mb8dXai6UxWP2HaHY3D@mail.gmail.com>
-         <1300960540.32158.13.camel@e102109-lin.cambridge.arm.com>
-         <AANLkTim139fpJsMJFLiyUYvFgGMz-Ljgd_yDrks-tqhE@mail.gmail.com>
-         <1301395206.583.53.camel@e102109-lin.cambridge.arm.com>
-         <AANLkTim-4v5Cbp6+wHoXjgKXoS0axk1cgQ5AHF_zot80@mail.gmail.com>
-         <1301399454.583.66.camel@e102109-lin.cambridge.arm.com>
-         <AANLkTin0_gT0E3=oGyfMwk+1quqonYBExeN9a3=v=Lob@mail.gmail.com>
-         <AANLkTi=gMP6jQuQFovfsOX=7p-SSnwXoVLO_DVEpV63h@mail.gmail.com>
-Organization: ARM Limited
-Date:   Wed, 30 Mar 2011 10:15:05 +0100
-Message-ID: <1301476505.29074.47.camel@e102109-lin.cambridge.arm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2011 11:32:56 +0200 (CEST)
+Received: from earthlight.etchedpixels.co.uk ([81.2.110.250]:45893 "EHLO
+        www.etchedpixels.co.uk" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491063Ab1C3Jcw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2011 11:32:52 +0200
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+        by www.etchedpixels.co.uk (8.14.4/8.14.4) with ESMTP id p2U9XJvv009649;
+        Wed, 30 Mar 2011 10:33:20 +0100
+Date:   Wed, 30 Mar 2011 10:33:19 +0100
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Ralph Hempel <ralph.hempel@lantiq.com>,
+        Felix Fietkau <nbd@openwrt.org>, linux-mips@linux-mips.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH V5 04/10] MIPS: lantiq: add serial port support
+Message-ID: <20110330103319.543eb2a6@lxorguk.ukuu.org.uk>
+In-Reply-To: <1301470076-17279-5-git-send-email-blogic@openwrt.org>
+References: <1301470076-17279-1-git-send-email-blogic@openwrt.org>
+        <1301470076-17279-5-git-send-email-blogic@openwrt.org>
+X-Mailer: Claws Mail 3.7.8 (GTK+ 2.22.0; x86_64-redhat-linux-gnu)
+Face:   iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAFVBMVEWysKsSBQMIAwIZCwj///8wIhxoRDXH9QHCAAABeUlEQVQ4jaXTvW7DIBAAYCQTzz2hdq+rdg494ZmBeE5KYHZjm/d/hJ6NfzBJpp5kRb5PHJwvMPMk2L9As5Y9AmYRBL+HAyJKeOU5aHRhsAAvORQ+UEgAvgddj/lwAXndw2laEDqA4x6KEBhjYRCg9tBFCOuJFxg2OKegbWjbsRTk8PPhKPD7HcRxB7cqhgBRp9Dcqs+B8v4CQvFdqeot3Kov6hBUn0AJitrzY+sgUuiA8i0r7+B3AfqKcN6t8M6HtqQ+AOoELCikgQSbgabKaJW3kn5lBs47JSGDhhLKDUh1UMipwwinMYPTBuIBjEclSaGZUk9hDlTb5sUTYN2SFFQuPe4Gox1X0FZOufjgBiV1Vls7b+GvK3SU4wfmcGo9rPPQzgIabfj4TYQo15k3bTHX9RIw/kniir5YbtJF4jkFG+dsDK1IgE413zAthU/vR2HVMmFUPIHTvF6jWCpFaGw/A3qWgnbxpSm9MSmY5b3pM1gvNc/gQfwBsGwF0VCtxZgAAAAASUVORK5CYII=
 Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1
-X-OriginalArrivalTime: 30 Mar 2011 09:15:06.0492 (UTC) FILETIME=[F5C61BC0:01CBEEBA]
-X-MC-Unique: 111033010150808201
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <catalin.marinas@arm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29632
+X-archive-position: 29633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: catalin.marinas@arm.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2011-03-29 at 20:36 +0100, Maxin John wrote:
-> I have prepared the combined patch for kmemleak porting to MIPS. After
-> applying the patch and enabling the kmemleak in Kernel, I can see one
-> kernel memleak reported during booting itself:
-...
-> unreferenced object 0x8f90d000 (size 4096):
->   comm "swapper", pid 1, jiffies 4294937330 (age 815.000s)
->   hex dump (first 32 bytes):
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace:
->     [<80529644>] alloc_large_system_hash+0x2f8/0x410
->     [<805383b4>] udp_table_init+0x4c/0x158
->     [<805384dc>] udp_init+0x1c/0x94
->     [<8053889c>] inet_init+0x184/0x2a0
->     [<80100584>] do_one_initcall+0x174/0x1e0
->     [<8051f348>] kernel_init+0xe4/0x174
->     [<80103d4c>] kernel_thread_helper+0x10/0x18
+On Wed, 30 Mar 2011 09:27:50 +0200
+John Crispin <blogic@openwrt.org> wrote:
 
-If you for the kmemleak scan (via echo) a few times, do you get more
-leaks? The udp_table_init() function looks like it could leak some
-memory but I haven't seen it before. I'm not sure whether this is a
-false positive or a real leak.
-> 
-> Please let me know your comments.
-> 
-> Signed-off-by: Maxin B. John <maxin.john@gmail.com>
-> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> This patch adds the driver for the 2 serial ports found inside the Lantiq SoC family
 
-I think the last line should be more like:
+Several comments, and a NAK to the current version.
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Looks like it just needs a bit of bringing up to current tty/serial
+interface expectations.
+
+> +static void
+> +lqasc_start_tx(struct uart_port *port)
+> +{
+> +	unsigned long flags;
+> +	local_irq_save(flags);
+> +	lqasc_tx_chars(port);
+> +	local_irq_restore(flags);
+> +	return;
+> +}
+
+Shouldn't this be using locks ?
+(note if the platorm is uniprocessor only then spin_lock_irqsave() turns
+into local_irq_save())
+
+
+
+> +static void
+> +lqasc_rx_chars(struct uart_port *port)
+> +{
+> +	struct tty_struct *tty = port->state->port.tty;
+
+tty ports are refcounted. Look how drivers use tty_port_tty_get() and
+tty_kref_put(). Note that a tty can be NULL at this point and you need to
+handle it
+
+
+> +static irqreturn_t
+> +lqasc_err_int(int irq, void *_port)
+> +{
+> +	struct uart_port *port = (struct uart_port *)_port;
+> +	/* clear any pending interrupts */
+> +	ltq_w32_mask(0, ASCWHBSTATE_CLRPE | ASCWHBSTATE_CLRFE |
+> +		ASCWHBSTATE_CLRROE, port->membase + LTQ_ASC_WHBSTATE);
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t
+> +lqasc_rx_int(int irq, void *_port)
+> +{
+> +	struct uart_port *port = (struct uart_port *)_port;
+> +	ltq_w32(ASC_IRNCR_RIR, port->membase + LTQ_ASC_IRNCR);
+> +	lqasc_rx_chars(port);
+> +	return IRQ_HANDLED;
+> +}
+
+The interrupt handlers look like they need to hold the port lock as well ?
+
+
+> +static void
+> +lqasc_set_termios(struct uart_port *port,
+> +	struct ktermios *new, struct ktermios *old)
+> +{
+> +	unsigned int cflag;
+> +	unsigned int iflag;
+> +	unsigned int divisor;
+> +	unsigned int baud;
+> +	unsigned int con = 0;
+> +	unsigned long flags;
+> +
+> +	cflag = new->c_cflag;
+> +	iflag = new->c_iflag;
+> +
+> +	switch (cflag & CSIZE) {
+> +	case CS7:
+> +		con = ASCCON_M_7ASYNC;
+> +		break;
+> +
+> +	case CS5:
+> +	case CS6:
+> +	default:
+> +		con = ASCCON_M_8ASYNC;
+
+If you can't support a request (eg CS5/CS6 or CMSPAR etc) you need to
+clear them from the requested settings - ie
+
+	default:
+		new->c_cflag &= ~ CSIZE;
+		new->c_cflag |= CS8;
+		con = ....
+> +		break;
+> +	}
+> +
+> +	if (cflag & CSTOPB)
+> +		con |= ASCCON_STP;
+> +
+> +	if (cflag & PARENB) {
+> +		if (!(cflag & PARODD))
+> +			con &= ~ASCCON_ODD;
+> +		else
+> +			con |= ASCCON_ODD;
+> +	}
+
+CMSPAR ?
+
+> +	local_irq_save(flags);
+
+Again I'd expect locks not this.
+
+> +
+> +	/* set up CON */
+> +	ltq_w32_mask(0, con, port->membase + LTQ_ASC_CON);
+> +
+> +	/* Set baud rate - take a divider of 2 into account */
+> +	baud = uart_get_baud_rate(port, new, old, 0, port->uartclk / 16);
+> +	divisor = uart_get_divisor(port, baud);
+> +	divisor = divisor / 2 - 1;
+
+Actual baud also wants writing back if not set to B0 (see 8250.c)
+
+
+> +static struct console lqasc_console = {
+> +	.name =		"ttyS",
+
+ttyS is reserved for the 8250 ports
+
+> +	.write =	lqasc_console_write,
+> +	.device =	uart_console_device,
+> +	.setup =	lqasc_console_setup,
+> +	.flags =	CON_PRINTBUFFER,
+> +	.index =	-1,
+> +	.data =		&lqasc_reg,
+> +};
+> +
+> +static int __init
+> +lqasc_console_init(void)
+> +{
+> +	register_console(&lqasc_console);
+> +	return 0;
+> +}
+> +console_initcall(lqasc_console_init);
+> +
+> +static struct uart_driver lqasc_reg = {
+> +	.owner =	THIS_MODULE,
+> +	.driver_name =	DRVNAME,
+> +	.dev_name =	"ttyS",
+> +	.major =	TTY_MAJOR,
+> +	.minor =	64,
+
+This is existing owned and reserved space - do a dynamic allocation and
+use a new name.
+
+
+Alan

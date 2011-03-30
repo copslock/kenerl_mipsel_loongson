@@ -1,29 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2011 14:40:49 +0200 (CEST)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:55311 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491130Ab1C3Mkq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Mar 2011 14:40:46 +0200
-Received: by qwi2 with SMTP id 2so863603qwi.36
-        for <linux-mips@linux-mips.org>; Wed, 30 Mar 2011 05:40:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Mar 2011 14:53:06 +0200 (CEST)
+Received: from mail-qy0-f177.google.com ([209.85.216.177]:64807 "EHLO
+        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491130Ab1C3MxD convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 30 Mar 2011 14:53:03 +0200
+Received: by qyl38 with SMTP id 38so905914qyl.15
+        for <linux-mips@linux-mips.org>; Wed, 30 Mar 2011 05:52:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=bHZsVxdp6udbZhqBv7bbf0MxFNaSxYNILJF3NcBYX0M=;
-        b=DdRp5Hs7kkvlh1VxNpw3rza3MVDPyjXI25aGlxQO3PBDiv4t7xdE0N2vQImeJAp2dS
-         h0CTvkK5EcqNeYtQaUwJL8BN+lo1UV/KLEg1BdaWueqzlrz4AbDyaQ7l2ieeiAdH31cB
-         9WsbLJfBrQUNj5DwHItK0YSTplVwBEyt0oetw=
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=OhBETm2sFq2S8CsdHOx2mttahKTmhELxAYUuLwOJ/Ko=;
+        b=sVKO8wvyaxUJPIzW0Kb8/xLCN1QL1jONqTgatHihrgRVWxlYcN8ZkBW0/nXJtYKJNx
+         R6U7LHqWz/WSv19+yb5iU0UgBFjnyRTegRBVHbbqrHto2OXIkZBO+nUbHTVCIH3RxYvf
+         qD0SiNZ4VVGJM0ucFkSwSr0g2VkDrg2ugrPqo=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=pNG8oGOrx3I2EflueVnHtJmJ92FjVBYxbKs3MWwNdGwhpKpKxDdowoM0q/D2Mdfzc1
-         NmlsC+tmwnavwkmzcPaSAswNrlQf5c5knng1mClJJNdwIijFK9vkRaTlzup8jTBIZ5BV
-         z72YTl5VUNIMh94wR93a6/aGhZVFv6JE7PjTw=
+         :cc:content-type:content-transfer-encoding;
+        b=mKqckMy2KkKs0uQSZiHipuWD3OgRIrNcKNuF2A0nO5jVERrwIMhOw/5M9Z50TzlbZf
+         vml5mSOkRErlhP8TMHv1JnIxtgLmcx9Iwbx6ptuLHeAu97W6H8HKN31PeDlRqC4dfvxS
+         GOgRo8lS0Q/XHiOp7gdMhqU3Px2WtxBPRHT6g=
 MIME-Version: 1.0
-Received: by 10.229.17.11 with SMTP id q11mr959584qca.46.1301488840319; Wed,
- 30 Mar 2011 05:40:40 -0700 (PDT)
-Received: by 10.229.6.200 with HTTP; Wed, 30 Mar 2011 05:40:40 -0700 (PDT)
+Received: by 10.224.138.14 with SMTP id y14mr1008274qat.31.1301489577530; Wed,
+ 30 Mar 2011 05:52:57 -0700 (PDT)
+Received: by 10.224.2.146 with HTTP; Wed, 30 Mar 2011 05:52:57 -0700 (PDT)
 In-Reply-To: <1301488032.3283.42.camel@edumazet-laptop>
 References: <9bde694e1003020554p7c8ff3c2o4ae7cb5d501d1ab9@mail.gmail.com>
         <AANLkTinnqtXf5DE+qxkTyZ9p9Mb8dXai6UxWP2HaHY3D@mail.gmail.com>
@@ -41,72 +43,95 @@ References: <9bde694e1003020554p7c8ff3c2o4ae7cb5d501d1ab9@mail.gmail.com>
         <1301485085.29074.61.camel@e102109-lin.cambridge.arm.com>
         <AANLkTikXfVNkyFE2MpW9ZtfX2G=QKvT7kvEuDE-YE5xO@mail.gmail.com>
         <1301488032.3283.42.camel@edumazet-laptop>
-Date:   Wed, 30 Mar 2011 13:40:40 +0100
-Message-ID: <AANLkTimvwZXJup9NhzAdWr1dO2p7=usLrsXXhyy7zrk4@mail.gmail.com>
+Date:   Wed, 30 Mar 2011 15:52:57 +0300
+Message-ID: <AANLkTikX0jxdkyYgPoqjvC5HzY8VydTbFh_gFDzM8zJ7@mail.gmail.com>
 Subject: Re: kmemleak for MIPS
-From:   Maxin John <maxin.john@gmail.com>
-To:     Eric Dumazet <eric.dumazet@gmail.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Daniel Baluta <dbaluta@ixiacom.com>,
+From:   Daniel Baluta <daniel.baluta@gmail.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     Maxin John <maxin.john@gmail.com>,
         naveen yadav <yad.naveen@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Eric Dumazet <eric.dumazet@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <maxin.john@gmail.com>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <daniel.baluta@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29645
+X-archive-position: 29646
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maxin.john@gmail.com
+X-original-sender: daniel.baluta@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-> How much memory do you have exactly on this machine ?
-
-debian-mips:~# cat /proc/meminfo
-MemTotal:         255500 kB
-MemFree:          214848 kB
-Buffers:            3116 kB
-Cached:            15960 kB
-SwapCached:            0 kB
-Active:            10332 kB
-Inactive:          12512 kB
-Active(anon):       3776 kB
-Inactive(anon):     2500 kB
-Active(file):       6556 kB
-Inactive(file):    10012 kB
-Unevictable:           0 kB
-Mlocked:               0 kB
-SwapTotal:        738952 kB
-SwapFree:         738952 kB
-Dirty:                 0 kB
-Writeback:             0 kB
-AnonPages:          3796 kB
-Mapped:             3300 kB
-Shmem:              2508 kB
-Slab:              16940 kB
-SReclaimable:       2884 kB
-SUnreclaim:        14056 kB
-KernelStack:         272 kB
-PageTables:          312 kB
-NFS_Unstable:          0 kB
-Bounce:                0 kB
-WritebackTmp:          0 kB
-CommitLimit:      866700 kB
-Committed_AS:      36916 kB
-VmallocTotal:    1048372 kB
-VmallocUsed:         220 kB
-VmallocChunk:    1048140 kB
-
-> If you care about losing 8192 bytes of memory, you could boot with
+On Wed, Mar 30, 2011 at 3:27 PM, Eric Dumazet <eric.dumazet@gmail.com> wrote:
+> Le mercredi 30 mars 2011 à 13:17 +0100, Maxin John a écrit :
+>> A quick observation from dmesg after placing printks in
+>> "net/ipv4/udp.c" for MIPS-malta
+>>
+>> CONFIG_BASE_SMALL : 0
+>> table->mask : 127
+>> UDP_HTABLE_SIZE_MIN :  256
+>>
+>> dmesg:
+>> ....
+>> ...
+>> TCP: Hash tables configured (established 8192 bind 8192)
+>> TCP reno registered
+>> CONFIG_BASE_SMALL : 0
+>> UDP hash table entries: 128 (order: 0, 4096 bytes)
+>> table->mask, UDP_HTABLE_SIZE_MIN : 127 256
+>> CONFIG_BASE_SMALL : 0
+>> UDP-Lite hash table entries: 128 (order: 0, 4096 bytes)
+>> table->mask, UDP_HTABLE_SIZE_MIN : 127 256
+>> NET: Registered protocol family 1
+>> ....
+>> ....
+>>
+>> printk(s) are placed in udp.c as listed below:
+>>
+>> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+>> index 588f47a..ca7f6c6 100644
+>> --- a/net/ipv4/udp.c
+>> +++ b/net/ipv4/udp.c
+>> @@ -2162,7 +2162,7 @@ __setup("uhash_entries=", set_uhash_entries);
+>>  void __init udp_table_init(struct udp_table *table, const char *name)
+>>  {
+>>         unsigned int i;
+>> -
+>> +       printk("CONFIG_BASE_SMALL : %d \n", CONFIG_BASE_SMALL);
+>>         if (!CONFIG_BASE_SMALL)
+>>                 table->hash = alloc_large_system_hash(name,
+>>                         2 * sizeof(struct udp_hslot),
+>> @@ -2175,6 +2175,8 @@ void __init udp_table_init(struct udp_table
+>> *table, const char *name)
+>>         /*
+>>          * Make sure hash table has the minimum size
+>>          */
+>> +       printk("table->mask, UDP_HTABLE_SIZE_MIN : %d %d
+>> \n",table->mask,UDP_HTABLE_SIZE_MIN);
+>> +
+>>         if (CONFIG_BASE_SMALL || table->mask < UDP_HTABLE_SIZE_MIN - 1) {
+>>                 table->hash = kmalloc(UDP_HTABLE_SIZE_MIN *
+>>                                       2 * sizeof(struct udp_hslot), GFP_KERNEL);
+>> ~
 >
-> "uhash_entries=256"
+>
+> How much memory do you have exactly on this machine ?
+>
+> alloc_large_system_hash() has no parameter to specify a minimum hash
+> table, and UDP needs one.
+>
+> If you care about losing 8192 bytes of memory, you could boot with
 
-Thank you very much for your inputs. I will try booting with this option.
+I can live with this, but is bad practice to have leaks even small ones.
+Our concern was, to see if kmemleak with Maxin's patch
+generates false positives.
 
-Best Regards,
-Maxin
+So, I guess everything is fine regarding udp_init_table. We can move on,
+integrating MIPS support for kmemleak :).
+
+thanks,
+Daniel.

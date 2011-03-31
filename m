@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2011 15:03:10 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:51134 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2011 15:03:37 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:51140 "EHLO
         duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491201Ab1CaNB5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Mar 2011 15:01:57 +0200
+        by eddie.linux-mips.org with ESMTP id S1491759Ab1CaNCD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Mar 2011 15:02:03 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2VD1toS016067;
-        Thu, 31 Mar 2011 15:01:55 +0200
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p2VD220j016080;
+        Thu, 31 Mar 2011 15:02:02 +0200
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2VD1tWO016066;
-        Thu, 31 Mar 2011 15:01:55 +0200
-Date:   Thu, 31 Mar 2011 15:01:55 +0200
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p2VD22Sw016079;
+        Thu, 31 Mar 2011 15:02:02 +0200
+Date:   Thu, 31 Mar 2011 15:02:02 +0200
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralph Hempel <ralph.hempel@lantiq.com>,
-        Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH V5 08/10] MIPS: lantiq: add mips_machine support
-Message-ID: <20110331130155.GE15402@linux-mips.org>
+Cc:     Ralph Hempel <ralph.hempel@lantiq.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH V5 09/10] MIPS: lantiq: add machtypes for lantiq eval kits
+Message-ID: <20110331130202.GF15402@linux-mips.org>
 References: <1301470076-17279-1-git-send-email-blogic@openwrt.org>
- <1301470076-17279-9-git-send-email-blogic@openwrt.org>
+ <1301470076-17279-10-git-send-email-blogic@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1301470076-17279-9-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1301470076-17279-10-git-send-email-blogic@openwrt.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29658
+X-archive-position: 29659
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

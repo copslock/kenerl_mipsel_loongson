@@ -1,111 +1,175 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Apr 2011 02:38:35 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:41302 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491816Ab1DAAic (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 1 Apr 2011 02:38:32 +0200
-Received: (qmail 9350 invoked from network); 1 Apr 2011 00:38:28 -0000
-Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 1 Apr 2011 00:38:28 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Thu, 31 Mar 2011 17:38:28 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Michael Sundius <msundius@cisco.com>,
-        David VomLehn <dvomlehn@cisco.com>,
-        Dave Hansen <dave@linux.vnet.ibm.com>,
-        Andy Whitcroft <apw@shadowen.org>,
-        Jon Fraser <jfraser@broadcom.com>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>, <stable@kernel.org>
-Subject: [PATCH v2] MIPS: Kernel crashes on boot with SPARSEMEM + HIGHMEM enabled
-Date:   Thu, 31 Mar 2011 17:27:07 -0700
-Message-Id: <c300b67a7a723369872c0b9a023d0b2e@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Apr 2011 05:06:58 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.49.93.86]:1461 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1490959Ab1DADGx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Apr 2011 05:06:53 +0200
+X-TM-IMSS-Message-ID: <7511d63500009b47@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 7511d63500009b47 ; Thu, 31 Mar 2011 20:06:42 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Thu, 31 Mar 2011 20:07:12 -0700
+Date:   Fri, 1 Apr 2011 08:36:46 +0530
+From:   Jayachandran C <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [PATCH 1/6] Netlogic XLR/XLS processor IDs.
+Message-ID: <78353133b475bf81b53f0a512af6693455765363.1301626288.git.jayachandranc@netlogicmicro.com>
+References: <cover.1301626288.git.jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+In-Reply-To: <cover.1301626288.git.jayachandranc@netlogicmicro.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-OriginalArrivalTime: 01 Apr 2011 03:07:12.0545 (UTC) FILETIME=[E5809910:01CBF019]
+Return-Path: <jayachandranc@netlogicmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29663
+X-archive-position: 29664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Michael Sundius <msundius@cisco.com>
+Add Netlogic Microsystems company ID and processor IDs for XLR
+and XLS processors for CPU probe. Add CPU_XLR to cpu_type_enum.
 
-Fix 3 problems in the MIPS SPARSEMEM implementation:
-
-1) mem_init() sets/clears PG_reserved on all pages in the HIGHMEM range
-without checking to see whether the page descriptor actually exists.
-
-2) bootmem_init() never calls memory_present() on HIGHMEM pages, so
-page descriptors are never created for them if SPARSEMEM is enabled.
-
-3) bootmem_init() calls memory_present() on lowmem pages before bootmem
-is fully set up.  This is bad because memory_present() can allocate
-bootmem in some circumstances (e.g. if SPARSEMEM_EXTREME ever got
-enabled).
-
-Signed-off-by: Michael Sundius <msundius@cisco.com>
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
-Cc: stable@kernel.org
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/kernel/setup.c |   18 +++++++++++++++++-
- arch/mips/mm/init.c      |    3 +++
- 2 files changed, 20 insertions(+), 1 deletions(-)
+ arch/mips/include/asm/cpu.h  |   27 ++++++++++++++++++++
+ arch/mips/kernel/cpu-probe.c |   55 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 82 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 8ad1d56..1f9f902 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -390,7 +390,6 @@ static void __init bootmem_init(void)
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 8687753..34c0d3c 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -33,6 +33,7 @@
+ #define PRID_COMP_TOSHIBA	0x070000
+ #define PRID_COMP_LSI		0x080000
+ #define PRID_COMP_LEXRA		0x0b0000
++#define PRID_COMP_NETLOGIC	0x0c0000
+ #define PRID_COMP_CAVIUM	0x0d0000
+ #define PRID_COMP_INGENIC	0xd00000
  
- 		/* Register lowmem ranges */
- 		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
--		memory_present(0, start, end);
- 	}
+@@ -142,6 +143,31 @@
+ #define PRID_IMP_JZRISC        0x0200
  
- 	/*
-@@ -402,6 +401,23 @@ static void __init bootmem_init(void)
- 	 * Reserve initrd memory if needed.
+ /*
++ * These are the PRID's for when 23:16 == PRID_COMP_NETLOGIC
++ */
++#define PRID_IMP_NETLOGIC_XLR732	0x0000
++#define PRID_IMP_NETLOGIC_XLR716	0x0200
++#define PRID_IMP_NETLOGIC_XLR532	0x0900
++#define PRID_IMP_NETLOGIC_XLR308	0x0600
++#define PRID_IMP_NETLOGIC_XLR532C	0x0800
++#define PRID_IMP_NETLOGIC_XLR516C	0x0a00
++#define PRID_IMP_NETLOGIC_XLR508C	0x0b00
++#define PRID_IMP_NETLOGIC_XLR308C	0x0f00
++#define PRID_IMP_NETLOGIC_XLS608	0x8000
++#define PRID_IMP_NETLOGIC_XLS408	0x8800
++#define PRID_IMP_NETLOGIC_XLS404	0x8c00
++#define PRID_IMP_NETLOGIC_XLS208	0x8e00
++#define PRID_IMP_NETLOGIC_XLS204	0x8f00
++#define PRID_IMP_NETLOGIC_XLS108	0xce00
++#define PRID_IMP_NETLOGIC_XLS104	0xcf00
++#define PRID_IMP_NETLOGIC_XLS616B	0x4000
++#define PRID_IMP_NETLOGIC_XLS608B	0x4a00
++#define PRID_IMP_NETLOGIC_XLS416B	0x4400
++#define PRID_IMP_NETLOGIC_XLS412B	0x4c00
++#define PRID_IMP_NETLOGIC_XLS408B	0x4e00
++#define PRID_IMP_NETLOGIC_XLS404B	0x4f00
++
++/*
+  * Definitions for 7:0 on legacy processors
+  */
+ 
+@@ -234,6 +260,7 @@ enum cpu_type_enum {
  	 */
- 	finalize_initrd();
-+
-+	/*
-+	 * Call memory_present() on all valid ranges, for SPARSEMEM.
-+	 * This must be done after setting up bootmem, since memory_present()
-+	 * may allocate bootmem.
-+	 */
-+	for (i = 0; i < boot_mem_map.nr_map; i++) {
-+		unsigned long start, end;
-+
-+		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
-+			continue;
-+
-+		start = PFN_UP(boot_mem_map.map[i].addr);
-+		end   = PFN_DOWN(boot_mem_map.map[i].addr
-+				    + boot_mem_map.map[i].size);
-+		memory_present(0, start, end);
-+	}
+ 	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
+ 	CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
++	CPU_XLR,
+ 
+ 	CPU_LAST
+ };
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index f65d4c8..a995d56 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -988,6 +988,59 @@ static inline void cpu_probe_ingenic(struct cpuinfo_mips *c, unsigned int cpu)
+ 	}
  }
  
- #endif	/* CONFIG_SGI_IP27 */
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 279599e..78a4cf2 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -392,6 +392,9 @@ void __init mem_init(void)
- 	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
- 		struct page *page = pfn_to_page(tmp);
- 
-+		if (!pfn_valid(tmp))
-+			continue;
++static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
++{
++	decode_configs(c);
 +
- 		if (!page_is_ram(tmp)) {
- 			SetPageReserved(page);
- 			continue;
++	c->options = (MIPS_CPU_TLB     |
++			MIPS_CPU_4KEX    |
++			MIPS_CPU_COUNTER |
++			MIPS_CPU_DIVEC   |
++			MIPS_CPU_WATCH   |
++			MIPS_CPU_EJTAG   |
++			MIPS_CPU_LLSC);
++
++	switch (c->processor_id & 0xff00) {
++	case PRID_IMP_NETLOGIC_XLR732:
++	case PRID_IMP_NETLOGIC_XLR716:
++	case PRID_IMP_NETLOGIC_XLR532:
++	case PRID_IMP_NETLOGIC_XLR308:
++	case PRID_IMP_NETLOGIC_XLR532C:
++	case PRID_IMP_NETLOGIC_XLR516C:
++	case PRID_IMP_NETLOGIC_XLR508C:
++	case PRID_IMP_NETLOGIC_XLR308C:
++		c->cputype = CPU_XLR;
++		__cpu_name[cpu] = "Netlogic XLR";
++		break;
++
++	case PRID_IMP_NETLOGIC_XLS608:
++	case PRID_IMP_NETLOGIC_XLS408:
++	case PRID_IMP_NETLOGIC_XLS404:
++	case PRID_IMP_NETLOGIC_XLS208:
++	case PRID_IMP_NETLOGIC_XLS204:
++	case PRID_IMP_NETLOGIC_XLS108:
++	case PRID_IMP_NETLOGIC_XLS104:
++	case PRID_IMP_NETLOGIC_XLS616B:
++	case PRID_IMP_NETLOGIC_XLS608B:
++	case PRID_IMP_NETLOGIC_XLS416B:
++	case PRID_IMP_NETLOGIC_XLS412B:
++	case PRID_IMP_NETLOGIC_XLS408B:
++	case PRID_IMP_NETLOGIC_XLS404B:
++		c->cputype = CPU_XLR;
++		__cpu_name[cpu] = "Netlogic XLS";
++		break;
++
++	default:
++		printk(KERN_INFO "Unknown Netlogic chip id [%02x]!\n",
++		       c->processor_id);
++		c->cputype = CPU_XLR;
++		break;
++	}
++
++	c->isa_level = MIPS_CPU_ISA_M64R1;
++	c->tlbsize = ((read_c0_config1() >> 25) & 0x3f) + 1;
++}
++
+ #ifdef CONFIG_64BIT
+ /* For use by uaccess.h */
+ u64 __ua_limit;
+@@ -1034,6 +1087,8 @@ __cpuinit void cpu_probe(void)
+ 		break;
+ 	case PRID_COMP_INGENIC:
+ 		cpu_probe_ingenic(c, cpu);
++	case PRID_COMP_NETLOGIC:
++		cpu_probe_netlogic(c, cpu);
+ 		break;
+ 	}
+ 
 -- 
-1.7.4.2
+1.7.1
+
+
+-- 
+Jayachandran C.
+jayachandranc@netlogicmicro.com                  (Netlogic Microsystems)
+jchandra@freebsd.org                               (The FreeBSD Project)

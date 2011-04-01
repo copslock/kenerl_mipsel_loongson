@@ -1,57 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Mar 2011 20:51:43 +0200 (CEST)
-Received: from smtp-out-109.synserver.de ([212.40.185.109]:1107 "HELO
-        smtp-out-109.synserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with SMTP id S1491762Ab1CaSvk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 31 Mar 2011 20:51:40 +0200
-Received: (qmail 20413 invoked by uid 0); 31 Mar 2011 18:51:37 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@laprican.de
-X-SynServer-PPID: 20313
-Received: from p4fc35957.dip.t-dialin.net (HELO lars-laptop.hh.ccc.de) [79.195.89.87]
-  by 217.119.54.81 with SMTP; 31 Mar 2011 18:51:37 -0000
-From:   Lars-Peter Clausen <lars@metafoo.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Apr 2011 02:38:35 +0200 (CEST)
+Received: from [69.28.251.93] ([69.28.251.93]:41302 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491816Ab1DAAic (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 1 Apr 2011 02:38:32 +0200
+Received: (qmail 9350 invoked from network); 1 Apr 2011 00:38:28 -0000
+Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 1 Apr 2011 00:38:28 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Thu, 31 Mar 2011 17:38:28 -0700
+From:   Kevin Cernekee <cernekee@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] MIPS: JZ4740: Set one-shot feature flag for the clockevent
-Date:   Thu, 31 Mar 2011 20:52:20 +0200
-Message-Id: <1301597540-12181-1-git-send-email-lars@metafoo.de>
-X-Mailer: git-send-email 1.7.2.5
-Return-Path: <lars@metafoo.de>
+Cc:     Michael Sundius <msundius@cisco.com>,
+        David VomLehn <dvomlehn@cisco.com>,
+        Dave Hansen <dave@linux.vnet.ibm.com>,
+        Andy Whitcroft <apw@shadowen.org>,
+        Jon Fraser <jfraser@broadcom.com>, <linux-mips@linux-mips.org>,
+        <linux-kernel@vger.kernel.org>, <stable@kernel.org>
+Subject: [PATCH v2] MIPS: Kernel crashes on boot with SPARSEMEM + HIGHMEM enabled
+Date:   Thu, 31 Mar 2011 17:27:07 -0700
+Message-Id: <c300b67a7a723369872c0b9a023d0b2e@localhost>
+User-Agent: vim 7.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29662
+X-archive-position: 29663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-The code for supporting one-shot mode for the clockevent is already there, only
-the feature flag was not set.
-This patch allows the kernel to run in tickless mode.
+From: Michael Sundius <msundius@cisco.com>
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
----
-It would be nice if the patch could go into 2.6.39, it is not required for
-stable though.
----
- arch/mips/jz4740/time.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Fix 3 problems in the MIPS SPARSEMEM implementation:
 
-diff --git a/arch/mips/jz4740/time.c b/arch/mips/jz4740/time.c
-index fe01678..eaa853a 100644
---- a/arch/mips/jz4740/time.c
-+++ b/arch/mips/jz4740/time.c
-@@ -89,7 +89,7 @@ static int jz4740_clockevent_set_next(unsigned long evt,
+1) mem_init() sets/clears PG_reserved on all pages in the HIGHMEM range
+without checking to see whether the page descriptor actually exists.
+
+2) bootmem_init() never calls memory_present() on HIGHMEM pages, so
+page descriptors are never created for them if SPARSEMEM is enabled.
+
+3) bootmem_init() calls memory_present() on lowmem pages before bootmem
+is fully set up.  This is bad because memory_present() can allocate
+bootmem in some circumstances (e.g. if SPARSEMEM_EXTREME ever got
+enabled).
+
+Signed-off-by: Michael Sundius <msundius@cisco.com>
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+Cc: stable@kernel.org
+---
+ arch/mips/kernel/setup.c |   18 +++++++++++++++++-
+ arch/mips/mm/init.c      |    3 +++
+ 2 files changed, 20 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 8ad1d56..1f9f902 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -390,7 +390,6 @@ static void __init bootmem_init(void)
  
- static struct clock_event_device jz4740_clockevent = {
- 	.name = "jz4740-timer",
--	.features = CLOCK_EVT_FEAT_PERIODIC,
-+	.features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT,
- 	.set_next_event = jz4740_clockevent_set_next,
- 	.set_mode = jz4740_clockevent_set_mode,
- 	.rating = 200,
+ 		/* Register lowmem ranges */
+ 		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
+-		memory_present(0, start, end);
+ 	}
+ 
+ 	/*
+@@ -402,6 +401,23 @@ static void __init bootmem_init(void)
+ 	 * Reserve initrd memory if needed.
+ 	 */
+ 	finalize_initrd();
++
++	/*
++	 * Call memory_present() on all valid ranges, for SPARSEMEM.
++	 * This must be done after setting up bootmem, since memory_present()
++	 * may allocate bootmem.
++	 */
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		unsigned long start, end;
++
++		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
++			continue;
++
++		start = PFN_UP(boot_mem_map.map[i].addr);
++		end   = PFN_DOWN(boot_mem_map.map[i].addr
++				    + boot_mem_map.map[i].size);
++		memory_present(0, start, end);
++	}
+ }
+ 
+ #endif	/* CONFIG_SGI_IP27 */
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 279599e..78a4cf2 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -392,6 +392,9 @@ void __init mem_init(void)
+ 	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
+ 		struct page *page = pfn_to_page(tmp);
+ 
++		if (!pfn_valid(tmp))
++			continue;
++
+ 		if (!page_is_ram(tmp)) {
+ 			SetPageReserved(page);
+ 			continue;
 -- 
-1.7.2.5
+1.7.4.2

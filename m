@@ -1,74 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 Apr 2011 20:48:07 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:11018 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491832Ab1DASsE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 1 Apr 2011 20:48:04 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4d961e1b0000>; Fri, 01 Apr 2011 11:48:59 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 1 Apr 2011 11:48:02 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 1 Apr 2011 11:48:02 -0700
-Message-ID: <4D961DE1.50807@caviumnetworks.com>
-Date:   Fri, 01 Apr 2011 11:48:01 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2011 05:49:26 +0200 (CEST)
+Received: from mail-vx0-f177.google.com ([209.85.220.177]:45640 "EHLO
+        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491046Ab1DCDtT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2011 05:49:19 +0200
+Received: by vxd2 with SMTP id 2so4269384vxd.36
+        for <linux-mips@linux-mips.org>; Sat, 02 Apr 2011 20:49:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:date:message-id:subject:from:to:cc
+         :content-type;
+        bh=S4Go7U19N/MZaCYDJY1f532FqR4InbX/UYpZ4PhUs3Q=;
+        b=CR0YZ/8bETBpGmaA29RaRJl0wOF6syp/0yDm3Js55FhsSXbeQ8PJ/GtmUQDhUKYCQy
+         l3GCr82rvWqR7BKcpDD3X+cHjoDvJt0AAcKmHJMBFbxIzKgw8eR/FPF+PWxzN6+ohMX1
+         kFnD5bwEXNNEVE+TFQVANhYnGPG6+uTWEIkIk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        b=IfCyrBDYyO0Nc94z45/UUXfbgmI+ZwYmTGWv4GC33BesCoIu6HHQtGiy7sJdK/V4t+
+         SHKpY68vqCyBcT7Hxw1KRlbm+X9dZVZvUR0fmcopFK0D05ICoEtRF4MuRXynUrY6sj11
+         OmGPXlOamfF95K/O8gm44a+ew5zPvTRX5vgyw=
 MIME-Version: 1.0
-To:     Michael Sundius <msundius@cisco.com>
-CC:     Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        David VomLehn <dvomlehn@cisco.com>,
-        Dave Hansen <dave@linux.vnet.ibm.com>,
-        Andy Whitcroft <apw@shadowen.org>,
-        Jon Fraser <jfraser@broadcom.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, stable@kernel.org
-Subject: Re: [PATCH v2] MIPS: Kernel crashes on boot with SPARSEMEM + HIGHMEM
- enabled
-References: <c300b67a7a723369872c0b9a023d0b2e@localhost> <4D9603D8.2010709@caviumnetworks.com> <4D961C6A.9070808@cisco.com>
-In-Reply-To: <4D961C6A.9070808@cisco.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 01 Apr 2011 18:48:02.0048 (UTC) FILETIME=[54073000:01CBF09D]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: by 10.52.66.135 with SMTP id f7mr469728vdt.198.1301802553404; Sat,
+ 02 Apr 2011 20:49:13 -0700 (PDT)
+Received: by 10.52.161.169 with HTTP; Sat, 2 Apr 2011 20:49:13 -0700 (PDT)
+Date:   Sun, 3 Apr 2011 11:49:13 +0800
+Message-ID: <BANLkTikpqk-UcFHHD6MGyZgv6LociaETtg@mail.gmail.com>
+Subject: System suffers frequent TLB miss
+From:   "wilbur.chan" <wilbur512@gmail.com>
+To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Cc:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29677
+X-archive-position: 29678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 04/01/2011 11:41 AM, Michael Sundius wrote:
-> David Daney wrote:
->>
->>
->> I think this may do the same thing as my patch:
->>
->> http://patchwork.linux-mips.org/patch/1988/
->>
->> Although my patch had different motivations, and changes some other
->> things around too.
->>
->> David Daney
->>
-> I'm not really sure why your kernel or initrd would be in memory was not
-> within
-> the range that had been accounted for. are you saying its in high mem?
->
+Hi all
 
-Well the memory initialization code has a bunch of weird rules built in 
-that prevent some memory from being used.
+We have a system running on mips64 xlr 732.  Our major application
+process is binded on CPU5,
 
-For example if the kernel resides in a different SPARSE page than the 
-rest of memory bad things happen because memory_present() was not called 
-on something that is later freed (when init memory is released).
+In order to reduce the tlb miss of our major process, we took the
+following steps:
 
-If I try to put an initrd at a high physical address, the memory below 
-that is not usable.
+(I)  Use 2 number of  tlb entries  to map  the elf code segment and
+data segment, say,  tlb_entry[i] { code segment}   and tlb_entry[i+1]
+{data segment}  respectively.
 
-My three patches try to make some sense out of the whole thing.
+(II)  Use another  6 number of tlb entries to map 6 reserved memory
+regions. In this way, our process can manipulate these
 
-David Daney
+   6 regions without any tlb miss.
+
+
+However we found that,  the tlib miss frequency  for (I) and (II) is
+very high.
+
+We guess the reson for this is that, we use some malloc
+operation,which leads to great tlb miss, and replace our tlb entries.
+
+So we took messures to  isolate our tlb  entries and ordinary tlb
+entres that were used for malloc.
+
+(III)  In tlb_init function, we set the wried register to 6, so when
+ordinary tlb miss occured, the tlb refill hander would write a random
+tlb entry above 6,
+
+ at the same time we can use our own 6 tlb entries to map whatever we want.
+
+
+
+
+After this, we found that, process is still sufferring from TLB miss
+in our 6 tlb entries.
+
+
+I'm  totally exhausted about the tlb miss, I wonder if we can record
+the virtual region of tlb miss  and the miss count in each region, in
+that way,
+
+I can find out which part leads to this tlb miss.That is , to record
+C0_BADVADDR  in tlb miss.
+
+
+However I'm not sure how to add code in build_r4000_tlb_refill_handler
+function, for it is wrote in some strage way .
+
+
+Any  suggestion on how to reduce tlb miss?
+
+Thx in advance.

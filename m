@@ -1,51 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Apr 2011 06:08:02 +0200 (CEST)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:56291 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491052Ab1DCEHz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 3 Apr 2011 06:07:55 +0200
-Received: by vxd2 with SMTP id 2so4273063vxd.36
-        for <linux-mips@linux-mips.org>; Sat, 02 Apr 2011 21:07:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=0vxJpsTYKCrKY3P20n5PBRylD7LwDdEbclzfqkuP9MM=;
-        b=eJ9bpV6lCu1v/anBWv1zIxh5BPBmy3nb0OyS7FQ9cTN+oig8UEOFwJ2iR0f/x+zmwU
-         6hHeJG9lC1eyik0AGcr0DNNV6ZGRXV/KLA2xueTuSfkjpoPVJZPXal2LLPHkNIVcw8YV
-         bDPxKtn0aNCSD/8PYvTyqc/RyB6UJSbdl7pSs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=nWNo99S59/JbZMLJA9HxTTV9rI4F+4Ii2esQp6n52vfwYW6iG2XbqcbaNVvytrL4me
-         Fv5PSLd5e+X6TKoBUi1PnzPTiCMLlpiH0GocCmwNLvo1mfawQvObCKeqqZ/tmObHbj0r
-         7GpVerYWqAPQdSP40U0yLkZCEotAhXwbrH/P0=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Apr 2011 15:35:31 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:36738 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491755Ab1DDNfZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 4 Apr 2011 15:35:25 +0200
+Message-ID: <4D99C974.5060800@openwrt.org>
+Date:   Mon, 04 Apr 2011 15:36:52 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100913 Icedove/3.0.7
 MIME-Version: 1.0
-Received: by 10.52.0.9 with SMTP id 9mr6869425vda.278.1301803669930; Sat, 02
- Apr 2011 21:07:49 -0700 (PDT)
-Received: by 10.52.161.169 with HTTP; Sat, 2 Apr 2011 21:07:49 -0700 (PDT)
-In-Reply-To: <BANLkTikpqk-UcFHHD6MGyZgv6LociaETtg@mail.gmail.com>
-References: <BANLkTikpqk-UcFHHD6MGyZgv6LociaETtg@mail.gmail.com>
-Date:   Sun, 3 Apr 2011 12:07:49 +0800
-Message-ID: <BANLkTinnVL04HM0TNMEgsZdKO01mKk2-Dw@mail.gmail.com>
-Subject: Re: System suffers frequent TLB miss
-From:   "wilbur.chan" <wilbur512@gmail.com>
-To:     Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Cc:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <wilbur512@gmail.com>
+To:     dedekind1@gmail.com
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Ralph Hempel <ralph.hempel@lantiq.com>,
+        linux-mtd@lists.infradead.org,
+        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>,
+        David Woodhouse <dwmw2@infradead.org>
+Subject: Re: [PATCH V5 06/10] MIPS: lantiq: add NOR flash support
+References: <1301470076-17279-1-git-send-email-blogic@openwrt.org>         <1301470076-17279-7-git-send-email-blogic@openwrt.org> <1301661832.2789.56.camel@localhost>
+In-Reply-To: <1301661832.2789.56.camel@localhost>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29679
+X-archive-position: 29680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-We record our 6 tlb missing  count in do_page_fault, because we don't
-have page table mapping for these tlb entris,each time tlb miss
+Hi Artem
 
-accured, tlb refilling handler would cause a page_fault
+thanks for the feedback, comments inline
+>
+>> +ltq_copy_from(struct map_info *map, void *to,
+>> +	unsigned long from, ssize_t len)
+>> +{
+>> +	unsigned char *f = (unsigned char *) (map->virt + from);
+>> +	unsigned char *t = (unsigned char *) to;
+>> +	unsigned long flags;
+>> +
+>> +	spin_lock_irqsave(&ebu_lock, flags);
+>> +	while (len--)
+>> +		*t++ = *f++;
+>> +	spin_unlock_irqrestore(&ebu_lock, flags);
+>>     
+> Can you use memcpy here instead?
+>
+>   
+
+as we are copying to/from iomem, we cannot use memcpy as the
+pre-fetching breaks the copy process. the normal alternative is to use
+memcpy_to/fromio, however on MIPS this breaks down to a normal memcpy.
+
+i will fold your comments into the patch and resend it ASAP
+
+thanks, John

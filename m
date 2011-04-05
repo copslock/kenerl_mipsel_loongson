@@ -1,49 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2011 14:20:06 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:54497 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491755Ab1DEMUE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 5 Apr 2011 14:20:04 +0200
-Message-ID: <4D9B0951.3030206@openwrt.org>
-Date:   Tue, 05 Apr 2011 14:21:37 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.12) Gecko/20100913 Icedove/3.0.7
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2011 14:21:40 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:33443 "EHLO
+        duck.linux-mips.net" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491778Ab1DEMVh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Apr 2011 14:21:37 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p35CLWHD009222;
+        Tue, 5 Apr 2011 14:21:32 +0200
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p35CLSXd009215;
+        Tue, 5 Apr 2011 14:21:28 +0200
+Date:   Tue, 5 Apr 2011 14:21:28 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "wilbur.chan" <wilbur512@gmail.com>
+Cc:     Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+        "Jayachandran C." <jayachandranc@netlogicmicro.com>
+Subject: Re: System suffers frequent TLB miss
+Message-ID: <20110405122128.GB31210@linux-mips.org>
+References: <BANLkTikpqk-UcFHHD6MGyZgv6LociaETtg@mail.gmail.com>
 MIME-Version: 1.0
-To:     dedekind1@gmail.com
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mtd@lists.infradead.org,
-        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH V6] MIPS: lantiq: add NOR flash support
-References: <1302005720-8508-1-git-send-email-blogic@openwrt.org> <1302005751.2760.116.camel@localhost>
-In-Reply-To: <1302005751.2760.116.camel@localhost>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <blogic@openwrt.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BANLkTikpqk-UcFHHD6MGyZgv6LociaETtg@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29687
+X-archive-position: 29688
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Apr 03, 2011 at 11:49:13AM +0800, wilbur.chan wrote:
 
-> Sorry, but pr_err is defined as follows:
->
-> #define pr_err(fmt, ...) \
->         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
->
-> You should not add KERN_INFO.
->
->   
-Hi,
+> We have a system running on mips64 xlr 732.  Our major application
+> process is binded on CPU5,
+> 
+> In order to reduce the tlb miss of our major process, we took the
+> following steps:
 
-i missed that one :(
-let me resend a fixed version
+What page size are you using?  If you're still using 4K pages, try switching
+to 16K or even 64K pages.  You also may want to look into using hugetlbfs.
 
-sorry,
-John
+  Ralf

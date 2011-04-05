@@ -1,90 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2011 16:29:27 +0200 (CEST)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:36580 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491768Ab1DEO3Y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Apr 2011 16:29:24 +0200
-Received: by ewy3 with SMTP id 3so136988ewy.36
-        for <multiple recipients>; Tue, 05 Apr 2011 07:29:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Apr 2011 18:59:07 +0200 (CEST)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:63482 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491795Ab1DEQ7D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 5 Apr 2011 18:59:03 +0200
+Received: by pvh11 with SMTP id 11so258513pvh.36
+        for <multiple recipients>; Tue, 05 Apr 2011 09:58:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:subject:from:reply-to:to:cc:in-reply-to
-         :references:content-type:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        bh=XykkLfmIU2yUBfwPEX0XastlRZqvYOwUwDPpRCnKKws=;
-        b=PjnmjHjG+zc+VwPZJohbALnQgwIanJp+44R7SJpwFFVPUX9v+abwmf6z44fz4ox3Mq
-         yWKAGIC68JpZpAFdKQ9FMEiFDATu52ZqwqUwEpV2lGQa3YXGL+IU9GXSdSB8iZpFExPu
-         GdXjqOuERPc54GSmGzpaPQblZHzkcMr0iAfSU=
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer
+         :in-reply-to:references;
+        bh=rcQzw8sKjrHSYVVWGrrtPVfC7iL7Yna0LT5K768Kx7I=;
+        b=kVGoRQ26zKAy242lWSkgHTZYIA0BWdppQPwOj/w+KgRJBn8nQYwBvqiK4a0fwWxRtM
+         pj5n0Zec+VhKpuSzyrmz3xttqayvTJmCVz8ODVmDubcO7pUV8ZKBr/P0yVeFMjgIz8av
+         mc5Vm19p6BWTXp3Zr4RLtmGMCSMlis3EgnA/I=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :date:message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=cnuqJzggZGHVmJie1UsHOGum3lTLRA7SQJwsx/DDYOzlX3kF8FYsGuIcaZFwue2aEg
-         M3o7KlHVNlCdH3DlvAtEV530hdysLE9OYWsxFU0J2SpT/1BL7+qb4kTtGMVL5+UoqB6r
-         KToAn+0bitWCjGTltHnp8gOojE0u4+N984UuU=
-Received: by 10.213.34.207 with SMTP id m15mr2243098ebd.89.1302013758495;
-        Tue, 05 Apr 2011 07:29:18 -0700 (PDT)
-Received: from ?IPv6:::1? (shutemov.name [188.40.19.243])
-        by mx.google.com with ESMTPS id y7sm4023261eeh.21.2011.04.05.07.29.16
-        (version=SSLv3 cipher=OTHER);
-        Tue, 05 Apr 2011 07:29:17 -0700 (PDT)
-Subject: Re: [PATCH V8] MIPS: lantiq: add NOR flash support
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mtd@lists.infradead.org,
-        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>,
-        David Woodhouse <dwmw2@infradead.org>
-In-Reply-To: <1302013192-8854-1-git-send-email-blogic@openwrt.org>
-References: <1302013192-8854-1-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Tue, 05 Apr 2011 17:26:38 +0300
-Message-ID: <1302013598.2760.140.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.2 (2.32.2-1.fc14) 
-Content-Transfer-Encoding: 8bit
-Return-Path: <dedekind1@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=QUgE/9dGlklhDfPsbjFndiUjGXIcLQVnjAXUVAaM1hZTWdTwRuf15Bf0Dk2bGDPl+L
+         p33TtVKV4vnjKhNfoyZoPwu78p6k3tBBD24Mujl+00fCiigFzNIdv6akbbGUiwAc8gcg
+         hFHl34Qy0OMwj5yxLf2avHVTi+HuVZkoZPTzM=
+Received: by 10.142.203.18 with SMTP id a18mr7599205wfg.397.1302022736972;
+        Tue, 05 Apr 2011 09:58:56 -0700 (PDT)
+Received: from localhost.localdomain ([64.134.235.77])
+        by mx.google.com with ESMTPS id m10sm9213015wfl.23.2011.04.05.09.58.54
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 05 Apr 2011 09:58:55 -0700 (PDT)
+From:   "Justin P. Mattock" <justinmattock@gmail.com>
+To:     trivial@kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "Justin P. Mattock" <justinmattock@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [RFC 3/5]arch:mips:pmc-sierra:msp71xx:Makefile Remove unused config in the Makefile.
+Date:   Tue,  5 Apr 2011 09:58:20 -0700
+Message-Id: <1302022702-24541-3-git-send-email-justinmattock@gmail.com>
+X-Mailer: git-send-email 1.7.4.2
+In-Reply-To: <1302022702-24541-1-git-send-email-justinmattock@gmail.com>
+References: <1302022702-24541-1-git-send-email-justinmattock@gmail.com>
+Return-Path: <justinmattock@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29697
+X-archive-position: 29698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: justinmattock@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2011-04-05 at 16:19 +0200, John Crispin wrote:
+The patch below removes an unused config variable found by using a kernel
+cleanup script.
+Note: I did try to cross compile these but hit erros while doing so..
+(gcc is not setup to cross compile) and am unsure if anymore needs to be done.
+Please have a look if/when anybody has free time.
 
-> +/* 
-> + * The NOR flash is connected to the same external bus unit (EBU) as PCI.
-> + * To make PCI work we need to enable the endianess swapping for the address
-> + * written to the EBU. This endianess swapping works for PCI correctly but
-> + * fails for attached NOR devices. To workaround this we need to use a complex
-> + * map. The workaround involves swapping all addresses whilste probing the chip.
-> + * Once probing is complete we stop swapping the addresses but swizzle the
-> + * unlock addresses to ensure that access to the NOR device works correctly.
-> + */
-> +
-> +enum ltq_nor_state {
-> +	LTQ_NOR_PROBING,
-> +	LTQ_NOR_NORMAL
-> +};
+Signed-off-by: Justin P. Mattock <justinmattock@gmail.com>
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: linux-mips@linux-mips.org
 
-You do not have to re-send because of this, just a note that in this
-case it makes more sense to use anonymous enum. Indeed, you do not need
-this 'ltq_nor_state' name at all, and C enums are not proper types
-anyway (no real type-checking), so it is just a tiny bit nicer to do:
+---
+ arch/mips/pmc-sierra/msp71xx/Makefile |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-enum {
-	LTQ_NOR_PROBING,
-	LTQ_NOR_NORMAL
-};
-
-But this is not important at all, just a side note :-)
-
+diff --git a/arch/mips/pmc-sierra/msp71xx/Makefile b/arch/mips/pmc-sierra/msp71xx/Makefile
+index cefba77..9201c8b 100644
+--- a/arch/mips/pmc-sierra/msp71xx/Makefile
++++ b/arch/mips/pmc-sierra/msp71xx/Makefile
+@@ -3,7 +3,6 @@
+ #
+ obj-y += msp_prom.o msp_setup.o msp_irq.o \
+ 	 msp_time.o msp_serial.o msp_elb.o
+-obj-$(CONFIG_HAVE_GPIO_LIB) += gpio.o gpio_extended.o
+ obj-$(CONFIG_PMC_MSP7120_GW) += msp_hwbutton.o
+ obj-$(CONFIG_IRQ_MSP_SLP) += msp_irq_slp.o
+ obj-$(CONFIG_IRQ_MSP_CIC) += msp_irq_cic.o msp_irq_per.o
 -- 
-Best Regards,
-Artem Bityutskiy (Артём Битюцкий)
+1.7.4.2

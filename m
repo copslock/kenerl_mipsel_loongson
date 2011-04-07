@@ -1,82 +1,148 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2011 16:31:52 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:42475 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491061Ab1DGObt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Apr 2011 16:31:49 +0200
-Received: by fxm14 with SMTP id 14so2173143fxm.36
-        for <multiple recipients>; Thu, 07 Apr 2011 07:31:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:subject:from:reply-to:to:cc:in-reply-to
-         :references:content-type:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        bh=KxTrPM2+kPlXwbMKmyrGzRGA1y12cmEGiOM7lJ3iXzM=;
-        b=avJhd2HY4Saicfdd+rj96V1IO9zBmdVujWavjCguz/J1udm41PookyX4Oo0bo1kUtt
-         UvB7BRs3NqH9EVqZmsTbkaoJ6QUdB80p22mz5QYwz3u3lXNvzOqW7IodAL5tCe3MGwnH
-         MK5LxlxHvE9jnGgbUItRu/iPToJrM+M2RyZOs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :date:message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=VqwGwd1wgGgue1cPRh6X566Tdibm53nbCEtMahq+C3EVov/1yCXaT2FxaTKlxVsi86
-         r1kMxXGDq+T2YaX6HI4Z25ZbiJM6Nl5qRSDuCwq9BLfuvF/F7/i6wZ9gpT1CW4JFH0G+
-         L2/oSHjaRpbLRD6gfO7k55MU0oFY58TzJfy2M=
-Received: by 10.204.19.3 with SMTP id y3mr823269bka.180.1302186704533;
-        Thu, 07 Apr 2011 07:31:44 -0700 (PDT)
-Received: from ?IPv6:::1? (shutemov.name [188.40.19.243])
-        by mx.google.com with ESMTPS id w3sm1111404bkt.5.2011.04.07.07.31.42
-        (version=SSLv3 cipher=OTHER);
-        Thu, 07 Apr 2011 07:31:43 -0700 (PDT)
-Subject: Re: [PATCH V8] MIPS: lantiq: add NOR flash support
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     John Crispin <john@phrozen.org>
-Cc:     Sergei Shtylyov <sshtylyov@mvista.com>, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2011 16:33:27 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:56255 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491061Ab1DGOdX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Apr 2011 16:33:23 +0200
+Received: by wyb28 with SMTP id 28so2773857wyb.36
+        for <multiple recipients>; Thu, 07 Apr 2011 07:33:18 -0700 (PDT)
+Received: by 10.216.79.6 with SMTP id h6mr485270wee.68.1302186798387;
+        Thu, 07 Apr 2011 07:33:18 -0700 (PDT)
+Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
+        by mx.google.com with ESMTPS id m73sm863829wej.40.2011.04.07.07.33.15
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 07 Apr 2011 07:33:16 -0700 (PDT)
+Message-ID: <4D9DCAC3.9090607@mvista.com>
+Date:   Thu, 07 Apr 2011 18:31:31 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:     John Crispin <blogic@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mtd@lists.infradead.org,
-        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>,
-        David Woodhouse <dwmw2@infradead.org>
-In-Reply-To: <4D9DCA62.2070606@phrozen.org>
-References: <1302013192-8854-1-git-send-email-blogic@openwrt.org>
-         <4D9DC4B7.2080706@mvista.com> <1302185823.2407.48.camel@localhost>
-         <4D9DC904.1040105@openwrt.org>  <4D9DCA62.2070606@phrozen.org>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Thu, 07 Apr 2011 17:28:59 +0300
-Message-ID: <1302186539.2407.49.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.2 (2.32.2-1.fc14) 
-Content-Transfer-Encoding: 8bit
-Return-Path: <dedekind1@gmail.com>
+        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
+        linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH V5 05/10] MIPS: lantiq: add watchdog support
+References: <1301470076-17279-1-git-send-email-blogic@openwrt.org> <1301470076-17279-6-git-send-email-blogic@openwrt.org>
+In-Reply-To: <1301470076-17279-6-git-send-email-blogic@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29708
+X-archive-position: 29709
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2011-04-07 at 16:29 +0200, John Crispin wrote:
-> On 07/04/11 16:24, John Crispin wrote:
-> > On 07/04/11 16:17, Artem Bityutskiy wrote:
-> >> I've taken this patch to l2 tree, but I can change it with a new version
-> >> easily.
-> >>
-> >>
-> >>   
-> > let me fold the proposed changes into the patch, specially the typos :)
-> > 
-> > 
-> 
-> Hi,
-> 
-> forgot to mention, this patch should go upstream via the MIPS tree
+Hello.
 
-Oh, then I'm dropping it.
+John Crispin wrote:
 
--- 
-Best Regards,
-Artem Bityutskiy (Артём Битюцкий)
+> This patch adds the driver for the watchdog found inside the Lantiq SoC family.
+
+> Signed-off-by: John Crispin <blogic@openwrt.org>
+> Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
+> Cc: Wim Van Sebroeck <wim@iguana.be>
+> Cc: linux-mips@linux-mips.org
+> Cc: linux-watchdog@vger.kernel.org
+
+> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+> new file mode 100644
+> index 0000000..0a78dfb
+> --- /dev/null
+> +++ b/drivers/watchdog/lantiq_wdt.c
+> @@ -0,0 +1,217 @@
+[...]
+> +/* Section 3.4 of the datasheet
+> + * The password sequence protects the WDT control register from unintended
+> + * write actions, which might cause malfunction of the WDT.
+> + *
+> + * essentially the following two magic passwords need to be written to allow
+> + * io access to the wdt core
+
+    s/io/IO/, s/wdt/WDT. Be consistent. :-)
+
+> +static void
+> +ltq_wdt_enable(unsigned int timeout)
+
+    This function is always called with 'ltw_wdt_timeout' as a parameter. Seems 
+better to use it internally, and not pass it every time.
+
+> +{
+> +	timeout = ((timeout * (ltq_io_region_clk_rate / LTQ_WDT_DIVIDER))
+> +		+ 0x1000);
+
+    The parens around rvalue are not needed.
+
+[...]
+> +static ssize_t
+> +ltq_wdt_write(struct file *file, const char __user *data,
+> +		size_t len, loff_t *ppos)
+> +{
+> +	size_t i;
+> +
+> +	if (!len)
+> +		return 0;
+> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
+
+    Er, Documentation/CodingStyle asks not to use #ifdef inside the code. You 
+could create a special function here...
+
+> +	for (i = 0; i != len; i++) {
+> +		char c;
+> +
+> +		if (get_user(c, data + i))
+> +			return -EFAULT;
+> +		if (c == 'V')
+> +			ltq_wdt_ok_to_close = 1;
+> +	}
+> +#endif
+> +	ltq_wdt_enable(ltq_wdt_timeout);
+> +	return len;
+> +}
+
+[...]
+
+> +static int __init
+> +ltq_wdt_probe(struct platform_device *pdev)
+> +{
+> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	struct clk *clk;
+> +
+> +	if (!res) {
+> +		dev_err(&pdev->dev, "cannot obtain I/O memory region");
+> +		return -ENOENT;
+> +	}
+> +	res = devm_request_mem_region(&pdev->dev, res->start,
+> +		resource_size(res), dev_name(&pdev->dev));
+> +	if (!res) {
+> +		dev_err(&pdev->dev, "cannot request I/O memory region");
+> +		return -EBUSY;
+> +	}
+> +	ltq_wdt_membase = devm_ioremap_nocache(&pdev->dev, res->start,
+> +		resource_size(res));
+> +	if (!ltq_wdt_membase) {
+> +		dev_err(&pdev->dev, "cannot remap I/O memory region\n");
+> +		return -ENOMEM;
+> +	}
+> +	/* we do not need to enable the clock as it is always running */
+> +	clk = clk_get(&pdev->dev, "io");
+> +	BUG_ON(!clk);
+
+    WARN_ON(). We shouldn't kill the whole machine I think.
+
+> +static int __init
+> +init_ltq_wdt(void)
+> +{
+> +	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
+> +}
+> +
+> +module_init(init_ltq_wdt);
+
+    How about module_exit()?
+
+WBR, Sergei

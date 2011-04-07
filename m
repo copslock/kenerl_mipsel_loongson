@@ -1,148 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2011 16:33:27 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:56255 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491061Ab1DGOdX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Apr 2011 16:33:23 +0200
-Received: by wyb28 with SMTP id 28so2773857wyb.36
-        for <multiple recipients>; Thu, 07 Apr 2011 07:33:18 -0700 (PDT)
-Received: by 10.216.79.6 with SMTP id h6mr485270wee.68.1302186798387;
-        Thu, 07 Apr 2011 07:33:18 -0700 (PDT)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
-        by mx.google.com with ESMTPS id m73sm863829wej.40.2011.04.07.07.33.15
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 07 Apr 2011 07:33:16 -0700 (PDT)
-Message-ID: <4D9DCAC3.9090607@mvista.com>
-Date:   Thu, 07 Apr 2011 18:31:31 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Apr 2011 19:31:15 +0200 (CEST)
+Received: from mxout1.idt.com ([157.165.5.25]:60501 "EHLO mxout1.idt.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491115Ab1DGRbM convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 7 Apr 2011 19:31:12 +0200
+Received: from mail.idt.com (localhost [127.0.0.1])
+        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id p37HV4Wo009474
+        for <linux-mips@linux-mips.org>; Thu, 7 Apr 2011 10:31:04 -0700
+Received: from corpml3.corp.idt.com (corpml3.corp.idt.com [157.165.140.25])
+        by mail.idt.com (8.13.8/8.13.8) with ESMTP id p37HV4Pj005336
+        for <linux-mips@linux-mips.org>; Thu, 7 Apr 2011 10:31:04 -0700 (PDT)
+Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
+        by corpml3.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id p37HV2g14496
+        for <linux-mips@linux-mips.org>; Thu, 7 Apr 2011 10:31:03 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Ralph Hempel <ralph.hempel@lantiq.com>,
-        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH V5 05/10] MIPS: lantiq: add watchdog support
-References: <1301470076-17279-1-git-send-email-blogic@openwrt.org> <1301470076-17279-6-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1301470076-17279-6-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: After writing successfully a NAND block is this reliable ar reading as a NOR sector? 
+Date:   Thu, 7 Apr 2011 10:31:01 -0700
+Message-ID: <AEA634773855ED4CAD999FBB1A66D0760190AFDD@CORPEXCH1.na.ads.idt.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: After writing successfully a NAND block is this reliable ar reading as a NOR sector? 
+Thread-Index: Acv1SZCM2iZJg7PmSYSrxfmO5vrwtg==
+From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+To:     <linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.43
+Return-Path: <Andrei.Ardelean@idt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29709
+X-archive-position: 29710
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: Andrei.Ardelean@idt.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hi,
 
-John Crispin wrote:
+Am interested in using MT29F2G08AABWP NAND Flash memory for a new
+embedded design and I couldn't find a clear specification regarding how
+reliable is the NAND flash vs. NOR for reading operation.
 
-> This patch adds the driver for the watchdog found inside the Lantiq SoC family.
+If I program successfully a NAND block, read back and verify
+successfully the information and never erase or program that particular
+block again, can I assume that block will remain a good block and the
+information written there is safe for READING, roughly as safe as a NOR
+sector?
 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-> Cc: Wim Van Sebroeck <wim@iguana.be>
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-watchdog@vger.kernel.org
+Is it any reason to keep in NAND copies of Kernel, bootloader or RFS? Is
+it a standard practice in the industry to keep copies in NAND even
+though we do not erase/program those during the normal operation? 
+ 
 
-> diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-> new file mode 100644
-> index 0000000..0a78dfb
-> --- /dev/null
-> +++ b/drivers/watchdog/lantiq_wdt.c
-> @@ -0,0 +1,217 @@
-[...]
-> +/* Section 3.4 of the datasheet
-> + * The password sequence protects the WDT control register from unintended
-> + * write actions, which might cause malfunction of the WDT.
-> + *
-> + * essentially the following two magic passwords need to be written to allow
-> + * io access to the wdt core
-
-    s/io/IO/, s/wdt/WDT. Be consistent. :-)
-
-> +static void
-> +ltq_wdt_enable(unsigned int timeout)
-
-    This function is always called with 'ltw_wdt_timeout' as a parameter. Seems 
-better to use it internally, and not pass it every time.
-
-> +{
-> +	timeout = ((timeout * (ltq_io_region_clk_rate / LTQ_WDT_DIVIDER))
-> +		+ 0x1000);
-
-    The parens around rvalue are not needed.
-
-[...]
-> +static ssize_t
-> +ltq_wdt_write(struct file *file, const char __user *data,
-> +		size_t len, loff_t *ppos)
-> +{
-> +	size_t i;
-> +
-> +	if (!len)
-> +		return 0;
-> +#ifndef CONFIG_WATCHDOG_NOWAYOUT
-
-    Er, Documentation/CodingStyle asks not to use #ifdef inside the code. You 
-could create a special function here...
-
-> +	for (i = 0; i != len; i++) {
-> +		char c;
-> +
-> +		if (get_user(c, data + i))
-> +			return -EFAULT;
-> +		if (c == 'V')
-> +			ltq_wdt_ok_to_close = 1;
-> +	}
-> +#endif
-> +	ltq_wdt_enable(ltq_wdt_timeout);
-> +	return len;
-> +}
-
-[...]
-
-> +static int __init
-> +ltq_wdt_probe(struct platform_device *pdev)
-> +{
-> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	struct clk *clk;
-> +
-> +	if (!res) {
-> +		dev_err(&pdev->dev, "cannot obtain I/O memory region");
-> +		return -ENOENT;
-> +	}
-> +	res = devm_request_mem_region(&pdev->dev, res->start,
-> +		resource_size(res), dev_name(&pdev->dev));
-> +	if (!res) {
-> +		dev_err(&pdev->dev, "cannot request I/O memory region");
-> +		return -EBUSY;
-> +	}
-> +	ltq_wdt_membase = devm_ioremap_nocache(&pdev->dev, res->start,
-> +		resource_size(res));
-> +	if (!ltq_wdt_membase) {
-> +		dev_err(&pdev->dev, "cannot remap I/O memory region\n");
-> +		return -ENOMEM;
-> +	}
-> +	/* we do not need to enable the clock as it is always running */
-> +	clk = clk_get(&pdev->dev, "io");
-> +	BUG_ON(!clk);
-
-    WARN_ON(). We shouldn't kill the whole machine I think.
-
-> +static int __init
-> +init_ltq_wdt(void)
-> +{
-> +	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
-> +}
-> +
-> +module_init(init_ltq_wdt);
-
-    How about module_exit()?
-
-WBR, Sergei
+Thank you,
+Andrei

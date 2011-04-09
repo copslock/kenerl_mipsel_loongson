@@ -1,533 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Apr 2011 21:05:45 +0200 (CEST)
-Received: from mail-iw0-f177.google.com ([209.85.214.177]:42682 "EHLO
-        mail-iw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491014Ab1DITFk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Apr 2011 21:05:40 +0200
-Received: by iwn36 with SMTP id 36so5138401iwn.36
-        for <multiple recipients>; Sat, 09 Apr 2011 12:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=1ewKjE7SJpMyGD+b7/7JC33YIXwt/XKJbITBQ3VU58Q=;
-        b=jZGDn+6cVAfFN0sPBIkQxb3Icr2cHtwU1t34DV7a8t9KX2gGuX/LbH0ivili/rgJvx
-         Hglde5rI/nwqpnUFHSB6gFgnDPkwjMs40Q6v+RjUCC6WhY+1hTF5SVn6IjKcabn+872M
-         iakP6+5Qhn3WftAMS7JLCs04WNImdSE4KCU7A=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=JD7LaZSZdJch5T2g/kbeEr58l+5d3FrOfheYDpt8Zb5YBToUo/X8GvFO7iUQdmkNYu
-         y3bqWCYcAzJzAu2pso6KIJ+elm1Juhiv55vAS/u+a2XpaslcSPOQ/1Ybk+UlOSs9LhTa
-         vNObj77pPD0qAEpzrz2oIrSwN7MgAzxAJ2EUY=
-Received: by 10.43.54.210 with SMTP id vv18mr5372982icb.103.1302375933078;
-        Sat, 09 Apr 2011 12:05:33 -0700 (PDT)
-Received: from localhost.localdomain ([182.32.130.75])
-        by mx.google.com with ESMTPS id 19sm2825783ibx.52.2011.04.09.12.05.11
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 09 Apr 2011 12:05:32 -0700 (PDT)
-From:   wanlong.gao@gmail.com
-To:     linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
-        ralf@linux-mips.org, benh@kernel.crashing.org, paulus@samba.org,
-        david.woodhouse@intel.com, akpm@linux-foundation.org,
-        u.kleine-koenig@pengutronix.de, mingo@elte.hu, rientjes@google.com,
-        nicolas.ferre@atmel.com, eric@eukrea.com, tony@atomide.com,
-        santosh.shilimkar@ti.com, khilman@deeprootsystems.com,
-        ben-linux@fluff.org, sam@ravnborg.org, manuel.lauss@googlemail.com,
-        galak@kernel.crashing.org, anton@samba.org,
-        grant.likely@secretlab.ca, sfr@canb.auug.org.au,
-        jwboyer@linux.vnet.ibm.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        Wanlong Gao <wanlong.gao@gmail.com>
-Subject: [PATCH] fix build warnings on defconfigs
-Date:   Sun, 10 Apr 2011 03:04:18 +0800
-Message-Id: <1302375858-11253-1-git-send-email-wanlong.gao@gmail.com>
-X-Mailer: git-send-email 1.7.3
-Return-Path: <wanlong.gao@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Apr 2011 21:24:08 +0200 (CEST)
+Received: from lennier.cc.vt.edu ([198.82.162.213]:53667 "EHLO
+        lennier.cc.vt.edu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491014Ab1DITYF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Apr 2011 21:24:05 +0200
+Received: from steiner.cc.vt.edu (steiner.cc.vt.edu [198.82.163.51])
+        by lennier.cc.vt.edu (8.13.8/8.13.8) with ESMTP id p39JNqbc021959;
+        Sat, 9 Apr 2011 15:23:52 -0400
+Received: from auth3.smtp.vt.edu (EHLO auth3.smtp.vt.edu) ([198.82.161.152])
+        by steiner.cc.vt.edu (MOS 4.2.2-FCS FastPath queued)
+        with ESMTP id OHT67467;
+        Sat, 09 Apr 2011 15:23:50 -0400 (EDT)
+Received: from localhost (h80ad272e.async.vt.edu [128.173.39.46])
+        (authenticated bits=0)
+        by auth3.smtp.vt.edu (8.13.8/8.13.8) with ESMTP id p39JNjmi029383
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Sat, 9 Apr 2011 15:23:48 -0400
+X-Mailer: exmh version 2.7.2 01/07/2005 with nmh-1.3-dev
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Joshua Kinard <kumba@gentoo.org>,
+        Linux MIPS List <linux-mips@linux-mips.org>,
+        rtc-linux@googlegroups.com, LKML <linux-kernel@vger.kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>
+Subject: Re: [PATCH 2/2]: MIPS: sgi-ip32: Add support for rtc-ds1685 to SGI O2 (IP32)
+In-Reply-To: Your message of "Fri, 08 Apr 2011 15:25:34 +0200."
+             <20110408132533.GA15416@linux-mips.org>
+From:   Valdis.Kletnieks@vt.edu
+References: <4D9DB95F.8040100@gentoo.org>
+            <20110408132533.GA15416@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1302377025_4802P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 09 Apr 2011 15:23:45 -0400
+Message-ID: <105137.1302377025@localhost>
+X-Mirapoint-Received-SPF: 198.82.161.152 auth3.smtp.vt.edu Valdis.Kletnieks@vt.edu 2 pass
+X-Mirapoint-IP-Reputation: reputation=neutral-1,
+        source=Fixed,
+        refid=n/a,
+        actions=MAILHURDLE SPF TAG
+X-Junkmail-Status: score=10/50, host=steiner.cc.vt.edu
+X-Junkmail-Signature-Raw: score=unknown,
+        refid=str=0001.0A020207.4DA0B248.00C8,ss=1,fgs=0,
+        ip=0.0.0.0,
+        so=2010-07-22 22:03:31,
+        dmn=2009-09-10 00:05:08,
+        mode=single engine
+X-Junkmail-IWF: false
+Return-Path: <Valdis.Kletnieks@vt.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29720
+X-archive-position: 29721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wanlong.gao@gmail.com
+X-original-sender: Valdis.Kletnieks@vt.edu
 Precedence: bulk
 X-list: linux-mips
 
-From: Wanlong Gao <wanlong.gao@gmail.com>
+--==_Exmh_1302377025_4802P
+Content-Type: text/plain; charset=us-ascii
 
-Change the BT_L2CAP and BT_SCO defconfigs from 'm' to 'y',
-since BT_L2CAP and BT_SCO had changed to bool configs.
+On Fri, 08 Apr 2011 15:25:34 +0200, Ralf Baechle said:
+> On Thu, Apr 07, 2011 at 09:17:19AM -0400, Joshua Kinard wrote:
 
-Signed-off-by: Wanlong Gao <wanlong.gao@gmail.com>
----
- arch/arm/configs/am200epdkit_defconfig     |    4 ++--
- arch/arm/configs/at572d940hfek_defconfig   |    2 +-
- arch/arm/configs/at91rm9200_defconfig      |    4 ++--
- arch/arm/configs/badge4_defconfig          |    2 +-
- arch/arm/configs/cm_x2xx_defconfig         |    4 ++--
- arch/arm/configs/cm_x300_defconfig         |    4 ++--
- arch/arm/configs/colibri_pxa270_defconfig  |    4 ++--
- arch/arm/configs/corgi_defconfig           |    4 ++--
- arch/arm/configs/davinci_all_defconfig     |    2 +-
- arch/arm/configs/em_x270_defconfig         |    4 ++--
- arch/arm/configs/magician_defconfig        |    4 ++--
- arch/arm/configs/mini2440_defconfig        |    4 ++--
- arch/arm/configs/nhk8815_defconfig         |    4 ++--
- arch/arm/configs/ns9xxx_defconfig          |    2 +-
- arch/arm/configs/omap2plus_defconfig       |    4 ++--
- arch/arm/configs/pxa3xx_defconfig          |    2 +-
- arch/arm/configs/s3c2410_defconfig         |    6 +++---
- arch/arm/configs/simpad_defconfig          |    4 ++--
- arch/arm/configs/spitz_defconfig           |    4 ++--
- arch/arm/configs/trizeps4_defconfig        |    4 ++--
- arch/arm/configs/viper_defconfig           |    2 +-
- arch/arm/configs/zeus_defconfig            |    4 ++--
- arch/avr32/configs/atngw100_mrmt_defconfig |    2 +-
- arch/mips/configs/lemote2f_defconfig       |    4 ++--
- arch/mips/configs/mtx1_defconfig           |    4 ++--
- arch/powerpc/configs/c2k_defconfig         |    4 ++--
- arch/powerpc/configs/pmac32_defconfig      |    4 ++--
- arch/powerpc/configs/ppc6xx_defconfig      |    4 ++--
- arch/powerpc/configs/ps3_defconfig         |    4 ++--
- 29 files changed, 52 insertions(+), 52 deletions(-)
+> > -----BEGIN PGP SIGNED MESSAGE-----
+> > Hash: SHA1
+> 
+> Please don't PGP sign patches.  Nobody care about your PGP signature as
+> long there's a valid Signed-off-by.
 
-diff --git a/arch/arm/configs/am200epdkit_defconfig b/arch/arm/configs/am200epdkit_defconfig
-index f0dea52..0a7d807 100644
---- a/arch/arm/configs/am200epdkit_defconfig
-+++ b/arch/arm/configs/am200epdkit_defconfig
-@@ -34,8 +34,8 @@ CONFIG_INET=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/at572d940hfek_defconfig b/arch/arm/configs/at572d940hfek_defconfig
-index 1b1158a..8409374 100644
---- a/arch/arm/configs/at572d940hfek_defconfig
-+++ b/arch/arm/configs/at572d940hfek_defconfig
-@@ -280,7 +280,7 @@ CONFIG_SDIO_UART=m
- CONFIG_MMC_AT91=m
- CONFIG_MMC_SPI=m
- CONFIG_NEW_LEDS=y
--CONFIG_LEDS_CLASS=m
-+CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_GPIO=m
- CONFIG_LEDS_TRIGGERS=y
- CONFIG_LEDS_TRIGGER_TIMER=m
-diff --git a/arch/arm/configs/at91rm9200_defconfig b/arch/arm/configs/at91rm9200_defconfig
-index 38cb7c9..b21dd9e 100644
---- a/arch/arm/configs/at91rm9200_defconfig
-+++ b/arch/arm/configs/at91rm9200_defconfig
-@@ -75,8 +75,8 @@ CONFIG_IPV6_TUNNEL=m
- CONFIG_BRIDGE=m
- CONFIG_VLAN_8021Q=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/badge4_defconfig b/arch/arm/configs/badge4_defconfig
-index 5b54abb..ddd8eb2 100644
---- a/arch/arm/configs/badge4_defconfig
-+++ b/arch/arm/configs/badge4_defconfig
-@@ -24,7 +24,7 @@ CONFIG_IRCOMM=y
- CONFIG_IRDA_ULTRA=y
- CONFIG_SA1100_FIR=y
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
-+CONFIG_BT_L2CAP=y
- CONFIG_BT_HCIUART=m
- CONFIG_BT_HCIVHCI=m
- # CONFIG_FW_LOADER is not set
-diff --git a/arch/arm/configs/cm_x2xx_defconfig b/arch/arm/configs/cm_x2xx_defconfig
-index a93ff8d..04bf923 100644
---- a/arch/arm/configs/cm_x2xx_defconfig
-+++ b/arch/arm/configs/cm_x2xx_defconfig
-@@ -43,8 +43,8 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_BNEP=m
- CONFIG_BT_HIDP=m
-diff --git a/arch/arm/configs/cm_x300_defconfig b/arch/arm/configs/cm_x300_defconfig
-index 921e56a..d7c7d99 100644
---- a/arch/arm/configs/cm_x300_defconfig
-+++ b/arch/arm/configs/cm_x300_defconfig
-@@ -40,8 +40,8 @@ CONFIG_IP_PNP_RARP=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/colibri_pxa270_defconfig b/arch/arm/configs/colibri_pxa270_defconfig
-index 2ef2c5e..a381317 100644
---- a/arch/arm/configs/colibri_pxa270_defconfig
-+++ b/arch/arm/configs/colibri_pxa270_defconfig
-@@ -45,8 +45,8 @@ CONFIG_IRDA_CACHE_LAST_LSAP=y
- CONFIG_IRDA_FAST_RR=y
- CONFIG_IRTTY_SIR=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/corgi_defconfig b/arch/arm/configs/corgi_defconfig
-index e53c475..ee85811 100644
---- a/arch/arm/configs/corgi_defconfig
-+++ b/arch/arm/configs/corgi_defconfig
-@@ -69,8 +69,8 @@ CONFIG_IRNET=m
- CONFIG_IRCOMM=m
- CONFIG_PXA_FICP=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/davinci_all_defconfig b/arch/arm/configs/davinci_all_defconfig
-index 889922a..9739ee2 100644
---- a/arch/arm/configs/davinci_all_defconfig
-+++ b/arch/arm/configs/davinci_all_defconfig
-@@ -152,7 +152,7 @@ CONFIG_MMC=m
- # CONFIG_MMC_BLOCK_BOUNCE is not set
- CONFIG_MMC_DAVINCI=m
- CONFIG_NEW_LEDS=y
--CONFIG_LEDS_CLASS=m
-+CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_GPIO=m
- CONFIG_LEDS_TRIGGERS=y
- CONFIG_LEDS_TRIGGER_TIMER=m
-diff --git a/arch/arm/configs/em_x270_defconfig b/arch/arm/configs/em_x270_defconfig
-index 60a21e0..9910c68 100644
---- a/arch/arm/configs/em_x270_defconfig
-+++ b/arch/arm/configs/em_x270_defconfig
-@@ -38,8 +38,8 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_BNEP=m
- CONFIG_BT_HIDP=m
-diff --git a/arch/arm/configs/magician_defconfig b/arch/arm/configs/magician_defconfig
-index a88e64d..eef5440 100644
---- a/arch/arm/configs/magician_defconfig
-+++ b/arch/arm/configs/magician_defconfig
-@@ -48,8 +48,8 @@ CONFIG_IRDA_DEBUG=y
- CONFIG_IRTTY_SIR=m
- CONFIG_PXA_FICP=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-index 2472a95..a0b5413 100644
---- a/arch/arm/configs/mini2440_defconfig
-+++ b/arch/arm/configs/mini2440_defconfig
-@@ -56,8 +56,8 @@ CONFIG_VLAN_8021Q=m
- CONFIG_VLAN_8021Q_GVRP=y
- CONFIG_NET_PKTGEN=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
-index 37207d1..5129217 100644
---- a/arch/arm/configs/nhk8815_defconfig
-+++ b/arch/arm/configs/nhk8815_defconfig
-@@ -38,8 +38,8 @@ CONFIG_IP_MROUTE=y
- # CONFIG_INET_LRO is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/ns9xxx_defconfig b/arch/arm/configs/ns9xxx_defconfig
-index 1f528a0..56c20fc 100644
---- a/arch/arm/configs/ns9xxx_defconfig
-+++ b/arch/arm/configs/ns9xxx_defconfig
-@@ -38,7 +38,7 @@ CONFIG_I2C_GPIO=m
- # CONFIG_VGA_CONSOLE is not set
- # CONFIG_USB_SUPPORT is not set
- CONFIG_NEW_LEDS=y
--CONFIG_LEDS_CLASS=m
-+CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_GPIO=m
- CONFIG_LEDS_TRIGGERS=y
- CONFIG_LEDS_TRIGGER_TIMER=m
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 076db52..08cc79d 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -89,8 +89,8 @@ CONFIG_IP_PNP_RARP=y
- # CONFIG_IPV6 is not set
- CONFIG_NETFILTER=y
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=y
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/pxa3xx_defconfig b/arch/arm/configs/pxa3xx_defconfig
-index 1677a06..573d882 100644
---- a/arch/arm/configs/pxa3xx_defconfig
-+++ b/arch/arm/configs/pxa3xx_defconfig
-@@ -99,7 +99,7 @@ CONFIG_LOGO=y
- CONFIG_MMC=y
- CONFIG_MMC_PXA=y
- CONFIG_NEW_LEDS=y
--CONFIG_LEDS_CLASS=m
-+CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_GPIO=m
- CONFIG_LEDS_DA903X=m
- CONFIG_LEDS_TRIGGERS=y
-diff --git a/arch/arm/configs/s3c2410_defconfig b/arch/arm/configs/s3c2410_defconfig
-index f9096c1..3a0cd99 100644
---- a/arch/arm/configs/s3c2410_defconfig
-+++ b/arch/arm/configs/s3c2410_defconfig
-@@ -177,8 +177,8 @@ CONFIG_IP6_NF_TARGET_REJECT=m
- CONFIG_IP6_NF_MANGLE=m
- CONFIG_IP6_NF_RAW=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-@@ -387,7 +387,7 @@ CONFIG_MMC_TEST=m
- CONFIG_MMC_SDHCI=m
- CONFIG_MMC_SPI=m
- CONFIG_MMC_S3C=y
--CONFIG_LEDS_CLASS=m
-+CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_S3C24XX=m
- CONFIG_LEDS_H1940=m
- CONFIG_LEDS_PCA9532=m
-diff --git a/arch/arm/configs/simpad_defconfig b/arch/arm/configs/simpad_defconfig
-index d335815..8c6f806 100644
---- a/arch/arm/configs/simpad_defconfig
-+++ b/arch/arm/configs/simpad_defconfig
-@@ -33,8 +33,8 @@ CONFIG_IRCOMM=m
- CONFIG_IRTTY_SIR=m
- CONFIG_SA1100_FIR=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/spitz_defconfig b/arch/arm/configs/spitz_defconfig
-index 7015827..f0137dd 100644
---- a/arch/arm/configs/spitz_defconfig
-+++ b/arch/arm/configs/spitz_defconfig
-@@ -66,8 +66,8 @@ CONFIG_IRNET=m
- CONFIG_IRCOMM=m
- CONFIG_PXA_FICP=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/trizeps4_defconfig b/arch/arm/configs/trizeps4_defconfig
-index 3162173..3d6ce92 100644
---- a/arch/arm/configs/trizeps4_defconfig
-+++ b/arch/arm/configs/trizeps4_defconfig
-@@ -49,8 +49,8 @@ CONFIG_IRDA_CACHE_LAST_LSAP=y
- CONFIG_IRDA_FAST_RR=y
- CONFIG_IRTTY_SIR=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/viper_defconfig b/arch/arm/configs/viper_defconfig
-index 8b0c717..4fe0c80 100644
---- a/arch/arm/configs/viper_defconfig
-+++ b/arch/arm/configs/viper_defconfig
-@@ -37,7 +37,7 @@ CONFIG_SYN_COOKIES=y
- # CONFIG_INET_LRO is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
-+CONFIG_BT_L2CAP=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/arm/configs/zeus_defconfig b/arch/arm/configs/zeus_defconfig
-index 960f655..f8f9910 100644
---- a/arch/arm/configs/zeus_defconfig
-+++ b/arch/arm/configs/zeus_defconfig
-@@ -32,7 +32,7 @@ CONFIG_SYN_COOKIES=y
- # CONFIG_INET_LRO is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
-+CONFIG_BT_L2CAP=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-@@ -150,7 +150,7 @@ CONFIG_MMC=y
- # CONFIG_MMC_BLOCK_BOUNCE is not set
- CONFIG_MMC_PXA=y
- CONFIG_NEW_LEDS=y
--CONFIG_LEDS_CLASS=m
-+CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_GPIO=m
- CONFIG_LEDS_TRIGGERS=y
- CONFIG_LEDS_TRIGGER_TIMER=m
-diff --git a/arch/avr32/configs/atngw100_mrmt_defconfig b/arch/avr32/configs/atngw100_mrmt_defconfig
-index 19f6cee..6f9ed2e 100644
---- a/arch/avr32/configs/atngw100_mrmt_defconfig
-+++ b/arch/avr32/configs/atngw100_mrmt_defconfig
-@@ -36,7 +36,7 @@ CONFIG_SYN_COOKIES=y
- # CONFIG_INET_LRO is not set
- # CONFIG_IPV6 is not set
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
-+CONFIG_BT_L2CAP=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_HIDP=m
-diff --git a/arch/mips/configs/lemote2f_defconfig b/arch/mips/configs/lemote2f_defconfig
-index cb2c5ea..b6acd2f 100644
---- a/arch/mips/configs/lemote2f_defconfig
-+++ b/arch/mips/configs/lemote2f_defconfig
-@@ -86,8 +86,8 @@ CONFIG_NET_SCHED=y
- CONFIG_NET_EMATCH=y
- CONFIG_NET_CLS_ACT=y
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
-index a97a42c..37862b2 100644
---- a/arch/mips/configs/mtx1_defconfig
-+++ b/arch/mips/configs/mtx1_defconfig
-@@ -225,8 +225,8 @@ CONFIG_TOSHIBA_FIR=m
- CONFIG_VLSI_FIR=m
- CONFIG_MCS_FIR=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/powerpc/configs/c2k_defconfig b/arch/powerpc/configs/c2k_defconfig
-index f9e6a3e..2a84fd7 100644
---- a/arch/powerpc/configs/c2k_defconfig
-+++ b/arch/powerpc/configs/c2k_defconfig
-@@ -132,8 +132,8 @@ CONFIG_NET_CLS_RSVP=m
- CONFIG_NET_CLS_RSVP6=m
- CONFIG_NET_CLS_IND=y
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
-index ac4fc41..f8b394a 100644
---- a/arch/powerpc/configs/pmac32_defconfig
-+++ b/arch/powerpc/configs/pmac32_defconfig
-@@ -112,8 +112,8 @@ CONFIG_IRDA_CACHE_LAST_LSAP=y
- CONFIG_IRDA_FAST_RR=y
- CONFIG_IRTTY_SIR=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index 0a10fb0..2142089 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -351,8 +351,8 @@ CONFIG_VLSI_FIR=m
- CONFIG_VIA_FIR=m
- CONFIG_MCS_FIR=m
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
-diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
-index caba919..6472322 100644
---- a/arch/powerpc/configs/ps3_defconfig
-+++ b/arch/powerpc/configs/ps3_defconfig
-@@ -52,8 +52,8 @@ CONFIG_IP_PNP_DHCP=y
- # CONFIG_INET_DIAG is not set
- CONFIG_IPV6=y
- CONFIG_BT=m
--CONFIG_BT_L2CAP=m
--CONFIG_BT_SCO=m
-+CONFIG_BT_L2CAP=y
-+CONFIG_BT_SCO=y
- CONFIG_BT_RFCOMM=m
- CONFIG_BT_RFCOMM_TTY=y
- CONFIG_BT_BNEP=m
--- 
-1.7.3
+Alternatively, fix your mailer to not send a single text/plain that PGP has signed,
+but use the MIME multipart/signed construct, where (a) the text/plain main part
+isn't changed at all, and (b) the PGP signature is in a separate bodypart.
+
+> > Signed-off-by: Joshua Kinard <kumba@gentoo.org>
+> > - ---
+
+> And this is a --- tearoff line corrupted by PGP.  Just like every other line
+> starting with a -.
+
+Doing this will prevent that.  The following line should appear as a single dash:
+
+-
+
+See? You *can* have your cake and eat it too. ;)
+
+--==_Exmh_1302377025_4802P
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+Comment: Exmh version 2.5 07/13/2001
+
+iD8DBQFNoLJBcC3lWbTT17ARAhlvAKChAYth386x50ejraQj7tmelO6TQgCgirdh
+7nzwhfrPig62Jkqm5eNYxDI=
+=Cy9B
+-----END PGP SIGNATURE-----
+
+--==_Exmh_1302377025_4802P--

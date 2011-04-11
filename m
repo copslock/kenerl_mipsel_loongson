@@ -1,19 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2011 04:57:25 +0200 (CEST)
-Received: from 30.mail-out.ovh.net ([213.186.62.213]:57881 "HELO
-        30.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1490957Ab1DKC5V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Apr 2011 04:57:21 +0200
-Received: (qmail 8951 invoked by uid 503); 11 Apr 2011 02:45:22 -0000
-Received: from b9.ovh.net (HELO mail419.ha.ovh.net) (213.186.33.59)
-  by 30.mail-out.ovh.net with SMTP; 11 Apr 2011 02:45:21 -0000
-Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
-        by b0.ovh.net with SMTP; 11 Apr 2011 04:57:17 +0200
-Received: from ns32433.ovh.net (HELO localhost) (plagnioj%jcrosoft.com@213.251.161.87)
-  by ns0.ovh.net with SMTP; 11 Apr 2011 04:57:16 +0200
-Date:   Mon, 11 Apr 2011 04:45:59 +0200
-From:   Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2011 08:12:01 +0200 (CEST)
+Received: from 50.23.254.54-static.reverse.softlayer.com ([50.23.254.54]:60779
+        "EHLO softlayer.compulab.co.il" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1490982Ab1DKGL6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 11 Apr 2011 08:11:58 +0200
+Received: from [62.90.235.247] (port=59178 helo=zimbra-mta.compulab.co.il)
+        by softlayer.compulab.co.il with esmtp (Exim 4.69)
+        (envelope-from <grinberg@compulab.co.il>)
+        id 1Q9AL0-0000eq-G9; Mon, 11 Apr 2011 09:11:02 +0300
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by zimbra-mta.compulab.co.il (Postfix) with ESMTP id 5DE4A7E91FF;
+        Mon, 11 Apr 2011 09:11:01 +0300 (IDT)
+X-Virus-Scanned: amavisd-new at compulab.co.il
+Received: from zimbra-mta.compulab.co.il ([127.0.0.1])
+        by localhost (zimbra-mta.compulab.co.il [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Yuy1LUAuTvwF; Mon, 11 Apr 2011 09:11:00 +0300 (IDT)
+Received: from [10.1.1.13] (grinberg-pc.compulab.local [10.1.1.13])
+        by zimbra-mta.compulab.co.il (Postfix) with ESMTP id 567E77E91EF;
+        Mon, 11 Apr 2011 09:11:00 +0300 (IDT)
+Message-ID: <4DA29B75.4090401@compulab.co.il>
+Date:   Mon, 11 Apr 2011 09:11:01 +0300
+From:   Igor Grinberg <grinberg@compulab.co.il>
+Organization: CompuLab Ltd.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en; rv:1.9.2.13) Gecko/20101211 Lightning/1.0b2 Thunderbird/3.1.7
+MIME-Version: 1.0
 To:     wanlong.gao@gmail.com
-Cc:     linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
+CC:     linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
         ralf@linux-mips.org, benh@kernel.crashing.org, paulus@samba.org,
         david.woodhouse@intel.com, akpm@linux-foundation.org,
         u.kleine-koenig@pengutronix.de, mingo@elte.hu, rientjes@google.com,
@@ -22,44 +33,49 @@ Cc:     linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
         ben-linux@fluff.org, sam@ravnborg.org, manuel.lauss@googlemail.com,
         galak@kernel.crashing.org, anton@samba.org,
         grant.likely@secretlab.ca, sfr@canb.auug.org.au,
-        jwboyer@linux.vnet.ibm.com, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
+        jwboyer@linux.vnet.ibm.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH] fix build warnings on defconfigs
-Message-ID: <20110411024559.GB18925@game.jcrosoft.org>
 References: <1302375858-11253-1-git-send-email-wanlong.gao@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <1302375858-11253-1-git-send-email-wanlong.gao@gmail.com>
-X-PGP-Key: http://uboot.jcrosoft.org/plagnioj.asc
-X-PGP-key-fingerprint: 6309 2BBA 16C8 3A07 1772 CC24 DEFC FFA3 279C CE7C
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-Ovh-Tracer-Id: 7876232800264039283
-X-Ovh-Remote: 213.251.161.87 (ns32433.ovh.net)
-X-Ovh-Local: 213.186.33.20 (ns0.ovh.net)
-Return-Path: <plagnioj@jcrosoft.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - softlayer.compulab.co.il
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - compulab.co.il
+Return-Path: <grinberg@compulab.co.il>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29730
+X-archive-position: 29731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: plagnioj@jcrosoft.com
+X-original-sender: grinberg@compulab.co.il
 Precedence: bulk
 X-list: linux-mips
 
-On 03:04 Sun 10 Apr     , wanlong.gao@gmail.com wrote:
+On 04/09/11 22:04, wanlong.gao@gmail.com wrote:
+
 > From: Wanlong Gao <wanlong.gao@gmail.com>
-> 
+>
 > Change the BT_L2CAP and BT_SCO defconfigs from 'm' to 'y',
 > since BT_L2CAP and BT_SCO had changed to bool configs.
-> 
+>
 > Signed-off-by: Wanlong Gao <wanlong.gao@gmail.com>
 > ---
-for at91
-Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Best Regards,
-J.
+For:
+
+>  arch/arm/configs/cm_x2xx_defconfig         |    4 ++--
+>  arch/arm/configs/cm_x300_defconfig         |    4 ++--
+>  arch/arm/configs/em_x270_defconfig         |    4 ++--
+
+Acked-by: Igor Grinberg <grinberg@compulab.co.il>
+
+-- 
+Regards,
+Igor.

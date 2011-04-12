@@ -1,67 +1,369 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2011 12:41:39 +0200 (CEST)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:50770 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491021Ab1DLKlg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2011 12:41:36 +0200
-Received: by bwz1 with SMTP id 1so6437032bwz.36
-        for <linux-mips@linux-mips.org>; Tue, 12 Apr 2011 03:41:29 -0700 (PDT)
-Received: by 10.204.14.11 with SMTP id e11mr1211756bka.185.1302604889278;
-        Tue, 12 Apr 2011 03:41:29 -0700 (PDT)
-Received: from [192.168.2.2] ([91.79.65.152])
-        by mx.google.com with ESMTPS id c11sm3765447bkc.2.2011.04.12.03.41.27
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 12 Apr 2011 03:41:28 -0700 (PDT)
-Message-ID: <4DA42BFB.2010908@mvista.com>
-Date:   Tue, 12 Apr 2011 14:39:55 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.15) Gecko/20110303 Thunderbird/3.1.9
-MIME-Version: 1.0
-To:     Yury Polyanskiy <ypolyans@princeton.edu>
-CC:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] Notifier chain called twice
-References: <BANLkTikTDQgwHtK1V4AqRAALw_HrSTuvnQ@mail.gmail.com>
-In-Reply-To: <BANLkTikTDQgwHtK1V4AqRAALw_HrSTuvnQ@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2011 18:08:42 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:51728 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491065Ab1DLQIi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Apr 2011 18:08:38 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     John Crispin <blogic@openwrt.org>,
+        Ralph Hempel <ralph.hempel@lantiq.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>,
+        linux-mips@linux-mips.org, linux-mtd@lists.infradead.org
+Subject: [PATCH V9] MIPS: lantiq: add NOR flash support
+Date:   Tue, 12 Apr 2011 18:10:01 +0200
+Message-Id: <1302624601-18571-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.2.3
+Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29736
+X-archive-position: 29737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+This patch adds the driver/map for NOR devices attached to the SoC via the
+External Bus Unit (EBU).
 
-On 12-04-2011 10:44, Yury Polyanskiy wrote:
+Signed-off-by: John Crispin <blogic@openwrt.org>
+Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>
+Cc: linux-mips@linux-mips.org
+Cc: linux-mtd@lists.infradead.org
 
-> Dear all,
+---
 
-> The notifier chain is currently called twice on OOPS. Patch below.
+Changes in V2
+* handle the endianess bug inside the map code and not in the generic cfi code
+* remove the addr swizzle patch
 
-    You need to provide your signoff for the patch to be applied.
+Changes in V3
+* whitespace
+* change __iomem void to void __iomem
 
-> Best,
-> Yury
+Changes in V4
+* fixes a checkpatch.pl bug, the second is a false positive
+* whitespace cleanups
+* remove unused typecasts
+* cleanup ltq_copy_from and ltq_copy_to
 
-    The greeting and goodbye shouldn't be parts of the patch.
+Changes in V6
+* cleanup/add comments
+* fix line breaks
+* properly handle return code of add_mtd_partitions()
+* use pr_err instead of printk
 
-> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> index 4e00f9b..fdc6773 100644
-> --- a/arch/mips/kernel/traps.c
-> +++ b/arch/mips/kernel/traps.c
-> @@ -375,8 +375,6 @@ void __noreturn die(const char *str, str
->          unsigned long dvpret = dvpe();
->   #endif /* CONFIG_MIPS_MT_SMTC */
->
-> -       notify_die(DIE_OOPS, str, regs, 0, regs_to_trapnr(regs), SIGSEGV);
-> -
+Changes in V7
+* remove bogus KERN_INFO from pr_err() call
 
-    Unfortunately, the patch is whitespace-mangled: all tabs have been 
-replaced by spaces.
+Changes in V8
+* dynamically allocate the instance of map_info allowing the use of .addr_unlock1
+  for indication of the probing state, thus eliminating the need for a global
+  variable
 
-WBR, Sergei
+Changes in V9
+* fixes spelling errors
+* adds proper exit path to init function
+* adds remove function
+
+This patch should be merged via the MIPS tree
+
+ drivers/mtd/maps/Kconfig        |    9 ++
+ drivers/mtd/maps/Makefile       |    1 +
+ drivers/mtd/maps/lantiq-flash.c |  251 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 261 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/mtd/maps/lantiq-flash.c
+
+diff --git a/drivers/mtd/maps/Kconfig b/drivers/mtd/maps/Kconfig
+index 44b1f46..0cf5c57 100644
+--- a/drivers/mtd/maps/Kconfig
++++ b/drivers/mtd/maps/Kconfig
+@@ -260,6 +260,15 @@ config MTD_BCM963XX
+ 	  Support for parsing CFE image tag and creating MTD partitions on
+ 	  Broadcom BCM63xx boards.
+ 
++config MTD_LANTIQ
++	tristate "Lantiq SoC NOR support"
++	depends on LANTIQ
++	select MTD_PARTITIONS
++	help
++	  Lantiq SoCs have a EBU (External Bus Unit). This IP allows to attach
++	  a number of different peripherals to the SoC. This driver adds
++	  support for NOR chips to be added.
++
+ config MTD_DILNETPC
+ 	tristate "CFI Flash device mapped on DIL/Net PC"
+ 	depends on X86 && MTD_PARTITIONS && MTD_CFI_INTELEXT && BROKEN
+diff --git a/drivers/mtd/maps/Makefile b/drivers/mtd/maps/Makefile
+index 08533bd..6adf4c9 100644
+--- a/drivers/mtd/maps/Makefile
++++ b/drivers/mtd/maps/Makefile
+@@ -60,3 +60,4 @@ obj-$(CONFIG_MTD_VMU)		+= vmu-flash.o
+ obj-$(CONFIG_MTD_GPIO_ADDR)	+= gpio-addr-flash.o
+ obj-$(CONFIG_MTD_BCM963XX)	+= bcm963xx-flash.o
+ obj-$(CONFIG_MTD_LATCH_ADDR)	+= latch-addr-flash.o
++obj-$(CONFIG_MTD_LANTIQ)	+= lantiq-flash.o
+diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+new file mode 100644
+index 0000000..983c88f
+--- /dev/null
++++ b/drivers/mtd/maps/lantiq-flash.c
+@@ -0,0 +1,251 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2004 Liu Peng Infineon IFAP DC COM CPE
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/io.h>
++#include <linux/slab.h>
++#include <linux/init.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/map.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/cfi.h>
++#include <linux/platform_device.h>
++#include <linux/mtd/physmap.h>
++
++#include <lantiq_soc.h>
++#include <lantiq_platform.h>
++
++/* 
++ * The NOR flash is connected to the same external bus unit (EBU) as PCI.
++ * To make PCI work we need to enable the endianness swapping for the address
++ * written to the EBU. This endianness swapping works for PCI correctly but
++ * fails for attached NOR devices. To workaround this we need to use a complex
++ * map. The workaround involves swapping all addresses whilst probing the chip.
++ * Once probing is complete we stop swapping the addresses but swizzle the
++ * unlock addresses to ensure that access to the NOR device works correctly.
++ */
++
++enum {
++	LTQ_NOR_PROBING,
++	LTQ_NOR_NORMAL
++};
++
++struct ltq_mtd {
++	struct resource *res;
++	struct mtd_info *mtd;
++	struct map_info *map;
++};
++
++static char ltq_map_name[] = "ltq_nor";
++
++static map_word
++ltq_read16(struct map_info *map, unsigned long adr)
++{
++	unsigned long flags;
++	map_word temp;
++
++	if (map->map_priv_1 == LTQ_NOR_PROBING)
++		adr ^= 2;
++	spin_lock_irqsave(&ebu_lock, flags);
++	temp.x[0] = *(u16 *)(map->virt + adr);
++	spin_unlock_irqrestore(&ebu_lock, flags);
++	return temp;
++}
++
++static void
++ltq_write16(struct map_info *map, map_word d, unsigned long adr)
++{
++	unsigned long flags;
++
++	if (map->map_priv_1 == LTQ_NOR_PROBING)
++		adr ^= 2;
++	spin_lock_irqsave(&ebu_lock, flags);
++	*(u16 *)(map->virt + adr) = d.x[0];
++	spin_unlock_irqrestore(&ebu_lock, flags);
++}
++
++/*
++ * The following 2 functions copy data between iomem and a cached memory
++ * section. As memcpy() makes use of pre-fetching we cannot use it here.
++ * The normal alternative of using memcpy_{to,from}io also makes use of
++ * memcpy() on MIPS so it is not applicable either. We are therefore stuck
++ * with having to use our own loop.
++ */
++static void
++ltq_copy_from(struct map_info *map, void *to,
++	unsigned long from, ssize_t len)
++{
++	unsigned char *f = (unsigned char *)map->virt + from;
++	unsigned char *t = (unsigned char *)to;
++	unsigned long flags;
++
++	spin_lock_irqsave(&ebu_lock, flags);
++	while (len--)
++		*t++ = *f++;
++	spin_unlock_irqrestore(&ebu_lock, flags);
++}
++
++static void
++ltq_copy_to(struct map_info *map, unsigned long to,
++	const void *from, ssize_t len)
++{
++	unsigned char *f = (unsigned char *)from;
++	unsigned char *t = (unsigned char *)map->virt + to;
++	unsigned long flags;
++
++	spin_lock_irqsave(&ebu_lock, flags);
++	while (len--)
++		*t++ = *f++;
++	spin_unlock_irqrestore(&ebu_lock, flags);
++}
++
++static const char const *part_probe_types[] = { "cmdlinepart", NULL };
++
++static int __init
++ltq_mtd_probe(struct platform_device *pdev)
++{
++	struct physmap_flash_data *ltq_mtd_data = dev_get_platdata(&pdev->dev);
++	struct ltq_mtd *ltq_mtd;
++	struct mtd_partition *parts;
++	struct resource *res;
++	int nr_parts = 0;
++	struct cfi_private *cfi;
++	int err;
++
++	ltq_mtd = kzalloc(sizeof(struct ltq_mtd), GFP_KERNEL);
++	platform_set_drvdata(pdev, ltq_mtd);
++
++	ltq_mtd->res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!ltq_mtd->res) {
++		dev_err(&pdev->dev, "failed to get memory resource");
++		err = -ENOENT;
++		goto err_out;
++	}
++
++	res = devm_request_mem_region(&pdev->dev, ltq_mtd->res->start,
++		resource_size(ltq_mtd->res), dev_name(&pdev->dev));
++	if (!ltq_mtd->res) {
++		dev_err(&pdev->dev, "failed to request mem resource");
++		err = -EBUSY;
++		goto err_out;
++	}
++
++	ltq_mtd->map = kzalloc(sizeof(struct map_info), GFP_KERNEL);
++	ltq_mtd->map->phys = res->start;
++	ltq_mtd->map->size = resource_size(res);
++	ltq_mtd->map->virt = devm_ioremap_nocache(&pdev->dev,
++				ltq_mtd->map->phys, ltq_mtd->map->size);
++	if (!ltq_mtd->map->virt) {
++		dev_err(&pdev->dev, "failed to ioremap!\n");
++		err = -ENOMEM;
++		goto err_free;
++	}
++
++	ltq_mtd->map->name = ltq_map_name;
++	ltq_mtd->map->bankwidth = 2;
++	ltq_mtd->map->read = ltq_read16;
++	ltq_mtd->map->write = ltq_write16;
++	ltq_mtd->map->copy_from = ltq_copy_from;
++	ltq_mtd->map->copy_to = ltq_copy_to;
++
++	ltq_mtd->map->map_priv_1 = LTQ_NOR_PROBING;
++	ltq_mtd->mtd = do_map_probe("cfi_probe", ltq_mtd->map);
++	ltq_mtd->map->map_priv_1 = LTQ_NOR_NORMAL;
++
++	if (!ltq_mtd->mtd) {
++		dev_err(&pdev->dev, "probing failed\n");
++		err = -ENXIO;
++		goto err_unmap;
++	}
++
++	ltq_mtd->mtd->owner = THIS_MODULE;
++
++	cfi = ltq_mtd->map->fldrv_priv;
++	cfi->addr_unlock1 ^= 1;
++	cfi->addr_unlock2 ^= 1;
++
++	nr_parts = parse_mtd_partitions(ltq_mtd->mtd,
++				part_probe_types, &parts, 0);
++	if (nr_parts > 0) {
++		dev_info(&pdev->dev,
++			"using %d partitions from cmdline", nr_parts);
++	} else {
++		nr_parts = ltq_mtd_data->nr_parts;
++		parts = ltq_mtd_data->parts;
++	}
++
++	err = add_mtd_partitions(ltq_mtd->mtd, parts, nr_parts);
++	if (err) {
++		dev_err(&pdev->dev, "failed to add partitions\n");
++		goto err_destroy;
++	}
++
++	return 0;
++
++err_destroy:
++	map_destroy(ltq_mtd->mtd);
++err_unmap:
++	iounmap(ltq_mtd->map->virt);
++err_free:
++	kfree(ltq_mtd->map);
++err_out:
++	kfree(ltq_mtd);
++	return err;
++}
++
++static int __devexit
++ltq_mtd_remove(struct platform_device *pdev)
++{
++	struct ltq_mtd *ltq_mtd = platform_get_drvdata(pdev);
++
++	if (ltq_mtd) {
++		if (ltq_mtd->mtd) {
++			del_mtd_partitions(ltq_mtd->mtd);
++			map_destroy(ltq_mtd->mtd);
++		}
++		if (ltq_mtd->map->virt)
++			iounmap(ltq_mtd->map->virt);
++		kfree(ltq_mtd->map);
++		kfree(ltq_mtd);
++	}
++	return 0;
++}
++
++static struct platform_driver ltq_mtd_driver = {
++	.remove = __devexit_p(ltq_mtd_remove),
++	.driver = {
++		.name = "ltq_nor",
++		.owner = THIS_MODULE,
++	},
++};
++
++static int __init
++init_ltq_mtd(void)
++{
++	int ret = platform_driver_probe(&ltq_mtd_driver, ltq_mtd_probe);
++
++	if (ret)
++		pr_err("ltq_nor: error registering platform driver");
++	return ret;
++}
++
++static void __exit
++exit_ltq_mtd(void)
++{
++	platform_driver_unregister(&ltq_mtd_driver);
++}
++
++module_init(init_ltq_mtd);
++module_exit(exit_ltq_mtd);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
++MODULE_DESCRIPTION("Lantiq SoC NOR");
+-- 
+1.7.2.3

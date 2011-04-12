@@ -1,66 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2011 00:47:23 +0200 (CEST)
-Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:51022
-        "EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491085Ab1DLWrU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Apr 2011 00:47:20 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by sunset.davemloft.net (Postfix) with ESMTP id 9530830001;
-        Tue, 12 Apr 2011 15:46:42 -0700 (PDT)
-Date:   Tue, 12 Apr 2011 15:46:42 -0700 (PDT)
-Message-Id: <20110412.154642.200375628.davem@davemloft.net>
-To:     blogic@openwrt.org
-Cc:     ralf@linux-mips.org, ralph.hempel@lantiq.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Apr 2011 01:54:38 +0200 (CEST)
+Received: from mail.vyatta.com ([76.74.103.46]:44260 "EHLO mail.vyatta.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491194Ab1DLXye (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 13 Apr 2011 01:54:34 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.vyatta.com (Postfix) with ESMTP id 3FD4D18298B6;
+        Tue, 12 Apr 2011 16:54:27 -0700 (PDT)
+X-Virus-Scanned: amavisd-new at tahiti.vyatta.com
+Received: from mail.vyatta.com ([127.0.0.1])
+        by localhost (mail.vyatta.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id AV6FADaB47BD; Tue, 12 Apr 2011 16:54:26 -0700 (PDT)
+Received: from nehalam (static-50-53-80-93.bvtn.or.frontiernet.net [50.53.80.93])
+        by mail.vyatta.com (Postfix) with ESMTPSA id 4E0DB1829045;
+        Tue, 12 Apr 2011 16:54:26 -0700 (PDT)
+Date:   Tue, 12 Apr 2011 16:54:24 -0700
+From:   Stephen Hemminger <shemminger@vyatta.com>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Ralph Hempel <ralph.hempel@lantiq.com>,
         linux-mips@linux-mips.org, netdev@vger.kernel.org
 Subject: Re: [PATCH 2/3] MIPS: lantiq: add ethernet driver
-From:   David Miller <davem@davemloft.net>
+Message-ID: <20110412165424.0b6ba71a@nehalam>
 In-Reply-To: <1302624675-18652-3-git-send-email-blogic@openwrt.org>
 References: <1302624675-18652-1-git-send-email-blogic@openwrt.org>
         <1302624675-18652-3-git-send-email-blogic@openwrt.org>
-X-Mailer: Mew version 6.3 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
+Organization: Vyatta
+X-Mailer: Claws Mail 3.7.6 (GTK+ 2.22.0; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Return-Path: <shemminger@vyatta.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29744
+X-archive-position: 29745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: shemminger@vyatta.com
 Precedence: bulk
 X-list: linux-mips
 
-From: John Crispin <blogic@openwrt.org>
-Date: Tue, 12 Apr 2011 18:11:14 +0200
-
-> This patch adds the driver for the ETOP Packet Processing Engine (PPE32) found
-> inside the XWAY family of Lantiq MIPS SoCs. This driver makes 100MBit ethernet
-> work. Support for all 8 dma channels, gbit and the embedded switch found on
-> the ar9/vr9 still needs to be implemented.
-> 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-
-This driver needs some work.
+On Tue, 12 Apr 2011 18:11:14 +0200
+John Crispin <blogic@openwrt.org> wrote:
 
 > +
-> +	skb_put(skb, len);
-> +	skb->dev = dev;
-> +	skb->protocol = eth_type_trans(skb, dev);
-> +	netif_rx(skb);
-> +	priv->stats.rx_packets++;
-> +	priv->stats.rx_bytes += len;
+> +struct ltq_mii_priv {
+> +	struct ltq_eth_data *pldata;
+> +	struct resource *res;
+> +	struct net_device_stats stats;
 
-Please convert this driver to use NAPI for packet reception.
+You don't need to have private stats structure it is part
+of net_device in recent kernels. In fact, since you don't
+set .ndo_get_stats, the driver is getting the default function
+which prints the values from network_device, not your priv structure.
 
-> +	local_irq_save(flags);
-> +	priv->rx_tasklet_running = 0;
-> +	if (priv->rx_channel_mask) {
-> +		priv->rx_tasklet_running = 1;
-> +		tasklet_schedule(&priv->rx_tasklet);
-> +	}
-> +	local_irq_restore(flags);
+Also, please consider adding basic ethtool support to
+show speed/duplex and driver information.
 
-This doesn't protect anything, use proper locking.
+-- 

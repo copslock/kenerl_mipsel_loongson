@@ -1,74 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Apr 2011 21:42:33 +0200 (CEST)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:36503 "EHLO
-        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491143Ab1DKTma convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 11 Apr 2011 21:42:30 +0200
-Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id F0DFE14014A;
-        Mon, 11 Apr 2011 21:42:22 +0200 (CEST)
-Received: from [127.0.0.1] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 7A3AB14013D;
-        Mon, 11 Apr 2011 21:42:22 +0200 (CEST)
-Message-ID: <4DA359A0.5020503@openwrt.org>
-Date:   Mon, 11 Apr 2011 21:42:24 +0200
-From:   Gabor Juhos <juhosg@openwrt.org>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; hu-HU; rv:1.9.2.15) Gecko/20110303 Thunderbird/3.1.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Apr 2011 08:45:09 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:54249 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490958Ab1DLGpF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 12 Apr 2011 08:45:05 +0200
+Received: by pzk5 with SMTP id 5so2725546pzk.36
+        for <linux-mips@linux-mips.org>; Mon, 11 Apr 2011 23:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:date:x-google-sender-auth
+         :message-id:subject:from:to:content-type;
+        bh=F5MaIqWVrDA/lUXai7iti8FnaKSDWXvpc71W70VETdw=;
+        b=lA9S1Xpe5NH5MSu9sFKhe2aafMZSN6Uv4SmTEYzL1PRrsVRp1DNq5bRxrnACFau/yo
+         NTisKrA5XngJgXiA7a/9Bh5xUdl3GqzOeg535hUXigNGZbJxwDyvMeyfsIqvLRs4B5KT
+         8kDim+3l/DLGWB/A8+IOfX9zEiZaPBWjiPWZw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:date:x-google-sender-auth:message-id:subject
+         :from:to:content-type;
+        b=qAfVSt0LgaValEC1ZfguuoLJSJtPQ/cAsFfvVLvI5zHpnvxZ9VWJTX1xWS0JOWYqf6
+         vnXbyorAD6PrxAlV0h2ryBTtds9wlrVMAvAbFATFYih1hwc3O5ly3o+Ox1Tk5nyNdrad
+         9q/OUleEYwwgwKLutbtQqQlEwxofy8e5+WENA=
 MIME-Version: 1.0
-To:     Alan Stern <stern@rowland.harvard.edu>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/3] USB: ehci: add workaround for Synopsys HC bug
-References: <Pine.LNX.4.44L0.1104111452040.1975-100000@iolanthe.rowland.org>
-In-Reply-To: <Pine.LNX.4.44L0.1104111452040.1975-100000@iolanthe.rowland.org>
-X-Enigmail-Version: 1.1.1
-Content-Type: text/plain; charset=ISO-8859-1
-X-Antivirus: avast! (VPS 110411-0, 2011.04.11), Outbound message
-X-Antivirus-Status: Clean
-Content-Transfer-Encoding: 8BIT
-X-VBMS: A166A1A67D0 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
-Return-Path: <juhosg@openwrt.org>
+Received: by 10.142.178.17 with SMTP id a17mr895806wff.64.1302590698121; Mon,
+ 11 Apr 2011 23:44:58 -0700 (PDT)
+Received: by 10.68.43.106 with HTTP; Mon, 11 Apr 2011 23:44:58 -0700 (PDT)
+Date:   Tue, 12 Apr 2011 02:44:58 -0400
+X-Google-Sender-Auth: PBUBfxprRCuHUL-1-NJtreJ9n68
+Message-ID: <BANLkTikTDQgwHtK1V4AqRAALw_HrSTuvnQ@mail.gmail.com>
+Subject: [PATCH] Notifier chain called twice
+From:   Yury Polyanskiy <ypolyans@princeton.edu>
+To:     linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=000e0cd2df94d9696604a0b3078a
+Return-Path: <polyanskiy@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29734
+X-archive-position: 29735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: ypolyans@princeton.edu
 Precedence: bulk
 X-list: linux-mips
 
-2011.04.11. 20:53 keltezéssel, Alan Stern írta:
-> On Sun, 10 Apr 2011, Gabor Juhos wrote:
-> 
->> A Synopsys USB core used in various SoCs has a bug which might cause
->> that the host controller not issuing ping.
->>
->> When software uses the Doorbell mechanism to remove queue heads, the
->> host controller still has references to the removed queue head even
->> after indicating an Interrupt on Async Advance. This happens if the last
->> executed queue head's Next Link queue head is removed.
->>
->> Consequences of the defect:
->> The Host controller fetches the removed queue head, using memory that
->> would otherwise be deallocated.This results in incorrect transactions on
->> both the USB and system memory. This may result in undefined behavior.
-> 
->> --- a/drivers/usb/host/ehci-q.c
->> +++ b/drivers/usb/host/ehci-q.c
->> @@ -1183,6 +1183,9 @@ static void end_unlink_async (struct ehci_hcd *ehci)
->>  		ehci->reclaim = NULL;
->>  		start_unlink_async (ehci, next);
->>  	}
->> +
->> +	if (ehci->has_synopsys_hc_bug)
->> +		writel((u32)ehci->async->qh_dma, &ehci->regs->async_next);
->>  }
-> 
-> This should be ehci_writel(ehci, ...).
+--000e0cd2df94d9696604a0b3078a
+Content-Type: text/plain; charset=ISO-8859-1
 
-You are right, I will change that.
+Dear all,
 
-Thanks,
-Gabor
+The notifier chain is currently called twice on OOPS. Patch below.
+
+Best,
+Yury
+
+
+
+
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 4e00f9b..fdc6773 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -375,8 +375,6 @@ void __noreturn die(const char *str, str
+        unsigned long dvpret = dvpe();
+ #endif /* CONFIG_MIPS_MT_SMTC */
+
+-       notify_die(DIE_OOPS, str, regs, 0, regs_to_trapnr(regs), SIGSEGV);
+-
+        console_verbose();
+        spin_lock_irq(&die_lock);
+        bust_spinlocks(1);
+
+--000e0cd2df94d9696604a0b3078a
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Dear all,<br><br>The notifier chain is currently called twice on OOPS. Patc=
+h below.<br><br>Best,<br>Yury<br><br><br><br><br>diff --git a/arch/mips/ker=
+nel/traps.c b/arch/mips/kernel/traps.c<br>index 4e00f9b..fdc6773 100644<br>
+--- a/arch/mips/kernel/traps.c<br>+++ b/arch/mips/kernel/traps.c<br>@@ -375=
+,8 +375,6 @@ void __noreturn die(const char *str, str<br>=A0=A0=A0=A0=A0=A0=
+=A0 unsigned long dvpret =3D dvpe();<br>=A0#endif /* CONFIG_MIPS_MT_SMTC */=
+<br>=A0<br>-=A0=A0=A0=A0=A0=A0 notify_die(DIE_OOPS, str, regs, 0, regs_to_t=
+rapnr(regs), SIGSEGV);<br>
+-<br>=A0=A0=A0=A0=A0=A0=A0 console_verbose();<br>=A0=A0=A0=A0=A0=A0=A0 spin=
+_lock_irq(&amp;die_lock);<br>=A0=A0=A0=A0=A0=A0=A0 bust_spinlocks(1);<br><b=
+r>
+
+--000e0cd2df94d9696604a0b3078a--

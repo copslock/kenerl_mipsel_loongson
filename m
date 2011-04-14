@@ -1,61 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2011 04:24:49 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:50747 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490969Ab1DNCYp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Apr 2011 04:24:45 +0200
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.221.2])
-        by mx2.suse.de (Postfix) with ESMTP id 7585D867E2;
-        Thu, 14 Apr 2011 04:24:45 +0200 (CEST)
-Date:   Wed, 13 Apr 2011 19:16:56 -0700
-From:   Greg KH <gregkh@suse.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-usb@vger.kernel.org,
-        Manuel Lauss <manuel.lauss@googlemail.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] USB: OHCI: Fix build warning on Alchemy
-Message-ID: <20110414021656.GB13169@suse.de>
-References: <20110413232308.GA22925@linux-mips.org>
- <20110413234317.GB17342@suse.de>
- <20110414003124.GA9660@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110414003124.GA9660@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <gregkh@suse.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Apr 2011 19:54:14 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:60564 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491755Ab1DNRyI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Apr 2011 19:54:08 +0200
+Received: by pzk5 with SMTP id 5so720445pzk.36
+        for <linux-mips@linux-mips.org>; Thu, 14 Apr 2011 10:54:01 -0700 (PDT)
+Received: by 10.68.71.133 with SMTP id v5mr659776pbu.487.1302803641376;
+        Thu, 14 Apr 2011 10:54:01 -0700 (PDT)
+Received: from [10.0.0.3] ([122.172.162.249])
+        by mx.google.com with ESMTPS id 25sm2582803wfb.10.2011.04.14.10.53.58
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 14 Apr 2011 10:53:59 -0700 (PDT)
+Subject: Re: [PATCH] MIPS: Octeon: add option to ignore PT_NOTE section
+From:   philby john <pjohn@mvista.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org
+In-Reply-To: <4DA5DF7A.1030207@caviumnetworks.com>
+References: <1302710833.14458.1.camel@localhost.localdomain>
+         <4DA5DF7A.1030207@caviumnetworks.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Thu, 14 Apr 2011 23:24:45 +0530
+Message-ID: <1302803685.3322.2.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.32.1 (2.32.1-1.fc14) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <pjohn@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29755
+X-archive-position: 29756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: pjohn@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 14, 2011 at 02:31:24AM +0200, Ralf Baechle wrote:
-> On Wed, Apr 13, 2011 at 04:43:17PM -0700, Greg KH wrote:
+On Wed, 2011-04-13 at 10:38 -0700, David Daney wrote:
+> On 04/13/2011 09:07 AM, philby john wrote:
+> > From: Philby John<pjohn@mvista.com>
 > 
-> > On Thu, Apr 14, 2011 at 01:23:08AM +0200, Ralf Baechle wrote:
-> > >   CC      drivers/usb/host/ohci-hcd.o
-> > > In file included from drivers/usb/host/ohci-hcd.c:1028:0:
-> > > drivers/usb/host/ohci-au1xxx.c:36:7: warning: "__BIG_ENDIAN" is not defined [-Wundef]
-> > > 
-> > > Fix the warning and some other build bullet proofing; let's not rely on
-> > > other needed header files getting dragged in magically.
-> > 
-> > Ick, I just applied the second part of this patch to my "for-linus"
-> > tree as a patch from someone else.  Are the #include changes really
-> > needed right now?
+> ^^^^^^^^ I believe that statement to be not entirely correct.
+
+To be honest, we had a xyz customer report this issue with a patch that
+had no original author sign-off. Good to know its origin.
+Another shot with correct attributions follows in a second.
+
+Regards,
+Philby
 > 
-> No, the include stuff was more for paranoia.
+> Perhaps you should change it to something like:
+> From: David Daney <ddaney@caviumnetworks.com>
 > 
-> However the warning fixed by the 2nd part of the patch exists back to
-> at least 2.6.27.
-
-Ah, it's not that much of a rush then :)
-
-thanks,
-
-greg k-h
+> 
+> > Date: Wed, 13 Apr 2011 20:46:32 +0530
+> > Subject: [PATCH] MIPS: Octeon: add option to ignore PT_NOTE section
+> >
+> > Some early Octeon bootloaders cannot process PT_NOTE program
+> > headers as reported in numerous sections of the web, here is
+> > an example http://www.spinics.net/lists/mips/msg37799.html
+> > Loading usually fails with such an error ...
+> > Error allocating memory for elf image!
+> >
+> > The work around usually is to strip the .notes section by using
+> > such a command $mips-gnu-strip -R .notes vmlinux -o fixed-vmlinux
+> > It is expected that the vmlinux image got after compilation be
+> > bootable. Add a Kconfig option to ignore the PT_NOTE section.
+> >
+> > Signed-off-by: Philby John<pjohn@mvista.com>
+> > ---

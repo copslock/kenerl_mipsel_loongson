@@ -1,123 +1,199 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2011 17:52:02 +0200 (CEST)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:51016 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491031Ab1DPPvz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Apr 2011 17:51:55 +0200
-Received: by wwb17 with SMTP id 17so3579492wwb.24
-        for <linux-mips@linux-mips.org>; Sat, 16 Apr 2011 08:51:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:sender:message-id:date:from:organization
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=GGRJpzTDbZPT0EGLm/Nxut+0r6J0MNSKporSEvfsjJQ=;
-        b=RLgdpn7ToHCZiTRc3CxCdyxRIv/jsyKYmLjUU6mTvwUgsumc0iK9fYj8nOF6zItaEl
-         LeAh0rAEsj3CIm88TyDe1gWFA7T/gvZttXDP09lkXsD8a+xW3TiyUgEow18LCC6GnO/I
-         5Du15/xMb2k/ncYEP/UhNLrZSqBqW4VtmcA/8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:message-id:date:from:organization:user-agent:mime-version:to
-         :cc:subject:references:in-reply-to:content-type
-         :content-transfer-encoding;
-        b=U9HseavHqL0c8oB35obuUgyXT8zsvrWIHydnzvHpBSvCgygQPTq8JUA1n7x0lneYrU
-         qnbmbC7J5/4BO+10haBouqZx69tKkLkvWIEr+fkxJIGCeP8NI7ADGuGwLCnn/CoDV9T4
-         G++ZP537zhoSFOr5OTQ3zJIjR1tomQd9+LY8g=
-Received: by 10.227.140.77 with SMTP id h13mr3165617wbu.217.1302969108672;
-        Sat, 16 Apr 2011 08:51:48 -0700 (PDT)
-Received: from [127.0.0.1] (fbx.mimichou.net [82.236.225.16])
-        by mx.google.com with ESMTPS id o6sm2226719wbo.54.2011.04.16.08.51.46
-        (version=SSLv3 cipher=OTHER);
-        Sat, 16 Apr 2011 08:51:47 -0700 (PDT)
-Message-ID: <4DA9BB10.5030309@openwrt.org>
-Date:   Sat, 16 Apr 2011 17:51:44 +0200
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.2.15) Gecko/20110303 Thunderbird/3.1.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2011 18:51:28 +0200 (CEST)
+Received: from [69.28.251.93] ([69.28.251.93]:41380 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491059Ab1DPQvY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 16 Apr 2011 18:51:24 +0200
+Received: (qmail 23766 invoked from network); 16 Apr 2011 16:51:18 -0000
+Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 16 Apr 2011 16:51:18 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sat, 16 Apr 2011 09:51:18 -0700
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
+Date:   Sat, 16 Apr 2011 09:44:29 -0700
+Message-Id: <7aa38c32b7748a95e814e5bb0583f967@localhost>
+User-Agent: vim 7.2
 MIME-Version: 1.0
-To:     Philby John <pjohn@mvista.com>
-CC:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Octeon: add option to ignore PT_NOTE section
-References: <1302710833.14458.1.camel@localhost.localdomain> <4DA5DF7A.1030207@caviumnetworks.com> <201104151024.07859.florian@openwrt.org> <4DA8081D.9050608@mvista.com> <4DA871F5.40809@caviumnetworks.com> <4DA9B3F3.50805@mvista.com>
-In-Reply-To: <4DA9B3F3.50805@mvista.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29764
+X-archive-position: 29765
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Reuse more of the same definitions for the non-RIXI and RIXI cases.  This
+avoids having special cases for kernel_uses_smartmips_rixi cluttering up
+the pgtable*.h files.
 
-Le 16/04/2011 17:21, Philby John a écrit :
-> On 04/15/2011 09:57 PM, David Daney wrote:
->> On 04/15/2011 01:55 AM, Philby John wrote:
->>> On 04/15/2011 01:54 PM, Florian Fainelli wrote:
->>>> Hello,
->>>>
->>>> On Wednesday 13 April 2011 19:38:02 David Daney wrote:
->>>>> On 04/13/2011 09:07 AM, philby john wrote:
->>>>>> From: Philby John<pjohn@mvista.com>
->>>>>
->>>>> ^^^^^^^^ I believe that statement to be not entirely correct.
->>>>>
->>>>> Perhaps you should change it to something like:
->>>>> From: David Daney<ddaney@caviumnetworks.com>
->>>>>
->>>>>> Date: Wed, 13 Apr 2011 20:46:32 +0530
->>>>>> Subject: [PATCH] MIPS: Octeon: add option to ignore PT_NOTE section
->>>>>>
->>>>>> Some early Octeon bootloaders cannot process PT_NOTE program
->>>>>> headers as reported in numerous sections of the web, here is
->>>>>> an example http://www.spinics.net/lists/mips/msg37799.html
->>>>>> Loading usually fails with such an error ...
->>>>>> Error allocating memory for elf image!
->>>>>>
->>>>>> The work around usually is to strip the .notes section by using
->>>>>> such a command $mips-gnu-strip -R .notes vmlinux -o fixed-vmlinux
->>>>>> It is expected that the vmlinux image got after compilation be
->>>>>> bootable. Add a Kconfig option to ignore the PT_NOTE section.
->>>>
->>>> Do we really want this to be in the kernel? In my opinion, this is a
->>>> fixup
->>>> which distributions should be aware of, but not necessarily take
->>>> place here in
->>>> the kernel Makefiles.
->>>
->>> You are right in one way. But as an OS vendor company we will definitely
->>> include this patch in our distribution. This incident has been reported
->>> many a times and its a pain to see the image not boot up, throw up an
->>> error, with the user having to search the work around on the web. What
->>> we are trying to do is save all that trouble. If it can be fixed why not
->>> fix it.
->>>
->>
->> I don't care one way or another.  We too (perhaps one and the same...)
->> provide kernels to our SDK customers with the patch applied.
->>
->> An alternative approach would be to put the $(CROSS_COMPILE)strip
->> command into the arch/mips/Makefile.
->
-> I doubt that's any good, strip also removes debug symbols along with the
-> notes section and I am not aware of a specific command to strip just the
-> PT_NOTE section. Just these lines of code seem to get the job done
-> though ...
->
-> +#ifndef CONFIG_DISABLE_ELF_NOTE_HEADER
->        NOTES :text :note
-> +#else
-> +    NOTES :text
-> +#endif
+On hardware that does not support RI/XI, EntryLo bits 31:30 / 63:62 will
+remain unset and RI/XI permissions will not be enforced.
 
-strip can be told to only strip a particular section, e.g: 
-$(TARGET_CROSS)strip -R .notes
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ arch/mips/include/asm/pgtable-bits.h |   23 ++++++++---------------
+ arch/mips/include/asm/pgtable.h      |   21 ++++++++-------------
+ arch/mips/mm/tlbex.c                 |   17 +++++------------
+ 3 files changed, 21 insertions(+), 40 deletions(-)
 
-like David, I prefer this option rather than modifying the linker script.
---
-Florian
+diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
+index e9fe7e9..7afba78 100644
+--- a/arch/mips/include/asm/pgtable-bits.h
++++ b/arch/mips/include/asm/pgtable-bits.h
+@@ -35,7 +35,7 @@
+ #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
+ 
+ #define _PAGE_PRESENT               (1<<6)  /* implemented in software */
+-#define _PAGE_READ                  (1<<7)  /* implemented in software */
++#define _PAGE_NO_READ               (1<<7)  /* implemented in software */
+ #define _PAGE_WRITE                 (1<<8)  /* implemented in software */
+ #define _PAGE_ACCESSED              (1<<9)  /* implemented in software */
+ #define _PAGE_MODIFIED              (1<<10) /* implemented in software */
+@@ -53,7 +53,7 @@
+ #elif defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+ 
+ #define _PAGE_PRESENT               (1<<0)  /* implemented in software */
+-#define _PAGE_READ                  (1<<1)  /* implemented in software */
++#define _PAGE_NO_READ               (1<<1)  /* implemented in software */
+ #define _PAGE_WRITE                 (1<<2)  /* implemented in software */
+ #define _PAGE_ACCESSED              (1<<3)  /* implemented in software */
+ #define _PAGE_MODIFIED              (1<<4)  /* implemented in software */
+@@ -79,11 +79,8 @@
+ /* implemented in software */
+ #define _PAGE_PRESENT_SHIFT	(0)
+ #define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
+-/* implemented in software, should be unused if kernel_uses_smartmips_rixi. */
+-#define _PAGE_READ_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_PRESENT_SHIFT : _PAGE_PRESENT_SHIFT + 1)
+-#define _PAGE_READ ({if (kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_READ_SHIFT; })
+ /* implemented in software */
+-#define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
++#define _PAGE_WRITE_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
+ #define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
+ /* implemented in software */
+ #define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
+@@ -104,12 +101,12 @@
+ #endif
+ 
+ /* Page cannot be executed */
+-#define _PAGE_NO_EXEC_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_HUGE_SHIFT + 1 : _PAGE_HUGE_SHIFT)
+-#define _PAGE_NO_EXEC		({if (!kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_NO_EXEC_SHIFT; })
++#define _PAGE_NO_EXEC_SHIFT	(_PAGE_HUGE_SHIFT + 1)
++#define _PAGE_NO_EXEC		(1 << _PAGE_NO_EXEC_SHIFT)
+ 
+ /* Page cannot be read */
+-#define _PAGE_NO_READ_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_NO_EXEC_SHIFT + 1 : _PAGE_NO_EXEC_SHIFT)
+-#define _PAGE_NO_READ		({if (!kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_NO_READ_SHIFT; })
++#define _PAGE_NO_READ_SHIFT	(_PAGE_NO_EXEC_SHIFT + 1)
++#define _PAGE_NO_READ		(1 << _PAGE_NO_READ_SHIFT)
+ 
+ #define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
+ #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
+@@ -136,10 +133,6 @@
+ #endif
+ #define _PFN_MASK		(~((1 << (_PFN_SHIFT)) - 1))
+ 
+-#ifndef _PAGE_NO_READ
+-#define _PAGE_NO_READ ({BUG(); 0; })
+-#define _PAGE_NO_READ_SHIFT ({BUG(); 0; })
+-#endif
+ #ifndef _PAGE_NO_EXEC
+ #define _PAGE_NO_EXEC ({BUG(); 0; })
+ #endif
+@@ -220,7 +213,7 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+ 
+ #endif
+ 
+-#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ))
++#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED)
+ #define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
+ 
+ #define _PAGE_CHG_MASK  (_PFN_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index 7e40f37..0b3e7c6 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -22,15 +22,15 @@ struct mm_struct;
+ struct vm_area_struct;
+ 
+ #define PAGE_NONE	__pgprot(_PAGE_PRESENT | _CACHE_CACHABLE_NONCOHERENT)
+-#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
++#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | \
+ 				 _page_cachable_default)
+-#define PAGE_COPY	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
+-				 (kernel_uses_smartmips_rixi ?  _PAGE_NO_EXEC : 0) | _page_cachable_default)
+-#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
++#define PAGE_COPY	__pgprot(_PAGE_PRESENT | _PAGE_NO_EXEC | \
++				 _page_cachable_default)
++#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | \
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
+ 				 _PAGE_GLOBAL | _page_cachable_default)
+-#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | _PAGE_WRITE | \
++#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | \
+ 				 _page_cachable_default)
+ #define PAGE_KERNEL_UNCACHED __pgprot(_PAGE_PRESENT | __READABLE | \
+ 			__WRITEABLE | _PAGE_GLOBAL | _CACHE_UNCACHED)
+@@ -250,7 +250,7 @@ static inline pte_t pte_mkdirty(pte_t pte)
+ static inline pte_t pte_mkyoung(pte_t pte)
+ {
+ 	pte.pte_low |= _PAGE_ACCESSED;
+-	if (pte.pte_low & _PAGE_READ) {
++	if (!(pte.pte_low & _PAGE_NO_READ)) {
+ 		pte.pte_low  |= _PAGE_SILENT_READ;
+ 		pte.pte_high |= _PAGE_SILENT_READ;
+ 	}
+@@ -299,13 +299,8 @@ static inline pte_t pte_mkdirty(pte_t pte)
+ static inline pte_t pte_mkyoung(pte_t pte)
+ {
+ 	pte_val(pte) |= _PAGE_ACCESSED;
+-	if (kernel_uses_smartmips_rixi) {
+-		if (!(pte_val(pte) & _PAGE_NO_READ))
+-			pte_val(pte) |= _PAGE_SILENT_READ;
+-	} else {
+-		if (pte_val(pte) & _PAGE_READ)
+-			pte_val(pte) |= _PAGE_SILENT_READ;
+-	}
++	if (!(pte_val(pte) & _PAGE_NO_READ))
++		pte_val(pte) |= _PAGE_SILENT_READ;
+ 	return pte;
+ }
+ 
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index f5734c2..451735b 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1463,19 +1463,12 @@ static void __cpuinit
+ build_pte_present(u32 **p, struct uasm_reloc **r,
+ 		  unsigned int pte, unsigned int ptr, enum label_id lid)
+ {
+-	if (kernel_uses_smartmips_rixi) {
+-		if (use_bbit_insns()) {
+-			uasm_il_bbit0(p, r, pte, ilog2(_PAGE_PRESENT), lid);
+-			uasm_i_nop(p);
+-		} else {
+-			uasm_i_andi(p, pte, pte, _PAGE_PRESENT);
+-			uasm_il_beqz(p, r, pte, lid);
+-			iPTE_LW(p, pte, ptr);
+-		}
++	if (use_bbit_insns()) {
++		uasm_il_bbit0(p, r, pte, ilog2(_PAGE_PRESENT), lid);
++		uasm_i_nop(p);
+ 	} else {
+-		uasm_i_andi(p, pte, pte, _PAGE_PRESENT | _PAGE_READ);
+-		uasm_i_xori(p, pte, pte, _PAGE_PRESENT | _PAGE_READ);
+-		uasm_il_bnez(p, r, pte, lid);
++		uasm_i_andi(p, pte, pte, _PAGE_PRESENT);
++		uasm_il_beqz(p, r, pte, lid);
+ 		iPTE_LW(p, pte, ptr);
+ 	}
+ }
+-- 
+1.7.4.3

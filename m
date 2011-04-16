@@ -1,19 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2011 18:51:28 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:41380 "EHLO b32.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Apr 2011 18:51:51 +0200 (CEST)
+Received: from [69.28.251.93] ([69.28.251.93]:41374 "EHLO b32.net"
         rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491059Ab1DPQvY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1491054Ab1DPQvY (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 16 Apr 2011 18:51:24 +0200
-Received: (qmail 23766 invoked from network); 16 Apr 2011 16:51:18 -0000
+Received: (qmail 23807 invoked from network); 16 Apr 2011 16:51:20 -0000
 Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 16 Apr 2011 16:51:18 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sat, 16 Apr 2011 09:51:18 -0700
+  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 16 Apr 2011 16:51:20 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sat, 16 Apr 2011 09:51:20 -0700
 From:   Kevin Cernekee <cernekee@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
         David Daney <ddaney@caviumnetworks.com>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
-Date:   Sat, 16 Apr 2011 09:44:29 -0700
-Message-Id: <7aa38c32b7748a95e814e5bb0583f967@localhost>
+Subject: [PATCH 2/4] MIPS: Add dummy _PAGE_NO_EXEC field for R3000 and 64BIT_PHYS_ADDR cases
+Date:   Sat, 16 Apr 2011 09:44:30 -0700
+Message-Id: <f564424e3119f4d469b772cb78546922@localhost>
+In-Reply-To: <7aa38c32b7748a95e814e5bb0583f967@localhost>
+References: <7aa38c32b7748a95e814e5bb0583f967@localhost>
 User-Agent: vim 7.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -22,7 +24,7 @@ Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29765
+X-archive-position: 29766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,170 +32,126 @@ X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Reuse more of the same definitions for the non-RIXI and RIXI cases.  This
-avoids having special cases for kernel_uses_smartmips_rixi cluttering up
-the pgtable*.h files.
-
-On hardware that does not support RI/XI, EntryLo bits 31:30 / 63:62 will
-remain unset and RI/XI permissions will not be enforced.
+Add a non-functional (software-only) _PAGE_NO_EXEC bit for all MIPS
+pte layouts.  This allows for the elimination of the special case for
+non-RIXI when initializing the page protection map.
 
 Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- arch/mips/include/asm/pgtable-bits.h |   23 ++++++++---------------
- arch/mips/include/asm/pgtable.h      |   21 ++++++++-------------
- arch/mips/mm/tlbex.c                 |   17 +++++------------
- 3 files changed, 21 insertions(+), 40 deletions(-)
+ arch/mips/include/asm/pgtable-bits.h |   21 ++++++-------
+ arch/mips/mm/cache.c                 |   54 ++++++++++-----------------------
+ 2 files changed, 27 insertions(+), 48 deletions(-)
 
 diff --git a/arch/mips/include/asm/pgtable-bits.h b/arch/mips/include/asm/pgtable-bits.h
-index e9fe7e9..7afba78 100644
+index 7afba78..c83eaca 100644
 --- a/arch/mips/include/asm/pgtable-bits.h
 +++ b/arch/mips/include/asm/pgtable-bits.h
-@@ -35,7 +35,7 @@
- #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
+@@ -36,10 +36,11 @@
  
  #define _PAGE_PRESENT               (1<<6)  /* implemented in software */
--#define _PAGE_READ                  (1<<7)  /* implemented in software */
-+#define _PAGE_NO_READ               (1<<7)  /* implemented in software */
- #define _PAGE_WRITE                 (1<<8)  /* implemented in software */
- #define _PAGE_ACCESSED              (1<<9)  /* implemented in software */
- #define _PAGE_MODIFIED              (1<<10) /* implemented in software */
-@@ -53,7 +53,7 @@
- #elif defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
+ #define _PAGE_NO_READ               (1<<7)  /* implemented in software */
+-#define _PAGE_WRITE                 (1<<8)  /* implemented in software */
+-#define _PAGE_ACCESSED              (1<<9)  /* implemented in software */
+-#define _PAGE_MODIFIED              (1<<10) /* implemented in software */
+-#define _PAGE_FILE                  (1<<10) /* set:pagecache unset:swap */
++#define _PAGE_NO_EXEC               (1<<8)  /* implemented in software */
++#define _PAGE_WRITE                 (1<<9)  /* implemented in software */
++#define _PAGE_ACCESSED              (1<<10) /* implemented in software */
++#define _PAGE_MODIFIED              (1<<11) /* implemented in software */
++#define _PAGE_FILE                  (1<<11) /* set:pagecache unset:swap */
+ 
+ #define _PAGE_R4KBUG                (1<<0)  /* workaround for r4k bug  */
+ #define _PAGE_GLOBAL                (1<<0)
+@@ -54,10 +55,11 @@
  
  #define _PAGE_PRESENT               (1<<0)  /* implemented in software */
--#define _PAGE_READ                  (1<<1)  /* implemented in software */
-+#define _PAGE_NO_READ               (1<<1)  /* implemented in software */
- #define _PAGE_WRITE                 (1<<2)  /* implemented in software */
- #define _PAGE_ACCESSED              (1<<3)  /* implemented in software */
- #define _PAGE_MODIFIED              (1<<4)  /* implemented in software */
-@@ -79,11 +79,8 @@
- /* implemented in software */
- #define _PAGE_PRESENT_SHIFT	(0)
- #define _PAGE_PRESENT		(1 << _PAGE_PRESENT_SHIFT)
--/* implemented in software, should be unused if kernel_uses_smartmips_rixi. */
--#define _PAGE_READ_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_PRESENT_SHIFT : _PAGE_PRESENT_SHIFT + 1)
--#define _PAGE_READ ({if (kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_READ_SHIFT; })
- /* implemented in software */
--#define _PAGE_WRITE_SHIFT	(_PAGE_READ_SHIFT + 1)
-+#define _PAGE_WRITE_SHIFT	(_PAGE_PRESENT_SHIFT + 1)
- #define _PAGE_WRITE		(1 << _PAGE_WRITE_SHIFT)
- /* implemented in software */
- #define _PAGE_ACCESSED_SHIFT	(_PAGE_WRITE_SHIFT + 1)
-@@ -104,12 +101,12 @@
- #endif
+ #define _PAGE_NO_READ               (1<<1)  /* implemented in software */
+-#define _PAGE_WRITE                 (1<<2)  /* implemented in software */
+-#define _PAGE_ACCESSED              (1<<3)  /* implemented in software */
+-#define _PAGE_MODIFIED              (1<<4)  /* implemented in software */
+-#define _PAGE_FILE                  (1<<4)  /* set:pagecache unset:swap */
++#define _PAGE_NO_EXEC               (1<<2)  /* implemented in software */
++#define _PAGE_WRITE                 (1<<3)  /* implemented in software */
++#define _PAGE_ACCESSED              (1<<4)  /* implemented in software */
++#define _PAGE_MODIFIED              (1<<5)  /* implemented in software */
++#define _PAGE_FILE                  (1<<5)  /* set:pagecache unset:swap */
  
- /* Page cannot be executed */
--#define _PAGE_NO_EXEC_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_HUGE_SHIFT + 1 : _PAGE_HUGE_SHIFT)
--#define _PAGE_NO_EXEC		({if (!kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_NO_EXEC_SHIFT; })
-+#define _PAGE_NO_EXEC_SHIFT	(_PAGE_HUGE_SHIFT + 1)
-+#define _PAGE_NO_EXEC		(1 << _PAGE_NO_EXEC_SHIFT)
- 
- /* Page cannot be read */
--#define _PAGE_NO_READ_SHIFT	(kernel_uses_smartmips_rixi ? _PAGE_NO_EXEC_SHIFT + 1 : _PAGE_NO_EXEC_SHIFT)
--#define _PAGE_NO_READ		({if (!kernel_uses_smartmips_rixi) BUG(); 1 << _PAGE_NO_READ_SHIFT; })
-+#define _PAGE_NO_READ_SHIFT	(_PAGE_NO_EXEC_SHIFT + 1)
-+#define _PAGE_NO_READ		(1 << _PAGE_NO_READ_SHIFT)
- 
- #define _PAGE_GLOBAL_SHIFT	(_PAGE_NO_READ_SHIFT + 1)
- #define _PAGE_GLOBAL		(1 << _PAGE_GLOBAL_SHIFT)
-@@ -136,10 +133,6 @@
+ #define _PAGE_GLOBAL                (1<<8)
+ #define _PAGE_VALID                 (1<<9)
+@@ -133,9 +135,6 @@
  #endif
  #define _PFN_MASK		(~((1 << (_PFN_SHIFT)) - 1))
  
--#ifndef _PAGE_NO_READ
--#define _PAGE_NO_READ ({BUG(); 0; })
--#define _PAGE_NO_READ_SHIFT ({BUG(); 0; })
+-#ifndef _PAGE_NO_EXEC
+-#define _PAGE_NO_EXEC ({BUG(); 0; })
 -#endif
- #ifndef _PAGE_NO_EXEC
- #define _PAGE_NO_EXEC ({BUG(); 0; })
+ #ifndef _PAGE_GLOBAL_SHIFT
+ #define _PAGE_GLOBAL_SHIFT ilog2(_PAGE_GLOBAL)
  #endif
-@@ -220,7 +213,7 @@ static inline uint64_t pte_to_entrylo(unsigned long pte_val)
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index 12af739..7c251e6 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -137,43 +137,23 @@ EXPORT_SYMBOL(_page_cachable_default);
  
- #endif
- 
--#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ))
-+#define __READABLE	(_PAGE_SILENT_READ | _PAGE_ACCESSED)
- #define __WRITEABLE	(_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
- 
- #define _PAGE_CHG_MASK  (_PFN_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 7e40f37..0b3e7c6 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -22,15 +22,15 @@ struct mm_struct;
- struct vm_area_struct;
- 
- #define PAGE_NONE	__pgprot(_PAGE_PRESENT | _CACHE_CACHABLE_NONCOHERENT)
--#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
-+#define PAGE_SHARED	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | \
- 				 _page_cachable_default)
--#define PAGE_COPY	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
--				 (kernel_uses_smartmips_rixi ?  _PAGE_NO_EXEC : 0) | _page_cachable_default)
--#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | \
-+#define PAGE_COPY	__pgprot(_PAGE_PRESENT | _PAGE_NO_EXEC | \
-+				 _page_cachable_default)
-+#define PAGE_READONLY	__pgprot(_PAGE_PRESENT | \
- 				 _page_cachable_default)
- #define PAGE_KERNEL	__pgprot(_PAGE_PRESENT | __READABLE | __WRITEABLE | \
- 				 _PAGE_GLOBAL | _page_cachable_default)
--#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | (kernel_uses_smartmips_rixi ? 0 : _PAGE_READ) | _PAGE_WRITE | \
-+#define PAGE_USERIO	__pgprot(_PAGE_PRESENT | _PAGE_WRITE | \
- 				 _page_cachable_default)
- #define PAGE_KERNEL_UNCACHED __pgprot(_PAGE_PRESENT | __READABLE | \
- 			__WRITEABLE | _PAGE_GLOBAL | _CACHE_UNCACHED)
-@@ -250,7 +250,7 @@ static inline pte_t pte_mkdirty(pte_t pte)
- static inline pte_t pte_mkyoung(pte_t pte)
+ static inline void setup_protection_map(void)
  {
- 	pte.pte_low |= _PAGE_ACCESSED;
--	if (pte.pte_low & _PAGE_READ) {
-+	if (!(pte.pte_low & _PAGE_NO_READ)) {
- 		pte.pte_low  |= _PAGE_SILENT_READ;
- 		pte.pte_high |= _PAGE_SILENT_READ;
- 	}
-@@ -299,13 +299,8 @@ static inline pte_t pte_mkdirty(pte_t pte)
- static inline pte_t pte_mkyoung(pte_t pte)
- {
- 	pte_val(pte) |= _PAGE_ACCESSED;
 -	if (kernel_uses_smartmips_rixi) {
--		if (!(pte_val(pte) & _PAGE_NO_READ))
--			pte_val(pte) |= _PAGE_SILENT_READ;
+-		protection_map[0]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
+-		protection_map[1]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
+-		protection_map[2]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
+-		protection_map[3]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
+-		protection_map[4]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_READ);
+-		protection_map[5]  = __pgprot(_page_cachable_default | _PAGE_PRESENT);
+-		protection_map[6]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_READ);
+-		protection_map[7]  = __pgprot(_page_cachable_default | _PAGE_PRESENT);
+-
+-		protection_map[8]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
+-		protection_map[9]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
+-		protection_map[10] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_WRITE | _PAGE_NO_READ);
+-		protection_map[11] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_WRITE);
+-		protection_map[12] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_READ);
+-		protection_map[13] = __pgprot(_page_cachable_default | _PAGE_PRESENT);
+-		protection_map[14] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_WRITE  | _PAGE_NO_READ);
+-		protection_map[15] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_WRITE);
+-
 -	} else {
--		if (pte_val(pte) & _PAGE_READ)
--			pte_val(pte) |= _PAGE_SILENT_READ;
+-		protection_map[0] = PAGE_NONE;
+-		protection_map[1] = PAGE_READONLY;
+-		protection_map[2] = PAGE_COPY;
+-		protection_map[3] = PAGE_COPY;
+-		protection_map[4] = PAGE_READONLY;
+-		protection_map[5] = PAGE_READONLY;
+-		protection_map[6] = PAGE_COPY;
+-		protection_map[7] = PAGE_COPY;
+-		protection_map[8] = PAGE_NONE;
+-		protection_map[9] = PAGE_READONLY;
+-		protection_map[10] = PAGE_SHARED;
+-		protection_map[11] = PAGE_SHARED;
+-		protection_map[12] = PAGE_READONLY;
+-		protection_map[13] = PAGE_READONLY;
+-		protection_map[14] = PAGE_SHARED;
+-		protection_map[15] = PAGE_SHARED;
 -	}
-+	if (!(pte_val(pte) & _PAGE_NO_READ))
-+		pte_val(pte) |= _PAGE_SILENT_READ;
- 	return pte;
++	protection_map[0]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
++	protection_map[1]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
++	protection_map[2]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
++	protection_map[3]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
++	protection_map[4]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_READ);
++	protection_map[5]  = __pgprot(_page_cachable_default | _PAGE_PRESENT);
++	protection_map[6]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_READ);
++	protection_map[7]  = __pgprot(_page_cachable_default | _PAGE_PRESENT);
++
++	protection_map[8]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_NO_READ);
++	protection_map[9]  = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC);
++	protection_map[10] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_WRITE | _PAGE_NO_READ);
++	protection_map[11] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_EXEC | _PAGE_WRITE);
++	protection_map[12] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_NO_READ);
++	protection_map[13] = __pgprot(_page_cachable_default | _PAGE_PRESENT);
++	protection_map[14] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_WRITE  | _PAGE_NO_READ);
++	protection_map[15] = __pgprot(_page_cachable_default | _PAGE_PRESENT | _PAGE_WRITE);
  }
  
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index f5734c2..451735b 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1463,19 +1463,12 @@ static void __cpuinit
- build_pte_present(u32 **p, struct uasm_reloc **r,
- 		  unsigned int pte, unsigned int ptr, enum label_id lid)
- {
--	if (kernel_uses_smartmips_rixi) {
--		if (use_bbit_insns()) {
--			uasm_il_bbit0(p, r, pte, ilog2(_PAGE_PRESENT), lid);
--			uasm_i_nop(p);
--		} else {
--			uasm_i_andi(p, pte, pte, _PAGE_PRESENT);
--			uasm_il_beqz(p, r, pte, lid);
--			iPTE_LW(p, pte, ptr);
--		}
-+	if (use_bbit_insns()) {
-+		uasm_il_bbit0(p, r, pte, ilog2(_PAGE_PRESENT), lid);
-+		uasm_i_nop(p);
- 	} else {
--		uasm_i_andi(p, pte, pte, _PAGE_PRESENT | _PAGE_READ);
--		uasm_i_xori(p, pte, pte, _PAGE_PRESENT | _PAGE_READ);
--		uasm_il_bnez(p, r, pte, lid);
-+		uasm_i_andi(p, pte, pte, _PAGE_PRESENT);
-+		uasm_il_beqz(p, r, pte, lid);
- 		iPTE_LW(p, pte, ptr);
- 	}
- }
+ void __cpuinit cpu_cache_init(void)
 -- 
 1.7.4.3

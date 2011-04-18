@@ -1,91 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 20:44:14 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:45718 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493122Ab1DRSoJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Apr 2011 20:44:09 +0200
-Received: (qmail 24230 invoked from network); 18 Apr 2011 18:44:02 -0000
-Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 18 Apr 2011 18:44:02 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Mon, 18 Apr 2011 11:44:02 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Robert Millan <rmh@gnu.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        wu zhangjin <wuzhangjin@gmail.com>,
-        Aurelien Jarno <aurelien@aurel32.net>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] MIPS: Introduce set_elf_platform() helper function
-Date:   Mon, 18 Apr 2011 11:37:55 -0700
-Message-Id: <12309140238d597edc0b48cbc07df218@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 20:52:34 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:4506 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493124Ab1DRSw1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2011 20:52:27 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4dac88a40000>; Mon, 18 Apr 2011 11:53:24 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 18 Apr 2011 11:52:24 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 18 Apr 2011 11:52:24 -0700
+Message-ID: <4DAC8868.4090003@caviumnetworks.com>
+Date:   Mon, 18 Apr 2011 11:52:24 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+To:     Kevin Cernekee <cernekee@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
+References: <7aa38c32b7748a95e814e5bb0583f967@localhost>        <4DAC75C6.2060504@caviumnetworks.com> <BANLkTinbFNvez+G4LpmF7uwwJrH_J1NK8w@mail.gmail.com>
+In-Reply-To: <BANLkTinbFNvez+G4LpmF7uwwJrH_J1NK8w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 18 Apr 2011 18:52:24.0662 (UTC) FILETIME=[C194A760:01CBFDF9]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29782
+X-archive-position: 29783
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Robert Millan <rmh@gnu.org>
+On 04/18/2011 11:24 AM, Kevin Cernekee wrote:
+> On Mon, Apr 18, 2011 at 10:32 AM, David Daney<ddaney@caviumnetworks.com>  wrote:
+>> How much testing have you done on non-RI/XI CPUs?
+>
+> On a non-RIXI CPU I was able to boot the system, run a basic GUI
+> application, create R/W shared mappings to /dev/mem, insert/remove
+> kernel modules, run a broken program that dumps core, etc.
+>
+> I guess it would be a good idea to make sure swap still works.  Didn't
+> try that yet.
+>
+> Can you think of anything else that might exercise the bits that were
+> touched by the patch?  Were there any tests you ran during the
+> development of RIXI support which uncovered subtle issues?
+>
 
-Replace these sequences:
+We run the LTP, I think it tests these things.  We also have a small 
+test case that tests for both the no-read and no-execute parts, but that 
+would be expected to fail on platforms that don't have RI/XI bits.
 
-if (cpu == 0)
-	__elf_platform = "foo";
-
-with a trivial inline function.
-
-Signed-off-by: Robert Millan <rmh@gnu.org>
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
-
-v2: Move the new function into cpu-probe.c .  Retained the "inline"
-qualifier because all but one of the other helper functions in
-cpu-probe.c use it.
-
- arch/mips/kernel/cpu-probe.c |   12 ++++++++----
- 1 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index f65d4c8..4e4a0fd 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -771,6 +771,12 @@ static void __cpuinit decode_configs(struct cpuinfo_mips *c)
- 		c->core = read_c0_ebase() & 0x3ff;
- }
- 
-+static inline void set_elf_platform(int cpu, const char *plat)
-+{
-+	if (cpu == 0)
-+		__elf_platform = plat;
-+}
-+
- static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- {
- 	decode_configs(c);
-@@ -956,14 +962,12 @@ static inline void cpu_probe_cavium(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->cputype = CPU_CAVIUM_OCTEON_PLUS;
- 		__cpu_name[cpu] = "Cavium Octeon+";
- platform:
--		if (cpu == 0)
--			__elf_platform = "octeon";
-+		set_elf_platform(cpu, "octeon");
- 		break;
- 	case PRID_IMP_CAVIUM_CN63XX:
- 		c->cputype = CPU_CAVIUM_OCTEON2;
- 		__cpu_name[cpu] = "Cavium Octeon II";
--		if (cpu == 0)
--			__elf_platform = "octeon2";
-+		set_elf_platform(cpu, "octeon2");
- 		break;
- 	default:
- 		printk(KERN_INFO "Unknown Octeon chip!\n");
--- 
-1.7.4.3
+David Daney

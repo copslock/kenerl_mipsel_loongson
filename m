@@ -1,64 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 20:24:32 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:48836 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493115Ab1DRSY1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2011 20:24:27 +0200
-Received: by pwi8 with SMTP id 8so2835382pwi.36
-        for <multiple recipients>; Mon, 18 Apr 2011 11:24:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 20:27:57 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:47802 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493116Ab1DRS1v (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2011 20:27:51 +0200
+Received: by wyb28 with SMTP id 28so5306004wyb.36
+        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2011 11:27:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
+        d=googlemail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type;
-        bh=uotnw6pBAl+DSn7zUSezkGJ3ev3wSyh69y6Qw5FOS/I=;
-        b=xn7agZ2nDjLhxxaSw/OHQesL6MeKQoKIfgVIuQLWfviZTmbGfq7+TsTnw6rm0tBevG
-         YIWEUjicKC0r10mcOY5J3eq3dRXOTfTQOztt/Ea/7V34jvaeztd3R0t8Ts8VOOuI9SFg
-         whUPNfyPHZQYMd1X9gtD+AhoHYqkMCfDDdRng=
+        bh=8hLX4ZiK/XW7ZNxY60elYzUZ4UbxZzBRpS1POsBw0Zs=;
+        b=N3S23RLFClf/yVDkiiWkPwXtJqMxcsIIydbgwTZTuu2REaj0aQ02qA8lCj/P0WzRaM
+         aCuT1ggg+d1cygF/2MqDE9Y/tLiHOJVP+G3R6bSZg+4qayUnkSnBFE38nQjRScD5P44X
+         6uceyhzy8qXeWZKw8zpeAWNUNGJPmk8aXuwVY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
+        d=googlemail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type;
-        b=nt1Ja5cLNKIq9iBaXwjx8lcyxMBRY3JZopsyetdcEUpb4b2u3joVB39h84zoyqZnkN
-         B16j6mQbWSz4mn1qIh/mwnWV2hJ99UiboyiSjfGirWqlx+fTe940CJMvcZri1PBd6/yP
-         kPCnm4XPaQYRNqoLriLgQBZzfaDo+xkJy/o2E=
+        b=dPyl8SWdl32WGK5ttVU9phmS0zjIFGhuxCe1nUqYCWS4VN1Mifz76LFOlHu3ZrSHZp
+         Wb+Z0+H5+stWzsMbPglrBjROOBR4bbsn5v3lZfh6ntZL/mm8OpzM4Mc6AEj8LqRQGZi/
+         PeaMIIaDPxzYtHd/EAHPeGsAjPC/Zu2rcYO74=
 MIME-Version: 1.0
-Received: by 10.68.1.36 with SMTP id 4mr7711657pbj.251.1303151060325; Mon, 18
- Apr 2011 11:24:20 -0700 (PDT)
-Received: by 10.68.46.169 with HTTP; Mon, 18 Apr 2011 11:24:20 -0700 (PDT)
-In-Reply-To: <4DAC75C6.2060504@caviumnetworks.com>
-References: <7aa38c32b7748a95e814e5bb0583f967@localhost>
-        <4DAC75C6.2060504@caviumnetworks.com>
-Date:   Mon, 18 Apr 2011 11:24:20 -0700
-Message-ID: <BANLkTinbFNvez+G4LpmF7uwwJrH_J1NK8w@mail.gmail.com>
-Subject: Re: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Received: by 10.216.144.134 with SMTP id n6mr5380392wej.27.1303151266327; Mon,
+ 18 Apr 2011 11:27:46 -0700 (PDT)
+Received: by 10.216.237.218 with HTTP; Mon, 18 Apr 2011 11:27:46 -0700 (PDT)
+In-Reply-To: <AEA634773855ED4CAD999FBB1A66D07601988EC8@CORPEXCH1.na.ads.idt.com>
+References: <AEA634773855ED4CAD999FBB1A66D07601988DFA@CORPEXCH1.na.ads.idt.com>
+        <BANLkTi=QLZe68o2=1Vk+4QTu-ru1T6H=vQ@mail.gmail.com>
+        <AEA634773855ED4CAD999FBB1A66D07601988EC8@CORPEXCH1.na.ads.idt.com>
+Date:   Mon, 18 Apr 2011 20:27:46 +0200
+Message-ID: <BANLkTims95JZfPfAM5Qk9+pVrqsoQ2J3SA@mail.gmail.com>
+Subject: Re: How can I access h/w registers in user space?
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29780
+X-archive-position: 29781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 18, 2011 at 10:32 AM, David Daney <ddaney@caviumnetworks.com> wrote:
-> How much testing have you done on non-RI/XI CPUs?
+On Mon, Apr 18, 2011 at 8:14 PM, Ardelean, Andrei
+<Andrei.Ardelean@idt.com> wrote:
+> Mmap() worked fine for one io memory region, but when I tried to open
+> twice for different io memory regions with different base addresses and
+> sizes it didn't work. It returned the same memory pointer value in both
+> cases. In my design the h/w guys put those h/w registers in two distinct
+> memory mapped regions with a large reserved area in between. Is it any
+> solution for this case?
 
-On a non-RIXI CPU I was able to boot the system, run a basic GUI
-application, create R/W shared mappings to /dev/mem, insert/remove
-kernel modules, run a broken program that dumps core, etc.
+This works for me.  Unlike QNX, you can only map multiples of the page size
+and the base must also be aligned on a page boundary:
 
-I guess it would be a good idea to make sure swap still works.  Didn't
-try that yet.
+#define MMIO    0x11900000    /* SYS_xxx */
+#define MMIO2   0x14000000   /* MEM_xxx */
 
-Can you think of anything else that might exercise the bits that were
-touched by the patch?  Were there any tests you ran during the
-development of RIXI support which uncovered subtle issues?
+memfd = open("/dev/mem", O_RDWR);
+pgsize = sysconf(_SC_PAGESIZE);
+mmio = (unsigned long)mmap(0, pgsize, PROT_READ | PROT_WRITE,
+                                        MAP_SHARED, memfd, MMIO);
+mmio2 = (unsigned long)mmap(0, 2 * pgsize, PROT_READ | PROT_WRITE,
+                                        MAP_SHARED, memfd, MMIO2);
 
-Thanks.
+Manuel

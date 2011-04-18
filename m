@@ -1,72 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 20:27:57 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:47802 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493116Ab1DRS1v (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2011 20:27:51 +0200
-Received: by wyb28 with SMTP id 28so5306004wyb.36
-        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2011 11:27:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=8hLX4ZiK/XW7ZNxY60elYzUZ4UbxZzBRpS1POsBw0Zs=;
-        b=N3S23RLFClf/yVDkiiWkPwXtJqMxcsIIydbgwTZTuu2REaj0aQ02qA8lCj/P0WzRaM
-         aCuT1ggg+d1cygF/2MqDE9Y/tLiHOJVP+G3R6bSZg+4qayUnkSnBFE38nQjRScD5P44X
-         6uceyhzy8qXeWZKw8zpeAWNUNGJPmk8aXuwVY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=dPyl8SWdl32WGK5ttVU9phmS0zjIFGhuxCe1nUqYCWS4VN1Mifz76LFOlHu3ZrSHZp
-         Wb+Z0+H5+stWzsMbPglrBjROOBR4bbsn5v3lZfh6ntZL/mm8OpzM4Mc6AEj8LqRQGZi/
-         PeaMIIaDPxzYtHd/EAHPeGsAjPC/Zu2rcYO74=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 20:44:14 +0200 (CEST)
+Received: from [69.28.251.93] ([69.28.251.93]:45718 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493122Ab1DRSoJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 18 Apr 2011 20:44:09 +0200
+Received: (qmail 24230 invoked from network); 18 Apr 2011 18:44:02 -0000
+Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 18 Apr 2011 18:44:02 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Mon, 18 Apr 2011 11:44:02 -0700
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Robert Millan <rmh@gnu.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        wu zhangjin <wuzhangjin@gmail.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] MIPS: Introduce set_elf_platform() helper function
+Date:   Mon, 18 Apr 2011 11:37:55 -0700
+Message-Id: <12309140238d597edc0b48cbc07df218@localhost>
+User-Agent: vim 7.2
 MIME-Version: 1.0
-Received: by 10.216.144.134 with SMTP id n6mr5380392wej.27.1303151266327; Mon,
- 18 Apr 2011 11:27:46 -0700 (PDT)
-Received: by 10.216.237.218 with HTTP; Mon, 18 Apr 2011 11:27:46 -0700 (PDT)
-In-Reply-To: <AEA634773855ED4CAD999FBB1A66D07601988EC8@CORPEXCH1.na.ads.idt.com>
-References: <AEA634773855ED4CAD999FBB1A66D07601988DFA@CORPEXCH1.na.ads.idt.com>
-        <BANLkTi=QLZe68o2=1Vk+4QTu-ru1T6H=vQ@mail.gmail.com>
-        <AEA634773855ED4CAD999FBB1A66D07601988EC8@CORPEXCH1.na.ads.idt.com>
-Date:   Mon, 18 Apr 2011 20:27:46 +0200
-Message-ID: <BANLkTims95JZfPfAM5Qk9+pVrqsoQ2J3SA@mail.gmail.com>
-Subject: Re: How can I access h/w registers in user space?
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@googlemail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29781
+X-archive-position: 29782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 18, 2011 at 8:14 PM, Ardelean, Andrei
-<Andrei.Ardelean@idt.com> wrote:
-> Mmap() worked fine for one io memory region, but when I tried to open
-> twice for different io memory regions with different base addresses and
-> sizes it didn't work. It returned the same memory pointer value in both
-> cases. In my design the h/w guys put those h/w registers in two distinct
-> memory mapped regions with a large reserved area in between. Is it any
-> solution for this case?
+From: Robert Millan <rmh@gnu.org>
 
-This works for me.  Unlike QNX, you can only map multiples of the page size
-and the base must also be aligned on a page boundary:
+Replace these sequences:
 
-#define MMIO    0x11900000    /* SYS_xxx */
-#define MMIO2   0x14000000   /* MEM_xxx */
+if (cpu == 0)
+	__elf_platform = "foo";
 
-memfd = open("/dev/mem", O_RDWR);
-pgsize = sysconf(_SC_PAGESIZE);
-mmio = (unsigned long)mmap(0, pgsize, PROT_READ | PROT_WRITE,
-                                        MAP_SHARED, memfd, MMIO);
-mmio2 = (unsigned long)mmap(0, 2 * pgsize, PROT_READ | PROT_WRITE,
-                                        MAP_SHARED, memfd, MMIO2);
+with a trivial inline function.
 
-Manuel
+Signed-off-by: Robert Millan <rmh@gnu.org>
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+
+v2: Move the new function into cpu-probe.c .  Retained the "inline"
+qualifier because all but one of the other helper functions in
+cpu-probe.c use it.
+
+ arch/mips/kernel/cpu-probe.c |   12 ++++++++----
+ 1 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index f65d4c8..4e4a0fd 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -771,6 +771,12 @@ static void __cpuinit decode_configs(struct cpuinfo_mips *c)
+ 		c->core = read_c0_ebase() & 0x3ff;
+ }
+ 
++static inline void set_elf_platform(int cpu, const char *plat)
++{
++	if (cpu == 0)
++		__elf_platform = plat;
++}
++
+ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ {
+ 	decode_configs(c);
+@@ -956,14 +962,12 @@ static inline void cpu_probe_cavium(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_CAVIUM_OCTEON_PLUS;
+ 		__cpu_name[cpu] = "Cavium Octeon+";
+ platform:
+-		if (cpu == 0)
+-			__elf_platform = "octeon";
++		set_elf_platform(cpu, "octeon");
+ 		break;
+ 	case PRID_IMP_CAVIUM_CN63XX:
+ 		c->cputype = CPU_CAVIUM_OCTEON2;
+ 		__cpu_name[cpu] = "Cavium Octeon II";
+-		if (cpu == 0)
+-			__elf_platform = "octeon2";
++		set_elf_platform(cpu, "octeon2");
+ 		break;
+ 	default:
+ 		printk(KERN_INFO "Unknown Octeon chip!\n");
+-- 
+1.7.4.3

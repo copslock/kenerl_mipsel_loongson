@@ -1,71 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Apr 2011 21:08:34 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:55953 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492955Ab1DQTIa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 17 Apr 2011 21:08:30 +0200
-Received: (qmail 21722 invoked from network); 17 Apr 2011 19:08:25 -0000
-Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 17 Apr 2011 19:08:25 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sun, 17 Apr 2011 12:08:24 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, <linux-mips@linux-mips.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] MIPS: Squash pci_fixup_irqs() compiler warning
-Date:   Sun, 17 Apr 2011 12:01:08 -0700
-Message-Id: <cb01d61712b1374a8c62bc765094ea7e@localhost>
-User-Agent: vim 7.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 17:42:03 +0200 (CEST)
+Received: from mxout1.idt.com ([157.165.5.25]:34212 "EHLO mxout1.idt.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493075Ab1DRPl7 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2011 17:41:59 +0200
+Received: from mail.idt.com (localhost [127.0.0.1])
+        by mxout1.idt.com (8.13.1/8.13.1) with ESMTP id p3IFfpg5009262
+        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2011 08:41:51 -0700
+Received: from corpml1.corp.idt.com (corpml1.corp.idt.com [157.165.140.20])
+        by mail.idt.com (8.13.8/8.13.8) with ESMTP id p3IFfp17017699
+        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2011 08:41:51 -0700 (PDT)
+Received: from CORPEXCH1.na.ads.idt.com (localhost [127.0.0.1])
+        by corpml1.corp.idt.com (8.11.7p1+Sun/8.11.7) with ESMTP id p3IFfoD00568
+        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2011 08:41:50 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: How can I access h/w registers in user space?
+Date:   Mon, 18 Apr 2011 08:41:48 -0700
+Message-ID: <AEA634773855ED4CAD999FBB1A66D07601988DFA@CORPEXCH1.na.ads.idt.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: How can I access h/w registers in user space?
+Thread-Index: Acv93yESpVtD7h5CTqqtT7JP0JzO/A==
+From:   "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
+To:     <linux-mips@linux-mips.org>
+X-Scanned-By: MIMEDefang 2.43
+Return-Path: <Andrei.Ardelean@idt.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29773
+X-archive-position: 29774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: Andrei.Ardelean@idt.com
 Precedence: bulk
 X-list: linux-mips
 
-MIPS Linux is unique in that it uses a "const struct pci_dev *" argument
-to discourage bad coding practices in pcibios_map_irq().  Add a cast so
-that this warning goes away:
+Hi,
 
-arch/mips/pci/pci.c: In function 'pcibios_init':
-arch/mips/pci/pci.c:165:45: warning: passing argument 2 of 'pci_fixup_irqs' from incompatible pointer type
-include/linux/pci.h:856:6: note: expected 'int (*)(struct pci_dev *, u8,  u8)' but argument is of type 'struct pci_dev *'
+1. My video processor has many h/w registers mapped in MIPS CPU physical
+memory space. Do I have in Linux MIPS something like iopl() to allow me
+to access h/w registers in user space? Is it anything similar available?
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
+2. I studied mmap() solution but what I found unpleased is that I need
+to malloc() space in user space equal to the IO memory space I want to
+access which it is quite lot and it takes from system DDR RAM available
+I have here. What I need is just to access a physical space which I know
+that is mapped on internal registers.     
 
-Reference:
-
-http://www.mail-archive.com/gnewsense-dev@nongnu.org/msg00706.html
-
-It's been two years since the original discussion, and the warning is
-still there.  It is now the only warning left in my kernel build.
-
-I was hoping we could get this resolved for good (one way or another).
-
- arch/mips/pci/pci.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 33bba7b..9a35cd6 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -157,7 +157,8 @@ static int __init pcibios_init(void)
- 	for (hose = hose_head; hose; hose = hose->next)
- 		pcibios_scanbus(hose);
- 
--	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
-+	pci_fixup_irqs(pci_common_swizzle,
-+		       (int (*)(struct pci_dev *, u8, u8))pcibios_map_irq);
- 
- 	pci_initialized = 1;
- 
--- 
-1.7.4.3
+Thanks,
+Andrei
+  

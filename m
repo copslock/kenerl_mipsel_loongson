@@ -1,67 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 17:47:53 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:46206 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493077Ab1DRPru (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2011 17:47:50 +0200
-Received: by wyb28 with SMTP id 28so5106883wyb.36
-        for <linux-mips@linux-mips.org>; Mon, 18 Apr 2011 08:47:44 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Apr 2011 19:28:08 +0200 (CEST)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:35342 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493095Ab1DRR2D (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 18 Apr 2011 19:28:03 +0200
+Received: by iyb39 with SMTP id 39so5096192iyb.36
+        for <multiple recipients>; Mon, 18 Apr 2011 10:27:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=QyRLLGxY/FSqlugykx1mskrRCd/l1ol9tQh7da5H5YE=;
-        b=pCLQgWzbmtztCzewVqln7YHeEaCw+2ruwJNqokK8dRKFKeGYvFCKxLtkqRPRL8aADy
-         LKQFBU1m/XQw7IgfY8rwrzHg5JWGXxo2utpsQARanCGR2PFw3fLpP7KKjJAXgzbZCYwG
-         l99Z7A3uLloWXNN86yGJt4Jf0H7F6RzrdppHs=
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:message-id:date:from:user-agent:mime-version:to
+         :cc:subject:references:in-reply-to:content-type
+         :content-transfer-encoding;
+        bh=TQ8QofcuR+uRBP25ysB8KfHxqtdPJcWtSYjxHfVW5+I=;
+        b=hltxnJzTuRxRMPTgj0Hnsgh8DboY55z1gQaJ/wMCpC7Df5o442m/mQ90wAyaTNYwL4
+         1uNa+tBqyLjk2pGQnVRBTOD+hkar2V3q7zSeQUIxSbsljUhzb7B3NcdyOuJNO0lhbuy3
+         nY7SW3sFPCA4maSyf/YRKKmS5ltM8LJcTa060=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=gUitwkGeJnUkl6BxfaYy6sIvOclI68qqY7KhgntB62ECokJ/vlcGk01++JmAoN7ZT7
-         6uyuO7hOj9rfLRzr6NxJEts+w65U7bpSyxFg+OcOYfnHhzpO5nRQNXfwKVIOA+IV6Nui
-         RuXK+YCL4bISRiqygMSW+Lx31XBjSXZBfrSTo=
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        b=Ai93AOg86KTdRC+MQKHQ3jGKbG8/56l6D7NYI+GZSKoux6PKl2Ujq3fajuaFQP/YCZ
+         ru3XAk2OnSYHopaAJkNYCMY0b9dAAlJSwn1BmqVN0LEjNlJgTpAnknciRKFZ/AZR9jbs
+         nLFIiUDVXMNNx0HVcDYgoHdsW5kePXnsvB820=
+Received: by 10.42.96.8 with SMTP id h8mr6657504icn.461.1303147676731;
+        Mon, 18 Apr 2011 10:27:56 -0700 (PDT)
+Received: from dd1.caveonetworks.com ([12.108.191.226])
+        by mx.google.com with ESMTPS id i20sm2921031iby.48.2011.04.18.10.27.54
+        (version=SSLv3 cipher=OTHER);
+        Mon, 18 Apr 2011 10:27:55 -0700 (PDT)
+Message-ID: <4DAC7499.5000602@gmail.com>
+Date:   Mon, 18 Apr 2011 10:27:53 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.216.82.68 with SMTP id n46mr5061771wee.57.1303141663946; Mon,
- 18 Apr 2011 08:47:43 -0700 (PDT)
-Received: by 10.216.237.218 with HTTP; Mon, 18 Apr 2011 08:47:43 -0700 (PDT)
-In-Reply-To: <AEA634773855ED4CAD999FBB1A66D07601988DFA@CORPEXCH1.na.ads.idt.com>
-References: <AEA634773855ED4CAD999FBB1A66D07601988DFA@CORPEXCH1.na.ads.idt.com>
-Date:   Mon, 18 Apr 2011 17:47:43 +0200
-Message-ID: <BANLkTi=QLZe68o2=1Vk+4QTu-ru1T6H=vQ@mail.gmail.com>
-Subject: Re: How can I access h/w registers in user space?
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     "Ardelean, Andrei" <Andrei.Ardelean@idt.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@googlemail.com>
+To:     Kevin Cernekee <cernekee@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Squash pci_fixup_irqs() compiler warning
+References: <cb01d61712b1374a8c62bc765094ea7e@localhost>
+In-Reply-To: <cb01d61712b1374a8c62bc765094ea7e@localhost>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ddaney.cavm@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29775
+X-archive-position: 29776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 18, 2011 at 5:41 PM, Ardelean, Andrei
-<Andrei.Ardelean@idt.com> wrote:
-> 1. My video processor has many h/w registers mapped in MIPS CPU physical
-> memory space. Do I have in Linux MIPS something like iopl() to allow me
-> to access h/w registers in user space? Is it anything similar available?
+On 04/17/2011 12:01 PM, Kevin Cernekee wrote:
+> MIPS Linux is unique in that it uses a "const struct pci_dev *" argument
+> to discourage bad coding practices in pcibios_map_irq().  Add a cast so
+> that this warning goes away:
+>
+> arch/mips/pci/pci.c: In function 'pcibios_init':
+> arch/mips/pci/pci.c:165:45: warning: passing argument 2 of 'pci_fixup_irqs' from incompatible pointer type
+> include/linux/pci.h:856:6: note: expected 'int (*)(struct pci_dev *, u8,  u8)' but argument is of type 'struct pci_dev *'
+>
+> Signed-off-by: Kevin Cernekee<cernekee@gmail.com>
+> ---
+>
+> Reference:
+>
+> http://www.mail-archive.com/gnewsense-dev@nongnu.org/msg00706.html
+>
+> It's been two years since the original discussion, and the warning is
+> still there.  It is now the only warning left in my kernel build.
+>
+> I was hoping we could get this resolved for good (one way or another).
+>
+>   arch/mips/pci/pci.c |    3 ++-
+>   1 files changed, 2 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+> index 33bba7b..9a35cd6 100644
+> --- a/arch/mips/pci/pci.c
+> +++ b/arch/mips/pci/pci.c
+> @@ -157,7 +157,8 @@ static int __init pcibios_init(void)
+>   	for (hose = hose_head; hose; hose = hose->next)
+>   		pcibios_scanbus(hose);
+>
+> -	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
+> +	pci_fixup_irqs(pci_common_swizzle,
+> +		       (int (*)(struct pci_dev *, u8, u8))pcibios_map_irq);
+>
 
-I believe iopl() is a x86-specific hack.
+NAK.
+
+I think Ralf's idea in the e-mail you referenced is the proper approach.
+
+Change pci_fixup_irqs(...) to take a 'const struct pci_dev *' instead. 
+There is a lot of work going on in the kernel to constify things.  This 
+should be fairly easy to get accepted.
+
+The alternative is to change all the pcibios_map_irq to match what is 
+expected by pci_fixup_irqs().
+
+David Daney
 
 
-> 2. I studied mmap() solution but what I found unpleased is that I need
-> to malloc() space in user space equal to the IO memory space I want to
-> access which it is quite lot and it takes from system DDR RAM available
-> I have here. What I need is just to access a physical space which I know
-> that is mapped on internal registers.
-
-I usually open /dev/mem then simply mmap() the base of the physical area
-I'm interested in.
-
-Hope that helps!
-      Manuel Lauss
+>   	pci_initialized = 1;
+>

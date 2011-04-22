@@ -1,56 +1,158 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Apr 2011 01:17:10 +0200 (CEST)
-Received: from mail.lysator.liu.se ([130.236.254.3]:54730 "EHLO
-        mail.lysator.liu.se" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1493186Ab1DSXRH convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 20 Apr 2011 01:17:07 +0200
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-        by mail.lysator.liu.se (Postfix) with ESMTP id 1F24B40004
-        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2011 01:17:07 +0200 (CEST)
-Received: by mail.lysator.liu.se (Postfix, from userid 1004)
-        id 13F694000B; Wed, 20 Apr 2011 01:17:07 +0200 (CEST)
-Received: from [192.168.10.106] (c83-251-17-172.bredband.comhem.se [83.251.17.172])
-        (using TLSv1 with cipher AES128-SHA (128/128 bits))
-        (No client certificate requested)
-        by mail.lysator.liu.se (Postfix) with ESMTPSA id D861140004
-        for <linux-mips@linux-mips.org>; Wed, 20 Apr 2011 01:17:05 +0200 (CEST)
-From:   Markus Gothe <nietzsche@lysator.liu.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Apr 2011 18:53:58 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.49.93.86]:3937 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491104Ab1DVQxx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Apr 2011 18:53:53 +0200
+X-TM-IMSS-Message-ID: <e42c476800016b68@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id e42c476800016b68 ; Fri, 22 Apr 2011 09:53:34 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Fri, 22 Apr 2011 09:54:40 -0700
+Date:   Fri, 22 Apr 2011 22:31:19 +0530
+From:   Jayachandran C <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [PATCH 2/8] mach-netlogic include directory and files.
+Message-ID: <2f31c4ee3bc81e04fea211ff83514a181b8c6413.1303487516.git.jayachandranc@netlogicmicro.com>
+References: <cover.1303487516.git.jayachandranc@netlogicmicro.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Subject: Realtek's LX 5181 vs LX 5280
-Date:   Wed, 20 Apr 2011 01:16:54 +0200
-Message-Id: <484613BA-E568-45C8-9179-1E0729BAAD5B@lysator.liu.se>
-To:     linux-mips@linux-mips.org
-Mime-Version: 1.0 (Apple Message framework v1084)
-X-Pgp-Agent: GPGMail 1.3.3
-X-Mailer: Apple Mail (2.1084)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <nietzsche@lysator.liu.se>
+Content-Disposition: inline
+In-Reply-To: <cover.1303487516.git.jayachandranc@netlogicmicro.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-OriginalArrivalTime: 22 Apr 2011 16:54:40.0774 (UTC) FILETIME=[F8D3E260:01CC010D]
+Return-Path: <jayachandranc@netlogicmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29784
+X-archive-position: 29785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nietzsche@lysator.liu.se
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Add war.h and irq.h with XLR/XLS definitions.
+Add feature overrides for XLR/XLS.
 
-Hi,
-does anyone have any good information about how Realtek's "LX 5181" differs from LX 5280?
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+ .../asm/mach-netlogic/cpu-feature-overrides.h      |   47 ++++++++++++++++++++
+ arch/mips/include/asm/mach-netlogic/irq.h          |   14 ++++++
+ arch/mips/include/asm/mach-netlogic/war.h          |   26 +++++++++++
+ 3 files changed, 87 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-netlogic/irq.h
+ create mode 100644 arch/mips/include/asm/mach-netlogic/war.h
 
-Any suggestions, observation etcetera on the toolchains out in the 'wild' would be highly appreciated.
+diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..3b72827
+--- /dev/null
++++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+@@ -0,0 +1,47 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2011 Netlogic Microsystems
++ * Copyright (C) 2003 Ralf Baechle
++ */
++#ifndef __ASM_MACH_NETLOGIC_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_NETLOGIC_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_4kex		1
++#define cpu_has_4k_cache	1
++#define cpu_has_watch		1
++#define cpu_has_mips16		0
++#define cpu_has_counter		1
++#define cpu_has_divec		1
++#define cpu_has_vce		0
++#define cpu_has_cache_cdex_p	0
++#define cpu_has_cache_cdex_s	0
++#define cpu_has_prefetch	1
++#define cpu_has_mcheck		1
++#define cpu_has_ejtag		1
++
++#define cpu_has_llsc		1
++#define cpu_has_vtag_icache	0
++#define cpu_has_dc_aliases	0
++#define cpu_has_ic_fills_f_dc	0
++#define cpu_has_dsp		0
++#define cpu_has_mipsmt		0
++#define cpu_has_userlocal	0
++#define cpu_icache_snoops_remote_store	0
++
++#define cpu_has_nofpuex		0
++#define cpu_has_64bits		1
++
++#define cpu_has_mips32r1	1
++#define cpu_has_mips32r2	0
++#define cpu_has_mips64r1	1
++#define cpu_has_mips64r2	0
++
++#define cpu_has_inclusive_pcaches	0
++
++#define cpu_dcache_line_size()	32
++#define cpu_icache_line_size()	32
++
++#endif /* __ASM_MACH_NETLOGIC_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/include/asm/mach-netlogic/irq.h b/arch/mips/include/asm/mach-netlogic/irq.h
+new file mode 100644
+index 0000000..b590245
+--- /dev/null
++++ b/arch/mips/include/asm/mach-netlogic/irq.h
+@@ -0,0 +1,14 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2011 Netlogic Microsystems.
++ */
++#ifndef __ASM_NETLOGIC_IRQ_H
++#define __ASM_NETLOGIC_IRQ_H
++
++#define NR_IRQS			64
++#define MIPS_CPU_IRQ_BASE	0
++
++#endif /* __ASM_NETLOGIC_IRQ_H */
+diff --git a/arch/mips/include/asm/mach-netlogic/war.h b/arch/mips/include/asm/mach-netlogic/war.h
+new file mode 100644
+index 0000000..22da893
+--- /dev/null
++++ b/arch/mips/include/asm/mach-netlogic/war.h
+@@ -0,0 +1,26 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2011 Netlogic Microsystems.
++ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ */
++#ifndef __ASM_MIPS_MACH_NLM_WAR_H
++#define __ASM_MIPS_MACH_NLM_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR	0
++#define R4600_V1_HIT_CACHEOP_WAR	0
++#define R4600_V2_HIT_CACHEOP_WAR	0
++#define R5432_CP0_INTERRUPT_WAR		0
++#define BCM1250_M3_WAR			0
++#define SIBYTE_1956_WAR			0
++#define MIPS4K_ICACHE_REFILL_WAR	0
++#define MIPS_CACHE_SYNC_WAR		0
++#define TX49XX_ICACHE_INDEX_INV_WAR	0
++#define RM9000_CDEX_SMP_WAR		0
++#define ICACHE_REFILLS_WORKAROUND_WAR	0
++#define R10000_LLSC_WAR			0
++#define MIPS34K_MISSED_ITLB_WAR		0
++
++#endif /* __ASM_MIPS_MACH_NLM_WAR_H */
+-- 
+1.7.1
 
-Best Regards,
-//Markus - The panama-hat hacker
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG/MacGPG2 v2.0.16 (Darwin)
-
-iD8DBQFNrhfw6I0XmJx2NrwRAsPDAKDM1gM6jfElol8yTRsvnINEgrNbDACfXbe/
-Nq0U7QezHFkrrrQGu4dlvYE=
-=Ytk5
------END PGP SIGNATURE-----
+-- 
+Jayachandran C.
+jayachandranc@netlogicmicro.com                  (Netlogic Microsystems)

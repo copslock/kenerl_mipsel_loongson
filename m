@@ -1,77 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Apr 2011 23:57:28 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:60412 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491198Ab1DWV5X (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Apr 2011 23:57:23 +0200
-Received: by pwi8 with SMTP id 8so872149pwi.36
-        for <multiple recipients>; Sat, 23 Apr 2011 14:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=KQqnBW5MpAvzVyAes1a/IXzomYv59NHyU2apFqBJvBI=;
-        b=IhlmDgdQdtGlAfnxWWYN3OEY5PiSPzl0M42d87t1Djxh5ottiXE16R0wLnStry3cp8
-         MQGdVGgZpcp3JYWJDdyQJ609aNxqwgEBbHPA3BLyapYvjZMo1Sd0Cnxj4TL9miC5XlUG
-         wMx9hYp4i+AnuzkBpaharFDduYzfVT3M7Dg/s=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=wVw2fDYmKMWLrfbZ9dUzDYPXAgKJyxTWYz0BSN2nYlcD8VbzwwW71S1dVeoobHypZN
-         HExWULlC8e4xxNcgGsHv5sGvJbwwYwCBPQxv/Pjz0X+Dv3bnkaO/UpVeAEKjb5AYv1zl
-         iws3woDEfbmSJZNGWOrBd5QsnITq7hI4Cl0Cc=
-Received: by 10.68.2.1 with SMTP id 1mr4025742pbq.102.1303595833461;
-        Sat, 23 Apr 2011 14:57:13 -0700 (PDT)
-Received: from localhost.localdomain ([123.113.111.220])
-        by mx.google.com with ESMTPS id i4sm2357428pbr.42.2011.04.23.14.57.10
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 23 Apr 2011 14:57:12 -0700 (PDT)
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] MIPS: Hibernation: Fixes for PAGE_SIZE >= 64kb
-Date:   Sun, 24 Apr 2011 05:56:59 +0800
-Message-Id: <1303595819-19299-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.7.1
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Apr 2011 12:51:28 +0200 (CEST)
+Received: from [12.203.210.36] ([12.203.210.36]:2179 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1490954Ab1DYKvT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 25 Apr 2011 12:51:19 +0200
+X-TM-IMSS-Message-ID: <f25364300001a04a@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id f25364300001a04a ; Mon, 25 Apr 2011 03:50:58 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Mon, 25 Apr 2011 03:52:14 -0700
+Date:   Mon, 25 Apr 2011 16:21:05 +0530
+From:   "Jayachandran C." <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: Re: [PATCH 7/8] USB support for XLS platforms.
+Message-ID: <20110425105105.GA14277@jayachandranc.netlogicmicro.com>
+References: <cover.1303487516.git.jayachandranc@netlogicmicro.com>
+ <21ae06c6f50f7a770b62d61265e6f509f37d1762.1303487516.git.jayachandranc@netlogicmicro.com>
+ <BANLkTi=cUHpCQAi9LUjPXfDZL=a2XnfqDA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BANLkTi=cUHpCQAi9LUjPXfDZL=a2XnfqDA@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-OriginalArrivalTime: 25 Apr 2011 10:52:14.0767 (UTC) FILETIME=[D66FCBF0:01CC0336]
+Return-Path: <jayachandranc@netlogicmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29795
+X-archive-position: 29796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-PAGE_SIZE >= 64kb (1 << 16) is too big to be the immediate of the
-addiu/daddiu instruction, so, use addu/daddu instruction instead.
+On Fri, Apr 22, 2011 at 07:03:23PM +0200, Manuel Lauss wrote:
+> On Fri, Apr 22, 2011 at 7:02 PM, Jayachandran C
+> <jayachandranc@netlogicmicro.com> wrote:
+> > update ehci-hcd.c and ohci-hcd.c to add XLS hcds
+> > add ehci/ohci devices to XLR/XLS platform driver
+> > Kconfig update
+> >
+> > Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+> > ---
+> >  arch/mips/Kconfig                        |    2 +
+> >  arch/mips/include/asm/netlogic/xlr/xlr.h |   12 ++
+> >  arch/mips/netlogic/xlr/platform.c        |   91 ++++++++++++++++
+> >  drivers/usb/host/ehci-hcd.c              |    5 +
+> >  drivers/usb/host/ehci-xls.c              |  170 ++++++++++++++++++++++++++++++
+> >  drivers/usb/host/ohci-hcd.c              |    5 +
+> >  drivers/usb/host/ohci-xls.c              |  160 ++++++++++++++++++++++++++++
+> >  7 files changed, 445 insertions(+), 0 deletions(-)
+> >  create mode 100644 drivers/usb/host/ehci-xls.c
+> >  create mode 100644 drivers/usb/host/ohci-xls.c
+> > diff --git a/drivers/usb/host/ehci-xls.c b/drivers/usb/host/ehci-xls.c
+> > new file mode 100644
+> > index 0000000..54467c6
+> > --- /dev/null
+> > +++ b/drivers/usb/host/ehci-xls.c
+> > @@ -0,0 +1,170 @@
+> > +/*
+> > + * OHCI HCD (Host Controller Driver) for USB.
+> > + *
+> > + * (C) Copyright 2011 Netlogic Microsystems Inc.
+> > + * (C) Copyright 1999 Roman Weissgaerber <weissg@vienna.at>
+> > + * (C) Copyright 2000-2002 David Brownell <dbrownell@users.sourceforge.net>
+> > + * (C) Copyright 2002 Hewlett-Packard Company
+> > + *
+> > + * Bus Glue for AMD Alchemy Au1xxx
+> > + * Written by Christopher Hoover <ch@hpl.hp.com>
+> > + * Based on fragments of previous driver by Rusell King et al.
+> > + *
+> > + * Modified for LH7A404 from ohci-sa1111.c
+> > + *  by Durgesh Pattamatta <pattamattad@sharpsec.com>
+> > + * Modified for AMD Alchemy Au1xxx
+> > + *  by Matt Porter <mporter@kernel.crashing.org>
+> > + *
+> > + * This file is licenced under the GPL.
+> > + */
+> 
+> Please correct the comments!  I also think that most of the people
+> which are attributed
+> here should be removed.  Perhaps simply state which file you used for
+> inspiration?
+> ("derived from ohci-whatever.c").
 
-The following compiling error is fixed:
+I will post a new version of the PCI and USB support patches, with this
+and another minor change.
 
-AS      arch/mips/power/hibernate.o
-arch/mips/power/hibernate.S: Assembler messages:
-arch/mips/power/hibernate.S:38: Error: expression out of range
-make[2]: *** [arch/mips/power/hibernate.o] Error 1
-make[1]: *** [arch/mips/power] Error 2
-
-Reported-by: Roman Mamedov <rm@romanrm.ru>
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/power/hibernate.S |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-index dbb5c7b..f8a751c 100644
---- a/arch/mips/power/hibernate.S
-+++ b/arch/mips/power/hibernate.S
-@@ -35,7 +35,7 @@ LEAF(swsusp_arch_resume)
- 0:
- 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
- 	PTR_L t2, PBE_ORIG_ADDRESS(t0) /* destination */
--	PTR_ADDIU t3, t1, PAGE_SIZE
-+	PTR_ADDU t3, t1, PAGE_SIZE
- 1:
- 	REG_L t8, (t1)
- 	REG_S t8, (t2)
--- 
-1.7.1
+Thanks,
+JC.

@@ -1,73 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Apr 2011 14:42:33 +0200 (CEST)
-Received: from mailrelay003.isp.belgacom.be ([195.238.6.53]:35408 "EHLO
-        mailrelay003.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490992Ab1DZMm1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Apr 2011 14:42:27 +0200
-X-Belgacom-Dynamic: yes
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AvsEAEK9tk1R8BPE/2dsb2JhbAClRHjEHg6FaAScYQ
-Received: from 196.19-240-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.240.19.196])
-  by relay.skynet.be with ESMTP; 26 Apr 2011 14:42:12 +0200
-Received: from wim by infomag with local (Exim 4.69)
-        (envelope-from <wim@infomag.iguana.be>)
-        id 1QEham-0007bK-8L; Tue, 26 Apr 2011 14:42:12 +0200
-Date:   Tue, 26 Apr 2011 14:42:12 +0200
-From:   Wim Van Sebroeck <wim@iguana.be>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mips@linux-mips.org, linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH V6] MIPS: lantiq: add watchdog support
-Message-ID: <20110426124212.GA17580@infomag.iguana.be>
-References: <1303817863-19526-1-git-send-email-blogic@openwrt.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1303817863-19526-1-git-send-email-blogic@openwrt.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <wim@iguana.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Apr 2011 01:39:49 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:3736 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491137Ab1D0Xjn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Apr 2011 01:39:43 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4db8a9760000>; Wed, 27 Apr 2011 16:40:38 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 27 Apr 2011 16:39:37 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 27 Apr 2011 16:39:36 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p3RNdUlM029907;
+        Wed, 27 Apr 2011 16:39:31 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p3RNdT47029906;
+        Wed, 27 Apr 2011 16:39:29 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Invalidate old TLB mappings when updating huge page PTEs.
+Date:   Wed, 27 Apr 2011 16:39:28 -0700
+Message-Id: <1303947568-29874-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 27 Apr 2011 23:39:37.0004 (UTC) FILETIME=[5E931EC0:01CC0534]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29801
+X-archive-position: 29802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi John,
+Without this, stale Icache or TLB entries may be used.
 
-> +static int
-> +ltq_wdt_open(struct inode *inode, struct file *file)
-> +{
-> +	if (ltq_wdt_in_use)
-> +		return -EBUSY;
-> +	ltq_wdt_in_use = 1;
-> +	ltq_wdt_enable();
-> +
-> +	return nonseekable_open(inode, file);
-> +}
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/include/asm/hugetlb.h |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-I prefer to see a test_and_set_bit(ltq_wdt_in_use) and a ...
-
-> +static int
-> +ltq_wdt_release(struct inode *inode, struct file *file)
-> +{
-> +	if (ltq_wdt_ok_to_close)
-> +		ltq_wdt_disable();
-> +	else
-> +		pr_err("ltq_wdt: watchdog closed without warning\n");
-> +	ltq_wdt_ok_to_close = 0;
-> +	ltq_wdt_in_use = 0;
-> +
-> +	return 0;
-> +}
-
-... clear_bit(ltq_wdt_in_use);
-
-For the rest is looks ok for me. So Signed-off-by: Wim Van Sebroeck <wim@iguana.be>
-
-Kind regards,
-Wim.
+diff --git a/arch/mips/include/asm/hugetlb.h b/arch/mips/include/asm/hugetlb.h
+index f5e8560..c565b7c 100644
+--- a/arch/mips/include/asm/hugetlb.h
++++ b/arch/mips/include/asm/hugetlb.h
+@@ -70,6 +70,7 @@ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+ static inline void huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 					 unsigned long addr, pte_t *ptep)
+ {
++	flush_tlb_mm(vma->vm_mm);
+ }
+ 
+ static inline int huge_pte_none(pte_t pte)
+-- 
+1.7.2.3

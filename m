@@ -1,104 +1,580 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 May 2011 11:48:10 +0200 (CEST)
-Received: from smtp-vbr10.xs4all.nl ([194.109.24.30]:4318 "EHLO
-        smtp-vbr10.xs4all.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491062Ab1EBJsE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 2 May 2011 11:48:04 +0200
-Received: from starbug-2.trinair2002 (c74072.upc-c.chello.nl [212.187.74.72])
-        (authenticated bits=0)
-        by smtp-vbr10.xs4all.nl (8.13.8/8.13.8) with ESMTP id p429lnRx064895;
-        Mon, 2 May 2011 11:47:53 +0200 (CEST)
-        (envelope-from maarten@treewalker.org)
-Received: from hyperion.trinair2002 (hyperion.trinair2002 [192.168.0.43])
-        by starbug-2.trinair2002 (Postfix) with ESMTP id 9853D44960;
-        Mon,  2 May 2011 11:47:49 +0200 (CEST)
-From:   Maarten ter Huurne <maarten@treewalker.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maarten ter Huurne <maarten@treewalker.org>
-Subject: [PATCH] MIPS: JZ4740: setup: Autodetect physical memory.
-Date:   Mon,  2 May 2011 11:47:00 +0200
-Message-Id: <1304329620-17659-1-git-send-email-maarten@treewalker.org>
-X-Mailer: git-send-email 1.7.3.4
-X-Virus-Scanned: by XS4ALL Virus Scanner
-Return-Path: <maarten@treewalker.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 May 2011 23:31:14 +0200 (CEST)
+Received: from narfation.org ([79.140.41.39]:36705 "EHLO v3-1039.vlinux.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491204Ab1ECVbI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 3 May 2011 23:31:08 +0200
+Received: from sven-desktop.home.narfation.org (i59F6A5DC.versanet.de [89.246.165.220])
+        by v3-1039.vlinux.de (Postfix) with ESMTPSA id 65E1B940CF;
+        Tue,  3 May 2011 23:31:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=narfation.org; s=mail;
+        t=1304458277; bh=sQDHl932+uNRI2Fh874hEtx7gcOULgLxW0VHF1muM+0=;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        b=i78kmfj1ByW7IWbIc5ahEgz4ipVHPFLXOnbpGFnVKhS0zx+ZiytLvQslqv1eSHViw
+         mpHtdncePG4Rj+DHvtj8EdEkBsIFM387bkgvSYgCZkzl+5VRkKFzxG1W3sNO4SsdiU
+         h59UuEqv7Rx40otDqQvihycRk0kyLuGesvnmFQ7M=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Sven Eckelmann <sven@narfation.org>,
+        David Howells <dhowells@redhat.com>,
+        Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
+        linux-m32r@ml.linux-m32r.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: [PATCH] atomic: add *_dec_not_zero
+Date:   Tue,  3 May 2011 23:30:35 +0200
+Message-Id: <1304458235-28473-1-git-send-email-sven@narfation.org>
+X-Mailer: git-send-email 1.7.4.4
+Return-Path: <sven@narfation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29803
+X-archive-position: 29804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: maarten@treewalker.org
+X-original-sender: sven@narfation.org
 Precedence: bulk
 X-list: linux-mips
 
-Assume that the boot loader knows the physical memory of the system and
-deduce that information from the contents of the SDRAM control register.
-It is still possible to override with with the "mem=" parameter, but we
-have a sensible default now.
+Introduce an *_dec_not_zero operation.  Make this a special case of
+*_add_unless because batman-adv uses atomic_dec_not_zero in different
+places like re-broadcast queue or aggregation queue management. There
+are other non-final patches which may also want to use this macro.
 
-Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+Reported-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Chris Metcalf <cmetcalf@tilera.com>
+Cc: x86@kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: uclinux-dist-devel@blackfin.uclinux.org
+Cc: linux-cris-kernel@axis.com
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-m32r@ml.linux-m32r.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-am33-list@redhat.com
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
 ---
- arch/mips/jz4740/setup.c |   32 ++++++++++++++++++++++++++++++++
- 1 files changed, 32 insertions(+), 0 deletions(-)
+David S. Miller recommended this change in
+ https://lists.open-mesh.org/pipermail/b.a.t.m.a.n/2011-May/004560.html
 
-diff --git a/arch/mips/jz4740/setup.c b/arch/mips/jz4740/setup.c
-index 6a9e14d..d97cfbf 100644
---- a/arch/mips/jz4740/setup.c
-+++ b/arch/mips/jz4740/setup.c
-@@ -1,5 +1,6 @@
- /*
-  *  Copyright (C) 2009-2010, Lars-Peter Clausen <lars@metafoo.de>
-+ *  Copyright (C) 2011, Maarten ter Huurne <maarten@treewalker.org>
-  *  JZ4740 setup code
-  *
-  *  This program is free software; you can redistribute it and/or modify it
-@@ -14,13 +15,44 @@
-  */
- 
- #include <linux/init.h>
-+#include <linux/io.h>
- #include <linux/kernel.h>
- 
-+#include <asm/bootinfo.h>
-+
-+#include <asm/mach-jz4740/base.h>
-+
- #include "reset.h"
- 
-+
-+#define JZ4740_EMC_SDRAM_CTRL 0x80
-+
-+
-+static void __init jz4740_detect_mem(void)
-+{
-+	void __iomem *jz_emc_base;
-+	u32 ctrl, bus, bank, rows, cols;
-+	phys_t size;
-+
-+	jz_emc_base = ioremap(JZ4740_EMC_BASE_ADDR, 0x100);
-+	ctrl = readl(jz_emc_base + JZ4740_EMC_SDRAM_CTRL);
-+	bus = 2 - ((ctrl >> 31) & 1);
-+	bank = 1 + ((ctrl >> 19) & 1);
-+	cols = 8 + ((ctrl >> 26) & 7);
-+	rows = 11 + ((ctrl >> 20) & 3);
-+	printk(KERN_DEBUG
-+		"SDRAM preconfigured: bus:%u bank:%u rows:%u cols:%u\n",
-+		bus, bank, rows, cols);
-+	iounmap(jz_emc_base);
-+
-+	size = 1 << (bus + bank + cols + rows);
-+	add_memory_region(0, size, BOOT_MEM_RAM);
-+}
-+
- void __init plat_mem_setup(void)
- {
- 	jz4740_reset_init();
-+	jz4740_detect_mem();
+ arch/alpha/include/asm/atomic.h    |    2 ++
+ arch/alpha/include/asm/local.h     |    1 +
+ arch/arm/include/asm/atomic.h      |    2 ++
+ arch/avr32/include/asm/atomic.h    |    1 +
+ arch/blackfin/include/asm/atomic.h |    1 +
+ arch/cris/include/asm/atomic.h     |    1 +
+ arch/frv/include/asm/atomic.h      |    1 +
+ arch/h8300/include/asm/atomic.h    |    1 +
+ arch/ia64/include/asm/atomic.h     |    2 ++
+ arch/m32r/include/asm/atomic.h     |    1 +
+ arch/m32r/include/asm/local.h      |    1 +
+ arch/m68k/include/asm/atomic.h     |    1 +
+ arch/mips/include/asm/atomic.h     |    2 ++
+ arch/mips/include/asm/local.h      |    1 +
+ arch/mn10300/include/asm/atomic.h  |    1 +
+ arch/parisc/include/asm/atomic.h   |    2 ++
+ arch/powerpc/include/asm/atomic.h  |    2 ++
+ arch/powerpc/include/asm/local.h   |    1 +
+ arch/s390/include/asm/atomic.h     |    2 ++
+ arch/sh/include/asm/atomic.h       |    1 +
+ arch/sparc/include/asm/atomic_32.h |    1 +
+ arch/sparc/include/asm/atomic_64.h |    2 ++
+ arch/tile/include/asm/atomic.h     |    9 +++++++++
+ arch/tile/include/asm/atomic_32.h  |    1 +
+ arch/x86/include/asm/atomic.h      |    1 +
+ arch/x86/include/asm/atomic64_64.h |    1 +
+ arch/xtensa/include/asm/atomic.h   |    1 +
+ include/asm-generic/atomic-long.h  |    2 ++
+ include/asm-generic/atomic.h       |    1 +
+ include/asm-generic/atomic64.h     |    1 +
+ include/asm-generic/local.h        |    1 +
+ include/asm-generic/local64.h      |    2 ++
+ 32 files changed, 50 insertions(+), 0 deletions(-)
+
+diff --git a/arch/alpha/include/asm/atomic.h b/arch/alpha/include/asm/atomic.h
+index e756d04..7e9434e 100644
+--- a/arch/alpha/include/asm/atomic.h
++++ b/arch/alpha/include/asm/atomic.h
+@@ -200,6 +200,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
  }
  
- const char *get_system_type(void)
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ /**
+  * atomic64_add_unless - add unless the number is a given value
+@@ -226,6 +227,7 @@ static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
+ }
+ 
+ #define atomic64_inc_not_zero(v) atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
+ 
+ #define atomic_add_negative(a, v) (atomic_add_return((a), (v)) < 0)
+ #define atomic64_add_negative(a, v) (atomic64_add_return((a), (v)) < 0)
+diff --git a/arch/alpha/include/asm/local.h b/arch/alpha/include/asm/local.h
+index b9e3e33..09fb327 100644
+--- a/arch/alpha/include/asm/local.h
++++ b/arch/alpha/include/asm/local.h
+@@ -79,6 +79,7 @@ static __inline__ long local_sub_return(long i, local_t * l)
+ 	c != (u);						\
+ })
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
++#define local_dec_not_zero(l) local_add_unless((l), -1, 0)
+ 
+ #define local_add_negative(a, l) (local_add_return((a), (l)) < 0)
+ 
+diff --git a/arch/arm/include/asm/atomic.h b/arch/arm/include/asm/atomic.h
+index 7e79503..a005265 100644
+--- a/arch/arm/include/asm/atomic.h
++++ b/arch/arm/include/asm/atomic.h
+@@ -218,6 +218,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
+ 	return c != u;
+ }
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ #define atomic_inc(v)		atomic_add(1, v)
+ #define atomic_dec(v)		atomic_sub(1, v)
+@@ -459,6 +460,7 @@ static inline int atomic64_add_unless(atomic64_t *v, u64 a, u64 u)
+ #define atomic64_dec_return(v)		atomic64_sub_return(1LL, (v))
+ #define atomic64_dec_and_test(v)	(atomic64_dec_return((v)) == 0)
+ #define atomic64_inc_not_zero(v)	atomic64_add_unless((v), 1LL, 0LL)
++#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1LL, 0LL)
+ 
+ #else /* !CONFIG_GENERIC_ATOMIC64 */
+ #include <asm-generic/atomic64.h>
+diff --git a/arch/avr32/include/asm/atomic.h b/arch/avr32/include/asm/atomic.h
+index bbce6a1..e6f39c1 100644
+--- a/arch/avr32/include/asm/atomic.h
++++ b/arch/avr32/include/asm/atomic.h
+@@ -189,6 +189,7 @@ static inline int atomic_sub_if_positive(int i, atomic_t *v)
+ #define atomic_add_negative(i, v) (atomic_add_return(i, v) < 0)
+ 
+ #define atomic_inc_not_zero(v)	atomic_add_unless(v, 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ #define atomic_dec_if_positive(v) atomic_sub_if_positive(1, v)
+ 
+ #define smp_mb__before_atomic_dec()	barrier()
+diff --git a/arch/blackfin/include/asm/atomic.h b/arch/blackfin/include/asm/atomic.h
+index e485089..900682e 100644
+--- a/arch/blackfin/include/asm/atomic.h
++++ b/arch/blackfin/include/asm/atomic.h
+@@ -103,6 +103,7 @@ static inline int atomic_test_mask(int mask, atomic_t *v)
+ 	c != (u);						\
+ })
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ /*
+  * atomic_inc_and_test - increment and test
+diff --git a/arch/cris/include/asm/atomic.h b/arch/cris/include/asm/atomic.h
+index 88dc9b9..9db2767 100644
+--- a/arch/cris/include/asm/atomic.h
++++ b/arch/cris/include/asm/atomic.h
+@@ -151,6 +151,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
+ 	return ret != u;
+ }
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ /* Atomic operations are already serializing */
+ #define smp_mb__before_atomic_dec()    barrier()
+diff --git a/arch/frv/include/asm/atomic.h b/arch/frv/include/asm/atomic.h
+index fae32c7..90f12a8 100644
+--- a/arch/frv/include/asm/atomic.h
++++ b/arch/frv/include/asm/atomic.h
+@@ -257,6 +257,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ #include <asm-generic/atomic-long.h>
+ #endif /* _ASM_ATOMIC_H */
+diff --git a/arch/h8300/include/asm/atomic.h b/arch/h8300/include/asm/atomic.h
+index 984221a..eda4c8a 100644
+--- a/arch/h8300/include/asm/atomic.h
++++ b/arch/h8300/include/asm/atomic.h
+@@ -117,6 +117,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
+ 	return ret != u;
+ }
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ static __inline__ void atomic_clear_mask(unsigned long mask, unsigned long *v)
+ {
+diff --git a/arch/ia64/include/asm/atomic.h b/arch/ia64/include/asm/atomic.h
+index 4468814..e2777a9 100644
+--- a/arch/ia64/include/asm/atomic.h
++++ b/arch/ia64/include/asm/atomic.h
+@@ -106,6 +106,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ static __inline__ long atomic64_add_unless(atomic64_t *v, long a, long u)
+ {
+@@ -123,6 +124,7 @@ static __inline__ long atomic64_add_unless(atomic64_t *v, long a, long u)
+ }
+ 
+ #define atomic64_inc_not_zero(v) atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
+ 
+ #define atomic_add_return(i,v)						\
+ ({									\
+diff --git a/arch/m32r/include/asm/atomic.h b/arch/m32r/include/asm/atomic.h
+index d44a51e..4e0b4ec 100644
+--- a/arch/m32r/include/asm/atomic.h
++++ b/arch/m32r/include/asm/atomic.h
+@@ -263,6 +263,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ static __inline__ void atomic_clear_mask(unsigned long  mask, atomic_t *addr)
+ {
+diff --git a/arch/m32r/include/asm/local.h b/arch/m32r/include/asm/local.h
+index 734bca8..d536082 100644
+--- a/arch/m32r/include/asm/local.h
++++ b/arch/m32r/include/asm/local.h
+@@ -272,6 +272,7 @@ static inline int local_add_unless(local_t *l, long a, long u)
+ }
+ 
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
++#define local_dec_not_zero(l) local_add_unless((l), -1, 0)
+ 
+ static inline void local_clear_mask(unsigned long  mask, local_t *addr)
+ {
+diff --git a/arch/m68k/include/asm/atomic.h b/arch/m68k/include/asm/atomic.h
+index 03ae3d1..187a33f 100644
+--- a/arch/m68k/include/asm/atomic.h
++++ b/arch/m68k/include/asm/atomic.h
+@@ -199,6 +199,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ /* Atomic operations are already serializing */
+ #define smp_mb__before_atomic_dec()	barrier()
+diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+index 4a02fe8..8c4109e 100644
+--- a/arch/mips/include/asm/atomic.h
++++ b/arch/mips/include/asm/atomic.h
+@@ -326,6 +326,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ 	return c != (u);
+ }
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ #define atomic_dec_return(v) atomic_sub_return(1, (v))
+ #define atomic_inc_return(v) atomic_add_return(1, (v))
+@@ -698,6 +699,7 @@ static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
+ }
+ 
+ #define atomic64_inc_not_zero(v) atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
+ 
+ #define atomic64_dec_return(v) atomic64_sub_return(1, (v))
+ #define atomic64_inc_return(v) atomic64_add_return(1, (v))
+diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
+index fffc830..c34d3ca 100644
+--- a/arch/mips/include/asm/local.h
++++ b/arch/mips/include/asm/local.h
+@@ -137,6 +137,7 @@ static __inline__ long local_sub_return(long i, local_t * l)
+ 	c != (u);						\
+ })
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
++#define local_dec_not_zero(l) local_add_unless((l), -1, 0)
+ 
+ #define local_dec_return(l) local_sub_return(1, (l))
+ #define local_inc_return(l) local_add_return(1, (l))
+diff --git a/arch/mn10300/include/asm/atomic.h b/arch/mn10300/include/asm/atomic.h
+index 9d773a6..bcad5d1 100644
+--- a/arch/mn10300/include/asm/atomic.h
++++ b/arch/mn10300/include/asm/atomic.h
+@@ -270,6 +270,7 @@ static inline void atomic_dec(atomic_t *v)
+ })
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ /**
+  * atomic_clear_mask - Atomically clear bits in memory
+diff --git a/arch/parisc/include/asm/atomic.h b/arch/parisc/include/asm/atomic.h
+index f819559..c2353cf 100644
+--- a/arch/parisc/include/asm/atomic.h
++++ b/arch/parisc/include/asm/atomic.h
+@@ -221,6 +221,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ #define atomic_add(i,v)	((void)(__atomic_add_return( (i),(v))))
+ #define atomic_sub(i,v)	((void)(__atomic_add_return(-(i),(v))))
+@@ -335,6 +336,7 @@ static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
+ }
+ 
+ #define atomic64_inc_not_zero(v) atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
+ 
+ #else /* CONFIG_64BIT */
+ 
+diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
+index b8f152e..906f49a 100644
+--- a/arch/powerpc/include/asm/atomic.h
++++ b/arch/powerpc/include/asm/atomic.h
+@@ -213,6 +213,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ #define atomic_sub_and_test(a, v)	(atomic_sub_return((a), (v)) == 0)
+ #define atomic_dec_and_test(v)		(atomic_dec_return((v)) == 0)
+@@ -469,6 +470,7 @@ static __inline__ int atomic64_add_unless(atomic64_t *v, long a, long u)
+ }
+ 
+ #define atomic64_inc_not_zero(v) atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
+ 
+ #else  /* __powerpc64__ */
+ #include <asm-generic/atomic64.h>
+diff --git a/arch/powerpc/include/asm/local.h b/arch/powerpc/include/asm/local.h
+index c2410af..3d4c58a 100644
+--- a/arch/powerpc/include/asm/local.h
++++ b/arch/powerpc/include/asm/local.h
+@@ -134,6 +134,7 @@ static __inline__ int local_add_unless(local_t *l, long a, long u)
+ }
+ 
+ #define local_inc_not_zero(l) local_add_unless((l), 1, 0)
++#define local_dec_not_zero(l) local_add_unless((l), -1, 0)
+ 
+ #define local_sub_and_test(a, l)	(local_sub_return((a), (l)) == 0)
+ #define local_dec_and_test(l)		(local_dec_return((l)) == 0)
+diff --git a/arch/s390/include/asm/atomic.h b/arch/s390/include/asm/atomic.h
+index d9db138..09972c3 100644
+--- a/arch/s390/include/asm/atomic.h
++++ b/arch/s390/include/asm/atomic.h
+@@ -109,6 +109,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ #undef __CS_LOOP
+ 
+@@ -326,6 +327,7 @@ static inline long long atomic64_dec_if_positive(atomic64_t *v)
+ #define atomic64_dec_return(_v)		atomic64_sub_return(1, _v)
+ #define atomic64_dec_and_test(_v)	(atomic64_sub_return(1, _v) == 0)
+ #define atomic64_inc_not_zero(v)	atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1, 0)
+ 
+ #define smp_mb__before_atomic_dec()	smp_mb()
+ #define smp_mb__after_atomic_dec()	smp_mb()
+diff --git a/arch/sh/include/asm/atomic.h b/arch/sh/include/asm/atomic.h
+index c798312..848849e 100644
+--- a/arch/sh/include/asm/atomic.h
++++ b/arch/sh/include/asm/atomic.h
+@@ -31,6 +31,7 @@
+ #define atomic_sub_and_test(i,v)	(atomic_sub_return((i), (v)) == 0)
+ #define atomic_dec_and_test(v)		(atomic_sub_return(1, (v)) == 0)
+ #define atomic_inc_not_zero(v)		atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v)		atomic_add_unless((v), -1, 0)
+ 
+ #define atomic_inc(v)			atomic_add(1, (v))
+ #define atomic_dec(v)			atomic_sub(1, (v))
+diff --git a/arch/sparc/include/asm/atomic_32.h b/arch/sparc/include/asm/atomic_32.h
+index 7ae128b..c7da1e5 100644
+--- a/arch/sparc/include/asm/atomic_32.h
++++ b/arch/sparc/include/asm/atomic_32.h
+@@ -53,6 +53,7 @@ extern void atomic_set(atomic_t *, int);
+ #define atomic_sub_and_test(i, v) (atomic_sub_return(i, v) == 0)
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ /* This is the old 24-bit implementation.  It's still used internally
+  * by some sparc-specific code, notably the semaphore implementation.
+diff --git a/arch/sparc/include/asm/atomic_64.h b/arch/sparc/include/asm/atomic_64.h
+index bdb2ff8..23ad7cf 100644
+--- a/arch/sparc/include/asm/atomic_64.h
++++ b/arch/sparc/include/asm/atomic_64.h
+@@ -86,6 +86,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ #define atomic64_cmpxchg(v, o, n) \
+ 	((__typeof__((v)->counter))cmpxchg(&((v)->counter), (o), (n)))
+@@ -107,6 +108,7 @@ static inline long atomic64_add_unless(atomic64_t *v, long a, long u)
+ }
+ 
+ #define atomic64_inc_not_zero(v) atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
+ 
+ /* Atomic operations are already serializing */
+ #define smp_mb__before_atomic_dec()	barrier()
+diff --git a/arch/tile/include/asm/atomic.h b/arch/tile/include/asm/atomic.h
+index 75a1602..7fd7be2 100644
+--- a/arch/tile/include/asm/atomic.h
++++ b/arch/tile/include/asm/atomic.h
+@@ -130,6 +130,15 @@ static inline int atomic_read(const atomic_t *v)
+  */
+ #define atomic_inc_not_zero(v)		atomic_add_unless((v), 1, 0)
+ 
++/**
++ * atomic_dec_not_zero - decrement unless the number is zero
++ * @v: pointer of type atomic_t
++ *
++ * Atomically decrement @v by 1, so long as @v is non-zero.
++ * Returns non-zero if @v was non-zero, and zero otherwise.
++ */
++#define atomic_dec_not_zero(v)		atomic_add_unless((v), -1, 0)
++
+ 
+ /*
+  * We define xchg() and cmpxchg() in the included headers.
+diff --git a/arch/tile/include/asm/atomic_32.h b/arch/tile/include/asm/atomic_32.h
+index ed359aee..43137bd 100644
+--- a/arch/tile/include/asm/atomic_32.h
++++ b/arch/tile/include/asm/atomic_32.h
+@@ -243,6 +243,7 @@ static inline void atomic64_set(atomic64_t *v, u64 n)
+ #define atomic64_dec_return(v)		atomic64_sub_return(1LL, (v))
+ #define atomic64_dec_and_test(v)	(atomic64_dec_return((v)) == 0)
+ #define atomic64_inc_not_zero(v)	atomic64_add_unless((v), 1LL, 0LL)
++#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1LL, 0LL)
+ 
+ /*
+  * We need to barrier before modifying the word, since the _atomic_xxx()
+diff --git a/arch/x86/include/asm/atomic.h b/arch/x86/include/asm/atomic.h
+index 952a826..7102a0b 100644
+--- a/arch/x86/include/asm/atomic.h
++++ b/arch/x86/include/asm/atomic.h
+@@ -245,6 +245,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ /*
+  * atomic_dec_if_positive - decrement by 1 if old value positive
+diff --git a/arch/x86/include/asm/atomic64_64.h b/arch/x86/include/asm/atomic64_64.h
+index 49fd1ea..2cb37f4 100644
+--- a/arch/x86/include/asm/atomic64_64.h
++++ b/arch/x86/include/asm/atomic64_64.h
+@@ -220,6 +220,7 @@ static inline int atomic64_add_unless(atomic64_t *v, long a, long u)
+ }
+ 
+ #define atomic64_inc_not_zero(v) atomic64_add_unless((v), 1, 0)
++#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
+ 
+ /*
+  * atomic64_dec_if_positive - decrement by 1 if old value positive
+diff --git a/arch/xtensa/include/asm/atomic.h b/arch/xtensa/include/asm/atomic.h
+index a96a061..3b2a7b3 100644
+--- a/arch/xtensa/include/asm/atomic.h
++++ b/arch/xtensa/include/asm/atomic.h
+@@ -249,6 +249,7 @@ static __inline__ int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ static inline void atomic_clear_mask(unsigned int mask, atomic_t *v)
+ {
+diff --git a/include/asm-generic/atomic-long.h b/include/asm-generic/atomic-long.h
+index b7babf0..0fe75ab 100644
+--- a/include/asm-generic/atomic-long.h
++++ b/include/asm-generic/atomic-long.h
+@@ -130,6 +130,7 @@ static inline long atomic_long_add_unless(atomic_long_t *l, long a, long u)
+ }
+ 
+ #define atomic_long_inc_not_zero(l) atomic64_inc_not_zero((atomic64_t *)(l))
++#define atomic_long_dec_not_zero(l) atomic64_dec_not_zero((atomic64_t *)(l))
+ 
+ #define atomic_long_cmpxchg(l, old, new) \
+ 	(atomic64_cmpxchg((atomic64_t *)(l), (old), (new)))
+@@ -247,6 +248,7 @@ static inline long atomic_long_add_unless(atomic_long_t *l, long a, long u)
+ }
+ 
+ #define atomic_long_inc_not_zero(l) atomic_inc_not_zero((atomic_t *)(l))
++#define atomic_long_dec_not_zero(l) atomic_dec_not_zero((atomic_t *)(l))
+ 
+ #define atomic_long_cmpxchg(l, old, new) \
+ 	(atomic_cmpxchg((atomic_t *)(l), (old), (new)))
+diff --git a/include/asm-generic/atomic.h b/include/asm-generic/atomic.h
+index e994197..4e1d3ef 100644
+--- a/include/asm-generic/atomic.h
++++ b/include/asm-generic/atomic.h
+@@ -139,6 +139,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
+ }
+ 
+ #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
++#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+ 
+ static inline void atomic_clear_mask(unsigned long mask, unsigned long *addr)
+ {
+diff --git a/include/asm-generic/atomic64.h b/include/asm-generic/atomic64.h
+index b18ce4f..f301c46 100644
+--- a/include/asm-generic/atomic64.h
++++ b/include/asm-generic/atomic64.h
+@@ -38,5 +38,6 @@ extern int	 atomic64_add_unless(atomic64_t *v, long long a, long long u);
+ #define atomic64_dec_return(v)		atomic64_sub_return(1LL, (v))
+ #define atomic64_dec_and_test(v)	(atomic64_dec_return((v)) == 0)
+ #define atomic64_inc_not_zero(v) 	atomic64_add_unless((v), 1LL, 0LL)
++#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1LL, 0LL)
+ 
+ #endif  /*  _ASM_GENERIC_ATOMIC64_H  */
+diff --git a/include/asm-generic/local.h b/include/asm-generic/local.h
+index c8a5d68..82ef01f 100644
+--- a/include/asm-generic/local.h
++++ b/include/asm-generic/local.h
+@@ -44,6 +44,7 @@ typedef struct
+ #define local_xchg(l, n) atomic_long_xchg((&(l)->a), (n))
+ #define local_add_unless(l, _a, u) atomic_long_add_unless((&(l)->a), (_a), (u))
+ #define local_inc_not_zero(l) atomic_long_inc_not_zero(&(l)->a)
++#define local_dec_not_zero(l) atomic_long_dec_not_zero(&(l)->a)
+ 
+ /* Non-atomic variants, ie. preemption disabled and won't be touched
+  * in interrupt, etc.  Some archs can optimize this case well. */
+diff --git a/include/asm-generic/local64.h b/include/asm-generic/local64.h
+index 02ac760..aa3a841 100644
+--- a/include/asm-generic/local64.h
++++ b/include/asm-generic/local64.h
+@@ -45,6 +45,7 @@ typedef struct {
+ #define local64_xchg(l, n)	local_xchg((&(l)->a), (n))
+ #define local64_add_unless(l, _a, u) local_add_unless((&(l)->a), (_a), (u))
+ #define local64_inc_not_zero(l)	local_inc_not_zero(&(l)->a)
++#define local64_dec_not_zero(l)	local_dec_not_zero(&(l)->a)
+ 
+ /* Non-atomic variants, ie. preemption disabled and won't be touched
+  * in interrupt, etc.  Some archs can optimize this case well. */
+@@ -83,6 +84,7 @@ typedef struct {
+ #define local64_xchg(l, n)	atomic64_xchg((&(l)->a), (n))
+ #define local64_add_unless(l, _a, u) atomic64_add_unless((&(l)->a), (_a), (u))
+ #define local64_inc_not_zero(l)	atomic64_inc_not_zero(&(l)->a)
++#define local64_dec_not_zero(l)	atomic64_dec_not_zero(&(l)->a)
+ 
+ /* Non-atomic variants, ie. preemption disabled and won't be touched
+  * in interrupt, etc.  Some archs can optimize this case well. */
 -- 
-1.7.3.4
+1.7.4.4

@@ -1,41 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 May 2011 14:18:02 +0200 (CEST)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:61436 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491051Ab1EDMR5 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 4 May 2011 14:17:57 +0200
-Received: by bwz1 with SMTP id 1so1179861bwz.36
-        for <linux-mips@linux-mips.org>; Wed, 04 May 2011 05:17:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=3ERi4Yv6QUYVc9R1ygD5GOUKWvs/8X1wolS/oEDmci8=;
-        b=rWTmL+qKC4a25Wby1kavCPeOcCVKBrRxXfruVvrbhM0WbjKQEJr8suEL3oJd9CI4UN
-         C1VBQchDRocSM98CXvhG8cXSI0pNApuOzFUcd2zth2iSdh906QIiqzjVlCFkQbT22ah9
-         olopGzojadjlBa+DpwOwDi+Da8mISa3qcH1zc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=f51yaEtpSAU1uXzB0uFikDTsnRzdJs5qeoBFJ5G46lBryxBVESllgxJ3ZNW0Tan/30
-         1dmZ9s/ahKafyMpm9XKTENrhqMALkR6UFzVX28gXJnkjoy7fqlHCrm2AjpBDIgygAIss
-         gHankU5bqAHPFjeMQJXbuN2/GnUfHN4qWjxyk=
-MIME-Version: 1.0
-Received: by 10.204.0.82 with SMTP id 18mr1025272bka.100.1304511471362; Wed,
- 04 May 2011 05:17:51 -0700 (PDT)
-Received: by 10.204.126.154 with HTTP; Wed, 4 May 2011 05:17:51 -0700 (PDT)
-In-Reply-To: <1304458235-28473-1-git-send-email-sven@narfation.org>
-References: <1304458235-28473-1-git-send-email-sven@narfation.org>
-Date:   Wed, 4 May 2011 14:17:51 +0200
-X-Google-Sender-Auth: 52Q_K_1bwIVJ1s18yumwIOjW098
-Message-ID: <BANLkTi=kRLxKS417xhaWDpF4h8+VTcUQQA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 May 2011 17:04:18 +0200 (CEST)
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:35979 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491040Ab1EDPEP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 4 May 2011 17:04:15 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 549738EE11E;
+        Wed,  4 May 2011 08:04:07 -0700 (PDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 73FMpYj8FZQo; Wed,  4 May 2011 08:04:07 -0700 (PDT)
+Received: from [192.168.2.10] (dagonet.hansenpartnership.com [76.243.235.53])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 988D58EE0BE;
+        Wed,  4 May 2011 08:04:05 -0700 (PDT)
 Subject: Re: [PATCH] atomic: add *_dec_not_zero
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Mike Frysinger <vapier.adi@gmail.com>
+Cc:     Sven Eckelmann <sven@narfation.org>, linux-kernel@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
         Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
         linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         uclinux-dist-devel@blackfin.uclinux.org,
@@ -45,37 +26,52 @@ Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <geert.uytterhoeven@gmail.com>
+In-Reply-To: <BANLkTiminpyJ_opxhqG0E0gBOrF490b+tQ@mail.gmail.com>
+References: <1304458235-28473-1-git-send-email-sven@narfation.org>
+         <BANLkTiminpyJ_opxhqG0E0gBOrF490b+tQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Wed, 04 May 2011 10:04:04 -0500
+Message-ID: <1304521444.2810.23.camel@mulgrave.site>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.32.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <James.Bottomley@HansenPartnership.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29815
+X-archive-position: 29816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: James.Bottomley@HansenPartnership.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 3, 2011 at 23:30, Sven Eckelmann <sven@narfation.org> wrote:
-> Introduce an *_dec_not_zero operation.  Make this a special case of
-> *_add_unless because batman-adv uses atomic_dec_not_zero in different
-> places like re-broadcast queue or aggregation queue management. There
-> are other non-final patches which may also want to use this macro.
+On Wed, 2011-05-04 at 00:44 -0400, Mike Frysinger wrote:
+> On Tue, May 3, 2011 at 17:30, Sven Eckelmann wrote:
+> > Introduce an *_dec_not_zero operation.  Make this a special case of
+> > *_add_unless because batman-adv uses atomic_dec_not_zero in different
+> > places like re-broadcast queue or aggregation queue management. There
+> > are other non-final patches which may also want to use this macro.
+> >
+> > Cc: uclinux-dist-devel@blackfin.uclinux.org
+> >
+> > --- a/arch/blackfin/include/asm/atomic.h
+> > +++ b/arch/blackfin/include/asm/atomic.h
+> > @@ -103,6 +103,7 @@ static inline int atomic_test_mask(int mask, atomic_t *v)
+> >        c != (u);                                               \
+> >  })
+> >  #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
+> > +#define atomic_dec_not_zero(v) atomic_add_unless((v), -1, 0)
+> >
+> >  /*
+> >  * atomic_inc_and_test - increment and test
+> 
+> no opinion on the actual idea, but for the Blackfin pieces:
+> Acked-by: Mike Frysinger <vapier@gentoo.org>
 
->  arch/m68k/include/asm/atomic.h     |    1 +
+This goes for parisc as well.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+James

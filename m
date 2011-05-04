@@ -1,81 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 May 2011 12:48:57 +0200 (CEST)
-Received: from anubis.se.axis.com ([195.60.68.12]:46258 "EHLO
-        anubis.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490984Ab1EDKsy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 May 2011 12:48:54 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by anubis.se.axis.com (Postfix) with ESMTP id E9AD819DC6;
-        Wed,  4 May 2011 12:48:47 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at anubis.se.axis.com
-Received: from anubis.se.axis.com ([127.0.0.1])
-        by localhost (anubis.se.axis.com [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id tgeP7vRDzl5S; Wed,  4 May 2011 12:48:47 +0200 (CEST)
-Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
-        by anubis.se.axis.com (Postfix) with ESMTP id 2D0C919D9A;
-        Wed,  4 May 2011 12:48:45 +0200 (CEST)
-Received: from silver.se.axis.com (silver.se.axis.com [10.88.4.3])
-        by seth.se.axis.com (Postfix) with ESMTP id EF5EF3E13C;
-        Wed,  4 May 2011 12:48:45 +0200 (CEST)
-Received: from silver.se.axis.com (localhost [127.0.0.1])
-        by silver.se.axis.com (8.14.3/8.14.3/Debian-5+lenny1) with ESMTP id p44AmjRg024638;
-        Wed, 4 May 2011 12:48:45 +0200
-Received: (from jespern@localhost)
-        by silver.se.axis.com (8.14.3/8.14.3/Submit) id p44AmfPQ024637;
-        Wed, 4 May 2011 12:48:41 +0200
-Date:   Wed, 4 May 2011 12:48:41 +0200
-From:   Jesper Nilsson <jesper.nilsson@axis.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 May 2011 13:06:02 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:39130 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491102Ab1EDLF7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 May 2011 13:05:59 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p44B2BXU005150;
+        Wed, 4 May 2011 12:02:12 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p44B27JV005143;
+        Wed, 4 May 2011 12:02:07 +0100
+Date:   Wed, 4 May 2011 12:02:07 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Sven Eckelmann <sven@narfation.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "linux-m32r@ml.linux-m32r.org" <linux-m32r@ml.linux-m32r.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        linux-cris-kernel <linux-cris-kernel@axis.com>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        David Howells <dhowells@redhat.com>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@vger.kernel.org>,
-        "linux-am33-list@redhat.com" <linux-am33-list@redhat.com>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "uclinux-dist-devel@blackfin.uclinux.org" 
-        <uclinux-dist-devel@blackfin.uclinux.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
+Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
+        linux-m32r@ml.linux-m32r.org, linux-m68k@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
 Subject: Re: [PATCH] atomic: add *_dec_not_zero
-Message-ID: <20110504104841.GE16179@axis.com>
+Message-ID: <20110504110207.GA4243@linux-mips.org>
 References: <1304458235-28473-1-git-send-email-sven@narfation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <1304458235-28473-1-git-send-email-sven@narfation.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <jesper.nilsson@axis.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29811
+X-archive-position: 29812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jesper.nilsson@axis.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
 On Tue, May 03, 2011 at 11:30:35PM +0200, Sven Eckelmann wrote:
-> Introduce an *_dec_not_zero operation.  Make this a special case of
-> *_add_unless because batman-adv uses atomic_dec_not_zero in different
-> places like re-broadcast queue or aggregation queue management. There
-> are other non-final patches which may also want to use this macro.
 
-For the CRIS-part:
+>  arch/mips/include/asm/atomic.h     |    2 ++
+>  arch/mips/include/asm/local.h      |    1 +
 
-Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-/^JN - Jesper Nilsson
--- 
-               Jesper Nilsson -- jesper.nilsson@axis.com
+  Ralf

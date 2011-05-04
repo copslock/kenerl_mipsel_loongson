@@ -1,17 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 May 2011 08:13:33 +0200 (CEST)
-Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:51079
-        "EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490953Ab1EDGNa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 4 May 2011 08:13:30 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by sunset.davemloft.net (Postfix) with ESMTP id 7D0A024C089;
-        Tue,  3 May 2011 23:12:55 -0700 (PDT)
-Date:   Tue, 03 May 2011 23:12:55 -0700 (PDT)
-Message-Id: <20110503.231255.115931602.davem@davemloft.net>
-To:     sven@narfation.org
-Cc:     linux-kernel@vger.kernel.org, dhowells@redhat.com,
-        cmetcalf@tilera.com, x86@kernel.org, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 May 2011 09:03:42 +0200 (CEST)
+Received: from mx2.mail.elte.hu ([157.181.151.9]:52107 "EHLO mx2.mail.elte.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490954Ab1EDHDk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 4 May 2011 09:03:40 +0200
+Received: from elvis.elte.hu ([157.181.1.14])
+        by mx2.mail.elte.hu with esmtp (Exim)
+        id 1QHW7D-0005sK-Eh
+        from <mingo@elte.hu>; Wed, 04 May 2011 09:03:25 +0200
+Received: by elvis.elte.hu (Postfix, from userid 1004)
+        id 76EEA3E2510; Wed,  4 May 2011 09:03:11 +0200 (CEST)
+Date:   Wed, 4 May 2011 09:03:12 +0200
+From:   Ingo Molnar <mingo@elte.hu>
+To:     Sven Eckelmann <sven@narfation.org>
+Cc:     linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+        Chris Metcalf <cmetcalf@tilera.com>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         uclinux-dist-devel@blackfin.uclinux.org,
         linux-cris-kernel@axis.com, linux-ia64@vger.kernel.org,
         linux-m32r@ml.linux-m32r.org, linux-m68k@lists.linux-m68k.org,
@@ -20,34 +23,46 @@ Cc:     linux-kernel@vger.kernel.org, dhowells@redhat.com,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
 Subject: Re: [PATCH] atomic: add *_dec_not_zero
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1304458235-28473-1-git-send-email-sven@narfation.org>
+Message-ID: <20110504070312.GD20828@elte.hu>
 References: <1304458235-28473-1-git-send-email-sven@narfation.org>
-X-Mailer: Mew version 6.3 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1304458235-28473-1-git-send-email-sven@narfation.org>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Received-SPF: neutral (mx2.mail.elte.hu: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
+X-ELTE-SpamScore: -2.0
+X-ELTE-SpamLevel: 
+X-ELTE-SpamCheck: no
+X-ELTE-SpamVersion: ELTE 2.0 
+X-ELTE-SpamCheck-Details: score=-2.0 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.3.1
+        -2.0 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+        [score: 0.0000]
+Return-Path: <mingo@elte.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29806
+X-archive-position: 29807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: mingo@elte.hu
 Precedence: bulk
 X-list: linux-mips
 
-From: Sven Eckelmann <sven@narfation.org>
-Date: Tue,  3 May 2011 23:30:35 +0200
+
+* Sven Eckelmann <sven@narfation.org> wrote:
 
 > Introduce an *_dec_not_zero operation.  Make this a special case of
 > *_add_unless because batman-adv uses atomic_dec_not_zero in different
 > places like re-broadcast queue or aggregation queue management. There
 > are other non-final patches which may also want to use this macro.
-> 
-> Reported-by: David S. Miller <davem@davemloft.net>
-> Signed-off-by: Sven Eckelmann <sven@narfation.org>
 
-Acked-by: David S. Miller <davem@davemloft.net>
+>  arch/x86/include/asm/atomic.h      |    1 +
+>  arch/x86/include/asm/atomic64_64.h |    1 +
+
+Acked-by: Ingo Molnar <mingo@elte.hu>
+
+Thanks,
+
+	Ingo

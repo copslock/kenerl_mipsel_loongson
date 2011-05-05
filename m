@@ -1,23 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 May 2011 22:59:03 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:44575 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2011 00:09:01 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:40661 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490992Ab1EEU7A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 5 May 2011 22:59:00 +0200
+        id S1490996Ab1EEWI6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 May 2011 00:08:58 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Ralph Hempel <ralph.hempel@lantiq.com>,
-        Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
-        linux-watchdog@vger.kernel.org
-Subject: [PATCH V6] MIPS: lantiq: add watchdog support
-Date:   Thu,  5 May 2011 23:00:23 +0200
-Message-Id: <1304629223-30537-1-git-send-email-blogic@openwrt.org>
+        linux-mips@linux-mips.org
+Subject: [PATCH V2 1/3] MIPS: lantiq: add DMA support
+Date:   Fri,  6 May 2011 00:10:00 +0200
+Message-Id: <1304633402-24161-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1304633402-24161-1-git-send-email-blogic@openwrt.org>
+References: <1304633402-24161-1-git-send-email-blogic@openwrt.org>
 Return-Path: <blogic@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29830
+X-archive-position: 29831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,344 +26,393 @@ X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds the driver for the watchdog found inside the Lantiq SoC family.
+This patch adds support for the DMA engine found inside the XWAY family of
+SoCs. The engine has 5 ports and 20 channels.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Ralph Hempel <ralph.hempel@lantiq.com>
-Cc: Wim Van Sebroeck <wim@iguana.be>
 Cc: linux-mips@linux-mips.org
-Cc: linux-watchdog@vger.kernel.org
 
 ---
 
 Changes in V2
-* add comments to explain register access
-* cleanup resource allocation
-* cleanup clock handling
-* whitespace fixes
+* use spinlocks
 
-Changes in V3
-* whitespace
-* change __iomem void to void __iomem
-* typo fixes
-* comment style
-* fix exit path in init function
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    3 +-
+ arch/mips/include/asm/mach-lantiq/xway/xway_dma.h  |   60 +++++
+ arch/mips/lantiq/xway/Makefile                     |    2 +-
+ arch/mips/lantiq/xway/dma.c                        |  272 ++++++++++++++++++++
+ 4 files changed, 335 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
+ create mode 100644 arch/mips/lantiq/xway/dma.c
 
-Changes in V4
-* fixes register offsets (we use a smaller memory window)
-* typo in the comments
-* add __init to probe function
-
-Changes in V5
-* add support for WDIOC_GETBOOTSTATUS and WDIOC_GETSTATUS
-* remove ifdefs and add a module parameter for the nowayout feature
-* add a remove function
-* fix typos
-
-Changes in V6
-* WDIOC_SETTIMEOUT should return ltq_wdt_timeout aswell as applying it
-
- drivers/watchdog/Kconfig      |    6 +
- drivers/watchdog/Makefile     |    1 +
- drivers/watchdog/lantiq_wdt.c |  261 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 268 insertions(+), 0 deletions(-)
- create mode 100644 drivers/watchdog/lantiq_wdt.c
-
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 1b0f98b..022f9eb 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -990,6 +990,12 @@ config BCM63XX_WDT
- 	  To compile this driver as a loadable module, choose M here.
- 	  The module will be called bcm63xx_wdt.
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index 34bc993..95f1882 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -85,7 +85,8 @@
+ #define LTQ_PPE32_SIZE		0x40000
  
-+config LANTIQ_WDT
-+	tristate "Lantiq SoC watchdog"
-+	depends on LANTIQ
-+	help
-+	  Hardware driver for the Lantiq SoC Watchdog Timer.
-+
- # PARISC Architecture
+ /* DMA */
+-#define LTQ_DMA_BASE_ADDR	0xBE104100
++#define LTQ_DMA_BASE_ADDR	0x1E104100
++#define LTQ_DMA_SIZE		0x800
  
- # POWERPC Architecture
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index 3f8608b..ed26f70 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -123,6 +123,7 @@ obj-$(CONFIG_AR7_WDT) += ar7_wdt.o
- obj-$(CONFIG_TXX9_WDT) += txx9wdt.o
- obj-$(CONFIG_OCTEON_WDT) += octeon-wdt.o
- octeon-wdt-y := octeon-wdt-main.o octeon-wdt-nmi.o
-+obj-$(CONFIG_LANTIQ_WDT) += lantiq_wdt.o
- 
- # PARISC Architecture
- 
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+ /* PCI */
+ #define PCI_CR_BASE_ADDR	0x1E105400
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h b/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
 new file mode 100644
-index 0000000..ba1618f
+index 0000000..872943a
 --- /dev/null
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -0,0 +1,261 @@
++++ b/arch/mips/include/asm/mach-lantiq/xway/xway_dma.h
+@@ -0,0 +1,60 @@
 +/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ *   This program is free software; you can redistribute it and/or modify it
++ *   under the terms of the GNU General Public License version 2 as published
++ *   by the Free Software Foundation.
 + *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ *  Based on EP93xx wdt driver
++ *   This program is distributed in the hope that it will be useful,
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *   GNU General Public License for more details.
++ *
++ *   You should have received a copy of the GNU General Public License
++ *   along with this program; if not, write to the Free Software
++ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
++ *
++ *   Copyright (C) 2011 John Crispin <blogic@openwrt.org>
 + */
 +
-+#include <linux/module.h>
-+#include <linux/fs.h>
-+#include <linux/miscdevice.h>
-+#include <linux/watchdog.h>
++#ifndef LTQ_DMA_H__
++#define LTQ_DMA_H__
++
++#define LTQ_DESC_SIZE		0x08	/* each descriptor is 64bit */
++#define LTQ_DESC_NUM		0x40	/* 64 descriptors / channel */
++
++#define LTQ_DMA_OWN		BIT(31)	/* owner bit */
++#define LTQ_DMA_C		BIT(30) /* complete bit */
++#define LTQ_DMA_SOP		BIT(29) /* start of packet */
++#define LTQ_DMA_EOP		BIT(28) /* end of packet */
++#define LTQ_DMA_TX_OFFSET(x)	((x & 0x1f) << 23) /* data bytes offset */
++#define LTQ_DMA_RX_OFFSET(x)	((x & 0x7) << 23) /* data bytes offset */
++#define LTQ_DMA_SIZE_MASK	(0xffff) /* the size field is 16 bit */
++
++struct ltq_dma_desc {
++	u32 ctl;
++	u32 addr;
++};
++
++struct ltq_dma_channel {
++	int nr;				/* the channel number */
++	int irq;			/* the mapped irq */
++	int desc;			/* the current descriptor */
++	struct ltq_dma_desc *desc_base;	/* the descriptor base */
++	int phys;			/* physical addr */
++};
++
++enum {
++	DMA_PORT_ETOP = 0,
++	DMA_PORT_DEU,
++};
++
++extern void ltq_dma_enable_irq(struct ltq_dma_channel *ch);
++extern void ltq_dma_disable_irq(struct ltq_dma_channel *ch);
++extern void ltq_dma_ack_irq(struct ltq_dma_channel *ch);
++extern void ltq_dma_open(struct ltq_dma_channel *ch);
++extern void ltq_dma_close(struct ltq_dma_channel *ch);
++extern void ltq_dma_alloc_tx(struct ltq_dma_channel *ch);
++extern void ltq_dma_alloc_rx(struct ltq_dma_channel *ch);
++extern void ltq_dma_free(struct ltq_dma_channel *ch);
++extern void ltq_dma_init_port(int p);
++
++#endif
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index a021def..d88a3e8 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,4 +1,4 @@
+-obj-y := pmu.o ebu.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o
++obj-y := pmu.o ebu.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o
+ 
+ obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
+ obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
+diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
+new file mode 100644
+index 0000000..485d5bf
+--- /dev/null
++++ b/arch/mips/lantiq/xway/dma.c
+@@ -0,0 +1,272 @@
++/*
++ *   This program is free software; you can redistribute it and/or modify it
++ *   under the terms of the GNU General Public License version 2 as published
++ *   by the Free Software Foundation.
++ *
++ *   This program is distributed in the hope that it will be useful,
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *   GNU General Public License for more details.
++ *
++ *   You should have received a copy of the GNU General Public License
++ *   along with this program; if not, write to the Free Software
++ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
++ *
++ *   Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
 +#include <linux/platform_device.h>
-+#include <linux/uaccess.h>
-+#include <linux/clk.h>
 +#include <linux/io.h>
++#include <linux/dma-mapping.h>
 +
-+#include <lantiq.h>
++#include <lantiq_soc.h>
++#include <xway_dma.h>
 +
-+/* Section 3.4 of the datasheet
-+ * The password sequence protects the WDT control register from unintended
-+ * write actions, which might cause malfunction of the WDT.
-+ *
-+ * essentially the following two magic passwords need to be written to allow
-+ * IO access to the WDT core
-+ */
-+#define LTQ_WDT_PW1		0x00BE0000
-+#define LTQ_WDT_PW2		0x00DC0000
++#define LTQ_DMA_CTRL		0x10
++#define LTQ_DMA_CPOLL		0x14
++#define LTQ_DMA_CS		0x18
++#define LTQ_DMA_CCTRL		0x1C
++#define LTQ_DMA_CDBA		0x20
++#define LTQ_DMA_CDLEN		0x24
++#define LTQ_DMA_CIS		0x28
++#define LTQ_DMA_CIE		0x2C
++#define LTQ_DMA_PS		0x40
++#define LTQ_DMA_PCTRL		0x44
++#define LTQ_DMA_IRNEN		0xf4
 +
-+#define LTQ_WDT_CR		0x0	/* watchdog control register */
-+#define LTQ_WDT_SR		0x8	/* watchdog status register */
++#define DMA_DESCPT		BIT(3)		/* descriptor complete irq */
++#define DMA_TX			BIT(8)		/* TX channel direction */
++#define DMA_CHAN_ON		BIT(0)		/* channel on / off bit */
++#define DMA_PDEN		BIT(6)		/* enable packet drop */
++#define DMA_CHAN_RST		BIT(1)		/* channel on / off bit */
++#define DMA_RESET		BIT(0)		/* channel on / off bit */
++#define DMA_IRQ_ACK		0x7e		/* IRQ status register */
++#define DMA_POLL		BIT(31)		/* turn on channel polling */
++#define DMA_CLK_DIV4		BIT(6)		/* polling clock divider */
++#define DMA_2W_BURST		BIT(1)		/* 2 word burst length */
++#define DMA_MAX_CHANNEL		20		/* the soc has 20 channels */
++#define DMA_ETOP_ENDIANESS	(0xf << 8) /* endianess swap etop channels */
++#define DMA_WEIGHT	(BIT(17) | BIT(16))	/* default channel wheight */
 +
-+#define LTQ_WDT_SR_EN		(0x1 << 31)	/* enable bit */
-+#define LTQ_WDT_SR_PWD		(0x3 << 26)	/* turn on power */
-+#define LTQ_WDT_SR_CLKDIV	(0x3 << 24)	/* turn on clock and set */
-+						/* divider to 0x40000 */
-+#define LTQ_WDT_DIVIDER		0x40000
-+#define LTQ_MAX_TIMEOUT		((1 << 16) - 1)	/* the reload field is 16 bit */
++#define ltq_dma_r32(x)			ltq_r32(ltq_dma_membase + (x))
++#define ltq_dma_w32(x, y)		ltq_w32(x, ltq_dma_membase + (y))
++#define ltq_dma_w32_mask(x, y, z)	ltq_w32_mask(x, y, \
++						ltq_dma_membase + (z))
 +
-+static int nowayout = WATCHDOG_NOWAYOUT;
++static void __iomem *ltq_dma_membase;
 +
-+static void __iomem *ltq_wdt_membase;
-+static unsigned long ltq_io_region_clk_rate;
++void
++ltq_dma_enable_irq(struct ltq_dma_channel *ch)
++{
++	unsigned long flags;
 +
-+static unsigned long ltq_wdt_bootstatus;
-+static int ltq_wdt_timeout = 30;
-+static int ltq_wdt_ok_to_close;
-+static int ltq_wdt_in_use;
++	local_irq_save(flags);
++	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
++	ltq_dma_w32_mask(0, 1 << ch->nr, LTQ_DMA_IRNEN);
++	local_irq_restore(flags);
++}
++EXPORT_SYMBOL_GPL(ltq_dma_enable_irq);
++
++void
++ltq_dma_disable_irq(struct ltq_dma_channel *ch)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
++	ltq_dma_w32_mask(1 << ch->nr, 0, LTQ_DMA_IRNEN);
++	local_irq_restore(flags);
++}
++EXPORT_SYMBOL_GPL(ltq_dma_disable_irq);
++
++void
++ltq_dma_ack_irq(struct ltq_dma_channel *ch)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
++	ltq_dma_w32(DMA_IRQ_ACK, LTQ_DMA_CIS);
++	local_irq_restore(flags);
++}
++EXPORT_SYMBOL_GPL(ltq_dma_ack_irq);
++
++void
++ltq_dma_open(struct ltq_dma_channel *ch)
++{
++	unsigned long flag;
++
++	local_irq_save(flag);
++	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
++	ltq_dma_w32_mask(0, DMA_CHAN_ON, LTQ_DMA_CCTRL);
++	ltq_dma_enable_irq(ch);
++	local_irq_restore(flag);
++}
++EXPORT_SYMBOL_GPL(ltq_dma_open);
++
++void
++ltq_dma_close(struct ltq_dma_channel *ch)
++{
++	unsigned long flag;
++
++	local_irq_save(flag);
++	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
++	ltq_dma_w32_mask(DMA_CHAN_ON, 0, LTQ_DMA_CCTRL);
++	ltq_dma_disable_irq(ch);
++	local_irq_restore(flag);
++}
++EXPORT_SYMBOL_GPL(ltq_dma_close);
 +
 +static void
-+ltq_wdt_enable(void)
++ltq_dma_alloc(struct ltq_dma_channel *ch)
 +{
-+	ltq_wdt_timeout = ltq_wdt_timeout *
-+			(ltq_io_region_clk_rate / LTQ_WDT_DIVIDER) + 0x1000;
-+	if (ltq_wdt_timeout > LTQ_MAX_TIMEOUT)
-+		ltq_wdt_timeout = LTQ_MAX_TIMEOUT;
++	unsigned long flags;
 +
-+	/* write the first password magic */
-+	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
-+	/* write the second magic plus the configuration and new timeout */
-+	ltq_w32(LTQ_WDT_SR_EN | LTQ_WDT_SR_PWD | LTQ_WDT_SR_CLKDIV |
-+		LTQ_WDT_PW2 | ltq_wdt_timeout, ltq_wdt_membase + LTQ_WDT_CR);
++	ch->desc = 0;
++	ch->desc_base = dma_alloc_coherent(NULL,
++				LTQ_DESC_NUM * LTQ_DESC_SIZE,
++				&ch->phys, GFP_ATOMIC);
++	memset(ch->desc_base, 0, LTQ_DESC_NUM * LTQ_DESC_SIZE);
++
++	local_irq_save(flags);
++	ltq_dma_w32(ch->nr, LTQ_DMA_CS);
++	ltq_dma_w32(ch->phys, LTQ_DMA_CDBA);
++	ltq_dma_w32(LTQ_DESC_NUM, LTQ_DMA_CDLEN);
++	ltq_dma_w32_mask(DMA_CHAN_ON, 0, LTQ_DMA_CCTRL);
++	wmb();
++	ltq_dma_w32_mask(0, DMA_CHAN_RST, LTQ_DMA_CCTRL);
++	while (ltq_dma_r32(LTQ_DMA_CCTRL) & DMA_CHAN_RST)
++		;
++	local_irq_restore(flags);
 +}
 +
-+static void
-+ltq_wdt_disable(void)
++void
++ltq_dma_alloc_tx(struct ltq_dma_channel *ch)
 +{
-+	/* write the first password magic */
-+	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
-+	/* write the second password magic with no config
-+	 * this turns the watchdog off
-+	 */
-+	ltq_w32(LTQ_WDT_PW2, ltq_wdt_membase + LTQ_WDT_CR);
++	unsigned long flags;
++
++	ltq_dma_alloc(ch);
++
++	local_irq_save(flags);
++	ltq_dma_w32(DMA_DESCPT, LTQ_DMA_CIE);
++	ltq_dma_w32_mask(0, 1 << ch->nr, LTQ_DMA_IRNEN);
++	ltq_dma_w32(DMA_WEIGHT | DMA_TX, LTQ_DMA_CCTRL);
++	local_irq_restore(flags);
 +}
++EXPORT_SYMBOL_GPL(ltq_dma_alloc_tx);
 +
-+static ssize_t
-+ltq_wdt_write(struct file *file, const char __user *data,
-+		size_t len, loff_t *ppos)
++void
++ltq_dma_alloc_rx(struct ltq_dma_channel *ch)
 +{
-+	if (len) {
-+		if (!nowayout) {
-+			size_t i;
++	unsigned long flags;
 +
-+			ltq_wdt_ok_to_close = 0;
-+			for (i = 0; i != len; i++) {
-+				char c;
++	ltq_dma_alloc(ch);
 +
-+				if (get_user(c, data + i))
-+					return -EFAULT;
-+				if (c == 'V')
-+					ltq_wdt_ok_to_close = 1;
-+				else
-+					ltq_wdt_ok_to_close = 0;
-+			}
-+		}
-+		ltq_wdt_enable();
-+	}
-+
-+	return len;
++	local_irq_save(flags);
++	ltq_dma_w32(DMA_DESCPT, LTQ_DMA_CIE);
++	ltq_dma_w32_mask(0, 1 << ch->nr, LTQ_DMA_IRNEN);
++	ltq_dma_w32(DMA_WEIGHT, LTQ_DMA_CCTRL);
++	local_irq_restore(flags);
 +}
++EXPORT_SYMBOL_GPL(ltq_dma_alloc_rx);
 +
-+static struct watchdog_info ident = {
-+	.options = WDIOF_MAGICCLOSE | WDIOF_SETTIMEOUT | WDIOF_KEEPALIVEPING |
-+			WDIOF_CARDRESET,
-+	.identity = "ltq_wdt",
-+};
-+
-+static long
-+ltq_wdt_ioctl(struct file *file,
-+		unsigned int cmd, unsigned long arg)
++void
++ltq_dma_free(struct ltq_dma_channel *ch)
 +{
-+	int ret = -ENOTTY;
++	if (!ch->desc_base)
++		return;
++	ltq_dma_close(ch);
++	dma_free_coherent(NULL, LTQ_DESC_NUM * LTQ_DESC_SIZE,
++		ch->desc_base, ch->phys);
++}
++EXPORT_SYMBOL_GPL(ltq_dma_free);
 +
-+	switch (cmd) {
-+	case WDIOC_GETSUPPORT:
-+		ret = copy_to_user((struct watchdog_info __user *)arg, &ident,
-+				sizeof(ident)) ? -EFAULT : 0;
++void
++ltq_dma_init_port(int p)
++{
++	ltq_dma_w32(p, LTQ_DMA_PS);
++	switch (p) {
++	case DMA_PORT_ETOP:
++		/*
++		 * Tell the DMA engine to swap the endianess of data frames and
++		 * drop packets if the channel arbitration fails.
++		 */
++		ltq_dma_w32_mask(0, DMA_ETOP_ENDIANESS | DMA_PDEN,
++			LTQ_DMA_PCTRL);
 +		break;
 +
-+	case WDIOC_GETBOOTSTATUS:
-+		ret = put_user(ltq_wdt_bootstatus, (int __user *)arg);
++	case DMA_PORT_DEU:
++		ltq_dma_w32((DMA_2W_BURST << 4) | (DMA_2W_BURST << 2),
++			LTQ_DMA_PCTRL);
 +		break;
 +
-+	case WDIOC_GETSTATUS:
-+		ret = put_user(0, (int __user *)arg);
-+		break;
-+
-+	case WDIOC_SETTIMEOUT:
-+		ret = get_user(ltq_wdt_timeout, (int __user *)arg);
-+		if (!ret)
-+			ltq_wdt_enable();
-+		/* intentional drop through */
-+	case WDIOC_GETTIMEOUT:
-+		ret = put_user(ltq_wdt_timeout, (int __user *)arg);
-+		break;
-+
-+	case WDIOC_KEEPALIVE:
-+		ltq_wdt_enable();
-+		ret = 0;
++	default:
 +		break;
 +	}
-+	return ret;
 +}
++EXPORT_SYMBOL_GPL(ltq_dma_init_port);
 +
 +static int
-+ltq_wdt_open(struct inode *inode, struct file *file)
++ltq_dma_probe(struct platform_device *pdev)
 +{
-+	if (ltq_wdt_in_use)
-+		return -EBUSY;
-+	ltq_wdt_in_use = 1;
-+	ltq_wdt_enable();
++	struct resource *res;
++	int i;
 +
-+	return nonseekable_open(inode, file);
-+}
-+
-+static int
-+ltq_wdt_release(struct inode *inode, struct file *file)
-+{
-+	if (ltq_wdt_ok_to_close)
-+		ltq_wdt_disable();
-+	else
-+		pr_err("ltq_wdt: watchdog closed without warning\n");
-+	ltq_wdt_ok_to_close = 0;
-+	ltq_wdt_in_use = 0;
-+
-+	return 0;
-+}
-+
-+static const struct file_operations ltq_wdt_fops = {
-+	.owner		= THIS_MODULE,
-+	.write		= ltq_wdt_write,
-+	.unlocked_ioctl	= ltq_wdt_ioctl,
-+	.open		= ltq_wdt_open,
-+	.release	= ltq_wdt_release,
-+	.llseek		= no_llseek,
-+};
-+
-+static struct miscdevice ltq_wdt_miscdev = {
-+	.minor	= WATCHDOG_MINOR,
-+	.name	= "watchdog",
-+	.fops	= &ltq_wdt_fops,
-+};
-+
-+static int __init
-+ltq_wdt_probe(struct platform_device *pdev)
-+{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	struct clk *clk;
-+
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 +	if (!res) {
-+		dev_err(&pdev->dev, "cannot obtain I/O memory region");
++		dev_err(&pdev->dev, "failed to get dma resource\n");
 +		return -ENOENT;
 +	}
++
 +	res = devm_request_mem_region(&pdev->dev, res->start,
 +		resource_size(res), dev_name(&pdev->dev));
 +	if (!res) {
-+		dev_err(&pdev->dev, "cannot request I/O memory region");
++		dev_err(&pdev->dev, "failed to request dma resource\n");
 +		return -EBUSY;
 +	}
-+	ltq_wdt_membase = devm_ioremap_nocache(&pdev->dev, res->start,
-+		resource_size(res));
-+	if (!ltq_wdt_membase) {
-+		dev_err(&pdev->dev, "cannot remap I/O memory region\n");
++
++	ltq_dma_membase = devm_ioremap_nocache(&pdev->dev,
++		res->start, resource_size(res));
++	if (!ltq_dma_membase) {
++		dev_err(&pdev->dev, "failed to remap dma engine %d\n",
++			pdev->id);
 +		return -ENOMEM;
 +	}
 +
-+	/* we do not need to enable the clock as it is always running */
-+	clk = clk_get(&pdev->dev, "io");
-+	WARN_ON(!clk);
-+	ltq_io_region_clk_rate = clk_get_rate(clk);
-+	clk_put(clk);
++	/* power up and reset the dma engine */
++	ltq_pmu_enable(PMU_DMA);
++	ltq_dma_w32_mask(0, DMA_RESET, LTQ_DMA_CTRL);
 +
-+	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
-+		ltq_wdt_bootstatus = WDIOF_CARDRESET;
++	/* disable all interrupts */
++	ltq_dma_w32(0, LTQ_DMA_IRNEN);
 +
-+	return misc_register(&ltq_wdt_miscdev);
-+}
-+
-+static int __devexit
-+ltq_wdt_remove(struct platform_device *pdev)
-+{
-+	misc_deregister(&ltq_wdt_miscdev);
-+
-+	if (ltq_wdt_membase)
-+		iounmap(ltq_wdt_membase);
-+
++	/* reset/configure each channel */
++	for (i = 0; i < DMA_MAX_CHANNEL; i++) {
++		ltq_dma_w32(i, LTQ_DMA_CS);
++		ltq_dma_w32(DMA_CHAN_RST, LTQ_DMA_CCTRL);
++		ltq_dma_w32(DMA_POLL | DMA_CLK_DIV4, LTQ_DMA_CPOLL);
++		ltq_dma_w32_mask(DMA_CHAN_ON, 0, LTQ_DMA_CCTRL);
++	}
 +	return 0;
 +}
 +
-+
-+static struct platform_driver ltq_wdt_driver = {
-+	.remove = __devexit_p(ltq_wdt_remove),
++static struct platform_driver ltq_dma_driver = {
++	.probe = ltq_dma_probe,
 +	.driver = {
-+		.name = "ltq_wdt",
++		.name = "ltq_dma",
 +		.owner = THIS_MODULE,
 +	},
 +};
 +
-+static int __init
-+init_ltq_wdt(void)
++int __init
++ltq_dma_init(void)
 +{
-+	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
++	int ret = platform_driver_register(&ltq_dma_driver);
++
++	if (ret)
++		pr_info("ltq_dma : Error registering platfom driver!");
++	return ret;
 +}
 +
-+static void __exit
-+exit_ltq_wdt(void)
-+{
-+	return platform_driver_unregister(&ltq_wdt_driver);
-+}
-+
-+module_init(init_ltq_wdt);
-+module_exit(exit_ltq_wdt);
-+
-+module_param(nowayout, int, 0);
-+MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started");
-+
-+MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
-+MODULE_DESCRIPTION("Lantiq SoC Watchdog");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_MISCDEV(WATCHDOG_MINOR);
++postcore_initcall(ltq_dma_init);
 -- 
 1.7.2.3

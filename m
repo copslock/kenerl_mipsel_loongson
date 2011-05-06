@@ -1,142 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2011 12:28:12 +0200 (CEST)
-Received: from mail-ew0-f49.google.com ([209.85.215.49]:56015 "EHLO
-        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491015Ab1EFK2H (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 6 May 2011 12:28:07 +0200
-Received: by ewy3 with SMTP id 3so1034226ewy.36
-        for <multiple recipients>; Fri, 06 May 2011 03:28:02 -0700 (PDT)
-Received: by 10.14.17.6 with SMTP id i6mr1673015eei.51.1304677682110;
-        Fri, 06 May 2011 03:28:02 -0700 (PDT)
-Received: from [192.168.2.2] ([91.79.96.47])
-        by mx.google.com with ESMTPS id e32sm1195003eee.5.2011.05.06.03.27.55
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 06 May 2011 03:27:57 -0700 (PDT)
-Message-ID: <4DC3CCC9.4040002@mvista.com>
-Date:   Fri, 06 May 2011 14:26:17 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.17) Gecko/20110414 Thunderbird/3.1.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2011 12:56:30 +0200 (CEST)
+Received: from cantor.suse.de ([195.135.220.2]:56711 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491056Ab1EFK41 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 6 May 2011 12:56:27 +0200
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.221.2])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.suse.de (Postfix) with ESMTP id 9F74A94746;
+        Fri,  6 May 2011 12:56:22 +0200 (CEST)
+Message-ID: <4DC3D3D5.6060007@suse.cz>
+Date:   Fri, 06 May 2011 12:56:21 +0200
+From:   Michal Marek <mmarek@suse.cz>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.14) Gecko/20110221 SUSE/3.1.8 Thunderbird/3.1.8
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Ralph Hempel <ralph.hempel@lantiq.com>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH V2 3/3] MIPS: lantiq: add dma/etop board support
-References: <1304633402-24161-1-git-send-email-blogic@openwrt.org> <1304633402-24161-4-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1304633402-24161-4-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v3 1/6] of: Allow scripts/dtc/libfdt to be used from
+ kernel code
+References: <1304614949-30460-1-git-send-email-ddaney@caviumnetworks.com> <1304614949-30460-2-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1304614949-30460-2-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-2; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@mvista.com>
+Return-Path: <mmarek@suse.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29839
+X-archive-position: 29840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: mmarek@suse.cz
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
-
-On 06-05-2011 2:10, John Crispin wrote:
-
-> This patch adds functions to register the etop and dma platform devices and
-> calls them from the board specific setup code.
-
-> Signed-off-by: John Crispin<blogic@openwrt.org>
-> Signed-off-by: Ralph Hempel<ralph.hempel@lantiq.com>
-> Cc: linux-mips@linux-mips.org
-[...]
-
-> diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
-> index e758863..a10244e 100644
-> --- a/arch/mips/lantiq/devices.c
-> +++ b/arch/mips/lantiq/devices.c
-> @@ -31,6 +31,19 @@
->   #define IRQ_RES(resname, irq) \
->   	{.name = #resname, .start = (irq), .flags = IORESOURCE_IRQ}
->
-> +/* dma engine */
-> +static struct resource ltq_dma_resource = {
-> +	.name	= "dma",
-> +	.start	= LTQ_DMA_BASE_ADDR,
-> +	.end	= LTQ_DMA_BASE_ADDR + LTQ_DMA_SIZE - 1,
-> +	.flags  = IORESOURCE_MEM,
-
-    Spaces before = instead of tab here.
-
-> diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
-> index 7d58ae5..99ff2ef 100644
-> --- a/arch/mips/lantiq/xway/devices.c
-> +++ b/arch/mips/lantiq/xway/devices.c
-> @@ -75,3 +75,30 @@ void __init ltq_register_gpio_stp(void)
->   {
->   	platform_device_register_simple("ltq_stp", 0,&ltq_stp_resource, 1);
->   }
+On 5.5.2011 19:02, David Daney wrote:
+> --- /dev/null
+> +++ b/drivers/of/libfdt/Makefile
+> @@ -0,0 +1,8 @@
+> +ccflags-y := -include linux/libfdt_env.h -I$(src)/../../../scripts/dtc/libfdt
 > +
-> +/* ethernet */
-> +static struct resource ltq_ethernet_resources = {
-> +	.name   = "etop",
-> +	.start  = LTQ_ETOP_BASE_ADDR,
-> +	.end    = LTQ_ETOP_BASE_ADDR + LTQ_ETOP_SIZE - 1,
-> +	.flags  = IORESOURCE_MEM,
-
-    It's better to use tabs, not spaces between the filed names and =, like 
-above...
-
-> +};
+> +obj-y = fdt.o fdt_wip.o fdt_ro.o
 > +
-> +static struct platform_device ltq_ethernet = {
-> +	.name = "ltq_etop",
-> +	.resource =&ltq_ethernet_resources,
-> +	.num_resources  = 1,
-
-    Too many spaces?
-
-> +};
 > +
-> +void __init
-> +ltq_register_ethernet(struct ltq_eth_data *eth)
-> +{
-> +	if (!eth)
-> +		return;
-> +	if (!is_valid_ether_addr(eth->mac.sa_data)) {
-> +		pr_warn("etop: invalid MAC, using random\n");
-> +		random_ether_addr(eth->mac.sa_data);
-> +	}
+> +$(obj)/%.o: $(src)/../../../scripts/dtc/libfdt/%.c FORCE
+> +	$(call cmd,force_checksrc)
+> +	$(call if_changed_rule,cc_o_c)
 
-    Why not do it in the driver?
+It's just three source files, so you could use three one-line wrappers 
+that #include ../../../scripts/dtc/libfdt/<file>.c instead of copying 
+the %.c -> %.o rule here.
 
-> +	ltq_ethernet.dev.platform_data = eth;
-> +	platform_device_register(&ltq_ethernet);
-> +}
-[...]
-> diff --git a/arch/mips/lantiq/xway/mach-easy50712.c b/arch/mips/lantiq/xway/mach-easy50712.c
-> index 5242a27..a001761 100644
-> --- a/arch/mips/lantiq/xway/mach-easy50712.c
-> +++ b/arch/mips/lantiq/xway/mach-easy50712.c
-> @@ -59,13 +59,19 @@ static struct ltq_pci_data ltq_pci_data = {
->   	},
->   };
->
-> +static struct ltq_eth_data ltq_eth_data = {
-> +	.mii_mode = PHY_INTERFACE_MODE_MII,
-> +};
-> +
->   static void __init easy50712_init(void)
->   {
-> +	ltq_register_dma();
->   	ltq_register_gpio();
->   	ltq_register_gpio_stp();
->   	ltq_register_nor(&easy50712_flash_data);
->   	ltq_register_wdt();
->   	ltq_register_pci(&ltq_pci_data);
-> +	ltq_register_ethernet(&ltq_eth_data);
->   }
->
->   MIPS_MACHINE(LTQ_MACH_EASY50712,
-
-    I'd put the board code in a sperate patch...
-
-WBR, Sergei
+Michal

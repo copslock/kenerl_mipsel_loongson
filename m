@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2011 22:08:02 +0200 (CEST)
-Received: from mx1.netlogicmicro.com ([12.203.210.36]:4837 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 May 2011 22:08:29 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:4838 "EHLO
         orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491113Ab1EFUHB (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491114Ab1EFUHB (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 6 May 2011 22:07:01 +0200
-X-TM-IMSS-Message-ID: <2cf5f7f40003a953@netlogicmicro.com>
-Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 2cf5f7f40003a953 ; Fri, 6 May 2011 13:06:31 -0700
+X-TM-IMSS-Message-ID: <2cf5f7480003a952@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 2cf5f7480003a952 ; Fri, 6 May 2011 13:06:31 -0700
 Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Fri, 6 May 2011 13:07:21 -0700
-Date:   Sat, 7 May 2011 01:37:31 +0530
+         Fri, 6 May 2011 13:07:03 -0700
+Date:   Sat, 7 May 2011 01:37:14 +0530
 From:   Jayachandran C <jayachandranc@netlogicmicro.com>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org
-Subject: [PATCH 7/8] PCI support for XLR/XLS
-Message-ID: <308b8963d3ed2beb54b96634e3b72d84c4b45cfa.1304712046.git.jayachandranc@netlogicmicro.com>
+Subject: [PATCH 6/8] Add default configuration for XLR/XLS processors
+Message-ID: <ae104da9d5d695e5a4f30325f0ab7fd5545bbd7e.1304712046.git.jayachandranc@netlogicmicro.com>
 References: <cover.1304712046.git.jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1304712046.git.jayachandranc@netlogicmicro.com>
 User-Agent: Mutt/1.5.20 (2009-06-14)
-X-OriginalArrivalTime: 06 May 2011 20:07:21.0369 (UTC) FILETIME=[35433090:01CC0C29]
+X-OriginalArrivalTime: 06 May 2011 20:07:03.0916 (UTC) FILETIME=[2ADC12C0:01CC0C29]
 Return-Path: <jayachandranc@netlogicmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29850
+X-archive-position: 29851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,408 +32,1725 @@ X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-Adds pci/pci-xlr.c to support for XLR PCI/PCI-X interface and XLS PCIe
-interface.
-Update irq.c to ack PCI interrupts, use irq handler data to do the
-PCI/PCIe bus ack.
+Enable XLR CPU support, SMP, initramfs based root filesystem etc.
 
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/include/asm/netlogic/xlr/xlr.h |   21 +++
- arch/mips/netlogic/xlr/irq.c             |   86 ++++++++++++-
- arch/mips/pci/Makefile                   |    1 +
- arch/mips/pci/pci-xlr.c                  |  214 ++++++++++++++++++++++++++++++
- 4 files changed, 321 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/pci/pci-xlr.c
+ arch/mips/configs/nlm_xlr_defconfig | 1705 +++++++++++++++++++++++++++++++++++
+ 1 files changed, 1705 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/configs/nlm_xlr_defconfig
 
-diff --git a/arch/mips/include/asm/netlogic/xlr/xlr.h b/arch/mips/include/asm/netlogic/xlr/xlr.h
-index 454c236..3e63726 100644
---- a/arch/mips/include/asm/netlogic/xlr/xlr.h
-+++ b/arch/mips/include/asm/netlogic/xlr/xlr.h
-@@ -41,6 +41,7 @@ unsigned int nlm_xlr_uart_in(struct uart_port *, int);
- void nlm_xlr_uart_out(struct uart_port *, int, int);
- 
- /* SMP support functions */
-+struct irq_desc;
- void nlm_smp_function_ipi_handler(unsigned int irq, struct irq_desc *desc);
- void nlm_smp_resched_ipi_handler(unsigned int irq, struct irq_desc *desc);
- int nlm_wakeup_secondary_cpus(u32 wakeup_mask);
-@@ -51,4 +52,24 @@ void prom_pre_boot_secondary_cpus(void);
- extern struct plat_smp_ops nlm_smp_ops;
- extern unsigned long nlm_common_ebase;
- 
-+/* XLS B silicon "Rook" */
-+static inline unsigned int nlm_chip_is_xls_b(void)
-+{
-+	uint32_t prid = read_c0_prid();
-+
-+	return ((prid & 0xf000) == 0x4000);
-+}
-+
-+/*
-+ *  XLR chip types
-+ */
-+ /* The XLS product line has chip versions 0x[48c]? */
-+static inline unsigned int nlm_chip_is_xls(void)
-+{
-+	uint32_t prid = read_c0_prid();
-+
-+	return ((prid & 0xf000) == 0x8000 || (prid & 0xf000) == 0x4000 ||
-+		(prid & 0xf000) == 0xc000);
-+}
-+
- #endif /* _ASM_NLM_XLR_H */
-diff --git a/arch/mips/netlogic/xlr/irq.c b/arch/mips/netlogic/xlr/irq.c
-index 2033f56..1446d58 100644
---- a/arch/mips/netlogic/xlr/irq.c
-+++ b/arch/mips/netlogic/xlr/irq.c
-@@ -83,14 +83,71 @@ static void xlr_pic_mask(struct irq_data *d)
- 	spin_unlock_irqrestore(&nlm_pic_lock, flags);
- }
- 
-+#ifdef CONFIG_PCI
-+/* Extra ACK needed for XLR on chip PCI controller */
-+static void xlr_pci_ack(struct irq_data *d)
-+{
-+	nlm_reg_t *pci_mmio = netlogic_io_mmio(NETLOGIC_IO_PCIX_OFFSET);
-+
-+	netlogic_read_reg(pci_mmio, (0x140 >> 2));
-+}
-+
-+/* Extra ACK needed for XLS on chip PCIe controller */
-+static void xls_pcie_ack(struct irq_data *d)
-+{
-+	nlm_reg_t *pcie_mmio_le = netlogic_io_mmio(NETLOGIC_IO_PCIE_1_OFFSET);
-+
-+	switch (d->irq) {
-+	case PIC_PCIE_LINK0_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x90 >> 2), 0xffffffff);
-+		break;
-+	case PIC_PCIE_LINK1_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x94 >> 2), 0xffffffff);
-+		break;
-+	case PIC_PCIE_LINK2_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x190 >> 2), 0xffffffff);
-+		break;
-+	case PIC_PCIE_LINK3_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x194 >> 2), 0xffffffff);
-+		break;
-+	}
-+}
-+
-+/* For XLS B silicon, the 3,4 PCI interrupts are different */
-+static void xls_pcie_ack_b(struct irq_data *d)
-+{
-+	nlm_reg_t *pcie_mmio_le = netlogic_io_mmio(NETLOGIC_IO_PCIE_1_OFFSET);
-+
-+	switch (d->irq) {
-+	case PIC_PCIE_LINK0_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x90 >> 2), 0xffffffff);
-+		break;
-+	case PIC_PCIE_LINK1_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x94 >> 2), 0xffffffff);
-+		break;
-+	case PIC_PCIE_XLSB0_LINK2_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x190 >> 2), 0xffffffff);
-+		break;
-+	case PIC_PCIE_XLSB0_LINK3_IRQ:
-+		netlogic_write_reg(pcie_mmio_le, (0x194 >> 2), 0xffffffff);
-+		break;
-+	}
-+}
-+#endif
-+
- static void xlr_pic_ack(struct irq_data *d)
- {
- 	unsigned long flags;
- 	nlm_reg_t *mmio;
- 	int irq = d->irq;
-+	void *hd = irq_data_get_irq_handler_data(d);
- 
- 	WARN(!PIC_IRQ_IS_IRT(irq), "Bad irq %d", irq);
- 
-+	if (hd) {
-+		void (*extra_ack)(void *) = hd;
-+		extra_ack(d);
-+	}
- 	mmio = netlogic_io_mmio(NETLOGIC_IO_PIC_OFFSET);
- 	spin_lock_irqsave(&nlm_pic_lock, flags);
- 	netlogic_write_reg(mmio, PIC_INT_ACK, (1 << (irq - PIC_IRQ_BASE)));
-@@ -162,6 +219,33 @@ void __init init_xlr_irqs(void)
- 	nlm_irq_mask |=
- 	    ((1ULL << IRQ_IPI_SMP_FUNCTION) | (1ULL << IRQ_IPI_SMP_RESCHEDULE));
- #endif
-+
-+#ifdef CONFIG_PCI
-+	/*
-+	 * For PCI interrupts, we need to ack the PIC controller too, overload
-+	 * irq handler data to do this
-+	 */
-+	if (nlm_chip_is_xls()) {
-+		if (nlm_chip_is_xls_b()) {
-+			irq_set_handler_data(PIC_PCIE_LINK0_IRQ,
-+							xls_pcie_ack_b);
-+			irq_set_handler_data(PIC_PCIE_LINK1_IRQ,
-+							xls_pcie_ack_b);
-+			irq_set_handler_data(PIC_PCIE_XLSB0_LINK2_IRQ,
-+							xls_pcie_ack_b);
-+			irq_set_handler_data(PIC_PCIE_XLSB0_LINK3_IRQ,
-+							xls_pcie_ack_b);
-+		} else {
-+			irq_set_handler_data(PIC_PCIE_LINK0_IRQ, xls_pcie_ack);
-+			irq_set_handler_data(PIC_PCIE_LINK1_IRQ, xls_pcie_ack);
-+			irq_set_handler_data(PIC_PCIE_LINK2_IRQ, xls_pcie_ack);
-+			irq_set_handler_data(PIC_PCIE_LINK3_IRQ, xls_pcie_ack);
-+		}
-+	} else {
-+		/* XLR PCI controller ACK */
-+		irq_set_handler_data(PIC_PCIE_XLSB0_LINK3_IRQ, xlr_pci_ack);
-+	}
-+#endif
- 	/* unmask all PIC related interrupts. If no handler is installed by the
- 	 * drivers, it'll just ack the interrupt and return
- 	 */
-@@ -199,7 +283,7 @@ asmlinkage void plat_irq_dispatch(void)
- 		return;
- 	}
- 
--	/* TODO use dcltz: optimize below code */
-+	/* use dcltz: optimize below code */
- 	for (i = 63; i != -1; i--) {
- 		if (eirr & (1ULL << i))
- 			break;
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index c9209ca..f0d5329 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_ZAO_CAPCELLA)	+= fixup-capcella.o
- obj-$(CONFIG_WR_PPMC)		+= fixup-wrppmc.o
- obj-$(CONFIG_MIKROTIK_RB532)	+= pci-rc32434.o ops-rc32434.o fixup-rc32434.o
- obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= pci-octeon.o pcie-octeon.o
-+obj-$(CONFIG_NLM_XLR)		+= pci-xlr.o
- 
- ifdef CONFIG_PCI_MSI
- obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= msi-octeon.o
-diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
+diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
 new file mode 100644
-index 0000000..38fece1
+index 0000000..a5a22f0
 --- /dev/null
-+++ b/arch/mips/pci/pci-xlr.c
-@@ -0,0 +1,214 @@
-+/*
-+ * Copyright 2003-2011 NetLogic Microsystems, Inc. (NetLogic). All rights
-+ * reserved.
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the NetLogic
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY NETLOGIC ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL NETLOGIC OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
++++ b/arch/mips/configs/nlm_xlr_defconfig
+@@ -0,0 +1,1705 @@
++#
++# Automatically generated make config: don't edit
++# Linux/mips 2.6.39-rc1 Kernel Configuration
++# Fri Apr  1 07:44:07 2011
++#
++CONFIG_MIPS=y
 +
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/mm.h>
-+#include <linux/console.h>
++#
++# Machine selection
++#
++# CONFIG_MIPS_ALCHEMY is not set
++# CONFIG_AR7 is not set
++# CONFIG_ATH79 is not set
++# CONFIG_BCM47XX is not set
++# CONFIG_BCM63XX is not set
++# CONFIG_MIPS_COBALT is not set
++# CONFIG_MACH_DECSTATION is not set
++# CONFIG_MACH_JAZZ is not set
++# CONFIG_MACH_JZ4740 is not set
++# CONFIG_LASAT is not set
++# CONFIG_MACH_LOONGSON is not set
++# CONFIG_MIPS_MALTA is not set
++# CONFIG_MIPS_SIM is not set
++# CONFIG_NEC_MARKEINS is not set
++# CONFIG_MACH_VR41XX is not set
++# CONFIG_NXP_STB220 is not set
++# CONFIG_NXP_STB225 is not set
++# CONFIG_PNX8550_JBS is not set
++# CONFIG_PNX8550_STB810 is not set
++# CONFIG_PMC_MSP is not set
++# CONFIG_PMC_YOSEMITE is not set
++# CONFIG_POWERTV is not set
++# CONFIG_SGI_IP22 is not set
++# CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP28 is not set
++# CONFIG_SGI_IP32 is not set
++# CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CARMEL is not set
++# CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_BIGSUR is not set
++# CONFIG_SNI_RM is not set
++# CONFIG_MACH_TX39XX is not set
++# CONFIG_MACH_TX49XX is not set
++# CONFIG_MIKROTIK_RB532 is not set
++# CONFIG_WR_PPMC is not set
++# CONFIG_CAVIUM_OCTEON_SIMULATOR is not set
++# CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD is not set
++CONFIG_NLM_XLR_BOARD=y
++# CONFIG_ALCHEMY_GPIO_INDIRECT is not set
++CONFIG_NLM_COMMON=y
++CONFIG_NLM_XLR=y
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++# CONFIG_ARCH_HAS_ILOG2_U32 is not set
++# CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_ARCH_SUPPORTS_OPROFILE=y
++CONFIG_GENERIC_FIND_NEXT_BIT=y
++CONFIG_GENERIC_FIND_BIT_LE=y
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_GENERIC_CMOS_UPDATE=y
++CONFIG_SCHED_OMIT_FRAME_POINTER=y
++CONFIG_CEVT_R4K_LIB=y
++CONFIG_CEVT_R4K=y
++CONFIG_CSRC_R4K_LIB=y
++CONFIG_CSRC_R4K=y
++CONFIG_ARCH_DMA_ADDR_T_64BIT=y
++CONFIG_DMA_COHERENT=y
++CONFIG_SYS_HAS_EARLY_PRINTK=y
++CONFIG_SYNC_R4K=y
++# CONFIG_MIPS_MACHINE is not set
++# CONFIG_NO_IOPORT is not set
++CONFIG_CPU_BIG_ENDIAN=y
++CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_SWAP_IO_SPACE=y
++CONFIG_BOOT_ELF32=y
++CONFIG_MIPS_L1_CACHE_SHIFT=5
 +
-+#include <asm/io.h>
++#
++# CPU selection
++#
++CONFIG_CPU_XLR=y
++CONFIG_SYS_HAS_CPU_XLR=y
++CONFIG_WEAK_ORDERING=y
++CONFIG_WEAK_REORDERING_BEYOND_LLSC=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_HUGEPAGES=y
 +
-+#include <asm/netlogic/interrupt.h>
-+#include <asm/netlogic/xlr/iomap.h>
-+#include <asm/netlogic/xlr/pic.h>
-+#include <asm/netlogic/xlr/xlr.h>
++#
++# Kernel type
++#
++CONFIG_32BIT=y
++# CONFIG_64BIT is not set
++CONFIG_PAGE_SIZE_4KB=y
++# CONFIG_PAGE_SIZE_16KB is not set
++# CONFIG_PAGE_SIZE_64KB is not set
++CONFIG_FORCE_MAX_ZONEORDER=11
++CONFIG_MIPS_MT_DISABLED=y
++CONFIG_64BIT_PHYS_ADDR=y
++CONFIG_ARCH_PHYS_ADDR_T_64BIT=y
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_HIGHMEM=y
++CONFIG_CPU_SUPPORTS_HIGHMEM=y
++CONFIG_SYS_SUPPORTS_HIGHMEM=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_ARCH_POPULATES_NODE_MAP=y
++CONFIG_SELECT_MEMORY_MODEL=y
++CONFIG_FLATMEM_MANUAL=y
++CONFIG_FLATMEM=y
++CONFIG_FLAT_NODE_MEM_MAP=y
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=4
++# CONFIG_COMPACTION is not set
++CONFIG_PHYS_ADDR_T_64BIT=y
++CONFIG_ZONE_DMA_FLAG=0
++CONFIG_BOUNCE=y
++CONFIG_VIRT_TO_BUS=y
++CONFIG_KSM=y
++CONFIG_DEFAULT_MMAP_MIN_ADDR=65536
++CONFIG_SMP=y
++CONFIG_SYS_SUPPORTS_SMP=y
++CONFIG_NR_CPUS_DEFAULT_32=y
++CONFIG_NR_CPUS=32
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++# CONFIG_HZ_48 is not set
++# CONFIG_HZ_100 is not set
++# CONFIG_HZ_128 is not set
++CONFIG_HZ_250=y
++# CONFIG_HZ_256 is not set
++# CONFIG_HZ_1000 is not set
++# CONFIG_HZ_1024 is not set
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=250
++# CONFIG_PREEMPT_NONE is not set
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_PREEMPT is not set
++CONFIG_KEXEC=y
++CONFIG_SECCOMP=y
++# CONFIG_USE_OF is not set
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++CONFIG_CONSTRUCTORS=y
++CONFIG_HAVE_IRQ_WORK=y
 +
-+static void *pci_config_base;
++#
++# General setup
++#
++CONFIG_EXPERIMENTAL=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_CROSS_COMPILE="mips64-unknown-linux-gnu-"
++CONFIG_LOCALVERSION=""
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SWAP=y
++CONFIG_SYSVIPC=y
++CONFIG_SYSVIPC_SYSCTL=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_POSIX_MQUEUE_SYSCTL=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++# CONFIG_FHANDLE is not set
++CONFIG_TASKSTATS=y
++CONFIG_TASK_DELAY_ACCT=y
++CONFIG_TASK_XACCT=y
++CONFIG_TASK_IO_ACCOUNTING=y
++CONFIG_AUDIT=y
++CONFIG_HAVE_GENERIC_HARDIRQS=y
 +
-+#define	pci_cfg_addr(bus, devfn, off) (((bus) << 16) | ((devfn) << 8) | (off))
++#
++# IRQ subsystem
++#
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_GENERIC_IRQ_SHOW=y
 +
-+/* PCI ops */
-+static inline u32 pci_cfg_read_32bit(struct pci_bus *bus, unsigned int devfn,
-+	int where)
-+{
-+	u32 data;
-+	u32 *cfgaddr;
++#
++# RCU Subsystem
++#
++CONFIG_TREE_RCU=y
++# CONFIG_PREEMPT_RCU is not set
++# CONFIG_RCU_TRACE is not set
++CONFIG_RCU_FANOUT=32
++# CONFIG_RCU_FANOUT_EXACT is not set
++# CONFIG_RCU_FAST_NO_HZ is not set
++# CONFIG_TREE_RCU_TRACE is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_LOG_BUF_SHIFT=17
++CONFIG_CGROUPS=y
++# CONFIG_CGROUP_DEBUG is not set
++# CONFIG_CGROUP_NS is not set
++# CONFIG_CGROUP_FREEZER is not set
++# CONFIG_CGROUP_DEVICE is not set
++# CONFIG_CPUSETS is not set
++# CONFIG_CGROUP_CPUACCT is not set
++# CONFIG_RESOURCE_COUNTERS is not set
++CONFIG_CGROUP_SCHED=y
++CONFIG_FAIR_GROUP_SCHED=y
++# CONFIG_RT_GROUP_SCHED is not set
++# CONFIG_BLK_CGROUP is not set
++CONFIG_NAMESPACES=y
++CONFIG_UTS_NS=y
++CONFIG_IPC_NS=y
++CONFIG_USER_NS=y
++CONFIG_PID_NS=y
++CONFIG_NET_NS=y
++CONFIG_SCHED_AUTOGROUP=y
++# CONFIG_SYSFS_DEPRECATED is not set
++CONFIG_RELAY=y
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_INITRAMFS_SOURCE="usr/dev_file_list usr/rootfs"
++CONFIG_INITRAMFS_ROOT_UID=0
++CONFIG_INITRAMFS_ROOT_GID=0
++CONFIG_RD_GZIP=y
++CONFIG_RD_BZIP2=y
++CONFIG_RD_LZMA=y
++# CONFIG_RD_XZ is not set
++# CONFIG_RD_LZO is not set
++# CONFIG_INITRAMFS_COMPRESSION_NONE is not set
++CONFIG_INITRAMFS_COMPRESSION_GZIP=y
++# CONFIG_INITRAMFS_COMPRESSION_BZIP2 is not set
++# CONFIG_INITRAMFS_COMPRESSION_LZMA is not set
++# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++CONFIG_SYSCTL=y
++CONFIG_ANON_INODES=y
++CONFIG_EXPERT=y
++# CONFIG_EMBEDDED is not set
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_KALLSYMS=y
++CONFIG_KALLSYMS_ALL=y
++# CONFIG_KALLSYMS_EXTRA_PASS is not set
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++# CONFIG_ELF_CORE is not set
++# CONFIG_PCSPKR_PLATFORM is not set
++CONFIG_BASE_FULL=y
++CONFIG_FUTEX=y
++CONFIG_EPOLL=y
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
++CONFIG_SHMEM=y
++CONFIG_AIO=y
++CONFIG_HAVE_PERF_EVENTS=y
++CONFIG_PERF_USE_VMALLOC=y
 +
-+	cfgaddr = (u32 *)(pci_config_base +
-+			pci_cfg_addr(bus->number, devfn, where & ~3));
-+	data = *cfgaddr;
-+	return cpu_to_le32(data);
-+}
++#
++# Kernel Performance Events And Counters
++#
++# CONFIG_PERF_EVENTS is not set
++# CONFIG_PERF_COUNTERS is not set
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_SLUB_DEBUG=y
++# CONFIG_COMPAT_BRK is not set
++# CONFIG_SLAB is not set
++CONFIG_SLUB=y
++# CONFIG_SLOB is not set
++CONFIG_PROFILING=y
++CONFIG_TRACEPOINTS=y
++# CONFIG_OPROFILE is not set
++CONFIG_HAVE_OPROFILE=y
++# CONFIG_KPROBES is not set
++# CONFIG_JUMP_LABEL is not set
++CONFIG_HAVE_KPROBES=y
++CONFIG_HAVE_KRETPROBES=y
++CONFIG_HAVE_DMA_ATTRS=y
++CONFIG_USE_GENERIC_SMP_HELPERS=y
++CONFIG_HAVE_DMA_API_DEBUG=y
++CONFIG_HAVE_ARCH_JUMP_LABEL=y
 +
-+static inline void pci_cfg_write_32bit(struct pci_bus *bus, unsigned int devfn,
-+	int where, u32 data)
-+{
-+	u32 *cfgaddr;
++#
++# GCOV-based kernel profiling
++#
++# CONFIG_GCOV_KERNEL is not set
++CONFIG_HAVE_GENERIC_DMA_COHERENT=y
++CONFIG_SLABINFO=y
++CONFIG_RT_MUTEXES=y
++CONFIG_BASE_SMALL=0
++CONFIG_MODULES=y
++# CONFIG_MODULE_FORCE_LOAD is not set
++CONFIG_MODULE_UNLOAD=y
++# CONFIG_MODULE_FORCE_UNLOAD is not set
++CONFIG_MODVERSIONS=y
++CONFIG_MODULE_SRCVERSION_ALL=y
++CONFIG_STOP_MACHINE=y
++CONFIG_BLOCK=y
++CONFIG_LBDAF=y
++CONFIG_BLK_DEV_BSG=y
++CONFIG_BLK_DEV_INTEGRITY=y
 +
-+	cfgaddr = (u32 *)(pci_config_base +
-+			pci_cfg_addr(bus->number, devfn, where & ~3));
-+	*cfgaddr = cpu_to_le32(data);
-+}
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++CONFIG_IOSCHED_DEADLINE=y
++CONFIG_IOSCHED_CFQ=y
++# CONFIG_DEFAULT_DEADLINE is not set
++CONFIG_DEFAULT_CFQ=y
++# CONFIG_DEFAULT_NOOP is not set
++CONFIG_DEFAULT_IOSCHED="cfq"
++# CONFIG_INLINE_SPIN_TRYLOCK is not set
++# CONFIG_INLINE_SPIN_TRYLOCK_BH is not set
++# CONFIG_INLINE_SPIN_LOCK is not set
++# CONFIG_INLINE_SPIN_LOCK_BH is not set
++# CONFIG_INLINE_SPIN_LOCK_IRQ is not set
++# CONFIG_INLINE_SPIN_LOCK_IRQSAVE is not set
++CONFIG_INLINE_SPIN_UNLOCK=y
++# CONFIG_INLINE_SPIN_UNLOCK_BH is not set
++CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
++# CONFIG_INLINE_SPIN_UNLOCK_IRQRESTORE is not set
++# CONFIG_INLINE_READ_TRYLOCK is not set
++# CONFIG_INLINE_READ_LOCK is not set
++# CONFIG_INLINE_READ_LOCK_BH is not set
++# CONFIG_INLINE_READ_LOCK_IRQ is not set
++# CONFIG_INLINE_READ_LOCK_IRQSAVE is not set
++CONFIG_INLINE_READ_UNLOCK=y
++# CONFIG_INLINE_READ_UNLOCK_BH is not set
++CONFIG_INLINE_READ_UNLOCK_IRQ=y
++# CONFIG_INLINE_READ_UNLOCK_IRQRESTORE is not set
++# CONFIG_INLINE_WRITE_TRYLOCK is not set
++# CONFIG_INLINE_WRITE_LOCK is not set
++# CONFIG_INLINE_WRITE_LOCK_BH is not set
++# CONFIG_INLINE_WRITE_LOCK_IRQ is not set
++# CONFIG_INLINE_WRITE_LOCK_IRQSAVE is not set
++CONFIG_INLINE_WRITE_UNLOCK=y
++# CONFIG_INLINE_WRITE_UNLOCK_BH is not set
++CONFIG_INLINE_WRITE_UNLOCK_IRQ=y
++# CONFIG_INLINE_WRITE_UNLOCK_IRQRESTORE is not set
++CONFIG_MUTEX_SPIN_ON_OWNER=y
++# CONFIG_FREEZER is not set
 +
-+static int nlm_pcibios_read(struct pci_bus *bus, unsigned int devfn,
-+	int where, int size, u32 *val)
-+{
-+	u32 data;
++#
++# Bus options (PCI, PCMCIA, EISA, ISA, TC)
++#
++CONFIG_HW_HAS_PCI=y
++# CONFIG_PCI is not set
++# CONFIG_ARCH_SUPPORTS_MSI is not set
++CONFIG_MMU=y
++# CONFIG_PCCARD is not set
 +
-+	if ((size == 2) && (where & 1))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	else if ((size == 4) && (where & 3))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
++#
++# Executable file formats
++#
++CONFIG_BINFMT_ELF=y
++# CONFIG_HAVE_AOUT is not set
++CONFIG_BINFMT_MISC=m
++CONFIG_TRAD_SIGNALS=y
 +
-+	data = pci_cfg_read_32bit(bus, devfn, where);
++#
++# Power management options
++#
++CONFIG_PM_RUNTIME=y
++CONFIG_PM=y
++CONFIG_PM_DEBUG=y
++# CONFIG_PM_VERBOSE is not set
++# CONFIG_PM_ADVANCED_DEBUG is not set
++CONFIG_NET=y
 +
-+	if (size == 1)
-+		*val = (data >> ((where & 3) << 3)) & 0xff;
-+	else if (size == 2)
-+		*val = (data >> ((where & 3) << 3)) & 0xffff;
-+	else
-+		*val = data;
++#
++# Networking options
++#
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM=y
++CONFIG_XFRM_USER=m
++# CONFIG_XFRM_SUB_POLICY is not set
++# CONFIG_XFRM_MIGRATE is not set
++# CONFIG_XFRM_STATISTICS is not set
++CONFIG_XFRM_IPCOMP=m
++CONFIG_NET_KEY=m
++# CONFIG_NET_KEY_MIGRATE is not set
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++# CONFIG_IP_FIB_TRIE_STATS is not set
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_ROUTE_CLASSID=y
++# CONFIG_IP_PNP is not set
++CONFIG_NET_IPIP=m
++# CONFIG_NET_IPGRE_DEMUX is not set
++CONFIG_IP_MROUTE=y
++# CONFIG_IP_MROUTE_MULTIPLE_TABLES is not set
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++# CONFIG_ARPD is not set
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++CONFIG_INET_XFRM_TUNNEL=m
++CONFIG_INET_TUNNEL=m
++CONFIG_INET_XFRM_MODE_TRANSPORT=m
++CONFIG_INET_XFRM_MODE_TUNNEL=m
++CONFIG_INET_XFRM_MODE_BEET=m
++CONFIG_INET_LRO=y
++CONFIG_INET_DIAG=y
++CONFIG_INET_TCP_DIAG=y
++CONFIG_TCP_CONG_ADVANCED=y
++CONFIG_TCP_CONG_BIC=m
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_TCP_CONG_WESTWOOD=m
++CONFIG_TCP_CONG_HTCP=m
++CONFIG_TCP_CONG_HSTCP=m
++CONFIG_TCP_CONG_HYBLA=m
++CONFIG_TCP_CONG_VEGAS=m
++CONFIG_TCP_CONG_SCALABLE=m
++CONFIG_TCP_CONG_LP=m
++CONFIG_TCP_CONG_VENO=m
++CONFIG_TCP_CONG_YEAH=m
++CONFIG_TCP_CONG_ILLINOIS=m
++CONFIG_DEFAULT_CUBIC=y
++# CONFIG_DEFAULT_RENO is not set
++CONFIG_DEFAULT_TCP_CONG="cubic"
++CONFIG_TCP_MD5SIG=y
++CONFIG_IPV6=y
++CONFIG_IPV6_PRIVACY=y
++# CONFIG_IPV6_ROUTER_PREF is not set
++# CONFIG_IPV6_OPTIMISTIC_DAD is not set
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++# CONFIG_IPV6_MIP6 is not set
++CONFIG_INET6_XFRM_TUNNEL=m
++CONFIG_INET6_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=m
++CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION=m
++CONFIG_IPV6_SIT=m
++# CONFIG_IPV6_SIT_6RD is not set
++CONFIG_IPV6_NDISC_NODETYPE=y
++CONFIG_IPV6_TUNNEL=m
++CONFIG_IPV6_MULTIPLE_TABLES=y
++# CONFIG_IPV6_SUBTREES is not set
++# CONFIG_IPV6_MROUTE is not set
++CONFIG_NETLABEL=y
++CONFIG_NETWORK_SECMARK=y
++# CONFIG_NETWORK_PHY_TIMESTAMPING is not set
++CONFIG_NETFILTER=y
++# CONFIG_NETFILTER_DEBUG is not set
++CONFIG_NETFILTER_ADVANCED=y
++CONFIG_BRIDGE_NETFILTER=y
 +
-+	return PCIBIOS_SUCCESSFUL;
-+}
++#
++# Core Netfilter Configuration
++#
++CONFIG_NETFILTER_NETLINK=m
++CONFIG_NETFILTER_NETLINK_QUEUE=m
++CONFIG_NETFILTER_NETLINK_LOG=m
++CONFIG_NF_CONNTRACK=m
++CONFIG_NF_CONNTRACK_MARK=y
++CONFIG_NF_CONNTRACK_SECMARK=y
++CONFIG_NF_CONNTRACK_EVENTS=y
++# CONFIG_NF_CONNTRACK_TIMESTAMP is not set
++CONFIG_NF_CT_PROTO_DCCP=m
++CONFIG_NF_CT_PROTO_GRE=m
++CONFIG_NF_CT_PROTO_SCTP=m
++CONFIG_NF_CT_PROTO_UDPLITE=m
++CONFIG_NF_CONNTRACK_AMANDA=m
++CONFIG_NF_CONNTRACK_FTP=m
++CONFIG_NF_CONNTRACK_H323=m
++CONFIG_NF_CONNTRACK_IRC=m
++CONFIG_NF_CONNTRACK_BROADCAST=m
++CONFIG_NF_CONNTRACK_NETBIOS_NS=m
++# CONFIG_NF_CONNTRACK_SNMP is not set
++CONFIG_NF_CONNTRACK_PPTP=m
++CONFIG_NF_CONNTRACK_SANE=m
++CONFIG_NF_CONNTRACK_SIP=m
++CONFIG_NF_CONNTRACK_TFTP=m
++CONFIG_NF_CT_NETLINK=m
++CONFIG_NETFILTER_TPROXY=m
++CONFIG_NETFILTER_XTABLES=m
 +
++#
++# Xtables combined modules
++#
++CONFIG_NETFILTER_XT_MARK=m
++CONFIG_NETFILTER_XT_CONNMARK=m
 +
-+static int nlm_pcibios_write(struct pci_bus *bus, unsigned int devfn,
-+		int where, int size, u32 val)
-+{
-+	u32 data;
++#
++# Xtables targets
++#
++# CONFIG_NETFILTER_XT_TARGET_AUDIT is not set
++# CONFIG_NETFILTER_XT_TARGET_CHECKSUM is not set
++CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
++CONFIG_NETFILTER_XT_TARGET_CONNMARK=m
++CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=m
++# CONFIG_NETFILTER_XT_TARGET_CT is not set
++CONFIG_NETFILTER_XT_TARGET_DSCP=m
++CONFIG_NETFILTER_XT_TARGET_HL=m
++# CONFIG_NETFILTER_XT_TARGET_IDLETIMER is not set
++CONFIG_NETFILTER_XT_TARGET_MARK=m
++CONFIG_NETFILTER_XT_TARGET_NFLOG=m
++CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
++CONFIG_NETFILTER_XT_TARGET_NOTRACK=m
++CONFIG_NETFILTER_XT_TARGET_RATEEST=m
++# CONFIG_NETFILTER_XT_TARGET_TEE is not set
++CONFIG_NETFILTER_XT_TARGET_TPROXY=m
++CONFIG_NETFILTER_XT_TARGET_TRACE=m
++CONFIG_NETFILTER_XT_TARGET_SECMARK=m
++CONFIG_NETFILTER_XT_TARGET_TCPMSS=m
++# CONFIG_NETFILTER_XT_TARGET_TCPOPTSTRIP is not set
 +
-+	if ((size == 2) && (where & 1))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	else if ((size == 4) && (where & 3))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
++#
++# Xtables matches
++#
++# CONFIG_NETFILTER_XT_MATCH_ADDRTYPE is not set
++CONFIG_NETFILTER_XT_MATCH_CLUSTER=m
++CONFIG_NETFILTER_XT_MATCH_COMMENT=m
++CONFIG_NETFILTER_XT_MATCH_CONNBYTES=m
++CONFIG_NETFILTER_XT_MATCH_CONNLIMIT=m
++CONFIG_NETFILTER_XT_MATCH_CONNMARK=m
++CONFIG_NETFILTER_XT_MATCH_CONNTRACK=m
++# CONFIG_NETFILTER_XT_MATCH_CPU is not set
++CONFIG_NETFILTER_XT_MATCH_DCCP=m
++# CONFIG_NETFILTER_XT_MATCH_DEVGROUP is not set
++CONFIG_NETFILTER_XT_MATCH_DSCP=m
++CONFIG_NETFILTER_XT_MATCH_ESP=m
++CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=m
++CONFIG_NETFILTER_XT_MATCH_HELPER=m
++CONFIG_NETFILTER_XT_MATCH_HL=m
++CONFIG_NETFILTER_XT_MATCH_IPRANGE=m
++# CONFIG_NETFILTER_XT_MATCH_IPVS is not set
++CONFIG_NETFILTER_XT_MATCH_LENGTH=m
++CONFIG_NETFILTER_XT_MATCH_LIMIT=m
++CONFIG_NETFILTER_XT_MATCH_MAC=m
++CONFIG_NETFILTER_XT_MATCH_MARK=m
++CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
++CONFIG_NETFILTER_XT_MATCH_OSF=m
++CONFIG_NETFILTER_XT_MATCH_OWNER=m
++CONFIG_NETFILTER_XT_MATCH_POLICY=m
++CONFIG_NETFILTER_XT_MATCH_PHYSDEV=m
++CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
++CONFIG_NETFILTER_XT_MATCH_QUOTA=m
++CONFIG_NETFILTER_XT_MATCH_RATEEST=m
++CONFIG_NETFILTER_XT_MATCH_REALM=m
++CONFIG_NETFILTER_XT_MATCH_RECENT=m
++CONFIG_NETFILTER_XT_MATCH_SCTP=m
++CONFIG_NETFILTER_XT_MATCH_SOCKET=m
++CONFIG_NETFILTER_XT_MATCH_STATE=m
++CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
++CONFIG_NETFILTER_XT_MATCH_STRING=m
++CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
++CONFIG_NETFILTER_XT_MATCH_TIME=m
++CONFIG_NETFILTER_XT_MATCH_U32=m
++# CONFIG_IP_SET is not set
++CONFIG_IP_VS=m
++CONFIG_IP_VS_IPV6=y
++# CONFIG_IP_VS_DEBUG is not set
++CONFIG_IP_VS_TAB_BITS=12
 +
-+	data = pci_cfg_read_32bit(bus, devfn, where);
++#
++# IPVS transport protocol load balancing support
++#
++CONFIG_IP_VS_PROTO_TCP=y
++CONFIG_IP_VS_PROTO_UDP=y
++CONFIG_IP_VS_PROTO_AH_ESP=y
++CONFIG_IP_VS_PROTO_ESP=y
++CONFIG_IP_VS_PROTO_AH=y
++# CONFIG_IP_VS_PROTO_SCTP is not set
 +
-+	if (size == 1)
-+		data = (data & ~(0xff << ((where & 3) << 3))) |
-+			(val << ((where & 3) << 3));
-+	else if (size == 2)
-+		data = (data & ~(0xffff << ((where & 3) << 3))) |
-+			(val << ((where & 3) << 3));
-+	else
-+		data = val;
++#
++# IPVS scheduler
++#
++CONFIG_IP_VS_RR=m
++CONFIG_IP_VS_WRR=m
++CONFIG_IP_VS_LC=m
++CONFIG_IP_VS_WLC=m
++CONFIG_IP_VS_LBLC=m
++CONFIG_IP_VS_LBLCR=m
++CONFIG_IP_VS_DH=m
++CONFIG_IP_VS_SH=m
++CONFIG_IP_VS_SED=m
++CONFIG_IP_VS_NQ=m
 +
-+	pci_cfg_write_32bit(bus, devfn, where, data);
++#
++# IPVS application helper
++#
++CONFIG_IP_VS_FTP=m
++CONFIG_IP_VS_NFCT=y
++# CONFIG_IP_VS_PE_SIP is not set
 +
-+	return PCIBIOS_SUCCESSFUL;
-+}
++#
++# IP: Netfilter Configuration
++#
++CONFIG_NF_DEFRAG_IPV4=m
++CONFIG_NF_CONNTRACK_IPV4=m
++CONFIG_NF_CONNTRACK_PROC_COMPAT=y
++CONFIG_IP_NF_QUEUE=m
++CONFIG_IP_NF_IPTABLES=m
++CONFIG_IP_NF_MATCH_AH=m
++CONFIG_IP_NF_MATCH_ECN=m
++CONFIG_IP_NF_MATCH_TTL=m
++CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_TARGET_REJECT=m
++CONFIG_IP_NF_TARGET_LOG=m
++CONFIG_IP_NF_TARGET_ULOG=m
++CONFIG_NF_NAT=m
++CONFIG_NF_NAT_NEEDED=y
++CONFIG_IP_NF_TARGET_MASQUERADE=m
++CONFIG_IP_NF_TARGET_NETMAP=m
++CONFIG_IP_NF_TARGET_REDIRECT=m
++CONFIG_NF_NAT_PROTO_DCCP=m
++CONFIG_NF_NAT_PROTO_GRE=m
++CONFIG_NF_NAT_PROTO_UDPLITE=m
++CONFIG_NF_NAT_PROTO_SCTP=m
++CONFIG_NF_NAT_FTP=m
++CONFIG_NF_NAT_IRC=m
++CONFIG_NF_NAT_TFTP=m
++CONFIG_NF_NAT_AMANDA=m
++CONFIG_NF_NAT_PPTP=m
++CONFIG_NF_NAT_H323=m
++CONFIG_NF_NAT_SIP=m
++CONFIG_IP_NF_MANGLE=m
++CONFIG_IP_NF_TARGET_CLUSTERIP=m
++CONFIG_IP_NF_TARGET_ECN=m
++CONFIG_IP_NF_TARGET_TTL=m
++CONFIG_IP_NF_RAW=m
++CONFIG_IP_NF_SECURITY=m
++CONFIG_IP_NF_ARPTABLES=m
++CONFIG_IP_NF_ARPFILTER=m
++CONFIG_IP_NF_ARP_MANGLE=m
 +
-+struct pci_ops nlm_pci_ops = {
-+	.read  = nlm_pcibios_read,
-+	.write = nlm_pcibios_write
-+};
++#
++# IPv6: Netfilter Configuration
++#
++CONFIG_NF_DEFRAG_IPV6=m
++CONFIG_NF_CONNTRACK_IPV6=m
++CONFIG_IP6_NF_QUEUE=m
++CONFIG_IP6_NF_IPTABLES=m
++CONFIG_IP6_NF_MATCH_AH=m
++CONFIG_IP6_NF_MATCH_EUI64=m
++CONFIG_IP6_NF_MATCH_FRAG=m
++CONFIG_IP6_NF_MATCH_OPTS=m
++CONFIG_IP6_NF_MATCH_HL=m
++CONFIG_IP6_NF_MATCH_IPV6HEADER=m
++CONFIG_IP6_NF_MATCH_MH=m
++CONFIG_IP6_NF_MATCH_RT=m
++CONFIG_IP6_NF_TARGET_HL=m
++CONFIG_IP6_NF_TARGET_LOG=m
++CONFIG_IP6_NF_FILTER=m
++CONFIG_IP6_NF_TARGET_REJECT=m
++CONFIG_IP6_NF_MANGLE=m
++CONFIG_IP6_NF_RAW=m
++CONFIG_IP6_NF_SECURITY=m
 +
-+static struct resource nlm_pci_mem_resource = {
-+	.name           = "XLR PCI MEM",
-+	.start          = 0xd0000000UL,	/* 256MB PCI mem @ 0xd000_0000 */
-+	.end            = 0xdfffffffUL,
-+	.flags          = IORESOURCE_MEM,
-+};
++#
++# DECnet: Netfilter Configuration
++#
++CONFIG_DECNET_NF_GRABULATOR=m
++CONFIG_BRIDGE_NF_EBTABLES=m
++CONFIG_BRIDGE_EBT_BROUTE=m
++CONFIG_BRIDGE_EBT_T_FILTER=m
++CONFIG_BRIDGE_EBT_T_NAT=m
++CONFIG_BRIDGE_EBT_802_3=m
++CONFIG_BRIDGE_EBT_AMONG=m
++CONFIG_BRIDGE_EBT_ARP=m
++CONFIG_BRIDGE_EBT_IP=m
++CONFIG_BRIDGE_EBT_IP6=m
++CONFIG_BRIDGE_EBT_LIMIT=m
++CONFIG_BRIDGE_EBT_MARK=m
++CONFIG_BRIDGE_EBT_PKTTYPE=m
++CONFIG_BRIDGE_EBT_STP=m
++CONFIG_BRIDGE_EBT_VLAN=m
++CONFIG_BRIDGE_EBT_ARPREPLY=m
++CONFIG_BRIDGE_EBT_DNAT=m
++CONFIG_BRIDGE_EBT_MARK_T=m
++CONFIG_BRIDGE_EBT_REDIRECT=m
++CONFIG_BRIDGE_EBT_SNAT=m
++CONFIG_BRIDGE_EBT_LOG=m
++CONFIG_BRIDGE_EBT_ULOG=m
++CONFIG_BRIDGE_EBT_NFLOG=m
++CONFIG_IP_DCCP=m
++CONFIG_INET_DCCP_DIAG=m
 +
-+static struct resource nlm_pci_io_resource = {
-+	.name           = "XLR IO MEM",
-+	.start          = 0x10000000UL,	/* 16MB PCI IO @ 0x1000_0000 */
-+	.end            = 0x100fffffUL,
-+	.flags          = IORESOURCE_IO,
-+};
++#
++# DCCP CCIDs Configuration (EXPERIMENTAL)
++#
++# CONFIG_IP_DCCP_CCID2_DEBUG is not set
++CONFIG_IP_DCCP_CCID3=y
++# CONFIG_IP_DCCP_CCID3_DEBUG is not set
++CONFIG_IP_DCCP_TFRC_LIB=y
 +
-+struct pci_controller nlm_pci_controller = {
-+	.index          = 0,
-+	.pci_ops        = &nlm_pci_ops,
-+	.mem_resource   = &nlm_pci_mem_resource,
-+	.mem_offset     = 0x00000000UL,
-+	.io_resource    = &nlm_pci_io_resource,
-+	.io_offset      = 0x00000000UL,
-+};
++#
++# DCCP Kernel Hacking
++#
++# CONFIG_IP_DCCP_DEBUG is not set
++CONFIG_IP_SCTP=m
++# CONFIG_SCTP_DBG_MSG is not set
++# CONFIG_SCTP_DBG_OBJCNT is not set
++# CONFIG_SCTP_HMAC_NONE is not set
++# CONFIG_SCTP_HMAC_SHA1 is not set
++CONFIG_SCTP_HMAC_MD5=y
++CONFIG_RDS=m
++CONFIG_RDS_TCP=m
++# CONFIG_RDS_DEBUG is not set
++CONFIG_TIPC=m
++# CONFIG_TIPC_ADVANCED is not set
++# CONFIG_TIPC_DEBUG is not set
++CONFIG_ATM=m
++CONFIG_ATM_CLIP=m
++# CONFIG_ATM_CLIP_NO_ICMP is not set
++CONFIG_ATM_LANE=m
++CONFIG_ATM_MPOA=m
++CONFIG_ATM_BR2684=m
++# CONFIG_ATM_BR2684_IPFILTER is not set
++# CONFIG_L2TP is not set
++CONFIG_STP=m
++CONFIG_GARP=m
++CONFIG_BRIDGE=m
++CONFIG_BRIDGE_IGMP_SNOOPING=y
++CONFIG_VLAN_8021Q=m
++CONFIG_VLAN_8021Q_GVRP=y
++CONFIG_DECNET=m
++# CONFIG_DECNET_ROUTER is not set
++CONFIG_LLC=m
++CONFIG_LLC2=m
++CONFIG_IPX=m
++# CONFIG_IPX_INTERN is not set
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++CONFIG_X25=m
++CONFIG_LAPB=m
++CONFIG_ECONET=m
++CONFIG_ECONET_AUNUDP=y
++CONFIG_ECONET_NATIVE=y
++CONFIG_WAN_ROUTER=m
++CONFIG_PHONET=m
++CONFIG_IEEE802154=m
++CONFIG_NET_SCHED=y
 +
-+int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	if (!nlm_chip_is_xls())
-+		return	PIC_PCIX_IRQ;	/* for XLR just one IRQ*/
++#
++# Queueing/Scheduling
++#
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_ATM=m
++CONFIG_NET_SCH_PRIO=m
++CONFIG_NET_SCH_MULTIQ=m
++CONFIG_NET_SCH_RED=m
++# CONFIG_NET_SCH_SFB is not set
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++CONFIG_NET_SCH_DRR=m
++# CONFIG_NET_SCH_MQPRIO is not set
++# CONFIG_NET_SCH_CHOKE is not set
++CONFIG_NET_SCH_INGRESS=m
 +
-+	/*
-+	 * For XLS PCIe, there is an IRQ per Link, find out which
-+	 * link the device is on to assign interrupts
-+	*/
-+	if (dev->bus->self == NULL)
-+		return 0;
++#
++# Classification
++#
++CONFIG_NET_CLS=y
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++# CONFIG_CLS_U32_PERF is not set
++CONFIG_CLS_U32_MARK=y
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++CONFIG_NET_CLS_FLOW=m
++# CONFIG_NET_CLS_CGROUP is not set
++CONFIG_NET_EMATCH=y
++CONFIG_NET_EMATCH_STACK=32
++CONFIG_NET_EMATCH_CMP=m
++CONFIG_NET_EMATCH_NBYTE=m
++CONFIG_NET_EMATCH_U32=m
++CONFIG_NET_EMATCH_META=m
++CONFIG_NET_EMATCH_TEXT=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=m
++CONFIG_NET_ACT_GACT=m
++CONFIG_GACT_PROB=y
++CONFIG_NET_ACT_MIRRED=m
++CONFIG_NET_ACT_IPT=m
++CONFIG_NET_ACT_NAT=m
++CONFIG_NET_ACT_PEDIT=m
++CONFIG_NET_ACT_SIMP=m
++CONFIG_NET_ACT_SKBEDIT=m
++# CONFIG_NET_ACT_CSUM is not set
++# CONFIG_NET_CLS_IND is not set
++CONFIG_NET_SCH_FIFO=y
++CONFIG_DCB=y
++CONFIG_DNS_RESOLVER=y
++# CONFIG_BATMAN_ADV is not set
++CONFIG_RPS=y
++CONFIG_RFS_ACCEL=y
++CONFIG_XPS=y
 +
-+	switch	(dev->bus->self->devfn) {
-+	case 0x0:
-+		return PIC_PCIE_LINK0_IRQ;
-+	case 0x8:
-+		return PIC_PCIE_LINK1_IRQ;
-+	case 0x10:
-+		if (nlm_chip_is_xls_b())
-+			return PIC_PCIE_XLSB0_LINK2_IRQ;
-+		else
-+			return PIC_PCIE_LINK2_IRQ;
-+	case 0x18:
-+		if (nlm_chip_is_xls_b())
-+			return PIC_PCIE_XLSB0_LINK3_IRQ;
-+		else
-+			return PIC_PCIE_LINK3_IRQ;
-+	}
-+	WARN(1, "Unexpected devfn %d\n", dev->bus->self->devfn);
-+	return 0;
-+}
++#
++# Network testing
++#
++CONFIG_NET_PKTGEN=m
++# CONFIG_NET_DROP_MONITOR is not set
++# CONFIG_HAMRADIO is not set
++# CONFIG_CAN is not set
++# CONFIG_IRDA is not set
++# CONFIG_BT is not set
++CONFIG_AF_RXRPC=m
++# CONFIG_AF_RXRPC_DEBUG is not set
++# CONFIG_RXKAD is not set
++CONFIG_FIB_RULES=y
++# CONFIG_WIRELESS is not set
++# CONFIG_WIMAX is not set
++# CONFIG_RFKILL is not set
++# CONFIG_NET_9P is not set
++# CONFIG_CAIF is not set
++# CONFIG_CEPH_LIB is not set
 +
-+/* Do platform specific device initialization at pci_enable_device() time */
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	return 0;
-+}
++#
++# Device Drivers
++#
 +
-+static int __init pcibios_init(void)
-+{
-+	/* PSB assigns PCI resources */
-+	pci_probe_only = 1;
-+	pci_config_base = ioremap(DEFAULT_PCI_CONFIG_BASE, 16 << 20);
++#
++# Generic Driver Options
++#
++CONFIG_UEVENT_HELPER_PATH=""
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++CONFIG_PREVENT_FIRMWARE_BUILD=y
++CONFIG_FW_LOADER=y
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
++# CONFIG_DEBUG_DRIVER is not set
++# CONFIG_DEBUG_DEVRES is not set
++# CONFIG_SYS_HYPERVISOR is not set
++CONFIG_CONNECTOR=y
++CONFIG_PROC_EVENTS=y
++CONFIG_MTD=m
++# CONFIG_MTD_DEBUG is not set
++# CONFIG_MTD_TESTS is not set
++# CONFIG_MTD_PARTITIONS is not set
 +
-+	/* Extend IO port for memory mapped io */
-+	ioport_resource.start =  0;
-+	ioport_resource.end   = ~0;
++#
++# User Modules And Translation Layers
++#
++# CONFIG_MTD_CHAR is not set
++# CONFIG_MTD_BLKDEVS is not set
++# CONFIG_MTD_BLOCK is not set
++# CONFIG_MTD_BLOCK_RO is not set
++# CONFIG_FTL is not set
++# CONFIG_NFTL is not set
++# CONFIG_INFTL is not set
++# CONFIG_RFD_FTL is not set
++# CONFIG_SSFDC is not set
++# CONFIG_SM_FTL is not set
++# CONFIG_MTD_OOPS is not set
++# CONFIG_MTD_SWAP is not set
 +
-+	set_io_port_base(CKSEG1);
-+	nlm_pci_controller.io_map_base = CKSEG1;
++#
++# RAM/ROM/Flash chip drivers
++#
++# CONFIG_MTD_CFI is not set
++# CONFIG_MTD_JEDECPROBE is not set
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++# CONFIG_MTD_CFI_I4 is not set
++# CONFIG_MTD_CFI_I8 is not set
++# CONFIG_MTD_RAM is not set
++# CONFIG_MTD_ROM is not set
++# CONFIG_MTD_ABSENT is not set
 +
-+	pr_info("Registering XLR/XLS PCIX/PCIE Controller.\n");
-+	register_pci_controller(&nlm_pci_controller);
++#
++# Mapping drivers for chip access
++#
++# CONFIG_MTD_COMPLEX_MAPPINGS is not set
++# CONFIG_MTD_PLATRAM is not set
 +
-+	return 0;
-+}
++#
++# Self-contained MTD device drivers
++#
++# CONFIG_MTD_SLRAM is not set
++# CONFIG_MTD_PHRAM is not set
++# CONFIG_MTD_MTDRAM is not set
++# CONFIG_MTD_BLOCK2MTD is not set
 +
-+arch_initcall(pcibios_init);
++#
++# Disk-On-Chip Device Drivers
++#
++# CONFIG_MTD_DOC2000 is not set
++# CONFIG_MTD_DOC2001 is not set
++# CONFIG_MTD_DOC2001PLUS is not set
++# CONFIG_MTD_NAND is not set
++# CONFIG_MTD_ONENAND is not set
 +
-+struct pci_fixup pcibios_fixups[] = {
-+	{0}
-+};
++#
++# LPDDR flash memory drivers
++#
++# CONFIG_MTD_LPDDR is not set
++# CONFIG_MTD_UBI is not set
++# CONFIG_PARPORT is not set
++CONFIG_BLK_DEV=y
++# CONFIG_BLK_DEV_COW_COMMON is not set
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++# CONFIG_BLK_DEV_DRBD is not set
++CONFIG_BLK_DEV_NBD=m
++CONFIG_BLK_DEV_OSD=m
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=16
++CONFIG_BLK_DEV_RAM_SIZE=65536
++# CONFIG_BLK_DEV_XIP is not set
++CONFIG_CDROM_PKTCDVD=y
++CONFIG_CDROM_PKTCDVD_BUFFERS=8
++# CONFIG_CDROM_PKTCDVD_WCACHE is not set
++# CONFIG_ATA_OVER_ETH is not set
++# CONFIG_BLK_DEV_HD is not set
++# CONFIG_BLK_DEV_RBD is not set
++# CONFIG_SENSORS_LIS3LV02D is not set
++CONFIG_MISC_DEVICES=y
++# CONFIG_ENCLOSURE_SERVICES is not set
++# CONFIG_C2PORT is not set
++
++#
++# EEPROM support
++#
++# CONFIG_EEPROM_93CX6 is not set
++
++#
++# Texas Instruments shared transport line discipline
++#
++CONFIG_HAVE_IDE=y
++# CONFIG_IDE is not set
++
++#
++# SCSI device support
++#
++CONFIG_SCSI_MOD=y
++CONFIG_RAID_ATTRS=m
++CONFIG_SCSI=y
++CONFIG_SCSI_DMA=y
++CONFIG_SCSI_TGT=m
++CONFIG_SCSI_NETLINK=y
++CONFIG_SCSI_PROC_FS=y
++
++#
++# SCSI support type (disk, tape, CD-ROM)
++#
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_ST=m
++CONFIG_CHR_DEV_OSST=m
++CONFIG_BLK_DEV_SR=y
++# CONFIG_BLK_DEV_SR_VENDOR is not set
++CONFIG_CHR_DEV_SG=y
++CONFIG_CHR_DEV_SCH=m
++CONFIG_SCSI_MULTI_LUN=y
++CONFIG_SCSI_CONSTANTS=y
++CONFIG_SCSI_LOGGING=y
++CONFIG_SCSI_SCAN_ASYNC=y
++CONFIG_SCSI_WAIT_SCAN=m
++
++#
++# SCSI Transports
++#
++CONFIG_SCSI_SPI_ATTRS=m
++CONFIG_SCSI_FC_ATTRS=m
++CONFIG_SCSI_FC_TGT_ATTRS=y
++CONFIG_SCSI_ISCSI_ATTRS=m
++CONFIG_SCSI_SAS_ATTRS=m
++CONFIG_SCSI_SAS_LIBSAS=m
++CONFIG_SCSI_SAS_HOST_SMP=y
++CONFIG_SCSI_SRP_ATTRS=m
++CONFIG_SCSI_SRP_TGT_ATTRS=y
++CONFIG_SCSI_LOWLEVEL=y
++CONFIG_ISCSI_TCP=m
++# CONFIG_ISCSI_BOOT_SYSFS is not set
++CONFIG_LIBFC=m
++CONFIG_LIBFCOE=m
++CONFIG_SCSI_DEBUG=m
++CONFIG_SCSI_DH=y
++CONFIG_SCSI_DH_RDAC=m
++CONFIG_SCSI_DH_HP_SW=m
++CONFIG_SCSI_DH_EMC=m
++CONFIG_SCSI_DH_ALUA=m
++CONFIG_SCSI_OSD_INITIATOR=m
++CONFIG_SCSI_OSD_ULD=m
++CONFIG_SCSI_OSD_DPRINT_SENSE=1
++# CONFIG_SCSI_OSD_DEBUG is not set
++# CONFIG_ATA is not set
++# CONFIG_MD is not set
++# CONFIG_TARGET_CORE is not set
++# CONFIG_NETDEVICES is not set
++# CONFIG_ISDN is not set
++# CONFIG_PHONE is not set
++
++#
++# Input device support
++#
++CONFIG_INPUT=y
++# CONFIG_INPUT_FF_MEMLESS is not set
++# CONFIG_INPUT_POLLDEV is not set
++# CONFIG_INPUT_SPARSEKMAP is not set
++
++#
++# Userland interfaces
++#
++# CONFIG_INPUT_MOUSEDEV is not set
++# CONFIG_INPUT_JOYDEV is not set
++CONFIG_INPUT_EVDEV=y
++CONFIG_INPUT_EVBUG=m
++
++#
++# Input Device Drivers
++#
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_INPUT_JOYSTICK is not set
++# CONFIG_INPUT_TABLET is not set
++# CONFIG_INPUT_TOUCHSCREEN is not set
++# CONFIG_INPUT_MISC is not set
++
++#
++# Hardware I/O ports
++#
++CONFIG_SERIO=y
++# CONFIG_SERIO_I8042 is not set
++CONFIG_SERIO_SERPORT=m
++CONFIG_SERIO_LIBPS2=y
++CONFIG_SERIO_RAW=m
++# CONFIG_SERIO_ALTERA_PS2 is not set
++# CONFIG_SERIO_PS2MULT is not set
++# CONFIG_GAMEPORT is not set
++
++#
++# Character devices
++#
++CONFIG_VT=y
++CONFIG_CONSOLE_TRANSLATIONS=y
++CONFIG_VT_CONSOLE=y
++CONFIG_HW_CONSOLE=y
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_UNIX98_PTYS=y
++CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=0
++CONFIG_SERIAL_NONSTANDARD=y
++CONFIG_N_HDLC=m
++# CONFIG_N_GSM is not set
++# CONFIG_DEVKMEM is not set
++CONFIG_STALDRV=y
++
++#
++# Serial drivers
++#
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_NR_UARTS=48
++CONFIG_SERIAL_8250_RUNTIME_UARTS=4
++CONFIG_SERIAL_8250_EXTENDED=y
++CONFIG_SERIAL_8250_MANY_PORTS=y
++CONFIG_SERIAL_8250_SHARE_IRQ=y
++# CONFIG_SERIAL_8250_DETECT_IRQ is not set
++CONFIG_SERIAL_8250_RSA=y
++
++#
++# Non-8250 serial port support
++#
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++CONFIG_CONSOLE_POLL=y
++# CONFIG_SERIAL_TIMBERDALE is not set
++# CONFIG_SERIAL_ALTERA_JTAGUART is not set
++# CONFIG_SERIAL_ALTERA_UART is not set
++# CONFIG_TTY_PRINTK is not set
++# CONFIG_IPMI_HANDLER is not set
++CONFIG_HW_RANDOM=y
++CONFIG_HW_RANDOM_TIMERIOMEM=m
++# CONFIG_R3964 is not set
++CONFIG_RAW_DRIVER=m
++CONFIG_MAX_RAW_DEVS=256
++# CONFIG_TCG_TPM is not set
++# CONFIG_RAMOOPS is not set
++# CONFIG_I2C is not set
++# CONFIG_SPI is not set
++
++#
++# PPS support
++#
++# CONFIG_PPS is not set
++
++#
++# PPS generators support
++#
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++# CONFIG_HWMON is not set
++# CONFIG_THERMAL is not set
++# CONFIG_WATCHDOG is not set
++CONFIG_SSB_POSSIBLE=y
++
++#
++# Sonics Silicon Backplane
++#
++# CONFIG_SSB is not set
++CONFIG_MFD_SUPPORT=y
++# CONFIG_MFD_CORE is not set
++# CONFIG_MFD_SM501 is not set
++# CONFIG_HTC_PASIC3 is not set
++# CONFIG_MFD_TMIO is not set
++# CONFIG_ABX500_CORE is not set
++# CONFIG_REGULATOR is not set
++# CONFIG_MEDIA_SUPPORT is not set
++
++#
++# Graphics support
++#
++# CONFIG_DRM is not set
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
++# CONFIG_FB is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++
++#
++# Display device support
++#
++# CONFIG_DISPLAY_SUPPORT is not set
++
++#
++# Console display driver support
++#
++# CONFIG_VGA_CONSOLE is not set
++CONFIG_DUMMY_CONSOLE=y
++# CONFIG_SOUND is not set
++# CONFIG_HID_SUPPORT is not set
++# CONFIG_USB_SUPPORT is not set
++# CONFIG_MMC is not set
++# CONFIG_MEMSTICK is not set
++# CONFIG_NEW_LEDS is not set
++# CONFIG_NFC_DEVICES is not set
++# CONFIG_ACCESSIBILITY is not set
++CONFIG_RTC_LIB=y
++# CONFIG_RTC_CLASS is not set
++# CONFIG_DMADEVICES is not set
++# CONFIG_AUXDISPLAY is not set
++CONFIG_UIO=y
++CONFIG_UIO_PDRV=m
++CONFIG_UIO_PDRV_GENIRQ=m
++# CONFIG_STAGING is not set
++
++#
++# File systems
++#
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++# CONFIG_EXT2_FS_XIP is not set
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_DEFAULTS_TO_ORDERED=y
++CONFIG_EXT3_FS_XATTR=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_XATTR=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++# CONFIG_EXT4_DEBUG is not set
++CONFIG_JBD=y
++# CONFIG_JBD_DEBUG is not set
++CONFIG_JBD2=y
++# CONFIG_JBD2_DEBUG is not set
++CONFIG_FS_MBCACHE=y
++# CONFIG_REISERFS_FS is not set
++# CONFIG_JFS_FS is not set
++# CONFIG_XFS_FS is not set
++CONFIG_GFS2_FS=m
++CONFIG_GFS2_FS_LOCKING_DLM=y
++CONFIG_OCFS2_FS=m
++CONFIG_OCFS2_FS_O2CB=m
++CONFIG_OCFS2_FS_USERSPACE_CLUSTER=m
++CONFIG_OCFS2_FS_STATS=y
++CONFIG_OCFS2_DEBUG_MASKLOG=y
++# CONFIG_OCFS2_DEBUG_FS is not set
++CONFIG_BTRFS_FS=m
++CONFIG_BTRFS_FS_POSIX_ACL=y
++CONFIG_NILFS2_FS=m
++CONFIG_FS_POSIX_ACL=y
++CONFIG_EXPORTFS=y
++CONFIG_FILE_LOCKING=y
++CONFIG_FSNOTIFY=y
++CONFIG_DNOTIFY=y
++CONFIG_INOTIFY_USER=y
++# CONFIG_FANOTIFY is not set
++CONFIG_QUOTA=y
++CONFIG_QUOTA_NETLINK_INTERFACE=y
++# CONFIG_PRINT_QUOTA_WARNING is not set
++# CONFIG_QUOTA_DEBUG is not set
++CONFIG_QUOTA_TREE=m
++CONFIG_QFMT_V1=m
++CONFIG_QFMT_V2=m
++CONFIG_QUOTACTL=y
++CONFIG_AUTOFS4_FS=m
++CONFIG_FUSE_FS=y
++CONFIG_CUSE=m
++CONFIG_GENERIC_ACL=y
++
++#
++# Caches
++#
++CONFIG_FSCACHE=m
++CONFIG_FSCACHE_STATS=y
++CONFIG_FSCACHE_HISTOGRAM=y
++# CONFIG_FSCACHE_DEBUG is not set
++# CONFIG_FSCACHE_OBJECT_LIST is not set
++CONFIG_CACHEFILES=m
++# CONFIG_CACHEFILES_DEBUG is not set
++# CONFIG_CACHEFILES_HISTOGRAM is not set
++
++#
++# CD-ROM/DVD Filesystems
++#
++CONFIG_ISO9660_FS=m
++CONFIG_JOLIET=y
++CONFIG_ZISOFS=y
++CONFIG_UDF_FS=m
++CONFIG_UDF_NLS=y
++
++#
++# DOS/FAT/NT Filesystems
++#
++CONFIG_FAT_FS=m
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_FAT_DEFAULT_CODEPAGE=437
++CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
++CONFIG_NTFS_FS=m
++# CONFIG_NTFS_DEBUG is not set
++# CONFIG_NTFS_RW is not set
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_PROC_SYSCTL=y
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_HUGETLB_PAGE is not set
++CONFIG_CONFIGFS_FS=y
++CONFIG_MISC_FILESYSTEMS=y
++CONFIG_ADFS_FS=m
++# CONFIG_ADFS_FS_RW is not set
++CONFIG_AFFS_FS=m
++CONFIG_ECRYPT_FS=y
++CONFIG_HFS_FS=m
++CONFIG_HFSPLUS_FS=m
++CONFIG_BEFS_FS=m
++# CONFIG_BEFS_DEBUG is not set
++CONFIG_BFS_FS=m
++CONFIG_EFS_FS=m
++# CONFIG_JFFS2_FS is not set
++# CONFIG_LOGFS is not set
++CONFIG_CRAMFS=m
++CONFIG_SQUASHFS=m
++# CONFIG_SQUASHFS_XATTR is not set
++# CONFIG_SQUASHFS_LZO is not set
++# CONFIG_SQUASHFS_XZ is not set
++# CONFIG_SQUASHFS_EMBEDDED is not set
++CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
++CONFIG_VXFS_FS=m
++CONFIG_MINIX_FS=m
++CONFIG_MINIX_FS_NATIVE_ENDIAN=y
++CONFIG_OMFS_FS=m
++CONFIG_HPFS_FS=m
++CONFIG_QNX4FS_FS=m
++CONFIG_ROMFS_FS=m
++CONFIG_ROMFS_BACKED_BY_BLOCK=y
++# CONFIG_ROMFS_BACKED_BY_MTD is not set
++# CONFIG_ROMFS_BACKED_BY_BOTH is not set
++CONFIG_ROMFS_ON_BLOCK=y
++# CONFIG_PSTORE is not set
++CONFIG_SYSV_FS=m
++CONFIG_UFS_FS=m
++# CONFIG_UFS_FS_WRITE is not set
++# CONFIG_UFS_DEBUG is not set
++CONFIG_EXOFS_FS=m
++# CONFIG_EXOFS_DEBUG is not set
++CONFIG_NETWORK_FILESYSTEMS=y
++CONFIG_NFS_FS=m
++CONFIG_NFS_V3=y
++CONFIG_NFS_V3_ACL=y
++CONFIG_NFS_V4=y
++# CONFIG_NFS_V4_1 is not set
++CONFIG_NFS_FSCACHE=y
++# CONFIG_NFS_USE_LEGACY_DNS is not set
++CONFIG_NFS_USE_KERNEL_DNS=y
++# CONFIG_NFS_USE_NEW_IDMAPPER is not set
++CONFIG_NFSD=m
++CONFIG_NFSD_DEPRECATED=y
++CONFIG_NFSD_V2_ACL=y
++CONFIG_NFSD_V3=y
++CONFIG_NFSD_V3_ACL=y
++CONFIG_NFSD_V4=y
++CONFIG_LOCKD=m
++CONFIG_LOCKD_V4=y
++CONFIG_NFS_ACL_SUPPORT=m
++CONFIG_NFS_COMMON=y
++CONFIG_SUNRPC=m
++CONFIG_SUNRPC_GSS=m
++CONFIG_RPCSEC_GSS_KRB5=m
++# CONFIG_CEPH_FS is not set
++CONFIG_CIFS=m
++# CONFIG_CIFS_STATS is not set
++CONFIG_CIFS_WEAK_PW_HASH=y
++CONFIG_CIFS_UPCALL=y
++CONFIG_CIFS_XATTR=y
++CONFIG_CIFS_POSIX=y
++# CONFIG_CIFS_DEBUG2 is not set
++CONFIG_CIFS_DFS_UPCALL=y
++# CONFIG_CIFS_FSCACHE is not set
++# CONFIG_CIFS_ACL is not set
++CONFIG_CIFS_EXPERIMENTAL=y
++CONFIG_NCP_FS=m
++CONFIG_NCPFS_PACKET_SIGNING=y
++CONFIG_NCPFS_IOCTL_LOCKING=y
++CONFIG_NCPFS_STRONG=y
++CONFIG_NCPFS_NFS_NS=y
++CONFIG_NCPFS_OS2_NS=y
++# CONFIG_NCPFS_SMALLDOS is not set
++CONFIG_NCPFS_NLS=y
++CONFIG_NCPFS_EXTRAS=y
++CONFIG_CODA_FS=m
++CONFIG_AFS_FS=m
++# CONFIG_AFS_DEBUG is not set
++# CONFIG_AFS_FSCACHE is not set
++
++#
++# Partition Types
++#
++CONFIG_PARTITION_ADVANCED=y
++CONFIG_ACORN_PARTITION=y
++# CONFIG_ACORN_PARTITION_CUMANA is not set
++# CONFIG_ACORN_PARTITION_EESOX is not set
++CONFIG_ACORN_PARTITION_ICS=y
++# CONFIG_ACORN_PARTITION_ADFS is not set
++# CONFIG_ACORN_PARTITION_POWERTEC is not set
++CONFIG_ACORN_PARTITION_RISCIX=y
++CONFIG_OSF_PARTITION=y
++CONFIG_AMIGA_PARTITION=y
++CONFIG_ATARI_PARTITION=y
++CONFIG_MAC_PARTITION=y
++CONFIG_MSDOS_PARTITION=y
++CONFIG_BSD_DISKLABEL=y
++CONFIG_MINIX_SUBPARTITION=y
++CONFIG_SOLARIS_X86_PARTITION=y
++CONFIG_UNIXWARE_DISKLABEL=y
++CONFIG_LDM_PARTITION=y
++# CONFIG_LDM_DEBUG is not set
++CONFIG_SGI_PARTITION=y
++CONFIG_ULTRIX_PARTITION=y
++CONFIG_SUN_PARTITION=y
++CONFIG_KARMA_PARTITION=y
++CONFIG_EFI_PARTITION=y
++CONFIG_SYSV68_PARTITION=y
++CONFIG_NLS=y
++CONFIG_NLS_DEFAULT="cp437"
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_CODEPAGE_737=m
++CONFIG_NLS_CODEPAGE_775=m
++CONFIG_NLS_CODEPAGE_850=m
++CONFIG_NLS_CODEPAGE_852=m
++CONFIG_NLS_CODEPAGE_855=m
++CONFIG_NLS_CODEPAGE_857=m
++CONFIG_NLS_CODEPAGE_860=m
++CONFIG_NLS_CODEPAGE_861=m
++CONFIG_NLS_CODEPAGE_862=m
++CONFIG_NLS_CODEPAGE_863=m
++CONFIG_NLS_CODEPAGE_864=m
++CONFIG_NLS_CODEPAGE_865=m
++CONFIG_NLS_CODEPAGE_866=m
++CONFIG_NLS_CODEPAGE_869=m
++CONFIG_NLS_CODEPAGE_936=m
++CONFIG_NLS_CODEPAGE_950=m
++CONFIG_NLS_CODEPAGE_932=m
++CONFIG_NLS_CODEPAGE_949=m
++CONFIG_NLS_CODEPAGE_874=m
++CONFIG_NLS_ISO8859_8=m
++CONFIG_NLS_CODEPAGE_1250=m
++CONFIG_NLS_CODEPAGE_1251=m
++CONFIG_NLS_ASCII=m
++CONFIG_NLS_ISO8859_1=m
++CONFIG_NLS_ISO8859_2=m
++CONFIG_NLS_ISO8859_3=m
++CONFIG_NLS_ISO8859_4=m
++CONFIG_NLS_ISO8859_5=m
++CONFIG_NLS_ISO8859_6=m
++CONFIG_NLS_ISO8859_7=m
++CONFIG_NLS_ISO8859_9=m
++CONFIG_NLS_ISO8859_13=m
++CONFIG_NLS_ISO8859_14=m
++CONFIG_NLS_ISO8859_15=m
++CONFIG_NLS_KOI8_R=m
++CONFIG_NLS_KOI8_U=m
++CONFIG_NLS_UTF8=m
++CONFIG_DLM=m
++# CONFIG_DLM_DEBUG is not set
++
++#
++# Kernel hacking
++#
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++CONFIG_PRINTK_TIME=y
++CONFIG_DEFAULT_MESSAGE_LOGLEVEL=4
++# CONFIG_ENABLE_WARN_DEPRECATED is not set
++# CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_FRAME_WARN=1024
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_STRIP_ASM_SYMS is not set
++CONFIG_UNUSED_SYMBOLS=y
++CONFIG_DEBUG_FS=y
++# CONFIG_HEADERS_CHECK is not set
++# CONFIG_DEBUG_SECTION_MISMATCH is not set
++CONFIG_DEBUG_KERNEL=y
++# CONFIG_DEBUG_SHIRQ is not set
++# CONFIG_LOCKUP_DETECTOR is not set
++# CONFIG_HARDLOCKUP_DETECTOR is not set
++CONFIG_DETECT_HUNG_TASK=y
++# CONFIG_BOOTPARAM_HUNG_TASK_PANIC is not set
++CONFIG_BOOTPARAM_HUNG_TASK_PANIC_VALUE=0
++CONFIG_SCHED_DEBUG=y
++CONFIG_SCHEDSTATS=y
++CONFIG_TIMER_STATS=y
++# CONFIG_DEBUG_OBJECTS is not set
++# CONFIG_SLUB_DEBUG_ON is not set
++# CONFIG_SLUB_STATS is not set
++# CONFIG_DEBUG_RT_MUTEXES is not set
++# CONFIG_RT_MUTEX_TESTER is not set
++# CONFIG_DEBUG_SPINLOCK is not set
++# CONFIG_DEBUG_MUTEXES is not set
++# CONFIG_DEBUG_LOCK_ALLOC is not set
++# CONFIG_PROVE_LOCKING is not set
++# CONFIG_SPARSE_RCU_POINTER is not set
++# CONFIG_LOCK_STAT is not set
++# CONFIG_DEBUG_SPINLOCK_SLEEP is not set
++# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
++CONFIG_STACKTRACE=y
++# CONFIG_DEBUG_KOBJECT is not set
++# CONFIG_DEBUG_HIGHMEM is not set
++CONFIG_DEBUG_INFO=y
++# CONFIG_DEBUG_INFO_REDUCED is not set
++# CONFIG_DEBUG_VM is not set
++# CONFIG_DEBUG_WRITECOUNT is not set
++CONFIG_DEBUG_MEMORY_INIT=y
++# CONFIG_DEBUG_LIST is not set
++# CONFIG_TEST_LIST_SORT is not set
++# CONFIG_DEBUG_SG is not set
++# CONFIG_DEBUG_NOTIFIERS is not set
++# CONFIG_DEBUG_CREDENTIALS is not set
++# CONFIG_BOOT_PRINTK_DELAY is not set
++# CONFIG_RCU_TORTURE_TEST is not set
++CONFIG_RCU_CPU_STALL_DETECTOR=y
++CONFIG_RCU_CPU_STALL_TIMEOUT=60
++CONFIG_RCU_CPU_STALL_DETECTOR_RUNNABLE=y
++# CONFIG_BACKTRACE_SELF_TEST is not set
++# CONFIG_DEBUG_BLOCK_EXT_DEVT is not set
++# CONFIG_DEBUG_FORCE_WEAK_PER_CPU is not set
++# CONFIG_LKDTM is not set
++# CONFIG_FAULT_INJECTION is not set
++CONFIG_SYSCTL_SYSCALL_CHECK=y
++# CONFIG_DEBUG_PAGEALLOC is not set
++CONFIG_NOP_TRACER=y
++CONFIG_HAVE_FUNCTION_TRACER=y
++CONFIG_HAVE_FUNCTION_GRAPH_TRACER=y
++CONFIG_HAVE_FUNCTION_TRACE_MCOUNT_TEST=y
++CONFIG_HAVE_DYNAMIC_FTRACE=y
++CONFIG_HAVE_FTRACE_MCOUNT_RECORD=y
++CONFIG_HAVE_C_RECORDMCOUNT=y
++CONFIG_TRACER_MAX_TRACE=y
++CONFIG_RING_BUFFER=y
++CONFIG_EVENT_TRACING=y
++CONFIG_EVENT_POWER_TRACING_DEPRECATED=y
++CONFIG_CONTEXT_SWITCH_TRACER=y
++CONFIG_TRACING=y
++CONFIG_GENERIC_TRACER=y
++CONFIG_TRACING_SUPPORT=y
++CONFIG_FTRACE=y
++# CONFIG_FUNCTION_TRACER is not set
++# CONFIG_IRQSOFF_TRACER is not set
++CONFIG_SCHED_TRACER=y
++CONFIG_BRANCH_PROFILE_NONE=y
++# CONFIG_PROFILE_ANNOTATED_BRANCHES is not set
++# CONFIG_PROFILE_ALL_BRANCHES is not set
++# CONFIG_STACK_TRACER is not set
++CONFIG_BLK_DEV_IO_TRACE=y
++# CONFIG_FTRACE_STARTUP_TEST is not set
++# CONFIG_RING_BUFFER_BENCHMARK is not set
++# CONFIG_DYNAMIC_DEBUG is not set
++# CONFIG_DMA_API_DEBUG is not set
++# CONFIG_ATOMIC64_SELFTEST is not set
++# CONFIG_SAMPLES is not set
++CONFIG_HAVE_ARCH_KGDB=y
++CONFIG_KGDB=y
++CONFIG_KGDB_SERIAL_CONSOLE=y
++# CONFIG_KGDB_TESTS is not set
++# CONFIG_KGDB_LOW_LEVEL_TRAP is not set
++# CONFIG_KGDB_KDB is not set
++# CONFIG_TEST_KSTRTOX is not set
++CONFIG_EARLY_PRINTK=y
++# CONFIG_CMDLINE_BOOL is not set
++# CONFIG_DEBUG_STACKOVERFLOW is not set
++# CONFIG_DEBUG_STACK_USAGE is not set
++# CONFIG_RUNTIME_DEBUG is not set
++# CONFIG_SPINLOCK_TEST is not set
++
++#
++# Security options
++#
++CONFIG_KEYS=y
++# CONFIG_KEYS_DEBUG_PROC_KEYS is not set
++# CONFIG_SECURITY_DMESG_RESTRICT is not set
++CONFIG_SECURITY=y
++CONFIG_SECURITYFS=y
++CONFIG_SECURITY_NETWORK=y
++# CONFIG_SECURITY_NETWORK_XFRM is not set
++CONFIG_SECURITY_PATH=y
++CONFIG_LSM_MMAP_MIN_ADDR=0
++CONFIG_SECURITY_SELINUX=y
++CONFIG_SECURITY_SELINUX_BOOTPARAM=y
++CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE=0
++CONFIG_SECURITY_SELINUX_DISABLE=y
++CONFIG_SECURITY_SELINUX_DEVELOP=y
++CONFIG_SECURITY_SELINUX_AVC_STATS=y
++CONFIG_SECURITY_SELINUX_CHECKREQPROT_VALUE=1
++# CONFIG_SECURITY_SELINUX_POLICYDB_VERSION_MAX is not set
++CONFIG_SECURITY_SMACK=y
++CONFIG_SECURITY_TOMOYO=y
++# CONFIG_SECURITY_APPARMOR is not set
++# CONFIG_IMA is not set
++CONFIG_DEFAULT_SECURITY_SELINUX=y
++# CONFIG_DEFAULT_SECURITY_SMACK is not set
++# CONFIG_DEFAULT_SECURITY_TOMOYO is not set
++# CONFIG_DEFAULT_SECURITY_DAC is not set
++CONFIG_DEFAULT_SECURITY="selinux"
++CONFIG_CRYPTO=y
++
++#
++# Crypto core or helper
++#
++CONFIG_CRYPTO_ALGAPI=y
++CONFIG_CRYPTO_ALGAPI2=y
++CONFIG_CRYPTO_AEAD=m
++CONFIG_CRYPTO_AEAD2=y
++CONFIG_CRYPTO_BLKCIPHER=y
++CONFIG_CRYPTO_BLKCIPHER2=y
++CONFIG_CRYPTO_HASH=y
++CONFIG_CRYPTO_HASH2=y
++CONFIG_CRYPTO_RNG=m
++CONFIG_CRYPTO_RNG2=y
++CONFIG_CRYPTO_PCOMP=m
++CONFIG_CRYPTO_PCOMP2=y
++CONFIG_CRYPTO_MANAGER=y
++CONFIG_CRYPTO_MANAGER2=y
++CONFIG_CRYPTO_MANAGER_DISABLE_TESTS=y
++CONFIG_CRYPTO_GF128MUL=m
++CONFIG_CRYPTO_NULL=m
++# CONFIG_CRYPTO_PCRYPT is not set
++CONFIG_CRYPTO_WORKQUEUE=y
++CONFIG_CRYPTO_CRYPTD=m
++CONFIG_CRYPTO_AUTHENC=m
++CONFIG_CRYPTO_TEST=m
++
++#
++# Authenticated Encryption with Associated Data
++#
++CONFIG_CRYPTO_CCM=m
++CONFIG_CRYPTO_GCM=m
++CONFIG_CRYPTO_SEQIV=m
++
++#
++# Block modes
++#
++CONFIG_CRYPTO_CBC=y
++CONFIG_CRYPTO_CTR=m
++CONFIG_CRYPTO_CTS=m
++CONFIG_CRYPTO_ECB=y
++CONFIG_CRYPTO_LRW=m
++CONFIG_CRYPTO_PCBC=m
++CONFIG_CRYPTO_XTS=m
++
++#
++# Hash modes
++#
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_XCBC=m
++CONFIG_CRYPTO_VMAC=m
++
++#
++# Digest
++#
++CONFIG_CRYPTO_CRC32C=m
++CONFIG_CRYPTO_GHASH=m
++CONFIG_CRYPTO_MD4=m
++CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_RMD128=m
++CONFIG_CRYPTO_RMD160=m
++CONFIG_CRYPTO_RMD256=m
++CONFIG_CRYPTO_RMD320=m
++CONFIG_CRYPTO_SHA1=m
++CONFIG_CRYPTO_SHA256=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++
++#
++# Ciphers
++#
++CONFIG_CRYPTO_AES=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_ARC4=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAMELLIA=m
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_DES=m
++CONFIG_CRYPTO_FCRYPT=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SALSA20=m
++CONFIG_CRYPTO_SEED=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++CONFIG_CRYPTO_TWOFISH_COMMON=m
++
++#
++# Compression
++#
++CONFIG_CRYPTO_DEFLATE=m
++CONFIG_CRYPTO_ZLIB=m
++CONFIG_CRYPTO_LZO=m
++
++#
++# Random Number Generation
++#
++CONFIG_CRYPTO_ANSI_CPRNG=m
++# CONFIG_CRYPTO_USER_API_HASH is not set
++# CONFIG_CRYPTO_USER_API_SKCIPHER is not set
++CONFIG_CRYPTO_HW=y
++# CONFIG_VIRTUALIZATION is not set
++CONFIG_BINARY_PRINTF=y
++
++#
++# Library routines
++#
++CONFIG_BITREVERSE=y
++CONFIG_GENERIC_FIND_LAST_BIT=y
++CONFIG_CRC_CCITT=m
++CONFIG_CRC16=y
++CONFIG_CRC_T10DIF=y
++CONFIG_CRC_ITU_T=m
++CONFIG_CRC32=y
++CONFIG_CRC7=m
++CONFIG_LIBCRC32C=m
++CONFIG_AUDIT_GENERIC=y
++CONFIG_ZLIB_INFLATE=y
++CONFIG_ZLIB_DEFLATE=m
++CONFIG_LZO_COMPRESS=m
++CONFIG_LZO_DECOMPRESS=m
++# CONFIG_XZ_DEC is not set
++# CONFIG_XZ_DEC_BCJ is not set
++CONFIG_DECOMPRESS_GZIP=y
++CONFIG_DECOMPRESS_BZIP2=y
++CONFIG_DECOMPRESS_LZMA=y
++CONFIG_TEXTSEARCH=y
++CONFIG_TEXTSEARCH_KMP=m
++CONFIG_TEXTSEARCH_BM=m
++CONFIG_TEXTSEARCH_FSM=m
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
++CONFIG_CPU_RMAP=y
++CONFIG_NLATTR=y
++CONFIG_GENERIC_ATOMIC64=y
++# CONFIG_AVERAGE is not set
 -- 
 1.7.1
 

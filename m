@@ -1,74 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2011 13:55:39 +0200 (CEST)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:50522 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491119Ab1EGLze (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2011 13:55:34 +0200
-Received: by wwb17 with SMTP id 17so3586054wwb.24
-        for <multiple recipients>; Sat, 07 May 2011 04:55:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=zZF7hPuU7OmnsMqFzib2JJZR586yYS6AhuT11zMUwIw=;
-        b=cSkdjoh0SGeJEN9SCwdYBCAfsyj8w568fyKqfHlFKE+HBBXv5un+R7uDtbU9iq5U56
-         L5OGUT+C3OmdZmkANlC83WsLEPzc3dauZv5c9FgfYY87Uh9XPJRX4o+C88D96N/mXBex
-         LQO/fL4OQEWPKTNzECl7zFbkkQvMky55Omh2w=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=u6Hd3O0Ca0RqKJJhvbrqlznYXyv3GqnIvOj2GGam7wkQ9v9eWpTVn22/+Ywz2ed4uz
-         k58BS2EwWlIMirbxLTci6b67O6KRko29v8YFoOCdlTxPYUg25uF7/+jkQQ0lF+ZZt5OB
-         Z3xSuBcfUdXy4cOnEVRdDbXKBLHK4NwCIbH4w=
-Received: by 10.216.230.213 with SMTP id j63mr624120weq.20.1304769328751;
-        Sat, 07 May 2011 04:55:28 -0700 (PDT)
-Received: from localhost.localdomain (178-191-9-4.adsl.highway.telekom.at [178.191.9.4])
-        by mx.google.com with ESMTPS id m84sm1240142weq.36.2011.05.07.04.55.27
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 07 May 2011 04:55:28 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH] MIPS: Alchemy: fix xxs1500 build error
-Date:   Sat,  7 May 2011 13:55:19 +0200
-Message-Id: <1304769319-25167-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: git-send-email 1.7.5.rc3
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2011 14:28:08 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:45531 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491121Ab1EGM2C (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2011 14:28:02 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 0C53D8ACB;
+        Sat,  7 May 2011 14:28:01 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id OmfcjUvQQOlw; Sat,  7 May 2011 14:27:54 +0200 (CEST)
+Received: from localhost.localdomain (dyndsl-085-016-167-129.ewe-ip-backbone.de [85.16.167.129])
+        by hauke-m.de (Postfix) with ESMTPSA id 4BDC48AC9;
+        Sat,  7 May 2011 14:27:54 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 0/5] MIPS: BCM47xx: Enhancements in Parsing the NVRAM data
+Date:   Sat,  7 May 2011 14:27:38 +0200
+Message-Id: <1304771263-10937-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.4.1
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29855
+X-archive-position: 29856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 
-This fixes:
-alchemy/xxs1500/init.c: In function 'prom_init':
-alchemy/xxs1500/init.c:57:17: error: ignoring return value of 'kstrtoul', declared with attribute warn_unused_result
+The first 3 patches add the ability to provide an fallback sprom from 
+the nvram when a card connected to the pci bus using a ssb bus itself 
+has no own sprom. Then the ssb code now asks the architecture code for 
+the data. In the bcm47xx architecture the sprom data is stored in the 
+nvram for recent devices and they do not have an own sprom.
+Patch #4 looks for some more values in the sprom. Boradcom changed the 
+names of some attributes with sprom revision 4.
+The last patch fixes the parsing of mac addresses on some devices.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
----
- arch/mips/alchemy/xxs1500/init.c |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
+Hauke Mehrtens (5):
+  ssb: Change fallback sprom to callback mechanism.
+  MIPS: BCM47xx: extend bcm47xx_fill_sprom with prefix.
+  MIPS: BCM47xx: register ssb fallback sprom callback
+  MIPS: BCM47xx: extend the filling of sprom from nvram
+  MIPS: BCM47xx: Fix mac address parsing.
 
-diff --git a/arch/mips/alchemy/xxs1500/init.c b/arch/mips/alchemy/xxs1500/init.c
-index 0bf768f..0ee02cf 100644
---- a/arch/mips/alchemy/xxs1500/init.c
-+++ b/arch/mips/alchemy/xxs1500/init.c
-@@ -51,10 +51,9 @@ void __init prom_init(void)
- 	prom_init_cmdline();
- 
- 	memsize_str = prom_getenv("memsize");
--	if (!memsize_str)
-+	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
- 		memsize = 0x04000000;
--	else
--		strict_strtoul(memsize_str, 0, &memsize);
-+
- 	add_memory_region(0, memsize, BOOT_MEM_RAM);
- }
- 
+ arch/mips/bcm47xx/nvram.c                  |    3 +-
+ arch/mips/bcm47xx/setup.c                  |  130 +++++++++++++++++++++++-----
+ arch/mips/bcm63xx/boards/board_bcm963xx.c  |   16 +++-
+ arch/mips/include/asm/mach-bcm47xx/nvram.h |   11 ++-
+ drivers/ssb/pci.c                          |   16 +++-
+ drivers/ssb/sprom.c                        |   26 +++---
+ drivers/ssb/ssb_private.h                  |    2 +-
+ include/linux/ssb/ssb.h                    |    4 +-
+ 8 files changed, 163 insertions(+), 45 deletions(-)
+
 -- 
-1.7.5.rc3
+1.7.4.1

@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2011 14:28:58 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45552 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2011 14:29:24 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:45563 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491130Ab1EGM2I (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2011 14:28:08 +0200
+        with ESMTP id S1491131Ab1EGM2M (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 May 2011 14:28:12 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 900C68AD0;
-        Sat,  7 May 2011 14:28:08 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id CBEDD8ACA;
+        Sat,  7 May 2011 14:28:11 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Eaqw+vBxS1e6; Sat,  7 May 2011 14:28:04 +0200 (CEST)
+        with ESMTP id Fxn3wuWHil-L; Sat,  7 May 2011 14:28:07 +0200 (CEST)
 Received: from localhost.localdomain (dyndsl-085-016-167-129.ewe-ip-backbone.de [85.16.167.129])
-        by hauke-m.de (Postfix) with ESMTPSA id B9BFA8ACA;
-        Sat,  7 May 2011 14:28:03 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 8AB0A8ACB;
+        Sat,  7 May 2011 14:28:04 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 2/5] MIPS: BCM47xx: extend bcm47xx_fill_sprom with prefix.
-Date:   Sat,  7 May 2011 14:27:40 +0200
-Message-Id: <1304771263-10937-3-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 3/5] MIPS: BCM47xx: register ssb fallback sprom callback
+Date:   Sat,  7 May 2011 14:27:41 +0200
+Message-Id: <1304771263-10937-4-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1304771263-10937-1-git-send-email-hauke@hauke-m.de>
 References: <1304771263-10937-1-git-send-email-hauke@hauke-m.de>
@@ -26,7 +26,7 @@ Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29858
+X-archive-position: 29859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,91 +34,86 @@ X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 
-When an other ssb based device without an own sprom is attached, using
-the PCI bus to the main ssb based device, the data normally found in
-the sprom will be stored in the nvram on modern devices. The keys, to
-load the data from the nvram, are all using some sort of prefix like
-pci/1/1/, pci/1/3/ or sb/1/ before the actual key. This patch extends
-bcm47xx_fill_sprom() to make it possible to read out these values when
-some prefix was used.
-The keys for the sprom data used on the main chip does not have a
-prefix.
+We are generating the prefix based on the PCI bus address the device is
+on. This is done like Broadcom does it in their code expect that the
+the bus number is increased by one. In the SB bus implementation used by
+Broadcom the SB bus emulates a PCI bus so the kernel sees one PCI bus
+more then in our implementation. We do not handle prefixes like sb/1/
+yet as they are only used on the new bus which is not implemented yet.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/setup.c |   29 +++++++++++++++++++++--------
- 1 files changed, 21 insertions(+), 8 deletions(-)
+ arch/mips/bcm47xx/nvram.c |    3 ++-
+ arch/mips/bcm47xx/setup.c |   22 ++++++++++++++++++++++
+ 2 files changed, 24 insertions(+), 1 deletions(-)
 
+diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
+index e5b6615..54db815 100644
+--- a/arch/mips/bcm47xx/nvram.c
++++ b/arch/mips/bcm47xx/nvram.c
+@@ -3,6 +3,7 @@
+  *
+  * Copyright (C) 2005 Broadcom Corporation
+  * Copyright (C) 2006 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2010-2011 Hauke Mehrtens <hauke@hauke-m.de>
+  *
+  * This program is free software; you can redistribute  it and/or modify it
+  * under  the terms of  the GNU General  Public License as published by the
+@@ -23,7 +24,7 @@
+ static char nvram_buf[NVRAM_SPACE];
+ 
+ /* Probe for NVRAM header */
+-static void __init early_nvram_init(void)
++static void early_nvram_init(void)
+ {
+ 	struct ssb_mipscore *mcore = &ssb_bcm47xx.mipscore;
+ 	struct nvram_header *header;
 diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index c95f90b..bbfcf9b 100644
+index bbfcf9b..258ffcf 100644
 --- a/arch/mips/bcm47xx/setup.c
 +++ b/arch/mips/bcm47xx/setup.c
-@@ -57,10 +57,23 @@ static void bcm47xx_machine_halt(void)
+@@ -3,6 +3,7 @@
+  *  Copyright (C) 2006 Felix Fietkau <nbd@openwrt.org>
+  *  Copyright (C) 2006 Michael Buesch <mb@bu3sch.de>
+  *  Copyright (C) 2010 Waldemar Brodkorb <wbx@openadk.org>
++ *  Copyright (C) 2010-2011 Hauke Mehrtens <hauke@hauke-m.de>
+  *
+  *  This program is free software; you can redistribute  it and/or modify it
+  *  under  the terms of  the GNU General  Public License as published by the
+@@ -154,6 +155,22 @@ static void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix)
+ 	}
  }
  
- #define READ_FROM_NVRAM(_outvar, name, buf) \
--	if (nvram_getenv(name, buf, sizeof(buf)) >= 0)\
-+	if (nvram_getprefix(prefix, name, buf, sizeof(buf)) >= 0)\
- 		sprom->_outvar = simple_strtoul(buf, NULL, 0);
- 
--static void bcm47xx_fill_sprom(struct ssb_sprom *sprom)
-+static inline int nvram_getprefix(const char *prefix, char *name,
-+				  char *buf, int len)
++int bcm47xx_get_sprom(struct ssb_bus *bus, struct ssb_sprom *out)
 +{
-+	if (prefix) {
-+		char key[100];
++	char prefix[10];
 +
-+		snprintf(key, sizeof(key), "%s%s", prefix, name);
-+		return nvram_getenv(key, buf, len);
++	if (bus->bustype == SSB_BUSTYPE_PCI) {
++		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
++			 bus->host_pci->bus->number + 1,
++			 PCI_SLOT(bus->host_pci->devfn));
++		bcm47xx_fill_sprom(out, prefix);
++		return 0;
++	} else {
++		printk(KERN_WARNING "bcm47xx: unable to fill SPROM for given bustype.\n");
++		return -EINVAL;
 +	}
-+
-+	return nvram_getenv(name, buf, len);
 +}
 +
-+static void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix)
+ static int bcm47xx_get_invariants(struct ssb_bus *bus,
+ 				   struct ssb_init_invariants *iv)
  {
+@@ -185,6 +202,11 @@ void __init plat_mem_setup(void)
  	char buf[100];
- 	u32 boardflags;
-@@ -69,11 +82,11 @@ static void bcm47xx_fill_sprom(struct ssb_sprom *sprom)
+ 	struct ssb_mipscore *mcore;
  
- 	sprom->revision = 1; /* Fallback: Old hardware does not define this. */
- 	READ_FROM_NVRAM(revision, "sromrev", buf);
--	if (nvram_getenv("il0macaddr", buf, sizeof(buf)) >= 0)
-+	if (nvram_getprefix(prefix, "il0macaddr", buf, sizeof(buf)) >= 0)
- 		nvram_parse_macaddr(buf, sprom->il0mac);
--	if (nvram_getenv("et0macaddr", buf, sizeof(buf)) >= 0)
-+	if (nvram_getprefix(prefix, "et0macaddr", buf, sizeof(buf)) >= 0)
- 		nvram_parse_macaddr(buf, sprom->et0mac);
--	if (nvram_getenv("et1macaddr", buf, sizeof(buf)) >= 0)
-+	if (nvram_getprefix(prefix, "et1macaddr", buf, sizeof(buf)) >= 0)
- 		nvram_parse_macaddr(buf, sprom->et1mac);
- 	READ_FROM_NVRAM(et0phyaddr, "et0phyaddr", buf);
- 	READ_FROM_NVRAM(et1phyaddr, "et1phyaddr", buf);
-@@ -125,14 +138,14 @@ static void bcm47xx_fill_sprom(struct ssb_sprom *sprom)
- 	READ_FROM_NVRAM(ofdm5gpo, "ofdm5gpo", buf);
- 	READ_FROM_NVRAM(ofdm5ghpo, "ofdm5ghpo", buf);
- 
--	if (nvram_getenv("boardflags", buf, sizeof(buf)) >= 0) {
-+	if (nvram_getprefix(prefix, "boardflags", buf, sizeof(buf)) >= 0) {
- 		boardflags = simple_strtoul(buf, NULL, 0);
- 		if (boardflags) {
- 			sprom->boardflags_lo = (boardflags & 0x0000FFFFU);
- 			sprom->boardflags_hi = (boardflags & 0xFFFF0000U) >> 16;
- 		}
- 	}
--	if (nvram_getenv("boardflags2", buf, sizeof(buf)) >= 0) {
-+	if (nvram_getprefix(prefix, "boardflags2", buf, sizeof(buf)) >= 0) {
- 		boardflags = simple_strtoul(buf, NULL, 0);
- 		if (boardflags) {
- 			sprom->boardflags2_lo = (boardflags & 0x0000FFFFU);
-@@ -158,7 +171,7 @@ static int bcm47xx_get_invariants(struct ssb_bus *bus,
- 	if (nvram_getenv("boardrev", buf, sizeof(buf)) >= 0)
- 		iv->boardinfo.rev = (u16)simple_strtoul(buf, NULL, 0);
- 
--	bcm47xx_fill_sprom(&iv->sprom);
-+	bcm47xx_fill_sprom(&iv->sprom, NULL);
- 
- 	if (nvram_getenv("cardbus", buf, sizeof(buf)) >= 0)
- 		iv->has_cardbus_slot = !!simple_strtoul(buf, NULL, 10);
++	err = ssb_arch_register_fallback_sprom(&bcm47xx_get_sprom);
++	if (err)
++		printk(KERN_WARNING "bcm47xx: someone else already registered"
++			" a ssb SPROM callback handler (err %d)\n", err);
++
+ 	err = ssb_bus_ssbbus_register(&ssb_bcm47xx, SSB_ENUM_BASE,
+ 				      bcm47xx_get_invariants);
+ 	if (err)
 -- 
 1.7.4.1

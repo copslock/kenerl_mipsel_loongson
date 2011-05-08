@@ -1,252 +1,129 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 May 2011 19:24:47 +0200 (CEST)
-Received: from mail-qy0-f177.google.com ([209.85.216.177]:40242 "EHLO
-        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491142Ab1EGRYo convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 7 May 2011 19:24:44 +0200
-Received: by qyl38 with SMTP id 38so3761394qyl.15
-        for <multiple recipients>; Sat, 07 May 2011 10:24:38 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 May 2011 10:42:36 +0200 (CEST)
+Received: from mail-ww0-f41.google.com ([74.125.82.41]:63956 "EHLO
+        mail-ww0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491003Ab1EHImc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 8 May 2011 10:42:32 +0200
+Received: by wwi18 with SMTP id 18so1552983wwi.0
+        for <linux-mips@linux-mips.org>; Sun, 08 May 2011 01:42:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type:content-transfer-encoding;
-        bh=KjtSvzSNEK39jCQQvsWFfibn7y4jBmF8y0mBbjVhzdk=;
-        b=xQIIgjROYREM7vbapu6XU6ImcnfwYhRh1TqtLTviyIRsLTWrSttWg1QjH8yJpzzcxT
-         gHo6oo9SSNhfzRa9v9zEIA0K4JIMD++ov/VASajawXOUo9xzWbwte24N3P3oQPuh/DJE
-         5uaKmgXbke+Bqj1zdVHvPXgz6fwER1UW2kua0=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=+n2pmT7iV0bbHsoUmKpmt7xyvo1Nyi34sZ2c03sWQEI=;
+        b=MfQH89jCSOa0+PUeiPD5ckhK1v559Y5bRjVYglj35oAZRy6oLMcW75yOjTc+AXQkYh
+         hgabmIcBZXRJXX0R9tLKBQa/3vImOU9Y15vR5ITs9w36QHCiEHREXVN0/M0ooC26cFA+
+         Vq9wXXnDBg4+syR766xvx1vElRXraYposEU4I=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        b=p1BA63pfHBxx+pGp0k01/JdZS+h3O9RRe7uEQ6xo1xsO4fFHpatkv/wK+tsgoWC1jY
-         JEF8MqL+eVE5XYaMCTEB3++EECb5nbERgxjtBteHD4GXr7uRH/Qs2e71KaJRVaxCofy+
-         YGzfezZfr9mhzWQ3p8+v/wqQTD2u0oJ6s6weI=
-Received: by 10.229.197.13 with SMTP id ei13mr1629624qcb.50.1304789078194;
- Sat, 07 May 2011 10:24:38 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.229.184.69 with HTTP; Sat, 7 May 2011 10:24:18 -0700 (PDT)
-In-Reply-To: <1304771263-10937-2-git-send-email-hauke@hauke-m.de>
-References: <1304771263-10937-1-git-send-email-hauke@hauke-m.de> <1304771263-10937-2-git-send-email-hauke@hauke-m.de>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Sat, 7 May 2011 19:24:18 +0200
-Message-ID: <BANLkTinV+cuTr2cPvR2pBDE_C-2J4KwWcA@mail.gmail.com>
-Subject: Re: [PATCH 1/5] ssb: Change fallback sprom to callback mechanism.
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        Michael Buesch <mb@bu3sch.de>, netdev@vger.kernel.org,
-        Florian Fainelli <florian@openwrt.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <jonas.gorski@gmail.com>
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=NopKJs0dbY1zjvvZSABVbATPhejf2jVn+2HH4bdtjQdep8XHneQCFPM87wKJDHwJTC
+         oBKqs6HDP6+nLCLvYTNqk+4pabRrSciGCy15XpJAczG1yoDDPMG4C/2oIZ6DQadYRUMe
+         ftLuVUDwqxpwUL4cMMNyqYFqJTQpbLhB9YcpE=
+Received: by 10.227.164.79 with SMTP id d15mr5952083wby.62.1304844145916;
+        Sun, 08 May 2011 01:42:25 -0700 (PDT)
+Received: from localhost.localdomain (178-191-5-255.adsl.highway.telekom.at [178.191.5.255])
+        by mx.google.com with ESMTPS id z9sm3022884wbx.34.2011.05.08.01.42.24
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 08 May 2011 01:42:25 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Florian Fainelli <florian@openwrt.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [RFC PATCH 0/9] Misc. Alchemy updates
+Date:   Sun,  8 May 2011 10:42:11 +0200
+Message-Id: <1304844140-3259-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.5.rc3
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29865
+X-archive-position: 29866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+This is a RFC for a series of patches I've been sitting on a while,
+it applies on top of latest linus-git (#3-#9 need to be applied
+in sequence).
 
-just some small small spelling nit-picks:
 
-On 7 May 2011 14:27, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> Some embedded devices like the Netgear WNDR3300 have two SSB based
-> cards without an own sprom on the pci bus. We have to provide two
-> different fallback sproms for these and this was not possible with the
-> old solution. In the bcm47xx architecture the sprom data is stored in
-> the nvram in the main flash storage. The architecture code will be able
-> to fill the sprom with the stored data based on the bus where the
-> device was found.
->
-> The bcm63xx code should to the same thing as before, just using the new
+These two are older; they've been updated a bit:
 
-to -> do
+#1  improves stability of DB1200 board,
+#2  is a buildfix for mtx-1 with gpiolib=n; the gpio api has
+    been updated with new functions, which this patch adds.
 
-> API.
->
-> CC: Michael Buesch <mb@bu3sch.de>
-> CC: netdev@vger.kernel.org
-> CC: Florian Fainelli <florian@openwrt.org>
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->  arch/mips/bcm63xx/boards/board_bcm963xx.c |   16 ++++++++++++++--
->  drivers/ssb/pci.c                         |   16 +++++++++++-----
->  drivers/ssb/sprom.c                       |   26 +++++++++++++++-----------
->  drivers/ssb/ssb_private.h                 |    2 +-
->  include/linux/ssb/ssb.h                   |    4 +++-
->  5 files changed, 44 insertions(+), 20 deletions(-)
->
-> diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-> index 8dba8cf..40b223b 100644
-> --- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
-> +++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-> @@ -643,6 +643,17 @@ static struct ssb_sprom bcm63xx_sprom = {
->        .boardflags_lo          = 0x2848,
->        .boardflags_hi          = 0x0000,
->  };
-> +
-> +int bcm63xx_get_fallback_sprom(struct ssb_bus *bus, struct ssb_sprom *out)
-> +{
-> +       if (bus->bustype == SSB_BUSTYPE_PCI) {
-> +               memcpy(out, &bcm63xx_sprom, sizeof(struct ssb_sprom));
-> +               return 0;
-> +       } else {
-> +               printk(KERN_ERR PFX "unable to fill SPROM for given bustype.\n");
-> +               return -EINVAL;
-> +       }
-> +}
->  #endif
->
->  /*
-> @@ -793,8 +804,9 @@ void __init board_prom_init(void)
->        if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
->                memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
->                memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-> -               if (ssb_arch_set_fallback_sprom(&bcm63xx_sprom) < 0)
-> -                       printk(KERN_ERR "failed to register fallback SPROM\n");
-> +               if (ssb_arch_register_fallback_sprom(
-> +                               &bcm63xx_get_fallback_sprom) < 0)
-> +                       printk(KERN_ERR PFX "failed to register fallback SPROM\n");
->        }
->  #endif
->  }
-> diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
-> index 6f34963..34955d1 100644
-> --- a/drivers/ssb/pci.c
-> +++ b/drivers/ssb/pci.c
-> @@ -662,7 +662,6 @@ static int sprom_extract(struct ssb_bus *bus, struct ssb_sprom *out,
->  static int ssb_pci_sprom_get(struct ssb_bus *bus,
->                             struct ssb_sprom *sprom)
->  {
-> -       const struct ssb_sprom *fallback;
->        int err;
->        u16 *buf;
->
-> @@ -707,10 +706,17 @@ static int ssb_pci_sprom_get(struct ssb_bus *bus,
->                if (err) {
->                        /* All CRC attempts failed.
->                         * Maybe there is no SPROM on the device?
-> -                        * If we have a fallback, use that. */
-> -                       fallback = ssb_get_fallback_sprom();
-> -                       if (fallback) {
-> -                               memcpy(sprom, fallback, sizeof(*sprom));
-> +                        * Now we ask the arch code if there is some sprom
-> +                        * avaliable for this device in some other storage */
 
-avaliable -> available
+the other patches mainly replace au_readl/au_writel with __raw_*
+functions, and try to reduce the register address clutter in
+the au1000.h header.  This was basically a single large patch
+broken down into smaller ones, one for each ip block.
 
-> +                       err = ssb_fill_sprom_with_fallback(bus, sprom);
-> +                       if (err) {
-> +                               ssb_printk(KERN_WARNING PFX "WARNING: Using"
-> +                                          " fallback SPROM failed (err %d)\n",
-> +                                          err);
-> +                       } else {
-> +                               ssb_dprintk(KERN_DEBUG PFX "Using SPROM"
-> +                                           " revision %d provided by"
-> +                                           " platform.\n", sprom->revision);
->                                err = 0;
->                                goto out_free;
->                        }
-> diff --git a/drivers/ssb/sprom.c b/drivers/ssb/sprom.c
-> index 5f34d7a..20cd139 100644
-> --- a/drivers/ssb/sprom.c
-> +++ b/drivers/ssb/sprom.c
-> @@ -17,7 +17,7 @@
->  #include <linux/slab.h>
->
->
-> -static const struct ssb_sprom *fallback_sprom;
-> +static int(*get_fallback_sprom)(struct ssb_bus *dev, struct ssb_sprom *out);
->
->
->  static int sprom2hex(const u16 *sprom, char *buf, size_t buf_len,
-> @@ -145,13 +145,14 @@ out:
->  }
->
->  /**
-> - * ssb_arch_set_fallback_sprom - Set a fallback SPROM for use if no SPROM is found.
-> + * ssb_arch_register_fallback_sprom - Registers a method providing a fallback
-> + * SPROM if no SPROM is found.
->  *
-> - * @sprom: The SPROM data structure to register.
-> + * @sprom_callback: The callbcak function.
+#3  removes most of the irq-controller related register defines
+    and updates irq.c to get rid of au_readl/writel.
+#4  converts IRQ PM to syscore_ops
+#5  converts DBDMA PM to syscore_ops
+#6  rewrite UART setup to use runtime CPU detection, and get
+    rid of most of the uart base address defines
+#7  rewrite ethernet setup to use runtime CPU detection,
+    and get rid of most of the redundant ethernet constants
+#8  updates the old au1000 dma driver: according to the
+    databooks physical addresses should be used for source
+    and destination; this also allows then to remove
+    another bunch of redundant address constants.
+#9  changes the GPIO1/GPIO2 defines into offsets from their
+    respective ip block base.  I also had to fixup the
+    mtx-1 wdt driver a bit since it modified the gpio2 block
+    directly.
 
-callbcak -> callback
+All patches have been compile tested, and except for #7, #8 and
+the wdt parts of #9 also been run- and PM-tested on the DB1200.
 
->  *
-> - * With this function the architecture implementation may register a fallback
-> - * SPROM data structure. The fallback is only used for PCI based SSB devices,
-> - * where no valid SPROM can be found in the shadow registers.
-> + * With this function the architecture implementation may register a callback
-> + * handler which wills the SPROM data structure. The fallback is only used for
+CCing Florian and Wolfgang: If you have time, please test #7-#9
+on your MTX-1 and GPR boards!  I'd like to know whether ethernet
+and the mtx-1 watchdog still work!  Thanks!
 
-wills -> fills
+Please test/comment!
 
-> + * PCI based SSB devices, where no valid SPROM can be found in the shadow registers.
->  *
->  * This function is useful for weird architectures that have a half-assed SSB device
->  * hardwired to their PCI bus.
-> @@ -163,18 +164,21 @@ out:
->  *
->  * This function is available for architecture code, only. So it is not exported.
->  */
-> -int ssb_arch_set_fallback_sprom(const struct ssb_sprom *sprom)
-> +int ssb_arch_register_fallback_sprom(int (*sprom_callback)(struct ssb_bus *bus, struct ssb_sprom *out))
->  {
-> -       if (fallback_sprom)
-> +       if (get_fallback_sprom)
->                return -EEXIST;
-> -       fallback_sprom = sprom;
-> +       get_fallback_sprom = sprom_callback;
->
->        return 0;
->  }
->
-> -const struct ssb_sprom *ssb_get_fallback_sprom(void)
-> +int ssb_fill_sprom_with_fallback(struct ssb_bus *bus, struct ssb_sprom *out)
->  {
-> -       return fallback_sprom;
-> +       if (!get_fallback_sprom)
-> +               return -ENOENT;
-> +
-> +       return get_fallback_sprom(bus, out);
->  }
->
->  /* http://bcm-v4.sipsolutions.net/802.11/IsSpromAvailable */
-> diff --git a/drivers/ssb/ssb_private.h b/drivers/ssb/ssb_private.h
-> index 0331139..1a32f58 100644
-> --- a/drivers/ssb/ssb_private.h
-> +++ b/drivers/ssb/ssb_private.h
-> @@ -171,7 +171,7 @@ ssize_t ssb_attr_sprom_store(struct ssb_bus *bus,
->                             const char *buf, size_t count,
->                             int (*sprom_check_crc)(const u16 *sprom, size_t size),
->                             int (*sprom_write)(struct ssb_bus *bus, const u16 *sprom));
-> -extern const struct ssb_sprom *ssb_get_fallback_sprom(void);
-> +extern int ssb_fill_sprom_with_fallback(struct ssb_bus *bus, struct ssb_sprom *out);
->
->
->  /* core.c */
-> diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
-> index 9659eff..045f72a 100644
-> --- a/include/linux/ssb/ssb.h
-> +++ b/include/linux/ssb/ssb.h
-> @@ -404,7 +404,9 @@ extern bool ssb_is_sprom_available(struct ssb_bus *bus);
->
->  /* Set a fallback SPROM.
->  * See kdoc at the function definition for complete documentation. */
-> -extern int ssb_arch_set_fallback_sprom(const struct ssb_sprom *sprom);
-> +extern int ssb_arch_register_fallback_sprom(
-> +               int (*sprom_callback)(struct ssb_bus *bus,
-> +               struct ssb_sprom *out));
->
->  /* Suspend a SSB bus.
->  * Call this from the parent bus suspend routine. */
-> --
-> 1.7.4.1
->
->
->
+Thank you,
+     Manuel Lauss
+
+Manuel Lauss (9):
+  MIPS: DB1200: Set Config[OD] for improved stability.
+  MIPS: Alchemy: update inlinable GPIO API
+  MIPS: Alchemy: irq code and constant cleanup
+  MIPS: Alchemy: convert irq.c to syscore_ops.
+  MIPS: Alchemy: convert dbdma.c to syscore_ops
+  MIPS: Alchemy: rewrite UART setup and constants.
+  MIPS: Alchemy: rewrite ethernet platform setup
+  MIPS: Alchemy: cleanup DMA addresses
+  MIPS: Alchemy: clean up GPIO registers and accessors
+
+ arch/mips/alchemy/common/dbdma.c                 |  123 +++-----
+ arch/mips/alchemy/common/dma.c                   |   46 ++--
+ arch/mips/alchemy/common/irq.c                   |  345 +++++++++++-----------
+ arch/mips/alchemy/common/platform.c              |  250 ++++++++++------
+ arch/mips/alchemy/common/setup.c                 |    4 +-
+ arch/mips/alchemy/devboards/db1200/setup.c       |    7 +
+ arch/mips/alchemy/devboards/pb1000/board_setup.c |    2 +-
+ arch/mips/alchemy/devboards/pb1500/board_setup.c |    2 +-
+ arch/mips/alchemy/devboards/prom.c               |    2 +-
+ arch/mips/alchemy/gpr/board_setup.c              |   14 +-
+ arch/mips/alchemy/gpr/init.c                     |    2 +-
+ arch/mips/alchemy/mtx-1/board_setup.c            |    2 +-
+ arch/mips/alchemy/mtx-1/init.c                   |    2 +-
+ arch/mips/alchemy/xxs1500/board_setup.c          |   11 +-
+ arch/mips/alchemy/xxs1500/init.c                 |    2 +-
+ arch/mips/boot/compressed/uart-alchemy.c         |    2 +-
+ arch/mips/include/asm/mach-au1x00/au1000.h       |  334 +++++----------------
+ arch/mips/include/asm/mach-au1x00/au1000_dma.h   |    4 -
+ arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h |    8 -
+ arch/mips/include/asm/mach-au1x00/gpio-au1000.h  |  122 +++++++--
+ drivers/watchdog/mtx-1_wdt.c                     |   21 +-
+ 21 files changed, 615 insertions(+), 690 deletions(-)
+
+-- 
+1.7.5.rc3

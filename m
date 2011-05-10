@@ -1,59 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2011 21:07:28 +0200 (CEST)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:57720 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491029Ab1EJTHZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 May 2011 21:07:25 +0200
-Received: by wwb17 with SMTP id 17so5994052wwb.24
-        for <multiple recipients>; Tue, 10 May 2011 12:07:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=jeHDt++L+o5mWVl6V9Vi4nM5Gbl+VXb5OzHLmY65RN4=;
-        b=QIYAdl8d48Dqm40TxYg/rpgZVpKXPYp/nSb5tilnODI31nfF8Bm5ltmlxjar9U47vH
-         KX2/jroLrIFzTQ+8WwKYOIv8OV3m8xP3NBeOGu6w5heDYDgQ3PqxXQvt3VEEefSy/qTP
-         VMgvy7znqqK2ShIDXEWIax7g7VaQykZO5P6yM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=Twl+UiIXrBUuhWLHtWhmPSzZf67yPuIZxcnQSgvgiLTEGx6Mjz2sGa3GZC35ghPWIl
-         QSF/1PVYMHSrM+s1LcDYNA4ru3vsIISMK4cOeDt6gkMU5nhPqpaIteFdSZbGqCvtxU4S
-         +diSPUNqS/XJ2frr50sJp46FEE7lnrZEBl72M=
-MIME-Version: 1.0
-Received: by 10.216.140.147 with SMTP id e19mr8557624wej.49.1305054439500;
- Tue, 10 May 2011 12:07:19 -0700 (PDT)
-Received: by 10.216.49.211 with HTTP; Tue, 10 May 2011 12:07:19 -0700 (PDT)
-In-Reply-To: <20110510150238.GI21768@linux-mips.org>
-References: <1304844140-3259-1-git-send-email-manuel.lauss@googlemail.com>
-        <1304844140-3259-10-git-send-email-manuel.lauss@googlemail.com>
-        <20110510150238.GI21768@linux-mips.org>
-Date:   Tue, 10 May 2011 21:07:19 +0200
-Message-ID: <BANLkTimHH3+exYa02NA1R7F3mnQaSZ8sqw@mail.gmail.com>
-Subject: Re: [PATCH 9/9] MIPS: Alchemy: clean up GPIO registers and accessors
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>,
-        Wolfgang Grandegger <wg@grandegger.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 May 2011 23:31:59 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:48264 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491043Ab1EJVby (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 May 2011 23:31:54 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 382108ACC;
+        Tue, 10 May 2011 23:31:52 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id aMCYqQXyZAaC; Tue, 10 May 2011 23:31:49 +0200 (CEST)
+Received: from localhost.localdomain (host-091-097-255-123.ewe-ip-backbone.de [91.97.255.123])
+        by hauke-m.de (Postfix) with ESMTPSA id 1902B87E4;
+        Tue, 10 May 2011 23:31:49 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH v2 0/5] MIPS: BCM47xx: Enhancements in Parsing the NVRAM data
+Date:   Tue, 10 May 2011 23:31:29 +0200
+Message-Id: <1305063094-26656-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.4.1
+Return-Path: <hauke@hauke-m.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29911
+X-archive-position: 29912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 10, 2011 at 5:02 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> Thanks, queued for 2.6.40 - but you really should cc the watchdog folks, too!
+The first 3 patches add the ability to provide an fallback sprom from 
+the nvram when a card connected to the pci bus using a ssb bus itself 
+has no own sprom. Then the ssb code now asks the architecture code for 
+the data. In the bcm47xx architecture the sprom data is stored in the 
+nvram for recent devices and they do not have an own sprom.
+Patch #4 looks for some more values in the sprom. Boradcom changed the 
+names of some attributes with sprom revision 4.
+The last patch fixes the parsing of mac addresses on some devices.
 
-Thank you.  Yesterday I split some of the patches in this series; among them is
-a stand-alone version of the mtx-1 watchdog patch which I sent to the watchdog
-maintainer and list.
+There are still some checkpatch warnings about not using kstrto*. 
+  WARNING: consider using kstrto* in preference to simple_strtoul
+I will fix this in a later patch as there are many usages of simple_strtoul
+in arch/mips/bcm47xx/setup.c.
+    
+v2: * fix some checkpatch errors and warnings
+    * fix spelling issues    
 
-Manuel
+Hauke Mehrtens (5):
+  ssb: Change fallback sprom to callback mechanism.
+  MIPS: BCM47xx: extend bcm47xx_fill_sprom with prefix.
+  MIPS: BCM47xx: register ssb fallback sprom callback
+  MIPS: BCM47xx: extend the filling of sprom from nvram
+  MIPS: BCM47xx: Fix mac address parsing.
+
+ arch/mips/bcm47xx/nvram.c                  |    3 +-
+ arch/mips/bcm47xx/setup.c                  |  130 +++++++++++++++++++++++-----
+ arch/mips/bcm63xx/boards/board_bcm963xx.c  |   16 +++-
+ arch/mips/include/asm/mach-bcm47xx/nvram.h |   12 ++-
+ drivers/ssb/pci.c                          |   16 +++-
+ drivers/ssb/sprom.c                        |   43 ++++++----
+ drivers/ssb/ssb_private.h                  |    3 +-
+ include/linux/ssb/ssb.h                    |    4 +-
+ 8 files changed, 175 insertions(+), 52 deletions(-)
+
+-- 
+1.7.4.1

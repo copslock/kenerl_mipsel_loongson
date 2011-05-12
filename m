@@ -1,86 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2011 11:27:59 +0200 (CEST)
-Received: from smtp.outflux.net ([198.145.64.163]:50968 "EHLO smtp.outflux.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491050Ab1ELJ1x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 12 May 2011 11:27:53 +0200
-Received: from www.outflux.net (serenity-end.outflux.net [10.2.0.2])
-        by vinyl.outflux.net (8.14.3/8.14.3/Debian-9.2ubuntu1) with ESMTP id p4C9OOuX016731;
-        Thu, 12 May 2011 02:24:25 -0700
-Date:   Thu, 12 May 2011 02:24:24 -0700
-From:   Kees Cook <kees.cook@canonical.com>
-To:     Ingo Molnar <mingo@elte.hu>
-Cc:     Will Drewry <wad@chromium.org>, linux-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Eric Paris <eparis@redhat.com>, agl@chromium.org,
-        jmorris@namei.org, Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Roland McGrath <roland@redhat.com>,
-        Jiri Slaby <jslaby@suse.cz>,
-        David Howells <dhowells@redhat.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-arm-kernel@lists.infradead.org,
-        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
- filtering
-Message-ID: <20110512092424.GO28888@outflux.net>
-References: <1304017638.18763.205.camel@gandalf.stny.rr.com>
- <1305169376-2363-1-git-send-email-wad@chromium.org>
- <20110512074850.GA9937@elte.hu>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 May 2011 11:59:00 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:42477 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491161Ab1ELJ66 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 12 May 2011 11:58:58 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4CA0C1d012311;
+        Thu, 12 May 2011 11:00:12 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4CA0ArF012308;
+        Thu, 12 May 2011 11:00:10 +0100
+Date:   Thu, 12 May 2011 11:00:10 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Robert Millan <rmh@gnu.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        wu zhangjin <wuzhangjin@gmail.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] MIPS: Set ELF AT_PLATFORM string for BMIPS processors
+Message-ID: <20110512100010.GA11400@linux-mips.org>
+References: <f571cce5cf7793777f8303cea5e9628f@localhost>
+ <7f27896d6ff6598a4b9e003454ef10e0@localhost>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20110512074850.GA9937@elte.hu>
-Organization: Canonical
-X-MIMEDefang-Filter: outflux$Revision: 1.316 $
-X-HELO: www.outflux.net
-X-Scanned-By: MIMEDefang 2.69 on 10.2.0.1
-Return-Path: <kees.cook@canonical.com>
+In-Reply-To: <7f27896d6ff6598a4b9e003454ef10e0@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29951
+X-archive-position: 29952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kees.cook@canonical.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Queued for 2.6.40.  Thanks Kevin!
 
-On Thu, May 12, 2011 at 09:48:50AM +0200, Ingo Molnar wrote:
-> 1) We already have a specific ABI for this: you can set filters for events via 
->    an event fd.
-> 
->    Why not extend that mechanism instead and improve *both* your sandboxing
->    bits and the events code? This new seccomp code has a lot more
->    to do with trace event filters than the minimal old seccomp code ...
-
-Would this require privileges to get the event fd to start with? If so,
-I would prefer to avoid that, since using prctl() as shown in the patch
-set won't require any privs.
-
--Kees
-
--- 
-Kees Cook
-Ubuntu Security Team
+  Ralf

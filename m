@@ -1,106 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 17:52:00 +0200 (CEST)
-Received: from chipmunk.wormnet.eu ([195.195.131.226]:51088 "EHLO
-        chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491849Ab1EMPv4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2011 17:51:56 +0200
-Received: by chipmunk.wormnet.eu (Postfix, from userid 1000)
-        id 7329A80C2A; Fri, 13 May 2011 16:51:55 +0100 (BST)
-Date:   Fri, 13 May 2011 16:51:55 +0100
-From:   Alexander Clouter <alex@digriz.org.uk>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, ddaney@caviumnetworks.com
-Subject: Re: [RFC|PATCH] MIPS: tlbex.c: Fix GCC 4.6.0 build error.
-Message-ID: <20110513155155.GP25017@chipmunk>
-References: <20110513154941.GN25017@chipmunk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 17:54:39 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:42870 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491855Ab1EMPyg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 May 2011 17:54:36 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4DFu67Q010784;
+        Fri, 13 May 2011 16:56:06 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4DFu5J9010782;
+        Fri, 13 May 2011 16:56:05 +0100
+Date:   Fri, 13 May 2011 16:56:05 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
+Message-ID: <20110513155605.GA30674@linux-mips.org>
+References: <7aa38c32b7748a95e814e5bb0583f967@localhost>
+ <20110513150707.GA26389@linux-mips.org>
+ <BANLkTikcyEzjOWt9pWToE=89dySSEYbw_g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20110513154941.GN25017@chipmunk>
-Organization: diGriz
-X-URL:  http://www.digriz.org.uk/
-X-JabberID: alex@digriz.org.uk
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <alex@digriz.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BANLkTikcyEzjOWt9pWToE=89dySSEYbw_g@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30004
+X-archive-position: 30005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@digriz.org.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Forget this, just seen it in upstream as 
-4a9040f451c32cd62971ecda1cb5bc4aed444c78.
+On Fri, May 13, 2011 at 08:46:18AM -0700, Kevin Cernekee wrote:
 
-Cheers
+> >> On hardware that does not support RI/XI, EntryLo bits 31:30 / 63:62 will
+> >> remain unset and RI/XI permissions will not be enforced.
+> >
+> > Nice idea but it breaks on 64-bit hardware running 32-bit kernels.  On
+> > those the RI/XI bits written to c0_entrylo0/1 31:30 will be interpreted as
+> > physical address bits 37:36.
+> 
+> Hmm, are you sure?  (Unfortunately I do not have a 64-bit machine to
+> test it on.)
+> 
+> I did not touch David's existing build_update_entries(), which makes a
+> point not to set the RI/XI bits when the RIXI feature is disabled:
+> 
+>         if (kernel_uses_smartmips_rixi) {
+>                 UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_NO_EXEC));
+>                 UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_NO_EXEC));
+>                 UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL) -
+> ilog2(_PAGE_NO_EXEC));
+>                 if (r4k_250MHZhwbug())
+>                         UASM_i_MTC0(p, 0, C0_ENTRYLO0);
+>                 UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
+>                 UASM_i_ROTR(p, ptep, ptep, ilog2(_PAGE_GLOBAL) -
+> ilog2(_PAGE_NO_EXEC));
+>         } else {
+>                 UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_GLOBAL)); /*
+> convert to entrylo0 */
+>                 if (r4k_250MHZhwbug())
+>                         UASM_i_MTC0(p, 0, C0_ENTRYLO0);
+>                 UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
+>                 UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_GLOBAL)); /*
+> convert to entrylo1 */
+>                 if (r45k_bvahwbug())
+>                         uasm_i_mfc0(p, tmp, C0_INDEX);
+>         }
+> 
+> If RIXI is enabled, it shifts the SW bits off the end of the register,
+> then rotates the RI/XI bits into place.
+> 
+> If RIXI is disabled, it shifts the SW bits + RI/XI bits off the end of
+> the register.  It should not be setting bits 31:30 or 63:62, ever.
+> 
+> (A side issue here is that ROTR is a MIPS R2 instruction, so we could
+> never remove the old handler and use the RIXI version of the TLB
+> handler on an R1 machine.)
+> 
+> If setting EntryLo bits 31:30 for RI/XI is illegal on a 64-bit system
+> running a 32-bit kernel, I suspect we will have a problem with the
+> existing RIXI TLB update code, regardless of whether my changes are
+> applied.
 
-* Alexander Clouter <alex@digriz.org.uk> [2011-05-13 16:49:41+0100]:
->
-> For !HUGETLB_PAGE htlb_info barfs, and when !64BIT we get vmalloc_mode
-> grumbling.
-> 
->   CC      arch/mips/mm/tlbex.o
-> arch/mips/mm/tlbex.c: In function 'build_r4000_tlb_refill_handler':
-> arch/mips/mm/tlbex.c:1155:22: error: variable 'vmalloc_mode' set but not used [-Werror=unused-but-set-variable]
-> arch/mips/mm/tlbex.c:1154:28: error: variable 'htlb_info' set but not used [-Werror=unused-but-set-variable]
-> cc1: all warnings being treated as errors
-> 
-> Untested other than shovelling through a compiler, it really is turning 
-> into an ifdef-fest though in there...
-> 
-> Signed-off-by: Alexander Clouter <alex@digriz.org.uk>
-> ---
->  arch/mips/mm/tlbex.c |   17 ++++++++++++++++-
->  1 files changed, 16 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 04f9e17..814b3f4 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -1151,8 +1151,12 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
->  	struct uasm_reloc *r = relocs;
->  	u32 *f;
->  	unsigned int final_len;
-> +#ifdef CONFIG_HUGETLB_PAGE
->  	struct mips_huge_tlb_info htlb_info;
-> +#endif
-> +#ifdef CONFIG_64BIT
->  	enum vmalloc64_mode vmalloc_mode;
-> +#endif
->  
->  	memset(tlb_handler, 0, sizeof(tlb_handler));
->  	memset(labels, 0, sizeof(labels));
-> @@ -1163,13 +1167,24 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
->  		scratch_reg = allocate_kscratch();
->  
->  	if ((scratch_reg > 0 || scratchpad_available()) && use_bbit_insns()) {
-> -		htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
-> +#ifdef CONFIG_HUGETLB_PAGE
-> +		htlb_info = 
-> +#else
-> +		(void)
-> +#endif
-> +			build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
->  							  scratch_reg);
-> +#ifdef CONFIG_64BIT
->  		vmalloc_mode = refill_scratch;
-> +#endif
->  	} else {
-> +#ifdef CONFIG_HUGETLB_PAGE
->  		htlb_info.huge_pte = K0;
->  		htlb_info.restore_scratch = 0;
-> +#endif
-> +#ifdef CONFIG_64BIT
->  		vmalloc_mode = refill_noscratch;
-> +#endif
->  		/*
->  		 * create the plain linear handler
->  		 */
->
+I'm not totally certain with my explanation but it seemed like a good
+working hypothesis.  Jayachandran C. bisected this morning's linux-queue
+on his Netlogic XLR which is MIPS64 R1 and found this comment causing
+the problem.
 
--- 
-Alexander Clouter
-.sigmonster says: Needs are a function of what other people have.
+  Ralf

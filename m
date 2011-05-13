@@ -1,90 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 17:30:50 +0200 (CEST)
-Received: from mx0.aculab.com ([213.249.233.131]:54879 "HELO mx0.aculab.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with SMTP
-        id S1491851Ab1EMPao convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2011 17:30:44 +0200
-Received: (qmail 27983 invoked from network); 13 May 2011 15:30:30 -0000
-Received: from localhost (127.0.0.1)
-  by mx0.aculab.com with SMTP; 13 May 2011 15:30:30 -0000
-Received: from mx0.aculab.com ([127.0.0.1])
- by localhost (mx0.aculab.com [127.0.0.1]) (amavisd-new, port 10024) with SMTP
- id 27321-03 for <linux-mips@linux-mips.org>;
- Fri, 13 May 2011 16:30:30 +0100 (BST)
-Received: (qmail 27800 invoked by uid 599); 13 May 2011 15:30:28 -0000
-Received: from unknown (HELO saturn3.Aculab.com) (10.202.163.5)
-    by mx0.aculab.com (qpsmtpd/0.28) with ESMTP; Fri, 13 May 2011 16:30:28 +0100
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 17:33:03 +0200 (CEST)
+Received: from mail-ew0-f49.google.com ([209.85.215.49]:61547 "EHLO
+        mail-ew0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491849Ab1EMPdA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2011 17:33:00 +0200
+Received: by ewy3 with SMTP id 3so876191ewy.36
+        for <linux-mips@linux-mips.org>; Fri, 13 May 2011 08:32:54 -0700 (PDT)
+Received: by 10.14.0.133 with SMTP id 5mr722946eeb.144.1305300774149;
+        Fri, 13 May 2011 08:32:54 -0700 (PDT)
+Received: from [192.168.11.174] (mail.dev.rtsoft.ru [213.79.90.226])
+        by mx.google.com with ESMTPS id y3sm1516274eeh.23.2011.05.13.08.32.50
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 13 May 2011 08:32:51 -0700 (PDT)
+Message-ID: <4DCD4EC9.1070804@mvista.com>
+Date:   Fri, 13 May 2011 19:31:21 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system callfiltering
-Date:   Fri, 13 May 2011 16:29:27 +0100
-Message-ID: <AE90C24D6B3A694183C094C60CF0A2F6D8AD37@saturn3.aculab.com>
-In-Reply-To: <1305299880.2076.31.camel@localhost.localdomain>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system callfiltering
-Thread-Index: AcwRgP+uf4p6VPi/TNeaJPKux9Io6gAAKobQ
-From:   "David Laight" <David.Laight@ACULAB.COM>
-To:     "Eric Paris" <eparis@redhat.com>, "Ingo Molnar" <mingo@elte.hu>
-Cc:     <linux-mips@linux-mips.org>, <linux-sh@vger.kernel.org>,
-        "Peter Zijlstra" <peterz@infradead.org>,
-        "Frederic Weisbecker" <fweisbec@gmail.com>,
-        "Heiko Carstens" <heiko.carstens@de.ibm.com>,
-        "Oleg Nesterov" <oleg@redhat.com>,
-        "David Howells" <dhowells@redhat.com>,
-        "Paul Mackerras" <paulus@samba.org>,
-        "H. PeterAnvin" <hpa@zytor.com>, <sparclinux@vger.kernel.org>,
-        "Jiri Slaby" <jslaby@suse.cz>, <linux-s390@vger.kernel.org>,
-        "Russell King" <linux@arm.linux.org.uk>, <x86@kernel.org>,
-        "James Morris" <jmorris@namei.org>,
-        "Linus Torvalds" <torvalds@linux-foundation.org>,
-        "Ingo Molnar" <mingo@redhat.com>, <kees.cook@canonical.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "Steven Rostedt" <rostedt@goodmis.org>,
-        "Tejun Heo" <tj@kernel.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        "Michal Marek" <mmarek@suse.cz>, "Michal Simek" <monstr@monstr.eu>,
-        "Will Drewry" <wad@chromium.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Ralf Baechle" <ralf@linux-mips.org>,
-        "Paul Mundt" <lethal@linux-sh.org>,
-        "Martin Schwidefsky" <schwidefsky@de.ibm.com>,
-        <linux390@de.ibm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
-        <agl@chromium.org>, "David S. Miller" <davem@davemloft.net>
-X-Virus-Scanned: by iCritical at mx0.aculab.com
-Return-Path: <David.Laight@ACULAB.COM>
+To:     Alexander Clouter <alex@digriz.org.uk>
+CC:     linux-mips@linux-mips.org, florian@openwrt.org
+Subject: Re: [PATCH] MIPS: AR7: Fix GCC 4.6.0 build error.
+References: <20110513152855.GM25017@chipmunk>
+In-Reply-To: <20110513152855.GM25017@chipmunk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29999
+X-archive-position: 30000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: David.Laight@ACULAB.COM
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-> ... If you can be completely stateless its easier, but there's
-> a reason that stacking security modules is hard.  Serge has tried in
-the
-> past and both dhowells and casey schaufler are working on it right
-now.
-> Stacking is never as easy as it sounds   :)
+Hello.
 
-For a bad example of trying to allow alternate security models
-look at NetBSD's kauth code :-)
+Alexander Clouter wrote:
 
-NetBSD also had issues where some 'system call trace' code
-was being used to (try to) apply security - unfortunately
-it worked by looking at the user-space buffers on system
-call entry - and a multithreaded program can easily arrange
-to update them after the initial check!
-For trace/event type activities this wouldn't really matter,
-for security policy it does.
-(I've not looked directly at these event points in linux)
+>   CC      arch/mips/ar7/gpio.o
+> arch/mips/ar7/gpio.c: In function 'ar7_gpio_init':
+> arch/mips/ar7/gpio.c:318:11: error: variable 'size' set but not used [-Werror=unused-but-set-variable]
+> cc1: all warnings being treated as errors
 
-	David
+> Signed-off-by: Alexander Clouter <alex@digriz.org.uk>
+> ---
+>  arch/mips/ar7/gpio.c |   12 ++----------
+>  1 files changed, 2 insertions(+), 10 deletions(-)
+
+> diff --git a/arch/mips/ar7/gpio.c b/arch/mips/ar7/gpio.c
+> index 425dfa5..6917427 100644
+> --- a/arch/mips/ar7/gpio.c
+> +++ b/arch/mips/ar7/gpio.c
+> @@ -314,16 +314,8 @@ static void titan_gpio_init(void)
+>  int __init ar7_gpio_init(void)
+>  {
+>  	int ret;
+> -	struct ar7_gpio_chip *gpch;
+> -	unsigned size;
+> -
+> -	if (!ar7_is_titan()) {
+> -		gpch = &ar7_gpio_chip;
+> -		size = 0x10;
+> -	} else {
+> -		gpch = &titan_gpio_chip;
+> -		size = 0x1f;
+> -	}
+> +	struct ar7_gpio_chip *gpch = (!ar7_is_titan())
+
+    Parens around (!x) are not really necessary. Perhaps Ralf could remove them 
+while applying...
+
+> +		? &ar7_gpio_chip : &titan_gpio_chip;
+
+WBR, Sergei

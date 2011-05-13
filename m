@@ -1,63 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 19:51:55 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:41542 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491849Ab1EMRvv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2011 19:51:51 +0200
-Received: by pwi8 with SMTP id 8so1520716pwi.36
-        for <multiple recipients>; Fri, 13 May 2011 10:51:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=d/1GAyNLhieuOsHfoanEzGx+HAlgm13tzqf7iIZ2vmk=;
-        b=OxS8E3V961N1X0gzIJnSoK0UbySOHTbuoZ884W2eiRzqTwPRFCg4VMaoBY37CpBN+T
-         grijvty095W+BIg7KWgQ5cxp52y32j73YGXnjPlFRQPp20eIpKdvWCH/aflFGeU2a7n0
-         xBAYa1JzFahHDuBMgMO3uBRCtxcFhH4uocTU4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=YoNQhlG+zmN7++Fp8G+rmmk9mvPC6rCq0+wjxEdDGigETLEioAtEQr06ZvtsauPtBL
-         wVCb58omlTK4DO/c7oLNTUzSFGmUUyoq9dyDtAonqgsLw1ilK/tXOCeir2FPakjXiKy+
-         lk0nQw6QfIvCD/leS3VFTlrQrbcxT6g7XWDoc=
-MIME-Version: 1.0
-Received: by 10.68.7.66 with SMTP id h2mr2605634pba.513.1305309104890; Fri, 13
- May 2011 10:51:44 -0700 (PDT)
-Received: by 10.68.51.72 with HTTP; Fri, 13 May 2011 10:51:44 -0700 (PDT)
-In-Reply-To: <20110513173633.GA14607@jayachandranc.netlogicmicro.com>
-References: <7aa38c32b7748a95e814e5bb0583f967@localhost>
-        <20110513150707.GA26389@linux-mips.org>
-        <BANLkTikcyEzjOWt9pWToE=89dySSEYbw_g@mail.gmail.com>
-        <20110513155605.GA30674@linux-mips.org>
-        <BANLkTinnALQV6dXkJ0AjaQ1=bTawYMMkuQ@mail.gmail.com>
-        <20110513173633.GA14607@jayachandranc.netlogicmicro.com>
-Date:   Fri, 13 May 2011 10:51:44 -0700
-Message-ID: <BANLkTim+z7TSCvNA2duA6LsUzNsiu9OQaQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 20:44:05 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:2728 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491849Ab1EMSoA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2011 20:44:00 +0200
+X-TM-IMSS-Message-ID: <50b6596a0004c398@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 50b6596a0004c398 ; Fri, 13 May 2011 11:43:22 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Fri, 13 May 2011 11:44:31 -0700
+Date:   Sat, 14 May 2011 00:15:33 +0530
+From:   "Jayachandran C." <jayachandranc@netlogicmicro.com>
+To:     Kevin Cernekee <cernekee@gmail.com>
 Cc:     Ralf Baechle <ralf@linux-mips.org>,
         David Daney <ddaney@caviumnetworks.com>,
         linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <cernekee@gmail.com>
+Subject: Re: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
+Message-ID: <20110513184532.GC14607@jayachandranc.netlogicmicro.com>
+References: <7aa38c32b7748a95e814e5bb0583f967@localhost>
+ <20110513150707.GA26389@linux-mips.org>
+ <BANLkTikcyEzjOWt9pWToE=89dySSEYbw_g@mail.gmail.com>
+ <20110513155605.GA30674@linux-mips.org>
+ <BANLkTinnALQV6dXkJ0AjaQ1=bTawYMMkuQ@mail.gmail.com>
+ <20110513173633.GA14607@jayachandranc.netlogicmicro.com>
+ <BANLkTim+z7TSCvNA2duA6LsUzNsiu9OQaQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BANLkTim+z7TSCvNA2duA6LsUzNsiu9OQaQ@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-OriginalArrivalTime: 13 May 2011 18:44:31.0519 (UTC) FILETIME=[CBE482F0:01CC119D]
+Return-Path: <jayachandranc@netlogicmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30015
+X-archive-position: 30016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 13, 2011 at 10:36 AM, Jayachandran C.
-<jayachandranc@netlogicmicro.com> wrote:
-> For 32-bit the config is nlm_xlr_defconfig in the source tree. Let me know if
-> you need any further info.
+On Fri, May 13, 2011 at 10:51:44AM -0700, Kevin Cernekee wrote:
+> On Fri, May 13, 2011 at 10:36 AM, Jayachandran C.
+> <jayachandranc@netlogicmicro.com> wrote:
+> > For 32-bit the config is nlm_xlr_defconfig in the source tree. Let me know if
+> > you need any further info.
+> 
+> Would you be able to dump out the TLB handlers in this configuration,
+> per David's suggestion?
 
-Would you be able to dump out the TLB handlers in this configuration,
-per David's suggestion?
+The current linux-mips queue works for me, and I don't have the old source
+or binaries with me anymore. You surely should be able build with
+nlm_xlr_defconfig and see if the rixi is enabled in the build, if you want
+any config register dump on the CPU, please let me know.
 
-Thanks.
+JC.

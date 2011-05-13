@@ -1,106 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 17:46:31 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:56447 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491849Ab1EMPqZ convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 13 May 2011 17:46:25 +0200
-Received: by pzk28 with SMTP id 28so1454294pzk.36
-        for <multiple recipients>; Fri, 13 May 2011 08:46:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=SoOKpt0w6kkAuvV+6JvKMvwIvr54bGp+UEi80cL2euU=;
-        b=Uvjsub9UPyWnvde5lODxceCbKwHFYh8yxj/uWJzLyOIY0MKNAwGtrPFBPX3iV9eunU
-         uQ+LTQKM6kZaOPoU4QAV5Lb4lzamCg6n04Gc8xoY+aC0Gwxcl1iU24qORGXp+UapYTuN
-         I2XwZDx3BK3rc/iKe7UR9zY2ZC4q66NBFVzXU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=XSLUrMrhhgBRdAW05+OgP/C8dHCmQ6vTnYWGJMUzk5FV1XpqCVvZPzLvKyaXyCWPjc
-         opSCjpwShnD4QY6mVGJKOnv9SypiZlPylwLIp0p6XBwcoG9XcU1xN00HqQoxJX5xEivd
-         mrgSwLLe+E6e4pIi7Pl2H2r++rD8wXWedPalM=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 17:49:46 +0200 (CEST)
+Received: from chipmunk.wormnet.eu ([195.195.131.226]:34155 "EHLO
+        chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491849Ab1EMPtm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2011 17:49:42 +0200
+Received: by chipmunk.wormnet.eu (Postfix, from userid 1000)
+        id 1281980C2A; Fri, 13 May 2011 16:49:42 +0100 (BST)
+Date:   Fri, 13 May 2011 16:49:42 +0100
+From:   Alexander Clouter <alex@digriz.org.uk>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, ddaney@caviumnetworks.com
+Subject: [RFC|PATCH] MIPS: tlbex.c: Fix GCC 4.6.0 build error.
+Message-ID: <20110513154941.GN25017@chipmunk>
 MIME-Version: 1.0
-Received: by 10.68.57.168 with SMTP id j8mr2442170pbq.111.1305301578289; Fri,
- 13 May 2011 08:46:18 -0700 (PDT)
-Received: by 10.68.51.72 with HTTP; Fri, 13 May 2011 08:46:18 -0700 (PDT)
-In-Reply-To: <20110513150707.GA26389@linux-mips.org>
-References: <7aa38c32b7748a95e814e5bb0583f967@localhost>
-        <20110513150707.GA26389@linux-mips.org>
-Date:   Fri, 13 May 2011 08:46:18 -0700
-Message-ID: <BANLkTikcyEzjOWt9pWToE=89dySSEYbw_g@mail.gmail.com>
-Subject: Re: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: diGriz
+X-URL:  http://www.digriz.org.uk/
+X-JabberID: alex@digriz.org.uk
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <alex@digriz.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30001
+X-archive-position: 30002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: alex@digriz.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 13, 2011 at 8:07 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
->> Reuse more of the same definitions for the non-RIXI and RIXI cases.  This
->> avoids having special cases for kernel_uses_smartmips_rixi cluttering up
->> the pgtable*.h files.
->>
->> On hardware that does not support RI/XI, EntryLo bits 31:30 / 63:62 will
->> remain unset and RI/XI permissions will not be enforced.
->
-> Nice idea but it breaks on 64-bit hardware running 32-bit kernels.  On
-> those the RI/XI bits written to c0_entrylo0/1 31:30 will be interpreted as
-> physical address bits 37:36.
+For !HUGETLB_PAGE htlb_info barfs, and when !64BIT we get vmalloc_mode
+grumbling.
 
-Hmm, are you sure?  (Unfortunately I do not have a 64-bit machine to
-test it on.)
+  CC      arch/mips/mm/tlbex.o
+arch/mips/mm/tlbex.c: In function 'build_r4000_tlb_refill_handler':
+arch/mips/mm/tlbex.c:1155:22: error: variable 'vmalloc_mode' set but not used [-Werror=unused-but-set-variable]
+arch/mips/mm/tlbex.c:1154:28: error: variable 'htlb_info' set but not used [-Werror=unused-but-set-variable]
+cc1: all warnings being treated as errors
 
-I did not touch David's existing build_update_entries(), which makes a
-point not to set the RI/XI bits when the RIXI feature is disabled:
+Untested other than shovelling through a compiler, it really is turning 
+into an ifdef-fest though in there...
 
-        if (kernel_uses_smartmips_rixi) {
-                UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_NO_EXEC));
-                UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_NO_EXEC));
-                UASM_i_ROTR(p, tmp, tmp, ilog2(_PAGE_GLOBAL) -
-ilog2(_PAGE_NO_EXEC));
-                if (r4k_250MHZhwbug())
-                        UASM_i_MTC0(p, 0, C0_ENTRYLO0);
-                UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
-                UASM_i_ROTR(p, ptep, ptep, ilog2(_PAGE_GLOBAL) -
-ilog2(_PAGE_NO_EXEC));
-        } else {
-                UASM_i_SRL(p, tmp, tmp, ilog2(_PAGE_GLOBAL)); /*
-convert to entrylo0 */
-                if (r4k_250MHZhwbug())
-                        UASM_i_MTC0(p, 0, C0_ENTRYLO0);
-                UASM_i_MTC0(p, tmp, C0_ENTRYLO0); /* load it */
-                UASM_i_SRL(p, ptep, ptep, ilog2(_PAGE_GLOBAL)); /*
-convert to entrylo1 */
-                if (r45k_bvahwbug())
-                        uasm_i_mfc0(p, tmp, C0_INDEX);
-        }
+Signed-off-by: Alexander Clouter <alex@digriz.org.uk>
+---
+ arch/mips/mm/tlbex.c |   17 ++++++++++++++++-
+ 1 files changed, 16 insertions(+), 1 deletions(-)
 
-If RIXI is enabled, it shifts the SW bits off the end of the register,
-then rotates the RI/XI bits into place.
-
-If RIXI is disabled, it shifts the SW bits + RI/XI bits off the end of
-the register.  It should not be setting bits 31:30 or 63:62, ever.
-
-(A side issue here is that ROTR is a MIPS R2 instruction, so we could
-never remove the old handler and use the RIXI version of the TLB
-handler on an R1 machine.)
-
-If setting EntryLo bits 31:30 for RI/XI is illegal on a 64-bit system
-running a 32-bit kernel, I suspect we will have a problem with the
-existing RIXI TLB update code, regardless of whether my changes are
-applied.
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 04f9e17..814b3f4 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -1151,8 +1151,12 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 	struct uasm_reloc *r = relocs;
+ 	u32 *f;
+ 	unsigned int final_len;
++#ifdef CONFIG_HUGETLB_PAGE
+ 	struct mips_huge_tlb_info htlb_info;
++#endif
++#ifdef CONFIG_64BIT
+ 	enum vmalloc64_mode vmalloc_mode;
++#endif
+ 
+ 	memset(tlb_handler, 0, sizeof(tlb_handler));
+ 	memset(labels, 0, sizeof(labels));
+@@ -1163,13 +1167,24 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 		scratch_reg = allocate_kscratch();
+ 
+ 	if ((scratch_reg > 0 || scratchpad_available()) && use_bbit_insns()) {
+-		htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
++#ifdef CONFIG_HUGETLB_PAGE
++		htlb_info = 
++#else
++		(void)
++#endif
++			build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
+ 							  scratch_reg);
++#ifdef CONFIG_64BIT
+ 		vmalloc_mode = refill_scratch;
++#endif
+ 	} else {
++#ifdef CONFIG_HUGETLB_PAGE
+ 		htlb_info.huge_pte = K0;
+ 		htlb_info.restore_scratch = 0;
++#endif
++#ifdef CONFIG_64BIT
+ 		vmalloc_mode = refill_noscratch;
++#endif
+ 		/*
+ 		 * create the plain linear handler
+ 		 */
+-- 
+1.7.5.1

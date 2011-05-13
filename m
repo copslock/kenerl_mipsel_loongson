@@ -1,270 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 14:40:33 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:49448 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491822Ab1EMMjz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 May 2011 14:39:55 +0200
-Received: by mail-fx0-f49.google.com with SMTP id 14so2302504fxm.36
-        for <linux-mips@linux-mips.org>; Fri, 13 May 2011 05:39:55 -0700 (PDT)
-Received: by 10.223.145.13 with SMTP id b13mr1684082fav.65.1305290394706;
-        Fri, 13 May 2011 05:39:54 -0700 (PDT)
-Received: from localhost.localdomain (540371FD.catv.pool.telekom.hu [84.3.113.253])
-        by mx.google.com with ESMTPS id 18sm568268fan.25.2011.05.13.05.39.53
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 13 May 2011 05:39:53 -0700 (PDT)
-From:   Gergely Kis <gergely@homejinni.com>
-To:     linux-mips@linux-mips.org
-Cc:     oprofile-list@lists.sourceforge.net,
-        Daniel Kalmar <kalmard@homejinni.com>,
-        Gergely Kis <gergely@homejinni.com>
-Subject: [PATCH 2/2] MIPS: oprofile: Add callgraph support
-Date:   Fri, 13 May 2011 12:38:05 +0000
-Message-Id: <1305290285-13818-3-git-send-email-gergely@homejinni.com>
-X-Mailer: git-send-email 1.7.0.4
-In-Reply-To: <1305290285-13818-1-git-send-email-gergely@homejinni.com>
-References: <1305290285-13818-1-git-send-email-gergely@homejinni.com>
-Return-Path: <gergely@homejinni.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 May 2011 14:40:56 +0200 (CEST)
+Received: from bombadil.infradead.org ([18.85.46.34]:45163 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491821Ab1EMMj6 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 May 2011 14:39:58 +0200
+Received: from canuck.infradead.org ([134.117.69.58])
+        by bombadil.infradead.org with esmtps (Exim 4.72 #1 (Red Hat Linux))
+        id 1QKreX-00062e-8B; Fri, 13 May 2011 12:39:33 +0000
+Received: from j77219.upc-j.chello.nl ([24.132.77.219] helo=twins)
+        by canuck.infradead.org with esmtpsa (Exim 4.72 #1 (Red Hat Linux))
+        id 1QKreW-0002OA-50; Fri, 13 May 2011 12:39:32 +0000
+Received: by twins (Postfix, from userid 1000)
+        id 4719A812FE74; Fri, 13 May 2011 14:39:30 +0200 (CEST)
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system
+ call filtering
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Ingo Molnar <mingo@elte.hu>
+Cc:     James Morris <jmorris@namei.org>, Will Drewry <wad@chromium.org>,
+        linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
+        agl@chromium.org, "Serge E. Hallyn" <serge@hallyn.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Roland McGrath <roland@redhat.com>,
+        Jiri Slaby <jslaby@suse.cz>,
+        David Howells <dhowells@redhat.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+In-Reply-To: <20110513122646.GA3924@elte.hu>
+References: <1304017638.18763.205.camel@gandalf.stny.rr.com>
+         <1305169376-2363-1-git-send-email-wad@chromium.org>
+         <20110512074850.GA9937@elte.hu>
+         <alpine.LRH.2.00.1105122133500.31507@tundra.namei.org>
+         <20110512130104.GA2912@elte.hu>
+         <alpine.LRH.2.00.1105131018040.3047@tundra.namei.org>
+         <20110513121034.GG21022@elte.hu> <1305289146.2466.8.camel@twins>
+         <20110513122646.GA3924@elte.hu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Date:   Fri, 13 May 2011 14:39:30 +0200
+Message-ID: <1305290370.2466.14.camel@twins>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
+Return-Path: <peterz@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 29982
+X-archive-position: 29983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gergely@homejinni.com
+X-original-sender: peterz@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Daniel Kalmar <kalmard@homejinni.com>
+On Fri, 2011-05-13 at 14:26 +0200, Ingo Molnar wrote:
+> * Peter Zijlstra <peterz@infradead.org> wrote:
+> 
+> > On Fri, 2011-05-13 at 14:10 +0200, Ingo Molnar wrote:
+> > >         err = event_vfs_getname(result);
+> > 
+> > I really think we should not do this. Events like we have them should be 
+> > inactive, totally passive entities, only observe but not affect execution 
+> > (other than the bare minimal time delay introduced by observance).
+> 
+> Well, this patchset already demonstrates that we can use a single event 
+> callback for a rather useful purpose.
 
-Stack unwinding is done by code examination. For kernelspace, the
-already existing unwind function is utilized that uses kallsyms to
-quickly find the beginning of functions. For userspace a new function
-was added that examines code at and before the pc.
+Can and should are two distinct things.
 
-Signed-off-by: Daniel Kalmar <kalmard@homejinni.com>
-Signed-off-by: Gergely Kis <gergely@homejinni.com>
----
- arch/mips/oprofile/Makefile    |    2 +-
- arch/mips/oprofile/backtrace.c |  173 ++++++++++++++++++++++++++++++++++++++++
- arch/mips/oprofile/common.c    |    1 +
- arch/mips/oprofile/op_impl.h   |    2 +
- 4 files changed, 177 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/oprofile/backtrace.c
+> Either it makes sense to do, in which case we should share facilities as much 
+> as possible, or it makes no sense, in which case we should not merge it at all.
 
-diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
-index 4b9d704..29f2f13 100644
---- a/arch/mips/oprofile/Makefile
-+++ b/arch/mips/oprofile/Makefile
-@@ -8,7 +8,7 @@ DRIVER_OBJS = $(addprefix ../../../drivers/oprofile/, \
- 		oprofilefs.o oprofile_stats.o \
- 		timer_int.o )
- 
--oprofile-y				:= $(DRIVER_OBJS) common.o
-+oprofile-y				:= $(DRIVER_OBJS) common.o backtrace.o
- 
- oprofile-$(CONFIG_CPU_MIPS32)		+= op_model_mipsxx.o
- oprofile-$(CONFIG_CPU_MIPS64)		+= op_model_mipsxx.o
-diff --git a/arch/mips/oprofile/backtrace.c b/arch/mips/oprofile/backtrace.c
-new file mode 100644
-index 0000000..d508e9e
---- /dev/null
-+++ b/arch/mips/oprofile/backtrace.c
-@@ -0,0 +1,173 @@
-+#include <linux/oprofile.h>
-+#include <linux/sched.h>
-+#include <linux/mm.h>
-+#include <linux/uaccess.h>
-+#include <asm/ptrace.h>
-+#include <asm/stacktrace.h>
-+#include <linux/stacktrace.h>
-+#include <linux/kernel.h>
-+#include <asm/sections.h>
-+#include <asm/inst.h>
-+
-+struct stackframe {
-+	unsigned long sp;
-+	unsigned long pc;
-+	unsigned long ra;
-+};
-+
-+static inline int get_mem(unsigned long addr, unsigned long *result)
-+{
-+	unsigned long *address = (unsigned long *) addr;
-+	if (!access_ok(VERIFY_READ, addr, sizeof(unsigned long)))
-+		return -1;
-+	if (__copy_from_user_inatomic(result, address, sizeof(unsigned long)))
-+		return -3;
-+	return 0;
-+}
-+
-+/*
-+ * These two instruction helpers were taken from process.c
-+ */
-+static inline int is_ra_save_ins(union mips_instruction *ip)
-+{
-+	/* sw / sd $ra, offset($sp) */
-+	return (ip->i_format.opcode == sw_op || ip->i_format.opcode == sd_op)
-+		&& ip->i_format.rs == 29 && ip->i_format.rt == 31;
-+}
-+
-+static inline int is_sp_move_ins(union mips_instruction *ip)
-+{
-+	/* addiu/daddiu sp,sp,-imm */
-+	if (ip->i_format.rs != 29 || ip->i_format.rt != 29)
-+		return 0;
-+	if (ip->i_format.opcode == addiu_op || ip->i_format.opcode == daddiu_op)
-+		return 1;
-+	return 0;
-+}
-+
-+/*
-+ * Looks for specific instructions that mark the end of a function.
-+ * This usually means we ran into the code area of the previous function.
-+ */
-+static inline int is_end_of_function_marker(union mips_instruction *ip)
-+{
-+	/* jr ra */
-+	if (ip->r_format.func == jr_op && ip->r_format.rs == 31)
-+		return 1;
-+	/* lui gp */
-+	if (ip->i_format.opcode == lui_op && ip->i_format.rt == 28)
-+		return 1;
-+	return 0;
-+}
-+
-+/*
-+ * TODO for userspace stack unwinding:
-+ * - handle cases where the stack is adjusted inside a function
-+ *     (generally doesn't happen)
-+ * - find optimal value for max_instr_check
-+ * - try to find a way to handle leaf functions
-+ */
-+
-+static inline int unwind_user_frame(struct stackframe *old_frame,
-+				    const unsigned int max_instr_check)
-+{
-+	struct stackframe new_frame = *old_frame;
-+	off_t ra_offset = 0;
-+	size_t stack_size = 0;
-+	unsigned long addr;
-+
-+	if (old_frame->pc == 0 || old_frame->sp == 0 || old_frame->ra == 0)
-+		return -9;
-+
-+	for (addr = new_frame.pc; (addr + max_instr_check > new_frame.pc)
-+		&& (!ra_offset || !stack_size); --addr) {
-+		union mips_instruction ip;
-+
-+		if (get_mem(addr, (unsigned long *) &ip))
-+			return -11;
-+
-+		if (is_sp_move_ins(&ip)) {
-+			int stack_adjustment = ip.i_format.simmediate;
-+			if (stack_adjustment > 0)
-+				/* This marks the end of the previous function,
-+				   which means we overran. */
-+				break;
-+			stack_size = (unsigned) stack_adjustment;
-+		} else if (is_ra_save_ins(&ip)) {
-+			int ra_slot = ip.i_format.simmediate;
-+			if (ra_slot < 0)
-+				/* This shouldn't happen. */
-+				break;
-+			ra_offset = ra_slot;
-+		} else if (is_end_of_function_marker(&ip))
-+			break;
-+	}
-+
-+	if (!ra_offset || !stack_size)
-+		return -1;
-+
-+	if (ra_offset) {
-+		new_frame.ra = old_frame->sp + ra_offset;
-+		if (get_mem(new_frame.ra, &(new_frame.ra)))
-+			return -13;
-+	}
-+
-+	if (stack_size) {
-+		new_frame.sp = old_frame->sp + stack_size;
-+		if (get_mem(new_frame.sp, &(new_frame.sp)))
-+			return -14;
-+	}
-+
-+	if (new_frame.sp > old_frame->sp)
-+		return -2;
-+
-+	new_frame.pc = old_frame->ra;
-+	*old_frame = new_frame;
-+
-+	return 0;
-+}
-+
-+static inline void do_user_backtrace(unsigned long low_addr,
-+				     struct stackframe *frame,
-+				     unsigned int depth) {
-+	const unsigned int max_instr_check = 512;
-+	const unsigned long high_addr = low_addr + THREAD_SIZE;
-+
-+	while (depth-- && !unwind_user_frame(frame, max_instr_check)) {
-+		oprofile_add_trace(frame->ra);
-+		if (frame->sp < low_addr || frame->sp > high_addr)
-+			break;
-+	}
-+}
-+
-+#ifndef CONFIG_KALLSYMS
-+static inline void do_kernel_backtrace(unsigned long low_addr,
-+				       struct stackframe *frame,
-+				       unsigned int depth) { }
-+#else
-+static inline void do_kernel_backtrace(unsigned long low_addr,
-+				       struct stackframe *frame,
-+				       unsigned int depth) {
-+	while (depth-- && frame->pc) {
-+		frame->pc = unwind_stack_by_address(low_addr,
-+						    &(frame->sp),
-+						    frame->pc,
-+						    &(frame->ra));
-+		oprofile_add_trace(frame->ra);
-+	}
-+}
-+#endif
-+
-+void notrace op_mips_backtrace(struct pt_regs *const regs, unsigned int depth)
-+{
-+	struct stackframe frame = { .sp = regs->regs[29],
-+				    .pc = regs->cp0_epc,
-+				    .ra = regs->regs[31] };
-+	const int userspace = user_mode(regs);
-+	const unsigned long low_addr = ALIGN(frame.sp, THREAD_SIZE);
-+
-+	if (userspace)
-+		do_user_backtrace(low_addr, &frame, depth);
-+	else
-+		do_kernel_backtrace(low_addr, &frame, depth);
-+}
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index f9eb1ab..d1f2d4c 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -115,6 +115,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
- 	ops->start		= op_mips_start;
- 	ops->stop		= op_mips_stop;
- 	ops->cpu_type		= lmodel->cpu_type;
-+	ops->backtrace		= op_mips_backtrace;
- 
- 	printk(KERN_INFO "oprofile: using %s performance monitoring.\n",
- 	       lmodel->cpu_type);
-diff --git a/arch/mips/oprofile/op_impl.h b/arch/mips/oprofile/op_impl.h
-index f04b54f..7c2da27 100644
---- a/arch/mips/oprofile/op_impl.h
-+++ b/arch/mips/oprofile/op_impl.h
-@@ -36,4 +36,6 @@ struct op_mips_model {
- 	unsigned char num_counters;
- };
- 
-+void op_mips_backtrace(struct pt_regs * const regs, unsigned int depth);
-+
- #endif
--- 
-1.7.0.4
+And I'm arguing we should _not_. Observing is radically different from
+Affecting, at the very least the two things should have different
+permission schemes. We should not confuse these two matters.
+
+> > If you want another entity that is more active, please invent a new name for 
+> > it and create a new subsystem for them, now you could have these active 
+> > entities also have an (automatic) passive event side, but that's some detail.
+> 
+> Why should we have two callbacks next to each other:
+> 
+> 	event_vfs_getname(result);
+> 	result = check_event_vfs_getname(result);
+> 
+> if one could do it all?
+
+Did you actually read the bit where I said that check_event_* (although
+I still think that name sucks) could imply a matching event_*?

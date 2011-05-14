@@ -1,90 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 May 2011 08:02:45 +0200 (CEST)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:38252 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490975Ab1ENGCj convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 14 May 2011 08:02:39 +0200
-Received: by pwi8 with SMTP id 8so1735284pwi.36
-        for <multiple recipients>; Fri, 13 May 2011 23:02:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=gwqY80S0QTgmsorOV+ATkJ1EScvm5bna312xwtqLSTw=;
-        b=KpHPDFaRzwo8n392EcMmiwU2wvslfO7EZWWJ6K/cuYWzpXqUxM4qZlhxbHrTQnoNwE
-         KRs2OjmtsamzQx/T+onEvxAlJmMokBvKzyVz5+nLI321WgPmDABxwSvIlXh1j+jVORRT
-         cCsbxSYzqWWe6w/7Oakz07b6tlqsA7ECpV7LY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=C5I/SAoXSl/4fEceHKd6ylUDucRUCBEkeEuICJRyfPzrvvyCDN6jrWaWDGyrvat2dN
-         iC53lDZqa/qag/B+AbgwzG1EZrOOkeYADP45UItMNgYFJpSekCocT7bsGlhyMEVbiUCm
-         elkYjvrWF1wI8moPDjO2pHxsPsOhMRSy9f78s=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 May 2011 09:06:30 +0200 (CEST)
+Received: from mx2.mail.elte.hu ([157.181.151.9]:47432 "EHLO mx2.mail.elte.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490975Ab1ENHGY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 14 May 2011 09:06:24 +0200
+Received: from elvis.elte.hu ([157.181.1.14])
+        by mx2.mail.elte.hu with esmtp (Exim)
+        id 1QL8v7-0004In-Jk
+        from <mingo@elte.hu>; Sat, 14 May 2011 09:05:55 +0200
+Received: by elvis.elte.hu (Postfix, from userid 1004)
+        id CB7A63E252E; Sat, 14 May 2011 09:05:39 +0200 (CEST)
+Date:   Sat, 14 May 2011 09:05:42 +0200
+From:   Ingo Molnar <mingo@elte.hu>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     James Morris <jmorris@namei.org>, Will Drewry <wad@chromium.org>,
+        linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
+        agl@chromium.org, "Serge E. Hallyn" <serge@hallyn.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
+        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
+        David Howells <dhowells@redhat.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
+ filtering
+Message-ID: <20110514070542.GA9307@elte.hu>
+References: <1305289146.2466.8.camel@twins>
+ <20110513122646.GA3924@elte.hu>
+ <1305290370.2466.14.camel@twins>
+ <1305290612.2466.17.camel@twins>
+ <20110513125452.GD3924@elte.hu>
+ <1305292132.2466.26.camel@twins>
+ <20110513131800.GA7883@elte.hu>
+ <1305294935.2466.64.camel@twins>
+ <20110513145737.GC32688@elte.hu>
+ <1305300443.2466.77.camel@twins>
 MIME-Version: 1.0
-Received: by 10.68.57.168 with SMTP id j8mr3473118pbq.111.1305352950751; Fri,
- 13 May 2011 23:02:30 -0700 (PDT)
-Received: by 10.68.51.72 with HTTP; Fri, 13 May 2011 23:02:27 -0700 (PDT)
-In-Reply-To: <20110514051303.GE14607@jayachandranc.netlogicmicro.com>
-References: <7aa38c32b7748a95e814e5bb0583f967@localhost>
-        <20110513150707.GA26389@linux-mips.org>
-        <BANLkTikcyEzjOWt9pWToE=89dySSEYbw_g@mail.gmail.com>
-        <20110513155605.GA30674@linux-mips.org>
-        <BANLkTinnALQV6dXkJ0AjaQ1=bTawYMMkuQ@mail.gmail.com>
-        <20110513173633.GA14607@jayachandranc.netlogicmicro.com>
-        <BANLkTim+z7TSCvNA2duA6LsUzNsiu9OQaQ@mail.gmail.com>
-        <20110513184532.GC14607@jayachandranc.netlogicmicro.com>
-        <BANLkTi=CJPuhO7OjCv5UF_ABQMb-bFe-2A@mail.gmail.com>
-        <20110514051303.GE14607@jayachandranc.netlogicmicro.com>
-Date:   Fri, 13 May 2011 23:02:27 -0700
-Message-ID: <BANLkTimuz8bgrpwJTSh4guDXt+h2hUvSGQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] MIPS: Replace _PAGE_READ with _PAGE_NO_READ
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <cernekee@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1305300443.2466.77.camel@twins>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Received-SPF: neutral (mx2.mail.elte.hu: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
+X-ELTE-SpamScore: -2.0
+X-ELTE-SpamLevel: 
+X-ELTE-SpamCheck: no
+X-ELTE-SpamVersion: ELTE 2.0 
+X-ELTE-SpamCheck-Details: score=-2.0 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.3.1
+        -2.0 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+        [score: 0.0000]
+Return-Path: <mingo@elte.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30023
+X-archive-position: 30024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: mingo@elte.hu
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 13, 2011 at 10:13 PM, Jayachandran C.
-<jayachandranc@netlogicmicro.com> wrote:
-> Can you send me the patchset which works on top of queue with any
-> debugging you want enabled?  I can try that and send you the results.
->
-> It is also possible that something is broken with the XLR platform code,
-> it is currently almost straight r4k...
 
-Well, David suggested adding "#define DEBUG 1" at the very top of
-tlbex.c, then booting with "debug" and posting the TLB refill handler
-to make sure the RI/XI code isn't getting enabled.  That seems like a
-reasonable start.  Even if there's no smoking gun, we'd still be able
-to compare our TLB handlers side-by-side.
+* Peter Zijlstra <peterz@infradead.org> wrote:
 
-Personally I don't have any other leads or patches to try.  These
-changes work fine for me in every configuration I am able to test:
+> On Fri, 2011-05-13 at 16:57 +0200, Ingo Molnar wrote:
+> > this is a security mechanism
+> 
+> Who says? [...]
 
-32-bit MIPS32 system, 32-bit kernel (non-RIXI)
-32-bit MIPS32 system, 32-bit kernel (XI)
-64-bit R5000 system, 32-bit kernel (non-RIXI, with 64-bit physical addresses)
-64-bit R5000 system, 64-bit kernel (non-RIXI)
+Kernel developers/maintainers of the affected code.
 
-So it's really best for somebody to debug the problem hands-on, on the
-system that showed the issue.
+We have security hooks all around the kernel, which can deny/accept execution 
+at various key points, but we do not have 'execute arbitrary user-space defined 
+(safe) scripts' callbacks in general.
 
-Would you be able to post your rootfs image?  Are you using
-"usr/dev_file_list usr/rootfs" from CONFIG_INITRAMFS_SOURCE?  That
-could eliminate one other potential difference between our
-configurations.
+But yes, if a particular callback point is defined widely enough to allow much 
+bigger intervention into the flow of execution, then more is possible as well.
+
+> [...] and why would you want to unify two separate concepts only to them 
+> limit it to security that just doesn't make sense.
+
+I don't limit them to security - the callbacks themselves are either for 
+passive observation or, at most, for security accept/deny callbacks.
+
+It's decided by the subsystem maintainers what kind of user-space control power 
+(or observation power) they want to allow, not me.
+
+I would just like to not stop the facility itself at the 'observe only' level, 
+like you suggest.
+
+Thanks,
+
+	Ingo

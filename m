@@ -1,55 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 14:01:32 +0200 (CEST)
-Received: from mx2.mail.elte.hu ([157.181.151.9]:38430 "EHLO mx2.mail.elte.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 14:03:42 +0200 (CEST)
+Received: from mx2.mail.elte.hu ([157.181.151.9]:39376 "EHLO mx2.mail.elte.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491023Ab1EPMBY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 May 2011 14:01:24 +0200
+        id S1491019Ab1EPMDf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 May 2011 14:03:35 +0200
 Received: from elvis.elte.hu ([157.181.1.14])
         by mx2.mail.elte.hu with esmtp (Exim)
-        id 1QLwTl-00034s-Ef
-        from <mingo@elte.hu>; Mon, 16 May 2011 14:00:59 +0200
+        id 1QLwVs-0003a4-T8
+        from <mingo@elte.hu>; Mon, 16 May 2011 14:03:10 +0200
 Received: by elvis.elte.hu (Postfix, from userid 1004)
-        id C7EF63E250F; Mon, 16 May 2011 14:00:44 +0200 (CEST)
-Date:   Mon, 16 May 2011 14:00:43 +0200
+        id 345163E250F; Mon, 16 May 2011 14:03:02 +0200 (CEST)
+Date:   Mon, 16 May 2011 14:03:02 +0200
 From:   Ingo Molnar <mingo@elte.hu>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Will Drewry <wad@chromium.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     Eric Paris <eparis@redhat.com>, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
         Frederic Weisbecker <fweisbec@gmail.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
         David Howells <dhowells@redhat.com>,
         Paul Mackerras <paulus@samba.org>,
-        Eric Paris <eparis@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        "H. PeterAnvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
         Jiri Slaby <jslaby@suse.cz>, linux-s390@vger.kernel.org,
         Russell King <linux@arm.linux.org.uk>, x86@kernel.org,
-        jmorris@namei.org, Ingo Molnar <mingo@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        James Morris <jmorris@namei.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>, kees.cook@canonical.com,
         "Serge E. Hallyn" <serge@hallyn.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        microblaze-uclinux@itee.uq.edu.au,
         Steven Rostedt <rostedt@goodmis.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, kees.cook@canonical.com,
-        Roland McGrath <roland@redhat.com>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
         Michal Marek <mmarek@suse.cz>, Michal Simek <monstr@monstr.eu>,
-        linuxppc-dev@lists.ozlabs.org, Oleg Nesterov <oleg@redhat.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>, Tejun Heo <tj@kernel.org>,
+        Will Drewry <wad@chromium.org>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
         linux390@de.ibm.com, Andrew Morton <akpm@linux-foundation.org>,
         agl@chromium.org, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
- filtering
-Message-ID: <20110516120043.GA7128@elte.hu>
-References: <1304017638.18763.205.camel@gandalf.stny.rr.com>
- <201105132135.34741.arnd@arndb.de>
- <BANLkTinukLesDoXzXKdtdRwgHtJkthXK0A@mail.gmail.com>
- <201105150842.07816.arnd@arndb.de>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system
+ callfiltering
+Message-ID: <20110516120302.GB7128@elte.hu>
+References: <1305299880.2076.31.camel@localhost.localdomain>
+ <AE90C24D6B3A694183C094C60CF0A2F6D8AD37@saturn3.aculab.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <201105150842.07816.arnd@arndb.de>
+In-Reply-To: <AE90C24D6B3A694183C094C60CF0A2F6D8AD37@saturn3.aculab.com>
 User-Agent: Mutt/1.5.20 (2009-08-17)
 Received-SPF: neutral (mx2.mail.elte.hu: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
 X-ELTE-SpamScore: -2.0
@@ -63,7 +59,7 @@ Return-Path: <mingo@elte.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30036
+X-archive-position: 30037
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,28 +68,15 @@ Precedence: bulk
 X-list: linux-mips
 
 
-* Arnd Bergmann <arnd@arndb.de> wrote:
+* David Laight <David.Laight@ACULAB.COM> wrote:
 
-> On Saturday 14 May 2011, Will Drewry wrote:
-> > Depending on integration, it could even be limited to ioctl commands
-> > that are appropriate to a known fd if the fd is opened prior to
-> > entering seccomp mode 2. Alternatively, __NR__ioctl could be allowed
-> > with a filter of "1" then narrowed through a later addition of
-> > something like "(fd == %u && (cmd == %u || cmd == %u))" or something
-> > along those lines.
-> > 
-> > Does that make sense?
-> 
-> Thanks for the explanation. This sounds like it's already doing all
-> we need.
+> [...] unfortunately it worked by looking at the user-space buffers on system 
+> call entry - and a multithreaded program can easily arrange to update them 
+> after the initial check! [...]
 
-One thing we could do more clearly here is to help keep the filter expressions 
-symbolic - i.e. help resolve the various ioctl variants as well, not just the 
-raw syscall parameter numbers.
-
-But yes, access to the raw syscall parameters and the ability to filter them 
-already gives us the ability to exclude/include specific ioctls in a rather 
-flexible way.
+Such problems of reliability/persistency of security checks is exactly one of 
+my arguments why this should not be limited to the syscall boundary, if you 
+read the example i have provided in this discussion.
 
 Thanks,
 

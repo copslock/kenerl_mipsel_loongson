@@ -1,78 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 May 2011 08:43:12 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.17.8]:50079 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490968Ab1EOGnH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 15 May 2011 08:43:07 +0200
-Received: from klappe2.localnet (p549B631F.dip.t-dialin.net [84.155.99.31])
-        by mrelayeu.kundenserver.de (node=mreu4) with ESMTP (Nemesis)
-        id 0Lq2eS-1Pqoym1s36-00djcI; Sun, 15 May 2011 08:42:08 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Will Drewry <wad@chromium.org>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call filtering
-Date:   Sun, 15 May 2011 08:42:07 +0200
-User-Agent: KMail/1.12.2 (Linux/2.6.37; KDE/4.3.2; x86_64; ; )
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        David Howells <dhowells@redhat.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Eric Paris <eparis@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
-        Jiri Slaby <jslaby@suse.cz>, linux-s390@vger.kernel.org,
-        Russell King <linux@arm.linux.org.uk>, x86@kernel.org,
-        jmorris@namei.org, Ingo Molnar <mingo@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Ingo Molnar <mingo@elte.hu>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        microblaze-uclinux@itee.uq.edu.au,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 02:37:37 +0200 (CEST)
+Received: from tundra.namei.org ([65.99.196.166]:40122 "EHLO tundra.namei.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491015Ab1EPAhc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 May 2011 02:37:32 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by tundra.namei.org (8.13.1/8.13.1) with ESMTP id p4G0a50X022105;
+        Sun, 15 May 2011 20:36:06 -0400
+Date:   Mon, 16 May 2011 10:36:05 +1000 (EST)
+From:   James Morris <jmorris@namei.org>
+To:     Ingo Molnar <mingo@elte.hu>
+cc:     Will Drewry <wad@chromium.org>, linux-kernel@vger.kernel.org,
         Steven Rostedt <rostedt@goodmis.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, kees.cook@canonical.com,
-        Roland McGrath <roland@redhat.com>,
-        Michal Marek <mmarek@suse.cz>, Michal Simek <monstr@monstr.eu>,
-        linuxppc-dev@lists.ozlabs.org, Oleg Nesterov <oleg@redhat.com>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
+        agl@chromium.org, Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
+        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
+        David Howells <dhowells@redhat.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>, Tejun Heo <tj@kernel.org>,
-        linux390@de.ibm.com, Andrew Morton <akpm@linux-foundation.org>,
-        agl@chromium.org, "David S. Miller" <davem@davemloft.net>
-References: <1304017638.18763.205.camel@gandalf.stny.rr.com> <201105132135.34741.arnd@arndb.de> <BANLkTinukLesDoXzXKdtdRwgHtJkthXK0A@mail.gmail.com>
-In-Reply-To: <BANLkTinukLesDoXzXKdtdRwgHtJkthXK0A@mail.gmail.com>
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
+ filtering
+In-Reply-To: <20110513121034.GG21022@elte.hu>
+Message-ID: <alpine.LRH.2.00.1105161006340.21749@tundra.namei.org>
+References: <1304017638.18763.205.camel@gandalf.stny.rr.com> <1305169376-2363-1-git-send-email-wad@chromium.org> <20110512074850.GA9937@elte.hu> <alpine.LRH.2.00.1105122133500.31507@tundra.namei.org> <20110512130104.GA2912@elte.hu>
+ <alpine.LRH.2.00.1105131018040.3047@tundra.namei.org> <20110513121034.GG21022@elte.hu>
+User-Agent: Alpine 2.00 (LRH 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201105150842.07816.arnd@arndb.de>
-X-Provags-ID: V02:K0:f4usqFz+G2Xqqw3c1bGJjp2l0I10M0PtSCwf08A10C3
- dx8gg30BDFrUg25Zlxruy2alsaOTN253cct9LuvJHr3QlRxxOf
- HHiXuuQsTNuXU7frNKvCLFJpiFISkc794o216MZOrKHJw2L/uD
- ustEekVp0LftEE/5gfUhR41eOonRjrZAR9LjK1WHKqRG+edjL+
- 4R0lBjje++DALexouIO6A==
-Return-Path: <arnd@arndb.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <jmorris@namei.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30030
+X-archive-position: 30031
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: jmorris@namei.org
 Precedence: bulk
 X-list: linux-mips
 
-On Saturday 14 May 2011, Will Drewry wrote:
-> Depending on integration, it could even be limited to ioctl commands
-> that are appropriate to a known fd if the fd is opened prior to
-> entering seccomp mode 2. Alternatively, __NR__ioctl could be allowed
-> with a filter of "1" then narrowed through a later addition of
-> something like "(fd == %u && (cmd == %u || cmd == %u))" or something
-> along those lines.
+On Fri, 13 May 2011, Ingo Molnar wrote:
+
+> Say i'm a user-space sandbox developer who wants to enforce that sandboxed code 
+> should only be allowed to open files in /home/sandbox/, /lib/ and /usr/lib/.
 > 
-> Does that make sense?
+> It is a simple and sensible security feature, agreed? It allows most code to 
+> run well and link to countless libraries - but no access to other files is 
+> allowed.
 
-Thanks for the explanation. This sounds like it's already doing all
-we need.
+Not really.
 
-	Arnd
+Firstly, what is the security goal of these restrictions?  Then, are the 
+restrictions complete and unbypassable?
+
+How do you reason about the behavior of the system as a whole?
+
+
+> I argue that this is the LSM and audit subsystems designed right: in the long 
+> run it could allow everything that LSM does at the moment - and so much more 
+> ...
+
+Now you're proposing a redesign of the security subsystem.  That's a 
+significant undertaking.
+
+In the meantime, we have a simple, well-defined enhancement to seccomp 
+which will be very useful to current users in reducing their kernel attack 
+surface.
+
+We should merge that, and the security subsystem discussion can carry on 
+separately.
+
+
+- James
+-- 
+James Morris
+<jmorris@namei.org>

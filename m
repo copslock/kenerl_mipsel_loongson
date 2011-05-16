@@ -1,249 +1,109 @@
-From: Jian Peng <jipeng2005@gmail.com>
-Date: Mon, 16 May 2011 12:07:37 -0700
-Subject: [PATCH 1/1] MIPS: topdown mmap support
-Message-ID: <20110516190737.iMmd4MAqo2J9-t6yrKuAViDB68eSZtubBMLRAa6D7iY@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2011 01:37:54 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:3218 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491056Ab1EPXhs convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 May 2011 01:37:48 +0200
+Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Mon, 16 May 2011 16:41:24 -0700
+X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
+Received: from IRVEXCHCCR01.corp.ad.broadcom.com ([10.252.49.30]) by
+ IRVEXCHHUB01.corp.ad.broadcom.com ([10.9.200.131]) with mapi; Mon, 16
+ May 2011 16:37:27 -0700
+From:   "Jian Peng" <jipeng@broadcom.com>
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+cc:     "Ralf Baechle" <ralf@linux-mips.org>
+Date:   Mon, 16 May 2011 16:37:22 -0700
+Subject: RE: patch to support topdown mmap allocation in MIPS
+Thread-Topic: patch to support topdown mmap allocation in MIPS
+Thread-Index: AcwUDZV1rkskQxMpROqms+cuQJj71wAFAjmg
+Message-ID: <E18F441196CA634DB8E1F1C56A50A8743242B54D32@IRVEXCHCCR01.corp.ad.broadcom.com>
+References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
+In-Reply-To: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-cr-hashedpuzzle: BMWF EYxD EmT6 ExBJ F8gF GEdz JSyk K7VS Mi5G Oy/A
+ P8nq U7Mt VlNH WF2n WIQ1
+ Wp3W;2;bABpAG4AdQB4AC0AbQBpAHAAcwBAAGwAaQBuAHUAeAAtAG0AaQBwAHMALgBvAHIAZwA7AHIAYQBsAGYAQABsAGkAbgB1AHgALQBtAGkAcABzAC4AbwByAGcA;Sosha1_v1;7;{EB42C5B0-8847-4B37-8AE1-43AD75694A72};agBpAHAAZQBuAGcAQABiAHIAbwBhAGQAYwBvAG0ALgBjAG8AbQA=;Mon,
+ 16 May 2011 23:37:22
+ GMT;UgBFADoAIABwAGEAdABjAGgAIAB0AG8AIABzAHUAcABwAG8AcgB0ACAAdABvAHAAZABvAHcAbgAgAG0AbQBhAHAAIABhAGwAbABvAGMAYQB0AGkAbwBuACAAaQBuACAATQBJAFAAUwA=
+x-cr-puzzleid: {EB42C5B0-8847-4B37-8AE1-43AD75694A72}
+acceptlanguage: en-US
+MIME-Version: 1.0
+X-WSS-ID: 61CF69AE1IC8295162-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <jipeng@broadcom.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 30054
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: jipeng@broadcom.com
+Precedence: bulk
+X-list: linux-mips
 
-This patch introduced topdown mmap support in user process address
-space allocation policy.
+Here is my testing program that intentionally caused OOM by calling mmap() to allocate 8MB each time.
 
-Recently, we ran some large applications that use mmap heavily and
-lead to OOM due to inflexible mmap allocation policy on MIPS32.
+Without patch, it failed at 168th mmap call, and with patch, it failed at 254th mmap call. It is 688MB more usable virtual address space.
 
-Since most other major archs supported it for years, it is reasonable
-to follow the trend and reduce the pain of porting applications.
+/*
+ * A simple testing program to cause OOM by calling mmap()
+ *
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/mman.h>
 
-Due to cache aliasing concern, arch_get_unmapped_area_topdown() and
-other helper functions are implemented in arch/mips/kernel/syscall.c.
+void *test_mmap(unsigned long addr, unsigned long size)
+{
+	void *pMem;
 
-Signed-off-by: Jian Peng <jipeng2005@gmail.com>
----
- arch/mips/include/asm/pgtable.h |    1 +
- arch/mips/kernel/syscall.c      |  180 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 178 insertions(+), 3 deletions(-)
+    	pMem = (char *)mmap((void *)addr, size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	printf("%s:addr=0x%08x, size=0x%x, return 0x%08x\n", __FUNCTION__, addr, size, pMem);
+	
+    	if (MAP_FAILED == pMem)
+    	{
+		printf("test_mmap FAILED\n");
+        	pMem = NULL;
+	}
 
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 7e40f37..b2202a6 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -414,6 +414,7 @@ int phys_mem_access_prot_allowed(struct file *file, unsigned long pfn,
-  * constraints placed on us by the cache architecture.
-  */
- #define HAVE_ARCH_UNMAPPED_AREA
-+#define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
- 
- /*
-  * No page table caches to initialise
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-index 58beabf..beda0ee 100644
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -42,6 +42,7 @@
- #include <asm/shmparam.h>
- #include <asm/sysmips.h>
- #include <asm/uaccess.h>
-+#include <linux/personality.h>
- 
- /*
-  * For historic reasons the pipe(2) syscall on MIPS has an unusual calling
-@@ -70,6 +71,54 @@ unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
- 
- EXPORT_SYMBOL(shm_align_mask);
- 
-+/* gap between mmap and stack */
-+#define MIN_GAP (128*1024*1024UL)
-+#define MAX_GAP(task_size)	((task_size)/6*5)
-+
-+/* add mmap layout code */
-+static int mmap_is_legacy(void)
-+{
-+	if (current->personality & ADDR_COMPAT_LAYOUT)
-+		return 1;
-+
-+	if (rlimit(RLIMIT_STACK) == RLIM_INFINITY)
-+		return 1;
-+
-+	return sysctl_legacy_va_layout;
-+}
-+
-+static unsigned long mmap_base(unsigned long rnd)
-+{
-+	unsigned long gap = rlimit(RLIMIT_STACK);
-+	unsigned long task_size;
-+
-+#ifdef CONFIG_32BIT
-+	task_size = TASK_SIZE;
-+#else /* Must be CONFIG_64BIT*/
-+	task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
-+#endif
-+
-+	if (gap < MIN_GAP)
-+		gap = MIN_GAP;
-+	else if (gap > MAX_GAP(task_size))
-+		gap = MAX_GAP(task_size);
-+
-+	return PAGE_ALIGN(task_size - gap - rnd);
-+}
-+
-+/* add COLOUR_ALIGN_DOWN */
-+static inline unsigned long COLOUR_ALIGN_DOWN(unsigned long addr,
-+					      unsigned long pgoff)
-+{
-+	unsigned long base = addr & ~shm_align_mask;
-+	unsigned long off = (pgoff << PAGE_SHIFT) & shm_align_mask;
-+
-+	if (base + off <= addr)
-+		return base + off;
-+
-+	return base - off;
-+}
-+
- #define COLOUR_ALIGN(addr,pgoff)				\
- 	((((addr) + shm_align_mask) & ~shm_align_mask) +	\
- 	 (((pgoff) << PAGE_SHIFT) & shm_align_mask))
-@@ -136,6 +185,125 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
- 	}
- }
- 
-+/* add  arch_get_unmapped_area_topdown */
-+unsigned long
-+arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
-+			  const unsigned long len, const unsigned long pgoff,
-+			  const unsigned long flags)
-+{
-+	struct vm_area_struct *vma;
-+	struct mm_struct *mm = current->mm;
-+	unsigned long addr = addr0;
-+	int do_colour_align;
-+	unsigned long task_size;
-+
-+#ifdef CONFIG_32BIT
-+	task_size = TASK_SIZE;
-+#else /* Must be CONFIG_64BIT*/
-+	task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
-+#endif
-+
-+	if (flags & MAP_FIXED) {
-+		/* We do not accept a shared mapping if it would violate
-+		 * cache aliasing constraints.
-+		 */
-+		if ((flags & MAP_SHARED) &&
-+		    ((addr - (pgoff << PAGE_SHIFT)) & shm_align_mask))
-+			return -EINVAL;
-+		return addr;
-+	}
-+
-+	if (unlikely(len > task_size))
-+		return -ENOMEM;
-+
-+	do_colour_align = 0;
-+	if (filp || (flags & MAP_SHARED))
-+		do_colour_align = 1;
-+
-+	/* requesting a specific address */
-+	if (addr) {
-+		if (do_colour_align)
-+			addr = COLOUR_ALIGN(addr, pgoff);
-+		else
-+			addr = PAGE_ALIGN(addr);
-+
-+		vma = find_vma(mm, addr);
-+		if (task_size - len >= addr &&
-+		    (!vma || addr + len <= vma->vm_start))
-+			return addr;
-+	}
-+
-+	/* check if free_area_cache is useful for us */
-+	if (len <= mm->cached_hole_size) {
-+		mm->cached_hole_size = 0;
-+		mm->free_area_cache = mm->mmap_base;
-+	}
-+
-+	/* either no address requested or can't fit in requested address hole */
-+	addr = mm->free_area_cache;
-+	if (do_colour_align) {
-+		unsigned long base = COLOUR_ALIGN_DOWN(addr-len, pgoff);
-+
-+		addr = base + len;
-+	}
-+
-+	/* make sure it can fit in the remaining address space */
-+	if (likely(addr > len)) {
-+		vma = find_vma(mm, addr-len);
-+		if (!vma || addr <= vma->vm_start) {
-+			/* remember the address as a hint for next time */
-+			return mm->free_area_cache = addr-len;
-+		}
-+	}
-+
-+	if (unlikely(mm->mmap_base < len))
-+		goto bottomup;
-+
-+	addr = mm->mmap_base-len;
-+	if (do_colour_align)
-+		addr = COLOUR_ALIGN_DOWN(addr, pgoff);
-+
-+	do {
-+		/*
-+		 * Lookup failure means no vma is above this address,
-+		 * else if new region fits below vma->vm_start,
-+		 * return with success:
-+		 */
-+		vma = find_vma(mm, addr);
-+		if (likely(!vma || addr+len <= vma->vm_start)) {
-+			/* remember the address as a hint for next time */
-+			return mm->free_area_cache = addr;
-+		}
-+
-+		/* remember the largest hole we saw so far */
-+		if (addr + mm->cached_hole_size < vma->vm_start)
-+			mm->cached_hole_size = vma->vm_start - addr;
-+
-+		/* try just below the current vma->vm_start */
-+		addr = vma->vm_start-len;
-+		if (do_colour_align)
-+			addr = COLOUR_ALIGN_DOWN(addr, pgoff);
-+	} while (likely(len < vma->vm_start));
-+
-+bottomup:
-+	/*
-+	 * A failed mmap() very likely causes application failure,
-+	 * so fall back to the bottom-up function here. This scenario
-+	 * can happen with large stack limits and large mmap()
-+	 * allocations.
-+	 */
-+	mm->cached_hole_size = ~0UL;
-+	mm->free_area_cache = TASK_UNMAPPED_BASE;
-+	addr = arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
-+	/*
-+	 * Restore the topdown base:
-+	 */
-+	mm->free_area_cache = mm->mmap_base;
-+	mm->cached_hole_size = ~0UL;
-+
-+	return addr;
-+}
-+
- void arch_pick_mmap_layout(struct mm_struct *mm)
- {
- 	unsigned long random_factor = 0UL;
-@@ -149,9 +317,15 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
- 			random_factor &= 0xffffffful;
- 	}
- 
--	mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
--	mm->get_unmapped_area = arch_get_unmapped_area;
--	mm->unmap_area = arch_unmap_area;
-+	if (mmap_is_legacy()) {
-+		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
-+		mm->get_unmapped_area = arch_get_unmapped_area;
-+		mm->unmap_area = arch_unmap_area;
-+	} else {
-+		mm->mmap_base = mmap_base(random_factor);
-+		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
-+		mm->unmap_area = arch_unmap_area_topdown;
-+	}
- }
- 
- static inline unsigned long brk_rnd(void)
--- 
-1.7.4.1
+    	return pMem;
+}
+
+int main(int argc, char **argv)
+{
+	int done = 0;
+	int keep = 1;
+
+	while(keep)
+	{
+		int i;
+		int loops = 2000000000;
+
+		if(!done) {
+			for(i=0; i<loops; i++)
+				if(test_mmap(0, 0x800000) == NULL)
+				{	
+					printf("\t\tFAILED at %d try\n", i);
+					break;
+				}
+			done = 1;
+		}	
+
+		sleep(1);
+	}
+}
+
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Jian Peng
+Sent: Monday, May 16, 2011 2:10 PM
+To: linux-mips@linux-mips.org
+Cc: Ralf Baechle
+Subject: patch to support topdown mmap allocation in MIPS

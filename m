@@ -1,95 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 02:37:37 +0200 (CEST)
-Received: from tundra.namei.org ([65.99.196.166]:40122 "EHLO tundra.namei.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491015Ab1EPAhc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 May 2011 02:37:32 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by tundra.namei.org (8.13.1/8.13.1) with ESMTP id p4G0a50X022105;
-        Sun, 15 May 2011 20:36:06 -0400
-Date:   Mon, 16 May 2011 10:36:05 +1000 (EST)
-From:   James Morris <jmorris@namei.org>
-To:     Ingo Molnar <mingo@elte.hu>
-cc:     Will Drewry <wad@chromium.org>, linux-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
-        agl@chromium.org, Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
-        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
-        David Howells <dhowells@redhat.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
- filtering
-In-Reply-To: <20110513121034.GG21022@elte.hu>
-Message-ID: <alpine.LRH.2.00.1105161006340.21749@tundra.namei.org>
-References: <1304017638.18763.205.camel@gandalf.stny.rr.com> <1305169376-2363-1-git-send-email-wad@chromium.org> <20110512074850.GA9937@elte.hu> <alpine.LRH.2.00.1105122133500.31507@tundra.namei.org> <20110512130104.GA2912@elte.hu>
- <alpine.LRH.2.00.1105131018040.3047@tundra.namei.org> <20110513121034.GG21022@elte.hu>
-User-Agent: Alpine 2.00 (LRH 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 10:19:14 +0200 (CEST)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:55542 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490970Ab1EPITL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2011 10:19:11 +0200
+Received: by wwb17 with SMTP id 17so3972173wwb.24
+        for <linux-mips@linux-mips.org>; Mon, 16 May 2011 01:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:sender:from:organization:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:message-id;
+        bh=DrEZhMyg6rALu3vOMThwremp8AAWirleT6TeRj1kT5U=;
+        b=IdUdWKj8H/c2xL1CQTqXKyTjDhVQoFDmptSq/Ariqgg3uC42KAGQfyq8wUovYtBThy
+         qY0tf24HxrIDex/O3xolGBaFY5UMxmWr5DNW21mC0EosHRVOxMqThl7k+mND3/6J76x4
+         MhKs+dizAlflRX33w0wq5GFry49lxU47wNI6E=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:organization:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        b=dJJXofSz9JJe6VAntaQ0zJIxQsOgmnl22oOCMtazCw2rFwCO3IbDTlgfaAA2Aypm2E
+         PqYRcVS44+JbhIulKhK9sUIxQjUn0yj9M8xvaC5zY1Hq66I+lFT36AtxdLe3xT2kV3vH
+         Bm/TksXFQHA+8T7MVju3MxR/scuUTvJtbY1IQ=
+Received: by 10.227.55.6 with SMTP id s6mr3979509wbg.112.1305533945733;
+        Mon, 16 May 2011 01:19:05 -0700 (PDT)
+Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
+        by mx.google.com with ESMTPS id s20sm2983152wbh.6.2011.05.16.01.19.03
+        (version=SSLv3 cipher=OTHER);
+        Mon, 16 May 2011 01:19:03 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+To:     "Robert P. J. Day" <rpjday@crashcourse.ca>
+Subject: Re: reference to non-existent CONFIG_HAVE_GPIO_LIB variable?
+Date:   Mon, 16 May 2011 10:23:33 +0200
+User-Agent: KMail/1.13.6 (Linux/2.6.38-8-server; KDE/4.6.2; x86_64; ; )
+Cc:     linux-mips@linux-mips.org
+References: <alpine.DEB.2.00.1105141904410.13343@localhost6.localdomain6>
+In-Reply-To: <alpine.DEB.2.00.1105141904410.13343@localhost6.localdomain6>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <jmorris@namei.org>
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201105161023.33072.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30031
+X-archive-position: 30032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jmorris@namei.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 13 May 2011, Ingo Molnar wrote:
+Hello,
 
-> Say i'm a user-space sandbox developer who wants to enforce that sandboxed code 
-> should only be allowed to open files in /home/sandbox/, /lib/ and /usr/lib/.
-> 
-> It is a simple and sensible security feature, agreed? It allows most code to 
-> run well and link to countless libraries - but no access to other files is 
-> allowed.
+On Sunday 15 May 2011 01:05:58 Robert P. J. Day wrote:
+>   the current kernel source contains a Makefile reference to the above
+> Kconfig variable that does not appear to be defined anywhere.
 
-Not really.
-
-Firstly, what is the security goal of these restrictions?  Then, are the 
-restrictions complete and unbypassable?
-
-How do you reason about the behavior of the system as a whole?
-
-
-> I argue that this is the LSM and audit subsystems designed right: in the long 
-> run it could allow everything that LSM does at the moment - and so much more 
-> ...
-
-Now you're proposing a redesign of the security subsystem.  That's a 
-significant undertaking.
-
-In the meantime, we have a simple, well-defined enhancement to seccomp 
-which will be very useful to current users in reducing their kernel attack 
-surface.
-
-We should merge that, and the security subsystem discussion can carry on 
-separately.
-
-
-- James
--- 
-James Morris
-<jmorris@namei.org>
+It would help if you mention which Makefile references this Kconfig variable 
+along with the changeset which introduced it.
+--
+Florian

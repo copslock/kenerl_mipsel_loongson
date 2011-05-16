@@ -1,111 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 15:35:43 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:52267 "EHLO duck.linux-mips.net"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491024Ab1EPNfj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 May 2011 15:35:39 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4GDbKx3021071;
-        Mon, 16 May 2011 14:37:20 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4GDbJTB021070;
-        Mon, 16 May 2011 14:37:19 +0100
-Date:   Mon, 16 May 2011 14:37:19 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Bharat Bhushan <bharat.76@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: Stack frame for netlink_broadcast
-Message-ID: <20110516133719.GA13589@linux-mips.org>
-References: <BANLkTikzAjpOL1GwTw9JQFV3z9G3kRJ=1g@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 16:42:22 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:60343 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491034Ab1EPOmR convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 May 2011 16:42:17 +0200
+Received: by fxm14 with SMTP id 14so4152226fxm.36
+        for <multiple recipients>; Mon, 16 May 2011 07:42:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BANLkTikzAjpOL1GwTw9JQFV3z9G3kRJ=1g@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.223.14.137 with SMTP id g9mr3481757faa.1.1305556927330; Mon,
+ 16 May 2011 07:42:07 -0700 (PDT)
+Received: by 10.223.101.204 with HTTP; Mon, 16 May 2011 07:42:07 -0700 (PDT)
+In-Reply-To: <20110516125505.GE7128@elte.hu>
+References: <1304017638.18763.205.camel@gandalf.stny.rr.com>
+        <1305169376-2363-1-git-send-email-wad@chromium.org>
+        <20110512074850.GA9937@elte.hu>
+        <alpine.LRH.2.00.1105122133500.31507@tundra.namei.org>
+        <20110512130104.GA2912@elte.hu>
+        <BANLkTin74OSAi94jbcYf_tj04L247O4GOg@mail.gmail.com>
+        <20110516125505.GE7128@elte.hu>
+Date:   Mon, 16 May 2011 09:42:07 -0500
+Message-ID: <BANLkTimg5KsPA-JYS__hdnXZWg57fmvZnQ@mail.gmail.com>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call filtering
+From:   Will Drewry <wad@chromium.org>
+To:     Ingo Molnar <mingo@elte.hu>
+Cc:     James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
+        agl@chromium.org, Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Roland McGrath <roland@redhat.com>,
+        Jiri Slaby <jslaby@suse.cz>,
+        David Howells <dhowells@redhat.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-arm-kernel@lists.infradead.org,
+        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <wad@chromium.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30042
+X-archive-position: 30043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wad@chromium.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 16, 2011 at 02:34:46PM +0530, Bharat Bhushan wrote:
-
-> I am using linux kernel version 2.6.16.51 MIPS port.
+On Mon, May 16, 2011 at 7:55 AM, Ingo Molnar <mingo@elte.hu> wrote:
 >
-> I see the crash while using netlink_broadcast from kernel module.
-> 
-> CPU 0 Unable to handle kernel paging request at virtual address
-> 00000000, epc == 8011c1c8, ra == 80120950
-> Oops[#1]:
-> Cpu 0
-> $ 0   : 00000000 50104c00 00000000 804008c0
-> $ 4   : 803841a0 00000000 00000001 00000000
-> $ 8   : 40000000 00000000 00000000 00000000
-> $12   : 00000000 00000001 8093bfff 00000002
-> $16   : 81201480 8120193c 8a69e018 881e1b80
-> $20   : 8ba5a520 00000001 80412d34 00000000
-> $24   : 00000000 80343f04
-> $28   : 80382000 80383d08 80383d10 80120950
-> Hi    : 00000090
-> Lo    : 0000007e
-> epc   : 8011c1c8 dequeue_task+0xc/0x94     Tainted: PF
-> ra    : 80120950 sys_sched_yield+0x7c/0xf8
-> Status: 50104c02    KERNEL EXL
-> Cause : 00808008
-> BadVA : 00000000
-> PrId  : 000c0904
-> Modules linked in: cf ipi_hsl dataplane evb sjtag xlr_fmn hw_random
-> ipt_connlimit xt_tcpudp xt_mark ipt_REDIRECT iptable_nat ip_nat
-> ip_conntrack iptable_filter ip_tables x_tables hwreset panic_dump
-> Process swapper (pid: 0, threadinfo=80382000, task=803841a0)
-> Stack : 80383d10 802c0180 ffffffff 00000001 8a69e018 881e1b80 ffffffff 00000001
->         00000001 802d6390 8e143390 00000000 8e11f848 8e002d8c 00000000 00000001
->         00000001 00000000 881e1c08 80410000 8e9c7f30 881e1b80 8fc7de00 8fc7def8
->         00000002 8e409400 8e143390 00000000 00000000 8e0d7840 817a3e00 0001164d
->         00000000 00000000 000000d0 8e40c0e4 8e0d9ea0 8e0d9cb4 8e706738 00000002
-> 
-> 
-> 
-> Please note netlink_broadcast reserves Stack frame of 80bytes but
-> tries to write to access 88(sp).
-> 
-> 802d60c8 <netlink_broadcast>:
-> 802d60c8:   27bdffb0    addiu   sp,sp,-80
-> 802d60cc:   afb40038    sw  s4,56(sp)
-> 802d60d0:   afb30034    sw  s3,52(sp)
-> 802d60d4:   afbf004c    sw  ra,76(sp)
-> 802d60d8:   afbe0048    sw  s8,72(sp)
-> 802d60dc:   afb70044    sw  s7,68(sp)
-> 802d60e0:   afb60040    sw  s6,64(sp)
-> 802d60e4:   afb5003c    sw  s5,60(sp)
-> 802d60e8:   afb20030    sw  s2,48(sp)
-> 802d60ec:   afb1002c    sw  s1,44(sp)
-> 802d60f0:   afb00028    sw  s0,40(sp)
-> 802d60f4:   afa40050    sw  a0,80(sp)  <-------Can this corrupt the
-> previous stack frame?
-> 802d60f8:   8ca20078    lw  v0,120(a1)
-> 802d60fc:   00a09821    move    s3,a1
-> 802d6100:   afa60058    sw  a2,88(sp) <------- Can this corrupt the
-> previous stack frame?
+> * Will Drewry <wad@chromium.org> wrote:
+>
+>> I agree with you on many of these points!  However, I don't think that the
+>> views around LSMs, perf/ftrace infrastructure, or the current seccomp
+>> filtering implementation are necessarily in conflict.  Here is my
+>> understanding of how the different worlds fit together and where I see this
+>> patchset living, along with where I could see future work going.  Perhaps I'm
+>> being a trifle naive, but here goes anyway:
+>>
+>> 1. LSMs provide a global mechanism for hooking "security relevant"
+>> events at a point where all the incoming user-sourced data has been
+>> preprocessed and moved into userspace.  The hooks are called every
+>> time one of those boundaries are crossed.
+>
+>> 2. Perf and the ftrace infrastructure provide global function tracing
+>> and system call hooks with direct access to the caller's registers
+>> (and memory).
+>
+> No, perf events are not just global but per task as well. Nor are events
+> limited to 'tracing' (generating a flow of events into a trace buffer) - they
+> can just be themselves as well and count and generate callbacks.
 
-No; this is entirely normal.  In the O32 ABI which is used to compile 32-bit
-kernels the caller allocates the stackframe for the callee to save the
-argument registers $a0 .. $a3 so you expect to see accesses to the 16 bytes
-above the current stack frame just like here.
+I was looking at the perf_sysenter_enable() call, but clearly there is
+more going on :)
 
-  Ralf
+> The generic NMI watchdog uses that kind of event model for example, see
+> kernel/watchdog.c and how it makes use of struct perf_event abstractions to do
+> per CPU events (with no buffrs), or how kernel/hw_breakpoint.c uses it for per
+> task events and integrates it with the ptrace hw-breakpoints code.
+>
+> Ideally Peter's one particular suggestion is right IMO and we'd want to be able
+> for a perf_event to just be a list of callbacks, attached to a task and barely
+> more than a discoverable, named notifier chain in its slimmest form.
+>
+> In practice it's fatter than that right now, but we should definitely factor
+> out that aspect of it more clearly, both code-wise and API-wise.
+> kernel/watchdog.c and kernel/hw_breakpoint.c shows that such factoring out is
+> possible and desirable.
+>
+>> 3. seccomp (as it exists today) provides a global system call entry
+>> hook point with a binary per-process decision about whether to provide
+>> "secure computing" behavior.
+>>
+>> When I boil that down to abstractions, I see:
+>> A. Globally scoped: LSMs, ftrace/perf
+>> B. Locally/process scoped: seccomp
+>
+> Ok, i see where you got the idea that you needed to cut your surface of
+> abstraction at the filter engine / syscall enumeration level - i think you were
+> thinking of it in the ftrace model of tracepoints, not in the perf model of
+> events.
+>
+> No, events are generic and as such per task as well, not just global.
+>
+> I've replied to your other mail with more specific suggestions of how we could
+> provide your feature using abstractions that share code more widely. Talking
+> specifics will i hope help move the discussion forward! :-)
 
-PS: 2.6.16.51 is now over 4 years old.  Please ship to the following address:
+Agreed.  I'll digest both the watchdog code as well as your other
+comments and follow up when I have a fuller picture in my head.
 
-  British Museum
-  Great Russell Street
-  WC1B 3DG
-  London
-  Great Britain
+(I have a few initial comments I'll post in response to your other mail.)
 
-;-)
+Thanks!
+will

@@ -1,74 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 21:41:07 +0200 (CEST)
-Received: from astoria.ccjclearline.com ([64.235.106.9]:51725 "EHLO
-        astoria.ccjclearline.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491069Ab1EPTlC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2011 21:41:02 +0200
-Received: from [4.79.116.67] (helo=crashcourse.ca)
-        by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.69)
-        (envelope-from <rpjday@crashcourse.ca>)
-        id 1QM3ew-00067n-Uu; Mon, 16 May 2011 15:40:55 -0400
-Date:   Mon, 16 May 2011 15:40:18 -0400 (EDT)
-From:   "Robert P. J. Day" <rpjday@crashcourse.ca>
-X-X-Sender: rpjday@localhost6.localdomain6
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     linux-mips@linux-mips.org
-Subject: Re: reference to non-existent CONFIG_HAVE_GPIO_LIB variable?
-In-Reply-To: <20110516155721.GA27664@linux-mips.org>
-Message-ID: <alpine.DEB.2.00.1105161538510.7547@localhost6.localdomain6>
-References: <alpine.DEB.2.00.1105141904410.13343@localhost6.localdomain6> <20110516155721.GA27664@linux-mips.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 May 2011 23:12:42 +0200 (CEST)
+Received: from mms1.broadcom.com ([216.31.210.17]:1672 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491054Ab1EPVMg convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 May 2011 23:12:36 +0200
+Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Mon, 16 May 2011 14:13:47 -0700
+X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
+Received: from IRVEXCHCCR01.corp.ad.broadcom.com ([10.252.49.30]) by
+ IRVEXCHHUB01.corp.ad.broadcom.com ([10.9.200.131]) with mapi; Mon, 16
+ May 2011 14:09:51 -0700
+From:   "Jian Peng" <jipeng@broadcom.com>
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+cc:     "Ralf Baechle" <ralf@linux-mips.org>
+Date:   Mon, 16 May 2011 14:09:46 -0700
+Subject: patch to support topdown mmap allocation in MIPS
+Thread-Topic: patch to support topdown mmap allocation in MIPS
+Thread-Index: AcwUDZV1rkskQxMpROqms+cuQJj71w==
+Message-ID: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-cr-hashedpuzzle: BY3Z CL+o Cbvi Ce5G Fbp4 FqCU G4zI J/1J KIWF Kp/u
+ Ljeu O7xN O9c4 O+3c Pxau
+ RVdN;2;bABpAG4AdQB4AC0AbQBpAHAAcwBAAGwAaQBuAHUAeAAtAG0AaQBwAHMALgBvAHIAZwA7AHIAYQBsAGYAQABsAGkAbgB1AHgALQBtAGkAcABzAC4AbwByAGcA;Sosha1_v1;7;{529305D6-144C-433F-B3E5-2920E3B268FA};agBpAHAAZQBuAGcAQABiAHIAbwBhAGQAYwBvAG0ALgBjAG8AbQA=;Mon,
+ 16 May 2011 21:09:46
+ GMT;cABhAHQAYwBoACAAdABvACAAcwB1AHAAcABvAHIAdAAgAHQAbwBwAGQAbwB3AG4AIABtAG0AYQBwACAAYQBsAGwAbwBjAGEAdABpAG8AbgAgAGkAbgAgAE0ASQBQAFMA
+x-cr-puzzleid: {529305D6-144C-433F-B3E5-2920E3B268FA}
+acceptlanguage: en-US
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - astoria.ccjclearline.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Return-Path: <rpjday@crashcourse.ca>
+X-WSS-ID: 61CF4C011IC8261062-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <jipeng@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30052
+X-archive-position: 30053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rpjday@crashcourse.ca
+X-original-sender: jipeng@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 16 May 2011, Ralf Baechle wrote:
-
-> On Sat, May 14, 2011 at 07:05:58PM -0400, Robert P. J. Day wrote:
->
-> >   the current kernel source contains a Makefile reference to the above
-> > Kconfig variable that does not appear to be defined anywhere.
->
-> Commit 7444a72effa632fcd8edc566f880d96fe213c73b ["gpiolib: allow
-> user- selection"] plus the fixups in commit
-> 09cd9527d621640d4dd231dff77b681e711d8e4b ["gpiolib: fix
-> HAVE_GPIO_LIB leftovers in asm-generic/gpio.h"] and maybe others
-> changed the symbol name.  Somehow this instance was missed - maybe
-> because the code was merged around the same timeframe.
-
-  well, i'll just leave this with someone here, you can decide the
-best way to resolve this.
-
-rday
-
-p.s.  if memory serves, there was another MIPS-related config variable
-that was unreferenced.  i'll see if i can track it down.
-
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================

@@ -1,73 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2011 12:00:43 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:51137 "EHLO duck.linux-mips.net"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1490989Ab1EQKAj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 May 2011 12:00:39 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4HA1pe0015961;
-        Tue, 17 May 2011 11:01:52 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4HA1nYA015960;
-        Tue, 17 May 2011 11:01:49 +0100
-Date:   Tue, 17 May 2011 11:01:49 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ipc: Add missing sys_ni entries for ipc/compat.c
- functions
-Message-ID: <20110517100149.GA7516@linux-mips.org>
-References: <cb0939f54999dd3754808f2c5fc1cf0f@localhost>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2011 14:42:57 +0200 (CEST)
+Received: from mx2.mail.elte.hu ([157.181.151.9]:52623 "EHLO mx2.mail.elte.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490989Ab1EQMmx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 May 2011 14:42:53 +0200
+Received: from elvis.elte.hu ([157.181.1.14])
+        by mx2.mail.elte.hu with esmtp (Exim)
+        id 1QMJbT-00065A-1G
+        from <mingo@elte.hu>; Tue, 17 May 2011 14:42:29 +0200
+Received: by elvis.elte.hu (Postfix, from userid 1004)
+        id 6A5F03E2533; Tue, 17 May 2011 14:42:12 +0200 (CEST)
+Date:   Tue, 17 May 2011 14:42:12 +0200
+From:   Ingo Molnar <mingo@elte.hu>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        James Morris <jmorris@namei.org>,
+        Will Drewry <wad@chromium.org>, linux-kernel@vger.kernel.org,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
+        agl@chromium.org, "Serge E. Hallyn" <serge@hallyn.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Roland McGrath <roland@redhat.com>,
+        Jiri Slaby <jslaby@suse.cz>,
+        David Howells <dhowells@redhat.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
+ filtering
+Message-ID: <20110517124212.GB21441@elte.hu>
+References: <1305290370.2466.14.camel@twins>
+ <1305290612.2466.17.camel@twins>
+ <20110513125452.GD3924@elte.hu>
+ <1305292132.2466.26.camel@twins>
+ <20110513131800.GA7883@elte.hu>
+ <1305294935.2466.64.camel@twins>
+ <20110513145737.GC32688@elte.hu>
+ <1305563026.5456.19.camel@gandalf.stny.rr.com>
+ <20110516165249.GB10929@elte.hu>
+ <1305565422.5456.21.camel@gandalf.stny.rr.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cb0939f54999dd3754808f2c5fc1cf0f@localhost>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1305565422.5456.21.camel@gandalf.stny.rr.com>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Received-SPF: neutral (mx2.mail.elte.hu: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
+X-ELTE-SpamScore: -2.0
+X-ELTE-SpamLevel: 
+X-ELTE-SpamCheck: no
+X-ELTE-SpamVersion: ELTE 2.0 
+X-ELTE-SpamCheck-Details: score=-2.0 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.3.1
+        -2.0 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+        [score: 0.0000]
+Return-Path: <mingo@elte.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30060
+X-archive-position: 30061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mingo@elte.hu
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 13, 2011 at 05:07:28PM -0700, Kevin Cernekee wrote:
-> Date:   Fri, 13 May 2011 17:07:28 -0700
-> From: Kevin Cernekee <cernekee@gmail.com>
-> To: Andrew Morton <akpm@linux-foundation.org>, Al Viro
->  <viro@zeniv.linux.org.uk>, Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-> Subject: [PATCH] ipc: Add missing sys_ni entries for ipc/compat.c functions
-> Content-Type: text/plain; charset=us-ascii
-> 
-> When building with:
-> 
-> CONFIG_64BIT=y
-> CONFIG_MIPS32_COMPAT=y
-> CONFIG_COMPAT=y
-> CONFIG_MIPS32_O32=y
-> CONFIG_MIPS32_N32=y
-> CONFIG_SYSVIPC is not set
-> (and implicitly: CONFIG_SYSVIPC_COMPAT is not set)
-> 
-> the final link fails with unresolved symbols for:
-> 
-> compat_sys_semctl, compat_sys_msgsnd, compat_sys_msgrcv,
-> compat_sys_shmctl, compat_sys_msgctl, compat_sys_semtimedop
-> 
-> The fix is to add cond_syscall declarations for all syscalls in
-> ipc/compat.c
-> 
-> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+* Steven Rostedt <rostedt@goodmis.org> wrote:
 
-Thanks, Kevin!
+> On Mon, 2011-05-16 at 18:52 +0200, Ingo Molnar wrote:
+> > * Steven Rostedt <rostedt@goodmis.org> wrote:
+> > 
+> > > I'm a bit nervous about the 'active' role of (trace_)events, because of the 
+> > > way multiple callbacks can be registered. How would:
+> > > 
+> > > 	err = event_x();
+> > > 	if (err == -EACCESS) {
+> > > 
+> > > be handled? [...]
+> > 
+> > The default behavior would be something obvious: to trigger all callbacks and 
+> > use the first non-zero return value.
+> 
+> But how do we know which callback that was from? There's no ordering of what 
+> callbacks are called first.
 
-  Ralf
+We do not have to know that - nor do the calling sites care in general. Do you 
+have some specific usecase in mind where the identity of the callback that 
+generates a match matters?
+
+Thanks,
+
+	Ingo

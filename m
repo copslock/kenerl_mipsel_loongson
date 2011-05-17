@@ -1,77 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2011 03:27:29 +0200 (CEST)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:56002 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491069Ab1EQB1Y convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 May 2011 03:27:24 +0200
-Received: by pzk28 with SMTP id 28so18475pzk.36
-        for <multiple recipients>; Mon, 16 May 2011 18:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=tOYvDOUFzlZUbskSkl0xgPvPTU0PLeKfMO0ly5uDEzg=;
-        b=hkHe9tw5UZiWc0jVVHNYFD1WwL14UWJ+Wqj9O0GzL3CoN/4+vF7PsBM6FJ+xNPk/sj
-         v1jNmtEhMl/rcBy+brnevTisDedYSJWRyOiyvVz8WepQzUyFyMQwH49qmUK8Qgdh04pM
-         wHVQt7quNgKhdmGFkd+JfX5htEgqo38+h1e9o=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=guQreLhK67RvubHDTafsGfgVBHYp3DKEJx9Xh72TL1QhN200jmtOnZTzjUmg12LKxF
-         h/+qbIDvhg929EQ2r+3mOwU0mHkQzZGF7egG98e/7R0eFCcvPW2IujxpUssI8jOeAaVY
-         HcdGQ0Yv7FlsYNrsBH6RhCwDXMFnpCdF7IrAE=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2011 04:25:51 +0200 (CEST)
+Received: from tundra.namei.org ([65.99.196.166]:56118 "EHLO tundra.namei.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490973Ab1EQCZp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 May 2011 04:25:45 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by tundra.namei.org (8.13.1/8.13.1) with ESMTP id p4H2OYPg031941;
+        Mon, 16 May 2011 22:24:34 -0400
+Date:   Tue, 17 May 2011 12:24:34 +1000 (EST)
+From:   James Morris <jmorris@namei.org>
+To:     Ingo Molnar <mingo@elte.hu>
+cc:     Will Drewry <wad@chromium.org>, linux-kernel@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
+        agl@chromium.org, Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
+        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
+ filtering
+In-Reply-To: <20110516150837.GA513@elte.hu>
+Message-ID: <alpine.LRH.2.00.1105171214330.31710@tundra.namei.org>
+References: <1304017638.18763.205.camel@gandalf.stny.rr.com> <1305169376-2363-1-git-send-email-wad@chromium.org> <20110512074850.GA9937@elte.hu> <alpine.LRH.2.00.1105122133500.31507@tundra.namei.org> <20110512130104.GA2912@elte.hu>
+ <alpine.LRH.2.00.1105131018040.3047@tundra.namei.org> <20110513121034.GG21022@elte.hu> <alpine.LRH.2.00.1105161006340.21749@tundra.namei.org> <20110516150837.GA513@elte.hu>
+User-Agent: Alpine 2.00 (LRH 1167 2008-08-23)
 MIME-Version: 1.0
-Received: by 10.68.19.131 with SMTP id f3mr110000pbe.379.1305595637791; Mon,
- 16 May 2011 18:27:17 -0700 (PDT)
-Received: by 10.68.51.72 with HTTP; Mon, 16 May 2011 18:27:17 -0700 (PDT)
-In-Reply-To: <4DD1BD72.2000408@caviumnetworks.com>
-References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
-        <4DD1BD72.2000408@caviumnetworks.com>
-Date:   Mon, 16 May 2011 18:27:17 -0700
-Message-ID: <BANLkTikq04wuK=bz+Lieavmm3oDtoYWKxg@mail.gmail.com>
-Subject: Re: patch to support topdown mmap allocation in MIPS
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Jian Peng <jipeng@broadcom.com>,
-        David Daney <ddaney@caviumnetworks.com>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <cernekee@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <jmorris@namei.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30057
+X-archive-position: 30058
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: jmorris@namei.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 16, 2011 at 5:12 PM, David Daney <ddaney@caviumnetworks.com> wrote:
-> On 05/16/2011 02:09 PM, Jian Peng wrote:
->>  #define COLOUR_ALIGN(addr,pgoff)                              \
->>        ((((addr) + shm_align_mask)&  ~shm_align_mask) +        \
->>         (((pgoff)<<  PAGE_SHIFT)&  shm_align_mask))
+On Mon, 16 May 2011, Ingo Molnar wrote:
 
-I see COLOUR_ALIGN in arch/{arm,mips,sh,sparc} .  All sorts of
-embedded platforms have to worry about cache aliases nowadays.
+> > Not really.
+> > 
+> > Firstly, what is the security goal of these restrictions? [...]
+> 
+> To do what i described above? Namely:
+> 
+>  " Sandboxed code should only be allowed to open files in /home/sandbox/, /lib/
+>    and /usr/lib/ "
 
-Do you think this logic could be folded into the generic
-implementations in mm/mmap.c ?  Or is there something else inside our
-arch_get_unmapped_area* functions that's really, irreparably unique to
-MIPS?
+These are access rules, they don't really describe a high-level security 
+goal.  How do you know it's ok to open everything in these directories?
 
->> +#ifdef CONFIG_32BIT
->> +       task_size = TASK_SIZE;
->> +#else /* Must be CONFIG_64BIT*/
->> +       task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 :
->> TASK_SIZE;
->> +#endif
 
-Can the "#else" clause and "task_size" local variable be eliminated?
-TASK_SIZE now performs this check automatically (although that wasn't
-always the case).
+- James
+-- 
+James Morris
+<jmorris@namei.org>

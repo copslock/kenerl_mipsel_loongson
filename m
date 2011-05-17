@@ -1,89 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2011 15:30:35 +0200 (CEST)
-Received: from tundra.namei.org ([65.99.196.166]:47533 "EHLO tundra.namei.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491069Ab1EQNaa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 17 May 2011 15:30:30 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by tundra.namei.org (8.13.1/8.13.1) with ESMTP id p4HDTaHc005479;
-        Tue, 17 May 2011 09:29:36 -0400
-Date:   Tue, 17 May 2011 23:29:36 +1000 (EST)
-From:   James Morris <jmorris@namei.org>
-To:     Ingo Molnar <mingo@elte.hu>
-cc:     Will Drewry <wad@chromium.org>, linux-kernel@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
-        agl@chromium.org, Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
-        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
- filtering
-In-Reply-To: <20110517131058.GE21441@elte.hu>
-Message-ID: <alpine.LRH.2.00.1105172317060.5404@tundra.namei.org>
-References: <1304017638.18763.205.camel@gandalf.stny.rr.com> <1305169376-2363-1-git-send-email-wad@chromium.org> <20110512074850.GA9937@elte.hu> <alpine.LRH.2.00.1105122133500.31507@tundra.namei.org> <20110512130104.GA2912@elte.hu>
- <alpine.LRH.2.00.1105131018040.3047@tundra.namei.org> <20110513121034.GG21022@elte.hu> <alpine.LRH.2.00.1105161006340.21749@tundra.namei.org> <20110516150837.GA513@elte.hu> <alpine.LRH.2.00.1105171214330.31710@tundra.namei.org>
- <20110517131058.GE21441@elte.hu>
-User-Agent: Alpine 2.00 (LRH 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 May 2011 17:16:54 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:40074 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491077Ab1EQPQr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 17 May 2011 17:16:47 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4HFIAdf008057;
+        Tue, 17 May 2011 16:18:11 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4HFI9Ik008056;
+        Tue, 17 May 2011 16:18:09 +0100
+Date:   Tue, 17 May 2011 16:18:09 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     Jian Peng <jipeng@broadcom.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: [PATCH] MIPS: Cleanup arch_get_unmapped_area
+Message-ID: <20110517151809.GA7932@linux-mips.org>
+References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
+ <4DD1BD72.2000408@caviumnetworks.com>
+ <BANLkTikq04wuK=bz+Lieavmm3oDtoYWKxg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <jmorris@namei.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BANLkTikq04wuK=bz+Lieavmm3oDtoYWKxg@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30066
+X-archive-position: 30067
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jmorris@namei.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 17 May 2011, Ingo Molnar wrote:
+On Mon, May 16, 2011 at 06:27:17PM -0700, Kevin Cernekee wrote:
 
-> I'm not sure i get your point.
-
-Your example was not complete as described.  After an apparently simple 
-specification, you've since added several qualifiers and assumptions, and 
-I still doubt that it's complete.
-
-A higher level goal would look like
-
-"Allow a sandbox app access only to approved resources, to contain the 
-effects of flaws in the app", or similar.
-
-Note that this includes a threat model (remote attacker taking control of 
-the app) and a general and fully stated strategy for dealing with it.
-
-From there, you can start to analyze how to implement the goal, at which 
-point you'd start thinking about configuration, assumptions, filesystem 
-access, namespaces, indirect access (e.g. via sockets, rpc, ipc, shared 
-memory, invocation).
-
-Anyway, this is getting off track from the main discussion, but you 
-asked...
+> >> +#ifdef CONFIG_32BIT
+> >> +       task_size = TASK_SIZE;
+> >> +#else /* Must be CONFIG_64BIT*/
+> >> +       task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 :
+> >> TASK_SIZE;
+> >> +#endif
+> 
+> Can the "#else" clause and "task_size" local variable be eliminated?
+> TASK_SIZE now performs this check automatically (although that wasn't
+> always the case).
 
 
+As noticed by Kevin Cernekee <cernekee@gmail.com> in
+http://www.linux-mips.org/cgi-bin/extract-mesg.cgi?a=linux-mips&m=2011-05&i=BANLkTikq04wuK%3Dbz%2BLieavmm3oDtoYWKxg%40mail.gmail.com
 
-- James
--- 
-James Morris
-<jmorris@namei.org>
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/kernel/syscall.c |   17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
+
+Index: linux-queue/arch/mips/kernel/syscall.c
+===================================================================
+--- linux-queue.orig/arch/mips/kernel/syscall.c
++++ linux-queue/arch/mips/kernel/syscall.c
+@@ -79,20 +79,13 @@ unsigned long arch_get_unmapped_area(str
+ {
+ 	struct vm_area_struct * vmm;
+ 	int do_color_align;
+-	unsigned long task_size;
+ 
+-#ifdef CONFIG_32BIT
+-	task_size = TASK_SIZE;
+-#else /* Must be CONFIG_64BIT*/
+-	task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
+-#endif
+-
+-	if (len > task_size)
++	if (len > TASK_SIZE)
+ 		return -ENOMEM;
+ 
+ 	if (flags & MAP_FIXED) {
+-		/* Even MAP_FIXED mappings must reside within task_size.  */
+-		if (task_size - len < addr)
++		/* Even MAP_FIXED mappings must reside within TASK_SIZE.  */
++		if (TASK_SIZE - len < addr)
+ 			return -EINVAL;
+ 
+ 		/*
+@@ -114,7 +107,7 @@ unsigned long arch_get_unmapped_area(str
+ 		else
+ 			addr = PAGE_ALIGN(addr);
+ 		vmm = find_vma(current->mm, addr);
+-		if (task_size - len >= addr &&
++		if (TASK_SIZE - len >= addr &&
+ 		    (!vmm || addr + len <= vmm->vm_start))
+ 			return addr;
+ 	}
+@@ -126,7 +119,7 @@ unsigned long arch_get_unmapped_area(str
+ 
+ 	for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
+ 		/* At this point:  (!vmm || addr < vmm->vm_end). */
+-		if (task_size - len < addr)
++		if (TASK_SIZE - len < addr)
+ 			return -ENOMEM;
+ 		if (!vmm || addr + len <= vmm->vm_start)
+ 			return addr;

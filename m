@@ -1,143 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2011 15:30:50 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:46527 "EHLO duck.linux-mips.net"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491073Ab1ESNar (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 May 2011 15:30:47 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4JDUqqS030732;
-        Thu, 19 May 2011 14:30:52 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4JDUpUY030729;
-        Thu, 19 May 2011 14:30:51 +0100
-Date:   Thu, 19 May 2011 14:30:51 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Sergei Shtylyov <sshtylyov@mvista.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/3] MIPS: DMA: Add plat_extra_sync_for_cpu()
-Message-ID: <20110519133051.GA30483@linux-mips.org>
-References: <064bb0722da5d8c271c2bd9fe0a521cc@localhost>
- <99a0868bdbcfa8785a92b4af4f6d9b99@localhost>
- <4C88AA27.5070206@mvista.com>
- <AANLkTinAhsetaV2F8SfBZE_BtaMhhmJO2fEwL+LJpZxB@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2011 17:05:37 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:41091 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491053Ab1ESPFb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 May 2011 17:05:31 +0200
+Received: by pwi8 with SMTP id 8so1486743pwi.36
+        for <multiple recipients>; Thu, 19 May 2011 08:05:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=xEl9jveZvvc5j4TtjN4RyF6x2IGATxe/8CDWXyAtMFY=;
+        b=abj1EB4BhS//VXdtx4gpVaISIo0j043TPQ8GAo22rxUN8pYpdggRDmjyBOrjdc9gou
+         R4DoUDKfnEjezEi214b6g4u7GgQQBWzKzhVvAIH6dCOyhEgdnpgcMGXzEct8R1MS6hMn
+         Ku73g2wW5MswdLtc7//1s809xKPCHAlaPcHv8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=G5LE8mEEG9ZgmXFBnurgbz2FhAe3UN82Yr5WojEPJNI9+izJrKTpECsqdYMWuHRKKy
+         2RKzYNKktusfRA6wQiZzjl4AJs2xJM/aX+kvZ2ilpyZLAL5Q3QeblnrEvlrVTGmBonAE
+         70i0shC0lHuvXweGvNt7reki3Wt04so0eEJhY=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AANLkTinAhsetaV2F8SfBZE_BtaMhhmJO2fEwL+LJpZxB@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.68.69.8 with SMTP id a8mr4973983pbu.418.1305817524759; Thu, 19
+ May 2011 08:05:24 -0700 (PDT)
+Received: by 10.68.47.5 with HTTP; Thu, 19 May 2011 08:05:24 -0700 (PDT)
+In-Reply-To: <20110519110638.GA11371@linux-mips.org>
+References: <002fbbeb01a5a51fff8015af85d5d101@localhost>
+        <20110519110638.GA11371@linux-mips.org>
+Date:   Thu, 19 May 2011 08:05:24 -0700
+Message-ID: <BANLkTikouHA-Owkqji5W4sYdZ2nFrT_==g@mail.gmail.com>
+Subject: Re: [PATCH v4] MIPS: HIGHMEM DMA on noncoherent MIPS32 processors
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     dediao@cisco.com, ddaney@caviumnetworks.com, dvomlehn@cisco.com,
+        sshtylyov@mvista.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30086
+X-archive-position: 30087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 09, 2010 at 05:39:32AM -0700, Kevin Cernekee wrote:
+On Thu, May 19, 2011 at 4:06 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Who is the author of this patch, you or Dezhong Diao?
 
-> On Thu, Sep 9, 2010 at 2:34 AM, Sergei Shtylyov <sshtylyov@mvista.com> wrote:
-> >> +static inline void plat_extra_sync_for_cpu(struct device *dev,
-> >> +       dma_addr_t dma_handle, unsigned long offset, size_t size,
-> >> +       enum dma_data_direction direction)
-> >> +{
-> >> +       return;
-> >
-> >   Why not just empty function bodies?
-> 
-> For consistency with plat_extra_sync_for_device().
-
-Consistency is good - but let's just stop the madness.  The lone return
-in a void function doesn't help readability and I'm not sure how it ever
-got into the code.  I just went through all the MIPS includes and cleaned
-all instances I found.
-
-  Ralf
-
-MIPS: Remove pointless return statement from empty void functions.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/include/asm/irq.h                         |    1 -
- arch/mips/include/asm/mach-generic/dma-coherence.h  |    1 -
- arch/mips/include/asm/mach-ip27/dma-coherence.h     |    1 -
- arch/mips/include/asm/mach-jazz/dma-coherence.h     |    1 -
- arch/mips/include/asm/mach-loongson/dma-coherence.h |    1 -
- arch/mips/include/asm/mach-powertv/dma-coherence.h  |    1 -
- 6 files changed, 6 deletions(-)
-
-Index: linux-queue/arch/mips/include/asm/mach-ip27/dma-coherence.h
-===================================================================
---- linux-queue.orig/arch/mips/include/asm/mach-ip27/dma-coherence.h
-+++ linux-queue/arch/mips/include/asm/mach-ip27/dma-coherence.h
-@@ -60,7 +60,6 @@ static inline int plat_dma_supported(str
- 
- static inline void plat_extra_sync_for_device(struct device *dev)
- {
--	return;
- }
- 
- static inline int plat_dma_mapping_error(struct device *dev,
-Index: linux-queue/arch/mips/include/asm/irq.h
-===================================================================
---- linux-queue.orig/arch/mips/include/asm/irq.h
-+++ linux-queue/arch/mips/include/asm/irq.h
-@@ -18,7 +18,6 @@
- 
- static inline void irq_dispose_mapping(unsigned int virq)
- {
--	return;
- }
- 
- #ifdef CONFIG_I8259
-Index: linux-queue/arch/mips/include/asm/mach-generic/dma-coherence.h
-===================================================================
---- linux-queue.orig/arch/mips/include/asm/mach-generic/dma-coherence.h
-+++ linux-queue/arch/mips/include/asm/mach-generic/dma-coherence.h
-@@ -49,7 +49,6 @@ static inline int plat_dma_supported(str
- 
- static inline void plat_extra_sync_for_device(struct device *dev)
- {
--	return;
- }
- 
- static inline int plat_dma_mapping_error(struct device *dev,
-Index: linux-queue/arch/mips/include/asm/mach-jazz/dma-coherence.h
-===================================================================
---- linux-queue.orig/arch/mips/include/asm/mach-jazz/dma-coherence.h
-+++ linux-queue/arch/mips/include/asm/mach-jazz/dma-coherence.h
-@@ -50,7 +50,6 @@ static inline int plat_dma_supported(str
- 
- static inline void plat_extra_sync_for_device(struct device *dev)
- {
--	return;
- }
- 
- static inline int plat_dma_mapping_error(struct device *dev,
-Index: linux-queue/arch/mips/include/asm/mach-loongson/dma-coherence.h
-===================================================================
---- linux-queue.orig/arch/mips/include/asm/mach-loongson/dma-coherence.h
-+++ linux-queue/arch/mips/include/asm/mach-loongson/dma-coherence.h
-@@ -55,7 +55,6 @@ static inline int plat_dma_supported(str
- 
- static inline void plat_extra_sync_for_device(struct device *dev)
- {
--	return;
- }
- 
- static inline int plat_dma_mapping_error(struct device *dev,
-Index: linux-queue/arch/mips/include/asm/mach-powertv/dma-coherence.h
-===================================================================
---- linux-queue.orig/arch/mips/include/asm/mach-powertv/dma-coherence.h
-+++ linux-queue/arch/mips/include/asm/mach-powertv/dma-coherence.h
-@@ -102,7 +102,6 @@ static inline int plat_dma_supported(str
- 
- static inline void plat_extra_sync_for_device(struct device *dev)
- {
--	return;
- }
- 
- static inline int plat_dma_mapping_error(struct device *dev,
+The author is Dezhong... I should have added the extra "From:" header.

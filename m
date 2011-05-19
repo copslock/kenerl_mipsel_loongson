@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2011 17:39:20 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:59330 "EHLO duck.linux-mips.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 May 2011 18:12:06 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47690 "EHLO duck.linux-mips.net"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491081Ab1ESPjK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 19 May 2011 17:39:10 +0200
+        id S1491066Ab1ESQMD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 19 May 2011 18:12:03 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4JFdEbA016880;
-        Thu, 19 May 2011 16:39:14 +0100
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4JGC6BN022186;
+        Thu, 19 May 2011 17:12:06 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4JFdEuv016878;
-        Thu, 19 May 2011 16:39:14 +0100
-Date:   Thu, 19 May 2011 16:39:14 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4JGC6Bo022184;
+        Thu, 19 May 2011 17:12:06 +0100
+Date:   Thu, 19 May 2011 17:12:06 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Shinya Kuribayashi <skuribay@pobox.com>
-Cc:     David VomLehn <dvomlehn@cisco.com>, macro@linux-mips.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: Enable cpu_has_clo_clz for MIPS Technologies'
- platforms
-Message-ID: <20110519153913.GB13357@linux-mips.org>
-References: <4C3B36B3.6010800@pobox.com>
- <4C3B37BF.2090606@pobox.com>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] arch: mips: use newly introduced hex_to_bin()
+Message-ID: <20110519161206.GA19321@linux-mips.org>
+References: <1284212009-25708-1-git-send-email-andy.shevchenko@gmail.com>
+ <AANLkTimRVNYMh923+5qS5mifDKgJRwCxeWGMXWYaJXr9@mail.gmail.com>
+ <201011080826.25676.florian@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4C3B37BF.2090606@pobox.com>
+In-Reply-To: <201011080826.25676.florian@openwrt.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30090
+X-archive-position: 30091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,6 +36,6 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thanks, queued for 2.6.41.
+Queued for 2.6.41.  Thanks,
 
   Ralf

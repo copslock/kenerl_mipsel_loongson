@@ -1,49 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2011 20:56:20 +0200 (CEST)
-Received: from shards.monkeyblade.net ([198.137.202.13]:49613 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491122Ab1ETS4O (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 May 2011 20:56:14 +0200
-Received: from localhost (nat-pool-rdu.redhat.com [66.187.233.202])
-        (authenticated bits=0)
-        by shards.monkeyblade.net (8.14.4/8.14.4) with ESMTP id p4KIu4Av014848
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Fri, 20 May 2011 11:56:08 -0700
-Date:   Fri, 20 May 2011 14:56:04 -0400 (EDT)
-Message-Id: <20110520.145604.330897605239664622.davem@davemloft.net>
-To:     manuel.lauss@googlemail.com
-Cc:     ralf@linux-mips.org, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] net: au1000_eth: add MACDMA to platform resource info.
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1305916865-14038-1-git-send-email-manuel.lauss@googlemail.com>
-References: <1305916865-14038-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: Mew version 6.3 on Emacs 23.2 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2011 22:35:00 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.17.10]:57906 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491129Ab1ETUey (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 May 2011 22:34:54 +0200
+Received: from wuerfel.localnet (port-92-200-12-60.dynamic.qsc.de [92.200.12.60])
+        by mrelayeu.kundenserver.de (node=mrbap4) with ESMTP (Nemesis)
+        id 0Lx7s1-1PdQ8F2tTd-016dQG; Fri, 20 May 2011 22:34:46 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Subject: Re: [PATCH resend] ipc: Add missing sys_ni entries for ipc/compat.c functions
+Date:   Fri, 20 May 2011 22:34:44 +0200
+User-Agent: KMail/1.13.5 (Linux/2.6.39-rc4+; KDE/4.5.1; x86_64; ; )
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+References: <5a124a3b070fd1dc1f28d72e78e72534@localhost>
+In-Reply-To: <5a124a3b070fd1dc1f28d72e78e72534@localhost>
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.6 (shards.monkeyblade.net [198.137.202.13]); Fri, 20 May 2011 11:56:09 -0700 (PDT)
-Return-Path: <davem@davemloft.net>
+Message-Id: <201105202234.44260.arnd@arndb.de>
+X-Provags-ID: V02:K0:fW7eRvK1TQgxTLZDEN7dX4wtJ7GADnO9/nGyEmFb1sl
+ qpChrNt1Nuxp6Xo9ZGY7x+FCXEuFeXrMTTMsSrd1NKNKxIRxe5
+ 4UFzekUcpg1PNzSWvFVZbWQh7N0B1ihffUHW1Tl6M4iJ+FWbZf
+ 6WjvE8S8OUTReFyvVEapSBcaZc4hbeC3p8hH7pTUQHuFJ9ZTZ+
+ MS3etcO4WTHGZCmJpYBhw==
+Return-Path: <arnd@arndb.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30106
+X-archive-position: 30107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 X-list: linux-mips
 
-From: Manuel Lauss <manuel.lauss@googlemail.com>
-Date: Fri, 20 May 2011 20:41:05 +0200
-
-> This patch removes the last hardcoded base address from the au1000_eth
-> driver:  The base of the MACDMA unit was derived from the
-> platform device id; if someone registered the MACs in inverse order
-> both would not work.
-> Instead pass the base address of the DMA unit to the driver along with
-> the other platform resource information.
+On Tuesday 17 May 2011 19:39:58 Kevin Cernekee wrote:
+> the final link fails with unresolved symbols for:
 > 
-> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+> compat_sys_semctl, compat_sys_msgsnd, compat_sys_msgrcv,
+> compat_sys_shmctl, compat_sys_msgctl, compat_sys_semtimedop
+> 
+> The fix is to add cond_syscall declarations for all syscalls in
+> ipc/compat.c
+> 
+> Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
 
-Acked-by: David S. Miller <davem@davemloft.net>
+Acked-by: Arnd Bergmann <arnd@arndb.de>

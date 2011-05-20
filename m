@@ -1,84 +1,208 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2011 09:18:26 +0200 (CEST)
-Received: from mail-gw0-f49.google.com ([74.125.83.49]:44559 "EHLO
-        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491101Ab1ETHSU convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 20 May 2011 09:18:20 +0200
-Received: by gwb1 with SMTP id 1so1423316gwb.36
-        for <multiple recipients>; Fri, 20 May 2011 00:18:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=GgRIUWzhwYeV+3CfVnU/vGiqPr92jO2/YFouYXi8dlE=;
-        b=ozwujM7gkUOWwdjaXq4X/4WRl1G35Kk3fkGVxrwRfdrkrPp6X7RQCkIblq0QETvtYg
-         5L00CtwahZUgKvL/OHoW8xECD7xYSUhdFvnbBhh01zB0aaP9dqaAzFsuynlFk80CXJB/
-         M9uif5iIJYH5KqQRjPUHlEihmww3nfUSejsXQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=kAo3jAB8IqjcDUsib2XFP4TuLd6A6gvjfvBDRPJY18ZoEpOBn/41trvyhpZNHE04kX
-         S/cnvuCsIIn36MHk9eKxm6uiY0W+NPQ5MiZdPAZRXjBRaI/INC0fyxOUOiR7xQbyX0ZW
-         8QEVb9O/2mpJvMwSZxACqIQSQ3nckQ9Ej9txA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2011 10:09:59 +0200 (CEST)
+Received: from mail161.messagelabs.com ([216.82.253.115]:19069 "EHLO
+        mail161.messagelabs.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491095Ab1ETIJ4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 20 May 2011 10:09:56 +0200
+X-VirusChecked: Checked
+X-Env-Sender: chandanmohanty@motorolasolutions.com
+X-Msg-Ref: server-2.tower-161.messagelabs.com!1305878991!35986812!1
+X-StarScan-Version: 6.2.9; banners=-,-,-
+X-Originating-IP: [129.188.136.8]
+Received: (qmail 11418 invoked from network); 20 May 2011 08:09:52 -0000
+Received: from motgate8.mot-solutions.com (HELO motgate8.mot-solutions.com) (129.188.136.8)
+  by server-2.tower-161.messagelabs.com with DHE-RSA-AES256-SHA encrypted SMTP; 20 May 2011 08:09:52 -0000
+Received: from il06exr01.mot.com (il06exr01.mot.com [129.188.137.131])
+        by motgate8.mot-solutions.com (8.14.3/8.14.3) with ESMTP id p4K89kH3020530;
+        Fri, 20 May 2011 01:09:51 -0700 (MST)
+Received: from il06vts02.mot.com (il06vts02.mot.com [129.188.137.142])
+        by il06exr01.mot.com (8.13.5/Vontu) with SMTP id p4K89kQq028415;
+        Fri, 20 May 2011 03:09:46 -0500 (CDT)
+Received: from zuk35exm65.ds.mot.com (zuk35exm65.ea.mot.com [10.178.4.21])
+        by il06exr01.mot.com (8.13.5/8.13.0) with ESMTP id p4K89jjF028405;
+        Fri, 20 May 2011 03:09:45 -0500 (CDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Received: by 10.236.191.164 with SMTP id g24mr4531500yhn.513.1305875894410;
- Fri, 20 May 2011 00:18:14 -0700 (PDT)
-Received: by 10.236.95.136 with HTTP; Fri, 20 May 2011 00:18:14 -0700 (PDT)
-In-Reply-To: <20110520071256.GA23902@linux-mips.org>
-References: <20110519231911.GB10628@linux-mips.org>
-        <s5hoc2x7tsr.wl%tiwai@suse.de>
-        <BANLkTimV4Wg5ZChixp5+0cpu5knrZesSjA@mail.gmail.com>
-        <20110520071256.GA23902@linux-mips.org>
-Date:   Fri, 20 May 2011 09:18:14 +0200
-Message-ID: <BANLkTinp4wY3ZNxAc1PvCz1ujHQrG1wE2w@mail.gmail.com>
-Subject: Re: [RFC] Remove Alchemy OSS drivers?
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Takashi Iwai <tiwai@suse.de>, linux-mips@linux-mips.org,
-        Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
-        Namhyung Kim <namhyung@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <manuel.lauss@googlemail.com>
+Content-Type: multipart/alternative;
+        boundary="----_=_NextPart_001_01CC16C5.3A957AB0"
+Subject: Need your help on setting of  INITIAL_JIFFIES
+Date:   Fri, 20 May 2011 09:09:23 +0100
+Message-ID: <CF80A1E11D28944EA2838FF532D25C3E03324CCB@zuk35exm65.ds.mot.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Need your help on setting of  INITIAL_JIFFIES
+Thread-Index: AcwWxThn48Xgik5gR02qz1dlNwbj2Q==
+From:   "MOHANTY CHANDAN-WJKD64" <chandanmohanty@motorolasolutions.com>
+To:     <sshtylyov@ru.mvista.com>, <hvr@gnu.org>,
+        <linux-mips@linux-mips.org>, <clem.taylor@gmail.com>,
+        <linux-mips-bounce@linux-mips.org>, <4468F40F.80902@ru.mvista.com>,
+        <4468EE9B.4000009@ru.mvista.com>
+Cc:     "MOHANTY CHANDAN-WJKD64" <chandanmohanty@motorolasolutions.com>
+X-CFilter-Loop: Reflected
+Return-Path: <chandanmohanty@motorolasolutions.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30100
+X-archive-position: 30101
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: chandanmohanty@motorolasolutions.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 20, 2011 at 9:12 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, May 20, 2011 at 08:51:37AM +0200, Manuel Lauss wrote:
->
->> On Fri, May 20, 2011 at 8:47 AM, Takashi Iwai <tiwai@suse.de> wrote:
->> > At Fri, 20 May 2011 00:19:12 +0100,
->> > Ralf Baechle wrote:
->> >>
->> >> OSS has very little if any useful life in it left for MIPS, at least from
->> >> my perspective.  So I propose to remove the Au1550 driver - there is an
->> >> ALSA replacement for it available.
->> >
->> > Even two variants available: one in ASoC driver and one in old ALSA
->> > driver.
->>
->> The current ASoC code can replace sound/oss/au1550_ac97.c,
->> but sound/mips/au1x00.c is for different (earlier) chips.  I wrote an ASoC
->> variant of this a long time ago, but I can't test it on real hardware.
->
-> My immediate interest is to kill off sounds/oss/ on MIPS because
-> sound/oss/soundcard.c is fairly ISA centric and does not build for some
-> some MIPS systems with only half-arsed ISA support, that is no DMA support.
->
-> Manuel, I got a DBAu1250 board here and maybe I can find a DBAu1500
-> Zinfandel board under some dusty hardware pile; would that be suitable for
-> testing your work?
+This is a multi-part message in MIME format.
 
-Yes, the db1500 would be perfect.
+------_=_NextPart_001_01CC16C5.3A957AB0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
 
-Manuel
+Hi,
+My greetings to all the enlightened Linux Souls.
+=20
+ I got all the mail ids from one of Linux based mail chain/URL
+http://www.linux-mips.org/archives/linux-mips/2006-05/msg00193.html
+=20
+Pls guide me on the usage of  INITIAL_JIFFIES.
+=20
+=20
+=20
+=20
+In the source of linux kernel \include\linux\jiffies.h there is code
+like this
+=20
+/*
+ * Have the 32 bit jiffies value wrap 5 minutes after boot
+ * so jiffies wrap bugs show up earlier.
+ */
+#define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-300*HZ))
+=20
+=20
+ This sets the initial jiffies value to 0x00000000fffb6c20, which can
+trigger 32-bit wraparound bugs .It is an offset to the jiffies
+counter,so that it begins from a large value instead of zero. So the
+wrap-around happens earlier,making it possible to detect any counter
+wrap-around bugs much quicker regardless of the HZ setting.
+=20
+=20
+=20
+=20
+1.Suppose I want to simulate the jiffies wraparound after 30
+mins(1800sec) of reboot.Can I change code as below in kernel?
+=20
+#define INITIAL_JIFFIES ((unsigned long)(unsigned int) (-1800*HZ))
+u64 jiffies_64 =3D INITIAL_JIFFIES;
+=20
+=20
+2.How to verify/test that wraparound has happened?
+=20
+=20
+Regards
+Chandan
+
+------_=_NextPart_001_01CC16C5.3A957AB0
+Content-Type: text/html;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dus-ascii" =
+http-equiv=3DContent-Type>
+<META name=3DGENERATOR content=3D"MSHTML 8.00.6001.19046"></HEAD>
+<BODY>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial>Hi,</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff =
+face=3DArial>My greetings=20
+to all the enlightened Linux Souls.</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><FONT face=3DArial><FONT color=3D#0000ff><SPAN =
+class=3D198195407-20052011>&nbsp;I=20
+got all the mail ids from one of Linux based mail chain/URL </SPAN><SPAN =
+
+class=3D198195407-20052011>&nbsp;<A=20
+href=3D"http://www.linux-mips.org/archives/linux-mips/2006-05/msg00193.ht=
+ml">http://www.linux-mips.org/archives/linux-mips/2006-05/msg00193.html</=
+A></SPAN></FONT></FONT></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT face=3DArial><FONT =
+color=3D#0000ff>Pls=20
+guide me on the usage of&nbsp;=20
+<EM>INITIAL_JIFFIES.</EM></FONT></FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><EM><FONT color=3D#0000ff=20
+face=3DArial></FONT></EM></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><EM><FONT color=3D#0000ff=20
+face=3DArial></FONT></EM></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><EM><FONT color=3D#0000ff=20
+face=3DArial></FONT></EM></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff =
+face=3DArial>In the source=20
+of linux kernel \include\linux\jiffies.h there is code like=20
+this</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011></SPAN><SPAN=20
+class=3D198195407-20052011></SPAN><FONT color=3D#0000ff=20
+face=3DArial></FONT>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff =
+face=3DArial>/*<BR>&nbsp;*=20
+Have the 32 bit jiffies value wrap 5 minutes after boot<BR>&nbsp;* so =
+jiffies=20
+wrap bugs show up earlier.<BR>&nbsp;*/<BR>#define INITIAL_JIFFIES =
+((unsigned=20
+long)(unsigned int) (-300*HZ))</FONT></SPAN></DIV>
+<DIV><FONT color=3D#0000ff face=3DArial></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial><FONT color=3D#0000ff><SPAN=20
+class=3D198195407-20052011>&nbsp;<BR>&nbsp;This sets the initial jiffies =
+value to=20
+0x00000000fffb6c20, which can trigger 32-bit wraparound bugs&nbsp;.It is =
+an=20
+offset to the jiffies counter,so that it begins from a large value =
+instead of=20
+zero. So the wrap-around happens </SPAN><SPAN=20
+class=3D198195407-20052011>earlier,making it possible to detect any =
+counter=20
+wrap-around bugs much quicker regardless of the HZ=20
+setting.</SPAN></FONT></FONT></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT =
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT =
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT =
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#008080 =
+face=3DArial>1.Suppose I=20
+want to simulate the jiffies wraparound after 30 mins(1800sec) of =
+reboot.Can I=20
+change code as below in kernel?</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#008080=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#008080 =
+face=3DArial>#define=20
+INITIAL_JIFFIES ((unsigned long)(unsigned int) =
+(-1800*HZ))</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#008080 =
+face=3DArial>u64=20
+jiffies_64 =3D INITIAL_JIFFIES;</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#008080 =
+face=3DArial>2.How=20
+to&nbsp;verify/test that wraparound has happened?</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#008080=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#008080=20
+face=3DArial></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial>Regards</FONT></SPAN></DIV>
+<DIV><SPAN class=3D198195407-20052011><FONT color=3D#0000ff=20
+face=3DArial>Chandan</FONT></SPAN></DIV></BODY></HTML>
+
+------_=_NextPart_001_01CC16C5.3A957AB0--

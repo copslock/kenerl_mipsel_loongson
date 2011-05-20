@@ -1,39 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 May 2011 23:41:49 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:1160 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 May 2011 00:25:58 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:2093 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491140Ab1ETVjr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 May 2011 23:39:47 +0200
+        by eddie.linux-mips.org with ESMTP id S1491140Ab1ETWZy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 May 2011 00:25:54 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4dd6dfdf0000>; Fri, 20 May 2011 14:40:47 -0700
+        id <B4dd6eaaf0000>; Fri, 20 May 2011 15:26:55 -0700
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 20 May 2011 14:39:44 -0700
+         Fri, 20 May 2011 15:25:52 -0700
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 20 May 2011 14:39:44 -0700
+         Fri, 20 May 2011 15:25:52 -0700
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p4KLdcZ1030414;
-        Fri, 20 May 2011 14:39:38 -0700
+        by dd1.caveonetworks.com (8.14.4/8.14.3) with ESMTP id p4KMPkBQ031298;
+        Fri, 20 May 2011 15:25:47 -0700
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p4KLdcBJ030413;
-        Fri, 20 May 2011 14:39:38 -0700
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p4KMPijF031297;
+        Fri, 20 May 2011 15:25:44 -0700
 From:   David Daney <ddaney@caviumnetworks.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <ddaney@caviumnetworks.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-Subject: [PATCH v4 4/5] MIPS: perf: Add support for 64-bit perf counters.
-Date:   Fri, 20 May 2011 14:39:21 -0700
-Message-Id: <1305927562-30351-5-git-send-email-ddaney@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
+        linux-kernel@vger.kernel.org
+Cc:     David Daney <ddaney@caviumnetworks.com>
+Subject: [RFC PATCH v4 0/6] MIPS: Octeon: Use Device Tree.
+Date:   Fri, 20 May 2011 15:25:37 -0700
+Message-Id: <1305930343-31259-1-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1305927562-30351-1-git-send-email-ddaney@caviumnetworks.com>
-References: <1305927562-30351-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 20 May 2011 21:39:44.0179 (UTC) FILETIME=[6ED16030:01CC1736]
+X-OriginalArrivalTime: 20 May 2011 22:25:52.0235 (UTC) FILETIME=[E0B533B0:01CC173C]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30113
+X-archive-position: 30114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,1204 +37,127 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-The hard coded constants are moved to struct mips_pmu.  All counter
-register access move to the read_counter and write_counter function
-pointers, which are set to either 32-bit or 64-bit access methods at
-initialization time.
+New in v4:
 
-Many of the function pointers in struct mips_pmu were not needed as
-there was only a single implementation, these were removed.
+Cleanup and error checking suggested by Sergei Shtylyov.
 
-I couldn't figure out what made struct cpu_hw_events.msbs[] at all
-useful, so I removed it too.
+Use device tree passed by bootloader if present.
 
-Some functions and other declarations were reordered to reduce the
-need for forward declarations.
+New in v3:
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Ingo Molnar <mingo@elte.hu>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
----
- arch/mips/kernel/perf_event_mipsxx.c |  858 +++++++++++++++-------------------
- 1 files changed, 389 insertions(+), 469 deletions(-)
+More updates to device tree bindings, and perhaps more importantly
+descriptions/definitions of the bindings
 
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index 65f8c5b..4957973 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -2,6 +2,7 @@
-  * Linux performance counter support for MIPS.
-  *
-  * Copyright (C) 2010 MIPS Technologies, Inc.
-+ * Copyright (C) 2011 Cavium Networks, Inc.
-  * Author: Deng-Cheng Zhu
-  *
-  * This code is based on the implementation for ARM, which is in turn
-@@ -26,12 +27,6 @@
- #include <asm/stacktrace.h>
- #include <asm/time.h> /* For perf_irq */
- 
--/* These are for 32bit counters. For 64bit ones, define them accordingly. */
--#define MAX_PERIOD	((1ULL << 32) - 1)
--#define VALID_COUNT	0x7fffffff
--#define TOTAL_BITS	32
--#define HIGHEST_BIT	31
--
- #define MIPS_MAX_HWEVENTS 4
- 
- struct cpu_hw_events {
-@@ -45,15 +40,6 @@ struct cpu_hw_events {
- 	unsigned long		used_mask[BITS_TO_LONGS(MIPS_MAX_HWEVENTS)];
- 
- 	/*
--	 * The borrowed MSB for the performance counter. A MIPS performance
--	 * counter uses its bit 31 (for 32bit counters) or bit 63 (for 64bit
--	 * counters) as a factor of determining whether a counter overflow
--	 * should be signaled. So here we use a separate MSB for each
--	 * counter to make things easy.
--	 */
--	unsigned long		msbs[BITS_TO_LONGS(MIPS_MAX_HWEVENTS)];
--
--	/*
- 	 * Software copy of the control register for each performance counter.
- 	 * MIPS CPUs vary in performance counters. They use this differently,
- 	 * and even may not use it.
-@@ -75,6 +61,7 @@ struct mips_perf_event {
- 	unsigned int cntr_mask;
- 	#define CNTR_EVEN	0x55555555
- 	#define CNTR_ODD	0xaaaaaaaa
-+	#define CNTR_ALL	0xffffffff
- #ifdef CONFIG_MIPS_MT_SMP
- 	enum {
- 		T  = 0,
-@@ -95,18 +82,13 @@ static DEFINE_MUTEX(raw_event_mutex);
- #define C(x) PERF_COUNT_HW_CACHE_##x
- 
- struct mips_pmu {
-+	u64		max_period;
-+	u64		valid_count;
-+	u64		overflow;
- 	const char	*name;
- 	int		irq;
--	irqreturn_t	(*handle_irq)(int irq, void *dev);
--	int		(*handle_shared_irq)(void);
--	void		(*start)(void);
--	void		(*stop)(void);
--	int		(*alloc_counter)(struct cpu_hw_events *cpuc,
--					struct hw_perf_event *hwc);
- 	u64		(*read_counter)(unsigned int idx);
- 	void		(*write_counter)(unsigned int idx, u64 val);
--	void		(*enable_event)(struct hw_perf_event *evt, int idx);
--	void		(*disable_event)(int idx);
- 	const struct mips_perf_event *(*map_raw_event)(u64 config);
- 	const struct mips_perf_event (*general_event_map)[PERF_COUNT_HW_MAX];
- 	const struct mips_perf_event (*cache_event_map)
-@@ -116,44 +98,302 @@ struct mips_pmu {
- 	unsigned int	num_counters;
- };
- 
--static const struct mips_pmu *mipspmu;
-+static struct mips_pmu mipspmu;
-+
-+#define M_CONFIG1_PC	(1 << 4)
-+
-+#define M_PERFCTL_EXL			(1      <<  0)
-+#define M_PERFCTL_KERNEL		(1      <<  1)
-+#define M_PERFCTL_SUPERVISOR		(1      <<  2)
-+#define M_PERFCTL_USER			(1      <<  3)
-+#define M_PERFCTL_INTERRUPT_ENABLE	(1      <<  4)
-+#define M_PERFCTL_EVENT(event)		(((event) & 0x3ff)  << 5)
-+#define M_PERFCTL_VPEID(vpe)		((vpe)    << 16)
-+#define M_PERFCTL_MT_EN(filter)		((filter) << 20)
-+#define    M_TC_EN_ALL			M_PERFCTL_MT_EN(0)
-+#define    M_TC_EN_VPE			M_PERFCTL_MT_EN(1)
-+#define    M_TC_EN_TC			M_PERFCTL_MT_EN(2)
-+#define M_PERFCTL_TCID(tcid)		((tcid)   << 22)
-+#define M_PERFCTL_WIDE			(1      << 30)
-+#define M_PERFCTL_MORE			(1      << 31)
-+
-+#define M_PERFCTL_COUNT_EVENT_WHENEVER	(M_PERFCTL_EXL |		\
-+					M_PERFCTL_KERNEL |		\
-+					M_PERFCTL_USER |		\
-+					M_PERFCTL_SUPERVISOR |		\
-+					M_PERFCTL_INTERRUPT_ENABLE)
-+
-+#ifdef CONFIG_MIPS_MT_SMP
-+#define M_PERFCTL_CONFIG_MASK		0x3fff801f
-+#else
-+#define M_PERFCTL_CONFIG_MASK		0x1f
-+#endif
-+#define M_PERFCTL_EVENT_MASK		0xfe0
-+
-+
-+#ifdef CONFIG_MIPS_MT_SMP
-+static int cpu_has_mipsmt_pertccounters;
-+
-+static DEFINE_RWLOCK(pmuint_rwlock);
-+
-+/*
-+ * FIXME: For VSMP, vpe_id() is redefined for Perf-events, because
-+ * cpu_data[cpuid].vpe_id reports 0 for _both_ CPUs.
-+ */
-+#if defined(CONFIG_HW_PERF_EVENTS)
-+#define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
-+			0 : smp_processor_id())
-+#else
-+#define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
-+			0 : cpu_data[smp_processor_id()].vpe_id)
-+#endif
-+
-+/* Copied from op_model_mipsxx.c */
-+static unsigned int vpe_shift(void)
-+{
-+	if (num_possible_cpus() > 1)
-+		return 1;
-+
-+	return 0;
-+}
-+
-+static unsigned int counters_total_to_per_cpu(unsigned int counters)
-+{
-+	return counters >> vpe_shift();
-+}
-+
-+static unsigned int counters_per_cpu_to_total(unsigned int counters)
-+{
-+	return counters << vpe_shift();
-+}
-+
-+#else /* !CONFIG_MIPS_MT_SMP */
-+#define vpe_id()	0
-+
-+#endif /* CONFIG_MIPS_MT_SMP */
-+
-+static void resume_local_counters(void);
-+static void pause_local_counters(void);
-+static irqreturn_t mipsxx_pmu_handle_irq(int, void *);
-+static int mipsxx_pmu_handle_shared_irq(void);
-+
-+static unsigned int mipsxx_pmu_swizzle_perf_idx(unsigned int idx)
-+{
-+	if (vpe_id() == 1)
-+		idx = (idx + 2) & 3;
-+	return idx;
-+}
-+
-+static u64 mipsxx_pmu_read_counter(unsigned int idx)
-+{
-+	idx = mipsxx_pmu_swizzle_perf_idx(idx);
-+
-+	switch (idx) {
-+	case 0:
-+		/*
-+		 * The counters are unsigned, we must cast to truncate
-+		 * off the high bits.
-+		 */
-+		return (u32)read_c0_perfcntr0();
-+	case 1:
-+		return (u32)read_c0_perfcntr1();
-+	case 2:
-+		return (u32)read_c0_perfcntr2();
-+	case 3:
-+		return (u32)read_c0_perfcntr3();
-+	default:
-+		WARN_ONCE(1, "Invalid performance counter number (%d)\n", idx);
-+		return 0;
-+	}
-+}
-+
-+static u64 mipsxx_pmu_read_counter_64(unsigned int idx)
-+{
-+	idx = mipsxx_pmu_swizzle_perf_idx(idx);
-+
-+	switch (idx) {
-+	case 0:
-+		return read_c0_perfcntr0_64();
-+	case 1:
-+		return read_c0_perfcntr1_64();
-+	case 2:
-+		return read_c0_perfcntr2_64();
-+	case 3:
-+		return read_c0_perfcntr3_64();
-+	default:
-+		WARN_ONCE(1, "Invalid performance counter number (%d)\n", idx);
-+		return 0;
-+	}
-+}
-+
-+static void mipsxx_pmu_write_counter(unsigned int idx, u64 val)
-+{
-+	idx = mipsxx_pmu_swizzle_perf_idx(idx);
-+
-+	switch (idx) {
-+	case 0:
-+		write_c0_perfcntr0(val);
-+		return;
-+	case 1:
-+		write_c0_perfcntr1(val);
-+		return;
-+	case 2:
-+		write_c0_perfcntr2(val);
-+		return;
-+	case 3:
-+		write_c0_perfcntr3(val);
-+		return;
-+	}
-+}
-+
-+static void mipsxx_pmu_write_counter_64(unsigned int idx, u64 val)
-+{
-+	idx = mipsxx_pmu_swizzle_perf_idx(idx);
-+
-+	switch (idx) {
-+	case 0:
-+		write_c0_perfcntr0_64(val);
-+		return;
-+	case 1:
-+		write_c0_perfcntr1_64(val);
-+		return;
-+	case 2:
-+		write_c0_perfcntr2_64(val);
-+		return;
-+	case 3:
-+		write_c0_perfcntr3_64(val);
-+		return;
-+	}
-+}
-+
-+static unsigned int mipsxx_pmu_read_control(unsigned int idx)
-+{
-+	idx = mipsxx_pmu_swizzle_perf_idx(idx);
-+
-+	switch (idx) {
-+	case 0:
-+		return read_c0_perfctrl0();
-+	case 1:
-+		return read_c0_perfctrl1();
-+	case 2:
-+		return read_c0_perfctrl2();
-+	case 3:
-+		return read_c0_perfctrl3();
-+	default:
-+		WARN_ONCE(1, "Invalid performance counter number (%d)\n", idx);
-+		return 0;
-+	}
-+}
-+
-+static void mipsxx_pmu_write_control(unsigned int idx, unsigned int val)
-+{
-+	idx = mipsxx_pmu_swizzle_perf_idx(idx);
-+
-+	switch (idx) {
-+	case 0:
-+		write_c0_perfctrl0(val);
-+		return;
-+	case 1:
-+		write_c0_perfctrl1(val);
-+		return;
-+	case 2:
-+		write_c0_perfctrl2(val);
-+		return;
-+	case 3:
-+		write_c0_perfctrl3(val);
-+		return;
-+	}
-+}
-+
-+static int mipsxx_pmu_alloc_counter(struct cpu_hw_events *cpuc,
-+				    struct hw_perf_event *hwc)
-+{
-+	int i;
-+
-+	/*
-+	 * We only need to care the counter mask. The range has been
-+	 * checked definitely.
-+	 */
-+	unsigned long cntr_mask = (hwc->event_base >> 8) & 0xffff;
-+
-+	for (i = mipspmu.num_counters - 1; i >= 0; i--) {
-+		/*
-+		 * Note that some MIPS perf events can be counted by both
-+		 * even and odd counters, wheresas many other are only by
-+		 * even _or_ odd counters. This introduces an issue that
-+		 * when the former kind of event takes the counter the
-+		 * latter kind of event wants to use, then the "counter
-+		 * allocation" for the latter event will fail. In fact if
-+		 * they can be dynamically swapped, they both feel happy.
-+		 * But here we leave this issue alone for now.
-+		 */
-+		if (test_bit(i, &cntr_mask) &&
-+			!test_and_set_bit(i, cpuc->used_mask))
-+			return i;
-+	}
-+
-+	return -EAGAIN;
-+}
-+
-+static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
-+{
-+	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
-+
-+	WARN_ON(idx < 0 || idx >= mipspmu.num_counters);
-+
-+	cpuc->saved_ctrl[idx] = M_PERFCTL_EVENT(evt->event_base & 0xff) |
-+		(evt->config_base & M_PERFCTL_CONFIG_MASK) |
-+		/* Make sure interrupt enabled. */
-+		M_PERFCTL_INTERRUPT_ENABLE;
-+	/*
-+	 * We do not actually let the counter run. Leave it until start().
-+	 */
-+}
-+
-+static void mipsxx_pmu_disable_event(int idx)
-+{
-+	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
-+	unsigned long flags;
-+
-+	WARN_ON(idx < 0 || idx >= mipspmu.num_counters);
-+
-+	local_irq_save(flags);
-+	cpuc->saved_ctrl[idx] = mipsxx_pmu_read_control(idx) &
-+		~M_PERFCTL_COUNT_EVENT_WHENEVER;
-+	mipsxx_pmu_write_control(idx, cpuc->saved_ctrl[idx]);
-+	local_irq_restore(flags);
-+}
- 
- static int mipspmu_event_set_period(struct perf_event *event,
- 				    struct hw_perf_event *hwc,
- 				    int idx)
- {
--	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
--	s64 left = local64_read(&hwc->period_left);
--	s64 period = hwc->sample_period;
-+	u64 left = local64_read(&hwc->period_left);
-+	u64 period = hwc->sample_period;
- 	int ret = 0;
--	u64 uleft;
--	unsigned long flags;
- 
--	if (unlikely(left <= -period)) {
-+	if (unlikely((left + period) & (1ULL << 63))) {
-+		/* left underflowed by more than period. */
- 		left = period;
- 		local64_set(&hwc->period_left, left);
- 		hwc->last_period = period;
- 		ret = 1;
--	}
--
--	if (unlikely(left <= 0)) {
-+	} else	if (unlikely((left + period) <= period)) {
-+		/* left underflowed by less than period. */
- 		left += period;
- 		local64_set(&hwc->period_left, left);
- 		hwc->last_period = period;
- 		ret = 1;
- 	}
- 
--	if (left > (s64)MAX_PERIOD)
--		left = MAX_PERIOD;
-+	if (left > mipspmu.max_period) {
-+		left = mipspmu.max_period;
-+		local64_set(&hwc->period_left, left);
-+	}
- 
--	local64_set(&hwc->prev_count, (u64)-left);
-+	local64_set(&hwc->prev_count, mipspmu.overflow - left);
- 
--	local_irq_save(flags);
--	uleft = (u64)(-left) & MAX_PERIOD;
--	uleft > VALID_COUNT ?
--		set_bit(idx, cpuc->msbs) : clear_bit(idx, cpuc->msbs);
--	mipspmu->write_counter(idx, (u64)(-left) & VALID_COUNT);
--	local_irq_restore(flags);
-+	mipspmu.write_counter(idx, mipspmu.overflow - left);
- 
- 	perf_event_update_userpage(event);
- 
-@@ -164,30 +404,18 @@ static void mipspmu_event_update(struct perf_event *event,
- 				 struct hw_perf_event *hwc,
- 				 int idx)
- {
--	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
--	unsigned long flags;
--	int shift = 64 - TOTAL_BITS;
--	s64 prev_raw_count, new_raw_count;
-+	u64 prev_raw_count, new_raw_count;
- 	u64 delta;
- 
- again:
- 	prev_raw_count = local64_read(&hwc->prev_count);
--	local_irq_save(flags);
--	/* Make the counter value be a "real" one. */
--	new_raw_count = mipspmu->read_counter(idx);
--	if (new_raw_count & (test_bit(idx, cpuc->msbs) << HIGHEST_BIT)) {
--		new_raw_count &= VALID_COUNT;
--		clear_bit(idx, cpuc->msbs);
--	} else
--		new_raw_count |= (test_bit(idx, cpuc->msbs) << HIGHEST_BIT);
--	local_irq_restore(flags);
-+	new_raw_count = mipspmu.read_counter(idx);
- 
- 	if (local64_cmpxchg(&hwc->prev_count, prev_raw_count,
- 				new_raw_count) != prev_raw_count)
- 		goto again;
- 
--	delta = (new_raw_count << shift) - (prev_raw_count << shift);
--	delta >>= shift;
-+	delta = new_raw_count - prev_raw_count;
- 
- 	local64_add(delta, &event->count);
- 	local64_sub(delta, &hwc->period_left);
-@@ -199,9 +427,6 @@ static void mipspmu_start(struct perf_event *event, int flags)
- {
- 	struct hw_perf_event *hwc = &event->hw;
- 
--	if (!mipspmu)
--		return;
--
- 	if (flags & PERF_EF_RELOAD)
- 		WARN_ON_ONCE(!(hwc->state & PERF_HES_UPTODATE));
- 
-@@ -211,19 +436,16 @@ static void mipspmu_start(struct perf_event *event, int flags)
- 	mipspmu_event_set_period(event, hwc, hwc->idx);
- 
- 	/* Enable the event. */
--	mipspmu->enable_event(hwc, hwc->idx);
-+	mipsxx_pmu_enable_event(hwc, hwc->idx);
- }
- 
- static void mipspmu_stop(struct perf_event *event, int flags)
- {
- 	struct hw_perf_event *hwc = &event->hw;
- 
--	if (!mipspmu)
--		return;
--
- 	if (!(hwc->state & PERF_HES_STOPPED)) {
- 		/* We are working on a local event. */
--		mipspmu->disable_event(hwc->idx);
-+		mipsxx_pmu_disable_event(hwc->idx);
- 		barrier();
- 		mipspmu_event_update(event, hwc, hwc->idx);
- 		hwc->state |= PERF_HES_STOPPED | PERF_HES_UPTODATE;
-@@ -240,7 +462,7 @@ static int mipspmu_add(struct perf_event *event, int flags)
- 	perf_pmu_disable(event->pmu);
- 
- 	/* To look for a free counter for this event. */
--	idx = mipspmu->alloc_counter(cpuc, hwc);
-+	idx = mipsxx_pmu_alloc_counter(cpuc, hwc);
- 	if (idx < 0) {
- 		err = idx;
- 		goto out;
-@@ -251,7 +473,7 @@ static int mipspmu_add(struct perf_event *event, int flags)
- 	 * make sure it is disabled.
- 	 */
- 	event->hw.idx = idx;
--	mipspmu->disable_event(idx);
-+	mipsxx_pmu_disable_event(idx);
- 	cpuc->events[idx] = event;
- 
- 	hwc->state = PERF_HES_STOPPED | PERF_HES_UPTODATE;
-@@ -272,7 +494,7 @@ static void mipspmu_del(struct perf_event *event, int flags)
- 	struct hw_perf_event *hwc = &event->hw;
- 	int idx = hwc->idx;
- 
--	WARN_ON(idx < 0 || idx >= mipspmu->num_counters);
-+	WARN_ON(idx < 0 || idx >= mipspmu.num_counters);
- 
- 	mipspmu_stop(event, PERF_EF_UPDATE);
- 	cpuc->events[idx] = NULL;
-@@ -294,14 +516,29 @@ static void mipspmu_read(struct perf_event *event)
- 
- static void mipspmu_enable(struct pmu *pmu)
- {
--	if (mipspmu)
--		mipspmu->start();
-+#ifdef CONFIG_MIPS_MT_SMP
-+	write_unlock(&pmuint_rwlock);
-+#endif
-+	resume_local_counters();
- }
- 
-+/*
-+ * MIPS performance counters can be per-TC. The control registers can
-+ * not be directly accessed accross CPUs. Hence if we want to do global
-+ * control, we need cross CPU calls. on_each_cpu() can help us, but we
-+ * can not make sure this function is called with interrupts enabled. So
-+ * here we pause local counters and then grab a rwlock and leave the
-+ * counters on other CPUs alone. If any counter interrupt raises while
-+ * we own the write lock, simply pause local counters on that CPU and
-+ * spin in the handler. Also we know we won't be switched to another
-+ * CPU after pausing local counters and before grabbing the lock.
-+ */
- static void mipspmu_disable(struct pmu *pmu)
- {
--	if (mipspmu)
--		mipspmu->stop();
-+	pause_local_counters();
-+#ifdef CONFIG_MIPS_MT_SMP
-+	write_lock(&pmuint_rwlock);
-+#endif
- }
- 
- static atomic_t active_events = ATOMIC_INIT(0);
-@@ -312,21 +549,21 @@ static int mipspmu_get_irq(void)
- {
- 	int err;
- 
--	if (mipspmu->irq >= 0) {
-+	if (mipspmu.irq >= 0) {
- 		/* Request my own irq handler. */
--		err = request_irq(mipspmu->irq, mipspmu->handle_irq,
--			IRQF_DISABLED | IRQF_NOBALANCING,
-+		err = request_irq(mipspmu.irq, mipsxx_pmu_handle_irq,
-+			IRQF_PERCPU | IRQF_NOBALANCING,
- 			"mips_perf_pmu", NULL);
- 		if (err) {
- 			pr_warning("Unable to request IRQ%d for MIPS "
--			   "performance counters!\n", mipspmu->irq);
-+			   "performance counters!\n", mipspmu.irq);
- 		}
- 	} else if (cp0_perfcount_irq < 0) {
- 		/*
- 		 * We are sharing the irq number with the timer interrupt.
- 		 */
- 		save_perf_irq = perf_irq;
--		perf_irq = mipspmu->handle_shared_irq;
-+		perf_irq = mipsxx_pmu_handle_shared_irq;
- 		err = 0;
- 	} else {
- 		pr_warning("The platform hasn't properly defined its "
-@@ -339,8 +576,8 @@ static int mipspmu_get_irq(void)
- 
- static void mipspmu_free_irq(void)
- {
--	if (mipspmu->irq >= 0)
--		free_irq(mipspmu->irq, NULL);
-+	if (mipspmu.irq >= 0)
-+		free_irq(mipspmu.irq, NULL);
- 	else if (cp0_perfcount_irq < 0)
- 		perf_irq = save_perf_irq;
- }
-@@ -361,7 +598,7 @@ static void hw_perf_event_destroy(struct perf_event *event)
- 		 * disabled.
- 		 */
- 		on_each_cpu(reset_counters,
--			(void *)(long)mipspmu->num_counters, 1);
-+			(void *)(long)mipspmu.num_counters, 1);
- 		mipspmu_free_irq();
- 		mutex_unlock(&pmu_reserve_mutex);
- 	}
-@@ -381,8 +618,8 @@ static int mipspmu_event_init(struct perf_event *event)
- 		return -ENOENT;
- 	}
- 
--	if (!mipspmu || event->cpu >= nr_cpumask_bits ||
--		(event->cpu >= 0 && !cpu_online(event->cpu)))
-+	if (event->cpu >= nr_cpumask_bits ||
-+	    (event->cpu >= 0 && !cpu_online(event->cpu)))
- 		return -ENODEV;
- 
- 	if (!atomic_inc_not_zero(&active_events)) {
-@@ -441,9 +678,9 @@ static const struct mips_perf_event *mipspmu_map_general_event(int idx)
- {
- 	const struct mips_perf_event *pev;
- 
--	pev = ((*mipspmu->general_event_map)[idx].event_id ==
-+	pev = ((*mipspmu.general_event_map)[idx].event_id ==
- 		UNSUPPORTED_PERF_EVENT_ID ? ERR_PTR(-EOPNOTSUPP) :
--		&(*mipspmu->general_event_map)[idx]);
-+		&(*mipspmu.general_event_map)[idx]);
- 
- 	return pev;
- }
-@@ -465,7 +702,7 @@ static const struct mips_perf_event *mipspmu_map_cache_event(u64 config)
- 	if (cache_result >= PERF_COUNT_HW_CACHE_RESULT_MAX)
- 		return ERR_PTR(-EINVAL);
- 
--	pev = &((*mipspmu->cache_event_map)
-+	pev = &((*mipspmu.cache_event_map)
- 					[cache_type]
- 					[cache_op]
- 					[cache_result]);
-@@ -486,7 +723,7 @@ static int validate_event(struct cpu_hw_events *cpuc,
- 	if (event->pmu != &pmu || event->state <= PERF_EVENT_STATE_OFF)
- 		return 1;
- 
--	return mipspmu->alloc_counter(cpuc, &fake_hwc) >= 0;
-+	return mipsxx_pmu_alloc_counter(cpuc, &fake_hwc) >= 0;
- }
- 
- static int validate_group(struct perf_event *event)
-@@ -524,123 +761,9 @@ static void handle_associated_event(struct cpu_hw_events *cpuc,
- 		return;
- 
- 	if (perf_event_overflow(event, 0, data, regs))
--		mipspmu->disable_event(idx);
-+		mipsxx_pmu_disable_event(idx);
- }
- 
--#define M_CONFIG1_PC	(1 << 4)
--
--#define M_PERFCTL_EXL			(1UL      <<  0)
--#define M_PERFCTL_KERNEL		(1UL      <<  1)
--#define M_PERFCTL_SUPERVISOR		(1UL      <<  2)
--#define M_PERFCTL_USER			(1UL      <<  3)
--#define M_PERFCTL_INTERRUPT_ENABLE	(1UL      <<  4)
--#define M_PERFCTL_EVENT(event)		(((event) & 0x3ff)  << 5)
--#define M_PERFCTL_VPEID(vpe)		((vpe)    << 16)
--#define M_PERFCTL_MT_EN(filter)		((filter) << 20)
--#define    M_TC_EN_ALL			M_PERFCTL_MT_EN(0)
--#define    M_TC_EN_VPE			M_PERFCTL_MT_EN(1)
--#define    M_TC_EN_TC			M_PERFCTL_MT_EN(2)
--#define M_PERFCTL_TCID(tcid)		((tcid)   << 22)
--#define M_PERFCTL_WIDE			(1UL      << 30)
--#define M_PERFCTL_MORE			(1UL      << 31)
--
--#define M_PERFCTL_COUNT_EVENT_WHENEVER	(M_PERFCTL_EXL |		\
--					M_PERFCTL_KERNEL |		\
--					M_PERFCTL_USER |		\
--					M_PERFCTL_SUPERVISOR |		\
--					M_PERFCTL_INTERRUPT_ENABLE)
--
--#ifdef CONFIG_MIPS_MT_SMP
--#define M_PERFCTL_CONFIG_MASK		0x3fff801f
--#else
--#define M_PERFCTL_CONFIG_MASK		0x1f
--#endif
--#define M_PERFCTL_EVENT_MASK		0xfe0
--
--#define M_COUNTER_OVERFLOW		(1UL      << 31)
--
--#ifdef CONFIG_MIPS_MT_SMP
--static int cpu_has_mipsmt_pertccounters;
--
--/*
-- * FIXME: For VSMP, vpe_id() is redefined for Perf-events, because
-- * cpu_data[cpuid].vpe_id reports 0 for _both_ CPUs.
-- */
--#if defined(CONFIG_HW_PERF_EVENTS)
--#define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
--			0 : smp_processor_id())
--#else
--#define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
--			0 : cpu_data[smp_processor_id()].vpe_id)
--#endif
--
--/* Copied from op_model_mipsxx.c */
--static unsigned int vpe_shift(void)
--{
--	if (num_possible_cpus() > 1)
--		return 1;
--
--	return 0;
--}
--
--static unsigned int counters_total_to_per_cpu(unsigned int counters)
--{
--	return counters >> vpe_shift();
--}
--
--static unsigned int counters_per_cpu_to_total(unsigned int counters)
--{
--	return counters << vpe_shift();
--}
--
--#else /* !CONFIG_MIPS_MT_SMP */
--#define vpe_id()	0
--
--#endif /* CONFIG_MIPS_MT_SMP */
--
--#define __define_perf_accessors(r, n, np)				\
--									\
--static unsigned int r_c0_ ## r ## n(void)				\
--{									\
--	unsigned int cpu = vpe_id();					\
--									\
--	switch (cpu) {							\
--	case 0:								\
--		return read_c0_ ## r ## n();				\
--	case 1:								\
--		return read_c0_ ## r ## np();				\
--	default:							\
--		BUG();							\
--	}								\
--	return 0;							\
--}									\
--									\
--static void w_c0_ ## r ## n(unsigned int value)				\
--{									\
--	unsigned int cpu = vpe_id();					\
--									\
--	switch (cpu) {							\
--	case 0:								\
--		write_c0_ ## r ## n(value);				\
--		return;							\
--	case 1:								\
--		write_c0_ ## r ## np(value);				\
--		return;							\
--	default:							\
--		BUG();							\
--	}								\
--	return;								\
--}									\
--
--__define_perf_accessors(perfcntr, 0, 2)
--__define_perf_accessors(perfcntr, 1, 3)
--__define_perf_accessors(perfcntr, 2, 0)
--__define_perf_accessors(perfcntr, 3, 1)
--
--__define_perf_accessors(perfctrl, 0, 2)
--__define_perf_accessors(perfctrl, 1, 3)
--__define_perf_accessors(perfctrl, 2, 0)
--__define_perf_accessors(perfctrl, 3, 1)
- 
- static int __n_counters(void)
- {
-@@ -682,94 +805,20 @@ static void reset_counters(void *arg)
- 	int counters = (int)(long)arg;
- 	switch (counters) {
- 	case 4:
--		w_c0_perfctrl3(0);
--		w_c0_perfcntr3(0);
--	case 3:
--		w_c0_perfctrl2(0);
--		w_c0_perfcntr2(0);
--	case 2:
--		w_c0_perfctrl1(0);
--		w_c0_perfcntr1(0);
--	case 1:
--		w_c0_perfctrl0(0);
--		w_c0_perfcntr0(0);
--	}
--}
--
--static u64 mipsxx_pmu_read_counter(unsigned int idx)
--{
--	switch (idx) {
--	case 0:
--		return r_c0_perfcntr0();
--	case 1:
--		return r_c0_perfcntr1();
--	case 2:
--		return r_c0_perfcntr2();
-+		mipsxx_pmu_write_control(3, 0);
-+		mipspmu.write_counter(3, 0);
- 	case 3:
--		return r_c0_perfcntr3();
--	default:
--		WARN_ONCE(1, "Invalid performance counter number (%d)\n", idx);
--		return 0;
--	}
--}
--
--static void mipsxx_pmu_write_counter(unsigned int idx, u64 val)
--{
--	switch (idx) {
--	case 0:
--		w_c0_perfcntr0(val);
--		return;
--	case 1:
--		w_c0_perfcntr1(val);
--		return;
-+		mipsxx_pmu_write_control(2, 0);
-+		mipspmu.write_counter(2, 0);
- 	case 2:
--		w_c0_perfcntr2(val);
--		return;
--	case 3:
--		w_c0_perfcntr3(val);
--		return;
--	}
--}
--
--static unsigned int mipsxx_pmu_read_control(unsigned int idx)
--{
--	switch (idx) {
--	case 0:
--		return r_c0_perfctrl0();
-+		mipsxx_pmu_write_control(1, 0);
-+		mipspmu.write_counter(1, 0);
- 	case 1:
--		return r_c0_perfctrl1();
--	case 2:
--		return r_c0_perfctrl2();
--	case 3:
--		return r_c0_perfctrl3();
--	default:
--		WARN_ONCE(1, "Invalid performance counter number (%d)\n", idx);
--		return 0;
-+		mipsxx_pmu_write_control(0, 0);
-+		mipspmu.write_counter(0, 0);
- 	}
- }
- 
--static void mipsxx_pmu_write_control(unsigned int idx, unsigned int val)
--{
--	switch (idx) {
--	case 0:
--		w_c0_perfctrl0(val);
--		return;
--	case 1:
--		w_c0_perfctrl1(val);
--		return;
--	case 2:
--		w_c0_perfctrl2(val);
--		return;
--	case 3:
--		w_c0_perfctrl3(val);
--		return;
--	}
--}
--
--#ifdef CONFIG_MIPS_MT_SMP
--static DEFINE_RWLOCK(pmuint_rwlock);
--#endif
--
- /* 24K/34K/1004K cores can share the same event map. */
- static const struct mips_perf_event mipsxxcore_event_map
- 				[PERF_COUNT_HW_MAX] = {
-@@ -1047,7 +1096,7 @@ static int __hw_perf_event_init(struct perf_event *event)
- 	} else if (PERF_TYPE_RAW == event->attr.type) {
- 		/* We are working on the global raw event. */
- 		mutex_lock(&raw_event_mutex);
--		pev = mipspmu->map_raw_event(event->attr.config);
-+		pev = mipspmu.map_raw_event(event->attr.config);
- 	} else {
- 		/* The event type is not (yet) supported. */
- 		return -EOPNOTSUPP;
-@@ -1092,7 +1141,7 @@ static int __hw_perf_event_init(struct perf_event *event)
- 	hwc->config = 0;
- 
- 	if (!hwc->sample_period) {
--		hwc->sample_period  = MAX_PERIOD;
-+		hwc->sample_period  = mipspmu.max_period;
- 		hwc->last_period    = hwc->sample_period;
- 		local64_set(&hwc->period_left, hwc->sample_period);
- 	}
-@@ -1105,70 +1154,47 @@ static int __hw_perf_event_init(struct perf_event *event)
- 	}
- 
- 	event->destroy = hw_perf_event_destroy;
--
- 	return err;
- }
- 
- static void pause_local_counters(void)
- {
- 	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
--	int counters = mipspmu->num_counters;
-+	int ctr = mipspmu.num_counters;
- 	unsigned long flags;
- 
- 	local_irq_save(flags);
--	switch (counters) {
--	case 4:
--		cpuc->saved_ctrl[3] = r_c0_perfctrl3();
--		w_c0_perfctrl3(cpuc->saved_ctrl[3] &
--			~M_PERFCTL_COUNT_EVENT_WHENEVER);
--	case 3:
--		cpuc->saved_ctrl[2] = r_c0_perfctrl2();
--		w_c0_perfctrl2(cpuc->saved_ctrl[2] &
--			~M_PERFCTL_COUNT_EVENT_WHENEVER);
--	case 2:
--		cpuc->saved_ctrl[1] = r_c0_perfctrl1();
--		w_c0_perfctrl1(cpuc->saved_ctrl[1] &
--			~M_PERFCTL_COUNT_EVENT_WHENEVER);
--	case 1:
--		cpuc->saved_ctrl[0] = r_c0_perfctrl0();
--		w_c0_perfctrl0(cpuc->saved_ctrl[0] &
--			~M_PERFCTL_COUNT_EVENT_WHENEVER);
--	}
-+	do {
-+		ctr--;
-+		cpuc->saved_ctrl[ctr] = mipsxx_pmu_read_control(ctr);
-+		mipsxx_pmu_write_control(ctr, cpuc->saved_ctrl[ctr] &
-+					 ~M_PERFCTL_COUNT_EVENT_WHENEVER);
-+	} while (ctr > 0);
- 	local_irq_restore(flags);
- }
- 
- static void resume_local_counters(void)
- {
- 	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
--	int counters = mipspmu->num_counters;
--	unsigned long flags;
-+	int ctr = mipspmu.num_counters;
- 
--	local_irq_save(flags);
--	switch (counters) {
--	case 4:
--		w_c0_perfctrl3(cpuc->saved_ctrl[3]);
--	case 3:
--		w_c0_perfctrl2(cpuc->saved_ctrl[2]);
--	case 2:
--		w_c0_perfctrl1(cpuc->saved_ctrl[1]);
--	case 1:
--		w_c0_perfctrl0(cpuc->saved_ctrl[0]);
--	}
--	local_irq_restore(flags);
-+	do {
-+		ctr--;
-+		mipsxx_pmu_write_control(ctr, cpuc->saved_ctrl[ctr]);
-+	} while (ctr > 0);
- }
- 
- static int mipsxx_pmu_handle_shared_irq(void)
- {
- 	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
- 	struct perf_sample_data data;
--	unsigned int counters = mipspmu->num_counters;
--	unsigned int counter;
-+	unsigned int counters = mipspmu.num_counters;
-+	u64 counter;
- 	int handled = IRQ_NONE;
- 	struct pt_regs *regs;
- 
- 	if (cpu_has_mips_r2 && !(read_c0_cause() & (1 << 26)))
- 		return handled;
--
- 	/*
- 	 * First we pause the local counters, so that when we are locked
- 	 * here, the counters are all paused. When it gets locked due to
-@@ -1189,13 +1215,9 @@ static int mipsxx_pmu_handle_shared_irq(void)
- #define HANDLE_COUNTER(n)						\
- 	case n + 1:							\
- 		if (test_bit(n, cpuc->used_mask)) {			\
--			counter = r_c0_perfcntr ## n();			\
--			if (counter & M_COUNTER_OVERFLOW) {		\
--				w_c0_perfcntr ## n(counter &		\
--						VALID_COUNT);		\
--				if (test_and_change_bit(n, cpuc->msbs))	\
--					handle_associated_event(cpuc,	\
--						n, &data, regs);	\
-+			counter = mipspmu.read_counter(n);		\
-+			if (counter & mipspmu.overflow) {		\
-+				handle_associated_event(cpuc, n, &data, regs); \
- 				handled = IRQ_HANDLED;			\
- 			}						\
- 		}
-@@ -1225,95 +1247,6 @@ static irqreturn_t mipsxx_pmu_handle_irq(int irq, void *dev)
- 	return mipsxx_pmu_handle_shared_irq();
- }
- 
--static void mipsxx_pmu_start(void)
--{
--#ifdef CONFIG_MIPS_MT_SMP
--	write_unlock(&pmuint_rwlock);
--#endif
--	resume_local_counters();
--}
--
--/*
-- * MIPS performance counters can be per-TC. The control registers can
-- * not be directly accessed across CPUs. Hence if we want to do global
-- * control, we need cross CPU calls. on_each_cpu() can help us, but we
-- * can not make sure this function is called with interrupts enabled. So
-- * here we pause local counters and then grab a rwlock and leave the
-- * counters on other CPUs alone. If any counter interrupt raises while
-- * we own the write lock, simply pause local counters on that CPU and
-- * spin in the handler. Also we know we won't be switched to another
-- * CPU after pausing local counters and before grabbing the lock.
-- */
--static void mipsxx_pmu_stop(void)
--{
--	pause_local_counters();
--#ifdef CONFIG_MIPS_MT_SMP
--	write_lock(&pmuint_rwlock);
--#endif
--}
--
--static int mipsxx_pmu_alloc_counter(struct cpu_hw_events *cpuc,
--				    struct hw_perf_event *hwc)
--{
--	int i;
--
--	/*
--	 * We only need to care the counter mask. The range has been
--	 * checked definitely.
--	 */
--	unsigned long cntr_mask = (hwc->event_base >> 8) & 0xffff;
--
--	for (i = mipspmu->num_counters - 1; i >= 0; i--) {
--		/*
--		 * Note that some MIPS perf events can be counted by both
--		 * even and odd counters, wheresas many other are only by
--		 * even _or_ odd counters. This introduces an issue that
--		 * when the former kind of event takes the counter the
--		 * latter kind of event wants to use, then the "counter
--		 * allocation" for the latter event will fail. In fact if
--		 * they can be dynamically swapped, they both feel happy.
--		 * But here we leave this issue alone for now.
--		 */
--		if (test_bit(i, &cntr_mask) &&
--			!test_and_set_bit(i, cpuc->used_mask))
--			return i;
--	}
--
--	return -EAGAIN;
--}
--
--static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
--{
--	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
--	unsigned long flags;
--
--	WARN_ON(idx < 0 || idx >= mipspmu->num_counters);
--
--	local_irq_save(flags);
--	cpuc->saved_ctrl[idx] = M_PERFCTL_EVENT(evt->event_base & 0xff) |
--		(evt->config_base & M_PERFCTL_CONFIG_MASK) |
--		/* Make sure interrupt enabled. */
--		M_PERFCTL_INTERRUPT_ENABLE;
--	/*
--	 * We do not actually let the counter run. Leave it until start().
--	 */
--	local_irq_restore(flags);
--}
--
--static void mipsxx_pmu_disable_event(int idx)
--{
--	struct cpu_hw_events *cpuc = &__get_cpu_var(cpu_hw_events);
--	unsigned long flags;
--
--	WARN_ON(idx < 0 || idx >= mipspmu->num_counters);
--
--	local_irq_save(flags);
--	cpuc->saved_ctrl[idx] = mipsxx_pmu_read_control(idx) &
--		~M_PERFCTL_COUNT_EVENT_WHENEVER;
--	mipsxx_pmu_write_control(idx, cpuc->saved_ctrl[idx]);
--	local_irq_restore(flags);
--}
--
- /* 24K */
- #define IS_UNSUPPORTED_24K_EVENT(r, b)					\
- 	((b) == 12 || (r) == 151 || (r) == 152 || (b) == 26 ||		\
-@@ -1452,40 +1385,11 @@ static const struct mips_perf_event *mipsxx_pmu_map_raw_event(u64 config)
- 	return &raw_event;
- }
- 
--static struct mips_pmu mipsxxcore_pmu = {
--	.handle_irq = mipsxx_pmu_handle_irq,
--	.handle_shared_irq = mipsxx_pmu_handle_shared_irq,
--	.start = mipsxx_pmu_start,
--	.stop = mipsxx_pmu_stop,
--	.alloc_counter = mipsxx_pmu_alloc_counter,
--	.read_counter = mipsxx_pmu_read_counter,
--	.write_counter = mipsxx_pmu_write_counter,
--	.enable_event = mipsxx_pmu_enable_event,
--	.disable_event = mipsxx_pmu_disable_event,
--	.map_raw_event = mipsxx_pmu_map_raw_event,
--	.general_event_map = &mipsxxcore_event_map,
--	.cache_event_map = &mipsxxcore_cache_map,
--};
--
--static struct mips_pmu mipsxx74Kcore_pmu = {
--	.handle_irq = mipsxx_pmu_handle_irq,
--	.handle_shared_irq = mipsxx_pmu_handle_shared_irq,
--	.start = mipsxx_pmu_start,
--	.stop = mipsxx_pmu_stop,
--	.alloc_counter = mipsxx_pmu_alloc_counter,
--	.read_counter = mipsxx_pmu_read_counter,
--	.write_counter = mipsxx_pmu_write_counter,
--	.enable_event = mipsxx_pmu_enable_event,
--	.disable_event = mipsxx_pmu_disable_event,
--	.map_raw_event = mipsxx_pmu_map_raw_event,
--	.general_event_map = &mipsxx74Kcore_event_map,
--	.cache_event_map = &mipsxx74Kcore_cache_map,
--};
--
- static int __init
- init_hw_perf_events(void)
- {
- 	int counters, irq;
-+	int counter_bits;
- 
- 	pr_info("Performance counters: ");
- 
-@@ -1517,32 +1421,28 @@ init_hw_perf_events(void)
- 	}
- #endif
- 
--	on_each_cpu(reset_counters, (void *)(long)counters, 1);
-+	mipspmu.map_raw_event = mipsxx_pmu_map_raw_event;
- 
- 	switch (current_cpu_type()) {
- 	case CPU_24K:
--		mipsxxcore_pmu.name = "mips/24K";
--		mipsxxcore_pmu.num_counters = counters;
--		mipsxxcore_pmu.irq = irq;
--		mipspmu = &mipsxxcore_pmu;
-+		mipspmu.name = "mips/24K";
-+		mipspmu.general_event_map = &mipsxxcore_event_map;
-+		mipspmu.cache_event_map = &mipsxxcore_cache_map;
- 		break;
- 	case CPU_34K:
--		mipsxxcore_pmu.name = "mips/34K";
--		mipsxxcore_pmu.num_counters = counters;
--		mipsxxcore_pmu.irq = irq;
--		mipspmu = &mipsxxcore_pmu;
-+		mipspmu.name = "mips/34K";
-+		mipspmu.general_event_map = &mipsxxcore_event_map;
-+		mipspmu.cache_event_map = &mipsxxcore_cache_map;
- 		break;
- 	case CPU_74K:
--		mipsxx74Kcore_pmu.name = "mips/74K";
--		mipsxx74Kcore_pmu.num_counters = counters;
--		mipsxx74Kcore_pmu.irq = irq;
--		mipspmu = &mipsxx74Kcore_pmu;
-+		mipspmu.name = "mips/74K";
-+		mipspmu.general_event_map = &mipsxx74Kcore_event_map;
-+		mipspmu.cache_event_map = &mipsxx74Kcore_cache_map;
- 		break;
- 	case CPU_1004K:
--		mipsxxcore_pmu.name = "mips/1004K";
--		mipsxxcore_pmu.num_counters = counters;
--		mipsxxcore_pmu.irq = irq;
--		mipspmu = &mipsxxcore_pmu;
-+		mipspmu.name = "mips/1004K";
-+		mipspmu.general_event_map = &mipsxxcore_event_map;
-+		mipspmu.cache_event_map = &mipsxxcore_cache_map;
- 		break;
- 	default:
- 		pr_cont("Either hardware does not support performance "
-@@ -1550,10 +1450,30 @@ init_hw_perf_events(void)
- 		return -ENODEV;
- 	}
- 
--	if (mipspmu)
--		pr_cont("%s PMU enabled, %d counters available to each "
--			"CPU, irq %d%s\n", mipspmu->name, counters, irq,
--			irq < 0 ? " (share with timer interrupt)" : "");
-+	mipspmu.num_counters = counters;
-+	mipspmu.irq = irq;
-+
-+	if (read_c0_perfctrl0() & M_PERFCTL_WIDE) {
-+		mipspmu.max_period = (1ULL << 63) - 1;
-+		mipspmu.valid_count = (1ULL << 63) - 1;
-+		mipspmu.overflow = 1ULL << 63;
-+		mipspmu.read_counter = mipsxx_pmu_read_counter_64;
-+		mipspmu.write_counter = mipsxx_pmu_write_counter_64;
-+		counter_bits = 64;
-+	} else {
-+		mipspmu.max_period = (1ULL << 31) - 1;
-+		mipspmu.valid_count = (1ULL << 31) - 1;
-+		mipspmu.overflow = 1ULL << 31;
-+		mipspmu.read_counter = mipsxx_pmu_read_counter;
-+		mipspmu.write_counter = mipsxx_pmu_write_counter;
-+		counter_bits = 32;
-+	}
-+
-+	on_each_cpu(reset_counters, (void *)(long)counters, 1);
-+
-+	pr_cont("%s PMU enabled, %d %d-bit counters available to each "
-+		"CPU, irq %d%s\n", mipspmu.name, counters, counter_bits, irq,
-+		irq < 0 ? " (share with timer interrupt)" : "");
- 
- 	perf_pmu_register(&pmu, "cpu", PERF_TYPE_RAW);
- 
+libfdt building moved to devices/of/libfdt.
+
+Cleanup and style improvements as suggested by Grant Likley.
+
+Omitted all the driver changes, as they are unchanged from the last
+set, and at this stage the patches are just an RFC.
+
+New in v2:
+
+Changed many device tree bindings.  They should be closer to the
+standard naming scheme now.
+
+Editing of the template device tree is done in the flattened form
+using libfdt.
+
+Standard platform driver functions used in preference to the
+of_platform variety.
+
+v1:
+
+Background: The Octeon family of SOCs has a variety of on-chip
+controllers for Ethernet, MDIO, I2C, and several other I/O devices.
+These chips are used on boards with a great variety of different
+configurations.  To date, the configuration and bus topology
+information has been hard coded in the drivers and support code.
+
+To facilitate supporting new chips and boards, we would like to make
+use use the Device Tree to encode the configuration information.
+
+I would like to get some feedback on the current code I am working
+with.  The migration approach is as follows:
+
+o Several device tree templates are statically linked into the kernel
+  image.  Based on SOC type and board type one of these is selected in
+  early boot.  Legacy configuration probing code is used to prune and
+  patch the device tree template.
+
+o New SOCs and boards will directly use a device tree passed by the
+  bootloader (This patch set doesn't actually implement this, but it
+  is trivial to add).
+
+
+
+1/6 -  Infrastructure to allow scripts/dtc/libfdt to be used in the
+       kernel.
+
+2/6 - OF patch to simplify of_find_node_by_path().
+
+3/6 - Add the statically linked Device Tree templates and bindings
+      descriptions.
+
+4/6 - Remove unused arch/mips/prom.c code that conflicts with
+      following patches.
+
+5/6 - irq_create_of_mapping() function.
+
+6/6 - Fix up Device Tree template for current environment.
+
+David Daney (6):
+  of: Allow scripts/dtc/libfdt to be used from kernel code
+  of: Make of_find_node_by_path() traverse /aliases for relative paths.
+  MIPS: Octeon: Add device tree source files.
+  MIPS: Prune some target specific code out of prom.c
+  MIPS: Octeon: Add irq_create_of_mapping() and GPIO interrupts.
+  MIPS: Octeon: Initialize and fixup device tree.
+
+ .../devicetree/bindings/mips/cavium/bootbus.txt    |   37 ++
+ .../devicetree/bindings/mips/cavium/ciu.txt        |   26 ++
+ .../devicetree/bindings/mips/cavium/gpio.txt       |   48 +++
+ .../devicetree/bindings/mips/cavium/mdio.txt       |   27 ++
+ .../devicetree/bindings/mips/cavium/mix.txt        |   40 ++
+ .../devicetree/bindings/mips/cavium/pip.txt        |   98 +++++
+ .../devicetree/bindings/mips/cavium/twsi.txt       |   34 ++
+ .../devicetree/bindings/mips/cavium/uart.txt       |   19 +
+ .../devicetree/bindings/mips/cavium/uctl.txt       |   47 +++
+ arch/mips/Kconfig                                  |    1 +
+ arch/mips/cavium-octeon/.gitignore                 |    2 +
+ arch/mips/cavium-octeon/Makefile                   |   16 +
+ arch/mips/cavium-octeon/octeon-irq.c               |  183 ++++++++++-
+ arch/mips/cavium-octeon/octeon-platform.c          |  295 +++++++++++++++
+ arch/mips/cavium-octeon/octeon_3xxx.dts            |  375 ++++++++++++++++++++
+ arch/mips/cavium-octeon/setup.c                    |   39 ++
+ arch/mips/kernel/prom.c                            |   49 ---
+ drivers/of/Kconfig                                 |    3 +
+ drivers/of/Makefile                                |    2 +
+ drivers/of/base.c                                  |   48 +++-
+ drivers/of/libfdt/Makefile                         |    3 +
+ drivers/of/libfdt/fdt.c                            |    2 +
+ drivers/of/libfdt/fdt_ro.c                         |    2 +
+ drivers/of/libfdt/fdt_wip.c                        |    2 +
+ include/linux/libfdt.h                             |    8 +
+ include/linux/libfdt_env.h                         |   13 +
+ 26 files changed, 1366 insertions(+), 53 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/bootbus.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/ciu.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/gpio.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/mdio.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/mix.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/pip.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/twsi.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/uart.txt
+ create mode 100644 Documentation/devicetree/bindings/mips/cavium/uctl.txt
+ create mode 100644 arch/mips/cavium-octeon/.gitignore
+ create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
+ create mode 100644 drivers/of/libfdt/Makefile
+ create mode 100644 drivers/of/libfdt/fdt.c
+ create mode 100644 drivers/of/libfdt/fdt_ro.c
+ create mode 100644 drivers/of/libfdt/fdt_wip.c
+ create mode 100644 include/linux/libfdt.h
+ create mode 100644 include/linux/libfdt_env.h
+
 -- 
 1.7.2.3

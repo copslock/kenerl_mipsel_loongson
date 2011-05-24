@@ -1,19 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 22:11:32 +0200 (CEST)
-Received: from mx2.mail.elte.hu ([157.181.151.9]:52564 "EHLO mx2.mail.elte.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491179Ab1EXUL3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 May 2011 22:11:29 +0200
-Received: from elvis.elte.hu ([157.181.1.14])
-        by mx2.mail.elte.hu with esmtp (Exim)
-        id 1QOxwP-0006y1-7N
-        from <mingo@elte.hu>; Tue, 24 May 2011 22:11:04 +0200
-Received: by elvis.elte.hu (Postfix, from userid 1004)
-        id 12FC53E252E; Tue, 24 May 2011 22:10:54 +0200 (CEST)
-Date:   Tue, 24 May 2011 22:10:53 +0200
-From:   Ingo Molnar <mingo@elte.hu>
-To:     Peter Zijlstra <peterz@infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 22:14:43 +0200 (CEST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:33736 "EHLO
+        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491179Ab1EXUOf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 May 2011 22:14:35 +0200
+X-Authority-Analysis: v=1.1 cv=u/eXSd3k4P+OuNmbl5aZU3ellt6eTxbOnGssQLT4hSY= c=1 sm=0 a=zw1CKeOhDhoA:10 a=5SG0PmZfjMsA:10 a=Q9fys5e9bTEA:10 a=OPBmh+XkhLl+Enan7BmTLg==:17 a=cm27Pg_UAAAA:8 a=Nhl_-d5xMr2zQsrJhTsA:9 a=PUjeQqilurYA:10 a=zv9_9hqRWm8A:10 a=OPBmh+XkhLl+Enan7BmTLg==:117
+X-Cloudmark-Score: 0
+X-Originating-IP: 67.242.120.143
+Received: from [67.242.120.143] ([67.242.120.143:59733] helo=[192.168.23.10])
+        by hrndva-oedge03.mail.rr.com (envelope-from <rostedt@goodmis.org>)
+        (ecelerity 2.2.3.46 r()) with ESMTP
+        id C4/C9-28963-E911CDD4; Tue, 24 May 2011 20:14:27 +0000
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system
+ call filtering
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Ingo Molnar <mingo@elte.hu>
 Cc:     Will Drewry <wad@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Frederic Weisbecker <fweisbec@gmail.com>,
         James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
         Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
@@ -39,77 +41,45 @@ Cc:     Will Drewry <wad@chromium.org>,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
- filtering
-Message-ID: <20110524201053.GE27634@elte.hu>
-References: <1305565422.5456.21.camel@gandalf.stny.rr.com>
- <20110517124212.GB21441@elte.hu>
- <1305637528.5456.723.camel@gandalf.stny.rr.com>
- <20110517131902.GF21441@elte.hu>
- <BANLkTikBK3-KZ10eErQ6Eex_L6Qe2aZang@mail.gmail.com>
- <1305807728.11267.25.camel@gandalf.stny.rr.com>
- <BANLkTiki8aQJbFkKOFC+s6xAEiuVyMM5MQ@mail.gmail.com>
- <BANLkTim9UyYAGhg06vCFLxkYPX18cPymEQ@mail.gmail.com>
- <1306254027.18455.47.camel@twins>
- <20110524195435.GC27634@elte.hu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110524195435.GC27634@elte.hu>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Received-SPF: neutral (mx2.mail.elte.hu: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
-X-ELTE-SpamScore: -2.0
-X-ELTE-SpamLevel: 
-X-ELTE-SpamCheck: no
-X-ELTE-SpamVersion: ELTE 2.0 
-X-ELTE-SpamCheck-Details: score=-2.0 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.3.1
-        -2.0 BAYES_00               BODY: Bayes spam probability is 0 to 1%
-        [score: 0.0000]
-Return-Path: <mingo@elte.hu>
+In-Reply-To: <20110524200815.GD27634@elte.hu>
+References: <1305563026.5456.19.camel@gandalf.stny.rr.com>
+         <20110516165249.GB10929@elte.hu>
+         <1305565422.5456.21.camel@gandalf.stny.rr.com>
+         <20110517124212.GB21441@elte.hu>
+         <1305637528.5456.723.camel@gandalf.stny.rr.com>
+         <20110517131902.GF21441@elte.hu>
+         <BANLkTikBK3-KZ10eErQ6Eex_L6Qe2aZang@mail.gmail.com>
+         <1305807728.11267.25.camel@gandalf.stny.rr.com>
+         <BANLkTiki8aQJbFkKOFC+s6xAEiuVyMM5MQ@mail.gmail.com>
+         <BANLkTim9UyYAGhg06vCFLxkYPX18cPymEQ@mail.gmail.com>
+         <20110524200815.GD27634@elte.hu>
+Content-Type: text/plain; charset="ISO-8859-15"
+Date:   Tue, 24 May 2011 16:14:22 -0400
+Message-ID: <1306268062.1465.79.camel@gandalf.stny.rr.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.32.2 
+Content-Transfer-Encoding: 7bit
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30141
+X-archive-position: 30142
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@elte.hu
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 2011-05-24 at 22:08 +0200, Ingo Molnar wrote:
+> * Will Drewry <wad@chromium.org> wrote:
 
-* Ingo Molnar <mingo@elte.hu> wrote:
+> But there could be a perf_tp_event_ret() or perf_tp_event_check() entry that 
+> code like seccomp which wants to use event results can use.
 
-> 
-> * Peter Zijlstra <peterz@infradead.org> wrote:
-> 
-> > On Tue, 2011-05-24 at 10:59 -0500, Will Drewry wrote:
-> > >  include/linux/ftrace_event.h  |    4 +-
-> > >  include/linux/perf_event.h    |   10 +++++---
-> > >  kernel/perf_event.c           |   49 +++++++++++++++++++++++++++++++++++++---
-> > >  kernel/seccomp.c              |    8 ++++++
-> > >  kernel/trace/trace_syscalls.c |   27 +++++++++++++++++-----
-> > >  5 files changed, 82 insertions(+), 16 deletions(-) 
-> > 
-> > I strongly oppose to the perf core being mixed with any sekurity voodoo
-> > (or any other active role for that matter).
-> 
-> I'd object to invisible side-effects as well, and vehemently so. But note how 
-> intelligently it's used here: it's explicit in the code, it's used explicitly 
-> in kernel/seccomp.c and the event generation place in 
-> kernel/trace/trace_syscalls.c.
-> 
-> So this is a really flexible solution IMO and does not extend events with 
-> some invisible 'active' role. It extends the *call site* with an open-coded 
-> active role - which active role btw. already pre-existed.
+We should name it something else. The "perf_tp.." is a misnomer as it
+has nothing to do with performance monitoring. "dynamic_event_.." maybe,
+as it is dynamic to the affect that we can use jump labels to enable or
+disable it.
 
-Also see my other mail - i think this seccomp code is too tied in to the perf 
-core and ABI - but this is fixable IMO.
-
-The fundamental notion that a generator subsystem of events can use filter 
-results as well (such as kernel/trace/trace_syscalls.c.) for its own purposes 
-is pretty robust though.
-
-Thanks,
-
-	Ingo
+-- Steve

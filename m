@@ -1,115 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 10:43:08 +0200 (CEST)
-Received: from tx2ehsobe001.messaging.microsoft.com ([65.55.88.11]:35112 "EHLO
-        TX2EHSOBE001.bigfish.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491161Ab1EXInE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 May 2011 10:43:04 +0200
-Received: from mail114-tx2-R.bigfish.com (10.9.14.253) by
- TX2EHSOBE001.bigfish.com (10.9.40.21) with Microsoft SMTP Server id
- 14.1.225.22; Tue, 24 May 2011 08:42:56 +0000
-Received: from mail114-tx2 (localhost.localdomain [127.0.0.1])  by
- mail114-tx2-R.bigfish.com (Postfix) with ESMTP id BF8D8E507ED; Tue, 24 May
- 2011 08:42:56 +0000 (UTC)
-X-SpamScore: -15
-X-BigFish: VPS-15(zzbb2cK4015L1432N98dKzz1202hzz8275bhz32i668h839h61h)
-X-Forefront-Antispam-Report: CIP:163.181.249.109;KIP:(null);UIP:(null);IPVD:NLI;H:ausb3twp02.amd.com;RD:none;EFVD:NLI
-Received: from mail114-tx2 (localhost.localdomain [127.0.0.1]) by mail114-tx2
- (MessageSwitch) id 1306226576608665_8436; Tue, 24 May 2011 08:42:56 +0000
- (UTC)
-Received: from TX2EHSMHS007.bigfish.com (unknown [10.9.14.251]) by
- mail114-tx2.bigfish.com (Postfix) with ESMTP id 7F3331D8050;   Tue, 24 May 2011
- 08:42:56 +0000 (UTC)
-Received: from ausb3twp02.amd.com (163.181.249.109) by
- TX2EHSMHS007.bigfish.com (10.9.99.107) with Microsoft SMTP Server id
- 14.1.225.22; Tue, 24 May 2011 08:42:55 +0000
-X-WSS-ID: 0LLOYVH-02-4DR-02
-X-M-MSG: 
-Received: from sausexedgep02.amd.com (sausexedgep02-ext.amd.com
- [163.181.249.73])      (using TLSv1 with cipher AES128-SHA (128/128 bits))     (No
- client certificate requested)  by ausb3twp02.amd.com (Axway MailGate 3.8.1)
- with ESMTP id 22EF8C83F3;      Tue, 24 May 2011 03:42:52 -0500 (CDT)
-Received: from sausexhtp01.amd.com (163.181.3.165) by sausexedgep02.amd.com
- (163.181.36.59) with Microsoft SMTP Server (TLS) id 8.3.106.1; Tue, 24 May
- 2011 03:43:00 -0500
-Received: from storexhtp01.amd.com (172.24.4.3) by sausexhtp01.amd.com
- (163.181.3.165) with Microsoft SMTP Server (TLS) id 8.3.83.0; Tue, 24 May
- 2011 03:42:53 -0500
-Received: from gwo.osrc.amd.com (165.204.16.204) by storexhtp01.amd.com
- (172.24.4.3) with Microsoft SMTP Server id 8.3.83.0; Tue, 24 May 2011
- 04:42:52 -0400
-Received: from erda.amd.com (erda.osrc.amd.com [165.204.15.17]) by
- gwo.osrc.amd.com (Postfix) with ESMTP id 3198549C229;  Tue, 24 May 2011
- 09:42:51 +0100 (BST)
-Received: by erda.amd.com (Postfix, from userid 35569)  id 095898009; Tue, 24
- May 2011 10:42:50 +0200 (CEST)
-Date:   Tue, 24 May 2011 10:42:50 +0200
-From:   Robert Richter <robert.richter@amd.com>
-To:     Gergely Kis <gergely@homejinni.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Daniel Kalmar <kalmard@homejinni.com>,
-        "oprofile-list@lists.sourceforge.net" 
-        <oprofile-list@lists.sourceforge.net>
-Subject: Re: [PATCH 0/2] MIPS: oprofile: callgraph support
-Message-ID: <20110524084250.GR20052@erda.amd.com>
-References: <1305290285-13818-1-git-send-email-gergely@homejinni.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1305290285-13818-1-git-send-email-gergely@homejinni.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-OriginatorOrg: amd.com
-Return-Path: <robert.richter@amd.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 14:20:11 +0200 (CEST)
+Received: from mail-px0-f182.google.com ([209.85.212.182]:45642 "EHLO
+        mail-px0-f182.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491012Ab1EXMUH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 May 2011 14:20:07 +0200
+Received: by pxi20 with SMTP id 20so4513278pxi.27
+        for <multiple recipients>; Tue, 24 May 2011 05:20:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=wBSEePNwtVpXoPKZRv4gPUOmVzTPsuKSDfibObidilg=;
+        b=Ku9KUpvxv+AbWU6CSgQoUkQ/3fe7i/WuyAb3r1UmkCbfBHv/mNQwm5HLEnytkkJxeu
+         hOq2aRd/xkhcpGX5RDUFeEA4TvTAcgI7UeNeZEwAgV0lLNOZBNvzAvLN8WLtfR5VthUM
+         zn01y+0pBJUYN1Ba1nAk+SHZ2VuD10MU3eXRE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=pB2e3uModwfXet52A9tBMbrEOJ7q797l0WdstL3hOUc812xjXPDJYpC0be3aiEz0m5
+         /Ro32oOAvuN0a5+2xAaVXYTrrExq7jfeNO3RYphyo3QSZ+T2P+3GGjraQbi/BOXrAljn
+         ar5+cXDI6iwLcl2hTD/DxkcM0I/dHFSJwnG2Y=
+Received: by 10.68.31.166 with SMTP id b6mr2766111pbi.198.1306239600133;
+        Tue, 24 May 2011 05:20:00 -0700 (PDT)
+Received: from localhost.localdomain ([182.32.187.185])
+        by mx.google.com with ESMTPS id s1sm4977335pbq.54.2011.05.24.05.19.55
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 24 May 2011 05:19:59 -0700 (PDT)
+From:   Pengfei Zhang <zoppof.zhang@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Pengfei Zhang <zoppof.zhang@gmail.com>
+Subject: [PATCH] MIPS:i8259.c remove resume and shutdown to syscore_ops
+Date:   Tue, 24 May 2011 20:19:18 +0800
+Message-Id: <1306239558-4997-1-git-send-email-zoppof.zhang@gmail.com>
+X-Mailer: git-send-email 1.7.4.1
+Return-Path: <zoppof.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30127
+X-archive-position: 30128
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robert.richter@amd.com
+X-original-sender: zoppof.zhang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 13.05.11 08:38:03, Gergely Kis wrote:
-> From: Daniel Kalmar <kalmard@homejinni.com>
-> 
-> These patches add callgraph/backtrace support to oprofile on MIPS.
-> 
-> Stack unwinding is done by code examination. For kernelspace, the
-> already existing unwind function is utilized that uses kallsyms to
-> quickly find the beginning of functions. For userspace a new function
-> was added that examines code at and before the pc.
-> 
-> Daniel Kalmar (2):
->   MIPS: Add unwind_stack_by_address to support unwinding from any
->     kernel code address
->   MIPS: oprofile: Add callgraph support
-> 
->  arch/mips/include/asm/stacktrace.h |    4 +
->  arch/mips/kernel/process.c         |   18 +++-
->  arch/mips/oprofile/Makefile        |    2 +-
->  arch/mips/oprofile/backtrace.c     |  173 ++++++++++++++++++++++++++++++++++++
->  arch/mips/oprofile/common.c        |    1 +
->  arch/mips/oprofile/op_impl.h       |    2 +
->  6 files changed, 194 insertions(+), 6 deletions(-)
->  create mode 100644 arch/mips/oprofile/backtrace.c
+Remove the resume and shutdown of i8259A from the sysdev_class
+to the syscore_ops since these members had removed from the
+structure sysdev_class.
 
-Daniel and Gergely,
+Signed-off-by: Pengfei Zhang <zoppof.zhang@gmail.com>
+---
+ arch/mips/kernel/i8259.c |   20 +++++++++++++-------
+ 1 files changed, 13 insertions(+), 7 deletions(-)
 
-the patches look good so far. I fixed the coding style to have the
-opening brace of functions at the beginning of the next line. After
-the MIPS maintainer's ack I will apply them to the oprofile tree.
-
-Thanks for your contribution.
-
-Ralf,
-
-please ack.
-
-Thanks,
-
--Robert
-
+diff --git a/arch/mips/kernel/i8259.c b/arch/mips/kernel/i8259.c
+index c018696..a74a8ea 100644
+--- a/arch/mips/kernel/i8259.c
++++ b/arch/mips/kernel/i8259.c
+@@ -16,6 +16,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/sysdev.h>
+ #include <linux/irq.h>
++#include <linux/syscore_ops.h>
+ 
+ #include <asm/i8259.h>
+ #include <asm/io.h>
+@@ -215,14 +216,13 @@ spurious_8259A_irq:
+ 	}
+ }
+ 
+-static int i8259A_resume(struct sys_device *dev)
++static void i8259A_resume(void)
+ {
+ 	if (i8259A_auto_eoi >= 0)
+ 		init_8259A(i8259A_auto_eoi);
+-	return 0;
+ }
+ 
+-static int i8259A_shutdown(struct sys_device *dev)
++static void i8259A_shutdown(void)
+ {
+ 	/* Put the i8259A into a quiescent state that
+ 	 * the kernel initialization code can get it
+@@ -232,15 +232,17 @@ static int i8259A_shutdown(struct sys_device *dev)
+ 		outb(0xff, PIC_MASTER_IMR);	/* mask all of 8259A-1 */
+ 		outb(0xff, PIC_SLAVE_IMR);	/* mask all of 8259A-1 */
+ 	}
+-	return 0;
+ }
+ 
+-static struct sysdev_class i8259_sysdev_class = {
+-	.name = "i8259",
++static struct syscore_ops i8259_syscore_ops = {
+ 	.resume = i8259A_resume,
+ 	.shutdown = i8259A_shutdown,
+ };
+ 
++static struct sysdev_class i8259_sysdev_class = {
++	.name = "i8259",
++};
++
+ static struct sys_device device_i8259A = {
+ 	.id	= 0,
+ 	.cls	= &i8259_sysdev_class,
+@@ -248,7 +250,11 @@ static struct sys_device device_i8259A = {
+ 
+ static int __init i8259A_init_sysfs(void)
+ {
+-	int error = sysdev_class_register(&i8259_sysdev_class);
++	int error;
++
++	register_syscore_ops(&i8259_syscore_ops);
++
++	error = sysdev_class_register(&i8259_sysdev_class);
+ 	if (!error)
+ 		error = sysdev_register(&device_i8259A);
+ 	return error;
 -- 
-Advanced Micro Devices, Inc.
-Operating System Research Center
+1.7.4.1

@@ -1,85 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 22:14:43 +0200 (CEST)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:33736 "EHLO
-        hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491179Ab1EXUOf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 May 2011 22:14:35 +0200
-X-Authority-Analysis: v=1.1 cv=u/eXSd3k4P+OuNmbl5aZU3ellt6eTxbOnGssQLT4hSY= c=1 sm=0 a=zw1CKeOhDhoA:10 a=5SG0PmZfjMsA:10 a=Q9fys5e9bTEA:10 a=OPBmh+XkhLl+Enan7BmTLg==:17 a=cm27Pg_UAAAA:8 a=Nhl_-d5xMr2zQsrJhTsA:9 a=PUjeQqilurYA:10 a=zv9_9hqRWm8A:10 a=OPBmh+XkhLl+Enan7BmTLg==:117
-X-Cloudmark-Score: 0
-X-Originating-IP: 67.242.120.143
-Received: from [67.242.120.143] ([67.242.120.143:59733] helo=[192.168.23.10])
-        by hrndva-oedge03.mail.rr.com (envelope-from <rostedt@goodmis.org>)
-        (ecelerity 2.2.3.46 r()) with ESMTP
-        id C4/C9-28963-E911CDD4; Tue, 24 May 2011 20:14:27 +0000
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system
- call filtering
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Ingo Molnar <mingo@elte.hu>
-Cc:     Will Drewry <wad@chromium.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
-        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
-        agl@chromium.org, "Serge E. Hallyn" <serge@hallyn.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
-        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
-        David Howells <dhowells@redhat.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2011 01:15:21 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:33756 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491182Ab1EXXPQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2011 01:15:16 +0200
+Received: by pwi8 with SMTP id 8so3721022pwi.36
+        for <multiple recipients>; Tue, 24 May 2011 16:15:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:subject:from:reply-to:to:cc:in-reply-to
+         :references:content-type:organization:date:message-id:mime-version
+         :x-mailer:content-transfer-encoding;
+        bh=YOarLjp8TyVQDEvxSbQslJDsHuVMI5UkoL30+glUgMY=;
+        b=sDy1eqzbMFzCAWel+7ei39x/2ytrfc1TQBpAg1p9BrY+f0SmUiyoCM9rOdAFvGKvOP
+         xRLPMz36Qf6We/1O9HNmtu7R7wvsY4zJuFgaZi8hEbR6gWr6nkkdgkH2n7GuqxPAvWXK
+         fEAzovD45YkkbdPd0z9sfTtcVROs+qmzZr5v4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=CdFOS8AHZEH7qxNVuJJIxR8zhQA/L1eU8Rw9g3wfzusQiK4ERU6AagSD0jwvAYYmco
+         DYYwWz5zVZhCv85/6KhNmUjslPgYvFPcOXt1XEl6LTZ9WMdA1KWfCOUmbXzToKEBEzCa
+         lDgQc+A4n4J54Q3Rp5x2xz2S3EJEcPJ1YZ7tc=
+Received: by 10.68.44.130 with SMTP id e2mr3234528pbm.515.1306278908358;
+        Tue, 24 May 2011 16:15:08 -0700 (PDT)
+Received: from [192.168.0.107] ([182.32.187.185])
+        by mx.google.com with ESMTPS id u10sm5281440pbt.69.2011.05.24.16.15.02
+        (version=SSLv3 cipher=OTHER);
+        Tue, 24 May 2011 16:15:07 -0700 (PDT)
+Subject: Re: [PATCH] MIPS:i8259.c remove resume and shutdown to syscore_ops
+From:   Wanlong Gao <wanlong.gao@gmail.com>
+Reply-To: wanlong.gao@gmail.com
+To:     "Rafael J. Wysocki" <rjw@sisk.pl>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-In-Reply-To: <20110524200815.GD27634@elte.hu>
-References: <1305563026.5456.19.camel@gandalf.stny.rr.com>
-         <20110516165249.GB10929@elte.hu>
-         <1305565422.5456.21.camel@gandalf.stny.rr.com>
-         <20110517124212.GB21441@elte.hu>
-         <1305637528.5456.723.camel@gandalf.stny.rr.com>
-         <20110517131902.GF21441@elte.hu>
-         <BANLkTikBK3-KZ10eErQ6Eex_L6Qe2aZang@mail.gmail.com>
-         <1305807728.11267.25.camel@gandalf.stny.rr.com>
-         <BANLkTiki8aQJbFkKOFC+s6xAEiuVyMM5MQ@mail.gmail.com>
-         <BANLkTim9UyYAGhg06vCFLxkYPX18cPymEQ@mail.gmail.com>
-         <20110524200815.GD27634@elte.hu>
-Content-Type: text/plain; charset="ISO-8859-15"
-Date:   Tue, 24 May 2011 16:14:22 -0400
-Message-ID: <1306268062.1465.79.camel@gandalf.stny.rr.com>
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Pengfei Zhang <zoppof.zhang@gmail.com>,
+        Linux PM mailing list <linux-pm@lists.linux-foundation.org>
+In-Reply-To: <201105242059.59770.rjw@sisk.pl>
+References: <1306247112.2066.8.camel@Tux>  <201105242059.59770.rjw@sisk.pl>
+Content-Type: text/plain; charset="UTF-8"
+Organization: Linux kernel
+Date:   Wed, 25 May 2011 07:14:59 +0800
+Message-ID: <1306278899.2135.2.camel@Tux>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.32.2 
-Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+Content-Transfer-Encoding: 8bit
+Return-Path: <wanlong.gao@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30142
+X-archive-position: 30143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: wanlong.gao@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2011-05-24 at 22:08 +0200, Ingo Molnar wrote:
-> * Will Drewry <wad@chromium.org> wrote:
+On 二, 2011-05-24 at 20:59 +0200, Rafael J. Wysocki wrote:
+> On Tuesday, May 24, 2011, Wanlong Gao wrote:
+> > 
+> > > On Tue, May 24, 2011 at 08:19:18PM +0800, Pengfei Zhang wrote:
+> > > 
+> > > > Remove the resume and shutdown of i8259A from the sysdev_class
+> > > > to the syscore_ops since these members had removed from the
+> > > > structure sysdev_class.
+> > > 
+> > > I don't see why one would want to want to first call
+> > > register_syscore_ops
+> > > then sysdev_class_register and sysdev_register?
+> > > 
+> > Hi Ralf:
+> > If these not moved to syscore_ops, building will get error.
+> > 
+> > Hi Thomas:
+> > Does you mean that we can just remove the sysfs entry now ?
+> 
+> I had the appended patch in my tree before the merge window started,
+> but it conflicted with analogous changes in the MIPS tree, so I had
+> dropped it.  Was it a mistake?
+> 
+> Rafael
 
-> But there could be a perf_tp_event_ret() or perf_tp_event_check() entry that 
-> code like seccomp which wants to use event results can use.
+Hi Rafael:
 
-We should name it something else. The "perf_tp.." is a misnomer as it
-has nothing to do with performance monitoring. "dynamic_event_.." maybe,
-as it is dynamic to the affect that we can use jump labels to enable or
-disable it.
+On 5/24/11, Ralf Baechle <ralf@linux-mips.org> wrote:
+>Re: [PATCH] MIPS: Use struct syscore_ops instead of sysdevs for i8259
+> On Fri, May 20, 2011 at 10:41:41PM +0900, Yoichi Yuasa wrote:
+>
+> Thanks, applied.
+>
+>   Ralf
+It seems already applied some about this?
 
--- Steve
+Thanks
+
+Best regards
+Wanlong Gao

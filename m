@@ -1,141 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 21:01:12 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:48341 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491178Ab1EXTBG convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 21:10:11 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:45793 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491178Ab1EXTKF convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 24 May 2011 21:01:06 +0200
-Received: by fxm14 with SMTP id 14so6390059fxm.36
-        for <multiple recipients>; Tue, 24 May 2011 12:00:58 -0700 (PDT)
+        Tue, 24 May 2011 21:10:05 +0200
+Received: by ywf9 with SMTP id 9so3175870ywf.36
+        for <multiple recipients>; Tue, 24 May 2011 12:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=kDahWKPcMHq1awBxrzLMgFM8mDDzF9xXkJHUGH7tl4E=;
+        b=PVkRLiujBAgdyT6YrOW6UAxDV6FQgqUFx77N7mDhHY5XBxaNCdMMh4eaa1YZF9Thcn
+         /2cWRjKmlc1MOXojLpWqtYHEY8RnF4dCnukGSa+tJ+AtKq/TsO6k1fYwMMYUGxCgr0xB
+         LqCO6hdwFC0PqPpg3QYmYUj5nM5PTcgotOy0E=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=oz7OB4VbruSyGUsniKwuu++w7oo0WOWwUXC3Zv1twdda6kt8M3Ruep+BicTpLMz0FB
+         qoCGuSCRewesemeCyalNk4HNiUSYbK2KwC69LtIYzVrhATAJpnWAABS3fxEqykLm6HWB
+         B8DG7QB2M0VDnUf7mddCjWKWMR3b45w7InuJE=
 MIME-Version: 1.0
-Received: by 10.223.76.129 with SMTP id c1mr4064608fak.107.1306263656179; Tue,
- 24 May 2011 12:00:56 -0700 (PDT)
-Received: by 10.223.86.71 with HTTP; Tue, 24 May 2011 12:00:56 -0700 (PDT)
-In-Reply-To: <alpine.LFD.2.02.1105241823540.3078@ionos>
-References: <20110513125452.GD3924@elte.hu>
-        <1305292132.2466.26.camel@twins>
-        <20110513131800.GA7883@elte.hu>
-        <1305294935.2466.64.camel@twins>
-        <20110513145737.GC32688@elte.hu>
-        <1305563026.5456.19.camel@gandalf.stny.rr.com>
-        <20110516165249.GB10929@elte.hu>
-        <1305565422.5456.21.camel@gandalf.stny.rr.com>
-        <20110517124212.GB21441@elte.hu>
-        <1305637528.5456.723.camel@gandalf.stny.rr.com>
-        <20110517131902.GF21441@elte.hu>
-        <BANLkTikBK3-KZ10eErQ6Eex_L6Qe2aZang@mail.gmail.com>
-        <1305807728.11267.25.camel@gandalf.stny.rr.com>
-        <BANLkTiki8aQJbFkKOFC+s6xAEiuVyMM5MQ@mail.gmail.com>
-        <BANLkTim9UyYAGhg06vCFLxkYPX18cPymEQ@mail.gmail.com>
-        <1306254027.18455.47.camel@twins>
-        <alpine.LFD.2.02.1105241823540.3078@ionos>
-Date:   Tue, 24 May 2011 14:00:56 -0500
-Message-ID: <BANLkTimTjudsCi-xg0TUtzy_M236m3qm8Q@mail.gmail.com>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call filtering
-From:   Will Drewry <wad@chromium.org>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@elte.hu>,
-        Frederic Weisbecker <fweisbec@gmail.com>
-Cc:     James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
-        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
-        agl@chromium.org, "Serge E. Hallyn" <serge@hallyn.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
-        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
-        David Howells <dhowells@redhat.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
+Received: by 10.236.176.39 with SMTP id a27mr1352802yhm.312.1306264198738;
+ Tue, 24 May 2011 12:09:58 -0700 (PDT)
+Received: by 10.236.102.137 with HTTP; Tue, 24 May 2011 12:09:58 -0700 (PDT)
+In-Reply-To: <201105242059.59770.rjw@sisk.pl>
+References: <1306247112.2066.8.camel@Tux>
+        <201105242059.59770.rjw@sisk.pl>
+Date:   Tue, 24 May 2011 21:09:58 +0200
+Message-ID: <BANLkTimYuJiiCbqO9QxgaAKHAZWe04vhgA@mail.gmail.com>
+Subject: Re: [PATCH] MIPS:i8259.c remove resume and shutdown to syscore_ops
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     "Rafael J. Wysocki" <rjw@sisk.pl>
+Cc:     wanlong.gao@gmail.com, Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        Pengfei Zhang <zoppof.zhang@gmail.com>,
+        Linux PM mailing list <linux-pm@lists.linux-foundation.org>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <wad@chromium.org>
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30137
+X-archive-position: 30138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wad@chromium.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 24, 2011 at 11:25 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
-> On Tue, 24 May 2011, Peter Zijlstra wrote:
->
->> On Tue, 2011-05-24 at 10:59 -0500, Will Drewry wrote:
->> >  include/linux/ftrace_event.h  |    4 +-
->> >  include/linux/perf_event.h    |   10 +++++---
->> >  kernel/perf_event.c           |   49 +++++++++++++++++++++++++++++++++++++---
->> >  kernel/seccomp.c              |    8 ++++++
->> >  kernel/trace/trace_syscalls.c |   27 +++++++++++++++++-----
->> >  5 files changed, 82 insertions(+), 16 deletions(-)
+On Tue, May 24, 2011 at 8:59 PM, Rafael J. Wysocki <rjw@sisk.pl> wrote:
+> On Tuesday, May 24, 2011, Wanlong Gao wrote:
 >>
->> I strongly oppose to the perf core being mixed with any sekurity voodoo
->> (or any other active role for that matter).
+>> > On Tue, May 24, 2011 at 08:19:18PM +0800, Pengfei Zhang wrote:
+>> >
+>> > > Remove the resume and shutdown of i8259A from the sysdev_class
+>> > > to the syscore_ops since these members had removed from the
+>> > > structure sysdev_class.
+>> >
+>> > I don't see why one would want to want to first call
+>> > register_syscore_ops
+>> > then sysdev_class_register and sysdev_register?
+>> >
+>> Hi Ralf:
+>> If these not moved to syscore_ops, building will get error.
+>>
+>> Hi Thomas:
+>> Does you mean that we can just remove the sysfs entry now ?
 >
-> Amen. We have enough crap to cleanup in perf/ftrace already, so we
-> really do not need security magic added to it.
+> I had the appended patch in my tree before the merge window started,
+> but it conflicted with analogous changes in the MIPS tree, so I had
+> dropped it.  Was it a mistake?
+> Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+> Acked-by: Greg Kroah-Hartman <gregkh@suse.de>
+> Acked-and-tested-by: Lars-Peter Clausen <lars@metafoo.de>
+> ---
+>  arch/mips/alchemy/common/dbdma.c |   92 +++++++++++----------------------------
+>  arch/mips/alchemy/common/irq.c   |   62 +++++++++-----------------
 
-Thanks for the quick responses!
+I took care of these two, they were the reason for the conflict in -next.
 
-I agree, but I'm left a little bit lost now w.r.t. the comments around
-reusing the ABI.  If perf doesn't make sense (which certainly seems
-wrong from a security interface perspective), then the preexisting
-ABIs I know of for this case are as follows:
-- /sys/kernel/debug/tracing/*
-- prctl(PR_SET_SECCOMP* (or /proc/...)
-
-Both would require expansion.  The latter was reused by the original
-patch series.  The former doesn't expose much in the way of per-task
-event filtering -- ftrace_pids doesn't translate well to
-ftrace_syscall_enter-based enforcement.  I'd expect we'd need
-ftrace_event_call->task_events (like ->perf_events), and either
-explore them in ftrace_syscall_enter or add a new tracepoint handler,
-ftrace_task_syscall_enter, via something like TRACE_REG_TASK_REGISTER.
- It could then do whatever it wanted with the successful or
-unsuccessful matching against predicates, stacking or not, which could
-be used for a seccomp-like mechanism.  However, bubbling that change
-up to the non-existent interfaces in debug/tracing could be a
-challenge too (Registration would require an alternate flow like perf
-to call TRACE_REG_*? Do they become
-tracing/events/subsystem/event/task/<tid>/<filter_string_N>? ...?).
-
-This is all just a matter of programming... but at this point, I'm not
-seeing the clear shared path forward.  Even with per-task ftrace
-access in debug/tracing, that would introduce a reasonably large
-change to the system and add a new ABI, albeit in debug/tracing.  If
-the above (or whatever the right approach is) comes into existence,
-then any prctl(PR_SET_SECCOMP) ABI could have the backend
-implementation to modify the same data.  I'm not putting it like this
-to say that I'm designing to be obsolete, but to show that the defined
-interface wouldn't conflict if ftrace does overlap more in the future.
- Given the importance of a clearly defined interface for security
-functionality, I'd be surprised to see all the pieces come together in
-the near future in such a way that a transition would be immediately
-possible -- I'm not even sure what the ftrace roadmap really is!
-
-Would it be more desirable to put a system call filtering interface on
-a miscdev (like /dev/syscall_filter) instead of in /proc or prctl (and
-not reuse seccomp at all)?  I'm not clear what the onus is to justify
-a change in the different ABI areas, but I see system call filtering
-as an important piece of system security and would like to determine
-if there is a viable path forward, or if this will need to be
-revisited in another 2 years.
-
-thanks again!
-will
+Manuel

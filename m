@@ -1,37 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 10:02:33 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:56567 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 May 2011 10:03:06 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:53615 "EHLO
         mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491167Ab1EXICC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 24 May 2011 10:02:02 +0200
-Received: by mail-fx0-f49.google.com with SMTP id 14so5835764fxm.36
-        for <multiple recipients>; Tue, 24 May 2011 01:02:02 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1491168Ab1EXICE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 May 2011 10:02:04 +0200
+Received: by fxm14 with SMTP id 14so5835792fxm.36
+        for <multiple recipients>; Tue, 24 May 2011 01:01:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer
          :in-reply-to:references;
-        bh=eb28ZoFDk1KvkWukuVWz1p6jirf7HnN7WyK3peIYQHw=;
-        b=JFA8v+rPQP1uNDtBcsvO4v9JTldzYQ/YJ7kHDdKmqRaFwK8g7MshSuW0d98PM/sihs
-         REVC7tANJSmeLaR1FvZWNOlCshPnKpXNk9SgCN30dDtPgZk9G1rF6XE0hezhZHocBM+8
-         fRa1T2Ysl/J1A4BOdOF6MTkwqxVe2lR2cYfWU=
+        bh=+S3mU6BKBqu6dy12I1MnNW5p7FxIeP3j8TrGUSB+C0M=;
+        b=F//OD+gQuRSPFlk0saLl6zt0kU3n6dfzeoilb5C3g1Juo63+69JVcFeJnYh4FknmzP
+         SNaprnBDAJVmkDyb5/ygvwB7ZmpRz0zgHL1vCFYca+xokkqpLSvQXlKKlmwU4z3xyGR7
+         FesX5aM6C/ywwyTQ8aKk+L5CaqQRHWJymFUPM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=r53iVT3YgnKiVIuwfpL/vENYh3kHJnF7MZ+sxeXsHvsbfC1xn+QrzcDe0T8haPMp7b
-         cQI4S0gKWSNb59AyAzZ0y/Hl0Ii1ZRGTLcaMR6kE6dui4r2arya/OgwOwTWr8unjLGoi
-         4E049O8W+QiXpDvIuW1WxkENk+wZFCSxSt1w0=
-Received: by 10.223.97.219 with SMTP id m27mr3367788fan.81.1306224122561;
-        Tue, 24 May 2011 01:02:02 -0700 (PDT)
+        b=n4HMNoQv3wKq+FGgzNM2G23rr94m2jecJUZYgNrJeXK+Wz0ghIDey0BnmPaf/7REH8
+         vtLZbKJtxtL58O9dQ0ZmfJNmKd51tXGbn4WyDoRxmpUQirNMkfvELO77Phsw1CpKfaUX
+         SqBbiSH+RmvMNbxY7Upt7R0CzN8rfWcVEBlnQ=
+Received: by 10.223.85.155 with SMTP id o27mr294633fal.109.1306224119014;
+        Tue, 24 May 2011 01:01:59 -0700 (PDT)
 Received: from localhost.localdomain (178-191-7-145.adsl.highway.telekom.at [178.191.7.145])
-        by mx.google.com with ESMTPS id r13sm2605211fax.8.2011.05.24.01.02.00
+        by mx.google.com with ESMTPS id r13sm2605211fax.8.2011.05.24.01.01.56
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 24 May 2011 01:02:01 -0700 (PDT)
+        Tue, 24 May 2011 01:01:58 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH 3/3] MIPS: Alchemy: more base address cleanup
-Date:   Tue, 24 May 2011 10:01:51 +0200
-Message-Id: <1306224111-1478-4-git-send-email-manuel.lauss@googlemail.com>
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Linux-USB <linux-usb@vger.kernel.org>
+Subject: [PATCH 1/3] MIPS: Alchemy: abstract USB block control register access
+Date:   Tue, 24 May 2011 10:01:49 +0200
+Message-Id: <1306224111-1478-2-git-send-email-manuel.lauss@googlemail.com>
 X-Mailer: git-send-email 1.7.5.rc3
 In-Reply-To: <1306224111-1478-1-git-send-email-manuel.lauss@googlemail.com>
 References: <1306224111-1478-1-git-send-email-manuel.lauss@googlemail.com>
@@ -39,7 +40,7 @@ Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30124
+X-archive-position: 30125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,641 +48,935 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-remove all redundant peripheral base address defines, fix
-all affected boards and drivers.
+Au1200 and Au1300 have one or more registers which control access
+to the usb blocks as well as PHY configuration.  I don't want
+the OHCI/EHCI glues to know about the different registers and bits,
+a new file hides the gory details of USB configuration from them.
 
+Cc: Linux-USB <linux-usb@vger.kernel.org>
 Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
 ---
- arch/mips/alchemy/common/platform.c            |   12 ++--
- arch/mips/alchemy/devboards/db1200/platform.c  |   52 ++++++-------
- arch/mips/alchemy/devboards/db1x00/platform.c  |   40 ++++-----
- arch/mips/alchemy/devboards/pb1100/platform.c  |   20 ++---
- arch/mips/alchemy/devboards/pb1200/platform.c  |   42 +++++-----
- arch/mips/alchemy/devboards/pb1500/platform.c  |   22 +++---
- arch/mips/alchemy/devboards/pb1550/platform.c  |   40 ++++-----
- arch/mips/alchemy/xxs1500/platform.c           |   12 ++--
- arch/mips/include/asm/mach-au1x00/au1000.h     |  103 ++++++------------------
- arch/mips/include/asm/mach-au1x00/au1xxx_psc.h |   26 ------
- arch/mips/include/asm/mach-db1x00/db1x00.h     |    8 +-
- arch/mips/include/asm/mach-pb1x00/pb1200.h     |    8 +-
- arch/mips/include/asm/mach-pb1x00/pb1550.h     |    8 +-
- 13 files changed, 146 insertions(+), 247 deletions(-)
+ arch/mips/alchemy/common/Makefile          |    2 +-
+ arch/mips/alchemy/common/dma.c             |   12 +-
+ arch/mips/alchemy/common/power.c           |   42 ----
+ arch/mips/alchemy/common/usb.c             |  345 ++++++++++++++++++++++++++++
+ arch/mips/include/asm/mach-au1x00/au1000.h |   84 ++------
+ drivers/usb/host/ehci-au1xxx.c             |   77 +------
+ drivers/usb/host/ohci-au1xxx.c             |  110 +--------
+ 7 files changed, 390 insertions(+), 282 deletions(-)
+ create mode 100644 arch/mips/alchemy/common/usb.c
 
-diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index e92a464..a5b37b3 100644
---- a/arch/mips/alchemy/common/platform.c
-+++ b/arch/mips/alchemy/common/platform.c
-@@ -194,8 +194,8 @@ static void __init alchemy_setup_usb(int ctype)
- #ifdef CONFIG_FB_AU1100
- static struct resource au1100_lcd_resources[] = {
- 	[0] = {
--		.start          = LCD_PHYS_ADDR,
--		.end            = LCD_PHYS_ADDR + 0x800 - 1,
-+		.start          = AU1100_LCD_PHYS_ADDR,
-+		.end            = AU1100_LCD_PHYS_ADDR + 0x800 - 1,
- 		.flags          = IORESOURCE_MEM,
- 	},
- 	[1] = {
-@@ -223,8 +223,8 @@ static struct platform_device au1100_lcd_device = {
+diff --git a/arch/mips/alchemy/common/Makefile b/arch/mips/alchemy/common/Makefile
+index 27811fe..575db47 100644
+--- a/arch/mips/alchemy/common/Makefile
++++ b/arch/mips/alchemy/common/Makefile
+@@ -6,7 +6,7 @@
+ #
  
- static struct resource au1200_lcd_resources[] = {
- 	[0] = {
--		.start          = LCD_PHYS_ADDR,
--		.end            = LCD_PHYS_ADDR + 0x800 - 1,
-+		.start          = AU1200_LCD_PHYS_ADDR,
-+		.end            = AU1200_LCD_PHYS_ADDR + 0x800 - 1,
- 		.flags          = IORESOURCE_MEM,
- 	},
- 	[1] = {
-@@ -328,8 +328,8 @@ static struct platform_device au1200_mmc1_device = {
- #ifdef SMBUS_PSC_BASE
- static struct resource pbdb_smbus_resources[] = {
- 	{
--		.start	= CPHYSADDR(SMBUS_PSC_BASE),
--		.end	= CPHYSADDR(SMBUS_PSC_BASE + 0xfffff),
-+		.start	= SMBUS_PSC_BASE,
-+		.end	= SMBUS_PSC_BASE + 0xfff,
- 		.flags	= IORESOURCE_MEM,
- 	},
- };
-diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
-index fbb5593..95c7327 100644
---- a/arch/mips/alchemy/devboards/db1200/platform.c
-+++ b/arch/mips/alchemy/devboards/db1200/platform.c
-@@ -343,8 +343,8 @@ struct au1xmmc_platform_data au1xmmc_platdata[] = {
+ obj-y += prom.o time.o clocks.o platform.o power.o setup.o \
+-	sleeper.o dma.o dbdma.o
++	sleeper.o dma.o dbdma.o usb.o
  
- static struct resource au1200_psc0_res[] = {
- 	[0] = {
--		.start	= PSC0_PHYS_ADDR,
--		.end	= PSC0_PHYS_ADDR + 0x000fffff,
-+		.start	= AU1550_PSC0_PHYS_ADDR,
-+		.end	= AU1550_PSC0_PHYS_ADDR + 0xfff,
- 		.flags	= IORESOURCE_MEM,
- 	},
- 	[1] = {
-@@ -401,8 +401,8 @@ static struct platform_device db1200_spi_dev = {
+ obj-$(CONFIG_ALCHEMY_GPIOINT_AU1000) += irq.o
  
- static struct resource au1200_psc1_res[] = {
- 	[0] = {
--		.start	= PSC1_PHYS_ADDR,
--		.end	= PSC1_PHYS_ADDR + 0x000fffff,
-+		.start	= AU1550_PSC1_PHYS_ADDR,
-+		.end	= AU1550_PSC1_PHYS_ADDR + 0xfff,
- 		.flags	= IORESOURCE_MEM,
- 	},
- 	[1] = {
-@@ -510,32 +510,28 @@ static int __init db1200_dev_init(void)
+diff --git a/arch/mips/alchemy/common/dma.c b/arch/mips/alchemy/common/dma.c
+index 347980e..6652a23 100644
+--- a/arch/mips/alchemy/common/dma.c
++++ b/arch/mips/alchemy/common/dma.c
+@@ -88,12 +88,12 @@ static const struct dma_dev {
+ 	{ AU1000_AC97_PHYS_ADDR + 0x08, DMA_DW16 | DMA_DR },	/* AC97 RX c */
+ 	{ AU1000_UART3_PHYS_ADDR + 0x04, DMA_DW8 | DMA_NC },	/* UART3_TX */
+ 	{ AU1000_UART3_PHYS_ADDR + 0x00, DMA_DW8 | DMA_NC | DMA_DR }, /* UART3_RX */
+-	{ AU1000_USBD_PHYS_ADDR + 0x00, DMA_DW8 | DMA_NC | DMA_DR }, /* EP0RD */
+-	{ AU1000_USBD_PHYS_ADDR + 0x04, DMA_DW8 | DMA_NC }, /* EP0WR */
+-	{ AU1000_USBD_PHYS_ADDR + 0x08, DMA_DW8 | DMA_NC }, /* EP2WR */
+-	{ AU1000_USBD_PHYS_ADDR + 0x0c, DMA_DW8 | DMA_NC }, /* EP3WR */
+-	{ AU1000_USBD_PHYS_ADDR + 0x10, DMA_DW8 | DMA_NC | DMA_DR }, /* EP4RD */
+-	{ AU1000_USBD_PHYS_ADDR + 0x14, DMA_DW8 | DMA_NC | DMA_DR }, /* EP5RD */
++	{ AU1000_USB_UDC_PHYS_ADDR + 0x00, DMA_DW8 | DMA_NC | DMA_DR }, /* EP0RD */
++	{ AU1000_USB_UDC_PHYS_ADDR + 0x04, DMA_DW8 | DMA_NC }, /* EP0WR */
++	{ AU1000_USB_UDC_PHYS_ADDR + 0x08, DMA_DW8 | DMA_NC }, /* EP2WR */
++	{ AU1000_USB_UDC_PHYS_ADDR + 0x0c, DMA_DW8 | DMA_NC }, /* EP3WR */
++	{ AU1000_USB_UDC_PHYS_ADDR + 0x10, DMA_DW8 | DMA_NC | DMA_DR }, /* EP4RD */
++	{ AU1000_USB_UDC_PHYS_ADDR + 0x14, DMA_DW8 | DMA_NC | DMA_DR }, /* EP5RD */
+ 	/* on Au1500, these 2 are DMA_REQ2/3 (GPIO208/209) instead! */
+ 	{ AU1000_I2S_PHYS_ADDR + 0x00, DMA_DW32 | DMA_NC},	/* I2S TX */
+ 	{ AU1000_I2S_PHYS_ADDR + 0x00, DMA_DW32 | DMA_NC | DMA_DR}, /* I2S RX */
+diff --git a/arch/mips/alchemy/common/power.c b/arch/mips/alchemy/common/power.c
+index 647e518..f1244f05 100644
+--- a/arch/mips/alchemy/common/power.c
++++ b/arch/mips/alchemy/common/power.c
+@@ -49,7 +49,6 @@
+  * We only have to save/restore registers that aren't otherwise
+  * done as part of a driver pm_* function.
+  */
+-static unsigned int sleep_usb[2];
+ static unsigned int sleep_sys_clocks[5];
+ static unsigned int sleep_sys_pinfunc;
+ static unsigned int sleep_static_memctlr[4][3];
+@@ -57,31 +56,6 @@ static unsigned int sleep_static_memctlr[4][3];
  
- 	/* Audio PSC clock is supplied externally. (FIXME: platdata!!) */
- 	__raw_writel(PSC_SEL_CLK_SERCLK,
--		(void __iomem *)KSEG1ADDR(PSC1_PHYS_ADDR) + PSC_SEL_OFFSET);
-+		(void __iomem *)KSEG1ADDR(AU1550_PSC1_PHYS_ADDR) + PSC_SEL_OFFSET);
- 	wmb();
- 
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR,
--				    PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--				    DB1200_PC0_INT,
--				    DB1200_PC0_INSERT_INT,
--				    /*DB1200_PC0_STSCHG_INT*/0,
--				    DB1200_PC0_EJECT_INT,
--				    0);
--
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR   + 0x004000000,
--				    PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
--				    DB1200_PC1_INT,
--				    DB1200_PC1_INSERT_INT,
--				    /*DB1200_PC1_STSCHG_INT*/0,
--				    DB1200_PC1_EJECT_INT,
--				    1);
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
-+		DB1200_PC0_INT, DB1200_PC0_INSERT_INT,
-+		/*DB1200_PC0_STSCHG_INT*/0, DB1200_PC0_EJECT_INT, 0);
-+
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
-+		DB1200_PC1_INT, DB1200_PC1_INSERT_INT,
-+		/*DB1200_PC1_STSCHG_INT*/0, DB1200_PC1_EJECT_INT, 1);
- 
- 	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1200_SWAPBOOT;
- 	db1x_register_norflash(64 << 20, 2, swapped);
-diff --git a/arch/mips/alchemy/devboards/db1x00/platform.c b/arch/mips/alchemy/devboards/db1x00/platform.c
-index 978d5ab..ef8017f 100644
---- a/arch/mips/alchemy/devboards/db1x00/platform.c
-+++ b/arch/mips/alchemy/devboards/db1x00/platform.c
-@@ -88,29 +88,25 @@
- static int __init db1xxx_dev_init(void)
+ static void save_core_regs(void)
  {
- #ifdef DB1XXX_HAS_PCMCIA
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR,
--				    PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--				    DB1XXX_PCMCIA_CARD0,
--				    DB1XXX_PCMCIA_CD0,
--				    /*DB1XXX_PCMCIA_STSCHG0*/0,
--				    0,
--				    0);
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
-+		DB1XXX_PCMCIA_CARD0, DB1XXX_PCMCIA_CD0,
-+		/*DB1XXX_PCMCIA_STSCHG0*/0, 0, 0);
- 
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR   + 0x004000000,
--				    PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
--				    DB1XXX_PCMCIA_CARD1,
--				    DB1XXX_PCMCIA_CD1,
--				    /*DB1XXX_PCMCIA_STSCHG1*/0,
--				    0,
--				    1);
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
-+		DB1XXX_PCMCIA_CARD1, DB1XXX_PCMCIA_CD1,
-+		/*DB1XXX_PCMCIA_STSCHG1*/0, 0, 1);
- #endif
- 	db1x_register_norflash(BOARD_FLASH_SIZE, BOARD_FLASH_WIDTH, F_SWAPPED);
- 	return 0;
-diff --git a/arch/mips/alchemy/devboards/pb1100/platform.c b/arch/mips/alchemy/devboards/pb1100/platform.c
-index 2c8dc29..8a4e733 100644
---- a/arch/mips/alchemy/devboards/pb1100/platform.c
-+++ b/arch/mips/alchemy/devboards/pb1100/platform.c
-@@ -30,17 +30,15 @@ static int __init pb1100_dev_init(void)
- 	int swapped;
- 
- 	/* PCMCIA. single socket, identical to Pb1500 */
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR,
--				    PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--				    AU1100_GPIO11_INT,	 /* card */
--				    AU1100_GPIO9_INT,	 /* insert */
--				    /*AU1100_GPIO10_INT*/0, /* stschg */
--				    0,			 /* eject */
--				    0);			 /* id */
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
-+		AU1100_GPIO11_INT, AU1100_GPIO9_INT,	 /* card / insert */
-+		/*AU1100_GPIO10_INT*/0, 0, 0); /* stschg / eject / id */
- 
- 	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1000_SWAPBOOT;
- 	db1x_register_norflash(64 * 1024 * 1024, 4, swapped);
-diff --git a/arch/mips/alchemy/devboards/pb1200/platform.c b/arch/mips/alchemy/devboards/pb1200/platform.c
-index 3ef2dce..c52809d 100644
---- a/arch/mips/alchemy/devboards/pb1200/platform.c
-+++ b/arch/mips/alchemy/devboards/pb1200/platform.c
-@@ -170,29 +170,25 @@ static int __init board_register_devices(void)
- {
- 	int swapped;
- 
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR,
--				    PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--				    PB1200_PC0_INT,
--				    PB1200_PC0_INSERT_INT,
--				    /*PB1200_PC0_STSCHG_INT*/0,
--				    PB1200_PC0_EJECT_INT,
--				    0);
+-#ifndef CONFIG_SOC_AU1200
+-	/* Shutdown USB host/device. */
+-	sleep_usb[0] = au_readl(USB_HOST_CONFIG);
 -
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR   + 0x008000000,
--				    PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
--				    PB1200_PC1_INT,
--				    PB1200_PC1_INSERT_INT,
--				    /*PB1200_PC1_STSCHG_INT*/0,
--				    PB1200_PC1_EJECT_INT,
--				    1);
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
-+		PB1200_PC0_INT, PB1200_PC0_INSERT_INT,
-+		/*PB1200_PC0_STSCHG_INT*/0, PB1200_PC0_EJECT_INT, 0);
-+
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008000000,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
-+		PB1200_PC1_INT, PB1200_PC1_INSERT_INT,
-+		/*PB1200_PC1_STSCHG_INT*/0, PB1200_PC1_EJECT_INT, 1);
- 
- 	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1200_SWAPBOOT;
- 	db1x_register_norflash(128 * 1024 * 1024, 2, swapped);
-diff --git a/arch/mips/alchemy/devboards/pb1500/platform.c b/arch/mips/alchemy/devboards/pb1500/platform.c
-index d443bc7..42b0e6b 100644
---- a/arch/mips/alchemy/devboards/pb1500/platform.c
-+++ b/arch/mips/alchemy/devboards/pb1500/platform.c
-@@ -28,18 +28,16 @@ static int __init pb1500_dev_init(void)
- {
- 	int swapped;
- 
--	/* PCMCIA. single socket, identical to Pb1500 */
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR,
--				    PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--				    AU1500_GPIO11_INT,	 /* card */
--				    AU1500_GPIO9_INT,	 /* insert */
--				    /*AU1500_GPIO10_INT*/0, /* stschg */
--				    0,			 /* eject */
--				    0);			 /* id */
-+	/* PCMCIA. single socket, identical to Pb1100 */
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
-+		AU1500_GPIO11_INT, AU1500_GPIO9_INT,	 /* card / insert */
-+		/*AU1500_GPIO10_INT*/0, 0, 0); /* stschg / eject / id */
- 
- 	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1000_SWAPBOOT;
- 	db1x_register_norflash(64 * 1024 * 1024, 4, swapped);
-diff --git a/arch/mips/alchemy/devboards/pb1550/platform.c b/arch/mips/alchemy/devboards/pb1550/platform.c
-index d7150d0..87c79b7 100644
---- a/arch/mips/alchemy/devboards/pb1550/platform.c
-+++ b/arch/mips/alchemy/devboards/pb1550/platform.c
-@@ -37,29 +37,23 @@ static int __init pb1550_dev_init(void)
- 	* drivers are used to shared irqs and b) statuschange isn't really use-
- 	* ful anyway.
- 	*/
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR,
--				    PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
--				    AU1550_GPIO201_205_INT,
--				    AU1550_GPIO0_INT,
--				    0,
--				    0,
--				    0);
+-	/* There appears to be some undocumented reset register.... */
+-	au_writel(0, 0xb0100004);
+-	au_sync();
+-	au_writel(0, USB_HOST_CONFIG);
+-	au_sync();
 -
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
--				    PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
--				    PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
--				    PCMCIA_IO_PHYS_ADDR   + 0x008000000,
--				    PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
--				    AU1550_GPIO201_205_INT,
--				    AU1550_GPIO1_INT,
--				    0,
--				    0,
--				    1);
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
-+		AU1550_GPIO201_205_INT, AU1550_GPIO0_INT, 0, 0, 0);
+-	sleep_usb[1] = au_readl(USBD_ENABLE);
+-	au_writel(0, USBD_ENABLE);
+-	au_sync();
+-
+-#else	/* AU1200 */
+-
+-	/* enable access to OTG mmio so we can save OTG CAP/MUX.
+-	 * FIXME: write an OTG driver and move this stuff there!
+-	 */
+-	au_writel(au_readl(USB_MSR_BASE + 4) | (1 << 6), USB_MSR_BASE + 4);
+-	au_sync();
+-	sleep_usb[0] = au_readl(0xb4020020);	/* OTG_CAP */
+-	sleep_usb[1] = au_readl(0xb4020024);	/* OTG_MUX */
+-#endif
+-
+ 	/* Clocks and PLLs. */
+ 	sleep_sys_clocks[0] = au_readl(SYS_FREQCTRL0);
+ 	sleep_sys_clocks[1] = au_readl(SYS_FREQCTRL1);
+@@ -125,22 +99,6 @@ static void restore_core_regs(void)
+ 	au_writel(sleep_sys_pinfunc, SYS_PINFUNC);
+ 	au_sync();
+ 
+-#ifndef CONFIG_SOC_AU1200
+-	au_writel(sleep_usb[0], USB_HOST_CONFIG);
+-	au_writel(sleep_usb[1], USBD_ENABLE);
+-	au_sync();
+-#else
+-	/* enable access to OTG memory */
+-	au_writel(au_readl(USB_MSR_BASE + 4) | (1 << 6), USB_MSR_BASE + 4);
+-	au_sync();
+-
+-	/* restore OTG caps and port mux. */
+-	au_writel(sleep_usb[0], 0xb4020020 + 0);	/* OTG_CAP */
+-	au_sync();
+-	au_writel(sleep_usb[1], 0xb4020020 + 4);	/* OTG_MUX */
+-	au_sync();
+-#endif
+-
+ 	/* Restore the static memory controller configuration. */
+ 	au_writel(sleep_static_memctlr[0][0], MEM_STCFG0);
+ 	au_writel(sleep_static_memctlr[0][1], MEM_STTIME0);
+diff --git a/arch/mips/alchemy/common/usb.c b/arch/mips/alchemy/common/usb.c
+new file mode 100644
+index 0000000..559a034
+--- /dev/null
++++ b/arch/mips/alchemy/common/usb.c
+@@ -0,0 +1,345 @@
++/*
++ * USB block power/access management abstraction.
++ *
++ *
++ * Au1000+: the OHCI block control register is at the far end of the
++ *	    OHCI memory area. Au1550 has OHCI on different base address.
++ *	    The Au1000 UDC is not handled because a full driver can do PM and
++ *	    control.
++ * Au1200:  one register to control access and clocks to O/EHCI, UDC and OTG,
++ *	    it's the main reason for this file's existence, as I don't want
++ *	    every bit of glue code messing with it.
++ */
 +
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008000000,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
-+		AU1550_GPIO201_205_INT, AU1550_GPIO1_INT, 0, 0, 1);
- 
- 	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_PB1550_SWAPBOOT;
- 	db1x_register_norflash(128 * 1024 * 1024, 4, swapped);
-diff --git a/arch/mips/alchemy/xxs1500/platform.c b/arch/mips/alchemy/xxs1500/platform.c
-index e87c45c..06a3a45 100644
---- a/arch/mips/alchemy/xxs1500/platform.c
-+++ b/arch/mips/alchemy/xxs1500/platform.c
-@@ -27,20 +27,20 @@ static struct resource xxs1500_pcmcia_res[] = {
- 	{
- 		.name	= "pcmcia-io",
- 		.flags	= IORESOURCE_MEM,
--		.start	= PCMCIA_IO_PHYS_ADDR,
--		.end	= PCMCIA_IO_PHYS_ADDR + 0x000400000 - 1,
-+		.start	= AU1000_PCMCIA_IO_PHYS_ADDR,
-+		.end	= AU1000_PCMCIA_IO_PHYS_ADDR + 0x000400000 - 1,
- 	},
- 	{
- 		.name	= "pcmcia-attr",
- 		.flags	= IORESOURCE_MEM,
--		.start	= PCMCIA_ATTR_PHYS_ADDR,
--		.end	= PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+		.start	= AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		.end	= AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
- 	},
- 	{
- 		.name	= "pcmcia-mem",
- 		.flags	= IORESOURCE_MEM,
--		.start	= PCMCIA_MEM_PHYS_ADDR,
--		.end	= PCMCIA_MEM_PHYS_ADDR + 0x000400000 - 1,
-+		.start	= AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		.end	= AU1000_PCMCIA_MEM_PHYS_ADDR + 0x000400000 - 1,
- 	},
- };
- 
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/spinlock.h>
++#include <linux/syscore_ops.h>
++#include <asm/mach-au1x00/au1000.h>
++
++/* control register offsets */
++#define AU1000_USBCFG	0x7fffc
++#define AU1550_USBCFG	0x07ffc
++#define AU1200_USBCFG	0x04
++
++/* Au1000 USB block config bits */
++#define USBHEN_RD	(1 << 4)		/* OHCI reset-done indicator */
++#define USBHEN_CE	(1 << 3)		/* OHCI block clock enable */
++#define USBHEN_E	(1 << 2)		/* OHCI block enable */
++#define USBHEN_C	(1 << 1)		/* OHCI block coherency bit */
++#define USBHEN_BE	(1 << 0)		/* OHCI Big-Endian */
++
++/* Au1200 USB config bits */
++#define USBCFG_PFEN	(1 << 31)		/* prefetch enable (undoc) */
++#define USBCFG_RDCOMB	(1 << 30)		/* read combining (undoc) */
++#define USBCFG_UNKNOWN	(5 << 20)		/* unknown, must be set */
++#define USBCFG_SSD	(1 << 23)		/* serial short detect en */
++#define USBCFG_PPE	(1 << 19)		/* HS PHY PLL */
++#define USBCFG_UCE	(1 << 18)		/* UDC clock enable */
++#define USBCFG_ECE	(1 << 17)		/* EHCI clock enable */
++#define USBCFG_OCE	(1 << 16)		/* OHCI clock enable */
++#define USBCFG_FLA(x)	(((x) & 0x3f) << 8)
++#define USBCFG_UCAM	(1 << 7)		/* coherent access (undoc) */
++#define USBCFG_GME	(1 << 6)		/* OTG mem access */
++#define USBCFG_DBE	(1 << 5)		/* UDC busmaster enable */
++#define USBCFG_DME	(1 << 4)		/* UDC mem enable */
++#define USBCFG_EBE	(1 << 3)		/* EHCI busmaster enable */
++#define USBCFG_EME	(1 << 2)		/* EHCI mem enable */
++#define USBCFG_OBE	(1 << 1)		/* OHCI busmaster enable */
++#define USBCFG_OME	(1 << 0)		/* OHCI mem enable */
++#define USBCFG_INIT_AU1200	(USBCFG_PFEN | USBCFG_RDCOMB | USBCFG_UNKNOWN |\
++				 USBCFG_SSD | USBCFG_FLA(0x20) | USBCFG_UCAM | \
++				 USBCFG_GME | USBCFG_DBE | USBCFG_DME |	       \
++				 USBCFG_EBE | USBCFG_EME | USBCFG_OBE |	       \
++				 USBCFG_OME)
++
++
++DEFINE_SPINLOCK(alchemy_usb_lock);
++
++
++static inline void __au1200_ohci_control(void __iomem *base, int enable)
++{
++	unsigned long r = __raw_readl(base + 0x04);	/* USB_CFG */
++	if (enable) {
++		__raw_writel(r | USBCFG_OCE, base + 0x04);
++		wmb();
++		udelay(2000);
++	} else {
++		__raw_writel(r & ~USBCFG_OCE, base + 0x04);
++		wmb();
++		udelay(1000);
++	}
++}
++
++static inline void __au1200_ehci_control(void __iomem *base, int enable)
++{
++	unsigned long r = __raw_readl(base + 0x04);	/* USB_CFG */
++	if (enable) {
++		__raw_writel(r | USBCFG_ECE | USBCFG_PPE, base + 0x04);
++		wmb();
++		udelay(1000);
++	} else {
++		if (!(r & USBCFG_UCE))		/* UDC also off? */
++			r &= ~USBCFG_PPE;	/* yes: disable HS PHY PLL */
++		__raw_writel(r & ~USBCFG_ECE, base + 0x04);
++		wmb();
++		udelay(1000);
++	}
++}
++
++static inline void __au1200_udc_control(void __iomem *base, int enable)
++{
++	unsigned long r = __raw_readl(base + 0x04);	/* USB_CFG */
++	if (enable) {
++		__raw_writel(r | USBCFG_UCE | USBCFG_PPE, base + 0x04);
++		wmb();
++	} else {
++		if (!(r & USBCFG_ECE))		/* EHCI also off? */
++			r &= ~USBCFG_PPE;	/* yes: disable HS PHY PLL */
++		__raw_writel(r & ~USBCFG_UCE, base + 0x04);
++		wmb();
++	}
++}
++
++static inline int au1200_coherency_bug(void)
++{
++#if defined(CONFIG_DMA_COHERENT)
++	/* Au1200 AB USB does not support coherent memory */
++	if (!(read_c0_prid() & 0xff)) {
++		printk(KERN_INFO "Au1200 USB: this is chip revision AB !!\n");
++		printk(KERN_INFO "Au1200 USB: update your board or re-configure"
++				 " the kernel\n");
++		return -ENODEV;
++	}
++#endif
++	return 0;
++}
++
++static inline int au1200_usb_control(int block, int enable)
++{
++	void __iomem *base =
++			(void __iomem *)KSEG1ADDR(AU1200_USB_CTL_PHYS_ADDR);
++	unsigned long flags, ret = 0;
++
++	spin_lock_irqsave(&alchemy_usb_lock, flags);
++	switch (block) {
++	case ALCHEMY_USB_OHCI0:
++		ret = au1200_coherency_bug();
++		if (ret && enable)
++			goto out;
++		__au1200_ohci_control(base, enable);
++		break;
++	case ALCHEMY_USB_UDC0:
++		__au1200_udc_control(base, enable);
++		break;
++	case ALCHEMY_USB_EHCI0:
++		ret = au1200_coherency_bug();
++		if (ret && enable)
++			goto out;
++		__au1200_ehci_control(base, enable);
++		break;
++	default:
++		ret = -ENODEV;
++	}
++out:
++	spin_unlock_irqrestore(&alchemy_usb_lock, flags);
++	return ret;
++}
++
++
++/* initialize USB block(s) to a known working state */
++static inline void au1200_usb_init(void)
++{
++	void __iomem *base =
++			(void __iomem *)KSEG1ADDR(AU1200_USB_CTL_PHYS_ADDR);
++	__raw_writel(USBCFG_INIT_AU1200, base + 0x04);	/* USB_CFG */
++	wmb();
++	udelay(1000);
++}
++
++static inline void au1000_usb_init(unsigned long rb, int reg)
++{
++	void __iomem *base = (void __iomem *)KSEG1ADDR(rb + reg);
++	unsigned long r = __raw_readl(base);
++
++#if defined(__BIG_ENDIAN)
++	r |= USBHEN_BE;
++#elif defined(__LITTLE_ENDIAN)
++	r |= 0;
++#endif
++	__raw_writel(r, base);
++	wmb();
++	udelay(1000);
++}
++
++
++static inline void __au1xx0_ohci_control(int enable, unsigned long rb, int creg)
++{
++	void __iomem *base = (void __iomem *)KSEG1ADDR(rb);
++	unsigned long r = __raw_readl(base + creg);
++
++	if (enable) {
++		__raw_writel(r | USBHEN_CE, base + creg);
++		wmb();
++		udelay(1000);
++		__raw_writel(r | USBHEN_CE | USBHEN_E, base + creg);
++		wmb();
++		udelay(1000);
++
++		/* wait for reset complete (read reg twice; au1500 erratum) */
++		while (__raw_readl(base + creg),
++			!(__raw_readl(base + creg) & USBHEN_RD))
++			udelay(1000);
++	} else {
++		__raw_writel(r & ~(USBHEN_CE | USBHEN_E), base + creg);
++		wmb();
++	}
++}
++
++static int au1000_usb_control(int block, int enable, unsigned long rb, int creg)
++{
++	unsigned long flags, ret = 0;
++
++	spin_lock_irqsave(&alchemy_usb_lock, flags);
++	switch (block) {
++	case ALCHEMY_USB_OHCI0:
++		__au1xx0_ohci_control(enable, rb, creg);
++		break;
++	default:
++		ret = -ENODEV;
++	}
++	spin_unlock_irqrestore(&alchemy_usb_lock, flags);
++	return ret;
++}
++
++/*
++ * alchemy_usb_control - control Alchemy on-chip USB blocks
++ * @block:	USB block to target
++ * @enable:	set 1 to enable a block, 0 to disable
++ */
++int alchemy_usb_control(int block, int enable)
++{
++	switch (alchemy_get_cputype()) {
++	case ALCHEMY_CPU_AU1000:
++	case ALCHEMY_CPU_AU1500:
++	case ALCHEMY_CPU_AU1100:
++		return au1000_usb_control(block, enable,
++				AU1000_USB_OHCI_PHYS_ADDR, AU1000_USBCFG);
++	case ALCHEMY_CPU_AU1550:
++		return au1000_usb_control(block, enable,
++				AU1550_USB_OHCI_PHYS_ADDR, AU1550_USBCFG);
++	case ALCHEMY_CPU_AU1200:
++		return au1200_usb_control(block, enable);
++	}
++	return -ENODEV;
++}
++EXPORT_SYMBOL_GPL(alchemy_usb_control);
++
++
++static unsigned long alchemy_usb_pmdata[2];
++
++static void au1000_usb_suspend(unsigned long br, int creg)
++{
++	void __iomem *base = (void __iomem *)KSEG1ADDR(br);
++
++	alchemy_usb_pmdata[0] = __raw_readl(base + creg);
++	/* There appears to be some undocumented reset register.... */
++	__raw_writel(0, base + 0x04);
++	wmb();
++	__raw_writel(0, base + creg);
++	wmb();
++}
++
++static void au1000_usb_resume(unsigned long br, int creg)
++{
++	void __iomem *base = (void __iomem *)KSEG1ADDR(br);
++	__raw_writel(alchemy_usb_pmdata[0], base + creg);
++	wmb();
++}
++
++/* FIXME: write an OTG driver (or simply a stub with PM methods) to do this!! */
++static void au1200_usb_suspend(void)
++{
++	void __iomem *base =
++			(void __iomem *)KSEG1ADDR(AU1200_USB_OTG_PHYS_ADDR);
++	/* save OTG_CAP/MUX registers which indicate port<->ctrl routing */
++	alchemy_usb_pmdata[0] = __raw_readl(base + 0x00);
++	alchemy_usb_pmdata[1] = __raw_readl(base + 0x04);
++}
++
++static void au1200_usb_resume(void)
++{
++	void __iomem *base =
++			(void __iomem *)KSEG1ADDR(AU1200_USB_OTG_PHYS_ADDR);
++
++	/* need access to OTG MUX space */
++	au1200_usb_init();
++
++	/* restore OTG_CAP/MUX registers which indicate port<->ctrl routing */
++	__raw_writel(alchemy_usb_pmdata[0], base + 0x00);
++	__raw_writel(alchemy_usb_pmdata[1], base + 0x04);
++	wmb();
++}
++
++static int alchemy_usb_suspend(void)
++{
++	switch (alchemy_get_cputype()) {
++	case ALCHEMY_CPU_AU1000:
++	case ALCHEMY_CPU_AU1500:
++	case ALCHEMY_CPU_AU1100:
++		au1000_usb_suspend(AU1000_USB_OHCI_PHYS_ADDR, AU1000_USBCFG);
++		break;
++	case ALCHEMY_CPU_AU1550:
++		au1000_usb_suspend(AU1550_USB_OHCI_PHYS_ADDR, AU1550_USBCFG);
++		break;
++	case ALCHEMY_CPU_AU1200:
++		au1200_usb_suspend();
++		break;
++	}
++	return 0;
++}
++
++static void alchemy_usb_resume(void)
++{
++	switch (alchemy_get_cputype()) {
++	case ALCHEMY_CPU_AU1000:
++	case ALCHEMY_CPU_AU1500:
++	case ALCHEMY_CPU_AU1100:
++		au1000_usb_resume(AU1000_USB_OHCI_PHYS_ADDR, AU1000_USBCFG);
++		break;
++	case ALCHEMY_CPU_AU1550:
++		au1000_usb_resume(AU1550_USB_OHCI_PHYS_ADDR, AU1550_USBCFG);
++		break;
++	case ALCHEMY_CPU_AU1200:
++		au1200_usb_resume();
++		break;
++	}
++}
++
++static struct syscore_ops alchemy_usb_pm_ops = {
++	.suspend	= alchemy_usb_suspend,
++	.resume		= alchemy_usb_resume,
++};
++
++static int __init alchemy_usb_init(void)
++{
++	switch (alchemy_get_cputype()) {
++	case ALCHEMY_CPU_AU1000:
++	case ALCHEMY_CPU_AU1500:
++	case ALCHEMY_CPU_AU1100:
++		au1000_usb_init(AU1000_USB_OHCI_PHYS_ADDR, AU1000_USBCFG);
++		break;
++	case ALCHEMY_CPU_AU1550:
++		au1000_usb_init(AU1550_USB_OHCI_PHYS_ADDR, AU1550_USBCFG);
++		break;
++	case ALCHEMY_CPU_AU1200:
++		au1200_usb_init();
++		break;
++	}
++
++	register_syscore_ops(&alchemy_usb_pm_ops);
++
++	return 0;
++}
++arch_initcall(alchemy_usb_init);
 diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
-index 86d39c3..bcf3d1e 100644
+index f260ebe..73e0d79 100644
 --- a/arch/mips/include/asm/mach-au1x00/au1000.h
 +++ b/arch/mips/include/asm/mach-au1x00/au1000.h
-@@ -698,114 +698,61 @@ enum soc_au1200_ints {
+@@ -245,6 +245,15 @@ void alchemy_sleep_au1000(void);
+ void alchemy_sleep_au1550(void);
+ void au_sleep(void);
+ 
++/* USB: arch/mips/alchemy/common/usb.c */
++enum alchemy_usb_block {
++	ALCHEMY_USB_OHCI0,
++	ALCHEMY_USB_UDC0,
++	ALCHEMY_USB_EHCI0,
++	ALCHEMY_USB_OTG0,
++};
++int alchemy_usb_control(int block, int enable);
++
+ 
+ /* SOC Interrupt numbers */
+ 
+@@ -687,7 +696,8 @@ enum soc_au1200_ints {
+  */
+ 
  #define AU1000_AC97_PHYS_ADDR		0x10000000 /* 012 */
- #define AU1000_USB_OHCI_PHYS_ADDR	0x10100000 /* 012 */
- #define AU1000_USB_UDC_PHYS_ADDR	0x10200000 /* 0123 */
-+#define AU1000_IRDA_PHYS_ADDR		0x10300000 /* 02 */
-+#define AU1200_AES_PHYS_ADDR		0x10300000 /* 4 */
+-#define AU1000_USBD_PHYS_ADDR		0x10200000 /* 0123 */
++#define AU1000_USB_OHCI_PHYS_ADDR	0x10100000 /* 012 */
++#define AU1000_USB_UDC_PHYS_ADDR	0x10200000 /* 0123 */
  #define AU1000_IC0_PHYS_ADDR		0x10400000 /* 01234 */
  #define AU1000_MAC0_PHYS_ADDR		0x10500000 /* 023 */
  #define AU1000_MAC1_PHYS_ADDR		0x10510000 /* 023 */
- #define AU1000_MACEN_PHYS_ADDR		0x10520000 /* 023 */
- #define AU1100_SD0_PHYS_ADDR		0x10600000 /* 24 */
- #define AU1100_SD1_PHYS_ADDR		0x10680000 /* 24 */
-+#define AU1550_PSC2_PHYS_ADDR		0x10A00000 /* 3 */
-+#define AU1550_PSC3_PHYS_ADDR		0x10B00000 /* 3 */
- #define AU1000_I2S_PHYS_ADDR		0x11000000 /* 02 */
- #define AU1500_MAC0_PHYS_ADDR		0x11500000 /* 1 */
- #define AU1500_MAC1_PHYS_ADDR		0x11510000 /* 1 */
- #define AU1500_MACEN_PHYS_ADDR		0x11520000 /* 1 */
- #define AU1000_UART0_PHYS_ADDR		0x11100000 /* 01234 */
-+#define AU1200_SWCNT_PHYS_ADDR		0x1110010C /* 4 */
- #define AU1000_UART1_PHYS_ADDR		0x11200000 /* 0234 */
- #define AU1000_UART2_PHYS_ADDR		0x11300000 /* 0 */
- #define AU1000_UART3_PHYS_ADDR		0x11400000 /* 0123 */
-+#define AU1000_SSI0_PHYS_ADDR		0x11600000 /* 02 */
-+#define AU1000_SSI1_PHYS_ADDR		0x11680000 /* 02 */
- #define AU1500_GPIO2_PHYS_ADDR		0x11700000 /* 1234 */
- #define AU1000_IC1_PHYS_ADDR		0x11800000 /* 01234 */
- #define AU1000_SYS_PHYS_ADDR		0x11900000 /* 01234 */
-+#define AU1550_PSC0_PHYS_ADDR		0x11A00000 /* 34 */
-+#define AU1550_PSC1_PHYS_ADDR		0x11B00000 /* 34 */
-+#define AU1000_MEM_PHYS_ADDR		0x14000000 /* 01234 */
-+#define AU1000_STATIC_MEM_PHYS_ADDR	0x14001000 /* 01234 */
- #define AU1000_DMA_PHYS_ADDR		0x14002000 /* 012 */
- #define AU1550_DBDMA_PHYS_ADDR		0x14002000 /* 34 */
+@@ -710,12 +720,17 @@ enum soc_au1200_ints {
  #define AU1550_DBDMA_CONF_PHYS_ADDR	0x14003000 /* 34 */
  #define AU1000_MACDMA0_PHYS_ADDR	0x14004000 /* 0123 */
  #define AU1000_MACDMA1_PHYS_ADDR	0x14004200 /* 0123 */
-+#define AU1200_CIM_PHYS_ADDR		0x14004000 /* 4 */
-+#define AU1500_PCI_PHYS_ADDR		0x14005000 /* 13 */
-+#define AU1550_PE_PHYS_ADDR		0x14008000 /* 3 */
-+#define AU1200_MAEBE_PHYS_ADDR		0x14010000 /* 4 */
-+#define AU1200_MAEFE_PHYS_ADDR		0x14012000 /* 4 */
- #define AU1550_USB_OHCI_PHYS_ADDR	0x14020000 /* 3 */
- #define AU1200_USB_CTL_PHYS_ADDR	0x14020000 /* 4 */
- #define AU1200_USB_OTG_PHYS_ADDR	0x14020020 /* 4 */
- #define AU1200_USB_OHCI_PHYS_ADDR	0x14020100 /* 4 */
- #define AU1200_USB_EHCI_PHYS_ADDR	0x14020200 /* 4 */
- #define AU1200_USB_UDC_PHYS_ADDR	0x14022000 /* 4 */
-+#define AU1100_LCD_PHYS_ADDR		0x15000000 /* 2 */
-+#define AU1200_LCD_PHYS_ADDR		0x15000000 /* 4 */
-+#define AU1500_PCI_MEM_PHYS_ADDR	0x400000000ULL /* 13 */
-+#define AU1500_PCI_IO_PHYS_ADDR		0x500000000ULL /* 13 */
-+#define AU1500_PCI_CONFIG0_PHYS_ADDR	0x600000000ULL /* 13 */
-+#define AU1500_PCI_CONFIG1_PHYS_ADDR	0x680000000ULL /* 13 */
-+#define AU1000_PCMCIA_IO_PHYS_ADDR	0xF00000000ULL /* 01234 */
-+#define AU1000_PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL /* 01234 */
-+#define AU1000_PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL /* 01234 */
++#define AU1550_USB_OHCI_PHYS_ADDR	0x14020000 /* 3 */
++#define AU1200_USB_CTL_PHYS_ADDR	0x14020000 /* 4 */
++#define AU1200_USB_OTG_PHYS_ADDR	0x14020020 /* 4 */
++#define AU1200_USB_OHCI_PHYS_ADDR	0x14020100 /* 4 */
++#define AU1200_USB_EHCI_PHYS_ADDR	0x14020200 /* 4 */
++#define AU1200_USB_UDC_PHYS_ADDR	0x14022000 /* 4 */
  
  
--#ifdef CONFIG_SOC_AU1000
--#define	MEM_PHYS_ADDR		0x14000000
--#define	STATIC_MEM_PHYS_ADDR	0x14001000
--#define	IRDA_PHYS_ADDR		0x10300000
--#define	SSI0_PHYS_ADDR		0x11600000
--#define	SSI1_PHYS_ADDR		0x11680000
--#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
--#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
--#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+ #ifdef CONFIG_SOC_AU1000
+ #define	MEM_PHYS_ADDR		0x14000000
+ #define	STATIC_MEM_PHYS_ADDR	0x14001000
+-#define	USBH_PHYS_ADDR		0x10100000
+ #define	IRDA_PHYS_ADDR		0x10300000
+ #define	SSI0_PHYS_ADDR		0x11600000
+ #define	SSI1_PHYS_ADDR		0x11680000
+@@ -729,7 +744,6 @@ enum soc_au1200_ints {
+ #ifdef CONFIG_SOC_AU1500
+ #define	MEM_PHYS_ADDR		0x14000000
+ #define	STATIC_MEM_PHYS_ADDR	0x14001000
+-#define	USBH_PHYS_ADDR		0x10100000
+ #define PCI_PHYS_ADDR		0x14005000
+ #define PCI_MEM_PHYS_ADDR	0x400000000ULL
+ #define PCI_IO_PHYS_ADDR	0x500000000ULL
+@@ -745,7 +759,6 @@ enum soc_au1200_ints {
+ #ifdef CONFIG_SOC_AU1100
+ #define	MEM_PHYS_ADDR		0x14000000
+ #define	STATIC_MEM_PHYS_ADDR	0x14001000
+-#define	USBH_PHYS_ADDR		0x10100000
+ #define	IRDA_PHYS_ADDR		0x10300000
+ #define	SSI0_PHYS_ADDR		0x11600000
+ #define	SSI1_PHYS_ADDR		0x11680000
+@@ -760,7 +773,6 @@ enum soc_au1200_ints {
+ #ifdef CONFIG_SOC_AU1550
+ #define	MEM_PHYS_ADDR		0x14000000
+ #define	STATIC_MEM_PHYS_ADDR	0x14001000
+-#define	USBH_PHYS_ADDR		0x14020000
+ #define PCI_PHYS_ADDR		0x14005000
+ #define PE_PHYS_ADDR		0x14008000
+ #define PSC0_PHYS_ADDR		0x11A00000
+@@ -783,8 +795,6 @@ enum soc_au1200_ints {
+ #define	STATIC_MEM_PHYS_ADDR	0x14001000
+ #define AES_PHYS_ADDR		0x10300000
+ #define CIM_PHYS_ADDR		0x14004000
+-#define USBM_PHYS_ADDR		0x14020000
+-#define	USBH_PHYS_ADDR		0x14020100
+ #define PSC0_PHYS_ADDR	 	0x11A00000
+ #define PSC1_PHYS_ADDR	 	0x11B00000
+ #define LCD_PHYS_ADDR		0x15000000
+@@ -868,21 +878,6 @@ enum soc_au1200_ints {
+ #define USB_EHCI_LEN		0x100
+ #define USB_UDC_BASE		0x14022000
+ #define USB_UDC_LEN		0x2000
+-#define USB_MSR_BASE		0xB4020000
+-#define USB_MSR_MCFG		4
+-#define USBMSRMCFG_OMEMEN	0
+-#define USBMSRMCFG_OBMEN	1
+-#define USBMSRMCFG_EMEMEN	2
+-#define USBMSRMCFG_EBMEN	3
+-#define USBMSRMCFG_DMEMEN	4
+-#define USBMSRMCFG_DBMEN	5
+-#define USBMSRMCFG_GMEMEN	6
+-#define USBMSRMCFG_OHCCLKEN	16
+-#define USBMSRMCFG_EHCCLKEN	17
+-#define USBMSRMCFG_UDCCLKEN	18
+-#define USBMSRMCFG_PHYPLLEN	19
+-#define USBMSRMCFG_RDCOMB	30
+-#define USBMSRMCFG_PFEN 	31
+ 
+ #define FOR_PLATFORM_C_USB_HOST_INT AU1200_USB_INT
+ 
+@@ -963,51 +958,6 @@ enum soc_au1200_ints {
+ #define USB_OHCI_LEN		0x00100000
+ #endif
+ 
+-#ifndef CONFIG_SOC_AU1200
+-
+-/* USB Device Controller */
+-#define USBD_EP0RD		0xB0200000
+-#define USBD_EP0WR		0xB0200004
+-#define USBD_EP2WR		0xB0200008
+-#define USBD_EP3WR		0xB020000C
+-#define USBD_EP4RD		0xB0200010
+-#define USBD_EP5RD		0xB0200014
+-#define USBD_INTEN		0xB0200018
+-#define USBD_INTSTAT		0xB020001C
+-#  define USBDEV_INT_SOF	(1 << 12)
+-#  define USBDEV_INT_HF_BIT	6
+-#  define USBDEV_INT_HF_MASK	(0x3f << USBDEV_INT_HF_BIT)
+-#  define USBDEV_INT_CMPLT_BIT	0
+-#  define USBDEV_INT_CMPLT_MASK (0x3f << USBDEV_INT_CMPLT_BIT)
+-#define USBD_CONFIG		0xB0200020
+-#define USBD_EP0CS		0xB0200024
+-#define USBD_EP2CS		0xB0200028
+-#define USBD_EP3CS		0xB020002C
+-#define USBD_EP4CS		0xB0200030
+-#define USBD_EP5CS		0xB0200034
+-#  define USBDEV_CS_SU		(1 << 14)
+-#  define USBDEV_CS_NAK 	(1 << 13)
+-#  define USBDEV_CS_ACK 	(1 << 12)
+-#  define USBDEV_CS_BUSY	(1 << 11)
+-#  define USBDEV_CS_TSIZE_BIT	1
+-#  define USBDEV_CS_TSIZE_MASK	(0x3ff << USBDEV_CS_TSIZE_BIT)
+-#  define USBDEV_CS_STALL	(1 << 0)
+-#define USBD_EP0RDSTAT		0xB0200040
+-#define USBD_EP0WRSTAT		0xB0200044
+-#define USBD_EP2WRSTAT		0xB0200048
+-#define USBD_EP3WRSTAT		0xB020004C
+-#define USBD_EP4RDSTAT		0xB0200050
+-#define USBD_EP5RDSTAT		0xB0200054
+-#  define USBDEV_FSTAT_FLUSH	(1 << 6)
+-#  define USBDEV_FSTAT_UF	(1 << 5)
+-#  define USBDEV_FSTAT_OF	(1 << 4)
+-#  define USBDEV_FSTAT_FCNT_BIT 0
+-#  define USBDEV_FSTAT_FCNT_MASK (0x0f << USBDEV_FSTAT_FCNT_BIT)
+-#define USBD_ENABLE		0xB0200058
+-#  define USBDEV_ENABLE 	(1 << 1)
+-#  define USBDEV_CE		(1 << 0)
+-
+-#endif /* !CONFIG_SOC_AU1200 */
+ 
+ /* Ethernet Controllers  */
+ 
+diff --git a/drivers/usb/host/ehci-au1xxx.c b/drivers/usb/host/ehci-au1xxx.c
+index 42ae574..e480dc1 100644
+--- a/drivers/usb/host/ehci-au1xxx.c
++++ b/drivers/usb/host/ehci-au1xxx.c
+@@ -14,61 +14,9 @@
+ #include <linux/platform_device.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+-#define USB_HOST_CONFIG   (USB_MSR_BASE + USB_MSR_MCFG)
+-#define USB_MCFG_PFEN     (1<<31)
+-#define USB_MCFG_RDCOMB   (1<<30)
+-#define USB_MCFG_SSDEN    (1<<23)
+-#define USB_MCFG_PHYPLLEN (1<<19)
+-#define USB_MCFG_UCECLKEN (1<<18)
+-#define USB_MCFG_EHCCLKEN (1<<17)
+-#ifdef CONFIG_DMA_COHERENT
+-#define USB_MCFG_UCAM     (1<<7)
+-#else
+-#define USB_MCFG_UCAM     (0)
+-#endif
+-#define USB_MCFG_EBMEN    (1<<3)
+-#define USB_MCFG_EMEMEN   (1<<2)
+-
+-#define USBH_ENABLE_CE	(USB_MCFG_PHYPLLEN | USB_MCFG_EHCCLKEN)
+-#define USBH_ENABLE_INIT (USB_MCFG_PFEN  | USB_MCFG_RDCOMB |	\
+-			  USBH_ENABLE_CE | USB_MCFG_SSDEN  |	\
+-			  USB_MCFG_UCAM  | USB_MCFG_EBMEN  |	\
+-			  USB_MCFG_EMEMEN)
+-
+-#define USBH_DISABLE      (USB_MCFG_EBMEN | USB_MCFG_EMEMEN)
+ 
+ extern int usb_disabled(void);
+ 
+-static void au1xxx_start_ehc(void)
+-{
+-	/* enable clock to EHCI block and HS PHY PLL*/
+-	au_writel(au_readl(USB_HOST_CONFIG) | USBH_ENABLE_CE, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(1000);
+-
+-	/* enable EHCI mmio */
+-	au_writel(au_readl(USB_HOST_CONFIG) | USBH_ENABLE_INIT, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(1000);
+-}
+-
+-static void au1xxx_stop_ehc(void)
+-{
+-	unsigned long c;
+-
+-	/* Disable mem */
+-	au_writel(au_readl(USB_HOST_CONFIG) & ~USBH_DISABLE, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(1000);
+-
+-	/* Disable EHC clock. If the HS PHY is unused disable it too. */
+-	c = au_readl(USB_HOST_CONFIG) & ~USB_MCFG_EHCCLKEN;
+-	if (!(c & USB_MCFG_UCECLKEN))		/* UDC disabled? */
+-		c &= ~USB_MCFG_PHYPLLEN;	/* yes: disable HS PHY PLL */
+-	au_writel(c, USB_HOST_CONFIG);
+-	au_sync();
+-}
+-
+ static int au1xxx_ehci_setup(struct usb_hcd *hcd)
+ {
+ 	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
+@@ -136,16 +84,6 @@ static int ehci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-#if defined(CONFIG_SOC_AU1200) && defined(CONFIG_DMA_COHERENT)
+-	/* Au1200 AB USB does not support coherent memory */
+-	if (!(read_c0_prid() & 0xff)) {
+-		printk(KERN_INFO "%s: this is chip revision AB!\n", pdev->name);
+-		printk(KERN_INFO "%s: update your board or re-configure"
+-				 " the kernel\n", pdev->name);
+-		return -ENODEV;
+-	}
 -#endif
 -
--/********************************************************************/
+ 	if (pdev->resource[1].flags != IORESOURCE_IRQ) {
+ 		pr_debug("resource[1] is not IORESOURCE_IRQ");
+ 		return -ENOMEM;
+@@ -171,7 +109,11 @@ static int ehci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 		goto err2;
+ 	}
+ 
+-	au1xxx_start_ehc();
++	if (alchemy_usb_control(ALCHEMY_USB_EHCI0, 1)) {
++		printk(KERN_INFO "%s: controller init failed!\n", pdev->name);
++		ret = -ENODEV;
++		goto err3;
++	}
+ 
+ 	ehci = hcd_to_ehci(hcd);
+ 	ehci->caps = hcd->regs;
+@@ -187,7 +129,8 @@ static int ehci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	au1xxx_stop_ehc();
++	alchemy_usb_control(ALCHEMY_USB_EHCI0, 0);
++err3:
+ 	iounmap(hcd->regs);
+ err2:
+ 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+@@ -201,10 +144,10 @@ static int ehci_hcd_au1xxx_drv_remove(struct platform_device *pdev)
+ 	struct usb_hcd *hcd = platform_get_drvdata(pdev);
+ 
+ 	usb_remove_hcd(hcd);
++	alchemy_usb_control(ALCHEMY_USB_EHCI0, 0);
+ 	iounmap(hcd->regs);
+ 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+ 	usb_put_hcd(hcd);
+-	au1xxx_stop_ehc();
+ 	platform_set_drvdata(pdev, NULL);
+ 
+ 	return 0;
+@@ -236,7 +179,7 @@ static int ehci_hcd_au1xxx_drv_suspend(struct device *dev)
+ 	// could save FLADJ in case of Vaux power loss
+ 	// ... we'd only use it to handle clock skew
+ 
+-	au1xxx_stop_ehc();
++	alchemy_usb_control(ALCHEMY_USB_EHCI0, 0);
+ 
+ 	return rc;
+ }
+@@ -246,7 +189,7 @@ static int ehci_hcd_au1xxx_drv_resume(struct device *dev)
+ 	struct usb_hcd *hcd = dev_get_drvdata(dev);
+ 	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
+ 
+-	au1xxx_start_ehc();
++	alchemy_usb_control(ALCHEMY_USB_EHCI0, 1);
+ 
+ 	// maybe restore FLADJ
+ 
+diff --git a/drivers/usb/host/ohci-au1xxx.c b/drivers/usb/host/ohci-au1xxx.c
+index 958d985..299d719 100644
+--- a/drivers/usb/host/ohci-au1xxx.c
++++ b/drivers/usb/host/ohci-au1xxx.c
+@@ -23,92 +23,9 @@
+ 
+ #include <asm/mach-au1x00/au1000.h>
+ 
+-#ifndef	CONFIG_SOC_AU1200
 -
--#ifdef CONFIG_SOC_AU1500
--#define	MEM_PHYS_ADDR		0x14000000
--#define	STATIC_MEM_PHYS_ADDR	0x14001000
--#define PCI_PHYS_ADDR		0x14005000
--#define PCI_MEM_PHYS_ADDR	0x400000000ULL
--#define PCI_IO_PHYS_ADDR	0x500000000ULL
--#define PCI_CONFIG0_PHYS_ADDR	0x600000000ULL
--#define PCI_CONFIG1_PHYS_ADDR	0x680000000ULL
--#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
--#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
--#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+-#define USBH_ENABLE_BE (1<<0)
+-#define USBH_ENABLE_C  (1<<1)
+-#define USBH_ENABLE_E  (1<<2)
+-#define USBH_ENABLE_CE (1<<3)
+-#define USBH_ENABLE_RD (1<<4)
+-
+-#ifdef __LITTLE_ENDIAN
+-#define USBH_ENABLE_INIT (USBH_ENABLE_CE | USBH_ENABLE_E | USBH_ENABLE_C)
+-#elif defined(__BIG_ENDIAN)
+-#define USBH_ENABLE_INIT (USBH_ENABLE_CE | USBH_ENABLE_E | USBH_ENABLE_C | \
+-			  USBH_ENABLE_BE)
+-#else
+-#error not byte order defined
 -#endif
 -
--/********************************************************************/
+-#else   /* Au1200 */
 -
--#ifdef CONFIG_SOC_AU1100
--#define	MEM_PHYS_ADDR		0x14000000
--#define	STATIC_MEM_PHYS_ADDR	0x14001000
--#define	IRDA_PHYS_ADDR		0x10300000
--#define	SSI0_PHYS_ADDR		0x11600000
--#define	SSI1_PHYS_ADDR		0x11680000
--#define LCD_PHYS_ADDR		0x15000000
--#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
--#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
--#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+-#define USB_HOST_CONFIG    (USB_MSR_BASE + USB_MSR_MCFG)
+-#define USB_MCFG_PFEN     (1<<31)
+-#define USB_MCFG_RDCOMB   (1<<30)
+-#define USB_MCFG_SSDEN    (1<<23)
+-#define USB_MCFG_OHCCLKEN (1<<16)
+-#ifdef CONFIG_DMA_COHERENT
+-#define USB_MCFG_UCAM     (1<<7)
+-#else
+-#define USB_MCFG_UCAM     (0)
 -#endif
+-#define USB_MCFG_OBMEN    (1<<1)
+-#define USB_MCFG_OMEMEN   (1<<0)
 -
--/***********************************************************************/
+-#define USBH_ENABLE_CE    USB_MCFG_OHCCLKEN
 -
--#ifdef CONFIG_SOC_AU1550
--#define	MEM_PHYS_ADDR		0x14000000
--#define	STATIC_MEM_PHYS_ADDR	0x14001000
--#define PCI_PHYS_ADDR		0x14005000
--#define PE_PHYS_ADDR		0x14008000
--#define PSC0_PHYS_ADDR		0x11A00000
--#define PSC1_PHYS_ADDR		0x11B00000
--#define PSC2_PHYS_ADDR		0x10A00000
--#define PSC3_PHYS_ADDR		0x10B00000
--#define PCI_MEM_PHYS_ADDR	0x400000000ULL
--#define PCI_IO_PHYS_ADDR	0x500000000ULL
--#define PCI_CONFIG0_PHYS_ADDR	0x600000000ULL
--#define PCI_CONFIG1_PHYS_ADDR	0x680000000ULL
--#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
--#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
--#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
--#endif
+-#define USBH_ENABLE_INIT  (USB_MCFG_PFEN  | USB_MCFG_RDCOMB 	|	\
+-			   USBH_ENABLE_CE | USB_MCFG_SSDEN	|	\
+-			   USB_MCFG_UCAM  |				\
+-			   USB_MCFG_OBMEN | USB_MCFG_OMEMEN)
 -
--/***********************************************************************/
+-#define USBH_DISABLE      (USB_MCFG_OBMEN | USB_MCFG_OMEMEN)
 -
+-#endif  /* Au1200 */
+ 
+ extern int usb_disabled(void);
+ 
+-static void au1xxx_start_ohc(void)
+-{
+-	/* enable host controller */
+-#ifndef CONFIG_SOC_AU1200
+-	au_writel(USBH_ENABLE_CE, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(1000);
+-
+-	au_writel(au_readl(USB_HOST_CONFIG) | USBH_ENABLE_INIT, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(1000);
+-
+-	/* wait for reset complete (read register twice; see au1500 errata) */
+-	while (au_readl(USB_HOST_CONFIG),
+-		!(au_readl(USB_HOST_CONFIG) & USBH_ENABLE_RD))
+-		udelay(1000);
+-
+-#else   /* Au1200 */
+-	au_writel(au_readl(USB_HOST_CONFIG) | USBH_ENABLE_CE, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(1000);
+-
+-	au_writel(au_readl(USB_HOST_CONFIG) | USBH_ENABLE_INIT, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(2000);
+-#endif  /* Au1200 */
+-}
+-
+-static void au1xxx_stop_ohc(void)
+-{
 -#ifdef CONFIG_SOC_AU1200
--#define	MEM_PHYS_ADDR		0x14000000
--#define	STATIC_MEM_PHYS_ADDR	0x14001000
--#define AES_PHYS_ADDR		0x10300000
--#define CIM_PHYS_ADDR		0x14004000
--#define PSC0_PHYS_ADDR	 	0x11A00000
--#define PSC1_PHYS_ADDR	 	0x11B00000
--#define LCD_PHYS_ADDR		0x15000000
--#define SWCNT_PHYS_ADDR		0x1110010C
--#define MAEFE_PHYS_ADDR		0x14012000
--#define MAEBE_PHYS_ADDR		0x14010000
--#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
--#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
--#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+-	/* Disable mem */
+-	au_writel(au_readl(USB_HOST_CONFIG) & ~USBH_DISABLE, USB_HOST_CONFIG);
+-	au_sync();
+-	udelay(1000);
+-#endif
+-	/* Disable clock */
+-	au_writel(au_readl(USB_HOST_CONFIG) & ~USBH_ENABLE_CE, USB_HOST_CONFIG);
+-	au_sync();
+-}
+-
+ static int __devinit ohci_au1xxx_start(struct usb_hcd *hcd)
+ {
+ 	struct ohci_hcd	*ohci = hcd_to_ohci(hcd);
+@@ -178,17 +95,6 @@ static int ohci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-#if defined(CONFIG_SOC_AU1200) && defined(CONFIG_DMA_COHERENT)
+-	/* Au1200 AB USB does not support coherent memory */
+-	if (!(read_c0_prid() & 0xff)) {
+-		printk(KERN_INFO "%s: this is chip revision AB !!\n",
+-			pdev->name);
+-		printk(KERN_INFO "%s: update your board or re-configure "
+-				 "the kernel\n", pdev->name);
+-		return -ENODEV;
+-	}
 -#endif
 -
- /* Static Bus Controller */
- #define MEM_STCFG0		0xB4001000
- #define MEM_STTIME0		0xB4001004
-diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_psc.h b/arch/mips/include/asm/mach-au1x00/au1xxx_psc.h
-index 892b7f1..8e2fa67 100644
---- a/arch/mips/include/asm/mach-au1x00/au1xxx_psc.h
-+++ b/arch/mips/include/asm/mach-au1x00/au1xxx_psc.h
-@@ -33,19 +33,6 @@
- #ifndef _AU1000_PSC_H_
- #define _AU1000_PSC_H_
+ 	if (pdev->resource[1].flags != IORESOURCE_IRQ) {
+ 		pr_debug("resource[1] is not IORESOURCE_IRQ\n");
+ 		return -ENOMEM;
+@@ -214,7 +120,12 @@ static int ohci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 		goto err2;
+ 	}
  
--/* The PSC base addresses.  */
--#ifdef CONFIG_SOC_AU1550
--#define PSC0_BASE_ADDR		0xb1a00000
--#define PSC1_BASE_ADDR		0xb1b00000
--#define PSC2_BASE_ADDR		0xb0a00000
--#define PSC3_BASE_ADDR		0xb0b00000
--#endif
--
--#ifdef CONFIG_SOC_AU1200
--#define PSC0_BASE_ADDR		0xb1a00000
--#define PSC1_BASE_ADDR		0xb1b00000
--#endif
--
- /*
-  * The PSC select and control registers are common to all protocols.
-  */
-@@ -80,19 +67,6 @@
- #define PSC_AC97GPO_OFFSET	0x00000028
- #define PSC_AC97GPI_OFFSET	0x0000002c
+-	au1xxx_start_ohc();
++	if (alchemy_usb_control(ALCHEMY_USB_OHCI0, 1)) {
++		printk(KERN_INFO "%s: controller init failed!\n", pdev->name);
++		ret = -ENODEV;
++		goto err3;
++	}
++
+ 	ohci_hcd_init(hcd_to_ohci(hcd));
  
--#define AC97_PSC_SEL		(AC97_PSC_BASE + PSC_SEL_OFFSET)
--#define AC97_PSC_CTRL		(AC97_PSC_BASE + PSC_CTRL_OFFSET)
--#define PSC_AC97CFG		(AC97_PSC_BASE + PSC_AC97CFG_OFFSET)
--#define PSC_AC97MSK		(AC97_PSC_BASE + PSC_AC97MSK_OFFSET)
--#define PSC_AC97PCR		(AC97_PSC_BASE + PSC_AC97PCR_OFFSET)
--#define PSC_AC97STAT		(AC97_PSC_BASE + PSC_AC97STAT_OFFSET)
--#define PSC_AC97EVNT		(AC97_PSC_BASE + PSC_AC97EVNT_OFFSET)
--#define PSC_AC97TXRX		(AC97_PSC_BASE + PSC_AC97TXRX_OFFSET)
--#define PSC_AC97CDC		(AC97_PSC_BASE + PSC_AC97CDC_OFFSET)
--#define PSC_AC97RST		(AC97_PSC_BASE + PSC_AC97RST_OFFSET)
--#define PSC_AC97GPO		(AC97_PSC_BASE + PSC_AC97GPO_OFFSET)
--#define PSC_AC97GPI		(AC97_PSC_BASE + PSC_AC97GPI_OFFSET)
--
- /* AC97 Config Register. */
- #define PSC_AC97CFG_RT_MASK	(3 << 30)
- #define PSC_AC97CFG_RT_FIFO1	(0 << 30)
-diff --git a/arch/mips/include/asm/mach-db1x00/db1x00.h b/arch/mips/include/asm/mach-db1x00/db1x00.h
-index a919dac..115cc7c 100644
---- a/arch/mips/include/asm/mach-db1x00/db1x00.h
-+++ b/arch/mips/include/asm/mach-db1x00/db1x00.h
-@@ -36,10 +36,10 @@
- #define DBDMA_I2S_TX_CHAN	DSCR_CMD0_PSC3_TX
- #define DBDMA_I2S_RX_CHAN	DSCR_CMD0_PSC3_RX
+ 	ret = usb_add_hcd(hcd, pdev->resource[1].start,
+@@ -224,7 +135,8 @@ static int ohci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
  
--#define SPI_PSC_BASE		PSC0_BASE_ADDR
--#define AC97_PSC_BASE		PSC1_BASE_ADDR
--#define SMBUS_PSC_BASE		PSC2_BASE_ADDR
--#define I2S_PSC_BASE		PSC3_BASE_ADDR
-+#define SPI_PSC_BASE		AU1550_PSC0_PHYS_ADDR
-+#define AC97_PSC_BASE		AU1550_PSC1_PHYS_ADDR
-+#define SMBUS_PSC_BASE		AU1550_PSC2_PHYS_ADDR
-+#define I2S_PSC_BASE		AU1550_PSC3_PHYS_ADDR
+-	au1xxx_stop_ohc();
++	alchemy_usb_control(ALCHEMY_USB_OHCI0, 0);
++err3:
+ 	iounmap(hcd->regs);
+ err2:
+ 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+@@ -238,7 +150,7 @@ static int ohci_hcd_au1xxx_drv_remove(struct platform_device *pdev)
+ 	struct usb_hcd *hcd = platform_get_drvdata(pdev);
  
- #define NAND_PHYS_ADDR		0x20000000
+ 	usb_remove_hcd(hcd);
+-	au1xxx_stop_ohc();
++	alchemy_usb_control(ALCHEMY_USB_OHCI0, 0);
+ 	iounmap(hcd->regs);
+ 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+ 	usb_put_hcd(hcd);
+@@ -275,7 +187,7 @@ static int ohci_hcd_au1xxx_drv_suspend(struct device *dev)
  
-diff --git a/arch/mips/include/asm/mach-pb1x00/pb1200.h b/arch/mips/include/asm/mach-pb1x00/pb1200.h
-index fce4332..0ecff1c 100644
---- a/arch/mips/include/asm/mach-pb1x00/pb1200.h
-+++ b/arch/mips/include/asm/mach-pb1x00/pb1200.h
-@@ -37,14 +37,14 @@
-  * SPI and SMB are muxed on the Pb1200 board.
-  * Refer to board documentation.
-  */
--#define SPI_PSC_BASE		PSC0_BASE_ADDR
--#define SMBUS_PSC_BASE		PSC0_BASE_ADDR
-+#define SPI_PSC_BASE		AU1550_PSC0_PHYS_ADDR
-+#define SMBUS_PSC_BASE		AU1550_PSC0_PHYS_ADDR
- /*
-  * AC97 and I2S are muxed on the Pb1200 board.
-  * Refer to board documentation.
-  */
--#define AC97_PSC_BASE       PSC1_BASE_ADDR
--#define I2S_PSC_BASE	PSC1_BASE_ADDR
-+#define AC97_PSC_BASE       AU1550_PSC1_PHYS_ADDR
-+#define I2S_PSC_BASE	AU1550_PSC1_PHYS_ADDR
+ 	clear_bit(HCD_FLAG_HW_ACCESSIBLE, &hcd->flags);
  
+-	au1xxx_stop_ohc();
++	alchemy_usb_control(ALCHEMY_USB_OHCI0, 0);
+ bail:
+ 	spin_unlock_irqrestore(&ohci->lock, flags);
  
- #define BCSR_SYSTEM_VDDI	0x001F
-diff --git a/arch/mips/include/asm/mach-pb1x00/pb1550.h b/arch/mips/include/asm/mach-pb1x00/pb1550.h
-index f835c88..0b0f462 100644
---- a/arch/mips/include/asm/mach-pb1x00/pb1550.h
-+++ b/arch/mips/include/asm/mach-pb1x00/pb1550.h
-@@ -35,10 +35,10 @@
- #define DBDMA_I2S_TX_CHAN	DSCR_CMD0_PSC3_TX
- #define DBDMA_I2S_RX_CHAN	DSCR_CMD0_PSC3_RX
+@@ -286,7 +198,7 @@ static int ohci_hcd_au1xxx_drv_resume(struct device *dev)
+ {
+ 	struct usb_hcd *hcd = dev_get_drvdata(dev);
  
--#define SPI_PSC_BASE		PSC0_BASE_ADDR
--#define AC97_PSC_BASE		PSC1_BASE_ADDR
--#define SMBUS_PSC_BASE		PSC2_BASE_ADDR
--#define I2S_PSC_BASE		PSC3_BASE_ADDR
-+#define SPI_PSC_BASE		AU1550_PSC0_PHYS_ADDR
-+#define AC97_PSC_BASE		AU1550_PSC1_PHYS_ADDR
-+#define SMBUS_PSC_BASE		AU1550_PSC2_PHYS_ADDR
-+#define I2S_PSC_BASE		AU1550_PSC3_PHYS_ADDR
+-	au1xxx_start_ohc();
++	alchemy_usb_control(ALCHEMY_USB_OHCI0, 1);
  
- /*
-  * Timing values as described in databook, * ns value stripped of
+ 	set_bit(HCD_FLAG_HW_ACCESSIBLE, &hcd->flags);
+ 	ohci_finish_controller_resume(hcd);
 -- 
 1.7.5.rc3

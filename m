@@ -1,594 +1,262 @@
-From: Jian Peng <jipeng2005@gmail.com>
-Date: Tue, 17 May 2011 12:27:49 -0700
-Subject: [PATCH 1/1] MIPS: topdown mmap support
-Message-ID: <20110517192749.LCByuReAtDBeEqQL6XXMwuehbp5Di9x-T3IQfj8S0Qs@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2011 19:49:42 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:50030 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491192Ab1EYRtf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2011 19:49:35 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <tglx@linutronix.de>)
+        id 1QPICU-0003Y5-Mu; Wed, 25 May 2011 19:48:54 +0200
+Date:   Wed, 25 May 2011 19:48:51 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Ingo Molnar <mingo@elte.hu>
+cc:     Peter Zijlstra <peterz@infradead.org>,
+        Will Drewry <wad@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
+        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
+        agl@chromium.org, "Serge E. Hallyn" <serge@hallyn.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
+        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
+        David Howells <dhowells@redhat.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
+ filtering
+In-Reply-To: <20110525150153.GE29179@elte.hu>
+Message-ID: <alpine.LFD.2.02.1105251836030.3078@ionos>
+References: <20110517124212.GB21441@elte.hu> <1305637528.5456.723.camel@gandalf.stny.rr.com> <20110517131902.GF21441@elte.hu> <BANLkTikBK3-KZ10eErQ6Eex_L6Qe2aZang@mail.gmail.com> <1305807728.11267.25.camel@gandalf.stny.rr.com> <BANLkTiki8aQJbFkKOFC+s6xAEiuVyMM5MQ@mail.gmail.com>
+ <BANLkTim9UyYAGhg06vCFLxkYPX18cPymEQ@mail.gmail.com> <1306254027.18455.47.camel@twins> <20110524195435.GC27634@elte.hu> <alpine.LFD.2.02.1105242239230.3078@ionos> <20110525150153.GE29179@elte.hu>
+User-Agent: Alpine 2.02 (LFD 1266 2009-07-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Return-Path: <tglx@linutronix.de>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 30148
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: tglx@linutronix.de
+Precedence: bulk
+X-list: linux-mips
 
-This patch introduced topdown mmap support in user process address
-space allocation policy.
+On Wed, 25 May 2011, Ingo Molnar wrote:
+> * Thomas Gleixner <tglx@linutronix.de> wrote:
+> > On Tue, 24 May 2011, Ingo Molnar wrote:
+> > > * Peter Zijlstra <peterz@infradead.org> wrote:
+> > > 
+> > > > On Tue, 2011-05-24 at 10:59 -0500, Will Drewry wrote:
+> > > > >  include/linux/ftrace_event.h  |    4 +-
+> > > > >  include/linux/perf_event.h    |   10 +++++---
+> > > > >  kernel/perf_event.c           |   49 +++++++++++++++++++++++++++++++++++++---
+> > > > >  kernel/seccomp.c              |    8 ++++++
+> > > > >  kernel/trace/trace_syscalls.c |   27 +++++++++++++++++-----
+> > > > >  5 files changed, 82 insertions(+), 16 deletions(-) 
+> > > > 
+> > > > I strongly oppose to the perf core being mixed with any sekurity voodoo
+> > > > (or any other active role for that matter).
+> > > 
+> > > I'd object to invisible side-effects as well, and vehemently so. But note how 
+> > > intelligently it's used here: it's explicit in the code, it's used explicitly 
+> > > in kernel/seccomp.c and the event generation place in 
+> > > kernel/trace/trace_syscalls.c.
+> > > 
+> > > So this is a really flexible solution IMO and does not extend events with some 
+> > > invisible 'active' role. It extends the *call site* with an open-coded active 
+> > > role - which active role btw. already pre-existed.
+> > 
+> > We do _NOT_ make any decision based on the trace point so what's the
+> > "pre-existing" active role in the syscall entry code?
+> 
+> The seccomp code we are discussing in this thread.
 
-Recently, we ran some large applications that use mmap heavily and
-lead to OOM due to inflexible mmap allocation policy on MIPS32.
+That's proposed code and has absolutely nothing to do with the
+existing trace point semantics.
+ 
+> > I'm all for code reuse and reuse of interfaces, but this is completely
+> > wrong. Instrumentation and security decisions are two fundamentally
+> > different things and we want them kept separate. Instrumentation is
+> > not meant to make decisions. Just because we can does not mean that it
+> > is a good idea.
+> 
+> Instrumentation does not 'make decisions': the calling site, which is 
+> already emitting both the event and wants to do decisions based on 
+> the data that also generates the event wants to do decisions.
 
-Since most other major archs supported it for years, it is reasonable
-to follow the trend and reduce the pain of porting applications.
+You can repeat that as often as you want, it does not make it more
+true. Fact is that the decision is made in the middle of the perf code.
 
-Due to cache aliasing concern, arch_get_unmapped_area_topdown() and
-other helper functions are implemented in arch/mips/kernel/syscall.c.
-
-Signed-off-by: Jian Peng <jipeng2005@gmail.com>
----
- arch/mips/include/asm/pgtable.h |    1 +
- arch/mips/kernel/syscall.c      |  201 ++++++++++++++++++++++++++++++++------
- 2 files changed, 170 insertions(+), 32 deletions(-)
-
-diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-index 7e40f37..b2202a6 100644
---- a/arch/mips/include/asm/pgtable.h
-+++ b/arch/mips/include/asm/pgtable.h
-@@ -414,6 +414,7 @@ int phys_mem_access_prot_allowed(struct file *file, unsigned long pfn,
-  * constraints placed on us by the cache architecture.
-  */
- #define HAVE_ARCH_UNMAPPED_AREA
-+#define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
-
- /*
-  * No page table caches to initialise
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-index 58beabf..aa636a5 100644
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -42,6 +42,7 @@
- #include <asm/shmparam.h>
- #include <asm/sysmips.h>
- #include <asm/uaccess.h>
-+#include <linux/personality.h>
-
- /*
-  * For historic reasons the pipe(2) syscall on MIPS has an unusual calling
-@@ -70,32 +71,69 @@ unsigned long shm_align_mask = PAGE_SIZE - 1;       /* Sane caches */
-
- EXPORT_SYMBOL(shm_align_mask);
-
-+/* gap between mmap and stack */
-+#define MIN_GAP (128*1024*1024UL)
-+#define MAX_GAP        ((TASK_SIZE)/6*5)
-+
-+static int mmap_is_legacy(void)
-+{
-+       if (current->personality & ADDR_COMPAT_LAYOUT)
-+               return 1;
-+
-+       if (rlimit(RLIMIT_STACK) == RLIM_INFINITY)
-+               return 1;
-+
-+       return sysctl_legacy_va_layout;
-+}
-+
-+static unsigned long mmap_base(unsigned long rnd)
-+{
-+       unsigned long gap = rlimit(RLIMIT_STACK);
-+
-+       if (gap < MIN_GAP)
-+               gap = MIN_GAP;
-+       else if (gap > MAX_GAP)
-+               gap = MAX_GAP;
-+
-+       return PAGE_ALIGN(TASK_SIZE - gap - rnd);
-+}
-+
-+static inline unsigned long COLOUR_ALIGN_DOWN(unsigned long addr,
-+                                             unsigned long pgoff)
-+{
-+       unsigned long base = addr & ~shm_align_mask;
-+       unsigned long off = (pgoff << PAGE_SHIFT) & shm_align_mask;
-+
-+       if (base + off <= addr)
-+               return base + off;
-+
-+       return base - off;
-+}
-+
- #define COLOUR_ALIGN(addr,pgoff)                               \
-        ((((addr) + shm_align_mask) & ~shm_align_mask) +        \
-         (((pgoff) << PAGE_SHIFT) & shm_align_mask))
-
--unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
--       unsigned long len, unsigned long pgoff, unsigned long flags)
-+enum mmap_allocation_direction {UP, DOWN};
-+
-+unsigned long arch_get_unmapped_area_foo(struct file *filp, unsigned long addr0,
-+               unsigned long len, unsigned long pgoff, unsigned long flags,
-+               enum mmap_allocation_direction dir)
- {
--       struct vm_area_struct * vmm;
-+       struct vm_area_struct *vma;
-+       struct mm_struct *mm = current->mm;
-+       unsigned long addr = addr0;
-        int do_color_align;
--       unsigned long task_size;
-
--#ifdef CONFIG_32BIT
--       task_size = TASK_SIZE;
--#else /* Must be CONFIG_64BIT*/
--       task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
--#endif
--
--       if (len > task_size)
-+       if (unlikely(len > TASK_SIZE))
-                return -ENOMEM;
-
-        if (flags & MAP_FIXED) {
--               /* Even MAP_FIXED mappings must reside within task_size.  */
--               if (task_size - len < addr)
-+               /* Even MAP_FIXED mappings must reside within TASK_SIZE */
-+               if (TASK_SIZE - len < addr)
-                        return -EINVAL;
-
--               /*
-+               /*
-                 * We do not accept a shared mapping if it would violate
-                 * cache aliasing constraints.
-                 */
-@@ -108,34 +146,127 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
-        do_color_align = 0;
-        if (filp || (flags & MAP_SHARED))
-                do_color_align = 1;
-+
-+       /* requesting a specific address */
-        if (addr) {
-                if (do_color_align)
-                        addr = COLOUR_ALIGN(addr, pgoff);
-                else
-                        addr = PAGE_ALIGN(addr);
--               vmm = find_vma(current->mm, addr);
--               if (task_size - len >= addr &&
--                   (!vmm || addr + len <= vmm->vm_start))
-+
-+               vma = find_vma(mm, addr);
-+               if (TASK_SIZE - len >= addr &&
-+                   (!vma || addr + len <= vma->vm_start))
-                        return addr;
-        }
--       addr = current->mm->mmap_base;
--       if (do_color_align)
--               addr = COLOUR_ALIGN(addr, pgoff);
--       else
--               addr = PAGE_ALIGN(addr);
-
--       for (vmm = find_vma(current->mm, addr); ; vmm = vmm->vm_next) {
--               /* At this point:  (!vmm || addr < vmm->vm_end). */
--               if (task_size - len < addr)
--                       return -ENOMEM;
--               if (!vmm || addr + len <= vmm->vm_start)
--                       return addr;
--               addr = vmm->vm_end;
-+       if(dir == UP) {
-+               addr = mm->mmap_base;
-                if (do_color_align)
-                        addr = COLOUR_ALIGN(addr, pgoff);
-+               else
-+                       addr = PAGE_ALIGN(addr);
-+
-+               for (vma = find_vma(current->mm, addr); ; vma = vma->vm_next) {
-+                       /* At this point:  (!vma || addr < vma->vm_end). */
-+                       if (TASK_SIZE - len < addr)
-+                               return -ENOMEM;
-+                       if (!vma || addr + len <= vma->vm_start)
-+                               return addr;
-+                       addr = vma->vm_end;
-+                       if (do_color_align)
-+                               addr = COLOUR_ALIGN(addr, pgoff);
-+               }
-+       } else {
-+               /* check if free_area_cache is useful for us */
-+               if (len <= mm->cached_hole_size) {
-+                       mm->cached_hole_size = 0;
-+                       mm->free_area_cache = mm->mmap_base;
-+               }
-+
-+               /* either no address requested or can't fit in requested address hole */
-+               addr = mm->free_area_cache;
-+                       if (do_color_align) {
-+                       unsigned long base = COLOUR_ALIGN_DOWN(addr-len, pgoff);
-+
-+                       addr = base + len;
-+               }
-+
-+               /* make sure it can fit in the remaining address space */
-+               if (likely(addr > len)) {
-+                       vma = find_vma(mm, addr-len);
-+                       if (!vma || addr <= vma->vm_start) {
-+                               /* remember the address as a hint for next time */
-+                               return mm->free_area_cache = addr-len;
-+                       }
-+               }
-+
-+               if (unlikely(mm->mmap_base < len))
-+                       goto bottomup;
-+
-+               addr = mm->mmap_base-len;
-+               if (do_color_align)
-+               addr = COLOUR_ALIGN_DOWN(addr, pgoff);
-+
-+               do {
-+                       /*
-+                        * Lookup failure means no vma is above this address,
-+                        * else if new region fits below vma->vm_start,
-+                        * return with success:
-+                        */
-+                       vma = find_vma(mm, addr);
-+                       if (likely(!vma || addr+len <= vma->vm_start)) {
-+                               /* remember the address as a hint for next time */
-+                               return mm->free_area_cache = addr;
-+                       }
-+
-+                       /* remember the largest hole we saw so far */
-+                       if (addr + mm->cached_hole_size < vma->vm_start)
-+                               mm->cached_hole_size = vma->vm_start - addr;
-+
-+                       /* try just below the current vma->vm_start */
-+                       addr = vma->vm_start-len;
-+                       if (do_color_align)
-+                               addr = COLOUR_ALIGN_DOWN(addr, pgoff);
-+               } while (likely(len < vma->vm_start));
-+
-+bottomup:
-+               /*
-+                * A failed mmap() very likely causes application failure,
-+                * so fall back to the bottom-up function here. This scenario
-+                * can happen with large stack limits and large mmap()
-+                * allocations.
-+                */
-+               mm->cached_hole_size = ~0UL;
-+               mm->free_area_cache = TASK_UNMAPPED_BASE;
-+               addr = arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
-+               /*
-+                * Restore the topdown base:
-+                */
-+               mm->free_area_cache = mm->mmap_base;
-+               mm->cached_hole_size = ~0UL;
-+
-+               return addr;
-        }
- }
-
-+unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
-+                       unsigned long len, unsigned long pgoff,
-+                       unsigned long flags)
-+{
-+       return arch_get_unmapped_area_foo(filp,
-+                       addr0, len, pgoff, flags, UP);
-+}
-+
-+unsigned long
-+arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
-+                         unsigned long len, unsigned long pgoff,
-+                         unsigned long flags)
-+{
-+       return arch_get_unmapped_area_foo(filp,
-+                       addr0, len, pgoff, flags, DOWN);
-+}
-+
- void arch_pick_mmap_layout(struct mm_struct *mm)
- {
-        unsigned long random_factor = 0UL;
-@@ -149,9 +280,15 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
-                        random_factor &= 0xffffffful;
-        }
-
--       mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
--       mm->get_unmapped_area = arch_get_unmapped_area;
--       mm->unmap_area = arch_unmap_area;
-+       if (mmap_is_legacy()) {
-+               mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
-+               mm->get_unmapped_area = arch_get_unmapped_area;
-+               mm->unmap_area = arch_unmap_area;
-+       } else {
-+               mm->mmap_base = mmap_base(random_factor);
-+               mm->get_unmapped_area = arch_get_unmapped_area_topdown;
-+               mm->unmap_area = arch_unmap_area_topdown;
-+       }
- }
-
- static inline unsigned long brk_rnd(void)
---
-1.7.4.1
-
-
-
-
------Original Message-----
-From: David Daney [mailto:ddaney@caviumnetworks.com]
-Sent: Tuesday, May 17, 2011 9:50 AM
-To: Jian Peng
-Cc: linux-mips@linux-mips.org; Ralf Baechle
-Subject: Re: patch to support topdown mmap allocation in MIPS
-
-On 05/16/2011 06:06 PM, Jian Peng wrote:
-> Thank you for reviewing. Here is new one with all fixings you want.
->
->> From 8dee85a8da61f74568ab9e0eadc8d7602a3f6fc6 Mon Sep 17 00:00:00 2001
-> From: Jian Peng<jipeng2005@gmail.com>
-> Date: Mon, 16 May 2011 18:00:33 -0700
-> Subject: [PATCH 1/1] MIPS: topdown mmap support
->
-> This patch introduced topdown mmap support in user process address
-> space allocation policy.
->
-> Recently, we ran some large applications that use mmap heavily and
-> lead to OOM due to inflexible mmap allocation policy on MIPS32.
->
-> Since most other major archs supported it for years, it is reasonable
-> to follow the trend and reduce the pain of porting applications.
->
-> Due to cache aliasing concern, arch_get_unmapped_area_topdown() and
-> other helper functions are implemented in arch/mips/kernel/syscall.c.
->
-> Signed-off-by: Jian Peng<jipeng2005@gmail.com>
-> ---
-
-Still too much code duplication.
-
-Try regenerating after Ralf's recent patch, and do something like:
-
-enum map_allocation_direction { up, down };
-
-long arch_get_unmapped_area_foo(num map_allocation_direction, ....)
-{
-/* a function that does both without code duplication */
-.
-.
-.
-}
-
-long arch_get_unmapped_area(....)
-{
-        return arch_get_unmapped_area_foo(up, ...);
-}
-
-long arch_get_unmapped_area_topdown(....)
-{
-        return arch_get_unmapped_area_foo(down, ...);
-}
-
-
-
->   arch/mips/include/asm/pgtable.h |    1 +
->   arch/mips/kernel/syscall.c      |  185 +++++++++++++++++++++++++++++++++++++-
->   2 files changed, 181 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
-> index 7e40f37..b2202a6 100644
-> --- a/arch/mips/include/asm/pgtable.h
-> +++ b/arch/mips/include/asm/pgtable.h
-> @@ -414,6 +414,7 @@ int phys_mem_access_prot_allowed(struct file *file, unsigned long pfn,
->    * constraints placed on us by the cache architecture.
->    */
->   #define HAVE_ARCH_UNMAPPED_AREA
-> +#define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
->
->   /*
->    * No page table caches to initialise
-> diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-> index 58beabf..e2f0ed5 100644
-> --- a/arch/mips/kernel/syscall.c
-> +++ b/arch/mips/kernel/syscall.c
-> @@ -42,6 +42,7 @@
->   #include<asm/shmparam.h>
->   #include<asm/sysmips.h>
->   #include<asm/uaccess.h>
-> +#include<linux/personality.h>
->
->   /*
->    * For historic reasons the pipe(2) syscall on MIPS has an unusual calling
-> @@ -70,14 +71,60 @@ unsigned long shm_align_mask = PAGE_SIZE - 1;     /* Sane caches */
->
->   EXPORT_SYMBOL(shm_align_mask);
->
-> -#define COLOUR_ALIGN(addr,pgoff)                             \
-> +/* gap between mmap and stack */
-> +#define MIN_GAP (128*1024*1024UL)
-> +#define MAX_GAP(task_size)   ((task_size)/6*5)
-> +
-> +static int mmap_is_legacy(void)
-> +{
-> +     if (current->personality&  ADDR_COMPAT_LAYOUT)
-> +             return 1;
-> +
-> +     if (rlimit(RLIMIT_STACK) == RLIM_INFINITY)
-> +             return 1;
-> +
-> +     return sysctl_legacy_va_layout;
-> +}
-> +
-> +static unsigned long mmap_base(unsigned long rnd)
-> +{
-> +     unsigned long gap = rlimit(RLIMIT_STACK);
-> +     unsigned long task_size;
-> +
-> +#ifdef CONFIG_32BIT
-> +     task_size = TASK_SIZE;
-> +#else /* Must be CONFIG_64BIT*/
-> +     task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
+> +     /* Transition the task if required. */
+> +     if (ctx->type == task_context && event->attr.require_secure) {
+> +#ifdef CONFIG_SECCOMP
+> +		/* Don't allow perf events to escape mode = 1. */
+> +		   if (!current->seccomp.mode)
+> +			current->seccomp.mode = 2;
 > +#endif
-> +
-> +     if (gap<  MIN_GAP)
-> +             gap = MIN_GAP;
-> +     else if (gap>  MAX_GAP(task_size))
-> +             gap = MAX_GAP(task_size);
-> +
-> +     return PAGE_ALIGN(task_size - gap - rnd);
-> +}
-> +
-> +static inline unsigned long COLOUR_ALIGN_DOWN(unsigned long addr,
-> +                                           unsigned long pgoff)
-> +{
-> +     unsigned long base = addr&  ~shm_align_mask;
-> +     unsigned long off = (pgoff<<  PAGE_SHIFT)&  shm_align_mask;
-> +
-> +     if (base + off<= addr)
-> +             return base + off;
-> +
-> +     return base - off;
-> +}
-> +
-> +#define COLOUR_ALIGN(addr, pgoff)                            \
->       ((((addr) + shm_align_mask)&  ~shm_align_mask) +        \
->        (((pgoff)<<  PAGE_SHIFT)&  shm_align_mask))
->
->   unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
->       unsigned long len, unsigned long pgoff, unsigned long flags)
->   {
-> -     struct vm_area_struct * vmm;
-> +     struct vm_area_struct *vmm;
->       int do_color_align;
->       unsigned long task_size;
->
-> @@ -136,6 +183,128 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
->       }
->   }
->
-> +unsigned long
-> +arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
-> +                       const unsigned long len, const unsigned long pgoff,
-> +                       const unsigned long flags)
-> +{
-> +     struct vm_area_struct *vma;
-> +     struct mm_struct *mm = current->mm;
-> +     unsigned long addr = addr0;
-> +     int do_color_align;
-> +     unsigned long task_size;
-> +
-> +#ifdef CONFIG_32BIT
-> +     task_size = TASK_SIZE;
-> +#else /* Must be CONFIG_64BIT*/
-> +     task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
-> +#endif
-> +
-> +     if (unlikely(len>  task_size))
-> +             return -ENOMEM;
-> +
-> +     if (flags&  MAP_FIXED) {
-> +             /* Even MAP_FIXED mappings must reside within task_size.  */
-> +             if (task_size - len<  addr)
-> +                     return -EINVAL;
-> +
-> +             /* We do not accept a shared mapping if it would violate
-> +              * cache aliasing constraints.
-> +              */
-> +             if ((flags&  MAP_SHARED)&&
-> +                 ((addr - (pgoff<<  PAGE_SHIFT))&  shm_align_mask))
-> +                     return -EINVAL;
-> +             return addr;
-> +     }
-> +
-> +     do_color_align = 0;
-> +     if (filp || (flags&  MAP_SHARED))
-> +             do_color_align = 1;
-> +
-> +     /* requesting a specific address */
-> +     if (addr) {
-> +             if (do_color_align)
-> +                     addr = COLOUR_ALIGN(addr, pgoff);
-> +             else
-> +                     addr = PAGE_ALIGN(addr);
-> +
-> +             vma = find_vma(mm, addr);
-> +             if (task_size - len>= addr&&
-> +                 (!vma || addr + len<= vma->vm_start))
-> +                     return addr;
-> +     }
-> +
-> +     /* check if free_area_cache is useful for us */
-> +     if (len<= mm->cached_hole_size) {
-> +             mm->cached_hole_size = 0;
-> +             mm->free_area_cache = mm->mmap_base;
-> +     }
-> +
-> +     /* either no address requested or can't fit in requested address hole */
-> +     addr = mm->free_area_cache;
-> +     if (do_color_align) {
-> +             unsigned long base = COLOUR_ALIGN_DOWN(addr-len, pgoff);
-> +
-> +             addr = base + len;
-> +     }
-> +
-> +     /* make sure it can fit in the remaining address space */
-> +     if (likely(addr>  len)) {
-> +             vma = find_vma(mm, addr-len);
-> +             if (!vma || addr<= vma->vm_start) {
-> +                     /* remember the address as a hint for next time */
-> +                     return mm->free_area_cache = addr-len;
-> +             }
-> +     }
-> +
-> +     if (unlikely(mm->mmap_base<  len))
-> +             goto bottomup;
-> +
-> +     addr = mm->mmap_base-len;
-> +     if (do_color_align)
-> +             addr = COLOUR_ALIGN_DOWN(addr, pgoff);
-> +
-> +     do {
-> +             /*
-> +              * Lookup failure means no vma is above this address,
-> +              * else if new region fits below vma->vm_start,
-> +              * return with success:
-> +              */
-> +             vma = find_vma(mm, addr);
-> +             if (likely(!vma || addr+len<= vma->vm_start)) {
-> +                     /* remember the address as a hint for next time */
-> +                     return mm->free_area_cache = addr;
-> +             }
-> +
-> +             /* remember the largest hole we saw so far */
-> +             if (addr + mm->cached_hole_size<  vma->vm_start)
-> +                     mm->cached_hole_size = vma->vm_start - addr;
-> +
-> +             /* try just below the current vma->vm_start */
-> +             addr = vma->vm_start-len;
-> +             if (do_color_align)
-> +                     addr = COLOUR_ALIGN_DOWN(addr, pgoff);
-> +     } while (likely(len<  vma->vm_start));
-> +
-> +bottomup:
-> +     /*
-> +      * A failed mmap() very likely causes application failure,
-> +      * so fall back to the bottom-up function here. This scenario
-> +      * can happen with large stack limits and large mmap()
-> +      * allocations.
-> +      */
-> +     mm->cached_hole_size = ~0UL;
-> +     mm->free_area_cache = TASK_UNMAPPED_BASE;
-> +     addr = arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
-> +     /*
-> +      * Restore the topdown base:
-> +      */
-> +     mm->free_area_cache = mm->mmap_base;
-> +     mm->cached_hole_size = ~0UL;
-> +
-> +     return addr;
-> +}
-> +
->   void arch_pick_mmap_layout(struct mm_struct *mm)
->   {
->       unsigned long random_factor = 0UL;
-> @@ -149,9 +318,15 @@ void arch_pick_mmap_layout(struct mm_struct *mm)
->                       random_factor&= 0xffffffful;
->       }
->
-> -     mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
-> -     mm->get_unmapped_area = arch_get_unmapped_area;
-> -     mm->unmap_area = arch_unmap_area;
-> +     if (mmap_is_legacy()) {
-> +             mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
-> +             mm->get_unmapped_area = arch_get_unmapped_area;
-> +             mm->unmap_area = arch_unmap_area;
-> +     } else {
-> +             mm->mmap_base = mmap_base(random_factor);
-> +             mm->get_unmapped_area = arch_get_unmapped_area_topdown;
-> +             mm->unmap_area = arch_unmap_area_topdown;
-> +     }
->   }
->
->   static inline unsigned long brk_rnd(void)
+> +	}
+ 
+and further down
+
+> +   	    if (event->attr.err_on_discard)
+> +		ok = -EACCES;
+ 
+> Those decisions *will be made* and you cannot prevent that, the only 
+> open question is can it reuse code intelligently, which code it is 
+> btw. already calling for observation reasons?
+
+The tracepoint is called for observation reasons and now you make it a
+decision function. That's what I call abuse.
+
+> ( Note that pure observers wont be affected and note that pure 
+>   observation call sites are not affected either. )
+
+Hahaha, they still have to run through the additional code when
+seccomp is enabled and we still have to propagate the return value
+down to the point where the tracepoint itself is. You call that not
+affected?
+ 
+> > So what the current approach does is:
+> > 
+> >  - abuse the existing ftrace syscall hook by adding a return value to
+> >    the tracepoint.
+> > 
+> >    So we need to propagate that for every tracepoint just because we
+> >    have a single user.
+> 
+> This is a technical criticism i share with you and i think it can be 
+> fixed - i outlined it to Will yesterday.
+> 
+> And no, if done cleanly it's not 'abuse' to reuse code. Could we wait 
+> for the first clean iteration of this patch instead of rushing 
+> judgement prematurely?
+
+There is no way to do it cleanly. It always comes for the price that
+you add additional code into the tracing code path. And there are
+other people who try hard to remove stuff to recude the overhead which
+is caused by instrumentation.
+
+> >  - abuse the perf per task mechanism
+> > 
+> >    Just because we have per task context in perf does not mean that we
+> >    pull everything and the world which requires per task context into
+> >    perf. The security folks have per task context already so security
+> >    related stuff wants to go there.
+> 
+> We do not pull 'everything and the world' in, but code that wants to 
+> process events in places that already emit events surely sounds 
+> related to me :-)
+
+We have enough places where different independent parts of the kernel
+want to hook into for obvious reasons.
+
+We have notifiers for those where performance does not matter much and
+we have separate calls into the independent functions where it matters
+or where we need to evaluate the results in specific ways.
+
+So now you turn instrumentation into a security mechanism, which
+"works" nicely for a particular purpose, i.e. decision on a particular
+syscall number. Now, how do you make that work when a decision has to
+be made on more than a simple match, e.g. syscall number + arguments ?
+
+Not at all, unless you add more complexity and arbitrary callbacks
+into the instrumentation code.
+
+> > Brilliant, we have already two ABIs (perf/ftrace) to support and at
+> > the same time we urgently need to solve the problem of better
+> > integration of those two. So adding a third completely unrelated
+> > component with a guaranteed ABI is just making this even more complex.
+> 
+> So your solution is to add yet another ABI for seccomp and to keep 
+> seccomp a limited hack forever, just because you are not interested 
+> in security?
+
+Well, I'm interested in security, but I'm neither interested in
+security decisions inside instrumentation code nor in security models
+which are limited hacks by definition unless you want to add callback
+complexities to the instrumentation code.
+
+It all looks nice and charming with this minimalistic use case, but
+add real features to it and it gets messy in a split second and you
+can't hold that off once you started to allow A. And you clearly
+stated that you want to have more trace point based security features
+than the simple syscall number filtering.
+
+> I think we want fewer ABIs and more flexible/reusable facilities.
+
+I'm all for that, but security and instrumentation are different
+beasts.
+ 
+> > We can factor out the filtering code and let the security dudes 
+> > reuse it for their own purposes. That makes them to have their own 
+> > interfaces and does not impose any restrictions upon the 
+> > tracing/perf ones. And really security stuff wants to be integrated 
+> > into the existing security frameworks and not duct taped into 
+> > perf/trace just because it's a conveniant hack around limitiations 
+> > of the existing security stuff.
+> 
+> You are missing what i tried to point out in earlier discussions: 
+> from a security design POV this isnt just about the system call 
+> boundary. If this seccomp variant is based on events then it could 
+> grow proper security checks in other places as well, in places where 
+> we have some sort of object observation event anyway.
+
+Right, that requires callbacks and more stuff to do object based
+observation and ties a trace point into a place where it might not
+make sense after a while, but the security decision wants to stay at
+that place. The syscall example is so tempting because it's simplistic
+and easy to solve, but every extension to that model is going to
+create a nightmare.
+
+You are duct taping stuff together which has totally different
+semantics and requirements. And your only argument is reuse of
+existing code. That's a good argument in principle, but there is a
+fundamental difference between intelligent reuse and enforcing it just
+for reuse sake.
+
+> So this is opens up possibilities to reuse and unify code on a very 
+> broad basis.
+
+By making a total mess out of it? 
+
+> So yes, over-integration is obviously wrong - but so is needless 
+> fragmentation.
+
+Right. And this falls into the category of over-integration. We have
+people working on security and they are working on stacked security
+models, so where is the justification to start another security
+framework inside the instrumentation code which is completely non
+interoperable with the existing ones?
+
+> If anything then that should tell you something that events and 
+> seccomp are not just casually related ...
+
+They happen to have the hook at the same point in the source and for
+pure coincidence it works because the problem to solve is extremly
+simplistic. And that's why the diffstat is minimalistic, but that does
+not prove anything.
+
+Thanks,
+
+	tglx

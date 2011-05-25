@@ -1,262 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2011 19:49:42 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:50030 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491192Ab1EYRtf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2011 19:49:35 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <tglx@linutronix.de>)
-        id 1QPICU-0003Y5-Mu; Wed, 25 May 2011 19:48:54 +0200
-Date:   Wed, 25 May 2011 19:48:51 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Ingo Molnar <mingo@elte.hu>
-cc:     Peter Zijlstra <peterz@infradead.org>,
-        Will Drewry <wad@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        James Morris <jmorris@namei.org>, linux-kernel@vger.kernel.org,
-        Eric Paris <eparis@redhat.com>, kees.cook@canonical.com,
-        agl@chromium.org, "Serge E. Hallyn" <serge@hallyn.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, Michal Marek <mmarek@suse.cz>,
-        Oleg Nesterov <oleg@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
-        David Howells <dhowells@redhat.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system call
- filtering
-In-Reply-To: <20110525150153.GE29179@elte.hu>
-Message-ID: <alpine.LFD.2.02.1105251836030.3078@ionos>
-References: <20110517124212.GB21441@elte.hu> <1305637528.5456.723.camel@gandalf.stny.rr.com> <20110517131902.GF21441@elte.hu> <BANLkTikBK3-KZ10eErQ6Eex_L6Qe2aZang@mail.gmail.com> <1305807728.11267.25.camel@gandalf.stny.rr.com> <BANLkTiki8aQJbFkKOFC+s6xAEiuVyMM5MQ@mail.gmail.com>
- <BANLkTim9UyYAGhg06vCFLxkYPX18cPymEQ@mail.gmail.com> <1306254027.18455.47.camel@twins> <20110524195435.GC27634@elte.hu> <alpine.LFD.2.02.1105242239230.3078@ionos> <20110525150153.GE29179@elte.hu>
-User-Agent: Alpine 2.02 (LFD 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2011 19:58:20 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13047 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491192Ab1EYR6O (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2011 19:58:14 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4ddd43720000>; Wed, 25 May 2011 10:59:14 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 25 May 2011 10:58:10 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 25 May 2011 10:58:10 -0700
+Message-ID: <4DDD432D.4020200@caviumnetworks.com>
+Date:   Wed, 25 May 2011 10:58:05 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Return-Path: <tglx@linutronix.de>
+To:     Jian Peng <jipeng@broadcom.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: patch to support topdown mmap allocation in MIPS
+References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com> <4DD1BD72.2000408@caviumnetworks.com> <E18F441196CA634DB8E1F1C56A50A8743242B54D97@IRVEXCHCCR01.corp.ad.broadcom.com> <4DD2A729.9090502@caviumnetworks.com> <E18F441196CA634DB8E1F1C56A50A8743242B54FA7@IRVEXCHCCR01.corp.ad.broadcom.com> <E18F441196CA634DB8E1F1C56A50A874572CCBB6B5@IRVEXCHCCR01.corp.ad.broadcom.com>
+In-Reply-To: <E18F441196CA634DB8E1F1C56A50A874572CCBB6B5@IRVEXCHCCR01.corp.ad.broadcom.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 25 May 2011 17:58:10.0689 (UTC) FILETIME=[4F588710:01CC1B05]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30148
+X-archive-position: 30149
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 25 May 2011, Ingo Molnar wrote:
-> * Thomas Gleixner <tglx@linutronix.de> wrote:
-> > On Tue, 24 May 2011, Ingo Molnar wrote:
-> > > * Peter Zijlstra <peterz@infradead.org> wrote:
-> > > 
-> > > > On Tue, 2011-05-24 at 10:59 -0500, Will Drewry wrote:
-> > > > >  include/linux/ftrace_event.h  |    4 +-
-> > > > >  include/linux/perf_event.h    |   10 +++++---
-> > > > >  kernel/perf_event.c           |   49 +++++++++++++++++++++++++++++++++++++---
-> > > > >  kernel/seccomp.c              |    8 ++++++
-> > > > >  kernel/trace/trace_syscalls.c |   27 +++++++++++++++++-----
-> > > > >  5 files changed, 82 insertions(+), 16 deletions(-) 
-> > > > 
-> > > > I strongly oppose to the perf core being mixed with any sekurity voodoo
-> > > > (or any other active role for that matter).
-> > > 
-> > > I'd object to invisible side-effects as well, and vehemently so. But note how 
-> > > intelligently it's used here: it's explicit in the code, it's used explicitly 
-> > > in kernel/seccomp.c and the event generation place in 
-> > > kernel/trace/trace_syscalls.c.
-> > > 
-> > > So this is a really flexible solution IMO and does not extend events with some 
-> > > invisible 'active' role. It extends the *call site* with an open-coded active 
-> > > role - which active role btw. already pre-existed.
-> > 
-> > We do _NOT_ make any decision based on the trace point so what's the
-> > "pre-existing" active role in the syscall entry code?
-> 
-> The seccomp code we are discussing in this thread.
+On 05/25/2011 10:47 AM, Jian Peng wrote:
+> Hi, Ralf/David,
+>
+> What else should I do to get this patch merged?
+>
 
-That's proposed code and has absolutely nothing to do with the
-existing trace point semantics.
- 
-> > I'm all for code reuse and reuse of interfaces, but this is completely
-> > wrong. Instrumentation and security decisions are two fundamentally
-> > different things and we want them kept separate. Instrumentation is
-> > not meant to make decisions. Just because we can does not mean that it
-> > is a good idea.
-> 
-> Instrumentation does not 'make decisions': the calling site, which is 
-> already emitting both the event and wants to do decisions based on 
-> the data that also generates the event wants to do decisions.
+Be patient.  And tell how it was tested.
 
-You can repeat that as often as you want, it does not make it more
-true. Fact is that the decision is made in the middle of the perf code.
 
-> +     /* Transition the task if required. */
-> +     if (ctx->type == task_context && event->attr.require_secure) {
-> +#ifdef CONFIG_SECCOMP
-> +		/* Don't allow perf events to escape mode = 1. */
-> +		   if (!current->seccomp.mode)
-> +			current->seccomp.mode = 2;
-> +#endif
-> +	}
- 
-and further down
+Also ....
 
-> +   	    if (event->attr.err_on_discard)
-> +		ok = -EACCES;
- 
-> Those decisions *will be made* and you cannot prevent that, the only 
-> open question is can it reuse code intelligently, which code it is 
-> btw. already calling for observation reasons?
+[...]
+> +
+> +unsigned long arch_get_unmapped_area_foo(struct file *filp, unsigned long addr0,
+> +               unsigned long len, unsigned long pgoff, unsigned long flags,
+> +               enum mmap_allocation_direction dir)
 
-The tracepoint is called for observation reasons and now you make it a
-decision function. That's what I call abuse.
+I know I suggested the name *_foo, but really I expected you to choose a 
+better name, as the 'foo' is just the default name for examples.
 
-> ( Note that pure observers wont be affected and note that pure 
->   observation call sites are not affected either. )
+I think it needs a better name than that.
 
-Hahaha, they still have to run through the additional code when
-seccomp is enabled and we still have to propagate the return value
-down to the point where the tracepoint itself is. You call that not
-affected?
- 
-> > So what the current approach does is:
-> > 
-> >  - abuse the existing ftrace syscall hook by adding a return value to
-> >    the tracepoint.
-> > 
-> >    So we need to propagate that for every tracepoint just because we
-> >    have a single user.
-> 
-> This is a technical criticism i share with you and i think it can be 
-> fixed - i outlined it to Will yesterday.
-> 
-> And no, if done cleanly it's not 'abuse' to reuse code. Could we wait 
-> for the first clean iteration of this patch instead of rushing 
-> judgement prematurely?
+I will try to test it on my Octeon system sometime.
 
-There is no way to do it cleanly. It always comes for the price that
-you add additional code into the tracing code path. And there are
-other people who try hard to remove stuff to recude the overhead which
-is caused by instrumentation.
-
-> >  - abuse the perf per task mechanism
-> > 
-> >    Just because we have per task context in perf does not mean that we
-> >    pull everything and the world which requires per task context into
-> >    perf. The security folks have per task context already so security
-> >    related stuff wants to go there.
-> 
-> We do not pull 'everything and the world' in, but code that wants to 
-> process events in places that already emit events surely sounds 
-> related to me :-)
-
-We have enough places where different independent parts of the kernel
-want to hook into for obvious reasons.
-
-We have notifiers for those where performance does not matter much and
-we have separate calls into the independent functions where it matters
-or where we need to evaluate the results in specific ways.
-
-So now you turn instrumentation into a security mechanism, which
-"works" nicely for a particular purpose, i.e. decision on a particular
-syscall number. Now, how do you make that work when a decision has to
-be made on more than a simple match, e.g. syscall number + arguments ?
-
-Not at all, unless you add more complexity and arbitrary callbacks
-into the instrumentation code.
-
-> > Brilliant, we have already two ABIs (perf/ftrace) to support and at
-> > the same time we urgently need to solve the problem of better
-> > integration of those two. So adding a third completely unrelated
-> > component with a guaranteed ABI is just making this even more complex.
-> 
-> So your solution is to add yet another ABI for seccomp and to keep 
-> seccomp a limited hack forever, just because you are not interested 
-> in security?
-
-Well, I'm interested in security, but I'm neither interested in
-security decisions inside instrumentation code nor in security models
-which are limited hacks by definition unless you want to add callback
-complexities to the instrumentation code.
-
-It all looks nice and charming with this minimalistic use case, but
-add real features to it and it gets messy in a split second and you
-can't hold that off once you started to allow A. And you clearly
-stated that you want to have more trace point based security features
-than the simple syscall number filtering.
-
-> I think we want fewer ABIs and more flexible/reusable facilities.
-
-I'm all for that, but security and instrumentation are different
-beasts.
- 
-> > We can factor out the filtering code and let the security dudes 
-> > reuse it for their own purposes. That makes them to have their own 
-> > interfaces and does not impose any restrictions upon the 
-> > tracing/perf ones. And really security stuff wants to be integrated 
-> > into the existing security frameworks and not duct taped into 
-> > perf/trace just because it's a conveniant hack around limitiations 
-> > of the existing security stuff.
-> 
-> You are missing what i tried to point out in earlier discussions: 
-> from a security design POV this isnt just about the system call 
-> boundary. If this seccomp variant is based on events then it could 
-> grow proper security checks in other places as well, in places where 
-> we have some sort of object observation event anyway.
-
-Right, that requires callbacks and more stuff to do object based
-observation and ties a trace point into a place where it might not
-make sense after a while, but the security decision wants to stay at
-that place. The syscall example is so tempting because it's simplistic
-and easy to solve, but every extension to that model is going to
-create a nightmare.
-
-You are duct taping stuff together which has totally different
-semantics and requirements. And your only argument is reuse of
-existing code. That's a good argument in principle, but there is a
-fundamental difference between intelligent reuse and enforcing it just
-for reuse sake.
-
-> So this is opens up possibilities to reuse and unify code on a very 
-> broad basis.
-
-By making a total mess out of it? 
-
-> So yes, over-integration is obviously wrong - but so is needless 
-> fragmentation.
-
-Right. And this falls into the category of over-integration. We have
-people working on security and they are working on stacked security
-models, so where is the justification to start another security
-framework inside the instrumentation code which is completely non
-interoperable with the existing ones?
-
-> If anything then that should tell you something that events and 
-> seccomp are not just casually related ...
-
-They happen to have the hook at the same point in the source and for
-pure coincidence it works because the problem to solve is extremly
-simplistic. And that's why the diffstat is minimalistic, but that does
-not prove anything.
-
-Thanks,
-
-	tglx
+David Daney

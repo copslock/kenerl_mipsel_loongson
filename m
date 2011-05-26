@@ -1,94 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 May 2011 20:07:10 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:4916 "EHLO mms1.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491193Ab1EYSHD convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 May 2011 20:07:03 +0200
-Received: from [10.9.200.133] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Wed, 25 May 2011 11:10:54 -0700
-X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
-Received: from IRVEXCHCCR01.corp.ad.broadcom.com ([10.252.49.30]) by
- IRVEXCHHUB02.corp.ad.broadcom.com ([10.9.200.133]) with mapi; Wed, 25
- May 2011 11:06:39 -0700
-From:   "Jian Peng" <jipeng@broadcom.com>
-To:     "David Daney" <ddaney@caviumnetworks.com>
-cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "Ralf Baechle" <ralf@linux-mips.org>
-Date:   Wed, 25 May 2011 11:06:44 -0700
-Subject: RE: patch to support topdown mmap allocation in MIPS
-Thread-Topic: patch to support topdown mmap allocation in MIPS
-Thread-Index: AcwbBVcOuMe2pbjkS7u+cbhp1RyQVgAABI5w
-Message-ID: <E18F441196CA634DB8E1F1C56A50A874572CCBB6D0@IRVEXCHCCR01.corp.ad.broadcom.com>
-References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
- <4DD1BD72.2000408@caviumnetworks.com>
- <E18F441196CA634DB8E1F1C56A50A8743242B54D97@IRVEXCHCCR01.corp.ad.broadcom.com>
- <4DD2A729.9090502@caviumnetworks.com>
- <E18F441196CA634DB8E1F1C56A50A8743242B54FA7@IRVEXCHCCR01.corp.ad.broadcom.com>
- <E18F441196CA634DB8E1F1C56A50A874572CCBB6B5@IRVEXCHCCR01.corp.ad.broadcom.com>
- <4DDD432D.4020200@caviumnetworks.com>
-In-Reply-To: <4DDD432D.4020200@caviumnetworks.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 May 2011 08:28:05 +0200 (CEST)
+Received: from ksp.mff.cuni.cz ([195.113.26.206]:39172 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1490955Ab1EZG2A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 May 2011 08:28:00 +0200
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id 5F468F0A11; Thu, 26 May 2011 08:27:59 +0200 (CEST)
+Date:   Thu, 26 May 2011 06:27:52 +0000
+From:   Pavel Machek <pavel@ucw.cz>
+To:     James Morris <jmorris@namei.org>
+Cc:     Ingo Molnar <mingo@elte.hu>, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        David Howells <dhowells@redhat.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Eric Paris <eparis@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        Jiri Slaby <jslaby@suse.cz>, linux-s390@vger.kernel.org,
+        Russell King <linux@arm.linux.org.uk>, x86@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        kees.cook@canonical.com, "Serge E. Hallyn" <serge@hallyn.com>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Michal Marek <mmarek@suse.cz>, Michal Simek <monstr@monstr.eu>,
+        Will Drewry <wad@chromium.org>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        linux390@de.ibm.com, Andrew Morton <akpm@linux-foundation.org>,
+        agl@chromium.org, "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 3/5] v2 seccomp_filters: Enable ftrace-based system
+        call filtering
+Message-ID: <20110526062752.GA14622@localhost.ucw.cz>
+References: <1304017638.18763.205.camel@gandalf.stny.rr.com> <1305169376-2363-1-git-send-email-wad@chromium.org> <20110512074850.GA9937@elte.hu> <alpine.LRH.2.00.1105122133500.31507@tundra.namei.org> <20110512130104.GA2912@elte.hu> <alpine.LRH.2.00.1105131018040.3047@tundra.namei.org> <20110513121034.GG21022@elte.hu> <alpine.LRH.2.00.1105161006340.21749@tundra.namei.org>
 MIME-Version: 1.0
-X-WSS-ID: 61C399A41IC11794642-01-01
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Return-Path: <jipeng@broadcom.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LRH.2.00.1105161006340.21749@tundra.namei.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30150
+X-archive-position: 30151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jipeng@broadcom.com
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 X-list: linux-mips
 
-Hi, David,
+  On Mon 2011-05-16 10:36:05, James Morris wrote:
+> On Fri, 13 May 2011, Ingo Molnar wrote:
+> How do you reason about the behavior of the system as a whole?
+> 
+> 
+> > I argue that this is the LSM and audit subsystems designed right: in the long 
+> > run it could allow everything that LSM does at the moment - and so much more 
+> > ...
+> 
+> Now you're proposing a redesign of the security subsystem.  That's a 
+> significant undertaking.
+> 
+> In the meantime, we have a simple, well-defined enhancement to seccomp 
+> which will be very useful to current users in reducing their kernel attack 
+> surface.
 
-I am willing to get more feedback and sort out issues before I forgot all details.
+Well, you can do the same with subterfugue, even without kernel
+changes. But that's ptrace -- slow. (And it already shows that syscall
+based filters are extremely tricky to configure).
 
-I post a simple testing program at http://www.linux-mips.org/archives/linux-mips/2011-05/msg00252.html
-And it was also tested in a real application using mmap heavily and need this patch to avoid failure.
+If yu want speed, seccomp+server for non-permitted operations seems like reasonable way.
 
-It is my bad to take your suggestion literally. How about arch_get_unmapped_area_common()?
-
-Thanks,
-Jian
-
------Original Message-----
-From: David Daney [mailto:ddaney@caviumnetworks.com] 
-Sent: Wednesday, May 25, 2011 10:58 AM
-To: Jian Peng
-Cc: linux-mips@linux-mips.org; Ralf Baechle
-Subject: Re: patch to support topdown mmap allocation in MIPS
-
-On 05/25/2011 10:47 AM, Jian Peng wrote:
-> Hi, Ralf/David,
->
-> What else should I do to get this patch merged?
->
-
-Be patient.  And tell how it was tested.
-
-
-Also ....
-
-[...]
-> +
-> +unsigned long arch_get_unmapped_area_foo(struct file *filp, unsigned long addr0,
-> +               unsigned long len, unsigned long pgoff, unsigned long flags,
-> +               enum mmap_allocation_direction dir)
-
-I know I suggested the name *_foo, but really I expected you to choose a 
-better name, as the 'foo' is just the default name for examples.
-
-I think it needs a better name than that.
-
-I will try to test it on my Octeon system sometime.
-
-David Daney
+-- 
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html

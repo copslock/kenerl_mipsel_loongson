@@ -1,57 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 22:09:36 +0200 (CEST)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:62382 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491779Ab1E0UJa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2011 22:09:30 +0200
-Received: by ywf9 with SMTP id 9so1056674ywf.36
-        for <multiple recipients>; Fri, 27 May 2011 13:09:24 -0700 (PDT)
-Received: by 10.91.20.13 with SMTP id x13mr2495910agi.16.1306526964066;
-        Fri, 27 May 2011 13:09:24 -0700 (PDT)
-Received: from [192.168.2.102] (cpe-24-27-26-60.austin.res.rr.com [24.27.26.60])
-        by mx.google.com with ESMTPS id c21sm1595897ana.50.2011.05.27.13.09.21
-        (version=SSLv3 cipher=OTHER);
-        Fri, 27 May 2011 13:09:22 -0700 (PDT)
-Message-ID: <4DE004EF.10507@landley.net>
-Date:   Fri, 27 May 2011 15:09:19 -0500
-From:   Rob Landley <rob@landley.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110424 Thunderbird/3.1.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 22:12:54 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:39723 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491779Ab1E0UMs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2011 22:12:48 +0200
+Received: by pwi8 with SMTP id 8so1098610pwi.36
+        for <multiple recipients>; Fri, 27 May 2011 13:12:41 -0700 (PDT)
+Received: by 10.142.223.6 with SMTP id v6mr402954wfg.204.1306527161767;
+        Fri, 27 May 2011 13:12:41 -0700 (PDT)
+Received: from localhost (S01060002b3d79728.cg.shawcable.net [70.72.87.49])
+        by mx.google.com with ESMTPS id q13sm82187wfd.23.2011.05.27.13.12.40
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 27 May 2011 13:12:40 -0700 (PDT)
+Received: by localhost (Postfix, from userid 1000)
+        id 3809B181763; Fri, 27 May 2011 14:12:40 -0600 (MDT)
+Date:   Fri, 27 May 2011 14:12:40 -0600
+From:   Grant Likely <grant.likely@secretlab.ca>
+To:     David Daney <ddaney@caviumnetworks.com>
+Cc:     David Gibson <david@gibson.dropbear.id.au>,
+        devicetree-discuss@lists.ozlabs.org, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v4 1/6] of: Allow scripts/dtc/libfdt to be used from
+ kernel code
+Message-ID: <20110527201240.GB6645@ponder.secretlab.ca>
+References: <1305930343-31259-1-git-send-email-ddaney@caviumnetworks.com>
+ <1305930343-31259-2-git-send-email-ddaney@caviumnetworks.com>
+ <20110521063345.GB14828@yookeroo.fritz.box>
+ <4DDA8FBC.1090904@caviumnetworks.com>
+ <20110527032402.GD7793@yookeroo.fritz.box>
+ <4DDFD622.1000102@caviumnetworks.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: MIPS panic in 2.6.39 (bisected to 7eaceaccab5f)
-References: <4DDB5673.5060206@landley.net> <20110524143937.GB30117@linux-mips.org> <4DDCB1EB.4020707@landley.net> <20110527075512.GE30117@linux-mips.org> <20110527140011.GF30117@linux-mips.org>
-In-Reply-To: <20110527140011.GF30117@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <rob@landley.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4DDFD622.1000102@caviumnetworks.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+Return-Path: <glikely@secretlab.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30163
+X-archive-position: 30164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rob@landley.net
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 
-On 05/27/2011 09:00 AM, Ralf Baechle wrote:
-> On Fri, May 27, 2011 at 08:55:13AM +0100, Ralf Baechle wrote:
+On Fri, May 27, 2011 at 09:49:38AM -0700, David Daney wrote:
+> On 05/26/2011 08:24 PM, David Gibson wrote:
+> >On Mon, May 23, 2011 at 09:47:56AM -0700, David Daney wrote:
+> >>On 05/20/2011 11:33 PM, David Gibson wrote:
+> >>>On Fri, May 20, 2011 at 03:25:38PM -0700, David Daney wrote:
+> >>>>To use it you need to do this in your Kconfig:
+> >>>>
+> >>>>	select LIBFDT
+> >>>>
+> >>>>And in the Makefile of the code using libfdt something like:
+> >>>>
+> >>>>ccflags-y := -include linux/libfdt_env.h -I$(src)/../../../scripts/dtc/libfdt
+> >>>>
+> >>>>Signed-off-by: David Daney<ddaney@caviumnetworks.com>
+> >>>>---
+> >>>>  drivers/of/Kconfig          |    3 +++
+> >>>>  drivers/of/Makefile         |    2 ++
+> >>>>  drivers/of/libfdt/Makefile  |    3 +++
+> >>>>  drivers/of/libfdt/fdt.c     |    2 ++
+> >>>>  drivers/of/libfdt/fdt_ro.c  |    2 ++
+> >>>>  drivers/of/libfdt/fdt_wip.c |    2 ++
+> >>>
+> >>>No fdt_sw.c or fdt_rw.c?
+> >>>
+> >>
+> >>I had no immediate need for them.  They could of course be added,
+> >>but that would potentially waste space.
+> >>
+> >>Let's see if I can make it into an archive library.
+> >
+> >That would be preferable.  It's more or less designed to work that way
+> >so that everything is available without using unnecessary space in the
+> >binary.
+> >
 > 
->>> Have you guys been able to reproduce the problem?
->>
->> Staring at the disassembly was good enough, I think.  The commit you
->> bisected is restructuring some of the hardware probing code for Malta and
->> seems to result in gcmp_present being set without _gcmp_base having been
->> assigned, thus the null pointer dereference.
+> Well, I was looking at this some more:
 > 
-> Can you test below patch?  Thanks,
+> Grant specifically requested that this go in drivers/of/libfdt,
+> however I am fairly sure that building archive libraries there will
+> require changes to the upper level Makefile infrastructure.
+> 
+> If I go back to lib/libfdt, like my first version, I can easily
+> achieve archive library behavior, but then it is separated from from
+> drivers/of.
+> 
+> Personally I am starting to like the lib/libfdt home more than
+> drivers/of.  If Grant doesn't object, I think I will move it back
+> there.
 
-arch/mips/mti-malta/malta-init.c: In function 'prom_init':
-arch/mips/mti-malta/malta-init.c:363: error: implicit declaration of
-function 'register_cmp_smp_ops'
-arch/mips/mti-malta/malta-init.c:366: error: implicit declaration of
-function 'register_vsmp_smp_ops'
-make[2]: *** [arch/mips/mti-malta/malta-init.o] Error 1
+okay.
 
-Rob
+g.

@@ -1,33 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 19:00:09 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:14983 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 19:05:45 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:15201 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491773Ab1E0RAF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2011 19:00:05 +0200
+        by eddie.linux-mips.org with ESMTP id S1491774Ab1E0RFj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2011 19:05:39 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4ddfd8d30000>; Fri, 27 May 2011 10:01:07 -0700
+        id <B4ddfda210000>; Fri, 27 May 2011 10:06:41 -0700
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 27 May 2011 10:00:03 -0700
+         Fri, 27 May 2011 10:05:37 -0700
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 27 May 2011 10:00:03 -0700
-Message-ID: <4DDFD892.1040309@caviumnetworks.com>
-Date:   Fri, 27 May 2011 10:00:02 -0700
+         Fri, 27 May 2011 10:05:37 -0700
+Message-ID: <4DDFD9E0.2090701@caviumnetworks.com>
+Date:   Fri, 27 May 2011 10:05:36 -0700
 From:   David Daney <ddaney@caviumnetworks.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
 To:     Grant Likely <grant.likely@secretlab.ca>
 CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v4 3/6] MIPS: Octeon: Add device tree source files.
-References: <1305930343-31259-1-git-send-email-ddaney@caviumnetworks.com> <1305930343-31259-4-git-send-email-ddaney@caviumnetworks.com> <20110527015618.GC5032@ponder.secretlab.ca>
-In-Reply-To: <20110527015618.GC5032@ponder.secretlab.ca>
+Subject: Re: [RFC PATCH v4 4/6] MIPS: Prune some target specific code out
+ of prom.c
+References: <1305930343-31259-1-git-send-email-ddaney@caviumnetworks.com> <1305930343-31259-5-git-send-email-ddaney@caviumnetworks.com> <20110527015845.GD5032@ponder.secretlab.ca>
+In-Reply-To: <20110527015845.GD5032@ponder.secretlab.ca>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 May 2011 17:00:03.0135 (UTC) FILETIME=[856D84F0:01CC1C8F]
+X-OriginalArrivalTime: 27 May 2011 17:05:37.0102 (UTC) FILETIME=[4C7CD6E0:01CC1C90]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30161
+X-archive-position: 30162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,132 +36,93 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On 05/26/2011 06:56 PM, Grant Likely wrote:
-> On Fri, May 20, 2011 at 03:25:40PM -0700, David Daney wrote:
+On 05/26/2011 06:58 PM, Grant Likely wrote:
+> On Fri, May 20, 2011 at 03:25:41PM -0700, David Daney wrote:
+>> This code is not common enough to be in a shared file.  It is also not
+>> used by any existing boards, so just remove it.
+>>
 >> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
 >> ---
->>   .../devicetree/bindings/mips/cavium/bootbus.txt    |   37 ++
->>   .../devicetree/bindings/mips/cavium/ciu.txt        |   26 ++
->>   .../devicetree/bindings/mips/cavium/gpio.txt       |   48 +++
->>   .../devicetree/bindings/mips/cavium/mdio.txt       |   27 ++
->>   .../devicetree/bindings/mips/cavium/mix.txt        |   40 ++
->>   .../devicetree/bindings/mips/cavium/pip.txt        |   98 +++++
->>   .../devicetree/bindings/mips/cavium/twsi.txt       |   34 ++
->>   .../devicetree/bindings/mips/cavium/uart.txt       |   19 +
->>   .../devicetree/bindings/mips/cavium/uctl.txt       |   47 +++
->>   arch/mips/cavium-octeon/.gitignore                 |    2 +
->>   arch/mips/cavium-octeon/Makefile                   |   13 +
->>   arch/mips/cavium-octeon/octeon_3xxx.dts            |  375 ++++++++++++++++++++
->>   12 files changed, 766 insertions(+), 0 deletions(-)
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/bootbus.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/ciu.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/gpio.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/mdio.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/mix.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/pip.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/twsi.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/uart.txt
->>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/uctl.txt
->>   create mode 100644 arch/mips/cavium-octeon/.gitignore
->>   create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
+>>   arch/mips/kernel/prom.c |   49 -----------------------------------------------
+>>   1 files changed, 0 insertions(+), 49 deletions(-)
+>>
+>> diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+>> index a19811e9..a07b6f1 100644
+>> --- a/arch/mips/kernel/prom.c
+>> +++ b/arch/mips/kernel/prom.c
+>> @@ -59,52 +59,3 @@ void __init early_init_dt_setup_initrd_arch(unsigned long start,
+>>   	initrd_below_start_ok = 1;
+>>   }
+>>   #endif
+>> -
+>> -/*
+>> - * irq_create_of_mapping - Hook to resolve OF irq specifier into a Linux irq#
+>> - *
+>> - * Currently the mapping mechanism is trivial; simple flat hwirq numbers are
+>> - * mapped 1:1 onto Linux irq numbers.  Cascaded irq controllers are not
+>> - * supported.
+>> - */
+>> -unsigned int irq_create_of_mapping(struct device_node *controller,
+>> -				   const u32 *intspec, unsigned int intsize)
+>> -{
+>> -	return intspec[0];
+>> -}
+>> -EXPORT_SYMBOL_GPL(irq_create_of_mapping);
 >
-> Looks pretty good to me.  A few comments below, but I'm okay with this
-> one being picked up (Ralf, or if you prefer then I can merge it via my
-> tree) as long as you follow it up with a fixup patch.
+> In $NEXT_KERNEL+1 irq_create_of_mapping will be replaced by common
+> infrastructure code after irq_domain is merged, so this will become
+> irrelevant anyway.
 
-This was only an RFC.  The whole patch set needs at least one more 
-revision to synchronize it with my boards' u-boot changes.
-
-I will post another set soon, and perhaps that can go via Ralf's tree.
-
-[...]
->> +++ b/Documentation/devicetree/bindings/mips/cavium/ciu.txt
->> @@ -0,0 +1,26 @@
->> +* Central Interrupt Unit
->> +
->> +Properties:
->> +- compatible: "cavium,octeon-3860-ciu"
->> +
->> +  Compatibility with all cn3XXX, cn5XXX and cn63XX SOCs.
->> +
->> +- interrupt-controller:  This is an interrupt controller.
->> +
->> +- reg: The base address of the CIU's register bank.
->> +
->> +- #interrupt-cells: Must be<2>.  The first cell is the bank within
->> +   the CIU and may have a value of 0 or 1.  The second cell is the bit
->> +   within the bank and may have a value between 0 and 63.
->> +
->> +Example:
->> +	interrupt-controller@1070000000000 {
->> +		compatible = "cavium,octeon-3860-ciu";
->> +		interrupt-controller;
->> +		/* Interrupts are specified by two parts:
->> +		 * 1) Controller register (0 or 1)
->> +		 * 2) Bit within the register (0..63)
->> +		 */
->
-> Are there any configuration parameters for these irq inputs?  Edge vs.
-> Level? Active high or active low?  If so, then you'll probably want to
-> have a flags cell.
-
-No.  They are all internal to the SOC and cannot be changed.  The chip 
-IRQ code knows how to deal with them.
+Yes, I saw your patch.  I will be tracking that as it gets merged.
 
 >
-> Also, how are the irqs typically documented in the hardware reference
-> manual?  Are they documented a irqs 0-63 in bank 1 and 0-63 in bank 2?
-
-Yes, they are clearly documented as two banks.
-
-> Or are is a flat 0-127 number range?  If it is the later, then you may
-> want to consider just using a single cell to specify the irq number,
-> and handle the bank calculation in the irq driver.
+>> -
+>> -void __init early_init_devtree(void *params)
+>> -{
+>> -	/* Setup flat device-tree pointer */
+>> -	initial_boot_params = params;
+>> -
+>> -	/* Retrieve various informations from the /chosen node of the
+>> -	 * device-tree, including the platform type, initrd location and
+>> -	 * size, and more ...
+>> -	 */
+>> -	of_scan_flat_dt(early_init_dt_scan_chosen, NULL);
+>> -
+>> -	/* Scan memory nodes */
+>> -	of_scan_flat_dt(early_init_dt_scan_root, NULL);
+>> -	of_scan_flat_dt(early_init_dt_scan_memory_arch, NULL);
+>> -}
+>> -
+>> -void __init device_tree_init(void)
+>> -{
+>> -	unsigned long base, size;
+>> -
+>> -	if (!initial_boot_params)
+>> -		return;
+>> -
+>> -	base = virt_to_phys((void *)initial_boot_params);
+>> -	size = be32_to_cpu(initial_boot_params->totalsize);
+>> -
+>> -	/* Before we do anything, lets reserve the dt blob */
+>> -	reserve_mem_mach(base, size);
+>> -
+>> -	unflatten_device_tree();
+>> -
+>> -	/* free the space reserved for the dt blob */
+>> -	free_mem_mach(base, size);
+>> -}
 >
->> +		#interrupt-cells =<2>;
->> +		reg =<0x10700 0x00000000 0x0 0x7000>;
->> +	};
->> diff --git a/Documentation/devicetree/bindings/mips/cavium/gpio.txt b/Documentation/devicetree/bindings/mips/cavium/gpio.txt
->> new file mode 100644
->> index 0000000..72853d4
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/mips/cavium/gpio.txt
->> @@ -0,0 +1,48 @@
->> +* General Purpose Input Output (GPIO) bus.
->> +
->> +Properties:
->> +- compatible: "cavium,octeon-3860-gpio"
->> +
->> +  Compatibility with all cn3XXX, cn5XXX and cn6XXX SOCs.
->> +
->> +- reg: The base address of the GPIO unit's register bank.
->> +
->> +- gpio-controller: This is a GPIO controller.
->> +
->> +- #gpio-cells: Must be<2>.  The first cell is the GPIO pin.
->> +
->> +- interrupt-controller: The GPIO controller is also an interrupt
->> +  controller, any of its pins may be configured as an interrupt
->> +  source.
->> +
->> +- #interrupt-cells: Must be<2>.  The first cell is the GPIO pin
->> +   connected to the interrupt source.  The second cell is the interrupt
->> +   triggering protocol and may have one of four values:
->> +   0 - level triggered active high.
->> +   1 - level triggered active low
->> +   2 - edge triggered on the rising edge.
->> +   3 - edge triggered on the falling edge.
->
-> Since you're choosing arbitrary values here anyway, it's convenient to
-> follow the lead of include/linux/irq.h and using 1->edge rising,
-> 2->edge falling, 4->level high, 8->level low.  In the past every irq
-> controller kind of did it's own thing, but that's not very scalable.
+> I'm a little concerned that the MIPS platforms are not sharing the
+> same DT init code.  This isn't really something that should need to be
+> customized per-platform.
 >
 
-OK.  I will use those still somewhat arbitrary values instead.
+For better or worse, the Octeon kernel is booted with a protocol 
+completely different than any other MIPS board.  So there has to be some 
+custom code to find and initialize the device tree.
 
+For boards that boot with the u-boot 'bootm' protocol, I think we need 
+to pass the device tree in the environment like other architectures do. 
+  The bootm code could, I think, be made common to all MIPS ports.
 
-[...]
-
-Thanks,
 David Daney

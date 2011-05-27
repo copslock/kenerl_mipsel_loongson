@@ -1,195 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 16:00:20 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:35652 "EHLO duck.linux-mips.net"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491772Ab1E0OAQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 May 2011 16:00:16 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p4RE0Dpj010133;
-        Fri, 27 May 2011 15:00:13 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p4RE0CWO010127;
-        Fri, 27 May 2011 15:00:12 +0100
-Date:   Fri, 27 May 2011 15:00:11 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Rob Landley <rob@landley.net>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: MIPS panic in 2.6.39 (bisected to 7eaceaccab5f)
-Message-ID: <20110527140011.GF30117@linux-mips.org>
-References: <4DDB5673.5060206@landley.net>
- <20110524143937.GB30117@linux-mips.org>
- <4DDCB1EB.4020707@landley.net>
- <20110527075512.GE30117@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 18:49:47 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:14631 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491773Ab1E0Qtl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2011 18:49:41 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4ddfd6630000>; Fri, 27 May 2011 09:50:43 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 27 May 2011 09:49:39 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 27 May 2011 09:49:39 -0700
+Message-ID: <4DDFD622.1000102@caviumnetworks.com>
+Date:   Fri, 27 May 2011 09:49:38 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110527075512.GE30117@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Return-Path: <ralf@linux-mips.org>
+To:     David Gibson <david@gibson.dropbear.id.au>,
+        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v4 1/6] of: Allow scripts/dtc/libfdt to be used from
+ kernel code
+References: <1305930343-31259-1-git-send-email-ddaney@caviumnetworks.com> <1305930343-31259-2-git-send-email-ddaney@caviumnetworks.com> <20110521063345.GB14828@yookeroo.fritz.box> <4DDA8FBC.1090904@caviumnetworks.com> <20110527032402.GD7793@yookeroo.fritz.box>
+In-Reply-To: <20110527032402.GD7793@yookeroo.fritz.box>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 27 May 2011 16:49:39.0139 (UTC) FILETIME=[117F4930:01CC1C8E]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30159
+X-archive-position: 30160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 27, 2011 at 08:55:13AM +0100, Ralf Baechle wrote:
+On 05/26/2011 08:24 PM, David Gibson wrote:
+> On Mon, May 23, 2011 at 09:47:56AM -0700, David Daney wrote:
+>> On 05/20/2011 11:33 PM, David Gibson wrote:
+>>> On Fri, May 20, 2011 at 03:25:38PM -0700, David Daney wrote:
+>>>> To use it you need to do this in your Kconfig:
+>>>>
+>>>> 	select LIBFDT
+>>>>
+>>>> And in the Makefile of the code using libfdt something like:
+>>>>
+>>>> ccflags-y := -include linux/libfdt_env.h -I$(src)/../../../scripts/dtc/libfdt
+>>>>
+>>>> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
+>>>> ---
+>>>>   drivers/of/Kconfig          |    3 +++
+>>>>   drivers/of/Makefile         |    2 ++
+>>>>   drivers/of/libfdt/Makefile  |    3 +++
+>>>>   drivers/of/libfdt/fdt.c     |    2 ++
+>>>>   drivers/of/libfdt/fdt_ro.c  |    2 ++
+>>>>   drivers/of/libfdt/fdt_wip.c |    2 ++
+>>>
+>>> No fdt_sw.c or fdt_rw.c?
+>>>
+>>
+>> I had no immediate need for them.  They could of course be added,
+>> but that would potentially waste space.
+>>
+>> Let's see if I can make it into an archive library.
+>
+> That would be preferable.  It's more or less designed to work that way
+> so that everything is available without using unnecessary space in the
+> binary.
+>
 
-> > Have you guys been able to reproduce the problem?
-> 
-> Staring at the disassembly was good enough, I think.  The commit you
-> bisected is restructuring some of the hardware probing code for Malta and
-> seems to result in gcmp_present being set without _gcmp_base having been
-> assigned, thus the null pointer dereference.
+Well, I was looking at this some more:
 
-Can you test below patch?  Thanks,
+Grant specifically requested that this go in drivers/of/libfdt, however 
+I am fairly sure that building archive libraries there will require 
+changes to the upper level Makefile infrastructure.
 
-  Ralf
+If I go back to lib/libfdt, like my first version, I can easily achieve 
+archive library behavior, but then it is separated from from drivers/of.
 
-Since af3a1f6f4813907e143f87030cde67a9971db533 the Malta code does no
-longer probe for presence of GCMP if CMP is not configured.  This means
-that the variable gcmp_present well be left at its default value of -1
-which normally is meant to indicate that GCMP has not yet been mmapped.
-This non-zero value is now interpreted as GCMP being present resulting
-in a write attempt to a GCMP register resulting in a crash.
+Personally I am starting to like the lib/libfdt home more than 
+drivers/of.  If Grant doesn't object, I think I will move it back there.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+What do you think?
 
- arch/mips/include/asm/smp-ops.h          |   41 +++++++++++++++++++++++++++--
- arch/mips/mipssim/sim_setup.c            |   17 ++++++------
- arch/mips/mti-malta/malta-init.c         |   13 ++++-----
- arch/mips/pmc-sierra/msp71xx/msp_setup.c |    8 ++---
- 4 files changed, 55 insertions(+), 24 deletions(-)
-
-diff --git a/arch/mips/include/asm/smp-ops.h b/arch/mips/include/asm/smp-ops.h
-index 9e09af3..48b03ff 100644
---- a/arch/mips/include/asm/smp-ops.h
-+++ b/arch/mips/include/asm/smp-ops.h
-@@ -56,8 +56,43 @@ static inline void register_smp_ops(struct plat_smp_ops *ops)
- 
- #endif /* !CONFIG_SMP */
- 
--extern struct plat_smp_ops up_smp_ops;
--extern struct plat_smp_ops cmp_smp_ops;
--extern struct plat_smp_ops vsmp_smp_ops;
-+static inline int register_up_smp_ops(void)
-+{
-+#ifdef CONFIG_SMP_UP
-+	extern struct plat_smp_ops up_smp_ops;
-+
-+	register_smp_ops(&up_smp_ops);
-+
-+	return 0;
-+#else
-+	return -ENODEV;
-+#endif
-+}
-+
-+static inline int register_cmp_smp_ops(void)
-+{
-+#ifdef CONFIG_MIPS_CMP
-+	extern struct plat_smp_ops cmp_smp_ops;
-+
-+	register_smp_ops(&cmp_smp_ops);
-+
-+	return 0;
-+#else
-+	return -ENODEV;
-+#endif
-+}
-+
-+static inline int register_vsmp_smp_ops(void)
-+{
-+#ifdef CONFIG_MIPS_MT_SMP
-+	extern struct plat_smp_ops vsmp_smp_ops;
-+
-+	register_smp_ops(&vsmp_smp_ops);
-+
-+	return 0;
-+#else
-+	return -ENODEV;
-+#endif
-+}
- 
- #endif /* __ASM_SMP_OPS_H */
-diff --git a/arch/mips/mipssim/sim_setup.c b/arch/mips/mipssim/sim_setup.c
-index 55f22a3..1970069 100644
---- a/arch/mips/mipssim/sim_setup.c
-+++ b/arch/mips/mipssim/sim_setup.c
-@@ -59,18 +59,17 @@ void __init prom_init(void)
- 
- 	prom_meminit();
- 
--#ifdef CONFIG_MIPS_MT_SMP
--	if (cpu_has_mipsmt)
--		register_smp_ops(&vsmp_smp_ops);
--	else
--		register_smp_ops(&up_smp_ops);
--#endif
-+	if (cpu_has_mipsmt) {
-+		if (!register_vsmp_smp_ops())
-+			return;
-+
- #ifdef CONFIG_MIPS_MT_SMTC
--	if (cpu_has_mipsmt)
- 		register_smp_ops(&ssmtc_smp_ops);
--	else
--		register_smp_ops(&up_smp_ops);
-+			return;
- #endif
-+	}
-+
-+	register_up_smp_ops();
- }
- 
- static void __init serial_init(void)
-diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
-index 31180c3..4163d09e 100644
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -358,15 +358,14 @@ void __init prom_init(void)
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	console_config();
- #endif
--#ifdef CONFIG_MIPS_CMP
- 	/* Early detection of CMP support */
- 	if (gcmp_probe(GCMP_BASE_ADDR, GCMP_ADDRSPACE_SZ))
--		register_smp_ops(&cmp_smp_ops);
--	else
--#endif
--#ifdef CONFIG_MIPS_MT_SMP
--		register_smp_ops(&vsmp_smp_ops);
--#endif
-+		if (!register_cmp_smp_ops())
-+			return;
-+
-+	if (!register_vsmp_smp_ops())
-+		return;
-+
- #ifdef CONFIG_MIPS_MT_SMTC
- 	register_smp_ops(&msmtc_smp_ops);
- #endif
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-index 2413ea6..0abfbe0 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-@@ -228,13 +228,11 @@ void __init prom_init(void)
- 	 */
- 	msp_serial_setup();
- 
--#ifdef CONFIG_MIPS_MT_SMP
--	register_smp_ops(&vsmp_smp_ops);
--#endif
--
-+	if (register_vsmp_smp_ops()) {
- #ifdef CONFIG_MIPS_MT_SMTC
--	register_smp_ops(&msp_smtc_smp_ops);
-+		register_smp_ops(&msp_smtc_smp_ops);
- #endif
-+	}
- 
- #ifdef CONFIG_PMCTWILED
- 	/*
+David Daney

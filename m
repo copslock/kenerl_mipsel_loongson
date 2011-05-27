@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 18:49:47 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:14631 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 May 2011 19:00:09 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:14983 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491773Ab1E0Qtl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2011 18:49:41 +0200
+        by eddie.linux-mips.org with ESMTP id S1491773Ab1E0RAF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 May 2011 19:00:05 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4ddfd6630000>; Fri, 27 May 2011 09:50:43 -0700
+        id <B4ddfd8d30000>; Fri, 27 May 2011 10:01:07 -0700
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 27 May 2011 09:49:39 -0700
+         Fri, 27 May 2011 10:00:03 -0700
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 27 May 2011 09:49:39 -0700
-Message-ID: <4DDFD622.1000102@caviumnetworks.com>
-Date:   Fri, 27 May 2011 09:49:38 -0700
+         Fri, 27 May 2011 10:00:03 -0700
+Message-ID: <4DDFD892.1040309@caviumnetworks.com>
+Date:   Fri, 27 May 2011 10:00:02 -0700
 From:   David Daney <ddaney@caviumnetworks.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-To:     David Gibson <david@gibson.dropbear.id.au>,
-        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca
+To:     Grant Likely <grant.likely@secretlab.ca>
 CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v4 1/6] of: Allow scripts/dtc/libfdt to be used from
- kernel code
-References: <1305930343-31259-1-git-send-email-ddaney@caviumnetworks.com> <1305930343-31259-2-git-send-email-ddaney@caviumnetworks.com> <20110521063345.GB14828@yookeroo.fritz.box> <4DDA8FBC.1090904@caviumnetworks.com> <20110527032402.GD7793@yookeroo.fritz.box>
-In-Reply-To: <20110527032402.GD7793@yookeroo.fritz.box>
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v4 3/6] MIPS: Octeon: Add device tree source files.
+References: <1305930343-31259-1-git-send-email-ddaney@caviumnetworks.com> <1305930343-31259-4-git-send-email-ddaney@caviumnetworks.com> <20110527015618.GC5032@ponder.secretlab.ca>
+In-Reply-To: <20110527015618.GC5032@ponder.secretlab.ca>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 May 2011 16:49:39.0139 (UTC) FILETIME=[117F4930:01CC1C8E]
+X-OriginalArrivalTime: 27 May 2011 17:00:03.0135 (UTC) FILETIME=[856D84F0:01CC1C8F]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 30160
+X-archive-position: 30161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,52 +35,132 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On 05/26/2011 08:24 PM, David Gibson wrote:
-> On Mon, May 23, 2011 at 09:47:56AM -0700, David Daney wrote:
->> On 05/20/2011 11:33 PM, David Gibson wrote:
->>> On Fri, May 20, 2011 at 03:25:38PM -0700, David Daney wrote:
->>>> To use it you need to do this in your Kconfig:
->>>>
->>>> 	select LIBFDT
->>>>
->>>> And in the Makefile of the code using libfdt something like:
->>>>
->>>> ccflags-y := -include linux/libfdt_env.h -I$(src)/../../../scripts/dtc/libfdt
->>>>
->>>> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
->>>> ---
->>>>   drivers/of/Kconfig          |    3 +++
->>>>   drivers/of/Makefile         |    2 ++
->>>>   drivers/of/libfdt/Makefile  |    3 +++
->>>>   drivers/of/libfdt/fdt.c     |    2 ++
->>>>   drivers/of/libfdt/fdt_ro.c  |    2 ++
->>>>   drivers/of/libfdt/fdt_wip.c |    2 ++
->>>
->>> No fdt_sw.c or fdt_rw.c?
->>>
->>
->> I had no immediate need for them.  They could of course be added,
->> but that would potentially waste space.
->>
->> Let's see if I can make it into an archive library.
+On 05/26/2011 06:56 PM, Grant Likely wrote:
+> On Fri, May 20, 2011 at 03:25:40PM -0700, David Daney wrote:
+>> Signed-off-by: David Daney<ddaney@caviumnetworks.com>
+>> ---
+>>   .../devicetree/bindings/mips/cavium/bootbus.txt    |   37 ++
+>>   .../devicetree/bindings/mips/cavium/ciu.txt        |   26 ++
+>>   .../devicetree/bindings/mips/cavium/gpio.txt       |   48 +++
+>>   .../devicetree/bindings/mips/cavium/mdio.txt       |   27 ++
+>>   .../devicetree/bindings/mips/cavium/mix.txt        |   40 ++
+>>   .../devicetree/bindings/mips/cavium/pip.txt        |   98 +++++
+>>   .../devicetree/bindings/mips/cavium/twsi.txt       |   34 ++
+>>   .../devicetree/bindings/mips/cavium/uart.txt       |   19 +
+>>   .../devicetree/bindings/mips/cavium/uctl.txt       |   47 +++
+>>   arch/mips/cavium-octeon/.gitignore                 |    2 +
+>>   arch/mips/cavium-octeon/Makefile                   |   13 +
+>>   arch/mips/cavium-octeon/octeon_3xxx.dts            |  375 ++++++++++++++++++++
+>>   12 files changed, 766 insertions(+), 0 deletions(-)
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/bootbus.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/ciu.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/gpio.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/mdio.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/mix.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/pip.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/twsi.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/uart.txt
+>>   create mode 100644 Documentation/devicetree/bindings/mips/cavium/uctl.txt
+>>   create mode 100644 arch/mips/cavium-octeon/.gitignore
+>>   create mode 100644 arch/mips/cavium-octeon/octeon_3xxx.dts
 >
-> That would be preferable.  It's more or less designed to work that way
-> so that everything is available without using unnecessary space in the
-> binary.
+> Looks pretty good to me.  A few comments below, but I'm okay with this
+> one being picked up (Ralf, or if you prefer then I can merge it via my
+> tree) as long as you follow it up with a fixup patch.
+
+This was only an RFC.  The whole patch set needs at least one more 
+revision to synchronize it with my boards' u-boot changes.
+
+I will post another set soon, and perhaps that can go via Ralf's tree.
+
+[...]
+>> +++ b/Documentation/devicetree/bindings/mips/cavium/ciu.txt
+>> @@ -0,0 +1,26 @@
+>> +* Central Interrupt Unit
+>> +
+>> +Properties:
+>> +- compatible: "cavium,octeon-3860-ciu"
+>> +
+>> +  Compatibility with all cn3XXX, cn5XXX and cn63XX SOCs.
+>> +
+>> +- interrupt-controller:  This is an interrupt controller.
+>> +
+>> +- reg: The base address of the CIU's register bank.
+>> +
+>> +- #interrupt-cells: Must be<2>.  The first cell is the bank within
+>> +   the CIU and may have a value of 0 or 1.  The second cell is the bit
+>> +   within the bank and may have a value between 0 and 63.
+>> +
+>> +Example:
+>> +	interrupt-controller@1070000000000 {
+>> +		compatible = "cavium,octeon-3860-ciu";
+>> +		interrupt-controller;
+>> +		/* Interrupts are specified by two parts:
+>> +		 * 1) Controller register (0 or 1)
+>> +		 * 2) Bit within the register (0..63)
+>> +		 */
+>
+> Are there any configuration parameters for these irq inputs?  Edge vs.
+> Level? Active high or active low?  If so, then you'll probably want to
+> have a flags cell.
+
+No.  They are all internal to the SOC and cannot be changed.  The chip 
+IRQ code knows how to deal with them.
+
+>
+> Also, how are the irqs typically documented in the hardware reference
+> manual?  Are they documented a irqs 0-63 in bank 1 and 0-63 in bank 2?
+
+Yes, they are clearly documented as two banks.
+
+> Or are is a flat 0-127 number range?  If it is the later, then you may
+> want to consider just using a single cell to specify the irq number,
+> and handle the bank calculation in the irq driver.
+>
+>> +		#interrupt-cells =<2>;
+>> +		reg =<0x10700 0x00000000 0x0 0x7000>;
+>> +	};
+>> diff --git a/Documentation/devicetree/bindings/mips/cavium/gpio.txt b/Documentation/devicetree/bindings/mips/cavium/gpio.txt
+>> new file mode 100644
+>> index 0000000..72853d4
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mips/cavium/gpio.txt
+>> @@ -0,0 +1,48 @@
+>> +* General Purpose Input Output (GPIO) bus.
+>> +
+>> +Properties:
+>> +- compatible: "cavium,octeon-3860-gpio"
+>> +
+>> +  Compatibility with all cn3XXX, cn5XXX and cn6XXX SOCs.
+>> +
+>> +- reg: The base address of the GPIO unit's register bank.
+>> +
+>> +- gpio-controller: This is a GPIO controller.
+>> +
+>> +- #gpio-cells: Must be<2>.  The first cell is the GPIO pin.
+>> +
+>> +- interrupt-controller: The GPIO controller is also an interrupt
+>> +  controller, any of its pins may be configured as an interrupt
+>> +  source.
+>> +
+>> +- #interrupt-cells: Must be<2>.  The first cell is the GPIO pin
+>> +   connected to the interrupt source.  The second cell is the interrupt
+>> +   triggering protocol and may have one of four values:
+>> +   0 - level triggered active high.
+>> +   1 - level triggered active low
+>> +   2 - edge triggered on the rising edge.
+>> +   3 - edge triggered on the falling edge.
+>
+> Since you're choosing arbitrary values here anyway, it's convenient to
+> follow the lead of include/linux/irq.h and using 1->edge rising,
+> 2->edge falling, 4->level high, 8->level low.  In the past every irq
+> controller kind of did it's own thing, but that's not very scalable.
 >
 
-Well, I was looking at this some more:
+OK.  I will use those still somewhat arbitrary values instead.
 
-Grant specifically requested that this go in drivers/of/libfdt, however 
-I am fairly sure that building archive libraries there will require 
-changes to the upper level Makefile infrastructure.
 
-If I go back to lib/libfdt, like my first version, I can easily achieve 
-archive library behavior, but then it is separated from from drivers/of.
+[...]
 
-Personally I am starting to like the lib/libfdt home more than 
-drivers/of.  If Grant doesn't object, I think I will move it back there.
-
-What do you think?
-
+Thanks,
 David Daney

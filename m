@@ -1,65 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jun 2011 19:00:58 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:42644 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491835Ab1FARAx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 1 Jun 2011 19:00:53 +0200
-Received: by fxm14 with SMTP id 14so271842fxm.36
-        for <multiple recipients>; Wed, 01 Jun 2011 10:00:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:in-reply-to:references:from
-         :date:x-google-sender-auth:message-id:subject:to:cc:content-type
-         :content-transfer-encoding;
-        bh=KpPEf4LLr9n8sDDxoaiv5s6pKcWw3mocvYJd39gSYcs=;
-        b=qTHYqlfs/NHw3B2/Tna+w+EPozkPp59n+cW1jr4Vc9IO+DB5jRM1D1Zfk29PGNt3r6
-         +bIQRMaKhLM0eyr2PNcfYcM+zZ8Tj5MFhn0V05b69T5CKjsn2swomtzGRs1MSYPEDy7J
-         pO5GPrw7DabUXJ9+CVRtw5Aguj1ACDtUM2+YQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:from:date
-         :x-google-sender-auth:message-id:subject:to:cc:content-type
-         :content-transfer-encoding;
-        b=otTydPVSSge4X4RPr279iPjuC8gex/ObSJDnJzzqIiMvQE3szWiAeTkBIL8E/0oDxN
-         WshBkkNurbbiRrDrkQBLPLiRLmLLqlL9D7sxpAESGbkyYBylRS7LawMEH5djpouT4AmP
-         ntZ5L0Fp0GJ9jVdfumAFPATnHHEKY5plOReQA=
-Received: by 10.223.1.209 with SMTP id 17mr5387359fag.89.1306947648106; Wed,
- 01 Jun 2011 10:00:48 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.223.149.133 with HTTP; Wed, 1 Jun 2011 10:00:28 -0700 (PDT)
-In-Reply-To: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
-References: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
-From:   Mike Frysinger <vapier@gentoo.org>
-Date:   Wed, 1 Jun 2011 13:00:28 -0400
-X-Google-Sender-Auth: EdDBFDhUtmES1ioY6e6-8QVrqfY
-Message-ID: <BANLkTinEc8OLHnkVCZVpHK4ZnC1DHbEsvw@mail.gmail.com>
-Subject: Re: [PATCH] Fix build warning of the defconfigs
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jun 2011 20:16:44 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([92.198.50.35]:51404 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491842Ab1FASQl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Jun 2011 20:16:41 +0200
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+        (envelope-from <wsa@pengutronix.de>)
+        id 1QRpxo-00074x-So; Wed, 01 Jun 2011 20:16:16 +0200
+Received: from wsa by octopus.hi.pengutronix.de with local (Exim 4.76)
+        (envelope-from <wsa@pengutronix.de>)
+        id 1QRpxb-0000Ka-8o; Wed, 01 Jun 2011 20:16:03 +0200
+Date:   Wed, 1 Jun 2011 20:16:03 +0200
+From:   Wolfram Sang <w.sang@pengutronix.de>
 To:     Wanlong Gao <wanlong.gao@gmail.com>
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
         linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
         linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
-        ralf@linux-mips.org, benh@kernel.crashing.org, paulus@samba.org,
-        lethal@linux-sh.org, gxt@mprc.pku.edu.cn,
+        vapier@gentoo.org, ralf@linux-mips.org, benh@kernel.crashing.org,
+        paulus@samba.org, lethal@linux-sh.org, gxt@mprc.pku.edu.cn,
         david.woodhouse@intel.com, akpm@linux-foundation.org,
         u.kleine-koenig@pengutronix.de, mingo@elte.hu, rientjes@google.com,
-        w.sang@pengutronix.de, sam@ravnborg.org,
-        manuel.lauss@googlemail.com, anton@samba.org, arnd@arndb.de
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30177
+        sam@ravnborg.org, manuel.lauss@googlemail.com, anton@samba.org,
+        arnd@arndb.de
+Subject: Re: [PATCH] Fix build warning of the defconfigs
+Message-ID: <20110601181603.GA454@pengutronix.de>
+References: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="7AUc2qLy4jB3hD7Z"
+Content-Disposition: inline
+In-Reply-To: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
+X-SA-Exim-Mail-From: wsa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+X-archive-position: 30178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vapier@gentoo.org
+X-original-sender: w.sang@pengutronix.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 970
+X-UID: 1075
 
-On Wed, Jun 1, 2011 at 12:29, Wanlong Gao wrote:
->  arch/blackfin/configs/CM-BF548_defconfig   |    2 +-
 
-Acked-by: Mike Frysinger <vapier@gentoo.org>
--mike
+--7AUc2qLy4jB3hD7Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jun 02, 2011 at 12:29:23AM +0800, Wanlong Gao wrote:
+> RTC_CLASS is changed to bool.
+> So value 'm' is invalid.
+>=20
+> Signed-off-by: Wanlong Gao <wanlong.gao@gmail.com>
+> ---
+>  arch/arm/configs/davinci_all_defconfig     |    2 +-
+>  arch/arm/configs/mxs_defconfig             |    2 +-
+>  arch/arm/configs/netx_defconfig            |    2 +-
+>  arch/arm/configs/viper_defconfig           |    2 +-
+>  arch/arm/configs/xcep_defconfig            |    2 +-
+>  arch/arm/configs/zeus_defconfig            |    2 +-
+>  arch/avr32/configs/atngw100_mrmt_defconfig |    2 +-
+>  arch/blackfin/configs/CM-BF548_defconfig   |    2 +-
+>  arch/mips/configs/mtx1_defconfig           |    2 +-
+>  arch/powerpc/configs/52xx/pcm030_defconfig |    2 +-
+>  arch/powerpc/configs/ps3_defconfig         |    2 +-
+>  arch/sh/configs/titan_defconfig            |    2 +-
+>  arch/unicore32/configs/debug_defconfig     |    2 +-
+>  13 files changed, 13 insertions(+), 13 deletions(-)
+
+The mxs-part has already been sent by Shawn Guo (shouldn't harm).
+
+Thanks for doing tree-wide:
+
+Acked-by: Wolfram Sang <w.sang@pengutronix.de>
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--7AUc2qLy4jB3hD7Z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iEYEARECAAYFAk3mgeMACgkQD27XaX1/VRtALACgwWNkKN3MYtyEJ3UIFNG7P/jx
+oygAoJkolxXXrviVsTRfROYzf65y/N+3
+=5o5C
+-----END PGP SIGNATURE-----
+
+--7AUc2qLy4jB3hD7Z--

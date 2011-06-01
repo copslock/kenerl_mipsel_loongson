@@ -1,99 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jun 2011 20:16:44 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:51404 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491842Ab1FASQl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Jun 2011 20:16:41 +0200
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <wsa@pengutronix.de>)
-        id 1QRpxo-00074x-So; Wed, 01 Jun 2011 20:16:16 +0200
-Received: from wsa by octopus.hi.pengutronix.de with local (Exim 4.76)
-        (envelope-from <wsa@pengutronix.de>)
-        id 1QRpxb-0000Ka-8o; Wed, 01 Jun 2011 20:16:03 +0200
-Date:   Wed, 1 Jun 2011 20:16:03 +0200
-From:   Wolfram Sang <w.sang@pengutronix.de>
-To:     Wanlong Gao <wanlong.gao@gmail.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
-        vapier@gentoo.org, ralf@linux-mips.org, benh@kernel.crashing.org,
-        paulus@samba.org, lethal@linux-sh.org, gxt@mprc.pku.edu.cn,
-        david.woodhouse@intel.com, akpm@linux-foundation.org,
-        u.kleine-koenig@pengutronix.de, mingo@elte.hu, rientjes@google.com,
-        sam@ravnborg.org, manuel.lauss@googlemail.com, anton@samba.org,
-        arnd@arndb.de
-Subject: Re: [PATCH] Fix build warning of the defconfigs
-Message-ID: <20110601181603.GA454@pengutronix.de>
-References: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="7AUc2qLy4jB3hD7Z"
-Content-Disposition: inline
-In-Reply-To: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
-X-SA-Exim-Mail-From: wsa@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-X-archive-position: 30178
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jun 2011 21:47:26 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47027 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491843Ab1FATrV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 1 Jun 2011 21:47:21 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p51JlRi5010104;
+        Wed, 1 Jun 2011 20:47:27 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p51JlQM0010101;
+        Wed, 1 Jun 2011 20:47:26 +0100
+Message-Id: <20110601180456.801265664@duck.linux-mips.net>
+User-Agent: quilt/0.48-1
+Date:   Wed, 01 Jun 2011 19:04:56 +0100
+From:   ralf@linux-mips.org
+To:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@linux-mips.org
+Subject: [patch 00/14] Sort out i8253 and PC speaker locking and headers
+X-archive-position: 30179
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w.sang@pengutronix.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 1075
+X-UID: 1159
 
+No longer terribly relevant these days but still broken and just an eyesore
+mess of neglience just as I've already raised it a few days ago.  Time to
+sort this.
 
---7AUc2qLy4jB3hD7Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+drivers/input/misc/pcspkr.c:
 
-On Thu, Jun 02, 2011 at 12:29:23AM +0800, Wanlong Gao wrote:
-> RTC_CLASS is changed to bool.
-> So value 'm' is invalid.
->=20
-> Signed-off-by: Wanlong Gao <wanlong.gao@gmail.com>
-> ---
->  arch/arm/configs/davinci_all_defconfig     |    2 +-
->  arch/arm/configs/mxs_defconfig             |    2 +-
->  arch/arm/configs/netx_defconfig            |    2 +-
->  arch/arm/configs/viper_defconfig           |    2 +-
->  arch/arm/configs/xcep_defconfig            |    2 +-
->  arch/arm/configs/zeus_defconfig            |    2 +-
->  arch/avr32/configs/atngw100_mrmt_defconfig |    2 +-
->  arch/blackfin/configs/CM-BF548_defconfig   |    2 +-
->  arch/mips/configs/mtx1_defconfig           |    2 +-
->  arch/powerpc/configs/52xx/pcm030_defconfig |    2 +-
->  arch/powerpc/configs/ps3_defconfig         |    2 +-
->  arch/sh/configs/titan_defconfig            |    2 +-
->  arch/unicore32/configs/debug_defconfig     |    2 +-
->  13 files changed, 13 insertions(+), 13 deletions(-)
+#if defined(CONFIG_MIPS) || defined(CONFIG_X86)
+/* Use the global PIT lock ! */
+#include <asm/i8253.h>
+#else
+#include <asm/8253pit.h>
+static DEFINE_RAW_SPINLOCK(i8253_lock);
+#endif
 
-The mxs-part has already been sent by Shawn Guo (shouldn't harm).
+sound/drivers/pcsp/pcsp.h:
 
-Thanks for doing tree-wide:
+#if defined(CONFIG_MIPS) || defined(CONFIG_X86)
+/* Use the global PIT lock ! */
+#include <asm/i8253.h>
+#else
+#include <asm/8253pit.h>
+static DEFINE_RAW_SPINLOCK(i8253_lock);
 
-Acked-by: Wolfram Sang <w.sang@pengutronix.de>
+$ git grep -F pcsp.h sound/drivers/pcsp
+sound/drivers/pcsp/pcsp.c:#include "pcsp.h"
+sound/drivers/pcsp/pcsp_input.c:#include "pcsp.h"
+sound/drivers/pcsp/pcsp_lib.c:#include "pcsp.h"
+sound/drivers/pcsp/pcsp_mixer.c:#include "pcsp.h"
+$ git grep -w i8253_lock sound/drivers/pcsp/
+sound/drivers/pcsp/pcsp.h:static DEFINE_RAW_SPINLOCK(i8253_lock);
+sound/drivers/pcsp/pcsp_input.c:        raw_spin_lock_irqsave(&i8253_lock, flags
+sound/drivers/pcsp/pcsp_input.c:        raw_spin_unlock_irqrestore(&i8253_lock, 
+sound/drivers/pcsp/pcsp_lib.c:          raw_spin_lock_irqsave(&i8253_lock, flags
+sound/drivers/pcsp/pcsp_lib.c:          raw_spin_unlock_irqrestore(&i8253_lock, 
+sound/drivers/pcsp/pcsp_lib.c:  raw_spin_lock(&i8253_lock);
+sound/drivers/pcsp/pcsp_lib.c:  raw_spin_unlock(&i8253_lock);
+sound/drivers/pcsp/pcsp_lib.c:  raw_spin_lock(&i8253_lock);
+sound/drivers/pcsp/pcsp_lib.c:  raw_spin_unlock(&i8253_lock);
 
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Locks are great, everybody should have their own lock!
 
---7AUc2qLy4jB3hD7Z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+$ find . -name 8253pit.h
+./arch/powerpc/include/asm/8253pit.h
+./arch/alpha/include/asm/8253pit.h
+$ cat arch/*/include/asm/8253pit.h
+/*
+ * 8253/8254 Programmable Interval Timer
+ */
+/*
+ * 8253/8254 Programmable Interval Timer
+ */
+$
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
+Eh...
 
-iEYEARECAAYFAk3mgeMACgkQD27XaX1/VRtALACgwWNkKN3MYtyEJ3UIFNG7P/jx
-oygAoJkolxXXrviVsTRfROYzf65y/N+3
-=5o5C
------END PGP SIGNATURE-----
+$ git grep -w PCSPKR_PLATFORM 
+arch/mips/Kconfig:      select PCSPKR_PLATFORM
+arch/mips/Kconfig:      select PCSPKR_PLATFORM
+arch/mips/Kconfig:      select PCSPKR_PLATFORM
+arch/powerpc/platforms/amigaone/Kconfig:        select PCSPKR_PLATFORM
+drivers/input/misc/Kconfig:     depends on PCSPKR_PLATFORM
+init/Kconfig:config PCSPKR_PLATFORM
+sound/drivers/Kconfig:  depends on PCSPKR_PLATFORM && X86 && HIGH_RES_TIMERS
 
---7AUc2qLy4jB3hD7Z--
+So the status is:
+
+ Alpha:		There is no PCSPKR_PLATFORM so while a platform device is
+		being installed no drivers will be built.  I don't know
+		which Alpha platforms or even if all of Alpha should be
+		doing a PCSPKR_PLATFORM so I haven't even tried to sort
+		this.
+ ARM:		No PC speaker supported, yeah :)
+ PowerPC:	Should compile but the locking is wrong but only the AmigaOne
+   		platforms should be affected.
+ MIPS:		Ok.
+ x86:		Ok.
+ All others:	No PC speaker supported
+
+Also only the plain old IBM PC XT was using a i8253; every later system
+had i8254.  So maybe this is the time for renaming the support code?
+
+  Ralf

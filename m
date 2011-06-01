@@ -1,101 +1,244 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jun 2011 05:11:12 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:62995 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491108Ab1FADLF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Jun 2011 05:11:05 +0200
-Received: by yxh35 with SMTP id 35so2477858yxh.36
-        for <multiple recipients>; Tue, 31 May 2011 20:10:57 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jun 2011 18:30:28 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:54628 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491835Ab1FAQaU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 1 Jun 2011 18:30:20 +0200
+Received: by pzk28 with SMTP id 28so3207760pzk.36
+        for <multiple recipients>; Wed, 01 Jun 2011 09:30:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer
-         :in-reply-to:references;
-        bh=n29JH1TGjiFRXdM7KNLghkbfZ4y73MIDKd3oAYdreSg=;
-        b=Ff8vEyVst6eA8VleCWKd+eLP0dFjZxBCqJqAbE74xWMJ3ZCngUBWNEjGA+YFQrRiej
-         MD9OdsnW682zCXrf4u9WI16kX4akh8SqvI9DPmIfU88TrybQLKELB4zb1+audFpuaoWh
-         xo+/2Pe84T6czmTTTgiBg7EJ47ROJwU5nfDAQ=
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=+9wTv5DZMjpVSH5mloXPUWybfyqKxdbh2tWtpb6qLMM=;
+        b=V92awdfW0hFp5TJ6dzstZLdC2HGUwJZ+coQsvt7szFY+0rkDbFQDnALqawC1XJG5Lw
+         yzyYTVtknfCzijzxGEFjnf/NO+wbI0WJYiYgrAVJkD4LszyucoyztDOMH/++YQmCI3aF
+         YuWZuYJZc/zUaL27gb5zhRUbN4IBKAQ5bW2FM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=KNuoOOblS+kRKhvW0eLKJfSNrTCqI9Pl5NXSftMfUrR1mVaguu6zrHHk/nqaJHOsH3
-         Fqc3cSCu6ZNiHeLXwaeRTwWa4i9bdPcZ2Eifwy63JxaLkqkDz8zYIcUh39aV6Q6I0FKV
-         tcsB7/8zQF62rOE89suGfALb2rLb9RpCAC3hA=
-Received: by 10.91.212.15 with SMTP id o15mr5713268agq.189.1306897857760;
-        Tue, 31 May 2011 20:10:57 -0700 (PDT)
-Received: from localhost.localdomain (adsl-98-87-45-176.bna.bellsouth.net [98.87.45.176])
-        by mx.google.com with ESMTPS id c21sm443297ana.24.2011.05.31.20.10.56
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=f6tDEFUz8fJnPr5rqzJPhwtPJjU2O8eQAhk1BEYxusUHe3bcRQJGa/Lv/v0uBXxHVA
+         EWlpiXtYuv/whqah1kU0D7g/OQZ5BK1tiyHgINuqh1die0uqZgGQZXvOl5Ir0SaSfMIw
+         CVFHiiF8QlJNah4i6YemaCrc58qusuFt8Q+oA=
+Received: by 10.143.63.17 with SMTP id q17mr1355266wfk.186.1306945812799;
+        Wed, 01 Jun 2011 09:30:12 -0700 (PDT)
+Received: from localhost.localdomain ([182.32.129.92])
+        by mx.google.com with ESMTPS id l10sm738976wfk.9.2011.06.01.09.29.41
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 31 May 2011 20:10:57 -0700 (PDT)
-From:   Will Drewry <wad@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     kees.cook@canonical.com, torvalds@linux-foundation.org,
-        tglx@linutronix.de, mingo@elte.hu, rostedt@goodmis.org,
-        jmorris@namei.org, Will Drewry <wad@chromium.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH v3 09/13] mips: select HAVE_SECCOMP_FILTER and provide seccomp_execve
-Date:   Tue, 31 May 2011 22:10:41 -0500
-Message-Id: <1306897845-9393-9-git-send-email-wad@chromium.org>
-X-Mailer: git-send-email 1.7.0.4
-In-Reply-To: <BANLkTimNcag-ZmVTXjUoTyiuJm6jtW0DgA@mail.gmail.com>
-References: <BANLkTimNcag-ZmVTXjUoTyiuJm6jtW0DgA@mail.gmail.com>
-X-archive-position: 30175
+        Wed, 01 Jun 2011 09:30:12 -0700 (PDT)
+From:   Wanlong Gao <wanlong.gao@gmail.com>
+To:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
+Cc:     linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
+        vapier@gentoo.org, ralf@linux-mips.org, benh@kernel.crashing.org,
+        paulus@samba.org, lethal@linux-sh.org, gxt@mprc.pku.edu.cn,
+        david.woodhouse@intel.com, akpm@linux-foundation.org,
+        u.kleine-koenig@pengutronix.de, mingo@elte.hu, rientjes@google.com,
+        w.sang@pengutronix.de, sam@ravnborg.org,
+        manuel.lauss@googlemail.com, anton@samba.org, arnd@arndb.de,
+        Wanlong Gao <wanlong.gao@gmail.com>
+Subject: [PATCH] Fix build warning of the defconfigs
+Date:   Thu,  2 Jun 2011 00:29:23 +0800
+Message-Id: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
+X-Mailer: git-send-email 1.7.4.1
+X-archive-position: 30176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wad@chromium.org
+X-original-sender: wanlong.gao@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 136
+X-UID: 950
 
-Facilitate the use of CONFIG_SECCOMP_FILTER by wrapping compatibility
-system call numbering for execve and selecting HAVE_SECCOMP_FILTER.
+RTC_CLASS is changed to bool.
+So value 'm' is invalid.
 
-Signed-off-by: Will Drewry <wad@chromium.org>
+Signed-off-by: Wanlong Gao <wanlong.gao@gmail.com>
 ---
- arch/mips/Kconfig               |    1 +
- arch/mips/include/asm/seccomp.h |    3 +++
- 2 files changed, 4 insertions(+), 0 deletions(-)
+ arch/arm/configs/davinci_all_defconfig     |    2 +-
+ arch/arm/configs/mxs_defconfig             |    2 +-
+ arch/arm/configs/netx_defconfig            |    2 +-
+ arch/arm/configs/viper_defconfig           |    2 +-
+ arch/arm/configs/xcep_defconfig            |    2 +-
+ arch/arm/configs/zeus_defconfig            |    2 +-
+ arch/avr32/configs/atngw100_mrmt_defconfig |    2 +-
+ arch/blackfin/configs/CM-BF548_defconfig   |    2 +-
+ arch/mips/configs/mtx1_defconfig           |    2 +-
+ arch/powerpc/configs/52xx/pcm030_defconfig |    2 +-
+ arch/powerpc/configs/ps3_defconfig         |    2 +-
+ arch/sh/configs/titan_defconfig            |    2 +-
+ arch/unicore32/configs/debug_defconfig     |    2 +-
+ 13 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8e256cc..d376f68 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -10,6 +10,7 @@ config MIPS
- 	select HAVE_ARCH_KGDB
- 	select HAVE_FUNCTION_TRACER
- 	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
-+	select HAVE_SECCOMP_FILTER
- 	select HAVE_DYNAMIC_FTRACE
- 	select HAVE_FTRACE_MCOUNT_RECORD
- 	select HAVE_C_RECORDMCOUNT
-diff --git a/arch/mips/include/asm/seccomp.h b/arch/mips/include/asm/seccomp.h
-index ae6306e..4014a3a 100644
---- a/arch/mips/include/asm/seccomp.h
-+++ b/arch/mips/include/asm/seccomp.h
-@@ -6,6 +6,7 @@
- #define __NR_seccomp_write __NR_write
- #define __NR_seccomp_exit __NR_exit
- #define __NR_seccomp_sigreturn __NR_rt_sigreturn
-+#define __NR_seccomp_execve __NR_execve
+diff --git a/arch/arm/configs/davinci_all_defconfig b/arch/arm/configs/davinci_all_defconfig
+index 889922a..67b5abb6 100644
+--- a/arch/arm/configs/davinci_all_defconfig
++++ b/arch/arm/configs/davinci_all_defconfig
+@@ -157,7 +157,7 @@ CONFIG_LEDS_GPIO=m
+ CONFIG_LEDS_TRIGGERS=y
+ CONFIG_LEDS_TRIGGER_TIMER=m
+ CONFIG_LEDS_TRIGGER_HEARTBEAT=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT3_FS=y
+ CONFIG_XFS_FS=m
+diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
+index 2bf2243..5a6ff7c 100644
+--- a/arch/arm/configs/mxs_defconfig
++++ b/arch/arm/configs/mxs_defconfig
+@@ -89,7 +89,7 @@ CONFIG_DISPLAY_SUPPORT=m
+ # CONFIG_USB_SUPPORT is not set
+ CONFIG_MMC=y
+ CONFIG_MMC_MXS=y
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_DS1307=m
+ CONFIG_DMADEVICES=y
+ CONFIG_MXS_DMA=y
+diff --git a/arch/arm/configs/netx_defconfig b/arch/arm/configs/netx_defconfig
+index 316af54..9c0ad79 100644
+--- a/arch/arm/configs/netx_defconfig
++++ b/arch/arm/configs/netx_defconfig
+@@ -60,7 +60,7 @@ CONFIG_FB_ARMCLCD=y
+ # CONFIG_VGA_CONSOLE is not set
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+ CONFIG_LOGO=y
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_INOTIFY=y
+ CONFIG_TMPFS=y
+ CONFIG_JFFS2_FS=y
+diff --git a/arch/arm/configs/viper_defconfig b/arch/arm/configs/viper_defconfig
+index 8b0c717..1d01ddd 100644
+--- a/arch/arm/configs/viper_defconfig
++++ b/arch/arm/configs/viper_defconfig
+@@ -142,7 +142,7 @@ CONFIG_USB_GADGETFS=m
+ CONFIG_USB_FILE_STORAGE=m
+ CONFIG_USB_G_SERIAL=m
+ CONFIG_USB_G_PRINTER=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_DS1307=m
+ CONFIG_RTC_DRV_SA1100=m
+ CONFIG_EXT2_FS=m
+diff --git a/arch/arm/configs/xcep_defconfig b/arch/arm/configs/xcep_defconfig
+index 5b55041..721832f 100644
+--- a/arch/arm/configs/xcep_defconfig
++++ b/arch/arm/configs/xcep_defconfig
+@@ -73,7 +73,7 @@ CONFIG_SENSORS_MAX6650=m
+ # CONFIG_VGA_CONSOLE is not set
+ # CONFIG_HID_SUPPORT is not set
+ # CONFIG_USB_SUPPORT is not set
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_SA1100=m
+ CONFIG_DMADEVICES=y
+ # CONFIG_DNOTIFY is not set
+diff --git a/arch/arm/configs/zeus_defconfig b/arch/arm/configs/zeus_defconfig
+index 960f655..59577ad 100644
+--- a/arch/arm/configs/zeus_defconfig
++++ b/arch/arm/configs/zeus_defconfig
+@@ -158,7 +158,7 @@ CONFIG_LEDS_TRIGGER_HEARTBEAT=m
+ CONFIG_LEDS_TRIGGER_BACKLIGHT=m
+ CONFIG_LEDS_TRIGGER_GPIO=m
+ CONFIG_LEDS_TRIGGER_DEFAULT_ON=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_ISL1208=m
+ CONFIG_RTC_DRV_PXA=m
+ CONFIG_EXT2_FS=y
+diff --git a/arch/avr32/configs/atngw100_mrmt_defconfig b/arch/avr32/configs/atngw100_mrmt_defconfig
+index 19f6cee..fb6dab8 100644
+--- a/arch/avr32/configs/atngw100_mrmt_defconfig
++++ b/arch/avr32/configs/atngw100_mrmt_defconfig
+@@ -109,7 +109,7 @@ CONFIG_LEDS_GPIO=y
+ CONFIG_LEDS_TRIGGERS=y
+ CONFIG_LEDS_TRIGGER_TIMER=y
+ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_S35390A=m
+ CONFIG_RTC_DRV_AT32AP700X=m
+ CONFIG_DMADEVICES=y
+diff --git a/arch/blackfin/configs/CM-BF548_defconfig b/arch/blackfin/configs/CM-BF548_defconfig
+index 31d9542..9f1d084 100644
+--- a/arch/blackfin/configs/CM-BF548_defconfig
++++ b/arch/blackfin/configs/CM-BF548_defconfig
+@@ -112,7 +112,7 @@ CONFIG_USB_G_SERIAL=m
+ CONFIG_USB_G_PRINTER=m
+ CONFIG_MMC=m
+ CONFIG_SDH_BFIN=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_BFIN=m
+ CONFIG_EXT2_FS=m
+ # CONFIG_DNOTIFY is not set
+diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
+index 37862b2..807c97e 100644
+--- a/arch/mips/configs/mtx1_defconfig
++++ b/arch/mips/configs/mtx1_defconfig
+@@ -678,7 +678,7 @@ CONFIG_LEDS_TRIGGERS=y
+ CONFIG_LEDS_TRIGGER_TIMER=y
+ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
+ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_INTF_DEV_UIE_EMUL=y
+ CONFIG_RTC_DRV_TEST=m
+ CONFIG_RTC_DRV_DS1307=m
+diff --git a/arch/powerpc/configs/52xx/pcm030_defconfig b/arch/powerpc/configs/52xx/pcm030_defconfig
+index 7f7e4a8..22e7195 100644
+--- a/arch/powerpc/configs/52xx/pcm030_defconfig
++++ b/arch/powerpc/configs/52xx/pcm030_defconfig
+@@ -85,7 +85,7 @@ CONFIG_USB_OHCI_HCD=m
+ CONFIG_USB_OHCI_HCD_PPC_OF_BE=y
+ # CONFIG_USB_OHCI_HCD_PCI is not set
+ CONFIG_USB_STORAGE=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_PCF8563=m
+ CONFIG_EXT2_FS=m
+ CONFIG_EXT3_FS=m
+diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
+index 6472322..185c292 100644
+--- a/arch/powerpc/configs/ps3_defconfig
++++ b/arch/powerpc/configs/ps3_defconfig
+@@ -141,7 +141,7 @@ CONFIG_USB_EHCI_TT_NEWSCHED=y
+ # CONFIG_USB_EHCI_HCD_PPC_OF is not set
+ CONFIG_USB_OHCI_HCD=m
+ CONFIG_USB_STORAGE=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_PS3=m
+ CONFIG_EXT2_FS=m
+ CONFIG_EXT3_FS=m
+diff --git a/arch/sh/configs/titan_defconfig b/arch/sh/configs/titan_defconfig
+index 0f55891..e2cbd92 100644
+--- a/arch/sh/configs/titan_defconfig
++++ b/arch/sh/configs/titan_defconfig
+@@ -227,7 +227,7 @@ CONFIG_USB_SERIAL=m
+ CONFIG_USB_SERIAL_GENERIC=y
+ CONFIG_USB_SERIAL_ARK3116=m
+ CONFIG_USB_SERIAL_PL2303=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_SH=m
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT3_FS=y
+diff --git a/arch/unicore32/configs/debug_defconfig b/arch/unicore32/configs/debug_defconfig
+index b5fbde9..1c367f0 100644
+--- a/arch/unicore32/configs/debug_defconfig
++++ b/arch/unicore32/configs/debug_defconfig
+@@ -168,7 +168,7 @@ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
  
- /*
-  * Kludge alert:
-@@ -19,6 +20,7 @@
- #define __NR_seccomp_write_32		4004
- #define __NR_seccomp_exit_32		4001
- #define __NR_seccomp_sigreturn_32	4193	/* rt_sigreturn */
-+#define __NR_seccomp_execve_32		4011
+ #	Real Time Clock
+ CONFIG_RTC_LIB=m
+-CONFIG_RTC_CLASS=m
++CONFIG_RTC_CLASS=y
  
- #elif defined(CONFIG_MIPS32_N32)
- 
-@@ -26,6 +28,7 @@
- #define __NR_seccomp_write_32		6001
- #define __NR_seccomp_exit_32		6058
- #define __NR_seccomp_sigreturn_32	6211	/* rt_sigreturn */
-+#define __NR_seccomp_execve_32		6057
- 
- #endif /* CONFIG_MIPS32_O32 */
- 
+ ### File systems
+ CONFIG_EXT2_FS=m
 -- 
-1.7.0.4
+1.7.4.1

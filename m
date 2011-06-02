@@ -1,53 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2011 07:26:08 +0200 (CEST)
-Received: from linux-sh.org ([111.68.239.195]:59274 "EHLO linux-sh.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491012Ab1FBF0F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 2 Jun 2011 07:26:05 +0200
-Received: from linux-sh.org (localhost.localdomain [127.0.0.1])
-        by linux-sh.org (8.14.4/8.14.4) with ESMTP id p525P1EJ027996;
-        Thu, 2 Jun 2011 14:25:01 +0900
-Received: (from pmundt@localhost)
-        by linux-sh.org (8.14.4/8.14.4/Submit) id p525OqgF025867;
-        Thu, 2 Jun 2011 14:24:52 +0900
-X-Authentication-Warning: linux-sh.org: pmundt set sender to lethal@linux-sh.org using -f
-Date:   Thu, 2 Jun 2011 14:24:52 +0900
-From:   Paul Mundt <lethal@linux-sh.org>
-To:     Wanlong Gao <wanlong.gao@gmail.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
-        vapier@gentoo.org, ralf@linux-mips.org, benh@kernel.crashing.org,
-        paulus@samba.org, gxt@mprc.pku.edu.cn, david.woodhouse@intel.com,
-        akpm@linux-foundation.org, u.kleine-koenig@pengutronix.de,
-        mingo@elte.hu, rientjes@google.com, w.sang@pengutronix.de,
-        sam@ravnborg.org, manuel.lauss@googlemail.com, anton@samba.org,
-        arnd@arndb.de
-Subject: Re: [PATCH] Fix build warning of the defconfigs
-Message-ID: <20110602052452.GA6087@linux-sh.org>
-References: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
-User-Agent: Mutt/1.4.1i
-X-archive-position: 30189
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jun 2011 13:30:37 +0200 (CEST)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:44576 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491187Ab1FBLad (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Jun 2011 13:30:33 +0200
+Received: by wwb17 with SMTP id 17so657611wwb.24
+        for <multiple recipients>; Thu, 02 Jun 2011 04:30:27 -0700 (PDT)
+Received: by 10.216.143.74 with SMTP id k52mr617037wej.0.1307014227664;
+        Thu, 02 Jun 2011 04:30:27 -0700 (PDT)
+Received: from [192.168.2.2] ([91.79.103.177])
+        by mx.google.com with ESMTPS id t79sm267935weq.29.2011.06.02.04.30.23
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 02 Jun 2011 04:30:25 -0700 (PDT)
+Message-ID: <4DE7741B.7040507@mvista.com>
+Date:   Thu, 02 Jun 2011 15:29:31 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.17) Gecko/20110414 Thunderbird/3.1.10
+MIME-Version: 1.0
+To:     ralf@linux-mips.org
+CC:     linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mips@linux-mips.org, Russell King <linux@arm.linux.org.uk>,
+        x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [patch 12/14] i8253: Move remaining content and delete <asm/i8253.h>
+References: <20110601180456.801265664@duck.linux-mips.net> <20110601180610.913463093@duck.linux-mips.net>
+In-Reply-To: <20110601180610.913463093@duck.linux-mips.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30190
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lethal@linux-sh.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 1511
+X-UID: 1675
 
-On Thu, Jun 02, 2011 at 12:29:23AM +0800, Wanlong Gao wrote:
-> RTC_CLASS is changed to bool.
-> So value 'm' is invalid.
-> 
-> Signed-off-by: Wanlong Gao <wanlong.gao@gmail.com>
+Hello.
 
->  arch/sh/configs/titan_defconfig            |    2 +-
+On 01-06-2011 22:05, ralf@linux-mips.org wrote:
 
-Acked-by: Paul Mundt <lethal@linux-sh.org>
+> There is no really good other place but one line for two out of three
+> architectures that have a <asm/i8253.h> file doesn't justify this files
+> existence.
+
+    I couldn't parse that. :-)
+
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> To: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Russell King <linux@arm.linux.org.uk>
+> Cc: linux-mips@linux-mips.org
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: x86@kernel.org
+
+WBR, Sergei

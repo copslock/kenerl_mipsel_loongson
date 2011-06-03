@@ -1,171 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2011 21:22:43 +0200 (CEST)
-Received: from mailout-de.gmx.net ([213.165.64.23]:35567 "HELO
-        mailout-de.gmx.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1491191Ab1FCTWj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2011 21:22:39 +0200
-Received: (qmail 14544 invoked by uid 0); 3 Jun 2011 19:22:32 -0000
-Received: from 79.6.110.179 by www063.gmx.net with HTTP;
- Fri, 03 Jun 2011 21:22:30 +0200 (CEST)
-Cc:     benh@kernel.crashing.org, tglx@linutronix.de,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset="utf-8"
-Date:   Fri, 03 Jun 2011 21:22:30 +0200
-From:   "Gerhard Pircher" <gerhard_pircher@gmx.net>
-In-Reply-To: <20110603180038.GA13239@linux-mips.org>
-Message-ID: <20110603192230.246630@gmx.net>
-MIME-Version: 1.0
-References: <20110601180456.801265664@duck.linux-mips.net>
- <20110602191119.302850@gmx.net> <20110603180038.GA13239@linux-mips.org>
-Subject: Re: [patch 00/14] Sort out i8253 and PC speaker locking and headers
-To:     Ralf Baechle <ralf@linux-mips.org>
-X-Authenticated: #6097454
-X-Flags: 0001
-X-Mailer: WWW-Mail 6100 (Global Message Exchange)
-X-Priority: 3
-X-Provags-ID: V01U2FsdGVkX18K9bI4TecKnQl0LIFRJILuFBXWNwsVtPMNBnKxN0
- cLVaDc6YahRvoVEjPYRfU8eyB/4h5dOBB2mQ== 
-Content-Transfer-Encoding: 8bit
-X-GMX-UID: OUGIKT4Ba0A7Q09lKDEze/I/Njh6dA7z
-X-archive-position: 30209
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2011 22:32:40 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:55622 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491189Ab1FCUce (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2011 22:32:34 +0200
+Received: by ywf9 with SMTP id 9so1146209ywf.36
+        for <multiple recipients>; Fri, 03 Jun 2011 13:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer
+         :in-reply-to:references;
+        bh=n29JH1TGjiFRXdM7KNLghkbfZ4y73MIDKd3oAYdreSg=;
+        b=W76YO/VWcOfUN0VrALLI2kpJHmbbR4lHjPweC4YC2Rfb1kgLNoqXu+SuxptmuFaLtO
+         FXnk4JZ55QO/8PsStZnphgxUls3gyMBtdMgQKN438ikXz7z6c2ADvA8gx9/CB25aHT3O
+         aSJbtKlVOAJXivecY1A571y2EheUZYWkwdjbQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=gWvKt5rJb9fouUM8U11I5NsH8YxrJqNGVWquTYk6SkldCLFLFQNB3i7yQnbKflezgy
+         Be6sTEINRwhup+S2HhcEE6uTglOV7lsVaVG8F+Qvb7kVaM/DEA5Fri4V7VFAZ4flMZP3
+         m8OLNXY4wDYNFJ0+5z97Ma/Rwe+TixXlKrq6o=
+Received: by 10.151.28.1 with SMTP id f1mr2274252ybj.51.1307133148205;
+        Fri, 03 Jun 2011 13:32:28 -0700 (PDT)
+Received: from localhost.localdomain (adsl-98-87-45-176.bna.bellsouth.net [98.87.45.176])
+        by mx.google.com with ESMTPS id i62sm1611097yhm.24.2011.06.03.13.32.26
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 03 Jun 2011 13:32:27 -0700 (PDT)
+From:   Will Drewry <wad@chromium.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     kees.cook@canonical.com, torvalds@linux-foundation.org,
+        tglx@linutronix.de, mingo@elte.hu, rostedt@goodmis.org,
+        jmorris@namei.org, paulmck@linux.vnet.ibm.com,
+        Will Drewry <wad@chromium.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH v4 09/13] mips: select HAVE_SECCOMP_FILTER and provide seccomp_execve
+Date:   Fri,  3 Jun 2011 15:34:08 -0500
+Message-Id: <1307133252-23259-9-git-send-email-wad@chromium.org>
+X-Mailer: git-send-email 1.7.0.4
+In-Reply-To: <1307133252-23259-1-git-send-email-wad@chromium.org>
+References: <1307133252-23259-1-git-send-email-wad@chromium.org>
+X-archive-position: 30210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gerhard_pircher@gmx.net
+X-original-sender: wad@chromium.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 2899
+X-UID: 2957
 
+Facilitate the use of CONFIG_SECCOMP_FILTER by wrapping compatibility
+system call numbering for execve and selecting HAVE_SECCOMP_FILTER.
 
--------- Original-Nachricht --------
-> Datum: Fri, 3 Jun 2011 19:00:38 +0100
-> Von: Ralf Baechle <ralf@linux-mips.org>
-> An: Gerhard Pircher <gerhard_pircher@gmx.net>
-> CC: linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Betreff: Re: [patch 00/14] Sort out i8253 and PC speaker locking and headers
+Signed-off-by: Will Drewry <wad@chromium.org>
+---
+ arch/mips/Kconfig               |    1 +
+ arch/mips/include/asm/seccomp.h |    3 +++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
-> On Thu, Jun 02, 2011 at 09:11:19PM +0200, Gerhard Pircher wrote:
-> 
-> > > #if defined(CONFIG_MIPS) || defined(CONFIG_X86)
-> > > /* Use the global PIT lock ! */
-> > > #include <asm/i8253.h>
-> > > #else
-> > > #include <asm/8253pit.h>
-> > > static DEFINE_RAW_SPINLOCK(i8253_lock);
-> > > #endif
-> > > 
-> > > sound/drivers/pcsp/pcsp.h:
-> > > 
-> > > #if defined(CONFIG_MIPS) || defined(CONFIG_X86)
-> > > /* Use the global PIT lock ! */
-> > > #include <asm/i8253.h>
-> > > #else
-> > > #include <asm/8253pit.h>
-> > > static DEFINE_RAW_SPINLOCK(i8253_lock);
-> > > 
-> > > $ git grep -F pcsp.h sound/drivers/pcsp
-> > > sound/drivers/pcsp/pcsp.c:#include "pcsp.h"
-> > > sound/drivers/pcsp/pcsp_input.c:#include "pcsp.h"
-> > > sound/drivers/pcsp/pcsp_lib.c:#include "pcsp.h"
-> > > sound/drivers/pcsp/pcsp_mixer.c:#include "pcsp.h"
-> > > $ git grep -w i8253_lock sound/drivers/pcsp/
-> > > sound/drivers/pcsp/pcsp.h:static DEFINE_RAW_SPINLOCK(i8253_lock);
-> > > sound/drivers/pcsp/pcsp_input.c:       
-> raw_spin_lock_irqsave(&i8253_lock,
-> > > flags
-> > > sound/drivers/pcsp/pcsp_input.c:       
-> > > raw_spin_unlock_irqrestore(&i8253_lock, 
-> > > sound/drivers/pcsp/pcsp_lib.c:         
-> raw_spin_lock_irqsave(&i8253_lock,
-> > > flags
-> > > sound/drivers/pcsp/pcsp_lib.c:         
-> > > raw_spin_unlock_irqrestore(&i8253_lock, 
-> > > sound/drivers/pcsp/pcsp_lib.c:  raw_spin_lock(&i8253_lock);
-> > > sound/drivers/pcsp/pcsp_lib.c:  raw_spin_unlock(&i8253_lock);
-> > > sound/drivers/pcsp/pcsp_lib.c:  raw_spin_lock(&i8253_lock);
-> > > sound/drivers/pcsp/pcsp_lib.c:  raw_spin_unlock(&i8253_lock);
-> > > 
-> > > Locks are great, everybody should have their own lock!
-> > > 
-> > > $ find . -name 8253pit.h
-> > > ./arch/powerpc/include/asm/8253pit.h
-> > > ./arch/alpha/include/asm/8253pit.h
-> > > $ cat arch/*/include/asm/8253pit.h
-> > > /*
-> > >  * 8253/8254 Programmable Interval Timer
-> > >  */
-> > > /*
-> > >  * 8253/8254 Programmable Interval Timer
-> > >  */
-> > > $
-> > > 
-> > > Eh...
-> > > 
-> > > $ git grep -w PCSPKR_PLATFORM 
-> > > arch/mips/Kconfig:      select PCSPKR_PLATFORM
-> > > arch/mips/Kconfig:      select PCSPKR_PLATFORM
-> > > arch/mips/Kconfig:      select PCSPKR_PLATFORM
-> > > arch/powerpc/platforms/amigaone/Kconfig:        select PCSPKR_PLATFORM
-> > > drivers/input/misc/Kconfig:     depends on PCSPKR_PLATFORM
-> > > init/Kconfig:config PCSPKR_PLATFORM
-> > > sound/drivers/Kconfig:  depends on PCSPKR_PLATFORM && X86 &&
-> > > HIGH_RES_TIMERS
-> > > 
-> > > So the status is:
-> > > 
-> > >  Alpha:	There is no PCSPKR_PLATFORM so while a platform device is
-> > > 		being installed no drivers will be built.  I don't know
-> > > 		which Alpha platforms or even if all of Alpha should be
-> > > 		doing a PCSPKR_PLATFORM so I haven't even tried to sort
-> > > 		this.
-> > >  ARM:		No PC speaker supported, yeah :)
-> > >  PowerPC:	Should compile but the locking is wrong but only the 
-> > >    		AmigaOne platforms should be affected.
-> > The Kconfig dependencies cleanup patch for CHRP, PSERIES, etc. should
-> > also apply to the AmigaOne. Can you resend it with a fix for the
-> > AmigaOne, or should I send a patch?
-> 
-> I can sort that; it's easy enough.
-Thanks a lot!
-
-> > I'll check next week, if the PC speaker is still working on my
-> > AmigaOne.
-> 
-> I can't imagine that it's going to break - the code is sorta simple ;-)
-That's true, but testing the most recent Linux kernel on the AmigaOne is
-never wrong. :-)
-
-> One obscurity I noticed is this bit in the amigaone.dts:
-> 
->         timer@40 {
->                 // Also adds pcspkr to platform devices.
->                 compatible = "pnpPNP,100";
->                 reg = <1 0x00000040 0x00000020>;
->         };
-> 
-> Shouldn't that rather be something like the following?
-> 
->         pcspeaker@61 {
->                 device_type = "sound";
->                 compatible = "pnpPNP,800";
->                 reg = <1 0x61 1>;
->         };
-> 
-> pnpPNP,100 is the i8253 timer as I understand and pnpPNP,800 the PC
-> speaker.
-> If you interpret pnpPNP,100 to imply the presence of a PC speaker you
-> can't express a system that has a i8253 but no PCspeaker in a DT so
-> maybe amigaone.dts and arch/powerpc/kernel/setup-common.c should be
-> changed to use pnpPNP,800 instead?
-
-That would be cleaner, but I guess it would break CHRP and PSERIES.
-These platforms probably only provide a pnpPNP,100 entry in the device
-tree (at least that's the case on the Pegasos2 CHRP machine AFAICT).
-
-Gerhard
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 8e256cc..d376f68 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -10,6 +10,7 @@ config MIPS
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
++	select HAVE_SECCOMP_FILTER
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+ 	select HAVE_C_RECORDMCOUNT
+diff --git a/arch/mips/include/asm/seccomp.h b/arch/mips/include/asm/seccomp.h
+index ae6306e..4014a3a 100644
+--- a/arch/mips/include/asm/seccomp.h
++++ b/arch/mips/include/asm/seccomp.h
+@@ -6,6 +6,7 @@
+ #define __NR_seccomp_write __NR_write
+ #define __NR_seccomp_exit __NR_exit
+ #define __NR_seccomp_sigreturn __NR_rt_sigreturn
++#define __NR_seccomp_execve __NR_execve
+ 
+ /*
+  * Kludge alert:
+@@ -19,6 +20,7 @@
+ #define __NR_seccomp_write_32		4004
+ #define __NR_seccomp_exit_32		4001
+ #define __NR_seccomp_sigreturn_32	4193	/* rt_sigreturn */
++#define __NR_seccomp_execve_32		4011
+ 
+ #elif defined(CONFIG_MIPS32_N32)
+ 
+@@ -26,6 +28,7 @@
+ #define __NR_seccomp_write_32		6001
+ #define __NR_seccomp_exit_32		6058
+ #define __NR_seccomp_sigreturn_32	6211	/* rt_sigreturn */
++#define __NR_seccomp_execve_32		6057
+ 
+ #endif /* CONFIG_MIPS32_O32 */
+ 
 -- 
-NEU: FreePhone - kostenlos mobil telefonieren!			
-Jetzt informieren: http://www.gmx.net/de/go/freephone
+1.7.0.4

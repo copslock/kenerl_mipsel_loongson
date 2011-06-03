@@ -1,84 +1,165 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2011 01:08:46 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:41454 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491867Ab1FBXIk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 3 Jun 2011 01:08:40 +0200
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id p52N80Rr018290
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 2 Jun 2011 19:08:00 -0400
-Received: from localhost.localdomain (vpn-11-52.rdu.redhat.com [10.11.11.52])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id p52N7ucf000563;
-        Thu, 2 Jun 2011 19:07:56 -0400
-Message-ID: <4DE817CC.80404@redhat.com>
-Date:   Thu, 02 Jun 2011 19:07:56 -0400
-From:   Eric Paris <eparis@redhat.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110428 Fedora/3.1.10-1.fc15 Lightning/1.0b3pre Thunderbird/3.1.10
-MIME-Version: 1.0
-To:     Tony Luck <tony.luck@intel.com>
-CC:     Richard Weinberger <richard@nod.at>, linux-kernel@vger.kernel.org,
-        fenghua.yu@intel.com, monstr@monstr.eu, ralf@linux-mips.org,
-        benh@kernel.crashing.org, paulus@samba.org, schwidefsky@de.ibm.com,
-        heiko.carstens@de.ibm.com, linux390@de.ibm.com,
-        lethal@linux-sh.org, davem@davemloft.net, jdike@addtoit.com,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, viro@zeniv.linux.org.uk, oleg@redhat.com,
-        akpm@linux-foundation.org, linux-ia64@vger.kernel.org,
-        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net
-Subject: Re: [PATCH] Audit: push audit success and retcode into arch ptrace.h
-References: <20110602210458.23613.24076.stgit@paris.rdu.redhat.com>     <201106030032.17398.richard@nod.at> <BANLkTik9kCs_06=7HKo44cWqpS0zB9fr+A@mail.gmail.com>
-In-Reply-To: <BANLkTik9kCs_06=7HKo44cWqpS0zB9fr+A@mail.gmail.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-X-archive-position: 30203
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jun 2011 03:08:39 +0200 (CEST)
+Received: from smtp-out-212.synserver.de ([212.40.185.212]:1639 "EHLO
+        smtp-out-212.synserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491868Ab1FCBId (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 3 Jun 2011 03:08:33 +0200
+Received: (qmail 8603 invoked by uid 0); 3 Jun 2011 01:08:28 -0000
+X-SynServer-TrustedSrc: 1
+X-SynServer-AuthUser: lars@laprican.de
+X-SynServer-PPID: 8419
+Received: from e177148193.adsl.alicedsl.de (HELO lars-laptop.nons.lan) [85.177.148.193]
+  by 217.119.54.87 with SMTP; 3 Jun 2011 01:08:28 -0000
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@sisk.pl>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH 1/4] PM / MIPS: Use struct syscore_ops instead of sysdevs for PM (v2)
+Date:   Fri,  3 Jun 2011 03:06:48 +0200
+Message-Id: <1307063211-10098-1-git-send-email-lars@metafoo.de>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 30204
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: eparis@redhat.com
+X-original-sender: lars@metafoo.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 2199
+X-UID: 2242
 
-On 06/02/2011 07:00 PM, Tony Luck wrote:
->> But there seems to be another problem.
->> Why is pt_regs of type void *?
->>
->> gcc complains:
->> In file included from include/linux/fsnotify.h:15:0,
->>                 from include/linux/security.h:26,
->>                 from init/main.c:32:
->> include/linux/audit.h: In function ‘audit_syscall_exit’:
->> include/linux/audit.h:440:17: warning: dereferencing ‘void *’ pointer
->> include/linux/audit.h:440:3: error: invalid use of void expression
->> include/linux/audit.h:441:21: warning: dereferencing ‘void *’ pointer
->> include/linux/audit.h:441:21: error: void value not ignored as it ought to be
-> 
-> Perhaps same issue on ia64 - but symptoms are different:
-> 
->   CC      crypto/cipher.o
-> In file included from include/linux/fsnotify.h:15,
->                  from include/linux/security.h:26,
->                  from init/do_mounts.c:8:
-> include/linux/audit.h: In function ‘audit_syscall_exit’:
-> include/linux/audit.h:440: warning: dereferencing ‘void *’ pointer
-> include/linux/audit.h:440: error: request for member ‘r10’ in
-> something not a structure or union
-> include/linux/audit.h:441: error: request for member ‘r10’ in
-> something not a structure or union
-> include/linux/audit.h:441: error: request for member ‘r8’ in something
-> not a structure or union
-> include/linux/audit.h:441: error: request for member ‘r8’ in something
-> not a structure or union
-> include/linux/audit.h:441: error: expected ‘;’ before ‘}’ token
-> include/linux/audit.h:441: error: void value not ignored as it ought to be
+From: Rafael J. Wysocki <rjw@sisk.pl>
 
-I think it is the same problem.  I'll redo the patch with typed static
-inlines instead of #defines and all of this should hopefully work out.
+Convert some MIPS architecture's code to using struct syscore_ops
+objects for power management instead of sysdev classes and sysdevs.
 
--Eric
+This simplifies the code and reduces the kernel's memory footprint.
+It also is necessary for removing sysdevs from the kernel entirely in
+the future.
+
+Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+Acked-by: Greg Kroah-Hartman <gregkh@suse.de>
+Acked-and-tested-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+ arch/mips/jz4740/gpio.c |   52 +++++++++++++++++++---------------------------
+ 1 files changed, 22 insertions(+), 30 deletions(-)
+
+diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
+index 73031f7..4397972 100644
+--- a/arch/mips/jz4740/gpio.c
++++ b/arch/mips/jz4740/gpio.c
+@@ -18,7 +18,7 @@
+ #include <linux/init.h>
+ 
+ #include <linux/spinlock.h>
+-#include <linux/sysdev.h>
++#include <linux/syscore_ops.h>
+ #include <linux/io.h>
+ #include <linux/gpio.h>
+ #include <linux/delay.h>
+@@ -86,7 +86,6 @@ struct jz_gpio_chip {
+ 	spinlock_t lock;
+ 
+ 	struct gpio_chip gpio_chip;
+-	struct sys_device sysdev;
+ };
+ 
+ static struct jz_gpio_chip jz4740_gpio_chips[];
+@@ -459,49 +458,47 @@ static struct jz_gpio_chip jz4740_gpio_chips[] = {
+ 	JZ4740_GPIO_CHIP(D),
+ };
+ 
+-static inline struct jz_gpio_chip *sysdev_to_chip(struct sys_device *dev)
++static void jz4740_gpio_suspend_chip(struct jz_gpio_chip *chip)
+ {
+-	return container_of(dev, struct jz_gpio_chip, sysdev);
++	chip->suspend_mask = readl(chip->base + JZ_REG_GPIO_MASK);
++	writel(~(chip->wakeup), chip->base + JZ_REG_GPIO_MASK_SET);
++	writel(chip->wakeup, chip->base + JZ_REG_GPIO_MASK_CLEAR);
+ }
+ 
+-static int jz4740_gpio_suspend(struct sys_device *dev, pm_message_t state)
++static int jz4740_gpio_suspend(void)
+ {
+-	struct jz_gpio_chip *chip = sysdev_to_chip(dev);
++	int i;
+ 
+-	chip->suspend_mask = readl(chip->base + JZ_REG_GPIO_MASK);
+-	writel(~(chip->wakeup), chip->base + JZ_REG_GPIO_MASK_SET);
+-	writel(chip->wakeup, chip->base + JZ_REG_GPIO_MASK_CLEAR);
++	for (i = 0; i < ARRAY_SIZE(jz4740_gpio_chips); i++)
++		jz4740_gpio_suspend_chip(&jz4740_gpio_chips[i]);
+ 
+ 	return 0;
+ }
+ 
+-static int jz4740_gpio_resume(struct sys_device *dev)
++static void jz4740_gpio_resume_chip(struct jz_gpio_chip *chip)
+ {
+-	struct jz_gpio_chip *chip = sysdev_to_chip(dev);
+ 	uint32_t mask = chip->suspend_mask;
+ 
+ 	writel(~mask, chip->base + JZ_REG_GPIO_MASK_CLEAR);
+ 	writel(mask, chip->base + JZ_REG_GPIO_MASK_SET);
++}
+ 
+-	return 0;
++static void jz4740_gpio_resume(void)
++{
++	int i;
++
++	for (i = ARRAY_SIZE(jz4740_gpio_chips) - 1; i >= 0 ; i--)
++		jz4740_gpio_resume_chip(&jz4740_gpio_chips[i]);
+ }
+ 
+-static struct sysdev_class jz4740_gpio_sysdev_class = {
+-	.name = "gpio",
++static struct syscore_ops jz4740_gpio_syscore_ops = {
+ 	.suspend = jz4740_gpio_suspend,
+ 	.resume = jz4740_gpio_resume,
+ };
+ 
+-static int jz4740_gpio_chip_init(struct jz_gpio_chip *chip, unsigned int id)
++static void jz4740_gpio_chip_init(struct jz_gpio_chip *chip, unsigned int id)
+ {
+-	int ret, irq;
+-
+-	chip->sysdev.id = id;
+-	chip->sysdev.cls = &jz4740_gpio_sysdev_class;
+-	ret = sysdev_register(&chip->sysdev);
+-
+-	if (ret)
+-		return ret;
++	int irq;
+ 
+ 	spin_lock_init(&chip->lock);
+ 
+@@ -519,22 +516,17 @@ static int jz4740_gpio_chip_init(struct jz_gpio_chip *chip, unsigned int id)
+ 		irq_set_chip_and_handler(irq, &jz_gpio_irq_chip,
+ 					 handle_level_irq);
+ 	}
+-
+-	return 0;
+ }
+ 
+ static int __init jz4740_gpio_init(void)
+ {
+ 	unsigned int i;
+-	int ret;
+-
+-	ret = sysdev_class_register(&jz4740_gpio_sysdev_class);
+-	if (ret)
+-		return ret;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(jz4740_gpio_chips); ++i)
+ 		jz4740_gpio_chip_init(&jz4740_gpio_chips[i], i);
+ 
++	register_syscore_ops(&jz4740_gpio_syscore_ops);
++
+ 	printk(KERN_INFO "JZ4740 GPIO initialized\n");
+ 
+ 	return 0;
+-- 
+1.7.2.5

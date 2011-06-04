@@ -1,79 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Jun 2011 00:52:21 +0200 (CEST)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:50791 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491194Ab1FCWwQ convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 Jun 2011 00:52:16 +0200
-Received: by iyb39 with SMTP id 39so2448385iyb.36
-        for <multiple recipients>; Fri, 03 Jun 2011 15:52:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=QcFzpaXl5O5nvRA2y9bRaW3kDB7me1h5mrlIXmJbmvg=;
-        b=PWhaE4o2JyTJFkHTRBQTlLQrOXnhViVZmKdN5rx62H3/NbrjjLDNjWRz2B+QAkydIo
-         46IEQC0FAATBnGfdVjZoduklBlWCr7tcYkMKBxBNK8L9Vs1WfoPdin7d8vH+7beVbUE0
-         lYkj34dB2Klo53KaYav84mxjlGTAgv68rikoA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=FDx509LSgl3EIBFZImarpKLtQjnzu6Br9frlqTmzvYHtZq6TxrZ2cFf/UovJEolcUQ
-         0+XeXA6qgpn6O4BkNTihrUskVSIs8NyfgFjUr6u44r771oFKDkaXEI9nAWwp9PYdh81P
-         XRS3Ob64sZ5YxeD0KT8kXnxe/LJracqcyrD9E=
-MIME-Version: 1.0
-Received: by 10.42.132.134 with SMTP id d6mr4244122ict.38.1307141529967; Fri,
- 03 Jun 2011 15:52:09 -0700 (PDT)
-Received: by 10.42.226.67 with HTTP; Fri, 3 Jun 2011 15:52:09 -0700 (PDT)
-In-Reply-To: <20110603220451.23134.47368.stgit@paris.rdu.redhat.com>
-References: <20110603220451.23134.47368.stgit@paris.rdu.redhat.com>
-Date:   Fri, 3 Jun 2011 15:52:09 -0700
-X-Google-Sender-Auth: q22O4eHy6fP53swHBUJ-T83rt3g
-Message-ID: <BANLkTik4qRe--C6L5WU3XvpP-TMEZ6RQ-w@mail.gmail.com>
-Subject: Re: [PATCH -v2] Audit: push audit success and retcode into arch ptrace.h
-From:   Tony Luck <tony.luck@intel.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jun 2011 00:39:37 +0200 (CEST)
+Received: from a.ns.miles-group.at ([95.130.255.143]:33623 "EHLO radon.swed.at"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491870Ab1FDWjc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 5 Jun 2011 00:39:32 +0200
+Received: (qmail 31674 invoked by uid 89); 4 Jun 2011 22:39:26 -0000
+Received: by simscan 1.3.1 ppid: 31652, pid: 31670, t: 0.1799s
+         scanners: attach: 1.3.1 clamav: 0.96.5/m:53
+Received: from unknown (HELO raccoon.localnet) (richard@nod.at@212.183.99.133)
+  by radon.swed.at with ESMTPA; 4 Jun 2011 22:39:26 -0000
+From:   Richard Weinberger <richard@nod.at>
 To:     Eric Paris <eparis@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, fenghua.yu@intel.com,
-        monstr@monstr.eu, ralf@linux-mips.org, benh@kernel.crashing.org,
-        paulus@samba.org, schwidefsky@de.ibm.com,
+Subject: Re: [PATCH -v2] Audit: push audit success and retcode into arch ptrace.h
+Date:   Sun, 5 Jun 2011 00:36:44 +0200
+User-Agent: KMail/1.13.7 (Linux/2.6.37.6-0.5-desktop; KDE/4.6.3; x86_64; ; )
+Cc:     linux-kernel@vger.kernel.org, tony.luck@intel.com,
+        fenghua.yu@intel.com, monstr@monstr.eu, ralf@linux-mips.org,
+        benh@kernel.crashing.org, paulus@samba.org, schwidefsky@de.ibm.com,
         heiko.carstens@de.ibm.com, linux390@de.ibm.com,
         lethal@linux-sh.org, davem@davemloft.net, jdike@addtoit.com,
-        richard@nod.at, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, viro@zeniv.linux.org.uk,
-        oleg@redhat.com, akpm@linux-foundation.org,
-        linux-ia64@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
-        linux-mips@linux-mips.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, viro@zeniv.linux.org.uk, oleg@redhat.com,
+        akpm@linux-foundation.org, linux-ia64@vger.kernel.org,
+        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         user-mode-linux-devel@lists.sourceforge.net
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30212
+References: <20110603220451.23134.47368.stgit@paris.rdu.redhat.com>
+In-Reply-To: <20110603220451.23134.47368.stgit@paris.rdu.redhat.com>
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201106050036.44852.richard@nod.at>
+X-archive-position: 30213
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tony.luck@intel.com
+X-original-sender: richard@nod.at
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3053
+X-UID: 3354
 
-On Fri, Jun 3, 2011 at 3:04 PM, Eric Paris <eparis@redhat.com> wrote:
+Am Samstag 04 Juni 2011, 00:04:51 schrieb Eric Paris:
+> The audit system previously expected arches calling to audit_syscall_exit
+> to supply as arguments if the syscall was a success and what the return
+> code was. Audit also provides a helper AUDITSC_RESULT which was supposed
+> to simplify things by converting from negative retcodes to an audit
+> internal magic value stating success or failure.  This helper was wrong
+> and could indicate that a valid pointer returned to userspace was a failed
+> syscall.  The fix is to fix the layering foolishness.  We now pass
+> audit_syscall_exit a struct pt_reg and it in turns calls back into arch
+> code to collect the return value and to determine if the syscall was a
+> success or failure.  We also define a generic is_syscall_success() macro
+> which determines success/failure based on if the value is < -MAX_ERRNO. 
+> This works for arches like x86 which do not use a separate mechanism to
+> indicate syscall failure.
+> 
+> In arch/sh/kernel/ptrace_64.c I see that we were using regs[9] in the old
+> audit code as the return value.  But the ptrace_64.h code defined the macro
+> regs_return_value() as regs[3].  I have no idea which one is correct, but
+> this patch now uses the regs_return_value() function, so it now uses
+> regs[3].
+> 
+> We make both the is_syscall_success() and regs_return_value() static
+> inlines instead of macros.  The reason is because the audit function must
+> take a void* for the regs.  (uml calls theirs struct uml_pt_regs instead
+> of just struct pt_regs so audit_syscall_exit can't take a struct pt_regs).
+>  Since the audit function takes a void* we need to use static inlines to
+> cast it back to the arch correct structure to dereference it.
+> 
 > The other major change is that on some arches, like ia64, we change
-> regs_return_value() to give us the negative value on syscall failure.  The
-> only other user of this macro, kretprobe_example.c, won't notice and it makes
-> the value signed consistently for the audit functions across all archs.
-
-v2 builds and boots on ia64 now
-Acked-by: Tony Luck <tony.luck@intel.com>
-
-
+> regs_return_value() to give us the negative value on syscall failure.  The
+> only other user of this macro, kretprobe_example.c, won't notice and it
+> makes the value signed consistently for the audit functions across all
+> archs.
+> 
 > Signed-off-by: Eric Paris <eparis@redhat.com>
 > Acked-by: Acked-by: H. Peter Anvin <hpa@zytor.com> [for x86 portion]
 
-  ^^^^^^^^^^^^^^^^^^^^  :-)
+The UML part is now fine for me. :-)
 
--Tony
+Acked-by: Richard Weinberger <richard@nod.at>
+
+Thanks,
+//richard

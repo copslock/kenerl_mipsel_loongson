@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 00:09:05 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:60285 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 00:09:33 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:60305 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491779Ab1FEWIP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 00:08:15 +0200
+        with ESMTP id S1491782Ab1FEWIS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 00:08:18 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 2741B8B16;
-        Mon,  6 Jun 2011 00:08:15 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 607DF8B18;
+        Mon,  6 Jun 2011 00:08:18 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id xUPRyNmWoAPo; Mon,  6 Jun 2011 00:08:10 +0200 (CEST)
+        with ESMTP id O2ZgSRWzGs9b; Mon,  6 Jun 2011 00:08:13 +0200 (CEST)
 Received: from localhost.localdomain (host-091-097-251-075.ewe-ip-backbone.de [91.97.251.75])
-        by hauke-m.de (Postfix) with ESMTPSA id 4AFD98B0E;
-        Mon,  6 Jun 2011 00:08:07 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 811318B0F;
+        Mon,  6 Jun 2011 00:08:08 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org
 Cc:     zajec5@gmail.com, mb@bu3sch.de, george@znau.edu.ua,
         arend@broadcom.com, b43-dev@lists.infradead.org,
         bernhardloos@googlemail.com, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [RFC][PATCH 02/10] bcma: Make it possible to run bcma_register_cores() later
-Date:   Mon,  6 Jun 2011 00:07:30 +0200
-Message-Id: <1307311658-15853-3-git-send-email-hauke@hauke-m.de>
+Subject: [RFC][PATCH 03/10] bcma: add embedded bus
+Date:   Mon,  6 Jun 2011 00:07:31 +0200
+Message-Id: <1307311658-15853-4-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
 References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 30224
+X-archive-position: 30225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,144 +33,247 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3685
+X-UID: 3686
 
-On embedded device we can not allocate memory with kalloc or sleep for
-some time, when bcma is initialized, because this is done early in the
-boot process. This patch makes it possible to do the
-bcma_register_cores() sometime later and not directly after searching
-for the cores. The initialization of the PCI(e) core is also done later
-as it uses udelay(), which will not work so early. The buses are placed
-into a list and bcma_register_cores() will be run when the bcma module
-is initialized. When using bcma on a PCI-Bus in a normal PC
-bcma_register_cores() is triggered directly after bcma_bus_register().
-This patch is based on ssb code.
+This patch adds support for using bcma on an embedded bus. An embedded
+system like the bcm4716 could register this bus and it searches for the
+bcma cores then.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/main.c       |   65 ++++++++++++++++++++++++++++++++++++++++++---
- include/linux/bcma/bcma.h |    3 ++
- 2 files changed, 64 insertions(+), 4 deletions(-)
+ drivers/bcma/Kconfig               |    5 ++
+ drivers/bcma/Makefile              |    1 +
+ drivers/bcma/host_embedded.c       |   93 ++++++++++++++++++++++++++++++++++++
+ drivers/bcma/main.c                |    1 +
+ drivers/bcma/scan.c                |   29 ++++++++++-
+ include/linux/bcma/bcma.h          |    3 +
+ include/linux/bcma/bcma_embedded.h |    8 +++
+ 7 files changed, 138 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/bcma/host_embedded.c
+ create mode 100644 include/linux/bcma/bcma_embedded.h
 
-diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index b0e7f5e..1afa107 100644
---- a/drivers/bcma/main.c
-+++ b/drivers/bcma/main.c
-@@ -15,6 +15,16 @@ static int bcma_bus_match(struct device *dev, struct device_driver *drv);
- static int bcma_device_probe(struct device *dev);
- static int bcma_device_remove(struct device *dev);
+diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+index 83e9adf..0390e32 100644
+--- a/drivers/bcma/Kconfig
++++ b/drivers/bcma/Kconfig
+@@ -27,6 +27,11 @@ config BCMA_HOST_PCI
+ 	bool "Support for BCMA on PCI-host bus"
+ 	depends on BCMA_HOST_PCI_POSSIBLE
  
-+/* Temporary list of yet-to-be-attached buses */
-+static LIST_HEAD(attach_queue);
-+/* There are differences in the codeflow, if the bus is
-+ * initialized from early boot, as various needed services
-+ * are not available early. This is a mechanism to delay
-+ * these initializations to after early boot has finished.
-+ * It's also used to avoid mutex locking, as that's not
-+ * available and needed early. */
-+static bool bcma_is_early_boot = 1;
++config BCMA_HOST_EMBEDDED
++	bool
++	depends on BCMA && MIPS
++	default n
 +
- static ssize_t manuf_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
- 	struct __bcma_dev_wrapper *wrapper = container_of(dev,
-@@ -126,6 +136,36 @@ static int bcma_register_cores(struct bcma_bus *bus)
- 	return 0;
- }
+ config BCMA_DEBUG
+ 	bool "BCMA debugging"
+ 	depends on BCMA
+diff --git a/drivers/bcma/Makefile b/drivers/bcma/Makefile
+index 0d56245..e509b1b 100644
+--- a/drivers/bcma/Makefile
++++ b/drivers/bcma/Makefile
+@@ -2,6 +2,7 @@ bcma-y					+= main.o scan.o core.o
+ bcma-y					+= driver_chipcommon.o driver_chipcommon_pmu.o
+ bcma-y					+= driver_pci.o
+ bcma-$(CONFIG_BCMA_HOST_PCI)		+= host_pci.o
++bcma-$(CONFIG_BCMA_HOST_EMBEDDED)	+= host_embedded.o
+ obj-$(CONFIG_BCMA)			+= bcma.o
  
-+static int bcma_attach_queued_buses(void)
+ ccflags-$(CONFIG_BCMA_DEBUG)		:= -DDEBUG
+diff --git a/drivers/bcma/host_embedded.c b/drivers/bcma/host_embedded.c
+new file mode 100644
+index 0000000..6942440
+--- /dev/null
++++ b/drivers/bcma/host_embedded.c
+@@ -0,0 +1,93 @@
++/*
++ * Broadcom specific AMBA
++ * PCI Host
++ *
++ * Licensed under the GNU/GPL. See COPYING for details.
++ */
++
++#include "bcma_private.h"
++#include "scan.h"
++#include <linux/bcma/bcma.h>
++
++static u8 bcma_host_bcma_read8(struct bcma_device *core, u16 offset)
 +{
-+	struct bcma_bus *bus, *n;
-+	int err = 0;
-+	int drop_them_all = 0;
-+
-+	list_for_each_entry_safe(bus, n, &attach_queue, attach_list) {
-+		if (drop_them_all) {
-+			list_del(&bus->attach_list);
-+			continue;
-+		}
-+		/* Can't init the PCIcore in bcma_bus_register(), as that
-+		 * is too early in boot for embedded systems
-+		 * (no udelay() available). So do it here in attach stage.
-+		 */
-+		if (bus->drv_pci.core)
-+			bcma_core_pci_init(&bus->drv_pci);
-+
-+		err = bcma_register_cores(bus);
-+		if (err) {
-+			drop_them_all = 1;
-+			list_del(&bus->attach_list);
-+			continue;
-+		}
-+		list_del(&bus->attach_list);
-+	}
-+
-+	return err;
++	offset += core->core_index * BCMA_CORE_SIZE;
++	return readb(core->bus->mmio + offset);
 +}
 +
- static void bcma_unregister_cores(struct bcma_bus *bus)
- {
- 	struct bcma_device *core;
-@@ -157,15 +197,20 @@ int bcma_bus_register(struct bcma_bus *bus)
- 		bcma_core_chipcommon_init(&bus->drv_cc);
- 	}
- 
--	/* Init PCIE core */
-+	/* Find PCIE core */
- 	core = bcma_find_core(bus, BCMA_CORE_PCIE);
- 	if (core) {
-+		/* will be initilized in bcma_attach_queued_buses() */
- 		bus->drv_pci.core = core;
--		bcma_core_pci_init(&bus->drv_pci);
- 	}
- 
--	/* Register found cores */
--	bcma_register_cores(bus);
-+	/* Queue it for attach.
-+	 * See the comment at the bcma_is_early_boot definition. */
-+	list_add_tail(&bus->attach_list, &attach_queue);
-+	if (!bcma_is_early_boot) {
-+		/* This is not early boot, so we must attach the bus now */
-+		bcma_attach_queued_buses();
-+	}
- 
- 	pr_info("Bus registered\n");
- 
-@@ -247,10 +292,22 @@ static int __init bcma_modinit(void)
- {
- 	int err;
- 
-+	/* See the comment at the bcma_is_early_boot definition */
-+	bcma_is_early_boot = 0;
++static u16 bcma_host_bcma_read16(struct bcma_device *core, u16 offset)
++{
++	offset += core->core_index * BCMA_CORE_SIZE;
++	return readw(core->bus->mmio + offset);
++}
 +
- 	err = bus_register(&bcma_bus_type);
- 	if (err)
- 		return err;
- 
-+	/* Maybe we already registered some buses at early boot.
-+	 * Check for this and attach them.
++static u32 bcma_host_bcma_read32(struct bcma_device *core, u16 offset)
++{
++	offset += core->core_index * BCMA_CORE_SIZE;
++	return readl(core->bus->mmio + offset);
++}
++
++static void bcma_host_bcma_write8(struct bcma_device *core, u16 offset,
++				 u8 value)
++{
++	offset += core->core_index * BCMA_CORE_SIZE;
++	writeb(value, core->bus->mmio + offset);
++}
++
++static void bcma_host_bcma_write16(struct bcma_device *core, u16 offset,
++				 u16 value)
++{
++	offset += core->core_index * BCMA_CORE_SIZE;
++	writew(value, core->bus->mmio + offset);
++}
++
++static void bcma_host_bcma_write32(struct bcma_device *core, u16 offset,
++				 u32 value)
++{
++	offset += core->core_index * BCMA_CORE_SIZE;
++	writel(value, core->bus->mmio + offset);
++}
++
++static u32 bcma_host_bcma_aread32(struct bcma_device *core, u16 offset)
++{
++	offset += core->core_index * BCMA_CORE_SIZE;
++	return readl(core->bus->host_embedded + offset);
++}
++
++static void bcma_host_bcma_awrite32(struct bcma_device *core, u16 offset,
++				  u32 value)
++{
++	offset += core->core_index * BCMA_CORE_SIZE;
++	writel(value, core->bus->host_embedded + offset);
++}
++
++const struct bcma_host_ops bcma_host_bcma_ops = {
++	.read8		= bcma_host_bcma_read8,
++	.read16		= bcma_host_bcma_read16,
++	.read32		= bcma_host_bcma_read32,
++	.write8		= bcma_host_bcma_write8,
++	.write16	= bcma_host_bcma_write16,
++	.write32	= bcma_host_bcma_write32,
++	.aread32	= bcma_host_bcma_aread32,
++	.awrite32	= bcma_host_bcma_awrite32,
++};
++
++int bcma_host_bcma_register(struct bcma_bus *bus)
++{
++	u32 __iomem *mmio;
++
++	/* iomap only first core. We have to read some register on this core
++	 * to get the number of cores. This is sone in bcma_scan()
 +	 */
-+	err = bcma_attach_queued_buses();
-+	if (err) {
-+		pr_err("Attaching core registered in early boot failed\n");
-+		err = 0;
-+	}
++	mmio = ioremap(BCMA_ADDR_BASE, BCMA_CORE_SIZE * 1);
++	if (!mmio)
++		return -ENOMEM;
++	bus->mmio = mmio;
 +
- #ifdef CONFIG_BCMA_HOST_PCI
- 	err = bcma_host_pci_init();
- 	if (err) {
++	/* Host specific */
++	bus->hosttype = BCMA_HOSTTYPE_EMBEDDED;
++	bus->ops = &bcma_host_bcma_ops;
++
++	/* Register */
++	return bcma_bus_register(bus);
++}
+diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+index 1afa107..c5bcb5f 100644
+--- a/drivers/bcma/main.c
++++ b/drivers/bcma/main.c
+@@ -119,6 +119,7 @@ static int bcma_register_cores(struct bcma_bus *bus)
+ 			break;
+ 		case BCMA_HOSTTYPE_NONE:
+ 		case BCMA_HOSTTYPE_SDIO:
++		case BCMA_HOSTTYPE_EMBEDDED:
+ 			break;
+ 		}
+ 
+diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+index 70b39f7..9229615 100644
+--- a/drivers/bcma/scan.c
++++ b/drivers/bcma/scan.c
+@@ -203,7 +203,7 @@ static s32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 **eromptr,
+ int bcma_bus_scan(struct bcma_bus *bus)
+ {
+ 	u32 erombase;
+-	u32 __iomem *eromptr, *eromend;
++	u32 __iomem *eromptr, *eromend, *mmio;
+ 
+ 	s32 cia, cib;
+ 	u8 ports[2], wrappers[2];
+@@ -219,9 +219,34 @@ int bcma_bus_scan(struct bcma_bus *bus)
+ 	bus->chipinfo.id = (tmp & BCMA_CC_ID_ID) >> BCMA_CC_ID_ID_SHIFT;
+ 	bus->chipinfo.rev = (tmp & BCMA_CC_ID_REV) >> BCMA_CC_ID_REV_SHIFT;
+ 	bus->chipinfo.pkg = (tmp & BCMA_CC_ID_PKG) >> BCMA_CC_ID_PKG_SHIFT;
++	bus->nr_cores = (tmp & BCMA_CC_ID_NRCORES) >> BCMA_CC_ID_NRCORES_SHIFT;
++
++	/* If we are an embedded device we now know the number of avaliable
++	 * core and ioremap the correct space.
++	 */
++	if (bus->hosttype == BCMA_HOSTTYPE_EMBEDDED) {
++		iounmap(bus->mmio);
++		mmio = ioremap(BCMA_ADDR_BASE, BCMA_CORE_SIZE * bus->nr_cores);
++		if (!mmio)
++			return -ENOMEM;
++		bus->mmio = mmio;
++
++		mmio = ioremap(BCMA_WRAP_BASE, BCMA_CORE_SIZE * bus->nr_cores);
++		if (!mmio)
++			return -ENOMEM;
++		bus->host_embedded = mmio;
++	}
++	/* reset it to 0 as we use it for counting */
++	bus->nr_cores = 0;
+ 
+ 	erombase = bcma_scan_read32(bus, 0, BCMA_CC_EROM);
+-	eromptr = bus->mmio;
++	if (bus->hosttype == BCMA_HOSTTYPE_EMBEDDED) {
++		eromptr = ioremap(erombase, BCMA_CORE_SIZE);
++		if (!eromptr)
++			return -ENOMEM;
++	} else
++		eromptr = bus->mmio;
++
+ 	eromend = eromptr + BCMA_CORE_SIZE / sizeof(u32);
+ 
+ 	bcma_scan_switch_core(bus, erombase);
 diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
-index 3dc5302..8b6feca 100644
+index 8b6feca..192c4ae 100644
 --- a/include/linux/bcma/bcma.h
 +++ b/include/linux/bcma/bcma.h
-@@ -195,6 +195,9 @@ struct bcma_bus {
- 
- 	struct bcma_drv_cc drv_cc;
- 	struct bcma_drv_pci drv_pci;
-+
-+	/* Internal-only stuff follows. Do not touch. */
-+	struct list_head attach_list;
+@@ -16,6 +16,7 @@ enum bcma_hosttype {
+ 	BCMA_HOSTTYPE_NONE,
+ 	BCMA_HOSTTYPE_PCI,
+ 	BCMA_HOSTTYPE_SDIO,
++	BCMA_HOSTTYPE_EMBEDDED,
  };
  
- extern inline u32 bcma_read8(struct bcma_device *core, u16 offset)
+ struct bcma_chipinfo {
+@@ -185,6 +186,8 @@ struct bcma_bus {
+ 		struct pci_dev *host_pci;
+ 		/* Pointer to the SDIO device (only for BCMA_HOSTTYPE_SDIO) */
+ 		struct sdio_func *host_sdio;
++		/* Pointer to the embedded iomem (only for BCMA_HOSTTYPE_EMBEDDED) */
++		void __iomem *host_embedded;
+ 	};
+ 
+ 	struct bcma_chipinfo chipinfo;
+diff --git a/include/linux/bcma/bcma_embedded.h b/include/linux/bcma/bcma_embedded.h
+new file mode 100644
+index 0000000..0faf46d
+--- /dev/null
++++ b/include/linux/bcma/bcma_embedded.h
+@@ -0,0 +1,8 @@
++#ifndef LINUX_BCMA_EMBEDDED_H_
++#define LINUX_BCMA_EMBEDDED_H_
++
++#include <linux/bcma/bcma.h>
++
++extern int bcma_host_bcma_register(struct bcma_bus *bus);
++
++#endif /* LINUX_BCMA_EMBEDDED_H_ */
 -- 
 1.7.4.1

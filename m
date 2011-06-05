@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 00:10:25 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:60326 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 00:10:50 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:60339 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491785Ab1FEWIW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 00:08:22 +0200
+        with ESMTP id S1491795Ab1FEWI2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 00:08:28 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 9EB2E8B1B;
-        Mon,  6 Jun 2011 00:08:22 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id EAE5C8B1C;
+        Mon,  6 Jun 2011 00:08:27 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JNKxFfsR02SU; Mon,  6 Jun 2011 00:08:18 +0200 (CEST)
+        with ESMTP id bAC+gmlKiAle; Mon,  6 Jun 2011 00:08:23 +0200 (CEST)
 Received: from localhost.localdomain (host-091-097-251-075.ewe-ip-backbone.de [91.97.251.75])
-        by hauke-m.de (Postfix) with ESMTPSA id D4D618B06;
-        Mon,  6 Jun 2011 00:08:10 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 049558B14;
+        Mon,  6 Jun 2011 00:08:12 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org
 Cc:     zajec5@gmail.com, mb@bu3sch.de, george@znau.edu.ua,
         arend@broadcom.com, b43-dev@lists.infradead.org,
         bernhardloos@googlemail.com, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [RFC][PATCH 05/10] bcma: add serial console support
-Date:   Mon,  6 Jun 2011 00:07:33 +0200
-Message-Id: <1307311658-15853-6-git-send-email-hauke@hauke-m.de>
+Subject: [RFC][PATCH 07/10] bcma: add pci(e) host mode
+Date:   Mon,  6 Jun 2011 00:07:35 +0200
+Message-Id: <1307311658-15853-8-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
 References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 30227
+X-archive-position: 30228
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,154 +33,152 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3688
+X-UID: 3689
 
-This adds support for serial console to bcma, when operating on an
-embedded device.
+This adds some stub for a pci(e) host controller. This controller is
+found on some embedded devices to attach other chips.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/bcma_private.h           |    4 ++
- drivers/bcma/driver_chipcommon.c      |   62 +++++++++++++++++++++++++++++++++
- drivers/bcma/driver_mips.c            |    9 +++++
- include/linux/bcma/bcma_driver_mips.h |   11 ++++++
- 4 files changed, 86 insertions(+), 0 deletions(-)
+ drivers/bcma/Kconfig                 |    6 ++++
+ drivers/bcma/Makefile                |    1 +
+ drivers/bcma/bcma_private.h          |    6 ++++
+ drivers/bcma/driver_pci.c            |   12 ++++++++-
+ drivers/bcma/driver_pci_host.c       |   44 ++++++++++++++++++++++++++++++++++
+ include/linux/bcma/bcma_driver_pci.h |    1 +
+ 6 files changed, 69 insertions(+), 1 deletions(-)
+ create mode 100644 drivers/bcma/driver_pci_host.c
 
+diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+index 568d30b..c863a87 100644
+--- a/drivers/bcma/Kconfig
++++ b/drivers/bcma/Kconfig
+@@ -27,6 +27,12 @@ config BCMA_HOST_PCI
+ 	bool "Support for BCMA on PCI-host bus"
+ 	depends on BCMA_HOST_PCI_POSSIBLE
+ 
++config BCMA_PCICORE_HOSTMODE
++	bool "Hostmode support for BCMA PCI core"
++	depends on BCMA_DRIVER_MIPS
++	help
++	  PCIcore hostmode operation (external PCI bus).
++
+ config BCMA_HOST_EMBEDDED
+ 	bool
+ 	depends on BCMA_DRIVER_MIPS
+diff --git a/drivers/bcma/Makefile b/drivers/bcma/Makefile
+index 50ddab8..f99abfe 100644
+--- a/drivers/bcma/Makefile
++++ b/drivers/bcma/Makefile
+@@ -1,6 +1,7 @@
+ bcma-y					+= main.o scan.o core.o
+ bcma-y					+= driver_chipcommon.o driver_chipcommon_pmu.o
+ bcma-y					+= driver_pci.o
++bcma-$(CONFIG_BCMA_PCICORE_HOSTMODE)	+= driver_pci_host.o
+ bcma-$(CONFIG_BCMA_DRIVER_MIPS)		+= driver_mips.o
+ bcma-$(CONFIG_BCMA_HOST_PCI)		+= host_pci.o
+ bcma-$(CONFIG_BCMA_HOST_EMBEDDED)	+= host_embedded.o
 diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
-index 842ee17..c65a6e2 100644
+index fbabe19..13cf25a 100644
 --- a/drivers/bcma/bcma_private.h
 +++ b/drivers/bcma/bcma_private.h
-@@ -22,6 +22,10 @@ int bcma_bus_scan(struct bcma_bus *bus);
- /* driver_mips.c */
- extern unsigned int bcma_core_mips_irq(struct bcma_device *dev);
+@@ -29,6 +29,12 @@ extern u32 bcma_pmu_get_clockcpu(struct bcma_drv_cc *cc);
+ extern int bcma_chipco_serial_init(struct bcma_drv_cc *cc,
+ 				   struct bcma_drv_mips_serial_port *ports);
  
-+/* driver_chipcommon.c */
-+extern int bcma_chipco_serial_init(struct bcma_drv_cc *cc,
-+				   struct bcma_drv_mips_serial_port *ports);
++#ifdef CONFIG_BCMA_PCICORE_HOSTMODE
++/* driver_pci_host.c */
++extern int bcma_pcicore_is_in_hostmode(struct bcma_drv_pci *pc);
++extern void bcma_pcicore_init_hostmode(struct bcma_drv_pci *pc);
++#endif /* CONFIG_BCMA_PCICORE_HOSTMODE */
 +
  #ifdef CONFIG_BCMA_HOST_PCI
  /* host_pci.c */
  extern int __init bcma_host_pci_init(void);
-diff --git a/drivers/bcma/driver_chipcommon.c b/drivers/bcma/driver_chipcommon.c
-index 6061022..b582570 100644
---- a/drivers/bcma/driver_chipcommon.c
-+++ b/drivers/bcma/driver_chipcommon.c
-@@ -87,3 +87,65 @@ u32 bcma_chipco_gpio_polarity(struct bcma_drv_cc *cc, u32 mask, u32 value)
+diff --git a/drivers/bcma/driver_pci.c b/drivers/bcma/driver_pci.c
+index 789d68b..cf8cbe0 100644
+--- a/drivers/bcma/driver_pci.c
++++ b/drivers/bcma/driver_pci.c
+@@ -159,7 +159,17 @@ static void bcma_pcicore_serdes_workaround(struct bcma_drv_pci *pc)
+ 
+ void bcma_core_pci_init(struct bcma_drv_pci *pc)
  {
- 	return bcma_cc_write32_masked(cc, BCMA_CC_GPIOPOL, mask, value);
- }
+-	bcma_pcicore_serdes_workaround(pc);
++	struct bcma_device *core = pc->core;
 +
-+int bcma_chipco_serial_init(struct bcma_drv_cc *cc,
-+			    struct bcma_drv_mips_serial_port *ports)
-+{
-+	int nr_ports = 0;
-+	u32 plltype;
-+	unsigned int irq;
-+	u32 baud_base, div;
-+	u32 i, n;
-+	unsigned int ccrev = cc->core->id.rev;
-+
-+	plltype = (cc->capabilities & BCMA_CC_CAP_PLLT);
-+	irq = bcma_core_mips_irq(cc->core);
-+
-+	if ((ccrev >= 11) && (ccrev != 15) && (ccrev != 20)) {
-+		/* Fixed ALP clock */
-+		baud_base = 20000000;
-+		if (cc->capabilities & BCMA_CC_CAP_PMU) {
-+			/* FIXME: baud_base is different for devices with a PMU */
-+			WARN_ON(1);
-+		}
-+		div = 1;
-+		if (ccrev >= 21) {
-+			/* Turn off UART clock before switching clocksource. */
-+			bcma_cc_write32(cc, BCMA_CC_CORECTL,
-+				       bcma_cc_read32(cc, BCMA_CC_CORECTL)
-+				       & ~BCMA_CC_CORECTL_UARTCLKEN);
-+		}
-+		/* Set the override bit so we don't divide it */
-+		bcma_cc_write32(cc, BCMA_CC_CORECTL,
-+			       bcma_cc_read32(cc, BCMA_CC_CORECTL)
-+			       | BCMA_CC_CORECTL_UARTCLK0);
-+		if (ccrev >= 21) {
-+			/* Re-enable the UART clock. */
-+			bcma_cc_write32(cc, BCMA_CC_CORECTL,
-+				       bcma_cc_read32(cc, BCMA_CC_CORECTL)
-+				       | BCMA_CC_CORECTL_UARTCLKEN);
-+		}
-+	} else
-+		pr_err("serial not supported on this device ccrev: 0x%x\n",
-+		       ccrev);
-+
-+	/* Determine the registers of the UARTs */
-+	n = (cc->capabilities & BCMA_CC_CAP_NRUART);
-+	for (i = 0; i < n; i++) {
-+		void __iomem *cc_mmio;
-+		void __iomem *uart_regs;
-+
-+		cc_mmio = cc->core->bus->mmio +
-+			  (cc->core->core_index * BCMA_CORE_SIZE);
-+		uart_regs = cc_mmio + BCMA_CC_UART0_DATA;
-+		uart_regs += (i * 256);
-+
-+		nr_ports++;
-+		ports[i].regs = uart_regs;
-+		ports[i].irq = irq;
-+		ports[i].baud_base = baud_base;
-+		ports[i].reg_shift = 0;
-+	}
-+
-+	return nr_ports;
-+}
-diff --git a/drivers/bcma/driver_mips.c b/drivers/bcma/driver_mips.c
-index 0a6c217..40e4a6d 100644
---- a/drivers/bcma/driver_mips.c
-+++ b/drivers/bcma/driver_mips.c
-@@ -155,6 +155,14 @@ static void bcma_core_mips_dump_irq(struct bcma_bus *bus)
- 	}
++	if (!bcma_core_is_enabled(core))
++		bcma_core_enable(core, 0);
++#ifdef CONFIG_BCMA_PCICORE_HOSTMODE
++	pc->hostmode = bcma_pcicore_is_in_hostmode(pc);
++	if (pc->hostmode)
++		bcma_pcicore_init_hostmode(pc);
++#endif /* CONFIG_BCMA_PCICORE_HOSTMODE */
++	if (!pc->hostmode)
++		bcma_pcicore_serdes_workaround(pc);
  }
  
-+static void bcma_core_mips_serial_init(struct bcma_drv_mips *mcore)
-+{
-+	struct bcma_bus *bus = mcore->core->bus;
+ int bcma_core_pci_irq_ctl(struct bcma_drv_pci *pc, struct bcma_device *core,
+diff --git a/drivers/bcma/driver_pci_host.c b/drivers/bcma/driver_pci_host.c
+new file mode 100644
+index 0000000..b52c6c9
+--- /dev/null
++++ b/drivers/bcma/driver_pci_host.c
+@@ -0,0 +1,44 @@
++/*
++ * Broadcom specific AMBA
++ * PCI Core
++ *
++ * Copyright 2005, Broadcom Corporation
++ * Copyright 2006, 2007, Michael Buesch <mb@bu3sch.de>
++ *
++ * Licensed under the GNU/GPL. See COPYING for details.
++ */
 +
-+	mcore->nr_serial_ports = bcma_chipco_serial_init(&bus->drv_cc,
-+							 mcore->serial_ports);
++#include "bcma_private.h"
++#include <linux/bcma/bcma.h>
++
++#include <asm/paccess.h>
++/* Probe a 32bit value on the bus and catch bus exceptions.
++ * Returns nonzero on a bus exception.
++ * This is MIPS specific */
++#define mips_busprobe32(val, addr)	get_dbe((val), ((u32 *)(addr)))
++
++
++void bcma_pcicore_init_hostmode(struct bcma_drv_pci *pc)
++{
++	/* TODO: implement PCI host mode */
 +}
 +
- static void bcma_core_mips_flash_detect(struct bcma_drv_mips *mcore)
- {
- 	struct bcma_bus *bus = mcore->core->bus;
-@@ -223,5 +231,6 @@ void bcma_core_mips_init(struct bcma_drv_mips *mcore)
- 	pr_info("after irq reconfiguration\n");
- 	bcma_core_mips_dump_irq(bus);
- 
-+	bcma_core_mips_serial_init(mcore);
- 	bcma_core_mips_flash_detect(mcore);
- }
-diff --git a/include/linux/bcma/bcma_driver_mips.h b/include/linux/bcma/bcma_driver_mips.h
-index 5faf30c..6584e7d 100644
---- a/include/linux/bcma/bcma_driver_mips.h
-+++ b/include/linux/bcma/bcma_driver_mips.h
-@@ -27,9 +27,20 @@
- 
- struct bcma_device;
- 
-+struct bcma_drv_mips_serial_port {
-+	void *regs;
-+	unsigned long clockspeed;
-+	unsigned int irq;
-+	unsigned int baud_base;
-+	unsigned int reg_shift;
-+};
++int bcma_pcicore_is_in_hostmode(struct bcma_drv_pci *pc)
++{
++	struct bcma_bus *bus = pc->core->bus;
++	u16 chipid_top;
++	u32 tmp;
 +
- struct bcma_drv_mips {
++	chipid_top = (bus->chipinfo.id & 0xFF00);
++	if (chipid_top != 0x4700 &&
++	    chipid_top != 0x5300)
++		return 0;
++
++/* TODO: add when sprom is available
++ * if (bus->sprom.boardflags_lo & SSB_PCICORE_BFL_NOPCI)
++ *		return 0;
++ */
++
++	return !mips_busprobe32(tmp, (bus->mmio + (pc->core->core_index *
++						   BCMA_CORE_SIZE)));
++}
+diff --git a/include/linux/bcma/bcma_driver_pci.h b/include/linux/bcma/bcma_driver_pci.h
+index b7e191c..5bbc58f 100644
+--- a/include/linux/bcma/bcma_driver_pci.h
++++ b/include/linux/bcma/bcma_driver_pci.h
+@@ -78,6 +78,7 @@ struct pci_dev;
+ struct bcma_drv_pci {
  	struct bcma_device *core;
+ 	u8 setup_done:1;
++	u8 hostmode:1;
+ };
  
-+	int nr_serial_ports;
-+	struct bcma_drv_mips_serial_port serial_ports[4];
-+
- 	u8 flash_buswidth;
- 	u32 flash_window;
- 	u32 flash_window_size;
+ /* Register access */
 -- 
 1.7.4.1

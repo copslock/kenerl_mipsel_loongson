@@ -1,77 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 10:32:23 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:4444 "EHLO mms1.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491055Ab1FFIcU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Jun 2011 10:32:20 +0200
-Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Mon, 06 Jun 2011 01:36:24 -0700
-X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Mon, 6 Jun 2011 01:32:02 -0700
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.17.16.106]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- A75FA74D0D; Mon, 6 Jun 2011 01:32:01 -0700 (PDT)
-Received: from [192.168.1.120] (unknown [10.176.68.21]) by
- mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 0DA7020501; Mon, 6
- Jun 2011 01:31:59 -0700 (PDT)
-Message-ID: <4DEC907E.9040405@broadcom.com>
-Date:   Mon, 6 Jun 2011 10:31:58 +0200
-From:   "Arend van Spriel" <arend@broadcom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.17)
- Gecko/20110424 Thunderbird/3.1.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 11:25:26 +0200 (CEST)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:36797 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491818Ab1FFJZX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 11:25:23 +0200
+Received: by wwb17 with SMTP id 17so3005863wwb.24
+        for <linux-mips@linux-mips.org>; Mon, 06 Jun 2011 02:25:17 -0700 (PDT)
+Received: by 10.216.143.96 with SMTP id k74mr2144266wej.100.1307352317218;
+        Mon, 06 Jun 2011 02:25:17 -0700 (PDT)
+Received: from [192.168.2.2] ([91.79.84.124])
+        by mx.google.com with ESMTPS id ge4sm2717580wbb.47.2011.06.06.02.25.14
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 06 Jun 2011 02:25:15 -0700 (PDT)
+Message-ID: <4DEC9CC5.9010700@mvista.com>
+Date:   Mon, 06 Jun 2011 13:24:21 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.17) Gecko/20110414 Thunderbird/3.1.10
 MIME-Version: 1.0
-To:     "Hauke Mehrtens" <hauke@hauke-m.de>
-cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "zajec5@gmail.com" <zajec5@gmail.com>,
-        "mb@bu3sch.de" <mb@bu3sch.de>,
-        "george@znau.edu.ua" <george@znau.edu.ua>,
-        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
-        "bernhardloos@googlemail.com" <bernhardloos@googlemail.com>
-Subject: Re: [RFC][PATCH 01/10] bcma: Use array to store cores.
-References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
- <1307311658-15853-2-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1307311658-15853-2-git-send-email-hauke@hauke-m.de>
-X-WSS-ID: 61F24E021IC16574349-01-01
-Content-Type: text/plain;
- charset=iso-8859-1;
- format=flowed
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+CC:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
+        zajec5@gmail.com, mb@bu3sch.de, george@znau.edu.ua,
+        arend@broadcom.com, b43-dev@lists.infradead.org,
+        bernhardloos@googlemail.com
+Subject: Re: [RFC][PATCH 10/10] bcm47xx: fix irq assignment for new SoCs.
+References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de> <1307311658-15853-11-git-send-email-hauke@hauke-m.de>
+In-Reply-To: <1307311658-15853-11-git-send-email-hauke@hauke-m.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 30238
+X-archive-position: 30239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend@broadcom.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3919
+X-UID: 4003
 
-On 06/06/2011 12:07 AM, Hauke Mehrtens wrote:
-> When using bcma on a embedded device it is initialized very early at
-> boot. We have to do so as the cpu and interrupt management and all
-> other devices are attached to this bus and it has to be initialized so
-> early. In that stage we can not allocate memory or sleep, just use the
-> memory on the stack and in the text segment as the kernel is not
-> initialized far enough. This patch removed the kzallocs from the scan
-> code. Some earlier version of the bcma implementation and the normal
-> ssb implementation are doing it like this.
-> The __bcma_dev_wrapper struct is used as the container for the device
-> struct as bcma_device will be too big if it includes struct device.
+Hello.
 
-Does this prevent using list_for_each() and friends to be used on the 
-device list? If so, could you consider a different approach. There were 
-good reasons to get rid of the bcma_dev_wrapper struct if I recall 
-discussions on the mailing list correctly. I also see tendency to use 
-ssb solutions without considering alternatives. For this particular 
-example, please consider adding a bcma_zalloc(), which does kzalloc for 
-non-embedded platforms and returns array pointers for embedded platform. 
-You could also consider this behavior for the embedded bus only.
+On 06-06-2011 2:07, Hauke Mehrtens wrote:
 
-Gr. AvS
+> Signed-off-by: Hauke Mehrtens<hauke@hauke-m.de>
+> ---
+>   arch/mips/bcm47xx/irq.c |    8 ++++++++
+>   1 files changed, 8 insertions(+), 0 deletions(-)
 
--- 
-Almost nobody dances sober, unless they happen to be insane.
--- H.P. Lovecraft --
+> diff --git a/arch/mips/bcm47xx/irq.c b/arch/mips/bcm47xx/irq.c
+> index 325757a..3642cee 100644
+> --- a/arch/mips/bcm47xx/irq.c
+> +++ b/arch/mips/bcm47xx/irq.c
+[...]
+> @@ -51,5 +52,12 @@ void plat_irq_dispatch(void)
+>
+>   void __init arch_init_irq(void)
+>   {
+> +	if (bcm47xx_active_bus_type == BCM47XX_BUS_TYPE_BCMA) {
+> +		bcma_write32(bcm47xx_bus.bcma.drv_mips.core,
+> +			     BCMA_MIPS_MIPS74K_INTMASK(5), 1<<  31);
+> +		/* the kernel reads the timer irq from some register and thinks
+> +		 * it's #5, but we offset it by 2 and route to #7 */
+
+    The preferred style for the multi-line comments is this:
+
+/*
+  * bla
+  * bla
+  */
+
+WBR, Sergei

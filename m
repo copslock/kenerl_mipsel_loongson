@@ -1,111 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 05:36:25 +0200 (CEST)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:61692 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490948Ab1FFDgU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 05:36:20 +0200
-Received: by vxd2 with SMTP id 2so3330542vxd.36
-        for <multiple recipients>; Sun, 05 Jun 2011 20:36:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:date:from:to:cc:subject:message-id:mime-version
-         :content-type:content-disposition:content-transfer-encoding
-         :user-agent;
-        bh=0FJ0rm1xg/3n71WM/jv5YZ8Dzeap8tEHf9mfSQeM4S4=;
-        b=WC2ZIySQjra6GeNG/LJKZiEiM33tBje2oOZGUWcn8MeKpDMscIM7zeWjuVLKhJdyhn
-         KmMmuQOqjmHIuWTBEqKQ6rheFqW9ZVnzRPMOhvMwkQeyGl9ILiOJhQVqSgtpFqDUSvH2
-         UQp3E5q4Fr1voJdBunmv2mfTg5eGZuZDclYPg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:mime-version:content-type
-         :content-disposition:content-transfer-encoding:user-agent;
-        b=v2PkpAkBZ+OdlYjQpFwtVpIVCpET7+O46NnfYT4FnAgf8yNb5pdafW8LOSn/DeHKZN
-         Vev0TFe1ZA8kaKKG+cCMWGjj4GIF+qI3xJrCZHVeHzu79XsP/5bNa0g61oyyyEk9zeTy
-         0wKPSTWZcnUCRdGwespgg0Sn1NSfX9cNeHNtw=
-Received: by 10.220.90.77 with SMTP id h13mr83667vcm.14.1307331370110;
-        Sun, 05 Jun 2011 20:36:10 -0700 (PDT)
-Received: from localhost (cpe-174-109-057-197.nc.res.rr.com [174.109.57.197])
-        by mx.google.com with ESMTPS id q38sm375289vcz.31.2011.06.05.20.36.09
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 05 Jun 2011 20:36:09 -0700 (PDT)
-Date:   Sun, 5 Jun 2011 23:36:08 -0400
-From:   Matt Turner <mattst88@gmail.com>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Regression: d6d5d5c breaks Broadcom BCM91250A
-Message-ID: <20110606033608.GA14686@localhost.mattst88>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 06:41:42 +0200 (CEST)
+Received: from mail-pw0-f49.google.com ([209.85.160.49]:62713 "EHLO
+        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490948Ab1FFEli convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 6 Jun 2011 06:41:38 +0200
+Received: by pwi8 with SMTP id 8so2729827pwi.36
+        for <multiple recipients>; Sun, 05 Jun 2011 21:41:30 -0700 (PDT)
+Received: by 10.68.14.167 with SMTP id q7mr1650199pbc.430.1307335290052; Sun,
+ 05 Jun 2011 21:41:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=unknown-8bit
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30235
+Received: by 10.68.65.134 with HTTP; Sun, 5 Jun 2011 21:41:10 -0700 (PDT)
+In-Reply-To: <20110606010753.GA16202@linux-mips.org>
+References: <20110606010753.GA16202@linux-mips.org>
+From:   Grant Likely <grant.likely@secretlab.ca>
+Date:   Sun, 5 Jun 2011 22:41:10 -0600
+X-Google-Sender-Auth: EEV9vv6Et-Dj72jRVy7R_q2-bos
+Message-ID: <BANLkTik1mRWTcX8WgO5s6mFrUGYwBRmSow@mail.gmail.com>
+Subject: Re: Converting MIPS to Device Tree
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        John Crispin <blogic@openwrt.org>,
+        Dezhong Diao <dediao@cisco.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3776
+X-UID: 3817
 
-Hi Thomas,
+On Sun, Jun 5, 2011 at 7:07 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Over the past few days I've started to convert arch/mips to use DT.
 
-Commit d6d5d5c4afd4c8bb4c5e3753a2141e9c3a874629 breaks boot-up on my
-Broadcom BCM91250A. Reverting it solves the problem.
+Nice!
 
-I looked at the commit but nothing obviously wrong jumped out at me.
+>  So
+> far none of the platforms (except maybe PowerTV?) seems to have a
+> firmware that is passing a DT nor is there any 2nd stage bootloader that
+> could do so.
 
-Thanks,
-Matt
+FWIW, U-Boot now has pretty generic support for manipulating and
+passing a dtb at boot.  That doesn't do much good for existing
+deployed systems though.
 
-CPU 1 Unable to handle kernel paging request at virtual address 0000000000000000, epc == 0000000000000000, ra == ffffffff80173888
-Oopsï¿½#1ï¿½:
-Cpu 1
-$ 0   : 0000000000000000 0000000014001fe0 0000000000000000 ffffffff804d6e00
-$ 4   : ffffffff804cce20 0000000000000000 0000000000000005 0000000000000000
-$ 8   : 0000000000000000 0000000000000000 6978000000000000 0000000000000000
-$12   : 0000000000000000 ffffffff80000008 ffffffff801aab00 0000000010020000
-$16   : ffffffff804cce20 ffffffff804cce20 0000000000000008 ffffffff804cce9c
-$20   : ffffffff8059de60 0000000014001fe1 0000000000001d4c 0000000000000000
-$24   : 0000000010018348 ffffffff802e9f58                                  
-$28   : a8000000ce068000 a8000000ce06bc10 0000000000000000 ffffffff80173888
-Hi    : 0000000000000000
-Lo    : 0000000000000700
-epc   : 0000000000000000           (null)
-    Tainted: G        W  
-ra    : ffffffff80173888 irq_shutdown+0x58/0x78
-Status: 14001fe2    KX SX UX KERNEL EXL 
-Cause : 00800008
-BadVA : 0000000000000000
-PrId  : 03040102 (SiByte SB1)
-Modules linked in:
-Process init (pid: 1, threadinfo=a8000000ce068000, task=a8000000ce067718, tls=000000002b340400)
-Stack : a8000000ce5d1700 ffffffff80171c28 a8000000ce46b800 ffffffff804cce20
-        ffffffff8059de60 0000000000000008 a8000000ce46b810 ffffffff8059de68
-        0000000000001d4c ffffffff80171d78 ffffffff8059de68 a8000000ce46b800
-        a8000000ce468000 ffffffff802ea6c8 0000000014001fe1 a8000000ce46b878
-        a8000000ce46b800 a8000000ce46b878 a8000000ce46b800 ffffffff802eb7c0
-        a8000000ce06be50 a8000000ce06bcf8 a8000000ce06bda0 a8000000ce06be50
-        a8000000ce06bd80 a8000000ce06be50 0000000014001fe1 a8000000ce11d760
-        0000000000000000 a8000000ce468000 0000000000000000 0000000000000000
-        a8000000ce044f40 0000000000000008 a8000000ce11d760 a8000000cd001450
-        0000000000000000 ffffffff802d2c14 a8000000ce3b7000 ffffffffffffff9c
-        ...
-Call Trace:
-ï¿½<ffffffff80171c28>ï¿½ __free_irq+0xe4/0x1c8
-ï¿½<ffffffff80171d78>ï¿½ free_irq+0x6c/0xb4
-ï¿½<ffffffff802ea6c8>ï¿½ uart_shutdown+0xe4/0x120
-ï¿½<ffffffff802eb7c0>ï¿½ uart_close+0x224/0x334
-ï¿½<ffffffff802d2c14>ï¿½ tty_release+0x1dc/0x4c8
-ï¿½<ffffffff801b9820>ï¿½ do_filp_open+0x38/0x9c
-ï¿½<ffffffff801ace88>ï¿½ fput+0x130/0x224
-ï¿½<ffffffff801a94ec>ï¿½ filp_close+0x8c/0xa4
-ï¿½<ffffffff801aabb0>ï¿½ SyS_close+0xb0/0x110
-ï¿½<ffffffff8010e6c4>ï¿½ handle_sysn32+0x44/0xa0
+> So as the 2nd best thing I've been working on .dts files to be compiled
+> into the images.
+>
+> I've put a git tree of my current working tree online.  It's absolutely
+> work in progress so expect to encounter bugs.
+>
+>  http://git.linux-mips.org/?p=linux-dt.git;a=summary (Gitweb)
+>  git://git.linux-mips.org/linux-dt.git
+>  http://www.linux-mips.org/wiki/Device_Tree (brief documentation & links)
+>
+> An incomplete to do list:
+>
+>  o Sort out interface for firmware to pass a DT to the kernel.  Because we
+>    have so many different firmware implementations this one might get a
+>    slight bit interesting.
 
+I strongly recommend defining a single method for passing the DT here.
+ If firmware is being modified anyway to add DT support, then may as
+well get everyone to conform to the same interface.  Things do get
+really hairy if you try to pass the DT inside a legacy firmware
+interface and then try to figure out which data is authoritative; the
+dtb or the legacy data.  DT boot can even be made a different boot
+mode for the firmware.  This is effectively what U-Boot has done.
+Either you boot without DT, using the legacy interface, or you boot
+with DT using a new *and common* DT boot interface.
 
-Code: (Bad address in epc)
+>  o Interface to select one of several builtin DT images.  I am thinking of
+>    extending the existing MIPS_MACHINE() / machtype mechanism to play
+>    nicely with DT.
 
-Disabling lock debugging due to kernel taint
-Kernel panic - not syncing: Attempted to kill init!
+I'm toying with this idea on arm too with the machine_desc structure,
+but it is looking more likely that ARM is going to support DT on older
+non-DT firmware by appending the .dtb blob to the zImage, and getting
+the wrapper to handle fixing up the boot interface.  There are patches
+on the list for this, but they need one more going over before they
+get committed.
+
+>  o Finish and test AR7, Cobalt, Jazz, Malta, MIPSsim and SNI ports.
+>  o Convert the remaining platforms; find if it's actually sensible to
+>    convert all platforms.
+>  o I'm considering to make DT support a requirement for future MIPS
+>    platforms so you might as well start beating your firmware monkeys /
+>    ask Santa to put you a shiny new bootloader blob into the boot now.
+>  o Write more of the required infrastructure.
+>  o Write documentation
+>
+> Contributions and comments welcome,
+
+Cheers,
+g.
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

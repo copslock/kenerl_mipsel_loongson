@@ -1,75 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 12:40:19 +0200 (CEST)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:36302 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490948Ab1FFKkQ convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Jun 2011 12:40:16 +0200
-Received: by qwi2 with SMTP id 2so2063949qwi.36
-        for <linux-mips@linux-mips.org>; Mon, 06 Jun 2011 03:40:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=Pa7u+Qq1FYpCR4COrWNYJvtK1mO0sOEaVw5owJ5KkCg=;
-        b=BVAIWJ+atMbLRFbeKYuhM8RhkPzzdyK8S3GGCIp3oH7PPxqEWdiYSh0w3I+5oVqw0t
-         BIZ2wKpjhs5s6rM3y5F/WAiCqv9Exbu8mxfmGOP4pcs2Z81NbEviN5ArPROXx3az50UD
-         xFPkTt5tHzRU9ar/oq3FqE1J9ip0WfvvDIyfI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=JBrV/hSo/G51C21t53F93DSVv/hlDY/AhvOVCKFqL9W1b6/yB99POxVcSvlyzOFDUo
-         t4gEaKcG7Wbmd2sTAdoWl/xfXDpDV4BRy2yCMQyq9GyTHI9+ELLKvKKOxwgdd6aW4qNs
-         JvKsAoDTBXMkYbYg/E4EiLTSa4rOjbQwGG7gg=
-MIME-Version: 1.0
-Received: by 10.229.35.1 with SMTP id n1mr3392977qcd.84.1307356810634; Mon, 06
- Jun 2011 03:40:10 -0700 (PDT)
-Received: by 10.229.96.21 with HTTP; Mon, 6 Jun 2011 03:40:10 -0700 (PDT)
-In-Reply-To: <BANLkTim74Km0T3XRo+W8jCrb2n-dv3XxNg@mail.gmail.com>
-References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
-        <1307311658-15853-7-git-send-email-hauke@hauke-m.de>
-        <BANLkTim74Km0T3XRo+W8jCrb2n-dv3XxNg@mail.gmail.com>
-Date:   Mon, 6 Jun 2011 12:40:10 +0200
-Message-ID: <BANLkTimdAoB=ye27qfxzdj2K-VBS6ch+ow@mail.gmail.com>
-Subject: Re: [RFC][PATCH 06/10] bcma: get CPU clock
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
-        mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 12:41:55 +0200 (CEST)
+Received: from mail.academy.zt.ua ([82.207.120.245]:31578 "EHLO
+        mail.academy.zt.ua" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1490948Ab1FFKlw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 12:41:52 +0200
+Received: from [10.0.2.42] by mail.academy.zt.ua (Cipher SSLv3:RC4-MD5:128) (MDaemon PRO v12.0.0)
+        with ESMTP id md50000009935.msg
+        for <linux-mips@linux-mips.org>; Mon, 06 Jun 2011 13:41:48 +0300
+X-Authenticated-Sender: george@academy.zt.ua
+X-HashCash: 1:20:110606:md50000009935::1cI2duNFRf28Tgcv:000023Vf
+X-Return-Path: prvs=1138417825=george@znau.edu.ua
+X-Envelope-From: george@znau.edu.ua
+X-MDaemon-Deliver-To: linux-mips@linux-mips.org
+Subject: Re: [RFC][PATCH 03/10] bcma: add embedded bus
+From:   George Kashperko <george@znau.edu.ua>
+To:     =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>, linux-wireless@vger.kernel.org,
+        linux-mips@linux-mips.org, mb@bu3sch.de, arend@broadcom.com,
         b43-dev@lists.infradead.org, bernhardloos@googlemail.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30246
+In-Reply-To: <BANLkTi=T6xO9q+vOCk5Fu+2J_nUTwX3dcg@mail.gmail.com>
+References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
+         <1307311658-15853-4-git-send-email-hauke@hauke-m.de>
+         <BANLkTi=T6xO9q+vOCk5Fu+2J_nUTwX3dcg@mail.gmail.com>
+Content-Type: text/plain
+Date:   Mon, 06 Jun 2011 13:32:02 +0300
+Message-Id: <1307356322.28734.11.camel@dev.znau.edu.ua>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.3 (2.12.3-19.el5) 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: george@znau.edu.ua
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 4092
+X-UID: 4096
 
-W dniu 6 czerwca 2011 12:34 użytkownik Rafał Miłecki <zajec5@gmail.com> napisał:
+Hi,
+
+> Hauke,
+> 
+> My idea for naming schema was to use:
+> bcma_host_TYPE_*
+> 
+> Like:
+> bcma_host_pci_*
+> bcma_host_sdio_*
+> 
+> You are using:
+> bcma_host_bcma_*
+> 
+> What do you think about changing this to:
+> bcma_host_embedded_*
+> or just some:
+> bcma_host_emb_*
+> ?
+> 
+> Does it make more sense to you? I was trying to keep names in bcma
+> really clear, so every first-time-reader can see differences between
+> hosts, host and driver, etc.
+how about bcma_host_soc ?
+
+> 
+> 
 > 2011/6/6 Hauke Mehrtens <hauke@hauke-m.de>:
->> +u32 bcma_cpu_clock(struct bcma_drv_mips *mcore)
->> +{
->> +       struct bcma_bus *bus = mcore->core->bus;
->> +
->> +       if (bus->drv_cc.capabilities & BCMA_CC_CAP_PMU)
->> +               return bcma_pmu_get_clockcpu(&bus->drv_cc);
->> +
->> +       pr_err("No PMU available, need this to get the cpu clock\n");
->> +       return 0;
->> +}
->> +EXPORT_SYMBOL(bcma_cpu_clock);
->
-> Are you really going to use this in some separated driver? If you're,
-> I heard that exporting symbol should go in pair with patch enabling
-> usage of such a symbol.
+> > --- /dev/null
+> > +++ b/drivers/bcma/host_embedded.c
+> > @@ -0,0 +1,93 @@
+> > +/*
+> > + * Broadcom specific AMBA
+> > + * PCI Host
+> 
+> s/PCI/Embedded/
+> 
+> 
+> > +int bcma_host_bcma_register(struct bcma_bus *bus)
+> > +{
+> > +       u32 __iomem *mmio;
+> > +       /* iomap only first core. We have to read some register on this core
+> > +        * to get the number of cores. This is sone in bcma_scan()
+> > +        */
+> > +       mmio = ioremap(BCMA_ADDR_BASE, BCMA_CORE_SIZE * 1);
+> > +       if (!mmio)
+> > +               return -ENOMEM;
+> > +       bus->mmio = mmio;
+> 
+> Maybe just:
+> bus->mmio = ioremap(...);
+> ? :)
+> 
+> 
+> > +       /* Host specific */
+> > +       bus->hosttype = BCMA_HOSTTYPE_EMBEDDED;
+> > +       bus->ops = &bcma_host_bcma_ops;
+> > +
+> > +       /* Register */
+> > +       return bcma_bus_register(bus);
+> > +}
+> > diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+> > index 1afa107..c5bcb5f 100644
+> > --- a/drivers/bcma/main.c
+> > +++ b/drivers/bcma/main.c
+> > @@ -119,6 +119,7 @@ static int bcma_register_cores(struct bcma_bus *bus)
+> >                        break;
+> >                case BCMA_HOSTTYPE_NONE:
+> >                case BCMA_HOSTTYPE_SDIO:
+> > +               case BCMA_HOSTTYPE_EMBEDDED:
+> >                        break;
+> >                }
+> >
+> > diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+> > index 70b39f7..9229615 100644
+> > --- a/drivers/bcma/scan.c
+> > +++ b/drivers/bcma/scan.c
+> > @@ -203,7 +203,7 @@ static s32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 **eromptr,
+> >  int bcma_bus_scan(struct bcma_bus *bus)
+> >  {
+> >        u32 erombase;
+> > -       u32 __iomem *eromptr, *eromend;
+> > +       u32 __iomem *eromptr, *eromend, *mmio;
+> >
+> >        s32 cia, cib;
+> >        u8 ports[2], wrappers[2];
+> > @@ -219,9 +219,34 @@ int bcma_bus_scan(struct bcma_bus *bus)
+> >        bus->chipinfo.id = (tmp & BCMA_CC_ID_ID) >> BCMA_CC_ID_ID_SHIFT;
+> >        bus->chipinfo.rev = (tmp & BCMA_CC_ID_REV) >> BCMA_CC_ID_REV_SHIFT;
+> >        bus->chipinfo.pkg = (tmp & BCMA_CC_ID_PKG) >> BCMA_CC_ID_PKG_SHIFT;
+> > +       bus->nr_cores = (tmp & BCMA_CC_ID_NRCORES) >> BCMA_CC_ID_NRCORES_SHIFT;
+> 
+To avoid using wrapper struct and at the same time to save on embedded
+reservations you could let the bus get scanned twice on SoC - first time
+discovering just system devices (chipcommon and mips core) required for
+early setup (you will never register those to the linux device subsystem
+so you can have them marked as __initdata and have no ->release callback
+therefore), second time full scan with registering the whole bus when
+done.
 
-I've just read patch 09/10, sorry for the noise :)
-
--- 
-Rafał
+Have nice day,
+George

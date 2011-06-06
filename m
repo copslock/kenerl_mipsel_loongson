@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 13:23:51 +0200 (CEST)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:39433 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490978Ab1FFLXs convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 13:32:20 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:50287 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490948Ab1FFLcS convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Jun 2011 13:23:48 +0200
-Received: by qwi2 with SMTP id 2so2080893qwi.36
-        for <linux-mips@linux-mips.org>; Mon, 06 Jun 2011 04:23:42 -0700 (PDT)
+        Mon, 6 Jun 2011 13:32:18 +0200
+Received: by qyk32 with SMTP id 32so847126qyk.15
+        for <linux-mips@linux-mips.org>; Mon, 06 Jun 2011 04:32:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        bh=1Y/1Xz+veULU1juedg8a1ZBlbh0LXI9Ab5GEegPR8+Y=;
-        b=P1LXs+oOmWbomaA7A2OwvO1x752O7Kuv4wU0zTj+h+nw/7C0y2ZC9SzR+wWOD0ViSm
-         wv/kCuim5xpTdCd3Wnpr/9qU23XSJPqYd5waR2prB9Q9CMXtOAFwjtNG+CW8DpOMcvCm
-         7VxBMPl7uExjyvxyjsEii9wgCdHVljgmr4iw8=
+        bh=q/kdsAXzOZOh74cFYGRyN61XXDqinT4KNI1L9wleoj4=;
+        b=MWXGpavn6CvftSCwqvPGFD85dlU4ia8PsKrxEG0A0DIKMYRwHImQhOOhTZOntbP5oK
+         DKB9jzKQAsUG/iUA+eQY/3O31IxzgcK8CWTUaVi3e5u8YX1qEOPnsLPDCFuA1WBAQU9b
+         t5X5bXERokWqlLQJP68BCZUIfcGdBRfIVwTSM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        b=KNWgiDZLD+V5FOWBO9zXyAncnw42HbiGQZf3NTbOmukODke4bNoRvu/Kt7v2ic/41C
-         qbg9QkIhQWO+NE/CMTWKq11kPfOE6lARp2jDEyQFK0+HEX+1qC15d4cle2e+7jxdTa9V
-         Ti1ByEtWxMWTjgf5ZEDtctTNnQujay/zRpCwM=
+        b=srbsfgkaJeqxuBvdkaQcHGYG92DilZd2tQjEwwNAUK6uavFrrWLsjQamNH4TzDHfTC
+         h6uS8a+YsH9Up1sOXfgOPdfKBDTk1tZgA2xnE3aeeEAY6WnQtilsg2lVhrYw4fEdYzJf
+         951oXNe36tFheb+8k/hnJZSB6F/gH91odSr3U=
 MIME-Version: 1.0
-Received: by 10.229.118.69 with SMTP id u5mr3407780qcq.122.1307359422318; Mon,
- 06 Jun 2011 04:23:42 -0700 (PDT)
-Received: by 10.229.96.21 with HTTP; Mon, 6 Jun 2011 04:23:42 -0700 (PDT)
-In-Reply-To: <1307311658-15853-5-git-send-email-hauke@hauke-m.de>
+Received: by 10.229.43.99 with SMTP id v35mr3466671qce.8.1307359932220; Mon,
+ 06 Jun 2011 04:32:12 -0700 (PDT)
+Received: by 10.229.96.21 with HTTP; Mon, 6 Jun 2011 04:32:11 -0700 (PDT)
+In-Reply-To: <1307311658-15853-8-git-send-email-hauke@hauke-m.de>
 References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
-        <1307311658-15853-5-git-send-email-hauke@hauke-m.de>
-Date:   Mon, 6 Jun 2011 13:23:42 +0200
-Message-ID: <BANLkTim_TtNVmmyH5J3G0pK-vrWNL1+24A@mail.gmail.com>
-Subject: Re: [RFC][PATCH 04/10] bcma: add mips driver
+        <1307311658-15853-8-git-send-email-hauke@hauke-m.de>
+Date:   Mon, 6 Jun 2011 13:32:11 +0200
+Message-ID: <BANLkTik93+7ujHyv0_Zk2Ma9BPsHvJTttg@mail.gmail.com>
+Subject: Re: [RFC][PATCH 07/10] bcma: add pci(e) host mode
 From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
@@ -39,7 +39,7 @@ Cc:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
         b43-dev@lists.infradead.org, bernhardloos@googlemail.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 30252
+X-archive-position: 30253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,64 +48,48 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 4136
+X-UID: 4142
 
 2011/6/6 Hauke Mehrtens <hauke@hauke-m.de>:
-> +/* driver_mips.c */
-> +extern unsigned int bcma_core_mips_irq(struct bcma_device *dev);
+> +config BCMA_PCICORE_HOSTMODE
+> +       bool "Hostmode support for BCMA PCI core"
+> +       depends on BCMA_DRIVER_MIPS
+> +       help
+> +         PCIcore hostmode operation (external PCI bus).
 
-Does it compile without CONFIG_BCMA_DRIVER_MIPS?
-
-
-> +/* Get the MIPS IRQ assignment for a specified device.
-> + * If unassigned, 0 is returned.
-> + * If disabled, 5 is returned.
-> + * If not supported, 6 is returned.
-> + */
-
-Does it ever return 6?
+I think you started to use BCMA_DRIVER_corename. Could you stick to it
+(one schema), please? Maybe just
+BCMA_DRIVER_PCI_HOSTMODE
+?
 
 
-> +unsigned int bcma_core_mips_irq(struct bcma_device *dev)
-> +{
-> +       struct bcma_device *mdev = dev->bus->drv_mips.core;
-> +       u32 irqflag;
-> +       unsigned int irq;
-> +
-> +       irqflag = bcma_core_mips_irqflag(dev);
-> +
-> +       for (irq = 1; irq <= 4; irq++)
-> +               if (bcma_read32(mdev, BCMA_MIPS_MIPS74K_INTMASK(irq)) & (1 << irqflag))
-> +                       break;
+> +#ifdef CONFIG_BCMA_PCICORE_HOSTMODE
+> +       pc->hostmode = bcma_pcicore_is_in_hostmode(pc);
+> +       if (pc->hostmode)
+> +               bcma_pcicore_init_hostmode(pc);
+> +#endif /* CONFIG_BCMA_PCICORE_HOSTMODE */
+> +       if (!pc->hostmode)
+> +               bcma_pcicore_serdes_workaround(pc);
 
-Use scripts/checkpatch*. Braces around "for" and split line to match
-80 chars width.
+Does it make sense to init hostmode PCI like clientmode if we just
+disable CONFIG_BCMA_PCICORE_HOSTMODE?
 
-Why don't you just use "return irq;" instead of break?
+I think we should always check if core is host or client mode and use
+correct initialization only. We should not init it as clientmode just
+because we do not have driver for host mode.
 
 
-> +
-> +       if (irq == 5)
-> +               irq = 0;
-> +
-> +       return irq;
+> diff --git a/drivers/bcma/driver_pci_host.c b/drivers/bcma/driver_pci_host.c
+> new file mode 100644
+> index 0000000..b52c6c9
+> --- /dev/null
+> +++ b/drivers/bcma/driver_pci_host.c
+> @@ -0,0 +1,44 @@
+> +/*
+> + * Broadcom specific AMBA
+> + * PCI Core
 
-You can just make it "return 0;" after changing break to return.
-
-
-> +                       for (i = 0; i < bus->nr_cores; i++)
-> +                               if ((1 << bcma_core_mips_irqflag(&bus->cores[i])) == oldirqflag) {
-> +                                       bcma_core_mips_set_irq(&bus->cores[i], 0);
-> +                                       break;
-> +                               }
-
-Braces for "for".
-
-
-> +       pr_info("after irq reconfiguration\n");
-
-Make first letter uppercase. I'm not English expert, but doesn't
-something like "IRQ reconfiguration done" sound better?
+Please rename "PCI Core", add something about hostmode.
 
 -- 
 Rafał

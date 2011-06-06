@@ -1,84 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 11:53:09 +0200 (CEST)
-Received: from www.linutronix.de ([62.245.132.108]:47652 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490948Ab1FFJxC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 11:53:02 +0200
-Received: from localhost ([127.0.0.1])
-        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <tglx@linutronix.de>)
-        id 1QTWUY-0002tU-80; Mon, 06 Jun 2011 11:53:02 +0200
-Date:   Mon, 6 Jun 2011 11:53:01 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Matt Turner <mattst88@gmail.com>
-cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: Regression: d6d5d5c breaks Broadcom BCM91250A
-In-Reply-To: <20110606033608.GA14686@localhost.mattst88>
-Message-ID: <alpine.LFD.2.02.1106061149460.13964@ionos>
-References: <20110606033608.GA14686@localhost.mattst88>
-User-Agent: Alpine 2.02 (LFD 1266 2009-07-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 12:16:42 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:3705 "EHLO MMS3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490995Ab1FFKQg convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Jun 2011 12:16:36 +0200
+Received: from [10.9.200.131] by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Mon, 06 Jun 2011 03:13:48 -0700
+X-Server-Uuid: B55A25B1-5D7D-41F8-BC53-C57E7AD3C201
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Mon, 6 Jun 2011 03:09:51 -0700
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.17.16.106]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ C54E274D03; Mon, 6 Jun 2011 03:09:51 -0700 (PDT)
+Received: from [192.168.1.120] (unknown [10.176.68.21]) by
+ mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id E553D20501; Mon, 6
+ Jun 2011 03:09:49 -0700 (PDT)
+Message-ID: <4DECA76C.90000@broadcom.com>
+Date:   Mon, 6 Jun 2011 12:09:48 +0200
+From:   "Arend van Spriel" <arend@broadcom.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.17)
+ Gecko/20110424 Thunderbird/3.1.10
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=UTF-8
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-X-archive-position: 30241
+To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+cc:     "Hauke Mehrtens" <hauke@hauke-m.de>,
+        "Arnd Bergmann" <arnd@arndb.de>, "Greg KH" <greg@kroah.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "mb@bu3sch.de" <mb@bu3sch.de>,
+        "george@znau.edu.ua" <george@znau.edu.ua>,
+        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
+        "bernhardloos@googlemail.com" <bernhardloos@googlemail.com>
+Subject: Re: [RFC][PATCH 01/10] bcma: Use array to store cores.
+References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
+ <1307311658-15853-2-git-send-email-hauke@hauke-m.de>
+ <BANLkTimAPHPcqKKJ+Rphef_+1RB0aHR4ug@mail.gmail.com>
+In-Reply-To: <BANLkTimAPHPcqKKJ+Rphef_+1RB0aHR4ug@mail.gmail.com>
+X-WSS-ID: 61F277D64NS16610534-01-01
+Content-Type: text/plain;
+ charset=utf-8;
+ format=flowed
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: arend@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 4029
+X-UID: 4054
 
-On Sun, 5 Jun 2011, Matt Turner wrote:
+On 06/06/2011 11:42 AM, Rafał Miłecki wrote:
+> Greg, Arnd: could you take a look at this patch, please?
+>
+> With proposed patch we are going back to this ugly array and wrappers hacks.
+>
+> I was really happy with our final solution, but it seems it's not
+> doable for embedded systems...? Is there something better we can do
+> about this?
 
-> Hi Thomas,
-> 
-> Commit d6d5d5c4afd4c8bb4c5e3753a2141e9c3a874629 breaks boot-up on my
-> Broadcom BCM91250A. Reverting it solves the problem.
-> 
-> I looked at the commit but nothing obviously wrong jumped out at me.
+I do agree with Rafał that we should look for another alternative. I 
+posted a suggestion earlier regarding this patch. Can anyone tell me 
+whether that could prevent need for the array/wrapper hack.
 
-The below should fix it.
+Gr. AvS
 
------------------>
-Subject: MIPS: sb1250: Restore dropped irq_mask function
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Mon, 06 Jun 2011 11:51:43 +0200
-
-Commit d6d5d5c4a (MIPS: Sibyte: Convert to new irq_chip functions)
-removed the mask function which breaks irq_shutdown(). Restore it.
-
-Reported-by: Matt Turner <mattst88@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-
----
-diff --git a/arch/mips/sibyte/sb1250/irq.c b/arch/mips/sibyte/sb1250/irq.c
-index be4460a..76ee045 100644
---- a/arch/mips/sibyte/sb1250/irq.c
-+++ b/arch/mips/sibyte/sb1250/irq.c
-@@ -123,6 +123,13 @@ static int sb1250_set_affinity(struct irq_data *d, const struct cpumask *mask,
- }
- #endif
- 
-+static void disable_sb1250_irq(struct irq_data *d)
-+{
-+	unsigned int irq = d->irq;
-+
-+	sb1250_mask_irq(sb1250_irq_owner[irq], irq);
-+}
-+
- static void enable_sb1250_irq(struct irq_data *d)
- {
- 	unsigned int irq = d->irq;
-@@ -180,6 +187,7 @@ static struct irq_chip sb1250_irq_type = {
- 	.name = "SB1250-IMR",
- 	.irq_mask_ack = ack_sb1250_irq,
- 	.irq_unmask = enable_sb1250_irq,
-+	.irq_mask = disable_sb1250_irq,
- #ifdef CONFIG_SMP
- 	.irq_set_affinity = sb1250_set_affinity
- #endif
+-- 
+Almost nobody dances sober, unless they happen to be insane.
+-- H.P. Lovecraft --

@@ -1,53 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 13:00:39 +0200 (CEST)
-Received: from mail-qw0-f49.google.com ([209.85.216.49]:42821 "EHLO
-        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490995Ab1FFLAf convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jun 2011 13:07:44 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:37407 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490948Ab1FFLHl convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 6 Jun 2011 13:00:35 +0200
-Received: by qwi2 with SMTP id 2so2071568qwi.36
-        for <linux-mips@linux-mips.org>; Mon, 06 Jun 2011 04:00:29 -0700 (PDT)
+        Mon, 6 Jun 2011 13:07:41 +0200
+Received: by qyk32 with SMTP id 32so837219qyk.15
+        for <linux-mips@linux-mips.org>; Mon, 06 Jun 2011 04:07:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:date
          :message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        bh=g3a68JGgAoCoxXg8BlCkX4SRBq/EDK7rMpFLEzJHblI=;
-        b=rrbDtHFJcGp+HFB9tLvXEFPYHhrFKonU6aFFQdxhY8sL5cbKH57uMRyE50XyGjJez2
-         UtylmCKhuW5S3dkl73MswIR4I0eTa0v4qr4lr7vHxmsDH2SGrIIWjDKE7GaPz5hF01Ol
-         IOi2PQlTVOLBpsSj0V1/MF8XJQhQqVAWAiP5g=
+        bh=lNIogaLGKBSA4BPEy9gMuBSWJ6F3wWqWJ9A4r5WWayc=;
+        b=HtY0d55j9R5lFri2CD8miZyKXJoI9qzSJBU1gp6SjVHOZG5YL5WlbTmL9oVnrkHjSz
+         08NXQxunnGhl9SXkdT+MOm4vQi2koRMLD0alQ+hZwckLXqR5W3d51nIcyK7cMFsX/v9P
+         0IXc5NTNJFRzVxGtsqs/QYd8iIsynDduIY4/A=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        b=hLcUwJHvUxgu/vCOx2gei21yzCnxGGfOgSls/BaRqzlGmNRRvjEwPY+o5ZkHIJg92c
-         TJyIimDdR9GoxuwiX1vcz5xY2i+NQHZKi8Y0PboIZbPlbg519i+lmoT1xbERMg/JuKOi
-         BcStGymhhBHn5UciQGvPYbn5LKs6PElI0hrUU=
+        b=NKd1mxNmoH7KHrbBk+OcwUuopx6qU1jRa9PShHx1GzTD5mk5HxvPMfW2U1lENpKWLV
+         tseDxEy62xZsfDnSDZkkXWvY4v/RDo1fXjdJFNzEsab/OMeLz2lIHwJRbUwwOsHjyKiB
+         IN2eAEKjSW27QVB+ciCAxeACBN3pPK6StLoTk=
 MIME-Version: 1.0
-Received: by 10.229.43.99 with SMTP id v35mr3446500qce.8.1307358029361; Mon,
- 06 Jun 2011 04:00:29 -0700 (PDT)
-Received: by 10.229.96.21 with HTTP; Mon, 6 Jun 2011 04:00:29 -0700 (PDT)
-In-Reply-To: <4DECB232.70308@broadcom.com>
+Received: by 10.229.43.99 with SMTP id v35mr3451104qce.8.1307358455148; Mon,
+ 06 Jun 2011 04:07:35 -0700 (PDT)
+Received: by 10.229.96.21 with HTTP; Mon, 6 Jun 2011 04:07:35 -0700 (PDT)
+In-Reply-To: <1307311658-15853-10-git-send-email-hauke@hauke-m.de>
 References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
-        <1307311658-15853-4-git-send-email-hauke@hauke-m.de>
-        <BANLkTi=T6xO9q+vOCk5Fu+2J_nUTwX3dcg@mail.gmail.com>
-        <1307356322.28734.11.camel@dev.znau.edu.ua>
-        <BANLkTimkKFAEfbKaWo81=uyuDS=gjESHAw@mail.gmail.com>
-        <4DECB232.70308@broadcom.com>
-Date:   Mon, 6 Jun 2011 13:00:29 +0200
-Message-ID: <BANLkTimAtq+8EmTckqytL+WyaVigNYfQwA@mail.gmail.com>
-Subject: Re: [RFC][PATCH 03/10] bcma: add embedded bus
+        <1307311658-15853-10-git-send-email-hauke@hauke-m.de>
+Date:   Mon, 6 Jun 2011 13:07:35 +0200
+Message-ID: <BANLkTi=ybf59NR1NA3TOuamsWzey9zx19A@mail.gmail.com>
+Subject: Re: [RFC][PATCH 09/10] bcm47xx: add support for bcma bus
 From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Arend van Spriel <arend@broadcom.com>
-Cc:     George Kashperko <george@znau.edu.ua>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "mb@bu3sch.de" <mb@bu3sch.de>,
-        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
-        "bernhardloos@googlemail.com" <bernhardloos@googlemail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
+        mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
+        b43-dev@lists.infradead.org, bernhardloos@googlemail.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 30250
+X-archive-position: 30251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,52 +48,44 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 4112
+X-UID: 4116
 
-W dniu 6 czerwca 2011 12:55 użytkownik Arend van Spriel
-<arend@broadcom.com> napisał:
-> On 06/06/2011 12:51 PM, Rafał Miłecki wrote:
->>
->> W dniu 6 czerwca 2011 12:32 użytkownik George Kashperko
->> <george@znau.edu.ua>  napisał:
->>>
->>> Hi,
->>>
->>>> Hauke,
->>>>
->>>> My idea for naming schema was to use:
->>>> bcma_host_TYPE_*
->>>>
->>>> Like:
->>>> bcma_host_pci_*
->>>> bcma_host_sdio_*
->>>>
->>>> You are using:
->>>> bcma_host_bcma_*
->>>>
->>>> What do you think about changing this to:
->>>> bcma_host_embedded_*
->>>> or just some:
->>>> bcma_host_emb_*
->>>> ?
->>>>
->>>> Does it make more sense to you? I was trying to keep names in bcma
->>>> really clear, so every first-time-reader can see differences between
->>>> hosts, host and driver, etc.
->>>
->>> how about bcma_host_soc ?
->>
->> We get then inconsistency with "BCMA_HOSTTYPE_EMBEDDED". I'd like to
->> 1) See something like bcma_host_emb...
->> xor
->> 2) Use bcma_host_soc_* and BCMA_HOSTTYPE_SOC
->>
+2011/6/6 Hauke Mehrtens <hauke@hauke-m.de>:
+> This patch add support for the bcma bus. Broadcom uses only Mips 74K
+> CPUs on the new SoC and on the old ons using ssb bus there are no Mips
+> 74K CPUs.
 >
-> I would go for option 2). It more clearly says what it is. Embedded is a
-> broader term. As an example, a handset is an embedded device, but it may use
-> BCMA_HOSTTYPE_SDIO.
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
+>  arch/mips/Kconfig                            |    4 +++
+>  arch/mips/bcm47xx/gpio.c                     |    9 ++++++++
+>  arch/mips/bcm47xx/nvram.c                    |    6 +++++
+>  arch/mips/bcm47xx/serial.c                   |   24 +++++++++++++++++++++++
+>  arch/mips/bcm47xx/setup.c                    |   27 ++++++++++++++++++++++++-
+>  arch/mips/bcm47xx/time.c                     |    3 ++
+>  arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    3 ++
+>  arch/mips/include/asm/mach-bcm47xx/gpio.h    |   18 +++++++++++++++++
+>  drivers/watchdog/bcm47xx_wdt.c               |    6 +++++
+>  9 files changed, 98 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 653da62..bdb0341 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -100,6 +100,10 @@ config BCM47XX
+>        select SSB_EMBEDDED
+>        select SSB_B43_PCI_BRIDGE if PCI
+>        select SSB_PCICORE_HOSTMODE if PCI
+> +       select BCMA
+> +       select BCMA_HOST_EMBEDDED
+> +       select BCMA_DRIVER_MIPS
+> +       select BCMA_PCICORE_HOSTMODE
 
-Good point, agree.
+I'm not involved in development for embedded devices but I believe
+that space is quite important for them.
+
+You force compiling both: ssb and bcma for every device using bcm47xx.
+I think ppl may want to compile only one bus driver.
 
 -- 
 Rafał

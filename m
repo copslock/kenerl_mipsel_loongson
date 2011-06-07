@@ -1,96 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jun 2011 12:30:55 +0200 (CEST)
-Received: from mms1.broadcom.com ([216.31.210.17]:1753 "EHLO mms1.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Jun 2011 19:22:07 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:11962 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491030Ab1FGKau convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 7 Jun 2011 12:30:50 +0200
-Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Tue, 07 Jun 2011 03:35:00 -0700
-X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Tue, 7 Jun 2011 03:30:35 -0700
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.17.16.106]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
- AB58F74D03; Tue, 7 Jun 2011 03:30:35 -0700 (PDT)
-Received: from [192.168.1.120] (unknown [10.176.68.21]) by
- mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 9833320501; Tue, 7
- Jun 2011 03:30:33 -0700 (PDT)
-Message-ID: <4DEDFDC8.50005@broadcom.com>
-Date:   Tue, 7 Jun 2011 12:30:32 +0200
-From:   "Arend van Spriel" <arend@broadcom.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.17)
- Gecko/20110424 Thunderbird/3.1.10
+        id S1491094Ab1FGRWB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 7 Jun 2011 19:22:01 +0200
+Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id p57HLW5l005836
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Tue, 7 Jun 2011 13:21:32 -0400
+Received: from tranklukator.englab.brq.redhat.com (dhcp-1-166.brq.redhat.com [10.34.1.166])
+        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id p57HLMQo021360;
+        Tue, 7 Jun 2011 13:21:22 -0400
+Received: by tranklukator.englab.brq.redhat.com (nbSMTP-1.00) for uid 500
+        oleg@redhat.com; Tue,  7 Jun 2011 19:20:02 +0200 (CEST)
+Date:   Tue, 7 Jun 2011 19:19:52 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Eric Paris <eparis@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, tony.luck@intel.com,
+        fenghua.yu@intel.com, monstr@monstr.eu, ralf@linux-mips.org,
+        benh@kernel.crashing.org, paulus@samba.org, schwidefsky@de.ibm.com,
+        heiko.carstens@de.ibm.com, linux390@de.ibm.com,
+        lethal@linux-sh.org, davem@davemloft.net, jdike@addtoit.com,
+        richard@nod.at, tglx@linutronix.de, mingo@redhat.com,
+        hpa@zytor.com, x86@kernel.org, viro@zeniv.linux.org.uk,
+        akpm@linux-foundation.org, linux-ia64@vger.kernel.org,
+        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        user-mode-linux-devel@lists.sourceforge.net
+Subject: Re: [PATCH -v2] Audit: push audit success and retcode into arch
+        ptrace.h
+Message-ID: <20110607171952.GA25729@redhat.com>
+References: <20110603220451.23134.47368.stgit@paris.rdu.redhat.com>
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-cc:     "Hauke Mehrtens" <hauke@hauke-m.de>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "mb@bu3sch.de" <mb@bu3sch.de>,
-        "george@znau.edu.ua" <george@znau.edu.ua>,
-        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
-        "bernhardloos@googlemail.com" <bernhardloos@googlemail.com>
-Subject: Re: [RFC][PATCH 03/10] bcma: add embedded bus
-References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
- <1307311658-15853-4-git-send-email-hauke@hauke-m.de>
- <BANLkTi=T6xO9q+vOCk5Fu+2J_nUTwX3dcg@mail.gmail.com>
- <4DED4DEB.5030802@hauke-m.de>
- <BANLkTikATEB7zoDPBcc4Ubh7ONyHXWBW+w@mail.gmail.com>
-In-Reply-To: <BANLkTikATEB7zoDPBcc4Ubh7ONyHXWBW+w@mail.gmail.com>
-X-WSS-ID: 61F3215E3B4122601-01-01
-Content-Type: text/plain;
- charset=utf-8;
- format=flowed
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30282
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20110603220451.23134.47368.stgit@paris.rdu.redhat.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
+X-archive-position: 30283
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arend@broadcom.com
+X-original-sender: oleg@redhat.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 5406
+X-UID: 5940
 
-On 06/07/2011 02:33 AM, Rafał Miłecki wrote:
-> W dniu 7 czerwca 2011 00:00 użytkownik Hauke Mehrtens
-> <hauke@hauke-m.de>  napisał:
->> On 06/06/2011 12:22 PM, Rafał Miłecki wrote:
->>>> +       if (bus->hosttype == BCMA_HOSTTYPE_EMBEDDED) {
->>>> +               iounmap(bus->mmio);
->>>> +               mmio = ioremap(BCMA_ADDR_BASE, BCMA_CORE_SIZE * bus->nr_cores);
->>>> +               if (!mmio)
->>>> +                       return -ENOMEM;
->>>> +               bus->mmio = mmio;
->>>> +
->>>> +               mmio = ioremap(BCMA_WRAP_BASE, BCMA_CORE_SIZE * bus->nr_cores);
->>>> +               if (!mmio)
->>>> +                       return -ENOMEM;
->>>> +               bus->host_embedded = mmio;
->>> Do we really need both? mmio and host_embedded? What about keeping
->>> mmio only and using it in calculation for read/write[8,16,32]?
->> These are two different memory regions, it should be possible to
->> calculate the other address, but I do not like that. As host_embedded is
->> in a union this does not waste any memory.
-> Ah, OK, I can see what does happen here. You are using:
-> 1) bus->mmio for first core
-> 2) bus->host_embedded for first agent/wrapper
+On 06/03, Eric Paris wrote:
 >
-> I'm not sure if this is a correct approach. Doing "core_index *
-> BCMA_CORE_SIZE" comes from ssb, where it was the way to calculate
-> offset. In case of BCMA we are reading all the info from (E)EPROM,
-> which also includes addresses of the cores.
+> The audit system previously expected arches calling to audit_syscall_exit to
+> supply as arguments if the syscall was a success and what the return code was.
+> Audit also provides a helper AUDITSC_RESULT which was supposed to simplify things
+> by converting from negative retcodes to an audit internal magic value stating
+> success or failure.  This helper was wrong and could indicate that a valid
+> pointer returned to userspace was a failed syscall.  The fix is to fix the
+> layering foolishness.  We now pass audit_syscall_exit a struct pt_reg and it
+> in turns calls back into arch code to collect the return value and to
+> determine if the syscall was a success or failure.  We also define a generic
+> is_syscall_success() macro which determines success/failure based on if the
+> value is < -MAX_ERRNO.  This works for arches like x86 which do not use a
+> separate mechanism to indicate syscall failure.
+
+I know nothing about audit, but the patch looks fine to me.
+
+
+But I have a bit off-topic question,
+
+> diff --git a/arch/x86/kernel/entry_64.S b/arch/x86/kernel/entry_64.S
+> index 8a445a0..b7b1f88 100644
+> --- a/arch/x86/kernel/entry_64.S
+> +++ b/arch/x86/kernel/entry_64.S
+> @@ -53,6 +53,7 @@
+>  #include <asm/paravirt.h>
+>  #include <asm/ftrace.h>
+>  #include <asm/percpu.h>
+> +#include <linux/err.h>
 >
-> IMO you should use core->addr and core->wrap for read/write ops. I
-> believe this is approach Broadcom decided to use for BCMA, when
-> designing (E)EPROM.
+>  /* Avoid __ASSEMBLER__'ifying <linux/audit.h> just for this.  */
+>  #include <linux/elf-em.h>
+> @@ -564,17 +565,16 @@ auditsys:
+>  	jmp system_call_fastpath
+>
+>  	/*
+> -	 * Return fast path for syscall audit.  Call audit_syscall_exit()
+> +	 * Return fast path for syscall audit.  Call __audit_syscall_exit()
+>  	 * directly and then jump back to the fast path with TIF_SYSCALL_AUDIT
+>  	 * masked off.
+>  	 */
+>  sysret_audit:
+>  	movq RAX-ARGOFFSET(%rsp),%rsi	/* second arg, syscall return value */
+> -	cmpq $0,%rsi		/* is it < 0? */
+> -	setl %al		/* 1 if so, 0 if not */
+> +	cmpq $-MAX_ERRNO,%rsi	/* is it < -MAX_ERRNO? */
+> +	setbe %al		/* 1 if so, 0 if not */
+>  	movzbl %al,%edi		/* zero-extend that into %edi */
+> -	inc %edi /* first arg, 0->1(AUDITSC_SUCCESS), 1->2(AUDITSC_FAILURE) */
+> -	call audit_syscall_exit
+> +	call __audit_syscall_exit
 
-Agree. There is no guarantee for the core index to relate to the 
-physical address. Chip designer may be systematic in this and the 
-index*size method may work, but not by design.
+With or without this patch, can't we call audit_syscall_exit() twice
+if there is something else in _TIF_WORK_SYSCALL_EXIT mask apart from
+SYSCALL_AUDIT ? First time it is called from asm, then from
+syscall_trace_leave(), no?
 
-Gr. AvS
+For example. The task has TIF_SYSCALL_AUDIT and nothing else, it does
+system_call->auditsys->system_call_fastpath. What if it gets, say,
+TIF_SYSCALL_TRACE before ret_from_sys_call?
 
--- 
-Almost nobody dances sober, unless they happen to be insane.
--- H.P. Lovecraft --
+Oleg.

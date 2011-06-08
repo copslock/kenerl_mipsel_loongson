@@ -1,53 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2011 10:20:27 +0200 (CEST)
-Received: from bues.ch ([80.190.117.144]:52647 "EHLO bues.ch"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491041Ab1FHIUW convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2011 10:20:22 +0200
-Received: by bues.ch with esmtpsa (Exim 4.69)
-        (envelope-from <m@bues.ch>)
-        id 1QUDzj-0003ZH-BR; Wed, 08 Jun 2011 10:20:07 +0200
-Date:   Wed, 8 Jun 2011 10:20:01 +0200
-From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        Arend van Spriel <arend@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        George Kashperko <george@znau.edu.ua>,
-        Greg KH <greg@kroah.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "mb@bu3sch.de" <mb@bu3sch.de>,
-        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
-        "bernhardloos@googlemail.com" <bernhardloos@googlemail.com>
-Subject: Re: [RFC][PATCH 01/10] bcma: Use array to store cores.
-Message-ID: <20110608102001.294a4ff2@maggie>
-In-Reply-To: <BANLkTikUqj-R72XaOXnifhKv-n1ZSJMxDQ@mail.gmail.com>
-References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>
-        <201106061503.14852.arnd@arndb.de>
-        <4DED48EA.7070001@hauke-m.de>
-        <201106062353.40470.arnd@arndb.de>
-        <4DEDF98C.6020905@broadcom.com>
-        <4DEE9BCD.1030304@hauke-m.de>
-        <BANLkTikUqj-R72XaOXnifhKv-n1ZSJMxDQ@mail.gmail.com>
-X-Mailer: Claws Mail 3.7.6 (GTK+ 2.20.1; powerpc-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30292
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2011 12:03:46 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:53725 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491050Ab1FHKDk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2011 12:03:40 +0200
+Received: by fxm14 with SMTP id 14so267017fxm.36
+        for <multiple recipients>; Wed, 08 Jun 2011 03:03:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
+        bh=Q+VN8wYqVzre7ftpcexUhGJRjHuq+XEgsVwK6dw/uqA=;
+        b=JVKMnY9Oj9ApcQhEQG9uNlUpPIcHq8l1uNIxLf3TCA8F42feALaRNPUb9JvZdqW9Th
+         kTXwLF36X9ZvKuYPaVALSjdH+9BIJFTS9hhaIjZhU+40AEiID1GRD7jao5oxgaigsK+Z
+         DGeyZjLIIUw5p+Tjj7kwDYcx3ISNes1EV7MjA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=JatPD8WZ838YK84V6Af8lyEDX4Jnj4yOnXOTrEY6TgAiA6UyOq25ZMwYH6WuNuabad
+         Br9xXDhLEklM+KSF59IKvax3eY8EfdLFG1TDsPa8/vSB9DfDn7rtMy1ZJE8oeEq0uQcg
+         nkvDGvDFmOHrFDui/DNW1haddvbU1ZmgSYlu0=
+Received: by 10.223.6.201 with SMTP id a9mr1992435faa.110.1307527414990;
+        Wed, 08 Jun 2011 03:03:34 -0700 (PDT)
+Received: from shaker64.lan (dslb-088-073-061-184.pools.arcor-ip.net [88.73.61.184])
+        by mx.google.com with ESMTPS id e15sm153481faa.47.2011.06.08.03.03.33
+        (version=SSLv3 cipher=OTHER);
+        Wed, 08 Jun 2011 03:03:34 -0700 (PDT)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Florian Fainelli <florian@openwrt.org>
+Cc:     linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: bcm63xx: remove duplicate PERF_IRQSTAT_REG definition
+Date:   Wed,  8 Jun 2011 12:03:02 +0200
+Message-Id: <1307527382-23623-1-git-send-email-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 30293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m@bues.ch
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6566
+X-UID: 6664
 
-On Wed, 8 Jun 2011 02:06:11 +0200
-Rafał Miłecki <zajec5@gmail.com> wrote:
 
-> Because full scanning needs one of the following:
-> 1) Working alloc - not possible for SoCs
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+---
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-Isn't there a bootmem allocator available on MIPS?
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index 85fd275..0ed5230 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -89,7 +89,6 @@
+ 
+ /* Interrupt Mask register */
+ #define PERF_IRQMASK_REG		0xc
+-#define PERF_IRQSTAT_REG		0x10
+ 
+ /* Interrupt Status register */
+ #define PERF_IRQSTAT_REG		0x10
+-- 
+1.7.2.5

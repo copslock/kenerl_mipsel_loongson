@@ -1,65 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2011 12:03:46 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:53725 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491050Ab1FHKDk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2011 12:03:40 +0200
-Received: by fxm14 with SMTP id 14so267017fxm.36
-        for <multiple recipients>; Wed, 08 Jun 2011 03:03:35 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2011 12:06:13 +0200 (CEST)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:49049 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491050Ab1FHKGI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 8 Jun 2011 12:06:08 +0200
+Received: by wwb17 with SMTP id 17so295017wwb.24
+        for <multiple recipients>; Wed, 08 Jun 2011 03:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=Q+VN8wYqVzre7ftpcexUhGJRjHuq+XEgsVwK6dw/uqA=;
-        b=JVKMnY9Oj9ApcQhEQG9uNlUpPIcHq8l1uNIxLf3TCA8F42feALaRNPUb9JvZdqW9Th
-         kTXwLF36X9ZvKuYPaVALSjdH+9BIJFTS9hhaIjZhU+40AEiID1GRD7jao5oxgaigsK+Z
-         DGeyZjLIIUw5p+Tjj7kwDYcx3ISNes1EV7MjA=
+        h=domainkey-signature:sender:from:organization:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:message-id;
+        bh=60GUw7n+z1w5ETNClsllSqCLXPU9TRvw/XHSaIwJZGU=;
+        b=B4jA9dEuruAuyAgqnwJKru7srkAgX2m5nAb+0qnoayCgOPKnCJbngl/iQQE3rU52kX
+         vqdMj5p4jO/6F654XY97yrZ0/IT3MR8dM3vucC3N4gg6dRj0wjvymA9QKzsaLc9nbYE2
+         xQAcN+wdhjtjPYQPuvZkkfG8k2FH10PzzL7BY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=JatPD8WZ838YK84V6Af8lyEDX4Jnj4yOnXOTrEY6TgAiA6UyOq25ZMwYH6WuNuabad
-         Br9xXDhLEklM+KSF59IKvax3eY8EfdLFG1TDsPa8/vSB9DfDn7rtMy1ZJE8oeEq0uQcg
-         nkvDGvDFmOHrFDui/DNW1haddvbU1ZmgSYlu0=
-Received: by 10.223.6.201 with SMTP id a9mr1992435faa.110.1307527414990;
-        Wed, 08 Jun 2011 03:03:34 -0700 (PDT)
-Received: from shaker64.lan (dslb-088-073-061-184.pools.arcor-ip.net [88.73.61.184])
-        by mx.google.com with ESMTPS id e15sm153481faa.47.2011.06.08.03.03.33
+        h=sender:from:organization:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        b=eEqn7iSOBkncjGi/JUwbcKVlDWHK55x1O1IsPhgaWYANw1Wbz9ZYxtj9Hae09HNyjz
+         0UGs27kGq8TK3ZMlmyAzKnrYz+gTJerqH2VodkclH27vSXMTFAF84tWA9RRog8dGlEnR
+         MlPaObpwZv0oqinHVTkyYtLam9BZGMMK2tpVs=
+Received: by 10.216.142.133 with SMTP id i5mr7250030wej.43.1307527563266;
+        Wed, 08 Jun 2011 03:06:03 -0700 (PDT)
+Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
+        by mx.google.com with ESMTPS id n20sm179690weq.39.2011.06.08.03.06.01
         (version=SSLv3 cipher=OTHER);
-        Wed, 08 Jun 2011 03:03:34 -0700 (PDT)
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Florian Fainelli <florian@openwrt.org>
-Cc:     linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: bcm63xx: remove duplicate PERF_IRQSTAT_REG definition
-Date:   Wed,  8 Jun 2011 12:03:02 +0200
-Message-Id: <1307527382-23623-1-git-send-email-jonas.gorski@gmail.com>
-X-Mailer: git-send-email 1.7.2.5
-X-archive-position: 30293
+        Wed, 08 Jun 2011 03:06:02 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: Converting MIPS to Device Tree
+Date:   Wed, 8 Jun 2011 12:10:22 +0200
+User-Agent: KMail/1.13.6 (Linux/2.6.38-8-server; KDE/4.6.2; x86_64; ; )
+Cc:     David VomLehn <dvomlehn@cisco.com>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        John Crispin <blogic@openwrt.org>,
+        "Dezhong Diao (dediao)" <dediao@cisco.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+References: <20110606010753.GA16202@linux-mips.org> <20110607230218.GA23552@dvomlehn-lnx2.corp.sa.net> <BANLkTikjgj-QH=8u6NeGbWHy5hi1jiiU6Q@mail.gmail.com>
+In-Reply-To: <BANLkTikjgj-QH=8u6NeGbWHy5hi1jiiU6Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201106081210.22284.florian@openwrt.org>
+X-archive-position: 30294
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6664
+X-UID: 6667
 
+On Wednesday 08 June 2011 09:15:14 Geert Uytterhoeven wrote:
+> On Wed, Jun 8, 2011 at 01:02, David VomLehn <dvomlehn@cisco.com> wrote:
+> > I took a look at the issue of passing device trees to the kernel and
+> > started by surveying the methods currently in use for passing
+> > information from the bootloader to the kernel. I came up with the ten
+> > approaches:
+> > 
+> > How MIPS Bootloaders Pass Information to the Kernel
+> > ---------------------------------------------------
+> > Apologies for any errors; this was meant more to be a quick survey
+> > rather than a detailed analysis.
+> > 
+> > 6.      a0 - argc
+> >        a1 - argv
+> >        a2 - non-standard envp
+> >        Command line created by concatenating argv strings, starting at
+> >        argv[1]. The envp is a pointer to a list of char ptr to name/char
+> >        ptr pairs.
+> >        Platforms: txx9
+> 
+> This depends on the actual boot loader. My rbtx4927 has a VxWorks boot
+> loader, which just doesn't pass anything.
+> 
+> Cfr. commit 97b0511ce125b0cb95d73b198c1bdbb3cebc4de2 ("MIPS: TXx9:
+> Make firmware parameter passing more robust").
 
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
----
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+Actually most devices out there OpenWrt is dealing with are in this situation. 
+Most of the time because the boot loader was highly hacked and/or locked down.
 
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-index 85fd275..0ed5230 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-@@ -89,7 +89,6 @@
- 
- /* Interrupt Mask register */
- #define PERF_IRQMASK_REG		0xc
--#define PERF_IRQSTAT_REG		0x10
- 
- /* Interrupt Status register */
- #define PERF_IRQSTAT_REG		0x10
--- 
-1.7.2.5
+In the best cases we can get the bootloader to pass a valid command-line to 
+the kernel.
+--
+Florian

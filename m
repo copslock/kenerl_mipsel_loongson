@@ -1,100 +1,141 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 00:06:45 +0200 (CEST)
-Received: from imr3.ericy.com ([198.24.6.13]:50438 "EHLO imr3.ericy.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491197Ab1FIWGk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 10 Jun 2011 00:06:40 +0200
-Received: from eusaamw0712.eamcs.ericsson.se ([147.117.20.181])
-        by imr3.ericy.com (8.13.8/8.13.8) with ESMTP id p59M6Dae002504
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Thu, 9 Jun 2011 17:06:31 -0500
-Received: from localhost (147.117.20.214) by eusaamw0712.eamcs.ericsson.se
- (147.117.20.182) with Microsoft SMTP Server id 8.3.137.0; Thu, 9 Jun 2011
- 18:06:14 -0400
-Date:   Thu, 9 Jun 2011 15:06:14 -0700
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-To:     David Daney <ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 01:00:02 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:6808 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491079Ab1FIW74 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jun 2011 00:59:56 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4df150aa0000>; Thu, 09 Jun 2011 16:00:58 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 9 Jun 2011 15:59:53 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 9 Jun 2011 15:59:53 -0700
+Message-ID: <4DF15068.30906@caviumnetworks.com>
+Date:   Thu, 09 Jun 2011 15:59:52 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+MIME-Version: 1.0
+To:     Guenter Roeck <guenter.roeck@ericsson.com>
 CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: Linux 2.6.39 on Cavium CN38xx
-Message-ID: <20110609220614.GA13583@ericsson.com>
-References: <1307653714.8271.130.camel@groeck-laptop>
- <4DF13E25.2060502@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="PEIAKu/WMn1b1Hv9"
-Content-Disposition: inline
-In-Reply-To: <4DF13E25.2060502@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 30312
+References: <1307653714.8271.130.camel@groeck-laptop> <4DF13E25.2060502@caviumnetworks.com> <20110609220614.GA13583@ericsson.com>
+In-Reply-To: <20110609220614.GA13583@ericsson.com>
+Content-Type: multipart/mixed;
+ boundary="------------000205060904040302050301"
+X-OriginalArrivalTime: 09 Jun 2011 22:59:53.0352 (UTC) FILETIME=[F191F080:01CC26F8]
+X-archive-position: 30313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8565
+X-UID: 8620
 
---PEIAKu/WMn1b1Hv9
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
+This is a multi-part message in MIME format.
+--------------000205060904040302050301
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi David,
+On 06/09/2011 03:06 PM, Guenter Roeck wrote:
+> Hi David,
+>
+> On Thu, Jun 09, 2011 at 05:41:57PM -0400, David Daney wrote:
+>> On 06/09/2011 02:08 PM, Guenter Roeck wrote:
+>>> Hi folks,
+>>>
+>>> I am trying to get Linux 2.6.39
+>>
+>> Where did you get your 2.6.39?  Or in othe rwords, what's the SHA1 Kenneth?
+>>
+>> From kernel.org. 2.6.39.1, more specifically. We have some local modifications,
+> but nothing relevant, ie nothing in the mips boot path.
+>
+>> And, what is your .config?
+>>
+> Please see attached.
 
-On Thu, Jun 09, 2011 at 05:41:57PM -0400, David Daney wrote:
-> On 06/09/2011 02:08 PM, Guenter Roeck wrote:
-> > Hi folks,
-> >
-> > I am trying to get Linux 2.6.39
-> 
-> Where did you get your 2.6.39?  Or in othe rwords, what's the SHA1 Kenneth?
-> 
->From kernel.org. 2.6.39.1, more specifically. We have some local modifications,
-but nothing relevant, ie nothing in the mips boot path.
 
-> And, what is your .config?
-> 
-Please see attached.
+With:
 
-> > to run on a board with Cavium CN38xx
-> > (pass 3, cpu ID 0x000d0003).
-> >
-> > Problem I have is that CPUs 1..15 come online, but get stuck in and
-> > endless interrupt handling loop as soon as interrupts are enabled. I
-> > attached a log generated with instrumentation code in the interrupt
-> > handler.
-> >
-> > Any idea what I might be doing wrong ? Note that I don't start the
-> > system from u-boot; the board uses OFW, so some register initialization
-> > may be wrong.
-> >
-> 
-> Octeon only supports the Octeon u-boot 'bootoctlinux' protocol.
-> 
-That is a little problem, obviously, since I am not in a position to modify OFW
-on the board. I modified setup.c instead to get and initialize required parameters
-as passed from OFW.
+commit cf29f916c310c9b13c19514b496700c549597e11
+Author: Greg Kroah-Hartman <gregkh@suse.de>
+Date:   Fri Jun 3 09:34:20 2011 +0900
 
-> You have to make sure that the octeon_bootinfo structure is filled in 
-> properly, and all the CPUs in the core_mask enter the kernel.
-> 
-All CPUs do enter the kernel. Problem is that they get stuck in an endless
-interrupt loop as soon as interrupts are enabled for a core for the first time
-(or soon thereafter).
+     Linux 2.6.39.1
 
-I know (or at least I am quite sure) that I am doing something wrong during
-initialization, I just hoped someone might have an idea what it might be.
 
-Thanks,
-Guenter
+And with the attached config I can do:
 
---PEIAKu/WMn1b1Hv9
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: attachment; filename="config"
+octeon:~# cat /proc/version
+Linux version 2.6.39.1 (ddaney@dd1.caveonetworks.com) (gcc version 4.6.1 
+20110328 (prerelease) [gcc-4_6-branch revision 171639] (GCC) ) #1031 SMP 
+Thu Jun 9 15:44:46 PDT 2011
+octeon:~# head /proc/cpuinfo
+system type		: EBT3000 (CN3860p3.X-500-NSP)
+processor		: 0
+cpu model		: Cavium Octeon V0.3
+BogoMIPS		: 1000.00
+wait instruction	: yes
+microsecond timers	: yes
+tlb_entries		: 32
+extra interrupt vector	: yes
+hardware watchpoint	: yes, count: 2, address/irw mask: [0x0ffc, 0x0ffb]
+ASEs implemented	:
+
+
+Boots on all 16 CPUs.
+
+>
+>>> to run on a board with Cavium CN38xx
+>>> (pass 3, cpu ID 0x000d0003).
+>>>
+>>> Problem I have is that CPUs 1..15 come online, but get stuck in and
+>>> endless interrupt handling loop as soon as interrupts are enabled. I
+>>> attached a log generated with instrumentation code in the interrupt
+>>> handler.
+>>>
+>>> Any idea what I might be doing wrong ? Note that I don't start the
+>>> system from u-boot; the board uses OFW, so some register initialization
+>>> may be wrong.
+>>>
+>>
+>> Octeon only supports the Octeon u-boot 'bootoctlinux' protocol.
+>>
+> That is a little problem, obviously, since I am not in a position to modify OFW
+> on the board. I modified setup.c instead to get and initialize required parameters
+> as passed from OFW.
+>
+>> You have to make sure that the octeon_bootinfo structure is filled in
+>> properly, and all the CPUs in the core_mask enter the kernel.
+>>
+> All CPUs do enter the kernel. Problem is that they get stuck in an endless
+> interrupt loop as soon as interrupts are enabled for a core for the first time
+> (or soon thereafter).
+>
+> I know (or at least I am quite sure) that I am doing something wrong during
+> initialization, I just hoped someone might have an idea what it might be.
+>
+
+If you could run it under the simulator, you could easily debug it.
+
+Otherwise it is not so easy.
+
+David Daney
+
+
+--------------000205060904040302050301
+Content-Type: text/plain;
+ name="o38.config"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="o38.config"
 
 #
 # Automatically generated make config: don't edit
 # Linux/mips 2.6.39.1 Kernel Configuration
-# Thu Jun  9 11:54:15 2011
+# Thu Jun  9 15:37:08 2011
 #
 CONFIG_MIPS=y
 
@@ -135,17 +176,14 @@ CONFIG_MIPS=y
 # CONFIG_SIBYTE_LITTLESUR is not set
 # CONFIG_SIBYTE_SENTOSA is not set
 # CONFIG_SIBYTE_BIGSUR is not set
-# CONFIG_SIBYTE_XC4 is not set
 # CONFIG_SNI_RM is not set
 # CONFIG_MACH_TX39XX is not set
 # CONFIG_MACH_TX49XX is not set
 # CONFIG_MIKROTIK_RB532 is not set
 # CONFIG_WR_PPMC is not set
 # CONFIG_CAVIUM_OCTEON_SIMULATOR is not set
-# CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD is not set
-CONFIG_ERICSSON_ASE=y
+CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD=y
 # CONFIG_ALCHEMY_GPIO_INDIRECT is not set
-CONFIG_CAVIUM_BOOTLOADER_OFW=y
 # CONFIG_CAVIUM_CN63XXP1 is not set
 # CONFIG_CAVIUM_OCTEON_2ND_KERNEL is not set
 CONFIG_CAVIUM_OCTEON_HW_FIX_UNALIGNED=y
@@ -324,16 +362,12 @@ CONFIG_BLK_CGROUP=y
 # CONFIG_SYSFS_DEPRECATED is not set
 CONFIG_RELAY=y
 CONFIG_BLK_DEV_INITRD=y
-CONFIG_INITRAMFS_SOURCE="initramfs_files.lst"
-CONFIG_INITRAMFS_ROOT_UID=0
-CONFIG_INITRAMFS_ROOT_GID=0
+CONFIG_INITRAMFS_SOURCE=""
 CONFIG_RD_GZIP=y
 # CONFIG_RD_BZIP2 is not set
 # CONFIG_RD_LZMA is not set
 # CONFIG_RD_XZ is not set
 # CONFIG_RD_LZO is not set
-# CONFIG_INITRAMFS_COMPRESSION_NONE is not set
-CONFIG_INITRAMFS_COMPRESSION_GZIP=y
 # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
 CONFIG_SYSCTL=y
 CONFIG_ANON_INODES=y
@@ -366,6 +400,7 @@ CONFIG_PERF_EVENTS=y
 # CONFIG_PERF_COUNTERS is not set
 # CONFIG_DEBUG_PERF_USE_VMALLOC is not set
 CONFIG_VM_EVENT_COUNTERS=y
+CONFIG_PCI_QUIRKS=y
 CONFIG_COMPAT_BRK=y
 CONFIG_SLAB=y
 # CONFIG_SLUB is not set
@@ -450,11 +485,18 @@ CONFIG_FREEZER=y
 # Bus options (PCI, PCMCIA, EISA, ISA, TC)
 #
 CONFIG_HW_HAS_PCI=y
-# CONFIG_PCI is not set
+CONFIG_PCI=y
+CONFIG_PCI_DOMAINS=y
 CONFIG_ARCH_SUPPORTS_MSI=y
+CONFIG_PCI_MSI=y
+# CONFIG_PCI_DEBUG is not set
+# CONFIG_PCI_STUB is not set
+# CONFIG_PCI_IOV is not set
 CONFIG_MMU=y
 CONFIG_ZONE_DMA32=y
 # CONFIG_PCCARD is not set
+# CONFIG_HOTPLUG_PCI is not set
+# CONFIG_RAPIDIO is not set
 
 #
 # Executable file formats
@@ -652,11 +694,13 @@ CONFIG_MTD_CFI_UTIL=y
 CONFIG_MTD_PHYSMAP=y
 # CONFIG_MTD_PHYSMAP_COMPAT is not set
 # CONFIG_MTD_PHYSMAP_OF is not set
+# CONFIG_MTD_INTEL_VR_NOR is not set
 # CONFIG_MTD_PLATRAM is not set
 
 #
 # Self-contained MTD device drivers
 #
+# CONFIG_MTD_PMC551 is not set
 # CONFIG_MTD_DATAFLASH is not set
 # CONFIG_MTD_M25P80 is not set
 # CONFIG_MTD_SST25L is not set
@@ -678,10 +722,14 @@ CONFIG_MTD_NAND=y
 # CONFIG_MTD_NAND_ECC_BCH is not set
 # CONFIG_MTD_SM_COMMON is not set
 # CONFIG_MTD_NAND_MUSEUM_IDS is not set
+# CONFIG_MTD_NAND_DENALI is not set
 CONFIG_MTD_NAND_IDS=y
+# CONFIG_MTD_NAND_RICOH is not set
 # CONFIG_MTD_NAND_DISKONCHIP is not set
+# CONFIG_MTD_NAND_CAFE is not set
 # CONFIG_MTD_NAND_NANDSIM is not set
 # CONFIG_MTD_NAND_PLATFORM is not set
+# CONFIG_MTD_ALAUDA is not set
 # CONFIG_MTD_ONENAND is not set
 
 #
@@ -707,6 +755,10 @@ CONFIG_OF_SPI=y
 CONFIG_OF_MDIO=y
 # CONFIG_PARPORT is not set
 CONFIG_BLK_DEV=y
+# CONFIG_BLK_CPQ_DA is not set
+# CONFIG_BLK_CPQ_CISS_DA is not set
+# CONFIG_BLK_DEV_DAC960 is not set
+# CONFIG_BLK_DEV_UMEM is not set
 # CONFIG_BLK_DEV_COW_COMMON is not set
 CONFIG_BLK_DEV_LOOP=y
 # CONFIG_BLK_DEV_CRYPTOLOOP is not set
@@ -715,6 +767,8 @@ CONFIG_BLK_DEV_LOOP=y
 # DRBD disabled because PROC_FS, INET or CONNECTOR not selected
 #
 # CONFIG_BLK_DEV_NBD is not set
+# CONFIG_BLK_DEV_SX8 is not set
+# CONFIG_BLK_DEV_UB is not set
 # CONFIG_BLK_DEV_RAM is not set
 # CONFIG_CDROM_PKTCDVD is not set
 # CONFIG_ATA_OVER_ETH is not set
@@ -770,35 +824,103 @@ CONFIG_SATA_PMP=y
 #
 # Controllers with non-SFF native interface
 #
+CONFIG_SATA_AHCI=y
 # CONFIG_SATA_AHCI_PLATFORM is not set
+# CONFIG_SATA_INIC162X is not set
+# CONFIG_SATA_ACARD_AHCI is not set
+# CONFIG_SATA_SIL24 is not set
 CONFIG_ATA_SFF=y
 
 #
 # SFF controllers with custom DMA interface
 #
+# CONFIG_PDC_ADMA is not set
 CONFIG_PATA_OCTEON_CF=y
+# CONFIG_SATA_QSTOR is not set
+# CONFIG_SATA_SX4 is not set
 CONFIG_ATA_BMDMA=y
 
 #
 # SATA SFF controllers with BMDMA
 #
+# CONFIG_ATA_PIIX is not set
 # CONFIG_SATA_MV is not set
+# CONFIG_SATA_NV is not set
+# CONFIG_SATA_PROMISE is not set
+# CONFIG_SATA_SIL is not set
+# CONFIG_SATA_SIS is not set
+# CONFIG_SATA_SVW is not set
+# CONFIG_SATA_ULI is not set
+# CONFIG_SATA_VIA is not set
+# CONFIG_SATA_VITESSE is not set
 
 #
 # PATA SFF controllers with BMDMA
 #
+# CONFIG_PATA_ALI is not set
+# CONFIG_PATA_AMD is not set
 # CONFIG_PATA_ARASAN_CF is not set
+# CONFIG_PATA_ARTOP is not set
+# CONFIG_PATA_ATIIXP is not set
+# CONFIG_PATA_ATP867X is not set
+# CONFIG_PATA_CMD64X is not set
+# CONFIG_PATA_CS5520 is not set
+# CONFIG_PATA_CS5530 is not set
+# CONFIG_PATA_CS5536 is not set
+# CONFIG_PATA_CYPRESS is not set
+# CONFIG_PATA_EFAR is not set
+# CONFIG_PATA_HPT366 is not set
+# CONFIG_PATA_HPT37X is not set
+# CONFIG_PATA_HPT3X2N is not set
+# CONFIG_PATA_HPT3X3 is not set
+# CONFIG_PATA_IT8213 is not set
+# CONFIG_PATA_IT821X is not set
+# CONFIG_PATA_JMICRON is not set
+# CONFIG_PATA_MARVELL is not set
+# CONFIG_PATA_NETCELL is not set
+# CONFIG_PATA_NINJA32 is not set
+# CONFIG_PATA_NS87415 is not set
+# CONFIG_PATA_OLDPIIX is not set
+# CONFIG_PATA_OPTIDMA is not set
+# CONFIG_PATA_PDC2027X is not set
+# CONFIG_PATA_PDC_OLD is not set
+# CONFIG_PATA_RADISYS is not set
+# CONFIG_PATA_RDC is not set
+# CONFIG_PATA_SC1200 is not set
+# CONFIG_PATA_SCH is not set
+# CONFIG_PATA_SERVERWORKS is not set
+# CONFIG_PATA_SIL680 is not set
+# CONFIG_PATA_SIS is not set
+# CONFIG_PATA_TOSHIBA is not set
+# CONFIG_PATA_TRIFLEX is not set
+# CONFIG_PATA_VIA is not set
+# CONFIG_PATA_WINBOND is not set
 
 #
 # PIO-only SFF controllers
 #
+# CONFIG_PATA_CMD640_PCI is not set
+# CONFIG_PATA_MPIIX is not set
+# CONFIG_PATA_NS87410 is not set
+# CONFIG_PATA_OPTI is not set
 CONFIG_PATA_PLATFORM=m
+# CONFIG_PATA_RZ1000 is not set
 
 #
 # Generic fallback / legacy drivers
 #
+# CONFIG_ATA_GENERIC is not set
+# CONFIG_PATA_LEGACY is not set
 # CONFIG_MD is not set
 # CONFIG_TARGET_CORE is not set
+# CONFIG_FUSION is not set
+
+#
+# IEEE 1394 (FireWire) support
+#
+# CONFIG_FIREWIRE is not set
+# CONFIG_FIREWIRE_NOSY is not set
+# CONFIG_I2O is not set
 CONFIG_NETDEVICES=y
 # CONFIG_DUMMY is not set
 # CONFIG_BONDING is not set
@@ -806,6 +928,7 @@ CONFIG_NETDEVICES=y
 # CONFIG_EQUALIZER is not set
 # CONFIG_TUN is not set
 # CONFIG_VETH is not set
+# CONFIG_ARCNET is not set
 CONFIG_MII=y
 CONFIG_PHYLIB=y
 
@@ -832,12 +955,18 @@ CONFIG_BROADCOM_PHY=y
 CONFIG_MDIO_OCTEON=y
 CONFIG_NET_ETHERNET=y
 # CONFIG_AX88796 is not set
+# CONFIG_HAPPYMEAL is not set
+# CONFIG_SUNGEM is not set
+# CONFIG_CASSINI is not set
+# CONFIG_NET_VENDOR_3COM is not set
 # CONFIG_SMC91X is not set
 # CONFIG_DM9000 is not set
 # CONFIG_ENC28J60 is not set
 # CONFIG_ETHOC is not set
 # CONFIG_SMSC911X is not set
 # CONFIG_DNET is not set
+# CONFIG_NET_TULIP is not set
+# CONFIG_HP100 is not set
 # CONFIG_IBM_NEW_EMAC_ZMII is not set
 # CONFIG_IBM_NEW_EMAC_RGMII is not set
 # CONFIG_IBM_NEW_EMAC_TAH is not set
@@ -845,32 +974,75 @@ CONFIG_NET_ETHERNET=y
 # CONFIG_IBM_NEW_EMAC_NO_FLOW_CTRL is not set
 # CONFIG_IBM_NEW_EMAC_MAL_CLR_ICINTSTAT is not set
 # CONFIG_IBM_NEW_EMAC_MAL_COMMON_ERR is not set
+# CONFIG_NET_PCI is not set
 # CONFIG_B44 is not set
 # CONFIG_KS8851 is not set
 # CONFIG_KS8851_MLL is not set
+# CONFIG_ATL2 is not set
 CONFIG_OCTEON_MGMT_ETHERNET=m
 CONFIG_NETDEV_1000=y
+# CONFIG_ACENIC is not set
+# CONFIG_DL2K is not set
+# CONFIG_E1000 is not set
+# CONFIG_E1000E is not set
+# CONFIG_IP1000 is not set
+# CONFIG_IGB is not set
+# CONFIG_IGBVF is not set
+# CONFIG_NS83820 is not set
+# CONFIG_HAMACHI is not set
+# CONFIG_YELLOWFIN is not set
+# CONFIG_R8169 is not set
+# CONFIG_SIS190 is not set
+# CONFIG_SKGE is not set
+# CONFIG_SKY2 is not set
+# CONFIG_VIA_VELOCITY is not set
+# CONFIG_TIGON3 is not set
+# CONFIG_BNX2 is not set
+# CONFIG_CNIC is not set
+# CONFIG_QLA3XXX is not set
+# CONFIG_ATL1 is not set
+# CONFIG_ATL1E is not set
+# CONFIG_ATL1C is not set
+# CONFIG_JME is not set
 # CONFIG_STMMAC_ETH is not set
+# CONFIG_PCH_GBE is not set
 # CONFIG_NETDEV_10000 is not set
+# CONFIG_TR is not set
 CONFIG_WLAN=y
+# CONFIG_ATMEL is not set
+# CONFIG_PRISM54 is not set
+# CONFIG_USB_ZD1201 is not set
 # CONFIG_HOSTAP is not set
 
 #
 # Enable WiMAX (Networking options) to see the WiMAX drivers
 #
+
+#
+# USB Network Adapters
+#
+# CONFIG_USB_CATC is not set
+# CONFIG_USB_KAWETH is not set
+# CONFIG_USB_PEGASUS is not set
+# CONFIG_USB_RTL8150 is not set
+# CONFIG_USB_USBNET is not set
+# CONFIG_USB_IPHETH is not set
 # CONFIG_WAN is not set
 
 #
 # CAIF transport drivers
 #
+# CONFIG_FDDI is not set
+# CONFIG_HIPPI is not set
 # CONFIG_PPP is not set
 # CONFIG_SLIP is not set
+# CONFIG_NET_FC is not set
 # CONFIG_NETCONSOLE is not set
 # CONFIG_NETPOLL is not set
 # CONFIG_NET_POLL_CONTROLLER is not set
+# CONFIG_VMXNET3 is not set
 # CONFIG_ISDN is not set
 # CONFIG_PHONE is not set
-# CONFIG_RBN is not set
 
 #
 # Input device support
@@ -892,6 +1064,7 @@ CONFIG_UNIX98_PTYS=y
 CONFIG_LEGACY_PTYS=y
 CONFIG_LEGACY_PTY_COUNT=256
 # CONFIG_SERIAL_NONSTANDARD is not set
+# CONFIG_NOZOMI is not set
 # CONFIG_N_GSM is not set
 CONFIG_DEVKMEM=y
 
@@ -900,6 +1073,7 @@ CONFIG_DEVKMEM=y
 #
 CONFIG_SERIAL_8250=y
 CONFIG_SERIAL_8250_CONSOLE=y
+CONFIG_SERIAL_8250_PCI=y
 CONFIG_SERIAL_8250_NR_UARTS=2
 CONFIG_SERIAL_8250_RUNTIME_UARTS=2
 # CONFIG_SERIAL_8250_EXTENDED is not set
@@ -909,18 +1083,23 @@ CONFIG_SERIAL_8250_RUNTIME_UARTS=2
 #
 # CONFIG_SERIAL_MAX3100 is not set
 # CONFIG_SERIAL_MAX3107 is not set
+# CONFIG_SERIAL_MFD_HSU is not set
 CONFIG_SERIAL_CORE=y
 CONFIG_SERIAL_CORE_CONSOLE=y
+# CONFIG_SERIAL_JSM is not set
 # CONFIG_SERIAL_OF_PLATFORM is not set
 # CONFIG_SERIAL_TIMBERDALE is not set
 # CONFIG_SERIAL_ALTERA_JTAGUART is not set
 # CONFIG_SERIAL_ALTERA_UART is not set
+# CONFIG_SERIAL_PCH_UART is not set
 # CONFIG_TTY_PRINTK is not set
 # CONFIG_IPMI_HANDLER is not set
 # CONFIG_HW_RANDOM is not set
 # CONFIG_R3964 is not set
+# CONFIG_APPLICOM is not set
 # CONFIG_RAW_DRIVER is not set
 # CONFIG_TCG_TPM is not set
+CONFIG_DEVPORT=y
 # CONFIG_RAMOOPS is not set
 CONFIG_I2C=m
 CONFIG_I2C_BOARDINFO=y
@@ -934,20 +1113,42 @@ CONFIG_I2C_HELPER_AUTO=y
 #
 
 #
+# PC SMBus host controller drivers
+#
+# CONFIG_I2C_ALI1535 is not set
+# CONFIG_I2C_ALI1563 is not set
+# CONFIG_I2C_ALI15X3 is not set
+# CONFIG_I2C_AMD756 is not set
+# CONFIG_I2C_AMD8111 is not set
+# CONFIG_I2C_I801 is not set
+# CONFIG_I2C_ISCH is not set
+# CONFIG_I2C_PIIX4 is not set
+# CONFIG_I2C_NFORCE2 is not set
+# CONFIG_I2C_SIS5595 is not set
+# CONFIG_I2C_SIS630 is not set
+# CONFIG_I2C_SIS96X is not set
+# CONFIG_I2C_VIA is not set
+# CONFIG_I2C_VIAPRO is not set
+
+#
 # I2C system bus drivers (mostly embedded / system-on-chip)
 #
+# CONFIG_I2C_INTEL_MID is not set
 # CONFIG_I2C_OCORES is not set
 # CONFIG_I2C_PCA_PLATFORM is not set
 # CONFIG_I2C_PXA_PCI is not set
 # CONFIG_I2C_SIMTEC is not set
 CONFIG_I2C_OCTEON=m
 # CONFIG_I2C_XILINX is not set
+# CONFIG_I2C_EG20T is not set
 
 #
 # External I2C/SMBus adapter drivers
 #
+# CONFIG_I2C_DIOLAN_U2C is not set
 # CONFIG_I2C_PARPORT_LIGHT is not set
 # CONFIG_I2C_TAOS_EVM is not set
+# CONFIG_I2C_TINY_USB is not set
 
 #
 # Other I2C/SMBus bus drivers
@@ -966,6 +1167,7 @@ CONFIG_SPI_MASTER=y
 # CONFIG_SPI_ALTERA is not set
 # CONFIG_SPI_BITBANG is not set
 # CONFIG_SPI_PXA2XX_PCI is not set
+# CONFIG_SPI_TOPCLIFF_PCH is not set
 # CONFIG_SPI_XILINX is not set
 # CONFIG_SPI_DESIGNWARE is not set
 
@@ -1009,6 +1211,7 @@ CONFIG_HWMON=m
 # CONFIG_SENSORS_ATXP1 is not set
 # CONFIG_SENSORS_DS620 is not set
 # CONFIG_SENSORS_DS1621 is not set
+# CONFIG_SENSORS_I5K_AMB is not set
 # CONFIG_SENSORS_F71805F is not set
 # CONFIG_SENSORS_F71882FG is not set
 # CONFIG_SENSORS_F75375S is not set
@@ -1037,7 +1240,6 @@ CONFIG_HWMON=m
 # CONFIG_SENSORS_LTC4261 is not set
 # CONFIG_SENSORS_LM95241 is not set
 # CONFIG_SENSORS_MAX1111 is not set
-# CONFIG_SENSORS_MAX16065 is not set
 # CONFIG_SENSORS_MAX1619 is not set
 # CONFIG_SENSORS_MAX6639 is not set
 # CONFIG_SENSORS_MAX6650 is not set
@@ -1046,6 +1248,7 @@ CONFIG_HWMON=m
 # CONFIG_SENSORS_PCF8591 is not set
 # CONFIG_PMBUS is not set
 # CONFIG_SENSORS_SHT21 is not set
+# CONFIG_SENSORS_SIS5595 is not set
 CONFIG_SENSORS_SMM665=m
 # CONFIG_SENSORS_DME1737 is not set
 # CONFIG_SENSORS_EMC1403 is not set
@@ -1062,7 +1265,9 @@ CONFIG_SENSORS_SMM665=m
 # CONFIG_SENSORS_TMP102 is not set
 # CONFIG_SENSORS_TMP401 is not set
 # CONFIG_SENSORS_TMP421 is not set
+# CONFIG_SENSORS_VIA686A is not set
 # CONFIG_SENSORS_VT1211 is not set
+# CONFIG_SENSORS_VT8231 is not set
 # CONFIG_SENSORS_W83781D is not set
 # CONFIG_SENSORS_W83791D is not set
 # CONFIG_SENSORS_W83792D is not set
@@ -1083,7 +1288,6 @@ CONFIG_SSB_POSSIBLE=y
 CONFIG_MFD_SUPPORT=y
 # CONFIG_MFD_CORE is not set
 # CONFIG_MFD_SM501 is not set
-# CONFIG_MFD_VIRTUAL_IRQ is not set
 # CONFIG_HTC_PASIC3 is not set
 # CONFIG_TPS6105X is not set
 # CONFIG_TPS6507X is not set
@@ -1094,6 +1298,10 @@ CONFIG_MFD_SUPPORT=y
 # CONFIG_MFD_MC13XXX is not set
 # CONFIG_ABX500_CORE is not set
 # CONFIG_EZX_PCAP is not set
+# CONFIG_LPC_SCH is not set
+# CONFIG_MFD_RDC321X is not set
+# CONFIG_MFD_JANZ_CMODIO is not set
+# CONFIG_MFD_VX855 is not set
 # CONFIG_MFD_WL1273_CORE is not set
 # CONFIG_REGULATOR is not set
 # CONFIG_MEDIA_SUPPORT is not set
@@ -1101,7 +1309,10 @@ CONFIG_MFD_SUPPORT=y
 #
 # Graphics support
 #
+CONFIG_VGA_ARB=y
+CONFIG_VGA_ARB_MAX_GPUS=16
 # CONFIG_DRM is not set
+# CONFIG_STUB_POULSBO is not set
 # CONFIG_VGASTATE is not set
 # CONFIG_VIDEO_OUTPUT_CONTROL is not set
 # CONFIG_FB is not set
@@ -1112,12 +1323,131 @@ CONFIG_MFD_SUPPORT=y
 #
 # CONFIG_DISPLAY_SUPPORT is not set
 # CONFIG_SOUND is not set
-# CONFIG_USB_SUPPORT is not set
+CONFIG_USB_SUPPORT=y
+CONFIG_USB_ARCH_HAS_HCD=y
+CONFIG_USB_ARCH_HAS_OHCI=y
+CONFIG_USB_ARCH_HAS_EHCI=y
+CONFIG_USB=y
+# CONFIG_USB_DEBUG is not set
+# CONFIG_USB_ANNOUNCE_NEW_DEVICES is not set
+
+#
+# Miscellaneous USB options
+#
+# CONFIG_USB_DEVICEFS is not set
+CONFIG_USB_DEVICE_CLASS=y
+# CONFIG_USB_DYNAMIC_MINORS is not set
+# CONFIG_USB_OTG_WHITELIST is not set
+# CONFIG_USB_OTG_BLACKLIST_HUB is not set
+# CONFIG_USB_MON is not set
+# CONFIG_USB_WUSB is not set
+# CONFIG_USB_WUSB_CBAF is not set
+
+#
+# USB Host Controller Drivers
+#
+# CONFIG_USB_C67X00_HCD is not set
+# CONFIG_USB_XHCI_HCD is not set
+CONFIG_USB_EHCI_HCD=y
+# CONFIG_USB_EHCI_ROOT_HUB_TT is not set
+CONFIG_USB_EHCI_TT_NEWSCHED=y
+CONFIG_USB_EHCI_BIG_ENDIAN_MMIO=y
+# CONFIG_USB_OXU210HP_HCD is not set
+# CONFIG_USB_ISP116X_HCD is not set
+# CONFIG_USB_ISP1760_HCD is not set
+# CONFIG_USB_ISP1362_HCD is not set
+CONFIG_USB_OHCI_HCD=y
+# CONFIG_USB_OHCI_BIG_ENDIAN_DESC is not set
+CONFIG_USB_OHCI_BIG_ENDIAN_MMIO=y
+CONFIG_USB_OHCI_LITTLE_ENDIAN=y
+# CONFIG_USB_UHCI_HCD is not set
+# CONFIG_USB_SL811_HCD is not set
+# CONFIG_USB_R8A66597_HCD is not set
+# CONFIG_USB_WHCI_HCD is not set
+# CONFIG_USB_HWA_HCD is not set
+CONFIG_USB_OCTEON_EHCI=y
+CONFIG_USB_OCTEON_OHCI=y
+CONFIG_USB_OCTEON2_COMMON=y
+
+#
+# USB Device Class drivers
+#
+# CONFIG_USB_ACM is not set
+# CONFIG_USB_PRINTER is not set
+# CONFIG_USB_WDM is not set
+# CONFIG_USB_TMC is not set
+
+#
+# NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
+#
+
+#
+# also be needed; see USB_STORAGE Help for more info
+#
+CONFIG_USB_STORAGE=y
+# CONFIG_USB_STORAGE_DEBUG is not set
+# CONFIG_USB_STORAGE_REALTEK is not set
+# CONFIG_USB_STORAGE_DATAFAB is not set
+# CONFIG_USB_STORAGE_FREECOM is not set
+# CONFIG_USB_STORAGE_ISD200 is not set
+# CONFIG_USB_STORAGE_USBAT is not set
+# CONFIG_USB_STORAGE_SDDR09 is not set
+# CONFIG_USB_STORAGE_SDDR55 is not set
+# CONFIG_USB_STORAGE_JUMPSHOT is not set
+# CONFIG_USB_STORAGE_ALAUDA is not set
+# CONFIG_USB_STORAGE_KARMA is not set
+# CONFIG_USB_STORAGE_CYPRESS_ATACB is not set
+# CONFIG_USB_STORAGE_ENE_UB6250 is not set
+# CONFIG_USB_UAS is not set
+# CONFIG_USB_LIBUSUAL is not set
+
+#
+# USB Imaging devices
+#
+# CONFIG_USB_MDC800 is not set
+# CONFIG_USB_MICROTEK is not set
+
+#
+# USB port drivers
+#
+# CONFIG_USB_SERIAL is not set
+
+#
+# USB Miscellaneous drivers
+#
+# CONFIG_USB_EMI62 is not set
+# CONFIG_USB_EMI26 is not set
+# CONFIG_USB_ADUTUX is not set
+# CONFIG_USB_SEVSEG is not set
+# CONFIG_USB_RIO500 is not set
+# CONFIG_USB_LEGOTOWER is not set
+# CONFIG_USB_LCD is not set
+# CONFIG_USB_LED is not set
+# CONFIG_USB_CYPRESS_CY7C63 is not set
+# CONFIG_USB_CYTHERM is not set
+# CONFIG_USB_IDMOUSE is not set
+# CONFIG_USB_FTDI_ELAN is not set
+# CONFIG_USB_APPLEDISPLAY is not set
+# CONFIG_USB_SISUSBVGA is not set
+# CONFIG_USB_LD is not set
+# CONFIG_USB_TRANCEVIBRATOR is not set
+# CONFIG_USB_IOWARRIOR is not set
+# CONFIG_USB_TEST is not set
+# CONFIG_USB_ISIGHTFW is not set
+# CONFIG_USB_YUREX is not set
+# CONFIG_USB_GADGET is not set
+
+#
+# OTG and related infrastructure
+#
+# CONFIG_NOP_USB_XCEIV is not set
+# CONFIG_UWB is not set
 # CONFIG_MMC is not set
 # CONFIG_MEMSTICK is not set
 # CONFIG_NEW_LEDS is not set
 # CONFIG_NFC_DEVICES is not set
 # CONFIG_ACCESSIBILITY is not set
+# CONFIG_INFINIBAND is not set
 CONFIG_RTC_LIB=y
 # CONFIG_RTC_CLASS is not set
 # CONFIG_DMADEVICES is not set
@@ -1125,15 +1455,32 @@ CONFIG_RTC_LIB=y
 # CONFIG_UIO is not set
 CONFIG_STAGING=y
 # CONFIG_STAGING_EXCLUDE_BUILD is not set
+# CONFIG_ET131X is not set
+# CONFIG_USB_IP_COMMON is not set
 # CONFIG_ECHO is not set
 # CONFIG_BRCM80211 is not set
 # CONFIG_COMEDI is not set
+# CONFIG_ASUS_OLED is not set
+# CONFIG_R8187SE is not set
+# CONFIG_RTL8192U is not set
+# CONFIG_RTL8192E is not set
+# CONFIG_R8712U is not set
+# CONFIG_RTS_PSTOR is not set
+# CONFIG_TRANZPORT is not set
 # CONFIG_POHMELFS is not set
+# CONFIG_IDE_PHISON is not set
 CONFIG_OCTEON_ETHERNET=y
+# CONFIG_VT6655 is not set
+# CONFIG_VT6656 is not set
+# CONFIG_VME_BUS is not set
+# CONFIG_DX_SEP is not set
 # CONFIG_IIO is not set
 # CONFIG_XVMALLOC is not set
 # CONFIG_ZRAM is not set
+# CONFIG_CRYSTALHD is not set
 CONFIG_MACH_NO_WESTBRIDGE=y
+# CONFIG_USB_ENESTORAGE is not set
+# CONFIG_BCM_WIMAX is not set
 # CONFIG_FT1000 is not set
 
 #
@@ -1148,18 +1495,18 @@ CONFIG_MACH_NO_WESTBRIDGE=y
 #
 # File systems
 #
-CONFIG_EXT2_FS=m
+CONFIG_EXT2_FS=y
 # CONFIG_EXT2_FS_XATTR is not set
 # CONFIG_EXT2_FS_XIP is not set
-CONFIG_EXT3_FS=m
+CONFIG_EXT3_FS=y
 CONFIG_EXT3_DEFAULTS_TO_ORDERED=y
 CONFIG_EXT3_FS_XATTR=y
 # CONFIG_EXT3_FS_POSIX_ACL is not set
 # CONFIG_EXT3_FS_SECURITY is not set
 # CONFIG_EXT4_FS is not set
-CONFIG_JBD=m
+CONFIG_JBD=y
 # CONFIG_JBD_DEBUG is not set
-CONFIG_FS_MBCACHE=m
+CONFIG_FS_MBCACHE=y
 # CONFIG_REISERFS_FS is not set
 CONFIG_JFS_FS=m
 # CONFIG_JFS_POSIX_ACL is not set
@@ -1417,11 +1764,9 @@ CONFIG_SECURITY_NETWORK=y
 # CONFIG_SECURITY_PATH is not set
 # CONFIG_SECURITY_TOMOYO is not set
 # CONFIG_SECURITY_APPARMOR is not set
-CONFIG_SECURITY_ESM=y
 # CONFIG_IMA is not set
-CONFIG_DEFAULT_SECURITY_ESM=y
-# CONFIG_DEFAULT_SECURITY_DAC is not set
-CONFIG_DEFAULT_SECURITY="esm"
+CONFIG_DEFAULT_SECURITY_DAC=y
+CONFIG_DEFAULT_SECURITY=""
 CONFIG_CRYPTO=y
 
 #
@@ -1523,6 +1868,7 @@ CONFIG_CRYPTO_DES=y
 # CONFIG_CRYPTO_USER_API_HASH is not set
 # CONFIG_CRYPTO_USER_API_SKCIPHER is not set
 CONFIG_CRYPTO_HW=y
+# CONFIG_CRYPTO_DEV_HIFN_795X is not set
 # CONFIG_VIRTUALIZATION is not set
 # CONFIG_BINARY_PRINTF is not set
 
@@ -1549,4 +1895,4 @@ CONFIG_CPU_RMAP=y
 CONFIG_NLATTR=y
 # CONFIG_AVERAGE is not set
 
---PEIAKu/WMn1b1Hv9--
+--------------000205060904040302050301--

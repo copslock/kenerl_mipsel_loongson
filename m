@@ -1,111 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2011 04:20:07 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:56649 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490945Ab1FICUB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2011 04:20:01 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id p592JcO6002506
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Wed, 8 Jun 2011 19:19:38 -0700 (PDT)
-Received: from tonyliu-laptop.wrs.com (128.224.162.208) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.50) with Microsoft SMTP Server id
- 14.1.255.0; Wed, 8 Jun 2011 19:19:38 -0700
-Message-ID: <4DF02DAA.7070902@windriver.com>
-Date:   Thu, 9 Jun 2011 10:19:22 +0800
-From:   Tonyliu <Bo.Liu@windriver.com>
-Reply-To: <Bo.Liu@windriver.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.9) Gecko/20100423 Thunderbird/3.0.4
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        John Crispin <blogic@openwrt.org>,
-        Dezhong Diao <dediao@cisco.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: Converting MIPS to Device Tree
-References: <20110606010753.GA16202@linux-mips.org>
-In-Reply-To: <20110606010753.GA16202@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-archive-position: 30302
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2011 07:08:19 +0200 (CEST)
+Received: from gate.crashing.org ([63.228.1.57]:56636 "EHLO gate.crashing.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490954Ab1FIFIP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 9 Jun 2011 07:08:15 +0200
+Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id p5956Uw9022243;
+        Thu, 9 Jun 2011 00:06:31 -0500
+Subject: Re: [PATCH] Fix build warning of the defconfigs
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     Wanlong Gao <wanlong.gao@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        uclinux-dist-devel@blackfin.uclinux.org, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        linux@arm.linux.org.uk, hans-christian.egtvedt@atmel.com,
+        vapier@gentoo.org, ralf@linux-mips.org, paulus@samba.org,
+        lethal@linux-sh.org, gxt@mprc.pku.edu.cn,
+        david.woodhouse@intel.com, akpm@linux-foundation.org,
+        u.kleine-koenig@pengutronix.de, mingo@elte.hu, rientjes@google.com,
+        w.sang@pengutronix.de, sam@ravnborg.org,
+        manuel.lauss@googlemail.com, anton@samba.org, arnd@arndb.de
+In-Reply-To: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
+References: <1306945763-6583-1-git-send-email-wanlong.gao@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Thu, 09 Jun 2011 15:06:28 +1000
+Message-ID: <1307595988.2874.266.camel@pasglop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30303
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Bo.Liu@windriver.com
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7476
+X-UID: 7541
 
-于 2011年06月06日 09:07, Ralf Baechle 写道:
-> Over the past few days I've started to convert arch/mips to use DT.  So
-> far none of the platforms (except maybe PowerTV?) seems to have a
-> firmware that is passing a DT nor is there any 2nd stage bootloader that
-> could do so.
->
-> So as the 2nd best thing I've been working on .dts files to be compiled
-> into the images.
->
-> I've put a git tree of my current working tree online.  It's absolutely
-> work in progress so expect to encounter bugs.
->
->    http://git.linux-mips.org/?p=linux-dt.git;a=summary (Gitweb)
->    git://git.linux-mips.org/linux-dt.git
->    
-should be git://git.linux-mips.org/pub/scm/linux-dt.git
+On Thu, 2011-06-02 at 00:29 +0800, Wanlong Gao wrote:
+> RTC_CLASS is changed to bool.
+> So value 'm' is invalid.
+> 
+> Signed-off-by: Wanlong Gao <wanlong.gao@gmail.com>
+> ---
 
-tonyliu@tonyliu-laptop:/opt/git-root$ git clone 
-git://git.linux-mips.org/linux-dt.git dt-linux_mips
-Initialized empty Git repository in /opt/git-root/dt-linux_mips/.git/
-fatal: The remote end hung up unexpectedly
-tonyliu@tonyliu-laptop:/opt/git-root$ git clone 
-git://git.linux-mips.org/pub/scm/linux-dt.git dt-linux_mips
-Initialized empty Git repository in /opt/git-root/dt-linux_mips/.git/
-remote: Counting objects: 2448486, done.
-remote: Compressing objects: 100% (446507/446507), done.
-Receiving objects: 0% (14786/2448486), 5.26 MiB | 7 KiB/s
-Receiving objects: 0% (18463/2448486), 6.56 MiB | 12 KiB/s
-Receiving objects: 2% (67572/2448486), 24.25 MiB | 11 KiB/s
-Receiving objects: 100% (2448486/2448486), 611.83 MiB | 309 KiB/s, done.
-remote: Total 2448486 (delta 2040537), reused 2388725 (delta 1982106)
-Resolving deltas: 100% (2040537/2040537), done.
-Checking out files: 100% (36749/36749), done.
+For powerpc:
 
-Tony
->    http://www.linux-mips.org/wiki/Device_Tree (brief documentation&  links)
->
-> An incomplete to do list:
->
->    o Sort out interface for firmware to pass a DT to the kernel.  Because we
->      have so many different firmware implementations this one might get a
->      slight bit interesting.
->    o Interface to select one of several builtin DT images.  I am thinking of
->      extending the existing MIPS_MACHINE() / machtype mechanism to play
->      nicely with DT.
->    o Finish and test AR7, Cobalt, Jazz, Malta, MIPSsim and SNI ports.
->    o Convert the remaining platforms; find if it's actually sensible to
->      convert all platforms.
->    o I'm considering to make DT support a requirement for future MIPS
->      platforms so you might as well start beating your firmware monkeys /
->      ask Santa to put you a shiny new bootloader blob into the boot now.
->    o Write more of the required infrastructure.
->    o Write documentation
->
-> Contributions and comments welcome,
->
->    Ralf
->
->
->    
+Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 
+Thanks !
 
--- 
-Tony Liu | Liu Bo
--------------------------------------------------------------
-WIND RIVER | China Development Center
-Tel: 86-10-8477-8542 ext: 8542 |  Fax: 86-10-64790367
-(M): 86-136-7117-3612
-Address: 15/F, Wangjing TowerB, Chaoyang District, Beijing, P.R.China
+Ben.

@@ -1,95 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jun 2011 21:22:02 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:21206 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491190Ab1FHTVz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 8 Jun 2011 21:21:55 +0200
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id p58JKnLT020232
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 8 Jun 2011 15:20:50 -0400
-Received: from tranklukator.englab.brq.redhat.com (dhcp-1-166.brq.redhat.com [10.34.1.166])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id p58JKfox006474;
-        Wed, 8 Jun 2011 15:20:41 -0400
-Received: by tranklukator.englab.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Wed,  8 Jun 2011 21:19:18 +0200 (CEST)
-Date:   Wed, 8 Jun 2011 21:19:10 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Eric Paris <eparis@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, tony.luck@intel.com,
-        fenghua.yu@intel.com, monstr@monstr.eu, ralf@linux-mips.org,
-        benh@kernel.crashing.org, paulus@samba.org, schwidefsky@de.ibm.com,
-        heiko.carstens@de.ibm.com, linux390@de.ibm.com,
-        lethal@linux-sh.org, davem@davemloft.net, jdike@addtoit.com,
-        richard@nod.at, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, viro@zeniv.linux.org.uk,
-        akpm@linux-foundation.org, linux-ia64@vger.kernel.org,
-        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        user-mode-linux-devel@lists.sourceforge.net
-Subject: Re: [PATCH -v2] Audit: push audit success and retcode into arch
-        ptrace.h
-Message-ID: <20110608191910.GA18698@redhat.com>
-References: <20110603220451.23134.47368.stgit@paris.rdu.redhat.com> <20110607171952.GA25729@redhat.com> <1307472796.2052.12.camel@localhost.localdomain> <20110608163653.GA9592@redhat.com> <1307556823.2577.5.camel@localhost.localdomain> <20110608183720.GA16883@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jun 2011 04:20:07 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:56649 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1490945Ab1FICUB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 9 Jun 2011 04:20:01 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id p592JcO6002506
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Wed, 8 Jun 2011 19:19:38 -0700 (PDT)
+Received: from tonyliu-laptop.wrs.com (128.224.162.208) by
+ ALA-HCA.corp.ad.wrs.com (147.11.189.50) with Microsoft SMTP Server id
+ 14.1.255.0; Wed, 8 Jun 2011 19:19:38 -0700
+Message-ID: <4DF02DAA.7070902@windriver.com>
+Date:   Thu, 9 Jun 2011 10:19:22 +0800
+From:   Tonyliu <Bo.Liu@windriver.com>
+Reply-To: <Bo.Liu@windriver.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.9) Gecko/20100423 Thunderbird/3.0.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110608183720.GA16883@redhat.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-X-archive-position: 30301
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     <linux-mips@linux-mips.org>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Imre Kaloz <kaloz@openwrt.org>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        John Crispin <blogic@openwrt.org>,
+        Dezhong Diao <dediao@cisco.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: Converting MIPS to Device Tree
+References: <20110606010753.GA16202@linux-mips.org>
+In-Reply-To: <20110606010753.GA16202@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-archive-position: 30302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: Bo.Liu@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7122
+X-UID: 7476
 
-On 06/08, Oleg Nesterov wrote:
+于 2011年06月06日 09:07, Ralf Baechle 写道:
+> Over the past few days I've started to convert arch/mips to use DT.  So
+> far none of the platforms (except maybe PowerTV?) seems to have a
+> firmware that is passing a DT nor is there any 2nd stage bootloader that
+> could do so.
 >
-> OK. Thanks a lot Eric for your explanations.
+> So as the 2nd best thing I've been working on .dts files to be compiled
+> into the images.
+>
+> I've put a git tree of my current working tree online.  It's absolutely
+> work in progress so expect to encounter bugs.
+>
+>    http://git.linux-mips.org/?p=linux-dt.git;a=summary (Gitweb)
+>    git://git.linux-mips.org/linux-dt.git
+>    
+should be git://git.linux-mips.org/pub/scm/linux-dt.git
 
-Yes. but may I ask another one?
+tonyliu@tonyliu-laptop:/opt/git-root$ git clone 
+git://git.linux-mips.org/linux-dt.git dt-linux_mips
+Initialized empty Git repository in /opt/git-root/dt-linux_mips/.git/
+fatal: The remote end hung up unexpectedly
+tonyliu@tonyliu-laptop:/opt/git-root$ git clone 
+git://git.linux-mips.org/pub/scm/linux-dt.git dt-linux_mips
+Initialized empty Git repository in /opt/git-root/dt-linux_mips/.git/
+remote: Counting objects: 2448486, done.
+remote: Compressing objects: 100% (446507/446507), done.
+Receiving objects: 0% (14786/2448486), 5.26 MiB | 7 KiB/s
+Receiving objects: 0% (18463/2448486), 6.56 MiB | 12 KiB/s
+Receiving objects: 2% (67572/2448486), 24.25 MiB | 11 KiB/s
+Receiving objects: 100% (2448486/2448486), 611.83 MiB | 309 KiB/s, done.
+remote: Total 2448486 (delta 2040537), reused 2388725 (delta 1982106)
+Resolving deltas: 100% (2040537/2040537), done.
+Checking out files: 100% (36749/36749), done.
 
-Shouldn't copy_process()->audit_alloc(tsk) path do
-clear_tsk_thread_flag(tsk, TIF_SYSCALL_AUDIT) if it doesn't
-set tsk->audit_context?
+Tony
+>    http://www.linux-mips.org/wiki/Device_Tree (brief documentation&  links)
+>
+> An incomplete to do list:
+>
+>    o Sort out interface for firmware to pass a DT to the kernel.  Because we
+>      have so many different firmware implementations this one might get a
+>      slight bit interesting.
+>    o Interface to select one of several builtin DT images.  I am thinking of
+>      extending the existing MIPS_MACHINE() / machtype mechanism to play
+>      nicely with DT.
+>    o Finish and test AR7, Cobalt, Jazz, Malta, MIPSsim and SNI ports.
+>    o Convert the remaining platforms; find if it's actually sensible to
+>      convert all platforms.
+>    o I'm considering to make DT support a requirement for future MIPS
+>      platforms so you might as well start beating your firmware monkeys /
+>      ask Santa to put you a shiny new bootloader blob into the boot now.
+>    o Write more of the required infrastructure.
+>    o Write documentation
+>
+> Contributions and comments welcome,
+>
+>    Ralf
+>
+>
+>    
 
-I can be easily wrong, but afaics otherwise the child can run
-with TIF_SYSCALL_AUDIT bit copied from parent's thread_info by
-dup_task_struct()->setup_thread_stack() and without ->audit_context,
-right? For what?
 
-Any other reason why audit_syscall_entry() checks context != NULL?
-
-IOW. Any reason the patch below is wrong?
-
-I am just curious, thanks.
-
-Oleg.
-
---- x/kernel/auditsc.c
-+++ x/kernel/auditsc.c
-@@ -885,6 +885,8 @@ int audit_alloc(struct task_struct *tsk)
- 	if (likely(!audit_ever_enabled))
- 		return 0; /* Return if not auditing. */
- 
-+	clear_tsk_thread_flag(tsk, TIF_SYSCALL_AUDIT);
-+
- 	state = audit_filter_task(tsk, &key);
- 	if (likely(state == AUDIT_DISABLED))
- 		return 0;
-@@ -1591,9 +1593,7 @@ void audit_syscall_entry(int arch, int m
- 	struct audit_context *context = tsk->audit_context;
- 	enum audit_state     state;
- 
--	if (unlikely(!context))
--		return;
--
-+	BUG_ON(!context);
- 	/*
- 	 * This happens only on certain architectures that make system
- 	 * calls in kernel_thread via the entry.S interface, instead of
+-- 
+Tony Liu | Liu Bo
+-------------------------------------------------------------
+WIND RIVER | China Development Center
+Tel: 86-10-8477-8542 ext: 8542 |  Fax: 86-10-64790367
+(M): 86-136-7117-3612
+Address: 15/F, Wangjing TowerB, Chaoyang District, Beijing, P.R.China

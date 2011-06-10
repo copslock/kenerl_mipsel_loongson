@@ -1,50 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 17:30:27 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:46929 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491108Ab1FJPaY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jun 2011 17:30:24 +0200
-Received: by wyb28 with SMTP id 28so2624277wyb.36
-        for <linux-mips@linux-mips.org>; Fri, 10 Jun 2011 08:30:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 17:31:30 +0200 (CEST)
+Received: from mail-ww0-f41.google.com ([74.125.82.41]:58638 "EHLO
+        mail-ww0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491108Ab1FJPb1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jun 2011 17:31:27 +0200
+Received: by wwi18 with SMTP id 18so875029wwi.0
+        for <linux-mips@linux-mips.org>; Fri, 10 Jun 2011 08:31:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:sender:from:organization:to:subject:date
          :user-agent:cc:references:in-reply-to:mime-version:content-type
          :content-transfer-encoding:message-id;
-        bh=ZKKnTVMzMz79HTn0QkhyyXytmx0I3C8517LYn16b6kA=;
-        b=YhkmRA7VzZBuqN7KuOOHr4zdjj4tx/Trw45EX2ii5kFiadfX6dDy0E5YJJ1peqoEGt
-         Z8Nfk5bsrtJQtP6yGYy+Fot9pvwl8tnzPyIQwZFGa1yw/5Y6/wxSa04t5/CbYR33YhrE
-         7T3bVYbjxN71kxXxENdWcGOazQVTv7Q5pf1Z4=
+        bh=LRs7gGO/luhcAbU0Yly9ZF3iurtzT6QEAZeATZqjkA4=;
+        b=IMunW2YbHGtX92JyqC76WUvYGlQjgy54UdpIGoz13Xe6ZYChr2z0nih+w+iILxY8HJ
+         q85jIDVGLS+mLWpeSBE3GT+sTiNhU4jC972NBcSYMJsjblpIELt69uehoVxMcKof2MZr
+         12brDo1v2k4KbNMU0OJH+Rby4Gg5Ij1KIjzIw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:organization:to:subject:date:user-agent:cc:references
          :in-reply-to:mime-version:content-type:content-transfer-encoding
          :message-id;
-        b=ItXlKMH0E++5MZmBsm2RUVVgx7V7P4iGO3KGiVfceXD9GZW3UrEd9j7M+Y4MtZ+YfR
-         Bs76aauZhUdkN6ppsavXnIYJL+fbSyXqKU0mbXGBiZI7lVlRZ7p4FYfP4Kw+K/Gpz3WX
-         LmBu+elWf9l35sNf8lBH3BCgqi0HT8VRishdg=
-Received: by 10.227.37.7 with SMTP id v7mr2387183wbd.41.1307719817248;
-        Fri, 10 Jun 2011 08:30:17 -0700 (PDT)
+        b=HoDWovox1p5B5isNJcNvkPgaxe4F27zEwev/Cx3gbbqaSUl20K/Lr7XBoitGXimmXt
+         zi4tFhPB9veNZkUAI3PGuawsT2BkS6rlVIDuC2utGXKOfxBwK/GYVMhpk7Oqp8FdXuC2
+         OSf90E87CaDikm7bfXF3iHiRdMh59DTZbsgyc=
+Received: by 10.216.61.135 with SMTP id w7mr7884896wec.19.1307719882157;
+        Fri, 10 Jun 2011 08:31:22 -0700 (PDT)
 Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by mx.google.com with ESMTPS id et5sm2112370wbb.33.2011.06.10.08.30.15
+        by mx.google.com with ESMTPS id n20sm1465014weq.39.2011.06.10.08.31.20
         (version=SSLv3 cipher=OTHER);
-        Fri, 10 Jun 2011 08:30:15 -0700 (PDT)
+        Fri, 10 Jun 2011 08:31:21 -0700 (PDT)
 From:   Florian Fainelli <florian@openwrt.org>
 Organization: OpenWrt
 To:     Jamie Iles <jamie@jamieiles.com>
-Subject: Re: [PATCH 2/3] WATCHDOG: mtx1-wdt: request gpio before using it
-Date:   Fri, 10 Jun 2011 17:34:34 +0200
+Subject: Re: [PATCH 3/3] WATCHDOG: mtx1-wdt: fix GPIO toggling
+Date:   Fri, 10 Jun 2011 17:35:40 +0200
 User-Agent: KMail/1.13.6 (Linux/2.6.38-8-server; KDE/4.6.2; x86_64; ; )
 Cc:     Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
         linux-watchdog@vger.kernel.org,
         Manuel Lauss <manuel.lauss@googlemail.com>, stable@kernel.org
-References: <201106021454.20111.florian@openwrt.org> <20110607095847.GB21174@pulham.picochip.com>
-In-Reply-To: <20110607095847.GB21174@pulham.picochip.com>
+References: <201106021454.21827.florian@openwrt.org> <20110607095932.GC21174@pulham.picochip.com>
+In-Reply-To: <20110607095932.GC21174@pulham.picochip.com>
 MIME-Version: 1.0
 Content-Type: Text/Plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201106101734.35048.florian@openwrt.org>
-X-archive-position: 30320
+Message-Id: <201106101735.40335.florian@openwrt.org>
+X-archive-position: 30321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,41 +53,61 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9309
+X-UID: 9310
 
-Hello Jamie,
-
-On Tuesday 07 June 2011 11:58:47 Jamie Iles wrote:
-> On Thu, Jun 02, 2011 at 02:54:20PM +0200, Florian Fainelli wrote:
-> > Otherwise, the gpiolib autorequest feature will produce a WARN_ON():
+On Tuesday 07 June 2011 11:59:32 Jamie Iles wrote:
+> On Thu, Jun 02, 2011 at 02:54:21PM +0200, Florian Fainelli wrote:
+> > Commit e391be76 (MIPS: Alchemy: Clean up GPIO registers and accessors)
+> > changed the way the GPIO was toggled. Prior to this patch, we would
+> > always actively drive the GPIO output to either 0 or 1, this patch
+> > drove the GPIO active to 0, and put the GPIO in tristate to drive it
+> > to 1, unfortunately this does not work, revert back to active driving.
 > > 
-> > WARNING: at drivers/gpio/gpiolib.c:101 0x8020ec6c()
-> > autorequest GPIO-215
-> > [...]
+> > Using a signed variable (gstate) to hold the gpio state and using a bit-
+> > wise operation on it also resulted in toggling value from 1 to -2 since
+> > the variable is signed. This value was then passed on to gpio_direction_
+> > output, which always perform a if (value) ... to set the value to the
+> > gpio, so we were always writing a 1 to this GPIO instead of 1 -> 0 -> 1
+> > ...
 > > 
 > > CC: stable@kernel.org
 > > Signed-off-by: Florian Fainelli <florian@openwrt.org>
 > > ---
 > > diff --git a/drivers/watchdog/mtx-1_wdt.c b/drivers/watchdog/mtx-1_wdt.c
-> > index 63df28c..16086f8 100644
+> > index 16086f8..9756da9 100644
 > > --- a/drivers/watchdog/mtx-1_wdt.c
 > > +++ b/drivers/watchdog/mtx-1_wdt.c
-> > @@ -214,6 +214,11 @@ static int __devinit mtx1_wdt_probe(struct
-> > platform_device *pdev)
+> > @@ -66,7 +66,7 @@ static struct {
 > > 
-> >  	int ret;
+> >  	int default_ticks;
+> >  	unsigned long inuse;
+> >  	unsigned gpio;
+> > 
+> > -	int gstate;
+> > +	unsigned int gstate;
+> > 
+> >  } mtx1_wdt_device;
+> >  
+> >  static void mtx1_wdt_trigger(unsigned long unused)
+> > 
+> > @@ -78,11 +78,8 @@ static void mtx1_wdt_trigger(unsigned long unused)
+> > 
+> >  		ticks--;
 > >  	
-> >  	mtx1_wdt_device.gpio = pdev->resource[0].start;
+> >  	/* toggle wdt gpio */
 > > 
-> > +	ret = gpio_request(mtx1_wdt_device.gpio, "mtx1-wdt");
-> > +	if (ret < 0) {
-> > +		dev_err(&pdev->dev, "failed to request gpio");
-> > +		return ret;
-> > +	}
+> > -	mtx1_wdt_device.gstate = ~mtx1_wdt_device.gstate;
+> > -	if (mtx1_wdt_device.gstate)
+> > -		gpio_direction_output(mtx1_wdt_device.gpio, 1);
+> > -	else
+> > -		gpio_direction_input(mtx1_wdt_device.gpio);
+> > +	mtx1_wdt_device.gstate = !mtx1_wdt_device.gstate;
+> > +	gpio_direction_output(mtx1_wdt_device.gpio, mtx1_wdt_device.gstate);
 > 
-> Could you use gpio_request_one() here to make sure the GPIO is in the
-> correct direction first?
+> Would gpio_set_value() be more appropriate here?  Isn't the gpio always
+> an output after the first call?
 
-Makes sense, I will respin a v2 of these.
+I wanted to first get it fixed, then eventually correctly updated. Makes sense 
+to have this merged in the patch to match the comment of my patch.
 --
 Florian

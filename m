@@ -1,53 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 15:10:15 +0200 (CEST)
-Received: from grimli.r00tworld.net ([83.169.44.195]:58620 "EHLO
-        mail.r00tworld.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490990Ab1FJNKK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jun 2011 15:10:10 +0200
-Received: by mail.r00tworld.net (Postfix, from userid 1000)
-        id C9FBC115901B4; Fri, 10 Jun 2011 15:10:04 +0200 (CEST)
-From:   Mathias Krause <minipli@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        Mathias Krause <minipli@googlemail.com>
-Subject: [PATCH] mips, exec: remove redundant addr_limit assignment
-Date:   Fri, 10 Jun 2011 15:10:04 +0200
-Message-Id: <1307711404-9745-1-git-send-email-minipli@googlemail.com>
-X-Mailer: git-send-email 1.5.6.5
-In-Reply-To: <BANLkTinv1teZEHMK0qymaVdcxPOErpqSyg@mail.gmail.com>
-References: <BANLkTinv1teZEHMK0qymaVdcxPOErpqSyg@mail.gmail.com>
-References: <BANLkTiknCeAxe30MJdVTxDom+ko8+EDQ4A@mail.gmail.com> <1307642718-22257-1-git-send-email-minipli@googlemail.com> <20110609155630.0f734351.akpm@linux-foundation.org>
-X-archive-position: 30317
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 15:59:38 +0200 (CEST)
+Received: from mga11.intel.com ([192.55.52.93]:64251 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491102Ab1FJN7f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 10 Jun 2011 15:59:35 +0200
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP; 10 Jun 2011 06:59:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.65,347,1304319600"; 
+   d="scan'208";a="14794275"
+Received: from unknown (HELO bob.linux.org.uk) ([10.255.13.27])
+  by fmsmga002.fm.intel.com with ESMTP; 10 Jun 2011 06:59:25 -0700
+Date:   Fri, 10 Jun 2011 14:57:24 +0100
+From:   Alan Cox <alan@linux.intel.com>
+To:     Jamie Iles <jamie@jamieiles.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-serial@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org,
+        Marc St-Jean <bluezzer@gmail.com>,
+        Shane McDonald <mcdonald.shane@gmail.com>,
+        Anoop P A <anoop.pa@gmail.com>
+Subject: Re: [PATCH] tty: 8250: handle USR for DesignWare 8250 with correct
+ accessors
+Message-ID: <20110610145724.1e0c0983@bob.linux.org.uk>
+In-Reply-To: <20110610075426.GM3711@pulham.picochip.com>
+References: <1307616525-22028-1-git-send-email-jamie@jamieiles.com>
+        <20110610035817.GA6740@linux-mips.org>
+        <20110610075426.GM3711@pulham.picochip.com>
+Organization: Intel
+X-Mailer: Claws Mail 3.7.8 (GTK+ 2.22.0; x86_64-redhat-linux-gnu)
+Organisation: Intel Corporation UK Ltd, registered no. 1134945 (England),
+ Registered office Pipers Way, Swindon, SN3 1RJ
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minipli@googlemail.com
+X-original-sender: alan@linux.intel.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9155
+X-UID: 9215
 
-The address limit is already set in flush_old_exec() via set_fs(USER_DS)
-so this assignment is redundant.
+> I found this series from Alan 
+> (http://www.spinics.net/lists/linux-serial/msg03484.html) which looks 
+> like it would do the job if we added the extra irq callback.  Ideally
+> we just remove both of the UPIO_DWAPB and UPIO_DWAPB32 and let the
+> platform specify the ops.
 
-Signed-off-by: Mathias Krause <minipli@googlemail.com>
----
- arch/mips/kernel/process.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+I've not yet had time to go back and revisit those patches and debug
+them so they actually work but as and when someone gets time I think
+it's the right basic path to follow, and the irq callback looks
+sensible too.
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index d2112d3..a8d53e5 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -103,7 +103,6 @@ void start_thread(struct pt_regs * regs, unsigned long pc, unsigned long sp)
- 		__init_dsp();
- 	regs->cp0_epc = pc;
- 	regs->regs[29] = sp;
--	current_thread_info()->addr_limit = USER_DS;
- }
- 
- void exit_thread(void)
--- 
-1.5.6.5
+Ultimately yes I'd also like to see all board specific ops banished
+from 8250.c

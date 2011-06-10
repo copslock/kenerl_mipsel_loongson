@@ -1,76 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 21:00:14 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:16138 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491037Ab1FJTAJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 10 Jun 2011 21:00:09 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4df269f80000>; Fri, 10 Jun 2011 12:01:12 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 10 Jun 2011 12:00:07 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 10 Jun 2011 12:00:07 -0700
-Message-ID: <4DF269B1.2020407@caviumnetworks.com>
-Date:   Fri, 10 Jun 2011 12:00:01 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     David VomLehn <dvomlehn@cisco.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        linux-mips@linux-mips.org, Imre Kaloz <kaloz@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>,
-        John Crispin <blogic@openwrt.org>,
-        "Dezhong Diao (dediao)" <dediao@cisco.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: Converting MIPS to Device Tree
-References: <20110606010753.GA16202@linux-mips.org> <BANLkTik1mRWTcX8WgO5s6mFrUGYwBRmSow@mail.gmail.com> <20110607230218.GA23552@dvomlehn-lnx2.corp.sa.net> <4DEEB2A8.8050302@caviumnetworks.com> <20110610185745.GA3536@linux-mips.org>
-In-Reply-To: <20110610185745.GA3536@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Jun 2011 19:00:07.0143 (UTC) FILETIME=[9D226770:01CC27A0]
-X-archive-position: 30324
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jun 2011 23:47:43 +0200 (CEST)
+Received: from smtp4-g21.free.fr ([212.27.42.4]:52556 "EHLO smtp4-g21.free.fr"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490954Ab1FJVrg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 10 Jun 2011 23:47:36 +0200
+Received: from bobafett.staff.proxad.net (unknown [213.228.1.121])
+        by smtp4-g21.free.fr (Postfix) with ESMTP id 9DDE84C80FF;
+        Fri, 10 Jun 2011 23:47:31 +0200 (CEST)
+Received: from sakura.staff.proxad.net (unknown [172.18.3.156])
+        by bobafett.staff.proxad.net (Postfix) with ESMTP id 8F0EF180650;
+        Fri, 10 Jun 2011 23:47:30 +0200 (CEST)
+Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
+        id 6846355AEB4; Fri, 10 Jun 2011 23:47:30 +0200 (CEST)
+From:   Maxime Bizon <mbizon@freebox.fr>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, florian@openwrt.org,
+        Maxime Bizon <mbizon@freebox.fr>
+Subject: [PATCH 02/11] MIPS: BCM63XX: hook up plat_ioremap to intercept soc registers remapping.
+Date:   Fri, 10 Jun 2011 23:47:12 +0200
+Message-Id: <1307742441-28284-3-git-send-email-mbizon@freebox.fr>
+X-Mailer: git-send-email 1.7.1.1
+In-Reply-To: <1307742441-28284-1-git-send-email-mbizon@freebox.fr>
+References: <1307742441-28284-1-git-send-email-mbizon@freebox.fr>
+X-archive-position: 30325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9499
+X-UID: 9568
 
-On 06/10/2011 11:57 AM, Ralf Baechle wrote:
-> On Tue, Jun 07, 2011 at 04:22:16PM -0700, David Daney wrote:
->
->>> use a parameter like "devtree=<virtual-address>" on the command line, passed
->>> in any way the bootloader likes.
->>
->> Some  u-boots for non-mips platforms pass it in the environment of
->> the bootm protocol.
->>
->> I would say to pass the pointer to the DTB in the environment, but
->> not all platforms (like powertv) have an environment.  So I guess
->> the command line has to do.
->
-> 3 steps:
->
->    1) Use command line argument for DT
->    2) Iff 1) fails, use DT specified by environment
+Internal SOC registers can be directly accessed, no need to waste a
+TLB entry.
 
-I'm OK with this as long as we can define 'the environment' to include 
-what I am currently doing on Octeon.
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+---
+ arch/mips/include/asm/mach-bcm63xx/ioremap.h |   38 ++++++++++++++++++++++++++
+ 1 files changed, 38 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/ioremap.h
 
-
->    3) Iff 1) and 2) fail, use builtin DTB.
->
->> Also I think we should pass the physical address of the DTB, not the
->> virtual address.  It would be the kernel's responsibility to figure
->> out what the virtual address is.
->
-> I like the basic idea - but ...  Most firmware will only use KSEG0 / XKPHYS
-> mappings so there should be no aliasing issue but still there could be
-> conflicting cache modes.  So we should also specify that firmware should
-> writeback and invalidate the DTB from caches.
->
->    Ralf
->
+diff --git a/arch/mips/include/asm/mach-bcm63xx/ioremap.h b/arch/mips/include/asm/mach-bcm63xx/ioremap.h
+new file mode 100644
+index 0000000..e3fe04d
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bcm63xx/ioremap.h
+@@ -0,0 +1,38 @@
++#ifndef BCM63XX_IOREMAP_H_
++#define BCM63XX_IOREMAP_H_
++
++#include <bcm63xx_cpu.h>
++
++static inline phys_t fixup_bigphys_addr(phys_t phys_addr, phys_t size)
++{
++	return phys_addr;
++}
++
++static inline int is_bcm63xx_internal_registers(phys_t offset)
++{
++	switch (bcm63xx_get_cpu_id()) {
++	case BCM6338_CPU_ID:
++	case BCM6345_CPU_ID:
++	case BCM6348_CPU_ID:
++	case BCM6358_CPU_ID:
++		if (offset >= 0xfff00000)
++			return 1;
++		break;
++	}
++	return 0;
++}
++
++static inline void __iomem *plat_ioremap(phys_t offset, unsigned long size,
++					 unsigned long flags)
++{
++	if (is_bcm63xx_internal_registers(offset))
++		return (void __iomem *)offset;
++	return NULL;
++}
++
++static inline int plat_iounmap(const volatile void __iomem *addr)
++{
++	return is_bcm63xx_internal_registers((unsigned long)addr);
++}
++
++#endif /* BCM63XX_IOREMAP_H_ */
+-- 
+1.7.1.1

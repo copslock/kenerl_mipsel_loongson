@@ -1,124 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Jun 2011 02:21:01 +0200 (CEST)
-Received: from imr3.ericy.com ([198.24.6.13]:53216 "EHLO imr3.ericy.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491138Ab1FKAU5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 11 Jun 2011 02:20:57 +0200
-Received: from eusaamw0711.eamcs.ericsson.se ([147.117.20.178])
-        by imr3.ericy.com (8.13.8/8.13.8) with ESMTP id p5B0Kh8q010415
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Fri, 10 Jun 2011 19:20:50 -0500
-Received: from [155.53.96.104] (147.117.20.214) by
- eusaamw0711.eamcs.ericsson.se (147.117.20.179) with Microsoft SMTP Server id
- 8.3.137.0; Fri, 10 Jun 2011 20:20:42 -0400
-Subject: Re: Linux 2.6.39 on Cavium CN38xx
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-Reply-To: guenter.roeck@ericsson.com
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <4DF15068.30906@caviumnetworks.com>
-References: <1307653714.8271.130.camel@groeck-laptop>
-         <4DF13E25.2060502@caviumnetworks.com> <20110609220614.GA13583@ericsson.com>
-         <4DF15068.30906@caviumnetworks.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: Ericsson
-Date:   Fri, 10 Jun 2011 17:20:42 -0700
-Message-ID: <1307751642.8271.315.camel@groeck-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jun 2011 00:33:47 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:54367 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491784Ab1FKWdk (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jun 2011 00:33:40 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 0D7918BA0;
+        Sun, 12 Jun 2011 00:33:39 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 1JeNDCpP0zcS; Sun, 12 Jun 2011 00:33:35 +0200 (CEST)
+Received: from [192.168.0.150] (host-091-097-251-232.ewe-ip-backbone.de [91.97.251.232])
+        by hauke-m.de (Postfix) with ESMTPSA id 809008B94;
+        Sun, 12 Jun 2011 00:33:34 +0200 (CEST)
+Message-ID: <4DF3ED3D.6060003@hauke-m.de>
+Date:   Sun, 12 Jun 2011 00:33:33 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110516 Lightning/1.0b2 Thunderbird/3.1.10
 MIME-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 30337
+To:     =?UTF-8?B?TWljaGFlbCBCw7xzY2g=?= <m@bues.ch>
+CC:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Arend van Spriel <arend@broadcom.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        George Kashperko <george@znau.edu.ua>,
+        Greg KH <greg@kroah.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "mb@bu3sch.de" <mb@bu3sch.de>,
+        "b43-dev@lists.infradead.org" <b43-dev@lists.infradead.org>,
+        "bernhardloos@googlemail.com" <bernhardloos@googlemail.com>
+Subject: Re: [RFC][PATCH 01/10] bcma: Use array to store cores.
+References: <1307311658-15853-1-git-send-email-hauke@hauke-m.de>        <201106061503.14852.arnd@arndb.de>      <4DED48EA.7070001@hauke-m.de>   <201106062353.40470.arnd@arndb.de>      <4DEDF98C.6020905@broadcom.com> <4DEE9BCD.1030304@hauke-m.de>   <BANLkTikUqj-R72XaOXnifhKv-n1ZSJMxDQ@mail.gmail.com> <20110608102001.294a4ff2@maggie>
+In-Reply-To: <20110608102001.294a4ff2@maggie>
+X-Enigmail-Version: 1.1.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 30338
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9665
+X-UID: 9923
 
-On Thu, 2011-06-09 at 18:59 -0400, David Daney wrote:
-> On 06/09/2011 03:06 PM, Guenter Roeck wrote:
-> > Hi David,
-> >
-> > On Thu, Jun 09, 2011 at 05:41:57PM -0400, David Daney wrote:
-> >> On 06/09/2011 02:08 PM, Guenter Roeck wrote:
-> >>> Hi folks,
-> >>>
-> >>> I am trying to get Linux 2.6.39
-> >>
-> >> Where did you get your 2.6.39?  Or in othe rwords, what's the SHA1 Kenneth?
-> >>
-> >> From kernel.org. 2.6.39.1, more specifically. We have some local modifications,
-> > but nothing relevant, ie nothing in the mips boot path.
-> >
-> >> And, what is your .config?
-> >>
-> > Please see attached.
+On 06/08/2011 10:20 AM, Michael Büsch wrote:
+> On Wed, 8 Jun 2011 02:06:11 +0200
+> Rafał Miłecki <zajec5@gmail.com> wrote:
 > 
+>> Because full scanning needs one of the following:
+>> 1) Working alloc - not possible for SoCs
 > 
-> With:
-> 
-> commit cf29f916c310c9b13c19514b496700c549597e11
-> Author: Greg Kroah-Hartman <gregkh@suse.de>
-> Date:   Fri Jun 3 09:34:20 2011 +0900
-> 
->      Linux 2.6.39.1
-> 
-> 
-> And with the attached config I can do:
-> 
-> octeon:~# cat /proc/version
-> Linux version 2.6.39.1 (ddaney@dd1.caveonetworks.com) (gcc version 4.6.1 
-> 20110328 (prerelease) [gcc-4_6-branch revision 171639] (GCC) ) #1031 SMP 
-> Thu Jun 9 15:44:46 PDT 2011
-> octeon:~# head /proc/cpuinfo
-> system type		: EBT3000 (CN3860p3.X-500-NSP)
-> processor		: 0
-> cpu model		: Cavium Octeon V0.3
-> BogoMIPS		: 1000.00
-> wait instruction	: yes
-> microsecond timers	: yes
-> tlb_entries		: 32
-> extra interrupt vector	: yes
-> hardware watchpoint	: yes, count: 2, address/irw mask: [0x0ffc, 0x0ffb]
-> ASEs implemented	:
-> 
-> 
-> Boots on all 16 CPUs.
+> Isn't there a bootmem allocator available on MIPS?
 
-Hi David,
+The bootmem allocator is working on mips, but it is initialized after
+plat_mem_setup() was called. To use it we have to move the start of bcma
+to some other place in the bcm47xx code.
 
-Turns out my primary problem is that octeon_irq_setup_secondary_ciu()
-sets C0_STATUS to 0x1000efe0, ie all interrupts except IP4 are enabled.
-This mask is primarily set through octeon_irq_percpu_enable(), which
-sets C0_STATUS to 0x1000e3e0. The value differs from CPU 0, where
-C0_STATUS is set to 0x10008ce0.
+We need access to the common and mips core for different functions in
+the bcm47xx code and these functions are getting called by the mips
+code, so we can not store these struct bcma_devices on the stack.
 
-This causes persistent spurious interrupts on our boards (both with
-CN38xx and CN58xx), where C0_CAUSE persistently reads as zero in the
-interrupt handling code but interrupts are triggered anyway. The
-spurious interrupt problem goes away if I mask out IP0, IP1, IP5, and
-IP6 at the end of octeon_irq_setup_secondary_ciu().
+I would use this struct on the embedded device and use it in the text
+segment of the bcm47xx code.
 
-There is some other problem later on (maybe I disabled too much or
-something else is wrong), but with the mask changes the SMP boot
-proceeds to:
+In include/linux/bcma/bcma.h:
+struct bcma_soc {
+	struct bcma_bus bus;
+	struct bcma_device core_cc;
+	struct bcma_device core_mips;
+};
 
-calling  tcp_congestion_default+0x0/0xc @ 1
-initcall tcp_congestion_default+0x0/0xc returned 0 after 1 usecs
-calling  initialize_hashrnd+0x0/0x28 @ 1
-initcall initialize_hashrnd+0x0/0x28 returned 0 after 11 usecs
- Return from do_initcalls [ this is an added log message ]
-open console
-Warning: unable to open an initial console.
-checking ramdisk
-async_waiting @ 1
+In arch/mips/bcm47xx/setup.c
+struct bcma_soc bus;
 
-before I get another hangup.
+The chipcommon and mips core can be initilized early without the need
+use of any alloc. The bcm47xx code will call
+bcma_bus_early_register(struct bcma_soc *soc) and this code will find
+these two cores, add then to the list of cores in bcma_bus and run the
+init code for them. After that we have all we need to boot up the
+device. After the kernel page allocator is fully set up we would search
+for all the other cores and add them to the list of cores and do the
+initialization for them. The two cores in struct bcma_soc will never be
+accessed directly but only through struct bcma_bus so that there is no
+difference from early boot and normal mode.
 
-I'll track that one down next. Key question right now, though, is why
-the secondary CPU boot code enables (almost) all interrupts. Any idea ?
-
-Thanks,
-Guenter
+Hauke

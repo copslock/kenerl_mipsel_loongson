@@ -1,75 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jun 2011 18:42:16 +0200 (CEST)
-Received: from imr3.ericy.com ([198.24.6.13]:60561 "EHLO imr3.ericy.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491071Ab1FLQmK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 12 Jun 2011 18:42:10 +0200
-Received: from eusaamw0711.eamcs.ericsson.se ([147.117.20.178])
-        by imr3.ericy.com (8.13.8/8.13.8) with ESMTP id p5CGftNc009130
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Sun, 12 Jun 2011 11:42:02 -0500
-Received: from localhost (147.117.20.214) by eusaamw0711.eamcs.ericsson.se
- (147.117.20.179) with Microsoft SMTP Server id 8.3.137.0; Sun, 12 Jun 2011
- 12:41:55 -0400
-Date:   Sun, 12 Jun 2011 09:41:55 -0700
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: Linux 2.6.39 on Cavium CN38xx
-Message-ID: <20110612164155.GA30615@ericsson.com>
-References: <1307653714.8271.130.camel@groeck-laptop>
- <4DF13E25.2060502@caviumnetworks.com>
- <20110609220614.GA13583@ericsson.com>
- <4DF15068.30906@caviumnetworks.com>
- <1307751642.8271.315.camel@groeck-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jun 2011 18:56:25 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:41175 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491065Ab1FLQ4U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jun 2011 18:56:20 +0200
+Received: by wyb28 with SMTP id 28so3788831wyb.36
+        for <linux-mips@linux-mips.org>; Sun, 12 Jun 2011 09:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:sender:from:to:subject:date:user-agent
+         :organization:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        bh=Keq3zFs/ceudYueQ8OtRMeF30h9+ZPZTe0+bL+Anbao=;
+        b=DLIv3qMxuuL2j4/dbaObKtsZ/9VIZdTwP7RcggUNDFRBGtePCLDJlgtJSdbkN7NiW+
+         EvVIj532emeQUSS/XHBrg0JlqypYGeHGn9EvzvEeU1wwS79es6yl9bj+l9GCCGIpRRqS
+         y+0MRCOc1F2RTIAsBVfAH3WSW9DZ6atg1Dcns=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:organization:mime-version
+         :content-type:content-transfer-encoding:message-id;
+        b=UVeAandO9tJLa4iKCMJKC7/4gUYp6rsFw7N9p0ngQaONNPAHMpFWwwz60q7cFHP1Fu
+         QvUpW59oqz59AzvrgtEzHYnXDvvBy/MCyWIOv9TA+GpM3wSWh7K2LAWDmH9eSyWvntHb
+         lC62v0njqE2c0y2QghJJcaGYCCwTpneHsGh6I=
+Received: by 10.216.80.32 with SMTP id j32mr4045748wee.91.1307897774385;
+        Sun, 12 Jun 2011 09:56:14 -0700 (PDT)
+Received: from bender.localnet (fbx.mimichou.net [82.236.225.16])
+        by mx.google.com with ESMTPS id o75sm2448726weq.16.2011.06.12.09.56.12
+        (version=SSLv3 cipher=OTHER);
+        Sun, 12 Jun 2011 09:56:13 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Wim Van Sebroeck <wim@iguana.be>, linux-mips@linux-mips.org,
+        linux-watchdog@vger.kernel.org,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Jamie Iles <jamie@jamieiles.com>
+Subject: [PATCH 1/5 v2] WATCHDOG: mtx1-wdt: use dev_{err,info} instead of printk()
+Date:   Sun, 12 Jun 2011 18:56:10 +0200
+User-Agent: KMail/1.13.6 (Linux/2.6.38-9-generic; KDE/4.6.2; x86_64; ; )
+Organization: OpenWrt
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1307751642.8271.315.camel@groeck-laptop>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 30347
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201106121856.11031.florian@openwrt.org>
+X-archive-position: 30348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10180
+X-UID: 10182
 
-On Fri, Jun 10, 2011 at 08:20:42PM -0400, Guenter Roeck wrote:
-[ ... ]
 
-> Hi David,
-> 
-> Turns out my primary problem is that octeon_irq_setup_secondary_ciu()
-> sets C0_STATUS to 0x1000efe0, ie all interrupts except IP4 are enabled.
-> This mask is primarily set through octeon_irq_percpu_enable(), which
-> sets C0_STATUS to 0x1000e3e0. The value differs from CPU 0, where
-> C0_STATUS is set to 0x10008ce0.
-> 
-> This causes persistent spurious interrupts on our boards (both with
-> CN38xx and CN58xx), where C0_CAUSE persistently reads as zero in the
-> interrupt handling code but interrupts are triggered anyway. The
-> spurious interrupt problem goes away if I mask out IP0, IP1, IP5, and
-> IP6 at the end of octeon_irq_setup_secondary_ciu().
-> 
-Answering part of my own question: The interrupt enable bits for secondary CPUs
-are all set through octeon_irq_core_eoi(), which is called from the per-CPU
-initialization code and enables each interrupt even if "desired_en" is false
-for a given bit. I modified octeon_irq_core_eoi() to
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+No changes since v1
 
-	if (cd->desired_en)
-                set_c0_status(0x100 << cd->bit); 
-
-which takes care of the problem. No idea if that is correct, though.
-
-The actual interrupt causing trouble and spurious interrupts in my case is,
-oddly enough, STATUSF_IP0. So far I have been unable to track down how that
-is triggered; I don't see the bit being set set in C0_CAUSE anywhere.
-
-Are there any means to trigger an IP0 interrupt other than by writing STATUSF_IP0 
-into the C0_CAUSE register ?
-
-Thanks,
-Guenter
+diff --git a/drivers/watchdog/mtx-1_wdt.c b/drivers/watchdog/mtx-1_wdt.c
+index 1479dc4..63df28c 100644
+--- a/drivers/watchdog/mtx-1_wdt.c
++++ b/drivers/watchdog/mtx-1_wdt.c
+@@ -224,11 +224,11 @@ static int __devinit mtx1_wdt_probe(struct platform_device *pdev)
+ 
+ 	ret = misc_register(&mtx1_wdt_misc);
+ 	if (ret < 0) {
+-		printk(KERN_ERR " mtx-1_wdt : failed to register\n");
++		dev_err(&pdev->dev, "failed to register\n");
+ 		return ret;
+ 	}
+ 	mtx1_wdt_start();
+-	printk(KERN_INFO "MTX-1 Watchdog driver\n");
++	dev_info(&pdev->dev, "MTX-1 Watchdog driver\n");
+ 	return 0;
+ }
+ 
+-- 
+1.7.4.1

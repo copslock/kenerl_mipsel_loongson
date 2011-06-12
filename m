@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jun 2011 18:31:35 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:55597 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jun 2011 18:32:02 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:51897 "EHLO
         mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491071Ab1FLQ3m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jun 2011 18:29:42 +0200
-Received: by mail-wy0-f177.google.com with SMTP id 28so3778171wyb.36
-        for <linux-mips@linux-mips.org>; Sun, 12 Jun 2011 09:29:42 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1491085Ab1FLQ3o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jun 2011 18:29:44 +0200
+Received: by wyb28 with SMTP id 28so3778202wyb.36
+        for <linux-mips@linux-mips.org>; Sun, 12 Jun 2011 09:29:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer
          :in-reply-to:references;
-        bh=x0YfbNF5UxZVsUt5USL39wO1im0ps3A7ac4aDeCU9d8=;
-        b=KRrW/9U3RUrEevGV62nvVNep56YSON0uv2V93x9k6QBKX65wVVxqOOj0RkQShQ0evx
-         g4pxk4drRJS0ohe0cFDSseQK1RQ2Fx2044Vk2rht3kj0NFBkTUM0s6jHoNSs/ZOwvr5c
-         PeE5NZf3a8yZ6+JtS272kNa/SgLJsF1qCqToI=
+        bh=y+/wum+2sNZEeq33TY2kKD4CsmvVpU08LXWFk9avLxU=;
+        b=u6D+j5LaJYCykyv0WsHBZ2/HyOrwG1/htvbd25NcnSIaZ/EaD3kW1gsJp71g9+QuUB
+         ned6am/Jy7D49lAgCvmTjAatX/eoELnneMSU/qyqC6ULmjBW1tuLRR16FJTDTrzxyuI1
+         uVMh7q4FhWHASks61HTZKfafJnt8N93MEOU2Y=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=kM/jyA8WTNEtJAczde1I3iZB6xp0S7m5lFo7vaoPH06DTLU/+FuJV+PeTLYiwXPvJ4
-         0ysifZBdOL+BGJpqbMn4diA8nQ1J+DVT4SdXEe3GI6iNgs/VdPg+aQsADloSISJWj0H6
-         BmDjvChNcyLeMHT641wvqyL9WTlYhASSCG08k=
-Received: by 10.216.14.199 with SMTP id d49mr3962304wed.65.1307896181842;
-        Sun, 12 Jun 2011 09:29:41 -0700 (PDT)
+        b=nZcREF92deIJk30qsN8OsaP1tB04ehZ9taQKmSQZT6LC7lXRVYl1a7i8PXVHrBgUBP
+         /9UoZG59yHKLtA6QrVRMEWJXKeMJODn5s3eqBIS+q/zoiRXI/cN30uGmHZ0Jh7VsB/hq
+         8htI60D7Iqq6HzNhtuVzdH4biF0WxGnxQa2C0=
+Received: by 10.216.62.195 with SMTP id y45mr4589520wec.15.1307896178937;
+        Sun, 12 Jun 2011 09:29:38 -0700 (PDT)
 Received: from localhost.localdomain (188-22-11-39.adsl.highway.telekom.at [188.22.11.39])
-        by mx.google.com with ESMTPS id w62sm2437815wec.18.2011.06.12.09.29.39
+        by mx.google.com with ESMTPS id w62sm2437815wec.18.2011.06.12.09.29.35
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 12 Jun 2011 09:29:40 -0700 (PDT)
+        Sun, 12 Jun 2011 09:29:37 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH 2/2] MIPS: Alchemy: DB1300 support
-Date:   Sun, 12 Jun 2011 18:29:32 +0200
-Message-Id: <1307896172-29460-3-git-send-email-manuel.lauss@googlemail.com>
+Subject: [PATCH 1/2] MIPS: Alchemy: Au1300 SoC support
+Date:   Sun, 12 Jun 2011 18:29:31 +0200
+Message-Id: <1307896172-29460-2-git-send-email-manuel.lauss@googlemail.com>
 X-Mailer: git-send-email 1.7.5.3
 In-Reply-To: <1307896172-29460-1-git-send-email-manuel.lauss@googlemail.com>
 References: <1307896172-29460-1-git-send-email-manuel.lauss@googlemail.com>
-X-archive-position: 30345
+X-archive-position: 30346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,779 +43,1334 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10175
+X-UID: 10176
 
-Basic support for the DB1300 board.
+Add support for the Au1300 SoC:
+- New GPIO/Interrupt controller
+- DBDMA ids
+- USB setup
+- enable various PSC drivers
+- detection code.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
 ---
- arch/mips/alchemy/Kconfig                     |    8 +
- arch/mips/alchemy/Platform                    |    7 +
- arch/mips/alchemy/devboards/Makefile          |    1 +
- arch/mips/alchemy/devboards/db1300/Makefile   |    1 +
- arch/mips/alchemy/devboards/db1300/platform.c |  638 +++++++++++++++++++++++++
- arch/mips/alchemy/devboards/db1300/setup.c    |  245 ++++++++++
- arch/mips/alchemy/devboards/prom.c            |    4 +
- arch/mips/boot/compressed/uart-alchemy.c      |    5 +-
- arch/mips/configs/db1300_defconfig            |  391 +++++++++++++++
- arch/mips/include/asm/mach-db1x00/bcsr.h      |   34 +-
- arch/mips/include/asm/mach-db1x00/db1300.h    |   40 ++
- arch/mips/include/asm/mach-db1x00/irq.h       |   23 +
- drivers/pcmcia/Kconfig                        |    4 +-
- drivers/pcmcia/db1xxx_ss.c                    |   30 +-
- drivers/video/au1200fb.c                      |   36 ++
- sound/soc/au1x/Kconfig                        |   12 +
- sound/soc/au1x/Makefile                       |    2 +
- sound/soc/au1x/db1300.c                       |  147 ++++++
- 18 files changed, 1613 insertions(+), 15 deletions(-)
- create mode 100644 arch/mips/alchemy/devboards/db1300/Makefile
- create mode 100644 arch/mips/alchemy/devboards/db1300/platform.c
- create mode 100644 arch/mips/alchemy/devboards/db1300/setup.c
- create mode 100644 arch/mips/configs/db1300_defconfig
- create mode 100644 arch/mips/include/asm/mach-db1x00/db1300.h
- create mode 100644 arch/mips/include/asm/mach-db1x00/irq.h
- create mode 100644 sound/soc/au1x/db1300.c
+ arch/mips/alchemy/Kconfig                        |    8 +
+ arch/mips/alchemy/common/Makefile                |    4 +-
+ arch/mips/alchemy/common/dbdma.c                 |   48 +++-
+ arch/mips/alchemy/common/gpioint.c               |  437 ++++++++++++++++++++++
+ arch/mips/alchemy/common/gpiolib-au1300.c        |   54 +++
+ arch/mips/alchemy/common/platform.c              |   31 ++-
+ arch/mips/alchemy/common/power.c                 |    2 +
+ arch/mips/alchemy/common/sleeper.S               |   73 ++++
+ arch/mips/alchemy/common/time.c                  |    1 +
+ arch/mips/alchemy/common/usb.c                   |  278 ++++++++++++++
+ arch/mips/alchemy/common/vss.c                   |   84 ++++
+ arch/mips/include/asm/cpu.h                      |    1 +
+ arch/mips/include/asm/mach-au1x00/au1000.h       |  223 ++++++++++-
+ arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h |   33 ++
+ arch/mips/include/asm/mach-au1x00/gpio-au1300.h  |  250 ++++++++++++
+ arch/mips/include/asm/mach-au1x00/gpio.h         |    4 +
+ arch/mips/kernel/cpu-probe.c                     |    8 +
+ drivers/i2c/busses/Kconfig                       |    6 +-
+ drivers/spi/Kconfig                              |    6 +-
+ drivers/usb/Kconfig                              |    2 +-
+ drivers/usb/host/ehci-hcd.c                      |    2 +-
+ drivers/usb/host/ohci-au1xxx.c                   |   10 +-
+ drivers/video/Kconfig                            |   10 +-
+ sound/soc/au1x/Kconfig                           |    6 +-
+ 24 files changed, 1539 insertions(+), 42 deletions(-)
+ create mode 100644 arch/mips/alchemy/common/gpioint.c
+ create mode 100644 arch/mips/alchemy/common/gpiolib-au1300.c
+ create mode 100644 arch/mips/alchemy/common/vss.c
+ create mode 100644 arch/mips/include/asm/mach-au1x00/gpio-au1300.h
 
 diff --git a/arch/mips/alchemy/Kconfig b/arch/mips/alchemy/Kconfig
-index 30277fd..0e2d61e 100644
+index 2ccfd4a..30277fd 100644
 --- a/arch/mips/alchemy/Kconfig
 +++ b/arch/mips/alchemy/Kconfig
-@@ -56,6 +56,14 @@ config MIPS_DB1200
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_HAS_EARLY_PRINTK
+@@ -2,6 +2,10 @@
+ config ALCHEMY_GPIOINT_AU1000
+ 	bool
  
-+config MIPS_DB1300
-+	bool "RMI DB1300 board"
-+	select SOC_AU1300
-+	select DMA_COHERENT
-+	select MIPS_DISABLE_OBSOLETE_IDE
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_HAS_EARLY_PRINTK
++# au1300-style GPIO/INT controller
++config ALCHEMY_GPIOINT_AU1300
++	bool
 +
- config MIPS_DB1500
- 	bool "Alchemy DB1500 board"
- 	select SOC_AU1500
-diff --git a/arch/mips/alchemy/Platform b/arch/mips/alchemy/Platform
-index 96e9e41..85699c7 100644
---- a/arch/mips/alchemy/Platform
-+++ b/arch/mips/alchemy/Platform
-@@ -75,6 +75,13 @@ cflags-$(CONFIG_MIPS_DB1200)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
- load-$(CONFIG_MIPS_DB1200)	+= 0xffffffff80100000
+ # select this in your board config if you don't want to use the gpio
+ # namespace as documented in the manuals.  In this case however you need
+ # to create the necessary gpio_* functions in your board code/headers!
+@@ -158,3 +162,7 @@ config SOC_AU1550
+ config SOC_AU1200
+ 	bool
+ 	select ALCHEMY_GPIOINT_AU1000
++
++config SOC_AU1300
++	bool
++	select ALCHEMY_GPIOINT_AU1300
+diff --git a/arch/mips/alchemy/common/Makefile b/arch/mips/alchemy/common/Makefile
+index 575db47..39a2fd6 100644
+--- a/arch/mips/alchemy/common/Makefile
++++ b/arch/mips/alchemy/common/Makefile
+@@ -6,14 +6,16 @@
+ #
  
- #
-+# NetLogic DBAu1300 development platform
-+#
-+platform-$(CONFIG_MIPS_DB1300)	+= alchemy/devboards/
-+cflags-$(CONFIG_MIPS_DB1300)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_DB1300)	+= 0xffffffff80100000
+ obj-y += prom.o time.o clocks.o platform.o power.o setup.o \
+-	sleeper.o dma.o dbdma.o usb.o
++	sleeper.o dma.o dbdma.o usb.o vss.o
+ 
+ obj-$(CONFIG_ALCHEMY_GPIOINT_AU1000) += irq.o
++obj-$(CONFIG_ALCHEMY_GPIOINT_AU1300) += gpioint.o
+ 
+ # optional gpiolib support
+ ifeq ($(CONFIG_ALCHEMY_GPIO_INDIRECT),)
+  ifeq ($(CONFIG_GPIOLIB),y)
+   obj-$(CONFIG_ALCHEMY_GPIOINT_AU1000) += gpiolib-au1000.o
++  obj-$(CONFIG_ALCHEMY_GPIOINT_AU1300) += gpiolib-au1300.o
+  endif
+ endif
+ 
+diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
+index 3a5abb5..83c02a2 100644
+--- a/arch/mips/alchemy/common/dbdma.c
++++ b/arch/mips/alchemy/common/dbdma.c
+@@ -40,8 +40,6 @@
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_dbdma.h>
+ 
+-#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
+-
+ /*
+  * The Descriptor Based DMA supports up to 16 channels.
+  *
+@@ -152,6 +150,47 @@ static dbdev_tab_t dbdev_tab[] = {
+ 
+ #endif /* CONFIG_SOC_AU1200 */
+ 
++#ifdef CONFIG_SOC_AU1300
++	{ DSCR_CMD0_UART0_TX, DEV_FLAGS_OUT, 0, 8,  0x10100004, 0, 0 },
++	{ DSCR_CMD0_UART0_RX, DEV_FLAGS_IN,  0, 8,  0x10100000, 0, 0 },
++	{ DSCR_CMD0_UART1_TX, DEV_FLAGS_OUT, 0, 8,  0x10101004, 0, 0 },
++	{ DSCR_CMD0_UART1_RX, DEV_FLAGS_IN,  0, 8,  0x10101000, 0, 0 },
++	{ DSCR_CMD0_UART2_TX, DEV_FLAGS_OUT, 0, 8,  0x10102004, 0, 0 },
++	{ DSCR_CMD0_UART2_RX, DEV_FLAGS_IN,  0, 8,  0x10102000, 0, 0 },
++	{ DSCR_CMD0_UART3_TX, DEV_FLAGS_OUT, 0, 8,  0x10103004, 0, 0 },
++	{ DSCR_CMD0_UART3_RX, DEV_FLAGS_IN,  0, 8,  0x10103000, 0, 0 },
 +
-+#
- # AMD Alchemy Bosporus eval board
- #
- platform-$(CONFIG_MIPS_BOSPORUS) += alchemy/devboards/
-diff --git a/arch/mips/alchemy/devboards/Makefile b/arch/mips/alchemy/devboards/Makefile
-index 826449c..18193c2 100644
---- a/arch/mips/alchemy/devboards/Makefile
-+++ b/arch/mips/alchemy/devboards/Makefile
-@@ -16,3 +16,4 @@ obj-$(CONFIG_MIPS_DB1500)	+= db1x00/
- obj-$(CONFIG_MIPS_DB1550)	+= db1x00/
- obj-$(CONFIG_MIPS_BOSPORUS)	+= db1x00/
- obj-$(CONFIG_MIPS_MIRAGE)	+= db1x00/
-+obj-$(CONFIG_MIPS_DB1300)	+= db1300/
-diff --git a/arch/mips/alchemy/devboards/db1300/Makefile b/arch/mips/alchemy/devboards/db1300/Makefile
++	{ DSCR_CMD0_SDMS_TX0, DEV_FLAGS_OUT, 4, 8,  0x10600000, 0, 0 },
++	{ DSCR_CMD0_SDMS_RX0, DEV_FLAGS_IN,  4, 8,  0x10600004, 0, 0 },
++	{ DSCR_CMD0_SDMS_TX1, DEV_FLAGS_OUT, 8, 8,  0x10601000, 0, 0 },
++	{ DSCR_CMD0_SDMS_RX1, DEV_FLAGS_IN,  8, 8,  0x10601004, 0, 0 },
++
++	{ DSCR_CMD0_AES_RX, DEV_FLAGS_IN ,   4, 32, 0x10300008, 0, 0 },
++	{ DSCR_CMD0_AES_TX, DEV_FLAGS_OUT,   4, 32, 0x10300004, 0, 0 },
++
++	{ DSCR_CMD0_PSC0_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0001c, 0, 0 },
++	{ DSCR_CMD0_PSC0_RX, DEV_FLAGS_IN,   0, 16, 0x10a0001c, 0, 0 },
++	{ DSCR_CMD0_PSC1_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0101c, 0, 0 },
++	{ DSCR_CMD0_PSC1_RX, DEV_FLAGS_IN,   0, 16, 0x10a0101c, 0, 0 },
++	{ DSCR_CMD0_PSC2_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0201c, 0, 0 },
++	{ DSCR_CMD0_PSC2_RX, DEV_FLAGS_IN,   0, 16, 0x10a0201c, 0, 0 },
++	{ DSCR_CMD0_PSC3_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0301c, 0, 0 },
++	{ DSCR_CMD0_PSC3_RX, DEV_FLAGS_IN,   0, 16, 0x10a0301c, 0, 0 },
++
++	{ DSCR_CMD0_LCD, DEV_FLAGS_ANYUSE,   0, 0,  0x00000000, 0, 0 },
++	{ DSCR_CMD0_NAND_FLASH, DEV_FLAGS_IN, 0, 0, 0x00000000, 0, 0 },
++
++	{ DSCR_CMD0_SDMS_TX2, DEV_FLAGS_OUT, 4, 8,  0x10602000, 0, 0 },
++	{ DSCR_CMD0_SDMS_RX2, DEV_FLAGS_IN,  4, 8,  0x10602004, 0, 0 },
++
++	{ DSCR_CMD0_CIM_SYNC, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
++
++	{ DSCR_CMD0_UDMA, DEV_FLAGS_ANYUSE,  0, 32, 0x14001810, 0, 0 },
++
++	{ DSCR_CMD0_DMA_REQ0, 0, 0, 0, 0x00000000, 0, 0 },
++	{ DSCR_CMD0_DMA_REQ1, 0, 0, 0, 0x00000000, 0, 0 },
++#endif /* CONFIG_SOC_AU1300 */
++
+ 	{ DSCR_CMD0_THROTTLE, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
+ 	{ DSCR_CMD0_ALWAYS, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
+ 
+@@ -1044,6 +1083,9 @@ static int __init au1xxx_dbdma_init(void)
+ 	case ALCHEMY_CPU_AU1200:
+ 		irq_nr = AU1200_DDMA_INT;
+ 		break;
++	case ALCHEMY_CPU_AU1300:
++		irq_nr = AU1300_DDMA_INT;
++		break;
+ 	default:
+ 		return -ENODEV;
+ 	}
+@@ -1061,5 +1103,3 @@ static int __init au1xxx_dbdma_init(void)
+ 	return ret;
+ }
+ subsys_initcall(au1xxx_dbdma_init);
+-
+-#endif /* defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200) */
+diff --git a/arch/mips/alchemy/common/gpioint.c b/arch/mips/alchemy/common/gpioint.c
 new file mode 100644
-index 0000000..b07e182
+index 0000000..f958f1a
 --- /dev/null
-+++ b/arch/mips/alchemy/devboards/db1300/Makefile
-@@ -0,0 +1 @@
-+obj-y := setup.o platform.o
-diff --git a/arch/mips/alchemy/devboards/db1300/platform.c b/arch/mips/alchemy/devboards/db1300/platform.c
-new file mode 100644
-index 0000000..d22a813
---- /dev/null
-+++ b/arch/mips/alchemy/devboards/db1300/platform.c
-@@ -0,0 +1,638 @@
++++ b/arch/mips/alchemy/common/gpioint.c
+@@ -0,0 +1,437 @@
 +/*
-+ * DBAu1300 platform initialization
++ * gpioint.c - Au1300 GPIO+Interrupt controller support.
 + *
-+ * (c) 2009 Manuel Lauss <manuel.lauss@googlemail.com>
++ * Copyright (c) 2009-2011 Manuel Lauss <manuel.lauss@googlemail.com>
++ *
++ * licensed under the GPLv2.
 + */
 +
-+#include <linux/dma-mapping.h>
-+#include <linux/gpio_keys.h>
-+#include <linux/init.h>
-+#include <linux/input.h>	/* KEY_* codes */
-+#include <linux/i2c.h>
 +#include <linux/io.h>
-+#include <linux/leds.h>
-+#include <linux/ata_platform.h>
-+#include <linux/mmc/host.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/nand.h>
-+#include <linux/mtd/partitions.h>
-+#include <linux/platform_device.h>
-+#include <linux/smsc911x.h>
++#include <linux/interrupt.h>
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/syscore_ops.h>
++#include <linux/types.h>
 +
++#include <asm/irq_cpu.h>
 +#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-au1x00/au1100_mmc.h>
-+#include <asm/mach-au1x00/au1xxx_dbdma.h>
-+#include <asm/mach-au1x00/au1xxx_psc.h>
-+#include <asm/mach-db1x00/db1300.h>
-+#include <asm/mach-db1x00/bcsr.h>
-+#include <asm/mach-au1x00/prom.h>
++#include <asm/mach-au1x00/gpio-au1300.h>
 +
-+#include "../platform.h"
++#if 0
++#define DBG(x...)	printk(KERN_INFO "GPIC " x)
++#else
++#define DBG(x...)
++#endif
 +
-+static struct i2c_board_info db1300_i2c_devs[] __initdata = {
-+	{ I2C_BOARD_INFO("wm8731", 0x1b), },	/* I2S audio codec */
-+	{ I2C_BOARD_INFO("ne1619", 0x2d), },	/* adm1025-compat hwmon */
++static int au1300_gpic_settype(struct irq_data *d, unsigned int type);
++
++/* setup for known onchip sources */
++struct gpic_devint_data {
++	int irq;	/* linux IRQ number */
++	int type;	/* IRQ_TYPE_ */
++	int prio;	/* irq priority, 0 highest, 3 lowest */
++	int internal;	/* internal-only source (no ext. pin)? */
 +};
 +
-+/**********************************************************************/
++struct gpic_devint_data au1300_devints[] __initdata = {
++	/* multifunction: gpio/device */
++	{ AU1300_UART1_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_UART2_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_UART3_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_SD1_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_SD2_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_PSC0_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_PSC1_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_PSC2_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_PSC3_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	{ AU1300_NAND_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 0, },
++	/* au1300 internal-only ints */
++	{ AU1300_DDMA_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_MMU_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_MPU_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_GPU_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_UDMA_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_TOY_INT,	 IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_TOY_MATCH2_INT, IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_RTC_INT,	 IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING,	0, 1, },
++	{ AU1300_UART0_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_SD0_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_USB_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_LCD_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_BSA_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_MPE_INT,	 IRQ_TYPE_EDGE_RISING,	1, 1, },
++	{ AU1300_ITE_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_AES_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ AU1300_CIM_INT,	 IRQ_TYPE_LEVEL_HIGH,	1, 1, },
++	{ -1, },	/* terminator */
++};
 +
-+static void au1300_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
-+				 unsigned int ctrl)
++
++/*
++ * au1300_gpic_chgcfg - change PIN configuration.
++ * @gpio:	pin to change (0-based GPIO number from datasheet).
++ * @clr:	clear all bits set in 'clr'.
++ * @set:	set these bits.
++ *
++ * modifies a pins' configuration register, bits set in @clr will
++ * be cleared in the register, bits in @set will be set.
++ * NOTE: according to the datasheet, this should only be called
++ * for disabled interrupts!
++ */
++static inline void au1300_gpic_chgcfg(unsigned int gpio,
++				      unsigned long clr,
++				      unsigned long set)
 +{
-+	struct nand_chip *this = mtd->priv;
-+	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
++	void __iomem *r = AU1300_GPIC_ADDR;
++	unsigned long l;
 +
-+	ioaddr &= 0xffffff00;
++	r += gpio * 4;	/* offset into pin config array */
++	l = __raw_readl(r + AU1300_GPIC_PINCFG);
++	l &= ~clr;
++	l |= set;
++	__raw_writel(l, r + AU1300_GPIC_PINCFG);
++	wmb();
 +
-+	if (ctrl & NAND_CLE) {
-+		ioaddr += MEM_STNAND_CMD;
-+	} else if (ctrl & NAND_ALE) {
-+		ioaddr += MEM_STNAND_ADDR;
-+	} else {
-+		/* assume we want to r/w real data  by default */
-+		ioaddr += MEM_STNAND_DATA;
-+	}
-+	this->IO_ADDR_R = this->IO_ADDR_W = (void __iomem *)ioaddr;
-+	if (cmd != NAND_CMD_NONE) {
-+		__raw_writeb(cmd, this->IO_ADDR_W);
++	DBG("MODCFG(%03d) %08lx %08lx -> %08lx\n", gpio, clr, set, l);
++}
++
++/*
++ * au1300_pinfunc_to_gpio - assign a pin as GPIO input (GPIO ctrl).
++ * @pin:	pin (0-based GPIO number from datasheet).
++ *
++ * Assigns a GPIO pin to the GPIO controller, so its level can either
++ * be read or set through the generic GPIO functions.
++ * If you need a GPOUT, use au1300_gpio_set_value(pin, 0/1).
++ * REVISIT: is this function really necessary?
++ */
++void au1300_pinfunc_to_gpio(enum au1300_multifunc_pins gpio)
++{
++	au1300_gpio_direction_input(gpio + AU1300_GPIO_BASE);
++
++	DBG("PIN2GPIN(%03d)\n", (int)gpio);
++}
++EXPORT_SYMBOL_GPL(au1300_pinfunc_to_gpio);
++
++/*
++ * au1300_pinfunc_to_dev - assign a pin to the device function.
++ * @pin:	pin (0-based GPIO number from datasheet).
++ *
++ * Assigns a GPIO pin to its associated device function; the pin will be
++ * driven by the device and not through GPIO functions.
++ */
++void au1300_pinfunc_to_dev(enum au1300_multifunc_pins gpio)
++{
++	void __iomem *r = AU1300_GPIC_ADDR;
++	unsigned long bit;
++
++	r += GPIC_GPIO_BANKOFF(gpio);
++	bit = GPIC_GPIO_TO_BIT(gpio);
++	__raw_writel(bit, r + AU1300_GPIC_DEVSEL);
++	wmb();
++
++	DBG("PIN2DEV(%03d)\n", (int)gpio);
++}
++EXPORT_SYMBOL_GPL(au1300_pinfunc_to_dev);
++
++/*
++ * au1300_set_irq_priority -  set internal priority of IRQ.
++ * @irq:	irq to set priority (linux irq number).
++ * @p:		priority (0 = highest, 3 = lowest).
++ */
++void au1300_set_irq_priority(unsigned int irq, int p)
++{
++	irq -= ALCHEMY_GPIC_INT_BASE;
++	au1300_gpic_chgcfg(irq, GPIC_CFG_IL_MASK, GPIC_CFG_IL_SET(p));
++}
++EXPORT_SYMBOL_GPL(au1300_set_irq_priority);
++
++/*
++ * au1300_set_dbdma_gpio - assign a gpio to one of the DBDMA triggers.
++ * @dchan:	dbdma trigger select (0, 1).
++ * @gpio:	pin to assign as trigger.
++ *
++ * DBDMA controller has 2 external trigger sources; this function
++ * assigns a GPIO to the selected trigger.
++ */
++void au1300_set_dbdma_gpio(int dchan, unsigned int gpio)
++{
++	unsigned long r;
++
++	if ((dchan >= 0) && (dchan <= 1)) {
++		r = __raw_readl(AU1300_GPIC_ADDR + AU1300_GPIC_DMASEL);
++		r &= ~(0xff << (8 * dchan));
++		r |= (gpio & 0x7f) << (8 * dchan);
++		__raw_writel(r, AU1300_GPIC_ADDR + AU1300_GPIC_DMASEL);
 +		wmb();
 +	}
 +}
 +
-+static int au1300_nand_device_ready(struct mtd_info *mtd)
++/**********************************************************************/
++
++static void gpic_pin_set_idlewake(unsigned int gpio, int allow)
 +{
-+	return __raw_readl((void __iomem *)MEM_STSTAT) & 1;
++	au1300_gpic_chgcfg(gpio, GPIC_CFG_IDLEWAKE,
++			   allow ? GPIC_CFG_IDLEWAKE : 0);
++
++	DBG("SETIDLEWAKE(%03d) %d\n", gpio, allow);
 +}
 +
-+static const char *db1300_part_probes[] = { "cmdlinepart", NULL };
-+
-+static struct mtd_partition db1300_nand_parts[] = {
-+	{
-+		.name	= "NAND FS 0",
-+		.offset	= 0,
-+		.size	= 8 * 1024 * 1024,
-+	},
-+	{
-+		.name	= "NAND FS 1",
-+		.offset	= MTDPART_OFS_APPEND,
-+		.size	= MTDPART_SIZ_FULL
-+	},
-+};
-+
-+struct platform_nand_data db1300_nand_platdata = {
-+	.chip = {
-+		.nr_chips	= 1,
-+		.chip_offset	= 0,
-+		.nr_partitions	= ARRAY_SIZE(db1300_nand_parts),
-+		.partitions	= db1300_nand_parts,
-+		.chip_delay	= 20,
-+		.part_probe_types = db1300_part_probes,
-+	},
-+	.ctrl = {
-+		.dev_ready	= au1300_nand_device_ready,
-+		.cmd_ctrl	= au1300_nand_cmd_ctrl,
-+	},
-+};
-+
-+static struct resource db1300_nand_res[] = {
-+	[0] = {
-+		.start	= DB1300_NAND_PHYS_ADDR,
-+		.end	= DB1300_NAND_PHYS_ADDR + 0xff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct platform_device db1300_nand_dev = {
-+	.name		= "gen_nand",
-+	.num_resources	= ARRAY_SIZE(db1300_nand_res),
-+	.resource	= db1300_nand_res,
-+	.id		= -1,
-+	.dev		= {
-+		.platform_data = &db1300_nand_platdata,
-+	}
-+};
-+
-+/**********************************************************************/
-+
-+static struct resource db1300_eth_res[] = {
-+	[0] = {
-+		.start		= DB1300_ETH_PHYS_ADDR,
-+		.end		= DB1300_ETH_PHYS_END,
-+		.flags		= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start		= DB1300_ETH_INT,
-+		.end		= DB1300_ETH_INT,
-+		.flags		= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct smsc911x_platform_config db1300_eth_config = {
-+	.phy_interface		= PHY_INTERFACE_MODE_MII,
-+	.irq_polarity		= SMSC911X_IRQ_POLARITY_ACTIVE_LOW,
-+	.irq_type		= SMSC911X_IRQ_TYPE_PUSH_PULL,
-+	.flags			= SMSC911X_USE_32BIT,
-+};
-+
-+static struct platform_device db1300_eth_dev = {
-+	.name			= "smsc911x",
-+	.id			= -1,
-+	.num_resources		= ARRAY_SIZE(db1300_eth_res),
-+	.resource		= db1300_eth_res,
-+	.dev = {
-+		.platform_data	= &db1300_eth_config,
-+	},
-+};
-+
-+/**********************************************************************/
-+
-+static struct resource au1300_psc1_res[] = {
-+	[0] = {
-+		.start	= AU1300_PSC1_PHYS_ADDR,
-+		.end	= AU1300_PSC1_PHYS_ADDR + 0x0fff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AU1300_PSC1_INT,
-+		.end	= AU1300_PSC1_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+	[2] = {
-+		.start	= DSCR_CMD0_PSC1_TX,
-+		.end	= DSCR_CMD0_PSC1_TX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+	[3] = {
-+		.start	= DSCR_CMD0_PSC1_RX,
-+		.end	= DSCR_CMD0_PSC1_RX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+};
-+
-+static struct platform_device db1300_ac97_dev = {
-+	.name		= "au1xpsc_ac97",
-+	.id		= 1,	/* PSC ID. match with AC97 codec ID! */
-+	.num_resources	= ARRAY_SIZE(au1300_psc1_res),
-+	.resource	= au1300_psc1_res,
-+};
-+
-+/**********************************************************************/
-+
-+static struct resource au1300_psc2_res[] = {
-+	[0] = {
-+		.start	= AU1300_PSC2_PHYS_ADDR,
-+		.end	= AU1300_PSC2_PHYS_ADDR + 0x0fff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AU1300_PSC2_INT,
-+		.end	= AU1300_PSC2_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+	[2] = {
-+		.start	= DSCR_CMD0_PSC2_TX,
-+		.end	= DSCR_CMD0_PSC2_TX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+	[3] = {
-+		.start	= DSCR_CMD0_PSC2_RX,
-+		.end	= DSCR_CMD0_PSC2_RX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+};
-+
-+static struct platform_device db1300_i2s_dev = {
-+	.name		= "au1xpsc_i2s",
-+	.id		= 2,	/* PSC ID */
-+	.num_resources	= ARRAY_SIZE(au1300_psc2_res),
-+	.resource	= au1300_psc2_res,
-+};
-+
-+/**********************************************************************/
-+
-+static struct resource au1300_psc3_res[] = {
-+	[0] = {
-+		.start	= AU1300_PSC3_PHYS_ADDR,
-+		.end	= AU1300_PSC3_PHYS_ADDR + 0x0fff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AU1300_PSC3_INT,
-+		.end	= AU1300_PSC3_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+	[2] = {
-+		.start	= DSCR_CMD0_PSC3_TX,
-+		.end	= DSCR_CMD0_PSC3_TX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+	[3] = {
-+		.start	= DSCR_CMD0_PSC3_RX,
-+		.end	= DSCR_CMD0_PSC3_RX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+};
-+
-+static struct platform_device db1300_i2c_dev = {
-+	.name		= "au1xpsc_smbus",
-+	.id		= 0,	/* bus number */
-+	.num_resources	= ARRAY_SIZE(au1300_psc3_res),
-+	.resource	= au1300_psc3_res,
-+};
-+
-+/**********************************************************************/
-+
-+/* proper key assignments when facing the LCD panel.  For key assignments
-+ * according to the schematics swap up with down and left with right.
-+ */
-+static struct gpio_keys_button db1300_5waysw_buttons[] = {
-+	{
-+		.code			= KEY_DOWN,
-+		.gpio			= AU1300_PIN_LCDPWM0,
-+		.type			= EV_KEY,
-+		.debounce_interval	= 1,
-+		.active_low		= 1,
-+	},
-+	{
-+		.code			= KEY_UP,
-+		.gpio			= AU1300_PIN_PSC2SYNC1,
-+		.type			= EV_KEY,
-+		.debounce_interval	= 1,
-+		.active_low		= 1,
-+	},
-+	{
-+		.code			= KEY_RIGHT,
-+		.gpio			= AU1300_PIN_WAKE3,
-+		.type			= EV_KEY,
-+		.debounce_interval	= 1,
-+		.active_low		= 1,
-+	},
-+	{
-+		.code			= KEY_LEFT,
-+		.gpio			= AU1300_PIN_WAKE2,
-+		.type			= EV_KEY,
-+		.debounce_interval	= 1,
-+		.active_low		= 1,
-+	},
-+	{
-+		.code			= KEY_ENTER,
-+		.gpio			= AU1300_PIN_WAKE1,
-+		.type			= EV_KEY,
-+		.debounce_interval	= 1,
-+		.active_low		= 1,
-+	},
-+};
-+
-+static struct gpio_keys_platform_data db1300_5waysw_data = {
-+	.buttons	= db1300_5waysw_buttons,
-+	.nbuttons	= ARRAY_SIZE(db1300_5waysw_buttons),
-+	.rep		= 1,
-+};
-+
-+static struct platform_device db1300_5waysw_dev = {
-+	.name		= "gpio-keys",
-+	.dev	= {
-+		.platform_data	= &db1300_5waysw_data,
-+	},
-+};
-+
-+/**********************************************************************/
-+
-+static struct platform_device db1300_rtc_dev = {
-+	.name	= "rtc-au1xxx",
-+	.id	= -1,
-+};
-+
-+/**********************************************************************/
-+
-+static struct pata_platform_info db1300_ide_info = {
-+	.ioport_shift	= DB1300_IDE_REG_SHIFT,
-+};
-+
-+#define IDE_ALT_START	(14 << DB1300_IDE_REG_SHIFT)
-+static struct resource db1300_ide_res[] = {
-+	[0] = {
-+		.start	= DB1300_IDE_PHYS_ADDR,
-+		.end	= DB1300_IDE_PHYS_ADDR + IDE_ALT_START - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= DB1300_IDE_PHYS_ADDR + IDE_ALT_START,
-+		.end	= DB1300_IDE_PHYS_ADDR + DB1300_IDE_PHYS_LEN - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[2] = {
-+		.start	= DB1300_IDE_INT,
-+		.end	= DB1300_IDE_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct platform_device db1300_ide_dev = {
-+	.dev	= {
-+		.platform_data	= &db1300_ide_info,
-+	},
-+	.name		= "pata_platform",
-+	.resource	= db1300_ide_res,
-+	.num_resources	= ARRAY_SIZE(db1300_ide_res),
-+};
-+
-+/**********************************************************************/
-+
-+static irqreturn_t db1300_mmc_cd(int irq, void *ptr)
++static void au1300_gpic_mask(struct irq_data *d)
 +{
-+	void(*mmc_cd)(struct mmc_host *, unsigned long);
++	void __iomem *r = AU1300_GPIC_ADDR;
++	unsigned long bit, irq = d->irq;
 +
-+	if (irq == DB1300_SD1_INSERT_INT) {
-+		disable_irq_nosync(DB1300_SD1_INSERT_INT);
-+		enable_irq(DB1300_SD1_EJECT_INT);
-+	} else {
-+		disable_irq_nosync(DB1300_SD1_EJECT_INT);
-+		enable_irq(DB1300_SD1_INSERT_INT);
++	irq -= ALCHEMY_GPIC_INT_BASE;
++	r += GPIC_GPIO_BANKOFF(irq);
++	bit = GPIC_GPIO_TO_BIT(irq);
++	__raw_writel(bit, r + AU1300_GPIC_IDIS);
++	wmb();
++
++	gpic_pin_set_idlewake(irq, 0);
++}
++
++static void au1300_gpic_unmask(struct irq_data *d)
++{
++	void __iomem *r = AU1300_GPIC_ADDR;
++	unsigned long bit, irq = d->irq;
++
++	irq -= ALCHEMY_GPIC_INT_BASE;
++
++	gpic_pin_set_idlewake(irq, 1);
++
++	r += GPIC_GPIO_BANKOFF(irq);
++	bit = GPIC_GPIO_TO_BIT(irq);
++	__raw_writel(bit, r + AU1300_GPIC_IEN);
++	wmb();
++}
++
++static void au1300_gpic_maskack(struct irq_data *d)
++{
++	void __iomem *r = AU1300_GPIC_ADDR;
++	unsigned long bit, irq = d->irq;
++
++	irq -= ALCHEMY_GPIC_INT_BASE;
++	r += GPIC_GPIO_BANKOFF(irq);
++	bit = GPIC_GPIO_TO_BIT(irq);
++	__raw_writel(bit, r + AU1300_GPIC_IPEND);	/* ack */
++	__raw_writel(bit, r + AU1300_GPIC_IDIS);	/* mask */
++	wmb();
++
++	gpic_pin_set_idlewake(irq, 0);
++}
++
++static void au1300_gpic_ack(struct irq_data *d)
++{
++	void __iomem *r = AU1300_GPIC_ADDR;
++	unsigned long bit, irq = d->irq;
++
++	irq -= ALCHEMY_GPIC_INT_BASE;
++	r += GPIC_GPIO_BANKOFF(irq);
++	bit = GPIC_GPIO_TO_BIT(irq);
++	__raw_writel(bit, r + AU1300_GPIC_IPEND);	/* ack */
++	wmb();
++}
++
++static struct irq_chip au1300_gpic = {
++	.name		= "GPIOINT",
++	.irq_ack	= au1300_gpic_ack,
++	.irq_mask	= au1300_gpic_mask,
++	.irq_mask_ack	= au1300_gpic_maskack,
++	.irq_unmask	= au1300_gpic_unmask,
++	.irq_set_type	= au1300_gpic_settype,
++};
++
++static int au1300_gpic_settype(struct irq_data *d, unsigned int type)
++{
++	unsigned long s;
++	unsigned char *name = NULL;
++	irq_flow_handler_t hdl = NULL;
++
++	switch (type) {
++	case IRQ_TYPE_LEVEL_HIGH:
++		s = GPIC_CFG_IC_LEVEL_HIGH;
++		name = "high";
++		hdl = handle_level_irq;
++		break;
++	case IRQ_TYPE_LEVEL_LOW:
++		s = GPIC_CFG_IC_LEVEL_LOW;
++		name = "low";
++		hdl = handle_level_irq;
++		break;
++	case IRQ_TYPE_EDGE_RISING:
++		s = GPIC_CFG_IC_EDGE_RISE;
++		name = "riseedge";
++		hdl = handle_edge_irq;
++		break;
++	case IRQ_TYPE_EDGE_FALLING:
++		s = GPIC_CFG_IC_EDGE_FALL;
++		name = "falledge";
++		hdl = handle_edge_irq;
++		break;
++	case IRQ_TYPE_EDGE_BOTH:
++		s = GPIC_CFG_IC_EDGE_BOTH;
++		name = "bothedge";
++		hdl = handle_edge_irq;
++		break;
++	case IRQ_TYPE_NONE:
++		s = GPIC_CFG_IC_OFF;
++		name = "disabled";
++		hdl = handle_level_irq;
++		break;
++	default:
++		return -EINVAL;
 +	}
 +
-+	/* link against CONFIG_MMC=m */
-+	mmc_cd = symbol_get(mmc_detect_change);
-+	if (mmc_cd) {
-+		mmc_cd(ptr, msecs_to_jiffies(500));
-+		symbol_put(mmc_detect_change);
-+	}
++	__irq_set_chip_handler_name_locked(d->irq, &au1300_gpic, hdl, name);
 +
-+	return IRQ_HANDLED;
-+}
++	au1300_gpic_chgcfg(d->irq - ALCHEMY_GPIC_INT_BASE, GPIC_CFG_IC_MASK, s);
 +
-+static int db1300_mmc_cd_setup(void *mmc_host, int en)
-+{
-+	int ret;
-+
-+	if (en) {
-+		ret = request_irq(DB1300_SD1_INSERT_INT, db1300_mmc_cd,
-+				  IRQF_DISABLED, "sd_insert", mmc_host);
-+		if (ret)
-+			goto out;
-+
-+		ret = request_irq(DB1300_SD1_EJECT_INT, db1300_mmc_cd,
-+				  IRQF_DISABLED, "sd_eject", mmc_host);
-+		if (ret) {
-+			free_irq(DB1300_SD1_INSERT_INT, mmc_host);
-+			goto out;
-+		}
-+
-+		if (bcsr_read(BCSR_SIGSTAT) & (1 << 12))
-+			enable_irq(DB1300_SD1_EJECT_INT);
-+		else
-+			enable_irq(DB1300_SD1_INSERT_INT);
-+
-+	} else {
-+		free_irq(DB1300_SD1_INSERT_INT, mmc_host);
-+		free_irq(DB1300_SD1_EJECT_INT, mmc_host);
-+	}
-+	ret = 0;
-+out:
-+	return ret;
-+}
-+
-+static int db1300_mmc_card_readonly(void *mmc_host)
-+{
-+	return !!(bcsr_read(BCSR_STATUS) & (1 << 10));
-+}
-+
-+static int db1300_mmc_card_inserted(void *mmc_host)
-+{
-+	return !!(bcsr_read(BCSR_SIGSTAT) & (1 << 12));
-+}
-+
-+static void db1300_mmcled_set(struct led_classdev *led,
-+			      enum led_brightness brightness)
-+{
-+	if (brightness != LED_OFF)
-+		bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED0, 0);
-+	else
-+		bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED0);
-+}
-+
-+static struct led_classdev db1300_mmc_led = {
-+	.brightness_set	= db1300_mmcled_set,
-+};
-+
-+struct au1xmmc_platform_data db1300_sd1_platdata = {
-+	.cd_setup	= db1300_mmc_cd_setup,
-+	.card_inserted	= db1300_mmc_card_inserted,
-+	.card_readonly	= db1300_mmc_card_readonly,
-+	.led		= &db1300_mmc_led,
-+};
-+
-+static struct resource au1300_sd1_res[] = {
-+	[0] = {
-+		.start	= AU1300_SD1_PHYS_ADDR,
-+		.end	= AU1300_SD1_PHYS_ADDR,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AU1300_SD1_INT,
-+		.end	= AU1300_SD1_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+	[2] = {
-+		.start	= DSCR_CMD0_SDMS_TX1,
-+		.end	= DSCR_CMD0_SDMS_TX1,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+	[3] = {
-+		.start	= DSCR_CMD0_SDMS_RX1,
-+		.end	= DSCR_CMD0_SDMS_RX1,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+};
-+
-+static struct platform_device db1300_sd1_dev = {
-+	.dev = {
-+		.platform_data	= &db1300_sd1_platdata,
-+	},
-+	.name		= "au1xxx-mmc",
-+	.id		= 1,
-+	.resource	= au1300_sd1_res,
-+	.num_resources	= ARRAY_SIZE(au1300_sd1_res),
-+};
-+
-+/**********************************************************************/
-+
-+static int db1300_movinand_inserted(void *mmc_host)
-+{
-+	return 1;	/* it's soldered on */
-+}
-+
-+static int db1300_movinand_readonly(void *mmc_host)
-+{
 +	return 0;
 +}
 +
-+static void db1300_movinand_led_set(struct led_classdev *led,
-+				    enum led_brightness brightness)
++static void __init alchemy_gpic_init_irq(struct gpic_devint_data *dints)
 +{
-+	if (brightness != LED_OFF)
-+		bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED1, 0);
-+	else
-+		bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED1);
-+}
++	int i;
++	void __iomem *bank_base;
 +
-+static struct led_classdev db1300_movinand_led = {
-+	.brightness_set		= db1300_movinand_led_set,
-+};
++	mips_cpu_irq_init();
 +
-+struct au1xmmc_platform_data db1300_sd0_platdata = {
-+	.card_inserted		= db1300_movinand_inserted,
-+	.card_readonly		= db1300_movinand_readonly,
-+	.led			= &db1300_movinand_led,
-+	.mask_host_caps		= MMC_CAP_NEEDS_POLL,
-+};
-+
-+static struct resource au1300_sd0_res[] = {
-+	[0] = {
-+		.start	= AU1100_SD0_PHYS_ADDR,
-+		.end	= AU1100_SD0_PHYS_ADDR,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AU1300_SD0_INT,
-+		.end	= AU1300_SD0_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+	[2] = {
-+		.start	= DSCR_CMD0_SDMS_TX0,
-+		.end	= DSCR_CMD0_SDMS_TX0,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+	[3] = {
-+		.start	= DSCR_CMD0_SDMS_RX0,
-+		.end	= DSCR_CMD0_SDMS_RX0,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+};
-+
-+static struct platform_device db1300_sd0_dev = {
-+	.dev = {
-+		.platform_data	= &db1300_sd0_platdata,
-+	},
-+	.name		= "au1xxx-mmc",
-+	.id		= 0,
-+	.resource	= au1300_sd0_res,
-+	.num_resources	= ARRAY_SIZE(au1300_sd0_res),
-+};
-+
-+/**********************************************************************/
-+
-+static struct platform_device db1300_wm9715_dev = {
-+	.name		= "wm9712-codec",
-+	.id		= 1,	/* ID of PSC with AC97 controller on it */
-+};
-+
-+/**********************************************************************/
-+
-+static struct resource au1300_lcd_resources[] = {
-+	[0] = {
-+		.start          = AU1200_LCD_PHYS_ADDR,
-+		.end            = AU1200_LCD_PHYS_ADDR + 0x800 - 1,
-+		.flags          = IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start          = AU1300_LCD_INT,
-+		.end            = AU1300_LCD_INT,
-+		.flags          = IORESOURCE_IRQ,
++	/* disable & ack all possible on-chip sources */
++	for (i = 0; i < 4; i++) {
++		bank_base = AU1300_GPIC_ADDR + (i * 4);
++		__raw_writel(~0UL, bank_base + AU1300_GPIC_IDIS);
++		wmb();
++		__raw_writel(~0UL, bank_base + AU1300_GPIC_IPEND);
++		wmb();
 +	}
-+};
 +
-+static u64 au1300_lcd_dmamask = DMA_BIT_MASK(32);
++	/* register all possible irq sources, with 2nd highest priority */
++	bank_base = AU1300_GPIC_ADDR + AU1300_GPIC_PINCFG;
++	for (i = ALCHEMY_GPIC_INT_BASE; i <= ALCHEMY_GPIC_INT_LAST; i++) {
++		au1300_set_irq_priority(i, 1);
++		au1300_gpic_settype(irq_get_irq_data(i), IRQ_TYPE_NONE);
++	}
 +
-+static struct platform_device db1300_lcd_dev = {
-+	.name           = "au1200-lcd",
-+	.id             = -1,
-+	.dev = {
-+		.dma_mask               = &au1300_lcd_dmamask,
-+		.coherent_dma_mask      = DMA_BIT_MASK(32),
-+	},
-+	.num_resources  = ARRAY_SIZE(au1300_lcd_resources),
-+	.resource       = au1300_lcd_resources,
++	/* setup known on-chip sources */
++	while ((i = dints->irq) != -1) {
++		au1300_gpic_settype(irq_get_irq_data(i), dints->type);
++		au1300_set_irq_priority(i, dints->prio);
++
++		if (dints->internal)
++			au1300_pinfunc_to_dev(i - ALCHEMY_GPIC_INT_BASE);
++
++		dints++;
++	}
++
++	set_c0_status(IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3);
++}
++
++static unsigned long alchemy_gpic_pmdata[128 + 6]; /* pincfg, enable regs */
++
++static int alchemy_gpic_suspend(void)
++{
++	void __iomem *base = (void __iomem *)KSEG1ADDR(AU1300_GPIC_PHYS_ADDR);
++	int i;
++
++	/* save 4 interrupt mask status registers */
++	alchemy_gpic_pmdata[0] = __raw_readl(base + AU1300_GPIC_IEN + 0x0);
++	alchemy_gpic_pmdata[1] = __raw_readl(base + AU1300_GPIC_IEN + 0x4);
++	alchemy_gpic_pmdata[2] = __raw_readl(base + AU1300_GPIC_IEN + 0x8);
++	alchemy_gpic_pmdata[3] = __raw_readl(base + AU1300_GPIC_IEN + 0xc);
++
++	/* misc */
++	alchemy_gpic_pmdata[4] = __raw_readl(base + AU1300_GPIC_DMASEL);
++
++	/* molto silenzioso */
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0x0);
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0x4);
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0x8);
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0xc);
++	wmb();
++
++	/* save pin configuration */
++	base += AU1300_GPIC_PINCFG;
++	for (i = 0; i < 128; i++)
++		alchemy_gpic_pmdata[i + 5] = __raw_readl(base + (i << 2));
++
++	wmb();
++
++	return 0;
++}
++
++static void alchemy_gpic_resume(void)
++{
++	void __iomem *base = (void __iomem *)KSEG1ADDR(AU1300_GPIC_PHYS_ADDR);
++	int i;
++
++	/* mask all off first */
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0x0);
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0x4);
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0x8);
++	__raw_writel(~0UL, base + AU1300_GPIC_IDIS + 0xc);
++	wmb();
++
++	/* restore pin configurations */
++	base += AU1300_GPIC_PINCFG;
++	for (i = 0; i < 128; i++)
++		__raw_writel(alchemy_gpic_pmdata[i + 5], base + (i << 2));
++	wmb();
++
++	/* misc */
++	base = (void __iomem *)KSEG1ADDR(AU1300_GPIC_PHYS_ADDR);
++	__raw_writel(alchemy_gpic_pmdata[4], base + AU1300_GPIC_DMASEL);
++	wmb();
++
++	/* restore masks */
++	__raw_writel(alchemy_gpic_pmdata[0], base + AU1300_GPIC_IEN + 0x0);
++	__raw_writel(alchemy_gpic_pmdata[1], base + AU1300_GPIC_IEN + 0x4);
++	__raw_writel(alchemy_gpic_pmdata[2], base + AU1300_GPIC_IEN + 0x8);
++	__raw_writel(alchemy_gpic_pmdata[3], base + AU1300_GPIC_IEN + 0xc);
++	wmb();
++}
++
++static struct syscore_ops alchemy_gpic_pmops = {
++	.suspend	= alchemy_gpic_suspend,
++	.resume		= alchemy_gpic_resume,
 +};
 +
 +/**********************************************************************/
 +
-+static struct platform_device *db1300_dev[] __initdata = {
-+	&db1300_eth_dev,
-+	&db1300_i2c_dev,
-+	&db1300_5waysw_dev,
-+	&db1300_rtc_dev,
-+	&db1300_nand_dev,
-+	&db1300_ide_dev,
-+	&db1300_sd0_dev,
-+	&db1300_sd1_dev,
-+	&db1300_lcd_dev,
-+	&db1300_ac97_dev,
-+	&db1300_i2s_dev,
-+	&db1300_wm9715_dev,
-+};
-+
-+static int __init db1300_device_init(void)
++void __init arch_init_irq(void)
 +{
-+	int swapped;
-+
-+	prom_get_ethernet_addr(&db1300_eth_config.mac[0]);
-+
-+	i2c_register_board_info(0, db1300_i2c_devs,
-+				ARRAY_SIZE(db1300_i2c_devs));
-+
-+	/* Audio PSC clock is supplied by codecs (PSC1, 2) */
-+	__raw_writel(PSC_SEL_CLK_SERCLK,
-+		(void __iomem *)KSEG1ADDR(AU1300_PSC1_PHYS_ADDR) + PSC_SEL_OFFSET);
-+	wmb();
-+	__raw_writel(PSC_SEL_CLK_SERCLK,
-+		(void __iomem *)KSEG1ADDR(AU1300_PSC2_PHYS_ADDR) + PSC_SEL_OFFSET);
-+	wmb();
-+	/* I2C uses internal 48MHz EXTCLK1 */
-+	__raw_writel(PSC_SEL_CLK_INTCLK,
-+		(void __iomem *)KSEG1ADDR(AU1300_PSC3_PHYS_ADDR) + PSC_SEL_OFFSET);
-+	wmb();
-+
-+	/* enable power to USB ports */
-+	bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_USBHPWR | BCSR_RESETS_OTGPWR);
-+
-+	/* although it is socket #0, it uses the bits which previous boards have
-+	 * used for socket #1.
-+	 */
-+	db1x_register_pcmcia_socket(
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x00400000 - 1,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x00400000 - 1,
-+		AU1000_PCMCIA_IO_PHYS_ADDR,
-+		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x00010000 - 1,
-+		DB1300_CF_INT, DB1300_CF_INSERT_INT, 0, DB1300_CF_EJECT_INT, 1);
-+
-+	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1200_SWAPBOOT;
-+	db1x_register_norflash(64 * 1024 * 1024, 2, swapped);
-+
-+	return platform_add_devices(db1300_dev, ARRAY_SIZE(db1300_dev));
-+}
-+device_initcall(db1300_device_init);
-+
-+/* au1200fb calls these: STERBT EINEN TRAGISCHEN TOD!!! */
-+int board_au1200fb_panel(void)
-+{
-+	return 9;	/* DB1300_800x480 */
++	switch (alchemy_get_cputype()) {
++	case ALCHEMY_CPU_AU1300:
++		alchemy_gpic_init_irq(&au1300_devints[0]);
++		register_syscore_ops(&alchemy_gpic_pmops);
++		break;
++	}
 +}
 +
-+int board_au1200fb_panel_init(void)
++void plat_irq_dispatch(void)
 +{
-+	/* Apply power (Vee/Vdd logic is inverted on Panel 9) */
-+	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD,
-+			     BCSR_BOARD_LCDBL);
-+	return 0;
-+}
++	unsigned long c = read_c0_cause(), s = read_c0_status();
++	int i;
 +
-+int board_au1200fb_panel_shutdown(void)
-+{
-+	/* Remove power (Vee/Vdd logic is inverted on Panel 9) */
-+	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDBL,
-+			     BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD);
-+	return 0;
++	DBG("M %08lx  S %08lx\n", c, s);
++	c &= s;
++
++	if (c & CAUSEF_IP7)		/* c0 timer */
++		i = MIPS_CPU_IRQ_BASE + 7 - ALCHEMY_GPIC_INT_BASE;
++	else if (c & (CAUSEF_IP2 | CAUSEF_IP3 | CAUSEF_IP4 | CAUSEF_IP5)) {
++		i = __raw_readl(AU1300_GPIC_ADDR + AU1300_GPIC_PRIENC);
++		DBG("I %d\n", i);
++		if (unlikely(i == 127))
++			goto spurious;
++	} else
++		goto spurious;
++
++	do_IRQ(i + ALCHEMY_GPIC_INT_BASE);
++	return;
++spurious:
++	spurious_interrupt();
 +}
-diff --git a/arch/mips/alchemy/devboards/db1300/setup.c b/arch/mips/alchemy/devboards/db1300/setup.c
+diff --git a/arch/mips/alchemy/common/gpiolib-au1300.c b/arch/mips/alchemy/common/gpiolib-au1300.c
 new file mode 100644
-index 0000000..769cb6d
+index 0000000..661cc6f
 --- /dev/null
-+++ b/arch/mips/alchemy/devboards/db1300/setup.c
-@@ -0,0 +1,245 @@
++++ b/arch/mips/alchemy/common/gpiolib-au1300.c
+@@ -0,0 +1,54 @@
 +/*
-+ * DB1300 board setup
-+ *
-+ * Copyright (c) 2009 Manuel Lauss <manuel.lauss@googlemail.com>
++ * Au1300-style GPIO/INT Controller GPIOLIB support
 + */
 +
 +#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/pm.h>
-+#include <linux/spinlock.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/gpio.h>
 +
-+#include <asm/barrier.h>
-+#include <asm/io.h>
-+#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-au1x00/au1xxx_psc.h>
 +#include <asm/mach-au1x00/gpio-au1300.h>
-+#include <asm/mach-db1x00/bcsr.h>
-+#include <asm/mach-db1x00/db1300.h>
 +
-+/* multifunction pins to assign to GPIO controller */
-+static int db1300_gpio_pins[] __initdata = {
-+	AU1300_PIN_LCDPWM0, AU1300_PIN_PSC2SYNC1, AU1300_PIN_WAKE1,
-+	AU1300_PIN_WAKE2, AU1300_PIN_WAKE3, AU1300_PIN_FG3AUX,
-+	AU1300_PIN_EXTCLK1,
++static int _gpic_get(struct gpio_chip *chip, unsigned int off)
++{
++	return au1300_gpio_get_value(off + AU1300_GPIO_BASE);
++}
 +
-+	-1,	/* terminator */
++static void _gpic_set(struct gpio_chip *chip, unsigned int off, int v)
++{
++	au1300_gpio_set_value(off + AU1300_GPIO_BASE, v);
++}
++
++static int _gpic_direction_input(struct gpio_chip *chip, unsigned int off)
++{
++	return au1300_gpio_direction_input(off + AU1300_GPIO_BASE);
++}
++
++static int _gpic_direction_output(struct gpio_chip *chip, unsigned int off,
++				   int v)
++{
++	return au1300_gpio_direction_output(off + AU1300_GPIO_BASE, v);
++}
++
++static int _gpic_gpio_to_irq(struct gpio_chip *chip, unsigned int off)
++{
++	return au1300_gpio_to_irq(off + AU1300_GPIO_BASE);
++}
++
++static struct gpio_chip au1300_gpiochip = {
++	.label			= "au1300",
++	.direction_input	= _gpic_direction_input,
++	.direction_output	= _gpic_direction_output,
++	.get			= _gpic_get,
++	.set			= _gpic_set,
++	.to_irq			= _gpic_gpio_to_irq,
++	.base			= AU1300_GPIO_BASE,
++	.ngpio			= AU1300_GPIO_NUM,
 +};
 +
-+/* multifunction pins to assign to device functions */
-+static int db1300_dev_pins[] __initdata = {
++static int __init au1300_gpiochip_init(void)
++{
++	return gpiochip_add(&au1300_gpiochip);
++}
++arch_initcall(au1300_gpiochip_init);
+diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
+index a5b37b3..932f697 100644
+--- a/arch/mips/alchemy/common/platform.c
++++ b/arch/mips/alchemy/common/platform.c
+@@ -82,6 +82,12 @@ static struct plat_serial8250_port au1x00_uart_data[][4] __initdata = {
+ 		PORT(AU1000_UART0_PHYS_ADDR, AU1200_UART0_INT),
+ 		PORT(AU1000_UART1_PHYS_ADDR, AU1200_UART1_INT),
+ 	},
++	[ALCHEMY_CPU_AU1300] = {
++		PORT(AU1300_UART0_PHYS_ADDR, AU1300_UART0_INT),
++		PORT(AU1300_UART1_PHYS_ADDR, AU1300_UART1_INT),
++		PORT(AU1300_UART2_PHYS_ADDR, AU1300_UART2_INT),
++		PORT(AU1300_UART3_PHYS_ADDR, AU1300_UART3_INT),
++	},
+ };
+ 
+ static struct platform_device au1xx0_uart_device = {
+@@ -122,10 +128,12 @@ static unsigned long alchemy_ohci_data[][2] __initdata = {
+ 	[ALCHEMY_CPU_AU1100] = { AU1000_USB_OHCI_PHYS_ADDR, AU1100_USB_HOST_INT },
+ 	[ALCHEMY_CPU_AU1550] = { AU1550_USB_OHCI_PHYS_ADDR, AU1550_USB_HOST_INT },
+ 	[ALCHEMY_CPU_AU1200] = { AU1200_USB_OHCI_PHYS_ADDR, AU1200_USB_INT },
++	[ALCHEMY_CPU_AU1300] = { AU1300_USB_OHCI0_PHYS_ADDR, AU1300_USB_INT },
+ };
+ 
+ static unsigned long alchemy_ehci_data[][2] __initdata = {
+ 	[ALCHEMY_CPU_AU1200] = { AU1200_USB_EHCI_PHYS_ADDR, AU1200_USB_INT },
++	[ALCHEMY_CPU_AU1300] = { AU1300_USB_EHCI_PHYS_ADDR, AU1300_USB_INT },
+ };
+ 
+ static int __init _new_usbres(struct resource **r, struct platform_device **d)
+@@ -169,8 +177,8 @@ static void __init alchemy_setup_usb(int ctype)
+ 		printk(KERN_INFO "Alchemy USB: cannot add OHCI0\n");
+ 
+ 
+-	/* setup EHCI0: Au1200 */
+-	if (ctype == ALCHEMY_CPU_AU1200) {
++	/* setup EHCI0: Au1200/Au1300 */
++	if ((ctype == ALCHEMY_CPU_AU1200) || (ctype == ALCHEMY_CPU_AU1300)) {
+ 		if (_new_usbres(&res, &pdev))
+ 			return;
+ 
+@@ -187,6 +195,25 @@ static void __init alchemy_setup_usb(int ctype)
+ 		if (platform_device_register(pdev))
+ 			printk(KERN_INFO "Alchemy USB: cannot add EHCI0\n");
+ 	}
++
++	/* Au1300: OHCI1 */
++	if (ctype == ALCHEMY_CPU_AU1300) {
++		if (_new_usbres(&res, &pdev))
++			return;
++
++		res[0].start = AU1300_USB_OHCI1_PHYS_ADDR;
++		res[0].end = res[0].start + 0x100 - 1;
++		res[0].flags = IORESOURCE_MEM;
++		res[1].start = AU1300_USB_INT;
++		res[1].end = res[1].start;
++		res[1].flags = IORESOURCE_IRQ;
++		pdev->name = "au1xxx-ohci";
++		pdev->id = 1;
++		pdev->dev.dma_mask = &alchemy_ohci_dmamask;
++
++		if (platform_device_register(pdev))
++			printk(KERN_INFO "Alchemy USB: cannot add OHCI1\n");
++	}
+ }
+ 
+ /*** AU1100 LCD controller ***/
+diff --git a/arch/mips/alchemy/common/power.c b/arch/mips/alchemy/common/power.c
+index f1244f05..302b1ff 100644
+--- a/arch/mips/alchemy/common/power.c
++++ b/arch/mips/alchemy/common/power.c
+@@ -123,6 +123,8 @@ void au_sleep(void)
+ 			alchemy_sleep_au1000();
+ 		else if (cpuid <= ALCHEMY_CPU_AU1200)
+ 			alchemy_sleep_au1550();
++		else if (cpuid <= ALCHEMY_CPU_AU1300)
++			alchemy_sleep_au1300();
+ 		restore_core_regs();
+ 	}
+ }
+diff --git a/arch/mips/alchemy/common/sleeper.S b/arch/mips/alchemy/common/sleeper.S
+index 77f3c74..c7bcc7e 100644
+--- a/arch/mips/alchemy/common/sleeper.S
++++ b/arch/mips/alchemy/common/sleeper.S
+@@ -153,6 +153,79 @@ LEAF(alchemy_sleep_au1550)
+ 
+ END(alchemy_sleep_au1550)
+ 
++/* sleepcode for Au1300 memory controller type */
++LEAF(alchemy_sleep_au1300)
++
++	SETUP_SLEEP
++
++	/* cache following instructions, as memory gets put to sleep */
++	la	t0, 2f
++	la	t1, 4f
++	subu	t2, t1, t0
++
++	.set	mips3
++
++1:	cache	0x14, 0(t0)
++	subu	t2, t2, 32
++	bgez	t2, 1b
++	 addu	t0, t0, 32
++
++	.set	mips0
++
++2:	lui	a0, 0xb400		/* mem_xxx */
++
++	/* disable all ports in mem_sdportcfga */
++	sw	zero, 0x868(a0)		/* mem_sdportcfga */
++	sync
++
++	/* disable ODT */
++	li	t0, 0x03010000
++	sw	t0, 0x08d8(a0)		/* mem_sdcmd0 */
++	sw	t0, 0x08dc(a0)		/* mem_sdcmd1 */
++	sync
++
++	/* precharge */
++	li	t0, 0x23000400
++	sw	t0, 0x08dc(a0)		/* mem_sdcmd1 */
++	sw	t0, 0x08d8(a0)		/* mem_sdcmd0 */
++	sync
++
++	/* auto refresh */
++	sw	zero, 0x08c8(a0)	/* mem_sdautoref */
++	sync
++
++	/* block access to the DDR */
++	lw	t0, 0x0848(a0)		/* mem_sdconfigb */
++	li	t1, (1 << 7 | 0x3F)
++	or	t0, t0, t1
++	sw	t0, 0x0848(a0)		/* mem_sdconfigb */
++	sync
++
++	/* issue the Self Refresh command */
++	li	t0, 0x10000000
++	sw	t0, 0x08dc(a0)		/* mem_sdcmd1 */
++	sw	t0, 0x08d8(a0)		/* mem_sdcmd0 */
++	sync
++
++	/* wait for sdram to enter self-refresh mode */
++	lui	t0, 0x0300
++3:	lw	t1, 0x0850(a0)		/* mem_sdstat */
++	and	t2, t1, t0
++	bne	t2, t0, 3b
++	 nop
++
++	/* disable SDRAM clocks */
++	li	t0, ~(3<<28)
++	lw	t1, 0x0840(a0)		/* mem_sdconfiga */
++	and	t1, t1, t0		/* clear CE[1:0] */
++	sw	t1, 0x0840(a0)		/* mem_sdconfiga */
++	sync
++
++	DO_SLEEP
++4:
++
++END(alchemy_sleep_au1300)
++
+ 
+ 	/* This is where we return upon wakeup.
+ 	 * Reload all of the registers and return.
+diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
+index d5da6ad..a594a85 100644
+--- a/arch/mips/alchemy/common/time.c
++++ b/arch/mips/alchemy/common/time.c
+@@ -178,6 +178,7 @@ static int alchemy_m2inttab[] __initdata = {
+ 	AU1100_RTC_MATCH2_INT,
+ 	AU1550_RTC_MATCH2_INT,
+ 	AU1200_RTC_MATCH2_INT,
++	AU1300_RTC_MATCH2_INT,
+ };
+ 
+ void __init plat_time_init(void)
+diff --git a/arch/mips/alchemy/common/usb.c b/arch/mips/alchemy/common/usb.c
+index e8ee533..a31ec85 100644
+--- a/arch/mips/alchemy/common/usb.c
++++ b/arch/mips/alchemy/common/usb.c
+@@ -52,9 +52,265 @@
+ 				 USBCFG_EBE | USBCFG_EME | USBCFG_OBE |	       \
+ 				 USBCFG_OME)
+ 
++/* Au1300 USB config registers */
++#define USB_DWC_CTRL1		0x00
++#define USB_DWC_CTRL2		0x04
++#define USB_VBUS_TIMER		0x10
++#define USB_SBUS_CTRL		0x14
++#define USB_MSR_ERR		0x18
++#define USB_DWC_CTRL3		0x1C
++#define USB_DWC_CTRL4		0x20
++#define USB_OTG_STATUS		0x28
++#define USB_DWC_CTRL5		0x2C
++#define USB_DWC_CTRL6		0x30
++#define USB_DWC_CTRL7		0x34
++#define USB_PHY_STATUS		0xC0
++#define USB_INT_STATUS		0xC4
++#define USB_INT_ENABLE		0xC8
++
++#define USB_DWC_CTRL1_OTGD	0x04 /* set to DISable OTG */
++#define USB_DWC_CTRL1_HSTRS	0x02 /* set to ENable EHCI */
++#define USB_DWC_CTRL1_DCRS	0x01 /* set to ENable UDC */
++
++#define USB_DWC_CTRL2_PHY1RS	0x04 /* set to enable PHY1 */
++#define USB_DWC_CTRL2_PHY0RS	0x02 /* set to enable PHY0 */
++#define USB_DWC_CTRL2_PHYRS	0x01 /* set to enable PHY */
++
++#define USB_DWC_CTRL3_OHCI1_CKEN	(1 << 19)
++#define USB_DWC_CTRL3_OHCI0_CKEN	(1 << 18)
++#define USB_DWC_CTRL3_EHCI0_CKEN	(1 << 17)
++#define USB_DWC_CTRL3_OTG0_CKEN		(1 << 16)
++
++#define USB_SBUS_CTRL_SBCA		0x04 /* coherent access */
++
++#define USB_INTEN_FORCE			0x20
++#define USB_INTEN_PHY			0x10
++#define USB_INTEN_UDC			0x08
++#define USB_INTEN_EHCI			0x04
++#define USB_INTEN_OHCI1			0x02
++#define USB_INTEN_OHCI0			0x01
+ 
+ static DEFINE_SPINLOCK(alchemy_usb_lock);
+ 
++static inline void __au1300_usb_phyctl(void __iomem *base, int enable)
++{
++	unsigned long r, s;
++
++	r = __raw_readl(base + USB_DWC_CTRL2);
++	s = __raw_readl(base + USB_DWC_CTRL3);
++
++	s &= USB_DWC_CTRL3_OHCI1_CKEN | USB_DWC_CTRL3_OHCI0_CKEN |
++		USB_DWC_CTRL3_EHCI0_CKEN | USB_DWC_CTRL3_OTG0_CKEN;
++
++	if (enable) {
++		/* simply enable all PHYs */
++		r |= USB_DWC_CTRL2_PHY1RS | USB_DWC_CTRL2_PHY0RS |
++		     USB_DWC_CTRL2_PHYRS;
++		__raw_writel(r, base + USB_DWC_CTRL2);
++		wmb();
++	} else if (!s) {
++		/* no USB block active, do disable all PHYs */
++		r &= ~(USB_DWC_CTRL2_PHY1RS | USB_DWC_CTRL2_PHY0RS |
++		       USB_DWC_CTRL2_PHYRS);
++		__raw_writel(r, base + USB_DWC_CTRL2);
++		wmb();
++	}
++}
++
++static inline void __au1300_ohci_control(void __iomem *base, int enable, int id)
++{
++	unsigned long r;
++
++	if (enable) {
++		__raw_writel(1, base + USB_DWC_CTRL7);  /* start OHCI clock */
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL3);	/* enable OHCI block */
++		r |= (id == 0) ? USB_DWC_CTRL3_OHCI0_CKEN
++			       : USB_DWC_CTRL3_OHCI1_CKEN;
++		__raw_writel(r, base + USB_DWC_CTRL3);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);	/* power up the PHYs */
++
++		r = __raw_readl(base + USB_INT_ENABLE);
++		r |= (id == 0) ? USB_INTEN_OHCI0 : USB_INTEN_OHCI1;
++		__raw_writel(r, base + USB_INT_ENABLE);
++		wmb();
++
++		/* reset the OHCI start clock bit */
++		__raw_writel(0, base + USB_DWC_CTRL7);
++		wmb();
++	} else {
++		r = __raw_readl(base + USB_INT_ENABLE);
++		r &= ~((id == 0) ? USB_INTEN_OHCI0 : USB_INTEN_OHCI1);
++		__raw_writel(r, base + USB_INT_ENABLE);
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL3);
++		r &= ~((id == 0) ? USB_DWC_CTRL3_OHCI0_CKEN
++				 : USB_DWC_CTRL3_OHCI1_CKEN);
++		__raw_writel(r, base + USB_DWC_CTRL3);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);
++	}
++}
++
++static inline void __au1300_ehci_control(void __iomem *base, int enable)
++{
++	unsigned long r;
++
++	if (enable) {
++		r = __raw_readl(base + USB_DWC_CTRL3);
++		r |= USB_DWC_CTRL3_EHCI0_CKEN;
++		__raw_writel(r, base + USB_DWC_CTRL3);
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL1);
++		r |= USB_DWC_CTRL1_HSTRS;
++		__raw_writel(r, base + USB_DWC_CTRL1);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);
++
++		r = __raw_readl(base + USB_INT_ENABLE);
++		r |= USB_INTEN_EHCI;
++		__raw_writel(r, base + USB_INT_ENABLE);
++		wmb();
++	} else {
++		r = __raw_readl(base + USB_INT_ENABLE);
++		r &= ~USB_INTEN_EHCI;
++		__raw_writel(r, base + USB_INT_ENABLE);
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL1);
++		r &= ~USB_DWC_CTRL1_HSTRS;
++		__raw_writel(r, base + USB_DWC_CTRL1);
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL3);
++		r &= ~USB_DWC_CTRL3_EHCI0_CKEN;
++		__raw_writel(r, base + USB_DWC_CTRL3);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);
++	}
++}
++
++static inline void __au1300_udc_control(void __iomem *base, int enable)
++{
++	unsigned long r;
++
++	if (enable) {
++		r = __raw_readl(base + USB_DWC_CTRL1);
++		r |= USB_DWC_CTRL1_DCRS;
++		__raw_writel(r, base + USB_DWC_CTRL1);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);
++
++		r = __raw_readl(base + USB_INT_ENABLE);
++		r |= USB_INTEN_UDC;
++		__raw_writel(r, base + USB_INT_ENABLE);
++		wmb();
++	} else {
++		r = __raw_readl(base + USB_INT_ENABLE);
++		r &= ~USB_INTEN_UDC;
++		__raw_writel(r, base + USB_INT_ENABLE);
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL1);
++		r &= ~USB_DWC_CTRL1_DCRS;
++		__raw_writel(r, base + USB_DWC_CTRL1);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);
++	}
++}
++
++static inline void __au1300_otg_control(void __iomem *base, int enable)
++{
++	unsigned long r;
++	if (enable) {
++		r = __raw_readl(base + USB_DWC_CTRL3);
++		r |= USB_DWC_CTRL3_OTG0_CKEN;
++		__raw_writel(r, base + USB_DWC_CTRL3);
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL1);
++		r &= ~USB_DWC_CTRL1_OTGD;
++		__raw_writel(r, base + USB_DWC_CTRL1);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);
++	} else {
++		r = __raw_readl(base + USB_DWC_CTRL1);
++		r |= USB_DWC_CTRL1_OTGD;
++		__raw_writel(r, base + USB_DWC_CTRL1);
++		wmb();
++
++		r = __raw_readl(base + USB_DWC_CTRL3);
++		r &= ~USB_DWC_CTRL3_OTG0_CKEN;
++		__raw_writel(r, base + USB_DWC_CTRL3);
++		wmb();
++
++		__au1300_usb_phyctl(base, enable);
++	}
++}
++
++static inline int au1300_usb_control(int block, int enable)
++{
++	void __iomem *base =
++		(void __iomem *)KSEG1ADDR(AU1300_USB_CTL_PHYS_ADDR);
++	unsigned long flags, ret = 0;
++
++	spin_lock_irqsave(&alchemy_usb_lock, flags);
++	switch (block) {
++	case ALCHEMY_USB_OHCI0:
++		__au1300_ohci_control(base, enable, 0);
++		break;
++	case ALCHEMY_USB_OHCI1:
++		__au1300_ohci_control(base, enable, 1);
++		break;
++	case ALCHEMY_USB_EHCI0:
++		__au1300_ehci_control(base, enable);
++		break;
++	case ALCHEMY_USB_UDC0:
++		__au1300_udc_control(base, enable);
++		break;
++	case ALCHEMY_USB_OTG0:
++		__au1300_otg_control(base, enable);
++		break;
++	default:
++		ret = -ENODEV;
++	}
++	spin_unlock_irqrestore(&alchemy_usb_lock, flags);
++	return ret;
++}
++
++static inline void au1300_usb_init(void)
++{
++	void __iomem *base =
++		(void __iomem *)KSEG1ADDR(AU1300_USB_CTL_PHYS_ADDR);
++
++	/* set some sane defaults.  Note: we don't fiddle with DWC_CTRL4
++	 * here at all: Port 2 routing (EHCI or UDC) must be set either
++	 * by boot firmware or platform init code; I can't autodetect
++	 * a sane setting.
++	 */
++	__raw_writel(0, base + USB_INT_ENABLE); /* disable all USB irqs */
++	wmb();
++	__raw_writel(0, base + USB_DWC_CTRL3); /* disable all clocks */
++	wmb();
++	__raw_writel(~0, base + USB_MSR_ERR); /* clear all errors */
++	wmb();
++	__raw_writel(~0, base + USB_INT_STATUS); /* clear int status */
++	wmb();
++	/* set coherent access bit */
++	__raw_writel(USB_SBUS_CTRL_SBCA, base + USB_SBUS_CTRL);
++	wmb();
++}
+ 
+ static inline void __au1200_ohci_control(void __iomem *base, int enable)
+ {
+@@ -230,6 +486,8 @@ int alchemy_usb_control(int block, int enable)
+ 				AU1550_USB_OHCI_PHYS_ADDR, AU1550_OHCICFG);
+ 	case ALCHEMY_CPU_AU1200:
+ 		return au1200_usb_control(block, enable);
++	case ALCHEMY_CPU_AU1300:
++		return au1300_usb_control(block, enable);
+ 	}
+ 	return -ENODEV;
+ }
+@@ -275,6 +533,20 @@ static void au1200_usb_pm(int susp)
+ 	}
+ }
+ 
++static void au1300_usb_pm(int susp)
++{
++	void __iomem *base =
++			(void __iomem *)KSEG1ADDR(AU1300_USB_CTL_PHYS_ADDR);
++	/* remember Port2 routing */
++	if (susp) {
++		alchemy_usb_pmdata[0] = __raw_readl(base + USB_DWC_CTRL4);
++	} else {
++		au1300_usb_init();
++		__raw_writel(alchemy_usb_pmdata[0], base + USB_DWC_CTRL4);
++		wmb();
++	}
++}
++
+ static void alchemy_usb_pm(int susp)
+ {
+ 	switch (alchemy_get_cputype()) {
+@@ -289,6 +561,9 @@ static void alchemy_usb_pm(int susp)
+ 	case ALCHEMY_CPU_AU1200:
+ 		au1200_usb_pm(susp);
+ 		break;
++	case ALCHEMY_CPU_AU1300:
++		au1300_usb_pm(susp);
++		break;
+ 	}
+ }
+ 
+@@ -322,6 +597,9 @@ static int __init alchemy_usb_init(void)
+ 	case ALCHEMY_CPU_AU1200:
+ 		au1200_usb_init();
+ 		break;
++	case ALCHEMY_CPU_AU1300:
++		au1300_usb_init();
++		break;
+ 	}
+ 
+ 	register_syscore_ops(&alchemy_usb_pm_ops);
+diff --git a/arch/mips/alchemy/common/vss.c b/arch/mips/alchemy/common/vss.c
+new file mode 100644
+index 0000000..d23b144
+--- /dev/null
++++ b/arch/mips/alchemy/common/vss.c
+@@ -0,0 +1,84 @@
++/*
++ * Au1300 media block power gating (VSS)
++ *
++ * This is a stop-gap solution until I have the clock framework integration
++ * ready. This stuff here really must be handled transparently when clocks
++ * for various media blocks are enabled/disabled.
++ */
++
++#include <linux/module.h>
++#include <linux/spinlock.h>
++#include <asm/mach-au1x00/au1000.h>
++
++#define VSS_GATE	0x00	/* gate wait timers */
++#define VSS_CLKRST	0x04	/* clock/block control */
++#define VSS_FTR		0x08	/* footers */
++
++#define VSS_ADDR(blk)	(KSEG1ADDR(AU1300_VSS_PHYS_ADDR) + (blk * 0x0c))
++
++static DEFINE_SPINLOCK(au1300_vss_lock);
++
++/* enable a block as outlined in the databook */
++static inline void __enable_block(int block)
++{
++	void __iomem *base = (void __iomem *)VSS_ADDR(block);
++
++	__raw_writel(3, base + VSS_CLKRST);	/* enable clock, assert reset */
++	wmb();
++
++	__raw_writel(0x01fffffe, base + VSS_GATE); /* maximum setup time */
++	wmb();
++
++	/* enable footers in sequence */
++	__raw_writel(0x01, base + VSS_FTR);
++	wmb();
++	__raw_writel(0x03, base + VSS_FTR);
++	wmb();
++	__raw_writel(0x07, base + VSS_FTR);
++	wmb();
++	__raw_writel(0x0f, base + VSS_FTR);
++	wmb();
++
++	__raw_writel(0x01ffffff, base + VSS_GATE); /* start FSM too */
++	wmb();
++
++	__raw_writel(2, base + VSS_CLKRST);	/* deassert reset */
++	wmb();
++
++	__raw_writel(0x1f, base + VSS_FTR);	/* enable isolation cells */
++	wmb();
++}
++
++/* disable a block as outlined in the databook */
++static inline void __disable_block(int block)
++{
++	void __iomem *base = (void __iomem *)VSS_ADDR(block);
++
++	__raw_writel(0x0f, base + VSS_FTR);	/* disable isolation cells */
++	wmb();
++	__raw_writel(0, base + VSS_GATE);	/* disable FSM */
++	wmb();
++	__raw_writel(3, base + VSS_CLKRST);	/* assert reset */
++	wmb();
++	__raw_writel(1, base + VSS_CLKRST);	/* disable clock */
++	wmb();
++	__raw_writel(0, base + VSS_FTR);	/* disable all footers */
++	wmb();
++}
++
++void au1300_vss_block_control(int block, int enable)
++{
++	unsigned long flags;
++
++	if (alchemy_get_cputype() != ALCHEMY_CPU_AU1300)
++		return;
++
++	/* only one block at a time */
++	spin_lock_irqsave(&au1300_vss_lock, flags);
++	if (enable)
++		__enable_block(block);
++	else
++		__disable_block(block);
++	spin_unlock_irqrestore(&au1300_vss_lock, flags);
++}
++EXPORT_SYMBOL_GPL(au1300_vss_block_control);
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 5f95a4b..bb9a470 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -166,6 +166,7 @@
+ #define PRID_IMP_NETLOGIC_XLS412B	0x4c00
+ #define PRID_IMP_NETLOGIC_XLS408B	0x4e00
+ #define PRID_IMP_NETLOGIC_XLS404B	0x4f00
++#define PRID_IMP_NETLOGIC_AU13XX	0x8000
+ 
+ /*
+  * Definitions for 7:0 on legacy processors
+diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
+index bcf3d1e..8adf205 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1000.h
++++ b/arch/mips/include/asm/mach-au1x00/au1000.h
+@@ -136,6 +136,7 @@ static inline int au1xxx_cpu_needs_config_od(void)
+ #define ALCHEMY_CPU_AU1100	2
+ #define ALCHEMY_CPU_AU1550	3
+ #define ALCHEMY_CPU_AU1200	4
++#define ALCHEMY_CPU_AU1300	5
+ 
+ static inline int alchemy_get_cputype(void)
+ {
+@@ -156,6 +157,9 @@ static inline int alchemy_get_cputype(void)
+ 	case 0x05030000:
+ 		return ALCHEMY_CPU_AU1200;
+ 		break;
++	case 0x800c0000:
++		return ALCHEMY_CPU_AU1300;
++		break;
+ 	}
+ 
+ 	return ALCHEMY_CPU_UNKNOWN;
+@@ -166,6 +170,7 @@ static inline int alchemy_get_uarts(int type)
+ {
+ 	switch (type) {
+ 	case ALCHEMY_CPU_AU1000:
++	case ALCHEMY_CPU_AU1300:
+ 		return 4;
+ 	case ALCHEMY_CPU_AU1500:
+ 	case ALCHEMY_CPU_AU1200:
+@@ -243,6 +248,7 @@ extern unsigned long au1xxx_calc_clock(void);
+ /* PM: arch/mips/alchemy/common/sleeper.S, power.c, irq.c */
+ void alchemy_sleep_au1000(void);
+ void alchemy_sleep_au1550(void);
++void alchemy_sleep_au1300(void);
+ void au_sleep(void);
+ 
+ /* USB: arch/mips/alchemy/common/usb.c */
+@@ -251,18 +257,96 @@ enum alchemy_usb_block {
+ 	ALCHEMY_USB_UDC0,
+ 	ALCHEMY_USB_EHCI0,
+ 	ALCHEMY_USB_OTG0,
++	ALCHEMY_USB_OHCI1,	/* au1300 */
+ };
+ int alchemy_usb_control(int block, int enable);
+ 
+ 
+-/* SOC Interrupt numbers */
++/* Multifunction pins: Each of these pins can either be assigned to the
++ * GPIO controller or a on-chip peripheral.
++ * Call "au1300_pinfunc_to_dev()" or "au1300_pinfunc_to_gpio()" to
++ * assign one of these to either the GPIO controller or the device.
++ */
++enum au1300_multifunc_pins {
 +	/* wake-from-str pins 0-3 */
-+	AU1300_PIN_WAKE0,
-+	/* external clock sources for PSC0 */
-+	AU1300_PIN_EXTCLK0,
++	AU1300_PIN_WAKE0 = 0, AU1300_PIN_WAKE1, AU1300_PIN_WAKE2,
++	AU1300_PIN_WAKE3,
++	/* external clock sources for PSCs: 4-5 */
++	AU1300_PIN_EXTCLK0, AU1300_PIN_EXTCLK1,
 +	/* 8bit MMC interface on SD0: 6-9 */
 +	AU1300_PIN_SD0DAT4, AU1300_PIN_SD0DAT5, AU1300_PIN_SD0DAT6,
 +	AU1300_PIN_SD0DAT7,
++	/* aux clk input for freqgen 3: 10 */
++	AU1300_PIN_FG3AUX,
 +	/* UART1 pins: 11-18 */
 +	AU1300_PIN_U1RI, AU1300_PIN_U1DCD, AU1300_PIN_U1DSR,
 +	AU1300_PIN_U1CTS, AU1300_PIN_U1RTS, AU1300_PIN_U1DTR,
@@ -827,8 +1382,8 @@ index 0000000..769cb6d
 +	AU1300_PIN_U2RX, AU1300_PIN_U2TX,
 +	/* UART3: 27-28 */
 +	AU1300_PIN_U3RX, AU1300_PIN_U3TX,
-+	/* LCD controller PWMs, ext pixclock: 30-31 */
-+	AU1300_PIN_LCDPWM1, AU1300_PIN_LCDCLKIN,
++	/* LCD controller PWMs, ext pixclock: 29-31 */
++	AU1300_PIN_LCDPWM0, AU1300_PIN_LCDPWM1, AU1300_PIN_LCDCLKIN,
 +	/* SD1 interface: 32-37 */
 +	AU1300_PIN_SD1DAT0, AU1300_PIN_SD1DAT1, AU1300_PIN_SD1DAT2,
 +	AU1300_PIN_SD1DAT3, AU1300_PIN_SD1CMD, AU1300_PIN_SD1CLK,
@@ -842,7 +1397,7 @@ index 0000000..769cb6d
 +	AU1300_PIN_PSC0D1,
 +	AU1300_PIN_PSC1SYNC0, AU1300_PIN_PSC1SYNC1, AU1300_PIN_PSC1D0,
 +	AU1300_PIN_PSC1D1,
-+	AU1300_PIN_PSC2SYNC0,                       AU1300_PIN_PSC2D0,
++	AU1300_PIN_PSC2SYNC0, AU1300_PIN_PSC2SYNC1, AU1300_PIN_PSC2D0,
 +	AU1300_PIN_PSC2D1,
 +	AU1300_PIN_PSC3SYNC0, AU1300_PIN_PSC3SYNC1, AU1300_PIN_PSC3D0,
 +	AU1300_PIN_PSC3D1,
@@ -854,1132 +1409,741 @@ index 0000000..769cb6d
 +	AU1300_PIN_CIMLS, AU1300_PIN_CIMFS,
 +	/* PSC2/3 clocks: 73-74 */
 +	AU1300_PIN_PSC2CLK, AU1300_PIN_PSC3CLK,
-+	-1,	/* terminator */
 +};
 +
-+static void __init db1300_gpio_config(void)
++/* GPIC (Au1300) pin management: arch/mips/alchemy/common/gpioint.c */
++extern void au1300_pinfunc_to_gpio(enum au1300_multifunc_pins gpio);
++extern void au1300_pinfunc_to_dev(enum au1300_multifunc_pins gpio);
++extern void au1300_set_irq_priority(unsigned int irq, int p);
++extern void au1300_set_dbdma_gpio(int dchan, unsigned int gpio);
++
++/* Au1300 allows to disconnect certain blocks from internal power supply */
++enum au1300_vss_block {
++	AU1300_VSS_MPE = 0,
++	AU1300_VSS_BSA,
++	AU1300_VSS_GPE,
++	AU1300_VSS_MGP,
++};
++
++extern void au1300_vss_block_control(int block, int enable);
++
+ 
++/* SOC Interrupt numbers */
++/* Au1000-style (IC0/1): 2 controllers with 32 sources each */
+ #define AU1000_INTC0_INT_BASE	(MIPS_CPU_IRQ_BASE + 8)
+ #define AU1000_INTC0_INT_LAST	(AU1000_INTC0_INT_BASE + 31)
+ #define AU1000_INTC1_INT_BASE	(AU1000_INTC0_INT_LAST + 1)
+ #define AU1000_INTC1_INT_LAST	(AU1000_INTC1_INT_BASE + 31)
+ #define AU1000_MAX_INTR 	AU1000_INTC1_INT_LAST
+ 
++/* Au1300-style (GPIC): 1 controller with up to 128 sources */
++#define ALCHEMY_GPIC_INT_BASE	(MIPS_CPU_IRQ_BASE + 8)
++#define ALCHEMY_GPIC_INT_LAST	(ALCHEMY_GPIC_INT_BASE + 127)
++
+ enum soc_au1000_ints {
+ 	AU1000_FIRST_INT	= AU1000_INTC0_INT_BASE,
+ 	AU1000_UART0_INT	= AU1000_FIRST_INT,
+@@ -583,6 +667,43 @@ enum soc_au1200_ints {
+ 
+ #endif /* !defined (_LANGUAGE_ASSEMBLY) */
+ 
++/* Au1300 peripheral interrupt numbers */
++#define AU1300_FIRST_INT	(ALCHEMY_GPIC_INT_BASE)
++#define AU1300_UART1_INT	(AU1300_FIRST_INT + 17)
++#define AU1300_UART2_INT	(AU1300_FIRST_INT + 25)
++#define AU1300_UART3_INT	(AU1300_FIRST_INT + 27)
++#define AU1300_SD1_INT		(AU1300_FIRST_INT + 32)
++#define AU1300_SD2_INT		(AU1300_FIRST_INT + 38)
++#define AU1300_PSC0_INT		(AU1300_FIRST_INT + 48)
++#define AU1300_PSC1_INT		(AU1300_FIRST_INT + 52)
++#define AU1300_PSC2_INT		(AU1300_FIRST_INT + 56)
++#define AU1300_PSC3_INT		(AU1300_FIRST_INT + 60)
++#define AU1300_NAND_INT		(AU1300_FIRST_INT + 62)
++#define AU1300_DDMA_INT		(AU1300_FIRST_INT + 75)
++#define AU1300_MMU_INT		(AU1300_FIRST_INT + 76)
++#define AU1300_MPU_INT		(AU1300_FIRST_INT + 77)
++#define AU1300_GPU_INT		(AU1300_FIRST_INT + 78)
++#define AU1300_UDMA_INT		(AU1300_FIRST_INT + 79)
++#define AU1300_TOY_INT		(AU1300_FIRST_INT + 80)
++#define AU1300_TOY_MATCH0_INT	(AU1300_FIRST_INT + 81)
++#define AU1300_TOY_MATCH1_INT	(AU1300_FIRST_INT + 82)
++#define AU1300_TOY_MATCH2_INT	(AU1300_FIRST_INT + 83)
++#define AU1300_RTC_INT		(AU1300_FIRST_INT + 84)
++#define AU1300_RTC_MATCH0_INT	(AU1300_FIRST_INT + 85)
++#define AU1300_RTC_MATCH1_INT	(AU1300_FIRST_INT + 86)
++#define AU1300_RTC_MATCH2_INT	(AU1300_FIRST_INT + 87)
++#define AU1300_UART0_INT	(AU1300_FIRST_INT + 88)
++#define AU1300_SD0_INT		(AU1300_FIRST_INT + 89)
++#define AU1300_USB_INT		(AU1300_FIRST_INT + 90)
++#define AU1300_LCD_INT		(AU1300_FIRST_INT + 91)
++#define AU1300_BSA_INT		(AU1300_FIRST_INT + 92)
++#define AU1300_MPE_INT		(AU1300_FIRST_INT + 93)
++#define AU1300_ITE_INT		(AU1300_FIRST_INT + 94)
++#define AU1300_AES_INT		(AU1300_FIRST_INT + 95)
++#define AU1300_CIM_INT		(AU1300_FIRST_INT + 96)
++
++/**********************************************************************/
++
+ /*
+  * SDRAM register offsets
+  */
+@@ -692,22 +813,38 @@ enum soc_au1200_ints {
+ 
+ /*
+  * Physical base addresses for integrated peripherals
+- * 0..au1000 1..au1500 2..au1100 3..au1550 4..au1200
++ * 0..au1000 1..au1500 2..au1100 3..au1550 4..au1200 5..au1300
+  */
+ 
+ #define AU1000_AC97_PHYS_ADDR		0x10000000 /* 012 */
++#define AU1300_ROM_PHYS_ADDR		0x10000000 /* 5 */
++#define AU1300_OTP_PHYS_ADDR		0x10002000 /* 5 */
++#define AU1300_VSS_PHYS_ADDR		0x10003000 /* 5 */
++#define AU1300_UART0_PHYS_ADDR		0x10100000 /* 5 */
++#define AU1300_UART1_PHYS_ADDR		0x10101000 /* 5 */
++#define AU1300_UART2_PHYS_ADDR		0x10102000 /* 5 */
++#define AU1300_UART3_PHYS_ADDR		0x10103000 /* 5 */
+ #define AU1000_USB_OHCI_PHYS_ADDR	0x10100000 /* 012 */
+ #define AU1000_USB_UDC_PHYS_ADDR	0x10200000 /* 0123 */
++#define AU1300_GPIC_PHYS_ADDR		0x10200000 /* 5 */
+ #define AU1000_IRDA_PHYS_ADDR		0x10300000 /* 02 */
+-#define AU1200_AES_PHYS_ADDR		0x10300000 /* 4 */
++#define AU1200_AES_PHYS_ADDR		0x10300000 /* 45 */
+ #define AU1000_IC0_PHYS_ADDR		0x10400000 /* 01234 */
++#define AU1300_GPU_PHYS_ADDR		0x10500000 /* 5 */
+ #define AU1000_MAC0_PHYS_ADDR		0x10500000 /* 023 */
+ #define AU1000_MAC1_PHYS_ADDR		0x10510000 /* 023 */
+ #define AU1000_MACEN_PHYS_ADDR		0x10520000 /* 023 */
+-#define AU1100_SD0_PHYS_ADDR		0x10600000 /* 24 */
++#define AU1100_SD0_PHYS_ADDR		0x10600000 /* 245 */
++#define AU1300_SD1_PHYS_ADDR		0x10601000 /* 5 */
++#define AU1300_SD2_PHYS_ADDR		0x10602000 /* 5 */
+ #define AU1100_SD1_PHYS_ADDR		0x10680000 /* 24 */
++#define AU1300_SYS_PHYS_ADDR		0x10900000 /* 5 */
+ #define AU1550_PSC2_PHYS_ADDR		0x10A00000 /* 3 */
+ #define AU1550_PSC3_PHYS_ADDR		0x10B00000 /* 3 */
++#define AU1300_PSC0_PHYS_ADDR		0x10A00000 /* 5 */
++#define AU1300_PSC1_PHYS_ADDR		0x10A01000 /* 5 */
++#define AU1300_PSC2_PHYS_ADDR		0x10A02000 /* 5 */
++#define AU1300_PSC3_PHYS_ADDR		0x10A03000 /* 5 */
+ #define AU1000_I2S_PHYS_ADDR		0x11000000 /* 02 */
+ #define AU1500_MAC0_PHYS_ADDR		0x11500000 /* 1 */
+ #define AU1500_MAC1_PHYS_ADDR		0x11510000 /* 1 */
+@@ -721,37 +858,96 @@ enum soc_au1200_ints {
+ #define AU1000_SSI1_PHYS_ADDR		0x11680000 /* 02 */
+ #define AU1500_GPIO2_PHYS_ADDR		0x11700000 /* 1234 */
+ #define AU1000_IC1_PHYS_ADDR		0x11800000 /* 01234 */
+-#define AU1000_SYS_PHYS_ADDR		0x11900000 /* 01234 */
++#define AU1000_SYS_PHYS_ADDR		0x11900000 /* 012345 */
+ #define AU1550_PSC0_PHYS_ADDR		0x11A00000 /* 34 */
+ #define AU1550_PSC1_PHYS_ADDR		0x11B00000 /* 34 */
+ #define AU1000_MEM_PHYS_ADDR		0x14000000 /* 01234 */
+ #define AU1000_STATIC_MEM_PHYS_ADDR	0x14001000 /* 01234 */
++#define AU1300_UDMA_PHYS_ADDR		0x14001800 /* 5 */
+ #define AU1000_DMA_PHYS_ADDR		0x14002000 /* 012 */
+-#define AU1550_DBDMA_PHYS_ADDR		0x14002000 /* 34 */
+-#define AU1550_DBDMA_CONF_PHYS_ADDR	0x14003000 /* 34 */
++#define AU1550_DBDMA_PHYS_ADDR		0x14002000 /* 345 */
++#define AU1550_DBDMA_CONF_PHYS_ADDR	0x14003000 /* 345 */
+ #define AU1000_MACDMA0_PHYS_ADDR	0x14004000 /* 0123 */
+ #define AU1000_MACDMA1_PHYS_ADDR	0x14004200 /* 0123 */
+-#define AU1200_CIM_PHYS_ADDR		0x14004000 /* 4 */
++#define AU1200_CIM_PHYS_ADDR		0x14004000 /* 45 */
+ #define AU1500_PCI_PHYS_ADDR		0x14005000 /* 13 */
+ #define AU1550_PE_PHYS_ADDR		0x14008000 /* 3 */
+ #define AU1200_MAEBE_PHYS_ADDR		0x14010000 /* 4 */
+ #define AU1200_MAEFE_PHYS_ADDR		0x14012000 /* 4 */
++#define AU1300_MAEITE_PHYS_ADDR		0x14010000 /* 5 */
++#define AU1300_MAEMPE_PHYS_ADDR		0x14014000 /* 5 */
+ #define AU1550_USB_OHCI_PHYS_ADDR	0x14020000 /* 3 */
+ #define AU1200_USB_CTL_PHYS_ADDR	0x14020000 /* 4 */
+ #define AU1200_USB_OTG_PHYS_ADDR	0x14020020 /* 4 */
+ #define AU1200_USB_OHCI_PHYS_ADDR	0x14020100 /* 4 */
+ #define AU1200_USB_EHCI_PHYS_ADDR	0x14020200 /* 4 */
+ #define AU1200_USB_UDC_PHYS_ADDR	0x14022000 /* 4 */
++#define AU1300_USB_EHCI_PHYS_ADDR	0x14020000 /* 5 */
++#define AU1300_USB_OHCI0_PHYS_ADDR	0x14020400 /* 5 */
++#define AU1300_USB_OHCI1_PHYS_ADDR	0x14020800 /* 5 */
++#define AU1300_USB_CTL_PHYS_ADDR	0x14021000 /* 5 */
++#define AU1300_USB_OTG_PHYS_ADDR	0x14022000 /* 5 */
++#define AU1300_MAEBSA_PHYS_ADDR		0x14030000 /* 5 */
+ #define AU1100_LCD_PHYS_ADDR		0x15000000 /* 2 */
+-#define AU1200_LCD_PHYS_ADDR		0x15000000 /* 4 */
++#define AU1200_LCD_PHYS_ADDR		0x15000000 /* 45 */
+ #define AU1500_PCI_MEM_PHYS_ADDR	0x400000000ULL /* 13 */
+ #define AU1500_PCI_IO_PHYS_ADDR		0x500000000ULL /* 13 */
+ #define AU1500_PCI_CONFIG0_PHYS_ADDR	0x600000000ULL /* 13 */
+ #define AU1500_PCI_CONFIG1_PHYS_ADDR	0x680000000ULL /* 13 */
+-#define AU1000_PCMCIA_IO_PHYS_ADDR	0xF00000000ULL /* 01234 */
+-#define AU1000_PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL /* 01234 */
+-#define AU1000_PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL /* 01234 */
++#define AU1000_PCMCIA_IO_PHYS_ADDR	0xF00000000ULL /* 012345 */
++#define AU1000_PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL /* 012345 */
++#define AU1000_PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL /* 012345 */
++
++/**********************************************************************/
++
++
++/*
++ * Au1300 GPIO+INT controller (GPIC) register offsets and bits
++ * Registers are 128bits (0x10 bytes), divided into 4 "banks".
++ */
++#define AU1300_GPIC_PINVAL	0x0000
++#define AU1300_GPIC_PINVALCLR	0x0010
++#define AU1300_GPIC_IPEND	0x0020
++#define AU1300_GPIC_PRIENC	0x0030
++#define AU1300_GPIC_IEN		0x0040	/* int_mask in manual */
++#define AU1300_GPIC_IDIS	0x0050	/* int_maskclr in manual */
++#define AU1300_GPIC_DMASEL	0x0060
++#define AU1300_GPIC_DEVSEL	0x0080
++#define AU1300_GPIC_DEVCLR	0x0090
++#define AU1300_GPIC_RSTVAL	0x00a0
++/* pin configuration space. one 32bit register for up to 128 IRQs */
++#define AU1300_GPIC_PINCFG	0x1000
++
++#define GPIC_GPIO_TO_BIT(gpio)	\
++	(1 << ((gpio) & 0x1f))
++
++#define GPIC_GPIO_BANKOFF(gpio)	\
++	(((gpio) >> 5) * 4)
++
++/* Pin Control bits: who owns the pin, what does it do */
++#define GPIC_CFG_PC_GPIN		0
++#define GPIC_CFG_PC_DEV			1
++#define GPIC_CFG_PC_GPOLOW		2
++#define GPIC_CFG_PC_GPOHIGH		3
++#define GPIC_CFG_PC_MASK		3
++
++/* assign pin to MIPS IRQ line */
++#define GPIC_CFG_IL_SET(x)	(((x) & 3) << 2)
++#define GPIC_CFG_IL_MASK	(3 << 2)
++
++/* pin interrupt type setup */
++#define GPIC_CFG_IC_OFF		(0 << 4)
++#define GPIC_CFG_IC_LEVEL_LOW	(1 << 4)
++#define GPIC_CFG_IC_LEVEL_HIGH	(2 << 4)
++#define GPIC_CFG_IC_EDGE_FALL	(5 << 4)
++#define GPIC_CFG_IC_EDGE_RISE	(6 << 4)
++#define GPIC_CFG_IC_EDGE_BOTH	(7 << 4)
++#define GPIC_CFG_IC_MASK	(7 << 4)
++
++/* allow interrupt to wake cpu from 'wait' */
++#define GPIC_CFG_IDLEWAKE	(1 << 7)
+ 
++/***********************************************************************/
+ 
+ /* Static Bus Controller */
+ #define MEM_STCFG0		0xB4001000
+@@ -770,14 +966,12 @@ enum soc_au1200_ints {
+ #define MEM_STTIME3		0xB4001034
+ #define MEM_STADDR3		0xB4001038
+ 
+-#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
+ #define MEM_STNDCTL		0xB4001100
+ #define MEM_STSTAT		0xB4001104
+ 
+ #define MEM_STNAND_CMD		0x0
+ #define MEM_STNAND_ADDR 	0x4
+ #define MEM_STNAND_DATA 	0x20
+-#endif
+ 
+ 
+ /* Programmable Counters 0 and 1 */
+@@ -850,7 +1044,6 @@ enum soc_au1200_ints {
+ #  define I2S_CONTROL_D 	(1 << 1)
+ #  define I2S_CONTROL_CE	(1 << 0)
+ 
+-
+ /* Ethernet Controllers  */
+ 
+ /* 4 byte offsets from AU1000_ETH_BASE */
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h b/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
+index 2fdacfe..14b26ff 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
+@@ -187,6 +187,39 @@ typedef volatile struct au1xxx_ddma_desc {
+ #define DSCR_CMD0_CIM_SYNC	26
+ #endif /* CONFIG_SOC_AU1200 */
+ 
++#ifdef CONFIG_SOC_AU1300
++#define DSCR_CMD0_UART0_TX      0
++#define DSCR_CMD0_UART0_RX      1
++#define DSCR_CMD0_UART1_TX      2
++#define DSCR_CMD0_UART1_RX      3
++#define DSCR_CMD0_UART2_TX      4
++#define DSCR_CMD0_UART2_RX      5
++#define DSCR_CMD0_UART3_TX      6
++#define DSCR_CMD0_UART3_RX      7
++#define DSCR_CMD0_SDMS_TX0      8
++#define DSCR_CMD0_SDMS_RX0      9
++#define DSCR_CMD0_SDMS_TX1      10
++#define DSCR_CMD0_SDMS_RX1      11
++#define DSCR_CMD0_AES_TX        12
++#define DSCR_CMD0_AES_RX        13
++#define DSCR_CMD0_PSC0_TX       14
++#define DSCR_CMD0_PSC0_RX       15
++#define DSCR_CMD0_PSC1_TX       16
++#define DSCR_CMD0_PSC1_RX       17
++#define DSCR_CMD0_PSC2_TX       18
++#define DSCR_CMD0_PSC2_RX       19
++#define DSCR_CMD0_PSC3_TX       20
++#define DSCR_CMD0_PSC3_RX       21
++#define DSCR_CMD0_LCD           22
++#define DSCR_CMD0_NAND_FLASH    23
++#define DSCR_CMD0_SDMS_TX2      24
++#define DSCR_CMD0_SDMS_RX2      25
++#define DSCR_CMD0_CIM_SYNC      26
++#define DSCR_CMD0_UDMA          27
++#define DSCR_CMD0_DMA_REQ0      28
++#define DSCR_CMD0_DMA_REQ1      29
++#endif /* CONFIG_SOC_AU1300 */
++
+ #define DSCR_CMD0_THROTTLE	30
+ #define DSCR_CMD0_ALWAYS	31
+ #define DSCR_NDEV_IDS		32
+diff --git a/arch/mips/include/asm/mach-au1x00/gpio-au1300.h b/arch/mips/include/asm/mach-au1x00/gpio-au1300.h
+new file mode 100644
+index 0000000..5d3bf5e
+--- /dev/null
++++ b/arch/mips/include/asm/mach-au1x00/gpio-au1300.h
+@@ -0,0 +1,250 @@
++/*
++ * gpio-au1300.h -- GPIO control for Au1300 and compatibles.
++ *
++ * Copyright (c) 2009-2010 Manuel Lauss <manuel.lauss@gmail.com>
++ */
++
++#ifndef _GPIO_AU1300_H_
++#define _GPIO_AU1300_H_
++
++#include <asm/addrspace.h>
++#include <asm/io.h>
++#include <asm/mach-au1x00/au1000.h>
++
++#define AU1300_GPIO_BASE	0
++#define AU1300_GPIO_NUM		75
++#define AU1300_GPIO_MAX		(AU1300_GPIO_BASE + AU1300_GPIO_NUM - 1)
++
++#define AU1300_GPIC_ADDR	\
++	(void __iomem *)KSEG1ADDR(AU1300_GPIC_PHYS_ADDR)
++
++static inline int au1300_gpio_get_value(unsigned int gpio)
 +{
-+	int *i;
++	void __iomem *roff = AU1300_GPIC_ADDR;
++	int bit;
 +
-+	i = &db1300_dev_pins[0];
-+	while (*i != -1)
-+		au1300_pinfunc_to_dev(*i++);
-+
-+	i = &db1300_gpio_pins[0];
-+	while (*i != -1)
-+		au1300_gpio_direction_input(*i++);/* implies pin_to_gpio */
-+
-+	au1300_set_dbdma_gpio(1, AU1300_PIN_FG3AUX);
++	gpio -= AU1300_GPIO_BASE;
++	roff += GPIC_GPIO_BANKOFF(gpio);
++	bit = GPIC_GPIO_TO_BIT(gpio);
++	return __raw_readl(roff + AU1300_GPIC_PINVAL) & bit;
 +}
 +
-+char *get_system_type(void)
++static inline int au1300_gpio_direction_input(unsigned int gpio)
 +{
-+	return "RMI DBAu1300 Development Platform";
++	void __iomem *roff = AU1300_GPIC_ADDR;
++	unsigned long bit;
++
++	gpio -= AU1300_GPIO_BASE;
++
++	roff += GPIC_GPIO_BANKOFF(gpio);
++	bit = GPIC_GPIO_TO_BIT(gpio);
++	__raw_writel(bit, roff + AU1300_GPIC_DEVCLR);
++	wmb();
++
++	return 0;
 +}
 +
-+void __init board_setup(void)
++static inline int au1300_gpio_set_value(unsigned int gpio, int v)
 +{
-+	unsigned short whoami;
++	void __iomem *roff = AU1300_GPIC_ADDR;
++	unsigned long bit;
 +
-+	/* set Config[OD] (disable overlapping bus transactions): gets
-+	 * rid of a _lot_ of spurious interrupts.
-+	 */
-+	set_c0_config(1 << 19);
++	gpio -= AU1300_GPIO_BASE;
 +
-+	db1300_gpio_config();
-+	bcsr_init(DB1300_BCSR_PHYS_ADDR,
-+		  DB1300_BCSR_PHYS_ADDR + DB1300_BCSR_HEXLED_OFS);
++	roff += GPIC_GPIO_BANKOFF(gpio);
++	bit = GPIC_GPIO_TO_BIT(gpio);
++	__raw_writel(bit, roff + (v ? AU1300_GPIC_PINVAL
++				    : AU1300_GPIC_PINVALCLR));
++	wmb();
 +
-+	whoami = bcsr_read(BCSR_WHOAMI);
-+	printk(KERN_INFO "RMI DBAu1300 Development Platform.\n\t"
-+		"BoardID %d   CPLD Rev %d   DCID %d\n",
-+		BCSR_WHOAMI_BOARD(whoami), BCSR_WHOAMI_CPLD(whoami),
-+		BCSR_WHOAMI_DCID(whoami));
++	return 0;
++}
 +
-+	/* enable UARTs, YAMON only enables #2 */
-+	alchemy_uart_enable(AU1300_UART0_PHYS_ADDR);
-+	alchemy_uart_enable(AU1300_UART1_PHYS_ADDR);
-+	alchemy_uart_enable(AU1300_UART3_PHYS_ADDR);
++static inline int au1300_gpio_direction_output(unsigned int gpio, int v)
++{
++	/* hw switches to output automatically */
++	return au1300_gpio_set_value(gpio, v);
++}
++
++static inline int au1300_gpio_to_irq(unsigned int gpio)
++{
++	return AU1300_FIRST_INT + (gpio - AU1300_GPIO_BASE);
++}
++
++static inline int au1300_irq_to_gpio(unsigned int irq)
++{
++	return (irq - AU1300_FIRST_INT) + AU1300_GPIO_BASE;
++}
++
++static inline int au1300_gpio_is_valid(unsigned int gpio)
++{
++	return ((gpio >= AU1300_GPIO_BASE) && (gpio <= AU1300_GPIO_MAX));
++}
++
++static inline int au1300_gpio_cansleep(unsigned int gpio)
++{
++	return 0;
++}
++
++static inline void alchemy_gpio1_input_enable(void)
++{
++	__raw_writel(0, (void __iomem *)KSEG1ADDR(AU1300_SYS_PHYS_ADDR) + 0x110);
++	wmb();
++}
++
++/* hardware remembers gpio 0-63 levels on powerup */
++static inline int au1300_gpio_getinitlvl(unsigned int gpio)
++{
++	void __iomem *roff = AU1300_GPIC_ADDR;
++	unsigned long v;
++
++	if (unlikely(gpio > 63))
++		return 0;
++	else if (gpio > 31) {
++		gpio -= 32;
++		roff += 4;
++	}
++
++	v = __raw_readl(roff + AU1300_GPIC_RSTVAL);
++	return (v >> gpio) & 1;
 +}
 +
 +/**********************************************************************/
 +
-+/*
-+ * This code, taken from the RMI sources, seems to be the only way to get
-+ * the DB1300 CPLD irq multiplexer to work reliably under linux.  With the
-+ * BCSR-code (Db1200) the whole OS will eventually stop servicing interrupts
-+ * once userspace boots.
-+ */
-+static DEFINE_SPINLOCK(__csclock);
-+static int __cscirq, __cscfirst, __cscusecnt;
-+static void __iomem *__bcsr_virt;
++/* Linux gpio framework integration.
++*
++* 4 use cases of Alchemy GPIOS:
++*(1) GPIOLIB=y, ALCHEMY_GPIO_INDIRECT=y:
++*	Board must register gpiochips.
++*(2) GPIOLIB=y, ALCHEMY_GPIO_INDIRECT=n:
++*	A gpiochip for the 75 GPIOs is registered.
++*
++*(3) GPIOLIB=n, ALCHEMY_GPIO_INDIRECT=y:
++*	the boards' gpio.h must provide	the linux gpio wrapper functions,
++*
++*(4) GPIOLIB=n, ALCHEMY_GPIO_INDIRECT=n:
++*	inlinable gpio functions are provided which enable access to the
++*	Au1300 gpios only by using the numbers straight out of the data-
++*	sheets.
 +
-+static irqreturn_t db1300_csc_handler(int irq, void *dev_id)
++* Cases 1 and 3 are intended for boards which want to provide their own
++* GPIO namespace and -operations (i.e. for example you have 8 GPIOs
++* which are in part provided by spare Au1300 GPIO pins and in part by
++* an external FPGA but you still want them to be accssible in linux
++* as gpio0-7. The board can of course use the alchemy_gpioX_* functions
++* as required).
++*/
++
++#ifndef CONFIG_GPIOLIB
++
++
++#ifndef CONFIG_ALCHEMY_GPIO_INDIRECT	/* case (4) */
++
++static inline int gpio_direction_input(unsigned int gpio)
 +{
-+	unsigned short bisr = __raw_readw(__bcsr_virt + BCSR_REG_INTSTAT);
-+
-+	for ( ; bisr; bisr &= bisr - 1)
-+		generic_handle_irq(__cscfirst + __ffs(bisr));
-+
-+	return IRQ_HANDLED;
++	return au1300_gpio_direction_input(gpio);
 +}
 +
-+static void db1300_csc_mask(struct irq_data *d)
++static inline int gpio_direction_output(unsigned int gpio, int v)
 +{
-+	unsigned long v = 1 << (d->irq - __cscfirst);
-+	__raw_writew(v, __bcsr_virt + BCSR_REG_MASKCLR);
-+	wmb();
++	return au1300_gpio_direction_output(gpio, v);
 +}
 +
-+static void db1300_csc_maskack(struct irq_data *d)
++static inline int gpio_get_value(unsigned int gpio)
 +{
-+	unsigned long v = 1 << (d->irq - __cscfirst);
-+	__raw_writew(v, __bcsr_virt + BCSR_REG_MASKCLR);
-+	__raw_writew(v, __bcsr_virt + BCSR_REG_INTSTAT);
-+	wmb();
++	return au1300_gpio_get_value(gpio);
 +}
 +
-+static void db1300_csc_unmask(struct irq_data *d)
++static inline void gpio_set_value(unsigned int gpio, int v)
 +{
-+	unsigned long v = 1 << (d->irq - __cscfirst);
-+	__raw_writew(v, __bcsr_virt + BCSR_REG_MASKSET);
-+	wmb();
++	au1300_gpio_set_value(gpio, v);
 +}
 +
-+static unsigned int db1300_csc_startup(struct irq_data *d)
++static inline int gpio_get_value_cansleep(unsigned gpio)
 +{
-+	int retval = 0;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&__csclock, flags);
-+	if ((++__cscusecnt) == 1)
-+		retval = request_irq(__cscirq, &db1300_csc_handler,
-+				     IRQF_TRIGGER_HIGH, "csc", 0);
-+	spin_unlock_irqrestore(&__csclock, flags);
-+
-+	db1300_csc_unmask(d);
-+
-+	return retval;
++	return gpio_get_value(gpio);
 +}
 +
-+static void db1300_csc_shutdown(struct irq_data *d)
++static inline void gpio_set_value_cansleep(unsigned gpio, int value)
 +{
-+	unsigned long flags;
-+
-+	db1300_csc_mask(d);
-+
-+	spin_lock_irqsave(&__csclock, flags);
-+	if ((--__cscusecnt) == 0)
-+		free_irq(__cscirq, &db1300_csc_handler);
-+	spin_unlock_irqrestore(&__csclock, flags);
++	gpio_set_value(gpio, value);
 +}
 +
-+static struct irq_chip db1300_csc_irq_type = {
-+	.name		= "DB1300",
-+	.irq_startup	= db1300_csc_startup,
-+	.irq_shutdown	= db1300_csc_shutdown,
-+	.irq_mask	= db1300_csc_mask,
-+	.irq_mask_ack	= db1300_csc_maskack,
-+	.irq_unmask	= db1300_csc_unmask,
-+};
-+
-+static void __init db1300_init_irq(int first, int last, int csc)
++static inline int gpio_is_valid(unsigned int gpio)
 +{
-+	int irq;
-+
-+	__bcsr_virt = (void __iomem *)KSEG1ADDR(DB1300_BCSR_PHYS_ADDR);
-+	__cscirq = csc;
-+	__cscfirst = first;
-+	__cscusecnt = 0;
-+
-+	__raw_writew(0xffff, __bcsr_virt + BCSR_REG_INTSET);
-+	__raw_writew(0xffff, __bcsr_virt + BCSR_REG_MASKCLR);
-+	__raw_writew(0xffff, __bcsr_virt + BCSR_REG_INTSTAT);
-+	wmb();
-+
-+	for (irq = first; irq <= last; irq++)
-+		irq_set_chip_and_handler_name(irq, &db1300_csc_irq_type,
-+					 handle_level_irq, "level");
++	return au1300_gpio_is_valid(gpio);
 +}
 +
-+static int __init db1300_arch_init(void)
++static inline int gpio_cansleep(unsigned int gpio)
 +{
-+	int cpldirq;
++	return au1300_gpio_cansleep(gpio);
++}
 +
-+	cpldirq = au1300_gpio_to_irq(AU1300_PIN_EXTCLK1);
++static inline int gpio_to_irq(unsigned int gpio)
++{
++	return au1300_gpio_to_irq(gpio);
++}
 +
-+	irq_set_irq_type(cpldirq, IRQF_TRIGGER_HIGH);
-+	au1300_set_irq_priority(cpldirq, 3);
++static inline int irq_to_gpio(unsigned int irq)
++{
++	return au1300_irq_to_gpio(irq);
++}
 +
-+	db1300_init_irq(DB1300_FIRST_INT, DB1300_LAST_INT, cpldirq);
-+
-+	/* insert/eject IRQs: one always triggers so don't enable them
-+	 * when doing request_irq() on them.  DB1200 has this bug too.
-+	 */
-+	irq_set_status_flags(DB1300_SD1_INSERT_INT, IRQ_NOAUTOEN);
-+	irq_set_status_flags(DB1300_SD1_EJECT_INT, IRQ_NOAUTOEN);
-+	irq_set_status_flags(DB1300_CF_INSERT_INT, IRQ_NOAUTOEN);
-+	irq_set_status_flags(DB1300_CF_EJECT_INT, IRQ_NOAUTOEN);
-+
++static inline int gpio_request(unsigned int gpio, const char *label)
++{
 +	return 0;
 +}
-+arch_initcall(db1300_arch_init);
-diff --git a/arch/mips/alchemy/devboards/prom.c b/arch/mips/alchemy/devboards/prom.c
-index e5306b5..14d855a 100644
---- a/arch/mips/alchemy/devboards/prom.c
-+++ b/arch/mips/alchemy/devboards/prom.c
-@@ -62,5 +62,9 @@ void __init prom_init(void)
- 
- void prom_putchar(unsigned char c)
- {
-+#ifdef CONFIG_MIPS_DB1300
-+	alchemy_uart_putchar(AU1300_UART2_PHYS_ADDR, c);
-+#else
- 	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
-+#endif
- }
-diff --git a/arch/mips/boot/compressed/uart-alchemy.c b/arch/mips/boot/compressed/uart-alchemy.c
-index eb063e6..3112df8 100644
---- a/arch/mips/boot/compressed/uart-alchemy.c
-+++ b/arch/mips/boot/compressed/uart-alchemy.c
-@@ -2,6 +2,9 @@
- 
- void putc(char c)
- {
--	/* all current (Jan. 2010) in-kernel boards */
-+#ifdef CONFIG_MIPS_DB1300
-+	alchemy_uart_putchar(AU1300_UART2_PHYS_ADDR, c);
-+#else
- 	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
-+#endif
- }
-diff --git a/arch/mips/configs/db1300_defconfig b/arch/mips/configs/db1300_defconfig
-new file mode 100644
-index 0000000..c38b190
---- /dev/null
-+++ b/arch/mips/configs/db1300_defconfig
-@@ -0,0 +1,391 @@
-+CONFIG_MIPS=y
-+CONFIG_MIPS_ALCHEMY=y
-+CONFIG_ALCHEMY_GPIOINT_AU1300=y
-+CONFIG_MIPS_DB1300=y
-+CONFIG_SOC_AU1300=y
-+CONFIG_RWSEM_GENERIC_SPINLOCK=y
-+CONFIG_ARCH_SUPPORTS_OPROFILE=y
-+CONFIG_GENERIC_HWEIGHT=y
-+CONFIG_GENERIC_CALIBRATE_DELAY=y
-+CONFIG_GENERIC_CLOCKEVENTS=y
-+CONFIG_GENERIC_CMOS_UPDATE=y
-+CONFIG_SCHED_OMIT_FRAME_POINTER=y
-+CONFIG_CEVT_R4K_LIB=y
-+CONFIG_CSRC_R4K_LIB=y
-+CONFIG_DMA_COHERENT=y
-+CONFIG_SYS_HAS_EARLY_PRINTK=y
-+CONFIG_MIPS_DISABLE_OBSOLETE_IDE=y
-+CONFIG_GENERIC_GPIO=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_SYS_SUPPORTS_APM_EMULATION=y
-+CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
-+CONFIG_IRQ_CPU=y
-+CONFIG_MIPS_L1_CACHE_SHIFT=5
-+CONFIG_CPU_MIPS32_R1=y
-+CONFIG_SYS_SUPPORTS_ZBOOT=y
-+CONFIG_SYS_HAS_CPU_MIPS32_R1=y
-+CONFIG_CPU_MIPS32=y
-+CONFIG_CPU_MIPSR1=y
-+CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
-+CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
-+CONFIG_HARDWARE_WATCHPOINTS=y
-+CONFIG_32BIT=y
-+CONFIG_PAGE_SIZE_4KB=y
-+CONFIG_FORCE_MAX_ZONEORDER=11
-+CONFIG_CPU_HAS_PREFETCH=y
-+CONFIG_MIPS_MT_DISABLED=y
-+CONFIG_64BIT_PHYS_ADDR=y
-+CONFIG_ARCH_PHYS_ADDR_T_64BIT=y
-+CONFIG_CPU_HAS_SYNC=y
-+CONFIG_CPU_SUPPORTS_HIGHMEM=y
-+CONFIG_ARCH_FLATMEM_ENABLE=y
-+CONFIG_ARCH_POPULATES_NODE_MAP=y
-+CONFIG_SELECT_MEMORY_MODEL=y
-+CONFIG_FLATMEM_MANUAL=y
-+CONFIG_FLATMEM=y
-+CONFIG_FLAT_NODE_MEM_MAP=y
-+CONFIG_PAGEFLAGS_EXTENDED=y
-+CONFIG_SPLIT_PTLOCK_CPUS=4
-+CONFIG_COMPACTION=y
-+CONFIG_MIGRATION=y
-+CONFIG_PHYS_ADDR_T_64BIT=y
-+CONFIG_ZONE_DMA_FLAG=0
-+CONFIG_VIRT_TO_BUS=y
-+CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
-+CONFIG_NEED_PER_CPU_KM=y
-+CONFIG_TICK_ONESHOT=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
-+CONFIG_HZ_100=y
-+CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
-+CONFIG_HZ=100
-+CONFIG_PREEMPT_NONE=y
-+CONFIG_LOCKDEP_SUPPORT=y
-+CONFIG_STACKTRACE_SUPPORT=y
-+CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
-+CONFIG_CONSTRUCTORS=y
-+CONFIG_HAVE_IRQ_WORK=y
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_BROKEN_ON_SMP=y
-+CONFIG_INIT_ENV_ARG_LIMIT=32
-+CONFIG_CROSS_COMPILE=""
-+CONFIG_LOCALVERSION="-db1300"
-+CONFIG_LOCALVERSION_AUTO=y
-+CONFIG_HAVE_KERNEL_GZIP=y
-+CONFIG_HAVE_KERNEL_BZIP2=y
-+CONFIG_HAVE_KERNEL_LZMA=y
-+CONFIG_HAVE_KERNEL_LZO=y
-+CONFIG_KERNEL_LZMA=y
-+CONFIG_SWAP=y
-+CONFIG_SYSVIPC=y
-+CONFIG_SYSVIPC_SYSCTL=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_POSIX_MQUEUE_SYSCTL=y
-+CONFIG_FHANDLE=y
-+CONFIG_HAVE_GENERIC_HARDIRQS=y
-+CONFIG_GENERIC_HARDIRQS=y
-+CONFIG_GENERIC_IRQ_PROBE=y
-+CONFIG_GENERIC_IRQ_SHOW=y
-+CONFIG_TINY_RCU=y
-+CONFIG_LOG_BUF_SHIFT=19
-+CONFIG_NAMESPACES=y
-+CONFIG_UTS_NS=y
-+CONFIG_IPC_NS=y
-+CONFIG_USER_NS=y
-+CONFIG_PID_NS=y
-+CONFIG_NET_NS=y
-+CONFIG_SYSCTL=y
-+CONFIG_ANON_INODES=y
-+CONFIG_EXPERT=y
-+CONFIG_SYSCTL_SYSCALL=y
-+CONFIG_KALLSYMS=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_HOTPLUG=y
-+CONFIG_PRINTK=y
-+CONFIG_BUG=y
-+CONFIG_ELF_CORE=y
-+CONFIG_BASE_FULL=y
-+CONFIG_FUTEX=y
-+CONFIG_EPOLL=y
-+CONFIG_SIGNALFD=y
-+CONFIG_TIMERFD=y
-+CONFIG_EVENTFD=y
-+CONFIG_SHMEM=y
-+CONFIG_AIO=y
-+CONFIG_EMBEDDED=y
-+CONFIG_HAVE_PERF_EVENTS=y
-+CONFIG_PERF_USE_VMALLOC=y
-+CONFIG_SLAB=y
-+CONFIG_HAVE_OPROFILE=y
-+CONFIG_HAVE_KPROBES=y
-+CONFIG_HAVE_KRETPROBES=y
-+CONFIG_HAVE_DMA_ATTRS=y
-+CONFIG_HAVE_DMA_API_DEBUG=y
-+CONFIG_HAVE_ARCH_JUMP_LABEL=y
-+CONFIG_HAVE_GENERIC_DMA_COHERENT=y
-+CONFIG_SLABINFO=y
-+CONFIG_RT_MUTEXES=y
-+CONFIG_BASE_SMALL=0
-+CONFIG_BLOCK=y
-+CONFIG_LBDAF=y
-+CONFIG_BLK_DEV_BSG=y
-+CONFIG_IOSCHED_NOOP=y
-+CONFIG_DEFAULT_NOOP=y
-+CONFIG_DEFAULT_IOSCHED="noop"
-+CONFIG_INLINE_SPIN_UNLOCK=y
-+CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
-+CONFIG_INLINE_READ_UNLOCK=y
-+CONFIG_INLINE_READ_UNLOCK_IRQ=y
-+CONFIG_INLINE_WRITE_UNLOCK=y
-+CONFIG_INLINE_WRITE_UNLOCK_IRQ=y
-+CONFIG_MMU=y
-+CONFIG_PCCARD=y
-+CONFIG_PCMCIA=y
-+CONFIG_PCMCIA_LOAD_CIS=y
-+CONFIG_PCMCIA_ALCHEMY_DEVBOARD=y
-+CONFIG_BINFMT_ELF=y
-+CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS=y
-+CONFIG_TRAD_SIGNALS=y
-+CONFIG_ARCH_HIBERNATION_POSSIBLE=y
-+CONFIG_ARCH_SUSPEND_POSSIBLE=y
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_XFRM=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_IP_PNP_BOOTP=y
-+CONFIG_IP_PNP_RARP=y
-+CONFIG_INET_TUNNEL=y
-+CONFIG_TCP_CONG_CUBIC=y
-+CONFIG_DEFAULT_TCP_CONG="cubic"
-+CONFIG_IPV6=y
-+CONFIG_INET6_XFRM_MODE_TRANSPORT=y
-+CONFIG_INET6_XFRM_MODE_TUNNEL=y
-+CONFIG_INET6_XFRM_MODE_BEET=y
-+CONFIG_IPV6_SIT=y
-+CONFIG_IPV6_NDISC_NODETYPE=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_STANDALONE=y
-+CONFIG_PREVENT_FIRMWARE_BUILD=y
-+CONFIG_FW_LOADER=y
-+CONFIG_FIRMWARE_IN_KERNEL=y
-+CONFIG_EXTRA_FIRMWARE=""
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_CHAR=y
-+CONFIG_MTD_BLKDEVS=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_CFI=y
-+CONFIG_MTD_GEN_PROBE=y
-+CONFIG_MTD_MAP_BANK_WIDTH_1=y
-+CONFIG_MTD_MAP_BANK_WIDTH_2=y
-+CONFIG_MTD_MAP_BANK_WIDTH_4=y
-+CONFIG_MTD_CFI_I1=y
-+CONFIG_MTD_CFI_I2=y
-+CONFIG_MTD_CFI_AMDSTD=y
-+CONFIG_MTD_CFI_UTIL=y
-+CONFIG_MTD_PHYSMAP=y
-+CONFIG_MTD_NAND_ECC=y
-+CONFIG_MTD_NAND=y
-+CONFIG_MTD_NAND_IDS=y
-+CONFIG_MTD_NAND_PLATFORM=y
-+CONFIG_BLK_DEV=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_UB=y
-+CONFIG_HAVE_IDE=y
-+CONFIG_IDE=y
-+CONFIG_IDE_GD=y
-+CONFIG_IDE_GD_ATA=y
-+CONFIG_BLK_DEV_IDECS=y
-+CONFIG_IDE_TASK_IOCTL=y
-+CONFIG_IDE_PROC_FS=y
-+CONFIG_BLK_DEV_PLATFORM=y
-+CONFIG_SCSI_MOD=y
-+CONFIG_NETDEVICES=y
-+CONFIG_MII=y
-+CONFIG_PHYLIB=y
-+CONFIG_SMSC_PHY=y
-+CONFIG_NET_ETHERNET=y
-+CONFIG_SMSC911X=y
-+CONFIG_INPUT=y
-+CONFIG_INPUT_EVDEV=y
-+CONFIG_INPUT_KEYBOARD=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_INPUT_TOUCHSCREEN=y
-+CONFIG_TOUCHSCREEN_WM97XX=y
-+CONFIG_TOUCHSCREEN_WM9712=y
-+CONFIG_TOUCHSCREEN_WM9713=y
-+CONFIG_INPUT_MISC=y
-+CONFIG_INPUT_UINPUT=y
-+CONFIG_VT=y
-+CONFIG_CONSOLE_TRANSLATIONS=y
-+CONFIG_VT_CONSOLE=y
-+CONFIG_HW_CONSOLE=y
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_UNIX98_PTYS=y
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_NR_UARTS=4
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=4
-+CONFIG_SERIAL_CORE=y
-+CONFIG_SERIAL_CORE_CONSOLE=y
-+CONFIG_I2C=y
-+CONFIG_I2C_BOARDINFO=y
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_SMBUS=y
-+CONFIG_I2C_AU1550=y
-+CONFIG_SPI=y
-+CONFIG_SPI_MASTER=y
-+CONFIG_SPI_AU1550=y
-+CONFIG_SPI_BITBANG=y
-+CONFIG_ARCH_WANT_OPTIONAL_GPIOLIB=y
-+CONFIG_HWMON=y
-+CONFIG_HWMON_VID=y
-+CONFIG_SENSORS_ADM1025=y
-+CONFIG_FB=y
-+CONFIG_FB_AU1200=y
-+CONFIG_DUMMY_CONSOLE=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_FONTS=y
-+CONFIG_FONT_ACORN_8x8=y
-+CONFIG_LOGO=y
-+CONFIG_LOGO_LINUX_CLUT224=y
-+CONFIG_SOUND=y
-+CONFIG_SND=y
-+CONFIG_SND_TIMER=y
-+CONFIG_SND_PCM=y
-+CONFIG_SND_JACK=y
-+CONFIG_SND_HRTIMER=y
-+CONFIG_SND_DYNAMIC_MINORS=y
-+CONFIG_SND_VERBOSE_PROCFS=y
-+CONFIG_SND_VERBOSE_PRINTK=y
-+CONFIG_SND_VMASTER=y
-+CONFIG_SND_AC97_CODEC=y
-+CONFIG_SND_SOC=y
-+CONFIG_SND_SOC_CACHE_LZO=y
-+CONFIG_SND_SOC_AC97_BUS=y
-+CONFIG_SND_SOC_AU1XPSC=y
-+CONFIG_SND_SOC_AU1XPSC_I2S=y
-+CONFIG_SND_SOC_AU1XPSC_AC97=y
-+CONFIG_SND_SOC_DB1300=y
-+CONFIG_SND_SOC_I2C_AND_SPI=y
-+CONFIG_SND_SOC_WM8731=y
-+CONFIG_SND_SOC_WM9712=y
-+CONFIG_AC97_BUS=y
-+CONFIG_HID_SUPPORT=y
-+CONFIG_HID=y
-+CONFIG_HIDRAW=y
-+CONFIG_USB_HID=y
-+CONFIG_USB_HIDDEV=y
-+CONFIG_USB_SUPPORT=y
-+CONFIG_USB_ARCH_HAS_HCD=y
-+CONFIG_USB_ARCH_HAS_OHCI=y
-+CONFIG_USB_ARCH_HAS_EHCI=y
-+CONFIG_USB=y
-+CONFIG_USB_DYNAMIC_MINORS=y
-+CONFIG_USB_EHCI_HCD=y
-+CONFIG_USB_EHCI_ROOT_HUB_TT=y
-+CONFIG_USB_EHCI_TT_NEWSCHED=y
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_OHCI_LITTLE_ENDIAN=y
-+CONFIG_RTC_LIB=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_HCTOSYS=y
-+CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
-+CONFIG_RTC_INTF_SYSFS=y
-+CONFIG_RTC_INTF_PROC=y
-+CONFIG_RTC_INTF_DEV=y
-+CONFIG_RTC_INTF_DEV_UIE_EMUL=y
-+CONFIG_RTC_DRV_AU1XXX=y
-+CONFIG_EXT2_FS=y
-+CONFIG_FS_POSIX_ACL=y
-+CONFIG_EXPORTFS=y
-+CONFIG_FILE_LOCKING=y
-+CONFIG_FSNOTIFY=y
-+CONFIG_DNOTIFY=y
-+CONFIG_INOTIFY_USER=y
-+CONFIG_GENERIC_ACL=y
-+CONFIG_FAT_FS=y
-+CONFIG_VFAT_FS=y
-+CONFIG_FAT_DEFAULT_CODEPAGE=437
-+CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
-+CONFIG_PROC_FS=y
-+CONFIG_PROC_SYSCTL=y
-+CONFIG_PROC_PAGE_MONITOR=y
-+CONFIG_SYSFS=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+CONFIG_TMPFS_XATTR=y
-+CONFIG_MISC_FILESYSTEMS=y
-+CONFIG_JFFS2_FS=y
-+CONFIG_JFFS2_FS_DEBUG=0
-+CONFIG_JFFS2_FS_WRITEBUFFER=y
-+CONFIG_JFFS2_SUMMARY=y
-+CONFIG_JFFS2_FS_XATTR=y
-+CONFIG_JFFS2_FS_POSIX_ACL=y
-+CONFIG_JFFS2_FS_SECURITY=y
-+CONFIG_JFFS2_COMPRESSION_OPTIONS=y
-+CONFIG_JFFS2_ZLIB=y
-+CONFIG_JFFS2_LZO=y
-+CONFIG_JFFS2_RTIME=y
-+CONFIG_JFFS2_RUBIN=y
-+CONFIG_JFFS2_CMODE_PRIORITY=y
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XZ=y
-+CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
-+CONFIG_NETWORK_FILESYSTEMS=y
-+CONFIG_NFS_FS=y
-+CONFIG_NFS_V3=y
-+CONFIG_ROOT_NFS=y
-+CONFIG_LOCKD=y
-+CONFIG_LOCKD_V4=y
-+CONFIG_NFS_COMMON=y
-+CONFIG_SUNRPC=y
-+CONFIG_MSDOS_PARTITION=y
-+CONFIG_NLS=y
-+CONFIG_NLS_DEFAULT="iso8859-1"
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_CODEPAGE_850=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_NLS_ISO8859_15=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_TRACE_IRQFLAGS_SUPPORT=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEFAULT_MESSAGE_LOGLEVEL=4
-+CONFIG_ENABLE_WARN_DEPRECATED=y
-+CONFIG_ENABLE_MUST_CHECK=y
-+CONFIG_FRAME_WARN=1024
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_HAVE_FUNCTION_TRACER=y
-+CONFIG_HAVE_FUNCTION_GRAPH_TRACER=y
-+CONFIG_HAVE_FUNCTION_TRACE_MCOUNT_TEST=y
-+CONFIG_HAVE_DYNAMIC_FTRACE=y
-+CONFIG_HAVE_FTRACE_MCOUNT_RECORD=y
-+CONFIG_HAVE_C_RECORDMCOUNT=y
-+CONFIG_TRACING_SUPPORT=y
-+CONFIG_HAVE_ARCH_KGDB=y
-+CONFIG_EARLY_PRINTK=y
-+CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="video=au1200fb:panel:bs console=tty console=ttyS2,115200"
-+CONFIG_DEBUG_ZBOOT=y
-+CONFIG_DEFAULT_SECURITY_DAC=y
-+CONFIG_DEFAULT_SECURITY=""
-+CONFIG_CRYPTO=y
-+CONFIG_BITREVERSE=y
-+CONFIG_CRC32=y
-+CONFIG_ZLIB_INFLATE=y
-+CONFIG_ZLIB_DEFLATE=y
-+CONFIG_LZO_COMPRESS=y
-+CONFIG_LZO_DECOMPRESS=y
-+CONFIG_XZ_DEC=y
-+CONFIG_HAS_IOMEM=y
-+CONFIG_HAS_IOPORT=y
-+CONFIG_HAS_DMA=y
-+CONFIG_NLATTR=y
-+CONFIG_GENERIC_ATOMIC64=y
-diff --git a/arch/mips/include/asm/mach-db1x00/bcsr.h b/arch/mips/include/asm/mach-db1x00/bcsr.h
-index 618d2de..0ef6300 100644
---- a/arch/mips/include/asm/mach-db1x00/bcsr.h
-+++ b/arch/mips/include/asm/mach-db1x00/bcsr.h
-@@ -34,6 +34,8 @@
- #define PB1200_BCSR_PHYS_ADDR	0x0D800000
- #define PB1200_BCSR_HEXLED_OFS	0x00400000
- 
-+#define DB1300_BCSR_PHYS_ADDR	0x19800000
-+#define DB1300_BCSR_HEXLED_OFS	0x00400000
- 
- enum bcsr_id {
- 	/* BCSR base 1 */
-@@ -105,6 +107,7 @@ enum bcsr_whoami_boards {
- 	BCSR_WHOAMI_PB1200 = BCSR_WHOAMI_PB1200_DDR1,
- 	BCSR_WHOAMI_PB1200_DDR2,
- 	BCSR_WHOAMI_DB1200,
-+	BCSR_WHOAMI_DB1300,
- };
- 
- /* STATUS reg.  Unless otherwise noted, they're valid on all boards.
-@@ -118,12 +121,12 @@ enum bcsr_whoami_boards {
- #define BCSR_STATUS_SRAMWIDTH		0x0080
- #define BCSR_STATUS_FLASHBUSY		0x0100
- #define BCSR_STATUS_ROMBUSY		0x0400
--#define BCSR_STATUS_SD0WP		0x0400	/* DB1200 */
-+#define BCSR_STATUS_SD0WP		0x0400	/* DB1200/DB1300:SD1 */
- #define BCSR_STATUS_SD1WP		0x0800
- #define BCSR_STATUS_USBOTGID		0x0800	/* PB/DB1550 */
- #define BCSR_STATUS_DB1000_SWAPBOOT	0x2000
--#define BCSR_STATUS_DB1200_SWAPBOOT	0x0040	/* DB1200 */
--#define BCSR_STATUS_IDECBLID		0x0200	/* DB1200 */
-+#define BCSR_STATUS_DB1200_SWAPBOOT	0x0040	/* DB1200/1300 */
-+#define BCSR_STATUS_IDECBLID		0x0200	/* DB1200/1300 */
- #define BCSR_STATUS_DB1200_U0RXD	0x1000	/* DB1200 */
- #define BCSR_STATUS_DB1200_U1RXD	0x2000	/* DB1200 */
- #define BCSR_STATUS_FLASHDEN		0xC000
-@@ -133,6 +136,11 @@ enum bcsr_whoami_boards {
- #define BCSR_STATUS_PB1550_U1RXD	0x2000	/* PB1550 */
- #define BCSR_STATUS_PB1550_U3RXD	0x8000	/* PB1550 */
- 
-+#define BCSR_STATUS_CFWP		0x4000	/* DB1300 */
-+#define BCSR_STATUS_USBOCn		0x2000	/* DB1300 */
-+#define BCSR_STATUS_OTGOCn		0x1000	/* DB1300 */
-+#define BCSR_STATUS_DCDMARQ		0x0010	/* DB1300 */
-+#define BCSR_STATUS_IDEDMARQ		0x0020	/* DB1300 */
- 
- /* DB/PB1000,1100,1500,1550 */
- #define BCSR_RESETS_PHY0		0x0001
-@@ -160,12 +168,12 @@ enum bcsr_whoami_boards {
- #define BCSR_BOARD_SD1WP		0x8000	/* DB1100 */
- 
- 
--/* DB/PB1200 */
-+/* DB/PB1200/1300 */
- #define BCSR_RESETS_ETH			0x0001
- #define BCSR_RESETS_CAMERA		0x0002
- #define BCSR_RESETS_DC			0x0004
- #define BCSR_RESETS_IDE			0x0008
--#define BCSR_RESETS_TV			0x0010	/* DB1200 */
-+#define BCSR_RESETS_TV			0x0010	/* DB1200/1300 */
- /* Not resets but in the same register */
- #define BCSR_RESETS_PWMR1MUX		0x0800	/* DB1200 */
- #define BCSR_RESETS_PB1200_WSCFSM	0x0800	/* PB1200 */
-@@ -174,13 +182,22 @@ enum bcsr_whoami_boards {
- #define BCSR_RESETS_SPISEL		0x4000
- #define BCSR_RESETS_SD1MUX		0x8000	/* PB1200 */
- 
-+#define BCSR_RESETS_VDDQSHDN		0x0200	/* DB1300 */
-+#define BCSR_RESETS_OTPPGM		0x0400	/* DB1300 */
-+#define BCSR_RESETS_OTPSCLK		0x0800	/* DB1300 */
-+#define BCSR_RESETS_OTPWRPROT		0x1000	/* DB1300 */
-+#define BCSR_RESETS_OTPCSB		0x2000	/* DB1300 */
-+#define BCSR_RESETS_OTGPWR		0x4000	/* DB1300 */
-+#define BCSR_RESETS_USBHPWR		0x8000  /* DB1300 */
 +
- #define BCSR_BOARD_LCDVEE		0x0001
- #define BCSR_BOARD_LCDVDD		0x0002
- #define BCSR_BOARD_LCDBL		0x0004
- #define BCSR_BOARD_CAMSNAP		0x0010
- #define BCSR_BOARD_CAMPWR		0x0020
- #define BCSR_BOARD_SD0PWR		0x0040
--
-+#define BCSR_BOARD_CAMCS		0x0010	/* DB1300 */
-+#define BCSR_BOARD_HDMI_DE		0x0040	/* DB1300 */
- 
- #define BCSR_SWITCHES_DIP		0x00FF
- #define BCSR_SWITCHES_DIP_1		0x0080
-@@ -214,7 +231,10 @@ enum bcsr_whoami_boards {
- #define BCSR_SYSTEM_RESET		0x8000	/* clear to reset */
- #define BCSR_SYSTEM_PWROFF		0x4000	/* set to power off */
- #define BCSR_SYSTEM_VDDI		0x001F	/* PB1xxx boards */
--
-+#define BCSR_SYSTEM_DEBUGCSMASK		0x003F	/* DB1300 */
-+#define BCSR_SYSTEM_UDMAMODE		0x0100	/* DB1300 */
-+#define BCSR_SYSTEM_WAKEONIRQ		0x0200	/* DB1300 */
-+#define BCSR_SYSTEM_VDDI1300		0x3C00	/* DB1300 */
- 
- 
- 
-diff --git a/arch/mips/include/asm/mach-db1x00/db1300.h b/arch/mips/include/asm/mach-db1x00/db1300.h
-new file mode 100644
-index 0000000..7fe5fb3
---- /dev/null
-+++ b/arch/mips/include/asm/mach-db1x00/db1300.h
-@@ -0,0 +1,40 @@
-+/*
-+ * NetLogic DB1300 board constants
-+ */
-+
-+#ifndef _DB1300_H_
-+#define _DB1300_H_
-+
-+/* FPGA (external mux) interrupt sources */
-+#define DB1300_FIRST_INT	(ALCHEMY_GPIC_INT_LAST + 1)
-+#define DB1300_IDE_INT		(DB1300_FIRST_INT + 0)
-+#define DB1300_ETH_INT		(DB1300_FIRST_INT + 1)
-+#define DB1300_CF_INT		(DB1300_FIRST_INT + 2)
-+#define DB1300_VIDEO_INT	(DB1300_FIRST_INT + 4)
-+#define DB1300_HDMI_INT		(DB1300_FIRST_INT + 5)
-+#define DB1300_DC_INT		(DB1300_FIRST_INT + 6)
-+#define DB1300_FLASH_INT	(DB1300_FIRST_INT + 7)
-+#define DB1300_CF_INSERT_INT	(DB1300_FIRST_INT + 8)
-+#define DB1300_CF_EJECT_INT	(DB1300_FIRST_INT + 9)
-+#define DB1300_AC97_INT		(DB1300_FIRST_INT + 10)
-+#define DB1300_AC97_PEN_INT	(DB1300_FIRST_INT + 11)
-+#define DB1300_SD1_INSERT_INT	(DB1300_FIRST_INT + 12)
-+#define DB1300_SD1_EJECT_INT	(DB1300_FIRST_INT + 13)
-+#define DB1300_OTG_VBUS_OC_INT	(DB1300_FIRST_INT + 14)
-+#define DB1300_HOST_VBUS_OC_INT	(DB1300_FIRST_INT + 15)
-+#define DB1300_LAST_INT		(DB1300_FIRST_INT + 15)
-+
-+/* SMSC9210 CS */
-+#define DB1300_ETH_PHYS_ADDR	0x19000000
-+#define DB1300_ETH_PHYS_END	0x197fffff
-+
-+/* ATA CS */
-+#define DB1300_IDE_PHYS_ADDR	0x18800000
-+#define DB1300_IDE_REG_SHIFT	5
-+#define DB1300_IDE_PHYS_LEN	(16 << DB1300_IDE_REG_SHIFT)
-+
-+/* NAND CS */
-+#define DB1300_NAND_PHYS_ADDR	0x20000000
-+#define DB1300_NAND_PHYS_END	0x20000fff
-+
-+#endif	/* _DB1300_H_ */
-diff --git a/arch/mips/include/asm/mach-db1x00/irq.h b/arch/mips/include/asm/mach-db1x00/irq.h
-new file mode 100644
-index 0000000..15b2669
---- /dev/null
-+++ b/arch/mips/include/asm/mach-db1x00/irq.h
-@@ -0,0 +1,23 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2003 by Ralf Baechle
-+ */
-+#ifndef __ASM_MACH_GENERIC_IRQ_H
-+#define __ASM_MACH_GENERIC_IRQ_H
-+
-+
-+#ifdef NR_IRQS
-+#undef NR_IRQS
-+#endif
-+
-+#ifndef MIPS_CPU_IRQ_BASE
-+#define MIPS_CPU_IRQ_BASE 0
-+#endif
-+
-+/* 8 (MIPS) + 128 (au1300) + 16 (cpld) */
-+#define NR_IRQS 152
-+
-+#endif /* __ASM_MACH_GENERIC_IRQ_H */
-diff --git a/drivers/pcmcia/Kconfig b/drivers/pcmcia/Kconfig
-index 6e318ce..af497ca 100644
---- a/drivers/pcmcia/Kconfig
-+++ b/drivers/pcmcia/Kconfig
-@@ -165,8 +165,8 @@ config PCMCIA_ALCHEMY_DEVBOARD
- 	select 64BIT_PHYS_ADDR
- 	help
- 	  Enable this driver of you want PCMCIA support on your Alchemy
--	  Db1000, Db/Pb1100, Db/Pb1500, Db/Pb1550, Db/Pb1200 board.
--	  NOT suitable for the PB1000!
-+	  Db1000, Db/Pb1100, Db/Pb1500, Db/Pb1550, Db/Pb1200, DB1300
-+	  board.  NOT suitable for the PB1000!
- 
- 	  This driver is also available as a module called db1xxx_ss.ko
- 
-diff --git a/drivers/pcmcia/db1xxx_ss.c b/drivers/pcmcia/db1xxx_ss.c
-index 01757f1..f286c2f 100644
---- a/drivers/pcmcia/db1xxx_ss.c
-+++ b/drivers/pcmcia/db1xxx_ss.c
-@@ -7,7 +7,7 @@
- 
- /* This is a fairly generic PCMCIA socket driver suitable for the
-  * following Alchemy Development boards:
-- *  Db1000, Db/Pb1500, Db/Pb1100, Db/Pb1550, Db/Pb1200.
-+ *  Db1000, Db/Pb1500, Db/Pb1100, Db/Pb1550, Db/Pb1200, Db1300
-  *
-  * The Db1000 is used as a reference:  Per-socket card-, carddetect- and
-  *  statuschange IRQs connected to SoC GPIOs, control and status register
-@@ -18,6 +18,7 @@
-  *	- Pb1100/Pb1500:  single socket only; voltage key bits VS are
-  *			  at STATUS[5:4] (instead of STATUS[1:0]).
-  *	- Au1200-based:	  additional card-eject irqs, irqs not gpios!
-+ *	- Db1300:	  Db1200-like, no pwr ctrl, single socket (#1).
-  */
- 
- #include <linux/delay.h>
-@@ -58,11 +59,17 @@ struct db1x_pcmcia_sock {
- #define BOARD_TYPE_DEFAULT	0	/* most boards */
- #define BOARD_TYPE_DB1200	1	/* IRQs aren't gpios */
- #define BOARD_TYPE_PB1100	2	/* VS bits slightly different */
-+#define BOARD_TYPE_DB1300	3	/* no power control */
- 	int	board_type;
- };
- 
- #define to_db1x_socket(x) container_of(x, struct db1x_pcmcia_sock, socket)
- 
-+static int db1300_card_inserted(struct db1x_pcmcia_sock *sock)
++static inline void gpio_free(unsigned int gpio)
 +{
-+	return bcsr_read(BCSR_SIGSTAT) & (1 << 8);
 +}
 +
- /* DB/PB1200: check CPLD SIGSTATUS register bit 10/12 */
- static int db1200_card_inserted(struct db1x_pcmcia_sock *sock)
++static inline int gpio_set_debounce(unsigned gpio, unsigned debounce)
++{
++	return -ENOSYS;
++}
++
++static inline void gpio_unexport(unsigned gpio)
++{
++}
++
++static inline int gpio_export(unsigned gpio, bool direction_may_change)
++{
++	return -ENOSYS;
++}
++
++static inline int gpio_sysfs_set_active_low(unsigned gpio, int value)
++{
++	return -ENOSYS;
++}
++
++static inline int gpio_export_link(struct device *dev, const char *name,
++				   unsigned gpio)
++{
++	return -ENOSYS;
++}
++
++#endif	/* !CONFIG_ALCHEMY_GPIO_INDIRECT */
++
++
++#else	/* CONFIG GPIOLIB */
++
++
++/* using gpiolib to provide up to 2 gpio_chips for on-chip gpios */
++#ifndef CONFIG_ALCHEMY_GPIO_INDIRECT	/* case (2) */
++
++/* get everything through gpiolib */
++#define gpio_to_irq	__gpio_to_irq
++#define gpio_get_value	__gpio_get_value
++#define gpio_set_value	__gpio_set_value
++#define gpio_cansleep	__gpio_cansleep
++#define irq_to_gpio	au1300_irq_to_gpio
++
++#include <asm-generic/gpio.h>
++
++#endif	/* !CONFIG_ALCHEMY_GPIO_INDIRECT */
++
++
++#endif	/* !CONFIG_GPIOLIB */
++
++#endif /* _GPIO_AU1300_H_ */
+diff --git a/arch/mips/include/asm/mach-au1x00/gpio.h b/arch/mips/include/asm/mach-au1x00/gpio.h
+index c3f60cd..4d6edea 100644
+--- a/arch/mips/include/asm/mach-au1x00/gpio.h
++++ b/arch/mips/include/asm/mach-au1x00/gpio.h
+@@ -5,6 +5,10 @@
+ 
+ #include <asm/mach-au1x00/gpio-au1000.h>
+ 
++#elif defined(CONFIG_ALCHEMY_GPIOINT_AU1300)
++
++#include <asm/mach-au1x00/gpio-au1300.h>
++
+ #endif
+ 
+ #endif	/* _ALCHEMY_GPIO_H_ */
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index bb133d1..b733712 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1011,6 +1011,14 @@ static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
  {
-@@ -83,6 +90,8 @@ static int db1x_card_inserted(struct db1x_pcmcia_sock *sock)
- 	switch (sock->board_type) {
- 	case BOARD_TYPE_DB1200:
- 		return db1200_card_inserted(sock);
-+	case BOARD_TYPE_DB1300:
-+		return db1300_card_inserted(sock);
- 	default:
- 		return db1000_card_inserted(sock);
- 	}
-@@ -159,7 +168,8 @@ static int db1x_pcmcia_setup_irqs(struct db1x_pcmcia_sock *sock)
- 	 * ejection handler have been registered and the currently
- 	 * active one disabled.
- 	 */
--	if (sock->board_type == BOARD_TYPE_DB1200) {
-+	if ((sock->board_type == BOARD_TYPE_DB1200) ||
-+	    (sock->board_type == BOARD_TYPE_DB1300)) {
- 		ret = request_irq(sock->insert_irq, db1200_pcmcia_cdirq,
- 				  IRQF_DISABLED, "pcmcia_insert", sock);
- 		if (ret)
-@@ -173,7 +183,7 @@ static int db1x_pcmcia_setup_irqs(struct db1x_pcmcia_sock *sock)
- 		}
+ 	decode_configs(c);
  
- 		/* enable the currently silent one */
--		if (db1200_card_inserted(sock))
-+		if (db1x_card_inserted(sock))
- 			enable_irq(sock->eject_irq);
- 		else
- 			enable_irq(sock->insert_irq);
-@@ -269,7 +279,8 @@ static int db1x_pcmcia_configure(struct pcmcia_socket *skt,
- 	}
- 
- 	/* create new voltage code */
--	cr_set |= ((v << 2) | p) << (sock->nr * 8);
-+	if (sock->board_type != BOARD_TYPE_DB1300)
-+		cr_set |= ((v << 2) | p) << (sock->nr * 8);
- 
- 	changed = state->flags ^ sock->old_flags;
- 
-@@ -319,7 +330,7 @@ static int db1x_pcmcia_get_status(struct pcmcia_socket *skt,
- 	unsigned short cr, sr;
- 	unsigned int status;
- 
--	status = db1x_card_inserted(sock) ? SS_DETECT : 0;
-+	status = 0;
- 
- 	cr = bcsr_read(BCSR_PCMCIA);
- 	sr = bcsr_read(BCSR_STATUS);
-@@ -342,6 +353,12 @@ static int db1x_pcmcia_get_status(struct pcmcia_socket *skt,
- 	/* if Vcc is not zero, we have applied power to a card */
- 	status |= GET_VCC(cr, sock->nr) ? SS_POWERON : 0;
- 
-+	/* DB1300: power is always on */
-+	if (sock->board_type == BOARD_TYPE_DB1300)
-+		status = SS_POWERON | SS_3VCARD;
++	switch (c->processor_id & 0xff00) {
++	case PRID_IMP_NETLOGIC_AU13XX:
++		c->cputype = CPU_ALCHEMY;
++		__cpu_name[cpu] = "Au13xx";
++		/* following stuff is not for Alchemy */
++		return;
++	}
 +
-+	status |= db1x_card_inserted(sock) ? SS_DETECT : 0;
-+
- 	/* reset de-asserted? then we're ready */
- 	status |= (GET_RESET(cr, sock->nr)) ? SS_READY : SS_RESET;
+ 	c->options = (MIPS_CPU_TLB       |
+ 			MIPS_CPU_4KEX    |
+ 			MIPS_CPU_COUNTER |
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 646068e..1384a4a 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -300,11 +300,11 @@ config I2C_AT91
+ 	  unless your system can cope with those limitations.
  
-@@ -418,6 +435,9 @@ static int __devinit db1x_pcmcia_socket_probe(struct platform_device *pdev)
- 	case BCSR_WHOAMI_PB1200 ... BCSR_WHOAMI_DB1200:
- 		sock->board_type = BOARD_TYPE_DB1200;
- 		break;
-+	case BCSR_WHOAMI_DB1300:
-+		sock->board_type = BOARD_TYPE_DB1300;
-+		break;
- 	default:
- 		printk(KERN_INFO "db1xxx-ss: unknown board %d!\n", bid);
+ config I2C_AU1550
+-	tristate "Au1550/Au1200 SMBus interface"
+-	depends on SOC_AU1550 || SOC_AU1200
++	tristate "Au1550/Au1200/Au1300 SMBus interface"
++	depends on SOC_AU1550 || SOC_AU1200 || SOC_AU1300
+ 	help
+ 	  If you say yes to this option, support will be included for the
+-	  Au1550 and Au1200 SMBus interface.
++	  Au1550/Au1200/Au1300 SMBus interface.
+ 
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-au1550.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index de35c3a..86c5066 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -90,12 +90,12 @@ config SPI_BFIN_SPORT
+ 	  will be called spi_bfin_sport.
+ 
+ config SPI_AU1550
+-	tristate "Au1550/Au12x0 SPI Controller"
+-	depends on (SOC_AU1550 || SOC_AU1200) && EXPERIMENTAL
++	tristate "Au1550/Au12x0/Au13xx SPI Controller"
++	depends on (SOC_AU1550 || SOC_AU1200 || SOC_AU1300) && EXPERIMENTAL
+ 	select SPI_BITBANG
+ 	help
+ 	  If you say yes to this option, support will be included for the
+-	  Au1550 SPI controller (may also work with Au1200,Au1210,Au1250).
++	  PSC SPI controller found on Au1550, Au12xx, Au13xx.
+ 
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called au1550_spi.
+diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
+index 48f1781..ec33212 100644
+--- a/drivers/usb/Kconfig
++++ b/drivers/usb/Kconfig
+@@ -56,7 +56,7 @@ config USB_ARCH_HAS_EHCI
+ 	boolean
+ 	default y if PPC_83xx
+ 	default y if PPC_MPC512x
+-	default y if SOC_AU1200
++	default y if MIPS_ALCHEMY
+ 	default y if ARCH_IXP4XX
+ 	default y if ARCH_W90X900
+ 	default y if ARCH_AT91SAM9G45
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index b435ed6..75e136b 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1187,7 +1187,7 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		ehci_hcd_sh_driver
+ #endif
+ 
+-#ifdef CONFIG_SOC_AU1200
++#ifdef CONFIG_MIPS_ALCHEMY
+ #include "ehci-au1xxx.c"
+ #define	PLATFORM_DRIVER		ehci_hcd_au1xxx_driver
+ #endif
+diff --git a/drivers/usb/host/ohci-au1xxx.c b/drivers/usb/host/ohci-au1xxx.c
+index 299d719..e4c624e 100644
+--- a/drivers/usb/host/ohci-au1xxx.c
++++ b/drivers/usb/host/ohci-au1xxx.c
+@@ -89,7 +89,7 @@ static const struct hc_driver ohci_au1xxx_hc_driver = {
+ 
+ static int ohci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ {
+-	int ret;
++	int ret, unit;
+ 	struct usb_hcd *hcd;
+ 
+ 	if (usb_disabled())
+@@ -120,7 +120,8 @@ static int ohci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 		goto err2;
+ 	}
+ 
+-	if (alchemy_usb_control(ALCHEMY_USB_OHCI0, 1)) {
++	unit = pdev->id == 0 ? ALCHEMY_USB_OHCI0 : ALCHEMY_USB_OHCI1;
++	if (alchemy_usb_control(unit, 1)) {
+ 		printk(KERN_INFO "%s: controller init failed!\n", pdev->name);
  		ret = -ENODEV;
-diff --git a/drivers/video/au1200fb.c b/drivers/video/au1200fb.c
-index 5dff32a..2f4c275 100644
---- a/drivers/video/au1200fb.c
-+++ b/drivers/video/au1200fb.c
-@@ -646,6 +646,42 @@ static struct panel_settings known_lcd_panels[] =
- 		856, 856,
- 		480, 480,
- 	},
-+	[9] = {
-+		.name = "DB1300_800x480",
-+		.monspecs = {
-+			.modedb = NULL,
-+			.modedb_len = 0,
-+			.hfmin = 30000,
-+			.hfmax = 70000,
-+			.vfmin = 60,
-+			.vfmax = 60,
-+			.dclkmin = 6000000,
-+			.dclkmax = 28000000,
-+			.input = FB_DISP_RGB,
-+		},
-+		.mode_screen		= LCD_SCREEN_SX_N(800) |
-+					  LCD_SCREEN_SY_N(480),
-+		.mode_horztiming	= LCD_HORZTIMING_HPW_N(5) |
-+					  LCD_HORZTIMING_HND1_N(16) |
-+					  LCD_HORZTIMING_HND2_N(8),
-+		.mode_verttiming	= LCD_VERTTIMING_VPW_N(4) |
-+					  LCD_VERTTIMING_VND1_N(8) |
-+					  LCD_VERTTIMING_VND2_N(5),
-+		.mode_clkcontrol	= LCD_CLKCONTROL_PCD_N(1) |
-+					  LCD_CLKCONTROL_IV |
-+					  LCD_CLKCONTROL_IH,
-+		.mode_pwmdiv		= 0x00000000,
-+		.mode_pwmhi		= 0x00000000,
-+		.mode_outmask		= 0x00FFFFFF,
-+		.mode_fifoctrl		= 0x2f2f2f2f,
-+		.mode_toyclksrc		= 0x00000004, /* AUXPLL directly */
-+		.mode_backlight		= 0x00000000,
-+		.mode_auxpll		= (48/12) * 2,
-+		.device_init		= board_au1200fb_panel_init,
-+		.device_shutdown	= board_au1200fb_panel_shutdown,
-+		800, 800,
-+		480, 480,
-+	},
- };
+ 		goto err3;
+@@ -135,7 +136,7 @@ static int ohci_hcd_au1xxx_drv_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
  
- #define NUM_PANELS (ARRAY_SIZE(known_lcd_panels))
+-	alchemy_usb_control(ALCHEMY_USB_OHCI0, 0);
++	alchemy_usb_control(unit, 0);
+ err3:
+ 	iounmap(hcd->regs);
+ err2:
+@@ -148,9 +149,10 @@ err1:
+ static int ohci_hcd_au1xxx_drv_remove(struct platform_device *pdev)
+ {
+ 	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++	int unit = pdev->id == 0 ? ALCHEMY_USB_OHCI0 : ALCHEMY_USB_OHCI1;
+ 
+ 	usb_remove_hcd(hcd);
+-	alchemy_usb_control(ALCHEMY_USB_OHCI0, 0);
++	alchemy_usb_control(unit, 0);
+ 	iounmap(hcd->regs);
+ 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+ 	usb_put_hcd(hcd);
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 549b960..6555902 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -1754,15 +1754,15 @@ config FB_AU1100
+ 	  au1100fb:panel=<name>.
+ 
+ config FB_AU1200
+-	bool "Au1200 LCD Driver"
+-	depends on (FB = y) && MIPS && SOC_AU1200
++	bool "Au1200/Au1300 LCD Driver"
++	depends on (FB = y) && MIPS_ALCHEMY
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+ 	help
+-	  This is the framebuffer driver for the AMD Au1200 SOC.  It can drive
+-	  various panels and CRTs by passing in kernel cmd line option
+-	  au1200fb:panel=<name>.
++	  This is the framebuffer driver for the Au1200/Au1300 SOCs.
++	  It can drive various panels and CRTs by passing in kernel cmd line
++	  option au1200fb:panel=<name>.
+ 
+ config FB_VT8500
+ 	bool "VT8500 LCD Driver"
 diff --git a/sound/soc/au1x/Kconfig b/sound/soc/au1x/Kconfig
-index 5bc30f3..f2662f9 100644
+index 4b67140..5bc30f3 100644
 --- a/sound/soc/au1x/Kconfig
 +++ b/sound/soc/au1x/Kconfig
-@@ -32,3 +32,15 @@ config SND_SOC_DB1200
+@@ -2,12 +2,12 @@
+ ## Au1200/Au1550 PSC + DBDMA
+ ##
+ config SND_SOC_AU1XPSC
+-	tristate "SoC Audio for Au1200/Au1250/Au1550"
+-	depends on SOC_AU1200 || SOC_AU1550
++	tristate "SoC Audio for Au12xx/Au13xx/Au1550"
++	depends on SOC_AU1200 || SOC_AU1550 || SOC_AU1300
  	help
- 	  Select this option to enable audio (AC97 or I2S) on the
- 	  Alchemy/AMD/RMI DB1200 demoboard.
-+
-+config SND_SOC_DB1300
-+	tristate "DB1300 audio support"
-+	depends on SND_SOC_AU1XPSC && MIPS_DB1300
-+	select SND_SOC_AU1XPSC_AC97
-+	select SND_SOC_WM9712
-+	select SND_SOC_AU1XPSC_I2S
-+	select SND_SOC_WM8731
-+	help
-+	  Select this option to enable AC97 and I2S audio on the
-+	  RMI/NetLogic DB1300 demoboard.  If you need touchscreen
-+	  support you definitely want to say Y here.
-diff --git a/sound/soc/au1x/Makefile b/sound/soc/au1x/Makefile
-index 1687307..21b1061 100644
---- a/sound/soc/au1x/Makefile
-+++ b/sound/soc/au1x/Makefile
-@@ -9,5 +9,7 @@ obj-$(CONFIG_SND_SOC_AU1XPSC_AC97) += snd-soc-au1xpsc-ac97.o
+ 	  This option enables support for the Programmable Serial
+ 	  Controllers in AC97 and I2S mode, and the Descriptor-Based DMA
+-	  Controller (DBDMA) as found on the Au1200/Au1250/Au1550 SoC.
++	  Controller (DBDMA) as found on the Au12xx/Au13xx/Au1550 SoC.
  
- # Boards
- snd-soc-db1200-objs := db1200.o
-+snd-soc-db1300-objs := db1300.o
- 
- obj-$(CONFIG_SND_SOC_DB1200) += snd-soc-db1200.o
-+obj-$(CONFIG_SND_SOC_DB1300) += snd-soc-db1300.o
-diff --git a/sound/soc/au1x/db1300.c b/sound/soc/au1x/db1300.c
-new file mode 100644
-index 0000000..46d4070
---- /dev/null
-+++ b/sound/soc/au1x/db1300.c
-@@ -0,0 +1,147 @@
-+/*
-+ * DB1300 ASoC audio fabric support code.
-+ *
-+ * (c) 2010 Manuel Lauss <manuel.lauss@googlemail.com>
-+ *
-+ * DB1300: AC97(WM9715) on PSC1, I2S(WM8731) on PSC2
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/moduleparam.h>
-+#include <linux/timer.h>
-+#include <linux/interrupt.h>
-+#include <linux/platform_device.h>
-+#include <sound/core.h>
-+#include <sound/pcm.h>
-+#include <sound/soc.h>
-+#include <sound/soc-dapm.h>
-+#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-au1x00/au1xxx_psc.h>
-+#include <asm/mach-au1x00/au1xxx_dbdma.h>
-+#include <asm/mach-db1x00/bcsr.h>
-+
-+#include "../codecs/wm8731.h"
-+#include "../codecs/wm9712.h"
-+#include "psc.h"
-+
-+/*-------------------------  AC97 PART  ---------------------------*/
-+
-+static struct snd_soc_dai_link db1300_ac97_dai = {
-+	.name		= "AC97",
-+	.stream_name	= "AC97 HiFi",
-+	.codec_dai_name	= "wm9712-hifi",
-+	.cpu_dai_name	= "au1xpsc_ac97.1",
-+	.platform_name	= "au1xpsc-pcm.1",
-+	.codec_name	= "wm9712-codec.1",
-+};
-+
-+static struct snd_soc_card db1300_ac97_machine = {
-+	.name		= "DB1300_AC97",
-+	.dai_link	= &db1300_ac97_dai,
-+	.num_links	= 1,
-+};
-+
-+/*-------------------------  I2S PART  ---------------------------*/
-+
-+static int db1300_i2s_startup(struct snd_pcm_substream *substream)
-+{
-+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct snd_soc_dai *codec_dai = rtd->codec_dai;
-+	struct snd_soc_dai *cpu_dai = rtd->cpu_dai;
-+	int ret;
-+
-+	/* WM8731 has its own 12MHz crystal */
-+	snd_soc_dai_set_sysclk(codec_dai, WM8731_SYSCLK_XTAL,
-+				12000000, SND_SOC_CLOCK_IN);
-+
-+	/* codec is bitclock and lrclk master */
-+	ret = snd_soc_dai_set_fmt(codec_dai, SND_SOC_DAIFMT_LEFT_J |
-+			SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_CBM_CFM);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = snd_soc_dai_set_fmt(cpu_dai, SND_SOC_DAIFMT_LEFT_J |
-+			SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_CBM_CFM);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = 0;
-+out:
-+	return ret;
-+}
-+
-+static struct snd_soc_ops db1300_i2s_wm8731_ops = {
-+	.startup	= db1300_i2s_startup,
-+};
-+
-+static struct snd_soc_dai_link db1300_i2s_dai = {
-+	.name		= "WM8731",
-+	.stream_name	= "WM8731 PCM",
-+	.codec_dai_name	= "wm8731-hifi",
-+	.cpu_dai_name	= "au1xpsc_i2s.2",
-+	.platform_name	= "au1xpsc-pcm.2",
-+	.codec_name	= "wm8731.0-001b",
-+	.ops		= &db1300_i2s_wm8731_ops,
-+};
-+
-+static struct snd_soc_card db1300_i2s_machine = {
-+	.name		= "DB1300_I2S",
-+	.dai_link	= &db1300_i2s_dai,
-+	.num_links	= 1,
-+};
-+
-+/*-------------------------  COMMON PART  ---------------------------*/
-+
-+static struct platform_device *db1300_ac97_dev, *db1300_i2s_dev;
-+
-+static int __init db1300_audio_load(void)
-+{
-+	int ret;
-+
-+	/* impostor check */
-+	if (BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI)) != BCSR_WHOAMI_DB1300)
-+		return -ENODEV;
-+
-+	ret = -ENOMEM;
-+	db1300_ac97_dev = platform_device_alloc("soc-audio", 1); /* PSC1 */
-+	if (!db1300_ac97_dev)
-+		goto out;
-+	platform_set_drvdata(db1300_ac97_dev, &db1300_ac97_machine);
-+
-+	db1300_i2s_dev = platform_device_alloc("soc-audio", 2); /* PSC2 */
-+	if (!db1300_i2s_dev)
-+		goto out;
-+	platform_set_drvdata(db1300_i2s_dev, &db1300_i2s_machine);
-+
-+	ret = platform_device_add(db1300_ac97_dev);
-+	if (ret) {
-+		platform_device_put(db1300_ac97_dev);
-+		db1300_ac97_dev = NULL;
-+		printk(KERN_ERR "DB1300: failed to register AC97 audio\n");
-+	}
-+
-+	ret = platform_device_add(db1300_i2s_dev);
-+	if (ret) {
-+		platform_device_put(db1300_i2s_dev);
-+		db1300_i2s_dev = NULL;
-+		printk(KERN_ERR "DB1300: failed to register I2S audio\n");
-+	}
-+
-+out:
-+	return ret;
-+}
-+
-+static void __exit db1300_audio_unload(void)
-+{
-+	if (db1300_i2s_dev)
-+		platform_device_unregister(db1300_i2s_dev);
-+	if (db1300_ac97_dev)
-+		platform_device_unregister(db1300_ac97_dev);
-+}
-+
-+module_init(db1300_audio_load);
-+module_exit(db1300_audio_unload);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("DB1300 ASoC audio support");
-+MODULE_AUTHOR("Manuel Lauss");
+ config SND_SOC_AU1XPSC_I2S
+ 	tristate
 -- 
 1.7.5.3

@@ -1,64 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jun 2011 21:00:42 +0200 (CEST)
-Received: from mail-ww0-f41.google.com ([74.125.82.41]:58876 "EHLO
-        mail-ww0-f41.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491065Ab1FLTAh (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 12 Jun 2011 21:00:37 +0200
-Received: by wwi18 with SMTP id 18so2043367wwi.0
-        for <multiple recipients>; Sun, 12 Jun 2011 12:00:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:sender:from:organization:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:message-id;
-        bh=L8s88egjbnhn3SkPLUf3vlEd5+dT1yNS4bEJu/nz9Hc=;
-        b=T8bzlqIPgElLKM8xC2jBFfvQLqSTGR61jMJ6uUy/YnN8HdRnW0H+tA8aAswFHfDx9D
-         6YGYLMNHE7goWZ3CmvbkJgHWUH9ebPj9NTUveSLs0ssdNS0U/jCAL7V45KoPTRSdFlWZ
-         V5UipILfP4BndfarV4xM4jjwRPXkbykmbSnvA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:organization:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=OSgZKAsE/dF74/WeEWXuWKZpGOfWxhWd+h5oJalNULGKv1bO+0mnVuzGuhSt3pCo/v
-         74lIK3u+82Hr5mMhN/s9lmzW3i+7CGjLBcolMTWXSLQbw6b8Mn79XwJzBlZNJ6dU5R3d
-         YMtc7WhtAJLRsvWkPTdFND+KDIxDXsxdjEQlY=
-Received: by 10.216.253.215 with SMTP id f65mr4242268wes.14.1307905232161;
-        Sun, 12 Jun 2011 12:00:32 -0700 (PDT)
-Received: from bender.localnet (fbx.mimichou.net [82.236.225.16])
-        by mx.google.com with ESMTPS id g2sm2500598weg.14.2011.06.12.12.00.30
-        (version=SSLv3 cipher=OTHER);
-        Sun, 12 Jun 2011 12:00:30 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-To:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 5/5] MIPS: ar7: use linux/time.h instead of asm/time.h
-Date:   Sun, 12 Jun 2011 21:00:29 +0200
-User-Agent: KMail/1.13.6 (Linux/2.6.38-9-generic; KDE/4.6.2; x86_64; ; )
-Cc:     ralf@linux-mips.org
-References: <1307905041-18391-1-git-send-email-florian@openwrt.org> <1307905041-18391-5-git-send-email-florian@openwrt.org>
-In-Reply-To: <1307905041-18391-5-git-send-email-florian@openwrt.org>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201106122100.29385.florian@openwrt.org>
-X-archive-position: 30361
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2011 06:28:00 +0200 (CEST)
+Received: from linux-sh.org ([111.68.239.195]:45657 "EHLO linux-sh.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490946Ab1FME1y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Jun 2011 06:27:54 +0200
+Received: from linux-sh.org (localhost.localdomain [127.0.0.1])
+        by linux-sh.org (8.14.4/8.14.4) with ESMTP id p5D4Oah7016184;
+        Mon, 13 Jun 2011 13:24:36 +0900
+Received: (from pmundt@localhost)
+        by linux-sh.org (8.14.4/8.14.4/Submit) id p5D4OAHE009396;
+        Mon, 13 Jun 2011 13:24:10 +0900
+X-Authentication-Warning: linux-sh.org: pmundt set sender to lethal@linux-sh.org using -f
+Date:   Mon, 13 Jun 2011 13:24:10 +0900
+From:   Paul Mundt <lethal@linux-sh.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Jesse Barnes <jbarnes@virtuousgeek.org>, linux-pci@vger.kernel.org,
+        Anton Vorontsov <avorontsov@mvista.com>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Colin Cross <ccross@android.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Erik Gilling <konkers@android.com>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        "H. Peter Anvin" <hpa@zytor.com>, Imre Kaloz <kaloz@openwrt.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Krzysztof Halasa <khc@pm.waw.pl>,
+        Lennert Buytenhek <kernel@wantstofly.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Olof Johansson <olof@lixom.net>,
+        Richard Henderson <rth@twiddle.net>,
+        Russell King <linux@arm.linux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-sh@vger.kernel.org, linux-tegra@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH] PCI: Make the struct pci_dev * argument of pci_fixup_irqs const.
+Message-ID: <20110613042410.GB29731@linux-sh.org>
+References: <20110610143021.GA26043@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20110610143021.GA26043@linux-mips.org>
+User-Agent: Mutt/1.4.1i
+X-archive-position: 30362
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: lethal@linux-sh.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10222
+X-UID: 10382
 
-On Sunday 12 June 2011 20:57:21 Florian Fainelli wrote:
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
->  arch/mips/ar7/time.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
+On Fri, Jun 10, 2011 at 03:30:21PM +0100, Ralf Baechle wrote:
+> Aside of the usual motivation for constification,  this function has a
+> history of being abused a hook for interrupt and other fixups so I turned
+> this function const ages ago in the MIPS code but it should be done
+> treewide.
+> 
+> Due to function pointer passing in varous places a few other functions
+> had to be constified as well.
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-And this one too is causing a build failure, sorry about that.
--- 
-Florian
+Acked-by: Paul Mundt <lethal@linux-sh.org>

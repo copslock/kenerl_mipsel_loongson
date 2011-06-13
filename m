@@ -1,102 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2011 11:13:26 +0200 (CEST)
-Received: from mprc.pku.edu.cn ([162.105.203.9]:52881 "EHLO mprc.pku.edu.cn"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491068Ab1FMJNU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Jun 2011 11:13:20 +0200
-Received: from [192.168.0.106] ([162.105.80.111])
-        (authenticated bits=0)
-        by mprc.pku.edu.cn (8.13.8/8.13.8) with ESMTP id p5D995YN010394;
-        Mon, 13 Jun 2011 17:09:08 +0800
-Subject: Re: [PATCH] PCI: Make the struct pci_dev * argument of
- pci_fixup_irqs const.
-From:   Guan Xuetao <gxt@mprc.pku.edu.cn>
-Reply-To: gxt@mprc.pku.edu.cn
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Jesse Barnes <jbarnes@virtuousgeek.org>, linux-pci@vger.kernel.org,
-        Anton Vorontsov <avorontsov@mvista.com>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Colin Cross <ccross@android.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Erik Gilling <konkers@android.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Imre Kaloz <kaloz@openwrt.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Krzysztof Halasa <khc@pm.waw.pl>,
-        Lennert Buytenhek <kernel@wantstofly.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Olof Johansson <olof@lixom.net>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Russell King <linux@arm.linux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, linux-tegra@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org
-In-Reply-To: <20110610143021.GA26043@linux-mips.org>
-References: <20110610143021.GA26043@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Organization: MPRC, PKU
-Date:   Mon, 13 Jun 2011 17:00:44 +0800
-Message-ID: <1307955644.1878.5.camel@epip-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.2 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 30364
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2011 11:19:39 +0200 (CEST)
+Received: from mail-ww0-f41.google.com ([74.125.82.41]:40760 "EHLO
+        mail-ww0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491056Ab1FMJTf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jun 2011 11:19:35 +0200
+Received: by wwi18 with SMTP id 18so2358286wwi.0
+        for <multiple recipients>; Mon, 13 Jun 2011 02:19:29 -0700 (PDT)
+Received: by 10.216.235.157 with SMTP id u29mr2338811weq.24.1307956769814;
+        Mon, 13 Jun 2011 02:19:29 -0700 (PDT)
+Received: from localhost (gw-ba1.picochip.com [94.175.234.108])
+        by mx.google.com with ESMTPS id z66sm2762709weq.24.2011.06.13.02.19.27
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 13 Jun 2011 02:19:28 -0700 (PDT)
+Date:   Mon, 13 Jun 2011 10:19:26 +0100
+From:   Jamie Iles <jamie@jamieiles.com>
+To:     Alan Cox <alan@linux.intel.com>
+Cc:     Jamie Iles <jamie@jamieiles.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-serial@vger.kernel.org, Greg Kroah-Hartman <gregkh@suse.de>,
+        linux-mips@linux-mips.org, Marc St-Jean <bluezzer@gmail.com>,
+        Shane McDonald <mcdonald.shane@gmail.com>,
+        Anoop P A <anoop.pa@gmail.com>
+Subject: Re: [PATCH] tty: 8250: handle USR for DesignWare 8250 with correct
+ accessors
+Message-ID: <20110613091926.GB2472@pulham.picochip.com>
+References: <1307616525-22028-1-git-send-email-jamie@jamieiles.com>
+ <20110610035817.GA6740@linux-mips.org>
+ <20110610075426.GM3711@pulham.picochip.com>
+ <20110610145724.1e0c0983@bob.linux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20110610145724.1e0c0983@bob.linux.org.uk>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 30365
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gxt@mprc.pku.edu.cn
+X-original-sender: jamie@jamieiles.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10464
+X-UID: 10473
 
-On Fri, 2011-06-10 at 15:30 +0100, Ralf Baechle wrote:
-> Aside of the usual motivation for constification,  this function has a
-> history of being abused a hook for interrupt and other fixups so I turned
-> this function const ages ago in the MIPS code but it should be done
-> treewide.
+On Fri, Jun 10, 2011 at 02:57:24PM +0100, Alan Cox wrote:
+> > I found this series from Alan 
+> > (http://www.spinics.net/lists/linux-serial/msg03484.html) which looks 
+> > like it would do the job if we added the extra irq callback.  Ideally
+> > we just remove both of the UPIO_DWAPB and UPIO_DWAPB32 and let the
+> > platform specify the ops.
 > 
-> Due to function pointer passing in varous places a few other functions
-> had to be constified as well.
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> To: Anton Vorontsov <avorontsov@mvista.com>
-> To: Chris Metcalf <cmetcalf@tilera.com>
-> To: Colin Cross <ccross@android.com>
-> To: "David S. Miller" <davem@davemloft.net>
-> To: Eric Miao <eric.y.miao@gmail.com>
-> To: Erik Gilling <konkers@android.com>
-> To: Guan Xuetao <gxt@mprc.pku.edu.cn>
-> To: "H. Peter Anvin" <hpa@zytor.com>
-> To: Imre Kaloz <kaloz@openwrt.org>
-> To: Ingo Molnar <mingo@redhat.com>
-> To: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-> To: Jesse Barnes <jbarnes@virtuousgeek.org>
-> To: Krzysztof Halasa <khc@pm.waw.pl>
-> To: Lennert Buytenhek <kernel@wantstofly.org>
-> To: Matt Turner <mattst88@gmail.com>
-> To: Nicolas Pitre <nico@fluxnic.net>
-> To: Olof Johansson <olof@lixom.net>
-> To: Paul Mundt <lethal@linux-sh.org>
-> To: Richard Henderson <rth@twiddle.net>
-> To: Russell King <linux@arm.linux.org.uk>
-> To: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
-> Cc: linux-pci@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-tegra@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: x86@kernel.org
-> ---
-For UniCore32 related codes:
-Acked-by: Guan Xuetao <gxt@mprc.pku.edu.cn>
+> I've not yet had time to go back and revisit those patches and debug
+> them so they actually work but as and when someone gets time I think
+> it's the right basic path to follow, and the irq callback looks
+> sensible too.
+
+As an intermediate step, how about adding the irq callback to 
+uart_8250_port and removing UPIO_DWAPB and UPIO_DWAPB32 from the driver?  
+
+Jamie

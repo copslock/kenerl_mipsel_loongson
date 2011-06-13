@@ -1,118 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2011 23:51:52 +0200 (CEST)
-Received: from imr4.ericy.com ([198.24.6.8]:44595 "EHLO imr4.ericy.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2011 01:44:06 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:3585 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491119Ab1FMVva (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 13 Jun 2011 23:51:30 +0200
-Received: from eusaamw0707.eamcs.ericsson.se ([147.117.20.32])
-        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id p5DLpHFj003939;
-        Mon, 13 Jun 2011 16:51:23 -0500
-Received: from localhost (147.117.20.214) by eusaamw0707.eamcs.ericsson.se
- (147.117.20.92) with Microsoft SMTP Server id 8.3.137.0; Mon, 13 Jun 2011
- 17:51:11 -0400
-Date:   Mon, 13 Jun 2011 14:51:11 -0700
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-To:     David Daney <ddaney@caviumnetworks.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: Linux 2.6.39 on Cavium CN38xx
-Message-ID: <20110613215111.GA3484@ericsson.com>
-References: <1307653714.8271.130.camel@groeck-laptop>
- <4DF13E25.2060502@caviumnetworks.com>
- <20110609220614.GA13583@ericsson.com>
- <4DF15068.30906@caviumnetworks.com>
- <1307751642.8271.315.camel@groeck-laptop>
- <20110612164155.GA30615@ericsson.com>
- <4DF67CAE.1040804@caviumnetworks.com>
+        id S1491114Ab1FMXoB convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jun 2011 01:44:01 +0200
+Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Mon, 13 Jun 2011 16:47:32 -0700
+X-Server-Uuid: D3C04415-6FA8-4F2C-93C1-920E106A2031
+Received: from IRVEXCHCCR01.corp.ad.broadcom.com ([10.252.49.30]) by
+ IRVEXCHHUB01.corp.ad.broadcom.com ([10.9.200.131]) with mapi; Mon, 13
+ Jun 2011 16:43:16 -0700
+From:   "Jian Peng" <jipeng@broadcom.com>
+To:     "Jian Peng" <jipeng@broadcom.com>,
+        "David Daney" <ddaney@caviumnetworks.com>
+cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "Ralf Baechle" <ralf@linux-mips.org>
+Date:   Mon, 13 Jun 2011 16:43:14 -0700
+Subject: RE: patch to support topdown mmap allocation in MIPS
+Thread-Topic: patch to support topdown mmap allocation in MIPS
+Thread-Index: AcwbBVcOuMe2pbjkS7u+cbhp1RyQVgAABI5wA8d2QpA=
+Message-ID: <E18F441196CA634DB8E1F1C56A50A874572DE7E983@IRVEXCHCCR01.corp.ad.broadcom.com>
+References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
+ <4DD1BD72.2000408@caviumnetworks.com>
+ <E18F441196CA634DB8E1F1C56A50A8743242B54D97@IRVEXCHCCR01.corp.ad.broadcom.com>
+ <4DD2A729.9090502@caviumnetworks.com>
+ <E18F441196CA634DB8E1F1C56A50A8743242B54FA7@IRVEXCHCCR01.corp.ad.broadcom.com>
+ <E18F441196CA634DB8E1F1C56A50A874572CCBB6B5@IRVEXCHCCR01.corp.ad.broadcom.com>
+ <4DDD432D.4020200@caviumnetworks.com>
+ <E18F441196CA634DB8E1F1C56A50A874572CCBB6D0@IRVEXCHCCR01.corp.ad.broadcom.com>
+In-Reply-To: <E18F441196CA634DB8E1F1C56A50A874572CCBB6D0@IRVEXCHCCR01.corp.ad.broadcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage: en-US
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <4DF67CAE.1040804@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 30372
+X-WSS-ID: 61E87E1E62O8373552-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: jipeng@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10964
+X-UID: 11060
 
-On Mon, Jun 13, 2011 at 05:10:06PM -0400, David Daney wrote:
-> On 06/12/2011 09:41 AM, Guenter Roeck wrote:
-> > On Fri, Jun 10, 2011 at 08:20:42PM -0400, Guenter Roeck wrote:
-> > [ ... ]
-> >
-> >> Hi David,
-> >>
-> >> Turns out my primary problem is that octeon_irq_setup_secondary_ciu()
-> >> sets C0_STATUS to 0x1000efe0, ie all interrupts except IP4 are enabled.
-> >> This mask is primarily set through octeon_irq_percpu_enable(), which
-> >> sets C0_STATUS to 0x1000e3e0. The value differs from CPU 0, where
-> >> C0_STATUS is set to 0x10008ce0.
-> >>
-> >> This causes persistent spurious interrupts on our boards (both with
-> >> CN38xx and CN58xx), where C0_CAUSE persistently reads as zero in the
-> >> interrupt handling code but interrupts are triggered anyway. The
-> >> spurious interrupt problem goes away if I mask out IP0, IP1, IP5, and
-> >> IP6 at the end of octeon_irq_setup_secondary_ciu().
-> >>
-> > Answering part of my own question: The interrupt enable bits for secondary CPUs
-> > are all set through octeon_irq_core_eoi(), which is called from the per-CPU
-> > initialization code and enables each interrupt even if "desired_en" is false
-> > for a given bit. I modified octeon_irq_core_eoi() to
-> >
-> > 	if (cd->desired_en)
-> >                  set_c0_status(0x100<<  cd->bit);
-> >
-> 
-> That shouldn't be needed.  The logic in irq_cpu_online() should only 
-> call chip->irq_cpu_online() if the irq is enabled.
-> 
-Doesn't look like it. Here is some log output:
+Hi, David/Ralf,
 
-SMP: Booting CPU01 (CoreId  1)...
-Core 1 ALIVE
-CPU revision is: 000d0003 (Cavium Octeon)
-PU 1: Calling irq_cpu_online() for irq_chip Core, flags=0x8, disabled=0
-CPU 1: irq_core_eoi(enable=0, bit=0)
-CPU 1: Calling irq_cpu_online() for irq_chip Core, flags=0x8, disabled=0
-CPU 1: irq_core_eoi(enable=0, bit=1)
-CPU 1: Calling irq_cpu_online() for irq_chip Core, flags=0x8, disabled=0
-CPU 1: irq_core_eoi(enable=0, bit=5)
-CPU 1: Calling irq_cpu_online() for irq_chip Core, flags=0x8, disabled=0
-CPU 1: irq_core_eoi(enable=0, bit=6)
-CPU 1: Calling irq_cpu_online() for irq_chip Core, flags=0x8, disabled=0
-CPU 1: irq_core_eoi(enable=1, bit=7)
+I tried to regenerate a patch for this, and after 
 
-irqd_irq_disabled(&desc->irq_data) returns false, meaning IRQD_IRQ_DISABLED
-is not set in the state_use_accessors field of irq_data for the interrupt bits
-in question. If I understand the code correctly, this happens for unused 
-interrupts if CONFIG_IRQ_SPARSE is not set (desc_set_defaults(), which sets the bit,
-is only called if CONFIG_IRQ_SPARSE is defined).
+git clone git://git.linux-mips.org/pub/scm/linux
 
-As a result, irq_core_eoi() is called from irq_cpu_online(), even though
-IRQCHIP_ONOFFLINE_ENABLED is set in irq_chip.
+I found out that there is arch/mips/mm/mmap.c, but could not find out who/how this file was merged.
 
-> 
-> > which takes care of the problem. No idea if that is correct, though.
-> >
-> > The actual interrupt causing trouble and spurious interrupts in my case is,
-> > oddly enough, STATUSF_IP0. So far I have been unable to track down how that
-> > is triggered; I don't see the bit being set set in C0_CAUSE anywhere.
-> >
-> > Are there any means to trigger an IP0 interrupt other than by writing STATUSF_IP0
-> > into the C0_CAUSE register ?
-> >
-> 
-> No.  Nothing that I know of ever uses IP0 and IP1, so they should always 
-> be cleared.
-> 
-Exactly what I figured, yet I still get those spurious interrupts if IP0 is enabled.
-Something odd is definitely going on in my system.
-
-Besides the above, my hopefully final problem is that timer interrupts are only
-received by CPU 0. Any idea what to look for to fix this problem ?
+I doubt that I may "git clone" a wrong repo that is no longer valid.
 
 Thanks,
-Guenter
+Jian
+
+-----Original Message-----
+From: linux-mips-bounce@linux-mips.org [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Jian Peng
+Sent: Wednesday, May 25, 2011 11:07 AM
+To: David Daney
+Cc: linux-mips@linux-mips.org; Ralf Baechle
+Subject: RE: patch to support topdown mmap allocation in MIPS
+
+Hi, David,
+
+I am willing to get more feedback and sort out issues before I forgot all details.
+
+I post a simple testing program at http://www.linux-mips.org/archives/linux-mips/2011-05/msg00252.html
+And it was also tested in a real application using mmap heavily and need this patch to avoid failure.
+
+It is my bad to take your suggestion literally. How about arch_get_unmapped_area_common()?
+
+Thanks,
+Jian
+
+-----Original Message-----
+From: David Daney [mailto:ddaney@caviumnetworks.com] 
+Sent: Wednesday, May 25, 2011 10:58 AM
+To: Jian Peng
+Cc: linux-mips@linux-mips.org; Ralf Baechle
+Subject: Re: patch to support topdown mmap allocation in MIPS
+
+On 05/25/2011 10:47 AM, Jian Peng wrote:
+> Hi, Ralf/David,
+>
+> What else should I do to get this patch merged?
+>
+
+Be patient.  And tell how it was tested.
+
+
+Also ....
+
+[...]
+> +
+> +unsigned long arch_get_unmapped_area_foo(struct file *filp, unsigned long addr0,
+> +               unsigned long len, unsigned long pgoff, unsigned long flags,
+> +               enum mmap_allocation_direction dir)
+
+I know I suggested the name *_foo, but really I expected you to choose a 
+better name, as the 'foo' is just the default name for examples.
+
+I think it needs a better name than that.
+
+I will try to test it on my Octeon system sometime.
+
+David Daney

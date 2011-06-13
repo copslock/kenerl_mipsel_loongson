@@ -1,80 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2011 23:11:07 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:19990 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491114Ab1FMVLE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Jun 2011 23:11:04 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4df67d270000>; Mon, 13 Jun 2011 14:12:07 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 13 Jun 2011 14:10:06 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 13 Jun 2011 14:10:06 -0700
-Message-ID: <4DF67CAE.1040804@caviumnetworks.com>
-Date:   Mon, 13 Jun 2011 14:10:06 -0700
-From:   David Daney <ddaney@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jun 2011 23:42:48 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:41305 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491114Ab1FMVmp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 13 Jun 2011 23:42:45 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5DLh5CN030275;
+        Mon, 13 Jun 2011 22:43:05 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5DLh465030273;
+        Mon, 13 Jun 2011 22:43:04 +0100
+Date:   Mon, 13 Jun 2011 22:43:04 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 4/5] MIPS: ar7: use linux/reboot.h instead of asm/reboot.h
+Message-ID: <20110613214304.GA29853@linux-mips.org>
+References: <1307905041-18391-1-git-send-email-florian@openwrt.org>
+ <1307905041-18391-4-git-send-email-florian@openwrt.org>
+ <201106122059.57909.florian@openwrt.org>
 MIME-Version: 1.0
-To:     Guenter Roeck <guenter.roeck@ericsson.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: Linux 2.6.39 on Cavium CN38xx
-References: <1307653714.8271.130.camel@groeck-laptop> <4DF13E25.2060502@caviumnetworks.com> <20110609220614.GA13583@ericsson.com> <4DF15068.30906@caviumnetworks.com> <1307751642.8271.315.camel@groeck-laptop> <20110612164155.GA30615@ericsson.com>
-In-Reply-To: <20110612164155.GA30615@ericsson.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Jun 2011 21:10:06.0805 (UTC) FILETIME=[4555A050:01CC2A0E]
-X-archive-position: 30368
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201106122059.57909.florian@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 30369
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10931
+X-UID: 10955
 
-On 06/12/2011 09:41 AM, Guenter Roeck wrote:
-> On Fri, Jun 10, 2011 at 08:20:42PM -0400, Guenter Roeck wrote:
-> [ ... ]
->
->> Hi David,
->>
->> Turns out my primary problem is that octeon_irq_setup_secondary_ciu()
->> sets C0_STATUS to 0x1000efe0, ie all interrupts except IP4 are enabled.
->> This mask is primarily set through octeon_irq_percpu_enable(), which
->> sets C0_STATUS to 0x1000e3e0. The value differs from CPU 0, where
->> C0_STATUS is set to 0x10008ce0.
->>
->> This causes persistent spurious interrupts on our boards (both with
->> CN38xx and CN58xx), where C0_CAUSE persistently reads as zero in the
->> interrupt handling code but interrupts are triggered anyway. The
->> spurious interrupt problem goes away if I mask out IP0, IP1, IP5, and
->> IP6 at the end of octeon_irq_setup_secondary_ciu().
->>
-> Answering part of my own question: The interrupt enable bits for secondary CPUs
-> are all set through octeon_irq_core_eoi(), which is called from the per-CPU
-> initialization code and enables each interrupt even if "desired_en" is false
-> for a given bit. I modified octeon_irq_core_eoi() to
->
-> 	if (cd->desired_en)
->                  set_c0_status(0x100<<  cd->bit);
->
+On Sun, Jun 12, 2011 at 08:59:57PM +0200, Florian Fainelli wrote:
 
-That shouldn't be needed.  The logic in irq_cpu_online() should only 
-call chip->irq_cpu_online() if the irq is enabled.
+> Ralf, please discard this one, it's causing a build failure.
 
+Okay, bitbucketed.
 
-> which takes care of the problem. No idea if that is correct, though.
->
-> The actual interrupt causing trouble and spurious interrupts in my case is,
-> oddly enough, STATUSF_IP0. So far I have been unable to track down how that
-> is triggered; I don't see the bit being set set in C0_CAUSE anywhere.
->
-> Are there any means to trigger an IP0 interrupt other than by writing STATUSF_IP0
-> into the C0_CAUSE register ?
->
-
-No.  Nothing that I know of ever uses IP0 and IP1, so they should always 
-be cleared.
-
-David Daney.
+  Ralf

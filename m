@@ -1,71 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2011 17:33:56 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:33678 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491014Ab1FNPdw convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 14 Jun 2011 17:33:52 +0200
-Received: by yxe42 with SMTP id 42so1758324yxe.36
-        for <multiple recipients>; Tue, 14 Jun 2011 08:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=ouFjE4oCkQanBZ79I9Xz/ge7VxEzxhCqLMLAb2sMObw=;
-        b=xGFxywx4nlCSTBPJo29gu9hx9sqyX7FY9nv49oa1GVPmzoTSvjRGYSvErQxIw1aTyu
-         zXyrwSW21TelwlapDD5J7Hf6f/pHe+uNsAh64DDGxLzO1hrQn5sUDEHO23XnGzYgRx4b
-         SDIesl3dfo2ha0N/y+n8IfZSgUaj1fCgPmbtQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=PGnBm68GpMIz/FuCO+EtEC+WYduAf5ZPKE8HrLpzk/XrR+hbWRtHgQ6czuVy+uIE3o
-         xD3sDY88Jzv1vTiZzsnwsKeBZAJVakw2dfs+x5zr8Rle58VZ3UFsICILmCeuEqRGn9BL
-         XHSrSxvGfyK62AeB2QMupliFUn1o0uUVIc9qs=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2011 18:55:51 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11278 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491000Ab1FNQzr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jun 2011 18:55:47 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4df792d30000>; Tue, 14 Jun 2011 09:56:51 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 14 Jun 2011 09:55:45 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 14 Jun 2011 09:55:45 -0700
+Message-ID: <4DF7928C.7010004@caviumnetworks.com>
+Date:   Tue, 14 Jun 2011 09:55:40 -0700
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.42.75.202 with SMTP id b10mr5015598ick.242.1308065625473; Tue,
- 14 Jun 2011 08:33:45 -0700 (PDT)
-Received: by 10.42.169.193 with HTTP; Tue, 14 Jun 2011 08:33:45 -0700 (PDT)
-In-Reply-To: <20110610035817.GA6740@linux-mips.org>
-References: <1307616525-22028-1-git-send-email-jamie@jamieiles.com>
-        <20110610035817.GA6740@linux-mips.org>
-Date:   Tue, 14 Jun 2011 09:33:45 -0600
-Message-ID: <BANLkTi=0Pk-2YT=jLeBTNLYELfo+e-saZA@mail.gmail.com>
-Subject: Re: [PATCH] tty: 8250: handle USR for DesignWare 8250 with correct accessors
-From:   Shane McDonald <mcdonald.shane@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Jamie Iles <jamie@jamieiles.com>, linux-serial@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org,
-        Marc St-Jean <bluezzer@gmail.com>,
-        Anoop P A <anoop.pa@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30376
+To:     Guenter Roeck <guenter.roeck@ericsson.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: Linux 2.6.39 on Cavium CN38xx
+References: <1307653714.8271.130.camel@groeck-laptop> <4DF13E25.2060502@caviumnetworks.com> <20110609220614.GA13583@ericsson.com> <4DF15068.30906@caviumnetworks.com> <1307751642.8271.315.camel@groeck-laptop> <20110612164155.GA30615@ericsson.com> <4DF67CAE.1040804@caviumnetworks.com> <20110613215111.GA3484@ericsson.com> <20110614033403.GA4582@ericsson.com>
+In-Reply-To: <20110614033403.GA4582@ericsson.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 14 Jun 2011 16:55:45.0606 (UTC) FILETIME=[E75D3660:01CC2AB3]
+X-archive-position: 30377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11650
+X-UID: 11713
 
-On Thu, Jun 9, 2011 at 9:58 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> If you look at arch/mips/include/asm/pmc-sierra/msp71xx/msp_regs.h there's
->
-> #define MSP_UART0_BASE          (MSP_SLP_BASE + 0x100)
->                                        /* UART0 controller base        */
-> #define MSP_BCPY_CTRL_BASE      (MSP_SLP_BASE + 0x120)
->                                        /* Block Copy controller base   */
->
-> So there are just 0x20 of address space reserved for that UART.  Me thinks
-> that PMC-Sierra clamped the 256 byte address space of the DesignWare APB
-> UART to what is standard for 16550 class UARTs, 8 registers which at a
-> shift of 4 is 0x20 bytes and the status register being accesses is really
-> something else.  I'd guess PMC-Sierra just remapped the register to
-> another address.
+On 06/13/2011 08:34 PM, Guenter Roeck wrote:
+> On Mon, Jun 13, 2011 at 05:51:11PM -0400, Guenter Roeck wrote:
+> [ ... ]
+>>>>
+>>>> The actual interrupt causing trouble and spurious interrupts in my case is,
+>>>> oddly enough, STATUSF_IP0. So far I have been unable to track down how that
+>>>> is triggered; I don't see the bit being set set in C0_CAUSE anywhere.
+>>>>
+>>>> Are there any means to trigger an IP0 interrupt other than by writing STATUSF_IP0
+>>>> into the C0_CAUSE register ?
+>>>>
+>>>
+>>> No.  Nothing that I know of ever uses IP0 and IP1, so they should always
+>>> be cleared.
+>>>
+>> Exactly what I figured, yet I still get those spurious interrupts if IP0 is enabled.
+>> Something odd is definitely going on in my system.
+>>
+>> Besides the above, my hopefully final problem is that timer interrupts are only
+>> received by CPU 0. Any idea what to look for to fix this problem ?
+>>
+> Found the problem. Apparently the BIOS resets CvmCtl[IPTI] to 0.
 
-I have confirmed with a contact at PMC-Sierra that this is the case.
+That is clearly erroneous behavior.  Although you can set any value, the 
+HRM clearly states that 2..7 are the only legal values.
 
-Shane
+The Cavuim/Octeon u-boot just leave it at the default value of 7, and 
+the kernel basically expects it to be 7, and never explicitly sets it.
+
+We do set the IPPCI to 6 in the kernel, and for performance reasons, 
+expect it to have a different value than IPTI.  IP{2,3,4} are basically 
+reserved for use by the system interrupt controller, so really these 
+things must be on one of IP{5,6,7}.
+
+David Daney

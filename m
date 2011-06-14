@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2011 01:44:06 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:3585 "EHLO mms2.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jun 2011 02:23:41 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:3985 "EHLO MMS3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491114Ab1FMXoB convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jun 2011 01:44:01 +0200
-Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Mon, 13 Jun 2011 16:47:32 -0700
-X-Server-Uuid: D3C04415-6FA8-4F2C-93C1-920E106A2031
+        id S1491120Ab1FNAXf convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Jun 2011 02:23:35 +0200
+Received: from [10.9.200.133] by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Mon, 13 Jun 2011 17:25:11 -0700
+X-Server-Uuid: B55A25B1-5D7D-41F8-BC53-C57E7AD3C201
 Received: from IRVEXCHCCR01.corp.ad.broadcom.com ([10.252.49.30]) by
- IRVEXCHHUB01.corp.ad.broadcom.com ([10.9.200.131]) with mapi; Mon, 13
- Jun 2011 16:43:16 -0700
+ IRVEXCHHUB02.corp.ad.broadcom.com ([10.9.200.133]) with mapi; Mon, 13
+ Jun 2011 17:20:56 -0700
 From:   "Jian Peng" <jipeng@broadcom.com>
 To:     "Jian Peng" <jipeng@broadcom.com>,
         "David Daney" <ddaney@caviumnetworks.com>
 cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         "Ralf Baechle" <ralf@linux-mips.org>
-Date:   Mon, 13 Jun 2011 16:43:14 -0700
+Date:   Mon, 13 Jun 2011 17:21:05 -0700
 Subject: RE: patch to support topdown mmap allocation in MIPS
 Thread-Topic: patch to support topdown mmap allocation in MIPS
-Thread-Index: AcwbBVcOuMe2pbjkS7u+cbhp1RyQVgAABI5wA8d2QpA=
-Message-ID: <E18F441196CA634DB8E1F1C56A50A874572DE7E983@IRVEXCHCCR01.corp.ad.broadcom.com>
+Thread-Index: AcwbBVcOuMe2pbjkS7u+cbhp1RyQVgAABI5wA8d2QpAAAVJwwA==
+Message-ID: <E18F441196CA634DB8E1F1C56A50A874572DE7E9A3@IRVEXCHCCR01.corp.ad.broadcom.com>
 References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.broadcom.com>
  <4DD1BD72.2000408@caviumnetworks.com>
  <E18F441196CA634DB8E1F1C56A50A8743242B54D97@IRVEXCHCCR01.corp.ad.broadcom.com>
@@ -27,18 +27,19 @@ References: <E18F441196CA634DB8E1F1C56A50A8743242B54C8A@IRVEXCHCCR01.corp.ad.bro
  <E18F441196CA634DB8E1F1C56A50A874572CCBB6B5@IRVEXCHCCR01.corp.ad.broadcom.com>
  <4DDD432D.4020200@caviumnetworks.com>
  <E18F441196CA634DB8E1F1C56A50A874572CCBB6D0@IRVEXCHCCR01.corp.ad.broadcom.com>
-In-Reply-To: <E18F441196CA634DB8E1F1C56A50A874572CCBB6D0@IRVEXCHCCR01.corp.ad.broadcom.com>
+ <E18F441196CA634DB8E1F1C56A50A874572DE7E983@IRVEXCHCCR01.corp.ad.broadcom.com>
+In-Reply-To: <E18F441196CA634DB8E1F1C56A50A874572DE7E983@IRVEXCHCCR01.corp.ad.broadcom.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 acceptlanguage: en-US
 MIME-Version: 1.0
-X-WSS-ID: 61E87E1E62O8373552-01-01
+X-WSS-ID: 61E875ED4NS20234553-01-01
 Content-Type: text/plain;
  charset=us-ascii
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 30373
+X-archive-position: 30374
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,7 +48,37 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11060
+X-UID: 11092
+
+Hi, David/Ralf,
+
+I found out the commit log
+
+commit 6f6c3c33c027f2c83d53e8562cd9daa73fe8108b
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Thu May 19 09:21:33 2011 +0100
+
+    MIPS: Move arch_get_unmapped_area and gang to new file.
+    
+    It never really belonged into syscall.c and it's about to become well more
+    complex.
+    
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+
+Ralf, do you want to pick up my patch on topdown mmap and merge into mmap.c or want me to do that?
+
+I can test it if you have new patch.
+
+Thanks,
+Jian
+
+-----Original Message-----
+From: Jian Peng 
+Sent: Monday, June 13, 2011 4:43 PM
+To: Jian Peng; David Daney
+Cc: linux-mips@linux-mips.org; Ralf Baechle
+Subject: RE: patch to support topdown mmap allocation in MIPS
 
 Hi, David/Ralf,
 

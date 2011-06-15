@@ -1,59 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 10:16:06 +0200 (CEST)
-Received: from smtp4-g21.free.fr ([212.27.42.4]:58859 "EHLO smtp4-g21.free.fr"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491055Ab1FOIQD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Jun 2011 10:16:03 +0200
-Received: from bobafett.staff.proxad.net (unknown [213.228.1.121])
-        by smtp4-g21.free.fr (Postfix) with ESMTP id ECAC04C8113;
-        Wed, 15 Jun 2011 10:15:54 +0200 (CEST)
-Received: from flexo.localnet (unknown [172.18.3.103])
-        by bobafett.staff.proxad.net (Postfix) with ESMTPS id C8E19180602;
-        Wed, 15 Jun 2011 10:15:53 +0200 (CEST)
-From:   Florian Fainelli <ffainelli@freebox.fr>
-Organization: Freebox
-To:     Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] phylib: Allow BCM63XX PHY to be selected only on BCM63XX.
-Date:   Wed, 15 Jun 2011 10:20:11 +0200
-User-Agent: KMail/1.13.6 (Linux/2.6.38-8-server; KDE/4.6.2; x86_64; ; )
-Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-mips@linux-mips.org
-References: <20110615080758.GA3226@linux-mips.org>
-In-Reply-To: <20110615080758.GA3226@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 10:35:32 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47757 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1490982Ab1FOIf1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Jun 2011 10:35:27 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5F8Yl3a006605;
+        Wed, 15 Jun 2011 09:34:47 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5F8YbQ1006594;
+        Wed, 15 Jun 2011 09:34:37 +0100
+Date:   Wed, 15 Jun 2011 09:34:37 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "H. Peter Anvin" <hpa@zytor.com>
+Cc:     linux-arch@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Chen Liqin <liqin.chen@sunplusct.com>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Chris Zankel <chris@zankel.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Kyle McMartin <kyle@mcmartin.ca>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Mikael Starvik <starvik@axis.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Russell King <linux@arm.linux.org.uk>,
+        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        microblaze-uclinux@itee.uq.edu.au, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org
+Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
+Message-ID: <20110615083437.GA32624@linux-mips.org>
+References: <20110614190850.GA13526@linux-mips.org>
+ <4DF7C3CA.9050902@zytor.com>
+ <20110614223404.GA30057@linux-mips.org>
+ <4DF8329C.7000904@zytor.com>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201106151020.11904.ffainelli@freebox.fr>
-X-archive-position: 30401
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4DF8329C.7000904@zytor.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 30402
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ffainelli@freebox.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12172
+X-UID: 12188
 
-On Wednesday 15 June 2011 10:07:58 Ralf Baechle wrote:
-> This PHY is available integrated into BCM63xx series SOCs only.
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+On Tue, Jun 14, 2011 at 09:18:36PM -0700, H. Peter Anvin wrote:
 
-Acked-by: Florian Fainelli <ffainelli@freebox.fr>
+> On 06/14/2011 03:34 PM, Ralf Baechle wrote:
+> > 
+> > There is no point in offering to build something that couldn't possibly be
+> > used.  It just makes the kernel harder to configure and inflates the test
+> > matrix for no good reason.
+> > 
+> 
+> I see... that's why a bunch of devices that only exist on ARM and MIPS
+> SoCs are offered on x86 platforms?
 
-> 
->  drivers/net/phy/Kconfig |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index 392a6c4..a702443 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -58,6 +58,7 @@ config BROADCOM_PHY
-> 
->  config BCM63XX_PHY
->  	tristate "Drivers for Broadcom 63xx SOCs internal PHY"
-> +	depends on BCM63XX
->  	---help---
->  	  Currently supports the 6348 and 6358 PHYs.
+Well, if you notice one of those, yell.  Or send patches.  Most of those
+have been fixed.
+
+  Ralf

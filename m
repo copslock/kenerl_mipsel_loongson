@@ -1,84 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 14:54:41 +0200 (CEST)
-Received: from mail-qy0-f177.google.com ([209.85.216.177]:47253 "EHLO
-        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490982Ab1FOMyh convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Jun 2011 14:54:37 +0200
-Received: by qyl38 with SMTP id 38so218811qyl.15
-        for <multiple recipients>; Wed, 15 Jun 2011 05:54:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-type:content-transfer-encoding;
-        bh=6BIBl6xH5kO3eDxm3N7toZxUuaeSa0Pzvq0q6wEraKE=;
-        b=JmcBojUm+rOTqHknYKj6gZCwUgE7MoVNK3FSMr4CtfS7FQPab819DvlXzw4mYSyXv5
-         CUm3kNJv5mQz52lEwzmoPBSKaXShm4uc2D+OaoiGow4IvEUU5P8RRBdyu/HCCzhkra8h
-         cpBasj/W4Y0/S5qcCfLKyLVbrmxiPVkxizvVo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        b=kCb0rdGxaboCEN08zUrKJBgcUt6Alru/E6M74wZ+BfEimBNrcrmXdBZ6iH9mnpSZAV
-         73ktKXE6Q2+3q3HLhrYPyEMz/CL2siJwTwe1pOtBHHLnVAdNN0BdffN+IqNJlxOYrgKv
-         ML5AQ8wnPlNLHK084fpicPV+EQ/CBf1mGNcjQ=
-Received: by 10.229.9.8 with SMTP id j8mr353492qcj.228.1308142471084; Wed, 15
- Jun 2011 05:54:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 14:56:12 +0200 (CEST)
+Received: from db3ehsobe003.messaging.microsoft.com ([213.199.154.141]:7961
+        "EHLO DB3EHSOBE003.bigfish.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490982Ab1FOM4H (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 14:56:07 +0200
+Received: from mail12-db3-R.bigfish.com (10.3.81.241) by
+ DB3EHSOBE003.bigfish.com (10.3.84.23) with Microsoft SMTP Server id
+ 14.1.225.22; Wed, 15 Jun 2011 12:55:58 +0000
+Received: from mail12-db3 (localhost.localdomain [127.0.0.1])   by
+ mail12-db3-R.bigfish.com (Postfix) with ESMTP id BC3941B818C;  Wed, 15 Jun
+ 2011 12:55:58 +0000 (UTC)
+X-SpamScore: -8
+X-BigFish: VPS-8(zz1432N98dKzz1202hzz8275bhz32i668h839h61h)
+X-Forefront-Antispam-Report: CIP:163.181.249.108;KIP:(null);UIP:(null);IPVD:NLI;H:ausb3twp01.amd.com;RD:none;EFVD:NLI
+Received: from mail12-db3 (localhost.localdomain [127.0.0.1]) by mail12-db3
+ (MessageSwitch) id 1308142558525996_12748; Wed, 15 Jun 2011 12:55:58 +0000
+ (UTC)
+Received: from DB3EHSMHS008.bigfish.com (unknown [10.3.81.247]) by
+ mail12-db3.bigfish.com (Postfix) with ESMTP id 725AA480051;    Wed, 15 Jun 2011
+ 12:55:58 +0000 (UTC)
+Received: from ausb3twp01.amd.com (163.181.249.108) by
+ DB3EHSMHS008.bigfish.com (10.3.87.108) with Microsoft SMTP Server id
+ 14.1.225.22; Wed, 15 Jun 2011 12:55:57 +0000
+X-WSS-ID: 0LMU196-01-0QE-02
+X-M-MSG: 
+Received: from sausexedgep02.amd.com (sausexedgep02-ext.amd.com
+ [163.181.249.73])      (using TLSv1 with cipher AES128-SHA (128/128 bits))     (No
+ client certificate requested)  by ausb3twp01.amd.com (Axway MailGate 3.8.1)
+ with ESMTP id 261EE1028235;    Wed, 15 Jun 2011 07:55:54 -0500 (CDT)
+Received: from sausexhtp02.amd.com (163.181.3.152) by sausexedgep02.amd.com
+ (163.181.36.59) with Microsoft SMTP Server (TLS) id 8.3.106.1; Wed, 15 Jun
+ 2011 07:56:18 -0500
+Received: from storexhtp02.amd.com (172.24.4.4) by sausexhtp02.amd.com
+ (163.181.3.152) with Microsoft SMTP Server (TLS) id 8.3.83.0; Wed, 15 Jun
+ 2011 07:55:56 -0500
+Received: from gwo.osrc.amd.com (165.204.16.204) by storexhtp02.amd.com
+ (172.24.4.4) with Microsoft SMTP Server id 8.3.83.0; Wed, 15 Jun 2011
+ 08:55:54 -0400
+Received: from erda.amd.com (erda.osrc.amd.com [165.204.15.17]) by
+ gwo.osrc.amd.com (Postfix) with ESMTP id 0C4D549C174;  Wed, 15 Jun 2011
+ 13:55:54 +0100 (BST)
+Received: by erda.amd.com (Postfix, from userid 35569)  id D3D1F8547; Wed, 15
+ Jun 2011 14:55:53 +0200 (CEST)
+Date:   Wed, 15 Jun 2011 14:55:53 +0200
+From:   Robert Richter <robert.richter@amd.com>
+To:     Daniel Kalmar <kalmard@homejinni.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Gergely Kis <gergely@homejinni.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "oprofile-list@lists.sourceforge.net" 
+        <oprofile-list@lists.sourceforge.net>
+Subject: Re: [PATCH 0/2] MIPS: oprofile: callgraph support
+Message-ID: <20110615125553.GC20052@erda.amd.com>
+References: <1305290285-13818-1-git-send-email-gergely@homejinni.com>
+ <20110524084250.GR20052@erda.amd.com>
+ <20110610123557.GQ20052@erda.amd.com>
 MIME-Version: 1.0
-Received: by 10.229.212.206 with HTTP; Wed, 15 Jun 2011 05:54:11 -0700 (PDT)
-In-Reply-To: <1307742441-28284-8-git-send-email-mbizon@freebox.fr>
-References: <1307742441-28284-1-git-send-email-mbizon@freebox.fr> <1307742441-28284-8-git-send-email-mbizon@freebox.fr>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 15 Jun 2011 14:54:11 +0200
-Message-ID: <BANLkTi=XTYy9+Qxp9XrykMJoLws1ECL1ig@mail.gmail.com>
-Subject: Re: [PATCH 07/11] MIPS: BCM63XX: change irq code to prepare for
- per-cpu peculiarity.
-To:     Maxime Bizon <mbizon@freebox.fr>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org, florian@openwrt.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30408
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20110610123557.GQ20052@erda.amd.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginatorOrg: amd.com
+X-archive-position: 30409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: robert.richter@amd.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12318
+X-UID: 12321
 
-Hi,
+On 10.06.11 14:35:57, Robert Richter wrote:
+> On 24.05.11 10:42:50, Robert Richter wrote:
+> > On 13.05.11 08:38:03, Gergely Kis wrote:
+> > > From: Daniel Kalmar <kalmard@homejinni.com>
+> > > 
+> > > These patches add callgraph/backtrace support to oprofile on MIPS.
+> > > 
+> > > Stack unwinding is done by code examination. For kernelspace, the
+> > > already existing unwind function is utilized that uses kallsyms to
+> > > quickly find the beginning of functions. For userspace a new function
+> > > was added that examines code at and before the pc.
+> > > 
+> > > Daniel Kalmar (2):
+> > >   MIPS: Add unwind_stack_by_address to support unwinding from any
+> > >     kernel code address
+> > >   MIPS: oprofile: Add callgraph support
+> > > 
+> > >  arch/mips/include/asm/stacktrace.h |    4 +
+> > >  arch/mips/kernel/process.c         |   18 +++-
+> > >  arch/mips/oprofile/Makefile        |    2 +-
+> > >  arch/mips/oprofile/backtrace.c     |  173 ++++++++++++++++++++++++++++++++++++
+> > >  arch/mips/oprofile/common.c        |    1 +
+> > >  arch/mips/oprofile/op_impl.h       |    2 +
+> > >  6 files changed, 194 insertions(+), 6 deletions(-)
+> > >  create mode 100644 arch/mips/oprofile/backtrace.c
+> 
+> If there are no objections I will apply the patches next week to the
+> oprofile tree.
 
-On 10 June 2011 23:47, Maxime Bizon <mbizon@freebox.fr> wrote:
-> diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-> index 3ea2681..4354be1 100644
-> --- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-> +++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-> @@ -89,9 +89,18 @@
->
->  /* Interrupt Mask register */
->  #define PERF_IRQMASK_REG               0xc
-> +#define PERF_IRQSTAT_REG               0x10
+Applied to oprofile/core. Thanks Daniel.
 
-You are re-adding the duplicate PERF_IRQSTAT_REG I just removed.
+-Robert
 
-> +#define PERF_IRQMASK_6338_REG          0xc
-> +#define PERF_IRQMASK_6345_REG          0xc
-> +#define PERF_IRQMASK_6348_REG          0xc
-> +#define PERF_IRQMASK_6358_REG          0xc
-
-If you are adding one for each SoC, why keep the "generic"
-PERF_IRQMASK_REG at all? AFAICS it isn't used it any more.
-
->
->  /* Interrupt Status register */
->  #define PERF_IRQSTAT_REG               0x10
-> +#define PERF_IRQSTAT_6338_REG          0x10
-> +#define PERF_IRQSTAT_6345_REG          0x10
-> +#define PERF_IRQSTAT_6348_REG          0x10
-> +#define PERF_IRQSTAT_6358_REG          0x10
-
-The same applies to the "generic" PERF_IRQSTAT_REG, you can also remove it.
-
-
-Jonas
+-- 
+Advanced Micro Devices, Inc.
+Operating System Research Center

@@ -1,112 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 08:28:35 +0200 (CEST)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:48969 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491043Ab1FOG23 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 08:28:29 +0200
-Received: by bwz1 with SMTP id 1so272513bwz.36
-        for <multiple recipients>; Tue, 14 Jun 2011 23:28:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type;
-        bh=OZtB9ScxFq5XmiiB1X/kLCd7iQyNmw1ZXFiNzlUERUo=;
-        b=Y3/o3rswiy14ohffXl+DfFkwoSQ8oL2plqFqFH25y6rSSsyr+E30uNuNzVdkLqID03
-         BjXWsxoMT1+ssrRuHL6qAj0Nm3d7mEqng+cZlRsJa4n+33RfiZtwc+LwOOd1hn+OwpUi
-         MlzRiJbRJLDfHM/vJMde/Izut664GUhkj1dfs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=hABKP2JwdDYzqyie6IoGn2F5GU2bWrqQJNdelzTr99t3YNvLMW4xsGe2lFc+qyuuVv
-         W1lWWapI59yG/Q9GVK8jNfQGX7n2grzcevhB1jWxrqDRSS3qzwOfgFOJyatOU4O1Sg3u
-         sC2aXy7xB5Kmyb+jPKljygR/X6oJ/Nt/HMhAY=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 09:43:52 +0200 (CEST)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:38716 "EHLO
+        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491063Ab1FOHnq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 09:43:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=w973z0Fa/80PLH5FFIiMGPYsqUQMlNp2jjMb8hfv48s=;
+        b=N7aEnoGdIiSKK3w7v9v+vtwCqJ/fQgPGYHTkKFZZeO2VzLom9px/0Oql9n6IPeeN+vyqBisFFz8NB6nx3oOaihss3e/v77NfqrHrnUdV2gN9+Q5SwuTaxu584ETCIgjQGSXZx9sMxWxhNVCYMJXCfAg3HpANcxVIp8TykHZfAic=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86])
+        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <linux@arm.linux.org.uk>)
+        id 1QWkhO-0003Kt-6M; Wed, 15 Jun 2011 08:39:38 +0100
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.72)
+        (envelope-from <linux@n2100.arm.linux.org.uk>)
+        id 1QWkhM-0003PG-2h; Wed, 15 Jun 2011 08:39:36 +0100
+Date:   Wed, 15 Jun 2011 08:39:35 +0100
+From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:     "H. Peter Anvin" <hpa@zytor.com>
+Cc:     "Luck, Tony" <tony.luck@intel.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Chen Liqin <liqin.chen@sunplusct.com>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Chris Zankel <chris@zankel.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Kyle McMartin <kyle@mcmartin.ca>,
+        Lennox Wu <lennox.wu@gmail.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Mikael Starvik <starvik@axis.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Richard Henderson <rth@twiddle.net>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "microblaze-uclinux@itee.uq.edu.au" 
+        <microblaze-uclinux@itee.uq.edu.au>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-cris-kernel@axis.com" <linux-cris-kernel@axis.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-m68k@vger.kernel.org" <linux-m68k@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>
+Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
+Message-ID: <20110615073935.GA28989@n2100.arm.linux.org.uk>
+References: <20110614190850.GA13526@linux-mips.org> <987664A83D2D224EAE907B061CE93D5301E7281306@orsmsx505.amr.corp.intel.com> <4DF8359F.10809@zytor.com>
 MIME-Version: 1.0
-Received: by 10.204.84.166 with SMTP id j38mr125672bkl.84.1308119304208; Tue,
- 14 Jun 2011 23:28:24 -0700 (PDT)
-Received: by 10.204.64.68 with HTTP; Tue, 14 Jun 2011 23:28:24 -0700 (PDT)
-In-Reply-To: <20110325172709.GC8483@linux-mips.org>
-References: <AANLkTimkh2QLvupu+62NGrKfqRb_gC7KLCAKkEoS9N9N@mail.gmail.com>
-        <20110325172709.GC8483@linux-mips.org>
-Date:   Wed, 15 Jun 2011 11:58:24 +0530
-Message-ID: <BANLkTimo6BEgDnTh+sPVR+MELyxiwJoFGw@mail.gmail.com>
-Subject: Re: flush_kernel_vmap_range() invalidate_kernel_vmap_range() API not
- exists for MIPS
-From:   naveen yadav <yad.naveen@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, Christoph Hellwig <hch@lst.de>
-Content-Type: multipart/mixed; boundary=0016e6d9a16e73800e04a5ba427f
-X-archive-position: 30396
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4DF8359F.10809@zytor.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+X-archive-position: 30397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yad.naveen@gmail.com
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12126
+X-UID: 12150
 
---0016e6d9a16e73800e04a5ba427f
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+On Tue, Jun 14, 2011 at 09:31:27PM -0700, H. Peter Anvin wrote:
+> On 06/14/2011 03:08 PM, Luck, Tony wrote:
+> > I took a look at the back of all my ia64 systems - none of them
+> > have a parallel port.  It seems unlikely that new systems will
+> > start adding parallel ports :-)
+> > 
+> > So even if I had a printer (or other device) that used a parallel
+> > port, I have no way to test it.
+> 
+> If it has PCI slots, it can have a parallel port.
 
-Dear Ralf Baechle,
-
-I have made one patch for below API's for 2.6.35.9 kernel. Pls provide
-me your feedback about this .
-
-Regards
-
-On Fri, Mar 25, 2011 at 10:57 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Mar 25, 2011 at 02:38:13PM +0530, naveen yadav wrote:
->
->> We are working on 2.6.35.9 linux kernel on MIPS 34kce core and our
->> cache is VIVT having cache aliasing .
->
-> No, they're VIPT unless you successfully modified your 34K core to
-> change it from a less than perfect cache design to the most lunatic
-> cache policy known to man kind ...
->
->> When I check the implementation on ARM I can check the implemenation
->> exists , but there is not similar implementation exists on MIPS.
->> These API's are used by XFS module:
->>
->> static inline void flush_kernel_vmap_range(void *vaddr, int size)
->> static inline void invalidate_kernel_vmap_range(void *vaddr, int size)
->> static inline void flush_kernel_dcache_page(struct page *page)
->
-> A known problem for (too ...) long. =A0I'll finally take care of it.
->
-> =A0Ralf
->
-
---0016e6d9a16e73800e04a5ba427f
-Content-Type: application/octet-stream; name="mips_dma_api.patch"
-Content-Disposition: attachment; filename="mips_dma_api.patch"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_goxwf9ly0
-
-ZGlmZiAtTnJ1cCBjbGVhbi9saW51eC0yLjYuMzUuOS9hcmNoL21pcHMvaW5jbHVkZS9hc20vY2Fj
-aGVmbHVzaC5oIGxpbnV4LTIuNi4zNS45L2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9jYWNoZWZsdXNo
-LmgKLS0tIGNsZWFuL2xpbnV4LTIuNi4zNS45L2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9jYWNoZWZs
-dXNoLmgJMjAxMC0xMS0yMyAwNDowMToyNi4wMDAwMDAwMDAgKzA5MDAKKysrIGxpbnV4LTIuNi4z
-NS45L2FyY2gvbWlwcy9pbmNsdWRlL2FzbS9jYWNoZWZsdXNoLmgJMjAxMS0wNi0xNCAxMTowODox
-Ni4wMDAwMDAwMDAgKzA5MDAKQEAgLTExNCw0ICsxMTQsMzEgQEAgdW5zaWduZWQgbG9uZyBydW5f
-dW5jYWNoZWQodm9pZCAqZnVuYyk7CiBleHRlcm4gdm9pZCAqa21hcF9jb2hlcmVudChzdHJ1Y3Qg
-cGFnZSAqcGFnZSwgdW5zaWduZWQgbG9uZyBhZGRyKTsKIGV4dGVybiB2b2lkIGt1bm1hcF9jb2hl
-cmVudCh2b2lkKTsKIAorLyogTmV3IGZ1bmN0aW9uIGFkZGVkIHdoaWNoIGFyZSBtaXNzZWQgaW4g
-IE1JUFMgKi8KKyNkZWZpbmUgQVJDSF9IQVNfRkxVU0hfS0VSTkVMX0RDQUNIRV9QQUdFCitzdGF0
-aWMgaW5saW5lIHZvaWQgZmx1c2hfa2VybmVsX3ZtYXBfcmFuZ2Uodm9pZCAqYWRkciwgaW50IHNp
-emUpCit7CisvKglpZiAoKGNhY2hlX2lzX3ZpdnQoKSB8fCBjYWNoZV9pc192aXB0X2FsaWFzaW5n
-KCkpKSovCisJaWYgKChjLT5pY2FjaGUuZmxhZ3MgJiBNSVBTX0NBQ0hFX1ZUQUcpIHx8CVwKKwkJ
-CShjLT5kY2FjaGUuZmxhZ3MgJiBNSVBTX0NBQ0hFX0FMSUFTRVMpKSB7CisJCQl1bnNpZ25lZCBs
-b25nIHN0YXJ0ID0gKHVuc2lnbmVkIGxvbmcpYWRkcjsKKwkJCWRtYV9jYWNoZV93YmFja19pbnYo
-c3RhcnQsIChzaXplX3Qpc2l6ZSk7CisJfQorfQorc3RhdGljIGlubGluZSB2b2lkIGludmFsaWRh
-dGVfa2VybmVsX3ZtYXBfcmFuZ2Uodm9pZCAqYWRkciwgaW50IHNpemUpCit7CisvKglpZiAoKGNh
-Y2hlX2lzX3ZpdnQoKSB8fCBjYWNoZV9pc192aXB0X2FsaWFzaW5nKCkpKSovCisJaWYgKChjLT5p
-Y2FjaGUuZmxhZ3MgJiBNSVBTX0NBQ0hFX1ZUQUcpIHx8CVwKKwkJKGMtPmRjYWNoZS5mbGFncyAm
-IE1JUFNfQ0FDSEVfQUxJQVNFUykpIHsKKwkJCXVuc2lnbmVkIGxvbmcgc3RhcnQgPSAodW5zaWdu
-ZWQgbG9uZylhZGRyOworCQkJZG1hX2NhY2hlX2ludihzdGFydCwgKHNpemVfdClzaXplKTsKK30K
-K30KK3N0YXRpYyBpbmxpbmUgdm9pZCBmbHVzaF9rZXJuZWxfZGNhY2hlX3BhZ2Uoc3RydWN0IHBh
-Z2UgKnBhZ2UpCit7CisKK30KKworCisKICNlbmRpZiAvKiBfQVNNX0NBQ0hFRkxVU0hfSCAqLwo=
---0016e6d9a16e73800e04a5ba427f--
+Is that a clue about where a select statement should be?

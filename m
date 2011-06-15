@@ -1,94 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 09:48:27 +0200 (CEST)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:36740 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491040Ab1FOHsV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 09:48:21 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=agOcgmQc07pm4x5FRlTzdVmIRxDIXvcdzqDHM+ZMJZk=;
-        b=UWfeIl/fb6ZsAwsAtL3BPXfQ6+uqL0JrTVA6/Qh5QlXtJIi6rovDLzrS8hdB1bHUhxSFDRMRmDcQSU39/9IdyRj6hBBhtLliq6x8RM7ewOlCUADYFGDgKvmITZsYbwp1o11Sop6FNqenSy+8MnsYbqqfuwcoSoFKGDdtUUbWfdg=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86])
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.72)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1QWkpM-0003Lu-Bv; Wed, 15 Jun 2011 08:47:52 +0100
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.72)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1QWkpK-0003Qi-D2; Wed, 15 Jun 2011 08:47:50 +0100
-Date:   Wed, 15 Jun 2011 08:47:50 +0100
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     "H. Peter Anvin" <hpa@zytor.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 10:03:04 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:59340 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490982Ab1FOIDB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 10:03:01 +0200
+Received: by qyk32 with SMTP id 32so2095458qyk.15
+        for <multiple recipients>; Wed, 15 Jun 2011 01:02:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=gVQUE4oX+uQMW5TLRGECkxA7/PzcUWpK4LvmRETvGtQ=;
+        b=n+mA4vvsdzLV/ei2iYXecq7Zp9onOwEAYT5AF1tIM/axCcywKKRTMv5etvQK4qWJF0
+         3tjvnHnillrTlGzvZEsGMEgae6U2xhmsfTCdG46zeSisBxCVpGMEHb9Kzp0f42oBGubL
+         rrTkGyx6KLkP8h+spq9/Q/04w0X4Sz5QoBR3k=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=uPVw/oXJvLbULUtBD6fdjAxgwbk785UTYVau9WpB7GIRu4xrx6dPr+VvILWzPenWof
+         LtdHVG7WeEymvDcNO4S1GNfs2d/49UnmEabE58gdvdq2Hh88EYHEYtL4pwtP+2GWaBmA
+         ztiYbzL76iApg7EE5GVGhAmWp4h66thKKE0mU=
+MIME-Version: 1.0
+Received: by 10.229.10.209 with SMTP id q17mr141368qcq.106.1308124973614; Wed,
+ 15 Jun 2011 01:02:53 -0700 (PDT)
+Received: by 10.229.217.201 with HTTP; Wed, 15 Jun 2011 01:02:53 -0700 (PDT)
+In-Reply-To: <201106142222.43553.arnd@arndb.de>
+References: <20110614190850.GA13526@linux-mips.org>
+        <201106142222.43553.arnd@arndb.de>
+Date:   Wed, 15 Jun 2011 16:02:53 +0800
+Message-ID: <BANLkTikpax09bQqwuP1dJYRtSO+c0DdUgg@mail.gmail.com>
+Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
+From:   Lennox Wu <lennox.wu@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linuxppc-dev@lists.ozlabs.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-arch@vger.kernel.org,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Chen Liqin <liqin.chen@sunplusct.com>,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Lennox Wu <lennox.wu@gmail.com>, linux-arch@vger.kernel.org,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Helge Deller <deller@gmx.de>, x86@kernel.org,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        microblaze-uclinux@itee.uq.edu.au,
         Chris Metcalf <cmetcalf@tilera.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Richard Henderson <rth@twiddle.net>,
         Chris Zankel <chris@zankel.net>,
-        Michal Simek <monstr@monstr.eu>,
-        Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
-        linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Helge Deller <deller@gmx.de>, "H. Peter Anvin" <hpa@zytor.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
         Kyle McMartin <kyle@mcmartin.ca>,
-        Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
-Message-ID: <20110615074749.GB28989@n2100.arm.linux.org.uk>
-References: <20110614190850.GA13526@linux-mips.org> <4DF7C3CA.9050902@zytor.com> <201106142333.16203.arnd@arndb.de> <4DF83577.6040903@zytor.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4DF83577.6040903@zytor.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-X-archive-position: 30398
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Mikael Starvik <starvik@axis.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Russell King <linux@arm.linux.org.uk>,
+        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-mips@linux-mips.org, linux-m68k@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-cris-kernel@axis.com, linux-sh@vger.kernel.org,
+        microblaze-uclinux@itee.uq.edu.au, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Content-Type: multipart/alternative; boundary=0016364ecb745fc9a204a5bb94b9
+X-archive-position: 30399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: lennox.wu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12151
+X-UID: 12155
 
-On Tue, Jun 14, 2011 at 09:30:47PM -0700, H. Peter Anvin wrote:
-> On 06/14/2011 02:33 PM, Arnd Bergmann wrote:
-> >>
-> >> Why on earth restrict it like that?  It's just a device driver, like
-> >> more or less any other device driver...
-> > 
-> > I'd say any other classic ISA/PC driver, including floppy, gameport or
-> > serial-8250. One problem with these is that we never fully worked out
-> > the dependencies for these, which we probably should. CONFIG_ISA
-> > generally means ISA add-on cards, but that might not be enabled for
-> > platforms that have a pc-parport but no ISA slots.
-> > 
-> 
-> OK, serial-8250 is clearly just plain wrong, since the 8250 series UARTs
-> are ubiquitous across just about every platform.
-> 
-> Floppy is special (in the short bus sense), since it is closely tied to
-> ISA DMA.  Conditionalizing this on ISA DMA makes total sense.
+--0016364ecb745fc9a204a5bb94b9
+Content-Type: text/plain; charset=ISO-8859-1
 
-No it doesn't.  It depends on the ISA DMA API, not that the machine has
-ISA DMA.
+2011/6/15 Arnd Bergmann <arnd@arndb.de>
+>
+> >  config SCORE
+> > -       def_bool y
+> > -       select HAVE_GENERIC_HARDIRQS
+> > -       select GENERIC_IRQ_SHOW
+> > +     def_bool y
+> > +     select HAVE_GENERIC_HARDIRQS
+> > +     select HAVE_PC_PARPORT
+> > +     select GENERIC_IRQ_SHOW
+> >
+> >  choice
+> >       prompt "System type"
+>
+> Certainly not, no PIO support
+>
+>  Yes, there is no platform of the Score supports PIO.
+Best,
+Lennox
 
-I have a platform which has no ISA DMA but uses the floppy driver.  Please
-don't break it.
+--0016364ecb745fc9a204a5bb94b9
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<br><br><div class=3D"gmail_quote">2011/6/15 Arnd Bergmann <span dir=3D"ltr=
+">&lt;<a href=3D"mailto:arnd@arndb.de">arnd@arndb.de</a>&gt;</span><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
+olid;padding-left:1ex;">
+<div class=3D"im">
+&gt; =A0config SCORE<br>
+&gt; - =A0 =A0 =A0 def_bool y<br>
+&gt; - =A0 =A0 =A0 select HAVE_GENERIC_HARDIRQS<br>
+&gt; - =A0 =A0 =A0 select GENERIC_IRQ_SHOW<br>
+&gt; + =A0 =A0 def_bool y<br>
+&gt; + =A0 =A0 select HAVE_GENERIC_HARDIRQS<br>
+&gt; + =A0 =A0 select HAVE_PC_PARPORT<br>
+&gt; + =A0 =A0 select GENERIC_IRQ_SHOW<br>
+&gt;<br>
+&gt; =A0choice<br>
+&gt; =A0 =A0 =A0 prompt &quot;System type&quot;<br>
+<br>
+</div>Certainly not, no PIO support<br>
+<div class=3D"im"><br></div></blockquote><div>=A0Yes, there is no platform =
+of the Score supports PIO.</div><div>Best,</div><div>Lennox</div></div>
+
+--0016364ecb745fc9a204a5bb94b9--

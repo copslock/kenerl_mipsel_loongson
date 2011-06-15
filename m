@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 14:50:46 +0200 (CEST)
-Received: from mail-qy0-f170.google.com ([209.85.216.170]:64634 "EHLO
-        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490982Ab1FOMuk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 14:50:40 +0200
-Received: by qyk32 with SMTP id 32so2223295qyk.15
-        for <multiple recipients>; Wed, 15 Jun 2011 05:50:34 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 14:53:05 +0200 (CEST)
+Received: from mail-qy0-f177.google.com ([209.85.216.177]:33055 "EHLO
+        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490982Ab1FOMxA convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Jun 2011 14:53:00 +0200
+Received: by qyl38 with SMTP id 38so217919qyl.15
+        for <multiple recipients>; Wed, 15 Jun 2011 05:52:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc:content-type:content-transfer-encoding;
-        bh=JRu8iTHHSDGIgHgPg+3wbT+IxDJ+DFnauBElJwasRxk=;
-        b=E3hF3fk+luOQdylWRSVZo6ytAt2KQ4l57PdbGZkAA4G3TvU6F+ijiMkJi1HIkIGJGm
-         iUo3VEQD/n6S5mzO7hUQkAngpH+ozFxt9DgeY8a8m9DTG2bJFhs1hDbLuV2oeviJWo+j
-         IYdmItOVq+F02yTg4ie4cWSLlzdOh/7A3iwVQ=
+        bh=WEVjYRpH3DvnAtTHz+2ucI9T7s2rHURKpOHmvCZzRBw=;
+        b=Kj6DHGxbOI89safhhl40XG9S2yrFY9KO/ewsIfAHyX6g4kJFwxxA58MDK7p24F78El
+         c3Fxi5lCppeMJWUHRJtT2iUWzByBrA2uB+4HmbOcsMzSpoY7ywB6IZdUZdBxg+FlXKTT
+         mGsbr/9vtEI2/0rnV8blOc+rVuvWfJTJJjX5g=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type:content-transfer-encoding;
-        b=FUG0Wy90h4qQuetdLIU40q5zffa1Jw7it3uv/B/oNqOjA7x9WyNsryoB2YHlvxVMDI
-         9//fXf0qsWH2Dv3OpCSmewbFCAKMT3a7Egm41/koVO1z3ZdRpmF6C7N9xUJ6g+apfJhX
-         XfjHBow8iYGYuyUiXgUo6Bx7j8dvll8SZjiOA=
-Received: by 10.229.9.8 with SMTP id j8mr349307qcj.228.1308142234192; Wed, 15
- Jun 2011 05:50:34 -0700 (PDT)
+        b=AhXExWMho/IyBW/5aPiD586wIl7mKpII3QH5iC1p3nrn/ZzrGVmbCq6bAS94mW6/Em
+         Sr6C2eDsTVXhCp7zTgr3NaHZeBT9xtBEoi8McoWn39kf0pH2BaIwtHm5rbpuw/lkSGxm
+         DknlPNl6YjVLoN6YEGM91n37nV0QP8nVLxPx4=
+Received: by 10.229.9.8 with SMTP id j8mr351825qcj.228.1308142374177; Wed, 15
+ Jun 2011 05:52:54 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.229.212.206 with HTTP; Wed, 15 Jun 2011 05:50:14 -0700 (PDT)
-In-Reply-To: <1307742441-28284-6-git-send-email-mbizon@freebox.fr>
-References: <1307742441-28284-1-git-send-email-mbizon@freebox.fr> <1307742441-28284-6-git-send-email-mbizon@freebox.fr>
+Received: by 10.229.212.206 with HTTP; Wed, 15 Jun 2011 05:52:34 -0700 (PDT)
+In-Reply-To: <1307742441-28284-7-git-send-email-mbizon@freebox.fr>
+References: <1307742441-28284-1-git-send-email-mbizon@freebox.fr> <1307742441-28284-7-git-send-email-mbizon@freebox.fr>
 From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 15 Jun 2011 14:50:14 +0200
-Message-ID: <BANLkTi=yrfZsh0tuKm0AObAfZkezSvrYvw@mail.gmail.com>
-Subject: Re: [PATCH 05/11] MIPS: BCM63XX: cleanup cpu registers.
+Date:   Wed, 15 Jun 2011 14:52:34 +0200
+Message-ID: <BANLkTikJ_MCPXweUD+OdWBLx-59L-Geaaw@mail.gmail.com>
+Subject: Re: [PATCH 06/11] MIPS: BCM63XX: add more register sets & missing
+ register definitions.
 To:     Maxime Bizon <mbizon@freebox.fr>
 Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org, florian@openwrt.org
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-archive-position: 30406
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,139 +45,149 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12315
+X-UID: 12316
 
-SGkgTWF4aW1lLAoKT24gMTAgSnVuZSAyMDExIDIzOjQ3LCBNYXhpbWUgQml6b24gPG1iaXpvbkBm
-cmVlYm94LmZyPiB3cm90ZToKPiBVc2UgcHJlcHJvY2Vzc29yIHdoZW4gcG9zc2libGUgdG8gYXZv
-aWQgZHVwbGljYXRlZCBhbmQgZXJyb3ItcHJvbmUKPiBjb2RlLgo+Cj4gU2lnbmVkLW9mZi1ieTog
-TWF4aW1lIEJpem9uIDxtYml6b25AZnJlZWJveC5mcj4KPiAtLS0KPiDCoGFyY2gvbWlwcy9iY202
-M3h4L2NwdS5jIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCDCoDE0NSAr
-LS0tLS0tLS0tLQo+IMKgYXJjaC9taXBzL2luY2x1ZGUvYXNtL21hY2gtYmNtNjN4eC9iY202M3h4
-X2NwdS5oIHwgwqAzMTEgKysrKysrKy0tLS0tLS0tLS0tLS0tLQo+IMKgMiBmaWxlcyBjaGFuZ2Vk
-LCAxMDkgaW5zZXJ0aW9ucygrKSwgMzQ3IGRlbGV0aW9ucygtKQo+Cj4gZGlmZiAtLWdpdCBhL2Fy
-Y2gvbWlwcy9iY202M3h4L2NwdS5jIGIvYXJjaC9taXBzL2JjbTYzeHgvY3B1LmMKPiBpbmRleCA3
-YzdlNGQ0Li4wMjdhYzMwIDEwMDY0NAo+IC0tLSBhL2FyY2gvbWlwcy9iY202M3h4L2NwdS5jCj4g
-KysrIGIvYXJjaC9taXBzL2JjbTYzeHgvY3B1LmMKPiBAQCAtMzMsMTYyICszMywzNyBAQCBzdGF0
-aWMgdW5zaWduZWQgaW50IGJjbTYzeHhfbWVtb3J5X3NpemU7Cj4gwqAqIDYzMzggcmVnaXN0ZXIg
-c2V0cyBhbmQgaXJxcwo+IMKgKi8KPiDCoHN0YXRpYyBjb25zdCB1bnNpZ25lZCBsb25nIGJjbTk2
-MzM4X3JlZ3NfYmFzZVtdID0gewoKSSB3b3VsZCBwcm9wb3NlIG5hbWluZyB0aGVzZSBiY202Mz8/
-X3JlZ3NfYmFzZTsgaXQgd291bGQgYmUgbW9yZSBpbgpsaW5lIHdpdGggdGhlIHJlc3Qgb2YgdGhl
-IGNvZGUuCgo+IC0gwqAgwqAgwqAgW1JTRVRfRFNMX0xNRU1dIMKgIMKgIMKgIMKgID0gQkNNXzYz
-MzhfRFNMX0xNRU1fQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX1BFUkZdIMKgIMKgIMKgIMKgIMKg
-IMKgID0gQkNNXzYzMzhfUEVSRl9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfVElNRVJdIMKgIMKg
-IMKgIMKgIMKgIMKgPSBCQ01fNjMzOF9USU1FUl9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfV0RU
-XSDCoCDCoCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzMzhfV0RUX0JBU0UsCj4gLSDCoCDCoCDCoCBb
-UlNFVF9VQVJUMF0gwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzM4X1VBUlQwX0JBU0UsCj4gLSDC
-oCDCoCDCoCBbUlNFVF9VQVJUMV0gwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzM4X1VBUlQxX0JB
-U0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9HUElPXSDCoCDCoCDCoCDCoCDCoCDCoCA9IEJDTV82MzM4
-X0dQSU9fQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX1NQSV0gwqAgwqAgwqAgwqAgwqAgwqAgwqA9
-IEJDTV82MzM4X1NQSV9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfT0hDSTBdIMKgIMKgIMKgIMKg
-IMKgIMKgPSBCQ01fNjMzOF9PSENJMF9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfT0hDSV9QUklW
-XSDCoCDCoCDCoCDCoD0gQkNNXzYzMzhfT0hDSV9QUklWX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNF
-VF9VU0JIX1BSSVZdIMKgIMKgIMKgIMKgPSBCQ01fNjMzOF9VU0JIX1BSSVZfQkFTRSwKPiAtIMKg
-IMKgIMKgIFtSU0VUX1VEQzBdIMKgIMKgIMKgIMKgIMKgIMKgID0gQkNNXzYzMzhfVURDMF9CQVNF
-LAo+IC0gwqAgwqAgwqAgW1JTRVRfTVBJXSDCoCDCoCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzMzhf
-TVBJX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9QQ01DSUFdIMKgIMKgIMKgIMKgIMKgID0gQkNN
-XzYzMzhfUENNQ0lBX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9TRFJBTV0gwqAgwqAgwqAgwqAg
-wqAgwqA9IEJDTV82MzM4X1NEUkFNX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9EU0xdIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgPSBCQ01fNjMzOF9EU0xfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX0VO
-RVQwXSDCoCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzMzhfRU5FVDBfQkFTRSwKPiAtIMKgIMKgIMKg
-IFtSU0VUX0VORVQxXSDCoCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzMzhfRU5FVDFfQkFTRSwKPiAt
-IMKgIMKgIMKgIFtSU0VUX0VORVRETUFdIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjMzOF9FTkVURE1B
-X0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9NRU1DXSDCoCDCoCDCoCDCoCDCoCDCoCA9IEJDTV82
-MzM4X01FTUNfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX0REUl0gwqAgwqAgwqAgwqAgwqAgwqAg
-wqA9IEJDTV82MzM4X0REUl9CQVNFLAo+ICsgwqAgwqAgwqAgX19HRU5fQ1BVX1JFR1NfVEFCTEUo
-NjMzOCkKPiDCoH07Cj4KPiDCoHN0YXRpYyBjb25zdCBpbnQgYmNtOTYzMzhfaXJxc1tdID0gewo+
-IC0gwqAgwqAgwqAgW0lSUV9USU1FUl0gwqAgwqAgwqAgwqAgwqAgwqAgPSBCQ01fNjMzOF9USU1F
-Ul9JUlEsCj4gLSDCoCDCoCDCoCBbSVJRX1VBUlQwXSDCoCDCoCDCoCDCoCDCoCDCoCA9IEJDTV82
-MzM4X1VBUlQwX0lSUSwKPiAtIMKgIMKgIMKgIFtJUlFfRFNMXSDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCA9IEJDTV82MzM4X0RTTF9JUlEsCj4gLSDCoCDCoCDCoCBbSVJRX0VORVQwXSDCoCDCoCDCoCDC
-oCDCoCDCoCA9IEJDTV82MzM4X0VORVQwX0lSUSwKPiAtIMKgIMKgIMKgIFtJUlFfRU5FVF9QSFld
-IMKgIMKgIMKgIMKgIMKgPSBCQ01fNjMzOF9FTkVUX1BIWV9JUlEsCj4gLSDCoCDCoCDCoCBbSVJR
-X0VORVQwX1JYRE1BXSDCoCDCoCDCoCA9IEJDTV82MzM4X0VORVQwX1JYRE1BX0lSUSwKPiAtIMKg
-IMKgIMKgIFtJUlFfRU5FVDBfVFhETUFdIMKgIMKgIMKgID0gQkNNXzYzMzhfRU5FVDBfVFhETUFf
-SVJRLAo+ICsgwqAgwqAgwqAgX19HRU5fQ1BVX0lSUV9UQUJMRSg2MzM4KQo+IMKgfTsKPgo+IC0v
-Kgo+IC0gKiA2MzQ1IHJlZ2lzdGVyIHNldHMgYW5kIGlycXMKPiAtICovCgpZb3Ugc2hvdWxkIGxl
-YXZlIHRoZSBjb21tZW50IGhlcmUgKG9yIGFsc28gZGVsZXRlIHRoZSA2MzM4IG9uZSBvbiB0b3Ap
-LgoKPiDCoHN0YXRpYyBjb25zdCB1bnNpZ25lZCBsb25nIGJjbTk2MzQ1X3JlZ3NfYmFzZVtdID0g
-ewo+IC0gwqAgwqAgwqAgW1JTRVRfRFNMX0xNRU1dIMKgIMKgIMKgIMKgID0gQkNNXzYzNDVfRFNM
-X0xNRU1fQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX1BFUkZdIMKgIMKgIMKgIMKgIMKgIMKgID0g
-QkNNXzYzNDVfUEVSRl9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfVElNRVJdIMKgIMKgIMKgIMKg
-IMKgIMKgPSBCQ01fNjM0NV9USU1FUl9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfV0RUXSDCoCDC
-oCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzNDVfV0RUX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9V
-QVJUMF0gwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzQ1X1VBUlQwX0JBU0UsCj4gLSDCoCDCoCDC
-oCBbUlNFVF9VQVJUMV0gwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzQ1X1VBUlQxX0JBU0UsCj4g
-LSDCoCDCoCDCoCBbUlNFVF9HUElPXSDCoCDCoCDCoCDCoCDCoCDCoCA9IEJDTV82MzQ1X0dQSU9f
-QkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX1NQSV0gwqAgwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82
-MzQ1X1NQSV9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfVURDMF0gwqAgwqAgwqAgwqAgwqAgwqAg
-PSBCQ01fNjM0NV9VREMwX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9PSENJMF0gwqAgwqAgwqAg
-wqAgwqAgwqA9IEJDTV82MzQ1X09IQ0kwX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9PSENJX1BS
-SVZdIMKgIMKgIMKgIMKgPSBCQ01fNjM0NV9PSENJX1BSSVZfQkFTRSwKPiAtIMKgIMKgIMKgIFtS
-U0VUX1VTQkhfUFJJVl0gwqAgwqAgwqAgwqA9IEJDTV82MzQ1X1VTQkhfUFJJVl9CQVNFLAo+IC0g
-wqAgwqAgwqAgW1JTRVRfTVBJXSDCoCDCoCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzNDVfTVBJX0JB
-U0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9QQ01DSUFdIMKgIMKgIMKgIMKgIMKgID0gQkNNXzYzNDVf
-UENNQ0lBX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9EU0xdIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-PSBCQ01fNjM0NV9EU0xfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX0VORVQwXSDCoCDCoCDCoCDC
-oCDCoCDCoD0gQkNNXzYzNDVfRU5FVDBfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX0VORVQxXSDC
-oCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzNDVfRU5FVDFfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VU
-X0VORVRETUFdIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjM0NV9FTkVURE1BX0JBU0UsCj4gLSDCoCDC
-oCDCoCBbUlNFVF9FSENJMF0gwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzQ1X0VIQ0kwX0JBU0Us
-Cj4gLSDCoCDCoCDCoCBbUlNFVF9TRFJBTV0gwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzQ1X1NE
-UkFNX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9NRU1DXSDCoCDCoCDCoCDCoCDCoCDCoCA9IEJD
-TV82MzQ1X01FTUNfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX0REUl0gwqAgwqAgwqAgwqAgwqAg
-wqAgwqA9IEJDTV82MzQ1X0REUl9CQVNFLAo+ICsgwqAgwqAgwqAgX19HRU5fQ1BVX1JFR1NfVEFC
-TEUoNjM0NSkKPiDCoH07Cj4KPiDCoHN0YXRpYyBjb25zdCBpbnQgYmNtOTYzNDVfaXJxc1tdID0g
-ewo+IC0gwqAgwqAgwqAgW0lSUV9USU1FUl0gwqAgwqAgwqAgwqAgwqAgwqAgPSBCQ01fNjM0NV9U
-SU1FUl9JUlEsCj4gLSDCoCDCoCDCoCBbSVJRX1VBUlQwXSDCoCDCoCDCoCDCoCDCoCDCoCA9IEJD
-TV82MzQ1X1VBUlQwX0lSUSwKPiAtIMKgIMKgIMKgIFtJUlFfRFNMXSDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCA9IEJDTV82MzQ1X0RTTF9JUlEsCj4gLSDCoCDCoCDCoCBbSVJRX0VORVQwXSDCoCDCoCDC
-oCDCoCDCoCDCoCA9IEJDTV82MzQ1X0VORVQwX0lSUSwKPiAtIMKgIMKgIMKgIFtJUlFfRU5FVF9Q
-SFldIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjM0NV9FTkVUX1BIWV9JUlEsCj4gLSDCoCDCoCDCoCBb
-SVJRX0VORVQwX1JYRE1BXSDCoCDCoCDCoCA9IEJDTV82MzQ1X0VORVQwX1JYRE1BX0lSUSwKPiAt
-IMKgIMKgIMKgIFtJUlFfRU5FVDBfVFhETUFdIMKgIMKgIMKgID0gQkNNXzYzNDVfRU5FVDBfVFhE
-TUFfSVJRLAo+ICsgwqAgwqAgwqAgX19HRU5fQ1BVX0lSUV9UQUJMRSg2MzQ1KQo+IMKgfTsKPgo+
-IC0vKgo+IC0gKiA2MzQ4IHJlZ2lzdGVyIHNldHMgYW5kIGlycXMKPiAtICovCgpTYW1lIGNvbW1l
-bnQgY29tbWVudC4KCj4gwqBzdGF0aWMgY29uc3QgdW5zaWduZWQgbG9uZyBiY205NjM0OF9yZWdz
-X2Jhc2VbXSA9IHsKPiAtIMKgIMKgIMKgIFtSU0VUX0RTTF9MTUVNXSDCoCDCoCDCoCDCoCA9IEJD
-TV82MzQ4X0RTTF9MTUVNX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9QRVJGXSDCoCDCoCDCoCDC
-oCDCoCDCoCA9IEJDTV82MzQ4X1BFUkZfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX1RJTUVSXSDC
-oCDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzNDhfVElNRVJfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VU
-X1dEVF0gwqAgwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzQ4X1dEVF9CQVNFLAo+IC0gwqAgwqAg
-wqAgW1JTRVRfVUFSVDBdIMKgIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjM0OF9VQVJUMF9CQVNFLAo+
-IC0gwqAgwqAgwqAgW1JTRVRfVUFSVDFdIMKgIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjM0OF9VQVJU
-MV9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfR1BJT10gwqAgwqAgwqAgwqAgwqAgwqAgPSBCQ01f
-NjM0OF9HUElPX0JBU0UsCj4gLSDCoCDCoCDCoCBbUlNFVF9TUEldIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgPSBCQ01fNjM0OF9TUElfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX09IQ0kwXSDCoCDCoCDC
-oCDCoCDCoCDCoD0gQkNNXzYzNDhfT0hDSTBfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX09IQ0lf
-UFJJVl0gwqAgwqAgwqAgwqA9IEJDTV82MzQ4X09IQ0lfUFJJVl9CQVNFLAo+IC0gwqAgwqAgwqAg
-W1JTRVRfVVNCSF9QUklWXSDCoCDCoCDCoCDCoD0gQkNNXzYzNDhfVVNCSF9QUklWX0JBU0UsCj4g
-LSDCoCDCoCDCoCBbUlNFVF9NUEldIMKgIMKgIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjM0OF9NUElf
-QkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX1BDTUNJQV0gwqAgwqAgwqAgwqAgwqAgPSBCQ01fNjM0
-OF9QQ01DSUFfQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX1NEUkFNXSDCoCDCoCDCoCDCoCDCoCDC
-oD0gQkNNXzYzNDhfU0RSQU1fQkFTRSwKPiAtIMKgIMKgIMKgIFtSU0VUX0RTTF0gwqAgwqAgwqAg
-wqAgwqAgwqAgwqA9IEJDTV82MzQ4X0RTTF9CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfRU5FVDBd
-IMKgIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjM0OF9FTkVUMF9CQVNFLAo+IC0gwqAgwqAgwqAgW1JT
-RVRfRU5FVDFdIMKgIMKgIMKgIMKgIMKgIMKgPSBCQ01fNjM0OF9FTkVUMV9CQVNFLAo+IC0gwqAg
-wqAgwqAgW1JTRVRfRU5FVERNQV0gwqAgwqAgwqAgwqAgwqA9IEJDTV82MzQ4X0VORVRETUFfQkFT
-RSwKPiAtIMKgIMKgIMKgIFtSU0VUX01FTUNdIMKgIMKgIMKgIMKgIMKgIMKgID0gQkNNXzYzNDhf
-TUVNQ19CQVNFLAo+IC0gwqAgwqAgwqAgW1JTRVRfRERSXSDCoCDCoCDCoCDCoCDCoCDCoCDCoD0g
-QkNNXzYzNDhfRERSX0JBU0UsCj4gKyDCoCDCoCDCoCBfX0dFTl9DUFVfUkVHU19UQUJMRSg2MzQ4
-KQo+IMKgfTsKPgo+IMKgc3RhdGljIGNvbnN0IGludCBiY205NjM0OF9pcnFzW10gPSB7Cj4gLSDC
-oCDCoCDCoCBbSVJRX1RJTUVSXSDCoCDCoCDCoCDCoCDCoCDCoCA9IEJDTV82MzQ4X1RJTUVSX0lS
-USwKPiAtIMKgIMKgIMKgIFtJUlFfVUFSVDBdIMKgIMKgIMKgIMKgIMKgIMKgID0gQkNNXzYzNDhf
-VUFSVDBfSVJRLAo+IC0gwqAgwqAgwqAgW0lSUV9EU0xdIMKgIMKgIMKgIMKgIMKgIMKgIMKgID0g
-QkNNXzYzNDhfRFNMX0lSUSwKPiAtIMKgIMKgIMKgIFtJUlFfRU5FVDBdIMKgIMKgIMKgIMKgIMKg
-IMKgID0gQkNNXzYzNDhfRU5FVDBfSVJRLAo+IC0gwqAgwqAgwqAgW0lSUV9FTkVUMV0gwqAgwqAg
-wqAgwqAgwqAgwqAgPSBCQ01fNjM0OF9FTkVUMV9JUlEsCj4gLSDCoCDCoCDCoCBbSVJRX0VORVRf
-UEhZXSDCoCDCoCDCoCDCoCDCoD0gQkNNXzYzNDhfRU5FVF9QSFlfSVJRLAo+IC0gwqAgwqAgwqAg
-W0lSUV9PSENJMF0gwqAgwqAgwqAgwqAgwqAgwqAgPSBCQ01fNjM0OF9PSENJMF9JUlEsCj4gLSDC
-oCDCoCDCoCBbSVJRX1BDTUNJQV0gwqAgwqAgwqAgwqAgwqAgwqA9IEJDTV82MzQ4X1BDTUNJQV9J
-UlEsCj4gLSDCoCDCoCDCoCBbSVJRX0VORVQwX1JYRE1BXSDCoCDCoCDCoCA9IEJDTV82MzQ4X0VO
-RVQwX1JYRE1BX0lSUSwKPiAtIMKgIMKgIMKgIFtJUlFfRU5FVDBfVFhETUFdIMKgIMKgIMKgID0g
-QkNNXzYzNDhfRU5FVDBfVFhETUFfSVJRLAo+IC0gwqAgwqAgwqAgW0lSUV9FTkVUMV9SWERNQV0g
-wqAgwqAgwqAgPSBCQ01fNjM0OF9FTkVUMV9SWERNQV9JUlEsCj4gLSDCoCDCoCDCoCBbSVJRX0VO
-RVQxX1RYRE1BXSDCoCDCoCDCoCA9IEJDTV82MzQ4X0VORVQxX1RYRE1BX0lSUSwKPiAtIMKgIMKg
-IMKgIFtJUlFfUENJXSDCoCDCoCDCoCDCoCDCoCDCoCDCoCA9IEJDTV82MzQ4X1BDSV9JUlEsCj4g
-KyDCoCDCoCDCoCBfX0dFTl9DUFVfSVJRX1RBQkxFKDYzNDgpCj4gKwo+IMKgfTsKPgo+IC0vKgo+
-IC0gKiA2MzU4IHJlZ2lzdGVyIHNldHMgYW5kIGlycXMKPiAtICovCgpTYW1lIGNvbW1lbnQgY29t
-bWVudC4KCgpKb25hcwo=
+Hi,
+
+On 10 June 2011 23:47, Maxime Bizon <mbizon@freebox.fr> wrote:
+> Needed for upcoming 6368 CPU support.
+>
+> Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+> ---
+>  arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h  |  183 +++++++++++++++++++++
+>  arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |   78 +++++++++
+>  2 files changed, 261 insertions(+), 0 deletions(-)
+>
+> diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
+> index 464f948..ce6b3ca 100644
+> --- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
+> +++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
+> @@ -88,6 +88,7 @@ enum bcm63xx_regs_set {
+>        RSET_UART1,
+>        RSET_GPIO,
+>        RSET_SPI,
+> +       RSET_SPI2,
+
+What's the difference between SPI and SPI2?
+
+As far as I can tell the biggest difference between the bcm6338/48 SPI
+controller and the bcm6358/68 one is the order of the registers (and
+some bit positions), but the general way it works is the same. Unless
+you have two drivers (which will then probably have a lot of common
+code), you'll need to check the chipid anyway to know which RSET to
+use, so you could also just direcly use this to use the correct
+register offsets.
+
+The High-Speed SPI controller on the bcm6328, bcm63268 and bcm6362 is
+a totally different beast though, that one should get it's own
+register set (but that's in the future ;-).
+
+>        RSET_UDC0,
+>        RSET_OHCI0,
+>        RSET_OHCI_PRIV,
+> @@ -98,10 +99,23 @@ enum bcm63xx_regs_set {
+>        RSET_ENET0,
+>        RSET_ENET1,
+>        RSET_ENETDMA,
+> +       RSET_ENETDMAC,
+> +       RSET_ENETDMAS,
+> +       RSET_ENETSW,
+>        RSET_EHCI0,
+>        RSET_SDRAM,
+>        RSET_MEMC,
+>        RSET_DDR,
+> +       RSET_M2M,
+> +       RSET_ATM,
+> +       RSET_XTM,
+> +       RSET_XTMDMA,
+> +       RSET_XTMDMAC,
+> +       RSET_XTMDMAS,
+> +       RSET_PCM,
+> +       RSET_PCMDMA,
+> +       RSET_PCMDMAC,
+> +       RSET_PCMDMAS,
+>  };
+>
+>  #define RSET_DSL_LMEM_SIZE             (64 * 1024 * 4)
+> @@ -109,11 +123,18 @@ enum bcm63xx_regs_set {
+>  #define RSET_WDT_SIZE                  12
+>  #define RSET_ENET_SIZE                 2048
+>  #define RSET_ENETDMA_SIZE              2048
+> +#define RSET_ENETSW_SIZE               65536
+>  #define RSET_UART_SIZE                 24
+>  #define RSET_UDC_SIZE                  256
+>  #define RSET_OHCI_SIZE                 256
+>  #define RSET_EHCI_SIZE                 256
+>  #define RSET_PCMCIA_SIZE               12
+> +#define RSET_M2M_SIZE                  256
+> +#define RSET_ATM_SIZE                  4096
+> +#define RSET_XTM_SIZE                  10240
+> +#define RSET_XTMDMA_SIZE               256
+> +#define RSET_XTMDMAC_SIZE(chans)       (16 * (chans))
+> +#define RSET_XTMDMAS_SIZE(chans)       (16 * (chans))
+>
+>  /*
+>  * 6338 register sets base address
+> @@ -127,6 +148,7 @@ enum bcm63xx_regs_set {
+>  #define BCM_6338_UART1_BASE            (0xdeadbeef)
+>  #define BCM_6338_GPIO_BASE             (0xfffe0400)
+>  #define BCM_6338_SPI_BASE              (0xfffe0c00)
+> +#define BCM_6338_SPI2_BASE             (0xdeadbeef)
+>  #define BCM_6338_UDC0_BASE             (0xdeadbeef)
+>  #define BCM_6338_USBDMA_BASE           (0xfffe2400)
+>  #define BCM_6338_OHCI0_BASE            (0xdeadbeef)
+> @@ -141,10 +163,23 @@ enum bcm63xx_regs_set {
+>  #define BCM_6338_ENET0_BASE            (0xfffe2800)
+>  #define BCM_6338_ENET1_BASE            (0xdeadbeef)
+>  #define BCM_6338_ENETDMA_BASE          (0xfffe2400)
+> +#define BCM_6338_ENETDMAC_BASE         (0xfffe2500)
+> +#define BCM_6338_ENETDMAS_BASE         (0xfffe2600)
+> +#define BCM_6338_ENETSW_BASE           (0xdeadbeef)
+>  #define BCM_6338_EHCI0_BASE            (0xdeadbeef)
+>  #define BCM_6338_SDRAM_BASE            (0xfffe3100)
+>  #define BCM_6338_MEMC_BASE             (0xdeadbeef)
+>  #define BCM_6338_DDR_BASE              (0xdeadbeef)
+> +#define BCM_6338_M2M_BASE              (0xdeadbeef)
+> +#define BCM_6338_ATM_BASE              (0xdeadbeef)
+
+That one is already there, it's called BCM_6338_SAR_BASE. You should
+just rename that one.
+
+> +#define BCM_6338_XTM_BASE              (0xdeadbeef)
+> +#define BCM_6338_XTMDMA_BASE           (0xdeadbeef)
+> +#define BCM_6338_XTMDMAC_BASE          (0xdeadbeef)
+> +#define BCM_6338_XTMDMAS_BASE          (0xdeadbeef)
+> +#define BCM_6338_PCM_BASE              (0xdeadbeef)
+> +#define BCM_6338_PCMDMA_BASE           (0xdeadbeef)
+> +#define BCM_6338_PCMDMAC_BASE          (0xdeadbeef)
+> +#define BCM_6338_PCMDMAS_BASE          (0xdeadbeef)
+>
+>  /*
+>  * 6345 register sets base address
+> @@ -158,10 +193,14 @@ enum bcm63xx_regs_set {
+>  #define BCM_6345_UART1_BASE            (0xdeadbeef)
+>  #define BCM_6345_GPIO_BASE             (0xfffe0400)
+>  #define BCM_6345_SPI_BASE              (0xdeadbeef)
+> +#define BCM_6345_SPI2_BASE             (0xdeadbeef)
+>  #define BCM_6345_UDC0_BASE             (0xdeadbeef)
+>  #define BCM_6345_USBDMA_BASE           (0xfffe2800)
+>  #define BCM_6345_ENET0_BASE            (0xfffe1800)
+>  #define BCM_6345_ENETDMA_BASE          (0xfffe2800)
+> +#define BCM_6345_ENETDMAC_BASE         (0xfffe2900)
+> +#define BCM_6345_ENETDMAS_BASE         (0xfffe2a00)
+> +#define BCM_6345_ENETSW_BASE           (0xdeadbeef)
+>  #define BCM_6345_PCMCIA_BASE           (0xfffe2028)
+>  #define BCM_6345_MPI_BASE              (0xdeadbeef)
+>  #define BCM_6345_OHCI0_BASE            (0xfffe2100)
+> @@ -176,6 +215,16 @@ enum bcm63xx_regs_set {
+>  #define BCM_6345_SDRAM_BASE            (0xfffe2300)
+>  #define BCM_6345_MEMC_BASE             (0xdeadbeef)
+>  #define BCM_6345_DDR_BASE              (0xdeadbeef)
+> +#define BCM_6345_M2M_BASE              (0xdeadbeef)
+> +#define BCM_6345_ATM_BASE              (0xdeadbeef)
+
+Actually that would be 0xfffe4000 (same as the bcm6348). There's also
+a SAR_BASE which should be removed.
+
+
+Jonas

@@ -1,67 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 10:50:24 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:57092 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491040Ab1FOIuR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 10:50:17 +0200
-Received: by wyb28 with SMTP id 28so154625wyb.36
-        for <multiple recipients>; Wed, 15 Jun 2011 01:50:12 -0700 (PDT)
-Received: by 10.216.6.27 with SMTP id 27mr265919wem.69.1308127811976;
-        Wed, 15 Jun 2011 01:50:11 -0700 (PDT)
-Received: from localhost (gw-ba1.picochip.com [94.175.234.108])
-        by mx.google.com with ESMTPS id g4sm120655weg.12.2011.06.15.01.50.09
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 15 Jun 2011 01:50:10 -0700 (PDT)
-Date:   Wed, 15 Jun 2011 09:49:59 +0100
-From:   Jamie Iles <jamie@jamieiles.com>
-To:     Shane McDonald <mcdonald.shane@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Jamie Iles <jamie@jamieiles.com>, linux-serial@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org,
-        Marc St-Jean <bluezzer@gmail.com>,
-        Anoop P A <anoop.pa@gmail.com>
-Subject: Re: [PATCH] tty: 8250: handle USR for DesignWare 8250 with correct
- accessors
-Message-ID: <20110615084959.GG3075@pulham.picochip.com>
-References: <1307616525-22028-1-git-send-email-jamie@jamieiles.com>
- <20110610035817.GA6740@linux-mips.org>
- <BANLkTi=0Pk-2YT=jLeBTNLYELfo+e-saZA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 11:48:18 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.126.187]:54707 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490982Ab1FOJsO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 11:48:14 +0200
+Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
+        by mrelayeu.kundenserver.de (node=mreu3) with ESMTP (Nemesis)
+        id 0Lx0lJ-1PQs4Z3vD7-016il5; Wed, 15 Jun 2011 11:46:19 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
+Date:   Wed, 15 Jun 2011 11:46:13 +0200
+User-Agent: KMail/1.12.2 (Linux/2.6.31-22-generic; KDE/4.3.2; x86_64; ; )
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Chen Liqin <liqin.chen@sunplusct.com>,
+        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Lennox Wu <lennox.wu@gmail.com>, linux-arch@vger.kernel.org,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Helge Deller <deller@gmx.de>, x86@kernel.org,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Matt Turner <mattst88@gmail.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        microblaze-uclinux@itee.uq.edu.au,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Mikael Starvik <starvik@axis.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Richard Henderson <rth@twiddle.net>,
+        Chris Zankel <chris@zankel.net>,
+        Michal Simek <monstr@monstr.eu>,
+        Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
+        linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
+        Kyle McMartin <kyle@mcmartin.ca>,
+        Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+References: <20110614190850.GA13526@linux-mips.org> <201106142333.16203.arnd@arndb.de> <4DF83577.6040903@zytor.com>
+In-Reply-To: <4DF83577.6040903@zytor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <BANLkTi=0Pk-2YT=jLeBTNLYELfo+e-saZA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30403
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201106151146.13320.arnd@arndb.de>
+X-Provags-ID: V02:K0:UgVhHbJxxDK/cApY1GY56+x3rDAp403fcp7osiEzSV+
+ c/BkLKpeSzJWKAH2NhkipzckEerD+ifXIZFDda14U+2AELaEDL
+ 5BuWUx5fUGyKn3Joch+yzM1xqBnNWVhb9ZpaSPDdMqGfRLeNam
+ zPswG5xDOA1u7jkOKjVtu2cPE65ywcJ4YVdWx62K1sBQkqKmXy
+ Vwd28VWYT/zHwfCqCRE3w==
+X-archive-position: 30404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jamie@jamieiles.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12199
+X-UID: 12225
 
-On Tue, Jun 14, 2011 at 09:33:45AM -0600, Shane McDonald wrote:
-> On Thu, Jun 9, 2011 at 9:58 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > If you look at arch/mips/include/asm/pmc-sierra/msp71xx/msp_regs.h there's
-> >
-> > #define MSP_UART0_BASE          (MSP_SLP_BASE + 0x100)
-> >                                        /* UART0 controller base        */
-> > #define MSP_BCPY_CTRL_BASE      (MSP_SLP_BASE + 0x120)
-> >                                        /* Block Copy controller base   */
-> >
-> > So there are just 0x20 of address space reserved for that UART.  Me thinks
-> > that PMC-Sierra clamped the 256 byte address space of the DesignWare APB
-> > UART to what is standard for 16550 class UARTs, 8 registers which at a
-> > shift of 4 is 0x20 bytes and the status register being accesses is really
-> > something else.  I'd guess PMC-Sierra just remapped the register to
-> > another address.
+On Wednesday 15 June 2011, H. Peter Anvin wrote:
+> On 06/14/2011 02:33 PM, Arnd Bergmann wrote:
+> >>
+> >> Why on earth restrict it like that?  It's just a device driver, like
+> >> more or less any other device driver...
+> > 
+> > I'd say any other classic ISA/PC driver, including floppy, gameport or
+> > serial-8250. One problem with these is that we never fully worked out
+> > the dependencies for these, which we probably should. CONFIG_ISA
+> > generally means ISA add-on cards, but that might not be enabled for
+> > platforms that have a pc-parport but no ISA slots.
+> > 
 > 
-> I have confirmed with a contact at PMC-Sierra that this is the case.
+> OK, serial-8250 is clearly just plain wrong, since the 8250 series UARTs
+> are ubiquitous across just about every platform.
 
-Thanks for confirming that Shane.  I'm currently working on a series to 
-move the DesignWare handling code into the pmc-sierra platform and kill 
-off UPIO_DWAPB{,32} and will post it in a couple of days.
+Obviously you want to support 8250 uarts with MMIO on most architectures,
+but the driver can only be built if you define both MMIO and PIO 
+accessors (readb and outb). I would like to make the PIO part of 8250
+conditional on having PIO support so that an architecture that doesn't
+support this no longer has to provide fake accessor functions.
 
-Jamie
+> Parallel port is an intermediate case... Centronics parallel ports
+> predate the PC ecosystem by quite a bit, and the particular arrangement
+> of ports became popular with the PC and spread to other platforms, but
+> the particular variant of it known as ECP (as opposed to EPP) is ISA DMA
+> specific.
+
+The driver looks like it can easily be built without support for the ISA DMA
+API.
+
+> > On the other hand, you have embedded platforms that currently build support
+> > for parport-pc but define the inb/outb macros to plain pointer dereferences
+> > (otherwise you can't build the 8250 driver). Loading parport-pc on those
+> > machines typically results in derefencing user memory in the best case.
+> >
+> > What I'd love to see is a configuration option for "arch has working
+> > PC-style inb/outb instructions", so we can build a kernel without them but
+> > still get MMIO based drivers for PCI-less platforms.
+> 
+> Now, isn't that was iowrite/ioread was designed for?
+
+Yes, it just isn't used consistently. As far as I can tell, this is for multiple
+number of reasons:
+
+* In case of 8250, the driver abstracts the difference between PIO and MMIO itself,
+  because it uses the same method to do indirect accesses and different strides.
+  Using ioread wouldn't really make the driver much simpler.
+
+* For parport-pc, the driver really only needs PIO, we don't even
+  try to support the same device on random MMIO addresses, and that might not
+  be necessary.
+
+* In case of floppies, the "solution" was to write a driver for every platform that
+  doesn't have PIO, since they tend to have other differences. The amiflop and
+  ataflop drivers are not even use readb(), they just derefence volatile pointers
+  to do MMIO. I doubt we can find volunteers to clean that up.
+
+	Arnd

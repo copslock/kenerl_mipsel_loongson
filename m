@@ -1,22 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 11:48:18 +0200 (CEST)
-Received: from moutng.kundenserver.de ([212.227.126.187]:54707 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490982Ab1FOJsO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 11:48:14 +0200
-Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
-        by mrelayeu.kundenserver.de (node=mreu3) with ESMTP (Nemesis)
-        id 0Lx0lJ-1PQs4Z3vD7-016il5; Wed, 15 Jun 2011 11:46:19 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     "H. Peter Anvin" <hpa@zytor.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 13:24:36 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:60907 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491040Ab1FOLYc convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Jun 2011 13:24:32 +0200
+Received: by bwz1 with SMTP id 1so466724bwz.36
+        for <multiple recipients>; Wed, 15 Jun 2011 04:24:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=z1KTW2uOCYijPRZGY4wMIXaSj/CLGvkowI1pYxwn2I8=;
+        b=F9K4PnYSrphTUPFtjyx7sIDD31+KIYXR8vz1nn7Bsi7GudUqIYHBNA1N0NkQ3urp7j
+         BkOJ9F/AQiGH7+HLmIt2AiUcIHLfk/6NTaroW2cd5R+5G6VoGAGnVvEmPY1dAZMLQ6Z5
+         3qmsje2Gram/nMMhJUfWfHjO28eHB0hAOtrAE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=n4vGYZ7jjdiWtEe00gTKMZIiGrFDZRmvPt7nrELkoZ4iBtU5D0QNxOOSsWDuGV2nr5
+         FKvHaexFU8c4J2sSE0IEkV3zmRtxeLLTgPs05cu1wvhgNa5ukGWcXuRiIlrOnM3sbABE
+         86r1iJydidL+06p1WwA0zSqbJg+cP+DaN2dF4=
+MIME-Version: 1.0
+Received: by 10.205.83.133 with SMTP id ag5mr403547bkc.121.1308137064885; Wed,
+ 15 Jun 2011 04:24:24 -0700 (PDT)
+Received: by 10.204.5.130 with HTTP; Wed, 15 Jun 2011 04:24:24 -0700 (PDT)
+In-Reply-To: <201106151146.13320.arnd@arndb.de>
+References: <20110614190850.GA13526@linux-mips.org>
+        <201106142333.16203.arnd@arndb.de>
+        <4DF83577.6040903@zytor.com>
+        <201106151146.13320.arnd@arndb.de>
+Date:   Wed, 15 Jun 2011 13:24:24 +0200
+X-Google-Sender-Auth: xtqG9DxGsRbwd0OHLPKkj7TFyaI
+Message-ID: <BANLkTimMLDb6LL0HZv8XtHt=zvyE7eybyg@mail.gmail.com>
 Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
-Date:   Wed, 15 Jun 2011 11:46:13 +0200
-User-Agent: KMail/1.12.2 (Linux/2.6.31-22-generic; KDE/4.3.2; x86_64; ; )
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "H. Peter Anvin" <hpa@zytor.com>, linux-mips@linux-mips.org,
         linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Chen Liqin <liqin.chen@sunplusct.com>,
+        linux-sh@vger.kernel.org, Chen Liqin <liqin.chen@sunplusct.com>,
         Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
         Guan Xuetao <gxt@mprc.pku.edu.cn>,
         Lennox Wu <lennox.wu@gmail.com>, linux-arch@vger.kernel.org,
@@ -26,7 +50,6 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Helge Deller <deller@gmx.de>, x86@kernel.org,
         "James E.J. Bottomley" <jejb@parisc-linux.org>,
         Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Matt Turner <mattst88@gmail.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
         microblaze-uclinux@itee.uq.edu.au,
@@ -34,94 +57,52 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Mikael Starvik <starvik@axis.com>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
         Richard Henderson <rth@twiddle.net>,
         Chris Zankel <chris@zankel.net>,
         Michal Simek <monstr@monstr.eu>,
-        Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
-        linux-cris-kernel@axis.com, linux-kernel@vger.kernel.org,
+        Tony Luck <tony.luck@intel.com>, linux-cris-kernel@axis.com,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ralf Baechle <ralf@linux-mips.org>,
         Kyle McMartin <kyle@mcmartin.ca>,
         Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org,
         "David S. Miller" <davem@davemloft.net>
-References: <20110614190850.GA13526@linux-mips.org> <201106142333.16203.arnd@arndb.de> <4DF83577.6040903@zytor.com>
-In-Reply-To: <4DF83577.6040903@zytor.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201106151146.13320.arnd@arndb.de>
-X-Provags-ID: V02:K0:UgVhHbJxxDK/cApY1GY56+x3rDAp403fcp7osiEzSV+
- c/BkLKpeSzJWKAH2NhkipzckEerD+ifXIZFDda14U+2AELaEDL
- 5BuWUx5fUGyKn3Joch+yzM1xqBnNWVhb9ZpaSPDdMqGfRLeNam
- zPswG5xDOA1u7jkOKjVtu2cPE65ywcJ4YVdWx62K1sBQkqKmXy
- Vwd28VWYT/zHwfCqCRE3w==
-X-archive-position: 30404
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30405
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12225
+X-UID: 12288
 
-On Wednesday 15 June 2011, H. Peter Anvin wrote:
-> On 06/14/2011 02:33 PM, Arnd Bergmann wrote:
-> >>
-> >> Why on earth restrict it like that?  It's just a device driver, like
-> >> more or less any other device driver...
-> > 
-> > I'd say any other classic ISA/PC driver, including floppy, gameport or
-> > serial-8250. One problem with these is that we never fully worked out
-> > the dependencies for these, which we probably should. CONFIG_ISA
-> > generally means ISA add-on cards, but that might not be enabled for
-> > platforms that have a pc-parport but no ISA slots.
-> > 
-> 
-> OK, serial-8250 is clearly just plain wrong, since the 8250 series UARTs
-> are ubiquitous across just about every platform.
+On Wed, Jun 15, 2011 at 11:46, Arnd Bergmann <arnd@arndb.de> wrote:
+> * In case of floppies, the "solution" was to write a driver for every platform that
+>  doesn't have PIO, since they tend to have other differences. The amiflop and
+>  ataflop drivers are not even use readb(), they just derefence volatile pointers
+>  to do MMIO. I doubt we can find volunteers to clean that up.
 
-Obviously you want to support 8250 uarts with MMIO on most architectures,
-but the driver can only be built if you define both MMIO and PIO 
-accessors (readb and outb). I would like to make the PIO part of 8250
-conditional on having PIO support so that an architecture that doesn't
-support this no longer has to provide fake accessor functions.
+Amiflop drives the Amiga floppy controller, which is completely
+different from the
+PC-style floppy controller.
+Ataflop drives the Atari floppy controller, which seems to be a WD1772 and not
+related to PC-style floppy controllers neither.
 
-> Parallel port is an intermediate case... Centronics parallel ports
-> predate the PC ecosystem by quite a bit, and the particular arrangement
-> of ports became popular with the PC and spread to other platforms, but
-> the particular variant of it known as ECP (as opposed to EPP) is ISA DMA
-> specific.
+So none of them drive PC-style hardware, and both predate the generic readb()
+infrastructure.
 
-The driver looks like it can easily be built without support for the ISA DMA
-API.
+Gr{oetje,eeting}s,
 
-> > On the other hand, you have embedded platforms that currently build support
-> > for parport-pc but define the inb/outb macros to plain pointer dereferences
-> > (otherwise you can't build the 8250 driver). Loading parport-pc on those
-> > machines typically results in derefencing user memory in the best case.
-> >
-> > What I'd love to see is a configuration option for "arch has working
-> > PC-style inb/outb instructions", so we can build a kernel without them but
-> > still get MMIO based drivers for PCI-less platforms.
-> 
-> Now, isn't that was iowrite/ioread was designed for?
+                        Geert
 
-Yes, it just isn't used consistently. As far as I can tell, this is for multiple
-number of reasons:
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-* In case of 8250, the driver abstracts the difference between PIO and MMIO itself,
-  because it uses the same method to do indirect accesses and different strides.
-  Using ioread wouldn't really make the driver much simpler.
-
-* For parport-pc, the driver really only needs PIO, we don't even
-  try to support the same device on random MMIO addresses, and that might not
-  be necessary.
-
-* In case of floppies, the "solution" was to write a driver for every platform that
-  doesn't have PIO, since they tend to have other differences. The amiflop and
-  ataflop drivers are not even use readb(), they just derefence volatile pointers
-  to do MMIO. I doubt we can find volunteers to clean that up.
-
-	Arnd
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

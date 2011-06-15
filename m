@@ -1,83 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 10:35:32 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:47757 "EHLO duck.linux-mips.net"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1490982Ab1FOIf1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Jun 2011 10:35:27 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5F8Yl3a006605;
-        Wed, 15 Jun 2011 09:34:47 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5F8YbQ1006594;
-        Wed, 15 Jun 2011 09:34:37 +0100
-Date:   Wed, 15 Jun 2011 09:34:37 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "H. Peter Anvin" <hpa@zytor.com>
-Cc:     linux-arch@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Chen Liqin <liqin.chen@sunplusct.com>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Chris Zankel <chris@zankel.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Kyle McMartin <kyle@mcmartin.ca>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Mikael Starvik <starvik@axis.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Russell King <linux@arm.linux.org.uk>,
-        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>, x86@kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        microblaze-uclinux@itee.uq.edu.au, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-cris-kernel@axis.com,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
-Message-ID: <20110615083437.GA32624@linux-mips.org>
-References: <20110614190850.GA13526@linux-mips.org>
- <4DF7C3CA.9050902@zytor.com>
- <20110614223404.GA30057@linux-mips.org>
- <4DF8329C.7000904@zytor.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 10:50:24 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:57092 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491040Ab1FOIuR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 15 Jun 2011 10:50:17 +0200
+Received: by wyb28 with SMTP id 28so154625wyb.36
+        for <multiple recipients>; Wed, 15 Jun 2011 01:50:12 -0700 (PDT)
+Received: by 10.216.6.27 with SMTP id 27mr265919wem.69.1308127811976;
+        Wed, 15 Jun 2011 01:50:11 -0700 (PDT)
+Received: from localhost (gw-ba1.picochip.com [94.175.234.108])
+        by mx.google.com with ESMTPS id g4sm120655weg.12.2011.06.15.01.50.09
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 15 Jun 2011 01:50:10 -0700 (PDT)
+Date:   Wed, 15 Jun 2011 09:49:59 +0100
+From:   Jamie Iles <jamie@jamieiles.com>
+To:     Shane McDonald <mcdonald.shane@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Jamie Iles <jamie@jamieiles.com>, linux-serial@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org,
+        Marc St-Jean <bluezzer@gmail.com>,
+        Anoop P A <anoop.pa@gmail.com>
+Subject: Re: [PATCH] tty: 8250: handle USR for DesignWare 8250 with correct
+ accessors
+Message-ID: <20110615084959.GG3075@pulham.picochip.com>
+References: <1307616525-22028-1-git-send-email-jamie@jamieiles.com>
+ <20110610035817.GA6740@linux-mips.org>
+ <BANLkTi=0Pk-2YT=jLeBTNLYELfo+e-saZA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <4DF8329C.7000904@zytor.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BANLkTi=0Pk-2YT=jLeBTNLYELfo+e-saZA@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30402
+X-archive-position: 30403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jamie@jamieiles.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12188
+X-UID: 12199
 
-On Tue, Jun 14, 2011 at 09:18:36PM -0700, H. Peter Anvin wrote:
-
-> On 06/14/2011 03:34 PM, Ralf Baechle wrote:
-> > 
-> > There is no point in offering to build something that couldn't possibly be
-> > used.  It just makes the kernel harder to configure and inflates the test
-> > matrix for no good reason.
-> > 
+On Tue, Jun 14, 2011 at 09:33:45AM -0600, Shane McDonald wrote:
+> On Thu, Jun 9, 2011 at 9:58 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > If you look at arch/mips/include/asm/pmc-sierra/msp71xx/msp_regs.h there's
+> >
+> > #define MSP_UART0_BASE          (MSP_SLP_BASE + 0x100)
+> >                                        /* UART0 controller base        */
+> > #define MSP_BCPY_CTRL_BASE      (MSP_SLP_BASE + 0x120)
+> >                                        /* Block Copy controller base   */
+> >
+> > So there are just 0x20 of address space reserved for that UART.  Me thinks
+> > that PMC-Sierra clamped the 256 byte address space of the DesignWare APB
+> > UART to what is standard for 16550 class UARTs, 8 registers which at a
+> > shift of 4 is 0x20 bytes and the status register being accesses is really
+> > something else.  I'd guess PMC-Sierra just remapped the register to
+> > another address.
 > 
-> I see... that's why a bunch of devices that only exist on ARM and MIPS
-> SoCs are offered on x86 platforms?
+> I have confirmed with a contact at PMC-Sierra that this is the case.
 
-Well, if you notice one of those, yell.  Or send patches.  Most of those
-have been fixed.
+Thanks for confirming that Shane.  I'm currently working on a series to 
+move the DesignWare handling code into the pmc-sierra platform and kill 
+off UPIO_DWAPB{,32} and will post it in a couple of days.
 
-  Ralf
+Jamie

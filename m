@@ -1,17 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 06:44:51 +0200 (CEST)
-Received: from imr4.ericy.com ([198.24.6.8]:53757 "EHLO imr4.ericy.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jun 2011 07:44:37 +0200 (CEST)
+Received: from terminus.zytor.com ([198.137.202.10]:38916 "EHLO mail.zytor.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490982Ab1FOEoo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 15 Jun 2011 06:44:44 +0200
-Received: from eusaamw0711.eamcs.ericsson.se ([147.117.20.178])
-        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id p5F4eMV5017064;
-        Tue, 14 Jun 2011 23:40:23 -0500
-Received: from localhost (147.117.20.214) by eusaamw0711.eamcs.ericsson.se
- (147.117.20.179) with Microsoft SMTP Server id 8.3.137.0; Wed, 15 Jun 2011
- 00:40:17 -0400
-Date:   Tue, 14 Jun 2011 21:40:16 -0700
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-To:     "H. Peter Anvin" <hpa@zytor.com>
+        id S1490982Ab1FOFoa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Jun 2011 07:44:30 +0200
+Received: from tazenda.hos.anvin.org ([IPv6:2001:470:861f:0:e269:95ff:fe35:9f3c])
+        (authenticated bits=0)
+        by mail.zytor.com (8.14.4/8.14.4) with ESMTP id p5F5hnAj000560
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
+        Tue, 14 Jun 2011 22:43:52 -0700
+Message-ID: <4DF8468F.1080806@zytor.com>
+Date:   Tue, 14 Jun 2011 22:43:43 -0700
+From:   "H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110428 Fedora/3.1.10-1.fc15 Thunderbird/3.1.10
+MIME-Version: 1.0
+To:     Guenter Roeck <guenter.roeck@ericsson.com>
 CC:     Ralf Baechle <ralf@linux-mips.org>,
         "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -54,38 +56,44 @@ CC:     Ralf Baechle <ralf@linux-mips.org>,
         "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
         "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>
 Subject: Re: [RFC,PATCH] Cleanup PC parallel port Kconfig
-Message-ID: <20110615044016.GC10553@ericsson.com>
-References: <20110614190850.GA13526@linux-mips.org>
- <4DF7C3CA.9050902@zytor.com>
- <20110614223404.GA30057@linux-mips.org>
- <4DF8329C.7000904@zytor.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <4DF8329C.7000904@zytor.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 30394
+References: <20110614190850.GA13526@linux-mips.org> <4DF7C3CA.9050902@zytor.com> <20110614223404.GA30057@linux-mips.org> <4DF8329C.7000904@zytor.com> <20110615044016.GC10553@ericsson.com>
+In-Reply-To: <20110615044016.GC10553@ericsson.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12090
+X-UID: 12105
 
-On Wed, Jun 15, 2011 at 12:18:36AM -0400, H. Peter Anvin wrote:
-> On 06/14/2011 03:34 PM, Ralf Baechle wrote:
-> > 
-> > There is no point in offering to build something that couldn't possibly be
-> > used.  It just makes the kernel harder to configure and inflates the test
-> > matrix for no good reason.
-> > 
+On 06/14/2011 09:40 PM, Guenter Roeck wrote:
+> On Wed, Jun 15, 2011 at 12:18:36AM -0400, H. Peter Anvin wrote:
+>> On 06/14/2011 03:34 PM, Ralf Baechle wrote:
+>>>
+>>> There is no point in offering to build something that couldn't possibly be
+>>> used.  It just makes the kernel harder to configure and inflates the test
+>>> matrix for no good reason.
+>>>
+>>
+>> I see... that's why a bunch of devices that only exist on ARM and MIPS
+>> SoCs are offered on x86 platforms?
+>>
+> http://en.wikipedia.org/wiki/Two_wrongs_make_a_right
 > 
-> I see... that's why a bunch of devices that only exist on ARM and MIPS
-> SoCs are offered on x86 platforms?
-> 
-http://en.wikipedia.org/wiki/Two_wrongs_make_a_right
 
-Guenter
+Except in this case it's not wrong.  It was done that way because it was
+discovered a long time ago that restricting drivers that were not
+*inherently* limited to specific platform just resulted in more bitrot
+and nasty surprises for the users who *did* need specific things after
+all, even though the maintainers had not thought so.
+
+	-hpa
+
+-- 
+H. Peter Anvin, Intel Open Source Technology Center
+I work for Intel.  I don't speak on their behalf.

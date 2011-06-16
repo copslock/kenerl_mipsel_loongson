@@ -1,41 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2011 20:02:55 +0200 (CEST)
-Received: from verein.lst.de ([213.95.11.211]:50184 "EHLO newverein.lst.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jun 2011 20:18:23 +0200 (CEST)
+Received: from imr4.ericy.com ([198.24.6.8]:44626 "EHLO imr4.ericy.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491089Ab1FPSCv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 16 Jun 2011 20:02:51 +0200
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id C223B14194; Thu, 16 Jun 2011 20:02:50 +0200 (CEST)
-Date:   Thu, 16 Jun 2011 20:02:50 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     naveen yadav <yad.naveen@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: flush_kernel_vmap_range() invalidate_kernel_vmap_range() API
-        not exists for MIPS
-Message-ID: <20110616180250.GA13025@lst.de>
-References: <AANLkTimkh2QLvupu+62NGrKfqRb_gC7KLCAKkEoS9N9N@mail.gmail.com> <20110325172709.GC8483@linux-mips.org> <BANLkTimo6BEgDnTh+sPVR+MELyxiwJoFGw@mail.gmail.com>
+        id S1491089Ab1FPSSU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 16 Jun 2011 20:18:20 +0200
+Received: from eusaamw0711.eamcs.ericsson.se ([147.117.20.178])
+        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id p5GII7Sm019059;
+        Thu, 16 Jun 2011 13:18:13 -0500
+Received: from localhost (147.117.20.214) by eusaamw0711.eamcs.ericsson.se
+ (147.117.20.179) with Microsoft SMTP Server id 8.3.137.0; Thu, 16 Jun 2011
+ 14:18:06 -0400
+Date:   Thu, 16 Jun 2011 11:18:06 -0700
+From:   Guenter Roeck <guenter.roeck@ericsson.com>
+To:     David Daney <ddaney@caviumnetworks.com>
+CC:     linux-mips@linux-mips.org
+Subject: Octeon Ethernet driver
+Message-ID: <20110616181806.GC19457@ericsson.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <BANLkTimo6BEgDnTh+sPVR+MELyxiwJoFGw@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-archive-position: 30426
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 30427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: guenter.roeck@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13775
+X-UID: 13792
 
-On Wed, Jun 15, 2011 at 11:58:24AM +0530, naveen yadav wrote:
-> Dear Ralf Baechle,
-> 
-> I have made one patch for below API's for 2.6.35.9 kernel. Pls provide
-> me your feedback about this .
+Hi David,
 
-Ralf,
+looks like we'll need to use the Octeon Ethernet driver from SDK 2.0
+or later in our system, for performance reasons. We plan to use 2.6.39,
+so we can not directly use the SDK driver.
 
-I'll second that request.  We'll really need this, right now embedded XFS
-users are hacking around it in horrible ways.
+Do you (or someone else) have plans to port it to the upstream kernel,
+or do you know if such a port exists ?
+
+Thanks,
+Guenter 

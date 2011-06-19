@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jun 2011 23:55:54 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:38212 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jun 2011 23:56:20 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:38228 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491134Ab1FSVw3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jun 2011 23:52:29 +0200
+        with ESMTP id S1491016Ab1FSVwe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jun 2011 23:52:34 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id A0AA18BBA;
-        Sun, 19 Jun 2011 23:52:29 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 869D58BC8;
+        Sun, 19 Jun 2011 23:52:34 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id C8OAWO-3mBFt; Sun, 19 Jun 2011 23:52:24 +0200 (CEST)
+        with ESMTP id ddGjidMslvYm; Sun, 19 Jun 2011 23:52:27 +0200 (CEST)
 Received: from localhost.localdomain (dyndsl-095-033-241-142.ewe-ip-backbone.de [95.33.241.142])
-        by hauke-m.de (Postfix) with ESMTPSA id 310218BBD;
-        Sun, 19 Jun 2011 23:51:14 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 0F0C68BBE;
+        Sun, 19 Jun 2011 23:51:15 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-wireless@vger.kernel.org, zajec5@gmail.com,
         linux-mips@linux-mips.org
@@ -20,13 +20,13 @@ Cc:     mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
         b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
         arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [RFC v2 10/12] bcm47xx: prepare to support different buses
-Date:   Sun, 19 Jun 2011 23:50:07 +0200
-Message-Id: <1308520209-668-11-git-send-email-hauke@hauke-m.de>
+Subject: [RFC v2 11/12] bcm47xx: add support for bcma bus
+Date:   Sun, 19 Jun 2011 23:50:08 +0200
+Message-Id: <1308520209-668-12-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
 References: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 30446
+X-archive-position: 30447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,455 +35,342 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15696
+X-UID: 15697
 
-The ssb bus is not hod directly any more. there is now a union which
-contains all the supported buses, now just ssb. As just one system bus
-can be used at a time the union does not cause any problems.
+This patch add support for the bcma bus. Broadcom uses only Mips 74K
+CPUs on the new SoC and on the old ons using ssb bus there are no Mips
+74K CPUs.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/gpio.c                     |   56 ++++++++++++++++----------
- arch/mips/bcm47xx/nvram.c                    |   15 +++++--
- arch/mips/bcm47xx/serial.c                   |   13 +++++-
- arch/mips/bcm47xx/setup.c                    |   32 +++++++++++---
- arch/mips/bcm47xx/time.c                     |    9 +++-
- arch/mips/bcm47xx/wgt634u.c                  |   13 ++++--
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |   14 ++++++-
- arch/mips/include/asm/mach-bcm47xx/gpio.h    |   55 ++++++++++++++++++-------
- drivers/watchdog/bcm47xx_wdt.c               |   12 +++++-
- 9 files changed, 158 insertions(+), 61 deletions(-)
+ arch/mips/Kconfig                            |    4 ++
+ arch/mips/bcm47xx/gpio.c                     |    9 ++++++
+ arch/mips/bcm47xx/nvram.c                    |    6 ++++
+ arch/mips/bcm47xx/serial.c                   |   25 ++++++++++++++++
+ arch/mips/bcm47xx/setup.c                    |   41 ++++++++++++++++++++++++-
+ arch/mips/bcm47xx/time.c                     |    3 ++
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    4 ++
+ arch/mips/include/asm/mach-bcm47xx/gpio.h    |   18 +++++++++++
+ drivers/watchdog/bcm47xx_wdt.c               |    7 ++++
+ 9 files changed, 115 insertions(+), 2 deletions(-)
 
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 45f7aac..f8cb414 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -100,6 +100,10 @@ config BCM47XX
+ 	select SSB_EMBEDDED
+ 	select SSB_B43_PCI_BRIDGE if PCI
+ 	select SSB_PCICORE_HOSTMODE if PCI
++	select BCMA
++	select BCMA_HOST_SOC
++	select BCMA_DRIVER_MIPS
++	select BCMA_DRIVER_PCI_HOSTMODE
+ 	select GENERIC_GPIO
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select CFE
 diff --git a/arch/mips/bcm47xx/gpio.c b/arch/mips/bcm47xx/gpio.c
-index e4a5ee9..2f6d2df 100644
+index 2f6d2df..42af3f8 100644
 --- a/arch/mips/bcm47xx/gpio.c
 +++ b/arch/mips/bcm47xx/gpio.c
-@@ -20,42 +20,54 @@ static DECLARE_BITMAP(gpio_in_use, BCM47XX_EXTIF_GPIO_LINES);
+@@ -34,6 +34,9 @@ int gpio_request(unsigned gpio, const char *tag)
+ 			return -EBUSY;
  
- int gpio_request(unsigned gpio, const char *tag)
- {
--	if (ssb_chipco_available(&ssb_bcm47xx.chipco) &&
--	    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
--		return -EINVAL;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
-+		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
-+			return -EINVAL;
- 
--	if (ssb_extif_available(&ssb_bcm47xx.extif) &&
--	    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
--		return -EINVAL;
-+		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
-+		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
-+			return -EINVAL;
- 
--	if (test_and_set_bit(gpio, gpio_in_use))
--		return -EBUSY;
-+		if (test_and_set_bit(gpio, gpio_in_use))
-+			return -EBUSY;
- 
--	return 0;
-+		return 0;
-+	}
-+	return -EINVAL;
+ 		return 0;
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return -EINVAL;
+ 	}
+ 	return -EINVAL;
  }
- EXPORT_SYMBOL(gpio_request);
+@@ -53,6 +56,9 @@ void gpio_free(unsigned gpio)
  
- void gpio_free(unsigned gpio)
- {
--	if (ssb_chipco_available(&ssb_bcm47xx.chipco) &&
--	    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
--		return;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
-+		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
-+			return;
- 
--	if (ssb_extif_available(&ssb_bcm47xx.extif) &&
--	    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
--		return;
-+		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
-+		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
-+			return;
- 
--	clear_bit(gpio, gpio_in_use);
-+		clear_bit(gpio, gpio_in_use);
+ 		clear_bit(gpio, gpio_in_use);
+ 		return;
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
 +		return;
-+	}
+ 	}
  }
  EXPORT_SYMBOL(gpio_free);
- 
- int gpio_to_irq(unsigned gpio)
- {
--	if (ssb_chipco_available(&ssb_bcm47xx.chipco))
--		return ssb_mips_irq(ssb_bcm47xx.chipco.dev) + 2;
--	else if (ssb_extif_available(&ssb_bcm47xx.extif))
--		return ssb_mips_irq(ssb_bcm47xx.extif.dev) + 2;
--	else
--		return -EINVAL;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco))
-+			return ssb_mips_irq(bcm47xx_bus.ssb.chipco.dev) + 2;
-+		else if (ssb_extif_available(&bcm47xx_bus.ssb.extif))
-+			return ssb_mips_irq(bcm47xx_bus.ssb.extif.dev) + 2;
-+		else
-+			return -EINVAL;
-+	}
-+	return -EINVAL;
+@@ -67,6 +73,9 @@ int gpio_to_irq(unsigned gpio)
+ 			return ssb_mips_irq(bcm47xx_bus.ssb.extif.dev) + 2;
+ 		else
+ 			return -EINVAL;
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return -EINVAL;
+ 	}
+ 	return -EINVAL;
  }
- EXPORT_SYMBOL_GPL(gpio_to_irq);
 diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index 54db815..d2304d0 100644
+index d2304d0..541facf 100644
 --- a/arch/mips/bcm47xx/nvram.c
 +++ b/arch/mips/bcm47xx/nvram.c
-@@ -26,14 +26,21 @@ static char nvram_buf[NVRAM_SPACE];
- /* Probe for NVRAM header */
+@@ -27,6 +27,7 @@ static char nvram_buf[NVRAM_SPACE];
  static void early_nvram_init(void)
  {
--	struct ssb_mipscore *mcore = &ssb_bcm47xx.mipscore;
-+	struct ssb_mipscore *mcore_ssb;
+ 	struct ssb_mipscore *mcore_ssb;
++	struct bcma_drv_mips *mcore_bcma;
  	struct nvram_header *header;
  	int i;
--	u32 base, lim, off;
-+	u32 base = 0;
-+	u32 lim = 0;
-+	u32 off;
- 	u32 *src, *dst;
- 
--	base = mcore->flash_window;
--	lim = mcore->flash_window_size;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		mcore_ssb = &bcm47xx_bus.ssb.mipscore;
-+		base = mcore_ssb->flash_window;
-+		lim = mcore_ssb->flash_window_size;
+ 	u32 base = 0;
+@@ -40,6 +41,11 @@ static void early_nvram_init(void)
+ 		base = mcore_ssb->flash_window;
+ 		lim = mcore_ssb->flash_window_size;
+ 		break;
++	case BCM47XX_BUS_TYPE_BCMA:
++		mcore_bcma = &bcm47xx_bus.bcma.bus.drv_mips;
++		base = mcore_bcma->flash_window;
++		lim = mcore_bcma->flash_window_size;
 +		break;
-+	}
+ 	}
  
  	off = FLASH_MIN;
- 	while (off <= lim) {
 diff --git a/arch/mips/bcm47xx/serial.c b/arch/mips/bcm47xx/serial.c
-index 59c11af..87c2c5e 100644
+index 87c2c5e..03ce8ce 100644
 --- a/arch/mips/bcm47xx/serial.c
 +++ b/arch/mips/bcm47xx/serial.c
-@@ -23,10 +23,10 @@ static struct platform_device uart8250_device = {
- 	},
- };
- 
--static int __init uart8250_init(void)
-+static int __init uart8250_init_ssb(void)
- {
- 	int i;
--	struct ssb_mipscore *mcore = &(ssb_bcm47xx.mipscore);
-+	struct ssb_mipscore *mcore = &(bcm47xx_bus.ssb.mipscore);
- 
- 	memset(&uart8250_data, 0,  sizeof(uart8250_data));
- 
-@@ -45,6 +45,15 @@ static int __init uart8250_init(void)
+@@ -45,11 +45,36 @@ static int __init uart8250_init_ssb(void)
  	return platform_device_register(&uart8250_device);
  }
  
-+static int __init uart8250_init(void)
++static int __init uart8250_init_bcma(void)
 +{
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		return uart8250_init_ssb();
++	int i;
++	struct bcma_drv_mips *mcore = &(bcm47xx_bus.bcma.bus.drv_mips);
++
++	memset(&uart8250_data, 0,  sizeof(uart8250_data));
++
++	for (i = 0; i < mcore->nr_serial_ports; i++) {
++		struct plat_serial8250_port *p = &(uart8250_data[i]);
++		struct bcma_drv_mips_serial_port *bcma_port;
++		bcma_port = &(mcore->serial_ports[i]);
++
++		p->mapbase = (unsigned int) bcma_port->regs;
++		p->membase = (void *) bcma_port->regs;
++		p->irq = bcma_port->irq + 2;
++		p->uartclk = bcma_port->baud_base;
++		p->regshift = bcma_port->reg_shift;
++		p->iotype = UPIO_MEM;
++		p->flags = UPF_BOOT_AUTOCONF | UPF_SHARE_IRQ;
 +	}
-+	return -EINVAL;
++	return platform_device_register(&uart8250_device);
 +}
 +
- module_init(uart8250_init);
- 
- MODULE_AUTHOR("Aurelien Jarno <aurelien@aurel32.net>");
+ static int __init uart8250_init(void)
+ {
+ 	switch (bcm47xx_active_bus_type) {
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		return uart8250_init_ssb();
++	case BCM47XX_BUS_TYPE_BCMA:
++		return uart8250_init_bcma();
+ 	}
+ 	return -EINVAL;
+ }
 diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 73b529b..c64b76d 100644
+index c64b76d..d844278 100644
 --- a/arch/mips/bcm47xx/setup.c
 +++ b/arch/mips/bcm47xx/setup.c
-@@ -35,15 +35,21 @@
- #include <bcm47xx.h>
- #include <asm/mach-bcm47xx/nvram.h>
- 
--struct ssb_bus ssb_bcm47xx;
--EXPORT_SYMBOL(ssb_bcm47xx);
-+union bcm47xx_bus bcm47xx_bus;
-+EXPORT_SYMBOL(bcm47xx_bus);
-+
-+enum bcm47xx_bus_type bcm47xx_active_bus_type;
- 
- static void bcm47xx_machine_restart(char *command)
- {
- 	printk(KERN_ALERT "Please stand by while rebooting the system...\n");
- 	local_irq_disable();
- 	/* Set the watchdog timer to reset immediately */
--	ssb_watchdog_timer_set(&ssb_bcm47xx, 1);
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
+@@ -29,6 +29,7 @@
+ #include <linux/types.h>
+ #include <linux/ssb/ssb.h>
+ #include <linux/ssb/ssb_embedded.h>
++#include <linux/bcma/bcma_soc.h>
+ #include <asm/bootinfo.h>
+ #include <asm/reboot.h>
+ #include <asm/time.h>
+@@ -49,6 +50,9 @@ static void bcm47xx_machine_restart(char *command)
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
+ 		break;
++	case BCM47XX_BUS_TYPE_BCMA:
++		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 1);
 +		break;
-+	}
- 	while (1)
- 		cpu_relax();
- }
-@@ -52,7 +58,11 @@ static void bcm47xx_machine_halt(void)
- {
- 	/* Disable interrupts and watchdog and spin forever */
- 	local_irq_disable();
--	ssb_watchdog_timer_set(&ssb_bcm47xx, 0);
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0);
-+		break;
-+	}
- 	while (1)
- 		cpu_relax();
- }
-@@ -247,7 +257,7 @@ static int bcm47xx_get_invariants(struct ssb_bus *bus,
- 	return 0;
- }
- 
--void __init plat_mem_setup(void)
-+static void __init bcm47xx_register_ssb(void)
- {
- 	int err;
- 	char buf[100];
-@@ -258,12 +268,12 @@ void __init plat_mem_setup(void)
- 		printk(KERN_WARNING "bcm47xx: someone else already registered"
- 			" a ssb SPROM callback handler (err %d)\n", err);
- 
--	err = ssb_bus_ssbbus_register(&ssb_bcm47xx, SSB_ENUM_BASE,
-+	err = ssb_bus_ssbbus_register(&(bcm47xx_bus.ssb), SSB_ENUM_BASE,
- 				      bcm47xx_get_invariants);
- 	if (err)
- 		panic("Failed to initialize SSB bus (err %d)\n", err);
- 
--	mcore = &ssb_bcm47xx.mipscore;
-+	mcore = &bcm47xx_bus.ssb.mipscore;
- 	if (nvram_getenv("kernel_args", buf, sizeof(buf)) >= 0) {
- 		if (strstr(buf, "console=ttyS1")) {
- 			struct ssb_serial_port port;
-@@ -276,6 +286,14 @@ void __init plat_mem_setup(void)
- 			memcpy(&mcore->serial_ports[1], &port, sizeof(port));
- 		}
  	}
+ 	while (1)
+ 		cpu_relax();
+@@ -62,6 +66,9 @@ static void bcm47xx_machine_halt(void)
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0);
+ 		break;
++	case BCM47XX_BUS_TYPE_BCMA:
++		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 0);
++		break;
+ 	}
+ 	while (1)
+ 		cpu_relax();
+@@ -288,14 +295,44 @@ static void __init bcm47xx_register_ssb(void)
+ 	}
+ }
+ 
++static void __init bcm47xx_register_bcma(void)
++{
++	int err;
++
++	err = bcma_host_soc_register(&bcm47xx_bus.bcma);
++	if (err)
++		panic("Failed to initialize BCMA bus (err %d)\n", err);
 +}
 +
-+void __init plat_mem_setup(void)
-+{
-+	struct cpuinfo_mips *c = &current_cpu_data;
-+
-+	bcm47xx_active_bus_type = BCM47XX_BUS_TYPE_SSB;
-+	bcm47xx_register_ssb();
+ void __init plat_mem_setup(void)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 
+-	bcm47xx_active_bus_type = BCM47XX_BUS_TYPE_SSB;
+-	bcm47xx_register_ssb();
++	if (c->cputype == CPU_74K) {
++		printk(KERN_INFO "bcm47xx: using bcma bus\n");
++		bcm47xx_active_bus_type = BCM47XX_BUS_TYPE_BCMA;
++		bcm47xx_register_bcma();
++	} else {
++		printk(KERN_INFO "bcm47xx: using ssb bus\n");
++		bcm47xx_active_bus_type = BCM47XX_BUS_TYPE_SSB;
++		bcm47xx_register_ssb();
++	}
  
  	_machine_restart = bcm47xx_machine_restart;
  	_machine_halt = bcm47xx_machine_halt;
+ 	pm_power_off = bcm47xx_machine_halt;
+ }
++
++static int __init bcm47xx_register_bus_complete(void)
++{
++	switch (bcm47xx_active_bus_type) {
++	case BCM47XX_BUS_TYPE_SSB:
++		/* Nothing to do */
++		break;
++	case BCM47XX_BUS_TYPE_BCMA:
++		bcma_bus_register(&bcm47xx_bus.bcma.bus);
++		break;
++	}
++	return 0;
++}
++device_initcall(bcm47xx_register_bus_complete);
 diff --git a/arch/mips/bcm47xx/time.c b/arch/mips/bcm47xx/time.c
-index 0c6f47b..a7be993 100644
+index a7be993..ebb2b64 100644
 --- a/arch/mips/bcm47xx/time.c
 +++ b/arch/mips/bcm47xx/time.c
-@@ -30,7 +30,7 @@
- 
- void __init plat_time_init(void)
- {
--	unsigned long hz;
-+	unsigned long hz = 0;
- 
- 	/*
- 	 * Use deterministic values for initial counter interrupt
-@@ -39,7 +39,12 @@ void __init plat_time_init(void)
- 	write_c0_count(0);
- 	write_c0_compare(0xffff);
- 
--	hz = ssb_cpu_clock(&ssb_bcm47xx.mipscore) / 2;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		hz = ssb_cpu_clock(&bcm47xx_bus.ssb.mipscore) / 2;
+@@ -43,6 +43,9 @@ void __init plat_time_init(void)
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		hz = ssb_cpu_clock(&bcm47xx_bus.ssb.mipscore) / 2;
+ 		break;
++	case BCM47XX_BUS_TYPE_BCMA:
++		hz = bcma_cpu_clock(&bcm47xx_bus.bcma.bus.drv_mips) / 2;
 +		break;
-+	}
-+
+ 	}
+ 
  	if (!hz)
- 		hz = 100000000;
- 
-diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-index 74d0696..79ecd0a 100644
---- a/arch/mips/bcm47xx/wgt634u.c
-+++ b/arch/mips/bcm47xx/wgt634u.c
-@@ -108,7 +108,7 @@ static irqreturn_t gpio_interrupt(int irq, void *ignored)
- 
- 	/* Interrupts are shared, check if the current one is
- 	   a GPIO interrupt. */
--	if (!ssb_chipco_irq_status(&ssb_bcm47xx.chipco,
-+	if (!ssb_chipco_irq_status(&bcm47xx_bus.ssb.chipco,
- 				   SSB_CHIPCO_IRQ_GPIO))
- 		return IRQ_NONE;
- 
-@@ -133,21 +133,24 @@ static int __init wgt634u_init(void)
- 	 * been allocated ranges 00:09:5b:xx:xx:xx and 00:0f:b5:xx:xx:xx.
- 	 */
- 
--	u8 *et0mac = ssb_bcm47xx.sprom.et0mac;
-+	if (bcm47xx_active_bus_type != BCM47XX_BUS_TYPE_SSB)
-+		return -ENODEV;
-+
-+	u8 *et0mac = bcm47xx_bus.ssb.sprom.et0mac;
- 
- 	if (et0mac[0] == 0x00 &&
- 	    ((et0mac[1] == 0x09 && et0mac[2] == 0x5b) ||
- 	     (et0mac[1] == 0x0f && et0mac[2] == 0xb5))) {
--		struct ssb_mipscore *mcore = &ssb_bcm47xx.mipscore;
-+		struct ssb_mipscore *mcore = &bcm47xx_bus.ssb.mipscore;
- 
- 		printk(KERN_INFO "WGT634U machine detected.\n");
- 
- 		if (!request_irq(gpio_to_irq(WGT634U_GPIO_RESET),
- 				 gpio_interrupt, IRQF_SHARED,
--				 "WGT634U GPIO", &ssb_bcm47xx.chipco)) {
-+				 "WGT634U GPIO", &bcm47xx_bus.ssb.chipco)) {
- 			gpio_direction_input(WGT634U_GPIO_RESET);
- 			gpio_intmask(WGT634U_GPIO_RESET, 1);
--			ssb_chipco_irq_mask(&ssb_bcm47xx.chipco,
-+			ssb_chipco_irq_mask(&bcm47xx_bus.ssb.chipco,
- 					    SSB_CHIPCO_IRQ_GPIO,
- 					    SSB_CHIPCO_IRQ_GPIO);
- 		}
 diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-index d008f47..4be8b95 100644
+index 4be8b95..4771b6f 100644
 --- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
 +++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-@@ -19,7 +19,17 @@
- #ifndef __ASM_BCM47XX_H
+@@ -20,13 +20,17 @@
  #define __ASM_BCM47XX_H
  
--/* SSB bus */
--extern struct ssb_bus ssb_bcm47xx;
-+#include <linux/ssb/ssb.h>
-+
-+enum bcm47xx_bus_type {
-+	BCM47XX_BUS_TYPE_SSB,
-+};
-+
-+union bcm47xx_bus {
-+	struct ssb_bus ssb;
-+};
-+
-+extern union bcm47xx_bus bcm47xx_bus;
-+extern enum bcm47xx_bus_type bcm47xx_active_bus_type;
+ #include <linux/ssb/ssb.h>
++#include <linux/bcma/bcma.h>
++#include <linux/bcma/bcma_soc.h>
  
- #endif /* __ASM_BCM47XX_H */
+ enum bcm47xx_bus_type {
+ 	BCM47XX_BUS_TYPE_SSB,
++	BCM47XX_BUS_TYPE_BCMA,
+ };
+ 
+ union bcm47xx_bus {
+ 	struct ssb_bus ssb;
++	struct bcma_soc bcma;
+ };
+ 
+ extern union bcm47xx_bus bcm47xx_bus;
 diff --git a/arch/mips/include/asm/mach-bcm47xx/gpio.h b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-index 9850414..976b8aa 100644
+index 976b8aa..2c80ed5 100644
 --- a/arch/mips/include/asm/mach-bcm47xx/gpio.h
 +++ b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-@@ -21,41 +21,66 @@ extern int gpio_to_irq(unsigned gpio);
- 
- static inline int gpio_get_value(unsigned gpio)
- {
--	return ssb_gpio_in(&ssb_bcm47xx, 1 << gpio);
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		return ssb_gpio_in(&bcm47xx_bus.ssb, 1 << gpio);
-+	}
-+	return -EINVAL;
+@@ -24,6 +24,9 @@ static inline int gpio_get_value(unsigned gpio)
+ 	switch (bcm47xx_active_bus_type) {
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		return ssb_gpio_in(&bcm47xx_bus.ssb, 1 << gpio);
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return -EINVAL;
+ 	}
+ 	return -EINVAL;
+ }
+@@ -34,6 +37,9 @@ static inline void gpio_set_value(unsigned gpio, int value)
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
+ 			     value ? 1 << gpio : 0);
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return;
+ 	}
  }
  
- static inline void gpio_set_value(unsigned gpio, int value)
- {
--	ssb_gpio_out(&ssb_bcm47xx, 1 << gpio, value ? 1 << gpio : 0);
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
-+			     value ? 1 << gpio : 0);
-+	}
+@@ -43,6 +49,9 @@ static inline int gpio_direction_input(unsigned gpio)
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 0);
+ 		return 0;
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return -EINVAL;
+ 	}
+ 	return -EINVAL;
  }
- 
- static inline int gpio_direction_input(unsigned gpio)
- {
--	ssb_gpio_outen(&ssb_bcm47xx, 1 << gpio, 0);
--	return 0;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 0);
-+		return 0;
-+	}
-+	return -EINVAL;
+@@ -57,6 +66,9 @@ static inline int gpio_direction_output(unsigned gpio, int value)
+ 		/* then set the gpio mode */
+ 		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 1 << gpio);
+ 		return 0;
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return -EINVAL;
+ 	}
+ 	return -EINVAL;
  }
- 
- static inline int gpio_direction_output(unsigned gpio, int value)
- {
--	/* first set the gpio out value */
--	ssb_gpio_out(&ssb_bcm47xx, 1 << gpio, value ? 1 << gpio : 0);
--	/* then set the gpio mode */
--	ssb_gpio_outen(&ssb_bcm47xx, 1 << gpio, 1 << gpio);
--	return 0;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		/* first set the gpio out value */
-+		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
-+			     value ? 1 << gpio : 0);
-+		/* then set the gpio mode */
-+		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 1 << gpio);
-+		return 0;
-+	}
-+	return -EINVAL;
+@@ -68,6 +80,9 @@ static inline int gpio_intmask(unsigned gpio, int value)
+ 		ssb_gpio_intmask(&bcm47xx_bus.ssb, 1 << gpio,
+ 				 value ? 1 << gpio : 0);
+ 		return 0;
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return -EINVAL;
+ 	}
+ 	return -EINVAL;
  }
- 
- static inline int gpio_intmask(unsigned gpio, int value)
- {
--	ssb_gpio_intmask(&ssb_bcm47xx, 1 << gpio,
--			 value ? 1 << gpio : 0);
--	return 0;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_intmask(&bcm47xx_bus.ssb, 1 << gpio,
-+				 value ? 1 << gpio : 0);
-+		return 0;
-+	}
-+	return -EINVAL;
+@@ -79,6 +94,9 @@ static inline int gpio_polarity(unsigned gpio, int value)
+ 		ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << gpio,
+ 				  value ? 1 << gpio : 0);
+ 		return 0;
++	case BCM47XX_BUS_TYPE_BCMA:
++		/* Not implemenmted yet */
++		return -EINVAL;
+ 	}
+ 	return -EINVAL;
  }
- 
- static inline int gpio_polarity(unsigned gpio, int value)
- {
--	ssb_gpio_polarity(&ssb_bcm47xx, 1 << gpio,
--			  value ? 1 << gpio : 0);
--	return 0;
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << gpio,
-+				  value ? 1 << gpio : 0);
-+		return 0;
-+	}
-+	return -EINVAL;
- }
- 
- 
 diff --git a/drivers/watchdog/bcm47xx_wdt.c b/drivers/watchdog/bcm47xx_wdt.c
-index bd44417..7e4e063 100644
+index 7e4e063..e570667 100644
 --- a/drivers/watchdog/bcm47xx_wdt.c
 +++ b/drivers/watchdog/bcm47xx_wdt.c
-@@ -54,12 +54,20 @@ static atomic_t ticks;
- static inline void bcm47xx_wdt_hw_start(void)
- {
- 	/* this is 2,5s on 100Mhz clock  and 2s on 133 Mhz */
--	ssb_watchdog_timer_set(&ssb_bcm47xx, 0xfffffff);
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0xfffffff);
+@@ -58,6 +58,10 @@ static inline void bcm47xx_wdt_hw_start(void)
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0xfffffff);
+ 		break;
++	case BCM47XX_BUS_TYPE_BCMA:
++		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc,
++					       0xfffffff);
 +		break;
-+	}
+ 	}
  }
  
- static inline int bcm47xx_wdt_hw_stop(void)
- {
--	return ssb_watchdog_timer_set(&ssb_bcm47xx, 0);
-+	switch (bcm47xx_active_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		return ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0);
-+	}
-+	return -EINVAL;
+@@ -66,6 +70,9 @@ static inline int bcm47xx_wdt_hw_stop(void)
+ 	switch (bcm47xx_active_bus_type) {
+ 	case BCM47XX_BUS_TYPE_SSB:
+ 		return ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0);
++	case BCM47XX_BUS_TYPE_BCMA:
++		bcma_chipco_watchdog_timer_set(&bcm47xx_bus.bcma.bus.drv_cc, 0);
++		return 0;
+ 	}
+ 	return -EINVAL;
  }
- 
- static void bcm47xx_timer_tick(unsigned long unused)
 -- 
 1.7.4.1

@@ -1,185 +1,312 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jun 2011 20:38:18 +0200 (CEST)
-Received: from [69.28.251.93] ([69.28.251.93]:57856 "EHLO b32.net"
-        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491134Ab1FRSiL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 18 Jun 2011 20:38:11 +0200
-Received: (qmail 27888 invoked from network); 18 Jun 2011 18:38:06 -0000
-Received: from localhost (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
-  by localhost with (DHE-RSA-AES128-SHA encrypted) SMTP; 18 Jun 2011 18:38:06 -0000
-Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sat, 18 Jun 2011 11:38:06 -0700
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Jian Peng <jipeng2005@gmail.com>,
-        David Daney <ddaney@caviumnetworks.com>,
-        <linux-mips@linux-mips.org>
-Subject: [PATCH -queue] MIPS: Trivial style cleanups in mmap.c
-Date:   Sat, 18 Jun 2011 11:28:48 -0700
-Message-Id: <50c16d4ef04b5213459ba15d14e30459@localhost>
-User-Agent: vim 7.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-archive-position: 30435
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jun 2011 23:51:48 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41171 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1490993Ab1FSVvo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jun 2011 23:51:44 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 8879C8BC0;
+        Sun, 19 Jun 2011 23:51:42 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id JN4-0jXGlIbm; Sun, 19 Jun 2011 23:51:07 +0200 (CEST)
+Received: from localhost.localdomain (dyndsl-095-033-241-142.ewe-ip-backbone.de [95.33.241.142])
+        by hauke-m.de (Postfix) with ESMTPSA id B50BA8BB4;
+        Sun, 19 Jun 2011 23:51:06 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     linux-wireless@vger.kernel.org, zajec5@gmail.com,
+        linux-mips@linux-mips.org
+Cc:     mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
+        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
+        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [RFC v2 01/12] bcma: move parsing of EEPROM into own function.
+Date:   Sun, 19 Jun 2011 23:49:58 +0200
+Message-Id: <1308520209-668-2-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.4.1
+In-Reply-To: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
+References: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 30436
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15274
+X-UID: 15684
 
-Fix checkpatch warnings.  Rename arch_get_unmapped_area_foo() to
-arch_get_unmapped_area_common().  Make indentations and spacing more
-consistent.  Add <linux/compiler.h> for likely/unlikely.
+Move the parsing of the EEPROM data in scan function for one core into
+an own function. Now we are able to use it in some other scan function
+as well.
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/mm/mmap.c |   48 +++++++++++++++++++++++++-----------------------
- 1 files changed, 25 insertions(+), 23 deletions(-)
+ drivers/bcma/scan.c |  230 ++++++++++++++++++++++++++-------------------------
+ 1 files changed, 118 insertions(+), 112 deletions(-)
 
-diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-index 9ff5d0f..302d779 100644
---- a/arch/mips/mm/mmap.c
-+++ b/arch/mips/mm/mmap.c
-@@ -6,6 +6,7 @@
-  * Copyright (C) 2011 Wind River Systems,
-  *   written by Ralf Baechle <ralf@linux-mips.org>
-  */
-+#include <linux/compiler.h>
- #include <linux/errno.h>
- #include <linux/mm.h>
- #include <linux/mman.h>
-@@ -15,12 +16,11 @@
- #include <linux/sched.h>
- 
- unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
--
- EXPORT_SYMBOL(shm_align_mask);
- 
- /* gap between mmap and stack */
- #define MIN_GAP (128*1024*1024UL)
--#define MAX_GAP        ((TASK_SIZE)/6*5)
-+#define MAX_GAP ((TASK_SIZE)/6*5)
- 
- static int mmap_is_legacy(void)
- {
-@@ -57,13 +57,13 @@ static inline unsigned long COLOUR_ALIGN_DOWN(unsigned long addr,
- 	return base - off;
+diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+index 40d7dcc..4012d8d 100644
+--- a/drivers/bcma/scan.c
++++ b/drivers/bcma/scan.c
+@@ -200,16 +200,124 @@ static s32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 **eromptr,
+ 	return addrl;
  }
  
--#define COLOUR_ALIGN(addr,pgoff)				\
-+#define COLOUR_ALIGN(addr, pgoff)				\
- 	((((addr) + shm_align_mask) & ~shm_align_mask) +	\
- 	 (((pgoff) << PAGE_SHIFT) & shm_align_mask))
- 
- enum mmap_allocation_direction {UP, DOWN};
- 
--static unsigned long arch_get_unmapped_area_foo(struct file *filp,
-+static unsigned long arch_get_unmapped_area_common(struct file *filp,
- 	unsigned long addr0, unsigned long len, unsigned long pgoff,
- 	unsigned long flags, enum mmap_allocation_direction dir)
++static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
++			      struct bcma_device *core)
++{
++	s32 tmp;
++	u8 i, j;
++	s32 cia, cib;
++	u8 ports[2], wrappers[2];
++
++	/* get CIs */
++	cia = bcma_erom_get_ci(bus, eromptr);
++	if (cia < 0) {
++		bcma_erom_push_ent(eromptr);
++		if (bcma_erom_is_end(bus, eromptr))
++			return -ESPIPE;
++		return -EILSEQ;
++	}
++	cib = bcma_erom_get_ci(bus, eromptr);
++	if (cib < 0)
++		return -EILSEQ;
++
++	/* parse CIs */
++	core->id.class = (cia & SCAN_CIA_CLASS) >> SCAN_CIA_CLASS_SHIFT;
++	core->id.id = (cia & SCAN_CIA_ID) >> SCAN_CIA_ID_SHIFT;
++	core->id.manuf = (cia & SCAN_CIA_MANUF) >> SCAN_CIA_MANUF_SHIFT;
++	ports[0] = (cib & SCAN_CIB_NMP) >> SCAN_CIB_NMP_SHIFT;
++	ports[1] = (cib & SCAN_CIB_NSP) >> SCAN_CIB_NSP_SHIFT;
++	wrappers[0] = (cib & SCAN_CIB_NMW) >> SCAN_CIB_NMW_SHIFT;
++	wrappers[1] = (cib & SCAN_CIB_NSW) >> SCAN_CIB_NSW_SHIFT;
++	core->id.rev = (cib & SCAN_CIB_REV) >> SCAN_CIB_REV_SHIFT;
++
++	if (((core->id.manuf == BCMA_MANUF_ARM) &&
++	     (core->id.id == 0xFFF)) ||
++	    (ports[1] == 0)) {
++		bcma_erom_skip_component(bus, eromptr);
++		return -ENXIO;
++	}
++
++	/* check if component is a core at all */
++	if (wrappers[0] + wrappers[1] == 0) {
++		/* we could save addrl of the router
++		if (cid == BCMA_CORE_OOB_ROUTER)
++		 */
++		bcma_erom_skip_component(bus, eromptr);
++		return -ENXIO;
++	}
++
++	if (bcma_erom_is_bridge(bus, eromptr)) {
++		bcma_erom_skip_component(bus, eromptr);
++		return -ENXIO;
++	}
++
++	/* get & parse master ports */
++	for (i = 0; i < ports[0]; i++) {
++		u32 mst_port_d = bcma_erom_get_mst_port(bus, eromptr);
++		if (mst_port_d < 0)
++			return -EILSEQ;
++	}
++
++	/* get & parse slave ports */
++	for (i = 0; i < ports[1]; i++) {
++		for (j = 0; ; j++) {
++			tmp = bcma_erom_get_addr_desc(bus, eromptr,
++				SCAN_ADDR_TYPE_SLAVE, i);
++			if (tmp < 0) {
++				/* no more entries for port _i_ */
++				/* pr_debug("erom: slave port %d "
++				 * "has %d descriptors\n", i, j); */
++				break;
++			} else {
++				if (i == 0 && j == 0)
++					core->addr = tmp;
++			}
++		}
++	}
++
++	/* get & parse master wrappers */
++	for (i = 0; i < wrappers[0]; i++) {
++		for (j = 0; ; j++) {
++			tmp = bcma_erom_get_addr_desc(bus, eromptr,
++				SCAN_ADDR_TYPE_MWRAP, i);
++			if (tmp < 0) {
++				/* no more entries for port _i_ */
++				/* pr_debug("erom: master wrapper %d "
++				 * "has %d descriptors\n", i, j); */
++				break;
++			} else {
++				if (i == 0 && j == 0)
++					core->wrap = tmp;
++			}
++		}
++	}
++
++	/* get & parse slave wrappers */
++	for (i = 0; i < wrappers[1]; i++) {
++		u8 hack = (ports[1] == 1) ? 0 : 1;
++		for (j = 0; ; j++) {
++			tmp = bcma_erom_get_addr_desc(bus, eromptr,
++				SCAN_ADDR_TYPE_SWRAP, i + hack);
++			if (tmp < 0) {
++				/* no more entries for port _i_ */
++				/* pr_debug("erom: master wrapper %d "
++				 * has %d descriptors\n", i, j); */
++				break;
++			} else {
++				if (wrappers[0] == 0 && !i && !j)
++					core->wrap = tmp;
++			}
++		}
++	}
++	return 0;
++}
++
+ int bcma_bus_scan(struct bcma_bus *bus)
  {
-@@ -103,16 +103,16 @@ static unsigned long arch_get_unmapped_area_foo(struct file *filp,
+ 	u32 erombase;
+ 	u32 __iomem *eromptr, *eromend;
  
- 		vma = find_vma(mm, addr);
- 		if (TASK_SIZE - len >= addr &&
--		   (!vma || addr + len <= vma->vm_start))
-+		    (!vma || addr + len <= vma->vm_start))
- 			return addr;
+-	s32 cia, cib;
+-	u8 ports[2], wrappers[2];
+-
+ 	s32 tmp;
+-	u8 i, j;
+ 
+ 	int err;
+ 
+@@ -236,112 +344,13 @@ int bcma_bus_scan(struct bcma_bus *bus)
+ 		INIT_LIST_HEAD(&core->list);
+ 		core->bus = bus;
+ 
+-		/* get CIs */
+-		cia = bcma_erom_get_ci(bus, &eromptr);
+-		if (cia < 0) {
+-			bcma_erom_push_ent(&eromptr);
+-			if (bcma_erom_is_end(bus, &eromptr))
+-				break;
+-			err= -EILSEQ;
+-			goto out;
+-		}
+-		cib = bcma_erom_get_ci(bus, &eromptr);
+-		if (cib < 0) {
+-			err= -EILSEQ;
+-			goto out;
+-		}
+-
+-		/* parse CIs */
+-		core->id.class = (cia & SCAN_CIA_CLASS) >> SCAN_CIA_CLASS_SHIFT;
+-		core->id.id = (cia & SCAN_CIA_ID) >> SCAN_CIA_ID_SHIFT;
+-		core->id.manuf = (cia & SCAN_CIA_MANUF) >> SCAN_CIA_MANUF_SHIFT;
+-		ports[0] = (cib & SCAN_CIB_NMP) >> SCAN_CIB_NMP_SHIFT;
+-		ports[1] = (cib & SCAN_CIB_NSP) >> SCAN_CIB_NSP_SHIFT;
+-		wrappers[0] = (cib & SCAN_CIB_NMW) >> SCAN_CIB_NMW_SHIFT;
+-		wrappers[1] = (cib & SCAN_CIB_NSW) >> SCAN_CIB_NSW_SHIFT;
+-		core->id.rev = (cib & SCAN_CIB_REV) >> SCAN_CIB_REV_SHIFT;
+-
+-		if (((core->id.manuf == BCMA_MANUF_ARM) &&
+-		     (core->id.id == 0xFFF)) ||
+-		    (ports[1] == 0)) {
+-			bcma_erom_skip_component(bus, &eromptr);
+-			continue;
+-		}
+-
+-		/* check if component is a core at all */
+-		if (wrappers[0] + wrappers[1] == 0) {
+-			/* we could save addrl of the router
+-			if (cid == BCMA_CORE_OOB_ROUTER)
+-			 */
+-			bcma_erom_skip_component(bus, &eromptr);
+-			continue;
+-		}
+-
+-		if (bcma_erom_is_bridge(bus, &eromptr)) {
+-			bcma_erom_skip_component(bus, &eromptr);
++		err = bcma_get_next_core(bus, &eromptr, core);
++		if (err == -ENXIO)
+ 			continue;
+-		}
+-
+-		/* get & parse master ports */
+-		for (i = 0; i < ports[0]; i++) {
+-			u32 mst_port_d = bcma_erom_get_mst_port(bus, &eromptr);
+-			if (mst_port_d < 0) {
+-				err= -EILSEQ;
+-				goto out;
+-			}
+-		}
+-
+-		/* get & parse slave ports */
+-		for (i = 0; i < ports[1]; i++) {
+-			for (j = 0; ; j++) {
+-				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
+-					SCAN_ADDR_TYPE_SLAVE, i);
+-				if (tmp < 0) {
+-					/* no more entries for port _i_ */
+-					/* pr_debug("erom: slave port %d "
+-					 * "has %d descriptors\n", i, j); */
+-					break;
+-				} else {
+-					if (i == 0 && j == 0)
+-						core->addr = tmp;
+-				}
+-			}
+-		}
+-
+-		/* get & parse master wrappers */
+-		for (i = 0; i < wrappers[0]; i++) {
+-			for (j = 0; ; j++) {
+-				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
+-					SCAN_ADDR_TYPE_MWRAP, i);
+-				if (tmp < 0) {
+-					/* no more entries for port _i_ */
+-					/* pr_debug("erom: master wrapper %d "
+-					 * "has %d descriptors\n", i, j); */
+-					break;
+-				} else {
+-					if (i == 0 && j == 0)
+-						core->wrap = tmp;
+-				}
+-			}
+-		}
+-
+-		/* get & parse slave wrappers */
+-		for (i = 0; i < wrappers[1]; i++) {
+-			u8 hack = (ports[1] == 1) ? 0 : 1;
+-			for (j = 0; ; j++) {
+-				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
+-					SCAN_ADDR_TYPE_SWRAP, i + hack);
+-				if (tmp < 0) {
+-					/* no more entries for port _i_ */
+-					/* pr_debug("erom: master wrapper %d "
+-					 * has %d descriptors\n", i, j); */
+-					break;
+-				} else {
+-					if (wrappers[0] == 0 && !i && !j)
+-						core->wrap = tmp;
+-				}
+-			}
+-		}
++		else if (err == -ESPIPE)
++			break;
++		else if (err < 0)
++			return err;
+ 
+ 		pr_info("Core %d found: %s "
+ 			"(manuf 0x%03X, id 0x%03X, rev 0x%02X, class 0x%X)\n",
+@@ -351,9 +360,6 @@ int bcma_bus_scan(struct bcma_bus *bus)
+ 
+ 		core->core_index = bus->nr_cores++;
+ 		list_add(&core->list, &bus->cores);
+-		continue;
+-out:
+-		return err;
  	}
  
- 	if (dir == UP) {
- 		addr = mm->mmap_base;
--			if (do_color_align)
--				addr = COLOUR_ALIGN(addr, pgoff);
--			else
--				addr = PAGE_ALIGN(addr);
-+		if (do_color_align)
-+			addr = COLOUR_ALIGN(addr, pgoff);
-+		else
-+			addr = PAGE_ALIGN(addr);
- 
- 		for (vma = find_vma(current->mm, addr); ; vma = vma->vm_next) {
- 			/* At this point:  (!vma || addr < vma->vm_end). */
-@@ -131,28 +131,30 @@ static unsigned long arch_get_unmapped_area_foo(struct file *filp,
- 			mm->free_area_cache = mm->mmap_base;
- 		}
- 
--		/* either no address requested or can't fit in requested address hole */
-+		/*
-+		 * either no address requested, or the mapping can't fit into
-+		 * the requested address hole
-+		 */
- 		addr = mm->free_area_cache;
--			if (do_color_align) {
--				unsigned long base =
--					COLOUR_ALIGN_DOWN(addr - len, pgoff);
--
-+		if (do_color_align) {
-+			unsigned long base =
-+				COLOUR_ALIGN_DOWN(addr - len, pgoff);
- 			addr = base + len;
--		 }
-+		}
- 
- 		/* make sure it can fit in the remaining address space */
- 		if (likely(addr > len)) {
- 			vma = find_vma(mm, addr - len);
- 			if (!vma || addr <= vma->vm_start) {
--				/* remember the address as a hint for next time */
--				return mm->free_area_cache = addr-len;
-+				/* cache the address as a hint for next time */
-+				return mm->free_area_cache = addr - len;
- 			}
- 		}
- 
- 		if (unlikely(mm->mmap_base < len))
- 			goto bottomup;
- 
--		addr = mm->mmap_base-len;
-+		addr = mm->mmap_base - len;
- 		if (do_color_align)
- 			addr = COLOUR_ALIGN_DOWN(addr, pgoff);
- 
-@@ -163,8 +165,8 @@ static unsigned long arch_get_unmapped_area_foo(struct file *filp,
- 			 * return with success:
- 			 */
- 			vma = find_vma(mm, addr);
--			if (likely(!vma || addr+len <= vma->vm_start)) {
--				/* remember the address as a hint for next time */
-+			if (likely(!vma || addr + len <= vma->vm_start)) {
-+				/* cache the address as a hint for next time */
- 				return mm->free_area_cache = addr;
- 			}
- 
-@@ -173,7 +175,7 @@ static unsigned long arch_get_unmapped_area_foo(struct file *filp,
- 				mm->cached_hole_size = vma->vm_start - addr;
- 
- 			/* try just below the current vma->vm_start */
--			addr = vma->vm_start-len;
-+			addr = vma->vm_start - len;
- 			if (do_color_align)
- 				addr = COLOUR_ALIGN_DOWN(addr, pgoff);
- 		} while (likely(len < vma->vm_start));
-@@ -201,7 +203,7 @@ bottomup:
- unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
- 	unsigned long len, unsigned long pgoff, unsigned long flags)
- {
--	return arch_get_unmapped_area_foo(filp,
-+	return arch_get_unmapped_area_common(filp,
- 			addr0, len, pgoff, flags, UP);
- }
- 
-@@ -213,7 +215,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
- 	unsigned long addr0, unsigned long len, unsigned long pgoff,
- 	unsigned long flags)
- {
--	return arch_get_unmapped_area_foo(filp,
-+	return arch_get_unmapped_area_common(filp,
- 			addr0, len, pgoff, flags, DOWN);
- }
- 
+ 	return 0;
 -- 
-1.7.5
+1.7.4.1

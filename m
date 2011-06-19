@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jun 2011 23:51:48 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41171 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jun 2011 23:52:15 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41190 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490993Ab1FSVvo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jun 2011 23:51:44 +0200
+        with ESMTP id S1491016Ab1FSVwA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jun 2011 23:52:00 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 8879C8BC0;
-        Sun, 19 Jun 2011 23:51:42 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 339798BC0;
+        Sun, 19 Jun 2011 23:52:00 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id JN4-0jXGlIbm; Sun, 19 Jun 2011 23:51:07 +0200 (CEST)
+        with ESMTP id VqPDJtzhrIo8; Sun, 19 Jun 2011 23:51:06 +0200 (CEST)
 Received: from localhost.localdomain (dyndsl-095-033-241-142.ewe-ip-backbone.de [95.33.241.142])
-        by hauke-m.de (Postfix) with ESMTPSA id B50BA8BB4;
-        Sun, 19 Jun 2011 23:51:06 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id B69208BAD;
+        Sun, 19 Jun 2011 23:51:05 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-wireless@vger.kernel.org, zajec5@gmail.com,
         linux-mips@linux-mips.org
@@ -20,13 +20,14 @@ Cc:     mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
         b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
         arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [RFC v2 01/12] bcma: move parsing of EEPROM into own function.
-Date:   Sun, 19 Jun 2011 23:49:58 +0200
-Message-Id: <1308520209-668-2-git-send-email-hauke@hauke-m.de>
+Subject: =?UTF-8?q?=5BRFC=20v2=2000/12=5D=20bcma=3A=20add=20support=20for=20embedded=20devices=20like=20bcm4716?=
+Date:   Sun, 19 Jun 2011 23:49:57 +0200
+Message-Id: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
-In-Reply-To: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
-References: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 30436
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 30437
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,278 +36,192 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15684
+X-UID: 15685
 
-Move the parsing of the EEPROM data in scan function for one core into
-an own function. Now we are able to use it in some other scan function
-as well.
+This patch series adds support for embedded devices like bcm47xx to 
+bcma. Bcma is used on bcm4716 and bcm4718 SoCs. With these patches my 
+bcm4716 device boots up till it tries to access the flash, because the 
+serial flash chip is unsupported for now, this will be my next task. 
+This adds support for MIPS cores, interrupt configuration and the 
+serial console.
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- drivers/bcma/scan.c |  230 ++++++++++++++++++++++++++-------------------------
- 1 files changed, 118 insertions(+), 112 deletions(-)
+These patches are based on ssb code, some patches by George Kashperko 
+and Bernhard Loos and parts of the source code release by ASUS and 
+Netgear for their devices.
 
-diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
-index 40d7dcc..4012d8d 100644
---- a/drivers/bcma/scan.c
-+++ b/drivers/bcma/scan.c
-@@ -200,16 +200,124 @@ static s32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 **eromptr,
- 	return addrl;
- }
+This was tested on a Netgear WNDR3400, but did not work fully because 
+of serial flash.
+
+This is bases on linux-next next-20110616, to which subsystem 
+maintainer should I send these patches later, as it is based on the 
+most recent version of bcma and bcm47xx?
+I do not have any normal PCIe based wireless device using this bus, so 
+I have not tested it with such a device, it will be nice to hear if it 
+is still working on them.
+The parallel flash should work so it could be that it will boot on an 
+Asus rt-n16, I have not tested that.
+
+An Ethernet driver is not included because the Braodcom source code 
+available is not licensed under a GPL compatible license and building a 
+new driver on that based is not possible.
+
+
+Using bootmem was not possible it was not setup when plat_mem_setup was called.
  
-+static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
-+			      struct bcma_device *core)
-+{
-+	s32 tmp;
-+	u8 i, j;
-+	s32 cia, cib;
-+	u8 ports[2], wrappers[2];
-+
-+	/* get CIs */
-+	cia = bcma_erom_get_ci(bus, eromptr);
-+	if (cia < 0) {
-+		bcma_erom_push_ent(eromptr);
-+		if (bcma_erom_is_end(bus, eromptr))
-+			return -ESPIPE;
-+		return -EILSEQ;
-+	}
-+	cib = bcma_erom_get_ci(bus, eromptr);
-+	if (cib < 0)
-+		return -EILSEQ;
-+
-+	/* parse CIs */
-+	core->id.class = (cia & SCAN_CIA_CLASS) >> SCAN_CIA_CLASS_SHIFT;
-+	core->id.id = (cia & SCAN_CIA_ID) >> SCAN_CIA_ID_SHIFT;
-+	core->id.manuf = (cia & SCAN_CIA_MANUF) >> SCAN_CIA_MANUF_SHIFT;
-+	ports[0] = (cib & SCAN_CIB_NMP) >> SCAN_CIB_NMP_SHIFT;
-+	ports[1] = (cib & SCAN_CIB_NSP) >> SCAN_CIB_NSP_SHIFT;
-+	wrappers[0] = (cib & SCAN_CIB_NMW) >> SCAN_CIB_NMW_SHIFT;
-+	wrappers[1] = (cib & SCAN_CIB_NSW) >> SCAN_CIB_NSW_SHIFT;
-+	core->id.rev = (cib & SCAN_CIB_REV) >> SCAN_CIB_REV_SHIFT;
-+
-+	if (((core->id.manuf == BCMA_MANUF_ARM) &&
-+	     (core->id.id == 0xFFF)) ||
-+	    (ports[1] == 0)) {
-+		bcma_erom_skip_component(bus, eromptr);
-+		return -ENXIO;
-+	}
-+
-+	/* check if component is a core at all */
-+	if (wrappers[0] + wrappers[1] == 0) {
-+		/* we could save addrl of the router
-+		if (cid == BCMA_CORE_OOB_ROUTER)
-+		 */
-+		bcma_erom_skip_component(bus, eromptr);
-+		return -ENXIO;
-+	}
-+
-+	if (bcma_erom_is_bridge(bus, eromptr)) {
-+		bcma_erom_skip_component(bus, eromptr);
-+		return -ENXIO;
-+	}
-+
-+	/* get & parse master ports */
-+	for (i = 0; i < ports[0]; i++) {
-+		u32 mst_port_d = bcma_erom_get_mst_port(bus, eromptr);
-+		if (mst_port_d < 0)
-+			return -EILSEQ;
-+	}
-+
-+	/* get & parse slave ports */
-+	for (i = 0; i < ports[1]; i++) {
-+		for (j = 0; ; j++) {
-+			tmp = bcma_erom_get_addr_desc(bus, eromptr,
-+				SCAN_ADDR_TYPE_SLAVE, i);
-+			if (tmp < 0) {
-+				/* no more entries for port _i_ */
-+				/* pr_debug("erom: slave port %d "
-+				 * "has %d descriptors\n", i, j); */
-+				break;
-+			} else {
-+				if (i == 0 && j == 0)
-+					core->addr = tmp;
-+			}
-+		}
-+	}
-+
-+	/* get & parse master wrappers */
-+	for (i = 0; i < wrappers[0]; i++) {
-+		for (j = 0; ; j++) {
-+			tmp = bcma_erom_get_addr_desc(bus, eromptr,
-+				SCAN_ADDR_TYPE_MWRAP, i);
-+			if (tmp < 0) {
-+				/* no more entries for port _i_ */
-+				/* pr_debug("erom: master wrapper %d "
-+				 * "has %d descriptors\n", i, j); */
-+				break;
-+			} else {
-+				if (i == 0 && j == 0)
-+					core->wrap = tmp;
-+			}
-+		}
-+	}
-+
-+	/* get & parse slave wrappers */
-+	for (i = 0; i < wrappers[1]; i++) {
-+		u8 hack = (ports[1] == 1) ? 0 : 1;
-+		for (j = 0; ; j++) {
-+			tmp = bcma_erom_get_addr_desc(bus, eromptr,
-+				SCAN_ADDR_TYPE_SWRAP, i + hack);
-+			if (tmp < 0) {
-+				/* no more entries for port _i_ */
-+				/* pr_debug("erom: master wrapper %d "
-+				 * has %d descriptors\n", i, j); */
-+				break;
-+			} else {
-+				if (wrappers[0] == 0 && !i && !j)
-+					core->wrap = tmp;
-+			}
-+		}
-+	}
-+	return 0;
-+}
-+
- int bcma_bus_scan(struct bcma_bus *bus)
- {
- 	u32 erombase;
- 	u32 __iomem *eromptr, *eromend;
- 
--	s32 cia, cib;
--	u8 ports[2], wrappers[2];
--
- 	s32 tmp;
--	u8 i, j;
- 
- 	int err;
- 
-@@ -236,112 +344,13 @@ int bcma_bus_scan(struct bcma_bus *bus)
- 		INIT_LIST_HEAD(&core->list);
- 		core->bus = bus;
- 
--		/* get CIs */
--		cia = bcma_erom_get_ci(bus, &eromptr);
--		if (cia < 0) {
--			bcma_erom_push_ent(&eromptr);
--			if (bcma_erom_is_end(bus, &eromptr))
--				break;
--			err= -EILSEQ;
--			goto out;
--		}
--		cib = bcma_erom_get_ci(bus, &eromptr);
--		if (cib < 0) {
--			err= -EILSEQ;
--			goto out;
--		}
--
--		/* parse CIs */
--		core->id.class = (cia & SCAN_CIA_CLASS) >> SCAN_CIA_CLASS_SHIFT;
--		core->id.id = (cia & SCAN_CIA_ID) >> SCAN_CIA_ID_SHIFT;
--		core->id.manuf = (cia & SCAN_CIA_MANUF) >> SCAN_CIA_MANUF_SHIFT;
--		ports[0] = (cib & SCAN_CIB_NMP) >> SCAN_CIB_NMP_SHIFT;
--		ports[1] = (cib & SCAN_CIB_NSP) >> SCAN_CIB_NSP_SHIFT;
--		wrappers[0] = (cib & SCAN_CIB_NMW) >> SCAN_CIB_NMW_SHIFT;
--		wrappers[1] = (cib & SCAN_CIB_NSW) >> SCAN_CIB_NSW_SHIFT;
--		core->id.rev = (cib & SCAN_CIB_REV) >> SCAN_CIB_REV_SHIFT;
--
--		if (((core->id.manuf == BCMA_MANUF_ARM) &&
--		     (core->id.id == 0xFFF)) ||
--		    (ports[1] == 0)) {
--			bcma_erom_skip_component(bus, &eromptr);
--			continue;
--		}
--
--		/* check if component is a core at all */
--		if (wrappers[0] + wrappers[1] == 0) {
--			/* we could save addrl of the router
--			if (cid == BCMA_CORE_OOB_ROUTER)
--			 */
--			bcma_erom_skip_component(bus, &eromptr);
--			continue;
--		}
--
--		if (bcma_erom_is_bridge(bus, &eromptr)) {
--			bcma_erom_skip_component(bus, &eromptr);
-+		err = bcma_get_next_core(bus, &eromptr, core);
-+		if (err == -ENXIO)
- 			continue;
--		}
--
--		/* get & parse master ports */
--		for (i = 0; i < ports[0]; i++) {
--			u32 mst_port_d = bcma_erom_get_mst_port(bus, &eromptr);
--			if (mst_port_d < 0) {
--				err= -EILSEQ;
--				goto out;
--			}
--		}
--
--		/* get & parse slave ports */
--		for (i = 0; i < ports[1]; i++) {
--			for (j = 0; ; j++) {
--				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
--					SCAN_ADDR_TYPE_SLAVE, i);
--				if (tmp < 0) {
--					/* no more entries for port _i_ */
--					/* pr_debug("erom: slave port %d "
--					 * "has %d descriptors\n", i, j); */
--					break;
--				} else {
--					if (i == 0 && j == 0)
--						core->addr = tmp;
--				}
--			}
--		}
--
--		/* get & parse master wrappers */
--		for (i = 0; i < wrappers[0]; i++) {
--			for (j = 0; ; j++) {
--				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
--					SCAN_ADDR_TYPE_MWRAP, i);
--				if (tmp < 0) {
--					/* no more entries for port _i_ */
--					/* pr_debug("erom: master wrapper %d "
--					 * "has %d descriptors\n", i, j); */
--					break;
--				} else {
--					if (i == 0 && j == 0)
--						core->wrap = tmp;
--				}
--			}
--		}
--
--		/* get & parse slave wrappers */
--		for (i = 0; i < wrappers[1]; i++) {
--			u8 hack = (ports[1] == 1) ? 0 : 1;
--			for (j = 0; ; j++) {
--				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
--					SCAN_ADDR_TYPE_SWRAP, i + hack);
--				if (tmp < 0) {
--					/* no more entries for port _i_ */
--					/* pr_debug("erom: master wrapper %d "
--					 * has %d descriptors\n", i, j); */
--					break;
--				} else {
--					if (wrappers[0] == 0 && !i && !j)
--						core->wrap = tmp;
--				}
--			}
--		}
-+		else if (err == -ESPIPE)
-+			break;
-+		else if (err < 0)
-+			return err;
- 
- 		pr_info("Core %d found: %s "
- 			"(manuf 0x%03X, id 0x%03X, rev 0x%02X, class 0x%X)\n",
-@@ -351,9 +360,6 @@ int bcma_bus_scan(struct bcma_bus *bus)
- 
- 		core->core_index = bus->nr_cores++;
- 		list_add(&core->list, &bus->cores);
--		continue;
--out:
--		return err;
- 	}
- 
- 	return 0;
+TODO:
+ * make bcm47xx built either with bcma, ssb or both and use mips MIPS 74K optimizations if possible
+ * detect if a pci device is in host mode every time. -> Rafał
+ * add block io support
+v2:
+ * use list and no arry to store cores
+ * rename bcma_host_bcma_ to bcma_host_soc_
+ * use core->io_addr and core->io_wrap to access cores
+ * checkpatch fixes
+ * some minor fixes
+
+Bootlog till it goes down because of missing serial flash driver.
+
+Starting program at 0x80001000
+Linux version 3.0-rc3 (hauke@hauke) (gcc version 4.5.4 20110505 (prerelease) (Linaro GCC 4.5-2011.05-0) ) #1 Sun Jun 19 23:38:43 CEST 2011
+bootconsole [early0] enabled
+CPU revision is: 00019740 (MIPS 74Kc)
+bcm47xx: using bcma bus
+bcma: Core 0 found: ChipCommon (manuf 0x4BF, id 0x800, rev 0x1F, class 0x0)
+bcma: Core 3 found: UNKNOWN (manuf 0x4A7, id 0x82C, rev 0x01, class 0x0)
+bcma: PLL init unknown for device 0x4716
+bcma: PMU resource config unknown for device 0x4716
+bcma: PMU switch/regulators init unknown for device 0x4716
+bcma: Workarounds unknown for device 0x4716
+bcma: Initializing MIPS core...
+bcma: IRQ reconfiguration done
+bcma: core 0x0800, irq : 2(S)* 3  4  5  6  D  I
+bcma: core 0x082c, irq : 2(S)* 3  4  5  6  D  I
+bcma: Serial flash not supported.
+bcma: Early bus registered
+Determined physical RAM map:
+ memory: 04000000 @ 00000000 (usable)
+Initrd not found or empty - disabling initrd
+Zone PFN ranges:
+  Normal   0x00000000 -> 0x00004000
+Movable zone start PFN for each node
+early_node_map[1] active PFN ranges
+    0: 0x00000000 -> 0x00004000
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 16256
+Kernel command line:  console=ttyS0,115200 root=/dev/mtdblock2 rootfstype=squashfs,jffs2 noinitrd console=ttyS0,115200
+PID hash table entries: 256 (order: -2, 1024 bytes)
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Primary instruction cache 32kB, VIPT, 4-way, linesize 32 bytes.
+Primary data cache 32kB, 4-way, VIPT, cache aliases, linesize 32 bytes
+Writing ErrCtl register=00000000
+Readback ErrCtl register=00000000
+Memory: 61924k/65536k available (2223k kernel code, 3612k reserved, 476k data, 160k init, 0k highmem)
+NR_IRQS:128
+Calibrating delay loop... 225.02 BogoMIPS (lpj=450048)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 512
+NET: Registered protocol family 16
+bio: create slab <bio-0> at 0
+Switching to clocksource MIPS
+Switched to NOHz mode on CPU #0
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
+TCP: Hash tables configured (established 2048 bind 2048)
+TCP reno registered
+UDP hash table entries: 256 (order: 0, 4096 bytes)
+UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+NET: Registered protocol family 1
+bcma: Core 1 found: IEEE 802.11 (manuf 0x4BF, id 0x812, rev 0x11, class 0x0)
+bcma: Core 2 found: GBit MAC (manuf 0x4BF, id 0x82D, rev 0x00, class 0x0)
+bcma: Core 4 found: USB 2.0 Host (manuf 0x4BF, id 0x819, rev 0x04, class 0x0)
+bcma: Core 5 found: PCIe (manuf 0x4BF, id 0x820, rev 0x0E, class 0x0)
+bcma: Core 6 found: DDR1/DDR2 Memory Controller (manuf 0x4BF, id 0x82E, rev 0x01, class 0x0)
+bcma: Core 7 found: Internal Memory (manuf 0x4BF, id 0x80E, rev 0x07, class 0x0)
+bcma: Core 8 found: I2S (manuf 0x4BF, id 0x834, rev 0x00, class 0x0)
+bcma: Initializing MIPS core...
+bcma: set_irq: core 0x0812, irq 3 => 3
+bcma: set_irq: core 0x082d, irq 4 => 4
+bcma: set_irq: core 0x0819, irq 5 => 5
+bcma: IRQ reconfiguration done
+bcma: core 0x0800, irq : 2(S)* 3  4  5  6  D  I 
+bcma: core 0x082c, irq : 2(S)* 3  4  5  6  D  I 
+bcma: core 0x0812, irq : 2(S)  3* 4  5  6  D  I 
+bcma: core 0x082d, irq : 2(S)  3  4* 5  6  D  I 
+bcma: core 0x0819, irq : 2(S)  3  4  5* 6  D  I 
+bcma: core 0x0820, irq : 2(S)  3  4  5  6* D  I 
+bcma: core 0x082e, irq : 2(S)* 3  4  5  6  D  I 
+bcma: core 0x080e, irq : 2(S)* 3  4  5  6  D  I 
+bcma: core 0x0834, irq : 2(S)* 3  4  5  6  D  I 
+bcma: No SPROM available
+bcma: Bus registered
+squashfs: version 4.0 (2009/01/31) Phillip Lougher
+JFFS2 version 2.2 (NAND) (SUMMARY) (LZMA) (RTIME) (CMODE_PRIORITY) (c) 2001-2006 Red Hat, Inc.
+msgmni has been set to 120
+io scheduler noop registered
+io scheduler deadline registered (default)
+Serial: 8250/16550 driver, 2 ports, IRQ sharing enabled
+console [ttyS0] enabled, bootconsole disabled 2) is a U6_16550A
+console [ttyS0] enabled, bootconsole disabled
+flash init: 0x1c000000 0x02000000
+Failed to do_map_probe
+BCM47xx Watchdog Timer enabled (30 seconds, nowayout)
+TCP westwood registered
+NET: Registered protocol family 17
+802.1Q VLAN Support v1.8
+Kernel not built with RTC support, ALARM timers will not wake from suspendVFS: Cannot open root device "mtdblock2" or unknown-block(0,0)
+Please append a correct "root=" boot option; here are the available partitions:
+Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+
+Hauke Mehrtens (12):
+  bcma: move parsing of EEPROM into own function.
+  bcma: move initializing of struct bcma_bus to own function.
+  bcma: add functions to scan cores needed on SoCs
+  bcma: add SOC bus
+  bcma: add mips driver
+  bcma: add serial console support
+  bcma: get CPU clock
+  bcma: add pci(e) host mode
+  bcma: add check if sprom is available before accessing it.
+  bcm47xx: prepare to support different buses
+  bcm47xx: add support for bcma bus
+  bcm47xx: fix irq assignment for new SoCs.
+
+ arch/mips/Kconfig                            |    4 +
+ arch/mips/bcm47xx/gpio.c                     |   63 ++++--
+ arch/mips/bcm47xx/irq.c                      |   10 +
+ arch/mips/bcm47xx/nvram.c                    |   21 ++-
+ arch/mips/bcm47xx/serial.c                   |   38 +++-
+ arch/mips/bcm47xx/setup.c                    |   69 +++++-
+ arch/mips/bcm47xx/time.c                     |   12 +-
+ arch/mips/bcm47xx/wgt634u.c                  |   13 +-
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |   18 ++-
+ arch/mips/include/asm/mach-bcm47xx/gpio.h    |   73 +++++--
+ drivers/bcma/Kconfig                         |   20 ++
+ drivers/bcma/Makefile                        |    3 +
+ drivers/bcma/bcma_private.h                  |   27 ++
+ drivers/bcma/driver_chipcommon.c             |   69 ++++++
+ drivers/bcma/driver_chipcommon_pmu.c         |   87 +++++++
+ drivers/bcma/driver_mips.c                   |  253 +++++++++++++++++++
+ drivers/bcma/driver_pci.c                    |   17 ++-
+ drivers/bcma/driver_pci_host.c               |   43 ++++
+ drivers/bcma/host_soc.c                      |   85 +++++++
+ drivers/bcma/main.c                          |   69 +++++-
+ drivers/bcma/scan.c                          |  337 +++++++++++++++++---------
+ drivers/bcma/sprom.c                         |    3 +
+ drivers/watchdog/bcm47xx_wdt.c               |   19 ++-
+ include/linux/bcma/bcma.h                    |    7 +
+ include/linux/bcma/bcma_driver_chipcommon.h  |   36 +++
+ include/linux/bcma/bcma_driver_mips.h        |   59 +++++
+ include/linux/bcma/bcma_driver_pci.h         |    1 +
+ include/linux/bcma/bcma_soc.h                |   16 ++
+ 28 files changed, 1298 insertions(+), 174 deletions(-)
+ create mode 100644 drivers/bcma/driver_mips.c
+ create mode 100644 drivers/bcma/driver_pci_host.c
+ create mode 100644 drivers/bcma/host_soc.c
+ create mode 100644 include/linux/bcma/bcma_driver_mips.h
+ create mode 100644 include/linux/bcma/bcma_soc.h
+
 -- 
 1.7.4.1

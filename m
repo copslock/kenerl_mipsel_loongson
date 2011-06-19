@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jun 2011 23:53:55 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41247 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Jun 2011 23:54:19 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41258 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491076Ab1FSVwN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jun 2011 23:52:13 +0200
+        with ESMTP id S1491093Ab1FSVwO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Jun 2011 23:52:14 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 3D76F8BC3;
-        Sun, 19 Jun 2011 23:52:13 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 813E68BC4;
+        Sun, 19 Jun 2011 23:52:14 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id nKLgXBUbqu0i; Sun, 19 Jun 2011 23:52:06 +0200 (CEST)
+        with ESMTP id I55gyhD1LIuI; Sun, 19 Jun 2011 23:52:09 +0200 (CEST)
 Received: from localhost.localdomain (dyndsl-095-033-241-142.ewe-ip-backbone.de [95.33.241.142])
-        by hauke-m.de (Postfix) with ESMTPSA id 15C8E8BB8;
+        by hauke-m.de (Postfix) with ESMTPSA id E37D88BB9;
         Sun, 19 Jun 2011 23:51:10 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linux-wireless@vger.kernel.org, zajec5@gmail.com,
@@ -20,13 +20,13 @@ Cc:     mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
         b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
         arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [RFC v2 05/12] bcma: add mips driver
-Date:   Sun, 19 Jun 2011 23:50:02 +0200
-Message-Id: <1308520209-668-6-git-send-email-hauke@hauke-m.de>
+Subject: [RFC v2 06/12] bcma: add serial console support
+Date:   Sun, 19 Jun 2011 23:50:03 +0200
+Message-Id: <1308520209-668-7-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
 References: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 30441
+X-archive-position: 30442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,431 +35,161 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15690
+X-UID: 15692
 
-This adds a mips driver to bcma. This is only found on embedded
-devices. For now the driver just initializes the irqs used on this
-system.
+This adds support for serial console to bcma, when operating on an
+embedded device.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/Kconfig                  |   11 ++-
- drivers/bcma/Makefile                 |    1 +
- drivers/bcma/bcma_private.h           |    5 +
- drivers/bcma/driver_mips.c            |  232 +++++++++++++++++++++++++++++++++
- drivers/bcma/main.c                   |   19 +++
- include/linux/bcma/bcma.h             |    2 +
- include/linux/bcma/bcma_driver_mips.h |   47 +++++++
- 7 files changed, 316 insertions(+), 1 deletions(-)
- create mode 100644 drivers/bcma/driver_mips.c
- create mode 100644 include/linux/bcma/bcma_driver_mips.h
+ drivers/bcma/bcma_private.h           |    6 +++
+ drivers/bcma/driver_chipcommon.c      |   64 +++++++++++++++++++++++++++++++++
+ drivers/bcma/driver_mips.c            |    9 +++++
+ include/linux/bcma/bcma_driver_mips.h |   11 ++++++
+ 4 files changed, 90 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
-index fc5c02f..0bd0a26 100644
---- a/drivers/bcma/Kconfig
-+++ b/drivers/bcma/Kconfig
-@@ -29,9 +29,18 @@ config BCMA_HOST_PCI
- 
- config BCMA_HOST_SOC
- 	bool
--	depends on BCMA && MIPS
-+	depends on BCMA_DRIVER_MIPS
- 	default n
- 
-+config BCMA_DRIVER_MIPS
-+	bool "BCMA Broadcom MIPS core driver"
-+	depends on BCMA && MIPS
-+	help
-+	  Driver for the Broadcom MIPS core attached to Broadcom specific
-+	  Advanced Microcontroller Bus.
-+
-+	  If unsure, say N
-+
- config BCMA_DEBUG
- 	bool "BCMA debugging"
- 	depends on BCMA
-diff --git a/drivers/bcma/Makefile b/drivers/bcma/Makefile
-index e2aaa41..3bb24f5 100644
---- a/drivers/bcma/Makefile
-+++ b/drivers/bcma/Makefile
-@@ -1,6 +1,7 @@
- bcma-y					+= main.o scan.o core.o sprom.o
- bcma-y					+= driver_chipcommon.o driver_chipcommon_pmu.o
- bcma-y					+= driver_pci.o
-+bcma-$(CONFIG_BCMA_DRIVER_MIPS)		+= driver_mips.o
- bcma-$(CONFIG_BCMA_HOST_PCI)		+= host_pci.o
- bcma-$(CONFIG_BCMA_HOST_SOC)		+= host_soc.o
- obj-$(CONFIG_BCMA)			+= bcma.o
 diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
-index 6416bbc..c0685ac 100644
+index c0685ac..17a2358 100644
 --- a/drivers/bcma/bcma_private.h
 +++ b/drivers/bcma/bcma_private.h
-@@ -29,6 +29,11 @@ void bcma_init_bus(struct bcma_bus *bus);
- /* sprom.c */
- int bcma_sprom_get(struct bcma_bus *bus);
+@@ -34,6 +34,12 @@ int bcma_sprom_get(struct bcma_bus *bus);
+ unsigned int bcma_core_mips_irq(struct bcma_device *dev);
+ #endif /* CONFIG_BCMA_DRIVER_MIPS */
  
++/* driver_chipcommon.c */
 +#ifdef CONFIG_BCMA_DRIVER_MIPS
-+/* driver_mips.c */
-+unsigned int bcma_core_mips_irq(struct bcma_device *dev);
++extern int bcma_chipco_serial_init(struct bcma_drv_cc *cc,
++				   struct bcma_drv_mips_serial_port *ports);
 +#endif /* CONFIG_BCMA_DRIVER_MIPS */
 +
  #ifdef CONFIG_BCMA_HOST_PCI
  /* host_pci.c */
  extern int __init bcma_host_pci_init(void);
-diff --git a/drivers/bcma/driver_mips.c b/drivers/bcma/driver_mips.c
-new file mode 100644
-index 0000000..d49f9af
---- /dev/null
-+++ b/drivers/bcma/driver_mips.c
-@@ -0,0 +1,232 @@
-+/*
-+ * Sonics Silicon Backplane
-+ * Broadcom MIPS core driver
-+ *
-+ * Copyright 2005, Broadcom Corporation
-+ * Copyright 2006, 2007, Michael Buesch <mb@bu3sch.de>
-+ * Copyright 2010, Bernhard Loos <bernhardloos@googlemail.com>
-+ *
-+ * Licensed under the GNU/GPL. See COPYING for details.
-+ */
+diff --git a/drivers/bcma/driver_chipcommon.c b/drivers/bcma/driver_chipcommon.c
+index 70321c6..88533ca 100644
+--- a/drivers/bcma/driver_chipcommon.c
++++ b/drivers/bcma/driver_chipcommon.c
+@@ -92,3 +92,67 @@ u32 bcma_chipco_gpio_polarity(struct bcma_drv_cc *cc, u32 mask, u32 value)
+ {
+ 	return bcma_cc_write32_masked(cc, BCMA_CC_GPIOPOL, mask, value);
+ }
 +
-+#include "bcma_private.h"
-+
-+#include <linux/bcma/bcma.h>
-+
-+#include <linux/serial.h>
-+#include <linux/serial_core.h>
-+#include <linux/serial_reg.h>
-+#include <linux/time.h>
-+
-+/* The 47162a0 hangs when reading its registers */
-+static inline bool bcma_core_mips_bcm47162a0_quirk(struct bcma_device *dev)
++#ifdef CONFIG_BCMA_DRIVER_MIPS
++int bcma_chipco_serial_init(struct bcma_drv_cc *cc,
++			    struct bcma_drv_mips_serial_port *ports)
 +{
-+	return dev->bus->chipinfo.id == 47162 && dev->bus->chipinfo.rev == 0 &&
-+	       dev->id.id == BCMA_CORE_MIPS_74K;
-+}
-+
-+static inline u32 mips_read32(struct bcma_drv_mips *mcore,
-+			      u16 offset)
-+{
-+	return bcma_read32(mcore->core, offset);
-+}
-+
-+static inline void mips_write32(struct bcma_drv_mips *mcore,
-+				u16 offset,
-+				u32 value)
-+{
-+	bcma_write32(mcore->core, offset, value);
-+}
-+
-+static const u32 ipsflag_irq_mask[] = {
-+	0,
-+	BCMA_MIPS_IPSFLAG_IRQ1,
-+	BCMA_MIPS_IPSFLAG_IRQ2,
-+	BCMA_MIPS_IPSFLAG_IRQ3,
-+	BCMA_MIPS_IPSFLAG_IRQ4,
-+};
-+
-+static const u32 ipsflag_irq_shift[] = {
-+	0,
-+	BCMA_MIPS_IPSFLAG_IRQ1_SHIFT,
-+	BCMA_MIPS_IPSFLAG_IRQ2_SHIFT,
-+	BCMA_MIPS_IPSFLAG_IRQ3_SHIFT,
-+	BCMA_MIPS_IPSFLAG_IRQ4_SHIFT,
-+};
-+
-+static u32 bcma_core_mips_irqflag(struct bcma_device *dev)
-+{
-+	u32 flag;
-+
-+	if (bcma_core_mips_bcm47162a0_quirk(dev))
-+		return dev->core_index;
-+	flag = bcma_aread32(dev, BCMA_MIPS_OOBSELOUTA30);
-+
-+	return flag & 0x1F;
-+}
-+
-+
-+/* Get the MIPS IRQ assignment for a specified device.
-+ * If unassigned, 0 is returned.
-+ * If disabled, 5 is returned.
-+ */
-+unsigned int bcma_core_mips_irq(struct bcma_device *dev)
-+{
-+	struct bcma_device *mdev = dev->bus->drv_mips.core;
-+	u32 irqflag;
++	int nr_ports = 0;
++	u32 plltype;
 +	unsigned int irq;
++	u32 baud_base, div;
++	u32 i, n;
++	unsigned int ccrev = cc->core->id.rev;
 +
-+	irqflag = bcma_core_mips_irqflag(dev);
++	plltype = (cc->capabilities & BCMA_CC_CAP_PLLT);
++	irq = bcma_core_mips_irq(cc->core);
 +
-+	for (irq = 1; irq <= 4; irq++)
-+		if (bcma_read32(mdev, BCMA_MIPS_MIPS74K_INTMASK(irq)) &
-+		    (1 << irqflag))
-+			return irq;
-+
-+	return 0;
-+}
-+
-+static void bcma_core_mips_set_irq(struct bcma_device *dev, unsigned int irq)
-+{
-+	unsigned int oldirq = bcma_core_mips_irq(dev);
-+	struct bcma_bus *bus = dev->bus;
-+	struct bcma_device *mdev = bus->drv_mips.core;
-+	u32 irqflag;
-+
-+	irqflag = bcma_core_mips_irqflag(dev);
-+	BUG_ON(oldirq == 6);
-+
-+	dev->irq = irq + 2;
-+
-+	/* clear the old irq */
-+	if (oldirq == 0)
-+		bcma_write32(mdev, BCMA_MIPS_MIPS74K_INTMASK(0),
-+			    bcma_read32(mdev, BCMA_MIPS_MIPS74K_INTMASK(0)) &
-+			    ~(1 << irqflag));
-+	else
-+		bcma_write32(mdev, BCMA_MIPS_MIPS74K_INTMASK(irq), 0);
-+
-+	/* assign the new one */
-+	if (irq == 0) {
-+		bcma_write32(mdev, BCMA_MIPS_MIPS74K_INTMASK(0),
-+			    bcma_read32(mdev, BCMA_MIPS_MIPS74K_INTMASK(0)) |
-+			    (1 << irqflag));
-+	} else {
-+		u32 oldirqflag = bcma_read32(mdev,
-+					     BCMA_MIPS_MIPS74K_INTMASK(irq));
-+		if (oldirqflag) {
-+			struct bcma_device *core;
-+
-+			/* backplane irq line is in use, find out who uses
-+			 * it and set user to irq 0
-+			 */
-+			list_for_each_entry_reverse(core, &bus->cores, list) {
-+				if ((1 << bcma_core_mips_irqflag(core)) ==
-+				    oldirqflag) {
-+					bcma_core_mips_set_irq(core, 0);
-+					break;
-+				}
-+			}
++	if ((ccrev >= 11) && (ccrev != 15) && (ccrev != 20)) {
++		/* Fixed ALP clock */
++		baud_base = 20000000;
++		if (cc->capabilities & BCMA_CC_CAP_PMU) {
++			/* FIXME: baud_base is different for devices with a PMU */
++			WARN_ON(1);
 +		}
-+		bcma_write32(mdev, BCMA_MIPS_MIPS74K_INTMASK(irq),
-+			     1 << irqflag);
++		div = 1;
++		if (ccrev >= 21) {
++			/* Turn off UART clock before switching clocksource. */
++			bcma_cc_write32(cc, BCMA_CC_CORECTL,
++				       bcma_cc_read32(cc, BCMA_CC_CORECTL)
++				       & ~BCMA_CC_CORECTL_UARTCLKEN);
++		}
++		/* Set the override bit so we don't divide it */
++		bcma_cc_write32(cc, BCMA_CC_CORECTL,
++			       bcma_cc_read32(cc, BCMA_CC_CORECTL)
++			       | BCMA_CC_CORECTL_UARTCLK0);
++		if (ccrev >= 21) {
++			/* Re-enable the UART clock. */
++			bcma_cc_write32(cc, BCMA_CC_CORECTL,
++				       bcma_cc_read32(cc, BCMA_CC_CORECTL)
++				       | BCMA_CC_CORECTL_UARTCLKEN);
++		}
++	} else
++		pr_err("serial not supported on this device ccrev: 0x%x\n",
++		       ccrev);
++
++	/* Determine the registers of the UARTs */
++	n = (cc->capabilities & BCMA_CC_CAP_NRUART);
++	for (i = 0; i < n; i++) {
++		void __iomem *cc_mmio;
++		void __iomem *uart_regs;
++
++		cc_mmio = cc->core->bus->mmio +
++			  (cc->core->core_index * BCMA_CORE_SIZE);
++		uart_regs = cc_mmio + BCMA_CC_UART0_DATA;
++		uart_regs += (i * 256);
++
++		nr_ports++;
++		ports[i].regs = uart_regs;
++		ports[i].irq = irq;
++		ports[i].baud_base = baud_base;
++		ports[i].reg_shift = 0;
 +	}
 +
-+	pr_info("set_irq: core 0x%04x, irq %d => %d\n",
-+		dev->id.id, oldirq + 2, irq + 2);
++	return nr_ports;
 +}
-+
-+static void bcma_core_mips_print_irq(struct bcma_device *dev, unsigned int irq)
-+{
-+	int i;
-+	static const char *irq_name[] = {"2(S)", "3", "4", "5", "6", "D", "I"};
-+	printk(KERN_INFO KBUILD_MODNAME ": core 0x%04x, irq :", dev->id.id);
-+	for (i = 0; i <= 6; i++)
-+		printk(" %s%s", irq_name[i], i == irq ? "*" : " ");
-+	printk("\n");
-+}
-+
-+static void bcma_core_mips_dump_irq(struct bcma_bus *bus)
-+{
-+	struct bcma_device *core;
-+
-+	list_for_each_entry_reverse(core, &bus->cores, list) {
-+		bcma_core_mips_print_irq(core, bcma_core_mips_irq(core));
-+	}
-+}
-+
-+static void bcma_core_mips_flash_detect(struct bcma_drv_mips *mcore)
++#endif /* CONFIG_BCMA_DRIVER_MIPS */
+diff --git a/drivers/bcma/driver_mips.c b/drivers/bcma/driver_mips.c
+index d49f9af..6524b44 100644
+--- a/drivers/bcma/driver_mips.c
++++ b/drivers/bcma/driver_mips.c
+@@ -155,6 +155,14 @@ static void bcma_core_mips_dump_irq(struct bcma_bus *bus)
+ 	}
+ }
+ 
++static void bcma_core_mips_serial_init(struct bcma_drv_mips *mcore)
 +{
 +	struct bcma_bus *bus = mcore->core->bus;
 +
-+	mcore->flash_buswidth = 2;
-+	if (bus->drv_cc.core) {
-+		mcore->flash_window = 0x1c000000;
-+		mcore->flash_window_size = 0x02000000;
-+		switch (bus->drv_cc.capabilities & BCMA_CC_CAP_FLASHT) {
-+		case BCMA_CC_FLASHT_STSER:
-+		case BCMA_CC_FLASHT_ATSER:
-+			pr_err("Serial flash not supported.\n");
-+			break;
-+		case BCMA_CC_FLASHT_PARA:
-+			if ((bcma_read32(bus->drv_cc.core, BCMA_CC_FLASH_CFG) &
-+			     BCMA_CC_OTPS) == 0)
-+				mcore->flash_buswidth = 1;
-+			break;
-+		}
-+	} else {
-+		mcore->flash_window = 0x1fc00000;
-+		mcore->flash_window_size = 0x00400000;
-+	}
++	mcore->nr_serial_ports = bcma_chipco_serial_init(&bus->drv_cc,
++							 mcore->serial_ports);
 +}
 +
-+void bcma_core_mips_init(struct bcma_drv_mips *mcore)
-+{
-+	struct bcma_bus *bus;
-+	struct bcma_device *core;
-+	bus = mcore->core->bus;
-+
-+	pr_info("Initializing MIPS core...\n");
-+
-+	if (!mcore->setup_done)
-+		mcore->assigned_irqs = 1;
-+
-+	/* Assign IRQs to all cores on the bus */
-+	list_for_each_entry_reverse(core, &bus->cores, list) {
-+		int mips_irq;
-+		if (core->irq)
-+			continue;
-+
-+		mips_irq = bcma_core_mips_irq(core);
-+		if (mips_irq > 4)
-+			core->irq = 0;
-+		else
-+			core->irq = mips_irq + 2;
-+		if (core->irq > 5)
-+			continue;
-+		switch (core->id.id) {
-+		case BCMA_CORE_PCI:
-+		case BCMA_CORE_PCIE:
-+		case BCMA_CORE_ETHERNET:
-+		case BCMA_CORE_ETHERNET_GBIT:
-+		case BCMA_CORE_MAC_GBIT:
-+		case BCMA_CORE_80211:
-+		case BCMA_CORE_USB20_HOST:
-+			/* These devices get their own IRQ line if available,
-+			 * the rest goes on IRQ0
-+			 */
-+			if (mcore->assigned_irqs <= 4)
-+				bcma_core_mips_set_irq(core,
-+						       mcore->assigned_irqs++);
-+			break;
-+		}
-+	}
-+	pr_info("IRQ reconfiguration done\n");
-+	bcma_core_mips_dump_irq(bus);
-+
-+	if (mcore->setup_done)
-+		return;
-+
-+	bcma_core_mips_flash_detect(mcore);
-+	mcore->setup_done = true;
-+}
-diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index 0025e59..83942f1 100644
---- a/drivers/bcma/main.c
-+++ b/drivers/bcma/main.c
-@@ -79,6 +79,7 @@ static int bcma_register_cores(struct bcma_bus *bus)
- 		case BCMA_CORE_CHIPCOMMON:
- 		case BCMA_CORE_PCI:
- 		case BCMA_CORE_PCIE:
-+		case BCMA_CORE_MIPS_74K:
- 			continue;
- 		}
+ static void bcma_core_mips_flash_detect(struct bcma_drv_mips *mcore)
+ {
+ 	struct bcma_bus *bus = mcore->core->bus;
+@@ -227,6 +235,7 @@ void bcma_core_mips_init(struct bcma_drv_mips *mcore)
+ 	if (mcore->setup_done)
+ 		return;
  
-@@ -140,6 +141,15 @@ int bcma_bus_register(struct bcma_bus *bus)
- 		bcma_core_chipcommon_init(&bus->drv_cc);
- 	}
- 
-+#ifdef CONFIG_BCMA_DRIVER_MIPS
-+	/* Init MIPS core */
-+	core = bcma_find_core(bus, BCMA_CORE_MIPS_74K);
-+	if (core) {
-+		bus->drv_mips.core = core;
-+		bcma_core_mips_init(&bus->drv_mips);
-+	}
-+#endif
-+
- 	/* Init PCIE core */
- 	core = bcma_find_core(bus, BCMA_CORE_PCIE);
- 	if (core) {
-@@ -209,6 +219,15 @@ int __init bcma_bus_earyl_register(struct bcma_bus *bus,
- 		bcma_core_chipcommon_init(&bus->drv_cc);
- 	}
- 
-+#ifdef CONFIG_BCMA_DRIVER_MIPS
-+	/* Init MIPS core */
-+	core = bcma_find_core(bus, BCMA_CORE_MIPS_74K);
-+	if (core) {
-+		bus->drv_mips.core = core;
-+		bcma_core_mips_init(&bus->drv_mips);
-+	}
-+#endif
-+
- 	pr_info("Early bus registered\n");
- 
- 	return 0;
-diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
-index db4ec30..6d962f2 100644
---- a/include/linux/bcma/bcma.h
-+++ b/include/linux/bcma/bcma.h
-@@ -6,6 +6,7 @@
- 
- #include <linux/bcma/bcma_driver_chipcommon.h>
- #include <linux/bcma/bcma_driver_pci.h>
-+#include <linux/bcma/bcma_driver_mips.h>
- #include <linux/ssb/ssb.h> /* SPROM sharing */
- 
- #include "bcma_regs.h"
-@@ -193,6 +194,7 @@ struct bcma_bus {
- 
- 	struct bcma_drv_cc drv_cc;
- 	struct bcma_drv_pci drv_pci;
-+	struct bcma_drv_mips drv_mips;
- 
- 	/* We decided to share SPROM struct with SSB as long as we do not need
- 	 * any hacks for BCMA. This simplifies drivers code. */
++	bcma_core_mips_serial_init(mcore);
+ 	bcma_core_mips_flash_detect(mcore);
+ 	mcore->setup_done = true;
+ }
 diff --git a/include/linux/bcma/bcma_driver_mips.h b/include/linux/bcma/bcma_driver_mips.h
-new file mode 100644
-index 0000000..6bd7555
---- /dev/null
+index 6bd7555..ce0a578 100644
+--- a/include/linux/bcma/bcma_driver_mips.h
 +++ b/include/linux/bcma/bcma_driver_mips.h
-@@ -0,0 +1,47 @@
-+#ifndef LINUX_BCMA_DRIVER_MIPS_H_
-+#define LINUX_BCMA_DRIVER_MIPS_H_
-+
-+#define BCMA_MIPS_IPSFLAG		0x0F08
-+/* which sbflags get routed to mips interrupt 1 */
-+#define	 BCMA_MIPS_IPSFLAG_IRQ1		0x0000003F
-+#define	 BCMA_MIPS_IPSFLAG_IRQ1_SHIFT	0
-+/* which sbflags get routed to mips interrupt 2 */
-+#define	 BCMA_MIPS_IPSFLAG_IRQ2		0x00003F00
-+#define	 BCMA_MIPS_IPSFLAG_IRQ2_SHIFT	8
-+/* which sbflags get routed to mips interrupt 3 */
-+#define	 BCMA_MIPS_IPSFLAG_IRQ3		0x003F0000
-+#define	 BCMA_MIPS_IPSFLAG_IRQ3_SHIFT	16
-+/* which sbflags get routed to mips interrupt 4 */
-+#define	 BCMA_MIPS_IPSFLAG_IRQ4		0x3F000000
-+#define	 BCMA_MIPS_IPSFLAG_IRQ4_SHIFT	24
-+
-+/* MIPS 74K core registers */
-+#define BCMA_MIPS_MIPS74K_CORECTL	0x0000
-+#define BCMA_MIPS_MIPS74K_EXCEPTBASE	0x0004
-+#define BCMA_MIPS_MIPS74K_BIST		0x000C
-+#define BCMA_MIPS_MIPS74K_INTMASK_INT0	0x0014
-+#define BCMA_MIPS_MIPS74K_INTMASK(int) \
-+	((int) * 4 + BCMA_MIPS_MIPS74K_INTMASK_INT0)
-+#define BCMA_MIPS_MIPS74K_NMIMASK	0x002C
-+#define BCMA_MIPS_MIPS74K_GPIOSEL	0x0040
-+#define BCMA_MIPS_MIPS74K_GPIOOUT	0x0044
-+#define BCMA_MIPS_MIPS74K_GPIOEN	0x0048
-+#define BCMA_MIPS_MIPS74K_CLKCTLST	0x01E0
-+
-+#define BCMA_MIPS_OOBSELOUTA30		0x100
-+
-+struct bcma_device;
-+
-+struct bcma_drv_mips {
-+	struct bcma_device *core;
-+	u8 setup_done:1;
-+	unsigned int assigned_irqs;
-+
-+	u8 flash_buswidth;
-+	u32 flash_window;
-+	u32 flash_window_size;
+@@ -32,11 +32,22 @@
+ 
+ struct bcma_device;
+ 
++struct bcma_drv_mips_serial_port {
++	void *regs;
++	unsigned long clockspeed;
++	unsigned int irq;
++	unsigned int baud_base;
++	unsigned int reg_shift;
 +};
 +
-+extern void bcma_core_mips_init(struct bcma_drv_mips *mcore);
+ struct bcma_drv_mips {
+ 	struct bcma_device *core;
+ 	u8 setup_done:1;
+ 	unsigned int assigned_irqs;
+ 
++	int nr_serial_ports;
++	struct bcma_drv_mips_serial_port serial_ports[4];
 +
-+#endif /* LINUX_BCMA_DRIVER_MIPS_H_ */
+ 	u8 flash_buswidth;
+ 	u32 flash_window;
+ 	u32 flash_window_size;
 -- 
 1.7.4.1

@@ -1,25 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2011 21:27:47 +0200 (CEST)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:35865 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2011 21:28:13 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:35874 "EHLO
         phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491146Ab1FTT1L (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jun 2011 21:27:11 +0200
+        by eddie.linux-mips.org with ESMTP id S1491148Ab1FTT1M (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jun 2011 21:27:12 +0200
 Received: from mail.szarvas.hu (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 86A8514020D;
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id D4BE7140219;
         Mon, 20 Jun 2011 21:27:06 +0200 (CEST)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 148B1140209;
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 5D45D140209;
         Mon, 20 Jun 2011 21:27:06 +0200 (CEST)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, Kathy Giori <kgiori@qca.qualcomm.com>,
         "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>,
         Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 00/13] MIPS: ath79: add initial support for AR933X SoCs
-Date:   Mon, 20 Jun 2011 21:26:00 +0200
-Message-Id: <1308597973-6037-1-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 02/13] MIPS: ath79: add revision id for the AR933X SoCs
+Date:   Mon, 20 Jun 2011 21:26:02 +0200
+Message-Id: <1308597973-6037-3-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
-X-VBMS: A1316539F9E | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
-X-archive-position: 30454
+In-Reply-To: <1308597973-6037-1-git-send-email-juhosg@openwrt.org>
+References: <1308597973-6037-1-git-send-email-juhosg@openwrt.org>
+X-VBMS: A1316B8375A | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-archive-position: 30455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,59 +30,74 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16491
+X-UID: 16492
 
-This patch set adds initial support for the Atheros AR933X SoCs.
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+---
+ arch/mips/ath79/setup.c                        |   12 ++++++++++++
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    4 ++++
+ arch/mips/include/asm/mach-ath79/ath79.h       |    4 +++-
+ 3 files changed, 19 insertions(+), 1 deletions(-)
 
-The patch set depends on the following unmerged patches:
-MIPS: ath79: modify number of available IRQs
-MIPS: ath79: handle more MISC IRQs
-MIPS: ath79: add common USB Host Controller device
-
-Gabor Juhos (13):
-  MIPS: ath79: remove superfluous parentheses
-  MIPS: ath79: add revision id for the AR933X SoCs
-  MIPS: ath79: add early printk support for the AR933X SoCs
-  MIPS: ath79: add AR933X specific clock init
-  MIPS: ath79: add AR933X specific glue for
-    ath79_device_reset_{set,clear}
-  MIPS: ath79: add AR933X specific IRQ initialization
-  MIPS: ath79: add AR933X specific GPIO initialization
-  MIPS: ath79: add config symbol for the AR933X SoCs
-  USB: ehci-ath79: add device_id entry for the AR933X SoCs
-  MIPS: ath79: add AR933X specific USB platform device registration
-  serial: add driver for the built-in UART of the AR933X SoC
-  MIPS: ath79: register UART device for the AR933X SoCs
-  MIPS: ath79: add initial support for the Atheros AP121 reference
-    board
-
- arch/mips/ath79/Kconfig                            |   15 +
- arch/mips/ath79/Makefile                           |    1 +
- arch/mips/ath79/clock.c                            |   55 ++
- arch/mips/ath79/common.c                           |    4 +
- arch/mips/ath79/dev-common.c                       |   38 +-
- arch/mips/ath79/dev-usb.c                          |   19 +
- arch/mips/ath79/early_printk.c                     |   76 ++-
- arch/mips/ath79/gpio.c                             |    2 +
- arch/mips/ath79/irq.c                              |    5 +-
- arch/mips/ath79/mach-ap121.c                       |   88 +++
- arch/mips/ath79/machtypes.h                        |    1 +
- arch/mips/ath79/setup.c                            |   18 +-
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h     |   43 ++
- arch/mips/include/asm/mach-ath79/ar933x_uart.h     |   67 ++
- .../include/asm/mach-ath79/ar933x_uart_platform.h  |   18 +
- arch/mips/include/asm/mach-ath79/ath79.h           |   10 +-
- drivers/tty/serial/Kconfig                         |   23 +
- drivers/tty/serial/Makefile                        |    2 +
- drivers/tty/serial/ar933x_uart.c                   |  688 ++++++++++++++++++++
- drivers/usb/host/Kconfig                           |    2 +-
- drivers/usb/host/ehci-ath79.c                      |    4 +
- include/linux/serial_core.h                        |    4 +
- 22 files changed, 1166 insertions(+), 17 deletions(-)
- create mode 100644 arch/mips/ath79/mach-ap121.c
- create mode 100644 arch/mips/include/asm/mach-ath79/ar933x_uart.h
- create mode 100644 arch/mips/include/asm/mach-ath79/ar933x_uart_platform.h
- create mode 100644 drivers/tty/serial/ar933x_uart.c
-
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index dea5af1..4cbd5e0 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -116,6 +116,18 @@ static void __init ath79_detect_sys_type(void)
+ 		rev = id & AR724X_REV_ID_REVISION_MASK;
+ 		break;
+ 
++	case REV_ID_MAJOR_AR9330:
++		ath79_soc = ATH79_SOC_AR9330;
++		chip = "9330";
++		rev = (id & AR933X_REV_ID_REVISION_MASK);
++		break;
++
++	case REV_ID_MAJOR_AR9331:
++		ath79_soc = ATH79_SOC_AR9331;
++		chip = "9331";
++		rev = (id & AR933X_REV_ID_REVISION_MASK);
++		break;
++
+ 	case REV_ID_MAJOR_AR913X:
+ 		minor = id & AR913X_REV_ID_MINOR_MASK;
+ 		rev = id >> AR913X_REV_ID_REVISION_SHIFT;
+diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+index 86f0fc8..929be06 100644
+--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+@@ -207,6 +207,8 @@
+ #define REV_ID_MAJOR_AR7240		0x00c0
+ #define REV_ID_MAJOR_AR7241		0x0100
+ #define REV_ID_MAJOR_AR7242		0x1100
++#define REV_ID_MAJOR_AR9330		0x0110
++#define REV_ID_MAJOR_AR9331		0x1110
+ 
+ #define AR71XX_REV_ID_MINOR_MASK	0x3
+ #define AR71XX_REV_ID_MINOR_AR7130	0x0
+@@ -221,6 +223,8 @@
+ #define AR913X_REV_ID_REVISION_MASK	0x3
+ #define AR913X_REV_ID_REVISION_SHIFT	2
+ 
++#define AR933X_REV_ID_REVISION_MASK	0x3
++
+ #define AR724X_REV_ID_REVISION_MASK	0x3
+ 
+ /*
+diff --git a/arch/mips/include/asm/mach-ath79/ath79.h b/arch/mips/include/asm/mach-ath79/ath79.h
+index 6a9f168..2dfc94c 100644
+--- a/arch/mips/include/asm/mach-ath79/ath79.h
++++ b/arch/mips/include/asm/mach-ath79/ath79.h
+@@ -26,7 +26,9 @@ enum ath79_soc_type {
+ 	ATH79_SOC_AR7241,
+ 	ATH79_SOC_AR7242,
+ 	ATH79_SOC_AR9130,
+-	ATH79_SOC_AR9132
++	ATH79_SOC_AR9132,
++	ATH79_SOC_AR9330,
++	ATH79_SOC_AR9331,
+ };
+ 
+ extern enum ath79_soc_type ath79_soc;
 -- 
 1.7.2.1

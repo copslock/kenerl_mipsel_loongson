@@ -1,60 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 18:38:25 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:58525 "EHLO duck.linux-mips.net"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491158Ab1FUQiU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 21 Jun 2011 18:38:20 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5LGcJR6026985;
-        Tue, 21 Jun 2011 17:38:19 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5LGcHR1026978;
-        Tue, 21 Jun 2011 17:38:17 +0100
-Date:   Tue, 21 Jun 2011 17:38:17 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Nick Clifton <nickc@redhat.com>
-Cc:     Jayachandran C <jayachandranc@netlogicmicro.com>,
-        linux-mips@linux-mips.org, binutils@sourceware.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 18:53:51 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:2859 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491158Ab1FUQxq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2011 18:53:46 +0200
+X-TM-IMSS-Message-ID: <19290458000ac807@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 19290458000ac807 ; Tue, 21 Jun 2011 09:52:40 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 21 Jun 2011 09:54:50 -0700
+Date:   Tue, 21 Jun 2011 22:26:30 +0530
+From:   "Jayachandran C." <jayachandranc@netlogicmicro.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, binutils@sourceware.org
 Subject: Re: XLR Linux/MIPS kernel build error
-Message-ID: <20110621163817.GA23070@linux-mips.org>
+Message-ID: <20110621165628.GA5769@jayachandranc.netlogicmicro.com>
 References: <20110621144340.GA11931@linux-mips.org>
- <4E00B33E.8080307@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4E00B33E.8080307@redhat.com>
+In-Reply-To: <20110621144340.GA11931@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30478
+X-OriginalArrivalTime: 21 Jun 2011 16:54:50.0484 (UTC) FILETIME=[EF668340:01CC3033]
+X-archive-position: 30479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17326
+X-UID: 17344
 
-On Tue, Jun 21, 2011 at 04:05:34PM +0100, Nick Clifton wrote:
-
-> Hi Ralf,
+On Tue, Jun 21, 2011 at 03:43:40PM +0100, Ralf Baechle wrote:
+> I'm getting a build error with gcc 4.6.0 and binutils 2.21:
 > 
-> >   AS      arch/mips/kernel/genex.o
-> >/home/ralf/src/linux/upstream-linus/arch/mips/kernel/genex.S: Assembler messages:
-> >/home/ralf/src/linux/upstream-linus/arch/mips/kernel/genex.S:524: Internal error!
-> >Assertion failure in append_insn at ../../gas/config/tc-mips.c line 2867.
+> [...]
+>   AS      arch/mips/kernel/entry.o
+>   AS      arch/mips/kernel/genex.o
+> /home/ralf/src/linux/upstream-linus/arch/mips/kernel/genex.S: Assembler messages:
+> /home/ralf/src/linux/upstream-linus/arch/mips/kernel/genex.S:524: Internal error!
+> Assertion failure in append_insn at ../../gas/config/tc-mips.c line 2867.
+> Please report this bug.
+> make[4]: *** [arch/mips/kernel/genex.o] Error 1
+> make[3]: *** [arch/mips/kernel] Error 2
+> make[2]: *** [arch/mips] Error 2
+> make[1]: *** [sub-make] Error 2
+> make: *** [all] Error 2
+> make: Leaving directory `/home/ralf/src/linux/obj/nlm_xlr-build'
 > 
-> >Not sure what's blowin up there and I haven't had a chance to try other
-> >binutils versions yet.  Is this something known?
-> 
-> Nope - it is a new one...
-> 
-> Please could you open a binutils bugzilla PR for this and include
-> the genex.S file (preprocessed if necessary) and the assembler
-> command line that causes gas to blow up ?
+> Not sure what's blowin up there and I haven't had a chance to try other
+> binutils versions yet.  Is this something known?  None of the other MIPS
+> kernel defconfigs is encountering this issue.
 
-I've extracted a 5 line minimal test case and cooking receipe and filed
-everything as http://sourceware.org/bugzilla/show_bug.cgi?id=12915
+I have not used this GCC/binutils combination yet.  But I have had success with the
+code sourcery toolchain (needs minor patch to add -march=xlr cflags):
 
-Cheers,
+gcc version 4.5.2 (Sourcery G++ Lite 2011.03-53) 
+GNU ld (Sourcery G++ Lite 2011.03-53) 2.20.51.20100809
 
-  Ralf
+JC.

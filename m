@@ -1,61 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 18:53:51 +0200 (CEST)
-Received: from mx1.netlogicmicro.com ([12.203.210.36]:2859 "EHLO
-        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491158Ab1FUQxq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2011 18:53:46 +0200
-X-TM-IMSS-Message-ID: <19290458000ac807@netlogicmicro.com>
-Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 19290458000ac807 ; Tue, 21 Jun 2011 09:52:40 -0700
-Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Tue, 21 Jun 2011 09:54:50 -0700
-Date:   Tue, 21 Jun 2011 22:26:30 +0530
-From:   "Jayachandran C." <jayachandranc@netlogicmicro.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, binutils@sourceware.org
-Subject: Re: XLR Linux/MIPS kernel build error
-Message-ID: <20110621165628.GA5769@jayachandranc.netlogicmicro.com>
-References: <20110621144340.GA11931@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 20:18:07 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:50967 "EHLO
+        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491158Ab1FUSSB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2011 20:18:01 +0200
+Received: from mail.szarvas.hu (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 37261140192;
+        Tue, 21 Jun 2011 20:17:56 +0200 (CEST)
+Received: from [127.0.0.1] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id C49CF14021B;
+        Tue, 21 Jun 2011 20:17:55 +0200 (CEST)
+Message-ID: <4E00E02E.1060606@openwrt.org>
+Date:   Tue, 21 Jun 2011 20:17:18 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; hu-HU; rv:1.9.2.17) Gecko/20110414 Thunderbird/3.1.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110621144340.GA11931@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-OriginalArrivalTime: 21 Jun 2011 16:54:50.0484 (UTC) FILETIME=[EF668340:01CC3033]
-X-archive-position: 30479
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Kathy Giori <kgiori@qca.qualcomm.com>,
+        "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>
+Subject: Re: [PATCH 02/13] MIPS: ath79: add revision id for the AR933X SoCs
+References: <1308597973-6037-1-git-send-email-juhosg@openwrt.org> <1308597973-6037-3-git-send-email-juhosg@openwrt.org> <4E0070CA.1070102@mvista.com>
+In-Reply-To: <4E0070CA.1070102@mvista.com>
+X-Enigmail-Version: 1.1.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Antivirus: avast! (VPS 110621-0, 2011.06.21), Outbound message
+X-Antivirus-Status: Clean
+X-VBMS: A10E8FE9814 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-archive-position: 30480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jayachandranc@netlogicmicro.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17344
+X-UID: 17426
 
-On Tue, Jun 21, 2011 at 03:43:40PM +0100, Ralf Baechle wrote:
-> I'm getting a build error with gcc 4.6.0 and binutils 2.21:
+Hi Sergei,
+
+> On 20-06-2011 23:26, Gabor Juhos wrote:
 > 
-> [...]
->   AS      arch/mips/kernel/entry.o
->   AS      arch/mips/kernel/genex.o
-> /home/ralf/src/linux/upstream-linus/arch/mips/kernel/genex.S: Assembler messages:
-> /home/ralf/src/linux/upstream-linus/arch/mips/kernel/genex.S:524: Internal error!
-> Assertion failure in append_insn at ../../gas/config/tc-mips.c line 2867.
-> Please report this bug.
-> make[4]: *** [arch/mips/kernel/genex.o] Error 1
-> make[3]: *** [arch/mips/kernel] Error 2
-> make[2]: *** [arch/mips] Error 2
-> make[1]: *** [sub-make] Error 2
-> make: *** [all] Error 2
-> make: Leaving directory `/home/ralf/src/linux/obj/nlm_xlr-build'
+>> Signed-off-by: Gabor Juhos<juhosg@openwrt.org>
+>> ---
+>>   arch/mips/ath79/setup.c                        |   12 ++++++++++++
+>>   arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    4 ++++
+>>   arch/mips/include/asm/mach-ath79/ath79.h       |    4 +++-
+>>   3 files changed, 19 insertions(+), 1 deletions(-)
 > 
-> Not sure what's blowin up there and I haven't had a chance to try other
-> binutils versions yet.  Is this something known?  None of the other MIPS
-> kernel defconfigs is encountering this issue.
+>> diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+>> index dea5af1..4cbd5e0 100644
+>> --- a/arch/mips/ath79/setup.c
+>> +++ b/arch/mips/ath79/setup.c
+>> @@ -116,6 +116,18 @@ static void __init ath79_detect_sys_type(void)
+>>           rev = id&  AR724X_REV_ID_REVISION_MASK;
+>>           break;
+>>
+>> +    case REV_ID_MAJOR_AR9330:
+>> +        ath79_soc = ATH79_SOC_AR9330;
+>> +        chip = "9330";
+>> +        rev = (id & AR933X_REV_ID_REVISION_MASK);
+>> +        break;
+>> +
+>> +    case REV_ID_MAJOR_AR9331:
+>> +        ath79_soc = ATH79_SOC_AR9331;
+>> +        chip = "9331";
+>> +        rev = (id & AR933X_REV_ID_REVISION_MASK);
+> 
+>    Hm, you've just removed such parens in the previous patch, why add more of
+> them? :-O
 
-I have not used this GCC/binutils combination yet.  But I have had success with the
-code sourcery toolchain (needs minor patch to add -march=xlr cflags):
+Hm, you are right. I'm sure that I have removed the parentheses from this code
+as well, but it seems that I lost that during a rebase process. I will fix this.
 
-gcc version 4.5.2 (Sourcery G++ Lite 2011.03-53) 
-GNU ld (Sourcery G++ Lite 2011.03-53) 2.20.51.20100809
-
-JC.
+Thanks,
+Gabor

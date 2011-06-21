@@ -1,72 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 12:23:25 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:51955 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491151Ab1FUKXT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2011 12:23:19 +0200
-Received: by wyf23 with SMTP id 23so3684051wyf.36
-        for <multiple recipients>; Tue, 21 Jun 2011 03:23:13 -0700 (PDT)
-Received: by 10.216.237.102 with SMTP id x80mr614752weq.111.1308651793304;
-        Tue, 21 Jun 2011 03:23:13 -0700 (PDT)
-Received: from [192.168.2.2] ([91.79.89.177])
-        by mx.google.com with ESMTPS id eq4sm3882408wbb.37.2011.06.21.03.23.10
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 21 Jun 2011 03:23:11 -0700 (PDT)
-Message-ID: <4E0070CA.1070102@mvista.com>
-Date:   Tue, 21 Jun 2011 14:22:02 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.2.17) Gecko/20110414 Thunderbird/3.1.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 13:27:48 +0200 (CEST)
+Received: from mail-pv0-f177.google.com ([74.125.83.177]:40437 "EHLO
+        mail-pv0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491152Ab1FUL1p convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 21 Jun 2011 13:27:45 +0200
+Received: by pvh11 with SMTP id 11so3827774pvh.36
+        for <linux-mips@linux-mips.org>; Tue, 21 Jun 2011 04:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=F82Ke0wU7JWkYSI1Ehq5DJbNDj1RBbN+pdbxuN/p2po=;
+        b=IbMNXwJWhKrJO/Y5rv28v8TlI+15CBPUzpqgstz7DT1wCCq+kqzju48iOnM9w9Vo/h
+         /MU4aIO6QUyVg4Th4uV+Y1TRcsQg5mQpIgAZHw2lOfyQUcxwpmDpzfsr2WoKeGdYwAx2
+         2Cul2tCgX5+idQcM38nDDhxVI2OYURjaO4Gy8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=Idpn1tMNyd5pZgEwRPKJU+OC8HkE9MU826H8iu57vdvjH6F2e27vnuL92vDcCojJjQ
+         c784J+BCiWZE/ukW1sYMRAMGQys6ePQWTeK7olvRRPcpkk8DHvV0uTfzupJjA6DOvSru
+         aiT4NTP84yw5Zmieso8C8IAixIxbSQsD2RH3M=
 MIME-Version: 1.0
-To:     Gabor Juhos <juhosg@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Kathy Giori <kgiori@qca.qualcomm.com>,
-        "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>
-Subject: Re: [PATCH 02/13] MIPS: ath79: add revision id for the AR933X SoCs
-References: <1308597973-6037-1-git-send-email-juhosg@openwrt.org> <1308597973-6037-3-git-send-email-juhosg@openwrt.org>
-In-Reply-To: <1308597973-6037-3-git-send-email-juhosg@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 30471
+Received: by 10.68.52.4 with SMTP id p4mr2606055pbo.127.1308655658419; Tue, 21
+ Jun 2011 04:27:38 -0700 (PDT)
+Received: by 10.68.46.194 with HTTP; Tue, 21 Jun 2011 04:27:38 -0700 (PDT)
+In-Reply-To: <4DFFBB6D.4030607@hauke-m.de>
+References: <1308520209-668-1-git-send-email-hauke@hauke-m.de>
+        <BANLkTim5R1ukc5OJQRRpF6EsmzeoL=SUoA@mail.gmail.com>
+        <4DFFBB6D.4030607@hauke-m.de>
+Date:   Tue, 21 Jun 2011 13:27:38 +0200
+Message-ID: <BANLkTimaSJB6a2Y5DxHiLm3QLWSfsXJiNQ@mail.gmail.com>
+Subject: Re: [RFC v2 00/12] bcma: add support for embedded devices like bcm4716
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
+        mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
+        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
+        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17048
+X-UID: 17083
 
-Hello.
-
-On 20-06-2011 23:26, Gabor Juhos wrote:
-
-> Signed-off-by: Gabor Juhos<juhosg@openwrt.org>
-> ---
->   arch/mips/ath79/setup.c                        |   12 ++++++++++++
->   arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    4 ++++
->   arch/mips/include/asm/mach-ath79/ath79.h       |    4 +++-
->   3 files changed, 19 insertions(+), 1 deletions(-)
-
-> diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
-> index dea5af1..4cbd5e0 100644
-> --- a/arch/mips/ath79/setup.c
-> +++ b/arch/mips/ath79/setup.c
-> @@ -116,6 +116,18 @@ static void __init ath79_detect_sys_type(void)
->   		rev = id&  AR724X_REV_ID_REVISION_MASK;
->   		break;
+W dniu 20 czerwca 2011 23:28 użytkownik Hauke Mehrtens
+<hauke@hauke-m.de> napisał:
+> On 06/20/2011 02:41 AM, Rafał Miłecki wrote:
+>> Hey Hauke,
+>>
+>> 2011/6/19 Hauke Mehrtens <hauke@hauke-m.de>:
+>>> This patch series adds support for embedded devices like bcm47xx to
+>>> bcma. Bcma is used on bcm4716 and bcm4718 SoCs. With these patches my
+>>> bcm4716 device boots up till it tries to access the flash, because the
+>>> serial flash chip is unsupported for now, this will be my next task.
+>>> This adds support for MIPS cores, interrupt configuration and the
+>>> serial console.
+>>>
+>>> These patches are based on ssb code, some patches by George Kashperko
+>>> and Bernhard Loos and parts of the source code release by ASUS and
+>>> Netgear for their devices.
+>>>
+>>> This was tested on a Netgear WNDR3400, but did not work fully because
+>>> of serial flash.
+>>>
+>>> This is bases on linux-next next-20110616, to which subsystem
+>>> maintainer should I send these patches later, as it is based on the
+>>> most recent version of bcma and bcm47xx?
+>>> I do not have any normal PCIe based wireless device using this bus, so
+>>> I have not tested it with such a device, it will be nice to hear if it
+>>> is still working on them.
+>>> The parallel flash should work so it could be that it will boot on an
+>>> Asus rt-n16, I have not tested that.
+>>
+>> I'm glad you are still working on it!
+>> Unfortunately it's really late right now and I'm leaving tomorrow
+>> (well, today as we passed midnight) for the whole week :( I'm not sure
+>> if I'll get a chance to review this, not to mention testing against
+>> any of my PCIe card.
 >
-> +	case REV_ID_MAJOR_AR9330:
-> +		ath79_soc = ATH79_SOC_AR9330;
-> +		chip = "9330";
-> +		rev = (id & AR933X_REV_ID_REVISION_MASK);
-> +		break;
-> +
-> +	case REV_ID_MAJOR_AR9331:
-> +		ath79_soc = ATH79_SOC_AR9331;
-> +		chip = "9331";
-> +		rev = (id & AR933X_REV_ID_REVISION_MASK);
+> No problem have a look at it when you find some time for it. There are
+> still some todos and the serial flash chip is also on my list, so I will
+> not run out of stuff to do. ;-)
+>
+>>
+>>> An Ethernet driver is not included because the Braodcom source code
+>>> available is not licensed under a GPL compatible license and building a
+>>> new driver on that based is not possible.
+>>
+>> I wonder if you could write specs for that core, so I could write
+>> GPL/any driver for it? Is that driver really big?
+>>
+> Now I think this will be the fastest solution. Henry Ptasinski from
+> Broadcom wanted to make it possible for us to use the Braodcom driver
+> directly as a base, but talking to all the lawyers and managers at
+> Braodcom to make this possible takes a lot of time and is not promising.
+> After this and flash support is in the kernel I will work on the
+> Ethernet driver.
 
-    Hm, you've just removed such parens in the previous patch, why add more of 
-them? :-O
+They are looking for releasing firmware for other PHYs for months now, so... ;)
 
-WBR, Sergei
+-- 
+Rafał

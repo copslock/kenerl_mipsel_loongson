@@ -1,101 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jun 2011 23:28:27 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:43468 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491140Ab1FTV2U (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Jun 2011 23:28:20 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 212378BB4;
-        Mon, 20 Jun 2011 23:28:20 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MKjyVZhWv8JS; Mon, 20 Jun 2011 23:28:15 +0200 (CEST)
-Received: from [192.168.0.152] (host-091-097-245-052.ewe-ip-backbone.de [91.97.245.52])
-        by hauke-m.de (Postfix) with ESMTPSA id BF7368BAD;
-        Mon, 20 Jun 2011 23:28:14 +0200 (CEST)
-Message-ID: <4DFFBB6D.4030607@hauke-m.de>
-Date:   Mon, 20 Jun 2011 23:28:13 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110516 Lightning/1.0b2 Thunderbird/3.1.10
-MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     linux-wireless@vger.kernel.org, linux-mips@linux-mips.org,
-        mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
-        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
-        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com
-Subject: Re: [RFC v2 00/12] bcma: add support for embedded devices like bcm4716
-References: <1308520209-668-1-git-send-email-hauke@hauke-m.de> <BANLkTim5R1ukc5OJQRRpF6EsmzeoL=SUoA@mail.gmail.com>
-In-Reply-To: <BANLkTim5R1ukc5OJQRRpF6EsmzeoL=SUoA@mail.gmail.com>
-X-Enigmail-Version: 1.1.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 30469
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 10:57:36 +0200 (CEST)
+Received: from earthlight.etchedpixels.co.uk ([81.2.110.250]:42194 "EHLO
+        www.etchedpixels.co.uk" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491065Ab1FUI5b (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2011 10:57:31 +0200
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+        by www.etchedpixels.co.uk (8.14.4/8.14.4) with ESMTP id p5L8xqkN032421;
+        Tue, 21 Jun 2011 09:59:52 +0100
+Date:   Tue, 21 Jun 2011 09:59:51 +0100
+From:   Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Kathy Giori <kgiori@qca.qualcomm.com>,
+        "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH 11/13] serial: add driver for the built-in UART of the
+ AR933X SoC
+Message-ID: <20110621095951.7dc1c9ee@lxorguk.ukuu.org.uk>
+In-Reply-To: <1308597973-6037-12-git-send-email-juhosg@openwrt.org>
+References: <1308597973-6037-1-git-send-email-juhosg@openwrt.org>
+        <1308597973-6037-12-git-send-email-juhosg@openwrt.org>
+X-Mailer: Claws Mail 3.7.9 (GTK+ 2.22.0; x86_64-redhat-linux-gnu)
+Face:   iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAFVBMVEWysKsSBQMIAwIZCwj///8wIhxoRDXH9QHCAAABeUlEQVQ4jaXTvW7DIBAAYCQTzz2hdq+rdg494ZmBeE5KYHZjm/d/hJ6NfzBJpp5kRb5PHJwvMPMk2L9As5Y9AmYRBL+HAyJKeOU5aHRhsAAvORQ+UEgAvgddj/lwAXndw2laEDqA4x6KEBhjYRCg9tBFCOuJFxg2OKegbWjbsRTk8PPhKPD7HcRxB7cqhgBRp9Dcqs+B8v4CQvFdqeot3Kov6hBUn0AJitrzY+sgUuiA8i0r7+B3AfqKcN6t8M6HtqQ+AOoELCikgQSbgabKaJW3kn5lBs47JSGDhhLKDUh1UMipwwinMYPTBuIBjEclSaGZUk9hDlTb5sUTYN2SFFQuPe4Gox1X0FZOufjgBiV1Vls7b+GvK3SU4wfmcGo9rPPQzgIabfj4TYQo15k3bTHX9RIw/kniir5YbtJF4jkFG+dsDK1IgE413zAthU/vR2HVMmFUPIHTvF6jWCpFaGw/A3qWgnbxpSm9MSmY5b3pM1gvNc/gQfwBsGwF0VCtxZgAAAAASUVORK5CYII=
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16632
+X-UID: 16990
 
-On 06/20/2011 02:41 AM, Rafał Miłecki wrote:
-> Hey Hauke,
-> 
-> 2011/6/19 Hauke Mehrtens <hauke@hauke-m.de>:
->> This patch series adds support for embedded devices like bcm47xx to
->> bcma. Bcma is used on bcm4716 and bcm4718 SoCs. With these patches my
->> bcm4716 device boots up till it tries to access the flash, because the
->> serial flash chip is unsupported for now, this will be my next task.
->> This adds support for MIPS cores, interrupt configuration and the
->> serial console.
->>
->> These patches are based on ssb code, some patches by George Kashperko
->> and Bernhard Loos and parts of the source code release by ASUS and
->> Netgear for their devices.
->>
->> This was tested on a Netgear WNDR3400, but did not work fully because
->> of serial flash.
->>
->> This is bases on linux-next next-20110616, to which subsystem
->> maintainer should I send these patches later, as it is based on the
->> most recent version of bcma and bcm47xx?
->> I do not have any normal PCIe based wireless device using this bus, so
->> I have not tested it with such a device, it will be nice to hear if it
->> is still working on them.
->> The parallel flash should work so it could be that it will boot on an
->> Asus rt-n16, I have not tested that.
-> 
-> I'm glad you are still working on it!
-> Unfortunately it's really late right now and I'm leaving tomorrow
-> (well, today as we passed midnight) for the whole week :( I'm not sure
-> if I'll get a chance to review this, not to mention testing against
-> any of my PCIe card.
+Looks good to me
 
-No problem have a look at it when you find some time for it. There are
-still some todos and the serial flash chip is also on my list, so I will
-not run out of stuff to do. ;-)
+Signed-off-by: Alan Cox <alan@linux.intel.com>
 
-> 
->> An Ethernet driver is not included because the Braodcom source code
->> available is not licensed under a GPL compatible license and building a
->> new driver on that based is not possible.
-> 
-> I wonder if you could write specs for that core, so I could write
-> GPL/any driver for it? Is that driver really big?
-> 
-Now I think this will be the fastest solution. Henry Ptasinski from
-Broadcom wanted to make it possible for us to use the Braodcom driver
-directly as a base, but talking to all the lawyers and managers at
-Braodcom to make this possible takes a lot of time and is not promising.
-After this and flash support is in the kernel I will work on the
-Ethernet driver.
-
-The driver is not really big so it will not take that long to write a
-spec and implement it.
-
-I published my git repo with the modifications integrated into OpenWrt:
-https://github.com/hauke/openwrt/tree/bcma-list
-
-Hauke
+and no problem here with it going via the MIPS tree (but make sure GregKH
+is happy)

@@ -1,67 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 20:51:41 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45384 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491160Ab1FUSvf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2011 20:51:35 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 95FB38BCB;
-        Tue, 21 Jun 2011 20:51:35 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id LfGNtwKgt0ZH; Tue, 21 Jun 2011 20:51:32 +0200 (CEST)
-Received: from [192.168.0.152] (dyndsl-085-016-164-198.ewe-ip-backbone.de [85.16.164.198])
-        by hauke-m.de (Postfix) with ESMTPSA id B6A7E8BC1;
-        Tue, 21 Jun 2011 20:51:31 +0200 (CEST)
-Message-ID: <4E00E832.5040502@hauke-m.de>
-Date:   Tue, 21 Jun 2011 20:51:30 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110516 Lightning/1.0b2 Thunderbird/3.1.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jun 2011 20:56:26 +0200 (CEST)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:59593 "EHLO
+        phoenix3.szarvasnet.hu" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491161Ab1FUS4X (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Jun 2011 20:56:23 +0200
+Received: from mail.szarvas.hu (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with SMTP id 4F59014021B;
+        Tue, 21 Jun 2011 20:56:18 +0200 (CEST)
+Received: from [127.0.0.1] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id D405F14020D;
+        Tue, 21 Jun 2011 20:56:17 +0200 (CEST)
+Message-ID: <4E00E92C.6000302@openwrt.org>
+Date:   Tue, 21 Jun 2011 20:55:40 +0200
+From:   Gabor Juhos <juhosg@openwrt.org>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; hu-HU; rv:1.9.2.17) Gecko/20110414 Thunderbird/3.1.10
 MIME-Version: 1.0
-To:     "John W. Linville" <linville@tuxdriver.com>
-CC:     mb@bu3sch.de, ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ssb: add __devinit to some functions
-References: <20110621150227.GB14197@linux-mips.org> <1308680889-4217-1-git-send-email-hauke@hauke-m.de> <20110621183800.GB2273@tuxdriver.com>
-In-Reply-To: <20110621183800.GB2273@tuxdriver.com>
-X-Enigmail-Version: 1.1.2
+To:     Alan Cox <alan@lxorguk.ukuu.org.uk>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Kathy Giori <kgiori@qca.qualcomm.com>,
+        "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH 11/13] serial: add driver for the built-in UART of the
+ AR933X SoC
+References: <1308597973-6037-1-git-send-email-juhosg@openwrt.org>       <1308597973-6037-12-git-send-email-juhosg@openwrt.org> <20110621095951.7dc1c9ee@lxorguk.ukuu.org.uk>
+In-Reply-To: <20110621095951.7dc1c9ee@lxorguk.ukuu.org.uk>
+X-Enigmail-Version: 1.1.1
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-archive-position: 30483
+X-Antivirus: avast! (VPS 110621-0, 2011.06.21), Outbound message
+X-Antivirus-Status: Clean
+X-VBMS: A12B63F3495 | phoenix3 | 127.0.0.1 |  | <juhosg@openwrt.org> | 
+X-archive-position: 30484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17459
+X-UID: 17464
 
-On 06/21/2011 08:38 PM, John W. Linville wrote:
-> On Tue, Jun 21, 2011 at 08:28:09PM +0200, Hauke Mehrtens wrote:
->> Two functions in ssb are using register_pci_controller() which is
->> __devinit. The functions ssb_pcicore_init_hostmode() and
->> ssb_gige_probe() should also be __devinit.
->>
->> This fixes the following warning:
->> WARNING: vmlinux.o(.text+0x2727b8): Section mismatch in reference from the function ssb_pcicore_init_hostmode() to the function .devinit.text:register_pci_controller()
->> The function ssb_pcicore_init_hostmode() references
->> the function __devinit register_pci_controller().
->> This is often because ssb_pcicore_init_hostmode lacks a __devinit
->> annotation or the annotation of register_pci_controller is wrong.
->>
->> WARNING: vmlinux.o(.text+0x273398): Section mismatch in reference from the function ssb_gige_probe() to the function .devinit.text:register_pci_controller()
->> The function ssb_gige_probe() references
->> the function __devinit register_pci_controller().
->> This is often because ssb_gige_probe lacks a __devinit
->> annotation or the annotation of register_pci_controller is wrong.
->>
->> Reported-by: Ralf Baechle <ralf@linux-mips.org>
+Hi Alan,
+
+> Looks good to me
 > 
-> Signed-off-by??
-> 
+> Signed-off-by: Alan Cox <alan@linux.intel.com>
 
-Ops missing, will resend both patches.
+Thank you!
 
-Hauke
+> and no problem here with it going via the MIPS tree (but make sure GregKH
+> is happy)
+
+Of course.
+
+Regards,
+Gabor

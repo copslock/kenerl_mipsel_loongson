@@ -1,88 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Jun 2011 20:11:08 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:46498 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491765Ab1FWSLE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Jun 2011 20:11:04 +0200
-Received: by wyf23 with SMTP id 23so1829157wyf.36
-        for <linux-mips@linux-mips.org>; Thu, 23 Jun 2011 11:10:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:from:to:cc:subject:date:message-id:x-mailer;
-        bh=K8zqxuGHz95ODiADsAp76bf9YD8/tfeC3OhAD61+ovg=;
-        b=GlBVIZNxbwwqzMH9pIg5ftLDaBErY11sm+8SPpTJOhJ0SG9uzFWdPNj0K70XkPf2mF
-         Gl1LwDjubF7Uo3RGZ8j4R+I20pZ1pGI0p7iwg+iXFVSos4vZBLm2b2Nio3DM9p7B2W40
-         S9Afw7SyxbFLRQeOORgW/XcO5yv73Dr0fUNuA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=OZEWJ/jQc8rtq5TYLxCEgEKhiXmf8FPYOTHu9lTgmS8+dho2soEENddwrhf3TAS9Au
-         ciUN+aCq5z31gTkpYcOfTlh4ZNvHdYPOdm9ROfpw5MO1wT5MN2MFNrfrI6ZYBwCyvomJ
-         J1twuTUFnn6aL6Xu3zESrzoXoiuZKz21I3SX8=
-Received: by 10.227.5.210 with SMTP id 18mr2257589wbw.18.1308852658447;
-        Thu, 23 Jun 2011 11:10:58 -0700 (PDT)
-Received: from localhost.localdomain (178-191-3-111.adsl.highway.telekom.at [178.191.3.111])
-        by mx.google.com with ESMTPS id ej7sm1416388wbb.36.2011.06.23.11.10.56
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 23 Jun 2011 11:10:57 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH] MIPS: Alchemy: include Au1100 in PM code.
-Date:   Thu, 23 Jun 2011 20:10:54 +0200
-Message-Id: <1308852654-26720-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: git-send-email 1.7.5.3
-X-archive-position: 30496
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2011 00:16:13 +0200 (CEST)
+Received: from swampdragon.chaosbits.net ([90.184.90.115]:23978 "EHLO
+        swampdragon.chaosbits.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491779Ab1FWWQH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Jun 2011 00:16:07 +0200
+Received: by swampdragon.chaosbits.net (Postfix, from userid 1000)
+        id 72CC19403D; Fri, 24 Jun 2011 00:07:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by swampdragon.chaosbits.net (Postfix) with ESMTP id 6BE899403B;
+        Fri, 24 Jun 2011 00:07:13 +0200 (CEST)
+Date:   Fri, 24 Jun 2011 00:07:13 +0200 (CEST)
+From:   Jesper Juhl <jj@chaosbits.net>
+To:     LKML <linux-kernel@vger.kernel.org>
+cc:     trivial@kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 06/37] Remove unneeded version.h includes from arch/mips/
+In-Reply-To: <alpine.LNX.2.00.1106232344480.17688@swampdragon.chaosbits.net>
+Message-ID: <alpine.LNX.2.00.1106240006140.17688@swampdragon.chaosbits.net>
+References: <alpine.LNX.2.00.1106232344480.17688@swampdragon.chaosbits.net>
+User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 30497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: jj@chaosbits.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19609
+X-UID: 19865
 
-The current code forgets the Au1100 when looking for the
-correct method to suspend the chip.
+It was pointed out by 'make versioncheck' that some includes of
+linux/version.h are not needed in arch/mips/.
+This patch removes them.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+Signed-off-by: Jesper Juhl <jj@chaosbits.net>
 ---
- arch/mips/alchemy/common/power.c |   22 ++++++++++++++--------
- 1 files changed, 14 insertions(+), 8 deletions(-)
+ arch/mips/include/asm/mach-powertv/dma-coherence.h |    1 -
+ arch/mips/lantiq/xway/ebu.c                        |    1 -
+ arch/mips/lantiq/xway/pmu.c                        |    1 -
+ 3 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/alchemy/common/power.c b/arch/mips/alchemy/common/power.c
-index 647e518..b86324a 100644
---- a/arch/mips/alchemy/common/power.c
-+++ b/arch/mips/alchemy/common/power.c
-@@ -158,15 +158,21 @@ static void restore_core_regs(void)
+diff --git a/arch/mips/include/asm/mach-powertv/dma-coherence.h b/arch/mips/include/asm/mach-powertv/dma-coherence.h
+index a8e72cf..613baf1 100644
+--- a/arch/mips/include/asm/mach-powertv/dma-coherence.h
++++ b/arch/mips/include/asm/mach-powertv/dma-coherence.h
+@@ -13,7 +13,6 @@
+ #define __ASM_MACH_POWERTV_DMA_COHERENCE_H
  
- void au_sleep(void)
- {
--	int cpuid = alchemy_get_cputype();
--	if (cpuid != ALCHEMY_CPU_UNKNOWN) {
--		save_core_regs();
--		if (cpuid <= ALCHEMY_CPU_AU1500)
--			alchemy_sleep_au1000();
--		else if (cpuid <= ALCHEMY_CPU_AU1200)
--			alchemy_sleep_au1550();
--		restore_core_regs();
-+	save_core_regs();
-+
-+	switch (alchemy_get_cputype()) {
-+	case ALCHEMY_CPU_AU1000:
-+	case ALCHEMY_CPU_AU1500:
-+	case ALCHEMY_CPU_AU1100:
-+		alchemy_sleep_au1000();
-+		break;
-+	case ALCHEMY_CPU_AU1550:
-+	case ALCHEMY_CPU_AU1200:
-+		alchemy_sleep_au1550();
-+		break;
- 	}
-+
-+	restore_core_regs();
- }
+ #include <linux/sched.h>
+-#include <linux/version.h>
+ #include <linux/device.h>
+ #include <asm/mach-powertv/asic.h>
  
- #endif	/* CONFIG_PM */
+diff --git a/arch/mips/lantiq/xway/ebu.c b/arch/mips/lantiq/xway/ebu.c
+index 66eb52f..033b318 100644
+--- a/arch/mips/lantiq/xway/ebu.c
++++ b/arch/mips/lantiq/xway/ebu.c
+@@ -10,7 +10,6 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/version.h>
+ #include <linux/ioport.h>
+ 
+ #include <lantiq_soc.h>
+diff --git a/arch/mips/lantiq/xway/pmu.c b/arch/mips/lantiq/xway/pmu.c
+index 9d69f01e..39f0d26 100644
+--- a/arch/mips/lantiq/xway/pmu.c
++++ b/arch/mips/lantiq/xway/pmu.c
+@@ -8,7 +8,6 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/version.h>
+ #include <linux/ioport.h>
+ 
+ #include <lantiq_soc.h>
 -- 
-1.7.5.3
+1.7.5.2
+
+
+-- 
+Jesper Juhl <jj@chaosbits.net>       http://www.chaosbits.net/
+Don't top-post http://www.catb.org/jargon/html/T/top-post.html
+Plain text mails only, please.

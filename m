@@ -1,28 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2011 15:30:17 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:38066 "EHLO duck.linux-mips.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jun 2011 15:36:30 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:37255 "EHLO duck.linux-mips.net"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1490991Ab1FXNaO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 24 Jun 2011 15:30:14 +0200
+        id S1490991Ab1FXNg1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 24 Jun 2011 15:36:27 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5ODU9JO032070;
-        Fri, 24 Jun 2011 14:30:09 +0100
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5ODaODP032661;
+        Fri, 24 Jun 2011 14:36:24 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5ODU9ON032067;
-        Fri, 24 Jun 2011 14:30:09 +0100
-Date:   Fri, 24 Jun 2011 14:30:09 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5ODaNmt032658;
+        Fri, 24 Jun 2011 14:36:23 +0100
+Date:   Fri, 24 Jun 2011 14:36:23 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Mauro Carvalho Chehab <mchehab@infradead.org>
-Cc:     Jaroslav Kysela <perex@perex.cz>, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH] MEDIA: Fix non-ISA_DMA_API link failure of sound code
-Message-ID: <20110624133009.GA30076@linux-mips.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Mauro Carvalho Chehab <mchehab@infradead.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] SOUND: Fix non-ISA_DMA_API build failure
+Message-ID: <20110624133623.GA32018@linux-mips.org>
+References: <20110623144750.GA10180@linux-mips.org>
+ <201106241519.44425.arnd@arndb.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <201106241519.44425.arnd@arndb.de>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30511
+X-archive-position: 30512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,118 +35,40 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20320
+X-UID: 20328
 
-A build with ISA && ISA_DMA && !ISA_DMA_API results in:
+On Fri, Jun 24, 2011 at 03:19:44PM +0200, Arnd Bergmann wrote:
 
-  CC      sound/isa/es18xx.o
-sound/isa/es18xx.c: In function ‘snd_es18xx_playback1_prepare’:
-sound/isa/es18xx.c:501:9: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/es18xx.c: In function ‘snd_es18xx_playback_pointer’:
-sound/isa/es18xx.c:818:3: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
+> > The sole ISA sound driver that does not use the ISA DMA API is the Adlib
+> > driver so replaced the dependency of SND_ISA on ISA_DMA_API and add it to
+> > each of the drivers individually.
+> 
+> Do we really care all that much about the Adlib driver on platforms without
+> ISA_DMA_API? Right now all of sound/isa/ is hidden behind ISA_DMA_API and
+> I think that's acceptable
 
-make[2]: *** [sound/isa/es18xx.o] Error 1
-  CC      sound/isa/sscape.o
-sound/isa/sscape.c: In function ‘upload_dma_data’:
-sound/isa/sscape.c:481:3: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
+When looking into this build error I started untangling the mess from the
+isa from the sounds end and found the media bits as the root cause after I
+finished the sound bits.  I honestly don't care about the Adlib - until I
+plug an Adlib into one of my SGI Indigo� and that's unlikely to happen :)
 
-make[2]: *** [sound/isa/sscape.o] Error 1
-  CC      sound/isa/ad1816a/ad1816a_lib.o
-sound/isa/ad1816a/ad1816a_lib.c: In function ‘snd_ad1816a_playback_prepare’:
-sound/isa/ad1816a/ad1816a_lib.c:244:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/ad1816a/ad1816a_lib.c: In function ‘snd_ad1816a_playback_pointer’:
-sound/isa/ad1816a/ad1816a_lib.c:302:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
-sound/isa/ad1816a/ad1816a_lib.c: In function ‘snd_ad1816a_free’:
-sound/isa/ad1816a/ad1816a_lib.c:544:3: error: implicit declaration of function ‘snd_dma_disable’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
+> > diff --git a/drivers/media/radio/Kconfig b/drivers/media/radio/Kconfig
+> > index e4c97fd..0aeed28 100644
+> > --- a/drivers/media/radio/Kconfig
+> > +++ b/drivers/media/radio/Kconfig
+> > @@ -168,7 +168,7 @@ config RADIO_MAXIRADIO
+> >  
+> >  config RADIO_MIROPCM20
+> >         tristate "miroSOUND PCM20 radio"
+> > -       depends on ISA && VIDEO_V4L2 && SND
+> > +       depends on ISA && ISA_DMA_API && VIDEO_V4L2 && SND
+> >         select SND_ISA
+> >         select SND_MIRO
+> >         ---help---
+> 
+> Then this hunk by itself would be enough to solve the compile
+> errors, AFAICT.
 
-make[3]: *** [sound/isa/ad1816a/ad1816a_lib.o] Error 1
-make[3]: Target `__build' not remade because of errors.
-make[2]: *** [sound/isa/ad1816a] Error 2
-  CC      sound/isa/es1688/es1688_lib.o
-sound/isa/es1688/es1688_lib.c: In function ‘snd_es1688_playback_prepare’:
-sound/isa/es1688/es1688_lib.c:417:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/es1688/es1688_lib.c: In function ‘snd_es1688_playback_pointer’:
-sound/isa/es1688/es1688_lib.c:509:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
+It is, I've tested that.
 
-make[3]: *** [sound/isa/es1688/es1688_lib.o] Error 1
-make[3]: Target `__build' not remade because of errors.
-make[2]: *** [sound/isa/es1688] Error 2
-  CC      sound/isa/gus/gus_dma.o
-sound/isa/gus/gus_dma.c: In function ‘snd_gf1_dma_program’:
-sound/isa/gus/gus_dma.c:79:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/gus/gus_dma.c: In function ‘snd_gf1_dma_done’:
-sound/isa/gus/gus_dma.c:177:3: error: implicit declaration of function ‘snd_dma_disable’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
-
-make[3]: *** [sound/isa/gus/gus_dma.o] Error 1
-  CC      sound/isa/gus/gus_pcm.o
-sound/isa/gus/gus_pcm.c: In function ‘snd_gf1_pcm_capture_prepare’:
-sound/isa/gus/gus_pcm.c:591:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/gus/gus_pcm.c: In function ‘snd_gf1_pcm_capture_pointer’:
-sound/isa/gus/gus_pcm.c:619:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
-
-make[3]: *** [sound/isa/gus/gus_pcm.o] Error 1
-make[3]: Target `__build' not remade because of errors.
-make[2]: *** [sound/isa/gus] Error 2
-  CC      sound/isa/sb/sb16_csp.o
-sound/isa/sb/sb16_csp.c: In function ‘snd_sb_csp_ioctl’:
-sound/isa/sb/sb16_csp.c:228:227: error: case label does not reduce to an integer constant
-make[3]: *** [sound/isa/sb/sb16_csp.o] Error 1
-  CC      sound/isa/sb/sb16_main.o
-sound/isa/sb/sb16_main.c: In function ‘snd_sb16_playback_prepare’:
-sound/isa/sb/sb16_main.c:276:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/sb/sb16_main.c: In function ‘snd_sb16_playback_pointer’:
-sound/isa/sb/sb16_main.c:456:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
-
-make[3]: *** [sound/isa/sb/sb16_main.o] Error 1
-  CC      sound/isa/sb/sb8_main.o
-sound/isa/sb/sb8_main.c: In function ‘snd_sb8_playback_prepare’:
-sound/isa/sb/sb8_main.c:172:3: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/sb/sb8_main.c: In function ‘snd_sb8_playback_pointer’:
-sound/isa/sb/sb8_main.c:425:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
-
-make[3]: *** [sound/isa/sb/sb8_main.o] Error 1
-make[3]: Target `__build' not remade because of errors.
-make[2]: *** [sound/isa/sb] Error 2
-  CC      sound/isa/wss/wss_lib.o
-sound/isa/wss/wss_lib.c: In function ‘snd_wss_playback_prepare’:
-sound/isa/wss/wss_lib.c:1025:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
-sound/isa/wss/wss_lib.c: In function ‘snd_wss_playback_pointer’:
-sound/isa/wss/wss_lib.c:1160:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
-sound/isa/wss/wss_lib.c: In function ‘snd_wss_free’:
-sound/isa/wss/wss_lib.c:1695:3: error: implicit declaration of function ‘snd_dma_disable’ [-Werror=implicit-function-declaration]
-cc1: some warnings being treated as errors
-
-make[3]: *** [sound/isa/wss/wss_lib.o] Error 1
-
-The root cause for this is hidden in this Kconfig warning:
-
-warning: (RADIO_MIROPCM20) selects SND_ISA which has unmet direct dependencies (SOUND && !M68K && SND && ISA && ISA_DMA_API)
-
-Adding a dependency on ISA_DMA_API to RADIO_MIROPCM20 fixes these issues.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- drivers/media/radio/Kconfig |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/media/radio/Kconfig b/drivers/media/radio/Kconfig
-index e4c97fd..0aeed28 100644
---- a/drivers/media/radio/Kconfig
-+++ b/drivers/media/radio/Kconfig
-@@ -168,7 +168,7 @@ config RADIO_MAXIRADIO
- 
- config RADIO_MIROPCM20
- 	tristate "miroSOUND PCM20 radio"
--	depends on ISA && VIDEO_V4L2 && SND
-+	depends on ISA && ISA_DMA_API && VIDEO_V4L2 && SND
- 	select SND_ISA
- 	select SND_MIRO
- 	---help---
+  Ralf

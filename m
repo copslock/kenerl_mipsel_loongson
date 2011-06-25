@@ -1,181 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2011 12:40:14 +0200 (CEST)
-Received: from casper.infradead.org ([85.118.1.10]:45702 "EHLO
-        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491867Ab1FYKkF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 25 Jun 2011 12:40:05 +0200
-Received: from 201-75-172-239-nd.cpe.vivax.com.br ([201.75.172.239] helo=[192.168.30.170])
-        by casper.infradead.org with esmtpsa (Exim 4.76 #1 (Red Hat Linux))
-        id 1QaQHS-0004ou-Kc; Sat, 25 Jun 2011 10:40:03 +0000
-Message-ID: <4E05BAFE.5000501@infradead.org>
-Date:   Sat, 25 Jun 2011 07:39:58 -0300
-From:   Mauro Carvalho Chehab <mchehab@infradead.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110419 Red Hat/3.1.10-1.el6_0 Thunderbird/3.1.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jun 2011 18:54:19 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47818 "EHLO duck.linux-mips.net"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491114Ab1FYQyO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 25 Jun 2011 18:54:14 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5PGsARf002435;
+        Sat, 25 Jun 2011 17:54:10 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5PGs9BV002429;
+        Sat, 25 Jun 2011 17:54:09 +0100
+Date:   Sat, 25 Jun 2011 17:54:09 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: [PATCH] NET: TC35815: Only build driver on Toshiba eval boards.
+Message-ID: <20110625165409.GA1760@linux-mips.org>
 MIME-Version: 1.0
-To:     Takashi Iwai <tiwai@suse.de>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        alsa-devel@alsa-project.org, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [alsa-devel] [PATCH] MEDIA: Fix non-ISA_DMA_API link failure
- of     sound code
-References: <20110624133009.GA30076@linux-mips.org> <s5hmxh6v0k0.wl%tiwai@suse.de>
-In-Reply-To: <s5hmxh6v0k0.wl%tiwai@suse.de>
-Content-Type: text/plain; charset=ISO-2022-JP
-Content-Transfer-Encoding: 7bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <mchehab@infradead.org> by casper.infradead.org
-        See http://www.infradead.org/rpr.html
-X-archive-position: 30515
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 30516
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mchehab@infradead.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20889
+X-UID: 21034
 
-Em 25-06-2011 04:21, Takashi Iwai escreveu:
-> At Fri, 24 Jun 2011 14:30:09 +0100,
-> Ralf Baechle wrote:
->>
->> A build with ISA && ISA_DMA && !ISA_DMA_API results in:
->>
->>   CC      sound/isa/es18xx.o
->> sound/isa/es18xx.c: In function ‘snd_es18xx_playback1_prepare’:
->> sound/isa/es18xx.c:501:9: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/es18xx.c: In function ‘snd_es18xx_playback_pointer’:
->> sound/isa/es18xx.c:818:3: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[2]: *** [sound/isa/es18xx.o] Error 1
->>   CC      sound/isa/sscape.o
->> sound/isa/sscape.c: In function ‘upload_dma_data’:
->> sound/isa/sscape.c:481:3: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[2]: *** [sound/isa/sscape.o] Error 1
->>   CC      sound/isa/ad1816a/ad1816a_lib.o
->> sound/isa/ad1816a/ad1816a_lib.c: In function ‘snd_ad1816a_playback_prepare’:
->> sound/isa/ad1816a/ad1816a_lib.c:244:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/ad1816a/ad1816a_lib.c: In function ‘snd_ad1816a_playback_pointer’:
->> sound/isa/ad1816a/ad1816a_lib.c:302:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
->> sound/isa/ad1816a/ad1816a_lib.c: In function ‘snd_ad1816a_free’:
->> sound/isa/ad1816a/ad1816a_lib.c:544:3: error: implicit declaration of function ‘snd_dma_disable’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[3]: *** [sound/isa/ad1816a/ad1816a_lib.o] Error 1
->> make[3]: Target `__build' not remade because of errors.
->> make[2]: *** [sound/isa/ad1816a] Error 2
->>   CC      sound/isa/es1688/es1688_lib.o
->> sound/isa/es1688/es1688_lib.c: In function ‘snd_es1688_playback_prepare’:
->> sound/isa/es1688/es1688_lib.c:417:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/es1688/es1688_lib.c: In function ‘snd_es1688_playback_pointer’:
->> sound/isa/es1688/es1688_lib.c:509:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[3]: *** [sound/isa/es1688/es1688_lib.o] Error 1
->> make[3]: Target `__build' not remade because of errors.
->> make[2]: *** [sound/isa/es1688] Error 2
->>   CC      sound/isa/gus/gus_dma.o
->> sound/isa/gus/gus_dma.c: In function ‘snd_gf1_dma_program’:
->> sound/isa/gus/gus_dma.c:79:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/gus/gus_dma.c: In function ‘snd_gf1_dma_done’:
->> sound/isa/gus/gus_dma.c:177:3: error: implicit declaration of function ‘snd_dma_disable’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[3]: *** [sound/isa/gus/gus_dma.o] Error 1
->>   CC      sound/isa/gus/gus_pcm.o
->> sound/isa/gus/gus_pcm.c: In function ‘snd_gf1_pcm_capture_prepare’:
->> sound/isa/gus/gus_pcm.c:591:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/gus/gus_pcm.c: In function ‘snd_gf1_pcm_capture_pointer’:
->> sound/isa/gus/gus_pcm.c:619:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[3]: *** [sound/isa/gus/gus_pcm.o] Error 1
->> make[3]: Target `__build' not remade because of errors.
->> make[2]: *** [sound/isa/gus] Error 2
->>   CC      sound/isa/sb/sb16_csp.o
->> sound/isa/sb/sb16_csp.c: In function ‘snd_sb_csp_ioctl’:
->> sound/isa/sb/sb16_csp.c:228:227: error: case label does not reduce to an integer constant
->> make[3]: *** [sound/isa/sb/sb16_csp.o] Error 1
->>   CC      sound/isa/sb/sb16_main.o
->> sound/isa/sb/sb16_main.c: In function ‘snd_sb16_playback_prepare’:
->> sound/isa/sb/sb16_main.c:276:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/sb/sb16_main.c: In function ‘snd_sb16_playback_pointer’:
->> sound/isa/sb/sb16_main.c:456:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[3]: *** [sound/isa/sb/sb16_main.o] Error 1
->>   CC      sound/isa/sb/sb8_main.o
->> sound/isa/sb/sb8_main.c: In function ‘snd_sb8_playback_prepare’:
->> sound/isa/sb/sb8_main.c:172:3: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/sb/sb8_main.c: In function ‘snd_sb8_playback_pointer’:
->> sound/isa/sb/sb8_main.c:425:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[3]: *** [sound/isa/sb/sb8_main.o] Error 1
->> make[3]: Target `__build' not remade because of errors.
->> make[2]: *** [sound/isa/sb] Error 2
->>   CC      sound/isa/wss/wss_lib.o
->> sound/isa/wss/wss_lib.c: In function ‘snd_wss_playback_prepare’:
->> sound/isa/wss/wss_lib.c:1025:2: error: implicit declaration of function ‘snd_dma_program’ [-Werror=implicit-function-declaration]
->> sound/isa/wss/wss_lib.c: In function ‘snd_wss_playback_pointer’:
->> sound/isa/wss/wss_lib.c:1160:2: error: implicit declaration of function ‘snd_dma_pointer’ [-Werror=implicit-function-declaration]
->> sound/isa/wss/wss_lib.c: In function ‘snd_wss_free’:
->> sound/isa/wss/wss_lib.c:1695:3: error: implicit declaration of function ‘snd_dma_disable’ [-Werror=implicit-function-declaration]
->> cc1: some warnings being treated as errors
->>
->> make[3]: *** [sound/isa/wss/wss_lib.o] Error 1
->>
->> The root cause for this is hidden in this Kconfig warning:
->>
->> warning: (RADIO_MIROPCM20) selects SND_ISA which has unmet direct dependencies (SOUND && !M68K && SND && ISA && ISA_DMA_API)
->>
->> Adding a dependency on ISA_DMA_API to RADIO_MIROPCM20 fixes these issues.
->>
->> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> Acked-by: Takashi Iwai <tiwai@suse.de>
+That's the only place where the TC35815 is known to be used.
 
-Ralf,
+  Ralf
 
-Do you want do send this patch directly? If so:
-Acked-by: Mauro Carvalho Chehab <mchehab@redhat.com>
+ drivers/net/Kconfig |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-Otherwise, I can just add it into my tree with my SOB.
-
-Both ways work fine for me.
-
-Thanks,
-Mauro
-> 
-> 
-> thanks,
-> 
-> Takashi
-> 
->>
->>  drivers/media/radio/Kconfig |    2 +-
->>  1 files changed, 1 insertions(+), 1 deletions(-)
->>
->> diff --git a/drivers/media/radio/Kconfig b/drivers/media/radio/Kconfig
->> index e4c97fd..0aeed28 100644
->> --- a/drivers/media/radio/Kconfig
->> +++ b/drivers/media/radio/Kconfig
->> @@ -168,7 +168,7 @@ config RADIO_MAXIRADIO
->>  
->>  config RADIO_MIROPCM20
->>  	tristate "miroSOUND PCM20 radio"
->> -	depends on ISA && VIDEO_V4L2 && SND
->> +	depends on ISA && ISA_DMA_API && VIDEO_V4L2 && SND
->>  	select SND_ISA
->>  	select SND_MIRO
->>  	---help---
->> _______________________________________________
->> Alsa-devel mailing list
->> Alsa-devel@alsa-project.org
->> http://mailman.alsa-project.org/mailman/listinfo/alsa-devel
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-media" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index be25e92..2b4ebfb 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -1516,7 +1516,8 @@ config CS89x0_NONISA_IRQ
+ 
+ config TC35815
+ 	tristate "TOSHIBA TC35815 Ethernet support"
+-	depends on NET_PCI && PCI && MIPS
++	depends on NET_PCI && PCI && MACH_TXX9
++	default y
+ 	select PHYLIB
+ 
+ config E100

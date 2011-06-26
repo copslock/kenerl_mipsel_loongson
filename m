@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 17:39:04 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:45797 "EHLO duck.linux-mips.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 17:39:30 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:45801 "EHLO duck.linux-mips.net"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491925Ab1F0PiE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1491926Ab1F0PiE (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 27 Jun 2011 17:38:04 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5RFc1wY019383;
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5RFc1SR019387;
         Mon, 27 Jun 2011 16:38:01 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5RFc0iB019381;
-        Mon, 27 Jun 2011 16:38:00 +0100
-Message-Id: <1a64483db2fd8cb2879ae148b0eab2eb6797ba0b.1309182743.git.ralf@linux-mips.org>
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5RFc1d0019386;
+        Mon, 27 Jun 2011 16:38:01 +0100
+Message-Id: <5c64aa41d9d581af5c6863c4c7078fb9dfb381d5.1309182743.git.ralf@linux-mips.org>
 In-Reply-To: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
 References: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
 From:   Ralf Baechle <ralf@linux-mips.org>
 To:     "David S. Miller" <davem@davemloft.net>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc:     Jaroslav Kysela <perex@perex.cz>, netdev@vger.kernel.org,
         linux-mips@linux-mips.org
-Date:   Sun, 26 Jun 2011 12:23:00 +0100
-Subject: [PATCH 04/12] NET: depca: Fix bucketload full of section mismatches.
-X-archive-position: 30523
+Date:   Sun, 26 Jun 2011 12:24:57 +0100
+Subject: [PATCH 05/12] NET: hp100: Fix section mismatches
+X-archive-position: 30524
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,142 +27,36 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21970
+X-UID: 21976
 
-WARNING: drivers/net/depca.o(.data+0x34): Section mismatch in reference from the variable depca_eisa_driver to the function .init.text:depca_eisa_probe()
-The variable depca_eisa_driver references
-the function __init depca_eisa_probe()
+WARNING: drivers/net/hp100.o(.data+0x70): Section mismatch in reference from the variable hp100_eisa_driver to the function .init.text:hp100_eisa_probe()
+The variable hp100_eisa_driver references
+the function __init hp100_eisa_probe()
 If the reference is valid then annotate the
 variable with __init* or __refdata (see linux/init.h) or name the variable:
 *_template, *_timer, *_sht, *_ops, *_probe, *_probe_one, *_console
 
-WARNING: drivers/net/depca.o(.devinit.text+0x2c): Section mismatch in reference from the function depca_isa_probe() to the function .init.text:depca_common_init()
-The function __devinit depca_isa_probe() references
-a function __init depca_common_init().
-If depca_common_init is only used by depca_isa_probe then
-annotate depca_common_init with a matching annotation.
-
-WARNING: drivers/net/depca.o(.devinit.text+0x44): Section mismatch in reference from the function depca_isa_probe() to the function .init.text:depca_shmem_probe()
-The function __devinit depca_isa_probe() references
-a function __init depca_shmem_probe().
-If depca_shmem_probe is only used by depca_isa_probe then
-annotate depca_shmem_probe with a matching annotation.
-
-WARNING: drivers/net/depca.o(.devinit.text+0x8c): Section mismatch in reference from the function depca_isa_probe() to the function .init.text:depca_hw_init()
-The function __devinit depca_isa_probe() references
-a function __init depca_hw_init().
-If depca_hw_init is only used by depca_isa_probe then
-annotate depca_hw_init with a matching annotation.
-
-Fixing these in turn triggers yet more mismatches, fix those as well.
-
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 To: "David S. Miller" <davem@davemloft.net>
+Cc: Jaroslav Kysela <perex@perex.cz>
 Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 ---
- drivers/net/depca.c |   25 +++++++++++++------------
- 1 files changed, 13 insertions(+), 12 deletions(-)
+ drivers/net/hp100.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/depca.c b/drivers/net/depca.c
-index 8b0084d..d40536a 100644
---- a/drivers/net/depca.c
-+++ b/drivers/net/depca.c
-@@ -331,7 +331,7 @@ static struct {
-                          "DE422",\
-                          ""}
- 
--static char* __initdata depca_signature[] = DEPCA_SIGNATURE;
-+static char* __devinitdata depca_signature[] = DEPCA_SIGNATURE;
- 
- enum depca_type {
- 	DEPCA, de100, de101, de200, de201, de202, de210, de212, de422, unknown
-@@ -541,9 +541,9 @@ static void SetMulticastFilter(struct net_device *dev);
- static int load_packet(struct net_device *dev, struct sk_buff *skb);
- static void depca_dbg_open(struct net_device *dev);
- 
--static u_char de1xx_irq[] __initdata = { 2, 3, 4, 5, 7, 9, 0 };
--static u_char de2xx_irq[] __initdata = { 5, 9, 10, 11, 15, 0 };
--static u_char de422_irq[] __initdata = { 5, 9, 10, 11, 0 };
-+static u_char de1xx_irq[] __devinitdata = { 2, 3, 4, 5, 7, 9, 0 };
-+static u_char de2xx_irq[] __devinitdata = { 5, 9, 10, 11, 15, 0 };
-+static u_char de422_irq[] __devinitdata = { 5, 9, 10, 11, 0 };
- static u_char *depca_irq;
- 
- static int irq;
-@@ -580,7 +580,8 @@ static const struct net_device_ops depca_netdev_ops = {
- 	.ndo_validate_addr	= eth_validate_addr,
- };
- 
--static int __init depca_hw_init (struct net_device *dev, struct device *device)
-+static int __devinit depca_hw_init (struct net_device *dev,
-+	struct device *device)
- {
- 	struct depca_private *lp;
- 	int i, j, offset, netRAM, mem_len, status = 0;
-@@ -1302,7 +1303,7 @@ static void SetMulticastFilter(struct net_device *dev)
- 	}
+diff --git a/drivers/net/hp100.c b/drivers/net/hp100.c
+index c3ecb11..9cd575f 100644
+--- a/drivers/net/hp100.c
++++ b/drivers/net/hp100.c
+@@ -2843,7 +2843,7 @@ static void cleanup_dev(struct net_device *d)
  }
- 
--static int __init depca_common_init (u_long ioaddr, struct net_device **devp)
-+static int __devinit depca_common_init (u_long ioaddr, struct net_device **devp)
- {
- 	int status = 0;
- 
-@@ -1333,7 +1334,7 @@ static int __init depca_common_init (u_long ioaddr, struct net_device **devp)
- /*
- ** Microchannel bus I/O device probe
- */
--static int __init depca_mca_probe(struct device *device)
-+static int __devinit depca_mca_probe(struct device *device)
- {
- 	unsigned char pos[2];
- 	unsigned char where;
-@@ -1497,7 +1498,7 @@ static void __init depca_platform_probe (void)
- 	}
- }
- 
--static enum depca_type __init depca_shmem_probe (ulong *mem_start)
-+static enum depca_type __devinit depca_shmem_probe (ulong *mem_start)
- {
- 	u_long mem_base[] = DEPCA_RAM_BASE_ADDRESSES;
- 	enum depca_type adapter = unknown;
-@@ -1558,7 +1559,7 @@ static int __devinit depca_isa_probe (struct platform_device *device)
- */
  
  #ifdef CONFIG_EISA
--static int __init depca_eisa_probe (struct device *device)
-+static int __devinit depca_eisa_probe (struct device *device)
+-static int __init hp100_eisa_probe (struct device *gendev)
++static int __devinit hp100_eisa_probe(struct device *gendev)
  {
- 	enum depca_type adapter = unknown;
- 	struct eisa_device *edev;
-@@ -1629,7 +1630,7 @@ static int __devexit depca_device_remove (struct device *device)
- ** and Boot (readb) ROM. This will also give us a clue to the network RAM
- ** base address.
- */
--static int __init DepcaSignature(char *name, u_long base_addr)
-+static int __devinit DepcaSignature(char *name, u_long base_addr)
- {
- 	u_int i, j, k;
- 	void __iomem *ptr;
-@@ -1698,7 +1699,7 @@ static int __init DepcaSignature(char *name, u_long base_addr)
- ** PROM address counter is correctly positioned at the start of the
- ** ethernet address for later read out.
- */
--static int __init DevicePresent(u_long ioaddr)
-+static int __devinit DevicePresent(u_long ioaddr)
- {
- 	union {
- 		struct {
-@@ -1751,7 +1752,7 @@ static int __init DevicePresent(u_long ioaddr)
- ** reason: access the upper half of the PROM with x=0; access the lower half
- ** with x=1.
- */
--static int __init get_hw_addr(struct net_device *dev)
-+static int __devinit get_hw_addr(struct net_device *dev)
- {
- 	u_long ioaddr = dev->base_addr;
- 	struct depca_private *lp = netdev_priv(dev);
+ 	struct net_device *dev = alloc_etherdev(sizeof(struct hp100_private));
+ 	struct eisa_device *edev = to_eisa_device(gendev);
 -- 
 1.7.4.4

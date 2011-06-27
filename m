@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 17:40:18 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:45803 "EHLO duck.linux-mips.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 17:40:44 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:45812 "EHLO duck.linux-mips.net"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491921Ab1F0PiE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jun 2011 17:38:04 +0200
+        id S1491927Ab1F0PiF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jun 2011 17:38:05 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5RFc4dZ019411;
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5RFc4Fm019420;
         Mon, 27 Jun 2011 16:38:04 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5RFc3DL019410;
-        Mon, 27 Jun 2011 16:38:03 +0100
-Message-Id: <f0b3d9a91be8dba5c45c14efebaa9c7800694f15.1309182743.git.ralf@linux-mips.org>
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5RFc4TK019418;
+        Mon, 27 Jun 2011 16:38:04 +0100
+Message-Id: <1868ba261f47136619ef71c85ff1ef56b085fbe2.1309182743.git.ralf@linux-mips.org>
 In-Reply-To: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
 References: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Alan Cox <alan@linux.intel.com>
-Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     David Airlie <airlied@linux.ie>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Date:   Mon, 27 Jun 2011 14:26:56 +0100
-Subject: [PATCH 10/12] SERIAL: SC26xx: Fix link error.
-X-archive-position: 30526
+Date:   Mon, 27 Jun 2011 14:40:35 +0100
+Subject: [PATCH 12/12] DRM: Radeon: Fix section mismatch.
+X-archive-position: 30527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,39 +27,44 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21983
+X-UID: 21984
 
-Kconfig allows enabling console support for the SC26xx driver even when
-it's configured as a module resulting in a:
-
-ERROR: "uart_console_device" [drivers/tty/serial/sc26xx.ko] undefined!
-
-modpost error since the driver was merged in
-eea63e0e8a60d00485b47fb6e75d9aa2566b989b [SC26XX: New serial driver for
-SC2681 uarts] in 2.6.25.  Fixed by only allowing console support to be
-enabled if the driver is builtin.
+WARNING: drivers/gpu/drm/radeon/radeon.o(.text+0x5d1fc): Section mismatch in reference from the function radeon_get_clock_info() to the function .devinit.text:radeon_read_clocks_OF()
+The function radeon_get_clock_info() references
+the function __devinit radeon_read_clocks_OF().
+This is often because radeon_get_clock_info lacks a __devinit
+annotation or the annotation of radeon_read_clocks_OF is wrong.
 
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-To: Alan Cox <alan@linux.intel.com>
-Cc: linux-serial@vger.kernel.org
+To: David Airlie <airlied@linux.ie>
+Cc: dri-devel@lists.freedesktop.org
 Cc: linux-kernel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 ---
- drivers/tty/serial/Kconfig |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/gpu/drm/radeon/radeon_clocks.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-index 636144c..b3692e6 100644
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -1419,7 +1419,7 @@ config SERIAL_SC26XX
- 
- config SERIAL_SC26XX_CONSOLE
- 	bool "Console on SC2681/SC2692 serial port"
--	depends on SERIAL_SC26XX
-+	depends on SERIAL_SC26XX=y
- 	select SERIAL_CORE_CONSOLE
- 	help
- 	  Support for Console on SC2681/SC2692 serial ports.
+diff --git a/drivers/gpu/drm/radeon/radeon_clocks.c b/drivers/gpu/drm/radeon/radeon_clocks.c
+index 2d48e7a..dcd0863e 100644
+--- a/drivers/gpu/drm/radeon/radeon_clocks.c
++++ b/drivers/gpu/drm/radeon/radeon_clocks.c
+@@ -96,7 +96,7 @@ uint32_t radeon_legacy_get_memory_clock(struct radeon_device *rdev)
+  * Read XTAL (ref clock), SCLK and MCLK from Open Firmware device
+  * tree. Hopefully, ATI OF driver is kind enough to fill these
+  */
+-static bool __devinit radeon_read_clocks_OF(struct drm_device *dev)
++static bool radeon_read_clocks_OF(struct drm_device *dev)
+ {
+ 	struct radeon_device *rdev = dev->dev_private;
+ 	struct device_node *dp = rdev->pdev->dev.of_node;
+@@ -166,7 +166,7 @@ static bool __devinit radeon_read_clocks_OF(struct drm_device *dev)
+ 	return true;
+ }
+ #else
+-static bool __devinit radeon_read_clocks_OF(struct drm_device *dev)
++static bool radeon_read_clocks_OF(struct drm_device *dev)
+ {
+ 	return false;
+ }
 -- 
 1.7.4.4

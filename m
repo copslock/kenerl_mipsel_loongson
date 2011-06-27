@@ -1,141 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 13:13:38 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:40018 "EHLO duck.linux-mips.net"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491908Ab1F0LNe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jun 2011 13:13:34 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5RBD1hg014131;
-        Mon, 27 Jun 2011 12:13:01 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5RBD0oZ014122;
-        Mon, 27 Jun 2011 12:13:00 +0100
-Date:   Mon, 27 Jun 2011 12:13:00 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ben Dooks <ben-linux@fluff.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Jeff Garzik <jeff@garzik.org>,
-        Magnus Damm <magnus.damm@gmail.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-sh@vger.kernel.org, netdev@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 14:58:02 +0200 (CEST)
+Received: from mv-drv-hcb004.ocn.ad.jp ([118.23.109.134]:40981 "EHLO
+        mv-drv-hcb004.ocn.ad.jp" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491917Ab1F0M5z (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 27 Jun 2011 14:57:55 +0200
+Received: from vcmba.ocn.ne.jp (localhost.localdomain [127.0.0.1])
+        by mv-drv-hcb004.ocn.ad.jp (Postfix) with ESMTP id 428F51B4241;
+        Mon, 27 Jun 2011 21:57:51 +0900 (JST)
+Received: from localhost (softbank221040169135.bbtec.net [221.40.169.135])
+        by vcmba.ocn.ne.jp (Postfix) with ESMTP;
+        Mon, 27 Jun 2011 21:57:51 +0900 (JST)
+Date:   Mon, 27 Jun 2011 21:57:47 +0900 (JST)
+Message-Id: <20110627.215747.208961032.anemo@mba.ocn.ne.jp>
+To:     ralf@linux-mips.org
+Cc:     davem@davemloft.net, netdev@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: [PATCH v2] NET: AX88796: Tighten up Kconfig dependencies
-Message-ID: <20110627111259.GA13620@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30519
+Subject: Re: [PATCH] NET: TC35815: Only build driver on Toshiba eval boards.
+From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20110625165409.GA1760@linux-mips.org>
+References: <20110625165409.GA1760@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30520
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21726
+X-UID: 21819
 
-In def47c5095d53814512bb0c62ec02dfdec769db1 [[netdrvr] Fix dependencies for
-ax88796 ne2k clone driver] the AX88796 driver got restricted to just be
-build for ARM and MIPS on the sole merrit that it was written for some ARM
-sytems and the driver had the misfortune to just build on MIPS, so MIPS was
-throw into the dependency for a good measure.  Later
-8687991a734a67f1638782c968f46fff0f94bb1f [ax88796: add superh to kconfig
-dependencies] added SH but only one in-tree SH system actually has an
-AX88796.
+On Sat, 25 Jun 2011 17:54:09 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
+> That's the only place where the TC35815 is known to be used.
+> 
+>   Ralf
+> 
+>  drivers/net/Kconfig |    3 ++-
+>  1 files changed, 2 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+> index be25e92..2b4ebfb 100644
+> --- a/drivers/net/Kconfig
+> +++ b/drivers/net/Kconfig
+> @@ -1516,7 +1516,8 @@ config CS89x0_NONISA_IRQ
+>  
+>  config TC35815
+>  	tristate "TOSHIBA TC35815 Ethernet support"
+> -	depends on NET_PCI && PCI && MIPS
+> +	depends on NET_PCI && PCI && MACH_TXX9
+> +	default y
+>  	select PHYLIB
+>  
+>  config E100
 
-Tighten up dependencies by using an auxilliary config sysmbol
-HAS_NET_AX88796 which is selected only by the platforms that actually
-have or may have an AX88796.  This also means the driver won't be built
-anymore for any MIPS platform.
+Yes, OK for me.
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
----
-v2: fixed Sergei's complaints about the log message
-
- arch/arm/mach-pxa/Kconfig     |    2 ++
- arch/arm/mach-s3c2410/Kconfig |    1 +
- arch/arm/mach-s3c2440/Kconfig |    1 +
- arch/sh/boards/Kconfig        |    1 +
- drivers/net/Kconfig           |    5 ++++-
- 5 files changed, 9 insertions(+), 1 deletions(-)
-
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index cd19309..37ce06f 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -247,11 +247,13 @@ config MACH_COLIBRI300
- 	select PXA3xx
- 	select CPU_PXA300
- 	select CPU_PXA310
-+	select HAS_NET_AX88796
- 
- config MACH_COLIBRI320
- 	bool "Toradex Colibri PXA320"
- 	select PXA3xx
- 	select CPU_PXA320
-+	select HAS_NET_AX88796
- 
- config MACH_COLIBRI_EVALBOARD
- 	bool "Toradex Colibri Evaluation Carrier Board support"
-diff --git a/arch/arm/mach-s3c2410/Kconfig b/arch/arm/mach-s3c2410/Kconfig
-index 7245a55..d665f92 100644
---- a/arch/arm/mach-s3c2410/Kconfig
-+++ b/arch/arm/mach-s3c2410/Kconfig
-@@ -122,6 +122,7 @@ config ARCH_BAST
- 	select S3C_DEV_HWMON
- 	select S3C_DEV_USB_HOST
- 	select S3C_DEV_NAND
-+	select HAS_NET_AX88796
- 	help
- 	  Say Y here if you are using the Simtec Electronics EB2410ITX
- 	  development board (also known as BAST)
-diff --git a/arch/arm/mach-s3c2440/Kconfig b/arch/arm/mach-s3c2440/Kconfig
-index 50825a3..7ddbd22 100644
---- a/arch/arm/mach-s3c2440/Kconfig
-+++ b/arch/arm/mach-s3c2440/Kconfig
-@@ -86,6 +86,7 @@ config MACH_ANUBIS
- 	select S3C24XX_GPIO_EXTRA64
- 	select S3C2440_XTAL_12000000
- 	select S3C_DEV_USB_HOST
-+	select HAS_NET_AX88796
- 	help
- 	  Say Y here if you are using the Simtec Electronics ANUBIS
- 	  development system
-diff --git a/arch/sh/boards/Kconfig b/arch/sh/boards/Kconfig
-index d893411..f23f332 100644
---- a/arch/sh/boards/Kconfig
-+++ b/arch/sh/boards/Kconfig
-@@ -162,6 +162,7 @@ config SH_HIGHLANDER
- 	depends on CPU_SUBTYPE_SH7780 || CPU_SUBTYPE_SH7785
- 	select SYS_SUPPORTS_PCI
- 	select IO_TRAPPED if MMU
-+	select HAS_NET_AX88796
- 
- config SH_SH7757LCR
- 	bool "SH7757LCR"
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index be25e92..85d18c4 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -237,13 +237,16 @@ source "drivers/net/arm/Kconfig"
- 
- config AX88796
- 	tristate "ASIX AX88796 NE2000 clone support"
--	depends on ARM || MIPS || SUPERH
-+	depends on HAS_NET_AX88796
- 	select PHYLIB
- 	select MDIO_BITBANG
- 	help
- 	  AX88796 driver, using platform bus to provide
- 	  chip detection and resources
- 
-+config HAS_NET_AX88796
-+	bool
-+
- config AX88796_93CX6
- 	bool "ASIX AX88796 external 93CX6 eeprom support"
- 	depends on AX88796
+Acked-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>

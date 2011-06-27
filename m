@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 17:41:58 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:45826 "EHLO duck.linux-mips.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 17:45:23 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47102 "EHLO duck.linux-mips.net"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491932Ab1F0PiI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jun 2011 17:38:08 +0200
+        id S1491923Ab1F0PpT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 27 Jun 2011 17:45:19 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5RFc2G5019402;
-        Mon, 27 Jun 2011 16:38:03 +0100
+        by duck.linux-mips.net (8.14.4/8.14.3) with ESMTP id p5RFc4PY019415;
+        Mon, 27 Jun 2011 16:38:04 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5RFc2cY019400;
-        Mon, 27 Jun 2011 16:38:02 +0100
-Message-Id: <76e1849ea61248353ebb2b2b60ba36c6ea1b34b4.1309182743.git.ralf@linux-mips.org>
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5RFc4ke019414;
+        Mon, 27 Jun 2011 16:38:04 +0100
+Message-Id: <2ecba7369d1ac0d7b1ab08ccce65f240719f99c8.1309182743.git.ralf@linux-mips.org>
 In-Reply-To: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
 References: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Richard Purdie <rpurdie@rpsys.net>,
+To:     Brent Casavant <bcasavan@sgi.com>,
         Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Date:   Sun, 26 Jun 2011 12:30:22 +0100
-Subject: [PATCH 08/12] LED: lp5521: Fix section mismatches
-X-archive-position: 30530
+Cc:     Tejun Heo <tj@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Date:   Mon, 27 Jun 2011 14:35:01 +0100
+Subject: [PATCH 11/12] MISC: IOC4: Fix section mismatch / race condition.
+X-archive-position: 30531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,46 +28,42 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21987
+X-UID: 21988
 
-WARNING: drivers/leds/leds-lp5521.o(.text+0xf2c): Section mismatch in reference from the function lp5521_probe() to the function .init.text:lp5521_init_led()
-The function lp5521_probe() references
-the function __init lp5521_init_led().
-This is often because lp5521_probe lacks a __init
-annotation or the annotation of lp5521_init_led is wrong.
+WARNING: drivers/misc/ioc4.o(.data+0x144): Section mismatch in reference from the variable ioc4_load_modules_work to the function .devinit.text:ioc4_load_modules()
+The variable ioc4_load_modules_work references
+the function __devinit ioc4_load_modules()
+If the reference is valid then annotate the
+variable with __init* or __refdata (see linux/init.h) or name the variable:
+*driver, *_template, *_timer, *_sht, *_ops, *_probe, *_probe_one, *_console
 
-Fixing this mismatch triggers one more mismatch, fix that one as well.
+This one is potencially fatal; by the time ioc4_load_modules is invoked
+it may already have been freed.  For that reason ioc4_load_modules_work
+can't be turned to __devinitdata but also because it's referenced in
+ioc4_exit.
 
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-To: Richard Purdie <rpurdie@rpsys.net>
+To: Brent Casavant <bcasavan@sgi.com>
 To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tejun Heo <tj@kernel.org>
 Cc: linux-kernel@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 ---
- drivers/leds/leds-lp5521.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/ioc4.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/leds/leds-lp5521.c b/drivers/leds/leds-lp5521.c
-index c0cff64..cc1dc48 100644
---- a/drivers/leds/leds-lp5521.c
-+++ b/drivers/leds/leds-lp5521.c
-@@ -593,7 +593,7 @@ static void lp5521_unregister_sysfs(struct i2c_client *client)
- 				&lp5521_led_attribute_group);
+diff --git a/drivers/misc/ioc4.c b/drivers/misc/ioc4.c
+index 668d41e..df03dd3 100644
+--- a/drivers/misc/ioc4.c
++++ b/drivers/misc/ioc4.c
+@@ -270,7 +270,7 @@ ioc4_variant(struct ioc4_driver_data *idd)
+ 	return IOC4_VARIANT_PCI_RT;
  }
  
--static int __init lp5521_init_led(struct lp5521_led *led,
-+static int __devinit lp5521_init_led(struct lp5521_led *led,
- 				struct i2c_client *client,
- 				int chan, struct lp5521_platform_data *pdata)
+-static void __devinit
++static void
+ ioc4_load_modules(struct work_struct *work)
  {
-@@ -637,7 +637,7 @@ static int __init lp5521_init_led(struct lp5521_led *led,
- 	return 0;
- }
- 
--static int lp5521_probe(struct i2c_client *client,
-+static int __devinit lp5521_probe(struct i2c_client *client,
- 			const struct i2c_device_id *id)
- {
- 	struct lp5521_chip		*chip;
+ 	request_module("sgiioc4");
 -- 
 1.7.4.4

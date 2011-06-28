@@ -1,60 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2011 07:13:30 +0200 (CEST)
-Received: from shards.monkeyblade.net ([198.137.202.13]:38929 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490992Ab1F1FNX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Jun 2011 07:13:23 +0200
-Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
-        (authenticated bits=0)
-        by shards.monkeyblade.net (8.14.4/8.14.4) with ESMTP id p5S5Cvu9025953
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Mon, 27 Jun 2011 22:12:58 -0700
-Date:   Mon, 27 Jun 2011 22:12:57 -0700 (PDT)
-Message-Id: <20110627.221257.1290251511587162468.davem@davemloft.net>
-To:     ralf@linux-mips.org
-Cc:     akpm@linux-foundation.org, alan@linux.intel.com, bcasavan@sgi.com,
-        airlied@linux.ie, grundler@parisc-linux.org,
-        JBottomley@parallels.com, perex@perex.cz, rpurdie@rpsys.net,
-        klassert@mathematik.tu-chemnitz.de, tj@kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-scsi@vger.kernel.org,
-        linux-serial@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 00/12] Fix various section mismatches and build errors.
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2011 10:26:19 +0200 (CEST)
+Received: from mga09.intel.com ([134.134.136.24]:30845 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S2097159Ab1F1I0K (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Jun 2011 10:26:10 +0200
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP; 28 Jun 2011 01:26:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.65,436,1304319600"; 
+   d="scan'208";a="19149638"
+Received: from unknown (HELO bob.linux.org.uk) ([10.255.13.97])
+  by orsmga002.jf.intel.com with ESMTP; 28 Jun 2011 01:26:01 -0700
+Date:   Tue, 28 Jun 2011 09:25:40 +0100
+From:   Alan Cox <alan@linux.intel.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 10/12] SERIAL: SC26xx: Fix link error.
+Message-ID: <20110628092540.61c94bf9@bob.linux.org.uk>
+In-Reply-To: <f0b3d9a91be8dba5c45c14efebaa9c7800694f15.1309182743.git.ralf@linux-mips.org>
 References: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
-X-Mailer: Mew version 6.3 on Emacs 23.2 / Mule 6.0 (HANACHIRUSATO)
+        <f0b3d9a91be8dba5c45c14efebaa9c7800694f15.1309182743.git.ralf@linux-mips.org>
+Organization: Intel
+X-Mailer: Claws Mail 3.7.8 (GTK+ 2.22.0; x86_64-redhat-linux-gnu)
+Organisation: Intel Corporation UK Ltd, registered no. 1134945 (England),
+ Registered office Pipers Way, Swindon, SN3 1RJ
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.6 (shards.monkeyblade.net [198.137.202.13]); Mon, 27 Jun 2011 22:13:00 -0700 (PDT)
-X-archive-position: 30536
+X-archive-position: 30537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: alan@linux.intel.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 22512
+X-UID: 22636
 
+On Mon, 27 Jun 2011 14:26:56 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-See commit:
+> Kconfig allows enabling console support for the SC26xx driver even
+> when it's configured as a module resulting in a:
+> 
+> ERROR: "uart_console_device" [drivers/tty/serial/sc26xx.ko] undefined!
+> 
+> modpost error since the driver was merged in
+> eea63e0e8a60d00485b47fb6e75d9aa2566b989b [SC26XX: New serial driver
+> for SC2681 uarts] in 2.6.25.  Fixed by only allowing console support
+> to be enabled if the driver is builtin.
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-commit 948252cb9e01d65a89ecadf67be5018351eee15e
-Author: David S. Miller <davem@davemloft.net>
-Date:   Tue May 31 19:27:48 2011 -0700
-
-    Revert "net: fix section mismatches"
-    
-    This reverts commit e5cb966c0838e4da43a3b0751bdcac7fe719f7b4.
-    
-    It causes new build regressions with gcc-4.2 which is
-    pretty common on non-x86 platforms.
-    
-    Reported-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-    Signed-off-by: David S. Miller <davem@davemloft.net>
-
-and postings that led to this revert including:
-
-http://marc.info/?l=linux-netdev&m=130653748205263&w=2
+Acked-by: Alan Cox <alan@linux.intel.com>

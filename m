@@ -1,82 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Jun 2011 17:57:37 +0200 (CEST)
-Received: from relay3.sgi.com ([192.48.152.1]:55876 "EHLO relay.sgi.com"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491921Ab1F0P5a (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 27 Jun 2011 17:57:30 +0200
-Received: from pkunk.americas.sgi.com (pkunk.americas.sgi.com [128.162.232.31])
-        by relay3.corp.sgi.com (Postfix) with ESMTP id 55C0AAC006;
-        Mon, 27 Jun 2011 08:57:22 -0700 (PDT)
-Date:   Mon, 27 Jun 2011 10:57:21 -0500 (CDT)
-From:   Brent Casavant <bcasavan@sgi.com>
-Reply-To: Brent Casavant <bcasavan@sgi.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Tejun Heo <tj@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 11/12] MISC: IOC4: Fix section mismatch / race
- condition.
-In-Reply-To: <2ecba7369d1ac0d7b1ab08ccce65f240719f99c8.1309182743.git.ralf@linux-mips.org>
-Message-ID: <alpine.DEB.2.00.1106271056200.28116@pkunk.americas.sgi.com>
-References: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org> <2ecba7369d1ac0d7b1ab08ccce65f240719f99c8.1309182743.git.ralf@linux-mips.org>
-User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
-Organization: "Silicon Graphics, Inc."
-Importance: normal
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2011 02:41:12 +0200 (CEST)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:60732 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491956Ab1F1AlD convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 28 Jun 2011 02:41:03 +0200
+Received: by iyn15 with SMTP id 15so5571085iyn.36
+        for <multiple recipients>; Mon, 27 Jun 2011 17:40:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=b7deloBv6q06do+Zd75oViHSx2ai6dBhFehEMyHCJVw=;
+        b=i8tDfsONQQKqHEH6pqGDQp8u+8FtlBqd30sOXJF3JFvyliJFvToFDw3dyGPoAEM4c6
+         Px+OV58O69oUqIasJ0JtYq1si0MB3Rhc92tGxBjcIkpEpThSObYSI/WEAseW9ctIYdDv
+         dFnp6k1AYxShav6T1itMdVu/bG+HXyQ3FJduc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=f96W5RMnLBZPEeOENA3b9Gc8kRfjNnDIQVDsxAKrFj4rBu82kk1tzfCAMxhU9khTsT
+         sJDXJ8hVUOQrp4hDWn47HbqeZPJ17AYHPNW99b53SMsy1/FoozlKvUFecF480cw2XHbQ
+         GrdyLFWWif8Uro56OonyptVy+/AusrYQgNX50=
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 30533
+Received: by 10.231.141.20 with SMTP id k20mr5292343ibu.132.1309221656937;
+ Mon, 27 Jun 2011 17:40:56 -0700 (PDT)
+Received: by 10.231.34.70 with HTTP; Mon, 27 Jun 2011 17:40:56 -0700 (PDT)
+In-Reply-To: <20110627111259.GA13620@linux-mips.org>
+References: <20110627111259.GA13620@linux-mips.org>
+Date:   Tue, 28 Jun 2011 09:40:56 +0900
+Message-ID: <BANLkTikDxsOJKpiJs0NpMXbjVOFMHL7RZw@mail.gmail.com>
+Subject: Re: [PATCH v2] NET: AX88796: Tighten up Kconfig dependencies
+From:   Magnus Damm <magnus.damm@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Miao <eric.y.miao@gmail.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Ben Dooks <ben-linux@fluff.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Jeff Garzik <jeff@garzik.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-sh@vger.kernel.org, netdev@vger.kernel.org,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bcasavan@sgi.com
+X-original-sender: magnus.damm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 22008
+X-UID: 22415
 
-On Mon, 27 Jun 2011, Ralf Baechle wrote:
+Hi Ralf,
 
-> WARNING: drivers/misc/ioc4.o(.data+0x144): Section mismatch in reference from the variable ioc4_load_modules_work to the function .devinit.text:ioc4_load_modules()
-> The variable ioc4_load_modules_work references
-> the function __devinit ioc4_load_modules()
-> If the reference is valid then annotate the
-> variable with __init* or __refdata (see linux/init.h) or name the variable:
-> *driver, *_template, *_timer, *_sht, *_ops, *_probe, *_probe_one, *_console
-> 
-> This one is potencially fatal; by the time ioc4_load_modules is invoked
-> it may already have been freed.  For that reason ioc4_load_modules_work
-> can't be turned to __devinitdata but also because it's referenced in
-> ioc4_exit.
-> 
+On Mon, Jun 27, 2011 at 8:13 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> In def47c5095d53814512bb0c62ec02dfdec769db1 [[netdrvr] Fix dependencies for
+> ax88796 ne2k clone driver] the AX88796 driver got restricted to just be
+> build for ARM and MIPS on the sole merrit that it was written for some ARM
+> sytems and the driver had the misfortune to just build on MIPS, so MIPS was
+> throw into the dependency for a good measure.  Later
+> 8687991a734a67f1638782c968f46fff0f94bb1f [ax88796: add superh to kconfig
+> dependencies] added SH but only one in-tree SH system actually has an
+> AX88796.
+>
+> Tighten up dependencies by using an auxilliary config sysmbol
+> HAS_NET_AX88796 which is selected only by the platforms that actually
+> have or may have an AX88796.  This also means the driver won't be built
+> anymore for any MIPS platform.
+>
 > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> To: Brent Casavant <bcasavan@sgi.com>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Tejun Heo <tj@kernel.org>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mips@linux-mips.org
 > ---
->  drivers/misc/ioc4.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/misc/ioc4.c b/drivers/misc/ioc4.c
-> index 668d41e..df03dd3 100644
-> --- a/drivers/misc/ioc4.c
-> +++ b/drivers/misc/ioc4.c
-> @@ -270,7 +270,7 @@ ioc4_variant(struct ioc4_driver_data *idd)
->  	return IOC4_VARIANT_PCI_RT;
->  }
->  
-> -static void __devinit
-> +static void
->  ioc4_load_modules(struct work_struct *work)
->  {
->  	request_module("sgiioc4");
-> -- 
-> 1.7.4.4
-> 
+> v2: fixed Sergei's complaints about the log message
 
-Acked-by: Brent Casavant <bcasavan@sgi.com>
+I'm the one who added the SuperH bits a few years ago. Judging by the
+text above it seems like you prefer not to build this driver for MIPS.
+Which is totally fine with me.
 
--- 
-Brent Casavant
-Silicon Graphics International
+As for SH and SH-Mobile ARM, unless explicitly requested we usually
+don't restrict our platform drivers. Allowing them to build on any
+system helps to catch compile errors. It also makes it possible to add
+board support by simply adding platform data to the board file and
+then updating the kconfig. Keeping the amount of code at the bare
+minimum makes back porting rather easy too.
+
+I'm not sure if the ax88796 driver does something non-standard to
+require special symbols, but usually platform drivers are rather clean
+and can be compiled for any architecture or platform. At least in
+theory. =)
+
+Cheers,
+
+/ magnus

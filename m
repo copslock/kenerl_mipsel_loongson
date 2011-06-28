@@ -1,97 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2011 02:41:12 +0200 (CEST)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:60732 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491956Ab1F1AlD convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 28 Jun 2011 02:41:03 +0200
-Received: by iyn15 with SMTP id 15so5571085iyn.36
-        for <multiple recipients>; Mon, 27 Jun 2011 17:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:in-reply-to:references:date
-         :message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=b7deloBv6q06do+Zd75oViHSx2ai6dBhFehEMyHCJVw=;
-        b=i8tDfsONQQKqHEH6pqGDQp8u+8FtlBqd30sOXJF3JFvyliJFvToFDw3dyGPoAEM4c6
-         Px+OV58O69oUqIasJ0JtYq1si0MB3Rhc92tGxBjcIkpEpThSObYSI/WEAseW9ctIYdDv
-         dFnp6k1AYxShav6T1itMdVu/bG+HXyQ3FJduc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=f96W5RMnLBZPEeOENA3b9Gc8kRfjNnDIQVDsxAKrFj4rBu82kk1tzfCAMxhU9khTsT
-         sJDXJ8hVUOQrp4hDWn47HbqeZPJ17AYHPNW99b53SMsy1/FoozlKvUFecF480cw2XHbQ
-         GrdyLFWWif8Uro56OonyptVy+/AusrYQgNX50=
-MIME-Version: 1.0
-Received: by 10.231.141.20 with SMTP id k20mr5292343ibu.132.1309221656937;
- Mon, 27 Jun 2011 17:40:56 -0700 (PDT)
-Received: by 10.231.34.70 with HTTP; Mon, 27 Jun 2011 17:40:56 -0700 (PDT)
-In-Reply-To: <20110627111259.GA13620@linux-mips.org>
-References: <20110627111259.GA13620@linux-mips.org>
-Date:   Tue, 28 Jun 2011 09:40:56 +0900
-Message-ID: <BANLkTikDxsOJKpiJs0NpMXbjVOFMHL7RZw@mail.gmail.com>
-Subject: Re: [PATCH v2] NET: AX88796: Tighten up Kconfig dependencies
-From:   Magnus Damm <magnus.damm@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Ben Dooks <ben-linux@fluff.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Jeff Garzik <jeff@garzik.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Jun 2011 03:40:52 +0200 (CEST)
+Received: from shards.monkeyblade.net ([198.137.202.13]:36880 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491956Ab1F1Bkm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 28 Jun 2011 03:40:42 +0200
+Received: from localhost (74-93-104-98-Washington.hfc.comcastbusiness.net [74.93.104.98])
+        (authenticated bits=0)
+        by shards.monkeyblade.net (8.14.4/8.14.4) with ESMTP id p5S1crxG006899
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Mon, 27 Jun 2011 18:38:56 -0700
+Date:   Mon, 27 Jun 2011 18:38:44 -0700 (PDT)
+Message-Id: <20110627.183844.146129637361136342.davem@davemloft.net>
+To:     magnus.damm@gmail.com
+Cc:     ralf@linux-mips.org, eric.y.miao@gmail.com, linux@arm.linux.org.uk,
+        ben-linux@fluff.org, lethal@linux-sh.org, jeff@garzik.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-sh@vger.kernel.org, netdev@vger.kernel.org,
         linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30534
+Subject: Re: [PATCH v2] NET: AX88796: Tighten up Kconfig dependencies
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <BANLkTikDxsOJKpiJs0NpMXbjVOFMHL7RZw@mail.gmail.com>
+References: <20110627111259.GA13620@linux-mips.org>
+        <BANLkTikDxsOJKpiJs0NpMXbjVOFMHL7RZw@mail.gmail.com>
+X-Mailer: Mew version 6.3 on Emacs 23.2 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.6 (shards.monkeyblade.net [198.137.202.13]); Mon, 27 Jun 2011 18:38:58 -0700 (PDT)
+X-archive-position: 30535
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: magnus.damm@gmail.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 22415
+X-UID: 22442
 
-Hi Ralf,
+From: Magnus Damm <magnus.damm@gmail.com>
+Date: Tue, 28 Jun 2011 09:40:56 +0900
 
-On Mon, Jun 27, 2011 at 8:13 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> In def47c5095d53814512bb0c62ec02dfdec769db1 [[netdrvr] Fix dependencies for
-> ax88796 ne2k clone driver] the AX88796 driver got restricted to just be
-> build for ARM and MIPS on the sole merrit that it was written for some ARM
-> sytems and the driver had the misfortune to just build on MIPS, so MIPS was
-> throw into the dependency for a good measure.  Later
-> 8687991a734a67f1638782c968f46fff0f94bb1f [ax88796: add superh to kconfig
-> dependencies] added SH but only one in-tree SH system actually has an
-> AX88796.
->
-> Tighten up dependencies by using an auxilliary config sysmbol
-> HAS_NET_AX88796 which is selected only by the platforms that actually
-> have or may have an AX88796.  This also means the driver won't be built
-> anymore for any MIPS platform.
->
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> ---
-> v2: fixed Sergei's complaints about the log message
+> As for SH and SH-Mobile ARM, unless explicitly requested we usually
+> don't restrict our platform drivers. Allowing them to build on any
+> system helps to catch compile errors.
 
-I'm the one who added the SuperH bits a few years ago. Judging by the
-text above it seems like you prefer not to build this driver for MIPS.
-Which is totally fine with me.
+I totally agree with Magnus, drivers should build on as many systems
+as possible.  Even on those for which the hardware never appears.
 
-As for SH and SH-Mobile ARM, unless explicitly requested we usually
-don't restrict our platform drivers. Allowing them to build on any
-system helps to catch compile errors. It also makes it possible to add
-board support by simply adding platform data to the board file and
-then updating the kconfig. Keeping the amount of code at the bare
-minimum makes back porting rather easy too.
-
-I'm not sure if the ax88796 driver does something non-standard to
-require special symbols, but usually platform drivers are rather clean
-and can be compiled for any architecture or platform. At least in
-theory. =)
-
-Cheers,
-
-/ magnus
+Ralf, unless these drivers have unfixable build errors on MIPS I
+do not want to add the new restrictions.

@@ -1,72 +1,132 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jun 2011 19:24:53 +0200 (CEST)
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42052 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491139Ab1F2RYq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Jun 2011 19:24:46 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2011 00:12:18 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:36802 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491146Ab1F2WML (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Jun 2011 00:12:11 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 454518EE094;
-        Wed, 29 Jun 2011 10:24:40 -0700 (PDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id fSz0A2jakJte; Wed, 29 Jun 2011 10:24:40 -0700 (PDT)
-Received: from [192.168.2.107] (dagonet.hansenpartnership.com [76.243.235.53])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id B02D98EE065;
-        Wed, 29 Jun 2011 10:24:38 -0700 (PDT)
-Subject: Re: [PATCH 00/12] Fix various section mismatches and build errors.
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Greg KH <greg@kroah.com>, David Miller <davem@davemloft.net>,
-        akpm@linux-foundation.org, alan@linux.intel.com, bcasavan@sgi.com,
-        airlied@linux.ie, grundler@parisc-linux.org, perex@perex.cz,
-        rpurdie@rpsys.net, klassert@mathematik.tu-chemnitz.de,
-        tj@kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-        netdev@vger.kernel.org
-In-Reply-To: <20110629161921.GA25833@linux-mips.org>
-References: <17dd5038b15d7135791aadbe80464a13c80758d3.1309182742.git.ralf@linux-mips.org>
-         <20110627.221257.1290251511587162468.davem@davemloft.net>
-         <20110629130711.GA15649@linux-mips.org> <1309355899.2551.4.camel@mulgrave>
-         <20110629151424.GD18023@kroah.com>  <20110629161921.GA25833@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Wed, 29 Jun 2011 12:24:36 -0500
-Message-ID: <1309368276.13937.2.camel@mulgrave>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.2 (2.32.2-1.fc14) 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 30542
+        by hauke-m.de (Postfix) with ESMTP id E64DC8BD8;
+        Thu, 30 Jun 2011 00:12:09 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id PCdExv-ST0c3; Thu, 30 Jun 2011 00:12:06 +0200 (CEST)
+Received: from localhost.localdomain (host-091-097-251-103.ewe-ip-backbone.de [91.97.251.103])
+        by hauke-m.de (Postfix) with ESMTPSA id 6D4D48BCA;
+        Thu, 30 Jun 2011 00:12:05 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     linux-wireless@vger.kernel.org, zajec5@gmail.com,
+        linux-mips@linux-mips.org
+Cc:     mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
+        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
+        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [RFC v3 00/13] bcma: add support for embedded devices like bcm4716
+Date:   Thu, 30 Jun 2011 00:11:45 +0200
+Message-Id: <1309385518-12097-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.4.1
+X-archive-position: 30543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Bottomley@HansenPartnership.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 24144
+X-UID: 24407
 
-On Wed, 2011-06-29 at 17:19 +0100, Ralf Baechle wrote:
-> On Wed, Jun 29, 2011 at 08:14:24AM -0700, Greg KH wrote:
-> 
-> > 
-> > On Wed, Jun 29, 2011 at 08:58:19AM -0500, James Bottomley wrote:
-> > > I think we should simply concentrate on __init and __exit; that's where
-> > > most of the discard value lies and stop expending huge efforts on the
-> > > __devX stuff which adds huge complexity for no real gain.
-> > 
-> > I have long felt that those __devX markings should just go away as they
-> > cause nothing but problems and have no real gain as you point out.
-> 
-> The suggestion to do that has been floated around before but seems to
-> have missed sufficient thrust.  I'm all for it; the manual tagging with
-> __devX has not been very efficient on developer time.  I just want to see
-> meaningful warnings again over all that noise the current mechanisn may
-> produce.
+This patch series adds support for embedded devices like bcm47xx to 
+bcma. Bcma is used on bcm4716 and bcm4718 SoCs. With these patches my 
+bcm4716 device boots up till it tries to access the flash, because the 
+serial flash chip is unsupported for now, this will be my next task. 
+This adds support for MIPS cores, interrupt configuration and the 
+serial console.
 
-For me, just go ahead and fix the actual problems: so _init sections and
-_exit sections that are used from the main body, just strip the
-annotations, don't try to change them for _devX ones.
+This patch series adds support for embedded devices like bcm47xx to 
+bcma. Bcma is used on bcm4716 and bcm4718 SoCs. With these patches my 
+bcm4716 device boots up till it tries to access the flash, because the 
+serial flash chip is unsupported for now, this will be my next task. 
+This adds support for MIPS cores, interrupt configuration and the 
+serial console.
 
-Thanks,
+The ifdef and switch case statements in the bcm47xx code do not look 
+good got me, but I do not know how to do it in an other way. Does 
+someone have a idea how to do it in a better way?
+Everything in bcma looks good to me and this should be the last RFC 
+patch. With the bcm47xx code I have the problem mentioned above, but if 
+no one has a better idea this also works.
+The pci(e) host code is not implemented, it is just done that far as it
+does not do client mode initialization on hostmode devices, which will
+break on an controller in host mode.
+These patches are not containing all functions needed to get the SoC to 
+fully work and support every feature, but it is a good start.
+These patches are now integrated in OpenWrt for everyone how wants to
+test them.
 
-James
+v3:
+ * make bcm47xx built either with bcma, ssb or both and use mips MIPS 74K optimizations if possible
+ * add block io support
+ * some minor fixes for code and doku
+v2:
+ * use list and no arry to store cores
+ * rename bcma_host_bcma_ to bcma_host_soc_
+ * use core->io_addr and core->io_wrap to access cores
+ * checkpatch fixes
+ * some minor fixes
+
+Hauke Mehrtens (13):
+  bcma: move parsing of EEPROM into own function.
+  bcma: move initializing of struct bcma_bus to own function.
+  bcma: add functions to scan cores needed on SoCs
+  bcma: add SOC bus
+  bcma: add mips driver
+  bcma: add serial console support
+  bcma: get CPU clock
+  bcma: add pci(e) host mode
+  bcma: add check if sprom is available before accessing it.
+  bcm47xx: prepare to support different buses
+  bcm47xx: make it possible to build bcm47xx without ssb.
+  bcm47xx: add support for bcma bus
+  bcm47xx: fix irq assignment for new SoCs.
+
+ arch/mips/Kconfig                            |    8 +-
+ arch/mips/bcm47xx/Kconfig                    |   31 +++
+ arch/mips/bcm47xx/Makefile                   |    3 +-
+ arch/mips/bcm47xx/gpio.c                     |   82 +++++--
+ arch/mips/bcm47xx/irq.c                      |   12 +
+ arch/mips/bcm47xx/nvram.c                    |   29 ++-
+ arch/mips/bcm47xx/serial.c                   |   46 ++++-
+ arch/mips/bcm47xx/setup.c                    |   90 +++++++-
+ arch/mips/bcm47xx/time.c                     |   16 +-
+ arch/mips/bcm47xx/wgt634u.c                  |   13 +-
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |   26 ++-
+ arch/mips/include/asm/mach-bcm47xx/gpio.h    |  108 +++++++--
+ arch/mips/pci/pci-bcm47xx.c                  |    6 +
+ drivers/bcma/Kconfig                         |   20 ++
+ drivers/bcma/Makefile                        |    3 +
+ drivers/bcma/bcma_private.h                  |   22 ++
+ drivers/bcma/driver_chipcommon.c             |   69 ++++++
+ drivers/bcma/driver_chipcommon_pmu.c         |   87 +++++++
+ drivers/bcma/driver_mips.c                   |  254 +++++++++++++++++++
+ drivers/bcma/driver_pci.c                    |   17 ++-
+ drivers/bcma/driver_pci_host.c               |   43 ++++
+ drivers/bcma/host_soc.c                      |  178 ++++++++++++++
+ drivers/bcma/main.c                          |   69 ++++++-
+ drivers/bcma/scan.c                          |  336 +++++++++++++++++---------
+ drivers/bcma/sprom.c                         |    3 +
+ drivers/watchdog/bcm47xx_wdt.c               |   27 ++-
+ include/linux/bcma/bcma.h                    |    7 +
+ include/linux/bcma/bcma_driver_chipcommon.h  |   36 +++
+ include/linux/bcma/bcma_driver_mips.h        |   61 +++++
+ include/linux/bcma/bcma_driver_pci.h         |    1 +
+ include/linux/bcma/bcma_soc.h                |   16 ++
+ 31 files changed, 1538 insertions(+), 181 deletions(-)
+ create mode 100644 arch/mips/bcm47xx/Kconfig
+ create mode 100644 drivers/bcma/driver_mips.c
+ create mode 100644 drivers/bcma/driver_pci_host.c
+ create mode 100644 drivers/bcma/host_soc.c
+ create mode 100644 include/linux/bcma/bcma_driver_mips.h
+ create mode 100644 include/linux/bcma/bcma_soc.h
+
+-- 
+1.7.4.1

@@ -1,76 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2011 14:43:49 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:59127 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491023Ab1F3Mnp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 30 Jun 2011 14:43:45 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p5UChYLr010341;
-        Thu, 30 Jun 2011 13:43:34 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p5UChXJE010331;
-        Thu, 30 Jun 2011 13:43:33 +0100
-Date:   Thu, 30 Jun 2011 13:43:33 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        florian@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jun 2011 14:54:44 +0200 (CEST)
+Received: from moutng.kundenserver.de ([212.227.17.9]:56583 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491054Ab1F3Myl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 30 Jun 2011 14:54:41 +0200
+Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
+        by mrelayeu.kundenserver.de (node=mrbap0) with ESMTP (Nemesis)
+        id 0M0KvV-1RQ7YO0bXx-00uw06; Thu, 30 Jun 2011 14:54:21 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: SB16 build error.
+Date:   Thu, 30 Jun 2011 14:54:16 +0200
+User-Agent: KMail/1.12.2 (Linux/2.6.31-22-generic; KDE/4.3.2; x86_64; ; )
+Cc:     Takashi Iwai <tiwai@suse.de>, Jaroslav Kysela <perex@perex.cz>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, florian@linux-mips.org,
+        Florian Fainelli <florian@openwrt.org>,
         linux-arch@vger.kernel.org, Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
         "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: Re: SB16 build error.
-Message-ID: <20110630124333.GA9727@linux-mips.org>
-References: <20110630091754.GA12119@linux-mips.org>
- <s5h8vsjy68z.wl%tiwai@suse.de>
- <20110630105254.GA25732@linux-mips.org>
- <s5h39iry3xp.wl%tiwai@suse.de>
- <s5hy60jwocc.wl%tiwai@suse.de>
- <20110630123212.GA6690@linux-mips.org>
- <s5hoc1fwl37.wl%tiwai@suse.de>
+References: <20110630091754.GA12119@linux-mips.org> <s5hy60jwocc.wl%tiwai@suse.de> <20110630123212.GA6690@linux-mips.org>
+In-Reply-To: <20110630123212.GA6690@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <s5hoc1fwl37.wl%tiwai@suse.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30568
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201106301454.16530.arnd@arndb.de>
+X-Provags-ID: V02:K0:ipnQQbgI2nL1V72pn4sQ2+HB7Yl3zcv6bH8CXOn4aGZ
+ ekvvO+TYBqFFhvMrCtVjXqvASmubmcmkPj05J7stHqQU7rBE97
+ 0a5u24Q633WwhfwVwDTVDV8DdZN3KzlmJkS8iVFrqtbmK5O0WC
+ hL8wo/vxCEZeOPPoHuVPEySUoPJDZ3LxCuxeN34f3EKn307feq
+ 28orNv/BxY2SxeXpAyMYw==
+X-archive-position: 30569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 24900
+X-UID: 24909
 
-On Thu, Jun 30, 2011 at 02:38:20PM +0200, Takashi Iwai wrote:
+On Thursday 30 June 2011, Ralf Baechle wrote:
+> #define SNDRV_SB_CSP_IOCTL_LOAD_CODE                            \
+>         _IOC(_IOC_WRITE,'H', 0x11, sizeof(struct snd_sb_csp_microcode))
+> 
+> error checking can be bypassed and all will be fine as long as the
+> resulting value doesn't result in in a a duplicate case value - which it
+> doesn't, at least not in my testing.
+> 
+> Should work but isn't nice.
 
-> > In userland an empty definition will be used for _IOC_TYPECHECK so there
-> > won't be an error.  So userland already is already using the existing
-> > value for SNDRV_SB_CSP_IOCTL_LOAD_CODE ...
-> 
-> Right.  It has an invalid direction (3), but apps won't care such
-> details anyway.
-> 
-> > With a crude hack like
-> > 
-> > #define SNDRV_SB_CSP_IOCTL_LOAD_CODE				\
-> > 	_IOC(_IOC_WRITE,'H', 0x11, sizeof(struct snd_sb_csp_microcode))
-> > 
-> > error checking can be bypassed and all will be fine as long as the
-> > resulting value doesn't result in in a a duplicate case value - which it
-> > doesn't, at least not in my testing.
-> > 
-> > Should work but isn't nice.
-> 
-> Indeed.  But which is uglier is hard to answer :)
-> 
-> If you are fine with the hacked ioctl number above, I can put it
-> with some comments.  This won't break anything, at least.
+Right. It's probably the best we can do. I think we added a few similar
+definitions when we originally introduce _IOC_TYPECHECK. The idea was
+never to break existing code, but rather to avoid merging new drivers that
+use inconsistent ioctl command numbers.
 
-Go ahead then and yes, this really deserves a comment.
-
-  Ralf
+	Arnd

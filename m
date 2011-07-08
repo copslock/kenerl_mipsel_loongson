@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2011 11:19:27 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:35603 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Jul 2011 11:19:59 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:47219 "EHLO
         mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491763Ab1GHJSx (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491770Ab1GHJSx (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 8 Jul 2011 11:18:53 +0200
-Received: by mail-fx0-f49.google.com with SMTP id 20so1399533fxd.36
-        for <multiple recipients>; Fri, 08 Jul 2011 02:18:53 -0700 (PDT)
+Received: by fxd20 with SMTP id 20so1399553fxd.36
+        for <multiple recipients>; Fri, 08 Jul 2011 02:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=ZYDblBIKgE+tpt/FjZn4CzFMPJrN5k1wXvTYeDJHEnU=;
-        b=QudWau+Go/5xfWbjp6n0UG2iAvuYPm2+GGklyPneKc3kPQkqgQ1Ag6S5vivf5Kizoz
-         54hSa32Zmyos5sdP/PJ1vow35xZVNXmiDZ/qmNku6Um/74IgEv68YrFgWsWD7Mq0eLav
-         lvWb3j8njXbs8md0sIMHz7kyRSgSE4Cp9aWCQ=
-Received: by 10.223.13.10 with SMTP id z10mr2748280faz.69.1310116732996;
-        Fri, 08 Jul 2011 02:18:52 -0700 (PDT)
+        bh=jkZI6uhT+SrJBDu5XkvuEJ+x45me2bTqVB9bMFqUB4E=;
+        b=MibiUWpw5noqzp9Wn6Rz1nU7YKTMB7u54+bECq4AWVaeu4P6DXW8NuDsmQRVUaX02m
+         Xujms42VnuE6um80zn+pRPFy7/F++N1893R4yrIgd2UN0YxOmt9SyN1t/xKhJyZAE7Ho
+         V26nrr+S7x/g9p1HRf7V0zCLXoE0XvshVxhvQ=
+Received: by 10.223.9.217 with SMTP id m25mr2694336fam.122.1310116728320;
+        Fri, 08 Jul 2011 02:18:48 -0700 (PDT)
 Received: from localhost.localdomain (188-22-147-55.adsl.highway.telekom.at [188.22.147.55])
-        by mx.google.com with ESMTPS id k26sm7260413fak.24.2011.07.08.02.18.51
+        by mx.google.com with ESMTPS id k26sm7260413fak.24.2011.07.08.02.18.46
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 08 Jul 2011 02:18:52 -0700 (PDT)
+        Fri, 08 Jul 2011 02:18:47 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH 4/5] MIPS: Alchemy: rewrite USB platform setup.
-Date:   Fri,  8 Jul 2011 11:18:42 +0200
-Message-Id: <1310116723-8632-5-git-send-email-manuel.lauss@googlemail.com>
+Subject: [PATCH 1/5] net: au1000_eth: pass MACDMA address through platform resource info.
+Date:   Fri,  8 Jul 2011 11:18:39 +0200
+Message-Id: <1310116723-8632-2-git-send-email-manuel.lauss@googlemail.com>
 X-Mailer: git-send-email 1.7.6
 In-Reply-To: <1310116723-8632-1-git-send-email-manuel.lauss@googlemail.com>
 References: <1310116723-8632-1-git-send-email-manuel.lauss@googlemail.com>
-X-archive-position: 30588
+X-archive-position: 30589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,314 +37,233 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 5979
+X-UID: 5980
 
-Use runtime CPU detection to setup all USB parts.
-Remove the Au1200 OTG and UDC platform devices since there are no
-drivers for them anyway.
-Clean up the USB address mess in the au1000 header.
+This patch removes the last hardcoded base address from the au1000_eth
+driver.  The base address of the MACDMA unit was derived from the
+platform device id; if someone registered the MACs in inverse order
+both would not work.
+So instead pass the base address of the DMA unit to the driver with
+the other platform resource information.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+Acked-by: David S. Miller <davem@davemloft.net>
 ---
- arch/mips/alchemy/common/platform.c        |  183 +++++++++++----------------
- arch/mips/include/asm/mach-au1x00/au1000.h |   55 ---------
- 2 files changed, 75 insertions(+), 163 deletions(-)
+ arch/mips/alchemy/common/platform.c |   30 +++++++++++++++------
+ drivers/net/au1000_eth.c            |   48 ++++++++++++++++++++++++++--------
+ drivers/net/au1000_eth.h            |    2 +-
+ 3 files changed, 58 insertions(+), 22 deletions(-)
 
 diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index 7400c93..e92a464 100644
+index 3b2c18b..7400c93 100644
 --- a/arch/mips/alchemy/common/platform.c
 +++ b/arch/mips/alchemy/common/platform.c
-@@ -111,34 +111,84 @@ static void __init alchemy_setup_uarts(int ctype)
- 		printk(KERN_INFO "Alchemy: failed to register UARTs\n");
- }
+@@ -373,8 +373,8 @@ static struct platform_device pbdb_smbus_device = {
+ #endif
  
--/* OHCI (USB full speed host controller) */
--static struct resource au1xxx_usb_ohci_resources[] = {
--	[0] = {
--		.start		= USB_OHCI_BASE,
--		.end		= USB_OHCI_BASE + USB_OHCI_LEN - 1,
--		.flags		= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start		= FOR_PLATFORM_C_USB_HOST_INT,
--		.end		= FOR_PLATFORM_C_USB_HOST_INT,
--		.flags		= IORESOURCE_IRQ,
--	},
--};
+ /* Macro to help defining the Ethernet MAC resources */
+-#define MAC_RES_COUNT	3	/* MAC regs base, MAC enable reg, MAC INT */
+-#define MAC_RES(_base, _enable, _irq)			\
++#define MAC_RES_COUNT	4	/* MAC regs, MAC en, MAC INT, MACDMA regs */
++#define MAC_RES(_base, _enable, _irq, _macdma)		\
+ 	{						\
+ 		.start	= _base,			\
+ 		.end	= _base + 0xffff,		\
+@@ -389,28 +389,37 @@ static struct platform_device pbdb_smbus_device = {
+ 		.start	= _irq,				\
+ 		.end	= _irq,				\
+ 		.flags	= IORESOURCE_IRQ		\
++	},						\
++	{						\
++		.start	= _macdma,			\
++		.end	= _macdma + 0x1ff,		\
++		.flags	= IORESOURCE_MEM,		\
+ 	}
  
--/* The dmamask must be set for OHCI to work */
--static u64 ohci_dmamask = DMA_BIT_MASK(32);
-+/* The dmamask must be set for OHCI/EHCI to work */
-+static u64 alchemy_ohci_dmamask = DMA_BIT_MASK(32);
-+static u64 __maybe_unused alchemy_ehci_dmamask = DMA_BIT_MASK(32);
- 
--static struct platform_device au1xxx_usb_ohci_device = {
--	.name		= "au1xxx-ohci",
--	.id		= 0,
--	.dev = {
--		.dma_mask		= &ohci_dmamask,
--		.coherent_dma_mask	= DMA_BIT_MASK(32),
--	},
--	.num_resources	= ARRAY_SIZE(au1xxx_usb_ohci_resources),
--	.resource	= au1xxx_usb_ohci_resources,
-+static unsigned long alchemy_ohci_data[][2] __initdata = {
-+	[ALCHEMY_CPU_AU1000] = { AU1000_USB_OHCI_PHYS_ADDR, AU1000_USB_HOST_INT },
-+	[ALCHEMY_CPU_AU1500] = { AU1000_USB_OHCI_PHYS_ADDR, AU1500_USB_HOST_INT },
-+	[ALCHEMY_CPU_AU1100] = { AU1000_USB_OHCI_PHYS_ADDR, AU1100_USB_HOST_INT },
-+	[ALCHEMY_CPU_AU1550] = { AU1550_USB_OHCI_PHYS_ADDR, AU1550_USB_HOST_INT },
-+	[ALCHEMY_CPU_AU1200] = { AU1200_USB_OHCI_PHYS_ADDR, AU1200_USB_INT },
-+};
-+
-+static unsigned long alchemy_ehci_data[][2] __initdata = {
-+	[ALCHEMY_CPU_AU1200] = { AU1200_USB_EHCI_PHYS_ADDR, AU1200_USB_INT },
+ static struct resource au1xxx_eth0_resources[][MAC_RES_COUNT] __initdata = {
+ 	[ALCHEMY_CPU_AU1000] = {
+ 		MAC_RES(AU1000_MAC0_PHYS_ADDR,
+ 			AU1000_MACEN_PHYS_ADDR,
+-			AU1000_MAC0_DMA_INT)
++			AU1000_MAC0_DMA_INT,
++			AU1000_MACDMA0_PHYS_ADDR)
+ 	},
+ 	[ALCHEMY_CPU_AU1500] = {
+ 		MAC_RES(AU1500_MAC0_PHYS_ADDR,
+ 			AU1500_MACEN_PHYS_ADDR,
+-			AU1500_MAC0_DMA_INT)
++			AU1500_MAC0_DMA_INT,
++			AU1000_MACDMA0_PHYS_ADDR)
+ 	},
+ 	[ALCHEMY_CPU_AU1100] = {
+ 		MAC_RES(AU1000_MAC0_PHYS_ADDR,
+ 			AU1000_MACEN_PHYS_ADDR,
+-			AU1100_MAC0_DMA_INT)
++			AU1100_MAC0_DMA_INT,
++			AU1000_MACDMA0_PHYS_ADDR)
+ 	},
+ 	[ALCHEMY_CPU_AU1550] = {
+ 		MAC_RES(AU1000_MAC0_PHYS_ADDR,
+ 			AU1000_MACEN_PHYS_ADDR,
+-			AU1550_MAC0_DMA_INT)
++			AU1550_MAC0_DMA_INT,
++			AU1000_MACDMA0_PHYS_ADDR)
+ 	},
  };
  
-+static int __init _new_usbres(struct resource **r, struct platform_device **d)
-+{
-+	*r = kzalloc(sizeof(struct resource) * 2, GFP_KERNEL);
-+	if (!*r)
-+		return -ENOMEM;
-+	*d = kzalloc(sizeof(struct platform_device), GFP_KERNEL);
-+	if (!*d) {
-+		kfree(*r);
-+		return -ENOMEM;
-+	}
-+
-+	(*d)->dev.coherent_dma_mask = DMA_BIT_MASK(32);
-+	(*d)->num_resources = 2;
-+	(*d)->resource = *r;
-+
-+	return 0;
-+}
-+
-+static void __init alchemy_setup_usb(int ctype)
-+{
-+	struct resource *res;
-+	struct platform_device *pdev;
-+
-+	/* setup OHCI0.  Every variant has one */
-+	if (_new_usbres(&res, &pdev))
-+		return;
-+
-+	res[0].start = alchemy_ohci_data[ctype][0];
-+	res[0].end = res[0].start + 0x100 - 1;
-+	res[0].flags = IORESOURCE_MEM;
-+	res[1].start = alchemy_ohci_data[ctype][1];
-+	res[1].end = res[1].start;
-+	res[1].flags = IORESOURCE_IRQ;
-+	pdev->name = "au1xxx-ohci";
-+	pdev->id = 0;
-+	pdev->dev.dma_mask = &alchemy_ohci_dmamask;
-+
-+	if (platform_device_register(pdev))
-+		printk(KERN_INFO "Alchemy USB: cannot add OHCI0\n");
-+
-+
-+	/* setup EHCI0: Au1200 */
-+	if (ctype == ALCHEMY_CPU_AU1200) {
-+		if (_new_usbres(&res, &pdev))
-+			return;
-+
-+		res[0].start = alchemy_ehci_data[ctype][0];
-+		res[0].end = res[0].start + 0x100 - 1;
-+		res[0].flags = IORESOURCE_MEM;
-+		res[1].start = alchemy_ehci_data[ctype][1];
-+		res[1].end = res[1].start;
-+		res[1].flags = IORESOURCE_IRQ;
-+		pdev->name = "au1xxx-ehci";
-+		pdev->id = 0;
-+		pdev->dev.dma_mask = &alchemy_ehci_dmamask;
-+
-+		if (platform_device_register(pdev))
-+			printk(KERN_INFO "Alchemy USB: cannot add EHCI0\n");
-+	}
-+}
-+
- /*** AU1100 LCD controller ***/
+@@ -429,17 +438,20 @@ static struct resource au1xxx_eth1_resources[][MAC_RES_COUNT] __initdata = {
+ 	[ALCHEMY_CPU_AU1000] = {
+ 		MAC_RES(AU1000_MAC1_PHYS_ADDR,
+ 			AU1000_MACEN_PHYS_ADDR + 4,
+-			AU1000_MAC1_DMA_INT)
++			AU1000_MAC1_DMA_INT,
++			AU1000_MACDMA1_PHYS_ADDR)
+ 	},
+ 	[ALCHEMY_CPU_AU1500] = {
+ 		MAC_RES(AU1500_MAC1_PHYS_ADDR,
+ 			AU1500_MACEN_PHYS_ADDR + 4,
+-			AU1500_MAC1_DMA_INT)
++			AU1500_MAC1_DMA_INT,
++			AU1000_MACDMA1_PHYS_ADDR)
+ 	},
+ 	[ALCHEMY_CPU_AU1550] = {
+ 		MAC_RES(AU1000_MAC1_PHYS_ADDR,
+ 			AU1000_MACEN_PHYS_ADDR + 4,
+-			AU1550_MAC1_DMA_INT)
++			AU1550_MAC1_DMA_INT,
++			AU1000_MACDMA1_PHYS_ADDR)
+ 	},
+ };
  
- #ifdef CONFIG_FB_AU1100
-@@ -170,86 +220,6 @@ static struct platform_device au1100_lcd_device = {
- #endif
+diff --git a/drivers/net/au1000_eth.c b/drivers/net/au1000_eth.c
+index b9debcf..520f7d3 100644
+--- a/drivers/net/au1000_eth.c
++++ b/drivers/net/au1000_eth.c
+@@ -541,19 +541,17 @@ static void au1000_reset_mac(struct net_device *dev)
+  * these are not descriptors sitting in memory.
+  */
+ static void
+-au1000_setup_hw_rings(struct au1000_private *aup, u32 rx_base, u32 tx_base)
++au1000_setup_hw_rings(struct au1000_private *aup, u32 *tx_base)
+ {
+ 	int i;
  
- #ifdef CONFIG_SOC_AU1200
--/* EHCI (USB high speed host controller) */
--static struct resource au1xxx_usb_ehci_resources[] = {
--	[0] = {
--		.start		= USB_EHCI_BASE,
--		.end		= USB_EHCI_BASE + USB_EHCI_LEN - 1,
--		.flags		= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start		= AU1200_USB_INT,
--		.end		= AU1200_USB_INT,
--		.flags		= IORESOURCE_IRQ,
--	},
--};
--
--static u64 ehci_dmamask = DMA_BIT_MASK(32);
--
--static struct platform_device au1xxx_usb_ehci_device = {
--	.name		= "au1xxx-ehci",
--	.id		= 0,
--	.dev = {
--		.dma_mask		= &ehci_dmamask,
--		.coherent_dma_mask	= DMA_BIT_MASK(32),
--	},
--	.num_resources	= ARRAY_SIZE(au1xxx_usb_ehci_resources),
--	.resource	= au1xxx_usb_ehci_resources,
--};
--
--/* Au1200 UDC (USB gadget controller) */
--static struct resource au1xxx_usb_gdt_resources[] = {
--	[0] = {
--		.start		= USB_UDC_BASE,
--		.end		= USB_UDC_BASE + USB_UDC_LEN - 1,
--		.flags		= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start		= AU1200_USB_INT,
--		.end		= AU1200_USB_INT,
--		.flags		= IORESOURCE_IRQ,
--	},
--};
--
--static u64 udc_dmamask = DMA_BIT_MASK(32);
--
--static struct platform_device au1xxx_usb_gdt_device = {
--	.name		= "au1xxx-udc",
--	.id		= 0,
--	.dev = {
--		.dma_mask		= &udc_dmamask,
--		.coherent_dma_mask	= DMA_BIT_MASK(32),
--	},
--	.num_resources	= ARRAY_SIZE(au1xxx_usb_gdt_resources),
--	.resource	= au1xxx_usb_gdt_resources,
--};
--
--/* Au1200 UOC (USB OTG controller) */
--static struct resource au1xxx_usb_otg_resources[] = {
--	[0] = {
--		.start		= USB_UOC_BASE,
--		.end		= USB_UOC_BASE + USB_UOC_LEN - 1,
--		.flags		= IORESOURCE_MEM,
--	},
--	[1] = {
--		.start		= AU1200_USB_INT,
--		.end		= AU1200_USB_INT,
--		.flags		= IORESOURCE_IRQ,
--	},
--};
--
--static u64 uoc_dmamask = DMA_BIT_MASK(32);
--
--static struct platform_device au1xxx_usb_otg_device = {
--	.name		= "au1xxx-uoc",
--	.id		= 0,
--	.dev = {
--		.dma_mask		= &uoc_dmamask,
--		.coherent_dma_mask	= DMA_BIT_MASK(32),
--	},
--	.num_resources	= ARRAY_SIZE(au1xxx_usb_otg_resources),
--	.resource	= au1xxx_usb_otg_resources,
--};
- 
- static struct resource au1200_lcd_resources[] = {
- 	[0] = {
-@@ -534,14 +504,10 @@ static void __init alchemy_setup_macs(int ctype)
+ 	for (i = 0; i < NUM_RX_DMA; i++) {
+-		aup->rx_dma_ring[i] =
+-			(struct rx_dma *)
+-					(rx_base + sizeof(struct rx_dma)*i);
++		aup->rx_dma_ring[i] = (struct rx_dma *)
++			(tx_base + 0x100 + sizeof(struct rx_dma) * i);
+ 	}
+ 	for (i = 0; i < NUM_TX_DMA; i++) {
+-		aup->tx_dma_ring[i] =
+-			(struct tx_dma *)
+-					(tx_base + sizeof(struct tx_dma)*i);
++		aup->tx_dma_ring[i] = (struct tx_dma *)
++			(tx_base + sizeof(struct tx_dma) * i);
+ 	}
  }
  
- static struct platform_device *au1xxx_platform_devices[] __initdata = {
--	&au1xxx_usb_ohci_device,
- #ifdef CONFIG_FB_AU1100
- 	&au1100_lcd_device,
- #endif
- #ifdef CONFIG_SOC_AU1200
--	&au1xxx_usb_ehci_device,
--	&au1xxx_usb_gdt_device,
--	&au1xxx_usb_otg_device,
- 	&au1200_lcd_device,
- 	&au1200_mmc0_device,
- #ifndef CONFIG_MIPS_DB1200
-@@ -559,6 +525,7 @@ static int __init au1xxx_platform_init(void)
+@@ -1026,7 +1024,7 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 	struct net_device *dev = NULL;
+ 	struct db_dest *pDB, *pDBfree;
+ 	int irq, i, err = 0;
+-	struct resource *base, *macen;
++	struct resource *base, *macen, *macdma;
  
- 	alchemy_setup_uarts(ctype);
- 	alchemy_setup_macs(ctype);
-+	alchemy_setup_usb(ctype);
+ 	base = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!base) {
+@@ -1049,6 +1047,13 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 		goto out;
+ 	}
  
- 	err = platform_add_devices(au1xxx_platform_devices,
- 				   ARRAY_SIZE(au1xxx_platform_devices));
-diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
-index 73e0d79..86d39c3 100644
---- a/arch/mips/include/asm/mach-au1x00/au1000.h
-+++ b/arch/mips/include/asm/mach-au1x00/au1000.h
-@@ -833,56 +833,6 @@ enum soc_au1200_ints {
- #endif
++	macdma = platform_get_resource(pdev, IORESOURCE_MEM, 2);
++	if (!macdma) {
++		dev_err(&pdev->dev, "failed to retrieve MACDMA registers\n");
++		err = -ENODEV;
++		goto out;
++	}
++
+ 	if (!request_mem_region(base->start, resource_size(base),
+ 							pdev->name)) {
+ 		dev_err(&pdev->dev, "failed to request memory region for base registers\n");
+@@ -1063,6 +1068,13 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 		goto err_request;
+ 	}
  
++	if (!request_mem_region(macdma->start, resource_size(macdma),
++							pdev->name)) {
++		dev_err(&pdev->dev, "failed to request MACDMA memory region\n");
++		err = -ENXIO;
++		goto err_macdma;
++	}
++
+ 	dev = alloc_etherdev(sizeof(struct au1000_private));
+ 	if (!dev) {
+ 		dev_err(&pdev->dev, "alloc_etherdev failed\n");
+@@ -1109,10 +1121,14 @@ static int __devinit au1000_probe(struct platform_device *pdev)
+ 	}
+ 	aup->mac_id = pdev->id;
  
--
--
--/* Au1000 */
--#ifdef CONFIG_SOC_AU1000
--
--#define USB_OHCI_BASE		0x10100000	/* phys addr for ioremap */
--#define USB_HOST_CONFIG 	0xB017FFFC
--#define FOR_PLATFORM_C_USB_HOST_INT AU1000_USB_HOST_INT
--#endif /* CONFIG_SOC_AU1000 */
--
--/* Au1500 */
--#ifdef CONFIG_SOC_AU1500
--
--#define USB_OHCI_BASE		0x10100000	/* phys addr for ioremap */
--#define USB_HOST_CONFIG 	0xB017fffc
--#define FOR_PLATFORM_C_USB_HOST_INT AU1500_USB_HOST_INT
--#endif /* CONFIG_SOC_AU1500 */
--
--/* Au1100 */
--#ifdef CONFIG_SOC_AU1100
--
--#define USB_OHCI_BASE		0x10100000	/* phys addr for ioremap */
--#define USB_HOST_CONFIG 	0xB017FFFC
--#define FOR_PLATFORM_C_USB_HOST_INT AU1100_USB_HOST_INT
--#endif /* CONFIG_SOC_AU1100 */
--
--#ifdef CONFIG_SOC_AU1550
--
--#define USB_OHCI_BASE		0x14020000	/* phys addr for ioremap */
--#define USB_OHCI_LEN		0x00060000
--#define USB_HOST_CONFIG 	0xB4027ffc
--#define FOR_PLATFORM_C_USB_HOST_INT AU1550_USB_HOST_INT
--#endif /* CONFIG_SOC_AU1550 */
--
--
--#ifdef CONFIG_SOC_AU1200
--
--#define USB_UOC_BASE		0x14020020
--#define USB_UOC_LEN		0x20
--#define USB_OHCI_BASE		0x14020100
--#define USB_OHCI_LEN		0x100
--#define USB_EHCI_BASE		0x14020200
--#define USB_EHCI_LEN		0x100
--#define USB_UDC_BASE		0x14022000
--#define USB_UDC_LEN		0x2000
--
--#define FOR_PLATFORM_C_USB_HOST_INT AU1200_USB_INT
--
--#endif /* CONFIG_SOC_AU1200 */
--
- /* Programmable Counters 0 and 1 */
- #define SYS_BASE		0xB1900000
- #define SYS_COUNTER_CNTRL	(SYS_BASE + 0x14)
-@@ -953,11 +903,6 @@ enum soc_au1200_ints {
- #  define I2S_CONTROL_D 	(1 << 1)
- #  define I2S_CONTROL_CE	(1 << 0)
+-	if (pdev->id == 0)
+-		au1000_setup_hw_rings(aup, MAC0_RX_DMA_ADDR, MAC0_TX_DMA_ADDR);
+-	else if (pdev->id == 1)
+-		au1000_setup_hw_rings(aup, MAC1_RX_DMA_ADDR, MAC1_TX_DMA_ADDR);
++	aup->macdma = ioremap_nocache(macdma->start, resource_size(macdma));
++	if (!aup->macdma) {
++		dev_err(&pdev->dev, "failed to ioremap MACDMA registers\n");
++		err = -ENXIO;
++		goto err_remap3;
++	}
++
++	au1000_setup_hw_rings(aup, aup->macdma);
  
--/* USB Host Controller */
--#ifndef USB_OHCI_LEN
--#define USB_OHCI_LEN		0x00100000
--#endif
--
+ 	/* set a random MAC now in case platform_data doesn't provide one */
+ 	random_ether_addr(dev->dev_addr);
+@@ -1252,6 +1268,8 @@ err_out:
+ err_mdiobus_reg:
+ 	mdiobus_free(aup->mii_bus);
+ err_mdiobus_alloc:
++	iounmap(aup->macdma);
++err_remap3:
+ 	iounmap(aup->enable);
+ err_remap2:
+ 	iounmap(aup->mac);
+@@ -1261,6 +1279,8 @@ err_remap1:
+ err_vaddr:
+ 	free_netdev(dev);
+ err_alloc:
++	release_mem_region(macdma->start, resource_size(macdma));
++err_macdma:
+ 	release_mem_region(macen->start, resource_size(macen));
+ err_request:
+ 	release_mem_region(base->start, resource_size(base));
+@@ -1293,9 +1313,13 @@ static int __devexit au1000_remove(struct platform_device *pdev)
+ 			(NUM_TX_BUFFS + NUM_RX_BUFFS),
+ 			(void *)aup->vaddr, aup->dma_addr);
  
- /* Ethernet Controllers  */
++	iounmap(aup->macdma);
+ 	iounmap(aup->mac);
+ 	iounmap(aup->enable);
+ 
++	base = platform_get_resource(pdev, IORESOURCE_MEM, 2);
++	release_mem_region(base->start, resource_size(base));
++
+ 	base = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	release_mem_region(base->start, resource_size(base));
+ 
+diff --git a/drivers/net/au1000_eth.h b/drivers/net/au1000_eth.h
+index 6229c77..9f28037 100644
+--- a/drivers/net/au1000_eth.h
++++ b/drivers/net/au1000_eth.h
+@@ -124,7 +124,7 @@ struct au1000_private {
+ 	 */
+ 	struct mac_reg *mac;  /* mac registers                      */
+ 	u32 *enable;     /* address of MAC Enable Register     */
+-
++	u32 *macdma;	/* base of MAC DMA port */
+ 	u32 vaddr;                /* virtual address of rx/tx buffers   */
+ 	dma_addr_t dma_addr;      /* dma address of rx/tx buffers       */
  
 -- 
 1.7.6

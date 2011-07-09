@@ -1,75 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jul 2011 13:11:44 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:42032 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1492162Ab1GILHD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jul 2011 13:07:03 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jul 2011 23:22:18 +0200 (CEST)
+Received: from swampdragon.chaosbits.net ([90.184.90.115]:13287 "EHLO
+        swampdragon.chaosbits.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492169Ab1GIVWL (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jul 2011 23:22:11 +0200
+Received: by swampdragon.chaosbits.net (Postfix, from userid 1000)
+        id A19A39403D; Sat,  9 Jul 2011 23:12:35 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 247418C6B;
-        Sat,  9 Jul 2011 13:07:03 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id kQyv79x88EoB; Sat,  9 Jul 2011 13:06:59 +0200 (CEST)
-Received: from localhost.localdomain (dyndsl-095-033-240-133.ewe-ip-backbone.de [95.33.240.133])
-        by hauke-m.de (Postfix) with ESMTPSA id C39F38C6C;
-        Sat,  9 Jul 2011 13:06:32 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
-        zajec5@gmail.com, linux-mips@linux-mips.org
-Cc:     mb@bu3sch.de, george@znau.edu.ua, arend@broadcom.com,
-        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
-        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 11/11] bcm47xx: fix irq assignment for new SoCs.
-Date:   Sat,  9 Jul 2011 13:06:03 +0200
-Message-Id: <1310209563-6405-12-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.4.1
-In-Reply-To: <1310209563-6405-1-git-send-email-hauke@hauke-m.de>
-References: <1310209563-6405-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 30604
+        by swampdragon.chaosbits.net (Postfix) with ESMTP id 9F88D9403B;
+        Sat,  9 Jul 2011 23:12:35 +0200 (CEST)
+Date:   Sat, 9 Jul 2011 23:12:35 +0200 (CEST)
+From:   Jesper Juhl <jj@chaosbits.net>
+To:     linux-kernel@vger.kernel.org
+cc:     trivial@kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org
+Subject: [PATCH 2/7] MIPS: static should be at beginning of declaration
+In-Reply-To: <alpine.LNX.2.00.1107092304160.25516@swampdragon.chaosbits.net>
+Message-ID: <alpine.LNX.2.00.1107092311190.25516@swampdragon.chaosbits.net>
+References: <alpine.LNX.2.00.1107092304160.25516@swampdragon.chaosbits.net>
+User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="8323328-244283129-1310245955=:25516"
+X-archive-position: 30605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: jj@chaosbits.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6784
+X-UID: 6945
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323328-244283129-1310245955=:25516
+Content-Type: TEXT/PLAIN; charset=ISO-8859-7
+Content-Transfer-Encoding: 8BIT
+
+Make sure that the 'static' keywork is at the beginning of declaration
+for arch/mips/include/asm/mach-jz4740/gpio.h
+
+This gets rid of warnings like
+  warning: ¡static¢ is not at beginning of declaration
+when building with -Wold-style-declaration (and/or -Wextra which also
+enables it).
+Also a few tiny whitespace changes.
+
+Signed-off-by: Jesper Juhl <jj@chaosbits.net>
 ---
- arch/mips/bcm47xx/irq.c |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
+ arch/mips/include/asm/mach-jz4740/gpio.h |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/bcm47xx/irq.c b/arch/mips/bcm47xx/irq.c
-index 325757a..70bdcf0 100644
---- a/arch/mips/bcm47xx/irq.c
-+++ b/arch/mips/bcm47xx/irq.c
-@@ -26,6 +26,7 @@
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <asm/irq_cpu.h>
-+#include <bcm47xx.h>
+diff --git a/arch/mips/include/asm/mach-jz4740/gpio.h b/arch/mips/include/asm/mach-jz4740/gpio.h
+index 7b74703..1a6482e 100644
+--- a/arch/mips/include/asm/mach-jz4740/gpio.h
++++ b/arch/mips/include/asm/mach-jz4740/gpio.h
+@@ -25,14 +25,13 @@ enum jz_gpio_function {
+     JZ_GPIO_FUNC3,
+ };
  
- void plat_irq_dispatch(void)
- {
-@@ -51,5 +52,16 @@ void plat_irq_dispatch(void)
+-
+ /*
+  Usually a driver for a SoC component has to request several gpio pins and
+  configure them as funcion pins.
+  jz_gpio_bulk_request can be used to ease this process.
+  Usually one would do something like:
  
- void __init arch_init_irq(void)
- {
-+#ifdef CONFIG_BCM47XX_BCMA
-+	if (bcm47xx_active_bus_type == BCM47XX_BUS_TYPE_BCMA) {
-+		bcma_write32(bcm47xx_bus.bcma.bus.drv_mips.core,
-+			     BCMA_MIPS_MIPS74K_INTMASK(5), 1 << 31);
-+		/*
-+		 * the kernel reads the timer irq from some register and thinks
-+		 * it's #5, but we offset it by 2 and route to #7
-+		 */
-+		cp0_compare_irq = 7;
-+	}
-+#endif
- 	mips_cpu_irq_init();
- }
+- const static struct jz_gpio_bulk_request i2c_pins[] = {
++ static const struct jz_gpio_bulk_request i2c_pins[] = {
+ 	JZ_GPIO_BULK_PIN(I2C_SDA),
+ 	JZ_GPIO_BULK_PIN(I2C_SCK),
+  };
+@@ -47,8 +46,8 @@ enum jz_gpio_function {
+ 
+     jz_gpio_bulk_free(i2c_pins, ARRAY_SIZE(i2c_pins));
+ 
+-
+ */
++
+ struct jz_gpio_bulk_request {
+ 	int gpio;
+ 	const char *name;
 -- 
-1.7.4.1
+1.7.6
+
+
+-- 
+Jesper Juhl <jj@chaosbits.net>       http://www.chaosbits.net/
+Don't top-post http://www.catb.org/jargon/html/T/top-post.html
+Plain text mails only, please.
+
+--8323328-244283129-1310245955=:25516--

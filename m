@@ -1,94 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 09 Jul 2011 23:22:18 +0200 (CEST)
-Received: from swampdragon.chaosbits.net ([90.184.90.115]:13287 "EHLO
-        swampdragon.chaosbits.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492169Ab1GIVWL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 9 Jul 2011 23:22:11 +0200
-Received: by swampdragon.chaosbits.net (Postfix, from userid 1000)
-        id A19A39403D; Sat,  9 Jul 2011 23:12:35 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by swampdragon.chaosbits.net (Postfix) with ESMTP id 9F88D9403B;
-        Sat,  9 Jul 2011 23:12:35 +0200 (CEST)
-Date:   Sat, 9 Jul 2011 23:12:35 +0200 (CEST)
-From:   Jesper Juhl <jj@chaosbits.net>
-To:     linux-kernel@vger.kernel.org
-cc:     trivial@kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org
-Subject: [PATCH 2/7] MIPS: static should be at beginning of declaration
-In-Reply-To: <alpine.LNX.2.00.1107092304160.25516@swampdragon.chaosbits.net>
-Message-ID: <alpine.LNX.2.00.1107092311190.25516@swampdragon.chaosbits.net>
-References: <alpine.LNX.2.00.1107092304160.25516@swampdragon.chaosbits.net>
-User-Agent: Alpine 2.00 (LNX 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Jul 2011 11:55:50 +0200 (CEST)
+Received: from rere.qmqm.pl ([89.167.52.164]:36802 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491129Ab1GLJzp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 12 Jul 2011 11:55:45 +0200
+Received: by rere.qmqm.pl (Postfix, from userid 1000)
+        id 59C1813A6A; Tue, 12 Jul 2011 11:55:41 +0200 (CEST)
+Date:   Tue, 12 Jul 2011 11:55:41 +0200
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Felix Fietkau <nbd@openwrt.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Jouni Malinen <jmalinen@atheros.com>,
+        Senthil Balasubramanian <senthilkumar@atheros.com>,
+        ath9k-devel@lists.ath9k.org,
+        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [ath9k-devel] [PATCH v2 07/46] net/wireless: ath9k: fix DMA
+ API usage
+Message-ID: <20110712095541.GA6236@rere.qmqm.pl>
+References: <cover.1310339688.git.mirq-linux@rere.qmqm.pl>
+ <280ad9176e6532f231e054b38b952b20580874c5.1310339688.git.mirq-linux@rere.qmqm.pl>
+ <4E1BCF36.2010506@openwrt.org>
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="8323328-244283129-1310245955=:25516"
-X-archive-position: 30605
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4E1BCF36.2010506@openwrt.org>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 30606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jj@chaosbits.net
+X-original-sender: mirq-linux@rere.qmqm.pl
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6945
+X-UID: 8480
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Tue, Jul 12, 2011 at 12:36:06PM +0800, Felix Fietkau wrote:
+> On 2011-07-11 8:52 AM, Micha³ Miros³aw wrote:
+> >Also constify buf_addr for ath9k_hw_process_rxdesc_edma() to verify
+> >assumptions --- dma_sync_single_for_device() call can be removed.
+> >
+> >Signed-off-by: Micha³ Miros³aw<mirq-linux@rere.qmqm.pl>
+> >---
+> >  drivers/net/wireless/ath/ath9k/ar9003_mac.c |    4 ++--
+> >  drivers/net/wireless/ath/ath9k/ar9003_mac.h |    2 +-
+> >  drivers/net/wireless/ath/ath9k/recv.c       |   10 +++-------
+> >  3 files changed, 6 insertions(+), 10 deletions(-)
+> >
+> >diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+> >index 70dc8ec..c5f46d5 100644
+> >--- a/drivers/net/wireless/ath/ath9k/recv.c
+> >+++ b/drivers/net/wireless/ath/ath9k/recv.c
+> >@@ -684,15 +684,11 @@ static bool ath_edma_get_buffers(struct ath_softc *sc,
+> >  	BUG_ON(!bf);
+> >
+> >  	dma_sync_single_for_cpu(sc->dev, bf->bf_buf_addr,
+> >-				common->rx_bufsize, DMA_FROM_DEVICE);
+> >+				common->rx_bufsize, DMA_BIDIRECTIONAL);
+> >
+> >  	ret = ath9k_hw_process_rxdesc_edma(ah, NULL, skb->data);
+> >-	if (ret == -EINPROGRESS) {
+> >-		/*let device gain the buffer again*/
+> >-		dma_sync_single_for_device(sc->dev, bf->bf_buf_addr,
+> >-				common->rx_bufsize, DMA_FROM_DEVICE);
+> >+	if (ret == -EINPROGRESS)
+> >  		return false;
+> >-	}
+> >
+> >  	__skb_unlink(skb,&rx_edma->rx_fifo);
+> >  	if (ret == -EINVAL) {
+> I have strong doubts about this change. On most MIPS devices,
+> dma_sync_single_for_cpu is a no-op, whereas
+> dma_sync_single_for_device flushes the cache range. With this
+> change, the CPU could cache the DMA status part behind skb->data and
+> that cache entry would not be flushed inbetween calls to this
+> functions on the same buffer, likely leading to rx stalls.
 
---8323328-244283129-1310245955=:25516
-Content-Type: TEXT/PLAIN; charset=ISO-8859-7
-Content-Transfer-Encoding: 8BIT
+You're suggesting a platform implementation bug then. If the platform is not
+cache-coherent, it should invalidate relevant CPU cache lines for sync_to_cpu
+and unmap cases. Do other devices show such symptoms on MIPS systems?
 
-Make sure that the 'static' keywork is at the beginning of declaration
-for arch/mips/include/asm/mach-jz4740/gpio.h
+I'm not familiar with the platform internals, so we should ask MIPS people.
 
-This gets rid of warnings like
-  warning: ¡static¢ is not at beginning of declaration
-when building with -Wold-style-declaration (and/or -Wextra which also
-enables it).
-Also a few tiny whitespace changes.
+[added Cc: linux-mips]
 
-Signed-off-by: Jesper Juhl <jj@chaosbits.net>
----
- arch/mips/include/asm/mach-jz4740/gpio.h |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/include/asm/mach-jz4740/gpio.h b/arch/mips/include/asm/mach-jz4740/gpio.h
-index 7b74703..1a6482e 100644
---- a/arch/mips/include/asm/mach-jz4740/gpio.h
-+++ b/arch/mips/include/asm/mach-jz4740/gpio.h
-@@ -25,14 +25,13 @@ enum jz_gpio_function {
-     JZ_GPIO_FUNC3,
- };
- 
--
- /*
-  Usually a driver for a SoC component has to request several gpio pins and
-  configure them as funcion pins.
-  jz_gpio_bulk_request can be used to ease this process.
-  Usually one would do something like:
- 
-- const static struct jz_gpio_bulk_request i2c_pins[] = {
-+ static const struct jz_gpio_bulk_request i2c_pins[] = {
- 	JZ_GPIO_BULK_PIN(I2C_SDA),
- 	JZ_GPIO_BULK_PIN(I2C_SCK),
-  };
-@@ -47,8 +46,8 @@ enum jz_gpio_function {
- 
-     jz_gpio_bulk_free(i2c_pins, ARRAY_SIZE(i2c_pins));
- 
--
- */
-+
- struct jz_gpio_bulk_request {
- 	int gpio;
- 	const char *name;
--- 
-1.7.6
-
-
--- 
-Jesper Juhl <jj@chaosbits.net>       http://www.chaosbits.net/
-Don't top-post http://www.catb.org/jargon/html/T/top-post.html
-Plain text mails only, please.
-
---8323328-244283129-1310245955=:25516--
+Best Regards,
+Micha³ Miros³aw

@@ -1,29 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2011 22:40:04 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:56327 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491187Ab1GMUjz convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 13 Jul 2011 22:39:55 +0200
-Received: by yxj20 with SMTP id 20so2980678yxj.36
-        for <multiple recipients>; Wed, 13 Jul 2011 13:39:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2011 22:56:52 +0200 (CEST)
+Received: from mail-yi0-f49.google.com ([209.85.218.49]:61149 "EHLO
+        mail-yi0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491187Ab1GMU4m (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2011 22:56:42 +0200
+Received: by yib17 with SMTP id 17so2991689yib.36
+        for <multiple recipients>; Wed, 13 Jul 2011 13:56:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type:content-transfer-encoding;
-        bh=J+JwlHC2XZThFQvj6GRIBMdaBb57R+z5U405CA/y3RA=;
-        b=TZIYcgziIDOYvUd0kQwrf8Ldanf2YZsAjqksk0FvDENiAwWNQS/UPNYat/+R0D2fHO
-         Lp+sqg7e0bfEz0YFqodg96Mk6PJLqr5HOrp0dVtSGRpF2ExJ7hjm1zbtNKiNVPuVZVsu
-         v3zD9QSn2zg7CziPi7q2DWy6/mN/P8ZKEjQLY=
-Received: by 10.150.175.13 with SMTP id x13mr1617820ybe.355.1310589589166;
- Wed, 13 Jul 2011 13:39:49 -0700 (PDT)
+        bh=upBy/YHFn/AqHxF2wl2HvGzu/3kxTov8+mSQCd9/JeM=;
+        b=Qy1uagbBH/0wllEpEin98FEw+B9WS+iROOmpVwE1HGt38RLtXQpXdo/8578Z9+dDcG
+         SzPtirvWwHJoB5nfsugZPAv28b1m5CmkLDe0G75ADZIhQfhUW3Y0jHN+SplQkeESKzLq
+         Fp7dg2y6sMqDErVPnaV3knsYMk6SOcMgkrj9E=
+Received: by 10.150.114.10 with SMTP id m10mr1628583ybc.412.1310590596178;
+ Wed, 13 Jul 2011 13:56:36 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.151.158.21 with HTTP; Wed, 13 Jul 2011 13:39:29 -0700 (PDT)
-In-Reply-To: <1310209563-6405-6-git-send-email-hauke@hauke-m.de>
-References: <1310209563-6405-1-git-send-email-hauke@hauke-m.de> <1310209563-6405-6-git-send-email-hauke@hauke-m.de>
+Received: by 10.151.158.21 with HTTP; Wed, 13 Jul 2011 13:56:16 -0700 (PDT)
+In-Reply-To: <1310209563-6405-7-git-send-email-hauke@hauke-m.de>
+References: <1310209563-6405-1-git-send-email-hauke@hauke-m.de> <1310209563-6405-7-git-send-email-hauke@hauke-m.de>
 From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 13 Jul 2011 22:39:29 +0200
-Message-ID: <CAOiHx=mpRNUtmLHFBw4n9XC4-cf4agc1tn4_twYFvz7=TQStzQ@mail.gmail.com>
-Subject: Re: [PATCH 05/11] bcma: add mips driver
+Date:   Wed, 13 Jul 2011 22:56:16 +0200
+Message-ID: <CAOiHx==5TdoOw0rt-GhnRG_gKCaWpcBE=yhRAe5ufu01tp_SnQ@mail.gmail.com>
+Subject: Re: [PATCH 06/11] bcma: add serial console support
 To:     Hauke Mehrtens <hauke@hauke-m.de>
 Cc:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
         zajec5@gmail.com, linux-mips@linux-mips.org, mb@bu3sch.de,
@@ -31,8 +30,8 @@ Cc:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
         b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
         arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30617
+Content-Transfer-Encoding: base64
+X-archive-position: 30618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,64 +40,97 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9681
+X-UID: 9692
 
-On 9 July 2011 13:05, Hauke Mehrtens <hauke@hauke-m.de> wrote:
-> diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-> index 2ca5eeb..ba9a357 100644
-> --- a/drivers/bcma/main.c
-> +++ b/drivers/bcma/main.c
-> @@ -79,6 +79,7 @@ static int bcma_register_cores(struct bcma_bus *bus)
->                case BCMA_CORE_CHIPCOMMON:
->                case BCMA_CORE_PCI:
->                case BCMA_CORE_PCIE:
-> +               case BCMA_CORE_MIPS_74K:
->                        continue;
->                }
->
-> @@ -138,6 +139,15 @@ int bcma_bus_register(struct bcma_bus *bus)
->                bcma_core_chipcommon_init(&bus->drv_cc);
->        }
->
-> +#ifdef CONFIG_BCMA_DRIVER_MIPS
-> +       /* Init MIPS core */
-> +       core = bcma_find_core(bus, BCMA_CORE_MIPS_74K);
-> +       if (core) {
-> +               bus->drv_mips.core = core;
-> +               bcma_core_mips_init(&bus->drv_mips);
-> +       }
-> +#endif
-
-You could avoid the ugly ifdefs here by moving it to
-bcma_driver_mips.h and change
-
-extern void bcma_core_mips_init(struct bcma_drv_mips *mcore);
-
-to
-#ifdef CONFIG_BCMA_DRIVER_MIPS
-extern void bcma_core_mips_init(struct bcma_drv_mips *mcore);
-#else
-static inline void bcma_core_mips_init(struct bcma_drv_mips *mcore) { }
-#endif
-
-assuming the bus->drv_mips.core being set doesn't have any side
-effects in the no mips core driver case.
-
-> +
->        /* Init PCIE core */
->        core = bcma_find_core(bus, BCMA_CORE_PCIE);
->        if (core) {
-> @@ -200,6 +210,15 @@ int __init bcma_bus_early_register(struct bcma_bus *bus,
->                bcma_core_chipcommon_init(&bus->drv_cc);
->        }
->
-> +#ifdef CONFIG_BCMA_DRIVER_MIPS
-> +       /* Init MIPS core */
-> +       core = bcma_find_core(bus, BCMA_CORE_MIPS_74K);
-> +       if (core) {
-> +               bus->drv_mips.core = core;
-> +               bcma_core_mips_init(&bus->drv_mips);
-> +       }
-> +#endif
-
-Ditto.
+T24gOSBKdWx5IDIwMTEgMTM6MDUsIEhhdWtlIE1laHJ0ZW5zIDxoYXVrZUBoYXVrZS1tLmRlPiB3
+cm90ZToKPiBUaGlzIGFkZHMgc3VwcG9ydCBmb3Igc2VyaWFsIGNvbnNvbGUgdG8gYmNtYSwgd2hl
+biBvcGVyYXRpbmcgb24gYW4gU29DLgo+Cj4gU2lnbmVkLW9mZi1ieTogSGF1a2UgTWVocnRlbnMg
+PGhhdWtlQGhhdWtlLW0uZGU+Cj4gLS0tCj4gwqBkcml2ZXJzL2JjbWEvYmNtYV9wcml2YXRlLmgg
+wqAgwqAgwqAgwqAgwqAgfCDCoCDCoDYgKysrCj4gwqBkcml2ZXJzL2JjbWEvZHJpdmVyX2NoaXBj
+b21tb24uYyDCoCDCoCDCoHwgwqAgNjQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+Cj4gwqBkcml2ZXJzL2JjbWEvZHJpdmVyX21pcHMuYyDCoCDCoCDCoCDCoCDCoCDCoHwgwqAgwqA5
+ICsrKysrCj4gwqBpbmNsdWRlL2xpbnV4L2JjbWEvYmNtYV9kcml2ZXJfbWlwcy5oIHwgwqAgMTEg
+KysrKysrCj4gwqA0IGZpbGVzIGNoYW5nZWQsIDkwIGluc2VydGlvbnMoKyksIDAgZGVsZXRpb25z
+KC0pCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9iY21hL2JjbWFfcHJpdmF0ZS5oIGIvZHJpdmVy
+cy9iY21hL2JjbWFfcHJpdmF0ZS5oCj4gaW5kZXggODMwMzg2Yy4uOTJlYzY3MSAxMDA2NDQKPiAt
+LS0gYS9kcml2ZXJzL2JjbWEvYmNtYV9wcml2YXRlLmgKPiArKysgYi9kcml2ZXJzL2JjbWEvYmNt
+YV9wcml2YXRlLmgKPiBAQCAtMjYsNiArMjYsMTIgQEAgaW50IF9faW5pdCBiY21hX2J1c19zY2Fu
+X2Vhcmx5KHN0cnVjdCBiY21hX2J1cyAqYnVzLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIHN0cnVjdCBiY21hX2RldmljZSAqY29yZSk7Cj4gwqB2b2lkIGJj
+bWFfaW5pdF9idXMoc3RydWN0IGJjbWFfYnVzICpidXMpOwo+Cj4gKy8qIGRyaXZlcl9jaGlwY29t
+bW9uLmMgKi8KPiArI2lmZGVmIENPTkZJR19CQ01BX0RSSVZFUl9NSVBTCj4gK2V4dGVybiBpbnQg
+YmNtYV9jaGlwY29fc2VyaWFsX2luaXQoc3RydWN0IGJjbWFfZHJ2X2NjICpjYywKPiArIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgc3RydWN0IGJjbWFf
+ZHJ2X21pcHNfc2VyaWFsX3BvcnQgKnBvcnRzKTsKPiArI2VuZGlmIC8qIENPTkZJR19CQ01BX0RS
+SVZFUl9NSVBTICovCj4gKwo+IMKgI2lmZGVmIENPTkZJR19CQ01BX0hPU1RfUENJCj4gwqAvKiBo
+b3N0X3BjaS5jICovCj4gwqBleHRlcm4gaW50IF9faW5pdCBiY21hX2hvc3RfcGNpX2luaXQodm9p
+ZCk7Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYmNtYS9kcml2ZXJfY2hpcGNvbW1vbi5jIGIvZHJp
+dmVycy9iY21hL2RyaXZlcl9jaGlwY29tbW9uLmMKPiBpbmRleCA3MDMyMWM2Li44ODUzM2NhIDEw
+MDY0NAo+IC0tLSBhL2RyaXZlcnMvYmNtYS9kcml2ZXJfY2hpcGNvbW1vbi5jCj4gKysrIGIvZHJp
+dmVycy9iY21hL2RyaXZlcl9jaGlwY29tbW9uLmMKPiBAQCAtOTIsMyArOTIsNjcgQEAgdTMyIGJj
+bWFfY2hpcGNvX2dwaW9fcG9sYXJpdHkoc3RydWN0IGJjbWFfZHJ2X2NjICpjYywgdTMyIG1hc2ss
+IHUzMiB2YWx1ZSkKPiDCoHsKPiDCoCDCoCDCoCDCoHJldHVybiBiY21hX2NjX3dyaXRlMzJfbWFz
+a2VkKGNjLCBCQ01BX0NDX0dQSU9QT0wsIG1hc2ssIHZhbHVlKTsKPiDCoH0KPiArCj4gKyNpZmRl
+ZiBDT05GSUdfQkNNQV9EUklWRVJfTUlQUwo+ICtpbnQgYmNtYV9jaGlwY29fc2VyaWFsX2luaXQo
+c3RydWN0IGJjbWFfZHJ2X2NjICpjYywKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIHN0cnVjdCBiY21hX2Rydl9taXBzX3NlcmlhbF9wb3J0ICpwb3J0cykKPiArewo+
+ICsgwqAgwqAgwqAgaW50IG5yX3BvcnRzID0gMDsKPiArIMKgIMKgIMKgIHUzMiBwbGx0eXBlOwo+
+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IGlycTsKPiArIMKgIMKgIMKgIHUzMiBiYXVkX2Jhc2Us
+IGRpdjsKPiArIMKgIMKgIMKgIHUzMiBpLCBuOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IGNj
+cmV2ID0gY2MtPmNvcmUtPmlkLnJldjsKPiArCj4gKyDCoCDCoCDCoCBwbGx0eXBlID0gKGNjLT5j
+YXBhYmlsaXRpZXMgJiBCQ01BX0NDX0NBUF9QTExUKTsKPiArIMKgIMKgIMKgIGlycSA9IGJjbWFf
+Y29yZV9taXBzX2lycShjYy0+Y29yZSk7Cj4gKwo+ICsgwqAgwqAgwqAgaWYgKChjY3JldiA+PSAx
+MSkgJiYgKGNjcmV2ICE9IDE1KSAmJiAoY2NyZXYgIT0gMjApKSB7Cj4gKyDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCAvKiBGaXhlZCBBTFAgY2xvY2sgKi8KPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJh
+dWRfYmFzZSA9IDIwMDAwMDAwOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGNjLT5jYXBh
+YmlsaXRpZXMgJiBCQ01BX0NDX0NBUF9QTVUpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIC8qIEZJWE1FOiBiYXVkX2Jhc2UgaXMgZGlmZmVyZW50IGZvciBkZXZpY2VzIHdp
+dGggYSBQTVUgKi8KPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIFdBUk5fT04o
+MSk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBk
+aXYgPSAxOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGNjcmV2ID49IDIxKSB7Cj4gKyDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAvKiBUdXJuIG9mZiBVQVJUIGNsb2NrIGJl
+Zm9yZSBzd2l0Y2hpbmcgY2xvY2tzb3VyY2UuICovCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCBiY21hX2NjX3dyaXRlMzIoY2MsIEJDTUFfQ0NfQ09SRUNUTCwKPiArIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYmNtYV9j
+Y19yZWFkMzIoY2MsIEJDTUFfQ0NfQ09SRUNUTCkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgJiB+QkNNQV9DQ19DT1JFQ1RMX1VBUlRD
+TEtFTik7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCAvKiBTZXQgdGhlIG92ZXJyaWRlIGJpdCBzbyB3ZSBkb24ndCBkaXZpZGUgaXQgKi8KPiArIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIGJjbWFfY2Nfd3JpdGUzMihjYywgQkNNQV9DQ19DT1JFQ1RMLAo+
+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBiY21hX2NjX3Jl
+YWQzMihjYywgQkNNQV9DQ19DT1JFQ1RMKQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqB8IEJDTUFfQ0NfQ09SRUNUTF9VQVJUQ0xLMCk7Cj4gKyDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCBpZiAoY2NyZXYgPj0gMjEpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIC8qIFJlLWVuYWJsZSB0aGUgVUFSVCBjbG9jay4gKi8KPiArIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJjbWFfY2Nfd3JpdGUzMihjYywgQkNNQV9DQ19DT1JF
+Q1RMLAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqBiY21hX2NjX3JlYWQzMihjYywgQkNNQV9DQ19DT1JFQ1RMKQo+ICsgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IEJDTUFfQ0Nf
+Q09SRUNUTF9VQVJUQ0xLRU4pOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfQo+ICsgwqAgwqAg
+wqAgfSBlbHNlCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBwcl9lcnIoInNlcmlhbCBub3Qgc3Vw
+cG9ydGVkIG9uIHRoaXMgZGV2aWNlIGNjcmV2OiAweCV4XG4iLAo+ICsgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqBjY3Jldik7CgpEb2N1bWVudGF0aW9uL0NvZGluZ1N0eWxlIGFuZCBh
+Z2FpbiA7LSkKCj4gKwo+ICsgwqAgwqAgwqAgLyogRGV0ZXJtaW5lIHRoZSByZWdpc3RlcnMgb2Yg
+dGhlIFVBUlRzICovCj4gKyDCoCDCoCDCoCBuID0gKGNjLT5jYXBhYmlsaXRpZXMgJiBCQ01BX0ND
+X0NBUF9OUlVBUlQpOwo+ICsgwqAgwqAgwqAgZm9yIChpID0gMDsgaSA8IG47IGkrKykgewo+ICsg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgdm9pZCBfX2lvbWVtICpjY19tbWlvOwo+ICsgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgdm9pZCBfX2lvbWVtICp1YXJ0X3JlZ3M7Cj4gKwo+ICsgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgY2NfbW1pbyA9IGNjLT5jb3JlLT5idXMtPm1taW8gKwo+ICsgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgKGNjLT5jb3JlLT5jb3JlX2luZGV4ICogQkNNQV9DT1JF
+X1NJWkUpOwoKY2NfbW1pbyBpcyBjb25zdGFudCBmb3IgYWxsIHVhcnRzLCBzbyB5b3Ugc2hvdWxk
+IG1vdmUgaXQgb3V0IG9mIHRoZQpsb29wIGFuZCBjYWxjdWxhdGUgaXQgb25jZS4KCj4gKyDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCB1YXJ0X3JlZ3MgPSBjY19tbWlvICsgQkNNQV9DQ19VQVJUMF9EQVRB
+Owo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydF9yZWdzICs9IChpICogMjU2KTsKClNhbWUg
+Zm9yIHRoZSB1YXJ0X3JlZ3MgYmFzZS4gSWYgeW91IGRvbid0IG1vZGlmeSBpdCBhdCBhbGwgeW91
+IGNvdWxkCmRyb3AgdGhlIGNjX21taW8gdmFyaWFibGUgKHNpbmNlIHlvdSBvbmx5IG5lZWQgaXQg
+dG8gY2FsY3VsYXRlCnVhcnRfcmVncykgYW5kCgo+ICsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IG5yX3BvcnRzKys7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBwb3J0c1tpXS5yZWdzID0gdWFy
+dF9yZWdzOwoKdXNlIGhlcmUKIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLnJlZ3MgPSB1
+YXJ0X3JlZ3MgKyAoaSAqIDI1Nik7CgpUaGlzIHdvdWxkIG1ha2UgdGhlIGNvZGUgYSBiaXQgY2xl
+YW5lciBJTUhPLgoKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLmlycSA9IGlycTsK
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLmJhdWRfYmFzZSA9IGJhdWRfYmFzZTsK
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLnJlZ19zaGlmdCA9IDA7Cj4gKyDCoCDC
+oCDCoCB9Cj4gKwo+ICsgwqAgwqAgwqAgcmV0dXJuIG5yX3BvcnRzOwoKSXNuJ3QgbiBhbHdheXMg
+dGhlIHNhbWUgYXMgbnJfcG9ydHM/IEF0IGxlYXN0IEkgZG9uJ3Qgc2VlIGFueSBjYXNlCndoZXJl
+IGl0IGNvdWxkIGRpZmZlciwgc28geW91IHNob3VsZCBiZSBzYWZlIHdoZW4gZGlyZWN0bHkgdXNp
+bmcKbnJfcG9ydHMgaW5zdGVhZCBvZiBuLgo=

@@ -1,136 +1,295 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2011 22:56:52 +0200 (CEST)
-Received: from mail-yi0-f49.google.com ([209.85.218.49]:61149 "EHLO
-        mail-yi0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491187Ab1GMU4m (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2011 22:56:42 +0200
-Received: by yib17 with SMTP id 17so2991689yib.36
-        for <multiple recipients>; Wed, 13 Jul 2011 13:56:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=upBy/YHFn/AqHxF2wl2HvGzu/3kxTov8+mSQCd9/JeM=;
-        b=Qy1uagbBH/0wllEpEin98FEw+B9WS+iROOmpVwE1HGt38RLtXQpXdo/8578Z9+dDcG
-         SzPtirvWwHJoB5nfsugZPAv28b1m5CmkLDe0G75ADZIhQfhUW3Y0jHN+SplQkeESKzLq
-         Fp7dg2y6sMqDErVPnaV3knsYMk6SOcMgkrj9E=
-Received: by 10.150.114.10 with SMTP id m10mr1628583ybc.412.1310590596178;
- Wed, 13 Jul 2011 13:56:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Jul 2011 23:57:11 +0200 (CEST)
+Received: from host6.manc-digital.ifl.telecomplete.net ([86.53.204.7]:11688
+        "EHLO freya" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S1491187Ab1GMV5E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 13 Jul 2011 23:57:04 +0200
+Received: from ben by freya with local (Exim 4.72)
+        (envelope-from <ben@freya.fluff.org>)
+        id 1Qh7QN-0001lf-8o; Wed, 13 Jul 2011 22:56:55 +0100
+Date:   Wed, 13 Jul 2011 22:56:55 +0100
+From:   Ben Dooks <ben-i2c@fluff.org>
+To:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
+Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+        ganesanr@netlogicmicro.com
+Subject: Re: [PATCH] i2c: Support for Netlogic XLR/XLS on-chip I2C
+ controller.
+Message-ID: <20110713215655.GF3369@freya.fluff.org>
+References: <20110623135057.GA26772@jayachandranc.netlogicmicro.com>
 MIME-Version: 1.0
-Received: by 10.151.158.21 with HTTP; Wed, 13 Jul 2011 13:56:16 -0700 (PDT)
-In-Reply-To: <1310209563-6405-7-git-send-email-hauke@hauke-m.de>
-References: <1310209563-6405-1-git-send-email-hauke@hauke-m.de> <1310209563-6405-7-git-send-email-hauke@hauke-m.de>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 13 Jul 2011 22:56:16 +0200
-Message-ID: <CAOiHx==5TdoOw0rt-GhnRG_gKCaWpcBE=yhRAe5ufu01tp_SnQ@mail.gmail.com>
-Subject: Re: [PATCH 06/11] bcma: add serial console support
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
-        zajec5@gmail.com, linux-mips@linux-mips.org, mb@bu3sch.de,
-        george@znau.edu.ua, arend@broadcom.com,
-        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
-        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-archive-position: 30618
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20110623135057.GA26772@jayachandranc.netlogicmicro.com>
+X-Disclaimer: These are my views alone.
+X-URL:  http://www.fluff.org/
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 30619
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: ben-i2c@fluff.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9692
+X-UID: 9737
 
-T24gOSBKdWx5IDIwMTEgMTM6MDUsIEhhdWtlIE1laHJ0ZW5zIDxoYXVrZUBoYXVrZS1tLmRlPiB3
-cm90ZToKPiBUaGlzIGFkZHMgc3VwcG9ydCBmb3Igc2VyaWFsIGNvbnNvbGUgdG8gYmNtYSwgd2hl
-biBvcGVyYXRpbmcgb24gYW4gU29DLgo+Cj4gU2lnbmVkLW9mZi1ieTogSGF1a2UgTWVocnRlbnMg
-PGhhdWtlQGhhdWtlLW0uZGU+Cj4gLS0tCj4gwqBkcml2ZXJzL2JjbWEvYmNtYV9wcml2YXRlLmgg
-wqAgwqAgwqAgwqAgwqAgfCDCoCDCoDYgKysrCj4gwqBkcml2ZXJzL2JjbWEvZHJpdmVyX2NoaXBj
-b21tb24uYyDCoCDCoCDCoHwgwqAgNjQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-Cj4gwqBkcml2ZXJzL2JjbWEvZHJpdmVyX21pcHMuYyDCoCDCoCDCoCDCoCDCoCDCoHwgwqAgwqA5
-ICsrKysrCj4gwqBpbmNsdWRlL2xpbnV4L2JjbWEvYmNtYV9kcml2ZXJfbWlwcy5oIHwgwqAgMTEg
-KysrKysrCj4gwqA0IGZpbGVzIGNoYW5nZWQsIDkwIGluc2VydGlvbnMoKyksIDAgZGVsZXRpb25z
-KC0pCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9iY21hL2JjbWFfcHJpdmF0ZS5oIGIvZHJpdmVy
-cy9iY21hL2JjbWFfcHJpdmF0ZS5oCj4gaW5kZXggODMwMzg2Yy4uOTJlYzY3MSAxMDA2NDQKPiAt
-LS0gYS9kcml2ZXJzL2JjbWEvYmNtYV9wcml2YXRlLmgKPiArKysgYi9kcml2ZXJzL2JjbWEvYmNt
-YV9wcml2YXRlLmgKPiBAQCAtMjYsNiArMjYsMTIgQEAgaW50IF9faW5pdCBiY21hX2J1c19zY2Fu
-X2Vhcmx5KHN0cnVjdCBiY21hX2J1cyAqYnVzLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIHN0cnVjdCBiY21hX2RldmljZSAqY29yZSk7Cj4gwqB2b2lkIGJj
-bWFfaW5pdF9idXMoc3RydWN0IGJjbWFfYnVzICpidXMpOwo+Cj4gKy8qIGRyaXZlcl9jaGlwY29t
-bW9uLmMgKi8KPiArI2lmZGVmIENPTkZJR19CQ01BX0RSSVZFUl9NSVBTCj4gK2V4dGVybiBpbnQg
-YmNtYV9jaGlwY29fc2VyaWFsX2luaXQoc3RydWN0IGJjbWFfZHJ2X2NjICpjYywKPiArIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgc3RydWN0IGJjbWFf
-ZHJ2X21pcHNfc2VyaWFsX3BvcnQgKnBvcnRzKTsKPiArI2VuZGlmIC8qIENPTkZJR19CQ01BX0RS
-SVZFUl9NSVBTICovCj4gKwo+IMKgI2lmZGVmIENPTkZJR19CQ01BX0hPU1RfUENJCj4gwqAvKiBo
-b3N0X3BjaS5jICovCj4gwqBleHRlcm4gaW50IF9faW5pdCBiY21hX2hvc3RfcGNpX2luaXQodm9p
-ZCk7Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYmNtYS9kcml2ZXJfY2hpcGNvbW1vbi5jIGIvZHJp
-dmVycy9iY21hL2RyaXZlcl9jaGlwY29tbW9uLmMKPiBpbmRleCA3MDMyMWM2Li44ODUzM2NhIDEw
-MDY0NAo+IC0tLSBhL2RyaXZlcnMvYmNtYS9kcml2ZXJfY2hpcGNvbW1vbi5jCj4gKysrIGIvZHJp
-dmVycy9iY21hL2RyaXZlcl9jaGlwY29tbW9uLmMKPiBAQCAtOTIsMyArOTIsNjcgQEAgdTMyIGJj
-bWFfY2hpcGNvX2dwaW9fcG9sYXJpdHkoc3RydWN0IGJjbWFfZHJ2X2NjICpjYywgdTMyIG1hc2ss
-IHUzMiB2YWx1ZSkKPiDCoHsKPiDCoCDCoCDCoCDCoHJldHVybiBiY21hX2NjX3dyaXRlMzJfbWFz
-a2VkKGNjLCBCQ01BX0NDX0dQSU9QT0wsIG1hc2ssIHZhbHVlKTsKPiDCoH0KPiArCj4gKyNpZmRl
-ZiBDT05GSUdfQkNNQV9EUklWRVJfTUlQUwo+ICtpbnQgYmNtYV9jaGlwY29fc2VyaWFsX2luaXQo
-c3RydWN0IGJjbWFfZHJ2X2NjICpjYywKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIHN0cnVjdCBiY21hX2Rydl9taXBzX3NlcmlhbF9wb3J0ICpwb3J0cykKPiArewo+
-ICsgwqAgwqAgwqAgaW50IG5yX3BvcnRzID0gMDsKPiArIMKgIMKgIMKgIHUzMiBwbGx0eXBlOwo+
-ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IGlycTsKPiArIMKgIMKgIMKgIHUzMiBiYXVkX2Jhc2Us
-IGRpdjsKPiArIMKgIMKgIMKgIHUzMiBpLCBuOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IGNj
-cmV2ID0gY2MtPmNvcmUtPmlkLnJldjsKPiArCj4gKyDCoCDCoCDCoCBwbGx0eXBlID0gKGNjLT5j
-YXBhYmlsaXRpZXMgJiBCQ01BX0NDX0NBUF9QTExUKTsKPiArIMKgIMKgIMKgIGlycSA9IGJjbWFf
-Y29yZV9taXBzX2lycShjYy0+Y29yZSk7Cj4gKwo+ICsgwqAgwqAgwqAgaWYgKChjY3JldiA+PSAx
-MSkgJiYgKGNjcmV2ICE9IDE1KSAmJiAoY2NyZXYgIT0gMjApKSB7Cj4gKyDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCAvKiBGaXhlZCBBTFAgY2xvY2sgKi8KPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJh
-dWRfYmFzZSA9IDIwMDAwMDAwOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGNjLT5jYXBh
-YmlsaXRpZXMgJiBCQ01BX0NDX0NBUF9QTVUpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIC8qIEZJWE1FOiBiYXVkX2Jhc2UgaXMgZGlmZmVyZW50IGZvciBkZXZpY2VzIHdp
-dGggYSBQTVUgKi8KPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIFdBUk5fT04o
-MSk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBk
-aXYgPSAxOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGNjcmV2ID49IDIxKSB7Cj4gKyDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAvKiBUdXJuIG9mZiBVQVJUIGNsb2NrIGJl
-Zm9yZSBzd2l0Y2hpbmcgY2xvY2tzb3VyY2UuICovCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCBiY21hX2NjX3dyaXRlMzIoY2MsIEJDTUFfQ0NfQ09SRUNUTCwKPiArIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYmNtYV9j
-Y19yZWFkMzIoY2MsIEJDTUFfQ0NfQ09SRUNUTCkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgJiB+QkNNQV9DQ19DT1JFQ1RMX1VBUlRD
-TEtFTik7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCAvKiBTZXQgdGhlIG92ZXJyaWRlIGJpdCBzbyB3ZSBkb24ndCBkaXZpZGUgaXQgKi8KPiArIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIGJjbWFfY2Nfd3JpdGUzMihjYywgQkNNQV9DQ19DT1JFQ1RMLAo+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBiY21hX2NjX3Jl
-YWQzMihjYywgQkNNQV9DQ19DT1JFQ1RMKQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqB8IEJDTUFfQ0NfQ09SRUNUTF9VQVJUQ0xLMCk7Cj4gKyDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCBpZiAoY2NyZXYgPj0gMjEpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIC8qIFJlLWVuYWJsZSB0aGUgVUFSVCBjbG9jay4gKi8KPiArIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJjbWFfY2Nfd3JpdGUzMihjYywgQkNNQV9DQ19DT1JF
-Q1RMLAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqBiY21hX2NjX3JlYWQzMihjYywgQkNNQV9DQ19DT1JFQ1RMKQo+ICsgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB8IEJDTUFfQ0Nf
-Q09SRUNUTF9VQVJUQ0xLRU4pOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfQo+ICsgwqAgwqAg
-wqAgfSBlbHNlCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBwcl9lcnIoInNlcmlhbCBub3Qgc3Vw
-cG9ydGVkIG9uIHRoaXMgZGV2aWNlIGNjcmV2OiAweCV4XG4iLAo+ICsgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqBjY3Jldik7CgpEb2N1bWVudGF0aW9uL0NvZGluZ1N0eWxlIGFuZCBh
-Z2FpbiA7LSkKCj4gKwo+ICsgwqAgwqAgwqAgLyogRGV0ZXJtaW5lIHRoZSByZWdpc3RlcnMgb2Yg
-dGhlIFVBUlRzICovCj4gKyDCoCDCoCDCoCBuID0gKGNjLT5jYXBhYmlsaXRpZXMgJiBCQ01BX0ND
-X0NBUF9OUlVBUlQpOwo+ICsgwqAgwqAgwqAgZm9yIChpID0gMDsgaSA8IG47IGkrKykgewo+ICsg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgdm9pZCBfX2lvbWVtICpjY19tbWlvOwo+ICsgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgdm9pZCBfX2lvbWVtICp1YXJ0X3JlZ3M7Cj4gKwo+ICsgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgY2NfbW1pbyA9IGNjLT5jb3JlLT5idXMtPm1taW8gKwo+ICsgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgKGNjLT5jb3JlLT5jb3JlX2luZGV4ICogQkNNQV9DT1JF
-X1NJWkUpOwoKY2NfbW1pbyBpcyBjb25zdGFudCBmb3IgYWxsIHVhcnRzLCBzbyB5b3Ugc2hvdWxk
-IG1vdmUgaXQgb3V0IG9mIHRoZQpsb29wIGFuZCBjYWxjdWxhdGUgaXQgb25jZS4KCj4gKyDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCB1YXJ0X3JlZ3MgPSBjY19tbWlvICsgQkNNQV9DQ19VQVJUMF9EQVRB
-Owo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdWFydF9yZWdzICs9IChpICogMjU2KTsKClNhbWUg
-Zm9yIHRoZSB1YXJ0X3JlZ3MgYmFzZS4gSWYgeW91IGRvbid0IG1vZGlmeSBpdCBhdCBhbGwgeW91
-IGNvdWxkCmRyb3AgdGhlIGNjX21taW8gdmFyaWFibGUgKHNpbmNlIHlvdSBvbmx5IG5lZWQgaXQg
-dG8gY2FsY3VsYXRlCnVhcnRfcmVncykgYW5kCgo+ICsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IG5yX3BvcnRzKys7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBwb3J0c1tpXS5yZWdzID0gdWFy
-dF9yZWdzOwoKdXNlIGhlcmUKIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLnJlZ3MgPSB1
-YXJ0X3JlZ3MgKyAoaSAqIDI1Nik7CgpUaGlzIHdvdWxkIG1ha2UgdGhlIGNvZGUgYSBiaXQgY2xl
-YW5lciBJTUhPLgoKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLmlycSA9IGlycTsK
-PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLmJhdWRfYmFzZSA9IGJhdWRfYmFzZTsK
-PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHBvcnRzW2ldLnJlZ19zaGlmdCA9IDA7Cj4gKyDCoCDC
-oCDCoCB9Cj4gKwo+ICsgwqAgwqAgwqAgcmV0dXJuIG5yX3BvcnRzOwoKSXNuJ3QgbiBhbHdheXMg
-dGhlIHNhbWUgYXMgbnJfcG9ydHM/IEF0IGxlYXN0IEkgZG9uJ3Qgc2VlIGFueSBjYXNlCndoZXJl
-IGl0IGNvdWxkIGRpZmZlciwgc28geW91IHNob3VsZCBiZSBzYWZlIHdoZW4gZGlyZWN0bHkgdXNp
-bmcKbnJfcG9ydHMgaW5zdGVhZCBvZiBuLgo=
+On Thu, Jun 23, 2011 at 07:21:03PM +0530, Jayachandran C. wrote:
+> From: Ganesan Ramalingam <ganesanr@netlogicmicro.com>
+> 
+> - platform.c : add i2c platform device
+> - i2c-xlr.c : algorithm and i2c adaptor
+> - Kconfig/Makefile: add CONFIG_I2C_XLR option
+> 
+> Signed-off-by: Ganesan Ramalingam <ganesanr@netlogicmicro.com>
+> Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+> ---
+
+snip
+
+> diff --git a/arch/mips/netlogic/xlr/platform.c b/arch/mips/netlogic/xlr/platform.c
+> index 609ec25..2cd2d3c 100644
+> --- a/arch/mips/netlogic/xlr/platform.c
+> +++ b/arch/mips/netlogic/xlr/platform.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/resource.h>
+>  #include <linux/serial_8250.h>
+>  #include <linux/serial_reg.h>
+> +#include <linux/i2c.h>
+>  
+>  #include <asm/netlogic/xlr/iomap.h>
+>  #include <asm/netlogic/xlr/pic.h>
+> @@ -66,6 +67,34 @@ void nlm_xlr_uart_out(struct uart_port *p, int offset, int value)
+>  		.serial_out	= nlm_xlr_uart_out,	\
+>  	}
+>  
+> +#ifdef CONFIG_I2C
+> +static struct i2c_board_info nlm_i2c_info1[] __initdata = {
+> +	/* All XLR boards have this RTC and Max6657 Temp Chip */
+> +	{"ds1374",          0, 0x68, 0, 0, 0},
+> +	{"lm90",            0, 0x4c, 0, 0, 0},
+> +};
+
+- named initialisers, or even the I2C_BOARD_INFO()
+- no need to have the fields initialiser with 0 after the address.
+- spaces betwee { and }
+
+>  config I2C_BLACKFIN_TWI
+>  	tristate "Blackfin TWI I2C support"
+>  	depends on BLACKFIN
+
+> new file mode 100644
+> index 0000000..ac3d989
+> --- /dev/null
+> +++ b/drivers/i2c/busses/i2c-xlr.c
+> @@ -0,0 +1,335 @@
+> +/*
+> + * Copyright 2011, Netlogic Microsystems Inc.
+> + * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
+> + *
+> + * This file is licensed under the terms of the GNU General Public
+> + * License version 2.  This program is licensed "as is" without any
+> + * warranty of any kind, whether express or implied.
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/slab.h>
+> +#include <linux/init.h>
+> +#include <linux/ioport.h>
+> +#include <linux/delay.h>
+> +#include <linux/errno.h>
+> +#include <linux/i2c.h>
+> +#include <linux/io.h>
+> +#include <linux/platform_device.h>
+> +#include <asm/netlogic/xlr/iomap.h>
+> +
+> +/* XLR I2C REGISTERS */
+> +#define XLR_I2C_CFG		0x00
+> +#define XLR_I2C_CLKDIV		0x01
+> +#define XLR_I2C_DEVADDR		0x02
+> +#define XLR_I2C_ADDR		0x03
+> +#define XLR_I2C_DATAOUT		0x04
+> +#define XLR_I2C_DATAIN		0x05
+> +#define XLR_I2C_STATUS		0x06
+> +#define XLR_I2C_STARTXFR	0x07
+> +#define XLR_I2C_BYTECNT		0x08
+> +#define XLR_I2C_HDSTATIM	0x09
+> +
+> +/* XLR I2C REGISTERS FLAGS */
+> +#define XLR_I2C_BUS_BUSY	0x01
+> +#define XLR_I2C_SDOEMPTY	0x02
+> +#define XLR_I2C_RXRDY		0x04
+> +#define XLR_I2C_ACK_ERR		0x08
+> +#define XLR_I2C_ARB_STARTERR	0x30
+> +
+> +/* Register Programming Values!! Change as required */
+> +#define XLR_I2C_CFG_ADDR	0xF8    /* 8-Bit dev Addr + POR Values */
+> +#define XLR_I2C_CFG_NOADDR	0xFA    /* 8-Bit reg Addr + POR Values */
+> +#define XLR_I2C_STARTXFR_ND	0x02    /* No data , only addr */
+> +#define XLR_I2C_STARTXFR_RD	0x01    /* Read */
+> +#define XLR_I2C_STARTXFR_WR	0x00    /* Write */
+> +#define XLR_I2C_CLKDIV_DEF	0x14A   /* 0x00000052 */
+> +#define XLR_I2C_HDSTATIM_DEF	0x107   /* 0x00000000 */
+> +
+> +struct xlr_i2c_private {
+> +	struct i2c_adapter adap;
+> +	u32 *iobase_i2c_regs;
+
+this should at-least be __iomem attributed
+
+> +};
+> +static struct xlr_i2c_private  xlr_i2c_priv;
+> +
+> +u32 *get_i2c_base(unsigned short bus)
+> +{
+> +	nlm_reg_t *mmio = 0;
+> +
+> +	if (bus == 0)
+> +		mmio = netlogic_io_mmio(NETLOGIC_IO_I2C_0_OFFSET);
+> +	else
+> +		mmio = netlogic_io_mmio(NETLOGIC_IO_I2C_1_OFFSET);
+> +
+> +	return (u32 *)mmio;
+> +}
+
+shouldn't this be in with the platform device?
+
+> +static void xlr_i2c_write(u32 *iobase_i2c_regs, int reg, int val)
+> +{
+> +	netlogic_write_reg(iobase_i2c_regs, reg, val);
+> +}
+
+did you really need to wrapper these functions?
+
+> +static u32 xlr_i2c_read(u32 *iobase_i2c_regs, int reg)
+> +{
+> +	u32 retVal = netlogic_read_reg(iobase_i2c_regs, reg);
+> +	return retVal;
+> +}
+> +
+
+> +		u16		addr,
+> +		unsigned short	flags,
+> +		char		read_write,
+> +		u8		command,
+> +		int		protocol,
+> +		union i2c_smbus_data *data)
+> +{
+> +	struct xlr_i2c_private *priv = i2c_adap->algo_data;
+> +	int err;
+> +	int len;
+> +
+> +	switch (protocol) {
+> +	case I2C_SMBUS_BYTE:
+> +		if (read_write == I2C_SMBUS_READ)
+> +			err = xlr_i2c_rx(priv, 1, &data->byte, addr, command);
+> +		else
+> +			err = xlr_i2c_tx(priv, 1, &data->byte, addr, command);
+> +
+> +		break;
+> +	case I2C_SMBUS_BYTE_DATA:
+> +		if (read_write == I2C_SMBUS_READ)
+> +			err = xlr_i2c_rx(priv, 1, &data->byte, addr, command);
+> +		else
+> +			err = xlr_i2c_tx(priv, 1, &data->byte, addr, command);
+> +		break;
+> +
+> +	case I2C_SMBUS_WORD_DATA:
+> +	case I2C_SMBUS_PROC_CALL:
+> +		if (read_write == I2C_SMBUS_READ)
+> +			err = xlr_i2c_rx(priv, 2, (u8 *)&data->word,
+> +					addr, command);
+> +		else
+> +			err = xlr_i2c_tx(priv, 2, (u8 *)&data->word,
+> +					addr, command);
+> +
+> +		break;
+> +	case I2C_FUNC_SMBUS_BLOCK_DATA:
+> +	case I2C_SMBUS_I2C_BLOCK_DATA:
+> +		len = (data->block[0] > I2C_SMBUS_BLOCK_MAX) ?
+> +			I2C_SMBUS_BLOCK_MAX : data->block[0];
+> +		if (read_write == I2C_SMBUS_READ)
+> +			err = xlr_i2c_rx(priv, len, &data->block[1],
+> +					addr, command);
+> +		else
+> +			err = xlr_i2c_tx(priv, len, &data->block[1],
+> +					addr, command);
+> +
+> +		break;
+> +	default:
+> +		err = -1;
+> +	}
+> +	return err;
+> +}
+
+thought most of these case where handled by the core translating
+them into the proper i2c messages?
+
+> +
+> +static u32 xlr_func(struct i2c_adapter *adap)
+> +{
+> +	/* We emulate SMBUS over I2C */
+> +	return I2C_FUNC_SMBUS_EMUL;
+> +}
+> +
+> +static struct i2c_algorithm xlr_i2c_algo = {
+> +	.smbus_xfer	= smbus_xfer,
+> +	.functionality	= xlr_func,
+> +};
+> +
+> +int xlr_i2c_add_bus(struct xlr_i2c_private *priv)
+> +{
+> +	priv->adap.owner	= THIS_MODULE;
+> +	priv->adap.algo_data	= priv;
+> +	priv->adap.nr		= 1;
+> +	priv->adap.algo		= &xlr_i2c_algo;
+> +	priv->adap.class	= I2C_CLASS_HWMON | I2C_CLASS_SPD;
+> +	snprintf(priv->adap.name, sizeof(priv->adap.name),
+> +			"SMBus XLR I2C Adapter");
+> +
+> +	/* register new adapter to i2c module... */
+> +	if (i2c_add_numbered_adapter(&priv->adap))
+> +		return -1;
+> +
+> +	return 0;
+> +}
+> +
+> +int xlr_i2c_del_bus(struct i2c_adapter *adap)
+> +{
+> +	return i2c_del_adapter(adap);
+> +}
+> +
+> +static int __devinit xlr_i2c_probe(struct platform_device *pd)
+> +{
+> +	xlr_i2c_priv.iobase_i2c_regs = get_i2c_base(pd->id);
+> +
+> +	xlr_i2c_priv.adap.dev.parent = &pd->dev;
+> +	if (xlr_i2c_add_bus(&xlr_i2c_priv) < 0) {
+> +		dev_err(&xlr_i2c_priv.adap.dev, "Failed to add i2c bus\n");
+> +		goto out;
+> +	} else
+> +		dev_info(&xlr_i2c_priv.adap.dev, "Added I2C Bus.\n");
+> +
+> +	return 0;
+> +out:
+> +	return -ENODEV;
+
+-ENODEV will get ignored by the upper layer. Need to find a better
+error code.
+
+> +}
+
+> +MODULE_AUTHOR("Netlogic Microsystems Inc.");
+> +MODULE_DESCRIPTION("XLR I2C SMBus driver");
+> +MODULE_LICENSE("GPL");
+
+no module alias for the platform device?
+
+> +module_init(xlr_i2c_init);
+> +module_exit(xlr_i2c_exit);
+> -- 
+> 1.7.4.1
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-i2c" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

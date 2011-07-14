@@ -1,150 +1,406 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2011 21:50:49 +0200 (CEST)
-Received: from ogre.sisk.pl ([217.79.144.158]:54539 "EHLO ogre.sisk.pl"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491198Ab1GNTum (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 14 Jul 2011 21:50:42 +0200
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by ogre.sisk.pl (Postfix) with ESMTP id 41A871B0212;
-        Thu, 14 Jul 2011 21:22:28 +0200 (CEST)
-Received: from ogre.sisk.pl ([127.0.0.1])
- by localhost (ogre.sisk.pl [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 10637-09; Thu, 14 Jul 2011 21:22:05 +0200 (CEST)
-Received: from ferrari.rjw.lan (220-bem-13.acn.waw.pl [82.210.184.220])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by ogre.sisk.pl (Postfix) with ESMTP id E53C91B0161;
-        Thu, 14 Jul 2011 21:22:05 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@sisk.pl>
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Subject: Re: Status of MIPS on 3.0.0-rc6 kernel
-Date:   Thu, 14 Jul 2011 21:51:24 +0200
-User-Agent: KMail/1.13.6 (Linux/3.0.0-rc7+; KDE/4.6.0; x86_64; ; )
-Cc:     Roland Vossen <rvossen@broadcom.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "devel@linuxdriverproject.org" <devel@linuxdriverproject.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-mips@linux-mips.org
-References: <4E1ECE3B.10308@broadcom.com> <CAOiHx=kznEFL1BELeg2psg9yw+=-A5reunG0VYTu89DGKwrSzA@mail.gmail.com>
-In-Reply-To: <CAOiHx=kznEFL1BELeg2psg9yw+=-A5reunG0VYTu89DGKwrSzA@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Jul 2011 22:37:45 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:46325 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491758Ab1GNUhh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 14 Jul 2011 22:37:37 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 49AA68C62;
+        Thu, 14 Jul 2011 22:37:36 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id eJbT3rlTFUog; Thu, 14 Jul 2011 22:37:29 +0200 (CEST)
+Received: from [192.168.0.152] (host-091-097-255-054.ewe-ip-backbone.de [91.97.255.54])
+        by hauke-m.de (Postfix) with ESMTPSA id 0C7888C4F;
+        Thu, 14 Jul 2011 22:37:27 +0200 (CEST)
+Message-ID: <4E1F5386.8020808@hauke-m.de>
+Date:   Thu, 14 Jul 2011 22:37:26 +0200
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110516 Lightning/1.0b2 Thunderbird/3.1.10
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+CC:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
+        zajec5@gmail.com, linux-mips@linux-mips.org, mb@bu3sch.de,
+        george@znau.edu.ua, arend@broadcom.com,
+        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
+        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com
+Subject: Re: [PATCH 04/11] bcma: add SOC bus
+References: <1310209563-6405-1-git-send-email-hauke@hauke-m.de> <1310209563-6405-5-git-send-email-hauke@hauke-m.de> <CAOiHx=n+sFWJ1WOwt-DBDMTNhZEH95MxkxOR-sQsKK1HkmmR9g@mail.gmail.com>
+In-Reply-To: <CAOiHx=n+sFWJ1WOwt-DBDMTNhZEH95MxkxOR-sQsKK1HkmmR9g@mail.gmail.com>
+X-Enigmail-Version: 1.1.2
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <201107142151.24763.rjw@sisk.pl>
-X-Virus-Scanned: amavisd-new at ogre.sisk.pl using MkS_Vir for Linux
-X-archive-position: 30622
+X-archive-position: 30623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rjw@sisk.pl
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10432
+X-UID: 10459
 
-On Thursday, July 14, 2011, Jonas Gorski wrote:
-> On 14 July 2011 13:08, Roland Vossen <rvossen@broadcom.com> wrote:
-> > Hi Jonas,
-> >
-> > The (defconfig) mips kernel fails to build, with the error message:
-> >
-> > arch/mips/kernel/i8259.c:240: error: unknown field 'resume' specified in
-> > initializer
-> >
-> > I read on https://lkml.org/lkml/2011/6/1/37 that Geert Uytterhoeven
-> > encountered the same issue on June 1st.
-> >
-> > Do you know if there are still known problems building a 3.0.0-rc6 MIPS
-> > kernel ?
+Hi Jonas,
+
+
+On 07/13/2011 09:36 PM, Jonas Gorski wrote:
+> Hi,
 > 
-> You probably could have found that out yourself quite easily [1] ;-)
+> some minor things I saw:
 > 
-> This is actually still a problem in rc7. Commit
-> 2e711c04dbbf7a7732a3f7073b1fc285d12b369d ("PM: Remove sysdev suspend,
-> resume and shutdown operations") broke it.
-> It's probably easily fixable by just removing the offending
-> .resume/.shutdown lines (and their referenced functions), but I don't
-> know the code (or PM) enough to know if some replacement is missing
-> there.
+> On 9 July 2011 13:05, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+>> This patch adds support for using bcma on a Broadcom SoC as the system
+>> bus. An SoC like the bcm4716 could register this bus and use it to
+>> searches for the bcma cores and register the devices on this bus.
+>>
+>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+>> ---
+>>  drivers/bcma/Kconfig          |    5 +
+>>  drivers/bcma/Makefile         |    1 +
+>>  drivers/bcma/host_soc.c       |  178 +++++++++++++++++++++++++++++++++++++++++
+>>  drivers/bcma/main.c           |    1 +
+>>  drivers/bcma/scan.c           |   24 +++++-
+>>  include/linux/bcma/bcma.h     |    4 +
+>>  include/linux/bcma/bcma_soc.h |   16 ++++
+>>  7 files changed, 227 insertions(+), 2 deletions(-)
+>>  create mode 100644 drivers/bcma/host_soc.c
+>>  create mode 100644 include/linux/bcma/bcma_soc.h
+>>
+>> diff --git a/drivers/bcma/Kconfig b/drivers/bcma/Kconfig
+>> index 353781b..8d82f42 100644
+>> --- a/drivers/bcma/Kconfig
+>> +++ b/drivers/bcma/Kconfig
+>> @@ -22,6 +22,11 @@ config BCMA_HOST_PCI
+>>        bool "Support for BCMA on PCI-host bus"
+>>        depends on BCMA_HOST_PCI_POSSIBLE
+>>
+>> +config BCMA_HOST_SOC
+>> +       bool
+>> +       depends on BCMA && MIPS
+>> +       default n
+> 
+> Default default is already "n", so this line is superfluous.
 
-Please check if the appended patch helps.
+Will remove this.
 
-Thanks,
-Rafael
+> 
+>> +
+>>  config BCMA_DEBUG
+>>        bool "BCMA debugging"
+>>        depends on BCMA
+>> diff --git a/drivers/bcma/Makefile b/drivers/bcma/Makefile
+>> index 0d56245..42d61dd 100644
+>> --- a/drivers/bcma/Makefile
+>> +++ b/drivers/bcma/Makefile
+>> @@ -2,6 +2,7 @@ bcma-y                                  += main.o scan.o core.o
+>>  bcma-y                                 += driver_chipcommon.o driver_chipcommon_pmu.o
+>>  bcma-y                                 += driver_pci.o
+>>  bcma-$(CONFIG_BCMA_HOST_PCI)           += host_pci.o
+>> +bcma-$(CONFIG_BCMA_HOST_SOC)           += host_soc.o
+>>  obj-$(CONFIG_BCMA)                     += bcma.o
+>>
+>>  ccflags-$(CONFIG_BCMA_DEBUG)           := -DDEBUG
+>> diff --git a/drivers/bcma/host_soc.c b/drivers/bcma/host_soc.c
+>> new file mode 100644
+>> index 0000000..a6fe724
+>> --- /dev/null
+>> +++ b/drivers/bcma/host_soc.c
+>> @@ -0,0 +1,178 @@
+>> +/*
+>> + * Broadcom specific AMBA
+>> + * System on Chip (SoC) Host
+>> + *
+>> + * Licensed under the GNU/GPL. See COPYING for details.
+>> + */
+>> +
+>> +#include "bcma_private.h"
+>> +#include "scan.h"
+>> +#include <linux/bcma/bcma.h>
+>> +#include <linux/bcma/bcma_soc.h>
+>> +
+>> +static u8 bcma_host_soc_read8(struct bcma_device *core, u16 offset)
+>> +{
+>> +       return readb(core->io_addr + offset);
+>> +}
+>> +
+>> +static u16 bcma_host_soc_read16(struct bcma_device *core, u16 offset)
+>> +{
+>> +       return readw(core->io_addr + offset);
+>> +}
+>> +
+>> +static u32 bcma_host_soc_read32(struct bcma_device *core, u16 offset)
+>> +{
+>> +       return readl(core->io_addr + offset);
+>> +}
+>> +
+>> +static void bcma_host_soc_write8(struct bcma_device *core, u16 offset,
+>> +                                u8 value)
+>> +{
+>> +       writeb(value, core->io_addr + offset);
+>> +}
+>> +
+>> +static void bcma_host_soc_write16(struct bcma_device *core, u16 offset,
+>> +                                u16 value)
+>> +{
+>> +       writew(value, core->io_addr + offset);
+>> +}
+>> +
+>> +static void bcma_host_soc_write32(struct bcma_device *core, u16 offset,
+>> +                                u32 value)
+>> +{
+>> +       writel(value, core->io_addr + offset);
+>> +}
+>> +
+>> +#ifdef CONFIG_BCMA_BLOCKIO
+>> +static void bcma_host_soc_block_read(struct bcma_device *core, void *buffer,
+>> +                                    size_t count, u16 offset, u8 reg_width)
+>> +{
+>> +       void __iomem *addr = core->io_addr + offset;
+>> +
+>> +       switch (reg_width) {
+>> +       case sizeof(u8): {
+>> +               u8 *buf = buffer;
+>> +
+>> +               while (count) {
+>> +                       *buf = __raw_readb(addr);
+>> +                       buf++;
+>> +                       count--;
+>> +               }
+>> +               break;
+>> +       }
+>> +       case sizeof(u16): {
+>> +               __le16 *buf = buffer;
+>> +
+>> +               WARN_ON(count & 1);
+>> +               while (count) {
+>> +                       *buf = (__force __le16)__raw_readw(addr);
+>> +                       buf++;
+>> +                       count -= 2;
+>> +               }
+>> +               break;
+>> +       }
+>> +       case sizeof(u32): {
+>> +               __le32 *buf = buffer;
+>> +
+>> +               WARN_ON(count & 3);
+>> +               while (count) {
+>> +                       *buf = (__force __le32)__raw_readl(addr);
+>> +                       buf++;
+>> +                       count -= 4;
+>> +               }
+>> +               break;
+>> +       }
+>> +       default:
+>> +               WARN_ON(1);
+>> +       }
+>> +}
+>> +
+>> +static void bcma_host_soc_block_write(struct bcma_device *core,
+>> +                                     const void *buffer,
+>> +                                     size_t count, u16 offset, u8 reg_width)
+>> +{
+>> +       void __iomem *addr = core->io_addr + offset;
+>> +
+>> +       switch (reg_width) {
+>> +       case sizeof(u8): {
+>> +               const u8 *buf = buffer;
+>> +
+>> +               while (count) {
+>> +                       __raw_writeb(*buf, addr);
+>> +                       buf++;
+>> +                       count--;
+>> +               }
+>> +               break;
+>> +       }
+>> +       case sizeof(u16): {
+>> +               const __le16 *buf = buffer;
+>> +
+>> +               WARN_ON(count & 1);
+>> +               while (count) {
+>> +                       __raw_writew((__force u16)(*buf), addr);
+>> +                       buf++;
+>> +                       count -= 2;
+>> +               }
+>> +               break;
+>> +       }
+>> +       case sizeof(u32): {
+>> +               const __le32 *buf = buffer;
+>> +
+>> +               WARN_ON(count & 3);
+>> +               while (count) {
+>> +                       __raw_writel((__force u32)(*buf), addr);
+>> +                       buf++;
+>> +                       count -= 4;
+>> +               }
+>> +               break;
+>> +       }
+>> +       default:
+>> +               WARN_ON(1);
+>> +       }
+>> +}
+>> +#endif /* CONFIG_BCMA_BLOCKIO */
+>> +
+>> +static u32 bcma_host_soc_aread32(struct bcma_device *core, u16 offset)
+>> +{
+>> +       return readl(core->io_wrap + offset);
+>> +}
+>> +
+>> +static void bcma_host_soc_awrite32(struct bcma_device *core, u16 offset,
+>> +                                 u32 value)
+>> +{
+>> +       writel(value, core->io_wrap + offset);
+>> +}
+>> +
+>> +const struct bcma_host_ops bcma_host_soc_ops = {
+>> +       .read8          = bcma_host_soc_read8,
+>> +       .read16         = bcma_host_soc_read16,
+>> +       .read32         = bcma_host_soc_read32,
+>> +       .write8         = bcma_host_soc_write8,
+>> +       .write16        = bcma_host_soc_write16,
+>> +       .write32        = bcma_host_soc_write32,
+>> +#ifdef CONFIG_BCMA_BLOCKIO
+>> +       .block_read     = bcma_host_soc_block_read,
+>> +       .block_write    = bcma_host_soc_block_write,
+>> +#endif
+>> +       .aread32        = bcma_host_soc_aread32,
+>> +       .awrite32       = bcma_host_soc_awrite32,
+>> +};
+>> +
+>> +int __init bcma_host_soc_register(struct bcma_soc *soc)
+>> +{
+>> +       struct bcma_bus *bus = &soc->bus;
+>> +
+>> +       /* iomap only first core. We have to read some register on this core
+>> +        * to scan the bus.
+>> +        */
+>> +       bus->mmio = ioremap(BCMA_ADDR_BASE, BCMA_CORE_SIZE * 1);
+>> +       if (!bus->mmio)
+>> +               return -ENOMEM;
+>> +
+>> +       /* Host specific */
+>> +       bus->hosttype = BCMA_HOSTTYPE_SOC;
+>> +       bus->ops = &bcma_host_soc_ops;
+>> +
+>> +       /* Register */
+>> +       return bcma_bus_early_register(bus, &soc->core_cc, &soc->core_mips);
+>> +}
+>> diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+>> index e6c308c..2ca5eeb 100644
+>> --- a/drivers/bcma/main.c
+>> +++ b/drivers/bcma/main.c
+>> @@ -92,6 +92,7 @@ static int bcma_register_cores(struct bcma_bus *bus)
+>>                        break;
+>>                case BCMA_HOSTTYPE_NONE:
+>>                case BCMA_HOSTTYPE_SDIO:
+>> +               case BCMA_HOSTTYPE_SOC:
+>>                        break;
+>>                }
+>>
+>> diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+>> index bf9f806..202edc8 100644
+>> --- a/drivers/bcma/scan.c
+>> +++ b/drivers/bcma/scan.c
+>> @@ -337,6 +337,14 @@ static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
+>>                        }
+>>                }
+>>        }
+>> +       if (bus->hosttype == BCMA_HOSTTYPE_SOC) {
+>> +               core->io_addr = ioremap(core->addr, BCMA_CORE_SIZE);
+>> +               if (!core->io_addr)
+>> +                       return -ENOMEM;
+>> +               core->io_wrap = ioremap(core->wrap, BCMA_CORE_SIZE);
+>> +               if (!core->io_wrap)
+>> +                       return -ENOMEM;
+> 
+> Shouldn't you unmap core->io_addr if remapping io_wrap fails?
 
----
-From: Rafael J. Wysocki <rjw@sisk.pl>
-Subject: MIPS: Convert i8259.c to using syscore_ops
-
-The code in arch/mips/kernel/i8259.c still hasn't been converted to
-using struct syscore_ops instead of a sysdev for resume and shutdown.
-As a result, this code doesn't build any more after suspend, resume
-and shutdown callbacks have been removed from struct sysdev_class.
-Fix this problem by converting i8259.c to using syscore_ops.
-
-Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
----
- arch/mips/kernel/i8259.c |   22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
-
-Index: linux-2.6/arch/mips/kernel/i8259.c
-===================================================================
---- linux-2.6.orig/arch/mips/kernel/i8259.c
-+++ linux-2.6/arch/mips/kernel/i8259.c
-@@ -14,7 +14,7 @@
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/spinlock.h>
--#include <linux/sysdev.h>
-+#include <linux/syscore_ops.h>
- #include <linux/irq.h>
- 
- #include <asm/i8259.h>
-@@ -215,14 +215,13 @@ spurious_8259A_irq:
- 	}
- }
- 
--static int i8259A_resume(struct sys_device *dev)
-+static void i8259A_resume(void)
- {
- 	if (i8259A_auto_eoi >= 0)
- 		init_8259A(i8259A_auto_eoi);
--	return 0;
- }
- 
--static int i8259A_shutdown(struct sys_device *dev)
-+static void i8259A_shutdown(void)
- {
- 	/* Put the i8259A into a quiescent state that
- 	 * the kernel initialization code can get it
-@@ -232,26 +231,17 @@ static int i8259A_shutdown(struct sys_de
- 		outb(0xff, PIC_MASTER_IMR);	/* mask all of 8259A-1 */
- 		outb(0xff, PIC_SLAVE_IMR);	/* mask all of 8259A-1 */
- 	}
--	return 0;
- }
- 
--static struct sysdev_class i8259_sysdev_class = {
--	.name = "i8259",
-+static struct syscore_ops i8259_syscore_ops = {
- 	.resume = i8259A_resume,
- 	.shutdown = i8259A_shutdown,
- };
- 
--static struct sys_device device_i8259A = {
--	.id	= 0,
--	.cls	= &i8259_sysdev_class,
--};
--
- static int __init i8259A_init_sysfs(void)
- {
--	int error = sysdev_class_register(&i8259_sysdev_class);
--	if (!error)
--		error = sysdev_register(&device_i8259A);
--	return error;
-+	register_syscore_ops(&i8259_syscore_ops);
-+	return 0;
- }
- 
- device_initcall(i8259A_init_sysfs);
+Ok I will add iounmap() on the error path and when the core is freed.
+> 
+>> +       }
+>>        return 0;
+>>  }
+>>
+>> @@ -369,7 +377,13 @@ int bcma_bus_scan(struct bcma_bus *bus)
+>>        bcma_init_bus(bus);
+>>
+>>        erombase = bcma_scan_read32(bus, 0, BCMA_CC_EROM);
+>> -       eromptr = bus->mmio;
+>> +       if (bus->hosttype == BCMA_HOSTTYPE_SOC) {
+>> +               eromptr = ioremap(erombase, BCMA_CORE_SIZE);
+>> +               if (!eromptr)
+>> +                       return -ENOMEM;
+>> +       } else
+>> +               eromptr = bus->mmio;
+> 
+> Documentation/CodingStyle says use braces in both branches if one needs them.
+Will fix this.
+> 
+>> +
+>>        eromend = eromptr + BCMA_CORE_SIZE / sizeof(u32);
+>>
+>>        bcma_scan_switch_core(bus, erombase);
+>> @@ -417,7 +431,13 @@ int __init bcma_bus_scan_early(struct bcma_bus *bus,
+>>        int err, core_num = 0;
+>>
+>>        erombase = bcma_scan_read32(bus, 0, BCMA_CC_EROM);
+>> -       eromptr = bus->mmio;
+>> +       if (bus->hosttype == BCMA_HOSTTYPE_SOC) {
+>> +               eromptr = ioremap(erombase, BCMA_CORE_SIZE);
+>> +               if (!eromptr)
+>> +                       return -ENOMEM;
+>> +       } else
+>> +               eromptr = bus->mmio;
+> 
+> Ditto.
+> 
+>> +
+>>        eromend = eromptr + BCMA_CORE_SIZE / sizeof(u32);
+>>
+>>        bcma_scan_switch_core(bus, erombase);
+>> diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
+>> index 6bd7b7f..73fda1c 100644
+>> --- a/include/linux/bcma/bcma.h
+>> +++ b/include/linux/bcma/bcma.h
+>> @@ -16,6 +16,7 @@ enum bcma_hosttype {
+>>        BCMA_HOSTTYPE_NONE,
+>>        BCMA_HOSTTYPE_PCI,
+>>        BCMA_HOSTTYPE_SDIO,
+>> +       BCMA_HOSTTYPE_SOC,
+>>  };
+>>
+>>  struct bcma_chipinfo {
+>> @@ -124,6 +125,9 @@ struct bcma_device {
+>>        u32 addr;
+>>        u32 wrap;
+>>
+>> +       void __iomem *io_addr;
+>> +       void __iomem *io_wrap;
+>> +
+>>        void *drvdata;
+>>        struct list_head list;
+>>  };
+>> diff --git a/include/linux/bcma/bcma_soc.h b/include/linux/bcma/bcma_soc.h
+>> new file mode 100644
+>> index 0000000..4203c55
+>> --- /dev/null
+>> +++ b/include/linux/bcma/bcma_soc.h
+>> @@ -0,0 +1,16 @@
+>> +#ifndef LINUX_BCMA_SOC_H_
+>> +#define LINUX_BCMA_SOC_H_
+>> +
+>> +#include <linux/bcma/bcma.h>
+>> +
+>> +struct bcma_soc {
+>> +       struct bcma_bus bus;
+>> +       struct bcma_device core_cc;
+>> +       struct bcma_device core_mips;
+>> +};
+>> +
+>> +int __init bcma_host_soc_register(struct bcma_soc *soc);
+>> +
+>> +int bcma_bus_register(struct bcma_bus *bus);
+>> +
+>> +#endif /* LINUX_BCMA_SOC_H_ */
+>> --
+>> 1.7.4.1

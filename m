@@ -1,99 +1,139 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2011 19:45:02 +0200 (CEST)
-Received: from mail-pz0-f53.google.com ([209.85.210.53]:54058 "EHLO
-        mail-pz0-f53.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491803Ab1GORoz convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jul 2011 19:44:55 +0200
-Received: by pzk6 with SMTP id 6so1939552pzk.26
-        for <linux-mips@linux-mips.org>; Fri, 15 Jul 2011 10:44:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=fNGFwPa5t58uTJJWiyhaQcgxbBpkxw/KVuINtbdUJCU=;
-        b=kjhPiZP/OUnAD4GKLWxhl95vrzsgczJsNWgF37CuazITYm4zzWs/0D+dC6/IXKxIuy
-         v31hxwotaYJcsANVQUJs5A6s9iHP5t1l3JenwNdd7SsR1X/1EKgiaXGHy0OMzkFPy4hI
-         M4zBXLgHCePm2WWptDRt+FHVYhlBWTyfiDXMo=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2011 23:52:57 +0200 (CEST)
+Received: from ogre.sisk.pl ([217.79.144.158]:57558 "EHLO ogre.sisk.pl"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1490945Ab1GOVwv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 15 Jul 2011 23:52:51 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by ogre.sisk.pl (Postfix) with ESMTP id 50E161B0824;
+        Fri, 15 Jul 2011 23:24:16 +0200 (CEST)
+Received: from ogre.sisk.pl ([127.0.0.1])
+ by localhost (ogre.sisk.pl [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 19052-08; Fri, 15 Jul 2011 23:23:55 +0200 (CEST)
+Received: from ferrari.rjw.lan (220-bem-13.acn.waw.pl [82.210.184.220])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by ogre.sisk.pl (Postfix) with ESMTP id EC2601B06B5;
+        Fri, 15 Jul 2011 23:23:54 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@sisk.pl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] MIPS: Convert i8259.c to using syscore_ops (was: Re: Status of MIPS on 3.0.0-rc6 kernel)
+Date:   Fri, 15 Jul 2011 23:53:37 +0200
+User-Agent: KMail/1.13.6 (Linux/3.0.0-rc7+; KDE/4.6.0; x86_64; ; )
+Cc:     "Roland Vossen" <rvossen@broadcom.com>,
+        "Jonas Gorski" <jonas.gorski@gmail.com>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>,
+        "devel@linuxdriverproject.org" <devel@linuxdriverproject.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Linux PM mailing list <linux-pm@lists.linux-foundation.org>
+References: <4E1ECE3B.10308@broadcom.com> <201107142151.24763.rjw@sisk.pl> <4E2032D7.9000704@broadcom.com>
+In-Reply-To: <4E2032D7.9000704@broadcom.com>
 MIME-Version: 1.0
-Received: by 10.68.57.71 with SMTP id g7mr4772586pbq.447.1310751888718; Fri,
- 15 Jul 2011 10:44:48 -0700 (PDT)
-Received: by 10.68.54.131 with HTTP; Fri, 15 Jul 2011 10:44:48 -0700 (PDT)
-In-Reply-To: <CALGOZk2M8Hn_EA+Mqg3frZzLGZgr0bbj3VV8mUqUB1taCdwXJg@mail.gmail.com>
-References: <CALGOZk2M8Hn_EA+Mqg3frZzLGZgr0bbj3VV8mUqUB1taCdwXJg@mail.gmail.com>
-Date:   Fri, 15 Jul 2011 10:44:48 -0700
-Message-ID: <CAJiQ=7Chq8zP9LHLvnQ_3Hi-YSD4PTbxT73ZLc=M2jLSZpW_cA@mail.gmail.com>
-Subject: Re: Confusion with vmlinux objcopy translation
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     David Peverley <pev@sketchymonkey.com>
-Cc:     linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30629
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201107152353.38004.rjw@sisk.pl>
+X-Virus-Scanned: amavisd-new at ogre.sisk.pl using MkS_Vir for Linux
+X-archive-position: 30630
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: rjw@sisk.pl
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11237
+X-UID: 11462
 
-On Fri, Jul 15, 2011 at 7:56 AM, David Peverley <pev@sketchymonkey.com> wrote:
-> Checking via GDB to see what the code looks like :
->  (gdb) disassemble kernel_entry
->  Dump of assembler code for function kernel_entry:
->  0x80504590 <kernel_entry+0>:    add    %ah,0x8(%eax)
->  0x80504593 <kernel_entry+3>:    inc    %eax
+On Friday, July 15, 2011, Roland Vossen wrote:
+> > Please check if the appended patch helps.
+> 
+> It does, I am able to build a big endian MIPS kernel now. Can you notify 
+> me if you submit this patch ?
 
-In the future, you may want to use "disass/r kernel_entry" to see the
-hex instructions, and correlate that output to what you see in the
-file.
+Well, it's been submitted already. :-)
 
-It would also be helpful to use a cross gdb built for MIPS.
+Ralf, the appended patch is necessary to fix build on MIPS due to a
+missing conversion to syscore_ops.  Please take it to your tree or
+let me know if you want me to push it myself.
 
-But the "objdump -d" output is probably enough to go on.  e.g.
-mipsel-percello-linux-gnu-objdump -d vmlinux | grep -A5
-'kernel_entry.:'
+Thanks,
+Rafael
 
-> I then convert this vmlinux file to a binary image :
->  $ mipsel-percello-linux-gnu-objcopy -O binary ./vmlinux ./vmlinux.bin.test
->
-> and then hexdump to see what's at the kernel_entry offset :
->  $ xxd -g xxd -g 4 -s 0x4550 -l 0x80 ./vmlinux.bin.test
->  0004550: 00600840 0010013c 1f002134 25400101  .`.@...<..!4%@..
->  0004560: 1f000839 00608840 c0000000 5080083c  ...9.`.@....P..<
->  0004570: bc450825 08000001 00000000 9c80083c  .E.%...........<
->  0004580: 00700825 000000ad a180093c dcb22925  .p.%.......<..)%
->  0004590: 04000825 feff0915 000000ad 9c80013c  ...%...........<
->  00045a0: 647624ac 9c80013c 687625ac 9c80013c  dv$....<hv%....<
->  00045b0: 6c7626ac 9c80013c 707627ac 00208040  lv&....<pv'.. .@
->  00045c0: 96801c3c 00609c27 e01f1d24 21e8bc03  ...<.`.'...$!...
->
-> The code for kernel_entry seems to be at an offset of 0x0004550. This
-> is -0x40 bytes below where I'd expected! Am I missing something? I can
-> confirm this by using my bootloader to load vmlinux.bin a
-> (load_address + 0x40) and it runs just fine.
+---
+From: Rafael J. Wysocki <rjw@sisk.pl>
+Subject: MIPS: Convert i8259.c to using syscore_ops
 
-I think the key here is the load address of the first ELF section.
->From the objcopy man page:
+The code in arch/mips/kernel/i8259.c still hasn't been converted to
+using struct syscore_ops instead of a sysdev for resume and shutdown.
+As a result, this code doesn't build any more after suspend, resume
+and shutdown callbacks have been removed from struct sysdev_class.
+Fix this problem by converting i8259.c to using syscore_ops.
 
-"objcopy can be used to generate a raw binary file by using an output
-target of binary (e.g., use -O binary).  When objcopy generates a raw
-binary file, it will essentially produce a memory dump of the contents
-of the input object file.  All symbols and relocation information will
-be discarded.  The memory dump will start at the load address of the
-lowest section copied into the output file."
+Reported-and-tested-by: Roland Vossen <rvossen@broadcom.com>
+Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+---
+ arch/mips/kernel/i8259.c |   22 ++++++----------------
+ 1 file changed, 6 insertions(+), 16 deletions(-)
 
-So, the kernel_entry address really does not matter in this context.
-Although obviously it's good to know whether the kernel_entry code is
-getting loaded into the right memory location.
-
-Posting the output from "objdump -x vmlinux" (or maybe even a URL from
-which to download your vmlinux file) may help shed light on what is
-happening.
-
-BTW: I enable CONFIG_BOOT_RAW on my images so that I don't have to
-worry about finding the ELF start address after converting vmlinux
-into a raw binary image.  This lets me jump to a fixed start address,
-even if the address of kernel_entry moves around.
+Index: linux-2.6/arch/mips/kernel/i8259.c
+===================================================================
+--- linux-2.6.orig/arch/mips/kernel/i8259.c
++++ linux-2.6/arch/mips/kernel/i8259.c
+@@ -14,7 +14,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/spinlock.h>
+-#include <linux/sysdev.h>
++#include <linux/syscore_ops.h>
+ #include <linux/irq.h>
+ 
+ #include <asm/i8259.h>
+@@ -215,14 +215,13 @@ spurious_8259A_irq:
+ 	}
+ }
+ 
+-static int i8259A_resume(struct sys_device *dev)
++static void i8259A_resume(void)
+ {
+ 	if (i8259A_auto_eoi >= 0)
+ 		init_8259A(i8259A_auto_eoi);
+-	return 0;
+ }
+ 
+-static int i8259A_shutdown(struct sys_device *dev)
++static void i8259A_shutdown(void)
+ {
+ 	/* Put the i8259A into a quiescent state that
+ 	 * the kernel initialization code can get it
+@@ -232,26 +231,17 @@ static int i8259A_shutdown(struct sys_de
+ 		outb(0xff, PIC_MASTER_IMR);	/* mask all of 8259A-1 */
+ 		outb(0xff, PIC_SLAVE_IMR);	/* mask all of 8259A-1 */
+ 	}
+-	return 0;
+ }
+ 
+-static struct sysdev_class i8259_sysdev_class = {
+-	.name = "i8259",
++static struct syscore_ops i8259_syscore_ops = {
+ 	.resume = i8259A_resume,
+ 	.shutdown = i8259A_shutdown,
+ };
+ 
+-static struct sys_device device_i8259A = {
+-	.id	= 0,
+-	.cls	= &i8259_sysdev_class,
+-};
+-
+ static int __init i8259A_init_sysfs(void)
+ {
+-	int error = sysdev_class_register(&i8259_sysdev_class);
+-	if (!error)
+-		error = sysdev_register(&device_i8259A);
+-	return error;
++	register_syscore_ops(&i8259_syscore_ops);
++	return 0;
+ }
+ 
+ device_initcall(i8259A_init_sysfs);
+ 

@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2011 18:56:11 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:50798 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2011 18:56:46 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:50814 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491025Ab1GPQ4E (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jul 2011 18:56:04 +0200
+        with ESMTP id S1491028Ab1GPQ4F (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jul 2011 18:56:05 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id EAF778C65;
-        Sat, 16 Jul 2011 18:56:02 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 0027F8C66;
+        Sat, 16 Jul 2011 18:56:05 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 5QLY0lkwAV2b; Sat, 16 Jul 2011 18:55:59 +0200 (CEST)
+        with ESMTP id 71n9X2sViqCg; Sat, 16 Jul 2011 18:56:00 +0200 (CEST)
 Received: from localhost.localdomain (host-091-097-255-051.ewe-ip-backbone.de [91.97.255.51])
-        by hauke-m.de (Postfix) with ESMTPSA id 67D2B8C4F;
-        Sat, 16 Jul 2011 18:55:58 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 734258C62;
+        Sat, 16 Jul 2011 18:55:59 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
         zajec5@gmail.com, linux-mips@linux-mips.org
@@ -21,14 +21,13 @@ Cc:     jonas.gorski@gmail.com, mb@bu3sch.de, george@znau.edu.ua,
         bernhardloos@googlemail.com, arnd@arndb.de,
         julian.calaby@gmail.com, sshtylyov@mvista.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: =?UTF-8?q?=5BPATCH=20v2=2000/11=5D=20bcma=3A=20add=20support=20for=20embedded=20devices=20like=20bcm4716?=
-Date:   Sat, 16 Jul 2011 18:55:31 +0200
-Message-Id: <1310835342-18877-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH v2 01/11] bcma: move parsing of EEPROM into own function.
+Date:   Sat, 16 Jul 2011 18:55:32 +0200
+Message-Id: <1310835342-18877-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 30631
+In-Reply-To: <1310835342-18877-1-git-send-email-hauke@hauke-m.de>
+References: <1310835342-18877-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 30632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,108 +36,278 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11702
+X-UID: 11703
 
-This patch series adds support for embedded devices like bcm47xx to 
-bcma. Bcma is used on bcm4716 and bcm4718 SoCs as the system bus and
-replaced ssb used on older devices. With these patches my bcm4716 
-device boots up till it tries to access the flash, because the serial 
-flash chip is unsupported for now, this will be my next task. This adds 
-support for MIPS cores, interrupt configuration and the serial console.
+Move the parsing of the EEPROM data in scan function for one core into
+an own function. Now we are able to use it in some other scan function
+as well.
 
-These patches are not containing all functions needed to get the SoC to 
-fully work and support every feature, but it is a good start.
-These patches are now integrated in OpenWrt for everyone how wants to
-test them.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ drivers/bcma/scan.c |  230 ++++++++++++++++++++++++++-------------------------
+ 1 files changed, 118 insertions(+), 112 deletions(-)
 
-This was tested with a BCM4704 device (SoC with ssb bus), a BCM4716 
-device and a pcie wireless card supported by bcma.
-
-
-@Rafał: If you are fine with the bcma patches could you please give
-your Signed-off on them.
-
-@Ralf: Could you please merger this into the mips tree so that it will be in linux-3.1.
-
-PATCH v2:
- * define inline function bcma_core_mips_init() if mips driver is not build
- * iounmap core->io_wrap and core->io_addr after it was used.
- * update bcma based on new braodcom driver code
-   * add workaround for 5357b0
- * move flash informations into own struct and store it in chipcommon.
-   When adding serial flash support it will be in chipcommon and then all flash structs should be there.
- * some changes to bcma_chipco_serial_init()
-  * some changes are done after looking into a more recent version of broadcom driver.
-  * changes suggested by Jonas
-  * serial struct is in chipcommon as it is accessed through chipcommon.
-  * use bcma_pmu_alp_clock() to get the clock.
- * cpu clock: add detection support for some newer SoCs.
-
-PATCH v1:
- * rebased on mips tree (mips/queue)
- * drop pcie hostmode patch as Rafał sent a better patch to wireless mailing list
- * drop sprom patch because sprom is not supported in bcma version from mips tree,
-     I will send a separate patch to wireless mailing list.
- * fix compilation of arch/mips/bcm47xx/wgt634u.c
- * fix texts in arch/mips/bcm47xx/Kconfig
-RFC v3:
- * make bcm47xx built either with bcma, ssb or both and use mips MIPS 74K optimizations if possible
- * add block io support
- * some minor fixes for code and doku
-RFC v2:
- * use list and no arry to store cores
- * rename bcma_host_bcma_ to bcma_host_soc_
- * use core->io_addr and core->io_wrap to access cores
- * checkpatch fixes
- * some minor fixes
-
-Hauke Mehrtens (11):
-  bcma: move parsing of EEPROM into own function.
-  bcma: move initializing of struct bcma_bus to own function.
-  bcma: add functions to scan cores needed on SoCs
-  bcma: add SOC bus
-  bcma: add mips driver
-  bcma: add serial console support
-  bcma: get CPU clock
-  bcm47xx: prepare to support different buses
-  bcm47xx: make it possible to build bcm47xx without ssb.
-  bcm47xx: add support for bcma bus
-  bcm47xx: fix irq assignment for new SoCs.
-
- arch/mips/Kconfig                            |    8 +-
- arch/mips/bcm47xx/Kconfig                    |   31 +++
- arch/mips/bcm47xx/Makefile                   |    3 +-
- arch/mips/bcm47xx/gpio.c                     |   82 +++++--
- arch/mips/bcm47xx/irq.c                      |   12 +
- arch/mips/bcm47xx/nvram.c                    |   29 ++-
- arch/mips/bcm47xx/serial.c                   |   46 ++++-
- arch/mips/bcm47xx/setup.c                    |   90 ++++++-
- arch/mips/bcm47xx/time.c                     |   16 +-
- arch/mips/bcm47xx/wgt634u.c                  |   14 +-
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |   26 ++-
- arch/mips/include/asm/mach-bcm47xx/gpio.h    |  108 +++++++--
- arch/mips/pci/pci-bcm47xx.c                  |    6 +
- drivers/bcma/Kconfig                         |   13 +
- drivers/bcma/Makefile                        |    2 +
- drivers/bcma/bcma_private.h                  |   18 ++
- drivers/bcma/driver_chipcommon.c             |   53 ++++
- drivers/bcma/driver_chipcommon_pmu.c         |  133 ++++++++++
- drivers/bcma/driver_mips.c                   |  256 +++++++++++++++++++
- drivers/bcma/driver_pci.c                    |    3 +
- drivers/bcma/host_soc.c                      |  183 ++++++++++++++
- drivers/bcma/main.c                          |   65 +++++
- drivers/bcma/scan.c                          |  348 ++++++++++++++++++--------
- drivers/watchdog/bcm47xx_wdt.c               |   27 ++-
- include/linux/bcma/bcma.h                    |    8 +
- include/linux/bcma/bcma_driver_chipcommon.h  |   67 +++++
- include/linux/bcma/bcma_driver_mips.h        |   51 ++++
- include/linux/bcma/bcma_soc.h                |   16 ++
- 28 files changed, 1535 insertions(+), 179 deletions(-)
- create mode 100644 arch/mips/bcm47xx/Kconfig
- create mode 100644 drivers/bcma/driver_mips.c
- create mode 100644 drivers/bcma/host_soc.c
- create mode 100644 include/linux/bcma/bcma_driver_mips.h
- create mode 100644 include/linux/bcma/bcma_soc.h
-
+diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+index 40d7dcc..4012d8d 100644
+--- a/drivers/bcma/scan.c
++++ b/drivers/bcma/scan.c
+@@ -200,16 +200,124 @@ static s32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 **eromptr,
+ 	return addrl;
+ }
+ 
++static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
++			      struct bcma_device *core)
++{
++	s32 tmp;
++	u8 i, j;
++	s32 cia, cib;
++	u8 ports[2], wrappers[2];
++
++	/* get CIs */
++	cia = bcma_erom_get_ci(bus, eromptr);
++	if (cia < 0) {
++		bcma_erom_push_ent(eromptr);
++		if (bcma_erom_is_end(bus, eromptr))
++			return -ESPIPE;
++		return -EILSEQ;
++	}
++	cib = bcma_erom_get_ci(bus, eromptr);
++	if (cib < 0)
++		return -EILSEQ;
++
++	/* parse CIs */
++	core->id.class = (cia & SCAN_CIA_CLASS) >> SCAN_CIA_CLASS_SHIFT;
++	core->id.id = (cia & SCAN_CIA_ID) >> SCAN_CIA_ID_SHIFT;
++	core->id.manuf = (cia & SCAN_CIA_MANUF) >> SCAN_CIA_MANUF_SHIFT;
++	ports[0] = (cib & SCAN_CIB_NMP) >> SCAN_CIB_NMP_SHIFT;
++	ports[1] = (cib & SCAN_CIB_NSP) >> SCAN_CIB_NSP_SHIFT;
++	wrappers[0] = (cib & SCAN_CIB_NMW) >> SCAN_CIB_NMW_SHIFT;
++	wrappers[1] = (cib & SCAN_CIB_NSW) >> SCAN_CIB_NSW_SHIFT;
++	core->id.rev = (cib & SCAN_CIB_REV) >> SCAN_CIB_REV_SHIFT;
++
++	if (((core->id.manuf == BCMA_MANUF_ARM) &&
++	     (core->id.id == 0xFFF)) ||
++	    (ports[1] == 0)) {
++		bcma_erom_skip_component(bus, eromptr);
++		return -ENXIO;
++	}
++
++	/* check if component is a core at all */
++	if (wrappers[0] + wrappers[1] == 0) {
++		/* we could save addrl of the router
++		if (cid == BCMA_CORE_OOB_ROUTER)
++		 */
++		bcma_erom_skip_component(bus, eromptr);
++		return -ENXIO;
++	}
++
++	if (bcma_erom_is_bridge(bus, eromptr)) {
++		bcma_erom_skip_component(bus, eromptr);
++		return -ENXIO;
++	}
++
++	/* get & parse master ports */
++	for (i = 0; i < ports[0]; i++) {
++		u32 mst_port_d = bcma_erom_get_mst_port(bus, eromptr);
++		if (mst_port_d < 0)
++			return -EILSEQ;
++	}
++
++	/* get & parse slave ports */
++	for (i = 0; i < ports[1]; i++) {
++		for (j = 0; ; j++) {
++			tmp = bcma_erom_get_addr_desc(bus, eromptr,
++				SCAN_ADDR_TYPE_SLAVE, i);
++			if (tmp < 0) {
++				/* no more entries for port _i_ */
++				/* pr_debug("erom: slave port %d "
++				 * "has %d descriptors\n", i, j); */
++				break;
++			} else {
++				if (i == 0 && j == 0)
++					core->addr = tmp;
++			}
++		}
++	}
++
++	/* get & parse master wrappers */
++	for (i = 0; i < wrappers[0]; i++) {
++		for (j = 0; ; j++) {
++			tmp = bcma_erom_get_addr_desc(bus, eromptr,
++				SCAN_ADDR_TYPE_MWRAP, i);
++			if (tmp < 0) {
++				/* no more entries for port _i_ */
++				/* pr_debug("erom: master wrapper %d "
++				 * "has %d descriptors\n", i, j); */
++				break;
++			} else {
++				if (i == 0 && j == 0)
++					core->wrap = tmp;
++			}
++		}
++	}
++
++	/* get & parse slave wrappers */
++	for (i = 0; i < wrappers[1]; i++) {
++		u8 hack = (ports[1] == 1) ? 0 : 1;
++		for (j = 0; ; j++) {
++			tmp = bcma_erom_get_addr_desc(bus, eromptr,
++				SCAN_ADDR_TYPE_SWRAP, i + hack);
++			if (tmp < 0) {
++				/* no more entries for port _i_ */
++				/* pr_debug("erom: master wrapper %d "
++				 * has %d descriptors\n", i, j); */
++				break;
++			} else {
++				if (wrappers[0] == 0 && !i && !j)
++					core->wrap = tmp;
++			}
++		}
++	}
++	return 0;
++}
++
+ int bcma_bus_scan(struct bcma_bus *bus)
+ {
+ 	u32 erombase;
+ 	u32 __iomem *eromptr, *eromend;
+ 
+-	s32 cia, cib;
+-	u8 ports[2], wrappers[2];
+-
+ 	s32 tmp;
+-	u8 i, j;
+ 
+ 	int err;
+ 
+@@ -236,112 +344,13 @@ int bcma_bus_scan(struct bcma_bus *bus)
+ 		INIT_LIST_HEAD(&core->list);
+ 		core->bus = bus;
+ 
+-		/* get CIs */
+-		cia = bcma_erom_get_ci(bus, &eromptr);
+-		if (cia < 0) {
+-			bcma_erom_push_ent(&eromptr);
+-			if (bcma_erom_is_end(bus, &eromptr))
+-				break;
+-			err= -EILSEQ;
+-			goto out;
+-		}
+-		cib = bcma_erom_get_ci(bus, &eromptr);
+-		if (cib < 0) {
+-			err= -EILSEQ;
+-			goto out;
+-		}
+-
+-		/* parse CIs */
+-		core->id.class = (cia & SCAN_CIA_CLASS) >> SCAN_CIA_CLASS_SHIFT;
+-		core->id.id = (cia & SCAN_CIA_ID) >> SCAN_CIA_ID_SHIFT;
+-		core->id.manuf = (cia & SCAN_CIA_MANUF) >> SCAN_CIA_MANUF_SHIFT;
+-		ports[0] = (cib & SCAN_CIB_NMP) >> SCAN_CIB_NMP_SHIFT;
+-		ports[1] = (cib & SCAN_CIB_NSP) >> SCAN_CIB_NSP_SHIFT;
+-		wrappers[0] = (cib & SCAN_CIB_NMW) >> SCAN_CIB_NMW_SHIFT;
+-		wrappers[1] = (cib & SCAN_CIB_NSW) >> SCAN_CIB_NSW_SHIFT;
+-		core->id.rev = (cib & SCAN_CIB_REV) >> SCAN_CIB_REV_SHIFT;
+-
+-		if (((core->id.manuf == BCMA_MANUF_ARM) &&
+-		     (core->id.id == 0xFFF)) ||
+-		    (ports[1] == 0)) {
+-			bcma_erom_skip_component(bus, &eromptr);
+-			continue;
+-		}
+-
+-		/* check if component is a core at all */
+-		if (wrappers[0] + wrappers[1] == 0) {
+-			/* we could save addrl of the router
+-			if (cid == BCMA_CORE_OOB_ROUTER)
+-			 */
+-			bcma_erom_skip_component(bus, &eromptr);
+-			continue;
+-		}
+-
+-		if (bcma_erom_is_bridge(bus, &eromptr)) {
+-			bcma_erom_skip_component(bus, &eromptr);
++		err = bcma_get_next_core(bus, &eromptr, core);
++		if (err == -ENXIO)
+ 			continue;
+-		}
+-
+-		/* get & parse master ports */
+-		for (i = 0; i < ports[0]; i++) {
+-			u32 mst_port_d = bcma_erom_get_mst_port(bus, &eromptr);
+-			if (mst_port_d < 0) {
+-				err= -EILSEQ;
+-				goto out;
+-			}
+-		}
+-
+-		/* get & parse slave ports */
+-		for (i = 0; i < ports[1]; i++) {
+-			for (j = 0; ; j++) {
+-				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
+-					SCAN_ADDR_TYPE_SLAVE, i);
+-				if (tmp < 0) {
+-					/* no more entries for port _i_ */
+-					/* pr_debug("erom: slave port %d "
+-					 * "has %d descriptors\n", i, j); */
+-					break;
+-				} else {
+-					if (i == 0 && j == 0)
+-						core->addr = tmp;
+-				}
+-			}
+-		}
+-
+-		/* get & parse master wrappers */
+-		for (i = 0; i < wrappers[0]; i++) {
+-			for (j = 0; ; j++) {
+-				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
+-					SCAN_ADDR_TYPE_MWRAP, i);
+-				if (tmp < 0) {
+-					/* no more entries for port _i_ */
+-					/* pr_debug("erom: master wrapper %d "
+-					 * "has %d descriptors\n", i, j); */
+-					break;
+-				} else {
+-					if (i == 0 && j == 0)
+-						core->wrap = tmp;
+-				}
+-			}
+-		}
+-
+-		/* get & parse slave wrappers */
+-		for (i = 0; i < wrappers[1]; i++) {
+-			u8 hack = (ports[1] == 1) ? 0 : 1;
+-			for (j = 0; ; j++) {
+-				tmp = bcma_erom_get_addr_desc(bus, &eromptr,
+-					SCAN_ADDR_TYPE_SWRAP, i + hack);
+-				if (tmp < 0) {
+-					/* no more entries for port _i_ */
+-					/* pr_debug("erom: master wrapper %d "
+-					 * has %d descriptors\n", i, j); */
+-					break;
+-				} else {
+-					if (wrappers[0] == 0 && !i && !j)
+-						core->wrap = tmp;
+-				}
+-			}
+-		}
++		else if (err == -ESPIPE)
++			break;
++		else if (err < 0)
++			return err;
+ 
+ 		pr_info("Core %d found: %s "
+ 			"(manuf 0x%03X, id 0x%03X, rev 0x%02X, class 0x%X)\n",
+@@ -351,9 +360,6 @@ int bcma_bus_scan(struct bcma_bus *bus)
+ 
+ 		core->core_index = bus->nr_cores++;
+ 		list_add(&core->list, &bus->cores);
+-		continue;
+-out:
+-		return err;
+ 	}
+ 
+ 	return 0;
 -- 
 1.7.4.1

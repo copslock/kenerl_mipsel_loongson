@@ -1,139 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Jul 2011 23:52:57 +0200 (CEST)
-Received: from ogre.sisk.pl ([217.79.144.158]:57558 "EHLO ogre.sisk.pl"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1490945Ab1GOVwv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 15 Jul 2011 23:52:51 +0200
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by ogre.sisk.pl (Postfix) with ESMTP id 50E161B0824;
-        Fri, 15 Jul 2011 23:24:16 +0200 (CEST)
-Received: from ogre.sisk.pl ([127.0.0.1])
- by localhost (ogre.sisk.pl [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 19052-08; Fri, 15 Jul 2011 23:23:55 +0200 (CEST)
-Received: from ferrari.rjw.lan (220-bem-13.acn.waw.pl [82.210.184.220])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by ogre.sisk.pl (Postfix) with ESMTP id EC2601B06B5;
-        Fri, 15 Jul 2011 23:23:54 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@sisk.pl>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: Convert i8259.c to using syscore_ops (was: Re: Status of MIPS on 3.0.0-rc6 kernel)
-Date:   Fri, 15 Jul 2011 23:53:37 +0200
-User-Agent: KMail/1.13.6 (Linux/3.0.0-rc7+; KDE/4.6.0; x86_64; ; )
-Cc:     "Roland Vossen" <rvossen@broadcom.com>,
-        "Jonas Gorski" <jonas.gorski@gmail.com>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "devel@linuxdriverproject.org" <devel@linuxdriverproject.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Linux PM mailing list <linux-pm@lists.linux-foundation.org>
-References: <4E1ECE3B.10308@broadcom.com> <201107142151.24763.rjw@sisk.pl> <4E2032D7.9000704@broadcom.com>
-In-Reply-To: <4E2032D7.9000704@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Jul 2011 18:56:11 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:50798 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491025Ab1GPQ4E (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 16 Jul 2011 18:56:04 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id EAF778C65;
+        Sat, 16 Jul 2011 18:56:02 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 5QLY0lkwAV2b; Sat, 16 Jul 2011 18:55:59 +0200 (CEST)
+Received: from localhost.localdomain (host-091-097-255-051.ewe-ip-backbone.de [91.97.255.51])
+        by hauke-m.de (Postfix) with ESMTPSA id 67D2B8C4F;
+        Sat, 16 Jul 2011 18:55:58 +0200 (CEST)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
+        zajec5@gmail.com, linux-mips@linux-mips.org
+Cc:     jonas.gorski@gmail.com, mb@bu3sch.de, george@znau.edu.ua,
+        arend@broadcom.com, b43-dev@lists.infradead.org,
+        bernhardloos@googlemail.com, arnd@arndb.de,
+        julian.calaby@gmail.com, sshtylyov@mvista.com,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: =?UTF-8?q?=5BPATCH=20v2=2000/11=5D=20bcma=3A=20add=20support=20for=20embedded=20devices=20like=20bcm4716?=
+Date:   Sat, 16 Jul 2011 18:55:31 +0200
+Message-Id: <1310835342-18877-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.4.1
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201107152353.38004.rjw@sisk.pl>
-X-Virus-Scanned: amavisd-new at ogre.sisk.pl using MkS_Vir for Linux
-X-archive-position: 30630
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 30631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rjw@sisk.pl
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11462
+X-UID: 11702
 
-On Friday, July 15, 2011, Roland Vossen wrote:
-> > Please check if the appended patch helps.
-> 
-> It does, I am able to build a big endian MIPS kernel now. Can you notify 
-> me if you submit this patch ?
+This patch series adds support for embedded devices like bcm47xx to 
+bcma. Bcma is used on bcm4716 and bcm4718 SoCs as the system bus and
+replaced ssb used on older devices. With these patches my bcm4716 
+device boots up till it tries to access the flash, because the serial 
+flash chip is unsupported for now, this will be my next task. This adds 
+support for MIPS cores, interrupt configuration and the serial console.
 
-Well, it's been submitted already. :-)
+These patches are not containing all functions needed to get the SoC to 
+fully work and support every feature, but it is a good start.
+These patches are now integrated in OpenWrt for everyone how wants to
+test them.
 
-Ralf, the appended patch is necessary to fix build on MIPS due to a
-missing conversion to syscore_ops.  Please take it to your tree or
-let me know if you want me to push it myself.
+This was tested with a BCM4704 device (SoC with ssb bus), a BCM4716 
+device and a pcie wireless card supported by bcma.
 
-Thanks,
-Rafael
 
----
-From: Rafael J. Wysocki <rjw@sisk.pl>
-Subject: MIPS: Convert i8259.c to using syscore_ops
+@Rafał: If you are fine with the bcma patches could you please give
+your Signed-off on them.
 
-The code in arch/mips/kernel/i8259.c still hasn't been converted to
-using struct syscore_ops instead of a sysdev for resume and shutdown.
-As a result, this code doesn't build any more after suspend, resume
-and shutdown callbacks have been removed from struct sysdev_class.
-Fix this problem by converting i8259.c to using syscore_ops.
+@Ralf: Could you please merger this into the mips tree so that it will be in linux-3.1.
 
-Reported-and-tested-by: Roland Vossen <rvossen@broadcom.com>
-Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
----
- arch/mips/kernel/i8259.c |   22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+PATCH v2:
+ * define inline function bcma_core_mips_init() if mips driver is not build
+ * iounmap core->io_wrap and core->io_addr after it was used.
+ * update bcma based on new braodcom driver code
+   * add workaround for 5357b0
+ * move flash informations into own struct and store it in chipcommon.
+   When adding serial flash support it will be in chipcommon and then all flash structs should be there.
+ * some changes to bcma_chipco_serial_init()
+  * some changes are done after looking into a more recent version of broadcom driver.
+  * changes suggested by Jonas
+  * serial struct is in chipcommon as it is accessed through chipcommon.
+  * use bcma_pmu_alp_clock() to get the clock.
+ * cpu clock: add detection support for some newer SoCs.
 
-Index: linux-2.6/arch/mips/kernel/i8259.c
-===================================================================
---- linux-2.6.orig/arch/mips/kernel/i8259.c
-+++ linux-2.6/arch/mips/kernel/i8259.c
-@@ -14,7 +14,7 @@
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/spinlock.h>
--#include <linux/sysdev.h>
-+#include <linux/syscore_ops.h>
- #include <linux/irq.h>
- 
- #include <asm/i8259.h>
-@@ -215,14 +215,13 @@ spurious_8259A_irq:
- 	}
- }
- 
--static int i8259A_resume(struct sys_device *dev)
-+static void i8259A_resume(void)
- {
- 	if (i8259A_auto_eoi >= 0)
- 		init_8259A(i8259A_auto_eoi);
--	return 0;
- }
- 
--static int i8259A_shutdown(struct sys_device *dev)
-+static void i8259A_shutdown(void)
- {
- 	/* Put the i8259A into a quiescent state that
- 	 * the kernel initialization code can get it
-@@ -232,26 +231,17 @@ static int i8259A_shutdown(struct sys_de
- 		outb(0xff, PIC_MASTER_IMR);	/* mask all of 8259A-1 */
- 		outb(0xff, PIC_SLAVE_IMR);	/* mask all of 8259A-1 */
- 	}
--	return 0;
- }
- 
--static struct sysdev_class i8259_sysdev_class = {
--	.name = "i8259",
-+static struct syscore_ops i8259_syscore_ops = {
- 	.resume = i8259A_resume,
- 	.shutdown = i8259A_shutdown,
- };
- 
--static struct sys_device device_i8259A = {
--	.id	= 0,
--	.cls	= &i8259_sysdev_class,
--};
--
- static int __init i8259A_init_sysfs(void)
- {
--	int error = sysdev_class_register(&i8259_sysdev_class);
--	if (!error)
--		error = sysdev_register(&device_i8259A);
--	return error;
-+	register_syscore_ops(&i8259_syscore_ops);
-+	return 0;
- }
- 
- device_initcall(i8259A_init_sysfs);
- 
+PATCH v1:
+ * rebased on mips tree (mips/queue)
+ * drop pcie hostmode patch as Rafał sent a better patch to wireless mailing list
+ * drop sprom patch because sprom is not supported in bcma version from mips tree,
+     I will send a separate patch to wireless mailing list.
+ * fix compilation of arch/mips/bcm47xx/wgt634u.c
+ * fix texts in arch/mips/bcm47xx/Kconfig
+RFC v3:
+ * make bcm47xx built either with bcma, ssb or both and use mips MIPS 74K optimizations if possible
+ * add block io support
+ * some minor fixes for code and doku
+RFC v2:
+ * use list and no arry to store cores
+ * rename bcma_host_bcma_ to bcma_host_soc_
+ * use core->io_addr and core->io_wrap to access cores
+ * checkpatch fixes
+ * some minor fixes
+
+Hauke Mehrtens (11):
+  bcma: move parsing of EEPROM into own function.
+  bcma: move initializing of struct bcma_bus to own function.
+  bcma: add functions to scan cores needed on SoCs
+  bcma: add SOC bus
+  bcma: add mips driver
+  bcma: add serial console support
+  bcma: get CPU clock
+  bcm47xx: prepare to support different buses
+  bcm47xx: make it possible to build bcm47xx without ssb.
+  bcm47xx: add support for bcma bus
+  bcm47xx: fix irq assignment for new SoCs.
+
+ arch/mips/Kconfig                            |    8 +-
+ arch/mips/bcm47xx/Kconfig                    |   31 +++
+ arch/mips/bcm47xx/Makefile                   |    3 +-
+ arch/mips/bcm47xx/gpio.c                     |   82 +++++--
+ arch/mips/bcm47xx/irq.c                      |   12 +
+ arch/mips/bcm47xx/nvram.c                    |   29 ++-
+ arch/mips/bcm47xx/serial.c                   |   46 ++++-
+ arch/mips/bcm47xx/setup.c                    |   90 ++++++-
+ arch/mips/bcm47xx/time.c                     |   16 +-
+ arch/mips/bcm47xx/wgt634u.c                  |   14 +-
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |   26 ++-
+ arch/mips/include/asm/mach-bcm47xx/gpio.h    |  108 +++++++--
+ arch/mips/pci/pci-bcm47xx.c                  |    6 +
+ drivers/bcma/Kconfig                         |   13 +
+ drivers/bcma/Makefile                        |    2 +
+ drivers/bcma/bcma_private.h                  |   18 ++
+ drivers/bcma/driver_chipcommon.c             |   53 ++++
+ drivers/bcma/driver_chipcommon_pmu.c         |  133 ++++++++++
+ drivers/bcma/driver_mips.c                   |  256 +++++++++++++++++++
+ drivers/bcma/driver_pci.c                    |    3 +
+ drivers/bcma/host_soc.c                      |  183 ++++++++++++++
+ drivers/bcma/main.c                          |   65 +++++
+ drivers/bcma/scan.c                          |  348 ++++++++++++++++++--------
+ drivers/watchdog/bcm47xx_wdt.c               |   27 ++-
+ include/linux/bcma/bcma.h                    |    8 +
+ include/linux/bcma/bcma_driver_chipcommon.h  |   67 +++++
+ include/linux/bcma/bcma_driver_mips.h        |   51 ++++
+ include/linux/bcma/bcma_soc.h                |   16 ++
+ 28 files changed, 1535 insertions(+), 179 deletions(-)
+ create mode 100644 arch/mips/bcm47xx/Kconfig
+ create mode 100644 drivers/bcma/driver_mips.c
+ create mode 100644 drivers/bcma/host_soc.c
+ create mode 100644 include/linux/bcma/bcma_driver_mips.h
+ create mode 100644 include/linux/bcma/bcma_soc.h
+
+-- 
+1.7.4.1

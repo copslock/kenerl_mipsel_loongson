@@ -1,69 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Jul 2011 22:07:35 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:57517 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491106Ab1GRUH3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 18 Jul 2011 22:07:29 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org
-Subject: [PATCH V2 1/3] MIPS: lantiq: fixes external interrupt sources
-Date:   Mon, 18 Jul 2011 22:08:40 +0200
-Message-Id: <1311019720-22234-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 30648
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Jul 2011 07:35:16 +0200 (CEST)
+Received: from mail-qy0-f177.google.com ([209.85.216.177]:50896 "EHLO
+        mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490984Ab1GSFfG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 19 Jul 2011 07:35:06 +0200
+Received: by qyk7 with SMTP id 7so2185597qyk.15
+        for <multiple recipients>; Mon, 18 Jul 2011 22:35:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=gOtOjJE1F5JmkhBGiWm6ftmeOKqiwCMnAaGGC9nV7Ek=;
+        b=mRKY3BeOwm8PMrtotbw4tEvZRMKXsKAnZA0unN5RSKTT85UTwFr5qtKXfDBa9MXW2+
+         7+gZbT2YSmOPOCkaD2bopS3XUvOy3Oo9WSpmKV0QBAlUySbOwOX/oNkVPXl6DsH/3oPV
+         D8ljEY6fPmHifLLOYY8Yo2r9To+JZBo0MXdpE=
+MIME-Version: 1.0
+Received: by 10.229.2.89 with SMTP id 25mr5500677qci.39.1311053700421; Mon, 18
+ Jul 2011 22:35:00 -0700 (PDT)
+Received: by 10.229.46.135 with HTTP; Mon, 18 Jul 2011 22:35:00 -0700 (PDT)
+In-Reply-To: <201107162350.51025.rjw@sisk.pl>
+References: <201107162350.51025.rjw@sisk.pl>
+Date:   Tue, 19 Jul 2011 14:35:00 +0900
+Message-ID: <CACBHAewP5twv0X=SOJw+Yb0HVvr7binRQ+VknSzh6=dVBPw_ww@mail.gmail.com>
+Subject: Re: [GIT PULL] MIPS build fix related to power management for 3.0
+From:   Yuasa Yoichi <tripeaks@gmail.com>
+To:     "Rafael J. Wysocki" <rjw@sisk.pl>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM mailing list <linux-pm@lists.linux-foundation.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 30649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: tripeaks@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12696
+X-UID: 12948
 
-The irq base offset needs to be ignored when matching irqs to external
-interrupt pins. Taking the offset into account resulted in the EIU not
-being brought up properly.
+Hi,
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: linux-mips@linux-mips.org
+2011/7/17 Rafael J. Wysocki <rjw@sisk.pl>:
+> Hi Linus,
+>
+> Please pull a MIPS build fix related to PM for 3.0 from:
+>
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-2.6.git pm-fixes
+>
+> It fixes a build regression resulting from a missing conversion from using
+> a sysdev to using syscore_ops for PM/shutdown in the MIPS tree.
 
----
-Changes in V2
-* fix typo in patch title
----
- arch/mips/lantiq/irq.c |    6 ++----
- 1 files changed, 2 insertions(+), 4 deletions(-)
+It has already been fixed in MIPS tree.
 
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index fc89795..f9737bb 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -123,11 +123,10 @@ void ltq_enable_irq(struct irq_data *d)
- static unsigned int ltq_startup_eiu_irq(struct irq_data *d)
- {
- 	int i;
--	int irq_nr = d->irq - INT_NUM_IRQ0;
- 
- 	ltq_enable_irq(d);
- 	for (i = 0; i < MAX_EIU; i++) {
--		if (irq_nr == ltq_eiu_irq[i]) {
-+		if (d->irq == ltq_eiu_irq[i]) {
- 			/* low level - we should really handle set_type */
- 			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_C) |
- 				(0x6 << (i * 4)), LTQ_EIU_EXIN_C);
-@@ -147,11 +146,10 @@ static unsigned int ltq_startup_eiu_irq(struct irq_data *d)
- static void ltq_shutdown_eiu_irq(struct irq_data *d)
- {
- 	int i;
--	int irq_nr = d->irq - INT_NUM_IRQ0;
- 
- 	ltq_disable_irq(d);
- 	for (i = 0; i < MAX_EIU; i++) {
--		if (irq_nr == ltq_eiu_irq[i]) {
-+		if (d->irq == ltq_eiu_irq[i]) {
- 			/* disable */
- 			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INEN) & ~(1 << i),
- 				LTQ_EIU_EXIN_INEN);
--- 
-1.7.2.3
+Yoichi

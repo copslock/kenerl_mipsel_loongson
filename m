@@ -1,61 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2011 19:28:01 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:61391 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491202Ab1GUR16 convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2011 00:30:25 +0200 (CEST)
+Received: from mail-pz0-f47.google.com ([209.85.210.47]:59328 "EHLO
+        mail-pz0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491159Ab1GUWaT convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jul 2011 19:27:58 +0200
-Received: by gya1 with SMTP id 1so837308gya.36
-        for <multiple recipients>; Thu, 21 Jul 2011 10:27:52 -0700 (PDT)
+        Fri, 22 Jul 2011 00:30:19 +0200
+Received: by pzk36 with SMTP id 36so2598291pzk.34
+        for <multiple recipients>; Thu, 21 Jul 2011 15:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
+        d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=9ZVYsA70l+uoYlzseiUCADoLuduVm/y2Qm8bKGCdVWk=;
-        b=SwHqbexKaiVAuIvXORllJJV+181Se4MOOkvLr4FPukZLxxgJ5lLIDvc6hKBtv2k2Fc
-         F3jQi7+92HnkVKWkF9uFofzNRFm2U2Y0j6ErW+AFFsjXn7jhMtV8vYMDizBjkwnlZCsV
-         QQ2a707zecd19lnTLR4jUPI36MYU63QoH6Stk=
+        bh=UPCbbdoReEChMha5dc3fLsmVVvEEeyrM0cAPTPx7WG8=;
+        b=Bl9Q6Dw+0Vbr6KyI1EKWwJtfMJlASze4eciePHmz3pVosBpmEKodf6+XicS8KhFWlp
+         J6lZKlXDfIM7qtff+eq5oiWA2UgUwFGi+JOUzO525YMx5j5RAoNcRJMkLT9+zf4F0DDm
+         M96gXtM/6MEI+jbY/s+qRKHbWLtEdvp6e4dSs=
 MIME-Version: 1.0
-Received: by 10.236.190.68 with SMTP id d44mr809119yhn.393.1311269271876; Thu,
- 21 Jul 2011 10:27:51 -0700 (PDT)
-Received: by 10.236.95.168 with HTTP; Thu, 21 Jul 2011 10:27:51 -0700 (PDT)
-In-Reply-To: <s5hmxg78st2.wl%tiwai@suse.de>
-References: <1311266050-22199-1-git-send-email-manuel.lauss@googlemail.com>
-        <s5hmxg78st2.wl%tiwai@suse.de>
-Date:   Thu, 21 Jul 2011 19:27:51 +0200
-Message-ID: <CAOLZvyEaKdSwC9ZU_FrYYAqmTkHfCsztftip_sY0Vfe9wDN7Og@mail.gmail.com>
-Subject: Re: [alsa-devel] [PATCH V2 0/2] ALSA: ASoC for Au1000/1500/1100
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     alsa-devel@alsa-project.org,
-        Linux-MIPS <linux-mips@linux-mips.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: by 10.68.27.135 with SMTP id t7mr1214669pbg.183.1311287411635; Thu,
+ 21 Jul 2011 15:30:11 -0700 (PDT)
+Received: by 10.68.49.98 with HTTP; Thu, 21 Jul 2011 15:30:11 -0700 (PDT)
+In-Reply-To: <1310835342-18877-1-git-send-email-hauke@hauke-m.de>
+References: <1310835342-18877-1-git-send-email-hauke@hauke-m.de>
+Date:   Fri, 22 Jul 2011 00:30:11 +0200
+Message-ID: <CACna6ryjYGuLc5c88eke=gjgwQyVD+A9afM6zCRhqV1THHgWvA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/11] bcma: add support for embedded devices like bcm4716
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     ralf@linux-mips.org, linux-wireless@vger.kernel.org,
+        linux-mips@linux-mips.org, jonas.gorski@gmail.com, mb@bu3sch.de,
+        george@znau.edu.ua, arend@broadcom.com,
+        b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
+        arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 30657
+X-archive-position: 30658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15298
+X-UID: 15555
 
-On Thu, Jul 21, 2011 at 7:08 PM, Takashi Iwai <tiwai@suse.de> wrote:
-> At Thu, 21 Jul 2011 18:34:08 +0200,
-> Manuel Lauss wrote:
->>
->> Hello,
->>
->> These 2 patches implement ASoC drivers for the AC97 and I2S
->> controllers found on early Alchemy chips. †They are largely
->> based on the old mips/au1x00.c driver which they replace.
+2011/7/16 Hauke Mehrtens <hauke@hauke-m.de>:
+> This patch series adds support for embedded devices like bcm47xx to
+> bcma. Bcma is used on bcm4716 and bcm4718 SoCs as the system bus and
+> replaced ssb used on older devices. With these patches my bcm4716
+> device boots up till it tries to access the flash, because the serial
+> flash chip is unsupported for now, this will be my next task. This adds
+> support for MIPS cores, interrupt configuration and the serial console.
 >
-> In general, dropping an old driver happens a bit later after the new
-> driver comes in. †You can make the old one as deprecated at first.
+> These patches are not containing all functions needed to get the SoC to
+> fully work and support every feature, but it is a good start.
+> These patches are now integrated in OpenWrt for everyone how wants to
+> test them.
+>
+> This was tested with a BCM4704 device (SoC with ssb bus), a BCM4716
+> device and a pcie wireless card supported by bcma.
+>
+>
+> @Rafa≈Ç: If you are fine with the bcma patches could you please give
+> your Signed-off on them.
+>
+> @Ralf: Could you please merger this into the mips tree so that it will be in linux-3.1.
 
-Makes sense, just ignore patch 2 then ;)
+ML for bcma is linux-wireless. Should we pass that patches "via" Ralf
+or John? Using linux-wireless (and John's tree) makes more sense to
+me, as we will work on the same tree and will get less merge
+conflicts. However don't take me as Linux development style guru, just
+my POV.
 
-Thanks,
-        Manuel Lauss
+-- 
+Rafa≈Ç

@@ -1,67 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2011 15:55:38 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:36844 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491099Ab1GUNza (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 21 Jul 2011 15:55:30 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p6LDtQKU000554;
-        Thu, 21 Jul 2011 14:55:26 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p6LDtPh1000551;
-        Thu, 21 Jul 2011 14:55:25 +0100
-Date:   Thu, 21 Jul 2011 14:55:25 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <david.daney@cavium.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2 v2] MIPS: Close races in TLB modify handlers.
-Message-ID: <20110721135525.GB27341@linux-mips.org>
-References: <1309908886-1624-1-git-send-email-david.daney@cavium.com>
- <1309908886-1624-2-git-send-email-david.daney@cavium.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1309908886-1624-2-git-send-email-david.daney@cavium.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30651
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Jul 2011 18:34:26 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:44461 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491141Ab1GUQeU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 21 Jul 2011 18:34:20 +0200
+Received: by fxd20 with SMTP id 20so2711731fxd.36
+        for <multiple recipients>; Thu, 21 Jul 2011 09:34:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=ckQSLqNQcXhGbA07ONgK71iCDeymrFLXaWCxtEkyBF4=;
+        b=Cni00reMDPWoKaIavYrsIdM4KgLEBeGYLpo0jlzm32IXsEylCeGn5WOzA9bdrghpe7
+         579qwDfJsgT9EhRHYkukiLJQXld06lT1P+NJFT0XgmLgvoz0VDhRRLvV1GIMpwVdCz7V
+         4Y0m80451L8KrGft4T9EnDE22hmTyyQWHsUzw=
+Received: by 10.223.160.144 with SMTP id n16mr533406fax.88.1311266055001;
+        Thu, 21 Jul 2011 09:34:15 -0700 (PDT)
+Received: from localhost.localdomain (188-22-154-193.adsl.highway.telekom.at [188.22.154.193])
+        by mx.google.com with ESMTPS id j19sm1490495faa.41.2011.07.21.09.34.13
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 21 Jul 2011 09:34:13 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     alsa-devel@vger.kernel.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH V2 0/2] ALSA: ASoC for Au1000/1500/1100
+Date:   Thu, 21 Jul 2011 18:34:08 +0200
+Message-Id: <1311266050-22199-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.6
+X-archive-position: 30652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15069
+X-UID: 15238
 
-On Tue, Jul 05, 2011 at 04:34:46PM -0700, David Daney wrote:
+Hello,
 
-> Page table entries are made invalid by writing a zero into the the PTE
-> slot in a page table.  This creates a race condition with the TLB
-> modify handlers when they are updating the PTE.
-> 
-> CPU0                              CPU1
-> 
-> Test for _PAGE_PRESENT
-> .                                 set to not _PAGE_PRESENT (zero)
-> Set to _PAGE_VALID
-> 
-> So now the page not present value (zero) is suddenly valid and user
-> space programs have access to physical page zero.
-> 
-> We close the race by putting the test for _PAGE_PRESENT and setting of
-> _PAGE_VALID into an atomic LL/SC section.  This requires more
-> registers than just K0 and K1 in the handlers, so we need to save some
-> registers to a save area and then restore them when we are done.
-> 
-> The save area is an array of cacheline aligned structures that should
-> not suffer cache line bouncing as they are CPU private.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
+These 2 patches implement ASoC drivers for the AC97 and I2S
+controllers found on early Alchemy chips.  They are largely
+based on the old mips/au1x00.c driver which they replace.
 
-Looks good and nobody else has complained but backporting to <= 2.6.37 is
-gonna be ugly.  I either have to resolve huge conflicts or alternatively
-backport tons of other tlbex.c patches.  The latter is less risky and
-time consuming and will provide additional benefit so I'll do it.  Just
-be prepared for a storm on the linux-git list.
+AC97 Tested on a Db1500 development board; I2S untested since none
+of the testboards I have actually have an I2S codec (just testpoints).
 
-  Ralf
+Changes since V1:
+- added untested I2S controller driver for completeness, removed the audio
+  defines from the au1000 header.
+
+Manuel Lauss (2):
+  ALSA: Alchemy AC97C/I2SC audio support
+  ALSA: delete MIPS au1x00 driver
+
+ arch/mips/alchemy/devboards/db1x00/platform.c |   37 ++
+ arch/mips/include/asm/mach-au1x00/au1000.h    |   61 ---
+ sound/mips/Kconfig                            |    8 -
+ sound/mips/Makefile                           |    2 -
+ sound/mips/au1x00.c                           |  695 -------------------------
+ sound/soc/au1x/Kconfig                        |   28 +
+ sound/soc/au1x/Makefile                       |   10 +
+ sound/soc/au1x/ac97c.c                        |  398 ++++++++++++++
+ sound/soc/au1x/db1000.c                       |   75 +++
+ sound/soc/au1x/dma.c                          |  470 +++++++++++++++++
+ sound/soc/au1x/i2sc.c                         |  353 +++++++++++++
+ sound/soc/au1x/psc.h                          |   31 +-
+ 12 files changed, 1393 insertions(+), 775 deletions(-)
+ delete mode 100644 sound/mips/au1x00.c
+ create mode 100644 sound/soc/au1x/ac97c.c
+ create mode 100644 sound/soc/au1x/db1000.c
+ create mode 100644 sound/soc/au1x/dma.c
+ create mode 100644 sound/soc/au1x/i2sc.c
+
+-- 
+1.7.6

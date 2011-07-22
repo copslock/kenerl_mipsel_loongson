@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2011 13:09:48 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Jul 2011 13:10:12 +0200 (CEST)
 Received: from mail-fx0-f49.google.com ([209.85.161.49]:35032 "EHLO
         mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491116Ab1GVLJS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jul 2011 13:09:18 +0200
+        by eddie.linux-mips.org with ESMTP id S1491171Ab1GVLJT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 22 Jul 2011 13:09:19 +0200
 Received: by mail-fx0-f49.google.com with SMTP id 20so3731881fxd.36
-        for <linux-mips@linux-mips.org>; Fri, 22 Jul 2011 04:09:18 -0700 (PDT)
+        for <linux-mips@linux-mips.org>; Fri, 22 Jul 2011 04:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=JTHDBsADwfN1gFdyIs7Dh2LRHSGWorBjTr53rNYsdyY=;
-        b=CNzJrnhnjdw4ZyrTtkHXVONlC24jSy9iqsJVNCIcsXBz21tQxXaVrj7BkgNqiHTs2F
-         Sa4wXhFmsL8hsyQG0L0DDiMQ9pGiwpelccpSMToPY2JX7ZFiQRDGcsOTjuzImiSF91ac
-         0+xPJpN6prCjp8jtW/vAE1Q7nAZYiVYYzaJDY=
-Received: by 10.223.14.24 with SMTP id e24mr1975755faa.15.1311332958293;
-        Fri, 22 Jul 2011 04:09:18 -0700 (PDT)
+        bh=mV1w5liCNery2Q04UeJO8xmcFuOzqbALKWaNoBYXJTI=;
+        b=uhD1WMt0gu2sdjbngpqOY0QvLIq14jmRJ+LLwgWWLVwiaD4iHiTELXmWv0tjCGEPAZ
+         pQd+14VeRYuJpwuyxVfS8suvHmqdYyiMnMTDVVPJvkGeqjbg52hmVDD0Fblzz3I823Nb
+         EFFAri6eC0kwTvSLXn9+Ua/q0TNBKCR53IEb8=
+Received: by 10.223.24.17 with SMTP id t17mr1890981fab.143.1311332959651;
+        Fri, 22 Jul 2011 04:09:19 -0700 (PDT)
 Received: from localhost.localdomain (178-191-13-216.adsl.highway.telekom.at [178.191.13.216])
-        by mx.google.com with ESMTPS id 28sm1978093fax.27.2011.07.22.04.09.16
+        by mx.google.com with ESMTPS id 28sm1978093fax.27.2011.07.22.04.09.18
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 22 Jul 2011 04:09:17 -0700 (PDT)
+        Fri, 22 Jul 2011 04:09:19 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     alsa-devel@vger.kernel.org
 Cc:     Mark Brown <broonie@opensource.wolfsonmicro.com>,
         Liam Girdwood <lrg@ti.com>,
         Linux-MIPS <linux-mips@linux-mips.org>,
         Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH 2/3] ASoC: Add a DB1x00 AC97 machine driver
-Date:   Fri, 22 Jul 2011 13:09:07 +0200
-Message-Id: <1311332948-29406-3-git-send-email-manuel.lauss@googlemail.com>
+Subject: [PATCH V3 3/3] ALSA: deprecate MIPS AU1X00 AC97 driver
+Date:   Fri, 22 Jul 2011 13:09:08 +0200
+Message-Id: <1311332948-29406-4-git-send-email-manuel.lauss@googlemail.com>
 X-Mailer: git-send-email 1.7.6
 In-Reply-To: <1311332948-29406-1-git-send-email-manuel.lauss@googlemail.com>
 References: <1311332948-29406-1-git-send-email-manuel.lauss@googlemail.com>
-X-archive-position: 30672
+X-archive-position: 30673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,212 +39,38 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15936
+X-UID: 15937
 
-Add a machine driver suitable for the AC97 part on the DB1000/DB1500/DB1100
-boards.
-
-Run-tested on DB1500.
+Now that an ASoC variant is available, tell users that this
+driver is now living on borrowed time...
 
 Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
 ---
-V3: split off from patch 1, implemented new machine code.
+V3: mark driver DEPRECATED instead of removing it outright.
 
- arch/mips/alchemy/devboards/db1x00/platform.c |   48 ++++++++++++++++
- sound/soc/au1x/Kconfig                        |    9 +++
- sound/soc/au1x/Makefile                       |    2 +
- sound/soc/au1x/db1000.c                       |   75 +++++++++++++++++++++++++
- 4 files changed, 134 insertions(+), 0 deletions(-)
- create mode 100644 sound/soc/au1x/db1000.c
+ sound/mips/Kconfig |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/alchemy/devboards/db1x00/platform.c b/arch/mips/alchemy/devboards/db1x00/platform.c
-index 978d5ab..7057d28 100644
---- a/arch/mips/alchemy/devboards/db1x00/platform.c
-+++ b/arch/mips/alchemy/devboards/db1x00/platform.c
-@@ -19,8 +19,11 @@
-  */
+diff --git a/sound/mips/Kconfig b/sound/mips/Kconfig
+index a9823fa..77dd0a1 100644
+--- a/sound/mips/Kconfig
++++ b/sound/mips/Kconfig
+@@ -23,12 +23,15 @@ config SND_SGI_HAL2
  
- #include <linux/init.h>
-+#include <linux/interrupt.h>
- #include <linux/platform_device.h>
  
-+#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-au1x00/au1000_dma.h>
- #include <asm/mach-au1x00/au1xxx.h>
- #include <asm/mach-db1x00/bcsr.h>
- #include "../platform.h"
-@@ -85,6 +88,45 @@
- #endif
- #endif
+ config SND_AU1X00
+-	tristate "Au1x00 AC97 Port Driver"
++	tristate "Au1x00 AC97 Port Driver (DEPRECATED)"
+ 	depends on SOC_AU1000 || SOC_AU1100 || SOC_AU1500
+ 	select SND_PCM
+ 	select SND_AC97_CODEC
+ 	help
+ 	  ALSA Sound driver for the Au1x00's AC97 port.
  
-+static struct resource alchemy_ac97c_res[] = {
-+	[0] = {
-+		.start	= AU1000_AC97_PHYS_ADDR,
-+		.end	= AU1000_AC97_PHYS_ADDR + 0xfff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= DMA_ID_AC97C_TX,
-+		.end	= DMA_ID_AC97C_TX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+	[2] = {
-+		.start	= DMA_ID_AC97C_RX,
-+		.end	= DMA_ID_AC97C_RX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+};
++	  Newer drivers for ASoC are available, please do not use
++	  this driver as it will be removed in the future.
 +
-+static struct platform_device alchemy_ac97c_dev = {
-+	.name		= "alchemy-ac97c",
-+	.id		= -1,
-+	.resource	= alchemy_ac97c_res,
-+	.num_resources	= ARRAY_SIZE(alchemy_ac97c_res),
-+};
-+
-+static struct platform_device alchemy_ac97c_dma_dev = {
-+	.name		= "alchemy-pcm-dma",
-+	.id		= 0,
-+};
-+
-+static struct platform_device db1x00_codec_dev = {
-+	.name		= "ac97-codec",
-+	.id		= -1,
-+};
-+
-+static struct platform_device db1x00_audio_dev = {
-+	.name		= "db1000-audio",
-+};
-+
- static int __init db1xxx_dev_init(void)
- {
- #ifdef DB1XXX_HAS_PCMCIA
-@@ -113,6 +155,12 @@ static int __init db1xxx_dev_init(void)
- 				    1);
- #endif
- 	db1x_register_norflash(BOARD_FLASH_SIZE, BOARD_FLASH_WIDTH, F_SWAPPED);
-+
-+	platform_device_register(&db1x00_codec_dev);
-+	platform_device_register(&alchemy_ac97c_dma_dev);
-+	platform_device_register(&alchemy_ac97c_dev);
-+	platform_device_register(&db1x00_audio_dev);
-+
- 	return 0;
- }
- device_initcall(db1xxx_dev_init);
-diff --git a/sound/soc/au1x/Kconfig b/sound/soc/au1x/Kconfig
-index 0460b42..6d59254 100644
---- a/sound/soc/au1x/Kconfig
-+++ b/sound/soc/au1x/Kconfig
-@@ -41,6 +41,15 @@ config SND_SOC_AU1XI2SC
- ##
- ## Boards
- ##
-+config SND_SOC_DB1000
-+	tristate "DB1000 Audio support"
-+	depends on SND_SOC_AU1XAUDIO
-+	select SND_SOC_AU1XAC97C
-+	select SND_SOC_AC97_CODEC
-+	help
-+	  Select this option to enable AC97 audio on the early DB1x00 series
-+	  of boards (DB1000/DB1500/DB1100).
-+
- config SND_SOC_DB1200
- 	tristate "DB1200 AC97+I2S audio support"
- 	depends on SND_SOC_AU1XPSC
-diff --git a/sound/soc/au1x/Makefile b/sound/soc/au1x/Makefile
-index ff5531e..9207105 100644
---- a/sound/soc/au1x/Makefile
-+++ b/sound/soc/au1x/Makefile
-@@ -16,6 +16,8 @@ obj-$(CONFIG_SND_SOC_AU1XAC97C) += snd-soc-au1x-ac97c.o
- obj-$(CONFIG_SND_SOC_AU1XI2SC) += snd-soc-au1x-i2sc.o
+ endif	# SND_MIPS
  
- # Boards
-+snd-soc-db1000-objs := db1000.o
- snd-soc-db1200-objs := db1200.o
- 
-+obj-$(CONFIG_SND_SOC_DB1000) += snd-soc-db1000.o
- obj-$(CONFIG_SND_SOC_DB1200) += snd-soc-db1200.o
-diff --git a/sound/soc/au1x/db1000.c b/sound/soc/au1x/db1000.c
-new file mode 100644
-index 0000000..127477a
---- /dev/null
-+++ b/sound/soc/au1x/db1000.c
-@@ -0,0 +1,75 @@
-+/*
-+ * DB1000/DB1500/DB1100 ASoC audio fabric support code.
-+ *
-+ * (c) 2011 Manuel Lauss <manuel.lauss@googlemail.com>
-+ *
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/moduleparam.h>
-+#include <linux/timer.h>
-+#include <linux/interrupt.h>
-+#include <linux/platform_device.h>
-+#include <sound/core.h>
-+#include <sound/pcm.h>
-+#include <sound/soc.h>
-+#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-db1x00/bcsr.h>
-+
-+#include "psc.h"
-+
-+static struct snd_soc_dai_link db1000_ac97_dai = {
-+	.name		= "AC97",
-+	.stream_name	= "AC97 HiFi",
-+	.codec_dai_name	= "ac97-hifi",
-+	.cpu_dai_name	= "alchemy-ac97c",
-+	.platform_name	= "alchemy-pcm-dma.0",
-+	.codec_name	= "ac97-codec",
-+};
-+
-+static struct snd_soc_card db1000_ac97 = {
-+	.name		= "DB1000_AC97",
-+	.dai_link	= &db1000_ac97_dai,
-+	.num_links	= 1,
-+};
-+
-+static int __devinit db1000_audio_probe(struct platform_device *pdev)
-+{
-+	struct snd_soc_card *card = &db1000_ac97;
-+	card->dev = &pdev->dev;
-+	return snd_soc_register_card(card);
-+}
-+
-+static int __devexit db1000_audio_remove(struct platform_device *pdev)
-+{
-+	struct snd_soc_card *card = platform_get_drvdata(pdev);
-+	snd_soc_unregister_card(card);
-+	return 0;
-+}
-+
-+static struct platform_driver db1000_audio_driver = {
-+	.driver	= {
-+		.name	= "db1000-audio",
-+		.owner	= THIS_MODULE,
-+		.pm	= &snd_soc_pm_ops,
-+	},
-+	.probe		= db1000_audio_probe,
-+	.remove		= __devexit_p(db1000_audio_remove),
-+};
-+
-+static int __init db1000_audio_load(void)
-+{
-+	return platform_driver_register(&db1000_audio_driver);
-+}
-+
-+static void __exit db1000_audio_unload(void)
-+{
-+	platform_driver_unregister(&db1000_audio_driver);
-+}
-+
-+module_init(db1000_audio_load);
-+module_exit(db1000_audio_unload);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("DB1000/DB1500/DB1100 ASoC audio");
-+MODULE_AUTHOR("Manuel Lauss");
 -- 
 1.7.6

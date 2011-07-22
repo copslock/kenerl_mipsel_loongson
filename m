@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jul 2011 01:23:33 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:59077 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Jul 2011 01:23:57 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:59092 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491803Ab1GVXUx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jul 2011 01:20:53 +0200
+        with ESMTP id S1491818Ab1GVXU7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 23 Jul 2011 01:20:59 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 81D5B8C98;
-        Sat, 23 Jul 2011 01:20:53 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id A61EA8C9A;
+        Sat, 23 Jul 2011 01:20:58 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cb5jGmxnMJPb; Sat, 23 Jul 2011 01:20:47 +0200 (CEST)
+        with ESMTP id 3uMJtI56fBty; Sat, 23 Jul 2011 01:20:44 +0200 (CEST)
 Received: from localhost.localdomain (dyndsl-085-016-164-032.ewe-ip-backbone.de [85.16.164.32])
-        by hauke-m.de (Postfix) with ESMTPSA id E70758C97;
-        Sat, 23 Jul 2011 01:20:31 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTPSA id 07A2A8C88;
+        Sat, 23 Jul 2011 01:20:30 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linville@tuxdriver.com, linux-wireless@vger.kernel.org,
         linux-mips@linux-mips.org
@@ -21,13 +21,13 @@ Cc:     jonas.gorski@gmail.com, ralf@linux-mips.org, zajec5@gmail.com,
         b43-dev@lists.infradead.org, bernhardloos@googlemail.com,
         arnd@arndb.de, julian.calaby@gmail.com, sshtylyov@mvista.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 08/11] bcm47xx: prepare to support different buses
-Date:   Sat, 23 Jul 2011 01:20:12 +0200
-Message-Id: <1311376815-15755-9-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 07/11] bcma: get CPU clock
+Date:   Sat, 23 Jul 2011 01:20:11 +0200
+Message-Id: <1311376815-15755-8-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1311376815-15755-1-git-send-email-hauke@hauke-m.de>
 References: <1311376815-15755-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 30685
+X-archive-position: 30686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,460 +36,241 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16561
+X-UID: 16562
 
-Prepare bcm47xx to support different System buses. Before adding
-support for bcma it should be possible to build bcm47xx without the
-need of ssb. With this patch bcm47xx does not directly contain a
-ssb_bus, but a union contain all the supported system buses. As a SoC
-just uses one system bus a union is a good choice.
+Add method to return the clock of the CPU. This is needed by the arch
+code to calculate the mips_hpt_frequency.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/gpio.c                     |   56 ++++++++++++++++----------
- arch/mips/bcm47xx/nvram.c                    |   15 +++++--
- arch/mips/bcm47xx/serial.c                   |   13 +++++-
- arch/mips/bcm47xx/setup.c                    |   33 ++++++++++++---
- arch/mips/bcm47xx/time.c                     |    9 +++-
- arch/mips/bcm47xx/wgt634u.c                  |   14 ++++--
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |   14 ++++++-
- arch/mips/include/asm/mach-bcm47xx/gpio.h    |   55 ++++++++++++++++++-------
- drivers/watchdog/bcm47xx_wdt.c               |   12 +++++-
- 9 files changed, 160 insertions(+), 61 deletions(-)
+ drivers/bcma/bcma_private.h                 |    1 +
+ drivers/bcma/driver_chipcommon_pmu.c        |  107 +++++++++++++++++++++++++++
+ drivers/bcma/driver_mips.c                  |   12 +++
+ include/linux/bcma/bcma_driver_chipcommon.h |   39 ++++++++++
+ include/linux/bcma/bcma_driver_mips.h       |    2 +
+ 5 files changed, 161 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/bcm47xx/gpio.c b/arch/mips/bcm47xx/gpio.c
-index e4a5ee9..99e1c50 100644
---- a/arch/mips/bcm47xx/gpio.c
-+++ b/arch/mips/bcm47xx/gpio.c
-@@ -20,42 +20,54 @@ static DECLARE_BITMAP(gpio_in_use, BCM47XX_EXTIF_GPIO_LINES);
+diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
+index 22d3052..30a3085 100644
+--- a/drivers/bcma/bcma_private.h
++++ b/drivers/bcma/bcma_private.h
+@@ -36,6 +36,7 @@ void bcma_chipco_serial_init(struct bcma_drv_cc *cc);
  
- int gpio_request(unsigned gpio, const char *tag)
- {
--	if (ssb_chipco_available(&ssb_bcm47xx.chipco) &&
--	    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
--		return -EINVAL;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
-+		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
-+			return -EINVAL;
+ /* driver_chipcommon_pmu.c */
+ u32 bcma_pmu_alp_clock(struct bcma_drv_cc *cc);
++u32 bcma_pmu_get_clockcpu(struct bcma_drv_cc *cc);
  
--	if (ssb_extif_available(&ssb_bcm47xx.extif) &&
--	    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
--		return -EINVAL;
-+		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
-+		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
-+			return -EINVAL;
+ #ifdef CONFIG_BCMA_HOST_PCI
+ /* host_pci.c */
+diff --git a/drivers/bcma/driver_chipcommon_pmu.c b/drivers/bcma/driver_chipcommon_pmu.c
+index 59d2b26..ecac255 100644
+--- a/drivers/bcma/driver_chipcommon_pmu.c
++++ b/drivers/bcma/driver_chipcommon_pmu.c
+@@ -11,6 +11,13 @@
+ #include "bcma_private.h"
+ #include <linux/bcma/bcma.h>
  
--	if (test_and_set_bit(gpio, gpio_in_use))
--		return -EBUSY;
-+		if (test_and_set_bit(gpio, gpio_in_use))
-+			return -EBUSY;
- 
--	return 0;
-+		return 0;
-+	}
-+	return -EINVAL;
- }
- EXPORT_SYMBOL(gpio_request);
- 
- void gpio_free(unsigned gpio)
- {
--	if (ssb_chipco_available(&ssb_bcm47xx.chipco) &&
--	    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
--		return;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco) &&
-+		    ((unsigned)gpio >= BCM47XX_CHIPCO_GPIO_LINES))
-+			return;
- 
--	if (ssb_extif_available(&ssb_bcm47xx.extif) &&
--	    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
--		return;
-+		if (ssb_extif_available(&bcm47xx_bus.ssb.extif) &&
-+		    ((unsigned)gpio >= BCM47XX_EXTIF_GPIO_LINES))
-+			return;
- 
--	clear_bit(gpio, gpio_in_use);
-+		clear_bit(gpio, gpio_in_use);
-+		return;
-+	}
- }
- EXPORT_SYMBOL(gpio_free);
- 
- int gpio_to_irq(unsigned gpio)
- {
--	if (ssb_chipco_available(&ssb_bcm47xx.chipco))
--		return ssb_mips_irq(ssb_bcm47xx.chipco.dev) + 2;
--	else if (ssb_extif_available(&ssb_bcm47xx.extif))
--		return ssb_mips_irq(ssb_bcm47xx.extif.dev) + 2;
--	else
--		return -EINVAL;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		if (ssb_chipco_available(&bcm47xx_bus.ssb.chipco))
-+			return ssb_mips_irq(bcm47xx_bus.ssb.chipco.dev) + 2;
-+		else if (ssb_extif_available(&bcm47xx_bus.ssb.extif))
-+			return ssb_mips_irq(bcm47xx_bus.ssb.extif.dev) + 2;
-+		else
-+			return -EINVAL;
-+	}
-+	return -EINVAL;
- }
- EXPORT_SYMBOL_GPL(gpio_to_irq);
-diff --git a/arch/mips/bcm47xx/nvram.c b/arch/mips/bcm47xx/nvram.c
-index 54db815..bcac2ff 100644
---- a/arch/mips/bcm47xx/nvram.c
-+++ b/arch/mips/bcm47xx/nvram.c
-@@ -26,14 +26,21 @@ static char nvram_buf[NVRAM_SPACE];
- /* Probe for NVRAM header */
- static void early_nvram_init(void)
- {
--	struct ssb_mipscore *mcore = &ssb_bcm47xx.mipscore;
-+	struct ssb_mipscore *mcore_ssb;
- 	struct nvram_header *header;
- 	int i;
--	u32 base, lim, off;
-+	u32 base = 0;
-+	u32 lim = 0;
-+	u32 off;
- 	u32 *src, *dst;
- 
--	base = mcore->flash_window;
--	lim = mcore->flash_window_size;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		mcore_ssb = &bcm47xx_bus.ssb.mipscore;
-+		base = mcore_ssb->flash_window;
-+		lim = mcore_ssb->flash_window_size;
-+		break;
-+	}
- 
- 	off = FLASH_MIN;
- 	while (off <= lim) {
-diff --git a/arch/mips/bcm47xx/serial.c b/arch/mips/bcm47xx/serial.c
-index 59c11af..17c67e2 100644
---- a/arch/mips/bcm47xx/serial.c
-+++ b/arch/mips/bcm47xx/serial.c
-@@ -23,10 +23,10 @@ static struct platform_device uart8250_device = {
- 	},
- };
- 
--static int __init uart8250_init(void)
-+static int __init uart8250_init_ssb(void)
- {
- 	int i;
--	struct ssb_mipscore *mcore = &(ssb_bcm47xx.mipscore);
-+	struct ssb_mipscore *mcore = &(bcm47xx_bus.ssb.mipscore);
- 
- 	memset(&uart8250_data, 0,  sizeof(uart8250_data));
- 
-@@ -45,6 +45,15 @@ static int __init uart8250_init(void)
- 	return platform_device_register(&uart8250_device);
- }
- 
-+static int __init uart8250_init(void)
++static u32 bcma_chipco_pll_read(struct bcma_drv_cc *cc, u32 offset)
 +{
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		return uart8250_init_ssb();
-+	}
-+	return -EINVAL;
++	bcma_cc_write32(cc, BCMA_CC_PLLCTL_ADDR, offset);
++	bcma_cc_read32(cc, BCMA_CC_PLLCTL_ADDR);
++	return bcma_cc_read32(cc, BCMA_CC_PLLCTL_DATA);
 +}
 +
- module_init(uart8250_init);
- 
- MODULE_AUTHOR("Aurelien Jarno <aurelien@aurel32.net>");
-diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index 73b529b..9828b60 100644
---- a/arch/mips/bcm47xx/setup.c
-+++ b/arch/mips/bcm47xx/setup.c
-@@ -35,15 +35,22 @@
- #include <bcm47xx.h>
- #include <asm/mach-bcm47xx/nvram.h>
- 
--struct ssb_bus ssb_bcm47xx;
--EXPORT_SYMBOL(ssb_bcm47xx);
-+union bcm47xx_bus bcm47xx_bus;
-+EXPORT_SYMBOL(bcm47xx_bus);
-+
-+enum bcm47xx_bus_type bcm47xx_bus_type;
-+EXPORT_SYMBOL(bcm47xx_bus_type);
- 
- static void bcm47xx_machine_restart(char *command)
+ static void bcma_chipco_chipctl_maskset(struct bcma_drv_cc *cc,
+ 					u32 offset, u32 mask, u32 set)
  {
- 	printk(KERN_ALERT "Please stand by while rebooting the system...\n");
- 	local_irq_disable();
- 	/* Set the watchdog timer to reset immediately */
--	ssb_watchdog_timer_set(&ssb_bcm47xx, 1);
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 1);
-+		break;
-+	}
- 	while (1)
- 		cpu_relax();
- }
-@@ -52,7 +59,11 @@ static void bcm47xx_machine_halt(void)
- {
- 	/* Disable interrupts and watchdog and spin forever */
- 	local_irq_disable();
--	ssb_watchdog_timer_set(&ssb_bcm47xx, 0);
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0);
-+		break;
-+	}
- 	while (1)
- 		cpu_relax();
- }
-@@ -247,7 +258,7 @@ static int bcm47xx_get_invariants(struct ssb_bus *bus,
- 	return 0;
- }
- 
--void __init plat_mem_setup(void)
-+static void __init bcm47xx_register_ssb(void)
- {
- 	int err;
- 	char buf[100];
-@@ -258,12 +269,12 @@ void __init plat_mem_setup(void)
- 		printk(KERN_WARNING "bcm47xx: someone else already registered"
- 			" a ssb SPROM callback handler (err %d)\n", err);
- 
--	err = ssb_bus_ssbbus_register(&ssb_bcm47xx, SSB_ENUM_BASE,
-+	err = ssb_bus_ssbbus_register(&(bcm47xx_bus.ssb), SSB_ENUM_BASE,
- 				      bcm47xx_get_invariants);
- 	if (err)
- 		panic("Failed to initialize SSB bus (err %d)\n", err);
- 
--	mcore = &ssb_bcm47xx.mipscore;
-+	mcore = &bcm47xx_bus.ssb.mipscore;
- 	if (nvram_getenv("kernel_args", buf, sizeof(buf)) >= 0) {
- 		if (strstr(buf, "console=ttyS1")) {
- 			struct ssb_serial_port port;
-@@ -276,6 +287,14 @@ void __init plat_mem_setup(void)
- 			memcpy(&mcore->serial_ports[1], &port, sizeof(port));
- 		}
+@@ -162,3 +169,103 @@ u32 bcma_pmu_alp_clock(struct bcma_drv_cc *cc)
  	}
+ 	return BCMA_CC_PMU_ALP_CLOCK;
+ }
++
++/* Find the output of the "m" pll divider given pll controls that start with
++ * pllreg "pll0" i.e. 12 for main 6 for phy, 0 for misc.
++ */
++static u32 bcma_pmu_clock(struct bcma_drv_cc *cc, u32 pll0, u32 m)
++{
++	u32 tmp, div, ndiv, p1, p2, fc;
++	struct bcma_bus *bus = cc->core->bus;
++
++	BUG_ON((pll0 & 3) || (pll0 > BCMA_CC_PMU4716_MAINPLL_PLL0));
++
++	BUG_ON(!m || m > 4);
++
++	if (bus->chipinfo.id == 0x5357 || bus->chipinfo.id == 0x4749) {
++		/* Detect failure in clock setting */
++		tmp = bcma_cc_read32(cc, BCMA_CC_CHIPSTAT);
++		if (tmp & 0x40000)
++			return 133 * 1000000;
++	}
++
++	tmp = bcma_chipco_pll_read(cc, pll0 + BCMA_CC_PPL_P1P2_OFF);
++	p1 = (tmp & BCMA_CC_PPL_P1_MASK) >> BCMA_CC_PPL_P1_SHIFT;
++	p2 = (tmp & BCMA_CC_PPL_P2_MASK) >> BCMA_CC_PPL_P2_SHIFT;
++
++	tmp = bcma_chipco_pll_read(cc, pll0 + BCMA_CC_PPL_M14_OFF);
++	div = (tmp >> ((m - 1) * BCMA_CC_PPL_MDIV_WIDTH)) &
++		BCMA_CC_PPL_MDIV_MASK;
++
++	tmp = bcma_chipco_pll_read(cc, pll0 + BCMA_CC_PPL_NM5_OFF);
++	ndiv = (tmp & BCMA_CC_PPL_NDIV_MASK) >> BCMA_CC_PPL_NDIV_SHIFT;
++
++	/* Do calculation in Mhz */
++	fc = bcma_pmu_alp_clock(cc) / 1000000;
++	fc = (p1 * ndiv * fc) / p2;
++
++	/* Return clock in Hertz */
++	return (fc / div) * 1000000;
 +}
 +
-+void __init plat_mem_setup(void)
++/* query bus clock frequency for PMU-enabled chipcommon */
++u32 bcma_pmu_get_clockcontrol(struct bcma_drv_cc *cc)
 +{
-+	struct cpuinfo_mips *c = &current_cpu_data;
++	struct bcma_bus *bus = cc->core->bus;
 +
-+	bcm47xx_bus_type = BCM47XX_BUS_TYPE_SSB;
-+	bcm47xx_register_ssb();
- 
- 	_machine_restart = bcm47xx_machine_restart;
- 	_machine_halt = bcm47xx_machine_halt;
-diff --git a/arch/mips/bcm47xx/time.c b/arch/mips/bcm47xx/time.c
-index 0c6f47b..50aea2e 100644
---- a/arch/mips/bcm47xx/time.c
-+++ b/arch/mips/bcm47xx/time.c
-@@ -30,7 +30,7 @@
- 
- void __init plat_time_init(void)
- {
--	unsigned long hz;
-+	unsigned long hz = 0;
- 
- 	/*
- 	 * Use deterministic values for initial counter interrupt
-@@ -39,7 +39,12 @@ void __init plat_time_init(void)
- 	write_c0_count(0);
- 	write_c0_compare(0xffff);
- 
--	hz = ssb_cpu_clock(&ssb_bcm47xx.mipscore) / 2;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		hz = ssb_cpu_clock(&bcm47xx_bus.ssb.mipscore) / 2;
-+		break;
++	switch (bus->chipinfo.id) {
++	case 0x4716:
++	case 0x4748:
++	case 47162:
++		return bcma_pmu_clock(cc, BCMA_CC_PMU4716_MAINPLL_PLL0,
++				      BCMA_CC_PMU5_MAINPLL_SSB);
++	case 0x5356:
++		return bcma_pmu_clock(cc, BCMA_CC_PMU5356_MAINPLL_PLL0,
++				      BCMA_CC_PMU5_MAINPLL_SSB);
++	case 0x5357:
++	case 0x4749:
++		return bcma_pmu_clock(cc, BCMA_CC_PMU5357_MAINPLL_PLL0,
++				      BCMA_CC_PMU5_MAINPLL_SSB);
++	case 0x5300:
++		return bcma_pmu_clock(cc, BCMA_CC_PMU4706_MAINPLL_PLL0,
++				      BCMA_CC_PMU5_MAINPLL_SSB);
++	case 53572:
++		return 75000000;
++	default:
++		pr_warn("No backplane clock specified for %04X device, "
++			"pmu rev. %d, using default %d Hz\n",
++			bus->chipinfo.id, cc->pmu.rev, BCMA_CC_PMU_HT_CLOCK);
++	}
++	return BCMA_CC_PMU_HT_CLOCK;
++}
++
++/* query cpu clock frequency for PMU-enabled chipcommon */
++u32 bcma_pmu_get_clockcpu(struct bcma_drv_cc *cc)
++{
++	struct bcma_bus *bus = cc->core->bus;
++
++	if (bus->chipinfo.id == 53572)
++		return 300000000;
++
++	if (cc->pmu.rev >= 5) {
++		u32 pll;
++		switch (bus->chipinfo.id) {
++		case 0x5356:
++			pll = BCMA_CC_PMU5356_MAINPLL_PLL0;
++			break;
++		case 0x5357:
++		case 0x4749:
++			pll = BCMA_CC_PMU5357_MAINPLL_PLL0;
++			break;
++		default:
++			pll = BCMA_CC_PMU4716_MAINPLL_PLL0;
++			break;
++		}
++
++		/* TODO: if (bus->chipinfo.id == 0x5300)
++		  return si_4706_pmu_clock(sih, osh, cc, PMU4706_MAINPLL_PLL0, PMU5_MAINPLL_CPU); */
++		return bcma_pmu_clock(cc, pll, BCMA_CC_PMU5_MAINPLL_CPU);
 +	}
 +
- 	if (!hz)
- 		hz = 100000000;
++	return bcma_pmu_get_clockcontrol(cc);
++}
+diff --git a/drivers/bcma/driver_mips.c b/drivers/bcma/driver_mips.c
+index b17233c..c3e9dff 100644
+--- a/drivers/bcma/driver_mips.c
++++ b/drivers/bcma/driver_mips.c
+@@ -166,6 +166,18 @@ static void bcma_core_mips_dump_irq(struct bcma_bus *bus)
+ 	}
+ }
  
-diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-index 74d0696..e9f9ec8 100644
---- a/arch/mips/bcm47xx/wgt634u.c
-+++ b/arch/mips/bcm47xx/wgt634u.c
-@@ -108,7 +108,7 @@ static irqreturn_t gpio_interrupt(int irq, void *ignored)
- 
- 	/* Interrupts are shared, check if the current one is
- 	   a GPIO interrupt. */
--	if (!ssb_chipco_irq_status(&ssb_bcm47xx.chipco,
-+	if (!ssb_chipco_irq_status(&bcm47xx_bus.ssb.chipco,
- 				   SSB_CHIPCO_IRQ_GPIO))
- 		return IRQ_NONE;
- 
-@@ -132,22 +132,26 @@ static int __init wgt634u_init(void)
- 	 * machine. Use the MAC address as an heuristic. Netgear Inc. has
- 	 * been allocated ranges 00:09:5b:xx:xx:xx and 00:0f:b5:xx:xx:xx.
- 	 */
-+	u8 *et0mac;
- 
--	u8 *et0mac = ssb_bcm47xx.sprom.et0mac;
-+	if (bcm47xx_bus_type != BCM47XX_BUS_TYPE_SSB)
-+		return -ENODEV;
++u32 bcma_cpu_clock(struct bcma_drv_mips *mcore)
++{
++	struct bcma_bus *bus = mcore->core->bus;
 +
-+	et0mac = bcm47xx_bus.ssb.sprom.et0mac;
- 
- 	if (et0mac[0] == 0x00 &&
- 	    ((et0mac[1] == 0x09 && et0mac[2] == 0x5b) ||
- 	     (et0mac[1] == 0x0f && et0mac[2] == 0xb5))) {
--		struct ssb_mipscore *mcore = &ssb_bcm47xx.mipscore;
-+		struct ssb_mipscore *mcore = &bcm47xx_bus.ssb.mipscore;
- 
- 		printk(KERN_INFO "WGT634U machine detected.\n");
- 
- 		if (!request_irq(gpio_to_irq(WGT634U_GPIO_RESET),
- 				 gpio_interrupt, IRQF_SHARED,
--				 "WGT634U GPIO", &ssb_bcm47xx.chipco)) {
-+				 "WGT634U GPIO", &bcm47xx_bus.ssb.chipco)) {
- 			gpio_direction_input(WGT634U_GPIO_RESET);
- 			gpio_intmask(WGT634U_GPIO_RESET, 1);
--			ssb_chipco_irq_mask(&ssb_bcm47xx.chipco,
-+			ssb_chipco_irq_mask(&bcm47xx_bus.ssb.chipco,
- 					    SSB_CHIPCO_IRQ_GPIO,
- 					    SSB_CHIPCO_IRQ_GPIO);
- 		}
-diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-index d008f47..7cf481b 100644
---- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-@@ -19,7 +19,17 @@
- #ifndef __ASM_BCM47XX_H
- #define __ASM_BCM47XX_H
- 
--/* SSB bus */
--extern struct ssb_bus ssb_bcm47xx;
-+#include <linux/ssb/ssb.h>
++	if (bus->drv_cc.capabilities & BCMA_CC_CAP_PMU)
++		return bcma_pmu_get_clockcpu(&bus->drv_cc);
 +
-+enum bcm47xx_bus_type {
-+	BCM47XX_BUS_TYPE_SSB,
-+};
++	pr_err("No PMU available, need this to get the cpu clock\n");
++	return 0;
++}
++EXPORT_SYMBOL(bcma_cpu_clock);
 +
-+union bcm47xx_bus {
-+	struct ssb_bus ssb;
-+};
+ static void bcma_core_mips_flash_detect(struct bcma_drv_mips *mcore)
+ {
+ 	struct bcma_bus *bus = mcore->core->bus;
+diff --git a/include/linux/bcma/bcma_driver_chipcommon.h b/include/linux/bcma/bcma_driver_chipcommon.h
+index b9a930e..6083725 100644
+--- a/include/linux/bcma/bcma_driver_chipcommon.h
++++ b/include/linux/bcma/bcma_driver_chipcommon.h
+@@ -241,8 +241,47 @@
+ #define BCMA_CC_SPROM			0x0800 /* SPROM beginning */
+ #define BCMA_CC_SPROM_PCIE6		0x0830 /* SPROM beginning on PCIe rev >= 6 */
+ 
++/* Divider allocation in 4716/47162/5356 */
++#define BCMA_CC_PMU5_MAINPLL_CPU	1
++#define BCMA_CC_PMU5_MAINPLL_MEM	2
++#define BCMA_CC_PMU5_MAINPLL_SSB	3
 +
-+extern union bcm47xx_bus bcm47xx_bus;
-+extern enum bcm47xx_bus_type bcm47xx_bus_type;
++/* PLL usage in 4716/47162 */
++#define BCMA_CC_PMU4716_MAINPLL_PLL0	12
++
++/* PLL usage in 5356/5357 */
++#define BCMA_CC_PMU5356_MAINPLL_PLL0	0
++#define BCMA_CC_PMU5357_MAINPLL_PLL0	0
++
++/* 4706 PMU */
++#define BCMA_CC_PMU4706_MAINPLL_PLL0	0
++
+ /* ALP clock on pre-PMU chips */
+ #define BCMA_CC_PMU_ALP_CLOCK		20000000
++/* HT clock for systems with PMU-enabled chipcommon */
++#define BCMA_CC_PMU_HT_CLOCK		80000000
++
++/* PMU rev 5 (& 6) */
++#define BCMA_CC_PPL_P1P2_OFF		0
++#define BCMA_CC_PPL_P1_MASK		0x0f000000
++#define BCMA_CC_PPL_P1_SHIFT		24
++#define BCMA_CC_PPL_P2_MASK		0x00f00000
++#define BCMA_CC_PPL_P2_SHIFT		20
++#define BCMA_CC_PPL_M14_OFF		1
++#define BCMA_CC_PPL_MDIV_MASK		0x000000ff
++#define BCMA_CC_PPL_MDIV_WIDTH		8
++#define BCMA_CC_PPL_NM5_OFF		2
++#define BCMA_CC_PPL_NDIV_MASK		0xfff00000
++#define BCMA_CC_PPL_NDIV_SHIFT		20
++#define BCMA_CC_PPL_FMAB_OFF		3
++#define BCMA_CC_PPL_MRAT_MASK		0xf0000000
++#define BCMA_CC_PPL_MRAT_SHIFT		28
++#define BCMA_CC_PPL_ABRAT_MASK		0x08000000
++#define BCMA_CC_PPL_ABRAT_SHIFT		27
++#define BCMA_CC_PPL_FDIV_MASK		0x07ffffff
++#define BCMA_CC_PPL_PLLCTL_OFF		4
++#define BCMA_CC_PPL_PCHI_OFF		5
++#define BCMA_CC_PPL_PCHI_MASK		0x0000003f
  
- #endif /* __ASM_BCM47XX_H */
-diff --git a/arch/mips/include/asm/mach-bcm47xx/gpio.h b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-index 9850414..6b78827 100644
---- a/arch/mips/include/asm/mach-bcm47xx/gpio.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-@@ -21,41 +21,66 @@ extern int gpio_to_irq(unsigned gpio);
+ /* Data for the PMU, if available.
+  * Check availability with ((struct bcma_chipcommon)->capabilities & BCMA_CC_CAP_PMU)
+diff --git a/include/linux/bcma/bcma_driver_mips.h b/include/linux/bcma/bcma_driver_mips.h
+index 82b3bfd..c004364 100644
+--- a/include/linux/bcma/bcma_driver_mips.h
++++ b/include/linux/bcma/bcma_driver_mips.h
+@@ -44,6 +44,8 @@ extern void bcma_core_mips_init(struct bcma_drv_mips *mcore);
+ static inline void bcma_core_mips_init(struct bcma_drv_mips *mcore) { }
+ #endif
  
- static inline int gpio_get_value(unsigned gpio)
- {
--	return ssb_gpio_in(&ssb_bcm47xx, 1 << gpio);
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		return ssb_gpio_in(&bcm47xx_bus.ssb, 1 << gpio);
-+	}
-+	return -EINVAL;
- }
++extern u32 bcma_cpu_clock(struct bcma_drv_mips *mcore);
++
+ extern unsigned int bcma_core_mips_irq(struct bcma_device *dev);
  
- static inline void gpio_set_value(unsigned gpio, int value)
- {
--	ssb_gpio_out(&ssb_bcm47xx, 1 << gpio, value ? 1 << gpio : 0);
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
-+			     value ? 1 << gpio : 0);
-+	}
- }
- 
- static inline int gpio_direction_input(unsigned gpio)
- {
--	ssb_gpio_outen(&ssb_bcm47xx, 1 << gpio, 0);
--	return 0;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 0);
-+		return 0;
-+	}
-+	return -EINVAL;
- }
- 
- static inline int gpio_direction_output(unsigned gpio, int value)
- {
--	/* first set the gpio out value */
--	ssb_gpio_out(&ssb_bcm47xx, 1 << gpio, value ? 1 << gpio : 0);
--	/* then set the gpio mode */
--	ssb_gpio_outen(&ssb_bcm47xx, 1 << gpio, 1 << gpio);
--	return 0;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		/* first set the gpio out value */
-+		ssb_gpio_out(&bcm47xx_bus.ssb, 1 << gpio,
-+			     value ? 1 << gpio : 0);
-+		/* then set the gpio mode */
-+		ssb_gpio_outen(&bcm47xx_bus.ssb, 1 << gpio, 1 << gpio);
-+		return 0;
-+	}
-+	return -EINVAL;
- }
- 
- static inline int gpio_intmask(unsigned gpio, int value)
- {
--	ssb_gpio_intmask(&ssb_bcm47xx, 1 << gpio,
--			 value ? 1 << gpio : 0);
--	return 0;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_intmask(&bcm47xx_bus.ssb, 1 << gpio,
-+				 value ? 1 << gpio : 0);
-+		return 0;
-+	}
-+	return -EINVAL;
- }
- 
- static inline int gpio_polarity(unsigned gpio, int value)
- {
--	ssb_gpio_polarity(&ssb_bcm47xx, 1 << gpio,
--			  value ? 1 << gpio : 0);
--	return 0;
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_gpio_polarity(&bcm47xx_bus.ssb, 1 << gpio,
-+				  value ? 1 << gpio : 0);
-+		return 0;
-+	}
-+	return -EINVAL;
- }
- 
- 
-diff --git a/drivers/watchdog/bcm47xx_wdt.c b/drivers/watchdog/bcm47xx_wdt.c
-index bd44417..c43406c 100644
---- a/drivers/watchdog/bcm47xx_wdt.c
-+++ b/drivers/watchdog/bcm47xx_wdt.c
-@@ -54,12 +54,20 @@ static atomic_t ticks;
- static inline void bcm47xx_wdt_hw_start(void)
- {
- 	/* this is 2,5s on 100Mhz clock  and 2s on 133 Mhz */
--	ssb_watchdog_timer_set(&ssb_bcm47xx, 0xfffffff);
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0xfffffff);
-+		break;
-+	}
- }
- 
- static inline int bcm47xx_wdt_hw_stop(void)
- {
--	return ssb_watchdog_timer_set(&ssb_bcm47xx, 0);
-+	switch (bcm47xx_bus_type) {
-+	case BCM47XX_BUS_TYPE_SSB:
-+		return ssb_watchdog_timer_set(&bcm47xx_bus.ssb, 0);
-+	}
-+	return -EINVAL;
- }
- 
- static void bcm47xx_timer_tick(unsigned long unused)
+ #endif /* LINUX_BCMA_DRIVER_MIPS_H_ */
 -- 
 1.7.4.1

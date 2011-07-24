@@ -1,83 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jul 2011 06:01:58 +0200 (CEST)
-Received: from mail-pz0-f47.google.com ([209.85.210.47]:49411 "EHLO
-        mail-pz0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490976Ab1GXEBy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jul 2011 06:01:54 +0200
-Received: by pzk36 with SMTP id 36so6101814pzk.34
-        for <multiple recipients>; Sat, 23 Jul 2011 21:01:47 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Jul 2011 12:12:09 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:56814 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491124Ab1GXKMB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 24 Jul 2011 12:12:01 +0200
+Received: by fxd20 with SMTP id 20so5693809fxd.36
+        for <multiple recipients>; Sun, 24 Jul 2011 03:11:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
+        d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=3IGgMguiFwnTr7kzBbDLa0kVxop3W6eaMIUsl4nOTrI=;
-        b=FmwJM7kXrdpKyEPlJNwG7ukinQOCH7I+pXq0gT/OYSJqtZgQ/2FJ06ktjerRUeyu+p
-         vtja4ePvsuN0ltxoFDdruLqy6eDqSF4q+HPrW1emUnSMGJsUdxStIfMt/a5E79YU51F4
-         fqU0KGFLm8WrMCpRuX+hZGY4IUFeRAQZhyVSE=
-Received: by 10.143.93.4 with SMTP id v4mr2065110wfl.10.1311480107586;
-        Sat, 23 Jul 2011 21:01:47 -0700 (PDT)
-Received: from localhost.localdomain ([112.80.236.140])
-        by mx.google.com with ESMTPS id e15sm2409389wfd.15.2011.07.23.21.01.44
+        bh=SYBagXgn5I71nqq2QhC+durd+9hQwMhiZL/upN2VFlg=;
+        b=BHe68vFWYdxOD8N+r9gm9KrQ38FPDhHTdVKQaChoG3UMHWzAMz2HIbTT9oW7FJhqMR
+         RYwIjHD1AYvgLdJiXxKDf/OrG+Jc8OB+1I/gQzaCkxwJuFn2825LRzHzPUw8SNA1Ufzf
+         BrQ7cUmXQ+QfyBkDz4oghbjErO+LkoTFap5g8=
+Received: by 10.223.5.212 with SMTP id 20mr5017283faw.40.1311502316411;
+        Sun, 24 Jul 2011 03:11:56 -0700 (PDT)
+Received: from localhost.localdomain (178-191-7-51.adsl.highway.telekom.at [178.191.7.51])
+        by mx.google.com with ESMTPS id f7sm2358798faa.8.2011.07.24.03.11.53
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 23 Jul 2011 21:01:46 -0700 (PDT)
-From:   Wanlong Gao <wanlong.gao@gmail.com>
-To:     ralf@linux-mips.org, blogic@openwrt.org
-Cc:     linux-mips@linux-mips.org, wanlong.gao@gmail.com,
-        Wanlong Gao <gaowanlong@cn.fujitsu.com>
-Subject: [PATCH] mips:lantiq:remove the dup include file
-Date:   Sun, 24 Jul 2011 11:59:40 +0800
-Message-Id: <1311479980-6756-1-git-send-email-gaowanlong@cn.fujitsu.com>
-X-Mailer: git-send-email 1.7.4.1
-X-archive-position: 30698
+        Sun, 24 Jul 2011 03:11:55 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     alsa-devel@vger.kernel.org,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>
+Cc:     Liam Girdwood <lrg@ti.com>, Linux-MIPS <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH V4 0/3] ASoC for Alchemy Au1000/1500/1100
+Date:   Sun, 24 Jul 2011 12:11:48 +0200
+Message-Id: <1311502311-16916-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.6
+X-archive-position: 30699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wanlong.gao@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17020
+X-UID: 17083
 
-linux/leds.h
-linux/reboot.h
-had been included twice in devices.c
+Hello,
 
-Signed-off-by: Wanlong Gao <gaowanlong@cn.fujitsu.com>
----
- arch/mips/lantiq/devices.c      |    2 --
- arch/mips/lantiq/xway/devices.c |    2 --
- 2 files changed, 0 insertions(+), 4 deletions(-)
+Here's V4 of the AC97/I2S ASoC patchset for early Alchemy
+chips and their respective evaluation boards. 
+The patches are largely based on the old mips/au1x00.c driver which
+they replace.
 
-diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
-index 7b82c34..44a3677 100644
---- a/arch/mips/lantiq/devices.c
-+++ b/arch/mips/lantiq/devices.c
-@@ -15,11 +15,9 @@
- #include <linux/platform_device.h>
- #include <linux/leds.h>
- #include <linux/etherdevice.h>
--#include <linux/reboot.h>
- #include <linux/time.h>
- #include <linux/io.h>
- #include <linux/gpio.h>
--#include <linux/leds.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/irq.h>
-diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
-index e09e789..d0e32ab 100644
---- a/arch/mips/lantiq/xway/devices.c
-+++ b/arch/mips/lantiq/xway/devices.c
-@@ -16,11 +16,9 @@
- #include <linux/platform_device.h>
- #include <linux/leds.h>
- #include <linux/etherdevice.h>
--#include <linux/reboot.h>
- #include <linux/time.h>
- #include <linux/io.h>
- #include <linux/gpio.h>
--#include <linux/leds.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/irq.h>
+AC97 Tested on a Db1500 development board; I2S untested since none
+of the testboards I have actually have an I2S codec (just testpoints).
+
+Changes since V3:
+- dropped the hunk which removed the I2S constants from the au1000.h header
+  to avoid merge conflicts with other patches.
+- use the context structure declared in psc.h.  Follow-up patches for psc* code
+  depend on this.
+
+Changes since V2:
+- implemented changes after feedback from Lars-Peter Clausen:
+* split patch 1 in two, one for the ASoC drivers, and a separate for
+  DB1000 machine code.
+* get rid of automatic dma device registration
+* tidied the I2S/AC97 sources
+- mark sound/mips/au1x00.c as DEPRECATED instead of removing it outright.
+
+Changes since V1:
+- added untested I2S controller driver for completeness, removed the audio
+  defines from the au1000 header.
+
+
+Manuel Lauss (3):
+  ASoC: Alchemy AC97C/I2SC audio support
+  ASoC: Add a DB1x00 AC97 machine driver
+  ALSA: deprecate MIPS AU1X00 AC97 driver
+
+ arch/mips/alchemy/devboards/db1x00/platform.c |   48 ++++
+ sound/mips/Kconfig                            |    5 +-
+ sound/soc/au1x/Kconfig                        |   28 ++
+ sound/soc/au1x/Makefile                       |   10 +
+ sound/soc/au1x/ac97c.c                        |  365 ++++++++++++++++++++++++
+ sound/soc/au1x/db1000.c                       |   75 +++++
+ sound/soc/au1x/dma.c                          |  374 +++++++++++++++++++++++++
+ sound/soc/au1x/i2sc.c                         |  342 ++++++++++++++++++++++
+ sound/soc/au1x/psc.h                          |   19 +-
+ 9 files changed, 1256 insertions(+), 10 deletions(-)
+ create mode 100644 sound/soc/au1x/ac97c.c
+ create mode 100644 sound/soc/au1x/db1000.c
+ create mode 100644 sound/soc/au1x/dma.c
+ create mode 100644 sound/soc/au1x/i2sc.c
+
 -- 
-1.7.4.1
+1.7.6

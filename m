@@ -1,122 +1,213 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2011 17:36:15 +0200 (CEST)
-Received: from mail-ey0-f178.google.com ([209.85.215.178]:53696 "EHLO
-        mail-ey0-f178.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491826Ab1GZPgL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jul 2011 17:36:11 +0200
-Received: by mail-ey0-f178.google.com with SMTP id 4so1036536eye.9
-        for <multiple recipients>; Tue, 26 Jul 2011 08:36:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        bh=iJQxxlW1BJ85nI4bJR5UfnbAx9ucA1T/8YaNvf4025E=;
-        b=IFyXsCFxbVXh9kgiBwiRmm0dnSv5fyYpDH06mS2nM1dX1rvMlebVRh5/l1eyvFHX9u
-         FPeR6TOx5eScJ5hCrsOjGv0/NC0XR+CIiyD/ssUnf57p6/MrfiPfY2+hjsnczWjwCBOA
-         oFraJxaoA8J5+gYJD9x5/u0/wMVzsYCUEcdik=
-Received: by 10.204.133.86 with SMTP id e22mr63694bkt.50.1311694571087;
-        Tue, 26 Jul 2011 08:36:11 -0700 (PDT)
-Received: from localhost.localdomain ([130.75.117.88])
-        by mx.google.com with ESMTPS id b3sm68203bke.44.2011.07.26.08.36.09
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 26 Jul 2011 08:36:10 -0700 (PDT)
-From:   Tejun Heo <tj@kernel.org>
-To:     benh@kernel.crashing.org, yinghai@kernel.org, hpa@zytor.com,
-        tony.luck@intel.com, ralf@linux-mips.org, schwidefsky@de.ibm.com,
-        liqin.chen@sunplusct.com, lethal@linux-sh.org, davem@davemloft.net,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-Cc:     mingo@redhat.com, Tejun Heo <tj@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2011 20:05:17 +0200 (CEST)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:53351 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490962Ab1GZSFK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jul 2011 20:05:10 +0200
+Received: by gwb1 with SMTP id 1so512417gwb.36
+        for <multiple recipients>; Tue, 26 Jul 2011 11:05:03 -0700 (PDT)
+Received: by 10.90.249.40 with SMTP id w40mr5973202agh.4.1311703503501;
+        Tue, 26 Jul 2011 11:05:03 -0700 (PDT)
+Received: from [192.168.6.91] ([64.134.25.244])
+        by mx.google.com with ESMTPS id j20sm578239anb.0.2011.07.26.11.05.01
+        (version=SSLv3 cipher=OTHER);
+        Tue, 26 Jul 2011 11:05:02 -0700 (PDT)
+Message-ID: <4E2F01CB.7090206@landley.net>
+Date:   Tue, 26 Jul 2011 13:04:59 -0500
+From:   Rob Landley <rob@landley.net>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.18) Gecko/20110617 Thunderbird/3.1.11
+MIME-Version: 1.0
+To:     ralf@linux-mips.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: [PATCH 19/23] mips: Use HAVE_MEMBLOCK_NODE_MAP
-Date:   Tue, 26 Jul 2011 17:35:30 +0200
-Message-Id: <1311694534-5161-20-git-send-email-tj@kernel.org>
-X-Mailer: git-send-email 1.7.6
-In-Reply-To: <1311694534-5161-1-git-send-email-tj@kernel.org>
-References: <1311694534-5161-1-git-send-email-tj@kernel.org>
-X-archive-position: 30728
+Subject: Mips still broken in v3.0 with v2.6.39 bug?
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 30729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: rob@landley.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18717
+X-UID: 18947
 
-mips used early_node_map[] just to prime free_area_init_nodes().  Now
-memblock can be used for the same purpose and early_node_map[] is
-scheduled to be dropped.  Use memblock instead.
+I still need to apply this patch:
 
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Yinghai Lu <yinghai@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
-Only compile tested.  Thanks.
+Date: Fri, 27 May 2011 15:00:11 +0100
+From: Ralf Baechle <ralf@linux-mips.org>
+To: Rob Landley <rob@landley.net>
+Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: MIPS panic in 2.6.39 (bisected to 7eaceaccab5f)
+Message-ID: <20110527140011.GF30117@linux-mips.org>
+References: <4DDB5673.5060206@landley.net>
+ <20110524143937.GB30117@linux-mips.org>
+ <4DDCB1EB.4020707@landley.net>
+ <20110527075512.GE30117@linux-mips.org>
+In-Reply-To: <20110527075512.GE30117@linux-mips.org>
 
- arch/mips/Kconfig                |    3 +++
- arch/mips/kernel/setup.c         |    3 ++-
- arch/mips/sgi-ip27/ip27-memory.c |    5 +++--
- 3 files changed, 8 insertions(+), 3 deletions(-)
+On Fri, May 27, 2011 at 08:55:13AM +0100, Ralf Baechle wrote:
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 653da62..368b2ec 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -24,6 +24,9 @@ config MIPS
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_IRQ_SHOW
- 	select HAVE_ARCH_JUMP_LABEL
-+	select HAVE_MEMBLOCK
-+	select HAVE_MEMBLOCK_NODE_MAP
-+	select ARCH_DISCARD_MEMBLOCK
+> > Have you guys been able to reproduce the problem?
+> 
+> Staring at the disassembly was good enough, I think.  The commit you
+> bisected is restructuring some of the hardware probing code for Malta and
+> seems to result in gcmp_present being set without _gcmp_base having been
+> assigned, thus the null pointer dereference.
+
+Can you test below patch?  Thanks,
+
+  Ralf
+
+Since af3a1f6f4813907e143f87030cde67a9971db533 the Malta code does no
+longer probe for presence of GCMP if CMP is not configured.  This means
+that the variable gcmp_present well be left at its default value of -1
+which normally is meant to indicate that GCMP has not yet been mmapped.
+This non-zero value is now interpreted as GCMP being present resulting
+in a write attempt to a GCMP register resulting in a crash.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/include/asm/smp-ops.h          |   41 +++++++++++++++++++++++++++--
+ arch/mips/mipssim/sim_setup.c            |   17 ++++++------
+ arch/mips/mti-malta/malta-init.c         |   14 +++++-----
+ arch/mips/pmc-sierra/msp71xx/msp_setup.c |    8 ++---
+ 4 files changed, 55 insertions(+), 24 deletions(-)
+
+diff --git a/arch/mips/include/asm/smp-ops.h b/arch/mips/include/asm/smp-ops.h
+index 9e09af3..48b03ff 100644
+--- a/arch/mips/include/asm/smp-ops.h
++++ b/arch/mips/include/asm/smp-ops.h
+@@ -56,8 +56,43 @@ static inline void register_smp_ops(struct plat_smp_ops *ops)
  
- menu "Machine selection"
+ #endif /* !CONFIG_SMP */
  
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 8ad1d56..c25bce4 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -14,6 +14,7 @@
- #include <linux/ioport.h>
- #include <linux/module.h>
- #include <linux/screen_info.h>
-+#include <linux/memblock.h>
- #include <linux/bootmem.h>
- #include <linux/initrd.h>
- #include <linux/root_dev.h>
-@@ -352,7 +353,7 @@ static void __init bootmem_init(void)
- 			continue;
+-extern struct plat_smp_ops up_smp_ops;
+-extern struct plat_smp_ops cmp_smp_ops;
+-extern struct plat_smp_ops vsmp_smp_ops;
++static inline int register_up_smp_ops(void)
++{
++#ifdef CONFIG_SMP_UP
++	extern struct plat_smp_ops up_smp_ops;
++
++	register_smp_ops(&up_smp_ops);
++
++	return 0;
++#else
++	return -ENODEV;
++#endif
++}
++
++static inline int register_cmp_smp_ops(void)
++{
++#ifdef CONFIG_MIPS_CMP
++	extern struct plat_smp_ops cmp_smp_ops;
++
++	register_smp_ops(&cmp_smp_ops);
++
++	return 0;
++#else
++	return -ENODEV;
++#endif
++}
++
++static inline int register_vsmp_smp_ops(void)
++{
++#ifdef CONFIG_MIPS_MT_SMP
++	extern struct plat_smp_ops vsmp_smp_ops;
++
++	register_smp_ops(&vsmp_smp_ops);
++
++	return 0;
++#else
++	return -ENODEV;
++#endif
++}
+ 
+ #endif /* __ASM_SMP_OPS_H */
+diff --git a/arch/mips/mipssim/sim_setup.c b/arch/mips/mipssim/sim_setup.c
+index 55f22a3..1970069 100644
+--- a/arch/mips/mipssim/sim_setup.c
++++ b/arch/mips/mipssim/sim_setup.c
+@@ -59,18 +59,17 @@ void __init prom_init(void)
+ 
+ 	prom_meminit();
+ 
+-#ifdef CONFIG_MIPS_MT_SMP
+-	if (cpu_has_mipsmt)
+-		register_smp_ops(&vsmp_smp_ops);
+-	else
+-		register_smp_ops(&up_smp_ops);
+-#endif
++	if (cpu_has_mipsmt) {
++		if (!register_vsmp_smp_ops())
++			return;
++
+ #ifdef CONFIG_MIPS_MT_SMTC
+-	if (cpu_has_mipsmt)
+ 		register_smp_ops(&ssmtc_smp_ops);
+-	else
+-		register_smp_ops(&up_smp_ops);
++			return;
  #endif
- 
--		add_active_range(0, start, end);
-+		memblock_add_node(PFN_PHYS(start), PFN_PHYS(end - start), 0);
- 	}
- 
- 	/*
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index bc12971..b105eca 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -12,6 +12,7 @@
-  */
- #include <linux/init.h>
- #include <linux/kernel.h>
-+#include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/mmzone.h>
- #include <linux/module.h>
-@@ -381,8 +382,8 @@ static void __init szmem(void)
- 				continue;
- 			}
- 			num_physpages += slot_psize;
--			add_active_range(node, slot_getbasepfn(node, slot),
--					 slot_getbasepfn(node, slot) + slot_psize);
-+			memblock_add_node(PFN_PHYS(slot_getbasepfn(node, slot)),
-+					  PFN_PHYS(slot_psize), node);
- 		}
- 	}
++	}
++
++	register_up_smp_ops();
  }
--- 
-1.7.6
+ 
+ static void __init serial_init(void)
+diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
+index 31180c3..3a73d69 100644
+--- a/arch/mips/mti-malta/malta-init.c
++++ b/arch/mips/mti-malta/malta-init.c
+@@ -29,6 +29,7 @@
+ #include <asm/system.h>
+ #include <asm/cacheflush.h>
+ #include <asm/traps.h>
++#include <asm/smp-ops.h>
+ 
+ #include <asm/gcmpregs.h>
+ #include <asm/mips-boards/prom.h>
+@@ -358,15 +359,14 @@ void __init prom_init(void)
+ #ifdef CONFIG_SERIAL_8250_CONSOLE
+ 	console_config();
+ #endif
+-#ifdef CONFIG_MIPS_CMP
+ 	/* Early detection of CMP support */
+ 	if (gcmp_probe(GCMP_BASE_ADDR, GCMP_ADDRSPACE_SZ))
+-		register_smp_ops(&cmp_smp_ops);
+-	else
+-#endif
+-#ifdef CONFIG_MIPS_MT_SMP
+-		register_smp_ops(&vsmp_smp_ops);
+-#endif
++		if (!register_cmp_smp_ops())
++			return;
++
++	if (!register_vsmp_smp_ops())
++		return;
++
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 	register_smp_ops(&msmtc_smp_ops);
+ #endif
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+index 2413ea6..0abfbe0 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+@@ -228,13 +228,11 @@ void __init prom_init(void)
+ 	 */
+ 	msp_serial_setup();
+ 
+-#ifdef CONFIG_MIPS_MT_SMP
+-	register_smp_ops(&vsmp_smp_ops);
+-#endif
+-
++	if (register_vsmp_smp_ops()) {
+ #ifdef CONFIG_MIPS_MT_SMTC
+-	register_smp_ops(&msp_smtc_smp_ops);
++		register_smp_ops(&msp_smtc_smp_ops);
+ #endif
++	}
+ 
+ #ifdef CONFIG_PMCTWILED
+ 	/*

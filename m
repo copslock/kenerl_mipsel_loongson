@@ -1,213 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Jul 2011 20:05:17 +0200 (CEST)
-Received: from mail-gw0-f49.google.com ([74.125.83.49]:53351 "EHLO
-        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490962Ab1GZSFK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 26 Jul 2011 20:05:10 +0200
-Received: by gwb1 with SMTP id 1so512417gwb.36
-        for <multiple recipients>; Tue, 26 Jul 2011 11:05:03 -0700 (PDT)
-Received: by 10.90.249.40 with SMTP id w40mr5973202agh.4.1311703503501;
-        Tue, 26 Jul 2011 11:05:03 -0700 (PDT)
-Received: from [192.168.6.91] ([64.134.25.244])
-        by mx.google.com with ESMTPS id j20sm578239anb.0.2011.07.26.11.05.01
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2011 05:19:22 +0200 (CEST)
+Received: from mail-pz0-f47.google.com ([209.85.210.47]:42305 "EHLO
+        mail-pz0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490965Ab1G0DTP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 27 Jul 2011 05:19:15 +0200
+Received: by pzk36 with SMTP id 36so1884641pzk.34
+        for <multiple recipients>; Tue, 26 Jul 2011 20:19:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=t93P9qlFU/1QO6XdcV+AZFhSydDB5JhEN3c+qDoO0pU=;
+        b=GjwGscypYZCqCOq3w+HXi452VzzDYmIK2r4b13HI87i+Y7uvTPpTH+am/M3DWaY8VU
+         2necuT2hMAFiX6Mz96jMNmDoA9Bif+la/+lOw/0HKEoOAlM4orOzihdSwtP7NFAgy7V8
+         J4l9B4WZirnNPqQJ+i3duiXG+xqIuiIUMFvQE=
+Received: by 10.68.1.170 with SMTP id 10mr9748491pbn.380.1311736747587;
+        Tue, 26 Jul 2011 20:19:07 -0700 (PDT)
+Received: from sdk (sannin29007.nirai.ne.jp [203.160.29.7])
+        by mx.google.com with ESMTPS id k3sm1210725pbj.45.2011.07.26.20.19.04
         (version=SSLv3 cipher=OTHER);
-        Tue, 26 Jul 2011 11:05:02 -0700 (PDT)
-Message-ID: <4E2F01CB.7090206@landley.net>
-Date:   Tue, 26 Jul 2011 13:04:59 -0500
-From:   Rob Landley <rob@landley.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.18) Gecko/20110617 Thunderbird/3.1.11
-MIME-Version: 1.0
-To:     ralf@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: Mips still broken in v3.0 with v2.6.39 bug?
-Content-Type: text/plain; charset=ISO-8859-1
+        Tue, 26 Jul 2011 20:19:06 -0700 (PDT)
+Date:   Wed, 27 Jul 2011 12:19:01 +0900
+From:   Yoichi Yuasa <yuasa@linux-mips.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips <linux-mips@linux-mips.org>, joe@perches.com,
+        yuasa@linux-mips.org
+Subject: MIPS: fix rc32434 pci build error
+Message-Id: <20110727121901.9ef04d00.yuasa@linux-mips.org>
+X-Mailer: Sylpheed 3.1.1 (GTK+ 2.22.0; i386-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-archive-position: 30729
+X-archive-position: 30730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rob@landley.net
+X-original-sender: yuasa@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18947
+X-UID: 19338
 
-I still need to apply this patch:
 
-Date: Fri, 27 May 2011 15:00:11 +0100
-From: Ralf Baechle <ralf@linux-mips.org>
-To: Rob Landley <rob@landley.net>
-Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: MIPS panic in 2.6.39 (bisected to 7eaceaccab5f)
-Message-ID: <20110527140011.GF30117@linux-mips.org>
-References: <4DDB5673.5060206@landley.net>
- <20110524143937.GB30117@linux-mips.org>
- <4DDCB1EB.4020707@landley.net>
- <20110527075512.GE30117@linux-mips.org>
-In-Reply-To: <20110527075512.GE30117@linux-mips.org>
+arch/mips/pci/pci-rc32434.c: In function 'rc32434_pci_init':
+arch/mips/pci/pci-rc32434.c:217:16: error: 'rcrc32434_res_pci_io1' undeclared (first use in this function)
+arch/mips/pci/pci-rc32434.c:217:16: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [arch/mips/pci/pci-rc32434.o] Error 1
 
-On Fri, May 27, 2011 at 08:55:13AM +0100, Ralf Baechle wrote:
+This problem is included in the following commit.
 
-> > Have you guys been able to reproduce the problem?
-> 
-> Staring at the disassembly was good enough, I think.  The commit you
-> bisected is restructuring some of the hardware probing code for Malta and
-> seems to result in gcmp_present being set without _gcmp_base having been
-> assigned, thus the null pointer dereference.
+  commit 28f65c11f2ffb3957259dece647a24f8ad2e241b
+  Author: Joe Perches <joe@perches.com>
+  Date:   Thu Jun 9 09:13:32 2011 -0700
 
-Can you test below patch?  Thanks,
+      treewide: Convert uses of struct resource to resource_size(ptr)
 
-  Ralf
+Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
+---
+ arch/mips/pci/pci-rc32434.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Since af3a1f6f4813907e143f87030cde67a9971db533 the Malta code does no
-longer probe for presence of GCMP if CMP is not configured.  This means
-that the variable gcmp_present well be left at its default value of -1
-which normally is meant to indicate that GCMP has not yet been mmapped.
-This non-zero value is now interpreted as GCMP being present resulting
-in a write attempt to a GCMP register resulting in a crash.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/include/asm/smp-ops.h          |   41 +++++++++++++++++++++++++++--
- arch/mips/mipssim/sim_setup.c            |   17 ++++++------
- arch/mips/mti-malta/malta-init.c         |   14 +++++-----
- arch/mips/pmc-sierra/msp71xx/msp_setup.c |    8 ++---
- 4 files changed, 55 insertions(+), 24 deletions(-)
-
-diff --git a/arch/mips/include/asm/smp-ops.h b/arch/mips/include/asm/smp-ops.h
-index 9e09af3..48b03ff 100644
---- a/arch/mips/include/asm/smp-ops.h
-+++ b/arch/mips/include/asm/smp-ops.h
-@@ -56,8 +56,43 @@ static inline void register_smp_ops(struct plat_smp_ops *ops)
+diff --git a/arch/mips/pci/pci-rc32434.c b/arch/mips/pci/pci-rc32434.c
+index 764362c..5f3a69c 100644
+--- a/arch/mips/pci/pci-rc32434.c
++++ b/arch/mips/pci/pci-rc32434.c
+@@ -215,7 +215,7 @@ static int __init rc32434_pci_init(void)
+ 	rc32434_pcibridge_init();
  
- #endif /* !CONFIG_SMP */
+ 	io_map_base = ioremap(rc32434_res_pci_io1.start,
+-			      resource_size(&rcrc32434_res_pci_io1));
++			      resource_size(&rc32434_res_pci_io1));
  
--extern struct plat_smp_ops up_smp_ops;
--extern struct plat_smp_ops cmp_smp_ops;
--extern struct plat_smp_ops vsmp_smp_ops;
-+static inline int register_up_smp_ops(void)
-+{
-+#ifdef CONFIG_SMP_UP
-+	extern struct plat_smp_ops up_smp_ops;
-+
-+	register_smp_ops(&up_smp_ops);
-+
-+	return 0;
-+#else
-+	return -ENODEV;
-+#endif
-+}
-+
-+static inline int register_cmp_smp_ops(void)
-+{
-+#ifdef CONFIG_MIPS_CMP
-+	extern struct plat_smp_ops cmp_smp_ops;
-+
-+	register_smp_ops(&cmp_smp_ops);
-+
-+	return 0;
-+#else
-+	return -ENODEV;
-+#endif
-+}
-+
-+static inline int register_vsmp_smp_ops(void)
-+{
-+#ifdef CONFIG_MIPS_MT_SMP
-+	extern struct plat_smp_ops vsmp_smp_ops;
-+
-+	register_smp_ops(&vsmp_smp_ops);
-+
-+	return 0;
-+#else
-+	return -ENODEV;
-+#endif
-+}
- 
- #endif /* __ASM_SMP_OPS_H */
-diff --git a/arch/mips/mipssim/sim_setup.c b/arch/mips/mipssim/sim_setup.c
-index 55f22a3..1970069 100644
---- a/arch/mips/mipssim/sim_setup.c
-+++ b/arch/mips/mipssim/sim_setup.c
-@@ -59,18 +59,17 @@ void __init prom_init(void)
- 
- 	prom_meminit();
- 
--#ifdef CONFIG_MIPS_MT_SMP
--	if (cpu_has_mipsmt)
--		register_smp_ops(&vsmp_smp_ops);
--	else
--		register_smp_ops(&up_smp_ops);
--#endif
-+	if (cpu_has_mipsmt) {
-+		if (!register_vsmp_smp_ops())
-+			return;
-+
- #ifdef CONFIG_MIPS_MT_SMTC
--	if (cpu_has_mipsmt)
- 		register_smp_ops(&ssmtc_smp_ops);
--	else
--		register_smp_ops(&up_smp_ops);
-+			return;
- #endif
-+	}
-+
-+	register_up_smp_ops();
- }
- 
- static void __init serial_init(void)
-diff --git a/arch/mips/mti-malta/malta-init.c b/arch/mips/mti-malta/malta-init.c
-index 31180c3..3a73d69 100644
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -29,6 +29,7 @@
- #include <asm/system.h>
- #include <asm/cacheflush.h>
- #include <asm/traps.h>
-+#include <asm/smp-ops.h>
- 
- #include <asm/gcmpregs.h>
- #include <asm/mips-boards/prom.h>
-@@ -358,15 +359,14 @@ void __init prom_init(void)
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	console_config();
- #endif
--#ifdef CONFIG_MIPS_CMP
- 	/* Early detection of CMP support */
- 	if (gcmp_probe(GCMP_BASE_ADDR, GCMP_ADDRSPACE_SZ))
--		register_smp_ops(&cmp_smp_ops);
--	else
--#endif
--#ifdef CONFIG_MIPS_MT_SMP
--		register_smp_ops(&vsmp_smp_ops);
--#endif
-+		if (!register_cmp_smp_ops())
-+			return;
-+
-+	if (!register_vsmp_smp_ops())
-+		return;
-+
- #ifdef CONFIG_MIPS_MT_SMTC
- 	register_smp_ops(&msmtc_smp_ops);
- #endif
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-index 2413ea6..0abfbe0 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
-@@ -228,13 +228,11 @@ void __init prom_init(void)
- 	 */
- 	msp_serial_setup();
- 
--#ifdef CONFIG_MIPS_MT_SMP
--	register_smp_ops(&vsmp_smp_ops);
--#endif
--
-+	if (register_vsmp_smp_ops()) {
- #ifdef CONFIG_MIPS_MT_SMTC
--	register_smp_ops(&msp_smtc_smp_ops);
-+		register_smp_ops(&msp_smtc_smp_ops);
- #endif
-+	}
- 
- #ifdef CONFIG_PMCTWILED
- 	/*
+ 	if (!io_map_base)
+ 		return -ENOMEM;
+-- 
+1.7.3.4

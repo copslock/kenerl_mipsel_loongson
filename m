@@ -1,66 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jul 2011 13:29:35 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:37325 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491119Ab1G1L2y (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jul 2011 13:28:54 +0200
-Received: by yxj20 with SMTP id 20so1609898yxj.36
-        for <linux-mips@linux-mips.org>; Thu, 28 Jul 2011 04:28:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=iNWr+VeF3/fCi4ihx2BkN0oSjGrbBHQm99vEIfYTLJE=;
-        b=fWgNZpS3mib5O8fkqP5fJ3uC1CKYhVuvGbKRkYHyVB580LcIhpz7RSRHoKsMa3SsLG
-         YVQtcRZDonVOKDtb1q3pfEM5alM4v1BXheBKFFgiGHN+QPMXrdM5V8sN0xrDV5pifEZs
-         mq7GN0hGgOD7ZG4KUexCutl4AIhFplwJN4EAQ=
-Received: by 10.91.163.20 with SMTP id q20mr596046ago.169.1311852528065;
-        Thu, 28 Jul 2011 04:28:48 -0700 (PDT)
-Received: from localhost.localdomain ([210.13.118.102])
-        by mx.google.com with ESMTPS id p6sm678491ank.28.2011.07.28.04.28.44
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 28 Jul 2011 04:28:47 -0700 (PDT)
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     jbarnes@virtuousgeek.org, torvalds@linux-foundation.org
-Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com,
-        dengcheng.zhu@gmail.com
-Subject: [PATCH 2/2] kernel/resource: enrich the comment for insert_resource_conflict()
-Date:   Thu, 28 Jul 2011 19:28:32 +0800
-Message-Id: <1311852512-7340-3-git-send-email-dengcheng.zhu@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1311852512-7340-1-git-send-email-dengcheng.zhu@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jul 2011 13:53:47 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:52970 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491113Ab1G1Lxo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Jul 2011 13:53:44 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p6SBrWQx031707;
+        Thu, 28 Jul 2011 12:53:32 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p6SBrUZf031704;
+        Thu, 28 Jul 2011 12:53:30 +0100
+Date:   Thu, 28 Jul 2011 12:53:30 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Cc:     jbarnes@virtuousgeek.org, torvalds@linux-foundation.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com
+Subject: Re: [PATCH 1/2] PCI: make pci_claim_resource() work with conflict
+ resources as appropriate
+Message-ID: <20110728115330.GA29899@linux-mips.org>
 References: <1311852512-7340-1-git-send-email-dengcheng.zhu@gmail.com>
-X-archive-position: 30754
+ <1311852512-7340-2-git-send-email-dengcheng.zhu@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1311852512-7340-2-git-send-email-dengcheng.zhu@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 30755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20661
+X-UID: 20675
 
-It helps people better understand how this function works.
+On Thu, Jul 28, 2011 at 07:28:31PM +0800, Deng-Cheng Zhu wrote:
 
-Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
----
- kernel/resource.c |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+> In resolving a network driver issue with the MIPS Malta platform, the root
+> cause was traced into pci_claim_resource():
+> 
+> MIPS System Controller's PCI I/O resources stay in 0x1000-0xffffff. When
+> PCI quirks start claiming resources using request_resource_conflict(),
+> collisions happen and -EBUSY is returned, thereby rendering the onboard AMD
+> PCnet32 NIC unaware of quirks' region and preventing the NIC from functioning.
+> For PCI quirks, PIIX4 ACPI is expected to claim 0x1000-0x103f, and PIIX4 SMB to
+> claim 0x1100-0x110f, both of which fall into the MSC I/O range. Certainly, we
+> can increase the start point of this range in arch/mips/mti-malta/malta-pci.c to
+> avoid the collisions. But a fix in here looks more justified, though it seems to
+> have a wider impact. Using insert_xxx as opposed to request_xxx will register
+> PCI quirks' resources as children of MSC I/O and return OK, instead of seeing
+> collisions which are actually resolvable.
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 3ff4017..5406ecf 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -617,7 +617,9 @@ static struct resource * __insert_resource(struct resource *parent, struct resou
-  * happens. If a conflict happens, and the conflicting resources
-  * entirely fit within the range of the new resource, then the new
-  * resource is inserted and the conflicting resources become children of
-- * the new resource.
-+ * the new resource. Also, if the new resource entirely fits within the range
-+ * of a conflicting resource without overlapping the latter's children, then
-+ * the new resource is inserted too and becomes a child of the conflicting one.
-  */
- struct resource *insert_resource_conflict(struct resource *parent, struct resource *new)
- {
--- 
-1.7.1
+This used to work in the past; do you know which commit broke the resource
+handling for the NIC?
+
+  Ralf

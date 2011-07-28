@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Jul 2011 22:27:50 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:52480 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jul 2011 13:26:26 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:54298 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491158Ab1G0U1q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 27 Jul 2011 22:27:46 +0200
+        id S1491056Ab1G1L0W (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 28 Jul 2011 13:26:22 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p6RKRYVa013231;
-        Wed, 27 Jul 2011 21:27:34 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p6SBQI7C029179;
+        Thu, 28 Jul 2011 12:26:18 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p6RKRXDe013228;
-        Wed, 27 Jul 2011 21:27:33 +0100
-Date:   Wed, 27 Jul 2011 21:27:33 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p6SBQGQo029176;
+        Thu, 28 Jul 2011 12:26:16 +0100
+Date:   Thu, 28 Jul 2011 12:26:16 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Ganesan Ramalingam <ganesan18@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
+        Liam Girdwood <lrg@ti.com>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org
-Subject: Re: Compilation error on linux-mips git
-Message-ID: <20110727202733.GA10842@linux-mips.org>
-References: <CAJ4A=e4dvK3RVCdha8f_Vs6kbc1cmfzwdAPtUe3+3AUuVddgRA@mail.gmail.com>
- <20110727134737.GA8930@linux-mips.org>
- <CAJ4A=e5bvq-RQ__ktbJ2u0eYJkeNNJOcS9nfBOdEJZrwasty_A@mail.gmail.com>
+Subject: [PATCH] SOUND: Fix txx9aclc.c build
+Message-ID: <20110728112616.GA27918@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJ4A=e5bvq-RQ__ktbJ2u0eYJkeNNJOcS9nfBOdEJZrwasty_A@mail.gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30750
+X-archive-position: 30751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,32 +32,33 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20121
+X-UID: 20651
 
-On Wed, Jul 27, 2011 at 07:40:02PM +0530, Ganesan Ramalingam wrote:
-> Date:   Wed, 27 Jul 2011 19:40:02 +0530
-> From: Ganesan Ramalingam <ganesan18@gmail.com>
-> To: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-> Subject: Re: Compilation error on linux-mips git
-> Content-Type: multipart/alternative; boundary=0023545bcf24e7046c04a90d9b5b
-> 
-> Got the error with below version of compiler:
-> 
-> Target: mips64-unknown-linux-gnu
-> Configured with: ../gcc-4.2.2/configure
-> --prefix=/home/rpmbuilder/CROSS_TOOLCHAIN
-> --with-local-prefix=/home/rpmbuilder/CROSS_TOOLCHAIN/mips64-unknown-linux-gnu
-> --target=mips64-unknown-linux-gnu --host=x86-cross-linux-gnu --disable-nls
-> --enable-shared --enable-languages=c,c++ --enable-__cxa_atexit --enable-c99
-> --enable-long-long --enable-threads=posix --with-arch=xlr --with-float=soft
-> --with-tune=xlr
-> --with-sysroot=/home/rpmbuilder/CROSS_TOOLCHAIN/mips64-unknown-linux-gnu
-> --with-headers=/home/rpmbuilder/CROSS_TOOLCHAIN/mips64-unknown-linux-gnu/usr/include
-> Thread model: posix
-> gcc version 4.2.2
+552d1ef6b5a98d7b95959d5b139071e3c90cebf1 [ASoC: core - Optimise and refactor
+pcm_new() to pass only rtd] breaks compilation of txx9aclc.c:
 
-And the warning is correct; I don't know why later compilers don't spot it.
-It's not like the code has any complex control flow.
+  CC [M]  sound/soc/txx9/txx9aclc.o
+/home/ralf/src/linux/linux-mips/sound/soc/txx9/txx9aclc.c: In function 'txx9aclc_pcm_new':
+/home/ralf/src/linux/linux-mips/sound/soc/txx9/txx9aclc.c:318:3: error: 'card' undeclared (first use in this function)
+/home/ralf/src/linux/linux-mips/sound/soc/txx9/txx9aclc.c:318:3: note: each undeclared identifier is reported only once for each function it appears in
+make[5]: *** [sound/soc/txx9/txx9aclc.o] Error 1
 
-  Ralf
+Fixed by providing a definition for card.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ sound/soc/txx9/txx9aclc.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/sound/soc/txx9/txx9aclc.c b/sound/soc/txx9/txx9aclc.c
+index 34aa972..3de99af 100644
+--- a/sound/soc/txx9/txx9aclc.c
++++ b/sound/soc/txx9/txx9aclc.c
+@@ -290,6 +290,7 @@ static void txx9aclc_pcm_free_dma_buffers(struct snd_pcm *pcm)
+ 
+ static int txx9aclc_pcm_new(struct snd_soc_pcm_runtime *rtd)
+ {
++	struct snd_card *card = rtd->card->snd_card;
+ 	struct snd_soc_dai *dai = rtd->cpu_dai;
+ 	struct snd_pcm *pcm = rtd->pcm;
+ 	struct platform_device *pdev = to_platform_device(dai->platform->dev);

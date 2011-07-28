@@ -1,64 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jul 2011 13:26:26 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:54298 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491056Ab1G1L0W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 28 Jul 2011 13:26:22 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p6SBQI7C029179;
-        Thu, 28 Jul 2011 12:26:18 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p6SBQGQo029176;
-        Thu, 28 Jul 2011 12:26:16 +0100
-Date:   Thu, 28 Jul 2011 12:26:16 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
-        Liam Girdwood <lrg@ti.com>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org
-Subject: [PATCH] SOUND: Fix txx9aclc.c build
-Message-ID: <20110728112616.GA27918@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30751
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Jul 2011 13:28:50 +0200 (CEST)
+Received: from mail-yi0-f49.google.com ([209.85.218.49]:48379 "EHLO
+        mail-yi0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491105Ab1G1L2r (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 28 Jul 2011 13:28:47 +0200
+Received: by yib17 with SMTP id 17so1980740yib.36
+        for <linux-mips@linux-mips.org>; Thu, 28 Jul 2011 04:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=aDMbfvxPSBeygsX7W8UE3aPvHQhyddCirXCs1l7/ej4=;
+        b=JcJ50MPZgRbW8Ihu5hjvXBvbq5FDc2j8o+xs7AuEhkdIl4RPklsReC9eFZf3FQtvgc
+         4ckYm8faSW5VdLgp4pc4Ui4H/SbmIh/xJFDUWzRT/j25u1MBxe13D1yty4lIBcY+QDlG
+         NMduQw0h0YoNDlWflrGgLk5jJWhzwXuX2Grmc=
+Received: by 10.91.4.32 with SMTP id g32mr689791agi.71.1311852520863;
+        Thu, 28 Jul 2011 04:28:40 -0700 (PDT)
+Received: from localhost.localdomain ([210.13.118.102])
+        by mx.google.com with ESMTPS id p6sm678491ank.28.2011.07.28.04.28.37
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 28 Jul 2011 04:28:40 -0700 (PDT)
+From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+To:     jbarnes@virtuousgeek.org, torvalds@linux-foundation.org
+Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com,
+        dengcheng.zhu@gmail.com
+Subject: [PATCH 0/2] PCI driver to use insert_resource_conflict() to claim resources
+Date:   Thu, 28 Jul 2011 19:28:30 +0800
+Message-Id: <1311852512-7340-1-git-send-email-dengcheng.zhu@gmail.com>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 30752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dengcheng.zhu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20651
+X-UID: 20655
 
-552d1ef6b5a98d7b95959d5b139071e3c90cebf1 [ASoC: core - Optimise and refactor
-pcm_new() to pass only rtd] breaks compilation of txx9aclc.c:
+Use insert_resource_conflict() instead of request_resource_conflict() in
+pci_claim_resource() to work with the conflict resource which can be the parent
+of the resource to be claimed.
 
-  CC [M]  sound/soc/txx9/txx9aclc.o
-/home/ralf/src/linux/linux-mips/sound/soc/txx9/txx9aclc.c: In function 'txx9aclc_pcm_new':
-/home/ralf/src/linux/linux-mips/sound/soc/txx9/txx9aclc.c:318:3: error: 'card' undeclared (first use in this function)
-/home/ralf/src/linux/linux-mips/sound/soc/txx9/txx9aclc.c:318:3: note: each undeclared identifier is reported only once for each function it appears in
-make[5]: *** [sound/soc/txx9/txx9aclc.o] Error 1
+Deng-Cheng Zhu (2):
+  PCI: make pci_claim_resource() work with conflict resources as
+    appropriate
+  kernel/resource: enrich the comment for insert_resource_conflict()
 
-Fixed by providing a definition for card.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- sound/soc/txx9/txx9aclc.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
-
-diff --git a/sound/soc/txx9/txx9aclc.c b/sound/soc/txx9/txx9aclc.c
-index 34aa972..3de99af 100644
---- a/sound/soc/txx9/txx9aclc.c
-+++ b/sound/soc/txx9/txx9aclc.c
-@@ -290,6 +290,7 @@ static void txx9aclc_pcm_free_dma_buffers(struct snd_pcm *pcm)
- 
- static int txx9aclc_pcm_new(struct snd_soc_pcm_runtime *rtd)
- {
-+	struct snd_card *card = rtd->card->snd_card;
- 	struct snd_soc_dai *dai = rtd->cpu_dai;
- 	struct snd_pcm *pcm = rtd->pcm;
- 	struct platform_device *pdev = to_platform_device(dai->platform->dev);
+ drivers/pci/setup-res.c |    2 +-
+ kernel/resource.c       |    4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)

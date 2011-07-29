@@ -1,90 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jul 2011 20:09:19 +0200 (CEST)
-Received: from smtp-out.google.com ([216.239.44.51]:59443 "EHLO
-        smtp-out.google.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491819Ab1G2SJM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 29 Jul 2011 20:09:12 +0200
-Received: from wpaz13.hot.corp.google.com (wpaz13.hot.corp.google.com [172.24.198.77])
-        by smtp-out.google.com with ESMTP id p6TI99bK024271
-        for <linux-mips@linux-mips.org>; Fri, 29 Jul 2011 11:09:09 -0700
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=google.com; s=beta;
-        t=1311962950; bh=vFfPpDqK2gSULim9tfV1cPUOY9c=;
-        h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=oQOFU0zW6OIpu9vSI3ltxV8/n1YwOCLE7+H16In6KqYc7C57MnWPez6s/ex3gbNFE
-         zapuRve/RXrW9KU4NmYvw==
-DomainKey-Signature: a=rsa-sha1; s=beta; d=google.com; c=nofws; q=dns;
-        h=dkim-signature:mime-version:in-reply-to:references:from:date:
-        message-id:subject:to:cc:content-type:x-system-of-record;
-        b=MdjhUOxfol/n+uMUZ18zn4qzfx27K8vhgQxFmN7YdNdz78/sVrwVEvVOINJIicwtZ
-        bR1zo0XboKJ0EhX+kxoaA==
-Received: from yxk8 (yxk8.prod.google.com [10.190.3.136])
-        by wpaz13.hot.corp.google.com with ESMTP id p6TI98nk001279
-        (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
-        for <linux-mips@linux-mips.org>; Fri, 29 Jul 2011 11:09:08 -0700
-Received: by yxk8 with SMTP id 8so4786226yxk.1
-        for <linux-mips@linux-mips.org>; Fri, 29 Jul 2011 11:09:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jul 2011 23:04:51 +0200 (CEST)
+Received: from mail-pz0-f47.google.com ([209.85.210.47]:53827 "EHLO
+        mail-pz0-f47.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490988Ab1G2VEo convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 29 Jul 2011 23:04:44 +0200
+Received: by pzk36 with SMTP id 36so6866883pzk.34
+        for <multiple recipients>; Fri, 29 Jul 2011 14:04:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=beta;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=7n8NNIcOuuUeX0p592tLwmLyR3+732GoefS8LEpqgnk=;
-        b=D1FO1/6uJRmJXuWLUK0neYYlIQ3NLsxj3saoFYrMcTJo7R8/woHZLltLKxBZliag4L
-         b26rchVms6OpVQaouknA==
-Received: by 10.150.138.3 with SMTP id l3mr906ybd.384.1311962948423;
-        Fri, 29 Jul 2011 11:09:08 -0700 (PDT)
-Received: by 10.150.138.3 with SMTP id l3mr140465ybd.384.1311961009784; Fri,
- 29 Jul 2011 10:36:49 -0700 (PDT)
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=JJCiSis/MvO7a527QjIkvhxjucv7Lej2euJpBjOTOGU=;
+        b=I9/WO/KjpkDiAkKhit1i098JyhWImb14W+Q0apeRj0wlxSJ8xGj2+H0NtjEu6vX3Hi
+         NOepL67Ma1PgkvfFyY/vi6+7TjxBEe6EpgGHP24DUcXQj3SgWxb3M0n8GhUma2zbgKpZ
+         WOyO0YLOgz26yH8Y20y1y8l3YY8qM5ow2aHXc=
 MIME-Version: 1.0
-Received: by 10.150.58.10 with HTTP; Fri, 29 Jul 2011 10:35:51 -0700 (PDT)
-In-Reply-To: <CAOfQC9-Z31SSv8agzxZ_hvPOOLY8p0F6yc1=o-QPbDwbNxavTg@mail.gmail.com>
-References: <1311852512-7340-1-git-send-email-dengcheng.zhu@gmail.com>
- <1311852512-7340-2-git-send-email-dengcheng.zhu@gmail.com>
- <20110728115330.GA29899@linux-mips.org> <CAOfQC9-Z31SSv8agzxZ_hvPOOLY8p0F6yc1=o-QPbDwbNxavTg@mail.gmail.com>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Fri, 29 Jul 2011 11:35:51 -0600
-Message-ID: <CAErSpo6SLCLxh6vOwLaj5AYXNLrUEtQgfMU_hFCKJVH1dC5neQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] PCI: make pci_claim_resource() work with conflict
- resources as appropriate
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, jbarnes@virtuousgeek.org,
-        torvalds@linux-foundation.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        eyal@mips.com, zenon@mips.com
-Content-Type: text/plain; charset=ISO-8859-1
-X-System-Of-Record: true
-X-archive-position: 30766
+Received: by 10.68.57.100 with SMTP id h4mr3039465pbq.317.1311973477492; Fri,
+ 29 Jul 2011 14:04:37 -0700 (PDT)
+Received: by 10.68.50.103 with HTTP; Fri, 29 Jul 2011 14:04:37 -0700 (PDT)
+In-Reply-To: <1311376815-15755-7-git-send-email-hauke@hauke-m.de>
+References: <1311376815-15755-1-git-send-email-hauke@hauke-m.de>
+        <1311376815-15755-7-git-send-email-hauke@hauke-m.de>
+Date:   Fri, 29 Jul 2011 23:04:37 +0200
+Message-ID: <CACna6rxMA9KDuWSPLmdNsS=zNJawkbX5-KYrRWq3Jn25gWhX7A@mail.gmail.com>
+Subject: Re: [PATCH 06/11] bcma: add serial console support
+From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     linville@tuxdriver.com, linux-wireless@vger.kernel.org,
+        linux-mips@linux-mips.org, jonas.gorski@gmail.com,
+        ralf@linux-mips.org, mb@bu3sch.de, george@znau.edu.ua,
+        arend@broadcom.com, b43-dev@lists.infradead.org,
+        bernhardloos@googlemail.com, arnd@arndb.de,
+        julian.calaby@gmail.com, sshtylyov@mvista.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30767
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: zajec5@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21961
+X-UID: 22053
 
-On Fri, Jul 29, 2011 at 12:32 AM, Deng-Cheng Zhu
-<dengcheng.zhu@gmail.com> wrote:
-> I noticed that at 79896cf42f Linus changed the function from insert_resource()
-> to request_resource() (and later evolved into request_resource_conflict()) and
-> he explained the reason. So, in the NIC's case, the problem is that in
-> pci_claim_resource() the function pci_find_parent_resource() returns the root
-> (0x0-0xffffff) rather than the MSC PCI I/O (0x1000-0xffffff).
+2011/7/23 Hauke Mehrtens <hauke@hauke-m.de>:
+> This adds support for serial console to bcma, when operating on an SoC.
+>
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
+>  drivers/bcma/bcma_private.h                 |    8 ++++
+>  drivers/bcma/driver_chipcommon.c            |   48 +++++++++++++++++++++++++++
+>  drivers/bcma/driver_chipcommon_pmu.c        |   26 ++++++++++++++
+>  drivers/bcma/driver_mips.c                  |    1 +
+>  include/linux/bcma/bcma_driver_chipcommon.h |   14 ++++++++
+>  5 files changed, 97 insertions(+), 0 deletions(-)
+>
+> diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
+> index b97633d..22d3052 100644
+> --- a/drivers/bcma/bcma_private.h
+> +++ b/drivers/bcma/bcma_private.h
+> @@ -29,6 +29,14 @@ void bcma_init_bus(struct bcma_bus *bus);
+>  /* sprom.c */
+>  int bcma_sprom_get(struct bcma_bus *bus);
+>
+> +/* driver_chipcommon.c */
+> +#ifdef CONFIG_BCMA_DRIVER_MIPS
+> +void bcma_chipco_serial_init(struct bcma_drv_cc *cc);
+> +#endif /* CONFIG_BCMA_DRIVER_MIPS */
+> +
+> +/* driver_chipcommon_pmu.c */
+> +u32 bcma_pmu_alp_clock(struct bcma_drv_cc *cc);
+> +
+>  #ifdef CONFIG_BCMA_HOST_PCI
+>  /* host_pci.c */
+>  extern int __init bcma_host_pci_init(void);
 
-This seems like the real problem: PCI has the wrong idea of the
-resources available on bus 00.  The pci_bus->resource[0] for bus 00
-points to ioport_resource (the default put there by pci_create_bus()),
-when it should point to to msc_io_resource instead.
+Not sure, what do you think about this, feel free to comment.
 
-Some architectures fill in the pci_bus->resource[] array directly for
-host bridges (for examples, try 'grep -r "resource\[0\] = " arch/').
-On x86 and ia64, we use pci_bus_remove_resources() and
-pci_bus_add_resource(), and I'd prefer that style for new code because
-it hides some ugly implementation details.
+My idea was to use bcma_private.h for bcma-internal functions. For
+example, support for PCI host or SoC host, is something "internal" (as
+I call it) for bcma. Drivers in theory could be separated modules and
+I use include/linux/bcma/driver_*.h for them.
 
-I'm a little puzzled that we don't see this problem on more
-architectures.  The grep above only found a few arches that update the
-root bus resources.  I would expect most of the ones it didn't find to
-be broken the same way Malta is.
+If following this schema, declarations of
+bcma_pmu_alp_clock
+bcma_host_pci_init
+should be in include/linux/bcma/bcma_driver_chipcommon.h
 
-Bjorn
+-- 
+Rafał

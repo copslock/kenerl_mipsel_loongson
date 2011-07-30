@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jul 2011 13:03:43 +0200 (CEST)
-Received: from mx1.netlogicmicro.com ([12.203.210.36]:4818 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jul 2011 15:33:02 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:2254 "EHLO
         orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491089Ab1G3LDg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Jul 2011 13:03:36 +0200
-X-TM-IMSS-Message-ID: <e0bff83500026b1a@netlogicmicro.com>
-Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id e0bff83500026b1a ; Sat, 30 Jul 2011 04:01:59 -0700
+        by eddie.linux-mips.org with ESMTP id S1491115Ab1G3Ncz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Jul 2011 15:32:55 +0200
+X-TM-IMSS-Message-ID: <e148a54800026d24@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id e148a54800026d24 ; Sat, 30 Jul 2011 06:31:16 -0700
 Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
-         Sat, 30 Jul 2011 04:04:26 -0700
-Date:   Sat, 30 Jul 2011 16:34:56 +0530
+         Sat, 30 Jul 2011 06:27:17 -0700
+Date:   Sat, 30 Jul 2011 18:57:48 +0530
 From:   Jayachandran C <jayachandranc@netlogicmicro.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [PATCH] MIPS: Netlogic: Minor fixes for XLR processors
-Message-ID: <20110730110449.GA30043@jayachandranc.netlogicmicro.com>
+Subject: [PATCH 0/4] MIPS: Support for Netlogic XLP processors.
+Message-ID: <cover.1312024106.git.jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-OriginalArrivalTime: 30 Jul 2011 11:04:26.0482 (UTC) FILETIME=[723AA520:01CC4EA8]
-X-archive-position: 30769
+X-OriginalArrivalTime: 30 Jul 2011 13:27:17.0732 (UTC) FILETIME=[67179A40:01CC4EBC]
+X-archive-position: 30770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,59 +26,82 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 22277
+X-UID: 22302
 
-* Avoid unneeded cache flushes, XLR dcache is fully coherent across
-  CPUs.
-* add r4k_wait as the cpu_wait
-* Move load address - the current value wastes space.
----
- .../asm/mach-netlogic/cpu-feature-overrides.h      |    5 ++---
- arch/mips/kernel/cpu-probe.c                       |    1 +
- arch/mips/netlogic/Platform                        |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+This patchset adds support for Netlogic's new XLP processor series.
+http://netlogicmicro.com/Products/ProductBriefs/MultiCore/XLP832.htm
+has more details on this processor, but here's a short blurb:
 
-diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-index 3b72827..3780743 100644
---- a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-@@ -25,13 +25,12 @@
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	0
- #define cpu_has_dc_aliases	0
--#define cpu_has_ic_fills_f_dc	0
-+#define cpu_has_ic_fills_f_dc	1
- #define cpu_has_dsp		0
- #define cpu_has_mipsmt		0
- #define cpu_has_userlocal	0
--#define cpu_icache_snoops_remote_store	0
-+#define cpu_icache_snoops_remote_store	1
- 
--#define cpu_has_nofpuex		0
- #define cpu_has_64bits		1
- 
- #define cpu_has_mips32r1	1
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index ebc0cd2..664bc13 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -190,6 +190,7 @@ void __init check_wait(void)
- 	case CPU_CAVIUM_OCTEON_PLUS:
- 	case CPU_CAVIUM_OCTEON2:
- 	case CPU_JZRISC:
-+	case CPU_XLR:
- 		cpu_wait = r4k_wait;
- 		break;
- 
-diff --git a/arch/mips/netlogic/Platform b/arch/mips/netlogic/Platform
-index b648b48..502d912 100644
---- a/arch/mips/netlogic/Platform
-+++ b/arch/mips/netlogic/Platform
-@@ -13,4 +13,4 @@ cflags-$(CONFIG_NLM_XLR)	+= $(call cc-option,-march=xlr,-march=mips64)
- # NETLOGIC XLR/XLS SoC, Simulator and boards
- #
- core-$(CONFIG_NLM_XLR)	      += arch/mips/netlogic/xlr/
--load-$(CONFIG_NLM_XLR_BOARD)  += 0xffffffff84000000
-+load-$(CONFIG_NLM_XLR_BOARD)  += 0xffffffff80100000
+  8-core, 4-way multi-threaded, MIPS64r2 CPUs with quad-issue out-of-order
+  execution. Cache-coherent, 32KB D-cache & 64KB I-cache per core, 4MB L2 cache,
+  8MB L3 cache. Floating point support. On-chip devices include DDR3 DRAM
+  controller, 40 GBps network accelerator, security accelerator, compression
+  engine, PCI, USB, I2C, UART, Flash, GPIO  and so on. Inter-chip
+  interconnect allows upto 4 chips to be connected into a 128 cpu system.
+  
+The changes here has the platform support with UART, PIC and 32-way SMP.
+Comments on the code and suggestions are very welcome.
+
+Thanks,
+JC.
+
+Jayachandran C (4):
+  MIPS: Netlogic: XLP CPU support.
+  MIPS: Netlogic: Platform files for XLP processors.
+  MIPS: Netlogic: Build support for netlogic XLP
+  MIPS: Netlogic: Add default XLP config.
+
+ arch/mips/Kconfig                                  |   44 ++
+ arch/mips/configs/nlm_xlp_defconfig                |  590 ++++++++++++++++++++
+ arch/mips/include/asm/cpu.h                        |    3 +-
+ .../asm/mach-netlogic/cpu-feature-overrides.h      |   18 +-
+ arch/mips/include/asm/module.h                     |    2 +
+ arch/mips/include/asm/netlogic/xlp-hal/bridge.h    |  187 +++++++
+ arch/mips/include/asm/netlogic/xlp-hal/cop2.h      |  319 +++++++++++
+ .../mips/include/asm/netlogic/xlp-hal/cpucontrol.h |   71 +++
+ arch/mips/include/asm/netlogic/xlp-hal/iomap.h     |  133 +++++
+ arch/mips/include/asm/netlogic/xlp-hal/mmio.h      |  441 +++++++++++++++
+ arch/mips/include/asm/netlogic/xlp-hal/pic.h       |  339 +++++++++++
+ arch/mips/include/asm/netlogic/xlp-hal/sys.h       |  128 +++++
+ arch/mips/include/asm/netlogic/xlp-hal/uart.h      |  191 +++++++
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h       |   68 +++
+ arch/mips/kernel/Makefile                          |    1 +
+ arch/mips/kernel/cpu-probe.c                       |   19 +-
+ arch/mips/lib/Makefile                             |    1 +
+ arch/mips/mm/Makefile                              |    1 +
+ arch/mips/mm/c-r4k.c                               |    4 +
+ arch/mips/mm/tlbex.c                               |    1 +
+ arch/mips/netlogic/Kconfig                         |    3 +
+ arch/mips/netlogic/Platform                        |    7 +
+ arch/mips/netlogic/xlp/Makefile                    |    5 +
+ arch/mips/netlogic/xlp/irq.c                       |  240 ++++++++
+ arch/mips/netlogic/xlp/nlm_hal.c                   |   84 +++
+ arch/mips/netlogic/xlp/platform.c                  |  107 ++++
+ arch/mips/netlogic/xlp/setup.c                     |   98 ++++
+ arch/mips/netlogic/xlp/smp.c                       |  286 ++++++++++
+ arch/mips/netlogic/xlp/smpboot.S                   |  217 +++++++
+ arch/mips/netlogic/xlp/time.c                      |   74 +++
+ arch/mips/netlogic/xlp/xlp_console.c               |   49 ++
+ 31 files changed, 3723 insertions(+), 8 deletions(-)
+ create mode 100644 arch/mips/configs/nlm_xlp_defconfig
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/bridge.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/cop2.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/mmio.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/pic.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/sys.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/uart.h
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+ create mode 100644 arch/mips/netlogic/xlp/Makefile
+ create mode 100644 arch/mips/netlogic/xlp/irq.c
+ create mode 100644 arch/mips/netlogic/xlp/nlm_hal.c
+ create mode 100644 arch/mips/netlogic/xlp/platform.c
+ create mode 100644 arch/mips/netlogic/xlp/setup.c
+ create mode 100644 arch/mips/netlogic/xlp/smp.c
+ create mode 100644 arch/mips/netlogic/xlp/smpboot.S
+ create mode 100644 arch/mips/netlogic/xlp/time.c
+ create mode 100644 arch/mips/netlogic/xlp/xlp_console.c
+
 -- 
 1.7.4.1

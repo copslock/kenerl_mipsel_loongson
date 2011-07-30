@@ -1,104 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Jul 2011 23:06:33 +0200 (CEST)
-Received: from mail-pz0-f47.google.com ([209.85.210.47]:61978 "EHLO
-        mail-pz0-f47.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490988Ab1G2VG1 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 29 Jul 2011 23:06:27 +0200
-Received: by pzk36 with SMTP id 36so6869250pzk.34
-        for <multiple recipients>; Fri, 29 Jul 2011 14:06:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=YkM1uDCgQuwxPXFSoymEapqkhTXIrtfP6W/hWx+UfiU=;
-        b=sQEn6U1VYqDY3V9DHL/FHOpWsR67t8uqqbAkZkpn7yENls+9+m92axJd3sXRIZOZnN
-         V6MtvHZJOKVOgUO0tsJG3KbzsWMjFm0DJ5pCrNmhaUCj+v6zo3MZkd1kTAZg7Fko6nV7
-         N4G3wsG7VXMSlNVsjYQQnYjEpnDAAr+yfDF6A=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Jul 2011 13:03:43 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:4818 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491089Ab1G3LDg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 30 Jul 2011 13:03:36 +0200
+X-TM-IMSS-Message-ID: <e0bff83500026b1a@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id e0bff83500026b1a ; Sat, 30 Jul 2011 04:01:59 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Sat, 30 Jul 2011 04:04:26 -0700
+Date:   Sat, 30 Jul 2011 16:34:56 +0530
+From:   Jayachandran C <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [PATCH] MIPS: Netlogic: Minor fixes for XLR processors
+Message-ID: <20110730110449.GA30043@jayachandranc.netlogicmicro.com>
 MIME-Version: 1.0
-Received: by 10.68.14.36 with SMTP id m4mr3148593pbc.518.1311973580158; Fri,
- 29 Jul 2011 14:06:20 -0700 (PDT)
-Received: by 10.68.50.103 with HTTP; Fri, 29 Jul 2011 14:06:20 -0700 (PDT)
-In-Reply-To: <CACna6rxMA9KDuWSPLmdNsS=zNJawkbX5-KYrRWq3Jn25gWhX7A@mail.gmail.com>
-References: <1311376815-15755-1-git-send-email-hauke@hauke-m.de>
-        <1311376815-15755-7-git-send-email-hauke@hauke-m.de>
-        <CACna6rxMA9KDuWSPLmdNsS=zNJawkbX5-KYrRWq3Jn25gWhX7A@mail.gmail.com>
-Date:   Fri, 29 Jul 2011 23:06:20 +0200
-Message-ID: <CACna6rzqm=NhsrUWZr8Mun5fNaz3x1Qa6Fv_-TMKw8iOsK=u-w@mail.gmail.com>
-Subject: Re: [PATCH 06/11] bcma: add serial console support
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linville@tuxdriver.com, linux-wireless@vger.kernel.org,
-        linux-mips@linux-mips.org, jonas.gorski@gmail.com,
-        ralf@linux-mips.org, mb@bu3sch.de, george@znau.edu.ua,
-        arend@broadcom.com, b43-dev@lists.infradead.org,
-        bernhardloos@googlemail.com, arnd@arndb.de,
-        julian.calaby@gmail.com, sshtylyov@mvista.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30768
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 30 Jul 2011 11:04:26.0482 (UTC) FILETIME=[723AA520:01CC4EA8]
+X-archive-position: 30769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 22055
+X-UID: 22277
 
-W dniu 29 lipca 2011 23:04 użytkownik Rafał Miłecki <zajec5@gmail.com> napisał:
-> 2011/7/23 Hauke Mehrtens <hauke@hauke-m.de>:
->> This adds support for serial console to bcma, when operating on an SoC.
->>
->> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->> ---
->>  drivers/bcma/bcma_private.h                 |    8 ++++
->>  drivers/bcma/driver_chipcommon.c            |   48 +++++++++++++++++++++++++++
->>  drivers/bcma/driver_chipcommon_pmu.c        |   26 ++++++++++++++
->>  drivers/bcma/driver_mips.c                  |    1 +
->>  include/linux/bcma/bcma_driver_chipcommon.h |   14 ++++++++
->>  5 files changed, 97 insertions(+), 0 deletions(-)
->>
->> diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
->> index b97633d..22d3052 100644
->> --- a/drivers/bcma/bcma_private.h
->> +++ b/drivers/bcma/bcma_private.h
->> @@ -29,6 +29,14 @@ void bcma_init_bus(struct bcma_bus *bus);
->>  /* sprom.c */
->>  int bcma_sprom_get(struct bcma_bus *bus);
->>
->> +/* driver_chipcommon.c */
->> +#ifdef CONFIG_BCMA_DRIVER_MIPS
->> +void bcma_chipco_serial_init(struct bcma_drv_cc *cc);
->> +#endif /* CONFIG_BCMA_DRIVER_MIPS */
->> +
->> +/* driver_chipcommon_pmu.c */
->> +u32 bcma_pmu_alp_clock(struct bcma_drv_cc *cc);
->> +
->>  #ifdef CONFIG_BCMA_HOST_PCI
->>  /* host_pci.c */
->>  extern int __init bcma_host_pci_init(void);
->
-> Not sure, what do you think about this, feel free to comment.
->
-> My idea was to use bcma_private.h for bcma-internal functions. For
-> example, support for PCI host or SoC host, is something "internal" (as
-> I call it) for bcma. Drivers in theory could be separated modules and
-> I use include/linux/bcma/driver_*.h for them.
->
-> If following this schema, declarations of
-> bcma_pmu_alp_clock
-> bcma_host_pci_init
-> should be in include/linux/bcma/bcma_driver_chipcommon.h
+* Avoid unneeded cache flushes, XLR dcache is fully coherent across
+  CPUs.
+* add r4k_wait as the cpu_wait
+* Move load address - the current value wastes space.
+---
+ .../asm/mach-netlogic/cpu-feature-overrides.h      |    5 ++---
+ arch/mips/kernel/cpu-probe.c                       |    1 +
+ arch/mips/netlogic/Platform                        |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-Same goes to the
-bcma_pmu_get_clockcpu
-from patch 07/11.
-
-Sorry for late-noticing this.
-
-I don't have more comments against your patch set :) Hope John will
-take it soon :)
-
+diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+index 3b72827..3780743 100644
+--- a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
++++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
+@@ -25,13 +25,12 @@
+ #define cpu_has_llsc		1
+ #define cpu_has_vtag_icache	0
+ #define cpu_has_dc_aliases	0
+-#define cpu_has_ic_fills_f_dc	0
++#define cpu_has_ic_fills_f_dc	1
+ #define cpu_has_dsp		0
+ #define cpu_has_mipsmt		0
+ #define cpu_has_userlocal	0
+-#define cpu_icache_snoops_remote_store	0
++#define cpu_icache_snoops_remote_store	1
+ 
+-#define cpu_has_nofpuex		0
+ #define cpu_has_64bits		1
+ 
+ #define cpu_has_mips32r1	1
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index ebc0cd2..664bc13 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -190,6 +190,7 @@ void __init check_wait(void)
+ 	case CPU_CAVIUM_OCTEON_PLUS:
+ 	case CPU_CAVIUM_OCTEON2:
+ 	case CPU_JZRISC:
++	case CPU_XLR:
+ 		cpu_wait = r4k_wait;
+ 		break;
+ 
+diff --git a/arch/mips/netlogic/Platform b/arch/mips/netlogic/Platform
+index b648b48..502d912 100644
+--- a/arch/mips/netlogic/Platform
++++ b/arch/mips/netlogic/Platform
+@@ -13,4 +13,4 @@ cflags-$(CONFIG_NLM_XLR)	+= $(call cc-option,-march=xlr,-march=mips64)
+ # NETLOGIC XLR/XLS SoC, Simulator and boards
+ #
+ core-$(CONFIG_NLM_XLR)	      += arch/mips/netlogic/xlr/
+-load-$(CONFIG_NLM_XLR_BOARD)  += 0xffffffff84000000
++load-$(CONFIG_NLM_XLR_BOARD)  += 0xffffffff80100000
 -- 
-Rafał
+1.7.4.1

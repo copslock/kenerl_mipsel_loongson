@@ -1,108 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2011 12:31:51 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:52844 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491134Ab1HAKbp convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 1 Aug 2011 12:31:45 +0200
-Received: by yxj20 with SMTP id 20so3508347yxj.36
-        for <multiple recipients>; Mon, 01 Aug 2011 03:31:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Aug 2011 14:52:06 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:54917 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491134Ab1HAMwC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 1 Aug 2011 14:52:02 +0200
+Received: by ywm13 with SMTP id 13so761620ywm.36
+        for <linux-mips@linux-mips.org>; Mon, 01 Aug 2011 05:51:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=8wmF7iBnBR18vFFMDmytP8r+rJ6eh9Mk1qKkkT96p80=;
-        b=FHT3qdmmxM9Uq68Jq+bvdYHKPbu0ox+Djno0NrAcwvbV05at2siYUEciEJoAuDd0c9
-         VnE5QztOEy0TF+zl/2VSWh5H763pZxTErXLm4gmx07saIr4fbrZxqbC80OV0N6FkoGOU
-         R4/TnQypY4HJ65ClcsVe/N1Fl0NnCq07WMtPo=
-Received: by 10.150.51.12 with SMTP id y12mr691591yby.33.1312194699174; Mon,
- 01 Aug 2011 03:31:39 -0700 (PDT)
+        d=googlemail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=2e8y+a5ne8lj5zdbjAtol0NyxWoQVvX/lePInybYsK0=;
+        b=kmCI8IcFqhymxqSihlQXH9Rp6RUOnfL5iNQEt/1QeaYCyxezDIt04FRB9KZ47TdL9Q
+         +2gLKnuIFQTEZDjhu21DEDUOYLg9pIz5C+QgXdNq0OFNQjX1af65s+8yRshJS6rtUs58
+         T5PSLYWyKHcPPeduNjFPKE8HqUgH2wxKKeqE4=
 MIME-Version: 1.0
-Received: by 10.151.11.10 with HTTP; Mon, 1 Aug 2011 03:31:19 -0700 (PDT)
-In-Reply-To: <1312194382-3706-3-git-send-email-florian@openwrt.org>
-References: <1312194382-3706-1-git-send-email-florian@openwrt.org> <1312194382-3706-3-git-send-email-florian@openwrt.org>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Mon, 1 Aug 2011 12:31:19 +0200
-Message-ID: <CAOiHx=no--75g7K_MoZrD-=LkcbskQBufUFWrz52NSNQJ36T4Q@mail.gmail.com>
-Subject: Re: [PATCH 3/3] MIPS: introduce CPU_R4K_CACHE_TLB
-To:     Florian Fainelli <florian@openwrt.org>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30780
+Received: by 10.236.108.198 with SMTP id q46mr2121879yhg.291.1312203116722;
+ Mon, 01 Aug 2011 05:51:56 -0700 (PDT)
+Received: by 10.236.103.172 with HTTP; Mon, 1 Aug 2011 05:51:56 -0700 (PDT)
+Date:   Mon, 1 Aug 2011 14:51:56 +0200
+Message-ID: <CAOLZvyEQNS3dwQ+6bh2o6kADp7Gd3xOpah8y1_AhqJ2FWSP9VA@mail.gmail.com>
+Subject: shm broken on MIPS in current -git
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Vasiliy Kulikov <segoon@openwall.com>, linux-kernel@vger.kernel.org
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 30781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 299
+X-UID: 399
 
-Hi,
+Hello Vasiliy,
 
-On 1 August 2011 12:26, Florian Fainelli <florian@openwrt.org> wrote:
-> R4K-style CPUs having common code to support their caches and tlb have this
-> boolean defined by default. Allows us to save some lines in
-> arch/mips/mm/Makefile
->
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
->  arch/mips/Kconfig     |    4 ++++
->  arch/mips/mm/Makefile |   16 +---------------
->  2 files changed, 5 insertions(+), 15 deletions(-)
->
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 44eebc7..0150745 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1811,6 +1811,10 @@ config CPU_R4K_FPU
->        bool
->        default y if !(CPU_R3000 || CPU_R6000 || CPU_TX39XX || CPU_CAVIUM_OCTEON)
->
-> +config CPU_R4K_CACHE_TLB
-> +       bool
-> +       default y if !(CPU_R3000 || CPU_SB1 || CPU_TX39XX || CPU_CAVIUM_OCTEON)
-> +
->  choice
->        prompt "MIPS MT options"
->
-> diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
-> index 4d8c162..04ece1b5 100644
-> --- a/arch/mips/mm/Makefile
-> +++ b/arch/mips/mm/Makefile
-> @@ -11,24 +11,10 @@ obj-$(CONFIG_64BIT)         += pgtable-64.o
->  obj-$(CONFIG_HIGHMEM)          += highmem.o
->  obj-$(CONFIG_HUGETLB_PAGE)     += hugetlbpage.o
->
-> -obj-$(CONFIG_CPU_LOONGSON2)    += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_MIPS32)       += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_MIPS64)       += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_NEVADA)       += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_R10000)       += c-r4k.o cex-gen.o tlb-r4k.o
-> +obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
->  obj-$(CONFIG_CPU_R3000)                += c-r3k.o tlb-r3k.o
-> -obj-$(CONFIG_CPU_R4300)                += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_R4X00)                += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_R5000)                += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_R5432)                += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_R5500)                += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_R8000)                += c-r4k.o cex-gen.o tlb-r8k.o
+Commits 5774ed014f02120db9a6945a1ecebeb97c2acccb
+(shm: handle separate PID namespaces case)
+and 4c677e2eefdba9c5bfc4474e2e91b26ae8458a1d
+(shm: optimize locking and ipc_namespace getting)
+break on my MIPS systems.  The following oops is
+printed on boot, and as a result, more than  300 zombie kworker
+kernel processes are resident.  I don't see this oops on x86 or x64.
 
-This one should stay (and be added to the exceptions): tlb-r*8*k. ;-)
+ra points to the down_write() in ipc/shm.c::exit_shm()
 
-> -obj-$(CONFIG_CPU_RM7000)       += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_RM9000)       += c-r4k.o cex-gen.o tlb-r4k.o
->  obj-$(CONFIG_CPU_SB1)          += c-r4k.o cerr-sb1.o cex-sb1.o tlb-r4k.o
->  obj-$(CONFIG_CPU_TX39XX)       += c-tx39.o tlb-r3k.o
-> -obj-$(CONFIG_CPU_TX49XX)       += c-r4k.o cex-gen.o tlb-r4k.o
-> -obj-$(CONFIG_CPU_VR41XX)       += c-r4k.o cex-gen.o tlb-r4k.o
->  obj-$(CONFIG_CPU_CAVIUM_OCTEON)        += c-octeon.o cex-oct.o tlb-r4k.o
->  obj-$(CONFIG_CPU_XLR)          += c-r4k.o tlb-r4k.o cex-gen.o
-
-This one should go, too. You probably missed it because it used a
-different file name order ;-). I haven't checked if they are others
-outside of the context lines.
+CPU 0 Unable to handle kernel paging request at virtual address
+00000000, epc == 80527c64, ra == 8024afb8
+Oops[#1]:
+Cpu 0
+$ 0   : 00000000 10003c00 00000000 10003c01
+$ 4   : 8060d114 8fc45e60 8060d118 8fc3f520
+$ 8   : 00000000 01312d00 0016e35f 00020000
+$12   : 00000080 00000010 00000010 8fc3001c
+$16   : 8fc3f520 00000000 00000000 00000000
+$20   : 00000000 00000000 8fc45eb4 00000000
+$24   : 00000000 8011f9b0
+$28   : 8fc44000 8fc45e50 00000001 8024afb8
+Hi    : 00000000
+Lo    : 01312d00
+epc   : 80527c64 __down_write_nested+0x68/0xf0
+    Not tainted
+ra    : 8024afb8 exit_shm+0x30/0x64
+Status: 10003c02    KERNEL EXL
+Cause : 0080800c
+BadVA : 00000000
+PrId  : 800c8000 (Au1300)
+Process kworker/u:0 (pid: 9, threadinfo=8fc44000, task=8fc3f520, tls=00000000)
+Stack : 14200972 d3054429 00000000 56b8e493 8060d118 00000000 8fc3f520 00000002
+        8fc2c000 8060d114 00000000 8024afb8 00000000 00000000 00000000 00000000
+        8060d0c0 00000000 8fc3f520 80128ae8 30480023 0b309f84 34ffeedb ef9e65d6
+        38019941 af430015 f6d9ebeb 00000000 00000000 00000000 8fc29ce0 8fc15300
+        00000000 00000000 00000000 00000000 00000000 00000000 00000000 80139578
+        ...
+Call Trace:
+[<80527c64>] __down_write_nested+0x68/0xf0
+[<8024afb8>] exit_shm+0x30/0x64
+[<80128ae8>] do_exit+0x50c/0x664
+[<80139578>] ____call_usermodehelper+0xfc/0x118
+[<801061bc>] kernel_thread_helper+0x10/0x18
 
 
-Jonas
+Code: ac850008  afa60010  afa20014 <ac450000> 40016000  30630001
+3421001f  3821001f  00611825
+Disabling lock debugging due to kernel taint
+Fixing recursive fault but reboot is needed!
+
+
+Thanks,
+        Manuel Lauss

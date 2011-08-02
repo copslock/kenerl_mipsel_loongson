@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Aug 2011 19:55:05 +0200 (CEST)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:45013 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Aug 2011 19:55:33 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:33355 "EHLO
         mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491757Ab1HBRvb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Aug 2011 19:51:31 +0200
-Received: by mail-fx0-f49.google.com with SMTP id 20so73262fxd.36
-        for <multiple recipients>; Tue, 02 Aug 2011 10:51:31 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1491759Ab1HBRvc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 2 Aug 2011 19:51:32 +0200
+Received: by mail-fx0-f49.google.com with SMTP id 20so73189fxd.36
+        for <multiple recipients>; Tue, 02 Aug 2011 10:51:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=4rlGmGcooaIVihjRsHy7wzWQJtNXsZSKdQA4ogEbyjQ=;
-        b=c+7JCFwnLsR2Wfzz5FVkzwmzCwIQkbgjCF4KmoIE8tngasK01UbE1p/XZFlZuBgJ0v
-         /LaS3GDXwzs016DkkewR562qUl/yeOBeoH8AzO3GVs04luwmJm++1GRPObGGP6reo2ct
-         6iuFg+fP62kT2VD8nm3MsD/eMj5c90+mAdt04=
-Received: by 10.223.9.217 with SMTP id m25mr826525fam.122.1312307490892;
-        Tue, 02 Aug 2011 10:51:30 -0700 (PDT)
+        bh=r/zhnjcxNAs6+KgLiCh/bmJg1wce0bcXo1pjky76rOw=;
+        b=F4cnLhVvNke4SlWmwwFtRgSIBscUPLTAeznY9TdkpmoJhPoPi7NBJkle3zQBsuoqUb
+         gPjpQEC4sIS7KBcGD9ROtHa/OsGufj8cOPRKyufDTIiMkpA9w18sRRBWJMtHe0a4fFEa
+         HTSymlhxCu6DGYIm3WNjT1zSO4Sl/26tIqNog=
+Received: by 10.223.68.22 with SMTP id t22mr803313fai.145.1312307492585;
+        Tue, 02 Aug 2011 10:51:32 -0700 (PDT)
 Received: from localhost.localdomain (188-22-5-211.adsl.highway.telekom.at [188.22.5.211])
-        by mx.google.com with ESMTPS id r12sm3608450fam.24.2011.08.02.10.51.29
+        by mx.google.com with ESMTPS id r12sm3608450fam.24.2011.08.02.10.51.30
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 02 Aug 2011 10:51:30 -0700 (PDT)
+        Tue, 02 Aug 2011 10:51:31 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH 08/15] MIPS: Alchemy: support multiple GPIO styles in one kernel
-Date:   Tue,  2 Aug 2011 19:51:03 +0200
-Message-Id: <1312307470-6841-9-git-send-email-manuel.lauss@googlemail.com>
+Subject: [PATCH 09/15] MIPS: au1xxx: au1xxx-ide: remove pb1200/db1200 header dependencies
+Date:   Tue,  2 Aug 2011 19:51:04 +0200
+Message-Id: <1312307470-6841-10-git-send-email-manuel.lauss@googlemail.com>
 X-Mailer: git-send-email 1.7.6
 In-Reply-To: <1312307470-6841-1-git-send-email-manuel.lauss@googlemail.com>
 References: <1312307470-6841-1-git-send-email-manuel.lauss@googlemail.com>
-X-archive-position: 30804
+X-archive-position: 30805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,455 +37,200 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 1619
+X-UID: 1620
 
-For GPIOLIB=y decide at runtime which gpiochips to register;
-in the GPIOLIB=n case, the gpio headers need to be reshuffled
-a bit to make multiple implementations coexist peacefully.
+au1xxx-ide uses defines from the pb1200/db1200 headers, fix this.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
 ---
- arch/mips/alchemy/common/Makefile               |    4 +-
- arch/mips/alchemy/common/gpiolib-au1000.c       |  126 ---------------------
- arch/mips/alchemy/common/gpiolib.c              |  133 +++++++++++++++++++++++
- arch/mips/include/asm/mach-au1x00/gpio-au1000.h |   31 +-----
- arch/mips/include/asm/mach-au1x00/gpio.h        |   79 +++++++++++++-
- 5 files changed, 212 insertions(+), 161 deletions(-)
- delete mode 100644 arch/mips/alchemy/common/gpiolib-au1000.c
- create mode 100644 arch/mips/alchemy/common/gpiolib.c
+ arch/mips/alchemy/devboards/db1200/platform.c  |    7 +++-
+ arch/mips/alchemy/devboards/pb1200/platform.c  |    8 ++++-
+ arch/mips/include/asm/mach-au1x00/au1xxx_ide.h |    1 +
+ arch/mips/include/asm/mach-db1x00/db1200.h     |    2 -
+ arch/mips/include/asm/mach-pb1x00/pb1200.h     |    2 -
+ drivers/ide/au1xxx-ide.c                       |   44 ++++++++++++++----------
+ 6 files changed, 40 insertions(+), 24 deletions(-)
 
-diff --git a/arch/mips/alchemy/common/Makefile b/arch/mips/alchemy/common/Makefile
-index 575db47..31728e0 100644
---- a/arch/mips/alchemy/common/Makefile
-+++ b/arch/mips/alchemy/common/Makefile
-@@ -12,9 +12,7 @@ obj-$(CONFIG_ALCHEMY_GPIOINT_AU1000) += irq.o
- 
- # optional gpiolib support
- ifeq ($(CONFIG_ALCHEMY_GPIO_INDIRECT),)
-- ifeq ($(CONFIG_GPIOLIB),y)
--  obj-$(CONFIG_ALCHEMY_GPIOINT_AU1000) += gpiolib-au1000.o
-- endif
-+ obj-$(CONFIG_GPIOLIB) += gpiolib.o
- endif
- 
- obj-$(CONFIG_PCI)		+= pci.o
-diff --git a/arch/mips/alchemy/common/gpiolib-au1000.c b/arch/mips/alchemy/common/gpiolib-au1000.c
-deleted file mode 100644
-index c8e1a94..0000000
---- a/arch/mips/alchemy/common/gpiolib-au1000.c
-+++ /dev/null
-@@ -1,126 +0,0 @@
--/*
-- *  Copyright (C) 2007-2009, OpenWrt.org, Florian Fainelli <florian@openwrt.org>
-- *  	GPIOLIB support for Au1000, Au1500, Au1100, Au1550 and Au12x0.
-- *
-- *  This program is free software; you can redistribute	 it and/or modify it
-- *  under  the terms of	 the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the	License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED	  ``AS	IS'' AND   ANY	EXPRESS OR IMPLIED
-- *  WARRANTIES,	  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO	EVENT  SHALL   THE AUTHOR  BE	 LIABLE FOR ANY	  DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED	  TO, PROCUREMENT OF  SUBSTITUTE GOODS	OR SERVICES; LOSS OF
-- *  USE, DATA,	OR PROFITS; OR	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN	 CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- *  Notes :
-- * 	au1000 SoC have only one GPIO block : GPIO1
-- * 	Au1100, Au15x0, Au12x0 have a second one : GPIO2
-- */
--
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/types.h>
--#include <linux/platform_device.h>
--#include <linux/gpio.h>
--
--#include <asm/mach-au1x00/au1000.h>
--#include <asm/mach-au1x00/gpio.h>
--
--static int gpio2_get(struct gpio_chip *chip, unsigned offset)
--{
--	return alchemy_gpio2_get_value(offset + ALCHEMY_GPIO2_BASE);
--}
--
--static void gpio2_set(struct gpio_chip *chip, unsigned offset, int value)
--{
--	alchemy_gpio2_set_value(offset + ALCHEMY_GPIO2_BASE, value);
--}
--
--static int gpio2_direction_input(struct gpio_chip *chip, unsigned offset)
--{
--	return alchemy_gpio2_direction_input(offset + ALCHEMY_GPIO2_BASE);
--}
--
--static int gpio2_direction_output(struct gpio_chip *chip, unsigned offset,
--				  int value)
--{
--	return alchemy_gpio2_direction_output(offset + ALCHEMY_GPIO2_BASE,
--						value);
--}
--
--static int gpio2_to_irq(struct gpio_chip *chip, unsigned offset)
--{
--	return alchemy_gpio2_to_irq(offset + ALCHEMY_GPIO2_BASE);
--}
--
--
--static int gpio1_get(struct gpio_chip *chip, unsigned offset)
--{
--	return alchemy_gpio1_get_value(offset + ALCHEMY_GPIO1_BASE);
--}
--
--static void gpio1_set(struct gpio_chip *chip,
--				unsigned offset, int value)
--{
--	alchemy_gpio1_set_value(offset + ALCHEMY_GPIO1_BASE, value);
--}
--
--static int gpio1_direction_input(struct gpio_chip *chip, unsigned offset)
--{
--	return alchemy_gpio1_direction_input(offset + ALCHEMY_GPIO1_BASE);
--}
--
--static int gpio1_direction_output(struct gpio_chip *chip,
--					unsigned offset, int value)
--{
--	return alchemy_gpio1_direction_output(offset + ALCHEMY_GPIO1_BASE,
--					     value);
--}
--
--static int gpio1_to_irq(struct gpio_chip *chip, unsigned offset)
--{
--	return alchemy_gpio1_to_irq(offset + ALCHEMY_GPIO1_BASE);
--}
--
--struct gpio_chip alchemy_gpio_chip[] = {
--	[0] = {
--		.label			= "alchemy-gpio1",
--		.direction_input	= gpio1_direction_input,
--		.direction_output	= gpio1_direction_output,
--		.get			= gpio1_get,
--		.set			= gpio1_set,
--		.to_irq			= gpio1_to_irq,
--		.base			= ALCHEMY_GPIO1_BASE,
--		.ngpio			= ALCHEMY_GPIO1_NUM,
--	},
--	[1] = {
--		.label                  = "alchemy-gpio2",
--		.direction_input        = gpio2_direction_input,
--		.direction_output       = gpio2_direction_output,
--		.get                    = gpio2_get,
--		.set                    = gpio2_set,
--		.to_irq			= gpio2_to_irq,
--		.base                   = ALCHEMY_GPIO2_BASE,
--		.ngpio                  = ALCHEMY_GPIO2_NUM,
--	},
--};
--
--static int __init alchemy_gpiolib_init(void)
--{
--	gpiochip_add(&alchemy_gpio_chip[0]);
--	if (alchemy_get_cputype() != ALCHEMY_CPU_AU1000)
--		gpiochip_add(&alchemy_gpio_chip[1]);
--
--	return 0;
--}
--arch_initcall(alchemy_gpiolib_init);
-diff --git a/arch/mips/alchemy/common/gpiolib.c b/arch/mips/alchemy/common/gpiolib.c
-new file mode 100644
-index 0000000..91fb4d9
---- /dev/null
-+++ b/arch/mips/alchemy/common/gpiolib.c
-@@ -0,0 +1,133 @@
-+/*
-+ *  Copyright (C) 2007-2009, OpenWrt.org, Florian Fainelli <florian@openwrt.org>
-+ *	GPIOLIB support for Alchemy chips.
-+ *
-+ *  This program is free software; you can redistribute	 it and/or modify it
-+ *  under  the terms of	 the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the	License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED	  ``AS	IS'' AND   ANY	EXPRESS OR IMPLIED
-+ *  WARRANTIES,	  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ *  NO	EVENT  SHALL   THE AUTHOR  BE	 LIABLE FOR ANY	  DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ *  NOT LIMITED	  TO, PROCUREMENT OF  SUBSTITUTE GOODS	OR SERVICES; LOSS OF
-+ *  USE, DATA,	OR PROFITS; OR	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN	 CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ *  Notes :
-+ *	This file must ONLY be built when CONFIG_GPIOLIB=y and
-+ *	 CONFIG_ALCHEMY_GPIO_INDIRECT=n, otherwise compilation will fail!
-+ *	au1000 SoC have only one GPIO block : GPIO1
-+ *	Au1100, Au15x0, Au12x0 have a second one : GPIO2
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/gpio.h>
-+#include <asm/mach-au1x00/gpio-au1000.h>
-+
-+static int gpio2_get(struct gpio_chip *chip, unsigned offset)
-+{
-+	return alchemy_gpio2_get_value(offset + ALCHEMY_GPIO2_BASE);
-+}
-+
-+static void gpio2_set(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	alchemy_gpio2_set_value(offset + ALCHEMY_GPIO2_BASE, value);
-+}
-+
-+static int gpio2_direction_input(struct gpio_chip *chip, unsigned offset)
-+{
-+	return alchemy_gpio2_direction_input(offset + ALCHEMY_GPIO2_BASE);
-+}
-+
-+static int gpio2_direction_output(struct gpio_chip *chip, unsigned offset,
-+				  int value)
-+{
-+	return alchemy_gpio2_direction_output(offset + ALCHEMY_GPIO2_BASE,
-+						value);
-+}
-+
-+static int gpio2_to_irq(struct gpio_chip *chip, unsigned offset)
-+{
-+	return alchemy_gpio2_to_irq(offset + ALCHEMY_GPIO2_BASE);
-+}
-+
-+
-+static int gpio1_get(struct gpio_chip *chip, unsigned offset)
-+{
-+	return alchemy_gpio1_get_value(offset + ALCHEMY_GPIO1_BASE);
-+}
-+
-+static void gpio1_set(struct gpio_chip *chip,
-+				unsigned offset, int value)
-+{
-+	alchemy_gpio1_set_value(offset + ALCHEMY_GPIO1_BASE, value);
-+}
-+
-+static int gpio1_direction_input(struct gpio_chip *chip, unsigned offset)
-+{
-+	return alchemy_gpio1_direction_input(offset + ALCHEMY_GPIO1_BASE);
-+}
-+
-+static int gpio1_direction_output(struct gpio_chip *chip,
-+					unsigned offset, int value)
-+{
-+	return alchemy_gpio1_direction_output(offset + ALCHEMY_GPIO1_BASE,
-+					     value);
-+}
-+
-+static int gpio1_to_irq(struct gpio_chip *chip, unsigned offset)
-+{
-+	return alchemy_gpio1_to_irq(offset + ALCHEMY_GPIO1_BASE);
-+}
-+
-+struct gpio_chip alchemy_gpio_chip[] = {
-+	[0] = {
-+		.label			= "alchemy-gpio1",
-+		.direction_input	= gpio1_direction_input,
-+		.direction_output	= gpio1_direction_output,
-+		.get			= gpio1_get,
-+		.set			= gpio1_set,
-+		.to_irq			= gpio1_to_irq,
-+		.base			= ALCHEMY_GPIO1_BASE,
-+		.ngpio			= ALCHEMY_GPIO1_NUM,
+diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
+index 95c7327..6fd070d 100644
+--- a/arch/mips/alchemy/devboards/db1200/platform.c
++++ b/arch/mips/alchemy/devboards/db1200/platform.c
+@@ -213,7 +213,12 @@ static struct resource db1200_ide_res[] = {
+ 		.start	= DB1200_IDE_INT,
+ 		.end	= DB1200_IDE_INT,
+ 		.flags	= IORESOURCE_IRQ,
+-	}
 +	},
-+	[1] = {
-+		.label                  = "alchemy-gpio2",
-+		.direction_input        = gpio2_direction_input,
-+		.direction_output       = gpio2_direction_output,
-+		.get                    = gpio2_get,
-+		.set                    = gpio2_set,
-+		.to_irq			= gpio2_to_irq,
-+		.base                   = ALCHEMY_GPIO2_BASE,
-+		.ngpio                  = ALCHEMY_GPIO2_NUM,
++	[2] = {
++		.start	= DSCR_CMD0_DMA_REQ1,
++		.end	= DSCR_CMD0_DMA_REQ1,
++		.flags	= IORESOURCE_DMA,
 +	},
-+};
+ };
+ 
+ static u64 ide_dmamask = DMA_BIT_MASK(32);
+diff --git a/arch/mips/alchemy/devboards/pb1200/platform.c b/arch/mips/alchemy/devboards/pb1200/platform.c
+index c52809d..6ac0494 100644
+--- a/arch/mips/alchemy/devboards/pb1200/platform.c
++++ b/arch/mips/alchemy/devboards/pb1200/platform.c
+@@ -26,6 +26,7 @@
+ 
+ #include <asm/mach-au1x00/au1xxx.h>
+ #include <asm/mach-au1x00/au1100_mmc.h>
++#include <asm/mach-au1x00/au1xxx_dbdma.h>
+ #include <asm/mach-db1x00/bcsr.h>
+ 
+ #include "../platform.h"
+@@ -115,7 +116,12 @@ static struct resource ide_resources[] = {
+ 		.start	= IDE_INT,
+ 		.end	= IDE_INT,
+ 		.flags	= IORESOURCE_IRQ
+-	}
++	},
++	[2] = {
++		.start	= DSCR_CMD0_DMA_REQ1,
++		.end	= DSCR_CMD0_DMA_REQ1,
++		.flags	= IORESOURCE_DMA,
++	},
+ };
+ 
+ static u64 ide_dmamask = DMA_BIT_MASK(32);
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h b/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
+index 5656c72..e306384 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
+@@ -58,6 +58,7 @@ typedef struct {
+ #endif
+ 	int			irq;
+ 	u32			regbase;
++	int			ddma_id;
+ } _auide_hwif;
+ 
+ /******************************************************************************/
+diff --git a/arch/mips/include/asm/mach-db1x00/db1200.h b/arch/mips/include/asm/mach-db1x00/db1200.h
+index 3404248..7a39657 100644
+--- a/arch/mips/include/asm/mach-db1x00/db1200.h
++++ b/arch/mips/include/asm/mach-db1x00/db1200.h
+@@ -46,8 +46,6 @@
+ 
+ #define IDE_PHYS_ADDR		0x18800000
+ #define IDE_REG_SHIFT		5
+-#define IDE_DDMA_REQ		DSCR_CMD0_DMA_REQ1
+-#define IDE_RQSIZE		128
+ 
+ #define DB1200_IDE_PHYS_ADDR	IDE_PHYS_ADDR
+ #define DB1200_IDE_PHYS_LEN	(16 << IDE_REG_SHIFT)
+diff --git a/arch/mips/include/asm/mach-pb1x00/pb1200.h b/arch/mips/include/asm/mach-pb1x00/pb1200.h
+index 0ecff1c..56865e9 100644
+--- a/arch/mips/include/asm/mach-pb1x00/pb1200.h
++++ b/arch/mips/include/asm/mach-pb1x00/pb1200.h
+@@ -76,8 +76,6 @@
+ #define IDE_REG_SHIFT		5
+ #define IDE_PHYS_LEN		(16 << IDE_REG_SHIFT)
+ #define IDE_INT 		PB1200_IDE_INT
+-#define IDE_DDMA_REQ		DSCR_CMD0_DMA_REQ1
+-#define IDE_RQSIZE		128
+ 
+ #define NAND_PHYS_ADDR 	0x1C000000
+ 
+diff --git a/drivers/ide/au1xxx-ide.c b/drivers/ide/au1xxx-ide.c
+index b26c234..c778373 100644
+--- a/drivers/ide/au1xxx-ide.c
++++ b/drivers/ide/au1xxx-ide.c
+@@ -43,6 +43,10 @@
+ #define DRV_NAME	"au1200-ide"
+ #define DRV_AUTHOR	"Enrico Walther <enrico.walther@amd.com> / Pete Popov <ppopov@embeddedalley.com>"
+ 
++#ifndef IDE_REG_SHIFT
++#define IDE_REG_SHIFT 5
++#endif
 +
-+static int __init alchemy_gpiochip_init(void)
-+{
-+	int ret = 0;
-+
-+	switch (alchemy_get_cputype()) {
-+	case ALCHEMY_CPU_AU1000:
-+		ret = gpiochip_add(&alchemy_gpio_chip[0]);
-+		break;
-+	case ALCHEMY_CPU_AU1500...ALCHEMY_CPU_AU1200:
-+		ret = gpiochip_add(&alchemy_gpio_chip[0]);
-+		ret |= gpiochip_add(&alchemy_gpio_chip[1]);
-+		break;
+ /* enable the burstmode in the dbdma */
+ #define IDE_AU1XXX_BURSTMODE	1
+ 
+@@ -317,10 +321,11 @@ static void auide_ddma_rx_callback(int irq, void *param)
+ }
+ #endif /* end CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA */
+ 
+-static void auide_init_dbdma_dev(dbdev_tab_t *dev, u32 dev_id, u32 tsize, u32 devwidth, u32 flags)
++static void auide_init_dbdma_dev(dbdev_tab_t *dev, u32 dev_id, u32 tsize,
++				 u32 devwidth, u32 flags, u32 regbase)
+ {
+ 	dev->dev_id          = dev_id;
+-	dev->dev_physaddr    = (u32)IDE_PHYS_ADDR;
++	dev->dev_physaddr    = CPHYSADDR(regbase);
+ 	dev->dev_intlevel    = 0;
+ 	dev->dev_intpolarity = 0;
+ 	dev->dev_tsize       = tsize;
+@@ -344,7 +349,7 @@ static int auide_ddma_init(ide_hwif_t *hwif, const struct ide_port_info *d)
+ 	dbdev_tab_t source_dev_tab, target_dev_tab;
+ 	u32 dev_id, tsize, devwidth, flags;
+ 
+-	dev_id	 = IDE_DDMA_REQ;
++	dev_id	 = hwif->ddma_id;
+ 
+ 	tsize    =  8; /*  1 */
+ 	devwidth = 32; /* 16 */
+@@ -356,20 +361,17 @@ static int auide_ddma_init(ide_hwif_t *hwif, const struct ide_port_info *d)
+ #endif
+ 
+ 	/* setup dev_tab for tx channel */
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      dev_id,
+-			      tsize, devwidth, DEV_FLAGS_OUT | flags);
++	auide_init_dbdma_dev(&source_dev_tab, dev_id, tsize, devwidth,
++			     DEV_FLAGS_OUT | flags, auide->regbase);
+  	auide->tx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      dev_id,
+-			      tsize, devwidth, DEV_FLAGS_IN | flags);
++	auide_init_dbdma_dev(&source_dev_tab, dev_id, tsize, devwidth,
++			     DEV_FLAGS_IN | flags, auide->regbase);
+  	auide->rx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 	
+ 	/* We also need to add a target device for the DMA */
+-	auide_init_dbdma_dev( &target_dev_tab,
+-			      (u32)DSCR_CMD0_ALWAYS,
+-			      tsize, devwidth, DEV_FLAGS_ANYUSE);
++	auide_init_dbdma_dev(&target_dev_tab, (u32)DSCR_CMD0_ALWAYS, tsize,
++			     devwidth, DEV_FLAGS_ANYUSE, auide->regbase);
+ 	auide->target_dev_id = au1xxx_ddma_add_device(&target_dev_tab);	
+  
+ 	/* Get a channel for TX */
+@@ -411,14 +413,12 @@ static int auide_ddma_init(ide_hwif_t *hwif, const struct ide_port_info *d)
+ #endif
+ 
+ 	/* setup dev_tab for tx channel */
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      (u32)DSCR_CMD0_ALWAYS,
+-			      8, 32, DEV_FLAGS_OUT | flags);
++	auide_init_dbdma_dev(&source_dev_tab, (u32)DSCR_CMD0_ALWAYS, 8, 32,
++			     DEV_FLAGS_OUT | flags, auide->regbase);
+  	auide->tx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      (u32)DSCR_CMD0_ALWAYS,
+-			      8, 32, DEV_FLAGS_IN | flags);
++	auide_init_dbdma_dev(&source_dev_tab, (u32)DSCR_CMD0_ALWAYS, 8, 32,
++			     DEV_FLAGS_IN | flags, auide->regbase);
+  	auide->rx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 	
+ 	/* Get a channel for TX */
+@@ -540,6 +540,14 @@ static int au_ide_probe(struct platform_device *dev)
+ 		goto out;
+ 	}
+ 
++	res = platform_get_resource(dev, IORESOURCE_DMA, 0);
++	if (!res) {
++		pr_debug("%s: no DDMA ID resource\n", DRV_NAME);
++		ret = -ENODEV;
++		goto out;
 +	}
-+	return ret;
-+}
-+arch_initcall(alchemy_gpiochip_init);
-diff --git a/arch/mips/include/asm/mach-au1x00/gpio-au1000.h b/arch/mips/include/asm/mach-au1x00/gpio-au1000.h
-index 1f41a52..73853b5 100644
---- a/arch/mips/include/asm/mach-au1x00/gpio-au1000.h
-+++ b/arch/mips/include/asm/mach-au1x00/gpio-au1000.h
-@@ -347,17 +347,6 @@ static inline int alchemy_gpio2_to_irq(int gpio)
- 
- /**********************************************************************/
- 
--/* On Au1000, Au1500 and Au1100 GPIOs won't work as inputs before
-- * SYS_PININPUTEN is written to at least once.  On Au1550/Au1200 this
-- * register enables use of GPIOs as wake source.
-- */
--static inline void alchemy_gpio1_input_enable(void)
--{
--	void __iomem *base = (void __iomem *)KSEG1ADDR(AU1000_SYS_PHYS_ADDR);
--	__raw_writel(0, base + SYS_PININPUTEN);	/* the write op is key */
--	wmb();
--}
--
- /* GPIO2 shared interrupts and control */
- 
- static inline void __alchemy_gpio2_mod_int(int gpio2, int en)
-@@ -561,6 +550,7 @@ static inline int alchemy_irq_to_gpio(int irq)
- 
- #ifndef CONFIG_GPIOLIB
- 
-+#ifdef CONFIG_ALCHEMY_GPIOINT_AU1000
- 
- #ifndef CONFIG_ALCHEMY_GPIO_INDIRECT	/* case (4) */
- 
-@@ -665,24 +655,7 @@ static inline void gpio_unexport(unsigned gpio)
- 
- #endif	/* !CONFIG_ALCHEMY_GPIO_INDIRECT */
- 
--
--#else	/* CONFIG GPIOLIB */
--
--
-- /* using gpiolib to provide up to 2 gpio_chips for on-chip gpios */
--#ifndef CONFIG_ALCHEMY_GPIO_INDIRECT	/* case (2) */
--
--/* get everything through gpiolib */
--#define gpio_to_irq	__gpio_to_irq
--#define gpio_get_value	__gpio_get_value
--#define gpio_set_value	__gpio_set_value
--#define gpio_cansleep	__gpio_cansleep
--#define irq_to_gpio	alchemy_irq_to_gpio
--
--#include <asm-generic/gpio.h>
--
--#endif	/* !CONFIG_ALCHEMY_GPIO_INDIRECT */
--
-+#endif	/* CONFIG_ALCHEMY_GPIOINT_AU1000 */
- 
- #endif	/* !CONFIG_GPIOLIB */
- 
-diff --git a/arch/mips/include/asm/mach-au1x00/gpio.h b/arch/mips/include/asm/mach-au1x00/gpio.h
-index c3f60cd..fcdc8c4 100644
---- a/arch/mips/include/asm/mach-au1x00/gpio.h
-+++ b/arch/mips/include/asm/mach-au1x00/gpio.h
-@@ -1,10 +1,83 @@
-+/*
-+ * Alchemy GPIO support.
-+ *
-+ * With CONFIG_GPIOLIB=y different types of on-chip GPIO can be supported within
-+ *  the same kernel image.
-+ * With CONFIG_GPIOLIB=n, your board must select ALCHEMY_GPIOINT_AU1XXX for the
-+ *  appropriate CPU type (AU1000 currently).
-+ */
++	ahwif->ddma_id = res->start;
 +
- #ifndef _ALCHEMY_GPIO_H_
- #define _ALCHEMY_GPIO_H_
- 
--#if defined(CONFIG_ALCHEMY_GPIOINT_AU1000)
--
-+#include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/gpio-au1000.h>
- 
--#endif
-+/* On Au1000, Au1500 and Au1100 GPIOs won't work as inputs before
-+ * SYS_PININPUTEN is written to at least once.  On Au1550/Au1200/Au1300 this
-+ * register enables use of GPIOs as wake source.
-+ */
-+static inline void alchemy_gpio1_input_enable(void)
-+{
-+	void __iomem *base = (void __iomem *)KSEG1ADDR(AU1000_SYS_PHYS_ADDR);
-+	__raw_writel(0, base + 0x110);		/* the write op is key */
-+	wmb();
-+}
-+
-+
-+/* Linux gpio framework integration.
-+*
-+* 4 use cases of Alchemy GPIOS:
-+*(1) GPIOLIB=y, ALCHEMY_GPIO_INDIRECT=y:
-+*	Board must register gpiochips.
-+*(2) GPIOLIB=y, ALCHEMY_GPIO_INDIRECT=n:
-+*	A gpiochip for the 75 GPIOs is registered.
-+*
-+*(3) GPIOLIB=n, ALCHEMY_GPIO_INDIRECT=y:
-+*	the boards' gpio.h must provide	the linux gpio wrapper functions,
-+*
-+*(4) GPIOLIB=n, ALCHEMY_GPIO_INDIRECT=n:
-+*	inlinable gpio functions are provided which enable access to the
-+*	Au1300 gpios only by using the numbers straight out of the data-
-+*	sheets.
-+
-+* Cases 1 and 3 are intended for boards which want to provide their own
-+* GPIO namespace and -operations (i.e. for example you have 8 GPIOs
-+* which are in part provided by spare Au1300 GPIO pins and in part by
-+* an external FPGA but you still want them to be accssible in linux
-+* as gpio0-7. The board can of course use the alchemy_gpioX_* functions
-+* as required).
-+*/
-+
-+#ifdef CONFIG_GPIOLIB
-+
-+/* wraps the cpu-dependent irq_to_gpio functions */
-+/* FIXME: gpiolib needs an irq_to_gpio hook */
-+static inline int __au_irq_to_gpio(unsigned int irq)
-+{
-+	switch (alchemy_get_cputype()) {
-+	case ALCHEMY_CPU_AU1000...ALCHEMY_CPU_AU1200:
-+		return alchemy_irq_to_gpio(irq);
-+	}
-+	return -EINVAL;
-+}
-+
-+
-+/* using gpiolib to provide up to 2 gpio_chips for on-chip gpios */
-+#ifndef CONFIG_ALCHEMY_GPIO_INDIRECT	/* case (2) */
-+
-+/* get everything through gpiolib */
-+#define gpio_to_irq	__gpio_to_irq
-+#define gpio_get_value	__gpio_get_value
-+#define gpio_set_value	__gpio_set_value
-+#define gpio_cansleep	__gpio_cansleep
-+#define irq_to_gpio	__au_irq_to_gpio
-+
-+#include <asm-generic/gpio.h>
-+
-+#endif	/* !CONFIG_ALCHEMY_GPIO_INDIRECT */
-+
-+
-+#endif	/* CONFIG_GPIOLIB */
- 
- #endif	/* _ALCHEMY_GPIO_H_ */
+ 	memset(&hw, 0, sizeof(hw));
+ 	auide_setup_ports(&hw, ahwif);
+ 	hw.irq = ahwif->irq;
 -- 
 1.7.6

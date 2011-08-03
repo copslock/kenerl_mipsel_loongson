@@ -1,60 +1,377 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Aug 2011 20:40:42 +0200 (CEST)
-Received: from void.printf.net ([89.145.121.20]:38955 "EHLO void.printf.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S2100417Ab1HCSke (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 3 Aug 2011 20:40:34 +0200
-Received: from 173-166-109-241-newengland.hfc.comcastbusiness.net ([173.166.109.241] helo=bob.laptop.org)
-        by void.printf.net with esmtp (Exim 4.69)
-        (envelope-from <cjb@laptop.org>)
-        id 1QogMr-0006ve-CV; Wed, 03 Aug 2011 19:40:33 +0100
-From:   Chris Ball <cjb@laptop.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@googlemail.com>,
-        Linux-MIPS <linux-mips@linux-mips.org>, linux-mmc@vger.kernel.org
-Subject: Re: [PATCH 12/15] MMC: au1xmmc: remove Alchemy CPU subtype dependencies
-References: <1312307470-6841-1-git-send-email-manuel.lauss@googlemail.com>
-        <1312307470-6841-13-git-send-email-manuel.lauss@googlemail.com>
-        <20110803120627.GA856@linux-mips.org>
-Date:   Wed, 03 Aug 2011 14:40:26 -0400
-In-Reply-To: <20110803120627.GA856@linux-mips.org> (Ralf Baechle's message of
-        "Wed, 3 Aug 2011 13:06:27 +0100")
-Message-ID: <m2y5za5of9.fsf@bob.laptop.org>
-User-Agent: Gnus/5.110018 (No Gnus v0.18) Emacs/23.2 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Aug 2011 00:04:35 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:14850 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490996Ab1HCWEb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Aug 2011 00:04:31 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4e39c6320000>; Wed, 03 Aug 2011 15:05:38 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 3 Aug 2011 15:04:28 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 3 Aug 2011 15:04:28 -0700
+Message-ID: <4E39C5EB.8070701@cavium.com>
+Date:   Wed, 03 Aug 2011 15:04:27 -0700
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-archive-position: 30828
+To:     devicetree-discuss@lists.ozlabs.org,
+        Grant Likely <grant.likely@secretlab.ca>
+CC:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: How to describe I2C and MDIO bus multiplexers with the device tree?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 03 Aug 2011 22:04:28.0557 (UTC) FILETIME=[508EBBD0:01CC5229]
+X-archive-position: 30829
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cjb@laptop.org
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 2557
+X-UID: 2691
 
-Hi Ralf,
 
-On Wed, Aug 03 2011, Ralf Baechle wrote:
-> On Tue, Aug 02, 2011 at 07:51:07PM +0200, Manuel Lauss wrote:
->
->> Replace all occurrences of CONFIG_SOC_AU1??? with runtime feature
->> detection.
->> 
->> Cc: <linux-mmc@vger.kernel.org>
->> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
->> ---
->> I'd like for this patch to go in via the mips tree since a few more depend
->> on it.
->
-> Patch is looking ok.  Since MMC is orphaned I've just queued it and it
-> will go to linux-next after -rc1.
+I have a board (ASCII art representation below) that has a bunch of
+PHY devices that are connected behind a MDIO bus switch/multiplexer.
+This multiplexer is in turn controlled by GPIO pins on a I2C GPIO port
+expander.  which is in turn on a I2C bus switch/multiplexer.
 
-MMC isn't orphaned anymore -- I've been maintaining it for a year.  Feel
-free to merge this yourself since there are dependency issues, though:
+There is another switch/multiplexer that is controlled directly via I2C.
 
-Acked-by: Chris Ball <cjb@laptop.org>
+Q: How can this be represented?
 
--- 
-Chris Ball   <cjb@laptop.org>   <http://printf.net/>
-One Laptop Per Child
+My attempt is below...
+
+   I2C-0 
+   MDIO-1            MDIO-0
+    | 
+    |                 |
+    |         |--------------| 
+    |                 |
+    |         |              +---- I2C-A ----- 
+    |                 |
+    +---------+ multiplexor  | 
+    |                 |
+    |         |              +---- I2C-B ----- 
+    |                 |
+    |         |  I2C-0x70    | 
+    |                 |
+    |         |              +---- I2C-C ----- 
+    |                 |
+    |         |              | 
+    |                 |
+    |         |              +---- I2C-D ----- 
+    |                 |
+    |         |              | 
+    |                 |
+    |         |              +---- I2C-E ----- 
+    |                 |
+    |         |              | 
+    |                 |
+    |         |              +---- I2C-F --------+ 
+    |                 |
+    |         |              |                   | 
+    |                 |
+    |         |              +---- I2C-G --+     | 
+    |                 |
+    |         |--------------|             |     | 
+    |                 |
+    |                                      |     | 
+    |                 |
+    |        |------------|          +-----+     | 
+    |                 |
+    |        |            |          |           | 
+    |                 |
+    +--------+  ds1337 RTC|          |           | 
+    |                 |
+    |        | I2C-0x68   |          |     |-----+-----| 
+|--------+---------|       |
+    |        |------------|          |     | GPIO      |          | 
+              |       |
+    |                                |     | Port      +--Pin 3---+ 
+multiplexor     |       |
+    |                                |     | Expander  +--Pin 4---+ 
+              |       |
+    |                                |     |           |          | 
+74CBTLV3253     |       |
+    |                                |     |I2C-0x38   |          | 
+              |       |
+    |                                |     |           |          | 
+              |       |
+    |                                |     |-----------| 
+|-+--------------+-|       |
+    |                                |                              | 
+            |         |
+    |                                |                              | 
+            |         |
+    |                           |----+-----|                        M 
+            M         |
+    |                           | GPIO     |                        D 
+            D         |
+    |                           | Port     |                        I 
+            I         |
+    |                           | Expander |                        O 
+            O         |
+    |                           |          |                        | 
+            |         |
+    |                           |I2C-0x38  |                        W 
+            X         |
+    |                           |----------|                        | 
+            |         |
+    |                                                               | 
+            |         |
+    |                                                               | 
+            |         |
+    | 
+|----+---|     |----+---|     |
+    |                                                          | 
+|     |        |     |
+    |                                                          | PHY-11 
+|     | PHY-21 |     |
+    |                                                          | PHY-12 
+|     | PHY-22 |     |
+    |                                                          | PHY-13 
+|     | PHY-23 |     |
+    |                                                          | PHY-14 
+|     | PHY-24 |     |
+    | 
+|--------|     |--------|     |
+    | 
+                      |
+    |         |-------------| 
+                      |
+    |         | multiplexor | 
+                      |
+    |         |  I2C-0x77 
++----------------------------------------------------------------+
+    +---------+   foo       |
+    |         |             |
+    |         |-+--------+--|
+    |           |        |
+                |        |
+                M        M
+                D        D
+                I        I
+                O        O
+                |        |
+                Y        Z
+                |        |
+          |-----+--|  |--+----|
+          | PHY-3  |  | PHY-4 |
+          |--------|  |-------|
+
+
+
+
+
+
+
+/dts-v1/;
+/ {
+	model = "cavium,brfl";
+	compatible = "cavium,brfl";
+	#address-cells = <2>;
+	#size-cells = <2>;
+	interrupt-parent = <&ciu>;
+
+	soc@0 {
+	      .
+	      .
+	      .
+		smi0: mdio@1180000001800 {
+			compatible = "cavium,octeon-3860-mdio";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x11800 0x00001800 0x0 0x40>;
+		};
+		smi1: mdio@1180000001900 {
+			compatible = "cavium,octeon-3860-mdio";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0x11800 0x00001900 0x0 0x40>;
+		};
+	      .
+	      .
+	      .
+		twsi0: i2c@1180000001000 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "cavium,octeon-3860-twsi";
+			reg = <0x11800 0x00001000 0x0 0x200>;
+			interrupts = <0 45>;
+			clock-rate = <100000>;
+			.
+			.
+			.
+			i2c-mux@70 {
+				compatible = "nxp,pca9548";
+				reg = <0x38>;
+
+				i2c@6 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					cell-index = <6>;
+
+					gpio66: gpio@38 {
+						compatible = "nxp,pca8574";
+						reg = <0x38>;
+						#gpio-cells = <2>;
+						gpio-controller;
+					};
+				}
+			};
+			.
+			.
+			.
+			mdio-mux@77 {
+				compatible = "bar,foo";
+				reg = <0x77>;
+				parent-bus = <&smi0>
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				mdio@0 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					cell-index = <0>;
+
+					phy3: ethernet-phy@1 {
+						reg = <1>;
+						compatible = "marvell,88e1149r";
+						marvell,reg-init = <3 0x10 0 0x5777>,
+							<3 0x11 0 0x00aa>,
+							<3 0x12 0 0x4105>,
+							<3 0x13 0 0x0a60>;
+					};
+				mdio@1 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					cell-index = <1>;
+
+					phy4: ethernet-phy@1 {
+						reg = <1>;
+						compatible = "marvell,88e1149r";
+						marvell,reg-init = <3 0x10 0 0x5777>,
+							<3 0x11 0 0x00aa>,
+							<3 0x12 0 0x4105>,
+							<3 0x13 0 0x0a60>;
+					};
+			};
+			.
+			.
+			.
+		};
+		mdio-mux@0 {
+			compatible = "ti,sn74cbtlv3253"
+			gpios = <&gpio66 3 1
+				 &gpio66 4 1>
+			parent-bus = <&smi1>
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mdio@2 {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				cell-index = <2>;
+
+				phy11: ethernet-phy@1 {
+					reg = <1>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+				phy12: ethernet-phy@1 {
+					reg = <2>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+				phy13: ethernet-phy@1 {
+					reg = <3>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+				phy14: ethernet-phy@1 {
+					reg = <4>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+			};
+			mdio@3 {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				cell-index = <3>;
+
+				phy21: ethernet-phy@1 {
+					reg = <1>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+				phy22: ethernet-phy@1 {
+					reg = <2>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+				phy23: ethernet-phy@1 {
+					reg = <3>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+				phy24: ethernet-phy@1 {
+					reg = <4>;
+					compatible = "marvell,88e1149r";
+					marvell,reg-init = <3 0x10 0 0x5777>,
+						<3 0x11 0 0x00aa>,
+						<3 0x12 0 0x4105>,
+						<3 0x13 0 0x0a60>;
+				};
+			};
+		};
+
+	      .
+	      .
+	      .
+	};
+
+};
+
+
+Some notes/questions:
+
+o mdio-mux@0 is a child of soc@0, but conceptually it might just as
+   well be floating in space.
+
+o The parent-bus property of both mdio-mux@0 and mdio-mux@77 denotes
+   the connection of the multiplexer to its 'parent' bus.
+
+o The cell-index property of the multiplexed bus instances denotes the
+   sub-bus of the switch/multiplexer the children are connected to.
+   Would a different property name be better here?
+
+o For mdio-mux@0 the driver will use the cell-index to determine how
+   to program the gpios that control the switch/multiplexer.
+
+Am I totally insane?
+David Daney

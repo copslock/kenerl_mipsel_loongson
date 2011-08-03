@@ -1,91 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Aug 2011 18:26:31 +0200 (CEST)
-Received: from mail-ey0-f170.google.com ([209.85.215.170]:36693 "EHLO
-        mail-ey0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S2100414Ab1HCQ01 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 3 Aug 2011 18:26:27 +0200
-Received: by eyd10 with SMTP id 10so944784eyd.29
-        for <multiple recipients>; Wed, 03 Aug 2011 09:26:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=fsoA+NQzTZZAtORdLxO279vF5SsEUQHpaeUBumdPqo0=;
-        b=tTtZ5ha+ojSEJpTDqj9sXm9vsU+te2/zf+Z7jNmhtn6g+6nOPYcDvI+QLrugIyGDaC
-         7O19d0iXe4i5+AweJ3DBYlY5PNGJR7PYym9rVZjUJrQNrD0TYbvL2c2H9QXHNkHF6CGp
-         5s6C+wA8iMHG42kmpNxTpZIN2U26fz4P7GqFI=
-Received: by 10.204.134.205 with SMTP id k13mr2279321bkt.252.1312388782297;
-        Wed, 03 Aug 2011 09:26:22 -0700 (PDT)
-Received: from htj.dyndns.org ([130.75.117.88])
-        by mx.google.com with ESMTPS id f13sm290980bku.18.2011.08.03.09.26.20
-        (version=SSLv3 cipher=OTHER);
-        Wed, 03 Aug 2011 09:26:20 -0700 (PDT)
-Date:   Wed, 3 Aug 2011 18:26:18 +0200
-From:   Tejun Heo <tj@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Aug 2011 20:40:42 +0200 (CEST)
+Received: from void.printf.net ([89.145.121.20]:38955 "EHLO void.printf.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S2100417Ab1HCSke (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 3 Aug 2011 20:40:34 +0200
+Received: from 173-166-109-241-newengland.hfc.comcastbusiness.net ([173.166.109.241] helo=bob.laptop.org)
+        by void.printf.net with esmtp (Exim 4.69)
+        (envelope-from <cjb@laptop.org>)
+        id 1QogMr-0006ve-CV; Wed, 03 Aug 2011 19:40:33 +0100
+From:   Chris Ball <cjb@laptop.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     benh@kernel.crashing.org, yinghai@kernel.org, hpa@zytor.com,
-        tony.luck@intel.com, schwidefsky@de.ibm.com,
-        liqin.chen@sunplusct.com, lethal@linux-sh.org, davem@davemloft.net,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        mingo@redhat.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH 19/23] mips: Use HAVE_MEMBLOCK_NODE_MAP
-Message-ID: <20110803162618.GB17477@htj.dyndns.org>
-References: <1311694534-5161-1-git-send-email-tj@kernel.org>
- <1311694534-5161-20-git-send-email-tj@kernel.org>
- <20110803161745.GA13266@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>,
+        Linux-MIPS <linux-mips@linux-mips.org>, linux-mmc@vger.kernel.org
+Subject: Re: [PATCH 12/15] MMC: au1xmmc: remove Alchemy CPU subtype dependencies
+References: <1312307470-6841-1-git-send-email-manuel.lauss@googlemail.com>
+        <1312307470-6841-13-git-send-email-manuel.lauss@googlemail.com>
+        <20110803120627.GA856@linux-mips.org>
+Date:   Wed, 03 Aug 2011 14:40:26 -0400
+In-Reply-To: <20110803120627.GA856@linux-mips.org> (Ralf Baechle's message of
+        "Wed, 3 Aug 2011 13:06:27 +0100")
+Message-ID: <m2y5za5of9.fsf@bob.laptop.org>
+User-Agent: Gnus/5.110018 (No Gnus v0.18) Emacs/23.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20110803161745.GA13266@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30827
+Content-Type: text/plain
+X-archive-position: 30828
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tj@kernel.org
+X-original-sender: cjb@laptop.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 2492
+X-UID: 2557
 
-On Wed, Aug 03, 2011 at 05:17:45PM +0100, Ralf Baechle wrote:
-> On Tue, Jul 26, 2011 at 05:35:30PM +0200, Tejun Heo wrote:
-> 
-> > mips used early_node_map[] just to prime free_area_init_nodes().  Now
-> > memblock can be used for the same purpose and early_node_map[] is
-> > scheduled to be dropped.  Use memblock instead.
-> > 
-> > Signed-off-by: Tejun Heo <tj@kernel.org>
-> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > Cc: Yinghai Lu <yinghai@kernel.org>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>
-> > Cc: linux-mips@linux-mips.org
-> > ---
-> > Only compile tested.  Thanks.
-> > 
-> >  arch/mips/Kconfig                |    3 +++
-> >  arch/mips/kernel/setup.c         |    3 ++-
-> >  arch/mips/sgi-ip27/ip27-memory.c |    5 +++--
-> >  3 files changed, 8 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > index 653da62..368b2ec 100644
-> > --- a/arch/mips/Kconfig
-> > +++ b/arch/mips/Kconfig
-> > @@ -24,6 +24,9 @@ config MIPS
-> >  	select GENERIC_IRQ_PROBE
-> >  	select GENERIC_IRQ_SHOW
-> >  	select HAVE_ARCH_JUMP_LABEL
-> > +	select HAVE_MEMBLOCK
-> 
-> This means <linux/memblock.h> will include <asm/memblock.h> which does
-> not exist for MIPS.  Did you accidentally not post this new file?
+Hi Ralf,
 
-Nope, earlier commit 24aa07882b and its fix patch (patch 0.5 in this
-series) removes asm/memblock.h from all archs and drops it from
-linux/memblock.h.
+On Wed, Aug 03 2011, Ralf Baechle wrote:
+> On Tue, Aug 02, 2011 at 07:51:07PM +0200, Manuel Lauss wrote:
+>
+>> Replace all occurrences of CONFIG_SOC_AU1??? with runtime feature
+>> detection.
+>> 
+>> Cc: <linux-mmc@vger.kernel.org>
+>> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+>> ---
+>> I'd like for this patch to go in via the mips tree since a few more depend
+>> on it.
+>
+> Patch is looking ok.  Since MMC is orphaned I've just queued it and it
+> will go to linux-next after -rc1.
 
-Thanks.
+MMC isn't orphaned anymore -- I've been maintaining it for a year.  Feel
+free to merge this yourself since there are dependency issues, though:
+
+Acked-by: Chris Ball <cjb@laptop.org>
 
 -- 
-tejun
+Chris Ball   <cjb@laptop.org>   <http://printf.net/>
+One Laptop Per Child

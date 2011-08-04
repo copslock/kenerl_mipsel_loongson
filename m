@@ -1,37 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Aug 2011 13:25:14 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Aug 2011 13:25:40 +0200 (CEST)
 Received: from mail-wy0-f177.google.com ([74.125.82.177]:40407 "EHLO
         mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491182Ab1HDLYm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Aug 2011 13:24:42 +0200
+        by eddie.linux-mips.org with ESMTP id S1491188Ab1HDLYr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 4 Aug 2011 13:24:47 +0200
 Received: by mail-wy0-f177.google.com with SMTP id 19so1049152wyg.36
-        for <multiple recipients>; Thu, 04 Aug 2011 04:24:42 -0700 (PDT)
+        for <multiple recipients>; Thu, 04 Aug 2011 04:24:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=sender:from:organization:to:subject:date:user-agent:cc:mime-version
          :content-type:content-transfer-encoding:message-id;
-        bh=eSJR1IHSm5zwpdhu+dGEmTXTmgZY15sBFBCExYa8/3Y=;
-        b=P8kufbH1VFKcPT8qKeBYJyw9X2qv1hSzVSHJE/vdZ95GQLBxrNrT8vQgLgqWcM7Toc
-         Oxep3zPDmmZr8//uI9ntUZ0t8TQ5bM6WL4FbEAQKpIy5N5WsIqB9dLzs7a1WsmD/eDt5
-         pbw1t0Wk6AID0nfxRn0IHcBY6Hs5tCN2Jij+A=
-Received: by 10.217.2.202 with SMTP id p52mr637803wes.28.1312457081883;
-        Thu, 04 Aug 2011 04:24:41 -0700 (PDT)
+        bh=P2IaI8EoyPhPoXNorCNoyWQyV/zqAPR4WymYgpFjxQg=;
+        b=Mm52lFcKD1wxdfos3MM2ZpiwHaiZCHoPaBgtkGV7yAoNBX8vA3IEe3QWCDNw5YbWXX
+         RNZ0OsckxCYWUa7GxIrcEDAwWoXABxk7wGqt1zIUMNzFM63n/1+XZaOXL6L06GBUdaAY
+         Duo0ItbKIRbrIxM/BvRSN7Aucwtlvcms3kwJE=
+Received: by 10.216.229.1 with SMTP id g1mr630859weq.51.1312457087441;
+        Thu, 04 Aug 2011 04:24:47 -0700 (PDT)
 Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by mx.google.com with ESMTPS id k9sm1130532weq.3.2011.08.04.04.24.40
+        by mx.google.com with ESMTPS id n33sm1123258weq.36.2011.08.04.04.24.45
         (version=SSLv3 cipher=OTHER);
-        Thu, 04 Aug 2011 04:24:40 -0700 (PDT)
+        Thu, 04 Aug 2011 04:24:46 -0700 (PDT)
 From:   Florian Fainelli <florian@openwrt.org>
 Organization: OpenWrt
 To:     ralf@linux-mips.org
-Subject: [PATCH 2/3 v2] MIPS: introduce CPU_R4K_FPU
-Date:   Thu, 4 Aug 2011 13:28:31 +0200
+Subject: [PATCH 3/3 v2] MIPS: introduce CPU_R4K_CACHE_TLB
+Date:   Thu, 4 Aug 2011 13:28:37 +0200
 User-Agent: KMail/1.13.6 (Linux/2.6.38-8-server; KDE/4.6.2; x86_64; ; )
 Cc:     linux-mips@linux-mips.org
 MIME-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <201108041328.31484.florian@openwrt.org>
-X-archive-position: 30833
+Message-Id: <201108041328.37455.florian@openwrt.org>
+X-archive-position: 30834
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,63 +40,64 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3192
+X-UID: 3193
 
-R4K-style CPUs have this boolean defined by default. Allows us
-to remove some lines in arch/mips/kernel/Makefile.
+R4K-style CPUs having common code to support their caches and tlb have this
+boolean defined by default. Allows us to remove some lines in
+arch/mips/mm/Makefile.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
 Changes since v1:
-- removed CPU_XLR already covered by CPU_R4K_FPU
+- removed CPU_XLR already covered by CPU_R4K_CACHE_TLB
+- add back CPU_R8000 to Kconfig exception list and Makefile
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9f4ade4..44eebc7 100644
+index 44eebc7..a250607 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -1807,6 +1807,10 @@ config CPU_GENERIC_DUMP_TLB
+@@ -1811,6 +1811,10 @@ config CPU_R4K_FPU
  	bool
- 	default y if !(CPU_R3000 || CPU_R6000 || CPU_R8000 || CPU_TX39XX)
+ 	default y if !(CPU_R3000 || CPU_R6000 || CPU_TX39XX || CPU_CAVIUM_OCTEON)
  
-+config CPU_R4K_FPU
++config CPU_R4K_CACHE_TLB
 +	bool
-+	default y if !(CPU_R3000 || CPU_R6000 || CPU_TX39XX || CPU_CAVIUM_OCTEON)
++	default y if !(CPU_R3000 || CPU_R8000 || CPU_SB1 || CPU_TX39XX || CPU_CAVIUM_OCTEON)
 +
  choice
  	prompt "MIPS MT options"
  
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index 83bba33..d07c112 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -32,27 +32,11 @@ obj-$(CONFIG_MODULES)		+= mips_ksyms.o module.o
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index 4d8c162..8e880da 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -11,26 +11,12 @@ obj-$(CONFIG_64BIT)		+= pgtable-64.o
+ obj-$(CONFIG_HIGHMEM)		+= highmem.o
+ obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
  
- obj-$(CONFIG_FUNCTION_TRACER)	+= mcount.o ftrace.o
+-obj-$(CONFIG_CPU_LOONGSON2)	+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_MIPS32)	+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_MIPS64)	+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_NEVADA)	+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_R10000)	+= c-r4k.o cex-gen.o tlb-r4k.o
++obj-$(CONFIG_CPU_R4K_CACHE_TLB) += c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_R3000)		+= c-r3k.o tlb-r3k.o
+-obj-$(CONFIG_CPU_R4300)		+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_R4X00)		+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_R5000)		+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_R5432)		+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_R5500)		+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_R8000)		+= c-r4k.o cex-gen.o tlb-r8k.o
+-obj-$(CONFIG_CPU_RM7000)	+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_RM9000)	+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_SB1)		+= c-r4k.o cerr-sb1.o cex-sb1.o tlb-r4k.o
+ obj-$(CONFIG_CPU_TX39XX)	+= c-tx39.o tlb-r3k.o
+-obj-$(CONFIG_CPU_TX49XX)	+= c-r4k.o cex-gen.o tlb-r4k.o
+-obj-$(CONFIG_CPU_VR41XX)	+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= c-octeon.o cex-oct.o tlb-r4k.o
+-obj-$(CONFIG_CPU_XLR)		+= c-r4k.o tlb-r4k.o cex-gen.o
  
--obj-$(CONFIG_CPU_LOONGSON2)	+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_MIPS32)	+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_MIPS64)	+= r4k_fpu.o r4k_switch.o
-+obj-$(CONFIG_CPU_R4K_FPU)	+= r4k_fpu.o r4k_switch.o
- obj-$(CONFIG_CPU_R3000)		+= r2300_fpu.o r2300_switch.o
--obj-$(CONFIG_CPU_R4300)		+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_R4X00)		+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_R5000)		+= r4k_fpu.o r4k_switch.o
- obj-$(CONFIG_CPU_R6000)		+= r6000_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_R5432)		+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_R5500)		+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_R8000)		+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_RM7000)	+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_RM9000)	+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_NEVADA)	+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_R10000)	+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_SB1)		+= r4k_fpu.o r4k_switch.o
- obj-$(CONFIG_CPU_TX39XX)	+= r2300_fpu.o r2300_switch.o
--obj-$(CONFIG_CPU_TX49XX)	+= r4k_fpu.o r4k_switch.o
--obj-$(CONFIG_CPU_VR41XX)	+= r4k_fpu.o r4k_switch.o
- obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= octeon_switch.o
--obj-$(CONFIG_CPU_XLR)		+= r4k_fpu.o r4k_switch.o
- 
- obj-$(CONFIG_SMP)		+= smp.o
- obj-$(CONFIG_SMP_UP)		+= smp-up.o
+ obj-$(CONFIG_IP22_CPU_SCACHE)	+= sc-ip22.o
+ obj-$(CONFIG_R5000_CPU_SCACHE)  += sc-r5k.o
 -- 
 1.7.4.1

@@ -1,103 +1,204 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2011 09:14:45 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:51154 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491108Ab1HJHOk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Aug 2011 09:14:40 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 2E3D58C90;
-        Wed, 10 Aug 2011 09:14:39 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id WLNTirg7OZZa; Wed, 10 Aug 2011 09:14:35 +0200 (CEST)
-Received: from [10.59.128.41] (unknown [82.113.99.169])
-        by hauke-m.de (Postfix) with ESMTPSA id 769868C88;
-        Wed, 10 Aug 2011 09:14:30 +0200 (CEST)
-Message-ID: <4E422FD0.5050600@hauke-m.de>
-Date:   Wed, 10 Aug 2011 09:14:24 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.18) Gecko/20110617 Lightning/1.0b2 Thunderbird/3.1.11
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2011 09:24:38 +0200 (CEST)
+Received: from gandharva.secretlabs.de ([78.46.147.237]:26895 "EHLO
+        gandharva.secretlabs.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491116Ab1HJHYe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Aug 2011 09:24:34 +0200
+Received: from [172.31.14.96] (unknown [222.128.194.2])
+        by gandharva.secretlabs.de (Postfix) with ESMTPSA id A7C9C1B10C0F
+        for <linux-mips@linux-mips.org>; Wed, 10 Aug 2011 07:35:29 +0000 (UTC)
+Message-ID: <4E423228.2080309@freyther.de>
+Date:   Wed, 10 Aug 2011 09:24:24 +0200
+From:   Holger Hans Peter Freyther <holger@freyther.de>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.18) Gecko/20110617 Lightning/1.0b2 Thunderbird/3.1.11
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     linville@tuxdriver.com, linux-wireless@vger.kernel.org,
-        linux-mips@linux-mips.org, jonas.gorski@gmail.com,
-        ralf@linux-mips.org, mb@bu3sch.de, george@znau.edu.ua,
-        arend@broadcom.com, b43-dev@lists.infradead.org,
-        bernhardloos@googlemail.com, arnd@arndb.de,
-        julian.calaby@gmail.com, sshtylyov@mvista.com
-Subject: Re: [PATCH 06/11] bcma: add serial console support
-References: <1311376815-15755-1-git-send-email-hauke@hauke-m.de>        <1311376815-15755-7-git-send-email-hauke@hauke-m.de>    <CACna6rxMA9KDuWSPLmdNsS=zNJawkbX5-KYrRWq3Jn25gWhX7A@mail.gmail.com> <CACna6rzqm=NhsrUWZr8Mun5fNaz3x1Qa6Fv_-TMKw8iOsK=u-w@mail.gmail.com>
-In-Reply-To: <CACna6rzqm=NhsrUWZr8Mun5fNaz3x1Qa6Fv_-TMKw8iOsK=u-w@mail.gmail.com>
-X-Enigmail-Version: 1.1.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 30843
+To:     linux-mips@linux-mips.org
+Subject: [RFC][PATCH] Implement perf_callchain_user for o32 ABI (on mipsel)
+X-Enigmail-Version: 1.1.1
+Content-Type: multipart/mixed;
+ boundary="------------060009060802060709030201"
+X-archive-position: 30844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: holger@freyther.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7224
+X-UID: 7227
 
-On 07/29/2011 11:06 PM, Rafał Miłecki wrote:
-> W dniu 29 lipca 2011 23:04 użytkownik Rafał Miłecki <zajec5@gmail.com> napisał:
->> 2011/7/23 Hauke Mehrtens <hauke@hauke-m.de>:
->>> This adds support for serial console to bcma, when operating on an SoC.
->>>
->>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
->>> ---
->>>  drivers/bcma/bcma_private.h                 |    8 ++++
->>>  drivers/bcma/driver_chipcommon.c            |   48 +++++++++++++++++++++++++++
->>>  drivers/bcma/driver_chipcommon_pmu.c        |   26 ++++++++++++++
->>>  drivers/bcma/driver_mips.c                  |    1 +
->>>  include/linux/bcma/bcma_driver_chipcommon.h |   14 ++++++++
->>>  5 files changed, 97 insertions(+), 0 deletions(-)
->>>
->>> diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
->>> index b97633d..22d3052 100644
->>> --- a/drivers/bcma/bcma_private.h
->>> +++ b/drivers/bcma/bcma_private.h
->>> @@ -29,6 +29,14 @@ void bcma_init_bus(struct bcma_bus *bus);
->>>  /* sprom.c */
->>>  int bcma_sprom_get(struct bcma_bus *bus);
->>>
->>> +/* driver_chipcommon.c */
->>> +#ifdef CONFIG_BCMA_DRIVER_MIPS
->>> +void bcma_chipco_serial_init(struct bcma_drv_cc *cc);
->>> +#endif /* CONFIG_BCMA_DRIVER_MIPS */
->>> +
->>> +/* driver_chipcommon_pmu.c */
->>> +u32 bcma_pmu_alp_clock(struct bcma_drv_cc *cc);
->>> +
->>>  #ifdef CONFIG_BCMA_HOST_PCI
->>>  /* host_pci.c */
->>>  extern int __init bcma_host_pci_init(void);
->>
->> Not sure, what do you think about this, feel free to comment.
->>
->> My idea was to use bcma_private.h for bcma-internal functions. For
->> example, support for PCI host or SoC host, is something "internal" (as
->> I call it) for bcma. Drivers in theory could be separated modules and
->> I use include/linux/bcma/driver_*.h for them.
->>
->> If following this schema, declarations of
->> bcma_pmu_alp_clock
->> bcma_host_pci_init
->> should be in include/linux/bcma/bcma_driver_chipcommon.h
-> 
-> Same goes to the
-> bcma_pmu_get_clockcpu
-> from patch 07/11.
-> 
-> Sorry for late-noticing this.
-> 
-> I don't have more comments against your patch set :) Hope John will
-> take it soon :)
-> 
-This sounds good. I will send a new patch moving the method declaration
-to bcma_driver_chipcommon.h for these 3 functions.
+This is a multi-part message in MIME format.
+--------------060009060802060709030201
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-Hauke
+Hi all,
+
+I wanted to use perf to profile my userspace application on MIPS but I saw
+that there is no solution for that. I have written some code to scan the
+prologue of the function to identify the stack size and where in the stack the
+return address is stored.
+
+   0:	27bdffd8 	addiu	sp,sp,-40 <-- used to find prev. stack
+   4:	afbf0024 	sw	ra,36(sp) <-- stored return addr.
+   8:	afbe0020 	sw	s8,32(sp)
+   c:	03a0f021 	move	s8,sp
+  10:	3c1c0000 	lui	gp,0x0
+  14:	279c0000 	addiu	gp,gp,0
+
+The code appears to work in qemu-system-mipsel (not where I am going to do my
+profiling) with my simple test application.
+
+The code is missing a S-o-b because I would like to get feedback if something
+like this would ever be accepted upstream. The other question is also about
+security, other ABIs, 32/64 bit...
+
+comments more than welcome
+	holger
+
+--------------060009060802060709030201
+Content-Type: text/x-patch;
+ name="0001-mips-Implement-perf_callchain_user-by-scanning-the-p.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0001-mips-Implement-perf_callchain_user-by-scanning-the-p.pa";
+ filename*1="tch"
+
+>From 7a8b1fcf942dbbd1bebbf41facdc77c0d9552811 Mon Sep 17 00:00:00 2001
+From: Holger Hans Peter Freyther <zecke@selfish.org>
+Date: Wed, 10 Aug 2011 08:56:59 +0200
+Subject: [PATCH] mips: Implement perf_callchain_user by scanning the prologue
+
+Scan the prologue for two instructions. The first one is adjusting
+the stack pointer for the current frame, the next one is storing
+the return address to the stack. Try to find both of these
+instructions to identify the caller of this function. It might be
+that the RA has not been written yet, in that case we will use the
+address from pt_regs.
+
+For all other frames try to find the two instructions again, exit
+when accessing the text or stack is failing, or too many
+instructions have been searched.
+
+http://elinux.org/images/6/68/ELC2008_-_Back-tracing_in_MIPS-based_Linux_Systems.pdf
+has helped to understand the prologue and was used in userspace
+for the first attempts.
+---
+ arch/mips/kernel/perf_event.c |   93 +++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 93 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/kernel/perf_event.c b/arch/mips/kernel/perf_event.c
+index a824485..623d63a 100644
+--- a/arch/mips/kernel/perf_event.c
++++ b/arch/mips/kernel/perf_event.c
+@@ -536,12 +536,105 @@ handle_associated_event(struct cpu_hw_events *cpuc,
+ /* Callchain handling code. */
+ 
+ /*
++ * Userspace code
++ */
++
++/*
+  * Leave userspace callchain empty for now. When we find a way to trace
+  * the user stack callchains, we add here.
+  */
+ void perf_callchain_user(struct perf_callchain_entry *entry,
+ 		    struct pt_regs *regs)
+ {
++#define ADDIU_SP_INSTR		0x27bd0000
++#define SW_RA_INSTR		0xafbf0000
++	/*
++	 * Find the first RA and FrameSize.
++	 */
++	unsigned long ra_addr = regs->regs[31];
++	unsigned long sp_addr = regs->regs[29];
++	unsigned long pc_addr = regs->cp0_epc;
++	unsigned long ra = 0;
++	unsigned int limit;
++	size_t stack_size = 0;
++	size_t ra_offset = 0;
++
++	/*
++	 * Try to find the initial stack size and the return address. It
++	 * is possible that the code is still in the prologue and the
++	 * return address might not have been stored to the stack yet
++	 */
++	for (limit = 0, pc_addr = regs->cp0_epc;
++	     limit < (PAGE_SIZE / 4) && (!ra_offset || !stack_size);
++	     --pc_addr, ++limit) {
++		int instr;
++		if (!access_ok(VERIFY_READ, pc_addr, sizeof(instr)))
++			return;
++		if (__copy_from_user_inatomic(&instr, (void *) pc_addr, sizeof(instr)))
++			return;
++		switch (instr & 0xffff0000) {
++		case ADDIU_SP_INSTR:
++			stack_size = abs((short)(instr & 0xffff));
++			goto __out_of_loop;
++			break;
++		case SW_RA_INSTR:
++			ra_offset = instr & 0xffff;
++			break;
++		}
++	}
++
++__out_of_loop:
++	if (stack_size == 0)
++		return;
++
++	if (ra_offset) {
++		ra_addr = sp_addr + ra_offset;
++		if (!access_ok(VERIFY_READ, ra_addr, sizeof(ra)))
++			return;
++		if (__copy_from_user_inatomic(&ra, (void *) ra_addr, sizeof(ra)))
++			return;
++	}
++
++	sp_addr = sp_addr + stack_size;
++
++
++	/* now try to walk from the return address we found */
++	limit = 0;
++	while (entry->nr < PERF_MAX_STACK_DEPTH && ra != 0) {
++		perf_callchain_store(entry, ra);
++		ra_offset = stack_size = 0;
++
++		for (pc_addr = ra;
++		     (!ra_offset || !stack_size) && limit < PAGE_SIZE/4/2;
++		     --pc_addr, ++limit) {
++			int instr;
++			if (!access_ok(VERIFY_READ, pc_addr, sizeof(instr)))
++				return;
++			if (__copy_from_user_inatomic(&instr, (void *) pc_addr, sizeof(instr)))
++				return;
++			switch (instr & 0xffff0000) {
++			case ADDIU_SP_INSTR:
++				stack_size = abs((short)(instr & 0xffff));
++				break;
++			case SW_RA_INSTR:
++				ra_offset = instr & 0xffff;
++				break;
++			}
++		}
++
++		/* must have hit a limit */
++		if (!ra_offset || !stack_size)
++			return;
++
++		ra_addr = sp_addr + ra_offset;
++		if (!access_ok(VERIFY_READ, ra_addr, sizeof(ra)))
++			return;
++		if (__copy_from_user_inatomic(&ra, (void *) ra_addr, sizeof(ra)))
++			return;
++		sp_addr = sp_addr + stack_size;
++	}
++
++	return;
+ }
+ 
+ static void save_raw_perf_callchain(struct perf_callchain_entry *entry,
+-- 
+1.7.4.1
+
+
+--------------060009060802060709030201--

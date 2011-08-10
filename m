@@ -1,66 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2011 17:24:05 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:47525 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491156Ab1HJPYA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Aug 2011 17:24:00 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p7AFNlxq008208;
-        Wed, 10 Aug 2011 16:23:47 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p7AFNkbD008205;
-        Wed, 10 Aug 2011 16:23:46 +0100
-Date:   Wed, 10 Aug 2011 16:23:46 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Don Fry <pcnet32@frontier.com>, netdev@vger.kernel.org
-Cc:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org
-Subject: [PATCH] PCnet: Fix section mismatch
-Message-ID: <20110810152346.GA6092@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2011 19:25:34 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:5572 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491161Ab1HJRZ1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 10 Aug 2011 19:25:27 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4e42bf460000>; Wed, 10 Aug 2011 10:26:31 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 10 Aug 2011 10:25:10 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 10 Aug 2011 10:25:10 -0700
+Message-ID: <4E42BEF0.1040502@cavium.com>
+Date:   Wed, 10 Aug 2011 10:25:04 -0700
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30845
+To:     Holger Hans Peter Freyther <holger@freyther.de>,
+        Ralf Baechle <ralf@linux-mips.org>
+CC:     linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>,
+        gergely@homejinni.com
+Subject: Re: [RFC][PATCH] Implement perf_callchain_user for o32 ABI (on mipsel)
+References: <4E423228.2080309@freyther.de>
+In-Reply-To: <4E423228.2080309@freyther.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 10 Aug 2011 17:25:10.0177 (UTC) FILETIME=[74AD2110:01CC5782]
+X-archive-position: 30846
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7663
+X-UID: 7762
 
-Building MIPS mtx1_defconfig results in:
+On 08/10/2011 12:24 AM, Holger Hans Peter Freyther wrote:
+> Hi all,
+>
+> I wanted to use perf to profile my userspace application on MIPS but I saw
+> that there is no solution for that. I have written some code to scan the
+> prologue of the function to identify the stack size and where in the stack the
+> return address is stored.
+>
+>     0:	27bdffd8 	addiu	sp,sp,-40<-- used to find prev. stack
+>     4:	afbf0024 	sw	ra,36(sp)<-- stored return addr.
+>     8:	afbe0020 	sw	s8,32(sp)
+>     c:	03a0f021 	move	s8,sp
+>    10:	3c1c0000 	lui	gp,0x0
+>    14:	279c0000 	addiu	gp,gp,0
+>
+> The code appears to work in qemu-system-mipsel (not where I am going to do my
+> profiling) with my simple test application.
+>
+> The code is missing a S-o-b because I would like to get feedback if something
+> like this would ever be accepted upstream. The other question is also about
+> security, other ABIs, 32/64 bit...
+>
+> comments more than welcome
+> 	holger
 
-  MODPOST 735 modules
-WARNING: drivers/net/pcnet32.o(.devinit.text+0x11ec): Section mismatch in reference from the function pcnet32_probe_vlbus.constprop.22() to the variable .init.data:pcnet32_portlist
-The function __devinit pcnet32_probe_vlbus.constprop.22() references
-a variable __initdata pcnet32_portlist.
-If pcnet32_portlist is only used by pcnet32_probe_vlbus.constprop.22 then
-annotate pcnet32_portlist with a matching annotation.
+You need to reconcile your patches with these:
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+http://patchwork.linux-mips.org/patch/2579/
+http://patchwork.linux-mips.org/patch/2376/
+http://patchwork.linux-mips.org/patch/2375/
 
----
-As recently discussed in the discussion of submission of a fix for a
-similar bug in another driver remove __initdata rather than replace it
-with __devinitdata.
+We probably could use some sort of backtrace code in the kernel, but 
+three seperate implementations are too many.
 
- drivers/net/pcnet32.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Also separating most of the unwinder into a separate file would be 
+preferable to mixing it into the perf counter driver.
 
-diff --git a/drivers/net/pcnet32.c b/drivers/net/pcnet32.c
-index 8b3090d..80b6f36 100644
---- a/drivers/net/pcnet32.c
-+++ b/drivers/net/pcnet32.c
-@@ -82,7 +82,7 @@ static int cards_found;
- /*
-  * VLB I/O addresses
-  */
--static unsigned int pcnet32_portlist[] __initdata =
-+static unsigned int pcnet32_portlist[] =
-     { 0x300, 0x320, 0x340, 0x360, 0 };
- 
- static int pcnet32_debug;
+David Daney

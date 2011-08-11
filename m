@@ -1,34 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Aug 2011 23:25:11 +0200 (CEST)
-Received: from lo.gmane.org ([80.91.229.12]:35276 "EHLO lo.gmane.org"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491864Ab1HJVZH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 10 Aug 2011 23:25:07 +0200
-Received: from list by lo.gmane.org with local (Exim 4.69)
-        (envelope-from <sgi-linux-mips@m.gmane.org>)
-        id 1QrGGw-00008F-12
-        for linux-mips@linux-mips.org; Wed, 10 Aug 2011 23:25:06 +0200
-Received: from indra.secretlabs.de ([78.46.94.148])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 10 Aug 2011 23:25:06 +0200
-Received: from zecke by indra.secretlabs.de with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 10 Aug 2011 23:25:06 +0200
-X-Injected-Via-Gmane: http://gmane.org/
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Aug 2011 02:36:32 +0200 (CEST)
+Received: from gandharva.secretlabs.de ([78.46.147.237]:14569 "EHLO
+        gandharva.secretlabs.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491867Ab1HKAg3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 11 Aug 2011 02:36:29 +0200
+Received: from localhost.localdomain (unknown [1.202.86.226])
+        by gandharva.secretlabs.de (Postfix) with ESMTPSA id 17E5A1B10C11;
+        Thu, 11 Aug 2011 00:47:26 +0000 (UTC)
+From:   Holger Hans Peter Freyther <zecke@selfish.org>
 To:     linux-mips@linux-mips.org
-From:   Holger Freyther <zecke@selfish.org>
-Subject: Re: [RFC][PATCH] Implement =?utf-8?b?cGVyZl9jYWxsY2hhaW5fdXNlcg==?= for o32 ABI (on mipsel)
-Date:   Wed, 10 Aug 2011 21:19:49 +0000 (UTC)
-Message-ID: <loom.20110810T231842-192@post.gmane.org>
-References: <4E423228.2080309@freyther.de> <4E42BEF0.1040502@cavium.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Complaints-To: usenet@dough.gmane.org
-X-Gmane-NNTP-Posting-Host: sea.gmane.org
-User-Agent: Loom/3.14 (http://gmane.org/)
-X-Loom-IP: 78.46.94.148 (Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30)
-X-archive-position: 30847
+Cc:     Holger Hans Peter Freyther <zecke@selfish.org>
+Subject: [PATCH 0/2] Implement perf_callchain_user
+Date:   Thu, 11 Aug 2011 02:36:04 +0200
+Message-Id: <1313022966-28152-1-git-send-email-zecke@selfish.org>
+X-Mailer: git-send-email 1.7.4.1
+X-archive-position: 30848
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,20 +22,26 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7920
+X-UID: 8019
 
-David Daney <david.daney <at> cavium.com> writes:
-
-
-> We probably could use some sort of backtrace code in the kernel, but 
-> three seperate implementations are too many.
-> 
-> Also separating most of the unwinder into a separate file would be 
-> preferable to mixing it into the perf counter driver.
+Hi,
+this is moving code from oprofile/backtrace.c to a commom
+place and then implements perf_callchain_user using the common
+code. Right now the unwind_user_frame will always be compiled
+into the kernel.
 
 
-Ah great, the oprofile support didn't exist when I was starting. Yes,
-I will move the userspace unwinding into a common file and then build
-the perf support on top of it.
+Holger Hans Peter Freyther (2):
+  MIPS: Move userspace stack unwinding into kernel/user_backtrace.c
+  MIPS: Implement perf_callchain_user using unwind_user_frame
 
-holger
+ arch/mips/include/asm/stacktrace.h |   10 +++
+ arch/mips/kernel/Makefile          |    3 +-
+ arch/mips/kernel/perf_event.c      |   14 ++++
+ arch/mips/kernel/user_backtrace.c  |  129 ++++++++++++++++++++++++++++++++++
+ arch/mips/oprofile/backtrace.c     |  133 ++----------------------------------
+ 5 files changed, 160 insertions(+), 129 deletions(-)
+ create mode 100644 arch/mips/kernel/user_backtrace.c
+
+-- 
+1.7.4.1

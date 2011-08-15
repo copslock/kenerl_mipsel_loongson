@@ -1,47 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2011 15:56:07 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:45627 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491951Ab1HON4D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 15 Aug 2011 15:56:03 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p7FDtG4K001694;
-        Mon, 15 Aug 2011 14:55:17 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p7FDtF8R001693;
-        Mon, 15 Aug 2011 14:55:15 +0100
-Date:   Mon, 15 Aug 2011 14:55:15 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-Cc:     Arnaud Lacombe <lacombar@gmail.com>, linux-kernel@vger.kernel.org,
-        Sam Ravnborg <sam@ravnborg.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/11] arch/mips: do not use EXTRA_CFLAGS
-Message-ID: <20110815135515.GA1441@linux-mips.org>
-References: <1313384834-24433-1-git-send-email-lacombar@gmail.com>
- <1313384834-24433-3-git-send-email-lacombar@gmail.com>
- <4E48EAA0.5020901@mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Aug 2011 18:19:12 +0200 (CEST)
+Received: from mail-ey0-f169.google.com ([209.85.215.169]:34994 "EHLO
+        mail-ey0-f169.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491819Ab1HOQTG convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 15 Aug 2011 18:19:06 +0200
+Received: by eye22 with SMTP id 22so3259954eye.0
+        for <multiple recipients>; Mon, 15 Aug 2011 09:19:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=+3AZsa8fjMHGuziQ21Os81goQHToHvtZUYDYImHNR5o=;
+        b=haHOmh6oMV2UddByfhd5si12wuXPQK42JXlkcTRI70iz0KvZzGOeaUN+uZJFXtR3+3
+         Zq7iosJTOPRMAwXtn5gkzz7a7QIwG4v4269Md8FUWUNFWDyPvTgKfceS9Q8dbi4JpXo+
+         M3BALEFnLMpZivzGS+tFyzRzjwboscTUXQso0=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4E48EAA0.5020901@mvista.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30882
+Received: by 10.14.151.14 with SMTP id a14mr618169eek.169.1313425140707; Mon,
+ 15 Aug 2011 09:19:00 -0700 (PDT)
+Received: by 10.14.187.14 with HTTP; Mon, 15 Aug 2011 09:19:00 -0700 (PDT)
+In-Reply-To: <20110815135515.GA1441@linux-mips.org>
+References: <1313384834-24433-1-git-send-email-lacombar@gmail.com>
+        <1313384834-24433-3-git-send-email-lacombar@gmail.com>
+        <4E48EAA0.5020901@mvista.com>
+        <20110815135515.GA1441@linux-mips.org>
+Date:   Mon, 15 Aug 2011 12:19:00 -0400
+Message-ID: <CACqU3MVyg_hA1m+1sJZ+aTHdxvzxviVXr0Fvom7p9EEHXVOMtA@mail.gmail.com>
+Subject: Re: [PATCH 02/11] arch/mips: do not use EXTRA_CFLAGS
+From:   Arnaud Lacombe <lacombar@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Sergei Shtylyov <sshtylyov@mvista.com>,
+        linux-kernel@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 30883
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: lacombar@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10856
+X-UID: 11047
 
-On Mon, Aug 15, 2011 at 01:45:04PM +0400, Sergei Shtylyov wrote:
+Hi,
 
->    You didn't sign off.
+On Mon, Aug 15, 2011 at 9:55 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Mon, Aug 15, 2011 at 01:45:04PM +0400, Sergei Shtylyov wrote:
+>
+>>    You didn't sign off.
+>
+> True - but I won't make a big fuzz about that for a one-line.  I'm sure
+> Arnaud will vow to do right the next time :-)
+>
+You are welcome to slap me. If it's not too late:
 
-True - but I won't make a big fuzz about that for a one-line.  I'm sure
-Arnaud will vow to do right the next time :-)
+Signed-off-by: Arnaud Lacombe <lacombar@gmail.com>
 
-Applied.  Thanks, Arnaud!
+  - Arnaud
 
-  Ralf
+> Applied.  Thanks, Arnaud!
+>
+>  Ralf
+>

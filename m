@@ -1,66 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Aug 2011 12:07:01 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:54973 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491988Ab1HPKGv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 16 Aug 2011 12:06:51 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p7GA5lWq012726;
-        Tue, 16 Aug 2011 11:05:48 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p7GA5jcc012724;
-        Tue, 16 Aug 2011 11:05:45 +0100
-Date:   Tue, 16 Aug 2011 11:05:45 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
-Cc:     Arnaud Lacombe <lacombar@gmail.com>,
-        Sergei Shtylyov <sshtylyov@mvista.com>,
-        linux-kernel@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 02/11] arch/mips: do not use EXTRA_CFLAGS
-Message-ID: <20110816100544.GA12658@linux-mips.org>
-References: <1313384834-24433-1-git-send-email-lacombar@gmail.com>
- <1313384834-24433-3-git-send-email-lacombar@gmail.com>
- <4E48EAA0.5020901@mvista.com>
- <20110815135515.GA1441@linux-mips.org>
- <CACqU3MVyg_hA1m+1sJZ+aTHdxvzxviVXr0Fvom7p9EEHXVOMtA@mail.gmail.com>
- <CA+7sy7DEBgcUYCf895yf8cKMS=iDgz-n9Nh7R8_EO_O-QX3MfA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+7sy7DEBgcUYCf895yf8cKMS=iDgz-n9Nh7R8_EO_O-QX3MfA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30885
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Aug 2011 19:12:02 +0200 (CEST)
+Received: from smtp2.caviumnetworks.com ([209.113.159.134]:9211 "EHLO
+        smtp2.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492003Ab1HPRLr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Aug 2011 19:11:47 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by smtp2.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4e4aa4d60000>; Tue, 16 Aug 2011 13:11:50 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 16 Aug 2011 10:11:05 -0700
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 16 Aug 2011 10:11:05 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id p7GHB1N8024516;
+        Tue, 16 Aug 2011 10:11:02 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p7GHAwvH024515;
+        Tue, 16 Aug 2011 10:10:58 -0700
+From:   David Daney <david.daney@cavium.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Cc:     David Daney <david.daney@cavium.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@suse.de>
+Subject: [PATCH] staging: octeon-ethernet: Add missing #includes.
+Date:   Tue, 16 Aug 2011 10:10:56 -0700
+Message-Id: <1313514656-24482-1-git-send-email-david.daney@cavium.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 16 Aug 2011 17:11:05.0727 (UTC) FILETIME=[7BD2C8F0:01CC5C37]
+X-archive-position: 30886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11596
+X-UID: 11792
 
-On Mon, Aug 15, 2011 at 10:58:27PM +0530, Jayachandran C. wrote:
+I looks like something used to implicitly include linux/interrupt.h,
+and no longer does.  Fix the resulting build error by explicitly
+including it.
 
-> On Mon, Aug 15, 2011 at 9:49 PM, Arnaud Lacombe <lacombar@gmail.com> wrote:
-> > Hi,
-> >
-> > On Mon, Aug 15, 2011 at 9:55 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> >> On Mon, Aug 15, 2011 at 01:45:04PM +0400, Sergei Shtylyov wrote:
-> >>
-> >>>    You didn't sign off.
-> >>
-> >> True - but I won't make a big fuzz about that for a one-line.  I'm sure
-> >> Arnaud will vow to do right the next time :-)
-> >>
-> > You are welcome to slap me. If it's not too late:
-> >
-> > Signed-off-by: Arnaud Lacombe <lacombar@gmail.com>
-> 
-> Thanks for fixing this up.   Looks like an acked-by is not needed :)
+Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+---
 
-No - but generally an Acked-by: a maintainer or Reviewed-by: or Tested-by:
-somebody else is always welcome.  The more eyeballs, the better :-)
+This could go via Ralf's linux-mips.org tree as Octeon is a MIPS
+archecture SOC.  It would be nice to get in before the final 3.1 as it
+is a build breaker.
 
-  Ralf
+ drivers/staging/octeon/ethernet-rgmii.c |    1 +
+ drivers/staging/octeon/ethernet-spi.c   |    1 +
+ 2 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/staging/octeon/ethernet-rgmii.c b/drivers/staging/octeon/ethernet-rgmii.c
+index 9c0d293..c3d73f8 100644
+--- a/drivers/staging/octeon/ethernet-rgmii.c
++++ b/drivers/staging/octeon/ethernet-rgmii.c
+@@ -26,6 +26,7 @@
+ **********************************************************************/
+ #include <linux/kernel.h>
+ #include <linux/netdevice.h>
++#include <linux/interrupt.h>
+ #include <linux/phy.h>
+ #include <linux/ratelimit.h>
+ #include <net/dst.h>
+diff --git a/drivers/staging/octeon/ethernet-spi.c b/drivers/staging/octeon/ethernet-spi.c
+index 9708254..d0e2d51 100644
+--- a/drivers/staging/octeon/ethernet-spi.c
++++ b/drivers/staging/octeon/ethernet-spi.c
+@@ -26,6 +26,7 @@
+ **********************************************************************/
+ #include <linux/kernel.h>
+ #include <linux/netdevice.h>
++#include <linux/interrupt.h>
+ #include <net/dst.h>
+ 
+ #include <asm/octeon/octeon.h>
+-- 
+1.7.2.3

@@ -1,82 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Aug 2011 19:12:02 +0200 (CEST)
-Received: from smtp2.caviumnetworks.com ([209.113.159.134]:9211 "EHLO
-        smtp2.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492003Ab1HPRLr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 16 Aug 2011 19:11:47 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by smtp2.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e4aa4d60000>; Tue, 16 Aug 2011 13:11:50 -0400
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 16 Aug 2011 10:11:05 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 16 Aug 2011 10:11:05 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id p7GHB1N8024516;
-        Tue, 16 Aug 2011 10:11:02 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p7GHAwvH024515;
-        Tue, 16 Aug 2011 10:10:58 -0700
-From:   David Daney <david.daney@cavium.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Cc:     David Daney <david.daney@cavium.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greg Kroah-Hartman <gregkh@suse.de>
-Subject: [PATCH] staging: octeon-ethernet: Add missing #includes.
-Date:   Tue, 16 Aug 2011 10:10:56 -0700
-Message-Id: <1313514656-24482-1-git-send-email-david.daney@cavium.com>
-X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 16 Aug 2011 17:11:05.0727 (UTC) FILETIME=[7BD2C8F0:01CC5C37]
-X-archive-position: 30886
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Aug 2011 03:55:13 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:39321 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492042Ab1HQBzF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Aug 2011 03:55:05 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id p7H1svPa001120
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Tue, 16 Aug 2011 18:54:57 -0700 (PDT)
+Received: from yzhang-desktop.corp.ad.wrs.com (128.224.158.133) by
+ ALA-HCA.corp.ad.wrs.com (147.11.189.50) with Microsoft SMTP Server id
+ 14.1.255.0; Tue, 16 Aug 2011 18:54:56 -0700
+From:   Yong Zhang <yong.zhang@windriver.com>
+To:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] MIPS: use 32-bit wrapper for compat_sys_futex
+Date:   Wed, 17 Aug 2011 09:54:54 +0800
+Message-ID: <1313546094-11882-1-git-send-email-yong.zhang@windriver.com>
+X-Mailer: git-send-email 1.7.4.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-archive-position: 30887
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: yong.zhang@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11792
+X-UID: 12139
 
-I looks like something used to implicitly include linux/interrupt.h,
-and no longer does.  Fix the resulting build error by explicitly
-including it.
+We can't trust in the caller(userspace) to give signed-extend
+parameter, thus futex-wait may fail in some special case.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Greg Kroah-Hartman <gregkh@suse.de>
+For example, if 'val' is too big and bit-31 is 1,
+the caller may enter endless loop at:
+futex_wait_setup()
+{
+	...
+
+	if (uval != val) {
+		queue_unlock(q, *hb);
+		ret = -EWOULDBLOCK;
+
+	...
+}
+
+Below assembler code will make it more easy to understand how
+the patch take effect :)
+
+Dump of assembler code for function SyS_32_futex:
+   0xffffffff811b6fe8 <+0>:	sll	a1,a1,0x0
+   0xffffffff811b6fec <+4>:	sll	a2,a2,0x0
+   0xffffffff811b6ff0 <+8>:	j	0xffffffff8121a240 <compat_sys_futex>
+   0xffffffff811b6ff4 <+12>:	sll	a5,a5,0x0
+
+Signed-off-by: Yong Zhang <yong.zhang@windriver.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
 ---
+ arch/mips/kernel/linux32.c     |    7 +++++++
+ arch/mips/kernel/scall64-n32.S |    2 +-
+ arch/mips/kernel/scall64-o32.S |    2 +-
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-This could go via Ralf's linux-mips.org tree as Octeon is a MIPS
-archecture SOC.  It would be nice to get in before the final 3.1 as it
-is a build breaker.
-
- drivers/staging/octeon/ethernet-rgmii.c |    1 +
- drivers/staging/octeon/ethernet-spi.c   |    1 +
- 2 files changed, 2 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/staging/octeon/ethernet-rgmii.c b/drivers/staging/octeon/ethernet-rgmii.c
-index 9c0d293..c3d73f8 100644
---- a/drivers/staging/octeon/ethernet-rgmii.c
-+++ b/drivers/staging/octeon/ethernet-rgmii.c
-@@ -26,6 +26,7 @@
- **********************************************************************/
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
-+#include <linux/interrupt.h>
- #include <linux/phy.h>
- #include <linux/ratelimit.h>
- #include <net/dst.h>
-diff --git a/drivers/staging/octeon/ethernet-spi.c b/drivers/staging/octeon/ethernet-spi.c
-index 9708254..d0e2d51 100644
---- a/drivers/staging/octeon/ethernet-spi.c
-+++ b/drivers/staging/octeon/ethernet-spi.c
-@@ -26,6 +26,7 @@
- **********************************************************************/
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
-+#include <linux/interrupt.h>
- #include <net/dst.h>
- 
- #include <asm/octeon/octeon.h>
+diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
+index 876a75c..922a554 100644
+--- a/arch/mips/kernel/linux32.c
++++ b/arch/mips/kernel/linux32.c
+@@ -349,3 +349,10 @@ SYSCALL_DEFINE6(32_fanotify_mark, int, fanotify_fd, unsigned int, flags,
+ 	return sys_fanotify_mark(fanotify_fd, flags, merge_64(a3, a4),
+ 				 dfd, pathname);
+ }
++
++SYSCALL_DEFINE6(32_futex, u32 __user *, uaddr, int, op, u32, val,
++		struct compat_timespec __user *, utime, u32 __user *, uaddr2,
++		u32, val3)
++{
++	return compat_sys_futex(uaddr, op, val, utime, uaddr2, val3);
++}
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index b85842f..c956cc9 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -315,7 +315,7 @@ EXPORT(sysn32_call_table)
+ 	PTR	sys_fremovexattr
+ 	PTR	sys_tkill
+ 	PTR	sys_ni_syscall
+-	PTR	compat_sys_futex
++	PTR	sys_32_futex
+ 	PTR	compat_sys_sched_setaffinity	/* 6195 */
+ 	PTR	compat_sys_sched_getaffinity
+ 	PTR	sys_cacheflush
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 46c4763..f48b18e 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -441,7 +441,7 @@ sys_call_table:
+ 	PTR	sys_fremovexattr		/* 4235 */
+ 	PTR	sys_tkill
+ 	PTR	sys_sendfile64
+-	PTR	compat_sys_futex
++	PTR	sys_32_futex
+ 	PTR	compat_sys_sched_setaffinity
+ 	PTR	compat_sys_sched_getaffinity	/* 4240 */
+ 	PTR	compat_sys_io_setup
 -- 
-1.7.2.3
+1.7.4.1

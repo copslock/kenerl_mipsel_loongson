@@ -1,145 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Aug 2011 19:18:03 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:16880 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492055Ab1HQRR5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 17 Aug 2011 19:17:57 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e4bf8060001>; Wed, 17 Aug 2011 10:19:02 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 17 Aug 2011 10:17:53 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 17 Aug 2011 10:17:53 -0700
-Message-ID: <4E4BF7C0.80703@cavium.com>
-Date:   Wed, 17 Aug 2011 10:17:52 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Yong Zhang <yong.zhang@windriver.com>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2011 04:33:07 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:51939 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1490968Ab1HRCdC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2011 04:33:02 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id p7I2Wp3j029483
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Wed, 17 Aug 2011 19:32:51 -0700 (PDT)
+Received: from localhost (128.224.158.133) by ALA-HCA.corp.ad.wrs.com
+ (147.11.189.50) with Microsoft SMTP Server (TLS) id 14.1.255.0; Wed, 17 Aug
+ 2011 19:32:51 -0700
+Date:   Thu, 18 Aug 2011 10:32:47 +0800
+From:   Yong Zhang <yong.zhang@windriver.com>
+To:     David Daney <david.daney@cavium.com>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: [PATCH] MIPS: use 32-bit wrapper for compat_sys_futex
+Message-ID: <20110818023247.GA3750@windriver.com>
+Reply-To: Yong Zhang <yong.zhang@windriver.com>
 References: <1313546094-11882-1-git-send-email-yong.zhang@windriver.com>
-In-Reply-To: <1313546094-11882-1-git-send-email-yong.zhang@windriver.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 17 Aug 2011 17:17:53.0680 (UTC) FILETIME=[99653900:01CC5D01]
-X-archive-position: 30889
+ <4E4BF7C0.80703@cavium.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <4E4BF7C0.80703@cavium.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Originating-IP: [128.224.158.133]
+X-archive-position: 30890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: yong.zhang@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12646
+X-UID: 12926
 
-On 08/16/2011 06:54 PM, Yong Zhang wrote:
-> We can't trust in the caller(userspace) to give signed-extend
-> parameter, thus futex-wait may fail in some special case.
->
-> For example, if 'val' is too big and bit-31 is 1,
-> the caller may enter endless loop at:
-> futex_wait_setup()
-> {
-> 	...
->
-> 	if (uval != val) {
-> 		queue_unlock(q, *hb);
-> 		ret = -EWOULDBLOCK;
->
-> 	...
-> }
->
-> Below assembler code will make it more easy to understand how
-> the patch take effect :)
->
-> Dump of assembler code for function SyS_32_futex:
->     0xffffffff811b6fe8<+0>:	sll	a1,a1,0x0
->     0xffffffff811b6fec<+4>:	sll	a2,a2,0x0
->     0xffffffff811b6ff0<+8>:	j	0xffffffff8121a240<compat_sys_futex>
->     0xffffffff811b6ff4<+12>:	sll	a5,a5,0x0
->
-> Signed-off-by: Yong Zhang<yong.zhang@windriver.com>
-> Cc: Ralf Baechle<ralf@linux-mips.org>
-> ---
->   arch/mips/kernel/linux32.c     |    7 +++++++
->   arch/mips/kernel/scall64-n32.S |    2 +-
->   arch/mips/kernel/scall64-o32.S |    2 +-
->   3 files changed, 9 insertions(+), 2 deletions(-)
-[...]
-> diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
-> index 876a75c..922a554 100644
-> --- a/arch/mips/kernel/linux32.c
-> +++ b/arch/mips/kernel/linux32.c
-> @@ -349,3 +349,10 @@ SYSCALL_DEFINE6(32_fanotify_mark, int, fanotify_fd, unsigned int, flags,
->   	return sys_fanotify_mark(fanotify_fd, flags, merge_64(a3, a4),
->   				 dfd, pathname);
->   }
-> +
-> +SYSCALL_DEFINE6(32_futex, u32 __user *, uaddr, int, op, u32, val,
-> +		struct compat_timespec __user *, utime, u32 __user *, uaddr2,
-> +		u32, val3)
-> +{
-> +	return compat_sys_futex(uaddr, op, val, utime, uaddr2, val3);
-> +}
-> diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-> index b85842f..c956cc9 100644
-> --- a/arch/mips/kernel/scall64-n32.S
-> +++ b/arch/mips/kernel/scall64-n32.S
-> @@ -315,7 +315,7 @@ EXPORT(sysn32_call_table)
->   	PTR	sys_fremovexattr
->   	PTR	sys_tkill
->   	PTR	sys_ni_syscall
-> -	PTR	compat_sys_futex
-> +	PTR	sys_32_futex
->   	PTR	compat_sys_sched_setaffinity	/* 6195 */
->   	PTR	compat_sys_sched_getaffinity
->   	PTR	sys_cacheflush
-> diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-> index 46c4763..f48b18e 100644
-> --- a/arch/mips/kernel/scall64-o32.S
-> +++ b/arch/mips/kernel/scall64-o32.S
-> @@ -441,7 +441,7 @@ sys_call_table:
->   	PTR	sys_fremovexattr		/* 4235 */
->   	PTR	sys_tkill
->   	PTR	sys_sendfile64
-> -	PTR	compat_sys_futex
-> +	PTR	sys_32_futex
+On Wed, Aug 17, 2011 at 10:17:52AM -0700, David Daney wrote:
+> >diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+> >index 46c4763..f48b18e 100644
+> >--- a/arch/mips/kernel/scall64-o32.S
+> >+++ b/arch/mips/kernel/scall64-o32.S
+> >@@ -441,7 +441,7 @@ sys_call_table:
+> >  	PTR	sys_fremovexattr		/* 4235 */
+> >  	PTR	sys_tkill
+> >  	PTR	sys_sendfile64
+> >-	PTR	compat_sys_futex
+> >+	PTR	sys_32_futex
+> 
+> This change is redundant, scall64-o32.S already does the right thing
 
-This change is redundant, scall64-o32.S already does the right thing
-so additional zero extending is not needed and is just extra
-instructions to execute for no reason.
+My first virsion(not sent out) doesn't include scall64-o32.S either.
 
->   	PTR	compat_sys_sched_setaffinity
->   	PTR	compat_sys_sched_getaffinity	/* 4240 */
->   	PTR	compat_sys_io_setup
+> so additional zero extending is not needed and is just extra
+> instructions to execute for no reason.
 
-But really I think this patch fixes things at the wrong level.  Each
-architecture potentially needs a similar patch.  What would happen if
-we did something like:
+Why I'm adding it here is for:
+1)code consistent, otherwise we must move SYSCALL_DEFINE6(32_futex,...)
+  under CONFIG_MIPS32_N32;
+2)I'm afraid there may be some other way to touch the high 32-bit of a
+  register, so touching scall64-o32.S is also for safety(due to unknown
+  reason, fix me if I'm wrong).
 
-
-diff --git a/kernel/futex_compat.c b/kernel/futex_compat.c
-index 5f9e689..74ada65 100644
---- a/kernel/futex_compat.c
-+++ b/kernel/futex_compat.c
-@@ -180,9 +180,9 @@ err_unlock:
-  	return ret;
-  }
-
--asmlinkage long compat_sys_futex(u32 __user *uaddr, int op, u32 val,
--		struct compat_timespec __user *utime, u32 __user *uaddr2,
--		u32 val3)
-+SYSCALL_DEFINE6(compat_sys_futex, u32 __user *, uaddr, int , op, u32, val,
-+		struct compat_timespec __user *, utime, u32 __user *, uaddr2,
-+		u32, val3)
-  {
-  	struct timespec ts;
-  	ktime_t t, *tp = NULL;
-
-Obviously the function name is wrong, but a varient of
-SYSCALL_DEFINE*() could be created so the proper function names are
-produced.
-
-David Daney
+Thanks,
+Yong

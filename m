@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2011 21:05:38 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:39234 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2011 21:13:05 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47454 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1492155Ab1HRTFd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 18 Aug 2011 21:05:33 +0200
+        id S1492169Ab1HRTM7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 18 Aug 2011 21:12:59 +0200
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p7IJ5QHZ023988;
-        Thu, 18 Aug 2011 20:05:26 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p7IJCujI026162;
+        Thu, 18 Aug 2011 20:12:56 +0100
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p7IJ5Olv023981;
-        Thu, 18 Aug 2011 20:05:24 +0100
-Date:   Thu, 18 Aug 2011 20:05:24 +0100
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p7IJCu5G026161;
+        Thu, 18 Aug 2011 20:12:56 +0100
+Date:   Thu, 18 Aug 2011 20:12:56 +0100
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Miller <davem@davemloft.net>
-Cc:     manuel.lauss@googlemail.com, linux-mips@linux-mips.org,
-        linux-ide@vger.kernel.org
-Subject: Re: [PATCH RESEND 4/8] MIPS: au1xxx: au1xxx-ide: remove
- pb1200/db1200 header dep
-Message-ID: <20110818190524.GA22920@linux-mips.org>
-References: <1313658718-14144-1-git-send-email-manuel.lauss@googlemail.com>
- <20110818.040341.498460978855618496.davem@davemloft.net>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 5/8] MIPS: Alchemy: clean DMA code of CONFIG_SOC_AU1???
+ defines
+Message-ID: <20110818191256.GB22920@linux-mips.org>
+References: <1313141985-5830-1-git-send-email-manuel.lauss@googlemail.com>
+ <1313141985-5830-6-git-send-email-manuel.lauss@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20110818.040341.498460978855618496.davem@davemloft.net>
+In-Reply-To: <1313141985-5830-6-git-send-email-manuel.lauss@googlemail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 30899
+X-archive-position: 30900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,8 +32,8 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13539
+X-UID: 13584
 
-Thanks, queued for 3.2.
+Queued for 3.2.  Thanks,
 
   Ralf

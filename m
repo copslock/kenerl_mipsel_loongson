@@ -1,99 +1,245 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2011 04:44:40 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:53492 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1490968Ab1HRCof (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2011 04:44:35 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id p7I2iQxJ000765
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Wed, 17 Aug 2011 19:44:26 -0700 (PDT)
-Received: from localhost (128.224.158.133) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.50) with Microsoft SMTP Server (TLS) id 14.1.255.0; Wed, 17 Aug
- 2011 19:44:26 -0700
-Date:   Thu, 18 Aug 2011 10:44:22 +0800
-From:   Yong Zhang <yong.zhang@windriver.com>
-To:     David Daney <david.daney@cavium.com>
-CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Aug 2011 11:12:30 +0200 (CEST)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:34342 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492102Ab1HRJMW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 18 Aug 2011 11:12:22 +0200
+Received: by bke17 with SMTP id 17so1615096bke.36
+        for <multiple recipients>; Thu, 18 Aug 2011 02:12:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=PGn9Zvk4TZSEoLGgyVO67dRrnVhDNN3orKDGQFyGwNo=;
+        b=myuYVrAZMX41VcKI1cdRf6FRA/I1X4ZlCZpnTJu/ApsqVHKRToVblhjpX4eUQqvQIF
+         WjvyT4/3ea6y9lB1MTSVMklZb5sq09LbOeu9Mv55fZ3eSxfCSHapKGP3oF7BTNSaEKwN
+         Bl962ydNKOQkqSYfOsIrkAWn1j52biIlim4kg=
+Received: by 10.204.231.197 with SMTP id jr5mr237624bkb.155.1313658736450;
+        Thu, 18 Aug 2011 02:12:16 -0700 (PDT)
+Received: from localhost.localdomain (188-22-156-154.adsl.highway.telekom.at [188.22.156.154])
+        by mx.google.com with ESMTPS id q1sm4284311faa.3.2011.08.18.02.12.13
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 18 Aug 2011 02:12:14 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: use 32-bit wrapper for compat_sys_futex
-Message-ID: <20110818024422.GB3750@windriver.com>
-Reply-To: Yong Zhang <yong.zhang@windriver.com>
-References: <1313546094-11882-1-git-send-email-yong.zhang@windriver.com>
- <4E4BF7C0.80703@cavium.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <4E4BF7C0.80703@cavium.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Originating-IP: [128.224.158.133]
-X-archive-position: 30891
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>,
+        linux-ide@vger.kernel.org, "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH RESEND 4/8] MIPS: au1xxx: au1xxx-ide: remove pb1200/db1200 header dep
+Date:   Thu, 18 Aug 2011 11:11:58 +0200
+Message-Id: <1313658718-14144-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.6
+X-archive-position: 30892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yong.zhang@windriver.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12930
+X-UID: 13098
 
-On Wed, Aug 17, 2011 at 10:17:52AM -0700, David Daney wrote:
-> >  	PTR	compat_sys_sched_setaffinity
-> >  	PTR	compat_sys_sched_getaffinity	/* 4240 */
-> >  	PTR	compat_sys_io_setup
-> 
-> But really I think this patch fixes things at the wrong level.  Each
-> architecture potentially needs a similar patch.  What would happen if
-> we did something like:
+au1xxx-ide uses defines from the pb1200/db1200 headers:
+get DBDMA ID through platform resource information,
+hardcode register spacing.  The only 2 users of this driver (and
+the only boards it can really work on realiably) use the same
+register layout.
 
-I have thought about it but finally I decide to keep it under arch code;
-because sparc64 and s390 have the same issue and they all smooth the
-concern by themselves.
+Cc: linux-ide@vger.kernel.org
+Cc: David S. Miller <davem@davemloft.net>
+Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+---
+Resend: adding old-IDE Maintainer David Miller to CC's
+I'd like for this to go through the MIPS tree, as other changes in it
+depend on it.
 
-For sparc64:
-arch/sparc/kernel/sys32.S:
-91: SIGN3(sys32_futex, compat_sys_futex, %o1, %o2, %o5)
+ arch/mips/alchemy/devboards/db1200/platform.c  |    7 +++-
+ arch/mips/alchemy/devboards/pb1200/platform.c  |    8 ++++-
+ arch/mips/include/asm/mach-au1x00/au1xxx_ide.h |    1 +
+ arch/mips/include/asm/mach-db1x00/db1200.h     |    2 -
+ arch/mips/include/asm/mach-pb1x00/pb1200.h     |    2 -
+ drivers/ide/au1xxx-ide.c                       |   44 ++++++++++++++----------
+ 6 files changed, 40 insertions(+), 24 deletions(-)
 
-For s390:
-arch/s390/kernel/compat_wrapper.S
-ENTRY(compat_sys_futex_wrapper)
-        llgtr   %r2,%r2                 # u32 *
-	lgfr    %r3,%r3                 # int
-	lgfr    %r4,%r4                 # int
-	llgtr   %r5,%r5                 # struct compat_timespec *
-	llgtr   %r6,%r6                 # u32 *
-	lgf     %r0,164(%r15)           # int
-	stg     %r0,160(%r15)
-	jg	compat_sys_futex	# branch to system call
-
-Maybe we can consolidate all of this like your patch in the future,
-but it's a different issue.
-
-Thanks,
-Yong
-
-> 
-> 
-> diff --git a/kernel/futex_compat.c b/kernel/futex_compat.c
-> index 5f9e689..74ada65 100644
-> --- a/kernel/futex_compat.c
-> +++ b/kernel/futex_compat.c
-> @@ -180,9 +180,9 @@ err_unlock:
->  	return ret;
->  }
-> 
-> -asmlinkage long compat_sys_futex(u32 __user *uaddr, int op, u32 val,
-> -		struct compat_timespec __user *utime, u32 __user *uaddr2,
-> -		u32 val3)
-> +SYSCALL_DEFINE6(compat_sys_futex, u32 __user *, uaddr, int , op, u32, val,
-> +		struct compat_timespec __user *, utime, u32 __user *, uaddr2,
-> +		u32, val3)
->  {
->  	struct timespec ts;
->  	ktime_t t, *tp = NULL;
-> 
-> Obviously the function name is wrong, but a varient of
-> SYSCALL_DEFINE*() could be created so the proper function names are
-> produced.
-> 
-> David Daney
+diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
+index 95c7327..6fd070d 100644
+--- a/arch/mips/alchemy/devboards/db1200/platform.c
++++ b/arch/mips/alchemy/devboards/db1200/platform.c
+@@ -213,7 +213,12 @@ static struct resource db1200_ide_res[] = {
+ 		.start	= DB1200_IDE_INT,
+ 		.end	= DB1200_IDE_INT,
+ 		.flags	= IORESOURCE_IRQ,
+-	}
++	},
++	[2] = {
++		.start	= DSCR_CMD0_DMA_REQ1,
++		.end	= DSCR_CMD0_DMA_REQ1,
++		.flags	= IORESOURCE_DMA,
++	},
+ };
+ 
+ static u64 ide_dmamask = DMA_BIT_MASK(32);
+diff --git a/arch/mips/alchemy/devboards/pb1200/platform.c b/arch/mips/alchemy/devboards/pb1200/platform.c
+index c52809d..6ac0494 100644
+--- a/arch/mips/alchemy/devboards/pb1200/platform.c
++++ b/arch/mips/alchemy/devboards/pb1200/platform.c
+@@ -26,6 +26,7 @@
+ 
+ #include <asm/mach-au1x00/au1xxx.h>
+ #include <asm/mach-au1x00/au1100_mmc.h>
++#include <asm/mach-au1x00/au1xxx_dbdma.h>
+ #include <asm/mach-db1x00/bcsr.h>
+ 
+ #include "../platform.h"
+@@ -115,7 +116,12 @@ static struct resource ide_resources[] = {
+ 		.start	= IDE_INT,
+ 		.end	= IDE_INT,
+ 		.flags	= IORESOURCE_IRQ
+-	}
++	},
++	[2] = {
++		.start	= DSCR_CMD0_DMA_REQ1,
++		.end	= DSCR_CMD0_DMA_REQ1,
++		.flags	= IORESOURCE_DMA,
++	},
+ };
+ 
+ static u64 ide_dmamask = DMA_BIT_MASK(32);
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h b/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
+index 5656c72..e306384 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
+@@ -58,6 +58,7 @@ typedef struct {
+ #endif
+ 	int			irq;
+ 	u32			regbase;
++	int			ddma_id;
+ } _auide_hwif;
+ 
+ /******************************************************************************/
+diff --git a/arch/mips/include/asm/mach-db1x00/db1200.h b/arch/mips/include/asm/mach-db1x00/db1200.h
+index 3404248..7a39657 100644
+--- a/arch/mips/include/asm/mach-db1x00/db1200.h
++++ b/arch/mips/include/asm/mach-db1x00/db1200.h
+@@ -46,8 +46,6 @@
+ 
+ #define IDE_PHYS_ADDR		0x18800000
+ #define IDE_REG_SHIFT		5
+-#define IDE_DDMA_REQ		DSCR_CMD0_DMA_REQ1
+-#define IDE_RQSIZE		128
+ 
+ #define DB1200_IDE_PHYS_ADDR	IDE_PHYS_ADDR
+ #define DB1200_IDE_PHYS_LEN	(16 << IDE_REG_SHIFT)
+diff --git a/arch/mips/include/asm/mach-pb1x00/pb1200.h b/arch/mips/include/asm/mach-pb1x00/pb1200.h
+index 0ecff1c..56865e9 100644
+--- a/arch/mips/include/asm/mach-pb1x00/pb1200.h
++++ b/arch/mips/include/asm/mach-pb1x00/pb1200.h
+@@ -76,8 +76,6 @@
+ #define IDE_REG_SHIFT		5
+ #define IDE_PHYS_LEN		(16 << IDE_REG_SHIFT)
+ #define IDE_INT 		PB1200_IDE_INT
+-#define IDE_DDMA_REQ		DSCR_CMD0_DMA_REQ1
+-#define IDE_RQSIZE		128
+ 
+ #define NAND_PHYS_ADDR 	0x1C000000
+ 
+diff --git a/drivers/ide/au1xxx-ide.c b/drivers/ide/au1xxx-ide.c
+index b26c234..c778373 100644
+--- a/drivers/ide/au1xxx-ide.c
++++ b/drivers/ide/au1xxx-ide.c
+@@ -43,6 +43,10 @@
+ #define DRV_NAME	"au1200-ide"
+ #define DRV_AUTHOR	"Enrico Walther <enrico.walther@amd.com> / Pete Popov <ppopov@embeddedalley.com>"
+ 
++#ifndef IDE_REG_SHIFT
++#define IDE_REG_SHIFT 5
++#endif
++
+ /* enable the burstmode in the dbdma */
+ #define IDE_AU1XXX_BURSTMODE	1
+ 
+@@ -317,10 +321,11 @@ static void auide_ddma_rx_callback(int irq, void *param)
+ }
+ #endif /* end CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA */
+ 
+-static void auide_init_dbdma_dev(dbdev_tab_t *dev, u32 dev_id, u32 tsize, u32 devwidth, u32 flags)
++static void auide_init_dbdma_dev(dbdev_tab_t *dev, u32 dev_id, u32 tsize,
++				 u32 devwidth, u32 flags, u32 regbase)
+ {
+ 	dev->dev_id          = dev_id;
+-	dev->dev_physaddr    = (u32)IDE_PHYS_ADDR;
++	dev->dev_physaddr    = CPHYSADDR(regbase);
+ 	dev->dev_intlevel    = 0;
+ 	dev->dev_intpolarity = 0;
+ 	dev->dev_tsize       = tsize;
+@@ -344,7 +349,7 @@ static int auide_ddma_init(ide_hwif_t *hwif, const struct ide_port_info *d)
+ 	dbdev_tab_t source_dev_tab, target_dev_tab;
+ 	u32 dev_id, tsize, devwidth, flags;
+ 
+-	dev_id	 = IDE_DDMA_REQ;
++	dev_id	 = hwif->ddma_id;
+ 
+ 	tsize    =  8; /*  1 */
+ 	devwidth = 32; /* 16 */
+@@ -356,20 +361,17 @@ static int auide_ddma_init(ide_hwif_t *hwif, const struct ide_port_info *d)
+ #endif
+ 
+ 	/* setup dev_tab for tx channel */
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      dev_id,
+-			      tsize, devwidth, DEV_FLAGS_OUT | flags);
++	auide_init_dbdma_dev(&source_dev_tab, dev_id, tsize, devwidth,
++			     DEV_FLAGS_OUT | flags, auide->regbase);
+  	auide->tx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      dev_id,
+-			      tsize, devwidth, DEV_FLAGS_IN | flags);
++	auide_init_dbdma_dev(&source_dev_tab, dev_id, tsize, devwidth,
++			     DEV_FLAGS_IN | flags, auide->regbase);
+  	auide->rx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 	
+ 	/* We also need to add a target device for the DMA */
+-	auide_init_dbdma_dev( &target_dev_tab,
+-			      (u32)DSCR_CMD0_ALWAYS,
+-			      tsize, devwidth, DEV_FLAGS_ANYUSE);
++	auide_init_dbdma_dev(&target_dev_tab, (u32)DSCR_CMD0_ALWAYS, tsize,
++			     devwidth, DEV_FLAGS_ANYUSE, auide->regbase);
+ 	auide->target_dev_id = au1xxx_ddma_add_device(&target_dev_tab);	
+  
+ 	/* Get a channel for TX */
+@@ -411,14 +413,12 @@ static int auide_ddma_init(ide_hwif_t *hwif, const struct ide_port_info *d)
+ #endif
+ 
+ 	/* setup dev_tab for tx channel */
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      (u32)DSCR_CMD0_ALWAYS,
+-			      8, 32, DEV_FLAGS_OUT | flags);
++	auide_init_dbdma_dev(&source_dev_tab, (u32)DSCR_CMD0_ALWAYS, 8, 32,
++			     DEV_FLAGS_OUT | flags, auide->regbase);
+  	auide->tx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 
+-	auide_init_dbdma_dev( &source_dev_tab,
+-			      (u32)DSCR_CMD0_ALWAYS,
+-			      8, 32, DEV_FLAGS_IN | flags);
++	auide_init_dbdma_dev(&source_dev_tab, (u32)DSCR_CMD0_ALWAYS, 8, 32,
++			     DEV_FLAGS_IN | flags, auide->regbase);
+  	auide->rx_dev_id = au1xxx_ddma_add_device( &source_dev_tab );
+ 	
+ 	/* Get a channel for TX */
+@@ -540,6 +540,14 @@ static int au_ide_probe(struct platform_device *dev)
+ 		goto out;
+ 	}
+ 
++	res = platform_get_resource(dev, IORESOURCE_DMA, 0);
++	if (!res) {
++		pr_debug("%s: no DDMA ID resource\n", DRV_NAME);
++		ret = -ENODEV;
++		goto out;
++	}
++	ahwif->ddma_id = res->start;
++
+ 	memset(&hw, 0, sizeof(hw));
+ 	auide_setup_ports(&hw, ahwif);
+ 	hw.irq = ahwif->irq;
+-- 
+1.7.6

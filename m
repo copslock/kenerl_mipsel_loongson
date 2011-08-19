@@ -1,38 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 19:10:42 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:8239 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491816Ab1HSRKd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Aug 2011 19:10:33 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e4e994a0000>; Fri, 19 Aug 2011 10:11:38 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 19 Aug 2011 10:10:29 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 19 Aug 2011 10:10:28 -0700
-Message-ID: <4E4E9902.10304@cavium.com>
-Date:   Fri, 19 Aug 2011 10:10:26 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 19:15:00 +0200 (CEST)
+Received: from imr4.ericy.com ([198.24.6.9]:51200 "EHLO imr4.ericy.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491816Ab1HSROz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Aug 2011 19:14:55 +0200
+Received: from eusaamw0712.eamcs.ericsson.se ([147.117.20.181])
+        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id p7JHEgAG006652;
+        Fri, 19 Aug 2011 12:14:43 -0500
+Received: from [IPv6:::1] (147.117.20.214) by smtps-am.internal.ericsson.com
+ (147.117.20.181) with Microsoft SMTP Server (TLS) id 8.3.137.0; Fri, 19 Aug
+ 2011 13:14:37 -0400
+Message-ID: <4E4E99F8.4050704@ericsson.com>
+Date:   Fri, 19 Aug 2011 10:14:32 -0700
+From:   Jason Kwon <jason.kwon@ericsson.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.18) Gecko/20110617 Thunderbird/3.1.11
 MIME-Version: 1.0
-To:     guenter.roeck@ericsson.com
-CC:     Jason Kwon <jason.kwon@ericsson.com>,
+To:     Guenter Roeck <guenter.roeck@ericsson.com>
+CC:     David Daney <david.daney@cavium.com>,
         "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
 Subject: Re: Problems booting 3.0.3 kernel on Octeon CN58XX board
 References: <4E4DA9DA.60305@ericsson.com>  <4E4E9036.9000802@cavium.com> <1313773248.3235.87.camel@groeck-laptop>
 In-Reply-To: <1313773248.3235.87.camel@groeck-laptop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Aug 2011 17:10:28.0587 (UTC) FILETIME=[E4ECEBB0:01CC5E92]
-X-archive-position: 30919
+X-archive-position: 30920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: jason.kwon@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14578
+X-UID: 14585
 
 On 08/19/2011 10:00 AM, Guenter Roeck wrote:
 > On Fri, 2011-08-19 at 12:32 -0400, David Daney wrote:
@@ -82,12 +81,10 @@ On 08/19/2011 10:00 AM, Guenter Roeck wrote:
 >>> [<ffffffff818721d0>] kernel_init+0xd8/0x178
 >>> [<ffffffff81109bb0>] kernel_thread_helper+0x10/0x18
 >>>
->>
 >> It appears to be related to use of physical memory above the 16GB
 >> barrier.  You could try reducing the amount of memory allocated to the
 >> kernel by passing 'mem=1700M' on the kernel command line.
 >>
->
 > Hi David,
 >
 > are you sure ?
@@ -128,26 +125,27 @@ On 08/19/2011 10:00 AM, Guenter Roeck wrote:
 > difference besides the CPU type is that the working board has more
 > memory.
 >
+> Thanks,
+> Guenter
+>
+>
+Well, I can confirm that setting mem=1700m on my CN5860 board allowed it 
+to boot, at least:
 
-That's right, I normally run on boards with 4GB of memory so I was not 
-seeing it.  When I reduce the memory to 2GB, I can see it on most boards.
+Linux version 3.0.3-Cavium-Octeon+ (jkwon@xc5-pc2) (gcc version 4.3.3 
+(Cavium Networks Version: 2_0_0 build 95) ) #2 SMP Thu Aug 18 15:16:58 
+PDT 2011
+[ ... ]
+CPU revision is: 000d0301 (Cavium Octeon+)
+Checking for the multiply/shift bug... no.
+Checking for the daddiu bug... no.
+Determined physical RAM map:
+  memory: 0000000000208000 @ 0000000001872000 (usable)
+  memory: 000000000dc00000 @ 0000000002200000 (usable)
+  memory: 000000005c800000 @ 0000000020000000 (usable)
 
-Sometimes (but not always) I see this:
-.
-.
-.
-Movable zone start PFN for each node
-early_node_map[5] active PFN ranges
-     0: 0x0000056a -> 0x00000578
-     0: 0x000005c0 -> 0x00001fc0
-     0: 0x00002080 -> 0x00003f80
-     0: 0x00008000 -> 0x00020000
-     0: 0x00104000 -> 0x00104900
-   Normal zone: 2808 pages exceeds realsize 2304
+I also tried the memory restriction on a CN3860 board that was also 
+hitting the same oops, and it then hit a different problem, so the 
+restriction did seem to work on both boards.
 
-^^^^^^^^^ Is a warning message indicating that something is not right in 
-the memory initialization, which is exactly where things are going wrong.
-
-I am retesting on the HEAD and trying to figure out where it is going wrong.
-
-David Daney
+Jason

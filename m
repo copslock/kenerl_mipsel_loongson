@@ -1,98 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 23:22:53 +0200 (CEST)
-Received: from e3.ny.us.ibm.com ([32.97.182.143]:46553 "EHLO e3.ny.us.ibm.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 23:27:24 +0200 (CEST)
+Received: from imr4.ericy.com ([198.24.6.9]:36553 "EHLO imr4.ericy.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492163Ab1HSVWt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 19 Aug 2011 23:22:49 +0200
-Received: from d01relay02.pok.ibm.com (d01relay02.pok.ibm.com [9.56.227.234])
-        by e3.ny.us.ibm.com (8.14.4/8.13.1) with ESMTP id p7JKwOFd024291
-        for <linux-mips@linux-mips.org>; Fri, 19 Aug 2011 16:58:24 -0400
-Received: from d01av01.pok.ibm.com (d01av01.pok.ibm.com [9.56.224.215])
-        by d01relay02.pok.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id p7JLLvuI472988
-        for <linux-mips@linux-mips.org>; Fri, 19 Aug 2011 17:22:14 -0400
-Received: from d01av01.pok.ibm.com (loopback [127.0.0.1])
-        by d01av01.pok.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id p7JLLt2q002344
-        for <linux-mips@linux-mips.org>; Fri, 19 Aug 2011 17:21:56 -0400
-Received: from [9.50.17.119] (dyn9050017119.mts.ibm.com [9.50.17.119] (may be forged))
-        by d01av01.pok.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id p7JLLs1H002172;
-        Fri, 19 Aug 2011 17:21:54 -0400
-Subject: Re: select() to /dev/rtc0 to wait for clock tick timed out
-From:   john stultz <johnstul@us.ibm.com>
-To:     Matt Turner <mattst88@gmail.com>
-Cc:     linux-mips@linux-mips.org
-In-Reply-To:  <CAEdQ38H7tHa3d83SOAbhUWFgwMgxCaP9ibJxNAGHAT2gmdEm=w@mail.gmail.com>
-References: <CAEdQ38HGfd9YWE+WLuirE4Km6UE6N26toTj=-1BuXAQUux6t5g@mail.gmail.com>
-         <1313777242.2970.131.camel@work-vm>
-         <CAEdQ38F4zi76ug+ABZPnPLcLvGfUFRhr6SKzYCN+24Otq+qAAQ@mail.gmail.com>
-         <1313783990.2970.136.camel@work-vm>
-         <CAEdQ38H5NC6B+T=gsF4-8Ue2DA=rfrFCi_i+RKC-=DFijjK2=g@mail.gmail.com>
-         <1313786070.2970.144.camel@work-vm>
-         <CAEdQ38H7tHa3d83SOAbhUWFgwMgxCaP9ibJxNAGHAT2gmdEm=w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Date:   Fri, 19 Aug 2011 14:21:52 -0700
-Message-ID: <1313788912.2970.152.camel@work-vm>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.2 
+        id S1492163Ab1HSV1R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 19 Aug 2011 23:27:17 +0200
+Received: from eusaamw0706.eamcs.ericsson.se ([147.117.20.31])
+        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id p7JLQ8fq021664;
+        Fri, 19 Aug 2011 16:26:21 -0500
+Received: from [IPv6:::1] (147.117.20.214) by smtps-am.internal.ericsson.com
+ (147.117.20.31) with Microsoft SMTP Server (TLS) id 8.3.137.0; Fri, 19 Aug
+ 2011 17:26:14 -0400
+Message-ID: <4E4ED4F5.2050002@ericsson.com>
+Date:   Fri, 19 Aug 2011 14:26:13 -0700
+From:   Jason Kwon <jason.kwon@ericsson.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.18) Gecko/20110617 Thunderbird/3.1.11
+MIME-Version: 1.0
+To:     Guenter Roeck <guenter.roeck@ericsson.com>
+CC:     David Daney <david.daney@cavium.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: Octeon: Select CONFIG_HOLES_IN_ZONE
+References: <1313779440-12522-1-git-send-email-david.daney@cavium.com> <1313781191.3235.96.camel@groeck-laptop>
+In-Reply-To: <1313781191.3235.96.camel@groeck-laptop>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 30931
+X-archive-position: 30932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: johnstul@us.ibm.com
+X-original-sender: jason.kwon@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14736
+X-UID: 14738
 
-On Fri, 2011-08-19 at 16:56 -0400, Matt Turner wrote:
-> With 2.6.37 the original rtctest program gives
-> 
-> 			RTC Driver Test Example.
-> 
-> RTC_UIE_ON ioctl: Invalid argument
-> 
-> and the modified version hangs in the same way. :(
+On 08/19/2011 12:13 PM, Guenter Roeck wrote:
+> On Fri, 2011-08-19 at 14:44 -0400, David Daney wrote:
+>> Current Octeon systems do in fact have holes in their memory zones.
+>> We need to select HOLES_IN_ZONE.  If we do not, some memory
+>> configurations will result in crashes at boot time like this:
+>>
+>> .
+>> .
+>> .
+>> CPU 6 Unable to handle kernel paging request at virtual address 0000000000700000, epc == ffffffff8118fe00, ra == ffffffff8118fe9c
+>> Oops[#1]:
+>> Cpu 6
+>> .
+>> .
+>> .
+>>          ...
+>> Call Trace:
+>> [<ffffffff8118fe00>] setup_per_zone_wmarks+0x1b0/0x338
+>> [<ffffffff815cd738>] init_per_zone_wmark_min+0x64/0xd0
+>> [<ffffffff81100438>] do_one_initcall+0x38/0x160
+>> .
+>> .
+>> .
+>>
+>> Reported-by: Jason Kwon<jason.kwon@ericsson.com>
+>> Signed-off-by: David Daney<david.daney@cavium.com>
+>> Cc: Jason Kwon<jason.kwon@ericsson.com>
+>> ---
+>> Jason, can you test this patch?
+>>
+>> Ralf, if Jason reports that it fixes his problem, it probably is
+>> needed for 3.0 and 3.1.
+>>
+> Your patch fixes the problem for the board with CN38xx and 2GB RAM that
+> crashed previously.
+>
+> Tested-by: Guenter Roeck<guenter.roeck@ericsson.com>
+>
+> Thanks a lot for looking into this.
+>
+> Guenter
+>
+>
 
-Ok, so the AIE/alarm irq isn't working (but returns as if it should),
-and in the older case, the UIE mode properly returned an error.
+I applied the patch to 3.0.3 and was able to boot the CN58XX system 
+without any memory restrictions.  The same patched kernel booted on 
+CN38XX ran into a different problem, which I'm looking into.
 
-So I'm guessing since we now use AIE mode interrupts to emulate UIE, the
-UIE code thinks alarms will work and so doesn't return an error,
-confusing the hwclock code.
+Thanks,
 
-> With 2.6.37, hwclock did work:
-> 
-> bcm91250a-be ~ # date
-> Fri Aug 19 16:52:21 EDT 2011
-> bcm91250a-be ~ # hwclock --systohc
-> bcm91250a-be ~ # date 082016522011
-> Sat Aug 20 16:52:00 EDT 2011
-> bcm91250a-be ~ # hwclock --hctosys
-> bcm91250a-be ~ # date
-> Fri Aug 19 16:53:02 EDT 2011
-
-Running strace on the hwclock --hctosys might prove the theory above. 
-
-
-> With 3.1.0-rc2+, it does not
-> bcm91250a-be ~ # date
-> Fri Aug 19 16:54:32 EDT 2011
-> bcm91250a-be ~ # hwclock --systohc
-> select() to /dev/rtc0 to wait for clock tick timed out
-> bcm91250a-be ~ # date 082016542011
-> Sat Aug 20 16:54:00 EDT 2011
-> bcm91250a-be ~ # hwclock --hctosys
-> select() to /dev/rtc0 to wait for clock tick timed out
-> bcm91250a-be ~ # date
-> Sat Aug 20 16:54:11 EDT 2011
-> 
-> So, even if the alarm never worked, there is some sort of regression here.
-
-Yea, since we depend on the alarm irq for more functionality now, it not
-working in this case is causing more trouble.
-
-I suspect either fixing the driver alarm code so it either works or
-provides a proper error code will resolve it.
-
-thanks
--john
+Jason

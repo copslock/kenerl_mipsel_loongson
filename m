@@ -1,79 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 21:13:40 +0200 (CEST)
-Received: from imr4.ericy.com ([198.24.6.9]:51472 "EHLO imr4.ericy.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492171Ab1HSTNc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 19 Aug 2011 21:13:32 +0200
-Received: from eusaamw0706.eamcs.ericsson.se ([147.117.20.31])
-        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id p7JJDMYC029638;
-        Fri, 19 Aug 2011 14:13:24 -0500
-Received: from [155.53.96.104] (147.117.20.214) by
- eusaamw0706.eamcs.ericsson.se (147.117.20.91) with Microsoft SMTP Server id
- 8.3.137.0; Fri, 19 Aug 2011 15:13:18 -0400
-Subject: Re: [PATCH] MIPS: Octeon: Select CONFIG_HOLES_IN_ZONE
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
-Reply-To: <guenter.roeck@ericsson.com>
-To:     David Daney <david.daney@cavium.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        Jason Kwon <jason.kwon@ericsson.com>
-In-Reply-To: <1313779440-12522-1-git-send-email-david.daney@cavium.com>
-References: <1313779440-12522-1-git-send-email-david.daney@cavium.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: Ericsson
-Date:   Fri, 19 Aug 2011 12:13:11 -0700
-Message-ID: <1313781191.3235.96.camel@groeck-laptop>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 21:46:54 +0200 (CEST)
+Received: from mail-vx0-f177.google.com ([209.85.220.177]:34655 "EHLO
+        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492171Ab1HSTqu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Aug 2011 21:46:50 +0200
+Received: by vxj2 with SMTP id 2so3487723vxj.36
+        for <linux-mips@linux-mips.org>; Fri, 19 Aug 2011 12:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=jpxH/l+NFJn4EN0Xpcja3fHyMtVWE7cr3rbhND92qAg=;
+        b=pX3BRUYT2qV2RhCuy/NyPG6UhDKKUm+0R2CYnLulNtxb7ue9MTC3ARDjtg0OiQaSXg
+         b6ft+k3xIFDn5v9L7cztHn2Ata4pDYSU8Y7s+KHDsel9fBHCmeTuRqk9R+XtOMRw5N5Z
+         SgofhklyK9tQPvxjXSAQBr02oROZECbK00Zck=
+Received: by 10.52.71.41 with SMTP id r9mr137002vdu.289.1313783204445; Fri, 19
+ Aug 2011 12:46:44 -0700 (PDT)
 MIME-Version: 1.0
-X-Mailer: Evolution 2.32.2 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 30925
+Received: by 10.52.156.131 with HTTP; Fri, 19 Aug 2011 12:41:59 -0700 (PDT)
+In-Reply-To: <1313777242.2970.131.camel@work-vm>
+References: <CAEdQ38HGfd9YWE+WLuirE4Km6UE6N26toTj=-1BuXAQUux6t5g@mail.gmail.com>
+ <1313777242.2970.131.camel@work-vm>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Fri, 19 Aug 2011 15:41:59 -0400
+Message-ID: <CAEdQ38F4zi76ug+ABZPnPLcLvGfUFRhr6SKzYCN+24Otq+qAAQ@mail.gmail.com>
+Subject: Re: select() to /dev/rtc0 to wait for clock tick timed out
+To:     john stultz <johnstul@us.ibm.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 30926
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14650
+X-UID: 14680
 
-On Fri, 2011-08-19 at 14:44 -0400, David Daney wrote:
-> Current Octeon systems do in fact have holes in their memory zones.
-> We need to select HOLES_IN_ZONE.  If we do not, some memory
-> configurations will result in crashes at boot time like this:
-> 
-> .
-> .
-> .
-> CPU 6 Unable to handle kernel paging request at virtual address 0000000000700000, epc == ffffffff8118fe00, ra == ffffffff8118fe9c
-> Oops[#1]:
-> Cpu 6
-> .
-> .
-> .
->         ...
-> Call Trace:
-> [<ffffffff8118fe00>] setup_per_zone_wmarks+0x1b0/0x338
-> [<ffffffff815cd738>] init_per_zone_wmark_min+0x64/0xd0
-> [<ffffffff81100438>] do_one_initcall+0x38/0x160
-> .
-> .
-> .
-> 
-> Reported-by: Jason Kwon <jason.kwon@ericsson.com>
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Cc: Jason Kwon <jason.kwon@ericsson.com>
-> ---
-> Jason, can you test this patch?
-> 
-> Ralf, if Jason reports that it fixes his problem, it probably is
-> needed for 3.0 and 3.1.
-> 
+On Fri, Aug 19, 2011 at 2:07 PM, john stultz <johnstul@us.ibm.com> wrote:
+> On Fri, 2011-08-19 at 00:16 -0400, Matt Turner wrote:
+>> Hi John,
+>>
+>> I just sent a patch series to linux-mips@ that enables the RTC on a
+>> particular Broadcom MIPS motherboard (BCM91250A SWARM). The RTC is an
+>> M41T80.
+>>
+>> When I first found the patchset (it was originally sent a a few years
+>> ago) and applied it to 2.6.37, it worked perfectly.
+>>
+>> Applied to 3.x (and I think even 2.6.38) I get the following when I run hwclock:
+>>
+>> # hwclock --systohc
+>> select() to /dev/rtc0 to wait for clock tick timed out
+>
+> So do alarm interrupts actually work on the hardware?
+>
+> The rtc-m41t80.c driver looks like it should support them ok.
+>
+> Does the test program at the end of Documentation/rtc.txt do much?
+>
+> thanks
+> -john
 
-Your patch fixes the problem for the board with CN38xx and 2GB RAM that
-crashed previously.
+Counting 5 update (1/sec) interrupts from reading /dev/rtc0:
 
-Tested-by: Guenter Roeck <guenter.roeck@ericsson.com>
+... and then it doesn't count.
 
-Thanks a lot for looking into this.
+Would it help if I tried to bisect this? (Is there an easy way to
+bisect 2.6.37..master with my patches applied to each iteration?)
 
-Guenter
+Thanks,
+Matt

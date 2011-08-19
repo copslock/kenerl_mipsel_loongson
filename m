@@ -1,100 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 03:05:51 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:1514 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492157Ab1HSBFq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Aug 2011 03:05:46 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e4db72d0000>; Thu, 18 Aug 2011 18:06:53 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 18 Aug 2011 18:05:44 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 18 Aug 2011 18:05:44 -0700
-Message-ID: <4E4DB6E2.3050207@cavium.com>
-Date:   Thu, 18 Aug 2011 18:05:38 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Aug 2011 03:56:31 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:46586 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492167Ab1HSB4W (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 19 Aug 2011 03:56:22 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id p7J1uBok013586
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Thu, 18 Aug 2011 18:56:11 -0700 (PDT)
+Received: from localhost (128.224.158.133) by ALA-HCA.corp.ad.wrs.com
+ (147.11.189.50) with Microsoft SMTP Server (TLS) id 14.1.255.0; Thu, 18 Aug
+ 2011 18:56:11 -0700
+Date:   Fri, 19 Aug 2011 09:56:07 +0800
+From:   Yong Zhang <yong.zhang@windriver.com>
+To:     David Daney <david.daney@cavium.com>
+CC:     <linux-mips@linux-mips.org>, <linux-kernel@vger.kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: use 32-bit wrapper for compat_sys_futex
+Message-ID: <20110819015607.GA2798@windriver.com>
+Reply-To: Yong Zhang <yong.zhang@windriver.com>
+References: <1313546094-11882-1-git-send-email-yong.zhang@windriver.com>
+ <4E4BF7C0.80703@cavium.com>
+ <20110818023247.GA3750@windriver.com>
+ <4E4D3C8D.1040707@cavium.com>
 MIME-Version: 1.0
-To:     Jason Kwon <jason.kwon@ericsson.com>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Problems booting 3.0.3 kernel on Octeon CN58XX board
-References: <4E4DA9DA.60305@ericsson.com>
-In-Reply-To: <4E4DA9DA.60305@ericsson.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 19 Aug 2011 01:05:44.0304 (UTC) FILETIME=[1F344700:01CC5E0C]
-X-archive-position: 30911
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <4E4D3C8D.1040707@cavium.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Originating-IP: [128.224.158.133]
+X-archive-position: 30912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: yong.zhang@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13782
+X-UID: 13794
 
-On 08/18/2011 05:10 PM, Jason Kwon wrote:
-> Attempting to boot a 3.0.3 kernel on a CN58XX board produced the
-> following oops:
->
-> CPU 4 Unable to handle kernel paging request at virtual address
-> 0000000001c00000, epc == ffffffff811aa9f4, ra == ffffffff811aaa98
-> Oops[#1]:
-> Cpu 4
-> $ 0 : 0000000000000000 0000000010008ce0 ffffffff821d2b80 0000000001c00000
-> $ 4 : 0000000001c00038 000000000000017c 0000000000080000 0000000000080072
-> $ 8 : 0000000000000008 0000000000000002 0000000000000003 a800000002284520
-> $12 : 0000000000000002 ffffffff8186ee80 ffffffffffffff80 0000000000000030
-> $16 : 0000000000080072 0000000000000001 0000000001bfa8f0 0000000001bfa928
-> $20 : a800000003aff8f0 00000000000f0000 ffffffff8186ee80 ffffffff821d2a80
-> $24 : 0000000000000001 0000000000000038
-> $28 : a80000041fc48000 a80000041fc4bd90 fffffffffffffffc ffffffff811aaa98
-> Hi : 0000000000000000
-> Lo : 0000000000000000
-> epc : ffffffff811aa9f4 setup_per_zone_wmarks+0x19c/0x2d8
-> Not tainted
-> ra : ffffffff811aaa98 setup_per_zone_wmarks+0x240/0x2d8
-> Status: 10008ce2 KX SX UX KERNEL EXL
-> Cause : 40808408
-> BadVA : 0000000001c00000
-> PrId : 000d0301 (Cavium Octeon+)
-> Modules linked in:
-> Process swapper (pid: 1, threadinfo=a80000041fc48000,
-> task=a80000041fc44038, tls=0000000000000000)
-> Stack : 0000000000000000 000000000006f75d ffffffff8186eec0 0000000000000001
-> 0000000000000547 ffffffff81825598 ffffffff81a80000 ffffffff818b3e68
-> ffffffff818a40ac 0000000000000000 ffffffff81a80000 0000000000000000
-> 0000000000000000 0000000000000000 0000000000000000 ffffffff818a40f0
-> ffffffff81a80000 ffffffff81100438 ffffffff818b4198 ffffffff818b3e68
-> ffffffff818b46c8 0000000000000000 0000000000000000 ffffffff818721d0
-> 0000000000000000 0000000000000000 0000000000000000 ffffffff81109bb0
-> 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> 0000000000000000 0000000000000000 0000000000000000 ffffffff818720f8
-> 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> ...
-> Call Trace:
-> [<ffffffff811aa9f4>] setup_per_zone_wmarks+0x19c/0x2d8
-> [<ffffffff818a40f0>] init_per_zone_wmark_min+0x44/0xe0
-> [<ffffffff81100438>] do_one_initcall+0x38/0x160
-> [<ffffffff818721d0>] kernel_init+0xd8/0x178
-> [<ffffffff81109bb0>] kernel_thread_helper+0x10/0x18
-[...]
+On Thu, Aug 18, 2011 at 09:23:41AM -0700, David Daney wrote:
+> On 08/17/2011 07:32 PM, Yong Zhang wrote:
+> >On Wed, Aug 17, 2011 at 10:17:52AM -0700, David Daney wrote:
+> >>>diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+> >>>index 46c4763..f48b18e 100644
+> >>>--- a/arch/mips/kernel/scall64-o32.S
+> >>>+++ b/arch/mips/kernel/scall64-o32.S
+> >>>@@ -441,7 +441,7 @@ sys_call_table:
+> >>>  	PTR	sys_fremovexattr		/* 4235 */
+> >>>  	PTR	sys_tkill
+> >>>  	PTR	sys_sendfile64
+> >>>-	PTR	compat_sys_futex
+> >>>+	PTR	sys_32_futex
+> >>
+> >>This change is redundant, scall64-o32.S already does the right thing
+> >
+> >My first virsion(not sent out) doesn't include scall64-o32.S either.
+> >
+> >>so additional zero extending is not needed and is just extra
+> >>instructions to execute for no reason.
+> >
+> >Why I'm adding it here is for:
+> >1)code consistent, otherwise we must move SYSCALL_DEFINE6(32_futex,...)
+> >   under CONFIG_MIPS32_N32;
+> 
+> No, you don't have to move it.  Just don't call it.
+> 
+> 
+> >2)I'm afraid there may be some other way to touch the high 32-bit of a
+> >   register, so touching scall64-o32.S is also for safety(due to unknown
+> >   reason, fix me if I'm wrong).
+> 
+> OK: You are mistaken.  You claim you don't understand what the code
+> does.  That is really a poor justification for modifying it.
 
-Weird, I get the same thing on cn5860 and cn3860.
+If you don't like it and you are sure there is no potential security problem,
+just make a patch to remove it. Go ahead.
 
-cn5750 and cn5020 are fine.
-
-Normally I test on my ebh5610 board (cn5750) so I didn't notice this.
-
-It may be caused by holes in the memory map.  Earlier I posted patches 
-to set the memory as present:
-
-http://patchwork.linux-mips.org/patch/1988/
-http://patchwork.linux-mips.org/patch/1989/
-http://patchwork.linux-mips.org/patch/1990/
-
-One or more of those might help, but it is just a guess at this point.
-
-I might take a look next week.
-
-David Daney
+Thanks,
+Yong

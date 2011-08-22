@@ -1,51 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2011 19:32:29 +0200 (CEST)
-Received: from lo.gmane.org ([80.91.229.12]:55239 "EHLO lo.gmane.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2011 22:03:30 +0200 (CEST)
+Received: from imr3.ericy.com ([198.24.6.13]:50601 "EHLO imr3.ericy.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493420Ab1HVRcZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 22 Aug 2011 19:32:25 +0200
-Received: from list by lo.gmane.org with local (Exim 4.69)
-        (envelope-from <sgi-linux-mips@m.gmane.org>)
-        id 1QvYMK-000144-8u
-        for linux-mips@linux-mips.org; Mon, 22 Aug 2011 19:32:24 +0200
-Received: from 91-64-80-26-dynip.superkabel.de ([91.64.80.26])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Mon, 22 Aug 2011 19:32:24 +0200
-Received: from zecke by 91-64-80-26-dynip.superkabel.de with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Mon, 22 Aug 2011 19:32:24 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To:     linux-mips@linux-mips.org
-From:   Holger Freyther <zecke@selfish.org>
-Subject: Re: [PATCH 0/2] Implement =?utf-8?b?cGVyZl9jYWxsY2hhaW5fdXNlcg==?=
-Date:   Mon, 22 Aug 2011 17:32:12 +0000 (UTC)
-Message-ID: <loom.20110822T193146-370@post.gmane.org>
-References: <1313022966-28152-1-git-send-email-zecke@selfish.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+        id S1492062Ab1HVUDZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Aug 2011 22:03:25 +0200
+Received: from eusaamw0707.eamcs.ericsson.se ([147.117.20.32])
+        by imr3.ericy.com (8.13.8/8.13.8) with ESMTP id p7MK333F010401
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Mon, 22 Aug 2011 15:03:04 -0500
+Received: from [155.53.96.104] (147.117.20.214) by
+ eusaamw0707.eamcs.ericsson.se (147.117.20.92) with Microsoft SMTP Server id
+ 8.3.137.0; Mon, 22 Aug 2011 16:03:02 -0400
+Subject: Re: [PATCH] I2C: SiByte: Convert the driver to make use of
+ interrupts
+From:   Guenter Roeck <guenter.roeck@ericsson.com>
+Reply-To: guenter.roeck@ericsson.com
+To:     Matt Turner <mattst88@gmail.com>
+CC:     Jean Delvare <khali@linux-fr.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+In-Reply-To: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
+References: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: Ericsson
+Date:   Mon, 22 Aug 2011 13:02:56 -0700
+Message-ID: <1314043376.3235.105.camel@groeck-laptop>
+MIME-Version: 1.0
+X-Mailer: Evolution 2.32.2 
 Content-Transfer-Encoding: 7bit
-X-Complaints-To: usenet@dough.gmane.org
-X-Gmane-NNTP-Posting-Host: sea.gmane.org
-User-Agent: Loom/3.14 (http://gmane.org/)
-X-Loom-IP: 91.64.80.26 (Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30)
-X-archive-position: 30946
+X-archive-position: 30947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zecke@selfish.org
+X-original-sender: guenter.roeck@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Keywords:                  
-X-UID: 16087
 
-Holger Hans Peter Freyther <zecke <at> selfish.org> writes:
-
+On Thu, 2011-08-18 at 19:43 -0400, Matt Turner wrote:
+> From: Maciej W. Rozycki <macro@linux-mips.org>
 > 
-> Hi,
-> this is moving code from oprofile/backtrace.c to a commom
-> place and then implements perf_callchain_user using the common
-> code. Right now the unwind_user_frame will always be compiled
-> into the kernel.
+> This is a rewrite of large parts of the driver mainly so that it uses
+> SMBus interrupts to offload the CPU from busy-waiting on status inputs.
+> As a part of the overhaul of the init and exit calls, all accesses to the
+> hardware got converted to use accessory functions via an ioremap() cookie.
+> 
+> [mattst88] Added BCM1480 interrupts and rebased minimally.
+> 
+> Signed-off-by: Matt Turner <mattst88@gmail.com>
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 
-Comments? Should this go somewhere else?
+Patch works fine on our target, and shows significant speed improvements
+for i2c accesses.
+
+Linux version 3.0.3-428-g17c1f3f (groeck@rbos-pc-13) (gcc version 4.4.1
+(Debian 4.4.1-1) ) #2 SMP Mon Aug 22 12:56:41 PDT 2011
+bootconsole [early0] enabled
+CPU revision is: 01041100 (SiByte SB1A)
+FPU revision is: 000f0103
+Checking for the multiply/shift bug... no.
+Checking for the daddiu bug... no.
+Broadcom SiByte BCM1480 B1 (pass2) @ 900 MHz (SB-1A rev 0)
+
+Tested-by: Guenter Roeck <guenter.roeck@ericsson.com>
+
+Guenter

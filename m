@@ -1,95 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2011 10:07:10 +0200 (CEST)
-Received: from alius.ayous.org ([78.46.213.165]:45780 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2011 16:20:23 +0200 (CEST)
+Received: from www.hansjkoch.de ([178.63.77.200]:39194 "EHLO www.hansjkoch.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491086Ab1HVIHG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 22 Aug 2011 10:07:06 +0200
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1QvPXE-0003DT-Ci; Mon, 22 Aug 2011 08:07:04 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1QvPX8-0005tD-Md; Mon, 22 Aug 2011 10:06:58 +0200
-Date:   Mon, 22 Aug 2011 10:06:58 +0200
-From:   Andreas Barth <aba@not.so.argh.org>
-To:     Matt Turner <mattst88@gmail.com>
-Cc:     linux-mips@linux-mips.org, debian-mips@lists.debian.org
-Subject: Re: [PATCH] mips/loongson: unify compiler flags and load location
-        for Loongson 2E and 2F
-Message-ID: <20110822080658.GA2657@mails.so.argh.org>
-Mail-Followup-To: Andreas Barth <aba@not.so.argh.org>,
-        Matt Turner <mattst88@gmail.com>, linux-mips@linux-mips.org,
-        debian-mips@lists.debian.org
-References: <20110821010513.GZ2657@mails.so.argh.org> <CAEdQ38G8VEh+Q0gOZb7_YgvQK6n2f3u=Bep59tZ9hGJfz+C08Q@mail.gmail.com>
+        id S1492223Ab1HVOUT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 22 Aug 2011 16:20:19 +0200
+Received: from [127.0.0.1] (helo=local)
+        by www.hansjkoch.de with esmtp (Exim 4.69)
+        (envelope-from <hjk@hansjkoch.de>)
+        id 1QvVMM-0004vI-JT; Mon, 22 Aug 2011 16:20:14 +0200
+Date:   Mon, 22 Aug 2011 16:20:00 +0200
+From:   "Hans J. Koch" <hjk@hansjkoch.de>
+To:     Wanlong Gao <wanlong.gao@gmail.com>
+Cc:     "Hans J. Koch" <hjk@hansjkoch.de>, linux-kernel@vger.kernel.org,
+        gregkh@suse.de, Wanlong Gao <gaowanlong@cn.fujitsu.com>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] drivers:uio:fix section mismatch in uio_pdrv_genirq.c
+Message-ID: <20110822141959.GE14373@local>
+References: <1313813528-30913-1-git-send-email-wanlong.gao@gmail.com>
+ <20110822120314.GC14373@local>
+ <1314017441.1825.2.camel@Allen>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEdQ38G8VEh+Q0gOZb7_YgvQK6n2f3u=Bep59tZ9hGJfz+C08Q@mail.gmail.com>
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 30943
+In-Reply-To: <1314017441.1825.2.camel@Allen>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 30944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@not.so.argh.org
+X-original-sender: hjk@hansjkoch.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15592
+X-UID: 15875
 
-* Matt Turner (mattst88@gmail.com) [110822 02:20]:
-> On Sat, Aug 20, 2011 at 9:05 PM, Andreas Barth <aba@not.so.argh.org> wrote:
-> > diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
-> > index 29692e5..d6471a5 100644
-> > --- a/arch/mips/loongson/Platform
-> > +++ b/arch/mips/loongson/Platform
-> > @@ -4,10 +4,8 @@
-> >
-> >  # Only gcc >= 4.4 have Loongson specific support
-> >  cflags-$(CONFIG_CPU_LOONGSON2) += -Wa,--trap
-> > -cflags-$(CONFIG_CPU_LOONGSON2E) += \
-> > -       $(call cc-option,-march=loongson2e,-march=r4600)
-> > -cflags-$(CONFIG_CPU_LOONGSON2F) += \
-> > -       $(call cc-option,-march=loongson2f,-march=r4600)
-> > +cflags-$(CONFIG_CPU_LOONGSON2) += \
-> > +       $(call cc-option,-march=r4600)
-> >  # Enable the workarounds for Loongson2f
-> >  ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
-> >   ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-nop,),)
+[Added linux-mips to Cc:]
+
+On Mon, Aug 22, 2011 at 08:50:41PM +0800, Wanlong Gao wrote:
+> On Mon, 2011-08-22 at 14:03 +0200, Hans J. Koch wrote:
+> > On Sat, Aug 20, 2011 at 12:12:07PM +0800, Wanlong Gao wrote:
+> > > From: Wanlong Gao <gaowanlong@cn.fujitsu.com>
+> > > 
+> > > Remove the __devinitconst to fix the section mismatch.
+> > > 
+> > > WARNING: drivers/uio/built-in.o(.data+0x2e8): Section mismatch in
+> > > reference from the variable uio_pdrv_genirq to the variable
+> > 
+> > Hmm, I don't see that section mismatch here when I do a
+> > make CONFIG_DEBUG_SECTION_MISMATCH=y. How do you produce that?
 > 
-> ... but I don't understand this one.
+> I produced in arch of mips like
+> make O=../latest ARCH=mips CROSS_COMILE=mips-linux-
+
+That seems to be a MIPS specific problem. It was tested OK on arm and x86.
+
 > 
-> So, in the name of simplification, let's just remove the ability to
-> compile with -march=loongson2{e,f}? What?
+> > 
+> > > .devinit.rodata:uio_of_genirq_match
+> > > The variable uio_pdrv_genirq references
+> > > the variable __devinitconst uio_of_genirq_match
+> > > If the reference is valid then annotate the
+> > > variable with __init* or __refdata (see linux/init.h) or name the
+> > > variable:
+> > > *driver, *_template, *_timer, *_sht, *_ops, *_probe, *_probe_one,
+> > > *_console
+> > 
+> > Is just removing the __devinitconst really the best solution?
+> > 
+> > Thanks,
+> > Hans
+> 
+> Do you have any better suggestions?
 
-I want to build a kernel that works on both 2e and 2f. Such a kernel
-must not be built with 2e or 2f specific code (which are incompatible
-to each other).
+No, maybe the MIPS guys can shed some light on it.
 
-> Is there some case where a -march=loongson2e kernel won't work on a 2F
-> system?
+Thanks,
+Hans
 
-Yes. There are 2E opcodes removed in the 2F. See e.g.
-http://media.romanrm.ru/loongson/info/Loongson%202F%20Datasheet.pdf 
-  Implementing all the features described in the MIPSIII, Loongson 2E
-  has some of custom instructions occupied the MIPS-reserved
-  instruction slot.  So in the 2F, these custom-tailored instruction
-  opcodes need to remove to the user instruction slot (COP2 or
-  Special2).
-
-(I could of course check if a kernel has such opcodes included. But
-I'm unhappy to use compiler instructions which might end in invalid
-code.
-
-
-> The commit message should explain this stuff.
-
-Ok.
-
-
-
-
-Andi
+> 
+> Thanks
+> -Wanlong Gao
+> 
+> > 
+> > > 
+> > > Signed-off-by: Wanlong Gao <gaowanlong@cn.fujitsu.com>
+> > > ---
+> > >  drivers/uio/uio_pdrv_genirq.c |    2 +-
+> > >  1 files changed, 1 insertions(+), 1 deletions(-)
+> > > 
+> > > diff --git a/drivers/uio/uio_pdrv_genirq.c b/drivers/uio/uio_pdrv_genirq.c
+> > > index bae96d2..0b2ed71 100644
+> > > --- a/drivers/uio/uio_pdrv_genirq.c
+> > > +++ b/drivers/uio/uio_pdrv_genirq.c
+> > > @@ -253,7 +253,7 @@ static const struct dev_pm_ops uio_pdrv_genirq_dev_pm_ops = {
+> > >  };
+> > >  
+> > >  #ifdef CONFIG_OF
+> > > -static const struct of_device_id __devinitconst uio_of_genirq_match[] = {
+> > > +static const struct of_device_id uio_of_genirq_match[] = {
+> > >  	{ /* empty for now */ },
+> > >  };
+> > >  MODULE_DEVICE_TABLE(of, uio_of_genirq_match);
+> > > -- 
+> > > 1.7.4.1
+> > > 
+> > > 
+> 
+> 
+> 

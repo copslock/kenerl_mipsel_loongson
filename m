@@ -1,81 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Aug 2011 22:16:16 +0200 (CEST)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:57160 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492062Ab1HVUQM convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 22 Aug 2011 22:16:12 +0200
-Received: by vxj2 with SMTP id 2so5414377vxj.36
-        for <linux-mips@linux-mips.org>; Mon, 22 Aug 2011 13:16:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :content-type:content-transfer-encoding;
-        bh=YZRyJECMbbJdvCryhQcUjtpe29lE2AAgeX02VZAGDmo=;
-        b=jtC1/OEDGlLUVTqRSIvwUbBfnjexsHWMzbQ6BDdzBgeaJmHy87eFqCzPQMMy0XDGx1
-         rbXfI1UtAN/r9YdHY59gUPnThpjPkEPv4TlRS3/IwVcyIyYOG7m0jxoDPKGof3TrIVbv
-         tqzBUqq7vwPIVrqt7jepw/xMfP2oebR7ZiPi4=
-Received: by 10.52.65.240 with SMTP id a16mr2624253vdt.490.1314044166202; Mon,
- 22 Aug 2011 13:16:06 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Aug 2011 10:09:30 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:4873 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1491846Ab1HWIJU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 23 Aug 2011 10:09:20 +0200
+X-TM-IMSS-Message-ID: <5bb8afaf0000ab73@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 5bb8afaf0000ab73 ; Tue, 23 Aug 2011 01:07:19 -0700
+Received: from jayachandranc.netlogicmicro.com ([10.7.0.77]) by orion8.netlogicmicro.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 23 Aug 2011 01:01:51 -0700
+Date:   Tue, 23 Aug 2011 13:35:08 +0530
+From:   Jayachandran C <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [PATCH 1/4] MIPS: Netlogic: Change load address
+Message-ID: <34f7e6b49638c11ba32e6cbe0dd22cc1207c84ad.1314086142.git.jayachandranc@netlogicmicro.com>
+References: <cover.1314086142.git.jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
-Received: by 10.52.156.131 with HTTP; Mon, 22 Aug 2011 13:15:45 -0700 (PDT)
-In-Reply-To: <20110822080658.GA2657@mails.so.argh.org>
-References: <20110821010513.GZ2657@mails.so.argh.org> <CAEdQ38G8VEh+Q0gOZb7_YgvQK6n2f3u=Bep59tZ9hGJfz+C08Q@mail.gmail.com>
- <20110822080658.GA2657@mails.so.argh.org>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Mon, 22 Aug 2011 16:15:45 -0400
-Message-ID: <CAEdQ38HEm-==pvo8egWoy234tAFpYvgc98Muveh+C5P_R8qtog@mail.gmail.com>
-Subject: Re: [PATCH] mips/loongson: unify compiler flags and load location for
- Loongson 2E and 2F
-To:     Andreas Barth <aba@not.so.argh.org>, linux-mips@linux-mips.org,
-        debian-mips@lists.debian.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30948
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1314086142.git.jayachandranc@netlogicmicro.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-OriginalArrivalTime: 23 Aug 2011 08:01:51.0761 (UTC) FILETIME=[EA9EE010:01CC616A]
+X-archive-position: 30949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16216
+X-UID: 16619
 
-On Mon, Aug 22, 2011 at 4:06 AM, Andreas Barth <aba@not.so.argh.org> wrote:
-> * Matt Turner (mattst88@gmail.com) [110822 02:20]:
->> On Sat, Aug 20, 2011 at 9:05 PM, Andreas Barth <aba@not.so.argh.org> wrote:
->> > diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
->> > index 29692e5..d6471a5 100644
->> > --- a/arch/mips/loongson/Platform
->> > +++ b/arch/mips/loongson/Platform
->> > @@ -4,10 +4,8 @@
->> >
->> >  # Only gcc >= 4.4 have Loongson specific support
->> >  cflags-$(CONFIG_CPU_LOONGSON2) += -Wa,--trap
->> > -cflags-$(CONFIG_CPU_LOONGSON2E) += \
->> > -       $(call cc-option,-march=loongson2e,-march=r4600)
->> > -cflags-$(CONFIG_CPU_LOONGSON2F) += \
->> > -       $(call cc-option,-march=loongson2f,-march=r4600)
->> > +cflags-$(CONFIG_CPU_LOONGSON2) += \
->> > +       $(call cc-option,-march=r4600)
->> >  # Enable the workarounds for Loongson2f
->> >  ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
->> >   ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-nop,),)
->>
->> ... but I don't understand this one.
->>
->> So, in the name of simplification, let's just remove the ability to
->> compile with -march=loongson2{e,f}? What?
->
-> I want to build a kernel that works on both 2e and 2f. Such a kernel
-> must not be built with 2e or 2f specific code (which are incompatible
-> to each other).
+Move load address from 0x84000000 to 0x80100000 to avoid wasting
+memory.
 
-I understand the desire, but this is removing the ability to build the
-kernel with -march=loongson2e or -march=loongson2f.
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+ arch/mips/netlogic/Platform |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-A Kconfig option should be added to allow building the kernel with
--march=r4600 for generic Loongson2 compatibility if you want to build
-one kernel for 2e and 2f.
-
-Matt
+diff --git a/arch/mips/netlogic/Platform b/arch/mips/netlogic/Platform
+index b648b48..502d912 100644
+--- a/arch/mips/netlogic/Platform
++++ b/arch/mips/netlogic/Platform
+@@ -13,4 +13,4 @@ cflags-$(CONFIG_NLM_XLR)	+= $(call cc-option,-march=xlr,-march=mips64)
+ # NETLOGIC XLR/XLS SoC, Simulator and boards
+ #
+ core-$(CONFIG_NLM_XLR)	      += arch/mips/netlogic/xlr/
+-load-$(CONFIG_NLM_XLR_BOARD)  += 0xffffffff84000000
++load-$(CONFIG_NLM_XLR_BOARD)  += 0xffffffff80100000
+-- 
+1.7.4.1

@@ -1,18 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2011 10:30:06 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:53091 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2011 10:30:31 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:53092 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493615Ab1HXIaB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1493616Ab1HXIaB (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 24 Aug 2011 10:30:01 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Thomas Langer <thomas.langer@lantiq.com>,
         linux-mips@linux-mips.org
-Subject: [PATCH 0/8] MIPS: lantiq: some fixes and support FALC-ON
-Date:   Wed, 24 Aug 2011 10:31:36 +0200
-Message-Id: <1314174704-15549-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 1/8] MIPS: lantiq: fix early printk
+Date:   Wed, 24 Aug 2011 10:31:37 +0200
+Message-Id: <1314174704-15549-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 30965
+In-Reply-To: <1314174704-15549-1-git-send-email-blogic@openwrt.org>
+References: <1314174704-15549-1-git-send-email-blogic@openwrt.org>
+X-archive-position: 30966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,85 +23,66 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17641
+X-UID: 17642
 
-This series adds support for the FALC-ON SoC made by Lantiq. In addition it
-also fixes some bugs related to early_printk, cmdline parsing and the watchdog
-code.
-
+The code was using a 32bit write operation in the early_printk code. This
+resulted in 3 zero bytes also being written to the serial port. Change the
+memory access to 8bit.
 
 Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Cc: linux-mips@linux-mips.org
+---
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    4 ++++
+ arch/mips/lantiq/early_printk.c                    |   14 ++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-
-John Crispin (8):
-  MIPS: lantiq: fix early printk
-  MIPS: lantiq: fix cmdline parsing
-  MIPS: lantiq: fix watchdogs timeout handling
-  MIPS: lantiq: reorganize xway code
-  MIPS: lantiq: make irq.c support the FALC-ON
-  MIPS: lantiq: add basic support for FALC-ON
-  MIPS: lantiq: add support for FALC-ON GPIOs
-  MIPS: lantiq: add support for the EASY98000 evaluation board
-
- .../include/asm/mach-lantiq/falcon/falcon_irq.h    |  268 +++++++++++++
- arch/mips/include/asm/mach-lantiq/falcon/irq.h     |   18 +
- .../include/asm/mach-lantiq/falcon/lantiq_soc.h    |  140 +++++++
- arch/mips/include/asm/mach-lantiq/lantiq.h         |   15 +-
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   18 +
- arch/mips/lantiq/Kconfig                           |    4 +
- arch/mips/lantiq/Makefile                          |    1 +
- arch/mips/lantiq/Platform                          |    1 +
- arch/mips/lantiq/clk.c                             |   25 +--
- arch/mips/lantiq/devices.c                         |   30 +--
- arch/mips/lantiq/devices.h                         |    4 +
- arch/mips/lantiq/early_printk.c                    |   14 +-
- arch/mips/lantiq/falcon/Kconfig                    |   11 +
- arch/mips/lantiq/falcon/Makefile                   |    2 +
- arch/mips/lantiq/falcon/clk.c                      |   44 +++
- arch/mips/lantiq/falcon/devices.c                  |  128 +++++++
- arch/mips/lantiq/falcon/devices.h                  |   20 +
- arch/mips/lantiq/falcon/gpio.c                     |  398 ++++++++++++++++++++
- arch/mips/lantiq/falcon/mach-easy98000.c           |  110 ++++++
- arch/mips/lantiq/falcon/prom.c                     |   72 ++++
- arch/mips/lantiq/falcon/reset.c                    |   87 +++++
- arch/mips/lantiq/falcon/sysctrl.c                  |  181 +++++++++
- arch/mips/lantiq/irq.c                             |   24 +-
- arch/mips/lantiq/machtypes.h                       |    5 +
- arch/mips/lantiq/prom.c                            |   56 +++-
- arch/mips/lantiq/prom.h                            |    4 +
- arch/mips/lantiq/xway/Makefile                     |    6 +-
- arch/mips/lantiq/xway/devices.c                    |   42 +--
- arch/mips/lantiq/xway/dma.c                        |   21 +-
- arch/mips/lantiq/xway/ebu.c                        |   53 ---
- arch/mips/lantiq/xway/pmu.c                        |   70 ----
- arch/mips/lantiq/xway/prom-ase.c                   |    9 +
- arch/mips/lantiq/xway/prom-xway.c                  |   10 +
- arch/mips/lantiq/xway/reset.c                      |   21 +-
- arch/mips/lantiq/xway/setup-ase.c                  |   19 -
- arch/mips/lantiq/xway/setup-xway.c                 |   20 -
- arch/mips/lantiq/xway/sysctrl.c                    |   77 ++++
- drivers/watchdog/lantiq_wdt.c                      |   10 +-
- 38 files changed, 1721 insertions(+), 317 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/irq.h
- create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
- create mode 100644 arch/mips/lantiq/falcon/Kconfig
- create mode 100644 arch/mips/lantiq/falcon/Makefile
- create mode 100644 arch/mips/lantiq/falcon/clk.c
- create mode 100644 arch/mips/lantiq/falcon/devices.c
- create mode 100644 arch/mips/lantiq/falcon/devices.h
- create mode 100644 arch/mips/lantiq/falcon/gpio.c
- create mode 100644 arch/mips/lantiq/falcon/mach-easy98000.c
- create mode 100644 arch/mips/lantiq/falcon/prom.c
- create mode 100644 arch/mips/lantiq/falcon/reset.c
- create mode 100644 arch/mips/lantiq/falcon/sysctrl.c
- delete mode 100644 arch/mips/lantiq/xway/ebu.c
- delete mode 100644 arch/mips/lantiq/xway/pmu.c
- delete mode 100644 arch/mips/lantiq/xway/setup-ase.c
- delete mode 100644 arch/mips/lantiq/xway/setup-xway.c
- create mode 100644 arch/mips/lantiq/xway/sysctrl.c
-
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index 8a3c6be..e6d1ca0 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -34,6 +34,10 @@
+ #define LTQ_ASC1_BASE_ADDR	0x1E100C00
+ #define LTQ_ASC_SIZE		0x400
+ 
++/* during early_printk no ioremap is possible
++   lets use KSEG1 instead  */
++#define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
++
+ /* RCU - reset control unit */
+ #define LTQ_RCU_BASE_ADDR	0x1F203000
+ #define LTQ_RCU_SIZE		0x1000
+diff --git a/arch/mips/lantiq/early_printk.c b/arch/mips/lantiq/early_printk.c
+index 972e05f..5089075 100644
+--- a/arch/mips/lantiq/early_printk.c
++++ b/arch/mips/lantiq/early_printk.c
+@@ -12,11 +12,13 @@
+ #include <lantiq.h>
+ #include <lantiq_soc.h>
+ 
+-/* no ioremap possible at this early stage, lets use KSEG1 instead  */
+-#define LTQ_ASC_BASE	KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
+ #define ASC_BUF		1024
+-#define LTQ_ASC_FSTAT	((u32 *)(LTQ_ASC_BASE + 0x0048))
+-#define LTQ_ASC_TBUF	((u32 *)(LTQ_ASC_BASE + 0x0020))
++#define LTQ_ASC_FSTAT	((u32 *)(LTQ_EARLY_ASC + 0x0048))
++#ifdef __BIG_ENDIAN
++#define LTQ_ASC_TBUF	((u32 *)(LTQ_EARLY_ASC + 0x0020 + 3))
++#else
++#define LTQ_ASC_TBUF	((u32 *)(LTQ_EARLY_ASC + 0x0020))
++#endif
+ #define TXMASK		0x3F00
+ #define TXOFFSET	8
+ 
+@@ -27,7 +29,7 @@ void prom_putchar(char c)
+ 	local_irq_save(flags);
+ 	do { } while ((ltq_r32(LTQ_ASC_FSTAT) & TXMASK) >> TXOFFSET);
+ 	if (c == '\n')
+-		ltq_w32('\r', LTQ_ASC_TBUF);
+-	ltq_w32(c, LTQ_ASC_TBUF);
++		ltq_w8('\r', LTQ_ASC_TBUF);
++	ltq_w8(c, LTQ_ASC_TBUF);
+ 	local_irq_restore(flags);
+ }
 -- 
 1.7.2.3

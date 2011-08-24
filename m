@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2011 10:32:00 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:53108 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2011 10:32:26 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:53111 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493619Ab1HXIaE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1493620Ab1HXIaE (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 24 Aug 2011 10:30:04 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     John Crispin <blogic@openwrt.org>,
         Thomas Langer <thomas.langer@lantiq.com>,
-        linux-mips@linux-mips.org
-Subject: [PATCH 5/8] MIPS: lantiq: make irq.c support the FALC-ON
-Date:   Wed, 24 Aug 2011 10:31:41 +0200
-Message-Id: <1314174704-15549-6-git-send-email-blogic@openwrt.org>
+        linux-watchdog@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 3/8] MIPS: lantiq: fix watchdogs timeout handling
+Date:   Wed, 24 Aug 2011 10:31:39 +0200
+Message-Id: <1314174704-15549-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1314174704-15549-1-git-send-email-blogic@openwrt.org>
 References: <1314174704-15549-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 30969
+X-archive-position: 30970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -23,73 +23,44 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17646
+X-UID: 17648
 
-There are minor differences in how irqs work on xway and falcon socs.
-Xway needs 2 quirks that we need to disable for falcon to also work with
-this code.
-
-* EBU irq does not need to send a special ack to the EBU
-* The EIU does not exist
+The enable function was using the global timeout variable for local operations.
+This resulted in the value of the global variable being corrupted, thus
+breaking the code.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
+Cc: linux-watchdog@vger.kernel.org
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/lantiq/irq.c |   24 +++++++++++++-----------
- 1 files changed, 13 insertions(+), 11 deletions(-)
+ drivers/watchdog/lantiq_wdt.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index f9737bb..17c057f 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -195,7 +195,7 @@ static void ltq_hw_irqdispatch(int module)
- 	do_IRQ((int)irq + INT_NUM_IM0_IRL0 + (INT_NUM_IM_OFFSET * module));
+diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+index 7d82ada..102aed0 100644
+--- a/drivers/watchdog/lantiq_wdt.c
++++ b/drivers/watchdog/lantiq_wdt.c
+@@ -51,16 +51,16 @@ static int ltq_wdt_ok_to_close;
+ static void
+ ltq_wdt_enable(void)
+ {
+-	ltq_wdt_timeout = ltq_wdt_timeout *
++	unsigned long int timeout = ltq_wdt_timeout *
+ 			(ltq_io_region_clk_rate / LTQ_WDT_DIVIDER) + 0x1000;
+-	if (ltq_wdt_timeout > LTQ_MAX_TIMEOUT)
+-		ltq_wdt_timeout = LTQ_MAX_TIMEOUT;
++	if (timeout > LTQ_MAX_TIMEOUT)
++		timeout = LTQ_MAX_TIMEOUT;
  
- 	/* if this is a EBU irq, we need to ack it or get a deadlock */
--	if ((irq == LTQ_ICU_EBU_IRQ) && (module == 0))
-+	if ((irq == LTQ_ICU_EBU_IRQ) && (module == 0) && LTQ_EBU_PCC_ISTAT)
- 		ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_PCC_ISTAT) | 0x10,
- 			LTQ_EBU_PCC_ISTAT);
+ 	/* write the first password magic */
+ 	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
+ 	/* write the second magic plus the configuration and new timeout */
+ 	ltq_w32(LTQ_WDT_SR_EN | LTQ_WDT_SR_PWD | LTQ_WDT_SR_CLKDIV |
+-		LTQ_WDT_PW2 | ltq_wdt_timeout, ltq_wdt_membase + LTQ_WDT_CR);
++		LTQ_WDT_PW2 | timeout, ltq_wdt_membase + LTQ_WDT_CR);
  }
-@@ -260,17 +260,19 @@ void __init arch_init_irq(void)
- 	if (!ltq_icu_membase)
- 		panic("Failed to remap icu memory\n");
  
--	if (insert_resource(&iomem_resource, &ltq_eiu_resource) < 0)
--		panic("Failed to insert eiu memory\n");
-+	if (LTQ_EIU_BASE_ADDR) {
-+		if (insert_resource(&iomem_resource, &ltq_eiu_resource) < 0)
-+			panic("Failed to insert eiu memory\n");
- 
--	if (request_mem_region(ltq_eiu_resource.start,
--			resource_size(&ltq_eiu_resource), "eiu") < 0)
--		panic("Failed to request eiu memory\n");
-+		if (request_mem_region(ltq_eiu_resource.start,
-+				resource_size(&ltq_eiu_resource), "eiu") < 0)
-+			panic("Failed to request eiu memory\n");
- 
--	ltq_eiu_membase = ioremap_nocache(ltq_eiu_resource.start,
-+		ltq_eiu_membase = ioremap_nocache(ltq_eiu_resource.start,
- 				resource_size(&ltq_eiu_resource));
--	if (!ltq_eiu_membase)
--		panic("Failed to remap eiu memory\n");
-+		if (!ltq_eiu_membase)
-+			panic("Failed to remap eiu memory\n");
-+	}
- 
- 	/* make sure all irqs are turned off by default */
- 	for (i = 0; i < 5; i++)
-@@ -296,8 +298,8 @@ void __init arch_init_irq(void)
- 
- 	for (i = INT_NUM_IRQ0;
- 		i <= (INT_NUM_IRQ0 + (5 * INT_NUM_IM_OFFSET)); i++)
--		if ((i == LTQ_EIU_IR0) || (i == LTQ_EIU_IR1) ||
--			(i == LTQ_EIU_IR2))
-+		if (((i == LTQ_EIU_IR0) || (i == LTQ_EIU_IR1) ||
-+			(i == LTQ_EIU_IR2)) && LTQ_EIU_BASE_ADDR)
- 			irq_set_chip_and_handler(i, &ltq_eiu_type,
- 				handle_level_irq);
- 		/* EIU3-5 only exist on ar9 and vr9 */
+ static void
 -- 
 1.7.2.3

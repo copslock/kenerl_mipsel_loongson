@@ -1,94 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2011 16:35:53 +0200 (CEST)
-Received: from mail-pz0-f69.google.com ([209.85.210.69]:49100 "EHLO
-        mail-pz0-f69.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493646Ab1HXOfq convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 24 Aug 2011 16:35:46 +0200
-Received: by pzd13 with SMTP id 13so25560pzd.8
-        for <linux-mips@linux-mips.org>; Wed, 24 Aug 2011 07:35:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Aug 2011 17:37:21 +0200 (CEST)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:40536 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493653Ab1HXPhO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 24 Aug 2011 17:37:14 +0200
+Received: by gyh20 with SMTP id 20so1170116gyh.36
+        for <multiple recipients>; Wed, 24 Aug 2011 08:37:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=beta;
+        d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=IfuV3V4M8pVYzo3x9gkpg1BvlVgxXwQAa0TvlJ6J1r0=;
-        b=LCXOU4VtiD4wmLpLf58BASOmypf7vfav1a47/U7bEgDNxlZWYNCFlcW8+TVckNP55E
-         XUs0DGyskH2V2N2+QbGA==
-Received: by 10.142.127.21 with SMTP id z21mr2440939wfc.396.1314196539663;
-        Wed, 24 Aug 2011 07:35:39 -0700 (PDT)
-Received: by 10.142.127.21 with SMTP id z21mr2440921wfc.396.1314196539441;
- Wed, 24 Aug 2011 07:35:39 -0700 (PDT)
+         :cc:content-type;
+        bh=KKg38CRY+RF6xDgYny6PoHYErqi1l7sIMSSFpMF/GBg=;
+        b=Asox2cexf3JW93zeE7IcDQxH1yzpYcBmANcVKi+A/Ibl9Kn6ZAGMfDD6GY0xGAg1MM
+         ofYgvKSqX0rZQNEd8bTdl5kS8ETXC2ISWJE9WO4HAc5nredzap6Bm6GYUcPgRd4xPdMj
+         gyzD9r7UloZk0DUFlM7GdKPwoHh08UiTX9GpE=
+Received: by 10.52.88.133 with SMTP id bg5mr5443721vdb.88.1314200228074; Wed,
+ 24 Aug 2011 08:37:08 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.142.216.14 with HTTP; Wed, 24 Aug 2011 07:35:19 -0700 (PDT)
-In-Reply-To: <1314167063-15785-2-git-send-email-dengcheng.zhu@gmail.com>
-References: <1314167063-15785-1-git-send-email-dengcheng.zhu@gmail.com> <1314167063-15785-2-git-send-email-dengcheng.zhu@gmail.com>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Wed, 24 Aug 2011 08:35:19 -0600
-Message-ID: <CAErSpo4091J2pGvzZKPbKK68LWWkDyVApA7suZYn7miq=tXrQg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] MIPS: PCI: Use pci_bus_remove_resources()/pci_bus_add_resource()
- to set up root resources
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-Cc:     jbarnes@virtuousgeek.org, ralf@linux-mips.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com
+Received: by 10.52.156.131 with HTTP; Wed, 24 Aug 2011 08:36:48 -0700 (PDT)
+In-Reply-To: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
+References: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Wed, 24 Aug 2011 11:36:48 -0400
+Message-ID: <CAEdQ38E6qqVAKC1MkAWto5yeU9N2uoyGY1Y5431kNUNL_yc8EA@mail.gmail.com>
+Subject: Re: [PATCH] I2C: SiByte: Convert the driver to make use of interrupts
+To:     Jean Delvare <khali@linux-fr.org>
+Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Guenter Roeck <guenter.roeck@ericsson.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>,
+        Matt Turner <mattst88@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 30980
+X-archive-position: 30981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Keywords:                  
-X-UID: 17928
 
-On Wed, Aug 24, 2011 at 12:24 AM, Deng-Cheng Zhu
-<dengcheng.zhu@gmail.com> wrote:
-> Use this new style (instead of filling in the pci_bus->resource[] array
-> directly) to hide some ugly implementation details.
->
-> Signed-off-by: Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-> ---
->  arch/mips/pci/pci.c |   11 +++++++++--
->  1 files changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-> index 33bba7b..7473214 100644
-> --- a/arch/mips/pci/pci.c
-> +++ b/arch/mips/pci/pci.c
-> @@ -261,6 +261,14 @@ static void pcibios_fixup_device_resources(struct pci_dev *dev,
->        }
->  }
->
-> +static void __devinit
-> +pcibios_setup_root_resources(struct pci_bus *bus, struct pci_controller *ctrl)
-> +{
-> +       pci_bus_remove_resources(bus);
-> +       pci_bus_add_resource(bus, ctrl->io_resource, 0);
-> +       pci_bus_add_resource(bus, ctrl->mem_resource, 0);
-> +}
-> +
->  void __devinit pcibios_fixup_bus(struct pci_bus *bus)
->  {
->        /* Propagate hose info into the subordinate devices.  */
-> @@ -270,8 +278,7 @@ void __devinit pcibios_fixup_bus(struct pci_bus *bus)
->        struct pci_dev *dev = bus->self;
->
->        if (!dev) {
-> -               bus->resource[0] = hose->io_resource;
-> -               bus->resource[1] = hose->mem_resource;
-> +               pcibios_setup_root_resources(bus, hose);
->        } else if (pci_probe_only &&
->                   (dev->class >> 8) == PCI_CLASS_BRIDGE_PCI) {
->                pci_read_bridge_bases(bus);
+On Thu, Aug 18, 2011 at 7:43 PM, Matt Turner <mattst88@gmail.com> wrote:
+> Signed-off-by: Matt Turner <mattst88@gmail.com>
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 
-I don't understand this patch.
+Jean,
+Do you want to take this patch, or should Ralf through his tree?
 
-Wouldn't it be enough to have [PATCH 2/3], which adds the
-pci_create_bus() argument with nobody using it yet, then [PATCH 3/3],
-which makes mips supply the new argument, and add a hunk to [PATCH
-3/3] that completely removes the bus->resource fixups in
-pcibios_fixup_bus() at the same time?
-
-Bjorn
+Thanks,
+Matt

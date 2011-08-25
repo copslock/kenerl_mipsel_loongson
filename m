@@ -1,114 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2011 18:10:19 +0200 (CEST)
-Received: from smtp-out.google.com ([216.239.44.51]:24092 "EHLO
-        smtp-out.google.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1493688Ab1HYQKM convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2011 18:10:12 +0200
-Received: from hpaq3.eem.corp.google.com (hpaq3.eem.corp.google.com [172.25.149.3])
-        by smtp-out.google.com with ESMTP id p7PGAAMg019868
-        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 09:10:10 -0700
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=google.com; s=beta;
-        t=1314288611; bh=cNTGNnam95OslwnUfiwuCIQQoWY=;
-        h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type:Content-Transfer-Encoding;
-        b=AWZVg1SG0CXXxQCkTsFKn/rVSVBLLQqFRGIO0jok8EcONgUSqrhiQaqfwDanYi4ZV
-         kjBSMDOxscO4HEUziaGPQ==
-DomainKey-Signature: a=rsa-sha1; s=beta; d=google.com; c=nofws; q=dns;
-        h=dkim-signature:mime-version:in-reply-to:references:from:date:
-        message-id:subject:to:cc:content-type:
-        content-transfer-encoding:x-system-of-record;
-        b=yaotez9k1m6Xi/Jj2McGi3OpAKe/bRmKv/BCU1JNTkPdvcgZqFc1XUF28rTsUP6Mt
-        oyngjAHy7Y84y6GHpYCzw==
-Received: from gye5 (gye5.prod.google.com [10.243.50.5])
-        by hpaq3.eem.corp.google.com with ESMTP id p7PG9RmM018302
-        (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
-        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 09:10:09 -0700
-Received: by gye5 with SMTP id 5so2490902gye.30
-        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 09:10:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2011 19:30:32 +0200 (CEST)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:48535 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493755Ab1HYRa2 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Aug 2011 19:30:28 +0200
+Received: by vws8 with SMTP id 8so2647634vws.36
+        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 10:30:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=beta;
+        d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc:content-type:content-transfer-encoding;
-        bh=MzUY4udQkTiz3jNMqMMahStHIpzyOhkQU4Gek6/Mb/w=;
-        b=MkrDms4wYxRUh+WzxZRtRt78U3hIev1tQB+CcAnxf7ioTUVGf2wTD5a7B61myWvA1H
-         ZF5hIze1F5YxU7abRoHg==
-Received: by 10.150.7.17 with SMTP id 17mr1099151ybg.270.1314288608432;
-        Thu, 25 Aug 2011 09:10:08 -0700 (PDT)
-Received: by 10.150.7.17 with SMTP id 17mr1099132ybg.270.1314288608187; Thu,
- 25 Aug 2011 09:10:08 -0700 (PDT)
+        bh=x5+K6VQ/4Hq1tfFAjlOSAL1mw6k4mCljPsBGRmeqgJU=;
+        b=DsWYedd8rgdqxdRfMRzZ8vheHKVJsYOxwT3psdOtVOQbK+vkBkmXueiO9AgAYnHwML
+         L686caPkQqegBM2pmPad/4zsVTohjQKSDqM/Afew249G1BW7QEbRaxr1TQ5RLPLpI7Z4
+         ifAw1zjgvJXOVfLDlXkD/IoeV3uJs652vHdX4=
+Received: by 10.52.65.240 with SMTP id a16mr6934532vdt.490.1314293422148; Thu,
+ 25 Aug 2011 10:30:22 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 10.151.48.2 with HTTP; Thu, 25 Aug 2011 09:09:48 -0700 (PDT)
-In-Reply-To: <1314271117-32717-3-git-send-email-dczhu@mips.com>
-References: <1314271117-32717-1-git-send-email-dczhu@mips.com> <1314271117-32717-3-git-send-email-dczhu@mips.com>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Thu, 25 Aug 2011 10:09:48 -0600
-Message-ID: <CAErSpo5n-FJXwOd2h179tctw2LX0bZ7xcyxU5Mam+tmVoqgprw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] MIPS: PCI: Pass controller's resources to
- pci_create_bus() in pcibios_scanbus()
-To:     Deng-Cheng Zhu <dczhu@mips.com>
-Cc:     jbarnes@virtuousgeek.org, ralf@linux-mips.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com,
-        dengcheng.zhu@gmail.com
+Received: by 10.52.156.131 with HTTP; Thu, 25 Aug 2011 10:30:02 -0700 (PDT)
+In-Reply-To: <CAEdQ38Gg2FWJNacoa51+=eu8JQRr2mSA7jCjosOGbv8FKPFDpw@mail.gmail.com>
+References: <CAEdQ38HGfd9YWE+WLuirE4Km6UE6N26toTj=-1BuXAQUux6t5g@mail.gmail.com>
+ <1313777242.2970.131.camel@work-vm> <CAEdQ38F4zi76ug+ABZPnPLcLvGfUFRhr6SKzYCN+24Otq+qAAQ@mail.gmail.com>
+ <1313783990.2970.136.camel@work-vm> <CAEdQ38H5NC6B+T=gsF4-8Ue2DA=rfrFCi_i+RKC-=DFijjK2=g@mail.gmail.com>
+ <1313786070.2970.144.camel@work-vm> <CAEdQ38H7tHa3d83SOAbhUWFgwMgxCaP9ibJxNAGHAT2gmdEm=w@mail.gmail.com>
+ <1313788912.2970.152.camel@work-vm> <CAEdQ38Gg2FWJNacoa51+=eu8JQRr2mSA7jCjosOGbv8FKPFDpw@mail.gmail.com>
+From:   Matt Turner <mattst88@gmail.com>
+Date:   Thu, 25 Aug 2011 13:30:02 -0400
+Message-ID: <CAEdQ38G7csFL61Ye1h-3Jszh2nDHytm1ms0rS4nGBC1E0QEfzQ@mail.gmail.com>
+Subject: Re: select() to /dev/rtc0 to wait for clock tick timed out
+To:     john stultz <johnstul@us.ibm.com>
+Cc:     linux-mips@linux-mips.org, rtc-linux@googlegroups.com,
+        Alessandro Zummo <a.zummo@towertech.it>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-X-System-Of-Record: true
-X-archive-position: 30989
+X-archive-position: 30990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: mattst88@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19056
+X-UID: 19194
 
-On Thu, Aug 25, 2011 at 5:18 AM, Deng-Cheng Zhu <dczhu@mips.com> wrote:
-> Use the new interface of pci_create_bus() so that system controller's
-> resources are added to the root bus upon bus creation, thereby avoiding
-> conflicts with PCI quirks before pcibios_fixup_bus() gets the chance to do
-> right things in pci_scan_child_bus(). Also, since we are passing resources
-> to pci_create_bus() and setting them up in the bus->resources list as
-> opposed to the bus->resource[] array, we have to adopt the list style while
-> doing bus fixups later on, or else, for example in this MIPS case, system
-> controller's resources will stay in both bus->resources and
-> bus->resource[].
-
-> +static void __devinit
-> +pcibios_setup_root_resources(struct pci_bus *bus, struct pci_controller *ctrl)
-> +{
-> +       pci_bus_remove_resources(bus);
-> +       pci_bus_add_resource(bus, ctrl->io_resource, 0);
-> +       pci_bus_add_resource(bus, ctrl->mem_resource, 0);
-> +}
-> +
->  void __devinit pcibios_fixup_bus(struct pci_bus *bus)
->  {
->        /* Propagate hose info into the subordinate devices.  */
-> @@ -269,10 +313,9 @@ void __devinit pcibios_fixup_bus(struct pci_bus *bus)
->        struct list_head *ln;
->        struct pci_dev *dev = bus->self;
+On Fri, Aug 19, 2011 at 5:48 PM, Matt Turner <mattst88@gmail.com> wrote:
+> On Fri, Aug 19, 2011 at 5:21 PM, john stultz <johnstul@us.ibm.com> wrote:
+>> On Fri, 2011-08-19 at 16:56 -0400, Matt Turner wrote:
+>>> With 2.6.37 the original rtctest program gives
+>>>
+>>>                       RTC Driver Test Example.
+>>>
+>>> RTC_UIE_ON ioctl: Invalid argument
+>>>
+>>> and the modified version hangs in the same way. :(
+>>
+>> Ok, so the AIE/alarm irq isn't working (but returns as if it should),
+>> and in the older case, the UIE mode properly returned an error.
+>>
+>> So I'm guessing since we now use AIE mode interrupts to emulate UIE, the
+>> UIE code thinks alarms will work and so doesn't return an error,
+>> confusing the hwclock code.
+>>
+>>> With 2.6.37, hwclock did work:
+>>>
+>>> bcm91250a-be ~ # date
+>>> Fri Aug 19 16:52:21 EDT 2011
+>>> bcm91250a-be ~ # hwclock --systohc
+>>> bcm91250a-be ~ # date 082016522011
+>>> Sat Aug 20 16:52:00 EDT 2011
+>>> bcm91250a-be ~ # hwclock --hctosys
+>>> bcm91250a-be ~ # date
+>>> Fri Aug 19 16:53:02 EDT 2011
+>>
+>> Running strace on the hwclock --hctosys might prove the theory above.
+>>
+>>
+>>> With 3.1.0-rc2+, it does not
+>>> bcm91250a-be ~ # date
+>>> Fri Aug 19 16:54:32 EDT 2011
+>>> bcm91250a-be ~ # hwclock --systohc
+>>> select() to /dev/rtc0 to wait for clock tick timed out
+>>> bcm91250a-be ~ # date 082016542011
+>>> Sat Aug 20 16:54:00 EDT 2011
+>>> bcm91250a-be ~ # hwclock --hctosys
+>>> select() to /dev/rtc0 to wait for clock tick timed out
+>>> bcm91250a-be ~ # date
+>>> Sat Aug 20 16:54:11 EDT 2011
+>>>
+>>> So, even if the alarm never worked, there is some sort of regression here.
+>>
+>> Yea, since we depend on the alarm irq for more functionality now, it not
+>> working in this case is causing more trouble.
+>>
+>> I suspect either fixing the driver alarm code so it either works or
+>> provides a proper error code will resolve it.
+>>
+>> thanks
+>> -john
 >
-> -       if (!dev) {
-> -               bus->resource[0] = hose->io_resource;
-> -               bus->resource[1] = hose->mem_resource;
-> -       } else if (pci_probe_only &&
-> +       if (!dev)
-> +               pcibios_setup_root_resources(bus, hose);
+> Indeed, looks like that's the case.
+>
+> 2.6.37: ioctl(3, PRESTO_GETMOUNT or RTC_UIE_ON, 0) = -1 EINVAL
+> 3.1.0: ioctl(3, PRESTO_GETMOUNT or RTC_UIE_ON, 0) = 0
+>
+> (Attaching full gz'd logs for posterity.)
+>
+> Thanks,
+> Matt
 
-As I mentioned in my other response, I think you can just drop this
-whole "if (!dev)" block since the root bus resources should already be
-correct.  There's no need to move them from the bus->resource[] array
-to the bus->resources list.
+I looked through the datasheet and tried to find a place where we're
+doing something wrong in the driver, but I didn't see anything.
 
-Someday, if all arches adopt your nice pci_create_bus() extension to
-make root bus resources correct from the beginning, there should be no
-arch references to the bus->resource[] array left, and then we can
-remove it altogether.  At least, that's what I was hoping when I added
-the list :)
+http://www.datasheetcatalog.com/datasheets_pdf/M/4/1/T/M41T80.shtml
 
-In any case, all the *readers* of bus resources already use the
-pci_bus_for_each_resource() interface, which knows how to look at both
-the array and the list.
+Any ideas?
 
-Bjorn
+Matt

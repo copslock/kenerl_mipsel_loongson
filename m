@@ -1,148 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2011 13:19:50 +0200 (CEST)
-Received: from dns1.mips.com ([12.201.5.69]:45810 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492007Ab1HYLTC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 25 Aug 2011 13:19:02 +0200
-Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id p7PBIrDX019877;
-        Thu, 25 Aug 2011 04:18:53 -0700
-Received: from fun-lab.MIPSCN.CEC (192.168.225.107) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Thu, 25 Aug 2011
- 04:18:50 -0700
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-To:     <jbarnes@virtuousgeek.org>, <ralf@linux-mips.org>
-CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <eyal@mips.com>, <zenon@mips.com>,
-        <dczhu@mips.com>, <dengcheng.zhu@gmail.com>
-Subject: [PATCH v2 2/2] MIPS: PCI: Pass controller's resources to pci_create_bus() in pcibios_scanbus()
-Date:   Thu, 25 Aug 2011 19:18:37 +0800
-Message-ID: <1314271117-32717-3-git-send-email-dczhu@mips.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1314271117-32717-1-git-send-email-dczhu@mips.com>
-References: <1314271117-32717-1-git-send-email-dczhu@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2011 17:35:11 +0200 (CEST)
+Received: from smtp-out.google.com ([216.239.44.51]:6554 "EHLO
+        smtp-out.google.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1493624Ab1HYPfG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2011 17:35:06 +0200
+Received: from wpaz33.hot.corp.google.com (wpaz33.hot.corp.google.com [172.24.198.97])
+        by smtp-out.google.com with ESMTP id p7PFZ4tB013229
+        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 08:35:04 -0700
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=google.com; s=beta;
+        t=1314286505; bh=zxt2OvbAOt5V6xPGA6PHbTiKC88=;
+        h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=SkY057VPfFrIipg6RXMb/l1siQ4TNwWMQYf6eOLoUtHJlbPQWigoP1zZKDdfccIJ+
+         nj18bHIOWhlFdNQTj0uEw==
+DomainKey-Signature: a=rsa-sha1; s=beta; d=google.com; c=nofws; q=dns;
+        h=dkim-signature:mime-version:in-reply-to:references:from:date:
+        message-id:subject:to:cc:content-type:x-system-of-record;
+        b=vP86hFcIutjfhTxkJLXi21/bL8WoCLHjmn11KCq+NS29GuN1mrnnlY61GKP0xL6y9
+        pmaQhLidx80KaJ8pOXXHg==
+Received: from gwb11 (gwb11.prod.google.com [10.200.2.11])
+        by wpaz33.hot.corp.google.com with ESMTP id p7PFXMAp028808
+        (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 08:35:04 -0700
+Received: by gwb11 with SMTP id 11so1900105gwb.20
+        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 08:35:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=beta;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=f958P2JMPIcdOJBqN6mtOuTHATzj6DPYppkat5Dk5uY=;
+        b=OUtIfNPus6rHH4FOYiNg0IRxAb48HlQuxHjGj7P05TBJ9u5d4/k7UbNt54e1yoDwnD
+         idvusPVR4Aji52gFJuxA==
+Received: by 10.150.209.21 with SMTP id h21mr1084334ybg.156.1314286503360;
+        Thu, 25 Aug 2011 08:35:03 -0700 (PDT)
+Received: by 10.150.209.21 with SMTP id h21mr1084316ybg.156.1314286503126;
+ Thu, 25 Aug 2011 08:35:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: 28hwGjtdUxwQmxvCRDaG2A==
-X-archive-position: 30987
+Received: by 10.151.48.2 with HTTP; Thu, 25 Aug 2011 08:34:43 -0700 (PDT)
+In-Reply-To: <CAOfQC98Nkr7Ek3uQfiD3OdW=YC76XGjfQ4WSfoLpsm2kvqKnog@mail.gmail.com>
+References: <1314167063-15785-1-git-send-email-dengcheng.zhu@gmail.com>
+ <1314167063-15785-2-git-send-email-dengcheng.zhu@gmail.com>
+ <CAErSpo4091J2pGvzZKPbKK68LWWkDyVApA7suZYn7miq=tXrQg@mail.gmail.com> <CAOfQC98Nkr7Ek3uQfiD3OdW=YC76XGjfQ4WSfoLpsm2kvqKnog@mail.gmail.com>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Thu, 25 Aug 2011 09:34:43 -0600
+Message-ID: <CAErSpo4zojYjYVd=6U72ToqiZOD-qL-saP8huwa6ShrNnaR3vA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/3] MIPS: PCI: Use pci_bus_remove_resources()/pci_bus_add_resource()
+ to set up root resources
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
+Cc:     jbarnes@virtuousgeek.org, ralf@linux-mips.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com
+Content-Type: text/plain; charset=ISO-8859-1
+X-System-Of-Record: true
+X-archive-position: 30988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18684
+X-UID: 19012
 
-Use the new interface of pci_create_bus() so that system controller's
-resources are added to the root bus upon bus creation, thereby avoiding
-conflicts with PCI quirks before pcibios_fixup_bus() gets the chance to do
-right things in pci_scan_child_bus(). Also, since we are passing resources
-to pci_create_bus() and setting them up in the bus->resources list as
-opposed to the bus->resource[] array, we have to adopt the list style while
-doing bus fixups later on, or else, for example in this MIPS case, system
-controller's resources will stay in both bus->resources and
-bus->resource[].
+On Thu, Aug 25, 2011 at 12:41 AM, Deng-Cheng Zhu
+<dengcheng.zhu@gmail.com> wrote:
+> 2011/8/24 Bjorn Helgaas <bhelgaas@google.com>:
+>> Wouldn't it be enough to have [PATCH 2/3], which adds the
+>> pci_create_bus() argument with nobody using it yet, then [PATCH 3/3],
+>> which makes mips supply the new argument, and add a hunk to [PATCH
+>> 3/3] that completely removes the bus->resource fixups in
+>> pcibios_fixup_bus() at the same time?
+>>
+>> Bjorn
+>>
+>
+> Do you mean to merge this patch to [PATCH 3/3]? OK, that's good!
 
-Signed-off-by: Deng-Cheng Zhu <dczhu@mips.com>
----
-Changes (v2 - v1):
-o Merge [PATCH 1/3] to [PATCH 3/3] of v1.
-o Add more info to patch description.
+No, I just mean that I don't see why you need this patch at all.  If
+you pass the list of bus resources to pci_create_bus(), there's no
+need to fix anything up later.  Or am I missing something?
 
- arch/mips/pci/pci.c |   53 ++++++++++++++++++++++++++++++++++++++++++++++----
- 1 files changed, 48 insertions(+), 5 deletions(-)
-
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 33bba7b..30856d6 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -76,11 +76,41 @@ pcibios_align_resource(void *data, const struct resource *res,
- 	return start;
- }
- 
-+static struct pci_bus_resource *
-+controller_resources(const struct pci_controller *ctrl)
-+{
-+	struct pci_bus_resource *mem_res, *io_res;
-+
-+	mem_res = kzalloc(sizeof(struct pci_bus_resource), GFP_KERNEL);
-+	if (!mem_res)
-+		goto err_out;
-+
-+	mem_res->res = ctrl->mem_resource;
-+	mem_res->flags = 0;
-+	INIT_LIST_HEAD(&mem_res->list);
-+
-+	io_res = kzalloc(sizeof(struct pci_bus_resource), GFP_KERNEL);
-+	if (!io_res) {
-+		kfree(mem_res);
-+		goto err_out;
-+	}
-+
-+	io_res->res = ctrl->io_resource;
-+	io_res->flags = 0;
-+	list_add(&io_res->list, &mem_res->list);
-+
-+	return mem_res;
-+err_out:
-+	printk(KERN_ERR "Can't allocate PCI bus resource.\n");
-+	return NULL;
-+}
-+
- static void __devinit pcibios_scanbus(struct pci_controller *hose)
- {
- 	static int next_busno;
- 	static int need_domain_info;
- 	struct pci_bus *bus;
-+	struct pci_bus_resource *bus_res;
- 
- 	if (!hose->iommu)
- 		PCI_DMA_BUS_IS_PHYS = 1;
-@@ -88,7 +118,13 @@ static void __devinit pcibios_scanbus(struct pci_controller *hose)
- 	if (hose->get_busno && pci_probe_only)
- 		next_busno = (*hose->get_busno)();
- 
--	bus = pci_scan_bus(next_busno, hose->pci_ops, hose);
-+	bus_res = controller_resources(hose);
-+	bus = pci_create_bus(NULL, next_busno, hose->pci_ops, hose, bus_res);
-+	if (bus) {
-+		bus->subordinate = pci_scan_child_bus(bus);
-+		pci_bus_add_devices(bus);
-+	}
-+
- 	hose->bus = bus;
- 
- 	need_domain_info = need_domain_info || hose->index;
-@@ -261,6 +297,14 @@ static void pcibios_fixup_device_resources(struct pci_dev *dev,
- 	}
- }
- 
-+static void __devinit
-+pcibios_setup_root_resources(struct pci_bus *bus, struct pci_controller *ctrl)
-+{
-+	pci_bus_remove_resources(bus);
-+	pci_bus_add_resource(bus, ctrl->io_resource, 0);
-+	pci_bus_add_resource(bus, ctrl->mem_resource, 0);
-+}
-+
- void __devinit pcibios_fixup_bus(struct pci_bus *bus)
- {
- 	/* Propagate hose info into the subordinate devices.  */
-@@ -269,10 +313,9 @@ void __devinit pcibios_fixup_bus(struct pci_bus *bus)
- 	struct list_head *ln;
- 	struct pci_dev *dev = bus->self;
- 
--	if (!dev) {
--		bus->resource[0] = hose->io_resource;
--		bus->resource[1] = hose->mem_resource;
--	} else if (pci_probe_only &&
-+	if (!dev)
-+		pcibios_setup_root_resources(bus, hose);
-+	else if (pci_probe_only &&
- 		   (dev->class >> 8) == PCI_CLASS_BRIDGE_PCI) {
- 		pci_read_bridge_bases(bus);
- 		pcibios_fixup_device_resources(dev, bus);
--- 
-1.7.1
+Bjorn

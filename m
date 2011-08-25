@@ -1,83 +1,134 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2011 08:56:28 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:32772 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491082Ab1HYG4V (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 25 Aug 2011 08:56:21 +0200
-Received: by yxk8 with SMTP id 8so1779634yxk.36
-        for <multiple recipients>; Wed, 24 Aug 2011 23:56:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=zGQc2KuIiC4ZBnR5hhOkw84GQVo6BIvi1B8nV1K6TkA=;
-        b=LM5GamP9+lLopoOhoQ2z7X5y4cAFq5Jmu4TvvjpyGFzNaLrEjVC7zHwp2oqEuux0WN
-         Ly037LBfvQQB/WO0yMy53cpRCIvwDuI+BnTfepSuIQ/dIcrBhfKBEryAUVq8ews/OfoD
-         5pRbEaYMoK3vwB3i3LJrJMoEanBYN4frN7888=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Aug 2011 10:01:07 +0200 (CEST)
+Received: from alius.ayous.org ([78.46.213.165]:46655 "EHLO alius.ayous.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491085Ab1HYIBD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 25 Aug 2011 10:01:03 +0200
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1QwUs0-0000Nc-WE; Thu, 25 Aug 2011 08:01:01 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1QwUru-0002iq-Nb; Thu, 25 Aug 2011 10:00:54 +0200
+Date:   Thu, 25 Aug 2011 10:00:54 +0200
+From:   Andreas Barth <aba@not.so.argh.org>
+To:     linux-mips@linux-mips.org, debian-mips@lists.debian.org
+Subject: [PATCH] mips/loongson: unify compiler flags and load location for
+        Loongson 2E and 2F
+Message-ID: <20110825080054.GA10459@mails.so.argh.org>
+Mail-Followup-To: Andreas Barth <aba@not.so.argh.org>,
+        linux-mips@linux-mips.org, debian-mips@lists.debian.org
+References: <20110821010513.GZ2657@mails.so.argh.org>
 MIME-Version: 1.0
-Received: by 10.236.178.68 with SMTP id e44mr37360116yhm.131.1314255375725;
- Wed, 24 Aug 2011 23:56:15 -0700 (PDT)
-Received: by 10.236.207.73 with HTTP; Wed, 24 Aug 2011 23:56:15 -0700 (PDT)
-In-Reply-To: <CAErSpo56V1eHaLTz72gLHcdONsNSUM01upKr4K+DtoU58ea5Ag@mail.gmail.com>
-References: <1314167063-15785-1-git-send-email-dengcheng.zhu@gmail.com>
-        <1314167063-15785-3-git-send-email-dengcheng.zhu@gmail.com>
-        <CAErSpo56V1eHaLTz72gLHcdONsNSUM01upKr4K+DtoU58ea5Ag@mail.gmail.com>
-Date:   Thu, 25 Aug 2011 14:56:15 +0800
-Message-ID: <CAOfQC9_S9q9fE6VyDaLseUFZD_GxZcEOYw8YsvRWkr9-2S=RRQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/3] PCI: Pass available resources into pci_create_bus()
-From:   Deng-Cheng Zhu <dengcheng.zhu@gmail.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     jbarnes@virtuousgeek.org, ralf@linux-mips.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 30983
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20110821010513.GZ2657@mails.so.argh.org>
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 30984
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dengcheng.zhu@gmail.com
+X-original-sender: aba@not.so.argh.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18495
+X-UID: 18531
 
-2011/8/24 Bjorn Helgaas <bhelgaas@google.com>:
-> I like this approach a lot.  Thanks for working it up.  It's a nice
-> small change with very little impact to other architectures, and you
-> have a nice clear changelog.  You might mention something about the
-> fact that by default, the bus starts out with all of ioport_resource
-> and iomem_resource -- that will mean something to people who know how
-> host bridges work.
+This patch starts to merge the Loongson 2E and 2F code together with the
+goal to produce a binary kernel image that can run on both machines. As
+code compiled for 2E cannot run on 2F and vice versa, the usage of cpu
+dependend code is optionally now (and old behaviour is default).
 
-Thanks! And I'll add this info to the patch description.
+The load address is unified as well, and the 2F workarounds can be enabled
+while compiling on a 2E machine (disabled there by default).
 
-> Using pci_bus_add_resource() here *seems* like it should be the right
-> thing, but I don't think it will work correctly.
->
-> The problem is that struct pci_bus has both a table of resources
-> (bus->resource[]) *and* a list (bus->resources).
-> pci_bus_add_resource() always puts the new resource on the list, but
-> various arch code still references the table directly, e.g., sparc has
-> "pbus->resource[0] = &pbm->io_space" in pcibios_fixup_bus().
->
-> As written, I think this patch will break sparc because the host
-> bridge will end up with both pbm->io_space (in the table) and
-> ioport_resource (in the list).
+Signed-off-by: Andreas Barth <aba@not.so.argh.org>
+---
+ arch/mips/Kconfig           |   22 +++++++++++++++++++---
+ arch/mips/loongson/Platform |   15 +++++++++++----
+ 2 files changed, 30 insertions(+), 7 deletions(-)
 
-Good catch! I overlooked this point.
-
-> I think something like this would work, though:
->
->    if (bus_res)
->        list_add_tail(&b->resources, &bus_res->list);
->    else {
->        b->resource[0] = &ioport_resource;
->        b->resource[1] = &iomem_resource;
->    }
-
-Yes, it should work.
-
-
-Thanks again for your time,
-
-Deng-Cheng
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b122adc..b7b65fb 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1481,7 +1481,7 @@ config CPU_XLR
+ 	  Netlogic Microsystems XLR/XLS processors.
+ endchoice
+ 
+-if CPU_LOONGSON2F
++if CPU_LOONGSON2
+ config CPU_NOP_WORKAROUNDS
+ 	bool
+ 
+@@ -1490,7 +1490,7 @@ config CPU_JUMP_WORKAROUNDS
+ 
+ config CPU_LOONGSON2F_WORKAROUNDS
+ 	bool "Loongson 2F Workarounds"
+-	default y
++	default y if !CPU_LOONGSON2E
+ 	select CPU_NOP_WORKAROUNDS
+ 	select CPU_JUMP_WORKAROUNDS
+ 	help
+@@ -1506,7 +1506,23 @@ config CPU_LOONGSON2F_WORKAROUNDS
+ 	  systems.
+ 
+ 	  If unsure, please say Y.
+-endif # CPU_LOONGSON2F
++
++config CPU_LOONGSON2E_CODE
++	bool "Loongson 2E-only code"
++        default y
++	depends on SYS_HAS_CPU_LOONGSON2E
++        help
++          Compile with Loongson 2E specific compiler options. This prevents
++          the kernel to run on other cpus.
++
++config CPU_LOONGSON2F_CODE
++	bool "Loongson 2F-only code"
++        default y
++	depends on SYS_HAS_CPU_LOONGSON2F
++        help
++          Compile with Loongson 2F specific compiler options. This prevents
++          the kernel to run on other cpus.
++endif # CPU_LOONGSON2
+ 
+ config SYS_SUPPORTS_ZBOOT
+ 	bool
+diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
+index 29692e5..df52393 100644
+--- a/arch/mips/loongson/Platform
++++ b/arch/mips/loongson/Platform
+@@ -4,10 +4,18 @@
+ 
+ # Only gcc >= 4.4 have Loongson specific support
+ cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
+-cflags-$(CONFIG_CPU_LOONGSON2E) += \
++ifdef CONFIG_CPU_LOONGSON2E_CODE
++    cflags-$(CONFIG_CPU_LOONGSON2) += \
+ 	$(call cc-option,-march=loongson2e,-march=r4600)
+-cflags-$(CONFIG_CPU_LOONGSON2F) += \
++else
++  ifdef CONFIG_CPU_LOONGSON2F_CODE
++    cflags-$(CONFIG_CPU_LOONGSON2) += \
+ 	$(call cc-option,-march=loongson2f,-march=r4600)
++  else
++    cflags-$(CONFIG_CPU_LOONGSON2) += \
++	$(call cc-option,-march=r4600)
++  endif
++endif
+ # Enable the workarounds for Loongson2f
+ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
+   ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-nop,),)
+@@ -28,5 +36,4 @@ endif
+ 
+ platform-$(CONFIG_MACH_LOONGSON) += loongson/
+ cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson -mno-branch-likely
+-load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
+-load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
++load-$(CONFIG_MACH_LOONGSON) += 0xffffffff80200000
+-- 
+1.5.6.5

@@ -1,47 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2011 01:45:28 +0200 (CEST)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:45168 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493797Ab1HYXpY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2011 01:45:24 +0200
-Received: by vws8 with SMTP id 8so2982305vws.36
-        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 16:45:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2011 05:21:46 +0200 (CEST)
+Received: from mail-gw0-f49.google.com ([74.125.83.49]:39004 "EHLO
+        mail-gw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490977Ab1HZDVl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2011 05:21:41 +0200
+Received: by gwb1 with SMTP id 1so2784816gwb.36
+        for <linux-mips@linux-mips.org>; Thu, 25 Aug 2011 20:21:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :content-type;
-        bh=ak6GK0p3IOK6/jG35LxfcuMlVTcC8cfYq3/ggFRHZxc=;
-        b=VE+99aIfe5q/bbx9+hJ8C/WgZUJJ32hkWQflrNW01+xVwXuGon8a7AdJ1aClCxyFKD
-         j7V7eEoZO6CdQxWvx8u6p6VbT7ASGJl7ujSJWtt/jwsL8eddm4LcsOEy7fzTs63Tawz0
-         ekSSF869v5TpbGDlwwMDvPacRwHbZq0LxGe+g=
-Received: by 10.52.71.41 with SMTP id r9mr403079vdu.289.1314315918194; Thu, 25
- Aug 2011 16:45:18 -0700 (PDT)
+        bh=O3L5T+FO4hhjBisDb0JWrlNJ4pcMlK2rtx7Az+3QNzY=;
+        b=TvpUWxxTmhDlTGzx/1PLyJo3qGeFWrxFi1b6F87k0Hdt2qquOQI6PeJ+WyYdevNp5i
+         TfUYd6WEclSTicffMoGoOWetuFb7UXWKGACxsxL/03Ey82Bv6iVSoPNfH/rCH3JYY5K1
+         l1cMqiVjzPPgtR6aNonKx9nmSJDkHCByXAUns=
 MIME-Version: 1.0
-Received: by 10.52.156.131 with HTTP; Thu, 25 Aug 2011 16:44:57 -0700 (PDT)
+Received: by 10.42.168.3 with SMTP id u3mr300945icy.213.1314328895583; Thu, 25
+ Aug 2011 20:21:35 -0700 (PDT)
+Received: by 10.42.19.131 with HTTP; Thu, 25 Aug 2011 20:21:35 -0700 (PDT)
 In-Reply-To: <20110825080054.GA10459@mails.so.argh.org>
-References: <20110821010513.GZ2657@mails.so.argh.org> <20110825080054.GA10459@mails.so.argh.org>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Thu, 25 Aug 2011 19:44:57 -0400
-Message-ID: <CAEdQ38Ft-okTSUxhXXkZPhr1z46b480CtBu+LtVRcyQLACS3tA@mail.gmail.com>
+References: <20110821010513.GZ2657@mails.so.argh.org>
+        <20110825080054.GA10459@mails.so.argh.org>
+Date:   Fri, 26 Aug 2011 11:21:35 +0800
+Message-ID: <CAD+V5Y+0JujdTz9ET1LAurCMP6D1nvC1tkoYg+gHXXJ=VL9mMQ@mail.gmail.com>
 Subject: Re: [PATCH] mips/loongson: unify compiler flags and load location for
  Loongson 2E and 2F
+From:   wu zhangjin <wuzhangjin@gmail.com>
 To:     Andreas Barth <aba@not.so.argh.org>, linux-mips@linux-mips.org,
         debian-mips@lists.debian.org
-Content-Type: multipart/mixed; boundary=20cf307f32606d3a0304ab5d0593
-X-archive-position: 30993
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 30994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19494
+X-UID: 19575
 
---20cf307f32606d3a0304ab5d0593
-Content-Type: text/plain; charset=ISO-8859-1
+Hi, Andreas
 
-On Thu, Aug 25, 2011 at 4:00 AM, Andreas Barth <aba@not.so.argh.org> wrote:
+Thanks very much for your effort on merging the support for 2E and 2F.
+
+but only this patch is not enough, we may also need to take care of
+the following parts:
+
+1. About processors
+
+$ grep LOONGSON2E -ur arch/mips/
+arch/mips/kernel/cpu-probe.c:		case PRID_REV_LOONGSON2E:
+arch/mips/include/asm/mach-loongson/mem.h:#ifdef CONFIG_CPU_LOONGSON2E
+arch/mips/include/asm/mach-loongson/mem.h:#ifdef CONFIG_CPU_LOONGSON2E
+arch/mips/include/asm/cpu.h:#define PRID_REV_LOONGSON2E	0x0002
+arch/mips/Kconfig:config CPU_LOONGSON2E
+arch/mips/Kconfig:	depends on SYS_HAS_CPU_LOONGSON2E
+arch/mips/Kconfig:config SYS_HAS_CPU_LOONGSON2E
+arch/mips/loongson/Platform:cflags-$(CONFIG_CPU_LOONGSON2E) += \
+arch/mips/loongson/Kconfig:	select SYS_HAS_CPU_LOONGSON2E
+arch/mips/loongson/common/bonito-irq.c:#ifdef CONFIG_CPU_LOONGSON2E
+arch/mips/loongson/common/env.c:		case PRID_REV_LOONGSON2E:
+
+$ grep LOONGSON2F -ur arch/mips/
+arch/mips/kernel/cpu-probe.c:		case PRID_REV_LOONGSON2F:
+arch/mips/include/asm/mach-loongson/dma-coherence.h:#if
+defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
+arch/mips/include/asm/stackframe.h:#endif /* CONFIG_CPU_LOONGSON2F */
+arch/mips/include/asm/cpu.h:#define PRID_REV_LOONGSON2F	0x0003
+arch/mips/Kconfig:config CPU_LOONGSON2F
+arch/mips/Kconfig:	depends on SYS_HAS_CPU_LOONGSON2F
+arch/mips/Kconfig:if CPU_LOONGSON2F
+arch/mips/Kconfig:config CPU_LOONGSON2F_WORKAROUNDS
+arch/mips/Kconfig:endif # CPU_LOONGSON2F
+arch/mips/Kconfig:config SYS_HAS_CPU_LOONGSON2F
+arch/mips/loongson/Platform:cflags-$(CONFIG_CPU_LOONGSON2F) += \
+arch/mips/loongson/Platform:ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
+arch/mips/loongson/Kconfig:	select SYS_HAS_CPU_LOONGSON2F
+arch/mips/loongson/common/env.c:		case PRID_REV_LOONGSON2F:
+arch/mips/loongson/common/platform.c:	if ((c->processor_id &
+PRID_REV_MASK) >= PRID_REV_LOONGSON2F)
+
+2. About machines
+
+$ grep LEMOTE_FULOONG2E -ur arch/mips/
+arch/mips/include/asm/mach-loongson/machine.h:#ifdef CONFIG_LEMOTE_FULOONG2E
+arch/mips/pci/Makefile:obj-$(CONFIG_LEMOTE_FULOONG2E)	+=
+fixup-fuloong2e.o ops-loongson2.o
+arch/mips/loongson/Platform:load-$(CONFIG_LEMOTE_FULOONG2E) +=
+0xffffffff80100000
+arch/mips/loongson/Kconfig:config LEMOTE_FULOONG2E
+arch/mips/loongson/Makefile:obj-$(CONFIG_LEMOTE_FULOONG2E)  += fuloong-2e/
+
+$ grep LEMOTE_MACH2F -ur arch/mips/
+arch/mips/include/asm/mach-loongson/machine.h:/* use fuloong2f as the
+default machine of LEMOTE_MACH2F */
+arch/mips/include/asm/mach-loongson/machine.h:#ifdef CONFIG_LEMOTE_MACH2F
+arch/mips/configs/lemote2f_defconfig:CONFIG_LEMOTE_MACH2F=y
+arch/mips/pci/Makefile:obj-$(CONFIG_LEMOTE_MACH2F)	+= fixup-lemote2f.o
+ops-loongson2.o
+arch/mips/loongson/Platform:load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
+arch/mips/loongson/Kconfig:config LEMOTE_MACH2F
+arch/mips/loongson/Makefile:obj-$(CONFIG_LEMOTE_MACH2F)  += lemote-2f/
+
+Best Regards,
+Wu Zhangjin
+
+On 8/25/11, Andreas Barth <aba@not.so.argh.org> wrote:
 > This patch starts to merge the Loongson 2E and 2F code together with the
 > goal to produce a binary kernel image that can run on both machines. As
 > code compiled for 2E cannot run on 2F and vice versa, the usage of cpu
@@ -51,63 +115,93 @@ On Thu, Aug 25, 2011 at 4:00 AM, Andreas Barth <aba@not.so.argh.org> wrote:
 > while compiling on a 2E machine (disabled there by default).
 >
 > Signed-off-by: Andreas Barth <aba@not.so.argh.org>
-
-I think we can simplify this a bit. How about something like what I've
-attached? (I didn't touch the load location stuff)
-
-Thanks,
-Matt
-
---20cf307f32606d3a0304ab5d0593
-Content-Type: text/x-patch; charset=US-ASCII; 
-	name="0001-mips-loongson-unify-compiler-flags.patch"
-Content-Disposition: attachment; 
-	filename="0001-mips-loongson-unify-compiler-flags.patch"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_grsdpy4n0
-
-RnJvbSA1ODcyOGFlOThhMDBkMDMyY2MzNjdjYWZiNzk0MDBmMDI0YTM2YmFlIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBNYXR0IFR1cm5lciA8bWF0dHN0ODhAZ21haWwuY29tPgpEYXRl
-OiBUaHUsIDI1IEF1ZyAyMDExIDE5OjM5OjQzIC0wNDAwClN1YmplY3Q6IFtQQVRDSF0gbWlwcy9s
-b29uZ3NvbjogdW5pZnkgY29tcGlsZXIgZmxhZ3MKClRoaXMgcGF0Y2ggc3RhcnRzIHRvIG1lcmdl
-IHRoZSBMb29uZ3NvbiAyRSBhbmQgMkYgY29kZSB0b2dldGhlciB3aXRoIHRoZQpnb2FsIHRvIHBy
-b2R1Y2UgYSBiaW5hcnkga2VybmVsIGltYWdlIHRoYXQgY2FuIHJ1biBvbiBib3RoIG1hY2hpbmVz
-LiBBcwpjb2RlIGNvbXBpbGVkIGZvciAyRSBjYW5ub3QgcnVuIG9uIDJGIGFuZCB2aWNlIHZlcnNh
-LCB0aGUgdXNhZ2Ugb2YgQ1BVCmRlcGVuZGVudCBjb2RlIGlzIG9wdGlvbmFsIG5vdyAoYW5kIG9s
-ZCBiZWhhdmlvdXIgaXMgZGVmYXVsdCkuCgpTaWduZWQtb2ZmLWJ5OiBNYXR0IFR1cm5lciA8bWF0
-dHN0ODhAZ21haWwuY29tPgotLS0KIGFyY2gvbWlwcy9LY29uZmlnICAgICAgICAgICB8ICAgMTIg
-KysrKysrKysrKy0tCiBhcmNoL21pcHMvbG9vbmdzb24vUGxhdGZvcm0gfCAgIDE0ICsrKysrKysr
-KysrKy0tCiAyIGZpbGVzIGNoYW5nZWQsIDIyIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL0tjb25maWcgYi9hcmNoL21pcHMvS2NvbmZpZwppbmRl
-eCAxNzdjZGFmLi42ZmY2ODEzIDEwMDY0NAotLS0gYS9hcmNoL21pcHMvS2NvbmZpZworKysgYi9h
-cmNoL21pcHMvS2NvbmZpZwpAQCAtMTE2Niw2ICsxMTY2LDE0IEBAIGNob2ljZQogCXByb21wdCAi
-Q1BVIHR5cGUiCiAJZGVmYXVsdCBDUFVfUjRYMDAKIAorY29uZmlnIENQVV9MT09OR1NPTjJfR0VO
-RVJJQworCWJvb2wgIkxvb25nc29uIDIgKGdlbmVyaWMpIgorCWRlcGVuZHMgb24gU1lTX0hBU19D
-UFVfTE9PTkdTT04yRSB8fCBTWVNfSEFTX0xPT05HU09OMkYKKwlzZWxlY3QgQ1BVX0xPT05HU09O
-MgorCWhlbHAKKwkgIFRoZSBMb29uZ3NvbiAyIHByb2Nlc3NvciBpbXBsZW1lbnRzIHRoZSBNSVBT
-IElJSSBpbnN0cnVjdGlvbiBzZXQKKwkgIHdpdGggbWFueSBleHRlbnNpb25zLgorCiBjb25maWcg
-Q1BVX0xPT05HU09OMkUKIAlib29sICJMb29uZ3NvbiAyRSIKIAlkZXBlbmRzIG9uIFNZU19IQVNf
-Q1BVX0xPT05HU09OMkUKQEAgLTE0NzUsNyArMTQ4Myw3IEBAIGNvbmZpZyBDUFVfWExSCiAJICBO
-ZXRsb2dpYyBNaWNyb3N5c3RlbXMgWExSL1hMUyBwcm9jZXNzb3JzLgogZW5kY2hvaWNlCiAKLWlm
-IENQVV9MT09OR1NPTjJGCitpZiBDUFVfTE9PTkdTT04yCiBjb25maWcgQ1BVX05PUF9XT1JLQVJP
-VU5EUwogCWJvb2wKIApAQCAtMTUwMCw3ICsxNTA4LDcgQEAgY29uZmlnIENQVV9MT09OR1NPTjJG
-X1dPUktBUk9VTkRTCiAJICBzeXN0ZW1zLgogCiAJICBJZiB1bnN1cmUsIHBsZWFzZSBzYXkgWS4K
-LWVuZGlmICMgQ1BVX0xPT05HU09OMkYKK2VuZGlmICMgQ1BVX0xPT05HU09OMgogCiBjb25maWcg
-U1lTX1NVUFBPUlRTX1pCT09UCiAJYm9vbApkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2xvb25nc29u
-L1BsYXRmb3JtIGIvYXJjaC9taXBzL2xvb25nc29uL1BsYXRmb3JtCmluZGV4IDI5NjkyZTUuLjRh
-MTRlMzkgMTAwNjQ0Ci0tLSBhL2FyY2gvbWlwcy9sb29uZ3Nvbi9QbGF0Zm9ybQorKysgYi9hcmNo
-L21pcHMvbG9vbmdzb24vUGxhdGZvcm0KQEAgLTQsMTAgKzQsMjAgQEAKIAogIyBPbmx5IGdjYyA+
-PSA0LjQgaGF2ZSBMb29uZ3NvbiBzcGVjaWZpYyBzdXBwb3J0CiBjZmxhZ3MtJChDT05GSUdfQ1BV
-X0xPT05HU09OMikJKz0gLVdhLC0tdHJhcAotY2ZsYWdzLSQoQ09ORklHX0NQVV9MT09OR1NPTjJF
-KSArPSBcCitpZmRlZiBDT05GSUdfQ1BVX0xPT05HU09OMkUKKyAgY2ZsYWdzLSQoQ09ORklHX0NQ
-VV9MT09OR1NPTjJFKSArPSBcCiAJJChjYWxsIGNjLW9wdGlvbiwtbWFyY2g9bG9vbmdzb24yZSwt
-bWFyY2g9cjQ2MDApCi1jZmxhZ3MtJChDT05GSUdfQ1BVX0xPT05HU09OMkYpICs9IFwKK2Vsc2UK
-KyAgaWZkZWYgQ09ORklHX0NQVV9MT09OR1NPTjJGCisgICAgY2ZsYWdzLSQoQ09ORklHX0NQVV9M
-T09OR1NPTjJGKSArPSBcCiAJJChjYWxsIGNjLW9wdGlvbiwtbWFyY2g9bG9vbmdzb24yZiwtbWFy
-Y2g9cjQ2MDApCisgIGVsc2UKKyAgICBpZmRlZiBDT05GSUdfQ1BVX0xPT05HU09OCisgICAgICBj
-ZmxhZ3MtJChDT05GSUdfQ1BVX0xPT05HU09OMikgKz0gXAorCSQoY2FsbCBjYy1vcHRpb24sLW1h
-cmNoPXI0NjAwKQorICAgIGVuZGlmCisgIGVuZGlmCitlbmRpZgogIyBFbmFibGUgdGhlIHdvcmth
-cm91bmRzIGZvciBMb29uZ3NvbjJmCiBpZmRlZiBDT05GSUdfQ1BVX0xPT05HU09OMkZfV09SS0FS
-T1VORFMKICAgaWZlcSAoJChjYWxsIGFzLW9wdGlvbiwtV2EkKGNvbW1hKS1tZml4LWxvb25nc29u
-MmYtbm9wLCksKQotLSAKMS43LjMuNAoK
---20cf307f32606d3a0304ab5d0593--
+> ---
+>  arch/mips/Kconfig           |   22 +++++++++++++++++++---
+>  arch/mips/loongson/Platform |   15 +++++++++++----
+>  2 files changed, 30 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index b122adc..b7b65fb 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -1481,7 +1481,7 @@ config CPU_XLR
+>  	  Netlogic Microsystems XLR/XLS processors.
+>  endchoice
+>
+> -if CPU_LOONGSON2F
+> +if CPU_LOONGSON2
+>  config CPU_NOP_WORKAROUNDS
+>  	bool
+>
+> @@ -1490,7 +1490,7 @@ config CPU_JUMP_WORKAROUNDS
+>
+>  config CPU_LOONGSON2F_WORKAROUNDS
+>  	bool "Loongson 2F Workarounds"
+> -	default y
+> +	default y if !CPU_LOONGSON2E
+>  	select CPU_NOP_WORKAROUNDS
+>  	select CPU_JUMP_WORKAROUNDS
+>  	help
+> @@ -1506,7 +1506,23 @@ config CPU_LOONGSON2F_WORKAROUNDS
+>  	  systems.
+>
+>  	  If unsure, please say Y.
+> -endif # CPU_LOONGSON2F
+> +
+> +config CPU_LOONGSON2E_CODE
+> +	bool "Loongson 2E-only code"
+> +        default y
+> +	depends on SYS_HAS_CPU_LOONGSON2E
+> +        help
+> +          Compile with Loongson 2E specific compiler options. This prevents
+> +          the kernel to run on other cpus.
+> +
+> +config CPU_LOONGSON2F_CODE
+> +	bool "Loongson 2F-only code"
+> +        default y
+> +	depends on SYS_HAS_CPU_LOONGSON2F
+> +        help
+> +          Compile with Loongson 2F specific compiler options. This prevents
+> +          the kernel to run on other cpus.
+> +endif # CPU_LOONGSON2
+>
+>  config SYS_SUPPORTS_ZBOOT
+>  	bool
+> diff --git a/arch/mips/loongson/Platform b/arch/mips/loongson/Platform
+> index 29692e5..df52393 100644
+> --- a/arch/mips/loongson/Platform
+> +++ b/arch/mips/loongson/Platform
+> @@ -4,10 +4,18 @@
+>
+>  # Only gcc >= 4.4 have Loongson specific support
+>  cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
+> -cflags-$(CONFIG_CPU_LOONGSON2E) += \
+> +ifdef CONFIG_CPU_LOONGSON2E_CODE
+> +    cflags-$(CONFIG_CPU_LOONGSON2) += \
+>  	$(call cc-option,-march=loongson2e,-march=r4600)
+> -cflags-$(CONFIG_CPU_LOONGSON2F) += \
+> +else
+> +  ifdef CONFIG_CPU_LOONGSON2F_CODE
+> +    cflags-$(CONFIG_CPU_LOONGSON2) += \
+>  	$(call cc-option,-march=loongson2f,-march=r4600)
+> +  else
+> +    cflags-$(CONFIG_CPU_LOONGSON2) += \
+> +	$(call cc-option,-march=r4600)
+> +  endif
+> +endif
+>  # Enable the workarounds for Loongson2f
+>  ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
+>    ifeq ($(call as-option,-Wa$(comma)-mfix-loongson2f-nop,),)
+> @@ -28,5 +36,4 @@ endif
+>
+>  platform-$(CONFIG_MACH_LOONGSON) += loongson/
+>  cflags-$(CONFIG_MACH_LOONGSON) +=
+> -I$(srctree)/arch/mips/include/asm/mach-loongson -mno-branch-likely
+> -load-$(CONFIG_LEMOTE_FULOONG2E) += 0xffffffff80100000
+> -load-$(CONFIG_LEMOTE_MACH2F) += 0xffffffff80200000
+> +load-$(CONFIG_MACH_LOONGSON) += 0xffffffff80200000
+> --
+> 1.5.6.5
+>
+>
+>

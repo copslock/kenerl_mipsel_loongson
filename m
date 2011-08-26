@@ -1,57 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2011 09:45:15 +0200 (CEST)
-Received: from alius.ayous.org ([78.46.213.165]:34574 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2011 11:07:37 +0200 (CEST)
+Received: from dns1.mips.com ([12.201.5.69]:36082 "EHLO dns1.mips.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491099Ab1HZHpM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 26 Aug 2011 09:45:12 +0200
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1Qwr6F-00031L-IC; Fri, 26 Aug 2011 07:45:11 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1Qwr69-0003sS-UK; Fri, 26 Aug 2011 09:45:05 +0200
-Date:   Fri, 26 Aug 2011 09:45:05 +0200
-From:   Andreas Barth <aba@not.so.argh.org>
-To:     Matt Turner <mattst88@gmail.com>
-Cc:     linux-mips@linux-mips.org, debian-mips@lists.debian.org
-Subject: Re: [PATCH] mips/loongson: unify compiler flags and load location
-        for Loongson 2E and 2F
-Message-ID: <20110826074505.GB32219@mails.so.argh.org>
-Mail-Followup-To: Andreas Barth <aba@not.so.argh.org>,
-        Matt Turner <mattst88@gmail.com>, linux-mips@linux-mips.org,
-        debian-mips@lists.debian.org
-References: <20110821010513.GZ2657@mails.so.argh.org> <20110825080054.GA10459@mails.so.argh.org> <CAEdQ38Ft-okTSUxhXXkZPhr1z46b480CtBu+LtVRcyQLACS3tA@mail.gmail.com>
+        id S1491831Ab1HZJHa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 26 Aug 2011 11:07:30 +0200
+Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id p7Q97JoW032185;
+        Fri, 26 Aug 2011 02:07:20 -0700
+Received: from fun-lab.MIPSCN.CEC (192.168.225.107) by exchhub01.mips.com
+ (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Fri, 26 Aug 2011
+ 02:07:17 -0700
+From:   Deng-Cheng Zhu <dczhu@mips.com>
+To:     <jbarnes@virtuousgeek.org>, <ralf@linux-mips.org>
+CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@linux-mips.org>, <eyal@mips.com>, <zenon@mips.com>,
+        <dczhu@mips.com>, <dengcheng.zhu@gmail.com>
+Subject: [PATCH v3 0/2] Pass resources to pci_create_bus() and fix MIPS PCI resources
+Date:   Fri, 26 Aug 2011 17:07:11 +0800
+Message-ID: <1314349633-13155-1-git-send-email-dczhu@mips.com>
+X-Mailer: git-send-email 1.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEdQ38Ft-okTSUxhXXkZPhr1z46b480CtBu+LtVRcyQLACS3tA@mail.gmail.com>
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 30996
+Content-Type: text/plain
+X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+X-EMS-STAMP: 6vaRRshF+VYJxN0Yg14/2A==
+X-archive-position: 30997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@not.so.argh.org
+X-original-sender: dczhu@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19665
+X-UID: 19724
 
-* Matt Turner (mattst88@gmail.com) [110826 01:45]:
-> I think we can simplify this a bit. How about something like what I've
-> attached? (I didn't touch the load location stuff)
+Change the pci_create_bus() interface to pass in available resources to get them
+settled down early. This is to avoid possible resource conflicts while doing
+pci_scan_slot() in pci_scan_child_bus(). Note that pcibios_fixup_bus() can get
+rid of such conflicts, but it's done AFTER scanning slots.
 
-I thought about that as well before sending in the patch.
+In addition, MIPS PCI resources are now fixed using this new interface.
 
-As I want to remove the "I'm building for this machine now"-stuff
-as far as possible, a CPU_LOONGSON2_GENERIC-option needs to either
-depend on exactly one machine being selected, or some way to specify
-which machine should be builded for.
+-- Changes --
+v3 - v2:
+o Do not do fixups for root buses in pcibios_fixup_bus().
+o Skip bus creation when bus resources cannot be allocated.
+o PCI domain/bus numbers added to the error info in controller_resources().
 
-Not too important now, but I wanted to avoid touching this part later
-on again.
+v2 - v1:
+o Merge [PATCH 1/3] to [PATCH 3/3], so now 2 patches in total.
+o Add more info to patch description.
+o Fix arch breaks in default resource setup discovered by Bjorn Helgaas.
 
+Deng-Cheng Zhu (2):
+  PCI: Pass available resources into pci_create_bus()
+  MIPS: PCI: Pass controller's resources to pci_create_bus() in
+    pcibios_scanbus()
 
-Andi
+ arch/microblaze/pci/pci-common.c |    3 +-
+ arch/mips/pci/pci.c              |   61 +++++++++++++++++++++++++++++++++-----
+ arch/powerpc/kernel/pci-common.c |    3 +-
+ arch/sparc/kernel/pci.c          |    3 +-
+ arch/x86/pci/acpi.c              |    2 +-
+ drivers/pci/probe.c              |   15 +++++++--
+ include/linux/pci.h              |    3 +-
+ 7 files changed, 73 insertions(+), 17 deletions(-)

@@ -1,62 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Aug 2011 18:05:21 +0200 (CEST)
-Received: from mv-drv-hcb003.ocn.ad.jp ([118.23.109.133]:33279 "EHLO
-        mv-drv-hcb003.ocn.ad.jp" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493808Ab1HZQFQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 26 Aug 2011 18:05:16 +0200
-Received: from vcmba.ocn.ne.jp (localhost.localdomain [127.0.0.1])
-        by mv-drv-hcb003.ocn.ad.jp (Postfix) with ESMTP id BBDEE56421D;
-        Sat, 27 Aug 2011 01:05:11 +0900 (JST)
-Received: from localhost (softbank221040169135.bbtec.net [221.40.169.135])
-        by vcmba.ocn.ne.jp (Postfix) with ESMTP;
-        Sat, 27 Aug 2011 01:05:11 +0900 (JST)
-Date:   Sat, 27 Aug 2011 01:05:06 +0900 (JST)
-Message-Id: <20110827.010506.17266154.anemo@mba.ocn.ne.jp>
-To:     mattst88@gmail.com
-Cc:     johnstul@us.ibm.com, linux-mips@linux-mips.org,
-        rtc-linux@googlegroups.com, a.zummo@towertech.it
-Subject: Re: select() to /dev/rtc0 to wait for clock tick timed out
-From:   Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <CAEdQ38G7csFL61Ye1h-3Jszh2nDHytm1ms0rS4nGBC1E0QEfzQ@mail.gmail.com>
-References: <1313788912.2970.152.camel@work-vm>
-        <CAEdQ38Gg2FWJNacoa51+=eu8JQRr2mSA7jCjosOGbv8FKPFDpw@mail.gmail.com>
-        <CAEdQ38G7csFL61Ye1h-3Jszh2nDHytm1ms0rS4nGBC1E0QEfzQ@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net:11371/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 6.3 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31001
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Aug 2011 03:39:06 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:2762 "EHLO
+        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
+        by eddie.linux-mips.org with ESMTP id S1493831Ab1H0BjD convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 27 Aug 2011 03:39:03 +0200
+X-TM-IMSS-Message-ID: <6eecd1b600018288@netlogicmicro.com>
+Received: from orion8.netlogicmicro.com ([10.10.16.60]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 6eecd1b600018288 ; Fri, 26 Aug 2011 18:37:03 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Subject: How to chip->startup() with IRQs disabled
+Date:   Fri, 26 Aug 2011 18:39:17 -0700
+Message-ID: <74B0AE1BA53C37449DE49BB274F9A2DBC4D052@orion8.netlogicmicro.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: How to chip->startup() with IRQs disabled
+Thread-Index: AcxkWiI2j/+0JnnlT7KeKap/xgfTRQ==
+From:   "Om Narasimhan" <onarasimhan@netlogicmicro.com>
+To:     <linux-mips@linux-mips.org>
+X-archive-position: 31002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: onarasimhan@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20077
+X-UID: 20445
 
-On Thu, 25 Aug 2011 13:30:02 -0400, Matt Turner <mattst88@gmail.com> wrote:
-> I looked through the datasheet and tried to find a place where we're
-> doing something wrong in the driver, but I didn't see anything.
-> 
-> http://www.datasheetcatalog.com/datasheets_pdf/M/4/1/T/M41T80.shtml
+Hi,
+I am working on a chip with multiple cores. I have defined 
+static struct irq_chip new_plat_chip = {
+...
+	.startup = n_irq_startup,
+	.mask = n_irq_shutdown,
+...
+};
 
-Excuse me for slow response.
+In n_irq_startup(), I have to make sure that all cores have set RVEC bit and corresponding EIMR bit. So, I try using on_each_cpu() (because EIMR can be set only by running code on that particular cpu) to run a function to set EIMR.
 
-As you and John discovered, this driver do not support alarm
-completely.  This driver just can set/read alarm date/time, but RTC
-interrupt is not implemented yet.
+n_irq_startup() is called as chip->startup() from __setup_irq() (from request_threaded_irq, in turn from request_irq() ) with a spin lock held (desc->lock, in kernel/irq/manage.c).  This causes a stack dump from on_each_cpu(). Since it is wrong to call on_each_cpu with interrupts disabled, I want to change this piece of code.
 
-So possible solutions would be:
+I am wondering how other SMP mips system implement this. Any comments or pointers will be helpful.
 
-* Implement RTC irq handler. (Now we have threaded-irq so it would be
-easier than the past)
-* Drop .set_alarm function. (i.e. drop whole alarm codes)
+I am not in the mailing list, please CC me in replies.
 
-I cannot test this driver by myself, but I will take a look if you had
-any fix.  Thank you.
-
----
-Atsushi Nemoto
+Om.

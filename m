@@ -1,40 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2011 01:53:39 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:10239 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491754Ab1H2Xxd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Aug 2011 01:53:33 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e5c26bc0000>; Mon, 29 Aug 2011 16:54:36 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 29 Aug 2011 16:53:26 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 29 Aug 2011 16:53:25 -0700
-Message-ID: <4E5C2673.3070406@cavium.com>
-Date:   Mon, 29 Aug 2011 16:53:23 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Aug 2011 01:56:02 +0200 (CEST)
+Received: from gateway06.websitewelcome.com ([67.18.44.20]:46755 "HELO
+        gateway06.websitewelcome.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by eddie.linux-mips.org with SMTP id S1491754Ab1H2Xzz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 30 Aug 2011 01:55:55 +0200
+Received: (qmail 11800 invoked from network); 29 Aug 2011 23:56:18 -0000
+Received: from ham.websitewelcome.com (HELO ham01.websitewelcome.com) (173.192.111.52)
+  by gateway06.websitewelcome.com with SMTP; 29 Aug 2011 23:56:18 -0000
+Received: by ham01.websitewelcome.com (Postfix, from userid 666)
+        id 96C1CA85E662B; Mon, 29 Aug 2011 18:55:06 -0500 (CDT)
+Received: from gator750.hostgator.com (gator750.hostgator.com [174.132.194.2])
+        by ham01.websitewelcome.com (Postfix) with ESMTP id 69684A85E65DA
+        for <linux-mips@linux-mips.org>; Mon, 29 Aug 2011 18:55:06 -0500 (CDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
+        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:X-Enigmail-Version:Content-Type:Content-Transfer-Encoding:X-BWhitelist:X-Source:X-Source-Args:X-Source-Dir:X-Source-Sender:X-Source-Auth:X-Email-Count:X-Source-Cap;
+        b=HwJKOTdh6/SNmN9quYpmhXgcfBFpzci0X1q240yDgnXGvm3vhezO2bfGdMD5jFFnmYM4/ZkBPauVHAnJGvGhrnCzSdmxU2wKyCJcy9/hAhBbFLeXw18VjipEdy1SMj1d;
+Received: from [216.239.45.4] (port=13350 helo=kkissell.mtv.corp.google.com)
+        by gator750.hostgator.com with esmtpa (Exim 4.69)
+        (envelope-from <kevink@paralogos.com>)
+        id 1QyBfO-0005vP-Tz; Mon, 29 Aug 2011 18:54:59 -0500
+Message-ID: <4E5C26D4.3000906@paralogos.com>
+Date:   Mon, 29 Aug 2011 16:55:00 -0700
+From:   "Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.18) Gecko/20110617 Thunderbird/3.1.11
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <david.daney@cavium.com>
 CC:     "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        linux-mips@linux-mips.org
+        linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: [PATCH] MIPS: SMTC: Correct saving of CP0_STATUS
 References: <20110829232029.GA15763@zapo> <4E5C2490.6040203@cavium.com>
 In-Reply-To: <4E5C2490.6040203@cavium.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+X-Enigmail-Version: 1.1.2
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 29 Aug 2011 23:53:26.0005 (UTC) FILETIME=[D7EBA250:01CC66A6]
-X-archive-position: 31010
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator750.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+X-BWhitelist: no
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 216-239-45-4.google.com (kkissell.mtv.corp.google.com) [216.239.45.4]:13350
+X-Source-Auth: kevink@kevink.net
+X-Email-Count: 2
+X-Source-Cap: a2tpc3NlbGw7a2tpc3NlbGw7Z2F0b3I3NTAuaG9zdGdhdG9yLmNvbQ==
+X-archive-position: 31011
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21960
+X-UID: 21962
 
-On 08/29/2011 04:45 PM, David Daney wrote:
+I submitted that exact patch (David's more minimal version) in December
+2010 (and I did test it).  Did it not take?  See the thread "SMTC
+support status in latest git head".  The patch went out on December 24
+(why I was spending my Christmas Eve fixing MIPS Linux is another
+question... :op )
+
+            Kevin K.
+
+On 08/29/11 16:45, David Daney wrote:
 > On 08/29/2011 04:20 PM, Edgar E. Iglesias wrote:
 >> Hi,
 >>
@@ -56,45 +86,4 @@ On 08/29/2011 04:45 PM, David Daney wrote:
 >
 > How about the attached completely untested one instead?
 >
-
-Ralf,
-
-I didn't mean to imply that Edgar's patch was not correct, it seems 
-likely that it is.  Really either approach is fine with me.
-
-David Daney.
-
-.
-.
-.
-
->
->  From d0035295ae34bcf84d601b1e25e2642fe0802752 Mon Sep 17 00:00:00 2001
-> From: David Daney<david.daney@cavium.com>
-> Date: Mon, 29 Aug 2011 16:42:12 -0700
-> Subject: [PATCH] MIPS: Don't clobber CP0_STATUS vaue for CONFIG_MIPS_MT_SMTC
->
-> Untested, but it looks nice.
->
-> Reported-by: Edgar E. Iglesias<edgar.iglesias@gmail.com>
-> Signed-off-by: David Daney<david.daney@cavium.com>
-> ---
->   arch/mips/include/asm/stackframe.h |    4 ++--
->   1 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-> index 569681e..51a3a0c 100644
-> --- a/arch/mips/include/asm/stackframe.h
-> +++ b/arch/mips/include/asm/stackframe.h
-> @@ -195,9 +195,9 @@
->   		 * to cover the pipeline delay.
->   		 */
->   		.set	mips32
-> -		mfc0	v1, CP0_TCSTATUS
-> +		mfc0	k0, CP0_TCSTATUS
->   		.set	mips0
-> -		LONG_S	v1, PT_TCSTATUS(sp)
-> +		LONG_S	k0, PT_TCSTATUS(sp)
->   #endif /* CONFIG_MIPS_MT_SMTC */
->   		LONG_S	$4, PT_R4(sp)
->   		LONG_S	$5, PT_R5(sp)
+> David Daney

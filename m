@@ -1,14 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2011 20:46:20 +0200 (CEST)
-Received: from exchange.solarflare.com ([216.237.3.220]:16994 "EHLO
-        exchange.solarflare.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491088Ab1IBSqP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2011 20:46:15 +0200
-Received: from [10.17.20.137] ([10.17.20.137]) by exchange.solarflare.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 2 Sep 2011 11:46:07 -0700
-Subject: Re: [patch net-next-2.6 v2] net: consolidate and fix
- ethtool_ops->get_settings calling
-From:   Ben Hutchings <bhutchings@solarflare.com>
-To:     Jiri Pirko <jpirko@redhat.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2011 22:43:34 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:18215 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491090Ab1IBUn1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Sep 2011 22:43:27 +0200
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id p82Kgi9i026887
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Fri, 2 Sep 2011 16:42:45 -0400
+Received: from localhost ([10.3.113.8])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id p82KgfVd021649;
+        Fri, 2 Sep 2011 16:42:42 -0400
+Date:   Fri, 2 Sep 2011 22:42:41 +0200
+From:   Jiri Pirko <jpirko@redhat.com>
+To:     Ben Hutchings <bhutchings@solarflare.com>
 Cc:     netdev@vger.kernel.org, ralf@linux-mips.org, fubar@us.ibm.com,
         andy@greyhouse.net, kaber@trash.net, bprakash@broadcom.com,
         JBottomley@parallels.com, robert.w.love@intel.com,
@@ -20,50 +24,55 @@ Cc:     netdev@vger.kernel.org, ralf@linux-mips.org, fubar@us.ibm.com,
         xiaosuo@gmail.com, greearb@candelatech.com, loke.chetan@gmail.com,
         linux-mips@linux-mips.org, linux-scsi@vger.kernel.org,
         devel@open-fcoe.org, bridge@lists.linux-foundation.org
-In-Reply-To: <20110902122630.GC1991@minipsycho>
+Subject: Re: [patch net-next-2.6 v2] net: consolidate and fix
+ ethtool_ops->get_settings calling
+Message-ID: <20110902204239.GA14802@minipsycho>
 References: <1314905304-16485-1-git-send-email-jpirko@redhat.com>
-         <20110902122630.GC1991@minipsycho>
-Content-Type: text/plain; charset="UTF-8"
-Organization: Solarflare Communications
-Date:   Fri, 02 Sep 2011 19:46:01 +0100
-Message-ID: <1314989161.3419.5.camel@bwh-desktop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.2 (2.32.2-1.fc14) 
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 02 Sep 2011 18:46:07.0494 (UTC) FILETIME=[935D2260:01CC69A0]
-X-TM-AS-Product-Ver: SMEX-8.0.0.1181-6.500.1024-18360.005
-X-TM-AS-Result: No--7.381000-0.000000-31
-X-TM-AS-User-Approved-Sender: Yes
-X-TM-AS-User-Blocked-Sender: No
-X-archive-position: 31033
+ <20110902122630.GC1991@minipsycho>
+ <1314989161.3419.5.camel@bwh-desktop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1314989161.3419.5.camel@bwh-desktop>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-archive-position: 31034
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhutchings@solarflare.com
+X-original-sender: jpirko@redhat.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 1592
+X-UID: 1678
 
-On Fri, 2011-09-02 at 14:26 +0200, Jiri Pirko wrote:
-> This patch does several things:
-> - introduces __ethtool_get_settings which is called from ethtool code and
->   from dev_ethtool_get_settings() as well.
-> - dev_ethtool_get_settings() becomes rtnl wrapper for
->   __ethtool_get_settings()
-[...]
+Fri, Sep 02, 2011 at 08:46:01PM CEST, bhutchings@solarflare.com wrote:
+>On Fri, 2011-09-02 at 14:26 +0200, Jiri Pirko wrote:
+>> This patch does several things:
+>> - introduces __ethtool_get_settings which is called from ethtool code and
+>>   from dev_ethtool_get_settings() as well.
+>> - dev_ethtool_get_settings() becomes rtnl wrapper for
+>>   __ethtool_get_settings()
+>[...]
+>
+>I don't like this locking change.  Most other dev_*() functions require
+>the caller to hold RTNL, and it will break any OOT module calling
+>dev_ethtool_get_settings() without producing any warning at compile
+>time.  Why not put an ASSERT_RTNL() in it instead?
 
-I don't like this locking change.  Most other dev_*() functions require
-the caller to hold RTNL, and it will break any OOT module calling
-dev_ethtool_get_settings() without producing any warning at compile
-time.  Why not put an ASSERT_RTNL() in it instead?
+Hmm. Okay, then I would remove dev_ethtool_get_settings() from
+net/core/dev.c and only put __ethtool_get_settings() to
+net/core/ethtool.c. Makes more sense to me to have it there...
+ASSERT_RTNL woudl be good there as well.
 
-The rest of this looks fine.
-
-Ben. 
-
--- 
-Ben Hutchings, Staff Engineer, Solarflare
-Not speaking for my employer; that's the marketing department's job.
-They asked us to note that Solarflare product names are trademarked.
+>
+>The rest of this looks fine.
+>
+>Ben. 
+>
+>-- 
+>Ben Hutchings, Staff Engineer, Solarflare
+>Not speaking for my employer; that's the marketing department's job.
+>They asked us to note that Solarflare product names are trademarked.
+>

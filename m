@@ -1,157 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Sep 2011 04:58:23 +0200 (CEST)
-Received: from dns1.mips.com ([12.201.5.69]:48744 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491890Ab1IAC6D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 1 Sep 2011 04:58:03 +0200
-Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id p812n24m000541;
-        Wed, 31 Aug 2011 19:49:03 -0700
-Received: from fun-lab.MIPSCN.CEC (192.168.225.107) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Wed, 31 Aug 2011
- 19:48:56 -0700
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-To:     <bhelgaas@google.com>, <jbarnes@virtuousgeek.org>,
-        <ralf@linux-mips.org>, <monstr@monstr.eu>,
-        <benh@kernel.crashing.org>, <paulus@samba.org>,
-        <davem@davemloft.net>, <tglx@linutronix.de>, <mingo@redhat.com>,
-        <hpa@zytor.com>, <x86@kernel.org>
-CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <eyal@mips.com>, <zenon@mips.com>,
-        <dczhu@mips.com>, <dengcheng.zhu@gmail.com>
-Subject: [RESEND PATCH v3 2/2] MIPS: PCI: Pass controller's resources to pci_create_bus() in pcibios_scanbus()
-Date:   Thu, 1 Sep 2011 10:48:29 +0800
-Message-ID: <1314845309-3277-3-git-send-email-dczhu@mips.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1314845309-3277-1-git-send-email-dczhu@mips.com>
-References: <1314845309-3277-1-git-send-email-dczhu@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2011 09:59:24 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:58683 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490992Ab1IBH7U (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Sep 2011 09:59:20 +0200
+Received: by fxd20 with SMTP id 20so1798038fxd.36
+        for <linux-mips@linux-mips.org>; Fri, 02 Sep 2011 00:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=mHqstqRTAWTzu2fjAbDGWwiw6Sw8P1gx3cnBNZF0tbg=;
+        b=Q12WRuL1ohCS/mK+ejUIJphhZab4e/gdJx219eAcW4ZzXGsEa/gCqHksZUwSXMEKDC
+         rV0GkfuMfY8/P9j1sYQ/oCSxg7XKXISB6l43hpwl4c7D6/GA4XWGxY5C+ktzYAhygJd5
+         qIMX46CokCWT/xsWpABA6B2rfZNLHo5hxCwg0=
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: 5zCUfjbrjzhoRWDYSfwuqQ==
-X-archive-position: 31027
+Received: by 10.223.87.204 with SMTP id x12mr1303121fal.27.1314950354931; Fri,
+ 02 Sep 2011 00:59:14 -0700 (PDT)
+Received: by 10.223.83.203 with HTTP; Fri, 2 Sep 2011 00:59:14 -0700 (PDT)
+Date:   Fri, 2 Sep 2011 13:29:14 +0530
+Message-ID: <CAFsuBjWNqi_eE=_1OCFbM5sNdf-46jOfV3Kkk7gCLXifK=_J9g@mail.gmail.com>
+Subject: MIPS:Octeon: mailbox_interrupt is not registered as per cpu
+From:   SAURABH MALPANI <saurabh140585@gmail.com>
+To:     linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=001517447e8ecd907804abf0bc78
+X-archive-position: 31028
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: saurabh140585@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 141
+X-UID: 1103
 
-Use the new interface of pci_create_bus() so that system controller's
-resources are added to the root bus upon bus creation, thereby avoiding
-conflicts with PCI quirks before pcibios_fixup_bus() gets the chance to do
-right things in pci_scan_child_bus().
+--001517447e8ecd907804abf0bc78
+Content-Type: text/plain; charset=UTF-8
 
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Deng-Cheng Zhu <dczhu@mips.com>
----
-Changes (v3 - v2):
-o Do not do fixups for root buses in pcibios_fixup_bus().
-o Skip bus creation when bus resources cannot be allocated.
-o PCI domain/bus numbers added to the error info in controller_resources().
-o Patch description modified according to the changes above.
+mailbox_interrupt is not registered with IRQF_PERCPU but it is supposed to
+be percpu interrupt. Is that on purpose or a miss? I am porting some code
+from x86 to octeon which requires special handling for per cpu interrupts.
 
-Changes (v2 - v1):
-o Merge [PATCH 1/3] to [PATCH 3/3] of v1.
-o Add more info to patch description.
+void octeon_prepare_cpus(unsigned int max_cpus)
+{
+        cvmx_write_csr(CVMX_CIU_MBOX_CLRX(cvmx_get_core_num()), 0xffffffff);
+        if (request_irq(OCTEON_IRQ_MBOX0, mailbox_interrupt, IRQF_DISABLED,
+                        "mailbox0", mailbox_interrupt)) {
+                panic("Cannot request_irq(OCTEON_IRQ_MBOX0)\n");
+        }
+        if (request_irq(OCTEON_IRQ_MBOX1, mailbox_interrupt, IRQF_DISABLED,
+                        "mailbox1", mailbox_interrupt)) {
+                panic("Cannot request_irq(OCTEON_IRQ_MBOX1)\n");
+        }
+}
 
- arch/mips/pci/pci.c |   61 ++++++++++++++++++++++++++++++++++++++++++++------
- 1 files changed, 53 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 33bba7b..c76fb30 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -76,11 +76,42 @@ pcibios_align_resource(void *data, const struct resource *res,
- 	return start;
- }
- 
-+static struct pci_bus_resource *
-+controller_resources(const struct pci_controller *ctrl, int domain, int busno)
-+{
-+	struct pci_bus_resource *mem_res, *io_res;
-+
-+	mem_res = kzalloc(sizeof(struct pci_bus_resource), GFP_KERNEL);
-+	if (!mem_res)
-+		goto err_out;
-+
-+	mem_res->res = ctrl->mem_resource;
-+	mem_res->flags = 0;
-+	INIT_LIST_HEAD(&mem_res->list);
-+
-+	io_res = kzalloc(sizeof(struct pci_bus_resource), GFP_KERNEL);
-+	if (!io_res) {
-+		kfree(mem_res);
-+		goto err_out;
-+	}
-+
-+	io_res->res = ctrl->io_resource;
-+	io_res->flags = 0;
-+	list_add(&io_res->list, &mem_res->list);
-+
-+	return mem_res;
-+err_out:
-+	printk(KERN_ERR "PCI bus %04x:%02x: Can't allocate bus resource.\n",
-+		domain, busno);
-+	return NULL;
-+}
-+
- static void __devinit pcibios_scanbus(struct pci_controller *hose)
- {
- 	static int next_busno;
- 	static int need_domain_info;
--	struct pci_bus *bus;
-+	struct pci_bus *bus = NULL;
-+	struct pci_bus_resource *bus_res;
- 
- 	if (!hose->iommu)
- 		PCI_DMA_BUS_IS_PHYS = 1;
-@@ -88,7 +119,22 @@ static void __devinit pcibios_scanbus(struct pci_controller *hose)
- 	if (hose->get_busno && pci_probe_only)
- 		next_busno = (*hose->get_busno)();
- 
--	bus = pci_scan_bus(next_busno, hose->pci_ops, hose);
-+	bus_res = controller_resources(hose, hose->index, next_busno);
-+	if (bus_res) {
-+		bus = pci_create_bus(NULL, next_busno, hose->pci_ops,
-+				     hose, bus_res);
-+		if (bus) {
-+			bus->subordinate = pci_scan_child_bus(bus);
-+			pci_bus_add_devices(bus);
-+		} else {
-+			/* io_resource */
-+			kfree(list_first_entry(&bus_res->list,
-+				struct pci_bus_resource, list));
-+			/* mem_resource */
-+			kfree(bus_res);
-+		}
-+	}
-+
- 	hose->bus = bus;
- 
- 	need_domain_info = need_domain_info || hose->index;
-@@ -265,15 +311,14 @@ void __devinit pcibios_fixup_bus(struct pci_bus *bus)
- {
- 	/* Propagate hose info into the subordinate devices.  */
- 
--	struct pci_controller *hose = bus->sysdata;
- 	struct list_head *ln;
- 	struct pci_dev *dev = bus->self;
- 
--	if (!dev) {
--		bus->resource[0] = hose->io_resource;
--		bus->resource[1] = hose->mem_resource;
--	} else if (pci_probe_only &&
--		   (dev->class >> 8) == PCI_CLASS_BRIDGE_PCI) {
-+	/*
-+	 * Root bus resources should already be set up correctly in
-+	 * pci_create_bus(), so don't do fixups for it.
-+	 */
-+	if (pci_probe_only && (dev->class >> 8) == PCI_CLASS_BRIDGE_PCI) {
- 		pci_read_bridge_bases(bus);
- 		pcibios_fixup_device_resources(dev, bus);
- 	}
 -- 
-1.7.1
+Saurabh
+
+--001517447e8ecd907804abf0bc78
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+mailbox_interrupt is not registered with IRQF_PERCPU but it is supposed to =
+be percpu interrupt. Is that on purpose or a miss? I am porting some code f=
+rom x86 to octeon which requires special handling for per cpu interrupts.=
+=C2=A0<div>
+<br></div><div><div>void octeon_prepare_cpus(unsigned int max_cpus)</div><d=
+iv>{</div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 cvmx_write_csr(CVMX_CIU_MBOX_CLR=
+X(cvmx_get_core_num()), 0xffffffff);</div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+if (request_irq(OCTEON_IRQ_MBOX0, mailbox_interrupt, IRQF_DISABLED,</div>
+<div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 &quot;mailbox0&quot;, mailbox_interrupt)) {</div><div>=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 panic(&quot;Cannot request=
+_irq(OCTEON_IRQ_MBOX0)\n&quot;);</div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 }</d=
+iv><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (request_irq(OCTEON_IRQ_MBOX1, mailb=
+ox_interrupt, IRQF_DISABLED,</div>
+<div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 &quot;mailbox1&quot;, mailbox_interrupt)) {</div><div>=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 panic(&quot;Cannot request=
+_irq(OCTEON_IRQ_MBOX1)\n&quot;);</div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 }</d=
+iv><div>}</div><div><br></div><div><br></div>
+-- <br>Saurabh <br>
+</div>
+
+--001517447e8ecd907804abf0bc78--

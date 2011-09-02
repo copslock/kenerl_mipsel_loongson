@@ -1,15 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2011 12:31:35 +0200 (CEST)
-Received: from mx1.redhat.com ([209.132.183.28]:53894 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Sep 2011 14:26:56 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:49892 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491019Ab1IBKbZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 2 Sep 2011 12:31:25 +0200
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id p82AUdaT018239
+        id S1491024Ab1IBM0r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 2 Sep 2011 14:26:47 +0200
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id p82CQY22022028
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Fri, 2 Sep 2011 06:30:40 -0400
+        Fri, 2 Sep 2011 08:26:34 -0400
 Received: from localhost ([10.3.113.8])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id p82AUYqL006208;
-        Fri, 2 Sep 2011 06:30:35 -0400
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id p82CQVtf029152;
+        Fri, 2 Sep 2011 08:26:32 -0400
+Date:   Fri, 2 Sep 2011 14:26:30 +0200
 From:   Jiri Pirko <jpirko@redhat.com>
 To:     netdev@vger.kernel.org
 Cc:     ralf@linux-mips.org, fubar@us.ibm.com, andy@greyhouse.net,
@@ -23,11 +24,17 @@ Cc:     ralf@linux-mips.org, fubar@us.ibm.com, andy@greyhouse.net,
         xiaosuo@gmail.com, greearb@candelatech.com, loke.chetan@gmail.com,
         linux-mips@linux-mips.org, linux-scsi@vger.kernel.org,
         devel@open-fcoe.org, bridge@lists.linux-foundation.org
-Subject: [patch net-next-2.6] net: consolidate and fix ethtool_ops->get_settings calling
-Date:   Thu,  1 Sep 2011 21:28:24 +0200
-Message-Id: <1314905304-16485-1-git-send-email-jpirko@redhat.com>
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
-X-archive-position: 31029
+Subject: [patch net-next-2.6 v2] net: consolidate and fix
+ ethtool_ops->get_settings calling
+Message-ID: <20110902122630.GC1991@minipsycho>
+References: <1314905304-16485-1-git-send-email-jpirko@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1314905304-16485-1-git-send-email-jpirko@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-archive-position: 31030
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,7 +43,7 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 742
+X-UID: 1282
 
 This patch does several things:
 - introduces __ethtool_get_settings which is called from ethtool code and
@@ -50,10 +57,13 @@ This patch does several things:
   so bnx2fc_if_create() and fcoe_if_create() are called locked as they
   are from other places.
 - prb_calc_retire_blk_tmo() in af_packet.c was not calling get_settings
-  with rtnl_lock. So use dev_ethtool_get_settings here.
+  with rntl_lock. So use dev_ethtool_get_settings here.
 - use __ethtool_get_settings() in bonding code
 
 Signed-off-by: Jiri Pirko <jpirko@redhat.com>
+
+v1->v2:
+	add missing export_symbol 
 ---
  arch/mips/txx9/generic/setup_tx4939.c |    2 +-
  drivers/net/bonding/bond_main.c       |   13 ++++------
@@ -64,10 +74,10 @@ Signed-off-by: Jiri Pirko <jpirko@redhat.com>
  net/8021q/vlan_dev.c                  |    3 +-
  net/bridge/br_if.c                    |    2 +-
  net/core/dev.c                        |   17 +++++---------
- net/core/ethtool.c                    |   17 +++++++++----
+ net/core/ethtool.c                    |   18 ++++++++++----
  net/core/net-sysfs.c                  |    4 +-
  net/packet/af_packet.c                |   41 +++++++++++++++-----------------
- 12 files changed, 59 insertions(+), 54 deletions(-)
+ 12 files changed, 60 insertions(+), 54 deletions(-)
 
 diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
 index e9f95dc..ba3cec3 100644
@@ -263,10 +273,10 @@ index 11b0fc7..abdc0e3 100644
  EXPORT_SYMBOL(dev_ethtool_get_settings);
  
 diff --git a/net/core/ethtool.c b/net/core/ethtool.c
-index 6cdba5f..94326d4 100644
+index 6cdba5f..307297c 100644
 --- a/net/core/ethtool.c
 +++ b/net/core/ethtool.c
-@@ -569,15 +569,22 @@ int __ethtool_set_flags(struct net_device *dev, u32 data)
+@@ -569,15 +569,23 @@ int __ethtool_set_flags(struct net_device *dev, u32 data)
  	return 0;
  }
  
@@ -279,6 +289,7 @@ index 6cdba5f..94326d4 100644
 +	cmd->cmd = ETHTOOL_GSET;
 +	return dev->ethtool_ops->get_settings(dev, cmd);
 +}
++EXPORT_SYMBOL(__ethtool_get_settings);
 +
  static int ethtool_get_settings(struct net_device *dev, void __user *useraddr)
  {

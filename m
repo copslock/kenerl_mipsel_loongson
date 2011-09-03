@@ -1,531 +1,441 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Sep 2011 10:31:01 +0200 (CEST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:10951 "EHLO
-        services.gcu-squad.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491103Ab1ICIa4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 3 Sep 2011 10:30:56 +0200
-Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=endymion.delvare)
-        by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1QzmnN-0004T2-Rb
-        (TLSv1:AES128-SHA:128)
-        (envelope-from <khali@linux-fr.org>)
-        ; Sat, 03 Sep 2011 11:45:50 +0200
-Date:   Sat, 3 Sep 2011 10:30:36 +0200
-From:   Jean Delvare <khali@linux-fr.org>
-To:     Matt Turner <mattst88@gmail.com>
-Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Guenter Roeck <guenter.roeck@ericsson.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [PATCH] I2C: SiByte: Convert the driver to make use of
- interrupts
-Message-ID: <20110903103036.161616a5@endymion.delvare>
-In-Reply-To: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
-References: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
-X-Mailer: Claws Mail 3.7.5 (GTK+ 2.20.1; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31035
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Sep 2011 15:35:00 +0200 (CEST)
+Received: from mx1.redhat.com ([209.132.183.28]:2963 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491002Ab1ICNeu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 3 Sep 2011 15:34:50 +0200
+Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id p83DYZCD019866
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Sat, 3 Sep 2011 09:34:36 -0400
+Received: from localhost ([10.3.113.8])
+        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with ESMTP id p83DYVmK000464;
+        Sat, 3 Sep 2011 09:34:32 -0400
+Date:   Sat, 3 Sep 2011 15:34:30 +0200
+From:   Jiri Pirko <jpirko@redhat.com>
+To:     Ben Hutchings <bhutchings@solarflare.com>
+Cc:     netdev@vger.kernel.org, ralf@linux-mips.org, fubar@us.ibm.com,
+        andy@greyhouse.net, kaber@trash.net, bprakash@broadcom.com,
+        JBottomley@parallels.com, robert.w.love@intel.com,
+        davem@davemloft.net, shemminger@linux-foundation.org,
+        decot@google.com, mirq-linux@rere.qmqm.pl,
+        alexander.h.duyck@intel.com, amit.salecha@qlogic.com,
+        eric.dumazet@gmail.com, therbert@google.com,
+        paulmck@linux.vnet.ibm.com, laijs@cn.fujitsu.com,
+        xiaosuo@gmail.com, greearb@candelatech.com, loke.chetan@gmail.com,
+        linux-mips@linux-mips.org, linux-scsi@vger.kernel.org,
+        devel@open-fcoe.org, bridge@lists.linux-foundation.org
+Subject: [patch net-next-2.6 v3] net: consolidate and fix
+ ethtool_ops->get_settings calling
+Message-ID: <20110903133428.GA2821@minipsycho>
+References: <1314905304-16485-1-git-send-email-jpirko@redhat.com>
+ <20110902122630.GC1991@minipsycho>
+ <1314989161.3419.5.camel@bwh-desktop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1314989161.3419.5.camel@bwh-desktop>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
+X-archive-position: 31036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: jpirko@redhat.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
+X-Keywords:                  
+X-UID: 1886
 
-Hi Matt,
+This patch does several things:
+- introduces __ethtool_get_settings which is called from ethtool code and
+  from drivers as well. Put ASSERT_RTNL there.
+- dev_ethtool_get_settings() is replaced by __ethtool_get_settings()
+- changes calling in drivers so rtnl locking is respected. In
+  iboe_get_rate was previously ->get_settings() called unlocked. This
+  fixes it. Also prb_calc_retire_blk_tmo() in af_packet.c had the same
+  problem. Also fixed by calling __dev_get_by_index() instead of
+  dev_get_by_index() and holding rtnl_lock for both calls.
+- introduces rtnl_lock in bnx2fc_vport_create() and fcoe_vport_create()
+  so bnx2fc_if_create() and fcoe_if_create() are called locked as they
+  are from other places.
+- use __ethtool_get_settings() in bonding code
 
-On Thu, 18 Aug 2011 19:43:11 -0400, Matt Turner wrote:
-> From: Maciej W. Rozycki <macro@linux-mips.org>
-> 
-> This is a rewrite of large parts of the driver mainly so that it uses
-> SMBus interrupts to offload the CPU from busy-waiting on status inputs.
-> As a part of the overhaul of the init and exit calls, all accesses to the
-> hardware got converted to use accessory functions via an ioremap() cookie.
+Signed-off-by: Jiri Pirko <jpirko@redhat.com>
 
-This could have been split into incremental patches, to make review
-easier.
+v2->v3:
+	-removed dev_ethtool_get_settings()
+	-added ASSERT_RTNL into __ethtool_get_settings()
+	-prb_calc_retire_blk_tmo - use __dev_get_by_index() and lock
+	 around it and __ethtool_get_settings() call
+v1->v2:
+        add missing export_symbol 
+ 
+---
+ arch/mips/txx9/generic/setup_tx4939.c |    2 +-
+ drivers/net/bonding/bond_main.c       |   13 +++-----
+ drivers/net/macvlan.c                 |    3 +-
+ drivers/scsi/bnx2fc/bnx2fc_fcoe.c     |    4 ++-
+ drivers/scsi/fcoe/fcoe.c              |    4 ++-
+ include/linux/ethtool.h               |    3 ++
+ include/linux/netdevice.h             |    3 --
+ include/rdma/ib_addr.h                |    6 +++-
+ net/8021q/vlan_dev.c                  |    3 +-
+ net/bridge/br_if.c                    |    2 +-
+ net/core/dev.c                        |   24 ---------------
+ net/core/ethtool.c                    |   20 +++++++++---
+ net/core/net-sysfs.c                  |    4 +-
+ net/packet/af_packet.c                |   52 +++++++++++++++++----------------
+ 14 files changed, 69 insertions(+), 74 deletions(-)
 
-> [mattst88] Added BCM1480 interrupts and rebased minimally.
-
-Ditto.
-
-checkpatch complains about this, please fix:
-
-WARNING: line over 80 characters
-#257: FILE: drivers/i2c/busses/i2c-sibyte.c:157:
-+	if (adap->status > 0 && ((adap->status & (M_SMB_ERROR | M_SMB_ERROR_TYPE)) == M_SMB_ERROR)) {
-
-Very nice patch overall, I only have minor comments, see below inline.
-
-> 
-> Signed-off-by: Matt Turner <mattst88@gmail.com>
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> ---
-> This is the second version of this patch that I've sent. This version
-> fixes the problem with the ENXIO return.
-> 
->  drivers/i2c/busses/i2c-sibyte.c |  296 +++++++++++++++++++++++++++++---------
->  1 files changed, 226 insertions(+), 70 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-sibyte.c b/drivers/i2c/busses/i2c-sibyte.c
-> index 0fe505d..d2f1cf1 100644
-> --- a/drivers/i2c/busses/i2c-sibyte.c
-> +++ b/drivers/i2c/busses/i2c-sibyte.c
-> @@ -2,6 +2,7 @@
->   * Copyright (C) 2004 Steven J. Hill
->   * Copyright (C) 2001,2002,2003 Broadcom Corporation
->   * Copyright (C) 1995-2000 Simon G. Vogl
-> + * Copyright (C) 2008 Maciej W. Rozycki
-
-Wow, looks like this patch has been sleeping for quite some time...
-
->   *
->   * This program is free software; you can redistribute it and/or
->   * modify it under the terms of the GNU General Public License
-> @@ -18,104 +19,164 @@
->   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
->   */
->  
-> +#include <linux/errno.h>
-> +#include <linux/interrupt.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/init.h>
->  #include <linux/i2c.h>
-> +#include <linux/param.h>
-> +#include <linux/spinlock.h>
-> +#include <linux/types.h>
-> +#include <linux/wait.h>
->  #include <linux/io.h>
-> +#include <asm/sibyte/sb1250_int.h>
->  #include <asm/sibyte/sb1250_regs.h>
->  #include <asm/sibyte/sb1250_smbus.h>
-> +#include <asm/sibyte/bcm1480_int.h>
->  
->  
->  struct i2c_algo_sibyte_data {
-> -	void *data;		/* private data */
-> -	int   bus;		/* which bus */
-> -	void *reg_base;		/* CSR base */
-> +	wait_queue_head_t	wait;		/* IRQ queue */
-> +	void __iomem		*csr;		/* mapped CSR handle */
-> +	phys_t			base;		/* physical CSR base */
-> +	char			*name;		/* IRQ handler name */
-
-Should be a const pointer. Also, if the name is only for the IRQ, then
-irq_name would be a better name.
-
-> +	spinlock_t		lock;		/* atomiser */
-
-A more useful comment would explain what exactly is being protected by
-the lock.
-
-> +	int			irq;		/* IRQ line */
-> +	int			status;		/* IRQ status */
-
-You could document than -1 means error.
-
->  };
->  
-> -/* ----- global defines ----------------------------------------------- */
-> -#define SMB_CSR(a,r) ((long)(a->reg_base + r))
->  
-> +static irqreturn_t i2c_sibyte_interrupt(int irq, void *dev_id)
-> +{
-> +	struct i2c_adapter *i2c_adap = dev_id;
-> +	struct i2c_algo_sibyte_data *adap = i2c_adap->algo_data;
-> +	void __iomem *csr = adap->csr;
-> +	u8 status;
-> +
-> +	/*
-> +	 * Ugh, no way to detect the finish interrupt,
-> +	 * but if busy it is obviously not one.
-> +	 */
-> +	status = __raw_readq(csr + R_SMB_STATUS);
-> +	if ((status & (M_SMB_ERROR | M_SMB_BUSY)) == M_SMB_BUSY)
-> +		return IRQ_NONE;
-> +
-> +	/*
-> +	 * Clear the error interrupt (write 1 to clear);
-> +	 * the finish interrupt was cleared by the read above.
-> +	 */
-> +	__raw_writeq(status, csr + R_SMB_STATUS);
-> +
-> +	/* Post the status. */
-> +	spin_lock(&adap->lock);
-> +	adap->status = status & (M_SMB_ERROR_TYPE | M_SMB_ERROR | M_SMB_BUSY);
-> +	wake_up(&adap->wait);
-> +	spin_unlock(&adap->lock);
-> +
-> +	return IRQ_HANDLED;
-> +}
->  
-> -static int smbus_xfer(struct i2c_adapter *i2c_adap, u16 addr,
-> -		      unsigned short flags, char read_write,
-> -		      u8 command, int size, union i2c_smbus_data * data)
-> +static s32 i2c_sibyte_smbus_xfer(struct i2c_adapter *i2c_adap, u16 addr,
-> +				 unsigned short cflags,
-> +				 char read_write, u8 command, int size,
-> +				 union i2c_smbus_data *data)
->  {
->  	struct i2c_algo_sibyte_data *adap = i2c_adap->algo_data;
-> +	void __iomem *csr = adap->csr;
-> +	unsigned long flags;
->  	int data_bytes = 0;
->  	int error;
->  
-> -	while (csr_in32(SMB_CSR(adap, R_SMB_STATUS)) & M_SMB_BUSY)
-> -		;
-> +	spin_lock_irqsave(&adap->lock, flags);
-> +
-> +	if (adap->status < 0) {
-> +		error = -EIO;
-> +		goto out_unlock;
-> +	}
-
-Well, this can only happen if the previous transaction ended up with a
-failure, right? This means that a single error will break the SMBus
-forever. Is there no way to reset the controller to a sane state if
-this happens?
-
->  
->  	switch (size) {
->  	case I2C_SMBUS_QUICK:
-> -		csr_out32((V_SMB_ADDR(addr) |
-> -			   (read_write == I2C_SMBUS_READ ? M_SMB_QDATA : 0) |
-> -			   V_SMB_TT_QUICKCMD), SMB_CSR(adap, R_SMB_START));
-> +		__raw_writeq(V_SMB_ADDR(addr) |
-> +			     (read_write == I2C_SMBUS_READ ? M_SMB_QDATA : 0) |
-> +			     V_SMB_TT_QUICKCMD,
-> +			     csr + R_SMB_START);
->  		break;
->  	case I2C_SMBUS_BYTE:
->  		if (read_write == I2C_SMBUS_READ) {
-> -			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_RD1BYTE),
-> -				  SMB_CSR(adap, R_SMB_START));
-> +			__raw_writeq(V_SMB_ADDR(addr) | V_SMB_TT_RD1BYTE,
-> +				     csr + R_SMB_START);
->  			data_bytes = 1;
->  		} else {
-> -			csr_out32(V_SMB_CMD(command), SMB_CSR(adap, R_SMB_CMD));
-> -			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_WR1BYTE),
-> -				  SMB_CSR(adap, R_SMB_START));
-> +			__raw_writeq(V_SMB_CMD(command), csr + R_SMB_CMD);
-> +			__raw_writeq(V_SMB_ADDR(addr) | V_SMB_TT_WR1BYTE,
-> +				     csr + R_SMB_START);
->  		}
->  		break;
->  	case I2C_SMBUS_BYTE_DATA:
-> -		csr_out32(V_SMB_CMD(command), SMB_CSR(adap, R_SMB_CMD));
-> +		__raw_writeq(V_SMB_CMD(command), csr + R_SMB_CMD);
->  		if (read_write == I2C_SMBUS_READ) {
-> -			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_CMD_RD1BYTE),
-> -				  SMB_CSR(adap, R_SMB_START));
-> +			__raw_writeq(V_SMB_ADDR(addr) | V_SMB_TT_CMD_RD1BYTE,
-> +				     csr + R_SMB_START);
->  			data_bytes = 1;
->  		} else {
-> -			csr_out32(V_SMB_LB(data->byte),
-> -				  SMB_CSR(adap, R_SMB_DATA));
-> -			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_WR2BYTE),
-> -				  SMB_CSR(adap, R_SMB_START));
-> +			__raw_writeq(V_SMB_LB(data->byte), csr + R_SMB_DATA);
-> +			__raw_writeq(V_SMB_ADDR(addr) | V_SMB_TT_WR2BYTE,
-> +				     csr + R_SMB_START);
->  		}
->  		break;
->  	case I2C_SMBUS_WORD_DATA:
-> -		csr_out32(V_SMB_CMD(command), SMB_CSR(adap, R_SMB_CMD));
-> +		__raw_writeq(V_SMB_CMD(command), csr + R_SMB_CMD);
->  		if (read_write == I2C_SMBUS_READ) {
-> -			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_CMD_RD2BYTE),
-> -				  SMB_CSR(adap, R_SMB_START));
-> +			__raw_writeq(V_SMB_ADDR(addr) | V_SMB_TT_CMD_RD2BYTE,
-> +				     csr + R_SMB_START);
->  			data_bytes = 2;
->  		} else {
-> -			csr_out32(V_SMB_LB(data->word & 0xff),
-> -				  SMB_CSR(adap, R_SMB_DATA));
-> -			csr_out32(V_SMB_MB(data->word >> 8),
-> -				  SMB_CSR(adap, R_SMB_DATA));
-> -			csr_out32((V_SMB_ADDR(addr) | V_SMB_TT_WR2BYTE),
-> -				  SMB_CSR(adap, R_SMB_START));
-> +			__raw_writeq(V_SMB_LB(data->word & 0xff),
-> +				     csr + R_SMB_DATA);
-> +			__raw_writeq(V_SMB_MB(data->word >> 8),
-> +				     csr + R_SMB_DATA);
-> +			__raw_writeq(V_SMB_ADDR(addr) | V_SMB_TT_WR2BYTE,
-> +				     csr + R_SMB_START);
->  		}
->  		break;
->  	default:
-> -		return -EOPNOTSUPP;
-> +		error = -EOPNOTSUPP;
-> +		goto out_unlock;
->  	}
-> +	mmiowb();
-> +	__raw_readq(csr + R_SMB_START);
-> +	adap->status = -1;
-> +
-> +	spin_unlock_irqrestore(&adap->lock, flags);
->  
-> -	while (csr_in32(SMB_CSR(adap, R_SMB_STATUS)) & M_SMB_BUSY)
-> -		;
-> +	wait_event_timeout(adap->wait, (adap->status >= 0), HZ);
-
-1 second is a rather long timeout. The driver only supports small
-transactions, so even if a slave slows down the clock, I can hardly
-imagine a transaction lasting more that, say, 10 ms. So I think you can
-safely lower the timeout to HZ / 5 or even HZ / 10.
-
-Also, shouldn't you check the return value? This would let you return
-the right error code (-ETIMEDOUT according to
-Documentation/i2c/fault-codes) and you would no longer have to check
-for adap->status sign in the rest of the function.
-
->  
-> -	error = csr_in32(SMB_CSR(adap, R_SMB_STATUS));
-> -	if (error & M_SMB_ERROR) {
-> -		/* Clear error bit by writing a 1 */
-> -		csr_out32(M_SMB_ERROR, SMB_CSR(adap, R_SMB_STATUS));
-> -		return (error & M_SMB_ERROR_TYPE) ? -EIO : -ENXIO;
-> +	spin_lock_irqsave(&adap->lock, flags);
-> +
-> +	if (adap->status > 0 && ((adap->status & (M_SMB_ERROR | M_SMB_ERROR_TYPE)) == M_SMB_ERROR)) {
-> +		error = -ENXIO;
-> +		goto out_unlock;
-> +	}
-> +	if (adap->status < 0 || (adap->status & (M_SMB_ERROR | M_SMB_BUSY))) {
-> +		error = -EIO;
-> +		goto out_unlock;
->  	}
->  
->  	if (data_bytes == 1)
-> -		data->byte = csr_in32(SMB_CSR(adap, R_SMB_DATA)) & 0xff;
-> +		data->byte = __raw_readq(csr + R_SMB_DATA) & 0xff;
->  	if (data_bytes == 2)
-> -		data->word = csr_in32(SMB_CSR(adap, R_SMB_DATA)) & 0xffff;
-> +		data->word = __raw_readq(csr + R_SMB_DATA) & 0xffff;
->  
-> -	return 0;
-> +	error = 0;
-> +
-> +out_unlock:
-> +	spin_unlock_irqrestore(&adap->lock, flags);
-> +
-> +	return error;
->  }
->  
-> -static u32 bit_func(struct i2c_adapter *adap)
-> +static u32 i2c_sibyte_bit_func(struct i2c_adapter *adap)
-
-If you're renaming this then please drop the "bit" part in it, it's
-most likely coming from a copy-and-paste from i2c-algo-bit and has no
-meaning in the sibyte driver.
-
->  {
->  	return (I2C_FUNC_SMBUS_QUICK | I2C_FUNC_SMBUS_BYTE |
->  		I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA);
-> @@ -125,8 +186,8 @@ static u32 bit_func(struct i2c_adapter *adap)
->  /* -----exported algorithm data: -------------------------------------	*/
->  
->  static const struct i2c_algorithm i2c_sibyte_algo = {
-> -	.smbus_xfer	= smbus_xfer,
-> -	.functionality	= bit_func,
-> +	.smbus_xfer	= i2c_sibyte_smbus_xfer,
-> +	.functionality	= i2c_sibyte_bit_func,
->  };
->  
->  /*
-> @@ -135,37 +196,121 @@ static const struct i2c_algorithm i2c_sibyte_algo = {
->  static int __init i2c_sibyte_add_bus(struct i2c_adapter *i2c_adap, int speed)
->  {
->  	struct i2c_algo_sibyte_data *adap = i2c_adap->algo_data;
-> +	void __iomem *csr;
-> +	int err;
->  
-> -	/* Register new adapter to i2c module... */
-> -	i2c_adap->algo = &i2c_sibyte_algo;
-> +	adap->status = 0;
-> +	init_waitqueue_head(&adap->wait);
-> +	spin_lock_init(&adap->lock);
-> +
-> +	csr = ioremap(adap->base, R_SMB_PEC + SMB_REGISTER_SPACING);
-> +	if (!csr) {
-> +		err = -ENOMEM;
-> +		goto out;
-> +	}
-> +	adap->csr = csr;
->  
->  	/* Set the requested frequency. */
-> -	csr_out32(speed, SMB_CSR(adap,R_SMB_FREQ));
-> -	csr_out32(0, SMB_CSR(adap,R_SMB_CONTROL));
-> +	__raw_writeq(speed, csr + R_SMB_FREQ);
-> +
-> +	/* Clear any pending error interrupt. */
-> +	__raw_writeq(__raw_readq(csr + R_SMB_STATUS), csr + R_SMB_STATUS);
-> +	/* Disable interrupts. */
-> +	__raw_writeq(0, csr + R_SMB_CONTROL);
-> +	mmiowb();
-> +	__raw_readq(csr + R_SMB_CONTROL);
-
-Shouldn't it be the other way around, disable interrupts first and then
-clear any pending one? Looks racy otherwise, but maybe it makes no
-difference in practice.
-
-> +
-> +	err = request_irq(adap->irq, i2c_sibyte_interrupt, IRQF_SHARED,
-> +			  adap->name, i2c_adap);
-> +	if (err < 0)
-> +		goto out_unmap;
-> +
-> +	/* Enable finish and error interrupts. */
-> +	__raw_writeq(M_SMB_FINISH_INTR | M_SMB_ERR_INTR, csr + R_SMB_CONTROL);
-> +
-> +	/* Register new adapter to i2c module... */
-> +	err = i2c_add_numbered_adapter(i2c_adap);
-> +	if (err < 0)
-> +		goto out_unirq;
-> +
-> +	return 0;
->  
-> -	return i2c_add_numbered_adapter(i2c_adap);
-> +out_unirq:
-> +	/* Disable interrupts. */
-> +	__raw_writeq(0, csr + R_SMB_CONTROL);
-> +	mmiowb();
-> +	__raw_readq(csr + R_SMB_CONTROL);
-> +
-> +	free_irq(adap->irq, i2c_adap);
-> +
-> +	/* Clear any pending error interrupt. */
-> +	__raw_writeq(__raw_readq(csr + R_SMB_STATUS), csr + R_SMB_STATUS);
-
-You may consider moving this block to a separate function, as it is
-duplicated in the i2c_sibyte_remove_bus() function below.
-
-> +out_unmap:
-> +	iounmap(csr);
-> +out:
-> +	return err;
->  }
->  
-> +static void i2c_sibyte_remove_bus(struct i2c_adapter *i2c_adap)
-> +{
-> +	struct i2c_algo_sibyte_data *adap = i2c_adap->algo_data;
-> +	void __iomem *csr = adap->csr;
-> +
-> +	i2c_del_adapter(i2c_adap);
-> +
-> +	/* Disable interrupts. */
-> +	__raw_writeq(0, csr + R_SMB_CONTROL);
-> +	mmiowb();
-> +	__raw_readq(csr + R_SMB_CONTROL);
->  
-> -static struct i2c_algo_sibyte_data sibyte_board_data[2] = {
-> -	{ NULL, 0, (void *) (CKSEG1+A_SMB_BASE(0)) },
-> -	{ NULL, 1, (void *) (CKSEG1+A_SMB_BASE(1)) }
-> +	free_irq(adap->irq, i2c_adap);
-> +
-> +	/* Clear any pending error interrupt. */
-> +	__raw_writeq(__raw_readq(csr + R_SMB_STATUS), csr + R_SMB_STATUS);
-> +
-> +	iounmap(csr);
-> +}
-> +
-> +static struct i2c_algo_sibyte_data i2c_sibyte_board_data[2] = {
-> +#ifdef CONFIG_SIBYTE_SB1250
-> +	{
-> +		.name	= "sb1250-smbus-0",
-> +		.base	= A_SMB_0,
-> +		.irq	= K_INT_SMB_0,
-> +	},
-> +	{
-> +		.name	= "sb1250-smbus-1",
-> +		.base	= A_SMB_1,
-> +		.irq	= K_INT_SMB_1,
-> +	}
-> +#else
-> +	{
-> +		.name	= "bcm1480-smbus-0",
-> +		.base	= A_SMB_0,
-> +		.irq	= K_BCM1480_INT_SMB_0,
-> +	},
-> +	{
-> +		.name	= "bcm1480-smbus-1",
-> +		.base	= A_SMB_1,
-> +		.irq	= K_BCM1480_INT_SMB_1,
-> +	}
-> +#endif
->  };
->  
-> -static struct i2c_adapter sibyte_board_adapter[2] = {
-> +static struct i2c_adapter i2c_sibyte_board_adapter[2] = {
->  	{
->  		.owner		= THIS_MODULE,
->  		.class		= I2C_CLASS_HWMON | I2C_CLASS_SPD,
-> -		.algo		= NULL,
-> -		.algo_data	= &sibyte_board_data[0],
-> +		.algo		= &i2c_sibyte_algo,
-> +		.algo_data	= &i2c_sibyte_board_data[0],
->  		.nr		= 0,
->  		.name		= "SiByte SMBus 0",
->  	},
->  	{
->  		.owner		= THIS_MODULE,
->  		.class		= I2C_CLASS_HWMON | I2C_CLASS_SPD,
-> -		.algo		= NULL,
-> -		.algo_data	= &sibyte_board_data[1],
-> +		.algo		= &i2c_sibyte_algo,
-> +		.algo_data	= &i2c_sibyte_board_data[1],
->  		.nr		= 1,
->  		.name		= "SiByte SMBus 1",
->  	},
-> @@ -173,21 +318,32 @@ static struct i2c_adapter sibyte_board_adapter[2] = {
->  
->  static int __init i2c_sibyte_init(void)
->  {
-> +	int err;
-> +
->  	pr_info("i2c-sibyte: i2c SMBus adapter module for SiByte board\n");
-> -	if (i2c_sibyte_add_bus(&sibyte_board_adapter[0], K_SMB_FREQ_100KHZ) < 0)
-> -		return -ENODEV;
-> -	if (i2c_sibyte_add_bus(&sibyte_board_adapter[1],
-> -			       K_SMB_FREQ_400KHZ) < 0) {
-> -		i2c_del_adapter(&sibyte_board_adapter[0]);
-> -		return -ENODEV;
-> -	}
-> +
-> +	err = i2c_sibyte_add_bus(&i2c_sibyte_board_adapter[0],
-> +				 K_SMB_FREQ_100KHZ);
-> +	if (err < 0)
-> +		goto out;
-> +
-> +	err = i2c_sibyte_add_bus(&i2c_sibyte_board_adapter[1],
-> +				 K_SMB_FREQ_400KHZ);
-> +	if (err < 0)
-> +		goto out_remove;
-> +
->  	return 0;
-> +
-> +out_remove:
-> +	i2c_sibyte_remove_bus(&i2c_sibyte_board_adapter[0]);
-> +out:
-> +	return err;
->  }
->  
->  static void __exit i2c_sibyte_exit(void)
->  {
-> -	i2c_del_adapter(&sibyte_board_adapter[0]);
-> -	i2c_del_adapter(&sibyte_board_adapter[1]);
-> +	i2c_sibyte_remove_bus(&i2c_sibyte_board_adapter[1]);
-> +	i2c_sibyte_remove_bus(&i2c_sibyte_board_adapter[0]);
->  }
->  
->  module_init(i2c_sibyte_init);
-
-Please address my concerns where you agree and send an updated patch.
-
+diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
+index e9f95dc..ba3cec3 100644
+--- a/arch/mips/txx9/generic/setup_tx4939.c
++++ b/arch/mips/txx9/generic/setup_tx4939.c
+@@ -321,7 +321,7 @@ void __init tx4939_sio_init(unsigned int sclk, unsigned int cts_mask)
+ static u32 tx4939_get_eth_speed(struct net_device *dev)
+ {
+ 	struct ethtool_cmd cmd;
+-	if (dev_ethtool_get_settings(dev, &cmd))
++	if (__ethtool_get_settings(dev, &cmd))
+ 		return 100;	/* default 100Mbps */
+ 
+ 	return ethtool_cmd_speed(&cmd);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 8cb75a6..1dcb07c 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -557,7 +557,7 @@ down:
+ static int bond_update_speed_duplex(struct slave *slave)
+ {
+ 	struct net_device *slave_dev = slave->dev;
+-	struct ethtool_cmd etool = { .cmd = ETHTOOL_GSET };
++	struct ethtool_cmd ecmd;
+ 	u32 slave_speed;
+ 	int res;
+ 
+@@ -565,18 +565,15 @@ static int bond_update_speed_duplex(struct slave *slave)
+ 	slave->speed = SPEED_100;
+ 	slave->duplex = DUPLEX_FULL;
+ 
+-	if (!slave_dev->ethtool_ops || !slave_dev->ethtool_ops->get_settings)
+-		return -1;
+-
+-	res = slave_dev->ethtool_ops->get_settings(slave_dev, &etool);
++	res = __ethtool_get_settings(slave_dev, &ecmd);
+ 	if (res < 0)
+ 		return -1;
+ 
+-	slave_speed = ethtool_cmd_speed(&etool);
++	slave_speed = ethtool_cmd_speed(&ecmd);
+ 	if (slave_speed == 0 || slave_speed == ((__u32) -1))
+ 		return -1;
+ 
+-	switch (etool.duplex) {
++	switch (ecmd.duplex) {
+ 	case DUPLEX_FULL:
+ 	case DUPLEX_HALF:
+ 		break;
+@@ -585,7 +582,7 @@ static int bond_update_speed_duplex(struct slave *slave)
+ 	}
+ 
+ 	slave->speed = slave_speed;
+-	slave->duplex = etool.duplex;
++	slave->duplex = ecmd.duplex;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index 836e13f..b100c90 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -543,7 +543,8 @@ static int macvlan_ethtool_get_settings(struct net_device *dev,
+ 					struct ethtool_cmd *cmd)
+ {
+ 	const struct macvlan_dev *vlan = netdev_priv(dev);
+-	return dev_ethtool_get_settings(vlan->lowerdev, cmd);
++
++	return __ethtool_get_settings(vlan->lowerdev, cmd);
+ }
+ 
+ static const struct ethtool_ops macvlan_ethtool_ops = {
+diff --git a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
+index 2c780a7..820a184 100644
+--- a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
++++ b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
+@@ -673,7 +673,7 @@ static void bnx2fc_link_speed_update(struct fc_lport *lport)
+ 	struct net_device *netdev = interface->netdev;
+ 	struct ethtool_cmd ecmd;
+ 
+-	if (!dev_ethtool_get_settings(netdev, &ecmd)) {
++	if (!__ethtool_get_settings(netdev, &ecmd)) {
+ 		lport->link_supported_speeds &=
+ 			~(FC_PORTSPEED_1GBIT | FC_PORTSPEED_10GBIT);
+ 		if (ecmd.supported & (SUPPORTED_1000baseT_Half |
+@@ -1001,9 +1001,11 @@ static int bnx2fc_vport_create(struct fc_vport *vport, bool disabled)
+ 			"this interface\n");
+ 		return -EIO;
+ 	}
++	rtnl_lock();
+ 	mutex_lock(&bnx2fc_dev_lock);
+ 	vn_port = bnx2fc_if_create(interface, &vport->dev, 1);
+ 	mutex_unlock(&bnx2fc_dev_lock);
++	rtnl_unlock();
+ 
+ 	if (IS_ERR(vn_port)) {
+ 		printk(KERN_ERR PFX "bnx2fc_vport_create (%s) failed\n",
+diff --git a/drivers/scsi/fcoe/fcoe.c b/drivers/scsi/fcoe/fcoe.c
+index 3416ab6..83aa3ac 100644
+--- a/drivers/scsi/fcoe/fcoe.c
++++ b/drivers/scsi/fcoe/fcoe.c
+@@ -2043,7 +2043,7 @@ int fcoe_link_speed_update(struct fc_lport *lport)
+ 	struct net_device *netdev = fcoe_netdev(lport);
+ 	struct ethtool_cmd ecmd;
+ 
+-	if (!dev_ethtool_get_settings(netdev, &ecmd)) {
++	if (!__ethtool_get_settings(netdev, &ecmd)) {
+ 		lport->link_supported_speeds &=
+ 			~(FC_PORTSPEED_1GBIT | FC_PORTSPEED_10GBIT);
+ 		if (ecmd.supported & (SUPPORTED_1000baseT_Half |
+@@ -2452,7 +2452,9 @@ static int fcoe_vport_create(struct fc_vport *vport, bool disabled)
+ 	}
+ 
+ 	mutex_lock(&fcoe_config_mutex);
++	rtnl_lock();
+ 	vn_port = fcoe_if_create(fcoe, &vport->dev, 1);
++	rtnl_unlock();
+ 	mutex_unlock(&fcoe_config_mutex);
+ 
+ 	if (IS_ERR(vn_port)) {
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 3829712..8571f18 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -728,6 +728,9 @@ enum ethtool_sfeatures_retval_bits {
+ /* needed by dev_disable_lro() */
+ extern int __ethtool_set_flags(struct net_device *dev, u32 flags);
+ 
++extern int __ethtool_get_settings(struct net_device *dev,
++				  struct ethtool_cmd *cmd);
++
+ /**
+  * enum ethtool_phys_id_state - indicator state for physical identification
+  * @ETHTOOL_ID_INACTIVE: Physical ID indicator should be deactivated
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index dad7e4d..8b1080b 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2600,9 +2600,6 @@ static inline int netif_is_bond_slave(struct net_device *dev)
+ 
+ extern struct pernet_operations __net_initdata loopback_net_ops;
+ 
+-int dev_ethtool_get_settings(struct net_device *dev,
+-			     struct ethtool_cmd *cmd);
+-
+ static inline u32 dev_ethtool_get_rx_csum(struct net_device *dev)
+ {
+ 	if (dev->features & NETIF_F_RXCSUM)
+diff --git a/include/rdma/ib_addr.h b/include/rdma/ib_addr.h
+index ae8c68f..639a449 100644
+--- a/include/rdma/ib_addr.h
++++ b/include/rdma/ib_addr.h
+@@ -218,8 +218,12 @@ static inline int iboe_get_rate(struct net_device *dev)
+ {
+ 	struct ethtool_cmd cmd;
+ 	u32 speed;
++	int err;
+ 
+-	if (dev_ethtool_get_settings(dev, &cmd))
++	rtnl_lock();
++	err = __ethtool_get_settings(dev, &cmd);
++	rtnl_unlock();
++	if (err)
+ 		return IB_RATE_PORT_CURRENT;
+ 
+ 	speed = ethtool_cmd_speed(&cmd);
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index eba705b..c8cf939 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -610,7 +610,8 @@ static int vlan_ethtool_get_settings(struct net_device *dev,
+ 				     struct ethtool_cmd *cmd)
+ {
+ 	const struct vlan_dev_info *vlan = vlan_dev_info(dev);
+-	return dev_ethtool_get_settings(vlan->real_dev, cmd);
++
++	return __ethtool_get_settings(vlan->real_dev, cmd);
+ }
+ 
+ static void vlan_ethtool_get_drvinfo(struct net_device *dev,
+diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
+index b365bba..043a5eb 100644
+--- a/net/bridge/br_if.c
++++ b/net/bridge/br_if.c
+@@ -35,7 +35,7 @@ static int port_cost(struct net_device *dev)
+ {
+ 	struct ethtool_cmd ecmd;
+ 
+-	if (!dev_ethtool_get_settings(dev, &ecmd)) {
++	if (!__ethtool_get_settings(dev, &ecmd)) {
+ 		switch (ethtool_cmd_speed(&ecmd)) {
+ 		case SPEED_10000:
+ 			return 2;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 11b0fc7..94f3254 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4566,30 +4566,6 @@ void dev_set_rx_mode(struct net_device *dev)
+ }
+ 
+ /**
+- *	dev_ethtool_get_settings - call device's ethtool_ops::get_settings()
+- *	@dev: device
+- *	@cmd: memory area for ethtool_ops::get_settings() result
+- *
+- *      The cmd arg is initialized properly (cleared and
+- *      ethtool_cmd::cmd field set to ETHTOOL_GSET).
+- *
+- *	Return device's ethtool_ops::get_settings() result value or
+- *	-EOPNOTSUPP when device doesn't expose
+- *	ethtool_ops::get_settings() operation.
+- */
+-int dev_ethtool_get_settings(struct net_device *dev,
+-			     struct ethtool_cmd *cmd)
+-{
+-	if (!dev->ethtool_ops || !dev->ethtool_ops->get_settings)
+-		return -EOPNOTSUPP;
+-
+-	memset(cmd, 0, sizeof(struct ethtool_cmd));
+-	cmd->cmd = ETHTOOL_GSET;
+-	return dev->ethtool_ops->get_settings(dev, cmd);
+-}
+-EXPORT_SYMBOL(dev_ethtool_get_settings);
+-
+-/**
+  *	dev_get_flags - get flags reported to userspace
+  *	@dev: device
+  *
+diff --git a/net/core/ethtool.c b/net/core/ethtool.c
+index 6cdba5f..f444817 100644
+--- a/net/core/ethtool.c
++++ b/net/core/ethtool.c
+@@ -569,15 +569,25 @@ int __ethtool_set_flags(struct net_device *dev, u32 data)
+ 	return 0;
+ }
+ 
+-static int ethtool_get_settings(struct net_device *dev, void __user *useraddr)
++int __ethtool_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
+ {
+-	struct ethtool_cmd cmd = { .cmd = ETHTOOL_GSET };
+-	int err;
++	ASSERT_RTNL();
+ 
+-	if (!dev->ethtool_ops->get_settings)
++	if (!dev->ethtool_ops || !dev->ethtool_ops->get_settings)
+ 		return -EOPNOTSUPP;
+ 
+-	err = dev->ethtool_ops->get_settings(dev, &cmd);
++	memset(cmd, 0, sizeof(struct ethtool_cmd));
++	cmd->cmd = ETHTOOL_GSET;
++	return dev->ethtool_ops->get_settings(dev, cmd);
++}
++EXPORT_SYMBOL(__ethtool_get_settings);
++
++static int ethtool_get_settings(struct net_device *dev, void __user *useraddr)
++{
++	int err;
++	struct ethtool_cmd cmd;
++
++	err = __ethtool_get_settings(dev, &cmd);
+ 	if (err < 0)
+ 		return err;
+ 
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 90fdb46..48e6279 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -172,7 +172,7 @@ static ssize_t show_speed(struct device *dev,
+ 
+ 	if (netif_running(netdev)) {
+ 		struct ethtool_cmd cmd;
+-		if (!dev_ethtool_get_settings(netdev, &cmd))
++		if (!__ethtool_get_settings(netdev, &cmd))
+ 			ret = sprintf(buf, fmt_udec, ethtool_cmd_speed(&cmd));
+ 	}
+ 	rtnl_unlock();
+@@ -190,7 +190,7 @@ static ssize_t show_duplex(struct device *dev,
+ 
+ 	if (netif_running(netdev)) {
+ 		struct ethtool_cmd cmd;
+-		if (!dev_ethtool_get_settings(netdev, &cmd))
++		if (!__ethtool_get_settings(netdev, &cmd))
+ 			ret = sprintf(buf, "%s\n",
+ 				      cmd.duplex ? "full" : "half");
+ 	}
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 2ea3d63..25e68f5 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -530,33 +530,35 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
+ {
+ 	struct net_device *dev;
+ 	unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
++	struct ethtool_cmd ecmd;
++	int err;
+ 
+-	dev = dev_get_by_index(sock_net(&po->sk), po->ifindex);
+-	if (unlikely(dev == NULL))
++	rtnl_lock();
++	dev = __dev_get_by_index(sock_net(&po->sk), po->ifindex);
++	if (unlikely(!dev)) {
++		rtnl_unlock();
+ 		return DEFAULT_PRB_RETIRE_TOV;
+-
+-	if (dev->ethtool_ops && dev->ethtool_ops->get_settings) {
+-		struct ethtool_cmd ecmd = { .cmd = ETHTOOL_GSET, };
+-
+-		if (!dev->ethtool_ops->get_settings(dev, &ecmd)) {
+-			switch (ecmd.speed) {
+-			case SPEED_10000:
+-				msec = 1;
+-				div = 10000/1000;
+-				break;
+-			case SPEED_1000:
+-				msec = 1;
+-				div = 1000/1000;
+-				break;
+-			/*
+-			 * If the link speed is so slow you don't really
+-			 * need to worry about perf anyways
+-			 */
+-			case SPEED_100:
+-			case SPEED_10:
+-			default:
+-				return DEFAULT_PRB_RETIRE_TOV;
+-			}
++	}
++	err = __ethtool_get_settings(dev, &ecmd);
++	rtnl_unlock();
++	if (!err) {
++		switch (ecmd.speed) {
++		case SPEED_10000:
++			msec = 1;
++			div = 10000/1000;
++			break;
++		case SPEED_1000:
++			msec = 1;
++			div = 1000/1000;
++			break;
++		/*
++		 * If the link speed is so slow you don't really
++		 * need to worry about perf anyways
++		 */
++		case SPEED_100:
++		case SPEED_10:
++		default:
++			return DEFAULT_PRB_RETIRE_TOV;
+ 		}
+ 	}
+ 
 -- 
-Jean Delvare
+1.7.6

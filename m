@@ -1,105 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Sep 2011 21:17:14 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:12114 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491846Ab1IFTRJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Sep 2011 21:17:09 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e6671fc0000>; Tue, 06 Sep 2011 12:18:20 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 6 Sep 2011 12:17:08 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 6 Sep 2011 12:17:08 -0700
-Message-ID: <4E6671B0.4040603@cavium.com>
-Date:   Tue, 06 Sep 2011 12:17:04 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Sep 2011 21:22:09 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:39476 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491846Ab1IFTWE (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Sep 2011 21:22:04 +0200
+Received: by fxd20 with SMTP id 20so105701fxd.36
+        for <linux-mips@linux-mips.org>; Tue, 06 Sep 2011 12:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=aHESF7+hJosJoOMjGzH7rlLoe94+rBb/mSvjwexmE+4=;
+        b=aJbUX+GaP/dKZO/J1bNDtzWgXfz48GaYPr19hvLn9wAVc+jAS4a5sLMPSamY71+GR/
+         2HKEXU/aqOwyOZX5LCAUB7RVODpC7hmLAzMFihHBmUstL54aBYYbxBzyh/dSs2Q4T5yT
+         +5W+lbT376Jfz2rOqhvAzW+mQlpslpEc26r1I=
 MIME-Version: 1.0
-To:     SAURABH MALPANI <saurabh140585@gmail.com>
-CC:     linux-mips@linux-mips.org
+Received: by 10.223.47.67 with SMTP id m3mr393345faf.27.1315336919574; Tue, 06
+ Sep 2011 12:21:59 -0700 (PDT)
+Received: by 10.223.83.203 with HTTP; Tue, 6 Sep 2011 12:21:59 -0700 (PDT)
+In-Reply-To: <4E6671B0.4040603@cavium.com>
+References: <CAFsuBjW4XZy6x4gDL+0cw92jUbuEodF4vzCcCijQDize97wkNQ@mail.gmail.com>
+        <4E6668A4.8010300@cavium.com>
+        <CAFsuBjU_VnUPL+hpQV=m1HNJ6Fis38hyToOHBgROmiYYTEQHyQ@mail.gmail.com>
+        <4E6671B0.4040603@cavium.com>
+Date:   Wed, 7 Sep 2011 00:51:59 +0530
+Message-ID: <CAFsuBjXDsY6-==jYi2+CeYtynLfRPYbLaM7sK9WrEz31WVxb=A@mail.gmail.com>
 Subject: Re: MIPS: Octeon: mailbox_interrupt is not registered as per cpu
-References: <CAFsuBjW4XZy6x4gDL+0cw92jUbuEodF4vzCcCijQDize97wkNQ@mail.gmail.com>        <4E6668A4.8010300@cavium.com> <CAFsuBjU_VnUPL+hpQV=m1HNJ6Fis38hyToOHBgROmiYYTEQHyQ@mail.gmail.com>
-In-Reply-To: <CAFsuBjU_VnUPL+hpQV=m1HNJ6Fis38hyToOHBgROmiYYTEQHyQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 06 Sep 2011 19:17:08.0099 (UTC) FILETIME=[9205ED30:01CC6CC9]
-X-archive-position: 31049
+From:   SAURABH MALPANI <saurabh140585@gmail.com>
+To:     David Daney <david.daney@cavium.com>
+Cc:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 31050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: saurabh140585@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3419
+X-UID: 3422
 
-On 09/06/2011 12:02 PM, SAURABH MALPANI wrote:
-> Hi David,
->
-> Thanks a bunch for clarifying this. Just to complete, I have some code
-> which calls CHECK_IRQ_PER_CPU(desc->status) after every time a
-> descriptor is created for an irq. And based on it we create either per
-> cpu data structures or single data structure for that particular irq.
->
-> After your clarification, I can safely create exception for
-> OCTEON_IRQ_MBOX0 and OCTEON_IRQ_MBOX1 as you mention that missing the
-> flag is just cosmetic.
->
-
-Well the performance counter and timer interrupts may suffer in a 
-similar manner.
-
-David Daney
-
-
-> Thanks again
-> Saurabh
->
->
-> On Wed, Sep 7, 2011 at 12:08 AM, David Daney<david.daney@cavium.com>  wrote:
->> On 09/05/2011 03:23 AM, SAURABH MALPANI wrote:
->>>
->>> Hi,
->>>
->>> <Re sending this because last time I am afraid I didn't hit the
->>> correct mail filters.>
->>>
->>> Query:
->>>
->>> mailbox_interrupt is not registered with IRQF_PERCPU but it is
->>> supposed to be percpu interrupt. Is that on purpose or a miss?
+On Wed, Sep 7, 2011 at 12:47 AM, David Daney <david.daney@cavium.com> wrote:
+> On 09/06/2011 12:02 PM, SAURABH MALPANI wrote:
 >>
->> On Octeon the per-cpuness of a particular irq is a property of the irq
->> itself rather than being controlled by IRQF_PERCPU.  So other than being
->> perhaps stylistically in poor taste, no harm is done by omitting IRQF_PERCPU
->> here.
+>> Hi David,
 >>
->>> I am
->>> porting some code from x86 to octeon which requires special handling
->>> for per cpu interrupts.
->>>
->>>   void octeon_prepare_cpus(unsigned int max_cpus)
->>> {
->>>           cvmx_write_csr(CVMX_CIU_MBOX_CLRX(cvmx_get_core_num()),
->>> 0xffffffff);
->>>           if (request_irq(OCTEON_IRQ_MBOX0, mailbox_interrupt,
->>> IRQF_DISABLED,
->>>                           "mailbox0", mailbox_interrupt)) {
->>>                   panic("Cannot request_irq(OCTEON_IRQ_MBOX0)\n");
->>>           }
->>>           if (request_irq(OCTEON_IRQ_MBOX1, mailbox_interrupt,
->>> IRQF_DISABLED,
->>>                           "mailbox1", mailbox_interrupt)) {
->>>                   panic("Cannot request_irq(OCTEON_IRQ_MBOX1)\n");
->>>           }
->>> }
->>>
->>> --
->>> Saurabh
->>>
->>>
+>> Thanks a bunch for clarifying this. Just to complete, I have some code
+>> which calls CHECK_IRQ_PER_CPU(desc->status) after every time a
+>> descriptor is created for an irq. And based on it we create either per
+>> cpu data structures or single data structure for that particular irq.
 >>
+>> After your clarification, I can safely create exception for
+>> OCTEON_IRQ_MBOX0 and OCTEON_IRQ_MBOX1 as you mention that missing the
+>> flag is just cosmetic.
 >>
 >
+> Well the performance counter and timer interrupts may suffer in a similar
+> manner.
 >
+> David Daney
 >
+
+
+Since the timer interrupt is registered via the clock device
+infrastructure, I found that hrtimer_interrupt irq descriptor was
+indeed succeeding the CHECK_IRQ_PER_CPU test. So far in our testing we
+only hit an exception for mailbox interrupt.

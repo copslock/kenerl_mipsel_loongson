@@ -1,62 +1,261 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 00:29:10 +0200 (CEST)
-Received: from smtp-out-188.synserver.de ([212.40.185.188]:1073 "HELO
-        smtp-out-180.synserver.de" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with SMTP id S1491123Ab1IMW3D (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2011 00:29:03 +0200
-Received: (qmail 21905 invoked by uid 0); 13 Sep 2011 22:28:48 -0000
-X-SynServer-TrustedSrc: 1
-X-SynServer-AuthUser: lars@laprican.de
-X-SynServer-PPID: 21634
-Received: from e177164147.adsl.alicedsl.de (HELO lars-laptop.nons.lan) [85.177.164.147]
-  by 217.119.54.73 with SMTP; 13 Sep 2011 22:28:45 -0000
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        Maarten ter Huurne <maarten@treewalker.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] MIPS: JZ4740: GPIO: Use new name for generic ack function.
-Date:   Wed, 14 Sep 2011 00:28:30 +0200
-Message-Id: <1315952910-6485-1-git-send-email-lars@metafoo.de>
-X-Mailer: git-send-email 1.7.2.5
-X-archive-position: 31068
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 01:07:29 +0200 (CEST)
+Received: from gate.crashing.org ([63.228.1.57]:39372 "EHLO gate.crashing.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491116Ab1IMXHS convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2011 01:07:18 +0200
+Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id p8DN75TT022479;
+        Tue, 13 Sep 2011 18:07:07 -0500
+Subject: Re: [PATCH 2/3] netdev/of/phy: Add MDIO bus multiplexer support.
+Mime-Version: 1.0 (Apple Message framework v1244.3)
+Content-Type: text/plain; charset=us-ascii
+From:   Kumar Gala <galak@kernel.crashing.org>
+In-Reply-To: <1314820906-14004-3-git-send-email-david.daney@cavium.com>
+Date:   Tue, 13 Sep 2011 18:07:09 -0500
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <129FAAB3-C9AD-43F6-A8CB-96548A47C4DC@kernel.crashing.org>
+References: <1314820906-14004-1-git-send-email-david.daney@cavium.com> <1314820906-14004-3-git-send-email-david.daney@cavium.com>
+To:     David Daney <david.daney@cavium.com>
+X-Mailer: Apple Mail (2.1244.3)
+X-archive-position: 31069
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: galak@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6828
+X-UID: 6846
 
-From: Maarten ter Huurne <maarten@treewalker.org>
 
-In commit 659fb32d1b6("genirq: replace irq_gc_ack() with {set,clr}_bit variants
-(fwd)"), irq_gc_ack was renamed to irq_gc_ack_set_bit.
+> diff --git a/Documentation/devicetree/bindings/net/mdio-mux.txt b/Documentation/devicetree/bindings/net/mdio-mux.txt
+> new file mode 100644
+> index 0000000..a908312
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/mdio-mux.txt
+> @@ -0,0 +1,132 @@
+> +Common MDIO bus multiplexer/switch properties.
+> +
+> +An MDIO bus multiplexer/switch will have several child busses that are
+> +numbered uniquely in a device dependent manner.  The nodes for an MDIO
+> +bus multiplexer/switch will have one child node for each child bus.
+> +
+> +Required properties:
+> +- parent-bus : phandle to the parent MDIO bus.
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
----
-Ralf, it would be good if you could merge this into "MIPS: JZ4740: Use generic
-irq chip" which should be in your 3.2 queue.
+Should probably be mdio-parent-bus
 
-Thanks
-- Lars
----
- arch/mips/jz4740/gpio.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+> +
+> +Optional properties:
+> +- Other properties specific to the multiplexer/switch hardware.
+> +
+> +Required properties for child nodes:
+> +- #address-cells = <1>;
+> +- #size-cells = <0>;
+> +- cell-index : The sub-bus number.
 
-diff --git a/arch/mips/jz4740/gpio.c b/arch/mips/jz4740/gpio.c
-index 7179c78..e1ddb95 100644
---- a/arch/mips/jz4740/gpio.c
-+++ b/arch/mips/jz4740/gpio.c
-@@ -441,7 +441,7 @@ static void jz4740_gpio_chip_init(struct jz_gpio_chip *chip, unsigned int id)
- 	ct->chip.name = "GPIO";
- 	ct->chip.irq_mask = irq_gc_mask_disable_reg;
- 	ct->chip.irq_unmask = jz_gpio_irq_unmask;
--	ct->chip.irq_ack = irq_gc_ack;
-+	ct->chip.irq_ack = irq_gc_ack_set_bit;
- 	ct->chip.irq_suspend = jz4740_irq_suspend;
- 	ct->chip.irq_resume = jz4740_irq_resume;
- 	ct->chip.irq_startup = jz_gpio_irq_startup;
--- 
-1.7.2.5
+What does sub-bus number mean?
+
+> +
+> +
+> +Example :
+
+[snip]
+
+> diff --git a/drivers/net/phy/mdio-mux.c b/drivers/net/phy/mdio-mux.c
+> new file mode 100644
+> index 0000000..f9c5826
+> --- /dev/null
+> +++ b/drivers/net/phy/mdio-mux.c
+> @@ -0,0 +1,182 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2011 Cavium Networks
+> + */
+> +
+> +#include <linux/platform_device.h>
+> +#include <linux/of_mdio.h>
+> +#include <linux/module.h>
+> +#include <linux/init.h>
+> +#include <linux/gfp.h>
+> +#include <linux/phy.h>
+> +#include <linux/mdio-mux.h>
+> +
+> +#define DRV_VERSION "1.0"
+> +#define DRV_DESCRIPTION "MDIO bus multiplexer driver"
+> +
+> +struct mdio_mux_parent_bus {
+> +	struct mii_bus *mii_bus;
+> +	int current_child;
+> +	int parent_id;
+> +	void *switch_data;
+> +	int (*switch_fn)(int current_child, int desired_child, void *data);
+> +};
+> +
+> +struct mdio_mux_child_bus {
+> +	struct mii_bus *mii_bus;
+> +	struct mdio_mux_parent_bus *parent;
+> +	int bus_number;
+> +	int phy_irq[PHY_MAX_ADDR];
+> +};
+> +
+> +/*
+> + * The parent bus' lock is used to order access to the switch_fn.
+> + */
+> +static int mdio_mux_read(struct mii_bus *bus, int phy_id, int regnum)
+> +{
+> +	struct mdio_mux_child_bus *cb = bus->priv;
+> +	struct mdio_mux_parent_bus *pb = cb->parent;
+> +	int r;
+> +
+> +	mutex_lock(&pb->mii_bus->mdio_lock);
+> +	r = pb->switch_fn(pb->current_child, cb->bus_number, pb->switch_data);
+> +	if (r)
+> +		goto out;
+> +
+> +	pb->current_child = cb->bus_number;
+> +
+> +	r = pb->mii_bus->read(pb->mii_bus, phy_id, regnum);
+> +out:
+> +	mutex_unlock(&pb->mii_bus->mdio_lock);
+> +
+> +	return r;
+> +}
+> +
+> +/*
+> + * The parent bus' lock is used to order access to the switch_fn.
+> + */
+> +static int mdio_mux_write(struct mii_bus *bus, int phy_id,
+> +			  int regnum, u16 val)
+> +{
+> +	struct mdio_mux_child_bus *cb = bus->priv;
+> +	struct mdio_mux_parent_bus *pb = cb->parent;
+> +
+> +	int r;
+> +
+> +	mutex_lock(&pb->mii_bus->mdio_lock);
+> +	r = pb->switch_fn(pb->current_child, cb->bus_number, pb->switch_data);
+> +	if (r)
+> +		goto out;
+> +
+> +	pb->current_child = cb->bus_number;
+> +
+> +	r = pb->mii_bus->write(pb->mii_bus, phy_id, regnum, val);
+> +out:
+> +	mutex_unlock(&pb->mii_bus->mdio_lock);
+> +
+> +	return r;
+> +}
+> +
+> +static int parent_count;
+> +
+> +int mdio_mux_probe(struct platform_device *pdev,
+> +		   int (*switch_fn)(int cur, int desired, void *data),
+> +		   void *data)
+> +{
+> +	struct device_node *parent_bus_node;
+> +	struct device_node *child_bus_node;
+> +	int r, n, ret_val;
+> +	struct mii_bus *parent_bus;
+> +	struct mdio_mux_parent_bus *pb;
+> +	struct mdio_mux_child_bus *cb;
+> +
+> +	if (!pdev->dev.of_node)
+> +		return -ENODEV;
+> +
+> +	parent_bus_node = of_parse_phandle(pdev->dev.of_node, "parent-bus", 0);
+> +
+> +	if (!parent_bus_node)
+> +		return -ENODEV;
+> +
+> +	parent_bus = of_mdio_find_bus(parent_bus_node);
+
+
+So what happens if the parent bus probe happens after the mux probe?
+
+> +
+> +	pb = devm_kzalloc(&pdev->dev, sizeof(*pb), GFP_KERNEL);
+> +	if (pb == NULL) {
+> +		ret_val = -ENOMEM;
+> +		goto err_parent_bus;
+> +	}
+> +
+> +	pb->switch_data = data;
+> +	pb->switch_fn = switch_fn;
+> +	pb->current_child = -1;
+> +	pb->parent_id = parent_count++;
+> +	pb->mii_bus = parent_bus;
+> +
+> +	n = 0;
+> +	for_each_child_of_node(pdev->dev.of_node, child_bus_node) {
+> +		u32 v;
+> +
+> +		r = of_property_read_u32(child_bus_node, "cell-index", &v);
+> +		if (r == 0) {
+> +			cb = devm_kzalloc(&pdev->dev, sizeof(*cb), GFP_KERNEL);
+> +			if (cb == NULL)
+> +				break;
+> +			cb->bus_number = v;
+> +			cb->parent = pb;
+> +			cb->mii_bus = mdiobus_alloc();
+> +			cb->mii_bus->priv = cb;
+> +
+> +			cb->mii_bus->irq = cb->phy_irq;
+> +			cb->mii_bus->name = "mdio_mux";
+> +			snprintf(cb->mii_bus->id, MII_BUS_ID_SIZE, "%x.%x",
+> +				 pb->parent_id, v);
+> +			cb->mii_bus->parent = &pdev->dev;
+> +			cb->mii_bus->read = mdio_mux_read;
+> +			cb->mii_bus->write = mdio_mux_write;
+> +			r = of_mdiobus_register(cb->mii_bus, child_bus_node);
+> +			if (r) {
+> +				of_node_put(child_bus_node);
+> +				devm_kfree(&pdev->dev, cb);
+> +			} else {
+> +				n++;
+> +			}
+> +
+> +		} else {
+> +			of_node_put(child_bus_node);
+> +		}
+> +	}
+> +	if (n) {
+> +		dev_info(&pdev->dev, "Version " DRV_VERSION "\n");
+> +		return 0;
+> +	}
+> +	ret_val = -ENOMEM;
+> +	devm_kfree(&pdev->dev, pb);
+> +err_parent_bus:
+> +	of_node_put(parent_bus_node);
+> +	return ret_val;
+> +}
+> +EXPORT_SYMBOL(mdio_mux_probe);
+> +
+> +static int __devexit mdio_mux_remove(struct platform_device *pdev)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int __init mdio_mux_mod_init(void)
+> +{
+> +	return 0;
+> +}
+> +module_init(mdio_mux_mod_init);
+> +
+> +static void __exit mdio_mux_mod_exit(void)
+> +{
+> +}
+> +module_exit(mdio_mux_mod_exit);
+> +
+> +MODULE_DESCRIPTION(DRV_DESCRIPTION);
+> +MODULE_VERSION(DRV_VERSION);
+> +MODULE_AUTHOR("David Daney");
+> +MODULE_LICENSE("GPL");

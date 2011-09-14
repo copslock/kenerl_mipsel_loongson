@@ -1,99 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 20:21:16 +0200 (CEST)
-Received: from gateway02.websitewelcome.com ([67.18.53.20]:35397 "HELO
-        gateway02.websitewelcome.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by eddie.linux-mips.org with SMTP id S1491160Ab1INSVJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2011 20:21:09 +0200
-Received: (qmail 30190 invoked from network); 14 Sep 2011 17:20:30 -0000
-Received: from ham.websitewelcome.com (HELO ham01.websitewelcome.com) (173.192.111.52)
-  by gateway02.websitewelcome.com with SMTP; 14 Sep 2011 17:20:30 -0000
-Received: by ham01.websitewelcome.com (Postfix, from userid 666)
-        id 4EF98CE93B9B2; Wed, 14 Sep 2011 13:20:19 -0500 (CDT)
-Received: from gator750.hostgator.com (gator750.hostgator.com [174.132.194.2])
-        by ham01.websitewelcome.com (Postfix) with ESMTP id 15248CE93B918
-        for <linux-mips@linux-mips.org>; Wed, 14 Sep 2011 13:20:19 -0500 (CDT)
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws; s=default; d=paralogos.com;
-        h=Received:Message-ID:Date:From:User-Agent:MIME-Version:To:CC:Subject:References:In-Reply-To:X-Enigmail-Version:Content-Type:Content-Transfer-Encoding:X-BWhitelist:X-Source:X-Source-Args:X-Source-Dir:X-Source-Sender:X-Source-Auth:X-Email-Count:X-Source-Cap;
-        b=FmH9JnQ/XEI4TJyt0u/7/LMh8XSrDD4TKA523R1w1hFWyDKeUSnsbDymdaOn4JLP2lLbRUE9jZDyEgi4e7HeVVkDF/9ZQLXw6y/HRcK/NuVau5cCiqlQ/RFT1yI+7XSQ;
-Received: from [216.239.45.4] (port=61985 helo=kkissell.mtv.corp.google.com)
-        by gator750.hostgator.com with esmtpa (Exim 4.69)
-        (envelope-from <kevink@paralogos.com>)
-        id 1R3u47-0007G1-DR; Wed, 14 Sep 2011 13:20:12 -0500
-Message-ID: <4E70F055.9020807@paralogos.com>
-Date:   Wed, 14 Sep 2011 11:20:05 -0700
-From:   "Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.21) Gecko/20110831 Thunderbird/3.1.13
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 21:10:28 +0200 (CEST)
+Received: from alius.ayous.org ([78.46.213.165]:46300 "EHLO alius.ayous.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491160Ab1INTKY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Sep 2011 21:10:24 +0200
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1R3uqk-0001uS-8I; Wed, 14 Sep 2011 19:10:23 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1R3uqe-0008Tm-KQ; Wed, 14 Sep 2011 21:10:16 +0200
+Date:   Wed, 14 Sep 2011 21:10:16 +0200
+From:   Andreas Barth <aba@not.so.argh.org>
+To:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: i8042_enable_kbd_port in arch/mips/loongson/lemote-2f/pm.c?
+Message-ID: <20110914191016.GT15003@mails.so.argh.org>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: SMTC: Correct saving of CP0_STATUS
-References: <20110829232029.GA15763@zapo> <4E5C2490.6040203@cavium.com> <4E5C26D4.3000906@paralogos.com> <4E5C2B62.9040007@cavium.com> <4E5C3060.70302@paralogos.com> <20110830111603.GB14243@edde.se.axis.com> <4E5D15DD.2020201@paralogos.com> <20110914151227.GA13290@linux-mips.org>
-In-Reply-To: <20110914151227.GA13290@linux-mips.org>
-X-Enigmail-Version: 1.1.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-X-BWhitelist: no
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 216-239-45-4.google.com (kkissell.mtv.corp.google.com) [216.239.45.4]:61985
-X-Source-Auth: kevink@kevink.net
-X-Email-Count: 1
-X-Source-Cap: a2tpc3NlbGw7a2tpc3NlbGw7Z2F0b3I3NTAuaG9zdGdhdG9yLmNvbQ==
-X-archive-position: 31081
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 31082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: aba@not.so.argh.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7347
+X-UID: 7372
 
-On 09/14/11 08:12, Ralf Baechle wrote:
-> On Tue, Aug 30, 2011 at 09:54:53AM -0700, Kevin D. Kissell wrote:
->
->> It could very well have been a QEMU issue.  At the time, I did spend
->> a while staring at the diffs between the working and non-working
->> kernel sources and I was unable to spot anything obviously suspect.
->>> It makes me wonder, what is the state of SMTC kernels? Are they widely
->>> used and considered stable?
->>> Or is the SMP mode (1 TC per VPE) the common choice?
->> The virtual SMP mode is far more common.  SMTC has the advantage
->> that it allows the maximum throughput to be extracted from a 34K
->> core - depending on the application/benchmark, the "sweet spot"
->> may be more than 2 concurrent threads - but it's less well maintained.
-> Not to mention that SMTC was developed for a single 34K core.  It has
-> never been pimped up to support multi-core systems such as the 1004K
-> which would add some considerable complexity.
-SMTC was only *run* on single 34K cores, but the design was
-done keeping in mind the possibility that a multi-MT-core
-configuration might be built.  The main thing that would need
-to be done would be to add startup code that would make the
-first TC/VPE of the second (and subsequent) cores recognize
-that they are secondary CPUs and follow the same code path
-as the non-zeroth TC/VPE in the single-core configuration.  One
-would also need to do "real" IPIs between cores, which is anyway
-what the actual production parts with 34Ks in them do (as opposed
-to what we had to do on the FPGA prototypes).
+Hi,
 
-The 1004K, as I understand it, was designed with exactly 2 VPEs
-and 2 TCs, and unless there's an option in the core configuration
-to synthesize it with more TCs per VPE (>2 TCs or <2 VPEs), SMTC
-would not be meaningful.  Even if you could build a single-VPE
-1004K with 2 TCs, the area savings would be relatively small
-and would have to be balanced against the small per-TC
-kernel performance hit of going to SMTC.  SMTC rocks when
-you  can put 3 or 4 TCs in a single VPE, so that the better
-utilization of functional units has a chance to more than
-make up for the SMTC efficiency hit in kernel mode.
+I just noticed that i8042_enable_kbd_port in
+arch/mips/loongson/lemote-2f/pm.c is almost equal to
+i8042_enable_kbd_port in drivers/input/serio/i8042.c
+(+ is pm.c - the error message in pm.c contains the string i8042.c,
+the one in i8042.c not):
 
-            Regards,
+ static int i8042_enable_kbd_port(void)
+ {
++       if (i8042_command(&i8042_ctr, I8042_CMD_CTL_RCTR)) {
++               pr_err("i8042.c: Can't read CTR while enabling i8042 kbd port."
++                      "\n");
++               return -EIO;
++       }
++
+        i8042_ctr &= ~I8042_CTR_KBDDIS;
+        i8042_ctr |= I8042_CTR_KBDINT;
 
-            Kevin K.
+        if (i8042_command(&i8042_ctr, I8042_CMD_CTL_WCTR)) {
+                i8042_ctr &= ~I8042_CTR_KBDINT;
+                i8042_ctr |= I8042_CTR_KBDDIS;
+-               pr_err("Failed to enable KBD port\n");
++               pr_err("i8042.c: Failed to enable KBD port.\n");
+                return -EIO;
+        }
+
+(called as part of setup_wakeup_events
+               outb((0xff & ~(1 << I8042_KBD_IRQ)), PIC_MASTER_IMR);
+               irq_mask = inb(PIC_MASTER_IMR);
+               i8042_enable_kbd_port();
+)
+
+
+
+This was added within 94d0b0e3 with this comment:
+    MIPS: Yeeloong 2F: Add board specific suspend support
+
+    Lemote Loongson 2F family machines need an external interrupt to wake the
+    system from the suspend mode.
+
+    For YeeLoong 2F and Mengloong 2F setup the keyboard interrupt as the wakeup
+    interrupt.
+
+    The new Fuloong 2F and LingLoong 2F have a button to directly send an
+    interrupt to the CPU so there is no need to setup an interrupt.
+
+    Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+    Cc: linux-mips@linux-mips.org
+    Cc: yanh@lemote.com
+    Cc: huhb@lemote.com
+    Cc: Wu Zhangjin <wuzhangjin@gmail.com>
+    Cc: Len Brown <len.brown@intel.com>
+    Cc: Rafael J. Wysocki <rjw@sisk.pl>
+    Cc: linux-pm@lists.linux-foundation.org
+    Patchwork: http://patchwork.linux-mips.org/patch/630/
+    Acked-by: Pavel Machek <pavel@ucw.cz>
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+
+My question now is: Could we migrate some way or other to use the standard
+i8042_enable_kbd_port?
+
+
+
+Andi

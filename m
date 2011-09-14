@@ -1,247 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 13:52:42 +0200 (CEST)
-Received: from mailhost.informatik.uni-hamburg.de ([134.100.9.70]:64079 "EHLO
-        mailhost.informatik.uni-hamburg.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491124Ab1INLwe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2011 13:52:34 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTP id 6B2F0CDF;
-        Wed, 14 Sep 2011 13:52:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at informatik.uni-hamburg.de
-Received: from mailhost.informatik.uni-hamburg.de ([127.0.0.1])
-        by localhost (mailhost.informatik.uni-hamburg.de [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id BS7f4Y9HUGly; Wed, 14 Sep 2011 13:52:27 +0200 (CEST)
-Received: from [172.31.16.247] (p4FC3557A.dip.t-dialin.net [79.195.85.122])
-        (using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: 7clausen)
-        by mailhost.informatik.uni-hamburg.de (Postfix) with ESMTPSA id 50306CDC;
-        Wed, 14 Sep 2011 13:52:04 +0200 (CEST)
-Message-ID: <4E70955D.8050106@metafoo.de>
-Date:   Wed, 14 Sep 2011 13:51:57 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.16) Gecko/20110818 Icedove/3.0.11
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 15:54:47 +0200 (CEST)
+Received: from mail-vw0-f41.google.com ([209.85.212.41]:62939 "EHLO
+        mail-vw0-f41.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491124Ab1INNyj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2011 15:54:39 +0200
+Received: by vwm42 with SMTP id 42so2535401vwm.28
+        for <multiple recipients>; Wed, 14 Sep 2011 06:54:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=BZ/SPOxkluppiFHl0KtO4rhwWH9KXCY5g/KOek4OKKA=;
+        b=o0d+tCy91tXWJeU2HlcpbQCHkOnS1Dr9I2cX2OpoiVF1ld9PFC9avpCP2udfNxobvg
+         XnAlyP3W1Yp8c4SgDcO14EkFfuxGzk8CVisMK/BHftFF9isKBu/Tb+MmWHjW+tVdyj2f
+         UQ5AiU8FI7Jc3RNjw8ib8CK1d+g+ciquOlq78=
 MIME-Version: 1.0
-To:     keguang.zhang@gmail.com
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+Received: by 10.52.76.68 with SMTP id i4mr2437721vdw.213.1316008472662; Wed,
+ 14 Sep 2011 06:54:32 -0700 (PDT)
+Received: by 10.220.84.82 with HTTP; Wed, 14 Sep 2011 06:54:32 -0700 (PDT)
+In-Reply-To: <20110914113134.GS15003@mails.so.argh.org>
+References: <1315997270-14332-1-git-send-email-keguang.zhang@gmail.com>
+        <20110914113134.GS15003@mails.so.argh.org>
+Date:   Wed, 14 Sep 2011 21:54:32 +0800
+Message-ID: <CAJhJPsUW+4fpJUSR07LBO=FDCyAw-KHKaZCt8G+sHCJtjts0oA@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Add basic support for Loongson1B
+From:   Kelvin Cheung <keguang.zhang@gmail.com>
+To:     Andreas Barth <aba@not.so.argh.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         ralf@linux-mips.org, wuzhangjin@gmail.com, r0bertz@gentoo.org,
         chenj@lemote.com
-Subject: Re: [PATCH] MIPS: Add basic support for Loongson1B
-References: <1315997270-14332-1-git-send-email-keguang.zhang@gmail.com>
-In-Reply-To: <1315997270-14332-1-git-send-email-keguang.zhang@gmail.com>
-X-Enigmail-Version: 1.0.1
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31073
+X-archive-position: 31074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lars@metafoo.de
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7082
+X-UID: 7143
 
-On 09/14/2011 12:47 PM, keguang.zhang@gmail.com wrote:
-> From: Zhang, Keguang <keguang.zhang@gmail.com>
-> 
-> This patch adds basic support for Loongson1B
-> including serial, timer and interrupt handler.
-> 
-> Loongson 1B is a 32-bit SoC designed by Institute of
-> Computing Technology (ICT), Chinese Academy of Sciences (CAS),
-> which implements the MIPS32 release 2 instruction set.
-> 
-> Signed-off-by: Zhang, Keguang <keguang.zhang@gmail.com>
-> ---
->  
-> [...
-> diff --git a/arch/mips/include/asm/mach-loongson1/regs-clk.h b/arch/mips/include/asm/mach-loongson1/regs-clk.h
-> new file mode 100644
-> index 0000000..acffd4f
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-loongson1/regs-clk.h
-> @@ -0,0 +1,32 @@
-> +/*
-> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
-> + *
-> + * Loongson1 Clock Register Definitions.
-> + *
-> + * This program is free software; you can redistribute  it and/or modify it
-> + * under  the terms of  the GNU General  Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#ifndef __ASM_MACH_LOONGSON1_REGS_CLK_H
-> +#define __ASM_MACH_LOONGSON1_REGS_CLK_H
-> +
-> +#define LOONGSON1_CLK_REG(x)		((void __iomem *)(LOONGSON1_CLK_BASE + (x)))
-> +
-> +#define	CLK_PLL_FREQ			LOONGSON1_CLK_REG(0x0)
-> +#define	CLK_PLL_DIV			LOONGSON1_CLK_REG(0x4)
-> +
-> +/* Clock PLL Divisor Register Bits */
-> +#define	DIV_DC_EN			(0x1 << 31)
-> +#define DIV_DC				(0x1f << 26)
-> +#define	DIV_CPU_EN			(0x1 << 25)
-> +#define DIV_CPU				(0x1f << 20)
-> +#define	DIV_DDR_EN			(0x1 << 19)
-> +#define DIV_DDR				(0x1f << 14)
-> +
-> +#define	DIV_DC_SHIFT			(26)
-> +#define	DIV_CPU_SHIFT			(20)
-> +#define	DIV_DDR_SHIFT			(14)
-> +
+2011/9/14, Andreas Barth <aba@not.so.argh.org>:
+> * keguang.zhang@gmail.com (keguang.zhang@gmail.com) [110914 12:49]:
+>> This patch adds basic support for Loongson1B
+>> including serial, timer and interrupt handler.
+>
+> I have a couple of questions. One of them is if it shouldn't be
+> possible to add this as part of the loongson-platform, and if we
+> really need a new platform. Each platform comes with some maintainence
+> costs which we should try to avoid. Making things more generic is
+> usually the right answer.
 
-In my opinion these defines should be namespaced, same goes for the other
-register definitions.
+I've tried to add Loongson1 to loongson-platform (acturally loongson2
+platform), but there is essential difference between them. The
+loongson2 platform is something like the PC's architecture, which has
+north and south bridge, while the loongson1 is SoC.
+So, I think it's better that adding loongson1 as a new platform.
 
-> +#endif /* __ASM_MACH_LOONGSON1_REGS_CLK_H */
-> [...]
-> diff --git a/arch/mips/loongson1/Platform b/arch/mips/loongson1/Platform
-> new file mode 100644
-> index 0000000..92804c6
-> --- /dev/null
-> +++ b/arch/mips/loongson1/Platform
-> @@ -0,0 +1,7 @@
-> +cflags-$(CONFIG_CPU_LOONGSON1)  += \
-> +	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-> +	-Wa,-mips32r2 -Wa,--trap
-> +
-> +platform-$(CONFIG_MACH_LOONGSON1)	+= loongson1/
-> +cflags-$(CONFIG_MACH_LOONGSON1)		+= -I$(srctree)/arch/mips/include/asm/mach-loongson1
-> +load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80010000
-> diff --git a/arch/mips/loongson1/common/Makefile b/arch/mips/loongson1/common/Makefile
-> new file mode 100644
-> index 0000000..b279770
-> --- /dev/null
-> +++ b/arch/mips/loongson1/common/Makefile
-> @@ -0,0 +1,5 @@
-> +#
-> +# Makefile for common code of loongson1 based machines.
-> +#
-> +
-> +obj-y	+= clock.o irq.o platform.o prom.o reset.o setup.o
-> diff --git a/arch/mips/loongson1/common/clock.c b/arch/mips/loongson1/common/clock.c
-> new file mode 100644
-> index 0000000..e854953
-> --- /dev/null
-> +++ b/arch/mips/loongson1/common/clock.c
-> @@ -0,0 +1,164 @@
-> +/*
-> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
-> + *
-> + * This program is free software; you can redistribute  it and/or modify it
-> + * under  the terms of  the GNU General  Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/list.h>
-> +#include <linux/mutex.h>
-> +#include <linux/clk.h>
-> +#include <linux/err.h>
-> +#include <asm/clock.h>
-> +#include <asm/time.h>
-> +
-> +#include <loongson1.h>
-> +
-> +static LIST_HEAD(clocks);
-> +static DEFINE_MUTEX(clocks_mutex);
-> +
-> +struct clk *clk_get(struct device *dev, const char *name)
-> +{
-> +	struct clk *c;
-> +	struct clk *ret = NULL;
-> +
-> +	mutex_lock(&clocks_mutex);
-> +	list_for_each_entry(c, &clocks, node) {
-> +		if (!strcmp(c->name, name)) {
-> +			ret = c;
-> +			break;
-> +		}
-> +	}
-> +	mutex_unlock(&clocks_mutex);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(clk_get);
-> +
-> +unsigned long clk_get_rate(struct clk *clk)
-> +{
-> +	return clk->rate;
-> +}
-> +EXPORT_SYMBOL(clk_get_rate);
-> +
+>> diff --git a/arch/mips/include/asm/mach-loongson1/irq.h
+>> b/arch/mips/include/asm/mach-loongson1/irq.h
+>> new file mode 100644
+>> index 0000000..44cec4a
+>> --- /dev/null
+>> +++ b/arch/mips/include/asm/mach-loongson1/irq.h
+>> @@ -0,0 +1,70 @@
+>> +/*
+>> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+>> + *
+>> + * Register mappings for Loongson1.
+>
+> Can't we do the mapping via device trees, or are we not there yet?
+>
+>
+>> --- /dev/null
+>> +++ b/arch/mips/loongson1/common/clock.c
+>> @@ -0,0 +1,164 @@
+>> +/*
+>> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+>
+> Is this file not derived from any of the clock drivers we already have
+> in Linux?
+>
+> Doesn't any of the existing clock drivers work?
+>
+> Is this clock part of the CPU? Otherwise it would make sense to move
+> it out to the generic drivers section.
+>
+>> --- /dev/null
+>> +++ b/arch/mips/loongson1/common/irq.c
+>> @@ -0,0 +1,132 @@
+>> +/*
+>> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+>> + *
+>> + * Based on Copyright (C) 2009 Lemote Inc.
+>
+> same question here. Also, do you have permission from Lemote to put
+> the code within GPLv2?
 
-Maybe use the generic clkdev implementation.
+These code are based on the loongson platform, which is part of the
+kernel code already.
 
-> [...]
-> diff --git a/arch/mips/loongson1/common/irq.c b/arch/mips/loongson1/common/irq.c
-> new file mode 100644
-> index 0000000..8a7287f
-> --- /dev/null
-> +++ b/arch/mips/loongson1/common/irq.c
-> @@ -0,0 +1,132 @@
-> +/*
-> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
-> + *
-> + * Based on Copyright (C) 2009 Lemote Inc.
-> + *
-> + * This program is free software; you can redistribute  it and/or modify it
-> + * under  the terms of  the GNU General  Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <linux/interrupt.h>
-> +#include <linux/irq.h>
-> +#include <asm/irq_cpu.h>
-> +
-> +#include <loongson1.h>
-> +#include <irq.h>
-> +
-> +static void loongson1_irq_ack(struct irq_data *d)
-> +{
-> +	unsigned int bit = (d->irq - LOONGSON1_IRQ_BASE) & 0x1f;
-> +	unsigned int n = (d->irq - LOONGSON1_IRQ_BASE) >> 5;
-> +
-> +	__raw_writel(__raw_readl(INTC_INTCLR(n)) | (1 << bit), INTC_INTCLR(n));
-> +}
-> +
-> +static void loongson1_irq_mask(struct irq_data *d)
-> +{
-> +	unsigned int bit = (d->irq - LOONGSON1_IRQ_BASE) & 0x1f;
-> +	unsigned int n = (d->irq - LOONGSON1_IRQ_BASE) >> 5;
-> +
-> +	__raw_writel(__raw_readl(INTC_INTIEN(n)) & ~(1 << bit), INTC_INTIEN(n));
-> +}
-> +
-> +static void loongson1_irq_mask_ack(struct irq_data *d)
-> +{
-> +	unsigned int bit = (d->irq - LOONGSON1_IRQ_BASE) & 0x1f;
-> +	unsigned int n = (d->irq - LOONGSON1_IRQ_BASE) >> 5;
-> +
-> +	__raw_writel(__raw_readl(INTC_INTIEN(n)) & ~(1 << bit), INTC_INTIEN(n));
-> +	__raw_writel(__raw_readl(INTC_INTCLR(n)) | (1 << bit), INTC_INTCLR(n));
-> +}
-> +
-> +static void loongson1_irq_unmask(struct irq_data *d)
-> +{
-> +	unsigned int bit = (d->irq - LOONGSON1_IRQ_BASE) & 0x1f;
-> +	unsigned int n = (d->irq - LOONGSON1_IRQ_BASE) >> 5;
-> +
-> +	__raw_writel(__raw_readl(INTC_INTIEN(n)) | (1 << bit), INTC_INTIEN(n));
-> +}
-> +
-> +static struct irq_chip loongson1_irq_chip = {
-> +	.name		= "LOONGSON1-INTC",
-> +	.irq_ack	= loongson1_irq_ack,
-> +	.irq_mask	= loongson1_irq_mask,
-> +	.irq_mask_ack	= loongson1_irq_mask_ack,
-> +	.irq_unmask	= loongson1_irq_unmask,
-> +};
+>> diff --git a/arch/mips/loongson1/common/prom.c
+>> b/arch/mips/loongson1/common/prom.c
+>> new file mode 100644
+>> index 0000000..84a25f6
+>> --- /dev/null
+>> +++ b/arch/mips/loongson1/common/prom.c
+>
+> Can't we re-use the prom-routines from the loongson platform here? Or
+> even better, factor them out somewhere else in the mips or even
+> generic linux tree?
 
-looks like a perfect candidate for irq_chip_generic.
+Same reason as question 1.
+
+>> index 0000000..b34ad35
+>> --- /dev/null
+>> +++ b/arch/mips/loongson1/common/reset.c
+>
+>
+>> +static void loongson1_halt(void)
+>> +{
+>> +	pr_notice("\n\n** You can safely turn off the power now **\n\n");
+>> +	while (1) {
+>> +		if (cpu_wait)
+>> +			cpu_wait();
+>> +	}
+>> +}
+>
+>
+> This code looks familiar to me, i.e. it shouldn't be
+> platform-specific.
+>
+>
+>
+>
+> Andi
+>
+
+Thanks for your review!
+
+-- 
+Best Regards!
+Kelvin

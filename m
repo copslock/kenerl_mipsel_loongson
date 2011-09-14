@@ -1,100 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 21:10:28 +0200 (CEST)
-Received: from alius.ayous.org ([78.46.213.165]:46300 "EHLO alius.ayous.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 22:42:57 +0200 (CEST)
+Received: from gate.crashing.org ([63.228.1.57]:41093 "EHLO gate.crashing.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491160Ab1INTKY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Sep 2011 21:10:24 +0200
-Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
-        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.72)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1R3uqk-0001uS-8I; Wed, 14 Sep 2011 19:10:23 +0000
-Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
-        (envelope-from <aba@not.so.argh.org>)
-        id 1R3uqe-0008Tm-KQ; Wed, 14 Sep 2011 21:10:16 +0200
-Date:   Wed, 14 Sep 2011 21:10:16 +0200
-From:   Andreas Barth <aba@not.so.argh.org>
-To:     linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: i8042_enable_kbd_port in arch/mips/loongson/lemote-2f/pm.c?
-Message-ID: <20110914191016.GT15003@mails.so.argh.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Editor: Vim http://www.vim.org/
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 31082
+        id S1491169Ab1INUmu convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Sep 2011 22:42:50 +0200
+Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id p8EKgKi1027396;
+        Wed, 14 Sep 2011 15:42:21 -0500
+Subject: Re: [PATCH 2/3] netdev/of/phy: Add MDIO bus multiplexer support.
+Mime-Version: 1.0 (Apple Message framework v1244.3)
+Content-Type:   text/plain; charset=US-ASCII
+From:   Kumar Gala <galak@kernel.crashing.org>
+In-Reply-To: <4E6FE5F9.2060604@cavium.com>
+Date:   Wed, 14 Sep 2011 15:42:21 -0500
+Cc:     grant.likely@secretlab.ca, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>
+Content-Transfer-Encoding: 7BIT
+Message-Id: <678076BE-4CF8-4AC9-BE9B-9AF1A17B7AF8@kernel.crashing.org>
+References: <1314820906-14004-1-git-send-email-david.daney@cavium.com> <1314820906-14004-3-git-send-email-david.daney@cavium.com> <129FAAB3-C9AD-43F6-A8CB-96548A47C4DC@kernel.crashing.org> <4E6FE5F9.2060604@cavium.com>
+To:     David Daney <david.daney@cavium.com>
+X-Mailer: Apple Mail (2.1244.3)
+X-archive-position: 31083
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aba@not.so.argh.org
+X-original-sender: galak@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7372
-
-Hi,
-
-I just noticed that i8042_enable_kbd_port in
-arch/mips/loongson/lemote-2f/pm.c is almost equal to
-i8042_enable_kbd_port in drivers/input/serio/i8042.c
-(+ is pm.c - the error message in pm.c contains the string i8042.c,
-the one in i8042.c not):
-
- static int i8042_enable_kbd_port(void)
- {
-+       if (i8042_command(&i8042_ctr, I8042_CMD_CTL_RCTR)) {
-+               pr_err("i8042.c: Can't read CTR while enabling i8042 kbd port."
-+                      "\n");
-+               return -EIO;
-+       }
-+
-        i8042_ctr &= ~I8042_CTR_KBDDIS;
-        i8042_ctr |= I8042_CTR_KBDINT;
-
-        if (i8042_command(&i8042_ctr, I8042_CMD_CTL_WCTR)) {
-                i8042_ctr &= ~I8042_CTR_KBDINT;
-                i8042_ctr |= I8042_CTR_KBDDIS;
--               pr_err("Failed to enable KBD port\n");
-+               pr_err("i8042.c: Failed to enable KBD port.\n");
-                return -EIO;
-        }
-
-(called as part of setup_wakeup_events
-               outb((0xff & ~(1 << I8042_KBD_IRQ)), PIC_MASTER_IMR);
-               irq_mask = inb(PIC_MASTER_IMR);
-               i8042_enable_kbd_port();
-)
+X-UID: 7432
 
 
+On Sep 13, 2011, at 6:23 PM, David Daney wrote:
 
-This was added within 94d0b0e3 with this comment:
-    MIPS: Yeeloong 2F: Add board specific suspend support
+> On 09/13/2011 04:07 PM, Kumar Gala wrote:
+>> 
+>>> diff --git a/Documentation/devicetree/bindings/net/mdio-mux.txt b/Documentation/devicetree/bindings/net/mdio-mux.txt
+>>> new file mode 100644
+>>> index 0000000..a908312
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/net/mdio-mux.txt
+>>> @@ -0,0 +1,132 @@
+>>> +Common MDIO bus multiplexer/switch properties.
+>>> +
+>>> +An MDIO bus multiplexer/switch will have several child busses that are
+>>> +numbered uniquely in a device dependent manner.  The nodes for an MDIO
+>>> +bus multiplexer/switch will have one child node for each child bus.
+>>> +
+>>> +Required properties:
+>>> +- parent-bus : phandle to the parent MDIO bus.
+>> 
+>> Should probably be mdio-parent-bus
+> 
+> Why?  We know it is MDIO.
+> 
+> Serial bus multiplexing is not a concept limited to MDIO.  We would want to use "parent-bus" for some I2C multiplexers as well.
 
-    Lemote Loongson 2F family machines need an external interrupt to wake the
-    system from the suspend mode.
+>From many years of dealing with device trees.  We typically don't name things overlay generically unless they will be used over and over again as a common idiom (like reg, interrupt, etc.).
 
-    For YeeLoong 2F and Mengloong 2F setup the keyboard interrupt as the wakeup
-    interrupt.
+We don't really use 'bus' generically today.
 
-    The new Fuloong 2F and LingLoong 2F have a button to directly send an
-    interrupt to the CPU so there is no need to setup an interrupt.
+> 
+>> 
+>>> +
+>>> +Optional properties:
+>>> +- Other properties specific to the multiplexer/switch hardware.
+>>> +
+>>> +Required properties for child nodes:
+>>> +- #address-cells =<1>;
+>>> +- #size-cells =<0>;
+>>> +- cell-index : The sub-bus number.
+>> 
+>> What does sub-bus number mean?
+> 
+> There are N child buses (or sub-buses) coming out of the multiplexer. The cell-index is used as a handle or identifier for each of these.
+> 
+> The concrete example in Patch 3/3 is a multiplexer with four child buses.  The happen to have cell-indexes of 0, 1, 2 and 3.
+> 
+> In the GPIO case of patch 3/3, these directly correspond the the state of the two GPIO pins controlling the multiplexer.  The driver then uses the cell-index property to determine the state of the GPIO to connect any given child.
+> 
+> It is possible that the documentation part of the patch could be made more clear about this.
+> 
+>> 
+>>> +
+>>> +
+>>> +Example :
+>> 
+> [...]
+>>> +
+>>> +int mdio_mux_probe(struct platform_device *pdev,
+>>> +		   int (*switch_fn)(int cur, int desired, void *data),
+>>> +		   void *data)
+>>> +{
+>>> +	struct device_node *parent_bus_node;
+>>> +	struct device_node *child_bus_node;
+>>> +	int r, n, ret_val;
+>>> +	struct mii_bus *parent_bus;
+>>> +	struct mdio_mux_parent_bus *pb;
+>>> +	struct mdio_mux_child_bus *cb;
+>>> +
+>>> +	if (!pdev->dev.of_node)
+>>> +		return -ENODEV;
+>>> +
+>>> +	parent_bus_node = of_parse_phandle(pdev->dev.of_node, "parent-bus", 0);
+>>> +
+>>> +	if (!parent_bus_node)
+>>> +		return -ENODEV;
+>>> +
+>>> +	parent_bus = of_mdio_find_bus(parent_bus_node);
+>> 
+>> 
+>> So what happens if the parent bus probe happens after the mux probe?
+>> 
+> 
+> The whole house of cards collapses.
+> 
+> Grant Likely has a patch to deal with this by retrying the probing,  but as far as I know, it has not been merged yet.
 
-    Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-    Cc: linux-mips@linux-mips.org
-    Cc: yanh@lemote.com
-    Cc: huhb@lemote.com
-    Cc: Wu Zhangjin <wuzhangjin@gmail.com>
-    Cc: Len Brown <len.brown@intel.com>
-    Cc: Rafael J. Wysocki <rjw@sisk.pl>
-    Cc: linux-pm@lists.linux-foundation.org
-    Patchwork: http://patchwork.linux-mips.org/patch/630/
-    Acked-by: Pavel Machek <pavel@ucw.cz>
-    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-
-My question now is: Could we migrate some way or other to use the standard
-i8042_enable_kbd_port?
-
-
-
-Andi
+- k

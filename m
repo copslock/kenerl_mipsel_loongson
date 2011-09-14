@@ -1,59 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 17:12:36 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:45041 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491152Ab1INPMc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Sep 2011 17:12:32 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p8EFCSX9013666;
-        Wed, 14 Sep 2011 17:12:28 +0200
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p8EFCRPA013664;
-        Wed, 14 Sep 2011 17:12:27 +0200
-Date:   Wed, 14 Sep 2011 17:12:27 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: SMTC: Correct saving of CP0_STATUS
-Message-ID: <20110914151227.GA13290@linux-mips.org>
-References: <20110829232029.GA15763@zapo>
- <4E5C2490.6040203@cavium.com>
- <4E5C26D4.3000906@paralogos.com>
- <4E5C2B62.9040007@cavium.com>
- <4E5C3060.70302@paralogos.com>
- <20110830111603.GB14243@edde.se.axis.com>
- <4E5D15DD.2020201@paralogos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Sep 2011 18:00:31 +0200 (CEST)
+Received: from alius.ayous.org ([78.46.213.165]:58323 "EHLO alius.ayous.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491140Ab1INQAX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Sep 2011 18:00:23 +0200
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1R3rsp-0007YW-K8; Wed, 14 Sep 2011 16:00:20 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1R3rsj-0007vE-Vk; Wed, 14 Sep 2011 18:00:13 +0200
+Date:   Wed, 14 Sep 2011 18:00:13 +0200
+From:   Andreas Barth <aba@not.so.argh.org>
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, wuzhangjin@gmail.com, r0bertz@gentoo.org,
+        chenj@lemote.com
+Subject: Re: [PATCH] MIPS: Add basic support for Loongson1B
+Message-ID: <20110914160013.GH4110@mails.so.argh.org>
+References: <1315997270-14332-1-git-send-email-keguang.zhang@gmail.com> <20110914113134.GS15003@mails.so.argh.org> <CAJhJPsUW+4fpJUSR07LBO=FDCyAw-KHKaZCt8G+sHCJtjts0oA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4E5D15DD.2020201@paralogos.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31079
+In-Reply-To: <CAJhJPsUW+4fpJUSR07LBO=FDCyAw-KHKaZCt8G+sHCJtjts0oA@mail.gmail.com>
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 31080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aba@not.so.argh.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7186
+X-UID: 7220
 
-On Tue, Aug 30, 2011 at 09:54:53AM -0700, Kevin D. Kissell wrote:
+* Kelvin Cheung (keguang.zhang@gmail.com) [110914 15:54]:
+> 2011/9/14, Andreas Barth <aba@not.so.argh.org>:
+> > * keguang.zhang@gmail.com (keguang.zhang@gmail.com) [110914 12:49]:
+> >> This patch adds basic support for Loongson1B
+> >> including serial, timer and interrupt handler.
+> >
+> > I have a couple of questions. One of them is if it shouldn't be
+> > possible to add this as part of the loongson-platform, and if we
+> > really need a new platform. Each platform comes with some maintainence
+> > costs which we should try to avoid. Making things more generic is
+> > usually the right answer.
+> 
+> I've tried to add Loongson1 to loongson-platform (acturally loongson2
+> platform), but there is essential difference between them. The
+> loongson2 platform is something like the PC's architecture, which has
+> north and south bridge, while the loongson1 is SoC.
+> So, I think it's better that adding loongson1 as a new platform.
 
-> It could very well have been a QEMU issue.  At the time, I did spend
-> a while staring at the diffs between the working and non-working
-> kernel sources and I was unable to spot anything obviously suspect.
-> > It makes me wonder, what is the state of SMTC kernels? Are they widely
-> > used and considered stable?
-> > Or is the SMP mode (1 TC per VPE) the common choice?
-> The virtual SMP mode is far more common.  SMTC has the advantage
-> that it allows the maximum throughput to be extracted from a 34K
-> core - depending on the application/benchmark, the "sweet spot"
-> may be more than 2 concurrent threads - but it's less well maintained.
+I'm not convinced, but that's also not necessary.
 
-Not to mention that SMTC was developed for a single 34K core.  It has
-never been pimped up to support multi-core systems such as the 1004K
-which would add some considerable complexity.
 
-  Ralf
+> >> --- /dev/null
+> >> +++ b/arch/mips/loongson1/common/clock.c
+> >> @@ -0,0 +1,164 @@
+> >> +/*
+> >> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+> >
+> > Is this file not derived from any of the clock drivers we already have
+> > in Linux?
+> >
+> > Doesn't any of the existing clock drivers work?
+> >
+> > Is this clock part of the CPU? Otherwise it would make sense to move
+> > it out to the generic drivers section.
+
+What's the answer to this questions?
+
+
+
+> >> --- /dev/null
+> >> +++ b/arch/mips/loongson1/common/irq.c
+> >> @@ -0,0 +1,132 @@
+> >> +/*
+> >> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+> >> + *
+> >> + * Based on Copyright (C) 2009 Lemote Inc.
+> >
+> > same question here. Also, do you have permission from Lemote to put
+> > the code within GPLv2?
+> 
+> These code are based on the loongson platform, which is part of the
+> kernel code already.
+
+In that case, it would make sense to say "derived from arch/mips/..."
+so that other people can understand where it comes from.
+
+> >> diff --git a/arch/mips/loongson1/common/prom.c
+> >> b/arch/mips/loongson1/common/prom.c
+> >> new file mode 100644
+> >> index 0000000..84a25f6
+> >> --- /dev/null
+> >> +++ b/arch/mips/loongson1/common/prom.c
+> >
+> > Can't we re-use the prom-routines from the loongson platform here? Or
+> > even better, factor them out somewhere else in the mips or even
+> > generic linux tree?
+> 
+> Same reason as question 1.
+
+Not really. Please try to de-duplicate code as far as possible, and to
+generalize it's usage. Having some code of the form
++       while (((readb(PORT(UART_BASE, UART_LSR)) & UART_LSR_THRE) == 0)
++                       && (timeout-- > 0))
++               ;
++
++       writeb(c, PORT(UART_BASE, UART_TX));
+here doesn't make too much sense to me. (Also questioning why this is
+part of the prom.c file).
+
+
+
+
+Andi

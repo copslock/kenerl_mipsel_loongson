@@ -1,155 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2011 05:27:43 +0200 (CEST)
-Received: from mail-vw0-f51.google.com ([209.85.212.51]:48144 "EHLO
-        mail-vw0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491109Ab1IOD1g (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Sep 2011 05:27:36 +0200
-Received: by vws20 with SMTP id 20so3612862vws.24
-        for <multiple recipients>; Wed, 14 Sep 2011 20:27:30 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2011 06:16:25 +0200 (CEST)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:47239 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491134Ab1IOEQV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Sep 2011 06:16:21 +0200
+Received: by iaep9 with SMTP id p9so1043389iae.36
+        for <multiple recipients>; Wed, 14 Sep 2011 21:16:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=hwdrH2QZTaNUiEKqqBAMn7eHP/yeRsmBYMeD03wmbRw=;
-        b=nVhAzasqk1ZYmZQ8gZLm6+JXTZe4isHXYEJKg9Jjde+gdBsUyZ343KRh6RlFnqmho6
-         QYj+hURYDlHjaUs/6QSmlUs+K8Xdq1MxPJOcZJjdXy8Z7Qv5vdnin9CWYr6r2lI98zp8
-         SB41lOCp24V4OOW8WagHjC9b+dIFEBh4+szZs=
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=xRgenVzK32h1nsbjcOU2elNyb7NaXr7GjZKuIePRNzM=;
+        b=e3Jq5amCTqQ6LGrzzjC+fCT/pezv6II91fLD+mMYJqjq04LEroUj1dLs1kmoZp1Bqt
+         v4orBVm5Wa11NydBEvi8LVhrx/gsThnGYHBdNgcYYjBMtJiP5mr99lSpUNDWwzWS8V5L
+         GYSA4g+XSzQ1Rm1y7kAHZsqtUXOx7L3F2eCcU=
+Received: by 10.42.77.73 with SMTP id h9mr335135ick.185.1316060174002;
+        Wed, 14 Sep 2011 21:16:14 -0700 (PDT)
+Received: from dd_xps.caveonetworks.com (adsl-68-122-40-123.dsl.pltn13.pacbell.net. [68.122.40.123])
+        by mx.google.com with ESMTPS id a11sm2934289ibg.3.2011.09.14.21.16.11
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 14 Sep 2011 21:16:13 -0700 (PDT)
+Message-ID: <4E717C0A.5050905@gmail.com>
+Date:   Wed, 14 Sep 2011 21:16:10 -0700
+From:   David Daney <david.s.daney@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110428 Fedora/3.1.10-1.fc13 Thunderbird/3.1.10
 MIME-Version: 1.0
-Received: by 10.220.213.135 with SMTP id gw7mr154450vcb.123.1316057250696;
- Wed, 14 Sep 2011 20:27:30 -0700 (PDT)
-Received: by 10.220.84.82 with HTTP; Wed, 14 Sep 2011 20:27:30 -0700 (PDT)
-In-Reply-To: <20110914160013.GH4110@mails.so.argh.org>
-References: <1315997270-14332-1-git-send-email-keguang.zhang@gmail.com>
-        <20110914113134.GS15003@mails.so.argh.org>
-        <CAJhJPsUW+4fpJUSR07LBO=FDCyAw-KHKaZCt8G+sHCJtjts0oA@mail.gmail.com>
-        <20110914160013.GH4110@mails.so.argh.org>
-Date:   Thu, 15 Sep 2011 11:27:30 +0800
-Message-ID: <CAJhJPsUXvGJBB-YiLB53VSf8GRXHjkrPRf3F3YE5ekOz-OVqgQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Add basic support for Loongson1B
-From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     Andreas Barth <aba@not.so.argh.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org, wuzhangjin@gmail.com, r0bertz@gentoo.org,
-        chenj@lemote.com
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 31087
+To:     Grant Likely <grant.likely@secretlab.ca>
+CC:     David Daney <david.daney@cavium.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        devicetree-discuss@lists.ozlabs.org, ralf@linux-mips.org
+Subject: Re: [PATCH 2/3] netdev/of/phy: Add MDIO bus multiplexer support.
+References: <1314820906-14004-1-git-send-email-david.daney@cavium.com>        <1314820906-14004-3-git-send-email-david.daney@cavium.com> <CACxGe6tA6D9JVf0_K-JAGnKcQmDmD=1ytqqYb6or-KjP9uZNxg@mail.gmail.com>
+In-Reply-To: <CACxGe6tA6D9JVf0_K-JAGnKcQmDmD=1ytqqYb6or-KjP9uZNxg@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: david.s.daney@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7573
+X-UID: 7583
 
-2011/9/15, Andreas Barth <aba@not.so.argh.org>:
-> * Kelvin Cheung (keguang.zhang@gmail.com) [110914 15:54]:
->> 2011/9/14, Andreas Barth <aba@not.so.argh.org>:
->> > * keguang.zhang@gmail.com (keguang.zhang@gmail.com) [110914 12:49]:
->> >> This patch adds basic support for Loongson1B
->> >> including serial, timer and interrupt handler.
->> >
->> > I have a couple of questions. One of them is if it shouldn't be
->> > possible to add this as part of the loongson-platform, and if we
->> > really need a new platform. Each platform comes with some maintainence
->> > costs which we should try to avoid. Making things more generic is
->> > usually the right answer.
->>
->> I've tried to add Loongson1 to loongson-platform (acturally loongson2
->> platform), but there is essential difference between them. The
->> loongson2 platform is something like the PC's architecture, which has
->> north and south bridge, while the loongson1 is SoC.
->> So, I think it's better that adding loongson1 as a new platform.
+On 09/14/2011 05:51 PM, Grant Likely wrote:
 >
-> I'm not convinced, but that's also not necessary.
-
-As I mentioned before, Loongson1 is a 32-bit SoC with many built-in
-controllers, which implements the MIPS32 release 2 instruction set,
-while Loongson2 is a 64-bit CPU, which only implements the MIPSIII
-instruction set.
-The Loongson1 does not have a PCI controller. And its interrupt and
-gpio are different from Loongson2 ...
-
-They are totally different thing.
-So, it is hard to reuse the code of loongson-platform.
-
->> >> --- /dev/null
->> >> +++ b/arch/mips/loongson1/common/clock.c
->> >> @@ -0,0 +1,164 @@
->> >> +/*
->> >> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
->> >
->> > Is this file not derived from any of the clock drivers we already have
->> > in Linux?
->> >
->> > Doesn't any of the existing clock drivers work?
->> >
->> > Is this clock part of the CPU? Otherwise it would make sense to move
->> > it out to the generic drivers section.
 >
-> What's the answer to this questions?
-
-I just did what other platform did, such as ar7, ath79, bcm63xx and
-jz4740. Could you have a look at their clock.c/clk.c?
-
->> >> --- /dev/null
->> >> +++ b/arch/mips/loongson1/common/irq.c
->> >> @@ -0,0 +1,132 @@
->> >> +/*
->> >> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
->> >> + *
->> >> + * Based on Copyright (C) 2009 Lemote Inc.
->> >
->> > same question here. Also, do you have permission from Lemote to put
->> > the code within GPLv2?
->>
->> These code are based on the loongson platform, which is part of the
->> kernel code already.
+> On Aug 31, 2011 2:01 PM, "David Daney" <david.daney@cavium.com 
+> <mailto:david.daney@cavium.com>> wrote:
+> >
+> > This patch adds a somewhat generic framework for MDIO bus
+> > multiplexers.  It is modeled on the I2C multiplexer.
+> >
 >
-> In that case, it would make sense to say "derived from arch/mips/..."
-> so that other people can understand where it comes from.
-
-Thanks! I will pay attention to this.
-
->> >> diff --git a/arch/mips/loongson1/common/prom.c
->> >> b/arch/mips/loongson1/common/prom.c
->> >> new file mode 100644
->> >> index 0000000..84a25f6
->> >> --- /dev/null
->> >> +++ b/arch/mips/loongson1/common/prom.c
->> >
->> > Can't we re-use the prom-routines from the loongson platform here? Or
->> > even better, factor them out somewhere else in the mips or even
->> > generic linux tree?
->>
->> Same reason as question 1.
+[...]
 >
-> Not really. Please try to de-duplicate code as far as possible, and to
-> generalize it's usage. Having some code of the form
-
-I did not just duplicate code, modified exactly. The prom-routines of
-loongson platform does not fit loongson1.For instance, the
-"cpu_clock_freq" parameter is not needed. The cpu freq. could be get
-from the PLL register directly. Moreover, the routines does not
-include the parameter "ethaddr", which is useful for embedded system.
-
-> +       while (((readb(PORT(UART_BASE, UART_LSR)) & UART_LSR_THRE) == 0)
-> +                       && (timeout-- > 0))
-> +               ;
-> +
-> +       writeb(c, PORT(UART_BASE, UART_TX));
-> here doesn't make too much sense to me. (Also questioning why this is
-> part of the prom.c file).
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/mdio-mux.txt
+> > @@ -0,0 +1,132 @@
+> > +Common MDIO bus multiplexer/switch properties.
+> > +
+> > +An MDIO bus multiplexer/switch will have several child busses that are
+> > +numbered uniquely in a device dependent manner.  The nodes for an MDIO
+> > +bus multiplexer/switch will have one child node for each child bus.
+> > +
+> > +Required properties:
+> > +- parent-bus : phandle to the parent MDIO bus.
+>
+> As discussed, I like mdio-parent-bus.
+>
+> > +
+> > +Optional properties:
+> > +- Other properties specific to the multiplexer/switch hardware.
+> > +
+> > +Required properties for child nodes:
+> > +- #address-cells = <1>;
+> > +- #size-cells = <0>;
+> > +- cell-index : The sub-bus number.
+>
+> Use reg, not cell-index. That is what it is there for. And add the 
+> appropriate #address/size-cells in the parent.
+>
+> I've not reviewed the implementation, but with the changes. I'm okay 
+> with the binding.
 >
 
-I just did what other platform did, such as ar7, bcm47xx and jz4740.
-Could you have a look at their prom.c?
+Thanks for the prompt reply Grant.
 
->
-> Andi
->
+I will rework this with the binding changes and send a new version soon.
 
-
--- 
-Best Regards!
-Kelvin
+David Daney

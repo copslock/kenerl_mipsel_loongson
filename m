@@ -1,245 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2011 02:51:18 +0200 (CEST)
-Received: from mail-vw0-f51.google.com ([209.85.212.51]:63751 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2011 05:27:43 +0200 (CEST)
+Received: from mail-vw0-f51.google.com ([209.85.212.51]:48144 "EHLO
         mail-vw0-f51.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491179Ab1IOAvJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Sep 2011 02:51:09 +0200
-Received: by vws20 with SMTP id 20so3429448vws.24
-        for <multiple recipients>; Wed, 14 Sep 2011 17:51:03 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1491109Ab1IOD1g (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Sep 2011 05:27:36 +0200
+Received: by vws20 with SMTP id 20so3612862vws.24
+        for <multiple recipients>; Wed, 14 Sep 2011 20:27:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=hwdrH2QZTaNUiEKqqBAMn7eHP/yeRsmBYMeD03wmbRw=;
+        b=nVhAzasqk1ZYmZQ8gZLm6+JXTZe4isHXYEJKg9Jjde+gdBsUyZ343KRh6RlFnqmho6
+         QYj+hURYDlHjaUs/6QSmlUs+K8Xdq1MxPJOcZJjdXy8Z7Qv5vdnin9CWYr6r2lI98zp8
+         SB41lOCp24V4OOW8WagHjC9b+dIFEBh4+szZs=
 MIME-Version: 1.0
-Received: by 10.52.177.40 with SMTP id cn8mr418501vdc.468.1316047863388; Wed,
- 14 Sep 2011 17:51:03 -0700 (PDT)
-Received: by 10.52.101.232 with HTTP; Wed, 14 Sep 2011 17:51:02 -0700 (PDT)
-Received: by 10.52.101.232 with HTTP; Wed, 14 Sep 2011 17:51:02 -0700 (PDT)
-In-Reply-To: <1314820906-14004-3-git-send-email-david.daney@cavium.com>
-References: <1314820906-14004-1-git-send-email-david.daney@cavium.com>
-        <1314820906-14004-3-git-send-email-david.daney@cavium.com>
-Date:   Wed, 14 Sep 2011 18:51:02 -0600
-X-Google-Sender-Auth: w0ZzFTRQLHsC0y9rX-JZs5BSBDw
-Message-ID: <CACxGe6tA6D9JVf0_K-JAGnKcQmDmD=1ytqqYb6or-KjP9uZNxg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] netdev/of/phy: Add MDIO bus multiplexer support.
-From:   Grant Likely <grant.likely@secretlab.ca>
-To:     David Daney <david.daney@cavium.com>,
-        David Daney <ddaney@caviumnetworks.com>
+Received: by 10.220.213.135 with SMTP id gw7mr154450vcb.123.1316057250696;
+ Wed, 14 Sep 2011 20:27:30 -0700 (PDT)
+Received: by 10.220.84.82 with HTTP; Wed, 14 Sep 2011 20:27:30 -0700 (PDT)
+In-Reply-To: <20110914160013.GH4110@mails.so.argh.org>
+References: <1315997270-14332-1-git-send-email-keguang.zhang@gmail.com>
+        <20110914113134.GS15003@mails.so.argh.org>
+        <CAJhJPsUW+4fpJUSR07LBO=FDCyAw-KHKaZCt8G+sHCJtjts0oA@mail.gmail.com>
+        <20110914160013.GH4110@mails.so.argh.org>
+Date:   Thu, 15 Sep 2011 11:27:30 +0800
+Message-ID: <CAJhJPsUXvGJBB-YiLB53VSf8GRXHjkrPRf3F3YE5ekOz-OVqgQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Add basic support for Loongson1B
+From:   Kelvin Cheung <keguang.zhang@gmail.com>
+To:     Andreas Barth <aba@not.so.argh.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        devicetree-discuss@lists.ozlabs.org, ralf@linux-mips.org
-Content-Type: multipart/alternative; boundary=bcaec5016323679bef04acf045b4
-X-archive-position: 31086
+        ralf@linux-mips.org, wuzhangjin@gmail.com, r0bertz@gentoo.org,
+        chenj@lemote.com
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 31087
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: keguang.zhang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7518
+X-UID: 7573
 
---bcaec5016323679bef04acf045b4
-Content-Type: text/plain; charset=ISO-8859-1
+2011/9/15, Andreas Barth <aba@not.so.argh.org>:
+> * Kelvin Cheung (keguang.zhang@gmail.com) [110914 15:54]:
+>> 2011/9/14, Andreas Barth <aba@not.so.argh.org>:
+>> > * keguang.zhang@gmail.com (keguang.zhang@gmail.com) [110914 12:49]:
+>> >> This patch adds basic support for Loongson1B
+>> >> including serial, timer and interrupt handler.
+>> >
+>> > I have a couple of questions. One of them is if it shouldn't be
+>> > possible to add this as part of the loongson-platform, and if we
+>> > really need a new platform. Each platform comes with some maintainence
+>> > costs which we should try to avoid. Making things more generic is
+>> > usually the right answer.
+>>
+>> I've tried to add Loongson1 to loongson-platform (acturally loongson2
+>> platform), but there is essential difference between them. The
+>> loongson2 platform is something like the PC's architecture, which has
+>> north and south bridge, while the loongson1 is SoC.
+>> So, I think it's better that adding loongson1 as a new platform.
+>
+> I'm not convinced, but that's also not necessary.
 
-On Aug 31, 2011 2:01 PM, "David Daney" <david.daney@cavium.com> wrote:
+As I mentioned before, Loongson1 is a 32-bit SoC with many built-in
+controllers, which implements the MIPS32 release 2 instruction set,
+while Loongson2 is a 64-bit CPU, which only implements the MIPSIII
+instruction set.
+The Loongson1 does not have a PCI controller. And its interrupt and
+gpio are different from Loongson2 ...
+
+They are totally different thing.
+So, it is hard to reuse the code of loongson-platform.
+
+>> >> --- /dev/null
+>> >> +++ b/arch/mips/loongson1/common/clock.c
+>> >> @@ -0,0 +1,164 @@
+>> >> +/*
+>> >> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+>> >
+>> > Is this file not derived from any of the clock drivers we already have
+>> > in Linux?
+>> >
+>> > Doesn't any of the existing clock drivers work?
+>> >
+>> > Is this clock part of the CPU? Otherwise it would make sense to move
+>> > it out to the generic drivers section.
 >
-> This patch adds a somewhat generic framework for MDIO bus
-> multiplexers.  It is modeled on the I2C multiplexer.
+> What's the answer to this questions?
+
+I just did what other platform did, such as ar7, ath79, bcm63xx and
+jz4740. Could you have a look at their clock.c/clk.c?
+
+>> >> --- /dev/null
+>> >> +++ b/arch/mips/loongson1/common/irq.c
+>> >> @@ -0,0 +1,132 @@
+>> >> +/*
+>> >> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+>> >> + *
+>> >> + * Based on Copyright (C) 2009 Lemote Inc.
+>> >
+>> > same question here. Also, do you have permission from Lemote to put
+>> > the code within GPLv2?
+>>
+>> These code are based on the loongson platform, which is part of the
+>> kernel code already.
 >
-> The multiplexer is needed if there are multiple PHYs with the same
-> address connected to the same MDIO bus adepter, or if there is
-> insufficient electrical drive capability for all the connected PHY
-> devices.
+> In that case, it would make sense to say "derived from arch/mips/..."
+> so that other people can understand where it comes from.
+
+Thanks! I will pay attention to this.
+
+>> >> diff --git a/arch/mips/loongson1/common/prom.c
+>> >> b/arch/mips/loongson1/common/prom.c
+>> >> new file mode 100644
+>> >> index 0000000..84a25f6
+>> >> --- /dev/null
+>> >> +++ b/arch/mips/loongson1/common/prom.c
+>> >
+>> > Can't we re-use the prom-routines from the loongson platform here? Or
+>> > even better, factor them out somewhere else in the mips or even
+>> > generic linux tree?
+>>
+>> Same reason as question 1.
 >
-> Conceptually it could look something like this:
->
->                   ------------------
->                   | Control Signal |
->                   --------+---------
->                           |
->  ---------------   --------+------
->  | MDIO MASTER |---| Multiplexer |
->  ---------------   --+-------+----
->                     |       |
->                     C       C
->                     h       h
->                     i       i
->                     l       l
->                     d       d
->                     |       |
->     ---------       A       B   ---------
->     |       |       |       |   |       |
->     | PHY@1 +-------+       +---+ PHY@1 |
->     |       |       |       |   |       |
->     ---------       |       |   ---------
->     ---------       |       |   ---------
->     |       |       |       |   |       |
->     | PHY@2 +-------+       +---+ PHY@2 |
->     |       |                   |       |
->     ---------                   ---------
->
-> This framework configures the bus topology from device tree data.  The
-> mechanics of switching the multiplexer is left to device specific
-> drivers.
->
-> The follow-on patch contains a multiplexer driven by GPIO lines.
->
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> ---
->  Documentation/devicetree/bindings/net/mdio-mux.txt |  132 ++++++++++++++
->  drivers/net/phy/Kconfig                            |    8 +
->  drivers/net/phy/Makefile                           |    1 +
->  drivers/net/phy/mdio-mux.c                         |  182
-++++++++++++++++++++
->  include/linux/mdio-mux.h                           |   18 ++
->  5 files changed, 341 insertions(+), 0 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/mdio-mux.txt
->  create mode 100644 drivers/net/phy/mdio-mux.c
->  create mode 100644 include/linux/mdio-mux.h
->
-> diff --git a/Documentation/devicetree/bindings/net/mdio-mux.txt
-b/Documentation/devicetree/bindings/net/mdio-mux.txt
-> new file mode 100644
-> index 0000000..a908312
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/mdio-mux.txt
-> @@ -0,0 +1,132 @@
-> +Common MDIO bus multiplexer/switch properties.
+> Not really. Please try to de-duplicate code as far as possible, and to
+> generalize it's usage. Having some code of the form
+
+I did not just duplicate code, modified exactly. The prom-routines of
+loongson platform does not fit loongson1.For instance, the
+"cpu_clock_freq" parameter is not needed. The cpu freq. could be get
+from the PLL register directly. Moreover, the routines does not
+include the parameter "ethaddr", which is useful for embedded system.
+
+> +       while (((readb(PORT(UART_BASE, UART_LSR)) & UART_LSR_THRE) == 0)
+> +                       && (timeout-- > 0))
+> +               ;
 > +
-> +An MDIO bus multiplexer/switch will have several child busses that are
-> +numbered uniquely in a device dependent manner.  The nodes for an MDIO
-> +bus multiplexer/switch will have one child node for each child bus.
-> +
-> +Required properties:
-> +- parent-bus : phandle to the parent MDIO bus.
+> +       writeb(c, PORT(UART_BASE, UART_TX));
+> here doesn't make too much sense to me. (Also questioning why this is
+> part of the prom.c file).
+>
 
-As discussed, I like mdio-parent-bus.
+I just did what other platform did, such as ar7, bcm47xx and jz4740.
+Could you have a look at their prom.c?
 
-> +
-> +Optional properties:
-> +- Other properties specific to the multiplexer/switch hardware.
-> +
-> +Required properties for child nodes:
-> +- #address-cells = <1>;
-> +- #size-cells = <0>;
-> +- cell-index : The sub-bus number.
+>
+> Andi
+>
 
-Use reg, not cell-index. That is what it is there for. And add the
-appropriate #address/size-cells in the parent.
 
-I've not reviewed the implementation, but with the changes. I'm okay with
-the binding.
-
-g.
-
---bcaec5016323679bef04acf045b4
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<p><br>
-On Aug 31, 2011 2:01 PM, &quot;David Daney&quot; &lt;<a href=3D"mailto:davi=
-d.daney@cavium.com">david.daney@cavium.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; This patch adds a somewhat generic framework for MDIO bus<br>
-&gt; multiplexers. =A0It is modeled on the I2C multiplexer.<br>
-&gt;<br>
-&gt; The multiplexer is needed if there are multiple PHYs with the same<br>
-&gt; address connected to the same MDIO bus adepter, or if there is<br>
-&gt; insufficient electrical drive capability for all the connected PHY<br>
-&gt; devices.<br>
-&gt;<br>
-&gt; Conceptually it could look something like this:<br>
-&gt;<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ------------------<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | Control Signal |<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 --------+---------<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |<br>
-&gt; =A0--------------- =A0 --------+------<br>
-&gt; =A0| MDIO MASTER |---| Multiplexer |<br>
-&gt; =A0--------------- =A0 --+-------+----<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A0 =A0 |<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 C =A0 =A0 =A0 C<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 h =A0 =A0 =A0 h<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 i =A0 =A0 =A0 i<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 l =A0 =A0 =A0 l<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 d =A0 =A0 =A0 d<br>
-&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A0 =A0 |<br>
-&gt; =A0 =A0 --------- =A0 =A0 =A0 A =A0 =A0 =A0 B =A0 ---------<br>
-&gt; =A0 =A0 | =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 | =A0 =A0 =A0 =
-|<br>
-&gt; =A0 =A0 | PHY@1 +-------+ =A0 =A0 =A0 +---+ PHY@1 |<br>
-&gt; =A0 =A0 | =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 | =A0 =A0 =A0 =
-|<br>
-&gt; =A0 =A0 --------- =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 ---------<br>
-&gt; =A0 =A0 --------- =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 ---------<br>
-&gt; =A0 =A0 | =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 =A0 =A0 | =A0 | =A0 =A0 =A0 =
-|<br>
-&gt; =A0 =A0 | PHY@2 +-------+ =A0 =A0 =A0 +---+ PHY@2 |<br>
-&gt; =A0 =A0 | =A0 =A0 =A0 | =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A0 =
-=A0 |<br>
-&gt; =A0 =A0 --------- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ---------<br>
-&gt;<br>
-&gt; This framework configures the bus topology from device tree data. =A0T=
-he<br>
-&gt; mechanics of switching the multiplexer is left to device specific<br>
-&gt; drivers.<br>
-&gt;<br>
-&gt; The follow-on patch contains a multiplexer driven by GPIO lines.<br>
-&gt;<br>
-&gt; Signed-off-by: David Daney &lt;<a href=3D"mailto:david.daney@cavium.co=
-m">david.daney@cavium.com</a>&gt;<br>
-&gt; Cc: Grant Likely &lt;<a href=3D"mailto:grant.likely@secretlab.ca">gran=
-t.likely@secretlab.ca</a>&gt;<br>
-&gt; Cc: &quot;David S. Miller&quot; &lt;<a href=3D"mailto:davem@davemloft.=
-net">davem@davemloft.net</a>&gt;<br>
-&gt; ---<br>
-&gt; =A0Documentation/devicetree/bindings/net/mdio-mux.txt | =A0132 +++++++=
-+++++++<br>
-&gt; =A0drivers/net/phy/Kconfig =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0| =A0 =A08 +<br>
-&gt; =A0drivers/net/phy/Makefile =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 | =A0 =A01 +<br>
-&gt; =A0drivers/net/phy/mdio-mux.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 | =A0182 ++++++++++++++++++++<br>
-&gt; =A0include/linux/mdio-mux.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 | =A0 18 ++<br>
-&gt; =A05 files changed, 341 insertions(+), 0 deletions(-)<br>
-&gt; =A0create mode 100644 Documentation/devicetree/bindings/net/mdio-mux.t=
-xt<br>
-&gt; =A0create mode 100644 drivers/net/phy/mdio-mux.c<br>
-&gt; =A0create mode 100644 include/linux/mdio-mux.h<br>
-&gt;<br>
-&gt; diff --git a/Documentation/devicetree/bindings/net/mdio-mux.txt b/Docu=
-mentation/devicetree/bindings/net/mdio-mux.txt<br>
-&gt; new file mode 100644<br>
-&gt; index 0000000..a908312<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/Documentation/devicetree/bindings/net/mdio-mux.txt<br>
-&gt; @@ -0,0 +1,132 @@<br>
-&gt; +Common MDIO bus multiplexer/switch properties.<br>
-&gt; +<br>
-&gt; +An MDIO bus multiplexer/switch will have several child busses that ar=
-e<br>
-&gt; +numbered uniquely in a device dependent manner. =A0The nodes for an M=
-DIO<br>
-&gt; +bus multiplexer/switch will have one child node for each child bus.<b=
-r>
-&gt; +<br>
-&gt; +Required properties:<br>
-&gt; +- parent-bus : phandle to the parent MDIO bus.</p>
-<p>As discussed, I like mdio-parent-bus.</p>
-<p>&gt; +<br>
-&gt; +Optional properties:<br>
-&gt; +- Other properties specific to the multiplexer/switch hardware.<br>
-&gt; +<br>
-&gt; +Required properties for child nodes:<br>
-&gt; +- #address-cells =3D &lt;1&gt;;<br>
-&gt; +- #size-cells =3D &lt;0&gt;;<br>
-&gt; +- cell-index : The sub-bus number.</p>
-<p>Use reg, not cell-index. That is what it is there for. And add the appro=
-priate #address/size-cells in the parent.</p>
-<p>I&#39;ve not reviewed the implementation, but with the changes. I&#39;m =
-okay with the binding.</p>
-<p>g.<br>
-</p>
-
---bcaec5016323679bef04acf045b4--
+-- 
+Best Regards!
+Kelvin

@@ -1,64 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2011 14:01:46 +0200 (CEST)
-Received: from ixqw-mail-out.ixiacom.com ([66.77.12.12]:16884 "EHLO
-        ixqw-mail-out.ixiacom.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491029Ab1IOMBn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Sep 2011 14:01:43 +0200
-Received: from ixro-ex1.ixiacom.com (10.205.8.10) by ixqw-hc2.ixiacom.com
- (10.210.5.14) with Microsoft SMTP Server id 8.2.176.0; Thu, 15 Sep 2011
- 05:01:36 -0700
-Received: from ixro-cratiu.localnet ([10.205.20.206]) by ixro-ex1.ixiacom.com
- over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);         Thu, 15 Sep
- 2011 15:01:30 +0300
-From:   Cosmin Ratiu <cratiu@ixiacom.com>
-Organization: IXIA
-To:     David Daney <david.daney@cavium.com>
-Subject: Re: Octeon crash in virt_to_page(&core0_stack_variable)
-Date:   Thu, 15 Sep 2011 15:01:30 +0300
-User-Agent: KMail/1.13.7 (Linux/2.6.32-5-686; KDE/4.6.5; i686; ; )
-CC:     <linux-mips@linux-mips.org>
-References: <201109091623.29000.cratiu@ixiacom.com> <4E6A45D9.6090706@cavium.com>
-In-Reply-To: <4E6A45D9.6090706@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Sep 2011 16:21:56 +0200 (CEST)
+Received: from mail1.pearl-online.net ([62.159.194.147]:51586 "EHLO
+        mail1.pearl-online.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491191Ab1IOOVt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Sep 2011 16:21:49 +0200
+Received: from Mobile0.Peter (109.125.101.165.dynamic.cablesurf.de [109.125.101.165])
+        by mail1.pearl-online.net (Postfix) with ESMTPA id 18E9F202CE;
+        Thu, 15 Sep 2011 16:21:44 +0200 (CEST)
+Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
+        by Mobile0.Peter (8.12.6/8.12.6/Sendmail/Linux 2.2.13) with ESMTP id p8FFTBd7001279;
+        Thu, 15 Sep 2011 15:29:11 GMT
+Received: from Indigo2.Peter (localhost [127.0.0.1])
+        by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id p8FDn3BQ014996;
+        Thu, 15 Sep 2011 15:49:03 +0200
+Received: from localhost (pf@localhost)
+        by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id p8FDn3Z5014993;
+        Thu, 15 Sep 2011 15:49:03 +0200
+X-Authentication-Warning: Indigo2.Peter: pf owned process doing -bs
+Date:   Thu, 15 Sep 2011 15:49:03 +0200 (CEST)
+From:   peter fuerst <post@pfrst.de>
+X-X-Sender: pf@Indigo2.Peter
+Reply-To: post@pfrst.de
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     Joshua Kinard <kumba@gentoo.org>, attilio.fiandrotti@gmail.com
+Subject: [PATCH 0/4] Impact video driver for SGI Indigo2
+In-Reply-To: <Pine.LNX.4.64.1109111200400.4146@Indigo2.Peter>
+Message-ID: <Pine.LNX.4.64.1109151436580.14966@Indigo2.Peter>
+References: <Pine.LNX.4.64.1109111200400.4146@Indigo2.Peter>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <201109151501.30037.cratiu@ixiacom.com>
-X-OriginalArrivalTime: 15 Sep 2011 12:01:30.0533 (UTC) FILETIME=[34899D50:01CC739F]
-X-archive-position: 31093
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 31094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cratiu@ixiacom.com
+X-original-sender: post@pfrst.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7726
+X-UID: 7819
 
-On Friday 09 September 2011 19:59:05 David Daney wrote:
-> 
-> > [ 2040.300/0] Call Trace:
-> > [ 2040.300/0] [<ffffffffc123a054>] vcrash+0x54/0x80 [vcrash]
-> > [ 2040.300/0] [<ffffffffc0065f28>] run_timer_softirq+0x198/0x23c
-> > [ 2040.300/0] [<ffffffffc00609e0>] __do_softirq+0xd8/0x188
-> 
->                    ^^^^^^^^^ CKSEG2 addresses detected!
-> 
-> You are using the out-of-tree mapped kernel patch which mucks about with
-> the implementation of virt_to_phys().
-> 
-> Can you reproduce the TCP related crash in an unpatched kernel?
-> 
-> If not, then it would point to problems in the out-of-tree patches you
-> have applied.
 
-You are right, we use your mapped kernel patch.
-I tried running without it, but it doesn't work due to external tools' 
-assumptions.
 
-I also looked over your patch, but I am not sufficiently familiar with mips to 
-fully understand what's going on. Can you please point me to where exactly in 
-the patch would the CKSEG2 addresses be translated to physical?
+With this and the following messages the patch for the Impact video
+driver will be resubmitted.
 
-If you need any other information, let me know.
+- Now - most important - the MUA sends text out unaltered.
 
-Cosmin.
+- The diff-text is split into several patches, roughly according to
+  destinations, although these patches are not all independent. ('hope
+  this helps to handle it better :)
+
+- The early-console stuff, probably helpfull only to kernel-debuggers,
+  is extracted to an additional patch, waiting backstage for delivery
+  on demand (only). (This console in principle is usable from kernel-
+  entry on)
+
+
+================================================================
+
+This patch brings, yet missing, parts that make a Linux-driven Indigo2
+Impact (IP28 and most probably IP22-Impact) an usable desktop-machine
+"out of the box".
+The driver provides the framebuffer console and an interface for the
+Xserver (mmap'ing a DMA-pool to the shadow framebuffer and doing the
+necessary cacheflush).
+Meanwhile only a few files are affected and obviously no side-effects
+to other parts of the kernel are to be expected.
+
+BTW: it would be appreciated, if someone could verify, that this driver
+also works for IP22 Impact.
+
+
+ include/video/impact.h           |  205 ++++++++
+ drivers/video/impact.c           | 1020 ++++++++++++++++++++++++++++++++++++++
+ drivers/video/Kconfig            |    6 +
+ drivers/video/Makefile           |    1 +
+ drivers/video/logo/Kconfig       |    2 +-
+ arch/mips/configs/ip28_defconfig |    1 +
+ arch/mips/sgi-ip22/ip22-setup.c  |   26 +
+ 7 files changed, 1260 insertions(+), 1 deletions(-)

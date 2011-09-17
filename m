@@ -1,60 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Sep 2011 03:06:16 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:8112 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491189Ab1IQBGK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Sep 2011 03:06:10 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e73f2c80000>; Fri, 16 Sep 2011 18:07:20 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 16 Sep 2011 18:06:06 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 16 Sep 2011 18:06:06 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id p8H165GY000350;
-        Fri, 16 Sep 2011 18:06:05 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p8H163QP000349;
-        Fri, 16 Sep 2011 18:06:03 -0700
-From:   David Daney <david.daney@cavium.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: No branches in delay slots for huge pages in handle_tlbl
-Date:   Fri, 16 Sep 2011 18:06:02 -0700
-Message-Id: <1316221562-315-1-git-send-email-david.daney@cavium.com>
-X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 17 Sep 2011 01:06:06.0888 (UTC) FILETIME=[FAA51280:01CC74D5]
-X-archive-position: 31097
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Sep 2011 03:23:31 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:39290 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491189Ab1IQBXY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 17 Sep 2011 03:23:24 +0200
+Received: by fxg7 with SMTP id 7so2803125fxg.36
+        for <multiple recipients>; Fri, 16 Sep 2011 18:23:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        bh=WXc2AasZvpfmWIOFMFVsQt2MgN3m1kR0vTJd4SNVjh8=;
+        b=pIZv1HamhxJHKKOUF5VuXD/YYlHqOSvub9oBfHFR2w7OO/n337jJBpCoPNXkm4OGAp
+         BQZy4rbMF4oMCKQAOTUhtJXqqeT3d5UwwJNPxOrkKXhJuWLoMEIKyiZH7S/XBzk3S+8F
+         bm5w2YOuNRI5GxLcMbagjjwUev3VBTJqV8Vp0=
+Received: by 10.223.88.23 with SMTP id y23mr130835fal.95.1316222599425;
+        Fri, 16 Sep 2011 18:23:19 -0700 (PDT)
+Received: from localhost (h59ec324b.selukar.dyn.perspektivbredband.net. [89.236.50.75])
+        by mx.google.com with ESMTPS id e17sm12555665fae.17.2011.09.16.18.23.18
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 16 Sep 2011 18:23:18 -0700 (PDT)
+Date:   Sat, 17 Sep 2011 03:23:15 +0200
+From:   "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org,
+        "Kevin D. Kissell" <kevink@paralogos.com>
+Subject: Re: [PATCH] MIPS: SMTC: Correct saving of CP0_STATUS
+Message-ID: <20110917012315.GG20455@zapo>
+References: <20110829232029.GA15763@zapo>
+ <4E5C2490.6040203@cavium.com>
+ <20110915160054.GA10622@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20110915160054.GA10622@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: edgar.iglesias@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8890
+X-UID: 8897
 
-For the case PM_DEFAULT_MASK == 0, we were placing a branch in the
-delay slot of another branch.  This leads to undefined behavior.
+On Thu, Sep 15, 2011 at 06:00:54PM +0200, Ralf Baechle wrote:
+> On Mon, Aug 29, 2011 at 04:45:20PM -0700, David Daney wrote:
+> 
+> > How about the attached completely untested one instead?
+> 
+> Applied.  I like it more than than Edgar's patch because of the better
+> scheduling.
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/mm/tlbex.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+I agree, thanks!
 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 46f33c7..e06370f 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -1962,7 +1962,8 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
- 			uasm_i_andi(&p, wr.r3, wr.r3, 2);
- 			uasm_il_beqz(&p, &r, wr.r3, label_tlbl_goaround2);
- 		}
--
-+		if (PM_DEFAULT_MASK == 0)
-+			uasm_i_nop(&p);
- 		/*
- 		 * We clobbered C0_PAGEMASK, restore it.  On the other branch
- 		 * it is restored in build_huge_tlb_write_entry.
--- 
-1.7.2.3
+BTW, in case anyone is intersted, it is now possible to boot malta
+boards with SMP with the latest QEMU. The neat thing is that if you
+debug the kernel with GDB, you'll see the different cores execution
+contexts as differten threads and can singletep them individually.
+
+You need a QEMU from latest git.
+
+Cheers

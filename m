@@ -1,38 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Sep 2011 11:45:47 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:40930 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491830Ab1ISJpj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 19 Sep 2011 11:45:39 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p8J0V7l4019576;
-        Mon, 19 Sep 2011 02:31:07 +0200
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p8J0V5xD019571;
-        Mon, 19 Sep 2011 02:31:05 +0200
-Date:   Mon, 19 Sep 2011 02:31:05 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     David Daney <david.daney@cavium.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: No branches in delay slots for huge pages in
- handle_tlbl
-Message-ID: <20110919003105.GA7910@linux-mips.org>
-References: <1316221562-315-1-git-send-email-david.daney@cavium.com>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Sep 2011 02:40:13 +0200 (CEST)
+Received: from lo.gmane.org ([80.91.229.12]:44709 "EHLO lo.gmane.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491826Ab1ITAkI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 20 Sep 2011 02:40:08 +0200
+Received: from list by lo.gmane.org with local (Exim 4.69)
+        (envelope-from <sgi-linux-mips@m.gmane.org>)
+        id 1R5oNb-0005TW-BG
+        for linux-mips@linux-mips.org; Tue, 20 Sep 2011 02:40:07 +0200
+Received: from customer-GDL-177-153.megared.net.mx ([customer-GDL-177-153.megared.net.mx])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Tue, 20 Sep 2011 02:40:07 +0200
+Received: from bsdero by customer-GDL-177-153.megared.net.mx with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Tue, 20 Sep 2011 02:40:07 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To:     linux-mips@linux-mips.org
+From:   BSDero <bsdero@gmail.com>
+Subject: Does the VIA VT6212 USB Host controller works on SGI/Mips?
+Date:   Tue, 20 Sep 2011 00:22:14 +0000 (UTC)
+Message-ID: <loom.20110920T021938-457@post.gmane.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1316221562-315-1-git-send-email-david.daney@cavium.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31106
+Content-Transfer-Encoding: 7bit
+X-Complaints-To: usenet@dough.gmane.org
+X-Gmane-NNTP-Posting-Host: sea.gmane.org
+User-Agent: Loom/3.14 (http://gmane.org/)
+X-Loom-IP: 189.192.177.153 (Mozilla/5.0 (Windows; U; Windows NT 5.1; es-ES; rv:1.9.1.19) Gecko/20110420 Firefox/3.5.19 FBSMTWB)
+X-archive-position: 31108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: bsdero@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9468
+X-UID: 10263
 
-Thanks, applied.
+I'm working on a Driver for this device in Irix, and I don't know if this works
+ok... I can not get PCI interrupts with this device... 
 
-  Ralf
+How is it in SGI/MIps Linux? 

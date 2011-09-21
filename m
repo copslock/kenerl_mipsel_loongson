@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2011 15:43:37 +0200 (CEST)
-Received: from zmc.proxad.net ([212.27.53.206]:50311 "EHLO zmc.proxad.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2011 15:43:15 +0200 (CEST)
+Received: from zmc.proxad.net ([212.27.53.206]:50310 "EHLO zmc.proxad.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491876Ab1IUNkf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1491874Ab1IUNkf (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 21 Sep 2011 15:40:35 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id BB6D332A4D0;
+        by zmc.proxad.net (Postfix) with ESMTP id BF9F232D673;
         Wed, 21 Sep 2011 15:40:33 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at 
 Received: from zmc.proxad.net ([127.0.0.1])
         by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 9JDcb4PakrE1; Wed, 21 Sep 2011 15:40:33 +0200 (CEST)
+        with ESMTP id WiYMPuFrE6BS; Wed, 21 Sep 2011 15:40:33 +0200 (CEST)
 Received: from flexo.priv.staff.proxad.net (bobafett.staff.proxad.net [213.228.1.121])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 6B24432D671;
+        by zmc.proxad.net (Postfix) with ESMTPSA id 72B5E32D67D;
         Wed, 21 Sep 2011 15:40:33 +0200 (CEST)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, Florian Fainelli <ffainelli@freebox.fr>,
         Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 4/5] MIPS: bcm63xx: remove BCM6345 hacks to read base boot address
-Date:   Wed, 21 Sep 2011 15:39:49 +0200
-Message-Id: <1316612390-6367-7-git-send-email-florian@openwrt.org>
+Subject: [PATCH 5/5] MIPS: bcm63xx: fix GPIO set/get for BCM6345
+Date:   Wed, 21 Sep 2011 15:39:50 +0200
+Message-Id: <1316612390-6367-8-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.7.4.1
 In-Reply-To: <1316612390-6367-1-git-send-email-florian@openwrt.org>
 References: <1316612390-6367-1-git-send-email-florian@openwrt.org>
-X-archive-position: 31122
+X-archive-position: 31121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,58 +32,68 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11655
+X-UID: 11656
 
 From: Florian Fainelli <ffainelli@freebox.fr>
 
-Though BCM6345 does not technically have the same MPI register layout
-than the other SoCs, reading the chip-select registers is done the same
-way, and particularly for chip-select 0, which is the boot flash.
-Now that BCM6345 has a MPI_BASE register defined, use it.
+On BCM6345, the register offsets for the set/get GPIO registers is wrong
+in order not add more complexity, use the HI_* variants for BCM6345
+which results in reading/writing from/to the right register offsets.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/bcm63xx/boards/board_bcm963xx.c |   21 ++++++---------------
- 1 files changed, 6 insertions(+), 15 deletions(-)
+ arch/mips/bcm63xx/gpio.c |   18 ++++++++++++++----
+ 1 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-index 40b223b..ac948c2 100644
---- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
-+++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-@@ -709,15 +709,9 @@ void __init board_prom_init(void)
- 	char cfe_version[32];
- 	u32 val;
+diff --git a/arch/mips/bcm63xx/gpio.c b/arch/mips/bcm63xx/gpio.c
+index f560fe7..154353f 100644
+--- a/arch/mips/bcm63xx/gpio.c
++++ b/arch/mips/bcm63xx/gpio.c
+@@ -4,7 +4,7 @@
+  * for more details.
+  *
+  * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
+- * Copyright (C) 2008 Florian Fainelli <florian@openwrt.org>
++ * Copyright (C) 2008-2011 Florian Fainelli <florian@openwrt.org>
+  */
  
--	/* read base address of boot chip select (0)
--	 * 6345 does not have MPI but boots from standard
--	 * MIPS Flash address */
--	if (BCMCPU_IS_6345())
--		val = 0x1fc00000;
--	else {
--		val = bcm_mpi_readl(MPI_CSBASE_REG(0));
--		val &= MPI_CSBASE_BASE_MASK;
--	}
-+	/* read base address of boot chip select (0) */
-+	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
-+	val &= MPI_CSBASE_BASE_MASK;
- 	boot_addr = (u8 *)KSEG1ADDR(val);
+ #include <linux/kernel.h>
+@@ -33,7 +33,10 @@ static void bcm63xx_gpio_set(struct gpio_chip *chip,
+ 		BUG();
  
- 	/* dump cfe version */
-@@ -893,12 +887,9 @@ int __init board_register_devices(void)
- 		bcm63xx_dsp_register(&board.dsp);
+ 	if (gpio < 32) {
+-		reg = GPIO_DATA_LO_REG;
++		if (!BCMCPU_IS_6345())
++			reg = GPIO_DATA_LO_REG;
++		else
++			reg = GPIO_DATA_HI_REG;
+ 		mask = 1 << gpio;
+ 		v = &gpio_out_low;
+ 	} else {
+@@ -60,7 +63,10 @@ static int bcm63xx_gpio_get(struct gpio_chip *chip, unsigned gpio)
+ 		BUG();
  
- 	/* read base address of boot chip select (0) */
--	if (BCMCPU_IS_6345())
--		val = 0x1fc00000;
--	else {
--		val = bcm_mpi_readl(MPI_CSBASE_REG(0));
--		val &= MPI_CSBASE_BASE_MASK;
--	}
-+	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
-+	val &= MPI_CSBASE_BASE_MASK;
+ 	if (gpio < 32) {
+-		reg = GPIO_DATA_LO_REG;
++		if (!BCMCPU_IS_6345())
++			reg = GPIO_DATA_LO_REG;
++		else
++			reg = GPIO_DATA_HI_REG;
+ 		mask = 1 << gpio;
+ 	} else {
+ 		reg = GPIO_DATA_HI_REG;
+@@ -125,7 +131,11 @@ static struct gpio_chip bcm63xx_gpio_chip = {
+ 
+ int __init bcm63xx_gpio_init(void)
+ {
+-	gpio_out_low = bcm_gpio_readl(GPIO_DATA_LO_REG);
++	if (!BCMCPU_IS_6345())
++		gpio_out_low = bcm_gpio_readl(GPIO_DATA_LO_REG);
++	else
++		gpio_out_low = bcm_gpio_readl(GPIO_DATA_HI_REG);
 +
- 	mtd_resources[0].start = val;
- 	mtd_resources[0].end = 0x1FFFFFFF;
- 
+ 	gpio_out_high = bcm_gpio_readl(GPIO_DATA_HI_REG);
+ 	bcm63xx_gpio_chip.ngpio = bcm63xx_gpio_count();
+ 	pr_info("registering %d GPIOs\n", bcm63xx_gpio_chip.ngpio);
 -- 
 1.7.4.1

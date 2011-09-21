@@ -1,58 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2011 15:49:06 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:39500 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491876Ab1IUNtA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Sep 2011 15:49:00 +0200
-Received: by wyi11 with SMTP id 11so258135wyi.36
-        for <multiple recipients>; Wed, 21 Sep 2011 06:48:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=sender:from:organization:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        bh=K5eSXn1MamefEWVUzkH/PM2GDjj7ujnMGo+gQK9L4ss=;
-        b=j3MLyWeCSnjmHb8R0bMtUiw1f0K3nN4CcOAq/A/JZUsYwGJQiUn7J5UE8J15LJG08q
-         thWUju9ZUxTWd8Q+ITLpq5JZuQXdQuDWjvFLGEsffgzipdiG5Nwh4GbOu40k9G+gUSwI
-         ny3JkCXnFxNwAAIG3qEYc6ToBVHrP78CO+AzY=
-Received: by 10.227.135.141 with SMTP id n13mr715124wbt.53.1316612934616;
-        Wed, 21 Sep 2011 06:48:54 -0700 (PDT)
-Received: from flexo.localnet (bobafett.staff.proxad.net. [213.228.1.121])
-        by mx.google.com with ESMTPS id l18sm3258085wbo.23.2011.09.21.06.48.52
-        (version=SSLv3 cipher=OTHER);
-        Wed, 21 Sep 2011 06:48:53 -0700 (PDT)
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-To:     ralf@linux-mips.org
-Subject: Re: [PATCH 1/3] MIPS: introduce GENERIC_DUMP_TLB
-Date:   Wed, 21 Sep 2011 15:48:28 +0200
-User-Agent: KMail/1.13.6 (Linux/2.6.38-11-server; KDE/4.6.2; x86_64; ; )
-Cc:     linux-mips@linux-mips.org
-References: <1316612390-6367-1-git-send-email-florian@openwrt.org> <1316612390-6367-2-git-send-email-florian@openwrt.org>
-In-Reply-To: <1316612390-6367-2-git-send-email-florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Sep 2011 22:09:34 +0200 (CEST)
+Received: from mail-qy0-f170.google.com ([209.85.216.170]:43655 "EHLO
+        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491885Ab1IUUJ0 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Sep 2011 22:09:26 +0200
+Received: by qyl16 with SMTP id 16so4591992qyl.15
+        for <multiple recipients>; Wed, 21 Sep 2011 13:09:20 -0700 (PDT)
+Received: by 10.52.65.42 with SMTP id u10mr1093781vds.267.1316635760064; Wed,
+ 21 Sep 2011 13:09:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201109211548.28440.florian@openwrt.org>
-X-archive-position: 31123
+Received: by 10.52.101.232 with HTTP; Wed, 21 Sep 2011 13:08:59 -0700 (PDT)
+In-Reply-To: <20110914150452.GA12638@linux-mips.org>
+References: <20110908220559.GA3040@maxin> <20110914150452.GA12638@linux-mips.org>
+From:   Grant Likely <grant.likely@secretlab.ca>
+Date:   Wed, 21 Sep 2011 14:08:59 -0600
+X-Google-Sender-Auth: E7i5-atD7WEYz250_aoL6nYCs7g
+Message-ID: <CACxGe6ufZkVvTS-A8j1khkapaMN_3LuztRPSfHmeKqU7saJzWA@mail.gmail.com>
+Subject: Re: [PATCH] mips: mm: tlbex.c: Fix compiler warnings
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "Maxin B. John" <maxin.john@gmail.com>,
+        David Daney <david.daney@cavium.com>,
+        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
+        Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 31124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 11665
+X-UID: 11940
 
-Ralf,
+On Wed, Sep 14, 2011 at 9:04 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Fri, Sep 09, 2011 at 01:06:00AM +0300, Maxin B. John wrote:
+>
+>>  CC      arch/mips/mm/tlbex.o
+>> cc1: warnings being treated as errors
+>> arch/mips/mm/tlbex.c: In function 'build_r3000_tlb_modify_handler':
+>> arch/mips/mm/tlbex.c:1769: error: 'wr.r1' is used uninitialized in this function
+>> arch/mips/mm/tlbex.c:1769: error: 'wr.r2' is used uninitialized in this function
+>> arch/mips/mm/tlbex.c:1769: error: 'wr.r3' is used uninitialized in this function
+>> make[2]: *** [arch/mips/mm/tlbex.o] Error 1
+>> make[1]: *** [arch/mips/mm] Error 2
+>> make: *** [arch/mips] Error 2
+>
+> This was fixed by 949cb4ca0aa53e97ea5f524536593ad2d2946b73.  The real
+> fix to not pass the wr members to build_pte_modifiable() because they
+> just are not needed.
 
-On Wednesday 21 September 2011 15:39:44 Florian Fainelli wrote:
-> Allows us not to duplicate more lines in arch/mips/lib/Makefile.
-> 
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+Which tree is this fix getting merged via?  Will it be in v3.1?
 
-I did not meant to resend this 3-series patch with the BCM6345 5 patches, 
-sorry for the noise.
--- 
-Florian
+g.

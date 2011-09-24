@@ -1,154 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Sep 2011 08:23:42 +0200 (CEST)
-Received: from mail-pz0-f45.google.com ([209.85.210.45]:45327 "EHLO
-        mail-pz0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491151Ab1IXGXJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Sep 2011 08:23:09 +0200
-Received: by pzk2 with SMTP id 2so10186333pzk.4
-        for <multiple recipients>; Fri, 23 Sep 2011 23:23:02 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Sep 2011 17:17:10 +0200 (CEST)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:35666 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491963Ab1IXPRD (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Sep 2011 17:17:03 +0200
+Received: by fxg7 with SMTP id 7so6005710fxg.36
+        for <multiple recipients>; Sat, 24 Sep 2011 08:16:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=FB2mSOrMLg/dxgLKZJLwKFxESRBxBKkJbBqPkPsSVSM=;
-        b=BSopC6aH4IsPEEYpDEbGmGCejSB6vpEHfYzaWq2suXQTkjNEZ4lCCeRKDk/ITIP5p8
-         ZKD1OajtpKogsLfa5qMNBg0x5BsFhP46w/wDOj2Es/xbBqdB2u8HlV1ui2zidxhkDKkv
-         CoNjQxXlsl+uakXIr42JpCPt4Wg2mraBXSIss=
-Received: by 10.68.29.73 with SMTP id i9mr14779657pbh.12.1316845382182;
-        Fri, 23 Sep 2011 23:23:02 -0700 (PDT)
-Received: from localhost.localdomain ([125.71.247.197])
-        by mx.google.com with ESMTPS id q10sm46366973pbn.9.2011.09.23.23.22.53
-        (version=SSLv3 cipher=OTHER);
-        Fri, 23 Sep 2011 23:23:01 -0700 (PDT)
-From:   keguang.zhang@gmail.com
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     ralf@linux-mips.org, wuzhangjin@gmail.com, r0bertz@gentoo.org,
-        chenj@lemote.com, Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH 2/2] MIPS: Add defconfig for Loongson1B (UPDATED)
-Date:   Sat, 24 Sep 2011 14:21:56 +0800
-Message-Id: <1316845316-5765-2-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.4.1
-In-Reply-To: <1316845316-5765-1-git-send-email-keguang.zhang@gmail.com>
-References: <1316845316-5765-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 31149
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=TgQF+SvxBjdRaWc0BT3f4PmBAyal+9P2bACCkL6QPJ8=;
+        b=L437IQZQgPe5izjjX5MXtMtzf7h4uMwCGMgF+SLeVcHUArgdkDoQFj7RAN1hRzclfU
+         6d2iQ0tw/8mohZKmxk8GXuHWblq+L4893HyfFlDACL2d2eZR9momf1eFocVkI/Xd2qF4
+         WLubiHs8SUn5qknbRaFPsYun8nQ+06a5TCT8o=
+Received: by 10.223.94.134 with SMTP id z6mr7134201fam.8.1316877417944;
+        Sat, 24 Sep 2011 08:16:57 -0700 (PDT)
+Received: from localhost.localdomain (188-22-1-130.adsl.highway.telekom.at. [188.22.1.130])
+        by mx.google.com with ESMTPS id w14sm14549396fae.13.2011.09.24.08.16.55
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sat, 24 Sep 2011 08:16:56 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH 0/2] MIPS: Alchemy: remove old board support
+Date:   Sat, 24 Sep 2011 17:16:54 +0200
+Message-Id: <1316877416-14958-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.6.1
+X-archive-position: 31150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13794
+X-UID: 13881
 
-From: Kelvin Cheung <keguang.zhang@gmail.com>
+Hello,
 
-This patch adds defconfig for Loongson1B.
+These 2 patches remove support for the PB1000 and BOSPORUS/MIRAGE boards.
+I have no appropriate test hardware, noone seems to be using them.
+With the PB1000 gone the old Alchemy PCMCIA socket code can go away as well.
+Support could be brought back if anyone is still interested (I do have
+datasheets for all).
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
----
- arch/mips/configs/ls1b_defconfig |   95 ++++++++++++++++++++++++++++++++++++++
- 1 files changed, 95 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/ls1b_defconfig
+Manuel Lauss (2):
+  MIPS: Alchemy: remove PB1000 support
+  MIPS: Alchemy: drop MIRAGE/BOSPORUS board support
 
-diff --git a/arch/mips/configs/ls1b_defconfig b/arch/mips/configs/ls1b_defconfig
-new file mode 100644
-index 0000000..f7c48f5
---- /dev/null
-+++ b/arch/mips/configs/ls1b_defconfig
-@@ -0,0 +1,95 @@
-+CONFIG_MACH_LOONGSON1=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT_VOLUNTARY=y
-+CONFIG_KEXEC=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=16
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_RD_XZ=y
-+CONFIG_RD_LZO=y
-+CONFIG_EXPERT=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_PERF_EVENTS=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+# CONFIG_LBDAF is not set
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_SYN_COOKIES=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_STANDALONE is not set
-+CONFIG_BLK_DEV_LOOP=y
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=8
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=1
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_RAMOOPS=y
-+# CONFIG_HWMON is not set
-+# CONFIG_MFD_SUPPORT is not set
-+# CONFIG_VGA_CONSOLE is not set
-+# CONFIG_HID_SUPPORT is not set
-+# CONFIG_USB_SUPPORT is not set
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+# CONFIG_ENABLE_WARN_DEPRECATED is not set
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_UNUSED_SYMBOLS=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_DETECT_HUNG_TASK=y
-+CONFIG_SCHEDSTATS=y
-+CONFIG_TIMER_STATS=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+CONFIG_BOOT_PRINTK_DELAY=y
-+CONFIG_SYSCTL_SYSCALL_CHECK=y
-+# CONFIG_FTRACE is not set
-+CONFIG_KGDB=y
-+CONFIG_KGDB_LOW_LEVEL_TRAP=y
-+CONFIG_KGDB_KDB=y
-+CONFIG_KDB_KEYBOARD=y
-+# CONFIG_EARLY_PRINTK is not set
+ arch/mips/alchemy/Kconfig                        |   23 -
+ arch/mips/alchemy/Platform                       |   21 -
+ arch/mips/alchemy/common/irq.c                   |   11 -
+ arch/mips/alchemy/devboards/Makefile             |    3 -
+ arch/mips/alchemy/devboards/db1x00/board_setup.c |  105 +----
+ arch/mips/alchemy/devboards/db1x00/platform.c    |   67 +---
+ arch/mips/alchemy/devboards/pb1000/Makefile      |    8 -
+ arch/mips/alchemy/devboards/pb1000/board_setup.c |  209 ---------
+ arch/mips/alchemy/devboards/prom.c               |    5 +-
+ arch/mips/include/asm/mach-pb1x00/pb1000.h       |   87 ----
+ drivers/net/irda/au1k_ir.c                       |    5 +-
+ drivers/pcmcia/Kconfig                           |    4 -
+ drivers/pcmcia/Makefile                          |    4 -
+ drivers/pcmcia/au1000_generic.c                  |  545 ----------------------
+ drivers/pcmcia/au1000_generic.h                  |  135 ------
+ drivers/pcmcia/au1000_pb1x00.c                   |  294 ------------
+ 16 files changed, 5 insertions(+), 1521 deletions(-)
+ delete mode 100644 arch/mips/alchemy/devboards/pb1000/Makefile
+ delete mode 100644 arch/mips/alchemy/devboards/pb1000/board_setup.c
+ delete mode 100644 arch/mips/include/asm/mach-pb1x00/pb1000.h
+ delete mode 100644 drivers/pcmcia/au1000_generic.c
+ delete mode 100644 drivers/pcmcia/au1000_generic.h
+ delete mode 100644 drivers/pcmcia/au1000_pb1x00.c
+
 -- 
-1.7.4.1
+1.7.6.1

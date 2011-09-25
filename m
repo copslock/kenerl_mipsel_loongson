@@ -1,83 +1,192 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Sep 2011 22:57:53 +0200 (CEST)
-Received: from mail-pz0-f45.google.com ([209.85.210.45]:55647 "EHLO
-        mail-pz0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491829Ab1IXU5t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Sep 2011 22:57:49 +0200
-Received: by pzk2 with SMTP id 2so11911554pzk.4
-        for <multiple recipients>; Sat, 24 Sep 2011 13:57:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Sep 2011 06:42:16 +0200 (CEST)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:44362 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490982Ab1IYEmH convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 25 Sep 2011 06:42:07 +0200
+Received: by gxk24 with SMTP id 24so4023577gxk.36
+        for <multiple recipients>; Sat, 24 Sep 2011 21:42:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=WIaFU+GWilnbnELPjcxJzJ9YF3C3uDZjzUK7gRzUowI=;
-        b=QPUJScfSmLpQEwVqkxsJtJikhqwaTqKcsdkPsnFb9tDIvvxeYwnXjHv/Shp+X+XeRW
-         uJYL+hQrqlZCHmHDtlImQjKZFFCenBRyx66IdpeQpD/nxLNQbj8xy6biL0iTuopaqRK6
-         Hf+oweeTLQDtjk9HQrXrbYIrkHNXhYrz8YK1g=
-Received: by 10.68.19.196 with SMTP id h4mr18667390pbe.39.1316897863014;
-        Sat, 24 Sep 2011 13:57:43 -0700 (PDT)
-Received: from dd_xps.caveonetworks.com (adsl-68-122-40-123.dsl.pltn13.pacbell.net. [68.122.40.123])
-        by mx.google.com with ESMTPS id ji3sm53716950pbc.2.2011.09.24.13.57.41
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 24 Sep 2011 13:57:42 -0700 (PDT)
-Message-ID: <4E7E4444.4010706@gmail.com>
-Date:   Sat, 24 Sep 2011 13:57:40 -0700
-From:   David Daney <david.s.daney@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.17) Gecko/20110428 Fedora/3.1.10-1.fc13 Thunderbird/3.1.10
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=BbaK6mRnem2RMR/IwyuHQgH8L8oCuhiIvJS8mMTTh4Y=;
+        b=dXRFPU02IE7tp2+FERQtkB/PoLHD503KPAwdat4PrBgJyJUdGyiro/2jYpl57B8etO
+         epGS3ie29tHCw3a63Csq7DVDZgQOHtkJiaxp4AL/owRPu3cZO+p5GuXcTNf6xr4uyU+a
+         rmVgjUQKq7GsIMrroynNIWLrgQO0ORwg8NdNA=
 MIME-Version: 1.0
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>, ralf@linux-mips.org
-CC:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: Re: [PATCH v5 4/5] MIPS: perf: Add support for 64-bit perf counters.
-References: <1316712378-7282-1-git-send-email-david.daney@cavium.com>        <1316712378-7282-5-git-send-email-david.daney@cavium.com> <CAOfQC98YwVoFWz+ZYv5JYCPG=NhzoeMKy70oE7aJbwAB+yZ6gA@mail.gmail.com>
-In-Reply-To: <CAOfQC98YwVoFWz+ZYv5JYCPG=NhzoeMKy70oE7aJbwAB+yZ6gA@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31154
+Received: by 10.231.9.40 with SMTP id j40mr7337940ibj.2.1316925719083; Sat, 24
+ Sep 2011 21:41:59 -0700 (PDT)
+Received: by 10.231.152.148 with HTTP; Sat, 24 Sep 2011 21:41:59 -0700 (PDT)
+In-Reply-To: <1316845316-5765-2-git-send-email-keguang.zhang@gmail.com>
+References: <1316845316-5765-1-git-send-email-keguang.zhang@gmail.com>
+        <1316845316-5765-2-git-send-email-keguang.zhang@gmail.com>
+Date:   Sun, 25 Sep 2011 12:41:59 +0800
+Message-ID: <CAD+V5YLEStps68UK2NXLNh4ktGnv==WxXxWjjVJsRhk-XUp+Jw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] MIPS: Add defconfig for Loongson1B (UPDATED)
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     keguang.zhang@gmail.com
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, r0bertz@gentoo.org, chenj@lemote.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 31155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.s.daney@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13925
+X-UID: 13988
 
-On 09/23/2011 07:54 PM, Deng-Cheng Zhu wrote:
-> 2011/9/23 David Daney<david.daney@cavium.com>:
->> The hard coded constants are moved to struct mips_pmu.  All counter
->> register access move to the read_counter and write_counter function
->> pointers, which are set to either 32-bit or 64-bit access methods at
->> initialization time.
->>
->> Many of the function pointers in struct mips_pmu were not needed as
->> there was only a single implementation, these were removed.
->>
->> I couldn't figure out what made struct cpu_hw_events.msbs[] at all
->> useful, so I removed it too.
-> The idea behind msbs is to simulate 32-bit counters based on the fact
-> of MIPS using the MSB to trigger the overflow interrupt. By doing this, the
-> average length of the overflow ISR can be shorter in the case of event
-> period is bigger than 0x80000000.
-It doesn't make the maximum overflow period any shorter.  It just hides 
-it from the perf core, which is perfectly capable of handling the 
-shorter maximum overflow period.
+On Sat, Sep 24, 2011 at 2:21 PM,  <keguang.zhang@gmail.com> wrote:
+> From: Kelvin Cheung <keguang.zhang@gmail.com>
+>
+> This patch adds defconfig for Loongson1B.
+>
+> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+> ---
+>  arch/mips/configs/ls1b_defconfig |   95 ++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 95 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/mips/configs/ls1b_defconfig
+>
+> diff --git a/arch/mips/configs/ls1b_defconfig b/arch/mips/configs/ls1b_defconfig
+> new file mode 100644
+> index 0000000..f7c48f5
+> --- /dev/null
+> +++ b/arch/mips/configs/ls1b_defconfig
+> @@ -0,0 +1,95 @@
+> +CONFIG_MACH_LOONGSON1=y
+> +CONFIG_HIGH_RES_TIMERS=y
+> +CONFIG_PREEMPT_VOLUNTARY=y
 
->   Also, it simplifies counter value related
-> algorithms in the code
+What is the target market of 1B?
 
-Have you looked at the code?  It in no way simplifies things.  The patch 
-removes 80 lines of code while maintaining 32-bit counter support *and* 
-adding 64-bit support.
+Seems CONFIG_PREEMPT_VOLUNTARY is for Desktop, CONFIG_PREEMPT is
+better for low-latency desktop
+and even for some real time applications.
 
+> +CONFIG_KEXEC=y
 
->   - most of other architectures have 32-bit counters
-> instead of 31-bit. In addition, taking over those bugfixes can be easier as
-> a concequence.
+Did you validate kexec support on your 1B board?
 
-Not the Linux way.  If there are bugs in the perf core we fix them, we 
-don't work around them in archecture specific code.
+According to my previous experiment, The kexec support of 32bit
+Loongson2F requires more patches,
+those patches are available in the following git repo:
 
-David Daney
+http://dev.lemote.com/cgit/linux-loongson-community.git/log/?h=tiny36
+
+or
+
+git://dev.lemote.com/linux-loongson-community.git tiny36
+
+> +# CONFIG_SECCOMP is not set
+> +CONFIG_EXPERIMENTAL=y
+> +# CONFIG_LOCALVERSION_AUTO is not set
+> +CONFIG_SYSVIPC=y
+> +CONFIG_BSD_PROCESS_ACCT=y
+> +CONFIG_BSD_PROCESS_ACCT_V3=y
+> +CONFIG_IKCONFIG=y
+> +CONFIG_IKCONFIG_PROC=y
+> +CONFIG_LOG_BUF_SHIFT=16
+> +CONFIG_BLK_DEV_INITRD=y
+> +CONFIG_RD_BZIP2=y
+> +CONFIG_RD_LZMA=y
+> +CONFIG_RD_XZ=y
+> +CONFIG_RD_LZO=y
+
+Not sure why you need all of these 4 compression algorithms, LZO is
+the fastest one, LZMA has the largest compression ratio.
+
+> +CONFIG_EXPERT=y
+> +CONFIG_KALLSYMS_ALL=y
+> +CONFIG_PERF_EVENTS=y
+> +# CONFIG_COMPAT_BRK is not set
+> +CONFIG_MODULES=y
+> +CONFIG_MODULE_UNLOAD=y
+> +CONFIG_MODVERSIONS=y
+> +# CONFIG_LBDAF is not set
+> +# CONFIG_BLK_DEV_BSG is not set
+> +# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
+> +# CONFIG_SUSPEND is not set
+> +CONFIG_NET=y
+> +CONFIG_PACKET=y
+> +CONFIG_UNIX=y
+> +CONFIG_INET=y
+> +CONFIG_IP_PNP=y
+> +CONFIG_IP_PNP_DHCP=y
+> +CONFIG_SYN_COOKIES=y
+> +# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+> +# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+> +# CONFIG_INET_XFRM_MODE_BEET is not set
+> +# CONFIG_INET_DIAG is not set
+> +# CONFIG_IPV6 is not set
+> +# CONFIG_WIRELESS is not set
+> +CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+> +CONFIG_DEVTMPFS=y
+> +CONFIG_DEVTMPFS_MOUNT=y
+> +# CONFIG_STANDALONE is not set
+> +CONFIG_BLK_DEV_LOOP=y
+> +# CONFIG_INPUT_MOUSEDEV is not set
+> +# CONFIG_INPUT_KEYBOARD is not set
+> +# CONFIG_INPUT_MOUSE is not set
+> +# CONFIG_SERIO is not set
+> +CONFIG_VT_HW_CONSOLE_BINDING=y
+> +CONFIG_LEGACY_PTY_COUNT=8
+> +# CONFIG_DEVKMEM is not set
+> +CONFIG_SERIAL_8250=y
+> +CONFIG_SERIAL_8250_CONSOLE=y
+> +CONFIG_SERIAL_8250_RUNTIME_UARTS=1
+> +# CONFIG_HW_RANDOM is not set
+> +CONFIG_RAMOOPS=y
+> +# CONFIG_HWMON is not set
+> +# CONFIG_MFD_SUPPORT is not set
+> +# CONFIG_VGA_CONSOLE is not set
+> +# CONFIG_HID_SUPPORT is not set
+> +# CONFIG_USB_SUPPORT is not set
+> +# CONFIG_IOMMU_SUPPORT is not set
+> +CONFIG_EXT2_FS=y
+> +CONFIG_EXT2_FS_XATTR=y
+> +CONFIG_EXT2_FS_POSIX_ACL=y
+> +CONFIG_EXT2_FS_SECURITY=y
+> +CONFIG_EXT3_FS=y
+> +CONFIG_EXT3_FS_POSIX_ACL=y
+> +CONFIG_EXT3_FS_SECURITY=y
+
+Seems we have EXT4 now, but PMON may not support it currently ;)
+
+> +# CONFIG_DNOTIFY is not set
+> +CONFIG_PROC_KCORE=y
+> +CONFIG_TMPFS=y
+> +CONFIG_TMPFS_POSIX_ACL=y
+> +# CONFIG_MISC_FILESYSTEMS is not set
+> +# CONFIG_NETWORK_FILESYSTEMS is not set
+> +# CONFIG_ENABLE_WARN_DEPRECATED is not set
+> +# CONFIG_ENABLE_MUST_CHECK is not set
+> +CONFIG_UNUSED_SYMBOLS=y
+> +CONFIG_DEBUG_FS=y
+> +CONFIG_DETECT_HUNG_TASK=y
+> +CONFIG_SCHEDSTATS=y
+> +CONFIG_TIMER_STATS=y
+> +CONFIG_DEBUG_INFO=y
+> +CONFIG_DEBUG_MEMORY_INIT=y
+> +CONFIG_BOOT_PRINTK_DELAY=y
+> +CONFIG_SYSCTL_SYSCALL_CHECK=y
+> +# CONFIG_FTRACE is not set
+> +CONFIG_KGDB=y
+> +CONFIG_KGDB_LOW_LEVEL_TRAP=y
+> +CONFIG_KGDB_KDB=y
+
+If this config is for product, the above debug support may be not required.
+
+Best Regards,
+Wu Zhangjin
+
+> +CONFIG_KDB_KEYBOARD=y
+> +# CONFIG_EARLY_PRINTK is not set
+> --
+> 1.7.4.1
+>
+>

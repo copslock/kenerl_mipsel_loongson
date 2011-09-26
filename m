@@ -1,145 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Sep 2011 11:38:59 +0200 (CEST)
-Received: from mail-gx0-f177.google.com ([209.85.161.177]:64155 "EHLO
-        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492009Ab1IZJih (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Sep 2011 11:38:37 +0200
-Received: by gxk24 with SMTP id 24so4696398gxk.36
-        for <multiple recipients>; Mon, 26 Sep 2011 02:38:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=k7RG3z1D6bxB2BUYWVTZjaP8VnU/t0rlApWUaPwTJy0=;
-        b=xgrREOuq1yvKidGht6L5DGB5Js2iqdRn/qUfq/C149pa9YZ6F0W/7pNdKRgT8Rxslg
-         Til2jOXtSWY6giv5XTy8CeqqGNUTGwRxS8+UqrX/kWqjVNpwUCaRyQSpuOkQ5qFNiODc
-         PQPix1jDxMrUwoofbq2HurjGID01i2vuA157g=
-Received: by 10.150.59.10 with SMTP id h10mr6320216yba.180.1317029911214;
-        Mon, 26 Sep 2011 02:38:31 -0700 (PDT)
-Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id l12sm42690739ang.6.2011.09.26.02.38.23
-        (version=SSLv3 cipher=OTHER);
-        Mon, 26 Sep 2011 02:38:30 -0700 (PDT)
-From:   keguang.zhang@gmail.com
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     ralf@linux-mips.org, wuzhangjin@gmail.com, r0bertz@gentoo.org,
-        chenj@lemote.com, Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH 2/2] MIPS: Add defconfig for Loongson1B (UPDATED)
-Date:   Mon, 26 Sep 2011 17:37:51 +0800
-Message-Id: <1317029871-14376-2-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1317029871-14376-1-git-send-email-keguang.zhang@gmail.com>
-References: <1317029871-14376-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 31167
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Sep 2011 21:50:58 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:16832 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492047Ab1IZTux (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Sep 2011 21:50:53 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4e80d7e00000>; Mon, 26 Sep 2011 12:52:00 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 26 Sep 2011 12:50:45 -0700
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 26 Sep 2011 12:50:44 -0700
+Message-ID: <4E80D794.3040701@cavium.com>
+Date:   Mon, 26 Sep 2011 12:50:44 -0700
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+MIME-Version: 1.0
+To:     rongqing.li@windriver.com, netdev@vger.kernel.org,
+        ralf@linux-mips.org, David Miller <davem@davemloft.net>
+CC:     linux-mips@linux-mips.org, Greg KH <greg@kroah.com>
+Subject: Re: [PATCH] staging/octeon: Software should check the checksum of
+ no tcp/udp packets
+References: <1316999280-11999-1-git-send-email-rongqing.li@windriver.com>
+In-Reply-To: <1316999280-11999-1-git-send-email-rongqing.li@windriver.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 26 Sep 2011 19:50:44.0968 (UTC) FILETIME=[946EB680:01CC7C85]
+X-archive-position: 31168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14466
+X-UID: 14909
 
-From: Kelvin Cheung <keguang.zhang@gmail.com>
+On 09/25/2011 06:08 PM, rongqing.li@windriver.com wrote:
+> From: Roy.Li<rongqing.li@windriver.com>
+>
+> Icmp packets with wrong checksum are never dropped since
+> skb->ip_summed is set to CHECKSUM_UNNECESSARY.
+>
+> When icmp packets with wrong checksum pass through the octeon
+> net driver, the not_IP, IP_exc, L4_error hardware indicators
+> show no error. so the driver sets CHECKSUM_UNNECESSARY on
+> skb->ip_summed.
+>
+> L4_error only works for TCP/UDP, not for ICMP.
+>
+> Signed-off-by: Roy.Li<rongqing.li@windriver.com>
 
-This patch adds defconfig for Loongson1B.
+We found the same problem, but have not yet sent the patch to fix it.
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
----
- arch/mips/configs/ls1b_defconfig |   86 ++++++++++++++++++++++++++++++++++++++
- 1 files changed, 86 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/ls1b_defconfig
+This looks fine to me,
 
-diff --git a/arch/mips/configs/ls1b_defconfig b/arch/mips/configs/ls1b_defconfig
-new file mode 100644
-index 0000000..b4e67ee
---- /dev/null
-+++ b/arch/mips/configs/ls1b_defconfig
-@@ -0,0 +1,86 @@
-+CONFIG_MACH_LOONGSON1=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_TINY_RCU=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=16
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_EXPERT=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_PERF_EVENTS=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+# CONFIG_LBDAF is not set
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_SYN_COOKIES=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_STANDALONE is not set
-+CONFIG_BLK_DEV_LOOP=y
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=8
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_8250_RUNTIME_UARTS=1
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_RAMOOPS=y
-+# CONFIG_HWMON is not set
-+# CONFIG_MFD_SUPPORT is not set
-+# CONFIG_VGA_CONSOLE is not set
-+# CONFIG_HID_SUPPORT is not set
-+# CONFIG_USB_SUPPORT is not set
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+# CONFIG_ENABLE_WARN_DEPRECATED is not set
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+CONFIG_SYSCTL_SYSCALL_CHECK=y
-+# CONFIG_FTRACE is not set
-+# CONFIG_EARLY_PRINTK is not set
-+# CONFIG_CRC32 is not set
--- 
-1.7.1
+Acked-by: David Daney <david.daney@cavium.com>
+
+I would let davem, Ralf and Greg KH fight over who gets to merge it.
+
+David Daney
+
+> ---
+>   drivers/staging/octeon/ethernet-rx.c |    3 ++-
+>   1 files changed, 2 insertions(+), 1 deletions(-)
+>
+> diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
+> index 1a7c19a..1747024 100644
+> --- a/drivers/staging/octeon/ethernet-rx.c
+> +++ b/drivers/staging/octeon/ethernet-rx.c
+> @@ -411,7 +411,8 @@ static int cvm_oct_napi_poll(struct napi_struct *napi, int budget)
+>   				skb->protocol = eth_type_trans(skb, dev);
+>   				skb->dev = dev;
+>
+> -				if (unlikely(work->word2.s.not_IP || work->word2.s.IP_exc || work->word2.s.L4_error))
+> +				if (unlikely(work->word2.s.not_IP || work->word2.s.IP_exc ||
+> +					work->word2.s.L4_error || !work->word2.s.tcp_or_udp))
+>   					skb->ip_summed = CHECKSUM_NONE;
+>   				else
+>   					skb->ip_summed = CHECKSUM_UNNECESSARY;

@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Sep 2011 11:01:32 +0200 (CEST)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:43169 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492001Ab1IZJBX (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Sep 2011 11:01:23 +0200
-Received: by vcbfo1 with SMTP id fo1so3751423vcb.36
-        for <multiple recipients>; Mon, 26 Sep 2011 02:01:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Sep 2011 11:03:18 +0200 (CEST)
+Received: from mail-vw0-f49.google.com ([209.85.212.49]:57361 "EHLO
+        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492000Ab1IZJDI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Sep 2011 11:03:08 +0200
+Received: by vws15 with SMTP id 15so4330487vws.36
+        for <multiple recipients>; Mon, 26 Sep 2011 02:03:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type;
-        bh=Ng0+GXO4ashHk9bQLayaeilTcU+CpVqENTUEIWqQppo=;
-        b=X3ajcSJ6OPXE5g7pGonzeRC8B6qbqsWxMVQXKAwsH1jZIj47AkkRvSo3H4ryFgkFTF
-         zKy2bYZw50FptB4773+WwLWf0l7OtMjSdN5RuDDoXUpvGC9Tf6L48Cpg1zi4WcCwm5Oy
-         vyVdgyRp0Dc6xGkCBfHHegXliCdLirhWG6KFc=
+        bh=2n71BRV3edALb8RCAaF8KqvOU9B1Ocf3RbJOq4OImdc=;
+        b=Wi344wjjStbnS6kMzUUhrovPsFmRfEnL7hymelMvsMumYrmepqpaKzaPPXcYWhco3E
+         tAvNVvDezEc8v2pcwqnc2pVJCoaIp0Dco5xZclBsuCZUlc6MzyVlWQJ+Op69cfpDFbBS
+         tmlGa7oY6IRXnuFkxNIqO9LDE4On2/crXHIuc=
 MIME-Version: 1.0
-Received: by 10.52.98.161 with SMTP id ej1mr5682991vdb.236.1317027677736; Mon,
- 26 Sep 2011 02:01:17 -0700 (PDT)
-Received: by 10.220.169.131 with HTTP; Mon, 26 Sep 2011 02:01:17 -0700 (PDT)
-In-Reply-To: <CAD+V5YLSR-0YdytbJjPnHqKZ4YKdb+sSWgK529SdqrZyZR9=+g@mail.gmail.com>
+Received: by 10.52.66.200 with SMTP id h8mr5701832vdt.169.1317027782033; Mon,
+ 26 Sep 2011 02:03:02 -0700 (PDT)
+Received: by 10.220.169.131 with HTTP; Mon, 26 Sep 2011 02:03:01 -0700 (PDT)
+In-Reply-To: <CAD+V5YLEStps68UK2NXLNh4ktGnv==WxXxWjjVJsRhk-XUp+Jw@mail.gmail.com>
 References: <1316845316-5765-1-git-send-email-keguang.zhang@gmail.com>
-        <CAD+V5YLrs91Cjj-EXbjREhs+sQnEjR=q5n3OXtEB0kFQ88p5Pw@mail.gmail.com>
-        <CACoURw540BQgs4457uEtkGf41-uLbbubGBP23qnvT4W-MNJqOQ@mail.gmail.com>
-        <CAD+V5YLSR-0YdytbJjPnHqKZ4YKdb+sSWgK529SdqrZyZR9=+g@mail.gmail.com>
-Date:   Mon, 26 Sep 2011 17:01:17 +0800
-Message-ID: <CAJhJPsW9F8+Hw=4YSibJ6OedXAVOMaoAH37w_prN7axn=xjTGA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MIPS: Add basic support for Loongson1B (UPDATED)
+        <1316845316-5765-2-git-send-email-keguang.zhang@gmail.com>
+        <CAD+V5YLEStps68UK2NXLNh4ktGnv==WxXxWjjVJsRhk-XUp+Jw@mail.gmail.com>
+Date:   Mon, 26 Sep 2011 17:03:01 +0800
+Message-ID: <CAJhJPsWZZ2H84pqJ-qguANP_4uYm_zF7OROwkCE2_+4Vcrha4g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] MIPS: Add defconfig for Loongson1B (UPDATED)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
 To:     wu zhangjin <wuzhangjin@gmail.com>
-Cc:     Shane McDonald <mcdonald.shane@gmail.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         ralf@linux-mips.org, r0bertz@gentoo.org, chenj@lemote.com
 Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 31161
+X-archive-position: 31162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,84 +38,161 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14408
+X-UID: 14411
 
-I have noticed this.
-And all register accesses in my patch are done through __raw_readl/__raw_writel.
-
-2011/9/26, wu zhangjin <wuzhangjin@gmail.com>:
-> On Sun, Sep 25, 2011 at 9:40 PM, Shane McDonald
-> <mcdonald.shane@gmail.com> wrote:
->>>> diff --git a/arch/mips/include/asm/mach-loongson1/regs-clk.h
->>>> b/arch/mips/include/asm/mach-loongson1/regs-clk.h
->>>> new file mode 100644
->>>> index 0000000..7a09d6a
->>>> --- /dev/null
->>>> +++ b/arch/mips/include/asm/mach-loongson1/regs-clk.h
->>>> @@ -0,0 +1,32 @@
->>>> +/*
->>>> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
->>>> + *
->>>> + * Loongson1 Clock Register Definitions.
->>>> + *
->>>> + * This program is free software; you can redistribute  it and/or
->>>> modify it
->>>> + * under  the terms of  the GNU General  Public License as published by
->>>> the
->>>> + * Free Software Foundation;  either version 2 of the  License, or (at
->>>> your
->>>> + * option) any later version.
->>>> + */
->>>> +
->>>> +#ifndef __ASM_MACH_LOONGSON1_REGS_CLK_H
->>>> +#define __ASM_MACH_LOONGSON1_REGS_CLK_H
->>>> +
->>>> +#define LS1_CLK_REG(x)         ((void __iomem *)(LOONGSON1_CLK_BASE +
->>>> (x)))
->>>
->>> "volatile" keyword may be required for __iomem access, the same to the
->>> following similar usage.
->>>
->>> Considering a scene is(LS1_XXX_REG(X) doesn't really exist):
->>>
->>> LS1_XXX_REG(X) = 0;              /* put cpu into idle and wait interrupt
->>> */
->>> LS1_XXX_REG(X) = 7;              /* recover the cpu frequency to the
->>> highest */
->>>
->>> If no "volatile" keyword indicated, the first line will be
->>> intelligently but wrongly removed by compiler.
+2011/9/25, wu zhangjin <wuzhangjin@gmail.com>:
+> On Sat, Sep 24, 2011 at 2:21 PM,  <keguang.zhang@gmail.com> wrote:
+>> From: Kelvin Cheung <keguang.zhang@gmail.com>
 >>
->> No -- please see Documentation/volatile-considered-harmful.txt,
->> particularly the paragraph starting at line 49.  This macro
->> is only being used as an argument to __raw_readl,
->> as it should be.
+>> This patch adds defconfig for Loongson1B.
+>>
+>> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+>> ---
+>>  arch/mips/configs/ls1b_defconfig |   95
+>> ++++++++++++++++++++++++++++++++++++++
+>>  1 files changed, 95 insertions(+), 0 deletions(-)
+>>  create mode 100644 arch/mips/configs/ls1b_defconfig
+>>
+>> diff --git a/arch/mips/configs/ls1b_defconfig
+>> b/arch/mips/configs/ls1b_defconfig
+>> new file mode 100644
+>> index 0000000..f7c48f5
+>> --- /dev/null
+>> +++ b/arch/mips/configs/ls1b_defconfig
+>> @@ -0,0 +1,95 @@
+>> +CONFIG_MACH_LOONGSON1=y
+>> +CONFIG_HIGH_RES_TIMERS=y
+>> +CONFIG_PREEMPT_VOLUNTARY=y
 >
-> Yeah, __raw_readl/writel() will use volatile to prevent it from
-> optimization, thanks ;)
+> What is the target market of 1B?
 >
-> "within the kernel, I/O memory  accesses are always done through
-> accessor functions;
->  accessing I/O memory directly through pointers is frowned upon and
-> does not work on all
->  architectures.  Those accessors are written to prevent unwanted
->  optimization,
-> ....
->   - The above-mentioned accessor functions might use volatile on
->      architectures where direct I/O memory access does work.  Essentially,
->      each accessor call becomes a little critical section on its own and
->      ensures that the access happens as expected by the programmer.
-> ...
-> Patches to remove volatile variables are generally welcome - as long as
->  they come with a justification which shows that the concurrency issues have
->  been properly thought through.
-> "
+> Seems CONFIG_PREEMPT_VOLUNTARY is for Desktop, CONFIG_PREEMPT is
+> better for low-latency desktop
+> and even for some real time applications.
+
+Replaced with CONFIG_PREEMPT.
+
+>> +CONFIG_KEXEC=y
 >
-> Thanks & Regards,
+> Did you validate kexec support on your 1B board?
+>
+> According to my previous experiment, The kexec support of 32bit
+> Loongson2F requires more patches,
+> those patches are available in the following git repo:
+>
+> http://dev.lemote.com/cgit/linux-loongson-community.git/log/?h=tiny36
+>
+> or
+>
+> git://dev.lemote.com/linux-loongson-community.git tiny36
+>
+>> +# CONFIG_SECCOMP is not set
+>> +CONFIG_EXPERIMENTAL=y
+>> +# CONFIG_LOCALVERSION_AUTO is not set
+>> +CONFIG_SYSVIPC=y
+>> +CONFIG_BSD_PROCESS_ACCT=y
+>> +CONFIG_BSD_PROCESS_ACCT_V3=y
+>> +CONFIG_IKCONFIG=y
+>> +CONFIG_IKCONFIG_PROC=y
+>> +CONFIG_LOG_BUF_SHIFT=16
+>> +CONFIG_BLK_DEV_INITRD=y
+>> +CONFIG_RD_BZIP2=y
+>> +CONFIG_RD_LZMA=y
+>> +CONFIG_RD_XZ=y
+>> +CONFIG_RD_LZO=y
+>
+> Not sure why you need all of these 4 compression algorithms, LZO is
+> the fastest one, LZMA has the largest compression ratio.
+>
+>> +CONFIG_EXPERT=y
+>> +CONFIG_KALLSYMS_ALL=y
+>> +CONFIG_PERF_EVENTS=y
+>> +# CONFIG_COMPAT_BRK is not set
+>> +CONFIG_MODULES=y
+>> +CONFIG_MODULE_UNLOAD=y
+>> +CONFIG_MODVERSIONS=y
+>> +# CONFIG_LBDAF is not set
+>> +# CONFIG_BLK_DEV_BSG is not set
+>> +# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
+>> +# CONFIG_SUSPEND is not set
+>> +CONFIG_NET=y
+>> +CONFIG_PACKET=y
+>> +CONFIG_UNIX=y
+>> +CONFIG_INET=y
+>> +CONFIG_IP_PNP=y
+>> +CONFIG_IP_PNP_DHCP=y
+>> +CONFIG_SYN_COOKIES=y
+>> +# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+>> +# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+>> +# CONFIG_INET_XFRM_MODE_BEET is not set
+>> +# CONFIG_INET_DIAG is not set
+>> +# CONFIG_IPV6 is not set
+>> +# CONFIG_WIRELESS is not set
+>> +CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+>> +CONFIG_DEVTMPFS=y
+>> +CONFIG_DEVTMPFS_MOUNT=y
+>> +# CONFIG_STANDALONE is not set
+>> +CONFIG_BLK_DEV_LOOP=y
+>> +# CONFIG_INPUT_MOUSEDEV is not set
+>> +# CONFIG_INPUT_KEYBOARD is not set
+>> +# CONFIG_INPUT_MOUSE is not set
+>> +# CONFIG_SERIO is not set
+>> +CONFIG_VT_HW_CONSOLE_BINDING=y
+>> +CONFIG_LEGACY_PTY_COUNT=8
+>> +# CONFIG_DEVKMEM is not set
+>> +CONFIG_SERIAL_8250=y
+>> +CONFIG_SERIAL_8250_CONSOLE=y
+>> +CONFIG_SERIAL_8250_RUNTIME_UARTS=1
+>> +# CONFIG_HW_RANDOM is not set
+>> +CONFIG_RAMOOPS=y
+>> +# CONFIG_HWMON is not set
+>> +# CONFIG_MFD_SUPPORT is not set
+>> +# CONFIG_VGA_CONSOLE is not set
+>> +# CONFIG_HID_SUPPORT is not set
+>> +# CONFIG_USB_SUPPORT is not set
+>> +# CONFIG_IOMMU_SUPPORT is not set
+>> +CONFIG_EXT2_FS=y
+>> +CONFIG_EXT2_FS_XATTR=y
+>> +CONFIG_EXT2_FS_POSIX_ACL=y
+>> +CONFIG_EXT2_FS_SECURITY=y
+>> +CONFIG_EXT3_FS=y
+>> +CONFIG_EXT3_FS_POSIX_ACL=y
+>> +CONFIG_EXT3_FS_SECURITY=y
+>
+> Seems we have EXT4 now, but PMON may not support it currently ;)
+>
+>> +# CONFIG_DNOTIFY is not set
+>> +CONFIG_PROC_KCORE=y
+>> +CONFIG_TMPFS=y
+>> +CONFIG_TMPFS_POSIX_ACL=y
+>> +# CONFIG_MISC_FILESYSTEMS is not set
+>> +# CONFIG_NETWORK_FILESYSTEMS is not set
+>> +# CONFIG_ENABLE_WARN_DEPRECATED is not set
+>> +# CONFIG_ENABLE_MUST_CHECK is not set
+>> +CONFIG_UNUSED_SYMBOLS=y
+>> +CONFIG_DEBUG_FS=y
+>> +CONFIG_DETECT_HUNG_TASK=y
+>> +CONFIG_SCHEDSTATS=y
+>> +CONFIG_TIMER_STATS=y
+>> +CONFIG_DEBUG_INFO=y
+>> +CONFIG_DEBUG_MEMORY_INIT=y
+>> +CONFIG_BOOT_PRINTK_DELAY=y
+>> +CONFIG_SYSCTL_SYSCALL_CHECK=y
+>> +# CONFIG_FTRACE is not set
+>> +CONFIG_KGDB=y
+>> +CONFIG_KGDB_LOW_LEVEL_TRAP=y
+>> +CONFIG_KGDB_KDB=y
+>
+> If this config is for product, the above debug support may be not required.
+>
+> Best Regards,
 > Wu Zhangjin
 >
+>> +CONFIG_KDB_KEYBOARD=y
+>> +# CONFIG_EARLY_PRINTK is not set
+>> --
+>> 1.7.4.1
 >>
->> Shane
 >>
 >
 

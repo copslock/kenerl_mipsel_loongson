@@ -1,65 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Sep 2011 03:08:09 +0200 (CEST)
-Received: from mail.windriver.com ([147.11.1.11]:64063 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491985Ab1IZBID (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Sep 2011 03:08:03 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id p8Q17oZC015245
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Sun, 25 Sep 2011 18:07:51 -0700 (PDT)
-Received: from lirq-OptiPlex-780.corp.ad.wrs.com (128.224.162.179) by
- ALA-HCA.corp.ad.wrs.com (147.11.189.50) with Microsoft SMTP Server id
- 14.1.255.0; Sun, 25 Sep 2011 18:07:50 -0700
-From:   <rongqing.li@windriver.com>
-To:     <linux-mips@linux-mips.org>, <netdev@vger.kernel.org>
-CC:     <ralf@linux-mips.org>, <david.daney@cavium.com>
-Subject: [PATCH] staging/octeon: Software should check the checksum of no tcp/udp packets
-Date:   Mon, 26 Sep 2011 09:08:00 +0800
-Message-ID: <1316999280-11999-1-git-send-email-rongqing.li@windriver.com>
-X-Mailer: git-send-email 1.7.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Sep 2011 03:41:01 +0200 (CEST)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:32809 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491987Ab1IZBkz convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 26 Sep 2011 03:40:55 +0200
+Received: by gyg13 with SMTP id 13so4608407gyg.36
+        for <multiple recipients>; Sun, 25 Sep 2011 18:40:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=nNkD1ODoBLvtmbAfRO0PP/gLO1GG3cUxqvX5DBuqboM=;
+        b=VuMWCPX+65Lr7pjSTC7Qldpe45O8OXR9y1gbyeWomYPcWRFxTXH//gJwI8NgytDWYC
+         loGnCNnHLOScYwjraDkTH0imk3grGodJmK/k/vwDSh2Bm8reBSDLmpyg7lSujEld4XFw
+         he41LtnwBJoyKa6S9wN1p1Yf0gR9eXg2mdS7A=
 MIME-Version: 1.0
-Content-Type: text/plain
-X-archive-position: 31158
+Received: by 10.42.153.1 with SMTP id k1mr1347517icw.145.1317001248407; Sun,
+ 25 Sep 2011 18:40:48 -0700 (PDT)
+Received: by 10.231.152.148 with HTTP; Sun, 25 Sep 2011 18:40:48 -0700 (PDT)
+In-Reply-To: <CACoURw540BQgs4457uEtkGf41-uLbbubGBP23qnvT4W-MNJqOQ@mail.gmail.com>
+References: <1316845316-5765-1-git-send-email-keguang.zhang@gmail.com>
+        <CAD+V5YLrs91Cjj-EXbjREhs+sQnEjR=q5n3OXtEB0kFQ88p5Pw@mail.gmail.com>
+        <CACoURw540BQgs4457uEtkGf41-uLbbubGBP23qnvT4W-MNJqOQ@mail.gmail.com>
+Date:   Mon, 26 Sep 2011 09:40:48 +0800
+Message-ID: <CAD+V5YLSR-0YdytbJjPnHqKZ4YKdb+sSWgK529SdqrZyZR9=+g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MIPS: Add basic support for Loongson1B (UPDATED)
+From:   wu zhangjin <wuzhangjin@gmail.com>
+To:     Shane McDonald <mcdonald.shane@gmail.com>
+Cc:     keguang.zhang@gmail.com, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        r0bertz@gentoo.org, chenj@lemote.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 31159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rongqing.li@windriver.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14236
+X-UID: 14253
 
-From: Roy.Li <rongqing.li@windriver.com>
+On Sun, Sep 25, 2011 at 9:40 PM, Shane McDonald
+<mcdonald.shane@gmail.com> wrote:
+>>> diff --git a/arch/mips/include/asm/mach-loongson1/regs-clk.h b/arch/mips/include/asm/mach-loongson1/regs-clk.h
+>>> new file mode 100644
+>>> index 0000000..7a09d6a
+>>> --- /dev/null
+>>> +++ b/arch/mips/include/asm/mach-loongson1/regs-clk.h
+>>> @@ -0,0 +1,32 @@
+>>> +/*
+>>> + * Copyright (c) 2011 Zhang, Keguang <keguang.zhang@gmail.com>
+>>> + *
+>>> + * Loongson1 Clock Register Definitions.
+>>> + *
+>>> + * This program is free software; you can redistribute  it and/or modify it
+>>> + * under  the terms of  the GNU General  Public License as published by the
+>>> + * Free Software Foundation;  either version 2 of the  License, or (at your
+>>> + * option) any later version.
+>>> + */
+>>> +
+>>> +#ifndef __ASM_MACH_LOONGSON1_REGS_CLK_H
+>>> +#define __ASM_MACH_LOONGSON1_REGS_CLK_H
+>>> +
+>>> +#define LS1_CLK_REG(x)         ((void __iomem *)(LOONGSON1_CLK_BASE + (x)))
+>>
+>> "volatile" keyword may be required for __iomem access, the same to the
+>> following similar usage.
+>>
+>> Considering a scene is(LS1_XXX_REG(X) doesn't really exist):
+>>
+>> LS1_XXX_REG(X) = 0;              /* put cpu into idle and wait interrupt */
+>> LS1_XXX_REG(X) = 7;              /* recover the cpu frequency to the highest */
+>>
+>> If no "volatile" keyword indicated, the first line will be
+>> intelligently but wrongly removed by compiler.
+>
+> No -- please see Documentation/volatile-considered-harmful.txt,
+> particularly the paragraph starting at line 49.  This macro
+> is only being used as an argument to __raw_readl,
+> as it should be.
 
-Icmp packets with wrong checksum are never dropped since
-skb->ip_summed is set to CHECKSUM_UNNECESSARY.
+Yeah, __raw_readl/writel() will use volatile to prevent it from
+optimization, thanks ;)
 
-When icmp packets with wrong checksum pass through the octeon
-net driver, the not_IP, IP_exc, L4_error hardware indicators
-show no error. so the driver sets CHECKSUM_UNNECESSARY on
-skb->ip_summed.
+"within the kernel, I/O memory  accesses are always done through
+accessor functions;
+ accessing I/O memory directly through pointers is frowned upon and
+does not work on all
+ architectures.  Those accessors are written to prevent unwanted
+ optimization,
+....
+  - The above-mentioned accessor functions might use volatile on
+     architectures where direct I/O memory access does work.  Essentially,
+     each accessor call becomes a little critical section on its own and
+     ensures that the access happens as expected by the programmer.
+...
+Patches to remove volatile variables are generally welcome - as long as
+ they come with a justification which shows that the concurrency issues have
+ been properly thought through.
+"
 
-L4_error only works for TCP/UDP, not for ICMP.
+Thanks & Regards,
+Wu Zhangjin
 
-Signed-off-by: Roy.Li <rongqing.li@windriver.com>
----
- drivers/staging/octeon/ethernet-rx.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
-index 1a7c19a..1747024 100644
---- a/drivers/staging/octeon/ethernet-rx.c
-+++ b/drivers/staging/octeon/ethernet-rx.c
-@@ -411,7 +411,8 @@ static int cvm_oct_napi_poll(struct napi_struct *napi, int budget)
- 				skb->protocol = eth_type_trans(skb, dev);
- 				skb->dev = dev;
- 
--				if (unlikely(work->word2.s.not_IP || work->word2.s.IP_exc || work->word2.s.L4_error))
-+				if (unlikely(work->word2.s.not_IP || work->word2.s.IP_exc ||
-+					work->word2.s.L4_error || !work->word2.s.tcp_or_udp))
- 					skb->ip_summed = CHECKSUM_NONE;
- 				else
- 					skb->ip_summed = CHECKSUM_UNNECESSARY;
--- 
-1.7.1
+>
+> Shane
+>

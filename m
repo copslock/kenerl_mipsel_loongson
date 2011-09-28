@@ -1,50 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2011 17:14:32 +0200 (CEST)
-Received: from ausxippc101.us.dell.com ([143.166.85.207]:31109 "EHLO
-        ausxippc101.us.dell.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492107Ab1I1PO1 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Sep 2011 17:14:27 +0200
-X-Loopcount0: from 10.175.216.251
-From:   <Paul_Koning@Dell.com>
-To:     <ralf@linux-mips.org>, <binutils@sourceware.org>,
-        <linux-mips@linux-mips.org>, <dvdkhlng@gmx.de>
-Date:   Wed, 28 Sep 2011 10:11:40 -0500
-Subject: RE: $ta0 .. $ta3 registers in O32 on MIPS
-Thread-Topic: $ta0 .. $ta3 registers in O32 on MIPS
-Thread-Index: Acx92r3YAHvtZ3s7Rm6mvuiE4xFJcAAFfHpw
-Message-ID: <09787EF419216C41A903FD14EE5506DD030987ABAE@AUSX7MCPC103.AMER.DELL.COM>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Sep 2011 21:42:44 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:57165 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1492121Ab1I1Tmk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Sep 2011 21:42:40 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p8SJhLBM017540;
+        Wed, 28 Sep 2011 21:43:21 +0200
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p8SJhKZC017533;
+        Wed, 28 Sep 2011 21:43:20 +0200
+Date:   Wed, 28 Sep 2011 21:43:20 +0200
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul_Koning@Dell.com
+Cc:     binutils@sourceware.org, linux-mips@linux-mips.org, dvdkhlng@gmx.de
+Subject: Re: $ta0 .. $ta3 registers in O32 on MIPS
+Message-ID: <20110928194319.GA17409@linux-mips.org>
 References: <20110928123305.GA1971@linux-mips.org>
-In-Reply-To: <20110928123305.GA1971@linux-mips.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+ <09787EF419216C41A903FD14EE5506DD030987ABAE@AUSX7MCPC103.AMER.DELL.COM>
 MIME-Version: 1.0
-X-archive-position: 31184
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09787EF419216C41A903FD14EE5506DD030987ABAE@AUSX7MCPC103.AMER.DELL.COM>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Paul_Koning@Dell.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16699
+X-UID: 16936
 
->The register names $ta0 .. $ta3 were added by SGI for N32 / N64 code.
->Because these reference $8 .. $11 just like $t0 .. $t3 in the O32 ABI their availability in O32 as well appears dangerous, if not a bug:
->
->$ cat s.s 
->	addu	$ta0, $ta0
->$ mips-linux-as -o s.o s.s
->$ file s.o
->s.o: ELF 32-bit MSB relocatable, MIPS, MIPS-I version 1 (SYSV), not stripped $
->
->I was expecting an error message and I'm wondering, was this intentional?
+On Wed, Sep 28, 2011 at 10:11:40AM -0500, Paul_Koning@Dell.com wrote:
 
-I would say so.  I call this a feature.  It makes it easier to write assembly code that assembles without change in both O32 and N32/N64.  Consider a function that has 4 or fewer arguments, but needs a pile of scratch registers.  It can use ta0-ta3 as four scratch registers, which is correct in all the ABIs.
+> >I was expecting an error message and I'm wondering, was this intentional?
+> 
+> I would say so.  I call this a feature.  It makes it easier to write assembly code that assembles without change in both O32 and N32/N64.  Consider a function that has 4 or fewer arguments, but needs a pile of scratch registers.  It can use ta0-ta3 as four scratch registers, which is correct in all the ABIs.
 
-	paul
+Turns out that later IRIX version also retroactively introduced the
+ta registers for O32 and I just never noticed.  So I'm going to change the
+Linux kernel headers for consistence and compatibility with everybody else.
+
+  Ralf

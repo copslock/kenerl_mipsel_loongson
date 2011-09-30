@@ -1,149 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2011 11:05:19 +0200 (CEST)
-Received: from mailout-de.gmx.net ([213.165.64.22]:38318 "HELO
-        mailout-de.gmx.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1491051Ab1I3JFL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2011 11:05:11 +0200
-Received: (qmail invoked by alias); 30 Sep 2011 09:05:05 -0000
-Received: from g225033181.adsl.alicedsl.de (EHLO mosquito.pool.gmx.de) [92.225.33.181]
-  by mail.gmx.net (mp038) with SMTP; 30 Sep 2011 11:05:05 +0200
-X-Authenticated: #4121607
-X-Provags-ID: V01U2FsdGVkX1/AF4pQ1M/AR+eZ8tpW5u5hINQIfDnO1gbXNO2Yj8
-        T1OcvyPsfG3sp0
-From:   David Kuehling <dvdkhlng@gmx.de>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH] add MIPS assembler version of twofish crypto algorithm
-References: <87ty9c743i.fsf@snail.Pool>
-        <20110928133241.GA30192@linux-mips.org>
-Date:   Fri, 30 Sep 2011 11:04:57 +0200
-In-Reply-To: <20110928133241.GA30192@linux-mips.org> (Ralf Baechle's message
-        of "Wed, 28 Sep 2011 15:32:41 +0200")
-Message-ID: <871uuycsee.fsf@mosquito.pool>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.2 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha1; protocol="application/pgp-signature"
-X-Y-GMX-Trusted: 0
-X-archive-position: 31186
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2011 20:49:47 +0200 (CEST)
+Received: from a-pb-sasl-sd.pobox.com ([74.115.168.62]:42642 "EHLO
+        sasl.smtp.pobox.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491071Ab1I3Stm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2011 20:49:42 +0200
+Received: from sasl.smtp.pobox.com (unknown [127.0.0.1])
+        by a-pb-sasl-sd.pobox.com (Postfix) with ESMTP id 365797256
+        for <linux-mips@linux-mips.org>; Fri, 30 Sep 2011 14:49:37 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=from:to
+        :subject:date:message-id; s=sasl; bh=moaW8BYkkwYXOfkON6tdmUl7NUU
+        =; b=vcv4AaIb1O78AIKZETW+ygP8wQzYRsE3thH/zde4iWaLQ9QT/zL6SaYrivy
+        HZbVG7SfZnDPRunxRODTklxwcSGp4AAESswNXi3kFUBTdGdjnMf2btczWySVU/R3
+        QTfcVYfMKyXWVyoIvkM35XhSg7h1mO2JBpFq02wjBUVHLC8s=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=pobox.com; h=from:to:subject
+        :date:message-id; q=dns; s=sasl; b=iWbfEEemMOsbyvVB0K15wyZOMIKkf
+        9P76mPRq5OdgG/DVMFtuKF7uw8oDvxQrywj+sRpiy52nTQx3lp79Pq7ebvJiDslu
+        6XKEJaSxTc9BJlRzIEldf9thhyLv2fgwnAhO0loKFC+lG0tSZ9S8ZUHXO2sv6ls0
+        L5HqBDfJwr2jR4=
+Received: from a-pb-sasl-sd.pobox.com (unknown [127.0.0.1])
+        by a-pb-sasl-sd.pobox.com (Postfix) with ESMTP id 2DDC47254
+        for <linux-mips@linux-mips.org>; Fri, 30 Sep 2011 14:49:37 -0400 (EDT)
+Received: from orca.stoopid.dyndns.org (unknown [99.12.192.254]) (using TLSv1
+ with cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client certificate
+ requested) by a-pb-sasl-sd.pobox.com (Postfix) with ESMTPSA id 9F8C37252 for
+ <linux-mips@linux-mips.org>; Fri, 30 Sep 2011 14:49:36 -0400 (EDT)
+From:   Nathan Lynch <ntl@pobox.com>
+To:     linux-mips@linux-mips.org
+Subject: [PATCH] mips: call oops_enter, oops_exit in die
+Date:   Fri, 30 Sep 2011 13:49:35 -0500
+Message-Id: <1317408575-14855-1-git-send-email-ntl@pobox.com>
+X-Mailer: git-send-email 1.7.6.2
+X-Pobox-Relay-ID: F1E72A58-EB94-11E0-92C4-65B1DE995924-04752483!a-pb-sasl-sd.pobox.com
+X-archive-position: 31187
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvdkhlng@gmx.de
+X-original-sender: ntl@pobox.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
+X-Keywords:                  
+X-UID: 19020
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+This allows pause_on_oops and mtdoops to work.
 
-Thought that patch went unnoticed and almost forgot about it myself...
-Nice to see that it didn't slip through, and thanks for taking the time
-to review.
+Signed-off-by: Nathan Lynch <ntl@pobox.com>
+---
+ arch/mips/kernel/traps.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-About your comments:
-
->>>>> "Ralf" =3D=3D Ralf Baechle <ralf@linux-mips.org> writes:
-
-> On Sat, Aug 20, 2011 at 12:46:25PM +0200, David Kuehling wrote:
->> this patch adds a MIPS assembler version of the twofish cipher
->> algorithm.  x86(_64) had an assembler version of twofish for some
->> time now, giving it an "unfair" advantage against the not so common
->> architectures.
-[..]
-> Lots of trailing whitespace in that patch.  scripts/checkpatch.pl
-> would have warned about those =E2=80=A6
-
-> +#if __mips64 +# define HAVE_64BIT +#endif
-
-> s/HAVE_64BIT/CONFIG_64BIT/
-
-> +#if _MIPS_SZPTR =3D=3D 32 +# define PTRADD addu=20
-[..]
-> PTR_ADDU from <asm/asm.h> does the same thing as PTRADDU so the entire
-> ifdefery above can go away.
-
-Good point, that'll neatly clean the patch up.
-
-> Finally the use of register names starting with $ is a bit obscure.
-> Kernel code needs to build for N64 and O32 but of those only N64 has
-> registers called $ta0 .. $ta3 which are the equivalent to registers $8
-> .. $11.
-
-> And in O32 registers $t0 ... $t3 also aliases for $8 .. $11.  I
-> haven't fully analyzed the code to ensure that there is no register
-> conflict arising from that.
-
-Didn't find another way to make the code work with O32 and N64.
-$ta0..$ta3 can replace registers $t4..$t7 that are missing on N64 to
-make room for additional argument registers $a4..$a7.  This works as
-long as $a4..$a7 aren't used as well.
-
-Looking at asm/regdef.h I see that #define ta0 etc. is missing for O32,
-making that trick impossible.  Maybe we should add them there as well?
-
-> I was surprised that gas assembles the code at all.  $ta0 .. $ta3 are
-> N32 / N64 register names and consider gas permitting the use of these
-> registers in O32 a bug - but see my other posting to the binutils list
-> for that.
-
-Yes, that feature may be obscure, had to grep through binutil sources to
-find out about it...
-
-> Improvment suggestion for le32_fromto_cpu - MIPS 32/64 R2 CPUs can use
-> the wsbh instruction to faster endianess swapping:
-[..]
-
-I completely missed the wsbh opcode.  Knew about rotr, but given that
-even the recent Loongson-2f doesn't support it, I was reluctant to add
-code for it (plus i won't be able to benchmark it anyways).
-
-> This code fragment is from <asm/swab.h>.
-
-> + /* if we turned this into 64-bit ops, we get endianess issues on +
-> big-endian mips, plus alignment problems */
-
-> Some CPUs (Cavium Octeon) handle unaligned loads in hardware, on
-> others a combination of LDL / LDR and SDL / SDR could be used to
-> handle the unaligned loads and DSBH / DSHD (see __arch_swab64 in
-> swab.h) could be used on MIPS64 R2 CPUs to handle the alignment
-> issues.  Or a rotate - have to think about it.
-
-There is an alignmask field in the crypto_alg struct, that might prevent
-alignment issues.  Didn't have an in-depth look at how that works
-though.  Still there would be endianess issues, given that twofish is
-designed to work on words of 32-bit.
-
-I think the load/store code of the crypto routine does not have much
-influence on performance, as it is outside the main loop (including the
-endianess conversion).  There is a rotation operation within the loop,
-that could be sped up using rotr opcode, giving maybe 2% performance
-gain.  Not sure whether that's worth another round of #ifdefs and twice
-the testing.
-
-What'd be the best way to check for rot opcode support?  Use
-CONFIG_CPU_MIPSR2?  Check gcc define __mips>=3D32 && __mips_isa_rev>=3D2
-(grepping through kernel asm files, I don't find any asm sources that
-include kconfig.h)?
-
-I'm currently a little swamped with work, btw, might take me a few days
-to prepare an updated patch.
-
-cheers,
-
-David
-=2D-=20
-GnuPG public key: http://dvdkhlng.users.sourceforge.net/dk.gpg
-Fingerprint: B17A DC95 D293 657B 4205  D016 7DEF 5323 C174 7D40
-
---=-=-=
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iD8DBQFOhYY6fe9TI8F0fUARAqqQAJwNj3Zz/SM8qct32d6MU2ihEE3cCACfSCcW
-LHcPXWRw0Rkz6QLGS9rc850=
-=DgEg
------END PGP SIGNATURE-----
---=-=-=--
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index b7517e3..dc31056 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -14,6 +14,7 @@
+ #include <linux/bug.h>
+ #include <linux/compiler.h>
+ #include <linux/init.h>
++#include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/module.h>
+ #include <linux/sched.h>
+@@ -374,6 +375,8 @@ void __noreturn die(const char *str, struct pt_regs *regs)
+ 	unsigned long dvpret = dvpe();
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 
++	oops_enter();
++
+ 	if (notify_die(DIE_OOPS, str, regs, 0, regs_to_trapnr(regs), SIGSEGV) == NOTIFY_STOP)
+ 		sig = 0;
+ 
+@@ -389,6 +392,8 @@ void __noreturn die(const char *str, struct pt_regs *regs)
+ 	add_taint(TAINT_DIE);
+ 	spin_unlock_irq(&die_lock);
+ 
++	oops_exit();
++
+ 	if (in_interrupt())
+ 		panic("Fatal exception in interrupt");
+ 
+-- 
+1.7.6.2

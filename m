@@ -1,82 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2011 20:49:47 +0200 (CEST)
-Received: from a-pb-sasl-sd.pobox.com ([74.115.168.62]:42642 "EHLO
-        sasl.smtp.pobox.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491071Ab1I3Stm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2011 20:49:42 +0200
-Received: from sasl.smtp.pobox.com (unknown [127.0.0.1])
-        by a-pb-sasl-sd.pobox.com (Postfix) with ESMTP id 365797256
-        for <linux-mips@linux-mips.org>; Fri, 30 Sep 2011 14:49:37 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=from:to
-        :subject:date:message-id; s=sasl; bh=moaW8BYkkwYXOfkON6tdmUl7NUU
-        =; b=vcv4AaIb1O78AIKZETW+ygP8wQzYRsE3thH/zde4iWaLQ9QT/zL6SaYrivy
-        HZbVG7SfZnDPRunxRODTklxwcSGp4AAESswNXi3kFUBTdGdjnMf2btczWySVU/R3
-        QTfcVYfMKyXWVyoIvkM35XhSg7h1mO2JBpFq02wjBUVHLC8s=
-DomainKey-Signature: a=rsa-sha1; c=nofws; d=pobox.com; h=from:to:subject
-        :date:message-id; q=dns; s=sasl; b=iWbfEEemMOsbyvVB0K15wyZOMIKkf
-        9P76mPRq5OdgG/DVMFtuKF7uw8oDvxQrywj+sRpiy52nTQx3lp79Pq7ebvJiDslu
-        6XKEJaSxTc9BJlRzIEldf9thhyLv2fgwnAhO0loKFC+lG0tSZ9S8ZUHXO2sv6ls0
-        L5HqBDfJwr2jR4=
-Received: from a-pb-sasl-sd.pobox.com (unknown [127.0.0.1])
-        by a-pb-sasl-sd.pobox.com (Postfix) with ESMTP id 2DDC47254
-        for <linux-mips@linux-mips.org>; Fri, 30 Sep 2011 14:49:37 -0400 (EDT)
-Received: from orca.stoopid.dyndns.org (unknown [99.12.192.254]) (using TLSv1
- with cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client certificate
- requested) by a-pb-sasl-sd.pobox.com (Postfix) with ESMTPSA id 9F8C37252 for
- <linux-mips@linux-mips.org>; Fri, 30 Sep 2011 14:49:36 -0400 (EDT)
-From:   Nathan Lynch <ntl@pobox.com>
-To:     linux-mips@linux-mips.org
-Subject: [PATCH] mips: call oops_enter, oops_exit in die
-Date:   Fri, 30 Sep 2011 13:49:35 -0500
-Message-Id: <1317408575-14855-1-git-send-email-ntl@pobox.com>
-X-Mailer: git-send-email 1.7.6.2
-X-Pobox-Relay-ID: F1E72A58-EB94-11E0-92C4-65B1DE995924-04752483!a-pb-sasl-sd.pobox.com
-X-archive-position: 31187
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Sep 2011 23:52:32 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:18532 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491078Ab1I3VwU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Sep 2011 23:52:20 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4e863a530000>; Fri, 30 Sep 2011 14:53:23 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 30 Sep 2011 14:52:07 -0700
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 30 Sep 2011 14:52:06 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id p8ULpP9M025691;
+        Fri, 30 Sep 2011 14:51:26 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id p8ULpNna025690;
+        Fri, 30 Sep 2011 14:51:23 -0700
+From:   David Daney <david.daney@cavium.com>
+To:     netdev@vger.kernel.org, davem@davemloft.net
+Cc:     linux-mips@linux-mips.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH] netdev/phy: Use mdiobus_read() so that proper locks are taken.
+Date:   Fri, 30 Sep 2011 14:51:22 -0700
+Message-Id: <1317419482-25655-1-git-send-email-david.daney@cavium.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 30 Sep 2011 21:52:07.0100 (UTC) FILETIME=[3292DFC0:01CC7FBB]
+X-archive-position: 31188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ntl@pobox.com
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19020
+X-UID: 19123
 
-This allows pause_on_oops and mtdoops to work.
+Accesses to the mdio busses must be done with the mdio_lock to ensure
+proper operation.  Conveniently we have the helper function
+mdiobus_read() to do that for us.  Lets use it in get_phy_id() instead
+of accessing the bus without the lock held.
 
-Signed-off-by: Nathan Lynch <ntl@pobox.com>
+Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/kernel/traps.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ drivers/net/phy/phy_device.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index b7517e3..dc31056 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -14,6 +14,7 @@
- #include <linux/bug.h>
- #include <linux/compiler.h>
- #include <linux/init.h>
-+#include <linux/kernel.h>
- #include <linux/mm.h>
- #include <linux/module.h>
- #include <linux/sched.h>
-@@ -374,6 +375,8 @@ void __noreturn die(const char *str, struct pt_regs *regs)
- 	unsigned long dvpret = dvpe();
- #endif /* CONFIG_MIPS_MT_SMTC */
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index ff109fe..83a5a5a 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -213,7 +213,7 @@ int get_phy_id(struct mii_bus *bus, int addr, u32 *phy_id)
  
-+	oops_enter();
-+
- 	if (notify_die(DIE_OOPS, str, regs, 0, regs_to_trapnr(regs), SIGSEGV) == NOTIFY_STOP)
- 		sig = 0;
+ 	/* Grab the bits from PHYIR1, and put them
+ 	 * in the upper half */
+-	phy_reg = bus->read(bus, addr, MII_PHYSID1);
++	phy_reg = mdiobus_read(bus, addr, MII_PHYSID1);
  
-@@ -389,6 +392,8 @@ void __noreturn die(const char *str, struct pt_regs *regs)
- 	add_taint(TAINT_DIE);
- 	spin_unlock_irq(&die_lock);
+ 	if (phy_reg < 0)
+ 		return -EIO;
+@@ -221,7 +221,7 @@ int get_phy_id(struct mii_bus *bus, int addr, u32 *phy_id)
+ 	*phy_id = (phy_reg & 0xffff) << 16;
  
-+	oops_exit();
-+
- 	if (in_interrupt())
- 		panic("Fatal exception in interrupt");
+ 	/* Grab the bits from PHYIR2, and put them in the lower half */
+-	phy_reg = bus->read(bus, addr, MII_PHYSID2);
++	phy_reg = mdiobus_read(bus, addr, MII_PHYSID2);
  
+ 	if (phy_reg < 0)
+ 		return -EIO;
 -- 
-1.7.6.2
+1.7.2.3

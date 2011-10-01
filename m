@@ -1,50 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Oct 2011 00:55:02 +0200 (CEST)
-Received: from shards.monkeyblade.net ([198.137.202.13]:57594 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491082Ab1I3Wyk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Oct 2011 00:54:40 +0200
-Received: from localhost (cpe-66-65-62-183.nyc.res.rr.com [66.65.62.183])
-        (authenticated bits=0)
-        by shards.monkeyblade.net (8.14.4/8.14.4) with ESMTP id p8UMsYWU028048
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Fri, 30 Sep 2011 15:54:34 -0700
-Date:   Fri, 30 Sep 2011 18:54:33 -0400 (EDT)
-Message-Id: <20110930.185433.371029849281805679.davem@davemloft.net>
-To:     david.daney@cavium.com
-Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
-        Gregory.Dietsche@cuw.edu, u.kleine-koenig@pengutronix.de,
-        peppe.cavallaro@st.com
-Subject: Re: [PATCH] netdev/phy/icplus: Use mdiobus_write() and
- mdiobus_read() for proper locking.
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <1317421068-27278-1-git-send-email-david.daney@cavium.com>
-References: <1317421068-27278-1-git-send-email-david.daney@cavium.com>
-X-Mailer: Mew version 6.3 on Emacs 23.2 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.6 (shards.monkeyblade.net [198.137.202.13]); Fri, 30 Sep 2011 15:54:36 -0700 (PDT)
-X-archive-position: 31191
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Oct 2011 07:20:07 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:62884 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491092Ab1JAFT7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Oct 2011 07:19:59 +0200
+Received: by wyi11 with SMTP id 11so2218072wyi.36
+        for <multiple recipients>; Fri, 30 Sep 2011 22:19:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=AmsZ2EystNIMyZwzo+LyfxyMI267J/UFIUOO7vctxNc=;
+        b=TMlhiSJR2e2+F1ypyBthUqPgtX/ari1Md17DFO99I2oI8Hw3NAlj7Nv7jtMsxXu3kD
+         EiaWeQIqodFD2u/oudufsoF6WGEj7mBu/Ux8Mk+wkCMDPZ7ZRlDpxrEuwazl/c2nO0GO
+         MlptfS+TNs9rYWOZ+ouHpoChUPQ2jwB3oRNkI=
+MIME-Version: 1.0
+Received: by 10.216.138.138 with SMTP id a10mr14962418wej.58.1317446393853;
+ Fri, 30 Sep 2011 22:19:53 -0700 (PDT)
+Received: by 10.216.73.193 with HTTP; Fri, 30 Sep 2011 22:19:53 -0700 (PDT)
+Date:   Sat, 1 Oct 2011 13:19:53 +0800
+Message-ID: <CAJd=RBDQ9eyfgWkgsdUrojteqbnribZyk0QATr3CgPXLbBDkPQ@mail.gmail.com>
+Subject: [RFC] count TLB refill for Netlogic XLR chip
+From:   Hillf Danton <dhillf@gmail.com>
+To:     linux-mips@linux-mips.org
+Cc:     "Jayachandran C." <jayachandranc@netlogicmicro.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 31192
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: dhillf@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 25
+X-UID: 111
 
-From: David Daney <david.daney@cavium.com>
-Date: Fri, 30 Sep 2011 15:17:48 -0700
+TLB miss is one of the concerned factors when tuning the performance of user
+applications, and there are on netlogic XLR chip eight 64-bit registers,
+c0 register 22 select 0-7, which could be used as temporary storage.
 
-> Usually you have to take the bus lock.  Why not here too?
-> 
-> I saw this when working on something else.  Not even compile tested.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Cc: Greg Dietsche <Gregory.Dietsche@cuw.edu>
-> Cc: "Uwe Kleine-Konig" <u.kleine-koenig@pengutronix.de>
-> Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+One of them is used for counting TLB refill, and any comment is appreciated.
 
-Applied to net-next.
+Thanks
+
+Signed-off-by: Hillf Danton <dhillf@gmail.com>
+---
+
+--- a/arch/mips/mm/tlbex.c	Sat Aug 13 11:44:39 2011
++++ b/arch/mips/mm/tlbex.c	Sat Oct  1 12:41:07 2011
+@@ -1239,6 +1239,11 @@ static void __cpuinit build_r4000_tlb_re
+ 	memset(relocs, 0, sizeof(relocs));
+ 	memset(final_handler, 0, sizeof(final_handler));
+
++	if (current_cpu_type() == CPU_XLR) {
++		UASM_i_MFC0(p, K0, 22, 0);
++		UASM_i_ADDIU(p, K0, K0, 1);
++		UASM_i_MTC0(p, K0, 22, 0);
++	}
+ 	if ((scratch_reg > 0 || scratchpad_available()) && use_bbit_insns()) {
+ 		htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
+ 							  scratch_reg);
+--- a/arch/mips/lib/dump_tlb.c	Sat May 14 15:21:02 2011
++++ b/arch/mips/lib/dump_tlb.c	Sat Oct  1 12:46:19 2011
+@@ -99,6 +99,10 @@ static void dump_tlb(int first, int last
+ 			       (entrylo1 & 1) ? 1 : 0);
+ 		}
+ 	}
++	if (current_cpu_type() == CPU_XLR) {
++		entrylo0 = __read_64bit_c0_register($22, 0);
++		printk("TLB refill count %llu\n", entrylo0);
++	}
+ 	printk("\n");
+
+ 	write_c0_entryhi(s_entryhi);

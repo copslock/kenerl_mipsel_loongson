@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Oct 2011 07:20:07 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:62884 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491092Ab1JAFT7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Oct 2011 07:19:59 +0200
-Received: by wyi11 with SMTP id 11so2218072wyi.36
-        for <multiple recipients>; Fri, 30 Sep 2011 22:19:54 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Oct 2011 08:19:07 +0200 (CEST)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:46094 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491105Ab1JAGS4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 1 Oct 2011 08:18:56 +0200
+Received: by gyg13 with SMTP id 13so2546058gyg.36
+        for <multiple recipients>; Fri, 30 Sep 2011 23:18:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        bh=AmsZ2EystNIMyZwzo+LyfxyMI267J/UFIUOO7vctxNc=;
-        b=TMlhiSJR2e2+F1ypyBthUqPgtX/ari1Md17DFO99I2oI8Hw3NAlj7Nv7jtMsxXu3kD
-         EiaWeQIqodFD2u/oudufsoF6WGEj7mBu/Ux8Mk+wkCMDPZ7ZRlDpxrEuwazl/c2nO0GO
-         MlptfS+TNs9rYWOZ+ouHpoChUPQ2jwB3oRNkI=
+        bh=klyWNYQfqadrFJIISmSM/yAJlwgQy/oJz70EOEwGPjo=;
+        b=aUAWCGs4hwYTs0E98FClDAbz3h+RBQvwnyNPzK3qIWdvi6+kB2ZWpMjiw2r/yDMWEa
+         Tr3tRV95uWeVp8uxNzhyj6J2u36oVor52iu/0iCXLcAqNNi/2E0VrcpcZBPwdyI00/kH
+         vVuTtDBhG6AvY7tQVyS/c8MS1ETk/GQXSDK9c=
 MIME-Version: 1.0
-Received: by 10.216.138.138 with SMTP id a10mr14962418wej.58.1317446393853;
- Fri, 30 Sep 2011 22:19:53 -0700 (PDT)
-Received: by 10.216.73.193 with HTTP; Fri, 30 Sep 2011 22:19:53 -0700 (PDT)
-Date:   Sat, 1 Oct 2011 13:19:53 +0800
-Message-ID: <CAJd=RBDQ9eyfgWkgsdUrojteqbnribZyk0QATr3CgPXLbBDkPQ@mail.gmail.com>
-Subject: [RFC] count TLB refill for Netlogic XLR chip
+Received: by 10.236.175.98 with SMTP id y62mr40047732yhl.78.1317449929361;
+ Fri, 30 Sep 2011 23:18:49 -0700 (PDT)
+Received: by 10.236.109.38 with HTTP; Fri, 30 Sep 2011 23:18:49 -0700 (PDT)
+Date:   Sat, 1 Oct 2011 14:18:49 +0800
+Message-ID: <CAJd=RBAkhesOGZiDEkQzzhGLmXVTV3=CrN9Bk9iwJULSnAT8sw@mail.gmail.com>
+Subject: [RFC] activate performance counter registers on Netlogic XLR chip
 From:   Hillf Danton <dhillf@gmail.com>
 To:     linux-mips@linux-mips.org
 Cc:     "Jayachandran C." <jayachandranc@netlogicmicro.com>,
         Ralf Baechle <ralf@linux-mips.org>
 Content-Type: text/plain; charset=UTF-8
-X-archive-position: 31192
+X-archive-position: 31193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,43 +33,77 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 111
+X-UID: 119
 
-TLB miss is one of the concerned factors when tuning the performance of user
-applications, and there are on netlogic XLR chip eight 64-bit registers,
-c0 register 22 select 0-7, which could be used as temporary storage.
+On Netlogic XLR chip two pairs of performance counter registers,
 
-One of them is used for counting TLB refill, and any comment is appreciated.
+   perf_ctrl0: c0 reg 25 sel 0, perf_cntr0: c0 reg 25 sel 1
+   perf_ctrl1: c0 reg 25 sel 2, perf_cntr0: c0 reg 25 sel 3
+
+provide a means for software to count processor events.
+
+At most 64 events can be counted, such as,
+   Instruction fetched and retired, branch instructions
+   Instruction and Data Cache Unit statistics
+   Instruction and Data TLB statistics
+   Instruction Fetch Unit statistics
+   Instruction Execution Unit statistics
+   Load/store Unit statistics
+   Cycle Count
+
+They are activated based on the model of mips/74k, and
+any comment is appreciated.
 
 Thanks
 
 Signed-off-by: Hillf Danton <dhillf@gmail.com>
 ---
 
---- a/arch/mips/mm/tlbex.c	Sat Aug 13 11:44:39 2011
-+++ b/arch/mips/mm/tlbex.c	Sat Oct  1 12:41:07 2011
-@@ -1239,6 +1239,11 @@ static void __cpuinit build_r4000_tlb_re
- 	memset(relocs, 0, sizeof(relocs));
- 	memset(final_handler, 0, sizeof(final_handler));
+--- a/arch/mips/oprofile/Makefile	Tue Jul 12 21:50:26 2011
++++ b/arch/mips/oprofile/Makefile	Sat Oct  1 13:44:28 2011
+@@ -16,3 +16,4 @@ oprofile-$(CONFIG_CPU_R10000)		+= op_mod
+ oprofile-$(CONFIG_CPU_SB1)		+= op_model_mipsxx.o
+ oprofile-$(CONFIG_CPU_RM9000)		+= op_model_rm9000.o
+ oprofile-$(CONFIG_CPU_LOONGSON2)	+= op_model_loongson2.o
++oprofile-$(CONFIG_CPU_XLR)		+= op_model_mipsxx.o
+--- a/arch/mips/oprofile/common.c	Tue Jul 12 21:50:26 2011
++++ b/arch/mips/oprofile/common.c	Sat Oct  1 13:45:23 2011
+@@ -89,6 +89,7 @@ int __init oprofile_arch_init(struct opr
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
++	case CPU_XLR:
+ 		lmodel = &op_model_mipsxx_ops;
+ 		break;
 
-+	if (current_cpu_type() == CPU_XLR) {
-+		UASM_i_MFC0(p, K0, 22, 0);
-+		UASM_i_ADDIU(p, K0, K0, 1);
-+		UASM_i_MTC0(p, K0, 22, 0);
-+	}
- 	if ((scratch_reg > 0 || scratchpad_available()) && use_bbit_insns()) {
- 		htlb_info = build_fast_tlb_refill_handler(&p, &l, &r, K0, K1,
- 							  scratch_reg);
---- a/arch/mips/lib/dump_tlb.c	Sat May 14 15:21:02 2011
-+++ b/arch/mips/lib/dump_tlb.c	Sat Oct  1 12:46:19 2011
-@@ -99,6 +99,10 @@ static void dump_tlb(int first, int last
- 			       (entrylo1 & 1) ? 1 : 0);
- 		}
- 	}
-+	if (current_cpu_type() == CPU_XLR) {
-+		entrylo0 = __read_64bit_c0_register($22, 0);
-+		printk("TLB refill count %llu\n", entrylo0);
-+	}
- 	printk("\n");
+--- a/arch/mips/oprofile/op_model_mipsxx.c	Sat May 14 15:21:02 2011
++++ b/arch/mips/oprofile/op_model_mipsxx.c	Sat Oct  1 13:50:26 2011
+@@ -19,7 +19,11 @@
+ #define M_PERFCTL_SUPERVISOR		(1UL      <<  2)
+ #define M_PERFCTL_USER			(1UL      <<  3)
+ #define M_PERFCTL_INTERRUPT_ENABLE	(1UL      <<  4)
++#ifdef CONFIG_CPU_XLR
++#define M_PERFCTL_EVENT(event)		((((event) & 0x3f)  << 5) | 0x2001)
++#else
+ #define M_PERFCTL_EVENT(event)		(((event) & 0x3ff)  << 5)
++#endif
+ #define M_PERFCTL_VPEID(vpe)		((vpe)    << 16)
+ #define M_PERFCTL_MT_EN(filter)		((filter) << 20)
+ #define    M_TC_EN_ALL			M_PERFCTL_MT_EN(0)
+@@ -264,6 +268,7 @@ static inline int n_counters(void)
 
- 	write_c0_entryhi(s_entryhi);
+ 	switch (current_cpu_type()) {
+ 	case CPU_R10000:
++	case CPU_XLR:
+ 		counters = 2;
+ 		break;
+
+@@ -365,6 +370,9 @@ static int __init mipsxx_init(void)
+ 		op_model_mipsxx_ops.cpu_type = "mips/sb1";
+ 		break;
+
++	case CPU_XLR:
++		op_model_mipsxx_ops.cpu_type = "mips/xlr";
++		break;
+ 	default:
+ 		printk(KERN_ERR "Profiling unsupported for this CPU\n");

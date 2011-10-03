@@ -1,55 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2011 12:39:56 +0200 (CEST)
-Received: from mx1.netlogicmicro.com ([12.203.210.36]:1362 "EHLO
-        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491881Ab1JCKjj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Oct 2011 12:39:39 +0200
-X-TM-IMSS-Message-ID: <51c099400001312a@netlogicmicro.com>
-Received: from hqcas01.netlogicmicro.com ([10.10.50.14]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0; TLS: TLSv1/SSLv3,128bits,AES128-SHA) id 51c099400001312a ; Mon, 3 Oct 2011 03:39:29 -0700
-Date:   Mon, 3 Oct 2011 16:09:36 +0530
-From:   Jayachandran C. <jayachandranc@netlogicmicro.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Hillf Danton <dhillf@gmail.com>, <linux-mips@linux-mips.org>
-Subject: Re: [RFC] mark Netlogic XLR chip as SMT capable
-Message-ID: <20111003103935.GA6016@jayachandranc.netlogicmicro.com>
-References: <CAJd=RBAc8Zv1JZfrAx2Ajj7fdJv=oA+eYHVBLfcFNOoZNyG7fg@mail.gmail.com>
- <20111002083044.GA23668@jayachandranc.netlogicmicro.com>
- <CAJd=RBBt0xNgUrz9XnU0TcHo443t3j323zYg8jMPYRjXsV=EHw@mail.gmail.com>
- <20111003103204.GC6038@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20111003103204.GC6038@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-OriginalArrivalTime: 03 Oct 2011 10:39:29.0363 (UTC) FILETIME=[BABA2A30:01CC81B8]
-X-archive-position: 31202
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Oct 2011 22:27:55 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:7697 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491905Ab1JCU1s (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 3 Oct 2011 22:27:48 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4e8a1b080000>; Mon, 03 Oct 2011 13:28:56 -0700
+Received: from casmarthost.caveonetworks.com ([192.168.16.225]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Mon, 3 Oct 2011 13:27:39 -0700
+Received: from localhost (webpowersw-sdk106.caveonetworks.com [10.18.162.106])
+        by casmarthost.caveonetworks.com (8.13.8/8.13.8) with ESMTP id p93KRbQm016177;
+        Mon, 3 Oct 2011 13:27:39 -0700
+From:   Venkat Subbiah <venkat.subbiah@caviumnetworks.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     linux-rt-users@vger.kernel.org, david.daney@cavium.com
+Subject: 0001-MIPS-Octeon-Mark-SMP-IPI-interrupt-as-IRQF_NO_THREAD.patch
+Date:   Mon,  3 Oct 2011 13:26:44 -0700
+Message-Id: <1317673604-10554-1-git-send-email-venkat.subbiah@caviumnetworks.com>
+X-Mailer: git-send-email 1.7.0.4
+X-OriginalArrivalTime: 03 Oct 2011 20:27:40.0095 (UTC) FILETIME=[E5A484F0:01CC820A]
+X-archive-position: 31203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jayachandranc@netlogicmicro.com
+X-original-sender: venkat.subbiah@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 955
+X-UID: 1513
 
-On Mon, Oct 03, 2011 at 11:32:04AM +0100, Ralf Baechle wrote:
-> On Mon, Oct 03, 2011 at 01:46:46PM +0800, Hillf Danton wrote:
-> 
-> > +	unsigned int cpu, core_id;
-> > +
-> > +	cpu = smp_processor_id();
-> > +	core_id = (cpu >> 2) & 0x7;
-> > +	cpu_data[cpu].core = core_id;
-> 
-> This is going to break in setups where Linux is not being booted on
-> what the hardware considers CPU core 0.  Which is not uncommon in embedded
-> setups.  You may want to probe the hardware for the core ID rather than
-> relying on smp_processor_id() here.
-
-Yes, the function hard_smp_processor_id() from netlogic/mips-extns.h has to
-be used here.
-
-This also conflicts with the recent patch-set for XLP support, but I don't
-know the status of that yet.
-
-JC.

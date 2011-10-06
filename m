@@ -1,110 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Oct 2011 12:48:40 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:39172 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491023Ab1JDKsb convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 4 Oct 2011 12:48:31 +0200
-Received: by wyi11 with SMTP id 11so421709wyi.36
-        for <multiple recipients>; Tue, 04 Oct 2011 03:48:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=mxfpB5gv2gHxW7ila+ZnxFT+ITcEz/4F7/5YrbfXoPc=;
-        b=X6T5LePl551KrqKQa/Z8KgbaSEg70y9QQifk7Aor0tzeyP/3bbwYX2zloVbuqiswIP
-         crbDKWUq3W1pJvf990qNXydsBRQqknnZqcHM5stp/O5RBfJQukjrJ6Pk3WHqLvFLnapi
-         ZLClaqf5+ksi3G+BPed3tBHbNRbYQfZmyvT7Q=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Oct 2011 09:55:12 +0200 (CEST)
+Received: from alius.ayous.org ([78.46.213.165]:37467 "EHLO alius.ayous.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491136Ab1JFHzI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 6 Oct 2011 09:55:08 +0200
+Received: from eos.turmzimmer.net ([2001:a60:f006:aba::1])
+        by alius.turmzimmer.net with esmtps (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1RBinK-0003hS-Sx; Thu, 06 Oct 2011 07:55:07 +0000
+Received: from aba by eos.turmzimmer.net with local (Exim 4.69)
+        (envelope-from <aba@not.so.argh.org>)
+        id 1RBinE-0005d6-RT; Thu, 06 Oct 2011 09:55:00 +0200
+Date:   Thu, 6 Oct 2011 09:55:00 +0200
+From:   Andreas Barth <aba@not.so.argh.org>
+To:     linux-mips@linux-mips.org, debian-mips@lists.debian.org
+Cc:     sebastian@breakpoint.cc
+Subject: [PATCH] mips/ide: flush dcache also if icache does not snoop dcache
+Message-ID: <20111006075500.GE4110@mails.so.argh.org>
+Mail-Followup-To: Andreas Barth <aba@not.so.argh.org>,
+        linux-mips@linux-mips.org, debian-mips@lists.debian.org,
+        sebastian@breakpoint.cc
 MIME-Version: 1.0
-Received: by 10.216.229.91 with SMTP id g69mr1312606weq.13.1317725305866; Tue,
- 04 Oct 2011 03:48:25 -0700 (PDT)
-Received: by 10.216.73.193 with HTTP; Tue, 4 Oct 2011 03:48:25 -0700 (PDT)
-In-Reply-To: <20111003103935.GA6016@jayachandranc.netlogicmicro.com>
-References: <CAJd=RBAc8Zv1JZfrAx2Ajj7fdJv=oA+eYHVBLfcFNOoZNyG7fg@mail.gmail.com>
-        <20111002083044.GA23668@jayachandranc.netlogicmicro.com>
-        <CAJd=RBBt0xNgUrz9XnU0TcHo443t3j323zYg8jMPYRjXsV=EHw@mail.gmail.com>
-        <20111003103204.GC6038@linux-mips.org>
-        <20111003103935.GA6016@jayachandranc.netlogicmicro.com>
-Date:   Tue, 4 Oct 2011 18:48:25 +0800
-Message-ID: <CAJd=RBC9Rdnx4H=ASfvbSrtPTZ+nqvFXoK-im1HzwHrp1pqBxg@mail.gmail.com>
-Subject: Re: [RFC] mark Netlogic XLR chip as SMT capable
-From:   Hillf Danton <dhillf@gmail.com>
-To:     "Jayachandran C." <jayachandranc@netlogicmicro.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31208
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Editor: Vim http://www.vim.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 31209
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhillf@gmail.com
+X-original-sender: aba@not.so.argh.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 1901
+X-UID: 3593
 
-On Mon, Oct 3, 2011 at 6:39 PM, Jayachandran C.
-<jayachandranc@netlogicmicro.com> wrote:
-> On Mon, Oct 03, 2011 at 11:32:04AM +0100, Ralf Baechle wrote:
->> On Mon, Oct 03, 2011 at 01:46:46PM +0800, Hillf Danton wrote:
->>
->> > +   unsigned int cpu, core_id;
->> > +
->> > +   cpu = smp_processor_id();
->> > +   core_id = (cpu >> 2) & 0x7;
->> > +   cpu_data[cpu].core = core_id;
->>
->> This is going to break in setups where Linux is not being booted on
->> what the hardware considers CPU core 0.  Which is not uncommon in embedded
->> setups.  You may want to probe the hardware for the core ID rather than
->> relying on smp_processor_id() here.
->
-> Yes, the function hard_smp_processor_id() from netlogic/mips-extns.h has to
-> be used here.
->
-> This also conflicts with the recent patch-set for XLP support, but I don't
-> know the status of that yet.
->
+Hi,
 
-Thanks JC and Ralf. Your comments are included in the following version.
+we apply this patch in Debian for quite some time (the linked bug
+report is available on http://bugs.debian.org/404951 ). There was some
+discussion about it in http://comments.gmane.org/gmane.linux.ide/45092
+but not concluded (or at least: the patch is not merged).
 
-Hillf
-----------------------------------------------------------------------------
-Subject: [RFC] Mark Netlogic XLR chip to be SMT capable
+In case it's useful it should IMHO go upstream. In case anything
+should be fixed we should fix whatever is necessary. (I don't have
+any own opinion with the patch, except that I want to get patches
+merged as far as useful.)
 
-Netlogic XLR chip has multiple cores. Each core includes four integrated
-hardware threads, and they share L1 data and instruction caches.
+So, my question is: Anything that needs to be changed? Or should we
+just continue the situation as is?
 
-If the chip is marked to be SMT capable, scheduler then could do more, say,
-idle load balancing.
 
-Changes are now confined only to the code of XLR, and hardware is probed
-to get core ID for correct setup.
+Regards,
+Andi
 
-Signed-off-by: Hillf Danton <dhillf@gmail.com>
+
+From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+Subject: mips/ide: flush dcache also if icache does not snoop dcache
+
+If this is not done then the new just read data which remains in dcache
+will not make it into icache on time. Thus the CPU loads invalid data
+and executes crap. The result is that the user is not able to execute
+anything from its IDE based media while reading plain data is still
+working well.
+This problem has been reported as Debian #404951.
+
+Cc: stable@kernel.org
+Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 ---
+ arch/mips/include/asm/mach-generic/ide.h |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/mips/netlogic/xlr/smp.c	Sun Oct  2 14:15:28 2011
-+++ b/arch/mips/netlogic/xlr/smp.c	Mon Oct  3 13:33:02 2011
-@@ -104,6 +104,12 @@ void nlm_early_init_secondary(void)
-  */
- static void __cpuinit nlm_init_secondary(void)
+diff --git a/arch/mips/include/asm/mach-generic/ide.h b/arch/mips/include/asm/mach-generic/ide.h
+index 9c93a5b..e80e47f 100644
+--- a/arch/mips/include/asm/mach-generic/ide.h
++++ b/arch/mips/include/asm/mach-generic/ide.h
+@@ -23,7 +23,7 @@
+ static inline void __ide_flush_prologue(void)
  {
-+	unsigned int cpu, core_id;
-+
-+	cpu = hard_smp_processor_id();
-+	core_id = (cpu >> 2) & 7;
-+	cpu_data[cpu].core = core_id;
-+
- 	nlm_smp_irq_init();
+ #ifdef CONFIG_SMP
+-	if (cpu_has_dc_aliases)
++	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
+ 		preempt_disable();
+ #endif
  }
-
-@@ -176,6 +182,8 @@ void __init nlm_smp_setup(void)
-
- void nlm_prepare_cpus(unsigned int max_cpus)
+@@ -31,14 +31,14 @@ static inline void __ide_flush_prologue(void)
+ static inline void __ide_flush_epilogue(void)
  {
-+	/* declare we are SMT capable */
-+	smp_num_siblings = 4;
+ #ifdef CONFIG_SMP
+-	if (cpu_has_dc_aliases)
++	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc)
+ 		preempt_enable();
+ #endif
  }
-
- struct plat_smp_ops nlm_smp_ops = {
+ 
+ static inline void __ide_flush_dcache_range(unsigned long addr, unsigned long size)
+ {
+-	if (cpu_has_dc_aliases) {
++	if (cpu_has_dc_aliases || !cpu_has_ic_fills_f_dc) {
+ 		unsigned long end = addr + size;
+ 
+ 		while (addr < end) {

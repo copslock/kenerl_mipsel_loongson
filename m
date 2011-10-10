@@ -1,123 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Oct 2011 19:17:37 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:1094 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491179Ab1JJRRU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Oct 2011 19:17:20 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e9328eb0000>; Mon, 10 Oct 2011 10:18:35 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 10 Oct 2011 10:17:17 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 10 Oct 2011 10:17:17 -0700
-Message-ID: <4E932897.9050301@cavium.com>
-Date:   Mon, 10 Oct 2011 10:17:11 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Oct 2011 23:04:57 +0200 (CEST)
+Received: from smtp-out.google.com ([74.125.121.67]:29799 "EHLO
+        smtp-out.google.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491753Ab1JJVEt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 10 Oct 2011 23:04:49 +0200
+Received: from wpaz21.hot.corp.google.com (wpaz21.hot.corp.google.com [172.24.198.85])
+        by smtp-out.google.com with ESMTP id p9AL4h1w009239
+        for <linux-mips@linux-mips.org>; Mon, 10 Oct 2011 14:04:43 -0700
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=google.com; s=beta;
+        t=1318280689; bh=Dwn+kl1Tk6Bf88ymwpRNAT6hxmw=;
+        h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=LSoh9nbvTCl59gYlRyrIg6kZHrf+LNU5VvAxt1rEdo7VCMuMF3Q9vCrqIm4igE6sM
+         baUAzNhZ89D2/6PnSC2Ig==
+DomainKey-Signature: a=rsa-sha1; s=beta; d=google.com; c=nofws; q=dns;
+        h=dkim-signature:mime-version:in-reply-to:references:from:date:
+        message-id:subject:to:cc:content-type:x-system-of-record;
+        b=uLZtfZzHecsL4YNJSFoWi65OSfxRKSbFAJBhJeD/1uSJ/XNegnAAEF2+sYQcmWH+h
+        FrrEq48bZy099FXyg9K5g==
+Received: from gyd8 (gyd8.prod.google.com [10.243.49.200])
+        by wpaz21.hot.corp.google.com with ESMTP id p9AL1ILm025305
+        (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+        for <linux-mips@linux-mips.org>; Mon, 10 Oct 2011 14:04:42 -0700
+Received: by gyd8 with SMTP id 8so9848386gyd.11
+        for <linux-mips@linux-mips.org>; Mon, 10 Oct 2011 14:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=beta;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type;
+        bh=IpgDZtq0dWRgFvKP1adf+T78a5+sXS5C1Q3chCXse8U=;
+        b=sQN4sv3WuabhbKVuirZgGh+l8vxHqDMgyYPEoM3ASRw38jvo0hCb6gKXXAtC15hPL9
+         R+bjQDhkhBGMECFK6B6w==
+Received: by 10.150.244.20 with SMTP id r20mr7874847ybh.50.1318280681335;
+        Mon, 10 Oct 2011 14:04:41 -0700 (PDT)
+Received: by 10.150.244.20 with SMTP id r20mr7874813ybh.50.1318280681112; Mon,
+ 10 Oct 2011 14:04:41 -0700 (PDT)
 MIME-Version: 1.0
-To:     Hillf Danton <dhillf@gmail.com>, Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org,
-        "Jayachandran C." <jayachandranc@netlogicmicro.com>
-Subject: Re: [RFC] Flush huge TLB
-References: <CAJd=RBBPd6frOA5zCg5juHuWdZ6wHzmOhhufgGhUCOc=rkNEzA@mail.gmail.com>
-In-Reply-To: <CAJd=RBBPd6frOA5zCg5juHuWdZ6wHzmOhhufgGhUCOc=rkNEzA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Oct 2011 17:17:17.0108 (UTC) FILETIME=[75E74740:01CC8770]
-X-archive-position: 31215
+Received: by 10.150.198.8 with HTTP; Mon, 10 Oct 2011 14:04:21 -0700 (PDT)
+In-Reply-To: <CAErSpo5py82G1=6BOTG4RSAj6_SRzN4fng6sECU2sS+u9quixw@mail.gmail.com>
+References: <1314845309-3277-1-git-send-email-dczhu@mips.com> <CAErSpo5py82G1=6BOTG4RSAj6_SRzN4fng6sECU2sS+u9quixw@mail.gmail.com>
+From:   Bjorn Helgaas <bhelgaas@google.com>
+Date:   Mon, 10 Oct 2011 15:04:21 -0600
+Message-ID: <CAErSpo5HNKi7NSKBbyL3o39Ow+Xkncyccrj5PQNaoeMdLHJsFQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH v3 0/2] Pass resources to pci_create_bus() and fix
+ MIPS PCI resources
+To:     Deng-Cheng Zhu <dczhu@mips.com>
+Cc:     jbarnes@virtuousgeek.org, ralf@linux-mips.org, monstr@monstr.eu,
+        benh@kernel.crashing.org, paulus@samba.org, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        eyal@mips.com, zenon@mips.com, dengcheng.zhu@gmail.com
+Content-Type: text/plain; charset=ISO-8859-1
+X-System-Of-Record: true
+X-archive-position: 31216
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: bhelgaas@google.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6475
+X-UID: 6640
 
-On 10/09/2011 05:53 AM, Hillf Danton wrote:
-> When flushing TLB, if @vma is backed by huge page, huge TLB should be flushed,
-> due to the fact that huge page is defined to be far from normal page, and the
-> flushing is shorten a bit.
+On Fri, Oct 7, 2011 at 3:50 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
+> On Wed, Aug 31, 2011 at 8:48 PM, Deng-Cheng Zhu <dczhu@mips.com> wrote:
+>> (Resending the patch set to include more arch maintainers.)
+>>
+>> Change the pci_create_bus() interface to pass in available resources to get them
+>> settled down early. This is to avoid possible resource conflicts while doing
+>> pci_scan_slot() in pci_scan_child_bus(). Note that pcibios_fixup_bus() can get
+>> rid of such conflicts, but it's done AFTER scanning slots.
+>>
+>> In addition, MIPS PCI resources are now fixed using this new interface.
 >
-> Any comment is welcome.
->
+> Jesse, I assume these are headed for the 3.2 merge window, right?
 
-Note that the current implementation works, but is not optimal.
+I tried to build on these patches to convert x86 to using the new
+pci_create_bus() interface, but I couldn't figure out a nice way to
+handle an arbitrary number of resources.
 
-> Thanks
->
-> Signed-off-by: Hillf Danton<dhillf@gmail.com>
-> ---
->
-> --- a/arch/mips/mm/tlb-r4k.c	Mon May 30 21:17:04 2011
-> +++ b/arch/mips/mm/tlb-r4k.c	Sun Oct  9 20:50:06 2011
-> @@ -120,22 +120,35 @@ void local_flush_tlb_range(struct vm_are
->
->   	if (cpu_context(cpu, mm) != 0) {
->   		unsigned long size, flags;
-> +		int huge = is_vm_hugetlb_page(vma);
->
->   		ENTER_CRITICAL(flags);
-> -		size = (end - start + (PAGE_SIZE - 1))>>  PAGE_SHIFT;
-> -		size = (size + 1)>>  1;
-> +		if (huge) {
-> +			size = (end - start) / HPAGE_SIZE;
- > +		} else {
- > +			size = (end - start + (PAGE_SIZE - 1))>>  PAGE_SHIFT;
- > +			size = (size + 1)>>  1;
- > +		}
+We made pci_create_bus() take a "struct pci_bus_resource *"
+(https://lkml.org/lkml/2011/8/26/88):
 
-Perhaps:
-	if (huge) {
-		start = round_down(start, HPAGE_SIZE);
-		end = round_up(start, HPAGE_SIZE);
-		size = (end - start) >> HPAGE_SHIFT;
-	} else {
-		start = round_down(start, PAGE_SIZE << 1);
-		end = round_up(start, PAGE_SIZE << 1);
-		size = (end - start) >> (PAGE_SHIFT + 1);
-	}
-.
-.
-.
+    struct pci_bus *pci_create_bus(struct device *parent, int bus,
+			       struct pci_ops *ops, void *sysdata,
+			       struct pci_bus_resource *bus_res);
 
->   		if (size<= current_cpu_data.tlbsize/2) {
+Where pci_bus_resource looks like this:
 
-Has anybody benchmarked this heuristic?  I guess it seems reasonable.
+    struct pci_bus_resource {
+        struct list_head list;
+        struct resource *res;
+        unsigned int flags;
+    };
 
->   			int oldpid = read_c0_entryhi();
->   			int newpid = cpu_asid(cpu, mm);
->
-> -			start&= (PAGE_MASK<<  1);
-> -			end += ((PAGE_SIZE<<  1) - 1);
-> -			end&= (PAGE_MASK<<  1);
-> +			if (huge) {
-> +				start&= HPAGE_MASK;
-> +				end&= HPAGE_MASK;
-> +			} else {
-> +				start&= (PAGE_MASK<<  1);
-> +				end += ((PAGE_SIZE<<  1) - 1);
-> +				end&= (PAGE_MASK<<  1);
-> +			}
+Conceptually, we're passing a list of resources to pci_create_bus(),
+which I think is the right thing.  But I think the best way to do that
+is by passing a pointer to a struct list_head, not a pointer to a
+pci_bus_resource.
 
-This stuff is done above so is removed.
+If we pass a pci_bus_resource, we're basically using that as a
+container for a list (as per include/linux/list.h), but it's not a
+well-formed list.  Normally a list contains one list_head per element,
+plus an extra list_head for the head of the list.  There's a nice
+drawing on page 296 of http://lwn.net/images/pdf/LDD3/ch11.pdf.
 
+The list built in your MIPS patch (https://lkml.org/lkml/2011/8/26/89)
+consists of two pci_bus_resource structs (each with a list_head), but
+there's no third list_head for the head of the list.  I think if you
+tried to use list_for_each_entry() to iterate through the list, it
+would not work correctly.
 
->   			while (start<  end) {
->   				int idx;
->
->   				write_c0_entryhi(start | newpid);
-> -				start += (PAGE_SIZE<<  1);
-> +				if (huge)
-> +					start += HPAGE_SIZE;
-> +				else
-> +					start += (PAGE_SIZE<<  1);
->   				mtc0_tlbw_hazard();
->   				tlb_probe();
->   				tlb_probe_hazard();
->
->
+I'll post a slightly modified series to show what I mean.  Take a look
+and see if it makes sense to you.
 
-If we do something like that, then...
-
-Acked-by: David Daney <david.daney@cavium.com>
+Bjorn

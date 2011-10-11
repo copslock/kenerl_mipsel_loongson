@@ -1,67 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2011 20:43:29 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:12859 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491771Ab1JKSnY (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2011 20:43:24 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e948e980000>; Tue, 11 Oct 2011 11:44:40 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 11 Oct 2011 11:43:22 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 11 Oct 2011 11:43:22 -0700
-Message-ID: <4E948E48.60205@cavium.com>
-Date:   Tue, 11 Oct 2011 11:43:20 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Joe Buehler <aspam@cox.net>
-CC:     linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Oct 2011 01:17:52 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:56612 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1491178Ab1JKXRt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 12 Oct 2011 01:17:49 +0200
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p9BNHaNs031856;
+        Wed, 12 Oct 2011 00:17:36 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p9BNHZnH031853;
+        Wed, 12 Oct 2011 00:17:35 +0100
+Date:   Wed, 12 Oct 2011 00:17:35 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David Daney <david.daney@cavium.com>
+Cc:     Joe Buehler <aspam@cox.net>, linux-mips@linux-mips.org
 Subject: Re: using mprotect to write to .text
-References: <loom.20111010T215444-70@post.gmane.org> <4E9470A1.8020309@cavium.com> <4E947D8A.9090409@cox.net> <4E948593.6030604@cavium.com> <4E948C62.3000802@cox.net>
-In-Reply-To: <4E948C62.3000802@cox.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 Oct 2011 18:43:22.0166 (UTC) FILETIME=[A6EE5560:01CC8845]
-X-archive-position: 31225
+Message-ID: <20111011231735.GA19175@linux-mips.org>
+References: <loom.20111010T215444-70@post.gmane.org>
+ <4E9470A1.8020309@cavium.com>
+ <4E947D8A.9090409@cox.net>
+ <4E948593.6030604@cavium.com>
+ <4E948C62.3000802@cox.net>
+ <4E948E48.60205@cavium.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4E948E48.60205@cavium.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7473
+X-UID: 7656
 
-Two points you may not be aware of:
+On Tue, Oct 11, 2011 at 11:43:20AM -0700, David Daney wrote:
 
-1) cacheflush() clears all hazards.
+> 1) cacheflush() clears all hazards.
 
-2) There are no hazards on Octeon.
+More by accident than design - when I wrote the cacheflush syscall and
+manpage in 1995 the term execution hazard barrier didn't yet exist in
+manuals though the CPU behaviour was documented in the R4000 / R4600
+manual of those days as a small number of pipeline cycles required to
+handle.  The return patch of the syscall was taking care of this
+implicitly.  And today the required R2 hazard barrier is provided by
+the ERET instruction of the return path, so everything is fine.
 
+But it may be worth updating the man page.  A change every 15 years or
+so isn't that bad ;-)
 
-On 10/11/2011 11:35 AM, Joe Buehler wrote:
-> David Daney wrote:
->
->> I cannot parse the meaning out of these last two sentences.  The
->> cacheflush() system call both exists and works.  You want to change it?
->
-> Let me rewind a bit.  I have a multithreaded binary running on multiple
-> physical CPUs.  As part of a debugging mechanism, I want to make changes
-> to .text from a thread dedicated to the purpose.  This requires at the
-> least icache flushes on all CPUs but also hazard avoidance measures on
-> all CPUs.  So I understand anyway.
->
-> The cacheflush call will do the flush but not the hazard avoidance.  In
-> order to solve my particular issue I am thinking about adding the hazard
-> avoidance into cacheflush for my particular application.  It is not a
-> question of cacheflush being wrong, but of extending it to meet my
-> needs.  In fact, it seems like a useful change -- it will allow an
-> application to do exactly what I want to do, and easily so, and would
-> seem a logical place for the functionality to reside.
->
-> Sorry if I seem a bit muddled -- this is extremely low level and not
-> what I deal with day to day.
->
-> Joe Buehler
->
+  Ralf

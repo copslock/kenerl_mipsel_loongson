@@ -1,72 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2011 20:06:19 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:10835 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491771Ab1JKSGO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2011 20:06:14 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4e9485e20000>; Tue, 11 Oct 2011 11:07:30 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 11 Oct 2011 11:06:12 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 11 Oct 2011 11:06:12 -0700
-Message-ID: <4E948593.6030604@cavium.com>
-Date:   Tue, 11 Oct 2011 11:06:11 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2011 20:35:30 +0200 (CEST)
+Received: from eastrmfepo203.cox.net ([68.230.241.218]:38395 "EHLO
+        eastrmfepo203.cox.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491771Ab1JKSf0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2011 20:35:26 +0200
+Received: from eastrmimpo02.cox.net ([68.1.16.120])
+          by eastrmfepo203.cox.net
+          (InterMail vM.8.01.04.00 201-2260-137-20101110) with ESMTP
+          id <20111011183516.ZGZQ3766.eastrmfepo203.cox.net@eastrmimpo02.cox.net>;
+          Tue, 11 Oct 2011 14:35:16 -0400
+Received: from thunder.sweets ([68.100.141.95])
+        by eastrmimpo02.cox.net with bizsmtp
+        id jWbG1h00723hm2k02WbGnP; Tue, 11 Oct 2011 14:35:16 -0400
+X-CT-Class: Clean
+X-CT-Score: 0.00
+X-CT-RefID: str=0001.0A020207.4E948C64.0072,ss=1,re=0.000,fgs=0
+X-CT-Spam: 0
+X-Authority-Analysis: v=1.1 cv=oaIW6hvuqrvZuBstGxzMQDCn9/QU+BfQ2mb81G/9NAc=
+ c=1 sm=1 a=sqqFQ7cWU8cA:10 a=PLag0n9VLbMA:10 a=G8Uczd0VNMoA:10
+ a=8nJEP1OIZ-IA:10 a=NpDSbZnL7oWxO3tJXEQWVQ==:17 a=UdjR6XGtzev_aqXJbLwA:9
+ a=wPNLvfGTeEIA:10 a=NpDSbZnL7oWxO3tJXEQWVQ==:117
+X-CM-Score: 0.00
+Authentication-Results: cox.net; none
+Received: from [10.10.10.15] (thunder.sweets [10.10.10.15])
+        by thunder.sweets (Postfix) with ESMTP id 980BCFD78;
+        Tue, 11 Oct 2011 14:35:15 -0400 (EDT)
+Message-ID: <4E948C62.3000802@cox.net>
+Date:   Tue, 11 Oct 2011 14:35:14 -0400
+From:   Joe Buehler <aspam@cox.net>
+User-Agent: Thunderbird 1.5.0.12 (X11/20090114)
 MIME-Version: 1.0
-To:     Joe Buehler <aspam@cox.net>
+To:     David Daney <david.daney@cavium.com>
 CC:     linux-mips@linux-mips.org
 Subject: Re: using mprotect to write to .text
-References: <loom.20111010T215444-70@post.gmane.org> <4E9470A1.8020309@cavium.com> <4E947D8A.9090409@cox.net>
-In-Reply-To: <4E947D8A.9090409@cox.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+References: <loom.20111010T215444-70@post.gmane.org> <4E9470A1.8020309@cavium.com> <4E947D8A.9090409@cox.net> <4E948593.6030604@cavium.com>
+In-Reply-To: <4E948593.6030604@cavium.com>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 Oct 2011 18:06:12.0232 (UTC) FILETIME=[75C96880:01CC8840]
-X-archive-position: 31223
+X-archive-position: 31224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: aspam@cox.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7420
+X-UID: 7463
 
-On 10/11/2011 10:31 AM, Joe Buehler wrote:
-> David Daney wrote:
->
->> No, it does nothing of the sort.  You need cacheflush() for that.
->
-> OK, I looked at cacheflush and it can be used to flush the icache on all
-> CPUs, which is what I want.  My current code sequence is more than that
-> however.  Something like this:
->
-> 	CVMX_ICACHE_INVALIDATE;
+David Daney wrote:
 
-This only works if you can guarantee that the code will never be run on 
-a different CPU than the current one.  For most Linux code you cannot 
-make such an assertion.
+> I cannot parse the meaning out of these last two sentences.  The
+> cacheflush() system call both exists and works.  You want to change it?
 
-> 	CVMX_SYNC;
+Let me rewind a bit.  I have a multithreaded binary running on multiple
+physical CPUs.  As part of a debugging mechanism, I want to make changes
+to .text from a thread dedicated to the purpose.  This requires at the
+least icache flushes on all CPUs but also hazard avoidance measures on
+all CPUs.  So I understand anyway.
 
-Unneeded.
+The cacheflush call will do the flush but not the hazard avoidance.  In
+order to solve my particular issue I am thinking about adding the hazard
+avoidance into cacheflush for my particular application.  It is not a
+question of cacheflush being wrong, but of extending it to meet my
+needs.  In fact, it seems like a useful change -- it will allow an
+application to do exactly what I want to do, and easily so, and would
+seem a logical place for the functionality to reside.
 
-> 	uint64_t tmp;
-> 	asm volatile ("    la %0,10f\n"
-> 		  "    jr.hb %0\n"
-> 		  "    nop\n"
-> 		  "    10:\n" : "=r" (tmp) : : "memory");
+Sorry if I seem a bit muddled -- this is extremely low level and not
+what I deal with day to day.
 
-jr.hb is equivalent to jr on Octeon.
-
->
-> I can certainly modify cacheflush for my application so the extra hazard
-> clearing is done when icache is flushed.  Is there any way to avoid that
-> and use existing kernel functionality?
->
-
-I cannot parse the meaning out of these last two sentences.  The 
-cacheflush() system call both exists and works.  You want to change it?
-
-David Daney
+Joe Buehler

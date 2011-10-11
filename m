@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2011 01:52:22 +0200 (CEST)
-Received: from dns1.mips.com ([12.201.5.69]:49162 "EHLO dns1.mips.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Oct 2011 09:53:10 +0200 (CEST)
+Received: from gate.crashing.org ([63.228.1.57]:33286 "EHLO gate.crashing.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491758Ab1JJXwO convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 11 Oct 2011 01:52:14 +0200
-Received: from exchdb01.mips.com (exchdb01.mips.com [192.168.36.67])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id p9ANn7br011082;
-        Mon, 10 Oct 2011 16:49:07 -0700
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchdb01.mips.com ([fe80::2897:a30d:a923:303%16]) with mapi id
- 14.01.0270.001; Mon, 10 Oct 2011 16:49:07 -0700
-From:   "Zhu, DengCheng" <dczhu@mips.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-CC:     "jbarnes@virtuousgeek.org" <jbarnes@virtuousgeek.org>,
+        id S1491160Ab1JKHxC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 11 Oct 2011 09:53:02 +0200
+Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id p9B7mFI1031341;
+        Tue, 11 Oct 2011 02:48:16 -0500
+Subject: RE: [RESEND PATCH v3 0/2] Pass resources to pci_create_bus() and
+ fix MIPS PCI resources
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     "Zhu, DengCheng" <dczhu@mips.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "jbarnes@virtuousgeek.org" <jbarnes@virtuousgeek.org>,
         "ralf@linux-mips.org" <ralf@linux-mips.org>,
         "monstr@monstr.eu" <monstr@monstr.eu>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
         "paulus@samba.org" <paulus@samba.org>,
         "davem@davemloft.net" <davem@davemloft.net>,
         "tglx@linutronix.de" <tglx@linutronix.de>,
@@ -26,102 +25,62 @@ CC:     "jbarnes@virtuousgeek.org" <jbarnes@virtuousgeek.org>,
         "Barzilay, Eyal" <eyal@mips.com>,
         "Fortuna, Zenon" <zenon@mips.com>,
         "dengcheng.zhu@gmail.com" <dengcheng.zhu@gmail.com>
-Subject: RE: [RESEND PATCH v3 0/2] Pass resources to pci_create_bus() and
- fix MIPS PCI resources
-Thread-Topic: [RESEND PATCH v3 0/2] Pass resources to pci_create_bus() and
- fix MIPS PCI resources
-Thread-Index: AQHMaFGlI7Hp27+M00OrntK+WpTVnJVyGw+AgASqA4D//68aHQ==
-Date:   Mon, 10 Oct 2011 23:49:06 +0000
-Message-ID: <BD04AF0D5BE72443A0B69C1C0486AD3ECE8D8973@exchdb03.mips.com>
+In-Reply-To: <BD04AF0D5BE72443A0B69C1C0486AD3ECE8D8973@exchdb03.mips.com>
 References: <1314845309-3277-1-git-send-email-dczhu@mips.com>
- <CAErSpo5py82G1=6BOTG4RSAj6_SRzN4fng6sECU2sS+u9quixw@mail.gmail.com>,<CAErSpo5HNKi7NSKBbyL3o39Ow+Xkncyccrj5PQNaoeMdLHJsFQ@mail.gmail.com>
-In-Reply-To: <CAErSpo5HNKi7NSKBbyL3o39Ow+Xkncyccrj5PQNaoeMdLHJsFQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: iiay/VHfaASoyHWbbhfuEw==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-archive-position: 31217
+         <CAErSpo5py82G1=6BOTG4RSAj6_SRzN4fng6sECU2sS+u9quixw@mail.gmail.com>
+         ,<CAErSpo5HNKi7NSKBbyL3o39Ow+Xkncyccrj5PQNaoeMdLHJsFQ@mail.gmail.com>
+         <BD04AF0D5BE72443A0B69C1C0486AD3ECE8D8973@exchdb03.mips.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:   Tue, 11 Oct 2011 09:48:15 +0200
+Message-ID: <1318319295.29415.452.camel@pasglop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.32.2 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6717
+X-UID: 6929
 
-2011/10/11 Bjorn Helgaas <bhelgaas@google.com>
->
-> On Fri, Oct 7, 2011 at 3:50 PM, Bjorn Helgaas <bhelgaas@google.com> wrote:
-> > On Wed, Aug 31, 2011 at 8:48 PM, Deng-Cheng Zhu <dczhu@mips.com> wrote:
-> >> (Resending the patch set to include more arch maintainers.)
-> >>
-> >> Change the pci_create_bus() interface to pass in available resources to get them
-> >> settled down early. This is to avoid possible resource conflicts while doing
-> >> pci_scan_slot() in pci_scan_child_bus(). Note that pcibios_fixup_bus() can get
-> >> rid of such conflicts, but it's done AFTER scanning slots.
-> >>
-> >> In addition, MIPS PCI resources are now fixed using this new interface.
-> >
-> > Jesse, I assume these are headed for the 3.2 merge window, right?
->
-> I tried to build on these patches to convert x86 to using the new
-> pci_create_bus() interface, but I couldn't figure out a nice way to
-> handle an arbitrary number of resources.
->
-> We made pci_create_bus() take a "struct pci_bus_resource *"
-> (https://lkml.org/lkml/2011/8/26/88):
->
->    struct pci_bus *pci_create_bus(struct device *parent, int bus,
->                               struct pci_ops *ops, void *sysdata,
->                               struct pci_bus_resource *bus_res);
->
-> Where pci_bus_resource looks like this:
->
->    struct pci_bus_resource {
->        struct list_head list;
->        struct resource *res;
->        unsigned int flags;
->    };
->
-> Conceptually, we're passing a list of resources to pci_create_bus(),
-> which I think is the right thing.  But I think the best way to do that
-> is by passing a pointer to a struct list_head, not a pointer to a
-> pci_bus_resource.
->
-> If we pass a pci_bus_resource, we're basically using that as a
-> container for a list (as per include/linux/list.h), but it's not a
-> well-formed list.  Normally a list contains one list_head per element,
-> plus an extra list_head for the head of the list.  There's a nice
-> drawing on page 296 of http://lwn.net/images/pdf/LDD3/ch11.pdf.
->
-> The list built in your MIPS patch (https://lkml.org/lkml/2011/8/26/89)
-> consists of two pci_bus_resource structs (each with a list_head), but
-> there's no third list_head for the head of the list.  I think if you
-> tried to use list_for_each_entry() to iterate through the list, it
-> would not work correctly.
->
-> I'll post a slightly modified series to show what I mean.  Take a look
-> and see if it makes sense to you.
+On Mon, 2011-10-10 at 23:49 +0000, Zhu, DengCheng wrote:
+> Yes, I can easily understand what you mean, because this point was ever
+> considered while writing this patch series. We pass the element list as
+> opposed to a list_head for the head of the element list because we simply
+> want to link the elements into pci_bus->resources in pci_create_bus(). This
+> can be done by a single line:
+>     list_add_tail(&b->resources, &bus_res->list);
+> 
+> In addition, if we need to do list_for_each_entry() on the list, our target
+> should always be pci_bus->resources rather than the pci_bus_resource list
+> which is passed into pci_create_bus() to be part (the meat) of
+> pci_bus->resources. 
 
-Yes, I can easily understand what you mean, because this point was ever
-considered while writing this patch series. We pass the element list as
-opposed to a list_head for the head of the element list because we simply
-want to link the elements into pci_bus->resources in pci_create_bus(). This
-can be done by a single line:
-    list_add_tail(&b->resources, &bus_res->list);
+I must admit I don't completely understand what this patch is about,
+other than it will most probably break the way we do resource management
+on powerpc :-)
 
-In addition, if we need to do list_for_each_entry() on the list, our target
-should always be pci_bus->resources rather than the pci_bus_resource list
-which is passed into pci_create_bus() to be part (the meat) of
-pci_bus->resources.
+I don't understand the point about conflicts in scan_slot and I don't
+see what you win by "settling down early". Also keep in mind that the
+resources read from the device need to be remapped on some archs like
+powerpc which we do from a header quirk at the moment.
 
+We also have very different behaviour depending on the platform that we
+can trigger ranging from ignoring all resources read from the devices
+because we want the kernel to fully re-assign everything, to on the
+contrary only every using what the firmware set (no re-assigning
+possible), with variants such as re-assigning everything using a custom
+algorithm etc....
 
-Deng-Cheng
+We do rely in various places on the concept of scan first, alloc/fixup
+next, then use. Merging scan & alloc/fixup of resources in one pass is a
+major conceptual change. It might be ok but I need to convince myself it
+is by understanding better what's going on and what problem you are
+really trying to solve here.
+
+Cheers,
+Ben.

@@ -1,96 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2011 12:12:41 +0200 (CEST)
-Received: from ams-iport-1.cisco.com ([144.254.224.140]:65451 "EHLO
-        ams-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491005Ab1JMKM2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Oct 2011 12:12:28 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=manesoni@cisco.com; l=1484; q=dns/txt;
-  s=iport; t=1318500748; x=1319710348;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   mime-version:in-reply-to;
-  bh=I/P10tROSvc4qVtiIw5YlPNk5SCeWfBBDnB7FvyV1cI=;
-  b=PUvrHb3q9ERZqs2XF6inMqjP6ilMMNDn5fsbFC9PvC2QHsHV2Rd51vWF
-   AGfWZEi6ec/uFR/6MCKmdlxyhFruCtNXUlnz8UuZRqcBrdQqFtiFOQCjg
-   1ElbJOUmjouba3KuFw8m3xK3d6+mYk8JY2UllQPmMgpavOrFp6tVa59FW
-   8=;
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: Av4EABe5lk6Q/khM/2dsb2JhbABDqFGBBYFTAQEBBBIBAgEREz8QCxgcEhQYMQsqoS8BgykPAZpwhwxhBId/i3mRXQ
-X-IronPort-AV: E=Sophos;i="4.69,339,1315180800"; 
-   d="scan'208";a="119017620"
-Received: from ams-core-3.cisco.com ([144.254.72.76])
-  by ams-iport-1.cisco.com with ESMTP; 13 Oct 2011 10:12:21 +0000
-Received: from cisco.com (dhcp-72-163-207-192.cisco.com [72.163.207.192])
-        by ams-core-3.cisco.com (8.14.3/8.14.3) with ESMTP id p9DACLpQ002738;
-        Thu, 13 Oct 2011 10:12:21 GMT
-Received: by cisco.com (Postfix, from userid 1001)
-        id 16EDD81C9F; Thu, 13 Oct 2011 15:42:18 +0530 (IST)
-Date:   Thu, 13 Oct 2011 15:42:18 +0530
-From:   Maneesh Soni <manesoni@cisco.com>
-To:     Ananth N Mavinakayanahalli <ananth@in.ibm.com>
-Cc:     ralf@linux-mips.org, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, david.daney@cavium.com,
-        kamensky@cisco.com
-Subject: Re: [PATCH] MIPS Kprobes: Support branch instructions probing
-Message-ID: <20111013101217.GD16761@cisco.com>
-Reply-To: manesoni@cisco.com
-References: <20111013090749.GB16761@cisco.com>
- <20111013094137.GA19054@in.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Oct 2011 19:29:07 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13849 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491072Ab1JMR3A (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 13 Oct 2011 19:29:00 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4e9720260000>; Thu, 13 Oct 2011 10:30:14 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 13 Oct 2011 10:28:55 -0700
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 13 Oct 2011 10:28:55 -0700
+Message-ID: <4E971FD3.2020308@cavium.com>
+Date:   Thu, 13 Oct 2011 10:28:51 -0700
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20111013094137.GA19054@in.ibm.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 31232
+To:     manesoni@cisco.com
+CC:     ralf@linux-mips.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, ananth@in.ibm.com, kamensky@cisco.com
+Subject: Re: [PATCH] MIPS Kprobes: Support branch instructions probing
+References: <20111013090749.GB16761@cisco.com>
+In-Reply-To: <20111013090749.GB16761@cisco.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 13 Oct 2011 17:28:55.0701 (UTC) FILETIME=[95895C50:01CC89CD]
+X-archive-position: 31233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manesoni@cisco.com
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8950
+X-UID: 9411
 
-On Thu, Oct 13, 2011 at 03:11:38PM +0530, Ananth N Mavinakayanahalli wrote:
-> On Thu, Oct 13, 2011 at 02:37:49PM +0530, Maneesh Soni wrote:
-> 
-> ...
-> 
-> I know nothing of MIPS internals, but...
->  
-> >  static int __kprobes kprobe_handler(struct pt_regs *regs)
-> > @@ -239,8 +531,13 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
-> >  			save_previous_kprobe(kcb);
-> >  			set_current_kprobe(p, regs, kcb);
-> >  			kprobes_inc_nmissed_count(p);
-> > -			prepare_singlestep(p, regs);
-> > +			prepare_singlestep(p, regs, kcb);
-> >  			kcb->kprobe_status = KPROBE_REENTER;
-> > +			if (kcb->flags & SKIP_DELAYSLOT) {
-> > +				resume_execution(p, regs, kcb);
-> > +				restore_previous_kprobe(kcb);
-> > +				preempt_enable_no_resched();
-> > +			}
-> >  			return 1;
-> >  		} else {
-> >  			if (addr->word != breakpoint_insn.word) {
-> > @@ -284,8 +581,15 @@ static int __kprobes kprobe_handler(struct pt_regs *regs)
-> >  	}
-> > 
-> >  ss_probe:
-> > -	prepare_singlestep(p, regs);
-> > -	kcb->kprobe_status = KPROBE_HIT_SS;
-> > +	prepare_singlestep(p, regs, kcb);
-> > +	if (kcb->flags & SKIP_DELAYSLOT) {
-> > +		kcb->kprobe_status = KPROBE_HIT_SSDONE;
-> > +		if (p->post_handler)
-> > +			p->post_handler(p, regs, 0);
-> > +		resume_execution(p, regs, kcb);
-> 
-> You are missing a preempt_disable_no_resched() here.
-> 
-ok.. you meant preempt_enable_no_resched(). Will add it in the next
-version. Thanks for pointing it out.
+On 10/13/2011 02:07 AM, Maneesh Soni wrote:
+>
+> From: Maneesh Soni<manesoni@cisco.com>
+>
+> This patch provides support for kprobes on branch instructions. The branch
+> instruction at the probed address is actually emulated and not executed
+> out-of-line like other normal instructions. Instead the delay-slot instruction
+> is copied and single stepped out of line.
+>
+> At the time of probe hit, the original branch instruction is evaluated
+> and the target cp0_epc is computed similar to compute_retrun_epc(). It
+> is also checked if the delay slot instruction can be skipped, which is
+> true if there is a NOP in delay slot or branch is taken in case of
+> branch likely instructions. Once the delay slot instruction is single
+> stepped the normal execution resume with the cp0_epc updated the earlier
+> computed cp0_epc as per the branch instructions.
+>
 
-Thanks
-Maneesh
+I haven't tested it but...
+
+
+> Signed-off-by: Maneesh Soni<manesoni@cisco.com>
+> ---
+>   arch/mips/include/asm/kprobes.h |    7 +
+>   arch/mips/kernel/kprobes.c      |  341 +++++++++++++++++++++++++++++++++++----
+>   2 files changed, 320 insertions(+), 28 deletions(-)
+>
+[...]
+> +static int evaluate_branch_instruction(struct kprobe *p, struct pt_regs *regs,
+> +					struct kprobe_ctlblk *kcb)
+>   {
+> +	union mips_instruction insn = p->opcode;
+> +	unsigned int dspcontrol;
+> +	long epc;
+> +
+> +	epc = regs->cp0_epc;
+> +	if (epc&  3)
+> +		goto unaligned;
+> +
+> +	if (p->ainsn.insn->word == 0)
+> +		kcb->flags |= SKIP_DELAYSLOT;
+> +	else
+> +		kcb->flags&= ~SKIP_DELAYSLOT;
+> +
+> +	switch (insn.i_format.opcode) {
+> +	/*
+> +	 * jr and jalr are in r_format format.
+> +	 */
+> +	case spec_op:
+[...]
+> +	case bgtzl_op:
+> +		/* rt field assumed to be zero */
+> +		if ((long)regs->regs[insn.i_format.rs]>  0) {
+> +			epc = epc + 4 + (insn.i_format.simmediate<<  2);
+> +			kcb->flags |= SKIP_DELAYSLOT;
+> +		} else
+> +			epc += 8;
+> +		regs->cp0_epc = epc;
+> +		break;
+
+
+
+Where is the handling for:
+
+	case cop1_op:
+
+#ifdef CONFIG_CPU_CAVIUM_OCTEON
+	case lwc2_op: /* This is bbit0 on Octeon */
+	case ldc2_op: /* This is bbit032 on Octeon */
+	case swc2_op: /* This is bbit1 on Octeon */
+	case sdc2_op: /* This is bbit132 on Octeon */
+#endif
+
+These are all defined in insn_has_delayslot() but not here.

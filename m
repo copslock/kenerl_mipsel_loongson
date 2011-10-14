@@ -1,116 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 14:30:29 +0200 (CEST)
-Received: from smtp-out2.tiscali.nl ([195.241.79.177]:33521 "EHLO
-        smtp-out2.tiscali.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1491106Ab1JNMaU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2011 14:30:20 +0200
-Received: from [212.123.169.34] (helo=[192.168.1.101])
-        by smtp-out2.tiscali.nl with esmtp (Exim)
-        (envelope-from <pebolle@tiscali.nl>)
-        id 1REgu3-0007Ez-60; Fri, 14 Oct 2011 14:30:19 +0200
-Subject: [PATCH 14/21] mips: drop unused Kconfig symbols
-From:   Paul Bolle <pebolle@tiscali.nl>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Date:   Fri, 14 Oct 2011 14:29:51 +0200
-Message-ID: <1318595391.6132.72.camel@x61.thuisdomein>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.32.3 (2.32.3-1.fc14) 
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31237
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 15:09:49 +0200 (CEST)
+Received: from mail-wy0-f177.google.com ([74.125.82.177]:52886 "EHLO
+        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491023Ab1JNNJn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2011 15:09:43 +0200
+Received: by wyi11 with SMTP id 11so3682456wyi.36
+        for <multiple recipients>; Fri, 14 Oct 2011 06:09:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        bh=wT6pf7V5Z7C+x+EMT2UVHGikKdnfQBqGA1EWx9u4LGU=;
+        b=FiDCEsnCIzhhHeOLsXqMJljwdF7uA5ePJ5atsCZZAP8GwHLYh2k32FkfA4xZkQIY49
+         ZwhYQ0WFqDWs7DTYq/UBcSFNEB8RTL2+qp87Rt5ckxCuU1YdWO7tJ5mD/0t1M6NDdAuc
+         +M5CrOhSB1DbubQbdEcQiI3LWYS4I94vYh9TA=
+MIME-Version: 1.0
+Received: by 10.216.220.158 with SMTP id o30mr2947555wep.58.1318597777726;
+ Fri, 14 Oct 2011 06:09:37 -0700 (PDT)
+Received: by 10.216.73.193 with HTTP; Fri, 14 Oct 2011 06:09:37 -0700 (PDT)
+In-Reply-To: <4E932897.9050301@cavium.com>
+References: <CAJd=RBBPd6frOA5zCg5juHuWdZ6wHzmOhhufgGhUCOc=rkNEzA@mail.gmail.com>
+        <4E932897.9050301@cavium.com>
+Date:   Fri, 14 Oct 2011 21:09:37 +0800
+Message-ID: <CAJd=RBA4c9Gs1jsftPCi9hd7UDa_UaO86-4qo=FHp4RB+m98kQ@mail.gmail.com>
+Subject: Re: [RFC] Flush huge TLB
+From:   Hillf Danton <dhillf@gmail.com>
+To:     David Daney <david.daney@cavium.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        "Jayachandran C." <jayachandranc@netlogicmicro.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-archive-position: 31238
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pebolle@tiscali.nl
+X-original-sender: dhillf@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10217
+X-UID: 10262
 
-Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
----
- arch/mips/Kconfig              |   14 --------------
- arch/mips/powertv/Kconfig      |    2 --
- arch/mips/powertv/asic/Kconfig |   28 ----------------------------
- 3 files changed, 0 insertions(+), 44 deletions(-)
- delete mode 100644 arch/mips/powertv/asic/Kconfig
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b122adc..6b1e0dd 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -823,10 +823,6 @@ config ARCH_HAS_ILOG2_U64
- 	bool
- 	default n
- 
--config ARCH_SUPPORTS_OPROFILE
--	bool
--	default y if !MIPS_MT_SMTC
--
- config GENERIC_HWEIGHT
- 	bool
- 	default y
-@@ -2258,16 +2254,6 @@ config HZ
- 
- source "kernel/Kconfig.preempt"
- 
--config MIPS_INSANE_LARGE
--	bool "Support for large 64-bit configurations"
--	depends on CPU_R10000 && 64BIT
--	help
--	  MIPS R10000 does support a 44 bit / 16TB address space as opposed to
--	  previous 64-bit processors which only supported 40 bit / 1TB. If you
--	  need processes of more than 1TB virtual address space, say Y here.
--	  This will result in additional memory usage, so it is not
--	  recommended for normal users.
--
- config KEXEC
- 	bool "Kexec system call (EXPERIMENTAL)"
- 	depends on EXPERIMENTAL
-diff --git a/arch/mips/powertv/Kconfig b/arch/mips/powertv/Kconfig
-index ff0e7e3..1a1b03e 100644
---- a/arch/mips/powertv/Kconfig
-+++ b/arch/mips/powertv/Kconfig
-@@ -1,5 +1,3 @@
--source "arch/mips/powertv/asic/Kconfig"
--
- config BOOTLOADER_DRIVER
- 	bool "PowerTV Bootloader Driver Support"
- 	default n
-diff --git a/arch/mips/powertv/asic/Kconfig b/arch/mips/powertv/asic/Kconfig
-deleted file mode 100644
-index 2016bfe..0000000
---- a/arch/mips/powertv/asic/Kconfig
-+++ /dev/null
-@@ -1,28 +0,0 @@
--config MIN_RUNTIME_RESOURCES
--	bool "Support for minimum runtime resources"
--	default n
--	depends on POWERTV
--	help
--	  Enables support for minimizing the number of (SA asic) runtime
--	  resources that are preallocated by the kernel.
--
--config MIN_RUNTIME_DOCSIS
--	bool "Support for minimum DOCSIS resource"
--	default y
--	depends on MIN_RUNTIME_RESOURCES
--	help
--	  Enables support for the preallocated DOCSIS resource.
--
--config MIN_RUNTIME_PMEM
--	bool "Support for minimum PMEM resource"
--	default y
--	depends on MIN_RUNTIME_RESOURCES
--	help
--	  Enables support for the preallocated Memory resource.
--
--config MIN_RUNTIME_TFTP
--	bool "Support for minimum TFTP resource"
--	default y
--	depends on MIN_RUNTIME_RESOURCES
--	help
--	  Enables support for the preallocated TFTP resource.
--- 
-1.7.4.4
+T24gVHVlLCBPY3QgMTEsIDIwMTEgYXQgMToxNyBBTSwgRGF2aWQgRGFuZXkgPGRhdmlkLmRhbmV5
+QGNhdml1bS5jb20+IHdyb3RlOgo+IE9uIDEwLzA5LzIwMTEgMDU6NTMgQU0sIEhpbGxmIERhbnRv
+biB3cm90ZToKPj4KPj4gV2hlbiBmbHVzaGluZyBUTEIsIGlmIEB2bWEgaXMgYmFja2VkIGJ5IGh1
+Z2UgcGFnZSwgaHVnZSBUTEIgc2hvdWxkIGJlCj4+IGZsdXNoZWQsCj4+IGR1ZSB0byB0aGUgZmFj
+dCB0aGF0IGh1Z2UgcGFnZSBpcyBkZWZpbmVkIHRvIGJlIGZhciBmcm9tIG5vcm1hbCBwYWdlLCBh
+bmQKPj4gdGhlCj4+IGZsdXNoaW5nIGlzIHNob3J0ZW4gYSBiaXQuCj4+Cj4+IEFueSBjb21tZW50
+IGlzIHdlbGNvbWUuCj4+Cj4KPiBOb3RlIHRoYXQgdGhlIGN1cnJlbnQgaW1wbGVtZW50YXRpb24g
+d29ya3MsIGJ1dCBpcyBub3Qgb3B0aW1hbC4KPgo+PiBUaGFua3MKPj4KPj4gU2lnbmVkLW9mZi1i
+eTogSGlsbGYgRGFudG9uPGRoaWxsZkBnbWFpbC5jb20+Cj4+IC0tLQo+Pgo+PiAtLS0gYS9hcmNo
+L21pcHMvbW0vdGxiLXI0ay5jIMKgIMKgTW9uIE1heSAzMCAyMToxNzowNCAyMDExCj4+ICsrKyBi
+L2FyY2gvbWlwcy9tbS90bGItcjRrLmMgwqAgwqBTdW4gT2N0IMKgOSAyMDo1MDowNiAyMDExCj4+
+IEBAIC0xMjAsMjIgKzEyMCwzNSBAQCB2b2lkIGxvY2FsX2ZsdXNoX3RsYl9yYW5nZShzdHJ1Y3Qg
+dm1fYXJlCj4+Cj4+IMKgIMKgIMKgIMKgaWYgKGNwdV9jb250ZXh0KGNwdSwgbW0pICE9IDApIHsK
+Pj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB1bnNpZ25lZCBsb25nIHNpemUsIGZsYWdzOwo+PiAr
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIGludCBodWdlID0gaXNfdm1faHVnZXRsYl9wYWdlKHZtYSk7
+Cj4+Cj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgRU5URVJfQ1JJVElDQUwoZmxhZ3MpOwo+PiAt
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNpemUgPSAoZW5kIC0gc3RhcnQgKyAoUEFHRV9TSVpFIC0g
+MSkpPj4gwqBQQUdFX1NISUZUOwo+PiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNpemUgPSAoc2l6
+ZSArIDEpPj4gwqAxOwo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGlmIChodWdlKSB7Cj4+ICsg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgc2l6ZSA9IChlbmQgLSBzdGFydCkgLyBI
+UEFHRV9TSVpFOwo+Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgfSBlbHNlIHsKPj4gKyDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBzaXplID0gKGVuZCAtIHN0YXJ0ICsgKFBBR0VfU0laRSAt
+IDEpKT4+Cj4+IMKgUEFHRV9TSElGVDsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCBzaXplID0gKHNpemUgKyAxKT4+IMKgMTsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4KPiBQ
+ZXJoYXBzOgo+IMKgIMKgIMKgIMKgaWYgKGh1Z2UpIHsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oHN0YXJ0ID0gcm91bmRfZG93bihzdGFydCwgSFBBR0VfU0laRSk7Cj4gwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqBlbmQgPSByb3VuZF91cChzdGFydCwgSFBBR0VfU0laRSk7Cj4gwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqBzaXplID0gKGVuZCAtIHN0YXJ0KSA+PiBIUEFHRV9TSElGVDsKPiDCoCDCoCDC
+oCDCoH0gZWxzZSB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBzdGFydCA9IHJvdW5kX2Rvd24o
+c3RhcnQsIFBBR0VfU0laRSA8PCAxKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGVuZCA9IHJv
+dW5kX3VwKHN0YXJ0LCBQQUdFX1NJWkUgPDwgMSk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBz
+aXplID0gKGVuZCAtIHN0YXJ0KSA+PiAoUEFHRV9TSElGVCArIDEpOwo+IMKgIMKgIMKgIMKgfQo+
+IC4KPiAuCj4gLgo+Cj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaWYgKHNpemU8PSBjdXJyZW50
+X2NwdV9kYXRhLnRsYnNpemUvMikgewo+Cj4gSGFzIGFueWJvZHkgYmVuY2htYXJrZWQgdGhpcyBo
+ZXVyaXN0aWM/IMKgSSBndWVzcyBpdCBzZWVtcyByZWFzb25hYmxlLgo+Cj4+IMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaW50IG9sZHBpZCA9IHJlYWRfYzBfZW50cnloaSgpOwo+
+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGludCBuZXdwaWQgPSBjcHVfYXNp
+ZChjcHUsIG1tKTsKPj4KPj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBzdGFy
+dCY9IChQQUdFX01BU0s8PCDCoDEpOwo+PiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIGVuZCArPSAoKFBBR0VfU0laRTw8IMKgMSkgLSAxKTsKPj4gLSDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCBlbmQmPSAoUEFHRV9NQVNLPDwgwqAxKTsKPj4gKyDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpZiAoaHVnZSkgewo+PiArIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN0YXJ0Jj0gSFBBR0VfTUFTSzsKPj4gKyDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBlbmQmPSBIUEFHRV9NQVNL
+Owo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIH0gZWxzZSB7Cj4+ICsgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgc3RhcnQmPSAoUEFHRV9N
+QVNLPDwgwqAxKTsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCBlbmQgKz0gKChQQUdFX1NJWkU8PCDCoDEpIC0gMSk7Cj4+ICsgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZW5kJj0gKFBBR0VfTUFTSzw8IMKgMSk7Cj4+
+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfQo+Cj4gVGhpcyBzdHVmZiBpcyBk
+b25lIGFib3ZlIHNvIGlzIHJlbW92ZWQuCj4KPgo+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoHdoaWxlIChzdGFydDwgwqBlbmQpIHsKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBpbnQgaWR4Owo+Pgo+PiDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHdyaXRlX2MwX2VudHJ5aGkoc3RhcnQgfCBu
+ZXdwaWQpOwo+PiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IHN0YXJ0ICs9IChQQUdFX1NJWkU8PCDCoDEpOwo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIGlmIChodWdlKQo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN0YXJ0ICs9IEhQQUdFX1NJWkU7
+Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZWxzZQo+
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIHN0YXJ0ICs9IChQQUdFX1NJWkU8PCDCoDEpOwo+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoG10YzBfdGxid19oYXphcmQoKTsKPj4gwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0bGJfcHJvYmUoKTsKPj4gwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0bGJfcHJvYmVfaGF6
+YXJkKCk7Cj4+Cj4+Cj4KPiBJZiB3ZSBkbyBzb21ldGhpbmcgbGlrZSB0aGF0LCB0aGVuLi4uCj4K
+PiBBY2tlZC1ieTogRGF2aWQgRGFuZXkgPGRhdmlkLmRhbmV5QGNhdml1bS5jb20+Cj4KClRoYW5r
+cyBEYXZpZC4gSXQgaXMgcmUtcHJlcGFyZWQgYXMgdGhlIGZvbGxvd2luZy4KCi0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KU3ViamVjdDogRmx1c2ggaHVnZSBUTEIKRnJvbTogSGlsbGYgRGFudG9uIDxkaGls
+bGZAZ21haWwuY29tPgoKV2hlbiBmbHVzaGluZyBUTEIsIGlmIEB2bWEgaXMgYmFja2VkIGJ5IGh1
+Z2UgcGFnZSwgd2UgY291bGQgZmx1c2ggaHVnZSBUTEIsCmR1ZSB0byB0aGF0IGh1Z2UgcGFnZSBp
+cyBkZWZpbmVkIHRvIGJlIGZhciBmcm9tIG5vcm1hbCBwYWdlLgoKU2lnbmVkLW9mZi1ieTogSGls
+bGYgRGFudG9uIDxkaGlsbGZAZ21haWwuY29tPgpBY2tlZC1ieTogRGF2aWQgRGFuZXkgPGRhdmlk
+LmRhbmV5QGNhdml1bS5jb20+Ci0tLQoKLS0tIGEvYXJjaC9taXBzL21tL3RsYi1yNGsuYwlNb24g
+TWF5IDMwIDIxOjE3OjA0IDIwMTEKKysrIGIvYXJjaC9taXBzL21tL3RsYi1yNGsuYwlTdW4gT2N0
+ICA5IDIwOjUwOjA2IDIwMTEKQEAgLTEyMCwyMiArMTIwLDMwIEBAIHZvaWQgbG9jYWxfZmx1c2hf
+dGxiX3JhbmdlKHN0cnVjdCB2bV9hcmUKCiAJaWYgKGNwdV9jb250ZXh0KGNwdSwgbW0pICE9IDAp
+IHsKIAkJdW5zaWduZWQgbG9uZyBzaXplLCBmbGFnczsKKwkJaW50IGh1Z2UgPSBpc192bV9odWdl
+dGxiX3BhZ2Uodm1hKTsKCiAJCUVOVEVSX0NSSVRJQ0FMKGZsYWdzKTsKLQkJc2l6ZSA9IChlbmQg
+LSBzdGFydCArIChQQUdFX1NJWkUgLSAxKSkgPj4gUEFHRV9TSElGVDsKLQkJc2l6ZSA9IChzaXpl
+ICsgMSkgPj4gMTsKKwkJaWYgKGh1Z2UpIHsKKwkJCXN0YXJ0ID0gcm91bmRfZG93bihzdGFydCwg
+SFBBR0VfU0laRSk7CisJCQllbmQgPSByb3VuZF91cChlbmQsIEhQQUdFX1NJWkUpOworCQkJc2l6
+ZSA9IChlbmQgLSBzdGFydCkgPj4gSFBBR0VfU0hJRlQ7CisJCX0gZWxzZSB7CisJCQlzdGFydCA9
+IHJvdW5kX2Rvd24oc3RhcnQsIFBBR0VfU0laRSA8PCAxKTsKKwkJCWVuZCA9IHJvdW5kX3VwKGVu
+ZCwgUEFHRV9TSVpFIDw8IDEpOworCQkJc2l6ZSA9IChlbmQgLSBzdGFydCkgPj4gKFBBR0VfU0hJ
+RlQgKyAxKTsKKwkJfQogCQlpZiAoc2l6ZSA8PSBjdXJyZW50X2NwdV9kYXRhLnRsYnNpemUvMikg
+ewogCQkJaW50IG9sZHBpZCA9IHJlYWRfYzBfZW50cnloaSgpOwogCQkJaW50IG5ld3BpZCA9IGNw
+dV9hc2lkKGNwdSwgbW0pOwoKLQkJCXN0YXJ0ICY9IChQQUdFX01BU0sgPDwgMSk7Ci0JCQllbmQg
+Kz0gKChQQUdFX1NJWkUgPDwgMSkgLSAxKTsKLQkJCWVuZCAmPSAoUEFHRV9NQVNLIDw8IDEpOwog
+CQkJd2hpbGUgKHN0YXJ0IDwgZW5kKSB7CiAJCQkJaW50IGlkeDsKCiAJCQkJd3JpdGVfYzBfZW50
+cnloaShzdGFydCB8IG5ld3BpZCk7Ci0JCQkJc3RhcnQgKz0gKFBBR0VfU0laRSA8PCAxKTsKKwkJ
+CQlpZiAoaHVnZSkKKwkJCQkJc3RhcnQgKz0gSFBBR0VfU0laRTsKKwkJCQllbHNlCisJCQkJCXN0
+YXJ0ICs9IChQQUdFX1NJWkUgPDwgMSk7CiAJCQkJbXRjMF90bGJ3X2hhemFyZCgpOwogCQkJCXRs
+Yl9wcm9iZSgpOwogCQkJCXRsYl9wcm9iZV9oYXphcmQoKTsK

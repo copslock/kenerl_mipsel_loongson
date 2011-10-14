@@ -1,43 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 19:28:48 +0200 (CEST)
-Received: from ams-iport-3.cisco.com ([144.254.224.146]:48759 "EHLO
-        ams-iport-3.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491102Ab1JNR2i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2011 19:28:38 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 19:31:26 +0200 (CEST)
+Received: from ams-iport-2.cisco.com ([144.254.224.141]:32937 "EHLO
+        ams-iport-2.cisco.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491102Ab1JNRbS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2011 19:31:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=manesoni@cisco.com; l=2602; q=dns/txt;
-  s=iport; t=1318613318; x=1319822918;
+  d=cisco.com; i=manesoni@cisco.com; l=1066; q=dns/txt;
+  s=iport; t=1318613478; x=1319823078;
   h=date:from:to:cc:subject:message-id:reply-to:references:
    mime-version:in-reply-to;
-  bh=SsVo/wNCYiiAEZNZ+I+6NS7fn1aLzYkcNgQqQsnAMTU=;
-  b=ATCxbf3PpFeldhQd/8D9FCCxJ/lYQjqNx+sh1xQOypvi+sq9QDrHXW+K
-   cOWDl/sXKTyfqb0AuNcOELU2N6USqhqdLrWLgyoAvtr8n1VKJX7YSQdhS
-   FUOG5YvcY/dyQ4d55nmKEZi8r+A/CzuK8UlLFmt+wNoaWOBkcIjrgeW3v
-   U=;
+  bh=sgyZMNQx0Srr5JqvCixPcO9cNQZYQaevx2IfCu0J5wU=;
+  b=J2B9M7Hca+3vX2ADUEQljjwGgEg4p143ZPkKhup37ROUWnzy9FWSVGnt
+   fijuVm8kqlPi8Q4bRQkwbUH62KvrauoNig9U37lbtyGkcIcaTfBrD/uWE
+   I96+nWMWDI0UTJAM6YQQ30Zol3i1Kz3s1PjPHF4rolFOhtNcM+F4tkvSu
+   4=;
 X-IronPort-AV: E=Sophos;i="4.69,347,1315180800"; 
-   d="scan'208";a="1047933"
+   d="scan'208";a="57827076"
 Received: from ams-core-4.cisco.com ([144.254.72.77])
-  by ams-iport-3.cisco.com with ESMTP; 14 Oct 2011 17:28:32 +0000
+  by ams-iport-2.cisco.com with ESMTP; 14 Oct 2011 17:31:12 +0000
 Received: from manesoni-ws.cisco.com ([10.65.83.37])
-        by ams-core-4.cisco.com (8.14.3/8.14.3) with ESMTP id p9EHSVTs002371;
-        Fri, 14 Oct 2011 17:28:32 GMT
+        by ams-core-4.cisco.com (8.14.3/8.14.3) with ESMTP id p9EHVBK7002818;
+        Fri, 14 Oct 2011 17:31:12 GMT
 Received: by manesoni-ws.cisco.com (Postfix, from userid 1001)
-        id 780AD81CA3; Fri, 14 Oct 2011 22:58:31 +0530 (IST)
-Date:   Fri, 14 Oct 2011 22:58:31 +0530
+        id 76F8581CA3; Fri, 14 Oct 2011 23:01:11 +0530 (IST)
+Date:   Fri, 14 Oct 2011 23:01:11 +0530
 From:   Maneesh Soni <manesoni@cisco.com>
-To:     David Daney <david.daney@cavium.com>
-Cc:     ralf@linux-mips.org, linux-kernel@vger.kernel.org,
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     David Daney <david.daney@cavium.com>, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org, ananth@in.ibm.com, kamensky@cisco.com
 Subject: Re: [PATCH] MIPS Kprobes: Support branch instructions probing
-Message-ID: <20111014172831.GA8521@cisco.com>
+Message-ID: <20111014173111.GB8521@cisco.com>
 Reply-To: manesoni@cisco.com
 References: <20111013090749.GB16761@cisco.com>
  <4E971FD3.2020308@cavium.com>
+ <20111013180714.GA7422@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4E971FD3.2020308@cavium.com>
+In-Reply-To: <20111013180714.GA7422@linux-mips.org>
 User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 31239
+X-archive-position: 31240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,86 +47,37 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10582
+X-UID: 10585
 
-On Thu, Oct 13, 2011 at 10:28:51AM -0700, David Daney wrote:
-> On 10/13/2011 02:07 AM, Maneesh Soni wrote:
-> >
-> >From: Maneesh Soni<manesoni@cisco.com>
-> >
-> >This patch provides support for kprobes on branch instructions. The branch
-> >instruction at the probed address is actually emulated and not executed
-> >out-of-line like other normal instructions. Instead the delay-slot instruction
-> >is copied and single stepped out of line.
-> >
-> >At the time of probe hit, the original branch instruction is evaluated
-> >and the target cp0_epc is computed similar to compute_retrun_epc(). It
-> >is also checked if the delay slot instruction can be skipped, which is
-> >true if there is a NOP in delay slot or branch is taken in case of
-> >branch likely instructions. Once the delay slot instruction is single
-> >stepped the normal execution resume with the cp0_epc updated the earlier
-> >computed cp0_epc as per the branch instructions.
-> >
+On Thu, Oct 13, 2011 at 07:07:14PM +0100, Ralf Baechle wrote:
+> On Thu, Oct 13, 2011 at 10:28:51AM -0700, David Daney wrote:
 > 
-> I haven't tested it but...
+> > Where is the handling for:
+> > 
+> > 	case cop1_op:
+> > 
+> > #ifdef CONFIG_CPU_CAVIUM_OCTEON
+> > 	case lwc2_op: /* This is bbit0 on Octeon */
+> > 	case ldc2_op: /* This is bbit032 on Octeon */
+> > 	case swc2_op: /* This is bbit1 on Octeon */
+> > 	case sdc2_op: /* This is bbit132 on Octeon */
+> > #endif
+> > 
+> > These are all defined in insn_has_delayslot() but not here.
 > 
+> Which is a wonderful demonstration for why duplicating such a large
+> function from branch.c was a baaad thing to do.
 > 
-> >Signed-off-by: Maneesh Soni<manesoni@cisco.com>
-> >---
-> >  arch/mips/include/asm/kprobes.h |    7 +
-> >  arch/mips/kernel/kprobes.c      |  341 +++++++++++++++++++++++++++++++++++----
-> >  2 files changed, 320 insertions(+), 28 deletions(-)
-> >
-> [...]
-> >+static int evaluate_branch_instruction(struct kprobe *p, struct pt_regs *regs,
-> >+					struct kprobe_ctlblk *kcb)
-> >  {
-> >+	union mips_instruction insn = p->opcode;
-> >+	unsigned int dspcontrol;
-> >+	long epc;
-> >+
-> >+	epc = regs->cp0_epc;
-> >+	if (epc&  3)
-> >+		goto unaligned;
-> >+
-> >+	if (p->ainsn.insn->word == 0)
-> >+		kcb->flags |= SKIP_DELAYSLOT;
-> >+	else
-> >+		kcb->flags&= ~SKIP_DELAYSLOT;
-> >+
-> >+	switch (insn.i_format.opcode) {
-> >+	/*
-> >+	 * jr and jalr are in r_format format.
-> >+	 */
-> >+	case spec_op:
-> [...]
-> >+	case bgtzl_op:
-> >+		/* rt field assumed to be zero */
-> >+		if ((long)regs->regs[insn.i_format.rs]>  0) {
-> >+			epc = epc + 4 + (insn.i_format.simmediate<<  2);
-> >+			kcb->flags |= SKIP_DELAYSLOT;
-> >+		} else
-> >+			epc += 8;
-> >+		regs->cp0_epc = epc;
-> >+		break;
+> Maneesh, can you refactor the code to share everything that was copied
+> from __compute_return_epc() can be shared with kprobes?  Idealy make
+> everything a two part series, first one patch to refactor branch.c and
+> the 2nd patch to deal with kprobes.
 > 
-> 
-> 
-> Where is the handling for:
-> 
-> 	case cop1_op:
-> 
-> #ifdef CONFIG_CPU_CAVIUM_OCTEON
-> 	case lwc2_op: /* This is bbit0 on Octeon */
-> 	case ldc2_op: /* This is bbit032 on Octeon */
-> 	case swc2_op: /* This is bbit1 on Octeon */
-> 	case sdc2_op: /* This is bbit132 on Octeon */
-> #endif
-> 
-> These are all defined in insn_has_delayslot() but not here.
 
-My bad.. will include them as well. Actually as Ralf suggested,
-will keep this as common code.
+Sure.. the branch likely instructions are not make it look good but
+still do it in the next version.
 
-Thanks
+Thanks for the comments.
+
+Regards,
 Maneesh

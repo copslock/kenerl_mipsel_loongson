@@ -1,136 +1,131 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 15:09:49 +0200 (CEST)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:52886 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491023Ab1JNNJn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2011 15:09:43 +0200
-Received: by wyi11 with SMTP id 11so3682456wyi.36
-        for <multiple recipients>; Fri, 14 Oct 2011 06:09:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=wT6pf7V5Z7C+x+EMT2UVHGikKdnfQBqGA1EWx9u4LGU=;
-        b=FiDCEsnCIzhhHeOLsXqMJljwdF7uA5ePJ5atsCZZAP8GwHLYh2k32FkfA4xZkQIY49
-         ZwhYQ0WFqDWs7DTYq/UBcSFNEB8RTL2+qp87Rt5ckxCuU1YdWO7tJ5mD/0t1M6NDdAuc
-         +M5CrOhSB1DbubQbdEcQiI3LWYS4I94vYh9TA=
-MIME-Version: 1.0
-Received: by 10.216.220.158 with SMTP id o30mr2947555wep.58.1318597777726;
- Fri, 14 Oct 2011 06:09:37 -0700 (PDT)
-Received: by 10.216.73.193 with HTTP; Fri, 14 Oct 2011 06:09:37 -0700 (PDT)
-In-Reply-To: <4E932897.9050301@cavium.com>
-References: <CAJd=RBBPd6frOA5zCg5juHuWdZ6wHzmOhhufgGhUCOc=rkNEzA@mail.gmail.com>
-        <4E932897.9050301@cavium.com>
-Date:   Fri, 14 Oct 2011 21:09:37 +0800
-Message-ID: <CAJd=RBA4c9Gs1jsftPCi9hd7UDa_UaO86-4qo=FHp4RB+m98kQ@mail.gmail.com>
-Subject: Re: [RFC] Flush huge TLB
-From:   Hillf Danton <dhillf@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 19:28:48 +0200 (CEST)
+Received: from ams-iport-3.cisco.com ([144.254.224.146]:48759 "EHLO
+        ams-iport-3.cisco.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491102Ab1JNR2i (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2011 19:28:38 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=cisco.com; i=manesoni@cisco.com; l=2602; q=dns/txt;
+  s=iport; t=1318613318; x=1319822918;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   mime-version:in-reply-to;
+  bh=SsVo/wNCYiiAEZNZ+I+6NS7fn1aLzYkcNgQqQsnAMTU=;
+  b=ATCxbf3PpFeldhQd/8D9FCCxJ/lYQjqNx+sh1xQOypvi+sq9QDrHXW+K
+   cOWDl/sXKTyfqb0AuNcOELU2N6USqhqdLrWLgyoAvtr8n1VKJX7YSQdhS
+   FUOG5YvcY/dyQ4d55nmKEZi8r+A/CzuK8UlLFmt+wNoaWOBkcIjrgeW3v
+   U=;
+X-IronPort-AV: E=Sophos;i="4.69,347,1315180800"; 
+   d="scan'208";a="1047933"
+Received: from ams-core-4.cisco.com ([144.254.72.77])
+  by ams-iport-3.cisco.com with ESMTP; 14 Oct 2011 17:28:32 +0000
+Received: from manesoni-ws.cisco.com ([10.65.83.37])
+        by ams-core-4.cisco.com (8.14.3/8.14.3) with ESMTP id p9EHSVTs002371;
+        Fri, 14 Oct 2011 17:28:32 GMT
+Received: by manesoni-ws.cisco.com (Postfix, from userid 1001)
+        id 780AD81CA3; Fri, 14 Oct 2011 22:58:31 +0530 (IST)
+Date:   Fri, 14 Oct 2011 22:58:31 +0530
+From:   Maneesh Soni <manesoni@cisco.com>
 To:     David Daney <david.daney@cavium.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        "Jayachandran C." <jayachandranc@netlogicmicro.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-archive-position: 31238
+Cc:     ralf@linux-mips.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, ananth@in.ibm.com, kamensky@cisco.com
+Subject: Re: [PATCH] MIPS Kprobes: Support branch instructions probing
+Message-ID: <20111014172831.GA8521@cisco.com>
+Reply-To: manesoni@cisco.com
+References: <20111013090749.GB16761@cisco.com>
+ <4E971FD3.2020308@cavium.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4E971FD3.2020308@cavium.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 31239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhillf@gmail.com
+X-original-sender: manesoni@cisco.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10262
+X-UID: 10582
 
-T24gVHVlLCBPY3QgMTEsIDIwMTEgYXQgMToxNyBBTSwgRGF2aWQgRGFuZXkgPGRhdmlkLmRhbmV5
-QGNhdml1bS5jb20+IHdyb3RlOgo+IE9uIDEwLzA5LzIwMTEgMDU6NTMgQU0sIEhpbGxmIERhbnRv
-biB3cm90ZToKPj4KPj4gV2hlbiBmbHVzaGluZyBUTEIsIGlmIEB2bWEgaXMgYmFja2VkIGJ5IGh1
-Z2UgcGFnZSwgaHVnZSBUTEIgc2hvdWxkIGJlCj4+IGZsdXNoZWQsCj4+IGR1ZSB0byB0aGUgZmFj
-dCB0aGF0IGh1Z2UgcGFnZSBpcyBkZWZpbmVkIHRvIGJlIGZhciBmcm9tIG5vcm1hbCBwYWdlLCBh
-bmQKPj4gdGhlCj4+IGZsdXNoaW5nIGlzIHNob3J0ZW4gYSBiaXQuCj4+Cj4+IEFueSBjb21tZW50
-IGlzIHdlbGNvbWUuCj4+Cj4KPiBOb3RlIHRoYXQgdGhlIGN1cnJlbnQgaW1wbGVtZW50YXRpb24g
-d29ya3MsIGJ1dCBpcyBub3Qgb3B0aW1hbC4KPgo+PiBUaGFua3MKPj4KPj4gU2lnbmVkLW9mZi1i
-eTogSGlsbGYgRGFudG9uPGRoaWxsZkBnbWFpbC5jb20+Cj4+IC0tLQo+Pgo+PiAtLS0gYS9hcmNo
-L21pcHMvbW0vdGxiLXI0ay5jIMKgIMKgTW9uIE1heSAzMCAyMToxNzowNCAyMDExCj4+ICsrKyBi
-L2FyY2gvbWlwcy9tbS90bGItcjRrLmMgwqAgwqBTdW4gT2N0IMKgOSAyMDo1MDowNiAyMDExCj4+
-IEBAIC0xMjAsMjIgKzEyMCwzNSBAQCB2b2lkIGxvY2FsX2ZsdXNoX3RsYl9yYW5nZShzdHJ1Y3Qg
-dm1fYXJlCj4+Cj4+IMKgIMKgIMKgIMKgaWYgKGNwdV9jb250ZXh0KGNwdSwgbW0pICE9IDApIHsK
-Pj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB1bnNpZ25lZCBsb25nIHNpemUsIGZsYWdzOwo+PiAr
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIGludCBodWdlID0gaXNfdm1faHVnZXRsYl9wYWdlKHZtYSk7
-Cj4+Cj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgRU5URVJfQ1JJVElDQUwoZmxhZ3MpOwo+PiAt
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNpemUgPSAoZW5kIC0gc3RhcnQgKyAoUEFHRV9TSVpFIC0g
-MSkpPj4gwqBQQUdFX1NISUZUOwo+PiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNpemUgPSAoc2l6
-ZSArIDEpPj4gwqAxOwo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGlmIChodWdlKSB7Cj4+ICsg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgc2l6ZSA9IChlbmQgLSBzdGFydCkgLyBI
-UEFHRV9TSVpFOwo+Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgfSBlbHNlIHsKPj4gKyDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBzaXplID0gKGVuZCAtIHN0YXJ0ICsgKFBBR0VfU0laRSAt
-IDEpKT4+Cj4+IMKgUEFHRV9TSElGVDsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCBzaXplID0gKHNpemUgKyAxKT4+IMKgMTsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4KPiBQ
-ZXJoYXBzOgo+IMKgIMKgIMKgIMKgaWYgKGh1Z2UpIHsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oHN0YXJ0ID0gcm91bmRfZG93bihzdGFydCwgSFBBR0VfU0laRSk7Cj4gwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqBlbmQgPSByb3VuZF91cChzdGFydCwgSFBBR0VfU0laRSk7Cj4gwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqBzaXplID0gKGVuZCAtIHN0YXJ0KSA+PiBIUEFHRV9TSElGVDsKPiDCoCDCoCDC
-oCDCoH0gZWxzZSB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBzdGFydCA9IHJvdW5kX2Rvd24o
-c3RhcnQsIFBBR0VfU0laRSA8PCAxKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGVuZCA9IHJv
-dW5kX3VwKHN0YXJ0LCBQQUdFX1NJWkUgPDwgMSk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBz
-aXplID0gKGVuZCAtIHN0YXJ0KSA+PiAoUEFHRV9TSElGVCArIDEpOwo+IMKgIMKgIMKgIMKgfQo+
-IC4KPiAuCj4gLgo+Cj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaWYgKHNpemU8PSBjdXJyZW50
-X2NwdV9kYXRhLnRsYnNpemUvMikgewo+Cj4gSGFzIGFueWJvZHkgYmVuY2htYXJrZWQgdGhpcyBo
-ZXVyaXN0aWM/IMKgSSBndWVzcyBpdCBzZWVtcyByZWFzb25hYmxlLgo+Cj4+IMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaW50IG9sZHBpZCA9IHJlYWRfYzBfZW50cnloaSgpOwo+
-PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGludCBuZXdwaWQgPSBjcHVfYXNp
-ZChjcHUsIG1tKTsKPj4KPj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBzdGFy
-dCY9IChQQUdFX01BU0s8PCDCoDEpOwo+PiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIGVuZCArPSAoKFBBR0VfU0laRTw8IMKgMSkgLSAxKTsKPj4gLSDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCBlbmQmPSAoUEFHRV9NQVNLPDwgwqAxKTsKPj4gKyDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpZiAoaHVnZSkgewo+PiArIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN0YXJ0Jj0gSFBBR0VfTUFTSzsKPj4gKyDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBlbmQmPSBIUEFHRV9NQVNL
-Owo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIH0gZWxzZSB7Cj4+ICsgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgc3RhcnQmPSAoUEFHRV9N
-QVNLPDwgwqAxKTsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCBlbmQgKz0gKChQQUdFX1NJWkU8PCDCoDEpIC0gMSk7Cj4+ICsgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZW5kJj0gKFBBR0VfTUFTSzw8IMKgMSk7Cj4+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfQo+Cj4gVGhpcyBzdHVmZiBpcyBk
-b25lIGFib3ZlIHNvIGlzIHJlbW92ZWQuCj4KPgo+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoHdoaWxlIChzdGFydDwgwqBlbmQpIHsKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBpbnQgaWR4Owo+Pgo+PiDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHdyaXRlX2MwX2VudHJ5aGkoc3RhcnQgfCBu
-ZXdwaWQpOwo+PiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IHN0YXJ0ICs9IChQQUdFX1NJWkU8PCDCoDEpOwo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIGlmIChodWdlKQo+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN0YXJ0ICs9IEhQQUdFX1NJWkU7
-Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZWxzZQo+
-PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIHN0YXJ0ICs9IChQQUdFX1NJWkU8PCDCoDEpOwo+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoG10YzBfdGxid19oYXphcmQoKTsKPj4gwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0bGJfcHJvYmUoKTsKPj4gwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0bGJfcHJvYmVfaGF6
-YXJkKCk7Cj4+Cj4+Cj4KPiBJZiB3ZSBkbyBzb21ldGhpbmcgbGlrZSB0aGF0LCB0aGVuLi4uCj4K
-PiBBY2tlZC1ieTogRGF2aWQgRGFuZXkgPGRhdmlkLmRhbmV5QGNhdml1bS5jb20+Cj4KClRoYW5r
-cyBEYXZpZC4gSXQgaXMgcmUtcHJlcGFyZWQgYXMgdGhlIGZvbGxvd2luZy4KCi0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KU3ViamVjdDogRmx1c2ggaHVnZSBUTEIKRnJvbTogSGlsbGYgRGFudG9uIDxkaGls
-bGZAZ21haWwuY29tPgoKV2hlbiBmbHVzaGluZyBUTEIsIGlmIEB2bWEgaXMgYmFja2VkIGJ5IGh1
-Z2UgcGFnZSwgd2UgY291bGQgZmx1c2ggaHVnZSBUTEIsCmR1ZSB0byB0aGF0IGh1Z2UgcGFnZSBp
-cyBkZWZpbmVkIHRvIGJlIGZhciBmcm9tIG5vcm1hbCBwYWdlLgoKU2lnbmVkLW9mZi1ieTogSGls
-bGYgRGFudG9uIDxkaGlsbGZAZ21haWwuY29tPgpBY2tlZC1ieTogRGF2aWQgRGFuZXkgPGRhdmlk
-LmRhbmV5QGNhdml1bS5jb20+Ci0tLQoKLS0tIGEvYXJjaC9taXBzL21tL3RsYi1yNGsuYwlNb24g
-TWF5IDMwIDIxOjE3OjA0IDIwMTEKKysrIGIvYXJjaC9taXBzL21tL3RsYi1yNGsuYwlTdW4gT2N0
-ICA5IDIwOjUwOjA2IDIwMTEKQEAgLTEyMCwyMiArMTIwLDMwIEBAIHZvaWQgbG9jYWxfZmx1c2hf
-dGxiX3JhbmdlKHN0cnVjdCB2bV9hcmUKCiAJaWYgKGNwdV9jb250ZXh0KGNwdSwgbW0pICE9IDAp
-IHsKIAkJdW5zaWduZWQgbG9uZyBzaXplLCBmbGFnczsKKwkJaW50IGh1Z2UgPSBpc192bV9odWdl
-dGxiX3BhZ2Uodm1hKTsKCiAJCUVOVEVSX0NSSVRJQ0FMKGZsYWdzKTsKLQkJc2l6ZSA9IChlbmQg
-LSBzdGFydCArIChQQUdFX1NJWkUgLSAxKSkgPj4gUEFHRV9TSElGVDsKLQkJc2l6ZSA9IChzaXpl
-ICsgMSkgPj4gMTsKKwkJaWYgKGh1Z2UpIHsKKwkJCXN0YXJ0ID0gcm91bmRfZG93bihzdGFydCwg
-SFBBR0VfU0laRSk7CisJCQllbmQgPSByb3VuZF91cChlbmQsIEhQQUdFX1NJWkUpOworCQkJc2l6
-ZSA9IChlbmQgLSBzdGFydCkgPj4gSFBBR0VfU0hJRlQ7CisJCX0gZWxzZSB7CisJCQlzdGFydCA9
-IHJvdW5kX2Rvd24oc3RhcnQsIFBBR0VfU0laRSA8PCAxKTsKKwkJCWVuZCA9IHJvdW5kX3VwKGVu
-ZCwgUEFHRV9TSVpFIDw8IDEpOworCQkJc2l6ZSA9IChlbmQgLSBzdGFydCkgPj4gKFBBR0VfU0hJ
-RlQgKyAxKTsKKwkJfQogCQlpZiAoc2l6ZSA8PSBjdXJyZW50X2NwdV9kYXRhLnRsYnNpemUvMikg
-ewogCQkJaW50IG9sZHBpZCA9IHJlYWRfYzBfZW50cnloaSgpOwogCQkJaW50IG5ld3BpZCA9IGNw
-dV9hc2lkKGNwdSwgbW0pOwoKLQkJCXN0YXJ0ICY9IChQQUdFX01BU0sgPDwgMSk7Ci0JCQllbmQg
-Kz0gKChQQUdFX1NJWkUgPDwgMSkgLSAxKTsKLQkJCWVuZCAmPSAoUEFHRV9NQVNLIDw8IDEpOwog
-CQkJd2hpbGUgKHN0YXJ0IDwgZW5kKSB7CiAJCQkJaW50IGlkeDsKCiAJCQkJd3JpdGVfYzBfZW50
-cnloaShzdGFydCB8IG5ld3BpZCk7Ci0JCQkJc3RhcnQgKz0gKFBBR0VfU0laRSA8PCAxKTsKKwkJ
-CQlpZiAoaHVnZSkKKwkJCQkJc3RhcnQgKz0gSFBBR0VfU0laRTsKKwkJCQllbHNlCisJCQkJCXN0
-YXJ0ICs9IChQQUdFX1NJWkUgPDwgMSk7CiAJCQkJbXRjMF90bGJ3X2hhemFyZCgpOwogCQkJCXRs
-Yl9wcm9iZSgpOwogCQkJCXRsYl9wcm9iZV9oYXphcmQoKTsK
+On Thu, Oct 13, 2011 at 10:28:51AM -0700, David Daney wrote:
+> On 10/13/2011 02:07 AM, Maneesh Soni wrote:
+> >
+> >From: Maneesh Soni<manesoni@cisco.com>
+> >
+> >This patch provides support for kprobes on branch instructions. The branch
+> >instruction at the probed address is actually emulated and not executed
+> >out-of-line like other normal instructions. Instead the delay-slot instruction
+> >is copied and single stepped out of line.
+> >
+> >At the time of probe hit, the original branch instruction is evaluated
+> >and the target cp0_epc is computed similar to compute_retrun_epc(). It
+> >is also checked if the delay slot instruction can be skipped, which is
+> >true if there is a NOP in delay slot or branch is taken in case of
+> >branch likely instructions. Once the delay slot instruction is single
+> >stepped the normal execution resume with the cp0_epc updated the earlier
+> >computed cp0_epc as per the branch instructions.
+> >
+> 
+> I haven't tested it but...
+> 
+> 
+> >Signed-off-by: Maneesh Soni<manesoni@cisco.com>
+> >---
+> >  arch/mips/include/asm/kprobes.h |    7 +
+> >  arch/mips/kernel/kprobes.c      |  341 +++++++++++++++++++++++++++++++++++----
+> >  2 files changed, 320 insertions(+), 28 deletions(-)
+> >
+> [...]
+> >+static int evaluate_branch_instruction(struct kprobe *p, struct pt_regs *regs,
+> >+					struct kprobe_ctlblk *kcb)
+> >  {
+> >+	union mips_instruction insn = p->opcode;
+> >+	unsigned int dspcontrol;
+> >+	long epc;
+> >+
+> >+	epc = regs->cp0_epc;
+> >+	if (epc&  3)
+> >+		goto unaligned;
+> >+
+> >+	if (p->ainsn.insn->word == 0)
+> >+		kcb->flags |= SKIP_DELAYSLOT;
+> >+	else
+> >+		kcb->flags&= ~SKIP_DELAYSLOT;
+> >+
+> >+	switch (insn.i_format.opcode) {
+> >+	/*
+> >+	 * jr and jalr are in r_format format.
+> >+	 */
+> >+	case spec_op:
+> [...]
+> >+	case bgtzl_op:
+> >+		/* rt field assumed to be zero */
+> >+		if ((long)regs->regs[insn.i_format.rs]>  0) {
+> >+			epc = epc + 4 + (insn.i_format.simmediate<<  2);
+> >+			kcb->flags |= SKIP_DELAYSLOT;
+> >+		} else
+> >+			epc += 8;
+> >+		regs->cp0_epc = epc;
+> >+		break;
+> 
+> 
+> 
+> Where is the handling for:
+> 
+> 	case cop1_op:
+> 
+> #ifdef CONFIG_CPU_CAVIUM_OCTEON
+> 	case lwc2_op: /* This is bbit0 on Octeon */
+> 	case ldc2_op: /* This is bbit032 on Octeon */
+> 	case swc2_op: /* This is bbit1 on Octeon */
+> 	case sdc2_op: /* This is bbit132 on Octeon */
+> #endif
+> 
+> These are all defined in insn_has_delayslot() but not here.
+
+My bad.. will include them as well. Actually as Ralf suggested,
+will keep this as common code.
+
+Thanks
+Maneesh

@@ -1,55 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 00:59:35 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:52280 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491849Ab1JMW7b (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 14 Oct 2011 00:59:31 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p9DMxKqd002403;
-        Thu, 13 Oct 2011 23:59:20 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p9DMxI4v002394;
-        Thu, 13 Oct 2011 23:59:18 +0100
-Date:   Thu, 13 Oct 2011 23:59:18 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Victor Kamensky <kamensky@cisco.com>
-Cc:     David Daney <david.daney@cavium.com>, manesoni@cisco.com,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        ananth@in.ibm.com
-Subject: Re: [PATCH] MIPS Kprobes: Support branch instructions probing
-Message-ID: <20111013225918.GA12513@linux-mips.org>
-References: <20111013090749.GB16761@cisco.com>
- <4E971FD3.2020308@cavium.com>
- <20111013180714.GA7422@linux-mips.org>
- <Pine.GSO.4.58.1110131205410.7452@infra-view9.cisco.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.GSO.4.58.1110131205410.7452@infra-view9.cisco.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31236
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Oct 2011 14:30:29 +0200 (CEST)
+Received: from smtp-out2.tiscali.nl ([195.241.79.177]:33521 "EHLO
+        smtp-out2.tiscali.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491106Ab1JNMaU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 14 Oct 2011 14:30:20 +0200
+Received: from [212.123.169.34] (helo=[192.168.1.101])
+        by smtp-out2.tiscali.nl with esmtp (Exim)
+        (envelope-from <pebolle@tiscali.nl>)
+        id 1REgu3-0007Ez-60; Fri, 14 Oct 2011 14:30:19 +0200
+Subject: [PATCH 14/21] mips: drop unused Kconfig symbols
+From:   Paul Bolle <pebolle@tiscali.nl>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Date:   Fri, 14 Oct 2011 14:29:51 +0200
+Message-ID: <1318595391.6132.72.camel@x61.thuisdomein>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.32.3 (2.32.3-1.fc14) 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: pebolle@tiscali.nl
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9676
+X-UID: 10217
 
-On Thu, Oct 13, 2011 at 12:16:27PM -0700, Victor Kamensky wrote:
+Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
+---
+ arch/mips/Kconfig              |   14 --------------
+ arch/mips/powertv/Kconfig      |    2 --
+ arch/mips/powertv/asic/Kconfig |   28 ----------------------------
+ 3 files changed, 0 insertions(+), 44 deletions(-)
+ delete mode 100644 arch/mips/powertv/asic/Kconfig
 
-> Yes, it does make a lot of sense. Don't you think we need to do
-> EXPORT_SYMBOL for __compute_return_epc as well? So it could be used by
-> klms.
-> 
-> Actually we have yet another copy of it in mips uprobes code, which
-> normally is built as klm, if we refactor and export __compute_return_epc
-> all three places could use the same function.
-
-Nothing wrong with exporting __compute_return_epc() as long as there are
-actually users of the exported symbol.  So far it's only used from the
-kernel proper which is why it's not been exported.  However I'd prefer it
-to be exported as EXPORT_SYMBOL_GPL().
-
-  Ralf
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b122adc..6b1e0dd 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -823,10 +823,6 @@ config ARCH_HAS_ILOG2_U64
+ 	bool
+ 	default n
+ 
+-config ARCH_SUPPORTS_OPROFILE
+-	bool
+-	default y if !MIPS_MT_SMTC
+-
+ config GENERIC_HWEIGHT
+ 	bool
+ 	default y
+@@ -2258,16 +2254,6 @@ config HZ
+ 
+ source "kernel/Kconfig.preempt"
+ 
+-config MIPS_INSANE_LARGE
+-	bool "Support for large 64-bit configurations"
+-	depends on CPU_R10000 && 64BIT
+-	help
+-	  MIPS R10000 does support a 44 bit / 16TB address space as opposed to
+-	  previous 64-bit processors which only supported 40 bit / 1TB. If you
+-	  need processes of more than 1TB virtual address space, say Y here.
+-	  This will result in additional memory usage, so it is not
+-	  recommended for normal users.
+-
+ config KEXEC
+ 	bool "Kexec system call (EXPERIMENTAL)"
+ 	depends on EXPERIMENTAL
+diff --git a/arch/mips/powertv/Kconfig b/arch/mips/powertv/Kconfig
+index ff0e7e3..1a1b03e 100644
+--- a/arch/mips/powertv/Kconfig
++++ b/arch/mips/powertv/Kconfig
+@@ -1,5 +1,3 @@
+-source "arch/mips/powertv/asic/Kconfig"
+-
+ config BOOTLOADER_DRIVER
+ 	bool "PowerTV Bootloader Driver Support"
+ 	default n
+diff --git a/arch/mips/powertv/asic/Kconfig b/arch/mips/powertv/asic/Kconfig
+deleted file mode 100644
+index 2016bfe..0000000
+--- a/arch/mips/powertv/asic/Kconfig
++++ /dev/null
+@@ -1,28 +0,0 @@
+-config MIN_RUNTIME_RESOURCES
+-	bool "Support for minimum runtime resources"
+-	default n
+-	depends on POWERTV
+-	help
+-	  Enables support for minimizing the number of (SA asic) runtime
+-	  resources that are preallocated by the kernel.
+-
+-config MIN_RUNTIME_DOCSIS
+-	bool "Support for minimum DOCSIS resource"
+-	default y
+-	depends on MIN_RUNTIME_RESOURCES
+-	help
+-	  Enables support for the preallocated DOCSIS resource.
+-
+-config MIN_RUNTIME_PMEM
+-	bool "Support for minimum PMEM resource"
+-	default y
+-	depends on MIN_RUNTIME_RESOURCES
+-	help
+-	  Enables support for the preallocated Memory resource.
+-
+-config MIN_RUNTIME_TFTP
+-	bool "Support for minimum TFTP resource"
+-	default y
+-	depends on MIN_RUNTIME_RESOURCES
+-	help
+-	  Enables support for the preallocated TFTP resource.
+-- 
+1.7.4.4

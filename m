@@ -1,89 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Oct 2011 02:34:51 +0200 (CEST)
-Received: from mx1.riseup.net ([204.13.164.18]:39531 "EHLO mx1.riseup.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491184Ab1JRAen (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 18 Oct 2011 02:34:43 +0200
-Received: from fruiteater.riseup.net (fruiteater-pn.riseup.net [10.0.1.74])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "*.riseup.net", Issuer "Gandi Standard SSL CA" (verified OK))
-        by mx1.riseup.net (Postfix) with ESMTPS id 14B10596C7;
-        Mon, 17 Oct 2011 17:34:41 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: proge@fruiteater.riseup.net)
-        with ESMTPSA id BA8A05B7
-Date:   Mon, 17 Oct 2011 18:00:15 -0500
-From:   Paul Roge <proge@riseup.net>
-To:     wu zhangjin <wuzhangjin@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Andreas Barth <aba@not.so.argh.org>, linux-mips@linux-mips.org,
-        debian-mips@lists.debian.org
-Subject: Re: YeeLoong / hotkey driver
-Message-ID: <20111017180015.1e5fc4fe@dragon.agroecology>
-In-Reply-To: <CAD+V5Y+shM4eqVHomaHvrXKdO8WpKfpCHw=2ExP1GFuuQzSaGw@mail.gmail.com>
-References: <20111012190659.GC15003@mails.so.argh.org>
-        <20111013080412.GA17240@linux-mips.org>
-        <CAD+V5Y+shM4eqVHomaHvrXKdO8WpKfpCHw=2ExP1GFuuQzSaGw@mail.gmail.com>
-X-Mailer: Claws Mail 3.7.6 (GTK+ 2.20.1; mipsel-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=PGP-SHA1;
- boundary="Sig_/cGZhmzMQE5qKtYo/1vqe0Yq"; protocol="application/pgp-signature"
-X-Virus-Scanned: clamav-milter 0.97 at mx1
-X-Virus-Status: Clean
-X-archive-position: 31248
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2011 00:33:33 +0200 (CEST)
+Received: from filtteri1.pp.htv.fi ([213.243.153.184]:56588 "EHLO
+        filtteri1.pp.htv.fi" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1491105Ab1JSWd3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 20 Oct 2011 00:33:29 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by filtteri1.pp.htv.fi (Postfix) with ESMTP id 358928BBAC;
+        Thu, 20 Oct 2011 01:33:28 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at pp.htv.fi
+Received: from smtp6.welho.com ([213.243.153.40])
+        by localhost (filtteri1.pp.htv.fi [213.243.153.184]) (amavisd-new, port 10024)
+        with ESMTP id 3EWl2D2TFavC; Thu, 20 Oct 2011 01:33:27 +0300 (EEST)
+Received: from dell.pp.htv.fi (cs178075134192.pp.htv.fi [178.75.134.192])
+        by smtp6.welho.com (Postfix) with ESMTP id A9E435BC005;
+        Thu, 20 Oct 2011 01:33:27 +0300 (EEST)
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] mips: fix the build with C=1
+Date:   Thu, 20 Oct 2011 01:33:27 +0300
+Message-Id: <1319063607-11316-1-git-send-email-aaro.koskinen@iki.fi>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 31249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: proge@riseup.net
+X-original-sender: aaro.koskinen@iki.fi
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12492
+X-UID: 14485
 
---Sig_/cGZhmzMQE5qKtYo/1vqe0Yq
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+When trying to compile the 3.1-rc10 kernel for my MIPS board with C=1
+(sparse checking), the build fails early with the error:
 
-> The old patch is out-of-date, perhaps we can start a new trip to
-> upstream the latest version maintained at
-> http://dev.lemote.com/code/linux-loongson-community.
->=20
-> The latest one threaded the irq interrupt handler and fixed some bugs.
->=20
-> Hope somebody else can work on it for I'm a little busy currently ;-)
+	  CHK     include/linux/version.h
+	  UPD     include/linux/version.h
+	  CHK     include/generated/utsrelease.h
+	  UPD     include/generated/utsrelease.h
+	  Checking missing-syscalls for N32
+	  CALL    scripts/checksyscalls.sh
+	  Checking missing-syscalls for O32
+	  CALL    scripts/checksyscalls.sh
+	  CC      kernel/bounds.s
+	  GEN     include/generated/bounds.h
+	  CC      arch/mips/kernel/asm-offsets.s
+	  GEN     include/generated/asm-offsets.h
+	  CALL    scripts/checksyscalls.sh
+	  HOSTCC  scripts/genksyms/genksyms.o
+	  SHIPPED scripts/genksyms/lex.lex.c
+	  SHIPPED scripts/genksyms/keywords.hash.c
+	  SHIPPED scripts/genksyms/parse.tab.h
+	  HOSTCC  scripts/genksyms/lex.lex.o
+	  SHIPPED scripts/genksyms/parse.tab.c
+	  HOSTCC  scripts/genksyms/parse.tab.o
+	  HOSTLD  scripts/genksyms/genksyms
+	/bin/sh: Syntax error: "(" unexpected
+	make[3]: *** [scripts/mod/empty.o] Error 2
+	make[2]: *** [scripts/mod] Error 2
+	make[1]: *** [scripts] Error 2
 
-Since I am new to configuring kernels, I doubt that I can help very much on=
- this.=20
+It seems the shell chokes because sparse is called with command line
+arguments such as:
 
-The 3.0.4-libre-lemote kernel from http://linux-libre.fsfla.org/pub/linux-l=
-ibre/lemote/gnewsense has everything except hotkey support for wireless. Th=
-e CONFIG_RTL8187 and CONFIG_RTL8187B options are disabled in the config fil=
-e. Typing "echo 1 > /sys/class/rfkill/rfkill0/state" does nothing, even whe=
-n the kernel is reconfigured with those drivers enabled.
+	-D__INT8_C(c)='c'
 
-The 2.36.8-loongson-2f kernel from http://bjlx.org.cn/loongson2f/squeeze ha=
-s functional hotkey and wireless networking capability. However, the date r=
-esets to 1968 when restarted, thus messing up certificates, and scrolling w=
-ith the keybad is disabled.=20
+Converting these to form:
 
-I would really appreciate suggestions for adding wireless/hotkey capability=
- to the 3.0.4-libre-lemote kernel, or fixing the date problem and adding th=
-e keybad scrolling capability on 2.36.8-loongson-2f! Should I add the patch=
-, modify options, or both?=20
+	-D'__INT8_C(c)'='c'
 
-Thanks!
-Paul
+seems to fix the problem.
 
---Sig_/cGZhmzMQE5qKtYo/1vqe0Yq
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Disposition: attachment; filename=signature.asc
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/mips/Makefile |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk6cs38ACgkQuBW/tw9lDuQWVgCguqMlpZWNuQkr9kBaUf4TBT4X
-CNAAoLyH/Tf1pu5zES1Mt0sR/pWTPi60
-=ZGWQ
------END PGP SIGNATURE-----
-
---Sig_/cGZhmzMQE5qKtYo/1vqe0Yq--
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 53e3514..30346b0 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -226,7 +226,7 @@ LDFLAGS			+= -m $(ld-emul)
+ ifdef CONFIG_MIPS
+ CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -xc /dev/null | \
+ 	egrep -vw '__GNUC_(|MINOR_|PATCHLEVEL_)_' | \
+-	sed -e 's/^\#define /-D/' -e "s/ /='/" -e "s/$$/'/")
++	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/")
+ ifdef CONFIG_64BIT
+ CHECKFLAGS		+= -m64
+ endif
+-- 
+1.7.2.5

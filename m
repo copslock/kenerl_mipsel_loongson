@@ -1,59 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2011 19:49:35 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:43157 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1491184Ab1JTRt2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 20 Oct 2011 19:49:28 +0200
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id p9KHnNfr021323;
-        Thu, 20 Oct 2011 18:49:23 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id p9KHnMx3021320;
-        Thu, 20 Oct 2011 18:49:22 +0100
-Date:   Thu, 20 Oct 2011 18:49:22 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Oct 2011 21:07:16 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:35000 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491184Ab1JTTHJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 20 Oct 2011 21:07:09 +0200
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1RGxxM-0006gz-00; Thu, 20 Oct 2011 21:07:08 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id 0EBD51DA27; Thu, 20 Oct 2011 21:07:02 +0200 (CEST)
+Date:   Thu, 20 Oct 2011 21:07:02 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-mips@linux-mips.org
 Subject: Re: [PATCH] GIO bus support for SGI IP22/28
-Message-ID: <20111020174922.GC885@linux-mips.org>
+Message-ID: <20111020190701.GA30021@alpha.franken.de>
 References: <20111020150859.6072A1DA26@solo.franken.de>
  <20111020161908.GA13220@linux-mips.org>
  <CAMuHMdXuOAgwPKTUjBCp3t1_kWoJsiwGf=uQfmYP_o+t7JYxUA@mail.gmail.com>
+ <20111020174922.GC885@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdXuOAgwPKTUjBCp3t1_kWoJsiwGf=uQfmYP_o+t7JYxUA@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31255
+In-Reply-To: <20111020174922.GC885@linux-mips.org>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 31256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15206
+X-UID: 15225
 
-On Thu, Oct 20, 2011 at 07:14:36PM +0200, Geert Uytterhoeven wrote:
+On Thu, Oct 20, 2011 at 06:49:22PM +0100, Ralf Baechle wrote:
+> There may have been obscure prototypes at SGI but I doubt any non-MIPS
+> GIO systems ever reached production status.
 
-> On Thu, Oct 20, 2011 at 18:19, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > On Thu, Oct 20, 2011 at 05:08:59PM +0200, Thomas Bogendoerfer wrote:
-> >
-> >> SGI IP22/IP28 machines have GIO busses for adding graphics and other
-> >> extension cards. This patch adds support for GIO driver/device
-> >> handling and converts the newport console driver to a GIO driver.
-> >
-> > I like it - finally proper driver structure in the year 15 of Indy
-> > support :D
+wikipedia only mentions MIPS based stuff from SGI with GIO.
+
+> > If yes, you want to move it to drivers/gio/.
 > 
-> Did GIO ever appeared on non-MIPS platforms?
+> Good point - it probably should go there anyway.
 
-There may have been obscure prototypes at SGI but I doubt any non-MIPS
-GIO systems ever reached production status.
+does a single file really need it's own directoy ? GIO is pretty simple
+and most of the magic lies inside the board specific parts. My idea is
+to factor out the common code as soon as IP12/IP20 support comes up
+(which is probably never).
 
-> If yes, you want to move it to drivers/gio/.
+Thomas.
 
-Good point - it probably should go there anyway.
-
-  Ralf
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

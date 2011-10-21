@@ -1,45 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2011 22:39:48 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:3489 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491757Ab1JUUjn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 21 Oct 2011 22:39:43 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4ea1d8dc0000>; Fri, 21 Oct 2011 13:41:00 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 21 Oct 2011 13:39:40 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 21 Oct 2011 13:39:38 -0700
-Message-ID: <4EA1D87A.1090708@cavium.com>
-Date:   Fri, 21 Oct 2011 13:39:22 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Noor <noor.mubeen@gmail.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Oct 2011 22:50:15 +0200 (CEST)
+Received: from imr4.ericy.com ([198.24.6.9]:50097 "EHLO imr4.ericy.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1491757Ab1JUUuL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 21 Oct 2011 22:50:11 +0200
+Received: from eusaamw0706.eamcs.ericsson.se ([147.117.20.31])
+        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id p9LKnxF3022182;
+        Fri, 21 Oct 2011 15:50:01 -0500
+Received: from [155.53.96.104] (147.117.20.214) by
+ eusaamw0706.eamcs.ericsson.se (147.117.20.91) with Microsoft SMTP Server id
+ 8.3.137.0; Fri, 21 Oct 2011 16:49:58 -0400
 Subject: Re: cause IP zero on interrupt
+From:   Guenter Roeck <guenter.roeck@ericsson.com>
+Reply-To: guenter.roeck@ericsson.com
+To:     David Daney <david.daney@cavium.com>
+CC:     Noor <noor.mubeen@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+In-Reply-To: <4EA1D87A.1090708@cavium.com>
 References: <CAMmEz3QV+kWvRK9KnUdmKFGqNA8XUspjc_cH7aYXfea5XYaRAg@mail.gmail.com>
-In-Reply-To: <CAMmEz3QV+kWvRK9KnUdmKFGqNA8XUspjc_cH7aYXfea5XYaRAg@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+         <4EA1D87A.1090708@cavium.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: Ericsson
+Date:   Fri, 21 Oct 2011 13:48:54 -0700
+Message-ID: <1319230134.2583.39.camel@groeck-laptop>
+MIME-Version: 1.0
+X-Mailer: Evolution 2.32.2 
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 Oct 2011 20:39:40.0833 (UTC) FILETIME=[8EABE910:01CC9031]
-X-archive-position: 31266
+X-archive-position: 31267
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: guenter.roeck@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15982
+X-UID: 15985
 
-On 10/21/2011 01:18 PM, Noor wrote:
-> what does it mean if cause register IP bits are zero after
-> interrupt exception  has already been invoked ?
->
+On Fri, 2011-10-21 at 16:39 -0400, David Daney wrote:
+> On 10/21/2011 01:18 PM, Noor wrote:
+> > what does it mean if cause register IP bits are zero after
+> > interrupt exception  has already been invoked ?
+> >
+> 
+> It might mean that something was asserting a '1' on to those bits, but 
+> quit doing so before you could read the cause register, or it could be 
+> that you get random interrupt exceptions for no reason at all.
+> 
 
-It might mean that something was asserting a '1' on to those bits, but 
-quit doing so before you could read the cause register, or it could be 
-that you get random interrupt exceptions for no reason at all.
+In my case it was the following:
 
-David Daney
+diff --git
+a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+index dedef7d..7500c55 100644
+--- a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
++++ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+@@ -63,6 +63,10 @@
+        # CN30XX Disable instruction prefetching
+        or  v0, v0, 0x2000
+ skip:
++#ifdef CONFIG_ERICSSON_ASE
++       # Set CvmCtl[IPTI] to 7
++       ori     v0, v0, (7 << 4)
++#endif
+        # First clear off CvmCtl[IPPCI] bit and move the performance
+        # counters interrupt to IRQ 6
+        li      v1, ~(7 << 7)
+
+This should not be needed in the Linux code, but CvmCtl[IPTI] was set to
+0 by ROMMON.
+
+Guenter

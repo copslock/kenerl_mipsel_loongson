@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Oct 2011 15:46:49 +0200 (CEST)
-Received: from mx1.netlogicmicro.com ([12.203.210.36]:3031 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Oct 2011 15:47:11 +0200 (CEST)
+Received: from mx1.netlogicmicro.com ([12.203.210.36]:3206 "EHLO
         orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1491032Ab1JWNoM (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1491033Ab1JWNoM (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Sun, 23 Oct 2011 15:44:12 +0200
-X-TM-IMSS-Message-ID: <b968702d0004e561@netlogicmicro.com>
-Received: from hqcas01.netlogicmicro.com ([10.10.50.14]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0; TLS: TLSv1/SSLv3,128bits,AES128-SHA) id b968702d0004e561 ; Sun, 23 Oct 2011 06:44:04 -0700
-Date:   Sun, 23 Oct 2011 19:10:42 +0530
+X-TM-IMSS-Message-ID: <b968759c0004e563@netlogicmicro.com>
+Received: from hqcas01.netlogicmicro.com ([10.10.50.14]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0; TLS: TLSv1/SSLv3,128bits,AES128-SHA) id b968759c0004e563 ; Sun, 23 Oct 2011 06:44:05 -0700
+Date:   Sun, 23 Oct 2011 19:11:28 +0530
 From:   Jayachandran C <jayachandranc@netlogicmicro.com>
 To:     <ralf@linux-mips.org>, <linux-mips@linux-mips.org>
-Subject: [PATCH 06/12] MIPS: Netlogic: XLP CPU support.
-Message-ID: <20111023134036.GA24842@jayachandranc.netlogicmicro.com>
+Subject: [PATCH 08/12] MIPS: Netlogic: Add XLP makefiles and config
+Message-ID: <20111023134122.GA26975@jayachandranc.netlogicmicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-OriginalArrivalTime: 23 Oct 2011 13:38:41.0628 (UTC) FILETIME=[13D699C0:01CC9189]
-X-archive-position: 31276
+X-OriginalArrivalTime: 23 Oct 2011 13:39:27.0112 (UTC) FILETIME=[2EF2E880:01CC9189]
+X-archive-position: 31277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -24,162 +24,154 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16583
+X-UID: 16584
 
-Add support for Netlogic's XLP MIPS SoC. This patch adds:
-* XLP processor ID in cpu_probe.c and asm/cpu.h
-* XLP case to asm/module.h
-* CPU_XLP case to mm/tlbex.c
-* minor change to r4k cache handling to ignore XLP secondary cache
-* XLP cpu overrides to mach-netlogic/cpu-feature-overrides.h
+- Add CPU_XLP and NLM_XLR_BOARD to arch/mips/Kconfig for Netlogic XLP boards
+- Update mips Makefiles to add XLP
 
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/include/asm/cpu.h                        |    3 ++-
- .../asm/mach-netlogic/cpu-feature-overrides.h      |   18 ++++++++++++++----
- arch/mips/include/asm/module.h                     |    2 ++
- arch/mips/kernel/cpu-probe.c                       |   19 ++++++++++++++++---
- arch/mips/mm/c-r4k.c                               |    3 +++
- 5 files changed, 37 insertions(+), 8 deletions(-)
+ arch/mips/Kconfig               |   43 +++++++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/Makefile       |    1 +
+ arch/mips/lib/Makefile          |    1 +
+ arch/mips/mm/Makefile           |    1 +
+ arch/mips/netlogic/Makefile     |    1 +
+ arch/mips/netlogic/Platform     |    1 +
+ arch/mips/netlogic/xlp/Makefile |    2 +
+ 7 files changed, 50 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/netlogic/xlp/Makefile
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 5f95a4b..4bcb668b 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -167,6 +167,7 @@
- #define PRID_IMP_NETLOGIC_XLS408B	0x4e00
- #define PRID_IMP_NETLOGIC_XLS404B	0x4f00
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index bbc4e0e..3898ef1 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -787,6 +787,33 @@ config NLM_XLR_BOARD
+ 	  Support for systems based on Netlogic XLR and XLS processors.
+ 	  Say Y here if you have a XLR or XLS based board.
  
-+#define PRID_IMP_NETLOGIC_XLP832	0x1000
- /*
-  * Definitions for 7:0 on legacy processors
-  */
-@@ -260,7 +261,7 @@ enum cpu_type_enum {
- 	 */
- 	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
- 	CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
--	CPU_XLR,
-+	CPU_XLR, CPU_XLP,
- 
- 	CPU_LAST
- };
-diff --git a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-index 3780743..d193fb6 100644
---- a/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-+++ b/arch/mips/include/asm/mach-netlogic/cpu-feature-overrides.h
-@@ -24,23 +24,33 @@
- 
- #define cpu_has_llsc		1
- #define cpu_has_vtag_icache	0
--#define cpu_has_dc_aliases	0
- #define cpu_has_ic_fills_f_dc	1
- #define cpu_has_dsp		0
- #define cpu_has_mipsmt		0
--#define cpu_has_userlocal	0
- #define cpu_icache_snoops_remote_store	1
- 
- #define cpu_has_64bits		1
- 
- #define cpu_has_mips32r1	1
--#define cpu_has_mips32r2	0
- #define cpu_has_mips64r1	1
--#define cpu_has_mips64r2	0
- 
- #define cpu_has_inclusive_pcaches	0
- 
- #define cpu_dcache_line_size()	32
- #define cpu_icache_line_size()	32
- 
-+#if defined(CONFIG_CPU_XLR)
-+#define cpu_has_userlocal	0
-+#define cpu_has_dc_aliases	0
-+#define cpu_has_mips32r2	0
-+#define cpu_has_mips64r2	0
-+#elif defined(CONFIG_CPU_XLP)
-+#define cpu_has_userlocal	1
-+#define cpu_has_mips32r2	1
-+#define cpu_has_mips64r2	1
-+#define cpu_has_dc_aliases	1
-+#else
-+#error "Unknown Netlogic CPU"
-+#endif
++config NLM_XLP_BOARD
++	bool "Netlogic XLP based systems"
++	depends on EXPERIMENTAL
++	select BOOT_ELF32
++	select NLM_COMMON
++	select SYS_HAS_CPU_XLP
++	select SYS_SUPPORTS_SMP
++	select HW_HAS_PCI
++	select SWAP_IO_SPACE
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_64BIT_KERNEL
++	select 64BIT_PHYS_ADDR
++	select SYS_SUPPORTS_BIG_ENDIAN
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select DMA_COHERENT
++	select NR_CPUS_DEFAULT_32
++	select CEVT_R4K
++	select CSRC_R4K
++	select IRQ_CPU
++	select ZONE_DMA if 64BIT
++	select SYNC_R4K
++	select SYS_HAS_EARLY_PRINTK
++	help
++	  This board is based on Netlogic XLP Processor.
++	  Say Y here if you have a XLP based board.
 +
- #endif /* __ASM_MACH_NETLOGIC_CPU_FEATURE_OVERRIDES_H */
-diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
-index bc01a02..2278e34 100644
---- a/arch/mips/include/asm/module.h
-+++ b/arch/mips/include/asm/module.h
-@@ -120,6 +120,8 @@ search_module_dbetables(unsigned long addr)
- #define MODULE_PROC_FAMILY "OCTEON "
- #elif defined CONFIG_CPU_XLR
- #define MODULE_PROC_FAMILY "XLR "
-+#elif defined CONFIG_CPU_XLP
-+#define MODULE_PROC_FAMILY "XLP "
- #else
- #error MODULE_PROC_FAMILY undefined for your processor configuration
- #endif
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 664bc13..501d302 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -191,6 +191,7 @@ void __init check_wait(void)
- 	case CPU_CAVIUM_OCTEON2:
- 	case CPU_JZRISC:
- 	case CPU_XLR:
-+	case CPU_XLP:
- 		cpu_wait = r4k_wait;
- 		break;
+ endchoice
  
-@@ -1020,6 +1021,11 @@ static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
- 			MIPS_CPU_LLSC);
- 
- 	switch (c->processor_id & 0xff00) {
-+	case PRID_IMP_NETLOGIC_XLP832:
-+		c->cputype = CPU_XLP;
-+		__cpu_name[cpu] = "Netlogic XLP";
-+		break;
+ source "arch/mips/alchemy/Kconfig"
+@@ -1479,6 +1506,19 @@ config CPU_XLR
+ 	select CPU_SUPPORTS_HUGEPAGES
+ 	help
+ 	  Netlogic Microsystems XLR/XLS processors.
 +
- 	case PRID_IMP_NETLOGIC_XLR732:
- 	case PRID_IMP_NETLOGIC_XLR716:
- 	case PRID_IMP_NETLOGIC_XLR532:
-@@ -1050,14 +1056,21 @@ static inline void cpu_probe_netlogic(struct cpuinfo_mips *c, int cpu)
- 		break;
++config CPU_XLP
++	bool "Netlogic XLP SoC"
++	depends on SYS_HAS_CPU_XLP
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_64BIT_KERNEL
++	select CPU_SUPPORTS_HIGHMEM
++	select CPU_HAS_LLSC
++	select WEAK_ORDERING
++	select WEAK_REORDERING_BEYOND_LLSC
++	select CPU_HAS_PREFETCH
++	help
++	  Netlogic Microsystems XLP processors.
+ endchoice
  
- 	default:
--		printk(KERN_INFO "Unknown Netlogic chip id [%02x]!\n",
-+		pr_info("Unknown Netlogic chip id [%02x]!\n",
- 		       c->processor_id);
- 		c->cputype = CPU_XLR;
- 		break;
- 	}
+ if CPU_LOONGSON2F
+@@ -1612,6 +1652,9 @@ config SYS_HAS_CPU_BMIPS5000
+ config SYS_HAS_CPU_XLR
+ 	bool
  
--	c->isa_level = MIPS_CPU_ISA_M64R1;
--	c->tlbsize = ((read_c0_config1() >> 25) & 0x3f) + 1;
-+	if (c->cputype == CPU_XLP) {
-+		c->isa_level = MIPS_CPU_ISA_M64R2;
-+		c->options |= (MIPS_CPU_FPU | MIPS_CPU_ULRI | MIPS_CPU_MCHECK);
-+		/* This will be updated again after all threads are woken up */
-+		c->tlbsize = ((read_c0_config6() >> 16) & 0xffff) + 1;
-+	} else {
-+		c->isa_level = MIPS_CPU_ISA_M64R1;
-+		c->tlbsize = ((read_c0_config1() >> 25) & 0x3f) + 1;
-+	}
- }
++config SYS_HAS_CPU_XLP
++	bool
++
+ #
+ # CPU may reorder R->R, R->W, W->R, W->W
+ # Reordering beyond LL and SC is handled in WEAK_REORDERING_BEYOND_LLSC
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 83bba33..ab31b00 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -53,6 +53,7 @@ obj-$(CONFIG_CPU_TX49XX)	+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_VR41XX)	+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= octeon_switch.o
+ obj-$(CONFIG_CPU_XLR)		+= r4k_fpu.o r4k_switch.o
++obj-$(CONFIG_CPU_XLP)		+= r4k_fpu.o r4k_switch.o
  
- #ifdef CONFIG_64BIT
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index a79fe9a..4f9eb0b 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1235,6 +1235,9 @@ static void __cpuinit setup_scache(void)
- 		loongson2_sc_init();
- 		return;
- #endif
-+	case CPU_XLP:
-+		/* don't need to worry about L2, fully coherent */
-+		return;
+ obj-$(CONFIG_SMP)		+= smp.o
+ obj-$(CONFIG_SMP_UP)		+= smp-up.o
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index b2cad4f..2a7c74f 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -29,6 +29,7 @@ obj-$(CONFIG_CPU_TX49XX)	+= dump_tlb.o
+ obj-$(CONFIG_CPU_VR41XX)	+= dump_tlb.o
+ obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= dump_tlb.o
+ obj-$(CONFIG_CPU_XLR)		+= dump_tlb.o
++obj-$(CONFIG_CPU_XLP)		+= dump_tlb.o
  
- 	default:
- 		if (c->isa_level == MIPS_CPU_ISA_M32R1 ||
+ # libgcc-style stuff needed in the kernel
+ obj-y += ashldi3.o ashrdi3.o cmpdi2.o lshrdi3.o ucmpdi2.o
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index 4d8c162..59b0905 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -31,6 +31,7 @@ obj-$(CONFIG_CPU_TX49XX)	+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_VR41XX)	+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= c-octeon.o cex-oct.o tlb-r4k.o
+ obj-$(CONFIG_CPU_XLR)		+= c-r4k.o tlb-r4k.o cex-gen.o
++obj-$(CONFIG_CPU_XLP)		+= c-r4k.o tlb-r4k.o cex-gen.o
+ 
+ obj-$(CONFIG_IP22_CPU_SCACHE)	+= sc-ip22.o
+ obj-$(CONFIG_R5000_CPU_SCACHE)  += sc-r5k.o
+diff --git a/arch/mips/netlogic/Makefile b/arch/mips/netlogic/Makefile
+index 797326d..36d169b 100644
+--- a/arch/mips/netlogic/Makefile
++++ b/arch/mips/netlogic/Makefile
+@@ -1,2 +1,3 @@
+ obj-$(CONFIG_NLM_COMMON)	+=	common/
+ obj-$(CONFIG_CPU_XLR)		+=	xlr/
++obj-$(CONFIG_CPU_XLP)		+=	xlp/
+diff --git a/arch/mips/netlogic/Platform b/arch/mips/netlogic/Platform
+index 7811b10..cdfc9ab 100644
+--- a/arch/mips/netlogic/Platform
++++ b/arch/mips/netlogic/Platform
+@@ -8,6 +8,7 @@ cflags-$(CONFIG_NLM_COMMON)	+= -I$(srctree)/arch/mips/include/asm/netlogic
+ # use mips64 if xlr is not available
+ #
+ cflags-$(CONFIG_CPU_XLR)	+= $(call cc-option,-march=xlr,-march=mips64)
++cflags-$(CONFIG_CPU_XLP)	+= $(call cc-option,-march=xlp,-march=mips64r2)
+ 
+ #
+ # NETLOGIC processor support
+diff --git a/arch/mips/netlogic/xlp/Makefile b/arch/mips/netlogic/xlp/Makefile
+new file mode 100644
+index 0000000..1940d1c
+--- /dev/null
++++ b/arch/mips/netlogic/xlp/Makefile
+@@ -0,0 +1,2 @@
++obj-y				+= setup.o platform.o nlm_hal.o
++obj-$(CONFIG_SMP)		+= smpboot.o wakeup.o
 -- 
 1.7.4.1

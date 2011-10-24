@@ -1,85 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2011 12:58:32 +0200 (CEST)
-Received: from dns1.mips.com ([12.201.5.69]:55750 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1491079Ab1JXK5R (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 24 Oct 2011 12:57:17 +0200
-Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id p9OAunYc011262;
-        Mon, 24 Oct 2011 03:56:49 -0700
-Received: from fun-lab.MIPSCN.CEC (192.168.225.107) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Mon, 24 Oct 2011
- 03:56:45 -0700
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
-CC:     Deng-Cheng Zhu <dczhu@mips.com>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@ghostprotocols.net>,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH 4/4] MIPS/Perf-events: Cleanup event->destroy at event init
-Date:   Mon, 24 Oct 2011 18:56:02 +0800
-Message-ID: <1319453762-12962-5-git-send-email-dczhu@mips.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1319453762-12962-1-git-send-email-dczhu@mips.com>
-References: <1319453762-12962-1-git-send-email-dczhu@mips.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2011 14:19:15 +0200 (CEST)
+Received: from eu1sys200aog116.obsmtp.com ([207.126.144.141]:39988 "EHLO
+        eu1sys200aog116.obsmtp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491071Ab1JXMTJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Oct 2011 14:19:09 +0200
+Received: from beta.dmz-eu.st.com ([164.129.1.35]) (using TLSv1) by eu1sys200aob116.postini.com ([207.126.147.11]) with SMTP;
+        Mon, 24 Oct 2011 12:19:08 UTC
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0BB72139;
+        Mon, 24 Oct 2011 12:19:00 +0000 (GMT)
+Received: from mail7.sgp.st.com (mail7.sgp.st.com [164.129.223.81])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 6A9872181;
+        Mon, 24 Oct 2011 12:19:00 +0000 (GMT)
+Received: from [10.52.139.57] (ctn000522.ctn.st.com [10.52.139.57])
+        by mail7.sgp.st.com (MOS 4.1.8-GA)
+        with ESMTP id AKG03689 (AUTH cavagiu);
+        Mon, 24 Oct 2011 14:18:59 +0200
+Message-ID: <4EA557B2.4020504@st.com>
+Date:   Mon, 24 Oct 2011 14:18:58 +0200
+From:   Giuseppe CAVALLARO <peppe.cavallaro@st.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: iG6TO23lkVVXFgbMYlS21A==
-X-archive-position: 31290
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
+Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        r0bertz@gentoo.org, netdev@vger.kernel.org
+Subject: Re: [PATCH V2 2/4] MIPS: Add board support for Loongson1B
+References: <1319192888-21465-1-git-send-email-keguang.zhang@gmail.com> <1319192888-21465-2-git-send-email-keguang.zhang@gmail.com> <CAD+V5YKBkW52_md9rBeVZ1RXq2FGEXt=Ergsw+z8txMreZdNsA@mail.gmail.com> <4EA5117C.3000402@st.com> <CAJhJPsVSzXXmBOwLaGNtOsxhVEyC0fAJtiBvEWzcKcSDC8NEcA@mail.gmail.com>
+In-Reply-To: <CAJhJPsVSzXXmBOwLaGNtOsxhVEyC0fAJtiBvEWzcKcSDC8NEcA@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: peppe.cavallaro@st.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17073
+X-UID: 17131
 
-Simplify the code by changing the place of event->destroy().
+Hello Kelvin.
 
-Signed-off-by: Deng-Cheng Zhu <dczhu@mips.com>
-Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Ingo Molnar <mingo@elte.hu>
-Cc: Arnaldo Carvalho de Melo <acme@ghostprotocols.net>
-Cc: David Daney <david.daney@cavium.com>
----
- arch/mips/kernel/perf_event.c        |    6 +-----
- arch/mips/kernel/perf_event_mipsxx.c |    3 +++
- 2 files changed, 4 insertions(+), 5 deletions(-)
+On 10/24/2011 12:36 PM, Kelvin Cheung wrote:
 
-diff --git a/arch/mips/kernel/perf_event.c b/arch/mips/kernel/perf_event.c
-index b1d51b5..7a8d0a0 100644
---- a/arch/mips/kernel/perf_event.c
-+++ b/arch/mips/kernel/perf_event.c
-@@ -397,11 +397,7 @@ static int mipspmu_event_init(struct perf_event *event)
- 	if (err)
- 		return err;
- 
--	err = __hw_perf_event_init(event);
--	if (err)
--		hw_perf_event_destroy(event);
--
--	return err;
-+	return __hw_perf_event_init(event);
- }
- 
- static struct pmu pmu = {
-diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
-index c804fdd..bd75473 100644
---- a/arch/mips/kernel/perf_event_mipsxx.c
-+++ b/arch/mips/kernel/perf_event_mipsxx.c
-@@ -628,6 +628,9 @@ static int __hw_perf_event_init(struct perf_event *event)
- 
- 	event->destroy = hw_perf_event_destroy;
- 
-+	if (err)
-+		event->destroy(event);
-+
- 	return err;
- }
- 
--- 
-1.7.1
+[snip]
+
+> According to datasheet of Loongson 1B, the buffer size in RX/TX 
+> descriptor is only 2KB. So the Loongson1B's GMAC could not handle
+> jumbo frames. And the second buffer is useless in this case. Am I
+> right? Is there a better way than ifdef CONFIG_MACH_LOONGSON1 to
+> avoid duplicate code?
+
+Sorry for my misunderstanding.
+
+I think you have to use the normal descriptor and remove the enh_desc
+from the platform w/o modifying the driver at all.
+
+The driver will be able to select/configure all automatically (also jumbo).
+
+Let me know.
+
+Note:
+IIRC, there is a bit difference in case of normal descriptors for
+Synopsys databook newer than the 1.91 (I used for testing this mode).
+In any case, I remember that, on some platforms, the normal descriptors
+have been used w/o problems also on these new chip generations.
+
+Peppe

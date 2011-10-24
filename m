@@ -1,77 +1,277 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Oct 2011 17:25:55 +0200 (CEST)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:59005 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491050Ab1JWPZs convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 23 Oct 2011 17:25:48 +0200
-Received: by iagz35 with SMTP id z35so7924043iag.36
-        for <multiple recipients>; Sun, 23 Oct 2011 08:25:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=xuiknyXUMjD0QBbkzhHX0xDKd11B9j2WIa48P+S2xUk=;
-        b=Z1mBp81e6Q4VlmOF/4FFT+WxGBQmfuxtdEWW5iTdzVUe8MfXGeCtWHdH9Q9iZ3B/Bo
-         swiBzCK5D86quSY0DEA1twLKfyL/eCFUt1tegvbZN2ATYwusxY3PzWgGOw3+0qvS6oJY
-         Ra0rn0ehYGJTl0V0+SEqHDjCq025DMip8NBbY=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Oct 2011 09:20:13 +0200 (CEST)
+Received: from eu1sys200aog110.obsmtp.com ([207.126.144.129]:32816 "EHLO
+        eu1sys200aog110.obsmtp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491055Ab1JXHUC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 24 Oct 2011 09:20:02 +0200
+Received: from beta.dmz-eu.st.com ([164.129.1.35]) (using TLSv1) by eu1sys200aob110.postini.com ([207.126.147.11]) with SMTP;
+        Mon, 24 Oct 2011 07:20:02 UTC
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A818CF3;
+        Mon, 24 Oct 2011 07:19:26 +0000 (GMT)
+Received: from mail7.sgp.st.com (mail7.sgp.st.com [164.129.223.81])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 12F221751;
+        Mon, 24 Oct 2011 07:19:26 +0000 (GMT)
+Received: from [10.52.139.57] (ctn000522.ctn.st.com [10.52.139.57])
+        by mail7.sgp.st.com (MOS 4.1.8-GA)
+        with ESMTP id AKF40735 (AUTH cavagiu);
+        Mon, 24 Oct 2011 09:19:25 +0200
+Message-ID: <4EA5117C.3000402@st.com>
+Date:   Mon, 24 Oct 2011 09:19:24 +0200
+From:   Giuseppe CAVALLARO <peppe.cavallaro@st.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
 MIME-Version: 1.0
-Received: by 10.231.1.6 with SMTP id 6mr8613961ibd.38.1319383539591; Sun, 23
- Oct 2011 08:25:39 -0700 (PDT)
-Received: by 10.231.59.135 with HTTP; Sun, 23 Oct 2011 08:25:39 -0700 (PDT)
-In-Reply-To: <20111017180015.1e5fc4fe@dragon.agroecology>
-References: <20111012190659.GC15003@mails.so.argh.org>
-        <20111013080412.GA17240@linux-mips.org>
-        <CAD+V5Y+shM4eqVHomaHvrXKdO8WpKfpCHw=2ExP1GFuuQzSaGw@mail.gmail.com>
-        <20111017180015.1e5fc4fe@dragon.agroecology>
-Date:   Sun, 23 Oct 2011 23:25:39 +0800
-Message-ID: <CAD+V5Y+55V+XvDBOsRNO6HrH51ZZm12emWix3uomEtXfuQJ6vg@mail.gmail.com>
-Subject: Re: YeeLoong / hotkey driver
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-To:     Paul Roge <proge@riseup.net>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Andreas Barth <aba@not.so.argh.org>, linux-mips@linux-mips.org,
-        debian-mips@lists.debian.org
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-archive-position: 31283
+To:     keguang.zhang@gmail.com
+Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
+        r0bertz@gentoo.org, netdev@vger.kernel.org
+Subject: Re: [PATCH V2 2/4] MIPS: Add board support for Loongson1B
+References: <1319192888-21465-1-git-send-email-keguang.zhang@gmail.com> <1319192888-21465-2-git-send-email-keguang.zhang@gmail.com> <CAD+V5YKBkW52_md9rBeVZ1RXq2FGEXt=Ergsw+z8txMreZdNsA@mail.gmail.com>
+In-Reply-To: <CAD+V5YKBkW52_md9rBeVZ1RXq2FGEXt=Ergsw+z8txMreZdNsA@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31284
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: peppe.cavallaro@st.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16622
+X-UID: 16929
 
-On Tue, Oct 18, 2011 at 7:00 AM, Paul Roge <proge@riseup.net> wrote:
->> The old patch is out-of-date, perhaps we can start a new trip to
->> upstream the latest version maintained at
->> http://dev.lemote.com/code/linux-loongson-community.
+On 10/21/2011 7:33 PM, Wu Zhangjin wrote:
+> On Fri, Oct 21, 2011 at 6:28 PM,  <keguang.zhang@gmail.com> wrote:
+>> From: Kelvin Cheung <keguang.zhang@gmail.com>
 >>
->> The latest one threaded the irq interrupt handler and fixed some bugs.
+>> This patch adds basic platform support for Loongson1B
+>> including serial port, ethernet, and interrupt handler.
 >>
->> Hope somebody else can work on it for I'm a little busy currently ;-)
->
-> Since I am new to configuring kernels, I doubt that I can help very much on this.
->
-> The 3.0.4-libre-lemote kernel from http://linux-libre.fsfla.org/pub/linux-libre/lemote/gnewsense has everything except hotkey support for wireless. The CONFIG_RTL8187 and CONFIG_RTL8187B options are disabled in the config file. Typing "echo 1 > /sys/class/rfkill/rfkill0/state" does nothing, even when the kernel is reconfigured with those drivers enabled.
->
-> The 2.36.8-loongson-2f kernel from http://bjlx.org.cn/loongson2f/squeeze has functional hotkey and wireless networking capability. However, the date resets to 1968 when restarted, thus messing up certificates, and scrolling with the keybad is disabled.
->
-> I would really appreciate suggestions for adding wireless/hotkey capability to the 3.0.4-libre-lemote kernel, or fixing the date problem and adding the keybad scrolling capability on 2.36.8-loongson-2f! Should I add the patch, modify options, or both?
+>> Loongson1B UART is compatible with NS16550A.
+>> Loongson1B GMAC is built around Synopsys IP Core.
+>>
+> 
+> Perhaps you'd better split out the GMAC support to its own patch and
+> send it to the net/ maintainer and the authors of the original files.
 
-I guess something may have been broken from 2.6.39 or 3.0, because I
-have no enough time to continue the maintaining, sorry, hope you can
-try 2.6.37 or 2.6.38 from http://bjlx.org.cn/loongson2f/squeeze
-instead.
+Also suggest you to provide the stmmac patches for net-next.
+The stmmac driver has been recently updated and I've also several
+patches to commit (for example for PCI etc) on it.
 
-Sorry for my late response.
+I'm happy that the support for big endianess arrived.
+I supported a guy some time ago but he didn't provided me the patches
+tested on his side :-(. So welcome yours and many thanks Kelvin!
 
-Regards,
-Wu Zhangjin
+Please send the stmmac patches and add me on CC. I'm happy to help you
+on reviewing them.
 
->
-> Thanks!
-> Paul
->
+>> diff --git a/drivers/net/stmmac/descs.h b/drivers/net/stmmac/descs.h
+>> index 63a03e2..4db27d0 100644
+>> --- a/drivers/net/stmmac/descs.h
+>> +++ b/drivers/net/stmmac/descs.h
+>> @@ -53,6 +53,38 @@ struct dma_desc {
+>>                        u32 reserved3:5;
+>>                        u32 disable_ic:1;
+>>                } rx;
+>> +#ifdef CONFIG_MACH_LOONGSON1
+>> +               struct {
+>> +                       /* RDES0 */
+>> +                       u32 payload_csum_error:1;
+>> +                       u32 crc_error:1;
+>> +                       u32 dribbling:1;
+>> +                       u32 error_gmii:1;
+>> +                       u32 receive_watchdog:1;
+>> +                       u32 frame_type:1;
+>> +                       u32 late_collision:1;
+>> +                       u32 ipc_csum_error:1;
+>> +                       u32 last_descriptor:1;
+>> +                       u32 first_descriptor:1;
+>> +                       u32 vlan_tag:1;
+>> +                       u32 overflow_error:1;
+>> +                       u32 length_error:1;
+>> +                       u32 sa_filter_fail:1;
+>> +                       u32 descriptor_error:1;
+>> +                       u32 error_summary:1;
+>> +                       u32 frame_length:14;
+>> +                       u32 da_filter_fail:1;
+>> +                       u32 own:1;
+>> +                       /* RDES1 */
+>> +                       u32 buffer1_size:11;
+>> +                       u32 buffer2_size:11;
+>> +                       u32 reserved1:2;
+>> +                       u32 second_address_chained:1;
+>> +                       u32 end_ring:1;
+>> +                       u32 reserved2:5;
+>> +                       u32 disable_ic:1;
+>> +               } erx;          /* -- enhanced -- */
+>> +#else
+>>                struct {
+>>                        /* RDES0 */
+>>                        u32 payload_csum_error:1;
+>> @@ -83,6 +115,7 @@ struct dma_desc {
+>>                        u32 reserved2:2;
+>>                        u32 disable_ic:1;
+>>                } erx;          /* -- enhanced -- */
+>> +#endif
+>>
+>>                /* Transmit descriptor */
+>>                struct {
+>> @@ -113,6 +146,40 @@ struct dma_desc {
+>>                        u32 last_segment:1;
+>>                        u32 interrupt:1;
+>>                } tx;
+>> +#ifdef CONFIG_MACH_LOONGSON1
+>> +               struct {
+>> +                       /* TDES0 */
+>> +                       u32 deferred:1;
+>> +                       u32 underflow_error:1;
+>> +                       u32 excessive_deferral:1;
+>> +                       u32 collision_count:4;
+>> +                       u32 vlan_frame:1;
+>> +                       u32 excessive_collisions:1;
+>> +                       u32 late_collision:1;
+>> +                       u32 no_carrier:1;
+>> +                       u32 loss_carrier:1;
+>> +                       u32 payload_error:1;
+>> +                       u32 frame_flushed:1;
+>> +                       u32 jabber_timeout:1;
+>> +                       u32 error_summary:1;
+>> +                       u32 ip_header_error:1;
+>> +                       u32 time_stamp_status:1;
+>> +                       u32 reserved1:13;
+>> +                       u32 own:1;
+>> +                       /* TDES1 */
+>> +                       u32 buffer1_size:11;
+>> +                       u32 buffer2_size:11;
+>> +                       u32 time_stamp_enable:1;
+>> +                       u32 disable_padding:1;
+>> +                       u32 second_address_chained:1;
+>> +                       u32 end_ring:1;
+>> +                       u32 crc_disable:1;
+>> +                       u32 checksum_insertion:2;
+>> +                       u32 first_segment:1;
+>> +                       u32 last_segment:1;
+>> +                       u32 interrupt:1;
+>> +               } etx;          /* -- enhanced -- */
+>> +#else
+>>                struct {
+>>                        /* TDES0 */
+>>                        u32 deferred:1;
+>> @@ -148,6 +215,7 @@ struct dma_desc {
+>>                        u32 buffer2_size:13;
+>>                        u32 reserved4:3;
+>>                } etx;          /* -- enhanced -- */
+>> +#endif
+>>        } des01;
+>>        unsigned int des2;
+>>        unsigned int des3;
+> 
+> 
+> If the difference is very much, perhaps a new dma_desc struct can be
+> defined instead.
+> 
+
+Concerning the descriptors, we could have two different files:
+
+descs_le.h
+descs_be.h
+
+and select their inclusion inside the common.h.
+
+Please use instead of the macro CONFIG_MACH_LOONGSON1 another one more
+generic e.g. CONFIG_STMMAC_BE  (and add it in the driver's Kconfig).
+
+On your platform you will have to enable it by default.
+Or it could be the default on MIPS: LE will be on ARM and SuperH.
+
+>> diff --git a/drivers/net/stmmac/enh_desc.c b/drivers/net/stmmac/enh_desc.c
+>> index e5dfb6a..3b5e4f1 100644
+>> --- a/drivers/net/stmmac/enh_desc.c
+>> +++ b/drivers/net/stmmac/enh_desc.c
+>> @@ -108,6 +108,7 @@ static int enh_desc_get_tx_len(struct dma_desc *p)
+>>  static int enh_desc_coe_rdes0(int ipc_err, int type, int payload_err)
+>>  {
+>>        int ret = good_frame;
+>> +#ifndef CONFIG_MACH_LOONGSON1
+>>        u32 status = (type << 2 | ipc_err << 1 | payload_err) & 0x7;
+>>
+>>        /* bits 5 7 0 | Frame status
+>> @@ -145,6 +146,7 @@ static int enh_desc_coe_rdes0(int ipc_err, int type, int payload_err)
+>>                CHIP_DBG(KERN_ERR "RX Des0 status: No IPv4, IPv6 frame.\n");
+>>                ret = discard_frame;
+>>        }
+>> +#endif
+>>        return ret;
+>>  }
+
+>>
+>> @@ -232,9 +234,17 @@ static void enh_desc_init_rx_desc(struct dma_desc *p, unsigned int ring_size,
+>>        int i;
+>>        for (i = 0; i < ring_size; i++) {
+>>                p->des01.erx.own = 1;
+>> +#ifdef CONFIG_MACH_LOONGSON1
+>> +               p->des01.erx.buffer1_size = BUF_SIZE_2KiB - 1;
+>> +#else
+>>                p->des01.erx.buffer1_size = BUF_SIZE_8KiB - 1;
+>> +#endif
+>>                /* To support jumbo frames */
+>> +#ifdef CONFIG_MACH_LOONGSON1
+>> +               p->des01.erx.buffer2_size = BUF_SIZE_2KiB - 1;
+>> +#else
+>>                p->des01.erx.buffer2_size = BUF_SIZE_8KiB - 1;
+>> +#endif
+>>                if (i == ring_size - 1)
+>>                        p->des01.erx.end_ring = 1;
+>>                if (disable_rx_ic)
+>> @@ -292,9 +302,15 @@ static void enh_desc_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
+>>                                     int csum_flag)
+>>  {
+>>        p->des01.etx.first_segment = is_fs;
+>> +#ifdef CONFIG_MACH_LOONGSON1
+>> +       if (unlikely(len > BUF_SIZE_2KiB)) {
+>> +               p->des01.etx.buffer1_size = BUF_SIZE_2KiB - 1;
+>> +               p->des01.etx.buffer2_size = len - BUF_SIZE_2KiB + 1;
+>> +#else
+>>        if (unlikely(len > BUF_SIZE_4KiB)) {
+>>                p->des01.etx.buffer1_size = BUF_SIZE_4KiB;
+>>                p->des01.etx.buffer2_size = len - BUF_SIZE_4KiB;
+>> +#endif
+>>        } else {
+>>                p->des01.etx.buffer1_size = len;
+>>        }
+
+No. I do not want to see all these ifdef inside the code.
+I had to rework some driver's part just last week to avoid this kind of
+code. I suggest you to re-base the work against the net-next kernel and
+look at how the ring/chained modes have been managed.
+
+I added a new file called descs_com.h that you can re-use adding small
+inline functions where define the changes for be mode.
+
+> Is it possible to add two new macros RX_BUF_SIZE and TX_BUF_SIZE to .h
+> instead? which may reduce code duplication.
+
+This code exists because we have to properly handle the jumbo frames.
+
+Note that this code has been reworked to use the ring/chained modes.
+Take a look at descs_com.h.
+
+I expect to see the driver on your platform that uses jumbo and
+chained/ring modes.
+
+Best Regards
+Giuseppe
+
+> 
+> Regards,
+> Wu Zhangjin
+> 
+>> --
+>> 1.7.1
+>>
+>>
+> --
+> To unsubscribe from this list: send the line "unsubscribe netdev" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

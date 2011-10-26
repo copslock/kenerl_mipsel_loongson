@@ -1,173 +1,183 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Oct 2011 06:27:59 +0200 (CEST)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:50125 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1490946Ab1JZE1t (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Oct 2011 06:27:49 +0200
-Received: by vws15 with SMTP id 15so1370883vws.36
-        for <multiple recipients>; Tue, 25 Oct 2011 21:27:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=sYumKCQ+1E4fO3zH3Z5agxOS10Rjqo/37hL3eYkJfU8=;
-        b=dCq9/3PzQK2+aBdMz82R7EHMXZqbGMf1bg27CesyGO5ueW4qOd2DSvQycF4pfjmpDl
-         gBEn/aL7sJgan15LPf4JJIWqLtABrDnkZ0oXSaCYh2ZR+rBl0VrJlozdt5nZtj1ds1QI
-         gtnan+6xwhP3LY5kyKRd6+vSwYt/s9fBfFjnM=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Oct 2011 09:21:52 +0200 (CEST)
+Received: from eu1sys200aog102.obsmtp.com ([207.126.144.113]:55641 "EHLO
+        eu1sys200aog102.obsmtp.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1490949Ab1JZHVm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 26 Oct 2011 09:21:42 +0200
+Received: from beta.dmz-eu.st.com ([164.129.1.35]) (using TLSv1) by eu1sys200aob102.postini.com ([207.126.147.11]) with SMTP;
+        Wed, 26 Oct 2011 07:21:41 UTC
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 1822A127;
+        Wed, 26 Oct 2011 07:20:49 +0000 (GMT)
+Received: from mail7.sgp.st.com (mail7.sgp.st.com [164.129.223.81])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 6C94C1661;
+        Wed, 26 Oct 2011 07:20:49 +0000 (GMT)
+Received: from [10.52.139.57] (ctn000522.ctn.st.com [10.52.139.57])
+        by mail7.sgp.st.com (MOS 4.1.8-GA)
+        with ESMTP id AKG34484 (AUTH cavagiu);
+        Wed, 26 Oct 2011 09:20:48 +0200
+Message-ID: <4EA7B4D7.9000101@st.com>
+Date:   Wed, 26 Oct 2011 09:20:55 +0200
+From:   Giuseppe CAVALLARO <peppe.cavallaro@st.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
 MIME-Version: 1.0
-Received: by 10.52.36.237 with SMTP id t13mr31119331vdj.45.1319603262654; Tue,
- 25 Oct 2011 21:27:42 -0700 (PDT)
-Received: by 10.220.108.69 with HTTP; Tue, 25 Oct 2011 21:27:42 -0700 (PDT)
-In-Reply-To: <4EA6716A.80307@st.com>
-References: <1319192888-21465-1-git-send-email-keguang.zhang@gmail.com>
-        <1319192888-21465-2-git-send-email-keguang.zhang@gmail.com>
-        <CAD+V5YKBkW52_md9rBeVZ1RXq2FGEXt=Ergsw+z8txMreZdNsA@mail.gmail.com>
-        <4EA5117C.3000402@st.com>
-        <CAJhJPsVSzXXmBOwLaGNtOsxhVEyC0fAJtiBvEWzcKcSDC8NEcA@mail.gmail.com>
-        <4EA557B2.4020504@st.com>
-        <CAJhJPsXxUAuF9HdivLd66MQC45mz-iYAuF1SdGdU=-duxJJ5bQ@mail.gmail.com>
-        <4EA585B5.5030405@st.com>
-        <CAJhJPsVu7hahhmUvPQ=s=AqvXGhU-05x=GqQ29Mo6PZ8cTtefA@mail.gmail.com>
-        <4EA660C0.1020901@st.com>
-        <4EA6716A.80307@st.com>
-Date:   Wed, 26 Oct 2011 12:27:42 +0800
-Message-ID: <CAJhJPsU3KMNuGcKaKf3H4pUCeu1+vnEz4DgO_jbm+wDQb1G4OA@mail.gmail.com>
-Subject: Re: [PATCH V2 2/4] MIPS: Add board support for Loongson1B
-From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     Giuseppe CAVALLARO <peppe.cavallaro@st.com>
+To:     Kelvin Cheung <keguang.zhang@gmail.com>
 Cc:     Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, ralf@linux-mips.org,
         r0bertz@gentoo.org, netdev@vger.kernel.org
-Content-Type: multipart/mixed; boundary=20cf30780d00b7076804b02c13c9
-X-archive-position: 31304
+Subject: Re: [PATCH V2 2/4] MIPS: Add board support for Loongson1B
+References: <1319192888-21465-1-git-send-email-keguang.zhang@gmail.com> <1319192888-21465-2-git-send-email-keguang.zhang@gmail.com> <CAD+V5YKBkW52_md9rBeVZ1RXq2FGEXt=Ergsw+z8txMreZdNsA@mail.gmail.com> <4EA5117C.3000402@st.com> <CAJhJPsVSzXXmBOwLaGNtOsxhVEyC0fAJtiBvEWzcKcSDC8NEcA@mail.gmail.com> <4EA557B2.4020504@st.com> <CAJhJPsXxUAuF9HdivLd66MQC45mz-iYAuF1SdGdU=-duxJJ5bQ@mail.gmail.com> <4EA585B5.5030405@st.com> <CAJhJPsVu7hahhmUvPQ=s=AqvXGhU-05x=GqQ29Mo6PZ8cTtefA@mail.gmail.com> <4EA660C0.1020901@st.com> <4EA6716A.80307@st.com> <CAJhJPsU3KMNuGcKaKf3H4pUCeu1+vnEz4DgO_jbm+wDQb1G4OA@mail.gmail.com>
+In-Reply-To: <CAJhJPsU3KMNuGcKaKf3H4pUCeu1+vnEz4DgO_jbm+wDQb1G4OA@mail.gmail.com>
+Content-Type: multipart/mixed;
+ boundary="------------070509020002010306020205"
+X-archive-position: 31305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: peppe.cavallaro@st.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18637
+X-UID: 18694
 
---20cf30780d00b7076804b02c13c9
+This is a multi-part message in MIME format.
+--------------070509020002010306020205
 Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-Hi Giuseppe,
+Hello Kelvin
 
-This patch works well on Loongson1B platform except one thing.
-The rx checksum offload of normal descriptor is disabled by default.
-So, I enabled this functon. And one minor tweak is added to your patch.
-What about your opinion?
+On 10/26/2011 6:27 AM, Kelvin Cheung wrote:
+> Hi Giuseppe,
+> 
+> This patch works well on Loongson1B platform except one thing.
+> The rx checksum offload of normal descriptor is disabled by default.
+> So, I enabled this functon. And one minor tweak is added to your patch.
+> What about your opinion?
 
-BTW, tx checksum insertion works now.
+Yes, I had not enabled the rx coe. I'm resending your patch (v3) where I
+fixed a problem. Old mac10/100 has no rx csum in HW. So I added an extra
+check.
+Let me consider it the final version. ;-)
 
-2011/10/25, Giuseppe CAVALLARO <peppe.cavallaro@st.com>:
-> On 10/25/2011 9:09 AM, Giuseppe CAVALLARO wrote:
->> On 10/25/2011 4:12 AM, Kelvin Cheung wrote:
->>> 2011/10/24, Giuseppe CAVALLARO <peppe.cavallaro@st.com>:
->>>> On 10/24/2011 4:05 PM, Kelvin Cheung wrote:
->>>>> 2011/10/24, Giuseppe CAVALLARO <peppe.cavallaro@st.com>:
->>>>>> Hello Kelvin.
+Thanks a lot for you effort.
+I'll send it for net-next now.
+
+Regards
+Peppe
+
+> 
+> BTW, tx checksum insertion works now.
+> 
+> 2011/10/25, Giuseppe CAVALLARO <peppe.cavallaro@st.com>:
+>> On 10/25/2011 9:09 AM, Giuseppe CAVALLARO wrote:
+>>> On 10/25/2011 4:12 AM, Kelvin Cheung wrote:
+>>>> 2011/10/24, Giuseppe CAVALLARO <peppe.cavallaro@st.com>:
+>>>>> On 10/24/2011 4:05 PM, Kelvin Cheung wrote:
+>>>>>> 2011/10/24, Giuseppe CAVALLARO <peppe.cavallaro@st.com>:
+>>>>>>> Hello Kelvin.
+>>>>>>>
+>>>>>>> On 10/24/2011 12:36 PM, Kelvin Cheung wrote:
+>>>>>>>
+>>>>>>> [snip]
+>>>>>>>
+>>>>>>>> According to datasheet of Loongson 1B, the buffer size in RX/TX
+>>>>>>>> descriptor is only 2KB. So the Loongson1B's GMAC could not handle
+>>>>>>>> jumbo frames. And the second buffer is useless in this case. Am I
+>>>>>>>> right? Is there a better way than ifdef CONFIG_MACH_LOONGSON1 to
+>>>>>>>> avoid duplicate code?
+>>>>>>>
+>>>>>>> Sorry for my misunderstanding.
+>>>>>>>
+>>>>>>> I think you have to use the normal descriptor and remove the enh_desc
+>>>>>>> from the platform w/o modifying the driver at all.
+>>>>>>>
+>>>>>>> The driver will be able to select/configure all automatically (also
+>>>>>>> jumbo).
+>>>>>>>
+>>>>>>> Let me know.
 >>>>>>
->>>>>> On 10/24/2011 12:36 PM, Kelvin Cheung wrote:
->>>>>>
->>>>>> [snip]
->>>>>>
->>>>>>> According to datasheet of Loongson 1B, the buffer size in RX/TX
->>>>>>> descriptor is only 2KB. So the Loongson1B's GMAC could not handle
->>>>>>> jumbo frames. And the second buffer is useless in this case. Am I
->>>>>>> right? Is there a better way than ifdef CONFIG_MACH_LOONGSON1 to
->>>>>>> avoid duplicate code?
->>>>>>
->>>>>> Sorry for my misunderstanding.
->>>>>>
->>>>>> I think you have to use the normal descriptor and remove the enh_desc
->>>>>> from the platform w/o modifying the driver at all.
->>>>>>
->>>>>> The driver will be able to select/configure all automatically (also
->>>>>> jumbo).
->>>>>>
->>>>>> Let me know.
+>>>>>> That's the problem.
+>>>>>> The bitfield definition of Loongson1B is also different from normal
+>>>>>> descriptor.
 >>>>>
->>>>> That's the problem.
->>>>> The bitfield definition of Loongson1B is also different from normal
->>>>> descriptor.
+>>>>> The problem is not in the Loongson1B gmac.
 >>>>
->>>> The problem is not in the Loongson1B gmac.
->>>
->>> I found that the bit checksum_insertion is not existed in normal
->>> descriptor.
->>>
->>>> The normal descriptor fields in the stmmac refer to an old synopsys
->>>> databook.
->>>
->>> Could you send me the new databook of Synopsys GMAC?
->>>
->>>> New chips have the same structure you have added; so we should fix this
->>>> in the driver w/o breaking the compatibility for old chips.
->>>
->>> Agree.
->>>
->>>> I kindly ask you to confirm if the currently normal descriptor structure
->>>> (w/o your changes) doesn't work on your platform.
->>>> Did you test it?
->>>
->>> Well, the normal descriptor works on my platform except TX checksum
->>> offload.
->>
->> ok! I suspected that.
->>
->>
->>>>> Moreover, I want to enable the TX checksum offload function which is
->>>>> not supported in normal descriptor.
->>>>> Any suggestions?
+>>>> I found that the bit checksum_insertion is not existed in normal
+>>>> descriptor.
 >>>>
->>>> It is supported but you have to pass from the platform: tx_coe = 1.
+>>>>> The normal descriptor fields in the stmmac refer to an old synopsys
+>>>>> databook.
+>>>>
+>>>> Could you send me the new databook of Synopsys GMAC?
+>>>>
+>>>>> New chips have the same structure you have added; so we should fix this
+>>>>> in the driver w/o breaking the compatibility for old chips.
+>>>>
+>>>> Agree.
+>>>>
+>>>>> I kindly ask you to confirm if the currently normal descriptor structure
+>>>>> (w/o your changes) doesn't work on your platform.
+>>>>> Did you test it?
+>>>>
+>>>> Well, the normal descriptor works on my platform except TX checksum
+>>>> offload.
 >>>
->>> I noticed that the flag csum_insertion is passed to
->>> ndesc_prepare_tx_desc() in stmmac_xmit(). But ndesc_prepare_tx_desc()
->>> just ignores it.
->>> In other words, the TX checksum offload function is disabled in normal
->>> descriptor currently.
+>>> ok! I suspected that.
 >>>
->>> Should we fix this problem for normal descriptor?
->>
->> Yes, we should. If you agree, I'll update the normal descriptor
->> structure to yours. This is the normal descriptor used in newer GMAC.
->> Tx csum will be done for normal descriptors in case of these GMAC
->> devices and not for old MAC10/100. For the MAC10/100 some bits for
->> normal descriptors are reserved and won't be used at all.
->>
->> I'll also verify that the patch doesn't break the back-compatibility
->> with old MAC10/100. I have the HW where doing the tests.
->>
->> After that, I'll prepare the patch for net-next and for your kernel.
->
-> Hello Kelvin
->
-> attached the patch tested on my development kernel.
-> It runs fine on old and new mac devices.
->
-> Can you try it on your side? Hmm, it is likely it won't apply fine on
-> your tree but you know the changes ;-).
->
-> If ok, I'll rework it for net-next and send it to the mailing list.
->
-> Thanks
-> Peppe
->
->>
 >>>
->>>> Peppe
+>>>>>> Moreover, I want to enable the TX checksum offload function which is
+>>>>>> not supported in normal descriptor.
+>>>>>> Any suggestions?
 >>>>>
->>>>>> Note:
->>>>>> IIRC, there is a bit difference in case of normal descriptors for
->>>>>> Synopsys databook newer than the 1.91 (I used for testing this mode).
->>>>>> In any case, I remember that, on some platforms, the normal
->>>>>> descriptors
->>>>>> have been used w/o problems also on these new chip generations.
+>>>>> It is supported but you have to pass from the platform: tx_coe = 1.
+>>>>
+>>>> I noticed that the flag csum_insertion is passed to
+>>>> ndesc_prepare_tx_desc() in stmmac_xmit(). But ndesc_prepare_tx_desc()
+>>>> just ignores it.
+>>>> In other words, the TX checksum offload function is disabled in normal
+>>>> descriptor currently.
+>>>>
+>>>> Should we fix this problem for normal descriptor?
+>>>
+>>> Yes, we should. If you agree, I'll update the normal descriptor
+>>> structure to yours. This is the normal descriptor used in newer GMAC.
+>>> Tx csum will be done for normal descriptors in case of these GMAC
+>>> devices and not for old MAC10/100. For the MAC10/100 some bits for
+>>> normal descriptors are reserved and won't be used at all.
+>>>
+>>> I'll also verify that the patch doesn't break the back-compatibility
+>>> with old MAC10/100. I have the HW where doing the tests.
+>>>
+>>> After that, I'll prepare the patch for net-next and for your kernel.
+>>
+>> Hello Kelvin
+>>
+>> attached the patch tested on my development kernel.
+>> It runs fine on old and new mac devices.
+>>
+>> Can you try it on your side? Hmm, it is likely it won't apply fine on
+>> your tree but you know the changes ;-).
+>>
+>> If ok, I'll rework it for net-next and send it to the mailing list.
+>>
+>> Thanks
+>> Peppe
+>>
+>>>
+>>>>
+>>>>> Peppe
 >>>>>>
->>>>>> Peppe
+>>>>>>> Note:
+>>>>>>> IIRC, there is a bit difference in case of normal descriptors for
+>>>>>>> Synopsys databook newer than the 1.91 (I used for testing this mode).
+>>>>>>> In any case, I remember that, on some platforms, the normal
+>>>>>>> descriptors
+>>>>>>> have been used w/o problems also on these new chip generations.
+>>>>>>>
+>>>>>>> Peppe
+>>>>>>>
+>>>>>>>
 >>>>>>
 >>>>>>
 >>>>>
@@ -175,163 +185,292 @@ BTW, tx checksum insertion works now.
 >>>>
 >>>>
 >>>
+>>> --
+>>> To unsubscribe from this list: send the line "unsubscribe netdev" in
+>>> the body of a message to majordomo@vger.kernel.org
+>>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 >>>
 >>
->> --
->> To unsubscribe from this list: send the line "unsubscribe netdev" in
->> the body of a message to majordomo@vger.kernel.org
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 >>
->
->
+> 
+> 
 
 
+--------------070509020002010306020205
+Content-Type: text/x-patch;
+ name="0001-stmmac-update-normal-descriptor-structure-v3.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0001-stmmac-update-normal-descriptor-structure-v3.patch"
+
+>From 324c8e56e728046590bae14d14e8ff09978b71b4 Mon Sep 17 00:00:00 2001
+From: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Date: Tue, 25 Oct 2011 09:46:41 +0200
+Subject: [PATCH (sh-2.6.32.y)] stmmac: update normal descriptor structure
+ (v3)
+
+This patch updates the normal descriptor structure
+to work fine on new GMAC Synopsys chips.
+
+Normal descriptors were designed on the old MAC10/100
+databook 1.91 where some bits were reserved: for example
+the tx checksum insertion and rx checksum offload.
+
+The patch maintains the back-compatibility with old
+MAC devices (tested on STx7109 MAC10/100) and adds new
+fields that actually new GMAC devices can use.
+
+For example, STx7109 will pass from the platform
+tx_coe = 0, enh_desc = 0, has_gmac = 0.
+A platform like Loongson1B (Mips) will pass:
+tx_coe = 1, enh_desc = 0, has_gmac = 1.
+
+Thanks to Kelvin, he enhanced the normal descriptors for
+GMAC on Loongson1B.
+
+Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+Signed-off-by: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+---
+ drivers/net/stmmac/common.h         |    8 +++---
+ drivers/net/stmmac/descs.h          |   31 +++++++++++++++-----------
+ drivers/net/stmmac/norm_desc.c      |   40 ++++++++++++++++++++--------------
+ drivers/net/stmmac/stmmac_ethtool.c |    8 +++---
+ drivers/net/stmmac/stmmac_main.c    |    4 +-
+ 5 files changed, 51 insertions(+), 40 deletions(-)
+
+diff --git a/drivers/net/stmmac/common.h b/drivers/net/stmmac/common.h
+index 9100c10..2cc1192 100644
+--- a/drivers/net/stmmac/common.h
++++ b/drivers/net/stmmac/common.h
+@@ -49,7 +49,7 @@ struct stmmac_extra_stats {
+ 	unsigned long tx_underflow ____cacheline_aligned;
+ 	unsigned long tx_carrier;
+ 	unsigned long tx_losscarrier;
+-	unsigned long tx_heartbeat;
++	unsigned long vlan_tag;
+ 	unsigned long tx_deferred;
+ 	unsigned long tx_vlan;
+ 	unsigned long tx_jabber;
+@@ -58,9 +58,9 @@ struct stmmac_extra_stats {
+ 	unsigned long tx_ip_header_error;
+ 	/* Receive errors */
+ 	unsigned long rx_desc;
+-	unsigned long rx_partial;
+-	unsigned long rx_runt;
+-	unsigned long rx_toolong;
++	unsigned long sa_filter_fail;
++	unsigned long overflow_error;
++	unsigned long ipc_csum_error;
+ 	unsigned long rx_collision;
+ 	unsigned long rx_crc;
+ 	unsigned long rx_length;
+diff --git a/drivers/net/stmmac/descs.h b/drivers/net/stmmac/descs.h
+index 63a03e2..9820ec8 100644
+--- a/drivers/net/stmmac/descs.h
++++ b/drivers/net/stmmac/descs.h
+@@ -25,33 +25,34 @@ struct dma_desc {
+ 	union {
+ 		struct {
+ 			/* RDES0 */
+-			u32 reserved1:1;
++			u32 payload_csum_error:1;
+ 			u32 crc_error:1;
+ 			u32 dribbling:1;
+ 			u32 mii_error:1;
+ 			u32 receive_watchdog:1;
+ 			u32 frame_type:1;
+ 			u32 collision:1;
+-			u32 frame_too_long:1;
++			u32 ipc_csum_error:1;
+ 			u32 last_descriptor:1;
+ 			u32 first_descriptor:1;
+-			u32 multicast_frame:1;
+-			u32 run_frame:1;
++			u32 vlan_tag:1;
++			u32 overflow_error:1;
+ 			u32 length_error:1;
+-			u32 partial_frame_error:1;
++			u32 sa_filter_fail:1;
+ 			u32 descriptor_error:1;
+ 			u32 error_summary:1;
+ 			u32 frame_length:14;
+-			u32 filtering_fail:1;
++			u32 da_filter_fail:1;
+ 			u32 own:1;
+ 			/* RDES1 */
+ 			u32 buffer1_size:11;
+ 			u32 buffer2_size:11;
+-			u32 reserved2:2;
++			u32 reserved1:2;
+ 			u32 second_address_chained:1;
+ 			u32 end_ring:1;
+-			u32 reserved3:5;
++			u32 reserved2:5;
+ 			u32 disable_ic:1;
++
+ 		} rx;
+ 		struct {
+ 			/* RDES0 */
+@@ -91,24 +92,28 @@ struct dma_desc {
+ 			u32 underflow_error:1;
+ 			u32 excessive_deferral:1;
+ 			u32 collision_count:4;
+-			u32 heartbeat_fail:1;
++			u32 vlan_frame:1;
+ 			u32 excessive_collisions:1;
+ 			u32 late_collision:1;
+ 			u32 no_carrier:1;
+ 			u32 loss_carrier:1;
+-			u32 reserved1:3;
++			u32 payload_error:1;
++			u32 frame_flushed:1;
++			u32 jabber_timeout:1;
+ 			u32 error_summary:1;
+-			u32 reserved2:15;
++			u32 ip_header_error:1;
++			u32 time_stamp_status:1;
++			u32 reserved1:13;
+ 			u32 own:1;
+ 			/* TDES1 */
+ 			u32 buffer1_size:11;
+ 			u32 buffer2_size:11;
+-			u32 reserved3:1;
++			u32 time_stamp_enable:1;
+ 			u32 disable_padding:1;
+ 			u32 second_address_chained:1;
+ 			u32 end_ring:1;
+ 			u32 crc_disable:1;
+-			u32 reserved4:2;
++			u32 checksum_insertion:2;
+ 			u32 first_segment:1;
+ 			u32 last_segment:1;
+ 			u32 interrupt:1;
+diff --git a/drivers/net/stmmac/norm_desc.c b/drivers/net/stmmac/norm_desc.c
+index f7e8ba7..3955ae7 100644
+--- a/drivers/net/stmmac/norm_desc.c
++++ b/drivers/net/stmmac/norm_desc.c
+@@ -50,11 +50,12 @@ static int ndesc_get_tx_status(void *data, struct stmmac_extra_stats *x,
+ 			stats->collisions += p->des01.tx.collision_count;
+ 		ret = -1;
+ 	}
+-	if (unlikely(p->des01.tx.heartbeat_fail)) {
+-		x->tx_heartbeat++;
+-		stats->tx_heartbeat_errors++;
+-		ret = -1;
+-	}
++
++        if (p->des01.etx.vlan_frame) {
++                CHIP_DBG(KERN_INFO "GMAC TX status: VLAN frame\n");
++                x->tx_vlan++;
++        }
++
+ 	if (unlikely(p->des01.tx.deferred))
+ 		x->tx_deferred++;
+ 
+@@ -68,12 +69,12 @@ static int ndesc_get_tx_len(struct dma_desc *p)
+ 
+ /* This function verifies if each incoming frame has some errors
+  * and, if required, updates the multicast statistics.
+- * In case of success, it returns csum_none because the device
+- * is not able to compute the csum in HW. */
++ * In case of success, it returns good_frame because the GMAC device
++ * is supposed to be able to compute the csum in HW. */
+ static int ndesc_get_rx_status(void *data, struct stmmac_extra_stats *x,
+ 			       struct dma_desc *p)
+ {
+-	int ret = csum_none;
++	int ret = good_frame;
+ 	struct net_device_stats *stats = (struct net_device_stats *)data;
+ 
+ 	if (unlikely(p->des01.rx.last_descriptor == 0)) {
+@@ -86,12 +87,12 @@ static int ndesc_get_rx_status(void *data, struct stmmac_extra_stats *x,
+ 	if (unlikely(p->des01.rx.error_summary)) {
+ 		if (unlikely(p->des01.rx.descriptor_error))
+ 			x->rx_desc++;
+-		if (unlikely(p->des01.rx.partial_frame_error))
+-			x->rx_partial++;
+-		if (unlikely(p->des01.rx.run_frame))
+-			x->rx_runt++;
+-		if (unlikely(p->des01.rx.frame_too_long))
+-			x->rx_toolong++;
++		if (unlikely(p->des01.rx.sa_filter_fail))
++			x->sa_filter_fail++;
++		if (unlikely(p->des01.rx.overflow_error))
++			x->overflow_error++;
++		if (unlikely(p->des01.rx.ipc_csum_error))
++			x->ipc_csum_error++;
+ 		if (unlikely(p->des01.rx.collision)) {
+ 			x->rx_collision++;
+ 			stats->collisions++;
+@@ -113,10 +114,12 @@ static int ndesc_get_rx_status(void *data, struct stmmac_extra_stats *x,
+ 		x->rx_mii++;
+ 		ret = discard_frame;
+ 	}
+-	if (p->des01.rx.multicast_frame) {
+-		x->rx_multicast++;
+-		stats->multicast++;
++#ifdef STMMAC_VLAN_TAG_USED
++	if (p->des01.rx.vlan_tag) {
++		x->vlan_tag++;
++		stats->vlan_tag++;
+ 	}
++#endif
+ 	return ret;
+ }
+ 
+@@ -184,6 +187,9 @@ static void ndesc_prepare_tx_desc(struct dma_desc *p, int is_fs, int len,
+ {
+ 	p->des01.tx.first_segment = is_fs;
+ 	norm_set_tx_desc_len(p, len);
++
++	if (likely(csum_flag))
++		p->des01.tx.checksum_insertion = cic_full;
+ }
+ 
+ static void ndesc_clear_tx_ic(struct dma_desc *p)
+diff --git a/drivers/net/stmmac/stmmac_ethtool.c b/drivers/net/stmmac/stmmac_ethtool.c
+index d81cf20..6831cf2 100644
+--- a/drivers/net/stmmac/stmmac_ethtool.c
++++ b/drivers/net/stmmac/stmmac_ethtool.c
+@@ -48,7 +48,7 @@ static const struct stmmac_stats stmmac_gstrings_stats[] = {
+ 	STMMAC_STAT(tx_underflow),
+ 	STMMAC_STAT(tx_carrier),
+ 	STMMAC_STAT(tx_losscarrier),
+-	STMMAC_STAT(tx_heartbeat),
++	STMMAC_STAT(vlan_tag),
+ 	STMMAC_STAT(tx_deferred),
+ 	STMMAC_STAT(tx_vlan),
+ 	STMMAC_STAT(rx_vlan),
+@@ -57,9 +57,9 @@ static const struct stmmac_stats stmmac_gstrings_stats[] = {
+ 	STMMAC_STAT(tx_payload_error),
+ 	STMMAC_STAT(tx_ip_header_error),
+ 	STMMAC_STAT(rx_desc),
+-	STMMAC_STAT(rx_partial),
+-	STMMAC_STAT(rx_runt),
+-	STMMAC_STAT(rx_toolong),
++	STMMAC_STAT(sa_filter_fail),
++	STMMAC_STAT(overflow_error),
++	STMMAC_STAT(ipc_csum_error),
+ 	STMMAC_STAT(rx_collision),
+ 	STMMAC_STAT(rx_crc),
+ 	STMMAC_STAT(rx_length),
+diff --git a/drivers/net/stmmac/stmmac_main.c b/drivers/net/stmmac/stmmac_main.c
+index 3a3efb1..18e614b 100644
+--- a/drivers/net/stmmac/stmmac_main.c
++++ b/drivers/net/stmmac/stmmac_main.c
+@@ -1318,8 +1318,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit)
+ #endif
+ 			skb->protocol = eth_type_trans(skb, priv->dev);
+ 
+-			if (unlikely(status == csum_none)) {
+-				/* always for the old mac 10/100 */
++			if (unlikely(!priv->plat->has_gmac)) {
++				/* No csum for the old mac 10/100 devices */
+ 				skb->ip_summed = CHECKSUM_NONE;
+ 				netif_receive_skb(skb);
+ 			} else {
 -- 
-Best Regards!
-Kelvin
+1.7.4.4
 
---20cf30780d00b7076804b02c13c9
-Content-Type: text/x-patch; charset=US-ASCII; 
-	name="0001-stmmac-update-normal-descriptor-structure.patch"
-Content-Disposition: attachment; 
-	filename="0001-stmmac-update-normal-descriptor-structure.patch"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: file0
 
-RnJvbSA5M2VlM2VmZmJkZTYxMDEzYTg4NmQ1NzlmYzg5YzM2ZGRkZGIzNWE0IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBLZWx2aW4gQ2hldW5nIDxrZWd1YW5nLnpoYW5nQGdtYWlsLmNv
-bT4KRGF0ZTogV2VkLCAyNiBPY3QgMjAxMSAxMTowODowMSArMDgwMApTdWJqZWN0OiBbUEFUQ0hd
-IHN0bW1hYzogdXBkYXRlIG5vcm1hbCBkZXNjcmlwdG9yIHN0cnVjdHVyZQoKVGhpcyBwYXRjaCB1
-cGRhdGVzIHRoZSBub3JtYWwgZGVzY3JpcHRvciBzdHJ1Y3R1cmUKdG8gd29yayBmaW5lIG9uIG5l
-dyBHTUFDIFN5bm9wc3lzIGNoaXBzLgoKTm9ybWFsIGRlc2NyaXB0b3JzIHdlcmUgZGVzaWduZWQg
-b24gdGhlIG9sZCBNQUMxMC8xMDAKZGF0YWJvb2sgMS45MSB3aGVyZSBzb21lIGJpdHMgd2VyZSBy
-ZXNlcnZlZDogZm9yIGV4YW1wbGUKdGhlIHR4IGNoZWNrc3VtIGluc2VydGlvbiBhbmQgcnggY2hl
-Y2tzdW0gb2ZmbG9hZC4KClRoZSBwYXRjaCBtYWludGFpbnMgdGhlIGJhY2stY29tcGF0aWJpbGl0
-eSB3aXRoIG9sZApNQUMgZGV2aWNlcyAodGVzdGVkIG9uIFNUeDcxMDkgTUFDMTAvMTAwKSBhbmQg
-YWRkcyBuZXcKZmllbGRzIHRoYXQgYWN0dWFsbHkgbmV3IEdNQUMgZGV2aWNlcyBjYW4gdXNlLgoK
-Rm9yIGV4YW1wbGUsIFNUeDcxMDkgd2lsbCBwYXNzIGZyb20gdGhlIHBsYXRmb3JtCnR4X2NvZSA9
-IDAsIGVuaF9kZXNjID0gMCwgaGFzX2dtYWMgPSAwLgpBIHBsYXRmb3JtIGxpa2UgTG9vbmdzb24x
-QiAoTWlwcykgd2lsbCBwYXNzOgp0eF9jb2UgPSAxLCBlbmhfZGVzYyA9IDAsIGhhc19nbWFjID0g
-MS4KClRoYW5rcyB0byBLZWx2aW4sIGhlIGVuaGFuY2VkIHRoZSBub3JtYWwgZGVzY3JpcHRvcnMg
-Zm9yCkdNQUMgb24gTG9vbmdzb24xQi4KClNpZ25lZC1vZmYtYnk6IEtlbHZpbiBDaGV1bmcgPGtl
-Z3VhbmcuemhhbmdAZ21haWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBHaXVzZXBwZSBDYXZhbGxhcm8g
-PHBlcHBlLmNhdmFsbGFyb0BzdC5jb20+Ci0tLQogZHJpdmVycy9uZXQvc3RtbWFjL2NvbW1vbi5o
-ICAgICAgICAgfCAgICA4ICsrKy0tLQogZHJpdmVycy9uZXQvc3RtbWFjL2Rlc2NzLmggICAgICAg
-ICAgfCAgIDMxICsrKysrKysrKysrKysrKy0tLS0tLS0tLS0tCiBkcml2ZXJzL25ldC9zdG1tYWMv
-bm9ybV9kZXNjLmMgICAgICB8ICAgNDAgKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0t
-LQogZHJpdmVycy9uZXQvc3RtbWFjL3N0bW1hY19ldGh0b29sLmMgfCAgICA4ICsrKy0tLQogNCBm
-aWxlcyBjaGFuZ2VkLCA0OCBpbnNlcnRpb25zKCspLCAzOSBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
-aXQgYS9kcml2ZXJzL25ldC9zdG1tYWMvY29tbW9uLmggYi9kcml2ZXJzL25ldC9zdG1tYWMvY29t
-bW9uLmgKaW5kZXggMzc1ZWExOS4uNmVjNGE4YyAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvc3Rt
-bWFjL2NvbW1vbi5oCisrKyBiL2RyaXZlcnMvbmV0L3N0bW1hYy9jb21tb24uaApAQCAtNDgsNyAr
-NDgsNyBAQCBzdHJ1Y3Qgc3RtbWFjX2V4dHJhX3N0YXRzIHsKIAl1bnNpZ25lZCBsb25nIHR4X3Vu
-ZGVyZmxvdyBfX19fY2FjaGVsaW5lX2FsaWduZWQ7CiAJdW5zaWduZWQgbG9uZyB0eF9jYXJyaWVy
-OwogCXVuc2lnbmVkIGxvbmcgdHhfbG9zc2NhcnJpZXI7Ci0JdW5zaWduZWQgbG9uZyB0eF9oZWFy
-dGJlYXQ7CisJdW5zaWduZWQgbG9uZyB2bGFuX3RhZzsKIAl1bnNpZ25lZCBsb25nIHR4X2RlZmVy
-cmVkOwogCXVuc2lnbmVkIGxvbmcgdHhfdmxhbjsKIAl1bnNpZ25lZCBsb25nIHR4X2phYmJlcjsK
-QEAgLTU3LDkgKzU3LDkgQEAgc3RydWN0IHN0bW1hY19leHRyYV9zdGF0cyB7CiAJdW5zaWduZWQg
-bG9uZyB0eF9pcF9oZWFkZXJfZXJyb3I7CiAJLyogUmVjZWl2ZSBlcnJvcnMgKi8KIAl1bnNpZ25l
-ZCBsb25nIHJ4X2Rlc2M7Ci0JdW5zaWduZWQgbG9uZyByeF9wYXJ0aWFsOwotCXVuc2lnbmVkIGxv
-bmcgcnhfcnVudDsKLQl1bnNpZ25lZCBsb25nIHJ4X3Rvb2xvbmc7CisJdW5zaWduZWQgbG9uZyBz
-YV9maWx0ZXJfZmFpbDsKKwl1bnNpZ25lZCBsb25nIG92ZXJmbG93X2Vycm9yOworCXVuc2lnbmVk
-IGxvbmcgaXBjX2NzdW1fZXJyb3I7CiAJdW5zaWduZWQgbG9uZyByeF9jb2xsaXNpb247CiAJdW5z
-aWduZWQgbG9uZyByeF9jcmM7CiAJdW5zaWduZWQgbG9uZyByeF9sZW5ndGg7CmRpZmYgLS1naXQg
-YS9kcml2ZXJzL25ldC9zdG1tYWMvZGVzY3MuaCBiL2RyaXZlcnMvbmV0L3N0bW1hYy9kZXNjcy5o
-CmluZGV4IDYzYTAzZTIuLjk4MjBlYzggMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3N0bW1hYy9k
-ZXNjcy5oCisrKyBiL2RyaXZlcnMvbmV0L3N0bW1hYy9kZXNjcy5oCkBAIC0yNSwzMyArMjUsMzQg
-QEAgc3RydWN0IGRtYV9kZXNjIHsKIAl1bmlvbiB7CiAJCXN0cnVjdCB7CiAJCQkvKiBSREVTMCAq
-LwotCQkJdTMyIHJlc2VydmVkMToxOworCQkJdTMyIHBheWxvYWRfY3N1bV9lcnJvcjoxOwogCQkJ
-dTMyIGNyY19lcnJvcjoxOwogCQkJdTMyIGRyaWJibGluZzoxOwogCQkJdTMyIG1paV9lcnJvcjox
-OwogCQkJdTMyIHJlY2VpdmVfd2F0Y2hkb2c6MTsKIAkJCXUzMiBmcmFtZV90eXBlOjE7CiAJCQl1
-MzIgY29sbGlzaW9uOjE7Ci0JCQl1MzIgZnJhbWVfdG9vX2xvbmc6MTsKKwkJCXUzMiBpcGNfY3N1
-bV9lcnJvcjoxOwogCQkJdTMyIGxhc3RfZGVzY3JpcHRvcjoxOwogCQkJdTMyIGZpcnN0X2Rlc2Ny
-aXB0b3I6MTsKLQkJCXUzMiBtdWx0aWNhc3RfZnJhbWU6MTsKLQkJCXUzMiBydW5fZnJhbWU6MTsK
-KwkJCXUzMiB2bGFuX3RhZzoxOworCQkJdTMyIG92ZXJmbG93X2Vycm9yOjE7CiAJCQl1MzIgbGVu
-Z3RoX2Vycm9yOjE7Ci0JCQl1MzIgcGFydGlhbF9mcmFtZV9lcnJvcjoxOworCQkJdTMyIHNhX2Zp
-bHRlcl9mYWlsOjE7CiAJCQl1MzIgZGVzY3JpcHRvcl9lcnJvcjoxOwogCQkJdTMyIGVycm9yX3N1
-bW1hcnk6MTsKIAkJCXUzMiBmcmFtZV9sZW5ndGg6MTQ7Ci0JCQl1MzIgZmlsdGVyaW5nX2ZhaWw6
-MTsKKwkJCXUzMiBkYV9maWx0ZXJfZmFpbDoxOwogCQkJdTMyIG93bjoxOwogCQkJLyogUkRFUzEg
-Ki8KIAkJCXUzMiBidWZmZXIxX3NpemU6MTE7CiAJCQl1MzIgYnVmZmVyMl9zaXplOjExOwotCQkJ
-dTMyIHJlc2VydmVkMjoyOworCQkJdTMyIHJlc2VydmVkMToyOwogCQkJdTMyIHNlY29uZF9hZGRy
-ZXNzX2NoYWluZWQ6MTsKIAkJCXUzMiBlbmRfcmluZzoxOwotCQkJdTMyIHJlc2VydmVkMzo1Owor
-CQkJdTMyIHJlc2VydmVkMjo1OwogCQkJdTMyIGRpc2FibGVfaWM6MTsKKwogCQl9IHJ4OwogCQlz
-dHJ1Y3QgewogCQkJLyogUkRFUzAgKi8KQEAgLTkxLDI0ICs5MiwyOCBAQCBzdHJ1Y3QgZG1hX2Rl
-c2MgewogCQkJdTMyIHVuZGVyZmxvd19lcnJvcjoxOwogCQkJdTMyIGV4Y2Vzc2l2ZV9kZWZlcnJh
-bDoxOwogCQkJdTMyIGNvbGxpc2lvbl9jb3VudDo0OwotCQkJdTMyIGhlYXJ0YmVhdF9mYWlsOjE7
-CisJCQl1MzIgdmxhbl9mcmFtZToxOwogCQkJdTMyIGV4Y2Vzc2l2ZV9jb2xsaXNpb25zOjE7CiAJ
-CQl1MzIgbGF0ZV9jb2xsaXNpb246MTsKIAkJCXUzMiBub19jYXJyaWVyOjE7CiAJCQl1MzIgbG9z
-c19jYXJyaWVyOjE7Ci0JCQl1MzIgcmVzZXJ2ZWQxOjM7CisJCQl1MzIgcGF5bG9hZF9lcnJvcjox
-OworCQkJdTMyIGZyYW1lX2ZsdXNoZWQ6MTsKKwkJCXUzMiBqYWJiZXJfdGltZW91dDoxOwogCQkJ
-dTMyIGVycm9yX3N1bW1hcnk6MTsKLQkJCXUzMiByZXNlcnZlZDI6MTU7CisJCQl1MzIgaXBfaGVh
-ZGVyX2Vycm9yOjE7CisJCQl1MzIgdGltZV9zdGFtcF9zdGF0dXM6MTsKKwkJCXUzMiByZXNlcnZl
-ZDE6MTM7CiAJCQl1MzIgb3duOjE7CiAJCQkvKiBUREVTMSAqLwogCQkJdTMyIGJ1ZmZlcjFfc2l6
-ZToxMTsKIAkJCXUzMiBidWZmZXIyX3NpemU6MTE7Ci0JCQl1MzIgcmVzZXJ2ZWQzOjE7CisJCQl1
-MzIgdGltZV9zdGFtcF9lbmFibGU6MTsKIAkJCXUzMiBkaXNhYmxlX3BhZGRpbmc6MTsKIAkJCXUz
-MiBzZWNvbmRfYWRkcmVzc19jaGFpbmVkOjE7CiAJCQl1MzIgZW5kX3Jpbmc6MTsKIAkJCXUzMiBj
-cmNfZGlzYWJsZToxOwotCQkJdTMyIHJlc2VydmVkNDoyOworCQkJdTMyIGNoZWNrc3VtX2luc2Vy
-dGlvbjoyOwogCQkJdTMyIGZpcnN0X3NlZ21lbnQ6MTsKIAkJCXUzMiBsYXN0X3NlZ21lbnQ6MTsK
-IAkJCXUzMiBpbnRlcnJ1cHQ6MTsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3N0bW1hYy9ub3Jt
-X2Rlc2MuYyBiL2RyaXZlcnMvbmV0L3N0bW1hYy9ub3JtX2Rlc2MuYwppbmRleCA3MDA4YzI5Li5m
-YWI4ZjBjIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9zdG1tYWMvbm9ybV9kZXNjLmMKKysrIGIv
-ZHJpdmVycy9uZXQvc3RtbWFjL25vcm1fZGVzYy5jCkBAIC00OSwxMSArNDksMTIgQEAgc3RhdGlj
-IGludCBuZGVzY19nZXRfdHhfc3RhdHVzKHZvaWQgKmRhdGEsIHN0cnVjdCBzdG1tYWNfZXh0cmFf
-c3RhdHMgKngsCiAJCQlzdGF0cy0+Y29sbGlzaW9ucyArPSBwLT5kZXMwMS50eC5jb2xsaXNpb25f
-Y291bnQ7CiAJCXJldCA9IC0xOwogCX0KLQlpZiAodW5saWtlbHkocC0+ZGVzMDEudHguaGVhcnRi
-ZWF0X2ZhaWwpKSB7Ci0JCXgtPnR4X2hlYXJ0YmVhdCsrOwotCQlzdGF0cy0+dHhfaGVhcnRiZWF0
-X2Vycm9ycysrOwotCQlyZXQgPSAtMTsKLQl9CisKKyAgICAgICAgaWYgKHAtPmRlczAxLmV0eC52
-bGFuX2ZyYW1lKSB7CisgICAgICAgICAgICAgICAgQ0hJUF9EQkcoS0VSTl9JTkZPICJHTUFDIFRY
-IHN0YXR1czogVkxBTiBmcmFtZVxuIik7CisgICAgICAgICAgICAgICAgeC0+dHhfdmxhbisrOwor
-ICAgICAgICB9CisKIAlpZiAodW5saWtlbHkocC0+ZGVzMDEudHguZGVmZXJyZWQpKQogCQl4LT50
-eF9kZWZlcnJlZCsrOwogCkBAIC02NiwxMyArNjcsMTEgQEAgc3RhdGljIGludCBuZGVzY19nZXRf
-dHhfbGVuKHN0cnVjdCBkbWFfZGVzYyAqcCkKIH0KIAogLyogVGhpcyBmdW5jdGlvbiB2ZXJpZmll
-cyBpZiBlYWNoIGluY29taW5nIGZyYW1lIGhhcyBzb21lIGVycm9ycwotICogYW5kLCBpZiByZXF1
-aXJlZCwgdXBkYXRlcyB0aGUgbXVsdGljYXN0IHN0YXRpc3RpY3MuCi0gKiBJbiBjYXNlIG9mIHN1
-Y2Nlc3MsIGl0IHJldHVybnMgY3N1bV9ub25lIGJlY2F1c2UgdGhlIGRldmljZQotICogaXMgbm90
-IGFibGUgdG8gY29tcHV0ZSB0aGUgY3N1bSBpbiBIVy4gKi8KKyAqIGFuZCwgaWYgcmVxdWlyZWQs
-IHVwZGF0ZXMgdGhlIG11bHRpY2FzdCBzdGF0aXN0aWNzLiAqLwogc3RhdGljIGludCBuZGVzY19n
-ZXRfcnhfc3RhdHVzKHZvaWQgKmRhdGEsIHN0cnVjdCBzdG1tYWNfZXh0cmFfc3RhdHMgKngsCiAJ
-CQkgICAgICAgc3RydWN0IGRtYV9kZXNjICpwKQogewotCWludCByZXQgPSBjc3VtX25vbmU7CisJ
-aW50IHJldCA9IGdvb2RfZnJhbWU7CiAJc3RydWN0IG5ldF9kZXZpY2Vfc3RhdHMgKnN0YXRzID0g
-KHN0cnVjdCBuZXRfZGV2aWNlX3N0YXRzICopZGF0YTsKIAogCWlmICh1bmxpa2VseShwLT5kZXMw
-MS5yeC5sYXN0X2Rlc2NyaXB0b3IgPT0gMCkpIHsKQEAgLTg1LDEyICs4NCwxMiBAQCBzdGF0aWMg
-aW50IG5kZXNjX2dldF9yeF9zdGF0dXModm9pZCAqZGF0YSwgc3RydWN0IHN0bW1hY19leHRyYV9z
-dGF0cyAqeCwKIAlpZiAodW5saWtlbHkocC0+ZGVzMDEucnguZXJyb3Jfc3VtbWFyeSkpIHsKIAkJ
-aWYgKHVubGlrZWx5KHAtPmRlczAxLnJ4LmRlc2NyaXB0b3JfZXJyb3IpKQogCQkJeC0+cnhfZGVz
-YysrOwotCQlpZiAodW5saWtlbHkocC0+ZGVzMDEucngucGFydGlhbF9mcmFtZV9lcnJvcikpCi0J
-CQl4LT5yeF9wYXJ0aWFsKys7Ci0JCWlmICh1bmxpa2VseShwLT5kZXMwMS5yeC5ydW5fZnJhbWUp
-KQotCQkJeC0+cnhfcnVudCsrOwotCQlpZiAodW5saWtlbHkocC0+ZGVzMDEucnguZnJhbWVfdG9v
-X2xvbmcpKQotCQkJeC0+cnhfdG9vbG9uZysrOworCQlpZiAodW5saWtlbHkocC0+ZGVzMDEucngu
-c2FfZmlsdGVyX2ZhaWwpKQorCQkJeC0+c2FfZmlsdGVyX2ZhaWwrKzsKKwkJaWYgKHVubGlrZWx5
-KHAtPmRlczAxLnJ4Lm92ZXJmbG93X2Vycm9yKSkKKwkJCXgtPm92ZXJmbG93X2Vycm9yKys7CisJ
-CWlmICh1bmxpa2VseShwLT5kZXMwMS5yeC5pcGNfY3N1bV9lcnJvcikpCisJCQl4LT5pcGNfY3N1
-bV9lcnJvcisrOwogCQlpZiAodW5saWtlbHkocC0+ZGVzMDEucnguY29sbGlzaW9uKSkgewogCQkJ
-eC0+cnhfY29sbGlzaW9uKys7CiAJCQlzdGF0cy0+Y29sbGlzaW9ucysrOwpAQCAtMTEyLDEwICsx
-MTEsMTIgQEAgc3RhdGljIGludCBuZGVzY19nZXRfcnhfc3RhdHVzKHZvaWQgKmRhdGEsIHN0cnVj
-dCBzdG1tYWNfZXh0cmFfc3RhdHMgKngsCiAJCXgtPnJ4X21paSsrOwogCQlyZXQgPSBkaXNjYXJk
-X2ZyYW1lOwogCX0KLQlpZiAocC0+ZGVzMDEucngubXVsdGljYXN0X2ZyYW1lKSB7Ci0JCXgtPnJ4
-X211bHRpY2FzdCsrOwotCQlzdGF0cy0+bXVsdGljYXN0Kys7CisjaWZkZWYgU1RNTUFDX1ZMQU5f
-VEFHX1VTRUQKKwlpZiAocC0+ZGVzMDEucngudmxhbl90YWcpIHsKKwkJeC0+dmxhbl90YWcrKzsK
-KwkJc3RhdHMtPnZsYW5fdGFnKys7CiAJfQorI2VuZGlmCiAJcmV0dXJuIHJldDsKIH0KIApAQCAt
-MTg0LDYgKzE4NSw5IEBAIHN0YXRpYyB2b2lkIG5kZXNjX3ByZXBhcmVfdHhfZGVzYyhzdHJ1Y3Qg
-ZG1hX2Rlc2MgKnAsIGludCBpc19mcywgaW50IGxlbiwKIHsKIAlwLT5kZXMwMS50eC5maXJzdF9z
-ZWdtZW50ID0gaXNfZnM7CiAJbm9ybV9zZXRfdHhfZGVzY19sZW4ocCwgbGVuKTsKKworCWlmIChs
-aWtlbHkoY3N1bV9mbGFnKSkKKwkJcC0+ZGVzMDEudHguY2hlY2tzdW1faW5zZXJ0aW9uID0gY2lj
-X2Z1bGw7CiB9CiAKIHN0YXRpYyB2b2lkIG5kZXNjX2NsZWFyX3R4X2ljKHN0cnVjdCBkbWFfZGVz
-YyAqcCkKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3N0bW1hYy9zdG1tYWNfZXRodG9vbC5jIGIv
-ZHJpdmVycy9uZXQvc3RtbWFjL3N0bW1hY19ldGh0b29sLmMKaW5kZXggN2VkOGZiNi4uM2Q1OGZj
-YyAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvc3RtbWFjL3N0bW1hY19ldGh0b29sLmMKKysrIGIv
-ZHJpdmVycy9uZXQvc3RtbWFjL3N0bW1hY19ldGh0b29sLmMKQEAgLTUwLDcgKzUwLDcgQEAgc3Rh
-dGljIGNvbnN0IHN0cnVjdCAgc3RtbWFjX3N0YXRzIHN0bW1hY19nc3RyaW5nc19zdGF0c1tdID0g
-ewogCVNUTU1BQ19TVEFUKHR4X3VuZGVyZmxvdyksCiAJU1RNTUFDX1NUQVQodHhfY2Fycmllciks
-CiAJU1RNTUFDX1NUQVQodHhfbG9zc2NhcnJpZXIpLAotCVNUTU1BQ19TVEFUKHR4X2hlYXJ0YmVh
-dCksCisJU1RNTUFDX1NUQVQodmxhbl90YWcpLAogCVNUTU1BQ19TVEFUKHR4X2RlZmVycmVkKSwK
-IAlTVE1NQUNfU1RBVCh0eF92bGFuKSwKIAlTVE1NQUNfU1RBVChyeF92bGFuKSwKQEAgLTU5LDkg
-KzU5LDkgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCAgc3RtbWFjX3N0YXRzIHN0bW1hY19nc3RyaW5n
-c19zdGF0c1tdID0gewogCVNUTU1BQ19TVEFUKHR4X3BheWxvYWRfZXJyb3IpLAogCVNUTU1BQ19T
-VEFUKHR4X2lwX2hlYWRlcl9lcnJvciksCiAJU1RNTUFDX1NUQVQocnhfZGVzYyksCi0JU1RNTUFD
-X1NUQVQocnhfcGFydGlhbCksCi0JU1RNTUFDX1NUQVQocnhfcnVudCksCi0JU1RNTUFDX1NUQVQo
-cnhfdG9vbG9uZyksCisJU1RNTUFDX1NUQVQoc2FfZmlsdGVyX2ZhaWwpLAorCVNUTU1BQ19TVEFU
-KG92ZXJmbG93X2Vycm9yKSwKKwlTVE1NQUNfU1RBVChpcGNfY3N1bV9lcnJvciksCiAJU1RNTUFD
-X1NUQVQocnhfY29sbGlzaW9uKSwKIAlTVE1NQUNfU1RBVChyeF9jcmMpLAogCVNUTU1BQ19TVEFU
-KHJ4X2xlbmd0aCksCi0tIAoxLjcuMQoK
---20cf30780d00b7076804b02c13c9--
+--------------070509020002010306020205--

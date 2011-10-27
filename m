@@ -1,85 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2011 15:55:34 +0200 (CEST)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:48112 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903600Ab1J0Nza (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Oct 2011 15:55:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=JjtLe5R3pQqucOq8WLPu8V5YyXdQMKl2wBFv+OWrxCk=;
-        b=PFtpAFqfu2t0uuZBgBRCgPtNShNoykKXx0msEzeblSwPNPmq8XQmiPuMHx5+YucPtHQzDTjFI/cml0FCY66UYSNS3dzRi0i0DmAudupnh6rff1e0AnSuHGJ7T+9L+8m92WJAN64froLSWpRdBZ8dypG/9wUuARK35JTudL70GOk=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:36559)
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.76)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1RJQP5-0006TQ-93; Thu, 27 Oct 2011 14:53:55 +0100
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1RJQP3-0004Nb-Cq; Thu, 27 Oct 2011 14:53:53 +0100
-Date:   Thu, 27 Oct 2011 14:53:53 +0100
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Mike Frysinger <vapier@gentoo.org>
-Cc:     Grant Likely <grant.likely@secretlab.ca>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Paul Mackerras <paulus@samba.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, microblaze-uclinux@itee.uq.edu.au,
-        linux-mips@linux-mips.org, linux-sh@vger.kernel.org,
-        linux@lists.openrisc.net, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org
-Subject: Re: [PATCH] asm-generic/gpio.h: merge basic gpiolib wrappers
-Message-ID: <20111027135353.GM19187@n2100.arm.linux.org.uk>
-References: <1319528012-19006-1-git-send-email-broonie@opensource.wolfsonmicro.com> <1319720503-3183-1-git-send-email-vapier@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2011 21:07:53 +0200 (CEST)
+Received: from mo-p00-ob.rzone.de ([81.169.146.161]:51420 "EHLO
+        mo-p00-ob.rzone.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903605Ab1J0THt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Oct 2011 21:07:49 +0200
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; t=1319742468; l=1958;
+        s=domk; d=haible.de;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Subject:To:
+        From:X-RZG-CLASS-ID:X-RZG-AUTH;
+        bh=s0bZ3vlFcVBoKURZe0ytfraRoCQ=;
+        b=Wtx0Tz2Z8WI2uPmH5ms2AJi/9RkGDmCuTQJodFs5YB0EpFyUlshFOxuVYa53NR5vCim
+        DYj3GDcIrsF1nXUyksyp5YaGd4KHmoog4/enjow830KClW5cI5u0Cs/9Qmiz2U2pZT4cr
+        ugAkyoOEr1Z+1Owi0sooHq9dPY6622VxBVc=
+X-RZG-AUTH: :Ln4Re0+Ic/6oZXR1YgKryK8brksyK8dozXDwHXjf9hj/zDNRb/Q45hFP
+X-RZG-CLASS-ID: mo00
+Received: from linuix.haible.de
+        (dslb-088-068-062-040.pools.arcor-ip.net [88.68.62.40])
+        by post.strato.de (mrclete mo6) (RZmta 26.10 AUTH)
+        with ESMTPA id z01fcbn9RGYjFO ; Thu, 27 Oct 2011 21:07:39 +0200 (MEST)
+From:   Bruno Haible <bruno@clisp.org>
+To:     bug-gnulib@gnu.org, linux-mips@linux-mips.org
+Subject: bug in fchownat in n32 and 64 ABIs
+Date:   Thu, 27 Oct 2011 21:07:38 +0200
+User-Agent: KMail/1.13.6 (Linux/2.6.37.6-0.5-desktop; KDE/4.6.0; x86_64; ; )
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1319720503-3183-1-git-send-email-vapier@gentoo.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-X-archive-position: 31312
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+Message-Id: <201110272107.38510.bruno@clisp.org>
+X-archive-position: 31313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: bruno@clisp.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19750
+X-UID: 19901
 
-On Thu, Oct 27, 2011 at 09:01:43AM -0400, Mike Frysinger wrote:
-> diff --git a/arch/arm/include/asm/gpio.h b/arch/arm/include/asm/gpio.h
-> index 11ad0bf..741efb2 100644
-> --- a/arch/arm/include/asm/gpio.h
-> +++ b/arch/arm/include/asm/gpio.h
-> @@ -5,14 +5,15 @@
->  #include <mach/gpio.h>
->  
->  #ifndef __ARM_GPIOLIB_COMPLEX
-> +/* assume the mach has defined this */
-> +#ifndef irq_to_gpio
-> +#define irq_to_gpio irq_to_gpio
-> +#endif
+Hi Linux/MIPS folks,
 
-Oh, this isn't a valid assumption either - it's far from valid.  Those
-sub-architectures which don't define __ARM_GPIOLIB_COMPLEX probably don't
-define any kind of irq_to_gpio function by any means.  Some of our
-mach/gpio.h header files for sub-architectures using entirely gpiolib
-are entirely empty - and we want them to stay that way.
+Found this bug by running the gnulib POSIX test suite: In the fchownat()
+call, an uid_t or gid_t of value (uid_t)-1 or (gid_t)-1 means no change.
+See <http://pubs.opengroup.org/onlinepubs/9699919799/functions/fchownat.html>.
+This value is correctly recognized on all Unices, _except_ Linux/MIPS
+in n32 and 64 ABIs.
+
+How to reproduce:
+==================================== foo.c ====================================
+#define _GNU_SOURCE 1
+#include <fcntl.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <unistd.h>
+int
+main ()
+{
+  const char *filename = "foo.c";
+  struct stat statbuf;
+  int ret;
+  int result = 0;
+
+  ret = stat (filename, &statbuf);
+  if (ret < 0)
+    {
+      perror ("stat");
+      return 1;
+    }
+  else
+    {
+      ret = fchownat (AT_FDCWD, filename, (uid_t)-1, statbuf.st_gid, 0);
+      if (ret < 0)
+        {
+          perror ("fchownat");
+          result |= 2;
+        }
+      ret = fchownat (AT_FDCWD, filename, statbuf.st_uid, (gid_t)-1, 0);
+      if (ret < 0)
+        {
+          perror ("fchownat");
+          result |= 4;
+        }
+      ret = fchownat (AT_FDCWD, filename, (uid_t)-1, (gid_t)-1, 0);
+      if (ret < 0)
+        {
+          perror ("fchownat");
+          result |= 8;
+        }
+    }
+  return result;
+}
+===============================================================================
+$ gcc -Wall -mabi=64 foo.c
+$ ./a.out ; echo $?
+fchownat: Operation not permitted
+fchownat: Operation not permitted
+fchownat: Operation not permitted
+14
+$ gcc -Wall -mabi=n32 foo.c
+$ ./a.out ; echo $?
+fchownat: Operation not permitted
+fchownat: Operation not permitted
+fchownat: Operation not permitted
+14
+$ gcc -Wall -mabi=32 foo.c
+$ ./a.out ; echo $?
+
+Other relevant data:
+- kernel version is 2.6.27.1
+- glibc version is 2.7
+- gcc version is 4.3.2 (Debian).
+
+'strace' of this program shows that the system call that returns with -1/EPERM
+is a call to SYS_6254 (in n32 ABI) or SYS_5250 (in 64 ABI).
+
+Bruno
+-- 
+In memoriam Helmuth Hübener <http://en.wikipedia.org/wiki/Helmuth_Hübener>

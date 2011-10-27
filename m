@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2011 15:45:28 +0200 (CEST)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:42086 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2011 15:55:34 +0200 (CEST)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:48112 "EHLO
         caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903601Ab1J0NpT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Oct 2011 15:45:19 +0200
+        by eddie.linux-mips.org with ESMTP id S1903600Ab1J0Nza (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Oct 2011 15:55:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=XTA5uydQACxIXeFXrRFYgHQDxLEZm0CTY2OGUzuuwPo=;
-        b=JD2l7Kojmb5/nddNtEcDG8NHF62H17URJtVrky0EH5HxHjtx0p1NzK+CKTIov7PvIzExeyFzsE0r+0aIpF1Oxo2zp84OmS1QW5hQhyvrXFwGpHHYRSsmNydm+fs+LcfpPhE/9GxdLpbXB06yoJ70aZ4UIAsn77oe9YG1L6x6N9g=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:42169)
+        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=JjtLe5R3pQqucOq8WLPu8V5YyXdQMKl2wBFv+OWrxCk=;
+        b=PFtpAFqfu2t0uuZBgBRCgPtNShNoykKXx0msEzeblSwPNPmq8XQmiPuMHx5+YucPtHQzDTjFI/cml0FCY66UYSNS3dzRi0i0DmAudupnh6rff1e0AnSuHGJ7T+9L+8m92WJAN64froLSWpRdBZ8dypG/9wUuARK35JTudL70GOk=;
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:36559)
         by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
         (Exim 4.76)
         (envelope-from <linux@arm.linux.org.uk>)
-        id 1RJQFN-0006Rq-GC; Thu, 27 Oct 2011 14:43:54 +0100
+        id 1RJQP5-0006TQ-93; Thu, 27 Oct 2011 14:53:55 +0100
 Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
         (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1RJQFL-0004JY-MS; Thu, 27 Oct 2011 14:43:51 +0100
-Date:   Thu, 27 Oct 2011 14:43:51 +0100
+        id 1RJQP3-0004Nb-Cq; Thu, 27 Oct 2011 14:53:53 +0100
+Date:   Thu, 27 Oct 2011 14:53:53 +0100
 From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
 To:     Mike Frysinger <vapier@gentoo.org>
 Cc:     Grant Likely <grant.likely@secretlab.ca>,
@@ -46,15 +46,14 @@ Cc:     Grant Likely <grant.likely@secretlab.ca>,
         uclinux-dist-devel@blackfin.uclinux.org,
         linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org
 Subject: Re: [PATCH] asm-generic/gpio.h: merge basic gpiolib wrappers
-Message-ID: <20111027134351.GL19187@n2100.arm.linux.org.uk>
-References: <1319528012-19006-1-git-send-email-broonie@opensource.wolfsonmicro.com> <1319720503-3183-1-git-send-email-vapier@gentoo.org> <20111027131124.GK19187@n2100.arm.linux.org.uk> <CAJaTeTp_jv-b1GUEswfFzn=joj=jkMHE91zK1wnDksH60GT6Dg@mail.gmail.com>
+Message-ID: <20111027135353.GM19187@n2100.arm.linux.org.uk>
+References: <1319528012-19006-1-git-send-email-broonie@opensource.wolfsonmicro.com> <1319720503-3183-1-git-send-email-vapier@gentoo.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJaTeTp_jv-b1GUEswfFzn=joj=jkMHE91zK1wnDksH60GT6Dg@mail.gmail.com>
+In-Reply-To: <1319720503-3183-1-git-send-email-vapier@gentoo.org>
 User-Agent: Mutt/1.5.19 (2009-01-05)
-X-archive-position: 31311
+X-archive-position: 31312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -63,91 +62,24 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19741
+X-UID: 19750
 
-On Thu, Oct 27, 2011 at 03:29:40PM +0200, Mike Frysinger wrote:
-> On Thu, Oct 27, 2011 at 15:11, Russell King - ARM Linux wrote:
-> > On Thu, Oct 27, 2011 at 09:01:43AM -0400, Mike Frysinger wrote:
-> >> diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
-> >> index d494001..622851c 100644
-> >> --- a/include/asm-generic/gpio.h
-> >> +++ b/include/asm-generic/gpio.h
-> >> @@ -170,6 +170,29 @@ extern int __gpio_cansleep(unsigned gpio);
-> >>
-> >>  extern int __gpio_to_irq(unsigned gpio);
-> >>
-> >> +#ifndef gpio_get_value
-> >> +#define gpio_get_value(gpio) __gpio_get_value(gpio)
-> >> +#endif
-> >> +
-> >> +#ifndef gpio_set_value
-> >> +#define gpio_set_value(gpio, value) __gpio_set_value(gpio, value)
-> >> +#endif
-> >> +
-> >> +#ifndef gpio_cansleep
-> >> +#define gpio_cansleep(gpio) __gpio_cansleep(gpio)
-> >> +#endif
-> >> +
-> >> +#ifndef gpio_to_irq
-> >> +#define gpio_to_irq(gpio) __gpio_to_irq(gpio)
-> >> +#endif
-> >> +
-> >> +#ifndef irq_to_gpio
-> >> +static inline int irq_to_gpio(unsigned int irq)
-> >> +{
-> >> +     return -EINVAL;
-> >> +}
-> >> +#endif
-> >> +
-> >
-> > This is extremely dangerous.  Consider for example this code
-> > (see ARM mach-davinci's gpio.h):
-> > ...
-> > This is why I didn't solve this using the preprocessor method in ARM, but
-> > instead used __ARM_GPIOLIB_COMPLEX to control whether these definitions
-> > are required.
-> 
-> i thought the arm mach were defining things already, but i guess i
-> missed some in my review
-> 
-> easy enough to glue the arm-specific world to the asm-generic world
-> ... a bit ugly, but should work i think:
-> #ifndef __ARM_GPIOLIB_COMPLEX
-> /* assume the mach has defined this */
-> #ifndef gpio_get_value
-> #define gpio_get_value gpio_get_value
-> #endif
-> #ifndef gpio_set_value
-> #define gpio_set_value gpio_set_value
-> #endif
-> #ifndef gpio_cansleep
-> #define gpio_cansleep gpio_cansleep
-> #endif
-> #ifndef gpio_to_irq
-> #define gpio_to_irq gpio_to_irq
-> #endif
-> #ifndef irq_to_gpio
-> #define irq_to_gpio irq_to_gpio
-> #endif
-> ...
-> 
-> the next step might be to drill down into the arm mach's and sprinkle
-> the defines into the parts that need it ...
+On Thu, Oct 27, 2011 at 09:01:43AM -0400, Mike Frysinger wrote:
+> diff --git a/arch/arm/include/asm/gpio.h b/arch/arm/include/asm/gpio.h
+> index 11ad0bf..741efb2 100644
+> --- a/arch/arm/include/asm/gpio.h
+> +++ b/arch/arm/include/asm/gpio.h
+> @@ -5,14 +5,15 @@
+>  #include <mach/gpio.h>
+>  
+>  #ifndef __ARM_GPIOLIB_COMPLEX
+> +/* assume the mach has defined this */
+> +#ifndef irq_to_gpio
+> +#define irq_to_gpio irq_to_gpio
+> +#endif
 
-You don't illustrate how it would work with what's there in current
-kernels, so I'm having to guess.
-
-With the above coming before the asm-generic/gpio.h include, and this
-following the include:
-
-/* The trivial gpiolib dispatchers */
-#define gpio_get_value  __gpio_get_value
-#define gpio_set_value  __gpio_set_value
-#define gpio_cansleep   __gpio_cansleep
-
-this is asking for multiple definition warnings from the preprocessor -
-and wrapping these with yet more ifdefs doesn't solve the problem.
-
-Also bear in mind that we're trying to reduce the amount of code in the
-mach/gpio.h header files at the moment, so I'd want to avoid adding stuff
-to them.
+Oh, this isn't a valid assumption either - it's far from valid.  Those
+sub-architectures which don't define __ARM_GPIOLIB_COMPLEX probably don't
+define any kind of irq_to_gpio function by any means.  Some of our
+mach/gpio.h header files for sub-architectures using entirely gpiolib
+are entirely empty - and we want them to stay that way.

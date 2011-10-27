@@ -1,119 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2011 21:07:53 +0200 (CEST)
-Received: from mo-p00-ob.rzone.de ([81.169.146.161]:51420 "EHLO
-        mo-p00-ob.rzone.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903605Ab1J0THt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Oct 2011 21:07:49 +0200
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; t=1319742468; l=1958;
-        s=domk; d=haible.de;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Subject:To:
-        From:X-RZG-CLASS-ID:X-RZG-AUTH;
-        bh=s0bZ3vlFcVBoKURZe0ytfraRoCQ=;
-        b=Wtx0Tz2Z8WI2uPmH5ms2AJi/9RkGDmCuTQJodFs5YB0EpFyUlshFOxuVYa53NR5vCim
-        DYj3GDcIrsF1nXUyksyp5YaGd4KHmoog4/enjow830KClW5cI5u0Cs/9Qmiz2U2pZT4cr
-        ugAkyoOEr1Z+1Owi0sooHq9dPY6622VxBVc=
-X-RZG-AUTH: :Ln4Re0+Ic/6oZXR1YgKryK8brksyK8dozXDwHXjf9hj/zDNRb/Q45hFP
-X-RZG-CLASS-ID: mo00
-Received: from linuix.haible.de
-        (dslb-088-068-062-040.pools.arcor-ip.net [88.68.62.40])
-        by post.strato.de (mrclete mo6) (RZmta 26.10 AUTH)
-        with ESMTPA id z01fcbn9RGYjFO ; Thu, 27 Oct 2011 21:07:39 +0200 (MEST)
-From:   Bruno Haible <bruno@clisp.org>
-To:     bug-gnulib@gnu.org, linux-mips@linux-mips.org
-Subject: bug in fchownat in n32 and 64 ABIs
-Date:   Thu, 27 Oct 2011 21:07:38 +0200
-User-Agent: KMail/1.13.6 (Linux/2.6.37.6-0.5-desktop; KDE/4.6.0; x86_64; ; )
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Oct 2011 21:26:48 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:6567 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903605Ab1J0T0o (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 27 Oct 2011 21:26:44 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4ea9b0c30000>; Thu, 27 Oct 2011 12:28:03 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 27 Oct 2011 12:26:42 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Thu, 27 Oct 2011 12:26:42 -0700
+Message-ID: <4EA9B072.5000107@cavium.com>
+Date:   Thu, 27 Oct 2011 12:26:42 -0700
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-Message-Id: <201110272107.38510.bruno@clisp.org>
-X-archive-position: 31313
+To:     Bruno Haible <bruno@clisp.org>
+CC:     "bug-gnulib@gnu.org" <bug-gnulib@gnu.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: bug in fchownat in n32 and 64 ABIs
+References: <201110272107.38510.bruno@clisp.org>
+In-Reply-To: <201110272107.38510.bruno@clisp.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 27 Oct 2011 19:26:42.0526 (UTC) FILETIME=[5B79C7E0:01CC94DE]
+X-archive-position: 31314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bruno@clisp.org
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19901
+X-UID: 19913
 
-Hi Linux/MIPS folks,
+On 10/27/2011 12:07 PM, Bruno Haible wrote:
+> Hi Linux/MIPS folks,
+>
+> Found this bug by running the gnulib POSIX test suite: In the fchownat()
+> call, an uid_t or gid_t of value (uid_t)-1 or (gid_t)-1 means no change.
+> See<http://pubs.opengroup.org/onlinepubs/9699919799/functions/fchownat.html>.
+> This value is correctly recognized on all Unices, _except_ Linux/MIPS
+> in n32 and 64 ABIs.
+>
+[...]
+> $ gcc -Wall -mabi=64 foo.c
+> $ ./a.out ; echo $?
+> fchownat: Operation not permitted
+> fchownat: Operation not permitted
+> fchownat: Operation not permitted
+> 14
+> $ gcc -Wall -mabi=n32 foo.c
+> $ ./a.out ; echo $?
+> fchownat: Operation not permitted
+> fchownat: Operation not permitted
+> fchownat: Operation not permitted
+> 14
+> $ gcc -Wall -mabi=32 foo.c
+> $ ./a.out ; echo $?
+>
+> Other relevant data:
+> - kernel version is 2.6.27.1
+> - glibc version is 2.7
+> - gcc version is 4.3.2 (Debian).
 
-Found this bug by running the gnulib POSIX test suite: In the fchownat()
-call, an uid_t or gid_t of value (uid_t)-1 or (gid_t)-1 means no change.
-See <http://pubs.opengroup.org/onlinepubs/9699919799/functions/fchownat.html>.
-This value is correctly recognized on all Unices, _except_ Linux/MIPS
-in n32 and 64 ABIs.
+Debian doesn't support 64-bit ABIs, so this list is incomplete.  Where 
+did you get your 64-bit libc ?
 
-How to reproduce:
-==================================== foo.c ====================================
-#define _GNU_SOURCE 1
-#include <fcntl.h>
-#include <stdio.h>
-#include <sys/stat.h>
-#include <unistd.h>
-int
-main ()
-{
-  const char *filename = "foo.c";
-  struct stat statbuf;
-  int ret;
-  int result = 0;
+>
+> 'strace' of this program shows that the system call that returns with -1/EPERM
+> is a call to SYS_6254 (in n32 ABI) or SYS_5250 (in 64 ABI).
+>
+Can you get strace -- version 4.5.20 or later and build it for the 
+corresponding ABI?  That should properly decode the relevant syscalls.
 
-  ret = stat (filename, &statbuf);
-  if (ret < 0)
-    {
-      perror ("stat");
-      return 1;
-    }
-  else
-    {
-      ret = fchownat (AT_FDCWD, filename, (uid_t)-1, statbuf.st_gid, 0);
-      if (ret < 0)
-        {
-          perror ("fchownat");
-          result |= 2;
-        }
-      ret = fchownat (AT_FDCWD, filename, statbuf.st_uid, (gid_t)-1, 0);
-      if (ret < 0)
-        {
-          perror ("fchownat");
-          result |= 4;
-        }
-      ret = fchownat (AT_FDCWD, filename, (uid_t)-1, (gid_t)-1, 0);
-      if (ret < 0)
-        {
-          perror ("fchownat");
-          result |= 8;
-        }
-    }
-  return result;
-}
-===============================================================================
-$ gcc -Wall -mabi=64 foo.c
-$ ./a.out ; echo $?
-fchownat: Operation not permitted
-fchownat: Operation not permitted
-fchownat: Operation not permitted
-14
-$ gcc -Wall -mabi=n32 foo.c
-$ ./a.out ; echo $?
-fchownat: Operation not permitted
-fchownat: Operation not permitted
-fchownat: Operation not permitted
-14
-$ gcc -Wall -mabi=32 foo.c
-$ ./a.out ; echo $?
+Once you have that, you might post the strace output.
 
-Other relevant data:
-- kernel version is 2.6.27.1
-- glibc version is 2.7
-- gcc version is 4.3.2 (Debian).
+In the mean time I might give it a try with my 2.9 glibc on a 2.6.32.27 
+kernels.
 
-'strace' of this program shows that the system call that returns with -1/EPERM
-is a call to SYS_6254 (in n32 ABI) or SYS_5250 (in 64 ABI).
-
-Bruno
--- 
-In memoriam Helmuth Hübener <http://en.wikipedia.org/wiki/Helmuth_Hübener>
+David Daney

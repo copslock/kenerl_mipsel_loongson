@@ -1,60 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Oct 2011 21:45:09 +0100 (CET)
-Received: from qmta12.emeryville.ca.mail.comcast.net ([76.96.27.227]:46990
-        "EHLO qmta12.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903677Ab1J3UpC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 30 Oct 2011 21:45:02 +0100
-Received: from omta07.emeryville.ca.mail.comcast.net ([76.96.30.59])
-        by qmta12.emeryville.ca.mail.comcast.net with comcast
-        id r8du1h0051GXsucAC8kn6V; Sun, 30 Oct 2011 20:44:47 +0000
-Received: from [192.168.1.13] ([76.106.65.35])
-        by omta07.emeryville.ca.mail.comcast.net with comcast
-        id r8ci1h00T0leNgC8U8ck7M; Sun, 30 Oct 2011 20:36:45 +0000
-Message-ID: <4EADB701.9040506@gentoo.org>
-Date:   Sun, 30 Oct 2011 16:43:45 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.0; WOW64; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
-MIME-Version: 1.0
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:     linux-mips@linux-mips.org, linux-fbdev@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 30 Oct 2011 23:34:31 +0100 (CET)
+Received: from elvis.franken.de ([193.175.24.41]:43881 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903677Ab1J3WeY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 30 Oct 2011 23:34:24 +0100
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1RKdxP-0001R7-00; Sun, 30 Oct 2011 23:34:23 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id 4204B1D248; Sun, 30 Oct 2011 23:34:18 +0100 (CET)
+Date:   Sun, 30 Oct 2011 23:34:18 +0100
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Joshua Kinard <kumba@gentoo.org>
+Cc:     linux-mips@linux-mips.org, linux-fbdev@vger.kernel.org,
         ralf@linux-mips.org, FlorianSchandinat@gmx.de
 Subject: Re: [PATCH v2] GIO bus support for SGI IP22/28
+Message-ID: <20111030223418.GA16346@alpha.franken.de>
 References: <20111020221928.0C2191DA27@solo.franken.de>
-In-Reply-To: <20111020221928.0C2191DA27@solo.franken.de>
-X-Enigmail-Version: 1.3.3
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31324
+ <4EADB701.9040506@gentoo.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4EADB701.9040506@gentoo.org>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 31325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21675
+X-UID: 21706
 
-On 10/20/2011 18:19, Thomas Bogendoerfer wrote:
+On Sun, Oct 30, 2011 at 04:43:45PM -0400, Joshua Kinard wrote:
+> Does this handle any glue logic for add-on NIC cards found for Indy and I2?
 
-> SGI IP22/IP28 machines have GIO busses for adding graphics and other
-> extension cards. This patch adds support for GIO driver/device
-> handling and converts the newport console driver to a GIO driver.
-> 
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+no, but it will make live a lot easier, because address and interrupts don't
+need to be probed by the driver. Right now interrupts are on my todo, since
+there is some weirdness between guiness and fullhouse boxes...
 
+>  I have a G130 Phobus and a rare ThunderLAN card in my Indy.  The Phobus has
+> an Altera GIO/PCI glue chip.  Not sure about the ThunderLAN.  Both have
+> normal driver support in the kernel (Phobus is just a Tulip chip).
 
-Does this handle any glue logic for add-on NIC cards found for Indy and I2?
- I have a G130 Phobus and a rare ThunderLAN card in my Indy.  The Phobus has
-an Altera GIO/PCI glue chip.  Not sure about the ThunderLAN.  Both have
-normal driver support in the kernel (Phobus is just a Tulip chip).
+it still needs something to setup the PCI bus on the card and issue
+the probing. The problem with the Tulip Phobos cards is, that they
+messed up the endianess, so that none of the Linux Tulip drivers will
+work out of the box...
+
+Thomas.
 
 -- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And
-our lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

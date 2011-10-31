@@ -1,92 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2011 10:20:22 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:65492 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903553Ab1JaJUT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2011 10:20:19 +0100
-Received: by wwf4 with SMTP id 4so984682wwf.24
-        for <linux-mips@linux-mips.org>; Mon, 31 Oct 2011 02:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=v9awrXCDz0JhwNc5c+IWc/oBmGVvxyxSYcm/Y+LZsLw=;
-        b=rVlfCLrhf0aZCivIK7n2NrXfYLQxXG5S77UdioI7HjNUJ9d7ImupnfcIpYgOwjqF8R
-         7/dD2AIwEnb6znkYwfNKQeOAt9+O1D00TWWLGGRAqYm/zDJYVS2wKTyIiUaibhIr1ZaP
-         GKf08HVZ3QqZzGEkrDB6gmKRL07uPjYUGRMoo=
-MIME-Version: 1.0
-Received: by 10.216.137.42 with SMTP id x42mr2482177wei.56.1320052813754; Mon,
- 31 Oct 2011 02:20:13 -0700 (PDT)
-Received: by 10.216.187.137 with HTTP; Mon, 31 Oct 2011 02:20:13 -0700 (PDT)
-In-Reply-To: <CAGXxSxXmgzxN361Cko1fY_+oWwfgjXLhS61gtvqB8YYXHXZVyw@mail.gmail.com>
-References: <CAGXxSxXmgzxN361Cko1fY_+oWwfgjXLhS61gtvqB8YYXHXZVyw@mail.gmail.com>
-Date:   Mon, 31 Oct 2011 17:20:13 +0800
-Message-ID: <CAM2zO=CodQLE05ZNOOba3jv_qJ5XuZj3yrnS0aHCOj+cp_24Xw@mail.gmail.com>
-Subject: Re: [MIPS]clocks_calc_mult_shift() may gen a too big mult value
-From:   Yong Zhang <yong.zhang0@gmail.com>
-To:     Chen Jie <chenj@lemote.com>
-Cc:     linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
-        johnstul@us.ibm.com, tglx@linutronix.de, yanhua <yanh@lemote.com>,
-        =?UTF-8?B?6aG55a6H?= <xiangy@lemote.com>,
-        zhangfx <zhangfx@lemote.com>,
-        =?UTF-8?B?5a2Z5rW35YuH?= <sunhy@lemote.com>
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 31328
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2011 10:54:12 +0100 (CET)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:23286 "EHLO
+        services.gcu-squad.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903553Ab1JaJyH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2011 10:54:07 +0100
+Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=endymion.delvare)
+        by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1RKpl4-0007Ic-RH
+        (TLSv1:AES128-SHA:128)
+        (envelope-from <khali@linux-fr.org>)
+        ; Mon, 31 Oct 2011 12:10:27 +0100
+Date:   Mon, 31 Oct 2011 10:53:54 +0100
+From:   Jean Delvare <khali@linux-fr.org>
+To:     Matt Turner <mattst88@gmail.com>
+Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Guenter Roeck <guenter.roeck@ericsson.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH] I2C: SiByte: Convert the driver to make use of 
+ interrupts
+Message-ID: <20111031105354.4b888e44@endymion.delvare>
+In-Reply-To: <20110903103036.161616a5@endymion.delvare>
+References: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
+        <20110903103036.161616a5@endymion.delvare>
+X-Mailer: Claws Mail 3.7.5 (GTK+ 2.20.1; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yong.zhang0@gmail.com
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
-X-Keywords:                  
-X-UID: 21833
 
-On Mon, Oct 31, 2011 at 5:00 PM, Chen Jie <chenj@lemote.com> wrote:
-> Hi all,
->
-> On MIPS, with maxsec=4, clocks_calc_mult_shift() may generate a very
-> big mult, which may easily cause timekeeper.mult overflow within
-> timekeeping jobs.
+On Sat, 3 Sep 2011 10:30:36 +0200, Jean Delvare wrote:
+> Please address my concerns where you agree and send an updated patch.
 
-Hmmm, why not use clocksource_register_hz()/clocksource_register_khz()
-instead? it's more convenient.
-
-Thanks,
-Yong
-
->
-> e.g. when clock freq was 250000500(i.e. mips_hpt_frequency=250000500,
-> and the CPU Freq will be 250000500*2=500001000), mult will be
-> 0xffffde72
->
-> Attachment is a script that calculates mult values for CPU Freq
-> between 400050000 and 500050000, with 1KHz step. It outputs mult
-> values greater than 0xf0000000:
-> CPU Freq:500001000, mult:0xffffde72, shift:30
-> CPU Freq:500002000, mult:0xffffbce4, shift:30
-> CPU Freq:500003000, mult:0xffff9b56, shift:30
-> CPU Freq:500004000, mult:0xffff79c9, shift:30
-> ...
->
-> The peak value appears around CPU_freq=500001000.
->
-> To avoid this, it may need:
-> 1. Supply a bigger maxsec value?
-> 2. In clocks_calc_mult_shift(), pick next mult/shift pair if mult is
-> too big? Then maxsec will not be strictly obeyed.
-> 3. Change timekeeper.mult to u64?
-> 4. ...
->
-> Any idea?
->
->
->
-> --
-> Regards,
-> - Chen Jie
->
-
-
+Matt, care to send an updated patch addressing my concerns? Otherwise
+it will be lost again.
 
 -- 
-Only stand for myself
+Jean Delvare

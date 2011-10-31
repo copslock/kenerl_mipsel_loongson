@@ -1,70 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2011 09:05:23 +0100 (CET)
-Received: from qmta11.emeryville.ca.mail.comcast.net ([76.96.27.211]:53717
-        "EHLO qmta11.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903554Ab1JaIFQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 31 Oct 2011 09:05:16 +0100
-Received: from omta20.emeryville.ca.mail.comcast.net ([76.96.30.87])
-        by qmta11.emeryville.ca.mail.comcast.net with comcast
-        id rL0P1h0021smiN4ABL5143; Mon, 31 Oct 2011 08:05:01 +0000
-Received: from [192.168.1.13] ([76.106.65.35])
-        by omta20.emeryville.ca.mail.comcast.net with comcast
-        id rKyM1h00M0leNgC8gKyPJf; Mon, 31 Oct 2011 07:58:24 +0000
-Message-ID: <4EAE5681.2090103@gentoo.org>
-Date:   Mon, 31 Oct 2011 04:04:17 -0400
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.0; WOW64; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Oct 2011 10:01:51 +0100 (CET)
+Received: from mail.lemote.com ([222.92.8.141]:38512 "EHLO lemote.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903553Ab1JaJBm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 31 Oct 2011 10:01:42 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by lemote.com (Postfix) with ESMTP id 1C75C3410E
+        for <linux-mips@linux-mips.org>; Mon, 31 Oct 2011 16:36:17 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from lemote.com ([127.0.0.1])
+        by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id m7Ttj3gpg3cv for <linux-mips@linux-mips.org>;
+        Mon, 31 Oct 2011 16:36:08 +0800 (CST)
+Received: from mail-fx0-f49.google.com (mail-fx0-f49.google.com [209.85.161.49])
+        by lemote.com (Postfix) with ESMTP id 9D5CE340C9
+        for <linux-mips@linux-mips.org>; Mon, 31 Oct 2011 16:36:07 +0800 (CST)
+Received: by faaf16 with SMTP id f16so7179004faa.36
+        for <linux-mips@linux-mips.org>; Mon, 31 Oct 2011 02:01:21 -0700 (PDT)
+Received: by 10.223.15.10 with SMTP id i10mr27808933faa.17.1320051681001; Mon,
+ 31 Oct 2011 02:01:21 -0700 (PDT)
 MIME-Version: 1.0
-To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:     linux-mips@linux-mips.org, linux-fbdev@vger.kernel.org,
-        ralf@linux-mips.org, FlorianSchandinat@gmx.de
-Subject: Re: [PATCH v2] GIO bus support for SGI IP22/28
-References: <20111020221928.0C2191DA27@solo.franken.de> <4EADB701.9040506@gentoo.org> <20111030223418.GA16346@alpha.franken.de>
-In-Reply-To: <20111030223418.GA16346@alpha.franken.de>
-X-Enigmail-Version: 1.3.3
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-archive-position: 31326
+Received: by 10.223.101.140 with HTTP; Mon, 31 Oct 2011 02:00:58 -0700 (PDT)
+From:   Chen Jie <chenj@lemote.com>
+Date:   Mon, 31 Oct 2011 17:00:58 +0800
+Message-ID: <CAGXxSxXmgzxN361Cko1fY_+oWwfgjXLhS61gtvqB8YYXHXZVyw@mail.gmail.com>
+Subject: [MIPS]clocks_calc_mult_shift() may gen a too big mult value
+To:     linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>
+Cc:     johnstul@us.ibm.com, tglx@linutronix.de, yanhua <yanh@lemote.com>,
+        =?UTF-8?B?6aG55a6H?= <xiangy@lemote.com>,
+        zhangfx <zhangfx@lemote.com>,
+        =?UTF-8?B?5a2Z5rW35YuH?= <sunhy@lemote.com>
+Content-Type: multipart/mixed; boundary=0015174482148802f204b0947b28
+X-archive-position: 31327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: chenj@lemote.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21802
+X-UID: 21824
 
-On 10/30/2011 18:34, Thomas Bogendoerfer wrote:
+--0015174482148802f204b0947b28
+Content-Type: text/plain; charset=ISO-8859-1
 
-> 
-> no, but it will make live a lot easier, because address and interrupts don't
-> need to be probed by the driver. Right now interrupts are on my todo, since
-> there is some weirdness between guiness and fullhouse boxes...
+Hi all,
+
+On MIPS, with maxsec=4, clocks_calc_mult_shift() may generate a very
+big mult, which may easily cause timekeeper.mult overflow within
+timekeeping jobs.
+
+e.g. when clock freq was 250000500(i.e. mips_hpt_frequency=250000500,
+and the CPU Freq will be 250000500*2=500001000), mult will be
+0xffffde72
+
+Attachment is a script that calculates mult values for CPU Freq
+between 400050000 and 500050000, with 1KHz step. It outputs mult
+values greater than 0xf0000000:
+CPU Freq:500001000, mult:0xffffde72, shift:30
+CPU Freq:500002000, mult:0xffffbce4, shift:30
+CPU Freq:500003000, mult:0xffff9b56, shift:30
+CPU Freq:500004000, mult:0xffff79c9, shift:30
+...
+
+The peak value appears around CPU_freq=500001000.
+
+To avoid this, it may need:
+1. Supply a bigger maxsec value?
+2. In clocks_calc_mult_shift(), pick next mult/shift pair if mult is
+too big? Then maxsec will not be strictly obeyed.
+3. Change timekeeper.mult to u64?
+4. ...
+
+Any idea?
 
 
-It wouldn't be an SGI machine if it didn't implement something weird or just
-plain backwards...
 
+--
+Regards,
+- Chen Jie
 
-> it still needs something to setup the PCI bus on the card and issue
-> the probing. The problem with the Tulip Phobos cards is, that they
-> messed up the endianess, so that none of the Linux Tulip drivers will
-> work out of the box...
+--0015174482148802f204b0947b28
+Content-Type: text/x-python; charset=US-ASCII; name="mult-test.py"
+Content-Disposition: attachment; filename="mult-test.py"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_guf66e8v0
 
-
-A.k.a., Tulip (and possibly ThunderLAN) assume little-endian, when we're
-talking big-endian archs here.  Interesting.  Simple fix, as in defining a
-few driver structures with little- and big-endian versions (if they're doing
-something like packing bits or using bitfields)?  Or is it more complex than
-that?
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-4096R/D25D95E3 2011-03-28
-
-"The past tempts us, the present confuses us, the future frightens us.  And
-our lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+IyEvYmluL2VudiBweXRob24KCmRlZiBjbG9ja3NfY2FsY19tdWx0X3NoaWZ0KGZyb21fLCB0b18s
+IG1heHNlYyk6CglzZnRhY2MgPSAzMjsKCgl0bXAgPSBtYXhzZWMgKiBmcm9tXyA+PiAzMjsKCXdo
+aWxlIHRtcDoKCQl0bXAgPj49IDEKCQlzZnRhY2MgLT0gMQoKCWZvciBzZnQgaW4geHJhbmdlKDMy
+LCAwLCAtMSk6CgkJdG1wID0gdG9fIDw8IHNmdDsKCQl0bXAgKz0gKGZyb21fIC8gMikKCQl0bXAg
+Lz0gZnJvbV8KCQlpZiAoKHRtcCA+PiBzZnRhY2MpID09IDApOgoJCQlicmVhawoKCW11bHQgPSB0
+bXAKCXNoaWZ0ID0gc2Z0CglyZXR1cm4gbXVsdCwgc2hpZnQgCgpmb3IgaSBpbiB4cmFuZ2UoNDAw
+MDUwMDAwLCA1MDAwNTAwMDAsIDEwMDApOgoJbXVsdCwgc2hpZnQgPSBjbG9ja3NfY2FsY19tdWx0
+X3NoaWZ0KGkvMiwgMTAwMDAwMDAwMCwgNCkKCWlmIG11bHQgPiAweGYwMDAwMDAwOgoJCXByaW50
+ICJDUFUgRnJlcTolZCwgbXVsdDoweCV4LCBzaGlmdDolZCIgJSAoaSwgbXVsdCwgc2hpZnQpCg==
+--0015174482148802f204b0947b28--

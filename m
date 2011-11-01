@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Nov 2011 20:07:26 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:43882 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903694Ab1KATE3 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Nov 2011 20:04:29 +0100
-Received: by bkat2 with SMTP id t2so2658581bka.36
-        for <multiple recipients>; Tue, 01 Nov 2011 12:04:24 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Nov 2011 20:08:02 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:32904 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903696Ab1KATEf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Nov 2011 20:04:35 +0100
+Received: by mail-fx0-f49.google.com with SMTP id q17so947590faa.36
+        for <multiple recipients>; Tue, 01 Nov 2011 12:04:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=aUZy6w3YW0kg8K3qNjmCikn7Cmh8xeFHLnuG53FEa8E=;
-        b=pIVUBYZb2GIqoKJVnrV8VNhp0T5HeK2/wmATKCoLK55KN+nAIWJVzIS3k6uz/vyz+l
-         BcMAZ8C4EvEMTAYqYtBDWRIhPj8jOnc/kwImyXdE3TG4m9DoCNOqXNRQTxmENLcR5h9P
-         /CnSu7LRckpFR+VsjzKOR7SKBgYvjs52U2Qr0=
-Received: by 10.223.91.68 with SMTP id l4mr2531933fam.16.1320174264143;
-        Tue, 01 Nov 2011 12:04:24 -0700 (PDT)
+        bh=33PYaQvP25673NW9mJtXPKjaMdBqI35UTms/H/guzdA=;
+        b=w8311EQYzjjpwvwj5joDyZOIX2I3vTmZ6Wr5oQtUyskWl035R53KFR3W79xtcPpfyB
+         LJ45OD0HZo4scJW580uCWm4Ya5D/FsCyeeEb0kSTR/SunX8RX8FZu8gTLCSao2Thx1s7
+         3tp4VXD9IwdAyx0iQFLbWPfRv588lk2an6GjQ=
+Received: by 10.223.5.66 with SMTP id 2mr2493446fau.26.1320174274280;
+        Tue, 01 Nov 2011 12:04:34 -0700 (PDT)
 Received: from localhost.localdomain (188-22-150-81.adsl.highway.telekom.at. [188.22.150.81])
-        by mx.google.com with ESMTPS id a8sm327916faa.11.2011.11.01.12.04.20
+        by mx.google.com with ESMTPS id a8sm327916faa.11.2011.11.01.12.04.24
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 01 Nov 2011 12:04:23 -0700 (PDT)
+        Tue, 01 Nov 2011 12:04:29 -0700 (PDT)
 From:   Manuel Lauss <manuel.lauss@googlemail.com>
 To:     Linux-MIPS <linux-mips@linux-mips.org>,
         Ralf Baechle <ralf@linux-mips.org>
 Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH 07/18] MIPS: Alchemy: merge GPR/MTX-1/XXS1500 board code into single files
-Date:   Tue,  1 Nov 2011 20:03:33 +0100
-Message-Id: <1320174224-27305-8-git-send-email-manuel.lauss@googlemail.com>
+Subject: [PATCH 08/18] MIPS: Alchemy: merge devboard code into single per-board files.
+Date:   Tue,  1 Nov 2011 20:03:34 +0100
+Message-Id: <1320174224-27305-9-git-send-email-manuel.lauss@googlemail.com>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1320174224-27305-1-git-send-email-manuel.lauss@googlemail.com>
 References: <1320174224-27305-1-git-send-email-manuel.lauss@googlemail.com>
-X-archive-position: 31347
+X-archive-position: 31348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,97 +37,97 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 657
-
-Most of these files are have more comments than real code;  merge
-them all into single board-<name>.c files.
+X-UID: 658
 
 Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
 ---
- arch/mips/alchemy/Makefile              |    3 +
- arch/mips/alchemy/Platform              |    8 +-
- arch/mips/alchemy/board-gpr.c           |  303 ++++++++++++++++++++++++++++++
- arch/mips/alchemy/board-mtx1.c          |  313 +++++++++++++++++++++++++++++++
- arch/mips/alchemy/board-xxs1500.c       |  154 +++++++++++++++
- arch/mips/alchemy/gpr/Makefile          |    8 -
- arch/mips/alchemy/gpr/board_setup.c     |   75 --------
- arch/mips/alchemy/gpr/init.c            |   63 ------
- arch/mips/alchemy/gpr/platform.c        |  230 -----------------------
- arch/mips/alchemy/mtx-1/Makefile        |    9 -
- arch/mips/alchemy/mtx-1/board_setup.c   |   94 ---------
- arch/mips/alchemy/mtx-1/init.c          |   66 -------
- arch/mips/alchemy/mtx-1/platform.c      |  230 -----------------------
- arch/mips/alchemy/xxs1500/Makefile      |    8 -
- arch/mips/alchemy/xxs1500/board_setup.c |   93 ---------
- arch/mips/alchemy/xxs1500/init.c        |   63 ------
- arch/mips/alchemy/xxs1500/platform.c    |   63 ------
- 17 files changed, 777 insertions(+), 1006 deletions(-)
- create mode 100644 arch/mips/alchemy/Makefile
- create mode 100644 arch/mips/alchemy/board-gpr.c
- create mode 100644 arch/mips/alchemy/board-mtx1.c
- create mode 100644 arch/mips/alchemy/board-xxs1500.c
- delete mode 100644 arch/mips/alchemy/gpr/Makefile
- delete mode 100644 arch/mips/alchemy/gpr/board_setup.c
- delete mode 100644 arch/mips/alchemy/gpr/init.c
- delete mode 100644 arch/mips/alchemy/gpr/platform.c
- delete mode 100644 arch/mips/alchemy/mtx-1/Makefile
- delete mode 100644 arch/mips/alchemy/mtx-1/board_setup.c
- delete mode 100644 arch/mips/alchemy/mtx-1/init.c
- delete mode 100644 arch/mips/alchemy/mtx-1/platform.c
- delete mode 100644 arch/mips/alchemy/xxs1500/Makefile
- delete mode 100644 arch/mips/alchemy/xxs1500/board_setup.c
- delete mode 100644 arch/mips/alchemy/xxs1500/init.c
- delete mode 100644 arch/mips/alchemy/xxs1500/platform.c
+ arch/mips/alchemy/devboards/Makefile             |   16 +-
+ arch/mips/alchemy/devboards/db1200.c             |  705 ++++++++++++++++++++++
+ arch/mips/alchemy/devboards/db1200/Makefile      |    1 -
+ arch/mips/alchemy/devboards/db1200/platform.c    |  648 --------------------
+ arch/mips/alchemy/devboards/db1200/setup.c       |   81 ---
+ arch/mips/alchemy/devboards/db1x00.c             |  256 ++++++++
+ arch/mips/alchemy/devboards/db1x00/Makefile      |    8 -
+ arch/mips/alchemy/devboards/db1x00/board_setup.c |  108 ----
+ arch/mips/alchemy/devboards/db1x00/platform.c    |  206 -------
+ arch/mips/alchemy/devboards/pb1100.c             |  167 +++++
+ arch/mips/alchemy/devboards/pb1100/Makefile      |    8 -
+ arch/mips/alchemy/devboards/pb1100/board_setup.c |  127 ----
+ arch/mips/alchemy/devboards/pb1100/platform.c    |   77 ---
+ arch/mips/alchemy/devboards/pb1200.c             |  464 ++++++++++++++
+ arch/mips/alchemy/devboards/pb1200/Makefile      |    5 -
+ arch/mips/alchemy/devboards/pb1200/board_setup.c |  174 ------
+ arch/mips/alchemy/devboards/pb1200/platform.c    |  339 -----------
+ arch/mips/alchemy/devboards/pb1500.c             |  198 ++++++
+ arch/mips/alchemy/devboards/pb1500/Makefile      |    8 -
+ arch/mips/alchemy/devboards/pb1500/board_setup.c |  139 -----
+ arch/mips/alchemy/devboards/pb1500/platform.c    |   94 ---
+ arch/mips/alchemy/devboards/pb1550.c             |  178 ++++++
+ arch/mips/alchemy/devboards/pb1550/Makefile      |    8 -
+ arch/mips/alchemy/devboards/pb1550/board_setup.c |   80 ---
+ arch/mips/alchemy/devboards/pb1550/platform.c    |  140 -----
+ 25 files changed, 1976 insertions(+), 2259 deletions(-)
+ create mode 100644 arch/mips/alchemy/devboards/db1200.c
+ delete mode 100644 arch/mips/alchemy/devboards/db1200/Makefile
+ delete mode 100644 arch/mips/alchemy/devboards/db1200/platform.c
+ delete mode 100644 arch/mips/alchemy/devboards/db1200/setup.c
+ create mode 100644 arch/mips/alchemy/devboards/db1x00.c
+ delete mode 100644 arch/mips/alchemy/devboards/db1x00/Makefile
+ delete mode 100644 arch/mips/alchemy/devboards/db1x00/board_setup.c
+ delete mode 100644 arch/mips/alchemy/devboards/db1x00/platform.c
+ create mode 100644 arch/mips/alchemy/devboards/pb1100.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1100/Makefile
+ delete mode 100644 arch/mips/alchemy/devboards/pb1100/board_setup.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1100/platform.c
+ create mode 100644 arch/mips/alchemy/devboards/pb1200.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1200/Makefile
+ delete mode 100644 arch/mips/alchemy/devboards/pb1200/board_setup.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1200/platform.c
+ create mode 100644 arch/mips/alchemy/devboards/pb1500.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1500/Makefile
+ delete mode 100644 arch/mips/alchemy/devboards/pb1500/board_setup.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1500/platform.c
+ create mode 100644 arch/mips/alchemy/devboards/pb1550.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1550/Makefile
+ delete mode 100644 arch/mips/alchemy/devboards/pb1550/board_setup.c
+ delete mode 100644 arch/mips/alchemy/devboards/pb1550/platform.c
 
-diff --git a/arch/mips/alchemy/Makefile b/arch/mips/alchemy/Makefile
+diff --git a/arch/mips/alchemy/devboards/Makefile b/arch/mips/alchemy/devboards/Makefile
+index 3467ec9..f562852 100644
+--- a/arch/mips/alchemy/devboards/Makefile
++++ b/arch/mips/alchemy/devboards/Makefile
+@@ -4,13 +4,13 @@
+ 
+ obj-y += prom.o bcsr.o platform.o
+ obj-$(CONFIG_PM)		+= pm.o
+-obj-$(CONFIG_MIPS_PB1100)	+= pb1100/
+-obj-$(CONFIG_MIPS_PB1200)	+= pb1200/
+-obj-$(CONFIG_MIPS_PB1500)	+= pb1500/
+-obj-$(CONFIG_MIPS_PB1550)	+= pb1550/
+-obj-$(CONFIG_MIPS_DB1000)	+= db1x00/
+-obj-$(CONFIG_MIPS_DB1100)	+= db1x00/
+-obj-$(CONFIG_MIPS_DB1200)	+= db1200/
++obj-$(CONFIG_MIPS_PB1100)	+= pb1100.o
++obj-$(CONFIG_MIPS_PB1200)	+= pb1200.o
++obj-$(CONFIG_MIPS_PB1500)	+= pb1500.o
++obj-$(CONFIG_MIPS_PB1550)	+= pb1550.o
++obj-$(CONFIG_MIPS_DB1000)	+= db1x00.o
++obj-$(CONFIG_MIPS_DB1100)	+= db1x00.o
++obj-$(CONFIG_MIPS_DB1200)	+= db1200.o
+ obj-$(CONFIG_MIPS_DB1300)	+= db1300.o
+-obj-$(CONFIG_MIPS_DB1500)	+= db1x00/
++obj-$(CONFIG_MIPS_DB1500)	+= db1x00.o
+ obj-$(CONFIG_MIPS_DB1550)	+= db1550.o
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
 new file mode 100644
-index 0000000..aac3b17
+index 0000000..43f5f1b
 --- /dev/null
-+++ b/arch/mips/alchemy/Makefile
-@@ -0,0 +1,3 @@
-+obj-$(CONFIG_MIPS_GPR) += board-gpr.o
-+obj-$(CONFIG_MIPS_MTX1) += board-mtx1.o
-+obj-$(CONFIG_MIPS_XXS1500) += board-xxs1500.o
-diff --git a/arch/mips/alchemy/Platform b/arch/mips/alchemy/Platform
-index 4d13e21..c032f5b 100644
---- a/arch/mips/alchemy/Platform
-+++ b/arch/mips/alchemy/Platform
-@@ -75,21 +75,21 @@ cflags-$(CONFIG_MIPS_DB1300)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
- load-$(CONFIG_MIPS_DB1300)	+= 0xffffffff80100000
- 
- #
--# 4G-Systems eval board
-+# 4G-Systems MTX-1 "MeshCube" wireless router
- #
--platform-$(CONFIG_MIPS_MTX1)	+= alchemy/mtx-1/
-+platform-$(CONFIG_MIPS_MTX1)	+= alchemy/
- load-$(CONFIG_MIPS_MTX1)	+= 0xffffffff80100000
- 
- #
- # MyCable eval board
- #
--platform-$(CONFIG_MIPS_XXS1500)	+= alchemy/xxs1500/
-+platform-$(CONFIG_MIPS_XXS1500)	+= alchemy/
- load-$(CONFIG_MIPS_XXS1500)	+= 0xffffffff80100000
- 
- #
- # Trapeze ITS GRP board
- #
--platform-$(CONFIG_MIPS_GPR)	+= alchemy/gpr/
-+platform-$(CONFIG_MIPS_GPR)	+= alchemy/
- load-$(CONFIG_MIPS_GPR)		+= 0xffffffff80100000
- 
- # boards can specify their own <gpio.h> in one of their include dirs.
-diff --git a/arch/mips/alchemy/board-gpr.c b/arch/mips/alchemy/board-gpr.c
-new file mode 100644
-index 0000000..ba32590
---- /dev/null
-+++ b/arch/mips/alchemy/board-gpr.c
-@@ -0,0 +1,303 @@
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -0,0 +1,705 @@
 +/*
-+ * GPR board platform device registration (Au1550)
++ * DBAu1200 board platform device registration
 + *
-+ * Copyright (C) 2010 Wolfgang Grandegger <wg@denx.de>
++ * Copyright (C) 2008-2011 Manuel Lauss
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -144,619 +144,1449 @@ index 0000000..ba32590
 + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 + */
 +
-+#include <linux/delay.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm.h>
-+#include <linux/mtd/partitions.h>
-+#include <linux/mtd/physmap.h>
-+#include <linux/leds.h>
++#include <linux/dma-mapping.h>
 +#include <linux/gpio.h>
 +#include <linux/i2c.h>
-+#include <linux/i2c-gpio.h>
-+#include <asm/bootinfo.h>
-+#include <asm/reboot.h>
-+#include <asm/mach-au1x00/au1000.h>
-+#include <prom.h>
-+
-+const char *get_system_type(void)
-+{
-+	return "GPR";
-+}
-+
-+void __init prom_init(void)
-+{
-+	unsigned char *memsize_str;
-+	unsigned long memsize;
-+
-+	prom_argc = fw_arg0;
-+	prom_argv = (char **)fw_arg1;
-+	prom_envp = (char **)fw_arg2;
-+
-+	prom_init_cmdline();
-+
-+	memsize_str = prom_getenv("memsize");
-+	if (!memsize_str)
-+		memsize = 0x04000000;
-+	else
-+		strict_strtoul(memsize_str, 0, &memsize);
-+	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+}
-+
-+void prom_putchar(unsigned char c)
-+{
-+	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
-+}
-+
-+static void gpr_reset(char *c)
-+{
-+	/* switch System-LED to orange (red# and green# on) */
-+	alchemy_gpio_direction_output(4, 0);
-+	alchemy_gpio_direction_output(5, 0);
-+
-+	/* trigger watchdog to reset board in 200ms */
-+	printk(KERN_EMERG "Triggering watchdog soft reset...\n");
-+	raw_local_irq_disable();
-+	alchemy_gpio_direction_output(1, 0);
-+	udelay(1);
-+	alchemy_gpio_set_value(1, 1);
-+	while (1)
-+		cpu_wait();
-+}
-+
-+static void gpr_power_off(void)
-+{
-+	while (1)
-+		cpu_wait();
-+}
-+
-+void __init board_setup(void)
-+{
-+	printk(KERN_INFO "Trapeze ITS GPR board\n");
-+
-+	pm_power_off = gpr_power_off;
-+	_machine_halt = gpr_power_off;
-+	_machine_restart = gpr_reset;
-+
-+	/* Enable UART1/3 */
-+	alchemy_uart_enable(AU1000_UART3_PHYS_ADDR);
-+	alchemy_uart_enable(AU1000_UART1_PHYS_ADDR);
-+
-+	/* Take away Reset of UMTS-card */
-+	alchemy_gpio_direction_output(215, 1);
-+}
-+
-+/*
-+ * Watchdog
-+ */
-+static struct resource gpr_wdt_resource[] = {
-+	[0] = {
-+		.start	= 1,
-+		.end	= 1,
-+		.name	= "gpr-adm6320-wdt",
-+		.flags	= IORESOURCE_IRQ,
-+	}
-+};
-+
-+static struct platform_device gpr_wdt_device = {
-+	.name = "adm6320-wdt",
-+	.id = 0,
-+	.num_resources = ARRAY_SIZE(gpr_wdt_resource),
-+	.resource = gpr_wdt_resource,
-+};
-+
-+/*
-+ * FLASH
-+ *
-+ * 0x00000000-0x00200000 : "kernel"
-+ * 0x00200000-0x00a00000 : "rootfs"
-+ * 0x01d00000-0x01f00000 : "config"
-+ * 0x01c00000-0x01d00000 : "yamon"
-+ * 0x01d00000-0x01d40000 : "yamon env vars"
-+ * 0x00000000-0x00a00000 : "kernel+rootfs"
-+ */
-+static struct mtd_partition gpr_mtd_partitions[] = {
-+	{
-+		.name	= "kernel",
-+		.size	= 0x00200000,
-+		.offset	= 0,
-+	},
-+	{
-+		.name	= "rootfs",
-+		.size	= 0x00800000,
-+		.offset	= MTDPART_OFS_APPEND,
-+		.mask_flags = MTD_WRITEABLE,
-+	},
-+	{
-+		.name	= "config",
-+		.size	= 0x00200000,
-+		.offset	= 0x01d00000,
-+	},
-+	{
-+		.name	= "yamon",
-+		.size	= 0x00100000,
-+		.offset	= 0x01c00000,
-+	},
-+	{
-+		.name	= "yamon env vars",
-+		.size	= 0x00040000,
-+		.offset	= MTDPART_OFS_APPEND,
-+	},
-+	{
-+		.name	= "kernel+rootfs",
-+		.size	= 0x00a00000,
-+		.offset	= 0,
-+	},
-+};
-+
-+static struct physmap_flash_data gpr_flash_data = {
-+	.width		= 4,
-+	.nr_parts	= ARRAY_SIZE(gpr_mtd_partitions),
-+	.parts		= gpr_mtd_partitions,
-+};
-+
-+static struct resource gpr_mtd_resource = {
-+	.start	= 0x1e000000,
-+	.end	= 0x1fffffff,
-+	.flags	= IORESOURCE_MEM,
-+};
-+
-+static struct platform_device gpr_mtd_device = {
-+	.name		= "physmap-flash",
-+	.dev		= {
-+		.platform_data	= &gpr_flash_data,
-+	},
-+	.num_resources	= 1,
-+	.resource	= &gpr_mtd_resource,
-+};
-+
-+/*
-+ * LEDs
-+ */
-+static struct gpio_led gpr_gpio_leds[] = {
-+	{	/* green */
-+		.name			= "gpr:green",
-+		.gpio			= 4,
-+		.active_low		= 1,
-+	},
-+	{	/* red */
-+		.name			= "gpr:red",
-+		.gpio			= 5,
-+		.active_low		= 1,
-+	}
-+};
-+
-+static struct gpio_led_platform_data gpr_led_data = {
-+	.num_leds = ARRAY_SIZE(gpr_gpio_leds),
-+	.leds = gpr_gpio_leds,
-+};
-+
-+static struct platform_device gpr_led_devices = {
-+	.name = "leds-gpio",
-+	.id = -1,
-+	.dev = {
-+		.platform_data = &gpr_led_data,
-+	}
-+};
-+
-+/*
-+ * I2C
-+ */
-+static struct i2c_gpio_platform_data gpr_i2c_data = {
-+	.sda_pin		= 209,
-+	.sda_is_open_drain	= 1,
-+	.scl_pin		= 210,
-+	.scl_is_open_drain	= 1,
-+	.udelay			= 2,		/* ~100 kHz */
-+	.timeout		= HZ,
-+};
-+
-+static struct platform_device gpr_i2c_device = {
-+	.name			= "i2c-gpio",
-+	.id			= -1,
-+	.dev.platform_data	= &gpr_i2c_data,
-+};
-+
-+static struct i2c_board_info gpr_i2c_info[] __initdata = {
-+	{
-+		I2C_BOARD_INFO("lm83", 0x18),
-+		.type = "lm83"
-+	}
-+};
-+
-+
-+
-+static struct resource alchemy_pci_host_res[] = {
-+	[0] = {
-+		.start	= AU1500_PCI_PHYS_ADDR,
-+		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+static int gpr_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
-+{
-+	if ((slot == 0) && (pin == 1))
-+		return AU1550_PCI_INTA;
-+	else if ((slot == 0) && (pin == 2))
-+		return AU1550_PCI_INTB;
-+
-+	return 0xff;
-+}
-+
-+static struct alchemy_pci_platdata gpr_pci_pd = {
-+	.board_map_irq	= gpr_map_pci_irq,
-+	.pci_cfg_set	= PCI_CONFIG_AEN | PCI_CONFIG_R2H | PCI_CONFIG_R1H |
-+			  PCI_CONFIG_CH |
-+#if defined(__MIPSEB__)
-+			  PCI_CONFIG_SIC_HWA_DAT | PCI_CONFIG_SM,
-+#else
-+			  0,
-+#endif
-+};
-+
-+static struct platform_device gpr_pci_host_dev = {
-+	.dev.platform_data = &gpr_pci_pd,
-+	.name		= "alchemy-pci",
-+	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
-+	.resource	= alchemy_pci_host_res,
-+};
-+
-+static struct platform_device *gpr_devices[] __initdata = {
-+	&gpr_wdt_device,
-+	&gpr_mtd_device,
-+	&gpr_i2c_device,
-+	&gpr_led_devices,
-+};
-+
-+static int __init gpr_pci_init(void)
-+{
-+	return platform_device_register(&gpr_pci_host_dev);
-+}
-+/* must be arch_initcall; MIPS PCI scans busses in a subsys_initcall */
-+arch_initcall(gpr_pci_init);
-+
-+
-+static int __init gpr_dev_init(void)
-+{
-+	i2c_register_board_info(0, gpr_i2c_info, ARRAY_SIZE(gpr_i2c_info));
-+
-+	return platform_add_devices(gpr_devices, ARRAY_SIZE(gpr_devices));
-+}
-+device_initcall(gpr_dev_init);
-diff --git a/arch/mips/alchemy/board-mtx1.c b/arch/mips/alchemy/board-mtx1.c
-new file mode 100644
-index 0000000..295f1a9
---- /dev/null
-+++ b/arch/mips/alchemy/board-mtx1.c
-@@ -0,0 +1,313 @@
-+/*
-+ * MTX-1 platform devices registration (Au1500)
-+ *
-+ * Copyright (C) 2007-2009, Florian Fainelli <florian@openwrt.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-+ */
-+
 +#include <linux/init.h>
 +#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/platform_device.h>
++#include <linux/io.h>
 +#include <linux/leds.h>
-+#include <linux/gpio.h>
-+#include <linux/gpio_keys.h>
-+#include <linux/input.h>
++#include <linux/mmc/host.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
 +#include <linux/mtd/partitions.h>
-+#include <linux/mtd/physmap.h>
-+#include <mtd/mtd-abi.h>
-+#include <asm/bootinfo.h>
-+#include <asm/reboot.h>
++#include <linux/platform_device.h>
++#include <linux/serial_8250.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/flash.h>
++#include <linux/smc91x.h>
 +#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-au1x00/au1xxx_eth.h>
-+#include <prom.h>
++#include <asm/mach-au1x00/au1100_mmc.h>
++#include <asm/mach-au1x00/au1xxx_dbdma.h>
++#include <asm/mach-au1x00/au1550_spi.h>
++#include <asm/mach-db1x00/bcsr.h>
++#include <asm/mach-db1x00/db1200.h>
++
++#include "platform.h"
++
 +
 +const char *get_system_type(void)
 +{
-+	return "MTX-1";
-+}
-+
-+void __init prom_init(void)
-+{
-+	unsigned char *memsize_str;
-+	unsigned long memsize;
-+
-+	prom_argc = fw_arg0;
-+	prom_argv = (char **)fw_arg1;
-+	prom_envp = (char **)fw_arg2;
-+
-+	prom_init_cmdline();
-+
-+	memsize_str = prom_getenv("memsize");
-+	if (!memsize_str)
-+		memsize = 0x04000000;
-+	else
-+		strict_strtoul(memsize_str, 0, &memsize);
-+	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+}
-+
-+void prom_putchar(unsigned char c)
-+{
-+	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
-+}
-+
-+static void mtx1_reset(char *c)
-+{
-+	/* Jump to the reset vector */
-+	__asm__ __volatile__("jr\t%0" : : "r"(0xbfc00000));
-+}
-+
-+static void mtx1_power_off(void)
-+{
-+	while (1)
-+		asm volatile (
-+		"	.set	mips32					\n"
-+		"	wait						\n"
-+		"	.set	mips0					\n");
++	return "DB1200";
 +}
 +
 +void __init board_setup(void)
 +{
-+#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
-+	/* Enable USB power switch */
-+	alchemy_gpio_direction_output(204, 0);
-+#endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
++	unsigned long freq0, clksrc, div, pfc;
++	unsigned short whoami;
 +
-+	/* Initialize sys_pinfunc */
-+	au_writel(SYS_PF_NI2, SYS_PINFUNC);
++	bcsr_init(DB1200_BCSR_PHYS_ADDR,
++		  DB1200_BCSR_PHYS_ADDR + DB1200_BCSR_HEXLED_OFS);
 +
-+	/* Initialize GPIO */
-+	au_writel(~0, KSEG1ADDR(AU1000_SYS_PHYS_ADDR) + SYS_TRIOUTCLR);
-+	alchemy_gpio_direction_output(0, 0);	/* Disable M66EN (PCI 66MHz) */
-+	alchemy_gpio_direction_output(3, 1);	/* Disable PCI CLKRUN# */
-+	alchemy_gpio_direction_output(1, 1);	/* Enable EXT_IO3 */
-+	alchemy_gpio_direction_output(5, 0);	/* Disable eth PHY TX_ER */
++	whoami = bcsr_read(BCSR_WHOAMI);
++	printk(KERN_INFO "Alchemy/AMD/RMI DB1200 Board, CPLD Rev %d"
++		"  Board-ID %d  Daughtercard ID %d\n",
++		(whoami >> 4) & 0xf, (whoami >> 8) & 0xf, whoami & 0xf);
 +
-+	/* Enable LED and set it to green */
-+	alchemy_gpio_direction_output(211, 1);	/* green on */
-+	alchemy_gpio_direction_output(212, 0);	/* red off */
++	/* SMBus/SPI on PSC0, Audio on PSC1 */
++	pfc = __raw_readl((void __iomem *)SYS_PINFUNC);
++	pfc &= ~(SYS_PINFUNC_P0A | SYS_PINFUNC_P0B);
++	pfc &= ~(SYS_PINFUNC_P1A | SYS_PINFUNC_P1B | SYS_PINFUNC_FS3);
++	pfc |= SYS_PINFUNC_P1C;	/* SPI is configured later */
++	__raw_writel(pfc, (void __iomem *)SYS_PINFUNC);
++	wmb();
 +
-+	pm_power_off = mtx1_power_off;
-+	_machine_halt = mtx1_power_off;
-+	_machine_restart = mtx1_reset;
++	/* Clock configurations: PSC0: ~50MHz via Clkgen0, derived from
++	 * CPU clock; all other clock generators off/unused.
++	 */
++	div = (get_au1x00_speed() + 25000000) / 50000000;
++	if (div & 1)
++		div++;
++	div = ((div >> 1) - 1) & 0xff;
 +
-+	printk(KERN_INFO "4G Systems MTX-1 Board\n");
++	freq0 = div << SYS_FC_FRDIV0_BIT;
++	__raw_writel(freq0, (void __iomem *)SYS_FREQCTRL0);
++	wmb();
++	freq0 |= SYS_FC_FE0;	/* enable F0 */
++	__raw_writel(freq0, (void __iomem *)SYS_FREQCTRL0);
++	wmb();
++
++	/* psc0_intclk comes 1:1 from F0 */
++	clksrc = SYS_CS_MUX_FQ0 << SYS_CS_ME0_BIT;
++	__raw_writel(clksrc, (void __iomem *)SYS_CLKSRC);
++	wmb();
 +}
 +
 +/******************************************************************************/
 +
-+static struct gpio_keys_button mtx1_gpio_button[] = {
++static struct mtd_partition db1200_spiflash_parts[] = {
 +	{
-+		.gpio = 207,
-+		.code = BTN_0,
-+		.desc = "System button",
-+	}
-+};
-+
-+static struct gpio_keys_platform_data mtx1_buttons_data = {
-+	.buttons = mtx1_gpio_button,
-+	.nbuttons = ARRAY_SIZE(mtx1_gpio_button),
-+};
-+
-+static struct platform_device mtx1_button = {
-+	.name = "gpio-keys",
-+	.id = -1,
-+	.dev = {
-+		.platform_data = &mtx1_buttons_data,
-+	}
-+};
-+
-+static struct resource mtx1_wdt_res[] = {
-+	[0] = {
-+		.start	= 215,
-+		.end	= 215,
-+		.name	= "mtx1-wdt-gpio",
-+		.flags	= IORESOURCE_IRQ,
-+	}
-+};
-+
-+static struct platform_device mtx1_wdt = {
-+	.name = "mtx1-wdt",
-+	.id = 0,
-+	.num_resources = ARRAY_SIZE(mtx1_wdt_res),
-+	.resource = mtx1_wdt_res,
-+};
-+
-+static struct gpio_led default_leds[] = {
-+	{
-+		.name	= "mtx1:green",
-+		.gpio = 211,
-+	}, {
-+		.name = "mtx1:red",
-+		.gpio = 212,
-+	},
-+};
-+
-+static struct gpio_led_platform_data mtx1_led_data = {
-+	.num_leds = ARRAY_SIZE(default_leds),
-+	.leds = default_leds,
-+};
-+
-+static struct platform_device mtx1_gpio_leds = {
-+	.name = "leds-gpio",
-+	.id = -1,
-+	.dev = {
-+		.platform_data = &mtx1_led_data,
-+	}
-+};
-+
-+static struct mtd_partition mtx1_mtd_partitions[] = {
-+	{
-+		.name	= "filesystem",
-+		.size	= 0x01C00000,
++		.name	= "DB1200 SPI flash",
 +		.offset	= 0,
++		.size	= MTDPART_SIZ_FULL,
++	},
++};
++
++static struct flash_platform_data db1200_spiflash_data = {
++	.name		= "s25fl001",
++	.parts		= db1200_spiflash_parts,
++	.nr_parts	= ARRAY_SIZE(db1200_spiflash_parts),
++	.type		= "m25p10",
++};
++
++static struct spi_board_info db1200_spi_devs[] __initdata = {
++	{
++		/* TI TMP121AIDBVR temp sensor */
++		.modalias	= "tmp121",
++		.max_speed_hz	= 2000000,
++		.bus_num	= 0,
++		.chip_select	= 0,
++		.mode		= 0,
 +	},
 +	{
-+		.name	= "yamon",
-+		.size	= 0x00100000,
-+		.offset	= MTDPART_OFS_APPEND,
-+		.mask_flags = MTD_WRITEABLE,
++		/* Spansion S25FL001D0FMA SPI flash */
++		.modalias	= "m25p80",
++		.max_speed_hz	= 50000000,
++		.bus_num	= 0,
++		.chip_select	= 1,
++		.mode		= 0,
++		.platform_data	= &db1200_spiflash_data,
++	},
++};
++
++static struct i2c_board_info db1200_i2c_devs[] __initdata = {
++	{ I2C_BOARD_INFO("24c04", 0x52),  }, /* AT24C04-10 I2C eeprom */
++	{ I2C_BOARD_INFO("ne1619", 0x2d), }, /* adm1025-compat hwmon */
++	{ I2C_BOARD_INFO("wm8731", 0x1b), }, /* I2S audio codec WM8731 */
++};
++
++/**********************************************************************/
++
++static void au1200_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
++				 unsigned int ctrl)
++{
++	struct nand_chip *this = mtd->priv;
++	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
++
++	ioaddr &= 0xffffff00;
++
++	if (ctrl & NAND_CLE) {
++		ioaddr += MEM_STNAND_CMD;
++	} else if (ctrl & NAND_ALE) {
++		ioaddr += MEM_STNAND_ADDR;
++	} else {
++		/* assume we want to r/w real data  by default */
++		ioaddr += MEM_STNAND_DATA;
++	}
++	this->IO_ADDR_R = this->IO_ADDR_W = (void __iomem *)ioaddr;
++	if (cmd != NAND_CMD_NONE) {
++		__raw_writeb(cmd, this->IO_ADDR_W);
++		wmb();
++	}
++}
++
++static int au1200_nand_device_ready(struct mtd_info *mtd)
++{
++	return __raw_readl((void __iomem *)MEM_STSTAT) & 1;
++}
++
++static const char *db1200_part_probes[] = { "cmdlinepart", NULL };
++
++static struct mtd_partition db1200_nand_parts[] = {
++	{
++		.name	= "NAND FS 0",
++		.offset	= 0,
++		.size	= 8 * 1024 * 1024,
 +	},
 +	{
-+		.name	= "kernel",
-+		.size	= 0x002c0000,
++		.name	= "NAND FS 1",
 +		.offset	= MTDPART_OFS_APPEND,
-+	},
-+	{
-+		.name	= "yamon env",
-+		.size	= 0x00040000,
-+		.offset	= MTDPART_OFS_APPEND,
++		.size	= MTDPART_SIZ_FULL
 +	},
 +};
 +
-+static struct physmap_flash_data mtx1_flash_data = {
-+	.width		= 4,
-+	.nr_parts	= 4,
-+	.parts		= mtx1_mtd_partitions,
-+};
-+
-+static struct resource mtx1_mtd_resource = {
-+	.start	= 0x1e000000,
-+	.end	= 0x1fffffff,
-+	.flags	= IORESOURCE_MEM,
-+};
-+
-+static struct platform_device mtx1_mtd = {
-+	.name		= "physmap-flash",
-+	.dev		= {
-+		.platform_data	= &mtx1_flash_data,
++struct platform_nand_data db1200_nand_platdata = {
++	.chip = {
++		.nr_chips	= 1,
++		.chip_offset	= 0,
++		.nr_partitions	= ARRAY_SIZE(db1200_nand_parts),
++		.partitions	= db1200_nand_parts,
++		.chip_delay	= 20,
++		.part_probe_types = db1200_part_probes,
 +	},
-+	.num_resources	= 1,
-+	.resource	= &mtx1_mtd_resource,
++	.ctrl = {
++		.dev_ready	= au1200_nand_device_ready,
++		.cmd_ctrl	= au1200_nand_cmd_ctrl,
++	},
 +};
 +
-+static struct resource alchemy_pci_host_res[] = {
++static struct resource db1200_nand_res[] = {
 +	[0] = {
-+		.start	= AU1500_PCI_PHYS_ADDR,
-+		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
++		.start	= DB1200_NAND_PHYS_ADDR,
++		.end	= DB1200_NAND_PHYS_ADDR + 0xff,
 +		.flags	= IORESOURCE_MEM,
 +	},
 +};
 +
-+static int mtx1_pci_idsel(unsigned int devsel, int assert)
-+{
-+	/* This function is only necessary to support a proprietary Cardbus
-+	 * adapter on the mtx-1 "singleboard" variant. It triggers a custom
-+	 * logic chip connected to EXT_IO3 (GPIO1) to suppress IDSEL signals.
-+	 */
-+	if (assert && devsel != 0)
-+		/* Suppress signal to Cardbus */
-+		alchemy_gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
-+	else
-+		alchemy_gpio_set_value(1, 1);	/* set EXT_IO3 ON */
-+
-+	udelay(1);
-+	return 1;
-+}
-+
-+static const char mtx1_irqtab[][5] = {
-+	[0] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTA, 0xff, 0xff }, /* IDSEL 00 - AdapterA-Slot0 (top) */
-+	[1] = { -1, AU1500_PCI_INTB, AU1500_PCI_INTA, 0xff, 0xff }, /* IDSEL 01 - AdapterA-Slot1 (bottom) */
-+	[2] = { -1, AU1500_PCI_INTC, AU1500_PCI_INTD, 0xff, 0xff }, /* IDSEL 02 - AdapterB-Slot0 (top) */
-+	[3] = { -1, AU1500_PCI_INTD, AU1500_PCI_INTC, 0xff, 0xff }, /* IDSEL 03 - AdapterB-Slot1 (bottom) */
-+	[4] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, 0xff, 0xff }, /* IDSEL 04 - AdapterC-Slot0 (top) */
-+	[5] = { -1, AU1500_PCI_INTB, AU1500_PCI_INTA, 0xff, 0xff }, /* IDSEL 05 - AdapterC-Slot1 (bottom) */
-+	[6] = { -1, AU1500_PCI_INTC, AU1500_PCI_INTD, 0xff, 0xff }, /* IDSEL 06 - AdapterD-Slot0 (top) */
-+	[7] = { -1, AU1500_PCI_INTD, AU1500_PCI_INTC, 0xff, 0xff }, /* IDSEL 07 - AdapterD-Slot1 (bottom) */
-+};
-+
-+static int mtx1_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
-+{
-+	return mtx1_irqtab[slot][pin];
-+}
-+
-+static struct alchemy_pci_platdata mtx1_pci_pd = {
-+	.board_map_irq	 = mtx1_map_pci_irq,
-+	.board_pci_idsel = mtx1_pci_idsel,
-+	.pci_cfg_set	 = PCI_CONFIG_AEN | PCI_CONFIG_R2H | PCI_CONFIG_R1H |
-+			   PCI_CONFIG_CH |
-+#if defined(__MIPSEB__)
-+			   PCI_CONFIG_SIC_HWA_DAT | PCI_CONFIG_SM,
-+#else
-+			   0,
-+#endif
-+};
-+
-+static struct platform_device mtx1_pci_host = {
-+	.dev.platform_data = &mtx1_pci_pd,
-+	.name		= "alchemy-pci",
-+	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
-+	.resource	= alchemy_pci_host_res,
-+};
-+
-+static struct __initdata platform_device * mtx1_devs[] = {
-+	&mtx1_pci_host,
-+	&mtx1_gpio_leds,
-+	&mtx1_wdt,
-+	&mtx1_button,
-+	&mtx1_mtd,
-+};
-+
-+static struct au1000_eth_platform_data mtx1_au1000_eth0_pdata = {
-+	.phy_search_highest_addr	= 1,
-+	.phy1_search_mac0		= 1,
-+};
-+
-+static int __init mtx1_register_devices(void)
-+{
-+	int rc;
-+
-+	irq_set_irq_type(AU1500_GPIO204_INT, IRQ_TYPE_LEVEL_HIGH);
-+	irq_set_irq_type(AU1500_GPIO201_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO202_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO203_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO205_INT, IRQ_TYPE_LEVEL_LOW);
-+
-+	au1xxx_override_eth_cfg(0, &mtx1_au1000_eth0_pdata);
-+
-+	rc = gpio_request(mtx1_gpio_button[0].gpio,
-+					mtx1_gpio_button[0].desc);
-+	if (rc < 0) {
-+		printk(KERN_INFO "mtx1: failed to request %d\n",
-+					mtx1_gpio_button[0].gpio);
-+		goto out;
++static struct platform_device db1200_nand_dev = {
++	.name		= "gen_nand",
++	.num_resources	= ARRAY_SIZE(db1200_nand_res),
++	.resource	= db1200_nand_res,
++	.id		= -1,
++	.dev		= {
++		.platform_data = &db1200_nand_platdata,
 +	}
-+	gpio_direction_input(mtx1_gpio_button[0].gpio);
-+out:
-+	return platform_add_devices(mtx1_devs, ARRAY_SIZE(mtx1_devs));
++};
++
++/**********************************************************************/
++
++static struct smc91x_platdata db1200_eth_data = {
++	.flags	= SMC91X_NOWAIT | SMC91X_USE_16BIT,
++	.leda	= RPC_LED_100_10,
++	.ledb	= RPC_LED_TX_RX,
++};
++
++static struct resource db1200_eth_res[] = {
++	[0] = {
++		.start	= DB1200_ETH_PHYS_ADDR,
++		.end	= DB1200_ETH_PHYS_ADDR + 0xf,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= DB1200_ETH_INT,
++		.end	= DB1200_ETH_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++static struct platform_device db1200_eth_dev = {
++	.dev	= {
++		.platform_data	= &db1200_eth_data,
++	},
++	.name		= "smc91x",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(db1200_eth_res),
++	.resource	= db1200_eth_res,
++};
++
++/**********************************************************************/
++
++static struct resource db1200_ide_res[] = {
++	[0] = {
++		.start	= DB1200_IDE_PHYS_ADDR,
++		.end	= DB1200_IDE_PHYS_ADDR + DB1200_IDE_PHYS_LEN - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= DB1200_IDE_INT,
++		.end	= DB1200_IDE_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_DMA_REQ1,
++		.end	= AU1200_DSCR_CMD0_DMA_REQ1,
++		.flags	= IORESOURCE_DMA,
++	},
++};
++
++static u64 au1200_ide_dmamask = DMA_BIT_MASK(32);
++
++static struct platform_device db1200_ide_dev = {
++	.name		= "au1200-ide",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1200_ide_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++	},
++	.num_resources	= ARRAY_SIZE(db1200_ide_res),
++	.resource	= db1200_ide_res,
++};
++
++/**********************************************************************/
++
++static struct platform_device db1200_rtc_dev = {
++	.name	= "rtc-au1xxx",
++	.id	= -1,
++};
++
++/**********************************************************************/
++
++/* SD carddetects:  they're supposed to be edge-triggered, but ack
++ * doesn't seem to work (CPLD Rev 2).  Instead, the screaming one
++ * is disabled and its counterpart enabled.  The 500ms timeout is
++ * because the carddetect isn't debounced in hardware.
++ */
++static irqreturn_t db1200_mmc_cd(int irq, void *ptr)
++{
++	void(*mmc_cd)(struct mmc_host *, unsigned long);
++
++	if (irq == DB1200_SD0_INSERT_INT) {
++		disable_irq_nosync(DB1200_SD0_INSERT_INT);
++		enable_irq(DB1200_SD0_EJECT_INT);
++	} else {
++		disable_irq_nosync(DB1200_SD0_EJECT_INT);
++		enable_irq(DB1200_SD0_INSERT_INT);
++	}
++
++	/* link against CONFIG_MMC=m */
++	mmc_cd = symbol_get(mmc_detect_change);
++	if (mmc_cd) {
++		mmc_cd(ptr, msecs_to_jiffies(500));
++		symbol_put(mmc_detect_change);
++	}
++
++	return IRQ_HANDLED;
 +}
-+arch_initcall(mtx1_register_devices);
-diff --git a/arch/mips/alchemy/board-xxs1500.c b/arch/mips/alchemy/board-xxs1500.c
++
++static int db1200_mmc_cd_setup(void *mmc_host, int en)
++{
++	int ret;
++
++	if (en) {
++		ret = request_irq(DB1200_SD0_INSERT_INT, db1200_mmc_cd,
++				  IRQF_DISABLED, "sd_insert", mmc_host);
++		if (ret)
++			goto out;
++
++		ret = request_irq(DB1200_SD0_EJECT_INT, db1200_mmc_cd,
++				  IRQF_DISABLED, "sd_eject", mmc_host);
++		if (ret) {
++			free_irq(DB1200_SD0_INSERT_INT, mmc_host);
++			goto out;
++		}
++
++		if (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT)
++			enable_irq(DB1200_SD0_EJECT_INT);
++		else
++			enable_irq(DB1200_SD0_INSERT_INT);
++
++	} else {
++		free_irq(DB1200_SD0_INSERT_INT, mmc_host);
++		free_irq(DB1200_SD0_EJECT_INT, mmc_host);
++	}
++	ret = 0;
++out:
++	return ret;
++}
++
++static void db1200_mmc_set_power(void *mmc_host, int state)
++{
++	if (state) {
++		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD0PWR);
++		msleep(400);	/* stabilization time */
++	} else
++		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD0PWR, 0);
++}
++
++static int db1200_mmc_card_readonly(void *mmc_host)
++{
++	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD0WP) ? 1 : 0;
++}
++
++static int db1200_mmc_card_inserted(void *mmc_host)
++{
++	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT) ? 1 : 0;
++}
++
++static void db1200_mmcled_set(struct led_classdev *led,
++			      enum led_brightness brightness)
++{
++	if (brightness != LED_OFF)
++		bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED0, 0);
++	else
++		bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED0);
++}
++
++static struct led_classdev db1200_mmc_led = {
++	.brightness_set	= db1200_mmcled_set,
++};
++
++static struct au1xmmc_platform_data db1200mmc_platdata = {
++	.cd_setup	= db1200_mmc_cd_setup,
++	.set_power	= db1200_mmc_set_power,
++	.card_inserted	= db1200_mmc_card_inserted,
++	.card_readonly	= db1200_mmc_card_readonly,
++	.led		= &db1200_mmc_led,
++};
++
++static struct resource au1200_mmc0_resources[] = {
++	[0] = {
++		.start	= AU1100_SD0_PHYS_ADDR,
++		.end	= AU1100_SD0_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_SD_INT,
++		.end	= AU1200_SD_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_SDMS_TX0,
++		.end	= AU1200_DSCR_CMD0_SDMS_TX0,
++		.flags	= IORESOURCE_DMA,
++	},
++	[3] = {
++		.start	= AU1200_DSCR_CMD0_SDMS_RX0,
++		.end	= AU1200_DSCR_CMD0_SDMS_RX0,
++		.flags	= IORESOURCE_DMA,
++	}
++};
++
++static u64 au1xxx_mmc_dmamask =  DMA_BIT_MASK(32);
++
++static struct platform_device db1200_mmc0_dev = {
++	.name		= "au1xxx-mmc",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1xxx_mmc_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &db1200mmc_platdata,
++	},
++	.num_resources	= ARRAY_SIZE(au1200_mmc0_resources),
++	.resource	= au1200_mmc0_resources,
++};
++
++/**********************************************************************/
++
++static struct resource au1200_lcd_res[] = {
++	[0] = {
++		.start	= AU1200_LCD_PHYS_ADDR,
++		.end	= AU1200_LCD_PHYS_ADDR + 0x800 - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_LCD_INT,
++		.end	= AU1200_LCD_INT,
++		.flags	= IORESOURCE_IRQ,
++	}
++};
++
++static u64 au1200_lcd_dmamask = DMA_BIT_MASK(32);
++
++static struct platform_device au1200_lcd_dev = {
++	.name		= "au1200-lcd",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1200_lcd_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++	},
++	.num_resources	= ARRAY_SIZE(au1200_lcd_res),
++	.resource	= au1200_lcd_res,
++};
++
++/**********************************************************************/
++
++static struct resource au1200_psc0_res[] = {
++	[0] = {
++		.start	= AU1550_PSC0_PHYS_ADDR,
++		.end	= AU1550_PSC0_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_PSC0_INT,
++		.end	= AU1200_PSC0_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_PSC0_TX,
++		.end	= AU1200_DSCR_CMD0_PSC0_TX,
++		.flags	= IORESOURCE_DMA,
++	},
++	[3] = {
++		.start	= AU1200_DSCR_CMD0_PSC0_RX,
++		.end	= AU1200_DSCR_CMD0_PSC0_RX,
++		.flags	= IORESOURCE_DMA,
++	},
++};
++
++static struct platform_device db1200_i2c_dev = {
++	.name		= "au1xpsc_smbus",
++	.id		= 0,	/* bus number */
++	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
++	.resource	= au1200_psc0_res,
++};
++
++static void db1200_spi_cs_en(struct au1550_spi_info *spi, int cs, int pol)
++{
++	if (cs)
++		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_SPISEL);
++	else
++		bcsr_mod(BCSR_RESETS, BCSR_RESETS_SPISEL, 0);
++}
++
++static struct au1550_spi_info db1200_spi_platdata = {
++	.mainclk_hz	= 50000000,	/* PSC0 clock */
++	.num_chipselect = 2,
++	.activate_cs	= db1200_spi_cs_en,
++};
++
++static u64 spi_dmamask = DMA_BIT_MASK(32);
++
++static struct platform_device db1200_spi_dev = {
++	.dev	= {
++		.dma_mask		= &spi_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &db1200_spi_platdata,
++	},
++	.name		= "au1550-spi",
++	.id		= 0,	/* bus number */
++	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
++	.resource	= au1200_psc0_res,
++};
++
++static struct resource au1200_psc1_res[] = {
++	[0] = {
++		.start	= AU1550_PSC1_PHYS_ADDR,
++		.end	= AU1550_PSC1_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_PSC1_INT,
++		.end	= AU1200_PSC1_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_PSC1_TX,
++		.end	= AU1200_DSCR_CMD0_PSC1_TX,
++		.flags	= IORESOURCE_DMA,
++	},
++	[3] = {
++		.start	= AU1200_DSCR_CMD0_PSC1_RX,
++		.end	= AU1200_DSCR_CMD0_PSC1_RX,
++		.flags	= IORESOURCE_DMA,
++	},
++};
++
++/* AC97 or I2S device */
++static struct platform_device db1200_audio_dev = {
++	/* name assigned later based on switch setting */
++	.id		= 1,	/* PSC ID */
++	.num_resources	= ARRAY_SIZE(au1200_psc1_res),
++	.resource	= au1200_psc1_res,
++};
++
++/* DB1200 ASoC card device */
++static struct platform_device db1200_sound_dev = {
++	/* name assigned later based on switch setting */
++	.id		= 1,	/* PSC ID */
++};
++
++static struct platform_device db1200_stac_dev = {
++	.name		= "ac97-codec",
++	.id		= 1,	/* on PSC1 */
++};
++
++static struct platform_device db1200_audiodma_dev = {
++	.name		= "au1xpsc-pcm",
++	.id		= 1,	/* PSC ID */
++};
++
++static struct platform_device *db1200_devs[] __initdata = {
++	NULL,		/* PSC0, selected by S6.8 */
++	&db1200_ide_dev,
++	&db1200_mmc0_dev,
++	&au1200_lcd_dev,
++	&db1200_eth_dev,
++	&db1200_rtc_dev,
++	&db1200_nand_dev,
++	&db1200_audiodma_dev,
++	&db1200_audio_dev,
++	&db1200_stac_dev,
++	&db1200_sound_dev,
++};
++
++static int __init db1200_dev_init(void)
++{
++	unsigned long pfc;
++	unsigned short sw;
++	int swapped;
++
++	/* GPIO7 is low-level triggered CPLD cascade */
++	irq_set_irq_type(AU1200_GPIO7_INT, IRQF_TRIGGER_LOW);
++	bcsr_init_irq(DB1200_INT_BEGIN, DB1200_INT_END, AU1200_GPIO7_INT);
++
++	/* insert/eject pairs: one of both is always screaming.  To avoid
++	 * issues they must not be automatically enabled when initially
++	 * requested.
++	 */
++	irq_set_status_flags(DB1200_SD0_INSERT_INT, IRQ_NOAUTOEN);
++	irq_set_status_flags(DB1200_SD0_EJECT_INT, IRQ_NOAUTOEN);
++	irq_set_status_flags(DB1200_PC0_INSERT_INT, IRQ_NOAUTOEN);
++	irq_set_status_flags(DB1200_PC0_EJECT_INT, IRQ_NOAUTOEN);
++	irq_set_status_flags(DB1200_PC1_INSERT_INT, IRQ_NOAUTOEN);
++	irq_set_status_flags(DB1200_PC1_EJECT_INT, IRQ_NOAUTOEN);
++
++	i2c_register_board_info(0, db1200_i2c_devs,
++				ARRAY_SIZE(db1200_i2c_devs));
++	spi_register_board_info(db1200_spi_devs,
++				ARRAY_SIZE(db1200_i2c_devs));
++
++	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C  ON=SPI)
++	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
++	 */
++
++	/* NOTE: GPIO215 controls OTG VBUS supply.  In SPI mode however
++	 * this pin is claimed by PSC0 (unused though, but pinmux doesn't
++	 * allow to free it without crippling the SPI interface).
++	 * As a result, in SPI mode, OTG simply won't work (PSC0 uses
++	 * it as an input pin which is pulled high on the boards).
++	 */
++	pfc = __raw_readl((void __iomem *)SYS_PINFUNC) & ~SYS_PINFUNC_P0A;
++
++	/* switch off OTG VBUS supply */
++	gpio_request(215, "otg-vbus");
++	gpio_direction_output(215, 1);
++
++	printk(KERN_INFO "DB1200 device configuration:\n");
++
++	sw = bcsr_read(BCSR_SWITCHES);
++	if (sw & BCSR_SWITCHES_DIP_8) {
++		db1200_devs[0] = &db1200_i2c_dev;
++		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
++
++		pfc |= (2 << 17);	/* GPIO2 block owns GPIO215 */
++
++		printk(KERN_INFO " S6.8 OFF: PSC0 mode I2C\n");
++		printk(KERN_INFO "   OTG port VBUS supply available!\n");
++	} else {
++		db1200_devs[0] = &db1200_spi_dev;
++		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_PSC0MUX);
++
++		pfc |= (1 << 17);	/* PSC0 owns GPIO215 */
++
++		printk(KERN_INFO " S6.8 ON : PSC0 mode SPI\n");
++		printk(KERN_INFO "   OTG port VBUS supply disabled\n");
++	}
++	__raw_writel(pfc, (void __iomem *)SYS_PINFUNC);
++	wmb();
++
++	/* Audio: DIP7 selects I2S(0)/AC97(1), but need I2C for I2S!
++	 * so: DIP7=1 || DIP8=0 => AC97, DIP7=0 && DIP8=1 => I2S
++	 */
++	sw &= BCSR_SWITCHES_DIP_8 | BCSR_SWITCHES_DIP_7;
++	if (sw == BCSR_SWITCHES_DIP_8) {
++		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_PSC1MUX);
++		db1200_audio_dev.name = "au1xpsc_i2s";
++		db1200_sound_dev.name = "db1200-i2s";
++		printk(KERN_INFO " S6.7 ON : PSC1 mode I2S\n");
++	} else {
++		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC1MUX, 0);
++		db1200_audio_dev.name = "au1xpsc_ac97";
++		db1200_sound_dev.name = "db1200-ac97";
++		printk(KERN_INFO " S6.7 OFF: PSC1 mode AC97\n");
++	}
++
++	/* Audio PSC clock is supplied externally. (FIXME: platdata!!) */
++	__raw_writel(PSC_SEL_CLK_SERCLK,
++	    (void __iomem *)KSEG1ADDR(AU1550_PSC1_PHYS_ADDR) + PSC_SEL_OFFSET);
++	wmb();
++
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
++		DB1200_PC0_INT, DB1200_PC0_INSERT_INT,
++		/*DB1200_PC0_STSCHG_INT*/0, DB1200_PC0_EJECT_INT, 0);
++
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
++		DB1200_PC1_INT, DB1200_PC1_INSERT_INT,
++		/*DB1200_PC1_STSCHG_INT*/0, DB1200_PC1_EJECT_INT, 1);
++
++	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1200_SWAPBOOT;
++	db1x_register_norflash(64 << 20, 2, swapped);
++
++	return platform_add_devices(db1200_devs, ARRAY_SIZE(db1200_devs));
++}
++device_initcall(db1200_dev_init);
++
++/* au1200fb calls these: STERBT EINEN TRAGISCHEN TOD!!! */
++int board_au1200fb_panel(void)
++{
++	return (bcsr_read(BCSR_SWITCHES) >> 8) & 0x0f;
++}
++
++int board_au1200fb_panel_init(void)
++{
++	/* Apply power */
++	bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
++				BCSR_BOARD_LCDBL);
++	return 0;
++}
++
++int board_au1200fb_panel_shutdown(void)
++{
++	/* Remove power */
++	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
++			     BCSR_BOARD_LCDBL, 0);
++	return 0;
++}
+diff --git a/arch/mips/alchemy/devboards/db1200/Makefile b/arch/mips/alchemy/devboards/db1200/Makefile
+deleted file mode 100644
+index 17840a5..0000000
+--- a/arch/mips/alchemy/devboards/db1200/Makefile
++++ /dev/null
+@@ -1 +0,0 @@
+-obj-y += setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
+deleted file mode 100644
+index c61867c..0000000
+--- a/arch/mips/alchemy/devboards/db1200/platform.c
++++ /dev/null
+@@ -1,648 +0,0 @@
+-/*
+- * DBAu1200 board platform device registration
+- *
+- * Copyright (C) 2008-2009 Manuel Lauss
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#include <linux/dma-mapping.h>
+-#include <linux/gpio.h>
+-#include <linux/i2c.h>
+-#include <linux/init.h>
+-#include <linux/io.h>
+-#include <linux/leds.h>
+-#include <linux/mmc/host.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <linux/mtd/partitions.h>
+-#include <linux/platform_device.h>
+-#include <linux/serial_8250.h>
+-#include <linux/spi/spi.h>
+-#include <linux/spi/flash.h>
+-#include <linux/smc91x.h>
+-
+-#include <asm/mach-au1x00/au1100_mmc.h>
+-#include <asm/mach-au1x00/au1xxx_dbdma.h>
+-#include <asm/mach-au1x00/au1550_spi.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-#include <asm/mach-db1x00/db1200.h>
+-
+-#include "../platform.h"
+-
+-static struct mtd_partition db1200_spiflash_parts[] = {
+-	{
+-		.name	= "DB1200 SPI flash",
+-		.offset	= 0,
+-		.size	= MTDPART_SIZ_FULL,
+-	},
+-};
+-
+-static struct flash_platform_data db1200_spiflash_data = {
+-	.name		= "s25fl001",
+-	.parts		= db1200_spiflash_parts,
+-	.nr_parts	= ARRAY_SIZE(db1200_spiflash_parts),
+-	.type		= "m25p10",
+-};
+-
+-static struct spi_board_info db1200_spi_devs[] __initdata = {
+-	{
+-		/* TI TMP121AIDBVR temp sensor */
+-		.modalias	= "tmp121",
+-		.max_speed_hz	= 2000000,
+-		.bus_num	= 0,
+-		.chip_select	= 0,
+-		.mode		= 0,
+-	},
+-	{
+-		/* Spansion S25FL001D0FMA SPI flash */
+-		.modalias	= "m25p80",
+-		.max_speed_hz	= 50000000,
+-		.bus_num	= 0,
+-		.chip_select	= 1,
+-		.mode		= 0,
+-		.platform_data	= &db1200_spiflash_data,
+-	},
+-};
+-
+-static struct i2c_board_info db1200_i2c_devs[] __initdata = {
+-	{
+-		/* AT24C04-10 I2C eeprom */
+-		I2C_BOARD_INFO("24c04", 0x52),
+-	},
+-	{
+-		/* Philips NE1619 temp/voltage sensor (adm1025 drv) */
+-		I2C_BOARD_INFO("ne1619", 0x2d),
+-	},
+-	{
+-		/* I2S audio codec WM8731 */
+-		I2C_BOARD_INFO("wm8731", 0x1b),
+-	},
+-};
+-
+-/**********************************************************************/
+-
+-static void au1200_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
+-				 unsigned int ctrl)
+-{
+-	struct nand_chip *this = mtd->priv;
+-	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
+-
+-	ioaddr &= 0xffffff00;
+-
+-	if (ctrl & NAND_CLE) {
+-		ioaddr += MEM_STNAND_CMD;
+-	} else if (ctrl & NAND_ALE) {
+-		ioaddr += MEM_STNAND_ADDR;
+-	} else {
+-		/* assume we want to r/w real data  by default */
+-		ioaddr += MEM_STNAND_DATA;
+-	}
+-	this->IO_ADDR_R = this->IO_ADDR_W = (void __iomem *)ioaddr;
+-	if (cmd != NAND_CMD_NONE) {
+-		__raw_writeb(cmd, this->IO_ADDR_W);
+-		wmb();
+-	}
+-}
+-
+-static int au1200_nand_device_ready(struct mtd_info *mtd)
+-{
+-	return __raw_readl((void __iomem *)MEM_STSTAT) & 1;
+-}
+-
+-static const char *db1200_part_probes[] = { "cmdlinepart", NULL };
+-
+-static struct mtd_partition db1200_nand_parts[] = {
+-	{
+-		.name	= "NAND FS 0",
+-		.offset	= 0,
+-		.size	= 8 * 1024 * 1024,
+-	},
+-	{
+-		.name	= "NAND FS 1",
+-		.offset	= MTDPART_OFS_APPEND,
+-		.size	= MTDPART_SIZ_FULL
+-	},
+-};
+-
+-struct platform_nand_data db1200_nand_platdata = {
+-	.chip = {
+-		.nr_chips	= 1,
+-		.chip_offset	= 0,
+-		.nr_partitions	= ARRAY_SIZE(db1200_nand_parts),
+-		.partitions	= db1200_nand_parts,
+-		.chip_delay	= 20,
+-		.part_probe_types = db1200_part_probes,
+-	},
+-	.ctrl = {
+-		.dev_ready	= au1200_nand_device_ready,
+-		.cmd_ctrl	= au1200_nand_cmd_ctrl,
+-	},
+-};
+-
+-static struct resource db1200_nand_res[] = {
+-	[0] = {
+-		.start	= DB1200_NAND_PHYS_ADDR,
+-		.end	= DB1200_NAND_PHYS_ADDR + 0xff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-};
+-
+-static struct platform_device db1200_nand_dev = {
+-	.name		= "gen_nand",
+-	.num_resources	= ARRAY_SIZE(db1200_nand_res),
+-	.resource	= db1200_nand_res,
+-	.id		= -1,
+-	.dev		= {
+-		.platform_data = &db1200_nand_platdata,
+-	}
+-};
+-
+-/**********************************************************************/
+-
+-static struct smc91x_platdata db1200_eth_data = {
+-	.flags	= SMC91X_NOWAIT | SMC91X_USE_16BIT,
+-	.leda	= RPC_LED_100_10,
+-	.ledb	= RPC_LED_TX_RX,
+-};
+-
+-static struct resource db1200_eth_res[] = {
+-	[0] = {
+-		.start	= DB1200_ETH_PHYS_ADDR,
+-		.end	= DB1200_ETH_PHYS_ADDR + 0xf,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= DB1200_ETH_INT,
+-		.end	= DB1200_ETH_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static struct platform_device db1200_eth_dev = {
+-	.dev	= {
+-		.platform_data	= &db1200_eth_data,
+-	},
+-	.name		= "smc91x",
+-	.id		= -1,
+-	.num_resources	= ARRAY_SIZE(db1200_eth_res),
+-	.resource	= db1200_eth_res,
+-};
+-
+-/**********************************************************************/
+-
+-static struct resource db1200_ide_res[] = {
+-	[0] = {
+-		.start	= DB1200_IDE_PHYS_ADDR,
+-		.end 	= DB1200_IDE_PHYS_ADDR + DB1200_IDE_PHYS_LEN - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= DB1200_IDE_INT,
+-		.end	= DB1200_IDE_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_DMA_REQ1,
+-		.end	= AU1200_DSCR_CMD0_DMA_REQ1,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-};
+-
+-static u64 ide_dmamask = DMA_BIT_MASK(32);
+-
+-static struct platform_device db1200_ide_dev = {
+-	.name		= "au1200-ide",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask 		= &ide_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-	},
+-	.num_resources	= ARRAY_SIZE(db1200_ide_res),
+-	.resource	= db1200_ide_res,
+-};
+-
+-/**********************************************************************/
+-
+-static struct platform_device db1200_rtc_dev = {
+-	.name	= "rtc-au1xxx",
+-	.id	= -1,
+-};
+-
+-/**********************************************************************/
+-
+-/* SD carddetects:  they're supposed to be edge-triggered, but ack
+- * doesn't seem to work (CPLD Rev 2).  Instead, the screaming one
+- * is disabled and its counterpart enabled.  The 500ms timeout is
+- * because the carddetect isn't debounced in hardware.
+- */
+-static irqreturn_t db1200_mmc_cd(int irq, void *ptr)
+-{
+-	void(*mmc_cd)(struct mmc_host *, unsigned long);
+-
+-	if (irq == DB1200_SD0_INSERT_INT) {
+-		disable_irq_nosync(DB1200_SD0_INSERT_INT);
+-		enable_irq(DB1200_SD0_EJECT_INT);
+-	} else {
+-		disable_irq_nosync(DB1200_SD0_EJECT_INT);
+-		enable_irq(DB1200_SD0_INSERT_INT);
+-	}
+-
+-	/* link against CONFIG_MMC=m */
+-	mmc_cd = symbol_get(mmc_detect_change);
+-	if (mmc_cd) {
+-		mmc_cd(ptr, msecs_to_jiffies(500));
+-		symbol_put(mmc_detect_change);
+-	}
+-
+-	return IRQ_HANDLED;
+-}
+-
+-static int db1200_mmc_cd_setup(void *mmc_host, int en)
+-{
+-	int ret;
+-
+-	if (en) {
+-		ret = request_irq(DB1200_SD0_INSERT_INT, db1200_mmc_cd,
+-				  IRQF_DISABLED, "sd_insert", mmc_host);
+-		if (ret)
+-			goto out;
+-
+-		ret = request_irq(DB1200_SD0_EJECT_INT, db1200_mmc_cd,
+-				  IRQF_DISABLED, "sd_eject", mmc_host);
+-		if (ret) {
+-			free_irq(DB1200_SD0_INSERT_INT, mmc_host);
+-			goto out;
+-		}
+-
+-		if (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT)
+-			enable_irq(DB1200_SD0_EJECT_INT);
+-		else
+-			enable_irq(DB1200_SD0_INSERT_INT);
+-
+-	} else {
+-		free_irq(DB1200_SD0_INSERT_INT, mmc_host);
+-		free_irq(DB1200_SD0_EJECT_INT, mmc_host);
+-	}
+-	ret = 0;
+-out:
+-	return ret;
+-}
+-
+-static void db1200_mmc_set_power(void *mmc_host, int state)
+-{
+-	if (state) {
+-		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD0PWR);
+-		msleep(400);	/* stabilization time */
+-	} else
+-		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD0PWR, 0);
+-}
+-
+-static int db1200_mmc_card_readonly(void *mmc_host)
+-{
+-	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD0WP) ? 1 : 0;
+-}
+-
+-static int db1200_mmc_card_inserted(void *mmc_host)
+-{
+-	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT) ? 1 : 0;
+-}
+-
+-static void db1200_mmcled_set(struct led_classdev *led,
+-			      enum led_brightness brightness)
+-{
+-	if (brightness != LED_OFF)
+-		bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED0, 0);
+-	else
+-		bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED0);
+-}
+-
+-static struct led_classdev db1200_mmc_led = {
+-	.brightness_set	= db1200_mmcled_set,
+-};
+-
+-static struct au1xmmc_platform_data db1200mmc_platdata = {
+-	.cd_setup	= db1200_mmc_cd_setup,
+-	.set_power	= db1200_mmc_set_power,
+-	.card_inserted	= db1200_mmc_card_inserted,
+-	.card_readonly	= db1200_mmc_card_readonly,
+-	.led		= &db1200_mmc_led,
+-};
+-
+-static struct resource au1200_mmc0_resources[] = {
+-	[0] = {
+-		.start	= AU1100_SD0_PHYS_ADDR,
+-		.end	= AU1100_SD0_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_SD_INT,
+-		.end	= AU1200_SD_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_SDMS_TX0,
+-		.end	= AU1200_DSCR_CMD0_SDMS_TX0,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[3] = {
+-		.start	= AU1200_DSCR_CMD0_SDMS_RX0,
+-		.end	= AU1200_DSCR_CMD0_SDMS_RX0,
+-		.flags	= IORESOURCE_DMA,
+-	}
+-};
+-
+-static u64 au1xxx_mmc_dmamask =  DMA_BIT_MASK(32);
+-
+-static struct platform_device db1200_mmc0_dev = {
+-	.name		= "au1xxx-mmc",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask		= &au1xxx_mmc_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-		.platform_data		= &db1200mmc_platdata,
+-	},
+-	.num_resources	= ARRAY_SIZE(au1200_mmc0_resources),
+-	.resource	= au1200_mmc0_resources,
+-};
+-
+-/**********************************************************************/
+-
+-static struct resource au1200_lcd_res[] = {
+-	[0] = {
+-		.start	= AU1200_LCD_PHYS_ADDR,
+-		.end	= AU1200_LCD_PHYS_ADDR + 0x800 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_LCD_INT,
+-		.end	= AU1200_LCD_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	}
+-};
+-
+-static u64 au1200_lcd_dmamask = DMA_BIT_MASK(32);
+-
+-static struct platform_device au1200_lcd_dev = {
+-	.name		= "au1200-lcd",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask		= &au1200_lcd_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-	},
+-	.num_resources	= ARRAY_SIZE(au1200_lcd_res),
+-	.resource	= au1200_lcd_res,
+-};
+-
+-/**********************************************************************/
+-
+-static struct resource au1200_psc0_res[] = {
+-	[0] = {
+-		.start	= AU1550_PSC0_PHYS_ADDR,
+-		.end	= AU1550_PSC0_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_PSC0_INT,
+-		.end	= AU1200_PSC0_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_PSC0_TX,
+-		.end	= AU1200_DSCR_CMD0_PSC0_TX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[3] = {
+-		.start	= AU1200_DSCR_CMD0_PSC0_RX,
+-		.end	= AU1200_DSCR_CMD0_PSC0_RX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-};
+-
+-static struct platform_device db1200_i2c_dev = {
+-	.name		= "au1xpsc_smbus",
+-	.id		= 0,	/* bus number */
+-	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
+-	.resource	= au1200_psc0_res,
+-};
+-
+-static void db1200_spi_cs_en(struct au1550_spi_info *spi, int cs, int pol)
+-{
+-	if (cs)
+-		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_SPISEL);
+-	else
+-		bcsr_mod(BCSR_RESETS, BCSR_RESETS_SPISEL, 0);
+-}
+-
+-static struct au1550_spi_info db1200_spi_platdata = {
+-	.mainclk_hz	= 50000000,	/* PSC0 clock */
+-	.num_chipselect = 2,
+-	.activate_cs	= db1200_spi_cs_en,
+-};
+-
+-static u64 spi_dmamask = DMA_BIT_MASK(32);
+-
+-static struct platform_device db1200_spi_dev = {
+-	.dev	= {
+-		.dma_mask		= &spi_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-		.platform_data		= &db1200_spi_platdata,
+-	},
+-	.name		= "au1550-spi",
+-	.id		= 0,	/* bus number */
+-	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
+-	.resource	= au1200_psc0_res,
+-};
+-
+-static struct resource au1200_psc1_res[] = {
+-	[0] = {
+-		.start	= AU1550_PSC1_PHYS_ADDR,
+-		.end	= AU1550_PSC1_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_PSC1_INT,
+-		.end	= AU1200_PSC1_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_PSC1_TX,
+-		.end	= AU1200_DSCR_CMD0_PSC1_TX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[3] = {
+-		.start	= AU1200_DSCR_CMD0_PSC1_RX,
+-		.end	= AU1200_DSCR_CMD0_PSC1_RX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-};
+-
+-/* AC97 or I2S device */
+-static struct platform_device db1200_audio_dev = {
+-	/* name assigned later based on switch setting */
+-	.id		= 1,	/* PSC ID */
+-	.num_resources	= ARRAY_SIZE(au1200_psc1_res),
+-	.resource	= au1200_psc1_res,
+-};
+-
+-/* DB1200 ASoC card device */
+-static struct platform_device db1200_sound_dev = {
+-	/* name assigned later based on switch setting */
+-	.id		= 1,	/* PSC ID */
+-};
+-
+-static struct platform_device db1200_stac_dev = {
+-	.name		= "ac97-codec",
+-	.id		= 1,	/* on PSC1 */
+-};
+-
+-static struct platform_device db1200_audiodma_dev = {
+-	.name		= "au1xpsc-pcm",
+-	.id		= 1,	/* PSC ID */
+-};
+-
+-static struct platform_device *db1200_devs[] __initdata = {
+-	NULL,		/* PSC0, selected by S6.8 */
+-	&db1200_ide_dev,
+-	&db1200_mmc0_dev,
+-	&au1200_lcd_dev,
+-	&db1200_eth_dev,
+-	&db1200_rtc_dev,
+-	&db1200_nand_dev,
+-	&db1200_audiodma_dev,
+-	&db1200_audio_dev,
+-	&db1200_stac_dev,
+-	&db1200_sound_dev,
+-};
+-
+-static int __init db1200_dev_init(void)
+-{
+-	unsigned long pfc;
+-	unsigned short sw;
+-	int swapped;
+-
+-	i2c_register_board_info(0, db1200_i2c_devs,
+-				ARRAY_SIZE(db1200_i2c_devs));
+-	spi_register_board_info(db1200_spi_devs,
+-				ARRAY_SIZE(db1200_i2c_devs));
+-
+-	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C  ON=SPI)
+-	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
+-	 */
+-
+-	/* NOTE: GPIO215 controls OTG VBUS supply.  In SPI mode however
+-	 * this pin is claimed by PSC0 (unused though, but pinmux doesn't
+-	 * allow to free it without crippling the SPI interface).
+-	 * As a result, in SPI mode, OTG simply won't work (PSC0 uses
+-	 * it as an input pin which is pulled high on the boards).
+-	 */
+-	pfc = __raw_readl((void __iomem *)SYS_PINFUNC) & ~SYS_PINFUNC_P0A;
+-
+-	/* switch off OTG VBUS supply */
+-	gpio_request(215, "otg-vbus");
+-	gpio_direction_output(215, 1);
+-
+-	printk(KERN_INFO "DB1200 device configuration:\n");
+-
+-	sw = bcsr_read(BCSR_SWITCHES);
+-	if (sw & BCSR_SWITCHES_DIP_8) {
+-		db1200_devs[0] = &db1200_i2c_dev;
+-		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
+-
+-		pfc |= (2 << 17);	/* GPIO2 block owns GPIO215 */
+-
+-		printk(KERN_INFO " S6.8 OFF: PSC0 mode I2C\n");
+-		printk(KERN_INFO "   OTG port VBUS supply available!\n");
+-	} else {
+-		db1200_devs[0] = &db1200_spi_dev;
+-		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_PSC0MUX);
+-
+-		pfc |= (1 << 17);	/* PSC0 owns GPIO215 */
+-
+-		printk(KERN_INFO " S6.8 ON : PSC0 mode SPI\n");
+-		printk(KERN_INFO "   OTG port VBUS supply disabled\n");
+-	}
+-	__raw_writel(pfc, (void __iomem *)SYS_PINFUNC);
+-	wmb();
+-
+-	/* Audio: DIP7 selects I2S(0)/AC97(1), but need I2C for I2S!
+-	 * so: DIP7=1 || DIP8=0 => AC97, DIP7=0 && DIP8=1 => I2S
+-	 */
+-	sw &= BCSR_SWITCHES_DIP_8 | BCSR_SWITCHES_DIP_7;
+-	if (sw == BCSR_SWITCHES_DIP_8) {
+-		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_PSC1MUX);
+-		db1200_audio_dev.name = "au1xpsc_i2s";
+-		db1200_sound_dev.name = "db1200-i2s";
+-		printk(KERN_INFO " S6.7 ON : PSC1 mode I2S\n");
+-	} else {
+-		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC1MUX, 0);
+-		db1200_audio_dev.name = "au1xpsc_ac97";
+-		db1200_sound_dev.name = "db1200-ac97";
+-		printk(KERN_INFO " S6.7 OFF: PSC1 mode AC97\n");
+-	}
+-
+-	/* Audio PSC clock is supplied externally. (FIXME: platdata!!) */
+-	__raw_writel(PSC_SEL_CLK_SERCLK,
+-		(void __iomem *)KSEG1ADDR(AU1550_PSC1_PHYS_ADDR) + PSC_SEL_OFFSET);
+-	wmb();
+-
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
+-		DB1200_PC0_INT, DB1200_PC0_INSERT_INT,
+-		/*DB1200_PC0_STSCHG_INT*/0, DB1200_PC0_EJECT_INT, 0);
+-
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
+-		DB1200_PC1_INT, DB1200_PC1_INSERT_INT,
+-		/*DB1200_PC1_STSCHG_INT*/0, DB1200_PC1_EJECT_INT, 1);
+-
+-	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1200_SWAPBOOT;
+-	db1x_register_norflash(64 << 20, 2, swapped);
+-
+-	return platform_add_devices(db1200_devs, ARRAY_SIZE(db1200_devs));
+-}
+-device_initcall(db1200_dev_init);
+-
+-/* au1200fb calls these: STERBT EINEN TRAGISCHEN TOD!!! */
+-int board_au1200fb_panel(void)
+-{
+-	return (bcsr_read(BCSR_SWITCHES) >> 8) & 0x0f;
+-}
+-
+-int board_au1200fb_panel_init(void)
+-{
+-	/* Apply power */
+-	bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
+-				BCSR_BOARD_LCDBL);
+-	return 0;
+-}
+-
+-int board_au1200fb_panel_shutdown(void)
+-{
+-	/* Remove power */
+-	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
+-			     BCSR_BOARD_LCDBL, 0);
+-	return 0;
+-}
+diff --git a/arch/mips/alchemy/devboards/db1200/setup.c b/arch/mips/alchemy/devboards/db1200/setup.c
+deleted file mode 100644
+index 4a89800..0000000
+--- a/arch/mips/alchemy/devboards/db1200/setup.c
++++ /dev/null
+@@ -1,81 +0,0 @@
+-/*
+- * Alchemy/AMD/RMI DB1200 board setup.
+- *
+- * Licensed under the terms outlined in the file COPYING in the root of
+- * this source archive.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/io.h>
+-#include <linux/kernel.h>
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-#include <asm/mach-db1x00/db1200.h>
+-
+-const char *get_system_type(void)
+-{
+-	return "Alchemy Db1200";
+-}
+-
+-void __init board_setup(void)
+-{
+-	unsigned long freq0, clksrc, div, pfc;
+-	unsigned short whoami;
+-
+-	bcsr_init(DB1200_BCSR_PHYS_ADDR,
+-		  DB1200_BCSR_PHYS_ADDR + DB1200_BCSR_HEXLED_OFS);
+-
+-	whoami = bcsr_read(BCSR_WHOAMI);
+-	printk(KERN_INFO "Alchemy/AMD/RMI DB1200 Board, CPLD Rev %d"
+-		"  Board-ID %d  Daughtercard ID %d\n",
+-		(whoami >> 4) & 0xf, (whoami >> 8) & 0xf, whoami & 0xf);
+-
+-	/* SMBus/SPI on PSC0, Audio on PSC1 */
+-	pfc = __raw_readl((void __iomem *)SYS_PINFUNC);
+-	pfc &= ~(SYS_PINFUNC_P0A | SYS_PINFUNC_P0B);
+-	pfc &= ~(SYS_PINFUNC_P1A | SYS_PINFUNC_P1B | SYS_PINFUNC_FS3);
+-	pfc |= SYS_PINFUNC_P1C;	/* SPI is configured later */
+-	__raw_writel(pfc, (void __iomem *)SYS_PINFUNC);
+-	wmb();
+-
+-	/* Clock configurations: PSC0: ~50MHz via Clkgen0, derived from
+-	 * CPU clock; all other clock generators off/unused.
+-	 */
+-	div = (get_au1x00_speed() + 25000000) / 50000000;
+-	if (div & 1)
+-		div++;
+-	div = ((div >> 1) - 1) & 0xff;
+-
+-	freq0 = div << SYS_FC_FRDIV0_BIT;
+-	__raw_writel(freq0, (void __iomem *)SYS_FREQCTRL0);
+-	wmb();
+-	freq0 |= SYS_FC_FE0;	/* enable F0 */
+-	__raw_writel(freq0, (void __iomem *)SYS_FREQCTRL0);
+-	wmb();
+-
+-	/* psc0_intclk comes 1:1 from F0 */
+-	clksrc = SYS_CS_MUX_FQ0 << SYS_CS_ME0_BIT;
+-	__raw_writel(clksrc, (void __iomem *)SYS_CLKSRC);
+-	wmb();
+-}
+-
+-static int __init db1200_arch_init(void)
+-{
+-	/* GPIO7 is low-level triggered CPLD cascade */
+-	irq_set_irq_type(AU1200_GPIO7_INT, IRQF_TRIGGER_LOW);
+-	bcsr_init_irq(DB1200_INT_BEGIN, DB1200_INT_END, AU1200_GPIO7_INT);
+-
+-	/* insert/eject pairs: one of both is always screaming.  To avoid
+-	 * issues they must not be automatically enabled when initially
+-	 * requested.
+-	 */
+-	irq_set_status_flags(DB1200_SD0_INSERT_INT, IRQ_NOAUTOEN);
+-	irq_set_status_flags(DB1200_SD0_EJECT_INT, IRQ_NOAUTOEN);
+-	irq_set_status_flags(DB1200_PC0_INSERT_INT, IRQ_NOAUTOEN);
+-	irq_set_status_flags(DB1200_PC0_EJECT_INT, IRQ_NOAUTOEN);
+-	irq_set_status_flags(DB1200_PC1_INSERT_INT, IRQ_NOAUTOEN);
+-	irq_set_status_flags(DB1200_PC1_EJECT_INT, IRQ_NOAUTOEN);
+-	return 0;
+-}
+-arch_initcall(db1200_arch_init);
+diff --git a/arch/mips/alchemy/devboards/db1x00.c b/arch/mips/alchemy/devboards/db1x00.c
 new file mode 100644
-index 0000000..bd55136
+index 0000000..589ae24
 --- /dev/null
-+++ b/arch/mips/alchemy/board-xxs1500.c
-@@ -0,0 +1,154 @@
++++ b/arch/mips/alchemy/devboards/db1x00.c
+@@ -0,0 +1,256 @@
 +/*
-+ * BRIEF MODULE DESCRIPTION
-+ *	MyCable XXS1500 board support
++ * DBAu1000/1500/1100 board support
 + *
-+ * Copyright 2003, 2008 MontaVista Software Inc.
++ * Copyright 2000, 2008 MontaVista Software Inc.
 + * Author: MontaVista Software, Inc. <source@mvista.com>
 + *
 + * This program is free software; you can redistribute it and/or modify
@@ -774,162 +1604,776 @@ index 0000000..bd55136
 + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 + */
 +
-+#include <linux/kernel.h>
++#include <linux/dma-mapping.h>
++#include <linux/gpio.h>
 +#include <linux/init.h>
 +#include <linux/interrupt.h>
 +#include <linux/platform_device.h>
-+#include <linux/gpio.h>
-+#include <linux/delay.h>
 +#include <linux/pm.h>
-+#include <asm/bootinfo.h>
-+#include <asm/reboot.h>
 +#include <asm/mach-au1x00/au1000.h>
++#include <asm/mach-au1x00/au1000_dma.h>
++#include <asm/mach-db1x00/bcsr.h>
++#include <asm/reboot.h>
 +#include <prom.h>
++#include "platform.h"
++
++struct pci_dev;
 +
 +const char *get_system_type(void)
 +{
-+	return "XXS1500";
-+}
-+
-+void __init prom_init(void)
-+{
-+	unsigned char *memsize_str;
-+	unsigned long memsize;
-+
-+	prom_argc = fw_arg0;
-+	prom_argv = (char **)fw_arg1;
-+	prom_envp = (char **)fw_arg2;
-+
-+	prom_init_cmdline();
-+
-+	memsize_str = prom_getenv("memsize");
-+	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
-+		memsize = 0x04000000;
-+
-+	add_memory_region(0, memsize, BOOT_MEM_RAM);
-+}
-+
-+void prom_putchar(unsigned char c)
-+{
-+	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
-+}
-+
-+static void xxs1500_reset(char *c)
-+{
-+	/* Jump to the reset vector */
-+	__asm__ __volatile__("jr\t%0" : : "r"(0xbfc00000));
-+}
-+
-+static void xxs1500_power_off(void)
-+{
-+	while (1)
-+		asm volatile (
-+		"	.set	mips32					\n"
-+		"	wait						\n"
-+		"	.set	mips0					\n");
++	return "Alchemy Db1x00";
 +}
 +
 +void __init board_setup(void)
 +{
-+	u32 pin_func;
++#ifdef CONFIG_MIPS_DB1000
++	printk(KERN_INFO "AMD Alchemy Au1000/Db1000 Board\n");
++#endif
++#ifdef CONFIG_MIPS_DB1500
++	printk(KERN_INFO "AMD Alchemy Au1500/Db1500 Board\n");
++#endif
++#ifdef CONFIG_MIPS_DB1100
++	printk(KERN_INFO "AMD Alchemy Au1100/Db1100 Board\n");
++#endif
++	/* initialize board register space */
++	bcsr_init(DB1000_BCSR_PHYS_ADDR,
++		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
 +
-+	pm_power_off = xxs1500_power_off;
-+	_machine_halt = xxs1500_power_off;
-+	_machine_restart = xxs1500_reset;
++#if defined(CONFIG_IRDA) && defined(CONFIG_AU1000_FIR)
++	{
++		u32 pin_func;
 +
++		/* Set IRFIRSEL instead of GPIO15 */
++		pin_func = au_readl(SYS_PINFUNC) | SYS_PF_IRF;
++		au_writel(pin_func, SYS_PINFUNC);
++		/* Power off until the driver is in use */
++		bcsr_mod(BCSR_RESETS, BCSR_RESETS_IRDA_MODE_MASK,
++			 BCSR_RESETS_IRDA_MODE_OFF);
++	}
++#endif
++	bcsr_write(BCSR_PCMCIA, 0);	/* turn off PCMCIA power */
++
++	/* Enable GPIO[31:0] inputs */
 +	alchemy_gpio1_input_enable();
-+	alchemy_gpio2_enable();
++}
 +
-+	/* Set multiple use pins (UART3/GPIO) to UART (it's used as UART too) */
-+	pin_func  = au_readl(SYS_PINFUNC) & ~SYS_PF_UR3;
-+	pin_func |= SYS_PF_UR3;
-+	au_writel(pin_func, SYS_PINFUNC);
++/* DB1xxx PCMCIA interrupt sources:
++ * CD0/1	GPIO0/3
++ * STSCHG0/1	GPIO1/4
++ * CARD0/1	GPIO2/5
++ */
 +
-+	/* Enable UART */
-+	alchemy_uart_enable(AU1000_UART3_PHYS_ADDR);
-+	/* Enable DTR (MCR bit 0) = USB power up */
-+	__raw_writel(1, (void __iomem *)KSEG1ADDR(AU1000_UART3_PHYS_ADDR + 0x18));
-+	wmb();
++#define F_SWAPPED (bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1000_SWAPBOOT)
++
++#if defined(CONFIG_MIPS_DB1000)
++#define DB1XXX_PCMCIA_CD0	AU1000_GPIO0_INT
++#define DB1XXX_PCMCIA_STSCHG0	AU1000_GPIO1_INT
++#define DB1XXX_PCMCIA_CARD0	AU1000_GPIO2_INT
++#define DB1XXX_PCMCIA_CD1	AU1000_GPIO3_INT
++#define DB1XXX_PCMCIA_STSCHG1	AU1000_GPIO4_INT
++#define DB1XXX_PCMCIA_CARD1	AU1000_GPIO5_INT
++#elif defined(CONFIG_MIPS_DB1100)
++#define DB1XXX_PCMCIA_CD0	AU1100_GPIO0_INT
++#define DB1XXX_PCMCIA_STSCHG0	AU1100_GPIO1_INT
++#define DB1XXX_PCMCIA_CARD0	AU1100_GPIO2_INT
++#define DB1XXX_PCMCIA_CD1	AU1100_GPIO3_INT
++#define DB1XXX_PCMCIA_STSCHG1	AU1100_GPIO4_INT
++#define DB1XXX_PCMCIA_CARD1	AU1100_GPIO5_INT
++#elif defined(CONFIG_MIPS_DB1500)
++#define DB1XXX_PCMCIA_CD0	AU1500_GPIO0_INT
++#define DB1XXX_PCMCIA_STSCHG0	AU1500_GPIO1_INT
++#define DB1XXX_PCMCIA_CARD0	AU1500_GPIO2_INT
++#define DB1XXX_PCMCIA_CD1	AU1500_GPIO3_INT
++#define DB1XXX_PCMCIA_STSCHG1	AU1500_GPIO4_INT
++#define DB1XXX_PCMCIA_CARD1	AU1500_GPIO5_INT
++
++static int db1500_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
++{
++	if ((slot < 12) || (slot > 13) || pin == 0)
++		return -1;
++	if (slot == 12)
++		return (pin == 1) ? AU1500_PCI_INTA : 0xff;
++	if (slot == 13) {
++		switch (pin) {
++		case 1: return AU1500_PCI_INTA;
++		case 2: return AU1500_PCI_INTB;
++		case 3: return AU1500_PCI_INTC;
++		case 4: return AU1500_PCI_INTD;
++		}
++	}
++	return -1;
++}
++
++static struct resource alchemy_pci_host_res[] = {
++	[0] = {
++		.start	= AU1500_PCI_PHYS_ADDR,
++		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static struct alchemy_pci_platdata db1500_pci_pd = {
++	.board_map_irq	= db1500_map_pci_irq,
++};
++
++static struct platform_device db1500_pci_host_dev = {
++	.dev.platform_data = &db1500_pci_pd,
++	.name		= "alchemy-pci",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
++	.resource	= alchemy_pci_host_res,
++};
++
++static int __init db1500_pci_init(void)
++{
++	return platform_device_register(&db1500_pci_host_dev);
++}
++/* must be arch_initcall; MIPS PCI scans busses in a subsys_initcall */
++arch_initcall(db1500_pci_init);
++#endif
++
++#ifdef CONFIG_MIPS_DB1100
++static struct resource au1100_lcd_resources[] = {
++	[0] = {
++		.start	= AU1100_LCD_PHYS_ADDR,
++		.end	= AU1100_LCD_PHYS_ADDR + 0x800 - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1100_LCD_INT,
++		.end	= AU1100_LCD_INT,
++		.flags	= IORESOURCE_IRQ,
++	}
++};
++
++static u64 au1100_lcd_dmamask = DMA_BIT_MASK(32);
++
++static struct platform_device au1100_lcd_device = {
++	.name		= "au1100-lcd",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1100_lcd_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++	},
++	.num_resources	= ARRAY_SIZE(au1100_lcd_resources),
++	.resource	= au1100_lcd_resources,
++};
++#endif
++
++static struct resource alchemy_ac97c_res[] = {
++	[0] = {
++		.start	= AU1000_AC97_PHYS_ADDR,
++		.end	= AU1000_AC97_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= DMA_ID_AC97C_TX,
++		.end	= DMA_ID_AC97C_TX,
++		.flags	= IORESOURCE_DMA,
++	},
++	[2] = {
++		.start	= DMA_ID_AC97C_RX,
++		.end	= DMA_ID_AC97C_RX,
++		.flags	= IORESOURCE_DMA,
++	},
++};
++
++static struct platform_device alchemy_ac97c_dev = {
++	.name		= "alchemy-ac97c",
++	.id		= -1,
++	.resource	= alchemy_ac97c_res,
++	.num_resources	= ARRAY_SIZE(alchemy_ac97c_res),
++};
++
++static struct platform_device alchemy_ac97c_dma_dev = {
++	.name		= "alchemy-pcm-dma",
++	.id		= 0,
++};
++
++static struct platform_device db1x00_codec_dev = {
++	.name		= "ac97-codec",
++	.id		= -1,
++};
++
++static struct platform_device db1x00_audio_dev = {
++	.name		= "db1000-audio",
++};
++
++static int __init db1xxx_dev_init(void)
++{
++	irq_set_irq_type(DB1XXX_PCMCIA_CD0, IRQ_TYPE_EDGE_BOTH);
++	irq_set_irq_type(DB1XXX_PCMCIA_CD1, IRQ_TYPE_EDGE_BOTH);
++	irq_set_irq_type(DB1XXX_PCMCIA_CARD0, IRQ_TYPE_LEVEL_LOW);
++	irq_set_irq_type(DB1XXX_PCMCIA_CARD1, IRQ_TYPE_LEVEL_LOW);
++	irq_set_irq_type(DB1XXX_PCMCIA_STSCHG0, IRQ_TYPE_LEVEL_LOW);
++	irq_set_irq_type(DB1XXX_PCMCIA_STSCHG1, IRQ_TYPE_LEVEL_LOW);
++
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
++		DB1XXX_PCMCIA_CARD0, DB1XXX_PCMCIA_CD0,
++		/*DB1XXX_PCMCIA_STSCHG0*/0, 0, 0);
++
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
++		DB1XXX_PCMCIA_CARD1, DB1XXX_PCMCIA_CD1,
++		/*DB1XXX_PCMCIA_STSCHG1*/0, 0, 1);
++#ifdef CONFIG_MIPS_DB1100
++	platform_device_register(&au1100_lcd_device);
++#endif
++	platform_device_register(&db1x00_codec_dev);
++	platform_device_register(&alchemy_ac97c_dma_dev);
++	platform_device_register(&alchemy_ac97c_dev);
++	platform_device_register(&db1x00_audio_dev);
++
++	db1x_register_norflash(32 << 20, 4 /* 32bit */, F_SWAPPED);
++	return 0;
++}
++device_initcall(db1xxx_dev_init);
+diff --git a/arch/mips/alchemy/devboards/db1x00/Makefile b/arch/mips/alchemy/devboards/db1x00/Makefile
+deleted file mode 100644
+index 613c0c0..0000000
+--- a/arch/mips/alchemy/devboards/db1x00/Makefile
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#
+-#  Copyright 2000, 2008 MontaVista Software Inc.
+-#  Author: MontaVista Software, Inc. <source@mvista.com>
+-#
+-# Makefile for the Alchemy Semiconductor DBAu1xx0 boards.
+-#
+-
+-obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+deleted file mode 100644
+index 2dbebcb..0000000
+--- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
++++ /dev/null
+@@ -1,108 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Alchemy Db1x00 board setup.
+- *
+- * Copyright 2000, 2008 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc. <source@mvista.com>
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/gpio.h>
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/pm.h>
+-
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-au1x00/au1xxx_eth.h>
+-#include <asm/mach-db1x00/db1x00.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-#include <asm/reboot.h>
+-
+-#include <prom.h>
+-
+-const char *get_system_type(void)
+-{
+-	return "Alchemy Db1x00";
+-}
+-
+-
+-void __init board_setup(void)
+-{
+-#ifdef CONFIG_MIPS_DB1000
+-	printk(KERN_INFO "AMD Alchemy Au1000/Db1000 Board\n");
+-#endif
+-#ifdef CONFIG_MIPS_DB1500
+-	printk(KERN_INFO "AMD Alchemy Au1500/Db1500 Board\n");
+-#endif
+-#ifdef CONFIG_MIPS_DB1100
+-	printk(KERN_INFO "AMD Alchemy Au1100/Db1100 Board\n");
+-#endif
+-	/* initialize board register space */
+-	bcsr_init(DB1000_BCSR_PHYS_ADDR,
+-		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
+-
+-#if defined(CONFIG_IRDA) && defined(CONFIG_AU1000_FIR)
+-	{
+-		u32 pin_func;
+-
+-		/* Set IRFIRSEL instead of GPIO15 */
+-		pin_func = au_readl(SYS_PINFUNC) | SYS_PF_IRF;
+-		au_writel(pin_func, SYS_PINFUNC);
+-		/* Power off until the driver is in use */
+-		bcsr_mod(BCSR_RESETS, BCSR_RESETS_IRDA_MODE_MASK,
+-			 BCSR_RESETS_IRDA_MODE_OFF);
+-	}
+-#endif
+-	bcsr_write(BCSR_PCMCIA, 0);	/* turn off PCMCIA power */
+-
+-	/* Enable GPIO[31:0] inputs */
+-	alchemy_gpio1_input_enable();
+-}
+-
+-static int __init db1x00_init_irq(void)
+-{
+-#if defined(CONFIG_MIPS_DB1500)
+-	irq_set_irq_type(AU1500_GPIO0_INT, IRQF_TRIGGER_LOW); /* CD0# */
+-	irq_set_irq_type(AU1500_GPIO3_INT, IRQF_TRIGGER_LOW); /* CD1# */
+-	irq_set_irq_type(AU1500_GPIO2_INT, IRQF_TRIGGER_LOW); /* CARD0# */
+-	irq_set_irq_type(AU1500_GPIO5_INT, IRQF_TRIGGER_LOW); /* CARD1# */
+-	irq_set_irq_type(AU1500_GPIO1_INT, IRQF_TRIGGER_LOW); /* STSCHG0# */
+-	irq_set_irq_type(AU1500_GPIO4_INT, IRQF_TRIGGER_LOW); /* STSCHG1# */
+-#elif defined(CONFIG_MIPS_DB1100)
+-	irq_set_irq_type(AU1100_GPIO0_INT, IRQF_TRIGGER_LOW); /* CD0# */
+-	irq_set_irq_type(AU1100_GPIO3_INT, IRQF_TRIGGER_LOW); /* CD1# */
+-	irq_set_irq_type(AU1100_GPIO2_INT, IRQF_TRIGGER_LOW); /* CARD0# */
+-	irq_set_irq_type(AU1100_GPIO5_INT, IRQF_TRIGGER_LOW); /* CARD1# */
+-	irq_set_irq_type(AU1100_GPIO1_INT, IRQF_TRIGGER_LOW); /* STSCHG0# */
+-	irq_set_irq_type(AU1100_GPIO4_INT, IRQF_TRIGGER_LOW); /* STSCHG1# */
+-#elif defined(CONFIG_MIPS_DB1000)
+-	irq_set_irq_type(AU1000_GPIO0_INT, IRQF_TRIGGER_LOW); /* CD0# */
+-	irq_set_irq_type(AU1000_GPIO3_INT, IRQF_TRIGGER_LOW); /* CD1# */
+-	irq_set_irq_type(AU1000_GPIO2_INT, IRQF_TRIGGER_LOW); /* CARD0# */
+-	irq_set_irq_type(AU1000_GPIO5_INT, IRQF_TRIGGER_LOW); /* CARD1# */
+-	irq_set_irq_type(AU1000_GPIO1_INT, IRQF_TRIGGER_LOW); /* STSCHG0# */
+-	irq_set_irq_type(AU1000_GPIO4_INT, IRQF_TRIGGER_LOW); /* STSCHG1# */
+-#endif
+-	return 0;
+-}
+-arch_initcall(db1x00_init_irq);
+diff --git a/arch/mips/alchemy/devboards/db1x00/platform.c b/arch/mips/alchemy/devboards/db1x00/platform.c
+deleted file mode 100644
+index b439b4f..0000000
+--- a/arch/mips/alchemy/devboards/db1x00/platform.c
++++ /dev/null
+@@ -1,206 +0,0 @@
+-/*
+- * DBAu1xxx board platform device registration
+- *
+- * Copyright (C) 2009 Manuel Lauss
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#include <linux/dma-mapping.h>
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/platform_device.h>
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-au1x00/au1000_dma.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-#include "../platform.h"
+-
+-struct pci_dev;
+-
+-/* DB1xxx PCMCIA interrupt sources:
+- * CD0/1 	GPIO0/3
+- * STSCHG0/1	GPIO1/4
+- * CARD0/1	GPIO2/5
+- */
+-
+-#define F_SWAPPED (bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1000_SWAPBOOT)
+-
+-#if defined(CONFIG_MIPS_DB1000)
+-#define DB1XXX_PCMCIA_CD0	AU1000_GPIO0_INT
+-#define DB1XXX_PCMCIA_STSCHG0	AU1000_GPIO1_INT
+-#define DB1XXX_PCMCIA_CARD0	AU1000_GPIO2_INT
+-#define DB1XXX_PCMCIA_CD1	AU1000_GPIO3_INT
+-#define DB1XXX_PCMCIA_STSCHG1	AU1000_GPIO4_INT
+-#define DB1XXX_PCMCIA_CARD1	AU1000_GPIO5_INT
+-#elif defined(CONFIG_MIPS_DB1100)
+-#define DB1XXX_PCMCIA_CD0	AU1100_GPIO0_INT
+-#define DB1XXX_PCMCIA_STSCHG0	AU1100_GPIO1_INT
+-#define DB1XXX_PCMCIA_CARD0	AU1100_GPIO2_INT
+-#define DB1XXX_PCMCIA_CD1	AU1100_GPIO3_INT
+-#define DB1XXX_PCMCIA_STSCHG1	AU1100_GPIO4_INT
+-#define DB1XXX_PCMCIA_CARD1	AU1100_GPIO5_INT
+-#elif defined(CONFIG_MIPS_DB1500)
+-#define DB1XXX_PCMCIA_CD0	AU1500_GPIO0_INT
+-#define DB1XXX_PCMCIA_STSCHG0	AU1500_GPIO1_INT
+-#define DB1XXX_PCMCIA_CARD0	AU1500_GPIO2_INT
+-#define DB1XXX_PCMCIA_CD1	AU1500_GPIO3_INT
+-#define DB1XXX_PCMCIA_STSCHG1	AU1500_GPIO4_INT
+-#define DB1XXX_PCMCIA_CARD1	AU1500_GPIO5_INT
+-
+-static int db1500_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
+-{
+-	if ((slot < 12) || (slot > 13) || pin == 0)
+-		return -1;
+-	if (slot == 12)
+-		return (pin == 1) ? AU1500_PCI_INTA : 0xff;
+-	if (slot == 13) {
+-		switch (pin) {
+-		case 1: return AU1500_PCI_INTA;
+-		case 2: return AU1500_PCI_INTB;
+-		case 3: return AU1500_PCI_INTC;
+-		case 4: return AU1500_PCI_INTD;
+-		}
+-	}
+-	return -1;
+-}
+-
+-static struct resource alchemy_pci_host_res[] = {
+-	[0] = {
+-		.start	= AU1500_PCI_PHYS_ADDR,
+-		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-};
+-
+-static struct alchemy_pci_platdata db1500_pci_pd = {
+-	.board_map_irq	= db1500_map_pci_irq,
+-};
+-
+-static struct platform_device db1500_pci_host_dev = {
+-	.dev.platform_data = &db1500_pci_pd,
+-	.name		= "alchemy-pci",
+-	.id		= 0,
+-	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
+-	.resource	= alchemy_pci_host_res,
+-};
+-
+-static int __init db1500_pci_init(void)
+-{
+-	return platform_device_register(&db1500_pci_host_dev);
+-}
+-/* must be arch_initcall; MIPS PCI scans busses in a subsys_initcall */
+-arch_initcall(db1500_pci_init);
+-#endif
+-
+-#ifdef CONFIG_MIPS_DB1100
+-static struct resource au1100_lcd_resources[] = {
+-	[0] = {
+-		.start	= AU1100_LCD_PHYS_ADDR,
+-		.end	= AU1100_LCD_PHYS_ADDR + 0x800 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1100_LCD_INT,
+-		.end	= AU1100_LCD_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	}
+-};
+-
+-static u64 au1100_lcd_dmamask = DMA_BIT_MASK(32);
+-
+-static struct platform_device au1100_lcd_device = {
+-	.name		= "au1100-lcd",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask		= &au1100_lcd_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-	},
+-	.num_resources	= ARRAY_SIZE(au1100_lcd_resources),
+-	.resource	= au1100_lcd_resources,
+-};
+-#endif
+-
+-static struct resource alchemy_ac97c_res[] = {
+-	[0] = {
+-		.start	= AU1000_AC97_PHYS_ADDR,
+-		.end	= AU1000_AC97_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= DMA_ID_AC97C_TX,
+-		.end	= DMA_ID_AC97C_TX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[2] = {
+-		.start	= DMA_ID_AC97C_RX,
+-		.end	= DMA_ID_AC97C_RX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-};
+-
+-static struct platform_device alchemy_ac97c_dev = {
+-	.name		= "alchemy-ac97c",
+-	.id		= -1,
+-	.resource	= alchemy_ac97c_res,
+-	.num_resources	= ARRAY_SIZE(alchemy_ac97c_res),
+-};
+-
+-static struct platform_device alchemy_ac97c_dma_dev = {
+-	.name		= "alchemy-pcm-dma",
+-	.id		= 0,
+-};
+-
+-static struct platform_device db1x00_codec_dev = {
+-	.name		= "ac97-codec",
+-	.id		= -1,
+-};
+-
+-static struct platform_device db1x00_audio_dev = {
+-	.name		= "db1000-audio",
+-};
+-
+-static int __init db1xxx_dev_init(void)
+-{
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
+-		DB1XXX_PCMCIA_CARD0, DB1XXX_PCMCIA_CD0,
+-		/*DB1XXX_PCMCIA_STSCHG0*/0, 0, 0);
+-
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004000000,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x004400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004000000,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x004400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004000000,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x004010000 - 1,
+-		DB1XXX_PCMCIA_CARD1, DB1XXX_PCMCIA_CD1,
+-		/*DB1XXX_PCMCIA_STSCHG1*/0, 0, 1);
+-#ifdef CONFIG_MIPS_DB1100
+-	platform_device_register(&au1100_lcd_device);
+-#endif
+-	platform_device_register(&db1x00_codec_dev);
+-	platform_device_register(&alchemy_ac97c_dma_dev);
+-	platform_device_register(&alchemy_ac97c_dev);
+-	platform_device_register(&db1x00_audio_dev);
+-
+-	db1x_register_norflash(0x02000000, 4 /* 32bit */, F_SWAPPED);
+-	return 0;
+-}
+-device_initcall(db1xxx_dev_init);
+diff --git a/arch/mips/alchemy/devboards/pb1100.c b/arch/mips/alchemy/devboards/pb1100.c
+new file mode 100644
+index 0000000..cff50d0
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1100.c
+@@ -0,0 +1,167 @@
++/*
++ * Pb1100 board platform device registration
++ *
++ * Copyright (C) 2009 Manuel Lauss
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/delay.h>
++#include <linux/gpio.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/dma-mapping.h>
++#include <linux/platform_device.h>
++#include <asm/mach-au1x00/au1000.h>
++#include <asm/mach-db1x00/bcsr.h>
++#include <prom.h>
++#include "platform.h"
++
++const char *get_system_type(void)
++{
++	return "PB1100";
++}
++
++void __init board_setup(void)
++{
++	volatile void __iomem *base = (volatile void __iomem *)0xac000000UL;
++
++	bcsr_init(DB1000_BCSR_PHYS_ADDR,
++		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
++
++	/* Set AUX clock to 12 MHz * 8 = 96 MHz */
++	au_writel(8, SYS_AUXPLL);
++	alchemy_gpio1_input_enable();
++	udelay(100);
++
++#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
++	{
++		u32 pin_func, sys_freqctrl, sys_clksrc;
++
++		/* Configure pins GPIO[14:9] as GPIO */
++		pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_UR3;
++
++		/* Zero and disable FREQ2 */
++		sys_freqctrl = au_readl(SYS_FREQCTRL0);
++		sys_freqctrl &= ~0xFFF00000;
++		au_writel(sys_freqctrl, SYS_FREQCTRL0);
++
++		/* Zero and disable USBH/USBD/IrDA clock */
++		sys_clksrc = au_readl(SYS_CLKSRC);
++		sys_clksrc &= ~(SYS_CS_CIR | SYS_CS_DIR | SYS_CS_MIR_MASK);
++		au_writel(sys_clksrc, SYS_CLKSRC);
++
++		sys_freqctrl = au_readl(SYS_FREQCTRL0);
++		sys_freqctrl &= ~0xFFF00000;
++
++		sys_clksrc = au_readl(SYS_CLKSRC);
++		sys_clksrc &= ~(SYS_CS_CIR | SYS_CS_DIR | SYS_CS_MIR_MASK);
++
++		/* FREQ2 = aux / 2 = 48 MHz */
++		sys_freqctrl |= (0 << SYS_FC_FRDIV2_BIT) |
++				SYS_FC_FE2 | SYS_FC_FS2;
++		au_writel(sys_freqctrl, SYS_FREQCTRL0);
++
++		/*
++		 * Route 48 MHz FREQ2 into USBH/USBD/IrDA
++		 */
++		sys_clksrc |= SYS_CS_MUX_FQ2 << SYS_CS_MIR_BIT;
++		au_writel(sys_clksrc, SYS_CLKSRC);
++
++		/* Setup the static bus controller */
++		au_writel(0x00000002, MEM_STCFG3);  /* type = PCMCIA */
++		au_writel(0x280E3D07, MEM_STTIME3); /* 250ns cycle time */
++		au_writel(0x10000000, MEM_STADDR3); /* any PCMCIA select */
++
++		/*
++		 * Get USB Functionality pin state (device vs host drive pins).
++		 */
++		pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_USB;
++		/* 2nd USB port is USB host. */
++		pin_func |= SYS_PF_USB;
++		au_writel(pin_func, SYS_PINFUNC);
++	}
++#endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
++
++	/* Enable sys bus clock divider when IDLE state or no bus activity. */
++	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
++
++	/* Enable the RTC if not already enabled. */
++	if (!(readb(base + 0x28) & 0x20)) {
++		writeb(readb(base + 0x28) | 0x20, base + 0x28);
++		au_sync();
++	}
++	/* Put the clock in BCD mode. */
++	if (readb(base + 0x2C) & 0x4) { /* reg B */
++		writeb(readb(base + 0x2c) & ~0x4, base + 0x2c);
++		au_sync();
++	}
 +}
 +
 +/******************************************************************************/
 +
-+static struct resource xxs1500_pcmcia_res[] = {
-+	{
-+		.name	= "pcmcia-io",
++static struct resource au1100_lcd_resources[] = {
++	[0] = {
++		.start	= AU1100_LCD_PHYS_ADDR,
++		.end	= AU1100_LCD_PHYS_ADDR + 0x800 - 1,
 +		.flags	= IORESOURCE_MEM,
-+		.start	= AU1000_PCMCIA_IO_PHYS_ADDR,
-+		.end	= AU1000_PCMCIA_IO_PHYS_ADDR + 0x000400000 - 1,
 +	},
-+	{
-+		.name	= "pcmcia-attr",
-+		.flags	= IORESOURCE_MEM,
-+		.start	= AU1000_PCMCIA_ATTR_PHYS_ADDR,
-+		.end	= AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
-+	},
-+	{
-+		.name	= "pcmcia-mem",
-+		.flags	= IORESOURCE_MEM,
-+		.start	= AU1000_PCMCIA_MEM_PHYS_ADDR,
-+		.end	= AU1000_PCMCIA_MEM_PHYS_ADDR + 0x000400000 - 1,
-+	},
++	[1] = {
++		.start	= AU1100_LCD_INT,
++		.end	= AU1100_LCD_INT,
++		.flags	= IORESOURCE_IRQ,
++	}
 +};
 +
-+static struct platform_device xxs1500_pcmcia_dev = {
-+	.name		= "xxs1500_pcmcia",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(xxs1500_pcmcia_res),
-+	.resource	= xxs1500_pcmcia_res,
++static u64 au1100_lcd_dmamask = DMA_BIT_MASK(32);
++
++static struct platform_device au1100_lcd_device = {
++	.name		= "au1100-lcd",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1100_lcd_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++	},
++	.num_resources	= ARRAY_SIZE(au1100_lcd_resources),
++	.resource	= au1100_lcd_resources,
 +};
 +
-+static struct platform_device *xxs1500_devs[] __initdata = {
-+	&xxs1500_pcmcia_dev,
-+};
-+
-+static int __init xxs1500_dev_init(void)
++static int __init pb1100_dev_init(void)
 +{
-+	irq_set_irq_type(AU1500_GPIO204_INT, IRQ_TYPE_LEVEL_HIGH);
-+	irq_set_irq_type(AU1500_GPIO201_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO202_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO203_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO205_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO207_INT, IRQ_TYPE_LEVEL_LOW);
++	int swapped;
 +
-+	irq_set_irq_type(AU1500_GPIO0_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO1_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO2_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO3_INT, IRQ_TYPE_LEVEL_LOW);
-+	irq_set_irq_type(AU1500_GPIO4_INT, IRQ_TYPE_LEVEL_LOW); /* CF irq */
-+	irq_set_irq_type(AU1500_GPIO5_INT, IRQ_TYPE_LEVEL_LOW);
++	irq_set_irq_type(AU1100_GPIO9_INT, IRQF_TRIGGER_LOW); /* PCCD# */
++	irq_set_irq_type(AU1100_GPIO10_INT, IRQF_TRIGGER_LOW); /* PCSTSCHG# */
++	irq_set_irq_type(AU1100_GPIO11_INT, IRQF_TRIGGER_LOW); /* PCCard# */
++	irq_set_irq_type(AU1100_GPIO13_INT, IRQF_TRIGGER_LOW); /* DC_IRQ# */
 +
-+	return platform_add_devices(xxs1500_devs,
-+				    ARRAY_SIZE(xxs1500_devs));
++	/* PCMCIA. single socket, identical to Pb1500 */
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
++		AU1100_GPIO11_INT, AU1100_GPIO9_INT,	 /* card / insert */
++		/*AU1100_GPIO10_INT*/0, 0, 0); /* stschg / eject / id */
++
++	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1000_SWAPBOOT;
++	db1x_register_norflash(64 * 1024 * 1024, 4, swapped);
++	platform_device_register(&au1100_lcd_device);
++
++	return 0;
 +}
-+device_initcall(xxs1500_dev_init);
-diff --git a/arch/mips/alchemy/gpr/Makefile b/arch/mips/alchemy/gpr/Makefile
++device_initcall(pb1100_dev_init);
+diff --git a/arch/mips/alchemy/devboards/pb1100/Makefile b/arch/mips/alchemy/devboards/pb1100/Makefile
 deleted file mode 100644
-index cb73fe2..0000000
---- a/arch/mips/alchemy/gpr/Makefile
+index 7e3756c..0000000
+--- a/arch/mips/alchemy/devboards/pb1100/Makefile
 +++ /dev/null
 @@ -1,8 +0,0 @@
 -#
--#  Copyright 2003 MontaVista Software Inc.
+-#  Copyright 2000, 2001, 2008 MontaVista Software Inc.
 -#  Author: MontaVista Software, Inc. <source@mvista.com>
 -#
--# Makefile for Trapeze ITS GPR board.
+-# Makefile for the Alchemy Semiconductor Pb1100 board.
 -#
 -
--obj-y += board_setup.o init.o platform.o
-diff --git a/arch/mips/alchemy/gpr/board_setup.c b/arch/mips/alchemy/gpr/board_setup.c
+-obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1100/board_setup.c b/arch/mips/alchemy/devboards/pb1100/board_setup.c
 deleted file mode 100644
-index dea45c7..0000000
---- a/arch/mips/alchemy/gpr/board_setup.c
+index d108fd5..0000000
+--- a/arch/mips/alchemy/devboards/pb1100/board_setup.c
 +++ /dev/null
-@@ -1,75 +0,0 @@
+@@ -1,127 +0,0 @@
 -/*
-- * Copyright 2010 Wolfgang Grandegger <wg@denx.de>
-- *
-- * Copyright 2000-2003, 2008 MontaVista Software Inc.
+- * Copyright 2002, 2008 MontaVista Software Inc.
 - * Author: MontaVista Software, Inc. <source@mvista.com>
 - *
 - *  This program is free software; you can redistribute  it and/or modify it
@@ -955,970 +2399,114 @@ index dea45c7..0000000
 -
 -#include <linux/gpio.h>
 -#include <linux/init.h>
--#include <linux/interrupt.h>
 -#include <linux/delay.h>
--#include <linux/pm.h>
+-#include <linux/interrupt.h>
 -
--#include <asm/reboot.h>
 -#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-db1x00/bcsr.h>
 -
 -#include <prom.h>
 -
--static void gpr_reset(char *c)
--{
--	/* switch System-LED to orange (red# and green# on) */
--	alchemy_gpio_direction_output(4, 0);
--	alchemy_gpio_direction_output(5, 0);
--
--	/* trigger watchdog to reset board in 200ms */
--	printk(KERN_EMERG "Triggering watchdog soft reset...\n");
--	raw_local_irq_disable();
--	alchemy_gpio_direction_output(1, 0);
--	udelay(1);
--	alchemy_gpio_set_value(1, 1);
--	while (1)
--		cpu_wait();
--}
--
--static void gpr_power_off(void)
--{
--	while (1)
--		cpu_wait();
--}
--
--void __init board_setup(void)
--{
--	printk(KERN_INFO "Trapeze ITS GPR board\n");
--
--	pm_power_off = gpr_power_off;
--	_machine_halt = gpr_power_off;
--	_machine_restart = gpr_reset;
--
--	/* Enable UART1/3 */
--	alchemy_uart_enable(AU1000_UART3_PHYS_ADDR);
--	alchemy_uart_enable(AU1000_UART1_PHYS_ADDR);
--
--	/* Take away Reset of UMTS-card */
--	alchemy_gpio_direction_output(215, 1);
--}
-diff --git a/arch/mips/alchemy/gpr/init.c b/arch/mips/alchemy/gpr/init.c
-deleted file mode 100644
-index 229aafa..0000000
---- a/arch/mips/alchemy/gpr/init.c
-+++ /dev/null
-@@ -1,63 +0,0 @@
--/*
-- * Copyright 2010 Wolfgang Grandegger <wg@denx.de>
-- *
-- * Copyright 2003, 2008 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc. <source@mvista.com>
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--#include <linux/init.h>
--#include <linux/kernel.h>
--
--#include <asm/bootinfo.h>
--#include <asm/mach-au1x00/au1000.h>
--
--#include <prom.h>
 -
 -const char *get_system_type(void)
 -{
--	return "GPR";
--}
--
--void __init prom_init(void)
--{
--	unsigned char *memsize_str;
--	unsigned long memsize;
--
--	prom_argc = fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
--
--	prom_init_cmdline();
--
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str)
--		memsize = 0x04000000;
--	else
--		strict_strtoul(memsize_str, 0, &memsize);
--	add_memory_region(0, memsize, BOOT_MEM_RAM);
--}
--
--void prom_putchar(unsigned char c)
--{
--	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
--}
-diff --git a/arch/mips/alchemy/gpr/platform.c b/arch/mips/alchemy/gpr/platform.c
-deleted file mode 100644
-index 982ce85..0000000
---- a/arch/mips/alchemy/gpr/platform.c
-+++ /dev/null
-@@ -1,230 +0,0 @@
--/*
-- * GPR board platform device registration
-- *
-- * Copyright (C) 2010 Wolfgang Grandegger <wg@denx.de>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-- */
--
--#include <linux/init.h>
--#include <linux/platform_device.h>
--#include <linux/mtd/partitions.h>
--#include <linux/mtd/physmap.h>
--#include <linux/leds.h>
--#include <linux/gpio.h>
--#include <linux/i2c.h>
--#include <linux/i2c-gpio.h>
--
--#include <asm/mach-au1x00/au1000.h>
--
--/*
-- * Watchdog
-- */
--static struct resource gpr_wdt_resource[] = {
--	[0] = {
--		.start	= 1,
--		.end	= 1,
--		.name	= "gpr-adm6320-wdt",
--		.flags	= IORESOURCE_IRQ,
--	}
--};
--
--static struct platform_device gpr_wdt_device = {
--	.name = "adm6320-wdt",
--	.id = 0,
--	.num_resources = ARRAY_SIZE(gpr_wdt_resource),
--	.resource = gpr_wdt_resource,
--};
--
--/*
-- * FLASH
-- *
-- * 0x00000000-0x00200000 : "kernel"
-- * 0x00200000-0x00a00000 : "rootfs"
-- * 0x01d00000-0x01f00000 : "config"
-- * 0x01c00000-0x01d00000 : "yamon"
-- * 0x01d00000-0x01d40000 : "yamon env vars"
-- * 0x00000000-0x00a00000 : "kernel+rootfs"
-- */
--static struct mtd_partition gpr_mtd_partitions[] = {
--	{
--		.name	= "kernel",
--		.size	= 0x00200000,
--		.offset	= 0,
--	},
--	{
--		.name	= "rootfs",
--		.size	= 0x00800000,
--		.offset	= MTDPART_OFS_APPEND,
--		.mask_flags = MTD_WRITEABLE,
--	},
--	{
--		.name	= "config",
--		.size	= 0x00200000,
--		.offset	= 0x01d00000,
--	},
--	{
--		.name	= "yamon",
--		.size	= 0x00100000,
--		.offset	= 0x01c00000,
--	},
--	{
--		.name	= "yamon env vars",
--		.size	= 0x00040000,
--		.offset	= MTDPART_OFS_APPEND,
--	},
--	{
--		.name	= "kernel+rootfs",
--		.size	= 0x00a00000,
--		.offset	= 0,
--	},
--};
--
--static struct physmap_flash_data gpr_flash_data = {
--	.width		= 4,
--	.nr_parts	= ARRAY_SIZE(gpr_mtd_partitions),
--	.parts		= gpr_mtd_partitions,
--};
--
--static struct resource gpr_mtd_resource = {
--	.start	= 0x1e000000,
--	.end	= 0x1fffffff,
--	.flags	= IORESOURCE_MEM,
--};
--
--static struct platform_device gpr_mtd_device = {
--	.name		= "physmap-flash",
--	.dev		= {
--		.platform_data	= &gpr_flash_data,
--	},
--	.num_resources	= 1,
--	.resource	= &gpr_mtd_resource,
--};
--
--/*
-- * LEDs
-- */
--static struct gpio_led gpr_gpio_leds[] = {
--	{	/* green */
--		.name			= "gpr:green",
--		.gpio			= 4,
--		.active_low		= 1,
--	},
--	{	/* red */
--		.name			= "gpr:red",
--		.gpio			= 5,
--		.active_low		= 1,
--	}
--};
--
--static struct gpio_led_platform_data gpr_led_data = {
--	.num_leds = ARRAY_SIZE(gpr_gpio_leds),
--	.leds = gpr_gpio_leds,
--};
--
--static struct platform_device gpr_led_devices = {
--	.name = "leds-gpio",
--	.id = -1,
--	.dev = {
--		.platform_data = &gpr_led_data,
--	}
--};
--
--/*
-- * I2C
-- */
--static struct i2c_gpio_platform_data gpr_i2c_data = {
--	.sda_pin		= 209,
--	.sda_is_open_drain	= 1,
--	.scl_pin		= 210,
--	.scl_is_open_drain	= 1,
--	.udelay			= 2,		/* ~100 kHz */
--	.timeout		= HZ,
-- };
--
--static struct platform_device gpr_i2c_device = {
--	.name			= "i2c-gpio",
--	.id			= -1,
--	.dev.platform_data	= &gpr_i2c_data,
--};
--
--static struct i2c_board_info gpr_i2c_info[] __initdata = {
--	{
--		I2C_BOARD_INFO("lm83", 0x18),
--		.type = "lm83"
--	}
--};
--
--
--
--static struct resource alchemy_pci_host_res[] = {
--	[0] = {
--		.start	= AU1500_PCI_PHYS_ADDR,
--		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
--		.flags	= IORESOURCE_MEM,
--	},
--};
--
--static int gpr_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
--{
--	if ((slot == 0) && (pin == 1))
--		return AU1550_PCI_INTA;
--	else if ((slot == 0) && (pin == 2))
--		return AU1550_PCI_INTB;
--
--	return -1;
--}
--
--static struct alchemy_pci_platdata gpr_pci_pd = {
--	.board_map_irq	= gpr_map_pci_irq,
--	.pci_cfg_set	= PCI_CONFIG_AEN | PCI_CONFIG_R2H | PCI_CONFIG_R1H |
--			  PCI_CONFIG_CH |
--#if defined(__MIPSEB__)
--			  PCI_CONFIG_SIC_HWA_DAT | PCI_CONFIG_SM,
--#else
--			  0,
--#endif
--};
--
--static struct platform_device gpr_pci_host_dev = {
--	.dev.platform_data = &gpr_pci_pd,
--	.name		= "alchemy-pci",
--	.id		= 0,
--	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
--	.resource	= alchemy_pci_host_res,
--};
--
--static struct platform_device *gpr_devices[] __initdata = {
--	&gpr_wdt_device,
--	&gpr_mtd_device,
--	&gpr_i2c_device,
--	&gpr_led_devices,
--};
--
--static int __init gpr_pci_init(void)
--{
--	return platform_device_register(&gpr_pci_host_dev);
--}
--/* must be arch_initcall; MIPS PCI scans busses in a subsys_initcall */
--arch_initcall(gpr_pci_init);
--
--
--static int __init gpr_dev_init(void)
--{
--	i2c_register_board_info(0, gpr_i2c_info, ARRAY_SIZE(gpr_i2c_info));
--
--	return platform_add_devices(gpr_devices, ARRAY_SIZE(gpr_devices));
--}
--device_initcall(gpr_dev_init);
-diff --git a/arch/mips/alchemy/mtx-1/Makefile b/arch/mips/alchemy/mtx-1/Makefile
-deleted file mode 100644
-index 81b540c..0000000
---- a/arch/mips/alchemy/mtx-1/Makefile
-+++ /dev/null
-@@ -1,9 +0,0 @@
--#
--#  Copyright 2003 MontaVista Software Inc.
--#  Author: MontaVista Software, Inc. <source@mvista.com>
--#       Bruno Randolf <bruno.randolf@4g-systems.biz>
--#
--# Makefile for 4G Systems MTX-1 board.
--#
--
--obj-y += init.o board_setup.o platform.o
-diff --git a/arch/mips/alchemy/mtx-1/board_setup.c b/arch/mips/alchemy/mtx-1/board_setup.c
-deleted file mode 100644
-index 851a5ab..0000000
---- a/arch/mips/alchemy/mtx-1/board_setup.c
-+++ /dev/null
-@@ -1,94 +0,0 @@
--/*
-- *
-- * BRIEF MODULE DESCRIPTION
-- *	4G Systems MTX-1 board setup.
-- *
-- * Copyright 2003, 2008 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc. <source@mvista.com>
-- *         Bruno Randolf <bruno.randolf@4g-systems.biz>
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--#include <linux/gpio.h>
--#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/pm.h>
--
--#include <asm/reboot.h>
--#include <asm/mach-au1x00/au1000.h>
--
--#include <prom.h>
--
--static void mtx1_reset(char *c)
--{
--	/* Jump to the reset vector */
--	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
--}
--
--static void mtx1_power_off(void)
--{
--	while (1)
--		asm volatile (
--		"	.set	mips32					\n"
--		"	wait						\n"
--		"	.set	mips0					\n");
+-	return "Alchemy Pb1100";
 -}
 -
 -void __init board_setup(void)
 -{
+-	volatile void __iomem *base = (volatile void __iomem *)0xac000000UL;
+-
+-	bcsr_init(DB1000_BCSR_PHYS_ADDR,
+-		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
+-
+-	/* Set AUX clock to 12 MHz * 8 = 96 MHz */
+-	au_writel(8, SYS_AUXPLL);
+-	alchemy_gpio1_input_enable();
+-	udelay(100);
+-
 -#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
--	/* Enable USB power switch */
--	alchemy_gpio_direction_output(204, 0);
+-	{
+-		u32 pin_func, sys_freqctrl, sys_clksrc;
+-
+-		/* Configure pins GPIO[14:9] as GPIO */
+-		pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_UR3;
+-
+-		/* Zero and disable FREQ2 */
+-		sys_freqctrl = au_readl(SYS_FREQCTRL0);
+-		sys_freqctrl &= ~0xFFF00000;
+-		au_writel(sys_freqctrl, SYS_FREQCTRL0);
+-
+-		/* Zero and disable USBH/USBD/IrDA clock */
+-		sys_clksrc = au_readl(SYS_CLKSRC);
+-		sys_clksrc &= ~(SYS_CS_CIR | SYS_CS_DIR | SYS_CS_MIR_MASK);
+-		au_writel(sys_clksrc, SYS_CLKSRC);
+-
+-		sys_freqctrl = au_readl(SYS_FREQCTRL0);
+-		sys_freqctrl &= ~0xFFF00000;
+-
+-		sys_clksrc = au_readl(SYS_CLKSRC);
+-		sys_clksrc &= ~(SYS_CS_CIR | SYS_CS_DIR | SYS_CS_MIR_MASK);
+-
+-		/* FREQ2 = aux / 2 = 48 MHz */
+-		sys_freqctrl |= (0 << SYS_FC_FRDIV2_BIT) |
+-				SYS_FC_FE2 | SYS_FC_FS2;
+-		au_writel(sys_freqctrl, SYS_FREQCTRL0);
+-
+-		/*
+-		 * Route 48 MHz FREQ2 into USBH/USBD/IrDA
+-		 */
+-		sys_clksrc |= SYS_CS_MUX_FQ2 << SYS_CS_MIR_BIT;
+-		au_writel(sys_clksrc, SYS_CLKSRC);
+-
+-		/* Setup the static bus controller */
+-		au_writel(0x00000002, MEM_STCFG3);  /* type = PCMCIA */
+-		au_writel(0x280E3D07, MEM_STTIME3); /* 250ns cycle time */
+-		au_writel(0x10000000, MEM_STADDR3); /* any PCMCIA select */
+-
+-		/*
+-		 * Get USB Functionality pin state (device vs host drive pins).
+-		 */
+-		pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_USB;
+-		/* 2nd USB port is USB host. */
+-		pin_func |= SYS_PF_USB;
+-		au_writel(pin_func, SYS_PINFUNC);
+-	}
 -#endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
 -
--	/* Initialize sys_pinfunc */
--	au_writel(SYS_PF_NI2, SYS_PINFUNC);
+-	/* Enable sys bus clock divider when IDLE state or no bus activity. */
+-	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
 -
--	/* Initialize GPIO */
--	au_writel(~0, KSEG1ADDR(AU1000_SYS_PHYS_ADDR) + SYS_TRIOUTCLR);
--	alchemy_gpio_direction_output(0, 0);	/* Disable M66EN (PCI 66MHz) */
--	alchemy_gpio_direction_output(3, 1);	/* Disable PCI CLKRUN# */
--	alchemy_gpio_direction_output(1, 1);	/* Enable EXT_IO3 */
--	alchemy_gpio_direction_output(5, 0);	/* Disable eth PHY TX_ER */
--
--	/* Enable LED and set it to green */
--	alchemy_gpio_direction_output(211, 1);	/* green on */
--	alchemy_gpio_direction_output(212, 0);	/* red off */
--
--	pm_power_off = mtx1_power_off;
--	_machine_halt = mtx1_power_off;
--	_machine_restart = mtx1_reset;
--
--	printk(KERN_INFO "4G Systems MTX-1 Board\n");
+-	/* Enable the RTC if not already enabled. */
+-	if (!(readb(base + 0x28) & 0x20)) {
+-		writeb(readb(base + 0x28) | 0x20, base + 0x28);
+-		au_sync();
+-	}
+-	/* Put the clock in BCD mode. */
+-	if (readb(base + 0x2C) & 0x4) { /* reg B */
+-		writeb(readb(base + 0x2c) & ~0x4, base + 0x2c);
+-		au_sync();
+-	}
 -}
 -
--static int __init mtx1_init_irq(void)
+-static int __init pb1100_init_irq(void)
 -{
--	irq_set_irq_type(AU1500_GPIO204_INT, IRQF_TRIGGER_HIGH);
--	irq_set_irq_type(AU1500_GPIO201_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO202_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO203_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO205_INT, IRQF_TRIGGER_LOW);
+-	irq_set_irq_type(AU1100_GPIO9_INT, IRQF_TRIGGER_LOW); /* PCCD# */
+-	irq_set_irq_type(AU1100_GPIO10_INT, IRQF_TRIGGER_LOW); /* PCSTSCHG# */
+-	irq_set_irq_type(AU1100_GPIO11_INT, IRQF_TRIGGER_LOW); /* PCCard# */
+-	irq_set_irq_type(AU1100_GPIO13_INT, IRQF_TRIGGER_LOW); /* DC_IRQ# */
 -
 -	return 0;
 -}
--arch_initcall(mtx1_init_irq);
-diff --git a/arch/mips/alchemy/mtx-1/init.c b/arch/mips/alchemy/mtx-1/init.c
+-arch_initcall(pb1100_init_irq);
+diff --git a/arch/mips/alchemy/devboards/pb1100/platform.c b/arch/mips/alchemy/devboards/pb1100/platform.c
 deleted file mode 100644
-index 2e81cc7..0000000
---- a/arch/mips/alchemy/mtx-1/init.c
+index 9c57c01..0000000
+--- a/arch/mips/alchemy/devboards/pb1100/platform.c
 +++ /dev/null
-@@ -1,66 +0,0 @@
+@@ -1,77 +0,0 @@
 -/*
-- *
-- * BRIEF MODULE DESCRIPTION
-- *	4G Systems MTX-1 board setup
-- *
-- * Copyright 2003, 2008 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc. <source@mvista.com>
-- *         Bruno Randolf <bruno.randolf@4g-systems.biz>
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--#include <linux/kernel.h>
--#include <linux/init.h>
--
--#include <asm/bootinfo.h>
--#include <asm/mach-au1x00/au1000.h>
--
--#include <prom.h>
--
--const char *get_system_type(void)
--{
--	return "MTX-1";
--}
--
--void __init prom_init(void)
--{
--	unsigned char *memsize_str;
--	unsigned long memsize;
--
--	prom_argc = fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
--
--	prom_init_cmdline();
--
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str)
--		memsize = 0x04000000;
--	else
--		strict_strtoul(memsize_str, 0, &memsize);
--	add_memory_region(0, memsize, BOOT_MEM_RAM);
--}
--
--void prom_putchar(unsigned char c)
--{
--	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
--}
-diff --git a/arch/mips/alchemy/mtx-1/platform.c b/arch/mips/alchemy/mtx-1/platform.c
-deleted file mode 100644
-index cc47b68..0000000
---- a/arch/mips/alchemy/mtx-1/platform.c
-+++ /dev/null
-@@ -1,230 +0,0 @@
--/*
-- * MTX-1 platform devices registration
-- *
-- * Copyright (C) 2007-2009, Florian Fainelli <florian@openwrt.org>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-- */
--
--#include <linux/init.h>
--#include <linux/platform_device.h>
--#include <linux/leds.h>
--#include <linux/gpio.h>
--#include <linux/gpio_keys.h>
--#include <linux/input.h>
--#include <linux/mtd/partitions.h>
--#include <linux/mtd/physmap.h>
--#include <mtd/mtd-abi.h>
--
--#include <asm/mach-au1x00/au1xxx_eth.h>
--
--static struct gpio_keys_button mtx1_gpio_button[] = {
--	{
--		.gpio = 207,
--		.code = BTN_0,
--		.desc = "System button",
--	}
--};
--
--static struct gpio_keys_platform_data mtx1_buttons_data = {
--	.buttons = mtx1_gpio_button,
--	.nbuttons = ARRAY_SIZE(mtx1_gpio_button),
--};
--
--static struct platform_device mtx1_button = {
--	.name = "gpio-keys",
--	.id = -1,
--	.dev = {
--		.platform_data = &mtx1_buttons_data,
--	}
--};
--
--static struct resource mtx1_wdt_res[] = {
--	[0] = {
--		.start	= 215,
--		.end	= 215,
--		.name	= "mtx1-wdt-gpio",
--		.flags	= IORESOURCE_IRQ,
--	}
--};
--
--static struct platform_device mtx1_wdt = {
--	.name = "mtx1-wdt",
--	.id = 0,
--	.num_resources = ARRAY_SIZE(mtx1_wdt_res),
--	.resource = mtx1_wdt_res,
--};
--
--static struct gpio_led default_leds[] = {
--	{
--		.name	= "mtx1:green",
--		.gpio = 211,
--	}, {
--		.name = "mtx1:red",
--		.gpio = 212,
--	},
--};
--
--static struct gpio_led_platform_data mtx1_led_data = {
--	.num_leds = ARRAY_SIZE(default_leds),
--	.leds = default_leds,
--};
--
--static struct platform_device mtx1_gpio_leds = {
--	.name = "leds-gpio",
--	.id = -1,
--	.dev = {
--		.platform_data = &mtx1_led_data,
--	}
--};
--
--static struct mtd_partition mtx1_mtd_partitions[] = {
--	{
--		.name	= "filesystem",
--		.size	= 0x01C00000,
--		.offset	= 0,
--	},
--	{
--		.name	= "yamon",
--		.size	= 0x00100000,
--		.offset	= MTDPART_OFS_APPEND,
--		.mask_flags = MTD_WRITEABLE,
--	},
--	{
--		.name	= "kernel",
--		.size	= 0x002c0000,
--		.offset	= MTDPART_OFS_APPEND,
--	},
--	{
--		.name	= "yamon env",
--		.size	= 0x00040000,
--		.offset	= MTDPART_OFS_APPEND,
--	},
--};
--
--static struct physmap_flash_data mtx1_flash_data = {
--	.width		= 4,
--	.nr_parts	= 4,
--	.parts		= mtx1_mtd_partitions,
--};
--
--static struct resource mtx1_mtd_resource = {
--	.start	= 0x1e000000,
--	.end	= 0x1fffffff,
--	.flags	= IORESOURCE_MEM,
--};
--
--static struct platform_device mtx1_mtd = {
--	.name		= "physmap-flash",
--	.dev		= {
--		.platform_data	= &mtx1_flash_data,
--	},
--	.num_resources	= 1,
--	.resource	= &mtx1_mtd_resource,
--};
--
--static struct resource alchemy_pci_host_res[] = {
--	[0] = {
--		.start	= AU1500_PCI_PHYS_ADDR,
--		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
--		.flags	= IORESOURCE_MEM,
--	},
--};
--
--static int mtx1_pci_idsel(unsigned int devsel, int assert)
--{
--	/* This function is only necessary to support a proprietary Cardbus
--	 * adapter on the mtx-1 "singleboard" variant. It triggers a custom
--	 * logic chip connected to EXT_IO3 (GPIO1) to suppress IDSEL signals.
--	 */
--	if (assert && devsel != 0)
--		/* Suppress signal to Cardbus */
--		alchemy_gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
--	else
--		alchemy_gpio_set_value(1, 1);	/* set EXT_IO3 ON */
--
--	udelay(1);
--	return 1;
--}
--
--static const char mtx1_irqtab[][5] = {
--	[0] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTA, 0xff, 0xff }, /* IDSEL 00 - AdapterA-Slot0 (top) */
--	[1] = { -1, AU1500_PCI_INTB, AU1500_PCI_INTA, 0xff, 0xff }, /* IDSEL 01 - AdapterA-Slot1 (bottom) */
--	[2] = { -1, AU1500_PCI_INTC, AU1500_PCI_INTD, 0xff, 0xff }, /* IDSEL 02 - AdapterB-Slot0 (top) */
--	[3] = { -1, AU1500_PCI_INTD, AU1500_PCI_INTC, 0xff, 0xff }, /* IDSEL 03 - AdapterB-Slot1 (bottom) */
--	[4] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, 0xff, 0xff }, /* IDSEL 04 - AdapterC-Slot0 (top) */
--	[5] = { -1, AU1500_PCI_INTB, AU1500_PCI_INTA, 0xff, 0xff }, /* IDSEL 05 - AdapterC-Slot1 (bottom) */
--	[6] = { -1, AU1500_PCI_INTC, AU1500_PCI_INTD, 0xff, 0xff }, /* IDSEL 06 - AdapterD-Slot0 (top) */
--	[7] = { -1, AU1500_PCI_INTD, AU1500_PCI_INTC, 0xff, 0xff }, /* IDSEL 07 - AdapterD-Slot1 (bottom) */
--};
--
--static int mtx1_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
--{
--	return mtx1_irqtab[slot][pin];
--}
--
--static struct alchemy_pci_platdata mtx1_pci_pd = {
--	.board_map_irq	 = mtx1_map_pci_irq,
--	.board_pci_idsel = mtx1_pci_idsel,
--	.pci_cfg_set	 = PCI_CONFIG_AEN | PCI_CONFIG_R2H | PCI_CONFIG_R1H |
--			   PCI_CONFIG_CH |
--#if defined(__MIPSEB__)
--			   PCI_CONFIG_SIC_HWA_DAT | PCI_CONFIG_SM,
--#else
--			   0,
--#endif
--};
--
--static struct platform_device mtx1_pci_host = {
--	.dev.platform_data = &mtx1_pci_pd,
--	.name		= "alchemy-pci",
--	.id		= 0,
--	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
--	.resource	= alchemy_pci_host_res,
--};
--
--
--static struct __initdata platform_device * mtx1_devs[] = {
--	&mtx1_pci_host,
--	&mtx1_gpio_leds,
--	&mtx1_wdt,
--	&mtx1_button,
--	&mtx1_mtd,
--};
--
--static struct au1000_eth_platform_data mtx1_au1000_eth0_pdata = {
--	.phy_search_highest_addr	= 1,
--	.phy1_search_mac0 		= 1,
--};
--
--static int __init mtx1_register_devices(void)
--{
--	int rc;
--
--	au1xxx_override_eth_cfg(0, &mtx1_au1000_eth0_pdata);
--
--	rc = gpio_request(mtx1_gpio_button[0].gpio,
--					mtx1_gpio_button[0].desc);
--	if (rc < 0) {
--		printk(KERN_INFO "mtx1: failed to request %d\n",
--					mtx1_gpio_button[0].gpio);
--		goto out;
--	}
--	gpio_direction_input(mtx1_gpio_button[0].gpio);
--out:
--	return platform_add_devices(mtx1_devs, ARRAY_SIZE(mtx1_devs));
--}
--
--arch_initcall(mtx1_register_devices);
-diff --git a/arch/mips/alchemy/xxs1500/Makefile b/arch/mips/alchemy/xxs1500/Makefile
-deleted file mode 100644
-index 91defcf..0000000
---- a/arch/mips/alchemy/xxs1500/Makefile
-+++ /dev/null
-@@ -1,8 +0,0 @@
--#
--#  Copyright 2003 MontaVista Software Inc.
--#  Author: MontaVista Software, Inc. <source@mvista.com>
--#
--# Makefile for MyCable XXS1500 board.
--#
--
--obj-y += init.o board_setup.o platform.o
-diff --git a/arch/mips/alchemy/xxs1500/board_setup.c b/arch/mips/alchemy/xxs1500/board_setup.c
-deleted file mode 100644
-index 3fa83f7..0000000
---- a/arch/mips/alchemy/xxs1500/board_setup.c
-+++ /dev/null
-@@ -1,93 +0,0 @@
--/*
-- * Copyright 2000-2003, 2008 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc. <source@mvista.com>
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--#include <linux/gpio.h>
--#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/delay.h>
--#include <linux/pm.h>
--
--#include <asm/reboot.h>
--#include <asm/mach-au1x00/au1000.h>
--
--#include <prom.h>
--
--static void xxs1500_reset(char *c)
--{
--	/* Jump to the reset vector */
--	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
--}
--
--static void xxs1500_power_off(void)
--{
--	while (1)
--		asm volatile (
--		"	.set	mips32					\n"
--		"	wait						\n"
--		"	.set	mips0					\n");
--}
--
--void __init board_setup(void)
--{
--	u32 pin_func;
--
--	pm_power_off = xxs1500_power_off;
--	_machine_halt = xxs1500_power_off;
--	_machine_restart = xxs1500_reset;
--
--	alchemy_gpio1_input_enable();
--	alchemy_gpio2_enable();
--
--	/* Set multiple use pins (UART3/GPIO) to UART (it's used as UART too) */
--	pin_func  = au_readl(SYS_PINFUNC) & ~SYS_PF_UR3;
--	pin_func |= SYS_PF_UR3;
--	au_writel(pin_func, SYS_PINFUNC);
--
--	/* Enable UART */
--	alchemy_uart_enable(AU1000_UART3_PHYS_ADDR);
--	/* Enable DTR (MCR bit 0) = USB power up */
--	__raw_writel(1, (void __iomem *)KSEG1ADDR(AU1000_UART3_PHYS_ADDR + 0x18));
--	wmb();
--}
--
--static int __init xxs1500_init_irq(void)
--{
--	irq_set_irq_type(AU1500_GPIO204_INT, IRQF_TRIGGER_HIGH);
--	irq_set_irq_type(AU1500_GPIO201_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO202_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO203_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO205_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO207_INT, IRQF_TRIGGER_LOW);
--
--	irq_set_irq_type(AU1500_GPIO0_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO1_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO2_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO3_INT, IRQF_TRIGGER_LOW);
--	irq_set_irq_type(AU1500_GPIO4_INT, IRQF_TRIGGER_LOW); /* CF irq */
--	irq_set_irq_type(AU1500_GPIO5_INT, IRQF_TRIGGER_LOW);
--
--	return 0;
--}
--arch_initcall(xxs1500_init_irq);
-diff --git a/arch/mips/alchemy/xxs1500/init.c b/arch/mips/alchemy/xxs1500/init.c
-deleted file mode 100644
-index 0ee02cf..0000000
---- a/arch/mips/alchemy/xxs1500/init.c
-+++ /dev/null
-@@ -1,63 +0,0 @@
--/*
-- * BRIEF MODULE DESCRIPTION
-- *	XXS1500 board setup
-- *
-- * Copyright 2003, 2008 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc. <source@mvista.com>
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--#include <linux/init.h>
--#include <linux/kernel.h>
--
--#include <asm/bootinfo.h>
--#include <asm/mach-au1x00/au1000.h>
--
--#include <prom.h>
--
--const char *get_system_type(void)
--{
--	return "XXS1500";
--}
--
--void __init prom_init(void)
--{
--	unsigned char *memsize_str;
--	unsigned long memsize;
--
--	prom_argc = fw_arg0;
--	prom_argv = (char **)fw_arg1;
--	prom_envp = (char **)fw_arg2;
--
--	prom_init_cmdline();
--
--	memsize_str = prom_getenv("memsize");
--	if (!memsize_str || strict_strtoul(memsize_str, 0, &memsize))
--		memsize = 0x04000000;
--
--	add_memory_region(0, memsize, BOOT_MEM_RAM);
--}
--
--void prom_putchar(unsigned char c)
--{
--	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
--}
-diff --git a/arch/mips/alchemy/xxs1500/platform.c b/arch/mips/alchemy/xxs1500/platform.c
-deleted file mode 100644
-index 06a3a45..0000000
---- a/arch/mips/alchemy/xxs1500/platform.c
-+++ /dev/null
-@@ -1,63 +0,0 @@
--/*
-- * XXS1500 board platform device registration
+- * Pb1100 board platform device registration
 - *
 - * Copyright (C) 2009 Manuel Lauss
 - *
@@ -1938,47 +2526,1960 @@ index 06a3a45..0000000
 - */
 -
 -#include <linux/init.h>
+-#include <linux/dma-mapping.h>
 -#include <linux/platform_device.h>
 -
 -#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-db1x00/bcsr.h>
 -
--static struct resource xxs1500_pcmcia_res[] = {
--	{
--		.name	= "pcmcia-io",
+-#include "../platform.h"
+-
+-static struct resource au1100_lcd_resources[] = {
+-	[0] = {
+-		.start	= AU1100_LCD_PHYS_ADDR,
+-		.end	= AU1100_LCD_PHYS_ADDR + 0x800 - 1,
 -		.flags	= IORESOURCE_MEM,
--		.start	= AU1000_PCMCIA_IO_PHYS_ADDR,
--		.end	= AU1000_PCMCIA_IO_PHYS_ADDR + 0x000400000 - 1,
 -	},
--	{
--		.name	= "pcmcia-attr",
--		.flags	= IORESOURCE_MEM,
--		.start	= AU1000_PCMCIA_ATTR_PHYS_ADDR,
--		.end	= AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
--	},
--	{
--		.name	= "pcmcia-mem",
--		.flags	= IORESOURCE_MEM,
--		.start	= AU1000_PCMCIA_MEM_PHYS_ADDR,
--		.end	= AU1000_PCMCIA_MEM_PHYS_ADDR + 0x000400000 - 1,
--	},
+-	[1] = {
+-		.start	= AU1100_LCD_INT,
+-		.end	= AU1100_LCD_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	}
 -};
 -
--static struct platform_device xxs1500_pcmcia_dev = {
--	.name		= "xxs1500_pcmcia",
--	.id		= -1,
--	.num_resources	= ARRAY_SIZE(xxs1500_pcmcia_res),
--	.resource	= xxs1500_pcmcia_res,
+-static u64 au1100_lcd_dmamask = DMA_BIT_MASK(32);
+-
+-static struct platform_device au1100_lcd_device = {
+-	.name		= "au1100-lcd",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask		= &au1100_lcd_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-	},
+-	.num_resources	= ARRAY_SIZE(au1100_lcd_resources),
+-	.resource	= au1100_lcd_resources,
 -};
 -
--static struct platform_device *xxs1500_devs[] __initdata = {
--	&xxs1500_pcmcia_dev,
--};
--
--static int __init xxs1500_dev_init(void)
+-static int __init pb1100_dev_init(void)
 -{
--	return platform_add_devices(xxs1500_devs,
--				    ARRAY_SIZE(xxs1500_devs));
+-	int swapped;
+-
+-	/* PCMCIA. single socket, identical to Pb1500 */
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
+-		AU1100_GPIO11_INT, AU1100_GPIO9_INT,	 /* card / insert */
+-		/*AU1100_GPIO10_INT*/0, 0, 0); /* stschg / eject / id */
+-
+-	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1000_SWAPBOOT;
+-	db1x_register_norflash(64 * 1024 * 1024, 4, swapped);
+-	platform_device_register(&au1100_lcd_device);
+-
+-	return 0;
 -}
--device_initcall(xxs1500_dev_init);
+-device_initcall(pb1100_dev_init);
+diff --git a/arch/mips/alchemy/devboards/pb1200.c b/arch/mips/alchemy/devboards/pb1200.c
+new file mode 100644
+index 0000000..a1b6497
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1200.c
+@@ -0,0 +1,464 @@
++/*
++ * Pb1200/DBAu1200 board platform device registration
++ *
++ * Copyright (C) 2008 MontaVista Software Inc. <source@mvista.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/dma-mapping.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/leds.h>
++#include <linux/platform_device.h>
++#include <linux/smc91x.h>
++#include <asm/mach-au1x00/au1000.h>
++#include <asm/mach-au1x00/au1100_mmc.h>
++#include <asm/mach-au1x00/au1xxx_dbdma.h>
++#include <asm/mach-db1x00/bcsr.h>
++#include <asm/mach-pb1x00/pb1200.h>
++#include <prom.h>
++#include "platform.h"
++
++
++const char *get_system_type(void)
++{
++	return "PB1200";
++}
++
++void __init board_setup(void)
++{
++	printk(KERN_INFO "AMD Alchemy Pb1200 Board\n");
++	bcsr_init(PB1200_BCSR_PHYS_ADDR,
++		  PB1200_BCSR_PHYS_ADDR + PB1200_BCSR_HEXLED_OFS);
++
++#if 0
++	{
++		u32 pin_func;
++
++		/*
++		 * Enable PSC1 SYNC for AC97.  Normaly done in audio driver,
++		 * but it is board specific code, so put it here.
++		 */
++		pin_func = au_readl(SYS_PINFUNC);
++		au_sync();
++		pin_func |= SYS_PF_MUST_BE_SET | SYS_PF_PSC1_S1;
++		au_writel(pin_func, SYS_PINFUNC);
++
++		au_writel(0, (u32)bcsr | 0x10); /* turn off PCMCIA power */
++		au_sync();
++	}
++#endif
++
++#if defined(CONFIG_I2C_AU1550)
++	{
++		u32 freq0, clksrc;
++		u32 pin_func;
++
++		/* Select SMBus in CPLD */
++		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
++
++		pin_func = au_readl(SYS_PINFUNC);
++		au_sync();
++		pin_func &= ~(SYS_PINFUNC_P0A | SYS_PINFUNC_P0B);
++		/* Set GPIOs correctly */
++		pin_func |= 2 << 17;
++		au_writel(pin_func, SYS_PINFUNC);
++		au_sync();
++
++		/* The I2C driver depends on 50 MHz clock */
++		freq0 = au_readl(SYS_FREQCTRL0);
++		au_sync();
++		freq0 &= ~(SYS_FC_FRDIV1_MASK | SYS_FC_FS1 | SYS_FC_FE1);
++		freq0 |= 3 << SYS_FC_FRDIV1_BIT;
++		/* 396 MHz / (3 + 1) * 2 == 49.5 MHz */
++		au_writel(freq0, SYS_FREQCTRL0);
++		au_sync();
++		freq0 |= SYS_FC_FE1;
++		au_writel(freq0, SYS_FREQCTRL0);
++		au_sync();
++
++		clksrc = au_readl(SYS_CLKSRC);
++		au_sync();
++		clksrc &= ~(SYS_CS_CE0 | SYS_CS_DE0 | SYS_CS_ME0_MASK);
++		/* Bit 22 is EXTCLK0 for PSC0 */
++		clksrc |= SYS_CS_MUX_FQ1 << SYS_CS_ME0_BIT;
++		au_writel(clksrc, SYS_CLKSRC);
++		au_sync();
++	}
++#endif
++
++	/*
++	 * The Pb1200 development board uses external MUX for PSC0 to
++	 * support SMB/SPI. bcsr_resets bit 12: 0=SMB 1=SPI
++	 */
++#ifdef CONFIG_I2C_AU1550
++	bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
++#endif
++	au_sync();
++}
++
++/******************************************************************************/
++
++static int mmc_activity;
++
++static void pb1200mmc0_set_power(void *mmc_host, int state)
++{
++	if (state)
++		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD0PWR);
++	else
++		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD0PWR, 0);
++
++	msleep(1);
++}
++
++static int pb1200mmc0_card_readonly(void *mmc_host)
++{
++	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD0WP) ? 1 : 0;
++}
++
++static int pb1200mmc0_card_inserted(void *mmc_host)
++{
++	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT) ? 1 : 0;
++}
++
++static void pb1200_mmcled_set(struct led_classdev *led,
++			enum led_brightness brightness)
++{
++	if (brightness != LED_OFF) {
++		if (++mmc_activity == 1)
++			bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED0, 0);
++	} else {
++		if (--mmc_activity == 0)
++			bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED0);
++	}
++}
++
++static struct led_classdev pb1200mmc_led = {
++	.brightness_set	= pb1200_mmcled_set,
++};
++
++static void pb1200mmc1_set_power(void *mmc_host, int state)
++{
++	if (state)
++		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD1PWR);
++	else
++		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD1PWR, 0);
++
++	msleep(1);
++}
++
++static int pb1200mmc1_card_readonly(void *mmc_host)
++{
++	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD1WP) ? 1 : 0;
++}
++
++static int pb1200mmc1_card_inserted(void *mmc_host)
++{
++	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD1INSERT) ? 1 : 0;
++}
++
++static struct au1xmmc_platform_data pb1200mmc_platdata[2] = {
++	[0] = {
++		.set_power	= pb1200mmc0_set_power,
++		.card_inserted	= pb1200mmc0_card_inserted,
++		.card_readonly	= pb1200mmc0_card_readonly,
++		.cd_setup	= NULL,		/* use poll-timer in driver */
++		.led		= &pb1200mmc_led,
++	},
++	[1] = {
++		.set_power	= pb1200mmc1_set_power,
++		.card_inserted	= pb1200mmc1_card_inserted,
++		.card_readonly	= pb1200mmc1_card_readonly,
++		.cd_setup	= NULL,		/* use poll-timer in driver */
++		.led		= &pb1200mmc_led,
++	},
++};
++
++static u64 au1xxx_mmc_dmamask =  DMA_BIT_MASK(32);
++
++static struct resource au1200_mmc0_res[] = {
++	[0] = {
++		.start	= AU1100_SD0_PHYS_ADDR,
++		.end	= AU1100_SD0_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_SD_INT,
++		.end	= AU1200_SD_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_SDMS_TX0,
++		.end	= AU1200_DSCR_CMD0_SDMS_TX0,
++		.flags	= IORESOURCE_DMA,
++	},
++	[3] = {
++		.start	= AU1200_DSCR_CMD0_SDMS_RX0,
++		.end	= AU1200_DSCR_CMD0_SDMS_RX0,
++		.flags	= IORESOURCE_DMA,
++	}
++};
++
++static struct platform_device pb1200_mmc0_dev = {
++	.name		= "au1xxx-mmc",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1xxx_mmc_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &pb1200mmc_platdata[0],
++	},
++	.num_resources	= ARRAY_SIZE(au1200_mmc0_res),
++	.resource	= au1200_mmc0_res,
++};
++
++static struct resource au1200_mmc1_res[] = {
++	[0] = {
++		.start	= AU1100_SD1_PHYS_ADDR,
++		.end	= AU1100_SD1_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_SD_INT,
++		.end	= AU1200_SD_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_SDMS_TX1,
++		.end	= AU1200_DSCR_CMD0_SDMS_TX1,
++		.flags	= IORESOURCE_DMA,
++	},
++	[3] = {
++		.start	= AU1200_DSCR_CMD0_SDMS_RX1,
++		.end	= AU1200_DSCR_CMD0_SDMS_RX1,
++		.flags	= IORESOURCE_DMA,
++	}
++};
++
++static struct platform_device pb1200_mmc1_dev = {
++	.name		= "au1xxx-mmc",
++	.id		= 1,
++	.dev = {
++		.dma_mask		= &au1xxx_mmc_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &pb1200mmc_platdata[1],
++	},
++	.num_resources	= ARRAY_SIZE(au1200_mmc1_res),
++	.resource	= au1200_mmc1_res,
++};
++
++
++static struct resource ide_resources[] = {
++	[0] = {
++		.start	= IDE_PHYS_ADDR,
++		.end	= IDE_PHYS_ADDR + IDE_PHYS_LEN - 1,
++		.flags	= IORESOURCE_MEM
++	},
++	[1] = {
++		.start	= IDE_INT,
++		.end	= IDE_INT,
++		.flags	= IORESOURCE_IRQ
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_DMA_REQ1,
++		.end	= AU1200_DSCR_CMD0_DMA_REQ1,
++		.flags	= IORESOURCE_DMA,
++	},
++};
++
++static u64 au1200_ide_dmamask = DMA_BIT_MASK(32);
++
++static struct platform_device ide_device = {
++	.name		= "au1200-ide",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1200_ide_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++	},
++	.num_resources	= ARRAY_SIZE(ide_resources),
++	.resource	= ide_resources
++};
++
++static struct smc91x_platdata smc_data = {
++	.flags	= SMC91X_NOWAIT | SMC91X_USE_16BIT,
++	.leda	= RPC_LED_100_10,
++	.ledb	= RPC_LED_TX_RX,
++};
++
++static struct resource smc91c111_resources[] = {
++	[0] = {
++		.name	= "smc91x-regs",
++		.start	= SMC91C111_PHYS_ADDR,
++		.end	= SMC91C111_PHYS_ADDR + 0xf,
++		.flags	= IORESOURCE_MEM
++	},
++	[1] = {
++		.start	= SMC91C111_INT,
++		.end	= SMC91C111_INT,
++		.flags	= IORESOURCE_IRQ
++	},
++};
++
++static struct platform_device smc91c111_device = {
++	.dev	= {
++		.platform_data	= &smc_data,
++	},
++	.name		= "smc91x",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(smc91c111_resources),
++	.resource	= smc91c111_resources
++};
++
++static struct resource au1200_psc0_res[] = {
++	[0] = {
++		.start	= AU1550_PSC0_PHYS_ADDR,
++		.end	= AU1550_PSC0_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_PSC0_INT,
++		.end	= AU1200_PSC0_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1200_DSCR_CMD0_PSC0_TX,
++		.end	= AU1200_DSCR_CMD0_PSC0_TX,
++		.flags	= IORESOURCE_DMA,
++	},
++	[3] = {
++		.start	= AU1200_DSCR_CMD0_PSC0_RX,
++		.end	= AU1200_DSCR_CMD0_PSC0_RX,
++		.flags	= IORESOURCE_DMA,
++	},
++};
++
++static struct platform_device pb1200_i2c_dev = {
++	.name		= "au1xpsc_smbus",
++	.id		= 0,	/* bus number */
++	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
++	.resource	= au1200_psc0_res,
++};
++
++static struct resource au1200_lcd_res[] = {
++	[0] = {
++		.start	= AU1200_LCD_PHYS_ADDR,
++		.end	= AU1200_LCD_PHYS_ADDR + 0x800 - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1200_LCD_INT,
++		.end	= AU1200_LCD_INT,
++		.flags	= IORESOURCE_IRQ,
++	}
++};
++
++static u64 au1200_lcd_dmamask = DMA_BIT_MASK(32);
++
++static struct platform_device au1200_lcd_dev = {
++	.name		= "au1200-lcd",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &au1200_lcd_dmamask,
++		.coherent_dma_mask	= DMA_BIT_MASK(32),
++	},
++	.num_resources	= ARRAY_SIZE(au1200_lcd_res),
++	.resource	= au1200_lcd_res,
++};
++
++static struct platform_device *board_platform_devices[] __initdata = {
++	&ide_device,
++	&smc91c111_device,
++	&pb1200_i2c_dev,
++	&pb1200_mmc0_dev,
++	&pb1200_mmc1_dev,
++	&au1200_lcd_dev,
++};
++
++static int __init board_register_devices(void)
++{
++	int swapped;
++
++	/* We have a problem with CPLD rev 3. */
++	if (BCSR_WHOAMI_CPLD(bcsr_read(BCSR_WHOAMI)) <= 3) {
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "Pb1200 must be at CPLD rev 4. Please have Pb1200\n");
++		printk(KERN_ERR "updated to latest revision. This software will\n");
++		printk(KERN_ERR "not work on anything less than CPLD rev 4.\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		panic("Game over.  Your score is 0.");
++	}
++
++	irq_set_irq_type(AU1200_GPIO7_INT, IRQF_TRIGGER_LOW);
++	bcsr_init_irq(PB1200_INT_BEGIN, PB1200_INT_END, AU1200_GPIO7_INT);
++
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
++		PB1200_PC0_INT, PB1200_PC0_INSERT_INT,
++		/*PB1200_PC0_STSCHG_INT*/0, PB1200_PC0_EJECT_INT, 0);
++
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008000000,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
++		PB1200_PC1_INT, PB1200_PC1_INSERT_INT,
++		/*PB1200_PC1_STSCHG_INT*/0, PB1200_PC1_EJECT_INT, 1);
++
++	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1200_SWAPBOOT;
++	db1x_register_norflash(128 * 1024 * 1024, 2, swapped);
++
++	return platform_add_devices(board_platform_devices,
++				    ARRAY_SIZE(board_platform_devices));
++}
++device_initcall(board_register_devices);
++
++
++int board_au1200fb_panel(void)
++{
++	return (bcsr_read(BCSR_SWITCHES) >> 8) & 0x0f;
++}
++
++int board_au1200fb_panel_init(void)
++{
++	/* Apply power */
++	bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
++				BCSR_BOARD_LCDBL);
++	return 0;
++}
++
++int board_au1200fb_panel_shutdown(void)
++{
++	/* Remove power */
++	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
++			     BCSR_BOARD_LCDBL, 0);
++	return 0;
++}
+diff --git a/arch/mips/alchemy/devboards/pb1200/Makefile b/arch/mips/alchemy/devboards/pb1200/Makefile
+deleted file mode 100644
+index 18c1bd5..0000000
+--- a/arch/mips/alchemy/devboards/pb1200/Makefile
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#
+-# Makefile for the Alchemy Semiconductor Pb1200/DBAu1200 boards.
+-#
+-
+-obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1200/board_setup.c b/arch/mips/alchemy/devboards/pb1200/board_setup.c
+deleted file mode 100644
+index 6d06b07..0000000
+--- a/arch/mips/alchemy/devboards/pb1200/board_setup.c
++++ /dev/null
+@@ -1,174 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Alchemy Pb1200/Db1200 board setup.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/sched.h>
+-
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-
+-#ifdef CONFIG_MIPS_PB1200
+-#include <asm/mach-pb1x00/pb1200.h>
+-#endif
+-
+-#ifdef CONFIG_MIPS_DB1200
+-#include <asm/mach-db1x00/db1200.h>
+-#define PB1200_INT_BEGIN DB1200_INT_BEGIN
+-#define PB1200_INT_END DB1200_INT_END
+-#endif
+-
+-#include <prom.h>
+-
+-const char *get_system_type(void)
+-{
+-	return "Alchemy Pb1200";
+-}
+-
+-void __init board_setup(void)
+-{
+-	printk(KERN_INFO "AMD Alchemy Pb1200 Board\n");
+-	bcsr_init(PB1200_BCSR_PHYS_ADDR,
+-		  PB1200_BCSR_PHYS_ADDR + PB1200_BCSR_HEXLED_OFS);
+-
+-#if 0
+-	{
+-		u32 pin_func;
+-
+-		/*
+-		 * Enable PSC1 SYNC for AC97.  Normaly done in audio driver,
+-		 * but it is board specific code, so put it here.
+-		 */
+-		pin_func = au_readl(SYS_PINFUNC);
+-		au_sync();
+-		pin_func |= SYS_PF_MUST_BE_SET | SYS_PF_PSC1_S1;
+-		au_writel(pin_func, SYS_PINFUNC);
+-
+-		au_writel(0, (u32)bcsr | 0x10); /* turn off PCMCIA power */
+-		au_sync();
+-	}
+-#endif
+-
+-#if defined(CONFIG_I2C_AU1550)
+-	{
+-		u32 freq0, clksrc;
+-		u32 pin_func;
+-
+-		/* Select SMBus in CPLD */
+-		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
+-
+-		pin_func = au_readl(SYS_PINFUNC);
+-		au_sync();
+-		pin_func &= ~(SYS_PINFUNC_P0A | SYS_PINFUNC_P0B);
+-		/* Set GPIOs correctly */
+-		pin_func |= 2 << 17;
+-		au_writel(pin_func, SYS_PINFUNC);
+-		au_sync();
+-
+-		/* The I2C driver depends on 50 MHz clock */
+-		freq0 = au_readl(SYS_FREQCTRL0);
+-		au_sync();
+-		freq0 &= ~(SYS_FC_FRDIV1_MASK | SYS_FC_FS1 | SYS_FC_FE1);
+-		freq0 |= 3 << SYS_FC_FRDIV1_BIT;
+-		/* 396 MHz / (3 + 1) * 2 == 49.5 MHz */
+-		au_writel(freq0, SYS_FREQCTRL0);
+-		au_sync();
+-		freq0 |= SYS_FC_FE1;
+-		au_writel(freq0, SYS_FREQCTRL0);
+-		au_sync();
+-
+-		clksrc = au_readl(SYS_CLKSRC);
+-		au_sync();
+-		clksrc &= ~(SYS_CS_CE0 | SYS_CS_DE0 | SYS_CS_ME0_MASK);
+-		/* Bit 22 is EXTCLK0 for PSC0 */
+-		clksrc |= SYS_CS_MUX_FQ1 << SYS_CS_ME0_BIT;
+-		au_writel(clksrc, SYS_CLKSRC);
+-		au_sync();
+-	}
+-#endif
+-
+-	/*
+-	 * The Pb1200 development board uses external MUX for PSC0 to
+-	 * support SMB/SPI. bcsr_resets bit 12: 0=SMB 1=SPI
+-	 */
+-#ifdef CONFIG_I2C_AU1550
+-	bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
+-#endif
+-	au_sync();
+-}
+-
+-static int __init pb1200_init_irq(void)
+-{
+-	/* We have a problem with CPLD rev 3. */
+-	if (BCSR_WHOAMI_CPLD(bcsr_read(BCSR_WHOAMI)) <= 3) {
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "Pb1200 must be at CPLD rev 4. Please have Pb1200\n");
+-		printk(KERN_ERR "updated to latest revision. This software will\n");
+-		printk(KERN_ERR "not work on anything less than CPLD rev 4.\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		panic("Game over.  Your score is 0.");
+-	}
+-
+-	irq_set_irq_type(AU1200_GPIO7_INT, IRQF_TRIGGER_LOW);
+-	bcsr_init_irq(PB1200_INT_BEGIN, PB1200_INT_END, AU1200_GPIO7_INT);
+-
+-	return 0;
+-}
+-arch_initcall(pb1200_init_irq);
+-
+-
+-int board_au1200fb_panel(void)
+-{
+-	return (bcsr_read(BCSR_SWITCHES) >> 8) & 0x0f;
+-}
+-
+-int board_au1200fb_panel_init(void)
+-{
+-	/* Apply power */
+-	bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
+-				BCSR_BOARD_LCDBL);
+-	/* printk(KERN_DEBUG "board_au1200fb_panel_init()\n"); */
+-	return 0;
+-}
+-
+-int board_au1200fb_panel_shutdown(void)
+-{
+-	/* Remove power */
+-	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
+-			     BCSR_BOARD_LCDBL, 0);
+-	/* printk(KERN_DEBUG "board_au1200fb_panel_shutdown()\n"); */
+-	return 0;
+-}
+diff --git a/arch/mips/alchemy/devboards/pb1200/platform.c b/arch/mips/alchemy/devboards/pb1200/platform.c
+deleted file mode 100644
+index 54f7f7b..0000000
+--- a/arch/mips/alchemy/devboards/pb1200/platform.c
++++ /dev/null
+@@ -1,339 +0,0 @@
+-/*
+- * Pb1200/DBAu1200 board platform device registration
+- *
+- * Copyright (C) 2008 MontaVista Software Inc. <source@mvista.com>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#include <linux/dma-mapping.h>
+-#include <linux/init.h>
+-#include <linux/leds.h>
+-#include <linux/platform_device.h>
+-#include <linux/smc91x.h>
+-
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-au1x00/au1100_mmc.h>
+-#include <asm/mach-au1x00/au1xxx_dbdma.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-#include <asm/mach-pb1x00/pb1200.h>
+-
+-#include "../platform.h"
+-
+-static int mmc_activity;
+-
+-static void pb1200mmc0_set_power(void *mmc_host, int state)
+-{
+-	if (state)
+-		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD0PWR);
+-	else
+-		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD0PWR, 0);
+-
+-	msleep(1);
+-}
+-
+-static int pb1200mmc0_card_readonly(void *mmc_host)
+-{
+-	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD0WP) ? 1 : 0;
+-}
+-
+-static int pb1200mmc0_card_inserted(void *mmc_host)
+-{
+-	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT) ? 1 : 0;
+-}
+-
+-static void pb1200_mmcled_set(struct led_classdev *led,
+-			enum led_brightness brightness)
+-{
+-	if (brightness != LED_OFF) {
+-		if (++mmc_activity == 1)
+-			bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED0, 0);
+-	} else {
+-		if (--mmc_activity == 0)
+-			bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED0);
+-	}
+-}
+-
+-static struct led_classdev pb1200mmc_led = {
+-	.brightness_set	= pb1200_mmcled_set,
+-};
+-
+-static void pb1200mmc1_set_power(void *mmc_host, int state)
+-{
+-	if (state)
+-		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD1PWR);
+-	else
+-		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD1PWR, 0);
+-
+-	msleep(1);
+-}
+-
+-static int pb1200mmc1_card_readonly(void *mmc_host)
+-{
+-	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD1WP) ? 1 : 0;
+-}
+-
+-static int pb1200mmc1_card_inserted(void *mmc_host)
+-{
+-	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD1INSERT) ? 1 : 0;
+-}
+-
+-static struct au1xmmc_platform_data pb1200mmc_platdata[2] = {
+-	[0] = {
+-		.set_power	= pb1200mmc0_set_power,
+-		.card_inserted	= pb1200mmc0_card_inserted,
+-		.card_readonly	= pb1200mmc0_card_readonly,
+-		.cd_setup	= NULL,		/* use poll-timer in driver */
+-		.led		= &pb1200mmc_led,
+-	},
+-	[1] = {
+-		.set_power	= pb1200mmc1_set_power,
+-		.card_inserted	= pb1200mmc1_card_inserted,
+-		.card_readonly	= pb1200mmc1_card_readonly,
+-		.cd_setup	= NULL,		/* use poll-timer in driver */
+-		.led		= &pb1200mmc_led,
+-	},
+-};
+-
+-static u64 au1xxx_mmc_dmamask =  DMA_BIT_MASK(32);
+-
+-static struct resource au1200_mmc0_res[] = {
+-	[0] = {
+-		.start	= AU1100_SD0_PHYS_ADDR,
+-		.end	= AU1100_SD0_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_SD_INT,
+-		.end	= AU1200_SD_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_SDMS_TX0,
+-		.end	= AU1200_DSCR_CMD0_SDMS_TX0,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[3] = {
+-		.start	= AU1200_DSCR_CMD0_SDMS_RX0,
+-		.end	= AU1200_DSCR_CMD0_SDMS_RX0,
+-		.flags	= IORESOURCE_DMA,
+-	}
+-};
+-
+-static struct platform_device pb1200_mmc0_dev = {
+-	.name		= "au1xxx-mmc",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask		= &au1xxx_mmc_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-		.platform_data		= &pb1200mmc_platdata[0],
+-	},
+-	.num_resources	= ARRAY_SIZE(au1200_mmc0_res),
+-	.resource	= au1200_mmc0_res,
+-};
+-
+-static struct resource au1200_mmc1_res[] = {
+-	[0] = {
+-		.start	= AU1100_SD1_PHYS_ADDR,
+-		.end	= AU1100_SD1_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_SD_INT,
+-		.end	= AU1200_SD_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_SDMS_TX1,
+-		.end	= AU1200_DSCR_CMD0_SDMS_TX1,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[3] = {
+-		.start	= AU1200_DSCR_CMD0_SDMS_RX1,
+-		.end	= AU1200_DSCR_CMD0_SDMS_RX1,
+-		.flags	= IORESOURCE_DMA,
+-	}
+-};
+-
+-static struct platform_device pb1200_mmc1_dev = {
+-	.name		= "au1xxx-mmc",
+-	.id		= 1,
+-	.dev = {
+-		.dma_mask		= &au1xxx_mmc_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-		.platform_data		= &pb1200mmc_platdata[1],
+-	},
+-	.num_resources	= ARRAY_SIZE(au1200_mmc1_res),
+-	.resource	= au1200_mmc1_res,
+-};
+-
+-
+-static struct resource ide_resources[] = {
+-	[0] = {
+-		.start	= IDE_PHYS_ADDR,
+-		.end 	= IDE_PHYS_ADDR + IDE_PHYS_LEN - 1,
+-		.flags	= IORESOURCE_MEM
+-	},
+-	[1] = {
+-		.start	= IDE_INT,
+-		.end	= IDE_INT,
+-		.flags	= IORESOURCE_IRQ
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_DMA_REQ1,
+-		.end	= AU1200_DSCR_CMD0_DMA_REQ1,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-};
+-
+-static u64 ide_dmamask = DMA_BIT_MASK(32);
+-
+-static struct platform_device ide_device = {
+-	.name		= "au1200-ide",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask 		= &ide_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-	},
+-	.num_resources	= ARRAY_SIZE(ide_resources),
+-	.resource	= ide_resources
+-};
+-
+-static struct smc91x_platdata smc_data = {
+-	.flags	= SMC91X_NOWAIT | SMC91X_USE_16BIT,
+-	.leda	= RPC_LED_100_10,
+-	.ledb	= RPC_LED_TX_RX,
+-};
+-
+-static struct resource smc91c111_resources[] = {
+-	[0] = {
+-		.name	= "smc91x-regs",
+-		.start	= SMC91C111_PHYS_ADDR,
+-		.end	= SMC91C111_PHYS_ADDR + 0xf,
+-		.flags	= IORESOURCE_MEM
+-	},
+-	[1] = {
+-		.start	= SMC91C111_INT,
+-		.end	= SMC91C111_INT,
+-		.flags	= IORESOURCE_IRQ
+-	},
+-};
+-
+-static struct platform_device smc91c111_device = {
+-	.dev	= {
+-		.platform_data	= &smc_data,
+-	},
+-	.name		= "smc91x",
+-	.id		= -1,
+-	.num_resources	= ARRAY_SIZE(smc91c111_resources),
+-	.resource	= smc91c111_resources
+-};
+-
+-static struct resource au1200_psc0_res[] = {
+-	[0] = {
+-		.start	= AU1550_PSC0_PHYS_ADDR,
+-		.end	= AU1550_PSC0_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_PSC0_INT,
+-		.end	= AU1200_PSC0_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1200_DSCR_CMD0_PSC0_TX,
+-		.end	= AU1200_DSCR_CMD0_PSC0_TX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[3] = {
+-		.start	= AU1200_DSCR_CMD0_PSC0_RX,
+-		.end	= AU1200_DSCR_CMD0_PSC0_RX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-};
+-
+-static struct platform_device pb1200_i2c_dev = {
+-	.name		= "au1xpsc_smbus",
+-	.id		= 0,	/* bus number */
+-	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
+-	.resource	= au1200_psc0_res,
+-};
+-
+-static struct resource au1200_lcd_res[] = {
+-	[0] = {
+-		.start	= AU1200_LCD_PHYS_ADDR,
+-		.end	= AU1200_LCD_PHYS_ADDR + 0x800 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1200_LCD_INT,
+-		.end	= AU1200_LCD_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	}
+-};
+-
+-static u64 au1200_lcd_dmamask = DMA_BIT_MASK(32);
+-
+-static struct platform_device au1200_lcd_dev = {
+-	.name		= "au1200-lcd",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask		= &au1200_lcd_dmamask,
+-		.coherent_dma_mask	= DMA_BIT_MASK(32),
+-	},
+-	.num_resources	= ARRAY_SIZE(au1200_lcd_res),
+-	.resource	= au1200_lcd_res,
+-};
+-
+-static struct platform_device *board_platform_devices[] __initdata = {
+-	&ide_device,
+-	&smc91c111_device,
+-	&pb1200_i2c_dev,
+-	&pb1200_mmc0_dev,
+-	&pb1200_mmc1_dev,
+-	&au1200_lcd_dev,
+-};
+-
+-static int __init board_register_devices(void)
+-{
+-	int swapped;
+-
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
+-		PB1200_PC0_INT, PB1200_PC0_INSERT_INT,
+-		/*PB1200_PC0_STSCHG_INT*/0, PB1200_PC0_EJECT_INT, 0);
+-
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008000000,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
+-		PB1200_PC1_INT, PB1200_PC1_INSERT_INT,
+-		/*PB1200_PC1_STSCHG_INT*/0, PB1200_PC1_EJECT_INT, 1);
+-
+-	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1200_SWAPBOOT;
+-	db1x_register_norflash(128 * 1024 * 1024, 2, swapped);
+-
+-	return platform_add_devices(board_platform_devices,
+-				    ARRAY_SIZE(board_platform_devices));
+-}
+-device_initcall(board_register_devices);
+diff --git a/arch/mips/alchemy/devboards/pb1500.c b/arch/mips/alchemy/devboards/pb1500.c
+new file mode 100644
+index 0000000..e7b807b
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1500.c
+@@ -0,0 +1,198 @@
++/*
++ * Pb1500 board support.
++ *
++ * Copyright (C) 2009 Manuel Lauss
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/delay.h>
++#include <linux/dma-mapping.h>
++#include <linux/gpio.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/platform_device.h>
++#include <asm/mach-au1x00/au1000.h>
++#include <asm/mach-db1x00/bcsr.h>
++#include <prom.h>
++#include "platform.h"
++
++const char *get_system_type(void)
++{
++	return "PB1500";
++}
++
++void __init board_setup(void)
++{
++	u32 pin_func;
++	u32 sys_freqctrl, sys_clksrc;
++
++	bcsr_init(DB1000_BCSR_PHYS_ADDR,
++		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
++
++	sys_clksrc = sys_freqctrl = pin_func = 0;
++	/* Set AUX clock to 12 MHz * 8 = 96 MHz */
++	au_writel(8, SYS_AUXPLL);
++	alchemy_gpio1_input_enable();
++	udelay(100);
++
++	/* GPIO201 is input for PCMCIA card detect */
++	/* GPIO203 is input for PCMCIA interrupt request */
++	alchemy_gpio_direction_input(201);
++	alchemy_gpio_direction_input(203);
++
++#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
++
++	/* Zero and disable FREQ2 */
++	sys_freqctrl = au_readl(SYS_FREQCTRL0);
++	sys_freqctrl &= ~0xFFF00000;
++	au_writel(sys_freqctrl, SYS_FREQCTRL0);
++
++	/* zero and disable USBH/USBD clocks */
++	sys_clksrc = au_readl(SYS_CLKSRC);
++	sys_clksrc &= ~(SYS_CS_CUD | SYS_CS_DUD | SYS_CS_MUD_MASK |
++			SYS_CS_CUH | SYS_CS_DUH | SYS_CS_MUH_MASK);
++	au_writel(sys_clksrc, SYS_CLKSRC);
++
++	sys_freqctrl = au_readl(SYS_FREQCTRL0);
++	sys_freqctrl &= ~0xFFF00000;
++
++	sys_clksrc = au_readl(SYS_CLKSRC);
++	sys_clksrc &= ~(SYS_CS_CUD | SYS_CS_DUD | SYS_CS_MUD_MASK |
++			SYS_CS_CUH | SYS_CS_DUH | SYS_CS_MUH_MASK);
++
++	/* FREQ2 = aux/2 = 48 MHz */
++	sys_freqctrl |= (0 << SYS_FC_FRDIV2_BIT) | SYS_FC_FE2 | SYS_FC_FS2;
++	au_writel(sys_freqctrl, SYS_FREQCTRL0);
++
++	/*
++	 * Route 48MHz FREQ2 into USB Host and/or Device
++	 */
++	sys_clksrc |= SYS_CS_MUX_FQ2 << SYS_CS_MUH_BIT;
++	au_writel(sys_clksrc, SYS_CLKSRC);
++
++	pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_USB;
++	/* 2nd USB port is USB host */
++	pin_func |= SYS_PF_USB;
++	au_writel(pin_func, SYS_PINFUNC);
++#endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
++
++#ifdef CONFIG_PCI
++	{
++		void __iomem *base =
++				(void __iomem *)KSEG1ADDR(AU1500_PCI_PHYS_ADDR);
++		/* Setup PCI bus controller */
++		__raw_writel(0x00003fff, base + PCI_REG_CMEM);
++		__raw_writel(0xf0000000, base + PCI_REG_MWMASK_DEV);
++		__raw_writel(0, base + PCI_REG_MWBASE_REV_CCL);
++		__raw_writel(0x02a00356, base + PCI_REG_STATCMD);
++		__raw_writel(0x00003c04, base + PCI_REG_PARAM);
++		__raw_writel(0x00000008, base + PCI_REG_MBAR);
++		wmb();
++	}
++#endif
++
++	/* Enable sys bus clock divider when IDLE state or no bus activity. */
++	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
++
++	/* Enable the RTC if not already enabled */
++	if (!(au_readl(0xac000028) & 0x20)) {
++		printk(KERN_INFO "enabling clock ...\n");
++		au_writel((au_readl(0xac000028) | 0x20), 0xac000028);
++	}
++	/* Put the clock in BCD mode */
++	if (au_readl(0xac00002c) & 0x4) { /* reg B */
++		au_writel(au_readl(0xac00002c) & ~0x4, 0xac00002c);
++		au_sync();
++	}
++}
++
++/******************************************************************************/
++
++static int pb1500_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
++{
++	if ((slot < 12) || (slot > 13) || pin == 0)
++		return -1;
++	if (slot == 12)
++		return (pin == 1) ? AU1500_PCI_INTA : 0xff;
++	if (slot == 13) {
++		switch (pin) {
++		case 1: return AU1500_PCI_INTA;
++		case 2: return AU1500_PCI_INTB;
++		case 3: return AU1500_PCI_INTC;
++		case 4: return AU1500_PCI_INTD;
++		}
++	}
++	return -1;
++}
++
++static struct resource alchemy_pci_host_res[] = {
++	[0] = {
++		.start	= AU1500_PCI_PHYS_ADDR,
++		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static struct alchemy_pci_platdata pb1500_pci_pd = {
++	.board_map_irq	= pb1500_map_pci_irq,
++	.pci_cfg_set	= PCI_CONFIG_AEN | PCI_CONFIG_R2H | PCI_CONFIG_R1H |
++			  PCI_CONFIG_CH |
++#if defined(__MIPSEB__)
++			  PCI_CONFIG_SIC_HWA_DAT | PCI_CONFIG_SM,
++#else
++			  0,
++#endif
++};
++
++static struct platform_device pb1500_pci_host = {
++	.dev.platform_data = &pb1500_pci_pd,
++	.name		= "alchemy-pci",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
++	.resource	= alchemy_pci_host_res,
++};
++
++static int __init pb1500_dev_init(void)
++{
++	int swapped;
++
++	irq_set_irq_type(AU1500_GPIO9_INT,   IRQF_TRIGGER_LOW);   /* CD0# */
++	irq_set_irq_type(AU1500_GPIO10_INT,  IRQF_TRIGGER_LOW);  /* CARD0 */
++	irq_set_irq_type(AU1500_GPIO11_INT,  IRQF_TRIGGER_LOW);  /* STSCHG0# */
++	irq_set_irq_type(AU1500_GPIO204_INT, IRQF_TRIGGER_HIGH);
++	irq_set_irq_type(AU1500_GPIO201_INT, IRQF_TRIGGER_LOW);
++	irq_set_irq_type(AU1500_GPIO202_INT, IRQF_TRIGGER_LOW);
++	irq_set_irq_type(AU1500_GPIO203_INT, IRQF_TRIGGER_LOW);
++	irq_set_irq_type(AU1500_GPIO205_INT, IRQF_TRIGGER_LOW);
++
++	/* PCMCIA. single socket, identical to Pb1100 */
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
++		AU1500_GPIO11_INT, AU1500_GPIO9_INT,	 /* card / insert */
++		/*AU1500_GPIO10_INT*/0, 0, 0); /* stschg / eject / id */
++
++	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1000_SWAPBOOT;
++	db1x_register_norflash(64 * 1024 * 1024, 4, swapped);
++	platform_device_register(&pb1500_pci_host);
++
++	return 0;
++}
++arch_initcall(pb1500_dev_init);
+diff --git a/arch/mips/alchemy/devboards/pb1500/Makefile b/arch/mips/alchemy/devboards/pb1500/Makefile
+deleted file mode 100644
+index e83b151..0000000
+--- a/arch/mips/alchemy/devboards/pb1500/Makefile
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#
+-#  Copyright 2000, 2001, 2008 MontaVista Software Inc.
+-#  Author: MontaVista Software, Inc. <source@mvista.com>
+-#
+-# Makefile for the Alchemy Semiconductor Pb1500 board.
+-#
+-
+-obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1500/board_setup.c b/arch/mips/alchemy/devboards/pb1500/board_setup.c
+deleted file mode 100644
+index 37c1883..0000000
+--- a/arch/mips/alchemy/devboards/pb1500/board_setup.c
++++ /dev/null
+@@ -1,139 +0,0 @@
+-/*
+- * Copyright 2000, 2008 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc. <source@mvista.com>
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/delay.h>
+-#include <linux/gpio.h>
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-
+-#include <prom.h>
+-
+-const char *get_system_type(void)
+-{
+-	return "Alchemy Pb1500";
+-}
+-
+-void __init board_setup(void)
+-{
+-	u32 pin_func;
+-	u32 sys_freqctrl, sys_clksrc;
+-
+-	bcsr_init(DB1000_BCSR_PHYS_ADDR,
+-		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
+-
+-	sys_clksrc = sys_freqctrl = pin_func = 0;
+-	/* Set AUX clock to 12 MHz * 8 = 96 MHz */
+-	au_writel(8, SYS_AUXPLL);
+-	alchemy_gpio1_input_enable();
+-	udelay(100);
+-
+-	/* GPIO201 is input for PCMCIA card detect */
+-	/* GPIO203 is input for PCMCIA interrupt request */
+-	alchemy_gpio_direction_input(201);
+-	alchemy_gpio_direction_input(203);
+-
+-#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
+-
+-	/* Zero and disable FREQ2 */
+-	sys_freqctrl = au_readl(SYS_FREQCTRL0);
+-	sys_freqctrl &= ~0xFFF00000;
+-	au_writel(sys_freqctrl, SYS_FREQCTRL0);
+-
+-	/* zero and disable USBH/USBD clocks */
+-	sys_clksrc = au_readl(SYS_CLKSRC);
+-	sys_clksrc &= ~(SYS_CS_CUD | SYS_CS_DUD | SYS_CS_MUD_MASK |
+-			SYS_CS_CUH | SYS_CS_DUH | SYS_CS_MUH_MASK);
+-	au_writel(sys_clksrc, SYS_CLKSRC);
+-
+-	sys_freqctrl = au_readl(SYS_FREQCTRL0);
+-	sys_freqctrl &= ~0xFFF00000;
+-
+-	sys_clksrc = au_readl(SYS_CLKSRC);
+-	sys_clksrc &= ~(SYS_CS_CUD | SYS_CS_DUD | SYS_CS_MUD_MASK |
+-			SYS_CS_CUH | SYS_CS_DUH | SYS_CS_MUH_MASK);
+-
+-	/* FREQ2 = aux/2 = 48 MHz */
+-	sys_freqctrl |= (0 << SYS_FC_FRDIV2_BIT) | SYS_FC_FE2 | SYS_FC_FS2;
+-	au_writel(sys_freqctrl, SYS_FREQCTRL0);
+-
+-	/*
+-	 * Route 48MHz FREQ2 into USB Host and/or Device
+-	 */
+-	sys_clksrc |= SYS_CS_MUX_FQ2 << SYS_CS_MUH_BIT;
+-	au_writel(sys_clksrc, SYS_CLKSRC);
+-
+-	pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_USB;
+-	/* 2nd USB port is USB host */
+-	pin_func |= SYS_PF_USB;
+-	au_writel(pin_func, SYS_PINFUNC);
+-#endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
+-
+-#ifdef CONFIG_PCI
+-	{
+-		void __iomem *base =
+-				(void __iomem *)KSEG1ADDR(AU1500_PCI_PHYS_ADDR);
+-		/* Setup PCI bus controller */
+-		__raw_writel(0x00003fff, base + PCI_REG_CMEM);
+-		__raw_writel(0xf0000000, base + PCI_REG_MWMASK_DEV);
+-		__raw_writel(0, base + PCI_REG_MWBASE_REV_CCL);
+-		__raw_writel(0x02a00356, base + PCI_REG_STATCMD);
+-		__raw_writel(0x00003c04, base + PCI_REG_PARAM);
+-		__raw_writel(0x00000008, base + PCI_REG_MBAR);
+-		wmb();
+-	}
+-#endif
+-
+-	/* Enable sys bus clock divider when IDLE state or no bus activity. */
+-	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
+-
+-	/* Enable the RTC if not already enabled */
+-	if (!(au_readl(0xac000028) & 0x20)) {
+-		printk(KERN_INFO "enabling clock ...\n");
+-		au_writel((au_readl(0xac000028) | 0x20), 0xac000028);
+-	}
+-	/* Put the clock in BCD mode */
+-	if (au_readl(0xac00002c) & 0x4) { /* reg B */
+-		au_writel(au_readl(0xac00002c) & ~0x4, 0xac00002c);
+-		au_sync();
+-	}
+-}
+-
+-static int __init pb1500_init_irq(void)
+-{
+-	irq_set_irq_type(AU1500_GPIO9_INT, IRQF_TRIGGER_LOW);   /* CD0# */
+-	irq_set_irq_type(AU1500_GPIO10_INT, IRQF_TRIGGER_LOW);  /* CARD0 */
+-	irq_set_irq_type(AU1500_GPIO11_INT, IRQF_TRIGGER_LOW);  /* STSCHG0# */
+-	irq_set_irq_type(AU1500_GPIO204_INT, IRQF_TRIGGER_HIGH);
+-	irq_set_irq_type(AU1500_GPIO201_INT, IRQF_TRIGGER_LOW);
+-	irq_set_irq_type(AU1500_GPIO202_INT, IRQF_TRIGGER_LOW);
+-	irq_set_irq_type(AU1500_GPIO203_INT, IRQF_TRIGGER_LOW);
+-	irq_set_irq_type(AU1500_GPIO205_INT, IRQF_TRIGGER_LOW);
+-
+-	return 0;
+-}
+-arch_initcall(pb1500_init_irq);
+diff --git a/arch/mips/alchemy/devboards/pb1500/platform.c b/arch/mips/alchemy/devboards/pb1500/platform.c
+deleted file mode 100644
+index 1e52a01..0000000
+--- a/arch/mips/alchemy/devboards/pb1500/platform.c
++++ /dev/null
+@@ -1,94 +0,0 @@
+-/*
+- * Pb1500 board platform device registration
+- *
+- * Copyright (C) 2009 Manuel Lauss
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#include <linux/dma-mapping.h>
+-#include <linux/init.h>
+-#include <linux/platform_device.h>
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-
+-#include "../platform.h"
+-
+-static int pb1500_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
+-{
+-	if ((slot < 12) || (slot > 13) || pin == 0)
+-		return -1;
+-	if (slot == 12)
+-		return (pin == 1) ? AU1500_PCI_INTA : 0xff;
+-	if (slot == 13) {
+-		switch (pin) {
+-		case 1: return AU1500_PCI_INTA;
+-		case 2: return AU1500_PCI_INTB;
+-		case 3: return AU1500_PCI_INTC;
+-		case 4: return AU1500_PCI_INTD;
+-		}
+-	}
+-	return -1;
+-}
+-
+-static struct resource alchemy_pci_host_res[] = {
+-	[0] = {
+-		.start	= AU1500_PCI_PHYS_ADDR,
+-		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-};
+-
+-static struct alchemy_pci_platdata pb1500_pci_pd = {
+-	.board_map_irq	= pb1500_map_pci_irq,
+-	.pci_cfg_set	= PCI_CONFIG_AEN | PCI_CONFIG_R2H | PCI_CONFIG_R1H |
+-			  PCI_CONFIG_CH |
+-#if defined(__MIPSEB__)
+-			  PCI_CONFIG_SIC_HWA_DAT | PCI_CONFIG_SM,
+-#else
+-			  0,
+-#endif
+-};
+-
+-static struct platform_device pb1500_pci_host = {
+-	.dev.platform_data = &pb1500_pci_pd,
+-	.name		= "alchemy-pci",
+-	.id		= 0,
+-	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
+-	.resource	= alchemy_pci_host_res,
+-};
+-
+-static int __init pb1500_dev_init(void)
+-{
+-	int swapped;
+-
+-	/* PCMCIA. single socket, identical to Pb1100 */
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
+-		AU1500_GPIO11_INT, AU1500_GPIO9_INT,	 /* card / insert */
+-		/*AU1500_GPIO10_INT*/0, 0, 0); /* stschg / eject / id */
+-
+-	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1000_SWAPBOOT;
+-	db1x_register_norflash(64 * 1024 * 1024, 4, swapped);
+-	platform_device_register(&pb1500_pci_host);
+-
+-	return 0;
+-}
+-arch_initcall(pb1500_dev_init);
+diff --git a/arch/mips/alchemy/devboards/pb1550.c b/arch/mips/alchemy/devboards/pb1550.c
+new file mode 100644
+index 0000000..e4a00a5
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1550.c
+@@ -0,0 +1,178 @@
++/*
++ * Pb1550 board support.
++ *
++ * Copyright (C) 2009-2011 Manuel Lauss
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/dma-mapping.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/platform_device.h>
++#include <asm/mach-au1x00/au1000.h>
++#include <asm/mach-au1x00/au1xxx_dbdma.h>
++#include <asm/mach-au1x00/gpio.h>
++#include <asm/mach-db1x00/bcsr.h>
++#include "platform.h"
++
++const char *get_system_type(void)
++{
++	return "PB1550";
++}
++
++void __init board_setup(void)
++{
++	u32 pin_func;
++
++	bcsr_init(PB1550_BCSR_PHYS_ADDR,
++		  PB1550_BCSR_PHYS_ADDR + PB1550_BCSR_HEXLED_OFS);
++
++	alchemy_gpio2_enable();
++
++	/*
++	 * Enable PSC1 SYNC for AC'97.  Normaly done in audio driver,
++	 * but it is board specific code, so put it here.
++	 */
++	pin_func = au_readl(SYS_PINFUNC);
++	au_sync();
++	pin_func |= SYS_PF_MUST_BE_SET | SYS_PF_PSC1_S1;
++	au_writel(pin_func, SYS_PINFUNC);
++
++	bcsr_write(BCSR_PCMCIA, 0);	/* turn off PCMCIA power */
++
++	printk(KERN_INFO "AMD Alchemy Pb1550 Board\n");
++}
++
++/******************************************************************************/
++
++static int pb1550_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
++{
++	if ((slot < 12) || (slot > 13) || pin == 0)
++		return -1;
++	if (slot == 12) {
++		switch (pin) {
++		case 1: return AU1500_PCI_INTB;
++		case 2: return AU1500_PCI_INTC;
++		case 3: return AU1500_PCI_INTD;
++		case 4: return AU1500_PCI_INTA;
++		}
++	}
++	if (slot == 13) {
++		switch (pin) {
++		case 1: return AU1500_PCI_INTA;
++		case 2: return AU1500_PCI_INTB;
++		case 3: return AU1500_PCI_INTC;
++		case 4: return AU1500_PCI_INTD;
++		}
++	}
++	return -1;
++}
++
++static struct resource alchemy_pci_host_res[] = {
++	[0] = {
++		.start	= AU1500_PCI_PHYS_ADDR,
++		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static struct alchemy_pci_platdata pb1550_pci_pd = {
++	.board_map_irq	= pb1550_map_pci_irq,
++};
++
++static struct platform_device pb1550_pci_host = {
++	.dev.platform_data = &pb1550_pci_pd,
++	.name		= "alchemy-pci",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
++	.resource	= alchemy_pci_host_res,
++};
++
++static struct resource au1550_psc2_res[] = {
++	[0] = {
++		.start	= AU1550_PSC2_PHYS_ADDR,
++		.end	= AU1550_PSC2_PHYS_ADDR + 0xfff,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= AU1550_PSC2_INT,
++		.end	= AU1550_PSC2_INT,
++		.flags	= IORESOURCE_IRQ,
++	},
++	[2] = {
++		.start	= AU1550_DSCR_CMD0_PSC2_TX,
++		.end	= AU1550_DSCR_CMD0_PSC2_TX,
++		.flags	= IORESOURCE_DMA,
++	},
++	[3] = {
++		.start	= AU1550_DSCR_CMD0_PSC2_RX,
++		.end	= AU1550_DSCR_CMD0_PSC2_RX,
++		.flags	= IORESOURCE_DMA,
++	},
++};
++
++static struct platform_device pb1550_i2c_dev = {
++	.name		= "au1xpsc_smbus",
++	.id		= 0,	/* bus number */
++	.num_resources	= ARRAY_SIZE(au1550_psc2_res),
++	.resource	= au1550_psc2_res,
++};
++
++static int __init pb1550_dev_init(void)
++{
++	int swapped;
++
++	irq_set_irq_type(AU1550_GPIO0_INT, IRQF_TRIGGER_LOW);
++	irq_set_irq_type(AU1550_GPIO1_INT, IRQF_TRIGGER_LOW);
++	irq_set_irq_type(AU1550_GPIO201_205_INT, IRQF_TRIGGER_HIGH);
++
++	/* enable both PCMCIA card irqs in the shared line */
++	alchemy_gpio2_enable_int(201);
++	alchemy_gpio2_enable_int(202);
++
++	/* Pb1550, like all others, also has statuschange irqs; however they're
++	* wired up on one of the Au1550's shared GPIO201_205 line, which also
++	* services the PCMCIA card interrupts.  So we ignore statuschange and
++	* use the GPIO201_205 exclusively for card interrupts, since a) pcmcia
++	* drivers are used to shared irqs and b) statuschange isn't really use-
++	* ful anyway.
++	*/
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
++		AU1550_GPIO201_205_INT, AU1550_GPIO0_INT, 0, 0, 0);
++
++	db1x_register_pcmcia_socket(
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
++		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
++		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008000000,
++		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
++		AU1550_GPIO201_205_INT, AU1550_GPIO1_INT, 0, 0, 1);
++
++	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_PB1550_SWAPBOOT;
++	db1x_register_norflash(128 * 1024 * 1024, 4, swapped);
++	platform_device_register(&pb1550_pci_host);
++	platform_device_register(&pb1550_i2c_dev);
++
++	return 0;
++}
++arch_initcall(pb1550_dev_init);
+diff --git a/arch/mips/alchemy/devboards/pb1550/Makefile b/arch/mips/alchemy/devboards/pb1550/Makefile
+deleted file mode 100644
+index 9661b6e..0000000
+--- a/arch/mips/alchemy/devboards/pb1550/Makefile
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#
+-#  Copyright 2000, 2008 MontaVista Software Inc.
+-#  Author: MontaVista Software, Inc. <source@mvista.com>
+-#
+-# Makefile for the Alchemy Semiconductor Pb1550 board.
+-#
+-
+-obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1550/board_setup.c b/arch/mips/alchemy/devboards/pb1550/board_setup.c
+deleted file mode 100644
+index 0f62d1e..0000000
+--- a/arch/mips/alchemy/devboards/pb1550/board_setup.c
++++ /dev/null
+@@ -1,80 +0,0 @@
+-/*
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	Alchemy Pb1550 board setup.
+- *
+- * Copyright 2000, 2008 MontaVista Software Inc.
+- * Author: MontaVista Software, Inc. <source@mvista.com>
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-pb1x00/pb1550.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-#include <asm/mach-au1x00/gpio.h>
+-
+-#include <prom.h>
+-
+-const char *get_system_type(void)
+-{
+-	return "Alchemy Pb1550";
+-}
+-
+-void __init board_setup(void)
+-{
+-	u32 pin_func;
+-
+-	bcsr_init(PB1550_BCSR_PHYS_ADDR,
+-		  PB1550_BCSR_PHYS_ADDR + PB1550_BCSR_HEXLED_OFS);
+-
+-	alchemy_gpio2_enable();
+-
+-	/*
+-	 * Enable PSC1 SYNC for AC'97.  Normaly done in audio driver,
+-	 * but it is board specific code, so put it here.
+-	 */
+-	pin_func = au_readl(SYS_PINFUNC);
+-	au_sync();
+-	pin_func |= SYS_PF_MUST_BE_SET | SYS_PF_PSC1_S1;
+-	au_writel(pin_func, SYS_PINFUNC);
+-
+-	bcsr_write(BCSR_PCMCIA, 0);	/* turn off PCMCIA power */
+-
+-	printk(KERN_INFO "AMD Alchemy Pb1550 Board\n");
+-}
+-
+-static int __init pb1550_init_irq(void)
+-{
+-	irq_set_irq_type(AU1550_GPIO0_INT, IRQF_TRIGGER_LOW);
+-	irq_set_irq_type(AU1550_GPIO1_INT, IRQF_TRIGGER_LOW);
+-	irq_set_irq_type(AU1550_GPIO201_205_INT, IRQF_TRIGGER_HIGH);
+-
+-	/* enable both PCMCIA card irqs in the shared line */
+-	alchemy_gpio2_enable_int(201);
+-	alchemy_gpio2_enable_int(202);
+-
+-	return 0;
+-}
+-arch_initcall(pb1550_init_irq);
+diff --git a/arch/mips/alchemy/devboards/pb1550/platform.c b/arch/mips/alchemy/devboards/pb1550/platform.c
+deleted file mode 100644
+index a4604b8..0000000
+--- a/arch/mips/alchemy/devboards/pb1550/platform.c
++++ /dev/null
+@@ -1,140 +0,0 @@
+-/*
+- * Pb1550 board platform device registration
+- *
+- * Copyright (C) 2009 Manuel Lauss
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-#include <linux/dma-mapping.h>
+-#include <linux/init.h>
+-#include <linux/platform_device.h>
+-#include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-au1x00/au1xxx_dbdma.h>
+-#include <asm/mach-pb1x00/pb1550.h>
+-#include <asm/mach-db1x00/bcsr.h>
+-
+-#include "../platform.h"
+-
+-static int pb1550_map_pci_irq(const struct pci_dev *d, u8 slot, u8 pin)
+-{
+-	if ((slot < 12) || (slot > 13) || pin == 0)
+-		return -1;
+-	if (slot == 12) {
+-		switch (pin) {
+-		case 1: return AU1500_PCI_INTB;
+-		case 2: return AU1500_PCI_INTC;
+-		case 3: return AU1500_PCI_INTD;
+-		case 4: return AU1500_PCI_INTA;
+-		}
+-	}
+-	if (slot == 13) {
+-		switch (pin) {
+-		case 1: return AU1500_PCI_INTA;
+-		case 2: return AU1500_PCI_INTB;
+-		case 3: return AU1500_PCI_INTC;
+-		case 4: return AU1500_PCI_INTD;
+-		}
+-	}
+-	return -1;
+-}
+-
+-static struct resource alchemy_pci_host_res[] = {
+-	[0] = {
+-		.start	= AU1500_PCI_PHYS_ADDR,
+-		.end	= AU1500_PCI_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-};
+-
+-static struct alchemy_pci_platdata pb1550_pci_pd = {
+-	.board_map_irq	= pb1550_map_pci_irq,
+-};
+-
+-static struct platform_device pb1550_pci_host = {
+-	.dev.platform_data = &pb1550_pci_pd,
+-	.name		= "alchemy-pci",
+-	.id		= 0,
+-	.num_resources	= ARRAY_SIZE(alchemy_pci_host_res),
+-	.resource	= alchemy_pci_host_res,
+-};
+-
+-static struct resource au1550_psc2_res[] = {
+-	[0] = {
+-		.start	= AU1550_PSC2_PHYS_ADDR,
+-		.end	= AU1550_PSC2_PHYS_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1550_PSC2_INT,
+-		.end	= AU1550_PSC2_INT,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-	[2] = {
+-		.start	= AU1550_DSCR_CMD0_PSC2_TX,
+-		.end	= AU1550_DSCR_CMD0_PSC2_TX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	[3] = {
+-		.start	= AU1550_DSCR_CMD0_PSC2_RX,
+-		.end	= AU1550_DSCR_CMD0_PSC2_RX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-};
+-
+-static struct platform_device pb1550_i2c_dev = {
+-	.name		= "au1xpsc_smbus",
+-	.id		= 0,	/* bus number */
+-	.num_resources	= ARRAY_SIZE(au1550_psc2_res),
+-	.resource	= au1550_psc2_res,
+-};
+-
+-static int __init pb1550_dev_init(void)
+-{
+-	int swapped;
+-
+-	/* Pb1550, like all others, also has statuschange irqs; however they're
+-	* wired up on one of the Au1550's shared GPIO201_205 line, which also
+-	* services the PCMCIA card interrupts.  So we ignore statuschange and
+-	* use the GPIO201_205 exclusively for card interrupts, since a) pcmcia
+-	* drivers are used to shared irqs and b) statuschange isn't really use-
+-	* ful anyway.
+-	*/
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x000400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x000400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x000010000 - 1,
+-		AU1550_GPIO201_205_INT, AU1550_GPIO0_INT, 0, 0, 0);
+-
+-	db1x_register_pcmcia_socket(
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008000000,
+-		AU1000_PCMCIA_ATTR_PHYS_ADDR + 0x008400000 - 1,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008000000,
+-		AU1000_PCMCIA_MEM_PHYS_ADDR  + 0x008400000 - 1,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008000000,
+-		AU1000_PCMCIA_IO_PHYS_ADDR   + 0x008010000 - 1,
+-		AU1550_GPIO201_205_INT, AU1550_GPIO1_INT, 0, 0, 1);
+-
+-	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_PB1550_SWAPBOOT;
+-	db1x_register_norflash(128 * 1024 * 1024, 4, swapped);
+-	platform_device_register(&pb1550_pci_host);
+-	platform_device_register(&pb1550_i2c_dev);
+-
+-	return 0;
+-}
+-arch_initcall(pb1550_dev_init);
 -- 
 1.7.7.1

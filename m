@@ -1,58 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Nov 2011 16:59:57 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:15008 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903953Ab1KBP7r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 Nov 2011 16:59:47 +0100
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id pA2FxR14017167
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Wed, 2 Nov 2011 11:59:27 -0400
-Received: from tranklukator.englab.brq.redhat.com (dhcp-1-232.brq.redhat.com [10.34.1.232])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id pA2FxMmS013201;
-        Wed, 2 Nov 2011 11:59:23 -0400
-Received: by tranklukator.englab.brq.redhat.com (nbSMTP-1.00) for uid 500
-        oleg@redhat.com; Wed,  2 Nov 2011 16:55:10 +0100 (CET)
-Date:   Wed, 2 Nov 2011 16:55:05 +0100
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     Tejun Heo <htejun@gmail.com>
-Cc:     trisha yad <trisha1march@gmail.com>, linux-mm <linux-mm@kvack.org>,
-        Russell King - ARM Linux <linux@arm.linux.org.uk>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        kamezawa.hiroyu@jp.fujitsu.com, mhocko@suse.cz,
-        rientjes@google.com, Andrew Morton <akpm@linux-foundation.org>,
-        Konstantin Khlebnikov <khlebnikov@openvz.org>,
-        KOSAKI Motohiro <kosaki.motohiro@jp.fujitsu.com>,
-        "Rafael J. Wysocki" <rjw@sisk.pl>,
-        Rusty Russell <rusty@rustcorp.com.au>
-Subject: Re: Issue with core dump
-Message-ID: <20111102155505.GA30500@redhat.com>
-References: <CAGr+u+zkPiZpGefstcbJv_cj929icWKXbqFy1uR22Hns1hzFeQ@mail.gmail.com> <20111101152320.GA30466@redhat.com> <CAGr+u+wgAYVWgdcG6o+6F0mDzuyNzoOxvsFwq0dMsR3JNnZ-cA@mail.gmail.com> <20111102153146.GC12543@dhcp-172-17-108-109.mtv.corp.google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Nov 2011 22:14:17 +0100 (CET)
+Received: from out5.smtp.messagingengine.com ([66.111.4.29]:41187 "EHLO
+        out5.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903965Ab1KBVOK (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 Nov 2011 22:14:10 +0100
+Received: from compute4.internal (compute4.nyi.mail.srv.osa [10.202.2.44])
+        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id A606C20F6D;
+        Wed,  2 Nov 2011 17:14:08 -0400 (EDT)
+Received: from frontend1.nyi.mail.srv.osa ([10.202.2.160])
+  by compute4.internal (MEProxy); Wed, 02 Nov 2011 17:14:08 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=date:from:to:cc:subject:message-id
+        :references:mime-version:content-type:in-reply-to; s=smtpout;
+         bh=gECfRHLPzcQw2IP3dTr6wl6LmNw=; b=BYcbEdUy6LBMqBwuBgt1yWFONAf3
+        2ugipOiYRmbXMpEQ0KSbbeW5xZAAmyVGOsLYOyItB9EjVfKBBo0x54TAUnZYdwVH
+        V9k188KdhCIbLO6IrYPYY4Y2P7/8UXhk50enHs9/vowAqoaEMdiev0NHhgDP65q5
+        RvhddBWwRRJF1bY=
+X-Sasl-enc: tYRpYk0gWb7zT5sxeZCYBVpEt+U/c5kdYTNv9AfXjFfY 1320268448
+Received: from localhost (c-76-121-69-168.hsd1.wa.comcast.net [76.121.69.168])
+        by mail.messagingengine.com (Postfix) with ESMTPSA id 37EED8E1007;
+        Wed,  2 Nov 2011 17:14:08 -0400 (EDT)
+Date:   Wed, 2 Nov 2011 14:08:54 -0700
+From:   Greg KH <greg@kroah.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Florian Fainelli <florian@openwrt.org>, linux-mips@linux-mips.org,
+        Greg KH <gregkh@suse.de>
+Subject: Re: [PATCH] Revert "MIPS: MTX-1: Make au1000_eth probe all PHY
+Message-ID: <20111102210854.GD9949@kroah.com>
+References: <201110171943.06143.florian@openwrt.org>
+ <20111021122549.GA12686@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20111102153146.GC12543@dhcp-172-17-108-109.mtv.corp.google.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-X-archive-position: 31365
+In-Reply-To: <20111021122549.GA12686@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: oleg@redhat.com
+X-original-sender: greg@kroah.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 1405
+X-UID: 1827
 
-On 11/02, Tejun Heo wrote:
->
-> Also, the time between do_user_fault() and actual core dumping isn't
-> the important factor here.  do_user_fault() directly triggers delivery
-> of SIGSEGV (or BUS) and signal delivery will immediately deliver
-> SIGKILL to all other threads in the process,
+On Fri, Oct 21, 2011 at 01:25:49PM +0100, Ralf Baechle wrote:
+> On Mon, Oct 17, 2011 at 07:43:06PM +0200, Florian Fainelli wrote:
+> 
+> > Commit ec3eb823 was not applicable in 2.6.32 and introduces a build breakage.
+> > Revert that commit since it is irrelevant for this kernel version.
+> > 
+> > CC: stable@kernel.org
+> > Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> > ---
+> > Greg, this is applicable from 2.6.32+ to 2.6.33+ included.
+> 
+> On 2.6.33-stable the commit ID to be reverted is 34dce55d.
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+> (Or should it be Un-Acked-by: for reverting a patch?  ;-)
 
-Not really, note the "if (!sig_kernel_coredump(sig))" check. And this
-is what we can improve. But this is not simple, and personally I think
-doesn't worth the trouble.
+Heh.
 
-Oleg.
+Thanks, I've applied this revert now.
+
+greg k-h

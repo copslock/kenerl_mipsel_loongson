@@ -1,91 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2011 10:51:45 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:41217 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1904081Ab1KDJvl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Nov 2011 10:51:41 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA49peQe002615
-        for <linux-mips@linux-mips.org>; Fri, 4 Nov 2011 09:51:40 GMT
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA49petW002613
-        for linux-mips@linux-mips.org; Fri, 4 Nov 2011 09:51:40 GMT
-Date:   Fri, 4 Nov 2011 09:51:40 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Subject: [ADMIN] Git repositories on linux-mips.org have moved
-Message-ID: <20111104095140.GA2197@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2011 11:18:15 +0100 (CET)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:52987 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904080Ab1KDKSJ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Nov 2011 11:18:09 +0100
+Received: by wwf4 with SMTP id 4so2679916wwf.24
+        for <multiple recipients>; Fri, 04 Nov 2011 03:18:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:message-id:organization:user-agent
+         :mime-version:content-transfer-encoding:content-type;
+        bh=mXJ3YdfJ+5VNsFCYSPZBZ5fAJKRWW2UKTl75+crbYFM=;
+        b=F2kmZRgdl4+gJm6KtcSyUkrvRqQMeDO39YMzYKSNKLozUQ6VvPn4JdjnfoZtIE8ep3
+         dQcq4ioaLbIeukAwhS3Oyo6CojnjlnANu+Co1ixRzlXLpSCXy7wbz07sMYY5VjApJRnL
+         VCBeXv8vTt+cr3WxbgrzxR1bFi7OQAZnwczbU=
+Received: by 10.227.205.2 with SMTP id fo2mr17033437wbb.21.1320401883652;
+        Fri, 04 Nov 2011 03:18:03 -0700 (PDT)
+Received: from flexo.localnet (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id fw16sm15154126wbb.13.2011.11.04.03.18.01
+        (version=SSLv3 cipher=OTHER);
+        Fri, 04 Nov 2011 03:18:02 -0700 (PDT)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org, hauke@hauke-m.de
+Subject: [PATCH v2] MIPS: BCM47xx: fix build with GENERIC_GPIO configuration
+Date:   Fri, 04 Nov 2011 11:17:46 +0100
+Message-ID: <1536404.fxng9lJsi6@flexo>
+Organization: OpenWrt
+User-Agent: KMail/4.7.2 (Linux/3.0.0-12-server; KDE/4.7.2; x86_64; ; )
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="h31gzZEtNLTqOjlF"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31376
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-archive-position: 31377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3440
+X-UID: 3456
 
+Since eb9ae7f2 (gpio: fix build error in include/asm-generic/gpio.h)
+the generic version of gpio.h calls __gpio_{set,get}_value which we
+do not define. Get rid of asm-generic/gpio.h and define the missing
+stubs directly for BCM47xx to build.
 
---h31gzZEtNLTqOjlF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reported-by: Ralf Baechle <ralf@linux-mips.org>
+CC: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+Changes since v2:
+- fixed the subject (BCM47xxx -> BCM47xx)
+- fixed gpio_is_valid to check for the proper gpio number
 
-To simplify some admin chores on linux-mips.org I've moved some of the
-git repositories into a subdirectory named by the owner.  The intent
-is that all future repositories will also be created in subdirectories.
-
-The following URLs are the new locations of the repositories that have moved:
-
-  git://git.linux-mips.org/pub/scm/ralf/linux-dt.git/
-  git://git.linux-mips.org/pub/scm/ralf/linux.git/
-  git://git.linux-mips.org/pub/scm/ralf/linux-i8253.git/
-  git://git.linux-mips.org/pub/scm/ralf/linux-ip35.git/
-  git://git.linux-mips.org/pub/scm/ralf/linux-malta.git/
-  git://git.linux-mips.org/pub/scm/ralf/linux-queue.git/
-  git://git.linux-mips.org/pub/scm/ralf/upstream-akpm.git/
-  git://git.linux-mips.org/pub/scm/ralf/upstream-linus.git/
-  git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git/
-  git://git.linux-mips.org/pub/scm/ralf/zmailer.git/
-
-Replace git:// with http:// or https:// for http or https transport.
-
-As a reminder, rsync:// as a transport is no longer supported by
-linux-mips.org because its abuse by the not so git savy has caused
-excessive load on the linux-mips.org machine.
-
-There is no need to reclone your old repository; you can update the
-repository's URL by editing .git/config or if you're using a very old
-git version, in one of the files in .git/remotes/, probably
-.git/remotes/origin.
-
-Cheers,
-
-  Ralf
-
---h31gzZEtNLTqOjlF
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-
-iQIcBAEBAgAGBQJOs7WjAAoJECY38MwAtnaCdXoP/1GLD1GitWhGn4Kfiw0nytv1
-r2V1Q+vkC0l94XheqmjU0I65LxdkqP6Rs80//ieM/A9+LNfoH4VHMN5avQbr44kk
-owhqcFGjWLc1O/QDJflMQdTKNvItU1dNitPMMHza0IBwlLXec4mvS7h5sqhJ4QlI
-zbYRcm9el5/ygLEb7kW6hWLygKjv5DBqUzlSVD21CRV4KLS9oPQY9YrxhwFRuxH4
-jXUdxv4sRLTvZvpwly/LhsiJJKCOjNkcbjnnnOl6jxTyWS2ZL+98gcObqzrQc3HB
-hxuSepRyDjwuXlkmaR7jUxtGwebUr6uIofEmL07XNMGNNGfftJxeRRDgzuylkyFn
-sxz4TpnQQ9RaqN6E9pdpaPNQDR9wXu7Q755hfQzLM6O+LKvQfFkNfIq+qvE0mWRJ
-5s1papUfcMzNEL+JsYDawJks/CUwKZMEsPfUvo7jXzVvSHe6cIohNFGQDXJ649h/
-Z5SGbHS7tluHpMdYiS2gNriFVt1LuL2k67BoS8FP35ESpfGIMvYB4gmvZiH4dRF1
-YA59AHB0E18QwuY1WiDhHgN5qUyszVrPu6EUIG895qsxAIToBALlbAFZZisJPFuI
-gMQVKqQGrV06/W+c6IDWMgOjojaEnf6N7y4z78dZOXoMTiVj4zDd6xyzgGSeyOoP
-Yd6D/YnuKKaDeZuDvBCE
-=ZL86
------END PGP SIGNATURE-----
-
---h31gzZEtNLTqOjlF--
+diff --git a/arch/mips/include/asm/mach-bcm47xx/gpio.h b/arch/mips/include/asm/mach-bcm47xx/gpio.h
+index 76961ca..2ef17e8 100644
+--- a/arch/mips/include/asm/mach-bcm47xx/gpio.h
++++ b/arch/mips/include/asm/mach-bcm47xx/gpio.h
+@@ -36,6 +36,8 @@ static inline int gpio_get_value(unsigned gpio)
+ 	return -EINVAL;
+ }
+ 
++#define gpio_get_value_cansleep	gpio_get_value
++
+ static inline void gpio_set_value(unsigned gpio, int value)
+ {
+ 	switch (bcm47xx_bus_type) {
+@@ -54,6 +56,19 @@ static inline void gpio_set_value(unsigned gpio, int value)
+ 	}
+ }
+ 
++#define gpio_set_value_cansleep gpio_set_value
++
++static inline int gpio_cansleep(unsigned gpio)
++{
++	return 0;
++}
++
++static inline int gpio_is_valid(unsigned gpio)
++{
++	return gpio < (BCM47XX_EXTIF_GPIO_LINES + BCM47XX_CHIPCO_GPIO_LINES);
++}
++
++
+ static inline int gpio_direction_input(unsigned gpio)
+ {
+ 	switch (bcm47xx_bus_type) {
+@@ -137,7 +152,4 @@ static inline int gpio_polarity(unsigned gpio, int value)
+ }
+ 
+ 
+-/* cansleep wrappers */
+-#include <asm-generic/gpio.h>
+-
+ #endif /* __BCM47XX_GPIO_H */
+-- 
+1.7.5.4

@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2011 19:49:22 +0100 (CET)
-Received: from smtp4-g21.free.fr ([212.27.42.4]:60202 "EHLO smtp4-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2011 20:28:57 +0100 (CET)
+Received: from smtp4-g21.free.fr ([212.27.42.4]:33537 "EHLO smtp4-g21.free.fr"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904135Ab1KDSsv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Nov 2011 19:48:51 +0100
+        id S1904144Ab1KDT2t (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 Nov 2011 20:28:49 +0100
 Received: from sakura.staff.proxad.net (unknown [213.36.7.13])
-        by smtp4-g21.free.fr (Postfix) with ESMTP id 8E45A4C8274;
-        Fri,  4 Nov 2011 19:48:44 +0100 (CET)
+        by smtp4-g21.free.fr (Postfix) with ESMTP id 9F69A4C81A2;
+        Fri,  4 Nov 2011 20:28:44 +0100 (CET)
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-        id C9953557C0D; Fri,  4 Nov 2011 19:11:58 +0100 (CET)
+        id 09DDB557C12; Fri,  4 Nov 2011 19:11:59 +0100 (CET)
 From:   Maxime Bizon <mbizon@freebox.fr>
 To:     ralf@linux-mips.org
 Cc:     Maxime Bizon <mbizon@freebox.fr>, linux-mips@linux-mips.org
-Subject: [PATCH v2 05/11] MIPS: BCM63XX: cleanup cpu registers.
-Date:   Fri,  4 Nov 2011 19:09:29 +0100
-Message-Id: <1320430175-13725-6-git-send-email-mbizon@freebox.fr>
+Subject: [PATCH v2 09/11] MIPS: BCM63XX: handle 64 bits irq stat register in irq code.
+Date:   Fri,  4 Nov 2011 19:09:33 +0100
+Message-Id: <1320430175-13725-10-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.7.1.1
 In-Reply-To: <1320430175-13725-1-git-send-email-mbizon@freebox.fr>
 References: <1320430175-13725-1-git-send-email-mbizon@freebox.fr>
 To:     ralf@linux-mips.org
-X-archive-position: 31399
+X-archive-position: 31400
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,637 +27,202 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3908
+X-UID: 3937
 
-Use preprocessor when possible to avoid duplicated and error-prone
-code.
+bcm6368 has larger irq registers, prepare for this.
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- arch/mips/bcm63xx/cpu.c                          |  180 ++-----------
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h |  311 +++++++---------------
- 2 files changed, 125 insertions(+), 366 deletions(-)
+ arch/mips/bcm63xx/irq.c |   82 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 files changed, 76 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/cpu.c b/arch/mips/bcm63xx/cpu.c
-index 7c7e4d4..8bd5133 100644
---- a/arch/mips/bcm63xx/cpu.c
-+++ b/arch/mips/bcm63xx/cpu.c
-@@ -29,166 +29,38 @@ static u16 bcm63xx_cpu_rev;
- static unsigned int bcm63xx_cpu_freq;
- static unsigned int bcm63xx_memory_size;
+diff --git a/arch/mips/bcm63xx/irq.c b/arch/mips/bcm63xx/irq.c
+index cdf352b..fde8bb4 100644
+--- a/arch/mips/bcm63xx/irq.c
++++ b/arch/mips/bcm63xx/irq.c
+@@ -20,11 +20,17 @@
+ #include <bcm63xx_irq.h>
  
--/*
-- * 6338 register sets and irqs
-- */
--static const unsigned long bcm96338_regs_base[] = {
--	[RSET_DSL_LMEM]		= BCM_6338_DSL_LMEM_BASE,
--	[RSET_PERF]		= BCM_6338_PERF_BASE,
--	[RSET_TIMER]		= BCM_6338_TIMER_BASE,
--	[RSET_WDT]		= BCM_6338_WDT_BASE,
--	[RSET_UART0]		= BCM_6338_UART0_BASE,
--	[RSET_UART1]		= BCM_6338_UART1_BASE,
--	[RSET_GPIO]		= BCM_6338_GPIO_BASE,
--	[RSET_SPI]		= BCM_6338_SPI_BASE,
--	[RSET_OHCI0]		= BCM_6338_OHCI0_BASE,
--	[RSET_OHCI_PRIV]	= BCM_6338_OHCI_PRIV_BASE,
--	[RSET_USBH_PRIV]	= BCM_6338_USBH_PRIV_BASE,
--	[RSET_UDC0]		= BCM_6338_UDC0_BASE,
--	[RSET_MPI]		= BCM_6338_MPI_BASE,
--	[RSET_PCMCIA]		= BCM_6338_PCMCIA_BASE,
--	[RSET_SDRAM]		= BCM_6338_SDRAM_BASE,
--	[RSET_DSL]		= BCM_6338_DSL_BASE,
--	[RSET_ENET0]		= BCM_6338_ENET0_BASE,
--	[RSET_ENET1]		= BCM_6338_ENET1_BASE,
--	[RSET_ENETDMA]		= BCM_6338_ENETDMA_BASE,
--	[RSET_MEMC]		= BCM_6338_MEMC_BASE,
--	[RSET_DDR]		= BCM_6338_DDR_BASE,
-+static const unsigned long bcm6338_regs_base[] = {
-+	__GEN_CPU_REGS_TABLE(6338)
- };
+ static void __dispatch_internal(void) __maybe_unused;
++static void __dispatch_internal_64(void) __maybe_unused;
++static void __internal_irq_mask_32(unsigned int irq) __maybe_unused;
++static void __internal_irq_mask_64(unsigned int irq) __maybe_unused;
++static void __internal_irq_unmask_32(unsigned int irq) __maybe_unused;
++static void __internal_irq_unmask_64(unsigned int irq) __maybe_unused;
  
--static const int bcm96338_irqs[] = {
--	[IRQ_TIMER]		= BCM_6338_TIMER_IRQ,
--	[IRQ_UART0]		= BCM_6338_UART0_IRQ,
--	[IRQ_DSL]		= BCM_6338_DSL_IRQ,
--	[IRQ_ENET0]		= BCM_6338_ENET0_IRQ,
--	[IRQ_ENET_PHY]		= BCM_6338_ENET_PHY_IRQ,
--	[IRQ_ENET0_RXDMA]	= BCM_6338_ENET0_RXDMA_IRQ,
--	[IRQ_ENET0_TXDMA]	= BCM_6338_ENET0_TXDMA_IRQ,
-+static const int bcm6338_irqs[] = {
-+	__GEN_CPU_IRQ_TABLE(6338)
- };
+ #ifndef BCMCPU_RUNTIME_DETECT
+ #ifdef CONFIG_BCM63XX_CPU_6338
+ #define irq_stat_reg		PERF_IRQSTAT_6338_REG
+ #define irq_mask_reg		PERF_IRQMASK_6338_REG
++#define irq_bits		32
+ #define is_ext_irq_cascaded	0
+ #define ext_irq_start		0
+ #define ext_irq_end		0
+@@ -32,6 +38,7 @@ static void __dispatch_internal(void) __maybe_unused;
+ #ifdef CONFIG_BCM63XX_CPU_6345
+ #define irq_stat_reg		PERF_IRQSTAT_6345_REG
+ #define irq_mask_reg		PERF_IRQMASK_6345_REG
++#define irq_bits		32
+ #define is_ext_irq_cascaded	0
+ #define ext_irq_start		0
+ #define ext_irq_end		0
+@@ -39,7 +46,7 @@ static void __dispatch_internal(void) __maybe_unused;
+ #ifdef CONFIG_BCM63XX_CPU_6348
+ #define irq_stat_reg		PERF_IRQSTAT_6348_REG
+ #define irq_mask_reg		PERF_IRQMASK_6348_REG
+-#define dispatch_internal	__dispatch_internal
++#define irq_bits		32
+ #define is_ext_irq_cascaded	0
+ #define ext_irq_start		0
+ #define ext_irq_end		0
+@@ -47,13 +54,21 @@ static void __dispatch_internal(void) __maybe_unused;
+ #ifdef CONFIG_BCM63XX_CPU_6358
+ #define irq_stat_reg		PERF_IRQSTAT_6358_REG
+ #define irq_mask_reg		PERF_IRQMASK_6358_REG
+-#define dispatch_internal	__dispatch_internal
++#define irq_bits		32
+ #define is_ext_irq_cascaded	1
+ #define ext_irq_start		(BCM_6358_EXT_IRQ0 - IRQ_INTERNAL_BASE)
+ #define ext_irq_end		(BCM_6358_EXT_IRQ3 - IRQ_INTERNAL_BASE)
+ #endif
  
--/*
-- * 6345 register sets and irqs
-- */
--static const unsigned long bcm96345_regs_base[] = {
--	[RSET_DSL_LMEM]		= BCM_6345_DSL_LMEM_BASE,
--	[RSET_PERF]		= BCM_6345_PERF_BASE,
--	[RSET_TIMER]		= BCM_6345_TIMER_BASE,
--	[RSET_WDT]		= BCM_6345_WDT_BASE,
--	[RSET_UART0]		= BCM_6345_UART0_BASE,
--	[RSET_UART1]		= BCM_6345_UART1_BASE,
--	[RSET_GPIO]		= BCM_6345_GPIO_BASE,
--	[RSET_SPI]		= BCM_6345_SPI_BASE,
--	[RSET_UDC0]		= BCM_6345_UDC0_BASE,
--	[RSET_OHCI0]		= BCM_6345_OHCI0_BASE,
--	[RSET_OHCI_PRIV]	= BCM_6345_OHCI_PRIV_BASE,
--	[RSET_USBH_PRIV]	= BCM_6345_USBH_PRIV_BASE,
--	[RSET_MPI]		= BCM_6345_MPI_BASE,
--	[RSET_PCMCIA]		= BCM_6345_PCMCIA_BASE,
--	[RSET_DSL]		= BCM_6345_DSL_BASE,
--	[RSET_ENET0]		= BCM_6345_ENET0_BASE,
--	[RSET_ENET1]		= BCM_6345_ENET1_BASE,
--	[RSET_ENETDMA]		= BCM_6345_ENETDMA_BASE,
--	[RSET_EHCI0]		= BCM_6345_EHCI0_BASE,
--	[RSET_SDRAM]		= BCM_6345_SDRAM_BASE,
--	[RSET_MEMC]		= BCM_6345_MEMC_BASE,
--	[RSET_DDR]		= BCM_6345_DDR_BASE,
-+static const unsigned long bcm6345_regs_base[] = {
-+	__GEN_CPU_REGS_TABLE(6345)
- };
+-#define dispatch_internal	__dispatch_internal
++#if irq_bits == 32
++#define dispatch_internal			__dispatch_internal
++#define internal_irq_mask			__internal_irq_mask_32
++#define internal_irq_unmask			__internal_irq_unmask_32
++#else
++#define dispatch_internal			__dispatch_internal_64
++#define internal_irq_mask			__internal_irq_mask_64
++#define internal_irq_unmask			__internal_irq_unmask_64
++#endif
  
--static const int bcm96345_irqs[] = {
--	[IRQ_TIMER]		= BCM_6345_TIMER_IRQ,
--	[IRQ_UART0]		= BCM_6345_UART0_IRQ,
--	[IRQ_DSL]		= BCM_6345_DSL_IRQ,
--	[IRQ_ENET0]		= BCM_6345_ENET0_IRQ,
--	[IRQ_ENET_PHY]		= BCM_6345_ENET_PHY_IRQ,
--	[IRQ_ENET0_RXDMA]	= BCM_6345_ENET0_RXDMA_IRQ,
--	[IRQ_ENET0_TXDMA]	= BCM_6345_ENET0_TXDMA_IRQ,
-+static const int bcm6345_irqs[] = {
-+	__GEN_CPU_IRQ_TABLE(6345)
- };
+ #define irq_stat_addr	(bcm63xx_regset_address(RSET_PERF) + irq_stat_reg)
+ #define irq_mask_addr	(bcm63xx_regset_address(RSET_PERF) + irq_mask_reg)
+@@ -67,9 +82,13 @@ static u32 irq_stat_addr, irq_mask_addr;
+ static void (*dispatch_internal)(void);
+ static int is_ext_irq_cascaded;
+ static unsigned int ext_irq_start, ext_irq_end;
++static void (*internal_irq_mask)(unsigned int irq);
++static void (*internal_irq_unmask)(unsigned int irq);
  
--/*
-- * 6348 register sets and irqs
-- */
--static const unsigned long bcm96348_regs_base[] = {
--	[RSET_DSL_LMEM]		= BCM_6348_DSL_LMEM_BASE,
--	[RSET_PERF]		= BCM_6348_PERF_BASE,
--	[RSET_TIMER]		= BCM_6348_TIMER_BASE,
--	[RSET_WDT]		= BCM_6348_WDT_BASE,
--	[RSET_UART0]		= BCM_6348_UART0_BASE,
--	[RSET_UART1]		= BCM_6348_UART1_BASE,
--	[RSET_GPIO]		= BCM_6348_GPIO_BASE,
--	[RSET_SPI]		= BCM_6348_SPI_BASE,
--	[RSET_OHCI0]		= BCM_6348_OHCI0_BASE,
--	[RSET_OHCI_PRIV]	= BCM_6348_OHCI_PRIV_BASE,
--	[RSET_USBH_PRIV]	= BCM_6348_USBH_PRIV_BASE,
--	[RSET_MPI]		= BCM_6348_MPI_BASE,
--	[RSET_PCMCIA]		= BCM_6348_PCMCIA_BASE,
--	[RSET_SDRAM]		= BCM_6348_SDRAM_BASE,
--	[RSET_DSL]		= BCM_6348_DSL_BASE,
--	[RSET_ENET0]		= BCM_6348_ENET0_BASE,
--	[RSET_ENET1]		= BCM_6348_ENET1_BASE,
--	[RSET_ENETDMA]		= BCM_6348_ENETDMA_BASE,
--	[RSET_MEMC]		= BCM_6348_MEMC_BASE,
--	[RSET_DDR]		= BCM_6348_DDR_BASE,
-+static const unsigned long bcm6348_regs_base[] = {
-+	__GEN_CPU_REGS_TABLE(6348)
- };
- 
--static const int bcm96348_irqs[] = {
--	[IRQ_TIMER]		= BCM_6348_TIMER_IRQ,
--	[IRQ_UART0]		= BCM_6348_UART0_IRQ,
--	[IRQ_DSL]		= BCM_6348_DSL_IRQ,
--	[IRQ_ENET0]		= BCM_6348_ENET0_IRQ,
--	[IRQ_ENET1]		= BCM_6348_ENET1_IRQ,
--	[IRQ_ENET_PHY]		= BCM_6348_ENET_PHY_IRQ,
--	[IRQ_OHCI0]		= BCM_6348_OHCI0_IRQ,
--	[IRQ_PCMCIA]		= BCM_6348_PCMCIA_IRQ,
--	[IRQ_ENET0_RXDMA]	= BCM_6348_ENET0_RXDMA_IRQ,
--	[IRQ_ENET0_TXDMA]	= BCM_6348_ENET0_TXDMA_IRQ,
--	[IRQ_ENET1_RXDMA]	= BCM_6348_ENET1_RXDMA_IRQ,
--	[IRQ_ENET1_TXDMA]	= BCM_6348_ENET1_TXDMA_IRQ,
--	[IRQ_PCI]		= BCM_6348_PCI_IRQ,
-+static const int bcm6348_irqs[] = {
-+	__GEN_CPU_IRQ_TABLE(6348)
+ static void bcm63xx_init_irq(void)
+ {
++	int irq_bits;
 +
- };
+ 	irq_stat_addr = bcm63xx_regset_address(RSET_PERF);
+ 	irq_mask_addr = bcm63xx_regset_address(RSET_PERF);
  
--/*
-- * 6358 register sets and irqs
-- */
--static const unsigned long bcm96358_regs_base[] = {
--	[RSET_DSL_LMEM]		= BCM_6358_DSL_LMEM_BASE,
--	[RSET_PERF]		= BCM_6358_PERF_BASE,
--	[RSET_TIMER]		= BCM_6358_TIMER_BASE,
--	[RSET_WDT]		= BCM_6358_WDT_BASE,
--	[RSET_UART0]		= BCM_6358_UART0_BASE,
--	[RSET_UART1]		= BCM_6358_UART1_BASE,
--	[RSET_GPIO]		= BCM_6358_GPIO_BASE,
--	[RSET_SPI]		= BCM_6358_SPI_BASE,
--	[RSET_OHCI0]		= BCM_6358_OHCI0_BASE,
--	[RSET_EHCI0]		= BCM_6358_EHCI0_BASE,
--	[RSET_OHCI_PRIV]	= BCM_6358_OHCI_PRIV_BASE,
--	[RSET_USBH_PRIV]	= BCM_6358_USBH_PRIV_BASE,
--	[RSET_MPI]		= BCM_6358_MPI_BASE,
--	[RSET_PCMCIA]		= BCM_6358_PCMCIA_BASE,
--	[RSET_SDRAM]		= BCM_6358_SDRAM_BASE,
--	[RSET_DSL]		= BCM_6358_DSL_BASE,
--	[RSET_ENET0]		= BCM_6358_ENET0_BASE,
--	[RSET_ENET1]		= BCM_6358_ENET1_BASE,
--	[RSET_ENETDMA]		= BCM_6358_ENETDMA_BASE,
--	[RSET_MEMC]		= BCM_6358_MEMC_BASE,
--	[RSET_DDR]		= BCM_6358_DDR_BASE,
-+static const unsigned long bcm6358_regs_base[] = {
-+	__GEN_CPU_REGS_TABLE(6358)
- };
- 
--static const int bcm96358_irqs[] = {
--	[IRQ_TIMER]		= BCM_6358_TIMER_IRQ,
--	[IRQ_UART0]		= BCM_6358_UART0_IRQ,
--	[IRQ_UART1]		= BCM_6358_UART1_IRQ,
--	[IRQ_DSL]		= BCM_6358_DSL_IRQ,
--	[IRQ_ENET0]		= BCM_6358_ENET0_IRQ,
--	[IRQ_ENET1]		= BCM_6358_ENET1_IRQ,
--	[IRQ_ENET_PHY]		= BCM_6358_ENET_PHY_IRQ,
--	[IRQ_OHCI0]		= BCM_6358_OHCI0_IRQ,
--	[IRQ_EHCI0]		= BCM_6358_EHCI0_IRQ,
--	[IRQ_PCMCIA]		= BCM_6358_PCMCIA_IRQ,
--	[IRQ_ENET0_RXDMA]	= BCM_6358_ENET0_RXDMA_IRQ,
--	[IRQ_ENET0_TXDMA]	= BCM_6358_ENET0_TXDMA_IRQ,
--	[IRQ_ENET1_RXDMA]	= BCM_6358_ENET1_RXDMA_IRQ,
--	[IRQ_ENET1_TXDMA]	= BCM_6358_ENET1_TXDMA_IRQ,
--	[IRQ_PCI]		= BCM_6358_PCI_IRQ,
-+static const int bcm6358_irqs[] = {
-+	__GEN_CPU_IRQ_TABLE(6358)
-+
- };
- 
- u16 __bcm63xx_get_cpu_id(void)
-@@ -301,24 +173,24 @@ void __init bcm63xx_cpu_init(void)
- 	case CPU_BMIPS3300:
- 		if ((read_c0_prid() & 0xff00) == PRID_IMP_BMIPS3300_ALT) {
- 			expected_cpu_id = BCM6348_CPU_ID;
--			bcm63xx_regs_base = bcm96348_regs_base;
--			bcm63xx_irqs = bcm96348_irqs;
-+			bcm63xx_regs_base = bcm6348_regs_base;
-+			bcm63xx_irqs = bcm6348_irqs;
- 		} else {
- 			__cpu_name[cpu] = "Broadcom BCM6338";
- 			expected_cpu_id = BCM6338_CPU_ID;
--			bcm63xx_regs_base = bcm96338_regs_base;
--			bcm63xx_irqs = bcm96338_irqs;
-+			bcm63xx_regs_base = bcm6338_regs_base;
-+			bcm63xx_irqs = bcm6338_irqs;
- 		}
+@@ -77,18 +96,22 @@ static void bcm63xx_init_irq(void)
+ 	case BCM6338_CPU_ID:
+ 		irq_stat_addr += PERF_IRQSTAT_6338_REG;
+ 		irq_mask_addr += PERF_IRQMASK_6338_REG;
++		irq_bits = 32;
  		break;
- 	case CPU_BMIPS32:
- 		expected_cpu_id = BCM6345_CPU_ID;
--		bcm63xx_regs_base = bcm96345_regs_base;
--		bcm63xx_irqs = bcm96345_irqs;
-+		bcm63xx_regs_base = bcm6345_regs_base;
-+		bcm63xx_irqs = bcm6345_irqs;
+ 	case BCM6345_CPU_ID:
+ 		irq_stat_addr += PERF_IRQSTAT_6345_REG;
+ 		irq_mask_addr += PERF_IRQMASK_6345_REG;
++		irq_bits = 32;
  		break;
- 	case CPU_BMIPS4350:
- 		expected_cpu_id = BCM6358_CPU_ID;
--		bcm63xx_regs_base = bcm96358_regs_base;
--		bcm63xx_irqs = bcm96358_irqs;
-+		bcm63xx_regs_base = bcm6358_regs_base;
-+		bcm63xx_irqs = bcm6358_irqs;
+ 	case BCM6348_CPU_ID:
+ 		irq_stat_addr += PERF_IRQSTAT_6348_REG;
+ 		irq_mask_addr += PERF_IRQMASK_6348_REG;
++		irq_bits = 32;
  		break;
+ 	case BCM6358_CPU_ID:
+ 		irq_stat_addr += PERF_IRQSTAT_6358_REG;
+ 		irq_mask_addr += PERF_IRQMASK_6358_REG;
++		irq_bits = 32;
+ 		is_ext_irq_cascaded = 1;
+ 		ext_irq_start = BCM_6358_EXT_IRQ0 - IRQ_INTERNAL_BASE;
+ 		ext_irq_end = BCM_6358_EXT_IRQ3 - IRQ_INTERNAL_BASE;
+@@ -97,7 +120,15 @@ static void bcm63xx_init_irq(void)
+ 		BUG();
  	}
  
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-index 96a2391..464f948 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-@@ -234,202 +234,77 @@ enum bcm63xx_regs_set {
- 
- extern const unsigned long *bcm63xx_regs_base;
- 
-+#define __GEN_RSET_BASE(__cpu, __rset)					\
-+	case RSET_## __rset :						\
-+		return BCM_## __cpu ##_## __rset ##_BASE;
-+
-+#define __GEN_RSET(__cpu)						\
-+	switch (set) {							\
-+	__GEN_RSET_BASE(__cpu, DSL_LMEM)				\
-+	__GEN_RSET_BASE(__cpu, PERF)					\
-+	__GEN_RSET_BASE(__cpu, TIMER)					\
-+	__GEN_RSET_BASE(__cpu, WDT)					\
-+	__GEN_RSET_BASE(__cpu, UART0)					\
-+	__GEN_RSET_BASE(__cpu, UART1)					\
-+	__GEN_RSET_BASE(__cpu, GPIO)					\
-+	__GEN_RSET_BASE(__cpu, SPI)					\
-+	__GEN_RSET_BASE(__cpu, UDC0)					\
-+	__GEN_RSET_BASE(__cpu, OHCI0)					\
-+	__GEN_RSET_BASE(__cpu, OHCI_PRIV)				\
-+	__GEN_RSET_BASE(__cpu, USBH_PRIV)				\
-+	__GEN_RSET_BASE(__cpu, MPI)					\
-+	__GEN_RSET_BASE(__cpu, PCMCIA)					\
-+	__GEN_RSET_BASE(__cpu, DSL)					\
-+	__GEN_RSET_BASE(__cpu, ENET0)					\
-+	__GEN_RSET_BASE(__cpu, ENET1)					\
-+	__GEN_RSET_BASE(__cpu, ENETDMA)					\
-+	__GEN_RSET_BASE(__cpu, EHCI0)					\
-+	__GEN_RSET_BASE(__cpu, SDRAM)					\
-+	__GEN_RSET_BASE(__cpu, MEMC)					\
-+	__GEN_RSET_BASE(__cpu, DDR)					\
+-	dispatch_internal = __dispatch_internal;
++	if (irq_bits == 32) {
++		dispatch_internal = __dispatch_internal;
++		internal_irq_mask = __internal_irq_mask_32;
++		internal_irq_unmask = __internal_irq_unmask_32;
++	} else {
++		dispatch_internal = __dispatch_internal_64;
++		internal_irq_mask = __internal_irq_mask_64;
++		internal_irq_unmask = __internal_irq_unmask_64;
 +	}
+ }
+ #endif /* ! BCMCPU_RUNTIME_DETECT */
+ 
+@@ -137,6 +168,27 @@ static void __dispatch_internal(void)
+ 	}
+ }
+ 
++static void __dispatch_internal_64(void)
++{
++	u64 pending;
++	static int i;
 +
-+#define __GEN_CPU_REGS_TABLE(__cpu)					\
-+	[RSET_DSL_LMEM]		= BCM_## __cpu ##_DSL_LMEM_BASE,	\
-+	[RSET_PERF]		= BCM_## __cpu ##_PERF_BASE,		\
-+	[RSET_TIMER]		= BCM_## __cpu ##_TIMER_BASE,		\
-+	[RSET_WDT]		= BCM_## __cpu ##_WDT_BASE,		\
-+	[RSET_UART0]		= BCM_## __cpu ##_UART0_BASE,		\
-+	[RSET_UART1]		= BCM_## __cpu ##_UART1_BASE,		\
-+	[RSET_GPIO]		= BCM_## __cpu ##_GPIO_BASE,		\
-+	[RSET_SPI]		= BCM_## __cpu ##_SPI_BASE,		\
-+	[RSET_UDC0]		= BCM_## __cpu ##_UDC0_BASE,		\
-+	[RSET_OHCI0]		= BCM_## __cpu ##_OHCI0_BASE,		\
-+	[RSET_OHCI_PRIV]	= BCM_## __cpu ##_OHCI_PRIV_BASE,	\
-+	[RSET_USBH_PRIV]	= BCM_## __cpu ##_USBH_PRIV_BASE,	\
-+	[RSET_MPI]		= BCM_## __cpu ##_MPI_BASE,		\
-+	[RSET_PCMCIA]		= BCM_## __cpu ##_PCMCIA_BASE,		\
-+	[RSET_DSL]		= BCM_## __cpu ##_DSL_BASE,		\
-+	[RSET_ENET0]		= BCM_## __cpu ##_ENET0_BASE,		\
-+	[RSET_ENET1]		= BCM_## __cpu ##_ENET1_BASE,		\
-+	[RSET_ENETDMA]		= BCM_## __cpu ##_ENETDMA_BASE,		\
-+	[RSET_EHCI0]		= BCM_## __cpu ##_EHCI0_BASE,		\
-+	[RSET_SDRAM]		= BCM_## __cpu ##_SDRAM_BASE,		\
-+	[RSET_MEMC]		= BCM_## __cpu ##_MEMC_BASE,		\
-+	[RSET_DDR]		= BCM_## __cpu ##_DDR_BASE,		\
++	pending = bcm_readll(irq_stat_addr) & bcm_readll(irq_mask_addr);
 +
++	if (!pending)
++		return ;
 +
- static inline unsigned long bcm63xx_regset_address(enum bcm63xx_regs_set set)
++	while (1) {
++		int to_call = i;
++
++		i = (i + 1) & 0x3f;
++		if (pending & (1ull << to_call)) {
++			handle_internal(to_call);
++			break;
++		}
++	}
++}
++
+ asmlinkage void plat_irq_dispatch(void)
  {
- #ifdef BCMCPU_RUNTIME_DETECT
- 	return bcm63xx_regs_base[set];
- #else
- #ifdef CONFIG_BCM63XX_CPU_6338
--	switch (set) {
--	case RSET_DSL_LMEM:
--		return BCM_6338_DSL_LMEM_BASE;
--	case RSET_PERF:
--		return BCM_6338_PERF_BASE;
--	case RSET_TIMER:
--		return BCM_6338_TIMER_BASE;
--	case RSET_WDT:
--		return BCM_6338_WDT_BASE;
--	case RSET_UART0:
--		return BCM_6338_UART0_BASE;
--	case RSET_UART1:
--		return BCM_6338_UART1_BASE;
--	case RSET_GPIO:
--		return BCM_6338_GPIO_BASE;
--	case RSET_SPI:
--		return BCM_6338_SPI_BASE;
--	case RSET_UDC0:
--		return BCM_6338_UDC0_BASE;
--	case RSET_OHCI0:
--		return BCM_6338_OHCI0_BASE;
--	case RSET_OHCI_PRIV:
--		return BCM_6338_OHCI_PRIV_BASE;
--	case RSET_USBH_PRIV:
--		return BCM_6338_USBH_PRIV_BASE;
--	case RSET_MPI:
--		return BCM_6338_MPI_BASE;
--	case RSET_PCMCIA:
--		return BCM_6338_PCMCIA_BASE;
--	case RSET_DSL:
--		return BCM_6338_DSL_BASE;
--	case RSET_ENET0:
--		return BCM_6338_ENET0_BASE;
--	case RSET_ENET1:
--		return BCM_6338_ENET1_BASE;
--	case RSET_ENETDMA:
--		return BCM_6338_ENETDMA_BASE;
--	case RSET_EHCI0:
--		return BCM_6338_EHCI0_BASE;
--	case RSET_SDRAM:
--		return BCM_6338_SDRAM_BASE;
--	case RSET_MEMC:
--		return BCM_6338_MEMC_BASE;
--	case RSET_DDR:
--		return BCM_6338_DDR_BASE;
--	}
-+	__GEN_RSET(6338)
- #endif
- #ifdef CONFIG_BCM63XX_CPU_6345
--	switch (set) {
--	case RSET_DSL_LMEM:
--		return BCM_6345_DSL_LMEM_BASE;
--	case RSET_PERF:
--		return BCM_6345_PERF_BASE;
--	case RSET_TIMER:
--		return BCM_6345_TIMER_BASE;
--	case RSET_WDT:
--		return BCM_6345_WDT_BASE;
--	case RSET_UART0:
--		return BCM_6345_UART0_BASE;
--	case RSET_UART1:
--		return BCM_6345_UART1_BASE;
--	case RSET_GPIO:
--		return BCM_6345_GPIO_BASE;
--	case RSET_SPI:
--		return BCM_6345_SPI_BASE;
--	case RSET_UDC0:
--		return BCM_6345_UDC0_BASE;
--	case RSET_OHCI0:
--		return BCM_6345_OHCI0_BASE;
--	case RSET_OHCI_PRIV:
--		return BCM_6345_OHCI_PRIV_BASE;
--	case RSET_USBH_PRIV:
--		return BCM_6345_USBH_PRIV_BASE;
--	case RSET_MPI:
--		return BCM_6345_MPI_BASE;
--	case RSET_PCMCIA:
--		return BCM_6345_PCMCIA_BASE;
--	case RSET_DSL:
--		return BCM_6345_DSL_BASE;
--	case RSET_ENET0:
--		return BCM_6345_ENET0_BASE;
--	case RSET_ENET1:
--		return BCM_6345_ENET1_BASE;
--	case RSET_ENETDMA:
--		return BCM_6345_ENETDMA_BASE;
--	case RSET_EHCI0:
--		return BCM_6345_EHCI0_BASE;
--	case RSET_SDRAM:
--		return BCM_6345_SDRAM_BASE;
--	case RSET_MEMC:
--		return BCM_6345_MEMC_BASE;
--	case RSET_DDR:
--		return BCM_6345_DDR_BASE;
--	}
-+	__GEN_RSET(6345)
- #endif
- #ifdef CONFIG_BCM63XX_CPU_6348
--	switch (set) {
--	case RSET_DSL_LMEM:
--		return BCM_6348_DSL_LMEM_BASE;
--	case RSET_PERF:
--		return BCM_6348_PERF_BASE;
--	case RSET_TIMER:
--		return BCM_6348_TIMER_BASE;
--	case RSET_WDT:
--		return BCM_6348_WDT_BASE;
--	case RSET_UART0:
--		return BCM_6348_UART0_BASE;
--	case RSET_UART1:
--		return BCM_6348_UART1_BASE;
--	case RSET_GPIO:
--		return BCM_6348_GPIO_BASE;
--	case RSET_SPI:
--		return BCM_6348_SPI_BASE;
--	case RSET_UDC0:
--		return BCM_6348_UDC0_BASE;
--	case RSET_OHCI0:
--		return BCM_6348_OHCI0_BASE;
--	case RSET_OHCI_PRIV:
--		return BCM_6348_OHCI_PRIV_BASE;
--	case RSET_USBH_PRIV:
--		return BCM_6348_USBH_PRIV_BASE;
--	case RSET_MPI:
--		return BCM_6348_MPI_BASE;
--	case RSET_PCMCIA:
--		return BCM_6348_PCMCIA_BASE;
--	case RSET_DSL:
--		return BCM_6348_DSL_BASE;
--	case RSET_ENET0:
--		return BCM_6348_ENET0_BASE;
--	case RSET_ENET1:
--		return BCM_6348_ENET1_BASE;
--	case RSET_ENETDMA:
--		return BCM_6348_ENETDMA_BASE;
--	case RSET_EHCI0:
--		return BCM_6348_EHCI0_BASE;
--	case RSET_SDRAM:
--		return BCM_6348_SDRAM_BASE;
--	case RSET_MEMC:
--		return BCM_6348_MEMC_BASE;
--	case RSET_DDR:
--		return BCM_6348_DDR_BASE;
--	}
-+	__GEN_RSET(6348)
- #endif
- #ifdef CONFIG_BCM63XX_CPU_6358
--	switch (set) {
--	case RSET_DSL_LMEM:
--		return BCM_6358_DSL_LMEM_BASE;
--	case RSET_PERF:
--		return BCM_6358_PERF_BASE;
--	case RSET_TIMER:
--		return BCM_6358_TIMER_BASE;
--	case RSET_WDT:
--		return BCM_6358_WDT_BASE;
--	case RSET_UART0:
--		return BCM_6358_UART0_BASE;
--	case RSET_UART1:
--		return BCM_6358_UART1_BASE;
--	case RSET_GPIO:
--		return BCM_6358_GPIO_BASE;
--	case RSET_SPI:
--		return BCM_6358_SPI_BASE;
--	case RSET_UDC0:
--		return BCM_6358_UDC0_BASE;
--	case RSET_OHCI0:
--		return BCM_6358_OHCI0_BASE;
--	case RSET_OHCI_PRIV:
--		return BCM_6358_OHCI_PRIV_BASE;
--	case RSET_USBH_PRIV:
--		return BCM_6358_USBH_PRIV_BASE;
--	case RSET_MPI:
--		return BCM_6358_MPI_BASE;
--	case RSET_PCMCIA:
--		return BCM_6358_PCMCIA_BASE;
--	case RSET_ENET0:
--		return BCM_6358_ENET0_BASE;
--	case RSET_ENET1:
--		return BCM_6358_ENET1_BASE;
--	case RSET_ENETDMA:
--		return BCM_6358_ENETDMA_BASE;
--	case RSET_DSL:
--		return BCM_6358_DSL_BASE;
--	case RSET_EHCI0:
--		return BCM_6358_EHCI0_BASE;
--	case RSET_SDRAM:
--		return BCM_6358_SDRAM_BASE;
--	case RSET_MEMC:
--		return BCM_6358_MEMC_BASE;
--	case RSET_DDR:
--		return BCM_6358_DDR_BASE;
--	}
-+	__GEN_RSET(6358)
- #endif
- #endif
- 	/* unreached */
-@@ -449,7 +324,6 @@ enum bcm63xx_irq {
- 	IRQ_ENET_PHY,
- 	IRQ_OHCI0,
- 	IRQ_EHCI0,
--	IRQ_PCMCIA0,
- 	IRQ_ENET0_RXDMA,
- 	IRQ_ENET0_TXDMA,
- 	IRQ_ENET1_RXDMA,
-@@ -462,62 +336,58 @@ enum bcm63xx_irq {
-  * 6338 irqs
+ 	u32 cause;
+@@ -168,7 +220,7 @@ asmlinkage void plat_irq_dispatch(void)
+  * internal IRQs operations: only mask/unmask on PERF irq mask
+  * register.
   */
- #define BCM_6338_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
--#define BCM_6338_SPI_IRQ		(IRQ_INTERNAL_BASE + 1)
- #define BCM_6338_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
--#define BCM_6338_DG_IRQ			(IRQ_INTERNAL_BASE + 4)
-+#define BCM_6338_UART1_IRQ		0
- #define BCM_6338_DSL_IRQ		(IRQ_INTERNAL_BASE + 5)
--#define BCM_6338_ATM_IRQ		(IRQ_INTERNAL_BASE + 6)
--#define BCM_6338_UDC0_IRQ		(IRQ_INTERNAL_BASE + 7)
- #define BCM_6338_ENET0_IRQ		(IRQ_INTERNAL_BASE + 8)
-+#define BCM_6338_ENET1_IRQ		0
- #define BCM_6338_ENET_PHY_IRQ		(IRQ_INTERNAL_BASE + 9)
--#define BCM_6338_SDRAM_IRQ		(IRQ_INTERNAL_BASE + 10)
--#define BCM_6338_USB_CNTL_RX_DMA_IRQ	(IRQ_INTERNAL_BASE + 11)
--#define BCM_6338_USB_CNTL_TX_DMA_IRQ	(IRQ_INTERNAL_BASE + 12)
--#define BCM_6338_USB_BULK_RX_DMA_IRQ	(IRQ_INTERNAL_BASE + 13)
--#define BCM_6338_USB_BULK_TX_DMA_IRQ	(IRQ_INTERNAL_BASE + 14)
-+#define BCM_6338_OHCI0_IRQ		0
-+#define BCM_6338_EHCI0_IRQ		0
- #define BCM_6338_ENET0_RXDMA_IRQ	(IRQ_INTERNAL_BASE + 15)
- #define BCM_6338_ENET0_TXDMA_IRQ	(IRQ_INTERNAL_BASE + 16)
--#define BCM_6338_SDIO_IRQ		(IRQ_INTERNAL_BASE + 17)
-+#define BCM_6338_ENET1_RXDMA_IRQ	0
-+#define BCM_6338_ENET1_TXDMA_IRQ	0
-+#define BCM_6338_PCI_IRQ		0
-+#define BCM_6338_PCMCIA_IRQ		0
- 
- /*
-  * 6345 irqs
-  */
- #define BCM_6345_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
- #define BCM_6345_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
-+#define BCM_6345_UART1_IRQ		0
- #define BCM_6345_DSL_IRQ		(IRQ_INTERNAL_BASE + 3)
--#define BCM_6345_ATM_IRQ		(IRQ_INTERNAL_BASE + 4)
--#define BCM_6345_USB_IRQ		(IRQ_INTERNAL_BASE + 5)
- #define BCM_6345_ENET0_IRQ		(IRQ_INTERNAL_BASE + 8)
-+#define BCM_6345_ENET1_IRQ		0
- #define BCM_6345_ENET_PHY_IRQ		(IRQ_INTERNAL_BASE + 12)
-+#define BCM_6345_OHCI0_IRQ		0
-+#define BCM_6345_EHCI0_IRQ		0
- #define BCM_6345_ENET0_RXDMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 1)
- #define BCM_6345_ENET0_TXDMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 2)
--#define BCM_6345_EBI_RX_IRQ		(IRQ_INTERNAL_BASE + 13 + 5)
--#define BCM_6345_EBI_TX_IRQ		(IRQ_INTERNAL_BASE + 13 + 6)
--#define BCM_6345_RESERVED_RX_IRQ	(IRQ_INTERNAL_BASE + 13 + 9)
--#define BCM_6345_RESERVED_TX_IRQ	(IRQ_INTERNAL_BASE + 13 + 10)
--#define BCM_6345_USB_BULK_RX_DMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 13)
--#define BCM_6345_USB_BULK_TX_DMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 14)
--#define BCM_6345_USB_CNTL_RX_DMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 15)
--#define BCM_6345_USB_CNTL_TX_DMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 16)
--#define BCM_6345_USB_ISO_RX_DMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 17)
--#define BCM_6345_USB_ISO_TX_DMA_IRQ	(IRQ_INTERNAL_BASE + 13 + 18)
-+#define BCM_6345_ENET1_RXDMA_IRQ	0
-+#define BCM_6345_ENET1_TXDMA_IRQ	0
-+#define BCM_6345_PCI_IRQ		0
-+#define BCM_6345_PCMCIA_IRQ		0
- 
- /*
-  * 6348 irqs
-  */
- #define BCM_6348_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
- #define BCM_6348_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
-+#define BCM_6348_UART1_IRQ		0
- #define BCM_6348_DSL_IRQ		(IRQ_INTERNAL_BASE + 4)
--#define BCM_6348_ENET1_IRQ		(IRQ_INTERNAL_BASE + 7)
- #define BCM_6348_ENET0_IRQ		(IRQ_INTERNAL_BASE + 8)
-+#define BCM_6348_ENET1_IRQ		(IRQ_INTERNAL_BASE + 7)
- #define BCM_6348_ENET_PHY_IRQ		(IRQ_INTERNAL_BASE + 9)
- #define BCM_6348_OHCI0_IRQ		(IRQ_INTERNAL_BASE + 12)
-+#define BCM_6348_EHCI0_IRQ		0
- #define BCM_6348_ENET0_RXDMA_IRQ	(IRQ_INTERNAL_BASE + 20)
- #define BCM_6348_ENET0_TXDMA_IRQ	(IRQ_INTERNAL_BASE + 21)
- #define BCM_6348_ENET1_RXDMA_IRQ	(IRQ_INTERNAL_BASE + 22)
- #define BCM_6348_ENET1_TXDMA_IRQ	(IRQ_INTERNAL_BASE + 23)
--#define BCM_6348_PCMCIA_IRQ		(IRQ_INTERNAL_BASE + 24)
- #define BCM_6348_PCI_IRQ		(IRQ_INTERNAL_BASE + 24)
-+#define BCM_6348_PCMCIA_IRQ		(IRQ_INTERNAL_BASE + 24)
- 
- /*
-  * 6358 irqs
-@@ -525,21 +395,38 @@ enum bcm63xx_irq {
- #define BCM_6358_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
- #define BCM_6358_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
- #define BCM_6358_UART1_IRQ		(IRQ_INTERNAL_BASE + 3)
--#define BCM_6358_OHCI0_IRQ		(IRQ_INTERNAL_BASE + 5)
--#define BCM_6358_ENET1_IRQ		(IRQ_INTERNAL_BASE + 6)
-+#define BCM_6358_DSL_IRQ		(IRQ_INTERNAL_BASE + 29)
- #define BCM_6358_ENET0_IRQ		(IRQ_INTERNAL_BASE + 8)
-+#define BCM_6358_ENET1_IRQ		(IRQ_INTERNAL_BASE + 6)
- #define BCM_6358_ENET_PHY_IRQ		(IRQ_INTERNAL_BASE + 9)
-+#define BCM_6358_OHCI0_IRQ		(IRQ_INTERNAL_BASE + 5)
- #define BCM_6358_EHCI0_IRQ		(IRQ_INTERNAL_BASE + 10)
- #define BCM_6358_ENET0_RXDMA_IRQ	(IRQ_INTERNAL_BASE + 15)
- #define BCM_6358_ENET0_TXDMA_IRQ	(IRQ_INTERNAL_BASE + 16)
- #define BCM_6358_ENET1_RXDMA_IRQ	(IRQ_INTERNAL_BASE + 17)
- #define BCM_6358_ENET1_TXDMA_IRQ	(IRQ_INTERNAL_BASE + 18)
--#define BCM_6358_DSL_IRQ		(IRQ_INTERNAL_BASE + 29)
- #define BCM_6358_PCI_IRQ		(IRQ_INTERNAL_BASE + 31)
- #define BCM_6358_PCMCIA_IRQ		(IRQ_INTERNAL_BASE + 24)
- 
- extern const int *bcm63xx_irqs;
- 
-+#define __GEN_CPU_IRQ_TABLE(__cpu)					\
-+	[IRQ_TIMER]		= BCM_## __cpu ##_TIMER_IRQ,		\
-+	[IRQ_UART0]		= BCM_## __cpu ##_UART0_IRQ,		\
-+	[IRQ_UART1]		= BCM_## __cpu ##_UART1_IRQ,		\
-+	[IRQ_DSL]		= BCM_## __cpu ##_DSL_IRQ,		\
-+	[IRQ_ENET0]		= BCM_## __cpu ##_ENET0_IRQ,		\
-+	[IRQ_ENET1]		= BCM_## __cpu ##_ENET1_IRQ,		\
-+	[IRQ_ENET_PHY]		= BCM_## __cpu ##_ENET_PHY_IRQ,		\
-+	[IRQ_OHCI0]		= BCM_## __cpu ##_OHCI0_IRQ,		\
-+	[IRQ_EHCI0]		= BCM_## __cpu ##_EHCI0_IRQ,		\
-+	[IRQ_ENET0_RXDMA]	= BCM_## __cpu ##_ENET0_RXDMA_IRQ,	\
-+	[IRQ_ENET0_TXDMA]	= BCM_## __cpu ##_ENET0_TXDMA_IRQ,	\
-+	[IRQ_ENET1_RXDMA]	= BCM_## __cpu ##_ENET1_RXDMA_IRQ,	\
-+	[IRQ_ENET1_TXDMA]	= BCM_## __cpu ##_ENET1_TXDMA_IRQ,	\
-+	[IRQ_PCI]		= BCM_## __cpu ##_PCI_IRQ,		\
-+	[IRQ_PCMCIA]		= BCM_## __cpu ##_PCMCIA_IRQ,		\
-+
- static inline int bcm63xx_get_irq_number(enum bcm63xx_irq irq)
+-static void internal_irq_mask(unsigned int irq)
++static void __internal_irq_mask_32(unsigned int irq)
  {
- 	return bcm63xx_irqs[irq];
+ 	u32 mask;
+ 
+@@ -177,7 +229,16 @@ static void internal_irq_mask(unsigned int irq)
+ 	bcm_writel(mask, irq_mask_addr);
+ }
+ 
+-static void internal_irq_unmask(unsigned int irq)
++static void __internal_irq_mask_64(unsigned int irq)
++{
++	u64 mask;
++
++	mask = bcm_readll(irq_mask_addr);
++	mask &= ~(1ull << irq);
++	bcm_writell(mask, irq_mask_addr);
++}
++
++static void __internal_irq_unmask_32(unsigned int irq)
+ {
+ 	u32 mask;
+ 
+@@ -186,6 +247,15 @@ static void internal_irq_unmask(unsigned int irq)
+ 	bcm_writel(mask, irq_mask_addr);
+ }
+ 
++static void __internal_irq_unmask_64(unsigned int irq)
++{
++	u64 mask;
++
++	mask = bcm_readll(irq_mask_addr);
++	mask |= (1ull << irq);
++	bcm_writell(mask, irq_mask_addr);
++}
++
+ static void bcm63xx_internal_irq_mask(struct irq_data *d)
+ {
+ 	internal_irq_mask(d->irq - IRQ_INTERNAL_BASE);
 -- 
 1.7.1.1

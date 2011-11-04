@@ -1,42 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2011 13:21:13 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:42132 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1904102Ab1KDMVJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 Nov 2011 13:21:09 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA4CL7wa008435;
-        Fri, 4 Nov 2011 12:21:07 GMT
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA4CL6cM008429;
-        Fri, 4 Nov 2011 12:21:06 GMT
-Date:   Fri, 4 Nov 2011 12:21:06 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Yong Zhang <yong.zhang0@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, tglx@linutronix.de,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 12/49] MIPS: irq: Remove IRQF_DISABLED
-Message-ID: <20111104122106.GA7581@linux-mips.org>
-References: <1319277421-9203-1-git-send-email-yong.zhang0@gmail.com>
- <1319277421-9203-13-git-send-email-yong.zhang0@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1319277421-9203-13-git-send-email-yong.zhang0@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31381
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Nov 2011 15:50:10 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:60180 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904115Ab1KDOuG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 Nov 2011 15:50:06 +0100
+Received: by faaq17 with SMTP id q17so3542356faa.36
+        for <linux-mips@linux-mips.org>; Fri, 04 Nov 2011 07:50:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=tSHxkvcokvPkUa+VFZrzyARcYxZxfixYLpDo6J80P6E=;
+        b=NAxDIlbQMt9qJ1dhPAQbaM3MhaMubUaJ3+/i3+/AcNYG9UDwWJdPudwQXrk0p6N/21
+         rwrmqw8gL1nVSEf3JPyGtPJNwQaAw+EfSa3kr/IxHTgAw/o++mURz5wi0XKmHTyTqVct
+         iMYu59auN/+TgtWY31Xv7hiDuoMhjUnXwE/js=
+Received: by 10.152.103.51 with SMTP id ft19mr991313lab.42.1320418200968;
+        Fri, 04 Nov 2011 07:50:00 -0700 (PDT)
+Received: from localhost.localdomain (178-191-6-64.adsl.highway.telekom.at. [178.191.6.64])
+        by mx.google.com with ESMTPS id hh9sm2618400lab.1.2011.11.04.07.49.58
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 04 Nov 2011 07:50:00 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH] MIPS: remove port limit in ioport_map
+Date:   Fri,  4 Nov 2011 15:49:51 +0100
+Message-Id: <1320418191-22096-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.7.1
+X-archive-position: 31382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3555
+X-UID: 3681
 
-Thanks, queued for 3.3.  I resolved a conflict in dbdma.c and remove
-one IRQF_DISABLED which had been missed in arch/mips/kernel/perf_event.c.
+Alchemy PCMCIA IO lies outside the 32bit address space and needs to
+be ioremapped to be accessible.  The resulting address is
+then fed as IO-port base to all PCMCIA client drivers attached
+to a particular socket.  pata_pcmcia does devm_ioport_map() on
+the port address, which returns errors because MIPS' ioport_map()
+implementation rejects incoming port addresses which are not
+within the 0..64k window.  Other embedded architectures don't
+bother with a check like this;  this patch brings MIPS in line
+and in turn makes pata_pcmcia work on all my Alchemy systems
+(and doesn't break PCI).
 
-Thanks!
+Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+---
+ arch/mips/lib/iomap.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/lib/iomap.c b/arch/mips/lib/iomap.c
+index e3acb2d..5139fa6 100644
+--- a/arch/mips/lib/iomap.c
++++ b/arch/mips/lib/iomap.c
+@@ -210,9 +210,6 @@ static void __iomem *ioport_map_legacy(unsigned long port, unsigned int nr)
+ 
+ void __iomem *ioport_map(unsigned long port, unsigned int nr)
+ {
+-	if (port > PIO_MASK)
+-		return NULL;
+-
+ 	return ioport_map_legacy(port, nr);
+ }
+ 
+-- 
+1.7.7.1

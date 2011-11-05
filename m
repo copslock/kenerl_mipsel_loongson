@@ -1,64 +1,131 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Nov 2011 21:54:54 +0100 (CET)
-Received: from mail-wy0-f177.google.com ([74.125.82.177]:47527 "EHLO
-        mail-wy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904164Ab1KEUyq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 5 Nov 2011 21:54:46 +0100
-Received: by wyf28 with SMTP id 28so4382786wyf.36
-        for <multiple recipients>; Sat, 05 Nov 2011 13:54:40 -0700 (PDT)
-Received: by 10.227.205.130 with SMTP id fq2mr25537715wbb.17.1320526480163;
-        Sat, 05 Nov 2011 13:54:40 -0700 (PDT)
-Received: from [192.168.122.59] (smart152.bb.netvision.net.il. [212.143.76.5])
-        by mx.google.com with ESMTPS id l20sm21415013wbo.6.2011.11.05.13.54.37
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 05 Nov 2011 13:54:39 -0700 (PDT)
-Message-ID: <4EB5A28F.9060005@mvista.com>
-Date:   Sat, 05 Nov 2011 22:54:39 +0200
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Nov 2011 22:33:36 +0100 (CET)
+Received: from [69.28.251.93] ([69.28.251.93]:41207 "EHLO b32.net"
+        rhost-flags-FAIL-FAIL-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1904165Ab1KEVd1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 5 Nov 2011 22:33:27 +0100
+Received: (qmail 28051 invoked from network); 5 Nov 2011 17:28:27 -0000
+Received: from unknown (HELO vps-1001064-677.cp.jvds.com) (127.0.0.1)
+  by 127.0.0.1 with (DHE-RSA-AES128-SHA encrypted) SMTP; 5 Nov 2011 17:28:27 -0000
+Received: by vps-1001064-677.cp.jvds.com (sSMTP sendmail emulation); Sat, 05 Nov 2011 10:28:27 -0700
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Maksim Rayskiy <maksim.rayskiy@gmail.com>,
+ Kevin D. Kissell <kevink@paralogos.com>, Sergey Shtylyov
+ <sshtylyov@mvista.com>
+Subject: [PATCH RESEND 1/9] MIPS: Add local_flush_tlb_all_mm to clear all mm
+ contexts on calling cpu
+Date:   Sat, 05 Nov 2011 14:21:10 -0700
+Message-Id: <c2c8833593cb8eeef5c102468e105497@localhost>
+User-Agent: vim 7.2
 MIME-Version: 1.0
-To:     Maxime Bizon <mbizon@freebox.fr>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 04/11] MIPS: BCM63XX: introduce bcm_readll & bcm_writell.
-References: <1320430175-13725-1-git-send-email-mbizon@freebox.fr> <1320430175-13725-5-git-send-email-mbizon@freebox.fr>
-In-Reply-To: <1320430175-13725-5-git-send-email-mbizon@freebox.fr>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31402
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-archive-position: 31403
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 4382
+X-UID: 4398
 
-Hello.
+From: Maksim Rayskiy <maksim.rayskiy@gmail.com>
 
-On 04.11.2011 20:09, Maxime Bizon wrote:
+When hotplug removing a cpu, all mm context TLB entries must be cleared
+to avoid ASID conflict when cpu is restarted.  New functions
+local_flush_tlb_all_mm() and all-cpu version flush_tlb_all_mm() are
+added.  To function properly, local_flush_tlb_all_mm() must be called
+when mm_cpumask for all mm context on given cpu is cleared.
 
-> Needed for upcoming 6368 CPU support.
->
-> Signed-off-by: Maxime Bizon<mbizon@freebox.fr>
-> ---
->   arch/mips/include/asm/mach-bcm63xx/bcm63xx_io.h |    2 ++
->   1 files changed, 2 insertions(+), 0 deletions(-)
->
-> diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_io.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_io.h
-> index 91180fa..8bf4a67 100644
-> --- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_io.h
-> +++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_io.h
-> @@ -49,9 +49,11 @@
->   #define bcm_readb(a)	(*(volatile unsigned char *)	BCM_REGS_VA(a))
->   #define bcm_readw(a)	(*(volatile unsigned short *)	BCM_REGS_VA(a))
->   #define bcm_readl(a)	(*(volatile unsigned int *)	BCM_REGS_VA(a))
-> +#define bcm_readll(a)	(*(volatile u64 *)		BCM_REGS_VA(a))
->   #define bcm_writeb(v, a) (*(volatile unsigned char *) BCM_REGS_VA((a)) = (v))
->   #define bcm_writew(v, a) (*(volatile unsigned short *) BCM_REGS_VA((a)) = (v))
->   #define bcm_writel(v, a) (*(volatile unsigned int *) BCM_REGS_VA((a)) = (v))
-> +#define bcm_writell(v, a) (*(volatile u64 *) BCM_REGS_VA((a)) = (v))
+Signed-off-by: Maksim Rayskiy <maksim.rayskiy@gmail.com>
+Tested-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ arch/mips/include/asm/tlbflush.h |    4 ++++
+ arch/mips/kernel/smp.c           |   10 ++++++++++
+ arch/mips/mm/tlb-r4k.c           |   13 +++++++++++++
+ 3 files changed, 27 insertions(+), 0 deletions(-)
 
-    64-bit accessors are generally called readq()/writeq().
-
-WBR, Sergei
+diff --git a/arch/mips/include/asm/tlbflush.h b/arch/mips/include/asm/tlbflush.h
+index 86b21de..d7b75e6 100644
+--- a/arch/mips/include/asm/tlbflush.h
++++ b/arch/mips/include/asm/tlbflush.h
+@@ -8,12 +8,14 @@
+  *
+  *  - flush_tlb_all() flushes all processes TLB entries
+  *  - flush_tlb_mm(mm) flushes the specified mm context TLB entries
++ *  - flush_tlb_all_mm() flushes all mm context TLB entries
+  *  - flush_tlb_page(vma, vmaddr) flushes one page
+  *  - flush_tlb_range(vma, start, end) flushes a range of pages
+  *  - flush_tlb_kernel_range(start, end) flushes a range of kernel pages
+  */
+ extern void local_flush_tlb_all(void);
+ extern void local_flush_tlb_mm(struct mm_struct *mm);
++extern void local_flush_tlb_all_mm(void);
+ extern void local_flush_tlb_range(struct vm_area_struct *vma,
+ 	unsigned long start, unsigned long end);
+ extern void local_flush_tlb_kernel_range(unsigned long start,
+@@ -26,6 +28,7 @@ extern void local_flush_tlb_one(unsigned long vaddr);
+ 
+ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm(struct mm_struct *);
++extern void flush_tlb_all_mm(void);
+ extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long,
+ 	unsigned long);
+ extern void flush_tlb_kernel_range(unsigned long, unsigned long);
+@@ -36,6 +39,7 @@ extern void flush_tlb_one(unsigned long vaddr);
+ 
+ #define flush_tlb_all()			local_flush_tlb_all()
+ #define flush_tlb_mm(mm)		local_flush_tlb_mm(mm)
++#define flush_tlb_all_mm()		local_flush_tlb_all_mm()
+ #define flush_tlb_range(vma, vmaddr, end)	local_flush_tlb_range(vma, vmaddr, end)
+ #define flush_tlb_kernel_range(vmaddr,end) \
+ 	local_flush_tlb_kernel_range(vmaddr, end)
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 32c1e95..78ca04c 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -269,6 +269,16 @@ void flush_tlb_all(void)
+ 	on_each_cpu(flush_tlb_all_ipi, NULL, 1);
+ }
+ 
++static void flush_tlb_all_mm_ipi(void *info)
++{
++	local_flush_tlb_all_mm();
++}
++
++void flush_tlb_all_mm(void)
++{
++	on_each_cpu(flush_tlb_all_mm_ipi, NULL, 1);
++}
++
+ static void flush_tlb_mm_ipi(void *mm)
+ {
+ 	local_flush_tlb_mm((struct mm_struct *)mm);
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 0d394e0..908fbe9 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -66,6 +66,19 @@ extern void build_tlb_refill_handler(void);
+ 
+ #endif
+ 
++/* This function will clear all mm contexts on calling cpu
++ * To produce desired effect it must be called
++ * when mm_cpumask for all mm contexts is cleared
++ */
++void local_flush_tlb_all_mm(void)
++{
++	struct task_struct *p;
++
++	for_each_process(p)
++		if (p->mm)
++			local_flush_tlb_mm(p->mm);
++}
++
+ void local_flush_tlb_all(void)
+ {
+ 	unsigned long flags;
+-- 
+1.7.6.3

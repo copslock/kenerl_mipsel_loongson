@@ -1,29 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2011 13:08:03 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:52730 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2011 21:45:13 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:55591 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1904226Ab1KGMH7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 7 Nov 2011 13:07:59 +0100
+        id S1904243Ab1KGUpE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Nov 2011 21:45:04 +0100
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA7C7rMB008270;
-        Mon, 7 Nov 2011 12:07:53 GMT
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA7KipVG011452;
+        Mon, 7 Nov 2011 20:44:51 GMT
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA7C7r72008269;
-        Mon, 7 Nov 2011 12:07:53 GMT
-Date:   Mon, 7 Nov 2011 12:07:53 +0000
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA7Kinkm011444;
+        Mon, 7 Nov 2011 20:44:49 GMT
+Date:   Mon, 7 Nov 2011 20:44:49 +0000
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Hillf Danton <dhillf@gmail.com>
-Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Add fast get_user_pages
-Message-ID: <20111107120752.GA5142@linux-mips.org>
-References: <CAJd=RBC=_+qAnbTaYXgTOoiVdfgppRt-rBs4cnKoZKxHD14nuw@mail.gmail.com>
- <20111104151603.GB13043@linux-mips.org>
+To:     Michal Marek <mmarek@suse.cz>
+Cc:     Arnaud Lacombe <lacombar@gmail.com>, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [PATCH] Kbuild: append missing-syscalls to the default target
+ list
+Message-ID: <20111107204448.GA9949@linux-mips.org>
+References: <1314234210-11090-1-git-send-email-lacombar@gmail.com>
+ <4E69FEC9.2080204@suse.cz>
+ <CACqU3MUFyn_jh2pN4GLENqcGVUzAwcMJUR_WLY2EtqOhMheceQ@mail.gmail.com>
+ <20111101232233.GA32441@sepie.suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20111104151603.GB13043@linux-mips.org>
+In-Reply-To: <20111101232233.GA32441@sepie.suse.cz>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31416
+X-archive-position: 31417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,36 +37,99 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 5202
+X-UID: 6017
 
-On Fri, Nov 04, 2011 at 03:16:03PM +0000, Ralf Baechle wrote:
+On Wed, Nov 02, 2011 at 12:22:33AM +0100, Michal Marek wrote:
 
-> On Fri, Oct 28, 2011 at 09:26:23PM +0800, Hillf Danton wrote:
+> On Wed, Sep 14, 2011 at 01:17:10AM -0400, Arnaud Lacombe wrote:
+> > 2011/9/9 Michal Marek <mmarek@suse.cz>:
+> > > On 25.8.2011 03:03, Arnaud Lacombe wrote:
+> > >> +always += missing-syscalls
+> > >> +targets += missing-syscalls
+> > >> +
+> > >>  quiet_cmd_syscalls = CALL    $<
+> > >>        cmd_syscalls = $(CONFIG_SHELL) $< $(CC) $(c_flags)
+> > >
+> > > checksyscalls.sh needs to depend on generated/asm-offsets.h, otherwise a
+> > > parallel build will fail.
+> > >
+> > true.
+> > 
+> > This:
+> > 
+> > diff --git a/Kbuild b/Kbuild
+> > index 1a2eb32..4caab4f 100644
+> > --- a/Kbuild
+> > +++ b/Kbuild
+> > @@ -94,7 +94,7 @@ targets += missing-syscalls
+> >  quiet_cmd_syscalls = CALL    $<
+> >        cmd_syscalls = $(CONFIG_SHELL) $< $(CC) $(c_flags)
+> > 
+> > -missing-syscalls: scripts/checksyscalls.sh FORCE
+> > +missing-syscalls: scripts/checksyscalls.sh $(offsets-file) FORCE
+> >         $(call cmd,syscalls)
 > 
-> When we were chasing the TLB crash recently for a while I was suspecting
-> the default get_user_fast implementation so I ported gup.c from x86 but I
-> never really finished it, so thanks for ridding me of one item from my
-> to do list.
-> 
-> This probably wants some more testing in particular on 32-bit systems with
-> 64-bit pagetables such as some Alchemy configurations or 32-bit kernels
-> on Sibyte systems.
-> 
-> I fixed up a reject in arch/mips/mm/Makefile due to whitespace differences
-> and queued the patch for 3.3.
-> 
-> Have you made any benchmarks of the new gup.c?
+> OK, applied to kbuild/kbuild with this fixup.
 
-Hitting this one in a non-hugepage build of upstream-sfr:
+5f7efb4c6da9f90cb306923ced2a6494d065a595 breaks 64-bit MIPS builds that
+have 32-bit binary compatibility enabled, for example ip27_defconfig
+or cavium-octeon_defconfig:
 
-  CC      arch/mips/mm/gup.o
-arch/mips/mm/gup.c:70:51: error: redefinition of ‘get_huge_page_tail’
-include/linux/mm.h:379:51: note: previous definition of ‘get_huge_page_tail’ was here
-make[2]: *** [arch/mips/mm/gup.o] Error 1
-make[1]: *** [arch/mips/mm] Error 2
-make: *** [arch/mips] Error 2
+  CC      arch/mips/kernel/asm-offsets.s
+In file included from include/linux/bitops.h:22:0,
+                 from include/linux/kernel.h:17,
+                 from include/linux/cache.h:4,
+                 from include/linux/time.h:7,
+                 from include/linux/stat.h:60,
+                 from include/linux/compat.h:10,
+                 from arch/mips/kernel/asm-offsets.c:11:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h: In function ‘__fls’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h:570:2: warning: left shift count >= width of type [enabled by default]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h:572:3: warning: left shift count >= width of type [enabled by default]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h:575:2: warning: left shift count >= width of type [enabled by default]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h:579:2: warning: left shift count >= width of type [enabled by default]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h:583:2: warning: left shift count >= width of type [enabled by default]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h:587:2: warning: left shift count >= width of type [enabled by default]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/bitops.h:591:2: warning: left shift count >= width of type [enabled by default]
+In file included from /home/ralf/src/linux/linux-mips/arch/mips/include/asm/page.h:46:0,
+                 from /home/ralf/src/linux/linux-mips/arch/mips/include/asm/compat.h:8,
+                 from include/linux/compat.h:18,
+                 from arch/mips/kernel/asm-offsets.c:11:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘phys_to_virt’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:136:9: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘isa_bus_to_virt’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:149:9: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘outq’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘inq’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘outq_p’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘inq_p’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘__mem_outq’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘__mem_inq’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘__mem_outq_p’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h: In function ‘__mem_inq_p’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/io.h:444:1: error: size of unnamed array is negative
+In file included from /home/ralf/src/linux/linux-mips/arch/mips/include/asm/pgtable.h:15:0,
+                 from include/linux/mm.h:42,
+                 from arch/mips/kernel/asm-offsets.c:14:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/pgtable-64.h: In function ‘mk_swap_pte’:
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/pgtable-64.h:273:1: warning: left shift count >= width of type [enabled by default]
+/home/ralf/src/linux/linux-mips/arch/mips/include/asm/pgtable-64.h:273:1: warning: left shift count >= width of type [enabled by default]
+In file included from arch/mips/kernel/asm-offsets.c:14:0:
+include/linux/mm.h: In function ‘virt_to_head_page’:
+include/linux/mm.h:393:9: warning: right shift count >= width of type [enabled by default]
+In file included from arch/mips/kernel/asm-offsets.c:14:0:
+include/linux/mm.h: In function ‘lowmem_page_address’:
+include/linux/mm.h:723:9: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+make[1]: *** [arch/mips/kernel/asm-offsets.s] Error 1
+make: *** [archprepare] Error 2
 
-I fixed this one up by removing the local definition of get_huge_page_tail
-but you may want to re-test.
+Not yet sure what the fix should be.
 
   Ralf

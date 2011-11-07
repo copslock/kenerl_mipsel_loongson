@@ -1,60 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2011 21:50:43 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4086 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904245Ab1KGUue (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2011 21:50:34 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4eb844be0000>; Mon, 07 Nov 2011 12:51:10 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 7 Nov 2011 12:49:47 -0800
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 7 Nov 2011 12:49:46 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pA7Knkoc001900;
-        Mon, 7 Nov 2011 12:49:46 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pA7KnhQG001898;
-        Mon, 7 Nov 2011 12:49:43 -0800
-From:   David Daney <david.daney@cavium.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        netdev@vger.kernel.org, gregkh@suse.de, devel@driverdev.osuosl.org
-Cc:     ddaney.cavm@gmail.com, David Daney <david.daney@cavium.com>
-Subject: [PATCH] staging: octeon-ethernet: Fix compile error caused by changed to struct skb_frag_struct.
-Date:   Mon,  7 Nov 2011 12:49:30 -0800
-Message-Id: <1320698970-1854-1-git-send-email-david.daney@cavium.com>
-X-Mailer: git-send-email 1.7.2.3
-X-OriginalArrivalTime: 07 Nov 2011 20:49:47.0061 (UTC) FILETIME=[C908B650:01CC9D8E]
-X-archive-position: 31418
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2011 22:19:06 +0100 (CET)
+Received: from cantor2.suse.de ([195.135.220.15]:43107 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1904246Ab1KGVTB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 7 Nov 2011 22:19:01 +0100
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.221.2])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx2.suse.de (Postfix) with ESMTP id E3C6B8891E;
+        Mon,  7 Nov 2011 22:19:00 +0100 (CET)
+Received: by sepie.suse.cz (Postfix, from userid 10020)
+        id 762BE764AC; Mon,  7 Nov 2011 22:19:00 +0100 (CET)
+Date:   Mon, 7 Nov 2011 22:19:00 +0100
+From:   Michal Marek <mmarek@suse.cz>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Arnaud Lacombe <lacombar@gmail.com>, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [PATCH] Kbuild: append missing-syscalls to the default target
+ list
+Message-ID: <20111107211900.GB6264@sepie.suse.cz>
+References: <1314234210-11090-1-git-send-email-lacombar@gmail.com>
+ <4E69FEC9.2080204@suse.cz>
+ <CACqU3MUFyn_jh2pN4GLENqcGVUzAwcMJUR_WLY2EtqOhMheceQ@mail.gmail.com>
+ <20111101232233.GA32441@sepie.suse.cz>
+ <20111107204448.GA9949@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20111107204448.GA9949@linux-mips.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: mmarek@suse.cz
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6024
+X-UID: 6059
 
-Evidently the definition of struct skb_frag_struct has changed, so we
-need to change to match it.
+On Mon, Nov 07, 2011 at 08:44:49PM +0000, Ralf Baechle wrote:
+> 5f7efb4c6da9f90cb306923ced2a6494d065a595 breaks 64-bit MIPS builds that
+> have 32-bit binary compatibility enabled, for example ip27_defconfig
+> or cavium-octeon_defconfig:
+> 
+>   CC      arch/mips/kernel/asm-offsets.s
+> In file included from include/linux/bitops.h:22:0,
+>                  from include/linux/kernel.h:17,
+>                  from include/linux/cache.h:4,
+>                  from include/linux/time.h:7,
+>                  from include/linux/stat.h:60,
+>                  from include/linux/compat.h:10,
+>                  from arch/mips/kernel/asm-offsets.c:11:
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- drivers/staging/octeon/ethernet-tx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Wild guess - does this patch help?
 
-diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
-index b445cd6..2542c37 100644
---- a/drivers/staging/octeon/ethernet-tx.c
-+++ b/drivers/staging/octeon/ethernet-tx.c
-@@ -275,7 +275,7 @@ int cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
- 		CVM_OCT_SKB_CB(skb)[0] = hw_buffer.u64;
- 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
- 			struct skb_frag_struct *fs = skb_shinfo(skb)->frags + i;
--			hw_buffer.s.addr = XKPHYS_TO_PHYS((u64)(page_address(fs->page) + fs->page_offset));
-+			hw_buffer.s.addr = XKPHYS_TO_PHYS((u64)(page_address(fs->page.p) + fs->page_offset));
- 			hw_buffer.s.size = fs->size;
- 			CVM_OCT_SKB_CB(skb)[i + 1] = hw_buffer.u64;
- 		}
--- 
-1.7.2.3
+
+diff --git a/Kbuild b/Kbuild
+index 4caab4f..77c191a 100644
+--- a/Kbuild
++++ b/Kbuild
+@@ -94,7 +94,7 @@ targets += missing-syscalls
+ quiet_cmd_syscalls = CALL    $<
+       cmd_syscalls = $(CONFIG_SHELL) $< $(CC) $(c_flags)
+ 
+-missing-syscalls: scripts/checksyscalls.sh $(offsets-file) FORCE
++missing-syscalls: scripts/checksyscalls.sh $(offsets-file) $(bounds-file) FORCE
+ 	$(call cmd,syscalls)
+ 
+ # Keep these two files during make clean
+
+
+If not, please attach logs of make V=1 with clean Linus' tree and with
+5f7efb4c6da9f90cb306923ced2a6494d065a595 reverted.
+
+Michal

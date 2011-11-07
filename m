@@ -1,61 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2011 03:11:15 +0100 (CET)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:54530 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904218Ab1KGCLH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2011 03:11:07 +0100
-Received: by faaq17 with SMTP id q17so6026765faa.36
-        for <multiple recipients>; Sun, 06 Nov 2011 18:11:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=I8dTfWIy7m9ma+zddz/sC4ebo+630Ih9aGSSoenRoBQ=;
-        b=GKiZogJQY199bcD6y68EyZLdw0GcT6ycq37QU+Ni2u4uIGFZDDonaN/1K0JoCalgt0
-         +AujMgc3YVA+/lT9nJNTsYLyh3W+QieAIBccm8NhvRjI6ZB9vQck5aRcsSo4tjAuwRrx
-         +Kyo79YY3EqYcnO8Ii1soqpCfVmFD3hjmzMAc=
-Received: by 10.223.81.196 with SMTP id y4mr43501866fak.6.1320631861807;
-        Sun, 06 Nov 2011 18:11:01 -0800 (PST)
-Received: from localhost ([61.148.56.138])
-        by mx.google.com with ESMTPS id p14sm29246209faf.20.2011.11.06.18.10.54
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 06 Nov 2011 18:10:58 -0800 (PST)
-Date:   Mon, 7 Nov 2011 10:10:48 +0800
-From:   Yong Zhang <yong.zhang0@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-kernel@vger.kernel.org, tglx@linutronix.de,
-        linux-mips@linux-mips.org, sfr@canb.auug.org.au
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Nov 2011 03:49:27 +0100 (CET)
+Received: from calzone.tip.net.au ([203.10.76.15]:53866 "EHLO
+        calzone.tip.net.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1904218Ab1KGCtU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 7 Nov 2011 03:49:20 +0100
+Received: from canb.auug.org.au (ibmaus65.lnk.telstra.net [165.228.126.9])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by calzone.tip.net.au (Postfix) with ESMTPSA id 427A4128440;
+        Mon,  7 Nov 2011 13:49:16 +1100 (EST)
+Date:   Mon, 7 Nov 2011 13:49:12 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Yong Zhang <yong.zhang0@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
+        tglx@linutronix.de, linux-mips@linux-mips.org
 Subject: Re: [PATCH 12/49] MIPS: irq: Remove IRQF_DISABLED
-Message-ID: <20111107021048.GA3027@zhy>
-Reply-To: Yong Zhang <yong.zhang0@gmail.com>
+Message-Id: <20111107134912.0878664493f1110ceefb98a6@canb.auug.org.au>
+In-Reply-To: <20111107021048.GA3027@zhy>
 References: <1319277421-9203-1-git-send-email-yong.zhang0@gmail.com>
- <1319277421-9203-13-git-send-email-yong.zhang0@gmail.com>
- <20111104122106.GA7581@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20111104122106.GA7581@linux-mips.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31413
+        <1319277421-9203-13-git-send-email-yong.zhang0@gmail.com>
+        <20111104122106.GA7581@linux-mips.org>
+        <20111107021048.GA3027@zhy>
+X-Mailer: Sylpheed 3.2.0beta3 (GTK+ 2.24.7; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA256";
+ boundary="Signature=_Mon__7_Nov_2011_13_49_12_+1100_jrHQyWU8AZ.BtL_r"
+X-archive-position: 31414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yong.zhang0@gmail.com
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 4910
+X-UID: 4923
 
-On Fri, Nov 04, 2011 at 12:21:06PM +0000, Ralf Baechle wrote:
-> Thanks, queued for 3.3.  I resolved a conflict in dbdma.c and remove
-> one IRQF_DISABLED which had been missed in arch/mips/kernel/perf_event.c.
+--Signature=_Mon__7_Nov_2011_13_49_12_+1100_jrHQyWU8AZ.BtL_r
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks, Ralf.
+Hi Yong,
 
-And FYI, my patch is based on next-20111014 when I made it.
+On Mon, 7 Nov 2011 10:10:48 +0800 Yong Zhang <yong.zhang0@gmail.com> wrote:
+>
+> On Fri, Nov 04, 2011 at 12:21:06PM +0000, Ralf Baechle wrote:
+> > Thanks, queued for 3.3.  I resolved a conflict in dbdma.c and remove
+> > one IRQF_DISABLED which had been missed in arch/mips/kernel/perf_event.=
+c.
+>=20
+> And FYI, my patch is based on next-20111014 when I made it.
 
-Seems Stephen Rothwell(Cc'ing) meet some conflict. Could
-you please visit it?
+You should never base anything on top of a linux-next tree.  You should
+use the tree you are fixing (Linus' or the Mips tree or ...) as the base.
 
-Thanks,
-Yong
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+http://www.canb.auug.org.au/~sfr/
+
+--Signature=_Mon__7_Nov_2011_13_49_12_+1100_jrHQyWU8AZ.BtL_r
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBCAAGBQJOt0coAAoJEECxmPOUX5FEHDIP/00zpvtv1S/Up9demv3hM++9
+Lne7Imn48Hgy6qceQWEZk43RCo1Umn3VCgJrMHN24yZ793UaJoiapPcr/RPNa1Kq
+2uQdZJlKHCCSDysCGiRh1VaHPI3q98n2zVqvxKQeSzX0BA0pHQ8TGgR0IJdIe+Br
+bopPE7e999LJno13I9EXx97JAdSNcj021CxmpBgNqUSLPjiV1PMBgwGqaNhMjwQs
+RMjR/BzKgtEYpRyPSMXCzwPirDb/mT736HW13QOT8FS2+EYYZ9B/rwkOOIab4pPS
+uF1MRpNM3ERtM58+0id8q4MmQgEoA6EwD4i8fIYUFEVYWb7YXg7lPTX92sMQaAi6
+p6zlKSknX6+5DXIdt9ynZ0Xg/DcXbf3diQK4QAYQYshft13JHozx1SDvcx2tvnIl
+MiAC9xQHFBHaQMFMwKeQRKVbLWMTZiIw8nQr5klOL9HxeaqqUAORjbQnAQwLoOTB
+blHCUTvXinoomIF0CNdie76rWz7otk4o3bqhhaIDw3fSn8DW8Oi4fdW4Z/7flKe8
+1lUgCIeODmS8/OM2B0+Go6WzU9UBgfuWh5Wd88iUjCD+pduF0GAuQMWRYJ/TFTIg
+PdUp6KrvA2jZA4q0jEcTVbxQryNWf6RI16IaAeRInm+ihbN0ZSoB/4Wk8GIXFCka
+HbWGaoSLujjjOOH3RTiX
+=xVUF
+-----END PGP SIGNATURE-----
+
+--Signature=_Mon__7_Nov_2011_13_49_12_+1100_jrHQyWU8AZ.BtL_r--

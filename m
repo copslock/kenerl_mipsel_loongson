@@ -1,134 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 16:00:07 +0100 (CET)
-Received: from mms1.broadcom.com ([216.31.210.17]:4071 "EHLO mms1.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903662Ab1KHPAC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Nov 2011 16:00:02 +0100
-Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Tue, 08 Nov 2011 07:07:24 -0800
-X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Tue, 8 Nov 2011 06:59:40 -0800
-Received: from stbsrv-and-2.and.broadcom.com (
- stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 05BE4BC395; Tue, 8
- Nov 2011 06:59:39 -0800 (PST)
-From:   "Al Cooper" <alcooperx@gmail.com>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-cc:     "Al Cooper" <alcooperx@gmail.com>
-Subject: [PATCH] MIPS: Kernel hangs occasionally during boot.
-Date:   Tue, 8 Nov 2011 09:59:01 -0500
-Message-ID: <1320764341-4275-1-git-send-email-alcooperx@gmail.com>
-X-Mailer: git-send-email 1.7.6
-In-Reply-To: <y>
-References: <y>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 16:03:39 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:60965 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903663Ab1KHPDf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Nov 2011 16:03:35 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA8F3X5Y003865;
+        Tue, 8 Nov 2011 15:03:33 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA8F3XGA003864;
+        Tue, 8 Nov 2011 15:03:33 GMT
+Date:   Tue, 8 Nov 2011 15:03:33 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 7/9] MIPS: BMIPS: Introduce bmips.h
+Message-ID: <20111108150333.GA1491@linux-mips.org>
+References: <c2c8833593cb8eeef5c102468e105497@localhost>
+ <1c70a0e0f9e1a3967b60c4c2d1ec99bd@localhost>
 MIME-Version: 1.0
-X-WSS-ID: 62A79A233JW15441453-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31424
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1c70a0e0f9e1a3967b60c4c2d1ec99bd@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31425
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alcooperx@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6790
+X-UID: 6794
 
-The Kernel hangs occasionally during boot after
-"Calibrating delay loop..". This is caused by the
-c0_compare_int_usable() routine in cevt-r4k.c returning false which
-causes the system to disable the timer and hang later. The false
-return happens because the routine is using a series of four calls to
-irq_disable_hazard() as a delay while it waits for the timer changes
-to propagate to the cp0 cause register. On newer MIPS cores, like the 74K,
-the series of irq_disable_hazard() calls turn into ehb instructions and
-can take as little as a few clock ticks for all 4 instructions. This
-is not enough of a delay, so the routine thinks the timer is not working.
-This fix uses up to a max number of cycle counter ticks for the delay
-and uses back_to_back_c0_hazard() instead of irq_disable_hazard() to
-handle the hazard condition between cp0 writes and cp0 reads.
+On Sat, Nov 05, 2011 at 02:21:16PM -0700, Kevin Cernekee wrote:
 
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
----
- arch/mips/kernel/cevt-r4k.c |   38 +++++++++++++++++++-------------------
- 1 files changed, 19 insertions(+), 19 deletions(-)
+> +static inline unsigned long bmips_read_zscm_reg(unsigned int offset)
+> +{
+> +	unsigned long ret;
+> +
+> +	cache_op(Index_Load_Tag_S, ZSCM_REG_BASE + offset);
+> +
+> +	__asm__ __volatile__(
+> +		".set push\n"
+> +		".set noreorder\n"
+> +		"sync\n"
+> +		"ssnop\n"
+> +		"ssnop\n"
+> +		"ssnop\n"
+> +		"ssnop\n"
+> +		"ssnop\n"
+> +		"ssnop\n"
+> +		"ssnop\n"
+> +		"mfc0 %0, $28, 3\n"
+> +		"ssnop\n"
+> +		".set pop\n"
+> +		: "=&r" (ret) : : "memory");
 
-diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
-index 98c5a97..e2d8e19 100644
---- a/arch/mips/kernel/cevt-r4k.c
-+++ b/arch/mips/kernel/cevt-r4k.c
-@@ -103,19 +103,10 @@ static int c0_compare_int_pending(void)
- 
- /*
-  * Compare interrupt can be routed and latched outside the core,
-- * so a single execution hazard barrier may not be enough to give
-- * it time to clear as seen in the Cause register.  4 time the
-- * pipeline depth seems reasonably conservative, and empirically
-- * works better in configurations with high CPU/bus clock ratios.
-+ * so wait up to worst case number of cycle counter ticks for timer interrupt
-+ * changes to propagate to the cause register.
-  */
--
--#define compare_change_hazard() \
--	do { \
--		irq_disable_hazard(); \
--		irq_disable_hazard(); \
--		irq_disable_hazard(); \
--		irq_disable_hazard(); \
--	} while (0)
-+#define COMPARE_INT_SEEN_TICKS 50
- 
- int c0_compare_int_usable(void)
- {
-@@ -126,8 +117,12 @@ int c0_compare_int_usable(void)
- 	 * IP7 already pending?  Try to clear it by acking the timer.
- 	 */
- 	if (c0_compare_int_pending()) {
--		write_c0_compare(read_c0_count());
--		compare_change_hazard();
-+		cnt = read_c0_count();
-+		write_c0_compare(cnt);
-+		back_to_back_c0_hazard();
-+		while (read_c0_count() < (cnt  + COMPARE_INT_SEEN_TICKS))
-+			if (!c0_compare_int_pending())
-+				break;
- 		if (c0_compare_int_pending())
- 			return 0;
- 	}
-@@ -136,7 +131,7 @@ int c0_compare_int_usable(void)
- 		cnt = read_c0_count();
- 		cnt += delta;
- 		write_c0_compare(cnt);
--		compare_change_hazard();
-+		back_to_back_c0_hazard();
- 		if ((int)(read_c0_count() - cnt) < 0)
- 		    break;
- 		/* increase delta if the timer was already expired */
-@@ -145,12 +140,17 @@ int c0_compare_int_usable(void)
- 	while ((int)(read_c0_count() - cnt) <= 0)
- 		;	/* Wait for expiry  */
- 
--	compare_change_hazard();
-+	while (read_c0_count() < (cnt + COMPARE_INT_SEEN_TICKS))
-+		if (c0_compare_int_pending())
-+			break;
- 	if (!c0_compare_int_pending())
- 		return 0;
--
--	write_c0_compare(read_c0_count());
--	compare_change_hazard();
-+	cnt = read_c0_count();
-+	write_c0_compare(cnt);
-+	back_to_back_c0_hazard();
-+	while (read_c0_count() < (cnt + COMPARE_INT_SEEN_TICKS))
-+		if (!c0_compare_int_pending())
-+			break;
- 	if (c0_compare_int_pending())
- 		return 0;
- 
--- 
-1.7.6
+Is it critical that the C compiler or assembler can't reorder anything to
+in between the cache_op and the inline asm statement?  If so, I'd
+recommend to put the cache instruction into the asm as well.
+
+> +static inline void bmips_write_zscm_reg(unsigned int offset, unsigned long data)
+> +{
+> +	__write_32bit_c0_register($28, 3, data);
+> +	back_to_back_c0_hazard();
+> +	cache_op(Index_Store_Tag_S, ZSCM_REG_BASE + offset);
+> +	back_to_back_c0_hazard();
+
+back_to_back_c0_hazard() is meant as the hazard barrier between a write
+followed immediately by a read from the same cp0 register:
+
+	mtc0	$reg1, $12
+	mfc0	$reg2, $12
+
+On various MIPS processors this instruction sequence would result in
+undefined operation such as the mfc0 instruction reading the value of
+$12 before the mtc0 or even next week's lucky lottery numbers..
+
+I think we don't really have a type of hazard barrier defined in hazard.h
+and this seems a rather special purpose use so I suggest you just open
+code whatever needs to be done.
+
+  Ralf

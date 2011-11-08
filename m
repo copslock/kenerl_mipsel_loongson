@@ -1,89 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 20:40:22 +0100 (CET)
-Received: from mail-qy0-f170.google.com ([209.85.216.170]:60561 "EHLO
-        mail-qy0-f170.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903676Ab1KHTkS convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Nov 2011 20:40:18 +0100
-Received: by qyg14 with SMTP id 14so4162832qyg.15
-        for <multiple recipients>; Tue, 08 Nov 2011 11:40:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=ltJ60YBw7pBFBctdO+QL7xweamZ1Tfvu8aAB85b7ttA=;
-        b=fw6qOtZ2nVJtdgSP1QwjxKZOpjZvz2fgQCk0BTv29IwnE/6qrSL6sIekDJJ0dx1WUv
-         p8AFPJVB6psu8F8Xzy9VBrkf+/1J5uj3mZ/XTb2CTqrRoNbjHG0C70TE4BHsFoPy04TB
-         BjIa1BYpgwCq3HLLpxlGC+UfHs6hwVe/wo1A4=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 20:57:57 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:15670 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903675Ab1KHT5t (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Nov 2011 20:57:49 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4eb98a0e0000>; Tue, 08 Nov 2011 11:59:10 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 8 Nov 2011 11:57:47 -0800
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Tue, 8 Nov 2011 11:57:47 -0800
+Message-ID: <4EB989B9.2060904@cavium.com>
+Date:   Tue, 08 Nov 2011 11:57:45 -0800
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.68.199.167 with SMTP id jl7mr3141307pbc.70.1320781212319; Tue,
- 08 Nov 2011 11:40:12 -0800 (PST)
-Received: by 10.68.62.169 with HTTP; Tue, 8 Nov 2011 11:40:11 -0800 (PST)
-In-Reply-To: <20111108164711.GA13937@linux-mips.org>
-References: <c2c8833593cb8eeef5c102468e105497@localhost>
-        <20111108164711.GA13937@linux-mips.org>
-Date:   Tue, 8 Nov 2011 11:40:11 -0800
-Message-ID: <CAJiQ=7BpXhMKqQ9RDYHCzC2rpb9NdNGra7gQUqXko9eWnjhrAA@mail.gmail.com>
-Subject: Re: [PATCH RESEND 1/9] MIPS: Add local_flush_tlb_all_mm to clear all
- mm contexts on calling cpu
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        Maksim Rayskiy <maksim.rayskiy@gmail.com>,
-        "Kevin D. Kissell" <kevink@paralogos.com>,
-        Sergei Shtylyov <sshtylyov@mvista.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31438
+To:     "manesoni@cisco.com" <manesoni@cisco.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        "ananth@in.ibm.com" <ananth@in.ibm.com>,
+        "kamensky@cisco.com" <kamensky@cisco.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 1/4] MIPS Kprobes: Fix OOPS in arch_prepare_kprobe()
+References: <20111108170336.GA16526@cisco.com> <20111108170454.GB16526@cisco.com>
+In-Reply-To: <20111108170454.GB16526@cisco.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 08 Nov 2011 19:57:47.0256 (UTC) FILETIME=[AFE5FF80:01CC9E50]
+X-archive-position: 31439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7119
+X-UID: 7132
 
-On Tue, Nov 8, 2011 at 8:47 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Sat, Nov 05, 2011 at 02:21:10PM -0700, Kevin Cernekee wrote:
+On 11/08/2011 09:04 AM, Maneesh Soni wrote:
+[...]
 >
->> +void local_flush_tlb_all_mm(void)
->> +{
->> +     struct task_struct *p;
->> +
->> +     for_each_process(p)
->> +             if (p->mm)
->> +                     local_flush_tlb_mm(p->mm);
+> diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
+> index ee28683..9fb1876 100644
+> --- a/arch/mips/kernel/kprobes.c
+> +++ b/arch/mips/kernel/kprobes.c
+> @@ -25,6 +25,7 @@
 >
-> Aside of for_each_process being a potencially very heavy iterator - there
-> can be thousands of threads on some systems, even embedded systems I'm
+>   #include<linux/kprobes.h>
+>   #include<linux/preempt.h>
+> +#include<linux/uaccess.h>
+>   #include<linux/kdebug.h>
+>   #include<linux/slab.h>
+>
+> @@ -118,11 +119,19 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+>   	union mips_instruction prev_insn;
+>   	int ret = 0;
+>
+> -	prev_insn = p->addr[-1];
+>   	insn = p->addr[0];
+>
+> -	if (insn_has_delayslot(insn) || insn_has_delayslot(prev_insn)) {
+> -		pr_notice("Kprobes for branch and jump instructions are not supported\n");
+> +	if (insn_has_delayslot(insn)) {
+> +		pr_notice("Kprobes for branch and jump instructions are not"
+> +			  "supported\n");
 
-This is called from play_dead() on a CPU that has been hot-unplugged.
+Don't wrap these strings.
 
-FWIW for_each_process() is also called from check_for_tasks() when
-bringing down a CPU.  I wonder if that would be a better place to add
-a hook to drop the MMU contexts, ala:
+It is better to go a little bit over 80 columns, than have this.
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 563f136..5854401 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -184,6 +184,7 @@ static inline void check_for_tasks(int cpu)
- 				"(state = %ld, flags = %x)\n",
- 				p->comm, task_pid_nr(p), cpu,
- 				p->state, p->flags);
-+		arch_drop_mmu_context(p, cpu);
- 	}
- 	write_unlock_irq(&tasklist_lock);
- }
-
-But it does run on a "surviving" CPU, not the dying CPU, so I'm not
-positive it would work the same way.
-
-> missing the task_list lock being taken so bad things could happen.
-
-Right, so without acquiring tasklist_lock, somebody else could
-rearrange the list while I'm iterating through it.
-
-Do I need to call task_lock(p) before touching p->mm, or would
-acquiring a write lock on tasklist_lock be sufficient?
+David Daney

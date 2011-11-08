@@ -1,79 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 16:23:28 +0100 (CET)
-Received: from ra.se.axis.com ([195.60.68.13]:60797 "EHLO ra.se.axis.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903661Ab1KHPXU convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 Nov 2011 16:23:20 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by ra.se.axis.com (Postfix) with ESMTP id 21624130BF
-        for <linux-mips@linux-mips.org>; Tue,  8 Nov 2011 16:23:15 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at ra.se.axis.com
-Received: from ra.se.axis.com ([127.0.0.1])
-        by localhost (ra.se.axis.com [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id B-uQBj+ANy8n for <linux-mips@linux-mips.org>;
-        Tue,  8 Nov 2011 16:23:14 +0100 (CET)
-Received: from seth.se.axis.com (seth.se.axis.com [10.0.2.172])
-        by ra.se.axis.com (Postfix) with ESMTP id 67207130B3
-        for <linux-mips@linux-mips.org>; Tue,  8 Nov 2011 16:23:14 +0100 (CET)
-Received: from lnxricardw.se.axis.com (lnxricardw.se.axis.com [10.88.7.1])
-        by seth.se.axis.com (Postfix) with ESMTP id 651243E0A5
-        for <linux-mips@linux-mips.org>; Tue,  8 Nov 2011 16:23:14 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by lnxricardw.se.axis.com (8.14.3/8.14.3/Debian-5+lenny1) with ESMTP id pA8FNEBN006592
-        for <linux-mips@linux-mips.org>; Tue, 8 Nov 2011 16:23:14 +0100
-Date:   Tue, 8 Nov 2011 16:23:14 +0100 (CET)
-From:   Ricard Wanderlof <ricard.wanderlof@axis.com>
-X-X-Sender: ricardw@lnxricardw.se.axis.com
-To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: built-in command line vs. bootloader-supplied
-Message-ID: <Pine.LNX.4.64.1111081603190.30940@lnxricardw.se.axis.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 16:24:01 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:32946 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903661Ab1KHPX4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Nov 2011 16:23:56 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA8FNsnn005876;
+        Tue, 8 Nov 2011 15:23:54 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA8FNsiY005875;
+        Tue, 8 Nov 2011 15:23:54 GMT
+Date:   Tue, 8 Nov 2011 15:23:54 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 8/9] MIPS: Add board_* hooks for ebase and NMI
+Message-ID: <20111108152354.GB1491@linux-mips.org>
+References: <c2c8833593cb8eeef5c102468e105497@localhost>
+ <338065dfaf54d0ca25497eabf63a54f0@localhost>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31426
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <338065dfaf54d0ca25497eabf63a54f0@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ricard.wanderlof@axis.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6809
+X-UID: 6811
 
+On Sat, Nov 05, 2011 at 02:21:17PM -0700, Kevin Cernekee wrote:
 
-Hi,
+> Certain BMIPS platforms need to move the exception vectors and/or
+> intercept NMI events.  Add hooks to make this possible.
 
-This is my first post to the list, not having had the need to delve into 
-the MIPS port at this level before.
+There are other potencial users of NMI hooks and exporting random
+function pointers has never been terribly stylish.  I instead suggest
+to use notifiers, see <linux/notifiers.h>.
 
-When the CONFIG_CMDLINE_BOOL is set, a built-in command line can be set 
-in CONFIG_CMDLINE by virtue of arch/mips/kernel/setup.c:arch_mem_init() .
+Due to the locking constraints in an NMI board_nmi_handler should then
+become a raw notifier and the board_ebase_setup() function could
+just go away.
 
-If the boot loader supplies an additional command line (picked up by 
-various sub-architecture-specific routines (to pick an example, 
-pmc-sierra/msp71xx/msp_prom.c:prom_init_cmdline())), it can be 
-concatenated with the built-in command line. This is not supported for all 
-architectures, but it is for x86 and MIPS. However, one difference is that 
-for x86, the bootloader-supplied command line is appended to the kernel 
-built-in one, but for MIPS it's the other way around: the 
-bootloader-supplied commands end up first in the command line string, 
-appended by the built-in command line.
-
-Is there any reason that it is like this? I could guess a number of 
-reasons for one or the other, but it would be nice if someone has a more 
-definitive answer. Or is it actually a bug? It would seem that it should 
-at least be consistent across architectures.
-
-Looking at the git log, the current state of affairs was committed 
-2009-09-21 by Dmitri Vorobiev, stating in the commit message " ... in a 
-manner identical to what is currently used for x86." . But at the time x86 
-worked as today, i.e. with the builtin first, appended by the 
-bootloader-supplied one.
-
-Thanks for any pointers.
-
-/Ricard
--- 
-Ricard Wolf Wanderlöf                           ricardw(at)axis.com
-Axis Communications AB, Lund, Sweden            www.axis.com
-Phone +46 46 272 2016                           Fax +46 46 13 61 30
+  Ralf

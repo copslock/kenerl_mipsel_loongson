@@ -1,76 +1,134 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 13:17:40 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:35682 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903656Ab1KHMRc convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 Nov 2011 13:17:32 +0100
-Received: by wwf4 with SMTP id 4so507760wwf.24
-        for <multiple recipients>; Tue, 08 Nov 2011 04:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=1Cy5F8i0WtgjUy585/dOkHAW7K2Ti9dD/ThHNqzMa4Q=;
-        b=A3O7H0019g7etFPQDbQJiPMzBi1k7ODkaSH/5YrtXuLVxtQOq9ssFepWiG48+Fj2fR
-         KcbpWfjbsGNp/L3D7EDd2VBvn+gly5Kf47toKanDIuFgez8DF4mmTB03xNByL6ifRxSo
-         +tU+KcSW0B8GjG3fXd2hiBHw4PMkpk29igZS0=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Nov 2011 16:00:07 +0100 (CET)
+Received: from mms1.broadcom.com ([216.31.210.17]:4071 "EHLO mms1.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903662Ab1KHPAC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 Nov 2011 16:00:02 +0100
+Received: from [10.9.200.131] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Tue, 08 Nov 2011 07:07:24 -0800
+X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Tue, 8 Nov 2011 06:59:40 -0800
+Received: from stbsrv-and-2.and.broadcom.com (
+ stbsrv-and-2.and.broadcom.com [10.32.128.96]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 05BE4BC395; Tue, 8
+ Nov 2011 06:59:39 -0800 (PST)
+From:   "Al Cooper" <alcooperx@gmail.com>
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+cc:     "Al Cooper" <alcooperx@gmail.com>
+Subject: [PATCH] MIPS: Kernel hangs occasionally during boot.
+Date:   Tue, 8 Nov 2011 09:59:01 -0500
+Message-ID: <1320764341-4275-1-git-send-email-alcooperx@gmail.com>
+X-Mailer: git-send-email 1.7.6
+In-Reply-To: <y>
+References: <y>
 MIME-Version: 1.0
-Received: by 10.216.24.41 with SMTP id w41mr4409760wew.69.1320754647249; Tue,
- 08 Nov 2011 04:17:27 -0800 (PST)
-Received: by 10.216.45.11 with HTTP; Tue, 8 Nov 2011 04:17:27 -0800 (PST)
-In-Reply-To: <20111107120752.GA5142@linux-mips.org>
-References: <CAJd=RBC=_+qAnbTaYXgTOoiVdfgppRt-rBs4cnKoZKxHD14nuw@mail.gmail.com>
-        <20111104151603.GB13043@linux-mips.org>
-        <20111107120752.GA5142@linux-mips.org>
-Date:   Tue, 8 Nov 2011 20:17:27 +0800
-Message-ID: <CAJd=RBD6VBi8-HA1CjgTCwwjt1WvVL642-T=n=fHjHpEAXk7CQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Add fast get_user_pages
-From:   Hillf Danton <dhillf@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31423
+X-WSS-ID: 62A79A233JW15441453-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhillf@gmail.com
+X-original-sender: alcooperx@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6656
+X-UID: 6790
 
-On Mon, Nov 7, 2011 at 8:07 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
->
-> Hitting this one in a non-hugepage build of upstream-sfr:
->
->  CC      arch/mips/mm/gup.o
-> arch/mips/mm/gup.c:70:51: error: redefinition of ‘get_huge_page_tail’
-> include/linux/mm.h:379:51: note: previous definition of ‘get_huge_page_tail’ was here
-> make[2]: *** [arch/mips/mm/gup.o] Error 1
-> make[1]: *** [arch/mips/mm] Error 2
-> make: *** [arch/mips] Error 2
->
-> I fixed this one up by removing the local definition of get_huge_page_tail
-> but you may want to re-test.
->
+The Kernel hangs occasionally during boot after
+"Calibrating delay loop..". This is caused by the
+c0_compare_int_usable() routine in cevt-r4k.c returning false which
+causes the system to disable the timer and hang later. The false
+return happens because the routine is using a series of four calls to
+irq_disable_hazard() as a delay while it waits for the timer changes
+to propagate to the cp0 cause register. On newer MIPS cores, like the 74K,
+the series of irq_disable_hazard() calls turn into ehb instructions and
+can take as little as a few clock ticks for all 4 instructions. This
+is not enough of a delay, so the routine thinks the timer is not working.
+This fix uses up to a max number of cycle counter ticks for the delay
+and uses back_to_back_c0_hazard() instead of irq_disable_hazard() to
+handle the hazard condition between cp0 writes and cp0 reads.
 
-Hi Ralf,
+Signed-off-by: Al Cooper <alcooperx@gmail.com>
+---
+ arch/mips/kernel/cevt-r4k.c |   38 +++++++++++++++++++-------------------
+ 1 files changed, 19 insertions(+), 19 deletions(-)
 
-It is my fault. While preparing the patch, Andrea shared the function in
-parallel, and I missed his update in linux/mm.h.
-
-thp: share get_huge_page_tail()
-author		Andrea Arcangeli <aarcange@redhat.com>	
-		Wed, 2 Nov 2011 20:37:36 +0000 (13:37 -0700)
-committer	Linus Torvalds <torvalds@linux-foundation.org>	
-		Wed, 2 Nov 2011 23:06:58 +0000 (16:06 -0700)
-commit		b35a35b556f5e6b7993ad0baf20173e75c09ce8c
-
-
-Test will be rechecked soon, and thanks for your fixup.
-
-Best regards
-
-Hillf
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 98c5a97..e2d8e19 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -103,19 +103,10 @@ static int c0_compare_int_pending(void)
+ 
+ /*
+  * Compare interrupt can be routed and latched outside the core,
+- * so a single execution hazard barrier may not be enough to give
+- * it time to clear as seen in the Cause register.  4 time the
+- * pipeline depth seems reasonably conservative, and empirically
+- * works better in configurations with high CPU/bus clock ratios.
++ * so wait up to worst case number of cycle counter ticks for timer interrupt
++ * changes to propagate to the cause register.
+  */
+-
+-#define compare_change_hazard() \
+-	do { \
+-		irq_disable_hazard(); \
+-		irq_disable_hazard(); \
+-		irq_disable_hazard(); \
+-		irq_disable_hazard(); \
+-	} while (0)
++#define COMPARE_INT_SEEN_TICKS 50
+ 
+ int c0_compare_int_usable(void)
+ {
+@@ -126,8 +117,12 @@ int c0_compare_int_usable(void)
+ 	 * IP7 already pending?  Try to clear it by acking the timer.
+ 	 */
+ 	if (c0_compare_int_pending()) {
+-		write_c0_compare(read_c0_count());
+-		compare_change_hazard();
++		cnt = read_c0_count();
++		write_c0_compare(cnt);
++		back_to_back_c0_hazard();
++		while (read_c0_count() < (cnt  + COMPARE_INT_SEEN_TICKS))
++			if (!c0_compare_int_pending())
++				break;
+ 		if (c0_compare_int_pending())
+ 			return 0;
+ 	}
+@@ -136,7 +131,7 @@ int c0_compare_int_usable(void)
+ 		cnt = read_c0_count();
+ 		cnt += delta;
+ 		write_c0_compare(cnt);
+-		compare_change_hazard();
++		back_to_back_c0_hazard();
+ 		if ((int)(read_c0_count() - cnt) < 0)
+ 		    break;
+ 		/* increase delta if the timer was already expired */
+@@ -145,12 +140,17 @@ int c0_compare_int_usable(void)
+ 	while ((int)(read_c0_count() - cnt) <= 0)
+ 		;	/* Wait for expiry  */
+ 
+-	compare_change_hazard();
++	while (read_c0_count() < (cnt + COMPARE_INT_SEEN_TICKS))
++		if (c0_compare_int_pending())
++			break;
+ 	if (!c0_compare_int_pending())
+ 		return 0;
+-
+-	write_c0_compare(read_c0_count());
+-	compare_change_hazard();
++	cnt = read_c0_count();
++	write_c0_compare(cnt);
++	back_to_back_c0_hazard();
++	while (read_c0_count() < (cnt + COMPARE_INT_SEEN_TICKS))
++		if (!c0_compare_int_pending())
++			break;
+ 	if (c0_compare_int_pending())
+ 		return 0;
+ 
+-- 
+1.7.6

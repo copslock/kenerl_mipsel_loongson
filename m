@@ -1,83 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 23:00:51 +0100 (CET)
-Received: from merlin.infradead.org ([205.233.59.134]:34824 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903665Ab1KIWAn convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2011 23:00:43 +0100
-Received: from canuck.infradead.org ([2001:4978:20e::1])
-        by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
-        id 1ROGCC-0004lI-5C; Wed, 09 Nov 2011 22:00:36 +0000
-Received: from j77219.upc-j.chello.nl ([24.132.77.219] helo=twins)
-        by canuck.infradead.org with esmtpsa (Exim 4.76 #1 (Red Hat Linux))
-        id 1ROGCB-0001Ru-4R; Wed, 09 Nov 2011 22:00:35 +0000
-Received: by twins (Postfix, from userid 1000)
-        id 9AC419B6CFC3; Wed,  9 Nov 2011 23:00:28 +0100 (CET)
-Subject: Re: [PATCH 1/4] MIPS/Perf-events: update the map of unsupported
- events for 74K
-From:   Peter Zijlstra <a.p.zijlstra@chello.nl>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Deng-Cheng Zhu <dczhu@mips.com>, linux-mips@linux-mips.org,
-        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@ghostprotocols.net>,
-        David Daney <david.daney@cavium.com>
-Date:   Wed, 09 Nov 2011 23:00:28 +0100
-In-Reply-To: <20111109204020.GB13280@linux-mips.org>
-References: <1319453762-12962-1-git-send-email-dczhu@mips.com>
-         <1319453762-12962-2-git-send-email-dczhu@mips.com>
-         <20111109204020.GB13280@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: Evolution 3.0.3- 
-Message-ID: <1320876028.19727.24.camel@twins>
-Mime-Version: 1.0
-X-archive-position: 31485
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2011 00:13:31 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:18628 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903665Ab1KIXNX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Nov 2011 00:13:23 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4ebb09630000>; Wed, 09 Nov 2011 15:14:43 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 9 Nov 2011 15:13:20 -0800
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 9 Nov 2011 15:13:20 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pA9NDJDa014226;
+        Wed, 9 Nov 2011 15:13:19 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pA9NDHgr014225;
+        Wed, 9 Nov 2011 15:13:17 -0800
+From:   David Daney <david.daney@cavium.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Octeon: Fix compile error in arch/mips/cavium-octeon/flash_setup.c
+Date:   Wed,  9 Nov 2011 15:13:16 -0800
+Message-Id: <1320880396-14193-1-git-send-email-david.daney@cavium.com>
+X-Mailer: git-send-email 1.7.2.3
+X-OriginalArrivalTime: 09 Nov 2011 23:13:20.0061 (UTC) FILETIME=[2B9BB6D0:01CC9F35]
+X-archive-position: 31486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.p.zijlstra@chello.nl
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8244
+X-UID: 8309
 
-On Wed, 2011-11-09 at 20:40 +0000, Ralf Baechle wrote:
-> On Mon, Oct 24, 2011 at 06:55:59PM +0800, Deng-Cheng Zhu wrote:
-> 
-> > Update the raw event info for 74K according to the latest document.
-> 
-> > +/*
-> > + * MIPS document MD00519 (MIPS32(r) 74K(tm) Processor Core Family Software
-> > + * User's Manual, Revision 01.05)
-> > + */
-> >  #define IS_UNSUPPORTED_74K_EVENT(r, b)					\
-> > -	((r) == 5 || ((r) >= 135 && (r) <= 137) ||			\
-> > -	 ((b) >= 10 && (b) <= 12) || (b) == 22 || (b) == 27 ||		\
-> > -	 (b) == 33 || (b) == 34 || ((b) >= 47 && (b) <= 49) ||		\
-> > -	 (r) == 178 || (b) == 55 || (b) == 57 || (b) == 60 ||		\
-> > -	 (b) == 61 || (r) == 62 || (r) == 191 ||			\
-> > -	 ((b) >= 64 && (b) <= 127))
-> > +	((r) == 5 || (r) == 135 || ((b) >= 10 && (b) <= 12) ||		\
-> > +	 (b) == 27 || (b) == 33 || (b) == 34 || (b) == 47 ||		\
-> > +	 (b) == 48 || (r) == 178 || (r) == 187 || (b) == 60 ||		\
-> > +	 (b) == 61 || (r) == 191 || (r) == 71 || (r) == 72 ||		\
-> > +	 (b) == 73 || ((b) >= 77 && (b) <= 127))
-> 
-> I wonder if such detailed checking of the performance counter
-> event numbers is really needed?  As long as feeding an bad number only
-> results in undefined counts of the performance counters I think we may
-> be better of by not checking the event numbers in detail.  Afair there
-> are MIPS licensee who have modified the counters to count extra events
-> so I sense some madness in that direction.
+The parse_mtd_partitions() and mtd_device_register() functions were
+combined into mtd_device_parse_register().  So call that instead.
 
-Right, we don't do much sanity checking on x86 either, all we do check
-are privilege bits, the rest we directly feed to the hardware. This all
-works as long as the hardware doesn't in fact fall over or worse of
-course. 
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/cavium-octeon/flash_setup.c |    9 ++-------
+ 1 files changed, 2 insertions(+), 7 deletions(-)
 
-On x86 it means you can program events that are outside those specified
-in the SDM, some actually count, although outside of specific hardware
-team for that chip I doubt there's anybody on the planet who can tell
-you what ;-)
-
-Not counting or counter utter crap is fine, that's what you get for
-passing in random numbers.
+diff --git a/arch/mips/cavium-octeon/flash_setup.c b/arch/mips/cavium-octeon/flash_setup.c
+index 975c203..0a430e0 100644
+--- a/arch/mips/cavium-octeon/flash_setup.c
++++ b/arch/mips/cavium-octeon/flash_setup.c
+@@ -17,8 +17,6 @@
+ 
+ static struct map_info flash_map;
+ static struct mtd_info *mymtd;
+-static int nr_parts;
+-static struct mtd_partition *parts;
+ static const char *part_probe_types[] = {
+ 	"cmdlinepart",
+ #ifdef CONFIG_MTD_REDBOOT_PARTS
+@@ -61,11 +59,8 @@ static int __init flash_init(void)
+ 		mymtd = do_map_probe("cfi_probe", &flash_map);
+ 		if (mymtd) {
+ 			mymtd->owner = THIS_MODULE;
+-
+-			nr_parts = parse_mtd_partitions(mymtd,
+-							part_probe_types,
+-							&parts, 0);
+-			mtd_device_register(mymtd, parts, nr_parts);
++			mtd_device_parse_register(mymtd, part_probe_types,
++						  0, NULL, 0);
+ 		} else {
+ 			pr_err("Failed to register MTD device for flash\n");
+ 		}
+-- 
+1.7.2.3

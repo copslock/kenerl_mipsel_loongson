@@ -1,81 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 06:34:07 +0100 (CET)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:32949 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903542Ab1KIFd7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2011 06:33:59 +0100
-Received: by ywn1 with SMTP id 1so1629675ywn.36
-        for <multiple recipients>; Tue, 08 Nov 2011 21:33:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=Mq3e9ZoZVSSvinYgYPKAPBj7nYZPg+InLl0gPij+1fo=;
-        b=yFqrETnUpP/++Znwf1Tr1euJoEEJ0Ytw2TrhV7rXuTNyy34i0HsM8cP8ukyQTu2xyq
-         gwLMdUShWe1d3g2AcHR2ttCQpXQdyH0Q2bfRq9TD9R3y9ZgT5+SGXVGX7Q0EUe3cvPaP
-         HCA3CvE4sCex2nwMEkxm3BEZPC16cXSgpvYtI=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 08:31:26 +0100 (CET)
+Received: from t111.niisi.ras.ru ([193.232.173.111]:33011 "EHLO
+        t111.niisi.ras.ru" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903541Ab1KIHbU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2011 08:31:20 +0100
+Received: from aa19.niisi.msk.ru (aa19.niisi.msk.ru [172.16.0.19] (may be forged))
+        by t111.niisi.ras.ru (8.13.8/8.13.8) with ESMTP id pA97VAIP018211
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Wed, 9 Nov 2011 11:31:10 +0400
+Received: from [192.168.173.2] (aa248 [172.16.0.248])
+        by aa19.niisi.msk.ru (8.13.8/8.13.8) with ESMTP id pA97V9XX025213;
+        Wed, 9 Nov 2011 11:31:09 +0400
+Message-ID: <4EBA2E65.3010009@niisi.msk.ru>
+Date:   Wed, 09 Nov 2011 11:40:21 +0400
+From:   "Gleb O. Raiko" <raiko@niisi.msk.ru>
+Organization: NIISI RAN
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
 MIME-Version: 1.0
-Received: by 10.68.11.233 with SMTP id t9mr2311140pbb.121.1320816832696; Tue,
- 08 Nov 2011 21:33:52 -0800 (PST)
-Received: by 10.68.62.169 with HTTP; Tue, 8 Nov 2011 21:33:52 -0800 (PST)
-In-Reply-To: <20111108164711.GA13937@linux-mips.org>
-References: <c2c8833593cb8eeef5c102468e105497@localhost>
-        <20111108164711.GA13937@linux-mips.org>
-Date:   Tue, 8 Nov 2011 21:33:52 -0800
-Message-ID: <CAJiQ=7B0Kcd4FnCtFedHqj_69U7Rt2fw4hwmx5WCh5sZZBXSow@mail.gmail.com>
-Subject: Re: [PATCH RESEND 1/9] MIPS: Add local_flush_tlb_all_mm to clear all
- mm contexts on calling cpu
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        "Kevin D. Kissell" <kevink@paralogos.com>
-Cc:     linux-mips@linux-mips.org,
-        Maksim Rayskiy <maksim.rayskiy@gmail.com>,
-        Sergey Shtylyov <sshtylyov@mvista.com>
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 31446
+To:     Ralf Baechle <ralf@linux-mips.org>
+CC:     Al Cooper <alcooperx@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Kernel hangs occasionally during boot.
+References: <y> <1320764341-4275-1-git-send-email-alcooperx@gmail.com> <20111108175532.GA15493@linux-mips.org>
+In-Reply-To: <20111108175532.GA15493@linux-mips.org>
+Content-Type: text/plain; charset=KOI8-R; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Antivirus: Dr.Web (R) for Mail Servers on t111.niisi.ras.ru host
+X-Antivirus-Code: 100000
+X-archive-position: 31447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: raiko@niisi.msk.ru
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7465
+X-UID: 7498
 
-I read through mmu_context.h and the threads from November/December
-2010 a couple of times, and I'm starting to think Maksim's original
-approach (don't reset asid_cache(cpu) when warm-restarting a CPU)
-makes the most sense.
+On 08.11.2011 21:55, Ralf Baechle wrote:
+> but we may need another hazard barrier to
+> replace back_to_back_c0_hazard().
+Urgently. We need some ticks to wait until counter state machine has 
+been updated. The amount of ticks may occasionally be the same as in 
+case of back_to_back_hazard for some cpus. It's completely different for 
+others, I sure. Original compare_change_hazard waits up to 12 ticks for 
+r4k. While I don't think this amount should depend on irq_disable_hazard 
+as old code assumes, we may still need 12 or so ticks for old cpus.
 
-The basic issue is that we want to assign unique, strictly increasing
-values to each mm's cpu_context(cpu, mm).  The per-cpu counter starts
-at ASID_FIRST_VERSION (0x100 on R4K), and counts up.  Assigning a new
-mm the same ASID value as an existing mm on the same CPU is illegal.
-Two obvious ways to meet this requirement when hotplugging CPUs are:
+> Author: Al Cooper <alcooperx@gmail.com> Tue Nov 8 09:59:01 2011 -0500
+> Comitter: Ralf Baechle <ralf@linux-mips.org> Tue Nov 8 16:52:51 2011 +0000
+> Commit: 9121470d99c029493bd55daa11607b398fe9aea3
+> Gitweb: http://git.linux-mips.org/g/linux/9121470d
+Could you fix those links, it's broken after you moved git repo in?
 
-Option #1: Retain the asid_cache(cpu) value across warm restarts.
-This is simple and inexpensive.  We pick up where we left off, and
-whatever existing cpu_context(cpu, mm) values are out there do not
-cause any trouble.
-
-I believe Maksim's original logic (assign ASID_FIRST_VERSION, a
-nonzero number, if asid_cache(cpu) == 0) would work correctly as
-written, because cpu_data is an array in .bss .  It will be 0 until
-the CPU is booted, and get_new_mmu_context() ensures that it will
-never be 0 again after that.
-
-Kevin K brought up the idea of a warm restart bitmask so the code
-could tell whether asid_cache(cpu) was valid.  I'm not sure that this
-would be required.
-
-I think we can also get away with not explicitly preserving EntryHi,
-since switch_mm() and activate_mm() will set it anyway.
-
-Option #2: When warm restarting a CPU, set asid_cache(cpu) to
-ASID_FIRST_VERSION again.  And at some point (cpu_up or cpu_down),
-iterate through all processes to set cpu_context(cpu, mm) to something
-that will not conflict with a newly assigned ASID.  This is what the
-most recent patch did.  It gets the job done, but it's more work than
-what is really needed.
-
-Please let me know your thoughts...
+Regards,
+Gleb.

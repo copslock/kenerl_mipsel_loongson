@@ -1,52 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 19:56:02 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:44055 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1904273Ab1KISz6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Nov 2011 19:55:58 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA9Itv1s012377;
-        Wed, 9 Nov 2011 18:55:57 GMT
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA9Ituq4012376;
-        Wed, 9 Nov 2011 18:55:56 GMT
-Date:   Wed, 9 Nov 2011 18:55:56 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:     Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: Alchemy: db1100: fix build: missing module.h
-Message-ID: <20111109185556.GC4816@linux-mips.org>
-References: <20111109145325.GL19187@linux-mips.org>
- <1320863955-14609-1-git-send-email-manuel.lauss@googlemail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1320863955-14609-1-git-send-email-manuel.lauss@googlemail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31479
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 20:02:58 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:60143 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904273Ab1KITCv (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2011 20:02:51 +0100
+Received: by faaq17 with SMTP id q17so2581758faa.36
+        for <multiple recipients>; Wed, 09 Nov 2011 11:02:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=ggCnr99nNeXI5fXEXmgbuqggkJdjp1H/dAR+yexiQhY=;
+        b=qVTT2plUEqXQKYlAaRFAv+oyp6V4kTDhPTbOl5ftBSQlNJI7CL6di1f624m9ZibxnW
+         a7I5VcQcUXvoWefp+GaUCCaPEGD2lL8OQ6L4kadbeJ/2gciUzqiCwUSGR2aC5RNOQOxP
+         UrAtXspfPaDsh4PeOolZCFmtvFhW+uYwkfr5s=
+Received: by 10.152.148.168 with SMTP id tt8mr2516021lab.7.1320865366409;
+        Wed, 09 Nov 2011 11:02:46 -0800 (PST)
+Received: from flagship.roarinelk.net (178-191-4-90.adsl.highway.telekom.at. [178.191.4.90])
+        by mx.google.com with ESMTPS id po16sm4983568lab.2.2011.11.09.11.02.44
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 09 Nov 2011 11:02:45 -0800 (PST)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: [PATCH mips-next] MIPS: Alchemy: pci: fix build: missing module.h
+Date:   Wed,  9 Nov 2011 20:02:42 +0100
+Message-Id: <1320865362-16718-1-git-send-email-manuel.lauss@googlemail.com>
+X-Mailer: git-send-email 1.7.7.2
+X-archive-position: 31480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8052
+X-UID: 8059
 
-On Wed, Nov 09, 2011 at 07:39:15PM +0100, Manuel Lauss wrote:
+fixes:
+pci-alchemy.c:487:12: error: 'THIS_MODULE' undeclared here [...]
 
-> fix build against 3.2-rc1, add a missing module.h (symbol_get/symbol_put).
-> 
-> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
-> ---
-> Please fold into "[PATCH 12/18] MIPS: Alchemy: MMC for DB1100".
+Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+---
+This is a new one in 3.2-rc1.
 
-Done, but:
+ arch/mips/pci/pci-alchemy.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-patching file arch/mips/alchemy/devboards/db1000.c
-Hunk #1 succeeded at 25 with fuzz 1.
-
-As with every use of symbol_get I wonder if this is not a case of doing
-something the very wrong way.
-
-  Ralf
+diff --git a/arch/mips/pci/pci-alchemy.c b/arch/mips/pci/pci-alchemy.c
+index 4ee5710..b7779a3 100644
+--- a/arch/mips/pci/pci-alchemy.c
++++ b/arch/mips/pci/pci-alchemy.c
+@@ -12,6 +12,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
++#include <linux/module.h>
+ #include <linux/vmalloc.h>
+ 
+ #include <asm/mach-au1x00/au1000.h>
+-- 
+1.7.7.2

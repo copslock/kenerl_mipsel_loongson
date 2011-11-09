@@ -1,62 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 14:43:10 +0100 (CET)
-Received: from cantor2.suse.de ([195.135.220.15]:51713 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903563Ab1KINm7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 9 Nov 2011 14:42:59 +0100
-Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.221.2])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx2.suse.de (Postfix) with ESMTP id 6508489471;
-        Wed,  9 Nov 2011 14:42:59 +0100 (CET)
-Message-ID: <4EBA8383.3020100@suse.cz>
-Date:   Wed, 09 Nov 2011 14:43:31 +0100
-From:   Michal Marek <mmarek@suse.cz>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:6.0) Gecko/20110812 Thunderbird/6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 15:48:23 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:41493 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903568Ab1KIOsQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Nov 2011 15:48:16 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA9EmEJZ019311;
+        Wed, 9 Nov 2011 14:48:14 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA9EmCX7019304;
+        Wed, 9 Nov 2011 14:48:12 GMT
+Date:   Wed, 9 Nov 2011 14:48:12 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>, netdev@vger.kernel.org,
+        linux-pcmcia@lists.infradead.org
+Subject: Re: [PATCH RESEND 01/18] MIPS: Alchemy: remove PB1000 support
+Message-ID: <20111109144812.GA19187@linux-mips.org>
+References: <1320174224-27305-2-git-send-email-manuel.lauss@googlemail.com>
+ <1320234824-28604-1-git-send-email-manuel.lauss@googlemail.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        Arnaud Lacombe <lacombar@gmail.com>,
-        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "Daney, David" <David.Daney@caviumnetworks.com>
-Subject: Re: [PATCH] Kbuild: append missing-syscalls to the default target
- list
-References: <1314234210-11090-1-git-send-email-lacombar@gmail.com> <4E69FEC9.2080204@suse.cz> <CACqU3MUFyn_jh2pN4GLENqcGVUzAwcMJUR_WLY2EtqOhMheceQ@mail.gmail.com> <20111101232233.GA32441@sepie.suse.cz> <20111107204448.GA9949@linux-mips.org> <20111107211900.GB6264@sepie.suse.cz> <20111107233330.GA26705@linux-mips.org> <4EB8E75D.1010706@suse.cz> <4EB97333.1050403@gmail.com> <4EB9AD98.3010404@suse.cz> <20111109095414.GA15438@linux-mips.org>
-In-Reply-To: <20111109095414.GA15438@linux-mips.org>
-X-Enigmail-Version: 1.3
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31455
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1320234824-28604-1-git-send-email-manuel.lauss@googlemail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mmarek@suse.cz
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7732
+X-UID: 7760
 
-Dne 9.11.2011 10:54, Ralf Baechle napsal(a):
-> On Tue, Nov 08, 2011 at 11:30:48PM +0100, Michal Marek wrote:
-> 
->> On 8.11.2011 19:21, David Daney wrote:
->>> The problem is that compiler options meant to be used only for the 
->>> compiling done by scripts/checksyscalls.sh are now leaking into the 
->>> compilation of other parts of the kernel (asm-offsets.c), where they 
->>> wreak havoc.
->>>
->>> Something like the attached is what I think needs to be done.
->>
->> Ah, right. That makes a lot of sense now. Ralf, does the patch at
->> https://lkml.org/lkml/2011/11/8/312 work for you?
-> 
-> Yes, it does - and unlike David's first version this one also looks
-> reasonably elegant.
-> 
-> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+On Wed, Nov 02, 2011 at 12:53:44PM +0100, Manuel Lauss wrote:
 
-Thanks to both of you, applied to kbuild.git#rc-fixes.
+> Noone seems to have test hardware or care anymore.  Drop PB1000 support
+> and along with it the old Alchemy PCMCIA socket driver.
 
-Michal
+Nobody (n)acked so I queued this one for 3.3.
+
+Thanks,
+
+  Ralf

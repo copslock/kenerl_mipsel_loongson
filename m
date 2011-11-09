@@ -1,94 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 06:26:20 +0100 (CET)
-Received: from ams-iport-3.cisco.com ([144.254.224.146]:43299 "EHLO
-        ams-iport-3.cisco.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903541Ab1KIF0M (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2011 06:26:12 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=manesoni@cisco.com; l=1220; q=dns/txt;
-  s=iport; t=1320816371; x=1322025971;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   mime-version:in-reply-to;
-  bh=qWvQXTzVeWK0qkUj6GZJ/b1MTdb1z4a0+UfOIl5u5bs=;
-  b=lBSjrSrI8ZEdSbyW2epdsYugQy+1mzlqmMJ/2hluLeDDgc7cdFY9CaQk
-   ThG2Dq7Tc7gZ7uG53KScwYE86RmHKVp/NVYz6qGdrPSXksgnWn93laUYO
-   6gR/21zSWNIOBEVv/KeOiVPJo9sy3yGqfWlaxkBmvQBcs7svBwTHQ0u/b
-   o=;
-X-IronPort-AV: E=Sophos;i="4.69,481,1315180800"; 
-   d="scan'208";a="2686989"
-Received: from ams-core-2.cisco.com ([144.254.72.75])
-  by ams-iport-3.cisco.com with ESMTP; 09 Nov 2011 05:26:05 +0000
-Received: from manesoni-ws.cisco.com (dhcp-72-163-207-192.cisco.com [72.163.207.192])
-        by ams-core-2.cisco.com (8.14.3/8.14.3) with ESMTP id pA95Q5jV027390;
-        Wed, 9 Nov 2011 05:26:05 GMT
-Received: by manesoni-ws.cisco.com (Postfix, from userid 1001)
-        id 5377981D60; Wed,  9 Nov 2011 10:56:07 +0530 (IST)
-Date:   Wed, 9 Nov 2011 10:56:07 +0530
-From:   Maneesh Soni <manesoni@cisco.com>
-To:     David Daney <david.daney@cavium.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "ananth@in.ibm.com" <ananth@in.ibm.com>,
-        "kamensky@cisco.com" <kamensky@cisco.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/4] MIPS Kprobes: Fix OOPS in arch_prepare_kprobe()
-Message-ID: <20111109052607.GA20317@cisco.com>
-Reply-To: manesoni@cisco.com
-References: <20111108170336.GA16526@cisco.com>
- <20111108170454.GB16526@cisco.com>
- <4EB989B9.2060904@cavium.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 06:34:07 +0100 (CET)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:32949 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903542Ab1KIFd7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2011 06:33:59 +0100
+Received: by ywn1 with SMTP id 1so1629675ywn.36
+        for <multiple recipients>; Tue, 08 Nov 2011 21:33:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=Mq3e9ZoZVSSvinYgYPKAPBj7nYZPg+InLl0gPij+1fo=;
+        b=yFqrETnUpP/++Znwf1Tr1euJoEEJ0Ytw2TrhV7rXuTNyy34i0HsM8cP8ukyQTu2xyq
+         gwLMdUShWe1d3g2AcHR2ttCQpXQdyH0Q2bfRq9TD9R3y9ZgT5+SGXVGX7Q0EUe3cvPaP
+         HCA3CvE4sCex2nwMEkxm3BEZPC16cXSgpvYtI=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4EB989B9.2060904@cavium.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-archive-position: 31445
+Received: by 10.68.11.233 with SMTP id t9mr2311140pbb.121.1320816832696; Tue,
+ 08 Nov 2011 21:33:52 -0800 (PST)
+Received: by 10.68.62.169 with HTTP; Tue, 8 Nov 2011 21:33:52 -0800 (PST)
+In-Reply-To: <20111108164711.GA13937@linux-mips.org>
+References: <c2c8833593cb8eeef5c102468e105497@localhost>
+        <20111108164711.GA13937@linux-mips.org>
+Date:   Tue, 8 Nov 2011 21:33:52 -0800
+Message-ID: <CAJiQ=7B0Kcd4FnCtFedHqj_69U7Rt2fw4hwmx5WCh5sZZBXSow@mail.gmail.com>
+Subject: Re: [PATCH RESEND 1/9] MIPS: Add local_flush_tlb_all_mm to clear all
+ mm contexts on calling cpu
+From:   Kevin Cernekee <cernekee@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        "Kevin D. Kissell" <kevink@paralogos.com>
+Cc:     linux-mips@linux-mips.org,
+        Maksim Rayskiy <maksim.rayskiy@gmail.com>,
+        Sergey Shtylyov <sshtylyov@mvista.com>
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 31446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manesoni@cisco.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7459
+X-UID: 7465
 
-On Tue, Nov 08, 2011 at 11:57:45AM -0800, David Daney wrote:
-> On 11/08/2011 09:04 AM, Maneesh Soni wrote:
-> [...]
-> >
-> >diff --git a/arch/mips/kernel/kprobes.c b/arch/mips/kernel/kprobes.c
-> >index ee28683..9fb1876 100644
-> >--- a/arch/mips/kernel/kprobes.c
-> >+++ b/arch/mips/kernel/kprobes.c
-> >@@ -25,6 +25,7 @@
-> >
-> >  #include<linux/kprobes.h>
-> >  #include<linux/preempt.h>
-> >+#include<linux/uaccess.h>
-> >  #include<linux/kdebug.h>
-> >  #include<linux/slab.h>
-> >
-> >@@ -118,11 +119,19 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
-> >  	union mips_instruction prev_insn;
-> >  	int ret = 0;
-> >
-> >-	prev_insn = p->addr[-1];
-> >  	insn = p->addr[0];
-> >
-> >-	if (insn_has_delayslot(insn) || insn_has_delayslot(prev_insn)) {
-> >-		pr_notice("Kprobes for branch and jump instructions are not supported\n");
-> >+	if (insn_has_delayslot(insn)) {
-> >+		pr_notice("Kprobes for branch and jump instructions are not"
-> >+			  "supported\n");
-> 
-> Don't wrap these strings.
-> 
-> It is better to go a little bit over 80 columns, than have this.
-> 
-> David Daney
+I read through mmu_context.h and the threads from November/December
+2010 a couple of times, and I'm starting to think Maksim's original
+approach (don't reset asid_cache(cpu) when warm-restarting a CPU)
+makes the most sense.
 
-Ok.. will keep that in mind for future patches. This line actually
-goes away in patch 4/4.
+The basic issue is that we want to assign unique, strictly increasing
+values to each mm's cpu_context(cpu, mm).  The per-cpu counter starts
+at ASID_FIRST_VERSION (0x100 on R4K), and counts up.  Assigning a new
+mm the same ASID value as an existing mm on the same CPU is illegal.
+Two obvious ways to meet this requirement when hotplugging CPUs are:
 
-Thanks
-Maneesh
+Option #1: Retain the asid_cache(cpu) value across warm restarts.
+This is simple and inexpensive.  We pick up where we left off, and
+whatever existing cpu_context(cpu, mm) values are out there do not
+cause any trouble.
+
+I believe Maksim's original logic (assign ASID_FIRST_VERSION, a
+nonzero number, if asid_cache(cpu) == 0) would work correctly as
+written, because cpu_data is an array in .bss .  It will be 0 until
+the CPU is booted, and get_new_mmu_context() ensures that it will
+never be 0 again after that.
+
+Kevin K brought up the idea of a warm restart bitmask so the code
+could tell whether asid_cache(cpu) was valid.  I'm not sure that this
+would be required.
+
+I think we can also get away with not explicitly preserving EntryHi,
+since switch_mm() and activate_mm() will set it anyway.
+
+Option #2: When warm restarting a CPU, set asid_cache(cpu) to
+ASID_FIRST_VERSION again.  And at some point (cpu_up or cpu_down),
+iterate through all processes to set cpu_context(cpu, mm) to something
+that will not conflict with a newly assigned ASID.  This is what the
+most recent patch did.  It gets the job done, but it's more work than
+what is really needed.
+
+Please let me know your thoughts...

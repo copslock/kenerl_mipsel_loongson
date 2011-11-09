@@ -1,59 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 13:43:32 +0100 (CET)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:35951 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903561Ab1KIMn0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 9 Nov 2011 13:43:26 +0100
-Received: by faaq17 with SMTP id q17so2073522faa.36
-        for <multiple recipients>; Wed, 09 Nov 2011 04:43:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=SRMvdZ884C3XmpYZonYMO4RS4Qy10EP1+lUu/l+0RdQ=;
-        b=jBoNwXplfDRDc8jZTwb+mRF+WU4kvjk4jmYLml2DSAbEkI4QYBCaAjEuPq1S8F12T9
-         JATgSDXsYSi+DiCzDS1Qp0Us5wIJx1qBCKNa4VEPNk2UvbMdOgCQs1EMG0KVj4WEPqQn
-         GY5Lq7hlY5Ns6Gqu4yVXz77qTgSOlN6mYPZTc=
-Received: by 10.223.6.15 with SMTP id 15mr4774951fax.4.1320842601107; Wed, 09
- Nov 2011 04:43:21 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Nov 2011 14:11:58 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:41208 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903565Ab1KINLw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 9 Nov 2011 14:11:52 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pA9DBna3010990;
+        Wed, 9 Nov 2011 13:11:49 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pA9DBlpX010975;
+        Wed, 9 Nov 2011 13:11:47 GMT
+Date:   Wed, 9 Nov 2011 13:11:47 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Kevin Cernekee <cernekee@gmail.com>
+Cc:     "Kevin D. Kissell" <kevink@paralogos.com>,
+        linux-mips@linux-mips.org,
+        Maksim Rayskiy <maksim.rayskiy@gmail.com>,
+        Sergey Shtylyov <sshtylyov@mvista.com>
+Subject: Re: [PATCH RESEND 1/9] MIPS: Add local_flush_tlb_all_mm to clear all
+ mm contexts on calling cpu
+Message-ID: <20111109131147.GB1586@linux-mips.org>
+References: <c2c8833593cb8eeef5c102468e105497@localhost>
+ <20111108164711.GA13937@linux-mips.org>
+ <CAJiQ=7B0Kcd4FnCtFedHqj_69U7Rt2fw4hwmx5WCh5sZZBXSow@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.223.118.15 with HTTP; Wed, 9 Nov 2011 04:43:00 -0800 (PST)
-In-Reply-To: <1320430175-13725-1-git-send-email-mbizon@freebox.fr>
-References: <1320430175-13725-1-git-send-email-mbizon@freebox.fr>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Wed, 9 Nov 2011 13:43:00 +0100
-Message-ID: <CAOiHx==+XMd05e6-JP_+9uXk_-8972uzAPJBW1T6Qqi7ov9=tg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] MIPS: BCM63XX: add support for Broadcom 6368 CPU.
-To:     Maxime Bizon <mbizon@freebox.fr>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 31453
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJiQ=7B0Kcd4FnCtFedHqj_69U7Rt2fw4hwmx5WCh5sZZBXSow@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31454
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7699
+X-UID: 7713
 
-Hi Maxime,
+On Tue, Nov 08, 2011 at 09:33:52PM -0800, Kevin Cernekee wrote:
 
-On 4 November 2011 19:09, Maxime Bizon <mbizon@freebox.fr> wrote:
->
-> New in v2:
->
-> Addressed all Jonas comments but the SPI register set. Since Florian
-> and you have upcoming SPI drivers to submit, I'll let you decide which
-> block deserves its own register set.
->
-> External IRQ support has been changed slightly to handle more than 4
-> irq, it now uses a fixed number range above 100. It has been tested on
-> 6348/58/68.
+> I read through mmu_context.h and the threads from November/December
+> 2010 a couple of times, and I'm starting to think Maksim's original
+> approach (don't reset asid_cache(cpu) when warm-restarting a CPU)
+> makes the most sense.
+> 
+> The basic issue is that we want to assign unique, strictly increasing
+> values to each mm's cpu_context(cpu, mm).  The per-cpu counter starts
+> at ASID_FIRST_VERSION (0x100 on R4K), and counts up.  Assigning a new
+> mm the same ASID value as an existing mm on the same CPU is illegal.
+> Two obvious ways to meet this requirement when hotplugging CPUs are:
+> 
+> Option #1: Retain the asid_cache(cpu) value across warm restarts.
+> This is simple and inexpensive.  We pick up where we left off, and
+> whatever existing cpu_context(cpu, mm) values are out there do not
+> cause any trouble.
+> 
+> I believe Maksim's original logic (assign ASID_FIRST_VERSION, a
+> nonzero number, if asid_cache(cpu) == 0) would work correctly as
+> written, because cpu_data is an array in .bss .  It will be 0 until
+> the CPU is booted, and get_new_mmu_context() ensures that it will
+> never be 0 again after that.
+> 
+> Kevin K brought up the idea of a warm restart bitmask so the code
+> could tell whether asid_cache(cpu) was valid.  I'm not sure that this
+> would be required.
 
-Apart from patch 10/11 (and the nitpick regarding the {read,write}ll
--> q) these look all fine to me. Thanks for your work!
+Neither do I.
 
+> I think we can also get away with not explicitly preserving EntryHi,
+> since switch_mm() and activate_mm() will set it anyway.
+> 
+> Option #2: When warm restarting a CPU, set asid_cache(cpu) to
+> ASID_FIRST_VERSION again.  And at some point (cpu_up or cpu_down),
+> iterate through all processes to set cpu_context(cpu, mm) to something
+> that will not conflict with a newly assigned ASID.  This is what the
+> most recent patch did.  It gets the job done, but it's more work than
+> what is really needed.
+> 
+> Please let me know your thoughts...
 
-Regards,
-Jonas
+I still like the original patch https://patchwork.linux-mips.org/patch/1797/
+I'd apply it right away but I'm going to hold off for a day just to give
+Kevin and maybe others a chance to comment.
+
+  Ralf

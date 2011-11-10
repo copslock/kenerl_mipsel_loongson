@@ -1,75 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2011 11:09:27 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:56345 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903680Ab1KJKJU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Nov 2011 11:09:20 +0100
-Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id pAAA8pU9007433;
-        Thu, 10 Nov 2011 02:08:52 -0800
-Received: from [192.168.225.107] (192.168.225.107) by exchhub01.mips.com
- (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Thu, 10 Nov 2011
- 02:08:46 -0800
-Message-ID: <4EBBA2AA.6000901@mips.com>
-Date:   Thu, 10 Nov 2011 18:08:42 +0800
-From:   Deng-Cheng Zhu <dczhu@mips.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.18) Gecko/20110617 Lightning/1.0b2 Thunderbird/3.1.11
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2011 12:16:44 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:49433 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903684Ab1KJLQl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 Nov 2011 12:16:41 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAABGBm9018999;
+        Thu, 10 Nov 2011 11:16:11 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAABG48X018967;
+        Thu, 10 Nov 2011 11:16:04 GMT
+Date:   Thu, 10 Nov 2011 11:16:04 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     Andrew Morton <akpm@google.com>, linux-kernel@vger.kernel.org,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        David Howells <dhowells@redhat.com>,
+        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        linux-ia64@vger.kernel.org, linux-m68k@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org
+Subject: Re: [PATCH 4/5] treewide: Convert uses of ATTRIB_NORETURN to
+ __noreturn
+Message-ID: <20111110111604.GB1580@linux-mips.org>
+References: <cover.1320917551.git.joe@perches.com>
+ <abb1d8b542872ef3bfd695e85d3b8a0fd70645b9.1320917558.git.joe@perches.com>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>,
-        Peter Zijlstra <a.p.zijlstra@chello.nl>,
-        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
-        Arnaldo Carvalho de Melo <acme@ghostprotocols.net>,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 1/4] MIPS/Perf-events: update the map of unsupported events
- for 74K
-References: <1319453762-12962-1-git-send-email-dczhu@mips.com> <1319453762-12962-2-git-send-email-dczhu@mips.com> <20111109204020.GB13280@linux-mips.org>
-In-Reply-To: <20111109204020.GB13280@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-X-EMS-STAMP: 5ov2F0WZdWH4lhp0ID6IVg==
-X-archive-position: 31494
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abb1d8b542872ef3bfd695e85d3b8a0fd70645b9.1320917558.git.joe@perches.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dczhu@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9195
+X-UID: 9225
 
-On 11/10/2011 04:40 AM, Ralf Baechle wrote:
-> On Mon, Oct 24, 2011 at 06:55:59PM +0800, Deng-Cheng Zhu wrote:
->
->> Update the raw event info for 74K according to the latest document.
->
->> +/*
->> + * MIPS document MD00519 (MIPS32(r) 74K(tm) Processor Core Family Software
->> + * User's Manual, Revision 01.05)
->> + */
->>   #define IS_UNSUPPORTED_74K_EVENT(r, b)					\
->> -	((r) == 5 || ((r)>= 135&&  (r)<= 137) ||			\
->> -	 ((b)>= 10&&  (b)<= 12) || (b) == 22 || (b) == 27 ||		\
->> -	 (b) == 33 || (b) == 34 || ((b)>= 47&&  (b)<= 49) ||		\
->> -	 (r) == 178 || (b) == 55 || (b) == 57 || (b) == 60 ||		\
->> -	 (b) == 61 || (r) == 62 || (r) == 191 ||			\
->> -	 ((b)>= 64&&  (b)<= 127))
->> +	((r) == 5 || (r) == 135 || ((b)>= 10&&  (b)<= 12) ||		\
->> +	 (b) == 27 || (b) == 33 || (b) == 34 || (b) == 47 ||		\
->> +	 (b) == 48 || (r) == 178 || (r) == 187 || (b) == 60 ||		\
->> +	 (b) == 61 || (r) == 191 || (r) == 71 || (r) == 72 ||		\
->> +	 (b) == 73 || ((b)>= 77&&  (b)<= 127))
->
-> ...
-> Afair there are MIPS licensee who have modified the counters to count
-> extra events so I sense some madness in that direction.
+On Thu, Nov 10, 2011 at 01:41:45AM -0800, Joe Perches wrote:
 
-A good point. Now that the user is working with raw events, the manual 
-is being used for sure. The user should have known what will be counted. 
-But we should keep the mappings for event cntr_mask and range. Although 
-they are also subject to changes by Arch licensees, patches will be 
-needed for their CPU in that case.
+> Use the more commonly used __noreturn instead of ATTRIB_NORETURN.
 
+Subject and here: s/ATTRIB_NORETURN/ATTRIB_NORET/
 
-Deng-Cheng
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+>  arch/ia64/kernel/machine_kexec.c       |    2 +-
+>  arch/m68k/amiga/config.c               |    2 +-
+>  arch/mips/include/asm/ptrace.h         |    2 +-
+>  arch/mips/kernel/traps.c               |    2 +-
+
+For the MIPS bits:
+
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
+
+  Ralf

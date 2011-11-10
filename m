@@ -1,63 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2011 01:38:26 +0100 (CET)
-Received: from terminus.zytor.com ([198.137.202.10]:60686 "EHLO mail.zytor.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904284Ab1KJAiT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Nov 2011 01:38:19 +0100
-Received: from anacreon.sc.intel.com (fmdmzpr04-ext.fm.intel.com [192.55.55.39])
-        (authenticated bits=0)
-        by mail.zytor.com (8.14.5/8.14.5) with ESMTP id pAA0bmYS011235
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
-        Wed, 9 Nov 2011 16:37:49 -0800
-Message-ID: <4EBB1CD7.6040502@zytor.com>
-Date:   Wed, 09 Nov 2011 16:37:43 -0800
-From:   "H. Peter Anvin" <hpa@zytor.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:7.0) Gecko/20110927 Thunderbird/7.0
-MIME-Version: 1.0
-To:     David Daney <david.daney@cavium.com>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org,
-        Russell King <linux@arm.linux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 1/2] fs: binfmt_elf: Create Kconfig variable for PIE randomization.
-References: <1320885178-24201-1-git-send-email-david.daney@cavium.com>
-In-Reply-To: <1320885178-24201-1-git-send-email-david.daney@cavium.com>
-X-Enigmail-Version: 1.3.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31490
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2011 10:42:11 +0100 (CET)
+Received: from perches-mx.perches.com ([206.117.179.246]:44558 "EHLO
+        labridge.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
+        with ESMTP id S1903678Ab1KJJmG (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 Nov 2011 10:42:06 +0100
+Received: from [173.60.85.8] (account joe@perches.com HELO joe-laptop.perches.com)
+  by labridge.com (CommuniGate Pro SMTP 5.0.14)
+  with ESMTPA id 18379807; Thu, 10 Nov 2011 01:42:03 -0800
+From:   Joe Perches <joe@perches.com>
+To:     Andrew Morton <akpm@google.com>
+Cc:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
+        linux-am33-list@redhat.com, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org
+Subject: [PATCH 0/5] treewide: __attribute__ neatening
+Date:   Thu, 10 Nov 2011 01:41:41 -0800
+Message-Id: <cover.1320917551.git.joe@perches.com>
+X-Mailer: git-send-email 1.7.6.405.gc1be0
+X-archive-position: 31491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hpa@zytor.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8373
+X-UID: 9168
 
-On 11/09/2011 04:32 PM, David Daney wrote:
-> Randomization of PIE load address is hard coded in binfmt_elf.c for
-> X86 and ARM.  Create a new Kconfig variable
-> (CONFIG_ARCH_BINFMT_ELF_RANDOMIZE_PIE) for this and use it instead.
-> Thus architecture specific policy is pushed out of the generic
-> binfmt_elf.c and into the architecture Kconfig files.
-> 
-> X86 and ARM Kconfigs are modified to select the new variable so there
-> is no change in behavior.  A follow on patch will select it for MIPS
-> too.
-> 
-> Cc: Russell King <linux@arm.linux.org.uk>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: x86@kernel.org
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Signed-off-by: David Daney <david.daney@cavium.com>
+Use the more current __<foo> styles for compiler attributes.
+NORET_TYPE is #defined to a null comment, so just remove it.
 
-Acked-by: H. Peter Anvin <hpa@zytor.com>
+Joe Perches (5):
+  kernel.h: Neaten panic prototype
+  linkage: Remove unused NORET_AND macro
+  treewide: Remove useless NORET_TYPE macro and uses
+  treewide: Convert uses of ATTRIB_NORETURN to __noreturn
+  linkage: Remove unused ATTRIB_NORET macro
+
+ arch/avr32/include/asm/system.h        |    2 +-
+ arch/avr32/kernel/traps.c              |    2 +-
+ arch/ia64/kernel/machine_kexec.c       |    4 ++--
+ arch/m68k/amiga/config.c               |    4 ++--
+ arch/mips/include/asm/ptrace.h         |    2 +-
+ arch/mips/kernel/traps.c               |    2 +-
+ arch/mn10300/include/asm/exceptions.h  |    2 +-
+ arch/powerpc/kernel/machine_kexec_32.c |    4 ++--
+ arch/powerpc/kernel/machine_kexec_64.c |    6 +++---
+ arch/s390/include/asm/processor.h      |    2 +-
+ arch/s390/kernel/nmi.c                 |    2 +-
+ arch/sh/kernel/process_32.c            |    2 +-
+ arch/sh/kernel/process_64.c            |    2 +-
+ arch/tile/kernel/machine_kexec.c       |    6 +++---
+ include/linux/kernel.h                 |   13 +++++++------
+ include/linux/linkage.h                |    4 ----
+ include/linux/sched.h                  |    2 +-
+ kernel/exit.c                          |    6 +++---
+ kernel/panic.c                         |    2 +-
+ 19 files changed, 33 insertions(+), 36 deletions(-)
+
+-- 
+1.7.6.405.gc1be0

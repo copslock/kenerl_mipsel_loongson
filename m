@@ -1,247 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Nov 2011 20:34:06 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:39371 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903664Ab1KJTdh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 Nov 2011 20:33:37 +0100
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org
-Subject: [PATCH V2] MIPS: lantiq: use export.h in favour of module.h
-Date:   Thu, 10 Nov 2011 21:33:07 +0100
-Message-Id: <1320957187-26693-2-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.7.1
-In-Reply-To: <1320957187-26693-1-git-send-email-blogic@openwrt.org>
-References: <1320957187-26693-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 31511
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 00:09:36 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:61890 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904243Ab1KJXJa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Nov 2011 00:09:30 +0100
+Received: by iapp10 with SMTP id p10so4406155iap.36
+        for <multiple recipients>; Thu, 10 Nov 2011 15:09:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=yyEoXXxKt011ZaIxsCU9nV2aFC2ATjrNR7uzjhIkZu8=;
+        b=T/d+RXTFXHl6mNAWBqmKUBFw9gEze+mQDm87Z5Gbn/AC+34dJfvDOi1x0VvdlnbAZJ
+         lzXU+gVGPjFS6eFpP1E45DKnPHw71LNtDgwZkWKFIIDk8VW73tN+YoISM7N9jYv+hi71
+         psz785pV62iC42svulH+zShuN1sMnptocdH2Q=
+Received: by 10.43.53.1 with SMTP id vo1mr10142277icb.2.1320966563553;
+        Thu, 10 Nov 2011 15:09:23 -0800 (PST)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id z10sm13291923ibv.9.2011.11.10.15.09.22
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 10 Nov 2011 15:09:23 -0800 (PST)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAAN9Lvr001907;
+        Thu, 10 Nov 2011 15:09:21 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAAN9KYx001906;
+        Thu, 10 Nov 2011 15:09:20 -0800
+From:   ddaney.cavm@gmail.com
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH 1/2] MIPS: Octeon: Update struct cvmx_bootinfo to v3.
+Date:   Thu, 10 Nov 2011 15:09:10 -0800
+Message-Id: <1320966550-1858-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 31512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9722
+X-UID: 9827
 
-The code located at arch/mips/lantiq/ included module.h to be able to use the
-EXPORT_SYMBOL* macros. These can now be directly included using export.h.
+From: David Daney <david.daney@cavium.com>
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: linux-mips@linux-mips.org
+Bootloaders can pass version 3 of this structure.  Add the new fields
+so we can support the Device Tree.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
 ---
+ arch/mips/include/asm/octeon/cvmx-bootinfo.h |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
 
-Changes in V2
-* adds arch/mips/pci/pci-lantiq.c
-
- arch/mips/lantiq/clk.c            |    2 +-
- arch/mips/lantiq/devices.c        |    2 +-
- arch/mips/lantiq/prom.c           |    2 +-
- arch/mips/lantiq/setup.c          |    2 +-
- arch/mips/lantiq/xway/clk-ase.c   |    2 +-
- arch/mips/lantiq/xway/clk-xway.c  |    2 +-
- arch/mips/lantiq/xway/devices.c   |    2 +-
- arch/mips/lantiq/xway/dma.c       |    1 +
- arch/mips/lantiq/xway/gpio.c      |    2 +-
- arch/mips/lantiq/xway/gpio_ebu.c  |    2 +-
- arch/mips/lantiq/xway/gpio_stp.c  |    2 +-
- arch/mips/lantiq/xway/prom-ase.c  |    2 +-
- arch/mips/lantiq/xway/prom-xway.c |    2 +-
- arch/mips/lantiq/xway/reset.c     |    2 +-
- arch/mips/pci/pci-lantiq.c        |    1 +
- 15 files changed, 15 insertions(+), 13 deletions(-)
-
-diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-index 7e9c0ff..77ed70f 100644
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -7,7 +7,7 @@
-  * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+index 4e4c3a8..d9d1668 100644
+--- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
++++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+@@ -39,7 +39,7 @@
+  * versions.
   */
- #include <linux/io.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/types.h>
-diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
-index 44a3677..de1cb2b 100644
---- a/arch/mips/lantiq/devices.c
-+++ b/arch/mips/lantiq/devices.c
-@@ -7,7 +7,7 @@
-  */
+ #define CVMX_BOOTINFO_MAJ_VER 1
+-#define CVMX_BOOTINFO_MIN_VER 2
++#define CVMX_BOOTINFO_MIN_VER 3
  
- #include <linux/init.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/types.h>
- #include <linux/string.h>
- #include <linux/kernel.h>
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 56ba007..e34fcfd 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -6,7 +6,7 @@
-  * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-  */
+ #if (CVMX_BOOTINFO_MAJ_VER == 1)
+ #define CVMX_BOOTINFO_OCTEON_SERIAL_LEN 20
+@@ -116,7 +116,13 @@ struct cvmx_bootinfo {
+ 	 */
+ 	uint32_t config_flags;
+ #endif
+-
++#if (CVMX_BOOTINFO_MIN_VER >= 3)
++	/*
++	 * Address of the OF Flattened Device Tree structure
++	 * describing the board.
++	 */
++	uint64_t fdt_addr;
++#endif
+ };
  
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/clk.h>
- #include <asm/bootinfo.h>
- #include <asm/time.h>
-diff --git a/arch/mips/lantiq/setup.c b/arch/mips/lantiq/setup.c
-index 9b8af77..1ff6c9d 100644
---- a/arch/mips/lantiq/setup.c
-+++ b/arch/mips/lantiq/setup.c
-@@ -7,7 +7,7 @@
-  */
- 
- #include <linux/kernel.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/io.h>
- #include <linux/ioport.h>
- #include <asm/bootinfo.h>
-diff --git a/arch/mips/lantiq/xway/clk-ase.c b/arch/mips/lantiq/xway/clk-ase.c
-index 22d823a..6522583 100644
---- a/arch/mips/lantiq/xway/clk-ase.c
-+++ b/arch/mips/lantiq/xway/clk-ase.c
-@@ -7,7 +7,7 @@
-  */
- 
- #include <linux/io.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/init.h>
- #include <linux/clk.h>
- 
-diff --git a/arch/mips/lantiq/xway/clk-xway.c b/arch/mips/lantiq/xway/clk-xway.c
-index ddd3959..696b1a3 100644
---- a/arch/mips/lantiq/xway/clk-xway.c
-+++ b/arch/mips/lantiq/xway/clk-xway.c
-@@ -7,7 +7,7 @@
-  */
- 
- #include <linux/io.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/init.h>
- #include <linux/clk.h>
- 
-diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
-index d0e32ab..d614aa7 100644
---- a/arch/mips/lantiq/xway/devices.c
-+++ b/arch/mips/lantiq/xway/devices.c
-@@ -7,7 +7,7 @@
-  */
- 
- #include <linux/init.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/types.h>
- #include <linux/string.h>
- #include <linux/mtd/physmap.h>
-diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index 4278a45..cbb6ae5 100644
---- a/arch/mips/lantiq/xway/dma.c
-+++ b/arch/mips/lantiq/xway/dma.c
-@@ -19,6 +19,7 @@
- #include <linux/platform_device.h>
- #include <linux/io.h>
- #include <linux/dma-mapping.h>
-+#include <linux/export.h>
- 
- #include <lantiq_soc.h>
- #include <xway_dma.h>
-diff --git a/arch/mips/lantiq/xway/gpio.c b/arch/mips/lantiq/xway/gpio.c
-index a321451..d2fa98f 100644
---- a/arch/mips/lantiq/xway/gpio.c
-+++ b/arch/mips/lantiq/xway/gpio.c
-@@ -7,7 +7,7 @@
-  */
- 
- #include <linux/slab.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
- #include <linux/ioport.h>
-diff --git a/arch/mips/lantiq/xway/gpio_ebu.c b/arch/mips/lantiq/xway/gpio_ebu.c
-index a479355..b91c7f1 100644
---- a/arch/mips/lantiq/xway/gpio_ebu.c
-+++ b/arch/mips/lantiq/xway/gpio_ebu.c
-@@ -7,7 +7,7 @@
-  */
- 
- #include <linux/init.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
- #include <linux/mutex.h>
-diff --git a/arch/mips/lantiq/xway/gpio_stp.c b/arch/mips/lantiq/xway/gpio_stp.c
-index 67d59d6..ff9991c 100644
---- a/arch/mips/lantiq/xway/gpio_stp.c
-+++ b/arch/mips/lantiq/xway/gpio_stp.c
-@@ -9,7 +9,7 @@
- 
- #include <linux/slab.h>
- #include <linux/init.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/types.h>
- #include <linux/platform_device.h>
- #include <linux/mutex.h>
-diff --git a/arch/mips/lantiq/xway/prom-ase.c b/arch/mips/lantiq/xway/prom-ase.c
-index abe49f4..ae4959a 100644
---- a/arch/mips/lantiq/xway/prom-ase.c
-+++ b/arch/mips/lantiq/xway/prom-ase.c
-@@ -6,7 +6,7 @@
-  *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-  */
- 
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/clk.h>
- #include <asm/bootinfo.h>
- #include <asm/time.h>
-diff --git a/arch/mips/lantiq/xway/prom-xway.c b/arch/mips/lantiq/xway/prom-xway.c
-index 1686692a..2228133 100644
---- a/arch/mips/lantiq/xway/prom-xway.c
-+++ b/arch/mips/lantiq/xway/prom-xway.c
-@@ -6,7 +6,7 @@
-  *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-  */
- 
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/clk.h>
- #include <asm/bootinfo.h>
- #include <asm/time.h>
-diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index a1be36d..3d41f0b 100644
---- a/arch/mips/lantiq/xway/reset.c
-+++ b/arch/mips/lantiq/xway/reset.c
-@@ -10,7 +10,7 @@
- #include <linux/io.h>
- #include <linux/ioport.h>
- #include <linux/pm.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <asm/reboot.h>
- 
- #include <lantiq_soc.h>
-diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
-index 8656388..be1e1af 100644
---- a/arch/mips/pci/pci-lantiq.c
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -13,6 +13,7 @@
- #include <linux/delay.h>
- #include <linux/mm.h>
- #include <linux/vmalloc.h>
-+#include <linux/export.h>
- #include <linux/platform_device.h>
- 
- #include <asm/pci.h>
+ #define CVMX_BOOTINFO_CFG_FLAG_PCI_HOST			(1ull << 0)
 -- 
-1.7.7.1
+1.7.2.3

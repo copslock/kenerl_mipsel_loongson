@@ -1,31 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 14:49:14 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:58439 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 16:01:09 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:58922 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903972Ab1KKNtI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Nov 2011 14:49:08 +0100
+        id S1903980Ab1KKPBF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 Nov 2011 16:01:05 +0100
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pABDn7uJ013849;
-        Fri, 11 Nov 2011 13:49:07 GMT
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pABF12bQ023347;
+        Fri, 11 Nov 2011 15:01:03 GMT
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pABDn60a013843;
-        Fri, 11 Nov 2011 13:49:06 GMT
-Date:   Fri, 11 Nov 2011 13:49:06 +0000
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pABF12l9023346;
+        Fri, 11 Nov 2011 15:01:02 GMT
+Date:   Fri, 11 Nov 2011 15:01:02 +0000
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Hillf Danton <dhillf@gmail.com>
-Cc:     linux-mips@linux-mips.org,
-        "Jayachandran C." <jayachandranc@netlogicmicro.com>
-Subject: Re: [PATCH 12/12] MIPS: Netlogic: Mark Netlogic chips as SMT capable
-Message-ID: <20111111134906.GA12771@linux-mips.org>
-References: <cover.1321010998.git.jayachandranc@netlogicmicro.com>
- <7a1a9bad5b110e931f1662ebaae4c0164d4dcc84.1321011002.git.jayachandranc@netlogicmicro.com>
- <20111111125436.GD28303@linux-mips.org>
- <CAJd=RBA6OBq9PucheeAmzcphPRMPyDdwOOKQuQh7Lq7p37-g4A@mail.gmail.com>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH V2] MIPS: Alchemy: pci: fix build: missing export.h
+Message-ID: <20111111150101.GA22942@linux-mips.org>
+References: <20111110180624.GA30108@linux-mips.org>
+ <1320951179-25780-1-git-send-email-manuel.lauss@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJd=RBA6OBq9PucheeAmzcphPRMPyDdwOOKQuQh7Lq7p37-g4A@mail.gmail.com>
+In-Reply-To: <1320951179-25780-1-git-send-email-manuel.lauss@googlemail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31561
+X-archive-position: 31562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,26 +31,28 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10301
+X-UID: 10342
 
-On Fri, Nov 11, 2011 at 09:39:00PM +0800, Hillf Danton wrote:
+On Thu, Nov 10, 2011 at 07:52:59PM +0100, Manuel Lauss wrote:
 
-> The patch was delivered by me, and reprepared under ideas and comments from
-> you and Jayachandran, thanks. It was fine tuned, and SOB, by Jayachandran, and
-> included in this patchset, which is far beyond my capability, for supporting
-> Netlogic chips. And please reconsider the patchset.
+> fixes:
+> pci-alchemy.c:487:12: error: 'THIS_MODULE' undeclared here [...]
+> 
+> Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
+> ---
+> V2: export.h instead of module.h
 
-This was just a comment on the mechanics of sending patches, not a review
-of the patch itself - in fact I think it's fine.
+Already fixed by:
 
-What seems to have happened is that Jayachandran prepared the patches
-with git-format-patch, then sent them out using mutt -H, not as the
-authors of git had intended using git-send-email.  Git-send-email
-puts the sender's email address into the from header and inserts a From:
-into the first line of the body, where needed.
+commit 91ffb85340c7994219ded8781376ae8d2d9d9c37
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Thu Nov 10 14:15:57 2011 +0000
 
-On the receiving side it doesn't change a thing - the patch would have
-looked exactly the same after being applied to git but as elaborated
-before, there are other problems.
+    MIPS: Fix build errors due to missing inclusion of <linux/export.h>.
+    
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+
+Thanks anyway!
 
   Ralf

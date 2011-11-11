@@ -1,28 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 14:35:02 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:58374 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 14:38:39 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:58397 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903966Ab1KKNeq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Nov 2011 14:34:46 +0100
+        id S1903966Ab1KKNif (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 Nov 2011 14:38:35 +0100
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pABDYi8A012400;
-        Fri, 11 Nov 2011 13:34:44 GMT
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pABDcYXF012814;
+        Fri, 11 Nov 2011 13:38:34 GMT
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pABDYiZG012398;
-        Fri, 11 Nov 2011 13:34:44 GMT
-Date:   Fri, 11 Nov 2011 13:34:44 +0000
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pABDcXH7012813;
+        Fri, 11 Nov 2011 13:38:33 GMT
+Date:   Fri, 11 Nov 2011 13:38:33 +0000
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
+To:     Jayachandran C <jayachandranc@netlogicmicro.com>,
+        Hillf Danton <dhillf@gmail.com>
 Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH V2 6/8] MIPS: Add NMI notifier
-Message-ID: <20111111133444.GA12174@linux-mips.org>
-References: <5f9666eb295ce196b2a9688afab07dea@localhost>
- <598dabc28eb6fdbd820ea80c0a57e87d@localhost>
+Subject: Re: [PATCH 12/12] MIPS: Netlogic: Mark Netlogic chips as SMT capable
+Message-ID: <20111111133833.GA12648@linux-mips.org>
+References: <cover.1321010998.git.jayachandranc@netlogicmicro.com>
+ <7a1a9bad5b110e931f1662ebaae4c0164d4dcc84.1321011002.git.jayachandranc@netlogicmicro.com>
+ <20111111125436.GD28303@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <598dabc28eb6fdbd820ea80c0a57e87d@localhost>
+In-Reply-To: <20111111125436.GD28303@linux-mips.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31558
+X-archive-position: 31559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,14 +33,24 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10294
+X-UID: 10295
 
-On Thu, Nov 10, 2011 at 10:30:29PM -0800, Kevin Cernekee wrote:
+On Fri, Nov 11, 2011 at 12:54:36PM +0000, Ralf Baechle wrote:
 
-> + * No lock; only written during early bootup by CPU 0.
+> On Fri, Nov 11, 2011 at 05:11:08PM +0530, Hillf Danton wrote:
+> > Date:   Fri, 11 Nov 2011 17:11:08 +0530
+> > From: Hillf Danton <dhillf@gmail.com>
+> 
+> Normally if you're resending other people's patches they should be sent
+> out with your email in the email's From: header and with the patch
+> author's name and Email address in a From: line in the first (important,
+> otherwise git won't parse it right) of the body.  Somehow here Hillf
+> ended up in the From: header which may be confusing, might upset him
+> and might also trigger spam filters.
+> 
+> No need to resend but you may want to fix that for the next batch of
+> patches.
 
-And if that wasn't the case, an NMI might come at any time, even with the
-lock already being held which would result in a deadlock.  NMIs are
-nasty stuff - and on MIPS they're just slightly more evil.
+And promptly the reply went to Hillf, whops :)
 
   Ralf

@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 19:06:58 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:60328 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 19:29:17 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:60470 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903692Ab1KKSGL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Nov 2011 19:06:11 +0100
+        id S1903681Ab1KKS3N (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 11 Nov 2011 19:29:13 +0100
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pABI69S4011209;
-        Fri, 11 Nov 2011 18:06:09 GMT
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pABITBVe013914;
+        Fri, 11 Nov 2011 18:29:11 GMT
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pABI69wv011208;
-        Fri, 11 Nov 2011 18:06:09 GMT
-Date:   Fri, 11 Nov 2011 18:06:09 +0000
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pABITBOW013913;
+        Fri, 11 Nov 2011 18:29:11 GMT
+Date:   Fri, 11 Nov 2011 18:29:11 +0000
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [PATCH V3 8/8] MIPS: BMIPS: Add SMP support code for
- BMIPS43xx/BMIPS5000
-Message-ID: <20111111180609.GJ9432@linux-mips.org>
-References: <6b6fee2e4bd49dec3682a55b2caa3c7e@localhost>
- <803035d8891f2bf68c239a6d89e6e28e@localhost>
+To:     Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:     Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH mips-next 1/3] MIPS: Alchemy: irq: register pm at irq
+ init time
+Message-ID: <20111111182911.GA12779@linux-mips.org>
+References: <1320952178-14228-1-git-send-email-manuel.lauss@googlemail.com>
+ <1320952178-14228-2-git-send-email-manuel.lauss@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <803035d8891f2bf68c239a6d89e6e28e@localhost>
+In-Reply-To: <1320952178-14228-2-git-send-email-manuel.lauss@googlemail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31577
+X-archive-position: 31578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,7 +32,7 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10534
+X-UID: 10548
 
 Queued for 3.3.  Thanks,
 

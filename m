@@ -1,181 +1,233 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 01:29:32 +0100 (CET)
-Received: from ch1ehsobe003.messaging.microsoft.com ([216.32.181.183]:50563
-        "EHLO ch1outboundpool.messaging.microsoft.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904249Ab1KKA32 convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 11 Nov 2011 01:29:28 +0100
-Received: from mail208-ch1-R.bigfish.com (10.43.68.243) by
- CH1EHSOBE014.bigfish.com (10.43.70.64) with Microsoft SMTP Server id
- 14.1.225.22; Fri, 11 Nov 2011 00:28:56 +0000
-Received: from mail208-ch1 (localhost.localdomain [127.0.0.1])  by
- mail208-ch1-R.bigfish.com (Postfix) with ESMTP id 47DD919D0296;        Fri, 11 Nov
- 2011 00:29:09 +0000 (UTC)
-X-SpamScore: -12
-X-BigFish: VS-12(zz9371K1432N98dKzz1202hzz8275bhz2dh2a8h668h839h8e2h8e3h)
-X-Forefront-Antispam-Report: CIP:70.37.183.190;KIP:(null);UIP:(null);IPVD:NLI;H:mail.freescale.net;RD:none;EFVD:NLI
-Received: from mail208-ch1 (localhost.localdomain [127.0.0.1]) by mail208-ch1
- (MessageSwitch) id 1320971348760538_14051; Fri, 11 Nov 2011 00:29:08 +0000
- (UTC)
-Received: from CH1EHSMHS014.bigfish.com (snatpool1.int.messaging.microsoft.com
- [10.43.68.245])        by mail208-ch1.bigfish.com (Postfix) with ESMTP id
- ABE43290051;   Fri, 11 Nov 2011 00:29:08 +0000 (UTC)
-Received: from mail.freescale.net (70.37.183.190) by CH1EHSMHS014.bigfish.com
- (10.43.70.14) with Microsoft SMTP Server (TLS) id 14.1.225.22; Fri, 11 Nov
- 2011 00:29:21 +0000
-Received: from 039-SN1MPN1-005.039d.mgd.msft.net ([169.254.7.249]) by
- 039-SN1MMR1-001.039d.mgd.msft.net ([10.84.1.13]) with mapi id 14.01.0339.002;
- Thu, 10 Nov 2011 18:29:20 -0600
-From:   Tabi Timur-B04825 <B04825@freescale.com>
-To:     David Daney <david.daney@cavium.com>
-CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] netdev/phy: Use mdiobus_read() so that proper locks are
- taken.
-Thread-Topic: [PATCH] netdev/phy: Use mdiobus_read() so that proper locks
- are taken.
-Thread-Index: AQHMoAjzmJcV2MLvkk+iGBSrsAFzbQ==
-Date:   Fri, 11 Nov 2011 00:29:19 +0000
-Message-ID: <CAOZdJXXA6nBv8Gaqu=qcL2DxjNB-ENrxameVQTep9FEbZ1jtGQ@mail.gmail.com>
-References: <1317419482-25655-1-git-send-email-david.daney@cavium.com>
-In-Reply-To: <1317419482-25655-1-git-send-email-david.daney@cavium.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [50.17.22.104]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <B6B970768B2E894DB75FB44393C9DF07@freescale.net>
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-OriginatorOrg: freescale.com
-X-archive-position: 31514
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Nov 2011 01:30:08 +0100 (CET)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:39891 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904249Ab1KKAaA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 11 Nov 2011 01:30:00 +0100
+Received: by ywp31 with SMTP id 31so1944415ywp.36
+        for <multiple recipients>; Thu, 10 Nov 2011 16:29:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=bW2ZFrdnThMRzZP1C0KIDYZ7mvo/MU83EKeB3+gkdBQ=;
+        b=htloxQyxLsSfiFxCqC47hJ8tHkIdKARTMCiZyzXQgJgLPIHhTfFbaF7cjGZu5mubOT
+         ugjXxe6f6yW9l4q3KV//6Fi7ZPYyxnm7U6nZedkU63up75bslp47Maq1xfW6HVdr3ZBe
+         kvSJ5XGDj57MHXPJXW0LsfbYqSt9e4DFjY+dA=
+Received: by 10.101.8.2 with SMTP id l2mr4437384ani.79.1320971393809;
+        Thu, 10 Nov 2011 16:29:53 -0800 (PST)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id 36sm28737824anz.2.2011.11.10.16.29.53
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 10 Nov 2011 16:29:53 -0800 (PST)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAB0TqGG029387;
+        Thu, 10 Nov 2011 16:29:52 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAB0TqEE029386;
+        Thu, 10 Nov 2011 16:29:52 -0800
+From:   ddaney.cavm@gmail.com
+To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org, gregkh@suse.de, devel@driverdev.osuosl.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH 2/3] MIPS: Octeon: Update bootloader board type constants.
+Date:   Thu, 10 Nov 2011 16:29:46 -0800
+Message-Id: <1320971387-29343-3-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1320971387-29343-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1320971387-29343-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 31515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: B04825@freescale.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 9860
+X-UID: 9866
 
-On Fri, Sep 30, 2011 at 4:51 PM, David Daney <david.daney@cavium.com> wrote:
-> Accesses to the mdio busses must be done with the mdio_lock to ensure
-> proper operation.  Conveniently we have the helper function
-> mdiobus_read() to do that for us.  Lets use it in get_phy_id() instead
-> of accessing the bus without the lock held.
->
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> ---
+From: David Daney <david.daney@cavium.com>
 
-This patch is causing me problems, but I'm not exactly certain how.
-The problems only appear when I add some unrelated code to my platform
-file (p1022ds.c), but the trap is definitely in the phy code:
+Many new types of boards exist, so lets recognize them.
 
-Fixed MDIO Bus: probed
-INFO: trying to register non-static key.
-the code is fine but needs lockdep annotation.
-turning off the locking correctness validator.
-Call Trace:
-[e685dcc0] [c0008c7c] show_stack+0x44/0x154 (unreliable)
-[e685dd00] [c007bf74] __lock_acquire+0x1374/0x1824
-[e685ddb0] [c007c870] lock_acquire+0x4c/0x68
-[e685ddd0] [c0455fe4] mutex_lock_nested+0x6c/0x394
-[e685de30] [c02acc08] mdiobus_read+0x3c/0x78
-[e685de50] [c02abc98] get_phy_id+0x24/0x80
-[e685de70] [c02b1860] fsl_pq_mdio_probe+0x3ac/0x458
-[e685deb0] [c027ba2c] platform_drv_probe+0x20/0x30
-[e685dec0] [c027a4b0] driver_probe_device+0xa4/0x1d4
-[e685dee0] [c027a6a4] __driver_attach+0xc4/0xc8
-[e685df00] [c027939c] bus_for_each_dev+0x60/0x9c
-[e685df30] [c027a0e4] driver_attach+0x24/0x34
-[e685df40] [c0279d30] bus_add_driver+0x1b0/0x278
-[e685df70] [c027aab8] driver_register+0x88/0x154
-[e685df90] [c027bd5c] platform_driver_register+0x68/0x78
-[e685dfa0] [c05d47c8] fsl_pq_mdio_init+0x18/0x28
-[e685dfb0] [c0001eb8] do_one_initcall+0x34/0x1ac
-[e685dfe0] [c05b984c] kernel_init+0xa0/0x13c
-[e685dff0] [c000e588] kernel_thread+0x4c/0x68
-Unable to handle kernel paging request for data at address 0x00000000
-Faulting instruction address: 0xc0456080
-Oops: Kernel access of bad area, sig: 11 [#1]
-SMP NR_CPUS=8 P1022 DS
-Modules linked in:
-NIP: c0456080 LR: c0456068 CTR: 00000000
-REGS: e685dd20 TRAP: 0300   Not tainted  (3.2.0-10b-00092-g66f2305-dirty)
-MSR: 00021000 <ME,CE>  CR: 22042044  XER: 20000000
-DEAR: 00000000, ESR: 00800000
-TASK = e6860000[1] 'swapper' THREAD: e685c000 CPU: 0
-GPR00: ffffffff e685ddd0 e6860000 e6e58028 e685ddd8 e685c000 e685dde4 00000002
-GPR08: 00000000 00000000 00000000 00000000 44042022 40401800 00000000 00000000
-GPR16: c0000a00 00000014 3fffffff 03ff9000 00000015 7ff3a68c c061e000 00000000
-GPR24: e6e5804c e685ddd8 e6e5802c 00029000 e6860000 c0620000 e685c000 e6e58028
-NIP [c0456080] mutex_lock_nested+0x108/0x394
-LR [c0456068] mutex_lock_nested+0xf0/0x394
-Call Trace:
-[e685ddd0] [c0456068] mutex_lock_nested+0xf0/0x394 (unreliable)
-[e685de30] [c02acc08] mdiobus_read+0x3c/0x78
-[e685de50] [c02abc98] get_phy_id+0x24/0x80
-[e685de70] [c02b1860] fsl_pq_mdio_probe+0x3ac/0x458
-[e685deb0] [c027ba2c] platform_drv_probe+0x20/0x30
-[e685dec0] [c027a4b0] driver_probe_device+0xa4/0x1d4
-[e685dee0] [c027a6a4] __driver_attach+0xc4/0xc8
-[e685df00] [c027939c] bus_for_each_dev+0x60/0x9c
-[e685df30] [c027a0e4] driver_attach+0x24/0x34
-[e685df40] [c0279d30] bus_add_driver+0x1b0/0x278
-[e685df70] [c027aab8] driver_register+0x88/0x154
-[e685df90] [c027bd5c] platform_driver_register+0x68/0x78
-[e685dfa0] [c05d47c8] fsl_pq_mdio_init+0x18/0x28
-[e685dfb0] [c0001eb8] do_one_initcall+0x34/0x1ac
-[e685dfe0] [c05b984c] kernel_init+0xa0/0x13c
-[e685dff0] [c000e588] kernel_thread+0x4c/0x68
-Instruction dump:
-7f24cb78 4bc21141 80bc0004 7fe3fb78 7f24cb78 4bc21325 813f0028 3b1f0024
-933f0028 3800ffff 93010008 9121000c
- 93810010 7c0004ac 7d20f828
----[ end trace 7cc8bbd19b132dac ]---
-note: swapper[1] exited with preempt_count 1
-Kernel panic - not syncing: Attempted to kill init!
-Call Trace:
-[e685dc00] [c0008c7c] show_stack+0x44/0x154 (unreliable)
-[e685dc40] [c04583a0] panic+0xb4/0x1f0
-[e685dc90] [c004724c] do_exit+0x5dc/0x684
-[e685dce0] [c000b368] die+0xdc/0x1b4
-[e685dd00] [c00137fc] bad_page_fault+0xb4/0xfc
-[e685dd10] [c000f998] handle_page_fault+0x7c/0x80
---- Exception: 300 at mutex_lock_nested+0x108/0x394
-    LR = mutex_lock_nested+0xf0/0x394
-[e685de30] [c02acc08] mdiobus_read+0x3c/0x78
-[e685de50] [c02abc98] get_phy_id+0x24/0x80
-[e685de70] [c02b1860] fsl_pq_mdio_probe+0x3ac/0x458
-[e685deb0] [c027ba2c] platform_drv_probe+0x20/0x30
-[e685dec0] [c027a4b0] driver_probe_device+0xa4/0x1d4
-[e685dee0] [c027a6a4] __driver_attach+0xc4/0xc8
-[e685df00] [c027939c] bus_for_each_dev+0x60/0x9c
-[e685df30] [c027a0e4] driver_attach+0x24/0x34
-[e685df40] [c0279d30] bus_add_driver+0x1b0/0x278
-[e685df70] [c027aab8] driver_register+0x88/0x154
-[e685df90] [c027bd5c] platform_driver_register+0x68/0x78
-[e685dfa0] [c05d47c8] fsl_pq_mdio_init+0x18/0x28
-[e685dfb0] [c0001eb8] do_one_initcall+0x34/0x1ac
-[e685dfe0] [c05b984c] kernel_init+0xa0/0x13c
-[e685dff0] [c000e588] kernel_thread+0x4c/0x68
-Rebooting in 1 seconds..
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ .../cavium-octeon/executive/cvmx-helper-board.c    |   20 ++++++
+ arch/mips/include/asm/octeon/cvmx-bootinfo.h       |   72 +++++++++++++++++++-
+ arch/mips/include/asm/octeon/cvmx-helper-board.h   |    6 ++
+ 3 files changed, 95 insertions(+), 3 deletions(-)
 
-I'm still trying to narrow down what's causing the problem, but when I
-revert this patch, I don't see these traps.
-
-Sometimes, I don't get the trap, but I get a hang on this line:
-
-int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
-{
-	int retval;
-
-	BUG_ON(in_interrupt());
-
---->	mutex_lock(&bus->mdio_lock);
-
+diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+index 71590a3..fd20153 100644
+--- a/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
++++ b/arch/mips/cavium-octeon/executive/cvmx-helper-board.c
+@@ -117,6 +117,10 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
+ 	case CVMX_BOARD_TYPE_EBH5200:
+ 	case CVMX_BOARD_TYPE_EBH5201:
+ 	case CVMX_BOARD_TYPE_EBT5200:
++		/* Board has 2 management ports */
++		if ((ipd_port >= CVMX_HELPER_BOARD_MGMT_IPD_PORT) &&
++		    (ipd_port < (CVMX_HELPER_BOARD_MGMT_IPD_PORT + 2)))
++			return ipd_port - CVMX_HELPER_BOARD_MGMT_IPD_PORT;
+ 		/*
+ 		 * Board has 4 SGMII ports. The PHYs start right after the MII
+ 		 * ports MII0 = 0, MII1 = 1, SGMII = 2-5.
+@@ -128,6 +132,9 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
+ 	case CVMX_BOARD_TYPE_EBH5600:
+ 	case CVMX_BOARD_TYPE_EBH5601:
+ 	case CVMX_BOARD_TYPE_EBH5610:
++		/* Board has 1 management port */
++		if (ipd_port == CVMX_HELPER_BOARD_MGMT_IPD_PORT)
++			return 0;
+ 		/*
+ 		 * Board has 8 SGMII ports. 4 connect out, two connect
+ 		 * to a switch, and 2 loop to each other
+@@ -147,6 +154,19 @@ int cvmx_helper_board_get_mii_address(int ipd_port)
+ 			return ipd_port - 16 + 1;
+ 		else
+ 			return -1;
++	case CVMX_BOARD_TYPE_NIC_XLE_10G:
++	case CVMX_BOARD_TYPE_NIC10E:
++		return -1;
++	case CVMX_BOARD_TYPE_NIC4E:
++		if (ipd_port >= 0 && ipd_port <= 3)
++			return (ipd_port + 0x1f) & 0x1f;
++		else
++			return -1;
++	case CVMX_BOARD_TYPE_NIC2E:
++		if (ipd_port >= 0 && ipd_port <= 1)
++			return ipd_port + 1;
++		else
++			return -1;
+ 	case CVMX_BOARD_TYPE_BBGW_REF:
+ 		/*
+ 		 * No PHYs are connected to Octeon, everything is
+diff --git a/arch/mips/include/asm/octeon/cvmx-bootinfo.h b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+index d9d1668..1db1dc2 100644
+--- a/arch/mips/include/asm/octeon/cvmx-bootinfo.h
++++ b/arch/mips/include/asm/octeon/cvmx-bootinfo.h
+@@ -170,6 +170,22 @@ enum cvmx_board_types_enum {
+ 	/* Special 'generic' board type, supports many boards */
+ 	CVMX_BOARD_TYPE_GENERIC = 28,
+ 	CVMX_BOARD_TYPE_EBH5610 = 29,
++	CVMX_BOARD_TYPE_LANAI2_A = 30,
++	CVMX_BOARD_TYPE_LANAI2_U = 31,
++	CVMX_BOARD_TYPE_EBB5600 = 32,
++	CVMX_BOARD_TYPE_EBB6300 = 33,
++	CVMX_BOARD_TYPE_NIC_XLE_10G = 34,
++	CVMX_BOARD_TYPE_LANAI2_G = 35,
++	CVMX_BOARD_TYPE_EBT5810 = 36,
++	CVMX_BOARD_TYPE_NIC10E = 37,
++	CVMX_BOARD_TYPE_EP6300C = 38,
++	CVMX_BOARD_TYPE_EBB6800 = 39,
++	CVMX_BOARD_TYPE_NIC4E = 40,
++	CVMX_BOARD_TYPE_NIC2E = 41,
++	CVMX_BOARD_TYPE_EBB6600 = 42,
++	CVMX_BOARD_TYPE_REDWING = 43,
++	CVMX_BOARD_TYPE_NIC68_4 = 44,
++	CVMX_BOARD_TYPE_NIC10E_66 = 45,
+ 	CVMX_BOARD_TYPE_MAX,
+ 
+ 	/*
+@@ -187,6 +203,23 @@ enum cvmx_board_types_enum {
+ 	CVMX_BOARD_TYPE_CUST_NS0216 = 10002,
+ 	CVMX_BOARD_TYPE_CUST_NB5 = 10003,
+ 	CVMX_BOARD_TYPE_CUST_WMR500 = 10004,
++	CVMX_BOARD_TYPE_CUST_ITB101 = 10005,
++	CVMX_BOARD_TYPE_CUST_NTE102 = 10006,
++	CVMX_BOARD_TYPE_CUST_AGS103 = 10007,
++	CVMX_BOARD_TYPE_CUST_GST104 = 10008,
++	CVMX_BOARD_TYPE_CUST_GCT105 = 10009,
++	CVMX_BOARD_TYPE_CUST_AGS106 = 10010,
++	CVMX_BOARD_TYPE_CUST_SGM107 = 10011,
++	CVMX_BOARD_TYPE_CUST_GCT108 = 10012,
++	CVMX_BOARD_TYPE_CUST_AGS109 = 10013,
++	CVMX_BOARD_TYPE_CUST_GCT110 = 10014,
++	CVMX_BOARD_TYPE_CUST_L2_AIR_SENDER = 10015,
++	CVMX_BOARD_TYPE_CUST_L2_AIR_RECEIVER = 10016,
++	CVMX_BOARD_TYPE_CUST_L2_ACCTON2_TX = 10017,
++	CVMX_BOARD_TYPE_CUST_L2_ACCTON2_RX = 10018,
++	CVMX_BOARD_TYPE_CUST_L2_WSTRNSNIC_TX = 10019,
++	CVMX_BOARD_TYPE_CUST_L2_WSTRNSNIC_RX = 10020,
++	CVMX_BOARD_TYPE_CUST_L2_ZINWELL = 10021,
+ 	CVMX_BOARD_TYPE_CUST_DEFINED_MAX = 20000,
+ 
+ 	/*
+@@ -247,6 +280,22 @@ static inline const char *cvmx_board_type_to_string(enum
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CB5200)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_GENERIC)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_EBH5610)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_LANAI2_A)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_LANAI2_U)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_EBB5600)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_EBB6300)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_NIC_XLE_10G)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_LANAI2_G)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_EBT5810)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_NIC10E)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_EP6300C)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_EBB6800)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_NIC4E)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_NIC2E)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_EBB6600)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_REDWING)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_NIC68_4)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_NIC10E_66)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_MAX)
+ 
+ 			/* Customer boards listed here */
+@@ -255,6 +304,23 @@ static inline const char *cvmx_board_type_to_string(enum
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_NS0216)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_NB5)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_WMR500)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_ITB101)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_NTE102)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_AGS103)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_GST104)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_GCT105)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_AGS106)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_SGM107)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_GCT108)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_AGS109)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_GCT110)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_L2_AIR_SENDER)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_L2_AIR_RECEIVER)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_L2_ACCTON2_TX)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_L2_ACCTON2_RX)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_L2_WSTRNSNIC_TX)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_L2_WSTRNSNIC_RX)
++		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_L2_ZINWELL)
+ 		ENUM_BRD_TYPE_CASE(CVMX_BOARD_TYPE_CUST_DEFINED_MAX)
+ 
+ 		    /* Customer private range */
+@@ -271,9 +337,9 @@ static inline const char *cvmx_chip_type_to_string(enum
+ {
+ 	switch (type) {
+ 		ENUM_CHIP_TYPE_CASE(CVMX_CHIP_TYPE_NULL)
+-		    ENUM_CHIP_TYPE_CASE(CVMX_CHIP_SIM_TYPE_DEPRECATED)
+-		    ENUM_CHIP_TYPE_CASE(CVMX_CHIP_TYPE_OCTEON_SAMPLE)
+-		    ENUM_CHIP_TYPE_CASE(CVMX_CHIP_TYPE_MAX)
++		ENUM_CHIP_TYPE_CASE(CVMX_CHIP_SIM_TYPE_DEPRECATED)
++		ENUM_CHIP_TYPE_CASE(CVMX_CHIP_TYPE_OCTEON_SAMPLE)
++		ENUM_CHIP_TYPE_CASE(CVMX_CHIP_TYPE_MAX)
+ 	}
+ 	return "Unsupported Chip";
+ }
+diff --git a/arch/mips/include/asm/octeon/cvmx-helper-board.h b/arch/mips/include/asm/octeon/cvmx-helper-board.h
+index b465bec..88527fa 100644
+--- a/arch/mips/include/asm/octeon/cvmx-helper-board.h
++++ b/arch/mips/include/asm/octeon/cvmx-helper-board.h
+@@ -44,6 +44,12 @@ typedef enum {
+ 	set_phy_link_flags_flow_control_mask = 0x3 << 1,	/* Mask for 2 bit wide flow control field */
+ } cvmx_helper_board_set_phy_link_flags_types_t;
+ 
++/*
++ * Fake IPD port, the RGMII/MII interface may use different PHY, use
++ * this macro to return appropriate MIX address to read the PHY.
++ */
++#define CVMX_HELPER_BOARD_MGMT_IPD_PORT     -10
++
+ /**
+  * cvmx_override_board_link_get(int ipd_port) is a function
+  * pointer. It is meant to allow customization of the process of
 -- 
-Timur Tabi
-Linux kernel developer at Freescale
+1.7.2.3

@@ -1,99 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Nov 2011 04:55:57 +0100 (CET)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:59092 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903695Ab1KLDzu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Nov 2011 04:55:50 +0100
-Received: by gyf1 with SMTP id 1so4231285gyf.36
-        for <multiple recipients>; Fri, 11 Nov 2011 19:55:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=ls0pueoFxTPKfEKf8YEcp1s+xaqzDYy4KIjKxsOFzPA=;
-        b=nPsbMoAlLp3w1/xDNsp0/dJB7zpe93Xe0Zly5zsOraWoElS6q3Krvvf81qkM0gNAGg
-         CSlBNFHfHeyIdi+1XmqdsoHj8IaFvQhJfz6FZOCs47qowoTekFykiTWmWBiQ+zO7FOZ+
-         tU/edWWSNq7TV4lvHOTPZ7CGXxV317iegmbOs=
-Received: by 10.236.145.72 with SMTP id o48mr1018998yhj.86.1321070143829;
-        Fri, 11 Nov 2011 19:55:43 -0800 (PST)
-Received: from [192.168.1.103] (65-36-72-55.dyn.grandenetworks.net. [65.36.72.55])
-        by mx.google.com with ESMTPS id u19sm39706616ank.11.2011.11.11.19.55.42
-        (version=SSLv3 cipher=OTHER);
-        Fri, 11 Nov 2011 19:55:43 -0800 (PST)
-Message-ID: <4EBDEE3D.1000000@gmail.com>
-Date:   Fri, 11 Nov 2011 21:55:41 -0600
-From:   Rob Herring <robherring2@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20110929 Thunderbird/7.0.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Nov 2011 15:11:35 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:44935 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903702Ab1KLOL3 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Nov 2011 15:11:29 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id DB9403650CD;
+        Sat, 12 Nov 2011 15:11:28 +0100 (CET)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id iYMXcTsdH4hv; Sat, 12 Nov 2011 15:11:28 +0100 (CET)
+Received: from lenovo.localnet (fbx.mimichou.net [82.247.4.1])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 2D8E3358033;
+        Sat, 12 Nov 2011 15:11:28 +0100 (CET)
+From:   Florian Fainelli <ffainelli@freebox.fr>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH V2 3/8] MIPS: BMIPS: Add CFLAGS, Makefile entries for BMIPS
+Date:   Sat, 12 Nov 2011 15:11:19 +0100
+User-Agent: KMail/1.13.7 (Linux/3.1.0-rc7-amd64; KDE/4.6.5; x86_64; ; )
+Cc:     Kevin Cernekee <cernekee@gmail.com>, linux-mips@linux-mips.org
+References: <5f9666eb295ce196b2a9688afab07dea@localhost> <CAJiQ=7B=BkptJ9YGkEKpA9uXU1ydaGZeQTUrEd=E0Y_QR8_Z1g@mail.gmail.com> <20111111172039.GA5200@linux-mips.org>
+In-Reply-To: <20111111172039.GA5200@linux-mips.org>
+Organization: Freebox
 MIME-Version: 1.0
-To:     ddaney.cavm@gmail.com
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
-        linux-kernel@vger.kernel.org, tglx@linutronix.de,
-        linux@arm.linux.org.uk, linux-arm-kernel@lists.infradead.org,
-        David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH 0/2] irq/of: Enchance irq_domain support.
-References: <1321062616-28317-1-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1321062616-28317-1-git-send-email-ddaney.cavm@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31587
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201111121511.21175.ffainelli@freebox.fr>
+X-archive-position: 31588
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: robherring2@gmail.com
+X-original-sender: ffainelli@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10805
+X-UID: 10878
 
-On 11/11/2011 07:50 PM, ddaney.cavm@gmail.com wrote:
-> From: David Daney <david.daney@cavium.com>
+Le vendredi 11 novembre 2011 18:20:39, Ralf Baechle a écrit :
+> On Fri, Nov 11, 2011 at 08:57:39AM -0800, Kevin Cernekee wrote:
+> > At a high level, the CONFIG_CPU_BMIPS* settings are used to make
+> > compile-time decisions that differentiate BMIPS from standard MIPS32,
+> > and that differentiate the BMIPS CPUs from one another.
+> > 
+> > 
+> > Present and future uses include:
+> > 
+> > Figuring out which set of proprietary BMIPS CP0 registers / core
+> > registers to use, where they are located, bit fields, etc.
+> > 
+> > Per-BMIPS SMP operations and capabilities
+> > 
+> > Per-BMIPS performance counter access
+> > 
+> > cpu-feature-overrides.h
+> > 
+> > HIGHMEM, SMP, and other basic features
+> > 
+> > eDSP instruction set (different on each BMIPS, and BMIPS-specific)
+> > 
+> > Cache architecture and BMIPS-specific cache optimizations
+> > 
+> > 
+> > Some of these could potentially be replaced with a "switch
+> > (current_cpu_type())" but others are a little trickier (i.e. they show
+> > up in low-level PM resume code, exception vectors, or other sensitive
+> > places).
+> > 
+> > 
+> > It is true that BMIPS uses -mips32 for compilation.  If the criteria
+> > for adding a new CONFIG_CPU_* choice is whether it selects a new
+> > instruction set or compilation flags, do you think it makes sense to
+> > remove BMIPS* from the "CPU selection" menu, enable
+> > CONFIG_CPU_MIPS32_R1 for BMIPS platforms, and call our options
+> > something different?  e.g.
+> > 
+> > CONFIG_BMIPS
+> > CONFIG_BMIPS3300
+> > CONFIG_BMIPS4350
+> > CONFIG_BMIPS4380
+> > CONFIG_BMIPS5000
 > 
-> This is the first cut at hooking up my Octeon port to the irq_domain things.
+> Fair enough; sorting that kind of thing will need some effort across
+> the tree at some point in the future.
 > 
-> The Octeon specific patches are part of a larger set, and will need to
-> be applied with that set, the first patch is stand-alone.
-> 
-> The basic problem being solved taken from one of my other e-mails:
-> 
->    Unfortunately, although a good idea, kernel/irq/irqdomain.c makes a
->    bunch of assumptions that don't hold for Octeon.  We may be able to
->    improve it so that it flexible enough to suit us.
-> 
-> 
->    Here are the problems I see:
-> 
->    1) It is assumed that there is some sort of linear correspondence
->    between 'hwirq' and 'irq', and that the range of valid values is
->    contiguous.
-> 
->    2) It is assumed that the concepts of nr_irq, irq_base and
->    hwirq_base have easy to determine values and you can do iteration
->    over their ranges by adding indexes to the bases.
-> 
+> I notice there seems to be only CPU core support; are you planning
+> to submit board support code as well?
 
-I still think this is the wrong approach.
-
-Are the gpio interrupts the source of your problem here? That's how I
-read it. You have 16 GPIO irqs directly connected into lines on your
-primary interrupt controller which has 128 lines. So for a Linux irq
-number, you want to translate to a GPIO hwirq number and/or a CIU hwirq
-number. Trying to have 2 hwirq mappings for 1 Linux irq number just
-won't work. It seems to me you should use a chained handler here because
-you need to process the interrupt at both the primary ctrlr and gpio
-ctrlr levels.
-
-Rob
-
-> 
-> David Daney (2):
->   irq/of/ARM: Enhance irq iteration capability of irq_domain code.
->   MIPS: Octeon: Add irq_create_of_mapping() and GPIO interrupts.
-> 
->  arch/arm/common/gic.c                |   32 +++--
->  arch/mips/Kconfig                    |    1 +
->  arch/mips/cavium-octeon/octeon-irq.c |  279 +++++++++++++++++++++++++++++++++-
->  include/linux/irqdomain.h            |   29 +++-
->  kernel/irq/irqdomain.c               |   97 +++++++++---
->  5 files changed, 390 insertions(+), 48 deletions(-)
-> 
+BCM63xx and BCM47xx use BMIPS CPUs and can already take advantage of this core 
+CPU support code. 
+-- 
+Florian

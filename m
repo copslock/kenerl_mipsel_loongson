@@ -1,55 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Nov 2011 18:51:05 +0100 (CET)
-Received: from fmmailgate01.web.de ([217.72.192.221]:45465 "EHLO
-        fmmailgate01.web.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903702Ab1KLRvB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Nov 2011 18:51:01 +0100
-Received: from moweb002.kundenserver.de (moweb002.kundenserver.de [172.19.20.108])
-        by fmmailgate01.web.de (Postfix) with ESMTP id 4CE281A3D87BD
-        for <linux-mips@linux-mips.org>; Sat, 12 Nov 2011 18:50:56 +0100 (CET)
-Received: from [192.168.2.100] ([93.219.173.162]) by smtp.web.de (mrweb002)
- with ESMTPA (Nemesis) id 0MVtmK-1RRVkW0Zzc-00X2t7; Sat, 12 Nov 2011 18:50:56
- +0100
-Message-ID: <1321120255.3588.24.camel@localhost>
-Subject: Linux Kernel for Telekom MR303
-From:   Matthias Bock <bockmatthias@web.de>
-To:     linux-mips@linux-mips.org
-Date:   Sat, 12 Nov 2011 18:50:55 +0100
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.0.3-2 
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-Provags-ID:  V02:K0:RtbfmTZaB65UuV/sUrzz6hZfZrMYU2JN692BvjwtkaH
- d+DiJaJuiJwZ7qTI6bnAZ7I4qZOMSZ9NlocT8pUC+VY69s0pDl
- 4xdoA3oUjUpKYSZ2vBmVg4LE4Dtnn3/I+sjB55/VIcnncEDltI
- v7tra71Ie5oqyUhkVxAPLlNBLGUYe/ZjErdd0X1f2rRBXdAt5A
- iPxJ//u4lggSvY8VFnf+w==
-X-archive-position: 31591
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Nov 2011 19:21:39 +0100 (CET)
+Received: from imr4.ericy.com ([198.24.6.9]:55404 "EHLO imr4.ericy.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903707Ab1KLSVf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sat, 12 Nov 2011 19:21:35 +0100
+Received: from eusaamw0706.eamcs.ericsson.se ([147.117.20.31])
+        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id pACILQCN026652;
+        Sat, 12 Nov 2011 12:21:28 -0600
+Received: from localhost (147.117.20.214) by eusaamw0706.eamcs.ericsson.se
+ (147.117.20.91) with Microsoft SMTP Server id 8.3.137.0; Sat, 12 Nov 2011
+ 13:21:21 -0500
+Date:   Sat, 12 Nov 2011 10:20:17 -0800
+From:   Guenter Roeck <guenter.roeck@ericsson.com>
+To:     Matthias Bock <bockmatthias@web.de>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: Linux Kernel for Telekom MR303
+Message-ID: <20111112182017.GA28658@ericsson.com>
+References: <1321120255.3588.24.camel@localhost>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1321120255.3588.24.camel@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bockmatthias@web.de
+X-original-sender: guenter.roeck@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10935
+X-UID: 10938
+
+On Sat, Nov 12, 2011 at 12:50:55PM -0500, Matthias Bock wrote:
+> Hi,
+> 
+> I hope, this is the correct mailing list ...
+> 
+> Together with my Internet Package (Telekom Entertain) came a Receiver.
+> It turned out, it runs Windows CE, so I disassembled it in order to
+> replace it by Linux:
+> 
+> It contains the 32-bit MIPS CPU Broadcom BCM7405 at 400 MHz,
+> 256 MByte DDR2 SDRAM, 4 MByte Flash and a 500 GB SATA HD.
+> 
+> I have never compiled Linux for platforms other than
+> provided in the kernel config menu "Processor type...".
+> 
+> Where do I have to start ?
+> And where can I share my developments ?
+> 
 
 Hi,
 
-I hope, this is the correct mailing list ...
+you would need a version of Linux for this specific box. I found a reference on the web
+indicating that the OEM (Tatung Technology Inc) also offers Linux for this box. See
+http://www.marcush.de/2011/02/12/test-des-mr303-telekom-entertain-media-receiver-303.
+But even if you manage to get and load a Linux image, there would be no guarantee that
+you could get it to work - if your internet or TV service requires an activation code
+stored in the box, you would likely be out of luck.
 
-Together with my Internet Package (Telekom Entertain) came a Receiver.
-It turned out, it runs Windows CE, so I disassembled it in order to
-replace it by Linux:
+Also, keep in mind you don't just need a kernel. You need a complete distribution with
+root file system etc.
 
-It contains the 32-bit MIPS CPU Broadcom BCM7405 at 400 MHz,
-256 MByte DDR2 SDRAM, 4 MByte Flash and a 500 GB SATA HD.
-
-I have never compiled Linux for platforms other than
-provided in the kernel config menu "Processor type...".
-
-Where do I have to start ?
-And where can I share my developments ?
-
-Best,
-Matthias
+Guenter

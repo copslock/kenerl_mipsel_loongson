@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Nov 2011 02:51:02 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:38768 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Nov 2011 02:51:28 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:40832 "EHLO
         mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903944Ab1KLBuc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Nov 2011 02:50:32 +0100
-Received: by iapp10 with SMTP id p10so5963810iap.36
+        by eddie.linux-mips.org with ESMTP id S1903945Ab1KLBud (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 12 Nov 2011 02:50:33 +0100
+Received: by iapp10 with SMTP id p10so5963820iap.36
         for <multiple recipients>; Fri, 11 Nov 2011 17:50:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=j1ztG5M3Yv30+SQNFmc8v0HPT6q7Mt7app/AN6l2wIs=;
-        b=w6nhDdYp/nyZQ0vNXtFEXcmdV7waaHUvRelslfqoiZ9fqjeCazus8NO3DvTDKYe94K
-         GOqQEESul4I0MawypkpVqzFRnzJxwWT0Cgl7VsF17xaq+VLXODb/1IpuniGFUoLfmUWw
-         x6f3hSEqMYa4xGJvX2qgkykxGftD07XtNvrgg=
-Received: by 10.231.28.106 with SMTP id l42mr3420226ibc.66.1321062626197;
+        bh=kHYC4szf0VwErgAU076tm+LEB8tCegf8phITRjCUDh8=;
+        b=uooUtBmZbOKddqK97u0nV0t+x6VlZnAoLwC1rI9d3irLJcmA8vzVIwbFJRaDeKUG8/
+         L3nlMIyDYHsPjHTKgf/f/lVvhjIpOWlXxQGJqQziXJSIdtwr9h5EqD+kWD18Cm8zlYLz
+         TZFmumNp0uesOrVNWS6IqdStmhG5wBtTZ8Jjw=
+Received: by 10.50.17.197 with SMTP id q5mr15390494igd.2.1321062626555;
         Fri, 11 Nov 2011 17:50:26 -0800 (PST)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id jm11sm18407563ibb.1.2011.11.11.17.50.25
+        by mx.google.com with ESMTPS id a2sm10052745igj.7.2011.11.11.17.50.25
         (version=TLSv1/SSLv3 cipher=OTHER);
         Fri, 11 Nov 2011 17:50:25 -0800 (PST)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAC1oN5t028365;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAC1oNKT028369;
         Fri, 11 Nov 2011 17:50:23 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAC1oNkj028364;
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAC1oNeC028368;
         Fri, 11 Nov 2011 17:50:23 -0800
 From:   ddaney.cavm@gmail.com
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
@@ -31,13 +31,13 @@ To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         tglx@linutronix.de, linux@arm.linux.org.uk,
         linux-arm-kernel@lists.infradead.org
 Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH 1/2] irq/of/ARM: Enhance irq iteration capability of irq_domain code.
-Date:   Fri, 11 Nov 2011 17:50:15 -0800
-Message-Id: <1321062616-28317-2-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH 2/2] MIPS: Octeon: Add irq_create_of_mapping() and GPIO interrupts.
+Date:   Fri, 11 Nov 2011 17:50:16 -0800
+Message-Id: <1321062616-28317-3-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1321062616-28317-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1321062616-28317-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 31585
+X-archive-position: 31586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,299 +46,383 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 10783
+X-UID: 10784
 
 From: David Daney <david.daney@cavium.com>
 
-Not all irq_domain have linear sequences of irq numbers, so add hooks
-for domain specific iteration of the irqs in the domain.
+This is needed for Octeon to use the Device Tree.
 
-There are two new optional functions in irq_domain_ops that iterate
-over the irqs in the domain calling a callback function on each one.
-If these are not present, the new helper functions
-irq_domain_each_irq() and irq_domain_each_hwirq() iterate using the
-existing semantics.
-
-arch/arm/common/gic.c had to be modified to use the new iteration
-method as part of the change.
+The GPIO interrupts are configured based on Device Tree properties
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/arm/common/gic.c     |   32 +++++++++------
- include/linux/irqdomain.h |   29 +++++++++----
- kernel/irq/irqdomain.c    |   97 +++++++++++++++++++++++++++++++++------------
- 3 files changed, 111 insertions(+), 47 deletions(-)
+ arch/mips/Kconfig                    |    1 +
+ arch/mips/cavium-octeon/octeon-irq.c |  279 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 279 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/common/gic.c b/arch/arm/common/gic.c
-index 0e6ae47..64095c9 100644
---- a/arch/arm/common/gic.c
-+++ b/arch/arm/common/gic.c
-@@ -264,6 +264,24 @@ void __init gic_cascade_irq(unsigned int gic_nr, unsigned int irq)
- 	irq_set_chained_handler(irq, gic_handle_cascade_irq);
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d46f1da..97c2cf2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1404,6 +1404,7 @@ config CPU_CAVIUM_OCTEON
+ 	select WEAK_ORDERING
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_HUGEPAGES
++	select IRQ_DOMAIN
+ 	help
+ 	  The Cavium Octeon processor is a highly integrated chip containing
+ 	  many ethernet hardware widgets for networking tasks. The processor
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index ffd4ae6..5e08590 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -7,12 +7,16 @@
+  */
+ 
+ #include <linux/interrupt.h>
++#include <linux/irqdomain.h>
+ #include <linux/bitops.h>
++#include <linux/module.h>
+ #include <linux/percpu.h>
++#include <linux/of_irq.h>
+ #include <linux/irq.h>
+ #include <linux/smp.h>
+ 
+ #include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-gpio-defs.h>
+ 
+ static DEFINE_RAW_SPINLOCK(octeon_irq_ciu0_lock);
+ static DEFINE_RAW_SPINLOCK(octeon_irq_ciu1_lock);
+@@ -58,6 +62,178 @@ static void __init octeon_irq_set_ciu_mapping(int irq, int line, int bit,
+ 	octeon_irq_ciu_to_irq[line][bit] = irq;
  }
  
-+static int __init gic_dist_init_domain_cb(struct irq_domain *domain,
-+					  unsigned int irq,
-+					  unsigned int hwirq)
++static int octeon_irq_gpio_dt_translate(struct irq_domain *d,
++				       struct device_node *node,
++				       const u32 *intspec,
++				       unsigned int intsize,
++				       unsigned int *out_hwirq,
++				       unsigned int *out_type)
 +{
-+	if (hwirq < 32) {
-+		irq_set_percpu_devid(irq);
-+		irq_set_chip_and_handler(irq, &gic_chip,
-+					 handle_percpu_devid_irq);
-+		set_irq_flags(irq, IRQF_VALID | IRQF_NOAUTOEN);
-+	} else {
-+		irq_set_chip_and_handler(irq, &gic_chip,
-+					 handle_fasteoi_irq);
-+		set_irq_flags(irq, IRQF_VALID | IRQF_PROBE);
++	unsigned int irq;
++	unsigned int type;
++	unsigned int ciu = 0, bit = 0;
++	unsigned int pin;
++	unsigned int trigger;
++	bool set_edge_handler = false;
++
++	if (intsize < 2)
++		return -EINVAL;
++
++	pin = be32_to_cpup(intspec);
++	if (pin >= 16)
++		return -EINVAL;
++
++	trigger = be32_to_cpup(intspec + 1);
++
++	switch (trigger) {
++	case 1:
++		type = IRQ_TYPE_EDGE_RISING;
++		set_edge_handler = true;
++		break;
++	case 2:
++		type = IRQ_TYPE_EDGE_FALLING;
++		set_edge_handler = true;
++		break;
++	case 4:
++		type = IRQ_TYPE_LEVEL_HIGH;
++		break;
++	case 8:
++		type = IRQ_TYPE_LEVEL_LOW;
++		break;
++	default:
++		WARN(1, "hello");
++		pr_err("Error: (%s) Invalid irq trigger specification: %x\n",
++		       node->name,
++		       trigger);
++		type = IRQ_TYPE_LEVEL_LOW;
++		break;
 +	}
-+	irq_set_chip_data(irq, gic);
++	*out_type = type;
++	*out_hwirq = d->hwirq_base + pin;
++
++	ciu = *out_hwirq >> 6;
++	bit = *out_hwirq & 0x3f;
++
++	irq = octeon_irq_ciu_to_irq[ciu][bit];
++
++	if (set_edge_handler)
++		__irq_set_handler(irq, handle_edge_irq, 0, NULL);
++
++
 +	return 0;
 +}
 +
- static void __init gic_dist_init(struct gic_chip_data *gic)
++/*
++ * octeon_irq_ciu_dt_translate - Hook to resolve OF irq specifier into a Linux irq#
++ *
++ * Octeon irq maps are a pair of indexes.  The first selects either
++ * ciu0 or ciu1, the second is the bit within the ciu register.
++ */
++static int octeon_irq_ciu_dt_translate(struct irq_domain *d,
++				       struct device_node *node,
++				       const u32 *intspec,
++				       unsigned int intsize,
++				       unsigned int *out_hwirq,
++				       unsigned int *out_type)
++{
++	unsigned int ciu, bit;
++
++	ciu = be32_to_cpup(intspec);
++	bit = be32_to_cpup(intspec + 1);
++
++	if (ciu > 1 || bit > 63)
++		return -EINVAL;
++
++	if (octeon_irq_ciu_to_irq[ciu][bit] == 0)
++		return -EINVAL;
++
++	*out_hwirq = (ciu << 6) | bit;
++	*out_type = 0;
++
++	return 0;
++}
++
++static unsigned int octeon_irq_ciu_to_irqf(struct irq_domain *d,
++					   unsigned int hwirq)
++{
++	unsigned int ciu, bit;
++
++	ciu = (hwirq >> 6) & 1;
++	bit = hwirq & 0x3f;
++	return octeon_irq_ciu_to_irq[ciu][bit];
++}
++
++static bool octeon_irq_ciu_in_domain(unsigned int irq)
++{
++	return (irq != 0) &&
++		!(irq >= OCTEON_IRQ_GPIO0 && irq < OCTEON_IRQ_GPIO0 + 16);
++}
++
++static int octeon_irq_ciu_each_irq(struct irq_domain *d,
++				   int (*cb)(struct irq_domain *d,
++					     unsigned int irq,
++					     unsigned int hwirq))
++{
++	int ciu, bit;
++	int ret = 0;
++	unsigned int irq, hwirq;
++
++	for (ciu = 0; ciu <=1; ciu++)
++		for (bit = 0; bit <= 63; bit++) {
++			irq = octeon_irq_ciu_to_irq[ciu][bit];
++			hwirq = (ciu << 6) | bit;
++			if (octeon_irq_ciu_in_domain(irq)) {
++				ret = cb(d, irq, hwirq);
++				if (ret)
++					return ret;
++			}
++		}
++	return 0;
++}
++
++static int octeon_irq_ciu_each_hwirq(struct irq_domain *d,
++				     int (*cb)(struct irq_domain *d,
++					       unsigned int hwirq))
++{
++	int ciu, bit;
++	int ret = 0;
++	unsigned int irq, hwirq;
++
++	for (ciu = 0; ciu <=1; ciu++)
++		for (bit = 0; bit <= 63; bit++) {
++			irq = octeon_irq_ciu_to_irq[ciu][bit];
++			hwirq = (ciu << 6) | bit;
++			if (octeon_irq_ciu_in_domain(irq)) {
++				ret = cb(d, hwirq);
++				if (ret)
++					return ret;
++			}
++		}
++	return 0;
++}
++
++static const struct irq_domain_ops octeon_irq_ciu_domain_ops = {
++	.to_irq = octeon_irq_ciu_to_irqf,
++	.each_irq = octeon_irq_ciu_each_irq,
++	.each_hwirq = octeon_irq_ciu_each_hwirq,
++	.dt_translate = octeon_irq_ciu_dt_translate,
++};
++
++static const struct irq_domain_ops octeon_irq_gpio_domain_ops = {
++	.to_irq = octeon_irq_ciu_to_irqf,
++	.dt_translate = octeon_irq_gpio_dt_translate,
++};
++
++static struct irq_domain octeon_irq_ciu_domain  = {
++	.ops = &octeon_irq_ciu_domain_ops
++};
++
++static struct irq_domain octeon_irq_gpio_domain  = {
++	.irq_base = OCTEON_IRQ_GPIO0,
++	.nr_irq = 16,
++	.ops = &octeon_irq_gpio_domain_ops
++};
++
+ static int octeon_coreid_for_cpu(int cpu)
  {
- 	unsigned int i, irq;
-@@ -311,19 +329,7 @@ static void __init gic_dist_init(struct gic_chip_data *gic)
- 	/*
- 	 * Setup the Linux IRQ subsystem.
- 	 */
--	irq_domain_for_each_irq(domain, i, irq) {
--		if (i < 32) {
--			irq_set_percpu_devid(irq);
--			irq_set_chip_and_handler(irq, &gic_chip,
--						 handle_percpu_devid_irq);
--			set_irq_flags(irq, IRQF_VALID | IRQF_NOAUTOEN);
--		} else {
--			irq_set_chip_and_handler(irq, &gic_chip,
--						 handle_fasteoi_irq);
--			set_irq_flags(irq, IRQF_VALID | IRQF_PROBE);
--		}
--		irq_set_chip_data(irq, gic);
--	}
-+	irq_domain_each_irq(domain, gic_dist_init_domain_cb);
- 
- 	writel_relaxed(1, base + GIC_DIST_CTRL);
+ #ifdef CONFIG_SMP
+@@ -505,6 +681,72 @@ static void octeon_irq_ciu_enable_all_v2(struct irq_data *data)
+ 	}
  }
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 99834e58..f8dceb6 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -27,16 +27,26 @@ struct irq_domain;
-  * @to_irq: (optional) given a local hardware irq number, return the linux
-  *          irq number.  If to_irq is not implemented, then the irq_domain
-  *          will use this translation: irq = (domain->irq_base + hwirq)
-+ * @each_irq: (optional) call the cb function for each irq that is a
-+ *            member of the domain.
-+ * @each_hwirq: (optional) call the cb function for each hwirq that is a
-+ *              member of the domain.
-  * @dt_translate: Given a device tree node and interrupt specifier, decode
-  *                the hardware irq number and linux irq type value.
-  */
- struct irq_domain_ops {
--	unsigned int (*to_irq)(struct irq_domain *d, unsigned long hwirq);
-+	unsigned int (*to_irq)(struct irq_domain *d, unsigned int hwirq);
-+	int (*each_irq)(struct irq_domain *d,
-+			int (*cb)(struct irq_domain *d,
-+				  unsigned int irq, unsigned int hwirq));
-+	int (*each_hwirq)(struct irq_domain *d,
-+			  int (*cb)(struct irq_domain *d,
-+				    unsigned int hwirq));
  
- #ifdef CONFIG_OF
- 	int (*dt_translate)(struct irq_domain *d, struct device_node *node,
- 			    const u32 *intspec, unsigned int intsize,
--			    unsigned long *out_hwirq, unsigned int *out_type);
-+			    unsigned int *out_hwirq, unsigned int *out_type);
- #endif /* CONFIG_OF */
++static void octeon_irq_gpio_setup(struct irq_data *data)
++{
++	union cvmx_gpio_bit_cfgx cfg;
++	int bit = data->irq - OCTEON_IRQ_GPIO0;
++	u32 t = irqd_get_trigger_type(data);
++
++	cfg.u64 = 0;
++	cfg.s.int_en = 1;
++	cfg.s.int_type = (t & (IRQ_TYPE_EDGE_RISING | IRQ_TYPE_EDGE_FALLING)) != 0;
++	cfg.s.rx_xor = (t & (IRQ_TYPE_LEVEL_LOW | IRQ_TYPE_EDGE_FALLING)) != 0;
++
++	/* 1 uS glitch filter*/
++	cfg.s.fil_cnt = 7;
++	cfg.s.fil_sel = 3;
++
++	cvmx_write_csr(CVMX_GPIO_BIT_CFGX(bit), cfg.u64);
++}
++
++static void octeon_irq_ciu_enable_gpio_v2(struct irq_data *data)
++{
++	octeon_irq_gpio_setup(data);
++	octeon_irq_ciu_enable_v2(data);
++}
++
++static void octeon_irq_ciu_enable_gpio(struct irq_data *data)
++{
++	octeon_irq_gpio_setup(data);
++	octeon_irq_ciu_enable(data);
++}
++
++static int octeon_irq_ciu_gpio_set_type(struct irq_data *data, unsigned int t)
++{
++	u32 current_type = irqd_get_trigger_type(data);
++
++	/* If the type has been set, don't change it */
++	if (current_type && current_type != t)
++		return -EINVAL;
++
++	irqd_set_trigger_type(data, t);
++	return IRQ_SET_MASK_OK;
++}
++
++static void octeon_irq_ciu_disable_gpio_v2(struct irq_data *data)
++{
++	int bit = data->irq - OCTEON_IRQ_GPIO0;
++	cvmx_write_csr(CVMX_GPIO_BIT_CFGX(bit), 0);
++
++	octeon_irq_ciu_disable_all_v2(data);
++}
++
++static void octeon_irq_ciu_disable_gpio(struct irq_data *data)
++{
++	int bit = data->irq - OCTEON_IRQ_GPIO0;
++	cvmx_write_csr(CVMX_GPIO_BIT_CFGX(bit), 0);
++
++	octeon_irq_ciu_disable_all(data);
++}
++
++static void octeon_irq_ciu_gpio_ack(struct irq_data *data)
++{
++	int bit = data->irq - OCTEON_IRQ_GPIO0;
++	u64 mask = 1ull << bit;
++
++	cvmx_write_csr(CVMX_GPIO_INT_CLR, mask);
++}
++
+ #ifdef CONFIG_SMP
+ 
+ static void octeon_irq_cpu_offline_ciu(struct irq_data *data)
+@@ -717,6 +959,31 @@ static struct irq_chip octeon_irq_chip_ciu_mbox = {
+ 	.flags = IRQCHIP_ONOFFLINE_ENABLED,
  };
  
-@@ -72,7 +82,7 @@ struct irq_domain {
-  * be overridden if the irq_domain implements a .to_irq() hook.
-  */
- static inline unsigned int irq_domain_to_irq(struct irq_domain *d,
--					     unsigned long hwirq)
-+					     unsigned int hwirq)
- {
- 	if (d->ops->to_irq)
- 		return d->ops->to_irq(d, hwirq);
-@@ -81,13 +91,14 @@ static inline unsigned int irq_domain_to_irq(struct irq_domain *d,
- 	return d->irq_base + hwirq - d->hwirq_base;
- }
++static struct irq_chip octeon_irq_chip_ciu_gpio_v2 = {
++	.name = "CIU-GPIO",
++	.irq_enable = octeon_irq_ciu_enable_gpio_v2,
++	.irq_disable = octeon_irq_ciu_disable_gpio_v2,
++	.irq_ack = octeon_irq_ciu_gpio_ack,
++	.irq_mask = octeon_irq_ciu_disable_local_v2,
++	.irq_unmask = octeon_irq_ciu_enable_v2,
++	.irq_set_type = octeon_irq_ciu_gpio_set_type,
++#ifdef CONFIG_SMP
++	.irq_set_affinity = octeon_irq_ciu_set_affinity_v2,
++#endif
++};
++
++static struct irq_chip octeon_irq_chip_ciu_gpio = {
++	.name = "CIU-GPIO",
++	.irq_enable = octeon_irq_ciu_enable_gpio,
++	.irq_disable = octeon_irq_ciu_disable_gpio,
++	.irq_mask = octeon_irq_dummy_mask,
++	.irq_ack = octeon_irq_ciu_gpio_ack,
++	.irq_set_type = octeon_irq_ciu_gpio_set_type,
++#ifdef CONFIG_SMP
++	.irq_set_affinity = octeon_irq_ciu_set_affinity,
++#endif
++};
++
+ /*
+  * Watchdog interrupts are special.  They are associated with a single
+  * core, so we hardwire the affinity to that core.
+@@ -890,6 +1157,7 @@ static void __init octeon_irq_init_ciu(void)
+ 	struct irq_chip *chip_edge;
+ 	struct irq_chip *chip_mbox;
+ 	struct irq_chip *chip_wd;
++	struct irq_chip *chip_gpio;
  
--#define irq_domain_for_each_hwirq(d, hw) \
--	for (hw = d->hwirq_base; hw < d->hwirq_base + d->nr_irq; hw++)
-+extern int irq_domain_each_hwirq(struct irq_domain *d,
-+				 int (*cb)(struct irq_domain *d,
-+					   unsigned int hwirq));
- 
--#define irq_domain_for_each_irq(d, hw, irq) \
--	for (hw = d->hwirq_base, irq = irq_domain_to_irq(d, hw); \
--	     hw < d->hwirq_base + d->nr_irq; \
--	     hw++, irq = irq_domain_to_irq(d, hw))
-+extern int irq_domain_each_irq(struct irq_domain *d,
-+			       int (*cb)(struct irq_domain *d,
-+					 unsigned int irq,
-+					 unsigned int hwirq));
- 
- extern void irq_domain_add(struct irq_domain *domain);
- extern void irq_domain_del(struct irq_domain *domain);
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 200ce83..528450e 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -9,6 +9,25 @@
- static LIST_HEAD(irq_domain_list);
- static DEFINE_MUTEX(irq_domain_mutex);
- 
-+static int irq_domain_add_per_irq(struct irq_domain *domain, unsigned int irq,
-+				  unsigned int hwirq)
-+{
-+	struct irq_data *d = irq_get_irq_data(irq);
-+
-+	if (!d) {
-+		WARN(1, "error: assigning domain to non existant irq_desc");
-+		return 1;
-+	}
-+	if (d->domain) {
-+		/* things are broken; just report, don't clean up */
-+		WARN(1, "error: irq_desc already assigned to a domain");
-+		return 1;
-+	}
-+	d->domain = domain;
-+	d->hwirq = hwirq;
-+	return 0;
-+}
-+
- /**
-  * irq_domain_add() - Register an irq_domain
-  * @domain: ptr to initialized irq_domain structure
-@@ -19,52 +38,77 @@ static DEFINE_MUTEX(irq_domain_mutex);
-  */
- void irq_domain_add(struct irq_domain *domain)
- {
--	struct irq_data *d;
--	int hwirq, irq;
--
- 	/*
- 	 * This assumes that the irq_domain owner has already allocated
- 	 * the irq_descs.  This block will be removed when support for dynamic
- 	 * allocation of irq_descs is added to irq_domain.
- 	 */
--	irq_domain_for_each_irq(domain, hwirq, irq) {
--		d = irq_get_irq_data(irq);
--		if (!d) {
--			WARN(1, "error: assigning domain to non existant irq_desc");
--			return;
--		}
--		if (d->domain) {
--			/* things are broken; just report, don't clean up */
--			WARN(1, "error: irq_desc already assigned to a domain");
--			return;
--		}
--		d->domain = domain;
--		d->hwirq = hwirq;
--	}
-+	irq_domain_each_irq(domain, irq_domain_add_per_irq);
- 
- 	mutex_lock(&irq_domain_mutex);
- 	list_add(&domain->list, &irq_domain_list);
- 	mutex_unlock(&irq_domain_mutex);
- }
- 
-+static int irq_domain_del_per_irq(struct irq_domain *domain, unsigned int irq,
-+				  unsigned int hwirq)
-+{
-+	struct irq_data *d = irq_get_irq_data(irq);
-+
-+	d->domain = NULL;
-+	return 0;
-+}
-+
- /**
-  * irq_domain_del() - Unregister an irq_domain
-  * @domain: ptr to registered irq_domain.
-  */
- void irq_domain_del(struct irq_domain *domain)
- {
--	struct irq_data *d;
--	int hwirq, irq;
--
- 	mutex_lock(&irq_domain_mutex);
- 	list_del(&domain->list);
- 	mutex_unlock(&irq_domain_mutex);
- 
- 	/* Clear the irq_domain assignments */
--	irq_domain_for_each_irq(domain, hwirq, irq) {
--		d = irq_get_irq_data(irq);
--		d->domain = NULL;
-+	irq_domain_each_irq(domain, irq_domain_del_per_irq);
-+}
-+
-+int irq_domain_each_hwirq(struct irq_domain *d,
-+			  int (*cb)(struct irq_domain *d, unsigned int hwirq))
-+{
-+	unsigned int hw;
-+	int ret = 0;
-+
-+	if (d->ops->each_hwirq)
-+		return d->ops->each_hwirq(d, cb);
-+
-+	for (hw = d->hwirq_base; hw < d->hwirq_base + d->nr_irq; hw++) {
-+		ret = cb(d, hw);
-+		if (ret)
-+			break;
-+	}
-+	return ret;
-+}
-+
-+int irq_domain_each_irq(struct irq_domain *d,
-+			int (*cb)(struct irq_domain *d,	unsigned int irq,
-+				  unsigned int hwirq))
-+{
-+	unsigned int hw, irq;
-+	int ret = 0;
-+
-+	if (d->ops->each_irq)
-+		return d->ops->each_irq(d, cb);
-+
-+	for (hw = d->hwirq_base, irq = irq_domain_to_irq(d, hw);
-+	     hw < d->hwirq_base + d->nr_irq;
-+	     hw++, irq = irq_domain_to_irq(d, hw)) {
-+		ret = cb(d, irq, hw);
-+		if (ret)
-+			break;
+ 	octeon_irq_init_ciu_percpu();
+ 	octeon_irq_setup_secondary = octeon_irq_setup_secondary_ciu;
+@@ -904,6 +1172,7 @@ static void __init octeon_irq_init_ciu(void)
+ 		chip_edge = &octeon_irq_chip_ciu_edge_v2;
+ 		chip_mbox = &octeon_irq_chip_ciu_mbox_v2;
+ 		chip_wd = &octeon_irq_chip_ciu_wd_v2;
++		chip_gpio = &octeon_irq_chip_ciu_gpio_v2;
+ 	} else {
+ 		octeon_irq_ip2 = octeon_irq_ip2_v1;
+ 		octeon_irq_ip3 = octeon_irq_ip3_v1;
+@@ -911,6 +1180,7 @@ static void __init octeon_irq_init_ciu(void)
+ 		chip_edge = &octeon_irq_chip_ciu_edge;
+ 		chip_mbox = &octeon_irq_chip_ciu_mbox;
+ 		chip_wd = &octeon_irq_chip_ciu_wd;
++		chip_gpio = &octeon_irq_chip_ciu_gpio;
  	}
-+
-+	return 0;
- }
+ 	octeon_irq_ip4 = octeon_irq_ip4_mask;
  
- #if defined(CONFIG_OF_IRQ)
-@@ -82,13 +126,16 @@ unsigned int irq_create_of_mapping(struct device_node *controller,
- 				   const u32 *intspec, unsigned int intsize)
- {
- 	struct irq_domain *domain;
--	unsigned long hwirq;
-+	unsigned int hwirq;
- 	unsigned int irq, type;
- 	int rc = -EINVAL;
+@@ -921,7 +1191,7 @@ static void __init octeon_irq_init_ciu(void)
+ 	for (i = 0; i < 16; i++)
+ 		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_WORKQ0, 0, i + 0, chip, handle_level_irq);
+ 	for (i = 0; i < 16; i++)
+-		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_GPIO0, 0, i + 16, chip, handle_level_irq);
++		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_GPIO0, 0, i + 16, chip_gpio, handle_level_irq);
  
- 	/* Find a domain which can translate the irq spec */
- 	mutex_lock(&irq_domain_mutex);
- 	list_for_each_entry(domain, &irq_domain_list, list) {
-+		if (domain->of_node != controller)
-+			continue;
+ 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MBOX0, 0, 32, chip_mbox, handle_percpu_irq);
+ 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MBOX1, 0, 33, chip_mbox, handle_percpu_irq);
+@@ -995,6 +1265,13 @@ static void __init octeon_irq_init_ciu(void)
+ 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_DFM, 1, 56, chip, handle_level_irq);
+ 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RST, 1, 63, chip, handle_level_irq);
+ 
++	octeon_irq_ciu_domain.of_node = of_find_compatible_node(NULL, NULL, "cavium,octeon-3860-ciu");
++	irq_domain_add(&octeon_irq_ciu_domain);
 +
- 		if (!domain->ops->dt_translate)
- 			continue;
- 		rc = domain->ops->dt_translate(domain, controller,
-@@ -129,7 +176,7 @@ EXPORT_SYMBOL_GPL(irq_dispose_mapping);
- int irq_domain_simple_dt_translate(struct irq_domain *d,
- 			    struct device_node *controller,
- 			    const u32 *intspec, unsigned int intsize,
--			    unsigned long *out_hwirq, unsigned int *out_type)
-+			    unsigned int *out_hwirq, unsigned int *out_type)
- {
- 	if (d->of_node != controller)
- 		return -EINVAL;
++	octeon_irq_gpio_domain.of_node = of_find_compatible_node(NULL, NULL, "cavium,octeon-3860-gpio");
++	octeon_irq_gpio_domain.hwirq_base = ((0 << 6) | 16);
++	irq_domain_add(&octeon_irq_gpio_domain);
++
+ 	/* Enable the CIU lines */
+ 	set_c0_status(STATUSF_IP3 | STATUSF_IP2);
+ 	clear_c0_status(STATUSF_IP4);
 -- 
 1.7.2.3

@@ -1,40 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 00:46:56 +0100 (CET)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:64988 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 00:47:22 +0100 (CET)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:63881 "EHLO
         mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903742Ab1KOXq1 (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1903744Ab1KOXq1 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2011 00:46:27 +0100
-Received: by ywp31 with SMTP id 31so7230857ywp.36
+Received: by ywp31 with SMTP id 31so7230863ywp.36
         for <multiple recipients>; Tue, 15 Nov 2011 15:46:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=jBgS9n7/hw2yBzKQtoDlaUiCMcRzZ7/I1tA1vIef6vs=;
-        b=fuCNniibt4xpBu9miUQy+iDmfgu+j+6AaW4OX6p2UX7SITuvVQFvdyAGZ/ZfUqAyp+
-         lf6pM2D4mTf7Tbrpbobk24KGHXR8ZV3/FlO0a8zFWkvIflfKjqWtT3zX6BjKGrjLGhmA
-         ejEN64+Q/fJ9kZYQuSgmm0ZSY/m/IpLghudBY=
-Received: by 10.101.57.14 with SMTP id j14mr8686928ank.112.1321400781191;
+        bh=oKPvs5anC094y99Kqf4pOHXb0OSWD3WiC80r1HcDsX8=;
+        b=GaDM4AKtc0TgmMshzw2E18/AZdZg2+vVk6R08NwtVPbPbuS0yp80Kb7ZDAVKJ1Aok5
+         H3EPRLln20S0IT6mDJqJODrZrIxsH1YWpSIpDAFKpPiqoeSC7d03Or+w4KeMHXLpyEE3
+         0gXErhrfUWlLd+Go46BYJm9ND/7KHuwTEfvaA=
+Received: by 10.146.200.27 with SMTP id x27mr226571yaf.31.1321400781455;
         Tue, 15 Nov 2011 15:46:21 -0800 (PST)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id l18sm49913648anb.22.2011.11.15.15.46.19
+        by mx.google.com with ESMTPS id b9sm78951737anb.7.2011.11.15.15.46.20
         (version=TLSv1/SSLv3 cipher=OTHER);
         Tue, 15 Nov 2011 15:46:20 -0800 (PST)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAFNkIca032402;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAFNkIn6032398;
         Tue, 15 Nov 2011 15:46:18 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAFNkINa032401;
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAFNkIrR032397;
         Tue, 15 Nov 2011 15:46:18 -0800
 From:   ddaney.cavm@gmail.com
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>,
-        David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 3/5] MIPS: Octeon: Update DMA mapping operations for OCTEON II processors.
-Date:   Tue, 15 Nov 2011 15:46:13 -0800
-Message-Id: <1321400775-32353-4-git-send-email-ddaney.cavm@gmail.com>
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH 2/5] MIPS: Octeon: Update feature test functions for new chips and features.
+Date:   Tue, 15 Nov 2011 15:46:12 -0800
+Message-Id: <1321400775-32353-3-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1321400775-32353-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1321400775-32353-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 31617
+X-archive-position: 31618
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,93 +42,258 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12942
+X-UID: 12943
 
 From: David Daney <david.daney@cavium.com>
 
-OCTEON II has a new dma to phys mapping method for PCIe.  Define
-OCTEON_DMA_BAR_TYPE_PCIE2 to denote this case, and handle it.
+cvmx.h was rearranged to fix include file ordering problems, but there
+is no change other than moving some definitions around.
 
-OCTEON II also needs a swiotlb if the OHCI USB driver is enabled, so
-allocate this too.
-
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/cavium-octeon/dma-octeon.c      |   23 +++++++++++++++++++++--
- arch/mips/include/asm/octeon/pci-octeon.h |    3 ++-
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/octeon/cvmx.h           |   42 +++++-----
+ arch/mips/include/asm/octeon/octeon-feature.h |  114 +++++++++++++++++++++++--
+ 2 files changed, 126 insertions(+), 30 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
-index ea4feba..b6bb92c 100644
---- a/arch/mips/cavium-octeon/dma-octeon.c
-+++ b/arch/mips/cavium-octeon/dma-octeon.c
-@@ -61,6 +61,16 @@ static phys_addr_t octeon_gen1_dma_to_phys(struct device *dev, dma_addr_t daddr)
- 	return daddr;
+diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
+index 7e12867..740be97 100644
+--- a/arch/mips/include/asm/octeon/cvmx.h
++++ b/arch/mips/include/asm/octeon/cvmx.h
+@@ -31,6 +31,27 @@
+ #include <linux/kernel.h>
+ #include <linux/string.h>
+ 
++enum cvmx_mips_space {
++	CVMX_MIPS_SPACE_XKSEG = 3LL,
++	CVMX_MIPS_SPACE_XKPHYS = 2LL,
++	CVMX_MIPS_SPACE_XSSEG = 1LL,
++	CVMX_MIPS_SPACE_XUSEG = 0LL
++};
++
++/* These macros for use when using 32 bit pointers. */
++#define CVMX_MIPS32_SPACE_KSEG0 1l
++#define CVMX_ADD_SEG32(segment, add) \
++	(((int32_t)segment << 31) | (int32_t)(add))
++
++#define CVMX_IO_SEG CVMX_MIPS_SPACE_XKPHYS
++
++/* These macros simplify the process of creating common IO addresses */
++#define CVMX_ADD_SEG(segment, add) \
++	((((uint64_t)segment) << 62) | (add))
++#ifndef CVMX_ADD_IO_SEG
++#define CVMX_ADD_IO_SEG(add) CVMX_ADD_SEG(CVMX_IO_SEG, (add))
++#endif
++
+ #include "cvmx-asm.h"
+ #include "cvmx-packet.h"
+ #include "cvmx-sysinfo.h"
+@@ -129,27 +150,6 @@ static inline uint64_t cvmx_build_bits(uint64_t high_bit,
+ 	return (value & cvmx_build_mask(high_bit - low_bit + 1)) << low_bit;
  }
  
-+static dma_addr_t octeon_gen2_phys_to_dma(struct device *dev, phys_addr_t paddr)
-+{
-+	return octeon_hole_phys_to_dma(paddr);
-+}
-+
-+static phys_addr_t octeon_gen2_dma_to_phys(struct device *dev, dma_addr_t daddr)
-+{
-+	return octeon_hole_dma_to_phys(daddr);
-+}
-+
- static dma_addr_t octeon_big_phys_to_dma(struct device *dev, phys_addr_t paddr)
- {
- 	if (paddr >= 0x410000000ull && paddr < 0x420000000ull)
-@@ -262,11 +272,11 @@ void __init plat_swiotlb_setup(void)
+-enum cvmx_mips_space {
+-	CVMX_MIPS_SPACE_XKSEG = 3LL,
+-	CVMX_MIPS_SPACE_XKPHYS = 2LL,
+-	CVMX_MIPS_SPACE_XSSEG = 1LL,
+-	CVMX_MIPS_SPACE_XUSEG = 0LL
+-};
+-
+-/* These macros for use when using 32 bit pointers. */
+-#define CVMX_MIPS32_SPACE_KSEG0 1l
+-#define CVMX_ADD_SEG32(segment, add) \
+-	(((int32_t)segment << 31) | (int32_t)(add))
+-
+-#define CVMX_IO_SEG CVMX_MIPS_SPACE_XKPHYS
+-
+-/* These macros simplify the process of creating common IO addresses */
+-#define CVMX_ADD_SEG(segment, add) \
+-	((((uint64_t)segment) << 62) | (add))
+-#ifndef CVMX_ADD_IO_SEG
+-#define CVMX_ADD_IO_SEG(add) CVMX_ADD_SEG(CVMX_IO_SEG, (add))
+-#endif
+-
+ /**
+  * Convert a memory pointer (void*) into a hardware compatible
+  * memory address (uint64_t). Octeon hardware widgets don't
+diff --git a/arch/mips/include/asm/octeon/octeon-feature.h b/arch/mips/include/asm/octeon/octeon-feature.h
+index cba6fbe..3caa826 100644
+--- a/arch/mips/include/asm/octeon/octeon-feature.h
++++ b/arch/mips/include/asm/octeon/octeon-feature.h
+@@ -31,8 +31,14 @@
  
- 	for (i = 0 ; i < boot_mem_map.nr_map; i++) {
- 		struct boot_mem_map_entry *e = &boot_mem_map.map[i];
--		if (e->type != BOOT_MEM_RAM)
-+		if (e->type != BOOT_MEM_RAM && e->type != BOOT_MEM_INIT_RAM)
- 			continue;
+ #ifndef __OCTEON_FEATURE_H__
+ #define __OCTEON_FEATURE_H__
++#include <asm/octeon/cvmx-mio-defs.h>
++#include <asm/octeon/cvmx-rnm-defs.h>
  
- 		/* These addresses map low for PCI. */
--		if (e->addr > 0x410000000ull)
-+		if (e->addr > 0x410000000ull && !OCTEON_IS_MODEL(OCTEON_CN6XXX))
- 			continue;
- 
- 		addr_size += e->size;
-@@ -296,6 +306,11 @@ void __init plat_swiotlb_setup(void)
- 		swiotlbsize = 64 * (1<<20);
- 	}
- #endif
-+#ifdef CONFIG_USB_OCTEON_OHCI
-+	/* OCTEON II ohci is only 32-bit. */
-+	if (OCTEON_IS_MODEL(OCTEON_CN6XXX) && max_addr >= 0x100000000ul)
-+		swiotlbsize = 64 * (1<<20);
-+#endif
- 	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
- 	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
- 	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
-@@ -330,6 +345,10 @@ struct dma_map_ops *octeon_pci_dma_map_ops;
- void __init octeon_pci_dma_init(void)
- {
- 	switch (octeon_dma_bar_type) {
-+	case OCTEON_DMA_BAR_TYPE_PCIE2:
-+		_octeon_pci_dma_map_ops.phys_to_dma = octeon_gen2_phys_to_dma;
-+		_octeon_pci_dma_map_ops.dma_to_phys = octeon_gen2_dma_to_phys;
-+		break;
- 	case OCTEON_DMA_BAR_TYPE_PCIE:
- 		_octeon_pci_dma_map_ops.phys_to_dma = octeon_gen1_phys_to_dma;
- 		_octeon_pci_dma_map_ops.dma_to_phys = octeon_gen1_dma_to_phys;
-diff --git a/arch/mips/include/asm/octeon/pci-octeon.h b/arch/mips/include/asm/octeon/pci-octeon.h
-index fba2ba2..c66734b 100644
---- a/arch/mips/include/asm/octeon/pci-octeon.h
-+++ b/arch/mips/include/asm/octeon/pci-octeon.h
-@@ -56,7 +56,8 @@ enum octeon_dma_bar_type {
- 	OCTEON_DMA_BAR_TYPE_INVALID,
- 	OCTEON_DMA_BAR_TYPE_SMALL,
- 	OCTEON_DMA_BAR_TYPE_BIG,
--	OCTEON_DMA_BAR_TYPE_PCIE
-+	OCTEON_DMA_BAR_TYPE_PCIE,
-+	OCTEON_DMA_BAR_TYPE_PCIE2
+ enum octeon_feature {
++        /* CN68XX uses port kinds for packet interface */
++	OCTEON_FEATURE_PKND,
++	/* CN68XX has different fields in word0 - word2 */ 
++	OCTEON_FEATURE_CN68XX_WQE,
+ 	/*
+ 	 * Octeon models in the CN5XXX family and higher support
+ 	 * atomic add instructions to memory (saa/saad).
+@@ -42,8 +48,13 @@ enum octeon_feature {
+ 	OCTEON_FEATURE_ZIP,
+ 	/* Does this Octeon support crypto acceleration using COP2? */
+ 	OCTEON_FEATURE_CRYPTO,
++	OCTEON_FEATURE_DORM_CRYPTO,
+ 	/* Does this Octeon support PCI express? */
+ 	OCTEON_FEATURE_PCIE,
++        /* Does this Octeon support SRIOs */
++	OCTEON_FEATURE_SRIO,
++	/*  Does this Octeon support Interlaken */
++	OCTEON_FEATURE_ILK,
+ 	/* Some Octeon models support internal memory for storing
+ 	 * cryptographic keys */
+ 	OCTEON_FEATURE_KEY_MEMORY,
+@@ -64,6 +75,15 @@ enum octeon_feature {
+ 	/* Octeon MDIO block supports clause 45 transactions for 10
+ 	 * Gig support */
+ 	OCTEON_FEATURE_MDIO_CLAUSE_45,
++        /*
++	 *  CN52XX and CN56XX used a block named NPEI for PCIe
++	 *  access. Newer chips replaced this with SLI+DPI.
++	 */
++	OCTEON_FEATURE_NPEI,
++	OCTEON_FEATURE_HFA,
++	OCTEON_FEATURE_DFM,
++	OCTEON_FEATURE_CIU2,
++	OCTEON_MAX_FEATURE
  };
  
- /*
+ static inline int cvmx_fuse_read(int fuse);
+@@ -96,30 +116,78 @@ static inline int octeon_has_feature(enum octeon_feature feature)
+ 			return !cvmx_fuse_read(121);
+ 
+ 	case OCTEON_FEATURE_CRYPTO:
+-		return !cvmx_fuse_read(90);
++		if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++			union cvmx_mio_fus_dat2 fus_2;
++			fus_2.u64 = cvmx_read_csr(CVMX_MIO_FUS_DAT2);
++			if (fus_2.s.nocrypto || fus_2.s.nomul) {
++				return 0;
++			} else if (!fus_2.s.dorm_crypto) {
++				return 1;
++			} else {
++				union cvmx_rnm_ctl_status st;
++				st.u64 = cvmx_read_csr(CVMX_RNM_CTL_STATUS);
++				return st.s.eer_val;
++			}
++		} else {
++			return !cvmx_fuse_read(90);
++		}
++
++	case OCTEON_FEATURE_DORM_CRYPTO:
++		if (OCTEON_IS_MODEL(OCTEON_CN6XXX)) {
++			union cvmx_mio_fus_dat2 fus_2;
++			fus_2.u64 = cvmx_read_csr(CVMX_MIO_FUS_DAT2);
++			return !fus_2.s.nocrypto && !fus_2.s.nomul && fus_2.s.dorm_crypto;
++		} else {
++			return 0;
++		}
+ 
+ 	case OCTEON_FEATURE_PCIE:
+-	case OCTEON_FEATURE_MGMT_PORT:
+-	case OCTEON_FEATURE_RAID:
+ 		return OCTEON_IS_MODEL(OCTEON_CN56XX)
+-			|| OCTEON_IS_MODEL(OCTEON_CN52XX);
++			|| OCTEON_IS_MODEL(OCTEON_CN52XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN6XXX);
++
++	case OCTEON_FEATURE_SRIO:
++		return OCTEON_IS_MODEL(OCTEON_CN63XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN66XX);
++
++	case OCTEON_FEATURE_ILK:
++		return (OCTEON_IS_MODEL(OCTEON_CN68XX));
+ 
+ 	case OCTEON_FEATURE_KEY_MEMORY:
++		return OCTEON_IS_MODEL(OCTEON_CN38XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN58XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN56XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN6XXX);
++
+ 	case OCTEON_FEATURE_LED_CONTROLLER:
+ 		return OCTEON_IS_MODEL(OCTEON_CN38XX)
+ 			|| OCTEON_IS_MODEL(OCTEON_CN58XX)
+ 			|| OCTEON_IS_MODEL(OCTEON_CN56XX);
++
+ 	case OCTEON_FEATURE_TRA:
+ 		return !(OCTEON_IS_MODEL(OCTEON_CN30XX)
+ 			 || OCTEON_IS_MODEL(OCTEON_CN50XX));
++	case OCTEON_FEATURE_MGMT_PORT:
++		return OCTEON_IS_MODEL(OCTEON_CN56XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN52XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN6XXX);
++
++	case OCTEON_FEATURE_RAID:
++		return OCTEON_IS_MODEL(OCTEON_CN56XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN52XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN6XXX);
++
+ 	case OCTEON_FEATURE_USB:
+ 		return !(OCTEON_IS_MODEL(OCTEON_CN38XX)
+ 			 || OCTEON_IS_MODEL(OCTEON_CN58XX));
++
+ 	case OCTEON_FEATURE_NO_WPTR:
+ 		return (OCTEON_IS_MODEL(OCTEON_CN56XX)
+-			 || OCTEON_IS_MODEL(OCTEON_CN52XX))
+-			&& !OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1_X)
+-			&& !OCTEON_IS_MODEL(OCTEON_CN52XX_PASS1_X);
++			|| OCTEON_IS_MODEL(OCTEON_CN52XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN6XXX))
++			  && !OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1_X)
++			  && !OCTEON_IS_MODEL(OCTEON_CN52XX_PASS1_X);
++
+ 	case OCTEON_FEATURE_DFA:
+ 		if (!OCTEON_IS_MODEL(OCTEON_CN38XX)
+ 		    && !OCTEON_IS_MODEL(OCTEON_CN31XX)
+@@ -127,14 +195,42 @@ static inline int octeon_has_feature(enum octeon_feature feature)
+ 			return 0;
+ 		else if (OCTEON_IS_MODEL(OCTEON_CN3020))
+ 			return 0;
+-		else if (OCTEON_IS_MODEL(OCTEON_CN38XX_PASS1))
+-			return 1;
+ 		else
+ 			return !cvmx_fuse_read(120);
++
++	case OCTEON_FEATURE_HFA:
++		if (!OCTEON_IS_MODEL(OCTEON_CN6XXX))
++			return 0;
++		else
++			return !cvmx_fuse_read(90);
++
++	case OCTEON_FEATURE_DFM:
++		if (!(OCTEON_IS_MODEL(OCTEON_CN63XX)
++		      || OCTEON_IS_MODEL(OCTEON_CN66XX)))
++			return 0;
++		else
++			return !cvmx_fuse_read(90);
++
+ 	case OCTEON_FEATURE_MDIO_CLAUSE_45:
+ 		return !(OCTEON_IS_MODEL(OCTEON_CN3XXX)
+ 			 || OCTEON_IS_MODEL(OCTEON_CN58XX)
+ 			 || OCTEON_IS_MODEL(OCTEON_CN50XX));
++
++	case OCTEON_FEATURE_NPEI:
++		return OCTEON_IS_MODEL(OCTEON_CN56XX)
++			|| OCTEON_IS_MODEL(OCTEON_CN52XX);
++
++	case OCTEON_FEATURE_PKND:
++		return OCTEON_IS_MODEL(OCTEON_CN68XX);
++
++	case OCTEON_FEATURE_CN68XX_WQE:
++		return OCTEON_IS_MODEL(OCTEON_CN68XX);
++
++	case OCTEON_FEATURE_CIU2:
++		return OCTEON_IS_MODEL(OCTEON_CN68XX);
++
++	default:
++		break;
+ 	}
+ 	return 0;
+ }
 -- 
 1.7.2.3

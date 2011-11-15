@@ -1,97 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2011 20:24:50 +0100 (CET)
-Received: from zmc.proxad.net ([212.27.53.206]:60320 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903731Ab1KOTYV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 15 Nov 2011 20:24:21 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 7FF0A2CEC4F;
-        Tue, 15 Nov 2011 20:24:20 +0100 (CET)
-X-Virus-Scanned: amavisd-new at 
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id kQPfGVqUhgxP; Tue, 15 Nov 2011 20:24:20 +0100 (CET)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 31C8D3A7824;
-        Tue, 15 Nov 2011 20:24:20 +0100 (CET)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 2/2] MIPS: AR7: add LEDs layout for the Actiontec GT701 router
-Date:   Tue, 15 Nov 2011 20:23:44 +0100
-Message-Id: <1321385024-32101-2-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.5.4
-In-Reply-To: <1321385024-32101-1-git-send-email-florian@openwrt.org>
-References: <1321385024-32101-1-git-send-email-florian@openwrt.org>
-X-archive-position: 31612
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Nov 2011 20:54:47 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:37809 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903731Ab1KOTyk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 15 Nov 2011 20:54:40 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAFJscqH005839;
+        Tue, 15 Nov 2011 19:54:38 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAFJscnn005836;
+        Tue, 15 Nov 2011 19:54:38 GMT
+Date:   Tue, 15 Nov 2011 19:54:38 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Maxime Bizon <mbizon@freebox.fr>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 01/11] MIPS: BCM63XX: set default pci cache line size.
+Message-ID: <20111115195438.GF26141@linux-mips.org>
+References: <1320430175-13725-1-git-send-email-mbizon@freebox.fr>
+ <1320430175-13725-2-git-send-email-mbizon@freebox.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1320430175-13725-2-git-send-email-mbizon@freebox.fr>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 12716
+X-UID: 12755
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
- arch/mips/ar7/platform.c |   37 +++++++++++++++++++++++++++++++++++++
- 1 files changed, 37 insertions(+), 0 deletions(-)
+On Fri, Nov 04, 2011 at 07:09:25PM +0100, Maxime Bizon wrote:
 
-diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index 33ffecf..e5f6fca 100644
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -462,6 +462,40 @@ static struct gpio_led fb_fon_leds[] = {
- 	},
- };
+> +	pci_cache_line_size = 4;
+> +
+
+Presumably because the CPU cache line size is 16 bytes?  On MIPS we don't
+set pci_dfl_cache_line_size; a patch (only compile tested) to pick a sane
+default is below.
+
+Does this work for you?
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/pci/pci.c |   29 ++++++++++++++++++++++++++++-
+ 1 files changed, 28 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index 41af7fa..8ac0d48 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -4,8 +4,11 @@
+  * Free Software Foundation;  either version 2 of the  License, or (at your
+  * option) any later version.
+  *
+- * Copyright (C) 2003, 04 Ralf Baechle (ralf@linux-mips.org)
++ * Copyright (C) 2003, 04, 11 Ralf Baechle (ralf@linux-mips.org)
++ * Copyright (C) 2011 Wind River Systems,
++ *   written by Ralf Baechle (ralf@linux-mips.org)
+  */
++#include <linux/bug.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/bootmem.h>
+@@ -14,6 +17,8 @@
+ #include <linux/types.h>
+ #include <linux/pci.h>
  
-+static struct gpio_led gt701_leds[] = {
-+	{
-+		.name			= "inet:green",
-+		.gpio			= 13,
-+		.active_low		= 1,
-+	},
-+	{
-+		.name			= "usb",
-+		.gpio			= 12,
-+		.active_low		= 1,
-+	},
-+	{
-+		.name			= "inet:red",
-+		.gpio			= 9,
-+		.active_low		= 1,
-+	},
-+	{
-+		.name			= "power:red",
-+		.gpio			= 7,
-+		.active_low		= 1,
-+	},
-+	{
-+		.name			= "power:green",
-+		.gpio			= 8,
-+		.active_low		= 1,
-+		.default_trigger	= "default-on",
-+	},
-+        {
-+                .name                   = "ethernet",
-+                .gpio                   = 10,
-+                .active_low             = 1,
-+        },
-+};
++#include <asm/cpu-info.h>
 +
- static struct gpio_led_platform_data ar7_led_data;
- 
- static struct platform_device ar7_gpio_leds = {
-@@ -503,6 +537,9 @@ static void __init detect_leds(void)
- 	} else if (strstr(prid, "CYWM") || strstr(prid, "CYWL")) {
- 		ar7_led_data.num_leds = ARRAY_SIZE(titan_leds);
- 		ar7_led_data.leds = titan_leds;
-+	} else if (strstr(prid, "GT701")) {
-+		ar7_led_data.num_leds = ARRAY_SIZE(gt701_leds);
-+		ar7_led_data.leds = gt701_leds;
- 	}
+ /*
+  * Indicate whether we respect the PCI setup left by the firmware.
+  *
+@@ -150,10 +155,32 @@ out:
+ 	       "Skipping PCI bus scan due to resource conflict\n");
  }
  
--- 
-1.7.5.4
++static void __init pcibios_set_cache_line_size(void)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	unsigned int lsize;
++
++	/*
++	 * Set PCI cacheline size to that of the highest level in the
++	 * cache hierarchy.
++	 */
++	lsize = c->dcache.linesz;
++	lsize = c->scache.linesz ? : lsize;
++	lsize = c->tcache.linesz ? : lsize;
++
++	BUG_ON(!lsize);
++
++	pci_dfl_cache_line_size = lsize >> 2;
++
++	pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
++}
++
+ static int __init pcibios_init(void)
+ {
+ 	struct pci_controller *hose;
+ 
++	pcibios_set_cache_line_size();
++
+ 	/* Scan all of the recorded PCI controllers.  */
+ 	for (hose = hose_head; hose; hose = hose->next)
+ 		pcibios_scanbus(hose);

@@ -1,35 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 20:15:57 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:45143 "EHLO linux-mips.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 20:16:20 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:45148 "EHLO linux-mips.org"
         rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903850Ab1KPTN5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 Nov 2011 20:13:57 +0100
+        id S1903853Ab1KPTOH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 Nov 2011 20:14:07 +0100
 Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAGJDrDd014589;
-        Wed, 16 Nov 2011 19:13:53 GMT
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAGJE6q6014608;
+        Wed, 16 Nov 2011 19:14:06 GMT
 Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAGJDrox014587;
-        Wed, 16 Nov 2011 19:13:53 GMT
-Date:   Wed, 16 Nov 2011 19:13:53 +0000
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAGJE6Dw014607;
+        Wed, 16 Nov 2011 19:14:06 GMT
+Date:   Wed, 16 Nov 2011 19:14:06 +0000
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Greg KH <greg@kroah.com>
-Cc:     Alan Cox <alan@lxorguk.ukuu.org.uk>,
-        Gabor Juhos <juhosg@openwrt.org>, linux-mips@linux-mips.org,
-        Kathy Giori <kgiori@qca.qualcomm.com>,
-        "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>,
-        linux-serial@vger.kernel.org
-Subject: Re: [PATCH 11/13] serial: add driver for the built-in UART of the
- AR933X SoC
-Message-ID: <20111116191352.GK8932@linux-mips.org>
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     linux-mips@linux-mips.org, Kathy Giori <kgiori@qca.qualcomm.com>,
+        "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>
+Subject: Re: [PATCH 12/13] MIPS: ath79: register UART device for the AR933X
+ SoCs
+Message-ID: <20111116191406.GL8932@linux-mips.org>
 References: <1308597973-6037-1-git-send-email-juhosg@openwrt.org>
- <1308597973-6037-12-git-send-email-juhosg@openwrt.org>
- <20110621095951.7dc1c9ee@lxorguk.ukuu.org.uk>
- <20110701211123.GA19805@kroah.com>
+ <1308597973-6037-13-git-send-email-juhosg@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20110701211123.GA19805@kroah.com>
+In-Reply-To: <1308597973-6037-13-git-send-email-juhosg@openwrt.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31694
+X-archive-position: 31695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,20 +33,8 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13748
+X-UID: 13749
 
-On Fri, Jul 01, 2011 at 02:11:23PM -0700, Greg KH wrote:
-
-> On Tue, Jun 21, 2011 at 09:59:51AM +0100, Alan Cox wrote:
-> > Looks good to me
-> > 
-> > Signed-off-by: Alan Cox <alan@linux.intel.com>
-> > 
-> > and no problem here with it going via the MIPS tree (but make sure GregKH
-> > is happy)
-> 
-> I'm happy with this.
-
-Queued for 3.3.  Thanks folks!,
+Queued for 3.3.  Thanks,
 
   Ralf

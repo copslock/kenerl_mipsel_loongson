@@ -1,83 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 21:10:43 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:49445 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903864Ab1KPUKj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2011 21:10:39 +0100
-Received: by iapp10 with SMTP id p10so1256086iap.36
-        for <multiple recipients>; Wed, 16 Nov 2011 12:10:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=rcOMpGhU1sjDcrIen4OUNu8dNFqVlk5FyJv4W+qQ9nc=;
-        b=fbPblJ/FSo/xnAlFSWrK7nI1/OfT5FhXOrLK6DN5kH59SwlREuhVLr0lEhGVGAWV0E
-         MOkkJUMvFtpOTZEZ4mBayBbaRl7BFfSoSrJJCodWJ2Gupp4FxADlwi3eYnoexgSHqqoc
-         yHUKlt6/HpXRrRc9dQYk5Z5Y3Lg7eYsLRlsdI=
-Received: by 10.42.41.143 with SMTP id p15mr34244025ice.9.1321474232606;
-        Wed, 16 Nov 2011 12:10:32 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id l28sm7040025ibc.3.2011.11.16.12.10.31
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 16 Nov 2011 12:10:32 -0800 (PST)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAGKAT10013758;
-        Wed, 16 Nov 2011 12:10:29 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAGKATtl013757;
-        Wed, 16 Nov 2011 12:10:29 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Octeon: Unconditionally build __cvmx_helper_errata_qlm_disable_2nd_order_cdr
-Date:   Wed, 16 Nov 2011 12:10:28 -0800
-Message-Id: <1321474228-13726-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 31704
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 21:50:38 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:46250 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903871Ab1KPUue (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 Nov 2011 21:50:34 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 0163D3AA74E;
+        Wed, 16 Nov 2011 21:50:34 +0100 (CET)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id VYxLbT+CidQb; Wed, 16 Nov 2011 21:50:33 +0100 (CET)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 9CF0F3AA74B;
+        Wed, 16 Nov 2011 21:50:33 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH] MIPS: BCM63XX: generate WLAN MAC address after registering ethernet devices.
+Date:   Wed, 16 Nov 2011 21:49:58 +0100
+Message-Id: <1321476598-9450-1-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.5.4
+X-archive-position: 31705
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13804
+X-UID: 13827
 
-From: David Daney <david.daney@cavium.com>
+In case the MAC address pool is not big enough to also register a WLAN device
+prefer registering the Ethernet devices.
 
-It is needed in !OCTEON_ETHERNET and !PCI too.  Since most people will
-probably have both of these defined in any real configuration, there
-is not really any size bloat from doing this.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/cavium-octeon/Kconfig            |    4 ----
- arch/mips/cavium-octeon/executive/Makefile |    2 +-
- 2 files changed, 1 insertions(+), 5 deletions(-)
+ arch/mips/bcm63xx/boards/board_bcm963xx.c |   25 +++++++++++++------------
+ 1 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
-index cad555e..f9e275a 100644
---- a/arch/mips/cavium-octeon/Kconfig
-+++ b/arch/mips/cavium-octeon/Kconfig
-@@ -86,10 +86,6 @@ config ARCH_SPARSEMEM_ENABLE
- 	def_bool y
- 	select SPARSEMEM_STATIC
+diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+index ac948c2..fcd5a8c 100644
+--- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
++++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+@@ -791,18 +791,6 @@ void __init board_prom_init(void)
+ 	}
  
--config CAVIUM_OCTEON_HELPER
--	def_bool y
--	depends on OCTEON_ETHERNET || PCI
+ 	bcm_gpio_writel(val, GPIO_MODE_REG);
 -
- config IOMMU_HELPER
- 	bool
+-	/* Generate MAC address for WLAN and
+-	 * register our SPROM */
+-#ifdef CONFIG_SSB_PCIHOST
+-	if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
+-		memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
+-		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
+-		if (ssb_arch_register_fallback_sprom(
+-				&bcm63xx_get_fallback_sprom) < 0)
+-			printk(KERN_ERR PFX "failed to register fallback SPROM\n");
+-	}
+-#endif
+ }
  
-diff --git a/arch/mips/cavium-octeon/executive/Makefile b/arch/mips/cavium-octeon/executive/Makefile
-index eec0b88..b6d6e84 100644
---- a/arch/mips/cavium-octeon/executive/Makefile
-+++ b/arch/mips/cavium-octeon/executive/Makefile
-@@ -16,4 +16,4 @@ obj-y += cvmx-pko.o cvmx-spi.o cvmx-cmd-queue.o \
- 	cvmx-helper-loop.o cvmx-helper-spi.o cvmx-helper-util.o \
- 	cvmx-interrupt-decodes.o cvmx-interrupt-rsl.o
+ /*
+@@ -886,6 +874,19 @@ int __init board_register_devices(void)
+ 	if (board.has_dsp)
+ 		bcm63xx_dsp_register(&board.dsp);
  
--obj-$(CONFIG_CAVIUM_OCTEON_HELPER) += cvmx-helper-errata.o cvmx-helper-jtag.o
-+obj-y += cvmx-helper-errata.o cvmx-helper-jtag.o
++	/* Generate MAC address for WLAN and register our SPROM,
++	 * do this after registering enet devices
++	 */
++#ifdef CONFIG_SSB_PCIHOST
++	if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
++		memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
++		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
++		if (ssb_arch_register_fallback_sprom(
++			&bcm63xx_get_fallback_sprom) < 0)
++			pr_err(PFX "failed to register fallback SPROM\n");
++	}
++#endif
++
+ 	/* read base address of boot chip select (0) */
+ 	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
+ 	val &= MPI_CSBASE_BASE_MASK;
 -- 
-1.7.2.3
+1.7.5.4

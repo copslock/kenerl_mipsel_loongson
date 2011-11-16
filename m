@@ -1,54 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 22:12:01 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:48490 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903871Ab1KPVLw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 Nov 2011 22:11:52 +0100
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 3399D23C0084;
-        Wed, 16 Nov 2011 22:11:50 +0100 (CET)
-Message-ID: <4EC42717.2050806@openwrt.org>
-Date:   Wed, 16 Nov 2011 22:11:51 +0100
-From:   Gabor Juhos <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 22:32:23 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:45956 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903874Ab1KPVcR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2011 22:32:17 +0100
+Received: by ggnb1 with SMTP id b1so240447ggn.36
+        for <linux-mips@linux-mips.org>; Wed, 16 Nov 2011 13:32:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=beta;
+        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type;
+        bh=roUnNzgnGVGUp1xRyhgei733Wc7Apl3oM689quOg67E=;
+        b=eke9s63eJHDIZycW+f7ikvEYNbHCHb2Xu9cBENNAwPDpJlz6IBWlkA2WJgqmWPuj5w
+         x3keoUgbC6fBUJ6A1cAA==
+Received: by 10.42.19.195 with SMTP id d3mr34219909icb.21.1321479130387;
+        Wed, 16 Nov 2011 13:32:10 -0800 (PST)
+Received: by 10.42.19.195 with SMTP id d3mr34219839icb.21.1321479130103;
+        Wed, 16 Nov 2011 13:32:10 -0800 (PST)
+Received: from [2620:0:1008:1201:be30:5bff:fed8:5e64] ([2620:0:1008:1201:be30:5bff:fed8:5e64])
+        by mx.google.com with ESMTPS id eh34sm48962473ibb.5.2011.11.16.13.32.08
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 16 Nov 2011 13:32:09 -0800 (PST)
+Date:   Wed, 16 Nov 2011 13:32:04 -0800 (PST)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To:     David Daney <ddaney.cavm@gmail.com>
+cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        William Irwin <wli@holomorphy.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH] hugetlb: Provide a default HPAGE_SHIFT if
+ !CONFIG_HUGETLB_PAGE
+In-Reply-To: <1321472611-13283-1-git-send-email-ddaney.cavm@gmail.com>
+Message-ID: <alpine.DEB.2.00.1111161327180.16596@chino.kir.corp.google.com>
+References: <1321472611-13283-1-git-send-email-ddaney.cavm@gmail.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-To:     "Luis R. Rodriguez" <mcgrof@frijolero.org>
-CC:     Sangwook Lee <sangwook.lee@linaro.org>,
-        Imre Kaloz <kaloz@openwrt.org>, linux-kernel@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        ath9k-devel@lists.ath9k.org, ralf@linux-mips.org,
-        linville@tuxdriver.com, rmanohar@qca.qualcomm.com,
-        patches@linaro.org
-Subject: Re: [PATCH] ath9k: rename ath9k_platform.h to ath_platform.h
-References: <1321356224-5053-1-git-send-email-sangwook.lee@linaro.org> <CAB=NE6UB6KzJ2p+sou4wcgnZ9jyQxhpWMr2qZ2=jwqaGc2L5Xw@mail.gmail.com>
-In-Reply-To: <CAB=NE6UB6KzJ2p+sou4wcgnZ9jyQxhpWMr2qZ2=jwqaGc2L5Xw@mail.gmail.com>
-X-Enigmail-Version: 1.3.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 31706
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 31707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: rientjes@google.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13844
+X-UID: 13862
 
-2011.11.15. 17:09 keltezéssel, Luis R. Rodriguez írta:
-> On Tue, Nov 15, 2011 at 3:23 AM, Sangwook Lee <sangwook.lee@linaro.org> wrote:
->> The patch series proposes to rename ath9k_platform.h to "ath_platform.h
->> This header file handles platform data used only for ath9k,
->> but it can used by ath6k as well.
+On Wed, 16 Nov 2011, David Daney wrote:
+
+> From: David Daney <david.daney@cavium.com>
 > 
-> Adding the actual OpenWrt stakeholders. Is there any public hardware
-> platform that uses this yet?
+> This is required now to get MIPS kernels to compile with
+> !CONFIG_HUGETLB_PAGE.
+> 
 
-It is used by the ath79 platform code in the mainline kernel, although only the
-AP81 reference board uses that for now. However the linux-mips tree also has
-code for the AP121 reference board, and that will use it as well.
+Why?  Apparently there's some config option you've enabled that is causing 
+it to fail but I can't find it.  defconfig works fine on my mips 
+crosscompiler and allyesconfig is borked already in other ways.
 
-Additionaly, we are using that in OpenWrt for several consumer boards which are
-based on the AR71xx/AR724x/AR913x SoCs.
+This is definitely the wrong fix, anyway, and it would require a change to 
+arch/mips/include/asm/page.h instead since it's localized to mips, so 
+nack.
 
--Gabor
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> ---
+>  include/linux/hugetlb.h |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 19644e0..746d543 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -113,6 +113,7 @@ static inline void copy_huge_page(struct page *dst, struct page *src)
+>  #ifndef HPAGE_MASK
+>  #define HPAGE_MASK	PAGE_MASK		/* Keep the compiler happy */
+>  #define HPAGE_SIZE	PAGE_SIZE
+> +#define HPAGE_SHIFT	PAGE_SHIFT
+>  #endif
+>  
+>  #endif /* !CONFIG_HUGETLB_PAGE */

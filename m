@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 14:37:55 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:59562 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 14:53:19 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:44260 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903823Ab1KPNhs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 Nov 2011 14:37:48 +0100
+        id S1903823Ab1KPNxL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 Nov 2011 14:53:11 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
         Thomas Langer <thomas.langer@lantiq.com>,
-        spi-devel-general@lists.sourceforge.net
-Subject: [PATCH] SPI: MIPS: lantiq: add FALC-ON spi driver
-Date:   Wed, 16 Nov 2011 15:37:17 +0100
-Message-Id: <1321454237-4041-1-git-send-email-blogic@openwrt.org>
+        linux-i2c@vger.kernel.org
+Subject: [PATCH] I2C: MIPS: lantiq: add FALC-ON i2c bus master
+Date:   Wed, 16 Nov 2011 15:52:39 +0100
+Message-Id: <1321455159-13914-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
-X-archive-position: 31670
+X-archive-position: 31671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,633 +21,1176 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13406
+X-UID: 13426
 
-The external bus unit (EBU) found on the FALC-ON SoC has spi emulation that is
-designed for serial flash access. This driver has only been tested with m25p80
-type chips. The hardware has no support for other types of spi peripherals.
+This patch adds the driver needed to make the I2C bus work on FALC-ON SoCs.
 
 Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: spi-devel-general@lists.sourceforge.net
+Cc: linux-i2c@vger.kernel.org
 ---
 
- arch/mips/lantiq/falcon/devices.c        |   13 +
- arch/mips/lantiq/falcon/devices.h        |    4 +
- arch/mips/lantiq/falcon/mach-easy98000.c |   27 ++
- drivers/spi/Kconfig                      |    4 +
- drivers/spi/Makefile                     |    1 +
- drivers/spi/spi-falcon.c                 |  483 ++++++++++++++++++++++++++++++
- 6 files changed, 532 insertions(+), 0 deletions(-)
- create mode 100644 drivers/spi/spi-falcon.c
+This patch should go upstream via the MIPS tree.
 
+ .../include/asm/mach-lantiq/falcon/lantiq_soc.h    |    5 +
+ arch/mips/lantiq/falcon/devices.c                  |   17 +
+ arch/mips/lantiq/falcon/devices.h                  |    1 +
+ arch/mips/lantiq/falcon/mach-easy98000.c           |    1 +
+ drivers/i2c/busses/Kconfig                         |   10 +
+ drivers/i2c/busses/Makefile                        |    1 +
+ drivers/i2c/busses/i2c-falcon.c                    | 1040 ++++++++++++++++++++
+ 7 files changed, 1075 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/i2c/busses/i2c-falcon.c
+
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+index b074748..f45231b 100644
+--- a/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+@@ -72,6 +72,10 @@
+ #define LTQ_PADCTRL4_BASE_ADDR  0x1E800600
+ #define LTQ_PADCTRL4_SIZE       0x0100
+ 
++/* I2C */
++#define GPON_I2C_BASE		0x1E200000
++#define GPON_I2C_SIZE		0x00010000
++
+ /* CHIP ID */
+ #define LTQ_STATUS_BASE_ADDR	0x1E802000
+ 
+@@ -105,6 +109,7 @@
+ #define ACTS_PADCTRL2	0x00200000
+ #define ACTS_PADCTRL3	0x00200000
+ #define ACTS_PADCTRL4	0x00400000
++#define ACTS_I2C_ACT	0x00004000
+ 
+ extern void ltq_sysctl_activate(int module, unsigned int mask);
+ extern void ltq_sysctl_deactivate(int module, unsigned int mask);
 diff --git a/arch/mips/lantiq/falcon/devices.c b/arch/mips/lantiq/falcon/devices.c
-index 4f47b44..4fc1069 100644
+index 4fc1069..7fe6159 100644
 --- a/arch/mips/lantiq/falcon/devices.c
 +++ b/arch/mips/lantiq/falcon/devices.c
-@@ -126,3 +126,16 @@ falcon_register_gpio_extra(void)
- 	ltq_sysctl_activate(SYSCTL_SYS1,
- 		ACTS_PADCTRL3 | ACTS_PADCTRL4 | ACTS_P3 | ACTS_P4);
+@@ -139,3 +139,20 @@ falcon_register_spi_flash(struct spi_board_info *data)
+ 	spi_register_board_info(data, 1);
+ 	platform_device_register(&ltq_spi);
  }
 +
-+/* spi flash */
-+static struct platform_device ltq_spi = {
-+	.name			= "falcon_spi",
-+	.num_resources		= 0,
++/* i2c */
++static struct resource falcon_i2c_resources[] = {
++	MEM_RES("i2c", GPON_I2C_BASE, GPON_I2C_SIZE),
++	IRQ_RES(i2c_lb, FALCON_IRQ_I2C_LBREQ),
++	IRQ_RES(i2c_b, FALCON_IRQ_I2C_BREQ),
++	IRQ_RES(i2c_err, FALCON_IRQ_I2C_I2C_ERR),
++	IRQ_RES(i2c_p, FALCON_IRQ_I2C_I2C_P),
 +};
 +
 +void __init
-+falcon_register_spi_flash(struct spi_board_info *data)
++falcon_register_i2c(void)
 +{
-+	spi_register_board_info(data, 1);
-+	platform_device_register(&ltq_spi);
++	platform_device_register_simple("i2c-falcon", 0,
++		falcon_i2c_resources, ARRAY_SIZE(falcon_i2c_resources));
++	ltq_sysctl_activate(SYSCTL_SYS1, ACTS_I2C_ACT);
 +}
 diff --git a/arch/mips/lantiq/falcon/devices.h b/arch/mips/lantiq/falcon/devices.h
-index 18be8b6..5e6f720 100644
+index 5e6f720..d81edbe 100644
 --- a/arch/mips/lantiq/falcon/devices.h
 +++ b/arch/mips/lantiq/falcon/devices.h
-@@ -11,10 +11,14 @@
- #ifndef _FALCON_DEVICES_H__
- #define _FALCON_DEVICES_H__
- 
-+#include <linux/spi/spi.h>
-+#include <linux/spi/flash.h>
-+
- #include "../devices.h"
- 
- extern void falcon_register_nand(void);
+@@ -20,5 +20,6 @@ extern void falcon_register_nand(void);
  extern void falcon_register_gpio(void);
  extern void falcon_register_gpio_extra(void);
-+extern void falcon_register_spi_flash(struct spi_board_info *data);
+ extern void falcon_register_spi_flash(struct spi_board_info *data);
++extern void falcon_register_i2c(void);
  
  #endif
 diff --git a/arch/mips/lantiq/falcon/mach-easy98000.c b/arch/mips/lantiq/falcon/mach-easy98000.c
-index 361b8f0..1a7caad 100644
+index 1a7caad..fc5720d 100644
 --- a/arch/mips/lantiq/falcon/mach-easy98000.c
 +++ b/arch/mips/lantiq/falcon/mach-easy98000.c
-@@ -40,6 +40,21 @@ struct physmap_flash_data easy98000_nor_flash_data = {
- 	.parts		= easy98000_nor_partitions,
- };
- 
-+static struct flash_platform_data easy98000_spi_flash_platform_data = {
-+	.name = "sflash",
-+	.parts = easy98000_nor_partitions,
-+	.nr_parts = ARRAY_SIZE(easy98000_nor_partitions)
-+};
-+
-+static struct spi_board_info easy98000_spi_flash_data __initdata = {
-+	.modalias		= "m25p80",
-+	.bus_num		= 0,
-+	.chip_select		= 0,
-+	.max_speed_hz		= 10 * 1000 * 1000,
-+	.mode			= SPI_MODE_3,
-+	.platform_data		= &easy98000_spi_flash_platform_data
-+};
-+
- /* setup gpio based spi bus/device for access to the eeprom on the board */
- #define SPI_GPIO_MRST		102
- #define SPI_GPIO_MTSR		103
-@@ -93,6 +108,13 @@ easy98000_init(void)
+@@ -98,6 +98,7 @@ easy98000_init_common(void)
+ {
+ 	spi_register_board_info(&easy98000_spi_gpio_devices, 1);
+ 	platform_device_register(&easy98000_spi_gpio_device);
++	falcon_register_i2c();
  }
  
  static void __init
-+easy98000sf_init(void)
-+{
-+	easy98000_init_common();
-+	falcon_register_spi_flash(&easy98000_spi_flash_data);
-+}
-+
-+static void __init
- easy98000nand_init(void)
- {
- 	easy98000_init_common();
-@@ -104,6 +126,11 @@ MIPS_MACHINE(LANTIQ_MACH_EASY98000,
- 			"EASY98000 Eval Board",
- 			easy98000_init);
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index a3afac4..41be6cc 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -369,6 +369,16 @@ config I2C_DESIGNWARE_PCI
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-designware-pci.
  
-+MIPS_MACHINE(LANTIQ_MACH_EASY98000SF,
-+			"EASY98000SF",
-+			"EASY98000 Eval Board (Serial Flash)",
-+			easy98000sf_init);
-+
- MIPS_MACHINE(LANTIQ_MACH_EASY98000NAND,
- 			"EASY98000NAND",
- 			"EASY98000 Eval Board (NAND Flash)",
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index a1fd73d..f244553 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -180,6 +180,10 @@ config SPI_MPC52xx
- 	  This drivers supports the MPC52xx SPI controller in master SPI
- 	  mode.
- 
-+config SPI_FALCON
-+	tristate "Falcon SPI controller support"
++config I2C_FALCON
++	tristate "Falcon I2C interface"
 +	depends on SOC_FALCON
++	help
++	  If you say yes to this option, support will be included for the
++	  Lantiq FALC-ON I2C core.
 +
- config SPI_MPC52xx_PSC
- 	tristate "Freescale MPC52xx PSC SPI controller"
- 	depends on PPC_MPC52xx && EXPERIMENTAL
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 61c3261..570894c 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -25,6 +25,7 @@ obj-$(CONFIG_SPI_DW_MMIO)		+= spi-dw-mmio.o
- obj-$(CONFIG_SPI_DW_PCI)		+= spi-dw-midpci.o
- spi-dw-midpci-objs			:= spi-dw-pci.o spi-dw-mid.o
- obj-$(CONFIG_SPI_EP93XX)		+= spi-ep93xx.o
-+obj-$(CONFIG_SPI_FALCON)		+= spi-falcon.o
- obj-$(CONFIG_SPI_FSL_LIB)		+= spi-fsl-lib.o
- obj-$(CONFIG_SPI_FSL_ESPI)		+= spi-fsl-espi.o
- obj-$(CONFIG_SPI_FSL_SPI)		+= spi-fsl-spi.o
-diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
++	  This driver can also be built as a module. If so, the module
++	  will be called i2c-falcon.
++
+ config I2C_GPIO
+ 	tristate "GPIO-based bitbanging I2C"
+ 	depends on GENERIC_GPIO
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index fba6da6..36239c8 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -37,6 +37,7 @@ obj-$(CONFIG_I2C_DESIGNWARE_PLATFORM)	+= i2c-designware-platform.o
+ i2c-designware-platform-objs := i2c-designware-platdrv.o i2c-designware-core.o
+ obj-$(CONFIG_I2C_DESIGNWARE_PCI)	+= i2c-designware-pci.o
+ i2c-designware-pci-objs := i2c-designware-pcidrv.o i2c-designware-core.o
++obj-$(CONFIG_I2C_FALCON)	+= i2c-falcon.o
+ obj-$(CONFIG_I2C_GPIO)		+= i2c-gpio.o
+ obj-$(CONFIG_I2C_HIGHLANDER)	+= i2c-highlander.o
+ obj-$(CONFIG_I2C_IBM_IIC)	+= i2c-ibm_iic.o
+diff --git a/drivers/i2c/busses/i2c-falcon.c b/drivers/i2c/busses/i2c-falcon.c
 new file mode 100644
-index 0000000..8b81aa2
+index 0000000..0257ee5
 --- /dev/null
-+++ b/drivers/spi/spi-falcon.c
-@@ -0,0 +1,483 @@
++++ b/drivers/i2c/busses/i2c-falcon.c
+@@ -0,0 +1,1040 @@
 +/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ * Lantiq FALC(tm) ON - I2C bus adapter
 + *
-+ *  Copyright (C) 2010 Thomas Langer <thomas.langer@lantiq.com>
++ * Parts based on i2c-designware.c and other i2c drivers from Linux 2.6.33
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ * Copyright (C) 2010 Thomas Langer <thomas.langer@lantiq.com>
 + */
 +
++/*
++ * CURRENT ISSUES:
++ * - no high speed support
++ * - supports only master mode
++ * - ten bit mode is not tested (no slave devices)
++ */
++
++#include <linux/kernel.h>
 +#include <linux/module.h>
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
-+#include <linux/spi/spi.h>
 +#include <linux/delay.h>
-+#include <linux/workqueue.h>
++#include <linux/slab.h>
++#include <linux/i2c.h>
++#include <linux/clk.h>
++#include <linux/errno.h>
++#include <linux/sched.h>
++#include <linux/err.h>
++#include <linux/interrupt.h>
++#include <linux/platform_device.h>
++#include <linux/io.h>
++#include <linux/gpio.h>
 +
 +#include <lantiq_soc.h>
 +
-+#define DRV_NAME			"falcon_spi"
-+
-+#define FALCON_SPI_XFER_BEGIN		(1 << 0)
-+#define FALCON_SPI_XFER_END		(1 << 1)
-+
-+/* Bus Read Configuration Register0 */
-+#define LTQ_BUSRCON0	0x00000010
-+/* Bus Write Configuration Register0 */
-+#define LTQ_BUSWCON0	0x00000018
-+/* Serial Flash Configuration Register */
-+#define LTQ_SFCON	0x00000080
-+/* Serial Flash Time Register */
-+#define LTQ_SFTIME	0x00000084
-+/* Serial Flash Status Register */
-+#define LTQ_SFSTAT	0x00000088
-+/* Serial Flash Command Register */
-+#define LTQ_SFCMD	0x0000008C
-+/* Serial Flash Address Register */
-+#define LTQ_SFADDR	0x00000090
-+/* Serial Flash Data Register */
-+#define LTQ_SFDATA	0x00000094
-+/* Serial Flash I/O Control Register */
-+#define LTQ_SFIO	0x00000098
-+/* EBU Clock Control Register */
-+#define LTQ_EBUCC	0x000000C4
-+
-+/* Dummy Phase Length */
-+#define SFCMD_DUMLEN_OFFSET	16
-+#define SFCMD_DUMLEN_MASK	0x000F0000
-+/* Chip Select */
-+#define SFCMD_CS_OFFSET		24
-+#define SFCMD_CS_MASK		0x07000000
++/* I2C Identification Register */
++/* Module ID */
++#define I2C_ID_ID_MASK 0x0000FF00
 +/* field offset */
-+#define SFCMD_ALEN_OFFSET	20
-+#define SFCMD_ALEN_MASK		0x00700000
-+/* SCK Rise-edge Position */
-+#define SFTIME_SCKR_POS_OFFSET	8
-+#define SFTIME_SCKR_POS_MASK	0x00000F00
-+/* SCK Period */
-+#define SFTIME_SCK_PER_OFFSET	0
-+#define SFTIME_SCK_PER_MASK	0x0000000F
-+/* SCK Fall-edge Position */
-+#define SFTIME_SCKF_POS_OFFSET	12
-+#define SFTIME_SCKF_POS_MASK	0x0000F000
-+/* Device Size */
-+#define SFCON_DEV_SIZE_A23_0	0x03000000
-+#define SFCON_DEV_SIZE_MASK	0x0F000000
-+/* Read Data Position */
-+#define SFTIME_RD_POS_MASK	0x000F0000
-+/* Data Output */
-+#define SFIO_UNUSED_WD_MASK	0x0000000F
-+/* Command Opcode mask */
-+#define SFCMD_OPC_MASK		0x000000FF
-+/* dlen bytes of data to write */
-+#define SFCMD_DIR_WRITE		0x00000100
-+/* Data Length offset */
-+#define SFCMD_DLEN_OFFSET	9
-+/* Command Error */
-+#define SFSTAT_CMD_ERR		0x20000000
-+/* Access Command Pending */
-+#define SFSTAT_CMD_PEND		0x00400000
-+/* Frequency set to 100MHz. */
-+#define EBUCC_EBUDIV_SELF100	0x00000001
-+/* Serial Flash */
-+#define BUSRCON0_AGEN_SERIAL_FLASH	0xF0000000
-+/* 8-bit multiplexed */
-+#define BUSRCON0_PORTW_8_BIT_MUX	0x00000000
-+/* Serial Flash */
-+#define BUSWCON0_AGEN_SERIAL_FLASH	0xF0000000
-+/* Chip Select after opcode */
-+#define SFCMD_KEEP_CS_KEEP_SELECTED	0x00008000
++#define I2C_ID_ID_OFFSET 8
++/* Revision */
++#define I2C_ID_REV_MASK 0x000000FF
++/* field offset */
++#define I2C_ID_REV_OFFSET 0
 +
-+struct falcon_spi {
-+	u32 sfcmd; /* for caching of opcode, direction, ... */
-+	struct spi_master *master;
++/* I2C Error Interrupt Request Source Status Register */
++/* TXF_OFL */
++#define I2C_ERR_IRQSS_TXF_OFL 0x00000008
++/* TXF_UFL */
++#define I2C_ERR_IRQSS_TXF_UFL 0x00000004
++/* RXF_OFL */
++#define I2C_ERR_IRQSS_RXF_OFL 0x00000002
++/* RXF_UFL */
++#define I2C_ERR_IRQSS_RXF_UFL 0x00000001
++
++/* I2C Bus Status Register */
++/* Bus Status */
++#define I2C_BUS_STAT_BS_MASK 0x00000003
++/* I2C Bus is free. */
++#define I2C_BUS_STAT_BS_FREE 0x00000000
++/*
++ * The device is working as master and has claimed the control
++ * on the I2C-bus (busy master).
++ */
++#define I2C_BUS_STAT_BS_BM 0x00000002
++
++/* I2C Interrupt Clear Register */
++/* Clear */
++#define I2C_ICR_BREQ_INT_CLR 0x00000008
++/* Clear */
++#define I2C_ICR_LBREQ_INT_CLR 0x00000004
++
++/* I2C RUN Control Register */
++/* Enable */
++#define I2C_RUN_CTRL_RUN_EN 0x00000001
++
++/* I2C Kernel Clock Control Register */
++/* field offset */
++#define I2C_CLC_RMC_OFFSET 8
++/* Enable */
++#define I2C_IMSC_I2C_P_INT_EN 0x00000020
++/* Enable */
++#define I2C_IMSC_I2C_ERR_INT_EN 0x00000010
++/* Enable */
++#define I2C_IMSC_BREQ_INT_EN 0x00000008
++/* Enable */
++#define I2C_IMSC_LBREQ_INT_EN 0x00000004
++
++/* I2C Fractional Divider Configuration Register */
++/* field offset */
++#define I2C_FDIV_CFG_INC_OFFSET 16
++/* field offset */
++#define I2C_FDIV_CFG_DEC_OFFSET 0
++
++/* I2C Fractional Divider (highspeed mode) Configuration Register */
++/* field offset */
++#define I2C_FDIV_HIGH_CFG_INC_OFFSET 16
++/* field offset */
++#define I2C_FDIV_HIGH_CFG_DEC_OFFSET 0
++
++/* I2C Address Register */
++/* Enable */
++#define I2C_ADDR_CFG_SOPE_EN 0x00200000
++/* Enable */
++#define I2C_ADDR_CFG_SONA_EN 0x00100000
++/* Enable */
++#define I2C_ADDR_CFG_MnS_EN 0x00080000
++
++/* I2C Protocol Interrupt Request Source Status Register */
++/* RX */
++#define I2C_P_IRQSS_RX 0x00000040
++/* TX_END */
++#define I2C_P_IRQSS_TX_END 0x00000020
++/* NACK */
++#define I2C_P_IRQSS_NACK 0x00000010
++/* AL */
++#define I2C_P_IRQSS_AL 0x00000008
++
++/* I2C Raw Interrupt Status Register */
++/* Read: Interrupt occurred. */
++#define I2C_RIS_I2C_P_INT_INTOCC 0x00000020
++/* Read: Interrupt occurred. */
++#define I2C_RIS_I2C_ERR_INT_INTOCC 0x00000010
++
++/* I2C End Data Control Register */
++/*
++ * Set End of Transmission - Note: Do not write '1' to this bit when bus is
++ * free. This will cause an abort after the first byte when a new transfer
++ * is started.
++ */
++#define I2C_ENDD_CTRL_SETEND 0x00000002
++/* TX FIFO Flow Control */
++#define I2C_FIFO_CFG_TXFC 0x00020000
++/* RX FIFO Flow Control */
++#define I2C_FIFO_CFG_RXFC 0x00010000
++/* Word aligned (character alignment of four characters) */
++#define I2C_FIFO_CFG_TXFA_TXFA2 0x00002000
++/* Word aligned (character alignment of four characters) */
++#define I2C_FIFO_CFG_RXFA_RXFA2 0x00000200
++/* 1 word */
++#define I2C_FIFO_CFG_TXBS_TXBS0 0x00000000
++/* 1 word */
++#define I2C_FIFO_CFG_RXBS_RXBS0 0x00000000
++
++
++/* I2C register structure */
++struct gpon_reg_i2c {
++	/* I2C Kernel Clock Control Register */
++	unsigned int clc; /* 0x00000000 */
++	/* Reserved */
++	unsigned int res_0; /* 0x00000004 */
++	/* I2C Identification Register */
++	unsigned int id; /* 0x00000008 */
++	/* Reserved */
++	unsigned int res_1; /* 0x0000000C */
++	/*
++	 * I2C RUN Control Register - This register enables and disables the I2C
++	 * peripheral. Before enabling, the I2C has to be configured properly.
++	 * After enabling no configuration is possible
++	 */
++	unsigned int run_ctrl; /* 0x00000010 */
++	/*
++	 * I2C End Data Control Register - This register is used to either turn
++	 * around the data transmission direction or to address another slave
++	 * without sending a stop condition. Also the software can stop the
++	 * slave-transmitter by sending a not-accolade when working as
++	 * master-receiver or even stop data transmission immediately when
++	 * operating as master-transmitter. The writing to the bits of this
++	 * control register is only effective when in MASTER RECEIVES BYTES,
++	 * MASTER TRANSMITS BYTES, MASTER RESTART or SLAVE RECEIVE BYTES state
++	 */
++	unsigned int endd_ctrl; /* 0x00000014 */
++	/*
++	 * I2C Fractional Divider Configuration Register - These register is
++	 * used to program the fractional divider of the I2C bus. Before the
++	 * peripheral is switched on by setting the RUN-bit the two (fixed)
++	 * values for the two operating frequencies are programmed into these
++	 * (configuration) registers. The Register FDIV_HIGH_CFG has the same
++	 * layout as I2C_FDIV_CFG.
++	 */
++	unsigned int fdiv_cfg; /* 0x00000018 */
++	/*
++	 * I2C Fractional Divider (highspeed mode) Configuration Register
++	 * These register is used to program the fractional divider of the I2C
++	 * bus. Before the peripheral is switched on by setting the RUN-bit the
++	 * two (fixed) values for the two operating frequencies are programmed
++	 * into these (configuration) registers. The Register FDIV_CFG has the
++	 * same layout as I2C_FDIV_CFG.
++	 */
++	unsigned int fdiv_high_cfg; /* 0x0000001C */
++	/* I2C Address Configuration Register */
++	unsigned int addr_cfg; /* 0x00000020 */
++	/*
++	 * I2C Bus Status Register - This register gives a status information
++	 * of the I2C. This additional information can be used by the software
++	 * to start proper actions.
++	 */
++	unsigned int bus_stat; /* 0x00000024 */
++	/* I2C FIFO Configuration Register */
++	unsigned int fifo_cfg; /* 0x00000028 */
++	/* I2C Maximum Received Packet Size Register */
++	unsigned int mrps_ctrl; /* 0x0000002C */
++	/* I2C Received Packet Size Status Register */
++	unsigned int rps_stat; /* 0x00000030 */
++	/* I2C Transmit Packet Size Register */
++	unsigned int tps_ctrl; /* 0x00000034 */
++	/* I2C Filled FIFO Stages Status Register */
++	unsigned int ffs_stat; /* 0x00000038 */
++	/* Reserved */
++	unsigned int res_2; /* 0x0000003C */
++	/* I2C Timing Configuration Register */
++	unsigned int tim_cfg; /* 0x00000040 */
++	/* Reserved */
++		unsigned int res_3[7]; /* 0x00000044 */
++	/* I2C Error Interrupt Request Source Mask Register */
++	unsigned int err_irqsm; /* 0x00000060 */
++	/* I2C Error Interrupt Request Source Status Register */
++	unsigned int err_irqss; /* 0x00000064 */
++	/* I2C Error Interrupt Request Source Clear Register */
++	unsigned int err_irqsc; /* 0x00000068 */
++	/* Reserved */
++	unsigned int res_4; /* 0x0000006C */
++	/* I2C Protocol Interrupt Request Source Mask Register */
++	unsigned int p_irqsm; /* 0x00000070 */
++	/* I2C Protocol Interrupt Request Source Status Register */
++	unsigned int p_irqss; /* 0x00000074 */
++	/* I2C Protocol Interrupt Request Source Clear Register */
++	unsigned int p_irqsc; /* 0x00000078 */
++	/* Reserved */
++	unsigned int res_5; /* 0x0000007C */
++	/* I2C Raw Interrupt Status Register */
++	unsigned int ris; /* 0x00000080 */
++	/* I2C Interrupt Mask Control Register */
++	unsigned int imsc; /* 0x00000084 */
++	/* I2C Masked Interrupt Status Register */
++	unsigned int mis; /* 0x00000088 */
++	/* I2C Interrupt Clear Register */
++	unsigned int icr; /* 0x0000008C */
++	/* I2C Interrupt Set Register */
++	unsigned int isr; /* 0x00000090 */
++	/* I2C DMA Enable Register */
++	unsigned int dmae; /* 0x00000094 */
++	/* Reserved */
++	unsigned int res_6[8154]; /* 0x00000098 */
++	/* I2C Transmit Data Register */
++	unsigned int txd; /* 0x00008000 */
++	/* Reserved */
++	unsigned int res_7[4095]; /* 0x00008004 */
++	/* I2C Receive Data Register */
++	unsigned int rxd; /* 0x0000C000 */
++	/* Reserved */
++	unsigned int res_8[4095]; /* 0x0000C004 */
 +};
 +
-+int
-+falcon_spi_xfer(struct spi_device *spi,
-+		    struct spi_transfer *t,
-+		    unsigned long flags)
-+{
-+	struct device *dev = &spi->dev;
-+	struct falcon_spi *priv = spi_master_get_devdata(spi->master);
-+	const u8 *txp = t->tx_buf;
-+	u8 *rxp = t->rx_buf;
-+	unsigned int bytelen = ((8 * t->len + 7) / 8);
-+	unsigned int len, alen, dumlen;
-+	u32 val;
++/* mapping for access macros */
++#define i2c	((struct gpon_reg_i2c *)priv->membase)
++#define reg_r32(reg)		__raw_readl(reg)
++#define reg_w32(val, reg)	__raw_writel(val, reg)
++#define reg_w32_mask(clear, set, reg)	\
++				reg_w32((reg_r32(reg) & ~(clear)) | (set), reg)
++#define reg_r32_table(reg, idx) reg_r32(&((uint32_t *)&reg)[idx])
++#define reg_w32_table(val, reg, idx) reg_w32(val, &((uint32_t *)&reg)[idx])
++
++#define i2c_r32(reg) reg_r32(&i2c->reg)
++#define i2c_w32(val, reg) reg_w32(val, &i2c->reg)
++#define i2c_w32_mask(clear, set, reg) reg_w32_mask(clear, set, &i2c->reg)
++
++#define DRV_NAME "i2c-falcon"
++#define DRV_VERSION "1.01"
++
++#define FALCON_I2C_BUSY_TIMEOUT		20 /* ms */
++
++#ifdef DEBUG
++#define FALCON_I2C_XFER_TIMEOUT		(25 * HZ)
++#else
++#define FALCON_I2C_XFER_TIMEOUT		HZ
++#endif
++#if defined(DEBUG) && 0
++#define PRINTK(arg...) pr_info(arg)
++#else
++#define PRINTK(arg...) do {} while (0)
++#endif
++
++#define FALCON_I2C_IMSC_DEFAULT_MASK	(I2C_IMSC_I2C_P_INT_EN | \
++					 I2C_IMSC_I2C_ERR_INT_EN)
++
++#define FALCON_I2C_ARB_LOST	(1 << 0)
++#define FALCON_I2C_NACK		(1 << 1)
++#define FALCON_I2C_RX_UFL	(1 << 2)
++#define FALCON_I2C_RX_OFL	(1 << 3)
++#define FALCON_I2C_TX_UFL	(1 << 4)
++#define FALCON_I2C_TX_OFL	(1 << 5)
++
++struct falcon_i2c {
++	struct mutex mutex;
++
 +	enum {
-+		state_init,
-+		state_command_prepare,
-+		state_write,
-+		state_read,
-+		state_disable_cs,
-+		state_end
-+	} state = state_init;
++		FALCON_I2C_MODE_100	= 1,
++		FALCON_I2C_MODE_400	= 2,
++		FALCON_I2C_MODE_3400	= 3
++	} mode;				/* current speed mode */
 +
-+	do {
-+		switch (state) {
-+		case state_init: /* detect phase of upper layer sequence */
-+		{
-+			/* initial write ? */
-+			if (flags & FALCON_SPI_XFER_BEGIN) {
-+				if (!txp) {
-+					dev_err(dev,
-+						"BEGIN without tx data!\n");
-+					return -1;
-+				}
-+				/*
-+				 * Prepare the parts of the sfcmd register,
-+				 * which should not
-+				 * change during a sequence!
-+				 * Only exception are the length fields,
-+				 * especially alen and dumlen.
-+				 */
++	struct clk *clk;		/* clock input for i2c hardware block */
++	struct gpon_reg_i2c __iomem *membase;	/* base of mapped registers */
++	int irq_lb, irq_b, irq_err, irq_p;	/* last burst, burst, error,
++						   protocol IRQs */
 +
-+				priv->sfcmd = ((spi->chip_select
-+						<< SFCMD_CS_OFFSET)
-+					       & SFCMD_CS_MASK);
-+				priv->sfcmd |= SFCMD_KEEP_CS_KEEP_SELECTED;
-+				priv->sfcmd |= *txp;
-+				txp++;
-+				bytelen--;
-+				if (bytelen) {
-+					/*
-+					 * more data:
-+					 * maybe address and/or dummy
-+					 */
-+					state = state_command_prepare;
-+					break;
-+				} else {
-+					dev_dbg(dev, "write cmd %02X\n",
-+						priv->sfcmd & SFCMD_OPC_MASK);
-+				}
-+			}
-+			/* continued write ? */
-+			if (txp && bytelen) {
-+				state = state_write;
-+				break;
-+			}
-+			/* read data? */
-+			if (rxp && bytelen) {
-+				state = state_read;
-+				break;
-+			}
-+			/* end of sequence? */
-+			if (flags & FALCON_SPI_XFER_END)
-+				state = state_disable_cs;
-+			else
-+				state = state_end;
-+			break;
-+		}
-+		/* collect tx data for address and dummy phase */
-+		case state_command_prepare:
-+		{
-+			/* txp is valid, already checked */
-+			val = 0;
-+			alen = 0;
-+			dumlen = 0;
-+			while (bytelen > 0) {
-+				if (alen < 3) {
-+					val = (val<<8)|(*txp++);
-+					alen++;
-+				} else if ((dumlen < 15) && (*txp == 0)) {
-+					/*
-+					 * assume dummy bytes are set to 0
-+					 * from upper layer
-+					 */
-+					dumlen++;
-+					txp++;
-+				} else
-+					break;
-+				bytelen--;
-+			}
-+			priv->sfcmd &= ~(SFCMD_ALEN_MASK | SFCMD_DUMLEN_MASK);
-+			priv->sfcmd |= (alen << SFCMD_ALEN_OFFSET) |
-+					 (dumlen << SFCMD_DUMLEN_OFFSET);
-+			if (alen > 0)
-+				ltq_ebu_w32(val, LTQ_SFADDR);
++	struct i2c_adapter adap;
++	struct device *dev;
 +
-+			dev_dbg(dev, "write cmd %02X, alen=%d "
-+				"(addr=%06X) dumlen=%d\n",
-+				priv->sfcmd & SFCMD_OPC_MASK,
-+				alen, val, dumlen);
++	struct completion	cmd_complete;
 +
-+			if (bytelen > 0) {
-+				/* continue with write */
-+				state = state_write;
-+			} else if (flags & FALCON_SPI_XFER_END) {
-+				/* end of sequence? */
-+				state = state_disable_cs;
-+			} else {
-+				/*
-+				 * go to end and expect another
-+				 * call (read or write)
-+				 */
-+				state = state_end;
-+			}
-+			break;
-+		}
-+		case state_write:
-+		{
-+			/* txp still valid */
-+			priv->sfcmd |= SFCMD_DIR_WRITE;
-+			len = 0;
-+			val = 0;
-+			do {
-+				if (bytelen--)
-+					val |= (*txp++) << (8 * len++);
-+				if ((flags & FALCON_SPI_XFER_END)
-+				    && (bytelen == 0)) {
-+					priv->sfcmd &=
-+						~SFCMD_KEEP_CS_KEEP_SELECTED;
-+				}
-+				if ((len == 4) || (bytelen == 0)) {
-+					ltq_ebu_w32(val, LTQ_SFDATA);
-+					ltq_ebu_w32(priv->sfcmd
-+						| (len<<SFCMD_DLEN_OFFSET),
-+						LTQ_SFCMD);
-+					len = 0;
-+					val = 0;
-+					priv->sfcmd &= ~(SFCMD_ALEN_MASK
-+							 | SFCMD_DUMLEN_MASK);
-+				}
-+			} while (bytelen);
-+			state = state_end;
-+			break;
-+		}
-+		case state_read:
-+		{
-+			/* read data */
-+			priv->sfcmd &= ~SFCMD_DIR_WRITE;
-+			do {
-+				if ((flags & FALCON_SPI_XFER_END)
-+				    && (bytelen <= 4)) {
-+					priv->sfcmd &=
-+						~SFCMD_KEEP_CS_KEEP_SELECTED;
-+				}
-+				len = (bytelen > 4) ? 4 : bytelen;
-+				bytelen -= len;
-+				ltq_ebu_w32(priv->sfcmd
-+					|(len<<SFCMD_DLEN_OFFSET), LTQ_SFCMD);
-+				priv->sfcmd &= ~(SFCMD_ALEN_MASK
-+						 | SFCMD_DUMLEN_MASK);
-+				do {
-+					val = ltq_ebu_r32(LTQ_SFSTAT);
-+					if (val & SFSTAT_CMD_ERR) {
-+						/* reset error status */
-+						dev_err(dev, "SFSTAT: CMD_ERR "
-+							"(%x)\n", val);
-+						ltq_ebu_w32(SFSTAT_CMD_ERR,
-+							LTQ_SFSTAT);
-+						return -1;
-+					}
-+				} while (val & SFSTAT_CMD_PEND);
-+				val = ltq_ebu_r32(LTQ_SFDATA);
-+				do {
-+					*rxp = (val & 0xFF);
-+					rxp++;
-+					val >>= 8;
-+					len--;
-+				} while (len);
-+			} while (bytelen);
-+			state = state_end;
-+			break;
-+		}
-+		case state_disable_cs:
-+		{
-+			priv->sfcmd &= ~SFCMD_KEEP_CS_KEEP_SELECTED;
-+			ltq_ebu_w32(priv->sfcmd | (0 << SFCMD_DLEN_OFFSET),
-+				LTQ_SFCMD);
-+			val = ltq_ebu_r32(LTQ_SFSTAT);
-+			if (val & SFSTAT_CMD_ERR) {
-+				/* reset error status */
-+				dev_err(dev, "SFSTAT: CMD_ERR (%x)\n", val);
-+				ltq_ebu_w32(SFSTAT_CMD_ERR, LTQ_SFSTAT);
-+				return -1;
-+			}
-+			state = state_end;
-+			break;
-+		}
-+		case state_end:
-+			break;
-+		}
-+	} while (state != state_end);
++	/* message transfer data */
++	/* current message */
++	struct i2c_msg		*current_msg;
++	/* number of messages to handle */
++	int			msgs_num;
++	/* current buffer */
++	u8			*msg_buf;
++	/* remaining length of current buffer */
++	u32			msg_buf_len;
++	/* error status of the current transfer */
++	int			msg_err;
 +
-+	return 0;
++	/* master status codes */
++	enum {
++		STATUS_IDLE,
++		STATUS_ADDR,	/* address phase */
++		STATUS_WRITE,
++		STATUS_READ,
++		STATUS_READ_END,
++		STATUS_STOP
++	} status;
++};
++
++static irqreturn_t falcon_i2c_isr(int irq, void *dev_id);
++
++static inline void enable_burst_irq(struct falcon_i2c *priv)
++{
++	i2c_w32_mask(0, I2C_IMSC_LBREQ_INT_EN | I2C_IMSC_BREQ_INT_EN, imsc);
++}
++static inline void disable_burst_irq(struct falcon_i2c *priv)
++{
++	i2c_w32_mask(I2C_IMSC_LBREQ_INT_EN | I2C_IMSC_BREQ_INT_EN, 0, imsc);
 +}
 +
-+static int
-+falcon_spi_setup(struct spi_device *spi)
++static void prepare_msg_send_addr(struct falcon_i2c *priv)
 +{
-+	struct device *dev = &spi->dev;
-+	const u32 ebuclk = CLOCK_100M;
-+	unsigned int i;
-+	unsigned long flags;
++	struct i2c_msg *msg = priv->current_msg;
++	int rd = !!(msg->flags & I2C_M_RD);
++	u16 addr = msg->addr;
 +
-+	dev_dbg(dev, "setup\n");
++	/* new i2c_msg */
++	priv->msg_buf = msg->buf;
++	priv->msg_buf_len = msg->len;
++	if (rd)
++		priv->status = STATUS_READ;
++	else
++		priv->status = STATUS_WRITE;
 +
-+	if (spi->master->bus_num > 0 || spi->chip_select > 0)
-+		return -ENODEV;
++	/* send slave address */
++	if (msg->flags & I2C_M_TEN) {
++		i2c_w32(0xf0 | ((addr & 0x300) >> 7) | rd, txd);
++		i2c_w32(addr & 0xff, txd);
++	} else
++		i2c_w32((addr & 0x7f) << 1 | rd, txd);
++}
 +
-+	spin_lock_irqsave(&ebu_lock, flags);
++static void set_tx_len(struct falcon_i2c *priv)
++{
++	struct i2c_msg *msg = priv->current_msg;
++	int len = (msg->flags & I2C_M_TEN) ? 2 : 1;
 +
-+	if (ebuclk < spi->max_speed_hz) {
-+		/* set EBU clock to 100 MHz */
-+		ltq_sys1_w32_mask(0, EBUCC_EBUDIV_SELF100, LTQ_EBUCC);
-+		i = 1; /* divider */
++	PRINTK("set_tx_len %cX\n", (msg->flags & I2C_M_RD) ? ('R') : ('T'));
++
++	priv->status = STATUS_ADDR;
++
++	if (!(msg->flags & I2C_M_RD)) {
++		len += msg->len;
 +	} else {
-+		/* set EBU clock to 50 MHz */
-+		ltq_sys1_w32_mask(EBUCC_EBUDIV_SELF100, 0, LTQ_EBUCC);
++		/* set maximum received packet size (before rx int!) */
++		i2c_w32(msg->len, mrps_ctrl);
++	}
++	i2c_w32(len, tps_ctrl);
++	enable_burst_irq(priv);
++}
 +
-+		/* search for suitable divider */
-+		for (i = 1; i < 7; i++) {
-+			if (ebuclk / i <= spi->max_speed_hz)
++static int falcon_i2c_hw_init(struct i2c_adapter *adap)
++{
++	struct falcon_i2c *priv = i2c_get_adapdata(adap);
++
++	/* disable bus */
++	i2c_w32_mask(I2C_RUN_CTRL_RUN_EN, 0, run_ctrl);
++
++#ifndef DEBUG
++	/* set normal operation clock divider */
++	i2c_w32(1 << I2C_CLC_RMC_OFFSET, clc);
++#else
++	/* for debugging a higher divider value! */
++	i2c_w32(0xF0 << I2C_CLC_RMC_OFFSET, clc);
++#endif
++
++	/* set frequency */
++	if (priv->mode == FALCON_I2C_MODE_100) {
++		dev_dbg(priv->dev, "set standard mode (100 kHz)\n");
++		i2c_w32(0, fdiv_high_cfg);
++		i2c_w32((1 << I2C_FDIV_CFG_INC_OFFSET) |
++			(499 << I2C_FDIV_CFG_DEC_OFFSET),
++			fdiv_cfg);
++	} else if (priv->mode == FALCON_I2C_MODE_400) {
++		dev_dbg(priv->dev, "set fast mode (400 kHz)\n");
++		i2c_w32(0, fdiv_high_cfg);
++		i2c_w32((1 << I2C_FDIV_CFG_INC_OFFSET) |
++			(124 << I2C_FDIV_CFG_DEC_OFFSET),
++			fdiv_cfg);
++	} else if (priv->mode == FALCON_I2C_MODE_3400) {
++		dev_dbg(priv->dev, "set high mode (3.4 MHz)\n");
++		i2c_w32(0, fdiv_cfg);
++		/* TODO recalculate value for 100MHz input */
++		i2c_w32((41 << I2C_FDIV_HIGH_CFG_INC_OFFSET) |
++			(152 << I2C_FDIV_HIGH_CFG_DEC_OFFSET),
++			fdiv_high_cfg);
++	} else {
++		dev_warn(priv->dev, "unknown mode\n");
++		return -ENODEV;
++	}
++
++	/* configure fifo */
++	i2c_w32(I2C_FIFO_CFG_TXFC | /* tx fifo as flow controller */
++		I2C_FIFO_CFG_RXFC | /* rx fifo as flow controller */
++		I2C_FIFO_CFG_TXFA_TXFA2 | /* tx fifo 4-byte aligned */
++		I2C_FIFO_CFG_RXFA_RXFA2 | /* rx fifo 4-byte aligned */
++		I2C_FIFO_CFG_TXBS_TXBS0 | /* tx fifo burst size is 1 word */
++		I2C_FIFO_CFG_RXBS_RXBS0,  /* rx fifo burst size is 1 word */
++		fifo_cfg);
++
++	/* configure address */
++	i2c_w32(I2C_ADDR_CFG_SOPE_EN |	/* generate stop when no more data
++					   in the fifo */
++		I2C_ADDR_CFG_SONA_EN |	/* generate stop when NA received */
++		I2C_ADDR_CFG_MnS_EN |	/* we are master device */
++		0,			/* our slave address (not used!) */
++		addr_cfg);
++
++	/* enable bus */
++	i2c_w32_mask(0, I2C_RUN_CTRL_RUN_EN, run_ctrl);
++
++	return 0;
++}
++
++static int falcon_i2c_wait_bus_not_busy(struct falcon_i2c *priv)
++{
++	int timeout = FALCON_I2C_BUSY_TIMEOUT;
++
++	while ((i2c_r32(bus_stat) & I2C_BUS_STAT_BS_MASK)
++				 != I2C_BUS_STAT_BS_FREE) {
++		if (timeout <= 0) {
++			dev_warn(priv->dev, "timeout waiting for bus ready\n");
++			return -ETIMEDOUT;
++		}
++		timeout--;
++		mdelay(1);
++	}
++
++	return 0;
++}
++
++static void falcon_i2c_tx(struct falcon_i2c *priv, int last)
++{
++	if (priv->msg_buf_len && priv->msg_buf) {
++		i2c_w32(*priv->msg_buf, txd);
++
++		if (--priv->msg_buf_len)
++			priv->msg_buf++;
++		else
++			priv->msg_buf = NULL;
++	} else
++		last = 1;
++
++	if (last)
++		disable_burst_irq(priv);
++}
++
++static void falcon_i2c_rx(struct falcon_i2c *priv, int last)
++{
++	u32 fifo_stat, timeout;
++	if (priv->msg_buf_len && priv->msg_buf) {
++		timeout = 5000000;
++		do {
++			fifo_stat = i2c_r32(ffs_stat);
++		} while (!fifo_stat && --timeout);
++		if (!timeout) {
++			last = 1;
++			PRINTK("\nrx timeout\n");
++			goto err;
++		}
++		while (fifo_stat) {
++			*priv->msg_buf = i2c_r32(rxd);
++			if (--priv->msg_buf_len)
++				priv->msg_buf++;
++			else {
++				priv->msg_buf = NULL;
++				last = 1;
 +				break;
++			}
++			#if 0
++			fifo_stat = i2c_r32(ffs_stat);
++			#else
++			/* do not read more than burst size, otherwise no "last
++			burst" is generated and the transaction is blocked! */
++			fifo_stat = 0;
++			#endif
++		}
++	} else {
++		last = 1;
++	}
++err:
++	if (last) {
++		disable_burst_irq(priv);
++
++		if (priv->status == STATUS_READ_END) {
++			/* do the STATUS_STOP and complete() here, as sometimes
++			   the tx_end is already seen before this is finished */
++			priv->status = STATUS_STOP;
++			complete(&priv->cmd_complete);
++		} else {
++			i2c_w32(I2C_ENDD_CTRL_SETEND, endd_ctrl);
++			priv->status = STATUS_READ_END;
 +		}
 +	}
-+
-+	/* setup period of serial clock */
-+	ltq_ebu_w32_mask(SFTIME_SCKF_POS_MASK
-+		     | SFTIME_SCKR_POS_MASK
-+		     | SFTIME_SCK_PER_MASK,
-+		     (i << SFTIME_SCKR_POS_OFFSET)
-+		     | (i << (SFTIME_SCK_PER_OFFSET + 1)),
-+		     LTQ_SFTIME);
-+
-+	/*
-+	 * set some bits of unused_wd, to not trigger HOLD/WP
-+	 * signals on non QUAD flashes
-+	 */
-+	ltq_ebu_w32((SFIO_UNUSED_WD_MASK & (0x8 | 0x4)), LTQ_SFIO);
-+
-+	ltq_ebu_w32(BUSRCON0_AGEN_SERIAL_FLASH | BUSRCON0_PORTW_8_BIT_MUX,
-+		LTQ_BUSRCON0);
-+	ltq_ebu_w32(BUSWCON0_AGEN_SERIAL_FLASH, LTQ_BUSWCON0);
-+	/* set address wrap around to maximum for 24-bit addresses */
-+	ltq_ebu_w32_mask(SFCON_DEV_SIZE_MASK, SFCON_DEV_SIZE_A23_0, LTQ_SFCON);
-+
-+	spin_unlock_irqrestore(&ebu_lock, flags);
-+
-+	return 0;
 +}
 +
-+static int
-+falcon_spi_transfer(struct spi_device *spi, struct spi_message *m)
++static void falcon_i2c_xfer_init(struct falcon_i2c *priv)
 +{
-+	struct falcon_spi *priv = spi_master_get_devdata(spi->master);
-+	struct spi_transfer *t;
-+	unsigned long spi_flags;
-+	unsigned long flags;
-+	int ret = 0;
++	/* enable interrupts */
++	i2c_w32(FALCON_I2C_IMSC_DEFAULT_MASK, imsc);
 +
-+	priv->sfcmd = 0;
-+	m->actual_length = 0;
++	/* trigger transfer of first msg */
++	set_tx_len(priv);
++}
 +
-+	spi_flags = FALCON_SPI_XFER_BEGIN;
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (list_is_last(&t->transfer_list, &m->transfers))
-+			spi_flags |= FALCON_SPI_XFER_END;
-+
-+		spin_lock_irqsave(&ebu_lock, flags);
-+		ret = falcon_spi_xfer(spi, t, spi_flags);
-+		spin_unlock_irqrestore(&ebu_lock, flags);
-+
-+		if (ret)
-+			break;
-+
-+		m->actual_length += t->len;
-+
-+		if (t->delay_usecs || t->cs_change)
-+			BUG();
-+
-+		spi_flags = 0;
++static void dump_msgs(struct i2c_msg msgs[], int num, int rx)
++{
++#if defined(DEBUG)
++	int i, j;
++	pr_info("Messages %d %s\n", num, rx ? "out" : "in");
++	for (i = 0; i < num; i++) {
++		pr_info("%2d %cX Msg(%d) addr=0x%X: ", i,
++			(msgs[i].flags & I2C_M_RD) ? ('R') : ('T'),
++			msgs[i].len, msgs[i].addr);
++		if (!(msgs[i].flags & I2C_M_RD) || rx) {
++			for (j = 0; j < msgs[i].len; j++)
++				printk("%02X ", msgs[i].buf[j]);
++		}
++		printk("\n");
 +	}
-+
-+	m->status = ret;
-+	m->complete(m->context);
-+
-+	return 0;
++#endif
 +}
 +
-+static void
-+falcon_spi_cleanup(struct spi_device *spi)
++static void falcon_i2c_release_bus(struct falcon_i2c *priv)
 +{
-+	struct device *dev = &spi->dev;
-+
-+	dev_dbg(dev, "cleanup\n");
++	if ((i2c_r32(bus_stat) & I2C_BUS_STAT_BS_MASK) == I2C_BUS_STAT_BS_BM)
++		i2c_w32(I2C_ENDD_CTRL_SETEND, endd_ctrl);
 +}
 +
-+static int __devinit
-+falcon_spi_probe(struct platform_device *pdev)
++static int falcon_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
++			   int num)
 +{
-+	struct device *dev = &pdev->dev;
-+	struct falcon_spi *priv;
-+	struct spi_master *master;
++	struct falcon_i2c *priv = i2c_get_adapdata(adap);
 +	int ret;
 +
-+	dev_dbg(dev, "probing\n");
++	dev_dbg(priv->dev, "xfer %u messages\n", num);
++	dump_msgs(msgs, num, 0);
 +
-+	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
-+	if (!master) {
-+		dev_err(dev, "no memory for spi_master\n");
++	mutex_lock(&priv->mutex);
++
++	INIT_COMPLETION(priv->cmd_complete);
++	priv->current_msg = msgs;
++	priv->msgs_num = num;
++	priv->msg_err = 0;
++	priv->status = STATUS_IDLE;
++
++	/* wait for the bus to become ready */
++	ret = falcon_i2c_wait_bus_not_busy(priv);
++	if (ret)
++		goto done;
++
++	while (priv->msgs_num) {
++		/* start the transfers */
++		falcon_i2c_xfer_init(priv);
++
++		/* wait for transfers to complete */
++		ret = wait_for_completion_interruptible_timeout(
++			&priv->cmd_complete, FALCON_I2C_XFER_TIMEOUT);
++		if (ret == 0) {
++			dev_err(priv->dev, "controller timed out\n");
++			falcon_i2c_hw_init(adap);
++			ret = -ETIMEDOUT;
++			goto done;
++		} else if (ret < 0)
++			goto done;
++
++		if (priv->msg_err) {
++			if (priv->msg_err & FALCON_I2C_NACK)
++				ret = -ENXIO;
++			else
++				ret = -EREMOTEIO;
++			goto done;
++		}
++		if (--priv->msgs_num)
++			priv->current_msg++;
++	}
++	/* no error? */
++	ret = num;
++
++done:
++	falcon_i2c_release_bus(priv);
++
++	mutex_unlock(&priv->mutex);
++
++	if (ret >= 0)
++		dump_msgs(msgs, num, 1);
++
++	PRINTK("XFER ret %d\n", ret);
++	return ret;
++}
++
++static irqreturn_t falcon_i2c_isr_burst(int irq, void *dev_id)
++{
++	struct falcon_i2c *priv = dev_id;
++	struct i2c_msg *msg = priv->current_msg;
++	int last = (irq == priv->irq_lb);
++
++	if (last)
++		PRINTK("LB ");
++	else
++		PRINTK("B ");
++
++	if (msg->flags & I2C_M_RD) {
++		switch (priv->status) {
++		case STATUS_ADDR:
++			PRINTK("X");
++			prepare_msg_send_addr(priv);
++			disable_burst_irq(priv);
++			break;
++		case STATUS_READ:
++		case STATUS_READ_END:
++			PRINTK("R");
++			falcon_i2c_rx(priv, last);
++			break;
++		default:
++			disable_burst_irq(priv);
++			PRINTK("Status R %d\n", priv->status);
++			break;
++		}
++	} else {
++		switch (priv->status) {
++		case STATUS_ADDR:
++			PRINTK("x");
++			prepare_msg_send_addr(priv);
++			break;
++		case STATUS_WRITE:
++			PRINTK("w");
++			falcon_i2c_tx(priv, last);
++			break;
++		default:
++			disable_burst_irq(priv);
++			PRINTK("Status W %d\n", priv->status);
++			break;
++		}
++	}
++
++	i2c_w32(I2C_ICR_BREQ_INT_CLR | I2C_ICR_LBREQ_INT_CLR, icr);
++	return IRQ_HANDLED;
++}
++
++static void falcon_i2c_isr_prot(struct falcon_i2c *priv)
++{
++	u32 i_pro = i2c_r32(p_irqss);
++
++	PRINTK("i2c-p");
++
++	/* not acknowledge */
++	if (i_pro & I2C_P_IRQSS_NACK) {
++		priv->msg_err |= FALCON_I2C_NACK;
++		PRINTK(" nack");
++	}
++
++	/* arbitration lost */
++	if (i_pro & I2C_P_IRQSS_AL) {
++		priv->msg_err |= FALCON_I2C_ARB_LOST;
++		PRINTK(" arb-lost");
++	}
++	/* tx -> rx switch */
++	if (i_pro & I2C_P_IRQSS_RX)
++		PRINTK(" rx");
++
++	/* tx end */
++	if (i_pro & I2C_P_IRQSS_TX_END)
++		PRINTK(" txend");
++	PRINTK("\n");
++
++	if (!priv->msg_err) {
++		/* tx -> rx switch */
++		if (i_pro & I2C_P_IRQSS_RX) {
++			priv->status = STATUS_READ;
++			enable_burst_irq(priv);
++		}
++		if (i_pro & I2C_P_IRQSS_TX_END) {
++			if (priv->status == STATUS_READ)
++				priv->status = STATUS_READ_END;
++			else {
++				disable_burst_irq(priv);
++				priv->status = STATUS_STOP;
++			}
++		}
++	}
++
++	i2c_w32(i_pro, p_irqsc);
++}
++
++static irqreturn_t falcon_i2c_isr(int irq, void *dev_id)
++{
++	u32 i_raw, i_err = 0;
++	struct falcon_i2c *priv = dev_id;
++
++	i_raw = i2c_r32(mis);
++	PRINTK("i_raw 0x%08X\n", i_raw);
++
++	/* error interrupt */
++	if (i_raw & I2C_RIS_I2C_ERR_INT_INTOCC) {
++		i_err = i2c_r32(err_irqss);
++		PRINTK("i_err 0x%08X bus_stat 0x%04X\n",
++			i_err, i2c_r32(bus_stat));
++
++		/* tx fifo overflow (8) */
++		if (i_err & I2C_ERR_IRQSS_TXF_OFL)
++			priv->msg_err |= FALCON_I2C_TX_OFL;
++
++		/* tx fifo underflow (4) */
++		if (i_err & I2C_ERR_IRQSS_TXF_UFL)
++			priv->msg_err |= FALCON_I2C_TX_UFL;
++
++		/* rx fifo overflow (2) */
++		if (i_err & I2C_ERR_IRQSS_RXF_OFL)
++			priv->msg_err |= FALCON_I2C_RX_OFL;
++
++		/* rx fifo underflow (1) */
++		if (i_err & I2C_ERR_IRQSS_RXF_UFL)
++			priv->msg_err |= FALCON_I2C_RX_UFL;
++
++		i2c_w32(i_err, err_irqsc);
++	}
++
++	/* protocol interrupt */
++	if (i_raw & I2C_RIS_I2C_P_INT_INTOCC)
++		falcon_i2c_isr_prot(priv);
++
++	if ((priv->msg_err) || (priv->status == STATUS_STOP))
++		complete(&priv->cmd_complete);
++
++	return IRQ_HANDLED;
++}
++
++static u32 falcon_i2c_functionality(struct i2c_adapter *adap)
++{
++	return	I2C_FUNC_I2C |
++		I2C_FUNC_10BIT_ADDR |
++		I2C_FUNC_SMBUS_EMUL;
++}
++
++static struct i2c_algorithm falcon_i2c_algorithm = {
++	.master_xfer	= falcon_i2c_xfer,
++	.functionality	= falcon_i2c_functionality,
++};
++
++static int __devinit falcon_i2c_probe(struct platform_device *pdev)
++{
++	int ret = 0;
++	struct falcon_i2c *priv;
++	struct i2c_adapter *adap;
++	struct resource *mmres, *ioarea,
++			*irqres_lb, *irqres_b, *irqres_err, *irqres_p;
++	struct clk *clk;
++
++	dev_dbg(&pdev->dev, "probing\n");
++
++	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	irqres_lb = platform_get_resource_byname(pdev, IORESOURCE_IRQ,
++						 "i2c_lb");
++	irqres_b = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "i2c_b");
++	irqres_err = platform_get_resource_byname(pdev, IORESOURCE_IRQ,
++						  "i2c_err");
++	irqres_p = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "i2c_p");
++
++	if (!mmres || !irqres_lb || !irqres_b || !irqres_err || !irqres_p) {
++		dev_err(&pdev->dev, "no resources\n");
++		return -ENODEV;
++	}
++
++	clk = clk_get(&pdev->dev, "fpi");
++	if (IS_ERR(clk)) {
++		dev_err(&pdev->dev, "failed to get fpi clk\n");
++		return -ENOENT;
++	}
++
++	if (clk_get_rate(clk) != 100000000) {
++		dev_err(&pdev->dev, "input clock is not 100MHz\n");
++		return -ENOENT;
++	}
++
++	/* allocate private data */
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv) {
++		dev_err(&pdev->dev, "can't allocate private data\n");
 +		return -ENOMEM;
 +	}
 +
-+	priv = spi_master_get_devdata(master);
-+	priv->master = master;
++	adap = &priv->adap;
++	i2c_set_adapdata(adap, priv);
++	adap->owner = THIS_MODULE;
++	adap->class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
++	strlcpy(adap->name, DRV_NAME "-adapter", sizeof(adap->name));
++	adap->algo = &falcon_i2c_algorithm;
 +
-+	master->mode_bits = SPI_MODE_3;
-+	master->num_chipselect = 1;
-+	master->bus_num = 0;
++	priv->mode = FALCON_I2C_MODE_100;
++	priv->clk = clk;
++	priv->dev = &pdev->dev;
 +
-+	master->setup = falcon_spi_setup;
-+	master->transfer = falcon_spi_transfer;
-+	master->cleanup = falcon_spi_cleanup;
++	init_completion(&priv->cmd_complete);
++	mutex_init(&priv->mutex);
++
++	ret = ltq_gpio_request(107, 0, 0, DRV_NAME":sda");
++	if (ret) {
++		dev_err(&pdev->dev, "I2C gpio 107 (sda) not available\n");
++		ret = -ENXIO;
++		goto err_free_priv;
++	}
++	ret = ltq_gpio_request(108, 0, 0, DRV_NAME":scl");
++	if (ret) {
++		gpio_free(107);
++		dev_err(&pdev->dev, "I2C gpio 108 (scl) not available\n");
++		ret = -ENXIO;
++		goto err_free_priv;
++	}
++
++	ioarea = request_mem_region(mmres->start, resource_size(mmres),
++					 pdev->name);
++
++	if (ioarea == NULL) {
++		dev_err(&pdev->dev, "I2C region already claimed\n");
++		ret = -ENXIO;
++		goto err_free_gpio;
++	}
++
++	/* map memory */
++	priv->membase = ioremap_nocache(mmres->start & ~KSEG1,
++		resource_size(mmres));
++	if (priv->membase == NULL) {
++		ret = -ENOMEM;
++		goto err_release_region;
++	}
++
++	priv->irq_lb = irqres_lb->start;
++	ret = request_irq(priv->irq_lb, falcon_i2c_isr_burst, IRQF_DISABLED,
++			  irqres_lb->name, priv);
++	if (ret) {
++		dev_err(&pdev->dev, "can't get last burst IRQ %d\n",
++					irqres_lb->start);
++		ret = -ENODEV;
++		goto err_unmap_mem;
++	}
++
++	priv->irq_b = irqres_b->start;
++	ret = request_irq(priv->irq_b, falcon_i2c_isr_burst, IRQF_DISABLED,
++			  irqres_b->name, priv);
++	if (ret) {
++		dev_err(&pdev->dev, "can't get burst IRQ %d\n",
++					irqres_b->start);
++		ret = -ENODEV;
++		goto err_free_lb_irq;
++	}
++
++	priv->irq_err = irqres_err->start;
++	ret = request_irq(priv->irq_err, falcon_i2c_isr, IRQF_DISABLED,
++			  irqres_err->name, priv);
++	if (ret) {
++		dev_err(&pdev->dev, "can't get error IRQ %d\n",
++					irqres_err->start);
++		ret = -ENODEV;
++		goto err_free_b_irq;
++	}
++
++	priv->irq_p = irqres_p->start;
++	ret = request_irq(priv->irq_p, falcon_i2c_isr, IRQF_DISABLED,
++			  irqres_p->name, priv);
++	if (ret) {
++		dev_err(&pdev->dev, "can't get protocol IRQ %d\n",
++					irqres_p->start);
++		ret = -ENODEV;
++		goto err_free_err_irq;
++	}
++
++	dev_dbg(&pdev->dev, "mapped io-space to %p\n", priv->membase);
++	dev_dbg(&pdev->dev, "use IRQs %d, %d, %d, %d\n", irqres_lb->start,
++	    irqres_b->start, irqres_err->start, irqres_p->start);
++
++	/* add our adapter to the i2c stack */
++	ret = i2c_add_numbered_adapter(adap);
++	if (ret) {
++		dev_err(&pdev->dev, "can't register I2C adapter\n");
++		goto err_free_p_irq;
++	}
 +
 +	platform_set_drvdata(pdev, priv);
++	i2c_set_adapdata(adap, priv);
 +
-+	ret = spi_register_master(master);
-+	if (ret)
-+		spi_master_put(master);
++	/* print module version information */
++	dev_dbg(&pdev->dev, "module id=%u revision=%u\n",
++		(i2c_r32(id) & I2C_ID_ID_MASK) >> I2C_ID_ID_OFFSET,
++		(i2c_r32(id) & I2C_ID_REV_MASK) >> I2C_ID_REV_OFFSET);
++
++	/* initialize HW */
++	ret = falcon_i2c_hw_init(adap);
++	if (ret) {
++		dev_err(&pdev->dev, "can't configure adapter\n");
++		goto err_remove_adapter;
++	}
++
++	dev_info(&pdev->dev, "version %s\n", DRV_VERSION);
++
++	return 0;
++
++err_remove_adapter:
++	i2c_del_adapter(adap);
++	platform_set_drvdata(pdev, NULL);
++
++err_free_p_irq:
++	free_irq(priv->irq_p, priv);
++
++err_free_err_irq:
++	free_irq(priv->irq_err, priv);
++
++err_free_b_irq:
++	free_irq(priv->irq_b, priv);
++
++err_free_lb_irq:
++	free_irq(priv->irq_lb, priv);
++
++err_unmap_mem:
++	iounmap(priv->membase);
++
++err_release_region:
++	release_mem_region(mmres->start, resource_size(mmres));
++
++err_free_gpio:
++	gpio_free(108);
++	gpio_free(107);
++
++err_free_priv:
++	kfree(priv);
 +
 +	return ret;
 +}
 +
-+static int __devexit
-+falcon_spi_remove(struct platform_device *pdev)
++static int __devexit falcon_i2c_remove(struct platform_device *pdev)
 +{
-+	struct device *dev = &pdev->dev;
-+	struct falcon_spi *priv = platform_get_drvdata(pdev);
++	struct falcon_i2c *priv = platform_get_drvdata(pdev);
++	struct resource *mmres;
 +
-+	dev_dbg(dev, "removed\n");
++	/* disable bus */
++	i2c_w32_mask(I2C_RUN_CTRL_RUN_EN, 0, run_ctrl);
 +
-+	spi_unregister_master(priv->master);
++	/* remove driver */
++	platform_set_drvdata(pdev, NULL);
++	i2c_del_adapter(&priv->adap);
++
++	free_irq(priv->irq_lb, priv);
++	free_irq(priv->irq_b, priv);
++	free_irq(priv->irq_err, priv);
++	free_irq(priv->irq_p, priv);
++
++	iounmap(priv->membase);
++
++	gpio_free(108);
++	gpio_free(107);
++
++	kfree(priv);
++
++	mmres = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	release_mem_region(mmres->start, resource_size(mmres));
++
++	dev_dbg(&pdev->dev, "removed\n");
 +
 +	return 0;
 +}
 +
-+static struct platform_driver falcon_spi_driver = {
-+	.probe	= falcon_spi_probe,
-+	.remove	= __devexit_p(falcon_spi_remove),
-+	.driver = {
++static struct platform_driver falcon_i2c_driver = {
++	.probe	= falcon_i2c_probe,
++	.remove	= __devexit_p(falcon_i2c_remove),
++	.driver	= {
 +		.name	= DRV_NAME,
-+		.owner	= THIS_MODULE
-+	}
++		.owner	= THIS_MODULE,
++	},
 +};
 +
-+static int __init
-+falcon_spi_init(void)
++static int __init falcon_i2c_init(void)
 +{
-+	return platform_driver_register(&falcon_spi_driver);
++	int ret;
++
++	ret = platform_driver_register(&falcon_i2c_driver);
++
++	if (ret)
++		pr_debug(DRV_NAME ": can't register platform driver\n");
++
++	return ret;
 +}
 +
-+static void __exit
-+falcon_spi_exit(void)
++static void __exit falcon_i2c_exit(void)
 +{
-+	platform_driver_unregister(&falcon_spi_driver);
++	platform_driver_unregister(&falcon_i2c_driver);
 +}
 +
-+module_init(falcon_spi_init);
-+module_exit(falcon_spi_exit);
++module_init(falcon_i2c_init);
++module_exit(falcon_i2c_exit);
 +
++MODULE_DESCRIPTION("Lantiq FALC(tm) ON - I2C bus adapter");
++MODULE_ALIAS("platform:" DRV_NAME);
 +MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Lantiq Falcon SPI controller driver");
++MODULE_VERSION(DRV_VERSION);
 -- 
 1.7.7.1

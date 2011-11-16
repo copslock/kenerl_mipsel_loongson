@@ -1,254 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 21:02:32 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:53233 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903864Ab1KPUCY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 Nov 2011 21:02:24 +0100
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 4BB0B23C00AD;
-        Wed, 16 Nov 2011 21:02:22 +0100 (CET)
-Message-ID: <4EC416CF.3050707@openwrt.org>
-Date:   Wed, 16 Nov 2011 21:02:23 +0100
-From:   Gabor Juhos <juhosg@openwrt.org>
-MIME-Version: 1.0
-To:     Rene Bolldorf <xsecute@googlemail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] Initial support for the Ubiquiti Networks XM board.
-References: <1321440940-20246-1-git-send-email-xsecute@googlemail.com> <1321440940-20246-3-git-send-email-xsecute@googlemail.com>
-In-Reply-To: <1321440940-20246-3-git-send-email-xsecute@googlemail.com>
-X-Enigmail-Version: 1.3.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 31703
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 21:10:43 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:49445 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903864Ab1KPUKj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2011 21:10:39 +0100
+Received: by iapp10 with SMTP id p10so1256086iap.36
+        for <multiple recipients>; Wed, 16 Nov 2011 12:10:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=rcOMpGhU1sjDcrIen4OUNu8dNFqVlk5FyJv4W+qQ9nc=;
+        b=fbPblJ/FSo/xnAlFSWrK7nI1/OfT5FhXOrLK6DN5kH59SwlREuhVLr0lEhGVGAWV0E
+         MOkkJUMvFtpOTZEZ4mBayBbaRl7BFfSoSrJJCodWJ2Gupp4FxADlwi3eYnoexgSHqqoc
+         yHUKlt6/HpXRrRc9dQYk5Z5Y3Lg7eYsLRlsdI=
+Received: by 10.42.41.143 with SMTP id p15mr34244025ice.9.1321474232606;
+        Wed, 16 Nov 2011 12:10:32 -0800 (PST)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id l28sm7040025ibc.3.2011.11.16.12.10.31
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 16 Nov 2011 12:10:32 -0800 (PST)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAGKAT10013758;
+        Wed, 16 Nov 2011 12:10:29 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAGKATtl013757;
+        Wed, 16 Nov 2011 12:10:29 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Octeon: Unconditionally build __cvmx_helper_errata_qlm_disable_2nd_order_cdr
+Date:   Wed, 16 Nov 2011 12:10:28 -0800
+Message-Id: <1321474228-13726-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 31704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13799
+X-UID: 13804
 
-Hi Rene,
+From: David Daney <david.daney@cavium.com>
 
-> Signed-off-by: Rene Bolldorf <xsecute@googlemail.com>
-> ---
->  arch/mips/ath79/Kconfig        |   12 ++++
->  arch/mips/ath79/Makefile       |    1 +
->  arch/mips/ath79/Platform       |    7 ++-
->  arch/mips/ath79/mach-ubnt-xm.c |  110 ++++++++++++++++++++++++++++++++++++++++
->  arch/mips/ath79/machtypes.h    |    1 +
->  5 files changed, 128 insertions(+), 3 deletions(-)
->  create mode 100644 arch/mips/ath79/mach-ubnt-xm.c
-> 
-> diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-> index 4770741..fa74e73 100644
-> --- a/arch/mips/ath79/Kconfig
-> +++ b/arch/mips/ath79/Kconfig
-> @@ -23,6 +23,16 @@ config ATH79_MACH_PB44
->  	  Say 'Y' here if you want your kernel to support the
->  	  Atheros PB44 reference board.
->  
-> +config ATH79_MACH_UBNT_XM
-> +	bool "Ubiquiti Networks XM board"
-> +	select SOC_AR724X
-> +	select ATH79_DEV_GPIO_BUTTONS
-> +	select ATH79_DEV_LEDS_GPIO
-> +	select ATH79_DEV_SPI
-> +	help
-> +	  Say 'Y' here if you want your kernel to support the
-> +	  Ubiquiti Networks XM board.
-> +
->  endmenu
->  
->  config SOC_AR71XX
-> @@ -33,6 +43,8 @@ config SOC_AR71XX
->  config SOC_AR724X
->  	select USB_ARCH_HAS_EHCI
->  	select USB_ARCH_HAS_OHCI
-> +	select HW_HAS_PCI
-> +	select PCI
+It is needed in !OCTEON_ETHERNET and !PCI too.  Since most people will
+probably have both of these defined in any real configuration, there
+is not really any size bloat from doing this.
 
-Please don't select the whole PCI subsystem. Even if the hardware has PCI
-support, not everyone wants to build a kernel with PCI support.
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/cavium-octeon/Kconfig            |    4 ----
+ arch/mips/cavium-octeon/executive/Makefile |    2 +-
+ 2 files changed, 1 insertions(+), 5 deletions(-)
 
->  	def_bool n
->  
->  config SOC_AR913X
-> diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-> index c33d465..ac9f375 100644
-> --- a/arch/mips/ath79/Makefile
-> +++ b/arch/mips/ath79/Makefile
-> @@ -26,3 +26,4 @@ obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
->  #
->  obj-$(CONFIG_ATH79_MACH_AP81)		+= mach-ap81.o
->  obj-$(CONFIG_ATH79_MACH_PB44)		+= mach-pb44.o
-> +obj-$(CONFIG_ATH79_MACH_UBNT_XM)	+= mach-ubnt-xm.o
-> diff --git a/arch/mips/ath79/Platform b/arch/mips/ath79/Platform
-> index 2bd6636..aca7ab1 100644
-> --- a/arch/mips/ath79/Platform
-> +++ b/arch/mips/ath79/Platform
-> @@ -2,6 +2,7 @@
->  # Atheros AR71xx/AR724x/AR913x
->  #
->  
-> -platform-$(CONFIG_ATH79)	+= ath79/
-> -cflags-$(CONFIG_ATH79)		+= -I$(srctree)/arch/mips/include/asm/mach-ath79
-> -load-$(CONFIG_ATH79)		= 0xffffffff80060000
-> +platform-$(CONFIG_ATH79)		+= ath79/
-> +cflags-$(CONFIG_ATH79)			+= -I$(srctree)/arch/mips/include/asm/mach-ath79
-> +load-$(CONFIG_ATH79)			= 0xffffffff80060000
-> +load-$(CONFIG_ATH79_MACH_UBNT_XM)	= 0xffffffff80002000
-
-Please don't add another load address here.The ath79 platform code has been
-designed in a way which allows a single kernel image to run on all
-AR71xx/AR724x/AR913X/AR933x based boards, and the 0x80060000 load address has
-been chosen due to compatibility reasons. It allows to boot the kernel on older
-boards which are using RedBoot as the bootloader. The U-Boot on the
-AR724x/AR933x based boards can load the kernel to 0x8006000.
-
-> diff --git a/arch/mips/ath79/mach-ubnt-xm.c b/arch/mips/ath79/mach-ubnt-xm.c
-> new file mode 100644
-> index 0000000..150a0a0
-> --- /dev/null
-> +++ b/arch/mips/ath79/mach-ubnt-xm.c
-> @@ -0,0 +1,110 @@
-> +/*
-> + *  Ubiquiti Networks XM board support
-> + *
-> + *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
-> + *
-> + *  Derived from: mach-pb44.c
-> + *
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License version 2 as published
-> + *  by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/pci.h>
-> +#include <linux/ath9k_platform.h>
-> +
-> +#include "machtypes.h"
-> +#include "dev-gpio-buttons.h"
-> +#include "dev-leds-gpio.h"
-> +#include "dev-spi.h"
-> +
-> +#define UBNT_XM_GPIO_LED_L1		0
-> +#define UBNT_XM_GPIO_LED_L2		1
-> +#define UBNT_XM_GPIO_LED_L3		11
-> +#define UBNT_XM_GPIO_LED_L4		7
-> +
-> +#define UBNT_XM_GPIO_BTN_RESET		12
-> +
-> +#define UBNT_XM_KEYS_POLL_INTERVAL	20
-> +#define UBNT_XM_KEYS_DEBOUNCE_INTERVAL	(3 * UBNT_XM_KEYS_POLL_INTERVAL)
-> +
-> +#define UBNT_XM_PCI_IRQ			48
-> +#define UBNT_XM_EEPROM_ADDR		(u8 *) KSEG1ADDR(0x1fff1000)
-> +
-> +static struct gpio_led ubnt_xm_leds_gpio[] __initdata = {
-> +	{
-> +		.name		= "signal:poor",
-> +		.gpio		= UBNT_XM_GPIO_LED_L1,
-> +		.active_low	= 0,
-> +	}, {
-> +		.name		= "signal:bad",
-> +		.gpio		= UBNT_XM_GPIO_LED_L2,
-> +		.active_low	= 0,
-> +	}, {
-> +		.name		= "signal:good",
-> +		.gpio		= UBNT_XM_GPIO_LED_L3,
-> +		.active_low	= 0,
-> +	}, {
-> +		.name		= "signal:excellent",
-> +		.gpio		= UBNT_XM_GPIO_LED_L4,
-> +		.active_low	= 0,
-> +	},
-
-The LED names should follow the Linux LED Device Naming convention.
-See Documentation/leds/leds-class.txt.
-
-> +};
-> +
-> +static struct gpio_keys_button ubnt_xm_gpio_keys[] __initdata = {
-> +	{
-> +		.desc		= "reset",
-> +		.type		= EV_KEY,
-> +		.code		= KEY_RESTART,
-> +		.debounce_interval = UBNT_XM_KEYS_DEBOUNCE_INTERVAL,
-> +		.gpio		= UBNT_XM_GPIO_BTN_RESET,
-> +		.active_low	= 1,
-> +	}
-> +};
-> +
-> +static struct spi_board_info ubnt_xm_spi_info[] = {
-> +	{
-> +		.bus_num	= 0,
-> +		.chip_select	= 0,
-> +		.max_speed_hz	= 25000000,
-> +		.modalias	= "mx25l6405d",
-> +	}
-> +};
-> +
-> +static struct ath79_spi_platform_data ubnt_xm_spi_data = {
-> +	.bus_num		= 0,
-> +	.num_chipselect		= 1,
-> +};
-> +
-> +static struct ath9k_platform_data ubnt_xm_eeprom_data;
-> +
-> +int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
-> +{
-> +	return UBNT_XM_PCI_IRQ;
-> +}
-> +
-> +int pcibios_plat_dev_init(struct pci_dev *dev)
-> +{
-> +	dev->dev.platform_data = &ubnt_xm_eeprom_data;
-> +
-> +	return 0;
-> +}
-
-The 'pci_bios_map_irq' and 'pcibios_plat_dev_init' functions are global, so you
-can have only one instance of them within the kernel. Adding these functions
-into a machine specific file would prevent to build a kernel which supports
-multiple different boards.
-
-> +
-> +static void __init ubnt_xm_init(void)
-> +{
-> +	ath79_register_leds_gpio(-1, ARRAY_SIZE(ubnt_xm_leds_gpio),
-> +				 ubnt_xm_leds_gpio);
-
-The Ubiquiti xM family has several different models. Registering all of these
-LEDs on every XM board makes no sense, the number of the LEDs and the assigned
-GPIO lines varies between the different boards.
-
-> +
-> +	ath79_register_gpio_keys_polled(-1, UBNT_XM_KEYS_POLL_INTERVAL,
-> +					ARRAY_SIZE(ubnt_xm_gpio_keys),
-> +					ubnt_xm_gpio_keys);
-> +
-> +	ath79_register_spi(&ubnt_xm_spi_data, ubnt_xm_spi_info,
-> +			   ARRAY_SIZE(ubnt_xm_spi_info));
-> +
-> +	memcpy(ubnt_xm_eeprom_data.eeprom_data, UBNT_XM_EEPROM_ADDR,
-> +	       sizeof(ubnt_xm_eeprom_data.eeprom_data));
-> +}
-> +
-> +MIPS_MACHINE(ATH79_MACH_UBNT_XM, "UBNT-XM", "Ubiquiti Networks XM board", ubnt_xm_init);
-> diff --git a/arch/mips/ath79/machtypes.h b/arch/mips/ath79/machtypes.h
-> index 3940fe4..1bb0747 100644
-> --- a/arch/mips/ath79/machtypes.h
-> +++ b/arch/mips/ath79/machtypes.h
-> @@ -18,6 +18,7 @@ enum ath79_mach_type {
->  	ATH79_MACH_GENERIC = 0,
->  	ATH79_MACH_AP81,		/* Atheros AP81 reference board */
->  	ATH79_MACH_PB44,		/* Atheros PB44 reference board */
-> +	ATH79_MACH_UBNT_XM,		/* Ubiquiti Networks XM board */
->  };
->  
->  #endif /* _ATH79_MACHTYPE_H */
+diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+index cad555e..f9e275a 100644
+--- a/arch/mips/cavium-octeon/Kconfig
++++ b/arch/mips/cavium-octeon/Kconfig
+@@ -86,10 +86,6 @@ config ARCH_SPARSEMEM_ENABLE
+ 	def_bool y
+ 	select SPARSEMEM_STATIC
+ 
+-config CAVIUM_OCTEON_HELPER
+-	def_bool y
+-	depends on OCTEON_ETHERNET || PCI
+-
+ config IOMMU_HELPER
+ 	bool
+ 
+diff --git a/arch/mips/cavium-octeon/executive/Makefile b/arch/mips/cavium-octeon/executive/Makefile
+index eec0b88..b6d6e84 100644
+--- a/arch/mips/cavium-octeon/executive/Makefile
++++ b/arch/mips/cavium-octeon/executive/Makefile
+@@ -16,4 +16,4 @@ obj-y += cvmx-pko.o cvmx-spi.o cvmx-cmd-queue.o \
+ 	cvmx-helper-loop.o cvmx-helper-spi.o cvmx-helper-util.o \
+ 	cvmx-interrupt-decodes.o cvmx-interrupt-rsl.o
+ 
+-obj-$(CONFIG_CAVIUM_OCTEON_HELPER) += cvmx-helper-errata.o cvmx-helper-jtag.o
++obj-y += cvmx-helper-errata.o cvmx-helper-jtag.o
+-- 
+1.7.2.3

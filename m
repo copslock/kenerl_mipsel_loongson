@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 11:56:48 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:40550 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 11:57:15 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:50962 "EHLO
         mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903783Ab1KPK4Q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2011 11:56:16 +0100
-Received: by bkat2 with SMTP id t2so446295bka.36
-        for <multiple recipients>; Wed, 16 Nov 2011 02:56:11 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1903785Ab1KPK4T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2011 11:56:19 +0100
+Received: by bkat2 with SMTP id t2so446351bka.36
+        for <multiple recipients>; Wed, 16 Nov 2011 02:56:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
          :mime-version:content-type:content-transfer-encoding;
-        bh=tKQl2+Wi233nse5cn5yvDjGzau2nVPj6SNaLuDwt1Pw=;
-        b=NM6EuU0mLYCcRaKAGTBnHYt6vfNeqFBTAerta6QYt2ZOpFKXMuG4+lxHFvSYyfLYcg
-         twChY3Ssc3AJbTsyyL4m4eBfJLvpp3urNEdCVmQKIon/0XjhbsP9Je1ezlNyvRCpptNF
-         ZzfE3Cn57s+0v1FxYz8euF+5xrTNURCpUuC/w=
-Received: by 10.204.14.208 with SMTP id h16mr28096602bka.2.1321440971389;
-        Wed, 16 Nov 2011 02:56:11 -0800 (PST)
+        bh=03+7HhHGhwKf0Lw/GRA7WbGZEfPEbxEJp4vt8aFeiq0=;
+        b=JvHxTd7vUQ/NINpfXdQCkIh2Q/gXz5aE+VWAMoSKE+KJu+xWMpdAVVdj6ujqyNYd5b
+         u/DUL8w5q/qVIntlMxFOu7T37g//I+PPll5ewVJ5TuQZrSGyPWYFoJXJk45JtTsFmVu4
+         Uz1NRiQgKrKmRdOuIUyaq5X+mvUqxcLot+dZc=
+Received: by 10.205.124.144 with SMTP id go16mr20547780bkc.119.1321440973877;
+        Wed, 16 Nov 2011 02:56:13 -0800 (PST)
 Received: from localhost.localdomain (dslb-178-003-254-091.pools.arcor-ip.net. [178.3.254.91])
-        by mx.google.com with ESMTPS id z7sm38609961bka.1.2011.11.16.02.56.09
+        by mx.google.com with ESMTPS id z7sm38609961bka.1.2011.11.16.02.56.12
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 16 Nov 2011 02:56:10 -0800 (PST)
+        Wed, 16 Nov 2011 02:56:13 -0800 (PST)
 From:   Rene Bolldorf <xsecute@googlemail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
         Rene Bolldorf <xsecute@googlemail.com>
-Subject: =?UTF-8?q?=5BPATCH=201/2=5D=20Initial=20PCI=20support=20for=20Atheros=20724x=20SoCs=2E?=
-Date:   Wed, 16 Nov 2011 11:55:39 +0100
-Message-Id: <1321440940-20246-2-git-send-email-xsecute@googlemail.com>
+Subject: =?UTF-8?q?=5BPATCH=202/2=5D=20Initial=20support=20for=20the=20Ubiquiti=20Networks=20XM=20board=2E?=
+Date:   Wed, 16 Nov 2011 11:55:40 +0100
+Message-Id: <1321440940-20246-3-git-send-email-xsecute@googlemail.com>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1321440940-20246-1-git-send-email-xsecute@googlemail.com>
 References: <1321440940-20246-1-git-send-email-xsecute@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-archive-position: 31642
+X-archive-position: 31643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,194 +41,199 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13290
+X-UID: 13291
 
 Signed-off-by: Rene Bolldorf <xsecute@googlemail.com>
 ---
- arch/mips/pci/Makefile      |    1 +
- arch/mips/pci/ops-ath724x.c |  109 +++++++++++++++++++++++++++++++++++++++++++
- arch/mips/pci/pci-ath724x.c |   45 ++++++++++++++++++
- 3 files changed, 155 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/pci/ops-ath724x.c
- create mode 100644 arch/mips/pci/pci-ath724x.c
+ arch/mips/ath79/Kconfig        |   12 ++++
+ arch/mips/ath79/Makefile       |    1 +
+ arch/mips/ath79/Platform       |    7 ++-
+ arch/mips/ath79/mach-ubnt-xm.c |  110 ++++++++++++++++++++++++++++++++++++++++
+ arch/mips/ath79/machtypes.h    |    1 +
+ 5 files changed, 128 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/ath79/mach-ubnt-xm.c
 
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index bb82cbd..5180b38 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -19,6 +19,7 @@ obj-$(CONFIG_BCM47XX)		+= pci-bcm47xx.o
- obj-$(CONFIG_BCM63XX)		+= pci-bcm63xx.o fixup-bcm63xx.o \
- 					ops-bcm63xx.o
- obj-$(CONFIG_MIPS_ALCHEMY)	+= pci-alchemy.o
-+obj-$(CONFIG_SOC_AR724X)	+= ops-ath724x.o pci-ath724x.o
+diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
+index 4770741..fa74e73 100644
+--- a/arch/mips/ath79/Kconfig
++++ b/arch/mips/ath79/Kconfig
+@@ -23,6 +23,16 @@ config ATH79_MACH_PB44
+ 	  Say 'Y' here if you want your kernel to support the
+ 	  Atheros PB44 reference board.
  
++config ATH79_MACH_UBNT_XM
++	bool "Ubiquiti Networks XM board"
++	select SOC_AR724X
++	select ATH79_DEV_GPIO_BUTTONS
++	select ATH79_DEV_LEDS_GPIO
++	select ATH79_DEV_SPI
++	help
++	  Say 'Y' here if you want your kernel to support the
++	  Ubiquiti Networks XM board.
++
+ endmenu
+ 
+ config SOC_AR71XX
+@@ -33,6 +43,8 @@ config SOC_AR71XX
+ config SOC_AR724X
+ 	select USB_ARCH_HAS_EHCI
+ 	select USB_ARCH_HAS_OHCI
++	select HW_HAS_PCI
++	select PCI
+ 	def_bool n
+ 
+ config SOC_AR913X
+diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
+index c33d465..ac9f375 100644
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -26,3 +26,4 @@ obj-$(CONFIG_ATH79_DEV_SPI)		+= dev-spi.o
  #
- # These are still pretty much in the old state, watch, go blind.
-diff --git a/arch/mips/pci/ops-ath724x.c b/arch/mips/pci/ops-ath724x.c
+ obj-$(CONFIG_ATH79_MACH_AP81)		+= mach-ap81.o
+ obj-$(CONFIG_ATH79_MACH_PB44)		+= mach-pb44.o
++obj-$(CONFIG_ATH79_MACH_UBNT_XM)	+= mach-ubnt-xm.o
+diff --git a/arch/mips/ath79/Platform b/arch/mips/ath79/Platform
+index 2bd6636..aca7ab1 100644
+--- a/arch/mips/ath79/Platform
++++ b/arch/mips/ath79/Platform
+@@ -2,6 +2,7 @@
+ # Atheros AR71xx/AR724x/AR913x
+ #
+ 
+-platform-$(CONFIG_ATH79)	+= ath79/
+-cflags-$(CONFIG_ATH79)		+= -I$(srctree)/arch/mips/include/asm/mach-ath79
+-load-$(CONFIG_ATH79)		= 0xffffffff80060000
++platform-$(CONFIG_ATH79)		+= ath79/
++cflags-$(CONFIG_ATH79)			+= -I$(srctree)/arch/mips/include/asm/mach-ath79
++load-$(CONFIG_ATH79)			= 0xffffffff80060000
++load-$(CONFIG_ATH79_MACH_UBNT_XM)	= 0xffffffff80002000
+diff --git a/arch/mips/ath79/mach-ubnt-xm.c b/arch/mips/ath79/mach-ubnt-xm.c
 new file mode 100644
-index 0000000..bd3cf15
+index 0000000..150a0a0
 --- /dev/null
-+++ b/arch/mips/pci/ops-ath724x.c
-@@ -0,0 +1,109 @@
++++ b/arch/mips/ath79/mach-ubnt-xm.c
+@@ -0,0 +1,110 @@
 +/*
-+ *  Atheros 724x PCI support
++ *  Ubiquiti Networks XM board support
 + *
 + *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
++ *
++ *  Derived from: mach-pb44.c
 + *
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
 + *  by the Free Software Foundation.
 + */
 +
++#include <linux/init.h>
 +#include <linux/pci.h>
++#include <linux/ath9k_platform.h>
 +
-+#define reg_read(_phys)		(*(volatile unsigned int *) KSEG1ADDR(_phys))
-+#define reg_write(_phys, _val)	((*(volatile unsigned int *) KSEG1ADDR(_phys)) = (_val))
++#include "machtypes.h"
++#include "dev-gpio-buttons.h"
++#include "dev-leds-gpio.h"
++#include "dev-spi.h"
 +
-+#define ATH724X_PCI_DEV_BASE	0x14000000
++#define UBNT_XM_GPIO_LED_L1		0
++#define UBNT_XM_GPIO_LED_L2		1
++#define UBNT_XM_GPIO_LED_L3		11
++#define UBNT_XM_GPIO_LED_L4		7
 +
-+static DEFINE_SPINLOCK(ath724x_pci_lock);
++#define UBNT_XM_GPIO_BTN_RESET		12
 +
-+static int ath724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
-+			    int size, uint32_t *value)
-+{
-+	unsigned long flags, addr, tval, mask;
++#define UBNT_XM_KEYS_POLL_INTERVAL	20
++#define UBNT_XM_KEYS_DEBOUNCE_INTERVAL	(3 * UBNT_XM_KEYS_POLL_INTERVAL)
 +
-+	if(devfn)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
++#define UBNT_XM_PCI_IRQ			48
++#define UBNT_XM_EEPROM_ADDR		(u8 *) KSEG1ADDR(0x1fff1000)
 +
-+	if(where & (size - 1))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
++static struct gpio_led ubnt_xm_leds_gpio[] __initdata = {
++	{
++		.name		= "signal:poor",
++		.gpio		= UBNT_XM_GPIO_LED_L1,
++		.active_low	= 0,
++	}, {
++		.name		= "signal:bad",
++		.gpio		= UBNT_XM_GPIO_LED_L2,
++		.active_low	= 0,
++	}, {
++		.name		= "signal:good",
++		.gpio		= UBNT_XM_GPIO_LED_L3,
++		.active_low	= 0,
++	}, {
++		.name		= "signal:excellent",
++		.gpio		= UBNT_XM_GPIO_LED_L4,
++		.active_low	= 0,
++	},
++};
 +
-+	spin_lock_irqsave(&ath724x_pci_lock, flags);
-+
-+	switch (size) {
-+	case 1:
-+		addr = where & ~3;
-+		mask = 0xff000000 >> ((where % 4) * 8);
-+		tval = reg_read(ATH724X_PCI_DEV_BASE + addr);
-+		tval = tval & ~mask;
-+		*value = (tval >> ((4 - (where % 4))*8));
-+	break;
-+	case 2:
-+		addr = where & ~3;
-+		mask = 0xffff0000 >> ((where % 4)*8);
-+		tval = reg_read(ATH724X_PCI_DEV_BASE + addr);
-+		tval = tval & ~mask;
-+		*value = (tval >> ((4 - (where % 4))*8));
-+	break;
-+	case 4:
-+		*value = reg_read(ATH724X_PCI_DEV_BASE + where);
-+	break;
-+	default:
-+		spin_unlock_irqrestore(&ath724x_pci_lock, flags);
-+
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
++static struct gpio_keys_button ubnt_xm_gpio_keys[] __initdata = {
++	{
++		.desc		= "reset",
++		.type		= EV_KEY,
++		.code		= KEY_RESTART,
++		.debounce_interval = UBNT_XM_KEYS_DEBOUNCE_INTERVAL,
++		.gpio		= UBNT_XM_GPIO_BTN_RESET,
++		.active_low	= 1,
 +	}
++};
 +
-+	spin_unlock_irqrestore(&ath724x_pci_lock, flags);
++static struct spi_board_info ubnt_xm_spi_info[] = {
++	{
++		.bus_num	= 0,
++		.chip_select	= 0,
++		.max_speed_hz	= 25000000,
++		.modalias	= "mx25l6405d",
++	}
++};
 +
-+	return PCIBIOS_SUCCESSFUL;
++static struct ath79_spi_platform_data ubnt_xm_spi_data = {
++	.bus_num		= 0,
++	.num_chipselect		= 1,
++};
++
++static struct ath9k_platform_data ubnt_xm_eeprom_data;
++
++int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
++{
++	return UBNT_XM_PCI_IRQ;
 +}
 +
-+static int ath724x_pci_write(struct pci_bus *bus,  unsigned int devfn, int where,
-+			     int size, uint32_t value)
++int pcibios_plat_dev_init(struct pci_dev *dev)
 +{
-+	unsigned long flags, tval, addr, mask;
-+
-+	if(devfn)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	if(where & (size - 1))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+
-+	spin_lock_irqsave(&ath724x_pci_lock, flags);
-+
-+	switch (size) {
-+	case 1:
-+		addr = (ATH724X_PCI_DEV_BASE + where) & ~3;
-+		mask = 0xff000000 >> ((where % 4)*8);
-+		tval = reg_read(addr);
-+		tval = tval & ~mask;
-+		tval |= (value << ((4 - (where % 4))*8)) & mask;
-+		reg_write(addr,tval);
-+	break;
-+	case 2:
-+		addr = (ATH724X_PCI_DEV_BASE + where) & ~3;
-+		mask = 0xffff0000 >> ((where % 4)*8);
-+		tval = reg_read(addr);
-+		tval = tval & ~mask;
-+		tval |= (value << ((4 - (where % 4))*8)) & mask;
-+		reg_write(addr,tval);
-+	break;
-+	case 4:
-+		reg_write((ATH724X_PCI_DEV_BASE + where),value);
-+	break;
-+	default:
-+		spin_unlock_irqrestore(&ath724x_pci_lock, flags);
-+
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	}
-+
-+	spin_unlock_irqrestore(&ath724x_pci_lock, flags);
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+struct pci_ops ath724x_pci_ops = {
-+	.read	= ath724x_pci_read,
-+	.write	= ath724x_pci_write,
-+};
-diff --git a/arch/mips/pci/pci-ath724x.c b/arch/mips/pci/pci-ath724x.c
-new file mode 100644
-index 0000000..6c6c483
---- /dev/null
-+++ b/arch/mips/pci/pci-ath724x.c
-@@ -0,0 +1,45 @@
-+/*
-+ *  Atheros 724x PCI support
-+ *
-+ *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include <linux/pci.h>
-+
-+#define ATH724X_PCI_MEM_BASE    0x10000000
-+#define ATH724X_PCI_MEM_SIZE    0x08000000
-+
-+static struct resource ath724x_io_resource = {
-+	.name	= "PCI IO space",
-+	.start	= 0,
-+	.end	= 0,
-+	.flags	= IORESOURCE_IO,
-+};
-+
-+static struct resource ath724x_mem_resource = {
-+	.name	= "PCI memory space",
-+	.start	= ATH724X_PCI_MEM_BASE,
-+	.end	= ATH724X_PCI_MEM_BASE + ATH724X_PCI_MEM_SIZE - 1,
-+	.flags	= IORESOURCE_MEM,
-+};
-+
-+extern struct pci_ops ath724x_pci_ops;
-+
-+static struct pci_controller ath724x_pci_controller = {
-+	.pci_ops	= &ath724x_pci_ops,
-+	.mem_resource	= &ath724x_mem_resource,
-+	.io_resource	= &ath724x_io_resource,
-+};
-+
-+static int __init ath724x_pcibios_init(void)
-+{
-+	register_pci_controller(&ath724x_pci_controller);
++	dev->dev.platform_data = &ubnt_xm_eeprom_data;
 +
 +	return 0;
 +}
 +
-+arch_initcall(ath724x_pcibios_init);
++static void __init ubnt_xm_init(void)
++{
++	ath79_register_leds_gpio(-1, ARRAY_SIZE(ubnt_xm_leds_gpio),
++				 ubnt_xm_leds_gpio);
++
++	ath79_register_gpio_keys_polled(-1, UBNT_XM_KEYS_POLL_INTERVAL,
++					ARRAY_SIZE(ubnt_xm_gpio_keys),
++					ubnt_xm_gpio_keys);
++
++	ath79_register_spi(&ubnt_xm_spi_data, ubnt_xm_spi_info,
++			   ARRAY_SIZE(ubnt_xm_spi_info));
++
++	memcpy(ubnt_xm_eeprom_data.eeprom_data, UBNT_XM_EEPROM_ADDR,
++	       sizeof(ubnt_xm_eeprom_data.eeprom_data));
++}
++
++MIPS_MACHINE(ATH79_MACH_UBNT_XM, "UBNT-XM", "Ubiquiti Networks XM board", ubnt_xm_init);
+diff --git a/arch/mips/ath79/machtypes.h b/arch/mips/ath79/machtypes.h
+index 3940fe4..1bb0747 100644
+--- a/arch/mips/ath79/machtypes.h
++++ b/arch/mips/ath79/machtypes.h
+@@ -18,6 +18,7 @@ enum ath79_mach_type {
+ 	ATH79_MACH_GENERIC = 0,
+ 	ATH79_MACH_AP81,		/* Atheros AP81 reference board */
+ 	ATH79_MACH_PB44,		/* Atheros PB44 reference board */
++	ATH79_MACH_UBNT_XM,		/* Ubiquiti Networks XM board */
+ };
+ 
+ #endif /* _ATH79_MACHTYPE_H */
 -- 
 1.7.7.1

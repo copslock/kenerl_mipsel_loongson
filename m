@@ -1,71 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 20:45:18 +0100 (CET)
-Received: from mail-gx0-f177.google.com ([209.85.161.177]:56621 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 20:51:45 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:59313 "EHLO
         mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903864Ab1KPTpL (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 16 Nov 2011 20:45:11 +0100
-Received: by ggnb1 with SMTP id b1so87596ggn.36
-        for <multiple recipients>; Wed, 16 Nov 2011 11:45:05 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1903864Ab1KPTvi convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 Nov 2011 20:51:38 +0100
+Received: by ggnb1 with SMTP id b1so96807ggn.36
+        for <multiple recipients>; Wed, 16 Nov 2011 11:51:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=1dUh3L9fpvLEtXnYf8iCofytBwYqryA3scnvmshozZ0=;
-        b=aJyNs9AHbLPQYt456I0siW5SJX9ERG2jDHEd06ZBwtEBo4xrVzcG3nBLkQTUGtN8nw
-         aOR6If7wMvjIb4XFzPK2zNKeqkXfKRCCPXObhkcCGHD9C0CO/8x2hpVX9MxsFNYnoLSS
-         8I03FLgun+y327zqMizAbtA3mM3dJB2ubBW8E=
-Received: by 10.236.174.3 with SMTP id w3mr4169161yhl.117.1321472704981;
-        Wed, 16 Nov 2011 11:45:04 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id l27sm88731867ani.21.2011.11.16.11.45.04
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 16 Nov 2011 11:45:04 -0800 (PST)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAGJiKWc013328;
-        Wed, 16 Nov 2011 11:44:20 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAGJhZ3B013323;
-        Wed, 16 Nov 2011 11:43:35 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        William Irwin <wli@holomorphy.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding;
+        bh=HjzCm+trlPzkD9bmrh7jrImO5ZytGP+DtIVacgGYy/I=;
+        b=pSTwbHiZE7Q95eKvGPZ6R0Fnlaf8XsT1x0pwfPd2d7o3mtWsRB3EBR+xR1gVy1GhM4
+         NoSV9J+iuRLRH2z27/SQKBHDw/OzHCl9/0pBFsf1wF76ByDINnJ1ysB7IsCKNEJKsnTy
+         lQ8+0WKh39rM8R8lorbOmfm+qdk7FnyuWhKF8=
+Received: by 10.236.200.135 with SMTP id z7mr4328090yhn.33.1321473092118; Wed,
+ 16 Nov 2011 11:51:32 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.236.102.141 with HTTP; Wed, 16 Nov 2011 11:50:51 -0800 (PST)
+In-Reply-To: <1321440940-20246-2-git-send-email-xsecute@googlemail.com>
+References: <1321440940-20246-1-git-send-email-xsecute@googlemail.com> <1321440940-20246-2-git-send-email-xsecute@googlemail.com>
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+Date:   Wed, 16 Nov 2011 20:50:51 +0100
+Message-ID: <CAOLZvyENpkRs7RtsUkeBHb-JdYTq1gV3D0m82ukH1m6SGcaT8w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] Initial PCI support for Atheros 724x SoCs.
+To:     Rene Bolldorf <xsecute@googlemail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] hugetlb: Provide a default HPAGE_SHIFT if !CONFIG_HUGETLB_PAGE
-Date:   Wed, 16 Nov 2011 11:43:31 -0800
-Message-Id: <1321472611-13283-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 31701
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 31702
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13785
+X-UID: 13789
 
-From: David Daney <david.daney@cavium.com>
+Howdy,
 
-This is required now to get MIPS kernels to compile with
-!CONFIG_HUGETLB_PAGE.
+On Wed, Nov 16, 2011 at 11:55 AM, Rene Bolldorf <xsecute@googlemail.com> wrote:
+> Signed-off-by: Rene Bolldorf <xsecute@googlemail.com>
+> ---
+>  arch/mips/pci/Makefile      |    1 +
+>  arch/mips/pci/ops-ath724x.c |  109 +++++++++++++++++++++++++++++++++++++++++++
+>  arch/mips/pci/pci-ath724x.c |   45 ++++++++++++++++++
 
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- include/linux/hugetlb.h |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+Why don't you just merge ops-ath724x.c into pci-ath724x.c?  (the only
+place where its
+contents are referenced)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 19644e0..746d543 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -113,6 +113,7 @@ static inline void copy_huge_page(struct page *dst, struct page *src)
- #ifndef HPAGE_MASK
- #define HPAGE_MASK	PAGE_MASK		/* Keep the compiler happy */
- #define HPAGE_SIZE	PAGE_SIZE
-+#define HPAGE_SHIFT	PAGE_SHIFT
- #endif
- 
- #endif /* !CONFIG_HUGETLB_PAGE */
--- 
-1.7.2.3
+
+> diff --git a/arch/mips/pci/ops-ath724x.c b/arch/mips/pci/ops-ath724x.c
+> new file mode 100644
+> index 0000000..bd3cf15
+> --- /dev/null
+> +++ b/arch/mips/pci/ops-ath724x.c
+> @@ -0,0 +1,109 @@
+[...]
+> +static int ath724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+> +                           int size, uint32_t *value)
+> +{
+> +       unsigned long flags, addr, tval, mask;
+> +
+> +       if(devfn)
+> +               return PCIBIOS_DEVICE_NOT_FOUND;
+> +
+> +       if(where & (size - 1))
+> +               return PCIBIOS_BAD_REGISTER_NUMBER;
+
+Please run both patches through checkpatch once and fix up the
+codingstyle issues it
+will complain about (like the two above).
+
+
+Thanks,
+        Manuel Lauss

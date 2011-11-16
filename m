@@ -1,19 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 14:31:15 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47401 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Nov 2011 14:31:41 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47425 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903816Ab1KPN2w (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 16 Nov 2011 14:28:52 +0100
+        id S1903819Ab1KPN3M (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 16 Nov 2011 14:29:12 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
         Thomas Langer <thomas.langer@lantiq.com>
-Subject: [PATCH V2 6/6] MIPS: lantiq: add support for the EASY98000 evaluation board
-Date:   Wed, 16 Nov 2011 15:28:18 +0100
-Message-Id: <1321453698-2598-6-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 1/6] MIPS: lantiq: fix early printk
+Date:   Wed, 16 Nov 2011 15:28:37 +0100
+Message-Id: <1321453722-2689-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
-In-Reply-To: <1321453698-2598-1-git-send-email-blogic@openwrt.org>
-References: <1321453698-2598-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 31663
+X-archive-position: 31664
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,176 +20,67 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 13395
+X-UID: 13397
 
-This patch adds the machine code for the EASY9800 evaluation board.
+The code was using a 32bit write operations in the early_printk code. This
+resulted in 3 zero bytes also being written to the serial port. This patch
+changes the memory access to 8bit.
 
 Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/falcon/Kconfig          |   11 +++
- arch/mips/lantiq/falcon/Makefile         |    1 +
- arch/mips/lantiq/falcon/mach-easy98000.c |  110 ++++++++++++++++++++++++++++++
- arch/mips/lantiq/machtypes.h             |    5 ++
- 4 files changed, 127 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/lantiq/falcon/Kconfig
- create mode 100644 arch/mips/lantiq/falcon/mach-easy98000.c
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    6 ++++++
+ arch/mips/lantiq/early_printk.c                    |   14 ++++++++------
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/lantiq/falcon/Kconfig b/arch/mips/lantiq/falcon/Kconfig
-new file mode 100644
-index 0000000..03e999d
---- /dev/null
-+++ b/arch/mips/lantiq/falcon/Kconfig
-@@ -0,0 +1,11 @@
-+if SOC_FALCON
-+
-+menu "MIPS Machine"
-+
-+config LANTIQ_MACH_EASY98000
-+	bool "Easy98000"
-+	default y
-+
-+endmenu
-+
-+endif
-diff --git a/arch/mips/lantiq/falcon/Makefile b/arch/mips/lantiq/falcon/Makefile
-index de72209..56b22eb 100644
---- a/arch/mips/lantiq/falcon/Makefile
-+++ b/arch/mips/lantiq/falcon/Makefile
-@@ -1 +1,2 @@
- obj-y := clk.o prom.o reset.o sysctrl.o devices.o gpio.o
-+obj-$(CONFIG_LANTIQ_MACH_EASY98000) += mach-easy98000.o
-diff --git a/arch/mips/lantiq/falcon/mach-easy98000.c b/arch/mips/lantiq/falcon/mach-easy98000.c
-new file mode 100644
-index 0000000..361b8f0
---- /dev/null
-+++ b/arch/mips/lantiq/falcon/mach-easy98000.c
-@@ -0,0 +1,110 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
-+ *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/platform_device.h>
-+#include <linux/mtd/partitions.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_gpio.h>
-+#include <linux/spi/eeprom.h>
-+
-+#include "../machtypes.h"
-+
-+#include "devices.h"
-+
-+static struct mtd_partition easy98000_nor_partitions[] = {
-+	{
-+		.name	= "uboot",
-+		.offset	= 0x0,
-+		.size	= 0x40000,
-+	},
-+	{
-+		.name	= "uboot_env",
-+		.offset	= 0x40000,
-+		.size	= 0x40000,	/* 2 sectors for redundant env. */
-+	},
-+	{
-+		.name	= "linux",
-+		.offset	= 0x80000,
-+		.size	= 0xF80000,	/* map only 16 MiB */
-+	},
-+};
-+
-+struct physmap_flash_data easy98000_nor_flash_data = {
-+	.nr_parts	= ARRAY_SIZE(easy98000_nor_partitions),
-+	.parts		= easy98000_nor_partitions,
-+};
-+
-+/* setup gpio based spi bus/device for access to the eeprom on the board */
-+#define SPI_GPIO_MRST		102
-+#define SPI_GPIO_MTSR		103
-+#define SPI_GPIO_CLK		104
-+#define SPI_GPIO_CS0		105
-+#define SPI_GPIO_CS1		106
-+#define SPI_GPIO_BUS_NUM	1
-+
-+static struct spi_gpio_platform_data easy98000_spi_gpio_data = {
-+	.sck		= SPI_GPIO_CLK,
-+	.mosi		= SPI_GPIO_MTSR,
-+	.miso		= SPI_GPIO_MRST,
-+	.num_chipselect	= 2,
-+};
-+
-+static struct platform_device easy98000_spi_gpio_device = {
-+	.name			= "spi_gpio",
-+	.id			= SPI_GPIO_BUS_NUM,
-+	.dev.platform_data	= &easy98000_spi_gpio_data,
-+};
-+
-+static struct spi_eeprom at25160n = {
-+	.byte_len	= 16 * 1024 / 8,
-+	.name		= "at25160n",
-+	.page_size	= 32,
-+	.flags		= EE_ADDR2,
-+};
-+
-+static struct spi_board_info easy98000_spi_gpio_devices __initdata = {
-+	.modalias		= "at25",
-+	.bus_num		= SPI_GPIO_BUS_NUM,
-+	.max_speed_hz		= 1000 * 1000,
-+	.mode			= SPI_MODE_3,
-+	.chip_select		= 1,
-+	.controller_data	= (void *) SPI_GPIO_CS1,
-+	.platform_data		= &at25160n,
-+};
-+
-+static void __init
-+easy98000_init_common(void)
-+{
-+	spi_register_board_info(&easy98000_spi_gpio_devices, 1);
-+	platform_device_register(&easy98000_spi_gpio_device);
-+}
-+
-+static void __init
-+easy98000_init(void)
-+{
-+	easy98000_init_common();
-+	ltq_register_nor(&easy98000_nor_flash_data);
-+}
-+
-+static void __init
-+easy98000nand_init(void)
-+{
-+	easy98000_init_common();
-+	falcon_register_nand();
-+}
-+
-+MIPS_MACHINE(LANTIQ_MACH_EASY98000,
-+			"EASY98000",
-+			"EASY98000 Eval Board",
-+			easy98000_init);
-+
-+MIPS_MACHINE(LANTIQ_MACH_EASY98000NAND,
-+			"EASY98000NAND",
-+			"EASY98000 Eval Board (NAND Flash)",
-+			easy98000nand_init);
-diff --git a/arch/mips/lantiq/machtypes.h b/arch/mips/lantiq/machtypes.h
-index 7e01b8c..dfc6af7 100644
---- a/arch/mips/lantiq/machtypes.h
-+++ b/arch/mips/lantiq/machtypes.h
-@@ -15,6 +15,11 @@ enum lantiq_mach_type {
- 	LTQ_MACH_GENERIC = 0,
- 	LTQ_MACH_EASY50712,	/* Danube evaluation board */
- 	LTQ_MACH_EASY50601,	/* Amazon SE evaluation board */
-+
-+	/* FALCON */
-+	LANTIQ_MACH_EASY98000,		/* Falcon Eval Board, NOR Flash */
-+	LANTIQ_MACH_EASY98000SF,	/* Falcon Eval Board, Serial Flash */
-+	LANTIQ_MACH_EASY98000NAND,	/* Falcon Eval Board, NAND Flash */
- };
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index 87f6d24..e31f52d 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -34,6 +34,12 @@
+ #define LTQ_ASC1_BASE_ADDR	0x1E100C00
+ #define LTQ_ASC_SIZE		0x400
  
- #endif
++/*
++ * during early_printk no ioremap is possible
++ * lets use KSEG1 instead
++ */
++#define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
++
+ /* RCU - reset control unit */
+ #define LTQ_RCU_BASE_ADDR	0x1F203000
+ #define LTQ_RCU_SIZE		0x1000
+diff --git a/arch/mips/lantiq/early_printk.c b/arch/mips/lantiq/early_printk.c
+index 972e05f..5089075 100644
+--- a/arch/mips/lantiq/early_printk.c
++++ b/arch/mips/lantiq/early_printk.c
+@@ -12,11 +12,13 @@
+ #include <lantiq.h>
+ #include <lantiq_soc.h>
+ 
+-/* no ioremap possible at this early stage, lets use KSEG1 instead  */
+-#define LTQ_ASC_BASE	KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
+ #define ASC_BUF		1024
+-#define LTQ_ASC_FSTAT	((u32 *)(LTQ_ASC_BASE + 0x0048))
+-#define LTQ_ASC_TBUF	((u32 *)(LTQ_ASC_BASE + 0x0020))
++#define LTQ_ASC_FSTAT	((u32 *)(LTQ_EARLY_ASC + 0x0048))
++#ifdef __BIG_ENDIAN
++#define LTQ_ASC_TBUF	((u32 *)(LTQ_EARLY_ASC + 0x0020 + 3))
++#else
++#define LTQ_ASC_TBUF	((u32 *)(LTQ_EARLY_ASC + 0x0020))
++#endif
+ #define TXMASK		0x3F00
+ #define TXOFFSET	8
+ 
+@@ -27,7 +29,7 @@ void prom_putchar(char c)
+ 	local_irq_save(flags);
+ 	do { } while ((ltq_r32(LTQ_ASC_FSTAT) & TXMASK) >> TXOFFSET);
+ 	if (c == '\n')
+-		ltq_w32('\r', LTQ_ASC_TBUF);
+-	ltq_w32(c, LTQ_ASC_TBUF);
++		ltq_w8('\r', LTQ_ASC_TBUF);
++	ltq_w8(c, LTQ_ASC_TBUF);
+ 	local_irq_restore(flags);
+ }
 -- 
 1.7.7.1

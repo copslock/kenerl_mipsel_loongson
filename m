@@ -1,125 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 20:07:11 +0100 (CET)
-Received: from wolverine02.qualcomm.com ([199.106.114.251]:27854 "EHLO
-        wolverine02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904058Ab1KQTHF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2011 20:07:05 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qca.qualcomm.com; i=kvalo@qca.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1321556824; x=1353092824;
-  h=message-id:date:from:mime-version:to:cc:subject:
-   references:in-reply-to:content-transfer-encoding;
-  z=Message-ID:=20<4EC55B4A.7050001@qca.qualcomm.com>|Date:
-   =20Thu,=2017=20Nov=202011=2021:06:50=20+0200|From:=20Kall
-   e=20Valo=20<kvalo@qca.qualcomm.com>|MIME-Version:=201.0
-   |To:=20Sangwook=20Lee=20<sangwook.lee@linaro.org>|CC:=20<
-   mcgrof@frijolero.org>,=20<linux-kernel@vger.kernel.org>,
-   =0D=0A=09<linux-mips@linux-mips.org>,=20<linux-wireless@v
-   ger.kernel.org>,=0D=0A=09<ath9k-devel@lists.ath9k.org>,
-   =20<ralf@linux-mips.org>,=20<juhosg@openwrt.org>,=0D=0A
-   =09<rodrigue@qca.qualcomm.com>,=20<linville@tuxdriver.com
-   >,=0D=0A=09<rmanohar@qca.qualcomm.com>,=20<patches@linaro
-   .org>|Subject:=20Re:=20[PATCH]=20ath9k:=20rename=20ath9k_
-   platform.h=20to=20ath_platform.h|References:=20<132135622
-   4-5053-1-git-send-email-sangwook.lee@linaro.org>=09<4EC29
-   534.7010502@adurom.com>=20<CADPsn1YDOu9Xyu1yDfs5Z0LjGzBL-
-   Rx6Fk35AT8n-8oOPhPzHA@mail.gmail.com>|In-Reply-To:=20<CAD
-   Psn1YDOu9Xyu1yDfs5Z0LjGzBL-Rx6Fk35AT8n-8oOPhPzHA@mail.gma
-   il.com>|Content-Transfer-Encoding:=207bit;
-  bh=cJytWx/MuN/PNZOnAcWJEQtJ19NGcfBih0OLVtjkK+o=;
-  b=ekFeKSNlEZJR+xyZID4iyXGwZGhHl/3gMZytW6YFnZRjeof5yvlxeibI
-   h4cYlxBbD2L5YglJMGdYL9d25Ai17TMwkZch6t/aDp1DZ81s2ki9SbXnf
-   bsb7ixq5DWzjn7yIoy5+90wZmykyW9OUMlFxjnjZ+4maT1i85HN4f/1Kx
-   8=;
-X-IronPort-AV: E=McAfee;i="5400,1158,6533"; a="136291800"
-Received: from ironmsg04-r.qualcomm.com ([172.30.46.18])
-  by wolverine02.qualcomm.com with ESMTP; 17 Nov 2011 11:07:01 -0800
-X-IronPort-AV: E=Sophos;i="4.69,527,1315206000"; 
-   d="scan'208";a="197506715"
-Received: from nasanexhc12.na.qualcomm.com ([172.30.39.187])
-  by Ironmsg04-R.qualcomm.com with ESMTP/TLS/AES128-SHA; 17 Nov 2011 11:07:01 -0800
-Received: from NASJOEXHC01.na.qualcomm.com (10.234.56.15) by
- nasanexhc12.na.qualcomm.com (172.30.39.187) with Microsoft SMTP Server (TLS)
- id 14.1.339.1; Thu, 17 Nov 2011 11:07:01 -0800
-Received: from [10.64.3.78] (10.64.3.78) by qcamail1.atheros.com
- (10.234.56.15) with Microsoft SMTP Server (TLS) id 14.1.339.1; Thu, 17 Nov
- 2011 11:06:59 -0800
-Message-ID: <4EC55B4A.7050001@qca.qualcomm.com>
-Date:   Thu, 17 Nov 2011 21:06:50 +0200
-From:   Kalle Valo <kvalo@qca.qualcomm.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.23) Gecko/20110922 Thunderbird/3.1.15
-MIME-Version: 1.0
-To:     Sangwook Lee <sangwook.lee@linaro.org>
-CC:     <mcgrof@frijolero.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@linux-mips.org>, <linux-wireless@vger.kernel.org>,
-        <ath9k-devel@lists.ath9k.org>, <ralf@linux-mips.org>,
-        <juhosg@openwrt.org>, <rodrigue@qca.qualcomm.com>,
-        <linville@tuxdriver.com>, <rmanohar@qca.qualcomm.com>,
-        <patches@linaro.org>
-Subject: Re: [PATCH] ath9k: rename ath9k_platform.h to ath_platform.h
-References: <1321356224-5053-1-git-send-email-sangwook.lee@linaro.org>  <4EC29534.7010502@adurom.com> <CADPsn1YDOu9Xyu1yDfs5Z0LjGzBL-Rx6Fk35AT8n-8oOPhPzHA@mail.gmail.com>
-In-Reply-To: <CADPsn1YDOu9Xyu1yDfs5Z0LjGzBL-Rx6Fk35AT8n-8oOPhPzHA@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.64.3.78]
-X-archive-position: 31744
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 22:57:50 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:59044 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904060Ab1KQV5n (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2011 22:57:43 +0100
+Received: by ggnb1 with SMTP id b1so2051493ggn.36
+        for <multiple recipients>; Thu, 17 Nov 2011 13:57:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=tAJyELo+gobkkRdyu5c/rvFRQf97UzCn3GjdNBRp850=;
+        b=FY09QKDtgT+aoUlTbjFcrH7+3vpHF8mxBH3mS7xE8SmG073LXNPtwBVdIOuU6P7ugm
+         /HnVF2zgIC4jF/HYCBItwuFa4RDNb7q+DK7XV+M+sOTNDqq4SRbbdO0yL/WbFJbAgQSG
+         cxiOwrbBe7dIylDDb10+d/t9/Armj3+sWE4Hg=
+Received: by 10.236.200.131 with SMTP id z3mr524750yhn.129.1321567056809;
+        Thu, 17 Nov 2011 13:57:36 -0800 (PST)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id b9sm99740802anb.7.2011.11.17.13.57.36
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 17 Nov 2011 13:57:36 -0800 (PST)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAHLvYZ1013248;
+        Thu, 17 Nov 2011 13:57:34 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAHLvYXc013247;
+        Thu, 17 Nov 2011 13:57:34 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     David Daney <david.daney@cavium.com>,
+        David Rientjes <rientjes@google.com>
+Subject: [PATCH v2 2/2] hugetlb: Provide safer dummy values for HPAGE_MASK and HPAGE_SIZE
+Date:   Thu, 17 Nov 2011 13:57:30 -0800
+Message-Id: <1321567050-13197-3-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1321567050-13197-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1321567050-13197-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 31745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kvalo@qca.qualcomm.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14703
+X-UID: 14861
 
-Hi Sangwook,
+From: David Daney <david.daney@cavium.com>
 
-On 11/16/2011 01:34 PM, Sangwook Lee wrote:
+It was pointed out by David Rientjes that the dummy values for
+HPAGE_MASK and HPAGE_SIZE are quite unsafe.  It they are inadvertently
+used with !CONFIG_HUGETLB_PAGE, compilation would succeed, but the
+resulting code would surly not do anything sensible.
 
-> 
-> On 15 November 2011 16:37, Kalle Valo <kvalo@adurom.com
-> <mailto:kvalo@adurom.com>> wrote:
-> 
->     Hi Sangwook,
-> 
->     On 11/15/2011 01:23 PM, Sangwook Lee wrote:
->     > The patch series proposes to rename ath9k_platform.h to
->     "ath_platform.h
->     > This header file handles platform data used only for ath9k,
->     > but it can used by ath6k as well. We can take "wl12xx.h" as
->     > as a example. Please let us change this file name so that
->     > other Atheors WLANs use this file for their own platform data
-> 
->     ath9k and ath6kl are very different devices, I'm not sure if sharing a
->     platfrom struct between the two is really a good idea. Most likely there
->     is very little the two drivers can share. What are your plans here?
->      
-> 
-> 
-> As you know, if ath6kl is not SDIO powered (in most of cases, including
-> mine)
-> we need to use platform struct in order to control reset/power line,
-> because ath6k is designed for mobile and embedded devices.
+Place BUG() in the these dummy definitions, as we do in similar
+circumstances in other places, so any abuse can be easily detected.
 
-We have been actually planning to do the same, but it's still on our
-todo list. If you can do this it would be awesome.
+Since the only sane place to use these symbols when
+!CONFIG_HUGETLB_PAGE is on dead code paths, the BUG() cause any actual
+code to be emitted by the compiler.
 
-Also we need to provide some clock configuration from the board file and
-I'm sure there will be more in the future. But let's start with the
-power control.
+Cc: David Rientjes <rientjes@google.com>
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ include/linux/hugetlb.h |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
-> so I found out that there is already header file for ath9k's platform
-> struct. How about using the one header file instead of
-> "include/linux/ath9k_platform.h"
-> , and "include/linux/ath6k_platform.h" ?
->  
-> 
->     I myself was thinking that we would have include/linux/ath6kl.h
->     dedicated just for ath6kl. That would makes things simpler.
-> 
-> But since I don't know much about ath9k, if you want to make the
-> separate header file for ath6kl's own struct, It would be fine as well.
-
-Yeah, I really would like to use separate file for ath6kl.
-
-Kalle
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 380451c..3ed6dbd 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -111,8 +111,9 @@ static inline void copy_huge_page(struct page *dst, struct page *src)
+ #define hugetlb_change_protection(vma, address, end, newprot)
+ 
+ #ifndef HPAGE_MASK
+-#define HPAGE_MASK	PAGE_MASK		/* Keep the compiler happy */
+-#define HPAGE_SIZE	PAGE_SIZE
++/* Keep the compiler happy with some dummy (but BUGgy) values */
++#define HPAGE_MASK	({BUG(); 0; })
++#define HPAGE_SIZE	({BUG(); 0; })
+ #define HPAGE_SHIFT	({BUG(); 0; })
+ #endif
+ 
+-- 
+1.7.2.3

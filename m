@@ -1,97 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 12:57:48 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:39380 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904023Ab1KQL5l (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2011 12:57:41 +0100
-Received: by bkat2 with SMTP id t2so2389332bka.36
-        for <multiple recipients>; Thu, 17 Nov 2011 03:57:36 -0800 (PST)
-Received: by 10.205.127.139 with SMTP id ha11mr25834406bkc.111.1321531056326;
-        Thu, 17 Nov 2011 03:57:36 -0800 (PST)
-Received: from [192.168.2.2] (ppp85-141-177-81.pppoe.mtu-net.ru. [85.141.177.81])
-        by mx.google.com with ESMTPS id f14sm18587592bkv.3.2011.11.17.03.57.34
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 17 Nov 2011 03:57:35 -0800 (PST)
-Message-ID: <4EC4F67A.2030407@mvista.com>
-Date:   Thu, 17 Nov 2011 15:56:42 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:8.0) Gecko/20111105 Thunderbird/8.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 13:00:34 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:63432 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904023Ab1KQMA1 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Nov 2011 13:00:27 +0100
+Received: by ggnb1 with SMTP id b1so1122101ggn.36
+        for <multiple recipients>; Thu, 17 Nov 2011 04:00:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding;
+        bh=WMrES2puG+cXz7EuRgRhxSI+xc6yJ3U9hpClOtSCncI=;
+        b=uhKvyuseexeFThqjktmFQYbpGdFO4Mkmy7CqNbG6k0Kt55w2o8rn2wWtqJxwLUTa5+
+         5+LtkKBGKKB0dJ9v0YsBILAjdA1pSVovBInOt1gMZLtT8D5eVEMy8m9heZGWAJ56BYIs
+         Vj4mnBexLJBKUD08EPGdIc1wVMfpBIojpC2FY=
+Received: by 10.236.200.135 with SMTP id z7mr8727617yhn.33.1321531221169; Thu,
+ 17 Nov 2011 04:00:21 -0800 (PST)
 MIME-Version: 1.0
-To:     Florian Fainelli <florian@openwrt.org>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: BCM63XX: generate WLAN MAC address after registering
- ethernet devices.
-References: <1321476598-9450-1-git-send-email-florian@openwrt.org>
-In-Reply-To: <1321476598-9450-1-git-send-email-florian@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31722
+Received: by 10.236.102.141 with HTTP; Thu, 17 Nov 2011 03:59:39 -0800 (PST)
+In-Reply-To: <4EC4F470.4090605@mvista.com>
+References: <1321458148-7894-1-git-send-email-manuel.lauss@googlemail.com> <4EC4F470.4090605@mvista.com>
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+Date:   Thu, 17 Nov 2011 12:59:39 +0100
+Message-ID: <CAOLZvyH4Hy8DpkSV4RHq0GgXrNE8ec=_2DaVx2ktRaVwpY8a9A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] MIPS: Alchemy: db1200: improve PB1200 detection.
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 31723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14392
+X-UID: 14405
 
-Hello.
+On Thu, Nov 17, 2011 at 12:48 PM, Sergei Shtylyov <sshtylyov@mvista.com> wrote:
+> Hello.
 
-On 17-11-2011 0:49, Florian Fainelli wrote:
-
-> In case the MAC address pool is not big enough to also register a WLAN device
-> prefer registering the Ethernet devices.
-
-> Signed-off-by: Florian Fainelli<florian@openwrt.org>
-> ---
->   arch/mips/bcm63xx/boards/board_bcm963xx.c |   25 +++++++++++++------------
->   1 files changed, 13 insertions(+), 12 deletions(-)
-
-> diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-> index ac948c2..fcd5a8c 100644
-> --- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
-> +++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-> @@ -791,18 +791,6 @@ void __init board_prom_init(void)
->   	}
+>> diff --git a/arch/mips/alchemy/devboards/db1200.c
+>> b/arch/mips/alchemy/devboards/db1200.c
+>> index 1181241..6721991 100644
+>> --- a/arch/mips/alchemy/devboards/db1200.c
+>> +++ b/arch/mips/alchemy/devboards/db1200.c
+>> @@ -66,19 +66,33 @@ static int __init detect_board(void)
+>>  {
+>>        int bid;
+>>
+>> -       /* try the PB1200 first */
+>> +       /* try the DB1200 first */
+>> +       bcsr_init(DB1200_BCSR_PHYS_ADDR,
+>> +                 DB1200_BCSR_PHYS_ADDR + DB1200_BCSR_HEXLED_OFS);
+>> +       if (BCSR_WHOAMI_DB1200 ==
+>> BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI))) {
+>> +               unsigned short t = bcsr_read(BCSR_HEXLEDS);
+>> +               bcsr_write(BCSR_HEXLEDS, ~t);
+>> +               if (bcsr_read(BCSR_HEXLEDS) != t) {
+>> +                       bcsr_write(BCSR_HEXLEDS, t);
+>> +                       return 0;
+>> +               }
+>> +       }
+>> +
+>> +       /* okay, try the PB1200 then */
+>>        bcsr_init(PB1200_BCSR_PHYS_ADDR,
+>>                  PB1200_BCSR_PHYS_ADDR + PB1200_BCSR_HEXLED_OFS);
+>>        bid = BCSR_WHOAMI_BOARD(bcsr_read(BCSR_WHOAMI));
+>>        if ((bid == BCSR_WHOAMI_PB1200_DDR1) ||
+>> -           (bid == BCSR_WHOAMI_PB1200_DDR2))
+>> -               return 0;
+>> +           (bid == BCSR_WHOAMI_PB1200_DDR2)) {
+>> +               unsigned short t = bcsr_read(BCSR_HEXLEDS);
+>> +               bcsr_write(BCSR_HEXLEDS, ~t);
+>> +               if (bcsr_read(BCSR_HEXLEDS) != t) {
+>> +                       bcsr_write(BCSR_HEXLEDS, t);
+>> +                       return 0;
+>> +               }
 >
->   	bcm_gpio_writel(val, GPIO_MODE_REG);
-> -
-> -	/* Generate MAC address for WLAN and
-> -	 * register our SPROM */
-> -#ifdef CONFIG_SSB_PCIHOST
-> -	if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
-> -		memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-> -		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-> -		if (ssb_arch_register_fallback_sprom(
-> -				&bcm63xx_get_fallback_sprom)<  0)
-> -			printk(KERN_ERR PFX "failed to register fallback SPROM\n");
-> -	}
-> -#endif
->   }
->
->   /*
-> @@ -886,6 +874,19 @@ int __init board_register_devices(void)
->   	if (board.has_dsp)
->   		bcm63xx_dsp_register(&board.dsp);
->
-> +	/* Generate MAC address for WLAN and register our SPROM,
-> +	 * do this after registering enet devices
-> +	 */
-> +#ifdef CONFIG_SSB_PCIHOST
-> +	if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
-> +		memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-> +		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-> +		if (ssb_arch_register_fallback_sprom(
-> +			&bcm63xx_get_fallback_sprom) < 0)
+>   Isn't it worth putting the repetitive code into a subroutine?
 
-    Please keep the old indentation. This one makes the code harder to read.
+If another Au1200-based reference board with similar hw design crops
+up, maybe.   The lines saved now however seemed not worth the effort.
 
-> +			pr_err(PFX "failed to register fallback SPROM\n");
-> +	}
-> +#endif
-> +
->   	/* read base address of boot chip select (0) */
->   	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
->   	val&= MPI_CSBASE_BASE_MASK;
-
-WBR, Sergei
+Manuel

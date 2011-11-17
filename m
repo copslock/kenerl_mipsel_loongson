@@ -1,150 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 10:41:40 +0100 (CET)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:42636 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904026Ab1KQJkm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2011 10:40:42 +0100
-Received: by mail-yw0-f49.google.com with SMTP id 31so955238ywp.36
-        for <multiple recipients>; Thu, 17 Nov 2011 01:40:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=cqRzHIKYaqihpkAPwB/zJcDTTNgImoX3J97yOnVSx8Q=;
-        b=mcmFihUReSI22HGjuL1j7kTwa4uKGcyzeTePvpcD9394HkDTw4YkuNo+pg9aXenESt
-         QsoQyVX7nEeTydRcNmumi1q36O8LgyzLeq0LmfOst8Hyv4F8Bu2wUaZ9FDvhstOYEHMR
-         yux5k8pNGPaQZbXMjE/+2OP7AZ5m4VOMWt5Gs=
-Received: by 10.236.191.198 with SMTP id g46mr7600528yhn.118.1321522841682;
-        Thu, 17 Nov 2011 01:40:41 -0800 (PST)
-Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id j25sm5198496yhm.12.2011.11.17.01.40.28
-        (version=SSLv3 cipher=OTHER);
-        Thu, 17 Nov 2011 01:40:41 -0800 (PST)
-From:   keguang.zhang@gmail.com
-To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:     ralf@linux-mips.org, zhzhl555@gmail.com, peppe.cavallaro@st.com,
-        wuzhangjin@gmail.com, r0bertz@gentoo.org,
-        Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V3 5/5] MIPS: Add defconfig for Loongson1B
-Date:   Thu, 17 Nov 2011 17:39:08 +0800
-Message-Id: <1321522748-21391-5-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.1
-In-Reply-To: <1321522748-21391-1-git-send-email-keguang.zhang@gmail.com>
-References: <1321522748-21391-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 31718
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 10:42:04 +0100 (CET)
+Received: from mail.lemote.com ([222.92.8.141]:46725 "EHLO lemote.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1904027Ab1KQJkp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Nov 2011 10:40:45 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by lemote.com (Postfix) with ESMTP id CD1FA31D74D
+        for <linux-mips@linux-mips.org>; Thu, 17 Nov 2011 17:14:24 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from lemote.com ([127.0.0.1])
+        by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Q44-nt9qmyfZ for <linux-mips@linux-mips.org>;
+        Thu, 17 Nov 2011 17:14:14 +0800 (CST)
+Received: from mail-fx0-f49.google.com (mail-fx0-f49.google.com [209.85.161.49])
+        by lemote.com (Postfix) with ESMTP id 9F6CD31D74A
+        for <linux-mips@linux-mips.org>; Thu, 17 Nov 2011 17:14:13 +0800 (CST)
+Received: by faar25 with SMTP id r25so3318321faa.36
+        for <linux-mips@linux-mips.org>; Thu, 17 Nov 2011 01:40:20 -0800 (PST)
+Received: by 10.204.141.24 with SMTP id k24mr19042694bku.97.1321522820211;
+ Thu, 17 Nov 2011 01:40:20 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.223.85.201 with HTTP; Thu, 17 Nov 2011 01:39:56 -0800 (PST)
+From:   Chen Jie <chenj@lemote.com>
+Date:   Thu, 17 Nov 2011 17:39:56 +0800
+Message-ID: <CAGXxSxWUfNysqpfG0hWGYC0WyOMWS5R+K4euZ9miD3UD43F94A@mail.gmail.com>
+Subject: [Question] What's difference between ioremap_wc and ioremap_uncached_accelerated?
+To:     linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 31719
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: chenj@lemote.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14295
+X-UID: 14297
 
-From: Kelvin Cheung <keguang.zhang@gmail.com>
+Hi all,
 
-This patch adds defconfig for Loongson1B.
+I noticed mips defines an ioremap_uncached_accelerated in
+arch/mips/include/asm/io.h, not reuse the name of "ioremap_wc", what
+is the difference?
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
----
- arch/mips/configs/ls1b_defconfig |   90 ++++++++++++++++++++++++++++++++++++++
- 1 files changed, 90 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/ls1b_defconfig
+Some drivers use ioremap_wc, e.g. ttm_bo_ioremap() in
+drivers/gpu/drm/ttm/ttm_bo_util.c, I wonder whether these ioremap_wc
+invocations can be replaced with "ioremap_uncached_accelerated"?
 
-diff --git a/arch/mips/configs/ls1b_defconfig b/arch/mips/configs/ls1b_defconfig
-new file mode 100644
-index 0000000..42954bc
---- /dev/null
-+++ b/arch/mips/configs/ls1b_defconfig
-@@ -0,0 +1,90 @@
-+CONFIG_MACH_LOONGSON1=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
-+# CONFIG_SECCOMP is not set
-+CONFIG_EXPERIMENTAL=y
-+# CONFIG_LOCALVERSION_AUTO is not set
-+CONFIG_SYSVIPC=y
-+CONFIG_BSD_PROCESS_ACCT=y
-+CONFIG_BSD_PROCESS_ACCT_V3=y
-+CONFIG_TINY_RCU=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=16
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_RD_BZIP2=y
-+CONFIG_RD_LZMA=y
-+CONFIG_EXPERT=y
-+CONFIG_KALLSYMS_ALL=y
-+CONFIG_PERF_EVENTS=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+# CONFIG_LBDAF is not set
-+# CONFIG_BLK_DEV_BSG is not set
-+# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_SYN_COOKIES=y
-+# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET_XFRM_MODE_BEET is not set
-+# CONFIG_INET_DIAG is not set
-+# CONFIG_IPV6 is not set
-+# CONFIG_WIRELESS is not set
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+# CONFIG_STANDALONE is not set
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_NETDEVICES=y
-+CONFIG_STMMAC_ETH=y
-+CONFIG_STMMAC_DA=y
-+# CONFIG_NETDEV_10000 is not set
-+# CONFIG_WLAN is not set
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_INPUT_KEYBOARD is not set
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+CONFIG_VT_HW_CONSOLE_BINDING=y
-+CONFIG_LEGACY_PTY_COUNT=8
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+# CONFIG_HW_RANDOM is not set
-+# CONFIG_HWMON is not set
-+# CONFIG_MFD_SUPPORT is not set
-+# CONFIG_VGA_CONSOLE is not set
-+# CONFIG_HID_SUPPORT is not set
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_LOONGSON1=y
-+# CONFIG_IOMMU_SUPPORT is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT3_FS_POSIX_ACL=y
-+CONFIG_EXT3_FS_SECURITY=y
-+# CONFIG_DNOTIFY is not set
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+# CONFIG_MISC_FILESYSTEMS is not set
-+# CONFIG_NETWORK_FILESYSTEMS is not set
-+# CONFIG_ENABLE_WARN_DEPRECATED is not set
-+# CONFIG_ENABLE_MUST_CHECK is not set
-+CONFIG_MAGIC_SYSRQ=y
-+# CONFIG_SCHED_DEBUG is not set
-+CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_MEMORY_INIT=y
-+CONFIG_SYSCTL_SYSCALL_CHECK=y
-+# CONFIG_FTRACE is not set
-+# CONFIG_EARLY_PRINTK is not set
--- 
-1.7.1
+
+
+Regards,
+-- Chen Jie

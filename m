@@ -1,85 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 22:30:28 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:48219 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904136Ab1KRVaV (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 22:30:21 +0100
-Received: by iapp10 with SMTP id p10so5653068iap.36
-        for <multiple recipients>; Fri, 18 Nov 2011 13:30:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=98kw5Xc0De8HrbqOnUFmJImoIHzm5Qhg45JqcpipWBs=;
-        b=gFL/+bEfjHP3KVl3Fc2uHARkczHEbBjcA2WYbg+Pr2+fVISBumX8Von2qs3fMISmSN
-         Fdqt04kMN7pGfN1AVhaxV9I+oVJQyZ4HEYerR9YqWMdD43PEyUwL5s6Z3Rkc1INqPKao
-         kRTEWBmgf2lOiNgR2Baq5bfX2+zAZAt3lvUoE=
-Received: by 10.42.161.132 with SMTP id t4mr4378866icx.16.1321651814783;
-        Fri, 18 Nov 2011 13:30:14 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id z10sm7430270ibv.9.2011.11.18.13.30.12
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 18 Nov 2011 13:30:13 -0800 (PST)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAILUBQo023427;
-        Fri, 18 Nov 2011 13:30:11 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAILUAvI023426;
-        Fri, 18 Nov 2011 13:30:10 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH] MIPS: Get rid of some #ifdefery in arch/mips/mm/tlb-r4k.c
-Date:   Fri, 18 Nov 2011 13:30:09 -0800
-Message-Id: <1321651809-23395-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 31814
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Nov 2011 12:29:56 +0100 (CET)
+Received: from www17.your-server.de ([213.133.104.17]:34090 "EHLO
+        www17.your-server.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903546Ab1KSL3w (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 19 Nov 2011 12:29:52 +0100
+Received: from [88.68.97.184] (helo=[192.168.2.108])
+        by www17.your-server.de with esmtpsa (SSLv3:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <thomas@m3y3r.de>)
+        id 1RRj74-0003m5-U3; Sat, 19 Nov 2011 12:29:39 +0100
+Subject: [PATCH] MIPS: ath79: Use kmemdup rather than duplicating its
+ implementation
+From:   Thomas Meyer <thomas@m3y3r.de>
+To:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Date:   Thu, 17 Nov 2011 23:43:40 +0100
+Message-ID: <1321569820.1624.273.camel@localhost.localdomain>
+X-Mailer: Evolution 3.2.1 (3.2.1-2.fc16) 
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: thomas@m3y3r.de
+X-Virus-Scanned: Clear (ClamAV 0.97.3/13904/Tue Nov  8 04:31:35 2011)
+X-archive-position: 31815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: thomas@m3y3r.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15944
+X-UID: 16318
 
-From: David Daney <david.daney@cavium.com>
+The semantic patch that makes this change is available
+in scripts/coccinelle/api/memdup.cocci.
 
-In the case of !CONFIG_HUGETLB_PAGE, in linux/hugetlb.h we have this
-definition:
-
-The other huge page constants in the if(pmd_huge()) block are likewise
-defined, so we can get rid of the #ifdef CONFIG_HUGETLB_PAGE an let
-the compiler optimize this block away instead.  Doing this the code
-has a much cleaner appearance.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
+Signed-off-by: Thomas Meyer <thomas@m3y3r.de>
 ---
- arch/mips/mm/tlb-r4k.c |    6 ++----
- 1 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 88dc49c..f93af98 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -305,7 +305,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
- 	pudp = pud_offset(pgdp, address);
- 	pmdp = pmd_offset(pudp, address);
- 	idx = read_c0_index();
--#ifdef CONFIG_HUGETLB_PAGE
-+
- 	/* this could be a huge page  */
- 	if (pmd_huge(*pmdp)) {
- 		unsigned long lo;
-@@ -321,9 +321,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
- 		else
- 			tlb_write_indexed();
- 		write_c0_pagemask(PM_DEFAULT_MASK);
--	} else
--#endif
--	{
-+	} else {
- 		ptep = pte_offset_map(pmdp, address);
+diff -u -p a/arch/mips/ath79/dev-gpio-buttons.c b/arch/mips/ath79/dev-gpio-buttons.c
+--- a/arch/mips/ath79/dev-gpio-buttons.c 2011-11-07 19:37:22.626233914 +0100
++++ b/arch/mips/ath79/dev-gpio-buttons.c 2011-11-08 11:02:34.088856260 +0100
+@@ -25,12 +25,10 @@ void __init ath79_register_gpio_keys_pol
+ 	struct gpio_keys_button *p;
+ 	int err;
  
- #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
--- 
-1.7.2.3
+-	p = kmalloc(nbuttons * sizeof(*p), GFP_KERNEL);
++	p = kmemdup(buttons, nbuttons * sizeof(*p), GFP_KERNEL);
+ 	if (!p)
+ 		return;
+ 
+-	memcpy(p, buttons, nbuttons * sizeof(*p));
+-
+ 	pdev = platform_device_alloc("gpio-keys-polled", id);
+ 	if (!pdev)
+ 		goto err_free_buttons;
+diff -u -p a/arch/mips/ath79/dev-leds-gpio.c b/arch/mips/ath79/dev-leds-gpio.c
+--- a/arch/mips/ath79/dev-leds-gpio.c 2011-11-07 19:37:22.626233914 +0100
++++ b/arch/mips/ath79/dev-leds-gpio.c 2011-11-08 11:02:33.992188296 +0100
+@@ -24,12 +24,10 @@ void __init ath79_register_leds_gpio(int
+ 	struct gpio_led *p;
+ 	int err;
+ 
+-	p = kmalloc(num_leds * sizeof(*p), GFP_KERNEL);
++	p = kmemdup(leds, num_leds * sizeof(*p), GFP_KERNEL);
+ 	if (!p)
+ 		return;
+ 
+-	memcpy(p, leds, num_leds * sizeof(*p));
+-
+ 	pdev = platform_device_alloc("leds-gpio", id);
+ 	if (!pdev)
+ 		goto err_free_leds;

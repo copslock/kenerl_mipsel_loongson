@@ -1,145 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 00:38:58 +0100 (CET)
-Received: from mail-gx0-f177.google.com ([209.85.161.177]:46767 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 00:45:04 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:44104 "EHLO
         mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904089Ab1KQXiu (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 00:38:50 +0100
-Received: by ggnb1 with SMTP id b1so2170342ggn.36
-        for <multiple recipients>; Thu, 17 Nov 2011 15:38:44 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1904090Ab1KQXo7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 00:44:59 +0100
+Received: by ggnb1 with SMTP id b1so2176781ggn.36
+        for <linux-mips@linux-mips.org>; Thu, 17 Nov 2011 15:44:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=Q01/eA0GfLF2vMgDm3SagUsV6xb4XDJgMLtrAzDyDG0=;
-        b=t9Rw0r+7q8nnhAsotG1j/2z6U1b77JLKGMfO0phuRLV/rt19GG+MJu7eoCF1qQQqAV
-         A/qKRhnpF8qAl8omGXKNmzGP5WoOnDndSUKxsjco91iP9KObJsL5O3zL0F7B6zgjmmWw
-         IWRYJyFeRJ+V2GU/4I7OBrWgXpd7xIQsr8vkw=
-Received: by 10.236.154.3 with SMTP id g3mr937150yhk.119.1321573124812;
-        Thu, 17 Nov 2011 15:38:44 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id w68sm8246977yhe.14.2011.11.17.15.38.43
-        (version=SSLv3 cipher=OTHER);
-        Thu, 17 Nov 2011 15:38:44 -0800 (PST)
-Message-ID: <4EC59B02.7060804@gmail.com>
-Date:   Thu, 17 Nov 2011 15:38:42 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
+        d=google.com; s=beta;
+        h=date:from:x-x-sender:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version:content-type;
+        bh=nh0+qcNac41q+BikpY77ogfKInCpOlfG7r5MJMDMz+U=;
+        b=QiKWibe0Sj9zxj2OgRhYiMe1A301rCrT0cvYXiajMr4Gr2raJlihznhoG6rGQiWxOq
+         J9fd0ZQS1A42WoucwSGw==
+Received: by 10.50.169.1 with SMTP id aa1mr825064igc.9.1321573493312;
+        Thu, 17 Nov 2011 15:44:53 -0800 (PST)
+Received: by 10.50.169.1 with SMTP id aa1mr825028igc.9.1321573493143;
+        Thu, 17 Nov 2011 15:44:53 -0800 (PST)
+Received: from [2620:0:1008:1201:be30:5bff:fed8:5e64] ([2620:0:1008:1201:be30:5bff:fed8:5e64])
+        by mx.google.com with ESMTPS id wo4sm24709179igc.5.2011.11.17.15.44.51
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 17 Nov 2011 15:44:52 -0800 (PST)
+Date:   Thu, 17 Nov 2011 15:44:50 -0800 (PST)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
 To:     Andrew Morton <akpm@linux-foundation.org>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH v2 2/2] hugetlb: Provide safer dummy values for HPAGE_MASK
- and HPAGE_SIZE
-References: <1321567050-13197-1-git-send-email-ddaney.cavm@gmail.com>   <1321567050-13197-3-git-send-email-ddaney.cavm@gmail.com> <20111117152841.dc962d9d.akpm@linux-foundation.org>
-In-Reply-To: <20111117152841.dc962d9d.akpm@linux-foundation.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31775
+cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, linux-kernel@vger.kernel.org,
+        David Daney <david.daney@cavium.com>,
+        linux-arch@vger.kernel.org, Robin Holt <holt@sgi.com>
+Subject: Re: [patch] hugetlb: remove dummy definitions of HPAGE_MASK and
+ HPAGE_SIZE
+In-Reply-To: <20111117153526.f90ee248.akpm@linux-foundation.org>
+Message-ID: <alpine.DEB.2.00.1111171538540.13555@chino.kir.corp.google.com>
+References: <1321567050-13197-1-git-send-email-ddaney.cavm@gmail.com> <alpine.DEB.2.00.1111171520130.20133@chino.kir.corp.google.com> <alpine.DEB.2.00.1111171522131.20133@chino.kir.corp.google.com> <20111117153526.f90ee248.akpm@linux-foundation.org>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 31776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: rientjes@google.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14971
+X-UID: 14977
 
-On 11/17/2011 03:28 PM, Andrew Morton wrote:
-> On Thu, 17 Nov 2011 13:57:30 -0800
-> David Daney<ddaney.cavm@gmail.com>  wrote:
->
->> From: David Daney<david.daney@cavium.com>
->>
->> It was pointed out by David Rientjes that the dummy values for
->> HPAGE_MASK and HPAGE_SIZE are quite unsafe.  It they are inadvertently
->> used with !CONFIG_HUGETLB_PAGE, compilation would succeed, but the
->> resulting code would surly not do anything sensible.
->>
->> Place BUG() in the these dummy definitions, as we do in similar
->> circumstances in other places, so any abuse can be easily detected.
->>
->> Since the only sane place to use these symbols when
->> !CONFIG_HUGETLB_PAGE is on dead code paths, the BUG() cause any actual
->> code to be emitted by the compiler.
->
-> I assume you meant "omitted" here.
+On Thu, 17 Nov 2011, Andrew Morton wrote:
 
-I jumbled it up.  It should read:
+> > So, just remove the dummy and dangerous definitions since they are no
+> > longer needed and reveals the correct dependencies.  Tested on
+> > architectures using the definitions with allyesconfig: x86 (even with
+> > thp), hppa, mips, powerpc, s390, sh3, sh4, sparc, and sparc64, and
+> > with defconfig on ia64.
+> 
+> How could arch/mips/mm/tlb-r4k.c:local_flush_tlb_range() compile OK
+> with this change?
+> 
 
-... the BUG() will not cause any actual code to be emitted by the 
-compiler.  In fact I have verified this on both MIPS64 and x86_64 kernels.
+This was tested on Linus' tree, not on Ralf's linux-next tree.  All uses 
+of HPAGE_* are protected by CONFIG_HUGETLB_PAGE as it appropriately should 
+be in Linus' tree in that file.
 
-I could re-spin the patch with a corrected changelog if desired.
+> What that function is doing looks reasonable to me.  Why fill the poor
+> thing with an ifdef mess?
+> 
+> otoh, catching mistakes is good too.  Doing it at runtime as David
+> proposes is OK.
+> 
 
->
-> But I don't think it's true.  Any such code would occur after testing
-> is_vm_hugetlb_page() or similar, and would have been omitted anyway.
->
+Nobody else needs it other than Ralf's pending change, and you're 
+suggesting we need them in a generic header file when any sane arch that 
+uses hugepages (all of them, in the current tree) declares these 
+themselves in arch/*/include/asm/page.h where it's supposed to be done?
 
-The point being that we are doing:
-
-if (is_vm_hugetlb_page(vma)) {
-	/* Do something with HPAGE_MASK*/
-} else {
-	/* Do something with PAGE_MASK */
-}
-
-In the !CONFIG_HUGETLB_PAGE case we have:
-static inline int is_vm_hugetlb_page(struct vm_area_struct *vma)
-{
-	return 0;
-}
-
-The compiler sees that the usage of the dummy definitions is in a dead 
-code path and nothing is emitted.
-
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -111,8 +111,9 @@ static inline void copy_huge_page(struct page *dst, struct page *src)
->>   #define hugetlb_change_protection(vma, address, end, newprot)
->>
->>   #ifndef HPAGE_MASK
->> -#define HPAGE_MASK	PAGE_MASK		/* Keep the compiler happy */
->> -#define HPAGE_SIZE	PAGE_SIZE
->> +/* Keep the compiler happy with some dummy (but BUGgy) values */
->
-> That's a quite poor comment.  This?
-
-I was trying to communicate the presence of the BUG() in the definition. 
-  Perhaps it is more confusing than it was before.
-
->
-> --- a/include/linux/hugetlb.h~hugetlb-provide-safer-dummy-values-for-hpage_mask-and-hpage_size-fix
-> +++ a/include/linux/hugetlb.h
-> @@ -111,7 +111,11 @@ static inline void copy_huge_page(struct
->   #define hugetlb_change_protection(vma, address, end, newprot)
->
->   #ifndef HPAGE_MASK
-> -/* Keep the compiler happy with some dummy (but BUGgy) values */
-> +/*
-> + * HPAGE_MASK and friends are defined if !CONFIG_HUGETLB_PAGE as an
-> + * ifdef-avoiding convenience.  However they should never be evaluated at
-> + * runtime if !CONFIG_HUGETLB_PAGE.
-> + */
->   #define HPAGE_MASK	({BUG(); 0; })
->   #define HPAGE_SIZE	({BUG(); 0; })
->   #define HPAGE_SHIFT	({BUG(); 0; })
-> _
->
->> +#define HPAGE_MASK	({BUG(); 0; })
->> +#define HPAGE_SIZE	({BUG(); 0; })
->>   #define HPAGE_SHIFT	({BUG(); 0; })
->
-> This change means that HPAGE_* cannot be evaluated at compile time.  So
->
-> int foo = HPAGE_SIZE;
->
-> outside functions will explode.  I guess that's OK - actually desirable
-> - as such code shouldn't have been compiled anyway.
->
-
-The exact point of the patch.
-
-Thanks,
-David Daney
+Why on earth do we have CONFIG_HUGETLB_PAGE for at all, then?  To catch 
+code that's operating on hugepages when our kernel doesn't support it.  
+I'd much rather break the build than get a runtime BUG() because we want 
+to avoid an #ifdef or actually write well-written code like every other 
+arch has!  Panicking the code to find errors like this is just insanity.

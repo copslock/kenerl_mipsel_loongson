@@ -1,72 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 23:17:00 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:46702 "EHLO
-        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904069Ab1KQWOZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2011 23:14:25 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 966661403D6;
-        Thu, 17 Nov 2011 23:14:17 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at mail.szarvasnet.hu
-Received: from mail.szarvasnet.hu ([127.0.0.1])
-        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id QYRBcrJtOyGg; Thu, 17 Nov 2011 23:14:17 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 478781404EF;
-        Thu, 17 Nov 2011 23:14:15 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Imre Kaloz <kaloz@openwrt.org>, linux-mips@linux-mips.org,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 6/6] MIPS: ath79: register the wireless MAC device on the AP121 board
-Date:   Thu, 17 Nov 2011 23:13:47 +0100
-Message-Id: <1321568027-32066-7-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.2.1
-In-Reply-To: <1321568027-32066-1-git-send-email-juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 23:32:05 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:53326 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1904068Ab1KQWcB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 17 Nov 2011 23:32:01 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAHMW0dn006373;
+        Thu, 17 Nov 2011 22:32:00 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAHMW039006371;
+        Thu, 17 Nov 2011 22:32:00 GMT
+Date:   Thu, 17 Nov 2011 22:32:00 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Gabor Juhos <juhosg@openwrt.org>
+Cc:     Imre Kaloz <kaloz@openwrt.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/6] MIPS: ath79: remove 'ar913x' from common variable
+ and function names
+Message-ID: <20111117223200.GB2758@linux-mips.org>
 References: <1321568027-32066-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 31754
+ <1321568027-32066-3-git-send-email-juhosg@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1321568027-32066-3-git-send-email-juhosg@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31755
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14887
+X-UID: 14900
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
- arch/mips/ath79/mach-ap121.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+On Thu, Nov 17, 2011 at 11:13:43PM +0100, Gabor Juhos wrote:
 
-diff --git a/arch/mips/ath79/mach-ap121.c b/arch/mips/ath79/mach-ap121.c
-index 353af55..39ee828 100644
---- a/arch/mips/ath79/mach-ap121.c
-+++ b/arch/mips/ath79/mach-ap121.c
-@@ -13,6 +13,7 @@
- #include "dev-leds-gpio.h"
- #include "dev-spi.h"
- #include "dev-usb.h"
-+#include "dev-ar913x-wmac.h"
- 
- #define AP121_GPIO_LED_WLAN		0
- #define AP121_GPIO_LED_USB		1
-@@ -73,6 +74,8 @@ static struct ath79_spi_platform_data ap121_spi_data = {
- 
- static void __init ap121_setup(void)
- {
-+	u8 *cal_data = (u8 *) KSEG1ADDR(AP121_CAL_DATA_ADDR);
-+
- 	ath79_register_leds_gpio(-1, ARRAY_SIZE(ap121_leds_gpio),
- 				 ap121_leds_gpio);
- 	ath79_register_gpio_keys_polled(-1, AP121_KEYS_POLL_INTERVAL,
-@@ -82,6 +85,7 @@ static void __init ap121_setup(void)
- 	ath79_register_spi(&ap121_spi_data, ap121_spi_info,
- 			   ARRAY_SIZE(ap121_spi_info));
- 	ath79_register_usb();
-+	ath79_register_wmac(cal_data);
- }
- 
- MIPS_MACHINE(ATH79_MACH_AP121, "AP121", "Atheros AP121 reference board",
--- 
-1.7.2.1
+> diff --git a/arch/mips/ath79/dev-ar913x-wmac.h b/arch/mips/ath79/dev-ar913x-wmac.h
+> index 579d562..de1d784 100644
+> --- a/arch/mips/ath79/dev-ar913x-wmac.h
+> +++ b/arch/mips/ath79/dev-ar913x-wmac.h
+> @@ -9,9 +9,9 @@
+>   *  by the Free Software Foundation.
+>   */
+>  
+> -#ifndef _ATH79_DEV_AR913X_WMAC_H
+> -#define _ATH79_DEV_AR913X_WMAC_H
+> +#ifndef _ATH79_DEV_WMAC_H
+> +#define _ATH79_DEV_WMAC_H
+
+In this case, don't you want to rename this header file as well?
+
+  Ralf

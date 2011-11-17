@@ -1,67 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 13:42:35 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:49933 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1904029Ab1KQMmc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 17 Nov 2011 13:42:32 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAHCgQFP012688;
-        Thu, 17 Nov 2011 12:42:26 GMT
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAHCgQpv012686;
-        Thu, 17 Nov 2011 12:42:26 GMT
-Date:   Thu, 17 Nov 2011 12:42:26 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     keguang.zhang@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Nov 2011 15:03:24 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:37010 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904036Ab1KQODU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 17 Nov 2011 15:03:20 +0100
+Received: by bkat2 with SMTP id t2so2579969bka.36
+        for <multiple recipients>; Thu, 17 Nov 2011 06:03:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=0/NzG6H9XXEr5gucs6+E9xORursC6wFczMAb5qcnJiU=;
+        b=aaZEj4JA2i8Pfl5UtzHIl0li7jev13POIbIYtAJC/50usGnORnRwmIILfXwT8VRQwT
+         Ue4SEaaFOuuLY2I51k0PFHInYt5sXHP11DUpdYoLBkw2OqpYLZvY98mYBpcgjRpnBZkw
+         rf6k9oZQxa8PsQsTv0VVHqwwTNtngonLReWns=
+Received: by 10.205.135.129 with SMTP id ig1mr14550117bkc.106.1321538595235;
+        Thu, 17 Nov 2011 06:03:15 -0800 (PST)
+Received: from localhost.localdomain (dslb-178-003-254-091.pools.arcor-ip.net. [178.3.254.91])
+        by mx.google.com with ESMTPS id x14sm41318988bkf.10.2011.11.17.06.03.13
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 17 Nov 2011 06:03:14 -0800 (PST)
+From:   Rene Bolldorf <xsecute@googlemail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        zhzhl555@gmail.com, peppe.cavallaro@st.com, wuzhangjin@gmail.com,
-        r0bertz@gentoo.org
-Subject: Re: [PATCH V3 4/5] MIPS: Add RTC support for Loongson1B
-Message-ID: <20111117124226.GB16467@linux-mips.org>
-References: <1321522748-21391-1-git-send-email-keguang.zhang@gmail.com>
- <1321522748-21391-4-git-send-email-keguang.zhang@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1321522748-21391-4-git-send-email-keguang.zhang@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31725
+        Rene Bolldorf <xsecute@googlemail.com>
+Subject: [PATCH 0/2] Summary
+Date:   Thu, 17 Nov 2011 15:02:55 +0100
+Message-Id: <1321538577-548-1-git-send-email-xsecute@googlemail.com>
+X-Mailer: git-send-email 1.7.7.1
+In-Reply-To: <CAEWqx59k97AMU6hH0NCC2TMEY2mu8d5ytxO68oEsa=7uvLBA4A@mail.gmail.com>
+References: <CAEWqx59k97AMU6hH0NCC2TMEY2mu8d5ytxO68oEsa=7uvLBA4A@mail.gmail.com>
+X-archive-position: 31726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: xsecute@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14436
+X-UID: 14475
 
-On Thu, Nov 17, 2011 at 05:39:07PM +0800, keguang.zhang@gmail.com wrote:
+Here is patchset v2 with coding style fixes and code improvements.
 
-> From: Kelvin Cheung <keguang.zhang@gmail.com>
-> 
-> This patch adds RTC support(TOY counter0) for Loongson1B.
-> Thanks Zhao Zhang for implementing this.
-> 
-> Signed-off-by: zhao zhang <zhzhl555@gmail.com>
-> Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
-> ---
->  arch/mips/include/asm/mach-loongson1/platform.h |    1 +
->  arch/mips/loongson1/common/platform.c           |    5 +
->  arch/mips/loongson1/ls1b/board.c                |    1 +
->  drivers/rtc/Kconfig                             |   10 +
->  drivers/rtc/Makefile                            |    1 +
->  drivers/rtc/rtc-ls1x.c                          |  210 +++++++++++++++++++++++
->  6 files changed, 228 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/rtc/rtc-ls1x.c
+Rene Bolldorf (2):
+  Initial PCI support for Atheros 724x SoCs. (v2)
+  Initial support for the Ubiquiti Networks XM board (rev 1.0). (patch
+    v2)
 
-Please send to the RTC list & maintainers, see MAINTAINERS for the
-addresses.  I can accept the RTC patch only with the RTC maintainer's
-Acked-by.
+ arch/mips/ath79/Kconfig                        |   11 ++
+ arch/mips/ath79/Makefile                       |    1 +
+ arch/mips/ath79/mach-ubnt-xm.c                 |  119 ++++++++++++++++
+ arch/mips/ath79/machtypes.h                    |    1 +
+ arch/mips/include/asm/mach-ath79/pci-ath724x.h |   21 +++
+ arch/mips/pci/Makefile                         |    1 +
+ arch/mips/pci/pci-ath724x.c                    |  174 ++++++++++++++++++++++++
+ 7 files changed, 328 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/ath79/mach-ubnt-xm.c
+ create mode 100644 arch/mips/include/asm/mach-ath79/pci-ath724x.h
+ create mode 100644 arch/mips/pci/pci-ath724x.c
 
-Also you may want to split this patch in two patches.  Send the
-drivers/rtc/ part to the RTC maintainer & list and merge the
-arch/mips bits into patch 2/5.
-
-Thanks,
-
-  Ralf
+-- 
+1.7.7.1

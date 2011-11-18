@@ -1,37 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 15:55:19 +0100 (CET)
-Received: from mail-ww0-f43.google.com ([74.125.82.43]:51342 "EHLO
-        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904113Ab1KROzL convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Nov 2011 15:55:11 +0100
-Received: by wwp14 with SMTP id 14so4416274wwp.24
-        for <multiple recipients>; Fri, 18 Nov 2011 06:55:05 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 16:03:59 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:37645 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904113Ab1KRPDz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 16:03:55 +0100
+Received: by faar25 with SMTP id r25so5521146faa.36
+        for <multiple recipients>; Fri, 18 Nov 2011 07:03:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=4Kw54x16eybZ2/ThkzxWavMkZy7417sAB+2oD2doZpA=;
-        b=igjPA6XqjRDH5DOrMW+YJVjNnkVuOWhzW3N5q626pGUPcKo9RF5xGg/pnoyBorO3Jn
-         HToczO/hCPXh3+9pv7eDKmUbzNpOu7Jo5MPF9W1mYG1bbQTI8bdAAdtEJBIl8Bu3E9O2
-         mWp64XS8WhBZbjGgBaO5uTGCW1xL4Y0u/kVZE=
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=9+E1fJ+8y1GZnNaFSv6H6SGcxxTsEKeHQkGbTaxOQH0=;
+        b=taAXyQ2CCe6C/UjtBmz7GBIfKcY92t9lqx0wWmzyOjheBBVeo4MqMq1BQU/ux2AAjc
+         TwyluJbOiX5fEvw2UH8hXGzm6VVzlq+DVbA8YhC/nhNzHGYFZV71uJeH/YSVN2f76V/V
+         ePEiyD9+yRw6qul7RU0SzURDsPIe16PFJEbUo=
 MIME-Version: 1.0
-Received: by 10.181.13.5 with SMTP id eu5mr3434273wid.55.1321628105640; Fri,
- 18 Nov 2011 06:55:05 -0800 (PST)
-Received: by 10.216.45.11 with HTTP; Fri, 18 Nov 2011 06:55:05 -0800 (PST)
-In-Reply-To: <20111118144600.GA12409@linux-mips.org>
-References: <CAJd=RBBTx8zWrFfVQGMK=aj=iPO_+i6nvqkhGDfYp_9=d1hyEw@mail.gmail.com>
-        <20111118144600.GA12409@linux-mips.org>
-Date:   Fri, 18 Nov 2011 22:55:05 +0800
-Message-ID: <CAJd=RBCBhmctuNACxAs-Uw6w+u88v1XVwUp89ybZN7yDn5jFuQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Flush huge TLB
+Received: by 10.181.11.226 with SMTP id el2mr3428225wid.64.1321628630438; Fri,
+ 18 Nov 2011 07:03:50 -0800 (PST)
+Received: by 10.216.45.11 with HTTP; Fri, 18 Nov 2011 07:03:50 -0800 (PST)
+Date:   Fri, 18 Nov 2011 23:03:50 +0800
+Message-ID: <CAJd=RBCmvyT2ZiaF=XsCenogZJ_Ry_M1uth7=U6PRS1=0LmZ9Q@mail.gmail.com>
+Subject: [PATCH] MIPS: Add FAULT_FLAG_ALLOW_RETRY in page fault handler
 From:   Hillf Danton <dhillf@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <david.daney@cavium.com>,
-        "Jayachandran C." <jayachandranc@netlogicmicro.com>,
-        linux-mips@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31788
+X-archive-position: 31789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,49 +32,57 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15502
+X-UID: 15511
 
-On Fri, Nov 18, 2011 at 10:46 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Nov 18, 2011 at 09:15:39PM +0800, Hillf Danton wrote:
->
->> When flushing TLB, if @vma is backed by huge page, we could flush huge TLB,
->> due to that huge page is defined to be far from normal page.
->>
->> Signed-off-by: Hillf Danton <dhillf@gmail.com>
->
-> It seems this patch is identical to
-> https://patchwork.linux-mips.org/patch/2825/ which I've already applied?
->
+The flag, FAULT_FLAG_ALLOW_RETRY, was introduced by the patch,
 
-Maybe you forget the following message:)
+	mm: retry page fault when blocking on disk transfer
+	commit: d065bd810b6deb67d4897a14bfe21f8eb526ba99
 
-btw, I want to change
-+			size = (end - start) >> HPAGE_SHIFT;
-to
-+			size = (end - start) / HPAGE_SIZE;
+for reducing mmap_sem hold times that are caused by waiting for disk
+transfers when accessing file mapped VMAs. So add it now.
 
-if it is not too late.
+Signed-off-by: Hillf Danton <dhillf@gmail.com>
+---
 
-Best regards
-Hillf
+--- a/arch/mips/mm/fault.c	Fri Nov 18 22:23:40 2011
++++ b/arch/mips/mm/fault.c	Fri Nov 18 22:36:04 2011
+@@ -42,6 +42,8 @@ asmlinkage void __kprobes do_page_fault(
+ 	const int field = sizeof(unsigned long) * 2;
+ 	siginfo_t info;
+ 	int fault;
++	unsigned int flags = FAULT_FLAG_ALLOW_RETRY |
++				(write ? FAULT_FLAG_WRITE : 0);
 
-On Wed, Nov 16, 2011 at 10:52 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Oct 14, 2011 at 09:09:37PM +0800, Hillf Danton wrote:
->
->> Subject: Flush huge TLB
->> From: Hillf Danton <dhillf@gmail.com>
->>
->> When flushing TLB, if @vma is backed by huge page, we could flush huge TLB,
->> due to that huge page is defined to be far from normal page.
->>
->> Signed-off-by: Hillf Danton <dhillf@gmail.com>
->> Acked-by: David Daney <david.daney@cavium.com>
->
-> I assume this 2nd version was actually meant to be applied, not just for RFC
-> so I've queued it for 3.3.  But you better remove that RFC from subject and
-> start a fresh mail thread when posting a patch to avoid confusion!
->
-> Thanks,
->
->  Ralf
->
+ #if 0
+ 	printk("Cpu%d[%s:%d:%0*lx:%ld:%0*lx]\n", raw_smp_processor_id(),
+@@ -91,6 +93,7 @@ asmlinkage void __kprobes do_page_fault(
+ 	if (in_atomic() || !mm)
+ 		goto bad_area_nosemaphore;
+
++retry:
+ 	down_read(&mm->mmap_sem);
+ 	vma = find_vma(mm, address);
+ 	if (!vma)
+@@ -144,7 +147,7 @@ good_area:
+ 	 * make sure we exit gracefully rather than endlessly redo
+ 	 * the fault.
+ 	 */
+-	fault = handle_mm_fault(mm, vma, address, write ? FAULT_FLAG_WRITE : 0);
++	fault = handle_mm_fault(mm, vma, address, flags);
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
+ 	if (unlikely(fault & VM_FAULT_ERROR)) {
+ 		if (fault & VM_FAULT_OOM)
+@@ -152,6 +155,12 @@ good_area:
+ 		else if (fault & VM_FAULT_SIGBUS)
+ 			goto do_sigbus;
+ 		BUG();
++	}
++	if (flags & FAULT_FLAG_ALLOW_RETRY) {
++		if (fault & VM_FAULT_RETRY) {
++			flags &= ~FAULT_FLAG_ALLOW_RETRY;
++			goto retry;
++		}
+ 	}
+ 	if (fault & VM_FAULT_MAJOR) {
+ 		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ, 1, regs, address);

@@ -1,88 +1,184 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 16:03:59 +0100 (CET)
-Received: from mail-fx0-f49.google.com ([209.85.161.49]:37645 "EHLO
-        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904113Ab1KRPDz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 16:03:55 +0100
-Received: by faar25 with SMTP id r25so5521146faa.36
-        for <multiple recipients>; Fri, 18 Nov 2011 07:03:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type;
-        bh=9+E1fJ+8y1GZnNaFSv6H6SGcxxTsEKeHQkGbTaxOQH0=;
-        b=taAXyQ2CCe6C/UjtBmz7GBIfKcY92t9lqx0wWmzyOjheBBVeo4MqMq1BQU/ux2AAjc
-         TwyluJbOiX5fEvw2UH8hXGzm6VVzlq+DVbA8YhC/nhNzHGYFZV71uJeH/YSVN2f76V/V
-         ePEiyD9+yRw6qul7RU0SzURDsPIe16PFJEbUo=
-MIME-Version: 1.0
-Received: by 10.181.11.226 with SMTP id el2mr3428225wid.64.1321628630438; Fri,
- 18 Nov 2011 07:03:50 -0800 (PST)
-Received: by 10.216.45.11 with HTTP; Fri, 18 Nov 2011 07:03:50 -0800 (PST)
-Date:   Fri, 18 Nov 2011 23:03:50 +0800
-Message-ID: <CAJd=RBCmvyT2ZiaF=XsCenogZJ_Ry_M1uth7=U6PRS1=0LmZ9Q@mail.gmail.com>
-Subject: [PATCH] MIPS: Add FAULT_FLAG_ALLOW_RETRY in page fault handler
-From:   Hillf Danton <dhillf@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 16:22:35 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:36002 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1904114Ab1KRPW2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 16:22:28 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id CCB121404FE;
+        Fri, 18 Nov 2011 16:22:22 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mail.szarvasnet.hu
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id rs1zNJ5KpSFp; Fri, 18 Nov 2011 16:22:21 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 954E9140498;
+        Fri, 18 Nov 2011 16:22:21 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <david.daney@cavium.com>, linux-mips@linux-mips.org
+Cc:     Rene Bolldorf <xsecute@googlemail.com>, linux-mips@linux-mips.org,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: =?UTF-8?q?=5BPATCH=201/7=5D=20MIPS=3A=20ath79=3A=20separate=20common=20PCI=20code?=
+Date:   Fri, 18 Nov 2011 16:21:54 +0100
+Message-Id: <1321629720-29035-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.2.1
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-archive-position: 31789
+Content-Transfer-Encoding: 8bit
+X-archive-position: 31790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhillf@gmail.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15511
+X-UID: 15528
 
-The flag, FAULT_FLAG_ALLOW_RETRY, was introduced by the patch,
+The 'pcibios_map_irq' and 'pcibios_plat_dev_init'
+are common functions and only instance one of them
+can be present in a single kernel.
 
-	mm: retry page fault when blocking on disk transfer
-	commit: d065bd810b6deb67d4897a14bfe21f8eb526ba99
+Currently these functions can be built only if the
+CONFIG_SOC_AR724X option is selected. However the
+ath79 platform contain support for the AR71XX SoCs,.
+The AR71XX SoCs have a differnet PCI controller,
+and those will require a different code.
 
-for reducing mmap_sem hold times that are caused by waiting for disk
-transfers when accessing file mapped VMAs. So add it now.
+Move the common PCI code into a separeate file in
+order to be able to use that with other SoCs as
+well.
 
-Signed-off-by: Hillf Danton <dhillf@gmail.com>
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 ---
+ arch/mips/ath79/Makefile    |    1 +
+ arch/mips/ath79/pci.c       |   46 +++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/pci/pci-ath724x.c |   34 -------------------------------
+ 3 files changed, 47 insertions(+), 34 deletions(-)
+ create mode 100644 arch/mips/ath79/pci.c
 
---- a/arch/mips/mm/fault.c	Fri Nov 18 22:23:40 2011
-+++ b/arch/mips/mm/fault.c	Fri Nov 18 22:36:04 2011
-@@ -42,6 +42,8 @@ asmlinkage void __kprobes do_page_fault(
- 	const int field = sizeof(unsigned long) * 2;
- 	siginfo_t info;
- 	int fault;
-+	unsigned int flags = FAULT_FLAG_ALLOW_RETRY |
-+				(write ? FAULT_FLAG_WRITE : 0);
-
- #if 0
- 	printk("Cpu%d[%s:%d:%0*lx:%ld:%0*lx]\n", raw_smp_processor_id(),
-@@ -91,6 +93,7 @@ asmlinkage void __kprobes do_page_fault(
- 	if (in_atomic() || !mm)
- 		goto bad_area_nosemaphore;
-
-+retry:
- 	down_read(&mm->mmap_sem);
- 	vma = find_vma(mm, address);
- 	if (!vma)
-@@ -144,7 +147,7 @@ good_area:
- 	 * make sure we exit gracefully rather than endlessly redo
- 	 * the fault.
- 	 */
--	fault = handle_mm_fault(mm, vma, address, write ? FAULT_FLAG_WRITE : 0);
-+	fault = handle_mm_fault(mm, vma, address, flags);
- 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
- 	if (unlikely(fault & VM_FAULT_ERROR)) {
- 		if (fault & VM_FAULT_OOM)
-@@ -152,6 +155,12 @@ good_area:
- 		else if (fault & VM_FAULT_SIGBUS)
- 			goto do_sigbus;
- 		BUG();
-+	}
-+	if (flags & FAULT_FLAG_ALLOW_RETRY) {
-+		if (fault & VM_FAULT_RETRY) {
-+			flags &= ~FAULT_FLAG_ALLOW_RETRY;
-+			goto retry;
-+		}
- 	}
- 	if (fault & VM_FAULT_MAJOR) {
- 		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ, 1, regs, address);
+diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
+index 3b911e09..221a76a9 100644
+--- a/arch/mips/ath79/Makefile
++++ b/arch/mips/ath79/Makefile
+@@ -11,6 +11,7 @@
+ obj-y	:= prom.o setup.o irq.o common.o clock.o gpio.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
++obj-$(CONFIG_PCI)			+= pci.o
+ 
+ #
+ # Devices
+diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
+new file mode 100644
+index 0000000..8db076e
+--- /dev/null
++++ b/arch/mips/ath79/pci.c
+@@ -0,0 +1,46 @@
++/*
++ *  Atheros AR71XX/AR724X specific PCI setup code
++ *
++ *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++#include <linux/pci.h>
++#include <asm/mach-ath79/pci-ath724x.h>
++
++static struct ath724x_pci_data *pci_data;
++static int pci_data_size;
++
++void ath724x_pci_add_data(struct ath724x_pci_data *data, int size)
++{
++	pci_data	= data;
++	pci_data_size	= size;
++}
++
++int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
++{
++	unsigned int devfn = dev->devfn;
++	int irq = -1;
++
++	if (devfn > pci_data_size - 1)
++		return irq;
++
++	irq = pci_data[devfn].irq;
++
++	return irq;
++}
++
++int pcibios_plat_dev_init(struct pci_dev *dev)
++{
++	unsigned int devfn = dev->devfn;
++
++	if (devfn > pci_data_size - 1)
++		return PCIBIOS_DEVICE_NOT_FOUND;
++
++	dev->dev.platform_data = pci_data[devfn].pdata;
++
++	return PCIBIOS_SUCCESSFUL;
++}
+diff --git a/arch/mips/pci/pci-ath724x.c b/arch/mips/pci/pci-ath724x.c
+index a4dd24a..1e810be 100644
+--- a/arch/mips/pci/pci-ath724x.c
++++ b/arch/mips/pci/pci-ath724x.c
+@@ -9,7 +9,6 @@
+  */
+ 
+ #include <linux/pci.h>
+-#include <asm/mach-ath79/pci-ath724x.h>
+ 
+ #define reg_read(_phys)		(*(unsigned int *) KSEG1ADDR(_phys))
+ #define reg_write(_phys, _val)	((*(unsigned int *) KSEG1ADDR(_phys)) = (_val))
+@@ -19,8 +18,6 @@
+ #define ATH724X_PCI_MEM_SIZE	0x08000000
+ 
+ static DEFINE_SPINLOCK(ath724x_pci_lock);
+-static struct ath724x_pci_data *pci_data;
+-static int pci_data_size;
+ 
+ static int ath724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+ 			    int size, uint32_t *value)
+@@ -133,37 +130,6 @@ static struct pci_controller ath724x_pci_controller = {
+ 	.mem_resource	= &ath724x_mem_resource,
+ };
+ 
+-void ath724x_pci_add_data(struct ath724x_pci_data *data, int size)
+-{
+-	pci_data	= data;
+-	pci_data_size	= size;
+-}
+-
+-int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
+-{
+-	unsigned int devfn = dev->devfn;
+-	int irq = -1;
+-
+-	if (devfn > pci_data_size - 1)
+-		return irq;
+-
+-	irq = pci_data[devfn].irq;
+-
+-	return irq;
+-}
+-
+-int pcibios_plat_dev_init(struct pci_dev *dev)
+-{
+-	unsigned int devfn = dev->devfn;
+-
+-	if (devfn > pci_data_size - 1)
+-		return PCIBIOS_DEVICE_NOT_FOUND;
+-
+-	dev->dev.platform_data = pci_data[devfn].pdata;
+-
+-	return PCIBIOS_SUCCESSFUL;
+-}
+-
+ static int __init ath724x_pcibios_init(void)
+ {
+ 	register_pci_controller(&ath724x_pci_controller);
+-- 
+1.7.2.1

@@ -1,30 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 16:22:35 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:36002 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 16:23:01 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:36004 "EHLO
         mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904114Ab1KRPW2 (ORCPT
+        with ESMTP id S1904117Ab1KRPW2 (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 16:22:28 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id CCB121404FE;
-        Fri, 18 Nov 2011 16:22:22 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 6840E140501;
+        Fri, 18 Nov 2011 16:22:23 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at mail.szarvasnet.hu
 Received: from mail.szarvasnet.hu ([127.0.0.1])
         by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id rs1zNJ5KpSFp; Fri, 18 Nov 2011 16:22:21 +0100 (CET)
+        with ESMTP id nLPqkl3gavHr; Fri, 18 Nov 2011 16:22:22 +0100 (CET)
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 954E9140498;
-        Fri, 18 Nov 2011 16:22:21 +0100 (CET)
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 481CF1404F7;
+        Fri, 18 Nov 2011 16:22:22 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Rene Bolldorf <xsecute@googlemail.com>, linux-mips@linux-mips.org,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: =?UTF-8?q?=5BPATCH=201/7=5D=20MIPS=3A=20ath79=3A=20separate=20common=20PCI=20code?=
-Date:   Fri, 18 Nov 2011 16:21:54 +0100
-Message-Id: <1321629720-29035-1-git-send-email-juhosg@openwrt.org>
+        Gabor Juhos <juhosg@openwrt.org>,
+        Gabor Juhos <juhsog@openwrt.org>
+Subject: =?UTF-8?q?=5BPATCH=203/7=5D=20MIPS=3A=20ath79=3A=20make=20ath724x=5Fpcibios=5Finit=20visible=20for=20external=20code?=
+Date:   Fri, 18 Nov 2011 16:21:56 +0100
+Message-Id: <1321629720-29035-3-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.1
+In-Reply-To: <1321629720-29035-1-git-send-email-juhosg@openwrt.org>
+References: <1321629720-29035-1-git-send-email-juhosg@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-archive-position: 31790
+X-archive-position: 31791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,50 +36,23 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15528
+X-UID: 15529
 
-The 'pcibios_map_irq' and 'pcibios_plat_dev_init'
-are common functions and only instance one of them
-can be present in a single kernel.
-
-Currently these functions can be built only if the
-CONFIG_SOC_AR724X option is selected. However the
-ath79 platform contain support for the AR71XX SoCs,.
-The AR71XX SoCs have a differnet PCI controller,
-and those will require a different code.
-
-Move the common PCI code into a separeate file in
-order to be able to use that with other SoCs as
-well.
-
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Signed-off-by: Gabor Juhos <juhsog@openwrt.org>
 ---
- arch/mips/ath79/Makefile    |    1 +
- arch/mips/ath79/pci.c       |   46 +++++++++++++++++++++++++++++++++++++++++++
- arch/mips/pci/pci-ath724x.c |   34 -------------------------------
- 3 files changed, 47 insertions(+), 34 deletions(-)
- create mode 100644 arch/mips/ath79/pci.c
+ arch/mips/include/asm/mach-ath79/pci.h |   20 ++++++++++++++++++++
+ arch/mips/pci/pci-ath724x.c            |    3 ++-
+ 2 files changed, 22 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-ath79/pci.h
 
-diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-index 3b911e09..221a76a9 100644
---- a/arch/mips/ath79/Makefile
-+++ b/arch/mips/ath79/Makefile
-@@ -11,6 +11,7 @@
- obj-y	:= prom.o setup.o irq.o common.o clock.o gpio.o
- 
- obj-$(CONFIG_EARLY_PRINTK)		+= early_printk.o
-+obj-$(CONFIG_PCI)			+= pci.o
- 
- #
- # Devices
-diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
+diff --git a/arch/mips/include/asm/mach-ath79/pci.h b/arch/mips/include/asm/mach-ath79/pci.h
 new file mode 100644
-index 0000000..8db076e
+index 0000000..7ef8a49
 --- /dev/null
-+++ b/arch/mips/ath79/pci.c
-@@ -0,0 +1,46 @@
++++ b/arch/mips/include/asm/mach-ath79/pci.h
+@@ -0,0 +1,20 @@
 +/*
-+ *  Atheros AR71XX/AR724X specific PCI setup code
++ *  Atheros 724x PCI support
 + *
 + *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
 + *
@@ -85,100 +61,36 @@ index 0000000..8db076e
 + *  by the Free Software Foundation.
 + */
 +
-+#include <linux/pci.h>
-+#include <asm/mach-ath79/pci-ath724x.h>
++#ifndef __ASM_MACH_ATH79_PCI_H
++#define __ASM_MACH_ATH79_PCI_H
 +
-+static struct ath724x_pci_data *pci_data;
-+static int pci_data_size;
++#if defined(CONFIG_PCI) && defined(CONFIG_SOC_AR724X)
++int ath724x_pcibios_init(void);
++#else
++static inline int ath724x_pcibios_init(void) { return 0 };
++#endif
 +
-+void ath724x_pci_add_data(struct ath724x_pci_data *data, int size)
-+{
-+	pci_data	= data;
-+	pci_data_size	= size;
-+}
-+
-+int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
-+{
-+	unsigned int devfn = dev->devfn;
-+	int irq = -1;
-+
-+	if (devfn > pci_data_size - 1)
-+		return irq;
-+
-+	irq = pci_data[devfn].irq;
-+
-+	return irq;
-+}
-+
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	unsigned int devfn = dev->devfn;
-+
-+	if (devfn > pci_data_size - 1)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	dev->dev.platform_data = pci_data[devfn].pdata;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
++#endif /* __ASM_MACH_ATH79_PCI_H */
 diff --git a/arch/mips/pci/pci-ath724x.c b/arch/mips/pci/pci-ath724x.c
-index a4dd24a..1e810be 100644
+index 1e810be..be01b7f 100644
 --- a/arch/mips/pci/pci-ath724x.c
 +++ b/arch/mips/pci/pci-ath724x.c
-@@ -9,7 +9,6 @@
+@@ -9,6 +9,7 @@
   */
  
  #include <linux/pci.h>
--#include <asm/mach-ath79/pci-ath724x.h>
++#include <asm/mach-ath79/pci.h>
  
  #define reg_read(_phys)		(*(unsigned int *) KSEG1ADDR(_phys))
  #define reg_write(_phys, _val)	((*(unsigned int *) KSEG1ADDR(_phys)) = (_val))
-@@ -19,8 +18,6 @@
- #define ATH724X_PCI_MEM_SIZE	0x08000000
- 
- static DEFINE_SPINLOCK(ath724x_pci_lock);
--static struct ath724x_pci_data *pci_data;
--static int pci_data_size;
- 
- static int ath724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
- 			    int size, uint32_t *value)
-@@ -133,37 +130,6 @@ static struct pci_controller ath724x_pci_controller = {
+@@ -130,7 +131,7 @@ static struct pci_controller ath724x_pci_controller = {
  	.mem_resource	= &ath724x_mem_resource,
  };
  
--void ath724x_pci_add_data(struct ath724x_pci_data *data, int size)
--{
--	pci_data	= data;
--	pci_data_size	= size;
--}
--
--int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
--{
--	unsigned int devfn = dev->devfn;
--	int irq = -1;
--
--	if (devfn > pci_data_size - 1)
--		return irq;
--
--	irq = pci_data[devfn].irq;
--
--	return irq;
--}
--
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	unsigned int devfn = dev->devfn;
--
--	if (devfn > pci_data_size - 1)
--		return PCIBIOS_DEVICE_NOT_FOUND;
--
--	dev->dev.platform_data = pci_data[devfn].pdata;
--
--	return PCIBIOS_SUCCESSFUL;
--}
--
- static int __init ath724x_pcibios_init(void)
+-static int __init ath724x_pcibios_init(void)
++int __init ath724x_pcibios_init(void)
  {
  	register_pci_controller(&ath724x_pci_controller);
+ 
 -- 
 1.7.2.1

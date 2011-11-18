@@ -1,55 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 10:32:41 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:34459 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903545Ab1KRJch (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Nov 2011 10:32:37 +0100
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 7C58A23C0084;
-        Fri, 18 Nov 2011 10:32:35 +0100 (CET)
-Message-ID: <4EC62636.6040208@openwrt.org>
-Date:   Fri, 18 Nov 2011 10:32:38 +0100
-From:   Gabor Juhos <juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 12:05:58 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:56267 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1904105Ab1KRLFy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 18 Nov 2011 12:05:54 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAIB5k4r010969;
+        Fri, 18 Nov 2011 11:05:46 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAIB5itA010962;
+        Fri, 18 Nov 2011 11:05:44 GMT
+Date:   Fri, 18 Nov 2011 11:05:44 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Chen Jie <chenj@lemote.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [Question] What's difference between ioremap_wc and
+ ioremap_uncached_accelerated?
+Message-ID: <20111118110544.GA18331@linux-mips.org>
+References: <CAGXxSxWUfNysqpfG0hWGYC0WyOMWS5R+K4euZ9miD3UD43F94A@mail.gmail.com>
 MIME-Version: 1.0
-To:     Sergei Shtylyov <sshtylyov@mvista.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, Imre Kaloz <kaloz@openwrt.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/6] MIPS: ath79: remove 'ar913x' from common variable
- and function names
-References: <1321568027-32066-1-git-send-email-juhosg@openwrt.org> <1321568027-32066-3-git-send-email-juhosg@openwrt.org> <4EC62138.7010703@mvista.com>
-In-Reply-To: <4EC62138.7010703@mvista.com>
-X-Enigmail-Version: 1.3.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-archive-position: 31784
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGXxSxWUfNysqpfG0hWGYC0WyOMWS5R+K4euZ9miD3UD43F94A@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15232
+X-UID: 15301
 
-Hi Sergei,
+On Thu, Nov 17, 2011 at 05:39:56PM +0800, Chen Jie wrote:
 
-2011.11.18. 10:11 keltezéssel, Sergei Shtylyov írta:
-> Hello.
+> I noticed mips defines an ioremap_uncached_accelerated in
+> arch/mips/include/asm/io.h, not reuse the name of "ioremap_wc", what
+> is the difference?
 > 
-> On 18-11-2011 2:13, Gabor Juhos wrote:
-> 
->> The wireless MAC specific variables and the registration
->> code can be shared between multiple SoCs. Remove the 'ar913x'
->> part from the function and variable names to avoid confusions.
-> 
->> Signed-off-by: Gabor Juhos<juhosg@openwrt.org>
->> ---
->>   arch/mips/ath79/dev-ar913x-wmac.c |   20 ++++++++++----------
->>   arch/mips/ath79/dev-ar913x-wmac.h |    8 ++++----
-> 
->    Don't you need to rename these files if they're no longer AR913x specific?
+> Some drivers use ioremap_wc, e.g. ttm_bo_ioremap() in
+> drivers/gpu/drm/ttm/ttm_bo_util.c, I wonder whether these ioremap_wc
+> invocations can be replaced with "ioremap_uncached_accelerated"?
 
-These files has been renamed by a later patch.
+Uncached Accelerated is the name under which the R10000 introduced a
+cache mode that uses the CPU's write buffer to combine writes but that
+otherwise is uncached.  ioremap_uncached_accelerated and ioremap_cache-
+able_cow were introduced in 2002; ioremap_wc was introduced in 2008 for
+x86 and the latter name became the standard.
 
--Gabor
+So the two functions are the same, just named differently for historic
+reasons.  I'm going to rename the function - for all practical purposes
+this naming difference has turned into a bug.
+
+Also I will rename ioremap_cacheable_cow to ioremap_cache.  Note that
+that ioremap_cacheable_cow also has a bug, it is hardwired to use CCA
+_CACHE_CACHABLE_COW which is not available on all MIPS cores.  I will
+change it to use the same CCA that is also being used for RAM.
+
+  Ralf

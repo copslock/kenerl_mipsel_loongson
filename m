@@ -1,61 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 12:05:58 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:56267 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1904105Ab1KRLFy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 18 Nov 2011 12:05:54 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAIB5k4r010969;
-        Fri, 18 Nov 2011 11:05:46 GMT
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAIB5itA010962;
-        Fri, 18 Nov 2011 11:05:44 GMT
-Date:   Fri, 18 Nov 2011 11:05:44 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Chen Jie <chenj@lemote.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: [Question] What's difference between ioremap_wc and
- ioremap_uncached_accelerated?
-Message-ID: <20111118110544.GA18331@linux-mips.org>
-References: <CAGXxSxWUfNysqpfG0hWGYC0WyOMWS5R+K4euZ9miD3UD43F94A@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Nov 2011 14:15:48 +0100 (CET)
+Received: from mail-fx0-f49.google.com ([209.85.161.49]:35576 "EHLO
+        mail-fx0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904109Ab1KRNPo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 18 Nov 2011 14:15:44 +0100
+Received: by faar25 with SMTP id r25so5349220faa.36
+        for <multiple recipients>; Fri, 18 Nov 2011 05:15:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        bh=cZSG+II3Z6BdgX+D2BXaNMeow5ENSxC+AuqphyxSOvw=;
+        b=ITDbub+/b13hN12DjcTJCZ/PAC1VTB4xpsgvTfKGAVKn/Yu5IsScrPvPcHyR3XRQzH
+         I27vilViivr6RNcEXxS2I5BhIE/rEU5q8LIE5lriaJzzETIiUe29D4TCMKOYEicMzTi/
+         5cdekuI84JzccsU2Zn3/AlUXXlo+uyZD5YYpQ=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGXxSxWUfNysqpfG0hWGYC0WyOMWS5R+K4euZ9miD3UD43F94A@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 31785
+Received: by 10.181.13.5 with SMTP id eu5mr3045089wid.55.1321622139293; Fri,
+ 18 Nov 2011 05:15:39 -0800 (PST)
+Received: by 10.216.45.11 with HTTP; Fri, 18 Nov 2011 05:15:39 -0800 (PST)
+Date:   Fri, 18 Nov 2011 21:15:39 +0800
+Message-ID: <CAJd=RBBTx8zWrFfVQGMK=aj=iPO_+i6nvqkhGDfYp_9=d1hyEw@mail.gmail.com>
+Subject: [PATCH] MIPS: Flush huge TLB
+From:   Hillf Danton <dhillf@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     David Daney <david.daney@cavium.com>,
+        "Jayachandran C." <jayachandranc@netlogicmicro.com>,
+        linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+X-archive-position: 31786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dhillf@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 15301
+X-UID: 15413
 
-On Thu, Nov 17, 2011 at 05:39:56PM +0800, Chen Jie wrote:
+When flushing TLB, if @vma is backed by huge page, we could flush huge TLB,
+due to that huge page is defined to be far from normal page.
 
-> I noticed mips defines an ioremap_uncached_accelerated in
-> arch/mips/include/asm/io.h, not reuse the name of "ioremap_wc", what
-> is the difference?
-> 
-> Some drivers use ioremap_wc, e.g. ttm_bo_ioremap() in
-> drivers/gpu/drm/ttm/ttm_bo_util.c, I wonder whether these ioremap_wc
-> invocations can be replaced with "ioremap_uncached_accelerated"?
+Signed-off-by: Hillf Danton <dhillf@gmail.com>
+---
 
-Uncached Accelerated is the name under which the R10000 introduced a
-cache mode that uses the CPU's write buffer to combine writes but that
-otherwise is uncached.  ioremap_uncached_accelerated and ioremap_cache-
-able_cow were introduced in 2002; ioremap_wc was introduced in 2008 for
-x86 and the latter name became the standard.
+--- a/arch/mips/mm/tlb-r4k.c	Mon May 30 21:17:04 2011
++++ b/arch/mips/mm/tlb-r4k.c	Fri Nov 18 21:13:13 2011
+@@ -120,22 +120,30 @@ void local_flush_tlb_range(struct vm_are
 
-So the two functions are the same, just named differently for historic
-reasons.  I'm going to rename the function - for all practical purposes
-this naming difference has turned into a bug.
+ 	if (cpu_context(cpu, mm) != 0) {
+ 		unsigned long size, flags;
++		int huge = is_vm_hugetlb_page(vma);
 
-Also I will rename ioremap_cacheable_cow to ioremap_cache.  Note that
-that ioremap_cacheable_cow also has a bug, it is hardwired to use CCA
-_CACHE_CACHABLE_COW which is not available on all MIPS cores.  I will
-change it to use the same CCA that is also being used for RAM.
+ 		ENTER_CRITICAL(flags);
+-		size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
+-		size = (size + 1) >> 1;
++		if (huge) {
++			start = round_down(start, HPAGE_SIZE);
++			end = round_up(end, HPAGE_SIZE);
++			size = (end - start) >> HPAGE_SHIFT;
++		} else {
++			start = round_down(start, PAGE_SIZE << 1);
++			end = round_up(end, PAGE_SIZE << 1);
++			size = (end - start) >> (PAGE_SHIFT + 1);
++		}
+ 		if (size <= current_cpu_data.tlbsize/2) {
+ 			int oldpid = read_c0_entryhi();
+ 			int newpid = cpu_asid(cpu, mm);
 
-  Ralf
+-			start &= (PAGE_MASK << 1);
+-			end += ((PAGE_SIZE << 1) - 1);
+-			end &= (PAGE_MASK << 1);
+ 			while (start < end) {
+ 				int idx;
+
+ 				write_c0_entryhi(start | newpid);
+-				start += (PAGE_SIZE << 1);
++				if (huge)
++					start += HPAGE_SIZE;
++				else
++					start += (PAGE_SIZE << 1);
+ 				mtc0_tlbw_hazard();
+ 				tlb_probe();
+ 				tlb_probe_hazard();

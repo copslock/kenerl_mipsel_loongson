@@ -1,98 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 00:22:24 +0100 (CET)
-Received: from smtp.gentoo.org ([140.211.166.183]:47224 "EHLO smtp.gentoo.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 00:26:39 +0100 (CET)
+Received: from terminus.zytor.com ([198.137.202.10]:38545 "EHLO mail.zytor.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903681Ab1KTXWS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Nov 2011 00:22:18 +0100
-Received: from vapier.localnet (localhost [127.0.0.1])
-        by smtp.gentoo.org (Postfix) with ESMTP id 80DF91B4001;
-        Sun, 20 Nov 2011 23:22:13 +0000 (UTC)
-From:   Mike Frysinger <vapier@gentoo.org>
-Organization: wh0rd.org
+        id S1903681Ab1KTX03 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Nov 2011 00:26:29 +0100
+Received: from tazenda.hos.anvin.org ([IPv6:2001:470:861f::feed:face:f00d])
+        (authenticated bits=0)
+        by mail.zytor.com (8.14.5/8.14.5) with ESMTP id pAKNQKYg029177
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
+        Sun, 20 Nov 2011 15:26:20 -0800
+Message-ID: <4EC98C97.50604@kernel.org>
+Date:   Sun, 20 Nov 2011 15:26:15 -0800
+From:   "H. Peter Anvin" <hpa@kernel.org>
+Organization: Linux Kernel Organization, Inc.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20110930 Thunderbird/7.0.1
+MIME-Version: 1.0
 To:     David Daney <ddaney.cavm@gmail.com>
-Subject: Re: [PATCH RFC 1/5] scripts: Add sortextable to sort the kernel's exception table.
-Date:   Sun, 20 Nov 2011 18:22:11 -0500
-User-Agent: KMail/1.13.7 (Linux/3.1.1; KDE/4.6.5; x86_64; ; )
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+CC:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-embedded@vger.kernel.org, x86@kernel.org,
         David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH RFC 1/5] scripts: Add sortextable to sort the kernel's
+ exception table.
 References: <1321645068-20475-1-git-send-email-ddaney.cavm@gmail.com> <1321645068-20475-2-git-send-email-ddaney.cavm@gmail.com>
 In-Reply-To: <1321645068-20475-2-git-send-email-ddaney.cavm@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart2815097.bik46lS6gJ";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <201111201822.13614.vapier@gentoo.org>
-X-archive-position: 31830
+X-archive-position: 31831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vapier@gentoo.org
+X-original-sender: hpa@kernel.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16798
+X-UID: 16803
 
---nextPart2815097.bik46lS6gJ
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+On 11/18/2011 11:37 AM, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> Using this build-time sort saves time booting as we don't have to burn
+> cycles sorting the exception table.
+> 
 
-On Friday 18 November 2011 14:37:44 David Daney wrote:
-> --- /dev/null
-> +++ b/scripts/sortextable.c
->
-> +/*
-> + * sortextable.c: Sort the kernel's exception table
-> + *
-> + * Copyright 2011 Cavium, Inc.
-> + *
-> + * Based on code taken from recortmcount.c which is:
+If we're going to do this at build time, I would suggest using a
+collisionless hash instead.  The lookup time for those are O(1), but
+they definitely need to be done at build time.
 
-seems like it'd be nice if the duplicate helper funcs were placed in a comm=
-on=20
-header file rather than copying & pasting between them.
-
-> +	switch (w2(ehdr->e_machine)) {
-> +	default:
-> +		fprintf(stderr, "unrecognized e_machine %d %s\n",
-> +			w2(ehdr->e_machine), fname);
-> +		fail_file();
-> +		break;
-> +	case EM_386:
-> +	case EM_MIPS:
-> +	case EM_X86_64:
-> +		break;
-> +	}  /* end switch */
-
-unlike recordmcount, this file doesn't do anything arch specific.  so let's=
- just=20
-delete this and be done.
-=2Dmike
-
---nextPart2815097.bik46lS6gJ
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.17 (GNU/Linux)
-
-iQIcBAABAgAGBQJOyYulAAoJEEFjO5/oN/WBe24QAL1WZzZr9y3mGK1q728FFE8z
-+Pz81B7gu/G3TFCeSp1qBbCOAfUQviuTpQG4Y+unbt3U0LeWKYmBQo5VdUsYRaft
-q9fua5PpIwfpaNKgvahhcFsR9KgAHlCGhiNOxdYLtHdlmG59ndRynhamlSIIo5rA
-x5ZOmNqbZdZ4Xmi0/z3SEErSw6kbvDyNe+kCPZ6aez8QaehQm/NcVH58qHkGGAI0
-RwPuW7iD6NM6oDAgUHLNFmZAEVs7yaTgPNKZyg0T8O1GqcC/gSnR+GRCltVU1prb
-T3fIgxoQNRidS0+4Ock3FDy4cJe+EqhFZocvAhOTQkV1O46ZlZUcvhd00oYiR9P/
-WEBlXM9Vcyp2VaAAuQIuP4cPWjOrJU2MPWDvPySiSgmCPc3EWLtADnYBHwb8B9KC
-RCrZX4mdyuGOfdvwvV9J+USQi1+oJFIsLjAnuQ+dbokf3/UFZru4DIamGV2EBwwU
-d3eXqDUVDEyogtOnLtyyBTA0r37gtjm6aOsGGqtkZKVUARJvYb9VTONBUX6PcPju
-n1z1M4Wgw3AMF3Pghox7aksapqhuRcoVgee/HZDzC0KH34gB1sxJJKCIvrOKUkpI
-cLNDoKE07kS5PS2myZic+lRGXSXoTYAUo/FbCqIg6U/ku0Hd4J974qvBHxQrUXWh
-SD1cwB8SCixlup5hTB4y
-=8wsY
------END PGP SIGNATURE-----
-
---nextPart2815097.bik46lS6gJ--
+	-hpa

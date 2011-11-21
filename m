@@ -1,28 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 17:10:53 +0100 (CET)
-Received: from zmc.proxad.net ([212.27.53.206]:40711 "EHLO zmc.proxad.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 17:11:21 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:40727 "EHLO zmc.proxad.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903797Ab1KUQIB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903799Ab1KUQIB (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Mon, 21 Nov 2011 17:08:01 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id C23293B2E48;
-        Mon, 21 Nov 2011 17:08:00 +0100 (CET)
+        by zmc.proxad.net (Postfix) with ESMTP id 999953B2E48;
+        Mon, 21 Nov 2011 17:08:01 +0100 (CET)
 X-Virus-Scanned: amavisd-new at 
 Received: from zmc.proxad.net ([127.0.0.1])
         by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id aghXqKlazjth; Mon, 21 Nov 2011 17:08:00 +0100 (CET)
+        with ESMTP id YJjWlIWC4op0; Mon, 21 Nov 2011 17:08:01 +0100 (CET)
 Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 6786E3AF532;
-        Mon, 21 Nov 2011 17:08:00 +0100 (CET)
+        by zmc.proxad.net (Postfix) with ESMTPSA id 021573AF532;
+        Mon, 21 Nov 2011 17:08:01 +0100 (CET)
 From:   Florian Fainelli <florian@openwrt.org>
 To:     ralf@linux-mips.org
 Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 6/8 v2] MIPS: BCM63XX: define internal registers offsets of the SPI controller
-Date:   Mon, 21 Nov 2011 17:07:21 +0100
-Message-Id: <1321891643-4119-7-git-send-email-florian@openwrt.org>
+Subject: [PATCH 7/8 v2] MIPS: BCM63XX: add stub to register the SPI platform driver
+Date:   Mon, 21 Nov 2011 17:07:22 +0100
+Message-Id: <1321891643-4119-8-git-send-email-florian@openwrt.org>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <1321891643-4119-1-git-send-email-florian@openwrt.org>
 References: <1321891643-4119-1-git-send-email-florian@openwrt.org>
-X-archive-position: 31888
+X-archive-position: 31889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,147 +31,256 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17465
+X-UID: 17467
 
-BCM6338, BCM6348, BCM6358 and BCM6368 basically use the same SPI controller
-though the internal registers are shuffled, which still allows a common
-driver to drive that IP block.
+This patch adds the necessary stub to register the SPI platform driver.
+Since the registers are shuffled between the 4 BCM63xx CPUs supported by
+this SPI driver we also need to generate the internal register layout and
+export this layout for the driver to use it properly.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-No changes since v1
+Changes since v1:
 
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |  120 +++++++++++++++++++++
- 1 files changed, 120 insertions(+), 0 deletions(-)
+- fixed typo in bcm63xx_spi_regs_init()
+- folded patch 8 and 7 together
 
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-index 94d4faa..5dc026a 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
-@@ -973,4 +973,124 @@
- #define M2M_SRCID_REG(x)		((x) * 0x40 + 0x14)
- #define M2M_DSTID_REG(x)		((x) * 0x40 + 0x18)
+ arch/mips/bcm63xx/Makefile                         |    3 +-
+ arch/mips/bcm63xx/dev-spi.c                        |  117 ++++++++++++++++++++
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |   89 +++++++++++++++
+ 3 files changed, 208 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/bcm63xx/dev-spi.c
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+
+diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
+index 6dfdc69..4049cd5 100644
+--- a/arch/mips/bcm63xx/Makefile
++++ b/arch/mips/bcm63xx/Makefile
+@@ -1,5 +1,6 @@
+ obj-y		+= clk.o cpu.o cs.o gpio.o irq.o prom.o setup.o timer.o \
+-		   dev-dsp.o dev-enet.o dev-pcmcia.o dev-uart.o dev-wdt.o
++		   dev-dsp.o dev-enet.o dev-pcmcia.o dev-spi.o dev-uart.o \
++		   dev-wdt.o
+ obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
  
-+/*************************************************************************
-+ * _REG relative to RSET_SPI
-+ *************************************************************************/
+ obj-y		+= boards/
+diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
+new file mode 100644
+index 0000000..2fd52f3
+--- /dev/null
++++ b/arch/mips/bcm63xx/dev-spi.c
+@@ -0,0 +1,117 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2009-2011 Florian Fainelli <florian@openwrt.org>
++ * Copyright (C) 2010 Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
++ */
 +
-+/* BCM 6338 SPI core */
-+#define SPI_6338_CMD			0x00	/* 16-bits register */
-+#define SPI_6338_INT_STATUS		0x02
-+#define SPI_6338_INT_MASK_ST		0x03
-+#define SPI_6338_INT_MASK		0x04
-+#define SPI_6338_ST			0x05
-+#define SPI_6338_CLK_CFG		0x06
-+#define SPI_6338_FILL_BYTE		0x07
-+#define SPI_6338_MSG_TAIL		0x09
-+#define SPI_6338_RX_TAIL		0x0b
-+#define SPI_6338_MSG_CTL		0x40
-+#define SPI_6338_MSG_DATA		0x41
-+#define SPI_6338_MSG_DATA_SIZE		0x3f
-+#define SPI_6338_RX_DATA		0x80
-+#define SPI_6338_RX_DATA_SIZE		0x3f
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/export.h>
++#include <linux/platform_device.h>
++#include <linux/err.h>
++#include <linux/clk.h>
 +
-+/* BCM 6348 SPI core */
-+#define SPI_6348_CMD			0x00	/* 16-bits register */
-+#define SPI_6348_INT_STATUS		0x02
-+#define SPI_6348_INT_MASK_ST		0x03
-+#define SPI_6348_INT_MASK		0x04
-+#define SPI_6348_ST			0x05
-+#define SPI_6348_CLK_CFG		0x06
-+#define SPI_6348_FILL_BYTE		0x07
-+#define SPI_6348_MSG_TAIL		0x09
-+#define SPI_6348_RX_TAIL		0x0b
-+#define SPI_6348_MSG_CTL		0x40
-+#define SPI_6348_MSG_DATA		0x41
-+#define SPI_6348_MSG_DATA_SIZE		0x3f
-+#define SPI_6348_RX_DATA		0x80
-+#define SPI_6348_RX_DATA_SIZE		0x3f
++#include <bcm63xx_cpu.h>
++#include <bcm63xx_dev_spi.h>
++#include <bcm63xx_regs.h>
 +
-+/* BCM 6358 SPI core */
-+#define SPI_6358_MSG_CTL		0x00	/* 16-bits register */
-+#define SPI_6358_MSG_DATA		0x02
-+#define SPI_6358_MSG_DATA_SIZE		0x21e
-+#define SPI_6358_RX_DATA		0x400
-+#define SPI_6358_RX_DATA_SIZE		0x220
-+#define SPI_6358_CMD			0x700	/* 16-bits register */
-+#define SPI_6358_INT_STATUS		0x702
-+#define SPI_6358_INT_MASK_ST		0x703
-+#define SPI_6358_INT_MASK		0x704
-+#define SPI_6358_ST			0x705
-+#define SPI_6358_CLK_CFG		0x706
-+#define SPI_6358_FILL_BYTE		0x707
-+#define SPI_6358_MSG_TAIL		0x709
-+#define SPI_6358_RX_TAIL		0x70B
++#ifdef BCMCPU_RUNTIME_DETECT
++/*
++ * register offsets
++ */
++static const unsigned long bcm6338_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6338)
++};
 +
-+/* BCM 6358 SPI core */
-+#define SPI_6368_MSG_CTL		0x00	/* 16-bits register */
-+#define SPI_6368_MSG_DATA		0x02
-+#define SPI_6368_MSG_DATA_SIZE		0x21e
-+#define SPI_6368_RX_DATA		0x400
-+#define SPI_6368_RX_DATA_SIZE		0x220
-+#define SPI_6368_CMD			0x700	/* 16-bits register */
-+#define SPI_6368_INT_STATUS		0x702
-+#define SPI_6368_INT_MASK_ST		0x703
-+#define SPI_6368_INT_MASK		0x704
-+#define SPI_6368_ST			0x705
-+#define SPI_6368_CLK_CFG		0x706
-+#define SPI_6368_FILL_BYTE		0x707
-+#define SPI_6368_MSG_TAIL		0x709
-+#define SPI_6368_RX_TAIL		0x70B
++static const unsigned long bcm6348_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6348)
++};
 +
-+/* Shared SPI definitions */
++static const unsigned long bcm6358_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6358)
++};
 +
-+/* Message configuration */
-+#define SPI_FD_RW			0x00
-+#define SPI_HD_W			0x01
-+#define SPI_HD_R			0x02
-+#define SPI_BYTE_CNT_SHIFT		0
-+#define SPI_MSG_TYPE_SHIFT		14
++static const unsigned long bcm6368_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6368)
++};
 +
-+/* Command */
-+#define SPI_CMD_NOOP			0x00
-+#define SPI_CMD_SOFT_RESET		0x01
-+#define SPI_CMD_HARD_RESET		0x02
-+#define SPI_CMD_START_IMMEDIATE		0x03
-+#define SPI_CMD_COMMAND_SHIFT		0
-+#define SPI_CMD_COMMAND_MASK		0x000f
-+#define SPI_CMD_DEVICE_ID_SHIFT		4
-+#define SPI_CMD_PREPEND_BYTE_CNT_SHIFT	8
-+#define SPI_CMD_ONE_BYTE_SHIFT		11
-+#define SPI_CMD_ONE_WIRE_SHIFT		12
-+#define SPI_DEV_ID_0			0
-+#define SPI_DEV_ID_1			1
-+#define SPI_DEV_ID_2			2
-+#define SPI_DEV_ID_3			3
++const unsigned long *bcm63xx_regs_spi;
++EXPORT_SYMBOL(bcm63xx_regs_spi);
 +
-+/* Interrupt mask */
-+#define SPI_INTR_CMD_DONE		0x01
-+#define SPI_INTR_RX_OVERFLOW		0x02
-+#define SPI_INTR_TX_UNDERFLOW		0x04
-+#define SPI_INTR_TX_OVERFLOW		0x08
-+#define SPI_INTR_RX_UNDERFLOW		0x10
-+#define SPI_INTR_CLEAR_ALL		0x1f
++static __init void bcm63xx_spi_regs_init(void)
++{
++	if (BCMCPU_IS_6338())
++		bcm63xx_regs_spi = bcm6338_regs_spi;
++	if (BCMCPU_IS_6348())
++		bcm63xx_regs_spi = bcm6348_regs_spi;
++	if (BCMCPU_IS_6358())
++		bcm63xx_regs_spi = bcm6358_regs_spi;
++	if (BCMCPU_IS_6368())
++		bcm63xx_regs_spi = bcm6368_regs_spi;
++}
++#else
++static __init void bcm63xx_spi_regs_init(void) { }
++#endif
 +
-+/* Status */
-+#define SPI_RX_EMPTY			0x02
-+#define SPI_CMD_BUSY			0x04
-+#define SPI_SERIAL_BUSY			0x08
++static struct resource spi_resources[] = {
++	{
++		.start		= -1, /* filled at runtime */
++		.end		= -1, /* filled at runtime */
++		.flags		= IORESOURCE_MEM,
++	},
++	{
++		.start		= -1, /* filled at runtime */
++		.flags		= IORESOURCE_IRQ,
++	},
++};
 +
-+/* Clock configuration */
-+#define SPI_CLK_20MHZ			0x00
-+#define SPI_CLK_0_391MHZ		0x01
-+#define SPI_CLK_0_781MHZ		0x02 /* default */
-+#define SPI_CLK_1_563MHZ		0x03
-+#define SPI_CLK_3_125MHZ		0x04
-+#define SPI_CLK_6_250MHZ		0x05
-+#define SPI_CLK_12_50MHZ		0x06
-+#define SPI_CLK_25MHZ			0x07
-+#define SPI_CLK_MASK			0x07
-+#define SPI_SSOFFTIME_MASK		0x38
-+#define SPI_SSOFFTIME_SHIFT		3
-+#define SPI_BYTE_SWAP			0x80
++static struct bcm63xx_spi_pdata spi_pdata = {
++	.bus_num		= 0,
++	.num_chipselect		= 8,
++};
 +
- #endif /* BCM63XX_REGS_H_ */
++static struct platform_device bcm63xx_spi_device = {
++	.name		= "bcm63xx-spi",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(spi_resources),
++	.resource	= spi_resources,
++	.dev		= {
++		.platform_data = &spi_pdata,
++	},
++};
++
++int __init bcm63xx_spi_register(void)
++{
++	struct clk *periph_clk;
++
++	if (BCMCPU_IS_6345())
++		return -ENODEV;
++
++	periph_clk = clk_get(NULL, "periph");
++	if (IS_ERR(periph_clk)) {
++		pr_err("unable to get periph clock\n");
++		return -ENODEV;
++	}
++
++	/* Set bus frequency */
++	spi_pdata.speed_hz = clk_get_rate(periph_clk);
++
++	spi_resources[0].start = bcm63xx_regset_address(RSET_SPI);
++	spi_resources[0].end = spi_resources[0].start;
++	spi_resources[0].end += RSET_SPI_SIZE - 1;
++	spi_resources[1].start = bcm63xx_get_irq_number(IRQ_SPI);
++
++	/* Fill in platform data */
++	if (BCMCPU_IS_6338() || BCMCPU_IS_6348())
++		spi_pdata.fifo_size = SPI_6338_MSG_DATA_SIZE;
++
++	if (BCMCPU_IS_6358() || BCMCPU_IS_6368())
++		spi_pdata.fifo_size = SPI_6358_MSG_DATA_SIZE;
++
++	bcm63xx_spi_regs_init();
++
++	return platform_device_register(&bcm63xx_spi_device);
++}
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+new file mode 100644
+index 0000000..7d98dbe
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+@@ -0,0 +1,89 @@
++#ifndef BCM63XX_DEV_SPI_H
++#define BCM63XX_DEV_SPI_H
++
++#include <linux/types.h>
++#include <bcm63xx_io.h>
++#include <bcm63xx_regs.h>
++
++int __init bcm63xx_spi_register(void);
++
++struct bcm63xx_spi_pdata {
++	unsigned int	fifo_size;
++	int		bus_num;
++	int		num_chipselect;
++	u32		speed_hz;
++};
++
++enum bcm63xx_regs_spi {
++	SPI_CMD,
++	SPI_INT_STATUS,
++	SPI_INT_MASK_ST,
++	SPI_INT_MASK,
++	SPI_ST,
++	SPI_CLK_CFG,
++	SPI_FILL_BYTE,
++	SPI_MSG_TAIL,
++	SPI_RX_TAIL,
++	SPI_MSG_CTL,
++	SPI_MSG_DATA,
++	SPI_RX_DATA,
++};
++
++#define __GEN_SPI_RSET_BASE(__cpu, __rset)				\
++	case SPI_## __rset:						\
++		return SPI_## __cpu ##_## __rset;
++
++#define __GEN_SPI_RSET(__cpu)						\
++	switch (reg) {							\
++	__GEN_SPI_RSET_BASE(__cpu, CMD)					\
++	__GEN_SPI_RSET_BASE(__cpu, INT_STATUS)				\
++	__GEN_SPI_RSET_BASE(__cpu, INT_MASK_ST)				\
++	__GEN_SPI_RSET_BASE(__cpu, INT_MASK)				\
++	__GEN_SPI_RSET_BASE(__cpu, ST)					\
++	__GEN_SPI_RSET_BASE(__cpu, CLK_CFG)				\
++	__GEN_SPI_RSET_BASE(__cpu, FILL_BYTE)				\
++	__GEN_SPI_RSET_BASE(__cpu, MSG_TAIL)				\
++	__GEN_SPI_RSET_BASE(__cpu, RX_TAIL)				\
++	__GEN_SPI_RSET_BASE(__cpu, MSG_CTL)				\
++	__GEN_SPI_RSET_BASE(__cpu, MSG_DATA)				\
++	__GEN_SPI_RSET_BASE(__cpu, RX_DATA)				\
++	}
++
++#define __GEN_SPI_REGS_TABLE(__cpu)					\
++	[SPI_CMD]		= SPI_## __cpu ##_CMD,			\
++	[SPI_INT_STATUS]	= SPI_## __cpu ##_INT_STATUS,		\
++	[SPI_INT_MASK_ST]	= SPI_## __cpu ##_INT_MASK_ST,		\
++	[SPI_INT_MASK]		= SPI_## __cpu ##_INT_MASK,		\
++	[SPI_ST]		= SPI_## __cpu ##_ST,			\
++	[SPI_CLK_CFG]		= SPI_## __cpu ##_CLK_CFG,		\
++	[SPI_FILL_BYTE]		= SPI_## __cpu ##_FILL_BYTE,		\
++	[SPI_MSG_TAIL]		= SPI_## __cpu ##_MSG_TAIL,		\
++	[SPI_RX_TAIL]		= SPI_## __cpu ##_RX_TAIL,		\
++	[SPI_MSG_CTL]		= SPI_## __cpu ##_MSG_CTL,		\
++	[SPI_MSG_DATA]		= SPI_## __cpu ##_MSG_DATA,		\
++	[SPI_RX_DATA]		= SPI_## __cpu ##_RX_DATA,
++
++static inline unsigned long bcm63xx_spireg(enum bcm63xx_regs_spi reg)
++{
++#ifdef BCMCPU_RUNTIME_DETECT
++	extern const unsigned long *bcm63xx_regs_spi;
++
++	return bcm63xx_regs_spi[reg];
++#else
++#ifdef CONFIG_BCM63XX_CPU_6338
++	__GEN_SPI_RSET(6338)
++#endif
++#ifdef CONFIG_BCM63XX_CPU_6348
++	__GEN_SPI_RSET(6348)
++#endif
++#ifdef CONFIG_BCM63XX_CPU_6358
++	__GEN_SPI_RSET(6358)
++#endif
++#ifdef CONFIG_BCM63XX_CPU_6368
++	__GEN_SPI_RSET(6368)
++#endif
++#endif
++	return 0;
++}
++
++#endif /* BCM63XX_DEV_SPI_H */
 -- 
 1.7.5.4

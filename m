@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 09:36:40 +0100 (CET)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:36019 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903698Ab1KUIfx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 09:35:53 +0100
-Received: by ywp31 with SMTP id 31so5238410ywp.36
-        for <multiple recipients>; Mon, 21 Nov 2011 00:35:47 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 09:37:04 +0100 (CET)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:65468 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903694Ab1KUIgY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 09:36:24 +0100
+Received: by yenr8 with SMTP id r8so4652197yen.36
+        for <multiple recipients>; Mon, 21 Nov 2011 00:36:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=Mn7ZxyBPx8E5XMOBCkRETMFUSebMbPv3h+xXhuXxE/M=;
-        b=Ck4yhVttDlDWiXAInmDtspEUvZnKBh81em+uo/C+qyUisYwm9/RuK1Ho5t2u2DmYGk
-         p0ve28DQ331WLKuUiIMUFD29gIDUmFUm/BH1usoWxR8KB1uz+/yfxIbYYz2hB5NuB8T6
-         uSm0MB3elMnN6cel9+m3czzZC5zH+dPDAW4XU=
-Received: by 10.236.201.132 with SMTP id b4mr18123287yho.40.1321864547192;
-        Mon, 21 Nov 2011 00:35:47 -0800 (PST)
+        bh=SCZjSw/HO31rkAl/VE41iAheXjO5Ur5fER4+fLv00dQ=;
+        b=Evy1rHMS6t1KOFVIg7w8/8BNfVk1q7mXi3GgkJx22ctfuY4vun3Ibq83ycStpQdz22
+         GnrNNORn8JEHoc7cYP+FHgg0dBhEYrkTvFmjwujJEyLobEKs7Mf3Ta6ASbTKR5ZMeWqS
+         8ZBoRo3JxC3YYvtLFWyuEb5KwS8gqGLXs0+rM=
+Received: by 10.101.194.39 with SMTP id w39mr2728067anp.115.1321864578149;
+        Mon, 21 Nov 2011 00:36:18 -0800 (PST)
 Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id l18sm27465698anb.22.2011.11.21.00.35.33
+        by mx.google.com with ESMTPS id l18sm27465698anb.22.2011.11.21.00.35.48
         (version=SSLv3 cipher=OTHER);
-        Mon, 21 Nov 2011 00:35:46 -0800 (PST)
+        Mon, 21 Nov 2011 00:36:17 -0800 (PST)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
 To:     ralf@linux-mips.org, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org
 Cc:     zhzhl555@gmail.com, peppe.cavallaro@st.com, wuzhangjin@gmail.com,
         r0bertz@gentoo.org, Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V4 3/4] MIPS: Add Makefile and Kconfig for Loongson1B
-Date:   Mon, 21 Nov 2011 16:34:51 +0800
-Message-Id: <1321864492-1278-3-git-send-email-keguang.zhang@gmail.com>
+Subject: [PATCH V4 4/4] MIPS: Add defconfig for Loongson1B
+Date:   Mon, 21 Nov 2011 16:34:52 +0800
+Message-Id: <1321864492-1278-4-git-send-email-keguang.zhang@gmail.com>
 X-Mailer: git-send-email 1.7.1
 In-Reply-To: <1321864492-1278-1-git-send-email-keguang.zhang@gmail.com>
 References: <1321864492-1278-1-git-send-email-keguang.zhang@gmail.com>
-X-archive-position: 31837
+X-archive-position: 31838
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,186 +38,111 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17005
+X-UID: 17006
 
-This patch adds Makefile and Kconfig related to Loongson1B.
+This patch adds defconfig for Loongson1B.
 
 Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
 ---
- arch/mips/Kbuild.platforms          |    1 +
- arch/mips/Kconfig                   |   31 +++++++++++++++++++++++++++++++
- arch/mips/loongson1/Kconfig         |   21 +++++++++++++++++++++
- arch/mips/loongson1/Makefile        |   11 +++++++++++
- arch/mips/loongson1/Platform        |    7 +++++++
- arch/mips/loongson1/common/Makefile |    5 +++++
- arch/mips/loongson1/ls1b/Makefile   |    5 +++++
- 7 files changed, 81 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/loongson1/Kconfig
- create mode 100644 arch/mips/loongson1/Makefile
- create mode 100644 arch/mips/loongson1/Platform
- create mode 100644 arch/mips/loongson1/common/Makefile
- create mode 100644 arch/mips/loongson1/ls1b/Makefile
+ arch/mips/configs/ls1b_defconfig |   90 ++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 90 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/configs/ls1b_defconfig
 
-diff --git a/arch/mips/Kbuild.platforms b/arch/mips/Kbuild.platforms
-index 5ce8029..d64786d 100644
---- a/arch/mips/Kbuild.platforms
-+++ b/arch/mips/Kbuild.platforms
-@@ -14,6 +14,7 @@ platforms += jz4740
- platforms += lantiq
- platforms += lasat
- platforms += loongson
-+platforms += loongson1
- platforms += mipssim
- platforms += mti-malta
- platforms += netlogic
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index d9b8ea8..4c6ad4f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -262,6 +262,17 @@ config MACH_LOONGSON
- 	  Chinese Academy of Sciences (CAS) in the People's Republic
- 	  of China. The chief architect is Professor Weiwu Hu.
- 
-+config MACH_LOONGSON1
-+	bool "Loongson1 family of machines"
-+	select SYS_SUPPORTS_ZBOOT
-+	help
-+	  This enables the support of Loongson1 family of machines.
-+
-+	  Loongson1 is a family of 32-bit MIPS-compatible SoCs.
-+	  developed at Institute of Computing Technology (ICT),
-+	  Chinese Academy of Sciences (CAS) in the People's Republic
-+	  of China.
-+
- config MIPS_MALTA
- 	bool "MIPS Malta board"
- 	select ARCH_MAY_HAVE_PC_FDC
-@@ -808,6 +819,7 @@ source "arch/mips/txx9/Kconfig"
- source "arch/mips/vr41xx/Kconfig"
- source "arch/mips/cavium-octeon/Kconfig"
- source "arch/mips/loongson/Kconfig"
-+source "arch/mips/loongson1/Kconfig"
- source "arch/mips/netlogic/Kconfig"
- 
- endmenu
-@@ -1201,6 +1213,14 @@ config CPU_LOONGSON2F
- 	  have a similar programming interface with FPGA northbridge used in
- 	  Loongson2E.
- 
-+config CPU_LOONGSON1B
-+	bool "Loongson 1B"
-+	depends on SYS_HAS_CPU_LOONGSON1B
-+	select CPU_LOONGSON1
-+	help
-+	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
-+	  release 2 instruction set.
-+
- config CPU_MIPS32_R1
- 	bool "MIPS32 Release 1"
- 	depends on SYS_HAS_CPU_MIPS32_R1
-@@ -1529,6 +1549,14 @@ config CPU_LOONGSON2
- 	select CPU_SUPPORTS_64BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
- 
-+config CPU_LOONGSON1
-+	bool
-+	select CPU_MIPS32
-+	select CPU_MIPSR2
-+	select CPU_HAS_PREFETCH
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select CPU_SUPPORTS_HIGHMEM
-+
- config SYS_HAS_CPU_LOONGSON2E
- 	bool
- 
-@@ -1538,6 +1566,9 @@ config SYS_HAS_CPU_LOONGSON2F
- 	select CPU_SUPPORTS_ADDRWINCFG if 64BIT
- 	select CPU_SUPPORTS_UNCACHED_ACCELERATED
- 
-+config SYS_HAS_CPU_LOONGSON1B
-+	bool
-+
- config SYS_HAS_CPU_MIPS32_R1
- 	bool
- 
-diff --git a/arch/mips/loongson1/Kconfig b/arch/mips/loongson1/Kconfig
+diff --git a/arch/mips/configs/ls1b_defconfig b/arch/mips/configs/ls1b_defconfig
 new file mode 100644
-index 0000000..237fa21
+index 0000000..42954bc
 --- /dev/null
-+++ b/arch/mips/loongson1/Kconfig
-@@ -0,0 +1,21 @@
-+if MACH_LOONGSON1
-+
-+choice
-+	prompt "Machine Type"
-+
-+config LOONGSON1_LS1B
-+	bool "Loongson LS1B board"
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select SYS_HAS_CPU_LOONGSON1B
-+	select DMA_NONCOHERENT
-+	select BOOT_ELF32
-+	select IRQ_CPU
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_HIGHMEM
-+	select SYS_HAS_EARLY_PRINTK
-+
-+endchoice
-+
-+endif # MACH_LOONGSON1
-diff --git a/arch/mips/loongson1/Makefile b/arch/mips/loongson1/Makefile
-new file mode 100644
-index 0000000..e9123c2
---- /dev/null
-+++ b/arch/mips/loongson1/Makefile
-@@ -0,0 +1,11 @@
-+#
-+# Common code for all Loongson1 based systems
-+#
-+
-+obj-$(CONFIG_MACH_LOONGSON1) += common/
-+
-+#
-+# Loongson LS1B board
-+#
-+
-+obj-$(CONFIG_LOONGSON1_LS1B)  += ls1b/
-diff --git a/arch/mips/loongson1/Platform b/arch/mips/loongson1/Platform
-new file mode 100644
-index 0000000..92804c6
---- /dev/null
-+++ b/arch/mips/loongson1/Platform
-@@ -0,0 +1,7 @@
-+cflags-$(CONFIG_CPU_LOONGSON1)  += \
-+	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-+	-Wa,-mips32r2 -Wa,--trap
-+
-+platform-$(CONFIG_MACH_LOONGSON1)	+= loongson1/
-+cflags-$(CONFIG_MACH_LOONGSON1)		+= -I$(srctree)/arch/mips/include/asm/mach-loongson1
-+load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80010000
-diff --git a/arch/mips/loongson1/common/Makefile b/arch/mips/loongson1/common/Makefile
-new file mode 100644
-index 0000000..b279770
---- /dev/null
-+++ b/arch/mips/loongson1/common/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for common code of loongson1 based machines.
-+#
-+
-+obj-y	+= clock.o irq.o platform.o prom.o reset.o setup.o
-diff --git a/arch/mips/loongson1/ls1b/Makefile b/arch/mips/loongson1/ls1b/Makefile
-new file mode 100644
-index 0000000..891eac4
---- /dev/null
-+++ b/arch/mips/loongson1/ls1b/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for loongson1B based machines.
-+#
-+
-+obj-y += board.o
++++ b/arch/mips/configs/ls1b_defconfig
+@@ -0,0 +1,90 @@
++CONFIG_MACH_LOONGSON1=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_PREEMPT=y
++# CONFIG_SECCOMP is not set
++CONFIG_EXPERIMENTAL=y
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++CONFIG_TINY_RCU=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_RD_BZIP2=y
++CONFIG_RD_LZMA=y
++CONFIG_EXPERT=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_PERF_EVENTS=y
++# CONFIG_COMPAT_BRK is not set
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++# CONFIG_LBDAF is not set
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_INET=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_SYN_COOKIES=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_DIAG is not set
++# CONFIG_IPV6 is not set
++# CONFIG_WIRELESS is not set
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_NETDEVICES=y
++CONFIG_STMMAC_ETH=y
++CONFIG_STMMAC_DA=y
++# CONFIG_NETDEV_10000 is not set
++# CONFIG_WLAN is not set
++# CONFIG_INPUT_MOUSEDEV is not set
++# CONFIG_INPUT_KEYBOARD is not set
++# CONFIG_INPUT_MOUSE is not set
++# CONFIG_SERIO is not set
++CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_LEGACY_PTY_COUNT=8
++# CONFIG_DEVKMEM is not set
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++# CONFIG_HW_RANDOM is not set
++# CONFIG_HWMON is not set
++# CONFIG_MFD_SUPPORT is not set
++# CONFIG_VGA_CONSOLE is not set
++# CONFIG_HID_SUPPORT is not set
++# CONFIG_USB_SUPPORT is not set
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_LOONGSON1=y
++# CONFIG_IOMMU_SUPPORT is not set
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++# CONFIG_DNOTIFY is not set
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_MISC_FILESYSTEMS is not set
++# CONFIG_NETWORK_FILESYSTEMS is not set
++# CONFIG_ENABLE_WARN_DEPRECATED is not set
++# CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_SCHED_DEBUG is not set
++CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_MEMORY_INIT=y
++CONFIG_SYSCTL_SYSCALL_CHECK=y
++# CONFIG_FTRACE is not set
++# CONFIG_EARLY_PRINTK is not set
 -- 
 1.7.1

@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 14:53:33 +0100 (CET)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:47359 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903756Ab1KUNxM convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Nov 2011 14:53:12 +0100
-Received: by mail-vw0-f49.google.com with SMTP id fs19so517607vbb.36
-        for <multiple recipients>; Mon, 21 Nov 2011 05:53:12 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 14:55:06 +0100 (CET)
+Received: from mail-vx0-f177.google.com ([209.85.220.177]:54301 "EHLO
+        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903752Ab1KUNy5 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 14:54:57 +0100
+Received: by vcbfo13 with SMTP id fo13so4066367vcb.36
+        for <multiple recipients>; Mon, 21 Nov 2011 05:54:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=Op46bVLwWwkz8pD8Ua+DSmF57GVUm632FAFtA6mKLko=;
-        b=ifprKWxqIBU2vdY2HUC6UOyxsK3k22pGwGgQbP8UD5Od6Iu8rC+AGW5LaaVRbBtBot
-         LSgXYbnmXxOTOwfAlhPhSQOAQiKN4vNRpUDNfjTkeKB6CamBYKCV3+bbGPxeb+EtqvzC
-         o7ERgKvMnM+PrnTZMEZCSFRjgu4MEbf3MicVE=
+        bh=ExVYvTfCh7fHtEQrbgVkUQuva33IH5pXaXi+7TaxjHk=;
+        b=JEEMlJpt3iSXAP/Qb/leTjp3CqQCHlTWBzQalBzDqMQj7jsChWFNnvhlrsfHjCAqsR
+         4h+RBC1B74nC4uFtgsm1lgy670iBkLDzEFxlJFSwJMifKoaST+6moV44/oP6Xj4kTX0P
+         Btxm+vfYs/7L7YAyGzAh5h0K64Bd4k4KHSGOM=
 MIME-Version: 1.0
-Received: by 10.182.31.78 with SMTP id y14mr3013845obh.25.1321883592084; Mon,
- 21 Nov 2011 05:53:12 -0800 (PST)
-Received: by 10.182.36.133 with HTTP; Mon, 21 Nov 2011 05:53:12 -0800 (PST)
-In-Reply-To: <1321825151-16053-2-git-send-email-juhosg@openwrt.org>
+Received: by 10.182.217.105 with SMTP id ox9mr3030941obc.45.1321883653079;
+ Mon, 21 Nov 2011 05:54:13 -0800 (PST)
+Received: by 10.182.36.133 with HTTP; Mon, 21 Nov 2011 05:54:13 -0800 (PST)
+In-Reply-To: <1321825151-16053-8-git-send-email-juhosg@openwrt.org>
 References: <1321825151-16053-1-git-send-email-juhosg@openwrt.org>
-        <1321825151-16053-2-git-send-email-juhosg@openwrt.org>
-Date:   Mon, 21 Nov 2011 14:53:12 +0100
-Message-ID: <CAEWqx58nqYXW9vtONQxAvKYnmE0_oon76cfAYR9n4ZyyPqXadQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/7] MIPS: ath79: separate common PCI code
+        <1321825151-16053-8-git-send-email-juhosg@openwrt.org>
+Date:   Mon, 21 Nov 2011 14:54:13 +0100
+Message-ID: <CAEWqx5-vkzGGkR2h5Dw=Fy0_3UTEGoFH5zwZVLsY8wUtqKgt-w@mail.gmail.com>
+Subject: Re: [PATCH v3 7/7] MIPS: ath79: use io-accessor macros in pci-ar724x.c
 From:   =?UTF-8?Q?Ren=C3=A9_Bolldorf?= <xsecute@googlemail.com>
 To:     Gabor Juhos <juhosg@openwrt.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31866
+Content-Transfer-Encoding: base64
+X-archive-position: 31867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,160 +37,102 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17305
+X-UID: 17307
 
-Acked-by: Rene Bolldorf <xsecute@googlemail.com>
-
-On Sun, Nov 20, 2011 at 10:39 PM, Gabor Juhos <juhosg@openwrt.org> wrote:
-> The 'pcibios_map_irq' and 'pcibios_plat_dev_init'
-> are common functions and only instance one of them
-> can be present in a single kernel.
->
-> Currently these functions can be built only if the
-> CONFIG_SOC_AR724X option is selected. However the
-> ath79 platform contain support for the AR71XX SoCs,.
-> The AR71XX SoCs have a differnet PCI controller,
-> and those will require a different code.
->
-> Move the common PCI code into a separeate file in
-> order to be able to use that with other SoCs as
-> well.
->
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> ---
-> v3: - no changes
-> v2: - no changes
-> ---
->  arch/mips/ath79/Makefile    |    1 +
->  arch/mips/ath79/pci.c       |   46 +++++++++++++++++++++++++++++++++++++++++++
->  arch/mips/pci/pci-ath724x.c |   34 -------------------------------
->  3 files changed, 47 insertions(+), 34 deletions(-)
->  create mode 100644 arch/mips/ath79/pci.c
->
-> diff --git a/arch/mips/ath79/Makefile b/arch/mips/ath79/Makefile
-> index 3b911e09..221a76a9 100644
-> --- a/arch/mips/ath79/Makefile
-> +++ b/arch/mips/ath79/Makefile
-> @@ -11,6 +11,7 @@
->  obj-y  := prom.o setup.o irq.o common.o clock.o gpio.o
->
->  obj-$(CONFIG_EARLY_PRINTK)             += early_printk.o
-> +obj-$(CONFIG_PCI)                      += pci.o
->
->  #
->  # Devices
-> diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-> new file mode 100644
-> index 0000000..8db076e
-> --- /dev/null
-> +++ b/arch/mips/ath79/pci.c
-> @@ -0,0 +1,46 @@
-> +/*
-> + *  Atheros AR71XX/AR724X specific PCI setup code
-> + *
-> + *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
-> + *
-> + *  This program is free software; you can redistribute it and/or modify it
-> + *  under the terms of the GNU General Public License version 2 as published
-> + *  by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/pci.h>
-> +#include <asm/mach-ath79/pci-ath724x.h>
-> +
-> +static struct ath724x_pci_data *pci_data;
-> +static int pci_data_size;
-> +
-> +void ath724x_pci_add_data(struct ath724x_pci_data *data, int size)
-> +{
-> +       pci_data        = data;
-> +       pci_data_size   = size;
-> +}
-> +
-> +int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
-> +{
-> +       unsigned int devfn = dev->devfn;
-> +       int irq = -1;
-> +
-> +       if (devfn > pci_data_size - 1)
-> +               return irq;
-> +
-> +       irq = pci_data[devfn].irq;
-> +
-> +       return irq;
-> +}
-> +
-> +int pcibios_plat_dev_init(struct pci_dev *dev)
-> +{
-> +       unsigned int devfn = dev->devfn;
-> +
-> +       if (devfn > pci_data_size - 1)
-> +               return PCIBIOS_DEVICE_NOT_FOUND;
-> +
-> +       dev->dev.platform_data = pci_data[devfn].pdata;
-> +
-> +       return PCIBIOS_SUCCESSFUL;
-> +}
-> diff --git a/arch/mips/pci/pci-ath724x.c b/arch/mips/pci/pci-ath724x.c
-> index a4dd24a..1e810be 100644
-> --- a/arch/mips/pci/pci-ath724x.c
-> +++ b/arch/mips/pci/pci-ath724x.c
-> @@ -9,7 +9,6 @@
->  */
->
->  #include <linux/pci.h>
-> -#include <asm/mach-ath79/pci-ath724x.h>
->
->  #define reg_read(_phys)                (*(unsigned int *) KSEG1ADDR(_phys))
->  #define reg_write(_phys, _val) ((*(unsigned int *) KSEG1ADDR(_phys)) = (_val))
-> @@ -19,8 +18,6 @@
->  #define ATH724X_PCI_MEM_SIZE   0x08000000
->
->  static DEFINE_SPINLOCK(ath724x_pci_lock);
-> -static struct ath724x_pci_data *pci_data;
-> -static int pci_data_size;
->
->  static int ath724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
->                            int size, uint32_t *value)
-> @@ -133,37 +130,6 @@ static struct pci_controller ath724x_pci_controller = {
->        .mem_resource   = &ath724x_mem_resource,
->  };
->
-> -void ath724x_pci_add_data(struct ath724x_pci_data *data, int size)
-> -{
-> -       pci_data        = data;
-> -       pci_data_size   = size;
-> -}
-> -
-> -int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
-> -{
-> -       unsigned int devfn = dev->devfn;
-> -       int irq = -1;
-> -
-> -       if (devfn > pci_data_size - 1)
-> -               return irq;
-> -
-> -       irq = pci_data[devfn].irq;
-> -
-> -       return irq;
-> -}
-> -
-> -int pcibios_plat_dev_init(struct pci_dev *dev)
-> -{
-> -       unsigned int devfn = dev->devfn;
-> -
-> -       if (devfn > pci_data_size - 1)
-> -               return PCIBIOS_DEVICE_NOT_FOUND;
-> -
-> -       dev->dev.platform_data = pci_data[devfn].pdata;
-> -
-> -       return PCIBIOS_SUCCESSFUL;
-> -}
-> -
->  static int __init ath724x_pcibios_init(void)
->  {
->        register_pci_controller(&ath724x_pci_controller);
-> --
-> 1.7.2.1
->
->
+QWNrZWQtYnk6IFJlbmUgQm9sbGRvcmYgPHhzZWN1dGVAZ29vZ2xlbWFpbC5jb20+CgpPbiBTdW4s
+IE5vdiAyMCwgMjAxMSBhdCAxMDozOSBQTSwgR2Fib3IgSnVob3MgPGp1aG9zZ0BvcGVud3J0Lm9y
+Zz4gd3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogR2Fib3IgSnVob3MgPGp1aG9zZ0BvcGVud3J0Lm9y
+Zz4KPiAtLS0KPiB2MzogLSBubyBjaGFuZ2VzCj4gdjI6IC0gcmVtb3ZlICdyZXQnIHZhcmlhYmxl
+IGZyb20gYXI3MjR4X3BjaWJpb3NfaW5pdAo+IC0tLQo+IMKgYXJjaC9taXBzL3BjaS9wY2ktYXI3
+MjR4LmMgfCDCoCAzOCArKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLQo+IMKg
+MSBmaWxlcyBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAxNCBkZWxldGlvbnMoLSkKPgo+IGRp
+ZmYgLS1naXQgYS9hcmNoL21pcHMvcGNpL3BjaS1hcjcyNHguYyBiL2FyY2gvbWlwcy9wY2kvcGNp
+LWFyNzI0eC5jCj4gaW5kZXggNzcyZDEyYy4uMjJmNWU1YiAxMDA2NDQKPiAtLS0gYS9hcmNoL21p
+cHMvcGNpL3BjaS1hcjcyNHguYwo+ICsrKyBiL2FyY2gvbWlwcy9wY2kvcGNpLWFyNzI0eC5jCj4g
+QEAgLTExLDE5ICsxMSwxOSBAQAo+IMKgI2luY2x1ZGUgPGxpbnV4L3BjaS5oPgo+IMKgI2luY2x1
+ZGUgPGFzbS9tYWNoLWF0aDc5L3BjaS5oPgo+Cj4gLSNkZWZpbmUgcmVnX3JlYWQoX3BoeXMpIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgKCoodW5zaWduZWQgaW50ICopIEtTRUcxQUREUihfcGh5cykp
+Cj4gLSNkZWZpbmUgcmVnX3dyaXRlKF9waHlzLCBfdmFsKSAoKCoodW5zaWduZWQgaW50ICopIEtT
+RUcxQUREUihfcGh5cykpID0gKF92YWwpKQo+IC0KPiAtI2RlZmluZSBBUjcyNFhfUENJX0RFVl9C
+QVNFIMKgIMKgMHgxNDAwMDAwMAo+ICsjZGVmaW5lIEFSNzI0WF9QQ0lfQ0ZHX0JBU0UgwqAgwqAw
+eDE0MDAwMDAwCj4gKyNkZWZpbmUgQVI3MjRYX1BDSV9DRkdfU0laRSDCoCDCoDB4MTAwMAo+IMKg
+I2RlZmluZSBBUjcyNFhfUENJX01FTV9CQVNFIMKgIMKgMHgxMDAwMDAwMAo+IMKgI2RlZmluZSBB
+UjcyNFhfUENJX01FTV9TSVpFIMKgIMKgMHgwODAwMDAwMAo+Cj4gwqBzdGF0aWMgREVGSU5FX1NQ
+SU5MT0NLKGFyNzI0eF9wY2lfbG9jayk7Cj4gK3N0YXRpYyB2b2lkIF9faW9tZW0gKmFyNzI0eF9w
+Y2lfZGV2Y2ZnX2Jhc2U7Cj4KPiDCoHN0YXRpYyBpbnQgYXI3MjR4X3BjaV9yZWFkKHN0cnVjdCBw
+Y2lfYnVzICpidXMsIHVuc2lnbmVkIGludCBkZXZmbiwgaW50IHdoZXJlLAo+IMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaW50IHNpemUsIHVpbnQzMl90ICp2YWx1ZSkK
+PiDCoHsKPiDCoCDCoCDCoCDCoHVuc2lnbmVkIGxvbmcgZmxhZ3MsIGFkZHIsIHR2YWwsIG1hc2s7
+Cj4gKyDCoCDCoCDCoCB2b2lkIF9faW9tZW0gKmJhc2U7Cj4KPiDCoCDCoCDCoCDCoGlmIChkZXZm
+bikKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHJldHVybiBQQ0lCSU9TX0RFVklDRV9OT1RfRk9V
+TkQ7Cj4gQEAgLTMxLDI1ICszMSwyNyBAQCBzdGF0aWMgaW50IGFyNzI0eF9wY2lfcmVhZChzdHJ1
+Y3QgcGNpX2J1cyAqYnVzLCB1bnNpZ25lZCBpbnQgZGV2Zm4sIGludCB3aGVyZSwKPiDCoCDCoCDC
+oCDCoGlmICh3aGVyZSAmIChzaXplIC0gMSkpCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqByZXR1
+cm4gUENJQklPU19CQURfUkVHSVNURVJfTlVNQkVSOwo+Cj4gKyDCoCDCoCDCoCBiYXNlID0gYXI3
+MjR4X3BjaV9kZXZjZmdfYmFzZTsKPiArCj4gwqAgwqAgwqAgwqBzcGluX2xvY2tfaXJxc2F2ZSgm
+YXI3MjR4X3BjaV9sb2NrLCBmbGFncyk7Cj4KPiDCoCDCoCDCoCDCoHN3aXRjaCAoc2l6ZSkgewo+
+IMKgIMKgIMKgIMKgY2FzZSAxOgo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYWRkciA9IHdoZXJl
+ICYgfjM7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBtYXNrID0gMHhmZjAwMDAwMCA+PiAoKHdo
+ZXJlICUgNCkgKiA4KTsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2YWwgPSByZWdfcmVhZChB
+UjcyNFhfUENJX0RFVl9CQVNFICsgYWRkcik7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB0dmFs
+ID0gX19yYXdfcmVhZGwoYmFzZSArIGFkZHIpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgdHZh
+bCA9IHR2YWwgJiB+bWFzazsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCp2YWx1ZSA9ICh0dmFs
+ID4+ICgoNCAtICh3aGVyZSAlIDQpKSo4KSk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVh
+azsKPiDCoCDCoCDCoCDCoGNhc2UgMjoKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGFkZHIgPSB3
+aGVyZSAmIH4zOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgbWFzayA9IDB4ZmZmZjAwMDAgPj4g
+KCh3aGVyZSAlIDQpKjgpOwo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgdHZhbCA9IHJlZ19yZWFk
+KEFSNzI0WF9QQ0lfREVWX0JBU0UgKyBhZGRyKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2
+YWwgPSBfX3Jhd19yZWFkbChiYXNlICsgYWRkcik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0
+dmFsID0gdHZhbCAmIH5tYXNrOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgKnZhbHVlID0gKHR2
+YWwgPj4gKCg0IC0gKHdoZXJlICUgNCkpKjgpKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGJy
+ZWFrOwo+IMKgIMKgIMKgIMKgY2FzZSA0Ogo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgKnZhbHVl
+ID0gcmVnX3JlYWQoQVI3MjRYX1BDSV9ERVZfQkFTRSArIHdoZXJlKTsKPiArIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgICp2YWx1ZSA9IF9fcmF3X3JlYWRsKGJhc2UgKyB3aGVyZSk7Cj4gwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqBicmVhazsKPiDCoCDCoCDCoCDCoGRlZmF1bHQ6Cj4gwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqBzcGluX3VubG9ja19pcnFyZXN0b3JlKCZhcjcyNHhfcGNpX2xvY2ssIGZsYWdz
+KTsKPiBAQCAtNjYsNiArNjgsNyBAQCBzdGF0aWMgaW50IGFyNzI0eF9wY2lfd3JpdGUoc3RydWN0
+IHBjaV9idXMgKmJ1cywgdW5zaWduZWQgaW50IGRldmZuLCBpbnQgd2hlcmUsCj4gwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW50IHNpemUsIHVpbnQzMl90IHZhbHVl
+KQo+IMKgewo+IMKgIMKgIMKgIMKgdW5zaWduZWQgbG9uZyBmbGFncywgdHZhbCwgYWRkciwgbWFz
+azsKPiArIMKgIMKgIMKgIHZvaWQgX19pb21lbSAqYmFzZTsKPgo+IMKgIMKgIMKgIMKgaWYgKGRl
+dmZuKQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgcmV0dXJuIFBDSUJJT1NfREVWSUNFX05PVF9G
+T1VORDsKPiBAQCAtNzMsMjcgKzc2LDI5IEBAIHN0YXRpYyBpbnQgYXI3MjR4X3BjaV93cml0ZShz
+dHJ1Y3QgcGNpX2J1cyAqYnVzLCB1bnNpZ25lZCBpbnQgZGV2Zm4sIGludCB3aGVyZSwKPiDCoCDC
+oCDCoCDCoGlmICh3aGVyZSAmIChzaXplIC0gMSkpCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBy
+ZXR1cm4gUENJQklPU19CQURfUkVHSVNURVJfTlVNQkVSOwo+Cj4gKyDCoCDCoCDCoCBiYXNlID0g
+YXI3MjR4X3BjaV9kZXZjZmdfYmFzZTsKPiArCj4gwqAgwqAgwqAgwqBzcGluX2xvY2tfaXJxc2F2
+ZSgmYXI3MjR4X3BjaV9sb2NrLCBmbGFncyk7Cj4KPiDCoCDCoCDCoCDCoHN3aXRjaCAoc2l6ZSkg
+ewo+IMKgIMKgIMKgIMKgY2FzZSAxOgo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgYWRkciA9IChB
+UjcyNFhfUENJX0RFVl9CQVNFICsgd2hlcmUpICYgfjM7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCBhZGRyID0gd2hlcmUgJiB+MzsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoG1hc2sgPSAweGZm
+MDAwMDAwID4+ICgod2hlcmUgJSA0KSo4KTsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2YWwg
+PSByZWdfcmVhZChhZGRyKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2YWwgPSBfX3Jhd19y
+ZWFkbChiYXNlICsgYWRkcik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0dmFsID0gdHZhbCAm
+IH5tYXNrOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgdHZhbCB8PSAodmFsdWUgPDwgKCg0IC0g
+KHdoZXJlICUgNCkpKjgpKSAmIG1hc2s7Cj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZWdfd3Jp
+dGUoYWRkciwgdHZhbCk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBfX3Jhd193cml0ZWwodHZh
+bCwgYmFzZSArIGFkZHIpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYnJlYWs7Cj4gwqAgwqAg
+wqAgwqBjYXNlIDI6Cj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCBhZGRyID0gKEFSNzI0WF9QQ0lf
+REVWX0JBU0UgKyB3aGVyZSkgJiB+MzsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGFkZHIgPSB3
+aGVyZSAmIH4zOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgbWFzayA9IDB4ZmZmZjAwMDAgPj4g
+KCh3aGVyZSAlIDQpKjgpOwo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgdHZhbCA9IHJlZ19yZWFk
+KGFkZHIpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdHZhbCA9IF9fcmF3X3JlYWRsKGJhc2Ug
+KyBhZGRyKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHR2YWwgPSB0dmFsICYgfm1hc2s7Cj4g
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0dmFsIHw9ICh2YWx1ZSA8PCAoKDQgLSAod2hlcmUgJSA0
+KSkqOCkpICYgbWFzazsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJlZ193cml0ZShhZGRyLCB0
+dmFsKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIF9fcmF3X3dyaXRlbCh0dmFsLCBiYXNlICsg
+YWRkcik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVhazsKPiDCoCDCoCDCoCDCoGNhc2Ug
+NDoKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJlZ193cml0ZSgoQVI3MjRYX1BDSV9ERVZfQkFT
+RSArIHdoZXJlKSwgdmFsdWUpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgX19yYXdfd3JpdGVs
+KHZhbHVlLCAoYmFzZSArIHdoZXJlKSk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVhazsK
+PiDCoCDCoCDCoCDCoGRlZmF1bHQ6Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBzcGluX3VubG9j
+a19pcnFyZXN0b3JlKCZhcjcyNHhfcGNpX2xvY2ssIGZsYWdzKTsKPiBAQCAtMTMzLDYgKzEzOCwx
+MSBAQCBzdGF0aWMgc3RydWN0IHBjaV9jb250cm9sbGVyIGFyNzI0eF9wY2lfY29udHJvbGxlciA9
+IHsKPgo+IMKgaW50IF9faW5pdCBhcjcyNHhfcGNpYmlvc19pbml0KHZvaWQpCj4gwqB7Cj4gKyDC
+oCDCoCDCoCBhcjcyNHhfcGNpX2RldmNmZ19iYXNlID0gaW9yZW1hcChBUjcyNFhfUENJX0NGR19C
+QVNFLAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqBBUjcyNFhfUENJX0NGR19TSVpFKTsKPiArIMKgIMKgIMKgIGlmIChhcjcyNHhf
+cGNpX2RldmNmZ19iYXNlID09IE5VTEwpCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZXR1cm4g
+LUVOT01FTTsKPiArCj4gwqAgwqAgwqAgwqByZWdpc3Rlcl9wY2lfY29udHJvbGxlcigmYXI3MjR4
+X3BjaV9jb250cm9sbGVyKTsKPgo+IMKgIMKgIMKgIMKgcmV0dXJuIFBDSUJJT1NfU1VDQ0VTU0ZV
+TDsKPiAtLQo+IDEuNy4yLjEKPgo+Cg==

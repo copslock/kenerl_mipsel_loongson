@@ -1,122 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 11:12:22 +0100 (CET)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:56950 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903711Ab1KUKMP convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Nov 2011 11:12:15 +0100
-Received: by ghbg15 with SMTP id g15so2998494ghb.36
-        for <multiple recipients>; Mon, 21 Nov 2011 02:12:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:from:date
-         :x-google-sender-auth:message-id:subject:to:cc:content-type
-         :content-transfer-encoding;
-        bh=/j08jdStfL3lTt0T+NmaxUwJKscmaQA4LKob4k7KDc4=;
-        b=qUxR5oTA9ji1oIycDd4cLRHbBzHGCjYY6a17SZV4BDEhCT1tJ5vD1+Vdb5WHEH2jSk
-         TYs5g2lntxzN8USUsVKb38Y98ysaa7hBHCHVgzPtzg421kcotxwKjrwQEplD0V8CCv1U
-         A5SvbK3q1fR1efFwgXqZi9RQ//jNYgx6J7gSc=
-Received: by 10.182.220.7 with SMTP id ps7mr360830obc.51.1321870328530; Mon,
- 21 Nov 2011 02:12:08 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 11:18:58 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:34973 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903711Ab1KUKSw (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 11:18:52 +0100
+Received: by bkat2 with SMTP id t2so8394708bka.36
+        for <multiple recipients>; Mon, 21 Nov 2011 02:18:46 -0800 (PST)
+Received: by 10.205.117.134 with SMTP id fm6mr10291445bkc.93.1321870726019;
+        Mon, 21 Nov 2011 02:18:46 -0800 (PST)
+Received: from [192.168.2.2] (ppp85-141-190-27.pppoe.mtu-net.ru. [85.141.190.27])
+        by mx.google.com with ESMTPS id cc2sm6866047bkb.8.2011.11.21.02.18.43
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 21 Nov 2011 02:18:43 -0800 (PST)
+Message-ID: <4ECA254E.4040509@mvista.com>
+Date:   Mon, 21 Nov 2011 14:17:50 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:8.0) Gecko/20111105 Thunderbird/8.0
 MIME-Version: 1.0
-Received: by 10.182.29.195 with HTTP; Mon, 21 Nov 2011 02:11:46 -0800 (PST)
-In-Reply-To: <1321866861-14340-8-git-send-email-florian@openwrt.org>
-References: <1321866861-14340-1-git-send-email-florian@openwrt.org> <1321866861-14340-8-git-send-email-florian@openwrt.org>
-From:   Florian Fainelli <florian@openwrt.org>
-Date:   Mon, 21 Nov 2011 11:11:46 +0100
-X-Google-Sender-Auth: HKBpPQlIHd-pWn_Lz15ufq5VsyA
-Message-ID: <CAGVrzcZMeUha9uqe7zaX7tKj+bFnb-scyni7Y61R3qwOM_+WnA@mail.gmail.com>
-Subject: Re: [PATCH 7/9] MIPS: BCM63XX: add stub to register the SPI platform driver
-To:     ralf@linux-mips.org
-Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31850
+To:     Gabor Juhos <juhosg@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Rene Bolldorf <xsecute@googlemail.com>
+Subject: Re: [PATCH v3 4/7] MIPS: ath79: add a common PCI registration function
+References: <1321825151-16053-1-git-send-email-juhosg@openwrt.org> <1321825151-16053-5-git-send-email-juhosg@openwrt.org>
+In-Reply-To: <1321825151-16053-5-git-send-email-juhosg@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17085
+X-UID: 17091
 
-Hello Ralf,
+Hello.
 
-2011/11/21 Florian Fainelli <florian@openwrt.org>:
-> This patch adds the necessary stub to register the SPI platform driver.
-> Since the registers are shuffled between the 4 BCM63xx CPUs supported by
-> this SPI driver we also need to generate the internal register layout and
-> export this layout for the driver to use it properly.
->
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+On 21-11-2011 1:39, Gabor Juhos wrote:
+
+> The current code unconditionally registers the AR724X
+> specific PCI controller, even if the kernel is running
+> on a different SoC.
+
+> Add a common function for PCI controller registration,
+> and only register the AR724X PCI controller if the kernel
+> is running on an AR724X SoC.
+
+> Signed-off-by: Gabor Juhos<juhosg@openwrt.org>
 > ---
->  arch/mips/bcm63xx/dev-spi.c                        |  117 ++++++++++++++++++++
->  .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |   89 +++++++++++++++
->  2 files changed, 206 insertions(+), 0 deletions(-)
->  create mode 100644 arch/mips/bcm63xx/dev-spi.c
->  create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
->
-> diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
-> new file mode 100644
-> index 0000000..b0faa85
-> --- /dev/null
-> +++ b/arch/mips/bcm63xx/dev-spi.c
-> @@ -0,0 +1,117 @@
-> +/*
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
-> + * Copyright (C) 2009-2011 Florian Fainelli <florian@openwrt.org>
-> + * Copyright (C) 2010 Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/export.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/err.h>
-> +#include <linux/clk.h>
-> +
-> +#include <bcm63xx_cpu.h>
-> +#include <bcm63xx_dev_spi.h>
-> +#include <bcm63xx_regs.h>
-> +
-> +#ifdef BCMCPU_RUNTIME_DETECT
-> +/*
-> + * register offsets
-> + */
-> +static const unsigned long bcm6338_regs_spi[] = {
-> +       __GEN_SPI_REGS_TABLE(6338)
-> +};
-> +
-> +static const unsigned long bcm6348_regs_spi[] = {
-> +       __GEN_SPI_REGS_TABLE(6348)
-> +};
-> +
-> +static const unsigned long bcm6358_regs_spi[] = {
-> +       __GEN_SPI_REGS_TABLE(6358)
-> +};
-> +
-> +static const unsigned long bcm6368_regs_spi[] = {
-> +       __GEN_SPI_REGS_TABLE(6368)
-> +};
-> +
-> +const unsigned long *bcm63xx_regs_spi;
-> +EXPORT_SYMBOL(bcm63xx_regs_spi);
-> +
-> +static __init void bcm63xx_spi_regs_init(void)
-> +{
-> +       if (BCMCPU_IS_6338())
-> +               bcm63xx_regs_spi = bcm6338_regs_spi;
-> +       if (BCMCPU_IS_6348())
-> +               bcm63xx_regs_spi = bcm6348_regs_spi;
-> +       if (BCMCPU_IS_6358())
-> +               bcm63xx_regs_spi = bcm6358_regs_spi;
-> +       if (BCMCPU_IS_6368())
-> +               bcm63xx_regs_spi = bcm6358_regs_spi;
+> v3: - fix compile error if CONFIG_PCI is not defined
+>      - add __init annotation to ath79_register_pci
 
-There is a typo here, I will resubmit a version 2 of the patchset.
---
-Florian
+> v2: - no changes
+[...]
+
+> diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
+> index 4957428..342363b 100644
+> --- a/arch/mips/ath79/pci.c
+> +++ b/arch/mips/ath79/pci.c
+
+> @@ -44,3 +46,15 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+>
+>   	return PCIBIOS_SUCCESSFUL;
+>   }
+> +
+> +int __init ath79_register_pci(void)
+> +{
+> +	int ret;
+> +
+> +	if (soc_is_ar724x())
+> +		ret = ath724x_pcibios_init();
+> +	else
+> +		ret = -ENODEV;
+
+    Why not return right away and save 4 lines of code?
+
+> +
+> +	return ret;
+> +}
+
+WBR, Sergei

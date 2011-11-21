@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 13:38:18 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:58348 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 13:38:43 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:58351 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903752Ab1KUMgE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Nov 2011 13:36:04 +0100
+        id S1903753Ab1KUMgF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Nov 2011 13:36:05 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
         Thomas Langer <thomas.langer@lantiq.com>
-Subject: [PATCH V2 5/6] MIPS: lantiq: add support for FALC-ON GPIOs
-Date:   Mon, 21 Nov 2011 14:35:24 +0100
-Message-Id: <1321882525-13780-5-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 6/6] MIPS: lantiq: add support for the EASY98000 evaluation board
+Date:   Mon, 21 Nov 2011 14:35:25 +0100
+Message-Id: <1321882525-13780-6-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1321882525-13780-1-git-send-email-blogic@openwrt.org>
 References: <1321882525-13780-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 31862
+X-archive-position: 31863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,102 +22,51 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17236
+X-UID: 17237
 
-FALC-ON uses a different GPIO core than the other Lantiq SoCs. This patch adds
-the new driver.
+This patch adds the machine code for the EASY9800 evaluation board.
 
 Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/falcon/Makefile  |    2 +-
- arch/mips/lantiq/falcon/devices.c |   41 ++++
- arch/mips/lantiq/falcon/devices.h |    2 +
- arch/mips/lantiq/falcon/gpio.c    |  399 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 443 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/lantiq/falcon/gpio.c
+ arch/mips/lantiq/falcon/Kconfig          |   11 +++
+ arch/mips/lantiq/falcon/Makefile         |    1 +
+ arch/mips/lantiq/falcon/mach-easy98000.c |  110 ++++++++++++++++++++++++++++++
+ arch/mips/lantiq/machtypes.h             |    5 ++
+ 4 files changed, 127 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/lantiq/falcon/Kconfig
+ create mode 100644 arch/mips/lantiq/falcon/mach-easy98000.c
 
+diff --git a/arch/mips/lantiq/falcon/Kconfig b/arch/mips/lantiq/falcon/Kconfig
+new file mode 100644
+index 0000000..03e999d
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/Kconfig
+@@ -0,0 +1,11 @@
++if SOC_FALCON
++
++menu "MIPS Machine"
++
++config LANTIQ_MACH_EASY98000
++	bool "Easy98000"
++	default y
++
++endmenu
++
++endif
 diff --git a/arch/mips/lantiq/falcon/Makefile b/arch/mips/lantiq/falcon/Makefile
-index e9c7455..de72209 100644
+index de72209..56b22eb 100644
 --- a/arch/mips/lantiq/falcon/Makefile
 +++ b/arch/mips/lantiq/falcon/Makefile
-@@ -1 +1 @@
--obj-y := clk.o prom.o reset.o sysctrl.o devices.o
-+obj-y := clk.o prom.o reset.o sysctrl.o devices.o gpio.o
-diff --git a/arch/mips/lantiq/falcon/devices.c b/arch/mips/lantiq/falcon/devices.c
-index c4606f2..4f47b44 100644
---- a/arch/mips/lantiq/falcon/devices.c
-+++ b/arch/mips/lantiq/falcon/devices.c
-@@ -9,6 +9,7 @@
- 
- #include <linux/platform_device.h>
- #include <linux/mtd/nand.h>
-+#include <linux/gpio.h>
- 
- #include <lantiq_soc.h>
- 
-@@ -85,3 +86,43 @@ falcon_register_nand(void)
- {
- 	platform_device_register(&ltq_flash_nand);
- }
-+
-+/* gpio */
-+#define DECLARE_GPIO_RES(port) \
-+static struct resource falcon_gpio ## port ## _res[] = { \
-+	MEM_RES("gpio"#port, LTQ_GPIO ## port ## _BASE_ADDR, \
-+		LTQ_GPIO ## port ## _SIZE), \
-+	MEM_RES("padctrl"#port, LTQ_PADCTRL ## port ## _BASE_ADDR, \
-+		LTQ_PADCTRL ## port ## _SIZE), \
-+	IRQ_RES("gpio_mux"#port, FALCON_IRQ_GPIO_P ## port) \
-+}
-+DECLARE_GPIO_RES(0);
-+DECLARE_GPIO_RES(1);
-+DECLARE_GPIO_RES(2);
-+DECLARE_GPIO_RES(3);
-+DECLARE_GPIO_RES(4);
-+
-+void __init
-+falcon_register_gpio(void)
-+{
-+	platform_device_register_simple("falcon_gpio", 0,
-+		falcon_gpio0_res, ARRAY_SIZE(falcon_gpio0_res));
-+	platform_device_register_simple("falcon_gpio", 1,
-+		falcon_gpio1_res, ARRAY_SIZE(falcon_gpio1_res));
-+	platform_device_register_simple("falcon_gpio", 2,
-+		falcon_gpio2_res, ARRAY_SIZE(falcon_gpio2_res));
-+	ltq_sysctl_activate(SYSCTL_SYS1, ACTS_PADCTRL1 | ACTS_P1);
-+	ltq_sysctl_activate(SYSCTL_SYSETH, ACTS_PADCTRL0 |
-+		ACTS_PADCTRL2 | ACTS_P0 | ACTS_P2);
-+}
-+
-+void __init
-+falcon_register_gpio_extra(void)
-+{
-+	platform_device_register_simple("falcon_gpio", 3,
-+		falcon_gpio3_res, ARRAY_SIZE(falcon_gpio3_res));
-+	platform_device_register_simple("falcon_gpio", 4,
-+		falcon_gpio4_res, ARRAY_SIZE(falcon_gpio4_res));
-+	ltq_sysctl_activate(SYSCTL_SYS1,
-+		ACTS_PADCTRL3 | ACTS_PADCTRL4 | ACTS_P3 | ACTS_P4);
-+}
-diff --git a/arch/mips/lantiq/falcon/devices.h b/arch/mips/lantiq/falcon/devices.h
-index e802a7c..18be8b6 100644
---- a/arch/mips/lantiq/falcon/devices.h
-+++ b/arch/mips/lantiq/falcon/devices.h
-@@ -14,5 +14,7 @@
- #include "../devices.h"
- 
- extern void falcon_register_nand(void);
-+extern void falcon_register_gpio(void);
-+extern void falcon_register_gpio_extra(void);
- 
- #endif
-diff --git a/arch/mips/lantiq/falcon/gpio.c b/arch/mips/lantiq/falcon/gpio.c
+@@ -1 +1,2 @@
+ obj-y := clk.o prom.o reset.o sysctrl.o devices.o gpio.o
++obj-$(CONFIG_LANTIQ_MACH_EASY98000) += mach-easy98000.o
+diff --git a/arch/mips/lantiq/falcon/mach-easy98000.c b/arch/mips/lantiq/falcon/mach-easy98000.c
 new file mode 100644
-index 0000000..28f8639
+index 0000000..361b8f0
 --- /dev/null
-+++ b/arch/mips/lantiq/falcon/gpio.c
-@@ -0,0 +1,399 @@
++++ b/arch/mips/lantiq/falcon/mach-easy98000.c
+@@ -0,0 +1,110 @@
 +/*
 + *  This program is free software; you can redistribute it and/or modify it
 + *  under the terms of the GNU General Public License version 2 as published
@@ -127,395 +76,122 @@ index 0000000..28f8639
 + *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
 + */
 +
-+#include <linux/gpio.h>
-+#include <linux/interrupt.h>
-+#include <linux/slab.h>
-+#include <linux/export.h>
 +#include <linux/platform_device.h>
++#include <linux/mtd/partitions.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_gpio.h>
++#include <linux/spi/eeprom.h>
 +
-+#include <lantiq_soc.h>
++#include "../machtypes.h"
 +
-+/* Multiplexer Control Register */
-+#define LTQ_PADC_MUX(x)         (x * 0x4)
-+/* Pad Control Availability Register */
-+#define LTQ_PADC_AVAIL          0x000000F0
++#include "devices.h"
 +
-+/* Data Output Register */
-+#define LTQ_GPIO_OUT            0x00000000
-+/* Data Input Register */
-+#define LTQ_GPIO_IN             0x00000004
-+/* Direction Register */
-+#define LTQ_GPIO_DIR            0x00000008
-+/* External Interrupt Control Register 0 */
-+#define LTQ_GPIO_EXINTCR0       0x00000018
-+/* External Interrupt Control Register 1 */
-+#define LTQ_GPIO_EXINTCR1       0x0000001C
-+/* IRN Capture Register */
-+#define LTQ_GPIO_IRNCR          0x00000020
-+/* IRN Interrupt Configuration Register */
-+#define LTQ_GPIO_IRNCFG		0x0000002C
-+/* IRN Interrupt Enable Set Register */
-+#define LTQ_GPIO_IRNRNSET       0x00000030
-+/* IRN Interrupt Enable Clear Register */
-+#define LTQ_GPIO_IRNENCLR       0x00000034
-+/* Output Set Register */
-+#define LTQ_GPIO_OUTSET         0x00000040
-+/* Output Cler Register */
-+#define LTQ_GPIO_OUTCLR         0x00000044
-+/* Direction Clear Register */
-+#define LTQ_GPIO_DIRSET         0x00000048
-+/* Direction Set Register */
-+#define LTQ_GPIO_DIRCLR         0x0000004C
-+
-+/* turn a gpio_chip into a falcon_gpio_port */
-+#define ctop(c)		container_of(c, struct falcon_gpio_port, gpio_chip)
-+/* turn a irq_data into a falcon_gpio_port */
-+#define itop(i)		((struct falcon_gpio_port *) irq_get_chip_data(i->irq))
-+
-+#define ltq_pad_r32(p, reg)		ltq_r32(p->pad + reg)
-+#define ltq_pad_w32(p, val, reg)	ltq_w32(val, p->pad + reg)
-+#define ltq_pad_w32_mask(c, clear, set, reg) \
-+		ltq_pad_w32(c, (ltq_pad_r32(c, reg) & ~(clear)) | (set), reg)
-+
-+#define ltq_port_r32(p, reg)		ltq_r32(p->port + reg)
-+#define ltq_port_w32(p, val, reg)	ltq_w32(val, p->port + reg)
-+#define ltq_port_w32_mask(p, clear, set, reg) \
-+		ltq_port_w32(p, (ltq_port_r32(p, reg) & ~(clear)) | (set), reg)
-+
-+#define MAX_PORTS		5
-+#define PINS_PER_PORT		32
-+
-+struct falcon_gpio_port {
-+	struct gpio_chip gpio_chip;
-+	void __iomem *pad;
-+	void __iomem *port;
-+	unsigned int irq_base;
-+	unsigned int chained_irq;
-+};
-+
-+static struct falcon_gpio_port ltq_gpio_port[MAX_PORTS];
-+
-+int gpio_to_irq(unsigned int gpio)
-+{
-+	return __gpio_to_irq(gpio);
-+}
-+EXPORT_SYMBOL(gpio_to_irq);
-+
-+int ltq_gpio_mux_set(unsigned int pin, unsigned int mux)
-+{
-+	int port = pin / 100;
-+	int offset = pin % 100;
-+	struct falcon_gpio_port *gpio_port;
-+
-+	if ((offset >= PINS_PER_PORT) || (port >= MAX_PORTS))
-+		return -EINVAL;
-+
-+	gpio_port = &ltq_gpio_port[port];
-+	ltq_pad_w32(gpio_port, mux & 0x3, LTQ_PADC_MUX(offset));
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(ltq_gpio_mux_set);
-+
-+int ltq_gpio_request(unsigned int pin, unsigned int mux,
-+			unsigned int dir, const char *name)
-+{
-+	int port = pin / 100;
-+	int offset = pin % 100;
-+
-+	if (offset >= PINS_PER_PORT || port >= MAX_PORTS)
-+		return -EINVAL;
-+
-+	if (gpio_request(pin, name)) {
-+		pr_err("failed to setup lantiq gpio: %s\n", name);
-+		return -EBUSY;
-+	}
-+
-+	if (dir)
-+		gpio_direction_output(pin, 1);
-+	else
-+		gpio_direction_input(pin);
-+
-+	return ltq_gpio_mux_set(pin, mux);
-+}
-+EXPORT_SYMBOL(ltq_gpio_request);
-+
-+static int
-+falcon_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
-+{
-+	ltq_port_w32(ctop(chip), 1 << offset, LTQ_GPIO_DIRCLR);
-+
-+	return 0;
-+}
-+
-+static void
-+falcon_gpio_set(struct gpio_chip *chip, unsigned int offset, int value)
-+{
-+	if (value)
-+		ltq_port_w32(ctop(chip), 1 << offset, LTQ_GPIO_OUTSET);
-+	else
-+		ltq_port_w32(ctop(chip), 1 << offset, LTQ_GPIO_OUTCLR);
-+}
-+
-+static int
-+falcon_gpio_direction_output(struct gpio_chip *chip,
-+			unsigned int offset, int value)
-+{
-+	falcon_gpio_set(chip, offset, value);
-+	ltq_port_w32(ctop(chip), 1 << offset, LTQ_GPIO_DIRSET);
-+
-+	return 0;
-+}
-+
-+static int
-+falcon_gpio_get(struct gpio_chip *chip, unsigned int offset)
-+{
-+	if ((ltq_port_r32(ctop(chip), LTQ_GPIO_DIR) >> offset) & 1)
-+		return (ltq_port_r32(ctop(chip), LTQ_GPIO_OUT) >> offset) & 1;
-+	else
-+		return (ltq_port_r32(ctop(chip), LTQ_GPIO_IN) >> offset) & 1;
-+}
-+
-+static int
-+falcon_gpio_request(struct gpio_chip *chip, unsigned offset)
-+{
-+	if ((ltq_pad_r32(ctop(chip), LTQ_PADC_AVAIL) >> offset) & 1) {
-+		if (ltq_pad_r32(ctop(chip), LTQ_PADC_MUX(offset)) > 1)
-+			return -EBUSY;
-+		/* switch on gpio function */
-+		ltq_pad_w32(ctop(chip), 1, LTQ_PADC_MUX(offset));
-+		return 0;
-+	}
-+
-+	return -ENODEV;
-+}
-+
-+static void
-+falcon_gpio_free(struct gpio_chip *chip, unsigned offset)
-+{
-+	if ((ltq_pad_r32(ctop(chip), LTQ_PADC_AVAIL) >> offset) & 1) {
-+		if (ltq_pad_r32(ctop(chip), LTQ_PADC_MUX(offset)) > 1)
-+			return;
-+		/* switch off gpio function */
-+		ltq_pad_w32(ctop(chip), 0, LTQ_PADC_MUX(offset));
-+	}
-+}
-+
-+static int
-+falcon_gpio_to_irq(struct gpio_chip *chip, unsigned offset)
-+{
-+	return ctop(chip)->irq_base + offset;
-+}
-+
-+static void
-+falcon_gpio_disable_irq(struct irq_data *d)
-+{
-+	unsigned int offset = d->irq - itop(d)->irq_base;
-+
-+	ltq_port_w32(itop(d), 1 << offset, LTQ_GPIO_IRNENCLR);
-+}
-+
-+static void
-+falcon_gpio_enable_irq(struct irq_data *d)
-+{
-+	unsigned int offset = d->irq - itop(d)->irq_base;
-+
-+	if (!ltq_pad_r32(itop(d), LTQ_PADC_MUX(offset)) < 1)
-+		/* switch on gpio function */
-+		ltq_pad_w32(itop(d), 1, LTQ_PADC_MUX(offset));
-+
-+	ltq_port_w32(itop(d), 1 << offset, LTQ_GPIO_IRNRNSET);
-+}
-+
-+static void
-+falcon_gpio_ack_irq(struct irq_data *d)
-+{
-+	unsigned int offset = d->irq - itop(d)->irq_base;
-+
-+	ltq_port_w32(itop(d), 1 << offset, LTQ_GPIO_IRNCR);
-+}
-+
-+static void
-+falcon_gpio_mask_and_ack_irq(struct irq_data *d)
-+{
-+	unsigned int offset = d->irq - itop(d)->irq_base;
-+
-+	ltq_port_w32(itop(d), 1 << offset, LTQ_GPIO_IRNENCLR);
-+	ltq_port_w32(itop(d), 1 << offset, LTQ_GPIO_IRNCR);
-+}
-+
-+static struct irq_chip falcon_gpio_irq_chip;
-+static int
-+falcon_gpio_irq_type(struct irq_data *d, unsigned int type)
-+{
-+	unsigned int offset = d->irq - itop(d)->irq_base;
-+	unsigned int mask = 1 << offset;
-+
-+	if ((type & IRQ_TYPE_SENSE_MASK) == IRQ_TYPE_NONE)
-+		return 0;
-+
-+	if ((type & (IRQ_TYPE_LEVEL_HIGH | IRQ_TYPE_LEVEL_LOW)) != 0) {
-+		/* level triggered */
-+		ltq_port_w32_mask(itop(d), 0, mask, LTQ_GPIO_IRNCFG);
-+		irq_set_chip_and_handler_name(d->irq,
-+				&falcon_gpio_irq_chip, handle_level_irq, "mux");
-+	} else {
-+		/* edge triggered */
-+		ltq_port_w32_mask(itop(d), mask, 0, LTQ_GPIO_IRNCFG);
-+		irq_set_chip_and_handler_name(d->irq,
-+			&falcon_gpio_irq_chip, handle_simple_irq, "mux");
-+	}
-+
-+	if ((type & IRQ_TYPE_EDGE_BOTH) == IRQ_TYPE_EDGE_BOTH) {
-+		ltq_port_w32_mask(itop(d), mask, 0, LTQ_GPIO_EXINTCR0);
-+		ltq_port_w32_mask(itop(d), 0, mask, LTQ_GPIO_EXINTCR1);
-+	} else {
-+		if ((type & (IRQ_TYPE_EDGE_RISING | IRQ_TYPE_LEVEL_HIGH)) != 0)
-+			/* positive logic: rising edge, high level */
-+			ltq_port_w32_mask(itop(d), mask, 0, LTQ_GPIO_EXINTCR0);
-+		else
-+			/* negative logic: falling edge, low level */
-+			ltq_port_w32_mask(itop(d), 0, mask, LTQ_GPIO_EXINTCR0);
-+		ltq_port_w32_mask(itop(d), mask, 0, LTQ_GPIO_EXINTCR1);
-+	}
-+
-+	return gpio_direction_input(itop(d)->gpio_chip.base + offset);
-+}
-+
-+static void
-+falcon_gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
-+{
-+	struct falcon_gpio_port *gpio_port = irq_desc_get_handler_data(desc);
-+	unsigned long irncr;
-+	int offset;
-+
-+	/* acknowledge interrupt */
-+	irncr = ltq_port_r32(gpio_port, LTQ_GPIO_IRNCR);
-+	ltq_port_w32(gpio_port, irncr, LTQ_GPIO_IRNCR);
-+
-+	desc->irq_data.chip->irq_ack(&desc->irq_data);
-+
-+	for_each_set_bit(offset, &irncr, gpio_port->gpio_chip.ngpio)
-+		generic_handle_irq(gpio_port->irq_base + offset);
-+}
-+
-+static struct irq_chip falcon_gpio_irq_chip = {
-+	.name = "gpio_irq_mux",
-+	.irq_mask = falcon_gpio_disable_irq,
-+	.irq_unmask = falcon_gpio_enable_irq,
-+	.irq_ack = falcon_gpio_ack_irq,
-+	.irq_mask_ack = falcon_gpio_mask_and_ack_irq,
-+	.irq_set_type = falcon_gpio_irq_type,
-+};
-+
-+static struct irqaction gpio_cascade = {
-+	.handler = no_action,
-+	.flags = IRQF_DISABLED,
-+	.name = "gpio_cascade",
-+};
-+
-+static int
-+falcon_gpio_probe(struct platform_device *pdev)
-+{
-+	struct falcon_gpio_port *gpio_port;
-+	int ret, i;
-+	struct resource *gpiores, *padres;
-+	int irq;
-+
-+	if (pdev->id >= MAX_PORTS)
-+		return -ENODEV;
-+
-+	gpiores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	padres = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	irq = platform_get_irq(pdev, 0);
-+	if (!gpiores || !padres)
-+		return -ENODEV;
-+
-+	gpio_port = &ltq_gpio_port[pdev->id];
-+	gpio_port->gpio_chip.label = "falcon-gpio";
-+	gpio_port->gpio_chip.direction_input = falcon_gpio_direction_input;
-+	gpio_port->gpio_chip.direction_output = falcon_gpio_direction_output;
-+	gpio_port->gpio_chip.get = falcon_gpio_get;
-+	gpio_port->gpio_chip.set = falcon_gpio_set;
-+	gpio_port->gpio_chip.request = falcon_gpio_request;
-+	gpio_port->gpio_chip.free = falcon_gpio_free;
-+	gpio_port->gpio_chip.base = 100 * pdev->id;
-+	gpio_port->gpio_chip.ngpio = 32;
-+	gpio_port->gpio_chip.dev = &pdev->dev;
-+
-+	gpio_port->port = ltq_remap_resource(gpiores);
-+	gpio_port->pad = ltq_remap_resource(padres);
-+
-+	if (!gpio_port->port || !gpio_port->pad) {
-+		dev_err(&pdev->dev, "Could not map io ranges\n");
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	if (irq > 0) {
-+		/* irq_chip support */
-+		gpio_port->gpio_chip.to_irq = falcon_gpio_to_irq;
-+		gpio_port->irq_base = INT_NUM_EXTRA_START + (32 * pdev->id);
-+
-+		for (i = 0; i < 32; i++) {
-+			irq_set_chip_and_handler_name(gpio_port->irq_base + i,
-+				&falcon_gpio_irq_chip, handle_simple_irq,
-+				"mux");
-+			irq_set_chip_data(gpio_port->irq_base + i, gpio_port);
-+			/* set to negative logic (falling edge, low level) */
-+			ltq_port_w32_mask(gpio_port, 0, 1 << i,
-+				LTQ_GPIO_EXINTCR0);
-+		}
-+
-+		gpio_port->chained_irq = irq;
-+		setup_irq(irq, &gpio_cascade);
-+		irq_set_handler_data(irq, gpio_port);
-+		irq_set_chained_handler(irq, falcon_gpio_irq_handler);
-+	}
-+
-+	ret = gpiochip_add(&gpio_port->gpio_chip);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Could not register gpiochip %d, %d\n",
-+			pdev->id, ret);
-+		goto err;
-+	}
-+	platform_set_drvdata(pdev, gpio_port);
-+	return ret;
-+
-+err:
-+	dev_err(&pdev->dev, "Error in gpio_probe %d, %d\n", pdev->id, ret);
-+	if (gpiores)
-+		release_resource(gpiores);
-+	if (padres)
-+		release_resource(padres);
-+
-+	if (gpio_port->port)
-+		iounmap(gpio_port->port);
-+	if (gpio_port->pad)
-+		iounmap(gpio_port->pad);
-+	return ret;
-+}
-+
-+static struct platform_driver falcon_gpio_driver = {
-+	.probe = falcon_gpio_probe,
-+	.driver = {
-+		.name = "falcon_gpio",
-+		.owner = THIS_MODULE,
++static struct mtd_partition easy98000_nor_partitions[] = {
++	{
++		.name	= "uboot",
++		.offset	= 0x0,
++		.size	= 0x40000,
++	},
++	{
++		.name	= "uboot_env",
++		.offset	= 0x40000,
++		.size	= 0x40000,	/* 2 sectors for redundant env. */
++	},
++	{
++		.name	= "linux",
++		.offset	= 0x80000,
++		.size	= 0xF80000,	/* map only 16 MiB */
 +	},
 +};
 +
-+int __init
-+falcon_gpio_init(void)
-+{
-+	int ret;
++struct physmap_flash_data easy98000_nor_flash_data = {
++	.nr_parts	= ARRAY_SIZE(easy98000_nor_partitions),
++	.parts		= easy98000_nor_partitions,
++};
 +
-+	pr_info("FALC(tm) ON GPIO Driver, (C) 2011 Lantiq Deutschland Gmbh\n");
-+	ret = platform_driver_register(&falcon_gpio_driver);
-+	if (ret)
-+		pr_err("falcon_gpio: Error registering platform driver!");
-+	return ret;
++/* setup gpio based spi bus/device for access to the eeprom on the board */
++#define SPI_GPIO_MRST		102
++#define SPI_GPIO_MTSR		103
++#define SPI_GPIO_CLK		104
++#define SPI_GPIO_CS0		105
++#define SPI_GPIO_CS1		106
++#define SPI_GPIO_BUS_NUM	1
++
++static struct spi_gpio_platform_data easy98000_spi_gpio_data = {
++	.sck		= SPI_GPIO_CLK,
++	.mosi		= SPI_GPIO_MTSR,
++	.miso		= SPI_GPIO_MRST,
++	.num_chipselect	= 2,
++};
++
++static struct platform_device easy98000_spi_gpio_device = {
++	.name			= "spi_gpio",
++	.id			= SPI_GPIO_BUS_NUM,
++	.dev.platform_data	= &easy98000_spi_gpio_data,
++};
++
++static struct spi_eeprom at25160n = {
++	.byte_len	= 16 * 1024 / 8,
++	.name		= "at25160n",
++	.page_size	= 32,
++	.flags		= EE_ADDR2,
++};
++
++static struct spi_board_info easy98000_spi_gpio_devices __initdata = {
++	.modalias		= "at25",
++	.bus_num		= SPI_GPIO_BUS_NUM,
++	.max_speed_hz		= 1000 * 1000,
++	.mode			= SPI_MODE_3,
++	.chip_select		= 1,
++	.controller_data	= (void *) SPI_GPIO_CS1,
++	.platform_data		= &at25160n,
++};
++
++static void __init
++easy98000_init_common(void)
++{
++	spi_register_board_info(&easy98000_spi_gpio_devices, 1);
++	platform_device_register(&easy98000_spi_gpio_device);
 +}
 +
-+postcore_initcall(falcon_gpio_init);
++static void __init
++easy98000_init(void)
++{
++	easy98000_init_common();
++	ltq_register_nor(&easy98000_nor_flash_data);
++}
++
++static void __init
++easy98000nand_init(void)
++{
++	easy98000_init_common();
++	falcon_register_nand();
++}
++
++MIPS_MACHINE(LANTIQ_MACH_EASY98000,
++			"EASY98000",
++			"EASY98000 Eval Board",
++			easy98000_init);
++
++MIPS_MACHINE(LANTIQ_MACH_EASY98000NAND,
++			"EASY98000NAND",
++			"EASY98000 Eval Board (NAND Flash)",
++			easy98000nand_init);
+diff --git a/arch/mips/lantiq/machtypes.h b/arch/mips/lantiq/machtypes.h
+index 7e01b8c..dfc6af7 100644
+--- a/arch/mips/lantiq/machtypes.h
++++ b/arch/mips/lantiq/machtypes.h
+@@ -15,6 +15,11 @@ enum lantiq_mach_type {
+ 	LTQ_MACH_GENERIC = 0,
+ 	LTQ_MACH_EASY50712,	/* Danube evaluation board */
+ 	LTQ_MACH_EASY50601,	/* Amazon SE evaluation board */
++
++	/* FALCON */
++	LANTIQ_MACH_EASY98000,		/* Falcon Eval Board, NOR Flash */
++	LANTIQ_MACH_EASY98000SF,	/* Falcon Eval Board, Serial Flash */
++	LANTIQ_MACH_EASY98000NAND,	/* Falcon Eval Board, NAND Flash */
+ };
+ 
+ #endif
 -- 
 1.7.7.1

@@ -1,70 +1,164 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 20:26:04 +0100 (CET)
-Received: from mail-gx0-f177.google.com ([209.85.161.177]:45706 "EHLO
-        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903796Ab1KUTZ4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 20:25:56 +0100
-Received: by ggki1 with SMTP id i1so2007804ggk.36
-        for <multiple recipients>; Mon, 21 Nov 2011 11:25:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=ponTTO+wZvcKPS31iBFPz3DXm2cDH6IuD0Xi3kE7ynI=;
-        b=ttJ0VwFP+eKJFhJnEJaAIJDa533GnAd6oM8OA09uWDo0maSQgeIZGTj3+m6tm6ajhz
-         L5yOOJwmbFBK25G49SW+mZZJAD+Olse4yzZbEeHLjFgaZidB5+fn1DYWzLnL+K69kEse
-         tNPa89sriR8PDjThIoPkbGUEyWhbscTqD9aq4=
-Received: by 10.236.154.166 with SMTP id h26mr21643722yhk.88.1321903550231;
-        Mon, 21 Nov 2011 11:25:50 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id 22sm31881863anp.12.2011.11.21.11.25.48
-        (version=SSLv3 cipher=OTHER);
-        Mon, 21 Nov 2011 11:25:49 -0800 (PST)
-Message-ID: <4ECAA5B8.3080908@gmail.com>
-Date:   Mon, 21 Nov 2011 11:25:44 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 21:08:51 +0100 (CET)
+Received: from smtp.gentoo.org ([140.211.166.183]:55214 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903805Ab1KUUIp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Nov 2011 21:08:45 +0100
+Received: from vapier.localnet (localhost [127.0.0.1])
+        by smtp.gentoo.org (Postfix) with ESMTP id 95EA11B401B;
+        Mon, 21 Nov 2011 20:08:39 +0000 (UTC)
+From:   Mike Frysinger <vapier@gentoo.org>
+Organization: wh0rd.org
+To:     David Daney <ddaney.cavm@gmail.com>
+Subject: Re: [PATCH RFC 1/5] scripts: Add sortextable to sort the kernel's exception table.
+Date:   Mon, 21 Nov 2011 15:08:37 -0500
+User-Agent: KMail/1.13.7 (Linux/3.1.1; KDE/4.6.5; x86_64; ; )
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-embedded@vger.kernel.org, x86@kernel.org,
+        David Daney <david.daney@cavium.com>
+References: <1321645068-20475-1-git-send-email-ddaney.cavm@gmail.com> <201111211350.58916.vapier@gentoo.org> <4ECAA374.2040102@gmail.com>
+In-Reply-To: <4ECAA374.2040102@gmail.com>
 MIME-Version: 1.0
-To:     Hillf Danton <dhillf@gmail.com>
-CC:     David Rientjes <rientjes@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [patch] mips, mm: avoid using HPAGE constants without CONFIG_HUGETLB_PAGE
-References: <alpine.DEB.2.00.1111191855410.5457@chino.kir.corp.google.com> <CAJd=RBBmODwpUi1_eObE47yCQVfEGLHyy45=aqUtxM-9Bpki6A@mail.gmail.com>
-In-Reply-To: <CAJd=RBBmODwpUi1_eObE47yCQVfEGLHyy45=aqUtxM-9Bpki6A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: multipart/signed;
+  boundary="nextPart1759691.6lAoAVt38i";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
 Content-Transfer-Encoding: 7bit
-X-archive-position: 31896
+Message-Id: <201111211508.39398.vapier@gentoo.org>
+X-archive-position: 31897
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: vapier@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17696
+X-UID: 17764
 
-On 11/19/2011 09:27 PM, Hillf Danton wrote:
-[...]
->
-> --- a/arch/mips/include/asm/page.h	Sun Nov 20 13:08:44 2011
-> +++ b/arch/mips/include/asm/page.h	Sun Nov 20 13:17:43 2011
-> @@ -38,6 +38,11 @@
->   #define HPAGE_SIZE	(_AC(1,UL)<<  HPAGE_SHIFT)
->   #define HPAGE_MASK	(~(HPAGE_SIZE - 1))
->   #define HUGETLB_PAGE_ORDER	(HPAGE_SHIFT - PAGE_SHIFT)
-> +#else
-> +#define HPAGE_SHIFT	({ BUG(); 0; })
-> +#define HPAGE_SIZE	({ BUG(); 0; })
-> +#define HPAGE_MASK	({ BUG(); 0; })
+--nextPart1759691.6lAoAVt38i
+Content-Type: Text/Plain;
+  charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-These three are taken care of in linux/hugetlb.h by the patches that 
-Andrew Morton has in his tree, the full discussion starts at:
+On Monday 21 November 2011 14:16:04 David Daney wrote:
+> On 11/21/2011 10:50 AM, Mike Frysinger wrote:
+> > On Monday 21 November 2011 13:25:36 David Daney wrote:
+> >> On 11/20/2011 03:22 PM, Mike Frysinger wrote:
+> >>> On Friday 18 November 2011 14:37:44 David Daney wrote:
+> >>>> +	switch (w2(ehdr->e_machine)) {
+> >>>> +	default:
+> >>>> +		fprintf(stderr, "unrecognized e_machine %d %s\n",
+> >>>> +			w2(ehdr->e_machine), fname);
+> >>>> +		fail_file();
+> >>>> +		break;
+> >>>> +	case EM_386:
+> >>>> +	case EM_MIPS:
+> >>>> +	case EM_X86_64:
+> >>>> +		break;
+> >>>> +	}  /* end switch */
+> >>>=20
+> >>> unlike recordmcount, this file doesn't do anything arch specific.  so
+> >>> let's just delete this and be done.
+> >>=20
+> >> Not really true at this point.  We don't know the size or layout of the
+> >> architecture specific exception table entries, likewise for
+> >> CONFIG_ARCH_HAS_SORT_EXTABLE, we don't even know how to do the
+> >> comparison.
+> >=20
+> > all of your code that i could see is based on "is it 32bit or is it
+> > 64bit". there is no code that says "if it's x86, we need to do XXX".
+>=20
+> At this point there is no need.  MIPS, i386 and x86_64 all store the key
+> in the first word of a two word structure.
+>=20
+> If there were some architecture that didn't fit this model, we would
+> have to create a special sorting function and select it (and perhaps
+> other parameters as well) in that switch statement.
 
-http://www.linux-mips.org/archives/linux-mips/2011-11/msg00412.html
+that's trivial to check:
+	sed -n '/^struct exception_table_entry/,/};/p'\
+		arch/*/include/asm/uaccess* include/asm-generic/uaccess.h=20
 
-> +#define HUGETLB_PAGE_ORDER	({ BUG(); 0; })
+and indeed, the only arches that don't follow this model are the ones that=
+=20
+define ARCH_HAS_SORT_EXTABLE.
 
-This value doesn't appear to be necessary at this point.
+> > when i look in the kernel, we have common code behind
+> > ARCH_HAS_SORT_EXTABLE. so you could easily do the same thing:
+> >=20
+> > scripts/sortextable.c:
+> > 	#ifdef ARCH_HAS_SORT_EXTABLE
+> > =09
+> > 		switch (w2(ehdr->e_machine)) {
+> > 	=09
+> > 		default:
+> > 			fprintf(stderr, "unrecognized e_machine %d %s\n",
+> > 		=09
+> > 				w2(ehdr->e_machine), fname);
+> > 		=09
+> > 			... return a unique exit code like 77 ...
+> > 			break;
+> > 	=09
+> > 		/* add arch sorting info here */
+> > 		}  /* end switch */
+> > =09
+> > 	#endif
+> >=20
+> > kernel/extable.c:
+> > 	#if defined(ARCH_HAS_SORT_EXTABLE)&&  !defined(ARCH_HAS_SORTED_EXTABLE)
+> > 	void __init sort_main_extable(void)
+> > 	{
+> > =09
+> > 		sort_extable(__start___ex_table, __stop___ex_table);
+> > =09
+> > 	}
+> > 	#endif
+>=20
+> Yes, I am familiar with that code.  One thing to keep in mind is that
+> the compiler has access to struct exception_table_entry, and can easily
+> figure out both how big the structure is *and* where the insn field is
+> within the structure.
+>=20
+> This is not the case for the author of sortextable.  Except for MIPS,
+> MIPS64, i386 and x86_64, I know neither the size of struct
+> exception_table_entry, nor the offset of its insn field.
 
-David Daney
+a trivial sed/grep gets you the answer: they're all the same
+
+> > this way all the people not doing unique stuff work out of the box.  on=
+ly
+> > the people who are doing funky stuff need to extend things.
+>=20
+> I didn't want to include something like this that I cannot test.  An
+> unsorted (or improperly sorted) exception table is not necessarily
+> something that will be noticeable by simply booting the kernel.  Your
+> only indication may be a panic or OOPS under rarely encountered condition=
+s.
+
+this is what linux-next is for :)
+=2Dmike
+
+--nextPart1759691.6lAoAVt38i
+Content-Type: application/pgp-signature; name=signature.asc 
+Content-Description: This is a digitally signed message part.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.17 (GNU/Linux)
+
+iQIcBAABAgAGBQJOyq/HAAoJEEFjO5/oN/WBoCYP/0UXHxMgqL2/Y6mYI8SWv9j1
+bGpyabcFESLzJ6S0QtiM0LAtDTT8epHa/wBXtN52V7lfTTxhviNeK7WIqhorn4pT
+3GTUA1R4JpcOC9Gnt1hpG/CSugDMuKVwquK69DhlKxp1Cfa8wN1P8dtnh545nHjX
+XedfFYzeeHzCQx6ZO6P+Cc85U5BimRLhGK9FPeqAMKsgerzT+hKsAVffgh4gNmqo
+XsEGOvby34VO9SmOLTtYfxZ91sENewJ1PwiLPjgq0aN5P6fkOpV+Y9668szE+8Pj
+mB9sGuraD4aSsHVgDaf+afEEvxb+JOjVcMuOGNjLkYQcJP6o7DaiuyAPD1mLeSaA
+YQIvuYX/1WYYsDR2sLHHRu/bKa645xILFzn6+VB4tJBs3a+6u4436aS4i72Q6I22
+6h5Nfb/kh2l5WIyj4tsMszyx/XzeKoQ7+7wOkRbHbVvVFExMtuCHlxcCz62w+p18
+kz2o6UjrvYBn+ddbme+9HnU9pgzF7PeZjQuoo0w6bjeCMSX4gM6JbBFRouoEWcrV
+n6sVeNtt7RzzJg3Z89URkgzx1ireAFzb1dvW9qRt4akH1AUpg5bE7dFs1qJ6mK/b
+UJ8zccOnhrhcRT4bvBKva59awy2wG8dstmjVzJqmtDUJWmPkLiVH8Yu45pOUpbw5
+TRFYFyh4xbhEk7KlGWjQ
+=IRxP
+-----END PGP SIGNATURE-----
+
+--nextPart1759691.6lAoAVt38i--

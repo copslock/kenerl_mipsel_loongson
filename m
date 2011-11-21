@@ -1,584 +1,601 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 21:17:35 +0100 (CET)
-Received: from zmc.proxad.net ([212.27.53.206]:34466 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903800Ab1KUUR0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Nov 2011 21:17:26 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 02E453B51A0;
-        Mon, 21 Nov 2011 21:17:26 +0100 (CET)
-X-Virus-Scanned: amavisd-new at 
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id pQ5eIUnh65vf; Mon, 21 Nov 2011 21:17:24 +0100 (CET)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id 29BA93B519A;
-        Mon, 21 Nov 2011 21:17:24 +0100 (CET)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     Grant Likely <grant.likely@secretlab.ca>
-Cc:     spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
-        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-Subject: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller driver
-Date:   Mon, 21 Nov 2011 21:16:55 +0100
-Message-Id: <1321906615-11392-1-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.5.4
-X-archive-position: 31898
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 22:34:04 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:59395 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903796Ab1KUVdz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 22:33:55 +0100
+Received: by ggki1 with SMTP id i1so2159280ggk.36
+        for <multiple recipients>; Mon, 21 Nov 2011 13:33:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=xjQVsmULbegpOcdumTZoQ0k4U7/s2jd76yiDiJpn5Gk=;
+        b=xlHsdy9R0hjEiPQCjJeNOA0qyAXqhJhjIdgrU9UiGkHueMqRw9zbeOvcC0xv1/psMK
+         4lrKyTodmcCgsosJfjsRcKY5jOJHtOUsufet5Hnfz+rfBrgQcUdQ95MadFqNrUKgHzDX
+         e5wNvBjJm7pPJT+5VGyKPO9FRb3LT07Q0pubQ=
+Received: by 10.236.161.65 with SMTP id v41mr23105193yhk.42.1321911228966;
+        Mon, 21 Nov 2011 13:33:48 -0800 (PST)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id 33sm32818334ano.1.2011.11.21.13.33.45
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 21 Nov 2011 13:33:46 -0800 (PST)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pALLXiBx024732;
+        Mon, 21 Nov 2011 13:33:44 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pALLXg5D024731;
+        Mon, 21 Nov 2011 13:33:42 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     David Daney <david.daney@cavium.com>
+Subject: [PATCH] MIPS: Unify memcpy.S and memcpy-inatomic.S
+Date:   Mon, 21 Nov 2011 13:33:40 -0800
+Message-Id: <1321911220-24700-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 31899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17768
+X-UID: 17851
 
-This patch adds support for the SPI controller found on the Broadcom BCM63xx
-SoCs.
+From: David Daney <david.daney@cavium.com>
 
-Signed-off-by: Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
+We can save the 451 lines of code that comprise memcpy-inatomic.S at
+the expense of a single instruction in the memcpy prolog.  We also use
+an additional register (t6), so this may cause increased register
+pressure in some places as well.  But I think the reduced maintenance
+burden, of not having two nearly identical implementations, makes it
+worth it.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
 ---
-The platform related changes have been submitted on the linux-mips ml:
-http://www.linux-mips.org/archives/linux-mips/2011-11/msg00547.html
+ arch/mips/include/asm/uaccess.h |    6 +-
+ arch/mips/lib/Makefile          |    2 +-
+ arch/mips/lib/memcpy-inatomic.S |  451 ---------------------------------------
+ arch/mips/lib/memcpy.S          |   11 +
+ 4 files changed, 15 insertions(+), 455 deletions(-)
+ delete mode 100644 arch/mips/lib/memcpy-inatomic.S
 
-Ralf, if Grant is okay with that patch, it probably makes sense to merge this
-controller via your tree since it depends on the arch/mips/bcm63xx knobs.
-
- drivers/spi/Kconfig       |    6 +
- drivers/spi/Makefile      |    1 +
- drivers/spi/spi-bcm63xx.c |  494 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 501 insertions(+), 0 deletions(-)
- create mode 100644 drivers/spi/spi-bcm63xx.c
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 52e2900..8aecc4e 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -94,6 +94,12 @@ config SPI_AU1550
- 	  If you say yes to this option, support will be included for the
- 	  Au1550 SPI controller (may also work with Au1200,Au1210,Au1250).
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index 653a412..3b92efe 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -687,7 +687,7 @@ extern size_t __copy_user(void *__to, const void *__from, size_t __n);
+ 	__MODULE_JAL(__copy_user)					\
+ 	: "+r" (__cu_to_r), "+r" (__cu_from_r), "+r" (__cu_len_r)	\
+ 	:								\
+-	: "$8", "$9", "$10", "$11", "$12", "$15", "$24", "$31",		\
++	: "$8", "$9", "$10", "$11", "$12", "$14", "$15", "$24", "$31",	\
+ 	  DADDI_SCRATCH, "memory");					\
+ 	__cu_len_r;							\
+ })
+@@ -797,7 +797,7 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
+ 	".set\treorder"							\
+ 	: "+r" (__cu_to_r), "+r" (__cu_from_r), "+r" (__cu_len_r)	\
+ 	:								\
+-	: "$8", "$9", "$10", "$11", "$12", "$15", "$24", "$31",		\
++	: "$8", "$9", "$10", "$11", "$12", "$14", "$15", "$24", "$31",	\
+ 	  DADDI_SCRATCH, "memory");					\
+ 	__cu_len_r;							\
+ })
+@@ -820,7 +820,7 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
+ 	".set\treorder"							\
+ 	: "+r" (__cu_to_r), "+r" (__cu_from_r), "+r" (__cu_len_r)	\
+ 	:								\
+-	: "$8", "$9", "$10", "$11", "$12", "$15", "$24", "$31",		\
++	: "$8", "$9", "$10", "$11", "$12", "$14", "$15", "$24", "$31",	\
+ 	  DADDI_SCRATCH, "memory");					\
+ 	__cu_len_r;							\
+ })
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index 2a7c74f..399a50a 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -2,7 +2,7 @@
+ # Makefile for MIPS-specific library files..
+ #
  
-+config SPI_BCM63XX
-+	tristate "Broadcom BCM63xx SPI controller"
-+	depends on BCM63XX
-+	help
-+          Enable support for the SPI controller on the Broadcom BCM63xx SoCs.
-+
- config SPI_BITBANG
- 	tristate "Utilities for Bitbanging SPI masters"
- 	help
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 61c3261..be38f73 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_SPI_ALTERA)		+= spi-altera.o
- obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
- obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
- obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
-+obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
- obj-$(CONFIG_SPI_BFIN)			+= spi-bfin5xx.o
- obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
- obj-$(CONFIG_SPI_BITBANG)		+= spi-bitbang.o
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-new file mode 100644
-index 0000000..9f01fc8
---- /dev/null
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -0,0 +1,494 @@
+-lib-y	+= csum_partial.o delay.o memcpy.o memcpy-inatomic.o memset.o \
++lib-y	+= csum_partial.o delay.o memcpy.o memset.o \
+ 	   strlen_user.o strncpy_user.o strnlen_user.o uncached.o
+ 
+ obj-y			+= iomap.o
+diff --git a/arch/mips/lib/memcpy-inatomic.S b/arch/mips/lib/memcpy-inatomic.S
+deleted file mode 100644
+index 68853a0..0000000
+--- a/arch/mips/lib/memcpy-inatomic.S
++++ /dev/null
+@@ -1,451 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Unified implementation of memcpy, memmove and the __copy_user backend.
+- *
+- * Copyright (C) 1998, 99, 2000, 01, 2002 Ralf Baechle (ralf@gnu.org)
+- * Copyright (C) 1999, 2000, 01, 2002 Silicon Graphics, Inc.
+- * Copyright (C) 2002 Broadcom, Inc.
+- *   memcpy/copy_user author: Mark Vandevoorde
+- * Copyright (C) 2007  Maciej W. Rozycki
+- *
+- * Mnemonic names for arguments to memcpy/__copy_user
+- */
+-
+-/*
+- * Hack to resolve longstanding prefetch issue
+- *
+- * Prefetching may be fatal on some systems if we're prefetching beyond the
+- * end of memory on some systems.  It's also a seriously bad idea on non
+- * dma-coherent systems.
+- */
+-#ifdef CONFIG_DMA_NONCOHERENT
+-#undef CONFIG_CPU_HAS_PREFETCH
+-#endif
+-#ifdef CONFIG_MIPS_MALTA
+-#undef CONFIG_CPU_HAS_PREFETCH
+-#endif
+-
+-#include <asm/asm.h>
+-#include <asm/asm-offsets.h>
+-#include <asm/regdef.h>
+-
+-#define dst a0
+-#define src a1
+-#define len a2
+-
+-/*
+- * Spec
+- *
+- * memcpy copies len bytes from src to dst and sets v0 to dst.
+- * It assumes that
+- *   - src and dst don't overlap
+- *   - src is readable
+- *   - dst is writable
+- * memcpy uses the standard calling convention
+- *
+- * __copy_user copies up to len bytes from src to dst and sets a2 (len) to
+- * the number of uncopied bytes due to an exception caused by a read or write.
+- * __copy_user assumes that src and dst don't overlap, and that the call is
+- * implementing one of the following:
+- *   copy_to_user
+- *     - src is readable  (no exceptions when reading src)
+- *   copy_from_user
+- *     - dst is writable  (no exceptions when writing dst)
+- * __copy_user uses a non-standard calling convention; see
+- * include/asm-mips/uaccess.h
+- *
+- * When an exception happens on a load, the handler must
+- # ensure that all of the destination buffer is overwritten to prevent
+- * leaking information to user mode programs.
+- */
+-
+-/*
+- * Implementation
+- */
+-
+-/*
+- * The exception handler for loads requires that:
+- *  1- AT contain the address of the byte just past the end of the source
+- *     of the copy,
+- *  2- src_entry <= src < AT, and
+- *  3- (dst - src) == (dst_entry - src_entry),
+- * The _entry suffix denotes values when __copy_user was called.
+- *
+- * (1) is set up up by uaccess.h and maintained by not writing AT in copy_user
+- * (2) is met by incrementing src by the number of bytes copied
+- * (3) is met by not doing loads between a pair of increments of dst and src
+- *
+- * The exception handlers for stores adjust len (if necessary) and return.
+- * These handlers do not need to overwrite any data.
+- *
+- * For __rmemcpy and memmove an exception is always a kernel bug, therefore
+- * they're not protected.
+- */
+-
+-#define EXC(inst_reg,addr,handler)		\
+-9:	inst_reg, addr;				\
+-	.section __ex_table,"a";		\
+-	PTR	9b, handler;			\
+-	.previous
+-
+-/*
+- * Only on the 64-bit kernel we can made use of 64-bit registers.
+- */
+-#ifdef CONFIG_64BIT
+-#define USE_DOUBLE
+-#endif
+-
+-#ifdef USE_DOUBLE
+-
+-#define LOAD   ld
+-#define LOADL  ldl
+-#define LOADR  ldr
+-#define STOREL sdl
+-#define STORER sdr
+-#define STORE  sd
+-#define ADD    daddu
+-#define SUB    dsubu
+-#define SRL    dsrl
+-#define SRA    dsra
+-#define SLL    dsll
+-#define SLLV   dsllv
+-#define SRLV   dsrlv
+-#define NBYTES 8
+-#define LOG_NBYTES 3
+-
+-/*
+- * As we are sharing code base with the mips32 tree (which use the o32 ABI
+- * register definitions). We need to redefine the register definitions from
+- * the n64 ABI register naming to the o32 ABI register naming.
+- */
+-#undef t0
+-#undef t1
+-#undef t2
+-#undef t3
+-#define t0	$8
+-#define t1	$9
+-#define t2	$10
+-#define t3	$11
+-#define t4	$12
+-#define t5	$13
+-#define t6	$14
+-#define t7	$15
+-
+-#else
+-
+-#define LOAD   lw
+-#define LOADL  lwl
+-#define LOADR  lwr
+-#define STOREL swl
+-#define STORER swr
+-#define STORE  sw
+-#define ADD    addu
+-#define SUB    subu
+-#define SRL    srl
+-#define SLL    sll
+-#define SRA    sra
+-#define SLLV   sllv
+-#define SRLV   srlv
+-#define NBYTES 4
+-#define LOG_NBYTES 2
+-
+-#endif /* USE_DOUBLE */
+-
+-#ifdef CONFIG_CPU_LITTLE_ENDIAN
+-#define LDFIRST LOADR
+-#define LDREST  LOADL
+-#define STFIRST STORER
+-#define STREST  STOREL
+-#define SHIFT_DISCARD SLLV
+-#else
+-#define LDFIRST LOADL
+-#define LDREST  LOADR
+-#define STFIRST STOREL
+-#define STREST  STORER
+-#define SHIFT_DISCARD SRLV
+-#endif
+-
+-#define FIRST(unit) ((unit)*NBYTES)
+-#define REST(unit)  (FIRST(unit)+NBYTES-1)
+-#define UNIT(unit)  FIRST(unit)
+-
+-#define ADDRMASK (NBYTES-1)
+-
+-	.text
+-	.set	noreorder
+-#ifndef CONFIG_CPU_DADDI_WORKAROUNDS
+-	.set	noat
+-#else
+-	.set	at=v1
+-#endif
+-
+-/*
+- * A combined memcpy/__copy_user
+- * __copy_user sets len to 0 for success; else to an upper bound of
+- * the number of uncopied bytes.
+- * memcpy sets v0 to dst.
+- */
+-	.align	5
+-LEAF(__copy_user_inatomic)
+-	/*
+-	 * Note: dst & src may be unaligned, len may be 0
+-	 * Temps
+-	 */
+-#define rem t8
+-
+-	/*
+-	 * The "issue break"s below are very approximate.
+-	 * Issue delays for dcache fills will perturb the schedule, as will
+-	 * load queue full replay traps, etc.
+-	 *
+-	 * If len < NBYTES use byte operations.
+-	 */
+-	PREF(	0, 0(src) )
+-	PREF(	1, 0(dst) )
+-	sltu	t2, len, NBYTES
+-	and	t1, dst, ADDRMASK
+-	PREF(	0, 1*32(src) )
+-	PREF(	1, 1*32(dst) )
+-	bnez	t2, .Lcopy_bytes_checklen
+-	 and	t0, src, ADDRMASK
+-	PREF(	0, 2*32(src) )
+-	PREF(	1, 2*32(dst) )
+-	bnez	t1, .Ldst_unaligned
+-	 nop
+-	bnez	t0, .Lsrc_unaligned_dst_aligned
+-	/*
+-	 * use delay slot for fall-through
+-	 * src and dst are aligned; need to compute rem
+-	 */
+-.Lboth_aligned:
+-	 SRL	t0, len, LOG_NBYTES+3    	# +3 for 8 units/iter
+-	beqz	t0, .Lcleanup_both_aligned	# len < 8*NBYTES
+-	 and	rem, len, (8*NBYTES-1)	 	# rem = len % (8*NBYTES)
+-	PREF(	0, 3*32(src) )
+-	PREF(	1, 3*32(dst) )
+-	.align	4
+-1:
+-EXC(	LOAD	t0, UNIT(0)(src),	.Ll_exc)
+-EXC(	LOAD	t1, UNIT(1)(src),	.Ll_exc_copy)
+-EXC(	LOAD	t2, UNIT(2)(src),	.Ll_exc_copy)
+-EXC(	LOAD	t3, UNIT(3)(src),	.Ll_exc_copy)
+-	SUB	len, len, 8*NBYTES
+-EXC(	LOAD	t4, UNIT(4)(src),	.Ll_exc_copy)
+-EXC(	LOAD	t7, UNIT(5)(src),	.Ll_exc_copy)
+-	STORE	t0, UNIT(0)(dst)
+-	STORE	t1, UNIT(1)(dst)
+-EXC(	LOAD	t0, UNIT(6)(src),	.Ll_exc_copy)
+-EXC(	LOAD	t1, UNIT(7)(src),	.Ll_exc_copy)
+-	ADD	src, src, 8*NBYTES
+-	ADD	dst, dst, 8*NBYTES
+-	STORE	t2, UNIT(-6)(dst)
+-	STORE	t3, UNIT(-5)(dst)
+-	STORE	t4, UNIT(-4)(dst)
+-	STORE	t7, UNIT(-3)(dst)
+-	STORE	t0, UNIT(-2)(dst)
+-	STORE	t1, UNIT(-1)(dst)
+-	PREF(	0, 8*32(src) )
+-	PREF(	1, 8*32(dst) )
+-	bne	len, rem, 1b
+-	 nop
+-
+-	/*
+-	 * len == rem == the number of bytes left to copy < 8*NBYTES
+-	 */
+-.Lcleanup_both_aligned:
+-	beqz	len, .Ldone
+-	 sltu	t0, len, 4*NBYTES
+-	bnez	t0, .Lless_than_4units
+-	 and	rem, len, (NBYTES-1)	# rem = len % NBYTES
+-	/*
+-	 * len >= 4*NBYTES
+-	 */
+-EXC(	LOAD	t0, UNIT(0)(src),	.Ll_exc)
+-EXC(	LOAD	t1, UNIT(1)(src),	.Ll_exc_copy)
+-EXC(	LOAD	t2, UNIT(2)(src),	.Ll_exc_copy)
+-EXC(	LOAD	t3, UNIT(3)(src),	.Ll_exc_copy)
+-	SUB	len, len, 4*NBYTES
+-	ADD	src, src, 4*NBYTES
+-	STORE	t0, UNIT(0)(dst)
+-	STORE	t1, UNIT(1)(dst)
+-	STORE	t2, UNIT(2)(dst)
+-	STORE	t3, UNIT(3)(dst)
+-	.set	reorder				/* DADDI_WAR */
+-	ADD	dst, dst, 4*NBYTES
+-	beqz	len, .Ldone
+-	.set	noreorder
+-.Lless_than_4units:
+-	/*
+-	 * rem = len % NBYTES
+-	 */
+-	beq	rem, len, .Lcopy_bytes
+-	 nop
+-1:
+-EXC(	LOAD	t0, 0(src),		.Ll_exc)
+-	ADD	src, src, NBYTES
+-	SUB	len, len, NBYTES
+-	STORE	t0, 0(dst)
+-	.set	reorder				/* DADDI_WAR */
+-	ADD	dst, dst, NBYTES
+-	bne	rem, len, 1b
+-	.set	noreorder
+-
+-	/*
+-	 * src and dst are aligned, need to copy rem bytes (rem < NBYTES)
+-	 * A loop would do only a byte at a time with possible branch
+-	 * mispredicts.  Can't do an explicit LOAD dst,mask,or,STORE
+-	 * because can't assume read-access to dst.  Instead, use
+-	 * STREST dst, which doesn't require read access to dst.
+-	 *
+-	 * This code should perform better than a simple loop on modern,
+-	 * wide-issue mips processors because the code has fewer branches and
+-	 * more instruction-level parallelism.
+-	 */
+-#define bits t2
+-	beqz	len, .Ldone
+-	 ADD	t1, dst, len	# t1 is just past last byte of dst
+-	li	bits, 8*NBYTES
+-	SLL	rem, len, 3	# rem = number of bits to keep
+-EXC(	LOAD	t0, 0(src),		.Ll_exc)
+-	SUB	bits, bits, rem	# bits = number of bits to discard
+-	SHIFT_DISCARD t0, t0, bits
+-	STREST	t0, -1(t1)
+-	jr	ra
+-	 move	len, zero
+-.Ldst_unaligned:
+-	/*
+-	 * dst is unaligned
+-	 * t0 = src & ADDRMASK
+-	 * t1 = dst & ADDRMASK; T1 > 0
+-	 * len >= NBYTES
+-	 *
+-	 * Copy enough bytes to align dst
+-	 * Set match = (src and dst have same alignment)
+-	 */
+-#define match rem
+-EXC(	LDFIRST	t3, FIRST(0)(src),	.Ll_exc)
+-	ADD	t2, zero, NBYTES
+-EXC(	LDREST	t3, REST(0)(src),	.Ll_exc_copy)
+-	SUB	t2, t2, t1	# t2 = number of bytes copied
+-	xor	match, t0, t1
+-	STFIRST t3, FIRST(0)(dst)
+-	beq	len, t2, .Ldone
+-	 SUB	len, len, t2
+-	ADD	dst, dst, t2
+-	beqz	match, .Lboth_aligned
+-	 ADD	src, src, t2
+-
+-.Lsrc_unaligned_dst_aligned:
+-	SRL	t0, len, LOG_NBYTES+2    # +2 for 4 units/iter
+-	PREF(	0, 3*32(src) )
+-	beqz	t0, .Lcleanup_src_unaligned
+-	 and	rem, len, (4*NBYTES-1)   # rem = len % 4*NBYTES
+-	PREF(	1, 3*32(dst) )
+-1:
+-/*
+- * Avoid consecutive LD*'s to the same register since some mips
+- * implementations can't issue them in the same cycle.
+- * It's OK to load FIRST(N+1) before REST(N) because the two addresses
+- * are to the same unit (unless src is aligned, but it's not).
+- */
+-EXC(	LDFIRST	t0, FIRST(0)(src),	.Ll_exc)
+-EXC(	LDFIRST	t1, FIRST(1)(src),	.Ll_exc_copy)
+-	SUB     len, len, 4*NBYTES
+-EXC(	LDREST	t0, REST(0)(src),	.Ll_exc_copy)
+-EXC(	LDREST	t1, REST(1)(src),	.Ll_exc_copy)
+-EXC(	LDFIRST	t2, FIRST(2)(src),	.Ll_exc_copy)
+-EXC(	LDFIRST	t3, FIRST(3)(src),	.Ll_exc_copy)
+-EXC(	LDREST	t2, REST(2)(src),	.Ll_exc_copy)
+-EXC(	LDREST	t3, REST(3)(src),	.Ll_exc_copy)
+-	PREF(	0, 9*32(src) )		# 0 is PREF_LOAD  (not streamed)
+-	ADD	src, src, 4*NBYTES
+-#ifdef CONFIG_CPU_SB1
+-	nop				# improves slotting
+-#endif
+-	STORE	t0, UNIT(0)(dst)
+-	STORE	t1, UNIT(1)(dst)
+-	STORE	t2, UNIT(2)(dst)
+-	STORE	t3, UNIT(3)(dst)
+-	PREF(	1, 9*32(dst) )     	# 1 is PREF_STORE (not streamed)
+-	.set	reorder				/* DADDI_WAR */
+-	ADD	dst, dst, 4*NBYTES
+-	bne	len, rem, 1b
+-	.set	noreorder
+-
+-.Lcleanup_src_unaligned:
+-	beqz	len, .Ldone
+-	 and	rem, len, NBYTES-1  # rem = len % NBYTES
+-	beq	rem, len, .Lcopy_bytes
+-	 nop
+-1:
+-EXC(	LDFIRST t0, FIRST(0)(src),	.Ll_exc)
+-EXC(	LDREST	t0, REST(0)(src),	.Ll_exc_copy)
+-	ADD	src, src, NBYTES
+-	SUB	len, len, NBYTES
+-	STORE	t0, 0(dst)
+-	.set	reorder				/* DADDI_WAR */
+-	ADD	dst, dst, NBYTES
+-	bne	len, rem, 1b
+-	.set	noreorder
+-
+-.Lcopy_bytes_checklen:
+-	beqz	len, .Ldone
+-	 nop
+-.Lcopy_bytes:
+-	/* 0 < len < NBYTES  */
+-#define COPY_BYTE(N)			\
+-EXC(	lb	t0, N(src), .Ll_exc);	\
+-	SUB	len, len, 1;		\
+-	beqz	len, .Ldone;		\
+-	 sb	t0, N(dst)
+-
+-	COPY_BYTE(0)
+-	COPY_BYTE(1)
+-#ifdef USE_DOUBLE
+-	COPY_BYTE(2)
+-	COPY_BYTE(3)
+-	COPY_BYTE(4)
+-	COPY_BYTE(5)
+-#endif
+-EXC(	lb	t0, NBYTES-2(src), .Ll_exc)
+-	SUB	len, len, 1
+-	jr	ra
+-	 sb	t0, NBYTES-2(dst)
+-.Ldone:
+-	jr	ra
+-	 nop
+-	END(__copy_user_inatomic)
+-
+-.Ll_exc_copy:
+-	/*
+-	 * Copy bytes from src until faulting load address (or until a
+-	 * lb faults)
+-	 *
+-	 * When reached by a faulting LDFIRST/LDREST, THREAD_BUADDR($28)
+-	 * may be more than a byte beyond the last address.
+-	 * Hence, the lb below may get an exception.
+-	 *
+-	 * Assumes src < THREAD_BUADDR($28)
+-	 */
+-	LOAD	t0, TI_TASK($28)
+-	 nop
+-	LOAD	t0, THREAD_BUADDR(t0)
+-1:
+-EXC(	lb	t1, 0(src),	.Ll_exc)
+-	ADD	src, src, 1
+-	sb	t1, 0(dst)	# can't fault -- we're copy_from_user
+-	.set	reorder				/* DADDI_WAR */
+-	ADD	dst, dst, 1
+-	bne	src, t0, 1b
+-	.set	noreorder
+-.Ll_exc:
+-	LOAD	t0, TI_TASK($28)
+-	 nop
+-	LOAD	t0, THREAD_BUADDR(t0)	# t0 is just past last good address
+-	 nop
+-	SUB	len, AT, t0		# len number of uncopied bytes
+-	jr	ra
+-	 nop
+diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+index 56a1f85..f1feeb9 100644
+--- a/arch/mips/lib/memcpy.S
++++ b/arch/mips/lib/memcpy.S
+@@ -183,6 +183,14 @@
+ #endif
+ 
+ /*
++ * t6 is used as a flag to note inatomic mode.
++ */
++LEAF(__copy_user_inatomic)
++	b	__copy_user_common
++	 li	t6, 1
++	END(__copy_user_inatomic)
++	
 +/*
-+ * Broadcom BCM63xx SPI controller support
-+ *
-+ * Copyright (C) 2009-2011 Florian Fainelli <florian@openwrt.org>
-+ * Copyright (C) 2010 Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the
-+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/clk.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/delay.h>
-+#include <linux/interrupt.h>
-+#include <linux/spi/spi.h>
-+#include <linux/completion.h>
-+#include <linux/err.h>
-+
-+#include <bcm63xx_dev_spi.h>
-+
-+#define PFX		KBUILD_MODNAME
-+#define DRV_VER		"0.1.2"
-+
-+struct bcm63xx_spi {
-+	spinlock_t              lock;
-+	int			stopping;
-+	struct completion	done;
-+
-+	void __iomem		*regs;
-+	int			irq;
-+
-+	/* Platform data */
-+	u32			speed_hz;
-+	unsigned		fifo_size;
-+
-+	/* Data buffers */
-+	const unsigned char	*tx_ptr;
-+	unsigned char		*rx_ptr;
-+
-+	/* data iomem */
-+	u8 __iomem		*tx_io;
-+	const u8 __iomem	*rx_io;
-+
-+	int			remaining_bytes;
-+
-+	struct clk		*clk;
-+	struct platform_device	*pdev;
-+};
-+
-+static inline u8 bcm_spi_readb(struct bcm63xx_spi *bs,
-+				unsigned int offset)
-+{
-+	return bcm_readw(bs->regs + bcm63xx_spireg(offset));
-+}
-+
-+static inline u16 bcm_spi_readw(struct bcm63xx_spi *bs,
-+				unsigned int offset)
-+{
-+	return bcm_readw(bs->regs + bcm63xx_spireg(offset));
-+}
-+
-+static inline void bcm_spi_writeb(struct bcm63xx_spi *bs,
-+				  u8 value, unsigned int offset)
-+{
-+	bcm_writeb(value, bs->regs + bcm63xx_spireg(offset));
-+}
-+
-+static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
-+				  u16 value, unsigned int offset)
-+{
-+	bcm_writew(value, bs->regs + bcm63xx_spireg(offset));
-+}
-+
-+static int bcm63xx_spi_setup_transfer(struct spi_device *spi,
-+				      struct spi_transfer *t)
-+{
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-+	u8 bits_per_word;
-+	u8 clk_cfg;
-+	u32 hz;
-+	unsigned int div;
-+
-+	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
-+	hz = (t) ? t->speed_hz : spi->max_speed_hz;
-+	if (bits_per_word != 8) {
-+		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
-+			__func__, bits_per_word);
-+		return -EINVAL;
-+	}
-+
-+	if (spi->chip_select > spi->master->num_chipselect) {
-+		dev_err(&spi->dev, "%s, unsupported slave %d\n",
-+			__func__, spi->chip_select);
-+		return -EINVAL;
-+	}
-+
-+	/* Check clock setting */
-+	div = (bs->speed_hz / hz);
-+	switch (div) {
-+	case 2:
-+		clk_cfg = SPI_CLK_25MHZ;
-+		break;
-+	case 4:
-+		clk_cfg = SPI_CLK_12_50MHZ;
-+		break;
-+	case 8:
-+		clk_cfg = SPI_CLK_6_250MHZ;
-+		break;
-+	case 16:
-+		clk_cfg = SPI_CLK_3_125MHZ;
-+		break;
-+	case 32:
-+		clk_cfg = SPI_CLK_1_563MHZ;
-+		break;
-+	case 64:
-+		clk_cfg = SPI_CLK_0_781MHZ;
-+		break;
-+	case 128:
-+	default:
-+		/* Set to slowest mode for compatibility */
-+		clk_cfg = SPI_CLK_0_391MHZ;
-+		break;
-+	}
-+
-+	bcm_spi_writeb(bs, clk_cfg, SPI_CLK_CFG);
-+	dev_dbg(&spi->dev, "Setting clock register to %d (hz %d, cmd %02x)\n",
-+		div, hz, clk_cfg);
-+
-+	return 0;
-+}
-+
-+/* the spi->mode bits understood by this driver: */
-+#define MODEBITS (SPI_CPOL | SPI_CPHA)
-+
-+static int bcm63xx_spi_setup(struct spi_device *spi)
-+{
-+	struct bcm63xx_spi *bs;
-+	int ret;
-+
-+	bs = spi_master_get_devdata(spi->master);
-+
-+	if (bs->stopping)
-+		return -ESHUTDOWN;
-+
-+	if (!spi->bits_per_word)
-+		spi->bits_per_word = 8;
-+
-+	if (spi->mode & ~MODEBITS) {
-+		dev_err(&spi->dev, "%s, unsupported mode bits %x\n",
-+			__func__, spi->mode & ~MODEBITS);
-+		return -EINVAL;
-+	}
-+
-+	ret = bcm63xx_spi_setup_transfer(spi, NULL);
-+	if (ret < 0) {
-+		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
-+			spi->mode & ~MODEBITS);
-+		return ret;
-+	}
-+
-+	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
-+		__func__, spi->mode & MODEBITS, spi->bits_per_word, 0);
-+
-+	return 0;
-+}
-+
-+/* Fill the TX FIFO with as many bytes as possible */
-+static void bcm63xx_spi_fill_tx_fifo(struct bcm63xx_spi *bs)
-+{
-+	u8 size;
-+
-+	/* Fill the Tx FIFO with as many bytes as possible */
-+	size = bs->remaining_bytes < bs->fifo_size ? bs->remaining_bytes :
-+		bs->fifo_size;
-+	memcpy_toio(bs->tx_io, bs->tx_ptr, size);
-+	bs->remaining_bytes -= size;
-+}
-+
-+static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-+	u16 msg_ctl;
-+	u16 cmd;
-+
-+	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
-+		t->tx_buf, t->rx_buf, t->len);
-+
-+	/* Transmitter is inhibited */
-+	bs->tx_ptr = t->tx_buf;
-+	bs->rx_ptr = t->rx_buf;
-+	init_completion(&bs->done);
-+
-+	if (t->tx_buf) {
-+		bs->remaining_bytes = t->len;
-+		bcm63xx_spi_fill_tx_fifo(bs);
-+	}
-+
-+	/* Enable the command done interrupt which
-+	 * we use to determine completion of a command */
-+	bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
-+
-+	/* Fill in the Message control register */
-+	msg_ctl = (t->len << SPI_BYTE_CNT_SHIFT);
-+
-+	if (t->rx_buf && t->tx_buf)
-+		msg_ctl |= (SPI_FD_RW << SPI_MSG_TYPE_SHIFT);
-+	else if (t->rx_buf)
-+		msg_ctl |= (SPI_HD_R << SPI_MSG_TYPE_SHIFT);
-+	else if (t->tx_buf)
-+		msg_ctl |= (SPI_HD_W << SPI_MSG_TYPE_SHIFT);
-+
-+	bcm_spi_writew(bs, msg_ctl, SPI_MSG_CTL);
-+
-+	/* Issue the transfer */
-+	cmd = SPI_CMD_START_IMMEDIATE;
-+	cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
-+	cmd |= (spi->chip_select << SPI_CMD_DEVICE_ID_SHIFT);
-+	bcm_spi_writew(bs, cmd, SPI_CMD);
-+	wait_for_completion(&bs->done);
-+
-+	/* Disable the CMD_DONE interrupt */
-+	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-+
-+	return t->len - bs->remaining_bytes;
-+}
-+
-+static int bcm63xx_transfer(struct spi_device *spi, struct spi_message *m)
-+{
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-+	struct spi_transfer *t;
-+	int ret = 0;
-+
-+	if (unlikely(list_empty(&m->transfers)))
-+		return -EINVAL;
-+
-+	if (bs->stopping)
-+		return -ESHUTDOWN;
-+
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		ret += bcm63xx_txrx_bufs(spi, t);
-+	}
-+
-+	m->complete(m->context);
-+
-+	return ret;
-+}
-+
-+/* This driver supports single master mode only. Hence
-+ * CMD_DONE is the only interrupt we care about
-+ */
-+static irqreturn_t bcm63xx_spi_interrupt(int irq, void *dev_id)
-+{
-+	struct spi_master *master = (struct spi_master *)dev_id;
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-+	u8 intr;
-+	u16 cmd;
-+
-+	/* Read interupts and clear them immediately */
-+	intr = bcm_spi_readb(bs, SPI_INT_STATUS);
-+	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
-+	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-+
-+	/* A tansfer completed */
-+	if (intr & SPI_INTR_CMD_DONE) {
-+		u8 rx_tail;
-+
-+		rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
-+
-+		/* Read out all the data */
-+		if (rx_tail)
-+			memcpy_fromio(bs->rx_ptr, bs->rx_io, rx_tail);
-+
-+		/* See if there is more data to send */
-+		if (bs->remaining_bytes > 0) {
-+			bcm63xx_spi_fill_tx_fifo(bs);
-+
-+			/* Start the transfer */
-+			bcm_spi_writew(bs, SPI_HD_W << SPI_MSG_TYPE_SHIFT,
-+				       SPI_MSG_CTL);
-+			cmd = bcm_spi_readw(bs, SPI_CMD);
-+			cmd |= SPI_CMD_START_IMMEDIATE;
-+			cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
-+			bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
-+			bcm_spi_writew(bs, cmd, SPI_CMD);
-+		} else
-+			complete(&bs->done);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+
-+static int __init bcm63xx_spi_probe(struct platform_device *pdev)
-+{
-+	struct resource *r;
-+	struct device *dev = &pdev->dev;
-+	struct bcm63xx_spi_pdata *pdata = pdev->dev.platform_data;
-+	int irq;
-+	struct spi_master *master;
-+	struct clk *clk;
-+	struct bcm63xx_spi *bs;
-+	int ret;
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!r) {
-+		dev_err(dev, "no iomem\n");
-+		ret = -ENXIO;
-+		goto out;
-+	}
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(dev, "no irq\n");
-+		ret = -ENXIO;
-+		goto out;
-+	}
-+
-+	clk = clk_get(dev, "spi");
-+	if (IS_ERR(clk)) {
-+		dev_err(dev, "no clock for device\n");
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
-+	master = spi_alloc_master(dev, sizeof(*bs));
-+	if (!master) {
-+		dev_err(dev, "out of memory\n");
-+		ret = -ENOMEM;
-+		goto out_free;
-+	}
-+
-+	bs = spi_master_get_devdata(master);
-+	init_completion(&bs->done);
-+
-+	platform_set_drvdata(pdev, master);
-+	bs->pdev = pdev;
-+
-+	if (!request_mem_region(r->start, resource_size(r), PFX)) {
-+		dev_err(dev, "iomem request failed\n");
-+		ret = -ENXIO;
-+		goto out_put_master;
-+	}
-+
-+	bs->regs = ioremap_nocache(r->start, resource_size(r));
-+	if (!bs->regs) {
-+		dev_err(dev, "unable to ioremap regs\n");
-+		ret = -ENOMEM;
-+		goto out_put_master;
-+	}
-+	bs->irq = irq;
-+	bs->clk = clk;
-+	bs->fifo_size = pdata->fifo_size;
-+
-+	ret = request_irq(irq, bcm63xx_spi_interrupt, 0, pdev->name, master);
-+	if (ret) {
-+		dev_err(dev, "unable to request irq\n");
-+		goto out_unmap;
-+	}
-+
-+	master->bus_num = pdata->bus_num;
-+	master->num_chipselect = pdata->num_chipselect;
-+	master->setup = bcm63xx_spi_setup;
-+	master->transfer = bcm63xx_transfer;
-+	bs->speed_hz = pdata->speed_hz;
-+	bs->stopping = 0;
-+	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
-+	bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
-+	spin_lock_init(&bs->lock);
-+
-+	/* Initialize hardware */
-+	clk_enable(bs->clk);
-+	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
-+
-+	/* register and we are done */
-+	ret = spi_register_master(master);
-+	if (ret) {
-+		dev_err(dev, "spi register failed\n");
-+		goto out_reset_hw;
-+	}
-+
-+	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d) v%s\n",
-+		 r->start, irq, bs->fifo_size, DRV_VER);
-+
-+	return 0;
-+
-+out_reset_hw:
-+	clk_disable(clk);
-+	free_irq(irq, master);
-+out_unmap:
-+	iounmap(bs->regs);
-+out_put_master:
-+	spi_master_put(master);
-+out_free:
-+	clk_put(clk);
-+out:
-+	return ret;
-+}
-+
-+static int __exit bcm63xx_spi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-+	struct resource	*r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+
-+	/* reset spi block */
-+	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-+	spin_lock(&bs->lock);
-+	bs->stopping = 1;
-+
-+	/* HW shutdown */
-+	clk_disable(bs->clk);
-+	clk_put(bs->clk);
-+
-+	spin_unlock(&bs->lock);
-+
-+	free_irq(bs->irq, master);
-+	iounmap(bs->regs);
-+	release_mem_region(r->start, r->end - r->start);
-+	platform_set_drvdata(pdev, 0);
-+	spi_unregister_master(master);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM
-+static int bcm63xx_spi_suspend(struct platform_device *pdev, pm_message_t mesg)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-+
-+	clk_disable(bs->clk);
-+
-+	return 0;
-+}
-+
-+static int bcm63xx_spi_resume(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-+
-+	clk_enable(bs->clk);
-+
-+	return 0;
-+}
-+#else
-+#define bcm63xx_spi_suspend	NULL
-+#define bcm63xx_spi_resume	NULL
-+#endif
-+
-+static struct platform_driver bcm63xx_spi_driver = {
-+	.driver = {
-+		.name	= "bcm63xx-spi",
-+		.owner	= THIS_MODULE,
-+	},
-+	.probe		= bcm63xx_spi_probe,
-+	.remove		= __exit_p(bcm63xx_spi_remove),
-+	.suspend	= bcm63xx_spi_suspend,
-+	.resume		= bcm63xx_spi_resume,
-+};
-+
-+
-+static int __init bcm63xx_spi_init(void)
-+{
-+	return platform_driver_register(&bcm63xx_spi_driver);
-+}
-+
-+static void __exit bcm63xx_spi_exit(void)
-+{
-+	platform_driver_unregister(&bcm63xx_spi_driver);
-+}
-+
-+module_init(bcm63xx_spi_init);
-+module_exit(bcm63xx_spi_exit);
-+
-+MODULE_ALIAS("platform:bcm63xx_spi");
-+MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
-+MODULE_AUTHOR("Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>");
-+MODULE_DESCRIPTION("Broadcom BCM63xx SPI Controller driver");
-+MODULE_LICENSE("GPL");
-+MODULE_VERSION(DRV_VER);
+  * A combined memcpy/__copy_user
+  * __copy_user sets len to 0 for success; else to an upper bound of
+  * the number of uncopied bytes.
+@@ -193,6 +201,8 @@ LEAF(memcpy)					/* a0=dst a1=src a2=len */
+ 	move	v0, dst				/* return value */
+ .L__memcpy:
+ FEXPORT(__copy_user)
++	li	t6, 0	/* not inatomic */
++__copy_user_common:
+ 	/*
+ 	 * Note: dst & src may be unaligned, len may be 0
+ 	 * Temps
+@@ -458,6 +468,7 @@ EXC(	lb	t1, 0(src),	.Ll_exc)
+ 	LOAD	t0, THREAD_BUADDR(t0)	# t0 is just past last good address
+ 	 nop
+ 	SUB	len, AT, t0		# len number of uncopied bytes
++	bnez	t6, .Ldone	/* Skip the zeroing part if inatomic */
+ 	/*
+ 	 * Here's where we rely on src and dst being incremented in tandem,
+ 	 *   See (3) above.
 -- 
-1.7.5.4
+1.7.2.3

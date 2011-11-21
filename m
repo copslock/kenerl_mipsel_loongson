@@ -1,34 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 14:55:06 +0100 (CET)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:54301 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903752Ab1KUNy5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 14:54:57 +0100
-Received: by vcbfo13 with SMTP id fo13so4066367vcb.36
-        for <multiple recipients>; Mon, 21 Nov 2011 05:54:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 14:55:33 +0100 (CET)
+Received: from mail-qw0-f49.google.com ([209.85.216.49]:52993 "EHLO
+        mail-qw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903756Ab1KUNzU convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Nov 2011 14:55:20 +0100
+Received: by qadc16 with SMTP id c16so77695qad.15
+        for <multiple recipients>; Mon, 21 Nov 2011 05:55:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=ExVYvTfCh7fHtEQrbgVkUQuva33IH5pXaXi+7TaxjHk=;
-        b=JEEMlJpt3iSXAP/Qb/leTjp3CqQCHlTWBzQalBzDqMQj7jsChWFNnvhlrsfHjCAqsR
-         4h+RBC1B74nC4uFtgsm1lgy670iBkLDzEFxlJFSwJMifKoaST+6moV44/oP6Xj4kTX0P
-         Btxm+vfYs/7L7YAyGzAh5h0K64Bd4k4KHSGOM=
+        bh=c7gp4Bac2Gh9J/GuIv203Q+3ixPPvETvBjmodVTBbmY=;
+        b=PjW2zT7wcv2aNlV2IXXjXcdtqDts7iCZoRk3q0zaT+LIDZYcJsrYV0VGX0JS/0xN+n
+         I9xtcVayTul3XwyWaic0X92NB6uOxczCLiojeKT+o2lbFgR4USyBMS2jjUC8lh7ck6E/
+         TSpqJUg8bg05LraDzmOyGZ7/CPnn1VyS3UR3c=
 MIME-Version: 1.0
-Received: by 10.182.217.105 with SMTP id ox9mr3030941obc.45.1321883653079;
- Mon, 21 Nov 2011 05:54:13 -0800 (PST)
-Received: by 10.182.36.133 with HTTP; Mon, 21 Nov 2011 05:54:13 -0800 (PST)
-In-Reply-To: <1321825151-16053-8-git-send-email-juhosg@openwrt.org>
+Received: by 10.182.31.78 with SMTP id y14mr3015387obh.25.1321883714466; Mon,
+ 21 Nov 2011 05:55:14 -0800 (PST)
+Received: by 10.182.36.133 with HTTP; Mon, 21 Nov 2011 05:55:14 -0800 (PST)
+In-Reply-To: <1321825151-16053-7-git-send-email-juhosg@openwrt.org>
 References: <1321825151-16053-1-git-send-email-juhosg@openwrt.org>
-        <1321825151-16053-8-git-send-email-juhosg@openwrt.org>
-Date:   Mon, 21 Nov 2011 14:54:13 +0100
-Message-ID: <CAEWqx5-vkzGGkR2h5Dw=Fy0_3UTEGoFH5zwZVLsY8wUtqKgt-w@mail.gmail.com>
-Subject: Re: [PATCH v3 7/7] MIPS: ath79: use io-accessor macros in pci-ar724x.c
+        <1321825151-16053-7-git-send-email-juhosg@openwrt.org>
+Date:   Mon, 21 Nov 2011 14:55:14 +0100
+Message-ID: <CAEWqx591-qdKfh8boqWqhOE5mJnnmbpKhzwKyPg_QUQMYtzqDg@mail.gmail.com>
+Subject: Re: [PATCH v3 6/7] MIPS: ath79: replace ath724x to ar724x
 From:   =?UTF-8?Q?Ren=C3=A9_Bolldorf?= <xsecute@googlemail.com>
 To:     Gabor Juhos <juhosg@openwrt.org>
 Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-archive-position: 31867
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 31868
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,102 +38,277 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17307
+X-UID: 17308
 
-QWNrZWQtYnk6IFJlbmUgQm9sbGRvcmYgPHhzZWN1dGVAZ29vZ2xlbWFpbC5jb20+CgpPbiBTdW4s
-IE5vdiAyMCwgMjAxMSBhdCAxMDozOSBQTSwgR2Fib3IgSnVob3MgPGp1aG9zZ0BvcGVud3J0Lm9y
-Zz4gd3JvdGU6Cj4gU2lnbmVkLW9mZi1ieTogR2Fib3IgSnVob3MgPGp1aG9zZ0BvcGVud3J0Lm9y
-Zz4KPiAtLS0KPiB2MzogLSBubyBjaGFuZ2VzCj4gdjI6IC0gcmVtb3ZlICdyZXQnIHZhcmlhYmxl
-IGZyb20gYXI3MjR4X3BjaWJpb3NfaW5pdAo+IC0tLQo+IMKgYXJjaC9taXBzL3BjaS9wY2ktYXI3
-MjR4LmMgfCDCoCAzOCArKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLQo+IMKg
-MSBmaWxlcyBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAxNCBkZWxldGlvbnMoLSkKPgo+IGRp
-ZmYgLS1naXQgYS9hcmNoL21pcHMvcGNpL3BjaS1hcjcyNHguYyBiL2FyY2gvbWlwcy9wY2kvcGNp
-LWFyNzI0eC5jCj4gaW5kZXggNzcyZDEyYy4uMjJmNWU1YiAxMDA2NDQKPiAtLS0gYS9hcmNoL21p
-cHMvcGNpL3BjaS1hcjcyNHguYwo+ICsrKyBiL2FyY2gvbWlwcy9wY2kvcGNpLWFyNzI0eC5jCj4g
-QEAgLTExLDE5ICsxMSwxOSBAQAo+IMKgI2luY2x1ZGUgPGxpbnV4L3BjaS5oPgo+IMKgI2luY2x1
-ZGUgPGFzbS9tYWNoLWF0aDc5L3BjaS5oPgo+Cj4gLSNkZWZpbmUgcmVnX3JlYWQoX3BoeXMpIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgKCoodW5zaWduZWQgaW50ICopIEtTRUcxQUREUihfcGh5cykp
-Cj4gLSNkZWZpbmUgcmVnX3dyaXRlKF9waHlzLCBfdmFsKSAoKCoodW5zaWduZWQgaW50ICopIEtT
-RUcxQUREUihfcGh5cykpID0gKF92YWwpKQo+IC0KPiAtI2RlZmluZSBBUjcyNFhfUENJX0RFVl9C
-QVNFIMKgIMKgMHgxNDAwMDAwMAo+ICsjZGVmaW5lIEFSNzI0WF9QQ0lfQ0ZHX0JBU0UgwqAgwqAw
-eDE0MDAwMDAwCj4gKyNkZWZpbmUgQVI3MjRYX1BDSV9DRkdfU0laRSDCoCDCoDB4MTAwMAo+IMKg
-I2RlZmluZSBBUjcyNFhfUENJX01FTV9CQVNFIMKgIMKgMHgxMDAwMDAwMAo+IMKgI2RlZmluZSBB
-UjcyNFhfUENJX01FTV9TSVpFIMKgIMKgMHgwODAwMDAwMAo+Cj4gwqBzdGF0aWMgREVGSU5FX1NQ
-SU5MT0NLKGFyNzI0eF9wY2lfbG9jayk7Cj4gK3N0YXRpYyB2b2lkIF9faW9tZW0gKmFyNzI0eF9w
-Y2lfZGV2Y2ZnX2Jhc2U7Cj4KPiDCoHN0YXRpYyBpbnQgYXI3MjR4X3BjaV9yZWFkKHN0cnVjdCBw
-Y2lfYnVzICpidXMsIHVuc2lnbmVkIGludCBkZXZmbiwgaW50IHdoZXJlLAo+IMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgaW50IHNpemUsIHVpbnQzMl90ICp2YWx1ZSkK
-PiDCoHsKPiDCoCDCoCDCoCDCoHVuc2lnbmVkIGxvbmcgZmxhZ3MsIGFkZHIsIHR2YWwsIG1hc2s7
-Cj4gKyDCoCDCoCDCoCB2b2lkIF9faW9tZW0gKmJhc2U7Cj4KPiDCoCDCoCDCoCDCoGlmIChkZXZm
-bikKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHJldHVybiBQQ0lCSU9TX0RFVklDRV9OT1RfRk9V
-TkQ7Cj4gQEAgLTMxLDI1ICszMSwyNyBAQCBzdGF0aWMgaW50IGFyNzI0eF9wY2lfcmVhZChzdHJ1
-Y3QgcGNpX2J1cyAqYnVzLCB1bnNpZ25lZCBpbnQgZGV2Zm4sIGludCB3aGVyZSwKPiDCoCDCoCDC
-oCDCoGlmICh3aGVyZSAmIChzaXplIC0gMSkpCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqByZXR1
-cm4gUENJQklPU19CQURfUkVHSVNURVJfTlVNQkVSOwo+Cj4gKyDCoCDCoCDCoCBiYXNlID0gYXI3
-MjR4X3BjaV9kZXZjZmdfYmFzZTsKPiArCj4gwqAgwqAgwqAgwqBzcGluX2xvY2tfaXJxc2F2ZSgm
-YXI3MjR4X3BjaV9sb2NrLCBmbGFncyk7Cj4KPiDCoCDCoCDCoCDCoHN3aXRjaCAoc2l6ZSkgewo+
-IMKgIMKgIMKgIMKgY2FzZSAxOgo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYWRkciA9IHdoZXJl
-ICYgfjM7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBtYXNrID0gMHhmZjAwMDAwMCA+PiAoKHdo
-ZXJlICUgNCkgKiA4KTsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2YWwgPSByZWdfcmVhZChB
-UjcyNFhfUENJX0RFVl9CQVNFICsgYWRkcik7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB0dmFs
-ID0gX19yYXdfcmVhZGwoYmFzZSArIGFkZHIpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgdHZh
-bCA9IHR2YWwgJiB+bWFzazsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCp2YWx1ZSA9ICh0dmFs
-ID4+ICgoNCAtICh3aGVyZSAlIDQpKSo4KSk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVh
-azsKPiDCoCDCoCDCoCDCoGNhc2UgMjoKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGFkZHIgPSB3
-aGVyZSAmIH4zOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgbWFzayA9IDB4ZmZmZjAwMDAgPj4g
-KCh3aGVyZSAlIDQpKjgpOwo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgdHZhbCA9IHJlZ19yZWFk
-KEFSNzI0WF9QQ0lfREVWX0JBU0UgKyBhZGRyKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2
-YWwgPSBfX3Jhd19yZWFkbChiYXNlICsgYWRkcik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0
-dmFsID0gdHZhbCAmIH5tYXNrOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgKnZhbHVlID0gKHR2
-YWwgPj4gKCg0IC0gKHdoZXJlICUgNCkpKjgpKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGJy
-ZWFrOwo+IMKgIMKgIMKgIMKgY2FzZSA0Ogo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgKnZhbHVl
-ID0gcmVnX3JlYWQoQVI3MjRYX1BDSV9ERVZfQkFTRSArIHdoZXJlKTsKPiArIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgICp2YWx1ZSA9IF9fcmF3X3JlYWRsKGJhc2UgKyB3aGVyZSk7Cj4gwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqBicmVhazsKPiDCoCDCoCDCoCDCoGRlZmF1bHQ6Cj4gwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqBzcGluX3VubG9ja19pcnFyZXN0b3JlKCZhcjcyNHhfcGNpX2xvY2ssIGZsYWdz
-KTsKPiBAQCAtNjYsNiArNjgsNyBAQCBzdGF0aWMgaW50IGFyNzI0eF9wY2lfd3JpdGUoc3RydWN0
-IHBjaV9idXMgKmJ1cywgdW5zaWduZWQgaW50IGRldmZuLCBpbnQgd2hlcmUsCj4gwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW50IHNpemUsIHVpbnQzMl90IHZhbHVl
-KQo+IMKgewo+IMKgIMKgIMKgIMKgdW5zaWduZWQgbG9uZyBmbGFncywgdHZhbCwgYWRkciwgbWFz
-azsKPiArIMKgIMKgIMKgIHZvaWQgX19pb21lbSAqYmFzZTsKPgo+IMKgIMKgIMKgIMKgaWYgKGRl
-dmZuKQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgcmV0dXJuIFBDSUJJT1NfREVWSUNFX05PVF9G
-T1VORDsKPiBAQCAtNzMsMjcgKzc2LDI5IEBAIHN0YXRpYyBpbnQgYXI3MjR4X3BjaV93cml0ZShz
-dHJ1Y3QgcGNpX2J1cyAqYnVzLCB1bnNpZ25lZCBpbnQgZGV2Zm4sIGludCB3aGVyZSwKPiDCoCDC
-oCDCoCDCoGlmICh3aGVyZSAmIChzaXplIC0gMSkpCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBy
-ZXR1cm4gUENJQklPU19CQURfUkVHSVNURVJfTlVNQkVSOwo+Cj4gKyDCoCDCoCDCoCBiYXNlID0g
-YXI3MjR4X3BjaV9kZXZjZmdfYmFzZTsKPiArCj4gwqAgwqAgwqAgwqBzcGluX2xvY2tfaXJxc2F2
-ZSgmYXI3MjR4X3BjaV9sb2NrLCBmbGFncyk7Cj4KPiDCoCDCoCDCoCDCoHN3aXRjaCAoc2l6ZSkg
-ewo+IMKgIMKgIMKgIMKgY2FzZSAxOgo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgYWRkciA9IChB
-UjcyNFhfUENJX0RFVl9CQVNFICsgd2hlcmUpICYgfjM7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCBhZGRyID0gd2hlcmUgJiB+MzsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoG1hc2sgPSAweGZm
-MDAwMDAwID4+ICgod2hlcmUgJSA0KSo4KTsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2YWwg
-PSByZWdfcmVhZChhZGRyKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHR2YWwgPSBfX3Jhd19y
-ZWFkbChiYXNlICsgYWRkcik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0dmFsID0gdHZhbCAm
-IH5tYXNrOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgdHZhbCB8PSAodmFsdWUgPDwgKCg0IC0g
-KHdoZXJlICUgNCkpKjgpKSAmIG1hc2s7Cj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZWdfd3Jp
-dGUoYWRkciwgdHZhbCk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBfX3Jhd193cml0ZWwodHZh
-bCwgYmFzZSArIGFkZHIpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYnJlYWs7Cj4gwqAgwqAg
-wqAgwqBjYXNlIDI6Cj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCBhZGRyID0gKEFSNzI0WF9QQ0lf
-REVWX0JBU0UgKyB3aGVyZSkgJiB+MzsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGFkZHIgPSB3
-aGVyZSAmIH4zOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgbWFzayA9IDB4ZmZmZjAwMDAgPj4g
-KCh3aGVyZSAlIDQpKjgpOwo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgdHZhbCA9IHJlZ19yZWFk
-KGFkZHIpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdHZhbCA9IF9fcmF3X3JlYWRsKGJhc2Ug
-KyBhZGRyKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHR2YWwgPSB0dmFsICYgfm1hc2s7Cj4g
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB0dmFsIHw9ICh2YWx1ZSA8PCAoKDQgLSAod2hlcmUgJSA0
-KSkqOCkpICYgbWFzazsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJlZ193cml0ZShhZGRyLCB0
-dmFsKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIF9fcmF3X3dyaXRlbCh0dmFsLCBiYXNlICsg
-YWRkcik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVhazsKPiDCoCDCoCDCoCDCoGNhc2Ug
-NDoKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJlZ193cml0ZSgoQVI3MjRYX1BDSV9ERVZfQkFT
-RSArIHdoZXJlKSwgdmFsdWUpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgX19yYXdfd3JpdGVs
-KHZhbHVlLCAoYmFzZSArIHdoZXJlKSk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBicmVhazsK
-PiDCoCDCoCDCoCDCoGRlZmF1bHQ6Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBzcGluX3VubG9j
-a19pcnFyZXN0b3JlKCZhcjcyNHhfcGNpX2xvY2ssIGZsYWdzKTsKPiBAQCAtMTMzLDYgKzEzOCwx
-MSBAQCBzdGF0aWMgc3RydWN0IHBjaV9jb250cm9sbGVyIGFyNzI0eF9wY2lfY29udHJvbGxlciA9
-IHsKPgo+IMKgaW50IF9faW5pdCBhcjcyNHhfcGNpYmlvc19pbml0KHZvaWQpCj4gwqB7Cj4gKyDC
-oCDCoCDCoCBhcjcyNHhfcGNpX2RldmNmZ19iYXNlID0gaW9yZW1hcChBUjcyNFhfUENJX0NGR19C
-QVNFLAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqBBUjcyNFhfUENJX0NGR19TSVpFKTsKPiArIMKgIMKgIMKgIGlmIChhcjcyNHhf
-cGNpX2RldmNmZ19iYXNlID09IE5VTEwpCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZXR1cm4g
-LUVOT01FTTsKPiArCj4gwqAgwqAgwqAgwqByZWdpc3Rlcl9wY2lfY29udHJvbGxlcigmYXI3MjR4
-X3BjaV9jb250cm9sbGVyKTsKPgo+IMKgIMKgIMKgIMKgcmV0dXJuIFBDSUJJT1NfU1VDQ0VTU0ZV
-TDsKPiAtLQo+IDEuNy4yLjEKPgo+Cg==
+Acked-by: Rene Bolldorf <xsecute@googlemail.com>
+
+On Sun, Nov 20, 2011 at 10:39 PM, Gabor Juhos <juhosg@openwrt.org> wrote:
+> Replace the 'ath724x' to 'ar724x' in function, variable and
+> structure names to reflect the name of the real SoC.
+>
+> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> ---
+> v3: - no changes
+> v2: - no changes
+> ---
+>  arch/mips/ath79/mach-ubnt-xm.c         |    4 +-
+>  arch/mips/ath79/pci.c                  |    6 ++--
+>  arch/mips/ath79/pci.h                  |   10 +++---
+>  arch/mips/include/asm/mach-ath79/pci.h |    4 +-
+>  arch/mips/pci/pci-ar724x.c             |   62 ++++++++++++++++----------------
+>  5 files changed, 43 insertions(+), 43 deletions(-)
+>
+> diff --git a/arch/mips/ath79/mach-ubnt-xm.c b/arch/mips/ath79/mach-ubnt-xm.c
+> index edbc093..3266ee0 100644
+> --- a/arch/mips/ath79/mach-ubnt-xm.c
+> +++ b/arch/mips/ath79/mach-ubnt-xm.c
+> @@ -84,7 +84,7 @@ static struct ath79_spi_platform_data ubnt_xm_spi_data = {
+>  #ifdef CONFIG_PCI
+>  static struct ath9k_platform_data ubnt_xm_eeprom_data;
+>
+> -static struct ath724x_pci_data ubnt_xm_pci_data[] = {
+> +static struct ar724x_pci_data ubnt_xm_pci_data[] = {
+>        {
+>                .irq    = UBNT_XM_PCI_IRQ,
+>                .pdata  = &ubnt_xm_eeprom_data,
+> @@ -108,7 +108,7 @@ static void __init ubnt_xm_init(void)
+>        memcpy(ubnt_xm_eeprom_data.eeprom_data, UBNT_XM_EEPROM_ADDR,
+>               sizeof(ubnt_xm_eeprom_data.eeprom_data));
+>
+> -       ath724x_pci_add_data(ubnt_xm_pci_data, ARRAY_SIZE(ubnt_xm_pci_data));
+> +       ar724x_pci_add_data(ubnt_xm_pci_data, ARRAY_SIZE(ubnt_xm_pci_data));
+>  #endif /* CONFIG_PCI */
+>
+>        ath79_register_pci();
+> diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
+> index 342363b..9989495c 100644
+> --- a/arch/mips/ath79/pci.c
+> +++ b/arch/mips/ath79/pci.c
+> @@ -13,10 +13,10 @@
+>  #include <asm/mach-ath79/pci.h>
+>  #include "pci.h"
+>
+> -static struct ath724x_pci_data *pci_data;
+> +static struct ar724x_pci_data *pci_data;
+>  static int pci_data_size;
+>
+> -void ath724x_pci_add_data(struct ath724x_pci_data *data, int size)
+> +void ar724x_pci_add_data(struct ar724x_pci_data *data, int size)
+>  {
+>        pci_data        = data;
+>        pci_data_size   = size;
+> @@ -52,7 +52,7 @@ int __init ath79_register_pci(void)
+>        int ret;
+>
+>        if (soc_is_ar724x())
+> -               ret = ath724x_pcibios_init();
+> +               ret = ar724x_pcibios_init();
+>        else
+>                ret = -ENODEV;
+>
+> diff --git a/arch/mips/ath79/pci.h b/arch/mips/ath79/pci.h
+> index 787fac2..e0601c4 100644
+> --- a/arch/mips/ath79/pci.h
+> +++ b/arch/mips/ath79/pci.h
+> @@ -8,15 +8,15 @@
+>  *  by the Free Software Foundation.
+>  */
+>
+> -#ifndef __ASM_MACH_ATH79_PCI_ATH724X_H
+> -#define __ASM_MACH_ATH79_PCI_ATH724X_H
+> +#ifndef _ATH79_PCI_H
+> +#define _ATH79_PCI_H
+>
+> -struct ath724x_pci_data {
+> +struct ar724x_pci_data {
+>        int irq;
+>        void *pdata;
+>  };
+>
+> -void ath724x_pci_add_data(struct ath724x_pci_data *data, int size);
+> +void ar724x_pci_add_data(struct ar724x_pci_data *data, int size);
+>
+>  #ifdef CONFIG_PCI
+>  int ath79_register_pci(void);
+> @@ -24,4 +24,4 @@ int ath79_register_pci(void);
+>  static inline int ath79_register_pci(void) { return 0; }
+>  #endif
+>
+> -#endif /* __ASM_MACH_ATH79_PCI_ATH724X_H */
+> +#endif /* _ATH79_PCI_H */
+> diff --git a/arch/mips/include/asm/mach-ath79/pci.h b/arch/mips/include/asm/mach-ath79/pci.h
+> index 7ef8a49..0aaf41f 100644
+> --- a/arch/mips/include/asm/mach-ath79/pci.h
+> +++ b/arch/mips/include/asm/mach-ath79/pci.h
+> @@ -12,9 +12,9 @@
+>  #define __ASM_MACH_ATH79_PCI_H
+>
+>  #if defined(CONFIG_PCI) && defined(CONFIG_SOC_AR724X)
+> -int ath724x_pcibios_init(void);
+> +int ar724x_pcibios_init(void);
+>  #else
+> -static inline int ath724x_pcibios_init(void) { return 0 };
+> +static inline int ar724x_pcibios_init(void) { return 0 };
+>  #endif
+>
+>  #endif /* __ASM_MACH_ATH79_PCI_H */
+> diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
+> index ebefc16..772d12c 100644
+> --- a/arch/mips/pci/pci-ar724x.c
+> +++ b/arch/mips/pci/pci-ar724x.c
+> @@ -14,13 +14,13 @@
+>  #define reg_read(_phys)                (*(unsigned int *) KSEG1ADDR(_phys))
+>  #define reg_write(_phys, _val) ((*(unsigned int *) KSEG1ADDR(_phys)) = (_val))
+>
+> -#define ATH724X_PCI_DEV_BASE   0x14000000
+> -#define ATH724X_PCI_MEM_BASE   0x10000000
+> -#define ATH724X_PCI_MEM_SIZE   0x08000000
+> +#define AR724X_PCI_DEV_BASE    0x14000000
+> +#define AR724X_PCI_MEM_BASE    0x10000000
+> +#define AR724X_PCI_MEM_SIZE    0x08000000
+>
+> -static DEFINE_SPINLOCK(ath724x_pci_lock);
+> +static DEFINE_SPINLOCK(ar724x_pci_lock);
+>
+> -static int ath724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+> +static int ar724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+>                            int size, uint32_t *value)
+>  {
+>        unsigned long flags, addr, tval, mask;
+> @@ -31,38 +31,38 @@ static int ath724x_pci_read(struct pci_bus *bus, unsigned int devfn, int where,
+>        if (where & (size - 1))
+>                return PCIBIOS_BAD_REGISTER_NUMBER;
+>
+> -       spin_lock_irqsave(&ath724x_pci_lock, flags);
+> +       spin_lock_irqsave(&ar724x_pci_lock, flags);
+>
+>        switch (size) {
+>        case 1:
+>                addr = where & ~3;
+>                mask = 0xff000000 >> ((where % 4) * 8);
+> -               tval = reg_read(ATH724X_PCI_DEV_BASE + addr);
+> +               tval = reg_read(AR724X_PCI_DEV_BASE + addr);
+>                tval = tval & ~mask;
+>                *value = (tval >> ((4 - (where % 4))*8));
+>                break;
+>        case 2:
+>                addr = where & ~3;
+>                mask = 0xffff0000 >> ((where % 4)*8);
+> -               tval = reg_read(ATH724X_PCI_DEV_BASE + addr);
+> +               tval = reg_read(AR724X_PCI_DEV_BASE + addr);
+>                tval = tval & ~mask;
+>                *value = (tval >> ((4 - (where % 4))*8));
+>                break;
+>        case 4:
+> -               *value = reg_read(ATH724X_PCI_DEV_BASE + where);
+> +               *value = reg_read(AR724X_PCI_DEV_BASE + where);
+>                break;
+>        default:
+> -               spin_unlock_irqrestore(&ath724x_pci_lock, flags);
+> +               spin_unlock_irqrestore(&ar724x_pci_lock, flags);
+>
+>                return PCIBIOS_BAD_REGISTER_NUMBER;
+>        }
+>
+> -       spin_unlock_irqrestore(&ath724x_pci_lock, flags);
+> +       spin_unlock_irqrestore(&ar724x_pci_lock, flags);
+>
+>        return PCIBIOS_SUCCESSFUL;
+>  }
+>
+> -static int ath724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+> +static int ar724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+>                             int size, uint32_t value)
+>  {
+>        unsigned long flags, tval, addr, mask;
+> @@ -73,11 +73,11 @@ static int ath724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+>        if (where & (size - 1))
+>                return PCIBIOS_BAD_REGISTER_NUMBER;
+>
+> -       spin_lock_irqsave(&ath724x_pci_lock, flags);
+> +       spin_lock_irqsave(&ar724x_pci_lock, flags);
+>
+>        switch (size) {
+>        case 1:
+> -               addr = (ATH724X_PCI_DEV_BASE + where) & ~3;
+> +               addr = (AR724X_PCI_DEV_BASE + where) & ~3;
+>                mask = 0xff000000 >> ((where % 4)*8);
+>                tval = reg_read(addr);
+>                tval = tval & ~mask;
+> @@ -85,7 +85,7 @@ static int ath724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+>                reg_write(addr, tval);
+>                break;
+>        case 2:
+> -               addr = (ATH724X_PCI_DEV_BASE + where) & ~3;
+> +               addr = (AR724X_PCI_DEV_BASE + where) & ~3;
+>                mask = 0xffff0000 >> ((where % 4)*8);
+>                tval = reg_read(addr);
+>                tval = tval & ~mask;
+> @@ -93,47 +93,47 @@ static int ath724x_pci_write(struct pci_bus *bus, unsigned int devfn, int where,
+>                reg_write(addr, tval);
+>                break;
+>        case 4:
+> -               reg_write((ATH724X_PCI_DEV_BASE + where), value);
+> +               reg_write((AR724X_PCI_DEV_BASE + where), value);
+>                break;
+>        default:
+> -               spin_unlock_irqrestore(&ath724x_pci_lock, flags);
+> +               spin_unlock_irqrestore(&ar724x_pci_lock, flags);
+>
+>                return PCIBIOS_BAD_REGISTER_NUMBER;
+>        }
+>
+> -       spin_unlock_irqrestore(&ath724x_pci_lock, flags);
+> +       spin_unlock_irqrestore(&ar724x_pci_lock, flags);
+>
+>        return PCIBIOS_SUCCESSFUL;
+>  }
+>
+> -static struct pci_ops ath724x_pci_ops = {
+> -       .read   = ath724x_pci_read,
+> -       .write  = ath724x_pci_write,
+> +static struct pci_ops ar724x_pci_ops = {
+> +       .read   = ar724x_pci_read,
+> +       .write  = ar724x_pci_write,
+>  };
+>
+> -static struct resource ath724x_io_resource = {
+> +static struct resource ar724x_io_resource = {
+>        .name   = "PCI IO space",
+>        .start  = 0,
+>        .end    = 0,
+>        .flags  = IORESOURCE_IO,
+>  };
+>
+> -static struct resource ath724x_mem_resource = {
+> +static struct resource ar724x_mem_resource = {
+>        .name   = "PCI memory space",
+> -       .start  = ATH724X_PCI_MEM_BASE,
+> -       .end    = ATH724X_PCI_MEM_BASE + ATH724X_PCI_MEM_SIZE - 1,
+> +       .start  = AR724X_PCI_MEM_BASE,
+> +       .end    = AR724X_PCI_MEM_BASE + AR724X_PCI_MEM_SIZE - 1,
+>        .flags  = IORESOURCE_MEM,
+>  };
+>
+> -static struct pci_controller ath724x_pci_controller = {
+> -       .pci_ops        = &ath724x_pci_ops,
+> -       .io_resource    = &ath724x_io_resource,
+> -       .mem_resource   = &ath724x_mem_resource,
+> +static struct pci_controller ar724x_pci_controller = {
+> +       .pci_ops        = &ar724x_pci_ops,
+> +       .io_resource    = &ar724x_io_resource,
+> +       .mem_resource   = &ar724x_mem_resource,
+>  };
+>
+> -int __init ath724x_pcibios_init(void)
+> +int __init ar724x_pcibios_init(void)
+>  {
+> -       register_pci_controller(&ath724x_pci_controller);
+> +       register_pci_controller(&ar724x_pci_controller);
+>
+>        return PCIBIOS_SUCCESSFUL;
+>  }
+> --
+> 1.7.2.1
+>
+>

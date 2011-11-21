@@ -1,41 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 16:51:34 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:52311 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 17:07:59 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:40679 "EHLO zmc.proxad.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903786Ab1KUPv3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 21 Nov 2011 16:51:29 +0100
-Message-ID: <4ECA8173.4080609@openwrt.org>
-Date:   Mon, 21 Nov 2011 17:50:59 +0100
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.20) Gecko/20110820 Icedove/3.1.12
-MIME-Version: 1.0
-To:     thomas.langer@lantiq.com
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH V2 4/6] MIPS: lantiq: add basic support for FALC-ON
-References: <1321882525-13780-1-git-send-email-blogic@openwrt.org> <1321882525-13780-4-git-send-email-blogic@openwrt.org> <0509FD3B91656A408BE277C2D2CD5B3B0FFAAD@MUCSE501.eu.infineon.com>
-In-Reply-To: <0509FD3B91656A408BE277C2D2CD5B3B0FFAAD@MUCSE501.eu.infineon.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31881
+        id S1903777Ab1KUQH4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 21 Nov 2011 17:07:56 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 6B52E3B388A;
+        Mon, 21 Nov 2011 17:07:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ctr8+EWh8Pi1; Mon, 21 Nov 2011 17:07:55 +0100 (CET)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 2605E3B2E48;
+        Mon, 21 Nov 2011 17:07:55 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 0/8 v2] MIPS: BCM63XX: prepare for SPI support
+Date:   Mon, 21 Nov 2011 17:07:15 +0100
+Message-Id: <1321891643-4119-1-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.5.4
+X-archive-position: 31882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17436
+X-UID: 17455
 
+This patchset adds the required infrastructure to register a Broadcom
+BCM63XX SPI controller platform device and driver.
 
-> Can you please create and send an updated patch?
->
-> Thanks,
-> Thomas
->
->
->
-Hi Thomas,
+Changes since v1:
+- fixed typo in spi platform device stub
+- folded patch 7 and 8 together
 
-let me fold your suggestions into the patch
+Florian Fainelli (8):
+  MIPS: BCM63XX: add IRQ_SPI and CPU specific SPI IRQ values
+  MIPS: BCM63XX: define BCM6358 SPI base address
+  MIPS: BCM63XX: add BCM6368 SPI clock mask
+  MIPS: BCM63XX: define RSET_SPI_SIZE
+  MIPS: BCM63XX: remove SPI2 register
+  MIPS: BCM63XX: define internal registers offsets of the SPI
+    controller
+  MIPS: BCM63XX: add stub to register the SPI platform driver
+  MIPS: BCM63XX: make board setup code register the spi platform device
 
-John
+ arch/mips/bcm63xx/Makefile                         |    3 +-
+ arch/mips/bcm63xx/boards/board_bcm963xx.c          |    3 +
+ arch/mips/bcm63xx/clk.c                            |    6 +-
+ arch/mips/bcm63xx/dev-spi.c                        |  117 +++++++++++++++++++
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h   |   20 ++--
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |   89 +++++++++++++++
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |  120 ++++++++++++++++++++
+ 7 files changed, 345 insertions(+), 13 deletions(-)
+ create mode 100644 arch/mips/bcm63xx/dev-spi.c
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+
+-- 
+1.7.5.4

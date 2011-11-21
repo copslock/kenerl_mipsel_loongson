@@ -1,57 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 15:37:15 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:61601 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903761Ab1KUOhE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 15:37:04 +0100
-Received: by bkat2 with SMTP id t2so8721291bka.36
-        for <multiple recipients>; Mon, 21 Nov 2011 06:36:58 -0800 (PST)
-Received: by 10.205.121.1 with SMTP id ga1mr12228818bkc.60.1321886218081;
-        Mon, 21 Nov 2011 06:36:58 -0800 (PST)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru. [213.79.90.226])
-        by mx.google.com with ESMTPS id hy13sm7480790bkc.0.2011.11.21.06.36.56
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 21 Nov 2011 06:36:57 -0800 (PST)
-Message-ID: <4ECA6FE7.6070602@mvista.com>
-Date:   Mon, 21 Nov 2011 18:36:07 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20110812 Thunderbird/6.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Nov 2011 16:07:23 +0100 (CET)
+Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:44832 "EHLO
+        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903761Ab1KUPHT (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 21 Nov 2011 16:07:19 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 781D2140245;
+        Mon, 21 Nov 2011 16:07:14 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mail.szarvasnet.hu
+Received: from mail.szarvasnet.hu ([127.0.0.1])
+        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id a6vT0kfSpBPC; Mon, 21 Nov 2011 16:07:13 +0100 (CET)
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 7879D140463;
+        Mon, 21 Nov 2011 16:06:55 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Rene Bolldorf <xsecute@googlemail.com>,
+        Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH v4 0/7] MIPS: ath79: cleanup AR724X PCI support code
+Date:   Mon, 21 Nov 2011 16:06:32 +0100
+Message-Id: <1321887999-14546-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.2.1
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH V2] NET: MIPS: lantiq: return value of request_irq was
- not handled gracefully
-References: <1321882291-13062-1-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1321882291-13062-1-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31871
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 31872
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 17350
+X-UID: 17379
 
-Hello.
+This patch-set contains patches to clean up the recently 
+introduced code for the AR724X PCI controller. This is required
+to allow to add support for the AR71XX PCI controller. 
 
-On 11/21/2011 04:31 PM, John Crispin wrote:
+Gabor Juhos (7):
+  MIPS: ath79: separate common PCI code
+  MIPS: ath79: rename pci-ath724x.h
+  MIPS: ath79: make ath724x_pcibios_init visible for external code
+  MIPS: ath79: add a common PCI registration function
+  MIPS: ath79: rename pci-ath724x.c to make it reflect the real SoC name
+  MIPS: ath79: replace ath724x to ar724x
+  MIPS: ath79: use io-accessor macros in pci-ar724x.c
 
-> The return values of request_irq() were not checked leading to the following
-> error message.
+ arch/mips/ath79/Makefile                           |    1 +
+ arch/mips/ath79/mach-ubnt-xm.c                     |    7 +-
+ arch/mips/ath79/pci.c                              |   56 +++++++
+ .../asm/mach-ath79/pci-ath724x.h => ath79/pci.h}   |   16 ++-
+ .../asm/mach-ath79/{pci-ath724x.h => pci.h}        |   17 +-
+ arch/mips/pci/Makefile                             |    2 +-
+ arch/mips/pci/pci-ar724x.c                         |  149 +++++++++++++++++
+ arch/mips/pci/pci-ath724x.c                        |  174 --------------------
+ 8 files changed, 230 insertions(+), 192 deletions(-)
+ create mode 100644 arch/mips/ath79/pci.c
+ copy arch/mips/{include/asm/mach-ath79/pci-ath724x.h => ath79/pci.h} (53%)
+ rename arch/mips/include/asm/mach-ath79/{pci-ath724x.h => pci.h} (53%)
+ create mode 100644 arch/mips/pci/pci-ar724x.c
+ delete mode 100644 arch/mips/pci/pci-ath724x.c
 
-> drivers/net/ethernet/lantiq_etop.c: In function 'ltq_etop_hw_init':
-> drivers/net/ethernet/lantiq_etop.c:368:15: warning: ignoring return value of 'request_irq', declared with attribute warn_unused_result
-> drivers/net/ethernet/lantiq_etop.c:377:15: warning: ignoring return value of 'request_irq', declared with attribute warn_unused_result
-
-> Signed-off-by: John Crispin<blogic@openwrt.org>
-> Acked-by: David S. Miller<davem@davemloft.net>
-> ---
-> Changes in V2:
-> * drop IRQF_DISABLED
-
-   This should have been noted in the patch description...
-
-WBR, Sergei
+-- 
+1.7.2.1

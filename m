@@ -1,60 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 16:19:13 +0100 (CET)
-Received: from mail-bw0-f49.google.com ([209.85.214.49]:63970 "EHLO
-        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903719Ab1KVPTD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Nov 2011 16:19:03 +0100
-Received: by bkat2 with SMTP id t2so401410bka.36
-        for <multiple recipients>; Tue, 22 Nov 2011 07:18:57 -0800 (PST)
-Received: by 10.204.128.199 with SMTP id l7mr8827878bks.27.1321975137620;
-        Tue, 22 Nov 2011 07:18:57 -0800 (PST)
-Received: from [192.168.11.174] (mail.dev.rtsoft.ru. [213.79.90.226])
-        by mx.google.com with ESMTPS id e18sm10322208bkr.15.2011.11.22.07.18.54
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 22 Nov 2011 07:18:54 -0800 (PST)
-Message-ID: <4ECBCB3F.3060302@mvista.com>
-Date:   Tue, 22 Nov 2011 19:18:07 +0300
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20110812 Thunderbird/6.0
-MIME-Version: 1.0
-To:     Florian Fainelli <florian@openwrt.org>
-CC:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3 v3] MIPS: introduce GENERIC_DUMP_TLB
-References: <1321970390-10887-1-git-send-email-florian@openwrt.org>
-In-Reply-To: <1321970390-10887-1-git-send-email-florian@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 31927
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 18:39:33 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:43793 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903722Ab1KVRj0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Nov 2011 18:39:26 +0100
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH V3] NET: MIPS: lantiq: return value of request_irq was not handled gracefully
+Date:   Tue, 22 Nov 2011 19:38:50 +0100
+Message-Id: <1321987130-10635-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.7.1
+X-archive-position: 31928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18696
+X-UID: 18824
 
-Hello.
+The return values of request_irq() were not checked leading to the following
+error message.
 
-On 11/22/2011 04:59 PM, Florian Fainelli wrote:
+drivers/net/ethernet/lantiq_etop.c: In function 'ltq_etop_hw_init':
+drivers/net/ethernet/lantiq_etop.c:368:15: warning: ignoring return value of 'request_irq', declared with attribute warn_unused_result
+drivers/net/ethernet/lantiq_etop.c:377:15: warning: ignoring return value of 'request_irq', declared with attribute warn_unused_result
 
-> Allows us not to duplicate more lines in arch/mips/lib/Makefile.
+We also drop IRQF_DISABLED as it is a noop.
 
-> Signed-off-by: Florian Fainelli<florian@openwrt.org>
-> ---
-> Changes since v2:
-> - rebased against mips-for-linux-next (remove XLR&  XLP)
+Signed-off-by: John Crispin <blogic@openwrt.org>
+Acked-by: David S. Miller <davem@davemloft.net>
+---
+Changes in V2:
+* drop IRQF_DISABLED
 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 0c55582..cc5976d 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -1836,6 +1836,10 @@ config SIBYTE_DMA_PAGEOPS
->   config CPU_HAS_PREFETCH
->   	bool
->
-> +config CPU_GENERIC_DUMP_TLB
+Changes in V3:
+* add the fact that we dropped IRQF_DISABLED to the commit text
 
-   You should probably fix the patch's subject which speaks of GENERIC_DUMP_TLB...
+ drivers/net/ethernet/lantiq_etop.c |   14 ++++++++------
+ 1 files changed, 8 insertions(+), 6 deletions(-)
 
-WBR, Sergei
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index 9fd6779..659c868 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -312,6 +312,7 @@ ltq_etop_hw_init(struct net_device *dev)
+ {
+ 	struct ltq_etop_priv *priv = netdev_priv(dev);
+ 	unsigned int mii_mode = priv->pldata->mii_mode;
++	int err = 0;
+ 	int i;
+ 
+ 	ltq_pmu_enable(PMU_PPE);
+@@ -356,7 +357,7 @@ ltq_etop_hw_init(struct net_device *dev)
+ 
+ 	ltq_dma_init_port(DMA_PORT_ETOP);
+ 
+-	for (i = 0; i < MAX_DMA_CHAN; i++) {
++	for (i = 0; i < MAX_DMA_CHAN && !err; i++) {
+ 		int irq = LTQ_DMA_ETOP + i;
+ 		struct ltq_etop_chan *ch = &priv->ch[i];
+ 
+@@ -364,21 +365,22 @@ ltq_etop_hw_init(struct net_device *dev)
+ 
+ 		if (IS_TX(i)) {
+ 			ltq_dma_alloc_tx(&ch->dma);
+-			request_irq(irq, ltq_etop_dma_irq, IRQF_DISABLED,
++			err = request_irq(irq, ltq_etop_dma_irq, 0,
+ 				"etop_tx", priv);
+ 		} else if (IS_RX(i)) {
+ 			ltq_dma_alloc_rx(&ch->dma);
+ 			for (ch->dma.desc = 0; ch->dma.desc < LTQ_DESC_NUM;
+ 					ch->dma.desc++)
+ 				if (ltq_etop_alloc_skb(ch))
+-					return -ENOMEM;
++					err = -ENOMEM;
+ 			ch->dma.desc = 0;
+-			request_irq(irq, ltq_etop_dma_irq, IRQF_DISABLED,
++			err = request_irq(irq, ltq_etop_dma_irq, 0,
+ 				"etop_rx", priv);
+ 		}
+-		ch->dma.irq = irq;
++		if (!err)
++			ch->dma.irq = irq;
+ 	}
+-	return 0;
++	return err;
+ }
+ 
+ static void
+-- 
+1.7.7.1

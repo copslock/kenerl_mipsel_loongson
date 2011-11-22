@@ -1,54 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 10:47:55 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:37700 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903705Ab1KVJrv convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Nov 2011 10:47:51 +0100
-Received: by iapp10 with SMTP id p10so10681483iap.36
-        for <multiple recipients>; Tue, 22 Nov 2011 01:47:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 14:49:07 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:56138 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903715Ab1KVNtD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Nov 2011 14:49:03 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pAMDmrA8015209;
+        Tue, 22 Nov 2011 13:48:53 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pAMDmrHm015208;
+        Tue, 22 Nov 2011 13:48:53 GMT
+Date:   Tue, 22 Nov 2011 13:48:53 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Deng-Cheng Zhu <dczhu@mips.com>
+Cc:     linux-mips@linux-mips.org, eyal@mips.com, zenon@mips.com,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        Paul Mackerras <paulus@samba.org>, Ingo Molnar <mingo@elte.hu>,
+        Arnaldo Carvalho de Melo <acme@ghostprotocols.net>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH v2 2/5] MIPS/Perf-events: Remove erroneous check on
+ active_events
+Message-ID: <20111122134853.GB12578@linux-mips.org>
+References: <1321932528-21098-1-git-send-email-dczhu@mips.com>
+ <1321932528-21098-3-git-send-email-dczhu@mips.com>
 MIME-Version: 1.0
-Received: by 10.231.68.20 with SMTP id t20mr4417181ibi.18.1321955265232; Tue,
- 22 Nov 2011 01:47:45 -0800 (PST)
-Received: by 10.50.17.228 with HTTP; Tue, 22 Nov 2011 01:47:45 -0800 (PST)
-In-Reply-To: <1321864620-8925-1-git-send-email-zhzhl555@gmail.com>
-References: <1321864620-8925-1-git-send-email-zhzhl555@gmail.com>
-Date:   Tue, 22 Nov 2011 10:47:45 +0100
-Message-ID: <CACRpkda_M0voVTFAHUU8XaMrpgTfac2fiQY7-RhkwZ_BHYT+0w@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Add RTC support for loongson1B
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     zhzhl555@gmail.com
-Cc:     a.zummo@towertech.it, rtc-linux@googlegroups.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org, keguang.zhang@gmail.com, wuzhangjin@gmail.com,
-        r0bertz@gentoo.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31919
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1321932528-21098-3-git-send-email-dczhu@mips.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31920
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18369
+X-UID: 18575
 
-On Mon, Nov 21, 2011 at 9:37 AM,  <zhzhl555@gmail.com> wrote:
+Queued for 3.3.  Thanks,
 
-> From: zhao zhang <zhzhl555@gmail.com>
->
-> This patch add RTC support(TOY counter0) for loongson1B
-> Signed-off-by: zhao zhang <zhzhl555@gmail.com>
-(...)
-> +       __raw_writel(v, SYS_TOYWRITE0);
-
-Why are you using __raw_* accessors everywhere?
-Is something wrong with just writel()/readl() on loongson?
-
-When I look in arch/mips/include/asm/io.h they actually
-seem to be #defined to their __raw_* counterparts anyway
-so it cannot hurt.
-
-Yours,
-Linus Walleij
+  Ralf

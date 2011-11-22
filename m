@@ -1,612 +1,204 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 09:26:22 +0100 (CET)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:58564 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903705Ab1KVI0O convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 22 Nov 2011 09:26:14 +0100
-Received: by vcbfo13 with SMTP id fo13so5096035vcb.36
-        for <multiple recipients>; Tue, 22 Nov 2011 00:26:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=iEZaEzOGAQWQX/HvwyF0067Nl8Xxbcp2JJ1cOm5yhNY=;
-        b=xDrN3Lso+sOx4Y9+0T/A662MOW7Fnvbft97kq+PTRPUu29/cxTvCWx5QBgFNaizPpw
-         81GLXP4F4Mhdz5MO5Jb4s1wPo/sHfXsGS0WxYOZO0F+z5BsWSyjD3H/stxchSAjeBF+u
-         1RYH4Gt3JwDv2s4DdxTa+vIoMxmrtCVv2OknI=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 10:17:54 +0100 (CET)
+Received: from mail-pz0-f45.google.com ([209.85.210.45]:35599 "EHLO
+        mail-pz0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903706Ab1KVJRp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Nov 2011 10:17:45 +0100
+Received: by pzd13 with SMTP id 13so14475580pzd.4
+        for <multiple recipients>; Tue, 22 Nov 2011 01:17:38 -0800 (PST)
 MIME-Version: 1.0
-Received: by 10.52.67.144 with SMTP id n16mr18834185vdt.108.1321950367415;
- Tue, 22 Nov 2011 00:26:07 -0800 (PST)
-Received: by 10.220.186.70 with HTTP; Tue, 22 Nov 2011 00:26:07 -0800 (PST)
-In-Reply-To: <1321906615-11392-1-git-send-email-florian@openwrt.org>
-References: <1321906615-11392-1-git-send-email-florian@openwrt.org>
-Date:   Tue, 22 Nov 2011 13:56:07 +0530
-Message-ID: <CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg@mail.gmail.com>
-Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller driver
-From:   Shubhrajyoti Datta <omaplinuxkernel@gmail.com>
-To:     Florian Fainelli <florian@openwrt.org>
-Cc:     Grant Likely <grant.likely@secretlab.ca>,
-        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>,
-        spi-devel-general@lists.sourceforge.net, ralf@linux-mips.org,
-        linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31917
+Received: by 10.68.0.193 with SMTP id 1mr43735196pbg.110.1321953458674; Tue,
+ 22 Nov 2011 01:17:38 -0800 (PST)
+Received: by 10.143.37.5 with HTTP; Tue, 22 Nov 2011 01:17:38 -0800 (PST)
+In-Reply-To: <4EC55B4A.7050001@qca.qualcomm.com>
+References: <1321356224-5053-1-git-send-email-sangwook.lee@linaro.org>
+        <4EC29534.7010502@adurom.com>
+        <CADPsn1YDOu9Xyu1yDfs5Z0LjGzBL-Rx6Fk35AT8n-8oOPhPzHA@mail.gmail.com>
+        <4EC55B4A.7050001@qca.qualcomm.com>
+Date:   Tue, 22 Nov 2011 09:17:38 +0000
+Message-ID: <CADPsn1aSL6eWnKHp3y3O6ibNhQ7PePJh9Lw4-oo_TeHy-xx9FQ@mail.gmail.com>
+Subject: Re: [PATCH] ath9k: rename ath9k_platform.h to ath_platform.h
+From:   Sangwook Lee <sangwook.lee@linaro.org>
+To:     Kalle Valo <kvalo@qca.qualcomm.com>
+Cc:     mcgrof@frijolero.org, linux-kernel@vger.kernel.org,
+        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        ath9k-devel@lists.ath9k.org, ralf@linux-mips.org,
+        juhosg@openwrt.org, rodrigue@qca.qualcomm.com,
+        linville@tuxdriver.com, rmanohar@qca.qualcomm.com,
+        patches@linaro.org
+Content-Type: multipart/alternative; boundary=bcaec5314b61505cd504b24f46b5
+X-archive-position: 31918
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: omaplinuxkernel@gmail.com
+X-original-sender: sangwook.lee@linaro.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18311
+X-UID: 18346
 
-Hi Florian,
+--bcaec5314b61505cd504b24f46b5
+Content-Type: text/plain; charset=ISO-8859-1
 
-On Tue, Nov 22, 2011 at 1:46 AM, Florian Fainelli <florian@openwrt.org> wrote:
-> This patch adds support for the SPI controller found on the Broadcom BCM63xx
-> SoCs.
->
-> Signed-off-by: Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
-> The platform related changes have been submitted on the linux-mips ml:
-> http://www.linux-mips.org/archives/linux-mips/2011-11/msg00547.html
->
-> Ralf, if Grant is okay with that patch, it probably makes sense to merge this
-> controller via your tree since it depends on the arch/mips/bcm63xx knobs.
->
->  drivers/spi/Kconfig       |    6 +
->  drivers/spi/Makefile      |    1 +
->  drivers/spi/spi-bcm63xx.c |  494 +++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 501 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/spi/spi-bcm63xx.c
->
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 52e2900..8aecc4e 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -94,6 +94,12 @@ config SPI_AU1550
->          If you say yes to this option, support will be included for the
->          Au1550 SPI controller (may also work with Au1200,Au1210,Au1250).
->
-> +config SPI_BCM63XX
-> +       tristate "Broadcom BCM63xx SPI controller"
-> +       depends on BCM63XX
-> +       help
-> +          Enable support for the SPI controller on the Broadcom BCM63xx SoCs.
-> +
->  config SPI_BITBANG
->        tristate "Utilities for Bitbanging SPI masters"
->        help
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index 61c3261..be38f73 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -14,6 +14,7 @@ obj-$(CONFIG_SPI_ALTERA)              += spi-altera.o
->  obj-$(CONFIG_SPI_ATMEL)                        += spi-atmel.o
->  obj-$(CONFIG_SPI_ATH79)                        += spi-ath79.o
->  obj-$(CONFIG_SPI_AU1550)               += spi-au1550.o
-> +obj-$(CONFIG_SPI_BCM63XX)              += spi-bcm63xx.o
->  obj-$(CONFIG_SPI_BFIN)                 += spi-bfin5xx.o
->  obj-$(CONFIG_SPI_BFIN_SPORT)           += spi-bfin-sport.o
->  obj-$(CONFIG_SPI_BITBANG)              += spi-bitbang.o
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> new file mode 100644
-> index 0000000..9f01fc8
-> --- /dev/null
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -0,0 +1,494 @@
-> +/*
-> + * Broadcom BCM63xx SPI controller support
-> + *
-> + * Copyright (C) 2009-2011 Florian Fainelli <florian@openwrt.org>
-> + * Copyright (C) 2010 Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License
-> + * as published by the Free Software Foundation; either version 2
-> + * of the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the
-> + * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/init.h>
-> +#include <linux/clk.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/delay.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/completion.h>
-> +#include <linux/err.h>
-> +
-> +#include <bcm63xx_dev_spi.h>
-> +
-> +#define PFX            KBUILD_MODNAME
-> +#define DRV_VER                "0.1.2"
-> +
-> +struct bcm63xx_spi {
-> +       spinlock_t              lock;
-> +       int                     stopping;
-> +       struct completion       done;
-> +
-> +       void __iomem            *regs;
-> +       int                     irq;
-> +
-> +       /* Platform data */
-> +       u32                     speed_hz;
-> +       unsigned                fifo_size;
-> +
-> +       /* Data buffers */
-> +       const unsigned char     *tx_ptr;
-> +       unsigned char           *rx_ptr;
-> +
-> +       /* data iomem */
-> +       u8 __iomem              *tx_io;
-> +       const u8 __iomem        *rx_io;
-> +
-> +       int                     remaining_bytes;
-> +
-> +       struct clk              *clk;
-> +       struct platform_device  *pdev;
-> +};
-> +
-> +static inline u8 bcm_spi_readb(struct bcm63xx_spi *bs,
-> +                               unsigned int offset)
-> +{
-> +       return bcm_readw(bs->regs + bcm63xx_spireg(offset));
-> +}
-> +
-> +static inline u16 bcm_spi_readw(struct bcm63xx_spi *bs,
-> +                               unsigned int offset)
-> +{
-> +       return bcm_readw(bs->regs + bcm63xx_spireg(offset));
-> +}
-> +
-> +static inline void bcm_spi_writeb(struct bcm63xx_spi *bs,
-> +                                 u8 value, unsigned int offset)
-> +{
-> +       bcm_writeb(value, bs->regs + bcm63xx_spireg(offset));
-> +}
-> +
-> +static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
-> +                                 u16 value, unsigned int offset)
-> +{
-> +       bcm_writew(value, bs->regs + bcm63xx_spireg(offset));
-> +}
-> +
-> +static int bcm63xx_spi_setup_transfer(struct spi_device *spi,
-> +                                     struct spi_transfer *t)
-> +{
-> +       struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-> +       u8 bits_per_word;
-> +       u8 clk_cfg;
-> +       u32 hz;
-> +       unsigned int div;
-> +
-> +       bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
-> +       hz = (t) ? t->speed_hz : spi->max_speed_hz;
-> +       if (bits_per_word != 8) {
-> +               dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
-> +                       __func__, bits_per_word);
-> +               return -EINVAL;
-> +       }
-> +
-> +       if (spi->chip_select > spi->master->num_chipselect) {
-> +               dev_err(&spi->dev, "%s, unsupported slave %d\n",
-> +                       __func__, spi->chip_select);
-> +               return -EINVAL;
-> +       }
-> +
-> +       /* Check clock setting */
-> +       div = (bs->speed_hz / hz);
-> +       switch (div) {
-> +       case 2:
-> +               clk_cfg = SPI_CLK_25MHZ;
-> +               break;
-> +       case 4:
-> +               clk_cfg = SPI_CLK_12_50MHZ;
-> +               break;
-> +       case 8:
-> +               clk_cfg = SPI_CLK_6_250MHZ;
-> +               break;
-> +       case 16:
-> +               clk_cfg = SPI_CLK_3_125MHZ;
-> +               break;
-> +       case 32:
-> +               clk_cfg = SPI_CLK_1_563MHZ;
-> +               break;
-> +       case 64:
-> +               clk_cfg = SPI_CLK_0_781MHZ;
-> +               break;
-> +       case 128:
-> +       default:
-> +               /* Set to slowest mode for compatibility */
-> +               clk_cfg = SPI_CLK_0_391MHZ;
-> +               break;
-> +       }
-> +
-> +       bcm_spi_writeb(bs, clk_cfg, SPI_CLK_CFG);
-> +       dev_dbg(&spi->dev, "Setting clock register to %d (hz %d, cmd %02x)\n",
-> +               div, hz, clk_cfg);
-> +
-> +       return 0;
-> +}
-> +
-> +/* the spi->mode bits understood by this driver: */
-> +#define MODEBITS (SPI_CPOL | SPI_CPHA)
-> +
-> +static int bcm63xx_spi_setup(struct spi_device *spi)
-> +{
-> +       struct bcm63xx_spi *bs;
-> +       int ret;
-> +
-> +       bs = spi_master_get_devdata(spi->master);
-> +
-> +       if (bs->stopping)
-> +               return -ESHUTDOWN;
-> +
-> +       if (!spi->bits_per_word)
-> +               spi->bits_per_word = 8;
-> +
-> +       if (spi->mode & ~MODEBITS) {
-> +               dev_err(&spi->dev, "%s, unsupported mode bits %x\n",
-> +                       __func__, spi->mode & ~MODEBITS);
-> +               return -EINVAL;
-> +       }
-> +
-> +       ret = bcm63xx_spi_setup_transfer(spi, NULL);
-> +       if (ret < 0) {
-> +               dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
-> +                       spi->mode & ~MODEBITS);
-> +               return ret;
-> +       }
-> +
-> +       dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
-> +               __func__, spi->mode & MODEBITS, spi->bits_per_word, 0);
-> +
-> +       return 0;
-> +}
-> +
-> +/* Fill the TX FIFO with as many bytes as possible */
-> +static void bcm63xx_spi_fill_tx_fifo(struct bcm63xx_spi *bs)
-> +{
-> +       u8 size;
-> +
-> +       /* Fill the Tx FIFO with as many bytes as possible */
-> +       size = bs->remaining_bytes < bs->fifo_size ? bs->remaining_bytes :
-> +               bs->fifo_size;
-> +       memcpy_toio(bs->tx_io, bs->tx_ptr, size);
-> +       bs->remaining_bytes -= size;
-> +}
-> +
-> +static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-> +{
-> +       struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-> +       u16 msg_ctl;
-> +       u16 cmd;
-> +
-> +       dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
-> +               t->tx_buf, t->rx_buf, t->len);
-> +
-> +       /* Transmitter is inhibited */
-> +       bs->tx_ptr = t->tx_buf;
-> +       bs->rx_ptr = t->rx_buf;
-> +       init_completion(&bs->done);
-> +
-> +       if (t->tx_buf) {
-> +               bs->remaining_bytes = t->len;
-> +               bcm63xx_spi_fill_tx_fifo(bs);
-> +       }
-> +
-> +       /* Enable the command done interrupt which
-> +        * we use to determine completion of a command */
-> +       bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
-> +
-> +       /* Fill in the Message control register */
-> +       msg_ctl = (t->len << SPI_BYTE_CNT_SHIFT);
-> +
-> +       if (t->rx_buf && t->tx_buf)
-> +               msg_ctl |= (SPI_FD_RW << SPI_MSG_TYPE_SHIFT);
-> +       else if (t->rx_buf)
-> +               msg_ctl |= (SPI_HD_R << SPI_MSG_TYPE_SHIFT);
-> +       else if (t->tx_buf)
-> +               msg_ctl |= (SPI_HD_W << SPI_MSG_TYPE_SHIFT);
-> +
-> +       bcm_spi_writew(bs, msg_ctl, SPI_MSG_CTL);
-> +
-> +       /* Issue the transfer */
-> +       cmd = SPI_CMD_START_IMMEDIATE;
-> +       cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
-> +       cmd |= (spi->chip_select << SPI_CMD_DEVICE_ID_SHIFT);
-> +       bcm_spi_writew(bs, cmd, SPI_CMD);
-> +       wait_for_completion(&bs->done);
-> +
-> +       /* Disable the CMD_DONE interrupt */
-> +       bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-> +
-> +       return t->len - bs->remaining_bytes;
-> +}
-> +
-> +static int bcm63xx_transfer(struct spi_device *spi, struct spi_message *m)
-> +{
-> +       struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-> +       struct spi_transfer *t;
-> +       int ret = 0;
-> +
-> +       if (unlikely(list_empty(&m->transfers)))
-> +               return -EINVAL;
-> +
-> +       if (bs->stopping)
-> +               return -ESHUTDOWN;
-> +
-> +       list_for_each_entry(t, &m->transfers, transfer_list) {
-> +               ret += bcm63xx_txrx_bufs(spi, t);
-> +       }
-> +
-> +       m->complete(m->context);
-> +
-> +       return ret;
-> +}
-> +
-> +/* This driver supports single master mode only. Hence
-> + * CMD_DONE is the only interrupt we care about
-> + */
-> +static irqreturn_t bcm63xx_spi_interrupt(int irq, void *dev_id)
-> +{
-> +       struct spi_master *master = (struct spi_master *)dev_id;
-> +       struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-> +       u8 intr;
-> +       u16 cmd;
-> +
-> +       /* Read interupts and clear them immediately */
-> +       intr = bcm_spi_readb(bs, SPI_INT_STATUS);
-> +       bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
-> +       bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-> +
-> +       /* A tansfer completed */
-> +       if (intr & SPI_INTR_CMD_DONE) {
-> +               u8 rx_tail;
-> +
-> +               rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
-> +
-> +               /* Read out all the data */
-> +               if (rx_tail)
-> +                       memcpy_fromio(bs->rx_ptr, bs->rx_io, rx_tail);
-> +
-> +               /* See if there is more data to send */
-> +               if (bs->remaining_bytes > 0) {
-> +                       bcm63xx_spi_fill_tx_fifo(bs);
-> +
-> +                       /* Start the transfer */
-> +                       bcm_spi_writew(bs, SPI_HD_W << SPI_MSG_TYPE_SHIFT,
-> +                                      SPI_MSG_CTL);
-> +                       cmd = bcm_spi_readw(bs, SPI_CMD);
-> +                       cmd |= SPI_CMD_START_IMMEDIATE;
-> +                       cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
-> +                       bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
-> +                       bcm_spi_writew(bs, cmd, SPI_CMD);
-> +               } else
-> +                       complete(&bs->done);
-> +       }
-> +
-> +       return IRQ_HANDLED;
-> +}
-> +
-> +
-> +static int __init bcm63xx_spi_probe(struct platform_device *pdev)
-> +{
-> +       struct resource *r;
-> +       struct device *dev = &pdev->dev;
-> +       struct bcm63xx_spi_pdata *pdata = pdev->dev.platform_data;
-> +       int irq;
-> +       struct spi_master *master;
-> +       struct clk *clk;
-> +       struct bcm63xx_spi *bs;
-> +       int ret;
-> +
-> +       r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       if (!r) {
-> +               dev_err(dev, "no iomem\n");
-> +               ret = -ENXIO;
-> +               goto out;
-> +       }
-> +
-> +       irq = platform_get_irq(pdev, 0);
-> +       if (irq < 0) {
-> +               dev_err(dev, "no irq\n");
-> +               ret = -ENXIO;
-> +               goto out;
-> +       }
-> +
-> +       clk = clk_get(dev, "spi");
-> +       if (IS_ERR(clk)) {
-> +               dev_err(dev, "no clock for device\n");
-> +               ret = -ENODEV;
-> +               goto out;
-> +       }
-> +
-> +       master = spi_alloc_master(dev, sizeof(*bs));
-> +       if (!master) {
-> +               dev_err(dev, "out of memory\n");
-> +               ret = -ENOMEM;
-> +               goto out_free;
-> +       }
-> +
-> +       bs = spi_master_get_devdata(master);
-> +       init_completion(&bs->done);
-> +
-> +       platform_set_drvdata(pdev, master);
-> +       bs->pdev = pdev;
-> +
-> +       if (!request_mem_region(r->start, resource_size(r), PFX)) {
-> +               dev_err(dev, "iomem request failed\n");
-> +               ret = -ENXIO;
-> +               goto out_put_master;
-> +       }
-> +
-> +       bs->regs = ioremap_nocache(r->start, resource_size(r));
-> +       if (!bs->regs) {
-> +               dev_err(dev, "unable to ioremap regs\n");
-> +               ret = -ENOMEM;
-> +               goto out_put_master;
-> +       }
-> +       bs->irq = irq;
-> +       bs->clk = clk;
-> +       bs->fifo_size = pdata->fifo_size;
-> +
-> +       ret = request_irq(irq, bcm63xx_spi_interrupt, 0, pdev->name, master);
-> +       if (ret) {
-> +               dev_err(dev, "unable to request irq\n");
-> +               goto out_unmap;
-> +       }
-Could this be a threaded irq ?
-> +
-> +       master->bus_num = pdata->bus_num;
-> +       master->num_chipselect = pdata->num_chipselect;
-> +       master->setup = bcm63xx_spi_setup;
-> +       master->transfer = bcm63xx_transfer;
-> +       bs->speed_hz = pdata->speed_hz;
-> +       bs->stopping = 0;
-> +       bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
-> +       bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
-> +       spin_lock_init(&bs->lock);
-> +
-> +       /* Initialize hardware */
-> +       clk_enable(bs->clk);
-> +       bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
-> +
-> +       /* register and we are done */
-> +       ret = spi_register_master(master);
-> +       if (ret) {
-> +               dev_err(dev, "spi register failed\n");
-> +               goto out_reset_hw;
-> +       }
-> +
-> +       dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d) v%s\n",
-> +                r->start, irq, bs->fifo_size, DRV_VER);
-> +
-> +       return 0;
-> +
-> +out_reset_hw:
-> +       clk_disable(clk);
-> +       free_irq(irq, master);
-> +out_unmap:
-> +       iounmap(bs->regs);
-> +out_put_master:
-> +       spi_master_put(master);
-> +out_free:
-> +       clk_put(clk);
-> +out:
-> +       return ret;
-> +}
-> +
-> +static int __exit bcm63xx_spi_remove(struct platform_device *pdev)
-> +{
-> +       struct spi_master *master = platform_get_drvdata(pdev);
-> +       struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-> +       struct resource *r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +
-> +       /* reset spi block */
-> +       bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-> +       spin_lock(&bs->lock);
-> +       bs->stopping = 1;
-> +
-> +       /* HW shutdown */
-> +       clk_disable(bs->clk);
-> +       clk_put(bs->clk);
-> +
-> +       spin_unlock(&bs->lock);
-> +
-> +       free_irq(bs->irq, master);
-> +       iounmap(bs->regs);
-> +       release_mem_region(r->start, r->end - r->start);
-> +       platform_set_drvdata(pdev, 0);
-> +       spi_unregister_master(master);
-> +
-> +       return 0;
-> +}
-> +
-> +#ifdef CONFIG_PM
-> +static int bcm63xx_spi_suspend(struct platform_device *pdev, pm_message_t mesg)
-> +{
-> +       struct spi_master *master = platform_get_drvdata(pdev);
-> +       struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-> +
-> +       clk_disable(bs->clk);
-> +
-> +       return 0;
-> +}
-> +
-> +static int bcm63xx_spi_resume(struct platform_device *pdev)
-> +{
-> +       struct spi_master *master = platform_get_drvdata(pdev);
-> +       struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-> +
-> +       clk_enable(bs->clk);
-> +
-> +       return 0;
-> +}
-> +#else
-> +#define bcm63xx_spi_suspend    NULL
-> +#define bcm63xx_spi_resume     NULL
-> +#endif
-> +
-> +static struct platform_driver bcm63xx_spi_driver = {
-> +       .driver = {
-> +               .name   = "bcm63xx-spi",
-> +               .owner  = THIS_MODULE,
-> +       },
-> +       .probe          = bcm63xx_spi_probe,
-> +       .remove         = __exit_p(bcm63xx_spi_remove),
-> +       .suspend        = bcm63xx_spi_suspend,
-> +       .resume         = bcm63xx_spi_resume,
+Hi Kalle
 
-Could we move to dev pm ops?
-> +};
-> +
-> +
-> +static int __init bcm63xx_spi_init(void)
-> +{
-> +       return platform_driver_register(&bcm63xx_spi_driver);
-> +}
-> +
-> +static void __exit bcm63xx_spi_exit(void)
-> +{
-> +       platform_driver_unregister(&bcm63xx_spi_driver);
-> +}
-> +
-> +module_init(bcm63xx_spi_init);
-> +module_exit(bcm63xx_spi_exit);
-> +
-> +MODULE_ALIAS("platform:bcm63xx_spi");
-> +MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
-> +MODULE_AUTHOR("Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>");
-> +MODULE_DESCRIPTION("Broadcom BCM63xx SPI Controller driver");
-> +MODULE_LICENSE("GPL");
-> +MODULE_VERSION(DRV_VER);
-> --
-> 1.7.5.4
+On 17 November 2011 19:06, Kalle Valo <kvalo@qca.qualcomm.com> wrote:
+
+> Hi Sangwook,
 >
+> On 11/16/2011 01:34 PM, Sangwook Lee wrote:
 >
-> ------------------------------------------------------------------------------
-> All the data continuously generated in your IT infrastructure
-> contains a definitive record of customers, application performance,
-> security threats, fraudulent activity, and more. Splunk takes this
-> data and makes sense of it. IT sense. And common sense.
-> http://p.sf.net/sfu/splunk-novd2d
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> >
+> > On 15 November 2011 16:37, Kalle Valo <kvalo@adurom.com
+> > <mailto:kvalo@adurom.com>> wrote:
+> >
+> >     Hi Sangwook,
+> >
+> >     On 11/15/2011 01:23 PM, Sangwook Lee wrote:
+> >     > The patch series proposes to rename ath9k_platform.h to
+> >     "ath_platform.h
+> >     > This header file handles platform data used only for ath9k,
+> >     > but it can used by ath6k as well. We can take "wl12xx.h" as
+> >     > as a example. Please let us change this file name so that
+> >     > other Atheors WLANs use this file for their own platform data
+> >
+> >     ath9k and ath6kl are very different devices, I'm not sure if sharing
+> a
+> >     platfrom struct between the two is really a good idea. Most likely
+> there
+> >     is very little the two drivers can share. What are your plans here?
+> >
+> >
+> >
+> > As you know, if ath6kl is not SDIO powered (in most of cases, including
+> > mine)
+> > we need to use platform struct in order to control reset/power line,
+> > because ath6k is designed for mobile and embedded devices.
 >
+> We have been actually planning to do the same, but it's still on our
+> todo list. If you can do this it would be awesome.
+>
+
+I did it but because my hw2.0 AR6003 has another problem, I couldn't go
+further.
+Simply I copied the same method from wl12xx wlan driver.
+(Maybe you might have know it)
+
+You can run "grep" the following definition, which is used by Panda board.
+CONFIG_WL12XX_PLATFORM_DATA
+
+It will increase small bits in WLAN driver but discard platform data from
+init section  at booting time.
+
+
+Also we need to provide some clock configuration from the board file and
+> I'm sure there will be more in the future. But let's start with the
+> power control.
+>
+> > so I found out that there is already header file for ath9k's platform
+> > struct. How about using the one header file instead of
+> > "include/linux/ath9k_platform.h"
+> > , and "include/linux/ath6k_platform.h" ?
+> >
+> >
+> >     I myself was thinking that we would have include/linux/ath6kl.h
+> >     dedicated just for ath6kl. That would makes things simpler.
+> >
+> > But since I don't know much about ath9k, if you want to make the
+> > separate header file for ath6kl's own struct, It would be fine as well.
+>
+> Yeah, I really would like to use separate file for ath6kl.
+>
+> Kalle
+>
+
+--bcaec5314b61505cd504b24f46b5
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi Kalle<br><br><div class=3D"gmail_quote">On 17 November 2011 19:06, Kalle=
+ Valo <span dir=3D"ltr">&lt;<a href=3D"mailto:kvalo@qca.qualcomm.com">kvalo=
+@qca.qualcomm.com</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote=
+" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;">
+Hi Sangwook,<br>
+<div class=3D"im"><br>
+On 11/16/2011 01:34 PM, Sangwook Lee wrote:<br>
+<br>
+&gt;<br>
+&gt; On 15 November 2011 16:37, Kalle Valo &lt;<a href=3D"mailto:kvalo@adur=
+om.com">kvalo@adurom.com</a><br>
+</div><div class=3D"im">&gt; &lt;mailto:<a href=3D"mailto:kvalo@adurom.com"=
+>kvalo@adurom.com</a>&gt;&gt; wrote:<br>
+&gt;<br>
+&gt; =A0 =A0 Hi Sangwook,<br>
+&gt;<br>
+&gt; =A0 =A0 On 11/15/2011 01:23 PM, Sangwook Lee wrote:<br>
+&gt; =A0 =A0 &gt; The patch series proposes to rename ath9k_platform.h to<b=
+r>
+&gt; =A0 =A0 &quot;ath_platform.h<br>
+&gt; =A0 =A0 &gt; This header file handles platform data used only for ath9=
+k,<br>
+&gt; =A0 =A0 &gt; but it can used by ath6k as well. We can take &quot;wl12x=
+x.h&quot; as<br>
+&gt; =A0 =A0 &gt; as a example. Please let us change this file name so that=
+<br>
+&gt; =A0 =A0 &gt; other Atheors WLANs use this file for their own platform =
+data<br>
+&gt;<br>
+&gt; =A0 =A0 ath9k and ath6kl are very different devices, I&#39;m not sure =
+if sharing a<br>
+&gt; =A0 =A0 platfrom struct between the two is really a good idea. Most li=
+kely there<br>
+&gt; =A0 =A0 is very little the two drivers can share. What are your plans =
+here?<br>
+&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt; As you know, if ath6kl is not SDIO powered (in most of cases, includin=
+g<br>
+&gt; mine)<br>
+&gt; we need to use platform struct in order to control reset/power line,<b=
+r>
+&gt; because ath6k is designed for mobile and embedded devices.<br>
+<br>
+</div>We have been actually planning to do the same, but it&#39;s still on =
+our<br>
+todo list. If you can do this it would be awesome.<br></blockquote><div><br=
+>I did it but because my hw2.0 AR6003 has another problem, I couldn&#39;t g=
+o further.<br>Simply I copied the same method from wl12xx wlan driver.<br>
+(Maybe you might have know it)<br><br>You can run &quot;grep&quot; the foll=
+owing definition, which is used by Panda board.<br>CONFIG_WL12XX_PLATFORM_D=
+ATA<br><br>It will increase small bits in WLAN driver but discard platform =
+data from init section=A0 at booting time.=A0 <br>
+</div><div>=A0<br><br></div><blockquote class=3D"gmail_quote" style=3D"marg=
+in: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-l=
+eft: 1ex;">
+Also we need to provide some clock configuration from the board file and<br=
+>
+I&#39;m sure there will be more in the future. But let&#39;s start with the=
+<br>
+power control.<br>
+<div class=3D"im"><br>
+&gt; so I found out that there is already header file for ath9k&#39;s platf=
+orm<br>
+&gt; struct. How about using the one header file instead of<br>
+&gt; &quot;include/linux/ath9k_platform.h&quot;<br>
+&gt; , and &quot;include/linux/ath6k_platform.h&quot; ?<br>
+&gt;<br>
+&gt;<br>
+&gt; =A0 =A0 I myself was thinking that we would have include/linux/ath6kl.=
+h<br>
+&gt; =A0 =A0 dedicated just for ath6kl. That would makes things simpler.<br=
+>
+&gt;<br>
+&gt; But since I don&#39;t know much about ath9k, if you want to make the<b=
+r>
+&gt; separate header file for ath6kl&#39;s own struct, It would be fine as =
+well.<br>
+<br>
+</div>Yeah, I really would like to use separate file for ath6kl.<br>
+<font color=3D"#888888"><br>
+Kalle<br>
+</font></blockquote></div><br>
+
+--bcaec5314b61505cd504b24f46b5--

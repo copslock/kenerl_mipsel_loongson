@@ -1,84 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 20:42:19 +0100 (CET)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:36178 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903812Ab1KVTmP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 22 Nov 2011 20:42:15 +0100
-Received: by yenr8 with SMTP id r8so700309yen.36
-        for <multiple recipients>; Tue, 22 Nov 2011 11:42:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=Hx6/JesxcEkm07XuzOcEze8TzyKfU5np2Svz/5xZNYs=;
-        b=gTwT0WexT34mdLoUd2LQtYiFsl4lhvInn5Yo1rXhBmvuQeV8xfNWXxtl97S9317pbs
-         V5hFudbPgPqBNFMlUZqinAcnO5jGt03RUfUWd/IlpWkAD/1diH62+4L3D170h7uWWz7l
-         GBGInwhCpXsJOrJOnRGf/rFWBpJhdr4rRIzpc=
-Received: by 10.236.192.135 with SMTP id i7mr30224698yhn.13.1321990928891;
-        Tue, 22 Nov 2011 11:42:08 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id y58sm20930488yhi.17.2011.11.22.11.42.07
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 22 Nov 2011 11:42:08 -0800 (PST)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pAMJg6xn014221;
-        Tue, 22 Nov 2011 11:42:06 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pAMJg50U014220;
-        Tue, 22 Nov 2011 11:42:05 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>,
-        Hillf Danton <dhillf@gmail.com>
-Subject: [PATCH] MIPS: Add dummy definitions of HPAGE_SHIFT et al.
-Date:   Tue, 22 Nov 2011 11:42:04 -0800
-Message-Id: <1321990924-14189-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 31929
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Nov 2011 21:42:09 +0100 (CET)
+Received: from mga09.intel.com ([134.134.136.24]:42641 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903818Ab1KVUmD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 22 Nov 2011 21:42:03 +0100
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP; 22 Nov 2011 12:41:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.67,352,1309762800"; 
+   d="scan'208";a="78932275"
+Received: from tassilo.jf.intel.com ([10.7.201.108])
+  by orsmga001.jf.intel.com with ESMTP; 22 Nov 2011 12:41:55 -0800
+Received: by tassilo.jf.intel.com (Postfix, from userid 501)
+        id 22136240F46; Tue, 22 Nov 2011 12:41:55 -0800 (PST)
+From:   Andi Kleen <andi@firstfloor.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        David Daney <ddaney@caviumnetworks.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        David Rientjes <rientjes@google.com>,
+        "linux-mips\@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf\@linux-mips.org" <ralf@linux-mips.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        David Daney <david.daney@cavium.com>,
+        "linux-arch\@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        Robin Holt <holt@sgi.com>
+Subject: Re: [patch] hugetlb: remove dummy definitions of HPAGE_MASK and HPAGE_SIZE
+References: <1321567050-13197-1-git-send-email-ddaney.cavm@gmail.com>
+        <alpine.DEB.2.00.1111171520130.20133@chino.kir.corp.google.com>
+        <alpine.DEB.2.00.1111171522131.20133@chino.kir.corp.google.com>
+        <4ECACF68.3020701@gmail.com>
+        <CA+55aFwZxqHfEOemj+OJNKCj2toqGf3rkK-9iuS39L7iZsoH1Q@mail.gmail.com>
+        <4ECADD83.3090108@caviumnetworks.com>
+        <CA+55aFzSNqCOFuvtEc2V1THVOsOVnz6NOa1U_9p5=Y4E=sj6qg@mail.gmail.com>
+        <20111121155024.33b1b881.akpm@linux-foundation.org>
+Date:   Tue, 22 Nov 2011 12:41:55 -0800
+In-Reply-To: <20111121155024.33b1b881.akpm@linux-foundation.org> (Andrew
+        Morton's message of "Mon, 21 Nov 2011 15:50:24 -0800")
+Message-ID: <m2sjlfvqi4.fsf@firstfloor.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-archive-position: 31930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: andi@firstfloor.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18941
+X-UID: 19008
 
-From: David Daney <david.daney@cavium.com>
+Andrew Morton <akpm@linux-foundation.org> writes:
+>> 
+>> I wish people whose code had stuff like that would take a deep look at it.
+>> 
+>
+> The original decision way back when was that huge pages shouldn't mess
+> up the core VM too much.  One way in which we addressed that was to
 
-In the case of !CONFIG_HUGETLB_PAGE we need dummy definitions of
-HPAGE_SHIFT, HPAGE_SIZE and HPAGE_MASK to be able to compile tlb-r4k.c
+IMHO this decision should really be revisited now.  Originally hugetlb
+was pretty simple, but these days it has most of the functionality of a
+full VM now. In fact with THP we have 3 different VM systems now, all
+subtle different with different issues. And with THP hugetlb will be
+even more widely used than it is today.
 
-Add these with a BUILD_BUG() to properly flag situations where they
-are improperly used.
+On the other hand there are strange gaps now, like shared memory
+doesn't work with THP, but only with hugetlbfs.
 
-Also conditionally define BUILD_BUG(), as the definition for this may
-not have been merged by the time this patch is merged.  Once a
-BUILD_BUG() is defined in kernel.h, we can remove this one.
+It would be far better to think about unifying these three VMs. Then with
+less ifdefs it would also not need hacks like this anymore.
 
-Cc: Hillf Danton <dhillf@gmail.com>
-Signed-off-by: David Daney <david.daney@cavium.com>
----
- arch/mips/include/asm/page.h |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+-Andi
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index e59cd1a..d417909 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -38,6 +38,14 @@
- #define HPAGE_SIZE	(_AC(1,UL) << HPAGE_SHIFT)
- #define HPAGE_MASK	(~(HPAGE_SIZE - 1))
- #define HUGETLB_PAGE_ORDER	(HPAGE_SHIFT - PAGE_SHIFT)
-+#else /* !CONFIG_HUGETLB_PAGE */
-+# ifndef BUILD_BUG
-+#  define BUILD_BUG() do { extern void __build_bug(void); __build_bug(); } while (0)
-+# endif
-+#define HPAGE_SHIFT	({BUILD_BUG(); 0; })
-+#define HPAGE_SIZE	({BUILD_BUG(); 0; })
-+#define HPAGE_MASK	({BUILD_BUG(); 0; })
-+#define HUGETLB_PAGE_ORDER	({BUILD_BUG(); 0; })
- #endif /* CONFIG_HUGETLB_PAGE */
- 
- #ifndef __ASSEMBLY__
 -- 
-1.7.2.3
+ak@linux.intel.com -- Speaking for myself only

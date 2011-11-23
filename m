@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 11:34:29 +0100 (CET)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:60039 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903549Ab1KWKeZ convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 12:35:28 +0100 (CET)
+Received: from mail-vx0-f177.google.com ([209.85.220.177]:42155 "EHLO
+        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903547Ab1KWLfW convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Nov 2011 11:34:25 +0100
-Received: by vbbfs19 with SMTP id fs19so1349091vbb.36
-        for <multiple recipients>; Wed, 23 Nov 2011 02:34:19 -0800 (PST)
+        Wed, 23 Nov 2011 12:35:22 +0100
+Received: by vcbfo13 with SMTP id fo13so1429708vcb.36
+        for <multiple recipients>; Wed, 23 Nov 2011 03:35:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=mime-version:in-reply-to:references:date:message-id:subject:from:to
          :cc:content-type:content-transfer-encoding;
-        bh=yb+ROfgb2gE/bBAHkCsS0yOuuNVpcDzFdlXZXmvxZTM=;
-        b=C3zXcSw1pNgxFokBorNi4rHy+xixeWbj5tRJZEWGyr601RC9akTolHV0MBwdT4Qc0c
-         boFp49hGGSeomQbLij6ARC+48SbmEXFtRmzgo2+W429aro2mTDRZGLxXuEpo1V7KEUTq
-         TM/2po1KtRqXhhnV6ShJhggeAiZEi9qP6S1pE=
+        bh=wUO01CPxm5M1jLmWHo2DajInMFYuIFFnSzzuARGE13w=;
+        b=IfqQX8gPt1FlwiiQGQB1z/7kupmttbFxBQ9xdHpZxeg4pMl7jCyqo3FG5q47BMKXje
+         mjPYZO3lYpbUpINrgR30o1VVia//PgI0t0dwX76QafvKj68ZGlcQO1NZSvlsZUUuz4JK
+         cM3wP4/s+e8hO7fAxmgbFNqJWGNVtu7oWsfJs=
 MIME-Version: 1.0
-Received: by 10.182.146.72 with SMTP id ta8mr8442671obb.35.1322044459084; Wed,
- 23 Nov 2011 02:34:19 -0800 (PST)
-Received: by 10.182.36.133 with HTTP; Wed, 23 Nov 2011 02:34:18 -0800 (PST)
-In-Reply-To: <1321887999-14546-5-git-send-email-juhosg@openwrt.org>
-References: <1321887999-14546-1-git-send-email-juhosg@openwrt.org>
-        <1321887999-14546-5-git-send-email-juhosg@openwrt.org>
-Date:   Wed, 23 Nov 2011 11:34:18 +0100
-Message-ID: <CAEWqx5-05WSPYfWOO=TBtQAJ0NmvCGvtJ1LEgfiJ3UdzJF+q2g@mail.gmail.com>
-Subject: Re: [PATCH v4 4/7] MIPS: ath79: add a common PCI registration function
+Received: by 10.182.145.38 with SMTP id sr6mr7592495obb.65.1322048115799; Wed,
+ 23 Nov 2011 03:35:15 -0800 (PST)
+Received: by 10.182.36.133 with HTTP; Wed, 23 Nov 2011 03:35:15 -0800 (PST)
+In-Reply-To: <1322003670-8797-1-git-send-email-juhosg@openwrt.org>
+References: <1322003670-8797-1-git-send-email-juhosg@openwrt.org>
+Date:   Wed, 23 Nov 2011 12:35:15 +0100
+Message-ID: <CAEWqx5-HNNy-9BhYi=nnp3Q=vGQnq1hfH50env5W73ux2UiZXw@mail.gmail.com>
+Subject: Re: [PATCH 00/12] MIPS: ath79: AR724X PCI fixes and AR71XX PCI support
 From:   =?UTF-8?Q?Ren=C3=A9_Bolldorf?= <xsecute@googlemail.com>
 To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Imre Kaloz <kaloz@openwrt.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 31947
+X-archive-position: 31948
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,94 +38,47 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19736
+X-UID: 19817
 
-And where is 'arch/mips/ath79/pci.h' ?
+I don't know on which board you tested the patches,
+but the pci read/write function are now broken.
 
-On Mon, Nov 21, 2011 at 4:06 PM, Gabor Juhos <juhosg@openwrt.org> wrote:
-> The current code unconditionally registers the AR724X
-> specific PCI controller, even if the kernel is running
-> on a different SoC.
+-My patchset has the ability to use different irqs (see pci_data).
+-I never hit the pci controller bug, any steps to replicate?
+
+On Wed, Nov 23, 2011 at 12:14 AM, Gabor Juhos <juhosg@openwrt.org> wrote:
+> This patch set fixes some errors in the AR724X specific
+> PCI code, and adds support for the PCI Host controller
+> of the AR71XX SoCs.
 >
-> Add a common function for PCI controller registration,
-> and only register the AR724X PCI controller if the kernel
-> is running on an AR724X SoC.
+> This set depends on v4 of the
+> 'MIPS: ath79: cleanup AR724X PCI support code' patches.
 >
-> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-> ---
-> v4: - simplify ath79_register_pci function
-> v3: - fix compile error if CONFIG_PCI is not defined
->    - add __init annotation to ath79_register_pci
-> v2: - no changes
-> ---
->  arch/mips/ath79/mach-ubnt-xm.c |    1 +
->  arch/mips/ath79/pci.c          |   10 ++++++++++
->  arch/mips/ath79/pci.h          |    6 ++++++
->  arch/mips/pci/pci-ath724x.c    |    2 --
->  4 files changed, 17 insertions(+), 2 deletions(-)
+> Gabor Juhos (12):
+>  MIPS: ath79: remove superfluous alignment checks from pci-ar724x.c
+>  MIPS: ath79: fix broken ar724x_pci_{read,write} functions
+>  MIPS: ath79: add a workaround for a PCI controller bug in AR724X SoCs
+>  MIPS: ath79: fix a wrong IRQ number
+>  MIPS: ath79: add PCI IRQ handling code for AR724X SoCs
+>  MIPS: ath79: get rid of some ifdefs in mach-ubnt-xm.c
+>  MIPS: ath79: allow to use board specific pci_plat_dev_init functions
+>  MIPS: ath79: add support for the PCI host controller of the AR71XX SoCs
+>  MIPS: ath79: allow to use SoC specific PCI IRQ maps
+>  MIPS: ath79: remove ar724x_pci_add_data function
+>  MIPS: ath79: register PCI controller on the PB44 board
+>  MIPS: ath79: update copyright headers of PCI related files
 >
-> diff --git a/arch/mips/ath79/mach-ubnt-xm.c b/arch/mips/ath79/mach-ubnt-xm.c
-> index a043500..edbc093 100644
-> --- a/arch/mips/ath79/mach-ubnt-xm.c
-> +++ b/arch/mips/ath79/mach-ubnt-xm.c
-> @@ -111,6 +111,7 @@ static void __init ubnt_xm_init(void)
->        ath724x_pci_add_data(ubnt_xm_pci_data, ARRAY_SIZE(ubnt_xm_pci_data));
->  #endif /* CONFIG_PCI */
+>  arch/mips/ath79/Kconfig                |    1 +
+>  arch/mips/ath79/mach-pb44.c            |    2 +
+>  arch/mips/ath79/mach-ubnt-xm.c         |   42 ++++---
+>  arch/mips/ath79/pci.c                  |   97 ++++++++++++---
+>  arch/mips/ath79/pci.h                  |   19 ++-
+>  arch/mips/include/asm/mach-ath79/irq.h |    6 +-
+>  arch/mips/include/asm/mach-ath79/pci.h |   14 ++-
+>  arch/mips/pci/Makefile                 |    1 +
+>  arch/mips/pci/pci-ar724x.c             |  215 +++++++++++++++++++++++++++-----
+>  9 files changed, 318 insertions(+), 79 deletions(-)
 >
-> +       ath79_register_pci();
->  }
->
->  MIPS_MACHINE(ATH79_MACH_UBNT_XM,
-> diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-> index 4957428..855a69d 100644
-> --- a/arch/mips/ath79/pci.c
-> +++ b/arch/mips/ath79/pci.c
-> @@ -9,6 +9,8 @@
->  */
->
->  #include <linux/pci.h>
-> +#include <asm/mach-ath79/ath79.h>
-> +#include <asm/mach-ath79/pci.h>
->  #include "pci.h"
->
->  static struct ath724x_pci_data *pci_data;
-> @@ -44,3 +46,11 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
->
->        return PCIBIOS_SUCCESSFUL;
->  }
-> +
-> +int __init ath79_register_pci(void)
-> +{
-> +       if (soc_is_ar724x())
-> +               return ath724x_pcibios_init();
-> +
-> +       return -ENODEV;
-> +}
-> diff --git a/arch/mips/ath79/pci.h b/arch/mips/ath79/pci.h
-> index 454885f..787fac2 100644
-> --- a/arch/mips/ath79/pci.h
-> +++ b/arch/mips/ath79/pci.h
-> @@ -18,4 +18,10 @@ struct ath724x_pci_data {
->
->  void ath724x_pci_add_data(struct ath724x_pci_data *data, int size);
->
-> +#ifdef CONFIG_PCI
-> +int ath79_register_pci(void);
-> +#else
-> +static inline int ath79_register_pci(void) { return 0; }
-> +#endif
-> +
->  #endif /* __ASM_MACH_ATH79_PCI_ATH724X_H */
-> diff --git a/arch/mips/pci/pci-ath724x.c b/arch/mips/pci/pci-ath724x.c
-> index be01b7f..ebefc16 100644
-> --- a/arch/mips/pci/pci-ath724x.c
-> +++ b/arch/mips/pci/pci-ath724x.c
-> @@ -137,5 +137,3 @@ int __init ath724x_pcibios_init(void)
->
->        return PCIBIOS_SUCCESSFUL;
->  }
-> -
-> -arch_initcall(ath724x_pcibios_init);
 > --
 > 1.7.2.1
 >

@@ -1,121 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 00:20:02 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:47781 "EHLO
-        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903850Ab1KVXPF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Nov 2011 00:15:05 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 93EF614057B;
-        Wed, 23 Nov 2011 00:15:00 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at mail.szarvasnet.hu
-Received: from mail.szarvasnet.hu ([127.0.0.1])
-        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id xqoy4CaNrbXb; Wed, 23 Nov 2011 00:14:59 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 8330B140581;
-        Wed, 23 Nov 2011 00:14:54 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        =?UTF-8?q?Ren=C3=A9=20Bolldorf?= <xsecute@googlemail.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 12/12] MIPS: ath79: update copyright headers of PCI related files
-Date:   Wed, 23 Nov 2011 00:14:30 +0100
-Message-Id: <1322003670-8797-13-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.2.1
-In-Reply-To: <1322003670-8797-1-git-send-email-juhosg@openwrt.org>
-References: <1322003670-8797-1-git-send-email-juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 10:22:15 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:51189 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903547Ab1KWJWH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 23 Nov 2011 10:22:07 +0100
+Received: by bkat2 with SMTP id t2so1238140bka.36
+        for <multiple recipients>; Wed, 23 Nov 2011 01:22:01 -0800 (PST)
+Received: by 10.204.15.200 with SMTP id l8mr7961784bka.132.1322040121542;
+        Wed, 23 Nov 2011 01:22:01 -0800 (PST)
+Received: from [192.168.2.2] (ppp85-141-197-74.pppoe.mtu-net.ru. [85.141.197.74])
+        by mx.google.com with ESMTPS id z15sm12312284bkv.4.2011.11.23.01.21.58
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 23 Nov 2011 01:21:59 -0800 (PST)
+Message-ID: <4ECCBB01.3070507@mvista.com>
+Date:   Wed, 23 Nov 2011 13:21:05 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:8.0) Gecko/20111105 Thunderbird/8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 31944
+To:     Gabor Juhos <juhosg@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?ISO-8859-1?Q?Ren=E9_Bolldorf?= <xsecute@googlemail.com>,
+        Imre Kaloz <kaloz@openwrt.org>
+Subject: Re: [PATCH 08/12] MIPS: ath79: add support for the PCI host controller
+ of the AR71XX SoCs
+References: <1322003670-8797-1-git-send-email-juhosg@openwrt.org> <1322003670-8797-9-git-send-email-juhosg@openwrt.org>
+In-Reply-To: <1322003670-8797-9-git-send-email-juhosg@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31945
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19245
+X-UID: 19682
 
-Add copyright records according to the recent changes in
-the PCI code. Also fix up the descriptions.
+Hello.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
----
-Just in case if someone is curious about why 2008 and 2009 years are
-present in this change:
+On 23-11-2011 3:14, Gabor Juhos wrote:
 
-The recent PCI specific changes were based on an existing
-code which can be found in the OpenWrt repository, and we
-are working on that since 2008.
----
- arch/mips/ath79/pci.c                  |    4 ++++
- arch/mips/ath79/pci.h                  |    4 +++-
- arch/mips/include/asm/mach-ath79/pci.h |    4 +++-
- arch/mips/pci/pci-ar724x.c             |    3 ++-
- 4 files changed, 12 insertions(+), 3 deletions(-)
+> The Atheros AR71XX SoCs have a built-in PCI Host Controller.
+> This patch adds a driver for that, and modifies the relevant
+> files in order to allow to register the PCI controller from
+> board specific setup.
 
-diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-index 253a382..bc40070 100644
---- a/arch/mips/ath79/pci.c
-+++ b/arch/mips/ath79/pci.c
-@@ -2,6 +2,10 @@
-  *  Atheros AR71XX/AR724X specific PCI setup code
-  *
-  *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
-+ *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *
-+ *  Parts of this file are based on Atheros' 2.6.15 BSP
-  *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
-diff --git a/arch/mips/ath79/pci.h b/arch/mips/ath79/pci.h
-index 5ebed21..51c6625 100644
---- a/arch/mips/ath79/pci.h
-+++ b/arch/mips/ath79/pci.h
-@@ -1,7 +1,9 @@
- /*
-- *  Atheros 724x PCI support
-+ *  Atheros AR71XX/AR724X PCI support
-  *
-  *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
-+ *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-  *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
-diff --git a/arch/mips/include/asm/mach-ath79/pci.h b/arch/mips/include/asm/mach-ath79/pci.h
-index a3d0655..58d065f 100644
---- a/arch/mips/include/asm/mach-ath79/pci.h
-+++ b/arch/mips/include/asm/mach-ath79/pci.h
-@@ -1,7 +1,9 @@
- /*
-- *  Atheros 724x PCI support
-+ *  Atheros AR71XX/AR724X PCI support
-  *
-  *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
-+ *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-  *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
-diff --git a/arch/mips/pci/pci-ar724x.c b/arch/mips/pci/pci-ar724x.c
-index 6a520a6..2c2c34f 100644
---- a/arch/mips/pci/pci-ar724x.c
-+++ b/arch/mips/pci/pci-ar724x.c
-@@ -1,7 +1,8 @@
- /*
-- *  Atheros 724x PCI support
-+ *  Atheros AR724X PCI host controller driver
-  *
-  *  Copyright (C) 2011 René Bolldorf <xsecute@googlemail.com>
-+ *  Copyright (C) 2009-2011 Gabor Juhos <juhosg@openwrt.org>
-  *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
--- 
-1.7.2.1
+> Signed-off-by: Gabor Juhos<juhosg@openwrt.org>
+> Signed-off-by: Imre Kaloz<kaloz@openwrt.org>
+[...]
+
+> diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+> index 172277c..b1c0a1c 100644
+> --- a/arch/mips/pci/Makefile
+> +++ b/arch/mips/pci/Makefile
+> @@ -19,6 +19,7 @@ obj-$(CONFIG_BCM47XX)		+= pci-bcm47xx.o
+>   obj-$(CONFIG_BCM63XX)		+= pci-bcm63xx.o fixup-bcm63xx.o \
+>   					ops-bcm63xx.o
+>   obj-$(CONFIG_MIPS_ALCHEMY)	+= pci-alchemy.o
+> +obj-$(CONFIG_SOC_AR71XX)	+= pci-ar71xx.o
+
+    OK, but where's pci_ar71xx.c file itself? Your whole patchset doesn't seem 
+to include it...
+
+WBR, Sergei

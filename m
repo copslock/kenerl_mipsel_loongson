@@ -1,234 +1,180 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 16:15:18 +0100 (CET)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:56607 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904254Ab1KWPPM convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 20:41:25 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:62380 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904113Ab1KWTlS convert rfc822-to-8bit
         (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Nov 2011 16:15:12 +0100
-Received: by vbbfs19 with SMTP id fs19so1690365vbb.36
-        for <multiple recipients>; Wed, 23 Nov 2011 07:15:06 -0800 (PST)
+        Wed, 23 Nov 2011 20:41:18 +0100
+Received: by bkat2 with SMTP id t2so2058018bka.36
+        for <multiple recipients>; Wed, 23 Nov 2011 11:41:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=YDbLEhicJskVUoubtbsNIrWf9b82yTE+eDqVKVWzIMM=;
-        b=jvCK/tJVFS8jL82EFEYCfz2NwH7XokdQ4RG760yXEfxWv6+AbOiag16DtDOxkz939R
-         JS3UOQRic9fpQHcPemluh4Y+8W/b3Err88byqhElHnsweIsuhHs1CTwg/XOXJBrEGm5j
-         bA2bnhAArqjbd04jTLe95/PmnMg1Rx9Iu93DA=
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding:message-id;
+        bh=9GnRiseOvOod3NaKmDcwST9TlekI935a6c9rP9+e9Fg=;
+        b=r09YaZxVlYpB11UJ8LlqX+wVcatPHGljHb7xHxau/oxvKN6C8lVZMBPs48Dve4x10i
+         k888qSV/BTDpSh7AhJ2tnzvLynxNuOH++jdcUp08xPdvMOtt6suMTc7L3u0MvjGhJyEf
+         nXD0HYtMS3LL3bTrsZbfc738K6jQT97NJagwk=
+Received: by 10.204.154.201 with SMTP id p9mr26074919bkw.33.1322077273039;
+        Wed, 23 Nov 2011 11:41:13 -0800 (PST)
+Received: from lenovo.localnet ([2a01:e35:2f70:4010:21d:7dff:fe45:5399])
+        by mx.google.com with ESMTPS id e20sm22959939fab.2.2011.11.23.11.41.09
+        (version=SSLv3 cipher=OTHER);
+        Wed, 23 Nov 2011 11:41:10 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Shubhrajyoti Datta <omaplinuxkernel@gmail.com>
+Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller driver
+Date:   Wed, 23 Nov 2011 20:41:18 +0100
+User-Agent: KMail/1.13.7 (Linux/3.1.0-1-amd64; KDE/4.6.5; x86_64; ; )
+Cc:     Grant Likely <grant.likely@secretlab.ca>,
+        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>,
+        spi-devel-general@lists.sourceforge.net, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
+References: <1321906615-11392-1-git-send-email-florian@openwrt.org> <CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg@mail.gmail.com>
+In-Reply-To: <CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.182.146.72 with SMTP id ta8mr8652028obb.35.1322061306348; Wed,
- 23 Nov 2011 07:15:06 -0800 (PST)
-Received: by 10.182.36.133 with HTTP; Wed, 23 Nov 2011 07:15:05 -0800 (PST)
-In-Reply-To: <CAEWqx5_hgSH0FoWJPL0JDrVXGTWFCV0-FH9hXPMTxbG3A1pScQ@mail.gmail.com>
-References: <1322003670-8797-1-git-send-email-juhosg@openwrt.org>
-        <CAEWqx5-HNNy-9BhYi=nnp3Q=vGQnq1hfH50env5W73ux2UiZXw@mail.gmail.com>
-        <4ECCFE72.6090300@openwrt.org>
-        <CAEWqx5_hgSH0FoWJPL0JDrVXGTWFCV0-FH9hXPMTxbG3A1pScQ@mail.gmail.com>
-Date:   Wed, 23 Nov 2011 16:15:05 +0100
-Message-ID: <CAEWqx5_emEPp1HzK=SwOUJnJp5uFhco1asEQjuucdEV4rTQCdg@mail.gmail.com>
-Subject: Re: [PATCH 00/12] MIPS: ath79: AR724X PCI fixes and AR71XX PCI support
-From:   =?UTF-8?Q?Ren=C3=A9_Bolldorf?= <xsecute@googlemail.com>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Imre Kaloz <kaloz@openwrt.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
-X-archive-position: 31955
+Message-Id: <201111232041.18477.florian@openwrt.org>
+X-archive-position: 31956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xsecute@googlemail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20009
+X-UID: 20250
 
-It seems your board is a older one.
-Can you remove the heatsink and post the revision from the SoC?
+Hi  Shubhrajyoti
 
-2011/11/23 René Bolldorf <xsecute@googlemail.com>:
-> Hi
->
-> 2011/11/23 Gabor Juhos <juhosg@openwrt.org>:
->> Hi René,
->>
->>> I don't know on which board you tested the patches,
->>
->> The patches were tested on an Ubiquiti Bullet 5M (AR7240), on a
->> TP-Link TL-MR3420 (AR7241), and on an Atheros PB44 (AR7161) boards.
->> You can find the bootlog of the Bullet 5M here:
->> http://pastebin.com/p3UiU29M
->>
->>> but the pci read/write function are now broken.
->>
->> Here is a snippet from the original pci_read function:
->>
->>        switch (size) {
->>        case 1:
->>                addr = where & ~3;
->>                mask = 0xff000000 >> ((where % 4) * 8);
->>                tval = reg_read(ATH724X_PCI_DEV_BASE + addr);
->>                tval = tval & ~mask;
->>                *value = (tval >> ((4 - (where % 4))*8));
->>                break;
->>
->> Say, we want to read four values from where={0,1,2,3} and with size=1.
->> Because 'addr' will be zero, we will read the same 32 bits wide register
->> in all cases, so I'm using 'tval = 0x12345678' for simplicity.
->>
->> if where == 0:
->>
->> mask = 0xff000000 >> ((0 % 4) * 8) = 0xff000000 >> (0 * 8) = 0xff000000 >> 0 = 0xff000000
->> tval = 0x12345678 & ~0xff000000 = 0x12345678 & 0x00ffffff = 0x00345678
->> *value = 0x00345678 >> ((4 - (0 % 4 )) * 8) = 0x00345678 >> ((4 - 0) * 8) = 0x00345678 >> (4 * 8) = 0x00345678 >> 32 = 0x00000000
->>
->> Because shift is 32, the CPU will do nothing with the value, so it will
->> return '0x00345678'. The value should be '0x78'.
->>
->> if where == 1:
->>
->> mask = 0xff000000 >> ((1 % 4) * 8) = 0xff000000 >> (1 * 8) = 0xff000000 >> 8 = 0x00ff0000
->> tval = 0x12345678 & ~0x00ff0000 = 0x12345678 & 0xff00ffff = 0x12005678
->> *value = 0x12005678 >> ((4 - (1 % 4 )) * 8) = 0x12005678 >> ((4 - 1) * 8) = 0x12005678 >> (3 * 8) = 0x12005678 >> 24 = 0x00000012
->>
->> The value should be '0x56' instead of '0x00000012'.
->>
->> if where = 2:
->>
->> mask = 0xff000000 >> ((2 % 4) * 8) = 0xff000000 >> (2 * 8) = 0xff000000 >> 16 = 0x0000ff00
->> tval = 0x12345678 & ~0x0000ff00 = 0x12345678 & 0xffff00ff = 0x12340078
->> *value = 0x12340078 >> ((4 - (2 % 4 )) * 8) = 0x12340078 >> ((4 - 2) * 8) = 0x12340078 >> (2 * 8) = 0x12340078 >> 16 = 0x00001234
->>
->> The value should be '0x34' instead of '0x00001234'.
->>
->> if where = 3:
->>
->> mask = 0xff000000 >> ((3 % 4) * 8) = 0xff000000 >> (3 * 8) = 0xff000000 >> 24 = 0x000000ff
->> tval = 0x12345678 & ~0x000000ff = 0x12345678 & 0xffffff00 = 0x12345600
->> *value = 0x12345600 >> ((4 - (3 % 4 )) * 8) = 0x12345600 >> ((4 - 3) * 8) = 0x12345600 >> (1 * 8) = 0x12345600 >> 8 = 0x00123456
->>
->> The value should be '0x12' instead of '0x00123456'.
->>
->> Due to this, and the other errors in the pci_write functions,
->> Linux fails to assign the correct IRQ number for the device.
->> It can be noticed from the output of 'lspci -vv':
->>
->>        Interrupt: pin A routed to IRQ 0
->> vs
->>        Interrupt: pin A routed to IRQ 48
->>
->> I can show you the errors in the write functions, if you would
->> like to see that as well.
->>
->>
->> I'm curious why do you think that it is broken now.
->> You are getting a data bus error by any chance?
->>
->
-> after a pci write, the pci read return bogus values.
-> However, I go through this tomorrow.
->
->>> -My patchset has the ability to use different irqs (see pci_data).
->>
->> Yes, I know. You can set that from the board setup by calling the
->> {ath,ar}724x_pci_add_data function.
->>
->> However that approach has some limitations:
->>
->> 1. It does not supports assigning a different IRQ for the different
->> interrupt pins (A,B,C,D) of a PCI device. This is not a problem on the
->> AR724X boards, but that functionality is needed by some AR71xx based
->> boards.
->>
->> 2. The devfn field of the struct pci_device is 0 on the AR724X based boards.
->> However on AR71XX they are different. On the PB44 board, the devfn of a PCI
->> device in the first miniPCI slot is 136, and it is 144 for the second slot.
->> So if I want to define the pci_data for the PB44 board, I should write
->> something like this:
->>
->> static struct ath724x_pci_data pb44_pci_data[] = {
->>        [136] = { .irq  = PCI_IRQ_A },
->>        [144] = { .irq  = PCI_IRQ_B },
->> };
->>
->> The array has 136+8 unused entries, which wastes the memory.
->>
->> 3. The {ath,ar}724x_pci_add_data function must be called from the
->> setup code of each board. If the board setup code does not calls the
->> function, the kernel will throw an oops due to a NULL pointer dereference.
->>
->>> int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
->>> {
->>>       unsigned int devfn = dev->devfn;
->>>       int irq = -1;
->>>
->>
->> If the '{ath,ar}724x_pci_add_data' function is not called, pci_data_size = 0,
->> and pci_data = NULL;
->>
->>>       if (devfn > pci_data_size - 1)
->>>               return irq;
->>
->> devfn is always >= 0, and (pci_data_size - 1) = -1 = 0xffffffff, so the
->> condition in this if statement will be evaluated to false ...
->>
->>>       irq = pci_data[devfn].irq;
->>
->> ... and this line will cause the following oops:
->>
->> CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 803c4cc8, ra == 803c4ca4
->> Oops[#1]:
->> Cpu 0
->> $ 0   : 00000000 80510000 00000000 00000000
->> $ 4   : 803b4128 00000a52 ffffffff 0000000a
->> $ 8   : 0000000a 00000000 00000001 00000000
->> $12   : 00000374 0000000f 00000001 ffffffff
->> $16   : 00000000 80510000 803c4c74 8019d838
->> $20   : 803d3fe0 00000000 00000000 00000000
->> $24   : 00000002 800617f0
->> $28   : 81c20000 81c21e50 00000000 803c4ca4
->> Hi    : 00000000
->> Lo    : 068e7780
->> epc   : 803c4cc8 pcibios_map_irq+0x54/0x6c
->>    Not tainted
->> ra    : 803c4ca4 pcibios_map_irq+0x30/0x6c
->> Status: 1000c003    KERNEL EXL IE
->> Cause : 00800008
->> BadVA : 00000000
->> PrId  : 00019374 (MIPS 24Kc)
->> Modules linked in:
->> Process swapper (pid: 1, threadinfo=81c20000, task=81c18000, tls=00000000)
->> Stack : 81c21e58 00000000 ffffffff 00000001 00000000 81c14c00 00000001 803d1840
->>        00000000 80300ce8 803d2a7c 00000000 01000000 803d2af8 81c46800 00000000
->>        803e9584 00000000 80510000 803d404c 00000000 00000000 80510000 803e9584
->>        80510000 80060930 33390000 00000000 0000a498 80143058 00000028 803b0000
->>        00000000 800bc4e4 803e92d0 803e9394 803e9584 00000000 00000000 00000000
->>        ...
->> Call Trace:
->> [<803c4cc8>] pcibios_map_irq+0x54/0x6c
->> [<803d1840>] pci_fixup_irqs+0x78/0xc4
->> [<803d404c>] pcibios_init+0x6c/0x8c
->> [<80060930>] do_one_initcall+0x3c/0x1cc
->> [<803c297c>] kernel_init+0xa4/0x138
->> [<80063c44>] kernel_thread_helper+0x10/0x18
->>
->> Code: 8c4250b4  001080c0  00508021 <8e020000> 8fbf001c  8fb10018  8fb00014  03e00008  27bd0020
->>
->>>
->>>       return irq;
->>> }
->
-> Ok
->
->>> -I never hit the pci controller bug, any steps to replicate?
->>
->> Hm, weird. Your devices are based on AR7240 or or AR7241?
->>
->> Regards,
->> Gabor
->>
->
-> AR7241 AH-4A
->
-> Maybe it is better to split ar71xx and ar72xx pci support completly?
->
+Le mardi 22 novembre 2011 09:26:07, Shubhrajyoti Datta a �crit :
+> Hi Florian,
+> 
+> On Tue, Nov 22, 2011 at 1:46 AM, Florian Fainelli <florian@openwrt.org> 
+wrote:
+[snip]
+> > +       bs->irq = irq;
+> > +       bs->clk = clk;
+> > +       bs->fifo_size = pdata->fifo_size;
+> > +
+> > +       ret = request_irq(irq, bcm63xx_spi_interrupt, 0, pdev->name,
+> > master); +       if (ret) {
+> > +               dev_err(dev, "unable to request irq\n");
+> > +               goto out_unmap;
+> > +       }
+> 
+> Could this be a threaded irq ?
+
+I see no reasons why it could not. Is this a requirement for accepting new 
+drivers? I see no drivers doing this in Grant's spi/next branch.
+
+> 
+> > +
+> > +       master->bus_num = pdata->bus_num;
+> > +       master->num_chipselect = pdata->num_chipselect;
+> > +       master->setup = bcm63xx_spi_setup;
+> > +       master->transfer = bcm63xx_transfer;
+> > +       bs->speed_hz = pdata->speed_hz;
+> > +       bs->stopping = 0;
+> > +       bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
+> > +       bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
+> > +       spin_lock_init(&bs->lock);
+> > +
+> > +       /* Initialize hardware */
+> > +       clk_enable(bs->clk);
+> > +       bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
+> > +
+> > +       /* register and we are done */
+> > +       ret = spi_register_master(master);
+> > +       if (ret) {
+> > +               dev_err(dev, "spi register failed\n");
+> > +               goto out_reset_hw;
+> > +       }
+> > +
+> > +       dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d) v%s\n",
+> > +                r->start, irq, bs->fifo_size, DRV_VER);
+> > +
+> > +       return 0;
+> > +
+> > +out_reset_hw:
+> > +       clk_disable(clk);
+> > +       free_irq(irq, master);
+> > +out_unmap:
+> > +       iounmap(bs->regs);
+> > +out_put_master:
+> > +       spi_master_put(master);
+> > +out_free:
+> > +       clk_put(clk);
+> > +out:
+> > +       return ret;
+> > +}
+> > +
+> > +static int __exit bcm63xx_spi_remove(struct platform_device *pdev)
+> > +{
+> > +       struct spi_master *master = platform_get_drvdata(pdev);
+> > +       struct bcm63xx_spi *bs = spi_master_get_devdata(master);
+> > +       struct resource *r = platform_get_resource(pdev, IORESOURCE_MEM,
+> > 0); +
+> > +       /* reset spi block */
+> > +       bcm_spi_writeb(bs, 0, SPI_INT_MASK);
+> > +       spin_lock(&bs->lock);
+> > +       bs->stopping = 1;
+> > +
+> > +       /* HW shutdown */
+> > +       clk_disable(bs->clk);
+> > +       clk_put(bs->clk);
+> > +
+> > +       spin_unlock(&bs->lock);
+> > +
+> > +       free_irq(bs->irq, master);
+> > +       iounmap(bs->regs);
+> > +       release_mem_region(r->start, r->end - r->start);
+> > +       platform_set_drvdata(pdev, 0);
+> > +       spi_unregister_master(master);
+> > +
+> > +       return 0;
+> > +}
+> > +
+> > +#ifdef CONFIG_PM
+> > +static int bcm63xx_spi_suspend(struct platform_device *pdev,
+> > pm_message_t mesg) +{
+> > +       struct spi_master *master = platform_get_drvdata(pdev);
+> > +       struct bcm63xx_spi *bs = spi_master_get_devdata(master);
+> > +
+> > +       clk_disable(bs->clk);
+> > +
+> > +       return 0;
+> > +}
+> > +
+> > +static int bcm63xx_spi_resume(struct platform_device *pdev)
+> > +{
+> > +       struct spi_master *master = platform_get_drvdata(pdev);
+> > +       struct bcm63xx_spi *bs = spi_master_get_devdata(master);
+> > +
+> > +       clk_enable(bs->clk);
+> > +
+> > +       return 0;
+> > +}
+> > +#else
+> > +#define bcm63xx_spi_suspend    NULL
+> > +#define bcm63xx_spi_resume     NULL
+> > +#endif
+> > +
+> > +static struct platform_driver bcm63xx_spi_driver = {
+> > +       .driver = {
+> > +               .name   = "bcm63xx-spi",
+> > +               .owner  = THIS_MODULE,
+> > +       },
+> > +       .probe          = bcm63xx_spi_probe,
+> > +       .remove         = __exit_p(bcm63xx_spi_remove),
+> > +       .suspend        = bcm63xx_spi_suspend,
+> > +       .resume         = bcm63xx_spi_resume,
+> 
+> Could we move to dev pm ops?
+
+Sure, I have fixed that in version 2 of the patch.
+
+-- 
+Florian

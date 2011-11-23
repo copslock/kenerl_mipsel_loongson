@@ -1,53 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 13:03:54 +0100 (CET)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:38951 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903548Ab1KWMDr convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 23 Nov 2011 13:03:47 +0100
-Received: by vcbfo13 with SMTP id fo13so1460449vcb.36
-        for <multiple recipients>; Wed, 23 Nov 2011 04:03:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=JGbvewXEe/X8NiZIiY5BO4eOHlY1Z/Xyr5reE/WeTzM=;
-        b=OsI6suZ5TyE4OqJH1a75OGfc4RcJxt0DjpJ0WjkxsxKnBDiqDcVRGXqSYCk/y3QOJY
-         /095gbBhc6PEu6e9imhM5/dQTHxRpmB8WKm/6EV0Cbt2ORkQngNZc6eNNRl6eKkbSWON
-         Go7iu+iV1FNYDeVrNLyGA9qeMa8IWN8nPpD2E=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Nov 2011 13:04:17 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:52299 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903550Ab1KWMEJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 23 Nov 2011 13:04:09 +0100
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 9011823C00A7;
+        Wed, 23 Nov 2011 13:04:07 +0100 (CET)
+Message-ID: <4ECCE137.8080803@openwrt.org>
+Date:   Wed, 23 Nov 2011 13:04:07 +0100
+From:   Gabor Juhos <juhosg@openwrt.org>
 MIME-Version: 1.0
-Received: by 10.182.145.38 with SMTP id sr6mr7612696obb.65.1322049821780; Wed,
- 23 Nov 2011 04:03:41 -0800 (PST)
-Received: by 10.182.36.133 with HTTP; Wed, 23 Nov 2011 04:03:41 -0800 (PST)
-In-Reply-To: <4ECCDDF1.7060605@openwrt.org>
-References: <1321887999-14546-1-git-send-email-juhosg@openwrt.org>
-        <1321887999-14546-5-git-send-email-juhosg@openwrt.org>
-        <CAEWqx5-05WSPYfWOO=TBtQAJ0NmvCGvtJ1LEgfiJ3UdzJF+q2g@mail.gmail.com>
-        <4ECCDDF1.7060605@openwrt.org>
-Date:   Wed, 23 Nov 2011 13:03:41 +0100
-Message-ID: <CAEWqx58pY6xpNRsTj0b01=g-JxQdTpbT=OMMLFsPFwk8EPHHKA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/7] MIPS: ath79: add a common PCI registration function
-From:   =?UTF-8?Q?Ren=C3=A9_Bolldorf?= <xsecute@googlemail.com>
-To:     Gabor Juhos <juhosg@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 31950
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?ISO-8859-1?Q?Ren=E9_Bolldorf?= <xsecute@googlemail.com>,
+        Imre Kaloz <kaloz@openwrt.org>
+Subject: Re: [PATCH 08/12] MIPS: ath79: add support for the PCI host controller
+ of the AR71XX SoCs
+References: <1322003670-8797-1-git-send-email-juhosg@openwrt.org> <1322003670-8797-9-git-send-email-juhosg@openwrt.org> <4ECCBB01.3070507@mvista.com>
+In-Reply-To: <4ECCBB01.3070507@mvista.com>
+X-Enigmail-Version: 1.3.2
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 31951
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xsecute@googlemail.com
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19837
+X-UID: 19838
 
-That is in 'arch/mips/include/asm/mach-ath79'.
-A error in the patch?
+Hi Sergei,
 
-2011/11/23 Gabor Juhos <juhosg@openwrt.org>:
-> 2011.11.23. 11:34 keltezéssel, René Bolldorf írta:
->> And where is 'arch/mips/ath79/pci.h' ?
->
-> That is introduced in the previous (3/7) patch.
->
+>> @@ -19,6 +19,7 @@ obj-$(CONFIG_BCM47XX)        += pci-bcm47xx.o
+>>   obj-$(CONFIG_BCM63XX)        += pci-bcm63xx.o fixup-bcm63xx.o \
+>>                       ops-bcm63xx.o
+>>   obj-$(CONFIG_MIPS_ALCHEMY)    += pci-alchemy.o
+>> +obj-$(CONFIG_SOC_AR71XX)    += pci-ar71xx.o
+> 
+>    OK, but where's pci_ar71xx.c file itself? Your whole patchset doesn't seem to
+> include it...
+
+You are correct, I forgot to add that. I have added that now, it will be in v2
+of the patch-set.
+
+Thanks,
+Gabor

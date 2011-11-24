@@ -1,63 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 19:39:47 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:33006 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 20:37:08 +0100 (CET)
+Received: from imr4.ericy.com ([198.24.6.9]:56772 "EHLO imr4.ericy.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904611Ab1KXSjl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Nov 2011 19:39:41 +0100
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 1AF2823C009A;
-        Thu, 24 Nov 2011 19:39:39 +0100 (CET)
-Message-ID: <4ECE8F6B.1060203@openwrt.org>
-Date:   Thu, 24 Nov 2011 19:39:39 +0100
-From:   Gabor Juhos <juhosg@openwrt.org>
+        id S1904615Ab1KXThD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Nov 2011 20:37:03 +0100
+Received: from eusaamw0711.eamcs.ericsson.se ([147.117.20.178])
+        by imr4.ericy.com (8.14.3/8.14.3/Debian-9.1ubuntu1) with ESMTP id pAOJaqYk031612;
+        Thu, 24 Nov 2011 13:36:56 -0600
+Received: from localhost (147.117.20.214) by eusaamw0711.eamcs.ericsson.se
+ (147.117.20.179) with Microsoft SMTP Server id 8.3.137.0; Thu, 24 Nov 2011
+ 14:36:47 -0500
+Date:   Thu, 24 Nov 2011 11:35:43 -0800
+From:   Guenter Roeck <guenter.roeck@ericsson.com>
+To:     Matthias Bock <bockmatthias@web.de>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: Linux Kernel for Telekom MR303
+Message-ID: <20111124193543.GA3481@ericsson.com>
+References: <1321120255.3588.24.camel@localhost>
+ <20111112182017.GA28658@ericsson.com>
+ <1322152751.7967.7.camel@localhost>
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmVuw6kgQm9sbGRvcmY=?= <xsecute@googlemail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        Imre Kaloz <kaloz@openwrt.org>
-Subject: Re: [PATCH 00/12] MIPS: ath79: AR724X PCI fixes and AR71XX PCI support
-References: <1322003670-8797-1-git-send-email-juhosg@openwrt.org> <CAEWqx5-HNNy-9BhYi=nnp3Q=vGQnq1hfH50env5W73ux2UiZXw@mail.gmail.com> <4ECCFE72.6090300@openwrt.org> <CAEWqx5_hgSH0FoWJPL0JDrVXGTWFCV0-FH9hXPMTxbG3A1pScQ@mail.gmail.com> <CAEWqx5_emEPp1HzK=SwOUJnJp5uFhco1asEQjuucdEV4rTQCdg@mail.gmail.com> <4ECD5B06.10204@openwrt.org> <CAEWqx5-deTQLVu=1S9XjKTeq+=O3OE-EXJsXugZAeKYFFzjo-w@mail.gmail.com> <4ECE5D8E.3030504@openwrt.org> <CAEWqx59_YvRfqKxhTYAxrCh=W+UV89V5ibMnBQpC+2i-Ed08Kg@mail.gmail.com>
-In-Reply-To: <CAEWqx59_YvRfqKxhTYAxrCh=W+UV89V5ibMnBQpC+2i-Ed08Kg@mail.gmail.com>
-X-Enigmail-Version: 1.3.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 31977
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1322152751.7967.7.camel@localhost>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 31978
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: guenter.roeck@ericsson.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21031
+X-UID: 21050
 
-2011.11.24. 16:54 keltezéssel, René Bolldorf írta:
-> 2011/11/24 Gabor Juhos <juhosg@openwrt.org>:
->> Hi René,
->>
->>> Sorry Gabor for the following patch, but it seems your patchset was
->>> against a other tree?
->>
->> Both of my patch sets was based on the 'mips-for-linux-next' branch of Ralf's
->> 'upstream-sfr' tree:
->>
->> git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
->>
->>> Because of the many failures I rebase'ed against 09521577ca7718b6c of the
->>> linus tree and written anything from scratch.
->>
->> That was waste of time. The ath79 platform got a pile of changes recently, and
->> those changes are not yet available in Linus' tree. If you were unsure about the
->> tree, you should have asked earlier.
->>
+On Thu, Nov 24, 2011 at 11:39:11AM -0500, Matthias Bock wrote:
+> Hi there,
 > 
-> Alright. I don't play with all trees now.
+> yes, I've seen the site you linked and have already mailed
+> to Tatung, but no response received yet and there's also no Linux
+> available on their website.
+> Anyway I guess they are only communicating with big distributors
+> like Telekom, no support for private people.
+> 
+> Nevertheless I intend to put barebox or U-Boot compiled for
+> MIPS in the MBR of the box's hard disk, loading a
+> Linux MIPS kernel and booting into Debian MIPS.
+> That project should have a chance, right?
+> 
+I'd say it is worth a try.
 
-Why if not indiscreet?
+On a side note, top posting is discouraged on Linux kernel mailing lists.
 
-> I wait for the next merge.
+Thanks,
+Guenter
 
-If you mean Linus' tree, the new codes will not be merged into that before the
-release of 3.2. You would have to wait for a few weeks probably.
-
--Gabor
+> Cheers! Matthias
+> 
+> 
+> Hi,
+> 
+> > you would need a version of Linux for this specific box. I found a
+> reference on the web
+> > indicating that the OEM (Tatung Technology Inc) also offers Linux for
+> this box. See
+> >
+> http://www.marcush.de/2011/02/12/test-des-mr303-telekom-entertain-media-receiver-303.
+> > But even if you manage to get and load a Linux image, there would be
+> no guarantee that
+> > you could get it to work - if your internet or TV service requires an
+> activation code
+> > stored in the box, you would likely be out of luck.
+> > 
+> > Also, keep in mind you don't just need a kernel. You need a complete
+> distribution with
+> > root file system etc.
+> > 
+> > Guenter
+> > 
+> > 
+> On Sat, 2011-11-12 at 10:20 -0800, Guenter Roeck wrote:
+> > On Sat, Nov 12, 2011 at 12:50:55PM -0500, Matthias Bock wrote:
+> > > Hi,
+> > > 
+> > > I hope, this is the correct mailing list ...
+> > > 
+> > > Together with my Internet Package (Telekom Entertain) came a Receiver.
+> > > It turned out, it runs Windows CE, so I disassembled it in order to
+> > > replace it by Linux:
+> > > 
+> > > It contains the 32-bit MIPS CPU Broadcom BCM7405 at 400 MHz,
+> > > 256 MByte DDR2 SDRAM, 4 MByte Flash and a 500 GB SATA HD.
+> > > 
+> > > I have never compiled Linux for platforms other than
+> > > provided in the kernel config menu "Processor type...".
+> > > 
+> > > Where do I have to start ?
+> > > And where can I share my developments ?
+> > > 
+> 
+> 

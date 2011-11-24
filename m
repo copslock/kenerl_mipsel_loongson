@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 21:16:24 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:47324 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 21:16:51 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:12931 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904616Ab1KXUQP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Nov 2011 21:16:15 +0100
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id pAOKFcB6001765
+        id S1904619Ab1KXUQf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Nov 2011 21:16:35 +0100
+Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id pAOKFx2W001789
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 24 Nov 2011 15:15:38 -0500
+        Thu, 24 Nov 2011 15:15:59 -0500
 Received: from redhat.com (vpn1-7-27.ams2.redhat.com [10.36.7.27])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id pAOKFNt2010413;
-        Thu, 24 Nov 2011 15:15:23 -0500
-Date:   Thu, 24 Nov 2011 22:17:02 +0200
+        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id pAOKFhbQ005250;
+        Thu, 24 Nov 2011 15:15:44 -0500
+Date:   Thu, 24 Nov 2011 22:17:23 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 Cc:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -62,8 +62,8 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
         Jesse Barnes <jbarnes@virtuousgeek.org>,
         linux-pci@vger.kernel.org
-Subject: [PATCH-RFC 02/10] lib: add GENERIC_PCI_IOMAP
-Message-ID: <b5a1327dd8bb38f87cba7ae10b308ec3b63de66a.1322163031.git.mst@redhat.com>
+Subject: [PATCH-RFC 03/10] alpha: switch to GENERIC_PCI_IOMAP
+Message-ID: <4245e7d8f484de6512fd4a9e4cba5b90cc111899.1322163031.git.mst@redhat.com>
 References: <cover.1322163031.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -71,9 +71,9 @@ Content-Disposition: inline
 In-Reply-To: <cover.1322163031.git.mst@redhat.com>
 X-Mutt-Fcc: =sent
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
 To:     unlisted-recipients:; (no To-header on input)
-X-archive-position: 31980
+X-archive-position: 31981
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -82,155 +82,46 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21063
+X-UID: 21064
 
-Many architectures want a generic pci_iomap but
-not the rest of iomap.c. Split that to a separate .c
-file and add a new config symbol. select automatically
-by GENERIC_IOMAP.
+alpha copied pci_iomap from generic code to avoid
+pulling the rest of iomap.c in.  Since that's in
+a separate file now, we can reuse the common implementation.
+
+The only difference is handling of nocache flag,
+that turns out to be done correctly by the
+generic code since arch/alpha/include/asm/io.h
+defines ioremap_nocache same as ioremap.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/asm-generic/io.h        |    5 +--
- include/asm-generic/iomap.h     |    7 +----
- include/asm-generic/pci_iomap.h |   26 +++++++++++++++++++++
- lib/Kconfig                     |    4 +++
- lib/Makefile                    |    1 +
- lib/iomap.c                     |   38 +-----------------------------
- lib/pci_iomap.c                 |   48 +++++++++++++++++++++++++++++++++++++++
- 7 files changed, 85 insertions(+), 44 deletions(-)
- create mode 100644 include/asm-generic/pci_iomap.h
- create mode 100644 lib/pci_iomap.c
+ arch/alpha/Kconfig      |    1 +
+ arch/alpha/kernel/pci.c |   26 +-------------------------
+ 2 files changed, 2 insertions(+), 25 deletions(-)
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index 9120887..c8a67345 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -19,6 +19,8 @@
- #include <asm-generic/iomap.h>
- #endif
- 
-+#include <asm-generic/pci_iomap.h>
-+
- #ifndef mmiowb
- #define mmiowb() do {} while (0)
- #endif
-@@ -283,9 +285,6 @@ static inline void writesb(const void __iomem *addr, const void *buf, int len)
- #define __io_virt(x) ((void __force *) (x))
- 
- #ifndef CONFIG_GENERIC_IOMAP
--/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
--struct pci_dev;
--extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
- static inline void pci_iounmap(struct pci_dev *dev, void __iomem *p)
- {
- }
-diff --git a/include/asm-generic/iomap.h b/include/asm-generic/iomap.h
-index 98dcd76..fdcddcb 100644
---- a/include/asm-generic/iomap.h
-+++ b/include/asm-generic/iomap.h
-@@ -69,16 +69,13 @@ extern void ioport_unmap(void __iomem *);
- #ifdef CONFIG_PCI
- /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
- struct pci_dev;
--extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
- extern void pci_iounmap(struct pci_dev *dev, void __iomem *);
- #else
- struct pci_dev;
--static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max)
--{
--	return NULL;
--}
- static inline void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
- { }
- #endif
- 
-+#include <asm-generic/pci_iomap.h>
-+
- #endif
-diff --git a/include/asm-generic/pci_iomap.h b/include/asm-generic/pci_iomap.h
-new file mode 100644
-index 0000000..e08b3bd
---- /dev/null
-+++ b/include/asm-generic/pci_iomap.h
-@@ -0,0 +1,26 @@
-+/* Generic I/O port emulation, based on MN10300 code
-+ *
-+ * Copyright (C) 2007 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public Licence
-+ * as published by the Free Software Foundation; either version
-+ * 2 of the Licence, or (at your option) any later version.
-+ */
-+#ifndef __ASM_GENERIC_PCI_IOMAP_H
-+#define __ASM_GENERIC_PCI_IOMAP_H
-+
-+#ifdef CONFIG_PCI
-+/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
-+struct pci_dev;
-+extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
-+#else
-+struct pci_dev;
-+static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#endif /* __ASM_GENERIC_IO_H */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 0058927..36884b4 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -19,8 +19,12 @@ config RATIONAL
- config GENERIC_FIND_FIRST_BIT
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index 3636b11..56a4df9 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -315,6 +315,7 @@ config ISA_DMA_API
+ config PCI
  	bool
- 
-+config GENERIC_PCI_IOMAP
-+	bool
-+
- config GENERIC_IOMAP
- 	bool
+ 	depends on !ALPHA_JENSEN
 +	select GENERIC_PCI_IOMAP
+ 	default y
+ 	help
+ 	  Find out whether you have a PCI motherboard. PCI is the name of a
+diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
+index c9ab94e..f3cae27 100644
+--- a/arch/alpha/kernel/pci.c
++++ b/arch/alpha/kernel/pci.c
+@@ -508,30 +508,7 @@ sys_pciconfig_iobase(long which, unsigned long bus, unsigned long dfn)
+ 	return -EOPNOTSUPP;
+ }
  
- config CRC_CCITT
- 	tristate "CRC-CCITT functions"
-diff --git a/lib/Makefile b/lib/Makefile
-index a4da283..609b2adc 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -33,6 +33,7 @@ endif
- 
- lib-$(CONFIG_HOTPLUG) += kobject_uevent.o
- obj-$(CONFIG_GENERIC_IOMAP) += iomap.o
-+obj-$(CONFIG_GENERIC_PCI_IOMAP) += pci_iomap.o
- obj-$(CONFIG_HAS_IOMEM) += iomap_copy.o devres.o
- obj-$(CONFIG_CHECK_SIGNATURE) += check_signature.o
- obj-$(CONFIG_DEBUG_LOCKING_API_SELFTESTS) += locking-selftest.o
-diff --git a/lib/iomap.c b/lib/iomap.c
-index 5dbcb4b..ada922a 100644
---- a/lib/iomap.c
-+++ b/lib/iomap.c
-@@ -242,45 +242,11 @@ EXPORT_SYMBOL(ioport_unmap);
- #endif /* CONFIG_HAS_IOPORT */
- 
- #ifdef CONFIG_PCI
--/**
-- * pci_iomap - create a virtual mapping cookie for a PCI BAR
-- * @dev: PCI device that owns the BAR
-- * @bar: BAR number
-- * @maxlen: length of the memory to map
-- *
-- * Using this function you will get a __iomem address to your device BAR.
-- * You can access it using ioread*() and iowrite*(). These functions hide
-- * the details if this is a MMIO or PIO address space and will just do what
-- * you expect from them in the correct way.
-- *
-- * @maxlen specifies the maximum length to map. If you want to get access to
-- * the complete BAR without checking for its length first, pass %0 here.
-- * */
+-/* Create an __iomem token from a PCI BAR.  Copied from lib/iomap.c with
+-   no changes, since we don't want the other things in that object file.  */
+-
 -void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen)
 -{
 -	resource_size_t start = pci_resource_start(dev, bar);
@@ -244,76 +135,25 @@ index 5dbcb4b..ada922a 100644
 -	if (flags & IORESOURCE_IO)
 -		return ioport_map(start, len);
 -	if (flags & IORESOURCE_MEM) {
--		if (flags & IORESOURCE_CACHEABLE)
--			return ioremap(start, len);
--		return ioremap_nocache(start, len);
+-		/* Not checking IORESOURCE_CACHEABLE because alpha does
+-		   not distinguish between ioremap and ioremap_nocache.  */
+-		return ioremap(start, len);
 -	}
--	/* What? */
 -	return NULL;
 -}
 -
-+/* Hide the details if this is a MMIO or PIO address space and just do what
-+ * you expect in the correct way. */
+-/* Destroy that token.  Not copied from lib/iomap.c.  */
++/* Destroy an __iomem token.  Not copied from lib/iomap.c.  */
+ 
  void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
  {
- 	IO_COND(addr, /* nothing */, iounmap(addr));
+@@ -539,7 +516,6 @@ void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
+ 		iounmap(addr);
  }
+ 
 -EXPORT_SYMBOL(pci_iomap);
  EXPORT_SYMBOL(pci_iounmap);
- #endif /* CONFIG_PCI */
-diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
-new file mode 100644
-index 0000000..40b26cb
---- /dev/null
-+++ b/lib/pci_iomap.c
-@@ -0,0 +1,48 @@
-+/*
-+ * Implement the default iomap interfaces
-+ *
-+ * (C) Copyright 2004 Linus Torvalds
-+ */
-+#include <linux/pci.h>
-+#include <linux/io.h>
-+
-+#include <linux/module.h>
-+
-+#ifdef CONFIG_PCI
-+/**
-+ * pci_iomap - create a virtual mapping cookie for a PCI BAR
-+ * @dev: PCI device that owns the BAR
-+ * @bar: BAR number
-+ * @maxlen: length of the memory to map
-+ *
-+ * Using this function you will get a __iomem address to your device BAR.
-+ * You can access it using ioread*() and iowrite*(). These functions hide
-+ * the details if this is a MMIO or PIO address space and will just do what
-+ * you expect from them in the correct way.
-+ *
-+ * @maxlen specifies the maximum length to map. If you want to get access to
-+ * the complete BAR without checking for its length first, pass %0 here.
-+ * */
-+void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen)
-+{
-+	resource_size_t start = pci_resource_start(dev, bar);
-+	resource_size_t len = pci_resource_len(dev, bar);
-+	unsigned long flags = pci_resource_flags(dev, bar);
-+
-+	if (!len || !start)
-+		return NULL;
-+	if (maxlen && len > maxlen)
-+		len = maxlen;
-+	if (flags & IORESOURCE_IO)
-+		return ioport_map(start, len);
-+	if (flags & IORESOURCE_MEM) {
-+		if (flags & IORESOURCE_CACHEABLE)
-+			return ioremap(start, len);
-+		return ioremap_nocache(start, len);
-+	}
-+	/* What? */
-+	return NULL;
-+}
-+
-+EXPORT_SYMBOL(pci_iomap);
-+#endif /* CONFIG_PCI */
+ 
+ /* FIXME: Some boxes have multiple ISA bridges! */
 -- 
 1.7.5.53.gc233e

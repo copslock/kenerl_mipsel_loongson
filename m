@@ -1,31 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 19:01:35 +0100 (CET)
-Received: from phoenix3.szarvasnet.hu ([87.101.127.16]:42071 "EHLO
-        mail.szarvasnet.hu" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904624Ab1KXR4i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Nov 2011 18:56:38 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTP id 61BC6140511;
-        Thu, 24 Nov 2011 18:56:32 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at mail.szarvasnet.hu
-Received: from mail.szarvasnet.hu ([127.0.0.1])
-        by localhost (phoenix3.szarvasnet.hu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 1COFwWZ5Tc3n; Thu, 24 Nov 2011 18:56:31 +0100 (CET)
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by phoenix3.szarvasnet.hu (Postfix) with ESMTPA id 4CE22140601;
-        Thu, 24 Nov 2011 18:56:24 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 19:39:47 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:33006 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1904611Ab1KXSjl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Nov 2011 19:39:41 +0100
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from [192.168.254.129] (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 1AF2823C009A;
+        Thu, 24 Nov 2011 19:39:39 +0100 (CET)
+Message-ID: <4ECE8F6B.1060203@openwrt.org>
+Date:   Thu, 24 Nov 2011 19:39:39 +0100
 From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        =?UTF-8?q?Ren=C3=A9=20Bolldorf?= <xsecute@googlemail.com>,
-        Imre Kaloz <kaloz@openwrt.org>,
-        Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH v2 10/12] MIPS: ath79: remove ar724x_pci_add_data function
-Date:   Thu, 24 Nov 2011 18:56:05 +0100
-Message-Id: <1322157367-31089-11-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.2.1
-In-Reply-To: <1322157367-31089-1-git-send-email-juhosg@openwrt.org>
-References: <1322157367-31089-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 31976
+MIME-Version: 1.0
+To:     =?UTF-8?B?UmVuw6kgQm9sbGRvcmY=?= <xsecute@googlemail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        Imre Kaloz <kaloz@openwrt.org>
+Subject: Re: [PATCH 00/12] MIPS: ath79: AR724X PCI fixes and AR71XX PCI support
+References: <1322003670-8797-1-git-send-email-juhosg@openwrt.org> <CAEWqx5-HNNy-9BhYi=nnp3Q=vGQnq1hfH50env5W73ux2UiZXw@mail.gmail.com> <4ECCFE72.6090300@openwrt.org> <CAEWqx5_hgSH0FoWJPL0JDrVXGTWFCV0-FH9hXPMTxbG3A1pScQ@mail.gmail.com> <CAEWqx5_emEPp1HzK=SwOUJnJp5uFhco1asEQjuucdEV4rTQCdg@mail.gmail.com> <4ECD5B06.10204@openwrt.org> <CAEWqx5-deTQLVu=1S9XjKTeq+=O3OE-EXJsXugZAeKYFFzjo-w@mail.gmail.com> <4ECE5D8E.3030504@openwrt.org> <CAEWqx59_YvRfqKxhTYAxrCh=W+UV89V5ibMnBQpC+2i-Ed08Kg@mail.gmail.com>
+In-Reply-To: <CAEWqx59_YvRfqKxhTYAxrCh=W+UV89V5ibMnBQpC+2i-Ed08Kg@mail.gmail.com>
+X-Enigmail-Version: 1.3.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-archive-position: 31977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,93 +29,35 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21020
+X-UID: 21031
 
-The variables set by this function are not used anymore.
-Remove the function and the relevant variables as well.
+2011.11.24. 16:54 keltezéssel, René Bolldorf írta:
+> 2011/11/24 Gabor Juhos <juhosg@openwrt.org>:
+>> Hi René,
+>>
+>>> Sorry Gabor for the following patch, but it seems your patchset was
+>>> against a other tree?
+>>
+>> Both of my patch sets was based on the 'mips-for-linux-next' branch of Ralf's
+>> 'upstream-sfr' tree:
+>>
+>> git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git
+>>
+>>> Because of the many failures I rebase'ed against 09521577ca7718b6c of the
+>>> linus tree and written anything from scratch.
+>>
+>> That was waste of time. The ath79 platform got a pile of changes recently, and
+>> those changes are not yet available in Linus' tree. If you were unsure about the
+>> tree, you should have asked earlier.
+>>
+> 
+> Alright. I don't play with all trees now.
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
----
-v2: - no changes
+Why if not indiscreet?
 
- arch/mips/ath79/mach-ubnt-xm.c |    7 -------
- arch/mips/ath79/pci.c          |    8 --------
- arch/mips/ath79/pci.h          |    6 ------
- 3 files changed, 0 insertions(+), 21 deletions(-)
+> I wait for the next merge.
 
-diff --git a/arch/mips/ath79/mach-ubnt-xm.c b/arch/mips/ath79/mach-ubnt-xm.c
-index ca47ba5..4a3c606 100644
---- a/arch/mips/ath79/mach-ubnt-xm.c
-+++ b/arch/mips/ath79/mach-ubnt-xm.c
-@@ -82,12 +82,6 @@ static struct ath79_spi_platform_data ubnt_xm_spi_data = {
- #ifdef CONFIG_PCI
- static struct ath9k_platform_data ubnt_xm_eeprom_data;
- 
--static struct ar724x_pci_data ubnt_xm_pci_data[] = {
--	{
--		.irq	= ATH79_PCI_IRQ(0),
--	},
--};
--
- static int ubnt_xm_pci_plat_dev_init(struct pci_dev *dev)
- {
- 	switch (PCI_SLOT(dev->devfn)) {
-@@ -104,7 +98,6 @@ static void __init ubnt_xm_pci_init(void)
- 	memcpy(ubnt_xm_eeprom_data.eeprom_data, UBNT_XM_EEPROM_ADDR,
- 	       sizeof(ubnt_xm_eeprom_data.eeprom_data));
- 
--	ar724x_pci_add_data(ubnt_xm_pci_data, ARRAY_SIZE(ubnt_xm_pci_data));
- 	ath79_pci_set_plat_dev_init(ubnt_xm_pci_plat_dev_init);
- 	ath79_register_pci();
- }
-diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-index 365a8b6..253a382 100644
---- a/arch/mips/ath79/pci.c
-+++ b/arch/mips/ath79/pci.c
-@@ -18,8 +18,6 @@
- static int (*ath79_pci_plat_dev_init)(struct pci_dev *dev);
- static const struct ath79_pci_irq *ath79_pci_irq_map __initdata;
- static unsigned ath79_pci_nr_irqs __initdata;
--static struct ar724x_pci_data *pci_data;
--static int pci_data_size;
- 
- static const struct ath79_pci_irq ar71xx_pci_irq_map[] __initconst = {
- 	{
-@@ -45,12 +43,6 @@ static const struct ath79_pci_irq ar724x_pci_irq_map[] __initconst = {
- 	}
- };
- 
--void ar724x_pci_add_data(struct ar724x_pci_data *data, int size)
--{
--	pci_data	= data;
--	pci_data_size	= size;
--}
--
- int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
- {
- 	int irq = -1;
-diff --git a/arch/mips/ath79/pci.h b/arch/mips/ath79/pci.h
-index a5c4e58..5ebed21 100644
---- a/arch/mips/ath79/pci.h
-+++ b/arch/mips/ath79/pci.h
-@@ -11,18 +11,12 @@
- #ifndef _ATH79_PCI_H
- #define _ATH79_PCI_H
- 
--struct ar724x_pci_data {
--	int irq;
--};
--
- struct ath79_pci_irq {
- 	u8	slot;
- 	u8	pin;
- 	int	irq;
- };
- 
--void ar724x_pci_add_data(struct ar724x_pci_data *data, int size);
--
- #ifdef CONFIG_PCI
- void ath79_pci_set_irq_map(unsigned nr_irqs, const struct ath79_pci_irq *map);
- void ath79_pci_set_plat_dev_init(int (*func)(struct pci_dev *dev));
--- 
-1.7.2.1
+If you mean Linus' tree, the new codes will not be merged into that before the
+release of 3.2. You would have to wait for a few weeks probably.
+
+-Gabor

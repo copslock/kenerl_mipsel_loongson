@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 21:16:51 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:12931 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 21:17:21 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:7405 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904619Ab1KXUQf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 24 Nov 2011 21:16:35 +0100
-Received: from int-mx10.intmail.prod.int.phx2.redhat.com (int-mx10.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id pAOKFx2W001789
+        id S1904620Ab1KXUQy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 24 Nov 2011 21:16:54 +0100
+Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id pAOKGJAg002523
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Thu, 24 Nov 2011 15:15:59 -0500
+        Thu, 24 Nov 2011 15:16:19 -0500
 Received: from redhat.com (vpn1-7-27.ams2.redhat.com [10.36.7.27])
-        by int-mx10.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id pAOKFhbQ005250;
-        Thu, 24 Nov 2011 15:15:44 -0500
-Date:   Thu, 24 Nov 2011 22:17:23 +0200
+        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id pAOKG2MB010523;
+        Thu, 24 Nov 2011 15:16:03 -0500
+Date:   Thu, 24 Nov 2011 22:17:42 +0200
 From:   "Michael S. Tsirkin" <mst@redhat.com>
 Cc:     Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -62,8 +62,8 @@ Cc:     Richard Henderson <rth@twiddle.net>,
         sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
         Jesse Barnes <jbarnes@virtuousgeek.org>,
         linux-pci@vger.kernel.org
-Subject: [PATCH-RFC 03/10] alpha: switch to GENERIC_PCI_IOMAP
-Message-ID: <4245e7d8f484de6512fd4a9e4cba5b90cc111899.1322163031.git.mst@redhat.com>
+Subject: [PATCH-RFC 04/10] arm: switch to GENERIC_PCI_IOMAP
+Message-ID: <1415bf8cf7d98d05b7d189e913efb7f9668846ac.1322163031.git.mst@redhat.com>
 References: <cover.1322163031.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -71,9 +71,9 @@ Content-Disposition: inline
 In-Reply-To: <cover.1322163031.git.mst@redhat.com>
 X-Mutt-Fcc: =sent
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.23
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
 To:     unlisted-recipients:; (no To-header on input)
-X-archive-position: 31981
+X-archive-position: 31982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -82,50 +82,63 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21064
+X-UID: 21065
 
-alpha copied pci_iomap from generic code to avoid
+arm copied pci_iomap from generic code, probably to avoid
 pulling the rest of iomap.c in.  Since that's in
 a separate file now, we can reuse the common implementation.
 
-The only difference is handling of nocache flag,
-that turns out to be done correctly by the
-generic code since arch/alpha/include/asm/io.h
-defines ioremap_nocache same as ioremap.
-
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- arch/alpha/Kconfig      |    1 +
- arch/alpha/kernel/pci.c |   26 +-------------------------
- 2 files changed, 2 insertions(+), 25 deletions(-)
+ arch/arm/Kconfig          |    1 +
+ arch/arm/include/asm/io.h |    2 +-
+ arch/arm/mm/iomap.c       |   21 ---------------------
+ 3 files changed, 2 insertions(+), 22 deletions(-)
 
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index 3636b11..56a4df9 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -315,6 +315,7 @@ config ISA_DMA_API
- config PCI
- 	bool
- 	depends on !ALPHA_JENSEN
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 44789ef..2ebf66b 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -30,6 +30,7 @@ config ARM
+ 	select HAVE_SPARSE_IRQ
+ 	select GENERIC_IRQ_SHOW
+ 	select CPU_PM if (SUSPEND || CPU_IDLE)
 +	select GENERIC_PCI_IOMAP
- 	default y
  	help
- 	  Find out whether you have a PCI motherboard. PCI is the name of a
-diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
-index c9ab94e..f3cae27 100644
---- a/arch/alpha/kernel/pci.c
-+++ b/arch/alpha/kernel/pci.c
-@@ -508,30 +508,7 @@ sys_pciconfig_iobase(long which, unsigned long bus, unsigned long dfn)
- 	return -EOPNOTSUPP;
- }
+ 	  The ARM series is a line of low-power-consumption RISC chip designs
+ 	  licensed by ARM Ltd and targeted at embedded applications and
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 065d100..9275828 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -27,6 +27,7 @@
+ #include <asm/byteorder.h>
+ #include <asm/memory.h>
+ #include <asm/system.h>
++#include <asm-generic/pci_iomap.h>
  
--/* Create an __iomem token from a PCI BAR.  Copied from lib/iomap.c with
--   no changes, since we don't want the other things in that object file.  */
--
+ /*
+  * ISA I/O bus memory addresses are 1:1 with the physical address.
+@@ -306,7 +307,6 @@ extern void ioport_unmap(void __iomem *addr);
+ 
+ struct pci_dev;
+ 
+-extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen);
+ extern void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
+ 
+ /*
+diff --git a/arch/arm/mm/iomap.c b/arch/arm/mm/iomap.c
+index 430df1a..e62956e 100644
+--- a/arch/arm/mm/iomap.c
++++ b/arch/arm/mm/iomap.c
+@@ -35,27 +35,6 @@ EXPORT_SYMBOL(pcibios_min_mem);
+ unsigned int pci_flags = PCI_REASSIGN_ALL_RSRC;
+ EXPORT_SYMBOL(pci_flags);
+ 
 -void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen)
 -{
 -	resource_size_t start = pci_resource_start(dev, bar);
--	resource_size_t len = pci_resource_len(dev, bar);
+-	resource_size_t len   = pci_resource_len(dev, bar);
 -	unsigned long flags = pci_resource_flags(dev, bar);
 -
 -	if (!len || !start)
@@ -135,25 +148,16 @@ index c9ab94e..f3cae27 100644
 -	if (flags & IORESOURCE_IO)
 -		return ioport_map(start, len);
 -	if (flags & IORESOURCE_MEM) {
--		/* Not checking IORESOURCE_CACHEABLE because alpha does
--		   not distinguish between ioremap and ioremap_nocache.  */
--		return ioremap(start, len);
+-		if (flags & IORESOURCE_CACHEABLE)
+-			return ioremap(start, len);
+-		return ioremap_nocache(start, len);
 -	}
 -	return NULL;
 -}
--
--/* Destroy that token.  Not copied from lib/iomap.c.  */
-+/* Destroy an __iomem token.  Not copied from lib/iomap.c.  */
- 
- void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
- {
-@@ -539,7 +516,6 @@ void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
- 		iounmap(addr);
- }
- 
 -EXPORT_SYMBOL(pci_iomap);
- EXPORT_SYMBOL(pci_iounmap);
- 
- /* FIXME: Some boxes have multiple ISA bridges! */
+-
+ void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
+ {
+ 	if ((unsigned long)addr >= VMALLOC_START &&
 -- 
 1.7.5.53.gc233e

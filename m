@@ -1,121 +1,303 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Nov 2011 01:59:37 +0100 (CET)
-Received: from calzone.tip.net.au ([203.10.76.15]:56787 "EHLO
-        calzone.tip.net.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904616Ab1KYA7d (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Nov 2011 01:59:33 +0100
-Received: from canb.auug.org.au (ibmaus65.lnk.telstra.net [165.228.126.9])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by calzone.tip.net.au (Postfix) with ESMTPSA id 611E012848C;
-        Fri, 25 Nov 2011 11:59:26 +1100 (EST)
-Date:   Fri, 25 Nov 2011 11:59:21 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Cc:     Nicolas Pitre <nicolas.pitre@linaro.org>,
-        linux-mips@linux-mips.org, linux-m68k@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux@openrisc.net,
-        linux-pci@vger.kernel.org, Jesse Barnes <jbarnes@virtuousgeek.org>,
-        Chen Liqin <liqin.chen@sunplusct.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        Helge Deller <deller@gmx.de>, x86@kernel.org,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-arch@vger.kernel.org, Arend van Spriel <arend@broadcom.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Lasse Collin <lasse.collin@tukaani.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        microblaze-uclinux@itee.uq.edu.au, Paul Bolle <pebolle@tiscali.nl>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Franky Lin <frankyl@broadcom.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Fabio Baltieri <fabio.baltieri@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Richard Henderson <rth@twiddle.net>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Michal Simek <monstr@monstr.eu>,
-        Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
-        linux-cris-kernel@axis.com,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Kyle McMartin <kyle@mcmartin.ca>,
-        Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
-        Olof Johansson <olof@lixom.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH-RFC 02/10] lib: add GENERIC_PCI_IOMAP
-Message-Id: <20111125115921.a3e642f06b24526dce6a96e8@canb.auug.org.au>
-In-Reply-To: <20111125115455.9d5e18da6e683586d84ed9c8@canb.auug.org.au>
-References: <cover.1322163031.git.mst@redhat.com>
-        <b5a1327dd8bb38f87cba7ae10b308ec3b63de66a.1322163031.git.mst@redhat.com>
-        <20111125115455.9d5e18da6e683586d84ed9c8@canb.auug.org.au>
-X-Mailer: Sylpheed 3.2.0beta3 (GTK+ 2.24.8; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA256";
- boundary="Signature=_Fri__25_Nov_2011_11_59_21_+1100_q4XOooN5uoDKv_dZ"
-X-archive-position: 31991
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Nov 2011 03:55:04 +0100 (CET)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:65239 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904619Ab1KYCy4 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Nov 2011 03:54:56 +0100
+Received: by yenq4 with SMTP id q4so141756yen.36
+        for <multiple recipients>; Thu, 24 Nov 2011 18:54:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=spaggKmFNln1AvJFhBeHj8GS9KTdxzw+XBvmNZ3qEIw=;
+        b=HbQMGcZDudPsTEkOGxCQKZ5CgPaimh+sacZ2+V1T8xnO80TcSIUTPONnx0ed6rcRlK
+         PtpH2mGdPLkdUr/NMfveeILapVpT65kdsCHKJX79yM1gugH3YbWwb+Sk9QNEcTpz3Uib
+         jE+6211uu3ykwouDJAKUPOE3JopwQeoAlKE90=
+Received: by 10.101.180.38 with SMTP id h38mr3050434anp.1.1322189689685;
+        Thu, 24 Nov 2011 18:54:49 -0800 (PST)
+Received: from localhost.localdomain ([182.148.112.76])
+        by mx.google.com with ESMTPS id 36sm28959588anz.2.2011.11.24.18.54.43
+        (version=SSLv3 cipher=OTHER);
+        Thu, 24 Nov 2011 18:54:48 -0800 (PST)
+From:   zhzhl555@gmail.com
+To:     a.zummo@towertech.it, rtc-linux@googlegroups.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:     ralf@linux-mips.org, keguang.zhang@gmail.com, wuzhangjin@gmail.com,
+        r0bertz@gentoo.org, zhao zhang <zhzhl555@gmail.com>
+Subject: [PATCH V1] MIPS: Add RTC support for loongson1B
+Date:   Fri, 25 Nov 2011 10:52:07 +0800
+Message-Id: <1322189527-4761-1-git-send-email-zhzhl555@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+X-archive-position: 31992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: zhzhl555@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21175
+X-UID: 21205
 
---Signature=_Fri__25_Nov_2011_11_59_21_+1100_q4XOooN5uoDKv_dZ
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: zhao zhang <zhzhl555@gmail.com>
 
-Hi Michael,
+V1: replace __raw_writel/__raw_readl with writel/readl.
+thanks for Linus Wallei's advice.
+This patch adds RTC support(TOY counter0) for loongson1B.
 
-On Fri, 25 Nov 2011 11:54:55 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->
-> Just wondering why you move pci_iomap but not pic_iounmap.
+Signed-off-by: zhao zhang <zhzhl555@gmail.com>
+---
+ drivers/rtc/Kconfig    |   10 ++
+ drivers/rtc/Makefile   |    1 +
+ drivers/rtc/rtc-ls1x.c |  213 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 224 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/rtc/rtc-ls1x.c
 
-I figured this out.  Arches have their own.
-
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
-http://www.canb.auug.org.au/~sfr/
-
---Signature=_Fri__25_Nov_2011_11_59_21_+1100_q4XOooN5uoDKv_dZ
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-
-iQIcBAEBCAAGBQJOzuhpAAoJEECxmPOUX5FESFYP/3CbBas7b+W+5nG4fSYO/XAY
-YsVPpQ7wIGYtWbIpHt5fproH7C6zyXeXuhqhJWwYk7A2vM4WCIxHJKnPIP3E9AoK
-EVaead1df7krZ29KJTLw0hEzhB2sftq8kotUfY7hhI0tIZ3vwPOCuTxbgaRIPAE8
-rm+q0xrJVHZSZ0eM14kDP2GuHPch3WgHvNWrQUeIX94g3v3bfYOZsg4PjUnamVVg
-ai5ulT6kqXdn5F1Q2G3Ftu8Cs/8CMw7wMSzYUvIr/F84t/4LZrbU6LHXAiGyEkXa
-4UR8xTXMpUWpyXU7JjVqgPgS1/85DYemZrW6WBkaiHozciV6lDpgIvJ+JBhlzAY/
-QUnzFjlKO6YeN0YzXF2VHaWJmtG/wnqouNHMbDvmt8RX6C4SpwiWP0w2tZhcSKmG
-uYq9YyQBq6CqvzDg66xoZWigPShS6CXHZWmd2YH4tx90CwNIVZdMkisFgPTbwVsp
-klTxE8gYst6ni0PoMI3xYqvVY034SaedFHRVx768gOuhNp1WaFGeWRveuRBYJiMw
-noFu4kywDxJJ/s4sCQiCwzvX3JYpRMWbgtEckEW0msSquMDrPTjlBZFGwkf4/OGC
-g83fXQr/YwgIJKMFyUqKabIAPX3uNfNUjzDcINzRK9mux4zrlWBzndLelIsti3FO
-6V/pN4Jg3NPFIEylidUW
-=sifz
------END PGP SIGNATURE-----
-
---Signature=_Fri__25_Nov_2011_11_59_21_+1100_q4XOooN5uoDKv_dZ--
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index 5a538fc..6f8c2d7 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -1070,4 +1070,14 @@ config RTC_DRV_PUV3
+ 	  This drive can also be built as a module. If so, the module
+ 	  will be called rtc-puv3.
+ 
++config RTC_DRV_LOONGSON1
++	tristate "loongson1 RTC support"
++	depends on MACH_LOONGSON1
++	help
++	  This is a driver for the loongson1 on-chip Counter0 (Time-Of-Year
++	  counter) to be used as a RTC.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called rtc-ls1x.
++
+ endif # RTC_CLASS
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 6e69823..48153fe 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -109,3 +109,4 @@ obj-$(CONFIG_RTC_DRV_VT8500)	+= rtc-vt8500.o
+ obj-$(CONFIG_RTC_DRV_WM831X)	+= rtc-wm831x.o
+ obj-$(CONFIG_RTC_DRV_WM8350)	+= rtc-wm8350.o
+ obj-$(CONFIG_RTC_DRV_X1205)	+= rtc-x1205.o
++obj-$(CONFIG_RTC_DRV_LOONGSON1)	+= rtc-ls1x.o
+diff --git a/drivers/rtc/rtc-ls1x.c b/drivers/rtc/rtc-ls1x.c
+new file mode 100644
+index 0000000..c752a30
+--- /dev/null
++++ b/drivers/rtc/rtc-ls1x.c
+@@ -0,0 +1,213 @@
++/*
++ * Copyright (c) 2011 Zhao Zhang <zhzhl555@gmail.com>
++ *
++ * Derived from driver/rtc/rtc-au1xxx.c
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/rtc.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/delay.h>
++#include <linux/types.h>
++#include <linux/io.h>
++#include <asm/mach-loongson1/loongson1.h>
++
++#define LS1X_RTC_REG_OFFSET	(LS1X_RTC_BASE + 0x20)
++#define LS1X_RTC_REGS(x) \
++		((void __iomem *)KSEG1ADDR(LS1X_RTC_REG_OFFSET + (x)))
++
++/*RTC programmable counters 0 and 1*/
++#define SYS_COUNTER_CNTRL		(LS1X_RTC_REGS(0x20))
++#define SYS_CNTRL_ERS			(1 << 23)
++#define SYS_CNTRL_RTS			(1 << 20)
++#define SYS_CNTRL_RM2			(1 << 19)
++#define SYS_CNTRL_RM1			(1 << 18)
++#define SYS_CNTRL_RM0			(1 << 17)
++#define SYS_CNTRL_RS			(1 << 16)
++#define SYS_CNTRL_BP			(1 << 14)
++#define SYS_CNTRL_REN			(1 << 13)
++#define SYS_CNTRL_BRT			(1 << 12)
++#define SYS_CNTRL_TEN			(1 << 11)
++#define SYS_CNTRL_BTT			(1 << 10)
++#define SYS_CNTRL_E0			(1 << 8)
++#define SYS_CNTRL_ETS			(1 << 7)
++#define SYS_CNTRL_32S			(1 << 5)
++#define SYS_CNTRL_TTS			(1 << 4)
++#define SYS_CNTRL_TM2			(1 << 3)
++#define SYS_CNTRL_TM1			(1 << 2)
++#define SYS_CNTRL_TM0			(1 << 1)
++#define SYS_CNTRL_TS			(1 << 0)
++
++/* Programmable Counter 0 Registers */
++#define SYS_TOYTRIM		(LS1X_RTC_REGS(0))
++#define SYS_TOYWRITE0		(LS1X_RTC_REGS(4))
++#define SYS_TOYWRITE1		(LS1X_RTC_REGS(8))
++#define SYS_TOYREAD0		(LS1X_RTC_REGS(0xC))
++#define SYS_TOYREAD1		(LS1X_RTC_REGS(0x10))
++#define SYS_TOYMATCH0		(LS1X_RTC_REGS(0x14))
++#define SYS_TOYMATCH1		(LS1X_RTC_REGS(0x18))
++#define SYS_TOYMATCH2		(LS1X_RTC_REGS(0x1C))
++
++/* Programmable Counter 1 Registers */
++#define SYS_RTCTRIM		(LS1X_RTC_REGS(0x40))
++#define SYS_RTCWRITE0		(LS1X_RTC_REGS(0x44))
++#define SYS_RTCREAD0		(LS1X_RTC_REGS(0x48))
++#define SYS_RTCMATCH0		(LS1X_RTC_REGS(0x4C))
++#define SYS_RTCMATCH1		(LS1X_RTC_REGS(0x50))
++#define SYS_RTCMATCH2		(LS1X_RTC_REGS(0x54))
++
++#define LS1X_SEC_OFFSET		(4)
++#define LS1X_MIN_OFFSET		(10)
++#define LS1X_HOUR_OFFSET	(16)
++#define LS1X_DAY_OFFSET		(21)
++#define LS1X_MONTH_OFFSET	(26)
++
++
++#define LS1X_SEC_MASK		(0x3f)
++#define LS1X_MIN_MASK		(0x3f)
++#define LS1X_HOUR_MASK		(0x1f)
++#define LS1X_DAY_MASK		(0x1f)
++#define LS1X_MONTH_MASK		(0x3f)
++#define LS1X_YEAR_MASK		(0xffffffff)
++
++#define ls1x_get_sec(t)		(((t) >> LS1X_SEC_OFFSET) & LS1X_SEC_MASK)
++#define ls1x_get_min(t)		(((t) >> LS1X_MIN_OFFSET) & LS1X_MIN_MASK)
++#define ls1x_get_hour(t)	(((t) >> LS1X_HOUR_OFFSET) & LS1X_HOUR_MASK)
++#define ls1x_get_day(t)		(((t) >> LS1X_DAY_OFFSET) & LS1X_DAY_MASK)
++#define ls1x_get_month(t)	(((t) >> LS1X_MONTH_OFFSET) & LS1X_MONTH_MASK)
++
++#define RTC_CNTR_OK (SYS_CNTRL_E0 | SYS_CNTRL_32S)
++
++static int ls1x_rtc_read_time(struct device *dev, struct rtc_time *rtm)
++{
++	unsigned long v, t;
++
++	v = readl(SYS_TOYREAD0);
++	t = readl(SYS_TOYREAD1);
++
++	memset(rtm, 0, sizeof(struct rtc_time));
++	t  = mktime((t & LS1X_YEAR_MASK), ls1x_get_month(v),
++			ls1x_get_day(v), ls1x_get_hour(v),
++			ls1x_get_min(v), ls1x_get_sec(v));
++	rtc_time_to_tm(t, rtm);
++
++	return rtc_valid_tm(rtm);
++}
++
++static int ls1x_rtc_set_time(struct device *dev, struct  rtc_time *rtm)
++{
++	unsigned long v, t;
++
++	v = ((rtm->tm_mon + 1)  << LS1X_MONTH_OFFSET)
++		| (rtm->tm_mday << LS1X_DAY_OFFSET)
++		| (rtm->tm_hour << LS1X_HOUR_OFFSET)
++		| (rtm->tm_min  << LS1X_MIN_OFFSET)
++		| (rtm->tm_sec  << LS1X_SEC_OFFSET);
++
++	t = rtm->tm_year + 1900;
++	writel(v, SYS_TOYWRITE0);
++	while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TS)
++		usleep_range(1000, 3000);
++	__asm__ volatile ("sync");
++
++	writel(t, SYS_TOYWRITE1);
++	while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TS)
++		usleep_range(1000, 3000);
++	__asm__ volatile ("sync");
++
++	v = readl(SYS_COUNTER_CNTRL);
++	return 0;
++}
++
++static struct rtc_class_ops  ls1x_rtc_ops = {
++	.read_time	= ls1x_rtc_read_time,
++	.set_time	= ls1x_rtc_set_time,
++};
++
++static int __devinit ls1x_rtc_probe(struct platform_device *pdev)
++{
++	struct rtc_device *rtcdev;
++	unsigned long v;
++	int ret;
++
++	v = readl(SYS_COUNTER_CNTRL);
++	if (!(v & RTC_CNTR_OK)) {
++		dev_err(&pdev->dev, "rtc counters not working\n");
++		ret = -ENODEV;
++		goto err;
++	}
++	ret = -ETIMEDOUT;
++	/*set to 1 HZ if needed*/
++	if (readl(SYS_TOYTRIM) != 32767) {
++		v = 0x100000;
++		while ((readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS) && --v)
++			usleep_range(1000, 3000);
++
++		if (!v) {
++			dev_err(&pdev->dev, "time out\n");
++			goto err;
++		}
++		writel(32767, SYS_TOYTRIM);
++		__asm__ volatile("sync");
++	}
++	/*this loop coundn't be endless*/
++	while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS)
++		usleep_range(1000, 3000);
++
++	rtcdev = rtc_device_register("ls1x-rtc", &pdev->dev,
++					&ls1x_rtc_ops , THIS_MODULE);
++	if (IS_ERR(rtcdev)) {
++		ret = PTR_ERR(rtcdev);
++		goto err;
++	}
++
++	platform_set_drvdata(pdev, rtcdev);
++	return 0;
++err:
++	return ret;
++}
++
++static int __devexit ls1x_rtc_remove(struct platform_device *pdev)
++{
++	struct rtc_device *rtcdev = platform_get_drvdata(pdev);
++
++	rtc_device_unregister(rtcdev);
++	platform_set_drvdata(pdev, NULL);
++
++	return 0;
++}
++
++static struct platform_driver  ls1x_rtc_driver = {
++	.driver		= {
++		.name	= "ls1x-rtc",
++		.owner	= THIS_MODULE,
++	},
++	.remove		= __devexit_p(ls1x_rtc_remove),
++};
++
++static int __init ls1x_rtc_init(void)
++{
++	return platform_driver_probe(&ls1x_rtc_driver, ls1x_rtc_probe);
++}
++
++static void __exit ls1x_rtc_exit(void)
++{
++	platform_driver_unregister(&ls1x_rtc_driver);
++}
++
++
++module_init(ls1x_rtc_init);
++module_exit(ls1x_rtc_exit);
++
++
++MODULE_DESCRIPTION("LOONGSON1 TOY-counter-based RTC driver");
++MODULE_AUTHOR("zhao zhang <zhzhl555@gmail.com>");
++MODULE_LICENSE("GPL");
++
+-- 
+1.7.0.4

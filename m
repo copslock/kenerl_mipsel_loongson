@@ -1,15 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Nov 2011 23:09:06 +0100 (CET)
-Received: from moutng.kundenserver.de ([212.227.126.186]:63267 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904619Ab1KXWJC (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 24 Nov 2011 23:09:02 +0100
-Received: from wuerfel.localnet (port-92-200-107-254.dynamic.qsc.de [92.200.107.254])
-        by mrelayeu.kundenserver.de (node=mreu4) with ESMTP (Nemesis)
-        id 0Lirv8-1QqWxb3mes-00d5x5; Thu, 24 Nov 2011 23:08:04 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linuxppc-dev@lists.ozlabs.org
-Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Nov 2011 01:55:46 +0100 (CET)
+Received: from calzone.tip.net.au ([203.10.76.15]:38178 "EHLO
+        calzone.tip.net.au" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1904616Ab1KYAzi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 25 Nov 2011 01:55:38 +0100
+Received: from canb.auug.org.au (ibmaus65.lnk.telstra.net [165.228.126.9])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by calzone.tip.net.au (Postfix) with ESMTPSA id 7828312847B;
+        Fri, 25 Nov 2011 11:55:02 +1100 (EST)
+Date:   Fri, 25 Nov 2011 11:54:55 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Nicolas Pitre <nicolas.pitre@linaro.org>,
         linux-mips@linux-mips.org, linux-m68k@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux@openrisc.net,
         linux-pci@vger.kernel.org, Jesse Barnes <jbarnes@virtuousgeek.org>,
@@ -30,6 +32,7 @@ Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
         Matt Turner <mattst88@gmail.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
         Lasse Collin <lasse.collin@tukaani.org>,
+        Arnd Bergmann <arnd@arndb.de>,
         Lucas De Marchi <lucas.demarchi@profusion.mobi>,
         microblaze-uclinux@itee.uq.edu.au, Paul Bolle <pebolle@tiscali.nl>,
         Rob Herring <rob.herring@calxeda.com>,
@@ -51,43 +54,224 @@ Cc:     "Michael S. Tsirkin" <mst@redhat.com>,
         Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
         Olof Johansson <olof@lixom.net>,
         Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
         "David S. Miller" <davem@davemloft.net>
 Subject: Re: [PATCH-RFC 02/10] lib: add GENERIC_PCI_IOMAP
-Date:   Thu, 24 Nov 2011 23:07:57 +0100
-Message-ID: <1564173.bLjG0I2D2P@wuerfel>
-User-Agent: KMail/4.7.2 (Linux/3.1.0-rc8nosema+; KDE/4.7.2; x86_64; ; )
+Message-Id: <20111125115455.9d5e18da6e683586d84ed9c8@canb.auug.org.au>
 In-Reply-To: <b5a1327dd8bb38f87cba7ae10b308ec3b63de66a.1322163031.git.mst@redhat.com>
-References: <cover.1322163031.git.mst@redhat.com> <b5a1327dd8bb38f87cba7ae10b308ec3b63de66a.1322163031.git.mst@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:EG8dozazYPpsKr6UJtFOn4IfwTCKaaCkCZeDOe2Okjx
- Cc2TasOhfy9zUcOiKOO/P4lBxzfT3wMDoGESgqYTQEy8BURAks
- aHiYWvWNEc/kLykrF2UPTLFDD/9VfjWt9vHwk2+3HJ//OBFEhb
- phThG2+Zp6D5oukiJTckKukA6Uyj7H8OymA4b1BCA7CJ23Oyhb
- dB63p7LQtYJrJ/xwZ5B2imHQQUb0ujoBmKv0Da8NcLOgE8Ykyn
- zjbjZTaiCGBZNL0lQ3qJfnM203vI5Kh2w7TEsv1vxGrmpFBUYj
- EX0pEBeIQlEmE9icwl3ae2LQQJSdUfHn6Z+ZZ6iASvV9cv10c5
- W3ITD/8xeXK/SyLQ3mPg=
-X-archive-position: 31989
+References: <cover.1322163031.git.mst@redhat.com>
+        <b5a1327dd8bb38f87cba7ae10b308ec3b63de66a.1322163031.git.mst@redhat.com>
+X-Mailer: Sylpheed 3.2.0beta3 (GTK+ 2.24.8; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA256";
+ boundary="Signature=_Fri__25_Nov_2011_11_54_55_+1100_Ear09Vzvz+xx6qEm"
+X-archive-position: 31990
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21120
+X-UID: 21174
 
-On Thursday 24 November 2011 22:17:02 Michael S. Tsirkin wrote:
-> Many architectures want a generic pci_iomap but
-> not the rest of iomap.c. Split that to a separate .c
-> file and add a new config symbol. select automatically
-> by GENERIC_IOMAP.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+--Signature=_Fri__25_Nov_2011_11_54_55_+1100_Ear09Vzvz+xx6qEm
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Very nice!
+Hi Michael,
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+On Thu, 24 Nov 2011 22:17:02 +0200 "Michael S. Tsirkin" <mst@redhat.com> wr=
+ote:
+>
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index 9120887..c8a67345 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -19,6 +19,8 @@
+>  #include <asm-generic/iomap.h>
+>  #endif
+> =20
+> +#include <asm-generic/pci_iomap.h>
+> +
+>  #ifndef mmiowb
+>  #define mmiowb() do {} while (0)
+>  #endif
+> @@ -283,9 +285,6 @@ static inline void writesb(const void __iomem *addr, =
+const void *buf, int len)
+>  #define __io_virt(x) ((void __force *) (x))
+> =20
+>  #ifndef CONFIG_GENERIC_IOMAP
+> -/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
+> -struct pci_dev;
+> -extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned lo=
+ng max);
+>  static inline void pci_iounmap(struct pci_dev *dev, void __iomem *p)
+>  {
+>  }
+
+Just wondering why you move pci_iomap but not pic_iounmap.  And also if
+pci_iounmap is meant to stay here, then the "struct pci_dev" should
+probably stay as well.
+
+> diff --git a/include/asm-generic/iomap.h b/include/asm-generic/iomap.h
+> index 98dcd76..fdcddcb 100644
+> --- a/include/asm-generic/iomap.h
+> +++ b/include/asm-generic/iomap.h
+> @@ -69,16 +69,13 @@ extern void ioport_unmap(void __iomem *);
+>  #ifdef CONFIG_PCI
+>  /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
+>  struct pci_dev;
+> -extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned lo=
+ng max);
+>  extern void pci_iounmap(struct pci_dev *dev, void __iomem *);
+
+Ditto with pci_iounmap.  Also the comment above really belongs with pci_iom=
+ap.
+
+> diff --git a/include/asm-generic/pci_iomap.h b/include/asm-generic/pci_io=
+map.h
+> new file mode 100644
+> index 0000000..e08b3bd
+> --- /dev/null
+> +++ b/include/asm-generic/pci_iomap.h
+> @@ -0,0 +1,26 @@
+> +/* Generic I/O port emulation, based on MN10300 code
+> + *
+> + * Copyright (C) 2007 Red Hat, Inc. All Rights Reserved.
+> + * Written by David Howells (dhowells@redhat.com)
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public Licence
+> + * as published by the Free Software Foundation; either version
+> + * 2 of the Licence, or (at your option) any later version.
+> + */
+> +#ifndef __ASM_GENERIC_PCI_IOMAP_H
+> +#define __ASM_GENERIC_PCI_IOMAP_H
+> +
+> +#ifdef CONFIG_PCI
+> +/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
+> +struct pci_dev;
+
+You could move this struct declaration above the ifdef and remove the
+duplicate below.
+
+> +extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned lo=
+ng max);
+> +#else
+> +struct pci_dev;
+> +static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsi=
+gned long max)
+> +{
+> +	return NULL;
+> +}
+> +#endif
+> +
+> +#endif /* __ASM_GENERIC_IO_H */
+> diff --git a/lib/iomap.c b/lib/iomap.c
+> index 5dbcb4b..ada922a 100644
+> --- a/lib/iomap.c
+> +++ b/lib/iomap.c
+> @@ -242,45 +242,11 @@ EXPORT_SYMBOL(ioport_unmap);
+>  #endif /* CONFIG_HAS_IOPORT */
+> =20
+>  #ifdef CONFIG_PCI
+> -/**
+> - * pci_iomap - create a virtual mapping cookie for a PCI BAR
+> - * @dev: PCI device that owns the BAR
+> - * @bar: BAR number
+> - * @maxlen: length of the memory to map
+> - *
+> - * Using this function you will get a __iomem address to your device BAR.
+> - * You can access it using ioread*() and iowrite*(). These functions hide
+> - * the details if this is a MMIO or PIO address space and will just do w=
+hat
+> - * you expect from them in the correct way.
+> - *
+> - * @maxlen specifies the maximum length to map. If you want to get acces=
+s to
+> - * the complete BAR without checking for its length first, pass %0 here.
+> - * */
+> -void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxl=
+en)
+> -{
+> -	resource_size_t start =3D pci_resource_start(dev, bar);
+> -	resource_size_t len =3D pci_resource_len(dev, bar);
+> -	unsigned long flags =3D pci_resource_flags(dev, bar);
+> -
+> -	if (!len || !start)
+> -		return NULL;
+> -	if (maxlen && len > maxlen)
+> -		len =3D maxlen;
+> -	if (flags & IORESOURCE_IO)
+> -		return ioport_map(start, len);
+> -	if (flags & IORESOURCE_MEM) {
+> -		if (flags & IORESOURCE_CACHEABLE)
+> -			return ioremap(start, len);
+> -		return ioremap_nocache(start, len);
+> -	}
+> -	/* What? */
+> -	return NULL;
+> -}
+> -
+> +/* Hide the details if this is a MMIO or PIO address space and just do w=
+hat
+> + * you expect in the correct way. */
+>  void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
+>  {
+>  	IO_COND(addr, /* nothing */, iounmap(addr));
+>  }
+> -EXPORT_SYMBOL(pci_iomap);
+>  EXPORT_SYMBOL(pci_iounmap);
+
+Ditto with pci_iounmap
+
+> diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
+> new file mode 100644
+> index 0000000..40b26cb
+> --- /dev/null
+> +++ b/lib/pci_iomap.c
+> @@ -0,0 +1,48 @@
+> +/*
+> + * Implement the default iomap interfaces
+> + *
+> + * (C) Copyright 2004 Linus Torvalds
+> + */
+> +#include <linux/pci.h>
+> +#include <linux/io.h>
+> +
+> +#include <linux/module.h>
+
+If this is relative to (at least) v3.2-rc1, then you should use export.h
+instead of module.h
+
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+http://www.canb.auug.org.au/~sfr/
+
+--Signature=_Fri__25_Nov_2011_11_54_55_+1100_Ear09Vzvz+xx6qEm
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBCAAGBQJOzudfAAoJEECxmPOUX5FE1/UP/0l4JcZxOiuNYsRtnb07C7hk
+Ue3iusoFy8ai5W839MsxANElduJ7bF/IEHXmpFbpTovxkxiHivHJ1JFxs7lyAeWL
+U7clx8Es4oRnSiWr6EbHSUXroLNw1zdHusF/XuM+xQvMXwZfUduE8KE866+XSV0h
+1kBawlJm/+4xUY/jpPdxKy4Ci4lCJ7oniqE22hWq4AGHMneU7/WbSBRL3r3oQcBp
+2f6IHg0BWjVUavic5bBD9EFDFLxnGZpZZhBh0ndbhqAmchrKAHeKqaLNp/uaYjtt
+5YZifhE6xLLZfoHYbZgcbT0ogWPKwKJsg433k3MdlTbpfMzeLXk4R3MbPo1ZsnR4
+Kx6lo+jTIMbugmWrU9z/BgA2NCLemrC/GKplPhhh+/G0jFfxfkYURO6PGP/hHkIx
+OksYjLKTf3PGs2hAn4Oyw2DsX1qHecCH2Ge7mTWf4q8ysb5reYZuwRhs6ykh4wEZ
+NMQonnmZ/OXuzXeRz5I+SwD4zn/k7zBz45y8zE6kKFee9JtentG/CA2YWPoj2fnw
+iDxc2gImfyd6r00YkldbmNMFeTsF0Ou2CaV+oNd2/ocDvnIhbz64mWWNPKQnoKEv
+wpja4BYLqwHXcv2yDQtlWsXIFeCtpEHHHd8Wi/OBLqZ8+TcTpB3eLHEtW5wWwihC
+Hhqalk75Y0o2tyHL4X1M
+=dkd1
+-----END PGP SIGNATURE-----
+
+--Signature=_Fri__25_Nov_2011_11_54_55_+1100_Ear09Vzvz+xx6qEm--

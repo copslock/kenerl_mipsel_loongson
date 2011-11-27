@@ -1,160 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Nov 2011 10:18:24 +0100 (CET)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:49914 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903593Ab1K0JST (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Nov 2011 10:18:19 +0100
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <wsa@pengutronix.de>)
-        id 1RUasA-0000hc-Lx; Sun, 27 Nov 2011 10:18:06 +0100
-Received: from wsa by octopus.hi.pengutronix.de with local (Exim 4.77)
-        (envelope-from <wsa@pengutronix.de>)
-        id 1RUas7-0003zx-Nt; Sun, 27 Nov 2011 10:18:03 +0100
-Date:   Sun, 27 Nov 2011 10:18:03 +0100
-From:   Wolfram Sang <w.sang@pengutronix.de>
-To:     rtc-linux@googlegroups.com
-Cc:     a.zummo@towertech.it, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-        keguang.zhang@gmail.com, wuzhangjin@gmail.com, r0bertz@gentoo.org,
-        zhao zhang <zhzhl555@gmail.com>
-Subject: Re: [rtc-linux] [PATCH V1] MIPS: Add RTC support for loongson1B
-Message-ID: <20111127091803.GD5263@pengutronix.de>
-References: <1322189527-4761-1-git-send-email-zhzhl555@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Nov 2011 10:52:57 +0100 (CET)
+Received: from out2.smtp.messagingengine.com ([66.111.4.26]:48377 "EHLO
+        out2.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903597Ab1K0Jwu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 27 Nov 2011 10:52:50 +0100
+Received: from compute4.internal (compute4.nyi.mail.srv.osa [10.202.2.44])
+        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id A692A209A5
+        for <linux-mips@linux-mips.org>; Sun, 27 Nov 2011 04:52:48 -0500 (EST)
+Received: from frontend2.nyi.mail.srv.osa ([10.202.2.161])
+  by compute4.internal (MEProxy); Sun, 27 Nov 2011 04:52:48 -0500
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=date:from:to:cc:subject:message-id
+        :references:mime-version:content-type:in-reply-to; s=smtpout;
+         bh=NmwGj0fj9kvkJ6Yuvsa7ZNGpLBY=; b=OZUalmNQB0Kx4u/6GZF89wOQTztR
+        Z/9mG3TSjj/w6ZPMlCEqDipw0+kx0H9ZCBWGpoamRhUPIu3D+qaBFGhcZjutv82m
+        LYvYX++rU0BJVKPyFxkrZieGrN4Nr7lwnjYjXZ6CDyRulFuW1MEOuySNm7tzYAjd
+        7bHgm9PO5Ds9q7s=
+X-Sasl-enc: 0VxubcDldYorrSuPzTu5ZOpTavXnk8DurJlssSEWFnzP 1322387566
+Received: from localhost (mobile-166-193-127-078.mycingular.net [166.193.127.78])
+        by mail.messagingengine.com (Postfix) with ESMTPSA id 736FA4824AF;
+        Sun, 27 Nov 2011 04:52:46 -0500 (EST)
+Date:   Sat, 26 Nov 2011 18:04:44 -0800
+From:   Greg KH <greg@kroah.com>
+To:     ddaney.cavm@gmail.com
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org, grant.likely@secretlab.ca,
+        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@suse.de>, devel@driverdev.osuosl.org
+Subject: Re: [PATCH 8/8] staging: octeon_ethernet: Convert to use device tree.
+Message-ID: <20111127020444.GA32071@kroah.com>
+References: <1320978124-13042-1-git-send-email-ddaney.cavm@gmail.com>
+ <1320978124-13042-9-git-send-email-ddaney.cavm@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="HWvPVVuAAfuRc6SZ"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1322189527-4761-1-git-send-email-zhzhl555@gmail.com>
+In-Reply-To: <1320978124-13042-9-git-send-email-ddaney.cavm@gmail.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
-X-SA-Exim-Mail-From: wsa@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-X-archive-position: 32003
+X-archive-position: 32004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w.sang@pengutronix.de
+X-original-sender: greg@kroah.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 22145
+X-UID: 22166
 
+On Thu, Nov 10, 2011 at 06:22:04PM -0800, ddaney.cavm@gmail.com wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> Get MAC address and PHY connection from the device tree.
+> 
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: netdev@vger.kernel.org
+> Cc: Greg Kroah-Hartman <gregkh@suse.de>
 
---HWvPVVuAAfuRc6SZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Greg Kroah-Hartman <gregkh@suse.de>
 
-On Fri, Nov 25, 2011 at 10:52:07AM +0800, zhzhl555@gmail.com wrote:
+This usually goes through the MIPS tree, so I'll let Ralf take it.
 
-> +	writel(t, SYS_TOYWRITE1);
-> +	while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TS)
-> +		usleep_range(1000, 3000);
-> +	__asm__ volatile ("sync");
+thanks,
 
-Timeout?
-
-> +
-> +static int __devinit ls1x_rtc_probe(struct platform_device *pdev)
-> +{
-> +	struct rtc_device *rtcdev;
-> +	unsigned long v;
-> +	int ret;
-> +
-> +	v =3D readl(SYS_COUNTER_CNTRL);
-> +	if (!(v & RTC_CNTR_OK)) {
-> +		dev_err(&pdev->dev, "rtc counters not working\n");
-> +		ret =3D -ENODEV;
-> +		goto err;
-> +	}
-> +	ret =3D -ETIMEDOUT;
-
-Why not putting this line to the corresponding dev_err-block?
-
-> +	/*set to 1 HZ if needed*/
-
-Minor: Spaces around comment-markers, here and in other places
-
-/* Comment */
-
-> +	if (readl(SYS_TOYTRIM) !=3D 32767) {
-> +		v =3D 0x100000;
-> +		while ((readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS) && --v)
-> +			usleep_range(1000, 3000);
-
-Timeout?
-
-> +
-> +		if (!v) {
-> +			dev_err(&pdev->dev, "time out\n");
-> +			goto err;
-> +		}
-> +		writel(32767, SYS_TOYTRIM);
-> +		__asm__ volatile("sync");
-> +	}
-> +	/*this loop coundn't be endless*/
-> +	while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS)
-> +		usleep_range(1000, 3000);
-
-Timeout again. First, the comment does not help. Why are you sure the loop
-could not be endless? And: Does it really need to be a usleep_range() inste=
-ad
-of a simple msleep()? And to make sure: There is no interrupt signalling the
-status changed?
-
-> +
-> +	rtcdev =3D rtc_device_register("ls1x-rtc", &pdev->dev,
-> +					&ls1x_rtc_ops , THIS_MODULE);
-> +	if (IS_ERR(rtcdev)) {
-> +		ret =3D PTR_ERR(rtcdev);
-> +		goto err;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, rtcdev);
-> +	return 0;
-> +err:
-> +	return ret;
-> +}
-> +
-
-=2E..
-
-> +static int __init ls1x_rtc_init(void)
-> +{
-> +	return platform_driver_probe(&ls1x_rtc_driver, ls1x_rtc_probe);
-> +}
-> +
-> +static void __exit ls1x_rtc_exit(void)
-> +{
-> +	platform_driver_unregister(&ls1x_rtc_driver);
-> +}
-> +
-> +
-> +module_init(ls1x_rtc_init);
-> +module_exit(ls1x_rtc_exit);
-
-Please use the new module_platform_driver()-macro.
-
-Thanks,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---HWvPVVuAAfuRc6SZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-
-iEYEARECAAYFAk7SAEsACgkQD27XaX1/VRtViACeN5BTIhOk0UALyDm64z1zQv+2
-otAAoLcDatRKZ5Gtt4yt1dhCXEA+0Nom
-=0IPR
------END PGP SIGNATURE-----
-
---HWvPVVuAAfuRc6SZ--
+greg k-h

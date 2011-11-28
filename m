@@ -1,261 +1,325 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Nov 2011 18:11:53 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:43424 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903695Ab1K0RLp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 27 Nov 2011 18:11:45 +0100
-Received: from int-mx12.intmail.prod.int.phx2.redhat.com (int-mx12.intmail.prod.int.phx2.redhat.com [10.5.11.25])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id pARHAo4a031602
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Sun, 27 Nov 2011 12:10:51 -0500
-Received: from redhat.com (vpn-201-184.tlv.redhat.com [10.35.201.184])
-        by int-mx12.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id pARHANJD013298;
-        Sun, 27 Nov 2011 12:10:24 -0500
-Date:   Sun, 27 Nov 2011 19:12:04 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Nicolas Pitre <nicolas.pitre@linaro.org>,
-        linux-mips@linux-mips.org, linux-m68k@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux@openrisc.net,
-        linux-pci@vger.kernel.org, Jesse Barnes <jbarnes@virtuousgeek.org>,
-        Chen Liqin <liqin.chen@sunplusct.com>,
-        Paul Mackerras <paulus@samba.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        Lennox Wu <lennox.wu@gmail.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        Helge Deller <deller@gmx.de>, x86@kernel.org,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-arch@vger.kernel.org, Arend van Spriel <arend@broadcom.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Lasse Collin <lasse.collin@tukaani.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        microblaze-uclinux@itee.uq.edu.au, Paul Bolle <pebolle@tiscali.nl>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Mikael Starvik <starvik@axis.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Franky Lin <frankyl@broadcom.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Fabio Baltieri <fabio.baltieri@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Richard Henderson <rth@twiddle.net>,
-        Michael Ellerman <michael@ellerman.id.au>,
-        Michal Simek <monstr@monstr.eu>,
-        Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
-        linux-cris-kernel@axis.com,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        Kyle McMartin <kyle@mcmartin.ca>,
-        Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
-        Olof Johansson <olof@lixom.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH-RFC 02/10] lib: add GENERIC_PCI_IOMAP
-Message-ID: <20111127171203.GA31987@redhat.com>
-References: <cover.1322163031.git.mst@redhat.com>
- <b5a1327dd8bb38f87cba7ae10b308ec3b63de66a.1322163031.git.mst@redhat.com>
- <20111125115455.9d5e18da6e683586d84ed9c8@canb.auug.org.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Nov 2011 06:06:48 +0100 (CET)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:44859 "EHLO
+        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904680Ab1K1FGj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 28 Nov 2011 06:06:39 +0100
+Received: by eaac10 with SMTP id c10so1783565eaa.36
+        for <multiple recipients>; Sun, 27 Nov 2011 21:06:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=7YKhc0UVSsOfdOiTL8lX03c+St5kuCsz8sxFiZNYKoE=;
+        b=nzMf/Z30ETJC/Xs7sQkMkjPdG0nKUD3VO7kA9YwaOe9mfeoYm04JylFwqVZFsRGM30
+         ffdvtoQ+wf21L7sGSgp8FexTkQR7/Rs+7x1syXh6b/RV83W6ejcLuRfBpUswcAt8k8u2
+         gmsPGur1qa/Bh9EyYkmu64ftoO0+KD+/LzCUY=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20111125115455.9d5e18da6e683586d84ed9c8@canb.auug.org.au>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.25
-X-archive-position: 32006
+Received: by 10.14.9.134 with SMTP id 6mr351360eet.107.1322456793650; Sun, 27
+ Nov 2011 21:06:33 -0800 (PST)
+Received: by 10.14.127.199 with HTTP; Sun, 27 Nov 2011 21:06:33 -0800 (PST)
+In-Reply-To: <20111127091803.GD5263@pengutronix.de>
+References: <1322189527-4761-1-git-send-email-zhzhl555@gmail.com>
+        <20111127091803.GD5263@pengutronix.de>
+Date:   Mon, 28 Nov 2011 13:06:33 +0800
+Message-ID: <CANY2ML+sjKshHF5u+ZxvEp-YSyB8NrJfVDaOggifbsOBuAxCrg@mail.gmail.com>
+Subject: Re: [rtc-linux] [PATCH V1] MIPS: Add RTC support for loongson1B
+From:   zhao zhang <zhzhl555@gmail.com>
+To:     Wolfram Sang <w.sang@pengutronix.de>
+Cc:     rtc-linux@googlegroups.com, a.zummo@towertech.it,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        ralf@linux-mips.org, keguang.zhang@gmail.com, wuzhangjin@gmail.com,
+        r0bertz@gentoo.org, zhzhl555@gmail.com
+Content-Type: multipart/alternative; boundary=0016364c7ac76a975c04b2c47766
+X-archive-position: 32007
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: zhzhl555@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 22313
+X-UID: 22568
 
-On Fri, Nov 25, 2011 at 11:54:55AM +1100, Stephen Rothwell wrote:
-> Hi Michael,
-> 
-> On Thu, 24 Nov 2011 22:17:02 +0200 "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >
-> > diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-> > index 9120887..c8a67345 100644
-> > --- a/include/asm-generic/io.h
-> > +++ b/include/asm-generic/io.h
-> > @@ -19,6 +19,8 @@
-> >  #include <asm-generic/iomap.h>
-> >  #endif
-> >  
-> > +#include <asm-generic/pci_iomap.h>
+--0016364c7ac76a975c04b2c47766
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: quoted-printable
+
+1:  Here is a  polling checking for TOY write status bit. if hardware done,
+the bit will be cleared. so if hardware has problem, the while loop will be
+infinite, it can never break out.  Does i really need to add timeout
+checking
+code although have checked in probe code.
+
+2:  Just set the default value, the real return value will be set in the
+following
+code. Line 154, err information will be put into dev_err-block.
+
+3: The minor, accept.
+
+4: Because in probe, we can not assume the hardware is OK,
+so add a counter( v =3D 0x100000) to avoid infinite loop.
+
+5: a): Since i have checked the RTC timing was OK, and  toytrim write
+status was
+OK again, so i can sure, the next writing will be OK.
+    b): Just following the  Documentation/timers/timers-howto.txt.
+    c): i can make sure.
+
+6: agree.
+
+
+=D4=DA 2011=C4=EA11=D4=C227=C8=D5 =CF=C2=CE=E75:18=A3=ACWolfram Sang <w.san=
+g@pengutronix.de>=D0=B4=B5=C0=A3=BA
+
+> On Fri, Nov 25, 2011 at 10:52:07AM +0800, zhzhl555@gmail.com wrote:
+>
+> > +     writel(t, SYS_TOYWRITE1);
+> > +     while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TS)
+> > +             usleep_range(1000, 3000);
+> > +     __asm__ volatile ("sync");
+>
+> Timeout?
+>
 > > +
-> >  #ifndef mmiowb
-> >  #define mmiowb() do {} while (0)
-> >  #endif
-> > @@ -283,9 +285,6 @@ static inline void writesb(const void __iomem *addr, const void *buf, int len)
-> >  #define __io_virt(x) ((void __force *) (x))
-> >  
-> >  #ifndef CONFIG_GENERIC_IOMAP
-> > -/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
-> > -struct pci_dev;
-> > -extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
-> >  static inline void pci_iounmap(struct pci_dev *dev, void __iomem *p)
-> >  {
-> >  }
-> 
-> Just wondering why you move pci_iomap but not pic_iounmap.
-
-unmap is implemented significantly different between architectures.
-
-
->  And also if
-> pci_iounmap is meant to stay here, then the "struct pci_dev" should
-> probably stay as well.
-
-Right. I'll fix that.
-
-> > diff --git a/include/asm-generic/iomap.h b/include/asm-generic/iomap.h
-> > index 98dcd76..fdcddcb 100644
-> > --- a/include/asm-generic/iomap.h
-> > +++ b/include/asm-generic/iomap.h
-> > @@ -69,16 +69,13 @@ extern void ioport_unmap(void __iomem *);
-> >  #ifdef CONFIG_PCI
-> >  /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
-> >  struct pci_dev;
-> > -extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
-> >  extern void pci_iounmap(struct pci_dev *dev, void __iomem *);
-> 
-> Ditto with pci_iounmap.
-
-Answered above :)
-
->  Also the comment above really belongs with pci_iomap.
-
-Right, I'll correct the comment.
-
-> > diff --git a/include/asm-generic/pci_iomap.h b/include/asm-generic/pci_iomap.h
-> > new file mode 100644
-> > index 0000000..e08b3bd
-> > --- /dev/null
-> > +++ b/include/asm-generic/pci_iomap.h
-> > @@ -0,0 +1,26 @@
-> > +/* Generic I/O port emulation, based on MN10300 code
-> > + *
-> > + * Copyright (C) 2007 Red Hat, Inc. All Rights Reserved.
-> > + * Written by David Howells (dhowells@redhat.com)
-> > + *
-> > + * This program is free software; you can redistribute it and/or
-> > + * modify it under the terms of the GNU General Public Licence
-> > + * as published by the Free Software Foundation; either version
-> > + * 2 of the Licence, or (at your option) any later version.
-> > + */
-> > +#ifndef __ASM_GENERIC_PCI_IOMAP_H
-> > +#define __ASM_GENERIC_PCI_IOMAP_H
-> > +
-> > +#ifdef CONFIG_PCI
-> > +/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
-> > +struct pci_dev;
-> 
-> You could move this struct declaration above the ifdef and remove the
-> duplicate below.
-
-Good point. Will do.
-
-> > +extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
-> > +#else
-> > +struct pci_dev;
-> > +static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max)
+> > +static int __devinit ls1x_rtc_probe(struct platform_device *pdev)
 > > +{
-> > +	return NULL;
+> > +     struct rtc_device *rtcdev;
+> > +     unsigned long v;
+> > +     int ret;
+> > +
+> > +     v =3D readl(SYS_COUNTER_CNTRL);
+> > +     if (!(v & RTC_CNTR_OK)) {
+> > +             dev_err(&pdev->dev, "rtc counters not working\n");
+> > +             ret =3D -ENODEV;
+> > +             goto err;
+> > +     }
+> > +     ret =3D -ETIMEDOUT;
+>
+> Why not putting this line to the corresponding dev_err-block?
+>
+> > +     /*set to 1 HZ if needed*/
+>
+> Minor: Spaces around comment-markers, here and in other places
+>
+> /* Comment */
+>
+> > +     if (readl(SYS_TOYTRIM) !=3D 32767) {
+> > +             v =3D 0x100000;
+> > +             while ((readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS) && --v)
+> > +                     usleep_range(1000, 3000);
+>
+> Timeout?
+>
+> > +
+> > +             if (!v) {
+> > +                     dev_err(&pdev->dev, "time out\n");
+> > +                     goto err;
+> > +             }
+> > +             writel(32767, SYS_TOYTRIM);
+> > +             __asm__ volatile("sync");
+> > +     }
+> > +     /*this loop coundn't be endless*/
+> > +     while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS)
+> > +             usleep_range(1000, 3000);
+>
+> Timeout again. First, the comment does not help. Why are you sure the loo=
+p
+> could not be endless? And: Does it really need to be a usleep_range()
+> instead
+> of a simple msleep()? And to make sure: There is no interrupt signalling
+> the
+> status changed?
+>
+> > +
+> > +     rtcdev =3D rtc_device_register("ls1x-rtc", &pdev->dev,
+> > +                                     &ls1x_rtc_ops , THIS_MODULE);
+> > +     if (IS_ERR(rtcdev)) {
+> > +             ret =3D PTR_ERR(rtcdev);
+> > +             goto err;
+> > +     }
+> > +
+> > +     platform_set_drvdata(pdev, rtcdev);
+> > +     return 0;
+> > +err:
+> > +     return ret;
 > > +}
-> > +#endif
 > > +
-> > +#endif /* __ASM_GENERIC_IO_H */
-> > diff --git a/lib/iomap.c b/lib/iomap.c
-> > index 5dbcb4b..ada922a 100644
-> > --- a/lib/iomap.c
-> > +++ b/lib/iomap.c
-> > @@ -242,45 +242,11 @@ EXPORT_SYMBOL(ioport_unmap);
-> >  #endif /* CONFIG_HAS_IOPORT */
-> >  
-> >  #ifdef CONFIG_PCI
-> > -/**
-> > - * pci_iomap - create a virtual mapping cookie for a PCI BAR
-> > - * @dev: PCI device that owns the BAR
-> > - * @bar: BAR number
-> > - * @maxlen: length of the memory to map
-> > - *
-> > - * Using this function you will get a __iomem address to your device BAR.
-> > - * You can access it using ioread*() and iowrite*(). These functions hide
-> > - * the details if this is a MMIO or PIO address space and will just do what
-> > - * you expect from them in the correct way.
-> > - *
-> > - * @maxlen specifies the maximum length to map. If you want to get access to
-> > - * the complete BAR without checking for its length first, pass %0 here.
-> > - * */
-> > -void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen)
-> > -{
-> > -	resource_size_t start = pci_resource_start(dev, bar);
-> > -	resource_size_t len = pci_resource_len(dev, bar);
-> > -	unsigned long flags = pci_resource_flags(dev, bar);
-> > -
-> > -	if (!len || !start)
-> > -		return NULL;
-> > -	if (maxlen && len > maxlen)
-> > -		len = maxlen;
-> > -	if (flags & IORESOURCE_IO)
-> > -		return ioport_map(start, len);
-> > -	if (flags & IORESOURCE_MEM) {
-> > -		if (flags & IORESOURCE_CACHEABLE)
-> > -			return ioremap(start, len);
-> > -		return ioremap_nocache(start, len);
-> > -	}
-> > -	/* What? */
-> > -	return NULL;
-> > -}
-> > -
-> > +/* Hide the details if this is a MMIO or PIO address space and just do what
-> > + * you expect in the correct way. */
-> >  void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
-> >  {
-> >  	IO_COND(addr, /* nothing */, iounmap(addr));
-> >  }
-> > -EXPORT_SYMBOL(pci_iomap);
-> >  EXPORT_SYMBOL(pci_iounmap);
-> 
-> Ditto with pci_iounmap
-
-Answered above.
-
-> > diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
-> > new file mode 100644
-> > index 0000000..40b26cb
-> > --- /dev/null
-> > +++ b/lib/pci_iomap.c
-> > @@ -0,0 +1,48 @@
-> > +/*
-> > + * Implement the default iomap interfaces
-> > + *
-> > + * (C) Copyright 2004 Linus Torvalds
-> > + */
-> > +#include <linux/pci.h>
-> > +#include <linux/io.h>
+>
+> ...
+>
+> > +static int __init ls1x_rtc_init(void)
+> > +{
+> > +     return platform_driver_probe(&ls1x_rtc_driver, ls1x_rtc_probe);
+> > +}
 > > +
-> > +#include <linux/module.h>
-> 
-> If this is relative to (at least) v3.2-rc1, then you should use export.h
-> instead of module.h
+> > +static void __exit ls1x_rtc_exit(void)
+> > +{
+> > +     platform_driver_unregister(&ls1x_rtc_driver);
+> > +}
+> > +
+> > +
+> > +module_init(ls1x_rtc_init);
+> > +module_exit(ls1x_rtc_exit);
+>
+> Please use the new module_platform_driver()-macro.
+>
+> Thanks,
+>
+>   Wolfram
+>
+> --
+> Pengutronix e.K.                           | Wolfram Sang                =
+|
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  =
+|
+>
 
-I just copied lib/iomap.c
-Will fix, thanks for the comments.
+--0016364c7ac76a975c04b2c47766
+Content-Type: text/html; charset=GB2312
+Content-Transfer-Encoding: quoted-printable
 
-> -- 
-> Cheers,
-> Stephen Rothwell                    sfr@canb.auug.org.au
-> http://www.canb.auug.org.au/~sfr/
+1:&nbsp; Here is a&nbsp; polling checking for TOY write status bit. if hard=
+ware done,<br>the bit will be cleared. so if hardware has problem, the whil=
+e loop will be <br>infinite, it can never break out.&nbsp; Does i really ne=
+ed to add timeout checking <br>
+code although have checked in probe code.<br><br>2:&nbsp; Just set the defa=
+ult value, the real return value will be set in the following<br>code. Line=
+ 154, err information will be put into dev_err-block. <br><br>3: The minor,=
+ accept.<br>
+<br>4: Because in probe, we can not assume the hardware is OK,<br>so add a =
+counter( v =3D 0x100000) to avoid infinite loop.<br><br>5: a): Since i have=
+ checked the RTC timing was OK, and&nbsp; toytrim write status was<br>OK ag=
+ain, so i can sure, the next writing will be OK.<br>
+&nbsp;&nbsp;&nbsp; b): Just following the&nbsp; Documentation/timers/timers=
+-howto.txt. <br>&nbsp;&nbsp;&nbsp; c): i can make sure. <br><br>6: agree.<b=
+r><br><br><div class=3D"gmail_quote">=D4=DA 2011=C4=EA11=D4=C227=C8=D5 =CF=
+=C2=CE=E75:18=A3=ACWolfram Sang <span dir=3D"ltr">&lt;<a href=3D"mailto:w.s=
+ang@pengutronix.de">w.sang@pengutronix.de</a>&gt;</span>=D0=B4=B5=C0=A3=BA<=
+br>
+<blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 0pt 0.8ex; borde=
+r-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;"><div class=3D"im"=
+>On Fri, Nov 25, 2011 at 10:52:07AM +0800, <a href=3D"mailto:zhzhl555@gmail=
+.com">zhzhl555@gmail.com</a> wrote:<br>
+
+<br>
+</div><div class=3D"im">&gt; + &nbsp; &nbsp; writel(t, SYS_TOYWRITE1);<br>
+&gt; + &nbsp; &nbsp; while (readl(SYS_COUNTER_CNTRL) &amp; SYS_CNTRL_TS)<br=
+>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; usleep_range(1000, 3000);<=
+br>
+&gt; + &nbsp; &nbsp; __asm__ volatile (&quot;sync&quot;);<br>
+<br>
+</div>Timeout?<br>
+<div class=3D"im"><br>
+&gt; +<br>
+&gt; +static int __devinit ls1x_rtc_probe(struct platform_device *pdev)<br>
+&gt; +{<br>
+&gt; + &nbsp; &nbsp; struct rtc_device *rtcdev;<br>
+&gt; + &nbsp; &nbsp; unsigned long v;<br>
+&gt; + &nbsp; &nbsp; int ret;<br>
+&gt; +<br>
+&gt; + &nbsp; &nbsp; v =3D readl(SYS_COUNTER_CNTRL);<br>
+&gt; + &nbsp; &nbsp; if (!(v &amp; RTC_CNTR_OK)) {<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dev_err(&amp;pdev-&gt;dev,=
+ &quot;rtc counters not working\n&quot;);<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ret =3D -ENODEV;<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; goto err;<br>
+&gt; + &nbsp; &nbsp; }<br>
+&gt; + &nbsp; &nbsp; ret =3D -ETIMEDOUT;<br>
+<br>
+</div>Why not putting this line to the corresponding dev_err-block?<br>
+<div class=3D"im"><br>
+&gt; + &nbsp; &nbsp; /*set to 1 HZ if needed*/<br>
+<br>
+</div>Minor: Spaces around comment-markers, here and in other places<br>
+<br>
+/* Comment */<br>
+<div class=3D"im"><br>
+&gt; + &nbsp; &nbsp; if (readl(SYS_TOYTRIM) !=3D 32767) {<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; v =3D 0x100000;<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while ((readl(SYS_COUNTER_=
+CNTRL) &amp; SYS_CNTRL_TTS) &amp;&amp; --v)<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp=
+; usleep_range(1000, 3000);<br>
+<br>
+</div>Timeout?<br>
+<div class=3D"im"><br>
+&gt; +<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!v) {<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp=
+; dev_err(&amp;pdev-&gt;dev, &quot;time out\n&quot;);<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp=
+; goto err;<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; writel(32767, SYS_TOYTRIM)=
+;<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; __asm__ volatile(&quot;syn=
+c&quot;);<br>
+&gt; + &nbsp; &nbsp; }<br>
+&gt; + &nbsp; &nbsp; /*this loop coundn&#39;t be endless*/<br>
+&gt; + &nbsp; &nbsp; while (readl(SYS_COUNTER_CNTRL) &amp; SYS_CNTRL_TTS)<b=
+r>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; usleep_range(1000, 3000);<=
+br>
+<br>
+</div>Timeout again. First, the comment does not help. Why are you sure the=
+ loop<br>
+could not be endless? And: Does it really need to be a usleep_range() inste=
+ad<br>
+of a simple msleep()? And to make sure: There is no interrupt signalling th=
+e<br>
+status changed?<br>
+<div class=3D"im"><br>
+&gt; +<br>
+&gt; + &nbsp; &nbsp; rtcdev =3D rtc_device_register(&quot;ls1x-rtc&quot;, &=
+amp;pdev-&gt;dev,<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp=
+; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &amp;ls1x_rtc_ops=
+ , THIS_MODULE);<br>
+&gt; + &nbsp; &nbsp; if (IS_ERR(rtcdev)) {<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ret =3D PTR_ERR(rtcdev);<b=
+r>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; goto err;<br>
+&gt; + &nbsp; &nbsp; }<br>
+&gt; +<br>
+&gt; + &nbsp; &nbsp; platform_set_drvdata(pdev, rtcdev);<br>
+&gt; + &nbsp; &nbsp; return 0;<br>
+&gt; +err:<br>
+&gt; + &nbsp; &nbsp; return ret;<br>
+&gt; +}<br>
+&gt; +<br>
+<br>
+</div>...<br>
+<div class=3D"im"><br>
+&gt; +static int __init ls1x_rtc_init(void)<br>
+&gt; +{<br>
+&gt; + &nbsp; &nbsp; return platform_driver_probe(&amp;ls1x_rtc_driver, ls1=
+x_rtc_probe);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +static void __exit ls1x_rtc_exit(void)<br>
+&gt; +{<br>
+&gt; + &nbsp; &nbsp; platform_driver_unregister(&amp;ls1x_rtc_driver);<br>
+&gt; +}<br>
+&gt; +<br>
+&gt; +<br>
+&gt; +module_init(ls1x_rtc_init);<br>
+&gt; +module_exit(ls1x_rtc_exit);<br>
+<br>
+</div>Please use the new module_platform_driver()-macro.<br>
+<br>
+Thanks,<br>
+<font color=3D"#888888"><br>
+ &nbsp; Wolfram<br>
+</font><div><div></div><div class=3D"h5"><br>
+--<br>
+Pengutronix e.K. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &n=
+bsp; &nbsp; &nbsp; &nbsp; &nbsp; | Wolfram Sang &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp; &nbsp; &nbsp; &nbsp;|<br>
+Industrial Linux Solutions &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
+ &nbsp; | <a href=3D"http://www.pengutronix.de/" target=3D"_blank">http://w=
+ww.pengutronix.de/</a> &nbsp;|<br>
+</div></div></blockquote></div><br>
+
+--0016364c7ac76a975c04b2c47766--

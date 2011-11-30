@@ -1,85 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Nov 2011 19:04:00 +0100 (CET)
-Received: from mail-yw0-f49.google.com ([209.85.213.49]:36891 "EHLO
-        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1905688Ab1K2SDy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 29 Nov 2011 19:03:54 +0100
-Received: by ywp18 with SMTP id 18so5471241ywp.36
-        for <multiple recipients>; Tue, 29 Nov 2011 10:03:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=ZE2IVaCuqBJGT9mqBJl3NnoOo3mpVoPFLK6GvTOI4/8=;
-        b=aBXQrL5wVdFMkVmbmMpnjguMCvHSr8EY2QetOmj4tB16m4kahhmkY+lw/4lgPHsgXD
-         ICXK5r3rid2fiWALXawCWnYKQG79GrN8yh17aKbyGcpTGa2jRUVpzOCnGAlZSWgVq86J
-         G90+U6y65swU8/RMk9KVhC8/egAWBTTLcxRsA=
-Received: by 10.50.94.229 with SMTP id df5mr56926653igb.27.1322589827734;
-        Tue, 29 Nov 2011 10:03:47 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id el2sm62009624ibb.10.2011.11.29.10.03.46
-        (version=SSLv3 cipher=OTHER);
-        Tue, 29 Nov 2011 10:03:46 -0800 (PST)
-Message-ID: <4ED51E81.3040304@gmail.com>
-Date:   Tue, 29 Nov 2011 10:03:45 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Nov 2011 08:52:08 +0100 (CET)
+Received: from smtpgw2.netlogicmicro.com ([12.203.210.54]:60112 "EHLO
+        smtpgw2.netlogicmicro.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903760Ab1K3HwB (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 30 Nov 2011 08:52:01 +0100
+Received: from pps.filterd (smtpgw2 [127.0.0.1])
+        by smtpgw2.netlogicmicro.com (8.14.4/8.14.4) with SMTP id pAU7lRsn003242;
+        Tue, 29 Nov 2011 23:51:54 -0800
+Received: from hqcas02.netlogicmicro.com (hqcas02.netlogicmicro.com [10.65.50.15])
+        by smtpgw2.netlogicmicro.com with ESMTP id 11denfg153-1
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT);
+        Tue, 29 Nov 2011 23:51:54 -0800
+From:   "Jayachandran C." <jayachandranc@netlogicmicro.com>
+To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
+CC:     Jayachandran C <jayachandranc@netlogicmicro.com>
+Subject: [PATCH] MIPS: Netlogic: Fix PCIX irq on XLR chips
+Date:   Wed, 30 Nov 2011 13:22:37 +0530
+Message-ID: <1322639557-32328-1-git-send-email-jayachandranc@netlogicmicro.com>
+X-Mailer: git-send-email 1.7.5.4
 MIME-Version: 1.0
-To:     Rik van Riel <riel@redhat.com>
-CC:     Andrea Arcangeli <aarcange@redhat.com>,
-        Hillf Danton <dhillf@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] MIPS: changes in VM core for adding THP
-References: <CAJd=RBB2gSCaJSsFfJXBg2zmgzNjXPAn8OakAZACNG0mv2D7nQ@mail.gmail.com> <20111126173151.GF8397@redhat.com> <4ED51B48.6020202@redhat.com>
-In-Reply-To: <4ED51B48.6020202@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32013
+Content-Type: text/plain
+X-Originating-IP: [10.7.0.77]
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:5.5.7110,1.0.211,0.0.0000
+ definitions=2011-11-30_02:2011-11-30,2011-11-30,1970-01-01 signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 ipscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=6.0.2-1012030000 definitions=main-1111290392
+X-archive-position: 32014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 24323
+X-UID: 24934
 
-On 11/29/2011 09:50 AM, Rik van Riel wrote:
-> On 11/26/2011 12:31 PM, Andrea Arcangeli wrote:
->> On Sat, Nov 26, 2011 at 10:43:15PM +0800, Hillf Danton wrote:
->>> In VM core, window is opened for MIPS to use THP.
->>>
->>> And two simple helper functions are added to easy MIPS a bit.
->>>
->>> Signed-off-by: Hillf Danton<dhillf@gmail.com>
->>> ---
->>>
->>> --- a/mm/Kconfig Thu Nov 24 21:12:00 2011
->>> +++ b/mm/Kconfig Sat Nov 26 22:12:56 2011
->>> @@ -307,7 +307,7 @@ config NOMMU_INITIAL_TRIM_EXCESS
->>>
->>> config TRANSPARENT_HUGEPAGE
->>> bool "Transparent Hugepage Support"
->>> - depends on X86&& MMU
->>> + depends on MMU
->>> select COMPACTION
->>> help
->>> Transparent Hugepages allows the kernel to use huge pages and
->>
->> Then the build will break for all archs if they enable it, better to
->> limit the option to those archs that supports it.
->
-> Would it be an idea to define ARCH_HAVE_HUGEPAGE in the
-> arch specific Kconfig file and test against that in
-> mm/Kconfig ?
->
+From: Jayachandran C <jayachandranc@netlogicmicro.com>
 
-I think so, but it would probably be spelled ARCH_HAVE_TRANSPARENT_HUGEPAGE
+The correct irq is PIC_PCIX_IRQ
 
-The practice of putting 'depends on X86' in archecture independent 
-Kconfigs should really be discouraged.  It has a real feel of hackyness 
-to it.
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+ arch/mips/pci/pci-xlr.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-David Daney
+diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
+index 3d701a9..0148001 100644
+--- a/arch/mips/pci/pci-xlr.c
++++ b/arch/mips/pci/pci-xlr.c
+@@ -327,7 +327,7 @@ static int __init pcibios_init(void)
+ 		}
+ 	} else {
+ 		/* XLR PCI controller ACK */
+-		irq_set_handler_data(PIC_PCIE_XLSB0_LINK3_IRQ, xlr_pci_ack);
++		irq_set_handler_data(PIC_PCIX_IRQ, xlr_pci_ack);
+ 	}
+ 
+ 	return 0;
+-- 
+1.7.5.4

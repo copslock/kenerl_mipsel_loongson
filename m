@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2011 22:37:13 +0100 (CET)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:54152 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903637Ab1LDVhJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 4 Dec 2011 22:37:09 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=2OY5smcNkF9QTn/tdYd0eNNGBIQr3Clq2NF9gAwDXqc=;
-        b=DM8S+/XHUw8nS7LEFE0uO7qZUdbe7a05QNYAsjLibTohm4vtPtw+EJKhpt8ji92bRSG/yqbZf7NhMWmYdXFxCjhYmYwY162Ymnyi41awmV2A3SVPPG0G0SZRIyUwQJN8eTyElgb/BbmXEy2KwVtKBFWU10pixh/mVY6VA+Ko4Zg=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:50678)
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.76)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1RXJgU-0002Fd-It; Sun, 04 Dec 2011 21:33:19 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1RXJgS-00080y-GV; Sun, 04 Dec 2011 21:33:16 +0000
-Date:   Sun, 4 Dec 2011 21:33:16 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Sven Eckelmann <sven@narfation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2011 22:49:23 +0100 (CET)
+Received: from narfation.org ([79.140.41.39]:43628 "EHLO v3-1039.vlinux.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903637Ab1LDVtS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 4 Dec 2011 22:49:18 +0100
+Received: from sven-laptop.home.narfation.org (i59F6CF54.versanet.de [89.246.207.84])
+        by v3-1039.vlinux.de (Postfix) with ESMTPSA id 33C9694013;
+        Sun,  4 Dec 2011 22:51:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=narfation.org; s=mail;
+        t=1323035461; bh=GKM8jeAiRdqqfuG6yco2XIYwCs5CnJh6qUypHqCFVDg=;
+        h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+         MIME-Version:Content-Type:Content-Transfer-Encoding;
+        b=Eg1ST5/SDpig76RBNCbl2zf51WC7OpUqsG4Q3UUwixwh2a3btULnIUmYCXLsyIplO
+         iXBh8VgZ8AtsZPuC5/H8n/PsSz5SMotEZwtzma+I0EIN3fQAmnWyAnr2/YuFDvVAN7
+         AAY1kj83V5fBqJ8a1uC0Yh5p9MArKIDy+FFCrp5w=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-arch@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
         Randy Dunlap <rdunlap@xenotime.net>,
@@ -40,7 +38,7 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
+        Arnd Bergma nn <arnd@arndb.de>, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
@@ -49,64 +47,78 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         sparclinux@vger.kernel.org,
         user-mode-linux-devel@lists.sourceforge.net,
         linux-hexagon@vger.kernel.org
-Subject: Re: [PATCHv5] atomic: add *_dec_not_zero
-Message-ID: <20111204213316.GB14542@n2100.arm.linux.org.uk>
-References: <1323013369-29691-1-git-send-email-sven@narfation.org>
+Subject: Re: Re: [PATCHv5] atomic: add *_dec_not_zero
+Date:   Sun, 04 Dec 2011 22:49:10 +0100
+Message-ID: <1699880.NTdz2k3W9O@sven-laptop.home.narfation.org>
+User-Agent: KMail/4.6.0 (Linux/3.1.0-1-686-pae; KDE/4.6.5; i686; ; )
+In-Reply-To: <20111204213316.GB14542@n2100.arm.linux.org.uk>
+References: <1323013369-29691-1-git-send-email-sven@narfation.org> <20111204213316.GB14542@n2100.arm.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1323013369-29691-1-git-send-email-sven@narfation.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-X-archive-position: 32022
+Content-Type: multipart/signed; boundary="nextPart4938203.Qb6ixptZZ3"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7Bit
+X-archive-position: 32023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: sven@narfation.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 2732
+X-UID: 2736
 
-On Sun, Dec 04, 2011 at 04:42:49PM +0100, Sven Eckelmann wrote:
-> diff --git a/arch/alpha/include/asm/atomic.h b/arch/alpha/include/asm/atomic.h
-> +#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/arm/include/asm/atomic.h b/arch/arm/include/asm/atomic.h
-> +#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1LL, 0LL)
-> diff --git a/arch/ia64/include/asm/atomic.h b/arch/ia64/include/asm/atomic.h
-> +#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
-> +#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/parisc/include/asm/atomic.h b/arch/parisc/include/asm/atomic.h
-> +#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-> +#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/s390/include/asm/atomic.h b/arch/s390/include/asm/atomic.h
-> +#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/sparc/include/asm/atomic_64.h b/arch/sparc/include/asm/atomic_64.h
-> +#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/tile/include/asm/atomic_32.h b/arch/tile/include/asm/atomic_32.h
-> +#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1LL, 0LL)
-> diff --git a/arch/tile/include/asm/atomic_64.h b/arch/tile/include/asm/atomic_64.h
-> +#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1, 0)
-> diff --git a/arch/x86/include/asm/atomic64_64.h b/arch/x86/include/asm/atomic64_64.h
-> +#define atomic64_dec_not_zero(v) atomic64_add_unless((v), -1, 0)
-> diff --git a/include/asm-generic/atomic64.h b/include/asm-generic/atomic64.h
-> +#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1LL, 0LL)
 
-I think this is rather silly - all these definitions are very similar to
-each other.  Is there really no way to put this into include/linux/atomic.h,
-maybe as something like:
+--nextPart4938203.Qb6ixptZZ3
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-#ifndef atomic64_dec_not_zero
-#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1, 0)
-#endif
+On Sunday 04 December 2011 21:33:16 Russell King - ARM Linux wrote:
+[...]
+> > +#define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1LL, 0LL)
+> 
+> I think this is rather silly - all these definitions are very similar to
+> each other.  Is there really no way to put this into include/linux/atomic.h,
+> maybe as something like:
+> 
+> #ifndef atomic64_dec_not_zero
+> #define atomic64_dec_not_zero(v)	atomic64_add_unless((v), -1, 0)
+> #endif
+> 
+> and avoid having to add essentially the same definition to 12 individual
+> files?
+> 
+> Architectures which want to override it can do by the following:
+> 
+> #define atomic64_dec_not_zero		atomic64_dec_not_zero
+> 
+> which won't have any effect on C nor asm code.
 
-and avoid having to add essentially the same definition to 12 individual
-files?
+ * https://lkml.org/lkml/2011/5/8/15
+ * https://lkml.org/lkml/2011/5/8/16
+ * https://lkml.org/lkml/2011/5/8/321
 
-Architectures which want to override it can do by the following:
+Kind regards,
+	Sven
+--nextPart4938203.Qb6ixptZZ3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
 
-#define atomic64_dec_not_zero		atomic64_dec_not_zero
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
 
-which won't have any effect on C nor asm code.
+iQIcBAABCgAGBQJO2+rWAAoJEF2HCgfBJntGGaoP/1cME9u1tSkxi9MYlM/Ss2sw
+Du85XnWWOFnV+CRwZ7+QCkgr10dzf/Qf7ekcxzM/7wapAawu0FmBbehfNW+06uW0
+4XrIxUDaZy0xgHusju96MVJav0msORD/2RXM3rQxwkjR2FhmfbVntuIu/5EqEHFv
+jIzksziGDgrHx6/HMjrEiX8p2tPPBfQ7MGa1Cvj+kLgDhPAPCOUKfpwgdj35MYHe
+2D+zXMr6aHi/JtDkYK2BV9u9nAGx91fcPdOO4/SyyxVg4DLrUnuRgWhNF9UCXd7R
+IDkz2SAlkqP5RXKa9XMxnS1n1zjkpmc1wfRL4rPHmk7Fg9IgidnlZ8TsXKuDjoVR
+JtIuXmj1FQ5nuHnzKnzhIfHMlu395tL0PVHeWi1+dPZGfUCLX+T4jdlTRaShY3d1
+UUzpbfKuc2dy8uX5BNfJ5kQl4PSx8w97Kn+8vRbb3U627FIpdkK8RQNEGgB7wpIR
+rCqnxvsjPiiyQA9ckXmL/S0d9xlrPcrB1Tu4kUgXYTr6llV/xKWuYtl801IFP6lr
+kFqvPd5St69DP66x5bMMC4NalTEfCIx7HOx+xd3xQC+9qsJVLomz95bvMZHxeI8K
+Ae736/5KDqONzVPOKW2J+UJIJLqIZPuSbNVRY9lkTZXjii1U25WY03PGAGwa4LLP
+mGvc5Y2WUfdr8CtFrvVL
+=T3Oo
+-----END PGP SIGNATURE-----
+
+--nextPart4938203.Qb6ixptZZ3--

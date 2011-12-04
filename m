@@ -1,91 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Dec 2011 19:02:23 +0100 (CET)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:44844 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903832Ab1LBSCT (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Dec 2011 19:02:19 +0100
-Received: by ghrr19 with SMTP id r19so3683758ghr.36
-        for <multiple recipients>; Fri, 02 Dec 2011 10:02:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=qCLRXIDErTwNw8e0bYWQCQFmdnBCblhb8KevHAQXRU4=;
-        b=jXFsk5xRK1oHEW4gwjJLgSNcZl+PmIE9yFwXxLpdF4YzBfWd9HtRrU0ksZ2Aermeec
-         l1CeKqqkCELSqKsfThdE0HzOQnZXWrvsFnvN2F95abG3fUOZ+S1fPqHiu8suCVLndUw9
-         6H+6rfe7kFtfOsg3zNCjBe3XrqykDoZIbNGOw=
-Received: by 10.101.158.28 with SMTP id k28mr3225160ano.7.1322848932766;
-        Fri, 02 Dec 2011 10:02:12 -0800 (PST)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id n64sm16772721yhk.4.2011.12.02.10.02.11
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 02 Dec 2011 10:02:12 -0800 (PST)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id pB2I29hC016154;
-        Fri, 2 Dec 2011 10:02:09 -0800
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id pB2I29vc016153;
-        Fri, 2 Dec 2011 10:02:09 -0800
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH resend] MIPS: Get rid of some #ifdefery in arch/mips/mm/tlb-r4k.c
-Date:   Fri,  2 Dec 2011 10:02:07 -0800
-Message-Id: <1322848927-16122-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 32018
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2011 11:46:18 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:5772 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903562Ab1LDKqJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 4 Dec 2011 11:46:09 +0100
+Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id pB4Ak6V1022564
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Sun, 4 Dec 2011 05:46:07 -0500
+Received: from redhat.com (vpn-202-5.tlv.redhat.com [10.35.202.5])
+        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id pB4Ak3OF014316;
+        Sun, 4 Dec 2011 05:46:05 -0500
+Date:   Sun, 4 Dec 2011 12:47:48 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH-RFC 06/10] mips: switch to GENERIC_PCI_IOMAP
+Message-ID: <20111204104748.GH15464@redhat.com>
+References: <cover.1322163031.git.mst@redhat.com>
+ <66457f7750d7d14229fcf8d0b011aba63185a75d.1322163031.git.mst@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66457f7750d7d14229fcf8d0b011aba63185a75d.1322163031.git.mst@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
+X-archive-position: 32019
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: mst@redhat.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 1749
+X-UID: 2487
 
-From: David Daney <david.daney@cavium.com>
+On Thu, Nov 24, 2011 at 10:18:37PM +0200, Michael S. Tsirkin wrote:
+> mips copied pci_iomap from generic code, probably to avoid
+> pulling the rest of iomap.c in.  Since that's in
+> a separate file now, we can reuse the common implementation.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
 
-In the case of !CONFIG_HUGETLB_PAGE, in linux/hugetlb.h we have this
-definition:
+Sorry to nag, any ACKs/NACKs on the mips part?
+I intend to send this to Linus if there are no
+objections. Thanks!
 
- #define pmd_huge(x)	0
-
-The other huge page constants in the if(pmd_huge()) block are likewise
-defined, so we can get rid of the #ifdef CONFIG_HUGETLB_PAGE an let
-the compiler optimize this block away instead.  Doing this the code
-has a much cleaner appearance.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
----
-
-The first attempt as sending the patch resulted in a corrupt change
-log, no change other than correcting the log.
-
- arch/mips/mm/tlb-r4k.c |    6 ++----
- 1 files changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 88dc49c..f93af98 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -305,7 +305,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
- 	pudp = pud_offset(pgdp, address);
- 	pmdp = pmd_offset(pudp, address);
- 	idx = read_c0_index();
--#ifdef CONFIG_HUGETLB_PAGE
-+
- 	/* this could be a huge page  */
- 	if (pmd_huge(*pmdp)) {
- 		unsigned long lo;
-@@ -321,9 +321,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
- 		else
- 			tlb_write_indexed();
- 		write_c0_pagemask(PM_DEFAULT_MASK);
--	} else
--#endif
--	{
-+	} else {
- 		ptep = pte_offset_map(pmdp, address);
- 
- #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
--- 
-1.7.2.3
+>  arch/mips/Kconfig         |    1 +
+>  arch/mips/lib/iomap-pci.c |   26 --------------------------
+>  2 files changed, 1 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index d46f1da..b70c96f 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -2317,6 +2317,7 @@ config PCI
+>  	bool "Support for PCI controller"
+>  	depends on HW_HAS_PCI
+>  	select PCI_DOMAINS
+> +	select GENERIC_PCI_IOMAP
+>  	help
+>  	  Find out whether you have a PCI motherboard. PCI is the name of a
+>  	  bus system, i.e. the way the CPU talks to the other stuff inside
+> diff --git a/arch/mips/lib/iomap-pci.c b/arch/mips/lib/iomap-pci.c
+> index 2ab899c..2635b1a 100644
+> --- a/arch/mips/lib/iomap-pci.c
+> +++ b/arch/mips/lib/iomap-pci.c
+> @@ -40,32 +40,6 @@ static void __iomem *ioport_map_pci(struct pci_dev *dev,
+>  	return (void __iomem *) (ctrl->io_map_base + port);
+>  }
+>  
+> -/*
+> - * Create a virtual mapping cookie for a PCI BAR (memory or IO)
+> - */
+> -void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen)
+> -{
+> -	resource_size_t start = pci_resource_start(dev, bar);
+> -	resource_size_t len = pci_resource_len(dev, bar);
+> -	unsigned long flags = pci_resource_flags(dev, bar);
+> -
+> -	if (!len || !start)
+> -		return NULL;
+> -	if (maxlen && len > maxlen)
+> -		len = maxlen;
+> -	if (flags & IORESOURCE_IO)
+> -		return ioport_map_pci(dev, start, len);
+> -	if (flags & IORESOURCE_MEM) {
+> -		if (flags & IORESOURCE_CACHEABLE)
+> -			return ioremap(start, len);
+> -		return ioremap_nocache(start, len);
+> -	}
+> -	/* What? */
+> -	return NULL;
+> -}
+> -
+> -EXPORT_SYMBOL(pci_iomap);
+> -
+>  void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
+>  {
+>  	iounmap(addr);
+> -- 
+> 1.7.5.53.gc233e

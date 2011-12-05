@@ -1,19 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Dec 2011 23:43:39 +0100 (CET)
-Received: from gate.crashing.org ([63.228.1.57]:59030 "EHLO gate.crashing.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2011 01:15:45 +0100 (CET)
+Received: from terminus.zytor.com ([198.137.202.10]:49777 "EHLO mail.zytor.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903649Ab1LDWnd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 4 Dec 2011 23:43:33 +0100
-Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id pB4MfwWn026726;
-        Sun, 4 Dec 2011 16:41:59 -0600
-Message-ID: <1323038515.11728.26.camel@pasglop>
-Subject: Re: Re: [PATCHv5] atomic: add *_dec_not_zero
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
-Cc:     Sven Eckelmann <sven@narfation.org>,
+        id S1903650Ab1LEAPh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 5 Dec 2011 01:15:37 +0100
+Received: from tazenda.hos.anvin.org ([IPv6:2001:470:861f::feed:face:f00d])
+        (authenticated bits=0)
+        by mail.zytor.com (8.14.5/8.14.5) with ESMTP id pB50EIGm007983
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=OK);
+        Sun, 4 Dec 2011 16:14:19 -0800
+Message-ID: <4EDC0CD5.2090601@zytor.com>
+Date:   Sun, 04 Dec 2011 16:14:13 -0800
+From:   "H. Peter Anvin" <hpa@zytor.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:8.0) Gecko/20111115 Thunderbird/8.0
+MIME-Version: 1.0
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC:     Russell King - ARM Linux <linux@arm.linux.org.uk>,
+        Sven Eckelmann <sven@narfation.org>,
         linux-m32r-ja@ml.linux-m32r.org, linux-mips@linux-mips.org,
         linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Randy Dunlap <rdunlap@xenotime.net>,
         Paul Mackerras <paulus@samba.org>,
@@ -43,48 +47,33 @@ Cc:     Sven Eckelmann <sven@narfation.org>,
         linux390@de.ibm.com, Andrew Morton <akpm@linux-foundation.org>,
         linuxppc-dev@lists.ozlabs.org,
         "David S. Miller" <davem@davemloft.net>
-Date:   Mon, 05 Dec 2011 09:41:55 +1100
-In-Reply-To: <20111204221850.GC14542@n2100.arm.linux.org.uk>
-References: <1323013369-29691-1-git-send-email-sven@narfation.org>
-         <20111204213316.GB14542@n2100.arm.linux.org.uk>
-         <1699880.NTdz2k3W9O@sven-laptop.home.narfation.org>
-         <20111204221850.GC14542@n2100.arm.linux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.1- 
+Subject: Re: [PATCHv5] atomic: add *_dec_not_zero
+References: <1323013369-29691-1-git-send-email-sven@narfation.org>  <20111204213316.GB14542@n2100.arm.linux.org.uk>  <1699880.NTdz2k3W9O@sven-laptop.home.narfation.org>  <20111204221850.GC14542@n2100.arm.linux.org.uk> <1323038515.11728.26.camel@pasglop>
+In-Reply-To: <1323038515.11728.26.camel@pasglop>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0
-X-archive-position: 32026
+X-archive-position: 32027
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: hpa@zytor.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 2749
+X-UID: 2789
 
-On Sun, 2011-12-04 at 22:18 +0000, Russell King - ARM Linux wrote:
-
- .../...
-
-> And really, I believe it would be a good cleanup if all the standard
-> definitions for atomic64 ops (like atomic64_add_negative) were also
-> defined in include/linux/atomic.h rather than individually in every
-> atomic*.h header throughout the kernel source, except where an arch
-> wants to explicitly override it.  Yet again, virtually all architectures
-> define these in exactly the same way.
+On 12/04/2011 02:41 PM, Benjamin Herrenschmidt wrote:
 > 
-> We have more than enough code in arch/ for any architecture to worry
-> about, we don't need schemes to add more when there's simple and
-> practical solutions to avoiding doing so if the right design were
-> chosen (preferably from the outset.)
+> I agree with Russell, his approach is a lot easier to maintain long run,
+> we should even consider converting existing definitions.
 > 
-> So, I'm not going to offer my ack for a change which I don't believe
-> is the correct approach.
 
-I agree with Russell, his approach is a lot easier to maintain long run,
-we should even consider converting existing definitions.
+Thirded.
 
-Cheers,
-Ben.
+	-hpa
+
+
+-- 
+H. Peter Anvin, Intel Open Source Technology Center
+I work for Intel.  I don't speak on their behalf.

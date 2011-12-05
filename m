@@ -1,100 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2011 16:58:40 +0100 (CET)
-Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]:59400 "EHLO
-        mo1.mail-out.ovh.net" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1903618Ab1LEP6c (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 5 Dec 2011 16:58:32 +0100
-Received: from mail99.ha.ovh.net (b6.ovh.net [213.186.33.56])
-        by mo1.mail-out.ovh.net (Postfix) with SMTP id 0D0DBFFB6D9
-        for <linux-mips@linux-mips.org>; Mon,  5 Dec 2011 16:58:38 +0100 (CET)
-Received: from b0.ovh.net (HELO queueout) (213.186.33.50)
-        by b0.ovh.net with SMTP; 5 Dec 2011 17:58:30 +0200
-Received: from ns32433.ovh.net (HELO localhost) (plagnioj%jcrosoft.com@213.251.161.87)
-  by ns0.ovh.net with SMTP; 5 Dec 2011 17:57:33 +0200
-Date:   Mon, 5 Dec 2011 16:53:59 +0100
-From:   Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-To:     rtc-linux@googlegroups.com
-Cc:     a.zummo@towertech.it, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-        keguang.zhang@gmail.com, wuzhangjin@gmail.com, r0bertz@gentoo.org,
-        zhao zhang <zhzhl555@gmail.com>
-X-Ovh-Mailout: 178.32.228.1 (mo1.mail-out.ovh.net)
-Subject: Re: [rtc-linux] [PATCH] MIPS: Add RTC support for loongson1B
-Message-ID: <20111205155359.GF9192@game.jcrosoft.org>
-References: <1322729078-6141-1-git-send-email-zhzhl555@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Dec 2011 23:36:32 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:34326 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903629Ab1LEWgW convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 5 Dec 2011 23:36:22 +0100
+Received: by bkcje16 with SMTP id je16so5048188bkc.36
+        for <multiple recipients>; Mon, 05 Dec 2011 14:36:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding:message-id;
+        bh=acEQrSGQLmFvFWOfYABMT/by1y8REsa1/RX14icVQGI=;
+        b=U1DB1jzr5uRq2d2yt63pD/7lyL67DaMb88uKxq4rRNe3e3kPBUESVd0XqfUGCV6gA+
+         tizIoScsjgUpi9xMMN4J0LZhCPgvSsPixR+LIL2a3548kWHtA0GjC9k+JHoKThpvLnnQ
+         Mi+sQHaw3fEUA4eJwZaxrZSMq2IeJVnMyUb+8=
+Received: by 10.180.4.167 with SMTP id l7mr14947247wil.51.1323124576730;
+        Mon, 05 Dec 2011 14:36:16 -0800 (PST)
+Received: from lenovo.localnet ([2a01:e35:2f70:4010:21d:7dff:fe45:5399])
+        by mx.google.com with ESMTPS id d17sm30224723wbh.19.2011.12.05.14.36.09
+        (version=SSLv3 cipher=OTHER);
+        Mon, 05 Dec 2011 14:36:11 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+Subject: Re: [PATCH 0/7] MTD: MAPS: remove bcm963xx-flash
+Date:   Mon, 5 Dec 2011 23:36:07 +0100
+User-Agent: KMail/1.13.7 (Linux/3.1.0-1-amd64; KDE/4.6.5; x86_64; ; )
+Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Artem Bityutskiy <Artem.Bityutskiy@intel.com>
+References: <1323097691-16414-1-git-send-email-jonas.gorski@gmail.com>
+In-Reply-To: <1323097691-16414-1-git-send-email-jonas.gorski@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1322729078-6141-1-git-send-email-zhzhl555@gmail.com>
-X-PGP-Key: http://uboot.jcrosoft.org/plagnioj.asc
-X-PGP-key-fingerprint: 6309 2BBA 16C8 3A07 1772 CC24 DEFC FFA3 279C CE7C
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-Ovh-Tracer-Id: 16856128980892036017
-X-Ovh-Remote: 213.251.161.87 (ns32433.ovh.net)
-X-Ovh-Local: 213.186.33.20 (ns0.ovh.net)
-X-OVH-SPAMSTATE: OK
-X-OVH-SPAMSCORE: 0
-X-OVH-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeefjedruddvucetggdotefuucfrrhhofhhilhgvmecuqfggjfenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkfhggtggujggfsehttdfttddtredvnecuhfhrohhmpeflvggrnhdqvehhrhhishhtohhphhgvucfrnfetiffpkffqnfdqggfknffnteftffcuoehplhgrghhnihhojhesjhgtrhhoshhofhhtrdgtohhmqeenucffohhmrghinhepne
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrfeefjedruddvucetggdotefuucfrrhhofhhilhgvmecuqfggjfenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkfhggtggujggfsehttdfttddtredvnecuhfhrohhmpeflvggrnhdqvehhrhhishhtohhphhgvucfrnfetiffpkffqnfdqggfknffnteftffcuoehplhgrghhnihhojhesjhgtrhhoshhofhhtrdgtohhmqeenucffohhmrghinhepne
-X-archive-position: 32039
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201112052336.07901.florian@openwrt.org>
+X-archive-position: 32040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: plagnioj@jcrosoft.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3400
+X-UID: 3874
 
-On 16:44 Thu 01 Dec     , zhzhl555@gmail.com wrote:
-> From: zhao zhang <zhzhl555@gmail.com>
+Hello Jonas,
+
+Le lundi 05 décembre 2011 16:08:04, Jonas Gorski a écrit :
+> While trying to improve the bcm963xx CFE partition parsing, I noticed
+> that it could be completely replaced by the generic physmap flash
+> driver using a custom parser.
 > 
-> V2: use new module_platform_driver macro.
-> thanks for Wolfram's advice.
+> The following patch set tries to accomplish that.
 > 
-> This patch adds RTC support(TOY counter0) for loongson1B.
-> Signed-off-by: zhao zhang <zhzhl555@gmail.com>
-> ---
->  drivers/rtc/Kconfig    |   10 ++
->  drivers/rtc/Makefile   |    1 +
->  drivers/rtc/rtc-ls1x.c |  214 ++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 225 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/rtc/rtc-ls1x.c
+> The first few patches clean take care of some minor code style issues
+> first to prevent checkpatch from complaining when moving code around.
 > 
-> diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-> index 5a538fc..6f8c2d7 100644
-> --- a/drivers/rtc/Kconfig
-> +++ b/drivers/rtc/Kconfig
-> @@ -1070,4 +1070,14 @@ config RTC_DRV_PUV3
->  	  This drive can also be built as a module. If so, the module
->  	  will be called rtc-puv3.
->  
-> +config RTC_DRV_LOONGSON1
-> +	tristate "loongson1 RTC support"
-> +	depends on MACH_LOONGSON1
-> +	help
-> +	  This is a driver for the loongson1 on-chip Counter0 (Time-Of-Year
-> +	  counter) to be used as a RTC.
-> +
-> +	  This driver can also be built as a module. If so, the module
-> +	  will be called rtc-ls1x.
-> +
->  endif # RTC_CLASS
-> diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-> index 6e69823..48153fe 100644
-> --- a/drivers/rtc/Makefile
-> +++ b/drivers/rtc/Makefile
-> @@ -109,3 +109,4 @@ obj-$(CONFIG_RTC_DRV_VT8500)	+= rtc-vt8500.o
->  obj-$(CONFIG_RTC_DRV_WM831X)	+= rtc-wm831x.o
->  obj-$(CONFIG_RTC_DRV_WM8350)	+= rtc-wm8350.o
->  obj-$(CONFIG_RTC_DRV_X1205)	+= rtc-x1205.o
-> +obj-$(CONFIG_RTC_DRV_LOONGSON1)	+= rtc-ls1x.o
-keep it ordered
+> After that I move the CFE partition parsing into a parser and make
+> bcm963xx-flash use it to make sure I don't create a non working version.
+> 
+> Finally I'll allow physmap_flash_data to take partition parser names for
+> overriding the default parsers list (the OF version already allows that),
+> let BCM63XX use it, and remove the bcm963xx-flash driver as it is now
+> completely replaced by physmap + CFE parser.
+> 
+> While most patches are limited to the MTD tree, patch 6/7 touches MIPS,
+> so it could go in either tree. But since the MTD tree already has some
+> modifications for bcm963xx-flash, I think it's better to let it go
+> through the MTD tree, to reduce the (potential for) conflicts.
 
+For the whole series, feel free to add my:
 
-you have no alarm, irq on this hardware?
+Acked-by: Florian Fainelli <florian@openwrt.org>
 
-Best Regards,
-J.
+thanks!
+
+> 
+> Regards
+> Jonas
+> 
+> P.S: This patchset is based on l2-mtd-2.6.git, which seems to be the
+> "correct" tree now (the website says mtd-2.6.git, but it doesn't look
+> like the correct one, having no commits).
+> 
+> Jonas Gorski (7):
+>   MTD: MAPS: bcm963xx-flash: fix word order for spare partition
+>   MTD: MAPS: bcm963xx-flash: remove superfluous semicolons
+>   MTD: MAPS: bcm963xx-flash: clean up printk usage
+>   MTD: MAPS: bcm963xx-flash: make CFE partition parsing an mtd parser
+>   MTD: MAPS: physmap: allow partition parsers for physmap_flash_data
+>   MIPS: BCM63XX: use the new bcm63xxpart parser
+>   MTD: MAPS: remove the now unused bcm963xx-flash
+> 
+>  arch/mips/bcm63xx/boards/board_bcm963xx.c |    3 +
+>  drivers/mtd/Kconfig                       |    8 +
+>  drivers/mtd/Makefile                      |    1 +
+>  drivers/mtd/bcm63xxpart.c                 |  189 ++++++++++++++++++++
+>  drivers/mtd/maps/Kconfig                  |    1 +
+>  drivers/mtd/maps/bcm963xx-flash.c         |  265
+> ----------------------------- drivers/mtd/maps/physmap.c                | 
+>   5 +-
+>  include/linux/mtd/physmap.h               |    1 +
+>  8 files changed, 207 insertions(+), 266 deletions(-)
+>  create mode 100644 drivers/mtd/bcm63xxpart.c
+>  delete mode 100644 drivers/mtd/maps/bcm963xx-flash.c
+
+-- 
+Florian

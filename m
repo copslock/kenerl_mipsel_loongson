@@ -1,132 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2011 01:49:42 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:14337 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903632Ab1LFAth (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Dec 2011 01:49:37 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4edd66f80000>; Mon, 05 Dec 2011 16:51:04 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 5 Dec 2011 16:49:36 -0800
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Mon, 5 Dec 2011 16:49:35 -0800
-Message-ID: <4EDD669F.30207@cavium.com>
-Date:   Mon, 05 Dec 2011 16:49:35 -0800
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     binutils <binutils@sourceware.org>
-CC:     linux-mips <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Dec 2011 06:40:37 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:44934 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903541Ab1LFFkc (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Dec 2011 06:40:32 +0100
+Received: by ggnp4 with SMTP id p4so224671ggn.36
+        for <linux-mips@linux-mips.org>; Mon, 05 Dec 2011 21:40:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=v1etU3VmvQqtrxXpPwwvz5vnrxajMJQSBIC6pSlOdms=;
+        b=JA0FGJ+BF9ARc5CreuSEn5DMh/DN62UNFD43ek3+3BQoO46zaMobEHLSnnCPoOnjo3
+         BEhUzBYEHJs07sWsCCYjgx4gB40vYl3uRVM4U1OF+MvHQaH39HR1+W/69tt4c/K0KKVN
+         I9GBmVba8RpcMFFQ3tUyvai3g7yAHVG1Zd00s=
+Received: by 10.236.131.82 with SMTP id l58mr16612006yhi.36.1323150026848;
+        Mon, 05 Dec 2011 21:40:26 -0800 (PST)
+Received: from bubble.grove.modra.org ([115.187.252.19])
+        by mx.google.com with ESMTPS id f7sm30953333and.17.2011.12.05.21.40.23
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 05 Dec 2011 21:40:26 -0800 (PST)
+Received: by bubble.grove.modra.org (Postfix, from userid 1000)
+        id 189C4170C2BF; Tue,  6 Dec 2011 16:10:19 +1030 (CST)
+Date:   Tue, 6 Dec 2011 16:10:19 +1030
+From:   Alan Modra <amodra@gmail.com>
+To:     David Daney <david.daney@cavium.com>
+Cc:     binutils <binutils@sourceware.org>,
+        linux-mips <linux-mips@linux-mips.org>,
         Manuel Lauss <manuel.lauss@googlemail.com>,
         Debian MIPS <debian-mips@lists.debian.org>
-Subject: [Patch]: Fix ld pr11138 FAILures on mips*.
-Content-Type: multipart/mixed;
- boundary="------------080709040708040308010506"
-X-OriginalArrivalTime: 06 Dec 2011 00:49:35.0825 (UTC) FILETIME=[ECF8DC10:01CCB3B0]
-X-archive-position: 32041
+Subject: Re: [Patch]: Fix ld pr11138 FAILures on mips*.
+Message-ID: <20111206054018.GB21034@bubble.grove.modra.org>
+Mail-Followup-To: David Daney <david.daney@cavium.com>,
+        binutils <binutils@sourceware.org>,
+        linux-mips <linux-mips@linux-mips.org>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Debian MIPS <debian-mips@lists.debian.org>
+References: <4EDD669F.30207@cavium.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4EDD669F.30207@cavium.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 32042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: amodra@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 3970
+X-UID: 4089
 
-This is a multi-part message in MIME format.
---------------080709040708040308010506
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+On Mon, Dec 05, 2011 at 04:49:35PM -0800, David Daney wrote:
+> The root cause of this is that the mips linker synthesizes a special
+> symbol "__RLD_MAP", and then sets MIPS_RLD_MAP to point to it.  When
+> a version script is present, this symbol gets versioned along with
+> all the rest, and when it is time to take its address, the symbol
+> can no longer be found as it has had version information appended to
+> its name.
 
-The pr11138 testcase links an executable with a version script.  On 
-mips64-linux the presence of a version script was causing the 
-MIPS_RLD_MAP dynamic tag to be populated with a NULL value.  When such 
-an executable was run ld.so would try to dereference this and receive 
-SIGSEGV, thus killing the process.
+Why not just change
 
-The root cause of this is that the mips linker synthesizes a special 
-symbol "__RLD_MAP", and then sets MIPS_RLD_MAP to point to it.  When a 
-version script is present, this symbol gets versioned along with all the 
-rest, and when it is time to take its address, the symbol can no longer 
-be found as it has had version information appended to its name.
+	  && (strcmp (name, "__rld_map") == 0
+	      || strcmp (name, "__RLD_MAP") == 0))
 
-Since "__RLD_MAP" is really part of the ABI, we want to exclude it from 
-symbol versioning.  To this end, I introduced a new symbol flag 
-'no_sym_version' to tag this type of symbol.  When the "__RLD_MAP" 
-symbol is created, we set this flag.
+to
 
-In _bfd_elf_link_assign_sym_version, we then skip all symbols that have 
-'no_sym_version' set, and everything now works.
+	  && (strncmp (name, "__rld_map", 9) == 0
+	      || strncmp (name, "__RLD_MAP", 9) == 0))
 
-This problem has also been reported in the wild when linking the firefox 
-executable.
+in _bfd_mips_elf_finish_dynamic_symbol?  Perhaps the same for other
+syms there too?
 
-Tested on mips64-linux-gnu and x86_64-linux-gnu
-
-Ok to commit?
-
-2011-12-05  David Daney  <david.daney@cavium.com>
-
-	* elf-bfd.h (elf_link_hash_entry): Add no_sym_version field.
-	* elflink.c (_bfd_elf_link_assign_sym_version): Don't assign a
-	version if no_sym_version is set.
-	* elfxx-mips.c (_bfd_mips_elf_create_dynamic_sections): Set
-	no_sym_version for "__RLD_MAP".
-
---------------080709040708040308010506
-Content-Type: text/plain;
- name="dd-2.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename="dd-2.patch"
-
-Index: bfd/elf-bfd.h
-===================================================================
-RCS file: /cvs/src/src/bfd/elf-bfd.h,v
-retrieving revision 1.329
-diff -u -p -r1.329 elf-bfd.h
---- bfd/elf-bfd.h	17 Aug 2011 00:39:38 -0000	1.329
-+++ bfd/elf-bfd.h	5 Dec 2011 20:15:49 -0000
-@@ -198,6 +198,8 @@ struct elf_link_hash_entry
-   unsigned int pointer_equality_needed : 1;
-   /* Symbol is a unique global symbol.  */
-   unsigned int unique_global : 1;
-+  /* Symbol should not be versioned.  It is part of the ABI */
-+  unsigned int no_sym_version : 1;
- 
-   /* String table index in .dynstr if this is a dynamic symbol.  */
-   unsigned long dynstr_index;
-Index: bfd/elflink.c
-===================================================================
-RCS file: /cvs/src/src/bfd/elflink.c,v
-retrieving revision 1.430
-diff -u -p -r1.430 elflink.c
---- bfd/elflink.c	15 Nov 2011 11:33:57 -0000	1.430
-+++ bfd/elflink.c	5 Dec 2011 20:15:50 -0000
-@@ -1946,6 +1946,9 @@ _bfd_elf_link_assign_sym_version (struct
-   if (!h->def_regular)
-     return TRUE;
- 
-+  if (h->no_sym_version)
-+    return TRUE;
-+
-   bed = get_elf_backend_data (info->output_bfd);
-   p = strchr (h->root.root.string, ELF_VER_CHR);
-   if (p != NULL && h->verinfo.vertree == NULL)
-Index: bfd/elfxx-mips.c
-===================================================================
-RCS file: /cvs/src/src/bfd/elfxx-mips.c,v
-retrieving revision 1.296
-diff -u -p -r1.296 elfxx-mips.c
---- bfd/elfxx-mips.c	29 Nov 2011 20:28:54 -0000	1.296
-+++ bfd/elfxx-mips.c	5 Dec 2011 20:15:50 -0000
-@@ -7260,6 +7260,7 @@ _bfd_mips_elf_create_dynamic_sections (b
- 	  h = (struct elf_link_hash_entry *) bh;
- 	  h->non_elf = 0;
- 	  h->def_regular = 1;
-+	  h->no_sym_version = 1;
- 	  h->type = STT_OBJECT;
- 
- 	  if (! bfd_elf_link_record_dynamic_symbol (info, h))
-
---------------080709040708040308010506--
+-- 
+Alan Modra
+Australia Development Lab, IBM

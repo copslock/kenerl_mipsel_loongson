@@ -1,77 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2011 22:27:21 +0100 (CET)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:45659 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903662Ab1LGV1R (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Dec 2011 22:27:17 +0100
-Received: from katana.hi.pengutronix.de ([2001:6f8:1178:2:221:70ff:fe71:1890] helo=pengutronix.de)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <w.sang@pengutronix.de>)
-        id 1RYP1D-0003B5-C3; Wed, 07 Dec 2011 22:27:11 +0100
-Date:   Wed, 7 Dec 2011 22:27:10 +0100
-From:   Wolfram Sang <w.sang@pengutronix.de>
-To:     Florian Fainelli <florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2011 23:02:43 +0100 (CET)
+Received: from mail-bw0-f49.google.com ([209.85.214.49]:64909 "EHLO
+        mail-bw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903682Ab1LGWCg convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Dec 2011 23:02:36 +0100
+Received: by bkcje16 with SMTP id je16so1286545bkc.36
+        for <multiple recipients>; Wed, 07 Dec 2011 14:02:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding:message-id;
+        bh=tUDSeakOcJcsMIRRA/ZjfzPsf+PlWX4tmuNM0CRsK8k=;
+        b=gIhSGcQ/Gc7EqIAwvWd1N/pbwdEJZjBuhgvYqdd03FYZSgJ6eFrW/JzGj0uTfutfW/
+         d1XufTLxkt7EG0ELTKwUitGf9Z0Hw/j1RXPNdNJKV6oH9yJOxWyrD20UJQj+N6fFTx03
+         fGL3MeLdG1EN7es4IdvCdz3A/lsM/J2vaSWow=
+Received: by 10.180.105.232 with SMTP id gp8mr252907wib.65.1323295350907;
+        Wed, 07 Dec 2011 14:02:30 -0800 (PST)
+Received: from lenovo.localnet ([2a01:e35:2f70:4010:21d:7dff:fe45:5399])
+        by mx.google.com with ESMTPS id dy1sm5066515wib.18.2011.12.07.14.02.22
+        (version=SSLv3 cipher=OTHER);
+        Wed, 07 Dec 2011 14:02:27 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller driver
+Date:   Wed, 7 Dec 2011 23:02:24 +0100
+User-Agent: KMail/1.13.7 (Linux/3.1.0-1-amd64; KDE/4.6.5; x86_64; ; )
 Cc:     Shubhrajyoti Datta <omaplinuxkernel@gmail.com>,
         Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>,
         linux-mips@linux-mips.org, ralf@linux-mips.org,
         spi-devel-general@lists.sourceforge.net
-Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller
- driver
-Message-ID: <20111207212710.GD3744@pengutronix.de>
-References: <1321906615-11392-1-git-send-email-florian@openwrt.org>
- <CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg@mail.gmail.com>
- <201111232041.18477.florian@openwrt.org>
+References: <1321906615-11392-1-git-send-email-florian@openwrt.org> <201111232041.18477.florian@openwrt.org> <20111207212710.GD3744@pengutronix.de>
+In-Reply-To: <20111207212710.GD3744@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="VMt1DrMGOVs3KQwf"
-Content-Disposition: inline
-In-Reply-To: <201111232041.18477.florian@openwrt.org>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:221:70ff:fe71:1890
-X-SA-Exim-Mail-From: w.sang@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-X-archive-position: 32054
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <201112072302.25001.florian@openwrt.org>
+X-archive-position: 32055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w.sang@pengutronix.de
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 6279
+X-UID: 6304
 
+Hello Wolfram,
 
---VMt1DrMGOVs3KQwf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Le mercredi 07 décembre 2011 22:27:10, Wolfram Sang a écrit :
+> > > Could we move to dev pm ops?
+> > 
+> > Sure, I have fixed that in version 2 of the patch.
+> 
+> Have you sent that already?
 
-> > Could we move to dev pm ops?
->=20
-> Sure, I have fixed that in version 2 of the patch.
+Not yet, so if you have any other comments, feel free to let me know so that I 
+can fold the fixes in version 2 of the patch.
 
-Have you sent that already?
-
-Regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---VMt1DrMGOVs3KQwf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk7f2i4ACgkQD27XaX1/VRt0HgCgi4KsJr9qog+cdPc9JN7UC8T1
-HtcAnjY1GMMe+lhyQlZfQYPph6wlvBhs
-=+6TV
------END PGP SIGNATURE-----
-
---VMt1DrMGOVs3KQwf--
+Thanks
+-- 
+Florian

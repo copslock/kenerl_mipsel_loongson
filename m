@@ -1,49 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2011 12:35:32 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:42219 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903656Ab1LGLf2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 7 Dec 2011 12:35:28 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pB7BZSQ2007776
-        for <linux-mips@linux-mips.org>; Wed, 7 Dec 2011 11:35:28 GMT
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pB7BZRuD007774
-        for linux-mips@linux-mips.org; Wed, 7 Dec 2011 11:35:27 GMT
-Date:   Wed, 7 Dec 2011 11:35:27 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     linux-mips@linux-mips.org
-Subject: Patchwork
-Message-ID: <20111207113527.GA7389@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Dec 2011 22:27:21 +0100 (CET)
+Received: from metis.ext.pengutronix.de ([92.198.50.35]:45659 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903662Ab1LGV1R (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Dec 2011 22:27:17 +0100
+Received: from katana.hi.pengutronix.de ([2001:6f8:1178:2:221:70ff:fe71:1890] helo=pengutronix.de)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+        (envelope-from <w.sang@pengutronix.de>)
+        id 1RYP1D-0003B5-C3; Wed, 07 Dec 2011 22:27:11 +0100
+Date:   Wed, 7 Dec 2011 22:27:10 +0100
+From:   Wolfram Sang <w.sang@pengutronix.de>
+To:     Florian Fainelli <florian@openwrt.org>
+Cc:     Shubhrajyoti Datta <omaplinuxkernel@gmail.com>,
+        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>,
+        linux-mips@linux-mips.org, ralf@linux-mips.org,
+        spi-devel-general@lists.sourceforge.net
+Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller
+ driver
+Message-ID: <20111207212710.GD3744@pengutronix.de>
+References: <1321906615-11392-1-git-send-email-florian@openwrt.org>
+ <CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg@mail.gmail.com>
+ <201111232041.18477.florian@openwrt.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="VMt1DrMGOVs3KQwf"
 Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32053
+In-Reply-To: <201111232041.18477.florian@openwrt.org>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-SA-Exim-Connect-IP: 2001:6f8:1178:2:221:70ff:fe71:1890
+X-SA-Exim-Mail-From: w.sang@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+X-archive-position: 32054
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: w.sang@pengutronix.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 5566
+X-UID: 6279
 
-Account creation in patchwork was broken a long time ago and some unrelated
-bug had caused a ugly junk in the listings of patches that contain
-non-ASCII characters.  I've fixed both along with upgrading patchwork to
-the latest and greatest version.
 
-What this mean:
+--VMt1DrMGOVs3KQwf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- - the junk names displayed in the listings is gone
- - you can create new patchwork accounts and use those accounts for example
-   to administrate your own patches, for example when submitting a new
-   version or when you discover a bug and want to withdraw a patch.
+> > Could we move to dev pm ops?
+>=20
+> Sure, I have fixed that in version 2 of the patch.
 
-The upgrade went more than rough and involved lots of manual database
-patching.  If something doesn't work right, please let me know.
+Have you sent that already?
 
-Happy patchworking!
+Regards,
 
-  Ralf
+   Wolfram
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--VMt1DrMGOVs3KQwf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAk7f2i4ACgkQD27XaX1/VRt0HgCgi4KsJr9qog+cdPc9JN7UC8T1
+HtcAnjY1GMMe+lhyQlZfQYPph6wlvBhs
+=+6TV
+-----END PGP SIGNATURE-----
+
+--VMt1DrMGOVs3KQwf--

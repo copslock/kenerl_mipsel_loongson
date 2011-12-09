@@ -1,431 +1,223 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2011 20:04:40 +0100 (CET)
-Received: from 206.83.70.73.ptr.us.xo.net ([206.83.70.73]:40121 "EHLO
-        king.tilera.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903747Ab1LITDp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2011 20:03:45 +0100
-Received: from farm-0002.internal.tilera.com ([10.2.0.32]) by king.tilera.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-         Fri, 9 Dec 2011 14:03:37 -0500
-Received: (from cmetcalf@localhost)
-        by farm-0002.internal.tilera.com (8.13.8/8.12.11/Submit) id pB9J39pd031553;
-        Fri, 9 Dec 2011 14:03:09 -0500
-Message-Id: <201112091903.pB9J39pd031553@farm-0002.internal.tilera.com>
-From:   Chris Metcalf <cmetcalf@tilera.com>
-Date:   Fri, 9 Dec 2011 10:29:07 -0500
-Subject: [PATCH v2] ipc: provide generic compat versions of IPC syscalls
-References: <201112091536.pB9Fa5f7002738@farm-0002.internal.tilera.com>, <201112091602.31325.arnd@arndb.de>
-In-Reply-To: <201112091602.31325.arnd@arndb.de>
-To:     Arnd Bergmann <arnd@arndb.de>, Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "J. Bruce Fields" <bfields@redhat.com>, NeilBrown <neilb@suse.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org
-X-OriginalArrivalTime: 09 Dec 2011 19:03:37.0663 (UTC) FILETIME=[41CBB4F0:01CCB6A5]
-X-archive-position: 32076
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2011 21:31:23 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:19976 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903739Ab1LIUbR (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2011 21:31:17 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4ee2706c0000>; Fri, 09 Dec 2011 12:32:44 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 9 Dec 2011 12:31:15 -0800
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 9 Dec 2011 12:31:14 -0800
+Message-ID: <4EE27012.5030508@cavium.com>
+Date:   Fri, 09 Dec 2011 12:31:14 -0800
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+MIME-Version: 1.0
+To:     binutils <binutils@sourceware.org>,
+        Richard Sandiford <rdsandiford@googlemail.com>,
+        Alan Modra <amodra@gmail.com>
+CC:     Manuel Lauss <manuel.lauss@googlemail.com>,
+        Debian MIPS <debian-mips@lists.debian.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: [Patch v2]: Fix ld pr11138 FAILures on mips*.
+Content-Type: multipart/mixed;
+ boundary="------------080002030204050901050102"
+X-OriginalArrivalTime: 09 Dec 2011 20:31:14.0976 (UTC) FILETIME=[7F660200:01CCB6B1]
+X-archive-position: 32077
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cmetcalf@tilera.com
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7992
+X-UID: 8059
 
-When using the "compat" APIs, architectures will generally want to
-be able to make direct syscalls to msgsnd(), shmctl(), etc., and
-in the kernel we would want them to be handled directly by
-compat_sys_xxx() functions, as is true for other compat syscalls.
+This is a multi-part message in MIME format.
+--------------080002030204050901050102
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-However, for historical reasons, several of the existing compat IPC
-syscalls do not do this.  semctl() expects a pointer to the fourth
-argument, instead of the fourth argument itself.  msgsnd(), msgrcv()
-and shmat() expect arguments in different order.
+As noted in from the first attempt at fixing this:
 
-This change adds an __ARCH_WANT_OLD_COMPAT_IPC define that can be
-set in <asm/compat.h> to preserve this behavior for ports that use it
-(x86, sparc, powerpc, s390, and mips).  No actual semantics are changed
-for those architectures, and there is only a minimal amount of code
-refactoring in ipc/compat.c.
+    The pr11138 testcase links an executable with a version script.  On
+    mips64-linux the presence of a version script was causing the
+    MIPS_RLD_MAP dynamic tag to be populated with a NULL value.  When
+    such an executable was run ld.so would try to dereference this and
+    receive SIGSEGV, thus killing the process.
 
-Newer architectures like tile (and perhaps future architectures such
-as arm64 and unicore64) should not supply this define, and thus can
-avoid having any IPC-specific code at all in their architecture-specific
-compat layer.  In the same vein, if this define is omitted, IPC_64 mode
-is assumed, since that's what the <asm-generic> headers expect.
+    The root cause of this is that the mips linker synthesizes a
+    special symbol "__RLD_MAP", and then sets MIPS_RLD_MAP to point to
+    it.  When a version script is present, this symbol gets versioned
+    along with all the rest, and when it is time to take its address,
+    the symbol can no longer be found as it has had version information
+    appended to its name.
 
-The workaround code in "tile" for msgsnd() and msgrcv() is removed
-with this change; it also fixes the bug that shmat() and semctl() were
-not being properly handled.
+    ...
 
-Signed-off-by: Chris Metcalf <cmetcalf@tilera.com>
----
-The first version used an "__ARCH_WANT_GENERIC_COMPAT_IPC" define that
-was set by tile, and presumably would be set by all future architectures.
-Arnd Bergmann observed:
+    This problem has also been reported in the wild when linking the
+    firefox executable.
 
-> I like the patch, but I think the __ARCH_WANT_GENERIC_COMPAT_IPC
-> should be defined as the opposite, so all "old" architectures
-> have to set it while tile (and future architectures like arm64
-> and unicore64) just get the default. [...]
-> We have powerpc, mips, s390, sparc and
-> x86 using the legacy method, while only parisc and tile get it right
-> and use the syscalls directly.
+This new patch, at Richard's suggestion, remembers the __RLD_MAP (which
+also goes by several other names) symbol before it can get hidden or
+renamed by the symbol versioning code.
 
- arch/mips/include/asm/compat.h    |    3 ++
- arch/powerpc/include/asm/compat.h |    3 ++
- arch/s390/include/asm/compat.h    |    3 ++
- arch/sparc/include/asm/compat.h   |    3 ++
- arch/tile/include/asm/compat.h    |   11 ------
- arch/tile/kernel/compat.c         |   43 ----------------------
- arch/x86/include/asm/compat.h     |    3 ++
- include/linux/compat.h            |   12 ++++++-
- ipc/compat.c                      |   70 +++++++++++++++++++++++++++++++++---
- 9 files changed, 90 insertions(+), 61 deletions(-)
+Then when it comes time to calculate the DT_MIPS_RLD_MAP value, we can
+get the required information from the now remembered symbol.
 
-diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
-index b77df03..41a57cb 100644
---- a/arch/mips/include/asm/compat.h
-+++ b/arch/mips/include/asm/compat.h
-@@ -8,6 +8,9 @@
- #include <asm/page.h>
- #include <asm/ptrace.h>
+We can get rid of a big blob of code in
+_bfd_mips_elf_finish_dynamic_symbol that is now unused.  Also the size
+of the .rld_map section was not being set properly for ELF64 targets,
+so I fixed that as well.
+
+Tested on mips64-linux-gnu where it fixes the pr11138 testcase
+failures.  Also tested by bootstrapping GCC with the patched binutils.
+
+Not tested on IRIX6 which has slightly different handling of these
+things, but I think the code 'looks plausible', so what could possibly
+go wrong?
+
+Comments?  or OK to commit?
+
+2011-12-09  David Daney  <david.daney@cavium.com>
+
+	* /elfxx-mips.c (mips_elf_link_hash_table.rld_value): Remove.
+	(mips_elf_link_hash_table.rld_symbol): New field;
+	(MIPS_ELF_RLD_MAP_SIZE): New macro.
+	(_bfd_mips_elf_add_symbol_hook): Remember __rld_obj_head symbol
+	in rld_symbol.
+	(_bfd_mips_elf_create_dynamic_sections): Remember __rld_map symbol
+	in rld_symbol.
+	(_bfd_mips_elf_size_dynamic_sections): Set correct size for .rld_map.
+	(_bfd_mips_elf_finish_dynamic_symbol): Remove .rld_map handling.
+	(_bfd_mips_elf_finish_dynamic_sections): Use rld_symbol to
+	calculate DT_MIPS_RLD_MAP value.
+	(_bfd_mips_elf_link_hash_table_create): Initialize rld_symbol,
+	quit initializing rld_value.
+
+--------------080002030204050901050102
+Content-Type: text/plain;
+ name="dd.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="dd.patch"
+
+Index: bfd/elfxx-mips.c
+===================================================================
+RCS file: /cvs/src/src/bfd/elfxx-mips.c,v
+retrieving revision 1.297
+diff -u -p -r1.297 elfxx-mips.c
+--- bfd/elfxx-mips.c	8 Dec 2011 20:47:24 -0000	1.297
++++ bfd/elfxx-mips.c	9 Dec 2011 18:47:25 -0000
+@@ -436,8 +436,8 @@ struct mips_elf_link_hash_table
+      entry is set to the address of __rld_obj_head as in IRIX5.  */
+   bfd_boolean use_rld_obj_head;
  
-+/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
-+#define __ARCH_WANT_OLD_COMPAT_IPC
+-  /* This is the value of the __rld_map or __rld_obj_head symbol.  */
+-  bfd_vma rld_value;
++  /* The  __rld_map or __rld_obj_head symbol. */
++  struct elf_link_hash_entry *rld_symbol;
+ 
+   /* This is set if we see any mips16 stub sections.  */
+   bfd_boolean mips16_stubs_seen;
+@@ -768,6 +768,10 @@ static bfd *reldyn_sorting_bfd;
+ #define MIPS_ELF_GOT_SIZE(abfd) \
+   (get_elf_backend_data (abfd)->s->arch_size / 8)
+ 
++/* The size of the .rld_map section. */
++#define MIPS_ELF_RLD_MAP_SIZE(abfd) \
++  (get_elf_backend_data (abfd)->s->arch_size / 8)
 +
- #define COMPAT_USER_HZ		100
- #define COMPAT_UTS_MACHINE	"mips\0\0\0"
+ /* The size of a symbol-table entry.  */
+ #define MIPS_ELF_SYM_SIZE(abfd) \
+   (get_elf_backend_data (abfd)->s->sizeof_sym)
+@@ -7082,6 +7086,7 @@ _bfd_mips_elf_add_symbol_hook (bfd *abfd
+ 	return FALSE;
  
-diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
-index 88e602f..450a976 100644
---- a/arch/powerpc/include/asm/compat.h
-+++ b/arch/powerpc/include/asm/compat.h
-@@ -7,6 +7,9 @@
- #include <linux/types.h>
- #include <linux/sched.h>
+       mips_elf_hash_table (info)->use_rld_obj_head = TRUE;
++      mips_elf_hash_table (info)->rld_symbol = h;
+     }
  
-+/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
-+#define __ARCH_WANT_OLD_COMPAT_IPC
-+
- #define COMPAT_USER_HZ		100
- #define COMPAT_UTS_MACHINE	"ppc\0\0"
+   /* If this is a mips16 text symbol, add 1 to the value to make it
+@@ -7267,6 +7272,7 @@ _bfd_mips_elf_create_dynamic_sections (b
  
-diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
-index 2e49748..9a38bae 100644
---- a/arch/s390/include/asm/compat.h
-+++ b/arch/s390/include/asm/compat.h
-@@ -7,6 +7,9 @@
- #include <linux/sched.h>
- #include <linux/thread_info.h>
+ 	  if (! bfd_elf_link_record_dynamic_symbol (info, h))
+ 	    return FALSE;
++	  mips_elf_hash_table (info)->rld_symbol = h;
+ 	}
+     }
  
-+/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
-+#define __ARCH_WANT_OLD_COMPAT_IPC
-+
- #define PSW32_MASK_PER		0x40000000UL
- #define PSW32_MASK_DAT		0x04000000UL
- #define PSW32_MASK_IO		0x02000000UL
-diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
-index b8be20d..bfd3d8b 100644
---- a/arch/sparc/include/asm/compat.h
-+++ b/arch/sparc/include/asm/compat.h
-@@ -5,6 +5,9 @@
-  */
- #include <linux/types.h>
+@@ -9028,7 +9034,7 @@ _bfd_mips_elf_size_dynamic_sections (bfd
+ 	{
+ 	  /* We add a room for __rld_map.  It will be filled in by the
+ 	     rtld to contain a pointer to the _r_debug structure.  */
+-	  s->size += 4;
++	  s->size += MIPS_ELF_RLD_MAP_SIZE(output_bfd);
+ 	}
+       else if (SGI_COMPAT (output_bfd)
+ 	       && CONST_STRNEQ (name, ".compact_rel"))
+@@ -10031,31 +10037,6 @@ _bfd_mips_elf_finish_dynamic_symbol (bfd
+   if (IRIX_COMPAT (output_bfd) == ict_irix6)
+     mips_elf_irix6_finish_dynamic_symbol (output_bfd, name, sym);
  
-+/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
-+#define __ARCH_WANT_OLD_COMPAT_IPC
-+
- #define COMPAT_USER_HZ		100
- #define COMPAT_UTS_MACHINE	"sparc\0\0"
- 
-diff --git a/arch/tile/include/asm/compat.h b/arch/tile/include/asm/compat.h
-index bf95f55..4b4b289 100644
---- a/arch/tile/include/asm/compat.h
-+++ b/arch/tile/include/asm/compat.h
-@@ -242,17 +242,6 @@ long compat_sys_fallocate(int fd, int mode,
- long compat_sys_sched_rr_get_interval(compat_pid_t pid,
- 				      struct compat_timespec __user *interval);
- 
--/* Versions of compat functions that differ from generic Linux. */
--struct compat_msgbuf;
--long tile_compat_sys_msgsnd(int msqid,
--			    struct compat_msgbuf __user *msgp,
--			    size_t msgsz, int msgflg);
--long tile_compat_sys_msgrcv(int msqid,
--			    struct compat_msgbuf __user *msgp,
--			    size_t msgsz, long msgtyp, int msgflg);
--long tile_compat_sys_ptrace(compat_long_t request, compat_long_t pid,
--			    compat_long_t addr, compat_long_t data);
+-  if (! info->shared)
+-    {
+-      if (! mips_elf_hash_table (info)->use_rld_obj_head
+-	  && (strcmp (name, "__rld_map") == 0
+-	      || strcmp (name, "__RLD_MAP") == 0))
+-	{
+-	  asection *s = bfd_get_section_by_name (dynobj, ".rld_map");
+-	  BFD_ASSERT (s != NULL);
+-	  sym->st_value = s->output_section->vma + s->output_offset;
+-	  bfd_put_32 (output_bfd, 0, s->contents);
+-	  if (mips_elf_hash_table (info)->rld_value == 0)
+-	    mips_elf_hash_table (info)->rld_value = sym->st_value;
+-	}
+-      else if (mips_elf_hash_table (info)->use_rld_obj_head
+-	       && strcmp (name, "__rld_obj_head") == 0)
+-	{
+-	  /* IRIX6 does not use a .rld_map section.  */
+-	  if (IRIX_COMPAT (output_bfd) == ict_irix5
+-              || IRIX_COMPAT (output_bfd) == ict_none)
+-	    BFD_ASSERT (bfd_get_section_by_name (dynobj, ".rld_map")
+-			!= NULL);
+-	  mips_elf_hash_table (info)->rld_value = sym->st_value;
+-	}
+-    }
 -
- /* Tilera Linux syscalls that don't have "compat" versions. */
- #define compat_sys_flush_cache sys_flush_cache
+   /* Keep dynamic MIPS16 symbols odd.  This allows the dynamic linker to
+      treat MIPS16 symbols like any other.  */
+   if (ELF_ST_IS_MIPS16 (sym->st_other))
+@@ -10518,7 +10499,18 @@ _bfd_mips_elf_finish_dynamic_sections (b
+ 	      break;
  
-diff --git a/arch/tile/kernel/compat.c b/arch/tile/kernel/compat.c
-index bf5e9d7..d67459b 100644
---- a/arch/tile/kernel/compat.c
-+++ b/arch/tile/kernel/compat.c
-@@ -16,7 +16,6 @@
- #define __SYSCALL_COMPAT
+ 	    case DT_MIPS_RLD_MAP:
+-	      dyn.d_un.d_ptr = mips_elf_hash_table (info)->rld_value;
++	      {
++		struct elf_link_hash_entry *h;
++		h = mips_elf_hash_table (info)->rld_symbol;
++		if (!h)
++		  {
++		    dyn_to_skip = MIPS_ELF_DYN_SIZE (dynobj);
++		    swap_out_p = FALSE;
++		  }
++		s = h->root.u.def.section;
++		dyn.d_un.d_ptr = s->output_section->vma + s->output_offset
++				 + h->root.u.def.value;
++	      }
+ 	      break;
  
- #include <linux/compat.h>
--#include <linux/msg.h>
- #include <linux/syscalls.h>
- #include <linux/kdev_t.h>
- #include <linux/fs.h>
-@@ -95,52 +94,10 @@ long compat_sys_sched_rr_get_interval(compat_pid_t pid,
- 	return ret;
- }
- 
--/*
-- * The usual compat_sys_msgsnd() and _msgrcv() seem to be assuming
-- * some different calling convention than our normal 32-bit tile code.
-- */
--
--/* Already defined in ipc/compat.c, but we need it here. */
--struct compat_msgbuf {
--	compat_long_t mtype;
--	char mtext[1];
--};
--
--long tile_compat_sys_msgsnd(int msqid,
--			    struct compat_msgbuf __user *msgp,
--			    size_t msgsz, int msgflg)
--{
--	compat_long_t mtype;
--
--	if (get_user(mtype, &msgp->mtype))
--		return -EFAULT;
--	return do_msgsnd(msqid, mtype, msgp->mtext, msgsz, msgflg);
--}
--
--long tile_compat_sys_msgrcv(int msqid,
--			    struct compat_msgbuf __user *msgp,
--			    size_t msgsz, long msgtyp, int msgflg)
--{
--	long err, mtype;
--
--	err =  do_msgrcv(msqid, &mtype, msgp->mtext, msgsz, msgtyp, msgflg);
--	if (err < 0)
--		goto out;
--
--	if (put_user(mtype, &msgp->mtype))
--		err = -EFAULT;
-- out:
--	return err;
--}
--
- /* Provide the compat syscall number to call mapping. */
- #undef __SYSCALL
- #define __SYSCALL(nr, call) [nr] = (call),
- 
--/* The generic versions of these don't work for Tile. */
--#define compat_sys_msgrcv tile_compat_sys_msgrcv
--#define compat_sys_msgsnd tile_compat_sys_msgsnd
--
- /* See comments in sys.c */
- #define compat_sys_fadvise64_64 sys32_fadvise64_64
- #define compat_sys_readahead sys32_readahead
-diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
-index 30d737e..a72cbe4 100644
---- a/arch/x86/include/asm/compat.h
-+++ b/arch/x86/include/asm/compat.h
-@@ -8,6 +8,9 @@
- #include <linux/sched.h>
- #include <asm/user32.h>
- 
-+/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
-+#define __ARCH_WANT_OLD_COMPAT_IPC
-+
- #define COMPAT_USER_HZ		100
- #define COMPAT_UTS_MACHINE	"i686\0\0"
- 
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index 66ed067..472e66c 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -224,6 +224,7 @@ struct compat_sysinfo;
- struct compat_sysctl_args;
- struct compat_kexec_segment;
- struct compat_mq_attr;
-+struct compat_msgbuf;
- 
- extern void compat_exit_robust_list(struct task_struct *curr);
- 
-@@ -234,13 +235,22 @@ asmlinkage long
- compat_sys_get_robust_list(int pid, compat_uptr_t __user *head_ptr,
- 			   compat_size_t __user *len_ptr);
- 
-+#ifdef __ARCH_WANT_OLD_COMPAT_IPC
- long compat_sys_semctl(int first, int second, int third, void __user *uptr);
- long compat_sys_msgsnd(int first, int second, int third, void __user *uptr);
- long compat_sys_msgrcv(int first, int second, int msgtyp, int third,
- 		int version, void __user *uptr);
--long compat_sys_msgctl(int first, int second, void __user *uptr);
- long compat_sys_shmat(int first, int second, compat_uptr_t third, int version,
- 		void __user *uptr);
-+#else
-+long compat_sys_semctl(int semid, int semnum, int cmd, int arg);
-+long compat_sys_msgsnd(int msqid, struct compat_msgbuf __user *msgp,
-+		size_t msgsz, int msgflg);
-+long compat_sys_msgrcv(int msqid, struct compat_msgbuf __user *msgp,
-+		size_t msgsz, long msgtyp, int msgflg);
-+long compat_sys_shmat(int shmid, compat_uptr_t shmaddr, int shmflg);
-+#endif
-+long compat_sys_msgctl(int first, int second, void __user *uptr);
- long compat_sys_shmctl(int first, int second, void __user *uptr);
- long compat_sys_semtimedop(int semid, struct sembuf __user *tsems,
- 		unsigned nsems, const struct compat_timespec __user *timeout);
-diff --git a/ipc/compat.c b/ipc/compat.c
-index 845a287..94ee136 100644
---- a/ipc/compat.c
-+++ b/ipc/compat.c
-@@ -27,6 +27,7 @@
- #include <linux/msg.h>
- #include <linux/shm.h>
- #include <linux/syscalls.h>
-+#include <linux/ptrace.h>
- 
- #include <linux/mutex.h>
- #include <asm/uaccess.h>
-@@ -117,6 +118,7 @@ extern int sem_ctls[];
- 
- static inline int compat_ipc_parse_version(int *cmd)
- {
-+#ifdef __ARCH_WANT_OLD_COMPAT_IPC
- 	int version = *cmd & IPC_64;
- 
- 	/* this is tricky: architectures that have support for the old
-@@ -128,6 +130,10 @@ static inline int compat_ipc_parse_version(int *cmd)
- 	*cmd &= ~IPC_64;
- #endif
- 	return version;
-+#else
-+	/* With the asm-generic APIs, we always use the 64-bit versions. */
-+	return IPC_64;
-+#endif
- }
- 
- static inline int __get_compat_ipc64_perm(struct ipc64_perm *p64,
-@@ -232,10 +238,9 @@ static inline int put_compat_semid_ds(struct semid64_ds *s,
- 	return err;
- }
- 
--long compat_sys_semctl(int first, int second, int third, void __user *uptr)
-+static long do_compat_semctl(int first, int second, int third, u32 pad)
- {
- 	union semun fourth;
--	u32 pad;
- 	int err, err2;
- 	struct semid64_ds s64;
- 	struct semid64_ds __user *up64;
-@@ -243,10 +248,6 @@ long compat_sys_semctl(int first, int second, int third, void __user *uptr)
- 
- 	memset(&s64, 0, sizeof(s64));
- 
--	if (!uptr)
--		return -EINVAL;
--	if (get_user(pad, (u32 __user *) uptr))
--		return -EFAULT;
- 	if ((third & (~IPC_64)) == SETVAL)
- 		fourth.val = (int) pad;
- 	else
-@@ -305,6 +306,18 @@ long compat_sys_semctl(int first, int second, int third, void __user *uptr)
- 	return err;
- }
- 
-+#ifdef __ARCH_WANT_OLD_COMPAT_IPC
-+long compat_sys_semctl(int first, int second, int third, void __user *uptr)
-+{
-+	u32 pad;
-+
-+	if (!uptr)
-+		return -EINVAL;
-+	if (get_user(pad, (u32 __user *) uptr))
-+		return -EFAULT;
-+	return do_compat_semctl(first, second, third, pad);
-+}
-+
- long compat_sys_msgsnd(int first, int second, int third, void __user *uptr)
- {
- 	struct compat_msgbuf __user *up = uptr;
-@@ -353,6 +366,37 @@ long compat_sys_msgrcv(int first, int second, int msgtyp, int third,
- out:
- 	return err;
- }
-+#else
-+long compat_sys_semctl(int semid, int semnum, int cmd, int arg)
-+{
-+	return do_compat_semctl(semid, semnum, cmd, arg);
-+}
-+
-+long compat_sys_msgsnd(int msqid, struct compat_msgbuf __user *msgp,
-+		       size_t msgsz, int msgflg)
-+{
-+	compat_long_t mtype;
-+
-+	if (get_user(mtype, &msgp->mtype))
-+		return -EFAULT;
-+	return do_msgsnd(msqid, mtype, msgp->mtext, msgsz, msgflg);
-+}
-+
-+long compat_sys_msgrcv(int msqid, struct compat_msgbuf __user *msgp,
-+		       size_t msgsz, long msgtyp, int msgflg)
-+{
-+	long err, mtype;
-+
-+	err =  do_msgrcv(msqid, &mtype, msgp->mtext, msgsz, msgtyp, msgflg);
-+	if (err < 0)
-+		goto out;
-+
-+	if (put_user(mtype, &msgp->mtype))
-+		err = -EFAULT;
-+ out:
-+	return err;
-+}
-+#endif
- 
- static inline int get_compat_msqid64(struct msqid64_ds *m64,
- 				     struct compat_msqid64_ds __user *up64)
-@@ -470,6 +514,7 @@ long compat_sys_msgctl(int first, int second, void __user *uptr)
- 	return err;
- }
- 
-+#ifdef __ARCH_WANT_OLD_COMPAT_IPC
- long compat_sys_shmat(int first, int second, compat_uptr_t third, int version,
- 			void __user *uptr)
- {
-@@ -485,6 +530,19 @@ long compat_sys_shmat(int first, int second, compat_uptr_t third, int version,
- 	uaddr = compat_ptr(third);
- 	return put_user(raddr, uaddr);
- }
-+#else
-+long compat_sys_shmat(int shmid, compat_uptr_t shmaddr, int shmflg)
-+{
-+	unsigned long ret;
-+	long err;
-+
-+	err = do_shmat(shmid, compat_ptr(shmaddr), shmflg, &ret);
-+	if (err)
-+		return err;
-+	force_successful_syscall_return();
-+	return (long)ret;
-+}
-+#endif
- 
- static inline int get_compat_shmid64_ds(struct shmid64_ds *s64,
- 					struct compat_shmid64_ds __user *up64)
--- 
-1.6.5.2
+ 	    case DT_MIPS_OPTIONS:
+@@ -12801,7 +12793,7 @@ _bfd_mips_elf_link_hash_table_create (bf
+   ret->procedure_count = 0;
+   ret->compact_rel_size = 0;
+   ret->use_rld_obj_head = FALSE;
+-  ret->rld_value = 0;
++  ret->rld_symbol = NULL;
+   ret->mips16_stubs_seen = FALSE;
+   ret->use_plts_and_copy_relocs = FALSE;
+   ret->is_vxworks = FALSE;
+
+--------------080002030204050901050102--

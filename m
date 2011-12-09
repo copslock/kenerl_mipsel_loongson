@@ -1,104 +1,152 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Dec 2011 21:53:32 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:16779 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903723Ab1LHUx2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 8 Dec 2011 21:53:28 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4ee1241f0000>; Thu, 08 Dec 2011 12:54:55 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 8 Dec 2011 12:53:26 -0800
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Thu, 8 Dec 2011 12:53:26 -0800
-Message-ID: <4EE123C6.5050703@cavium.com>
-Date:   Thu, 08 Dec 2011 12:53:26 -0800
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2011 07:44:40 +0100 (CET)
+Received: from mail-ey0-f177.google.com ([209.85.215.177]:61299 "EHLO
+        mail-ey0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903707Ab1LIGod (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2011 07:44:33 +0100
+Received: by eaac10 with SMTP id c10so1871158eaa.36
+        for <multiple recipients>; Thu, 08 Dec 2011 22:44:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=yMmjZk3lJDxGN/zDeoK9iof7ArEnaB66jZ1dBxOdzB0=;
+        b=KLihlJzyZ09SsE/GluPXBdxa0DgsThuIZrUNI2hKY59f65JwQTeZLPapL4WUwZC24H
+         396UH7yrYm/RkfF/gNeCUDTPfn++v+dhR17KICzJTc3dUk9EYzgySEf3b57ZLPKpOkOg
+         dptSbLyYKPRS9RQxXKeM+iul8v5coUXpx10N8=
 MIME-Version: 1.0
-To:     binutils <binutils@sourceware.org>, Alan Modra <amodra@gmail.com>,
-        linux-mips <linux-mips@linux-mips.org>,
-        Manuel Lauss <manuel.lauss@googlemail.com>,
-        Debian MIPS <debian-mips@lists.debian.org>,
-        rdsandiford@googlemail.com
-Subject: Re: [Patch]: Fix ld pr11138 FAILures on mips*.
-References: <4EDD669F.30207@cavium.com> <20111206054018.GB21034@bubble.grove.modra.org> <8762ht2yft.fsf@firetop.home> <4EDE9373.4070707@cavium.com> <87liqm7qgr.fsf@firetop.home>
-In-Reply-To: <87liqm7qgr.fsf@firetop.home>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 08 Dec 2011 20:53:26.0605 (UTC) FILETIME=[6EB2B7D0:01CCB5EB]
-X-archive-position: 32064
+Received: by 10.213.29.138 with SMTP id q10mr581387ebc.35.1323413067768; Thu,
+ 08 Dec 2011 22:44:27 -0800 (PST)
+Received: by 10.14.37.15 with HTTP; Thu, 8 Dec 2011 22:44:27 -0800 (PST)
+In-Reply-To: <20111208130835.GC10113@linux-mips.org>
+References: <1322729078-6141-1-git-send-email-zhzhl555@gmail.com>
+        <20111208130835.GC10113@linux-mips.org>
+Date:   Fri, 9 Dec 2011 14:44:27 +0800
+Message-ID: <CANY2MLLNVmmU_cDTTS-dYemt1CHQewHm=b87OafAB=kL6GHFmQ@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Add RTC support for loongson1B
+From:   zhao zhang <zhzhl555@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     a.zummo@towertech.it, rtc-linux@googlegroups.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        keguang.zhang@gmail.com, wuzhangjin@gmail.com, r0bertz@gentoo.org
+Content-Type: multipart/alternative; boundary=0015174be8facba57504b3a31d38
+X-archive-position: 32065
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: zhzhl555@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7087
+X-UID: 7420
 
-On 12/08/2011 12:34 PM, Richard Sandiford wrote:
-> David Daney<david.daney@cavium.com>  writes:
->>> There again, is this symbol (as opposed to the DT_MIPS_RLD_MAP tag)
->>> actually part of the ABI?  I can't find any reference to it in the
->>> original psABI, the SGI ELF64 spec, gdb or glibc.  If it's just an
->>> internal thing, maybe we could get rid of it altogether, or at least
->>> make it bind locally rather than globally.
->>>
->>
->> That is an option too I suppose.  I would say that it is part of a de
->> facto ABI if nothing else.  The question of weather anybody uses it it a
->> different question.  I thought boehm-gc may have used it, but I cannot
->> find it there now.
->
-> Yeah, good point.  It occured to me rather belatedly that if wasn't
-> part of the de facto ABI, it wouldn't have two distinct names...
->
-> So if we were just doing this for the tag, the simplest way would have
-> been to find the .rld_map section in _bfd_mips_elf_finish_dynamic_sections.
-> But I agree that we should keep the symbol Just In Case.  So...
->
->> It might be possible to #define elf_backend_output_arch_local_syms and
->> then handle calculation of the rld_value value there instead.
->>
->> If this seems like a good approach, I can prepare and test a patch that
->> does that.
->
-> ...how about caching the hash table entry for __rld_map/__RLD_MAP/
-> __rld_obj_head in mips_elf_link_hash_entry, instead of rld_value.
-> (One field shared by all three should be enough.)  We can then use
-> that in _bfd_mips_elf_finish_dynamic_sections.
->
-> The code to set sym->st_value in _bfd_mips_elf_finish_dynamic_symbol
-> should already be redundant: the symbol is defined as being at the
-> start of .rld_map by:
->
-> 	  s = bfd_get_section_by_name (abfd, ".rld_map");
-> 	  BFD_ASSERT (s != NULL);
->
-> 	  name = SGI_COMPAT (abfd) ? "__rld_map" : "__RLD_MAP";
-> 	  bh = NULL;
-> 	  if (!(_bfd_generic_link_add_one_symbol
-> 		(info, abfd, name, BSF_GLOBAL, s, 0, NULL, FALSE,
-> 		 get_elf_backend_data (abfd)->collect,&bh)))
-> 	    return FALSE;
->
-> And the code to clear the first word should be redundant too, since
-> _bfd_mips_elf_size_dynamic_sections uses bfd_zalloc to allocate the
-> section's contents.
+--0015174be8facba57504b3a31d38
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: quoted-printable
 
-That's right, also elsewhere we set the size of the section to 4, which 
-is not correct for ELF64 targets.
+Thanks for Ralf's replay.
 
->  So if we do cache the hash table entry, the whole
-> _bfd_mips_elf_finish_dynamic_symbol handling should become dead.
+Since the read address and the write address are different, so i am worry
+about
+the out-of-order execution. I just want make sure the read instruction
+*not*
+ahead of that write instruction.
+
+I didn't know about the detail principle of out-of-order execution on this
+SOC, and
+i didn't know the read for different address will also complete after all
+preceeding
+writes have completed.
+
+
+
+
+=D4=DA 2011=C4=EA12=D4=C28=C8=D5 =CF=C2=CE=E79:08=A3=ACRalf Baechle <ralf@l=
+inux-mips.org>=D0=B4=B5=C0=A3=BA
+
+> On Thu, Dec 01, 2011 at 04:44:38PM +0800, zhzhl555@gmail.com wrote:
 >
-> Richard
+> > +     writel(t, SYS_TOYWRITE1);
+> > +     __asm__ volatile ("sync");
+> > +     c =3D 0x10000;
+> > +     while ((readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TS) && --c)
+> > +             usleep_range(1000, 3000);
+>
+> Why the SYNC instruction?  This is an uncached write and on all MIPS CPUs
+> the SYNC instruction will only make sure the write has left the CPU's
+> write buffers.  There is no guarantee that by the time the SYNC has
+> completed
+> the write has actually reached its destination.  If that is what you want=
+,
+> read something from device.  Reads will only complete after all preceedin=
+g
+> writes have completed.
+>
+> In this driver all instances of SYNC instructions are followed by polling
+> loops reading from the RTC which means all SYNCs should be unnecessary.
+>
+> Or?
+>
+>  Ralf
+>
 
-Thanks Richard,
+--0015174be8facba57504b3a31d38
+Content-Type: text/html; charset=GB2312
+Content-Transfer-Encoding: quoted-printable
 
-Those are all good ideas, so I think I will hack up a new patch to try 
-and implement this plan.  Some care also needs to be taken for the SGI 
-case as there the symbol seems to come from one of the input objects 
-rather than being synthesized by the linker.
+Thanks for Ralf&#39;s replay.<br>
+<br>
+Since the read address and the write address are different, so i am=20
+worry about <br>
+the <span class=3D"st">out-of-order execution. </span>I just want make=20
+sure the read instruction *not* <br>
+ahead of that write =20
+instruction.<br>
+<br>
+I didn&#39;t know about the detail principle of <span class=3D"st">out-of-o=
+rder
+ execution</span> on this SOC, and<br>
+i didn&#39;t know the read for different address will also complete after=
+=20
+all preceeding<br>
 
-David Daney
+writes have completed.<br>
+
+ <br><br><br><br><div class=3D"gmail_quote">=D4=DA 2011=C4=EA12=D4=C28=C8=
+=D5 =CF=C2=CE=E79:08=A3=ACRalf Baechle <span dir=3D"ltr">&lt;<a href=3D"mai=
+lto:ralf@linux-mips.org">ralf@linux-mips.org</a>&gt;</span>=D0=B4=B5=C0=A3=
+=BA<br><blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 0pt 0.8ex=
+; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;">
+<div class=3D"im">On Thu, Dec 01, 2011 at 04:44:38PM +0800, <a href=3D"mail=
+to:zhzhl555@gmail.com">zhzhl555@gmail.com</a> wrote:<br>
+<br>
+&gt; + &nbsp; &nbsp; writel(t, SYS_TOYWRITE1);<br>
+&gt; + &nbsp; &nbsp; __asm__ volatile (&quot;sync&quot;);<br>
+&gt; + &nbsp; &nbsp; c =3D 0x10000;<br>
+&gt; + &nbsp; &nbsp; while ((readl(SYS_COUNTER_CNTRL) &amp; SYS_CNTRL_TS) &=
+amp;&amp; --c)<br>
+&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; usleep_range(1000, 3000);<=
+br>
+<br>
+</div>Why the SYNC instruction? &nbsp;This is an uncached write and on all =
+MIPS CPUs<br>
+the SYNC instruction will only make sure the write has left the CPU&#39;s<b=
+r>
+write buffers. &nbsp;There is no guarantee that by the time the SYNC has co=
+mpleted<br>
+the write has actually reached its destination. &nbsp;If that is what you w=
+ant,<br>
+read something from device. &nbsp;Reads will only complete after all precee=
+ding<br>
+writes have completed.<br>
+<br>
+In this driver all instances of SYNC instructions are followed by polling<b=
+r>
+loops reading from the RTC which means all SYNCs should be unnecessary.<br>
+<br>
+Or?<br>
+<font color=3D"#888888"><br>
+ &nbsp;Ralf<br>
+</font></blockquote></div><br>
+
+--0015174be8facba57504b3a31d38--

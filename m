@@ -1,264 +1,431 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2011 20:04:06 +0100 (CET)
-Received: from zmc.proxad.net ([212.27.53.206]:59820 "EHLO zmc.proxad.net"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903743Ab1LITBz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Dec 2011 20:01:55 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by zmc.proxad.net (Postfix) with ESMTP id 66E3738FEB9;
-        Fri,  9 Dec 2011 20:01:54 +0100 (CET)
-X-Virus-Scanned: amavisd-new at 
-Received: from zmc.proxad.net ([127.0.0.1])
-        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 5uLGWDiu4hub; Fri,  9 Dec 2011 20:01:54 +0100 (CET)
-Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
-        by zmc.proxad.net (Postfix) with ESMTPSA id D55CD398038;
-        Fri,  9 Dec 2011 20:01:53 +0100 (CET)
-From:   Florian Fainelli <florian@openwrt.org>
-To:     Matt Mackall <mpm@selenic.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>, ralf@linux-mips.org,
-        linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 5/5] hw_random: add Broadcom BCM63xx RNG driver
-Date:   Fri,  9 Dec 2011 20:01:10 +0100
-Message-Id: <1323457270-16330-6-git-send-email-florian@openwrt.org>
-X-Mailer: git-send-email 1.7.5.4
-In-Reply-To: <1323457270-16330-1-git-send-email-florian@openwrt.org>
-References: <1323457270-16330-1-git-send-email-florian@openwrt.org>
-X-archive-position: 32075
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2011 20:04:40 +0100 (CET)
+Received: from 206.83.70.73.ptr.us.xo.net ([206.83.70.73]:40121 "EHLO
+        king.tilera.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903747Ab1LITDp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Dec 2011 20:03:45 +0100
+Received: from farm-0002.internal.tilera.com ([10.2.0.32]) by king.tilera.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Fri, 9 Dec 2011 14:03:37 -0500
+Received: (from cmetcalf@localhost)
+        by farm-0002.internal.tilera.com (8.13.8/8.12.11/Submit) id pB9J39pd031553;
+        Fri, 9 Dec 2011 14:03:09 -0500
+Message-Id: <201112091903.pB9J39pd031553@farm-0002.internal.tilera.com>
+From:   Chris Metcalf <cmetcalf@tilera.com>
+Date:   Fri, 9 Dec 2011 10:29:07 -0500
+Subject: [PATCH v2] ipc: provide generic compat versions of IPC syscalls
+References: <201112091536.pB9Fa5f7002738@farm-0002.internal.tilera.com>, <201112091602.31325.arnd@arndb.de>
+In-Reply-To: <201112091602.31325.arnd@arndb.de>
+To:     Arnd Bergmann <arnd@arndb.de>, Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "J. Bruce Fields" <bfields@redhat.com>, NeilBrown <neilb@suse.de>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org
+X-OriginalArrivalTime: 09 Dec 2011 19:03:37.0663 (UTC) FILETIME=[41CBB4F0:01CCB6A5]
+X-archive-position: 32076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: cmetcalf@tilera.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7991
+X-UID: 7992
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
+When using the "compat" APIs, architectures will generally want to
+be able to make direct syscalls to msgsnd(), shmctl(), etc., and
+in the kernel we would want them to be handled directly by
+compat_sys_xxx() functions, as is true for other compat syscalls.
+
+However, for historical reasons, several of the existing compat IPC
+syscalls do not do this.  semctl() expects a pointer to the fourth
+argument, instead of the fourth argument itself.  msgsnd(), msgrcv()
+and shmat() expect arguments in different order.
+
+This change adds an __ARCH_WANT_OLD_COMPAT_IPC define that can be
+set in <asm/compat.h> to preserve this behavior for ports that use it
+(x86, sparc, powerpc, s390, and mips).  No actual semantics are changed
+for those architectures, and there is only a minimal amount of code
+refactoring in ipc/compat.c.
+
+Newer architectures like tile (and perhaps future architectures such
+as arm64 and unicore64) should not supply this define, and thus can
+avoid having any IPC-specific code at all in their architecture-specific
+compat layer.  In the same vein, if this define is omitted, IPC_64 mode
+is assumed, since that's what the <asm-generic> headers expect.
+
+The workaround code in "tile" for msgsnd() and msgrcv() is removed
+with this change; it also fixes the bug that shmat() and semctl() were
+not being properly handled.
+
+Signed-off-by: Chris Metcalf <cmetcalf@tilera.com>
 ---
- drivers/char/hw_random/Kconfig       |   14 +++
- drivers/char/hw_random/Makefile      |    1 +
- drivers/char/hw_random/bcm63xx-rng.c |  175 ++++++++++++++++++++++++++++++++++
- 3 files changed, 190 insertions(+), 0 deletions(-)
- create mode 100644 drivers/char/hw_random/bcm63xx-rng.c
+The first version used an "__ARCH_WANT_GENERIC_COMPAT_IPC" define that
+was set by tile, and presumably would be set by all future architectures.
+Arnd Bergmann observed:
 
-diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
-index 0689bf6..f29d1bc 100644
---- a/drivers/char/hw_random/Kconfig
-+++ b/drivers/char/hw_random/Kconfig
-@@ -73,6 +73,20 @@ config HW_RANDOM_ATMEL
+> I like the patch, but I think the __ARCH_WANT_GENERIC_COMPAT_IPC
+> should be defined as the opposite, so all "old" architectures
+> have to set it while tile (and future architectures like arm64
+> and unicore64) just get the default. [...]
+> We have powerpc, mips, s390, sparc and
+> x86 using the legacy method, while only parisc and tile get it right
+> and use the syscalls directly.
+
+ arch/mips/include/asm/compat.h    |    3 ++
+ arch/powerpc/include/asm/compat.h |    3 ++
+ arch/s390/include/asm/compat.h    |    3 ++
+ arch/sparc/include/asm/compat.h   |    3 ++
+ arch/tile/include/asm/compat.h    |   11 ------
+ arch/tile/kernel/compat.c         |   43 ----------------------
+ arch/x86/include/asm/compat.h     |    3 ++
+ include/linux/compat.h            |   12 ++++++-
+ ipc/compat.c                      |   70 +++++++++++++++++++++++++++++++++---
+ 9 files changed, 90 insertions(+), 61 deletions(-)
+
+diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
+index b77df03..41a57cb 100644
+--- a/arch/mips/include/asm/compat.h
++++ b/arch/mips/include/asm/compat.h
+@@ -8,6 +8,9 @@
+ #include <asm/page.h>
+ #include <asm/ptrace.h>
  
- 	  If unsure, say Y.
++/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
++#define __ARCH_WANT_OLD_COMPAT_IPC
++
+ #define COMPAT_USER_HZ		100
+ #define COMPAT_UTS_MACHINE	"mips\0\0\0"
  
-+config HW_RANDOM_BCM63XX
-+	tristate "Broadcom BCM63xx Random Number Generator support"
-+	depends on HW_RANDOM && BCM63XX
-+	default HW_RANDOM
-+	---help---
-+	  This driver provides kernel-side support for the Random Number
-+	  Generator hardware found on the Broadcom BCM63xx SoCs.
+diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
+index 88e602f..450a976 100644
+--- a/arch/powerpc/include/asm/compat.h
++++ b/arch/powerpc/include/asm/compat.h
+@@ -7,6 +7,9 @@
+ #include <linux/types.h>
+ #include <linux/sched.h>
+ 
++/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
++#define __ARCH_WANT_OLD_COMPAT_IPC
 +
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called bcm63xx-rng
+ #define COMPAT_USER_HZ		100
+ #define COMPAT_UTS_MACHINE	"ppc\0\0"
+ 
+diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
+index 2e49748..9a38bae 100644
+--- a/arch/s390/include/asm/compat.h
++++ b/arch/s390/include/asm/compat.h
+@@ -7,6 +7,9 @@
+ #include <linux/sched.h>
+ #include <linux/thread_info.h>
+ 
++/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
++#define __ARCH_WANT_OLD_COMPAT_IPC
 +
-+	  If unusure, say Y.
+ #define PSW32_MASK_PER		0x40000000UL
+ #define PSW32_MASK_DAT		0x04000000UL
+ #define PSW32_MASK_IO		0x02000000UL
+diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
+index b8be20d..bfd3d8b 100644
+--- a/arch/sparc/include/asm/compat.h
++++ b/arch/sparc/include/asm/compat.h
+@@ -5,6 +5,9 @@
+  */
+ #include <linux/types.h>
+ 
++/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
++#define __ARCH_WANT_OLD_COMPAT_IPC
 +
+ #define COMPAT_USER_HZ		100
+ #define COMPAT_UTS_MACHINE	"sparc\0\0"
+ 
+diff --git a/arch/tile/include/asm/compat.h b/arch/tile/include/asm/compat.h
+index bf95f55..4b4b289 100644
+--- a/arch/tile/include/asm/compat.h
++++ b/arch/tile/include/asm/compat.h
+@@ -242,17 +242,6 @@ long compat_sys_fallocate(int fd, int mode,
+ long compat_sys_sched_rr_get_interval(compat_pid_t pid,
+ 				      struct compat_timespec __user *interval);
+ 
+-/* Versions of compat functions that differ from generic Linux. */
+-struct compat_msgbuf;
+-long tile_compat_sys_msgsnd(int msqid,
+-			    struct compat_msgbuf __user *msgp,
+-			    size_t msgsz, int msgflg);
+-long tile_compat_sys_msgrcv(int msqid,
+-			    struct compat_msgbuf __user *msgp,
+-			    size_t msgsz, long msgtyp, int msgflg);
+-long tile_compat_sys_ptrace(compat_long_t request, compat_long_t pid,
+-			    compat_long_t addr, compat_long_t data);
+-
+ /* Tilera Linux syscalls that don't have "compat" versions. */
+ #define compat_sys_flush_cache sys_flush_cache
+ 
+diff --git a/arch/tile/kernel/compat.c b/arch/tile/kernel/compat.c
+index bf5e9d7..d67459b 100644
+--- a/arch/tile/kernel/compat.c
++++ b/arch/tile/kernel/compat.c
+@@ -16,7 +16,6 @@
+ #define __SYSCALL_COMPAT
+ 
+ #include <linux/compat.h>
+-#include <linux/msg.h>
+ #include <linux/syscalls.h>
+ #include <linux/kdev_t.h>
+ #include <linux/fs.h>
+@@ -95,52 +94,10 @@ long compat_sys_sched_rr_get_interval(compat_pid_t pid,
+ 	return ret;
+ }
+ 
+-/*
+- * The usual compat_sys_msgsnd() and _msgrcv() seem to be assuming
+- * some different calling convention than our normal 32-bit tile code.
+- */
+-
+-/* Already defined in ipc/compat.c, but we need it here. */
+-struct compat_msgbuf {
+-	compat_long_t mtype;
+-	char mtext[1];
+-};
+-
+-long tile_compat_sys_msgsnd(int msqid,
+-			    struct compat_msgbuf __user *msgp,
+-			    size_t msgsz, int msgflg)
+-{
+-	compat_long_t mtype;
+-
+-	if (get_user(mtype, &msgp->mtype))
+-		return -EFAULT;
+-	return do_msgsnd(msqid, mtype, msgp->mtext, msgsz, msgflg);
+-}
+-
+-long tile_compat_sys_msgrcv(int msqid,
+-			    struct compat_msgbuf __user *msgp,
+-			    size_t msgsz, long msgtyp, int msgflg)
+-{
+-	long err, mtype;
+-
+-	err =  do_msgrcv(msqid, &mtype, msgp->mtext, msgsz, msgtyp, msgflg);
+-	if (err < 0)
+-		goto out;
+-
+-	if (put_user(mtype, &msgp->mtype))
+-		err = -EFAULT;
+- out:
+-	return err;
+-}
+-
+ /* Provide the compat syscall number to call mapping. */
+ #undef __SYSCALL
+ #define __SYSCALL(nr, call) [nr] = (call),
+ 
+-/* The generic versions of these don't work for Tile. */
+-#define compat_sys_msgrcv tile_compat_sys_msgrcv
+-#define compat_sys_msgsnd tile_compat_sys_msgsnd
+-
+ /* See comments in sys.c */
+ #define compat_sys_fadvise64_64 sys32_fadvise64_64
+ #define compat_sys_readahead sys32_readahead
+diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
+index 30d737e..a72cbe4 100644
+--- a/arch/x86/include/asm/compat.h
++++ b/arch/x86/include/asm/compat.h
+@@ -8,6 +8,9 @@
+ #include <linux/sched.h>
+ #include <asm/user32.h>
+ 
++/* Use different 32-bit syscall convention than 64-bit for some syscalls. */
++#define __ARCH_WANT_OLD_COMPAT_IPC
 +
- config HW_RANDOM_GEODE
- 	tristate "AMD Geode HW Random Number Generator support"
- 	depends on HW_RANDOM && X86_32 && PCI
-diff --git a/drivers/char/hw_random/Makefile b/drivers/char/hw_random/Makefile
-index b2ff526..8cfac60 100644
---- a/drivers/char/hw_random/Makefile
-+++ b/drivers/char/hw_random/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_HW_RANDOM_TIMERIOMEM) += timeriomem-rng.o
- obj-$(CONFIG_HW_RANDOM_INTEL) += intel-rng.o
- obj-$(CONFIG_HW_RANDOM_AMD) += amd-rng.o
- obj-$(CONFIG_HW_RANDOM_ATMEL) += atmel-rng.o
-+obj-$(CONFIG_HW_RANDOM_BCM63XX)	+= bcm63xx-rng.o
- obj-$(CONFIG_HW_RANDOM_GEODE) += geode-rng.o
- obj-$(CONFIG_HW_RANDOM_N2RNG) += n2-rng.o
- n2-rng-y := n2-drv.o n2-asm.o
-diff --git a/drivers/char/hw_random/bcm63xx-rng.c b/drivers/char/hw_random/bcm63xx-rng.c
-new file mode 100644
-index 0000000..80e282d
---- /dev/null
-+++ b/drivers/char/hw_random/bcm63xx-rng.c
-@@ -0,0 +1,175 @@
-+/*
-+ * Broadcom BCM63xx Random Number Generator support
-+ *
-+ * Copyright (C) 2011, Florian Fainelli <florian@openwrt.org>
-+ * Copyright (C) 2009, Broadcom Corporation
-+ *
-+ */
-+#include <linux/module.h>
-+#include <linux/slab.h>
-+#include <linux/io.h>
-+#include <linux/err.h>
-+#include <linux/clk.h>
-+#include <linux/platform_device.h>
-+#include <linux/hw_random.h>
-+
-+#include <bcm63xx_io.h>
-+#include <bcm63xx_regs.h>
-+
-+struct bcm63xx_trng_priv {
-+	struct clk *clk;
-+	void __iomem *regs;
-+};
-+
-+#define to_trng_priv(rng)	((struct bcm63xx_trng_priv *)rng->priv)
-+
-+static int bcm63xx_trng_init(struct hwrng *rng)
+ #define COMPAT_USER_HZ		100
+ #define COMPAT_UTS_MACHINE	"i686\0\0"
+ 
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index 66ed067..472e66c 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -224,6 +224,7 @@ struct compat_sysinfo;
+ struct compat_sysctl_args;
+ struct compat_kexec_segment;
+ struct compat_mq_attr;
++struct compat_msgbuf;
+ 
+ extern void compat_exit_robust_list(struct task_struct *curr);
+ 
+@@ -234,13 +235,22 @@ asmlinkage long
+ compat_sys_get_robust_list(int pid, compat_uptr_t __user *head_ptr,
+ 			   compat_size_t __user *len_ptr);
+ 
++#ifdef __ARCH_WANT_OLD_COMPAT_IPC
+ long compat_sys_semctl(int first, int second, int third, void __user *uptr);
+ long compat_sys_msgsnd(int first, int second, int third, void __user *uptr);
+ long compat_sys_msgrcv(int first, int second, int msgtyp, int third,
+ 		int version, void __user *uptr);
+-long compat_sys_msgctl(int first, int second, void __user *uptr);
+ long compat_sys_shmat(int first, int second, compat_uptr_t third, int version,
+ 		void __user *uptr);
++#else
++long compat_sys_semctl(int semid, int semnum, int cmd, int arg);
++long compat_sys_msgsnd(int msqid, struct compat_msgbuf __user *msgp,
++		size_t msgsz, int msgflg);
++long compat_sys_msgrcv(int msqid, struct compat_msgbuf __user *msgp,
++		size_t msgsz, long msgtyp, int msgflg);
++long compat_sys_shmat(int shmid, compat_uptr_t shmaddr, int shmflg);
++#endif
++long compat_sys_msgctl(int first, int second, void __user *uptr);
+ long compat_sys_shmctl(int first, int second, void __user *uptr);
+ long compat_sys_semtimedop(int semid, struct sembuf __user *tsems,
+ 		unsigned nsems, const struct compat_timespec __user *timeout);
+diff --git a/ipc/compat.c b/ipc/compat.c
+index 845a287..94ee136 100644
+--- a/ipc/compat.c
++++ b/ipc/compat.c
+@@ -27,6 +27,7 @@
+ #include <linux/msg.h>
+ #include <linux/shm.h>
+ #include <linux/syscalls.h>
++#include <linux/ptrace.h>
+ 
+ #include <linux/mutex.h>
+ #include <asm/uaccess.h>
+@@ -117,6 +118,7 @@ extern int sem_ctls[];
+ 
+ static inline int compat_ipc_parse_version(int *cmd)
+ {
++#ifdef __ARCH_WANT_OLD_COMPAT_IPC
+ 	int version = *cmd & IPC_64;
+ 
+ 	/* this is tricky: architectures that have support for the old
+@@ -128,6 +130,10 @@ static inline int compat_ipc_parse_version(int *cmd)
+ 	*cmd &= ~IPC_64;
+ #endif
+ 	return version;
++#else
++	/* With the asm-generic APIs, we always use the 64-bit versions. */
++	return IPC_64;
++#endif
+ }
+ 
+ static inline int __get_compat_ipc64_perm(struct ipc64_perm *p64,
+@@ -232,10 +238,9 @@ static inline int put_compat_semid_ds(struct semid64_ds *s,
+ 	return err;
+ }
+ 
+-long compat_sys_semctl(int first, int second, int third, void __user *uptr)
++static long do_compat_semctl(int first, int second, int third, u32 pad)
+ {
+ 	union semun fourth;
+-	u32 pad;
+ 	int err, err2;
+ 	struct semid64_ds s64;
+ 	struct semid64_ds __user *up64;
+@@ -243,10 +248,6 @@ long compat_sys_semctl(int first, int second, int third, void __user *uptr)
+ 
+ 	memset(&s64, 0, sizeof(s64));
+ 
+-	if (!uptr)
+-		return -EINVAL;
+-	if (get_user(pad, (u32 __user *) uptr))
+-		return -EFAULT;
+ 	if ((third & (~IPC_64)) == SETVAL)
+ 		fourth.val = (int) pad;
+ 	else
+@@ -305,6 +306,18 @@ long compat_sys_semctl(int first, int second, int third, void __user *uptr)
+ 	return err;
+ }
+ 
++#ifdef __ARCH_WANT_OLD_COMPAT_IPC
++long compat_sys_semctl(int first, int second, int third, void __user *uptr)
 +{
-+	struct bcm63xx_trng_priv *priv = to_trng_priv(rng);
-+	u32 val;
++	u32 pad;
 +
-+	val = bcm_readl(priv->regs + TRNG_CTRL);
-+	val |= TRNG_EN;
-+	bcm_writel(val, priv->regs + TRNG_CTRL);
-+
-+	return 0;
++	if (!uptr)
++		return -EINVAL;
++	if (get_user(pad, (u32 __user *) uptr))
++		return -EFAULT;
++	return do_compat_semctl(first, second, third, pad);
 +}
 +
-+static void bcm63xx_trng_cleanup(struct hwrng *rng)
+ long compat_sys_msgsnd(int first, int second, int third, void __user *uptr)
+ {
+ 	struct compat_msgbuf __user *up = uptr;
+@@ -353,6 +366,37 @@ long compat_sys_msgrcv(int first, int second, int msgtyp, int third,
+ out:
+ 	return err;
+ }
++#else
++long compat_sys_semctl(int semid, int semnum, int cmd, int arg)
 +{
-+	struct bcm63xx_trng_priv *priv = to_trng_priv(rng);
-+	u32 val;
-+
-+	val = bcm_readl(priv->regs + TRNG_CTRL);
-+	val &= ~TRNG_EN;
-+	bcm_writel(val, priv->regs + TRNG_CTRL);
++	return do_compat_semctl(semid, semnum, cmd, arg);
 +}
 +
-+static int bcm63xx_trng_data_present(struct hwrng *rng, int wait)
++long compat_sys_msgsnd(int msqid, struct compat_msgbuf __user *msgp,
++		       size_t msgsz, int msgflg)
 +{
-+	struct bcm63xx_trng_priv *priv = to_trng_priv(rng);
++	compat_long_t mtype;
 +
-+	return bcm_readl(priv->regs + TRNG_STAT) & TRNG_AVAIL_MASK;
++	if (get_user(mtype, &msgp->mtype))
++		return -EFAULT;
++	return do_msgsnd(msqid, mtype, msgp->mtext, msgsz, msgflg);
 +}
 +
-+static int bcm63xx_trng_data_read(struct hwrng *rng, u32 *data)
++long compat_sys_msgrcv(int msqid, struct compat_msgbuf __user *msgp,
++		       size_t msgsz, long msgtyp, int msgflg)
 +{
-+	struct bcm63xx_trng_priv *priv = to_trng_priv(rng);
++	long err, mtype;
 +
-+	*data = bcm_readl(priv->regs + TRNG_DATA);
-+
-+	return 4;
-+}
-+
-+static int __init bcm63xx_trng_probe(struct platform_device *pdev)
-+{
-+	struct resource *r;
-+	struct clk *clk;
-+	int ret;
-+	struct bcm63xx_trng_priv *priv;
-+	struct hwrng *rng;
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!r) {
-+		dev_err(&pdev->dev, "no iomem resource\n");
-+		ret = -ENXIO;
++	err =  do_msgrcv(msqid, &mtype, msgp->mtext, msgsz, msgtyp, msgflg);
++	if (err < 0)
 +		goto out;
-+	}
 +
-+	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	if (!priv) {
-+		dev_err(&pdev->dev, "no memory for private structure\n");
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	rng = kzalloc(sizeof(*rng), GFP_KERNEL);
-+	if (!rng) {
-+		dev_err(&pdev->dev, "no memory for rng structure\n");
-+		ret = -ENOMEM;
-+		goto out_free_priv;
-+	}
-+
-+	platform_set_drvdata(pdev, rng);
-+	rng->priv = (unsigned long)priv;
-+	rng->name = pdev->name;
-+	rng->init = bcm63xx_trng_init;
-+	rng->cleanup = bcm63xx_trng_cleanup;
-+	rng->data_present = bcm63xx_trng_data_present;
-+	rng->data_read = bcm63xx_trng_data_read;
-+
-+	clk = clk_get(&pdev->dev, "ipsec");
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "no clock for device\n");
-+		ret = PTR_ERR(clk);
-+		goto out_free_rng;
-+	}
-+
-+	priv->clk = clk;
-+
-+	if (!devm_request_mem_region(&pdev->dev, r->start,
-+					resource_size(r), pdev->name)) {
-+		dev_err(&pdev->dev, "request mem failed");
-+		ret = -ENOMEM;
-+		goto out_free_rng;
-+	}
-+
-+	priv->regs = devm_ioremap_nocache(&pdev->dev, r->start,
-+					resource_size(r));
-+	if (!priv->regs) {
-+		dev_err(&pdev->dev, "ioremap failed");
-+		ret = -ENOMEM;
-+		goto out_free_rng;
-+	}
-+
-+	clk_enable(clk);
-+
-+	ret = hwrng_register(rng);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to register rng device\n");
-+		goto out_clk_disable;
-+	}
-+
-+	dev_info(&pdev->dev, "registered RNG driver\n");
-+
-+	return 0;
-+
-+out_clk_disable:
-+	clk_disable(clk);
-+out_free_rng:
-+	platform_set_drvdata(pdev, NULL);
-+	kfree(rng);
-+out_free_priv:
-+	kfree(priv);
-+out:
-+	return ret;
++	if (put_user(mtype, &msgp->mtype))
++		err = -EFAULT;
++ out:
++	return err;
 +}
-+
-+static int __devexit bcm63xx_trng_remove(struct platform_device *pdev)
++#endif
+ 
+ static inline int get_compat_msqid64(struct msqid64_ds *m64,
+ 				     struct compat_msqid64_ds __user *up64)
+@@ -470,6 +514,7 @@ long compat_sys_msgctl(int first, int second, void __user *uptr)
+ 	return err;
+ }
+ 
++#ifdef __ARCH_WANT_OLD_COMPAT_IPC
+ long compat_sys_shmat(int first, int second, compat_uptr_t third, int version,
+ 			void __user *uptr)
+ {
+@@ -485,6 +530,19 @@ long compat_sys_shmat(int first, int second, compat_uptr_t third, int version,
+ 	uaddr = compat_ptr(third);
+ 	return put_user(raddr, uaddr);
+ }
++#else
++long compat_sys_shmat(int shmid, compat_uptr_t shmaddr, int shmflg)
 +{
-+	struct hwrng *rng = platform_get_drvdata(pdev);
-+	struct bcm63xx_trng_priv *priv = to_trng_priv(rng);
++	unsigned long ret;
++	long err;
 +
-+	hwrng_unregister(rng);
-+	clk_disable(priv->clk);
-+	kfree(priv);
-+	kfree(rng);
-+	platform_set_drvdata(pdev, NULL);
-+
-+	return 0;
++	err = do_shmat(shmid, compat_ptr(shmaddr), shmflg, &ret);
++	if (err)
++		return err;
++	force_successful_syscall_return();
++	return (long)ret;
 +}
-+
-+static struct platform_driver bcm63xx_trng_driver = {
-+	.probe		= bcm63xx_trng_probe,
-+	.remove		= __devexit_p(bcm63xx_trng_remove),
-+	.driver		= {
-+		.name	= "bcm63xx-trng",
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+module_platform_driver(bcm63xx_trng_driver);
-+
-+MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
-+MODULE_DESCRIPTION("Broadcom BCM63xx RNG driver");
-+MODULE_LICENSE("GPL");
++#endif
+ 
+ static inline int get_compat_shmid64_ds(struct shmid64_ds *s64,
+ 					struct compat_shmid64_ds __user *up64)
 -- 
-1.7.5.4
+1.6.5.2

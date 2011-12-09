@@ -1,59 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2011 17:11:01 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:57382 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903731Ab1LIQK5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Dec 2011 17:10:57 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pB9G7VIw008738;
-        Fri, 9 Dec 2011 16:07:31 GMT
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pB9G7MwM008731;
-        Fri, 9 Dec 2011 16:07:22 GMT
-Date:   Fri, 9 Dec 2011 16:07:22 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Cong Wang <amwang@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        Russell King <linux@arm.linux.org.uk>,
-        David Howells <dhowells@redhat.com>,
-        Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
-        Kyle McMartin <kyle@mcmartin.ca>, Helge Deller <deller@gmx.de>,
-        "James E.J. Bottomley" <jejb@parisc-linux.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Chris Metcalf <cmetcalf@tilera.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        James Bottomley <James.Bottomley@suse.de>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Christoph Lameter <cl@linux.com>, Tejun Heo <tj@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-am33-list@redhat.com, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 61/62] highmem: kill all __kmap_atomic()
-Message-ID: <20111209160722.GB30988@linux-mips.org>
-References: <1322371662-26166-1-git-send-email-amwang@redhat.com>
- <1322371662-26166-62-git-send-email-amwang@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1322371662-26166-62-git-send-email-amwang@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32069
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Dec 2011 20:01:58 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:59802 "EHLO zmc.proxad.net"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903739Ab1LITBy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 9 Dec 2011 20:01:54 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id 1C2AB35E2DB;
+        Fri,  9 Dec 2011 20:01:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id fQ3QzXfAI9Xi; Fri,  9 Dec 2011 20:01:53 +0100 (CET)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id AED03360DCA;
+        Fri,  9 Dec 2011 20:01:53 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     Matt Mackall <mpm@selenic.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 1/5] MIPS: BCM63XX: fix BCM6368 IPSec clock bit
+Date:   Fri,  9 Dec 2011 20:01:06 +0100
+Message-Id: <1323457270-16330-2-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.5.4
+In-Reply-To: <1323457270-16330-1-git-send-email-florian@openwrt.org>
+References: <1323457270-16330-1-git-send-email-florian@openwrt.org>
+X-archive-position: 32070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 7778
+X-UID: 7985
 
-On Sun, Nov 27, 2011 at 01:27:41PM +0800, Cong Wang wrote:
+The IPsec clock bit is 18 and not 17.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index 94d4faa..fdcd78c 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -99,7 +99,7 @@
+ #define CKCTL_6368_USBH_CLK_EN		(1 << 15)
+ #define CKCTL_6368_DISABLE_GLESS_EN	(1 << 16)
+ #define CKCTL_6368_NAND_CLK_EN		(1 << 17)
+-#define CKCTL_6368_IPSEC_CLK_EN		(1 << 17)
++#define CKCTL_6368_IPSEC_CLK_EN		(1 << 18)
+ 
+ #define CKCTL_6368_ALL_SAFE_EN		(CKCTL_6368_SWPKT_USB_EN |	\
+ 					CKCTL_6368_SWPKT_SAR_EN |	\
+-- 
+1.7.5.4

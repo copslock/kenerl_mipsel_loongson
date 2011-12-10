@@ -1,86 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Dec 2011 01:50:08 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:7120 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903738Ab1LJAuD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Dec 2011 01:50:03 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4ee2ad120000>; Fri, 09 Dec 2011 16:51:30 -0800
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 9 Dec 2011 16:50:01 -0800
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Fri, 9 Dec 2011 16:50:01 -0800
-Message-ID: <4EE2ACB9.9010301@cavium.com>
-Date:   Fri, 09 Dec 2011 16:50:01 -0800
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     binutils <binutils@sourceware.org>,
-        Richard Sandiford <rdsandiford@googlemail.com>,
-        Alan Modra <amodra@gmail.com>
-CC:     Manuel Lauss <manuel.lauss@googlemail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Dec 2011 11:19:35 +0100 (CET)
+Received: from mail-ww0-f43.google.com ([74.125.82.43]:49258 "EHLO
+        mail-ww0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903563Ab1LJKTb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Dec 2011 11:19:31 +0100
+Received: by wgbds11 with SMTP id ds11so6323737wgb.24
+        for <linux-mips@linux-mips.org>; Sat, 10 Dec 2011 02:19:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=from:to:mail-followup-to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version:content-type;
+        bh=FUD905LAPgordNukFEaefCmiCijTYj0y1kkzl0Abv38=;
+        b=SH3ENlZ4Nzcy83AihLeoZx8iPAPoghL0CZrWo1WtirwXUc7UYYpnLjYUgpN/AdQb/G
+         6OOSA+Q92FG4b9ChYKSHzvnAIDu3yKCl2cTDN5nj8EwpvWOTItF8i8uhuteuVFOXIzAv
+         p4WUOnUj6zF6VBZX4wnoXCYNcSoyoeIvoaLm0=
+Received: by 10.227.197.130 with SMTP id ek2mr9337696wbb.16.1323512366221;
+        Sat, 10 Dec 2011 02:19:26 -0800 (PST)
+Received: from localhost (rsandifo.gotadsl.co.uk. [82.133.89.107])
+        by mx.google.com with ESMTPS id er5sm11037757wbb.11.2011.12.10.02.19.24
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sat, 10 Dec 2011 02:19:25 -0800 (PST)
+From:   Richard Sandiford <rdsandiford@googlemail.com>
+To:     David Daney <david.daney@cavium.com>
+Mail-Followup-To: David Daney <david.daney@cavium.com>,binutils <binutils@sourceware.org>,  Alan Modra <amodra@gmail.com>,  Manuel Lauss <manuel.lauss@googlemail.com>,  Debian MIPS <debian-mips@lists.debian.org>,  linux-mips <linux-mips@linux-mips.org>, rdsandiford@googlemail.com
+Cc:     binutils <binutils@sourceware.org>, Alan Modra <amodra@gmail.com>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
         Debian MIPS <debian-mips@lists.debian.org>,
         linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [Patch v2]: Fix ld pr11138 FAILures on mips*.
-References: <4EE27012.5030508@cavium.com> <20111210003928.GC2461@bubble.grove.modra.org>
-In-Reply-To: <20111210003928.GC2461@bubble.grove.modra.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Dec 2011 00:50:01.0311 (UTC) FILETIME=[A5D0B6F0:01CCB6D5]
-X-archive-position: 32081
+References: <4EE27012.5030508@cavium.com>
+        <20111210003928.GC2461@bubble.grove.modra.org>
+        <4EE2ACB9.9010301@cavium.com>
+Date:   Sat, 10 Dec 2011 10:19:20 +0000
+In-Reply-To: <4EE2ACB9.9010301@cavium.com> (David Daney's message of "Fri, 09
+        Dec 2011 16:50:01 -0800")
+Message-ID: <87y5ukenkn.fsf@firetop.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-archive-position: 32082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: rdsandiford@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8203
+X-UID: 8288
 
-Thanks Alan,
+David Daney <david.daney@cavium.com> writes:
+> I will wait a couple of days to give Richard a chance to object.
 
-I will wait a couple of days to give Richard a chance to object.  I 
-think I got the address calculation correct, but having another pair of 
-eyes look at it would be nice.  I am especially concerned about what 
-happens on IRIX where the symbol comes in from an external object rather 
-than being generated by the linker itself.  I had no way to test that.
+Looks good to me too.  Thanks for doing this.  I think it should go
+on the 2.22 branch as well.
 
-David Daney
+> I am especially concerned about what happens on IRIX where the symbol
+> comes in from an external object rather than being generated by the
+> linker itself.  I had no way to test that.
 
+Me neither, unfortunately.  But I agree it looks right.  There's a
+possibility that we could create the dynamic sections before the
+definition of __rld_obj_head has been read in (e.g. from the
+check_relocs of a previous object).  In that case it looks like
+we would create the .rld_map section and __rld_map/__RLD_MAP symbol,
+then later switch to __rld_obj_head.  .rld_map would then be left
+at zero size and the __rld_map/__RLD_MAP symbol would be ignored
+when setting the tag value.  But your patch preserves the
+behaviour in that case too.
 
-On 12/09/2011 04:39 PM, Alan Modra wrote:
-> On Fri, Dec 09, 2011 at 12:31:14PM -0800, David Daney wrote:
->> 	* /elfxx-mips.c (mips_elf_link_hash_table.rld_value): Remove.
->> 	(mips_elf_link_hash_table.rld_symbol): New field;
->> 	(MIPS_ELF_RLD_MAP_SIZE): New macro.
->> 	(_bfd_mips_elf_add_symbol_hook): Remember __rld_obj_head symbol
->> 	in rld_symbol.
->> 	(_bfd_mips_elf_create_dynamic_sections): Remember __rld_map symbol
->> 	in rld_symbol.
->> 	(_bfd_mips_elf_size_dynamic_sections): Set correct size for .rld_map.
->> 	(_bfd_mips_elf_finish_dynamic_symbol): Remove .rld_map handling.
->> 	(_bfd_mips_elf_finish_dynamic_sections): Use rld_symbol to
->> 	calculate DT_MIPS_RLD_MAP value.
->> 	(_bfd_mips_elf_link_hash_table_create): Initialize rld_symbol,
->> 	quit initializing rld_value.
->
-> OK.  Remove stray / in ChangeLog entry
-
-Yes, I noticed that only after hitting Send.
-
->
->> +	  s->size += MIPS_ELF_RLD_MAP_SIZE(output_bfd);
->
-> Fix formatting here.
->
->> +		dyn.d_un.d_ptr = s->output_section->vma + s->output_offset
->> +				 + h->root.u.def.value;
->
-> And it's nice to write code that emacs auto-indent won't change, so
-> add parentheses
->
-> 		dyn.d_un.d_ptr = (s->output_section->vma + s->output_offset
-> 				  + h->root.u.def.value);
->
-
-I will fix those too.
+Richard

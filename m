@@ -1,76 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Dec 2011 00:22:43 +0100 (CET)
-Received: from moutng.kundenserver.de ([212.227.126.186]:57213 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903744Ab1LIXWg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Dec 2011 00:22:36 +0100
-Received: from wuerfel.localnet (port-92-200-84-125.dynamic.qsc.de [92.200.84.125])
-        by mrelayeu.kundenserver.de (node=mreu3) with ESMTP (Nemesis)
-        id 0LblNw-1QsA2q09pc-00jXBD; Sat, 10 Dec 2011 00:21:49 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Chris Metcalf <cmetcalf@tilera.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        "J. Bruce Fields" <bfields@redhat.com>, NeilBrown <neilb@suse.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2] ipc: provide generic compat versions of IPC syscalls
-Date:   Sat, 10 Dec 2011 00:21:35 +0100
-Message-ID: <1690400.7yOAjHVqTH@wuerfel>
-User-Agent: KMail/4.7.2 (Linux/3.1.0-rc8nosema+; KDE/4.7.2; x86_64; ; )
-In-Reply-To: <20111209134852.f5b5bcbc.akpm@linux-foundation.org>
-References: <201112091536.pB9Fa5f7002738@farm-0002.internal.tilera.com> <201112091903.pB9J39pd031553@farm-0002.internal.tilera.com> <20111209134852.f5b5bcbc.akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Dec 2011 01:39:46 +0100 (CET)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:40373 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903738Ab1LJAjm (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 10 Dec 2011 01:39:42 +0100
+Received: by ghrr19 with SMTP id r19so3196997ghr.36
+        for <linux-mips@linux-mips.org>; Fri, 09 Dec 2011 16:39:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-type:content-disposition:in-reply-to
+         :user-agent;
+        bh=jWAfHx/dRsRHMMteNCfF82lDJM0BcfUbyIStnJ714LE=;
+        b=LOmz/R4/lYxd525l/nYDvBOSjXzK0rUh95kdd6Dmjw2gvgF06sGIGL+J5qq1i9Rxm/
+         Q7bX0tjfB78C8uN2ndo7u0rs9Z+9uWwJg1D7NNC/3DFShZHJx0DlMRlHAN7uoe64pGTH
+         CY3lVwLCeYcaQbiGHTFm+ivKZDzTNOIJB4JWo=
+Received: by 10.236.75.230 with SMTP id z66mr15146399yhd.66.1323477576472;
+        Fri, 09 Dec 2011 16:39:36 -0800 (PST)
+Received: from bubble.grove.modra.org ([115.187.252.19])
+        by mx.google.com with ESMTPS id 37sm3344101anu.21.2011.12.09.16.39.33
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 09 Dec 2011 16:39:35 -0800 (PST)
+Received: by bubble.grove.modra.org (Postfix, from userid 1000)
+        id C8D5D170C2BF; Sat, 10 Dec 2011 11:09:28 +1030 (CST)
+Date:   Sat, 10 Dec 2011 11:09:28 +1030
+From:   Alan Modra <amodra@gmail.com>
+To:     David Daney <david.daney@cavium.com>
+Cc:     binutils <binutils@sourceware.org>,
+        Richard Sandiford <rdsandiford@googlemail.com>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Debian MIPS <debian-mips@lists.debian.org>,
+        linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [Patch v2]: Fix ld pr11138 FAILures on mips*.
+Message-ID: <20111210003928.GC2461@bubble.grove.modra.org>
+Mail-Followup-To: David Daney <david.daney@cavium.com>,
+        binutils <binutils@sourceware.org>,
+        Richard Sandiford <rdsandiford@googlemail.com>,
+        Manuel Lauss <manuel.lauss@googlemail.com>,
+        Debian MIPS <debian-mips@lists.debian.org>,
+        linux-mips <linux-mips@linux-mips.org>
+References: <4EE27012.5030508@cavium.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V02:K0:/15MQ54WxZ/BuawCVfAT2GidHxMZcpVi5BanFd0QBCc
- Zd45DWJOnZ6RritkMak2rkAPnsxFUHt18OrYd7I3dWSm5c+vYT
- EK2DRbdPqHzyex8Hya3ropKP72s2P74h2HyxRR7YGpm9MQcppr
- iG5zjpraZIS4yNsePCRHQ2s3WbDnMN2yBhaGpweC3WO0LomrxH
- +2eMs4mZsI7bo52wEEw7nnDqGclXQKPl1yuuG/89VLUfsQmcrL
- 9A/qXsUHnG2nPZCcan6apdxrtyMggzq7moOu8e6SsTISmVpszZ
- trS3YoI4kwCnxw32z5iyCEumVT8bG2LGPiHTxParLcaBf4QPIS
- iQTjBpKG6+wKBVFR8tJc=
-X-archive-position: 32079
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4EE27012.5030508@cavium.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-archive-position: 32080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: amodra@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 8152
+X-UID: 8200
 
-On Friday 09 December 2011 13:48:52 Andrew Morton wrote:
-> What would we need to do to get all architectures using the new
-> interfaces, and remove __ARCH_WANT_OLD_COMPAT_IPC?
+On Fri, Dec 09, 2011 at 12:31:14PM -0800, David Daney wrote:
+> 	* /elfxx-mips.c (mips_elf_link_hash_table.rld_value): Remove.
+> 	(mips_elf_link_hash_table.rld_symbol): New field;
+> 	(MIPS_ELF_RLD_MAP_SIZE): New macro.
+> 	(_bfd_mips_elf_add_symbol_hook): Remember __rld_obj_head symbol
+> 	in rld_symbol.
+> 	(_bfd_mips_elf_create_dynamic_sections): Remember __rld_map symbol
+> 	in rld_symbol.
+> 	(_bfd_mips_elf_size_dynamic_sections): Set correct size for .rld_map.
+> 	(_bfd_mips_elf_finish_dynamic_symbol): Remove .rld_map handling.
+> 	(_bfd_mips_elf_finish_dynamic_sections): Use rld_symbol to
+> 	calculate DT_MIPS_RLD_MAP value.
+> 	(_bfd_mips_elf_link_hash_table_create): Initialize rld_symbol,
+> 	quit initializing rld_value.
 
-We would change the various compat_sys_ipc functions (mips, powerpc,
-s390, sparc, x86) to call the new functions instead of the existing
-ones, and test each architecture. For parisc, we might not
-actually need the either version, but I'd have to take a closer look
-to be sure.
+OK.  Remove stray / in ChangeLog entry
 
-> Regarding the implementation: rather than patching the header
-> files, it would be more conventional (and arguably better) to add
-> 
->         select ARCH_WANT_OLD_COMPAT_IPC
-> 
-> to arch/*/Kconfig, then use CONFIG_ARCH_WANT_OLD_COMPAT_IPC.
+> +	  s->size += MIPS_ELF_RLD_MAP_SIZE(output_bfd);
 
-Yes.
+Fix formatting here.
 
-	Arnd
+> +		dyn.d_un.d_ptr = s->output_section->vma + s->output_offset
+> +				 + h->root.u.def.value;
+
+And it's nice to write code that emacs auto-indent won't change, so
+add parentheses
+
+		dyn.d_un.d_ptr = (s->output_section->vma + s->output_offset
+				  + h->root.u.def.value);
+
+-- 
+Alan Modra
+Australia Development Lab, IBM

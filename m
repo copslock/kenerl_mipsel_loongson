@@ -1,96 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Dec 2011 12:45:52 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:53550 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903724Ab1LRLps (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Dec 2011 12:45:48 +0100
-Received: by iadk27 with SMTP id k27so6676256iad.36
-        for <linux-mips@linux-mips.org>; Sun, 18 Dec 2011 03:45:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:references
-         :content-type:x-mailer:mime-version;
-        bh=eKjRWjBGbk53rad6ZTmEMFuJzAHC27UQZkfoeTTt5TI=;
-        b=h4srjOCPseLDGW3rrm5DL7idT7o4tyhhwTG2y/bCzM/k44N+0DGOCtHCGRvDhCltwr
-         V/zNmGPpzokWMx983jpeVoJMNREyUxQivlBZoxPt4dULSRoPKHB48vzBHumArAKE76/p
-         JRi1VIfnmgofNVinMvNUWGBRt9/IlF0QHu8A0=
-Received: by 10.50.171.5 with SMTP id aq5mr20232268igc.76.1324208742232;
-        Sun, 18 Dec 2011 03:45:42 -0800 (PST)
-Received: from [127.0.0.1] (jfdmzpr01-ext.jf.intel.com. [134.134.139.70])
-        by mx.google.com with ESMTPS id mb4sm26037528igc.1.2011.12.18.03.45.38
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Dec 2011 14:27:59 +0100 (CET)
+Received: from mail-we0-f177.google.com ([74.125.82.177]:40075 "EHLO
+        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903728Ab1LRN1y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 18 Dec 2011 14:27:54 +0100
+Received: by wera10 with SMTP id a10so1177937wer.36
+        for <linux-mips@linux-mips.org>; Sun, 18 Dec 2011 05:27:48 -0800 (PST)
+Received: by 10.216.132.213 with SMTP id o63mr5824825wei.11.1324214868500;
+        Sun, 18 Dec 2011 05:27:48 -0800 (PST)
+Received: from [192.168.2.2] ([91.79.83.96])
+        by mx.google.com with ESMTPS id hb10sm21458785wib.16.2011.12.18.05.27.46
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Sun, 18 Dec 2011 03:45:41 -0800 (PST)
-Message-ID: <1324208821.17534.0.camel@sauron.fi.intel.com>
-Subject: Re: [PATCH 2/5] MTD: bcm63xxpart: make sure CFE and NVRAM
- partitions are at least 64K
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     Jonas Gorski <jonas.gorski@gmail.com>
-Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Florian Fainelli <florian@openwrt.org>
-Date:   Sun, 18 Dec 2011 13:47:01 +0200
-In-Reply-To: <CAOiHx=nwZ27ByyLDOXcy21x3_NJZKWU4AEJo3m3SfcposAbucA@mail.gmail.com>
-References: <1324126698-9919-1-git-send-email-jonas.gorski@gmail.com>
-         <1324126698-9919-3-git-send-email-jonas.gorski@gmail.com>
-         <1324157643.2240.2.camel@koala>
-         <CAOiHx=nwZ27ByyLDOXcy21x3_NJZKWU4AEJo3m3SfcposAbucA@mail.gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
-        boundary="=-E+Nd6eqYg0UMJjsoC+P8"
-X-Mailer: Evolution 3.2.2 (3.2.2-1.fc16) 
-Mime-Version: 1.0
-X-archive-position: 32135
+        Sun, 18 Dec 2011 05:27:47 -0800 (PST)
+Message-ID: <4EEDEA17.4040006@mvista.com>
+Date:   Sun, 18 Dec 2011 17:26:47 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:8.0) Gecko/20111105 Thunderbird/8.0
+MIME-Version: 1.0
+To:     Joshua Kinard <kumba@gentoo.org>
+CC:     netdev@vger.kernel.org, Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] net: meth: Add set_rx_mode hook to fix ICMPv6 neighbor
+ discovery
+References: <4EED3A3D.9080503@gentoo.org>
+In-Reply-To: <4EED3A3D.9080503@gentoo.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14420
+X-UID: 14440
 
+Hello.
 
---=-E+Nd6eqYg0UMJjsoC+P8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 18-12-2011 4:56, Joshua Kinard wrote:
 
-On Sat, 2011-12-17 at 22:57 +0100, Jonas Gorski wrote:
-> On 17 December 2011 22:33, Artem Bityutskiy <dedekind1@gmail.com> wrote:
-> > Not that I have any knowledge about BCM platform, but still, I think
-> > it is good idea to explain why these partitions have to be at least
-> > 64KiB. Could you please do this, just for the sake of having good
-> > commit messages?
->=20
-> Sure, no problem. Should I sent the whole series again or is a V2 of
-> this one enough?
+> SGI IP32 (O2)'s ethernet driver (meth) lacks a set_rx_mode function, which
+> prevents IPv6 from working completely because any ICMPv6 neighbor
+> solicitation requests aren't picked up by the driver.  So the machine can
+> ping out and connect to other systems, but other systems will have a very
+> hard time connecting to the O2.
 
-Just one patch is better - less traffic.
+> Signed-off-by: Joshua Kinard<kumba@gentoo.org>
+> ---
 
---=20
-Best Regards,
-Artem Bityutskiy
+    Some minor nits below...
 
---=-E+Nd6eqYg0UMJjsoC+P8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+>   drivers/net/ethernet/sgi/meth.c |   60 +++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 53 insertions(+), 7 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
+> --- a/drivers/net/ethernet/sgi/meth.c	2011-12-17 15:51:44.569166824 -0500
+> +++ b/drivers/net/ethernet/sgi/meth.c	2011-12-17 15:51:20.259167050 -0500
+[...]
+> @@ -57,6 +58,12 @@ static const char *meth_str="SGI O2 Fast
+>   static int timeout = TX_TIMEOUT;
+>   module_param(timeout, int, 0);
+>
+> +/* Maximum number of multicast addresses to filter (vs. Rx-all-multicast).
+> + * MACE Ethernet uses a 64 element hash table based on the Ethernet CRC.
+> + */
+> +static int multicast_filter_limit = 32;
+> +
+> +
 
-iQIcBAABAgAGBQJO7dK1AAoJECmIfjd9wqK0MIwQAICLA0YfLdDzGAVJRknYBXYb
-WP25czqUN/5tZ4jUbasSfQp/WTGyDOL6aZljCJaJ2FXDtYYNoZQgB7+i613Nn/gu
-wwdRphbrjqxhfxqzSLliBxp5ltyr5Dbi6nhCSx4Yx8PIfsuG7B9gvUDfvrFnaQRc
-2r+zaYnoTIINS14wwRC0KXaXGTxRnyMJryyH7BYqhTtN23Plb4MfG6uNgmScv9+8
-5+pwK+dFloEAitgbhU91/wfPtp6+zdJUTwWP3bQS68GopZAf/+1UFmzOs/+fMXNV
-EnBGKu9Tqedg0f7Y95xr5w3Hp6NjZYsuN/Sh3i2vxnaIyFLt0g9IOPjaJCeX8jNZ
-K/jlAluVi3jnYCB0aD7siljdR+7k5NEjSBeT6EyfaRm6a71OMTFSKN3+drmf6Dpa
-EYMjuL/Ic/DZtGtKoDggF8ZVSDv1pIkagSFnQz2gBmpkrDsl9nM6BozeAfXStjCh
-aMUXGUMSFmzJ4ST4MoMJstJdZ9lWZkOOVhwCoYgl2ViR/Npgp5lzzIwdqy4kzHjT
-oOj874RuyL7QAVqYsf4sva0F2XhGhfPEr0pHYfpAT7xGj2EY9416tbfKeXcYDOLl
-KvRXZjYmxtN3Fo9oH28e9cTZ6RmqGlczI8h46tyF1/hKl8YIO/KsbefNUnO9Bv8t
-Z3dOcwd3UPX3cvEGGJLV
-=mlpg
------END PGP SIGNATURE-----
+    On empty oine would be enough...
 
---=-E+Nd6eqYg0UMJjsoC+P8--
+>   /*
+>    * This structure is private to each device. It is used to pass
+>    * packets in and out, so there is place for a packet
+> @@ -765,15 +775,51 @@ static int meth_ioctl(struct net_device
+>   	}
+>   }
+>
+> +static void meth_set_rx_mode(struct net_device *dev)
+> +{
+> +	struct meth_private *priv = netdev_priv(dev);
+> +	unsigned long flags;
+> +
+> +	netif_stop_queue(dev);
+> +	spin_lock_irqsave(&priv->meth_lock, flags);
+> +	priv->mac_ctrl&= ~(METH_PROMISC);
+
+    Parens not needed here.
+
+> +
+> +	if (dev->flags & IFF_PROMISC) {
+> +		priv->mac_ctrl |= METH_PROMISC;
+> +		priv->mcast_filter = 0xffffffffffffffffUL;
+> +		mace->eth.mac_ctrl = priv->mac_ctrl;
+> +		mace->eth.mcast_filter = priv->mcast_filter;
+> +	} else if ((netdev_mc_count(dev) > multicast_filter_limit) ||
+> +			   (dev->flags & IFF_ALLMULTI)) {
+> +			priv->mac_ctrl |= METH_ACCEPT_AMCAST;
+> +			priv->mcast_filter = 0xffffffffffffffffUL;
+> +			mace->eth.mac_ctrl = priv->mac_ctrl;
+> +			mace->eth.mcast_filter = priv->mcast_filter;
+
+     This block is over-indented.
+
+> +	} else {
+> +		struct netdev_hw_addr *ha;
+> +		priv->mac_ctrl |= METH_ACCEPT_MCAST;
+> +
+> +		netdev_for_each_mc_addr(ha, dev)
+> +			set_bit((ether_crc(ETH_ALEN, ha->addr) >> 26),
+> +				    (volatile long unsigned int *)&priv->mcast_filter);
+> +
+> +		mace->eth.mcast_filter = priv->mcast_filter;
+
+    This last statement is common between all branches, so could be moved out 
+of *if*...
+
+> +	}
+> +
+> +	spin_unlock_irqrestore(&priv->meth_lock, flags);
+> +	netif_wake_queue(dev);
+> +}
+> +
+>   static const struct net_device_ops meth_netdev_ops = {
+> -	.ndo_open		= meth_open,
+> -	.ndo_stop		= meth_release,
+> -	.ndo_start_xmit		= meth_tx,
+> -	.ndo_do_ioctl		= meth_ioctl,
+> -	.ndo_tx_timeout		= meth_tx_timeout,
+> -	.ndo_change_mtu		= eth_change_mtu,
+> -	.ndo_validate_addr	= eth_validate_addr,
+> +	.ndo_open				= meth_open,
+> +	.ndo_stop				= meth_release,
+> +	.ndo_start_xmit			= meth_tx,
+> +	.ndo_do_ioctl			= meth_ioctl,
+> +	.ndo_tx_timeout			= meth_tx_timeout,
+> +	.ndo_change_mtu			= eth_change_mtu,
+> +	.ndo_validate_addr		= eth_validate_addr,
+>   	.ndo_set_mac_address	= eth_mac_addr,
+> +	.ndo_set_rx_mode    	= meth_set_rx_mode,
+
+    The intializer values are not aligned now, and they were before the patch.
+
+WBR, Sergei

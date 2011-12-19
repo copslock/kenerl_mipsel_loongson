@@ -1,82 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Dec 2011 13:02:07 +0100 (CET)
-Received: from mail-we0-f177.google.com ([74.125.82.177]:58894 "EHLO
-        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903613Ab1LSMCD (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 19 Dec 2011 13:02:03 +0100
-Received: by wera10 with SMTP id a10so1619240wer.36
-        for <linux-mips@linux-mips.org>; Mon, 19 Dec 2011 04:01:58 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2011 00:07:51 +0100 (CET)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:59938 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903750Ab1LSXHo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Dec 2011 00:07:44 +0100
+Received: by ghrr15 with SMTP id r15so2069023ghr.36
+        for <multiple recipients>; Mon, 19 Dec 2011 15:07:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=Ff2yP9SyBgpeFjFkt4azLm3OX/T+dqXtLUjgf7XlCDs=;
-        b=RUuZ7qBWyFcOX9Ygqhdg8USmt1n5GGeNYQtEtHoceZ5s6yjaKDwEOvcjqU6IaLrDb0
-         GNFPFyyKD6tMe1tXM086Od/q5bHJAZWeieFiqM67QJ9Xkmrninr0J9QSZnst6SkXSR/2
-         /xOSh/V8X5iL20PfEy5sV7QoCnQPSVHJ9NdYA=
-Received: by 10.216.135.154 with SMTP id u26mr6624203wei.20.1324296118355;
- Mon, 19 Dec 2011 04:01:58 -0800 (PST)
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=YaiQwu1+uOsLwZXQ+JgvA7b9vleTNIWNeP9DIqLm1xs=;
+        b=YAdam6Qpw7tFPQ7u5z2ELh2uhxQ893o4Y1Mw421tcIsIb4Q0KewiX0mpfPe8dcNlZx
+         n120/exhBxb7BXgOZQdIRGUMmliT9lwT4B9SYoQQG/BZ9f98YllpvZfxo0PrGItuQs5K
+         SOOZmJyduR5fO+omDi42n129MuxdH9d1L0T0k=
+Received: by 10.236.175.72 with SMTP id y48mr32376564yhl.17.1324336057716;
+        Mon, 19 Dec 2011 15:07:37 -0800 (PST)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id w68sm32488441yhe.14.2011.12.19.15.07.36
+        (version=SSLv3 cipher=OTHER);
+        Mon, 19 Dec 2011 15:07:36 -0800 (PST)
+Message-ID: <4EEFC3B7.9020008@gmail.com>
+Date:   Mon, 19 Dec 2011 15:07:35 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.223.117.2 with HTTP; Mon, 19 Dec 2011 04:01:37 -0800 (PST)
-In-Reply-To: <1324292192.32675.6.camel@sauron.fi.intel.com>
-References: <1324208821.17534.0.camel@sauron.fi.intel.com> <1324290964-14096-1-git-send-email-jonas.gorski@gmail.com>
- <1324292192.32675.6.camel@sauron.fi.intel.com>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Mon, 19 Dec 2011 13:01:37 +0100
-Message-ID: <CAOiHx=kV8ovXQc2TTdxigMuVbSwj3GwsGs8K+vxMd_VepD3hSg@mail.gmail.com>
-Subject: Re: [PATCH V2 2/5] MTD: bcm63xxpart: make sure CFE and NVRAM
- partitions are at least 64K
-To:     dedekind1@gmail.com
-Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Florian Fainelli <florian@openwrt.org>
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 32142
+To:     ralf@linux-mips.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-mips@linux-mips.org,
+        Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>
+CC:     linux-kernel@vger.kernel.org, Jason Baron <jbaron@redhat.com>,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH v2a] jump-label: initialize jump-label subsystem somewhat
+ later
+References: <1323885279-26850-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1323885279-26850-1-git-send-email-ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32143
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 14927
+X-UID: 15587
 
-On 19 December 2011 11:56, Artem Bityutskiy <dedekind1@gmail.com> wrote:
-> On Mon, 2011-12-19 at 11:36 +0100, Jonas Gorski wrote:
->> The CFE boot loader on BCM63XX platforms assumes itself and the NVRAM
->> partition to be 64 KiB (or erase block sized, if larger).
->> Ensure this assumption is also met when creating the partitions to
->> prevent accidential erasure of CFE or NVRAM.
->>
->> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+On 12/14/2011 09:54 AM, David Daney wrote:
+> From: David Daney<david.daney@cavium.com>
 >
-> If someone creates a partition smaller than 64 KiB, then why it is
-> better to silently make it 64 KiB (and thus doing not what the user
-> asked to do and possibly confusing him), rather than returning an error
-> or just printing a warning?
+> commit 97ce2c88f9ad42e3c60a9beb9fca87abf3639faa
+> (jump-label: initialize jump-label subsystem much earlier) breaks MIPS.
+>
+> The jump-label initialization does I-Cache flushing after modifying
+> code.  On MIPS this is done by calling through the function pointer
+> flush_icache_range().  This function pointer is initialized by
+> trap_init().
+>
+> As things stand, we cannot be calling jump_label_init() until after
+> trap_init() completes, so we move the call down to satisfy this
+> constraint.
+>
+> Signed-off-by: David Daney<david.daney@cavium.com>
 
-This adjustment to 64 KiB is only done for the CFE and NVRAM
-partitions, not for the rootfs or kernel partitions. The CFE and NVRAM
-lengths/offsets are defined in the CFE boot loader at build time and
-fixed, so to change them you would need to build and flash your own
-CFE (and the sources are not public, so you also need to be a Broadcom
-customer). I have yet to see a device where this was done, so this is
-currently just a theoretical possibility.
+NACK to myself:
 
-Also you can't create/modify partitions arbitrarily as there is no
-partition table, just a fixed image header format (which the CFE
-parses on boot). So the only two partitions changeable from the
-outside are the kernel and rootfs partitions, which are defined in the
-image tag, which always resides at the beginning of the first erase
-block after the CFE. Changing the CFE length would result in a changed
-offset of the image tag, leading to a "wrong" image tag being read (or
-in case after patch 5, a warning that the image tag is likely corrupt,
-and no rootfs/kernel partitions created).
+I now have a patch for MIPS that makes this one unnecessary.
 
-Of course everything is done under the assumption the boot loader is
-CFE (there are a few devices with RedBoot out there), but the parser
-already bails out if no CFE is detected.
+David Daney
 
-Hope that clears things up.
-
-Jonas
+> ---
+>
+> Sorry for spamming this out again, but Sergei keeps flagging my poor
+> grammar.
+>
+> Difference from v2: Fix grammar and spelling issues in changelog.  No
+>                      change to the patch.
+>
+> Difference from v1: Move jump_label_init() up one so it is now before
+>                      mm_init() instead of after it.
+>
+>
+>   init/main.c |    3 +--
+>   1 files changed, 1 insertions(+), 2 deletions(-)
+>
+> diff --git a/init/main.c b/init/main.c
+> index 217ed23..68ab12b 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -513,8 +513,6 @@ asmlinkage void __init start_kernel(void)
+>   		   __stop___param - __start___param,
+>   		&unknown_bootoption);
+>
+> -	jump_label_init();
+> -
+>   	/*
+>   	 * These use large bootmem allocations and must precede
+>   	 * kmem_cache_init()
+> @@ -524,6 +522,7 @@ asmlinkage void __init start_kernel(void)
+>   	vfs_caches_init_early();
+>   	sort_main_extable();
+>   	trap_init();
+> +	jump_label_init();
+>   	mm_init();
+>
+>   	/*

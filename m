@@ -1,75 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Dec 2011 17:37:51 +0100 (CET)
-Received: from mail-ee0-f49.google.com ([74.125.83.49]:58111 "EHLO
-        mail-ee0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903705Ab1LTQhj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 20 Dec 2011 17:37:39 +0100
-Received: by eekc13 with SMTP id c13so5719268eek.36
-        for <multiple recipients>; Tue, 20 Dec 2011 08:37:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Dec 2011 21:54:29 +0100 (CET)
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:43683 "EHLO
+        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903762Ab1LUUyZ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Dec 2011 21:54:25 +0100
+Received: by lahc1 with SMTP id c1so6027608lah.36
+        for <linux-mips@linux-mips.org>; Wed, 21 Dec 2011 12:54:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=NLLY6KTY0ahn4kqTCQFjRHbE0GODDmEI5IgWtsS+HJI=;
-        b=Z66l0qZUs/BiizggylwUNsBcKB78+IFYavTovPwpc/f1uYjm16iYN3+PKxS7onX4vT
-         lx68dkMNO/avqppuSftFM0Sn5+XJoOeYUIGjDTHtUbpbaOxLENOYP1ueH0PCrOE+yZ2e
-         192cFqeWb2AZNehWN8TTQak0vTWfOuoFPcuEo=
-Received: by 10.213.114.140 with SMTP id e12mr685592ebq.78.1324399054253;
-        Tue, 20 Dec 2011 08:37:34 -0800 (PST)
-Received: from flagship.roarinelk.net (188-22-146-24.adsl.highway.telekom.at. [188.22.146.24])
-        by mx.google.com with ESMTPS id j20sm8683364eej.8.2011.12.20.08.37.32
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 20 Dec 2011 08:37:33 -0800 (PST)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Linux-MIPS <linux-mips@linux-mips.org>
-Cc:     Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: [PATCH] MIPS: Alchemy: increase minimum timeout for 32kHz timer.
-Date:   Tue, 20 Dec 2011 17:37:29 +0100
-Message-Id: <1324399049-6410-1-git-send-email-manuel.lauss@googlemail.com>
-X-Mailer: git-send-email 1.7.8
-X-archive-position: 32150
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:date:in-reply-to:references
+         :content-type:x-mailer:content-transfer-encoding:message-id
+         :mime-version;
+        bh=vvU7IdbwU18tlrQWMKIBXYChO5DWD4fsZfTH7ur7hdA=;
+        b=pBSEgYM3JbbWJkpltHl1ER8ut6u1CkKCDgpMyCObnMU1V9O9RXDPS6rIb9aGUny6vI
+         JsOGsCoKaAGsVVpHUOVzIEhb4ZS4UOMYJgCPnMJciPayC37QsyPoy/iWG0i1rTKG13EK
+         SQYWDWZwNysFMfKmp+Yw2h5cvLUwUilzK2j/w=
+Received: by 10.152.134.50 with SMTP id ph18mr7207784lab.1.1324500859973;
+        Wed, 21 Dec 2011 12:54:19 -0800 (PST)
+Received: from [192.168.255.2] (host-94-101-1-70.igua.fi. [94.101.1.70])
+        by mx.google.com with ESMTPS id pi7sm5438310lab.5.2011.12.21.12.54.16
+        (version=SSLv3 cipher=OTHER);
+        Wed, 21 Dec 2011 12:54:18 -0800 (PST)
+Subject: Re: [PATCH V2 2/5] MTD: bcm63xxpart: make sure CFE and NVRAM
+ partitions are at least 64K
+From:   Artem Bityutskiy <dedekind1@gmail.com>
+Reply-To: dedekind1@gmail.com
+To:     Jonas Gorski <jonas.gorski@gmail.com>
+Cc:     linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Florian Fainelli <florian@openwrt.org>
+Date:   Wed, 21 Dec 2011 22:54:13 +0200
+In-Reply-To: <1324290964-14096-1-git-send-email-jonas.gorski@gmail.com>
+References: <1324208821.17534.0.camel@sauron.fi.intel.com>
+         <1324290964-14096-1-git-send-email-jonas.gorski@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.0.3 (3.0.3-1.fc15) 
+Content-Transfer-Encoding: 7bit
+Message-ID: <1324500858.2110.1.camel@koala>
+Mime-Version: 1.0
+X-archive-position: 32151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: dedekind1@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 16183
+X-UID: 17466
 
-Since a clocksource change post 3.2-rc1, tasks on my DB1500 board
-hang after random amounts of time (from a few minutes to a few hours),
-regardless of load.  Debugging showed that the compare-match register
-value is a few seconds lower than the current counter value.
+On Mon, 2011-12-19 at 11:36 +0100, Jonas Gorski wrote:
+> The CFE boot loader on BCM63XX platforms assumes itself and the NVRAM
+> partition to be 64 KiB (or erase block sized, if larger).
+> Ensure this assumption is also met when creating the partitions to
+> prevent accidential erasure of CFE or NVRAM.
+> 
+> Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 
-The minimum value of 8 was initialy determined by a trial-and-error
-approach.  Currently it is sufficient for all Alchemys (without PCI
-apparently), independent of CPU clock;  only the DB1500 and DB1550
-boards experience these timer-related tasks hangs now.
-
-This patch increases the minimum timeout by 1 (to 9 counter ticks)
-which seems sufficient since the systems are still working perfectly
-fine after over 24 hours.
-
-Signed-off-by: Manuel Lauss <manuel.lauss@googlemail.com>
----
-Please consider for 3.2
-
- arch/mips/alchemy/common/time.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
-index a594a85..63ba51f 100644
---- a/arch/mips/alchemy/common/time.c
-+++ b/arch/mips/alchemy/common/time.c
-@@ -146,7 +146,7 @@ static int __init alchemy_time_init(unsigned int m2int)
- 	cd->shift = 32;
- 	cd->mult = div_sc(32768, NSEC_PER_SEC, cd->shift);
- 	cd->max_delta_ns = clockevent_delta2ns(0xffffffff, cd);
--	cd->min_delta_ns = clockevent_delta2ns(8, cd);	/* ~0.25ms */
-+	cd->min_delta_ns = clockevent_delta2ns(9, cd);	/* ~0.28ms */
- 	clockevents_register_device(cd);
- 	setup_irq(m2int, &au1x_rtcmatch2_irqaction);
- 
--- 
-1.7.8
+Updated, thanks!

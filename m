@@ -1,71 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2011 15:53:40 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:53192 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903614Ab1LVOxd (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Dec 2011 15:53:33 +0100
-Received: by iadk27 with SMTP id k27so14569245iad.36
-        for <multiple recipients>; Thu, 22 Dec 2011 06:53:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=date:from:to:subject:message-id:mime-version:content-type
-         :content-disposition:user-agent;
-        bh=nVEMytF4T5xa8cZgu7bS6imq8oQ70QM6UHAUGignoCQ=;
-        b=sf0dW0uL8JswhST7/A8gWUsSPk5TWtSXQAZFtoXJSZWGPsqE34lsk0VvkDMXy88XMI
-         FOyQ6+61vzg4ODMUtcxKQUi33/jk/2v4VVkRwiX+zOjNPjWM946CPh3RkR+fJVydg+w3
-         T12K+e22+AxFf7eRf4yIOctvmM+OZn1gdqkB4=
-Received: by 10.43.43.130 with SMTP id uc2mr11550290icb.35.1324565606749;
-        Thu, 22 Dec 2011 06:53:26 -0800 (PST)
-Received: from hades ([58.210.254.98])
-        by mx.google.com with ESMTPS id j3sm29894366ibj.1.2011.12.22.06.53.22
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 22 Dec 2011 06:53:25 -0800 (PST)
-Date:   Thu, 22 Dec 2011 22:53:17 +0800
-From:   Tony Wu <tung7970@gmail.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [PATCH] vmlinux.lds.S: remove duplicate _sdata symbol
-Message-ID: <20111222145317.GA411@hades>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Dec 2011 18:18:40 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:32931 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903644Ab1LVRSg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 22 Dec 2011 18:18:36 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id pBMHIZv7016910;
+        Thu, 22 Dec 2011 17:18:35 GMT
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id pBMHIXAO016903;
+        Thu, 22 Dec 2011 17:18:33 GMT
+Date:   Thu, 22 Dec 2011 17:18:33 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     "James E.J. Bottomley" <JBottomley@parallels.com>
+Cc:     linux-scsi@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] SCSI: Change size of factor from u64 to unsigned int.
+Message-ID: <20111222171833.GA16435@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32154
+X-archive-position: 32155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tung7970@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18109
+X-UID: 18217
 
+Struct scsi_device.sector_size is unsigned int, so the value of factor
+can have at most 23 significant bits.
 
-_sdata is defined twice in vmlinux.lds.S. According to vmlinux.ld.h
-in asm-generic, _sdata should be marked at the beginning RO_DATA_SECTION.
+Adding a type check to do_div() caught these two do_div as the only
+invocations in the kernel passing a non-32-bit divisor.
 
- *      _sdata = .;
- *      RO_DATA_SECTION(PAGE_SIZE)
- *      RW_DATA_SECTION(...)
- *      _edata = .;
-
-Remove the one that is marked at RW_DATA_SECTION.
-
-Signed-off-by: Tony Wu <tung7970@gmail.com>
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-scsi@vger.kernel.org
+Cc: linux-mips@linux-mips.org
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/mips/kernel/vmlinux.lds.S |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ drivers/scsi/sd.c |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index a81176f..924da5e 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -69,7 +69,6 @@ SECTIONS
- 	RODATA
- 
- 	/* writeable */
--	_sdata = .;				/* Start of data section */
- 	.data : {	/* Data */
- 		. = . + DATAOFFSET;		/* for CONFIG_MAPPED_KERNEL */
- 
--- 
-1.7.4.4
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index fa3a591..42a1ff6 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -1335,8 +1335,7 @@ static unsigned int sd_completed_bytes(struct scsi_cmnd *scmd)
+ 		start_lba <<= 1;
+ 		end_lba <<= 1;
+ 	} else {
+-		/* be careful ... don't want any overflows */
+-		u64 factor = scmd->device->sector_size / 512;
++		unsigned int factor = scmd->device->sector_size / 512;
+ 		do_div(start_lba, factor);
+ 		do_div(end_lba, factor);
+ 	}

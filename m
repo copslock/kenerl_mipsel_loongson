@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Dec 2011 19:28:25 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:46088 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Dec 2011 19:28:48 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:46092 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903629Ab1LWS0N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Dec 2011 19:26:13 +0100
+        id S1903631Ab1LWS0O (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Dec 2011 19:26:14 +0100
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 8585123C008D;
-        Fri, 23 Dec 2011 19:26:12 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 535E623C008D;
+        Fri, 23 Dec 2011 19:26:13 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
         mcgrof@infradead.org, Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 05/16] MIPS: ath79: add GPIO support code for AR934X
-Date:   Fri, 23 Dec 2011 19:25:31 +0100
-Message-Id: <1324664742-3648-6-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 06/16] MIPS: ath79: rework IP2/IP3 interrupt handling
+Date:   Fri, 23 Dec 2011 19:25:32 +0100
+Message-Id: <1324664742-3648-7-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.5
 In-Reply-To: <1324664742-3648-1-git-send-email-juhosg@openwrt.org>
 References: <1324664742-3648-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 32179
+X-archive-position: 32180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,104 +27,158 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19092
+X-UID: 19093
+
+The current implementation assumes that flushing the
+DDR writeback buffer is required for IP2/IP3 interrupts,
+however this is not true for all SoCs.
+
+Use SoC specific IP2/IP3 handlers instead of flushing
+the buffers in the dispatcher code.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
 ---
- arch/mips/ath79/gpio.c                         |   47 +++++++++++++++++++++++-
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    1 +
- 2 files changed, 47 insertions(+), 1 deletions(-)
+ arch/mips/ath79/irq.c |   92 ++++++++++++++++++++++++++++++++++++++-----------
+ 1 files changed, 72 insertions(+), 20 deletions(-)
 
-diff --git a/arch/mips/ath79/gpio.c b/arch/mips/ath79/gpio.c
-index a2f8ca6..29054f2 100644
---- a/arch/mips/ath79/gpio.c
-+++ b/arch/mips/ath79/gpio.c
-@@ -1,9 +1,12 @@
+diff --git a/arch/mips/ath79/irq.c b/arch/mips/ath79/irq.c
+index 1b073de..9f87ade 100644
+--- a/arch/mips/ath79/irq.c
++++ b/arch/mips/ath79/irq.c
+@@ -1,7 +1,7 @@
  /*
-  *  Atheros AR71XX/AR724X/AR913X GPIO API support
+  *  Atheros AR71xx/AR724x/AR913x specific interrupt handling
   *
 - *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
 + *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
   *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
   *
-+ *  Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
-+ *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
-  *  by the Free Software Foundation.
-@@ -89,6 +92,42 @@ static int ath79_gpio_direction_output(struct gpio_chip *chip,
- 	return 0;
+  *  Parts of this file are based on Atheros' 2.6.15 BSP
+@@ -23,8 +23,8 @@
+ #include <asm/mach-ath79/ar71xx_regs.h>
+ #include "common.h"
+ 
+-static unsigned int ath79_ip2_flush_reg;
+-static unsigned int ath79_ip3_flush_reg;
++static void (*ath79_ip2_handler)(void);
++static void (*ath79_ip3_handler)(void);
+ 
+ static void ath79_misc_irq_handler(unsigned int irq, struct irq_desc *desc)
+ {
+@@ -152,10 +152,8 @@ asmlinkage void plat_irq_dispatch(void)
+ 	if (pending & STATUSF_IP7)
+ 		do_IRQ(ATH79_CPU_IRQ_TIMER);
+ 
+-	else if (pending & STATUSF_IP2) {
+-		ath79_ddr_wb_flush(ath79_ip2_flush_reg);
+-		do_IRQ(ATH79_CPU_IRQ_IP2);
+-	}
++	else if (pending & STATUSF_IP2)
++		ath79_ip2_handler();
+ 
+ 	else if (pending & STATUSF_IP4)
+ 		do_IRQ(ATH79_CPU_IRQ_GE0);
+@@ -163,10 +161,8 @@ asmlinkage void plat_irq_dispatch(void)
+ 	else if (pending & STATUSF_IP5)
+ 		do_IRQ(ATH79_CPU_IRQ_GE1);
+ 
+-	else if (pending & STATUSF_IP3) {
+-		ath79_ddr_wb_flush(ath79_ip3_flush_reg);
+-		do_IRQ(ATH79_CPU_IRQ_USB);
+-	}
++	else if (pending & STATUSF_IP3)
++		ath79_ip3_handler();
+ 
+ 	else if (pending & STATUSF_IP6)
+ 		do_IRQ(ATH79_CPU_IRQ_MISC);
+@@ -175,22 +171,78 @@ asmlinkage void plat_irq_dispatch(void)
+ 		spurious_interrupt();
  }
  
-+static int ar934x_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
++/*
++ * The IP2/IP3 lines are tied to a PCI/WMAC/USB device. Drivers for
++ * these devices typically allocate coherent DMA memory, however the
++ * DMA controller may still have some unsynchronized data in the FIFO.
++ * Issue a flush in the handlers to ensure that the driver sees
++ * the update.
++ */
++static void ar71xx_ip2_handler(void)
 +{
-+	void __iomem *base = ath79_gpio_base;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) | (1 << offset),
-+		     base + AR71XX_GPIO_REG_OE);
-+
-+	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+
-+	return 0;
++	ath79_ddr_wb_flush(AR71XX_DDR_REG_FLUSH_PCI);
++	do_IRQ(ATH79_CPU_IRQ_IP2);
 +}
 +
-+static int ar934x_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
-+					int value)
++static void ar724x_ip2_handler(void)
 +{
-+	void __iomem *base = ath79_gpio_base;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&ath79_gpio_lock, flags);
-+
-+	if (value)
-+		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_SET);
-+	else
-+		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_CLEAR);
-+
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) & ~(1 << offset),
-+		     base + AR71XX_GPIO_REG_OE);
-+
-+	spin_unlock_irqrestore(&ath79_gpio_lock, flags);
-+
-+	return 0;
++	ath79_ddr_wb_flush(AR724X_DDR_REG_FLUSH_PCIE);
++	do_IRQ(ATH79_CPU_IRQ_IP2);
 +}
 +
- static struct gpio_chip ath79_gpio_chip = {
- 	.label			= "ath79",
- 	.get			= ath79_gpio_get_value,
-@@ -155,11 +194,17 @@ void __init ath79_gpio_init(void)
- 		ath79_gpio_count = AR913X_GPIO_COUNT;
- 	else if (soc_is_ar933x())
- 		ath79_gpio_count = AR933X_GPIO_COUNT;
-+	else if (soc_is_ar934x())
-+		ath79_gpio_count = AR934X_GPIO_COUNT;
- 	else
++static void ar913x_ip2_handler(void)
++{
++	ath79_ddr_wb_flush(AR913X_DDR_REG_FLUSH_WMAC);
++	do_IRQ(ATH79_CPU_IRQ_IP2);
++}
++
++static void ar933x_ip2_handler(void)
++{
++	ath79_ddr_wb_flush(AR933X_DDR_REG_FLUSH_WMAC);
++	do_IRQ(ATH79_CPU_IRQ_IP2);
++}
++
++static void ar71xx_ip3_handler(void)
++{
++	ath79_ddr_wb_flush(AR71XX_DDR_REG_FLUSH_USB);
++	do_IRQ(ATH79_CPU_IRQ_USB);
++}
++
++static void ar724x_ip3_handler(void)
++{
++	ath79_ddr_wb_flush(AR724X_DDR_REG_FLUSH_USB);
++	do_IRQ(ATH79_CPU_IRQ_USB);
++}
++
++static void ar913x_ip3_handler(void)
++{
++	ath79_ddr_wb_flush(AR913X_DDR_REG_FLUSH_USB);
++	do_IRQ(ATH79_CPU_IRQ_USB);
++}
++
++static void ar933x_ip3_handler(void)
++{
++	ath79_ddr_wb_flush(AR933X_DDR_REG_FLUSH_USB);
++	do_IRQ(ATH79_CPU_IRQ_USB);
++}
++
+ void __init arch_init_irq(void)
+ {
+ 	if (soc_is_ar71xx()) {
+-		ath79_ip2_flush_reg = AR71XX_DDR_REG_FLUSH_PCI;
+-		ath79_ip3_flush_reg = AR71XX_DDR_REG_FLUSH_USB;
++		ath79_ip2_handler = ar71xx_ip2_handler;
++		ath79_ip3_handler = ar71xx_ip3_handler;
+ 	} else if (soc_is_ar724x()) {
+-		ath79_ip2_flush_reg = AR724X_DDR_REG_FLUSH_PCIE;
+-		ath79_ip3_flush_reg = AR724X_DDR_REG_FLUSH_USB;
++		ath79_ip2_handler = ar724x_ip2_handler;
++		ath79_ip3_handler = ar724x_ip3_handler;
+ 	} else if (soc_is_ar913x()) {
+-		ath79_ip2_flush_reg = AR913X_DDR_REG_FLUSH_WMAC;
+-		ath79_ip3_flush_reg = AR913X_DDR_REG_FLUSH_USB;
++		ath79_ip2_handler = ar913x_ip2_handler;
++		ath79_ip3_handler = ar913x_ip3_handler;
+ 	} else if (soc_is_ar933x()) {
+-		ath79_ip2_flush_reg = AR933X_DDR_REG_FLUSH_WMAC;
+-		ath79_ip3_flush_reg = AR933X_DDR_REG_FLUSH_USB;
+-	} else
++		ath79_ip2_handler = ar933x_ip2_handler;
++		ath79_ip3_handler = ar933x_ip3_handler;
++	} else {
  		BUG();
- 
- 	ath79_gpio_base = ioremap_nocache(AR71XX_GPIO_BASE, AR71XX_GPIO_SIZE);
- 	ath79_gpio_chip.ngpio = ath79_gpio_count;
-+	if (soc_is_ar934x()) {
-+		ath79_gpio_chip.direction_input = ar934x_gpio_direction_input;
-+		ath79_gpio_chip.direction_output = ar934x_gpio_direction_output;
 +	}
  
- 	err = gpiochip_add(&ath79_gpio_chip);
- 	if (err)
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index bc1c345..1a9234b 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -367,5 +367,6 @@
- #define AR724X_GPIO_COUNT		18
- #define AR913X_GPIO_COUNT		22
- #define AR933X_GPIO_COUNT		30
-+#define AR934X_GPIO_COUNT		23
- 
- #endif /* __ASM_MACH_AR71XX_REGS_H */
+ 	cp0_perfcount_irq = ATH79_MISC_IRQ_PERFC;
+ 	mips_cpu_irq_init();
 -- 
 1.7.2.1

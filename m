@@ -1,81 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Dec 2011 17:35:27 +0100 (CET)
-Received: from palinux.external.hp.com ([192.25.206.14]:37481 "EHLO
-        mail.parisc-linux.org" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903617Ab1LWQfW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 23 Dec 2011 17:35:22 +0100
-Received: by mail.parisc-linux.org (Postfix, from userid 26919)
-        id 098C7494005; Fri, 23 Dec 2011 09:35:16 -0700 (MST)
-Date:   Fri, 23 Dec 2011 09:35:16 -0700
-From:   Matthew Wilcox <matthew@wil.cx>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
-        x86@kernel.org, linux-sh@vger.kernel.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@linux-mips.org, discuss@x86-64.org,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@samsung.com>
-Subject: Re: [PATCH 00/14] DMA-mapping framework redesign preparation
-Message-ID: <20111223163516.GO20129@parisc-linux.org>
-References: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-archive-position: 32173
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Dec 2011 19:26:13 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:46053 "EHLO arrakis.dune.hu"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903617Ab1LWS0F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Dec 2011 19:26:05 +0100
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
+        by arrakis.dune.hu (Postfix) with ESMTPSA id DD29F23C0090;
+        Fri, 23 Dec 2011 19:26:04 +0100 (CET)
+From:   Gabor Juhos <juhosg@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org,
+        "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
+        mcgrof@infradead.org, Gabor Juhos <juhosg@openwrt.org>
+Subject: [PATCH 00/16] MIPS: ath79: add initial support for the Atheros AR934X SoCs
+Date:   Fri, 23 Dec 2011 19:25:26 +0100
+Message-Id: <1324664742-3648-1-git-send-email-juhosg@openwrt.org>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 32174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matthew@wil.cx
+X-original-sender: juhosg@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 18988
+X-UID: 19084
 
-On Fri, Dec 23, 2011 at 01:27:19PM +0100, Marek Szyprowski wrote:
-> The first issue we identified is the fact that on some platform (again,
-> mainly ARM) there are several functions for allocating DMA buffers:
-> dma_alloc_coherent, dma_alloc_writecombine and dma_alloc_noncoherent
+This patch set adds initial support for the Atheros AR934X SoCs.
 
-Is this write-combining from the point of view of the device (ie iommu),
-or from the point of view of the CPU, or both?
+The patch set is created against the mips-for-linux-next branch of the
+git://git.linux-mips.org/pub/scm/ralf/upstream-sfr.git tree, and it
+depends on these sets:
 
-> The next step in dma mapping framework update is the introduction of
-> dma_mmap/dma_mmap_attrs() function. There are a number of drivers
-> (mainly V4L2 and ALSA) that only exports the DMA buffers to user space.
-> Creating a userspace mapping with correct page attributes is not an easy
-> task for the driver. Also the DMA-mapping framework is the only place
-> where the complete information about the allocated pages is available,
-> especially if the implementation uses IOMMU controller to provide a
-> contiguous buffer in DMA address space which is scattered in physical
-> memory space.
+http://patchwork.linux-mips.org/bundle/juhosg/ath79-cleanup-AR724X-PCI-support-code-v4/
+http://patchwork.linux-mips.org/bundle/juhosg/ath79-AR724X-PCI-fixes-and-AR71XX-PCI-support-v2/
 
-Surely we only need a helper which drivrs can call from their mmap routine to solve this?
+Gabor Juhos (16):
+  MIPS: ath79: add early_printk support for AR934X
+  MIPS: ath79: sort case statements in ath79_detect_sys_type
+  MIPS: ath79: add SoC detection code for AR934X
+  MIPS: ath79: add clock initialization code for AR934X
+  MIPS: ath79: add GPIO support code for AR934X
+  MIPS: ath79: rework IP2/IP3 interrupt handling
+  MIPS: ath79: add IRQ handling code for AR934X
+  MIPS: ath79: add AR934X specific glue to ath79_device_reset_{clear,set}
+  MIPS: ath79: register UART device for AR934X SoCs
+  MIPS: ath79: add WMAC registration code for AR934X
+  MIPS: ath79: add USB platform setup code for AR934X
+  MIPS: ath79: add PCI_AR724X Kconfig symbol
+  MIPS: ath79: add PCI registration code for AR934X
+  MIPS: ath79: add initial support for the Atheros DB120 board
+  USB: ehci-ath79: add device_id entry for the AR934X SoCs
+  watchdog: ath79_wdt: flush register writes
 
-> Usually these drivers don't touch the buffer data at all, so the mapping
-> in kernel virtual address space is not needed. We can introduce
-> DMA_ATTRIB_NO_KERNEL_MAPPING attribute which lets kernel to skip/ignore
-> creation of kernel virtual mapping. This way we can save previous
-> vmalloc area and simply some mapping operation on a few architectures.
+ arch/mips/ath79/Kconfig                        |   24 ++++-
+ arch/mips/ath79/Makefile                       |    1 +
+ arch/mips/ath79/clock.c                        |   81 ++++++++++++
+ arch/mips/ath79/common.c                       |    9 ++-
+ arch/mips/ath79/dev-common.c                   |    3 +-
+ arch/mips/ath79/dev-usb.c                      |   28 +++++
+ arch/mips/ath79/dev-wmac.c                     |   30 +++++-
+ arch/mips/ath79/early_printk.c                 |    3 +
+ arch/mips/ath79/gpio.c                         |   47 +++++++-
+ arch/mips/ath79/irq.c                          |  147 +++++++++++++++++++----
+ arch/mips/ath79/mach-db120.c                   |  155 ++++++++++++++++++++++++
+ arch/mips/ath79/machtypes.h                    |    1 +
+ arch/mips/ath79/pci.c                          |   13 ++-
+ arch/mips/ath79/setup.c                        |   45 +++++--
+ arch/mips/include/asm/mach-ath79/ar71xx_regs.h |  126 +++++++++++++++++++-
+ arch/mips/include/asm/mach-ath79/ath79.h       |   23 ++++
+ arch/mips/include/asm/mach-ath79/irq.h         |    6 +-
+ arch/mips/include/asm/mach-ath79/pci.h         |    2 +-
+ arch/mips/pci/Makefile                         |    2 +-
+ drivers/usb/host/Kconfig                       |    2 +-
+ drivers/usb/host/ehci-ath79.c                  |    4 +
+ drivers/watchdog/ath79_wdt.c                   |    6 +
+ 22 files changed, 711 insertions(+), 47 deletions(-)
+ create mode 100644 arch/mips/ath79/mach-db120.c
 
-I really think this wants to be a separate function.  dma_alloc_coherent
-is for allocating memory to be shared between the kernel and a driver;
-we already have dma_map_sg for mapping userspace I/O as an alternative
-interface.  This feels like it's something different again rather than
-an option to dma_alloc_coherent.
-
--- 
-Matthew Wilcox				Intel Open Source Technology Centre
-"Bill, look, we understand that you're interested in selling us this
-operating system, but compare it to ours.  We can't possibly take such
-a retrograde step."
+--
+1.7.2.1

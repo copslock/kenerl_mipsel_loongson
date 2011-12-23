@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Dec 2011 19:26:39 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:46068 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Dec 2011 19:27:05 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:46075 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903621Ab1LWS0J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 23 Dec 2011 19:26:09 +0100
+        id S1903622Ab1LWS0K (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 23 Dec 2011 19:26:10 +0100
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 0B3BC23C007C;
-        Fri, 23 Dec 2011 19:26:07 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 84EDD23C007C;
+        Fri, 23 Dec 2011 19:26:09 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
         mcgrof@infradead.org, Gabor Juhos <juhosg@openwrt.org>
-Subject: [PATCH 01/16] MIPS: ath79: add early_printk support for AR934X
-Date:   Fri, 23 Dec 2011 19:25:27 +0100
-Message-Id: <1324664742-3648-2-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 02/16] MIPS: ath79: sort case statements in ath79_detect_sys_type
+Date:   Fri, 23 Dec 2011 19:25:28 +0100
+Message-Id: <1324664742-3648-3-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.5
 In-Reply-To: <1324664742-3648-1-git-send-email-juhosg@openwrt.org>
 References: <1324664742-3648-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 32175
+X-archive-position: 32176
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,58 +27,58 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19085
+X-UID: 19088
 
-The patch allows to see kernel messages on AR934X SoCs in
-early boot stage.
+Sort the case statements alphabetically in order to improve
+readability.
 
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
 ---
- arch/mips/ath79/early_printk.c                 |    3 +++
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    6 +++++-
- 2 files changed, 8 insertions(+), 1 deletions(-)
+ arch/mips/ath79/setup.c |   24 ++++++++++++------------
+ 1 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/mips/ath79/early_printk.c b/arch/mips/ath79/early_printk.c
-index 6a51ced..dc938cb 100644
---- a/arch/mips/ath79/early_printk.c
-+++ b/arch/mips/ath79/early_printk.c
-@@ -71,6 +71,9 @@ static void prom_putchar_init(void)
- 	case REV_ID_MAJOR_AR7241:
- 	case REV_ID_MAJOR_AR7242:
- 	case REV_ID_MAJOR_AR913X:
-+	case REV_ID_MAJOR_AR9341:
-+	case REV_ID_MAJOR_AR9342:
-+	case REV_ID_MAJOR_AR9344:
- 		_prom_putchar = prom_putchar_ar71xx;
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 80a7d40..24dfedf 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -116,18 +116,6 @@ static void __init ath79_detect_sys_type(void)
+ 		rev = id & AR724X_REV_ID_REVISION_MASK;
  		break;
  
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 2f0becb..b7df674 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -1,10 +1,11 @@
- /*
-  *  Atheros AR71XX/AR724X/AR913X SoC register definitions
-  *
-+ *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
-  *  Copyright (C) 2008-2010 Gabor Juhos <juhosg@openwrt.org>
-  *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-  *
-- *  Parts of this file are based on Atheros' 2.6.15 BSP
-+ *  Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
-  *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
-@@ -249,6 +250,9 @@
- #define REV_ID_MAJOR_AR7242		0x1100
- #define REV_ID_MAJOR_AR9330		0x0110
- #define REV_ID_MAJOR_AR9331		0x1110
-+#define REV_ID_MAJOR_AR9341		0x0120
-+#define REV_ID_MAJOR_AR9342		0x1120
-+#define REV_ID_MAJOR_AR9344		0x2120
+-	case REV_ID_MAJOR_AR9330:
+-		ath79_soc = ATH79_SOC_AR9330;
+-		chip = "9330";
+-		rev = id & AR933X_REV_ID_REVISION_MASK;
+-		break;
+-
+-	case REV_ID_MAJOR_AR9331:
+-		ath79_soc = ATH79_SOC_AR9331;
+-		chip = "9331";
+-		rev = id & AR933X_REV_ID_REVISION_MASK;
+-		break;
+-
+ 	case REV_ID_MAJOR_AR913X:
+ 		minor = id & AR913X_REV_ID_MINOR_MASK;
+ 		rev = id >> AR913X_REV_ID_REVISION_SHIFT;
+@@ -145,6 +133,18 @@ static void __init ath79_detect_sys_type(void)
+ 		}
+ 		break;
  
- #define AR71XX_REV_ID_MINOR_MASK	0x3
- #define AR71XX_REV_ID_MINOR_AR7130	0x0
++	case REV_ID_MAJOR_AR9330:
++		ath79_soc = ATH79_SOC_AR9330;
++		chip = "9330";
++		rev = id & AR933X_REV_ID_REVISION_MASK;
++		break;
++
++	case REV_ID_MAJOR_AR9331:
++		ath79_soc = ATH79_SOC_AR9331;
++		chip = "9331";
++		rev = id & AR933X_REV_ID_REVISION_MASK;
++		break;
++
+ 	default:
+ 		panic("ath79: unknown SoC, id:0x%08x", id);
+ 	}
 -- 
 1.7.2.1

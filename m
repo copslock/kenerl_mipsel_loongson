@@ -1,152 +1,125 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Dec 2011 06:06:52 +0100 (CET)
-Received: from qmta15.westchester.pa.mail.comcast.net ([76.96.59.228]:41108
-        "EHLO qmta15.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903605Ab1L0FGo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Dec 2011 06:06:44 +0100
-Received: from omta06.westchester.pa.mail.comcast.net ([76.96.62.51])
-        by qmta15.westchester.pa.mail.comcast.net with comcast
-        id E56Y1i00616LCl05F56eTU; Tue, 27 Dec 2011 05:06:38 +0000
-Received: from [192.168.1.13] ([76.106.69.86])
-        by omta06.westchester.pa.mail.comcast.net with comcast
-        id E56d1i0071rgsis3S56eH9; Tue, 27 Dec 2011 05:06:38 +0000
-Message-ID: <4EF95247.7000403@gentoo.org>
-Date:   Tue, 27 Dec 2011 00:06:15 -0500
-From:   Joshua Kinard <kumba@gentoo.org>
-User-Agent: Mozilla/5.0 (Windows NT 6.0; WOW64; rv:8.0) Gecko/20111105 Thunderbird/8.0
-MIME-Version: 1.0
-To:     netdev@vger.kernel.org, Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] net: meth: Add set_rx_mode hook to fix ICMPv6 neighbor
- discovery
-References: <4EED3A3D.9080503@gentoo.org>
-In-Reply-To: <4EED3A3D.9080503@gentoo.org>
-X-Enigmail-Version: 1.3.4
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32195
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Dec 2011 09:26:01 +0100 (CET)
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:57490 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903617Ab1L0IZr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Dec 2011 09:25:47 +0100
+Received: from euspt1 (mailout1.w1.samsung.com [210.118.77.11])
+ by mailout1.w1.samsung.com
+ (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14 2004))
+ with ESMTP id <0LWU003OMSQQFV@mailout1.w1.samsung.com> for
+ linux-mips@linux-mips.org; Tue, 27 Dec 2011 08:25:38 +0000 (GMT)
+Received: from linux.samsung.com ([106.116.38.10])
+ by spt1.w1.samsung.com (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14
+ 2004)) with ESMTPA id <0LWU00IWXSQQN9@spt1.w1.samsung.com> for
+ linux-mips@linux-mips.org; Tue, 27 Dec 2011 08:25:38 +0000 (GMT)
+Received: from AMDC159 (unknown [106.116.37.153])
+        by linux.samsung.com (Postfix) with ESMTP id 36F9F27004A; Tue,
+ 27 Dec 2011 09:37:33 +0100 (CET)
+Date:   Tue, 27 Dec 2011 09:25:25 +0100
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: RE: [PATCH 00/14] DMA-mapping framework redesign preparation
+In-reply-to: <20111223163516.GO20129@parisc-linux.org>
+To:     'Matthew Wilcox' <matthew@wil.cx>
+Cc:     linux-kernel@vger.kernel.org,
+        'Benjamin Herrenschmidt' <benh@kernel.crashing.org>,
+        'Thomas Gleixner' <tglx@linutronix.de>,
+        'Andrew Morton' <akpm@linux-foundation.org>,
+        'Arnd Bergmann' <arnd@arndb.de>,
+        'Stephen Rothwell' <sfr@canb.auug.org.au>,
+        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
+        x86@kernel.org, linux-sh@vger.kernel.org,
+        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@linux-mips.org, discuss@x86-64.org,
+        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+        linaro-mm-sig@lists.linaro.org, 'Jonathan Corbet' <corbet@lwn.net>,
+        'Kyungmin Park' <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+Message-id: <000901ccc471$15db8bc0$4192a340$%szyprowski@samsung.com>
+Organization: SPRC
+MIME-version: 1.0
+X-Mailer: Microsoft Office Outlook 12.0
+Content-type: text/plain; charset=us-ascii
+Content-language: pl
+Content-transfer-encoding: 7BIT
+Thread-index: AczBkN6KMgxtoNoIReeb7jeu/nBm0QC3D65A
+References: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
+ <20111223163516.GO20129@parisc-linux.org>
+X-archive-position: 32196
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: m.szyprowski@samsung.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 19807
+X-UID: 19857
 
-SGI IP32 (O2)'s ethernet driver (meth) lacks a set_rx_mode function, which
-prevents IPv6 from working completely because any ICMPv6 neighbor
-solicitation requests aren't picked up by the driver.  So the machine can
-ping out and connect to other systems, but other systems will have a very
-hard time connecting to the O2.
+Hello,
 
-Signed-off-by: Joshua Kinard <kumba@gentoo.org>
----
+On Friday, December 23, 2011 5:35 PM Matthew Wilcox wrote:
 
- arch/mips/include/asm/ip32/mace.h |    2 -
- drivers/net/ethernet/sgi/meth.c   |   48 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 48 insertions(+), 2 deletions(-)
+> On Fri, Dec 23, 2011 at 01:27:19PM +0100, Marek Szyprowski wrote:
+> > The first issue we identified is the fact that on some platform (again,
+> > mainly ARM) there are several functions for allocating DMA buffers:
+> > dma_alloc_coherent, dma_alloc_writecombine and dma_alloc_noncoherent
+> 
+> Is this write-combining from the point of view of the device (ie iommu),
+> or from the point of view of the CPU, or both?
 
-diff -Naurp a/arch/mips/include/asm/ip32/mace.h
-b/arch/mips/include/asm/ip32/mace.h
---- a/arch/mips/include/asm/ip32/mace.h	2011-12-24 16:19:46.703561171 -0500
-+++ b/arch/mips/include/asm/ip32/mace.h	2011-12-26 20:04:15.281839510 -0500
-@@ -95,7 +95,7 @@ struct mace_video {
-  * Ethernet interface
-  */
- struct mace_ethernet {
--	volatile unsigned long mac_ctrl;
-+	volatile u64 mac_ctrl;
- 	volatile unsigned long int_stat;
- 	volatile unsigned long dma_ctrl;
- 	volatile unsigned long timer;
-diff -Naurp a/drivers/net/ethernet/sgi/meth.c b/drivers/net/ethernet/sgi/meth.c
---- a/drivers/net/ethernet/sgi/meth.c	2011-12-24 16:20:06.743560985 -0500
-+++ b/drivers/net/ethernet/sgi/meth.c	2011-12-26 20:03:53.471839710 -0500
-@@ -28,6 +28,7 @@
- #include <linux/tcp.h>         /* struct tcphdr */
- #include <linux/skbuff.h>
- #include <linux/mii.h>         /* MII definitions */
-+#include <linux/crc32.h>
+It is about write-combining from the CPU point of view. Right now there are
+no devices with such advanced memory interface to do write combining on the
+DMA side, but I believe that they might appear at some point in the future 
+as well.
 
- #include <asm/ip32/mace.h>
- #include <asm/ip32/ip32_ints.h>
-@@ -58,12 +59,19 @@ static int timeout = TX_TIMEOUT;
- module_param(timeout, int, 0);
+> > The next step in dma mapping framework update is the introduction of
+> > dma_mmap/dma_mmap_attrs() function. There are a number of drivers
+> > (mainly V4L2 and ALSA) that only exports the DMA buffers to user space.
+> > Creating a userspace mapping with correct page attributes is not an easy
+> > task for the driver. Also the DMA-mapping framework is the only place
+> > where the complete information about the allocated pages is available,
+> > especially if the implementation uses IOMMU controller to provide a
+> > contiguous buffer in DMA address space which is scattered in physical
+> > memory space.
+> 
+> Surely we only need a helper which drivrs can call from their mmap routine
+> to solve this?
 
- /*
-+ * Maximum number of multicast addresses to filter (vs. Rx-all-multicast).
-+ * MACE Ethernet uses a 64 element hash table based on the Ethernet CRC.
-+ */
-+#define METH_MCF_LIMIT 32
-+
-+/*
-  * This structure is private to each device. It is used to pass
-  * packets in and out, so there is place for a packet
-  */
- struct meth_private {
- 	/* in-memory copy of MAC Control register */
--	unsigned long mac_ctrl;
-+	u64 mac_ctrl;
-+
- 	/* in-memory copy of DMA Control register */
- 	unsigned long dma_ctrl;
- 	/* address of PHY, used by mdio_* functions, initialized in mdio_probe */
-@@ -79,6 +87,9 @@ struct meth_private {
- 	struct sk_buff *rx_skbs[RX_RING_ENTRIES];
- 	unsigned long rx_write;
+On ARM architecture it is already implemented this way and a bunch of drivers
+use dma_mmap_coherent/dma_mmap_writecombine calls. We would like to standardize
+these calls across all architectures.
 
-+	/* Multicast filter. */
-+	u64 mcast_filter;
-+
- 	spinlock_t meth_lock;
- };
+> > Usually these drivers don't touch the buffer data at all, so the mapping
+> > in kernel virtual address space is not needed. We can introduce
+> > DMA_ATTRIB_NO_KERNEL_MAPPING attribute which lets kernel to skip/ignore
+> > creation of kernel virtual mapping. This way we can save previous
+> > vmalloc area and simply some mapping operation on a few architectures.
+> 
+> I really think this wants to be a separate function.  dma_alloc_coherent
+> is for allocating memory to be shared between the kernel and a driver;
+> we already have dma_map_sg for mapping userspace I/O as an alternative
+> interface.  This feels like it's something different again rather than
+> an option to dma_alloc_coherent.
 
-@@ -765,6 +776,40 @@ static int meth_ioctl(struct net_device
- 	}
- }
+That is just a starting point for the discussion. 
 
-+static void meth_set_rx_mode(struct net_device *dev)
-+{
-+	struct meth_private *priv = netdev_priv(dev);
-+	unsigned long flags;
-+
-+	netif_stop_queue(dev);
-+	spin_lock_irqsave(&priv->meth_lock, flags);
-+	priv->mac_ctrl &= ~METH_PROMISC;
-+
-+	if (dev->flags & IFF_PROMISC) {
-+		priv->mac_ctrl |= METH_PROMISC;
-+		priv->mcast_filter = 0xffffffffffffffffUL;
-+	} else if ((netdev_mc_count(dev) > METH_MCF_LIMIT) ||
-+		   (dev->flags & IFF_ALLMULTI)) {
-+		priv->mac_ctrl |= METH_ACCEPT_AMCAST;
-+		priv->mcast_filter = 0xffffffffffffffffUL;
-+	} else {
-+		struct netdev_hw_addr *ha;
-+		priv->mac_ctrl |= METH_ACCEPT_MCAST;
-+
-+		netdev_for_each_mc_addr(ha, dev)
-+			set_bit((ether_crc(ETH_ALEN, ha->addr) >> 26),
-+			        (volatile unsigned long *)&priv->mcast_filter);
-+	}
-+
-+	/* Write the changes to the chip registers. */
-+	mace->eth.mac_ctrl = priv->mac_ctrl;
-+	mace->eth.mcast_filter = priv->mcast_filter;
-+
-+	/* Done! */
-+	spin_unlock_irqrestore(&priv->meth_lock, flags);
-+	netif_wake_queue(dev);
-+}
-+
- static const struct net_device_ops meth_netdev_ops = {
- 	.ndo_open		= meth_open,
- 	.ndo_stop		= meth_release,
-@@ -774,6 +819,7 @@ static const struct net_device_ops meth_
- 	.ndo_change_mtu		= eth_change_mtu,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_mac_address	= eth_mac_addr,
-+	.ndo_set_rx_mode    	= meth_set_rx_mode,
- };
+I thought about this API a bit and came to conclusion that there is no much
+difference between a dma_alloc_coherent which creates a mapping in kernel
+virtual space and the one that does not. It is just a hint from the driver
+that it will not use that mapping at all. Of course this attribute makes sense
+only together with adding a dma_mmap_attrs() call, because otherwise drivers
+won't be able to get access to the buffer data.
 
- /*
+On coherent architectures where dma_alloc_coherent is just a simple wrapper
+around alloc_pages_exact() such attribute can be simply ignored without any
+impact on the drivers (that's the main idea behind dma attributes!).
+However such hint will help a lot on non-coherent architectures where 
+additional work need to be done to provide a cohenent mapping in kernel 
+address space. It also saves some precious kernel resources like vmalloc
+address range.
+
+Best regards
+-- 
+Marek Szyprowski
+Samsung Poland R&D Center

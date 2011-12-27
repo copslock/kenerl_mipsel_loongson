@@ -1,42 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Dec 2011 19:52:20 +0100 (CET)
-Received: from shards.monkeyblade.net ([198.137.202.13]:59610 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903622Ab1L0SwQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Dec 2011 19:52:16 +0100
-Received: from localhost (nat-pool-rdu.redhat.com [66.187.233.202])
-        (authenticated bits=0)
-        by shards.monkeyblade.net (8.14.4/8.14.4) with ESMTP id pBRIq95Q015881
-        (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NO);
-        Tue, 27 Dec 2011 10:52:10 -0800
-Date:   Tue, 27 Dec 2011 13:52:09 -0500 (EST)
-Message-Id: <20111227.135209.1552228715466981902.davem@davemloft.net>
-To:     shemminger@vyatta.com
-Cc:     kumba@gentoo.org, netdev@vger.kernel.org, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Dec 2011 22:30:26 +0100 (CET)
+Received: from qmta10.emeryville.ca.mail.comcast.net ([76.96.30.17]:41440 "EHLO
+        qmta10.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903627Ab1L0VaU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Dec 2011 22:30:20 +0100
+Received: from omta21.emeryville.ca.mail.comcast.net ([76.96.30.88])
+        by qmta10.emeryville.ca.mail.comcast.net with comcast
+        id EM4e1i0251u4NiLAAMW6fv; Tue, 27 Dec 2011 21:30:06 +0000
+Received: from [192.168.1.13] ([76.106.69.86])
+        by omta21.emeryville.ca.mail.comcast.net with comcast
+        id EMx71i00E1rgsis8hMx8dP; Tue, 27 Dec 2011 21:57:10 +0000
+Message-ID: <4EFA38D5.1000602@gentoo.org>
+Date:   Tue, 27 Dec 2011 16:29:57 -0500
+From:   Joshua Kinard <kumba@gentoo.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.0; WOW64; rv:8.0) Gecko/20111105 Thunderbird/8.0
+MIME-Version: 1.0
+To:     Stephen Hemminger <shemminger@vyatta.com>
+CC:     netdev@vger.kernel.org, Linux MIPS List <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] net: meth: Add set_rx_mode hook to fix ICMPv6 neighbor
  discovery
-From:   David Miller <davem@davemloft.net>
+References: <4EED3A3D.9080503@gentoo.org> <4EF95247.7000403@gentoo.org> <20111227103408.01aad10e@nehalam.linuxnetplumber.net>
 In-Reply-To: <20111227103408.01aad10e@nehalam.linuxnetplumber.net>
-References: <4EED3A3D.9080503@gentoo.org>
-        <4EF95247.7000403@gentoo.org>
-        <20111227103408.01aad10e@nehalam.linuxnetplumber.net>
-X-Mailer: Mew version 6.4 on Emacs 23.3 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+X-Enigmail-Version: 1.3.4
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.6 (shards.monkeyblade.net [198.137.202.13]); Tue, 27 Dec 2011 10:52:11 -0800 (PST)
-X-archive-position: 32200
+X-archive-position: 32201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 20098
+X-UID: 20153
 
-From: Stephen Hemminger <shemminger@vyatta.com>
-Date: Tue, 27 Dec 2011 10:34:08 -0800
+On 12/27/2011 13:34, Stephen Hemminger wrote:
 
 > On Tue, 27 Dec 2011 00:06:15 -0500
 > Joshua Kinard <kumba@gentoo.org> wrote:
@@ -55,5 +53,26 @@ Date: Tue, 27 Dec 2011 10:34:08 -0800
 > This device driver writer needs to read:
 >   Documentation/volatile-considered-harmful.txt
 
-This driver has a lot of problems, some of which I've made Joshua aware of
-already.
+MIPS I/O registers are always memory-mapped, and to prevent the compiler
+from trying to over-optimize, volatile is used to make sure we always read a
+value from the hardware and not from some cached value.
+
+See MIPS Run (2nd Ed), pp 307, section 10.5.2 highlights an example of this,
+which is viewable here:
+http://books.google.com/books?id=kk8G2gK4Tw8C&pg=PA307&lpg=PA308#v=onepage&q&f=false
+
+But other than that, yeah, this driver needs to pretty much be stripped down
+to the nuts and bolts and re-written.  Maybe something to tackle in the
+future.  I still haven't gotten around to submitting the RTC driver for O2's
+(that I re-wrote from a patch sent into LKML years ago) upstream yet.
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+4096R/D25D95E3 2011-03-28
+
+"The past tempts us, the present confuses us, the future frightens us.  And
+our lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

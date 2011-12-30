@@ -1,245 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Dec 2011 09:32:19 +0100 (CET)
-Received: from mail-we0-f177.google.com ([74.125.82.177]:52548 "EHLO
-        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903650Ab1L3IcN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Dec 2011 09:32:13 +0100
-Received: by wera10 with SMTP id a10so8482653wer.36
-        for <linux-mips@linux-mips.org>; Fri, 30 Dec 2011 00:32:07 -0800 (PST)
-Received: by 10.216.82.138 with SMTP id o10mr17965863wee.35.1325233927102;
-        Fri, 30 Dec 2011 00:32:07 -0800 (PST)
-Received: from [10.8.0.6] (fidelio.qi-hardware.com. [213.239.211.82])
-        by mx.google.com with ESMTPS id fy5sm90306668wib.7.2011.12.30.00.31.59
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 30 Dec 2011 00:32:05 -0800 (PST)
-Message-ID: <4EFD76F9.50204@openmobilefree.net>
-Date:   Fri, 30 Dec 2011 16:31:53 +0800
-From:   Xiangfu Liu <xiangfu@openmobilefree.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Dec 2011 16:30:59 +0100 (CET)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:53994 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903650Ab1L3Paz (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Dec 2011 16:30:55 +0100
+Received: by ghrr15 with SMTP id r15so6324171ghr.36
+        for <linux-mips@linux-mips.org>; Fri, 30 Dec 2011 07:30:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=Ri18Vu4l5NSWJJkZUTJnqKi4Df6FT87zd9WPUHSkI8o=;
+        b=Y6/QPLzFe771loX90WxizKUCwOg/eftJ4MlXw+T/EF7Iee3eGHoQP7JlOWF5aK8nf/
+         ElQibTcvzso2C5vS/JWgHXP7XP3FTJBtzsqRLnLGwLmsTxaBwiLHfqlFoAYg66ShDDs1
+         Z3PsdkfDWh4s28BrqhUiNi+zw+3p+nVdP+rr0=
+Received: by 10.236.195.73 with SMTP id o49mr3222503yhn.71.1325259048630;
+        Fri, 30 Dec 2011 07:30:48 -0800 (PST)
+Received: from [192.168.1.103] (65-36-72-55.dyn.grandenetworks.net. [65.36.72.55])
+        by mx.google.com with ESMTPS id q33sm37923563anh.4.2011.12.30.07.30.46
+        (version=SSLv3 cipher=OTHER);
+        Fri, 30 Dec 2011 07:30:47 -0800 (PST)
+Message-ID: <4EFDD925.3050806@gmail.com>
+Date:   Fri, 30 Dec 2011 09:30:45 -0600
+From:   Rob Herring <robherring2@gmail.com>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:8.0) Gecko/20111124 Thunderbird/8.0
 MIME-Version: 1.0
-To:     john stultz <johnstul@us.ibm.com>
-CC:     Matt Turner <mattst88@gmail.com>, linux-mips@linux-mips.org,
-        jz47xx-kernel@lists.en.qi-hardware.com, rtc-linux@googlegroups.com
-Subject: Re: select() to /dev/rtc0 to wait for clock tick timed out
-References: <CAEdQ38HGfd9YWE+WLuirE4Km6UE6N26toTj=-1BuXAQUux6t5g@mail.gmail.com>         <1313777242.2970.131.camel@work-vm>         <CAEdQ38F4zi76ug+ABZPnPLcLvGfUFRhr6SKzYCN+24Otq+qAAQ@mail.gmail.com> <1313783990.2970.136.camel@work-vm>
-In-Reply-To: <1313783990.2970.136.camel@work-vm>
-Content-Type: multipart/mixed;
- boundary="------------030306060802010500060401"
-X-archive-position: 32206
+To:     David Daney <ddaney.cavm@gmail.com>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        devicetree-discuss@lists.ozlabs.org,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Rob Herring <rob.herring@calxeda.com>,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH v2 0/4] irq/of: Cleanup and Enchance irq_domain support.
+References: <1323916330-8865-1-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1323916330-8865-1-git-send-email-ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32207
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xiangfu@openmobilefree.net
+X-original-sender: robherring2@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 X-Keywords:                  
-X-UID: 21083
+X-UID: 21168
 
-This is a multi-part message in MIME format.
---------------030306060802010500060401
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+David,
 
-Hi John Stultz
+On 12/14/2011 08:32 PM, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> Back in early Nov. I send the first version of this patch set.  Now
+> things are heating up again in the world of irq_domain, so I wanted to
+> try to get some closure on the issues I had.  The Octeon patch is
+> included here to show how I am using irq_domain, but is part of a much
+> larger effort to merge Octeon device tree support.
+> 
+> The basic problem I am attempting to solve is using irq domains when
+> there is a 'non-linear' mapping of hwirq <--> irq within a domain.
+> Octeon has a single set of irq numbers that is used across two
+> different implementations of the interrupt controller as well as more
+> than 10 different SOCs all which use different subsets of the irq
+> number space.  The result is that the hwirq to irq mapping function
+> contains many gaps and discontinuities, it is really quite random.
+> 
+> The existing irq domain infrastructure assumes a continuous linear
+> mapping of hwirq to irq that can be encapsulated by the irq_base,
+> hwirq_base and nr_irq elements of struct irq_domain.  This is not
+> suitable for the Octeon implementation.
+> 
+> The gist of my change is to add an optional iterator function to
+> irq_domain_ops which knows how to iterate over the irq numbers in a
+> given domain.  For simple linear domains (those currently supported),
+> we iterate using the current method based on irq_base, hwirq_base and
+> nr_irq.
+> 
+> Summary of the patches:
+> 
+> 1) Get rid of some unused code to make subsequent changes simpler.
+> 
+> 2) Cleanup the data type used by various hwirq functions and users.
+> 
+> 3) Add the irq iterator, and fix up the ARM GIC code to use it instead
+> of the current irq_domain_for_each_irq().
+> 
+> 4) Add the Octeon users of the interface.
+> 
+> In an earlier exchange, Rob Herring had said:
+> 
+>    ... Handling sparse irqs is a potentially common problem, so we
+>    should address that in the core irqdomain code.
+> 
+> Which is what this patch set is doing.
+> 
+> There was a suggestion that perhaps having .to_irq() return a magic
+> value if there was no mapping would also work.  However I prefer this
+> approach as it separates the concepts of iteration and mapping of irq
+> numbers.
+> 
+> Please comment.
 
-I meet the same problem on MIPS jz4740, here is the step I try to find out the problem:
+Can we first have a patch that just allows irq domains to be enabled on
+MIPS. It collides because of multiple versions of irq_create_of_mapping.
 
-1. when I direct run 'hwclock' it will give
-    "select() to /dev/rtc0 to wait for clock tick timed out"
-    attachment 'hwclock.time.out' is the strace log
-
-2. run 'rtctest' program. it works fine. the output is here[1]
-
-3. after 'rtctest', run 'hwclock' again. then it works fine
-    attachment 'hwclock.wors' is the strace log
-
-without 'rtctest' run first. 'hwclock' never works.
-the hwclock works fine in 2.6.27.6, failed under '3.0.0'
-
-Please give me some tips how to fix this problem. shoule I modify the driver code
-or is that relate to 'CONFIG_RTC_INTF_DEV_UIE_EMUL'?
-
-thanks in advance.
-xiangfu
-
-[1]
-root@BenNanoNote:~# ./rtctest
-			RTC Driver Test Example.
-Current RTC date/time is 30-12-2011, 08:25:55.
-Alarm time now set to 08:26:00.
-Waiting 5 seconds for alarm... okay. Alarm rang.
-
-Periodic IRQ rate is 64Hz.
-Counting 20 interrupts at:
-2Hz:	 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-4Hz:	 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-8Hz:	 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-16Hz:	 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-32Hz:	 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-64Hz:	 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
-
-			 *** Test complete ***
-
---------------030306060802010500060401
-Content-Type: text/plain;
- name="hwclock.time.out"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="hwclock.time.out"
-
-ZXhlY3ZlKCIvc2Jpbi9od2Nsb2NrIiwgWyJod2Nsb2NrIl0sIFsvKiAxNSB2YXJzICovXSkg
-PSAwCm9sZF9tbWFwKE5VTEwsIDQwOTYsIFBST1RfUkVBRHxQUk9UX1dSSVRFLCBNQVBfUFJJ
-VkFURXxNQVBfQU5PTllNT1VTfDB4NDAwMDAwMCwgLTEsIDApID0gMHgyYWFiNzAwMApzdGF0
-KCIvZXRjL2xkLnNvLmNhY2hlIiwgMHg3ZmFhYTNmMCkgICAgPSAtMSBFTk9FTlQgKE5vIHN1
-Y2ggZmlsZSBvciBkaXJlY3RvcnkpCm9wZW4oIi9saWIvbGliZ2NjX3Muc28uMSIsIE9fUkRP
-TkxZKSAgICA9IDMKZnN0YXQoMywge3N0X21vZGU9U19JRlJFR3wwNjQ0LCBzdF9zaXplPTcw
-MjI4LCAuLi59KSA9IDAKb2xkX21tYXAoTlVMTCwgNDA5NiwgUFJPVF9SRUFEfFBST1RfV1JJ
-VEUsIE1BUF9QUklWQVRFfE1BUF9BTk9OWU1PVVN8MHg0MDAwMDAwLCAtMSwgMCkgPSAweDJh
-YWI4MDAwCnJlYWQoMywgIlwxNzdFTEZcMVwxXDFcMFwwXDBcMFwwXDBcMFwwXDBcM1wwXDEw
-XDBcMVwwXDBcMFwyMjA0XDBcMDAwNFwwXDBcMCIuLi4sIDQwOTYpID0gNDA5NgpvbGRfbW1h
-cChOVUxMLCAxMjY5NzYsIFBST1RfTk9ORSwgTUFQX1BSSVZBVEV8TUFQX0FOT05ZTU9VUywg
-LTEsIDApID0gMHgyYWFjODAwMApvbGRfbW1hcCgweDJhYWM4MDAwLCA1OTExNiwgUFJPVF9S
-RUFEfFBST1RfRVhFQywgTUFQX1BSSVZBVEV8TUFQX0ZJWEVELCAzLCAwKSA9IDB4MmFhYzgw
-MDAKb2xkX21tYXAoMHgyYWFlNjAwMCwgMjQ3NiwgUFJPVF9SRUFEfFBST1RfV1JJVEUsIE1B
-UF9QUklWQVRFfE1BUF9GSVhFRCwgMywgMHhlMDAwKSA9IDB4MmFhZTYwMDAKY2xvc2UoMykg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgID0gMAptdW5tYXAoMHgyYWFiODAwMCwg
-NDA5NikgICAgICAgICAgICAgICAgPSAwCm9wZW4oIi9saWIvbGliYy5zby4wIiwgT19SRE9O
-TFkpICAgICAgICA9IDMKZnN0YXQoMywge3N0X21vZGU9U19JRlJFR3wwNzU1LCBzdF9zaXpl
-PTYyOTkwNCwgLi4ufSkgPSAwCm9sZF9tbWFwKE5VTEwsIDQwOTYsIFBST1RfUkVBRHxQUk9U
-X1dSSVRFLCBNQVBfUFJJVkFURXxNQVBfQU5PTllNT1VTfDB4NDAwMDAwMCwgLTEsIDApID0g
-MHgyYWFiODAwMApyZWFkKDMsICJcMTc3RUxGXDFcMVwxXDBcMFwwXDBcMFwwXDBcMFwwXDNc
-MFwxMFwwXDFcMFwwXDAwMDBcMjQ2XDBcMDAwNFwwXDBcMCIuLi4sIDQwOTYpID0gNDA5Ngpv
-bGRfbW1hcChOVUxMLCA2NzU4NDAsIFBST1RfTk9ORSwgTUFQX1BSSVZBVEV8TUFQX0FOT05Z
-TU9VUywgLTEsIDApID0gMHgyYWFlNzAwMApvbGRfbW1hcCgweDJhYWU3MDAwLCA1Nzc1NjQs
-IFBST1RfUkVBRHxQUk9UX0VYRUMsIE1BUF9QUklWQVRFfE1BUF9GSVhFRCwgMywgMCkgPSAw
-eDJhYWU3MDAwCm9sZF9tbWFwKDB4MmFiODQwMDAsIDc1MDQsIFBST1RfUkVBRHxQUk9UX1dS
-SVRFLCBNQVBfUFJJVkFURXxNQVBfRklYRUQsIDMsIDB4OGQwMDApID0gMHgyYWI4NDAwMApv
-bGRfbW1hcCgweDJhYjg2MDAwLCAyMDYwNCwgUFJPVF9SRUFEfFBST1RfV1JJVEUsIE1BUF9Q
-UklWQVRFfE1BUF9GSVhFRHxNQVBfQU5PTllNT1VTLCAtMSwgMCkgPSAweDJhYjg2MDAwCmNs
-b3NlKDMpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA9IDAKbXVubWFwKDB4MmFh
-YjgwMDAsIDQwOTYpICAgICAgICAgICAgICAgID0gMApvcGVuKCIvbGliL2xpYmMuc28uMCIs
-IE9fUkRPTkxZKSAgICAgICAgPSAzCmZzdGF0KDMsIHtzdF9tb2RlPVNfSUZSRUd8MDc1NSwg
-c3Rfc2l6ZT02Mjk5MDQsIC4uLn0pID0gMApjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgPSAwCnN0YXQoIi9saWIvbGQtdUNsaWJjLnNvLjAiLCB7c3RfbW9kZT1T
-X0lGUkVHfDA3NTUsIHN0X3NpemU9MzE3NTYsIC4uLn0pID0gMApvbGRfbW1hcChOVUxMLCA0
-MDk2LCBQUk9UX1JFQUR8UFJPVF9XUklURSwgTUFQX1BSSVZBVEV8TUFQX0FOT05ZTU9VU3ww
-eDQwMDAwMDAsIC0xLCAwKSA9IDB4MmFhYjgwMDAKc2V0X3RocmVhZF9hcmVhKDB4MmFhYmYy
-ZDApICAgICAgICAgICAgID0gMAptcHJvdGVjdCgweDJhYjg0MDAwLCA0MDk2LCBQUk9UX1JF
-QUQpICAgPSAwCm1wcm90ZWN0KDB4MmFhYzYwMDAsIDQwOTYsIFBST1RfUkVBRCkgICA9IDAK
-aW9jdGwoMCwgVElPQ05YQ0wsIHtCMzg0MDAgb3Bvc3QgaXNpZyBpY2Fub24gZWNobyAuLi59
-KSA9IDAKaW9jdGwoMSwgVElPQ05YQ0wsIDB4N2ZhYWEzYzApICAgICAgICAgID0gLTEgRU5P
-VFRZIChJbmFwcHJvcHJpYXRlIGlvY3RsIGZvciBkZXZpY2UpCmdldHRpbWVvZmRheSh7MTMy
-NTIzMDU4MywgODEzNjY1fSwgTlVMTCkgPSAwCmdldHVpZCgpICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICA9IDAKb3BlbigiL2Rldi9ydGMiLCBPX1JET05MWXxPX0xBUkdFRklM
-RSkgID0gMwpjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAwCnN0
-YXQ2NCgweDQwNDg0MCwgMHg3ZmFhYTIzOCkgICAgICAgICAgICA9IDAKYnJrKDApICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgID0gMHg3MDEwMDAKYnJrKDB4NzAyMDAwKSAg
-ICAgICAgICAgICAgICAgICAgICAgICAgID0gMHg3MDIwMDAKb3BlbigiL2V0Yy9hZGp0aW1l
-IiwgT19SRE9OTFl8T19MQVJHRUZJTEUpID0gMwppb2N0bCgzLCBUSU9DTlhDTCwgMHg3ZmFh
-YTFlOCkgICAgICAgICAgPSAtMSBFTk9UVFkgKEluYXBwcm9wcmlhdGUgaW9jdGwgZm9yIGRl
-dmljZSkKYnJrKDB4NzAzMDAwKSAgICAgICAgICAgICAgICAgICAgICAgICAgID0gMHg3MDMw
-MDAKcmVhZCgzLCAiMC4wMDAwMDAgMTMyNTIzMDM3OCAwLjAwMDAwMFxuMTMyIi4uLiwgNDA5
-NikgPSA0NgpjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAwCm9w
-ZW4oIi9kZXYvcnRjIiwgT19SRE9OTFl8T19MQVJHRUZJTEUpICA9IDMKaW9jdGwoMywgUFJF
-U1RPX0dFVE1PVU5UIG9yIFJUQ19VSUVfT04sIDApID0gMApfbmV3c2VsZWN0KDQsIFszXSwg
-TlVMTCwgTlVMTCwgezUsIDB9KSAgPSAwIChUaW1lb3V0KQp3cml0ZSgyLCAic2VsZWN0KCkg
-dG8gIiwgMTJzZWxlY3QoKSB0byApICAgICAgICAgICAgPSAxMgp3cml0ZSgyLCAiL2Rldi9y
-dGMiLCA4L2Rldi9ydGMpICAgICAgICAgICAgICAgICA9IDgKd3JpdGUoMiwgIiB0byB3YWl0
-IGZvciBjbG9jayB0aWNrIHRpbWVkIG91Ii4uLiwgMzQgdG8gd2FpdCBmb3IgY2xvY2sgdGlj
-ayB0aW1lZCBvdXQKKSA9IDM0CmlvY3RsKDMsIFBSRVNUT19TRVRQSUQgb3IgUlRDX1VJRV9P
-RkYsIDApID0gMApjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAw
-CmV4aXRfZ3JvdXAoMSkgICAgICAgICAgICAgICAgICAgICAgICAgICA9ID8K
---------------030306060802010500060401
-Content-Type: text/plain;
- name="hwclock.works"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="hwclock.works"
-
-ZXhlY3ZlKCIvc2Jpbi9od2Nsb2NrIiwgWyJod2Nsb2NrIl0sIFsvKiAxNSB2YXJzICovXSkg
-PSAwCm9sZF9tbWFwKE5VTEwsIDQwOTYsIFBST1RfUkVBRHxQUk9UX1dSSVRFLCBNQVBfUFJJ
-VkFURXxNQVBfQU5PTllNT1VTfDB4NDAwMDAwMCwgLTEsIDApID0gMHgyYWMxNTAwMApzdGF0
-KCIvZXRjL2xkLnNvLmNhY2hlIiwgMHg3ZmIyMWJlMCkgICAgPSAtMSBFTk9FTlQgKE5vIHN1
-Y2ggZmlsZSBvciBkaXJlY3RvcnkpCm9wZW4oIi9saWIvbGliZ2NjX3Muc28uMSIsIE9fUkRP
-TkxZKSAgICA9IDMKZnN0YXQoMywge3N0X21vZGU9U19JRlJFR3wwNjQ0LCBzdF9zaXplPTcw
-MjI4LCAuLi59KSA9IDAKb2xkX21tYXAoTlVMTCwgNDA5NiwgUFJPVF9SRUFEfFBST1RfV1JJ
-VEUsIE1BUF9QUklWQVRFfE1BUF9BTk9OWU1PVVN8MHg0MDAwMDAwLCAtMSwgMCkgPSAweDJh
-YzE2MDAwCnJlYWQoMywgIlwxNzdFTEZcMVwxXDFcMFwwXDBcMFwwXDBcMFwwXDBcM1wwXDEw
-XDBcMVwwXDBcMFwyMjA0XDBcMDAwNFwwXDBcMCIuLi4sIDQwOTYpID0gNDA5NgpvbGRfbW1h
-cChOVUxMLCAxMjY5NzYsIFBST1RfTk9ORSwgTUFQX1BSSVZBVEV8TUFQX0FOT05ZTU9VUywg
-LTEsIDApID0gMHgyYWMyNjAwMApvbGRfbW1hcCgweDJhYzI2MDAwLCA1OTExNiwgUFJPVF9S
-RUFEfFBST1RfRVhFQywgTUFQX1BSSVZBVEV8TUFQX0ZJWEVELCAzLCAwKSA9IDB4MmFjMjYw
-MDAKb2xkX21tYXAoMHgyYWM0NDAwMCwgMjQ3NiwgUFJPVF9SRUFEfFBST1RfV1JJVEUsIE1B
-UF9QUklWQVRFfE1BUF9GSVhFRCwgMywgMHhlMDAwKSA9IDB4MmFjNDQwMDAKY2xvc2UoMykg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgID0gMAptdW5tYXAoMHgyYWMxNjAwMCwg
-NDA5NikgICAgICAgICAgICAgICAgPSAwCm9wZW4oIi9saWIvbGliYy5zby4wIiwgT19SRE9O
-TFkpICAgICAgICA9IDMKZnN0YXQoMywge3N0X21vZGU9U19JRlJFR3wwNzU1LCBzdF9zaXpl
-PTYyOTkwNCwgLi4ufSkgPSAwCm9sZF9tbWFwKE5VTEwsIDQwOTYsIFBST1RfUkVBRHxQUk9U
-X1dSSVRFLCBNQVBfUFJJVkFURXxNQVBfQU5PTllNT1VTfDB4NDAwMDAwMCwgLTEsIDApID0g
-MHgyYWMxNjAwMApyZWFkKDMsICJcMTc3RUxGXDFcMVwxXDBcMFwwXDBcMFwwXDBcMFwwXDNc
-MFwxMFwwXDFcMFwwXDAwMDBcMjQ2XDBcMDAwNFwwXDBcMCIuLi4sIDQwOTYpID0gNDA5Ngpv
-bGRfbW1hcChOVUxMLCA2NzU4NDAsIFBST1RfTk9ORSwgTUFQX1BSSVZBVEV8TUFQX0FOT05Z
-TU9VUywgLTEsIDApID0gMHgyYWM0NTAwMApvbGRfbW1hcCgweDJhYzQ1MDAwLCA1Nzc1NjQs
-IFBST1RfUkVBRHxQUk9UX0VYRUMsIE1BUF9QUklWQVRFfE1BUF9GSVhFRCwgMywgMCkgPSAw
-eDJhYzQ1MDAwCm9sZF9tbWFwKDB4MmFjZTIwMDAsIDc1MDQsIFBST1RfUkVBRHxQUk9UX1dS
-SVRFLCBNQVBfUFJJVkFURXxNQVBfRklYRUQsIDMsIDB4OGQwMDApID0gMHgyYWNlMjAwMApv
-bGRfbW1hcCgweDJhY2U0MDAwLCAyMDYwNCwgUFJPVF9SRUFEfFBST1RfV1JJVEUsIE1BUF9Q
-UklWQVRFfE1BUF9GSVhFRHxNQVBfQU5PTllNT1VTLCAtMSwgMCkgPSAweDJhY2U0MDAwCmNs
-b3NlKDMpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA9IDAKbXVubWFwKDB4MmFj
-MTYwMDAsIDQwOTYpICAgICAgICAgICAgICAgID0gMApvcGVuKCIvbGliL2xpYmMuc28uMCIs
-IE9fUkRPTkxZKSAgICAgICAgPSAzCmZzdGF0KDMsIHtzdF9tb2RlPVNfSUZSRUd8MDc1NSwg
-c3Rfc2l6ZT02Mjk5MDQsIC4uLn0pID0gMApjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgPSAwCnN0YXQoIi9saWIvbGQtdUNsaWJjLnNvLjAiLCB7c3RfbW9kZT1T
-X0lGUkVHfDA3NTUsIHN0X3NpemU9MzE3NTYsIC4uLn0pID0gMApvbGRfbW1hcChOVUxMLCA0
-MDk2LCBQUk9UX1JFQUR8UFJPVF9XUklURSwgTUFQX1BSSVZBVEV8TUFQX0FOT05ZTU9VU3ww
-eDQwMDAwMDAsIC0xLCAwKSA9IDB4MmFjMTYwMDAKc2V0X3RocmVhZF9hcmVhKDB4MmFjMWQy
-ZDApICAgICAgICAgICAgID0gMAptcHJvdGVjdCgweDJhY2UyMDAwLCA0MDk2LCBQUk9UX1JF
-QUQpICAgPSAwCm1wcm90ZWN0KDB4MmFjMjQwMDAsIDQwOTYsIFBST1RfUkVBRCkgICA9IDAK
-aW9jdGwoMCwgVElPQ05YQ0wsIHtCMzg0MDAgb3Bvc3QgaXNpZyBpY2Fub24gZWNobyAuLi59
-KSA9IDAKaW9jdGwoMSwgVElPQ05YQ0wsIDB4N2ZiMjFiYjApICAgICAgICAgID0gLTEgRU5P
-VFRZIChJbmFwcHJvcHJpYXRlIGlvY3RsIGZvciBkZXZpY2UpCmdldHRpbWVvZmRheSh7MTMy
-NTIzMTE4MSwgNDAwNTQ1fSwgTlVMTCkgPSAwCmdldHVpZCgpICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICA9IDAKb3BlbigiL2Rldi9ydGMiLCBPX1JET05MWXxPX0xBUkdFRklM
-RSkgID0gMwpjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAwCnN0
-YXQ2NCgweDQwNDg0MCwgMHg3ZmIyMWEyOCkgICAgICAgICAgICA9IDAKYnJrKDApICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgID0gMHhhNmMwMDAKYnJrKDB4YTZkMDAwKSAg
-ICAgICAgICAgICAgICAgICAgICAgICAgID0gMHhhNmQwMDAKb3BlbigiL2V0Yy9hZGp0aW1l
-IiwgT19SRE9OTFl8T19MQVJHRUZJTEUpID0gMwppb2N0bCgzLCBUSU9DTlhDTCwgMHg3ZmIy
-MTlkOCkgICAgICAgICAgPSAtMSBFTk9UVFkgKEluYXBwcm9wcmlhdGUgaW9jdGwgZm9yIGRl
-dmljZSkKYnJrKDB4YTZlMDAwKSAgICAgICAgICAgICAgICAgICAgICAgICAgID0gMHhhNmUw
-MDAKcmVhZCgzLCAiMC4wMDAwMDAgMTMyNTIzMDM3OCAwLjAwMDAwMFxuMTMyIi4uLiwgNDA5
-NikgPSA0NgpjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAwCm9w
-ZW4oIi9kZXYvcnRjIiwgT19SRE9OTFl8T19MQVJHRUZJTEUpICA9IDMKaW9jdGwoMywgUFJF
-U1RPX0dFVE1PVU5UIG9yIFJUQ19VSUVfT04sIDApID0gMApfbmV3c2VsZWN0KDQsIFszXSwg
-TlVMTCwgTlVMTCwgezUsIDB9KSAgPSAxIChpbiBbM10sIGxlZnQgezMsIDIwMTkwfSkKaW9j
-dGwoMywgUFJFU1RPX1NFVFBJRCBvciBSVENfVUlFX09GRiwgMCkgPSAwCmNsb3NlKDMpICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICA9IDAKZ2V0dGltZW9mZGF5KHsxMzI1MjMx
-MTgzLCAzOTc0MjJ9LCBOVUxMKSA9IDAKb3BlbigiL2Rldi9ydGMiLCBPX1JET05MWXxPX0xB
-UkdFRklMRSkgID0gMwppb2N0bCgzLCBQUkVTVE9fU0VUT1BUIG9yIFJUQ19SRF9USU1FLCB7
-dG1fc2VjPTIzLCB0bV9taW49NDYsIHRtX2hvdXI9NywgdG1fbWRheT0zMCwgdG1fbW9uPTEx
-LCB0bV95ZWFyPTExMSwgLi4ufSkgPSAwCmNsb3NlKDMpICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICA9IDAKdGltZShOVUxMKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ID0gMTMyNTIzMTE4MwpvcGVuKCIvZXRjL1RaIiwgT19SRE9OTFkpICAgICAgICAgICAgICAg
-PSAzCnJlYWQoMywgIlVUQ1xuIiwgNjgpICAgICAgICAgICAgICAgICAgICA9IDQKY2xvc2Uo
-MykgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgID0gMApvcGVuKCIvZXRjL1RaIiwg
-T19SRE9OTFkpICAgICAgICAgICAgICAgPSAzCnJlYWQoMywgIlVUQ1xuIiwgNjgpICAgICAg
-ICAgICAgICAgICAgICA9IDQKY2xvc2UoMykgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgID0gMAp0aW1lKE5VTEwpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAxMzI1
-MjMxMTgzCm9wZW4oIi9ldGMvVFoiLCBPX1JET05MWSkgICAgICAgICAgICAgICA9IDMKcmVh
-ZCgzLCAiVVRDXG4iLCA2OCkgICAgICAgICAgICAgICAgICAgID0gNApjbG9zZSgzKSAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAwCm9wZW4oIi9ldGMvVFoiLCBPX1JET05M
-WSkgICAgICAgICAgICAgICA9IDMKcmVhZCgzLCAiVVRDXG4iLCA2OCkgICAgICAgICAgICAg
-ICAgICAgID0gNApjbG9zZSgzKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSAw
-CnRpbWUoTlVMTCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA9IDEzMjUyMzExODMK
-b3BlbigiL2V0Yy9UWiIsIE9fUkRPTkxZKSAgICAgICAgICAgICAgID0gMwpyZWFkKDMsICJV
-VENcbiIsIDY4KSAgICAgICAgICAgICAgICAgICAgPSA0CmNsb3NlKDMpICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICA9IDAKb3BlbigiL2V0Yy9UWiIsIE9fUkRPTkxZKSAgICAg
-ICAgICAgICAgID0gMwpyZWFkKDMsICJVVENcbiIsIDY4KSAgICAgICAgICAgICAgICAgICAg
-PSA0CmNsb3NlKDMpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA9IDAKb3Blbigi
-L2V0Yy9UWiIsIE9fUkRPTkxZKSAgICAgICAgICAgICAgID0gMwpyZWFkKDMsICJVVENcbiIs
-IDY4KSAgICAgICAgICAgICAgICAgICAgPSA0CmNsb3NlKDMpICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICA9IDAKd3JpdGUoMSwgIkZyaSBEZWMgMzAgMDc6NDY6MjMgMjAxMSAg
-LTEuOTk2Ii4uLiwgNDRGcmkgRGVjIDMwIDA3OjQ2OjIzIDIwMTEgIC0xLjk5Njg3NyBzZWNv
-bmRzCikgPSA0NApleGl0X2dyb3VwKDApICAgICAgICAgICAgICAgICAgICAgICAgICAgPSA/
-Cg==
---------------030306060802010500060401--
+Rob

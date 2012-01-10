@@ -1,66 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2012 13:12:49 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:52168 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903839Ab2AJMMo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jan 2012 13:12:44 +0100
-Received: by iakk12 with SMTP id k12so988318iak.36
-        for <multiple recipients>; Tue, 10 Jan 2012 04:12:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=sender:date:from:to:cc:subject:message-id:x-mailer:mime-version
-         :content-type:content-transfer-encoding;
-        bh=ok7Vv6d+zRqIDWyiguyX5JQ0C7RgNfC/O+dbkFS1IOU=;
-        b=jsH+k3Oc+H3FArushv//VnTt67FGOH5fslLlUk6a2hpwyjmZ6oD81TrtWeEof+a91K
-         Sl+zHVe+QyASN6ejXprArYV/JH9JWuhSEkIBGTS9HPTYyKyuomc+mXJHNIAgNMpaiUHx
-         rx+zq3pycVI1tY52zcWHIbLzqd7AY5TNMXj7k=
-Received: by 10.50.47.136 with SMTP id d8mr2218361ign.21.1326197557858;
-        Tue, 10 Jan 2012 04:12:37 -0800 (PST)
-Received: from sdk (UQ1-221-170-12-50.tky.mesh.ad.jp. [221.170.12.50])
-        by mx.google.com with ESMTPS id 36sm262564794ibc.6.2012.01.10.04.12.34
-        (version=SSLv3 cipher=OTHER);
-        Tue, 10 Jan 2012 04:12:36 -0800 (PST)
-Date:   Tue, 10 Jan 2012 21:11:56 +0900
-From:   Yoichi Yuasa <yuasa@linux-mips.org>
-To:     Greg Kroah-Hartman <gregkh@suse.de>
-Cc:     Kay Sievers <kay.sievers@vrfy.org>,
-        Ralf Baechle <ralf@linux-mips.org>, yuasa@linux-mips.org,
-        linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: txx9 7segled fix struct device has no member
-Message-Id: <20120110211156.31e27cae.yuasa@linux-mips.org>
-X-Mailer: Sylpheed 3.1.1 (GTK+ 2.22.0; i386-redhat-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jan 2012 16:04:19 +0100 (CET)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:44186 "EHLO
+        services.gcu-squad.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903848Ab2AJPEP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Jan 2012 16:04:15 +0100
+Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=endymion.delvare)
+        by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1Rke4A-000512-JR
+        (TLSv1:AES128-SHA:128)
+        (envelope-from <khali@linux-fr.org>)
+        ; Tue, 10 Jan 2012 16:56:50 +0100
+Date:   Tue, 10 Jan 2012 15:38:34 +0100
+From:   Jean Delvare <khali@linux-fr.org>
+To:     Matt Turner <mattst88@gmail.com>
+Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Guenter Roeck <guenter.roeck@ericsson.com>,
+        "Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH] I2C: SiByte: Convert the driver to make use of  
+ interrupts
+Message-ID: <20120110153834.531664db@endymion.delvare>
+In-Reply-To: <20111031105354.4b888e44@endymion.delvare>
+References: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
+        <20110903103036.161616a5@endymion.delvare>
+        <20111031105354.4b888e44@endymion.delvare>
+X-Mailer: Claws Mail 3.7.5 (GTK+ 2.20.1; x86_64-unknown-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-archive-position: 32211
+X-archive-position: 32212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yuasa@linux-mips.org
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-arch/mips/txx9/generic/7segled.c: In function 'tx_7segled_init_sysfs':
-arch/mips/txx9/generic/7segled.c:105:6: error: 'struct device' has no member named 'dev'
-make[3]: *** [arch/mips/txx9/generic/7segled.o] Error 1
+On Mon, 31 Oct 2011 10:53:54 +0100, Jean Delvare wrote:
+> On Sat, 3 Sep 2011 10:30:36 +0200, Jean Delvare wrote:
+> > Please address my concerns where you agree and send an updated patch.
+> 
+> Matt, care to send an updated patch addressing my concerns? Otherwise
+> it will be lost again.
 
-Signed-off-by: Yoichi Yuasa <yuasa@linux-mips.org>
----
- arch/mips/txx9/generic/7segled.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+It's been 3 more months. Matt (or anyone else who cares and has access
+to the hardware), please send an updated patch or I'll have to drop it.
 
-diff --git a/arch/mips/txx9/generic/7segled.c b/arch/mips/txx9/generic/7segled.c
-index 8e93b21..4642f56 100644
---- a/arch/mips/txx9/generic/7segled.c
-+++ b/arch/mips/txx9/generic/7segled.c
-@@ -102,7 +102,7 @@ static int __init tx_7segled_init_sysfs(void)
- 			break;
- 		}
- 		dev->id = i;
--		dev->dev = &tx_7segled_subsys;
-+		dev->bus = &tx_7segled_subsys;
- 		error = device_register(dev);
- 		if (!error) {
- 			device_create_file(dev, &dev_attr_ascii);
 -- 
-1.7.3.4
+Jean Delvare

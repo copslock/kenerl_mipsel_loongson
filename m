@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:50:21 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47697 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:50:46 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47741 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904071Ab2AKUtI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jan 2012 21:49:08 +0100
+        id S1904058Ab2AKUtY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jan 2012 21:49:24 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH RESEND 11/17] MIPS: lantiq: add default configs
-Date:   Wed, 11 Jan 2012 21:44:28 +0100
-Message-Id: <1326314674-9899-11-git-send-email-blogic@openwrt.org>
+Subject: [PATCH RESEND 14/17] NET: MIPS: lantiq: non existing phy was not handled gracefully
+Date:   Wed, 11 Jan 2012 21:44:31 +0100
+Message-Id: <1326314674-9899-14-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
 References: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32228
+X-archive-position: 32229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,283 +21,63 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch adds the default config for 3 Lantiq SoCs
+The code blindly assumed that that a PHY device was present causing a BadVA.
+In addition the driver should not fail to load incase no PHY was found.
+Instead we print the following line and continue with no attached PHY.
 
-* Danube/AR9 (xway)
-* Amazon-SE
-* Falc-ON
+   etop: mdio probe failed
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
+Acked-by: David S. Miller <davem@davemloft.net>
 ---
- arch/mips/configs/ase_defconfig    |   80 ++++++++++++++++++++++++++++++++++
- arch/mips/configs/falcon_defconfig |   83 ++++++++++++++++++++++++++++++++++++
- arch/mips/configs/xway_defconfig   |   81 +++++++++++++++++++++++++++++++++++
- 3 files changed, 244 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/configs/ase_defconfig
- create mode 100644 arch/mips/configs/falcon_defconfig
- create mode 100644 arch/mips/configs/xway_defconfig
+ drivers/net/ethernet/lantiq_etop.c |   14 ++++++++------
+ 1 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/configs/ase_defconfig b/arch/mips/configs/ase_defconfig
-new file mode 100644
-index 0000000..04a6aa5
---- /dev/null
-+++ b/arch/mips/configs/ase_defconfig
-@@ -0,0 +1,80 @@
-+CONFIG_LANTIQ=y
-+CONFIG_SOC_AMAZON_SE=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_DEFAULT_HOSTNAME="amazon_se"
-+CONFIG_SYSVIPC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_INITRAMFS_SOURCE="../root-lantiq/ ../root-lantiq/initramfs-base-files.txt"
-+CONFIG_INITRAMFS_ROOT_UID=1000
-+CONFIG_INITRAMFS_ROOT_GID=1000
-+# CONFIG_RD_GZIP is not set
-+CONFIG_RD_LZMA=y
-+CONFIG_EMBEDDED=y
-+CONFIG_SLAB=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_DEFAULT_DEADLINE=y
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_IP_MROUTE=y
-+CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
-+CONFIG_ARPD=y
-+CONFIG_SYN_COOKIES=y
-+CONFIG_NETFILTER=y
-+CONFIG_BRIDGE=m
-+CONFIG_VLAN_8021Q=y
-+CONFIG_NET_SCHED=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_CHAR=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_CFI=y
-+CONFIG_MTD_CFI_ADV_OPTIONS=y
-+CONFIG_MTD_CFI_GEOMETRY=y
-+CONFIG_MTD_CFI_INTELEXT=y
-+CONFIG_MTD_CFI_AMDSTD=y
-+CONFIG_MTD_COMPLEX_MAPPINGS=y
-+CONFIG_MTD_LANTIQ=y
-+CONFIG_MISC_DEVICES=y
-+CONFIG_NETDEVICES=y
-+CONFIG_MII=y
-+CONFIG_LANTIQ_ETOP=y
-+CONFIG_PHYLIB=y
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_KEYBOARD_ATKBD is not set
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_KEYBOARD_GPIO_POLLED=y
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+# CONFIG_VT is not set
-+# CONFIG_LEGACY_PTYS is not set
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_LANTIQ=y
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_GPIO_SYSFS=y
-+# CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+CONFIG_LANTIQ_WDT=y
-+# CONFIG_HID_SUPPORT is not set
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_TMPFS=y
-+CONFIG_JFFS2_FS=y
-+CONFIG_JFFS2_SUMMARY=y
-+CONFIG_JFFS2_FS_XATTR=y
-+CONFIG_JFFS2_COMPRESSION_OPTIONS=y
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XZ=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
-diff --git a/arch/mips/configs/falcon_defconfig b/arch/mips/configs/falcon_defconfig
-new file mode 100644
-index 0000000..ab8f8e2
---- /dev/null
-+++ b/arch/mips/configs/falcon_defconfig
-@@ -0,0 +1,83 @@
-+CONFIG_LANTIQ=y
-+CONFIG_SOC_FALCON=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_DEFAULT_HOSTNAME="falcon"
-+CONFIG_SYSVIPC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_INITRAMFS_SOURCE="../root-lantiq/ ../root-lantiq/initramfs-base-files.txt"
-+CONFIG_INITRAMFS_ROOT_UID=1000
-+CONFIG_INITRAMFS_ROOT_GID=1000
-+CONFIG_RD_LZMA=y
-+CONFIG_EMBEDDED=y
-+CONFIG_SLAB=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_DEFAULT_DEADLINE=y
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_IP_MROUTE=y
-+CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
-+CONFIG_ARPD=y
-+CONFIG_SYN_COOKIES=y
-+CONFIG_NETFILTER=y
-+CONFIG_BRIDGE=m
-+CONFIG_VLAN_8021Q=y
-+CONFIG_NET_SCHED=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_CHAR=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_CFI=y
-+CONFIG_MTD_CFI_ADV_OPTIONS=y
-+CONFIG_MTD_CFI_GEOMETRY=y
-+CONFIG_MTD_CFI_INTELEXT=y
-+CONFIG_MTD_CFI_AMDSTD=y
-+CONFIG_MTD_COMPLEX_MAPPINGS=y
-+CONFIG_MTD_LANTIQ=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_MISC_DEVICES=y
-+CONFIG_EEPROM_AT24=y
-+CONFIG_NETDEVICES=y
-+CONFIG_MII=y
-+CONFIG_PHYLIB=y
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_KEYBOARD_ATKBD is not set
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_KEYBOARD_GPIO_POLLED=y
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+# CONFIG_VT is not set
-+# CONFIG_LEGACY_PTYS is not set
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_LANTIQ=y
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_I2C=y
-+CONFIG_I2C_FALCON=y
-+CONFIG_SPI=y
-+CONFIG_SPI_FALCON=y
-+CONFIG_GPIO_SYSFS=y
-+CONFIG_WATCHDOG=y
-+CONFIG_LANTIQ_WDT=y
-+# CONFIG_HID_SUPPORT is not set
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_TMPFS=y
-+CONFIG_JFFS2_FS=y
-+CONFIG_JFFS2_SUMMARY=y
-+CONFIG_JFFS2_FS_XATTR=y
-+CONFIG_JFFS2_COMPRESSION_OPTIONS=y
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XZ=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
-diff --git a/arch/mips/configs/xway_defconfig b/arch/mips/configs/xway_defconfig
-new file mode 100644
-index 0000000..461d58d
---- /dev/null
-+++ b/arch/mips/configs/xway_defconfig
-@@ -0,0 +1,81 @@
-+CONFIG_LANTIQ=y
-+CONFIG_CPU_MIPS32_R2=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_DEFAULT_HOSTNAME="danube"
-+CONFIG_SYSVIPC=y
-+CONFIG_LOG_BUF_SHIFT=14
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_INITRAMFS_SOURCE="../root-lantiq/ ../root-lantiq/initramfs-base-files.txt"
-+CONFIG_INITRAMFS_ROOT_UID=1000
-+CONFIG_INITRAMFS_ROOT_GID=1000
-+# CONFIG_RD_GZIP is not set
-+CONFIG_RD_LZMA=y
-+CONFIG_EMBEDDED=y
-+CONFIG_SLAB=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_DEFAULT_DEADLINE=y
-+CONFIG_PCI=y
-+# CONFIG_SUSPEND is not set
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_ADVANCED_ROUTER=y
-+CONFIG_IP_MULTIPLE_TABLES=y
-+CONFIG_IP_ROUTE_MULTIPATH=y
-+CONFIG_IP_ROUTE_VERBOSE=y
-+CONFIG_IP_MROUTE=y
-+CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
-+CONFIG_ARPD=y
-+CONFIG_SYN_COOKIES=y
-+CONFIG_NETFILTER=y
-+CONFIG_BRIDGE=m
-+CONFIG_VLAN_8021Q=y
-+CONFIG_NET_SCHED=y
-+CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-+CONFIG_MTD=y
-+CONFIG_MTD_CMDLINE_PARTS=y
-+CONFIG_MTD_CHAR=y
-+CONFIG_MTD_BLOCK=y
-+CONFIG_MTD_CFI=y
-+CONFIG_MTD_CFI_ADV_OPTIONS=y
-+CONFIG_MTD_CFI_GEOMETRY=y
-+CONFIG_MTD_CFI_INTELEXT=y
-+CONFIG_MTD_CFI_AMDSTD=y
-+CONFIG_MTD_COMPLEX_MAPPINGS=y
-+CONFIG_MTD_LANTIQ=y
-+CONFIG_MISC_DEVICES=y
-+CONFIG_NETDEVICES=y
-+CONFIG_MII=y
-+CONFIG_LANTIQ_ETOP=y
-+CONFIG_PHYLIB=y
-+# CONFIG_INPUT_MOUSEDEV is not set
-+# CONFIG_KEYBOARD_ATKBD is not set
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_KEYBOARD_GPIO_POLLED=y
-+# CONFIG_INPUT_MOUSE is not set
-+# CONFIG_SERIO is not set
-+# CONFIG_VT is not set
-+# CONFIG_LEGACY_PTYS is not set
-+# CONFIG_DEVKMEM is not set
-+CONFIG_SERIAL_LANTIQ=y
-+# CONFIG_HW_RANDOM is not set
-+CONFIG_GPIO_SYSFS=y
-+# CONFIG_HWMON is not set
-+CONFIG_WATCHDOG=y
-+CONFIG_LANTIQ_WDT=y
-+# CONFIG_VGA_ARB is not set
-+# CONFIG_HID_SUPPORT is not set
-+# CONFIG_USB_SUPPORT is not set
-+CONFIG_TMPFS=y
-+CONFIG_JFFS2_FS=y
-+CONFIG_JFFS2_SUMMARY=y
-+CONFIG_JFFS2_FS_XATTR=y
-+CONFIG_JFFS2_COMPRESSION_OPTIONS=y
-+CONFIG_SQUASHFS=y
-+CONFIG_SQUASHFS_XZ=y
-+CONFIG_STRIP_ASM_SYMS=y
-+CONFIG_DEBUG_FS=y
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index d3d4931..9fd6779 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -612,7 +612,8 @@ ltq_etop_open(struct net_device *dev)
+ 		ltq_dma_open(&ch->dma);
+ 		napi_enable(&ch->napi);
+ 	}
+-	phy_start(priv->phydev);
++	if (priv->phydev)
++		phy_start(priv->phydev);
+ 	netif_tx_start_all_queues(dev);
+ 	return 0;
+ }
+@@ -624,7 +625,8 @@ ltq_etop_stop(struct net_device *dev)
+ 	int i;
+ 
+ 	netif_tx_stop_all_queues(dev);
+-	phy_stop(priv->phydev);
++	if (priv->phydev)
++		phy_stop(priv->phydev);
+ 	for (i = 0; i < MAX_DMA_CHAN; i++) {
+ 		struct ltq_etop_chan *ch = &priv->ch[i];
+ 
+@@ -770,9 +772,10 @@ ltq_etop_init(struct net_device *dev)
+ 	if (err)
+ 		goto err_netdev;
+ 	ltq_etop_set_multicast_list(dev);
+-	err = ltq_etop_mdio_init(dev);
+-	if (err)
+-		goto err_netdev;
++	if (!ltq_etop_mdio_init(dev))
++		dev->ethtool_ops = &ltq_etop_ethtool_ops;
++	else
++		pr_warn("etop: mdio probe failed\n");;
+ 	return 0;
+ 
+ err_netdev:
+@@ -868,7 +871,6 @@ ltq_etop_probe(struct platform_device *pdev)
+ 	dev = alloc_etherdev_mq(sizeof(struct ltq_etop_priv), 4);
+ 	strcpy(dev->name, "eth%d");
+ 	dev->netdev_ops = &ltq_eth_netdev_ops;
+-	dev->ethtool_ops = &ltq_etop_ethtool_ops;
+ 	priv = netdev_priv(dev);
+ 	priv->res = res;
+ 	priv->pldata = dev_get_platdata(&pdev->dev);
 -- 
 1.7.7.1

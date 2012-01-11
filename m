@@ -1,19 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:48:37 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47532 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:49:09 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47691 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904061Ab2AKUov (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jan 2012 21:44:51 +0100
+        id S1904061Ab2AKUtF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jan 2012 21:49:05 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        Matti Laakso <malaakso@elisanet.fi>
-Subject: [PATCH RESEND 10/17] MIPS: lantiq: fix pull gpio up resistors usage
-Date:   Wed, 11 Jan 2012 21:44:27 +0100
-Message-Id: <1326314674-9899-10-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH RESEND 15/17] NET: MIPS: lantiq: return value of request_irq was not handled gracefully
+Date:   Wed, 11 Jan 2012 21:44:32 +0100
+Message-Id: <1326314674-9899-15-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
 References: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32224
+X-archive-position: 32225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,45 +21,67 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The register that enables a gpios internal pullups was not used. This patch
-makes sure the pullups are activated correctly.
+The return values of request_irq() were not checked leading to the following
+error message.
 
-Signed-off-by: Matti Laakso <malaakso@elisanet.fi>
+drivers/net/ethernet/lantiq_etop.c: In function 'ltq_etop_hw_init':
+drivers/net/ethernet/lantiq_etop.c:368:15: warning: ignoring return value of 'request_irq', declared with attribute warn_unused_result
+drivers/net/ethernet/lantiq_etop.c:377:15: warning: ignoring return value of 'request_irq', declared with attribute warn_unused_result
+
 Signed-off-by: John Crispin <blogic@openwrt.org>
+Acked-by: David S. Miller <davem@davemloft.net>
 ---
- arch/mips/lantiq/xway/gpio.c |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ drivers/net/ethernet/lantiq_etop.c |   14 ++++++++------
+ 1 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/lantiq/xway/gpio.c b/arch/mips/lantiq/xway/gpio.c
-index f204f6c..14ff7c7 100644
---- a/arch/mips/lantiq/xway/gpio.c
-+++ b/arch/mips/lantiq/xway/gpio.c
-@@ -21,6 +21,8 @@
- #define LTQ_GPIO_ALTSEL0	0x0C
- #define LTQ_GPIO_ALTSEL1	0x10
- #define LTQ_GPIO_OD		0x14
-+#define LTQ_GPIO_PUDSEL		0x1C
-+#define LTQ_GPIO_PUDEN		0x20
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index 9fd6779..659c868 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -312,6 +312,7 @@ ltq_etop_hw_init(struct net_device *dev)
+ {
+ 	struct ltq_etop_priv *priv = netdev_priv(dev);
+ 	unsigned int mii_mode = priv->pldata->mii_mode;
++	int err = 0;
+ 	int i;
  
- #define PINS_PER_PORT		16
- #define MAX_PORTS		3
-@@ -106,6 +108,8 @@ static int ltq_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
+ 	ltq_pmu_enable(PMU_PPE);
+@@ -356,7 +357,7 @@ ltq_etop_hw_init(struct net_device *dev)
  
- 	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_OD, offset);
- 	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_DIR, offset);
-+	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_PUDSEL, offset);
-+	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_PUDEN, offset);
+ 	ltq_dma_init_port(DMA_PORT_ETOP);
  
- 	return 0;
+-	for (i = 0; i < MAX_DMA_CHAN; i++) {
++	for (i = 0; i < MAX_DMA_CHAN && !err; i++) {
+ 		int irq = LTQ_DMA_ETOP + i;
+ 		struct ltq_etop_chan *ch = &priv->ch[i];
+ 
+@@ -364,21 +365,22 @@ ltq_etop_hw_init(struct net_device *dev)
+ 
+ 		if (IS_TX(i)) {
+ 			ltq_dma_alloc_tx(&ch->dma);
+-			request_irq(irq, ltq_etop_dma_irq, IRQF_DISABLED,
++			err = request_irq(irq, ltq_etop_dma_irq, 0,
+ 				"etop_tx", priv);
+ 		} else if (IS_RX(i)) {
+ 			ltq_dma_alloc_rx(&ch->dma);
+ 			for (ch->dma.desc = 0; ch->dma.desc < LTQ_DESC_NUM;
+ 					ch->dma.desc++)
+ 				if (ltq_etop_alloc_skb(ch))
+-					return -ENOMEM;
++					err = -ENOMEM;
+ 			ch->dma.desc = 0;
+-			request_irq(irq, ltq_etop_dma_irq, IRQF_DISABLED,
++			err = request_irq(irq, ltq_etop_dma_irq, 0,
+ 				"etop_rx", priv);
+ 		}
+-		ch->dma.irq = irq;
++		if (!err)
++			ch->dma.irq = irq;
+ 	}
+-	return 0;
++	return err;
  }
-@@ -117,6 +121,8 @@ static int ltq_gpio_direction_output(struct gpio_chip *chip,
  
- 	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_OD, offset);
- 	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_DIR, offset);
-+	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_PUDSEL, offset);
-+	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_PUDEN, offset);
- 	ltq_gpio_set(chip, offset, value);
- 
- 	return 0;
+ static void
 -- 
 1.7.7.1

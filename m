@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:47:24 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47522 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:47:51 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47525 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904058Ab2AKUot (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jan 2012 21:44:49 +0100
+        id S1904059Ab2AKUou (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jan 2012 21:44:50 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
         Thomas Langer <thomas.langer@lantiq.com>
-Subject: [PATCH RESEND 07/17] MIPS: lantiq: fix early printk
-Date:   Wed, 11 Jan 2012 21:44:24 +0100
-Message-Id: <1326314674-9899-7-git-send-email-blogic@openwrt.org>
+Subject: [PATCH RESEND 08/17] MIPS: lantiq: fix cmdline parsing
+Date:   Wed, 11 Jan 2012 21:44:25 +0100
+Message-Id: <1326314674-9899-8-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
 References: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32221
+X-archive-position: 32222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,65 +22,33 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The code was using a 32bit write operations in the early_printk code. This
-resulted in 3 zero bytes also being written to the serial port. This patch
-changes the memory access to 8bit.
+The code tested if the KSEG1 mapped address of argv was != 0. We need to use
+CPHYSADDR instead to make the conditional actually work.
 
 Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    6 ++++++
- arch/mips/lantiq/early_printk.c                    |   14 ++++++++------
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ arch/mips/lantiq/prom.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index a6521ec..c8024e3 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -34,6 +34,12 @@
- #define LTQ_ASC1_BASE_ADDR	0x1E100C00
- #define LTQ_ASC_SIZE		0x400
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 528e205..ee63a33 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -49,10 +49,12 @@ static void __init prom_init_cmdline(void)
+ 	char **argv = (char **) KSEG1ADDR(fw_arg1);
+ 	int i;
  
-+/*
-+ * during early_printk no ioremap is possible
-+ * lets use KSEG1 instead
-+ */
-+#define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
++	arcs_cmdline[0] = '\0';
 +
- /* RCU - reset control unit */
- #define LTQ_RCU_BASE_ADDR	0x1F203000
- #define LTQ_RCU_SIZE		0x1000
-diff --git a/arch/mips/lantiq/early_printk.c b/arch/mips/lantiq/early_printk.c
-index 972e05f..5089075 100644
---- a/arch/mips/lantiq/early_printk.c
-+++ b/arch/mips/lantiq/early_printk.c
-@@ -12,11 +12,13 @@
- #include <lantiq.h>
- #include <lantiq_soc.h>
+ 	for (i = 0; i < argc; i++) {
+-		char *p = (char *)  KSEG1ADDR(argv[i]);
++		char *p = (char *) KSEG1ADDR(argv[i]);
  
--/* no ioremap possible at this early stage, lets use KSEG1 instead  */
--#define LTQ_ASC_BASE	KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
- #define ASC_BUF		1024
--#define LTQ_ASC_FSTAT	((u32 *)(LTQ_ASC_BASE + 0x0048))
--#define LTQ_ASC_TBUF	((u32 *)(LTQ_ASC_BASE + 0x0020))
-+#define LTQ_ASC_FSTAT	((u32 *)(LTQ_EARLY_ASC + 0x0048))
-+#ifdef __BIG_ENDIAN
-+#define LTQ_ASC_TBUF	((u32 *)(LTQ_EARLY_ASC + 0x0020 + 3))
-+#else
-+#define LTQ_ASC_TBUF	((u32 *)(LTQ_EARLY_ASC + 0x0020))
-+#endif
- #define TXMASK		0x3F00
- #define TXOFFSET	8
- 
-@@ -27,7 +29,7 @@ void prom_putchar(char c)
- 	local_irq_save(flags);
- 	do { } while ((ltq_r32(LTQ_ASC_FSTAT) & TXMASK) >> TXOFFSET);
- 	if (c == '\n')
--		ltq_w32('\r', LTQ_ASC_TBUF);
--	ltq_w32(c, LTQ_ASC_TBUF);
-+		ltq_w8('\r', LTQ_ASC_TBUF);
-+	ltq_w8(c, LTQ_ASC_TBUF);
- 	local_irq_restore(flags);
- }
+-		if (p && *p) {
++		if (CPHYSADDR(p) && *p) {
+ 			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
+ 			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
+ 		}
 -- 
 1.7.7.1

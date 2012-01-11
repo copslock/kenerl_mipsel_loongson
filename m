@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:48:15 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47529 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:48:37 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47532 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904060Ab2AKUou (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jan 2012 21:44:50 +0100
+        id S1904061Ab2AKUov (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jan 2012 21:44:51 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
         Matti Laakso <malaakso@elisanet.fi>
-Subject: [PATCH RESEND 09/17] MIPS: lantiq: fix STP gpio groups
-Date:   Wed, 11 Jan 2012 21:44:26 +0100
-Message-Id: <1326314674-9899-9-git-send-email-blogic@openwrt.org>
+Subject: [PATCH RESEND 10/17] MIPS: lantiq: fix pull gpio up resistors usage
+Date:   Wed, 11 Jan 2012 21:44:27 +0100
+Message-Id: <1326314674-9899-10-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
 References: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32223
+X-archive-position: 32224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,39 +22,45 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The STP engine has 3 groups of 8 pins. Only the first was activated by default.
-This patch activates the 2 missing groups.
+The register that enables a gpios internal pullups was not used. This patch
+makes sure the pullups are activated correctly.
 
 Signed-off-by: Matti Laakso <malaakso@elisanet.fi>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/xway/gpio_stp.c |    7 +++++--
- 1 files changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/lantiq/xway/gpio.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/lantiq/xway/gpio_stp.c b/arch/mips/lantiq/xway/gpio_stp.c
-index 2c78660..cb6f170 100644
---- a/arch/mips/lantiq/xway/gpio_stp.c
-+++ b/arch/mips/lantiq/xway/gpio_stp.c
-@@ -35,6 +35,8 @@
- #define LTQ_STP_ADSL_SRC	(3 << 24)
+diff --git a/arch/mips/lantiq/xway/gpio.c b/arch/mips/lantiq/xway/gpio.c
+index f204f6c..14ff7c7 100644
+--- a/arch/mips/lantiq/xway/gpio.c
++++ b/arch/mips/lantiq/xway/gpio.c
+@@ -21,6 +21,8 @@
+ #define LTQ_GPIO_ALTSEL0	0x0C
+ #define LTQ_GPIO_ALTSEL1	0x10
+ #define LTQ_GPIO_OD		0x14
++#define LTQ_GPIO_PUDSEL		0x1C
++#define LTQ_GPIO_PUDEN		0x20
  
- #define LTQ_STP_GROUP0		(1 << 0)
-+#define LTQ_STP_GROUP1		(1 << 1)
-+#define LTQ_STP_GROUP2		(1 << 2)
+ #define PINS_PER_PORT		16
+ #define MAX_PORTS		3
+@@ -106,6 +108,8 @@ static int ltq_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
  
- #define LTQ_STP_RISING		0
- #define LTQ_STP_FALLING		(1 << 26)
-@@ -93,8 +95,9 @@ static int ltq_stp_hw_init(void)
- 	/* rising or falling edge */
- 	ltq_stp_w32_mask(LTQ_STP_EDGE_MASK, LTQ_STP_FALLING, LTQ_STP_CON0);
+ 	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_OD, offset);
+ 	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_DIR, offset);
++	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_PUDSEL, offset);
++	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_PUDEN, offset);
  
--	/* per default stp 15-0 are set */
--	ltq_stp_w32_mask(0, LTQ_STP_GROUP0, LTQ_STP_CON1);
-+	/* enable all three led groups */
-+	ltq_stp_w32_mask(0, LTQ_STP_GROUP0 | LTQ_STP_GROUP1 | LTQ_STP_GROUP2,
-+		LTQ_STP_CON1);
+ 	return 0;
+ }
+@@ -117,6 +121,8 @@ static int ltq_gpio_direction_output(struct gpio_chip *chip,
  
- 	/* stp are update periodically by the FPI bus */
- 	ltq_stp_w32_mask(LTQ_STP_UPD_MASK, LTQ_STP_UPD_FPI, LTQ_STP_CON1);
+ 	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_OD, offset);
+ 	ltq_gpio_setbit(ltq_gpio->membase, LTQ_GPIO_DIR, offset);
++	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_PUDSEL, offset);
++	ltq_gpio_clearbit(ltq_gpio->membase, LTQ_GPIO_PUDEN, offset);
+ 	ltq_gpio_set(chip, offset, value);
+ 
+ 	return 0;
 -- 
 1.7.7.1

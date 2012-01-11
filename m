@@ -1,18 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:50:46 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47741 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jan 2012 21:51:12 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47743 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904058Ab2AKUtY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Jan 2012 21:49:24 +0100
+        id S1904070Ab2AKUtZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 11 Jan 2012 21:49:25 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH RESEND 14/17] NET: MIPS: lantiq: non existing phy was not handled gracefully
-Date:   Wed, 11 Jan 2012 21:44:31 +0100
-Message-Id: <1326314674-9899-14-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        Felix Fietkau <nbd@openwrt.org>
+Subject: [PATCH RESEND 16/17] MIPS: make oprofile use cp0_perfcount_irq if it is set
+Date:   Wed, 11 Jan 2012 21:44:33 +0100
+Message-Id: <1326314674-9899-16-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
 References: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32229
+X-archive-position: 32230
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,63 +22,66 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The code blindly assumed that that a PHY device was present causing a BadVA.
-In addition the driver should not fail to load incase no PHY was found.
-Instead we print the following line and continue with no attached PHY.
+The patch makes the oprofile code use the performance counters irq.
 
-   etop: mdio probe failed
+This patch is written by Felix Fietkau.
 
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Acked-by: David S. Miller <davem@davemloft.net>
 ---
- drivers/net/ethernet/lantiq_etop.c |   14 ++++++++------
- 1 files changed, 8 insertions(+), 6 deletions(-)
+ arch/mips/kernel/cevt-r4k.c          |    2 +-
+ arch/mips/oprofile/op_model_mipsxx.c |   12 ++++++++++++
+ 2 files changed, 13 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index d3d4931..9fd6779 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -612,7 +612,8 @@ ltq_etop_open(struct net_device *dev)
- 		ltq_dma_open(&ch->dma);
- 		napi_enable(&ch->napi);
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 51095dd9..bc702c8 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -84,7 +84,7 @@ out:
+ 
+ struct irqaction c0_compare_irqaction = {
+ 	.handler = c0_compare_interrupt,
+-	.flags = IRQF_PERCPU | IRQF_TIMER,
++	.flags = IRQF_PERCPU | IRQF_TIMER | IRQF_SHARED,
+ 	.name = "timer",
+ };
+ 
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 54759f1..86cf234 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -298,6 +298,11 @@ static void reset_counters(void *arg)
  	}
--	phy_start(priv->phydev);
-+	if (priv->phydev)
-+		phy_start(priv->phydev);
- 	netif_tx_start_all_queues(dev);
+ }
+ 
++static irqreturn_t mipsxx_perfcount_int(int irq, void *dev_id)
++{
++	return mipsxx_perfcount_handler();
++}
++
+ static int __init mipsxx_init(void)
+ {
+ 	int counters;
+@@ -374,6 +379,10 @@ static int __init mipsxx_init(void)
+ 	save_perf_irq = perf_irq;
+ 	perf_irq = mipsxx_perfcount_handler;
+ 
++	if (cp0_perfcount_irq >= 0)
++		return request_irq(cp0_perfcount_irq, mipsxx_perfcount_int,
++			IRQF_SHARED, "Perfcounter", save_perf_irq);
++
  	return 0;
  }
-@@ -624,7 +625,8 @@ ltq_etop_stop(struct net_device *dev)
- 	int i;
  
- 	netif_tx_stop_all_queues(dev);
--	phy_stop(priv->phydev);
-+	if (priv->phydev)
-+		phy_stop(priv->phydev);
- 	for (i = 0; i < MAX_DMA_CHAN; i++) {
- 		struct ltq_etop_chan *ch = &priv->ch[i];
+@@ -381,6 +390,9 @@ static void mipsxx_exit(void)
+ {
+ 	int counters = op_model_mipsxx_ops.num_counters;
  
-@@ -770,9 +772,10 @@ ltq_etop_init(struct net_device *dev)
- 	if (err)
- 		goto err_netdev;
- 	ltq_etop_set_multicast_list(dev);
--	err = ltq_etop_mdio_init(dev);
--	if (err)
--		goto err_netdev;
-+	if (!ltq_etop_mdio_init(dev))
-+		dev->ethtool_ops = &ltq_etop_ethtool_ops;
-+	else
-+		pr_warn("etop: mdio probe failed\n");;
- 	return 0;
++	if (cp0_perfcount_irq >= 0)
++		free_irq(cp0_perfcount_irq, save_perf_irq);
++
+ 	counters = counters_per_cpu_to_total(counters);
+ 	on_each_cpu(reset_counters, (void *)(long)counters, 1);
  
- err_netdev:
-@@ -868,7 +871,6 @@ ltq_etop_probe(struct platform_device *pdev)
- 	dev = alloc_etherdev_mq(sizeof(struct ltq_etop_priv), 4);
- 	strcpy(dev->name, "eth%d");
- 	dev->netdev_ops = &ltq_eth_netdev_ops;
--	dev->ethtool_ops = &ltq_etop_ethtool_ops;
- 	priv = netdev_priv(dev);
- 	priv->res = res;
- 	priv->pldata = dev_get_platdata(&pdev->dev);
 -- 
 1.7.7.1

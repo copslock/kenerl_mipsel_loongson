@@ -1,83 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2012 15:51:36 +0100 (CET)
-Received: from imr3.ericy.com ([198.24.6.13]:46517 "EHLO imr3.ericy.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1904104Ab2ALOva (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 12 Jan 2012 15:51:30 +0100
-Received: from eusaamw0711.eamcs.ericsson.se ([147.117.20.178])
-        by imr3.ericy.com (8.13.8/8.13.8) with ESMTP id q0CEp46X021921
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Thu, 12 Jan 2012 08:51:16 -0600
-Received: from localhost (147.117.20.214) by eusaamw0711.eamcs.ericsson.se
- (147.117.20.179) with Microsoft SMTP Server id 8.3.137.0; Thu, 12 Jan 2012
- 09:51:05 -0500
-Date:   Thu, 12 Jan 2012 06:49:38 -0800
-From:   Guenter Roeck <guenter.roeck@ericsson.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2012 18:02:59 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58640 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1901168Ab2ALRCz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 12 Jan 2012 18:02:55 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id q0CH2rcx024077;
+        Thu, 12 Jan 2012 18:02:54 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id q0CH2pSL024076;
+        Thu, 12 Jan 2012 18:02:51 +0100
+Date:   Thu, 12 Jan 2012 18:02:51 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
 To:     Sergei Shtylyov <sshtylyov@mvista.com>
-CC:     John Crispin <blogic@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+Cc:     John Crispin <blogic@openwrt.org>, linux-mips@linux-mips.org,
         Felix Fietkau <nbd@openwrt.org>
 Subject: Re: [PATCH RESEND 16/17] MIPS: make oprofile use cp0_perfcount_irq
  if it is set
-Message-ID: <20120112144938.GA17168@ericsson.com>
+Message-ID: <20120112170251.GA21781@linux-mips.org>
 References: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
  <1326314674-9899-16-git-send-email-blogic@openwrt.org>
  <4F0EFE6E.3080503@mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <4F0EFE6E.3080503@mvista.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32235
+X-archive-position: 32236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: guenter.roeck@ericsson.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Jan 12, 2012 at 10:38:22AM -0500, Sergei Shtylyov wrote:
-> Hello.
-> 
-> On 01/11/2012 11:44 PM, John Crispin wrote:
-> 
-> > The patch makes the oprofile code use the performance counters irq.
-> 
-> > This patch is written by Felix Fietkau.
-> 
-> > Signed-off-by: Felix Fietkau<nbd@openwrt.org>
-> > Signed-off-by: John Crispin<blogic@openwrt.org>
-> 
-> > @@ -374,6 +379,10 @@ static int __init mipsxx_init(void)
-> >   	save_perf_irq = perf_irq;
-> >   	perf_irq = mipsxx_perfcount_handler;
-> >
-> > +	if (cp0_perfcount_irq>= 0)
-> 
->     BTW, I just noticed. IRQ0 is not a valid IRQ in Linux, request_irq() should 
-> fail when passed 0, so this and following check should be '> 0'.
-> 
-There is also the little matter of coding style. Watch out for chapter 3.
+On Thu, Jan 12, 2012 at 06:38:22PM +0300, Sergei Shtylyov wrote:
 
-Guenter
+> >@@ -374,6 +379,10 @@ static int __init mipsxx_init(void)
+> >  	save_perf_irq = perf_irq;
+> >  	perf_irq = mipsxx_perfcount_handler;
+> >
+> >+	if (cp0_perfcount_irq>= 0)
+> 
+>    BTW, I just noticed. IRQ0 is not a valid IRQ in Linux,
+> request_irq() should fail when passed 0, so this and following check
+> should be '> 0'.
 
-> > +		return request_irq(cp0_perfcount_irq, mipsxx_perfcount_int,
-> > +			IRQF_SHARED, "Perfcounter", save_perf_irq);
-> > +
-> >   	return 0;
-> >   }
-> >
-> > @@ -381,6 +390,9 @@ static void mipsxx_exit(void)
-> >   {
-> >   	int counters = op_model_mipsxx_ops.num_counters;
-> >
-> > +	if (cp0_perfcount_irq>= 0)
-> > +		free_irq(cp0_perfcount_irq, save_perf_irq);
-> > +
-> >   	counters = counters_per_cpu_to_total(counters);
-> >   	on_each_cpu(reset_counters, (void *)(long)counters, 1);
-> >
-> 
-> WBR, Sergei
-> 
+In a normal configuration that is in a discrete processor or in a MIPS
+core where the performance IRQ is just routed back into the core the
+lowest sensible value for cp0_perfcount_irq is 2, so there is no
+immediate problem there.
+
+IRQ 0 is ok for static use; dynamic use is problematic.  This case is
+even more problematic because the interrupt might be shared with the
+timer and the timer interrupt is allocated statically (see cevt-r4k.c)
+but the performance counter interrupt later allocated dynamically with
+IRQF_SHARED.
+
+  Ralf

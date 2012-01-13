@@ -1,62 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jan 2012 22:20:21 +0100 (CET)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:54268 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901167Ab2ALVUR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Jan 2012 22:20:17 +0100
-Received: by dajx4 with SMTP id x4so2033140daj.36
-        for <multiple recipients>; Thu, 12 Jan 2012 13:20:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=GXQs5YpTFA3aVL2tTdzWSX5RlE2K2d1GMcP6xb/EqGw=;
-        b=Q7wThLpFDGNp3ZeOB/cCT1tYYN9UxK7rXSNyW3+OWxya4uAs9d4Aa6M3tavoLnMPZG
-         7qlr5vQXN7JcdB8ydJfkgUzKcKJMLKn/G4RAYGaFre7YElAIX/XnBVvdLSzqGoYAOGIJ
-         3Sis/Jb+ZhI4jEMkIgsNML/zMdPLsmOqVklQc=
-Received: by 10.68.115.195 with SMTP id jq3mr11568276pbb.34.1326403210267;
- Thu, 12 Jan 2012 13:20:10 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jan 2012 13:38:07 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52402 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903542Ab2AMMiC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 13 Jan 2012 13:38:02 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id q0DCc1vY024389;
+        Fri, 13 Jan 2012 13:38:01 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id q0DCc1ww024388;
+        Fri, 13 Jan 2012 13:38:01 +0100
+Date:   Fri, 13 Jan 2012 13:38:01 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH RESEND 01/17] MIPS: lantiq: reorganize xway code
+Message-ID: <20120113123800.GA22597@linux-mips.org>
+References: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
 MIME-Version: 1.0
-Received: by 10.68.48.8 with HTTP; Thu, 12 Jan 2012 13:19:49 -0800 (PST)
-In-Reply-To: <20120110153834.531664db@endymion.delvare>
-References: <1313710991-3596-1-git-send-email-mattst88@gmail.com>
- <20110903103036.161616a5@endymion.delvare> <20111031105354.4b888e44@endymion.delvare>
- <20120110153834.531664db@endymion.delvare>
-From:   Matt Turner <mattst88@gmail.com>
-Date:   Thu, 12 Jan 2012 16:19:49 -0500
-Message-ID: <CAEdQ38FpG11m50pwg2=tu1fJRRg=zixFKLsPmVPOzWNBCjbNBg@mail.gmail.com>
-Subject: Re: [PATCH] I2C: SiByte: Convert the driver to make use of interrupts
-To:     Jean Delvare <khali@linux-fr.org>
-Cc:     linux-i2c@vger.kernel.org, linux-mips@linux-mips.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Guenter Roeck <guenter.roeck@ericsson.com>,
-        "Maciej W. Rozycki" <macro@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 32237
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1326314674-9899-1-git-send-email-blogic@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 32238
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mattst88@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Jan 10, 2012 at 9:38 AM, Jean Delvare <khali@linux-fr.org> wrote:
-> On Mon, 31 Oct 2011 10:53:54 +0100, Jean Delvare wrote:
->> On Sat, 3 Sep 2011 10:30:36 +0200, Jean Delvare wrote:
->> > Please address my concerns where you agree and send an updated patch.
->>
->> Matt, care to send an updated patch addressing my concerns? Otherwise
->> it will be lost again.
->
-> It's been 3 more months. Matt (or anyone else who cares and has access
-> to the hardware), please send an updated patch or I'll have to drop it.
->
-> --
-> Jean Delvare
+On Wed, Jan 11, 2012 at 09:44:18PM +0100, John Crispin wrote:
 
-I'll fix it up and resend the next time I'm working on the related mips stuff.
+> +static inline void ltq_ebu_w32_mask(u32 c, u32 s, u32 r) {
+> +	ltq_ebu_w32((ltq_ebu_r32(r) & ~c) | s, r);
+> +}
+> +
+> +/* cgu access */
+> +static inline void ltq_cgu_w32(u32 v, u32 r) {
+> +	ltq_w32(v, ltq_cgu_membase + r);
+> +};
+> +static inline u32 ltq_cgu_r32(u32 r) {
+> +	return ltq_r32(ltq_cgu_membase + r);
+> +};
+> +static inline void ltq_cgu_w32_mask(u32 c, u32 s, u32 r) {
+> +	ltq_cgu_w32((ltq_cgu_r32(r) & ~c) | s, r);
+> +}
 
-It's hard to prioritize volunteer work for hardware you and two other
-people have. :)
+Documentation/CodingStyle:
 
-Matt
+[...]
+
+However, there is one special case, namely functions: they have the
+opening brace at the beginning of the next line, thus:
+
+        int function(int x)
+        {
+                body of function
+        }
+
+Heretic people all over the world have claimed that this inconsistency
+is ...  well ...  inconsistent, but all right-thinking people know that
+(a) K&R are _right_ and (b) K&R are right.  Besides, functions are
+special anyway (you can't nest them in C).
+
+[...]
+
+So this formatting is heretic.  Pray 10 CodingStyle to Saint K&R.
+
+  Ralf

@@ -1,11 +1,11 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2012 12:52:46 +0100 (CET)
-Received: from ozlabs.org ([203.10.76.45]:53667 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2012 12:53:28 +0100 (CET)
+Received: from ozlabs.org ([203.10.76.45]:36054 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903606Ab2APLwW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Jan 2012 12:52:22 +0100
+        id S1903605Ab2APLwV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 Jan 2012 12:52:21 +0100
 Received: by ozlabs.org (Postfix, from userid 1007)
-        id E0EDF1007D3; Mon, 16 Jan 2012 22:52:17 +1100 (EST)
-Date:   Mon, 16 Jan 2012 19:09:40 +1100
+        id DE6651007D2; Mon, 16 Jan 2012 22:52:17 +1100 (EST)
+Date:   Mon, 16 Jan 2012 12:57:10 +1100
 From:   David Gibson <david@gibson.dropbear.id.au>
 To:     Marek Szyprowski <m.szyprowski@samsung.com>
 Cc:     linux-kernel@vger.kernel.org,
@@ -23,8 +23,9 @@ Cc:     linux-kernel@vger.kernel.org,
         linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
         Kyungmin Park <kyungmin.park@samsung.com>,
         Andrzej Pietrasiewicz <andrzej.p@samsung.com>
-Subject: Re: [PATCH 04/14] PowerPC: adapt for dma_map_ops changes
-Message-ID: <20120116080940.GF4512@truffala.fritz.box>
+Subject: Re: [PATCH 01/14] common: dma-mapping: introduce alloc_attrs and
+ free_attrs methods
+Message-ID: <20120116015710.GD4512@truffala.fritz.box>
 Mail-Followup-To: David Gibson <david@gibson.dropbear.id.au>,
         Marek Szyprowski <m.szyprowski@samsung.com>,
         linux-kernel@vger.kernel.org,
@@ -43,13 +44,13 @@ Mail-Followup-To: David Gibson <david@gibson.dropbear.id.au>,
         Kyungmin Park <kyungmin.park@samsung.com>,
         Andrzej Pietrasiewicz <andrzej.p@samsung.com>
 References: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
- <1324643253-3024-5-git-send-email-m.szyprowski@samsung.com>
+ <1324643253-3024-2-git-send-email-m.szyprowski@samsung.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1324643253-3024-5-git-send-email-m.szyprowski@samsung.com>
+In-Reply-To: <1324643253-3024-2-git-send-email-m.szyprowski@samsung.com>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32245
+X-archive-position: 32246
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -58,20 +59,23 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, Dec 23, 2011 at 01:27:23PM +0100, Marek Szyprowski wrote:
-> From: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+On Fri, Dec 23, 2011 at 01:27:20PM +0100, Marek Szyprowski wrote:
+> Introduce new generic alloc and free methods with attributes argument.
 > 
-> Adapt core PowerPC architecture code for dma_map_ops changes: replace
-> alloc/free_coherent with generic alloc/free methods.
+> Existing alloc_coherent and free_coherent can be implemented on top of the
+> new calls with NULL attributes argument. Later also dma_alloc_non_coherent
+> can be implemented using DMA_ATTR_NONCOHERENT attribute as well as
+> dma_alloc_writecombine with separate DMA_ATTR_WRITECOMBINE attribute.
 > 
-> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+> This way the drivers will get more generic, platform independent way of
+> allocating dma buffers with specific parameters.
+> 
 > Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 > Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
 
-Looks sane.
+Looks sensible to me.
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-
+Reviewed-by: David Gibson <david@gibson.dropbear.ud.au>
 -- 
 David Gibson			| I'll have my music baroque, and my code
 david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_

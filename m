@@ -1,16 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2012 17:44:34 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:56218 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jan 2012 17:45:06 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:56220 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903607Ab2APQoX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 16 Jan 2012 17:44:23 +0100
+        id S1903613Ab2APQoY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 16 Jan 2012 17:44:24 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 01/17] MIPS: lantiq: reorganize xway code
-Date:   Mon, 16 Jan 2012 17:43:38 +0100
-Message-Id: <1326732224-21336-1-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        Thomas Langer <thomas.langer@lantiq.com>
+Subject: [PATCH V2 04/17] MIPS: lantiq: add basic support for FALC-ON
+Date:   Mon, 16 Jan 2012 17:43:39 +0100
+Message-Id: <1326732224-21336-2-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
-X-archive-position: 32253
+In-Reply-To: <1326732224-21336-1-git-send-email-blogic@openwrt.org>
+References: <1326732224-21336-1-git-send-email-blogic@openwrt.org>
+X-archive-position: 32254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -19,13 +22,9 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Inside the folder arch/mips/lantiq/xway, there were alot of small files with
-lots of duplicated code. This patch adds a wrapper function for inserting and
-requesting resources and unifies the small files into one bigger file.
+Adds support for the FALC-ON SoC. This SoC is from the FTTH/GPON SoC family.
 
-This patch makes the xway code consistent with the falcon support added later
-in this series.
-
+Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
 Signed-off-by: John Crispin <blogic@openwrt.org>
 
 ---
@@ -33,107 +32,454 @@ Changes in V2:
 * ritually kill printks that notify about reset
 * fixes code formatting of inline functions
 
- arch/mips/include/asm/mach-lantiq/lantiq.h         |   22 ++---
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   36 +++++++++
- arch/mips/lantiq/clk.c                             |   25 +------
- arch/mips/lantiq/devices.c                         |   30 ++------
- arch/mips/lantiq/devices.h                         |    4 +
- arch/mips/lantiq/prom.c                            |   51 +++++++++++--
- arch/mips/lantiq/prom.h                            |    4 +
- arch/mips/lantiq/xway/Makefile                     |    6 +-
- arch/mips/lantiq/xway/devices.c                    |   42 ++---------
- arch/mips/lantiq/xway/dma.c                        |   21 +----
- arch/mips/lantiq/xway/ebu.c                        |   52 -------------
- arch/mips/lantiq/xway/pmu.c                        |   69 -----------------
- arch/mips/lantiq/xway/prom-ase.c                   |    9 ++
- arch/mips/lantiq/xway/prom-xway.c                  |   10 +++
- arch/mips/lantiq/xway/reset.c                      |   24 +-----
- arch/mips/lantiq/xway/setup-ase.c                  |   19 -----
- arch/mips/lantiq/xway/setup-xway.c                 |   20 -----
- arch/mips/lantiq/xway/sysctrl.c                    |   78 ++++++++++++++++++++
- drivers/watchdog/lantiq_wdt.c                      |    2 +-
- 19 files changed, 226 insertions(+), 298 deletions(-)
- delete mode 100644 arch/mips/lantiq/xway/ebu.c
- delete mode 100644 arch/mips/lantiq/xway/pmu.c
- delete mode 100644 arch/mips/lantiq/xway/setup-ase.c
- delete mode 100644 arch/mips/lantiq/xway/setup-xway.c
- create mode 100644 arch/mips/lantiq/xway/sysctrl.c
+ .../include/asm/mach-lantiq/falcon/falcon_irq.h    |  268 ++++++++++++++++++++
+ arch/mips/include/asm/mach-lantiq/falcon/irq.h     |   18 ++
+ .../include/asm/mach-lantiq/falcon/lantiq_soc.h    |  158 ++++++++++++
+ arch/mips/include/asm/mach-lantiq/lantiq.h         |    1 +
+ arch/mips/lantiq/Kconfig                           |    4 +
+ arch/mips/lantiq/Makefile                          |    1 +
+ arch/mips/lantiq/Platform                          |    1 +
+ arch/mips/lantiq/falcon/Makefile                   |    1 +
+ arch/mips/lantiq/falcon/clk.c                      |   44 ++++
+ arch/mips/lantiq/falcon/devices.c                  |   87 +++++++
+ arch/mips/lantiq/falcon/devices.h                  |   18 ++
+ arch/mips/lantiq/falcon/prom.c                     |   93 +++++++
+ arch/mips/lantiq/falcon/reset.c                    |   88 +++++++
+ arch/mips/lantiq/falcon/sysctrl.c                  |  183 +++++++++++++
+ 14 files changed, 965 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+ create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/irq.h
+ create mode 100644 arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+ create mode 100644 arch/mips/lantiq/falcon/Makefile
+ create mode 100644 arch/mips/lantiq/falcon/clk.c
+ create mode 100644 arch/mips/lantiq/falcon/devices.c
+ create mode 100644 arch/mips/lantiq/falcon/devices.h
+ create mode 100644 arch/mips/lantiq/falcon/prom.c
+ create mode 100644 arch/mips/lantiq/falcon/reset.c
+ create mode 100644 arch/mips/lantiq/falcon/sysctrl.c
 
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
-index ce2f029..5bdec4f 100644
---- a/arch/mips/include/asm/mach-lantiq/lantiq.h
-+++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
-@@ -9,23 +9,17 @@
- #define _LANTIQ_H__
- 
- #include <linux/irq.h>
-+#include <linux/ioport.h>
- 
--/* generic reg access functions */
-+/* generic reg access */
- #define ltq_r32(reg)		__raw_readl(reg)
- #define ltq_w32(val, reg)	__raw_writel(val, reg)
--#define ltq_w32_mask(clear, set, reg)	\
--	ltq_w32((ltq_r32(reg) & ~(clear)) | (set), reg)
- #define ltq_r8(reg)		__raw_readb(reg)
- #define ltq_w8(val, reg)	__raw_writeb(val, reg)
--
--/* register access macros for EBU and CGU */
--#define ltq_ebu_w32(x, y)	ltq_w32((x), ltq_ebu_membase + (y))
--#define ltq_ebu_r32(x)		ltq_r32(ltq_ebu_membase + (x))
--#define ltq_cgu_w32(x, y)	ltq_w32((x), ltq_cgu_membase + (y))
--#define ltq_cgu_r32(x)		ltq_r32(ltq_cgu_membase + (x))
--
--extern __iomem void *ltq_ebu_membase;
--extern __iomem void *ltq_cgu_membase;
-+static inline void ltq_w32_mask(u32 c, u32 s, volatile void __iomem *r)
-+{
-+	ltq_w32((ltq_r32(r) & ~(c)) | (s), r);
-+}
- 
- extern unsigned int ltq_get_cpu_ver(void);
- extern unsigned int ltq_get_soc_type(void);
-@@ -51,7 +45,9 @@ extern void ltq_enable_irq(struct irq_data *data);
- 
- /* find out what caused the last cpu reset */
- extern int ltq_reset_cause(void);
--#define LTQ_RST_CAUSE_WDTRST	0x20
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h b/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+new file mode 100644
+index 0000000..4dc6466
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lantiq/falcon/falcon_irq.h
+@@ -0,0 +1,268 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 Thomas Langer <thomas.langer@lantiq.com>
++ */
 +
-+/* helper for requesting and remapping resources */
-+extern void __iomem *ltq_remap_resource(struct resource *res);
- 
- #define IOPORT_RESOURCE_START	0x10000000
- #define IOPORT_RESOURCE_END	0xffffffff
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index 8a3c6be..001bf2e 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -61,6 +61,8 @@
- #define LTQ_CGU_BASE_ADDR	0x1F103000
- #define LTQ_CGU_SIZE		0x1000
- 
-+#define CGU_EPHY		0x10
++#ifndef _FALCON_IRQ__
++#define _FALCON_IRQ__
 +
- /* ICU - interrupt control unit */
- #define LTQ_ICU_BASE_ADDR	0x1F880200
- #define LTQ_ICU_SIZE		0x100
-@@ -97,6 +99,8 @@
- #define LTQ_WDT_BASE_ADDR	0x1F8803F0
- #define LTQ_WDT_SIZE		0x10
- 
-+#define LTQ_RST_CAUSE_WDTRST	0x20
++#define INT_NUM_IRQ0			8
++#define INT_NUM_IM0_IRL0		(INT_NUM_IRQ0 + 0)
++#define INT_NUM_IM1_IRL0		(INT_NUM_IM0_IRL0 + 32)
++#define INT_NUM_IM2_IRL0		(INT_NUM_IM1_IRL0 + 32)
++#define INT_NUM_IM3_IRL0		(INT_NUM_IM2_IRL0 + 32)
++#define INT_NUM_IM4_IRL0		(INT_NUM_IM3_IRL0 + 32)
++#define INT_NUM_EXTRA_START		(INT_NUM_IM4_IRL0 + 32)
++#define INT_NUM_IM_OFFSET		(INT_NUM_IM1_IRL0 - INT_NUM_IM0_IRL0)
 +
- /* STP - serial to parallel conversion unit */
- #define LTQ_STP_BASE_ADDR	0x1E100BB0
- #define LTQ_STP_SIZE		0x40
-@@ -121,11 +125,43 @@
- #define LTQ_MPS_BASE_ADDR	(KSEG1 + 0x1F107000)
- #define LTQ_MPS_CHIPID		((u32 *)(LTQ_MPS_BASE_ADDR + 0x0344))
- 
-+extern __iomem void *ltq_ebu_membase;
-+extern __iomem void *ltq_cgu_membase;
++#define MIPS_CPU_TIMER_IRQ			7
 +
-+/* ebu access */
++/* HOST IF Event Interrupt */
++#define FALCON_IRQ_HOST				(INT_NUM_IM0_IRL0 + 0)
++/* HOST IF Mailbox0 Receive Interrupt */
++#define FALCON_IRQ_HOST_MB0_RX			(INT_NUM_IM0_IRL0 + 1)
++/* HOST IF Mailbox0 Transmit Interrupt */
++#define FALCON_IRQ_HOST_MB0_TX			(INT_NUM_IM0_IRL0 + 2)
++/* HOST IF Mailbox1 Receive Interrupt */
++#define FALCON_IRQ_HOST_MB1_RX			(INT_NUM_IM0_IRL0 + 3)
++/* HOST IF Mailbox1 Transmit Interrupt */
++#define FALCON_IRQ_HOST_MB1_TX			(INT_NUM_IM0_IRL0 + 4)
++/* I2C Last Single Data Transfer Request */
++#define FALCON_IRQ_I2C_LSREQ			(INT_NUM_IM0_IRL0 + 8)
++/* I2C Single Data Transfer Request */
++#define FALCON_IRQ_I2C_SREQ			(INT_NUM_IM0_IRL0 + 9)
++/* I2C Last Burst Data Transfer Request */
++#define FALCON_IRQ_I2C_LBREQ			(INT_NUM_IM0_IRL0 + 10)
++/* I2C Burst Data Transfer Request */
++#define FALCON_IRQ_I2C_BREQ			(INT_NUM_IM0_IRL0 + 11)
++/* I2C Error Interrupt */
++#define FALCON_IRQ_I2C_I2C_ERR			(INT_NUM_IM0_IRL0 + 12)
++/* I2C Protocol Interrupt */
++#define FALCON_IRQ_I2C_I2C_P			(INT_NUM_IM0_IRL0 + 13)
++/* SSC Transmit Interrupt */
++#define FALCON_IRQ_SSC_T			(INT_NUM_IM0_IRL0 + 14)
++/* SSC Receive Interrupt */
++#define FALCON_IRQ_SSC_R			(INT_NUM_IM0_IRL0 + 15)
++/* SSC Error Interrupt */
++#define FALCON_IRQ_SSC_E			(INT_NUM_IM0_IRL0 + 16)
++/* SSC Frame Interrupt */
++#define FALCON_IRQ_SSC_F			(INT_NUM_IM0_IRL0 + 17)
++/* Advanced Encryption Standard Interrupt */
++#define FALCON_IRQ_AES_AES			(INT_NUM_IM0_IRL0 + 27)
++/* Secure Hash Algorithm Interrupt */
++#define FALCON_IRQ_SHA_HASH			(INT_NUM_IM0_IRL0 + 28)
++/* PCM Receive Interrupt */
++#define FALCON_IRQ_PCM_RX			(INT_NUM_IM0_IRL0 + 29)
++/* PCM Transmit Interrupt */
++#define FALCON_IRQ_PCM_TX			(INT_NUM_IM0_IRL0 + 30)
++/* PCM Transmit Crash Interrupt */
++#define FALCON_IRQ_PCM_HW2_CRASH		(INT_NUM_IM0_IRL0 + 31)
++
++/* EBU Serial Flash Command Error */
++#define FALCON_IRQ_EBU_SF_CMDERR		(INT_NUM_IM1_IRL0 + 0)
++/* EBU Serial Flash Command Overwrite Error */
++#define FALCON_IRQ_EBU_SF_COVERR		(INT_NUM_IM1_IRL0 + 1)
++/* EBU Serial Flash Busy */
++#define FALCON_IRQ_EBU_SF_BUSY			(INT_NUM_IM1_IRL0 + 2)
++/* External Interrupt from GPIO P0 */
++#define FALCON_IRQ_GPIO_P0			(INT_NUM_IM1_IRL0 + 4)
++/* External Interrupt from GPIO P1 */
++#define FALCON_IRQ_GPIO_P1			(INT_NUM_IM1_IRL0 + 5)
++/* External Interrupt from GPIO P2 */
++#define FALCON_IRQ_GPIO_P2			(INT_NUM_IM1_IRL0 + 6)
++/* External Interrupt from GPIO P3 */
++#define FALCON_IRQ_GPIO_P3			(INT_NUM_IM1_IRL0 + 7)
++/* External Interrupt from GPIO P4 */
++#define FALCON_IRQ_GPIO_P4			(INT_NUM_IM1_IRL0 + 8)
++/* 8kHz backup interrupt derived from core-PLL */
++#define FALCON_IRQ_FSC_BKP			(INT_NUM_IM1_IRL0 + 10)
++/* FSC Timer Interrupt 0 */
++#define FALCON_IRQ_FSCT_CMP0			(INT_NUM_IM1_IRL0 + 11)
++/* FSC Timer Interrupt 1 */
++#define FALCON_IRQ_FSCT_CMP1			(INT_NUM_IM1_IRL0 + 12)
++/* 8kHz root interrupt derived from GPON interface */
++#define FALCON_IRQ_FSC_ROOT			(INT_NUM_IM1_IRL0 + 13)
++/* Time of Day */
++#define FALCON_IRQ_TOD				(INT_NUM_IM1_IRL0 + 14)
++/* PMA Interrupt from IntNode of the 200MHz Domain */
++#define FALCON_IRQ_PMA_200M			(INT_NUM_IM1_IRL0 + 15)
++/* PMA Interrupt from IntNode of the TX Clk Domain */
++#define FALCON_IRQ_PMA_TX			(INT_NUM_IM1_IRL0 + 16)
++/* PMA Interrupt from IntNode of the RX Clk Domain */
++#define FALCON_IRQ_PMA_RX			(INT_NUM_IM1_IRL0 + 17)
++/* SYS1 Interrupt */
++#define FALCON_IRQ_SYS1				(INT_NUM_IM1_IRL0 + 20)
++/* SYS GPE Interrupt */
++#define FALCON_IRQ_SYS_GPE			(INT_NUM_IM1_IRL0 + 21)
++/* Watchdog Access Error Interrupt */
++#define FALCON_IRQ_WDT_AEIR			(INT_NUM_IM1_IRL0 + 24)
++/* Watchdog Prewarning Interrupt */
++#define FALCON_IRQ_WDT_PIR			(INT_NUM_IM1_IRL0 + 25)
++/* SBIU interrupt */
++#define FALCON_IRQ_SBIU0			(INT_NUM_IM1_IRL0 + 27)
++/* FPI Bus Control Unit Interrupt */
++#define FALCON_IRQ_BCU0				(INT_NUM_IM1_IRL0 + 29)
++/* DDR Controller Interrupt */
++#define FALCON_IRQ_DDR				(INT_NUM_IM1_IRL0 + 30)
++/* Crossbar Error Interrupt */
++#define FALCON_IRQ_XBAR_ERROR			(INT_NUM_IM1_IRL0 + 31)
++
++/* ICTRLL 0 Interrupt */
++#define FALCON_IRQ_ICTRLL0			(INT_NUM_IM2_IRL0 + 0)
++/* ICTRLL 1 Interrupt */
++#define FALCON_IRQ_ICTRLL1			(INT_NUM_IM2_IRL0 + 1)
++/* ICTRLL 2 Interrupt */
++#define FALCON_IRQ_ICTRLL2			(INT_NUM_IM2_IRL0 + 2)
++/* ICTRLL 3 Interrupt */
++#define FALCON_IRQ_ICTRLL3			(INT_NUM_IM2_IRL0 + 3)
++/* OCTRLL 0 Interrupt */
++#define FALCON_IRQ_OCTRLL0			(INT_NUM_IM2_IRL0 + 4)
++/* OCTRLL 1 Interrupt */
++#define FALCON_IRQ_OCTRLL1			(INT_NUM_IM2_IRL0 + 5)
++/* OCTRLL 2 Interrupt */
++#define FALCON_IRQ_OCTRLL2			(INT_NUM_IM2_IRL0 + 6)
++/* OCTRLL 3 Interrupt */
++#define FALCON_IRQ_OCTRLL3			(INT_NUM_IM2_IRL0 + 7)
++/* OCTRLG Interrupt */
++#define FALCON_IRQ_OCTRLG			(INT_NUM_IM2_IRL0 + 9)
++/* IQM Interrupt */
++#define FALCON_IRQ_IQM				(INT_NUM_IM2_IRL0 + 10)
++/* FSQM Interrupt */
++#define FALCON_IRQ_FSQM				(INT_NUM_IM2_IRL0 + 11)
++/* TMU Interrupt */
++#define FALCON_IRQ_TMU				(INT_NUM_IM2_IRL0 + 12)
++/* LINK1 Interrupt */
++#define FALCON_IRQ_LINK1			(INT_NUM_IM2_IRL0 + 14)
++/* ICTRLC 0 Interrupt */
++#define FALCON_IRQ_ICTRLC0			(INT_NUM_IM2_IRL0 + 16)
++/* ICTRLC 1 Interrupt */
++#define FALCON_IRQ_ICTRLC1			(INT_NUM_IM2_IRL0 + 17)
++/* OCTRLC Interrupt */
++#define FALCON_IRQ_OCTRLC			(INT_NUM_IM2_IRL0 + 18)
++/* CONFIG Break Interrupt */
++#define FALCON_IRQ_CONFIG_BREAK			(INT_NUM_IM2_IRL0 + 19)
++/* CONFIG Interrupt */
++#define FALCON_IRQ_CONFIG			(INT_NUM_IM2_IRL0 + 20)
++/* Dispatcher Interrupt */
++#define FALCON_IRQ_DISP				(INT_NUM_IM2_IRL0 + 21)
++/* TBM Interrupt */
++#define FALCON_IRQ_TBM				(INT_NUM_IM2_IRL0 + 22)
++/* GTC Downstream Interrupt */
++#define FALCON_IRQ_GTC_DS			(INT_NUM_IM2_IRL0 + 29)
++/* GTC Upstream Interrupt */
++#define FALCON_IRQ_GTC_US			(INT_NUM_IM2_IRL0 + 30)
++/* EIM Interrupt */
++#define FALCON_IRQ_EIM				(INT_NUM_IM2_IRL0 + 31)
++
++/* ASC0 Transmit Interrupt */
++#define FALCON_IRQ_ASC0_T			(INT_NUM_IM3_IRL0 + 0)
++/* ASC0 Receive Interrupt */
++#define FALCON_IRQ_ASC0_R			(INT_NUM_IM3_IRL0 + 1)
++/* ASC0 Error Interrupt */
++#define FALCON_IRQ_ASC0_E			(INT_NUM_IM3_IRL0 + 2)
++/* ASC0 Transmit Buffer Interrupt */
++#define FALCON_IRQ_ASC0_TB			(INT_NUM_IM3_IRL0 + 3)
++/* ASC0 Autobaud Start Interrupt */
++#define FALCON_IRQ_ASC0_ABST			(INT_NUM_IM3_IRL0 + 4)
++/* ASC0 Autobaud Detection Interrupt */
++#define FALCON_IRQ_ASC0_ABDET			(INT_NUM_IM3_IRL0 + 5)
++/* ASC1 Modem Status Interrupt */
++#define FALCON_IRQ_ASC0_MS			(INT_NUM_IM3_IRL0 + 6)
++/* ASC0 Soft Flow Control Interrupt */
++#define FALCON_IRQ_ASC0_SFC			(INT_NUM_IM3_IRL0 + 7)
++/* ASC1 Transmit Interrupt */
++#define FALCON_IRQ_ASC1_T			(INT_NUM_IM3_IRL0 + 8)
++/* ASC1 Receive Interrupt */
++#define FALCON_IRQ_ASC1_R			(INT_NUM_IM3_IRL0 + 9)
++/* ASC1 Error Interrupt */
++#define FALCON_IRQ_ASC1_E			(INT_NUM_IM3_IRL0 + 10)
++/* ASC1 Transmit Buffer Interrupt */
++#define FALCON_IRQ_ASC1_TB			(INT_NUM_IM3_IRL0 + 11)
++/* ASC1 Autobaud Start Interrupt */
++#define FALCON_IRQ_ASC1_ABST			(INT_NUM_IM3_IRL0 + 12)
++/* ASC1 Autobaud Detection Interrupt */
++#define FALCON_IRQ_ASC1_ABDET			(INT_NUM_IM3_IRL0 + 13)
++/* ASC1 Modem Status Interrupt */
++#define FALCON_IRQ_ASC1_MS			(INT_NUM_IM3_IRL0 + 14)
++/* ASC1 Soft Flow Control Interrupt */
++#define FALCON_IRQ_ASC1_SFC			(INT_NUM_IM3_IRL0 + 15)
++/* GPTC Timer/Counter 1A Interrupt */
++#define FALCON_IRQ_GPTC_TC1A			(INT_NUM_IM3_IRL0 + 16)
++/* GPTC Timer/Counter 1B Interrupt */
++#define FALCON_IRQ_GPTC_TC1B			(INT_NUM_IM3_IRL0 + 17)
++/* GPTC Timer/Counter 2A Interrupt */
++#define FALCON_IRQ_GPTC_TC2A			(INT_NUM_IM3_IRL0 + 18)
++/* GPTC Timer/Counter 2B Interrupt */
++#define FALCON_IRQ_GPTC_TC2B			(INT_NUM_IM3_IRL0 + 19)
++/* GPTC Timer/Counter 3A Interrupt */
++#define FALCON_IRQ_GPTC_TC3A			(INT_NUM_IM3_IRL0 + 20)
++/* GPTC Timer/Counter 3B Interrupt */
++#define FALCON_IRQ_GPTC_TC3B			(INT_NUM_IM3_IRL0 + 21)
++/* DFEV0, Channel 1 Transmit Interrupt */
++#define FALCON_IRQ_DFEV0_2TX			(INT_NUM_IM3_IRL0 + 26)
++/* DFEV0, Channel 1 Receive Interrupt */
++#define FALCON_IRQ_DFEV0_2RX			(INT_NUM_IM3_IRL0 + 27)
++/* DFEV0, Channel 1 General Purpose Interrupt */
++#define FALCON_IRQ_DFEV0_2GP			(INT_NUM_IM3_IRL0 + 28)
++/* DFEV0, Channel 0 Transmit Interrupt */
++#define FALCON_IRQ_DFEV0_1TX			(INT_NUM_IM3_IRL0 + 29)
++/* DFEV0, Channel 0 Receive Interrupt */
++#define FALCON_IRQ_DFEV0_1RX			(INT_NUM_IM3_IRL0 + 30)
++/* DFEV0, Channel 0 General Purpose Interrupt */
++#define FALCON_IRQ_DFEV0_1GP			(INT_NUM_IM3_IRL0 + 31)
++
++/* ICTRLL 0 Error */
++#define FALCON_IRQ_ICTRLL0_ERR			(INT_NUM_IM4_IRL0 + 0)
++/* ICTRLL 1 Error */
++#define FALCON_IRQ_ICTRLL1_ERR			(INT_NUM_IM4_IRL0 + 1)
++/* ICTRLL 2 Error */
++#define FALCON_IRQ_ICTRLL2_ERR			(INT_NUM_IM4_IRL0 + 2)
++/* ICTRLL 3 Error */
++#define FALCON_IRQ_ICTRLL3_ERR			(INT_NUM_IM4_IRL0 + 3)
++/* OCTRLL 0 Error */
++#define FALCON_IRQ_OCTRLL0_ERR			(INT_NUM_IM4_IRL0 + 4)
++/* OCTRLL 1 Error */
++#define FALCON_IRQ_OCTRLL1_ERR			(INT_NUM_IM4_IRL0 + 5)
++/* OCTRLL 2 Error */
++#define FALCON_IRQ_OCTRLL2_ERR			(INT_NUM_IM4_IRL0 + 6)
++/* OCTRLL 3 Error */
++#define FALCON_IRQ_OCTRLL3_ERR			(INT_NUM_IM4_IRL0 + 7)
++/* ICTRLG Error */
++#define FALCON_IRQ_ICTRLG_ERR			(INT_NUM_IM4_IRL0 + 8)
++/* OCTRLG Error */
++#define FALCON_IRQ_OCTRLG_ERR			(INT_NUM_IM4_IRL0 + 9)
++/* IQM Error */
++#define FALCON_IRQ_IQM_ERR			(INT_NUM_IM4_IRL0 + 10)
++/* FSQM Error */
++#define FALCON_IRQ_FSQM_ERR			(INT_NUM_IM4_IRL0 + 11)
++/* TMU Error */
++#define FALCON_IRQ_TMU_ERR			(INT_NUM_IM4_IRL0 + 12)
++/* MPS Status Interrupt #0 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR0			(INT_NUM_IM4_IRL0 + 14)
++/* MPS Status Interrupt #1 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR1			(INT_NUM_IM4_IRL0 + 15)
++/* MPS Status Interrupt #2 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR2			(INT_NUM_IM4_IRL0 + 16)
++/* MPS Status Interrupt #3 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR3			(INT_NUM_IM4_IRL0 + 17)
++/* MPS Status Interrupt #4 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR4			(INT_NUM_IM4_IRL0 + 18)
++/* MPS Status Interrupt #5 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR5			(INT_NUM_IM4_IRL0 + 19)
++/* MPS Status Interrupt #6 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR6			(INT_NUM_IM4_IRL0 + 20)
++/* MPS Status Interrupt #7 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR7			(INT_NUM_IM4_IRL0 + 21)
++/* MPS Status Interrupt #8 (VPE1 to VPE0) */
++#define FALCON_IRQ_MPS_IR8			(INT_NUM_IM4_IRL0 + 22)
++/* VPE0 Exception Level Flag Interrupt */
++#define FALCON_IRQ_VPE0_EXL			(INT_NUM_IM4_IRL0 + 29)
++/* VPE0 Error Level Flag Interrupt */
++#define FALCON_IRQ_VPE0_ERL			(INT_NUM_IM4_IRL0 + 30)
++/* VPE0 Performance Monitoring Counter Interrupt */
++#define FALCON_IRQ_VPE0_PMCIR			(INT_NUM_IM4_IRL0 + 31)
++
++#endif /* _FALCON_IRQ__ */
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/irq.h b/arch/mips/include/asm/mach-lantiq/falcon/irq.h
+new file mode 100644
+index 0000000..2caccd9
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lantiq/falcon/irq.h
+@@ -0,0 +1,18 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ */
++
++#ifndef __FALCON_IRQ_H
++#define __FALCON_IRQ_H
++
++#include <falcon_irq.h>
++
++#define NR_IRQS 328
++
++#include_next <irq.h>
++
++#endif
+diff --git a/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+new file mode 100644
+index 0000000..8ac509a
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
+@@ -0,0 +1,158 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _LTQ_FALCON_H__
++#define _LTQ_FALCON_H__
++
++#ifdef CONFIG_SOC_FALCON
++
++#include <lantiq.h>
++
++/* Chip IDs */
++#define SOC_ID_FALCON		0x01B8
++
++/* SoC Types */
++#define SOC_TYPE_FALCON		0x01
++
++/* ASC0/1 - serial port */
++#define LTQ_ASC0_BASE_ADDR	0x1E100C00
++#define LTQ_ASC1_BASE_ADDR	0x1E100B00
++#define LTQ_ASC_SIZE		0x100
++
++#define LTQ_ASC_TIR(x)          (INT_NUM_IM3_IRL0 + (x * 8))
++#define LTQ_ASC_RIR(x)          (INT_NUM_IM3_IRL0 + (x * 8) + 1)
++#define LTQ_ASC_EIR(x)          (INT_NUM_IM3_IRL0 + (x * 8) + 2)
++
++/*
++ * during early_printk no ioremap possible at this early stage
++ * lets use KSEG1 instead
++ */
++#define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC0_BASE_ADDR)
++
++/* ICU - interrupt control unit */
++#define LTQ_ICU_BASE_ADDR	0x1F880200
++#define LTQ_ICU_SIZE		0x100
++
++/* WDT */
++#define LTQ_WDT_BASE_ADDR	0x1F8803F0
++#define LTQ_WDT_SIZE		0x10
++
++#define LTQ_RST_CAUSE_WDTRST	0x0002
++
++/* EBU - external bus unit */
++#define LTQ_EBU_BASE_ADDR       0x18000000
++#define LTQ_EBU_SIZE            0x0100
++
++#define LTQ_EBU_MODCON  0x000C
++
++/* GPIO */
++#define LTQ_GPIO0_BASE_ADDR     0x1D810000
++#define LTQ_GPIO0_SIZE          0x0080
++#define LTQ_GPIO1_BASE_ADDR     0x1E800100
++#define LTQ_GPIO1_SIZE          0x0080
++#define LTQ_GPIO2_BASE_ADDR     0x1D810100
++#define LTQ_GPIO2_SIZE          0x0080
++#define LTQ_GPIO3_BASE_ADDR     0x1E800200
++#define LTQ_GPIO3_SIZE          0x0080
++#define LTQ_GPIO4_BASE_ADDR     0x1E800300
++#define LTQ_GPIO4_SIZE          0x0080
++#define LTQ_PADCTRL0_BASE_ADDR  0x1DB01000
++#define LTQ_PADCTRL0_SIZE       0x0100
++#define LTQ_PADCTRL1_BASE_ADDR  0x1E800400
++#define LTQ_PADCTRL1_SIZE       0x0100
++#define LTQ_PADCTRL2_BASE_ADDR  0x1DB02000
++#define LTQ_PADCTRL2_SIZE       0x0100
++#define LTQ_PADCTRL3_BASE_ADDR  0x1E800500
++#define LTQ_PADCTRL3_SIZE       0x0100
++#define LTQ_PADCTRL4_BASE_ADDR  0x1E800600
++#define LTQ_PADCTRL4_SIZE       0x0100
++
++/* CHIP ID */
++#define LTQ_STATUS_BASE_ADDR	0x1E802000
++
++#define LTQ_FALCON_CHIPID	((u32 *)(KSEG1 + LTQ_STATUS_BASE_ADDR + 0x0c))
++#define LTQ_FALCON_CHIPTYPE	((u32 *)(KSEG1 + LTQ_STATUS_BASE_ADDR + 0x38))
++#define LTQ_FALCON_CHIPCONF	((u32 *)(KSEG1 + LTQ_STATUS_BASE_ADDR + 0x40))
++
++/* SYSCTL - start/stop/restart/configure/... different parts of the Soc */
++#define LTQ_SYS1_BASE_ADDR      0x1EF00000
++#define LTQ_SYS1_SIZE           0x0100
++#define LTQ_STATUS_BASE_ADDR	0x1E802000
++#define LTQ_STATUS_SIZE		0x0080
++#define LTQ_SYS_ETH_BASE_ADDR	0x1DB00000
++#define LTQ_SYS_ETH_SIZE	0x0100
++#define LTQ_SYS_GPE_BASE_ADDR	0x1D700000
++#define LTQ_SYS_GPE_SIZE	0x0100
++
++#define SYSCTL_SYS1		0
++#define SYSCTL_SYSETH		1
++#define SYSCTL_SYSGPE		2
++
++/* Activation Status Register */
++#define ACTS_ASC1_ACT	0x00000800
++#define ACTS_P0		0x00010000
++#define ACTS_P1		0x00010000
++#define ACTS_P2		0x00020000
++#define ACTS_P3		0x00020000
++#define ACTS_P4		0x00040000
++#define ACTS_PADCTRL0	0x00100000
++#define ACTS_PADCTRL1	0x00100000
++#define ACTS_PADCTRL2	0x00200000
++#define ACTS_PADCTRL3	0x00200000
++#define ACTS_PADCTRL4	0x00400000
++
++extern void ltq_sysctl_activate(int module, unsigned int mask);
++extern void ltq_sysctl_deactivate(int module, unsigned int mask);
++extern void ltq_sysctl_clken(int module, unsigned int mask);
++extern void ltq_sysctl_clkdis(int module, unsigned int mask);
++extern void ltq_sysctl_reboot(int module, unsigned int mask);
++extern int ltq_gpe_is_activated(unsigned int mask);
++
++/* global register ranges */
++extern void __iomem *ltq_ebu_membase;
++extern void __iomem *ltq_sys1_membase;
 +static inline void ltq_ebu_w32(u32 v, u32 r)
 +{
 +	ltq_w32(v, ltq_ebu_membase + r);
@@ -146,722 +492,101 @@ index 8a3c6be..001bf2e 100644
 +{
 +	ltq_ebu_w32((ltq_ebu_r32(r) & ~(c)) | (s), r);
 +}
-+
-+/* cgu access */
-+static inline void ltq_cgu_w32(u32 v, u32 r)
++static inline void ltq_sys1_w32(u32 v, u32 r)
 +{
-+	ltq_w32(v, ltq_cgu_membase + r);
++	ltq_w32(v, ltq_sys1_membase + r);
 +}
-+static inline u32 ltq_cgu_r32(u32 r)
++static inline u32 ltq_sys1_r32(u32 r)
 +{
-+	return ltq_r32(ltq_cgu_membase + r);
++	return ltq_r32(ltq_sys1_membase + r);
 +}
-+static inline void ltq_cgu_w32_mask(u32 c, u32 s, u32 r)
++static inline void ltq_sys1_w32_mask(u32 c, u32 s, u32 r)
 +{
-+	ltq_cgu_w32((ltq_cgu_r32(r) & ~(c)) | (s), r);
++	ltq_sys1_w32((ltq_sys1_r32(r) & ~(c)) | (s), r);
 +}
 +
- /* request a non-gpio and set the PIO config */
- extern int  ltq_gpio_request(unsigned int pin, unsigned int alt0,
- 	unsigned int alt1, unsigned int dir, const char *name);
- extern void ltq_pmu_enable(unsigned int module);
- extern void ltq_pmu_disable(unsigned int module);
-+extern void ltq_cgu_enable(unsigned int clk);
- 
- static inline int ltq_is_ar9(void)
- {
-diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-index 412814f..39eef7f 100644
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -22,6 +22,7 @@
- #include <lantiq_soc.h>
- 
- #include "clk.h"
-+#include "prom.h"
- 
- struct clk {
- 	const char *name;
-@@ -46,16 +47,6 @@ static struct clk cpu_clk_generic[] = {
- 	},
- };
- 
--static struct resource ltq_cgu_resource = {
--	.name	= "cgu",
--	.start	= LTQ_CGU_BASE_ADDR,
--	.end	= LTQ_CGU_BASE_ADDR + LTQ_CGU_SIZE - 1,
--	.flags	= IORESOURCE_MEM,
--};
--
--/* remapped clock register range */
--void __iomem *ltq_cgu_membase;
--
- void clk_init(void)
- {
- 	cpu_clk = cpu_clk_generic;
-@@ -133,21 +124,11 @@ void __init plat_time_init(void)
- {
- 	struct clk *clk;
- 
--	if (insert_resource(&iomem_resource, &ltq_cgu_resource) < 0)
--		panic("Failed to insert cgu memory");
--
--	if (request_mem_region(ltq_cgu_resource.start,
--			resource_size(&ltq_cgu_resource), "cgu") < 0)
--		panic("Failed to request cgu memory");
-+	ltq_soc_init();
- 
--	ltq_cgu_membase = ioremap_nocache(ltq_cgu_resource.start,
--				resource_size(&ltq_cgu_resource));
--	if (!ltq_cgu_membase) {
--		pr_err("Failed to remap cgu memory\n");
--		unreachable();
--	}
- 	clk = clk_get(0, "cpu");
- 	mips_hpt_frequency = clk_get_rate(clk) / ltq_get_counter_resolution();
- 	write_c0_compare(read_c0_count());
-+	pr_info("CPU Clock: %ldMHz\n", clk_get_rate(clk) / 1000000);
- 	clk_put(clk);
- }
-diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
-index de1cb2b..7193d78 100644
---- a/arch/mips/lantiq/devices.c
-+++ b/arch/mips/lantiq/devices.c
-@@ -27,12 +27,8 @@
- #include "devices.h"
- 
- /* nor flash */
--static struct resource ltq_nor_resource = {
--	.name	= "nor",
--	.start	= LTQ_FLASH_START,
--	.end	= LTQ_FLASH_START + LTQ_FLASH_MAX - 1,
--	.flags  = IORESOURCE_MEM,
--};
-+static struct resource ltq_nor_resource =
-+	MEM_RES("nor", LTQ_FLASH_START, LTQ_FLASH_MAX);
- 
- static struct platform_device ltq_nor = {
- 	.name		= "ltq_nor",
-@@ -47,12 +43,8 @@ void __init ltq_register_nor(struct physmap_flash_data *data)
- }
- 
- /* watchdog */
--static struct resource ltq_wdt_resource = {
--	.name	= "watchdog",
--	.start  = LTQ_WDT_BASE_ADDR,
--	.end    = LTQ_WDT_BASE_ADDR + LTQ_WDT_SIZE - 1,
--	.flags  = IORESOURCE_MEM,
--};
-+static struct resource ltq_wdt_resource =
-+	MEM_RES("watchdog", LTQ_WDT_BASE_ADDR, LTQ_WDT_SIZE);
- 
- void __init ltq_register_wdt(void)
- {
-@@ -61,24 +53,14 @@ void __init ltq_register_wdt(void)
- 
- /* asc ports */
- static struct resource ltq_asc0_resources[] = {
--	{
--		.name	= "asc0",
--		.start  = LTQ_ASC0_BASE_ADDR,
--		.end    = LTQ_ASC0_BASE_ADDR + LTQ_ASC_SIZE - 1,
--		.flags  = IORESOURCE_MEM,
--	},
-+	MEM_RES("asc0", LTQ_ASC0_BASE_ADDR, LTQ_ASC_SIZE),
- 	IRQ_RES(tx, LTQ_ASC_TIR(0)),
- 	IRQ_RES(rx, LTQ_ASC_RIR(0)),
- 	IRQ_RES(err, LTQ_ASC_EIR(0)),
- };
- 
- static struct resource ltq_asc1_resources[] = {
--	{
--		.name	= "asc1",
--		.start  = LTQ_ASC1_BASE_ADDR,
--		.end    = LTQ_ASC1_BASE_ADDR + LTQ_ASC_SIZE - 1,
--		.flags  = IORESOURCE_MEM,
--	},
-+	MEM_RES("asc1", LTQ_ASC1_BASE_ADDR, LTQ_ASC_SIZE),
- 	IRQ_RES(tx, LTQ_ASC_TIR(1)),
- 	IRQ_RES(rx, LTQ_ASC_RIR(1)),
- 	IRQ_RES(err, LTQ_ASC_EIR(1)),
-diff --git a/arch/mips/lantiq/devices.h b/arch/mips/lantiq/devices.h
-index 2947bb1..18b65df 100644
---- a/arch/mips/lantiq/devices.h
-+++ b/arch/mips/lantiq/devices.h
-@@ -14,6 +14,10 @@
- 
- #define IRQ_RES(resname, irq) \
- 	{.name = #resname, .start = (irq), .flags = IORESOURCE_IRQ}
-+#define MEM_RES(resname, adr_start, adr_size) \
-+	{ .name = resname, .flags = IORESOURCE_MEM, \
-+	  .start = CPHYSADDR(adr_start), \
-+	  .end = CPHYSADDR(adr_start + adr_size - 1) }
- 
- extern void ltq_register_nor(struct physmap_flash_data *data);
- extern void ltq_register_wdt(void);
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index e34fcfd..528e205 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -16,6 +16,10 @@
- #include "prom.h"
- #include "clk.h"
- 
-+/* access to the ebu needs to be locked between different drivers */
-+DEFINE_SPINLOCK(ebu_lock);
-+EXPORT_SYMBOL_GPL(ebu_lock);
++/* gpio_request wrapper to help configure the pin */
++extern int  ltq_gpio_request(unsigned int pin, unsigned int mux,
++				unsigned int dir, const char *name);
++extern int ltq_gpio_mux_set(unsigned int pin, unsigned int mux);
 +
- static struct ltq_soc_info soc_info;
- 
- unsigned int ltq_get_cpu_ver(void)
-@@ -55,16 +59,51 @@ static void __init prom_init_cmdline(void)
- 	}
- }
- 
--void __init prom_init(void)
-+void __iomem *ltq_remap_resource(struct resource *res)
- {
--	struct clk *clk;
-+	__iomem void *ret = NULL;
-+	struct resource *lookup = lookup_resource(&iomem_resource, res->start);
++/* to keep the irq code generic we need to define these to 0 as falcon
++   has no EIU/EBU */
++#define LTQ_EIU_BASE_ADDR	0
++#define LTQ_EBU_PCC_ISTAT	0
 +
-+	if (lookup && strcmp(lookup->name, res->name)) {
-+		pr_err("conflicting memory range %s\n", res->name);
-+		return NULL;
-+	}
-+	if (!lookup) {
-+		if (insert_resource(&iomem_resource, res) < 0) {
-+			pr_err("Failed to insert %s memory\n", res->name);
-+			return NULL;
-+		}
-+	}
-+	if (request_mem_region(res->start,
-+			resource_size(res), res->name) < 0) {
-+		pr_err("Failed to request %s memory\n", res->name);
-+		goto err_res;
-+	}
- 
-+	ret = ioremap_nocache(res->start, resource_size(res));
-+	if (!ret)
-+		goto err_mem;
++#define ltq_is_ar9()	0
++#define ltq_is_vr9()	0
 +
-+	pr_debug("remap: 0x%08X-0x%08X : \"%s\"\n",
-+		res->start, res->end, res->name);
-+	return ret;
++#endif /* CONFIG_SOC_FALCON */
++#endif /* _LTQ_XWAY_H__ */
+diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
+index 5bdec4f..bf05854 100644
+--- a/arch/mips/include/asm/mach-lantiq/lantiq.h
++++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
+@@ -27,6 +27,7 @@ extern unsigned int ltq_get_soc_type(void);
+ /* clock speeds */
+ #define CLOCK_60M	60000000
+ #define CLOCK_83M	83333333
++#define CLOCK_100M	100000000
+ #define CLOCK_111M	111111111
+ #define CLOCK_133M	133333333
+ #define CLOCK_167M	166666667
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 3fccf21..cb6b39f 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -16,8 +16,12 @@ config SOC_XWAY
+ 	bool "XWAY"
+ 	select SOC_TYPE_XWAY
+ 	select HW_HAS_PCI
 +
-+err_mem:
-+	panic("Failed to remap %s memory", res->name);
-+	release_mem_region(res->start, resource_size(res));
-+
-+err_res:
-+	release_resource(res);
-+	return NULL;
-+}
-+EXPORT_SYMBOL(ltq_remap_resource);
-+
-+void __init prom_init(void)
-+{
- 	ltq_soc_detect(&soc_info);
- 	clk_init();
--	clk = clk_get(0, "cpu");
--	snprintf(soc_info.sys_type, LTQ_SYS_TYPE_LEN - 1, "%s rev1.%d",
--		soc_info.name, soc_info.rev);
--	clk_put(clk);
-+	snprintf(soc_info.sys_type, LTQ_SYS_TYPE_LEN - 1, "%s rev %s",
-+		soc_info.name, soc_info.rev_type);
- 	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
- 	pr_info("SoC: %s\n", soc_info.sys_type);
- 	prom_init_cmdline();
-diff --git a/arch/mips/lantiq/prom.h b/arch/mips/lantiq/prom.h
-index b4229d9..51dba1b 100644
---- a/arch/mips/lantiq/prom.h
-+++ b/arch/mips/lantiq/prom.h
-@@ -9,17 +9,21 @@
- #ifndef _LTQ_PROM_H__
- #define _LTQ_PROM_H__
++config SOC_FALCON
++	bool "FALCON"
+ endchoice
  
-+#define LTQ_SYS_REV_LEN		0x10
- #define LTQ_SYS_TYPE_LEN	0x100
+ source "arch/mips/lantiq/xway/Kconfig"
++source "arch/mips/lantiq/falcon/Kconfig"
  
- struct ltq_soc_info {
- 	unsigned char *name;
- 	unsigned int rev;
-+	unsigned char rev_type[LTQ_SYS_REV_LEN];
-+	unsigned int srev;
- 	unsigned int partnum;
- 	unsigned int type;
- 	unsigned char sys_type[LTQ_SYS_TYPE_LEN];
- };
+ endif
+diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
+index e5dae0e..7e9c69e 100644
+--- a/arch/mips/lantiq/Makefile
++++ b/arch/mips/lantiq/Makefile
+@@ -9,3 +9,4 @@ obj-y := irq.o setup.o clk.o prom.o devices.o
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
  
- extern void ltq_soc_detect(struct ltq_soc_info *i);
-+extern void ltq_soc_init(void);
- extern void ltq_soc_setup(void);
- 
- #endif
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index c517f2e..6678402 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1,7 +1,7 @@
--obj-y := pmu.o ebu.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o
-+obj-y := sysctrl.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o
- 
--obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o setup-xway.o
--obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o setup-ase.o
-+obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
-+obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
- 
- obj-$(CONFIG_LANTIQ_MACH_EASY50712) += mach-easy50712.o
- obj-$(CONFIG_LANTIQ_MACH_EASY50601) += mach-easy50601.o
-diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
-index d614aa7..f97e565 100644
---- a/arch/mips/lantiq/xway/devices.c
-+++ b/arch/mips/lantiq/xway/devices.c
-@@ -31,22 +31,9 @@
- 
- /* gpio */
- static struct resource ltq_gpio_resource[] = {
--	{
--		.name	= "gpio0",
--		.start  = LTQ_GPIO0_BASE_ADDR,
--		.end    = LTQ_GPIO0_BASE_ADDR + LTQ_GPIO_SIZE - 1,
--		.flags  = IORESOURCE_MEM,
--	}, {
--		.name	= "gpio1",
--		.start  = LTQ_GPIO1_BASE_ADDR,
--		.end    = LTQ_GPIO1_BASE_ADDR + LTQ_GPIO_SIZE - 1,
--		.flags  = IORESOURCE_MEM,
--	}, {
--		.name	= "gpio2",
--		.start  = LTQ_GPIO2_BASE_ADDR,
--		.end    = LTQ_GPIO2_BASE_ADDR + LTQ_GPIO_SIZE - 1,
--		.flags  = IORESOURCE_MEM,
--	}
-+	MEM_RES("gpio0", LTQ_GPIO0_BASE_ADDR, LTQ_GPIO_SIZE),
-+	MEM_RES("gpio1", LTQ_GPIO1_BASE_ADDR, LTQ_GPIO_SIZE),
-+	MEM_RES("gpio2", LTQ_GPIO2_BASE_ADDR, LTQ_GPIO_SIZE),
- };
- 
- void __init ltq_register_gpio(void)
-@@ -64,12 +51,8 @@ void __init ltq_register_gpio(void)
- }
- 
- /* serial to parallel conversion */
--static struct resource ltq_stp_resource = {
--	.name   = "stp",
--	.start  = LTQ_STP_BASE_ADDR,
--	.end    = LTQ_STP_BASE_ADDR + LTQ_STP_SIZE - 1,
--	.flags  = IORESOURCE_MEM,
--};
-+static struct resource ltq_stp_resource =
-+	MEM_RES("stp", LTQ_STP_BASE_ADDR, LTQ_STP_SIZE);
- 
- void __init ltq_register_gpio_stp(void)
- {
-@@ -78,12 +61,7 @@ void __init ltq_register_gpio_stp(void)
- 
- /* asc ports - amazon se has its own serial mapping */
- static struct resource ltq_ase_asc_resources[] = {
--	{
--		.name	= "asc0",
--		.start  = LTQ_ASC1_BASE_ADDR,
--		.end    = LTQ_ASC1_BASE_ADDR + LTQ_ASC_SIZE - 1,
--		.flags  = IORESOURCE_MEM,
--	},
-+	MEM_RES("asc0", LTQ_ASC1_BASE_ADDR, LTQ_ASC_SIZE),
- 	IRQ_RES(tx, LTQ_ASC_ASE_TIR),
- 	IRQ_RES(rx, LTQ_ASC_ASE_RIR),
- 	IRQ_RES(err, LTQ_ASC_ASE_EIR),
-@@ -96,12 +74,8 @@ void __init ltq_register_ase_asc(void)
- }
- 
- /* ethernet */
--static struct resource ltq_etop_resources = {
--	.name	= "etop",
--	.start	= LTQ_ETOP_BASE_ADDR,
--	.end	= LTQ_ETOP_BASE_ADDR + LTQ_ETOP_SIZE - 1,
--	.flags	= IORESOURCE_MEM,
--};
-+static struct resource ltq_etop_resources =
-+	MEM_RES("etop", LTQ_ETOP_BASE_ADDR, LTQ_ETOP_SIZE);
- 
- static struct platform_device ltq_etop = {
- 	.name		= "ltq_etop",
-diff --git a/arch/mips/lantiq/xway/dma.c b/arch/mips/lantiq/xway/dma.c
-index b210e93..6cf883b 100644
---- a/arch/mips/lantiq/xway/dma.c
-+++ b/arch/mips/lantiq/xway/dma.c
-@@ -24,6 +24,8 @@
- #include <lantiq_soc.h>
- #include <xway_dma.h>
- 
-+#include "../devices.h"
-+
- #define LTQ_DMA_CTRL		0x10
- #define LTQ_DMA_CPOLL		0x14
- #define LTQ_DMA_CS		0x18
-@@ -55,12 +57,8 @@
- #define ltq_dma_w32_mask(x, y, z)	ltq_w32_mask(x, y, \
- 						ltq_dma_membase + (z))
- 
--static struct resource ltq_dma_resource = {
--	.name	= "dma",
--	.start	= LTQ_DMA_BASE_ADDR,
--	.end	= LTQ_DMA_BASE_ADDR + LTQ_DMA_SIZE - 1,
--	.flags  = IORESOURCE_MEM,
--};
-+static struct resource ltq_dma_resource =
-+	MEM_RES("dma", LTQ_DMA_BASE_ADDR, LTQ_DMA_SIZE);
- 
- static void __iomem *ltq_dma_membase;
- 
-@@ -220,17 +218,8 @@ ltq_dma_init(void)
- {
- 	int i;
- 
--	/* insert and request the memory region */
--	if (insert_resource(&iomem_resource, &ltq_dma_resource) < 0)
--		panic("Failed to insert dma memory");
--
--	if (request_mem_region(ltq_dma_resource.start,
--			resource_size(&ltq_dma_resource), "dma") < 0)
--		panic("Failed to request dma memory");
--
- 	/* remap dma register range */
--	ltq_dma_membase = ioremap_nocache(ltq_dma_resource.start,
--				resource_size(&ltq_dma_resource));
-+	ltq_dma_membase = ltq_remap_resource(&ltq_dma_resource);
- 	if (!ltq_dma_membase)
- 		panic("Failed to remap dma memory");
- 
-diff --git a/arch/mips/lantiq/xway/ebu.c b/arch/mips/lantiq/xway/ebu.c
-deleted file mode 100644
-index 862e3e8..0000000
---- a/arch/mips/lantiq/xway/ebu.c
-+++ /dev/null
-@@ -1,52 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  EBU - the external bus unit attaches PCI, NOR and NAND
-- *
-- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-- */
--
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/ioport.h>
--
--#include <lantiq_soc.h>
--
--/* all access to the ebu must be locked */
--DEFINE_SPINLOCK(ebu_lock);
--EXPORT_SYMBOL_GPL(ebu_lock);
--
--static struct resource ltq_ebu_resource = {
--	.name	= "ebu",
--	.start	= LTQ_EBU_BASE_ADDR,
--	.end	= LTQ_EBU_BASE_ADDR + LTQ_EBU_SIZE - 1,
--	.flags	= IORESOURCE_MEM,
--};
--
--/* remapped base addr of the clock unit and external bus unit */
--void __iomem *ltq_ebu_membase;
--
--static int __init lantiq_ebu_init(void)
--{
--	/* insert and request the memory region */
--	if (insert_resource(&iomem_resource, &ltq_ebu_resource) < 0)
--		panic("Failed to insert ebu memory");
--
--	if (request_mem_region(ltq_ebu_resource.start,
--			resource_size(&ltq_ebu_resource), "ebu") < 0)
--		panic("Failed to request ebu memory");
--
--	/* remap ebu register range */
--	ltq_ebu_membase = ioremap_nocache(ltq_ebu_resource.start,
--				resource_size(&ltq_ebu_resource));
--	if (!ltq_ebu_membase)
--		panic("Failed to remap ebu memory");
--
--	/* make sure to unprotect the memory region where flash is located */
--	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
--	return 0;
--}
--
--postcore_initcall(lantiq_ebu_init);
-diff --git a/arch/mips/lantiq/xway/pmu.c b/arch/mips/lantiq/xway/pmu.c
-deleted file mode 100644
-index fe85361..0000000
---- a/arch/mips/lantiq/xway/pmu.c
-+++ /dev/null
-@@ -1,69 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-- */
--
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/ioport.h>
--
--#include <lantiq_soc.h>
--
--/* PMU - the power management unit allows us to turn part of the core
-- * on and off
-- */
--
--/* the enable / disable registers */
--#define LTQ_PMU_PWDCR	0x1C
--#define LTQ_PMU_PWDSR	0x20
--
--#define ltq_pmu_w32(x, y)	ltq_w32((x), ltq_pmu_membase + (y))
--#define ltq_pmu_r32(x)		ltq_r32(ltq_pmu_membase + (x))
--
--static struct resource ltq_pmu_resource = {
--	.name	= "pmu",
--	.start	= LTQ_PMU_BASE_ADDR,
--	.end	= LTQ_PMU_BASE_ADDR + LTQ_PMU_SIZE - 1,
--	.flags	= IORESOURCE_MEM,
--};
--
--static void __iomem *ltq_pmu_membase;
--
--void ltq_pmu_enable(unsigned int module)
--{
--	int err = 1000000;
--
--	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) & ~module, LTQ_PMU_PWDCR);
--	do {} while (--err && (ltq_pmu_r32(LTQ_PMU_PWDSR) & module));
--
--	if (!err)
--		panic("activating PMU module failed!");
--}
--EXPORT_SYMBOL(ltq_pmu_enable);
--
--void ltq_pmu_disable(unsigned int module)
--{
--	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) | module, LTQ_PMU_PWDCR);
--}
--EXPORT_SYMBOL(ltq_pmu_disable);
--
--int __init ltq_pmu_init(void)
--{
--	if (insert_resource(&iomem_resource, &ltq_pmu_resource) < 0)
--		panic("Failed to insert pmu memory");
--
--	if (request_mem_region(ltq_pmu_resource.start,
--			resource_size(&ltq_pmu_resource), "pmu") < 0)
--		panic("Failed to request pmu memory");
--
--	ltq_pmu_membase = ioremap_nocache(ltq_pmu_resource.start,
--				resource_size(&ltq_pmu_resource));
--	if (!ltq_pmu_membase)
--		panic("Failed to remap pmu memory");
--	return 0;
--}
--
--core_initcall(ltq_pmu_init);
-diff --git a/arch/mips/lantiq/xway/prom-ase.c b/arch/mips/lantiq/xway/prom-ase.c
-index ae4959a..3f86a3b 100644
---- a/arch/mips/lantiq/xway/prom-ase.c
-+++ b/arch/mips/lantiq/xway/prom-ase.c
-@@ -13,6 +13,7 @@
- 
- #include <lantiq_soc.h>
- 
-+#include "devices.h"
- #include "../prom.h"
- 
- #define SOC_AMAZON_SE	"Amazon_SE"
-@@ -26,6 +27,7 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
- {
- 	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
- 	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
-+	sprintf(i->rev_type, "1.%d", i->rev);
- 	switch (i->partnum) {
- 	case SOC_ID_AMAZON_SE:
- 		i->name = SOC_AMAZON_SE;
-@@ -37,3 +39,10 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
- 		break;
- 	}
- }
-+
-+void __init ltq_soc_setup(void)
-+{
-+	ltq_register_ase_asc();
-+	ltq_register_gpio();
-+	ltq_register_wdt();
-+}
-diff --git a/arch/mips/lantiq/xway/prom-xway.c b/arch/mips/lantiq/xway/prom-xway.c
-index 2228133..d823a92 100644
---- a/arch/mips/lantiq/xway/prom-xway.c
-+++ b/arch/mips/lantiq/xway/prom-xway.c
-@@ -13,6 +13,7 @@
- 
- #include <lantiq_soc.h>
- 
-+#include "devices.h"
- #include "../prom.h"
- 
- #define SOC_DANUBE	"Danube"
-@@ -28,6 +29,7 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
- {
- 	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
- 	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
-+	sprintf(i->rev_type, "1.%d", i->rev);
- 	switch (i->partnum) {
- 	case SOC_ID_DANUBE1:
- 	case SOC_ID_DANUBE2:
-@@ -52,3 +54,11 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
- 		break;
- 	}
- }
-+
-+void __init ltq_soc_setup(void)
-+{
-+	ltq_register_asc(0);
-+	ltq_register_asc(1);
-+	ltq_register_gpio();
-+	ltq_register_wdt();
-+}
-diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
-index 8b66bd8..bd0b697 100644
---- a/arch/mips/lantiq/xway/reset.c
-+++ b/arch/mips/lantiq/xway/reset.c
-@@ -15,6 +15,8 @@
- 
- #include <lantiq_soc.h>
- 
-+#include "../devices.h"
-+
- #define ltq_rcu_w32(x, y)	ltq_w32((x), ltq_rcu_membase + (y))
- #define ltq_rcu_r32(x)		ltq_r32(ltq_rcu_membase + (x))
- 
-@@ -25,12 +27,8 @@
- #define LTQ_RCU_RST_STAT	0x0014
- #define LTQ_RCU_STAT_SHIFT	26
- 
--static struct resource ltq_rcu_resource = {
--	.name   = "rcu",
--	.start  = LTQ_RCU_BASE_ADDR,
--	.end    = LTQ_RCU_BASE_ADDR + LTQ_RCU_SIZE - 1,
--	.flags  = IORESOURCE_MEM,
--};
-+static struct resource ltq_rcu_resource =
-+	MEM_RES("rcu", LTQ_RCU_BASE_ADDR, LTQ_RCU_SIZE);
- 
- /* remapped base addr of the reset control unit */
- static void __iomem *ltq_rcu_membase;
-@@ -45,7 +43,6 @@ EXPORT_SYMBOL_GPL(ltq_reset_cause);
- 
- static void ltq_machine_restart(char *command)
- {
--	pr_notice("System restart\n");
- 	local_irq_disable();
- 	ltq_rcu_w32(ltq_rcu_r32(LTQ_RCU_RST) | LTQ_RCU_RST_ALL, LTQ_RCU_RST);
- 	unreachable();
-@@ -53,31 +50,20 @@ static void ltq_machine_restart(char *command)
- 
- static void ltq_machine_halt(void)
- {
--	pr_notice("System halted.\n");
- 	local_irq_disable();
- 	unreachable();
- }
- 
- static void ltq_machine_power_off(void)
- {
--	pr_notice("Please turn off the power now.\n");
- 	local_irq_disable();
- 	unreachable();
- }
- 
- static int __init mips_reboot_setup(void)
- {
--	/* insert and request the memory region */
--	if (insert_resource(&iomem_resource, &ltq_rcu_resource) < 0)
--		panic("Failed to insert rcu memory");
--
--	if (request_mem_region(ltq_rcu_resource.start,
--			resource_size(&ltq_rcu_resource), "rcu") < 0)
--		panic("Failed to request rcu memory");
--
- 	/* remap rcu register range */
--	ltq_rcu_membase = ioremap_nocache(ltq_rcu_resource.start,
--				resource_size(&ltq_rcu_resource));
-+	ltq_rcu_membase = ltq_remap_resource(&ltq_rcu_resource);
- 	if (!ltq_rcu_membase)
- 		panic("Failed to remap rcu memory");
- 
-diff --git a/arch/mips/lantiq/xway/setup-ase.c b/arch/mips/lantiq/xway/setup-ase.c
-deleted file mode 100644
-index f6f3267..0000000
---- a/arch/mips/lantiq/xway/setup-ase.c
-+++ /dev/null
-@@ -1,19 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
-- */
--
--#include <lantiq_soc.h>
--
--#include "../prom.h"
--#include "devices.h"
--
--void __init ltq_soc_setup(void)
--{
--	ltq_register_ase_asc();
--	ltq_register_gpio();
--	ltq_register_wdt();
--}
-diff --git a/arch/mips/lantiq/xway/setup-xway.c b/arch/mips/lantiq/xway/setup-xway.c
-deleted file mode 100644
-index c292f64..0000000
---- a/arch/mips/lantiq/xway/setup-xway.c
-+++ /dev/null
-@@ -1,20 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
-- */
--
--#include <lantiq_soc.h>
--
--#include "../prom.h"
--#include "devices.h"
--
--void __init ltq_soc_setup(void)
--{
--	ltq_register_asc(0);
--	ltq_register_asc(1);
--	ltq_register_gpio();
--	ltq_register_wdt();
--}
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+ obj-$(CONFIG_SOC_TYPE_XWAY) += xway/
++obj-$(CONFIG_SOC_FALCON) += falcon/
+diff --git a/arch/mips/lantiq/Platform b/arch/mips/lantiq/Platform
+index f3dff05..b3ec498 100644
+--- a/arch/mips/lantiq/Platform
++++ b/arch/mips/lantiq/Platform
+@@ -6,3 +6,4 @@ platform-$(CONFIG_LANTIQ)	+= lantiq/
+ cflags-$(CONFIG_LANTIQ)		+= -I$(srctree)/arch/mips/include/asm/mach-lantiq
+ load-$(CONFIG_LANTIQ)		= 0xffffffff80002000
+ cflags-$(CONFIG_SOC_TYPE_XWAY)	+= -I$(srctree)/arch/mips/include/asm/mach-lantiq/xway
++cflags-$(CONFIG_SOC_FALCON)	+= -I$(srctree)/arch/mips/include/asm/mach-lantiq/falcon
+diff --git a/arch/mips/lantiq/falcon/Makefile b/arch/mips/lantiq/falcon/Makefile
 new file mode 100644
-index 0000000..38c122f
+index 0000000..e9c7455
 --- /dev/null
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -0,0 +1,78 @@
++++ b/arch/mips/lantiq/falcon/Makefile
+@@ -0,0 +1 @@
++obj-y := clk.o prom.o reset.o sysctrl.o devices.o
+diff --git a/arch/mips/lantiq/falcon/clk.c b/arch/mips/lantiq/falcon/clk.c
+new file mode 100644
+index 0000000..afe1b52
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/clk.c
+@@ -0,0 +1,44 @@
 +/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
 + *
-+ *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ * Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2011 John Crispin <blogic@openwrt.org>
 + */
 +
 +#include <linux/ioport.h>
@@ -869,83 +594,534 @@ index 0000000..38c122f
 +
 +#include <lantiq_soc.h>
 +
-+#include "../devices.h"
++#include "devices.h"
 +
-+/* clock control register */
-+#define LTQ_CGU_IFCCR	0x0018
++/* CPU0 Clock Control Register */
++#define LTQ_SYS1_CPU0CC		0x0040
++/* clock divider bit */
++#define LTQ_CPU0CC_CPUDIV	0x0001
 +
-+/* the enable / disable registers */
-+#define LTQ_PMU_PWDCR	0x1C
-+#define LTQ_PMU_PWDSR	0x20
-+
-+#define ltq_pmu_w32(x, y)	ltq_w32((x), ltq_pmu_membase + (y))
-+#define ltq_pmu_r32(x)		ltq_r32(ltq_pmu_membase + (x))
-+
-+static struct resource ltq_cgu_resource =
-+	MEM_RES("cgu", LTQ_CGU_BASE_ADDR, LTQ_CGU_SIZE);
-+
-+static struct resource ltq_pmu_resource =
-+	MEM_RES("pmu", LTQ_PMU_BASE_ADDR, LTQ_PMU_SIZE);
-+
-+static struct resource ltq_ebu_resource =
-+	MEM_RES("ebu", LTQ_EBU_BASE_ADDR, LTQ_EBU_SIZE);
-+
-+void __iomem *ltq_cgu_membase;
-+void __iomem *ltq_ebu_membase;
-+static void __iomem *ltq_pmu_membase;
-+
-+void ltq_cgu_enable(unsigned int clk)
++unsigned int
++ltq_get_io_region_clock(void)
 +{
-+	ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) | clk, LTQ_CGU_IFCCR);
++	return CLOCK_200M;
++}
++EXPORT_SYMBOL(ltq_get_io_region_clock);
++
++unsigned int
++ltq_get_cpu_hz(void)
++{
++	if (ltq_sys1_r32(LTQ_SYS1_CPU0CC) & LTQ_CPU0CC_CPUDIV)
++		return CLOCK_200M;
++	else
++		return CLOCK_400M;
++}
++EXPORT_SYMBOL(ltq_get_cpu_hz);
++
++unsigned int
++ltq_get_fpi_hz(void)
++{
++	return CLOCK_100M;
++}
++EXPORT_SYMBOL(ltq_get_fpi_hz);
+diff --git a/arch/mips/lantiq/falcon/devices.c b/arch/mips/lantiq/falcon/devices.c
+new file mode 100644
+index 0000000..c4606f2
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/devices.c
+@@ -0,0 +1,87 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/platform_device.h>
++#include <linux/mtd/nand.h>
++
++#include <lantiq_soc.h>
++
++#include "devices.h"
++
++/* nand flash */
++/* address lines used for NAND control signals */
++#define NAND_ADDR_ALE		0x10000
++#define NAND_ADDR_CLE		0x20000
++/* Ready/Busy Status */
++#define MODCON_STS		0x0002
++/* Ready/Busy Status Edge */
++#define MODCON_STSEDGE		0x0004
++
++static const char *part_probes[] = { "cmdlinepart", NULL };
++
++static int
++falcon_nand_ready(struct mtd_info *mtd)
++{
++	u32 modcon = ltq_ebu_r32(LTQ_EBU_MODCON);
++
++	return (((modcon & (MODCON_STS | MODCON_STSEDGE)) ==
++						(MODCON_STS | MODCON_STSEDGE)));
 +}
 +
-+void ltq_pmu_enable(unsigned int module)
++static void
++falcon_hwcontrol(struct mtd_info *mtd, int cmd, unsigned int ctrl)
++{
++	struct nand_chip *this = mtd->priv;
++	unsigned long nandaddr = (unsigned long) this->IO_ADDR_W;
++
++	if (ctrl & NAND_CTRL_CHANGE) {
++		nandaddr &= ~(NAND_ADDR_ALE | NAND_ADDR_CLE);
++
++		if (ctrl & NAND_CLE)
++			nandaddr |= NAND_ADDR_CLE;
++		if (ctrl & NAND_ALE)
++			nandaddr |= NAND_ADDR_ALE;
++
++		this->IO_ADDR_W = (void __iomem *) nandaddr;
++	}
++
++	if (cmd != NAND_CMD_NONE)
++		writeb(cmd, this->IO_ADDR_W);
++}
++
++static struct platform_nand_data falcon_flash_nand_data = {
++	.chip = {
++		.nr_chips		= 1,
++		.chip_delay		= 25,
++		.part_probe_types	= part_probes,
++	},
++	.ctrl = {
++		.cmd_ctrl		= falcon_hwcontrol,
++		.dev_ready		= falcon_nand_ready,
++	}
++};
++
++static struct resource ltq_nand_res =
++	MEM_RES("nand", LTQ_FLASH_START, LTQ_FLASH_MAX);
++
++static struct platform_device ltq_flash_nand = {
++	.name		= "gen_nand",
++	.id		= -1,
++	.num_resources	= 1,
++	.resource	= &ltq_nand_res,
++	.dev		= {
++		.platform_data = &falcon_flash_nand_data,
++	},
++};
++
++void __init
++falcon_register_nand(void)
++{
++	platform_device_register(&ltq_flash_nand);
++}
+diff --git a/arch/mips/lantiq/falcon/devices.h b/arch/mips/lantiq/falcon/devices.h
+new file mode 100644
+index 0000000..e802a7c
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/devices.h
+@@ -0,0 +1,18 @@
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ */
++
++#ifndef _FALCON_DEVICES_H__
++#define _FALCON_DEVICES_H__
++
++#include "../devices.h"
++
++extern void falcon_register_nand(void);
++
++#endif
+diff --git a/arch/mips/lantiq/falcon/prom.c b/arch/mips/lantiq/falcon/prom.c
+new file mode 100644
+index 0000000..b50d6f9
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/prom.c
+@@ -0,0 +1,93 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ */
++
++#include <lantiq_soc.h>
++
++#include "devices.h"
++
++#include "../prom.h"
++
++#define SOC_FALCON		"Falcon"
++#define SOC_FALCON_D		"Falcon-D"
++#define SOC_FALCON_V		"Falcon-V"
++#define SOC_FALCON_M		"Falcon-M"
++
++#define PART_SHIFT	12
++#define PART_MASK	0x0FFFF000
++#define REV_SHIFT	28
++#define REV_MASK	0xF0000000
++#define SREV_SHIFT	22
++#define SREV_MASK	0x03C00000
++#define TYPE_SHIFT	26
++#define TYPE_MASK	0x3C000000
++
++#define MUXC_SIF_RX_PIN		112
++#define MUXC_SIF_TX_PIN		113
++
++/* this parameter allows us enable/disable asc1 via commandline */
++static int register_asc1;
++static int __init
++ltq_parse_asc1(char *p)
++{
++	register_asc1 = 1;
++	return 0;
++}
++__setup("use_asc1", ltq_parse_asc1);
++
++void __init
++ltq_soc_setup(void)
++{
++	ltq_register_asc(0);
++	ltq_register_wdt();
++	falcon_register_gpio();
++	if (register_asc1) {
++		ltq_register_asc(1);
++		if (ltq_gpio_request(MUXC_SIF_RX_PIN, 3, 0, "asc1-rx"))
++			pr_err("failed to request asc1-rx");
++		if (ltq_gpio_request(MUXC_SIF_TX_PIN, 3, 1, "asc1-tx"))
++			pr_err("failed to request asc1-tx");
++		ltq_sysctl_activate(SYSCTL_SYS1, ACTS_ASC1_ACT);
++	}
++}
++
++void __init
++ltq_soc_detect(struct ltq_soc_info *i)
++{
++	u32 type;
++	i->partnum = (ltq_r32(LTQ_FALCON_CHIPID) & PART_MASK) >> PART_SHIFT;
++	i->rev = (ltq_r32(LTQ_FALCON_CHIPID) & REV_MASK) >> REV_SHIFT;
++	i->srev = ((ltq_r32(LTQ_FALCON_CHIPCONF) & SREV_MASK) >> SREV_SHIFT);
++	sprintf(i->rev_type, "%c%d%d", (i->srev & 0x4) ? ('B') : ('A'),
++		i->rev & 0x7, (i->srev & 0x3) + 1);
++
++	switch (i->partnum) {
++	case SOC_ID_FALCON:
++		type = (ltq_r32(LTQ_FALCON_CHIPTYPE) & TYPE_MASK) >> TYPE_SHIFT;
++		switch (type) {
++		case 0:
++			i->name = SOC_FALCON_D;
++			break;
++		case 1:
++			i->name = SOC_FALCON_V;
++			break;
++		case 2:
++			i->name = SOC_FALCON_M;
++			break;
++		default:
++			i->name = SOC_FALCON;
++			break;
++		}
++		i->type = SOC_TYPE_FALCON;
++		break;
++
++	default:
++		unreachable();
++		break;
++	}
++}
+diff --git a/arch/mips/lantiq/falcon/reset.c b/arch/mips/lantiq/falcon/reset.c
+new file mode 100644
+index 0000000..6d829af
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/reset.c
+@@ -0,0 +1,88 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/pm.h>
++#include <asm/reboot.h>
++#include <linux/export.h>
++
++#include <lantiq_soc.h>
++
++/* CPU0 Reset Source Register */
++#define LTQ_SYS1_CPU0RS		0x0040
++/* reset cause mask */
++#define LTQ_CPU0RS_MASK		0x0003
++
++int
++ltq_reset_cause(void)
++{
++	return ltq_sys1_r32(LTQ_SYS1_CPU0RS) & LTQ_CPU0RS_MASK;
++}
++EXPORT_SYMBOL_GPL(ltq_reset_cause);
++
++#define BOOT_REG_BASE	(KSEG1 | 0x1F200000)
++#define BOOT_PW1_REG	(BOOT_REG_BASE | 0x20)
++#define BOOT_PW2_REG	(BOOT_REG_BASE | 0x24)
++#define BOOT_PW1	0x4C545100
++#define BOOT_PW2	0x0051544C
++
++#define WDT_REG_BASE	(KSEG1 | 0x1F8803F0)
++#define WDT_PW1		0x00BE0000
++#define WDT_PW2		0x00DC0000
++
++static void
++ltq_machine_restart(char *command)
++{
++	local_irq_disable();
++
++	/* reboot magic */
++	ltq_w32(BOOT_PW1, (void *)BOOT_PW1_REG); /* 'LTQ\0' */
++	ltq_w32(BOOT_PW2, (void *)BOOT_PW2_REG); /* '\0QTL' */
++	ltq_w32(0, (void *)BOOT_REG_BASE); /* reset Bootreg RVEC */
++
++	/* watchdog magic */
++	ltq_w32(WDT_PW1, (void *)WDT_REG_BASE);
++	ltq_w32(WDT_PW2 |
++		(0x3 << 26) | /* PWL */
++		(0x2 << 24) | /* CLKDIV */
++		(0x1 << 31) | /* enable */
++		(1), /* reload */
++		(void *)WDT_REG_BASE);
++	/*
++	 * Dont call unreachable(); here as we need to wait for the watchdog
++	 * to trigger.
++	 */
++	do {} while (1);
++}
++
++static void
++ltq_machine_halt(void)
++{
++	local_irq_disable();
++	unreachable();
++}
++
++static void
++ltq_machine_power_off(void)
++{
++	local_irq_disable();
++	unreachable();
++}
++
++static int __init
++mips_reboot_setup(void)
++{
++	_machine_restart = ltq_machine_restart;
++	_machine_halt = ltq_machine_halt;
++	pm_power_off = ltq_machine_power_off;
++	return 0;
++}
++
++arch_initcall(mips_reboot_setup);
+diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
+new file mode 100644
+index 0000000..905a142
+--- /dev/null
++++ b/arch/mips/lantiq/falcon/sysctrl.c
+@@ -0,0 +1,183 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ *
++ * Copyright (C) 2011 Thomas Langer <thomas.langer@lantiq.com>
++ * Copyright (C) 2011 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/ioport.h>
++#include <linux/export.h>
++#include <asm/delay.h>
++
++#include <lantiq_soc.h>
++
++#include "devices.h"
++
++/* infrastructure control register */
++#define SYS1_INFRAC		0x00bc
++/* Configuration fuses for drivers and pll */
++#define STATUS_CONFIG		0x0040
++
++/* GPE frequency selection */
++#define GPPC_OFFSET		24
++#define GPEFREQ_MASK		0x00000C0
++#define GPEFREQ_OFFSET		10
++/* Clock status register */
++#define LTQ_SYSCTL_CLKS		0x0000
++/* Clock enable register */
++#define LTQ_SYSCTL_CLKEN	0x0004
++/* Clock clear register */
++#define LTQ_SYSCTL_CLKCLR	0x0008
++/* Activation Status Register */
++#define LTQ_SYSCTL_ACTS		0x0020
++/* Activation Register */
++#define LTQ_SYSCTL_ACT		0x0024
++/* Deactivation Register */
++#define LTQ_SYSCTL_DEACT	0x0028
++/* reboot Register */
++#define LTQ_SYSCTL_RBT		0x002c
++
++static struct resource ltq_sysctl_res[] = {
++	MEM_RES("sys1", LTQ_SYS1_BASE_ADDR, LTQ_SYS1_SIZE),
++	MEM_RES("syseth", LTQ_SYS_ETH_BASE_ADDR, LTQ_SYS_ETH_SIZE),
++	MEM_RES("sysgpe", LTQ_SYS_GPE_BASE_ADDR, LTQ_SYS_GPE_SIZE),
++};
++
++static struct resource ltq_status_res =
++	MEM_RES("status", LTQ_STATUS_BASE_ADDR, LTQ_STATUS_SIZE);
++static struct resource ltq_ebu_res =
++	MEM_RES("ebu", LTQ_EBU_BASE_ADDR, LTQ_EBU_SIZE);
++
++static void __iomem *ltq_sysctl[3];
++static void __iomem *ltq_status_membase;
++void __iomem *ltq_sys1_membase;
++void __iomem *ltq_ebu_membase;
++
++#define ltq_reg_w32(m, x, y)	ltq_w32((x), ltq_sysctl[m] + (y))
++#define ltq_reg_r32(m, x)	ltq_r32(ltq_sysctl[m] + (x))
++#define ltq_reg_w32_mask(m, clear, set, reg)	\
++		ltq_reg_w32(m, (ltq_reg_r32(m, reg) & ~(clear)) | (set), reg)
++
++#define ltq_status_w32(x, y)	ltq_w32((x), ltq_status_membase + (y))
++#define ltq_status_r32(x)	ltq_r32(ltq_status_membase + (x))
++
++static inline void
++ltq_sysctl_wait(int module, unsigned int mask,
++		unsigned int test, unsigned int reg)
 +{
 +	int err = 1000000;
 +
-+	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) & ~module, LTQ_PMU_PWDCR);
-+	do {} while (--err && (ltq_pmu_r32(LTQ_PMU_PWDSR) & module));
-+
++	do {} while (--err && ((ltq_reg_r32(module, reg)
++					& mask) != test));
 +	if (!err)
-+		panic("activating PMU module failed!");
++		pr_err("module de/activation failed %d %08X %08X\n",
++							module, mask, test);
 +}
-+EXPORT_SYMBOL(ltq_pmu_enable);
 +
-+void ltq_pmu_disable(unsigned int module)
++void
++ltq_sysctl_activate(int module, unsigned int mask)
 +{
-+	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) | module, LTQ_PMU_PWDCR);
-+}
-+EXPORT_SYMBOL(ltq_pmu_disable);
++	if (module > SYSCTL_SYSGPE)
++		return;
 +
-+void __init ltq_soc_init(void)
++	ltq_reg_w32(module, mask, LTQ_SYSCTL_CLKEN);
++	ltq_reg_w32(module, mask, LTQ_SYSCTL_ACT);
++	ltq_sysctl_wait(module, mask, mask, LTQ_SYSCTL_ACTS);
++}
++EXPORT_SYMBOL(ltq_sysctl_activate);
++
++void
++ltq_sysctl_deactivate(int module, unsigned int mask)
 +{
-+	ltq_pmu_membase = ltq_remap_resource(&ltq_pmu_resource);
-+	if (!ltq_pmu_membase)
-+		panic("Failed to remap pmu memory");
++	if (module > SYSCTL_SYSGPE)
++		return;
 +
-+	ltq_cgu_membase = ltq_remap_resource(&ltq_cgu_resource);
-+	if (!ltq_cgu_membase)
-+		panic("Failed to remap cgu memory");
-+
-+	ltq_ebu_membase = ltq_remap_resource(&ltq_ebu_resource);
-+	if (!ltq_ebu_membase)
-+		panic("Failed to remap ebu memory");
-+
-+	/* make sure to unprotect the memory region where flash is located */
-+	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
++	ltq_reg_w32(module, mask, LTQ_SYSCTL_CLKCLR);
++	ltq_reg_w32(module, mask, LTQ_SYSCTL_DEACT);
++	ltq_sysctl_wait(module, mask, 0, LTQ_SYSCTL_ACTS);
 +}
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-index 102aed0..179bf98 100644
---- a/drivers/watchdog/lantiq_wdt.c
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -16,7 +16,7 @@
- #include <linux/clk.h>
- #include <linux/io.h>
- 
--#include <lantiq.h>
-+#include <lantiq_soc.h>
- 
- /* Section 3.4 of the datasheet
-  * The password sequence protects the WDT control register from unintended
++EXPORT_SYMBOL(ltq_sysctl_deactivate);
++
++void
++ltq_sysctl_clken(int module, unsigned int mask)
++{
++	if (module > SYSCTL_SYSGPE)
++		return;
++
++	ltq_reg_w32(module, mask, LTQ_SYSCTL_CLKEN);
++	ltq_sysctl_wait(module, mask, mask, LTQ_SYSCTL_CLKS);
++}
++EXPORT_SYMBOL(ltq_sysctl_clken);
++
++void
++ltq_sysctl_clkdis(int module, unsigned int mask)
++{
++	if (module > SYSCTL_SYSGPE)
++		return;
++
++	ltq_reg_w32(module, mask, LTQ_SYSCTL_CLKCLR);
++	ltq_sysctl_wait(module, mask, 0, LTQ_SYSCTL_CLKS);
++}
++EXPORT_SYMBOL(ltq_sysctl_clkdis);
++
++void
++ltq_sysctl_reboot(int module, unsigned int mask)
++{
++	unsigned int act;
++
++	if (module > SYSCTL_SYSGPE)
++		return;
++
++	act = ltq_reg_r32(module, LTQ_SYSCTL_ACT);
++	if ((~act & mask) != 0)
++		ltq_sysctl_activate(module, ~act & mask);
++	ltq_reg_w32(module, act & mask, LTQ_SYSCTL_RBT);
++	ltq_sysctl_wait(module, mask, mask, LTQ_SYSCTL_ACTS);
++}
++EXPORT_SYMBOL(ltq_sysctl_reboot);
++
++/* enable the ONU core */
++static void
++ltq_gpe_enable(void)
++{
++	unsigned int freq;
++	unsigned int status;
++
++	/* if if the clock is already enabled */
++	status = ltq_reg_r32(SYSCTL_SYS1, SYS1_INFRAC);
++	if (status & (1 << (GPPC_OFFSET + 1)))
++		return;
++
++	if (ltq_status_r32(STATUS_CONFIG) == 0)
++		freq = 1; /* use 625MHz on unfused chip */
++	else
++		freq = (ltq_status_r32(STATUS_CONFIG) &
++			GPEFREQ_MASK) >>
++			GPEFREQ_OFFSET;
++
++	/* apply new frequency */
++	ltq_reg_w32_mask(SYSCTL_SYS1, 7 << (GPPC_OFFSET + 1),
++		freq << (GPPC_OFFSET + 2) , SYS1_INFRAC);
++	udelay(1);
++
++	/* enable new frequency */
++	ltq_reg_w32_mask(SYSCTL_SYS1, 0, 1 << (GPPC_OFFSET + 1), SYS1_INFRAC);
++	udelay(1);
++}
++
++void __init
++ltq_soc_init(void)
++{
++	int i;
++
++	for (i = 0; i < 3; i++)
++		ltq_sysctl[i] = ltq_remap_resource(&ltq_sysctl_res[i]);
++
++	ltq_sys1_membase = ltq_sysctl[0];
++	ltq_status_membase = ltq_remap_resource(&ltq_status_res);
++	ltq_ebu_membase = ltq_remap_resource(&ltq_ebu_res);
++
++	ltq_gpe_enable();
++}
 -- 
 1.7.7.1

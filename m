@@ -1,35 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2012 07:40:05 +0100 (CET)
-Received: from mail-vw0-f49.google.com ([209.85.212.49]:64221 "EHLO
-        mail-vw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903642Ab2ARGj5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2012 07:39:57 +0100
-Received: by vbbff1 with SMTP id ff1so3214999vbb.36
-        for <multiple recipients>; Tue, 17 Jan 2012 22:39:51 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2012 07:41:48 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:55727 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903642Ab2ARGll (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2012 07:41:41 +0100
+Received: by iaek3 with SMTP id k3so2806173iae.36
+        for <multiple recipients>; Tue, 17 Jan 2012 22:41:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        bh=h2eI1eMOvIGEfdqrptJLqB/4G96ggOIvmoR9KM0uc4A=;
-        b=BcHkPGwSnbeYX2O2hTM5+kH0sYeskeYvHgjlT9lNCOtqtxelLK7tC1w+JTVNORkGjl
-         vKd6CtzpLkYgL2qDI4XIZZvy+T83vDa/uUoDixfwiRBHVnTZEFNwbxIvXz1i/JeBzrKY
-         44gcBuTNdaf1RG9vLJfi28Y9GApC0ygCCv9mo=
-Received: by 10.52.93.77 with SMTP id cs13mr2850214vdb.71.1326868791543; Tue,
- 17 Jan 2012 22:39:51 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.220.184.1 with HTTP; Tue, 17 Jan 2012 22:39:30 -0800 (PST)
-In-Reply-To: <Pine.LNX.4.44L0.1201171021320.1818-100000@iolanthe.rowland.org>
-References: <1326777160-9930-5-git-send-email-keguang.zhang@gmail.com> <Pine.LNX.4.44L0.1201171021320.1818-100000@iolanthe.rowland.org>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=voOQieJyfw4JAhYKCS5Oh7W8ml8pui59WKV6EPo192Q=;
+        b=sAMpY+nMIOPVVlKeOvi7ZdgNnTJ1WHdD1HnKvgFXVhn3v3loN2xIoIyhcEMUqxX7s+
+         heUq4oLIwOqHb+ZN308hGeB/ClZmLV07nOWeA1ppCWhPzM6nZxNb0le8OEtTAri6NwyB
+         Us0lpqk/DcsYyUIAwdR8ONtoOq+iBP5HvAJkI=
+Received: by 10.50.51.199 with SMTP id m7mr18494705igo.23.1326868894832;
+        Tue, 17 Jan 2012 22:41:34 -0800 (PST)
+Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
+        by mx.google.com with ESMTPS id gh7sm42941173igb.1.2012.01.17.22.41.28
+        (version=SSLv3 cipher=OTHER);
+        Tue, 17 Jan 2012 22:41:33 -0800 (PST)
 From:   Kelvin Cheung <keguang.zhang@gmail.com>
-Date:   Wed, 18 Jan 2012 14:39:30 +0800
-Message-ID: <CAJhJPsVd1iTQuo4wWOoJVANsmNAPC8siM9z-dz1V0QX3s3X7cg@mail.gmail.com>
-Subject: Re: [PATCH V6 4/5] USB: Add EHCI bus glue for Loongson1x SoCs
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
-        linux-usb@vger.kernel.org, gregkh@suse.de, zhzhl555@gmail.com,
-        peppe.cavallaro@st.com, wuzhangjin@gmail.com,
-        linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary=bcaec501652ffbc7eb04b6c7b686
-X-archive-position: 32284
+To:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
+        ralf@linux-mips.org, linux-mips@linux-mips.org
+Cc:     gregkh@suse.de, wuzhangjin@gmail.com, linux-kernel@vger.kernel.org,
+        Kelvin Cheung <keguang.zhang@gmail.com>
+Subject: [PATCH V6 4/5] USB: Add EHCI bus glue for Loongson1x SoCs (UPDATED)
+Date:   Wed, 18 Jan 2012 14:41:16 +0800
+Message-Id: <1326868876-20271-1-git-send-email-keguang.zhang@gmail.com>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 32285
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,149 +36,212 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
---bcaec501652ffbc7eb04b6c7b686
-Content-Type: text/plain; charset=ISO-8859-1
+Use ehci_setup() in ehci_ls1x_reset().
 
-Done.
+The Loongson1x SoCs have a built-in EHCI controller.
+This patch adds the necessary glue code to make the generic EHCI
+driver usable for them.
 
-Thanks for review.
+Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+---
+ drivers/usb/Kconfig          |    1 +
+ drivers/usb/host/ehci-hcd.c  |    5 ++
+ drivers/usb/host/ehci-ls1x.c |  159 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 165 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/usb/host/ehci-ls1x.c
 
-2012/1/17 Alan Stern <stern@rowland.harvard.edu>
-
-> On Tue, 17 Jan 2012, Kelvin Cheung wrote:
->
-> > The Loongson1x SoCs have a built-in EHCI controller.
-> > This patch adds the necessary glue code to make the generic EHCI
-> > driver usable for them.
->
-> > --- /dev/null
-> > +++ b/drivers/usb/host/ehci-ls1x.c
-> > @@ -0,0 +1,170 @@
-> > +/*
-> > + *  Bus Glue for Loongson LS1X built-in EHCI controller.
-> > + *
-> > + *  Copyright (c) 2012 Zhang, Keguang <keguang.zhang@gmail.com>
-> > + *
-> > + *  This program is free software; you can redistribute it and/or
-> modify it
-> > + *  under the terms of the GNU General Public License version 2 as
-> published
-> > + *  by the Free Software Foundation.
-> > + */
-> > +
-> > +
-> > +#include <linux/platform_device.h>
-> > +
-> > +static int ehci_ls1x_setup(struct usb_hcd *hcd)
-> > +{
-> > +     struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-> > +     int ret;
-> > +
-> > +     ehci->caps = hcd->regs;
-> > +     ehci->regs = hcd->regs +
-> > +             HC_LENGTH(ehci, ehci_readl(ehci, &ehci->caps->hc_capbase));
-> > +     dbg_hcs_params(ehci, "reset");
-> > +     dbg_hcc_params(ehci, "reset");
-> > +
-> > +     /* cache this readonly data; minimize chip reads */
-> > +     ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
-> > +     ehci->sbrn = 0x20;
-> > +
-> > +     ehci_reset(ehci);
-> > +
-> > +     /* data structure init */
-> > +     ret = ehci_init(hcd);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ehci_port_power(ehci, 0);
-> > +
-> > +     return 0;
-> > +}
->
-> Most of this routine should be replaced with a call to ehci_setup().
->
-> Alan Stern
->
->
-
-
+diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
+index 85d5a01..78ac78b 100644
+--- a/drivers/usb/Kconfig
++++ b/drivers/usb/Kconfig
+@@ -68,6 +68,7 @@ config USB_ARCH_HAS_EHCI
+ 	default y if ARCH_MSM
+ 	default y if MICROBLAZE
+ 	default y if SPARC_LEON
++	default y if MACH_LOONGSON1
+ 	default PCI
+ 
+ # ARM SA1111 chips have a non-PCI based "OHCI-compatible" USB host interface.
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 47aa22d..d38bd7c 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1291,6 +1291,11 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		ehci_grlib_driver
+ #endif
+ 
++#ifdef CONFIG_MACH_LOONGSON1
++#include "ehci-ls1x.c"
++#define PLATFORM_DRIVER		ehci_ls1x_driver
++#endif
++
+ #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
+     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER) && \
+     !defined(XILINX_OF_PLATFORM_DRIVER)
+diff --git a/drivers/usb/host/ehci-ls1x.c b/drivers/usb/host/ehci-ls1x.c
+new file mode 100644
+index 0000000..a283e59
+--- /dev/null
++++ b/drivers/usb/host/ehci-ls1x.c
+@@ -0,0 +1,159 @@
++/*
++ *  Bus Glue for Loongson LS1X built-in EHCI controller.
++ *
++ *  Copyright (c) 2012 Zhang, Keguang <keguang.zhang@gmail.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
++
++
++#include <linux/platform_device.h>
++
++static int ehci_ls1x_reset(struct usb_hcd *hcd)
++{
++	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
++	int ret;
++
++	ehci->caps = hcd->regs;
++
++	ret = ehci_setup(hcd);
++	if (ret)
++		return ret;
++
++	ehci_port_power(ehci, 0);
++
++	return 0;
++}
++
++static const struct hc_driver ehci_ls1x_hc_driver = {
++	.description		= hcd_name,
++	.product_desc		= "LOONGSON1 EHCI",
++	.hcd_priv_size		= sizeof(struct ehci_hcd),
++
++	/*
++	 * generic hardware linkage
++	 */
++	.irq			= ehci_irq,
++	.flags			= HCD_MEMORY | HCD_USB2,
++
++	/*
++	 * basic lifecycle operations
++	 */
++	.reset			= ehci_ls1x_reset,
++	.start			= ehci_run,
++	.stop			= ehci_stop,
++	.shutdown		= ehci_shutdown,
++
++	/*
++	 * managing i/o requests and associated device resources
++	 */
++	.urb_enqueue		= ehci_urb_enqueue,
++	.urb_dequeue		= ehci_urb_dequeue,
++	.endpoint_disable	= ehci_endpoint_disable,
++	.endpoint_reset		= ehci_endpoint_reset,
++
++	/*
++	 * scheduling support
++	 */
++	.get_frame_number	= ehci_get_frame,
++
++	/*
++	 * root hub support
++	 */
++	.hub_status_data	= ehci_hub_status_data,
++	.hub_control		= ehci_hub_control,
++	.relinquish_port	= ehci_relinquish_port,
++	.port_handed_over	= ehci_port_handed_over,
++
++	.clear_tt_buffer_complete	= ehci_clear_tt_buffer_complete,
++};
++
++static int ehci_hcd_ls1x_probe(struct platform_device *pdev)
++{
++	struct usb_hcd *hcd;
++	struct resource *res;
++	int irq;
++	int ret;
++
++	pr_debug("initializing loongson1 ehci USB Controller\n");
++
++	if (usb_disabled())
++		return -ENODEV;
++
++	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!res) {
++		dev_err(&pdev->dev,
++			"Found HC with no IRQ. Check %s setup!\n",
++			dev_name(&pdev->dev));
++		return -ENODEV;
++	}
++	irq = res->start;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res) {
++		dev_err(&pdev->dev,
++			"Found HC with no register addr. Check %s setup!\n",
++			dev_name(&pdev->dev));
++		return -ENODEV;
++	}
++
++	hcd = usb_create_hcd(&ehci_ls1x_hc_driver, &pdev->dev,
++				dev_name(&pdev->dev));
++	if (!hcd)
++		return -ENOMEM;
++	hcd->rsrc_start	= res->start;
++	hcd->rsrc_len	= resource_size(res);
++
++	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
++		dev_dbg(&pdev->dev, "controller already in use\n");
++		ret = -EBUSY;
++		goto err_put_hcd;
++	}
++
++	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
++	if (hcd->regs == NULL) {
++		dev_dbg(&pdev->dev, "error mapping memory\n");
++		ret = -EFAULT;
++		goto err_release_region;
++	}
++
++	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED | IRQF_SHARED);
++	if (ret)
++		goto err_iounmap;
++
++	return ret;
++
++err_iounmap:
++	iounmap(hcd->regs);
++err_release_region:
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++err_put_hcd:
++	usb_put_hcd(hcd);
++	return ret;
++}
++
++static int ehci_hcd_ls1x_remove(struct platform_device *pdev)
++{
++	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++
++	usb_remove_hcd(hcd);
++	iounmap(hcd->regs);
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++	usb_put_hcd(hcd);
++
++	return 0;
++}
++
++static struct platform_driver ehci_ls1x_driver = {
++	.probe = ehci_hcd_ls1x_probe,
++	.remove = ehci_hcd_ls1x_remove,
++	.shutdown = usb_hcd_platform_shutdown,
++	.driver = {
++		.name = "ls1x-ehci",
++		.owner	= THIS_MODULE,
++	},
++};
++
++MODULE_ALIAS(PLATFORM_MODULE_PREFIX "ls1x-ehci");
 -- 
-Best Regards!
-Kelvin
-
---bcaec501652ffbc7eb04b6c7b686
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Done.<br>
-<br>
-Thanks for review.<br><br><div class=3D"gmail_quote">2012/1/17 Alan Stern <=
-span dir=3D"ltr">&lt;<a href=3D"mailto:stern@rowland.harvard.edu">stern@row=
-land.harvard.edu</a>&gt;</span><br><blockquote class=3D"gmail_quote" style=
-=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-
-<div class=3D"im">On Tue, 17 Jan 2012, Kelvin Cheung wrote:<br>
-<br>
-&gt; The Loongson1x SoCs have a built-in EHCI controller.<br>
-&gt; This patch adds the necessary glue code to make the generic EHCI<br>
-&gt; driver usable for them.<br>
-<br>
-</div><div><div class=3D"h5">&gt; --- /dev/null<br>
-&gt; +++ b/drivers/usb/host/ehci-ls1x.c<br>
-&gt; @@ -0,0 +1,170 @@<br>
-&gt; +/*<br>
-&gt; + * =A0Bus Glue for Loongson LS1X built-in EHCI controller.<br>
-&gt; + *<br>
-&gt; + * =A0Copyright (c) 2012 Zhang, Keguang &lt;<a href=3D"mailto:keguang=
-.zhang@gmail.com">keguang.zhang@gmail.com</a>&gt;<br>
-&gt; + *<br>
-&gt; + * =A0This program is free software; you can redistribute it and/or m=
-odify it<br>
-&gt; + * =A0under the terms of the GNU General Public License version 2 as =
-published<br>
-&gt; + * =A0by the Free Software Foundation.<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +<br>
-&gt; +#include &lt;linux/platform_device.h&gt;<br>
-&gt; +<br>
-&gt; +static int ehci_ls1x_setup(struct usb_hcd *hcd)<br>
-&gt; +{<br>
-&gt; + =A0 =A0 struct ehci_hcd *ehci =3D hcd_to_ehci(hcd);<br>
-&gt; + =A0 =A0 int ret;<br>
-&gt; +<br>
-&gt; + =A0 =A0 ehci-&gt;caps =3D hcd-&gt;regs;<br>
-&gt; + =A0 =A0 ehci-&gt;regs =3D hcd-&gt;regs +<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 HC_LENGTH(ehci, ehci_readl(ehci, &amp;ehci-&=
-gt;caps-&gt;hc_capbase));<br>
-&gt; + =A0 =A0 dbg_hcs_params(ehci, &quot;reset&quot;);<br>
-&gt; + =A0 =A0 dbg_hcc_params(ehci, &quot;reset&quot;);<br>
-&gt; +<br>
-&gt; + =A0 =A0 /* cache this readonly data; minimize chip reads */<br>
-&gt; + =A0 =A0 ehci-&gt;hcs_params =3D ehci_readl(ehci, &amp;ehci-&gt;caps-=
-&gt;hcs_params);<br>
-&gt; + =A0 =A0 ehci-&gt;sbrn =3D 0x20;<br>
-&gt; +<br>
-&gt; + =A0 =A0 ehci_reset(ehci);<br>
-&gt; +<br>
-&gt; + =A0 =A0 /* data structure init */<br>
-&gt; + =A0 =A0 ret =3D ehci_init(hcd);<br>
-&gt; + =A0 =A0 if (ret)<br>
-&gt; + =A0 =A0 =A0 =A0 =A0 =A0 return ret;<br>
-&gt; +<br>
-&gt; + =A0 =A0 ehci_port_power(ehci, 0);<br>
-&gt; +<br>
-&gt; + =A0 =A0 return 0;<br>
-&gt; +}<br>
-<br>
-</div></div>Most of this routine should be replaced with a call to ehci_set=
-up().<br>
-<span class=3D"HOEnZb"><font color=3D"#888888"><br>
-Alan Stern<br>
-<br>
-</font></span></blockquote></div><br><br clear=3D"all"><br>-- <br>Best Rega=
-rds!<br>Kelvin<br><br><img src=3D"http://ubuntucounter.geekosophical.net/im=
-g/ubuntu-blogger.php?user=3D26540"><br><br>
-
---bcaec501652ffbc7eb04b6c7b686--
+1.7.1

@@ -1,247 +1,305 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2012 07:41:48 +0100 (CET)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:55727 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jan 2012 09:17:34 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:45078 "EHLO
         mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903642Ab2ARGll (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2012 07:41:41 +0100
-Received: by iaek3 with SMTP id k3so2806173iae.36
-        for <multiple recipients>; Tue, 17 Jan 2012 22:41:34 -0800 (PST)
+        by eddie.linux-mips.org with ESMTP id S1903644Ab2ARIR3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 18 Jan 2012 09:17:29 +0100
+Received: by iaek3 with SMTP id k3so2936362iae.36
+        for <multiple recipients>; Wed, 18 Jan 2012 00:17:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=voOQieJyfw4JAhYKCS5Oh7W8ml8pui59WKV6EPo192Q=;
-        b=sAMpY+nMIOPVVlKeOvi7ZdgNnTJ1WHdD1HnKvgFXVhn3v3loN2xIoIyhcEMUqxX7s+
-         heUq4oLIwOqHb+ZN308hGeB/ClZmLV07nOWeA1ppCWhPzM6nZxNb0le8OEtTAri6NwyB
-         Us0lpqk/DcsYyUIAwdR8ONtoOq+iBP5HvAJkI=
-Received: by 10.50.51.199 with SMTP id m7mr18494705igo.23.1326868894832;
-        Tue, 17 Jan 2012 22:41:34 -0800 (PST)
-Received: from kelvin-Work.chd.intersil.com ([182.148.112.76])
-        by mx.google.com with ESMTPS id gh7sm42941173igb.1.2012.01.17.22.41.28
+        bh=+iHo++QyNRacD9jZZIa7YgpJ+yaG/X4PHFCTZy2f/+Y=;
+        b=pXzkXI1sHmgDo+qe5n89hwcV2zH8BEpqRHfI42qZDEEPyq5E5GZCJXr3RLFT4a4gZW
+         G1qh1owWs398EZolwzkRZ7q/avGCylcEXBtidyfumaUzUgpXYnMQrOOSlVIhmZSIX3DB
+         a56ccACgOzLHvR/YkO4Hnn8ldMWlzTLKEAdpA=
+Received: by 10.50.87.132 with SMTP id ay4mr1270389igb.2.1326874643357;
+        Wed, 18 Jan 2012 00:17:23 -0800 (PST)
+Received: from localhost.localdomain ([182.148.112.76])
+        by mx.google.com with ESMTPS id 5sm86504429ibe.8.2012.01.18.00.17.16
         (version=SSLv3 cipher=OTHER);
-        Tue, 17 Jan 2012 22:41:33 -0800 (PST)
-From:   Kelvin Cheung <keguang.zhang@gmail.com>
-To:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
-        ralf@linux-mips.org, linux-mips@linux-mips.org
-Cc:     gregkh@suse.de, wuzhangjin@gmail.com, linux-kernel@vger.kernel.org,
-        Kelvin Cheung <keguang.zhang@gmail.com>
-Subject: [PATCH V6 4/5] USB: Add EHCI bus glue for Loongson1x SoCs (UPDATED)
-Date:   Wed, 18 Jan 2012 14:41:16 +0800
-Message-Id: <1326868876-20271-1-git-send-email-keguang.zhang@gmail.com>
-X-Mailer: git-send-email 1.7.1
-X-archive-position: 32285
+        Wed, 18 Jan 2012 00:17:21 -0800 (PST)
+From:   zhzhl555@gmail.com
+To:     a.zummo@towertech.it, rtc-linux@googlegroups.com,
+        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:     ralf@linux-mips.org, keguang.zhang@gmail.com, wuzhangjin@gmail.com,
+        r0bertz@gentoo.org, zhao zhang <zhzhl555@gmail.com>
+Subject: [PATCH V3] MIPS: Add RTC support for loongson1B
+Date:   Wed, 18 Jan 2012 16:17:04 +0800
+Message-Id: <1326874624-17867-1-git-send-email-zhzhl555@gmail.com>
+X-Mailer: git-send-email 1.7.0.4
+X-archive-position: 32286
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: keguang.zhang@gmail.com
+X-original-sender: zhzhl555@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Use ehci_setup() in ehci_ls1x_reset().
+From: zhao zhang <zhzhl555@gmail.com>
 
-The Loongson1x SoCs have a built-in EHCI controller.
-This patch adds the necessary glue code to make the generic EHCI
-driver usable for them.
+This patch adds RTC support(TOY counter0) for loongson1B SOC
 
-Signed-off-by: Kelvin Cheung <keguang.zhang@gmail.com>
+change log:
+V3:Remove sync instruction.
+V2:Use new module_platform_driver macro.
+V1:Replace __raw_writel/__raw_readl with writel/readl.
+
+Signed-off-by: zhao zhang <zhzhl555@gmail.com>
 ---
- drivers/usb/Kconfig          |    1 +
- drivers/usb/host/ehci-hcd.c  |    5 ++
- drivers/usb/host/ehci-ls1x.c |  159 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 165 insertions(+), 0 deletions(-)
- create mode 100644 drivers/usb/host/ehci-ls1x.c
+ drivers/rtc/Kconfig    |   10 +++
+ drivers/rtc/Makefile   |    1 +
+ drivers/rtc/rtc-ls1x.c |  211 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 222 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/rtc/rtc-ls1x.c
 
-diff --git a/drivers/usb/Kconfig b/drivers/usb/Kconfig
-index 85d5a01..78ac78b 100644
---- a/drivers/usb/Kconfig
-+++ b/drivers/usb/Kconfig
-@@ -68,6 +68,7 @@ config USB_ARCH_HAS_EHCI
- 	default y if ARCH_MSM
- 	default y if MICROBLAZE
- 	default y if SPARC_LEON
-+	default y if MACH_LOONGSON1
- 	default PCI
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index 5a538fc..6f8c2d7 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -1070,4 +1070,14 @@ config RTC_DRV_PUV3
+ 	  This drive can also be built as a module. If so, the module
+ 	  will be called rtc-puv3.
  
- # ARM SA1111 chips have a non-PCI based "OHCI-compatible" USB host interface.
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 47aa22d..d38bd7c 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -1291,6 +1291,11 @@ MODULE_LICENSE ("GPL");
- #define PLATFORM_DRIVER		ehci_grlib_driver
- #endif
- 
-+#ifdef CONFIG_MACH_LOONGSON1
-+#include "ehci-ls1x.c"
-+#define PLATFORM_DRIVER		ehci_ls1x_driver
-+#endif
++config RTC_DRV_LOONGSON1
++	tristate "loongson1 RTC support"
++	depends on MACH_LOONGSON1
++	help
++	  This is a driver for the loongson1 on-chip Counter0 (Time-Of-Year
++	  counter) to be used as a RTC.
 +
- #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
-     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER) && \
-     !defined(XILINX_OF_PLATFORM_DRIVER)
-diff --git a/drivers/usb/host/ehci-ls1x.c b/drivers/usb/host/ehci-ls1x.c
++	  This driver can also be built as a module. If so, the module
++	  will be called rtc-ls1x.
++
+ endif # RTC_CLASS
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 6e69823..6c9387a 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -53,6 +53,7 @@ obj-$(CONFIG_RTC_DRV_ISL1208)	+= rtc-isl1208.o
+ obj-$(CONFIG_RTC_DRV_ISL12022)	+= rtc-isl12022.o
+ obj-$(CONFIG_RTC_DRV_JZ4740)	+= rtc-jz4740.o
+ obj-$(CONFIG_RTC_DRV_LPC32XX)	+= rtc-lpc32xx.o
++obj-$(CONFIG_RTC_DRV_LOONGSON1)	+= rtc-ls1x.o
+ obj-$(CONFIG_RTC_DRV_M41T80)	+= rtc-m41t80.o
+ obj-$(CONFIG_RTC_DRV_M41T93)	+= rtc-m41t93.o
+ obj-$(CONFIG_RTC_DRV_M41T94)	+= rtc-m41t94.o
+diff --git a/drivers/rtc/rtc-ls1x.c b/drivers/rtc/rtc-ls1x.c
 new file mode 100644
-index 0000000..a283e59
+index 0000000..7305986
 --- /dev/null
-+++ b/drivers/usb/host/ehci-ls1x.c
-@@ -0,0 +1,159 @@
++++ b/drivers/rtc/rtc-ls1x.c
+@@ -0,0 +1,211 @@
 +/*
-+ *  Bus Glue for Loongson LS1X built-in EHCI controller.
++ * Copyright (c) 2011 Zhao Zhang <zhzhl555@gmail.com>
 + *
-+ *  Copyright (c) 2012 Zhang, Keguang <keguang.zhang@gmail.com>
++ * Derived from driver/rtc/rtc-au1xxx.c
 + *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
 + */
 +
-+
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/rtc.h>
++#include <linux/init.h>
 +#include <linux/platform_device.h>
++#include <linux/delay.h>
++#include <linux/types.h>
++#include <linux/io.h>
++#include <asm/mach-loongson1/loongson1.h>
 +
-+static int ehci_ls1x_reset(struct usb_hcd *hcd)
++#define LS1X_RTC_REG_OFFSET	(LS1X_RTC_BASE + 0x20)
++#define LS1X_RTC_REGS(x) \
++		((void __iomem *)KSEG1ADDR(LS1X_RTC_REG_OFFSET + (x)))
++
++/*RTC programmable counters 0 and 1*/
++#define SYS_COUNTER_CNTRL		(LS1X_RTC_REGS(0x20))
++#define SYS_CNTRL_ERS			(1 << 23)
++#define SYS_CNTRL_RTS			(1 << 20)
++#define SYS_CNTRL_RM2			(1 << 19)
++#define SYS_CNTRL_RM1			(1 << 18)
++#define SYS_CNTRL_RM0			(1 << 17)
++#define SYS_CNTRL_RS			(1 << 16)
++#define SYS_CNTRL_BP			(1 << 14)
++#define SYS_CNTRL_REN			(1 << 13)
++#define SYS_CNTRL_BRT			(1 << 12)
++#define SYS_CNTRL_TEN			(1 << 11)
++#define SYS_CNTRL_BTT			(1 << 10)
++#define SYS_CNTRL_E0			(1 << 8)
++#define SYS_CNTRL_ETS			(1 << 7)
++#define SYS_CNTRL_32S			(1 << 5)
++#define SYS_CNTRL_TTS			(1 << 4)
++#define SYS_CNTRL_TM2			(1 << 3)
++#define SYS_CNTRL_TM1			(1 << 2)
++#define SYS_CNTRL_TM0			(1 << 1)
++#define SYS_CNTRL_TS			(1 << 0)
++
++/* Programmable Counter 0 Registers */
++#define SYS_TOYTRIM		(LS1X_RTC_REGS(0))
++#define SYS_TOYWRITE0		(LS1X_RTC_REGS(4))
++#define SYS_TOYWRITE1		(LS1X_RTC_REGS(8))
++#define SYS_TOYREAD0		(LS1X_RTC_REGS(0xC))
++#define SYS_TOYREAD1		(LS1X_RTC_REGS(0x10))
++#define SYS_TOYMATCH0		(LS1X_RTC_REGS(0x14))
++#define SYS_TOYMATCH1		(LS1X_RTC_REGS(0x18))
++#define SYS_TOYMATCH2		(LS1X_RTC_REGS(0x1C))
++
++/* Programmable Counter 1 Registers */
++#define SYS_RTCTRIM		(LS1X_RTC_REGS(0x40))
++#define SYS_RTCWRITE0		(LS1X_RTC_REGS(0x44))
++#define SYS_RTCREAD0		(LS1X_RTC_REGS(0x48))
++#define SYS_RTCMATCH0		(LS1X_RTC_REGS(0x4C))
++#define SYS_RTCMATCH1		(LS1X_RTC_REGS(0x50))
++#define SYS_RTCMATCH2		(LS1X_RTC_REGS(0x54))
++
++#define LS1X_SEC_OFFSET		(4)
++#define LS1X_MIN_OFFSET		(10)
++#define LS1X_HOUR_OFFSET	(16)
++#define LS1X_DAY_OFFSET		(21)
++#define LS1X_MONTH_OFFSET	(26)
++
++
++#define LS1X_SEC_MASK		(0x3f)
++#define LS1X_MIN_MASK		(0x3f)
++#define LS1X_HOUR_MASK		(0x1f)
++#define LS1X_DAY_MASK		(0x1f)
++#define LS1X_MONTH_MASK		(0x3f)
++#define LS1X_YEAR_MASK		(0xffffffff)
++
++#define ls1x_get_sec(t)		(((t) >> LS1X_SEC_OFFSET) & LS1X_SEC_MASK)
++#define ls1x_get_min(t)		(((t) >> LS1X_MIN_OFFSET) & LS1X_MIN_MASK)
++#define ls1x_get_hour(t)	(((t) >> LS1X_HOUR_OFFSET) & LS1X_HOUR_MASK)
++#define ls1x_get_day(t)		(((t) >> LS1X_DAY_OFFSET) & LS1X_DAY_MASK)
++#define ls1x_get_month(t)	(((t) >> LS1X_MONTH_OFFSET) & LS1X_MONTH_MASK)
++
++#define RTC_CNTR_OK (SYS_CNTRL_E0 | SYS_CNTRL_32S)
++
++static int ls1x_rtc_read_time(struct device *dev, struct rtc_time *rtm)
 +{
-+	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-+	int ret;
++	unsigned long v, t;
 +
-+	ehci->caps = hcd->regs;
++	v = readl(SYS_TOYREAD0);
++	t = readl(SYS_TOYREAD1);
 +
-+	ret = ehci_setup(hcd);
-+	if (ret)
-+		return ret;
++	memset(rtm, 0, sizeof(struct rtc_time));
++	t  = mktime((t & LS1X_YEAR_MASK), ls1x_get_month(v),
++			ls1x_get_day(v), ls1x_get_hour(v),
++			ls1x_get_min(v), ls1x_get_sec(v));
++	rtc_time_to_tm(t, rtm);
 +
-+	ehci_port_power(ehci, 0);
-+
-+	return 0;
++	return rtc_valid_tm(rtm);
 +}
 +
-+static const struct hc_driver ehci_ls1x_hc_driver = {
-+	.description		= hcd_name,
-+	.product_desc		= "LOONGSON1 EHCI",
-+	.hcd_priv_size		= sizeof(struct ehci_hcd),
++static int ls1x_rtc_set_time(struct device *dev, struct  rtc_time *rtm)
++{
++	unsigned long v, t, c;
++	int ret = -ETIMEDOUT;
 +
-+	/*
-+	 * generic hardware linkage
-+	 */
-+	.irq			= ehci_irq,
-+	.flags			= HCD_MEMORY | HCD_USB2,
++	v = ((rtm->tm_mon + 1)  << LS1X_MONTH_OFFSET)
++		| (rtm->tm_mday << LS1X_DAY_OFFSET)
++		| (rtm->tm_hour << LS1X_HOUR_OFFSET)
++		| (rtm->tm_min  << LS1X_MIN_OFFSET)
++		| (rtm->tm_sec  << LS1X_SEC_OFFSET);
 +
-+	/*
-+	 * basic lifecycle operations
-+	 */
-+	.reset			= ehci_ls1x_reset,
-+	.start			= ehci_run,
-+	.stop			= ehci_stop,
-+	.shutdown		= ehci_shutdown,
++	writel(v, SYS_TOYWRITE0);
++	c = 0x10000;
++	/* add timeout check counter, for more safe */
++	while ((readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TS) && --c)
++		usleep_range(1000, 3000);
 +
-+	/*
-+	 * managing i/o requests and associated device resources
-+	 */
-+	.urb_enqueue		= ehci_urb_enqueue,
-+	.urb_dequeue		= ehci_urb_dequeue,
-+	.endpoint_disable	= ehci_endpoint_disable,
-+	.endpoint_reset		= ehci_endpoint_reset,
++	if (!c) {
++		dev_err(dev, "set time timeout!\n");
++		goto err;
++	}
 +
-+	/*
-+	 * scheduling support
-+	 */
-+	.get_frame_number	= ehci_get_frame,
++	t = rtm->tm_year + 1900;
++	writel(t, SYS_TOYWRITE1);
++	c = 0x10000;
++	while ((readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TS) && --c)
++		usleep_range(1000, 3000);
 +
-+	/*
-+	 * root hub support
-+	 */
-+	.hub_status_data	= ehci_hub_status_data,
-+	.hub_control		= ehci_hub_control,
-+	.relinquish_port	= ehci_relinquish_port,
-+	.port_handed_over	= ehci_port_handed_over,
++	if (!c) {
++		dev_err(dev, "set time timeout!\n");
++		goto err;
++	}
++	return 0;
++err:
++	return ret;
++}
 +
-+	.clear_tt_buffer_complete	= ehci_clear_tt_buffer_complete,
++static struct rtc_class_ops  ls1x_rtc_ops = {
++	.read_time	= ls1x_rtc_read_time,
++	.set_time	= ls1x_rtc_set_time,
 +};
 +
-+static int ehci_hcd_ls1x_probe(struct platform_device *pdev)
++static int __devinit ls1x_rtc_probe(struct platform_device *pdev)
 +{
-+	struct usb_hcd *hcd;
-+	struct resource *res;
-+	int irq;
++	struct rtc_device *rtcdev;
++	unsigned long v;
 +	int ret;
 +
-+	pr_debug("initializing loongson1 ehci USB Controller\n");
-+
-+	if (usb_disabled())
-+		return -ENODEV;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev,
-+			"Found HC with no IRQ. Check %s setup!\n",
-+			dev_name(&pdev->dev));
-+		return -ENODEV;
++	v = readl(SYS_COUNTER_CNTRL);
++	if (!(v & RTC_CNTR_OK)) {
++		dev_err(&pdev->dev, "rtc counters not working\n");
++		ret = -ENODEV;
++		goto err;
 +	}
-+	irq = res->start;
++	ret = -ETIMEDOUT;
++	/* set to 1 HZ if needed */
++	if (readl(SYS_TOYTRIM) != 32767) {
++		v = 0x100000;
++		while ((readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS) && --v)
++			usleep_range(1000, 3000);
 +
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev,
-+			"Found HC with no register addr. Check %s setup!\n",
-+			dev_name(&pdev->dev));
-+		return -ENODEV;
++		if (!v) {
++			dev_err(&pdev->dev, "time out\n");
++			goto err;
++		}
++		writel(32767, SYS_TOYTRIM);
 +	}
++	/* this loop coundn't be endless */
++	while (readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_TTS)
++		usleep_range(1000, 3000);
 +
-+	hcd = usb_create_hcd(&ehci_ls1x_hc_driver, &pdev->dev,
-+				dev_name(&pdev->dev));
-+	if (!hcd)
-+		return -ENOMEM;
-+	hcd->rsrc_start	= res->start;
-+	hcd->rsrc_len	= resource_size(res);
-+
-+	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-+		dev_dbg(&pdev->dev, "controller already in use\n");
-+		ret = -EBUSY;
-+		goto err_put_hcd;
++	rtcdev = rtc_device_register("ls1x-rtc", &pdev->dev,
++					&ls1x_rtc_ops , THIS_MODULE);
++	if (IS_ERR(rtcdev)) {
++		ret = PTR_ERR(rtcdev);
++		goto err;
 +	}
 +
-+	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-+	if (hcd->regs == NULL) {
-+		dev_dbg(&pdev->dev, "error mapping memory\n");
-+		ret = -EFAULT;
-+		goto err_release_region;
-+	}
-+
-+	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED | IRQF_SHARED);
-+	if (ret)
-+		goto err_iounmap;
-+
-+	return ret;
-+
-+err_iounmap:
-+	iounmap(hcd->regs);
-+err_release_region:
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+err_put_hcd:
-+	usb_put_hcd(hcd);
++	platform_set_drvdata(pdev, rtcdev);
++	return 0;
++err:
 +	return ret;
 +}
 +
-+static int ehci_hcd_ls1x_remove(struct platform_device *pdev)
++static int __devexit ls1x_rtc_remove(struct platform_device *pdev)
 +{
-+	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++	struct rtc_device *rtcdev = platform_get_drvdata(pdev);
 +
-+	usb_remove_hcd(hcd);
-+	iounmap(hcd->regs);
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	usb_put_hcd(hcd);
++	rtc_device_unregister(rtcdev);
++	platform_set_drvdata(pdev, NULL);
 +
 +	return 0;
 +}
 +
-+static struct platform_driver ehci_ls1x_driver = {
-+	.probe = ehci_hcd_ls1x_probe,
-+	.remove = ehci_hcd_ls1x_remove,
-+	.shutdown = usb_hcd_platform_shutdown,
-+	.driver = {
-+		.name = "ls1x-ehci",
++static struct platform_driver  ls1x_rtc_driver = {
++	.driver		= {
++		.name	= "ls1x-rtc",
 +		.owner	= THIS_MODULE,
 +	},
++	.remove		= __devexit_p(ls1x_rtc_remove),
++	.probe		= ls1x_rtc_probe,
 +};
 +
-+MODULE_ALIAS(PLATFORM_MODULE_PREFIX "ls1x-ehci");
++module_platform_driver(ls1x_rtc_driver);
++
++MODULE_AUTHOR("zhao zhang <zhzhl555@gmail.com>");
++MODULE_LICENSE("GPL");
++
 -- 
-1.7.1
+1.7.0.4

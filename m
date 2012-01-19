@@ -1,62 +1,110 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2012 14:53:34 +0100 (CET)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:56023 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903678Ab2ASNx2 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2012 14:53:28 +0100
-Received: by yenq11 with SMTP id q11so2398942yen.36
-        for <multiple recipients>; Thu, 19 Jan 2012 05:53:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
-        bh=WWjBx+0Q1HAvBofe2lJgOo/gmM9rcYdBwI+QmxB5wiU=;
-        b=ZVj3CUc7w8CHWoTycF0gPwAbbskMhr2ZvpYBCpOnXATrl9wiXc6Q5p1/aBz2cRslzf
-         5tZPvRCiZyfijhYFm7Tl77ZsEZpgDHa69zJZOc5LcDDxk1r2UwJ35m/DArAyV8fRisWR
-         ZLCKZ+rV/+nBAWuCn+Rnyd02x3Bj4ofRLAD3U=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jan 2012 21:40:26 +0100 (CET)
+Received: from mho-02-ewr.mailhop.org ([204.13.248.72]:62725 "EHLO
+        mho-02-ewr.mailhop.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903680Ab2ASUkW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Jan 2012 21:40:22 +0100
+Received: from 117.235.221.87.dynamic.jazztel.es ([87.221.235.117] helo=mail.viric.name)
+        by mho-02-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+        (Exim 4.72)
+        (envelope-from <viric@viric.name>)
+        id 1RnymO-000FoO-22
+        for linux-mips@linux-mips.org; Thu, 19 Jan 2012 20:40:16 +0000
+Received: by mail.viric.name (Postfix, from userid 1000)
+        id F02EE501572; Thu, 19 Jan 2012 21:40:10 +0100 (CET)
+X-Mail-Handler: MailHop Outbound by DynDNS
+X-Originating-IP: 87.221.235.117
+X-Report-Abuse-To: abuse@dyndns.com (see http://www.dyndns.com/services/mailhop/outbound_abuse.html for abuse reporting information)
+X-MHO-User: U2FsdGVkX1+qPrO3l8/LjBQxUb3410Kh
+Date:   Thu, 19 Jan 2012 21:40:10 +0100
+From:   =?iso-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>
+To:     linux-mips@linux-mips.org
+Subject: Remove a Kconfig warning on 3.2.1 for fuloong2f
+Message-ID: <20120119204010.GR21947@vicerveza.homeunix.net>
 MIME-Version: 1.0
-Received: by 10.236.185.8 with SMTP id t8mr39417777yhm.30.1326981202654; Thu,
- 19 Jan 2012 05:53:22 -0800 (PST)
-Received: by 10.146.167.5 with HTTP; Thu, 19 Jan 2012 05:53:22 -0800 (PST)
-In-Reply-To: <1326874624-17867-1-git-send-email-zhzhl555@gmail.com>
-References: <1326874624-17867-1-git-send-email-zhzhl555@gmail.com>
-Date:   Thu, 19 Jan 2012 14:53:22 +0100
-X-Google-Sender-Auth: 5W650dofBqf57SOlMFCKhTsCwkM
-Message-ID: <CAKnu2Mp9pV+aGb1r2q4h=CfOzsKN8Nz3tRbmEQOiRGOZ_Nw91Q@mail.gmail.com>
-Subject: Re: [PATCH V3] MIPS: Add RTC support for loongson1B
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     zhzhl555@gmail.com, Andrew Morton <akpm@linux-foundation.org>
-Cc:     a.zummo@towertech.it, rtc-linux@googlegroups.com,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        ralf@linux-mips.org, keguang.zhang@gmail.com, wuzhangjin@gmail.com,
-        r0bertz@gentoo.org
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 32290
+Content-Type: multipart/mixed; boundary="HSQ3hISbU3Um6hch"
+Content-Disposition: inline
+X-Accept-Language: ca, es, eo, ru, en, jbo, tokipona
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: viric@viric.name
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-2012/1/18  <zhzhl555@gmail.com>:
 
-> From: zhao zhang <zhzhl555@gmail.com>
->
-> This patch adds RTC support(TOY counter0) for loongson1B SOC
->
-> change log:
-> V3:Remove sync instruction.
-> V2:Use new module_platform_driver macro.
-> V1:Replace __raw_writel/__raw_readl with writel/readl.
->
-> Signed-off-by: zhao zhang <zhzhl555@gmail.com>
+--HSQ3hISbU3Um6hch
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I think this is looking good now.
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Hello,
 
-You need Andrew to pick it up though, so send it directly to him
-as well.
+building the kernel 3.2.1 for the fuloong2f I hit a warning at every 'mak=
+e
+nconfig'.
 
-Yours,
-Linus Walleij
+Here is a patch that takes out the warning, but someone that understands =
+better
+than me should check I did not break anything.
+
+Regards,
+Llu=EDs.
+
+--HSQ3hISbU3Um6hch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="0001-Remove-a-warning-I-saw-on-make-nconfig-for-the-Fuloo.patch"
+
+>From 4dd3da2b4290b5e790e07d24d2e6daa7cb989ee3 Mon Sep 17 00:00:00 2001
+From: Lluis Batlle <viric@vicerveza.homeunix.net>
+Date: Thu, 19 Jan 2012 21:35:44 +0100
+Subject: [PATCH] Remove a warning I saw on 'make nconfig' for the Fuloong2F.
+
+The warning was:
+warning: (LEMOTE_FULOONG2E && LEMOTE_MACH2F && DEXXON_GDIUM) selects
+ARCH_SPARSEMEM_ENABLE which has unmet direct dependencies
+(CPU_CAVIUM_OCTEON)
+
+I followed advices from daney on irc.
+
+I don't know how to test it, but now I don't see the warning at least.
+---
+ arch/mips/Kconfig               |    1 +
+ arch/mips/cavium-octeon/Kconfig |    4 ----
+ 2 files changed, 1 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d46f1da..330800d 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1404,6 +1404,7 @@ config CPU_CAVIUM_OCTEON
+ 	select WEAK_ORDERING
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_HUGEPAGES
++	select ARCH_SPARSEMEM_ENABLE
+ 	help
+ 	  The Cavium Octeon processor is a highly integrated chip containing
+ 	  many ethernet hardware widgets for networking tasks. The processor
+diff --git a/arch/mips/cavium-octeon/Kconfig b/arch/mips/cavium-octeon/Kconfig
+index cad555e..15ba565 100644
+--- a/arch/mips/cavium-octeon/Kconfig
++++ b/arch/mips/cavium-octeon/Kconfig
+@@ -82,10 +82,6 @@ config CAVIUM_OCTEON_LOCK_L2_MEMCPY
+ 	help
+ 	  Lock the kernel's implementation of memcpy() into L2.
+ 
+-config ARCH_SPARSEMEM_ENABLE
+-	def_bool y
+-	select SPARSEMEM_STATIC
+-
+ config CAVIUM_OCTEON_HELPER
+ 	def_bool y
+ 	depends on OCTEON_ETHERNET || PCI
+-- 
+1.7.8
+
+
+--HSQ3hISbU3Um6hch--

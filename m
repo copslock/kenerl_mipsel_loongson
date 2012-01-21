@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jan 2012 23:21:39 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45817 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jan 2012 23:22:03 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:45828 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903704Ab2AUWTz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Jan 2012 23:19:55 +0100
+        with ESMTP id S1903707Ab2AUWT6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Jan 2012 23:19:58 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id AEBB98F63;
-        Sat, 21 Jan 2012 23:19:55 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 8D5EF8F69;
+        Sat, 21 Jan 2012 23:19:58 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id MZapiaf0oG1c; Sat, 21 Jan 2012 23:19:50 +0100 (CET)
+        with ESMTP id 9frhdWtm3n0a; Sat, 21 Jan 2012 23:19:52 +0100 (CET)
 Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 56AF78F64;
+        by hauke-m.de (Postfix) with ESMTPSA id B82638F65;
         Sat, 21 Jan 2012 23:19:44 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     ralf@linux-mips.org, linux-mips@linux-mips.org
 Cc:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
         zajec5@gmail.com, linux-wireless@vger.kernel.org, m@bues.ch,
         george@znau.edu.ua, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 4/7] USB: EHCI: Add a generic platform device driver
-Date:   Sat, 21 Jan 2012 23:19:24 +0100
-Message-Id: <1327184367-8824-5-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 5/7] USB: Add driver for the bcma bus
+Date:   Sat, 21 Jan 2012 23:19:25 +0100
+Message-Id: <1327184367-8824-6-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <1327184367-8824-1-git-send-email-hauke@hauke-m.de>
 References: <1327184367-8824-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 32304
+X-archive-position: 32305
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,272 +33,363 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This adds a generic driver for platform devices. It works like the PCI
-driver and is based on it. This is for devices which do not have an own
-bus but their EHCI controller works like a PCI controller. It will be
-used for the Broadcom bcma and ssb USB EHCI controller.
+This adds a USB driver using the generic platform device driver for the
+USB controller found on the Broadcom bcma bus. The bcma bus just
+exposes one device which serves the OHCI and the EHCI controller at the
+same time. This driver probes for this USB controller and creates and
+registers two new platform devices which will be probed by the new
+generic platform device driver. This makes it possible to use the EHCI
+and the OCHI controller on the bcma bus at the same time.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/usb/host/Kconfig         |   10 ++
- drivers/usb/host/ehci-hcd.c      |    5 +
- drivers/usb/host/ehci-platform.c |  211 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 226 insertions(+), 0 deletions(-)
- create mode 100644 drivers/usb/host/ehci-platform.c
+ drivers/usb/host/Kconfig    |   12 ++
+ drivers/usb/host/Makefile   |    1 +
+ drivers/usb/host/bcma-hcd.c |  307 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 320 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/usb/host/bcma-hcd.c
 
 diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 6651ed6..e7b5efe 100644
+index e7b5efe..b15ce91 100644
 --- a/drivers/usb/host/Kconfig
 +++ b/drivers/usb/host/Kconfig
-@@ -403,6 +403,16 @@ config USB_OHCI_HCD_PLATFORM
- 
- 	  If unsure, say N.
- 
-+config USB_EHCI_HCD_PLATFORM
-+	bool "Generic EHCI driver for a platform device"
-+	depends on USB_EHCI_HCD && EXPERIMENTAL
-+	default n
-+	---help---
-+	  Adds an EHCI host driver for a generic platform device, which
-+	  provieds a memory space and an irq.
+@@ -633,3 +633,15 @@ config USB_PXA168_EHCI
+ 	help
+ 	  Enable support for Marvell PXA168 SoC's on-chip EHCI
+ 	  host controller
++
++config USB_HCD_BCMA
++	tristate "BCMA usb host driver"
++	depends on BCMA && EXPERIMENTAL
++	select USB_OHCI_HCD_PLATFORM if USB_OHCI_HCD
++	select USB_EHCI_HCD_PLATFORM if USB_EHCI_HCD
++	help
++	  Enbale support for the EHCI and OCHI host controller on an bcma bus.
++	  It converts the bcma driver into two platform device drivers
++	  for ehci and ohci.
 +
 +	  If unsure, say N.
-+
- config USB_OHCI_BIG_ENDIAN_DESC
- 	bool
- 	depends on USB_OHCI_HCD
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index a007a9f..afe0984 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -1376,6 +1376,11 @@ MODULE_LICENSE ("GPL");
- #define        PLATFORM_DRIVER         ehci_mv_driver
- #endif
- 
-+#ifdef CONFIG_USB_EHCI_HCD_PLATFORM
-+#include "ehci-platform.c"
-+#define PLATFORM_DRIVER		ehci_platform_driver
-+#endif
-+
- #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
-     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER) && \
-     !defined(XILINX_OF_PLATFORM_DRIVER)
-diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
+diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
+index 7ca290f..f2c2846 100644
+--- a/drivers/usb/host/Makefile
++++ b/drivers/usb/host/Makefile
+@@ -37,3 +37,4 @@ obj-$(CONFIG_USB_IMX21_HCD)	+= imx21-hcd.o
+ obj-$(CONFIG_USB_FSL_MPH_DR_OF)	+= fsl-mph-dr-of.o
+ obj-$(CONFIG_USB_OCTEON2_COMMON) += octeon2-common.o
+ obj-$(CONFIG_MIPS_ALCHEMY)	+= alchemy-common.o
++obj-$(CONFIG_USB_HCD_BCMA)	+= bcma-hcd.o
+diff --git a/drivers/usb/host/bcma-hcd.c b/drivers/usb/host/bcma-hcd.c
 new file mode 100644
-index 0000000..1c20c02
+index 0000000..ef46364
 --- /dev/null
-+++ b/drivers/usb/host/ehci-platform.c
-@@ -0,0 +1,211 @@
++++ b/drivers/usb/host/bcma-hcd.c
+@@ -0,0 +1,307 @@
 +/*
-+ * Generic platform ehci driver
++ * Broadcom specific Advanced Microcontroller Bus
++ * Broadcom USB-core driver (BCMA bus glue)
 + *
-+ * Copyright 2007 Steven Brown <sbrown@cortland.com>
-+ * Copyright 2010-2011 Hauke Mehrtens <hauke@hauke-m.de>
++ * Copyright 2011 Hauke Mehrtens <hauke@hauke-m.de>
 + *
-+ * Derived from the ohci-ssb driver
++ * Based on ssb-ohci driver
 + * Copyright 2007 Michael Buesch <m@bues.ch>
 + *
-+ * Derived from the EHCI-PCI driver
-+ * Copyright (c) 2000-2004 by David Brownell
-+ *
-+ * Derived from the ohci-pci driver
++ * Derived from the OHCI-PCI driver
 + * Copyright 1999 Roman Weissgaerber
 + * Copyright 2000-2002 David Brownell
 + * Copyright 1999 Linus Torvalds
 + * Copyright 1999 Gregory P. Smith
 + *
++ * Derived from the USBcore related parts of Broadcom-SB
++ * Copyright 2005-2011 Broadcom Corporation
++ *
 + * Licensed under the GNU/GPL. See COPYING for details.
 + */
++#include <linux/bcma/bcma.h>
++#include <linux/delay.h>
 +#include <linux/platform_device.h>
++#include <linux/module.h>
 +
-+static int ehci_platform_reset(struct usb_hcd *hcd)
-+{
-+	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-+	int retval;
++MODULE_AUTHOR("Hauke Mehrtens");
++MODULE_DESCRIPTION("Common USB driver for BCMA Bus");
++MODULE_LICENSE("GPL");
 +
-+	ehci->caps = hcd->regs;
-+	ehci->regs = hcd->regs +
-+		HC_LENGTH(ehci, ehci_readl(ehci, &ehci->caps->hc_capbase));
-+
-+	dbg_hcs_params(ehci, "reset");
-+	dbg_hcc_params(ehci, "reset");
-+
-+	/* cache this readonly data; minimize chip reads */
-+	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
-+
-+	retval = ehci_halt(ehci);
-+	if (retval)
-+		return retval;
-+
-+	/* data structure init */
-+	retval = ehci_init(hcd);
-+	if (retval)
-+		return retval;
-+
-+	ehci_reset(ehci);
-+
-+	ehci_port_power(ehci, 1);
-+
-+	return retval;
-+}
-+
-+static const struct hc_driver ehci_platform_hc_driver = {
-+	.description		= "platform-usb-ehci",
-+	.product_desc		= "Generic Platform EHCI Controller",
-+	.hcd_priv_size		= sizeof(struct ehci_hcd),
-+
-+	.irq			= ehci_irq,
-+	.flags			= HCD_MEMORY | HCD_USB2,
-+
-+	.reset			= ehci_platform_reset,
-+	.start			= ehci_run,
-+	.stop			= ehci_stop,
-+	.shutdown		= ehci_shutdown,
-+
-+	.urb_enqueue		= ehci_urb_enqueue,
-+	.urb_dequeue		= ehci_urb_dequeue,
-+	.endpoint_disable	= ehci_endpoint_disable,
-+	.endpoint_reset		= ehci_endpoint_reset,
-+
-+	.get_frame_number	= ehci_get_frame,
-+
-+	.hub_status_data	= ehci_hub_status_data,
-+	.hub_control		= ehci_hub_control,
-+#if defined(CONFIG_PM)
-+	.bus_suspend		= ehci_bus_suspend,
-+	.bus_resume		= ehci_bus_resume,
-+#endif
-+	.relinquish_port	= ehci_relinquish_port,
-+	.port_handed_over	= ehci_port_handed_over,
-+
-+	.update_device		= ehci_update_device,
-+
-+	.clear_tt_buffer_complete = ehci_clear_tt_buffer_complete,
++struct bcma_hcd_device {
++	struct platform_device *ehci_dev;
++	struct platform_device *ohci_dev;
 +};
 +
-+static int ehci_platform_attach(struct platform_device *dev)
++static void __devinit bcma_hcd_4716wa(struct bcma_device *dev)
 +{
-+	struct usb_hcd *hcd;
-+	struct resource *res_irq, *res_mem;
-+	int err = -ENOMEM;
++#ifdef CONFIG_BCMA_DRIVER_MIPS
++	/* Work around for 4716 failures. */
++	if (dev->bus->chipinfo.id == 0x4716) {
++		u32 tmp;
 +
-+	hcd = usb_create_hcd(&ehci_platform_hc_driver, &dev->dev,
-+			     dev_name(&dev->dev));
-+	if (!hcd)
-+		goto err_return;
++		tmp = bcma_cpu_clock(&dev->bus->drv_mips);
++		if (tmp >= 480000000)
++			tmp = 0x1846b; /* set CDR to 0x11(fast) */
++		else if (tmp == 453000000)
++			tmp = 0x1046b; /* set CDR to 0x10(slow) */
++		else
++			tmp = 0;
 +
-+	res_irq = platform_get_resource(dev, IORESOURCE_IRQ, 0);
-+	if (!res_irq) {
-+		err = -ENXIO;
-+		goto err_return;
++		/* Change Shim mdio control reg to fix host not acking at
++		 * high frequencies
++		 */
++		if (tmp) {
++			bcma_write32(dev, 0x524, 0x1); /* write sel to enable */
++			udelay(500);
++
++			bcma_write32(dev, 0x524, tmp);
++			udelay(500);
++			bcma_write32(dev, 0x524, 0x4ab);
++			udelay(500);
++			bcma_read32(dev, 0x528);
++			bcma_write32(dev, 0x528, 0x80000000);
++		}
 +	}
-+	res_mem = platform_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (!res_mem) {
-+		err = -ENXIO;
-+		goto err_return;
-+	}
-+	hcd->rsrc_start = res_mem->start;
-+	hcd->rsrc_len = res_mem->end - res_mem->start + 1;
++#endif /* CONFIG_BCMA_DRIVER_MIPS */
++}
++
++/* based on arch/mips/brcm-boards/bcm947xx/pcibios.c */
++static void __devinit bcma_hcd_init_chip(struct bcma_device *dev)
++{
++	u32 tmp;
 +
 +	/*
-+	 * start & size modified per sbutils.c
++	 * USB 2.0 special considerations:
++	 *
++	 * 1. Since the core supports both OHCI and EHCI functions, it must
++	 *    only be reset once.
++	 *
++	 * 2. In addition to the standard SI reset sequence, the Host Control
++	 *    Register must be programmed to bring the USB core and various
++	 *    phy components out of reset.
 +	 */
-+	hcd->regs = ioremap_nocache(hcd->rsrc_start, hcd->rsrc_len);
-+	if (!hcd->regs)
-+		goto err_put_hcd;
-+	err = usb_add_hcd(hcd, res_irq->start, IRQF_SHARED);
-+	if (err)
-+		goto err_iounmap;
++	if (!bcma_core_is_enabled(dev)) {
++		bcma_core_enable(dev, 0);
++		mdelay(10);
++		if (dev->id.rev >= 5) {
++			/* Enable Misc PLL */
++			tmp = bcma_read32(dev, 0x1e0);
++			tmp |= 0x100;
++			bcma_write32(dev, 0x1e0, tmp);
++			if (bcma_wait_bits(dev, 0x1e0, 1 << 24, 100, 1))
++				printk(KERN_EMERG "Failed to enable misc PPL!\n");
 +
-+	platform_set_drvdata(dev, hcd);
++			/* Take out of resets */
++			bcma_write32(dev, 0x200, 0x4ff);
++			udelay(25);
++			bcma_write32(dev, 0x200, 0x6ff);
++			udelay(25);
 +
-+	return err;
++			/* Make sure digital and AFE are locked in USB PHY */
++			bcma_write32(dev, 0x524, 0x6b);
++			udelay(50);
++			tmp = bcma_read32(dev, 0x524);
++			udelay(50);
++			bcma_write32(dev, 0x524, 0xab);
++			udelay(50);
++			tmp = bcma_read32(dev, 0x524);
++			udelay(50);
++			bcma_write32(dev, 0x524, 0x2b);
++			udelay(50);
++			tmp = bcma_read32(dev, 0x524);
++			udelay(50);
++			bcma_write32(dev, 0x524, 0x10ab);
++			udelay(50);
++			tmp = bcma_read32(dev, 0x524);
 +
-+err_iounmap:
-+	iounmap(hcd->regs);
-+err_put_hcd:
-+	usb_put_hcd(hcd);
-+err_return:
-+	return err;
++			if (bcma_wait_bits(dev, 0x528, 0xc000, 10000, 1)) {
++				tmp = bcma_read32(dev, 0x528);
++				printk(KERN_EMERG
++				       "USB20H mdio_rddata 0x%08x\n", tmp);
++			}
++			bcma_write32(dev, 0x528, 0x80000000);
++			tmp = bcma_read32(dev, 0x314);
++			udelay(265);
++			bcma_write32(dev, 0x200, 0x7ff);
++			udelay(10);
++
++			/* Take USB and HSIC out of non-driving modes */
++			bcma_write32(dev, 0x510, 0);
++		} else {
++			bcma_write32(dev, 0x200, 0x7ff);
++
++			udelay(1);
++		}
++
++		bcma_hcd_4716wa(dev);
++	}
 +}
 +
-+static int ehci_platform_probe(struct platform_device *dev)
++static struct platform_device * __devinit
++bcma_hcd_create_pdev(struct bcma_device *dev, char *name, u32 addr)
++{
++	struct platform_device *hci_dev;
++	struct resource hci_res[2];
++	int ret = -ENOMEM;
++
++	memset(hci_res, 0, sizeof(hci_res));
++
++	hci_res[0].start = addr;
++	hci_res[0].end = hci_res[0].start + 0x1000 - 1;
++	hci_res[0].flags = IORESOURCE_MEM;
++
++	hci_res[1].start = dev->irq;
++	hci_res[1].flags = IORESOURCE_IRQ;
++
++	hci_dev = platform_device_alloc(name, 0);
++	if (!hci_dev)
++		goto err_alloc;
++
++	hci_dev->dev.parent = &dev->dev;
++	hci_dev->dev.dma_mask = &hci_dev->dev.coherent_dma_mask;
++
++	ret = platform_device_add_resources(hci_dev, hci_res,
++					    ARRAY_SIZE(hci_res));
++	if (ret)
++		goto err_alloc;
++
++	ret = platform_device_add(hci_dev);
++	if (ret) {
++err_alloc:
++		platform_device_put(hci_dev);
++		return ERR_PTR(ret);
++	}
++
++	return hci_dev;
++}
++
++static int __devinit bcma_hcd_probe(struct bcma_device *dev)
 +{
 +	int err;
++	u16 chipid_top;
++	u32 ohci_addr;
++	struct bcma_hcd_device *usb_dev;
++	struct bcma_chipinfo *chipinfo;
 +
-+	if (usb_disabled())
++	chipinfo = &dev->bus->chipinfo;
++	/* USBcores are only connected on embedded devices. */
++	chipid_top = (chipinfo->id & 0xFF00);
++	if (chipid_top != 0x4700 && chipid_top != 0x5300)
 +		return -ENODEV;
 +
-+	err = ehci_platform_attach(dev);
++	/* TODO: Probably need checks here; is the core connected? */
 +
++	if (dma_set_mask(dev->dma_dev, DMA_BIT_MASK(32)) ||
++	    dma_set_coherent_mask(dev->dma_dev, DMA_BIT_MASK(32)))
++		return -EOPNOTSUPP;
++
++	usb_dev = kzalloc(sizeof(struct bcma_hcd_device), GFP_KERNEL);
++	if (!usb_dev)
++		return -ENOMEM;
++
++	bcma_hcd_init_chip(dev);
++
++	/* In AI chips EHCI is addrspace 0, OHCI is 1 */
++	ohci_addr = dev->addr1;
++	if ((chipinfo->id == 0x5357 || chipinfo->id == 0x4749)
++	    && chipinfo->rev == 0)
++		ohci_addr = 0x18009000;
++
++	usb_dev->ohci_dev = bcma_hcd_create_pdev(dev, "ohci-platform",
++						 ohci_addr);
++	if (IS_ERR(usb_dev->ohci_dev)) {
++		err = PTR_ERR(usb_dev->ohci_dev);
++		goto err_free_usb_dev;
++	}
++
++	usb_dev->ehci_dev = bcma_hcd_create_pdev(dev, "ehci-platform",
++						 dev->addr);
++	if (IS_ERR(usb_dev->ehci_dev)) {
++		err = PTR_ERR(usb_dev->ehci_dev);
++		goto err_unregister_ohci_dev;
++	}
++
++	bcma_set_drvdata(dev, usb_dev);
++	return 0;
++
++err_unregister_ohci_dev:
++	platform_device_unregister(usb_dev->ohci_dev);
++err_free_usb_dev:
++	kfree(usb_dev);
 +	return err;
 +}
 +
-+static int ehci_platform_remove(struct platform_device *dev)
++static void __devexit bcma_hcd_remove(struct bcma_device *dev)
 +{
-+	struct usb_hcd *hcd;
++	struct bcma_hcd_device *usb_dev;
++	struct platform_device *ohci_dev;
++	struct platform_device *ehci_dev;
 +
-+	hcd = platform_get_drvdata(dev);
-+	if (!hcd)
-+		return -ENODEV;
-+
-+	usb_remove_hcd(hcd);
-+	iounmap(hcd->regs);
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	usb_put_hcd(hcd);
-+
-+	return 0;
-+}
-+
-+static void ehci_platform_shutdown(struct platform_device *dev)
-+{
-+	struct usb_hcd *hcd;
-+
-+	hcd = platform_get_drvdata(dev);
-+	if (!hcd)
++	usb_dev = bcma_get_drvdata(dev);
++	if (!usb_dev)
 +		return;
 +
-+	if (hcd->driver->shutdown)
-+		hcd->driver->shutdown(hcd);
++	ohci_dev = usb_dev->ohci_dev;
++	ehci_dev = usb_dev->ehci_dev;
++
++	if (ohci_dev)
++		platform_device_unregister(ohci_dev);
++	if (ehci_dev)
++		platform_device_unregister(ehci_dev);
++
++	bcma_core_disable(dev, 0);
++}
++
++static void bcma_hcd_shutdown(struct bcma_device *dev)
++{
++	bcma_core_disable(dev, 0);
 +}
 +
 +#ifdef CONFIG_PM
 +
-+static int ehci_platform_suspend(struct platform_device *dev,
-+				 pm_message_t state)
++static int bcma_hcd_suspend(struct bcma_device *dev, pm_message_t state)
 +{
++	bcma_core_disable(dev, 0);
++
 +	return 0;
 +}
 +
-+static int ehci_platform_resume(struct platform_device *dev)
++static int bcma_hcd_resume(struct bcma_device *dev)
 +{
-+	struct usb_hcd *hcd = platform_get_drvdata(dev);
++	bcma_core_enable(dev, 0);
 +
-+	ehci_finish_controller_resume(hcd);
 +	return 0;
 +}
 +
 +#else /* !CONFIG_PM */
-+#define ehci_platform_suspend	NULL
-+#define ehci_platform_resume	NULL
++#define bcma_hcd_suspend	NULL
++#define bcma_hcd_resume	NULL
 +#endif /* CONFIG_PM */
 +
-+static const struct platform_device_id ehci_platform_table[] = {
-+	{ "ehci-platform", 0 },
-+	{ }
++static const struct bcma_device_id bcma_hcd_table[] __devinitconst = {
++	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_USB20_HOST, BCMA_ANY_REV, BCMA_ANY_CLASS),
++	BCMA_CORETABLE_END
 +};
-+MODULE_DEVICE_TABLE(platform, ehci_platform_table);
++MODULE_DEVICE_TABLE(bcma, bcma_hcd_table);
 +
-+static struct platform_driver ehci_platform_driver = {
-+	.id_table	= ehci_platform_table,
-+	.probe		= ehci_platform_probe,
-+	.remove		= ehci_platform_remove,
-+	.shutdown	= ehci_platform_shutdown,
-+	.suspend	= ehci_platform_suspend,
-+	.resume		= ehci_platform_resume,
-+	.driver		= {
-+		.name	= "ehci-platform",
-+	}
++static struct bcma_driver bcma_hcd_driver = {
++	.name		= KBUILD_MODNAME,
++	.id_table	= bcma_hcd_table,
++	.probe		= bcma_hcd_probe,
++	.remove		= __devexit_p(bcma_hcd_remove),
++	.shutdown	= bcma_hcd_shutdown,
++	.suspend	= bcma_hcd_suspend,
++	.resume		= bcma_hcd_resume,
 +};
++
++static int __init bcma_hcd_init(void)
++{
++	return bcma_driver_register(&bcma_hcd_driver);
++}
++module_init(bcma_hcd_init);
++
++static void __exit bcma_hcd_exit(void)
++{
++	bcma_driver_unregister(&bcma_hcd_driver);
++}
++module_exit(bcma_hcd_exit);
 -- 
 1.7.5.4

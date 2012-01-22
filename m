@@ -1,398 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Jan 2012 23:22:57 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:45846 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903709Ab2AUWUE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 21 Jan 2012 23:20:04 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id ADFA68F6B;
-        Sat, 21 Jan 2012 23:20:04 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id a4dseZCEf-w8; Sat, 21 Jan 2012 23:19:58 +0100 (CET)
-Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 873D98F67;
-        Sat, 21 Jan 2012 23:19:45 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     ralf@linux-mips.org, linux-mips@linux-mips.org
-Cc:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
-        zajec5@gmail.com, linux-wireless@vger.kernel.org, m@bues.ch,
-        george@znau.edu.ua, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 7/7] USB: OHCI: remove old SSB OHCI driver
-Date:   Sat, 21 Jan 2012 23:19:27 +0100
-Message-Id: <1327184367-8824-8-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.5.4
-In-Reply-To: <1327184367-8824-1-git-send-email-hauke@hauke-m.de>
-References: <1327184367-8824-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 32307
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2012 04:41:38 +0100 (CET)
+Received: from netrider.rowland.org ([192.131.102.5]:59977 "HELO
+        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1901167Ab2AVDla (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Jan 2012 04:41:30 +0100
+Received: (qmail 32631 invoked by uid 500); 21 Jan 2012 22:41:26 -0500
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 21 Jan 2012 22:41:26 -0500
+Date:   Sat, 21 Jan 2012 22:41:26 -0500 (EST)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@netrider.rowland.org
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+cc:     ralf@linux-mips.org, <linux-mips@linux-mips.org>,
+        USB list <linux-usb@vger.kernel.org>, <zajec5@gmail.com>,
+        <linux-wireless@vger.kernel.org>, <m@bues.ch>, <george@znau.edu.ua>
+Subject: Re: [PATCH 4/7] USB: EHCI: Add a generic platform device driver
+In-Reply-To: <1327184367-8824-5-git-send-email-hauke@hauke-m.de>
+Message-ID: <Pine.LNX.4.44L0.1201212235050.32266-100000@netrider.rowland.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 32308
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This is now replaced by the new ssb USB driver, which also supports
-devices with an EHCI controller.
+On Sat, 21 Jan 2012, Hauke Mehrtens wrote:
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- drivers/usb/host/Kconfig    |   13 --
- drivers/usb/host/ohci-hcd.c |   21 +----
- drivers/usb/host/ohci-ssb.c |  260 -------------------------------------------
- 3 files changed, 1 insertions(+), 293 deletions(-)
- delete mode 100644 drivers/usb/host/ohci-ssb.c
+> This adds a generic driver for platform devices. It works like the PCI
+> driver and is based on it. This is for devices which do not have an own
+> bus but their EHCI controller works like a PCI controller. It will be
+> used for the Broadcom bcma and ssb USB EHCI controller.
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 2825dc4..3649510 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -360,19 +360,6 @@ config USB_OHCI_HCD_PCI
- 	  Enables support for PCI-bus plug-in USB controller cards.
- 	  If unsure, say Y.
- 
--config USB_OHCI_HCD_SSB
--	bool "OHCI support for Broadcom SSB OHCI core"
--	depends on USB_OHCI_HCD && (SSB = y || SSB = USB_OHCI_HCD) && EXPERIMENTAL
--	default n
--	---help---
--	  Support for the Sonics Silicon Backplane (SSB) attached
--	  Broadcom USB OHCI core.
--
--	  This device is present in some embedded devices with
--	  Broadcom based SSB bus.
--
--	  If unsure, say N.
--
- config USB_OHCI_SH
- 	bool "OHCI support for SuperH USB controller"
- 	depends on USB_OHCI_HCD && SUPERH
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 50fbbf9..a2f4d4e 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -1081,11 +1081,6 @@ MODULE_LICENSE ("GPL");
- #define PS3_SYSTEM_BUS_DRIVER	ps3_ohci_driver
- #endif
- 
--#ifdef CONFIG_USB_OHCI_HCD_SSB
--#include "ohci-ssb.c"
--#define SSB_OHCI_DRIVER		ssb_ohci_driver
--#endif
--
- #ifdef CONFIG_MFD_SM501
- #include "ohci-sm501.c"
- #define SM501_OHCI_DRIVER	ohci_hcd_sm501_driver
-@@ -1134,8 +1129,7 @@ MODULE_LICENSE ("GPL");
- 	!defined(SA1111_DRIVER) &&	\
- 	!defined(PS3_SYSTEM_BUS_DRIVER) && \
- 	!defined(SM501_OHCI_DRIVER) && \
--	!defined(TMIO_OHCI_DRIVER) && \
--	!defined(SSB_OHCI_DRIVER)
-+	!defined(TMIO_OHCI_DRIVER)
- #error "missing bus glue for ohci-hcd"
- #endif
- 
-@@ -1201,12 +1195,6 @@ static int __init ohci_hcd_mod_init(void)
- 		goto error_pci;
- #endif
- 
--#ifdef SSB_OHCI_DRIVER
--	retval = ssb_driver_register(&SSB_OHCI_DRIVER);
--	if (retval)
--		goto error_ssb;
--#endif
--
- #ifdef SM501_OHCI_DRIVER
- 	retval = platform_driver_register(&SM501_OHCI_DRIVER);
- 	if (retval < 0)
-@@ -1230,10 +1218,6 @@ static int __init ohci_hcd_mod_init(void)
- 	platform_driver_unregister(&SM501_OHCI_DRIVER);
-  error_sm501:
- #endif
--#ifdef SSB_OHCI_DRIVER
--	ssb_driver_unregister(&SSB_OHCI_DRIVER);
-- error_ssb:
--#endif
- #ifdef PCI_DRIVER
- 	pci_unregister_driver(&PCI_DRIVER);
-  error_pci:
-@@ -1281,9 +1265,6 @@ static void __exit ohci_hcd_mod_exit(void)
- #ifdef SM501_OHCI_DRIVER
- 	platform_driver_unregister(&SM501_OHCI_DRIVER);
- #endif
--#ifdef SSB_OHCI_DRIVER
--	ssb_driver_unregister(&SSB_OHCI_DRIVER);
--#endif
- #ifdef PCI_DRIVER
- 	pci_unregister_driver(&PCI_DRIVER);
- #endif
-diff --git a/drivers/usb/host/ohci-ssb.c b/drivers/usb/host/ohci-ssb.c
-deleted file mode 100644
-index 5ba1859..0000000
---- a/drivers/usb/host/ohci-ssb.c
-+++ /dev/null
-@@ -1,260 +0,0 @@
--/*
-- * Sonics Silicon Backplane
-- * Broadcom USB-core OHCI driver
-- *
-- * Copyright 2007 Michael Buesch <m@bues.ch>
-- *
-- * Derived from the OHCI-PCI driver
-- * Copyright 1999 Roman Weissgaerber
-- * Copyright 2000-2002 David Brownell
-- * Copyright 1999 Linus Torvalds
-- * Copyright 1999 Gregory P. Smith
-- *
-- * Derived from the USBcore related parts of Broadcom-SB
-- * Copyright 2005 Broadcom Corporation
-- *
-- * Licensed under the GNU/GPL. See COPYING for details.
-- */
--#include <linux/ssb/ssb.h>
--
--
--#define SSB_OHCI_TMSLOW_HOSTMODE	(1 << 29)
--
--struct ssb_ohci_device {
--	struct ohci_hcd ohci; /* _must_ be at the beginning. */
--
--	u32 enable_flags;
--};
--
--static inline
--struct ssb_ohci_device *hcd_to_ssb_ohci(struct usb_hcd *hcd)
--{
--	return (struct ssb_ohci_device *)(hcd->hcd_priv);
--}
--
--
--static int ssb_ohci_reset(struct usb_hcd *hcd)
--{
--	struct ssb_ohci_device *ohcidev = hcd_to_ssb_ohci(hcd);
--	struct ohci_hcd *ohci = &ohcidev->ohci;
--	int err;
--
--	ohci_hcd_init(ohci);
--	err = ohci_init(ohci);
--
--	return err;
--}
--
--static int ssb_ohci_start(struct usb_hcd *hcd)
--{
--	struct ssb_ohci_device *ohcidev = hcd_to_ssb_ohci(hcd);
--	struct ohci_hcd *ohci = &ohcidev->ohci;
--	int err;
--
--	err = ohci_run(ohci);
--	if (err < 0) {
--		ohci_err(ohci, "can't start\n");
--		ohci_stop(hcd);
--	}
--
--	return err;
--}
--
--static const struct hc_driver ssb_ohci_hc_driver = {
--	.description		= "ssb-usb-ohci",
--	.product_desc		= "SSB OHCI Controller",
--	.hcd_priv_size		= sizeof(struct ssb_ohci_device),
--
--	.irq			= ohci_irq,
--	.flags			= HCD_MEMORY | HCD_USB11,
--
--	.reset			= ssb_ohci_reset,
--	.start			= ssb_ohci_start,
--	.stop			= ohci_stop,
--	.shutdown		= ohci_shutdown,
--
--	.urb_enqueue		= ohci_urb_enqueue,
--	.urb_dequeue		= ohci_urb_dequeue,
--	.endpoint_disable	= ohci_endpoint_disable,
--
--	.get_frame_number	= ohci_get_frame,
--
--	.hub_status_data	= ohci_hub_status_data,
--	.hub_control		= ohci_hub_control,
--#ifdef	CONFIG_PM
--	.bus_suspend		= ohci_bus_suspend,
--	.bus_resume		= ohci_bus_resume,
--#endif
--
--	.start_port_reset	= ohci_start_port_reset,
--};
--
--static void ssb_ohci_detach(struct ssb_device *dev)
--{
--	struct usb_hcd *hcd = ssb_get_drvdata(dev);
--
--	if (hcd->driver->shutdown)
--		hcd->driver->shutdown(hcd);
--	usb_remove_hcd(hcd);
--	iounmap(hcd->regs);
--	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
--	usb_put_hcd(hcd);
--	ssb_device_disable(dev, 0);
--}
--
--static int ssb_ohci_attach(struct ssb_device *dev)
--{
--	struct ssb_ohci_device *ohcidev;
--	struct usb_hcd *hcd;
--	int err = -ENOMEM;
--	u32 tmp, flags = 0;
--
--	if (dma_set_mask(dev->dma_dev, DMA_BIT_MASK(32)) ||
--	    dma_set_coherent_mask(dev->dma_dev, DMA_BIT_MASK(32)))
--		return -EOPNOTSUPP;
--
--	if (dev->id.coreid == SSB_DEV_USB11_HOSTDEV) {
--		/* Put the device into host-mode. */
--		flags |= SSB_OHCI_TMSLOW_HOSTMODE;
--		ssb_device_enable(dev, flags);
--	} else if (dev->id.coreid == SSB_DEV_USB20_HOST) {
--		/*
--		 * USB 2.0 special considerations:
--		 *
--		 * In addition to the standard SSB reset sequence, the Host
--		 * Control Register must be programmed to bring the USB core
--		 * and various phy components out of reset.
--		 */
--		ssb_device_enable(dev, 0);
--		ssb_write32(dev, 0x200, 0x7ff);
--
--		/* Change Flush control reg */
--		tmp = ssb_read32(dev, 0x400);
--		tmp &= ~8;
--		ssb_write32(dev, 0x400, tmp);
--		tmp = ssb_read32(dev, 0x400);
--
--		/* Change Shim control reg */
--		tmp = ssb_read32(dev, 0x304);
--		tmp &= ~0x100;
--		ssb_write32(dev, 0x304, tmp);
--		tmp = ssb_read32(dev, 0x304);
--
--		udelay(1);
--
--		/* Work around for 5354 failures */
--		if (dev->id.revision == 2 && dev->bus->chip_id == 0x5354) {
--			/* Change syn01 reg */
--			tmp = 0x00fe00fe;
--			ssb_write32(dev, 0x894, tmp);
--
--			/* Change syn03 reg */
--			tmp = ssb_read32(dev, 0x89c);
--			tmp |= 0x1;
--			ssb_write32(dev, 0x89c, tmp);
--		}
--	} else
--		ssb_device_enable(dev, 0);
--
--	hcd = usb_create_hcd(&ssb_ohci_hc_driver, dev->dev,
--			dev_name(dev->dev));
--	if (!hcd)
--		goto err_dev_disable;
--	ohcidev = hcd_to_ssb_ohci(hcd);
--	ohcidev->enable_flags = flags;
--
--	tmp = ssb_read32(dev, SSB_ADMATCH0);
--	hcd->rsrc_start = ssb_admatch_base(tmp);
--	hcd->rsrc_len = ssb_admatch_size(tmp);
--	hcd->regs = ioremap_nocache(hcd->rsrc_start, hcd->rsrc_len);
--	if (!hcd->regs)
--		goto err_put_hcd;
--	err = usb_add_hcd(hcd, dev->irq, IRQF_SHARED);
--	if (err)
--		goto err_iounmap;
--
--	ssb_set_drvdata(dev, hcd);
--
--	return err;
--
--err_iounmap:
--	iounmap(hcd->regs);
--err_put_hcd:
--	usb_put_hcd(hcd);
--err_dev_disable:
--	ssb_device_disable(dev, flags);
--	return err;
--}
--
--static int ssb_ohci_probe(struct ssb_device *dev,
--		const struct ssb_device_id *id)
--{
--	int err;
--	u16 chipid_top;
--
--	/* USBcores are only connected on embedded devices. */
--	chipid_top = (dev->bus->chip_id & 0xFF00);
--	if (chipid_top != 0x4700 && chipid_top != 0x5300)
--		return -ENODEV;
--
--	/* TODO: Probably need checks here; is the core connected? */
--
--	if (usb_disabled())
--		return -ENODEV;
--
--	/* We currently always attach SSB_DEV_USB11_HOSTDEV
--	 * as HOST OHCI. If we want to attach it as Client device,
--	 * we must branch here and call into the (yet to
--	 * be written) Client mode driver. Same for remove(). */
--
--	err = ssb_ohci_attach(dev);
--
--	return err;
--}
--
--static void ssb_ohci_remove(struct ssb_device *dev)
--{
--	ssb_ohci_detach(dev);
--}
--
--#ifdef CONFIG_PM
--
--static int ssb_ohci_suspend(struct ssb_device *dev, pm_message_t state)
--{
--	ssb_device_disable(dev, 0);
--
--	return 0;
--}
--
--static int ssb_ohci_resume(struct ssb_device *dev)
--{
--	struct usb_hcd *hcd = ssb_get_drvdata(dev);
--	struct ssb_ohci_device *ohcidev = hcd_to_ssb_ohci(hcd);
--
--	ssb_device_enable(dev, ohcidev->enable_flags);
--
--	ohci_finish_controller_resume(hcd);
--	return 0;
--}
--
--#else /* !CONFIG_PM */
--#define ssb_ohci_suspend	NULL
--#define ssb_ohci_resume	NULL
--#endif /* CONFIG_PM */
--
--static const struct ssb_device_id ssb_ohci_table[] = {
--	SSB_DEVICE(SSB_VENDOR_BROADCOM, SSB_DEV_USB11_HOSTDEV, SSB_ANY_REV),
--	SSB_DEVICE(SSB_VENDOR_BROADCOM, SSB_DEV_USB11_HOST, SSB_ANY_REV),
--	SSB_DEVICE(SSB_VENDOR_BROADCOM, SSB_DEV_USB20_HOST, SSB_ANY_REV),
--	SSB_DEVTABLE_END
--};
--MODULE_DEVICE_TABLE(ssb, ssb_ohci_table);
--
--static struct ssb_driver ssb_ohci_driver = {
--	.name		= KBUILD_MODNAME,
--	.id_table	= ssb_ohci_table,
--	.probe		= ssb_ohci_probe,
--	.remove		= ssb_ohci_remove,
--	.suspend	= ssb_ohci_suspend,
--	.resume		= ssb_ohci_resume,
--};
--- 
-1.7.5.4
+Before adding a generic platform driver for EHCI, you should give some
+to thought to how it might be generalized.  There are a lot of EHCI
+platform drivers, all differing in various major or minor respects.  
+It should be possible to replace a lot of them with the generic driver, 
+but first it will need some way to cope with a few minor quirks.
+
+Please consider this, and think about which of the existing drivers 
+could be replaced.
+
+> --- /dev/null
+> +++ b/drivers/usb/host/ehci-platform.c
+> @@ -0,0 +1,211 @@
+> +/*
+> + * Generic platform ehci driver
+> + *
+> + * Copyright 2007 Steven Brown <sbrown@cortland.com>
+> + * Copyright 2010-2011 Hauke Mehrtens <hauke@hauke-m.de>
+> + *
+> + * Derived from the ohci-ssb driver
+> + * Copyright 2007 Michael Buesch <m@bues.ch>
+> + *
+> + * Derived from the EHCI-PCI driver
+> + * Copyright (c) 2000-2004 by David Brownell
+> + *
+> + * Derived from the ohci-pci driver
+> + * Copyright 1999 Roman Weissgaerber
+> + * Copyright 2000-2002 David Brownell
+> + * Copyright 1999 Linus Torvalds
+> + * Copyright 1999 Gregory P. Smith
+> + *
+> + * Licensed under the GNU/GPL. See COPYING for details.
+> + */
+> +#include <linux/platform_device.h>
+> +
+> +static int ehci_platform_reset(struct usb_hcd *hcd)
+> +{
+> +	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
+> +	int retval;
+> +
+> +	ehci->caps = hcd->regs;
+> +	ehci->regs = hcd->regs +
+> +		HC_LENGTH(ehci, ehci_readl(ehci, &ehci->caps->hc_capbase));
+> +
+> +	dbg_hcs_params(ehci, "reset");
+> +	dbg_hcc_params(ehci, "reset");
+> +
+> +	/* cache this readonly data; minimize chip reads */
+> +	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
+> +
+> +	retval = ehci_halt(ehci);
+> +	if (retval)
+> +		return retval;
+> +
+> +	/* data structure init */
+> +	retval = ehci_init(hcd);
+> +	if (retval)
+> +		return retval;
+> +
+> +	ehci_reset(ehci);
+> +
+> +	ehci_port_power(ehci, 1);
+> +
+> +	return retval;
+> +}
+
+Most of this routine should be replaced with a call to ehci_setup.
+
+Alan Stern

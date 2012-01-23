@@ -1,62 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2012 14:33:07 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:33338 "EHLO linux-mips.org"
-        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
-        id S1903735Ab2AWNc4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 23 Jan 2012 14:32:56 +0100
-Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
-        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id q0NDWsvO010812;
-        Mon, 23 Jan 2012 14:32:54 +0100
-Received: (from ralf@localhost)
-        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id q0NDWqDT010811;
-        Mon, 23 Jan 2012 14:32:52 +0100
-Date:   Mon, 23 Jan 2012 14:32:52 +0100
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     linux-mips@linux-mips.org,
-        Jayachandran C <jayachandranc@netlogicmicro.com>,
-        David VomLehn <dvomlehn@cisco.com>
-Subject: Re: [PATCH] mips: fix netlogic defconfigs for coverage builds
-Message-ID: <20120123133252.GA10454@linux-mips.org>
-References: <1327262566-2676-1-git-send-email-paul.gortmaker@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2012 17:29:51 +0100 (CET)
+Received: from iolanthe.rowland.org ([192.131.102.54]:56272 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with SMTP id S1903806Ab2AWQ3q (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2012 17:29:46 +0100
+Received: (qmail 1564 invoked by uid 2102); 23 Jan 2012 11:29:43 -0500
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 23 Jan 2012 11:29:43 -0500
+Date:   Mon, 23 Jan 2012 11:29:43 -0500 (EST)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Hauke Mehrtens <hauke@hauke-m.de>, Greg KH <greg@kroah.com>
+cc:     ralf@linux-mips.org, <linux-mips@linux-mips.org>,
+        USB list <linux-usb@vger.kernel.org>, <zajec5@gmail.com>,
+        <linux-wireless@vger.kernel.org>, <m@bues.ch>, <george@znau.edu.ua>
+Subject: Re: [PATCH 4/7] USB: EHCI: Add a generic platform device driver
+In-Reply-To: <20120122192346.GA1691@kroah.com>
+Message-ID: <Pine.LNX.4.44L0.1201231115280.1372-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1327262566-2676-1-git-send-email-paul.gortmaker@windriver.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32312
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-archive-position: 32313
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: stern@rowland.harvard.edu
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, Jan 22, 2012 at 03:02:46PM -0500, Paul Gortmaker wrote:
+On Sun, 22 Jan 2012, Greg KH wrote:
 
-> The toolchain prefix will most likely be site specific and is
-> not guaranteed to always be "mips-linux-gnu-", so simply don't
-> specify one.  A quick "git grep" shows this to be consistent
-> amongst other cross compiled targets.
+> On Sun, Jan 22, 2012 at 04:02:13PM +0100, Hauke Mehrtens wrote:
+> > On 01/22/2012 04:41 AM, Alan Stern wrote:
+> > > On Sat, 21 Jan 2012, Hauke Mehrtens wrote:
+> > > 
+> > >> This adds a generic driver for platform devices. It works like the PCI
+> > >> driver and is based on it. This is for devices which do not have an own
+> > >> bus but their EHCI controller works like a PCI controller. It will be
+> > >> used for the Broadcom bcma and ssb USB EHCI controller.
+> > > 
+> > > Before adding a generic platform driver for EHCI, you should give some
+> > > to thought to how it might be generalized.  There are a lot of EHCI
+> > > platform drivers, all differing in various major or minor respects.  
+> > > It should be possible to replace a lot of them with the generic driver, 
+> > > but first it will need some way to cope with a few minor quirks.
+> > > 
+> > > Please consider this, and think about which of the existing drivers 
+> > > could be replaced.
+> > 
+> > For now I just build this for bcma and ssb based SoCs. Yes there are
+> > some drivers which could be replaced with this one, but most (all ??) of
+> > them do something special in the device probing and this have to be
+> > moved to somewhere else e.g. where the platform device is created.
+> > I could rename it so it would not be generic any more, but I think it is
+> > the wrong approach. ;-)
+> > I am not able and do not have the time to convert all EHCI platform
+> > drivers, where it is possible  to this generic platform driver, as I do
+> > not have the devices to test this and time is limited.
 > 
-> Similarly, the site specific initramfs source location should not
-> be used, since that won't exist for most people, and it prevents
-> them from doing coverage builds on the defconfigs, such as those
-> done in linux-next and run routinely by many others.
+> Time is not limited for us, sorry, this seems like the correct thing to
+> do, and because of that, we (well I at least) will not accept this patch
+> as-is.
+> 
+> Please go rework it to be as Alan suggested.
+> 
+> > If someone else wants to improve something on these "generic" platform
+> > drivers to make them work with an other device I am totally fine with it.
+> 
+> I think that someone just became you :)
+> 
+> Yes, this isn't fair, but it's how Linux kernel development works,
+> sorry.
 
-I ran into that issue as well.  My build script does something like
+The work doesn't have to be all done right away.  Still, I think it 
+makes sense to separate out the "generic platform" drivers from the 
+rest of this patch series.
 
-  sed -i -e s@^CONFIG_CROSS_COMPILE=\"[^\"]*\"\$@CONFIG_CROSS_COMPILE=\"\"@
-  sed -i -e s@^CONFIG_INITRAMFS_SOURCE=\"[^\"]*\"\$@CONFIG_INITRAMFS_SOURCE=\"\"@
-  sed -i -e s/^CONFIG_DEBUG_INFO=y\$/#\ CONFIG_DEBUG_INFO\ is\ not\ set/
+Some platform drivers require additional storage for things like
+pointers to clocks or OTG transceivers.  For example see ehci-mv.c,
+which allocates its own ehci_hcd_mv structure along with ehci_hcd.  
+Some other drivers even define their own private version of ehci_hcd,
+such as ehci-fsl.c.  If you can figure out a good way to expend the
+ehci_hcd structure so that it can accomodate the extra fields needed by
+all these drivers in a generic way, that would be an excellent start
+and well worth merging.  Maybe just adding a "void *platform_data"
+field would be enough.
 
-to patch up two two annoying settings and the last one to make the compiler
-run a little quicker and increase chances for a hit in ccache.
+As for special activities during device probing...  Many of these can 
+be handled later on, easily enough, by adding appropriate quirk flags.  
+We don't have to worry about that part right now.
 
-But for benefit of the rest of the world I've applied tihs patch and will
-also patch up powertv_defconfig which now is the last CONFIG_CROSS_COMPILE
-user.
-
-Thanks!
-
-  Ralf
+Alan Stern

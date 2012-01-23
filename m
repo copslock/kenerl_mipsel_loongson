@@ -1,84 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jan 2012 21:03:19 +0100 (CET)
-Received: from mail.windriver.com ([147.11.1.11]:48332 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1901341Ab2AVUDN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 22 Jan 2012 21:03:13 +0100
-Received: from yow-lpgnfs-02.corp.ad.wrs.com (yow-lpgnfs-02.ottawa.windriver.com [128.224.149.8])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id q0MK30ZP017584;
-        Sun, 22 Jan 2012 12:03:00 -0800 (PST)
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org, Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Jayachandran C <jayachandranc@netlogicmicro.com>
-Subject: [PATCH] mips: fix netlogic defconfigs for coverage builds
-Date:   Sun, 22 Jan 2012 15:02:46 -0500
-Message-Id: <1327262566-2676-1-git-send-email-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 1.7.7.2
-X-archive-position: 32311
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2012 14:33:07 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33338 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903735Ab2AWNc4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 23 Jan 2012 14:32:56 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id q0NDWsvO010812;
+        Mon, 23 Jan 2012 14:32:54 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id q0NDWqDT010811;
+        Mon, 23 Jan 2012 14:32:52 +0100
+Date:   Mon, 23 Jan 2012 14:32:52 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     linux-mips@linux-mips.org,
+        Jayachandran C <jayachandranc@netlogicmicro.com>,
+        David VomLehn <dvomlehn@cisco.com>
+Subject: Re: [PATCH] mips: fix netlogic defconfigs for coverage builds
+Message-ID: <20120123133252.GA10454@linux-mips.org>
+References: <1327262566-2676-1-git-send-email-paul.gortmaker@windriver.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1327262566-2676-1-git-send-email-paul.gortmaker@windriver.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 32312
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The toolchain prefix will most likely be site specific and is
-not guaranteed to always be "mips-linux-gnu-", so simply don't
-specify one.  A quick "git grep" shows this to be consistent
-amongst other cross compiled targets.
+On Sun, Jan 22, 2012 at 03:02:46PM -0500, Paul Gortmaker wrote:
 
-Similarly, the site specific initramfs source location should not
-be used, since that won't exist for most people, and it prevents
-them from doing coverage builds on the defconfigs, such as those
-done in linux-next and run routinely by many others.
+> The toolchain prefix will most likely be site specific and is
+> not guaranteed to always be "mips-linux-gnu-", so simply don't
+> specify one.  A quick "git grep" shows this to be consistent
+> amongst other cross compiled targets.
+> 
+> Similarly, the site specific initramfs source location should not
+> be used, since that won't exist for most people, and it prevents
+> them from doing coverage builds on the defconfigs, such as those
+> done in linux-next and run routinely by many others.
 
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-CC: Jayachandran C <jayachandranc@netlogicmicro.com>
+I ran into that issue as well.  My build script does something like
 
-diff --git a/arch/mips/configs/nlm_xlp_defconfig b/arch/mips/configs/nlm_xlp_defconfig
-index 4479fd6..28c6b27 100644
---- a/arch/mips/configs/nlm_xlp_defconfig
-+++ b/arch/mips/configs/nlm_xlp_defconfig
-@@ -8,7 +8,7 @@ CONFIG_HIGH_RES_TIMERS=y
- # CONFIG_SECCOMP is not set
- CONFIG_USE_OF=y
- CONFIG_EXPERIMENTAL=y
--CONFIG_CROSS_COMPILE="mips-linux-gnu-"
-+CONFIG_CROSS_COMPILE=""
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-@@ -22,7 +22,7 @@ CONFIG_AUDIT=y
- CONFIG_CGROUPS=y
- CONFIG_NAMESPACES=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_INITRAMFS_SOURCE="usr/dev_file_list usr/rootfs.xlp"
-+CONFIG_INITRAMFS_SOURCE=""
- CONFIG_RD_BZIP2=y
- CONFIG_RD_LZMA=y
- CONFIG_INITRAMFS_COMPRESSION_LZMA=y
-diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
-index 7c68666..d0b857d 100644
---- a/arch/mips/configs/nlm_xlr_defconfig
-+++ b/arch/mips/configs/nlm_xlr_defconfig
-@@ -8,7 +8,7 @@ CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_KEXEC=y
- CONFIG_EXPERIMENTAL=y
--CONFIG_CROSS_COMPILE="mips-linux-gnu-"
-+CONFIG_CROSS_COMPILE=""
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
-@@ -22,7 +22,7 @@ CONFIG_AUDIT=y
- CONFIG_NAMESPACES=y
- CONFIG_SCHED_AUTOGROUP=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_INITRAMFS_SOURCE="usr/dev_file_list usr/rootfs.xlr"
-+CONFIG_INITRAMFS_SOURCE=""
- CONFIG_RD_BZIP2=y
- CONFIG_RD_LZMA=y
- CONFIG_INITRAMFS_COMPRESSION_GZIP=y
--- 
-1.7.7.2
+  sed -i -e s@^CONFIG_CROSS_COMPILE=\"[^\"]*\"\$@CONFIG_CROSS_COMPILE=\"\"@
+  sed -i -e s@^CONFIG_INITRAMFS_SOURCE=\"[^\"]*\"\$@CONFIG_INITRAMFS_SOURCE=\"\"@
+  sed -i -e s/^CONFIG_DEBUG_INFO=y\$/#\ CONFIG_DEBUG_INFO\ is\ not\ set/
+
+to patch up two two annoying settings and the last one to make the compiler
+run a little quicker and increase chances for a hit in ccache.
+
+But for benefit of the rest of the world I've applied tihs patch and will
+also patch up powertv_defconfig which now is the last CONFIG_CROSS_COMPILE
+user.
+
+Thanks!
+
+  Ralf

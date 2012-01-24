@@ -1,52 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jan 2012 22:34:09 +0100 (CET)
-Received: from iolanthe.rowland.org ([192.131.102.54]:56370 "HELO
-        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1903866Ab2AWVeE (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Jan 2012 22:34:04 +0100
-Received: (qmail 10705 invoked by uid 2102); 23 Jan 2012 16:34:02 -0500
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 23 Jan 2012 16:34:02 -0500
-Date:   Mon, 23 Jan 2012 16:34:02 -0500 (EST)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@iolanthe.rowland.org
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-cc:     Greg KH <greg@kroah.com>, <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>, USB list <linux-usb@vger.kernel.org>,
-        <zajec5@gmail.com>, <linux-wireless@vger.kernel.org>, <m@bues.ch>,
-        <george@znau.edu.ua>
-Subject: Re: [PATCH 4/7] USB: EHCI: Add a generic platform device driver
-In-Reply-To: <4F1DC9D4.8090008@hauke-m.de>
-Message-ID: <Pine.LNX.4.44L0.1201231626080.1372-100000@iolanthe.rowland.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 32316
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jan 2012 01:07:38 +0100 (CET)
+Received: from e32.co.us.ibm.com ([32.97.110.150]:58395 "EHLO
+        e32.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903867Ab2AXAH3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Jan 2012 01:07:29 +0100
+Received: from /spool/local
+        by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <jstultz@us.ibm.com>;
+        Mon, 23 Jan 2012 17:07:22 -0700
+Received: from d03dlp02.boulder.ibm.com (9.17.202.178)
+        by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Mon, 23 Jan 2012 17:06:17 -0700
+Received: from d03relay03.boulder.ibm.com (d03relay03.boulder.ibm.com [9.17.195.228])
+        by d03dlp02.boulder.ibm.com (Postfix) with ESMTP id 74C483E40055;
+        Mon, 23 Jan 2012 17:06:16 -0700 (MST)
+Received: from d03av02.boulder.ibm.com (d03av02.boulder.ibm.com [9.17.195.168])
+        by d03relay03.boulder.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id q0O06AEi160132;
+        Mon, 23 Jan 2012 17:06:13 -0700
+Received: from d03av02.boulder.ibm.com (loopback [127.0.0.1])
+        by d03av02.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id q0O069a7004339;
+        Mon, 23 Jan 2012 17:06:10 -0700
+Received: from kernel.beaverton.ibm.com (kernel.beaverton.ibm.com [9.47.67.96])
+        by d03av02.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id q0O068tD004236;
+        Mon, 23 Jan 2012 17:06:09 -0700
+Received: by kernel.beaverton.ibm.com (Postfix, from userid 1056)
+        id B0A9EBFE5C; Mon, 23 Jan 2012 16:06:07 -0800 (PST)
+From:   John Stultz <john.stultz@linaro.org>
+To:     lkml <linux-kernel@vger.kernel.org>
+Cc:     John Stultz <john.stultz@linaro.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Yong Zhang <yong.zhang0@gmail.com>, linux-mips@linux-mips.org
+Subject: [PATCH 3/3] clocksource: Convert mips pnx8550 to use clocksource_register_hz
+Date:   Mon, 23 Jan 2012 16:05:50 -0800
+Message-Id: <1327363550-19952-4-git-send-email-john.stultz@linaro.org>
+X-Mailer: git-send-email 1.7.3.2.146.gca209
+In-Reply-To: <1327363550-19952-1-git-send-email-john.stultz@linaro.org>
+References: <1327363550-19952-1-git-send-email-john.stultz@linaro.org>
+X-Content-Scanned: Fidelis XPS MAILER
+x-cbid: 12012400-3270-0000-0000-0000036FE78C
+X-archive-position: 32317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stern@rowland.harvard.edu
+X-original-sender: john.stultz@linaro.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, 23 Jan 2012, Hauke Mehrtens wrote:
+This patch converts the registration to use clocksource_register_hz()
+but is clearly broken, as the pnx_clocksource doesn't seem to set a
+proper mult/shift pair.
 
-> > The work doesn't have to be all done right away.  Still, I think it 
-> > makes sense to separate out the "generic platform" drivers from the 
-> > rest of this patch series.
-> Ok, but how should these patches being merged as my plan is to get them
-> all into 3.4 in some way? The bcma hcd driver depends on changes in
-> drivers/bcma and will also depend on these generic platform driver.
+CC: Ralf Baechle <ralf@linux-mips.org>
+CC: Yong Zhang <yong.zhang0@gmail.com>
+CC: linux-mips@linux-mips.org
+Signed-off-by: John Stultz <john.stultz@linaro.org>
+---
+ arch/mips/pnx8550/common/time.c |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
 
-Like I said, we don't need a fully general generic platform driver
-right away.  If you make a small number of additions so that it is
-clear how to use the two generic drivers instead of some of the
-existing platform drivers, and then submit the generic drivers as a
-separate standalone patch series, that should be good enough.  Greg
-will probably be very happy to merge it, if it includes an explicit
-plan for replacing some existing drivers.
-
-Then the bcma stuff can be added on top, as a separate patch series.  
-Once that's done, we can start making an effort to assimilate the
-platform drivers into the generic drivers.
-
-Alan Stern
+diff --git a/arch/mips/pnx8550/common/time.c b/arch/mips/pnx8550/common/time.c
+index 831d6b3..006ac88 100644
+--- a/arch/mips/pnx8550/common/time.c
++++ b/arch/mips/pnx8550/common/time.c
+@@ -104,7 +104,12 @@ __init void plat_time_init(void)
+ 
+ 	pnx8xxx_clockevent.cpumask = cpu_none_mask;
+ 	clockevents_register_device(&pnx8xxx_clockevent);
+-	clocksource_register(&pnx_clocksource);
++	
++	/*
++	 * XXX - Nothing seems to set pnx_clocksource mult/shift! 
++	 * So I don't know what freq to use here. Help! -johnstul
++	 */
++	clocksource_register_hz(&pnx_clocksource, 0);
+ 
+ 	/* Timer 1 start */
+ 	configPR = read_c0_config7();
+-- 
+1.7.3.2.146.gca209

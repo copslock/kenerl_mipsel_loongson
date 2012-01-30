@@ -1,16 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 17:10:40 +0100 (CET)
-Received: from moutng.kundenserver.de ([212.227.17.8]:53314 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903692Ab2A3QKa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2012 17:10:30 +0100
-Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
-        by mrelayeu.kundenserver.de (node=mrbap1) with ESMTP (Nemesis)
-        id 0MCfaM-1RiaPc3YuY-008or0; Mon, 30 Jan 2012 17:09:59 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH 0/3] arch: fix ioport mapping on mips,sh
-Date:   Mon, 30 Jan 2012 16:09:55 +0000
-User-Agent: KMail/1.12.2 (Linux/3.3.0-rc1; KDE/4.3.2; x86_64; ; )
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 17:16:18 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:39459 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903694Ab2A3QQL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Jan 2012 17:16:11 +0100
+Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q0UGG2oh012894
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Mon, 30 Jan 2012 11:16:02 -0500
+Received: from redhat.com (vpn-203-146.tlv.redhat.com [10.35.203.146])
+        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id q0UGFplZ016452;
+        Mon, 30 Jan 2012 11:15:52 -0500
+Date:   Mon, 30 Jan 2012 18:18:19 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Kevin Cernekee <cernekee@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Mundt <lethal@linux-sh.org>,
@@ -24,70 +26,90 @@ Cc:     Kevin Cernekee <cernekee@gmail.com>,
         Michael Witten <mfwitten@gmail.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/3] lib: add NO_GENERIC_PCI_IOPORT_MAP
+Message-ID: <20120130161818.GA9345@redhat.com>
 References: <cover.1327877053.git.mst@redhat.com>
-In-Reply-To: <cover.1327877053.git.mst@redhat.com>
+ <d78d91d0166651700cf662a50c87d84da4bdab88.1327877053.git.mst@redhat.com>
+ <201201301551.46907.arnd@arndb.de>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201201301609.56105.arnd@arndb.de>
-X-Provags-ID: V02:K0:YRmjaTYJpZu6S8WxSZdsxdgrZ4yBP5TfISB8Z6OHH/Z
- CO+Ztb/1clhmgzcjEejOSB8X08T+EYcfPe2yyWQYRhwYVc5CDl
- JQj3RbhTCyCU3OOY/EWMH9w9rxOgaP81SVJQWKxCpJzZU9hoO/
- od6lhFDtsstc9ZF9Fy1xxo0E9vXsQHiS21D//bqkfadjYpAz00
- MT7bH/MtHT8FyGPv9lWvfn/VugcY2zTm1HG7NWGSGrjJoPL21G
- 0fEtc5l2MV72qevHUPa73HEpXWiqN6wq88WIunZImUhr2hQNbH
- K/nMw9WrRcpjRa3lJKProgmUFgqscMRrm1iLU7KrH3xjyPLNLB
- Y8bU3210GHolkMOpzDpU=
-X-archive-position: 32329
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201201301551.46907.arnd@arndb.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
+X-archive-position: 32330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: mst@redhat.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Monday 30 January 2012, Michael S. Tsirkin wrote:
-> Kevin Cernekee reported that recent cleanup
-> that replaced pci_iomap with a generic function
-> failed to take into account the differences
-> in io port handling on mips and sh architectures.
+On Mon, Jan 30, 2012 at 03:51:46PM +0000, Arnd Bergmann wrote:
+> On Monday 30 January 2012, Michael S. Tsirkin wrote:
+> > --- a/include/asm-generic/pci_iomap.h
+> > +++ b/include/asm-generic/pci_iomap.h
+> > @@ -15,6 +15,11 @@ struct pci_dev;
+> >  #ifdef CONFIG_PCI
+> >  /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
+> >  extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
+> > +/* Create a virtual mapping cookie for a port on a given PCI device.
+> > + * Do not call this directly, it exists to make it easier for architectures
+> > + * to override. */
+> > +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
+> > +                                     unsigned int nr);
+> >  #else
+> >  static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max)
+> >  {
+> > index 4b0fdc2..1dfda29 100644
+> > --- a/lib/pci_iomap.c
+> > +++ b/lib/pci_iomap.c
+> > @@ -9,6 +9,16 @@
+> >  #include <linux/export.h>
+> >  
+> >  #ifdef CONFIG_PCI
+> > +#ifndef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
+> > +/* Architectures can override ioport mapping while
+> > + * still using the rest of the generic infrastructure. */
+> > +void __iomem *__pci_ioport_map(struct pci_dev *dev,
+> > +                              unsigned long port,
+> > +                              unsigned int nr)
+> > +{
+> > +       return ioport_map(port, nr);
+> > +}
+> > +#endif
+> >  /**
+> >   * pci_iomap - create a virtual mapping cookie for a PCI BAR
+> >   * @dev: PCI device that owns the BAR
 > 
-> Rather than revert the changes reintroducing the
-> code duplication, this patchset fixes this
-> by adding ability for architectures to override
-> ioport mapping for pci devices.
+> This looks correct, but it would be nicer to express this with an inline
+> function and keeping the new #ifdef to the header file, like
 > 
-> I put this in my tree that feeds into linux-next
-> and intend to ask Linus to pull this fix if this
-> doesn't cause any issues and there are no objections.
+> +/*
+> + * Create a virtual mapping cookie for a port on a given PCI device.
+> + * Do not call this directly, it exists to make it easier for architectures
+> + * to override.
+> + */
+> +#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
+> +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
+> +                                     unsigned int nr);
+> +#else
+> +static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
+> +                              unsigned long port, unsigned int nr)
+> +{
+> +       return ioport_map(port, nr);
+> +}
+> +#endif
 > 
-> The patches were tested on x86 and compiled on mips and sh.
-> Would appreciate reviews/acks/testing reports.
+> 	Arnd
 
-Looks good to me, except for the one detail I've commented
-on in the third patch.
+It would be nicer in that it would
+make the kernel a bit smaller for generic architectures
+but this would need to go into a separate header:
+it depends on io.h and io.h depends on pci_iomap.h.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Worth it?
 
-I do wonder if the sh and mips implementations are robust enough however
-(independent of your work): It seems that an ioport number is treated
-differently in pci_iomap than it is using ioport_map and inb/outb,
-the assumption being that the port number is a local index per PCI domain.
-This would mean that any port access other than pci_iomap would only
-work on the primary PCI domain. There are two IMHO better solutions that
-I've seen on other architectures:
-
-1. create a larger (e.g. 1MB) io port mapping range in virtual memory
-that is split into 64kb per domain, and use the domain number to
-find the per domain range when setting the resources. Port numbers will
-be larger than 65535 this way, but PCI will ignore the upper address
-bits for any access so it works fine.
-
-2. split the 64kb io port range into subsections per domain (on page
-granularity, e.g. 2 domains with 32kb or at most 16 domains with 4kb)
-and map them virtually contiguous, then reassign all io port resources
-so that only the correct region for each domain is used.
-
-	Arnd
+-- 
+MST

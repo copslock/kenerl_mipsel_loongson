@@ -1,85 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 21:05:05 +0100 (CET)
-Received: from moutng.kundenserver.de ([212.227.126.187]:56671 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903703Ab2A3UFA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2012 21:05:00 +0100
-Received: from klappe2.localnet (HSI-KBW-46-223-44-216.hsi.kabel-badenwuerttemberg.de [46.223.44.216])
-        by mrelayeu.kundenserver.de (node=mreu0) with ESMTP (Nemesis)
-        id 0MJYS7-1Rtt8q2dER-002uIK; Mon, 30 Jan 2012 21:04:36 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH 1/3] lib: add NO_GENERIC_PCI_IOPORT_MAP
-Date:   Mon, 30 Jan 2012 20:04:32 +0000
-User-Agent: KMail/1.12.2 (Linux/3.3.0-rc1; KDE/4.3.2; x86_64; ; )
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Jesse Barnes <jbarnes@virtuousgeek.org>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        Dmitry Kasatkin <dmitry.kasatkin@intel.com>,
-        James Morris <jmorris@namei.org>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Michael Witten <mfwitten@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-arch@vger.kernel.org
-References: <cover.1327877053.git.mst@redhat.com> <201201301551.46907.arnd@arndb.de> <20120130161818.GA9345@redhat.com>
-In-Reply-To: <20120130161818.GA9345@redhat.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201201302004.33083.arnd@arndb.de>
-X-Provags-ID: V02:K0:ZNS912xatw+iD7ZLS287Q+NKxYf+kk+kMcCGVS81KSq
- wi9DOEBYVVloDKXEFGDv0RhA1yuMgB3Ot0m75Y8aynC/BPnIlQ
- yrDEqVE8kbqoV+ZbBijJ5vbhJ67xHzebv+Eoen9iODbyQv/Pak
- hMWqI6Yzt9tTZU/8owt/TQ2bYuD9KgrHJU6G0oXnt5sB/8cKkR
- rbzJb2EMH7D5Omd9fVVvZo9Uhep7m7Yw6fJvtO+fb9N+0gc41n
- AtPE5Fg4Y1s9rJYq6dYwaUl9rZOaah/sVWQbCEHxhftG+1D5Bx
- GIC93MoyUw2RIC3xnUiFwNPQEGRG4YQ8byVanFX+lr66athX3w
- 2HohRC9RBsKHDtIFneTI=
-X-archive-position: 32335
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2012 00:04:21 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41764 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903705Ab2A3XEQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jan 2012 00:04:16 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 19F6F8F68;
+        Tue, 31 Jan 2012 00:04:16 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id B6F99mUoS62O; Tue, 31 Jan 2012 00:04:12 +0100 (CET)
+Received: from localhost.localdomain (unknown [134.102.132.222])
+        by hauke-m.de (Postfix) with ESMTPSA id 668328F60;
+        Tue, 31 Jan 2012 00:04:12 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     linville@tuxdriver.com
+Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 0/7] bcma: add PCIe host controller
+Date:   Tue, 31 Jan 2012 00:03:30 +0100
+Message-Id: <1327964617-7910-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.5.4
+X-archive-position: 32336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Monday 30 January 2012, Michael S. Tsirkin wrote:
-> > 
-> > +/*
-> > + * Create a virtual mapping cookie for a port on a given PCI device.
-> > + * Do not call this directly, it exists to make it easier for architectures
-> > + * to override.
-> > + */
-> > +#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
-> > +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
-> > +                                     unsigned int nr);
-> > +#else
-> > +static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
-> > +                              unsigned long port, unsigned int nr)
-> > +{
-> > +       return ioport_map(port, nr);
-> > +}
-> > +#endif
-> > 
-> >       Arnd
-> 
-> It would be nicer in that it would
-> make the kernel a bit smaller for generic architectures
-> but this would need to go into a separate header:
-> it depends on io.h and io.h depends on pci_iomap.h.
+These patches are adding support for a PCIe Host controller found on 
+some Broadcom SoCs using bcma as the System bus. This was tested with 
+one BCM4716 based device, a Netgear WNDR3400 with a BCM43224 connected 
+through PCIe.
+These patches are based on wireless-testing.
 
-Adding extra dependencies is not good here, I agree.
-Maybe  a better solution is to use a macro instead of an inline
-function then:
+Hauke Mehrtens (7):
+  bcma: add the core unit number
+  bcma: add constants for PCI and use them
+  bcma: export bcma_pcie_read()
+  bcma: make some functions __devinit
+  bcma: add PCIe host controller
+  bcma: add bus num counter
+  bcma: add extra sprom check
 
-#define  __pci_ioport_map(dev, port, nr) ioport_map(port, nr)
+ arch/mips/pci/pci-bcm47xx.c                 |   49 ++-
+ drivers/bcma/bcma_private.h                 |    8 +-
+ drivers/bcma/driver_pci.c                   |  168 ++++-----
+ drivers/bcma/driver_pci_host.c              |  578 ++++++++++++++++++++++++++-
+ drivers/bcma/host_pci.c                     |    4 +-
+ drivers/bcma/main.c                         |   14 +-
+ drivers/bcma/scan.c                         |   14 +
+ drivers/bcma/sprom.c                        |    7 +
+ include/linux/bcma/bcma.h                   |    2 +
+ include/linux/bcma/bcma_driver_chipcommon.h |   16 +
+ include/linux/bcma/bcma_driver_pci.h        |  125 ++++++-
+ include/linux/bcma/bcma_regs.h              |   27 ++
+ 12 files changed, 908 insertions(+), 104 deletions(-)
 
-In general, macros should be avoided, but I think it's the
-best tradeoff in this case.
-
-	Arnd
+-- 
+1.7.5.4

@@ -1,21 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 17:16:18 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:39459 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903694Ab2A3QQL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Jan 2012 17:16:11 +0100
-Received: from int-mx02.intmail.prod.int.phx2.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q0UGG2oh012894
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 30 Jan 2012 11:16:02 -0500
-Received: from redhat.com (vpn-203-146.tlv.redhat.com [10.35.203.146])
-        by int-mx02.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id q0UGFplZ016452;
-        Mon, 30 Jan 2012 11:15:52 -0500
-Date:   Mon, 30 Jan 2012 18:18:19 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 17:49:56 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:55635 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903700Ab2A3Qtu (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2012 17:49:50 +0100
+Received: by bke5 with SMTP id 5so4929434bke.36
+        for <multiple recipients>; Mon, 30 Jan 2012 08:49:44 -0800 (PST)
+Received: by 10.204.10.80 with SMTP id o16mr6021463bko.50.1327942184418;
+        Mon, 30 Jan 2012 08:49:44 -0800 (PST)
+Received: from [192.168.11.174] (mail.dev.rtsoft.ru. [213.79.90.226])
+        by mx.google.com with ESMTPS id ci12sm38728634bkb.13.2012.01.30.08.49.41
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Mon, 30 Jan 2012 08:49:42 -0800 (PST)
+Message-ID: <4F26D815.3040105@mvista.com>
+Date:   Mon, 30 Jan 2012 20:49:09 +0300
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:6.0) Gecko/20110812 Thunderbird/6.0
+MIME-Version: 1.0
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+CC:     Kevin Cernekee <cernekee@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Mundt <lethal@linux-sh.org>,
+        Arnd Bergmann <arnd@arndb.de>,
         Jesse Barnes <jbarnes@virtuousgeek.org>,
         Myron Stowe <myron.stowe@redhat.com>,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
@@ -26,90 +31,37 @@ Cc:     Kevin Cernekee <cernekee@gmail.com>,
         Michael Witten <mfwitten@gmail.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/3] lib: add NO_GENERIC_PCI_IOPORT_MAP
-Message-ID: <20120130161818.GA9345@redhat.com>
-References: <cover.1327877053.git.mst@redhat.com>
- <d78d91d0166651700cf662a50c87d84da4bdab88.1327877053.git.mst@redhat.com>
- <201201301551.46907.arnd@arndb.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <201201301551.46907.arnd@arndb.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.12
-X-archive-position: 32330
+Subject: Re: [PATCH 2/3] mips: use the the PCI controller's io_map_base
+References: <cover.1327877053.git.mst@redhat.com> <dd3dab360f11d4f8829854891d04bf838bc50e5e.1327877053.git.mst@redhat.com>
+In-Reply-To: <dd3dab360f11d4f8829854891d04bf838bc50e5e.1327877053.git.mst@redhat.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Jan 30, 2012 at 03:51:46PM +0000, Arnd Bergmann wrote:
-> On Monday 30 January 2012, Michael S. Tsirkin wrote:
-> > --- a/include/asm-generic/pci_iomap.h
-> > +++ b/include/asm-generic/pci_iomap.h
-> > @@ -15,6 +15,11 @@ struct pci_dev;
-> >  #ifdef CONFIG_PCI
-> >  /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
-> >  extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
-> > +/* Create a virtual mapping cookie for a port on a given PCI device.
-> > + * Do not call this directly, it exists to make it easier for architectures
-> > + * to override. */
-> > +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
-> > +                                     unsigned int nr);
-> >  #else
-> >  static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max)
-> >  {
-> > index 4b0fdc2..1dfda29 100644
-> > --- a/lib/pci_iomap.c
-> > +++ b/lib/pci_iomap.c
-> > @@ -9,6 +9,16 @@
-> >  #include <linux/export.h>
-> >  
-> >  #ifdef CONFIG_PCI
-> > +#ifndef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
-> > +/* Architectures can override ioport mapping while
-> > + * still using the rest of the generic infrastructure. */
-> > +void __iomem *__pci_ioport_map(struct pci_dev *dev,
-> > +                              unsigned long port,
-> > +                              unsigned int nr)
-> > +{
-> > +       return ioport_map(port, nr);
-> > +}
-> > +#endif
-> >  /**
-> >   * pci_iomap - create a virtual mapping cookie for a PCI BAR
-> >   * @dev: PCI device that owns the BAR
-> 
-> This looks correct, but it would be nicer to express this with an inline
-> function and keeping the new #ifdef to the header file, like
-> 
-> +/*
-> + * Create a virtual mapping cookie for a port on a given PCI device.
-> + * Do not call this directly, it exists to make it easier for architectures
-> + * to override.
-> + */
-> +#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
-> +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
-> +                                     unsigned int nr);
-> +#else
-> +static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
-> +                              unsigned long port, unsigned int nr)
-> +{
-> +       return ioport_map(port, nr);
-> +}
-> +#endif
-> 
-> 	Arnd
+Hello.
 
-It would be nicer in that it would
-make the kernel a bit smaller for generic architectures
-but this would need to go into a separate header:
-it depends on io.h and io.h depends on pci_iomap.h.
+On 01/30/2012 03:18 PM, Michael S. Tsirkin wrote:
 
-Worth it?
+> commit eab90291d35438bcebf7c3dc85be66d0f24e3002
 
--- 
-MST
+    Please add that commit's summary in parens.
+
+> failed to take into account the PCI controller's
+> io_map_base for mapping IO BARs.
+> This also caused a new warning on mips.
+
+> Fix this, without re-introducing code duplication,
+> by setting NO_GENERIC_PCI_IOPORT_MAP
+> and supplying a mips-specific __pci_ioport_map.
+
+> Reported-by: Kevin Cernekee <cernekee@gmail.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+WBR, Sergei

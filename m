@@ -1,54 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 19:38:15 +0100 (CET)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:61952 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903700Ab2A3SiJ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2012 19:38:09 +0100
-Received: by dadz9 with SMTP id z9so3407117dad.36
-        for <multiple recipients>; Mon, 30 Jan 2012 10:38:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=C4WGZsbwNYQIjS6j00QgwzT6wzUh/YjytanaiGZQXhk=;
-        b=q4jyczTmd+DUVx4EJPSVNz4E//Efc+MPQIKaa1LHRksYsPUpsYjcAEGN/pDM+jGKg5
-         pgtNtXmYJkT8NKhEEL8maJB4UDXucYqzqEPCPGoebHK5Feq5WDFTc0pzDc+T6hr53lsa
-         7xPxmXDATbBWftHlKL5On4tedCCIYW3x048bw=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 21:05:05 +0100 (CET)
+Received: from moutng.kundenserver.de ([212.227.126.187]:56671 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903703Ab2A3UFA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2012 21:05:00 +0100
+Received: from klappe2.localnet (HSI-KBW-46-223-44-216.hsi.kabel-badenwuerttemberg.de [46.223.44.216])
+        by mrelayeu.kundenserver.de (node=mreu0) with ESMTP (Nemesis)
+        id 0MJYS7-1Rtt8q2dER-002uIK; Mon, 30 Jan 2012 21:04:36 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH 1/3] lib: add NO_GENERIC_PCI_IOPORT_MAP
+Date:   Mon, 30 Jan 2012 20:04:32 +0000
+User-Agent: KMail/1.12.2 (Linux/3.3.0-rc1; KDE/4.3.2; x86_64; ; )
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Jesse Barnes <jbarnes@virtuousgeek.org>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
+        Dmitry Kasatkin <dmitry.kasatkin@intel.com>,
+        James Morris <jmorris@namei.org>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Michael Witten <mfwitten@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-arch@vger.kernel.org
+References: <cover.1327877053.git.mst@redhat.com> <201201301551.46907.arnd@arndb.de> <20120130161818.GA9345@redhat.com>
+In-Reply-To: <20120130161818.GA9345@redhat.com>
 MIME-Version: 1.0
-Received: by 10.68.130.201 with SMTP id og9mr43325418pbb.61.1327948682951;
- Mon, 30 Jan 2012 10:38:02 -0800 (PST)
-Received: by 10.68.234.166 with HTTP; Mon, 30 Jan 2012 10:38:02 -0800 (PST)
-In-Reply-To: <4F26CD48.3040809@gmail.com>
-References: <0736d2becb10905c35eec74f04c63970@localhost>
-        <4F26CD48.3040809@gmail.com>
-Date:   Mon, 30 Jan 2012 10:38:02 -0800
-Message-ID: <CAJiQ=7DXJvnt0NZLiThiH+FiQ43GTm07ODJs6e4-RbpsBSxAKQ@mail.gmail.com>
-Subject: Re: [PATCH] MIPS: Fix duplicate instances of ARCH_SPARSEMEM_ENABLE
-From:   Kevin Cernekee <cernekee@gmail.com>
-To:     David Daney <ddaney.cavm@gmail.com>, viric@viric.name
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        David Daney <ddaney@caviumnetworks.com>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 32334
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <201201302004.33083.arnd@arndb.de>
+X-Provags-ID: V02:K0:ZNS912xatw+iD7ZLS287Q+NKxYf+kk+kMcCGVS81KSq
+ wi9DOEBYVVloDKXEFGDv0RhA1yuMgB3Ot0m75Y8aynC/BPnIlQ
+ yrDEqVE8kbqoV+ZbBijJ5vbhJ67xHzebv+Eoen9iODbyQv/Pak
+ hMWqI6Yzt9tTZU/8owt/TQ2bYuD9KgrHJU6G0oXnt5sB/8cKkR
+ rbzJb2EMH7D5Omd9fVVvZo9Uhep7m7Yw6fJvtO+fb9N+0gc41n
+ AtPE5Fg4Y1s9rJYq6dYwaUl9rZOaah/sVWQbCEHxhftG+1D5Bx
+ GIC93MoyUw2RIC3xnUiFwNPQEGRG4YQ8byVanFX+lr66athX3w
+ 2HohRC9RBsKHDtIFneTI=
+X-archive-position: 32335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Jan 30, 2012 at 9:03 AM, David Daney <ddaney.cavm@gmail.com> wrote:
-> NAK!
->
-> A cleaner patch for this was already done here:
->
-> http://patchwork.linux-mips.org/patch/3285/
+On Monday 30 January 2012, Michael S. Tsirkin wrote:
+> > 
+> > +/*
+> > + * Create a virtual mapping cookie for a port on a given PCI device.
+> > + * Do not call this directly, it exists to make it easier for architectures
+> > + * to override.
+> > + */
+> > +#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
+> > +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
+> > +                                     unsigned int nr);
+> > +#else
+> > +static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
+> > +                              unsigned long port, unsigned int nr)
+> > +{
+> > +       return ioport_map(port, nr);
+> > +}
+> > +#endif
+> > 
+> >       Arnd
+> 
+> It would be nicer in that it would
+> make the kernel a bit smaller for generic architectures
+> but this would need to go into a separate header:
+> it depends on io.h and io.h depends on pci_iomap.h.
 
-This patch fixed the problem for me, but it doesn't apply cleanly to
-the current head of tree since the context (CAVIUM_OCTEON_HELPER) has
-changed.
+Adding extra dependencies is not good here, I agree.
+Maybe  a better solution is to use a macro instead of an inline
+function then:
 
-Lluis, do you want to go ahead and submit a V2?
+#define  __pci_ioport_map(dev, port, nr) ioport_map(port, nr)
 
-Thanks.
+In general, macros should be avoided, but I think it's the
+best tradeoff in this case.
+
+	Arnd

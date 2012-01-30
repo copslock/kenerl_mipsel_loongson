@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2012 00:06:02 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41800 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2012 00:06:27 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:41811 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904013Ab2A3XE0 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jan 2012 00:04:26 +0100
+        with ESMTP id S1904014Ab2A3XE3 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jan 2012 00:04:29 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id DDDCF8F62;
-        Tue, 31 Jan 2012 00:04:25 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 391AC8F6A;
+        Tue, 31 Jan 2012 00:04:29 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id BrDBiuppXC8u; Tue, 31 Jan 2012 00:04:22 +0100 (CET)
+        with ESMTP id Gx45fOc5l+17; Tue, 31 Jan 2012 00:04:26 +0100 (CET)
 Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 3A5A98F64;
+        by hauke-m.de (Postfix) with ESMTPSA id 92E4E8F66;
         Tue, 31 Jan 2012 00:04:13 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linville@tuxdriver.com
 Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
         linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 4/7] bcma: make some functions __devinit
-Date:   Tue, 31 Jan 2012 00:03:34 +0100
-Message-Id: <1327964617-7910-5-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 6/7] bcma: add bus num counter
+Date:   Tue, 31 Jan 2012 00:03:36 +0100
+Message-Id: <1327964617-7910-7-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <1327964617-7910-1-git-send-email-hauke@hauke-m.de>
 References: <1327964617-7910-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 32340
+X-archive-position: 32341
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,123 +33,63 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-bcma_core_pci_hostmode_init() has to be in __devinit as it will call a
-function in that section and so all functions calling it also have to
-be in __devinit.
+If we have two bcma buses on one computer the second will not work
+without this patch. Now each bus gets an own number.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/bcma/bcma_private.h          |    4 ++--
- drivers/bcma/driver_pci.c            |    6 +++---
- drivers/bcma/driver_pci_host.c       |    2 +-
- drivers/bcma/host_pci.c              |    4 ++--
- drivers/bcma/main.c                  |    2 +-
- include/linux/bcma/bcma_driver_pci.h |    2 +-
- 6 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/bcma/main.c       |   12 +++++++++++-
+ include/linux/bcma/bcma.h |    1 +
+ 2 files changed, 12 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/bcma/bcma_private.h b/drivers/bcma/bcma_private.h
-index 6109da5..63c5242 100644
---- a/drivers/bcma/bcma_private.h
-+++ b/drivers/bcma/bcma_private.h
-@@ -13,7 +13,7 @@
- struct bcma_bus;
- 
- /* main.c */
--int bcma_bus_register(struct bcma_bus *bus);
-+int __devinit bcma_bus_register(struct bcma_bus *bus);
- void bcma_bus_unregister(struct bcma_bus *bus);
- int __init bcma_bus_early_register(struct bcma_bus *bus,
- 				   struct bcma_device *core_cc,
-@@ -52,7 +52,7 @@ extern void __exit bcma_host_pci_exit(void);
- u32 bcma_pcie_read(struct bcma_drv_pci *pc, u32 address);
- 
- #ifdef CONFIG_BCMA_DRIVER_PCI_HOSTMODE
--void bcma_core_pci_hostmode_init(struct bcma_drv_pci *pc);
-+void __devinit bcma_core_pci_hostmode_init(struct bcma_drv_pci *pc);
- #endif /* CONFIG_BCMA_DRIVER_PCI_HOSTMODE */
- 
- #endif
-diff --git a/drivers/bcma/driver_pci.c b/drivers/bcma/driver_pci.c
-index 20ceebd..161c8ba 100644
---- a/drivers/bcma/driver_pci.c
-+++ b/drivers/bcma/driver_pci.c
-@@ -174,12 +174,12 @@ static void bcma_pcicore_serdes_workaround(struct bcma_drv_pci *pc)
-  * Init.
-  **************************************************/
- 
--static void bcma_core_pci_clientmode_init(struct bcma_drv_pci *pc)
-+static void __devinit bcma_core_pci_clientmode_init(struct bcma_drv_pci *pc)
- {
- 	bcma_pcicore_serdes_workaround(pc);
- }
- 
--static bool bcma_core_pci_is_in_hostmode(struct bcma_drv_pci *pc)
-+static bool __devinit bcma_core_pci_is_in_hostmode(struct bcma_drv_pci *pc)
- {
- 	struct bcma_bus *bus = pc->core->bus;
- 	u16 chipid_top;
-@@ -204,7 +204,7 @@ static bool bcma_core_pci_is_in_hostmode(struct bcma_drv_pci *pc)
- 	return true;
- }
- 
--void bcma_core_pci_init(struct bcma_drv_pci *pc)
-+void __devinit bcma_core_pci_init(struct bcma_drv_pci *pc)
- {
- 	if (pc->setup_done)
- 		return;
-diff --git a/drivers/bcma/driver_pci_host.c b/drivers/bcma/driver_pci_host.c
-index eb332b7..99e040b 100644
---- a/drivers/bcma/driver_pci_host.c
-+++ b/drivers/bcma/driver_pci_host.c
-@@ -8,7 +8,7 @@
- #include "bcma_private.h"
- #include <linux/bcma/bcma.h>
- 
--void bcma_core_pci_hostmode_init(struct bcma_drv_pci *pc)
-+void __devinit bcma_core_pci_hostmode_init(struct bcma_drv_pci *pc)
- {
- 	pr_err("No support for PCI core in hostmode yet\n");
- }
-diff --git a/drivers/bcma/host_pci.c b/drivers/bcma/host_pci.c
-index f59244e..e3928d6 100644
---- a/drivers/bcma/host_pci.c
-+++ b/drivers/bcma/host_pci.c
-@@ -154,8 +154,8 @@ const struct bcma_host_ops bcma_host_pci_ops = {
- 	.awrite32	= bcma_host_pci_awrite32,
- };
- 
--static int bcma_host_pci_probe(struct pci_dev *dev,
--			     const struct pci_device_id *id)
-+static int __devinit bcma_host_pci_probe(struct pci_dev *dev,
-+					 const struct pci_device_id *id)
- {
- 	struct bcma_bus *bus;
- 	int err = -ENOMEM;
 diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
-index febbc0a..3363036 100644
+index 3363036..bcd1c01 100644
 --- a/drivers/bcma/main.c
 +++ b/drivers/bcma/main.c
-@@ -132,7 +132,7 @@ static void bcma_unregister_cores(struct bcma_bus *bus)
- 	}
- }
+@@ -13,6 +13,12 @@
+ MODULE_DESCRIPTION("Broadcom's specific AMBA driver");
+ MODULE_LICENSE("GPL");
  
--int bcma_bus_register(struct bcma_bus *bus)
-+int __devinit bcma_bus_register(struct bcma_bus *bus)
- {
++/* contains the number the next bus should get. */
++static unsigned int bcma_bus_next_num = 0;
++
++/* bcma_buses_mutex locks the bcma_bus_next_num */
++static DEFINE_MUTEX(bcma_buses_mutex);
++
+ static int bcma_bus_match(struct device *dev, struct device_driver *drv);
+ static int bcma_device_probe(struct device *dev);
+ static int bcma_device_remove(struct device *dev);
+@@ -93,7 +99,7 @@ static int bcma_register_cores(struct bcma_bus *bus)
+ 
+ 		core->dev.release = bcma_release_core_dev;
+ 		core->dev.bus = &bcma_bus_type;
+-		dev_set_name(&core->dev, "bcma%d:%d", 0/*bus->num*/, dev_id);
++		dev_set_name(&core->dev, "bcma%d:%d", bus->num, dev_id);
+ 
+ 		switch (bus->hosttype) {
+ 		case BCMA_HOSTTYPE_PCI:
+@@ -137,6 +143,10 @@ int __devinit bcma_bus_register(struct bcma_bus *bus)
  	int err;
  	struct bcma_device *core;
-diff --git a/include/linux/bcma/bcma_driver_pci.h b/include/linux/bcma/bcma_driver_pci.h
-index 67ea7be..679d4ca 100644
---- a/include/linux/bcma/bcma_driver_pci.h
-+++ b/include/linux/bcma/bcma_driver_pci.h
-@@ -169,7 +169,7 @@ struct bcma_drv_pci {
- #define pcicore_read32(pc, offset)		bcma_read32((pc)->core, offset)
- #define pcicore_write32(pc, offset, val)	bcma_write32((pc)->core, offset, val)
  
--extern void bcma_core_pci_init(struct bcma_drv_pci *pc);
-+extern void __devinit bcma_core_pci_init(struct bcma_drv_pci *pc);
- extern int bcma_core_pci_irq_ctl(struct bcma_drv_pci *pc,
- 				 struct bcma_device *core, bool enable);
++	mutex_lock(&bcma_buses_mutex);
++	bus->num = bcma_bus_next_num++;
++	mutex_unlock(&bcma_buses_mutex);
++
+ 	/* Scan for devices (cores) */
+ 	err = bcma_bus_scan(bus);
+ 	if (err) {
+diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
+index 024a6e2..b9f65fb 100644
+--- a/include/linux/bcma/bcma.h
++++ b/include/linux/bcma/bcma.h
+@@ -196,6 +196,7 @@ struct bcma_bus {
+ 	struct list_head cores;
+ 	u8 nr_cores;
+ 	u8 init_done:1;
++	u8 num;
  
+ 	struct bcma_drv_cc drv_cc;
+ 	struct bcma_drv_pci drv_pci;
 -- 
 1.7.5.4

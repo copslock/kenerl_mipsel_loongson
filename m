@@ -1,22 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 13:17:36 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:27958 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903685Ab2A3MQu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Jan 2012 13:16:50 +0100
-Received: from int-mx01.intmail.prod.int.phx2.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q0UCGjJ8032637
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 30 Jan 2012 07:16:45 -0500
-Received: from redhat.com (vpn-203-146.tlv.redhat.com [10.35.203.146])
-        by int-mx01.intmail.prod.int.phx2.redhat.com (8.13.8/8.13.8) with SMTP id q0UCGbiT001738;
-        Mon, 30 Jan 2012 07:16:38 -0500
-Date:   Mon, 30 Jan 2012 14:19:05 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Kevin Cernekee <cernekee@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jan 2012 15:19:42 +0100 (CET)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:57024 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903688Ab2A3OTi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Jan 2012 15:19:38 +0100
+Received: by iafj26 with SMTP id j26so6481266iaf.36
+        for <multiple recipients>; Mon, 30 Jan 2012 06:19:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=glOgYlptzA46iGk28AjtcKAojoMSeqrZIp1Tgre1SME=;
+        b=t07NKW6fciECKqtzJo5AvqQZFqqO4zDdFjB1uDbaIe00fOOuqwFJTvYGbAYFg/0BIU
+         JgyrL+aC+MIJ7xrGFMfgVACLVt/gQOuIzXEqj44OY+m1Hh84o1fv4joGpRSDp2tB24qK
+         9fjGb5EIKoncDZ4iC3xP2vilKCjqhFZehF/6Y=
+MIME-Version: 1.0
+Received: by 10.42.168.6 with SMTP id u6mr11369008icy.9.1327933171756; Mon, 30
+ Jan 2012 06:19:31 -0800 (PST)
+Received: by 10.231.54.4 with HTTP; Mon, 30 Jan 2012 06:19:31 -0800 (PST)
+In-Reply-To: <d78d91d0166651700cf662a50c87d84da4bdab88.1327877053.git.mst@redhat.com>
+References: <cover.1327877053.git.mst@redhat.com>
+        <d78d91d0166651700cf662a50c87d84da4bdab88.1327877053.git.mst@redhat.com>
+Date:   Mon, 30 Jan 2012 08:19:31 -0600
+Message-ID: <CACoURw6docF1E4KwvfAAwh3GG0KFo15erj+JJwu0HHB-wtswig@mail.gmail.com>
+Subject: Re: [PATCH 1/3] lib: add NO_GENERIC_PCI_IOPORT_MAP
+From:   Shane McDonald <mcdonald.shane@gmail.com>
+To:     "Michael S. Tsirkin" <mst@redhat.com>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
         Paul Mundt <lethal@linux-sh.org>,
         Arnd Bergmann <arnd@arndb.de>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
         Jesse Barnes <jbarnes@virtuousgeek.org>,
         Myron Stowe <myron.stowe@redhat.com>,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
@@ -27,67 +39,28 @@ Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Michael Witten <mfwitten@gmail.com>, linux-mips@linux-mips.org,
         linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-arch@vger.kernel.org
-Subject: [PATCH 3/3] sh: use the the PCI channels's io_map_base
-Message-ID: <60def7835613710ecae4878ae5742c45b05791df.1327877053.git.mst@redhat.com>
-References: <cover.1327877053.git.mst@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1327877053.git.mst@redhat.com>
-X-Mutt-Fcc: =sent
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.67 on 10.5.11.11
-X-archive-position: 32325
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 32326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-commit 43db595e8b5d78ce5ad2feab719814a76e3ad2e5
-failed to take into account the PCI channels's
-io_map_base for mapping IO BARs.
-This also caused a new warning on sh.
+Just a minor nit on the comment:
 
-Fix this, without re-introducing code duplication,
-by setting NO_GENERIC_PCI_IOPORT_MAP
-and supplying a sh-specific __pci_ioport_map.
+On Mon, Jan 30, 2012 at 6:18 AM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> Some architectures need to override the way
+> IO port mapping is does not PCI devices.
 
-Reported-by: Kevin Cernekee <cernekee@gmail.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- arch/sh/Kconfig           |    1 +
- arch/sh/drivers/pci/pci.c |    4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+Should this line read "IO port mapping is done on PCI devices."?
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 3c8db65..713fb58 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -859,6 +859,7 @@ config PCI
- 	depends on SYS_SUPPORTS_PCI
- 	select PCI_DOMAINS
- 	select GENERIC_PCI_IOMAP
-+	select NO_GENERIC_PCI_IOPORT_MAP
- 	help
- 	  Find out whether you have a PCI motherboard. PCI is the name of a
- 	  bus system, i.e. the way the CPU talks to the other stuff inside
-diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-index 8f18dd0..1e7b0e2 100644
---- a/arch/sh/drivers/pci/pci.c
-+++ b/arch/sh/drivers/pci/pci.c
-@@ -356,8 +356,8 @@ int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
- 
- #ifndef CONFIG_GENERIC_IOMAP
- 
--static void __iomem *ioport_map_pci(struct pci_dev *dev,
--				    unsigned long port, unsigned int nr)
-+void __iomem *__pci_ioport_map(struct pci_dev *dev,
-+			       unsigned long port, unsigned int nr)
- {
- 	struct pci_channel *chan = dev->sysdata;
- 
--- 
-1.7.8.2.325.g247f9
+> Supply a generic function that calls
+> ioport_map, and make it possible for architectures
+> to override.
+>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+Shane

@@ -1,98 +1,137 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2012 00:07:20 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:41823 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904016Ab2A3XEe (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 31 Jan 2012 00:04:34 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 9A0998F60;
-        Tue, 31 Jan 2012 00:04:34 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id nbizJnQIE7yk; Tue, 31 Jan 2012 00:04:29 +0100 (CET)
-Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id C1AFC8F67;
-        Tue, 31 Jan 2012 00:04:13 +0100 (CET)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     linville@tuxdriver.com
-Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 7/7] bcma: add extra sprom check
-Date:   Tue, 31 Jan 2012 00:03:37 +0100
-Message-Id: <1327964617-7910-8-git-send-email-hauke@hauke-m.de>
-X-Mailer: git-send-email 1.7.5.4
-In-Reply-To: <1327964617-7910-1-git-send-email-hauke@hauke-m.de>
-References: <1327964617-7910-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 32343
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2012 01:20:07 +0100 (CET)
+Received: from mx1.redhat.com ([209.132.183.28]:55494 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903705Ab2AaAT6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Jan 2012 01:19:58 +0100
+Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q0V0JjCA027208
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
+        Mon, 30 Jan 2012 19:19:45 -0500
+Received: from redhat.com (vpn-203-134.tlv.redhat.com [10.35.203.134])
+        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id q0V0Jb29028240;
+        Mon, 30 Jan 2012 19:19:38 -0500
+Date:   Tue, 31 Jan 2012 02:22:05 +0200
+From:   "Michael S. Tsirkin" <mst@redhat.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Kevin Cernekee <cernekee@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Jesse Barnes <jbarnes@virtuousgeek.org>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
+        Dmitry Kasatkin <dmitry.kasatkin@intel.com>,
+        James Morris <jmorris@namei.org>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Michael Witten <mfwitten@gmail.com>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/3] lib: add NO_GENERIC_PCI_IOPORT_MAP
+Message-ID: <20120131002203.GA14344@redhat.com>
+References: <cover.1327877053.git.mst@redhat.com>
+ <201201301551.46907.arnd@arndb.de>
+ <20120130161818.GA9345@redhat.com>
+ <201201302004.33083.arnd@arndb.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201201302004.33083.arnd@arndb.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
+X-archive-position: 32344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: mst@redhat.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This check is needed on the BCM43224 device as it says in the
-capabilities it has an sprom but is extra check says it has not.
+On Mon, Jan 30, 2012 at 08:04:32PM +0000, Arnd Bergmann wrote:
+> On Monday 30 January 2012, Michael S. Tsirkin wrote:
+> > > 
+> > > +/*
+> > > + * Create a virtual mapping cookie for a port on a given PCI device.
+> > > + * Do not call this directly, it exists to make it easier for architectures
+> > > + * to override.
+> > > + */
+> > > +#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
+> > > +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
+> > > +                                     unsigned int nr);
+> > > +#else
+> > > +static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
+> > > +                              unsigned long port, unsigned int nr)
+> > > +{
+> > > +       return ioport_map(port, nr);
+> > > +}
+> > > +#endif
+> > > 
+> > >       Arnd
+> > 
+> > It would be nicer in that it would
+> > make the kernel a bit smaller for generic architectures
+> > but this would need to go into a separate header:
+> > it depends on io.h and io.h depends on pci_iomap.h.
+> 
+> Adding extra dependencies is not good here, I agree.
+> Maybe  a better solution is to use a macro instead of an inline
+> function then:
+> 
+> #define  __pci_ioport_map(dev, port, nr) ioport_map(port, nr)
+> 
+> In general, macros should be avoided, but I think it's the
+> best tradeoff in this case.
+> 
+> 	Arnd
 
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- drivers/bcma/sprom.c                        |    7 +++++++
- include/linux/bcma/bcma_driver_chipcommon.h |   16 ++++++++++++++++
- 2 files changed, 23 insertions(+), 0 deletions(-)
+I have an idea: we can make the generic one inline
+if we keep it in the .c file. So something like
+the below on top of my patch will probably work.
+Ack?
 
-diff --git a/drivers/bcma/sprom.c b/drivers/bcma/sprom.c
-index e35134f..ca77525 100644
---- a/drivers/bcma/sprom.c
-+++ b/drivers/bcma/sprom.c
-@@ -250,6 +250,7 @@ int bcma_sprom_get(struct bcma_bus *bus)
+diff --git a/include/asm-generic/pci_iomap.h b/include/asm-generic/pci_iomap.h
+index 2aff58e..2ec1bdb 100644
+--- a/include/asm-generic/pci_iomap.h
++++ b/include/asm-generic/pci_iomap.h
+@@ -15,11 +15,6 @@ struct pci_dev;
+ #ifdef CONFIG_PCI
+ /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
+ extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
+-/* Create a virtual mapping cookie for a port on a given PCI device.
+- * Do not call this directly, it exists to make it easier for architectures
+- * to override. */
+-extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
+-				      unsigned int nr);
+ #else
+ static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max)
  {
- 	u16 offset;
- 	u16 *sprom;
-+	u32 sromctrl;
- 	int err = 0;
+@@ -27,4 +22,12 @@ static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned lon
+ }
+ #endif
  
- 	if (!bus->drv_cc.core)
-@@ -258,6 +259,12 @@ int bcma_sprom_get(struct bcma_bus *bus)
- 	if (!(bus->drv_cc.capabilities & BCMA_CC_CAP_SPROM))
- 		return -ENOENT;
- 
-+	if (bus->drv_cc.core->id.rev >= 32) {
-+		sromctrl = bcma_read32(bus->drv_cc.core, BCMA_CC_SROM_CONTROL);
-+		if (!(sromctrl & BCMA_CC_SROM_CONTROL_PRESENT))
-+			return -ENOENT;
-+	}
++#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
++/* Create a virtual mapping cookie for a port on a given PCI device.
++ * Do not call this directly, it exists to make it easier for architectures
++ * to override. */
++extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
++				      unsigned int nr);
++#endif
 +
- 	sprom = kcalloc(SSB_SPROMSIZE_WORDS_R4, sizeof(u16),
- 			GFP_KERNEL);
- 	if (!sprom)
-diff --git a/include/linux/bcma/bcma_driver_chipcommon.h b/include/linux/bcma/bcma_driver_chipcommon.h
-index a33086a..e72938b 100644
---- a/include/linux/bcma/bcma_driver_chipcommon.h
-+++ b/include/linux/bcma/bcma_driver_chipcommon.h
-@@ -181,6 +181,22 @@
- #define BCMA_CC_FLASH_CFG		0x0128
- #define  BCMA_CC_FLASH_CFG_DS		0x0010	/* Data size, 0=8bit, 1=16bit */
- #define BCMA_CC_FLASH_WAITCNT		0x012C
-+#define BCMA_CC_SROM_CONTROL		0x0190
-+#define  BCMA_CC_SROM_CONTROL_START	0x80000000
-+#define  BCMA_CC_SROM_CONTROL_BUSY	0x80000000
-+#define  BCMA_CC_SROM_CONTROL_OPCODE	0x60000000
-+#define  BCMA_CC_SROM_CONTROL_OP_READ	0x00000000
-+#define  BCMA_CC_SROM_CONTROL_OP_WRITE	0x20000000
-+#define  BCMA_CC_SROM_CONTROL_OP_WRDIS	0x40000000
-+#define  BCMA_CC_SROM_CONTROL_OP_WREN	0x60000000
-+#define  BCMA_CC_SROM_CONTROL_OTPSEL	0x00000010
-+#define  BCMA_CC_SROM_CONTROL_LOCK	0x00000008
-+#define  BCMA_CC_SROM_CONTROL_SIZE_MASK	0x00000006
-+#define  BCMA_CC_SROM_CONTROL_SIZE_1K	0x00000000
-+#define  BCMA_CC_SROM_CONTROL_SIZE_4K	0x00000002
-+#define  BCMA_CC_SROM_CONTROL_SIZE_16K	0x00000004
-+#define  BCMA_CC_SROM_CONTROL_SIZE_SHIFT	1
-+#define  BCMA_CC_SROM_CONTROL_PRESENT	0x00000001
- /* 0x1E0 is defined as shared BCMA_CLKCTLST */
- #define BCMA_CC_HW_WORKAROUND		0x01E4 /* Hardware workaround (rev >= 20) */
- #define BCMA_CC_UART0_DATA		0x0300
--- 
-1.7.5.4
+ #endif /* __ASM_GENERIC_IO_H */
+diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
+index 1dfda29..8102f28 100644
+--- a/lib/pci_iomap.c
++++ b/lib/pci_iomap.c
+@@ -12,9 +12,9 @@
+ #ifndef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
+ /* Architectures can override ioport mapping while
+  * still using the rest of the generic infrastructure. */
+-void __iomem *__pci_ioport_map(struct pci_dev *dev,
+-			       unsigned long port,
+-			       unsigned int nr)
++static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
++					     unsigned long port,
++					     unsigned int nr)
+ {
+ 	return ioport_map(port, nr);
+ }

@@ -1,137 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2012 01:20:07 +0100 (CET)
-Received: from mx1.redhat.com ([209.132.183.28]:55494 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Jan 2012 15:08:38 +0100 (CET)
+Received: from zmc.proxad.net ([212.27.53.206]:60357 "EHLO zmc.proxad.net"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903705Ab2AaAT6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 31 Jan 2012 01:19:58 +0100
-Received: from int-mx09.intmail.prod.int.phx2.redhat.com (int-mx09.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        by mx1.redhat.com (8.14.4/8.14.4) with ESMTP id q0V0JjCA027208
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-        Mon, 30 Jan 2012 19:19:45 -0500
-Received: from redhat.com (vpn-203-134.tlv.redhat.com [10.35.203.134])
-        by int-mx09.intmail.prod.int.phx2.redhat.com (8.14.4/8.14.4) with SMTP id q0V0Jb29028240;
-        Mon, 30 Jan 2012 19:19:38 -0500
-Date:   Tue, 31 Jan 2012 02:22:05 +0200
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Jesse Barnes <jbarnes@virtuousgeek.org>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        Dmitry Kasatkin <dmitry.kasatkin@intel.com>,
-        James Morris <jmorris@namei.org>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        Michael Witten <mfwitten@gmail.com>, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH 1/3] lib: add NO_GENERIC_PCI_IOPORT_MAP
-Message-ID: <20120131002203.GA14344@redhat.com>
-References: <cover.1327877053.git.mst@redhat.com>
- <201201301551.46907.arnd@arndb.de>
- <20120130161818.GA9345@redhat.com>
- <201201302004.33083.arnd@arndb.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <201201302004.33083.arnd@arndb.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.68 on 10.5.11.22
-X-archive-position: 32344
+        id S1904021Ab2AaOIc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 31 Jan 2012 15:08:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by zmc.proxad.net (Postfix) with ESMTP id F135A1119D1;
+        Tue, 31 Jan 2012 15:08:31 +0100 (CET)
+X-Virus-Scanned: amavisd-new at 
+Received: from zmc.proxad.net ([127.0.0.1])
+        by localhost (zmc.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id B-bR6ET+eoDY; Tue, 31 Jan 2012 15:08:31 +0100 (CET)
+Received: from flexo.iliad.local (freebox.vlq16.iliad.fr [213.36.7.13])
+        by zmc.proxad.net (Postfix) with ESMTPSA id 6B8CD32CE5B;
+        Tue, 31 Jan 2012 15:08:31 +0100 (CET)
+From:   Florian Fainelli <florian@openwrt.org>
+To:     ralf@linux-mips.org
+Cc:     linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 2/2] MIPS: BCM63XX: be consistent in clock bits enable naming
+Date:   Tue, 31 Jan 2012 15:08:08 +0100
+Message-Id: <1328018888-5533-3-git-send-email-florian@openwrt.org>
+X-Mailer: git-send-email 1.7.5.4
+In-Reply-To: <1328018888-5533-1-git-send-email-florian@openwrt.org>
+References: <1328018888-5533-1-git-send-email-florian@openwrt.org>
+X-archive-position: 32345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mst@redhat.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Jan 30, 2012 at 08:04:32PM +0000, Arnd Bergmann wrote:
-> On Monday 30 January 2012, Michael S. Tsirkin wrote:
-> > > 
-> > > +/*
-> > > + * Create a virtual mapping cookie for a port on a given PCI device.
-> > > + * Do not call this directly, it exists to make it easier for architectures
-> > > + * to override.
-> > > + */
-> > > +#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
-> > > +extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
-> > > +                                     unsigned int nr);
-> > > +#else
-> > > +static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
-> > > +                              unsigned long port, unsigned int nr)
-> > > +{
-> > > +       return ioport_map(port, nr);
-> > > +}
-> > > +#endif
-> > > 
-> > >       Arnd
-> > 
-> > It would be nicer in that it would
-> > make the kernel a bit smaller for generic architectures
-> > but this would need to go into a separate header:
-> > it depends on io.h and io.h depends on pci_iomap.h.
-> 
-> Adding extra dependencies is not good here, I agree.
-> Maybe  a better solution is to use a macro instead of an inline
-> function then:
-> 
-> #define  __pci_ioport_map(dev, port, nr) ioport_map(port, nr)
-> 
-> In general, macros should be avoided, but I think it's the
-> best tradeoff in this case.
-> 
-> 	Arnd
+Remove the _CLK suffix from the BCM6368 clock bits definitions to be
+consistent with what is already present.
 
-I have an idea: we can make the generic one inline
-if we keep it in the .c file. So something like
-the below on top of my patch will probably work.
-Ack?
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+ arch/mips/bcm63xx/clk.c                           |    6 ++--
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h |   36 ++++++++++----------
+ 2 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/include/asm-generic/pci_iomap.h b/include/asm-generic/pci_iomap.h
-index 2aff58e..2ec1bdb 100644
---- a/include/asm-generic/pci_iomap.h
-+++ b/include/asm-generic/pci_iomap.h
-@@ -15,11 +15,6 @@ struct pci_dev;
- #ifdef CONFIG_PCI
- /* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
- extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max);
--/* Create a virtual mapping cookie for a port on a given PCI device.
-- * Do not call this directly, it exists to make it easier for architectures
-- * to override. */
--extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
--				      unsigned int nr);
- #else
- static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long max)
+diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
+index 9d57c71..8d2ea22 100644
+--- a/arch/mips/bcm63xx/clk.c
++++ b/arch/mips/bcm63xx/clk.c
+@@ -120,7 +120,7 @@ static void enetsw_set(struct clk *clk, int enable)
  {
-@@ -27,4 +22,12 @@ static inline void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned lon
+ 	if (!BCMCPU_IS_6368())
+ 		return;
+-	bcm_hwclock_set(CKCTL_6368_ROBOSW_CLK_EN |
++	bcm_hwclock_set(CKCTL_6368_ROBOSW_EN |
+ 			CKCTL_6368_SWPKT_USB_EN |
+ 			CKCTL_6368_SWPKT_SAR_EN, enable);
+ 	if (enable) {
+@@ -163,7 +163,7 @@ static void usbh_set(struct clk *clk, int enable)
+ 	if (BCMCPU_IS_6348())
+ 		bcm_hwclock_set(CKCTL_6348_USBH_EN, enable);
+ 	else if (BCMCPU_IS_6368())
+-		bcm_hwclock_set(CKCTL_6368_USBH_CLK_EN, enable);
++		bcm_hwclock_set(CKCTL_6368_USBH_EN, enable);
  }
- #endif
  
-+#ifdef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
-+/* Create a virtual mapping cookie for a port on a given PCI device.
-+ * Do not call this directly, it exists to make it easier for architectures
-+ * to override. */
-+extern void __iomem *__pci_ioport_map(struct pci_dev *dev, unsigned long port,
-+				      unsigned int nr);
-+#endif
-+
- #endif /* __ASM_GENERIC_IO_H */
-diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
-index 1dfda29..8102f28 100644
---- a/lib/pci_iomap.c
-+++ b/lib/pci_iomap.c
-@@ -12,9 +12,9 @@
- #ifndef CONFIG_NO_GENERIC_PCI_IOPORT_MAP
- /* Architectures can override ioport mapping while
-  * still using the rest of the generic infrastructure. */
--void __iomem *__pci_ioport_map(struct pci_dev *dev,
--			       unsigned long port,
--			       unsigned int nr)
-+static inline void __iomem *__pci_ioport_map(struct pci_dev *dev,
-+					     unsigned long port,
-+					     unsigned int nr)
- {
- 	return ioport_map(port, nr);
- }
+ static struct clk clk_usbh = {
+@@ -199,7 +199,7 @@ static void xtm_set(struct clk *clk, int enable)
+ 	if (!BCMCPU_IS_6368())
+ 		return;
+ 
+-	bcm_hwclock_set(CKCTL_6368_SAR_CLK_EN |
++	bcm_hwclock_set(CKCTL_6368_SAR_EN |
+ 			CKCTL_6368_SWPKT_SAR_EN, enable);
+ 
+ 	if (enable) {
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+index 94d4faa..6ddd081 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h
+@@ -90,29 +90,29 @@
+ #define CKCTL_6368_PHYMIPS_EN		(1 << 6)
+ #define CKCTL_6368_SWPKT_USB_EN		(1 << 7)
+ #define CKCTL_6368_SWPKT_SAR_EN		(1 << 8)
+-#define CKCTL_6368_SPI_CLK_EN		(1 << 9)
+-#define CKCTL_6368_USBD_CLK_EN		(1 << 10)
+-#define CKCTL_6368_SAR_CLK_EN		(1 << 11)
+-#define CKCTL_6368_ROBOSW_CLK_EN	(1 << 12)
+-#define CKCTL_6368_UTOPIA_CLK_EN	(1 << 13)
+-#define CKCTL_6368_PCM_CLK_EN		(1 << 14)
+-#define CKCTL_6368_USBH_CLK_EN		(1 << 15)
++#define CKCTL_6368_SPI_EN		(1 << 9)
++#define CKCTL_6368_USBD_EN		(1 << 10)
++#define CKCTL_6368_SAR_EN		(1 << 11)
++#define CKCTL_6368_ROBOSW_EN		(1 << 12)
++#define CKCTL_6368_UTOPIA_EN		(1 << 13)
++#define CKCTL_6368_PCM_EN		(1 << 14)
++#define CKCTL_6368_USBH_EN		(1 << 15)
+ #define CKCTL_6368_DISABLE_GLESS_EN	(1 << 16)
+-#define CKCTL_6368_NAND_CLK_EN		(1 << 17)
+-#define CKCTL_6368_IPSEC_CLK_EN		(1 << 17)
++#define CKCTL_6368_NAND_EN		(1 << 17)
++#define CKCTL_6368_IPSEC_EN		(1 << 17)
+ 
+ #define CKCTL_6368_ALL_SAFE_EN		(CKCTL_6368_SWPKT_USB_EN |	\
+ 					CKCTL_6368_SWPKT_SAR_EN |	\
+-					CKCTL_6368_SPI_CLK_EN |		\
+-					CKCTL_6368_USBD_CLK_EN |	\
+-					CKCTL_6368_SAR_CLK_EN |		\
+-					CKCTL_6368_ROBOSW_CLK_EN |	\
+-					CKCTL_6368_UTOPIA_CLK_EN |	\
+-					CKCTL_6368_PCM_CLK_EN |		\
+-					CKCTL_6368_USBH_CLK_EN |	\
++					CKCTL_6368_SPI_EN |		\
++					CKCTL_6368_USBD_EN |		\
++					CKCTL_6368_SAR_EN |		\
++					CKCTL_6368_ROBOSW_EN |		\
++					CKCTL_6368_UTOPIA_EN |		\
++					CKCTL_6368_PCM_EN |		\
++					CKCTL_6368_USBH_EN |		\
+ 					CKCTL_6368_DISABLE_GLESS_EN |	\
+-					CKCTL_6368_NAND_CLK_EN |	\
+-					CKCTL_6368_IPSEC_CLK_EN)
++					CKCTL_6368_NAND_EN |		\
++					CKCTL_6368_IPSEC_EN)
+ 
+ /* System PLL Control register  */
+ #define PERF_SYS_PLL_CTL_REG		0x8
+-- 
+1.7.5.4

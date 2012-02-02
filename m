@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2012 15:40:46 +0100 (CET)
-Received: from smtpgw1.netlogicmicro.com ([12.203.210.53]:46752 "EHLO
-        smtpgw1.netlogicmicro.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904107Ab2BBOjS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2012 15:39:18 +0100
-Received: from pps.filterd (smtpgw1 [127.0.0.1])
-        by smtpgw1.netlogicmicro.com (8.14.5/8.14.5) with SMTP id q12EWTJ2028910;
-        Thu, 2 Feb 2012 06:39:11 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2012 15:41:12 +0100 (CET)
+Received: from smtpgw2.netlogicmicro.com ([12.203.210.54]:52724 "EHLO
+        smtpgw2.netlogicmicro.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904110Ab2BBOjU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2012 15:39:20 +0100
+Received: from pps.filterd (smtpgw2 [127.0.0.1])
+        by smtpgw2.netlogicmicro.com (8.14.5/8.14.5) with SMTP id q12EcpTm028764;
+        Thu, 2 Feb 2012 06:39:13 -0800
 Received: from hqcas02.netlogicmicro.com (hqcas02.netlogicmicro.com [10.65.50.15])
-        by smtpgw1.netlogicmicro.com with ESMTP id 12hfu7nyfm-1
+        by smtpgw2.netlogicmicro.com with ESMTP id 11pcrwt2a8-1
         (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT);
-        Thu, 02 Feb 2012 06:39:11 -0800
+        Thu, 02 Feb 2012 06:39:13 -0800
 From:   Jayachandran C <jayachandranc@netlogicmicro.com>
 To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
 CC:     Jayachandran C <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 04/11] MIPS: Netlogic: Update comments in smpboot.S
-Date:   Thu, 2 Feb 2012 20:12:58 +0530
-Message-ID: <f442f13c0d06b9c3118f0ee714091dcff9068f13.1328189941.git.jayachandranc@netlogicmicro.com>
+Subject: [PATCH 05/11] MIPS: Netlogic: SMP wakeup code update
+Date:   Thu, 2 Feb 2012 20:12:59 +0530
+Message-ID: <a5879133671a87ef5fe33900b26f29772da565fd.1328189941.git.jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <cover.1328189941.git.jayachandranc@netlogicmicro.com>
 References: <cover.1328189941.git.jayachandranc@netlogicmicro.com>
@@ -24,7 +24,7 @@ Content-Type: text/plain
 X-Originating-IP: [10.7.0.77]
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:5.6.7361,1.0.211,0.0.0000
  definitions=2012-01-28_02:2012-01-27,2012-01-28,1970-01-01 signatures=0
-X-archive-position: 32387
+X-archive-position: 32388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,227 +33,117 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-No change in logic, comments update and whitespace cleanup.
+Update for core intialization code.  Initialize status register
+after receiving NMI for CPU wakeup. Add the low level L1D flush
+code before enabling threads in core.
 
-* A few comments in the file were in assembler style and the rest
-  int C style, convert all of them to C style.
-* Mark workarounds for Ax silicon with a macro XLP_AX_WORKAROUND
-* Whitespace fixes - use tabs consistently
-* rename __config_lsu macro to xlp_config_lsu
+Also convert the ehb to _ehb so that it works under more GCC
+versions.
 
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/netlogic/common/smpboot.S |  112 +++++++++++++++++++----------------
- 1 files changed, 61 insertions(+), 51 deletions(-)
+ .../mips/include/asm/netlogic/xlp-hal/cpucontrol.h |    4 +-
+ arch/mips/netlogic/common/smpboot.S                |   47 +++++++++++++++++--
+ 2 files changed, 45 insertions(+), 6 deletions(-)
 
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h b/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h
+index bf7d41d..7b63a6b 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h
+@@ -47,7 +47,9 @@
+ #define CPU_BLOCKID_MAP		10
+ 
+ #define LSU_DEFEATURE		0x304
+-#define LSU_CERRLOG_REGID	0x09
++#define LSU_DEBUG_ADDR		0x305
++#define LSU_DEBUG_DATA0		0x306
++#define LSU_CERRLOG_REGID	0x309
+ #define SCHED_DEFEATURE		0x700
+ 
+ /* Offsets of interest from the 'MAP' Block */
 diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
-index c138b1a..bfe9060 100644
+index bfe9060..aa86590 100644
 --- a/arch/mips/netlogic/common/smpboot.S
 +++ b/arch/mips/netlogic/common/smpboot.S
-@@ -54,28 +54,36 @@
- 			XLP_IO_SYS_OFFSET(node) + XLP_IO_PCI_HDRSZ + \
- 			SYS_CPU_NONCOHERENT_MODE * 4
- 
--.macro __config_lsu
--	li      t0, LSU_DEFEATURE
--	mfcr    t1, t0
-+#define	XLP_AX_WORKAROUND	/* enable Ax silicon workarounds */
- 
--	lui     t2, 0x4080  /* Enable Unaligned Access, L2HPE */
--	or      t1, t1, t2
--	li	t2, ~0xe    /* S1RCM */
-+/* Enable XLP features and workarounds in the LSU */
-+.macro xlp_config_lsu
-+	li	t0, LSU_DEFEATURE
-+	mfcr	t1, t0
-+
-+	lui	t2, 0x4080	/* Enable Unaligned Access, L2HPE */
-+	or	t1, t1, t2
-+#ifdef XLP_AX_WORKAROUND
-+	li	t2, ~0xe	/* S1RCM */
- 	and	t1, t1, t2
-+#endif
- 	mtcr    t1, t0
- 
--	li      t0, SCHED_DEFEATURE
--	lui     t1, 0x0100  /* Experimental: Disable BRU accepting ALU ops */
--	mtcr    t1, t0
-+#ifdef XLP_AX_WORKAROUND
-+	li	t0, SCHED_DEFEATURE
-+	lui	t1, 0x0100	/* Disable BRU accepting ALU ops */
-+	mtcr	t1, t0
-+#endif
+@@ -77,6 +77,38 @@
  .endm
  
  /*
-- * The cores can come start when they are woken up. This is also the NMI
-- * entry, so check that first.
-+ * This is the code that will be copied to the reset entry point for
-+ * XLR and XLP. The XLP cores start here when they are woken up. This
-+ * is also the NMI entry point.
-  *
-- * The data corresponding to reset is stored at RESET_DATA_PHYS location,
-- * this will have the thread mask (used when core is woken up) and the
-- * current NMI handler in case we reached here for an NMI.
-+ * The data corresponding to reset/NMI is stored at RESET_DATA_PHYS
-+ * location, this will have the thread mask (used when core is woken up)
-+ * and the current NMI handler in case we reached here for an NMI.
-  *
-  * When a core or thread is newly woken up, it loops in a 'wait'. When
-  * the CPU really needs waking up, we send an NMI to it, with the NMI
-@@ -89,12 +97,12 @@
- FEXPORT(nlm_reset_entry)
- 	dmtc0	k0, $22, 6
- 	dmtc0	k1, $22, 7
--	mfc0    k0, CP0_STATUS
--	li      k1, 0x80000
--	and     k1, k0, k1
--	beqz    k1, 1f         /* go to real reset entry */
-+	mfc0	k0, CP0_STATUS
-+	li	k1, 0x80000
-+	and	k1, k0, k1
-+	beqz	k1, 1f		/* go to real reset entry */
- 	nop
--	li	k1, CKSEG1ADDR(RESET_DATA_PHYS)   /* NMI */
-+	li	k1, CKSEG1ADDR(RESET_DATA_PHYS)	/* NMI */
- 	ld	k0, BOOT_NMI_HANDLER(k1)
- 	jr	k0
- 	nop
-@@ -114,21 +122,23 @@ FEXPORT(nlm_reset_entry)
- 	li	t2, SYS_CPU_COHERENT_BASE(0)
- 	add	t2, t2, t3		/* t2 <- SYS offset for node */
- 	lw	t1, 0(t2)
--	and     t1, t1, t0
--	sw      t1, 0(t2)
-+	and	t1, t1, t0
-+	sw	t1, 0(t2)
- 
- 	/* read back to ensure complete */
--	lw      t1, 0(t2)
-+	lw	t1, 0(t2)
- 	sync
- 
- 	/* Configure LSU on Non-0 Cores. */
--	__config_lsu
-+	xlp_config_lsu
-+	/* FALL THROUGH */
- 
- /*
-  * Wake up sibling threads from the initial thread in
++ * Low level L1 d-cache flush for core, needs to be called before
++ * threads are enabled
++ */
++.macro	xlp_flush_l1_dcache
++	li	t0, LSU_DEBUG_DATA0
++	li      t1, LSU_DEBUG_ADDR
++	li	t2, 0		/* index */
++	li 	t3, 0x200	/* loop count, 512 sets */
++1:
++	sll	v0, t2, 5
++	mtcr	zero, t0
++	ori	v1, v0, 0x3	/* way0 | write_enable | write_active */
++	mtcr	v1, t1
++2:
++	mfcr	v1, t1
++	andi	v1, 0x1		/* wait for write_active == 0 */
++	bnez	v1, 2b
++	nop
++	mtcr    zero, t0
++	ori	v1, v0, 0x7	/* way1 | write_enable | write_active */
++	mtcr    v1, t1
++3:
++	mfcr    v1, t1
++	andi    v1, 0x1		/* wait for write_active == 0 */
++	bnez    v1, 3b
++	nop
++	addi	t2, 1
++	bne	t3, t2, 1b
++	nop
++.endm
++
++/*
+  * This is the code that will be copied to the reset entry point for
+  * XLR and XLP. The XLP cores start here when they are woken up. This
+  * is also the NMI entry point.
+@@ -138,6 +170,8 @@ FEXPORT(nlm_reset_entry)
   * a core.
   */
  EXPORT(nlm_boot_siblings)
-+	/* Enable hw threads by writing to MAP_THREADMODE of the core */
++	/* core L1D flush before enable threads */
++	xlp_flush_l1_dcache
+ 	/* Enable hw threads by writing to MAP_THREADMODE of the core */
  	li	t0, CKSEG1ADDR(RESET_DATA_PHYS)
  	lw	t1, BOOT_THREAD_MODE(t0)	/* t1 <- thread mode */
- 	li	t0, ((CPU_BLOCKID_MAP << 8) | MAP_THREADMODE)
-@@ -139,24 +149,24 @@ EXPORT(nlm_boot_siblings)
- 	/*
- 	 * The new hardware thread starts at the next instruction
- 	 * For all the cases other than core 0 thread 0, we will
--         * jump to the secondary wait function.
--         */
-+	* jump to the secondary wait function.
-+	*/
- 	mfc0	v0, CP0_EBASE, 1
- 	andi	v0, 0x7f		/* v0 <- node/core */
+@@ -164,16 +198,13 @@ EXPORT(nlm_boot_siblings)
+ 	li	t0, MMU_SETUP
+ 	li	t1, 0
+ 	mtcr	t1, t0
+-	ehb
++	_ehb
  
--#if 1
--	/* A0 errata - Write MMU_SETUP after changing thread mode register. */
-+	/* Init MMU in the first thread after changing THREAD_MODE
-+	 * register (Ax Errata?)
-+	 */
- 	andi	v1, v0, 0x3		/* v1 <- thread id */
- 	bnez	v1, 2f
- 	nop
- 
--        li	t0, MMU_SETUP
--        li	t1, 0
--        mtcr	t1, t0
-+	li	t0, MMU_SETUP
-+	li	t1, 0
-+	mtcr	t1, t0
- 	ehb
--#endif
- 
--2:	beqz	v0, 4f
-+2:	beqz	v0, 4f		/* boot cpu (cpuid == 0)? */
+ 2:	beqz	v0, 4f		/* boot cpu (cpuid == 0)? */
  	nop
  
  	/* setup status reg */
-@@ -183,9 +193,9 @@ EXPORT(nlm_boot_siblings)
- 	 * For the boot CPU, we have to restore registers and
- 	 * return
- 	 */
--4:	dmfc0	t0, $4, 2       /* restore SP from UserLocal */
-+4:	dmfc0	t0, $4, 2	/* restore SP from UserLocal */
- 	li	t1, 0xfadebeef
--	dmtc0	t1, $4, 2       /* restore SP from UserLocal */
-+	dmtc0	t1, $4, 2	/* restore SP from UserLocal */
- 	PTR_SUBU sp, t0, PT_SIZE
- 	RESTORE_ALL
- 	jr   ra
-@@ -193,7 +203,7 @@ EXPORT(nlm_boot_siblings)
- EXPORT(nlm_reset_entry_end)
+-	mfc0	t1, CP0_STATUS
+-	li	t0, ST0_BEV
+-	or	t1, t0
+-	xor	t1, t0
++	move	t1, zero
+ #ifdef CONFIG_64BIT
+ 	ori	t1, ST0_KX
+ #endif
+@@ -220,6 +251,12 @@ FEXPORT(xlp_boot_core0_siblings)	/* "Master" cpu starts from here */
  
- FEXPORT(xlp_boot_core0_siblings)	/* "Master" cpu starts from here */
--	__config_lsu
-+	xlp_config_lsu
- 	dmtc0   sp, $4, 2		/* SP saved in UserLocal */
- 	SAVE_ALL
- 	sync
-@@ -234,36 +244,36 @@ END(nlm_boot_secondary_cpus)
-  */
  	__CPUINIT
- NESTED(nlm_rmiboot_preboot, 16, sp)
--	mfc0	t0, $15, 1	# read ebase
--	andi	t0, 0x1f	# t0 has the processor_id()
--	andi	t2, t0, 0x3	# thread no
--	sll	t0, 2		# offset in cpu array
-+	mfc0	t0, $15, 1	/* read ebase */
-+	andi	t0, 0x1f	/* t0 has the processor_id() */
-+	andi	t2, t0, 0x3	/* thread num */
-+	sll	t0, 2		/* offset in cpu array */
- 
--	PTR_LA	t1, nlm_cpu_ready # mark CPU ready
-+	PTR_LA	t1, nlm_cpu_ready /* mark CPU ready */
- 	PTR_ADDU t1, t0
- 	li	t3, 1
- 	sw	t3, 0(t1)
- 
--	bnez	t2, 1f		# skip thread programming
--	nop			# for non zero hw threads
-+	bnez	t2, 1f		/* skip thread programming */
-+	nop			/* for thread id != 0 */
- 
- 	/*
--	 * MMU setup only for first thread in core
-+	 * XLR MMU setup only for first thread in core
- 	 */
- 	li	t0, 0x400
- 	mfcr	t1, t0
--	li	t2, 6 		# XLR thread mode mask
-+	li	t2, 6 		/* XLR thread mode mask */
- 	nor	t3, t2, zero
--	and	t2, t1, t2	# t2 - current thread mode
-+	and	t2, t1, t2	/* t2 - current thread mode */
- 	li	v0, CKSEG1ADDR(RESET_DATA_PHYS)
--	lw	v1, BOOT_THREAD_MODE(v0) # v1 - new thread mode
-+	lw	v1, BOOT_THREAD_MODE(v0) /* v1 - new thread mode */
- 	sll	v1, 1
--	beq	v1, t2, 1f 	# same as request value
--	nop			# nothing to do */
-+	beq	v1, t2, 1f 	/* same as request value */
-+	nop			/* nothing to do */
- 
--	and	t2, t1, t3	# mask out old thread mode
--	or	t1, t2, v1	# put in new value
--	mtcr	t1, t0		# update core control
-+	and	t2, t1, t3	/* mask out old thread mode */
-+	or	t1, t2, v1	/* put in new value */
-+	mtcr	t1, t0		/* update core control */
- 
- 1:	wait
- 	j	1b
+ NESTED(nlm_boot_secondary_cpus, 16, sp)
++	/* Initialize CP0 Status */
++	move	t1, zero
++#ifdef CONFIG_64BIT
++	ori	t1, ST0_KX
++#endif
++	mtc0	t1, CP0_STATUS
+ 	PTR_LA	t1, nlm_next_sp
+ 	PTR_L	sp, 0(t1)
+ 	PTR_LA	t1, nlm_next_gp
 -- 
 1.7.5.4

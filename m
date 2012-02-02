@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2012 15:43:17 +0100 (CET)
-Received: from smtpgw1.netlogicmicro.com ([12.203.210.53]:46756 "EHLO
-        smtpgw1.netlogicmicro.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904115Ab2BBOjb (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2012 15:39:31 +0100
-Received: from pps.filterd (smtpgw1 [127.0.0.1])
-        by smtpgw1.netlogicmicro.com (8.14.5/8.14.5) with SMTP id q12EM67W012889;
-        Thu, 2 Feb 2012 06:39:25 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2012 15:43:44 +0100 (CET)
+Received: from smtpgw2.netlogicmicro.com ([12.203.210.54]:52728 "EHLO
+        smtpgw2.netlogicmicro.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904116Ab2BBOje (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2012 15:39:34 +0100
+Received: from pps.filterd (smtpgw2 [127.0.0.1])
+        by smtpgw2.netlogicmicro.com (8.14.5/8.14.5) with SMTP id q12Ed9ZJ029370;
+        Thu, 2 Feb 2012 06:39:27 -0800
 Received: from hqcas02.netlogicmicro.com (hqcas02.netlogicmicro.com [10.65.50.15])
-        by smtpgw1.netlogicmicro.com with ESMTP id 12hfu7nyfu-1
+        by smtpgw2.netlogicmicro.com with ESMTP id 11pcrwt2ah-1
         (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT);
-        Thu, 02 Feb 2012 06:39:25 -0800
+        Thu, 02 Feb 2012 06:39:27 -0800
 From:   Jayachandran C <jayachandranc@netlogicmicro.com>
 To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
 CC:     Ganesan Ramalingam <ganesanr@netlogicmicro.com>,
         Jayachandran C <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 10/11] MIPS: Netlogic: XLP PCIe controller support.
-Date:   Thu, 2 Feb 2012 20:13:04 +0530
-Message-ID: <0cf5927c0d043919d424eef38615f76e3e1e6683.1328189941.git.jayachandranc@netlogicmicro.com>
+Subject: [PATCH 11/11] MIPS: Netlogic: USB support for XLP
+Date:   Thu, 2 Feb 2012 20:13:05 +0530
+Message-ID: <5360c071d54ce6c5217b53fc41e4672a680ff3f4.1328189941.git.jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <cover.1328189941.git.jayachandranc@netlogicmicro.com>
 References: <cover.1328189941.git.jayachandranc@netlogicmicro.com>
@@ -25,7 +25,7 @@ Content-Type: text/plain
 X-Originating-IP: [10.7.0.77]
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:5.6.7361,1.0.211,0.0.0000
  definitions=2012-01-28_02:2012-01-27,2012-01-28,1970-01-01 signatures=0
-X-archive-position: 32393
+X-archive-position: 32394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,60 +36,65 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: Ganesan Ramalingam <ganesanr@netlogicmicro.com>
 
-Adds support for the XLP on-chip PCIe controller. On XLP, the
-on-chip devices(including the 4 PCIe links) appear in the PCIe
-configuration space of the XLP as PCI devices.
+The XLP USB controller appears as a device on the internal SoC PCIe
+bus, the block has 2 EHCI blocks and 4 OHCI blocks. Change are to:
 
-The changes are to initialize and register the PCIe controller,
-enable hardware byte swap in the PCIe IO and MEM space, and to
-enable PCIe interrupts.
+* Add files netlogic/xlp/usb-init.c and asm/netlogic/xlp-hal/usb.h
+  to initialize the USB controller and define PCI fixups. The PCI
+  fixups are to setup interrupts and DMA mask.
+* Update include/asm/xlp-hal/{iomap.h,pic.h,xlp.h} to add interrupt
+  mapping for EHCI/OHCI interrupts.
 
 Signed-off-by: Ganesan Ramalingam <ganesanr@netlogicmicro.com>
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/Kconfig                               |    1 -
- arch/mips/include/asm/netlogic/xlp-hal/iomap.h  |    3 +
- arch/mips/include/asm/netlogic/xlp-hal/pcibus.h |   76 +++++++
- arch/mips/include/asm/netlogic/xlp-hal/xlp.h    |    8 +-
- arch/mips/netlogic/xlp/nlm_hal.c                |   16 ++
- arch/mips/pci/Makefile                          |    1 +
- arch/mips/pci/pci-xlp.c                         |  247 +++++++++++++++++++++++
- 7 files changed, 349 insertions(+), 3 deletions(-)
- create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
- create mode 100644 arch/mips/pci/pci-xlp.c
+ arch/mips/include/asm/netlogic/xlp-hal/iomap.h |    2 +-
+ arch/mips/include/asm/netlogic/xlp-hal/pic.h   |    4 +
+ arch/mips/include/asm/netlogic/xlp-hal/usb.h   |   64 ++++++++++++
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h   |    6 +
+ arch/mips/netlogic/xlp/Makefile                |    1 +
+ arch/mips/netlogic/xlp/nlm_hal.c               |   24 +++++
+ arch/mips/netlogic/xlp/platform.c              |    2 +-
+ arch/mips/netlogic/xlp/usb-init.c              |  125 ++++++++++++++++++++++++
+ 8 files changed, 226 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/usb.h
+ create mode 100644 arch/mips/netlogic/xlp/usb-init.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index baabbe5..7d77ac7 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -794,7 +794,6 @@ config NLM_XLP_BOARD
- 	select SYS_HAS_CPU_XLP
- 	select SYS_SUPPORTS_SMP
- 	select HW_HAS_PCI
--	select SWAP_IO_SPACE
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select 64BIT_PHYS_ADDR
 diff --git a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-index 86cc339..ece86f1 100644
+index ece86f1..2c63f97 100644
 --- a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
 +++ b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
-@@ -36,6 +36,9 @@
- #define __NLM_HAL_IOMAP_H__
- 
- #define XLP_DEFAULT_IO_BASE             0x18000000
-+#define XLP_DEFAULT_PCI_ECFG_BASE	XLP_DEFAULT_IO_BASE
-+#define XLP_DEFAULT_PCI_CFG_BASE	0x1c000000
-+
- #define NMI_BASE			0xbfc00000
- #define	XLP_IO_CLK			133333333
- 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
+@@ -132,7 +132,7 @@
+ #define	PCI_DEVICE_ID_NLM_PIC		0x1003
+ #define	PCI_DEVICE_ID_NLM_PCIE		0x1004
+ #define	PCI_DEVICE_ID_NLM_EHCI		0x1007
+-#define	PCI_DEVICE_ID_NLM_ILK		0x1008
++#define	PCI_DEVICE_ID_NLM_OHCI		0x1008
+ #define	PCI_DEVICE_ID_NLM_NAE		0x1009
+ #define	PCI_DEVICE_ID_NLM_POE		0x100A
+ #define	PCI_DEVICE_ID_NLM_FMN		0x100B
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pic.h b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
+index b6628f7..ad8b802 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/pic.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
+@@ -201,7 +201,11 @@
+ #define PIC_NUM_USB_IRTS		6
+ #define PIC_IRT_USB_0_INDEX		115
+ #define PIC_IRT_EHCI_0_INDEX		115
++#define PIC_IRT_OHCI_0_INDEX		116
++#define PIC_IRT_OHCI_1_INDEX		117
+ #define PIC_IRT_EHCI_1_INDEX		118
++#define PIC_IRT_OHCI_2_INDEX		119
++#define PIC_IRT_OHCI_3_INDEX		120
+ #define PIC_IRT_USB_INDEX(num)		((num) + PIC_IRT_USB_0_INDEX)
+ /* 115 to 120 */
+ #define PIC_IRT_GDX_INDEX		121
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/usb.h b/arch/mips/include/asm/netlogic/xlp-hal/usb.h
 new file mode 100644
-index 0000000..b4e6d51
+index 0000000..4052be4
 --- /dev/null
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/pcibus.h
-@@ -0,0 +1,76 @@
++++ b/arch/mips/include/asm/netlogic/xlp-hal/usb.h
+@@ -0,0 +1,64 @@
 +/*
 + * Copyright 2003-2011 NetLogic Microsystems, Inc. (NetLogic). All rights
 + * reserved.
@@ -124,119 +129,122 @@ index 0000000..b4e6d51
 + * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
 +
-+#ifndef __NLM_HAL_PCIBUS_H__
-+#define	__NLM_HAL_PCIBUS_H__
++#ifndef __NLM_HAL_USB_H__
++#define __NLM_HAL_USB_H__
 +
-+/* PCIE Memory and IO regions */
-+#define	PCIE_MEM_BASE			0xd0000000ULL
-+#define	PCIE_MEM_LIMIT			0xdfffffffULL
-+#define	PCIE_IO_BASE			0x14000000ULL
-+#define	PCIE_IO_LIMIT			0x15ffffffULL
-+
-+#define	PCIE_BRIDGE_CMD			0x1
-+#define	PCIE_BRIDGE_MSI_CAP		0x14
-+#define	PCIE_BRIDGE_MSI_ADDRL		0x15
-+#define	PCIE_BRIDGE_MSI_ADDRH		0x16
-+#define	PCIE_BRIDGE_MSI_DATA		0x17
-+
-+/* XLP Global PCIE configuration space registers */
-+#define	PCIE_BYTE_SWAP_MEM_BASE		0x247
-+#define	PCIE_BYTE_SWAP_MEM_LIM		0x248
-+#define	PCIE_BYTE_SWAP_IO_BASE		0x249
-+#define	PCIE_BYTE_SWAP_IO_LIM		0x24A
-+#define	PCIE_MSI_STATUS			0x25A
-+#define	PCIE_MSI_EN			0x25B
-+#define	PCIE_INT_EN0			0x261
-+
-+/* PCIE_MSI_EN */
-+#define	PCIE_MSI_VECTOR_INT_EN		0xFFFFFFFF
-+
-+/* PCIE_INT_EN0 */
-+#define	PCIE_MSI_INT_EN			(1 << 9)
++#define USB_CTL_0			0x01
++#define USB_PHY_0			0x0A
++#define USB_PHY_RESET			0x01
++#define USB_PHY_PORT_RESET_0		0x10
++#define USB_PHY_PORT_RESET_1		0x20
++#define USB_CONTROLLER_RESET		0x01
++#define USB_INT_STATUS			0x0E
++#define USB_INT_EN			0x0F
++#define USB_PHY_INTERRUPT_EN		0x01
++#define USB_OHCI_INTERRUPT_EN		0x02
++#define USB_OHCI_INTERRUPT1_EN		0x04
++#define USB_OHCI_INTERRUPT2_EN		0x08
++#define USB_CTRL_INTERRUPT_EN		0x10
 +
 +#ifndef __ASSEMBLY__
 +
-+#define	nlm_read_pcie_reg(b, r)		nlm_read_reg(b, r)
-+#define	nlm_write_pcie_reg(b, r, v)	nlm_write_reg(b, r, v)
-+#define	nlm_get_pcie_base(node, inst)	\
-+			nlm_pcicfg_base(XLP_IO_PCIE_OFFSET(node, inst))
-+#define	nlm_get_pcie_regbase(node, inst)	\
-+			(nlm_get_pcie_base(node, inst) + XLP_IO_PCI_HDRSZ)
++#define nlm_read_usb_reg(b, r)			nlm_read_reg(b, r)
++#define nlm_write_usb_reg(b, r, v)		nlm_write_reg(b, r, v)
++#define nlm_get_usb_pcibase(node, inst)		\
++	nlm_pcicfg_base(XLP_IO_USB_OFFSET(node, inst))
++#define nlm_get_usb_hcd_base(node, inst)	\
++	nlm_xkphys_map_pcibar0(nlm_get_usb_pcibase(node, inst))
++#define nlm_get_usb_regbase(node, inst)		\
++	(nlm_get_usb_pcibase(node, inst) + XLP_IO_PCI_HDRSZ)
 +
-+int xlp_pcie_link_irt(int link);
 +#endif
-+#endif /* __NLM_HAL_PCIBUS_H__ */
++#endif /* __NLM_HAL_USB_H__ */
 diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-index 1540588..dc6e98e 100644
+index dc6e98e..3921a31 100644
 --- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
 +++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
-@@ -35,8 +35,12 @@
- #ifndef _NLM_HAL_XLP_H
- #define _NLM_HAL_XLP_H
- 
--#define PIC_UART_0_IRQ           17
--#define PIC_UART_1_IRQ           18
-+#define PIC_UART_0_IRQ			17
-+#define PIC_UART_1_IRQ			18
-+#define PIC_PCIE_LINK_0_IRQ		19
-+#define PIC_PCIE_LINK_1_IRQ		20
-+#define PIC_PCIE_LINK_2_IRQ		21
-+#define PIC_PCIE_LINK_3_IRQ		22
+@@ -41,6 +41,12 @@
+ #define PIC_PCIE_LINK_1_IRQ		20
+ #define PIC_PCIE_LINK_2_IRQ		21
+ #define PIC_PCIE_LINK_3_IRQ		22
++#define PIC_EHCI_0_IRQ			23
++#define PIC_EHCI_1_IRQ			24
++#define PIC_OHCI_0_IRQ			25
++#define PIC_OHCI_1_IRQ			26
++#define PIC_OHCI_2_IRQ			27
++#define PIC_OHCI_3_IRQ			28
  
  #ifndef __ASSEMBLY__
  
+diff --git a/arch/mips/netlogic/xlp/Makefile b/arch/mips/netlogic/xlp/Makefile
+index b93ed83..5bd24b6 100644
+--- a/arch/mips/netlogic/xlp/Makefile
++++ b/arch/mips/netlogic/xlp/Makefile
+@@ -1,2 +1,3 @@
+ obj-y				+= setup.o platform.o nlm_hal.o
+ obj-$(CONFIG_SMP)		+= wakeup.o
++obj-$(CONFIG_USB)		+= usb-init.o
 diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
-index 9428e71..3a4a172 100644
+index 3a4a172..fad2cae 100644
 --- a/arch/mips/netlogic/xlp/nlm_hal.c
 +++ b/arch/mips/netlogic/xlp/nlm_hal.c
-@@ -69,6 +69,14 @@ int nlm_irq_to_irt(int irq)
- 		return PIC_IRT_UART_0_INDEX;
- 	case PIC_UART_1_IRQ:
- 		return PIC_IRT_UART_1_INDEX;
-+	case PIC_PCIE_LINK_0_IRQ:
-+	       return PIC_IRT_PCIE_LINK_0_INDEX;
-+	case PIC_PCIE_LINK_1_IRQ:
-+	       return PIC_IRT_PCIE_LINK_1_INDEX;
-+	case PIC_PCIE_LINK_2_IRQ:
-+	       return PIC_IRT_PCIE_LINK_2_INDEX;
-+	case PIC_PCIE_LINK_3_IRQ:
-+	       return PIC_IRT_PCIE_LINK_3_INDEX;
+@@ -77,6 +77,18 @@ int nlm_irq_to_irt(int irq)
+ 	       return PIC_IRT_PCIE_LINK_2_INDEX;
+ 	case PIC_PCIE_LINK_3_IRQ:
+ 	       return PIC_IRT_PCIE_LINK_3_INDEX;
++	case PIC_EHCI_0_IRQ:
++	       return PIC_IRT_EHCI_0_INDEX;
++	case PIC_EHCI_1_IRQ:
++	       return PIC_IRT_EHCI_1_INDEX;
++	case PIC_OHCI_0_IRQ:
++	       return PIC_IRT_OHCI_0_INDEX;
++	case PIC_OHCI_1_IRQ:
++	       return PIC_IRT_OHCI_1_INDEX;
++	case PIC_OHCI_2_IRQ:
++	       return PIC_IRT_OHCI_2_INDEX;
++	case PIC_OHCI_3_IRQ:
++	       return PIC_IRT_OHCI_3_INDEX;
  	default:
  		return -1;
  	}
-@@ -81,6 +89,14 @@ int nlm_irt_to_irq(int irt)
- 		return PIC_UART_0_IRQ;
- 	case PIC_IRT_UART_1_INDEX:
- 		return PIC_UART_1_IRQ;
-+	case PIC_IRT_PCIE_LINK_0_INDEX:
-+	       return PIC_PCIE_LINK_0_IRQ;
-+	case PIC_IRT_PCIE_LINK_1_INDEX:
-+	       return PIC_PCIE_LINK_1_IRQ;
-+	case PIC_IRT_PCIE_LINK_2_INDEX:
-+	       return PIC_PCIE_LINK_2_IRQ;
-+	case PIC_IRT_PCIE_LINK_3_INDEX:
-+	       return PIC_PCIE_LINK_3_IRQ;
+@@ -97,6 +109,18 @@ int nlm_irt_to_irq(int irt)
+ 	       return PIC_PCIE_LINK_2_IRQ;
+ 	case PIC_IRT_PCIE_LINK_3_INDEX:
+ 	       return PIC_PCIE_LINK_3_IRQ;
++	case PIC_IRT_EHCI_0_INDEX:
++		return PIC_EHCI_0_IRQ;
++	case PIC_IRT_EHCI_1_INDEX:
++		return PIC_EHCI_1_IRQ;
++	case PIC_IRT_OHCI_0_INDEX:
++		return PIC_OHCI_0_IRQ;
++	case PIC_IRT_OHCI_1_INDEX:
++		return PIC_OHCI_1_IRQ;
++	case PIC_IRT_OHCI_2_INDEX:
++		return PIC_OHCI_2_IRQ;
++	case PIC_IRT_OHCI_3_INDEX:
++		return PIC_OHCI_3_IRQ;
  	default:
  		return -1;
  	}
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index c3ac4b0..44cdf55 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -57,6 +57,7 @@ obj-$(CONFIG_WR_PPMC)		+= fixup-wrppmc.o
- obj-$(CONFIG_MIKROTIK_RB532)	+= pci-rc32434.o ops-rc32434.o fixup-rc32434.o
- obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= pci-octeon.o pcie-octeon.o
- obj-$(CONFIG_CPU_XLR)		+= pci-xlr.o
-+obj-$(CONFIG_CPU_XLP)		+= pci-xlp.o
+diff --git a/arch/mips/netlogic/xlp/platform.c b/arch/mips/netlogic/xlp/platform.c
+index 1f5e4cb..2c510d5 100644
+--- a/arch/mips/netlogic/xlp/platform.c
++++ b/arch/mips/netlogic/xlp/platform.c
+@@ -53,7 +53,7 @@
  
- ifdef CONFIG_PCI_MSI
- obj-$(CONFIG_CPU_CAVIUM_OCTEON)	+= msi-octeon.o
-diff --git a/arch/mips/pci/pci-xlp.c b/arch/mips/pci/pci-xlp.c
+ static unsigned int nlm_xlp_uart_in(struct uart_port *p, int offset)
+ {
+-	 return nlm_read_reg(p->iobase, offset);
++	return nlm_read_reg(p->iobase, offset);
+ }
+ 
+ static void nlm_xlp_uart_out(struct uart_port *p, int offset, int value)
+diff --git a/arch/mips/netlogic/xlp/usb-init.c b/arch/mips/netlogic/xlp/usb-init.c
 new file mode 100644
-index 0000000..7bb84ba
+index 0000000..81ce206
 --- /dev/null
-+++ b/arch/mips/pci/pci-xlp.c
-@@ -0,0 +1,247 @@
++++ b/arch/mips/netlogic/xlp/usb-init.c
+@@ -0,0 +1,125 @@
 +/*
 + * Copyright 2003-2011 NetLogic Microsystems, Inc. (NetLogic). All rights
 + * reserved.
@@ -271,218 +279,96 @@ index 0000000..7bb84ba
 + * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
 +
-+#include <linux/types.h>
-+#include <linux/pci.h>
++#include <linux/dma-mapping.h>
 +#include <linux/kernel.h>
++#include <linux/delay.h>
 +#include <linux/init.h>
-+#include <linux/msi.h>
-+#include <linux/mm.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
-+#include <linux/console.h>
++#include <linux/platform_device.h>
 +
-+#include <asm/io.h>
-+
-+#include <asm/netlogic/interrupt.h>
 +#include <asm/netlogic/haldefs.h>
-+
 +#include <asm/netlogic/xlp-hal/iomap.h>
-+#include <asm/netlogic/xlp-hal/pic.h>
 +#include <asm/netlogic/xlp-hal/xlp.h>
-+#include <asm/netlogic/xlp-hal/pcibus.h>
-+#include <asm/netlogic/xlp-hal/bridge.h>
++#include <asm/netlogic/xlp-hal/usb.h>
 +
-+static void *pci_config_base;
-+
-+#define	pci_cfg_addr(bus, devfn, off) (((bus) << 20) | ((devfn) << 12) | (off))
-+
-+/* PCI ops */
-+static inline u32 pci_cfg_read_32bit(struct pci_bus *bus, unsigned int devfn,
-+	int where)
++static void nlm_usb_intr_en(int node, int port)
 +{
-+	u32 data;
-+	u32 *cfgaddr;
++	uint32_t val;
++	uint64_t port_addr;
 +
-+	cfgaddr = (u32 *)(pci_config_base +
-+			pci_cfg_addr(bus->number, devfn, where & ~3));
-+	data = *cfgaddr;
-+	return data;
++	port_addr = nlm_get_usb_regbase(node, port);
++	val = nlm_read_usb_reg(port_addr, USB_INT_EN);
++	val = USB_CTRL_INTERRUPT_EN  | USB_OHCI_INTERRUPT_EN |
++		USB_OHCI_INTERRUPT1_EN | USB_CTRL_INTERRUPT_EN  |
++		USB_OHCI_INTERRUPT_EN | USB_OHCI_INTERRUPT2_EN;
++	nlm_write_usb_reg(port_addr, USB_INT_EN, val);
 +}
 +
-+static inline void pci_cfg_write_32bit(struct pci_bus *bus, unsigned int devfn,
-+	int where, u32 data)
++static void nlm_usb_hw_reset(int node, int port)
 +{
-+	u32 *cfgaddr;
++	uint64_t port_addr;
++	uint32_t val;
 +
-+	cfgaddr = (u32 *)(pci_config_base +
-+			pci_cfg_addr(bus->number, devfn, where & ~3));
-+	*cfgaddr = data;
++	/* reset USB phy */
++	port_addr = nlm_get_usb_regbase(node, port);
++	val = nlm_read_usb_reg(port_addr, USB_PHY_0);
++	val &= ~(USB_PHY_RESET | USB_PHY_PORT_RESET_0 | USB_PHY_PORT_RESET_1);
++	nlm_write_usb_reg(port_addr, USB_PHY_0, val);
++
++	mdelay(100);
++	val = nlm_read_usb_reg(port_addr, USB_CTL_0);
++	val &= ~(USB_CONTROLLER_RESET);
++	val |= 0x4;
++	nlm_write_usb_reg(port_addr, USB_CTL_0, val);
 +}
 +
-+static int nlm_pcibios_read(struct pci_bus *bus, unsigned int devfn,
-+	int where, int size, u32 *val)
++static int __init nlm_platform_usb_init(void)
 +{
-+	u32 data;
++	pr_info("Initializing USB Interface\n");
++	nlm_usb_hw_reset(0, 0);
++	nlm_usb_hw_reset(0, 3);
 +
-+	if ((size == 2) && (where & 1))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	else if ((size == 4) && (where & 3))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
++	/* Enable PHY interrupts */
++	nlm_usb_intr_en(0, 0);
++	nlm_usb_intr_en(0, 3);
 +
-+	data = pci_cfg_read_32bit(bus, devfn, where);
-+
-+	if (size == 1)
-+		*val = (data >> ((where & 3) << 3)) & 0xff;
-+	else if (size == 2)
-+		*val = (data >> ((where & 3) << 3)) & 0xffff;
-+	else
-+		*val = data;
-+
-+	return PCIBIOS_SUCCESSFUL;
++	return 0;
 +}
 +
++arch_initcall(nlm_platform_usb_init);
 +
-+static int nlm_pcibios_write(struct pci_bus *bus, unsigned int devfn,
-+		int where, int size, u32 val)
++static u64 xlp_usb_dmamask = ~(u32)0;
++
++/* Fixup the IRQ for USB devices which is exist on XLP SOC PCIE bus */
++static void nlm_usb_fixup_final(struct pci_dev *dev)
 +{
-+	u32 data;
-+
-+	if ((size == 2) && (where & 1))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+	else if ((size == 4) && (where & 3))
-+		return PCIBIOS_BAD_REGISTER_NUMBER;
-+
-+	data = pci_cfg_read_32bit(bus, devfn, where);
-+
-+	if (size == 1)
-+		data = (data & ~(0xff << ((where & 3) << 3))) |
-+			(val << ((where & 3) << 3));
-+	else if (size == 2)
-+		data = (data & ~(0xffff << ((where & 3) << 3))) |
-+			(val << ((where & 3) << 3));
-+	else
-+		data = val;
-+
-+	pci_cfg_write_32bit(bus, devfn, where, data);
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+struct pci_ops nlm_pci_ops = {
-+	.read  = nlm_pcibios_read,
-+	.write = nlm_pcibios_write
-+};
-+
-+static struct resource nlm_pci_mem_resource = {
-+	.name           = "XLP PCI MEM",
-+	.start          = 0xd0000000UL,	/* 256MB PCI mem @ 0xd000_0000 */
-+	.end            = 0xdfffffffUL,
-+	.flags          = IORESOURCE_MEM,
-+};
-+
-+static struct resource nlm_pci_io_resource = {
-+	.name           = "XLP IO MEM",
-+	.start          = 0x14000000UL,	/* 64MB PCI IO @ 0x1000_0000 */
-+	.end            = 0x17ffffffUL,
-+	.flags          = IORESOURCE_IO,
-+};
-+
-+struct pci_controller nlm_pci_controller = {
-+	.index          = 0,
-+	.pci_ops        = &nlm_pci_ops,
-+	.mem_resource   = &nlm_pci_mem_resource,
-+	.mem_offset     = 0x00000000UL,
-+	.io_resource    = &nlm_pci_io_resource,
-+	.io_offset      = 0x00000000UL,
-+};
-+
-+static int get_irq_vector(const struct pci_dev *dev)
-+{
-+	/*
-+	 * For XLP PCIe, there is an IRQ per Link, find out which
-+	 * link the device is on to assign interrupts
-+	*/
-+	if (dev->bus->self == NULL)
-+		return 0;
-+
-+	switch	(dev->bus->self->devfn) {
-+	case 0x8:
-+		return PIC_PCIE_LINK_0_IRQ;
-+	case 0x9:
-+		return PIC_PCIE_LINK_1_IRQ;
-+	case 0xa:
-+		return PIC_PCIE_LINK_2_IRQ;
-+	case 0xb:
-+		return PIC_PCIE_LINK_3_IRQ;
++	dev->dev.dma_mask		= &xlp_usb_dmamask,
++	dev->dev.coherent_dma_mask	= DMA_BIT_MASK(64);
++	switch (dev->devfn) {
++	case 0x10:
++	       dev->irq = PIC_EHCI_0_IRQ;
++	       break;
++	case 0x11:
++	       dev->irq = PIC_OHCI_0_IRQ;
++	       break;
++	case 0x12:
++	       dev->irq = PIC_OHCI_1_IRQ;
++	       break;
++	case 0x13:
++	       dev->irq = PIC_EHCI_1_IRQ;
++	       break;
++	case 0x14:
++	       dev->irq = PIC_OHCI_2_IRQ;
++	       break;
++	case 0x15:
++	       dev->irq = PIC_OHCI_3_IRQ;
++	       break;
 +	}
-+	WARN(1, "Unexpected devfn %d\n", dev->bus->self->devfn);
-+	return 0;
-+}
-+
-+int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	return get_irq_vector(dev);
-+}
-+
-+/* Do platform specific device initialization at pci_enable_device() time */
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	return 0;
-+}
-+
-+static int xlp_enable_pci_bswap(void)
-+{
-+	uint64_t pciebase, sysbase;
-+	int node, i;
-+	u32 reg;
-+
-+	/* Chip-0 so node set to 0 */
-+	node = 0;
-+	sysbase = nlm_get_bridge_regbase(node);
-+	/*
-+	 *  Enable byte swap in hardware. Program each link's PCIe SWAP regions
-+	 * from the link's address ranges.
-+	 */
-+	for (i = 0; i < 4; i++) {
-+		pciebase = nlm_pcicfg_base(XLP_IO_PCIE_OFFSET(node, i));
-+		if (nlm_read_pci_reg(pciebase, 0) == 0xffffffff)
-+			continue;
-+
-+		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEMEM_BASE0 + i);
-+		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_MEM_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEMEM_LIMIT0 + i);
-+		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_MEM_LIM, reg);
-+
-+		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_BASE0 + i);
-+		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_BASE, reg);
-+
-+		reg = nlm_read_bridge_reg(sysbase, BRIDGE_PCIEIO_LIMIT0 + i);
-+		nlm_write_pci_reg(pciebase, PCIE_BYTE_SWAP_IO_LIM, reg);
-+	}
-+	return 0;
-+}
-+
-+static int __init pcibios_init(void)
-+{
-+	/* Firmware assigns PCI resources */
-+	pci_probe_only = 1;
-+	pci_config_base = ioremap(XLP_DEFAULT_PCI_ECFG_BASE, 64 << 20);
-+
-+	/* Extend IO port for memory mapped io */
-+	ioport_resource.start =  0;
-+	ioport_resource.end   = ~0;
-+
-+	xlp_enable_pci_bswap();
-+	set_io_port_base(CKSEG1);
-+	nlm_pci_controller.io_map_base = CKSEG1;
-+
-+	register_pci_controller(&nlm_pci_controller);
-+	pr_info("XLP PCIe Controller %pR%pR.\n", &nlm_pci_io_resource,
-+		&nlm_pci_mem_resource);
 +
 +	return 0;
 +}
-+arch_initcall(pcibios_init);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_EHCI,
++		nlm_usb_fixup_final);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_OHCI,
++		nlm_usb_fixup_final);
 -- 
 1.7.5.4

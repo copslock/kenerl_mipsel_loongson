@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2012 15:41:12 +0100 (CET)
-Received: from smtpgw2.netlogicmicro.com ([12.203.210.54]:52724 "EHLO
-        smtpgw2.netlogicmicro.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904110Ab2BBOjU (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2012 15:39:20 +0100
-Received: from pps.filterd (smtpgw2 [127.0.0.1])
-        by smtpgw2.netlogicmicro.com (8.14.5/8.14.5) with SMTP id q12EcpTm028764;
-        Thu, 2 Feb 2012 06:39:13 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Feb 2012 15:41:37 +0100 (CET)
+Received: from smtpgw1.netlogicmicro.com ([12.203.210.53]:46754 "EHLO
+        smtpgw1.netlogicmicro.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1904111Ab2BBOjW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 2 Feb 2012 15:39:22 +0100
+Received: from pps.filterd (smtpgw1 [127.0.0.1])
+        by smtpgw1.netlogicmicro.com (8.14.5/8.14.5) with SMTP id q12EM67V012889;
+        Thu, 2 Feb 2012 06:39:16 -0800
 Received: from hqcas02.netlogicmicro.com (hqcas02.netlogicmicro.com [10.65.50.15])
-        by smtpgw2.netlogicmicro.com with ESMTP id 11pcrwt2a8-1
+        by smtpgw1.netlogicmicro.com with ESMTP id 12hfu7nyfp-1
         (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT);
-        Thu, 02 Feb 2012 06:39:13 -0800
+        Thu, 02 Feb 2012 06:39:16 -0800
 From:   Jayachandran C <jayachandranc@netlogicmicro.com>
 To:     <linux-mips@linux-mips.org>, <ralf@linux-mips.org>
 CC:     Jayachandran C <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 05/11] MIPS: Netlogic: SMP wakeup code update
-Date:   Thu, 2 Feb 2012 20:12:59 +0530
-Message-ID: <a5879133671a87ef5fe33900b26f29772da565fd.1328189941.git.jayachandranc@netlogicmicro.com>
+Subject: [PATCH 06/11] MIPS: Netlogic: Fix TLB size of boot CPU.
+Date:   Thu, 2 Feb 2012 20:13:00 +0530
+Message-ID: <8f6783d1c4c5cd731448bac40a547a1f2b5f8e45.1328189941.git.jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <cover.1328189941.git.jayachandranc@netlogicmicro.com>
 References: <cover.1328189941.git.jayachandranc@netlogicmicro.com>
@@ -24,7 +24,7 @@ Content-Type: text/plain
 X-Originating-IP: [10.7.0.77]
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10432:5.6.7361,1.0.211,0.0.0000
  definitions=2012-01-28_02:2012-01-27,2012-01-28,1970-01-01 signatures=0
-X-archive-position: 32388
+X-archive-position: 32389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,117 +33,44 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Update for core intialization code.  Initialize status register
-after receiving NMI for CPU wakeup. Add the low level L1D flush
-code before enabling threads in core.
+Starting other threads in the core will change the number of
+TLB entries of a CPU.  Re-calculate current_cpu_data.tlbsize
+on the boot cpu after enabling and waking up other threads.
 
-Also convert the ehb to _ehb so that it works under more GCC
-versions.
+The secondary CPUs do not need this logic because the threads
+are enabled on the secondary cores at wakeup and before cpu_probe.
 
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- .../mips/include/asm/netlogic/xlp-hal/cpucontrol.h |    4 +-
- arch/mips/netlogic/common/smpboot.S                |   47 +++++++++++++++++--
- 2 files changed, 45 insertions(+), 6 deletions(-)
+ arch/mips/netlogic/xlp/setup.c |    8 +++++++-
+ 1 files changed, 7 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h b/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h
-index bf7d41d..7b63a6b 100644
---- a/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h
-+++ b/arch/mips/include/asm/netlogic/xlp-hal/cpucontrol.h
-@@ -47,7 +47,9 @@
- #define CPU_BLOCKID_MAP		10
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index acb677a..b3df7c2 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -82,8 +82,10 @@ void __init prom_free_prom_memory(void)
  
- #define LSU_DEFEATURE		0x304
--#define LSU_CERRLOG_REGID	0x09
-+#define LSU_DEBUG_ADDR		0x305
-+#define LSU_DEBUG_DATA0		0x306
-+#define LSU_CERRLOG_REGID	0x309
- #define SCHED_DEFEATURE		0x700
- 
- /* Offsets of interest from the 'MAP' Block */
-diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
-index bfe9060..aa86590 100644
---- a/arch/mips/netlogic/common/smpboot.S
-+++ b/arch/mips/netlogic/common/smpboot.S
-@@ -77,6 +77,38 @@
- .endm
- 
- /*
-+ * Low level L1 d-cache flush for core, needs to be called before
-+ * threads are enabled
-+ */
-+.macro	xlp_flush_l1_dcache
-+	li	t0, LSU_DEBUG_DATA0
-+	li      t1, LSU_DEBUG_ADDR
-+	li	t2, 0		/* index */
-+	li 	t3, 0x200	/* loop count, 512 sets */
-+1:
-+	sll	v0, t2, 5
-+	mtcr	zero, t0
-+	ori	v1, v0, 0x3	/* way0 | write_enable | write_active */
-+	mtcr	v1, t1
-+2:
-+	mfcr	v1, t1
-+	andi	v1, 0x1		/* wait for write_active == 0 */
-+	bnez	v1, 2b
-+	nop
-+	mtcr    zero, t0
-+	ori	v1, v0, 0x7	/* way1 | write_enable | write_active */
-+	mtcr    v1, t1
-+3:
-+	mfcr    v1, t1
-+	andi    v1, 0x1		/* wait for write_active == 0 */
-+	bnez    v1, 3b
-+	nop
-+	addi	t2, 1
-+	bne	t3, t2, 1b
-+	nop
-+.endm
+ void xlp_mmu_init(void)
+ {
++	/* enable extended TLB and Large Fixed TLB */
+ 	write_c0_config6(read_c0_config6() | 0x24);
+-	current_cpu_data.tlbsize = ((read_c0_config6() >> 16) & 0xffff) + 1;
 +
-+/*
-  * This is the code that will be copied to the reset entry point for
-  * XLR and XLP. The XLP cores start here when they are woken up. This
-  * is also the NMI entry point.
-@@ -138,6 +170,8 @@ FEXPORT(nlm_reset_entry)
-  * a core.
-  */
- EXPORT(nlm_boot_siblings)
-+	/* core L1D flush before enable threads */
-+	xlp_flush_l1_dcache
- 	/* Enable hw threads by writing to MAP_THREADMODE of the core */
- 	li	t0, CKSEG1ADDR(RESET_DATA_PHYS)
- 	lw	t1, BOOT_THREAD_MODE(t0)	/* t1 <- thread mode */
-@@ -164,16 +198,13 @@ EXPORT(nlm_boot_siblings)
- 	li	t0, MMU_SETUP
- 	li	t1, 0
- 	mtcr	t1, t0
--	ehb
-+	_ehb
- 
- 2:	beqz	v0, 4f		/* boot cpu (cpuid == 0)? */
- 	nop
- 
- 	/* setup status reg */
--	mfc0	t1, CP0_STATUS
--	li	t0, ST0_BEV
--	or	t1, t0
--	xor	t1, t0
-+	move	t1, zero
- #ifdef CONFIG_64BIT
- 	ori	t1, ST0_KX
++	/* set page mask of Fixed TLB in config7 */
+ 	write_c0_config7(PM_DEFAULT_MASK >>
+ 		(13 + (ffz(PM_DEFAULT_MASK >> 13) / 2)));
+ }
+@@ -100,6 +102,10 @@ void __init prom_init(void)
+ 	nlm_common_ebase = read_c0_ebase() & (~((1 << 12) - 1));
+ #ifdef CONFIG_SMP
+ 	nlm_wakeup_secondary_cpus(0xffffffff);
++
++	/* update TLB size after waking up threads */
++	current_cpu_data.tlbsize = ((read_c0_config6() >> 16) & 0xffff) + 1;
++
+ 	register_smp_ops(&nlm_smp_ops);
  #endif
-@@ -220,6 +251,12 @@ FEXPORT(xlp_boot_core0_siblings)	/* "Master" cpu starts from here */
- 
- 	__CPUINIT
- NESTED(nlm_boot_secondary_cpus, 16, sp)
-+	/* Initialize CP0 Status */
-+	move	t1, zero
-+#ifdef CONFIG_64BIT
-+	ori	t1, ST0_KX
-+#endif
-+	mtc0	t1, CP0_STATUS
- 	PTR_LA	t1, nlm_next_sp
- 	PTR_L	sp, 0(t1)
- 	PTR_LA	t1, nlm_next_gp
+ }
 -- 
 1.7.5.4

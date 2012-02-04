@@ -1,80 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Feb 2012 00:17:00 +0100 (CET)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:37876 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904199Ab2BCXQz convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 4 Feb 2012 00:16:55 +0100
-Received: by pbdx9 with SMTP id x9so3927753pbd.36
-        for <multiple recipients>; Fri, 03 Feb 2012 15:16:48 -0800 (PST)
-Received: by 10.68.74.69 with SMTP id r5mr21595490pbv.118.1328311008129; Fri,
- 03 Feb 2012 15:16:48 -0800 (PST)
-MIME-Version: 1.0
-Received: by 10.68.224.170 with HTTP; Fri, 3 Feb 2012 15:16:28 -0800 (PST)
-In-Reply-To: <20111026073348.GB2915@opensource.wolfsonmicro.com>
-References: <1319528012-19006-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <CAJaTeTp2w85UHnmH-PPMZsQGQMNa-93kw-tjmDxA_wjJXkYQcQ@mail.gmail.com> <20111026073348.GB2915@opensource.wolfsonmicro.com>
-From:   Grant Likely <grant.likely@secretlab.ca>
-Date:   Fri, 3 Feb 2012 16:16:28 -0700
-X-Google-Sender-Auth: QCaMiBSYY2kFLeomBBCgc9xFG4c
-Message-ID: <CACxGe6sbwy8z+U8=5rtvjyDrt3SZD2N33GiGHwPOMUAxt_BXTA@mail.gmail.com>
-Subject: Re: [PATCH] gpiolib/arches: Centralise bolierplate asm/gpio.h
-To:     Mark Brown <broonie@opensource.wolfsonmicro.com>
-Cc:     Mike Frysinger <vapier@gentoo.org>,
-        Russell King <linux@arm.linux.org.uk>,
-        Haavard Skinnemoen <hskinnemoen@gmail.com>,
-        Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        uclinux-dist-devel@blackfin.uclinux.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@linux-mips.org,
-        linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 32403
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Feb 2012 11:08:38 +0100 (CET)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:35340 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903604Ab2BDKIb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Feb 2012 11:08:31 +0100
+Received: by bkcjk13 with SMTP id jk13so18648bkc.36
+        for <multiple recipients>; Sat, 04 Feb 2012 02:08:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=5DbAKFYwy9Pcg1BtxsGhRbHPD1tUZtU03iH+TQ8Jsrc=;
+        b=i5r7zPKtsJ/1IEUu/VPcf7UAJ1qqjhOPGM6uDS8gdo230BqkkPGYbYw07gmGvmMuCB
+         tzXt9ygtBWg+mxcW5j+wInsghXbJaQ4N4ZcQxhulukddzgh3DUjpSiR1CetNOhhx7Ivq
+         gHmbuKmmSxfBs7nQpQ5t1gJUZwe9N1KLrGUYE=
+Received: by 10.204.9.198 with SMTP id m6mr4960192bkm.74.1328350105851;
+        Sat, 04 Feb 2012 02:08:25 -0800 (PST)
+Received: from shaker64.lan (dslb-088-073-058-217.pools.arcor-ip.net. [88.73.58.217])
+        by mx.google.com with ESMTPS id ez5sm24774605bkc.15.2012.02.04.02.08.24
+        (version=SSLv3 cipher=OTHER);
+        Sat, 04 Feb 2012 02:08:24 -0800 (PST)
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>,
+        Florian Fainelli <florian@openwrt.org>, stable@vger.kernel.org
+Subject: [PATCH V2] MIPS: BCM63XX: add missing include for bcm63xx_gpio.h
+Date:   Sat,  4 Feb 2012 11:07:37 +0100
+Message-Id: <1328350057-10797-1-git-send-email-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 1.7.2.5
+X-archive-position: 32404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Oct 26, 2011 at 1:33 AM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
-> On Tue, Oct 25, 2011 at 07:44:14PM -0400, Mike Frysinger wrote:
->
->> i don't think this is generally how asm-generic is handled.  instead, how about:
->>  - move the duplicate code to asm-generic/gpio.h
->>  - have the arches which merely need asm-generic/gpio.h add "generic-y
->> += gpio.h" to their include/asm/Kbuild
->>  - for arches which need to override these common funcs in some way,
->> add #ifdef protection to the asm-generic/gpio.h
->
->> and it seems like with slightly more work, this path allow you to
->> merge most of arch/sh/include/asm/gpio.h.  and it has the advantage of
->> not needing new Kconfig symbols.
->
-> That's really not how gpiolib is currently handled, unfortunately -
-> trying to transition over to that model in one patch would be way too
-> much.
->
-> The goal here from that point of view is to make transitioning to
-> something more sensible easier by getting rid of the boilerplate code,
-> it makes doing the more invasive changes like you're suggesting much
-> easier as we're only dealing with the architectures that are actually
-> doing something.  It also means that we're able to immediately work on
-> turning on gpiolib on random architectures which is a definite win.
+bcm63xx_gpio.h uses macros defined in bcm63xx_cpu.h without including it,
+leading to the following build failure:
 
-I had picked up this patch, but I've dropped again from gpio/next
-since there are still a lot of drivers including asm/gpio.h.  It
-caused build breakage on linux-next with allmodconfig.
+  CC [M]  drivers/mmc/core/cd-gpio.o
+In file included from arch/mips/include/asm/mach-bcm63xx/gpio.h:4:0,
+                 from arch/mips/include/asm/gpio.h:4,
+                 from include/linux/gpio.h:30,
+                 from drivers/mmc/core/cd-gpio.c:12:
 
-g.
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h: In function 'bcm63xx_gpio_count':
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:10:2: error: implicit declaration of function 'bcm63xx_get_cpu_id'
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: error: 'BCM6358_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: note: each undeclared identifier is reported only once for each function it appears in
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:13:7: error: 'BCM6338_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:15:7: error: 'BCM6345_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:17:7: error: 'BCM6368_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:19:7: error: 'BCM6348_CPU_ID' undeclared (first use in this function)
+
+make[7]: *** [drivers/mmc/core/cd-gpio.o] Error 1
+
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+
+Cc: stable@vger.kernel.org
+---
+V1 -> V2
+ * added cc to stable
 
 
+This is also needed for all supported stable versions. The include is
+missing from the beginning, breaking any driver using linux/gpio.h (but
+they don't seem to be used often used on bcm63xx).
+
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
+index 3d5de96..1d7dd96 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
+@@ -2,6 +2,7 @@
+ #define BCM63XX_GPIO_H
+ 
+ #include <linux/init.h>
++#include <bcm63xx_cpu.h>
+ 
+ int __init bcm63xx_gpio_init(void);
+ 
 -- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+1.7.2.5

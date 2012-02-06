@@ -1,24 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 04 Feb 2012 18:42:19 +0100 (CET)
-Received: from caramon.arm.linux.org.uk ([78.32.30.218]:34917 "EHLO
-        caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903613Ab2BDRmN (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 4 Feb 2012 18:42:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=arm.linux.org.uk; s=caramon;
-        h=Sender:In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date; bh=v+sk/DkWDb4m0c2kbhSCAjLrgnicRmt4XWIw3Cha6I4=;
-        b=ANouVT5pWWW5o4+G+bE58/dXIU3e78jVVI02z6gapi+QDTddfgi1RO2xpzlsKIHLO8D6R0hrfZTlmH5W/K1XWriH4B69orq6zRWAAAY14JK3QsL8/HIahVGrxh9Ep9FAFoElHDiX0chMAFPiK5cZ2z2QyB5tAJKClDlCM1m9Nxc=;
-Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86]:56925)
-        by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.76)
-        (envelope-from <linux@arm.linux.org.uk>)
-        id 1Rtjbx-00032m-K9; Sat, 04 Feb 2012 17:41:18 +0000
-Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.76)
-        (envelope-from <linux@n2100.arm.linux.org.uk>)
-        id 1Rtjbw-0004qP-4b; Sat, 04 Feb 2012 17:41:16 +0000
-Date:   Sat, 4 Feb 2012 17:41:15 +0000
-From:   Russell King - ARM Linux <linux@arm.linux.org.uk>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Feb 2012 12:37:38 +0100 (CET)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:54747 "EHLO
+        opensource.wolfsonmicro.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903649Ab2BFLh1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 6 Feb 2012 12:37:27 +0100
+Received: from finisterre.wolfsonmicro.main (unknown [87.246.78.26])
+        by opensource.wolfsonmicro.com (Postfix) with ESMTPSA id E7672110520;
+        Mon,  6 Feb 2012 11:37:20 +0000 (GMT)
+Received: from broonie by finisterre.wolfsonmicro.main with local (Exim 4.77)
+        (envelope-from <broonie@opensource.wolfsonmicro.com>)
+        id 1RuMsq-0005Pn-AK; Mon, 06 Feb 2012 11:37:20 +0000
+Date:   Mon, 6 Feb 2012 11:37:20 +0000
+From:   Mark Brown <broonie@opensource.wolfsonmicro.com>
+To:     Russell King - ARM Linux <linux@arm.linux.org.uk>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, Guan Xuetao <gxt@mprc.pku.edu.cn>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Mundt <lethal@linux-sh.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
@@ -31,68 +25,75 @@ Cc:     Mark Brown <broonie@opensource.wolfsonmicro.com>,
         linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
         linux-sh@vger.kernel.org
 Subject: Re: [PATCH] gpiolib/arches: Centralise bolierplate asm/gpio.h
-Message-ID: <20120204174115.GX889@n2100.arm.linux.org.uk>
-References: <1328370879-18523-1-git-send-email-broonie@opensource.wolfsonmicro.com> <20120204170632.GA3615@merkur.ravnborg.org>
+Message-ID: <20120206113720.GG3070@opensource.wolfsonmicro.com>
+References: <1328370879-18523-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <20120204170632.GA3615@merkur.ravnborg.org>
+ <20120204174115.GX889@n2100.arm.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="PpAOPzA3dXsRhoo+"
 Content-Disposition: inline
-In-Reply-To: <20120204170632.GA3615@merkur.ravnborg.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-X-archive-position: 32408
+In-Reply-To: <20120204174115.GX889@n2100.arm.linux.org.uk>
+X-Cookie: Many pages make a thick book.
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 32409
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux@arm.linux.org.uk
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, Feb 04, 2012 at 06:06:32PM +0100, Sam Ravnborg wrote:
-> On Sat, Feb 04, 2012 at 03:54:39PM +0000, Mark Brown wrote:
-> > Rather than requiring architectures that use gpiolib but don't have any
-> > need to define anything custom to copy an asm/gpio.h provide a Kconfig
-> > symbol which architectures must select in order to include gpio.h and
-> > for other architectures just provide the trivial implementation directly.
-> 
-> Hi Mark.
-> 
-> There is an even simpler solution.
-> 
-> For each arch that uses asm-generic/gpio.h add a line
-> to arch/$ARCH/include/asm/Kbuild like this:
-> 
-> 
->     generic-y += gpio.h
-> 
-> This will then make this arch pick up the asm-generic version when
-> you do #include <asm/gpio.h>.
 
-You're assuming that asm-generic/gpio.h was invented to be a replacement
-for an architecture asm/gpio.h.  Unfortunately, things aren't that
-simple.
+--PpAOPzA3dXsRhoo+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It would have been a lot better if asm-generic/gpio.h was tacked on the
-bottom of linux/gpio.h - because that's what it really is.  It's core
-code features, not platform stuff.
+On Sat, Feb 04, 2012 at 05:41:15PM +0000, Russell King - ARM Linux wrote:
 
-What's platform specific about asm/gpio.h is the number of GPIOs in
-the system, and whether it wants to intercept the gpio_xxx() functions
-to provide fast access to on-chip GPIOs.
+> What's platform specific about asm/gpio.h is the number of GPIOs in
+> the system, and whether it wants to intercept the gpio_xxx() functions
+> to provide fast access to on-chip GPIOs.
 
-What I'd suggest is moving asm-generic/gpio.h to linux/gpiolib.h, and
-making asm-generic/gpio.h include that as a patch until stuff is fixed
-for its new location.  That should result in a proper asm-generic/gpio.h
-being:
+Plus the fact that it might be a completely non-standard API, and might
+totally override the gpiolib implementation.
 
-/* The trivial gpiolib dispatchers */
-#define gpio_get_value  __gpio_get_value
-#define gpio_set_value  __gpio_set_value
-#define gpio_cansleep   __gpio_cansleep
-#define gpio_to_irq     __gpio_to_irq
+> What I'd suggest is moving asm-generic/gpio.h to linux/gpiolib.h, and
+> making asm-generic/gpio.h include that as a patch until stuff is fixed
+> for its new location.  That should result in a proper asm-generic/gpio.h
+> being:
 
-and nothing else.
+> Alternatively, instead of linux/gpiolib.h, put it in linux/gpio.h instead,
+> but that gets more icky because of the mess of asm/gpio.h includes (which
+> I've been banging on for years about in ARM patches and they're _still_
+> coming.)
 
-Alternatively, instead of linux/gpiolib.h, put it in linux/gpio.h instead,
-but that gets more icky because of the mess of asm/gpio.h includes (which
-I've been banging on for years about in ARM patches and they're _still_
-coming.)
+Yeah, though it is a bit neater if it's all in gpio.h and everyone is
+using gpiolib.  Perhaps something like the warnings I added on inclusion
+of asm/gpio.h without linux/gpio.h would help, though I certainly
+wouldn't expect it to solve anything.
+
+--PpAOPzA3dXsRhoo+
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPL7tpAAoJEBus8iNuMP3d12YQAJa6Z9EArDWj12yuaVLeGewd
+3nUgd+GTaayJJo+I47NOMHevebKyErQd/y68c3YWmVXZdOi0kKZCLEupFGh1jf5B
+V5EphiOXY06SsHqrQXy67US1Mpf4ms2MQozBkvCEkZoF2LkwdOoZj9TCutnwquQs
+UD7SkQ0QQaIRehc5Y4+XM7KseFcCmyvK/mqEnRGfE9xNIln2JeStF3yifdjXeOzj
++6cHi9pN5Tw25mVARelZZmx7vCA9rAoNC8tVNWet9GtOWNRiEVbBlGoNeukeMdUT
+iYgPCeX/IOYBivJiULQijvOMAG0FfNr3DmrAGVgeSGPRPRILX53RaqsVDXT74zme
+CFFuz3BhtGpE8WkjiLAPNd84I8IGsvKgQKX/KQhatUbxjf7HvfAauJ2YxFEpjNps
+5UDmO5MfgsEAZ0zZXPfi67/kXjuhkPJ4PzYiwIE9MvWjLlWdEhEqmrPYVVjRwge8
+nZR2P9oJRMj5k5pQ1gwe37fgabFwXe09JR1K4yKT5rpaiihiEX2HfU9I8Gm5kJGY
++TQv44fnozuKj+i6SSgiDK2ljrnlZMAO8XCSemKOHtSoi67Wx40QOzw87QBMGw6H
+p5MDrmcw6Z1J65uXiJJTzf+FSkVc99RogMEL8nhIROIVv91TxR17/m1QPRMiVzvM
+WyCUwqMjTqqMAqum/gOz
+=ZpPo
+-----END PGP SIGNATURE-----
+
+--PpAOPzA3dXsRhoo+--

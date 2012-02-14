@@ -1,206 +1,214 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Feb 2012 13:42:36 +0100 (CET)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:28895 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901163Ab2BMMma (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 13 Feb 2012 13:42:30 +0100
-MIME-version: 1.0
-Content-transfer-encoding: 7BIT
-Content-type: TEXT/PLAIN
-Received: from euspt1 ([210.118.77.14]) by mailout4.w1.samsung.com
- (Sun Java(tm) System Messaging Server 6.3-8.04 (built Jul 29 2009; 32bit))
- with ESMTP id <0LZC00IW40MNCY50@mailout4.w1.samsung.com> for
- linux-mips@linux-mips.org; Mon, 13 Feb 2012 12:42:23 +0000 (GMT)
-Received: from linux.samsung.com ([106.116.38.10])
- by spt1.w1.samsung.com (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14
- 2004)) with ESMTPA id <0LZC00DUY0MMLE@spt1.w1.samsung.com> for
- linux-mips@linux-mips.org; Mon, 13 Feb 2012 12:42:23 +0000 (GMT)
-Received: from mcdsrvbld02.digital.local (unknown [106.116.37.23])
-        by linux.samsung.com (Postfix) with ESMTP id 60FDC270054; Mon,
- 13 Feb 2012 13:59:58 +0100 (CET)
-Date:   Mon, 13 Feb 2012 13:41:55 +0100
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 03/14 v3] MIPS: adapt for dma_map_ops changes
-In-reply-to: <4F38E8E1.3070004@mvista.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2012 12:42:52 +0100 (CET)
+Received: from arkanian.console-pimps.org ([212.110.184.194]:36682 "EHLO
+        arkanian.console-pimps.org" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903621Ab2BNLmr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Feb 2012 12:42:47 +0100
+Received: by arkanian.console-pimps.org (Postfix, from userid 1002)
+        id D8C40C000D; Tue, 14 Feb 2012 11:42:44 +0000 (GMT)
+Received: from localhost (02dddf07.bb.sky.com [2.221.223.7])
+        by arkanian.console-pimps.org (Postfix) with ESMTPSA id D7982C000F;
+        Tue, 14 Feb 2012 11:42:43 +0000 (GMT)
+From:   Matt Fleming <matt@console-pimps.org>
+To:     linux-arch@vger.kernel.org
+Cc:     Oleg Nesterov <oleg@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
-        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
-        x86@kernel.org, linux-sh@vger.kernel.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@linux-mips.org, discuss@x86-64.org,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@samsung.com>
-Message-id: <1329136915-24824-1-git-send-email-m.szyprowski@samsung.com>
-X-Mailer: git-send-email 1.7.8.3
-References: <4F38E8E1.3070004@mvista.com>
-X-archive-position: 32422
+        linux-kernel@vger.kernel.org,
+        Matt Fleming <matt.fleming@intel.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        David Daney <ddaney@caviumnetworks.com>,
+        linux-mips@linux-mips.org
+Subject: [PATCH 19/40] MIPS: Use set_current_blocked() and block_sigmask()
+Date:   Tue, 14 Feb 2012 11:40:52 +0000
+Message-Id: <1329219673-28711-20-git-send-email-matt@console-pimps.org>
+X-Mailer: git-send-email 1.7.4.4
+In-Reply-To: <1329219673-28711-1-git-send-email-matt@console-pimps.org>
+References: <1329219673-28711-1-git-send-email-matt@console-pimps.org>
+X-archive-position: 32424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m.szyprowski@samsung.com
+X-original-sender: matt@console-pimps.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+From: Matt Fleming <matt.fleming@intel.com>
 
-Adapt core MIPS architecture code for dma_map_ops changes: replace
-alloc/free_coherent with generic alloc/free methods.
+As described in e6fa16ab ("signal: sigprocmask() should do
+retarget_shared_pending()") the modification of current->blocked is
+incorrect as we need to check whether the signal we're about to block
+is pending in the shared queue.
 
-Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
-[added missing changes to arch/mips/cavium-octeon/dma-octeon.c,
- fixed attrs argument in dma-mapping.h]
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+Also, use the new helper function introduced in commit 5e6292c0f28f
+("signal: add block_sigmask() for adding sigmask to current->blocked")
+which centralises the code for updating current->blocked after
+successfully delivering a signal and reduces the amount of duplicate
+code across architectures. In the past some architectures got this
+code wrong, so using this helper function should stop that from
+happening again.
+
+Cc: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: David Daney <ddaney@caviumnetworks.com>
+Cc: linux-mips@linux-mips.org
+Signed-off-by: Matt Fleming <matt.fleming@intel.com>
 ---
- arch/mips/cavium-octeon/dma-octeon.c |   16 ++++++++--------
- arch/mips/include/asm/dma-mapping.h  |   18 ++++++++++++------
- arch/mips/mm/dma-default.c           |    8 ++++----
- 3 files changed, 24 insertions(+), 18 deletions(-)
+ arch/mips/kernel/signal.c     |   27 +++++----------------------
+ arch/mips/kernel/signal32.c   |   20 ++++----------------
+ arch/mips/kernel/signal_n32.c |   10 ++--------
+ 3 files changed, 11 insertions(+), 46 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
-index b6bb92c..df70600 100644
---- a/arch/mips/cavium-octeon/dma-octeon.c
-+++ b/arch/mips/cavium-octeon/dma-octeon.c
-@@ -157,7 +157,7 @@ static void octeon_dma_sync_sg_for_device(struct device *dev,
- }
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index f852400..76084cc 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -256,11 +256,8 @@ asmlinkage int sys_sigsuspend(nabi_no_regargs struct pt_regs regs)
+ 		return -EFAULT;
+ 	sigdelsetmask(&newset, ~_BLOCKABLE);
  
- static void *octeon_dma_alloc_coherent(struct device *dev, size_t size,
--	dma_addr_t *dma_handle, gfp_t gfp)
-+	dma_addr_t *dma_handle, gfp_t gfp, struct dma_attrs *attrs)
- {
- 	void *ret;
+-	spin_lock_irq(&current->sighand->siglock);
+ 	current->saved_sigmask = current->blocked;
+-	current->blocked = newset;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&newset);
  
-@@ -184,7 +184,7 @@ static void *octeon_dma_alloc_coherent(struct device *dev, size_t size,
- 	/* Don't invoke OOM killer */
- 	gfp |= __GFP_NORETRY;
+ 	current->state = TASK_INTERRUPTIBLE;
+ 	schedule();
+@@ -285,11 +282,8 @@ asmlinkage int sys_rt_sigsuspend(nabi_no_regargs struct pt_regs regs)
+ 		return -EFAULT;
+ 	sigdelsetmask(&newset, ~_BLOCKABLE);
  
--	ret = swiotlb_alloc_coherent(dev, size, dma_handle, gfp);
-+	ret = swiotlb_alloc_coherent(dev, size, dma_handle, gfp, attrs);
+-	spin_lock_irq(&current->sighand->siglock);
+ 	current->saved_sigmask = current->blocked;
+-	current->blocked = newset;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&newset);
  
- 	mb();
+ 	current->state = TASK_INTERRUPTIBLE;
+ 	schedule();
+@@ -361,10 +355,7 @@ asmlinkage void sys_sigreturn(nabi_no_regargs struct pt_regs regs)
+ 		goto badframe;
  
-@@ -192,14 +192,14 @@ static void *octeon_dma_alloc_coherent(struct device *dev, size_t size,
- }
+ 	sigdelsetmask(&blocked, ~_BLOCKABLE);
+-	spin_lock_irq(&current->sighand->siglock);
+-	current->blocked = blocked;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&blocked);
  
- static void octeon_dma_free_coherent(struct device *dev, size_t size,
--	void *vaddr, dma_addr_t dma_handle)
-+	void *vaddr, dma_addr_t dma_handle, struct dma_attrs *attrs)
- {
- 	int order = get_order(size);
+ 	sig = restore_sigcontext(&regs, &frame->sf_sc);
+ 	if (sig < 0)
+@@ -400,10 +391,7 @@ asmlinkage void sys_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
+ 		goto badframe;
  
- 	if (dma_release_from_coherent(dev, order, vaddr))
- 		return;
+ 	sigdelsetmask(&set, ~_BLOCKABLE);
+-	spin_lock_irq(&current->sighand->siglock);
+-	current->blocked = set;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&set);
  
--	swiotlb_free_coherent(dev, size, vaddr, dma_handle);
-+	swiotlb_free_coherent(dev, size, vaddr, dma_handle, attrs);
- }
+ 	sig = restore_sigcontext(&regs, &frame->rs_uc.uc_mcontext);
+ 	if (sig < 0)
+@@ -579,12 +567,7 @@ static int handle_signal(unsigned long sig, siginfo_t *info,
+ 	if (ret)
+ 		return ret;
  
- static dma_addr_t octeon_unity_phys_to_dma(struct device *dev, phys_addr_t paddr)
-@@ -240,8 +240,8 @@ EXPORT_SYMBOL(dma_to_phys);
- 
- static struct octeon_dma_map_ops octeon_linear_dma_map_ops = {
- 	.dma_map_ops = {
--		.alloc_coherent = octeon_dma_alloc_coherent,
--		.free_coherent = octeon_dma_free_coherent,
-+		.alloc = octeon_dma_alloc_coherent,
-+		.free = octeon_dma_free_coherent,
- 		.map_page = octeon_dma_map_page,
- 		.unmap_page = swiotlb_unmap_page,
- 		.map_sg = octeon_dma_map_sg,
-@@ -325,8 +325,8 @@ void __init plat_swiotlb_setup(void)
- #ifdef CONFIG_PCI
- static struct octeon_dma_map_ops _octeon_pci_dma_map_ops = {
- 	.dma_map_ops = {
--		.alloc_coherent = octeon_dma_alloc_coherent,
--		.free_coherent = octeon_dma_free_coherent,
-+		.alloc = octeon_dma_alloc_coherent,
-+		.free = octeon_dma_free_coherent,
- 		.map_page = octeon_dma_map_page,
- 		.unmap_page = swiotlb_unmap_page,
- 		.map_sg = octeon_dma_map_sg,
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index 7aa37dd..be39a12 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -57,25 +57,31 @@ dma_set_mask(struct device *dev, u64 mask)
- extern void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- 	       enum dma_data_direction direction);
- 
--static inline void *dma_alloc_coherent(struct device *dev, size_t size,
--				       dma_addr_t *dma_handle, gfp_t gfp)
-+#define dma_alloc_coherent(d,s,h,f)	dma_alloc_attrs(d,s,h,f,NULL)
-+
-+static inline void *dma_alloc_attrs(struct device *dev, size_t size,
-+				    dma_addr_t *dma_handle, gfp_t gfp,
-+				    struct dma_attrs *attrs)
- {
- 	void *ret;
- 	struct dma_map_ops *ops = get_dma_ops(dev);
- 
--	ret = ops->alloc_coherent(dev, size, dma_handle, gfp);
-+	ret = ops->alloc(dev, size, dma_handle, gfp, attrs);
- 
- 	debug_dma_alloc_coherent(dev, size, *dma_handle, ret);
+-	spin_lock_irq(&current->sighand->siglock);
+-	sigorsets(&current->blocked, &current->blocked, &ka->sa.sa_mask);
+-	if (!(ka->sa.sa_flags & SA_NODEFER))
+-		sigaddset(&current->blocked, sig);
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	block_sigmask(ka, sig);
  
  	return ret;
  }
+diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
+index aae9866..902a889 100644
+--- a/arch/mips/kernel/signal32.c
++++ b/arch/mips/kernel/signal32.c
+@@ -290,11 +290,8 @@ asmlinkage int sys32_sigsuspend(nabi_no_regargs struct pt_regs regs)
+ 		return -EFAULT;
+ 	sigdelsetmask(&newset, ~_BLOCKABLE);
  
--static inline void dma_free_coherent(struct device *dev, size_t size,
--				     void *vaddr, dma_addr_t dma_handle)
-+#define dma_free_coherent(d,s,c,h) dma_free_attrs(d,s,c,h,NULL)
-+
-+static inline void dma_free_attrs(struct device *dev, size_t size,
-+				  void *vaddr, dma_addr_t dma_handle,
-+				  struct dma_attrs *attrs)
- {
- 	struct dma_map_ops *ops = get_dma_ops(dev);
+-	spin_lock_irq(&current->sighand->siglock);
+ 	current->saved_sigmask = current->blocked;
+-	current->blocked = newset;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&newset);
  
--	ops->free_coherent(dev, size, vaddr, dma_handle);
-+	ops->free(dev, size, vaddr, dma_handle, attrs);
+ 	current->state = TASK_INTERRUPTIBLE;
+ 	schedule();
+@@ -318,11 +315,8 @@ asmlinkage int sys32_rt_sigsuspend(nabi_no_regargs struct pt_regs regs)
+ 		return -EFAULT;
+ 	sigdelsetmask(&newset, ~_BLOCKABLE);
  
- 	debug_dma_free_coherent(dev, size, vaddr, dma_handle);
- }
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 4608491..3fab204 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -98,7 +98,7 @@ void *dma_alloc_noncoherent(struct device *dev, size_t size,
- EXPORT_SYMBOL(dma_alloc_noncoherent);
+-	spin_lock_irq(&current->sighand->siglock);
+ 	current->saved_sigmask = current->blocked;
+-	current->blocked = newset;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&newset);
  
- static void *mips_dma_alloc_coherent(struct device *dev, size_t size,
--	dma_addr_t * dma_handle, gfp_t gfp)
-+	dma_addr_t * dma_handle, gfp_t gfp, struct dma_attrs *attrs)
- {
- 	void *ret;
+ 	current->state = TASK_INTERRUPTIBLE;
+ 	schedule();
+@@ -488,10 +482,7 @@ asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
+ 		goto badframe;
  
-@@ -132,7 +132,7 @@ void dma_free_noncoherent(struct device *dev, size_t size, void *vaddr,
- EXPORT_SYMBOL(dma_free_noncoherent);
+ 	sigdelsetmask(&blocked, ~_BLOCKABLE);
+-	spin_lock_irq(&current->sighand->siglock);
+-	current->blocked = blocked;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&blocked);
  
- static void mips_dma_free_coherent(struct device *dev, size_t size, void *vaddr,
--	dma_addr_t dma_handle)
-+	dma_addr_t dma_handle, struct dma_attrs *attrs)
- {
- 	unsigned long addr = (unsigned long) vaddr;
- 	int order = get_order(size);
-@@ -323,8 +323,8 @@ void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
- EXPORT_SYMBOL(dma_cache_sync);
+ 	sig = restore_sigcontext32(&regs, &frame->sf_sc);
+ 	if (sig < 0)
+@@ -529,10 +520,7 @@ asmlinkage void sys32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
+ 		goto badframe;
  
- static struct dma_map_ops mips_default_dma_map_ops = {
--	.alloc_coherent = mips_dma_alloc_coherent,
--	.free_coherent = mips_dma_free_coherent,
-+	.alloc = mips_dma_alloc_coherent,
-+	.free = mips_dma_free_coherent,
- 	.map_page = mips_dma_map_page,
- 	.unmap_page = mips_dma_unmap_page,
- 	.map_sg = mips_dma_map_sg,
+ 	sigdelsetmask(&set, ~_BLOCKABLE);
+-	spin_lock_irq(&current->sighand->siglock);
+-	current->blocked = set;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&set);
+ 
+ 	sig = restore_sigcontext32(&regs, &frame->rs_uc.uc_mcontext);
+ 	if (sig < 0)
+diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
+index ee24d81..30fc7ff 100644
+--- a/arch/mips/kernel/signal_n32.c
++++ b/arch/mips/kernel/signal_n32.c
+@@ -94,11 +94,8 @@ asmlinkage int sysn32_rt_sigsuspend(nabi_no_regargs struct pt_regs regs)
+ 	sigset_from_compat(&newset, &uset);
+ 	sigdelsetmask(&newset, ~_BLOCKABLE);
+ 
+-	spin_lock_irq(&current->sighand->siglock);
+ 	current->saved_sigmask = current->blocked;
+-	current->blocked = newset;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&newset);
+ 
+ 	current->state = TASK_INTERRUPTIBLE;
+ 	schedule();
+@@ -122,10 +119,7 @@ asmlinkage void sysn32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
+ 		goto badframe;
+ 
+ 	sigdelsetmask(&set, ~_BLOCKABLE);
+-	spin_lock_irq(&current->sighand->siglock);
+-	current->blocked = set;
+-	recalc_sigpending();
+-	spin_unlock_irq(&current->sighand->siglock);
++	set_current_blocked(&set);
+ 
+ 	sig = restore_sigcontext(&regs, &frame->rs_uc.uc_mcontext);
+ 	if (sig < 0)
 -- 
-1.7.1.569.g6f426
+1.7.4.4

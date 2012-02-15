@@ -1,114 +1,210 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Feb 2012 23:53:03 +0100 (CET)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:58142 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903642Ab2BNWw4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 14 Feb 2012 23:52:56 +0100
-Received: by pbcun1 with SMTP id un1so1017264pbc.36
-        for <linux-mips@linux-mips.org>; Tue, 14 Feb 2012 14:52:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=gamma;
-        h=mime-version:from:to:cc:subject:date:message-id:x-mailer
-         :in-reply-to:references;
-        bh=G1uOMzHgzzP7ZeAyvXYF0gGf+HQmOoIOsfXAlX0EVpI=;
-        b=y8rVfgFMJ803msfIH96qh8JPSFAMFr1rbrxpWvullywNL2bM8yd92VHKIEjiMTKi/C
-         +0YwQDFfXaCWYnGqGrrnjWaZXmJVO+uXuc3OjN2jqV+1Zdmj8CN3bkq3sBea4rc8NxG2
-         M+9aw25Ejr0Tgbzaqiin8DoWQbr63wU5yueM4=
-MIME-Version: 1.0
-Received: by 10.68.231.201 with SMTP id ti9mr63646675pbc.73.1329259970617;
-        Tue, 14 Feb 2012 14:52:50 -0800 (PST)
-Received: by 10.68.231.201 with SMTP id ti9mr63646609pbc.73.1329259970460;
-        Tue, 14 Feb 2012 14:52:50 -0800 (PST)
-Received: from tippy.mtv.corp.google.com (tippy.mtv.corp.google.com [172.18.96.130])
-        by mx.google.com with ESMTPS id y9sm6426972pbi.3.2012.02.14.14.52.48
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 14 Feb 2012 14:52:49 -0800 (PST)
-From:   Venkatesh Pallipadi <venki@google.com>
-To:     Rusty Russell <rusty@rustcorp.com.au>
-Cc:     Tony Luck <tony.luck@gmail.com>,
-        "Srivatsa S. Bhat" <srivatsa.bhat@linux.vnet.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        KOSAKI Motohiro <kosaki.motohiro@gmail.com>,
-        KOSAKI Motohiro <kosaki.motohiro@jp.fujitsu.com>,
-        Mike Travis <travis@sgi.com>,
-        "Paul E. McKenney" <paul.mckenney@linaro.org>,
-        "Rafael J. Wysocki" <rjw@sisk.pl>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        linux-kernel@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
-        linux-hexagon@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org, Jeff Dike <jdike@addtoit.com>,
-        Richard Weinberger <richard@nod.at>,
-        user-mode-linux-devel@lists.sourceforge.net,
-        Venkatesh Pallipadi <venki@google.com>
-Subject: [PATCH 3/3] um: Avoid raw handling of cpu_online_map
-Date:   Tue, 14 Feb 2012 14:49:44 -0800
-Message-Id: <1329259784-20592-4-git-send-email-venki@google.com>
-X-Mailer: git-send-email 1.7.7.3
-In-Reply-To: <1329259784-20592-1-git-send-email-venki@google.com>
-References: <87wr7pbwbz.fsf@rustcorp.com.au>
- <1329259784-20592-1-git-send-email-venki@google.com>
-X-Gm-Message-State: ALoCoQkpJpCkjOUXzOq5LnZnamNu3ej5wSfHFgQSi6glhLrvZDc0yUVz3et2KHtUarlC6Eef6yvz5zYcOHzonfSqAwBKQ6giQA1BkXnzQk7AYy22T1f3Ek261a+MJ5CbrYep742/cB4uLSiSokeKQUHsKwpHr0EkAVTMTBWgED8HJnnNmkbn2X4=
-X-archive-position: 32428
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Feb 2012 06:00:24 +0100 (CET)
+Received: from ozlabs.org ([203.10.76.45]:59829 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903646Ab2BOFAQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 15 Feb 2012 06:00:16 +0100
+Received: by ozlabs.org (Postfix, from userid 1011)
+        id D5C081007D4; Wed, 15 Feb 2012 16:00:11 +1100 (EST)
+From:   Rusty Russell <rusty@rustcorp.com.au>
+CC:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        linux-ia64@vger.kernel.org
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+CC:     Chris Metcalf <cmetcalf@tilera.com>
+CC:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org
+To:     linux-kernel@vger.kernel.org
+Message-ID: <1329281884.8121.rusty@rustcorp.com.au>
+Date:   Wed, 15 Feb 2012 15:28:04 +1030
+Subject: [PATCH 11/12] documentation: remove references to cpu_*_map.
+X-archive-position: 32429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: venki@google.com
+X-original-sender: rusty@rustcorp.com.au
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Use init_cpu_online and set_cpu_online instead.
+From: Rusty Russell <rusty@rustcorp.com.au>
 
-Signed-off-by: Venkatesh Pallipadi <venki@google.com>
+This has been obsolescent for a while, fix documentation and
+misc comments.
+
+Signed-off-by: Rusty Russell <rusty@rustcorp.com.au>
 ---
- arch/um/kernel/skas/process.c |    2 +-
- arch/um/kernel/smp.c          |    8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ Documentation/cpu-hotplug.txt       |   22 +++++++++++-----------
+ arch/ia64/kernel/acpi.c             |    2 +-
+ arch/mips/cavium-octeon/smp.c       |    2 +-
+ arch/mips/pmc-sierra/yosemite/smp.c |    2 +-
+ arch/mips/sibyte/bcm1480/smp.c      |    2 +-
+ arch/tile/kernel/setup.c            |    2 +-
+ arch/x86/xen/enlighten.c            |    2 +-
+ init/Kconfig                        |    4 ++--
+ 8 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/arch/um/kernel/skas/process.c b/arch/um/kernel/skas/process.c
-index 2e9852c..5daa0f5 100644
---- a/arch/um/kernel/skas/process.c
-+++ b/arch/um/kernel/skas/process.c
-@@ -41,7 +41,7 @@ static int __init start_kernel_proc(void *unused)
- 	cpu_tasks[0].pid = pid;
- 	cpu_tasks[0].task = current;
- #ifdef CONFIG_SMP
--	cpu_online_map = cpumask_of_cpu(0);
-+	init_cpu_online(cpumask_of(0));
- #endif
- 	start_kernel();
- 	return 0;
-diff --git a/arch/um/kernel/smp.c b/arch/um/kernel/smp.c
-index 155206a..b5d2ca9 100644
---- a/arch/um/kernel/smp.c
-+++ b/arch/um/kernel/smp.c
-@@ -76,7 +76,7 @@ static int idle_proc(void *cpup)
- 		cpu_relax();
+diff --git a/Documentation/cpu-hotplug.txt b/Documentation/cpu-hotplug.txt
+--- a/Documentation/cpu-hotplug.txt
++++ b/Documentation/cpu-hotplug.txt
+@@ -47,7 +47,7 @@ maxcpus=n    Restrict boot time cpus to 
+              other cpus later online, read FAQ's for more info.
  
- 	notify_cpu_starting(cpu);
--	cpu_set(cpu, cpu_online_map);
-+	set_cpu_online(cpu, true);
- 	default_idle();
- 	return 0;
+ additional_cpus=n (*)	Use this to limit hotpluggable cpus. This option sets
+-  			cpu_possible_map = cpu_present_map + additional_cpus
++  			cpu_possible_mask = cpu_present_mask + additional_cpus
+ 
+ cede_offline={"off","on"}  Use this option to disable/enable putting offlined
+ 		            processors to an extended H_CEDE state on
+@@ -64,11 +64,11 @@ should only rely on this to count the # 
+ on the apicid values in those tables for disabled apics. In the event
+ BIOS doesn't mark such hot-pluggable cpus as disabled entries, one could
+ use this parameter "additional_cpus=x" to represent those cpus in the
+-cpu_possible_map.
++cpu_possible_mask.
+ 
+ possible_cpus=n		[s390,x86_64] use this to set hotpluggable cpus.
+ 			This option sets possible_cpus bits in
+-			cpu_possible_map. Thus keeping the numbers of bits set
++			cpu_possible_mask. Thus keeping the numbers of bits set
+ 			constant even if the machine gets rebooted.
+ 
+ CPU maps and such
+@@ -76,7 +76,7 @@ CPU maps and such
+ [More on cpumaps and primitive to manipulate, please check
+ include/linux/cpumask.h that has more descriptive text.]
+ 
+-cpu_possible_map: Bitmap of possible CPUs that can ever be available in the
++cpu_possible_mask: Bitmap of possible CPUs that can ever be available in the
+ system. This is used to allocate some boot time memory for per_cpu variables
+ that aren't designed to grow/shrink as CPUs are made available or removed.
+ Once set during boot time discovery phase, the map is static, i.e no bits
+@@ -84,13 +84,13 @@ are added or removed anytime.  Trimming 
+ upfront can save some boot time memory. See below for how we use heuristics
+ in x86_64 case to keep this under check.
+ 
+-cpu_online_map: Bitmap of all CPUs currently online. Its set in __cpu_up()
++cpu_online_mask: Bitmap of all CPUs currently online. Its set in __cpu_up()
+ after a cpu is available for kernel scheduling and ready to receive
+ interrupts from devices. Its cleared when a cpu is brought down using
+ __cpu_disable(), before which all OS services including interrupts are
+ migrated to another target CPU.
+ 
+-cpu_present_map: Bitmap of CPUs currently present in the system. Not all
++cpu_present_mask: Bitmap of CPUs currently present in the system. Not all
+ of them may be online. When physical hotplug is processed by the relevant
+ subsystem (e.g ACPI) can change and new bit either be added or removed
+ from the map depending on the event is hot-add/hot-remove. There are currently
+@@ -99,22 +99,22 @@ at which time hotplug is disabled.
+ 
+ You really dont need to manipulate any of the system cpu maps. They should
+ be read-only for most use. When setting up per-cpu resources almost always use
+-cpu_possible_map/for_each_possible_cpu() to iterate.
++cpu_possible_mask/for_each_possible_cpu() to iterate.
+ 
+ Never use anything other than cpumask_t to represent bitmap of CPUs.
+ 
+ 	#include <linux/cpumask.h>
+ 
+-	for_each_possible_cpu     - Iterate over cpu_possible_map
+-	for_each_online_cpu       - Iterate over cpu_online_map
+-	for_each_present_cpu      - Iterate over cpu_present_map
++	for_each_possible_cpu     - Iterate over cpu_possible_mask
++	for_each_online_cpu       - Iterate over cpu_online_mask
++	for_each_present_cpu      - Iterate over cpu_present_mask
+ 	for_each_cpu_mask(x,mask) - Iterate over some random collection of cpu mask.
+ 
+ 	#include <linux/cpu.h>
+ 	get_online_cpus() and put_online_cpus():
+ 
+ The above calls are used to inhibit cpu hotplug operations. While the
+-cpu_hotplug.refcount is non zero, the cpu_online_map will not change.
++cpu_hotplug.refcount is non zero, the cpu_online_mask will not change.
+ If you merely need to avoid cpus going away, you could also use
+ preempt_disable() and preempt_enable() for those sections.
+ Just remember the critical section cannot call any
+diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
+--- a/arch/ia64/kernel/acpi.c
++++ b/arch/ia64/kernel/acpi.c
+@@ -840,7 +840,7 @@ static __init int setup_additional_cpus(
+ early_param("additional_cpus", setup_additional_cpus);
+ 
+ /*
+- * cpu_possible_map should be static, it cannot change as CPUs
++ * cpu_possible_mask should be static, it cannot change as CPUs
+  * are onlined, or offlined. The reason is per-cpu data-structures
+  * are allocated by some modules at init time, and dont expect to
+  * do this dynamically on cpu arrival/departure.
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -78,7 +78,7 @@ static inline void octeon_send_ipi_mask(
  }
-@@ -110,8 +110,8 @@ void smp_prepare_cpus(unsigned int maxcpus)
- 	for (i = 0; i < ncpus; ++i)
- 		set_cpu_possible(i, true);
  
--	cpu_clear(me, cpu_online_map);
--	cpu_set(me, cpu_online_map);
-+	set_cpu_online(me, false);
-+	set_cpu_online(me, true);
- 	cpu_set(me, cpu_callin_map);
- 
- 	err = os_pipe(cpu_data[me].ipi_pipe, 1, 1);
-@@ -138,7 +138,7 @@ void smp_prepare_cpus(unsigned int maxcpus)
- 
- void smp_prepare_boot_cpu(void)
+ /**
+- * Detect available CPUs, populate cpu_possible_map
++ * Detect available CPUs, populate cpu_possible_mask
+  */
+ static void octeon_smp_hotplug_setup(void)
  {
--	cpu_set(smp_processor_id(), cpu_online_map);
-+	set_cpu_online(smp_processor_id(), true);
+diff --git a/arch/mips/pmc-sierra/yosemite/smp.c b/arch/mips/pmc-sierra/yosemite/smp.c
+--- a/arch/mips/pmc-sierra/yosemite/smp.c
++++ b/arch/mips/pmc-sierra/yosemite/smp.c
+@@ -146,7 +146,7 @@ static void __cpuinit yos_boot_secondary
  }
  
- int __cpu_up(unsigned int cpu)
--- 
-1.7.7.3
+ /*
+- * Detect available CPUs, populate cpu_possible_map before smp_init
++ * Detect available CPUs, populate cpu_possible_mask before smp_init
+  *
+  * We don't want to start the secondary CPU yet nor do we have a nice probing
+  * feature in PMON so we just assume presence of the secondary core.
+diff --git a/arch/mips/sibyte/bcm1480/smp.c b/arch/mips/sibyte/bcm1480/smp.c
+--- a/arch/mips/sibyte/bcm1480/smp.c
++++ b/arch/mips/sibyte/bcm1480/smp.c
+@@ -138,7 +138,7 @@ static void __cpuinit bcm1480_boot_secon
+ 
+ /*
+  * Use CFE to find out how many CPUs are available, setting up
+- * cpu_possible_map and the logical/physical mappings.
++ * cpu_possible_mask and the logical/physical mappings.
+  * XXXKW will the boot CPU ever not be physical 0?
+  *
+  * Common setup before any secondaries are started
+diff --git a/arch/tile/kernel/setup.c b/arch/tile/kernel/setup.c
+--- a/arch/tile/kernel/setup.c
++++ b/arch/tile/kernel/setup.c
+@@ -1100,7 +1100,7 @@ EXPORT_SYMBOL(hash_for_home_map);
+ 
+ /*
+  * cpu_cacheable_map lists all the cpus whose caches the hypervisor can
+- * flush on our behalf.  It is set to cpu_possible_map OR'ed with
++ * flush on our behalf.  It is set to cpu_possible_mask OR'ed with
+  * hash_for_home_map, and it is what should be passed to
+  * hv_flush_remote() to flush all caches.  Note that if there are
+  * dedicated hypervisor driver tiles that have authorized use of their
+diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -876,7 +876,7 @@ void xen_setup_shared_info(void)
+ 	xen_setup_mfn_list_list();
+ }
+ 
+-/* This is called once we have the cpu_possible_map */
++/* This is called once we have the cpu_possible_mask */
+ void xen_setup_vcpu_info_placement(void)
+ {
+ 	int cpu;
+diff --git a/init/Kconfig b/init/Kconfig
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1423,8 +1423,8 @@ endif # MODULES
+ config INIT_ALL_POSSIBLE
+ 	bool
+ 	help
+-	  Back when each arch used to define their own cpu_online_map and
+-	  cpu_possible_map, some of them chose to initialize cpu_possible_map
++	  Back when each arch used to define their own cpu_online_mask and
++	  cpu_possible_mask, some of them chose to initialize cpu_possible_mask
+ 	  with all 1s, and others with all 0s.  When they were centralised,
+ 	  it was better to provide this option than to break all the archs
+ 	  and have several arch maintainers pursuing me down dark alleys.

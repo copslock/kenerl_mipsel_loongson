@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2012 11:40:41 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:36979 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2012 11:41:04 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:36982 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903723Ab2BQKeH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1901169Ab2BQKeH (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Fri, 17 Feb 2012 11:34:07 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 2/3] MIPS: lantiq: add vr9 support
-Date:   Fri, 17 Feb 2012 11:33:51 +0100
-Message-Id: <1329474832-21095-2-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 3/3] MIPS: lantiq: make use of module_platform_driver()
+Date:   Fri, 17 Feb 2012 11:33:52 +0100
+Message-Id: <1329474832-21095-3-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1329474832-21095-1-git-send-email-blogic@openwrt.org>
 References: <1329474832-21095-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32455
+X-archive-position: 32456
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,64 +21,125 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-VR9 is a VDSL SoC made by Lantiq. It is very similar to the AR9.
-This patch adds the clkdev init code and SoC detection for the VR9.
+Reduce boilerplate code.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    1 +
- arch/mips/lantiq/xway/prom.c                       |    5 +++++
- arch/mips/lantiq/xway/sysctrl.c                    |   10 ++++++++++
- 3 files changed, 16 insertions(+), 0 deletions(-)
+ drivers/mtd/maps/lantiq-flash.c    |   20 ++------------------
+ drivers/net/ethernet/lantiq_etop.c |   20 ++------------------
+ drivers/watchdog/lantiq_wdt.c      |   17 ++---------------
+ 3 files changed, 6 insertions(+), 51 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index 6dfb65e..8e0fa6c 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -21,6 +21,7 @@
- #define SOC_ID_ARX188		0x16C
- #define SOC_ID_ARX168		0x16D
- #define SOC_ID_ARX182		0x16F
-+#define SOC_ID_VRX288           0x1C0
+diff --git a/drivers/mtd/maps/lantiq-flash.c b/drivers/mtd/maps/lantiq-flash.c
+index 7b889de..e22436d 100644
+--- a/drivers/mtd/maps/lantiq-flash.c
++++ b/drivers/mtd/maps/lantiq-flash.c
+@@ -203,6 +203,7 @@ ltq_mtd_remove(struct platform_device *pdev)
+ }
  
- /* SoC Types */
- #define SOC_TYPE_DANUBE		0x01
-diff --git a/arch/mips/lantiq/xway/prom.c b/arch/mips/lantiq/xway/prom.c
-index 0929acb..53b627c 100644
---- a/arch/mips/lantiq/xway/prom.c
-+++ b/arch/mips/lantiq/xway/prom.c
-@@ -60,6 +60,11 @@ void __init ltq_soc_detect(struct ltq_soc_info *i)
- #endif
- 		break;
+ static struct platform_driver ltq_mtd_driver = {
++	.probe = ltq_mtd_probe,
+ 	.remove = __devexit_p(ltq_mtd_remove),
+ 	.driver = {
+ 		.name = "ltq_nor",
+@@ -210,24 +211,7 @@ static struct platform_driver ltq_mtd_driver = {
+ 	},
+ };
  
-+	case SOC_ID_VRX288:
-+		i->name = SOC_VR9;
-+		i->type = SOC_TYPE_VR9;
-+		break;
-+
- 	default:
- 		unreachable();
- 		break;
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 879c89a..18bff5a 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -152,6 +152,16 @@ void __init ltq_soc_init(void)
- 		clkdev_add_static("io", CLOCK_133M);
- 		clkdev_add_cgu("ephycgu", CGU_EPHY),
- 		clkdev_add_pmu("fpi", "ephy", 0, PMU_EPHY);
-+	} else if (ltq_is_vr9()) {
-+		clkdev_add_static("cpu", ltq_vr9_cpu_hz());
-+		clkdev_add_static("fpi", ltq_vr9_fpi_hz());
-+		clkdev_add_static("io", ltq_vr9_io_region_clock());
-+		clkdev_add_pmu("pcie-phy", NULL, 1, PMU1_PCIE_PHY);
-+		clkdev_add_pmu("pcie-bus", NULL, 0, PMU_PCIE_CLK);
-+		clkdev_add_pmu("pcie-msi", NULL, 1, PMU1_PCIE_MSI);
-+		clkdev_add_pmu("pcie-pdi", NULL, 1, PMU1_PCIE_PDI);
-+		clkdev_add_pmu("pcie-ctl", NULL, 1, PMU1_PCIE_CTL);
-+		clkdev_add_pmu("ahb", NULL, 0, PMU_AHBM | PMU_AHBS);
- 	} else {
- 		clkdev_add_static("cpu", ltq_danube_cpu_hz());
- 		clkdev_add_static("fpi", ltq_danube_fpi_hz());
+-static int __init
+-init_ltq_mtd(void)
+-{
+-	int ret = platform_driver_probe(&ltq_mtd_driver, ltq_mtd_probe);
+-
+-	if (ret)
+-		pr_err("ltq_nor: error registering platform driver");
+-	return ret;
+-}
+-
+-static void __exit
+-exit_ltq_mtd(void)
+-{
+-	platform_driver_unregister(&ltq_mtd_driver);
+-}
+-
+-module_init(init_ltq_mtd);
+-module_exit(exit_ltq_mtd);
++module_platform_driver(ltq_mtd_driver);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index fa2580b..4cfc314 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -943,6 +943,7 @@ ltq_etop_remove(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver ltq_mii_driver = {
++	.probe = ltq_etop_probe,
+ 	.remove = __devexit_p(ltq_etop_remove),
+ 	.driver = {
+ 		.name = "ltq_etop",
+@@ -950,24 +951,7 @@ static struct platform_driver ltq_mii_driver = {
+ 	},
+ };
+ 
+-int __init
+-init_ltq_etop(void)
+-{
+-	int ret = platform_driver_probe(&ltq_mii_driver, ltq_etop_probe);
+-
+-	if (ret)
+-		pr_err("ltq_etop: Error registering platfom driver!");
+-	return ret;
+-}
+-
+-static void __exit
+-exit_ltq_etop(void)
+-{
+-	platform_driver_unregister(&ltq_mii_driver);
+-}
+-
+-module_init(init_ltq_etop);
+-module_exit(exit_ltq_etop);
++module_platform_driver(ltq_mii_driver);
+ 
+ MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
+ MODULE_DESCRIPTION("Lantiq SoC ETOP");
+diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+index 05646b8..572ac60 100644
+--- a/drivers/watchdog/lantiq_wdt.c
++++ b/drivers/watchdog/lantiq_wdt.c
+@@ -227,6 +227,7 @@ ltq_wdt_remove(struct platform_device *pdev)
+ 
+ 
+ static struct platform_driver ltq_wdt_driver = {
++	.probe = ltq_wdt_probe,
+ 	.remove = __devexit_p(ltq_wdt_remove),
+ 	.driver = {
+ 		.name = "ltq_wdt",
+@@ -234,21 +235,7 @@ static struct platform_driver ltq_wdt_driver = {
+ 	},
+ };
+ 
+-static int __init
+-init_ltq_wdt(void)
+-{
+-	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
+-}
+-
+-static void __exit
+-exit_ltq_wdt(void)
+-{
+-	return platform_driver_unregister(&ltq_wdt_driver);
+-}
+-
+-module_init(init_ltq_wdt);
+-module_exit(exit_ltq_wdt);
+-
++module_platform_driver(ltq_wdt_driver);
+ module_param(nowayout, int, 0);
+ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started");
+ 
 -- 
 1.7.7.1

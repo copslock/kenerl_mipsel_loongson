@@ -1,18 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2012 11:35:47 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:36893 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Feb 2012 11:36:10 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:36925 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903688Ab2BQKdU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 17 Feb 2012 11:33:20 +0100
+        id S1903693Ab2BQKdg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 17 Feb 2012 11:33:36 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH 6/6] MIPS: lantiq: convert gpio_stp to managed gpio
-Date:   Fri, 17 Feb 2012 11:32:51 +0100
-Message-Id: <1329474771-20874-7-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 0/9] MIPS: lantiq: convert to clkdev api
+Date:   Fri, 17 Feb 2012 11:33:11 +0100
+Message-Id: <1329474800-20979-1-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
-In-Reply-To: <1329474771-20874-1-git-send-email-blogic@openwrt.org>
-References: <1329474771-20874-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32443
+X-archive-position: 32444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,44 +19,51 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-ltq_gpio_request() now uses devres to manage the gpios. We need to pass a
-struct device pointer to make it work.
+arch/mips/lantiq/* used its own functions to handle some clocks and the clock
+gating. This series changes the code to use clkdev api instead.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
- arch/mips/lantiq/xway/gpio_stp.c |   13 ++++++++-----
- 1 files changed, 8 insertions(+), 5 deletions(-)
+This change also allows us to merge the clock code for all xway socs into a
+single file.
 
-diff --git a/arch/mips/lantiq/xway/gpio_stp.c b/arch/mips/lantiq/xway/gpio_stp.c
-index cb6f170..e6b4809 100644
---- a/arch/mips/lantiq/xway/gpio_stp.c
-+++ b/arch/mips/lantiq/xway/gpio_stp.c
-@@ -80,11 +80,6 @@ static struct gpio_chip ltq_stp_chip = {
- 
- static int ltq_stp_hw_init(void)
- {
--	/* the 3 pins used to control the external stp */
--	ltq_gpio_request(4, 2, 1, "stp-st");
--	ltq_gpio_request(5, 2, 1, "stp-d");
--	ltq_gpio_request(6, 2, 1, "stp-sh");
--
- 	/* sane defaults */
- 	ltq_stp_w32(0, LTQ_STP_AR);
- 	ltq_stp_w32(0, LTQ_STP_CPU0);
-@@ -133,6 +128,14 @@ static int __devinit ltq_stp_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "failed to remap STP memory\n");
- 		return -ENOMEM;
- 	}
-+
-+	/* the 3 pins used to control the external stp */
-+	if (ltq_gpio_request(&pdev->dev, 4, 2, 1, "stp-st") ||
-+			ltq_gpio_request(&pdev->dev, 5, 2, 1, "stp-d") ||
-+			ltq_gpio_request(&pdev->dev, 6, 2, 1, "stp-sh")) {
-+		dev_err(&pdev->dev, "failed to request needed gpios\n");
-+		return -EBUSY;
-+	}
- 	ret = gpiochip_add(&ltq_stp_chip);
- 	if (!ret)
- 		ret = ltq_stp_hw_init();
+
+John Crispin (9):
+  MIPS: add clkdev.h
+  MIPS: lantiq: convert to clkdev api
+  MIPS: lantiq: convert xway to clkdev api
+  MIPS: lantiq: convert falcon to clkdev api
+  MIPS: lantiq: convert dma driver to clkdev api
+  MIPS: lantiq: convert gpio_stp driver to clkdev api
+  SERIAL: MIPS: lantiq: convert serial driver to clkdev api
+  NET: MIPS: lantiq: convert etop driver to clkdev api
+  WDT: MIPS: lantiq: convert watchdog driver to clkdev api
+
+ arch/mips/Kconfig                                  |    3 +-
+ arch/mips/include/asm/clkdev.h                     |   25 ++
+ .../include/asm/mach-lantiq/falcon/lantiq_soc.h    |    8 +-
+ arch/mips/include/asm/mach-lantiq/lantiq.h         |   17 +-
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   13 -
+ arch/mips/lantiq/clk.c                             |   85 +++----
+ arch/mips/lantiq/clk.h                             |   59 ++++-
+ arch/mips/lantiq/falcon/Makefile                   |    2 +-
+ arch/mips/lantiq/falcon/clk.c                      |   44 ----
+ arch/mips/lantiq/falcon/sysctrl.c                  |  131 ++++++----
+ arch/mips/lantiq/prom.c                            |    1 -
+ arch/mips/lantiq/xway/Makefile                     |    6 +-
+ arch/mips/lantiq/xway/clk-ase.c                    |   48 ----
+ arch/mips/lantiq/xway/clk-xway.c                   |  223 ----------------
+ arch/mips/lantiq/xway/clk.c                        |  266 ++++++++++++++++++++
+ arch/mips/lantiq/xway/dma.c                        |    5 +-
+ arch/mips/lantiq/xway/gpio_stp.c                   |    6 +-
+ arch/mips/lantiq/xway/sysctrl.c                    |  106 +++++++-
+ drivers/net/ethernet/lantiq_etop.c                 |   27 ++-
+ drivers/tty/serial/lantiq.c                        |    2 +-
+ drivers/watchdog/lantiq_wdt.c                      |    2 +-
+ 21 files changed, 603 insertions(+), 476 deletions(-)
+ create mode 100644 arch/mips/include/asm/clkdev.h
+ delete mode 100644 arch/mips/lantiq/falcon/clk.c
+ delete mode 100644 arch/mips/lantiq/xway/clk-ase.c
+ delete mode 100644 arch/mips/lantiq/xway/clk-xway.c
+ create mode 100644 arch/mips/lantiq/xway/clk.c
+
 -- 
 1.7.7.1

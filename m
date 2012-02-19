@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2012 19:33:50 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:35796 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2012 19:34:22 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:35808 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903561Ab2BSSdP (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2012 19:33:15 +0100
+        with ESMTP id S1903562Ab2BSSdQ (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2012 19:33:16 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 09D378F61;
+        by hauke-m.de (Postfix) with ESMTP id DBD728F62;
         Sun, 19 Feb 2012 19:33:15 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cPLHWNryp4eP; Sun, 19 Feb 2012 19:33:00 +0100 (CET)
+        with ESMTP id i26xLR3f+F0t; Sun, 19 Feb 2012 19:33:02 +0100 (CET)
 Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 4CB078F62;
+        by hauke-m.de (Postfix) with ESMTPSA id B13108F63;
         Sun, 19 Feb 2012 19:32:47 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linville@tuxdriver.com
 Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
         linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         arend@broadcom.com, m@bues.ch, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 02/11] ssb: remove 5GHz antenna gain from sprom
-Date:   Sun, 19 Feb 2012 19:32:16 +0100
-Message-Id: <1329676345-15856-3-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 03/11] ssb: fix per path sprom vars
+Date:   Sun, 19 Feb 2012 19:32:17 +0100
+Message-Id: <1329676345-15856-4-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <1329676345-15856-1-git-send-email-hauke@hauke-m.de>
 References: <1329676345-15856-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 32471
+X-archive-position: 32472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,168 +33,27 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-There is no 2.4 GHz or 5GHz antenna gain stored in sprom. The sprom
-just stores the gain values for antenna 1 and 2 or 1 to 4 for more
-recent sprom versions. On old devices antenna 2 was used for 5 GHz wifi.
+On sprom version 4 and 5 there are 4 values for pa_2g, pa_5gl, pa_5g
+and pa_5gh, for sprom version 8 and 9 there are only 3. Make the per
+path sprom store also work for older sprom versions.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/net/wireless/b43legacy/phy.c |    2 +-
- drivers/ssb/pci.c                    |   40 ++++++++++++----------------------
- drivers/ssb/pcmcia.c                 |   12 +++------
- drivers/ssb/sdio.c                   |   12 +++------
- include/linux/ssb/ssb.h              |    7 +-----
- 5 files changed, 24 insertions(+), 49 deletions(-)
+ include/linux/ssb/ssb.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/b43legacy/phy.c b/drivers/net/wireless/b43legacy/phy.c
-index 96faaef..9503341 100644
---- a/drivers/net/wireless/b43legacy/phy.c
-+++ b/drivers/net/wireless/b43legacy/phy.c
-@@ -1860,7 +1860,7 @@ void b43legacy_phy_xmitpower(struct b43legacy_wldev *dev)
- 	 * which accounts for the factor of 4 */
- #define REG_MAX_PWR 20
- 	max_pwr = min(REG_MAX_PWR * 4
--		      - dev->dev->bus->sprom.antenna_gain.ghz24.a0
-+		      - dev->dev->bus->sprom.antenna_gain.a0
- 		      - 0x6, max_pwr);
- 
- 	/* find the desired power in Q5.2 - power_level is in dBm
-diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
-index befa89e..9d8e39d 100644
---- a/drivers/ssb/pci.c
-+++ b/drivers/ssb/pci.c
-@@ -390,20 +390,12 @@ static void sprom_extract_r123(struct ssb_sprom *out, const u16 *in)
- 		SPEX(boardflags_hi, SSB_SPROM2_BFLHI, 0xFFFF, 0);
- 
- 	/* Extract the antenna gain values. */
--	gain = r123_extract_antgain(out->revision, in,
--				    SSB_SPROM1_AGAIN_BG,
--				    SSB_SPROM1_AGAIN_BG_SHIFT);
--	out->antenna_gain.ghz24.a0 = gain;
--	out->antenna_gain.ghz24.a1 = gain;
--	out->antenna_gain.ghz24.a2 = gain;
--	out->antenna_gain.ghz24.a3 = gain;
--	gain = r123_extract_antgain(out->revision, in,
--				    SSB_SPROM1_AGAIN_A,
--				    SSB_SPROM1_AGAIN_A_SHIFT);
--	out->antenna_gain.ghz5.a0 = gain;
--	out->antenna_gain.ghz5.a1 = gain;
--	out->antenna_gain.ghz5.a2 = gain;
--	out->antenna_gain.ghz5.a3 = gain;
-+	out->antenna_gain.a0 = r123_extract_antgain(out->revision, in,
-+						    SSB_SPROM1_AGAIN_BG,
-+						    SSB_SPROM1_AGAIN_BG_SHIFT);
-+	out->antenna_gain.a1 = r123_extract_antgain(out->revision, in,
-+						    SSB_SPROM1_AGAIN_A,
-+						    SSB_SPROM1_AGAIN_A_SHIFT);
- }
- 
- /* Revs 4 5 and 8 have partially shared layout */
-@@ -504,16 +496,14 @@ static void sprom_extract_r45(struct ssb_sprom *out, const u16 *in)
- 	}
- 
- 	/* Extract the antenna gain values. */
--	SPEX(antenna_gain.ghz24.a0, SSB_SPROM4_AGAIN01,
-+	SPEX(antenna_gain.a0, SSB_SPROM4_AGAIN01,
- 	     SSB_SPROM4_AGAIN0, SSB_SPROM4_AGAIN0_SHIFT);
--	SPEX(antenna_gain.ghz24.a1, SSB_SPROM4_AGAIN01,
-+	SPEX(antenna_gain.a1, SSB_SPROM4_AGAIN01,
- 	     SSB_SPROM4_AGAIN1, SSB_SPROM4_AGAIN1_SHIFT);
--	SPEX(antenna_gain.ghz24.a2, SSB_SPROM4_AGAIN23,
-+	SPEX(antenna_gain.a2, SSB_SPROM4_AGAIN23,
- 	     SSB_SPROM4_AGAIN2, SSB_SPROM4_AGAIN2_SHIFT);
--	SPEX(antenna_gain.ghz24.a3, SSB_SPROM4_AGAIN23,
-+	SPEX(antenna_gain.a3, SSB_SPROM4_AGAIN23,
- 	     SSB_SPROM4_AGAIN3, SSB_SPROM4_AGAIN3_SHIFT);
--	memcpy(&out->antenna_gain.ghz5, &out->antenna_gain.ghz24,
--	       sizeof(out->antenna_gain.ghz5));
- 
- 	sprom_extract_r458(out, in);
- 
-@@ -602,16 +592,14 @@ static void sprom_extract_r8(struct ssb_sprom *out, const u16 *in)
- 	SPEX32(ofdm5ghpo, SSB_SPROM8_OFDM5GHPO, 0xFFFFFFFF, 0);
- 
- 	/* Extract the antenna gain values. */
--	SPEX(antenna_gain.ghz24.a0, SSB_SPROM8_AGAIN01,
-+	SPEX(antenna_gain.a0, SSB_SPROM8_AGAIN01,
- 	     SSB_SPROM8_AGAIN0, SSB_SPROM8_AGAIN0_SHIFT);
--	SPEX(antenna_gain.ghz24.a1, SSB_SPROM8_AGAIN01,
-+	SPEX(antenna_gain.a1, SSB_SPROM8_AGAIN01,
- 	     SSB_SPROM8_AGAIN1, SSB_SPROM8_AGAIN1_SHIFT);
--	SPEX(antenna_gain.ghz24.a2, SSB_SPROM8_AGAIN23,
-+	SPEX(antenna_gain.a2, SSB_SPROM8_AGAIN23,
- 	     SSB_SPROM8_AGAIN2, SSB_SPROM8_AGAIN2_SHIFT);
--	SPEX(antenna_gain.ghz24.a3, SSB_SPROM8_AGAIN23,
-+	SPEX(antenna_gain.a3, SSB_SPROM8_AGAIN23,
- 	     SSB_SPROM8_AGAIN3, SSB_SPROM8_AGAIN3_SHIFT);
--	memcpy(&out->antenna_gain.ghz5, &out->antenna_gain.ghz24,
--	       sizeof(out->antenna_gain.ghz5));
- 
- 	/* Extract cores power info info */
- 	for (i = 0; i < ARRAY_SIZE(pwr_info_offset); i++) {
-diff --git a/drivers/ssb/pcmcia.c b/drivers/ssb/pcmcia.c
-index c821c6b..fbafed5 100644
---- a/drivers/ssb/pcmcia.c
-+++ b/drivers/ssb/pcmcia.c
-@@ -676,14 +676,10 @@ static int ssb_pcmcia_do_get_invariants(struct pcmcia_device *p_dev,
- 	case SSB_PCMCIA_CIS_ANTGAIN:
- 		GOTO_ERROR_ON(tuple->TupleDataLen != 2,
- 			"antg tpl size");
--		sprom->antenna_gain.ghz24.a0 = tuple->TupleData[1];
--		sprom->antenna_gain.ghz24.a1 = tuple->TupleData[1];
--		sprom->antenna_gain.ghz24.a2 = tuple->TupleData[1];
--		sprom->antenna_gain.ghz24.a3 = tuple->TupleData[1];
--		sprom->antenna_gain.ghz5.a0 = tuple->TupleData[1];
--		sprom->antenna_gain.ghz5.a1 = tuple->TupleData[1];
--		sprom->antenna_gain.ghz5.a2 = tuple->TupleData[1];
--		sprom->antenna_gain.ghz5.a3 = tuple->TupleData[1];
-+		sprom->antenna_gain.a0 = tuple->TupleData[1];
-+		sprom->antenna_gain.a1 = tuple->TupleData[1];
-+		sprom->antenna_gain.a2 = tuple->TupleData[1];
-+		sprom->antenna_gain.a3 = tuple->TupleData[1];
- 		break;
- 	case SSB_PCMCIA_CIS_BFLAGS:
- 		GOTO_ERROR_ON((tuple->TupleDataLen != 3) &&
-diff --git a/drivers/ssb/sdio.c b/drivers/ssb/sdio.c
-index 63fd709..b2d36f7 100644
---- a/drivers/ssb/sdio.c
-+++ b/drivers/ssb/sdio.c
-@@ -551,14 +551,10 @@ int ssb_sdio_get_invariants(struct ssb_bus *bus,
- 			case SSB_SDIO_CIS_ANTGAIN:
- 				GOTO_ERROR_ON(tuple->size != 2,
- 					      "antg tpl size");
--				sprom->antenna_gain.ghz24.a0 = tuple->data[1];
--				sprom->antenna_gain.ghz24.a1 = tuple->data[1];
--				sprom->antenna_gain.ghz24.a2 = tuple->data[1];
--				sprom->antenna_gain.ghz24.a3 = tuple->data[1];
--				sprom->antenna_gain.ghz5.a0 = tuple->data[1];
--				sprom->antenna_gain.ghz5.a1 = tuple->data[1];
--				sprom->antenna_gain.ghz5.a2 = tuple->data[1];
--				sprom->antenna_gain.ghz5.a3 = tuple->data[1];
-+				sprom->antenna_gain.a0 = tuple->data[1];
-+				sprom->antenna_gain.a1 = tuple->data[1];
-+				sprom->antenna_gain.a2 = tuple->data[1];
-+				sprom->antenna_gain.a3 = tuple->data[1];
- 				break;
- 			case SSB_SDIO_CIS_BFLAGS:
- 				GOTO_ERROR_ON((tuple->size != 3) &&
 diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
-index f169621..1de5675 100644
+index 1de5675..4928419 100644
 --- a/include/linux/ssb/ssb.h
 +++ b/include/linux/ssb/ssb.h
-@@ -94,12 +94,7 @@ struct ssb_sprom {
- 	 * on each band. Values in dBm/4 (Q5.2). Negative gain means the
- 	 * loss in the connectors is bigger than the gain. */
- 	struct {
--		struct {
--			s8 a0, a1, a2, a3;
--		} ghz24;	/* 2.4GHz band */
--		struct {
--			s8 a0, a1, a2, a3;
--		} ghz5;		/* 5GHz band */
-+		s8 a0, a1, a2, a3;
- 	} antenna_gain;
+@@ -19,7 +19,7 @@ struct ssb_driver;
+ struct ssb_sprom_core_pwr_info {
+ 	u8 itssi_2g, itssi_5g;
+ 	u8 maxpwr_2g, maxpwr_5gl, maxpwr_5g, maxpwr_5gh;
+-	u16 pa_2g[3], pa_5gl[3], pa_5g[3], pa_5gh[3];
++	u16 pa_2g[4], pa_5gl[4], pa_5g[4], pa_5gh[4];
+ };
  
- 	struct {
+ struct ssb_sprom {
 -- 
 1.7.5.4

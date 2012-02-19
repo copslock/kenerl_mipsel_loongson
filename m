@@ -1,88 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Feb 2012 18:06:04 +0100 (CET)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:55011 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901351Ab2BRRGA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 18 Feb 2012 18:06:00 +0100
-Received: by pbcun1 with SMTP id un1so5694934pbc.36
-        for <linux-mips@linux-mips.org>; Sat, 18 Feb 2012 09:05:54 -0800 (PST)
-Received-SPF: pass (google.com: domain of david.s.daney@gmail.com designates 10.68.195.73 as permitted sender) client-ip=10.68.195.73;
-Authentication-Results: mr.google.com; spf=pass (google.com: domain of david.s.daney@gmail.com designates 10.68.195.73 as permitted sender) smtp.mail=david.s.daney@gmail.com; dkim=pass header.i=david.s.daney@gmail.com
-Received: from mr.google.com ([10.68.195.73])
-        by 10.68.195.73 with SMTP id ic9mr43382716pbc.72.1329584754020 (num_hops = 1);
-        Sat, 18 Feb 2012 09:05:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=ofjvcW+huBFnj4YUG9kHeehWp+pd/TGS3sKdPTgy0Wk=;
-        b=UAh1tx8YOKYypGYY/wdBezVVbG1fdYpvuVYjdlObAQPeBuNEb5yYl06Gc2IG2VGt3f
-         ONBC0/xnTfCv5Thl+asNdV4xyH9awb91SSRnVFm1OsXwrZxZOP2GabS1aQ7CgXe92b75
-         DnF+VzclYkSDlUv1rDiZEYRiNBSKsM9GBQBAE=
-Received: by 10.68.195.73 with SMTP id ic9mr35456479pbc.72.1329584753984;
-        Sat, 18 Feb 2012 09:05:53 -0800 (PST)
-Received: from dd_xps.caveonetworks.com (ppp-67-124-89-155.dsl.pltn13.pacbell.net. [67.124.89.155])
-        by mx.google.com with ESMTPS id y5sm8301394pbk.45.2012.02.18.09.05.52
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Sat, 18 Feb 2012 09:05:53 -0800 (PST)
-Message-ID: <4F3FDA70.9060304@gmail.com>
-Date:   Sat, 18 Feb 2012 09:05:52 -0800
-From:   David Daney <david.s.daney@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.1) Gecko/20120209 Thunderbird/10.0.1
-MIME-Version: 1.0
-To:     Alan Cooper <alcooperx@gmail.com>
-CC:     linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: Stack unwind across signal frame
-References: <CAOGqxeWjtr=SOY83ZFEdwJXXatqLLEN6SHre9-0DfeJfcyBhKQ@mail.gmail.com>
-In-Reply-To: <CAOGqxeWjtr=SOY83ZFEdwJXXatqLLEN6SHre9-0DfeJfcyBhKQ@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32468
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2012 19:33:04 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:35768 "EHLO
+        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903554Ab2BSSdA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2012 19:33:00 +0100
+Received: from localhost (localhost [127.0.0.1])
+        by hauke-m.de (Postfix) with ESMTP id 8B0B88F6C;
+        Sun, 19 Feb 2012 19:32:59 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
+Received: from hauke-m.de ([127.0.0.1])
+        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id HFfEjTq3Uxbh; Sun, 19 Feb 2012 19:32:46 +0100 (CET)
+Received: from localhost.localdomain (unknown [134.102.132.222])
+        by hauke-m.de (Postfix) with ESMTPSA id 218478F60;
+        Sun, 19 Feb 2012 19:32:46 +0100 (CET)
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+To:     linville@tuxdriver.com
+Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
+        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
+        arend@broadcom.com, m@bues.ch, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 00/11] ssb/bcma/BCM47XX: sprom fixes and extensions
+Date:   Sun, 19 Feb 2012 19:32:14 +0100
+Message-Id: <1329676345-15856-1-git-send-email-hauke@hauke-m.de>
+X-Mailer: git-send-email 1.7.5.4
+X-archive-position: 32469
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.s.daney@gmail.com
+X-original-sender: hauke@hauke-m.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 02/17/2012 01:13 PM, Alan Cooper wrote:
-> I'm seeing a problem on both 2.6.37 and 3.3 MIPS kernels where I can't
-> unwind through a MIPS signal frame.
-You don't tell us the version of the unwinder (likely from libgcc) you 
-are using.  There was a lot of work in this area four or five years ago, 
-I didn't take the time to do the required archaeology to determine the 
-exact patch, but likely you are missing this.
+This patch series fixes some errors in the sprom structures and extends 
+it to contain members for all sprom values for sprom version 1 to 9. 
+This was done by looking into the open source part of the Broadcom SDK. 
+This also adds a fallback sprom registration method to bcma.
+It also contains some small fixes for the bcma47xx arch code and a 
+rewrite of the code to provide the sprom from flash. It now also 
+provides sprom from flash for devices using bcma to control the system 
+bus.
 
->   It looks like this is caused by
-> the VDSO code that was added 2/2010.
-Some CPUs have errata necessitating a different signal frame layout, on 
-these CPUs, you wouldn't be able to unwind either, even pre mips-vdso.
+This patch series is based on wireles-testing. I think it is the best 
+way to merge this through John's wireless tree as the changes in the 
+sprom struct should be used in further patches extending the pci sprom 
+parsing and the usage of struct sprom by the brcmsmac driver.
 
->   When the unwinder tries to find
-> the frame info for the caller of the signal handler (the trampoline in
-> VDSO), it can't find the eh_frame info because the address is in the
-> VDSO area and stops unwinding. It looks like other platforms solve
-> this by adding the eh_frame info for the VDSO area so the lookup
-> works.
+Hauke Mehrtens (11):
+  ssb: sprom fix some sizes / signedness
+  ssb: remove 5GHz antenna gain from sprom
+  ssb: fix per path sprom vars
+  ssb: add ccode
+  ssb: add some missing sprom attributes
+  bcma: export bcma_find_core
+  bcma: add support for sprom not found on the device.
+  MIPS: BCM47XX: return number of written bytes in nvram_getenv
+  MIPS: BCM47XX: fix signature of nvram_parse_macaddr
+  MIPS: BCM47XX: move and extend sprom parsing
+  MIPS: BCM47XX: provide sprom to bcma bus
 
-That's right.  However all 'modern' GCCs and GDBs can unwind through 
-signal frames on all 2.4.x and later kernels.  I would recommend 
-upgrading your GCC to 4.6.2, and see if you obtain better results.
+ arch/mips/bcm47xx/Makefile                   |    2 +-
+ arch/mips/bcm47xx/nvram.c                    |    3 +-
+ arch/mips/bcm47xx/setup.c                    |  188 ++-------
+ arch/mips/bcm47xx/sprom.c                    |  618 ++++++++++++++++++++++++++
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    3 +
+ arch/mips/include/asm/mach-bcm47xx/nvram.h   |    2 +-
+ drivers/bcma/main.c                          |    3 +-
+ drivers/bcma/sprom.c                         |   75 +++-
+ drivers/net/wireless/b43legacy/phy.c         |    2 +-
+ drivers/ssb/pci.c                            |   40 +--
+ drivers/ssb/pcmcia.c                         |   12 +-
+ drivers/ssb/sdio.c                           |   12 +-
+ include/linux/bcma/bcma.h                    |    7 +
+ include/linux/ssb/ssb.h                      |  102 ++++-
+ 14 files changed, 844 insertions(+), 225 deletions(-)
+ create mode 100644 arch/mips/bcm47xx/sprom.c
 
-> This problem ends up breaking pthread cleanup for C++ programs because
-> the cleanup is done using a class with the expectation that the
-> destructor will be called when the thread gets canceled by a cancel
-> signal. This seems like a big problem for all current MIPS kernels so
-> I was wondering if I'm missing something?
-
-A modern libgcc I think.
-
->
-> If this is correct, then it seems like the best solution would be to
-> add the VDSO eh_frame info to MIPS.
-
-Having a correct eh_frame in the vdso, would be nice, but is not the 
-highest priority for me.
-
-
-David Daney
+-- 
+1.7.5.4

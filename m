@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2012 20:17:46 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:36171 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2012 20:28:56 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:36218 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903594Ab2BSTRm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2012 20:17:42 +0100
+        with ESMTP id S1903594Ab2BST2x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2012 20:28:53 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id B783F8F61;
-        Sun, 19 Feb 2012 20:17:41 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 8E73B8F61;
+        Sun, 19 Feb 2012 20:28:52 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ZQWsLhITrtj8; Sun, 19 Feb 2012 20:17:28 +0100 (CET)
+        with ESMTP id CeLvxo6oyga3; Sun, 19 Feb 2012 20:28:38 +0100 (CET)
 Received: from [192.168.1.220] (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 3005F8F60;
-        Sun, 19 Feb 2012 20:17:28 +0100 (CET)
-Message-ID: <4F414AC6.90709@hauke-m.de>
-Date:   Sun, 19 Feb 2012 20:17:26 +0100
+        by hauke-m.de (Postfix) with ESMTPSA id A44DF8F60;
+        Sun, 19 Feb 2012 20:28:37 +0100 (CET)
+Message-ID: <4F414D63.1070409@hauke-m.de>
+Date:   Sun, 19 Feb 2012 20:28:35 +0100
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
 MIME-Version: 1.0
-To:     Larry Finger <Larry.Finger@lwfinger.net>
+To:     =?ISO-8859-1?Q?Michael_B=FCsch?= <m@bues.ch>
 CC:     linville@tuxdriver.com, zajec5@gmail.com,
         b43-dev@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org, arend@broadcom.com, m@bues.ch
-Subject: Re: [PATCH 02/11] ssb: remove 5GHz antenna gain from sprom
-References: <1329676345-15856-1-git-send-email-hauke@hauke-m.de> <1329676345-15856-3-git-send-email-hauke@hauke-m.de> <4F4149FC.50900@lwfinger.net>
-In-Reply-To: <4F4149FC.50900@lwfinger.net>
+        linux-wireless@vger.kernel.org, arend@broadcom.com
+Subject: Re: [PATCH 04/11] ssb: add ccode
+References: <1329676345-15856-1-git-send-email-hauke@hauke-m.de> <1329676345-15856-5-git-send-email-hauke@hauke-m.de> <20120219194923.566f3fe8@milhouse>
+In-Reply-To: <20120219194923.566f3fe8@milhouse>
 X-Enigmail-Version: 1.3.5
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8bit
-X-archive-position: 32483
+X-archive-position: 32484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,30 +37,32 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 02/19/2012 08:14 PM, Larry Finger wrote:
-> On 02/19/2012 12:32 PM, Hauke Mehrtens wrote:
->> There is no 2.4 GHz or 5GHz antenna gain stored in sprom. The sprom
->> just stores the gain values for antenna 1 and 2 or 1 to 4 for more
->> recent sprom versions. On old devices antenna 2 was used for 5 GHz wifi.
+On 02/19/2012 07:49 PM, Michael Büsch wrote:
+> On Sun, 19 Feb 2012 19:32:18 +0100
+> Hauke Mehrtens <hauke@hauke-m.de> wrote:
+> 
+>> This member contains the country code encoded with two chars
 >>
->> Signed-off-by: Hauke Mehrtens<hauke@hauke-m.de>
+>> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 >> ---
->>   drivers/net/wireless/b43legacy/phy.c |    2 +-
->>   drivers/ssb/pci.c                    |   40
->> ++++++++++++----------------------
->>   drivers/ssb/pcmcia.c                 |   12 +++------
->>   drivers/ssb/sdio.c                   |   12 +++------
->>   include/linux/ssb/ssb.h              |    7 +-----
->>   5 files changed, 24 insertions(+), 49 deletions(-)
+>>  include/linux/ssb/ssb.h |    1 +
+>>  1 files changed, 1 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
+>> index 4928419..44e486e 100644
+>> --- a/include/linux/ssb/ssb.h
+>> +++ b/include/linux/ssb/ssb.h
+>> @@ -33,6 +33,7 @@ struct ssb_sprom {
+>>  	u8 et1mdcport;		/* MDIO for enet1 */
+>>  	u16 board_rev;		/* Board revision number from SPROM. */
+>>  	u8 country_code;	/* Country Code */
+>> +	char ccode[2];		/* Country Code as two chars like EU or US */
 > 
-> After this patch, I get the warning
-> 
-> drivers/ssb/pci.c: In function ‘sprom_extract_r123’:
-> drivers/ssb/pci.c:334:5: warning: unused variable ‘gain’
-> [-Wunused-variable]
-> 
-> I am still testing, but all other patches compile OK.
-
-Thanks for the info, I haven't see it. I will fix it in the next round.
+> This usually is referred to as "alpha2". So we should name it like that, too.
+I can not find any references to "alpha2" in the spec, the broadcom
+code, ssb, bcma or b43. ccode was the name broadcom gave this value so I
+took it.
+http://bcm-v4.sipsolutions.net/SPROM wrongly maps ccode to country_code,
+but cc is stored into country_code in ssb.
 
 Hauke

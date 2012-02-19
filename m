@@ -1,28 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2012 19:33:04 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:35768 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Feb 2012 19:33:25 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:35778 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903554Ab2BSSdA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2012 19:33:00 +0100
+        with ESMTP id S1903555Ab2BSSdC (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 19 Feb 2012 19:33:02 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 8B0B88F6C;
-        Sun, 19 Feb 2012 19:32:59 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id D14E18F60;
+        Sun, 19 Feb 2012 19:33:01 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id HFfEjTq3Uxbh; Sun, 19 Feb 2012 19:32:46 +0100 (CET)
+        with ESMTP id GqQ1B5dmdfRJ; Sun, 19 Feb 2012 19:32:47 +0100 (CET)
 Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 218478F60;
+        by hauke-m.de (Postfix) with ESMTPSA id D79698F61;
         Sun, 19 Feb 2012 19:32:46 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linville@tuxdriver.com
 Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
         linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         arend@broadcom.com, m@bues.ch, Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 00/11] ssb/bcma/BCM47XX: sprom fixes and extensions
-Date:   Sun, 19 Feb 2012 19:32:14 +0100
-Message-Id: <1329676345-15856-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 01/11] ssb: sprom fix some sizes / signedness
+Date:   Sun, 19 Feb 2012 19:32:15 +0100
+Message-Id: <1329676345-15856-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.5.4
-X-archive-position: 32469
+In-Reply-To: <1329676345-15856-1-git-send-email-hauke@hauke-m.de>
+References: <1329676345-15856-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 32470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,49 +33,60 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch series fixes some errors in the sprom structures and extends 
-it to contain members for all sprom values for sprom version 1 to 9. 
-This was done by looking into the open source part of the Broadcom SDK. 
-This also adds a fallback sprom registration method to bcma.
-It also contains some small fixes for the bcma47xx arch code and a 
-rewrite of the code to provide the sprom from flash. It now also 
-provides sprom from flash for devices using bcma to control the system 
-bus.
+Some parts of the sprom struct are bigger than needed.
+The leddc and maxpwr values are just 8 bit long and not 16.
+rxpo2g and rxpo5g are signed
 
-This patch series is based on wireles-testing. I think it is the best 
-way to merge this through John's wireless tree as the changes in the 
-sprom struct should be used in further patches extending the pci sprom 
-parsing and the usage of struct sprom by the brcmsmac driver.
+I got these information for the open source part of the Braodcom SDK
+covering sprom version 1 to 9. rxpo2g contained a negative number on my
+bcm5354 based device, this cased an error and Broadcom SDK says this is
+signed.
 
-Hauke Mehrtens (11):
-  ssb: sprom fix some sizes / signedness
-  ssb: remove 5GHz antenna gain from sprom
-  ssb: fix per path sprom vars
-  ssb: add ccode
-  ssb: add some missing sprom attributes
-  bcma: export bcma_find_core
-  bcma: add support for sprom not found on the device.
-  MIPS: BCM47XX: return number of written bytes in nvram_getenv
-  MIPS: BCM47XX: fix signature of nvram_parse_macaddr
-  MIPS: BCM47XX: move and extend sprom parsing
-  MIPS: BCM47XX: provide sprom to bcma bus
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ include/linux/ssb/ssb.h |   16 ++++++++--------
+ 1 files changed, 8 insertions(+), 8 deletions(-)
 
- arch/mips/bcm47xx/Makefile                   |    2 +-
- arch/mips/bcm47xx/nvram.c                    |    3 +-
- arch/mips/bcm47xx/setup.c                    |  188 ++-------
- arch/mips/bcm47xx/sprom.c                    |  618 ++++++++++++++++++++++++++
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    3 +
- arch/mips/include/asm/mach-bcm47xx/nvram.h   |    2 +-
- drivers/bcma/main.c                          |    3 +-
- drivers/bcma/sprom.c                         |   75 +++-
- drivers/net/wireless/b43legacy/phy.c         |    2 +-
- drivers/ssb/pci.c                            |   40 +--
- drivers/ssb/pcmcia.c                         |   12 +-
- drivers/ssb/sdio.c                           |   12 +-
- include/linux/bcma/bcma.h                    |    7 +
- include/linux/ssb/ssb.h                      |  102 ++++-
- 14 files changed, 844 insertions(+), 225 deletions(-)
- create mode 100644 arch/mips/bcm47xx/sprom.c
-
+diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
+index bbc2612..f169621 100644
+--- a/include/linux/ssb/ssb.h
++++ b/include/linux/ssb/ssb.h
+@@ -33,8 +33,8 @@ struct ssb_sprom {
+ 	u8 et1mdcport;		/* MDIO for enet1 */
+ 	u16 board_rev;		/* Board revision number from SPROM. */
+ 	u8 country_code;	/* Country Code */
+-	u16 leddc_on_time;	/* LED Powersave Duty Cycle On Count */
+-	u16 leddc_off_time;	/* LED Powersave Duty Cycle Off Count */
++	u8 leddc_on_time;	/* LED Powersave Duty Cycle On Count */
++	u8 leddc_off_time;	/* LED Powersave Duty Cycle Off Count */
+ 	u8 ant_available_a;	/* 2GHz antenna available bits (up to 4) */
+ 	u8 ant_available_bg;	/* 5GHz antenna available bits (up to 4) */
+ 	u16 pa0b0;
+@@ -53,10 +53,10 @@ struct ssb_sprom {
+ 	u8 gpio1;		/* GPIO pin 1 */
+ 	u8 gpio2;		/* GPIO pin 2 */
+ 	u8 gpio3;		/* GPIO pin 3 */
+-	u16 maxpwr_bg;		/* 2.4GHz Amplifier Max Power (in dBm Q5.2) */
+-	u16 maxpwr_al;		/* 5.2GHz Amplifier Max Power (in dBm Q5.2) */
+-	u16 maxpwr_a;		/* 5.3GHz Amplifier Max Power (in dBm Q5.2) */
+-	u16 maxpwr_ah;		/* 5.8GHz Amplifier Max Power (in dBm Q5.2) */
++	u8 maxpwr_bg;		/* 2.4GHz Amplifier Max Power (in dBm Q5.2) */
++	u8 maxpwr_al;		/* 5.2GHz Amplifier Max Power (in dBm Q5.2) */
++	u8 maxpwr_a;		/* 5.3GHz Amplifier Max Power (in dBm Q5.2) */
++	u8 maxpwr_ah;		/* 5.8GHz Amplifier Max Power (in dBm Q5.2) */
+ 	u8 itssi_a;		/* Idle TSSI Target for A-PHY */
+ 	u8 itssi_bg;		/* Idle TSSI Target for B/G-PHY */
+ 	u8 tri2g;		/* 2.4GHz TX isolation */
+@@ -67,8 +67,8 @@ struct ssb_sprom {
+ 	u8 txpid5gl[4];		/* 4.9 - 5.1GHz TX power index */
+ 	u8 txpid5g[4];		/* 5.1 - 5.5GHz TX power index */
+ 	u8 txpid5gh[4];		/* 5.5 - ...GHz TX power index */
+-	u8 rxpo2g;		/* 2GHz RX power offset */
+-	u8 rxpo5g;		/* 5GHz RX power offset */
++	s8 rxpo2g;		/* 2GHz RX power offset */
++	s8 rxpo5g;		/* 5GHz RX power offset */
+ 	u8 rssisav2g;		/* 2GHz RSSI params */
+ 	u8 rssismc2g;
+ 	u8 rssismf2g;
 -- 
 1.7.5.4

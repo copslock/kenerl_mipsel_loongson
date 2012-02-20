@@ -1,107 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2012 12:10:24 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:51291 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903555Ab2BTLKR (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2012 12:10:17 +0100
-Received: by bkcjk13 with SMTP id jk13so6371256bkc.36
-        for <linux-mips@linux-mips.org>; Mon, 20 Feb 2012 03:10:11 -0800 (PST)
-Received-SPF: pass (google.com: domain of sshtylyov@mvista.com designates 10.205.137.136 as permitted sender) client-ip=10.205.137.136;
-Authentication-Results: mr.google.com; spf=pass (google.com: domain of sshtylyov@mvista.com designates 10.205.137.136 as permitted sender) smtp.mail=sshtylyov@mvista.com
-Received: from mr.google.com ([10.205.137.136])
-        by 10.205.137.136 with SMTP id io8mr11070912bkc.106.1329736211567 (num_hops = 1);
-        Mon, 20 Feb 2012 03:10:11 -0800 (PST)
-Received: by 10.205.137.136 with SMTP id io8mr8954532bkc.106.1329736211355;
-        Mon, 20 Feb 2012 03:10:11 -0800 (PST)
-Received: from [192.168.2.2] (ppp91-79-78-89.pppoe.mtu-net.ru. [91.79.78.89])
-        by mx.google.com with ESMTPS id e13sm38364206bku.12.2012.02.20.03.10.09
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 20 Feb 2012 03:10:10 -0800 (PST)
-Message-ID: <4F4229C7.1070107@mvista.com>
-Date:   Mon, 20 Feb 2012 15:08:55 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2012 20:07:52 +0100 (CET)
+Received: from forward10.mail.yandex.net ([77.88.61.49]:47681 "EHLO
+        forward10.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903565Ab2BTTHp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2012 20:07:45 +0100
+Received: from smtp8.mail.yandex.net (smtp8.mail.yandex.net [77.88.61.54])
+        by forward10.mail.yandex.net (Yandex) with ESMTP id DD4C11020EE9;
+        Mon, 20 Feb 2012 23:07:23 +0400 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1329764843; bh=U/R5XbpG3r+JHUnzPXx1zuYexHX9mG3NbKVCkQ9QlHA=;
+        h=Message-ID:Date:From:MIME-Version:To:Subject:Content-Type:
+         Content-Transfer-Encoding;
+        b=Fjrdp05POiwf1MESqOjeGN9bx0BTp/IG0GYy1vNirih1AY37mz9pygDhVrocN6JxW
+         vu74CkpAaqJheetD+fkN/dH7IA310J/xEwKSPSuZObXvWqWptCWTxjnaZJebFLwjK+
+         CPSj82lV90+Swl+ms65doxoG76F2PQSrqxfPKcF8=
+Received: from smtp8.mail.yandex.net (localhost [127.0.0.1])
+        by smtp8.mail.yandex.net (Yandex) with ESMTP id B7E3B1B604C7;
+        Mon, 20 Feb 2012 23:07:23 +0400 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+        t=1329764843; bh=U/R5XbpG3r+JHUnzPXx1zuYexHX9mG3NbKVCkQ9QlHA=;
+        h=Message-ID:Date:From:MIME-Version:To:Subject:Content-Type:
+         Content-Transfer-Encoding;
+        b=Fjrdp05POiwf1MESqOjeGN9bx0BTp/IG0GYy1vNirih1AY37mz9pygDhVrocN6JxW
+         vu74CkpAaqJheetD+fkN/dH7IA310J/xEwKSPSuZObXvWqWptCWTxjnaZJebFLwjK+
+         CPSj82lV90+Swl+ms65doxoG76F2PQSrqxfPKcF8=
+Received: from unknown (unknown [94.242.50.174])
+        by smtp8.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 7Neq0pmo-7NeqalPf;
+        Mon, 20 Feb 2012 23:07:23 +0400
+X-Yandex-Spam: 1
+Message-ID: <4F429B4C.9070600@yandex.ru>
+Date:   Mon, 20 Feb 2012 23:13:16 +0400
+From:   Nikolai Zhubr <n-a-zhubr@yandex.ru>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.1.5) Gecko/20091204 Thunderbird/3.0
 MIME-Version: 1.0
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-CC:     linville@tuxdriver.com, zajec5@gmail.com,
-        b43-dev@lists.infradead.org, linux-mips@linux-mips.org,
-        linux-wireless@vger.kernel.org, arend@broadcom.com, m@bues.ch
-Subject: Re: [PATCH 11/11] MIPS: BCM47XX: provide sprom to bcma bus
-References: <1329676345-15856-1-git-send-email-hauke@hauke-m.de> <1329676345-15856-12-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1329676345-15856-12-git-send-email-hauke@hauke-m.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:     OpenWrt Development List <openwrt-devel@lists.openwrt.org>,
+        linux-mips@linux-mips.org
+Subject: kexec on mips
+Content-Type: text/plain; charset=KOI8-R; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQntviHJXerQJjHAC5Y9tyHCenMZbE/mfd3v2iTeKyiBaEfALhWYyMdgbExAsmeRNeF4EvTT
-X-archive-position: 32489
+X-archive-position: 32490
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: n-a-zhubr@yandex.ru
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+Hello all,
 
-On 19-02-2012 22:32, Hauke Mehrtens wrote:
+I'm running both openwrt and debian on a mips-based wndr3800 netgear 
+router/ap and I'm using kexec to arrange kind of dual-boot in a safe and 
+comfortable manner.
 
-> On SoCs the sprom is often stored in nvram in the flashchip. This patch
-> registers a sprom fallback callback handler in bcma and provides the
-> sprom needed for this device.
+Now, I've found that the following is critical for kexec to actually work:
+--- arch/mips/kernel/machine_kexec.c.orig       2012-02-08 
+01:58:13.000000000 +0300
++++ arch/mips/kernel/machine_kexec.c    2012-02-20 22:19:11.000000000 +0300
+@@ -52,7 +52,7 @@
+         reboot_code_buffer =
+           (unsigned long)page_address(image->control_code_page);
 
-> Signed-off-by: Hauke Mehrtens<hauke@hauke-m.de>
-> ---
->   arch/mips/bcm47xx/setup.c |   39 +++++++++++++++++++++++++++++++++++----
->   1 files changed, 35 insertions(+), 4 deletions(-)
+-       kexec_start_address = image->start;
++       kexec_start_address = (unsigned long) phys_to_virt(image->start);
+         kexec_indirection_page =
+                 (unsigned long) phys_to_virt(image->head & PAGE_MASK);
 
-> diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-> index 6b0dacd..6f8b073 100644
-> --- a/arch/mips/bcm47xx/setup.c
-> +++ b/arch/mips/bcm47xx/setup.c
-[...]
-> @@ -159,10 +159,41 @@ static void __init bcm47xx_register_ssb(void)
->   #endif
->
->   #ifdef CONFIG_BCM47XX_BCMA
-> +static int bcm47xx_get_sprom_bcma(struct bcma_bus *bus, struct ssb_sprom *out)
-> +{
-> +	char prefix[10];
-> +	struct bcma_device *core;
-> +
-> +	if (bus->hosttype == BCMA_HOSTTYPE_PCI) {
+I've found that in openwrt repository this change was present (among 
+others) in a big patchset targeted for kernel 2.6.30 and now it is still 
+present as a small separate patch for 2.6.38 
+(target/linux/generic/patches-2.6.38/303-mips_fix_kexec.patch) and maybe 
+others. Meanwhile, the latest _stable_ openwrt for the moment (backfire 
+10.03.1) was released with kernel 2.6.32 without this patch so I had to 
+dig through some forums to find the reason of kexec not working 
+out-of-the-box. I've just now checked and the latest kernel.org's stable 
+kernel (3.2.6) does not seem to include this either. Ok, since I know 
+the secret already I'll fix it for myself anytime, but maybe some kind 
+soul could just submit this _one_ line upstream? I'd say this feature is 
+really handy in some cases.
 
-    Why not *switch* statement? It seems more natural in this situation...
+Thank you.
 
-> +		snprintf(prefix, sizeof(prefix), "pci/%u/%u/",
-> +			 bus->host_pci->bus->number + 1,
-> +			 PCI_SLOT(bus->host_pci->devfn));
-> +		bcm47xx_fill_sprom(out, prefix);
-> +		return 0;
-> +	} else if (bus->hosttype == BCMA_HOSTTYPE_SOC) {
-> +		bcm47xx_fill_sprom_ethernet(out, NULL);
-> +		core = bcma_find_core(bus, BCMA_CORE_80211);
-> +		if (core) {
-> +			snprintf(prefix, sizeof(prefix), "sb/%u/",
-> +				 core->core_index);
-> +			bcm47xx_fill_sprom(out, prefix);
-> +		}
-> +		return 0;
-> +	} else {
-> +		printk(KERN_WARNING "bcm47xx: unable to fill SPROM for given bustype.\n");
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->   static void __init bcm47xx_register_bcma(void)
->   {
->   	int err;
->
-> +	err = bcma_arch_register_fallback_sprom(&bcm47xx_get_sprom_bcma);
-> +	if (err)
-> +		printk(KERN_WARNING "bcm47xx: someone else already registered"
+(Please CC me, I'm not subscribed to linux-mips)
 
-    pr_warn(). And don't break the message to help grepping.
-
-> +			" a bcma SPROM callback handler (err %d)\n", err);
-> +
-
-WBR, Sergei
+Nikolai

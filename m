@@ -1,85 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Feb 2012 20:07:52 +0100 (CET)
-Received: from forward10.mail.yandex.net ([77.88.61.49]:47681 "EHLO
-        forward10.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903565Ab2BTTHp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 20 Feb 2012 20:07:45 +0100
-Received: from smtp8.mail.yandex.net (smtp8.mail.yandex.net [77.88.61.54])
-        by forward10.mail.yandex.net (Yandex) with ESMTP id DD4C11020EE9;
-        Mon, 20 Feb 2012 23:07:23 +0400 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1329764843; bh=U/R5XbpG3r+JHUnzPXx1zuYexHX9mG3NbKVCkQ9QlHA=;
-        h=Message-ID:Date:From:MIME-Version:To:Subject:Content-Type:
-         Content-Transfer-Encoding;
-        b=Fjrdp05POiwf1MESqOjeGN9bx0BTp/IG0GYy1vNirih1AY37mz9pygDhVrocN6JxW
-         vu74CkpAaqJheetD+fkN/dH7IA310J/xEwKSPSuZObXvWqWptCWTxjnaZJebFLwjK+
-         CPSj82lV90+Swl+ms65doxoG76F2PQSrqxfPKcF8=
-Received: from smtp8.mail.yandex.net (localhost [127.0.0.1])
-        by smtp8.mail.yandex.net (Yandex) with ESMTP id B7E3B1B604C7;
-        Mon, 20 Feb 2012 23:07:23 +0400 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-        t=1329764843; bh=U/R5XbpG3r+JHUnzPXx1zuYexHX9mG3NbKVCkQ9QlHA=;
-        h=Message-ID:Date:From:MIME-Version:To:Subject:Content-Type:
-         Content-Transfer-Encoding;
-        b=Fjrdp05POiwf1MESqOjeGN9bx0BTp/IG0GYy1vNirih1AY37mz9pygDhVrocN6JxW
-         vu74CkpAaqJheetD+fkN/dH7IA310J/xEwKSPSuZObXvWqWptCWTxjnaZJebFLwjK+
-         CPSj82lV90+Swl+ms65doxoG76F2PQSrqxfPKcF8=
-Received: from unknown (unknown [94.242.50.174])
-        by smtp8.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 7Neq0pmo-7NeqalPf;
-        Mon, 20 Feb 2012 23:07:23 +0400
-X-Yandex-Spam: 1
-Message-ID: <4F429B4C.9070600@yandex.ru>
-Date:   Mon, 20 Feb 2012 23:13:16 +0400
-From:   Nikolai Zhubr <n-a-zhubr@yandex.ru>
-User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.1.5) Gecko/20091204 Thunderbird/3.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Feb 2012 03:12:32 +0100 (CET)
+Received: from mail1.windriver.com ([147.11.146.13]:51396 "EHLO
+        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903695Ab2BUCM2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 21 Feb 2012 03:12:28 +0100
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
+        by mail1.windriver.com (8.14.3/8.14.3) with ESMTP id q1L2CEc2016165
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Mon, 20 Feb 2012 18:12:15 -0800 (PST)
+Received: from [128.224.162.71] (128.224.162.71) by ALA-HCA.corp.ad.wrs.com
+ (147.11.189.50) with Microsoft SMTP Server id 14.1.255.0; Mon, 20 Feb 2012
+ 18:12:14 -0800
+Message-ID: <4F42FD60.4090201@windriver.com>
+Date:   Tue, 21 Feb 2012 10:11:44 +0800
+From:   "tiejun.chen" <tiejun.chen@windriver.com>
+User-Agent: Thunderbird 2.0.0.24 (X11/20101027)
 MIME-Version: 1.0
-To:     OpenWrt Development List <openwrt-devel@lists.openwrt.org>,
-        linux-mips@linux-mips.org
-Subject: kexec on mips
-Content-Type: text/plain; charset=KOI8-R; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32490
+To:     Mikael Starvik <mikael.starvik@axis.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: SMP MIPS and Linux 3.2
+References: <4BEA3FF3CAA35E408EA55C7BE2E61D055C769FECBC@xmail3.se.axis.com>
+In-Reply-To: <4BEA3FF3CAA35E408EA55C7BE2E61D055C769FECBC@xmail3.se.axis.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-archive-position: 32491
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: n-a-zhubr@yandex.ru
+X-original-sender: tiejun.chen@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello all,
+Mikael Starvik wrote:
+> I'm running Linux 3.2 on a MIPS 34K with two VPEs (in MT_SMP configuration). It works fine in UP but with SMP it deadlocks during bootup (both CPUs gets idle). Typically like this:
+> 
+> [��� 0.090000] CPU revision is: 01019550 (MIPS 34Kc)
+> [��� 0.090000] Primary instruction cache 32kB, VIPT, 4-way, linesize 32 bytes.
+> [��� 0.090000] Primary data cache 32kB, 4-way, PIPT, no aliases, linesize 32 bytes
+> [��� 0.170000] Brought up 2 CPUs
+> <No more output>
+> 
+> I have tried to enable __ARCH_WANT_INTERRUPTS_ON_CTXSW but that didn't improve anything. Anyone else got this running or have any thoughts about what the problem may be?
+> 
 
-I'm running both openwrt and debian on a mips-based wndr3800 netgear 
-router/ap and I'm using kexec to arrange kind of dual-boot in a safe and 
-comfortable manner.
+I think using git-bisect is the simplest way to figure out this if you already
+know one kernel version is fine for mips 34kc.
 
-Now, I've found that the following is critical for kexec to actually work:
---- arch/mips/kernel/machine_kexec.c.orig       2012-02-08 
-01:58:13.000000000 +0300
-+++ arch/mips/kernel/machine_kexec.c    2012-02-20 22:19:11.000000000 +0300
-@@ -52,7 +52,7 @@
-         reboot_code_buffer =
-           (unsigned long)page_address(image->control_code_page);
+Or did you try to pass 'nosmp' into the kernel command line? If good maybe
+you're hitting some locking issues. You can enable those Kconfig options to
+probe-to-debug these locking problem.
 
--       kexec_start_address = image->start;
-+       kexec_start_address = (unsigned long) phys_to_virt(image->start);
-         kexec_indirection_page =
-                 (unsigned long) phys_to_virt(image->head & PAGE_MASK);
-
-I've found that in openwrt repository this change was present (among 
-others) in a big patchset targeted for kernel 2.6.30 and now it is still 
-present as a small separate patch for 2.6.38 
-(target/linux/generic/patches-2.6.38/303-mips_fix_kexec.patch) and maybe 
-others. Meanwhile, the latest _stable_ openwrt for the moment (backfire 
-10.03.1) was released with kernel 2.6.32 without this patch so I had to 
-dig through some forums to find the reason of kexec not working 
-out-of-the-box. I've just now checked and the latest kernel.org's stable 
-kernel (3.2.6) does not seem to include this either. Ok, since I know 
-the secret already I'll fix it for myself anytime, but maybe some kind 
-soul could just submit this _one_ line upstream? I'd say this feature is 
-really handy in some cases.
-
-Thank you.
-
-(Please CC me, I'm not subscribed to linux-mips)
-
-Nikolai
+Tiejun

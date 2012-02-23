@@ -1,18 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:20:03 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:57479 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:20:28 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:57484 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903755Ab2BWQT6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Feb 2012 17:19:58 +0100
+        id S1903761Ab2BWQUD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 Feb 2012 17:20:03 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 13/14] MIPS: lantiq: unify xway prom code
-Date:   Thu, 23 Feb 2012 17:03:12 +0100
-Message-Id: <1330012993-13510-13-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        netdev@vger.kernel.org
+Subject: [PATCH V2 11/14] NET: MIPS: lantiq: convert etop driver to clkdev api
+Date:   Thu, 23 Feb 2012 17:03:10 +0100
+Message-Id: <1330012993-13510-11-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1330012993-13510-1-git-send-email-blogic@openwrt.org>
 References: <1330012993-13510-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32521
+X-archive-position: 32522
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,240 +22,118 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-The xway prom-ase.c and prom-xway.c files are redundant. Unify the 2 files.
+Update from old pmu_{dis,en}able() to ckldev api.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
+Cc: netdev@vger.kernel.org
 ---
- arch/mips/lantiq/xway/Makefile    |    5 +--
- arch/mips/lantiq/xway/prom-ase.c  |   48 ----------------------
- arch/mips/lantiq/xway/prom-xway.c |   64 ------------------------------
- arch/mips/lantiq/xway/prom.c      |   79 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 80 insertions(+), 116 deletions(-)
- delete mode 100644 arch/mips/lantiq/xway/prom-ase.c
- delete mode 100644 arch/mips/lantiq/xway/prom-xway.c
- create mode 100644 arch/mips/lantiq/xway/prom.c
+ drivers/net/ethernet/lantiq_etop.c |   47 ++++++++++++++++++++++++++++++-----
+ 1 files changed, 40 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
-index 4dcb96f..89f0a11 100644
---- a/arch/mips/lantiq/xway/Makefile
-+++ b/arch/mips/lantiq/xway/Makefile
-@@ -1,7 +1,4 @@
--obj-y := sysctrl.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o clk.o
--
--obj-$(CONFIG_SOC_XWAY) += prom-xway.o
--obj-$(CONFIG_SOC_AMAZON_SE) += prom-ase.o
-+obj-y := prom.o sysctrl.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o clk.o
- 
- obj-$(CONFIG_LANTIQ_MACH_EASY50712) += mach-easy50712.o
- obj-$(CONFIG_LANTIQ_MACH_EASY50601) += mach-easy50601.o
-diff --git a/arch/mips/lantiq/xway/prom-ase.c b/arch/mips/lantiq/xway/prom-ase.c
-deleted file mode 100644
-index 3f86a3b..0000000
---- a/arch/mips/lantiq/xway/prom-ase.c
-+++ /dev/null
-@@ -1,48 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-- */
--
--#include <linux/export.h>
--#include <linux/clk.h>
--#include <asm/bootinfo.h>
--#include <asm/time.h>
--
--#include <lantiq_soc.h>
--
--#include "devices.h"
--#include "../prom.h"
--
--#define SOC_AMAZON_SE	"Amazon_SE"
--
--#define PART_SHIFT	12
--#define PART_MASK	0x0FFFFFFF
--#define REV_SHIFT	28
--#define REV_MASK	0xF0000000
--
--void __init ltq_soc_detect(struct ltq_soc_info *i)
--{
--	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
--	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
--	sprintf(i->rev_type, "1.%d", i->rev);
--	switch (i->partnum) {
--	case SOC_ID_AMAZON_SE:
--		i->name = SOC_AMAZON_SE;
--		i->type = SOC_TYPE_AMAZON_SE;
--		break;
--
--	default:
--		unreachable();
--		break;
--	}
--}
--
--void __init ltq_soc_setup(void)
--{
--	ltq_register_ase_asc();
--	ltq_register_gpio();
--	ltq_register_wdt();
--}
-diff --git a/arch/mips/lantiq/xway/prom-xway.c b/arch/mips/lantiq/xway/prom-xway.c
-deleted file mode 100644
-index d823a92..0000000
---- a/arch/mips/lantiq/xway/prom-xway.c
-+++ /dev/null
-@@ -1,64 +0,0 @@
--/*
-- *  This program is free software; you can redistribute it and/or modify it
-- *  under the terms of the GNU General Public License version 2 as published
-- *  by the Free Software Foundation.
-- *
-- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-- */
--
--#include <linux/export.h>
--#include <linux/clk.h>
--#include <asm/bootinfo.h>
--#include <asm/time.h>
--
--#include <lantiq_soc.h>
--
--#include "devices.h"
--#include "../prom.h"
--
--#define SOC_DANUBE	"Danube"
--#define SOC_TWINPASS	"Twinpass"
--#define SOC_AR9		"AR9"
--
--#define PART_SHIFT	12
--#define PART_MASK	0x0FFFFFFF
--#define REV_SHIFT	28
--#define REV_MASK	0xF0000000
--
--void __init ltq_soc_detect(struct ltq_soc_info *i)
--{
--	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
--	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
--	sprintf(i->rev_type, "1.%d", i->rev);
--	switch (i->partnum) {
--	case SOC_ID_DANUBE1:
--	case SOC_ID_DANUBE2:
--		i->name = SOC_DANUBE;
--		i->type = SOC_TYPE_DANUBE;
--		break;
--
--	case SOC_ID_TWINPASS:
--		i->name = SOC_TWINPASS;
--		i->type = SOC_TYPE_DANUBE;
--		break;
--
--	case SOC_ID_ARX188:
--	case SOC_ID_ARX168:
--	case SOC_ID_ARX182:
--		i->name = SOC_AR9;
--		i->type = SOC_TYPE_AR9;
--		break;
--
--	default:
--		unreachable();
--		break;
--	}
--}
--
--void __init ltq_soc_setup(void)
--{
--	ltq_register_asc(0);
--	ltq_register_asc(1);
--	ltq_register_gpio();
--	ltq_register_wdt();
--}
-diff --git a/arch/mips/lantiq/xway/prom.c b/arch/mips/lantiq/xway/prom.c
-new file mode 100644
-index 0000000..0929acb
---- /dev/null
-+++ b/arch/mips/lantiq/xway/prom.c
-@@ -0,0 +1,79 @@
-+/*
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ *
-+ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
-+ */
-+
-+#include <linux/export.h>
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index e5ec8b1..6b2e4b4 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -36,6 +36,7 @@
+ #include <linux/io.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
 +#include <linux/clk.h>
-+#include <asm/bootinfo.h>
-+#include <asm/time.h>
+ 
+ #include <asm/checksum.h>
+ 
+@@ -148,6 +149,11 @@ struct ltq_etop_priv {
+ 	int tx_free[MAX_DMA_CHAN >> 1];
+ 
+ 	spinlock_t lock;
 +
-+#include <lantiq_soc.h>
++	struct clk *clk_ppe;
++	struct clk *clk_switch;
++	struct clk *clk_ephy;
++	struct clk *clk_ephycgu;
+ };
+ 
+ static int ltq_etop_mdio_wr(struct mii_bus *bus, int phy_addr,
+@@ -281,16 +287,27 @@ ltq_etop_hw_exit(struct net_device *dev)
+ 	struct ltq_etop_priv *priv = netdev_priv(dev);
+ 	int i;
+ 
+-	ltq_pmu_disable(PMU_PPE);
++	clk_disable(priv->clk_ppe);
 +
-+#include "../prom.h"
-+#include "devices.h"
++	if (ltq_has_gbit())
++		clk_disable(priv->clk_switch);
 +
-+#define SOC_DANUBE	"Danube"
-+#define SOC_TWINPASS	"Twinpass"
-+#define SOC_AR9		"AR9"
-+#define SOC_VR9		"VR9"
-+
-+#define PART_SHIFT	12
-+#define PART_MASK	0x0FFFFFFF
-+#define REV_SHIFT	28
-+#define REV_MASK	0xF0000000
-+
-+#define SOC_AMAZON_SE	"Amazon_SE"
-+
-+void __init ltq_soc_detect(struct ltq_soc_info *i)
-+{
-+	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
-+	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
-+	sprintf(i->rev_type, "1.%d", i->rev);
-+	switch (i->partnum) {
-+	case SOC_ID_DANUBE1:
-+	case SOC_ID_DANUBE2:
-+		i->name = SOC_DANUBE;
-+		i->type = SOC_TYPE_DANUBE;
-+		break;
-+
-+	case SOC_ID_TWINPASS:
-+		i->name = SOC_TWINPASS;
-+		i->type = SOC_TYPE_DANUBE;
-+		break;
-+
-+	case SOC_ID_ARX188:
-+	case SOC_ID_ARX168:
-+	case SOC_ID_ARX182:
-+		i->name = SOC_AR9;
-+		i->type = SOC_TYPE_AR9;
-+		break;
-+
-+	case SOC_ID_AMAZON_SE:
-+		i->name = SOC_AMAZON_SE;
-+		i->type = SOC_TYPE_AMAZON_SE;
-+#ifdef CONFIG_PCI
-+		panic("ase is only supported for non pci kernels");
-+#endif
-+		break;
-+
-+	default:
-+		unreachable();
-+		break;
-+	}
-+}
-+
-+void __init ltq_soc_setup(void)
-+{
 +	if (ltq_is_ase()) {
-+		ltq_register_ase_asc();
-+	} else {
-+		ltq_register_asc(0);
-+		ltq_register_asc(1);
++		clk_disable(priv->clk_ephy);
++		clk_disable(priv->clk_ephycgu);
 +	}
-+	ltq_register_gpio();
-+	ltq_register_wdt();
-+}
++
+ 	for (i = 0; i < MAX_DMA_CHAN; i++)
+ 		if (IS_TX(i) || IS_RX(i))
+ 			ltq_etop_free_channel(dev, &priv->ch[i]);
+ }
+ 
+ static void
+-ltq_etop_gbit_init(void)
++ltq_etop_gbit_init(struct net_device *dev)
+ {
+-	ltq_pmu_enable(PMU_SWITCH);
++	struct ltq_etop_priv *priv = netdev_priv(dev);
++
++	clk_enable(priv->clk_switch);
+ 
+ 	ltq_gbit_w32_mask(0, GCTL0_SE, LTQ_GBIT_GCTL0);
+ 	/** Disable MDIO auto polling mode */
+@@ -313,10 +330,10 @@ ltq_etop_hw_init(struct net_device *dev)
+ 	int err = 0;
+ 	int i;
+ 
+-	ltq_pmu_enable(PMU_PPE);
++	clk_enable(priv->clk_ppe);
+ 
+ 	if (ltq_has_gbit()) {
+-		ltq_etop_gbit_init();
++		ltq_etop_gbit_init(dev);
+ 		/* force the etops link to the gbit to MII */
+ 		mii_mode = PHY_INTERFACE_MODE_MII;
+ 	}
+@@ -334,11 +351,11 @@ ltq_etop_hw_init(struct net_device *dev)
+ 
+ 	default:
+ 		if (ltq_is_ase()) {
+-			ltq_pmu_enable(PMU_EPHY);
++			clk_enable(priv->clk_ephy);
+ 			/* disable external MII */
+ 			ltq_etop_w32_mask(0, ETOP_CFG_MII0, LTQ_ETOP_CFG);
+ 			/* enable clock for internal PHY */
+-			ltq_cgu_enable(CGU_EPHY);
++			clk_enable(priv->clk_ephycgu);
+ 			/* we need to write this magic to the internal phy to
+ 			   make it work */
+ 			ltq_etop_mdio_wr(NULL, 0x8, 0x12, 0xC020);
+@@ -886,6 +903,22 @@ ltq_etop_probe(struct platform_device *pdev)
+ 	priv->pdev = pdev;
+ 	priv->pldata = dev_get_platdata(&pdev->dev);
+ 	priv->netdev = dev;
++
++	priv->clk_ppe = clk_get(&pdev->dev, NULL);
++	if (!priv->clk_ppe)
++		return -ENOENT;
++	if (ltq_has_gbit()) {
++		priv->clk_switch = clk_get(&pdev->dev, "switch");
++		if (!priv->clk_switch)
++			return -ENOENT;
++	}
++	if (ltq_is_ase()) {
++		priv->clk_ephy = clk_get(&pdev->dev, "ephy");
++		priv->clk_ephycgu = clk_get(&pdev->dev, "ephycgu");
++		if (!priv->clk_ephy || !priv->clk_ephycgu)
++			return -ENOENT;
++	}
++
+ 	spin_lock_init(&priv->lock);
+ 
+ 	for (i = 0; i < MAX_DMA_CHAN; i++) {
 -- 
 1.7.7.1

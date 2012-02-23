@@ -1,72 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 19:14:26 +0100 (CET)
-Received: from mail-wi0-f177.google.com ([209.85.212.177]:57165 "EHLO
-        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903629Ab2BWSOX convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Feb 2012 19:14:23 +0100
-Received: by wico1 with SMTP id o1so1185876wic.36
-        for <linux-mips@linux-mips.org>; Thu, 23 Feb 2012 10:14:17 -0800 (PST)
-Received-SPF: pass (google.com: domain of zajec5@gmail.com designates 10.216.139.147 as permitted sender) client-ip=10.216.139.147;
-Authentication-Results: mr.google.com; spf=pass (google.com: domain of zajec5@gmail.com designates 10.216.139.147 as permitted sender) smtp.mail=zajec5@gmail.com; dkim=pass header.i=zajec5@gmail.com
-Received: from mr.google.com ([10.216.139.147])
-        by 10.216.139.147 with SMTP id c19mr1502057wej.11.1330020857753 (num_hops = 1);
-        Thu, 23 Feb 2012 10:14:17 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 20:19:55 +0100 (CET)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:32782 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903635Ab2BWTTt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Feb 2012 20:19:49 +0100
+Received: by ggnf2 with SMTP id f2so874022ggn.36
+        for <linux-mips@linux-mips.org>; Thu, 23 Feb 2012 11:19:43 -0800 (PST)
+Received-SPF: pass (google.com: domain of ddaney.cavm@gmail.com designates 10.236.80.4 as permitted sender) client-ip=10.236.80.4;
+Authentication-Results: mr.google.com; spf=pass (google.com: domain of ddaney.cavm@gmail.com designates 10.236.80.4 as permitted sender) smtp.mail=ddaney.cavm@gmail.com; dkim=pass header.i=ddaney.cavm@gmail.com
+Received: from mr.google.com ([10.236.80.4])
+        by 10.236.80.4 with SMTP id j4mr5330334yhe.120.1330024783770 (num_hops = 1);
+        Thu, 23 Feb 2012 11:19:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        bh=FpBNnWKLBLd77dLhpimfJ2cGjbMI5uU8Knw6/XZEpLE=;
-        b=paffGuJUkcck+BHYZf8CWRvyY4rDsPJOBniu9qtVTa0C1tNQlu/QtJfaWE7GE6iykt
-         hLr6JR+bldAVHJb8NAPI+bTY11LJAVP1Vqv9myiSQ3nA3O1K3b0KSc2cYEKqNCNdCLas
-         wedlCwVu7Iv6W8fa6ulWucRbVsxXxY8Hh+RO8=
-MIME-Version: 1.0
-Received: by 10.216.139.147 with SMTP id c19mr1226952wej.11.1330020857691;
- Thu, 23 Feb 2012 10:14:17 -0800 (PST)
-Received: by 10.216.86.8 with HTTP; Thu, 23 Feb 2012 10:14:17 -0800 (PST)
-In-Reply-To: <1329676345-15856-2-git-send-email-hauke@hauke-m.de>
-References: <1329676345-15856-1-git-send-email-hauke@hauke-m.de>
-        <1329676345-15856-2-git-send-email-hauke@hauke-m.de>
-Date:   Thu, 23 Feb 2012 19:14:17 +0100
-Message-ID: <CACna6rwNEPY3iJCeWV3AmbBy7fQwQrgr9Oji6tro-Dr23y5udQ@mail.gmail.com>
-Subject: Re: [PATCH 01/11] ssb: sprom fix some sizes / signedness
-From:   =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     linville@tuxdriver.com, b43-dev@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        arend@broadcom.com, m@bues.ch
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 32527
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=MvXCEvX6QBI/PM9ko/YHmn0LRck0OPAF5usErf6rxrM=;
+        b=PtIXRwltOu1FL4lEZhlY9mgKC+b09CKhgxGh8Hxnf2922fwfjQ7wzSiU3sZeFmZm+M
+         hSbc/7rtSdhyt2BDKAu1Uw/mdJu74me4f0feme4rwWDrPEE8MndwZ8ut94W2UG5iiROZ
+         2sOL5m6/MR0ytIpfYIO1Dq53yuK0Rl8TrI9iM=
+Received: by 10.236.80.4 with SMTP id j4mr4313302yhe.120.1330024783718;
+        Thu, 23 Feb 2012 11:19:43 -0800 (PST)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id b73sm2214169yhj.22.2012.02.23.11.19.42
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 23 Feb 2012 11:19:42 -0800 (PST)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q1NJJe3M025437;
+        Thu, 23 Feb 2012 11:19:40 -0800
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q1NJJc8x025426;
+        Thu, 23 Feb 2012 11:19:38 -0800
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-mips@linux-mips.org, devel@driverdev.osuosl.org,
+        David Daney <david.daney@cavium.com>,
+        Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH] staging/octeon: Fix PHY binding in octeon-ethernet driver.
+Date:   Thu, 23 Feb 2012 11:19:31 -0800
+Message-Id: <1330024771-25396-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 32528
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zajec5@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-2012/2/19 Hauke Mehrtens <hauke@hauke-m.de>:
-> @@ -53,10 +53,10 @@ struct ssb_sprom {
->        u8 gpio1;               /* GPIO pin 1 */
->        u8 gpio2;               /* GPIO pin 2 */
->        u8 gpio3;               /* GPIO pin 3 */
-> -       u16 maxpwr_bg;          /* 2.4GHz Amplifier Max Power (in dBm Q5.2) */
-> -       u16 maxpwr_al;          /* 5.2GHz Amplifier Max Power (in dBm Q5.2) */
-> -       u16 maxpwr_a;           /* 5.3GHz Amplifier Max Power (in dBm Q5.2) */
-> -       u16 maxpwr_ah;          /* 5.8GHz Amplifier Max Power (in dBm Q5.2) */
-> +       u8 maxpwr_bg;           /* 2.4GHz Amplifier Max Power (in dBm Q5.2) */
-> +       u8 maxpwr_al;           /* 5.2GHz Amplifier Max Power (in dBm Q5.2) */
-> +       u8 maxpwr_a;            /* 5.3GHz Amplifier Max Power (in dBm Q5.2) */
-> +       u8 maxpwr_ah;           /* 5.8GHz Amplifier Max Power (in dBm Q5.2) */
->        u8 itssi_a;             /* Idle TSSI Target for A-PHY */
->        u8 itssi_bg;            /* Idle TSSI Target for B/G-PHY */
->        u8 tri2g;               /* 2.4GHz TX isolation */
+From: David Daney <david.daney@cavium.com>
 
-Just a note in case you're going to develop ssb/bcma/b43/brcm code.
-Please note we're trying to switch from properties you modified to
-struct ssb_sprom_core_pwr_info.
+Commit d6c25be (mdio-octeon: use an unique MDIO bus name.) changed the
+names used to refer to MDIO buses.  The ethernet driver must be
+changed to match, so that the PHY drivers can be attached.
 
-The patch still looks fine.
+Cc: Florian Fainelli <florian@openwrt.org>
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ drivers/staging/octeon/ethernet-mdio.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/staging/octeon/ethernet-mdio.c b/drivers/staging/octeon/ethernet-mdio.c
+index 63800ba..e31949c 100644
+--- a/drivers/staging/octeon/ethernet-mdio.c
++++ b/drivers/staging/octeon/ethernet-mdio.c
+@@ -164,9 +164,9 @@ int cvm_oct_phy_setup_device(struct net_device *dev)
+ 
+ 	int phy_addr = cvmx_helper_board_get_mii_address(priv->port);
+ 	if (phy_addr != -1) {
+-		char phy_id[20];
++		char phy_id[MII_BUS_ID_SIZE + 3];
+ 
+-		snprintf(phy_id, sizeof(phy_id), PHY_ID_FMT, "0", phy_addr);
++		snprintf(phy_id, sizeof(phy_id), PHY_ID_FMT, "mdio-octeon-0", phy_addr);
+ 
+ 		priv->phydev = phy_connect(dev, phy_id, cvm_oct_adjust_link, 0,
+ 					PHY_INTERFACE_MODE_GMII);
 -- 
-Rafał
+1.7.2.3

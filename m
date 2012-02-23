@@ -1,16 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:10:57 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:60679 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:20:03 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:57479 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903774Ab2BWQFL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Feb 2012 17:05:11 +0100
+        id S1903755Ab2BWQT6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 Feb 2012 17:19:58 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH] MIPS: lantiq: add ipi handlers to make vsmp work
-Date:   Thu, 23 Feb 2012 17:04:52 +0100
-Message-Id: <1330013092-13815-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 13/14] MIPS: lantiq: unify xway prom code
+Date:   Thu, 23 Feb 2012 17:03:12 +0100
+Message-Id: <1330012993-13510-13-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
-X-archive-position: 32520
+In-Reply-To: <1330012993-13510-1-git-send-email-blogic@openwrt.org>
+References: <1330012993-13510-1-git-send-email-blogic@openwrt.org>
+X-archive-position: 32521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -19,121 +21,240 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add IPI handlers to the interrupt code. This patch makes MIPS_MT_SMP work
-on lantiq SoCs.
+The xway prom-ase.c and prom-xway.c files are redundant. Unify the 2 files.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/irq.c  |   61 +++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/lantiq/prom.c |    5 ++++
- 2 files changed, 66 insertions(+), 0 deletions(-)
+ arch/mips/lantiq/xway/Makefile    |    5 +--
+ arch/mips/lantiq/xway/prom-ase.c  |   48 ----------------------
+ arch/mips/lantiq/xway/prom-xway.c |   64 ------------------------------
+ arch/mips/lantiq/xway/prom.c      |   79 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 80 insertions(+), 116 deletions(-)
+ delete mode 100644 arch/mips/lantiq/xway/prom-ase.c
+ delete mode 100644 arch/mips/lantiq/xway/prom-xway.c
+ create mode 100644 arch/mips/lantiq/xway/prom.c
 
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index 3b8cea5..71648a8 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -9,6 +9,7 @@
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 4dcb96f..89f0a11 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,7 +1,4 @@
+-obj-y := sysctrl.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o clk.o
+-
+-obj-$(CONFIG_SOC_XWAY) += prom-xway.o
+-obj-$(CONFIG_SOC_AMAZON_SE) += prom-ase.o
++obj-y := prom.o sysctrl.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o clk.o
  
- #include <linux/interrupt.h>
- #include <linux/ioport.h>
-+#include <linux/sched.h>
- 
- #include <asm/bootinfo.h>
- #include <asm/irq_cpu.h>
-@@ -51,6 +52,14 @@
- #define ltq_eiu_w32(x, y)	ltq_w32((x), ltq_eiu_membase + (y))
- #define ltq_eiu_r32(x)		ltq_r32(ltq_eiu_membase + (x))
- 
-+/* our 2 ipi interrupts for VSMP */
-+#define MIPS_CPU_IPI_RESCHED_IRQ	0
-+#define MIPS_CPU_IPI_CALL_IRQ		1
+ obj-$(CONFIG_LANTIQ_MACH_EASY50712) += mach-easy50712.o
+ obj-$(CONFIG_LANTIQ_MACH_EASY50601) += mach-easy50601.o
+diff --git a/arch/mips/lantiq/xway/prom-ase.c b/arch/mips/lantiq/xway/prom-ase.c
+deleted file mode 100644
+index 3f86a3b..0000000
+--- a/arch/mips/lantiq/xway/prom-ase.c
++++ /dev/null
+@@ -1,48 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/export.h>
+-#include <linux/clk.h>
+-#include <asm/bootinfo.h>
+-#include <asm/time.h>
+-
+-#include <lantiq_soc.h>
+-
+-#include "devices.h"
+-#include "../prom.h"
+-
+-#define SOC_AMAZON_SE	"Amazon_SE"
+-
+-#define PART_SHIFT	12
+-#define PART_MASK	0x0FFFFFFF
+-#define REV_SHIFT	28
+-#define REV_MASK	0xF0000000
+-
+-void __init ltq_soc_detect(struct ltq_soc_info *i)
+-{
+-	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
+-	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
+-	sprintf(i->rev_type, "1.%d", i->rev);
+-	switch (i->partnum) {
+-	case SOC_ID_AMAZON_SE:
+-		i->name = SOC_AMAZON_SE;
+-		i->type = SOC_TYPE_AMAZON_SE;
+-		break;
+-
+-	default:
+-		unreachable();
+-		break;
+-	}
+-}
+-
+-void __init ltq_soc_setup(void)
+-{
+-	ltq_register_ase_asc();
+-	ltq_register_gpio();
+-	ltq_register_wdt();
+-}
+diff --git a/arch/mips/lantiq/xway/prom-xway.c b/arch/mips/lantiq/xway/prom-xway.c
+deleted file mode 100644
+index d823a92..0000000
+--- a/arch/mips/lantiq/xway/prom-xway.c
++++ /dev/null
+@@ -1,64 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/export.h>
+-#include <linux/clk.h>
+-#include <asm/bootinfo.h>
+-#include <asm/time.h>
+-
+-#include <lantiq_soc.h>
+-
+-#include "devices.h"
+-#include "../prom.h"
+-
+-#define SOC_DANUBE	"Danube"
+-#define SOC_TWINPASS	"Twinpass"
+-#define SOC_AR9		"AR9"
+-
+-#define PART_SHIFT	12
+-#define PART_MASK	0x0FFFFFFF
+-#define REV_SHIFT	28
+-#define REV_MASK	0xF0000000
+-
+-void __init ltq_soc_detect(struct ltq_soc_info *i)
+-{
+-	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
+-	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
+-	sprintf(i->rev_type, "1.%d", i->rev);
+-	switch (i->partnum) {
+-	case SOC_ID_DANUBE1:
+-	case SOC_ID_DANUBE2:
+-		i->name = SOC_DANUBE;
+-		i->type = SOC_TYPE_DANUBE;
+-		break;
+-
+-	case SOC_ID_TWINPASS:
+-		i->name = SOC_TWINPASS;
+-		i->type = SOC_TYPE_DANUBE;
+-		break;
+-
+-	case SOC_ID_ARX188:
+-	case SOC_ID_ARX168:
+-	case SOC_ID_ARX182:
+-		i->name = SOC_AR9;
+-		i->type = SOC_TYPE_AR9;
+-		break;
+-
+-	default:
+-		unreachable();
+-		break;
+-	}
+-}
+-
+-void __init ltq_soc_setup(void)
+-{
+-	ltq_register_asc(0);
+-	ltq_register_asc(1);
+-	ltq_register_gpio();
+-	ltq_register_wdt();
+-}
+diff --git a/arch/mips/lantiq/xway/prom.c b/arch/mips/lantiq/xway/prom.c
+new file mode 100644
+index 0000000..0929acb
+--- /dev/null
++++ b/arch/mips/lantiq/xway/prom.c
+@@ -0,0 +1,79 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
 +
-+#if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
-+int gic_present;
++#include <linux/export.h>
++#include <linux/clk.h>
++#include <asm/bootinfo.h>
++#include <asm/time.h>
++
++#include <lantiq_soc.h>
++
++#include "../prom.h"
++#include "devices.h"
++
++#define SOC_DANUBE	"Danube"
++#define SOC_TWINPASS	"Twinpass"
++#define SOC_AR9		"AR9"
++#define SOC_VR9		"VR9"
++
++#define PART_SHIFT	12
++#define PART_MASK	0x0FFFFFFF
++#define REV_SHIFT	28
++#define REV_MASK	0xF0000000
++
++#define SOC_AMAZON_SE	"Amazon_SE"
++
++void __init ltq_soc_detect(struct ltq_soc_info *i)
++{
++	i->partnum = (ltq_r32(LTQ_MPS_CHIPID) & PART_MASK) >> PART_SHIFT;
++	i->rev = (ltq_r32(LTQ_MPS_CHIPID) & REV_MASK) >> REV_SHIFT;
++	sprintf(i->rev_type, "1.%d", i->rev);
++	switch (i->partnum) {
++	case SOC_ID_DANUBE1:
++	case SOC_ID_DANUBE2:
++		i->name = SOC_DANUBE;
++		i->type = SOC_TYPE_DANUBE;
++		break;
++
++	case SOC_ID_TWINPASS:
++		i->name = SOC_TWINPASS;
++		i->type = SOC_TYPE_DANUBE;
++		break;
++
++	case SOC_ID_ARX188:
++	case SOC_ID_ARX168:
++	case SOC_ID_ARX182:
++		i->name = SOC_AR9;
++		i->type = SOC_TYPE_AR9;
++		break;
++
++	case SOC_ID_AMAZON_SE:
++		i->name = SOC_AMAZON_SE;
++		i->type = SOC_TYPE_AMAZON_SE;
++#ifdef CONFIG_PCI
++		panic("ase is only supported for non pci kernels");
 +#endif
++		break;
 +
- static unsigned short ltq_eiu_irq[MAX_EIU] = {
- 	LTQ_EIU_IR0,
- 	LTQ_EIU_IR1,
-@@ -216,6 +225,47 @@ static void ltq_hw5_irqdispatch(void)
- 	do_IRQ(MIPS_CPU_TIMER_IRQ);
- }
- 
-+#ifdef CONFIG_MIPS_MT_SMP
-+void __init arch_init_ipiirq(int irq, struct irqaction *action)
-+{
-+	setup_irq(irq, action);
-+	irq_set_handler(irq, handle_percpu_irq);
-+}
-+
-+static void ltq_sw0_irqdispatch(void)
-+{
-+	do_IRQ(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_RESCHED_IRQ);
-+}
-+
-+static void ltq_sw1_irqdispatch(void)
-+{
-+	do_IRQ(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_CALL_IRQ);
-+}
-+static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
-+{
-+	scheduler_ipi();
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
-+{
-+	smp_call_function_interrupt();
-+	return IRQ_HANDLED;
-+}
-+
-+static struct irqaction irq_resched = {
-+	.handler	= ipi_resched_interrupt,
-+	.flags		= IRQF_PERCPU,
-+	.name		= "IPI_resched"
-+};
-+
-+static struct irqaction irq_call = {
-+	.handler	= ipi_call_interrupt,
-+	.flags		= IRQF_PERCPU,
-+	.name		= "IPI_call"
-+};
-+#endif
-+
- asmlinkage void plat_irq_dispatch(void)
- {
- 	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
-@@ -310,6 +360,17 @@ void __init arch_init_irq(void)
- 			irq_set_chip_and_handler(i, &ltq_irq_type,
- 				handle_level_irq);
- 
-+#if defined(CONFIG_MIPS_MT_SMP)
-+	if (cpu_has_vint) {
-+		pr_info("Setting up IPI vectored interrupts\n");
-+		set_vi_handler(MIPS_CPU_IPI_RESCHED_IRQ, ltq_sw0_irqdispatch);
-+		set_vi_handler(MIPS_CPU_IPI_CALL_IRQ, ltq_sw1_irqdispatch);
++	default:
++		unreachable();
++		break;
 +	}
-+	arch_init_ipiirq(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_RESCHED_IRQ,
-+		&irq_resched);
-+	arch_init_ipiirq(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_CALL_IRQ, &irq_call);
-+#endif
++}
 +
- #if !defined(CONFIG_MIPS_MT_SMP) && !defined(CONFIG_MIPS_MT_SMTC)
- 	set_c0_status(IE_IRQ0 | IE_IRQ1 | IE_IRQ2 |
- 		IE_IRQ3 | IE_IRQ4 | IE_IRQ5);
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index b002bc7..c68a4d2 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -108,4 +108,9 @@ void __init prom_init(void)
- 	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
- 	pr_info("SoC: %s\n", soc_info.sys_type);
- 	prom_init_cmdline();
-+
-+#if defined(CONFIG_MIPS_MT_SMP)
-+	if (register_vsmp_smp_ops())
-+		panic("failed to register_vsmp_smp_ops()");
-+#endif
- }
++void __init ltq_soc_setup(void)
++{
++	if (ltq_is_ase()) {
++		ltq_register_ase_asc();
++	} else {
++		ltq_register_asc(0);
++		ltq_register_asc(1);
++	}
++	ltq_register_gpio();
++	ltq_register_wdt();
++}
 -- 
 1.7.7.1

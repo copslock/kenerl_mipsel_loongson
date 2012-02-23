@@ -1,18 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:03:49 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47249 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:04:14 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47251 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903632Ab2BWQCP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Feb 2012 17:02:15 +0100
+        id S1903633Ab2BWQCQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 Feb 2012 17:02:16 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 5/6] MIPS: lantiq: convert pci to managed gpio
-Date:   Thu, 23 Feb 2012 17:01:52 +0100
-Message-Id: <1330012913-13293-5-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        netdev@vger.kernel.org
+Subject: [PATCH V2 4/6] NET: MIPS: lantiq: convert etop to managed gpio
+Date:   Thu, 23 Feb 2012 17:01:51 +0100
+Message-Id: <1330012913-13293-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1330012913-13293-1-git-send-email-blogic@openwrt.org>
 References: <1330012913-13293-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32504
+X-archive-position: 32505
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,64 +26,37 @@ ltq_gpio_request() now uses devres to manage the gpios. We need to pass a
 struct device pointer to make it work.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
+Cc: netdev@vger.kernel.org
 ---
- arch/mips/pci/pci-lantiq.c |   18 ++++++++++--------
- 1 files changed, 10 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/lantiq_etop.c |    9 ++++++---
+ 1 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
-index 3bf42c8..47b5d8e 100644
---- a/arch/mips/pci/pci-lantiq.c
-+++ b/arch/mips/pci/pci-lantiq.c
-@@ -150,24 +150,26 @@ static u32 ltq_calc_bar11mask(void)
- 	return bar11mask;
- }
- 
--static void ltq_pci_setup_gpio(int gpio)
-+static void ltq_pci_setup_gpio(struct device *dev)
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index 66ec54a..e5ec8b1 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -292,9 +292,6 @@ ltq_etop_gbit_init(void)
  {
-+	struct ltq_pci_data *conf = (struct ltq_pci_data *) dev->platform_data;
- 	int i;
- 	for (i = 0; i < ARRAY_SIZE(ltq_pci_gpio_map); i++) {
--		if (gpio & (1 << i)) {
--			ltq_gpio_request(ltq_pci_gpio_map[i].pin,
-+		if (conf->gpio & (1 << i)) {
-+			ltq_gpio_request(dev, ltq_pci_gpio_map[i].pin,
- 				ltq_pci_gpio_map[i].mux,
- 				ltq_pci_gpio_map[i].dir,
- 				ltq_pci_gpio_map[i].name);
+ 	ltq_pmu_enable(PMU_SWITCH);
+ 
+-	ltq_gpio_request(42, 2, 1, "MDIO");
+-	ltq_gpio_request(43, 2, 1, "MDC");
+-
+ 	ltq_gbit_w32_mask(0, GCTL0_SE, LTQ_GBIT_GCTL0);
+ 	/** Disable MDIO auto polling mode */
+ 	ltq_gbit_w32_mask(0, PX_CTL_DMDIO, LTQ_GBIT_P0_CTL);
+@@ -873,6 +870,12 @@ ltq_etop_probe(struct platform_device *pdev)
+ 			err = -ENOMEM;
+ 			goto err_out;
  		}
- 	}
--	ltq_gpio_request(21, 0, 1, "pci-reset");
--	ltq_pci_req_mask = (gpio >> PCI_REQ_SHIFT) & PCI_REQ_MASK;
-+	ltq_gpio_request(dev, 21, 0, 1, "pci-reset");
-+	ltq_pci_req_mask = (conf->gpio >> PCI_REQ_SHIFT) & PCI_REQ_MASK;
- }
- 
--static int __devinit ltq_pci_startup(struct ltq_pci_data *conf)
-+static int __devinit ltq_pci_startup(struct device *dev)
- {
- 	u32 temp_buffer;
-+	struct ltq_pci_data *conf = (struct ltq_pci_data *) dev->platform_data;
- 
- 	/* set clock to 33Mhz */
- 	if (ltq_is_ar9()) {
-@@ -190,7 +192,7 @@ static int __devinit ltq_pci_startup(struct ltq_pci_data *conf)
++		if (ltq_gpio_request(&pdev->dev, 42, 2, 1, "MDIO") ||
++				ltq_gpio_request(&pdev->dev, 43, 2, 1, "MDC")) {
++			dev_err(&pdev->dev, "failed to request MDIO gpios\n");
++			err = -EBUSY;
++			goto err_out;
++		}
  	}
  
- 	/* setup pci clock and gpis used by pci */
--	ltq_pci_setup_gpio(conf->gpio);
-+	ltq_pci_setup_gpio(dev);
- 
- 	/* enable auto-switching between PCI and EBU */
- 	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
-@@ -275,7 +277,7 @@ static int __devinit ltq_pci_probe(struct platform_device *pdev)
- 		ioremap_nocache(LTQ_PCI_CFG_BASE, LTQ_PCI_CFG_BASE);
- 	ltq_pci_controller.io_map_base =
- 		(unsigned long)ioremap(LTQ_PCI_IO_BASE, LTQ_PCI_IO_SIZE - 1);
--	ltq_pci_startup(ltq_pci_data);
-+	ltq_pci_startup(&pdev->dev);
- 	register_pci_controller(&ltq_pci_controller);
- 
- 	return 0;
+ 	dev = alloc_etherdev_mq(sizeof(struct ltq_etop_priv), 4);
 -- 
 1.7.7.1

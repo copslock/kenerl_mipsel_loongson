@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:10:07 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47420 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:10:35 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47425 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903765Ab2BWQEE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 23 Feb 2012 17:04:04 +0100
+        id S1903766Ab2BWQEF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 23 Feb 2012 17:04:05 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        netdev@vger.kernel.org
-Subject: [PATCH V2 2/3] NET: MIPS: lantiq: use module_platform_driver inside lantiq ethernet driver
-Date:   Thu, 23 Feb 2012 17:03:43 +0100
-Message-Id: <1330013024-13622-2-git-send-email-blogic@openwrt.org>
+        linux-watchdog@vger.kernel.org
+Subject: [PATCH V2 3/3] WDT: MIPS: lantiq: use module_platform_driver inside lantiq watchdog driver
+Date:   Thu, 23 Feb 2012 17:03:44 +0100
+Message-Id: <1330013024-13622-3-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1330013024-13622-1-git-send-email-blogic@openwrt.org>
 References: <1330013024-13622-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32518
+X-archive-position: 32519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,57 +25,54 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 Reduce boilerplate code by converting driver to module_platform_driver.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: netdev@vger.kernel.org
+Cc: linux-watchdog@vger.kernel.org
 ---
- drivers/net/ethernet/lantiq_etop.c |   22 +++-------------------
- 1 files changed, 3 insertions(+), 19 deletions(-)
+ drivers/watchdog/lantiq_wdt.c |   19 +++----------------
+ 1 files changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 6b2e4b4..584794f 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -839,7 +839,7 @@ static const struct net_device_ops ltq_eth_netdev_ops = {
- 	.ndo_tx_timeout = ltq_etop_tx_timeout,
+diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
+index fa4866b..70127b3 100644
+--- a/drivers/watchdog/lantiq_wdt.c
++++ b/drivers/watchdog/lantiq_wdt.c
+@@ -182,7 +182,7 @@ static struct miscdevice ltq_wdt_miscdev = {
+ 	.fops	= &ltq_wdt_fops,
  };
  
 -static int __init
 +static int __devinit
- ltq_etop_probe(struct platform_device *pdev)
+ ltq_wdt_probe(struct platform_device *pdev)
  {
- 	struct net_device *dev;
-@@ -959,6 +959,7 @@ ltq_etop_remove(struct platform_device *pdev)
- }
+ 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -227,6 +227,7 @@ ltq_wdt_remove(struct platform_device *pdev)
  
- static struct platform_driver ltq_mii_driver = {
-+	.probe = ltq_etop_probe,
- 	.remove = __devexit_p(ltq_etop_remove),
+ 
+ static struct platform_driver ltq_wdt_driver = {
++	.probe = ltq_wdt_probe,
+ 	.remove = __devexit_p(ltq_wdt_remove),
  	.driver = {
- 		.name = "ltq_etop",
-@@ -966,24 +967,7 @@ static struct platform_driver ltq_mii_driver = {
+ 		.name = "ltq_wdt",
+@@ -234,21 +235,7 @@ static struct platform_driver ltq_wdt_driver = {
  	},
  };
  
--int __init
--init_ltq_etop(void)
+-static int __init
+-init_ltq_wdt(void)
 -{
--	int ret = platform_driver_probe(&ltq_mii_driver, ltq_etop_probe);
--
--	if (ret)
--		pr_err("ltq_etop: Error registering platfom driver!");
--	return ret;
+-	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
 -}
 -
 -static void __exit
--exit_ltq_etop(void)
+-exit_ltq_wdt(void)
 -{
--	platform_driver_unregister(&ltq_mii_driver);
+-	return platform_driver_unregister(&ltq_wdt_driver);
 -}
 -
--module_init(init_ltq_etop);
--module_exit(exit_ltq_etop);
-+module_platform_driver(ltq_mii_driver);
+-module_init(init_ltq_wdt);
+-module_exit(exit_ltq_wdt);
+-
++module_platform_driver(ltq_wdt_driver);
+ module_param(nowayout, int, 0);
+ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started");
  
- MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
- MODULE_DESCRIPTION("Lantiq SoC ETOP");
 -- 
 1.7.7.1

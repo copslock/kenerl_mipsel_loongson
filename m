@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:06:04 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47354 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:06:34 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47356 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903642Ab2BWQDd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903656Ab2BWQDd (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 23 Feb 2012 17:03:33 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 03/14] MIPS: lantiq: convert to clkdev api
-Date:   Thu, 23 Feb 2012 17:03:02 +0100
-Message-Id: <1330012993-13510-3-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 04/14] MIPS: lantiq: convert xway to clkdev api
+Date:   Thu, 23 Feb 2012 17:03:03 +0100
+Message-Id: <1330012993-13510-4-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1330012993-13510-1-git-send-email-blogic@openwrt.org>
 References: <1330012993-13510-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32509
+X-archive-position: 32510
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -21,296 +21,733 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-* Change setup from HAVE_CLK -> HAVE_MACH_CLKDEV/CLKDEV_LOOKUP
-* Add clk_activate/clk_deactivate
-* Add better error paths to the clk_*() functions
-* Change the way our static clocks are referenced
+Unify xway/ase clock code and add clkdev hooks to sysctrl.c
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/Kconfig                          |    3 +-
- arch/mips/include/asm/mach-lantiq/lantiq.h |   20 ++----
- arch/mips/lantiq/clk.c                     |   96 +++++++++++++++------------
- arch/mips/lantiq/clk.h                     |   52 ++++++++++++++-
- arch/mips/lantiq/prom.c                    |    1 -
- 5 files changed, 111 insertions(+), 61 deletions(-)
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   13 --
+ arch/mips/lantiq/xway/Makefile                     |    6 +-
+ arch/mips/lantiq/xway/clk-ase.c                    |   48 ----
+ arch/mips/lantiq/xway/clk-xway.c                   |  223 -------------------
+ arch/mips/lantiq/xway/clk.c                        |  227 ++++++++++++++++++++
+ arch/mips/lantiq/xway/sysctrl.c                    |  104 ++++++++-
+ 6 files changed, 325 insertions(+), 296 deletions(-)
+ delete mode 100644 arch/mips/lantiq/xway/clk-ase.c
+ delete mode 100644 arch/mips/lantiq/xway/clk-xway.c
+ create mode 100644 arch/mips/lantiq/xway/clk.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c4c1312..b106c9e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -228,7 +228,8 @@ config LANTIQ
- 	select ARCH_REQUIRE_GPIOLIB
- 	select SWAP_IO_SPACE
- 	select BOOT_RAW
--	select HAVE_CLK
-+	select HAVE_MACH_CLKDEV
-+	select CLKDEV_LOOKUP
- 	select MIPS_MACHINE
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index 1b60181..2208a9db 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -81,15 +81,6 @@
+ #define LTQ_PMU_BASE_ADDR	0x1F102000
+ #define LTQ_PMU_SIZE		0x1000
  
- config LASAT
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
-index d90eef3..52f1cdf 100644
---- a/arch/mips/include/asm/mach-lantiq/lantiq.h
-+++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
-@@ -9,6 +9,7 @@
- #define _LANTIQ_H__
+-#define PMU_DMA			0x0020
+-#define PMU_EPHY		0x0080
+-#define PMU_USB			0x8041
+-#define PMU_LED			0x0800
+-#define PMU_GPT			0x1000
+-#define PMU_PPE			0x2000
+-#define PMU_FPI			0x4000
+-#define PMU_SWITCH		0x10000000
+-
+ /* ETOP - ethernet */
+ #define LTQ_ETOP_BASE_ADDR	0x1E180000
+ #define LTQ_ETOP_SIZE		0x40000
+@@ -167,10 +158,6 @@ static inline void ltq_cgu_w32_mask(u32 c, u32 s, u32 r)
+ 	ltq_cgu_w32((ltq_cgu_r32(r) & ~(c)) | (s), r);
+ }
  
- #include <linux/irq.h>
+-extern void ltq_pmu_enable(unsigned int module);
+-extern void ltq_pmu_disable(unsigned int module);
+-extern void ltq_cgu_enable(unsigned int clk);
+-
+ static inline int ltq_is_ase(void)
+ {
+ 	return (ltq_get_soc_type() == SOC_TYPE_AMAZON_SE);
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 6678402..4dcb96f 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,7 +1,7 @@
+-obj-y := sysctrl.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o
++obj-y := sysctrl.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o clk.o
+ 
+-obj-$(CONFIG_SOC_XWAY) += clk-xway.o prom-xway.o
+-obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o prom-ase.o
++obj-$(CONFIG_SOC_XWAY) += prom-xway.o
++obj-$(CONFIG_SOC_AMAZON_SE) += prom-ase.o
+ 
+ obj-$(CONFIG_LANTIQ_MACH_EASY50712) += mach-easy50712.o
+ obj-$(CONFIG_LANTIQ_MACH_EASY50601) += mach-easy50601.o
+diff --git a/arch/mips/lantiq/xway/clk-ase.c b/arch/mips/lantiq/xway/clk-ase.c
+deleted file mode 100644
+index 6522583..0000000
+--- a/arch/mips/lantiq/xway/clk-ase.c
++++ /dev/null
+@@ -1,48 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/io.h>
+-#include <linux/export.h>
+-#include <linux/init.h>
+-#include <linux/clk.h>
+-
+-#include <asm/time.h>
+-#include <asm/irq.h>
+-#include <asm/div64.h>
+-
+-#include <lantiq_soc.h>
+-
+-/* cgu registers */
+-#define LTQ_CGU_SYS	0x0010
+-
+-unsigned int ltq_get_io_region_clock(void)
+-{
+-	return CLOCK_133M;
+-}
+-EXPORT_SYMBOL(ltq_get_io_region_clock);
+-
+-unsigned int ltq_get_fpi_bus_clock(int fpi)
+-{
+-	return CLOCK_133M;
+-}
+-EXPORT_SYMBOL(ltq_get_fpi_bus_clock);
+-
+-unsigned int ltq_get_cpu_hz(void)
+-{
+-	if (ltq_cgu_r32(LTQ_CGU_SYS) & (1 << 5))
+-		return CLOCK_266M;
+-	else
+-		return CLOCK_133M;
+-}
+-EXPORT_SYMBOL(ltq_get_cpu_hz);
+-
+-unsigned int ltq_get_fpi_hz(void)
+-{
+-	return CLOCK_133M;
+-}
+-EXPORT_SYMBOL(ltq_get_fpi_hz);
+diff --git a/arch/mips/lantiq/xway/clk-xway.c b/arch/mips/lantiq/xway/clk-xway.c
+deleted file mode 100644
+index 696b1a3..0000000
+--- a/arch/mips/lantiq/xway/clk-xway.c
++++ /dev/null
+@@ -1,223 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/io.h>
+-#include <linux/export.h>
+-#include <linux/init.h>
+-#include <linux/clk.h>
+-
+-#include <asm/time.h>
+-#include <asm/irq.h>
+-#include <asm/div64.h>
+-
+-#include <lantiq_soc.h>
+-
+-static unsigned int ltq_ram_clocks[] = {
+-	CLOCK_167M, CLOCK_133M, CLOCK_111M, CLOCK_83M };
+-#define DDR_HZ ltq_ram_clocks[ltq_cgu_r32(LTQ_CGU_SYS) & 0x3]
+-
+-#define BASIC_FREQUENCY_1	35328000
+-#define BASIC_FREQUENCY_2	36000000
+-#define BASIS_REQUENCY_USB	12000000
+-
+-#define GET_BITS(x, msb, lsb) \
+-	(((x) & ((1 << ((msb) + 1)) - 1)) >> (lsb))
+-
+-#define LTQ_CGU_PLL0_CFG	0x0004
+-#define LTQ_CGU_PLL1_CFG	0x0008
+-#define LTQ_CGU_PLL2_CFG	0x000C
+-#define LTQ_CGU_SYS		0x0010
+-#define LTQ_CGU_UPDATE		0x0014
+-#define LTQ_CGU_IF_CLK		0x0018
+-#define LTQ_CGU_OSC_CON		0x001C
+-#define LTQ_CGU_SMD		0x0020
+-#define LTQ_CGU_CT1SR		0x0028
+-#define LTQ_CGU_CT2SR		0x002C
+-#define LTQ_CGU_PCMCR		0x0030
+-#define LTQ_CGU_PCI_CR		0x0034
+-#define LTQ_CGU_PD_PC		0x0038
+-#define LTQ_CGU_FMR		0x003C
+-
+-#define CGU_PLL0_PHASE_DIVIDER_ENABLE	\
+-	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 31))
+-#define CGU_PLL0_BYPASS			\
+-	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 30))
+-#define CGU_PLL0_CFG_DSMSEL		\
+-	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 28))
+-#define CGU_PLL0_CFG_FRAC_EN		\
+-	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 27))
+-#define CGU_PLL1_SRC			\
+-	(ltq_cgu_r32(LTQ_CGU_PLL1_CFG) & (1 << 31))
+-#define CGU_PLL2_PHASE_DIVIDER_ENABLE	\
+-	(ltq_cgu_r32(LTQ_CGU_PLL2_CFG) & (1 << 20))
+-#define CGU_SYS_FPI_SEL			(1 << 6)
+-#define CGU_SYS_DDR_SEL			0x3
+-#define CGU_PLL0_SRC			(1 << 29)
+-
+-#define CGU_PLL0_CFG_PLLK	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 26, 17)
+-#define CGU_PLL0_CFG_PLLN	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 12, 6)
+-#define CGU_PLL0_CFG_PLLM	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 5, 2)
+-#define CGU_PLL2_SRC		GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL2_CFG), 18, 17)
+-#define CGU_PLL2_CFG_INPUT_DIV	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL2_CFG), 16, 13)
+-
+-static unsigned int ltq_get_pll0_fdiv(void);
+-
+-static inline unsigned int get_input_clock(int pll)
+-{
+-	switch (pll) {
+-	case 0:
+-		if (ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & CGU_PLL0_SRC)
+-			return BASIS_REQUENCY_USB;
+-		else if (CGU_PLL0_PHASE_DIVIDER_ENABLE)
+-			return BASIC_FREQUENCY_1;
+-		else
+-			return BASIC_FREQUENCY_2;
+-	case 1:
+-		if (CGU_PLL1_SRC)
+-			return BASIS_REQUENCY_USB;
+-		else if (CGU_PLL0_PHASE_DIVIDER_ENABLE)
+-			return BASIC_FREQUENCY_1;
+-		else
+-			return BASIC_FREQUENCY_2;
+-	case 2:
+-		switch (CGU_PLL2_SRC) {
+-		case 0:
+-			return ltq_get_pll0_fdiv();
+-		case 1:
+-			return CGU_PLL2_PHASE_DIVIDER_ENABLE ?
+-				BASIC_FREQUENCY_1 :
+-				BASIC_FREQUENCY_2;
+-		case 2:
+-			return BASIS_REQUENCY_USB;
+-		}
+-	default:
+-		return 0;
+-	}
+-}
+-
+-static inline unsigned int cal_dsm(int pll, unsigned int num, unsigned int den)
+-{
+-	u64 res, clock = get_input_clock(pll);
+-
+-	res = num * clock;
+-	do_div(res, den);
+-	return res;
+-}
+-
+-static inline unsigned int mash_dsm(int pll, unsigned int M, unsigned int N,
+-	unsigned int K)
+-{
+-	unsigned int num = ((N + 1) << 10) + K;
+-	unsigned int den = (M + 1) << 10;
+-
+-	return cal_dsm(pll, num, den);
+-}
+-
+-static inline unsigned int ssff_dsm_1(int pll, unsigned int M, unsigned int N,
+-	unsigned int K)
+-{
+-	unsigned int num = ((N + 1) << 11) + K + 512;
+-	unsigned int den = (M + 1) << 11;
+-
+-	return cal_dsm(pll, num, den);
+-}
+-
+-static inline unsigned int ssff_dsm_2(int pll, unsigned int M, unsigned int N,
+-	unsigned int K)
+-{
+-	unsigned int num = K >= 512 ?
+-		((N + 1) << 12) + K - 512 : ((N + 1) << 12) + K + 3584;
+-	unsigned int den = (M + 1) << 12;
+-
+-	return cal_dsm(pll, num, den);
+-}
+-
+-static inline unsigned int dsm(int pll, unsigned int M, unsigned int N,
+-	unsigned int K, unsigned int dsmsel, unsigned int phase_div_en)
+-{
+-	if (!dsmsel)
+-		return mash_dsm(pll, M, N, K);
+-	else if (!phase_div_en)
+-		return mash_dsm(pll, M, N, K);
+-	else
+-		return ssff_dsm_2(pll, M, N, K);
+-}
+-
+-static inline unsigned int ltq_get_pll0_fosc(void)
+-{
+-	if (CGU_PLL0_BYPASS)
+-		return get_input_clock(0);
+-	else
+-		return !CGU_PLL0_CFG_FRAC_EN
+-			? dsm(0, CGU_PLL0_CFG_PLLM, CGU_PLL0_CFG_PLLN, 0,
+-				CGU_PLL0_CFG_DSMSEL,
+-				CGU_PLL0_PHASE_DIVIDER_ENABLE)
+-			: dsm(0, CGU_PLL0_CFG_PLLM, CGU_PLL0_CFG_PLLN,
+-				CGU_PLL0_CFG_PLLK, CGU_PLL0_CFG_DSMSEL,
+-				CGU_PLL0_PHASE_DIVIDER_ENABLE);
+-}
+-
+-static unsigned int ltq_get_pll0_fdiv(void)
+-{
+-	unsigned int div = CGU_PLL2_CFG_INPUT_DIV + 1;
+-
+-	return (ltq_get_pll0_fosc() + (div >> 1)) / div;
+-}
+-
+-unsigned int ltq_get_io_region_clock(void)
+-{
+-	unsigned int ret = ltq_get_pll0_fosc();
+-
+-	switch (ltq_cgu_r32(LTQ_CGU_PLL2_CFG) & CGU_SYS_DDR_SEL) {
+-	default:
+-	case 0:
+-		return (ret + 1) / 2;
+-	case 1:
+-		return (ret * 2 + 2) / 5;
+-	case 2:
+-		return (ret + 1) / 3;
+-	case 3:
+-		return (ret + 2) / 4;
+-	}
+-}
+-EXPORT_SYMBOL(ltq_get_io_region_clock);
+-
+-unsigned int ltq_get_fpi_bus_clock(int fpi)
+-{
+-	unsigned int ret = ltq_get_io_region_clock();
+-
+-	if ((fpi == 2) && (ltq_cgu_r32(LTQ_CGU_SYS) & CGU_SYS_FPI_SEL))
+-		ret >>= 1;
+-	return ret;
+-}
+-EXPORT_SYMBOL(ltq_get_fpi_bus_clock);
+-
+-unsigned int ltq_get_cpu_hz(void)
+-{
+-	switch (ltq_cgu_r32(LTQ_CGU_SYS) & 0xc) {
+-	case 0:
+-		return CLOCK_333M;
+-	case 4:
+-		return DDR_HZ;
+-	case 8:
+-		return DDR_HZ << 1;
+-	default:
+-		return DDR_HZ >> 1;
+-	}
+-}
+-EXPORT_SYMBOL(ltq_get_cpu_hz);
+-
+-unsigned int ltq_get_fpi_hz(void)
+-{
+-	unsigned int ddr_clock = DDR_HZ;
+-
+-	if (ltq_cgu_r32(LTQ_CGU_SYS) & 0x40)
+-		return ddr_clock >> 1;
+-	return ddr_clock;
+-}
+-EXPORT_SYMBOL(ltq_get_fpi_hz);
+diff --git a/arch/mips/lantiq/xway/clk.c b/arch/mips/lantiq/xway/clk.c
+new file mode 100644
+index 0000000..f3b50fc
+--- /dev/null
++++ b/arch/mips/lantiq/xway/clk.c
+@@ -0,0 +1,227 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
++ */
++
++#include <linux/io.h>
++#include <linux/export.h>
++#include <linux/init.h>
 +#include <linux/clk.h>
++
++#include <asm/time.h>
++#include <asm/irq.h>
++#include <asm/div64.h>
++
++#include <lantiq_soc.h>
++
++#include "../clk.h"
++
++static unsigned int ltq_ram_clocks[] = {
++	CLOCK_167M, CLOCK_133M, CLOCK_111M, CLOCK_83M };
++#define DDR_HZ ltq_ram_clocks[ltq_cgu_r32(LTQ_CGU_SYS) & 0x3]
++
++#define BASIC_FREQUENCY_1	35328000
++#define BASIC_FREQUENCY_2	36000000
++#define BASIS_REQUENCY_USB	12000000
++
++#define GET_BITS(x, msb, lsb) \
++	(((x) & ((1 << ((msb) + 1)) - 1)) >> (lsb))
++
++/* legacy xway clock */
++#define LTQ_CGU_PLL0_CFG	0x0004
++#define LTQ_CGU_PLL1_CFG	0x0008
++#define LTQ_CGU_PLL2_CFG	0x000C
++#define LTQ_CGU_SYS		0x0010
++#define LTQ_CGU_UPDATE		0x0014
++#define LTQ_CGU_IF_CLK		0x0018
++#define LTQ_CGU_OSC_CON		0x001C
++#define LTQ_CGU_SMD		0x0020
++#define LTQ_CGU_CT1SR		0x0028
++#define LTQ_CGU_CT2SR		0x002C
++#define LTQ_CGU_PCMCR		0x0030
++#define LTQ_CGU_PCI_CR		0x0034
++#define LTQ_CGU_PD_PC		0x0038
++#define LTQ_CGU_FMR		0x003C
++
++#define CGU_PLL0_PHASE_DIVIDER_ENABLE	\
++	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 31))
++#define CGU_PLL0_BYPASS			\
++	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 30))
++#define CGU_PLL0_CFG_DSMSEL		\
++	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 28))
++#define CGU_PLL0_CFG_FRAC_EN		\
++	(ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & (1 << 27))
++#define CGU_PLL1_SRC			\
++	(ltq_cgu_r32(LTQ_CGU_PLL1_CFG) & (1 << 31))
++#define CGU_PLL2_PHASE_DIVIDER_ENABLE	\
++	(ltq_cgu_r32(LTQ_CGU_PLL2_CFG) & (1 << 20))
++#define CGU_SYS_FPI_SEL			(1 << 6)
++#define CGU_SYS_DDR_SEL			0x3
++#define CGU_PLL0_SRC			(1 << 29)
++
++#define CGU_PLL0_CFG_PLLK	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 26, 17)
++#define CGU_PLL0_CFG_PLLN	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 12, 6)
++#define CGU_PLL0_CFG_PLLM	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL0_CFG), 5, 2)
++#define CGU_PLL2_SRC		GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL2_CFG), 18, 17)
++#define CGU_PLL2_CFG_INPUT_DIV	GET_BITS(ltq_cgu_r32(LTQ_CGU_PLL2_CFG), 16, 13)
++
++/* vr9 clock */
++#define LTQ_CGU_SYS_VR9	0x0c
++#define LTQ_CGU_IF_CLK_VR9	0x24
++
++
++static unsigned int ltq_get_pll0_fdiv(void);
++
++static inline unsigned int get_input_clock(int pll)
++{
++	switch (pll) {
++	case 0:
++		if (ltq_cgu_r32(LTQ_CGU_PLL0_CFG) & CGU_PLL0_SRC)
++			return BASIS_REQUENCY_USB;
++		else if (CGU_PLL0_PHASE_DIVIDER_ENABLE)
++			return BASIC_FREQUENCY_1;
++		else
++			return BASIC_FREQUENCY_2;
++	case 1:
++		if (CGU_PLL1_SRC)
++			return BASIS_REQUENCY_USB;
++		else if (CGU_PLL0_PHASE_DIVIDER_ENABLE)
++			return BASIC_FREQUENCY_1;
++		else
++			return BASIC_FREQUENCY_2;
++	case 2:
++		switch (CGU_PLL2_SRC) {
++		case 0:
++			return ltq_get_pll0_fdiv();
++		case 1:
++			return CGU_PLL2_PHASE_DIVIDER_ENABLE ?
++				BASIC_FREQUENCY_1 :
++				BASIC_FREQUENCY_2;
++		case 2:
++			return BASIS_REQUENCY_USB;
++		}
++	default:
++		return 0;
++	}
++}
++
++static inline unsigned int cal_dsm(int pll, unsigned int num, unsigned int den)
++{
++	u64 res, clock = get_input_clock(pll);
++
++	res = num * clock;
++	do_div(res, den);
++	return res;
++}
++
++static inline unsigned int mash_dsm(int pll, unsigned int M, unsigned int N,
++	unsigned int K)
++{
++	unsigned int num = ((N + 1) << 10) + K;
++	unsigned int den = (M + 1) << 10;
++
++	return cal_dsm(pll, num, den);
++}
++
++static inline unsigned int ssff_dsm_1(int pll, unsigned int M, unsigned int N,
++	unsigned int K)
++{
++	unsigned int num = ((N + 1) << 11) + K + 512;
++	unsigned int den = (M + 1) << 11;
++
++	return cal_dsm(pll, num, den);
++}
++
++static inline unsigned int ssff_dsm_2(int pll, unsigned int M, unsigned int N,
++	unsigned int K)
++{
++	unsigned int num = K >= 512 ?
++		((N + 1) << 12) + K - 512 : ((N + 1) << 12) + K + 3584;
++	unsigned int den = (M + 1) << 12;
++
++	return cal_dsm(pll, num, den);
++}
++
++static inline unsigned int dsm(int pll, unsigned int M, unsigned int N,
++	unsigned int K, unsigned int dsmsel, unsigned int phase_div_en)
++{
++	if (!dsmsel)
++		return mash_dsm(pll, M, N, K);
++	else if (!phase_div_en)
++		return mash_dsm(pll, M, N, K);
++	else
++		return ssff_dsm_2(pll, M, N, K);
++}
++
++static inline unsigned int ltq_get_pll0_fosc(void)
++{
++	if (CGU_PLL0_BYPASS)
++		return get_input_clock(0);
++	else
++		return !CGU_PLL0_CFG_FRAC_EN
++			? dsm(0, CGU_PLL0_CFG_PLLM, CGU_PLL0_CFG_PLLN, 0,
++				CGU_PLL0_CFG_DSMSEL,
++				CGU_PLL0_PHASE_DIVIDER_ENABLE)
++			: dsm(0, CGU_PLL0_CFG_PLLM, CGU_PLL0_CFG_PLLN,
++				CGU_PLL0_CFG_PLLK, CGU_PLL0_CFG_DSMSEL,
++				CGU_PLL0_PHASE_DIVIDER_ENABLE);
++}
++
++static unsigned int ltq_get_pll0_fdiv(void)
++{
++	unsigned int div = CGU_PLL2_CFG_INPUT_DIV + 1;
++
++	return (ltq_get_pll0_fosc() + (div >> 1)) / div;
++}
++
++unsigned long ltq_danube_io_region_clock(void)
++{
++	unsigned int ret = ltq_get_pll0_fosc();
++
++	switch (ltq_cgu_r32(LTQ_CGU_PLL2_CFG) & CGU_SYS_DDR_SEL) {
++	default:
++	case 0:
++		return (ret + 1) / 2;
++	case 1:
++		return (ret * 2 + 2) / 5;
++	case 2:
++		return (ret + 1) / 3;
++	case 3:
++		return (ret + 2) / 4;
++	}
++}
++
++unsigned long ltq_danube_fpi_bus_clock(int fpi)
++{
++	unsigned long ret = ltq_danube_io_region_clock();
++
++	if ((fpi == 2) && (ltq_cgu_r32(LTQ_CGU_SYS) & CGU_SYS_FPI_SEL))
++		ret >>= 1;
++	return ret;
++}
++
++unsigned long ltq_danube_cpu_hz(void)
++{
++	switch (ltq_cgu_r32(LTQ_CGU_SYS) & 0xc) {
++	case 0:
++		return CLOCK_333M;
++	case 4:
++		return DDR_HZ;
++	case 8:
++		return DDR_HZ << 1;
++	default:
++		return DDR_HZ >> 1;
++	}
++}
++
++unsigned long ltq_danube_fpi_hz(void)
++{
++	unsigned long ddr_clock = DDR_HZ;
++
++	if (ltq_cgu_r32(LTQ_CGU_SYS) & 0x40)
++		return ddr_clock >> 1;
++	return ddr_clock;
++}
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 38c122f..22d076e 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -8,17 +8,48 @@
+ 
  #include <linux/ioport.h>
- 
- /* generic reg access */
-@@ -24,18 +25,6 @@ static inline void ltq_w32_mask(u32 c, u32 s, volatile void __iomem *r)
- extern unsigned int ltq_get_cpu_ver(void);
- extern unsigned int ltq_get_soc_type(void);
- 
--/* clock speeds */
--#define CLOCK_60M	60000000
--#define CLOCK_83M	83333333
--#define CLOCK_100M	100000000
--#define CLOCK_111M	111111111
--#define CLOCK_133M	133333333
--#define CLOCK_167M	166666667
--#define CLOCK_200M	200000000
--#define CLOCK_266M	266666666
--#define CLOCK_333M	333333333
--#define CLOCK_400M	400000000
--
- /* spinlock all ebu i/o */
- extern spinlock_t ebu_lock;
- 
-@@ -48,6 +37,13 @@ extern void ltq_disable_irq(struct irq_data *data);
- extern void ltq_mask_and_ack_irq(struct irq_data *data);
- extern void ltq_enable_irq(struct irq_data *data);
- 
-+/* clock handling */
-+extern int clk_activate(struct clk *clk);
-+extern void clk_deactivate(struct clk *clk);
-+extern struct clk *clk_get_cpu(void);
-+extern struct clk *clk_get_fpi(void);
-+extern struct clk *clk_get_io(void);
-+
- /* find out what caused the last cpu reset */
- extern int ltq_reset_cause(void);
- 
-diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-index 39eef7f..84a201e 100644
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/types.h>
- #include <linux/clk.h>
-+#include <linux/clkdev.h>
- #include <linux/err.h>
- #include <linux/list.h>
- 
-@@ -24,33 +25,29 @@
- #include "clk.h"
- #include "prom.h"
- 
--struct clk {
--	const char *name;
--	unsigned long rate;
--	unsigned long (*get_rate) (void);
--};
-+/* lantiq socs have 3 static clocks */
-+static struct clk cpu_clk_generic[3];
- 
--static struct clk *cpu_clk;
--static int cpu_clk_cnt;
-+void clkdev_add_static(unsigned long cpu, unsigned long fpi, unsigned long io)
-+{
-+	cpu_clk_generic[0].rate = cpu;
-+	cpu_clk_generic[1].rate = fpi;
-+	cpu_clk_generic[2].rate = io;
-+}
- 
--/* lantiq socs have 3 static clocks */
--static struct clk cpu_clk_generic[] = {
--	{
--		.name = "cpu",
--		.get_rate = ltq_get_cpu_hz,
--	}, {
--		.name = "fpi",
--		.get_rate = ltq_get_fpi_hz,
--	}, {
--		.name = "io",
--		.get_rate = ltq_get_io_region_clock,
--	},
--};
--
--void clk_init(void)
-+struct clk *clk_get_cpu(void)
-+{
-+	return &cpu_clk_generic[0];
-+}
-+
-+struct clk *clk_get_fpi(void)
- {
--	cpu_clk = cpu_clk_generic;
--	cpu_clk_cnt = ARRAY_SIZE(cpu_clk_generic);
-+	return &cpu_clk_generic[1];
-+}
-+
-+struct clk *clk_get_io(void)
-+{
-+	return &cpu_clk_generic[2];
- }
- 
- static inline int clk_good(struct clk *clk)
-@@ -73,36 +70,49 @@ unsigned long clk_get_rate(struct clk *clk)
- }
- EXPORT_SYMBOL(clk_get_rate);
- 
--struct clk *clk_get(struct device *dev, const char *id)
-+int clk_enable(struct clk *clk)
- {
--	int i;
-+	if (unlikely(!clk_good(clk)))
-+		return -1;
-+
-+	if (clk->enable)
-+		return clk->enable(clk);
- 
--	for (i = 0; i < cpu_clk_cnt; i++)
--		if (!strcmp(id, cpu_clk[i].name))
--			return &cpu_clk[i];
--	BUG();
--	return ERR_PTR(-ENOENT);
-+	return -1;
- }
--EXPORT_SYMBOL(clk_get);
-+EXPORT_SYMBOL(clk_enable);
- 
--void clk_put(struct clk *clk)
-+void clk_disable(struct clk *clk)
- {
--	/* not used */
-+	if (unlikely(!clk_good(clk)))
-+		return;
-+
-+	if (clk->disable)
-+		clk->disable(clk);
- }
--EXPORT_SYMBOL(clk_put);
-+EXPORT_SYMBOL(clk_disable);
- 
--int clk_enable(struct clk *clk)
-+int clk_activate(struct clk *clk)
- {
--	/* not used */
--	return 0;
-+	if (unlikely(!clk_good(clk)))
-+		return -1;
-+
-+	if (clk->activate)
-+		return clk->activate(clk);
-+
-+	return -1;
- }
--EXPORT_SYMBOL(clk_enable);
-+EXPORT_SYMBOL(clk_activate);
- 
--void clk_disable(struct clk *clk)
-+void clk_deactivate(struct clk *clk)
- {
--	/* not used */
-+	if (unlikely(!clk_good(clk)))
-+		return;
-+
-+	if (clk->deactivate)
-+		clk->deactivate(clk);
- }
--EXPORT_SYMBOL(clk_disable);
-+EXPORT_SYMBOL(clk_deactivate);
- 
- static inline u32 ltq_get_counter_resolution(void)
- {
-@@ -126,7 +136,7 @@ void __init plat_time_init(void)
- 
- 	ltq_soc_init();
- 
--	clk = clk_get(0, "cpu");
-+	clk = clk_get_cpu();
- 	mips_hpt_frequency = clk_get_rate(clk) / ltq_get_counter_resolution();
- 	write_c0_compare(read_c0_count());
- 	pr_info("CPU Clock: %ldMHz\n", clk_get_rate(clk) / 1000000);
-diff --git a/arch/mips/lantiq/clk.h b/arch/mips/lantiq/clk.h
-index 3328925..d047768 100644
---- a/arch/mips/lantiq/clk.h
-+++ b/arch/mips/lantiq/clk.h
-@@ -9,10 +9,54 @@
- #ifndef _LTQ_CLK_H__
- #define _LTQ_CLK_H__
- 
--extern void clk_init(void);
+ #include <linux/export.h>
 +#include <linux/clkdev.h>
  
--extern unsigned long ltq_get_cpu_hz(void);
--extern unsigned long ltq_get_fpi_hz(void);
--extern unsigned long ltq_get_io_region_clock(void);
-+/* clock speeds */
-+#define CLOCK_60M	60000000
-+#define CLOCK_62_5M	62500000
-+#define CLOCK_83M	83333333
-+#define CLOCK_83_5M	83500000
-+#define CLOCK_98_304M	98304000
-+#define CLOCK_100M	100000000
-+#define CLOCK_111M	111111111
-+#define CLOCK_125M	125000000
-+#define CLOCK_133M	133333333
-+#define CLOCK_150M	150000000
-+#define CLOCK_166M	166666666
-+#define CLOCK_167M	166666667
-+#define CLOCK_196_608M	196608000
-+#define CLOCK_200M	200000000
-+#define CLOCK_250M	250000000
-+#define CLOCK_266M	266666666
-+#define CLOCK_300M	300000000
-+#define CLOCK_333M	333333333
-+#define CLOCK_393M	393215332
-+#define CLOCK_400M	400000000
-+#define CLOCK_500M	500000000
-+#define CLOCK_600M	600000000
-+
-+struct clk {
-+	struct clk_lookup cl;
-+	unsigned long rate;
-+	unsigned long (*get_rate) (void);
-+	unsigned int module;
-+	unsigned int bits;
-+	int (*enable) (struct clk *clk);
-+	void (*disable) (struct clk *clk);
-+	int (*activate) (struct clk *clk);
-+	void (*deactivate) (struct clk *clk);
-+	void (*reboot) (struct clk *clk);
-+};
-+
-+extern void clkdev_add_static(unsigned long cpu, unsigned long fpi,
-+					unsigned long io);
-+
-+extern unsigned long ltq_danube_cpu_hz(void);
-+extern unsigned long ltq_danube_fpi_hz(void);
-+extern unsigned long ltq_danube_io_region_clock(void);
-+
-+extern unsigned long ltq_vr9_cpu_hz(void);
-+extern unsigned long ltq_vr9_fpi_hz(void);
-+extern unsigned long ltq_vr9_io_region_clock(void);
+ #include <lantiq_soc.h>
  
- #endif
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index ee63a33..b002bc7 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -103,7 +103,6 @@ EXPORT_SYMBOL(ltq_remap_resource);
- void __init prom_init(void)
++#include "../clk.h"
+ #include "../devices.h"
+ 
+ /* clock control register */
+ #define LTQ_CGU_IFCCR	0x0018
++/* system clock register */
++#define LTQ_CGU_SYS     0x0010
+ 
+ /* the enable / disable registers */
+ #define LTQ_PMU_PWDCR	0x1C
+ #define LTQ_PMU_PWDSR	0x20
++#define LTQ_PMU_PWDCR1	0x24
++#define LTQ_PMU_PWDSR1	0x28
++
++#define PWDCR(x) ((x) ? (LTQ_PMU_PWDCR1) : (LTQ_PMU_PWDCR))
++#define PWDSR(x) ((x) ? (LTQ_PMU_PWDSR1) : (LTQ_PMU_PWDSR))
++
++/* CGU - clock generation unit */
++#define CGU_EPHY		0x10
++
++/* PMU - power management unit */
++#define PMU_DMA			0x0020
++#define PMU_SPI			0x0100
++#define PMU_EPHY		0x0080
++#define PMU_USB			0x8041
++#define PMU_STP			0x0800
++#define PMU_GPT			0x1000
++#define PMU_PPE			0x2000
++#define PMU_FPI			0x4000
++#define PMU_SWITCH		0x10000000
++#define PMU_AHBS		0x2000
++#define PMU_AHBM		0x8000
++#define PMU_PCIE_CLK            0x80000000
++
++#define PMU1_PCIE_PHY		0x0001
++#define PMU1_PCIE_CTL		0x0002
++#define PMU1_PCIE_MSI		0x0020
++#define PMU1_PCIE_PDI		0x0010
+ 
+ #define ltq_pmu_w32(x, y)	ltq_w32((x), ltq_pmu_membase + (y))
+ #define ltq_pmu_r32(x)		ltq_r32(ltq_pmu_membase + (x))
+@@ -36,28 +67,64 @@ void __iomem *ltq_cgu_membase;
+ void __iomem *ltq_ebu_membase;
+ static void __iomem *ltq_pmu_membase;
+ 
+-void ltq_cgu_enable(unsigned int clk)
++static int ltq_cgu_enable(struct clk *clk)
  {
- 	ltq_soc_detect(&soc_info);
--	clk_init();
- 	snprintf(soc_info.sys_type, LTQ_SYS_TYPE_LEN - 1, "%s rev %s",
- 		soc_info.name, soc_info.rev_type);
- 	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
+-	ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) | clk, LTQ_CGU_IFCCR);
++	ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) | clk->bits, LTQ_CGU_IFCCR);
++	return 0;
+ }
+ 
+-void ltq_pmu_enable(unsigned int module)
++static void ltq_cgu_disable(struct clk *clk)
++{
++	ltq_cgu_w32(ltq_cgu_r32(LTQ_CGU_IFCCR) & ~clk->bits, LTQ_CGU_IFCCR);
++}
++
++static int ltq_pmu_enable(struct clk *clk)
+ {
+ 	int err = 1000000;
+ 
+-	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) & ~module, LTQ_PMU_PWDCR);
+-	do {} while (--err && (ltq_pmu_r32(LTQ_PMU_PWDSR) & module));
++	ltq_pmu_w32(ltq_pmu_r32(PWDCR(clk->module)) & ~clk->bits,
++		PWDCR(clk->module));
++	do {} while (--err && (ltq_pmu_r32(PWDSR(clk->module)) & clk->bits));
+ 
+ 	if (!err)
+ 		panic("activating PMU module failed!");
++
++	return 0;
+ }
+-EXPORT_SYMBOL(ltq_pmu_enable);
+ 
+-void ltq_pmu_disable(unsigned int module)
++static void ltq_pmu_disable(struct clk *clk)
+ {
+-	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) | module, LTQ_PMU_PWDCR);
++	ltq_pmu_w32(ltq_pmu_r32(LTQ_PMU_PWDCR) | clk->bits, LTQ_PMU_PWDCR);
++}
++
++static inline void clkdev_add_pmu(const char *dev, const char *con,
++	unsigned int module, unsigned int bits)
++{
++	struct clk *clk = kzalloc(sizeof(struct clk), GFP_KERNEL);
++
++	clk->cl.dev_id = dev;
++	clk->cl.con_id = con;
++	clk->cl.clk = clk;
++	clk->enable = ltq_pmu_enable;
++	clk->disable = ltq_pmu_disable;
++	clk->module = module;
++	clk->bits = bits;
++	clkdev_add(&clk->cl);
++}
++
++static inline void clkdev_add_cgu(const char *dev, const char *con,
++					unsigned int bits)
++{
++	struct clk *clk = kzalloc(sizeof(struct clk), GFP_KERNEL);
++
++	clk->cl.dev_id = dev;
++	clk->cl.con_id = con;
++	clk->cl.clk = clk;
++	clk->enable = ltq_cgu_enable;
++	clk->disable = ltq_cgu_disable;
++	clk->bits = bits;
++	clkdev_add(&clk->cl);
+ }
+-EXPORT_SYMBOL(ltq_pmu_disable);
+ 
+ void __init ltq_soc_init(void)
+ {
+@@ -75,4 +142,23 @@ void __init ltq_soc_init(void)
+ 
+ 	/* make sure to unprotect the memory region where flash is located */
+ 	ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_BUSCON0) & ~EBU_WRDIS, LTQ_EBU_BUSCON0);
++
++	/* add our clocks */
++	clkdev_add_pmu("ltq_dma", NULL, 0, PMU_DMA);
++	clkdev_add_pmu("ltq_stp", NULL, 0, PMU_STP);
++	clkdev_add_pmu("ltq_spi", NULL, 0, PMU_SPI);
++	clkdev_add_pmu("ltq_etop", NULL, 0, PMU_PPE);
++	if (ltq_is_ase()) {
++		if (ltq_cgu_r32(LTQ_CGU_SYS) & (1 << 5))
++			clkdev_add_static(CLOCK_266M, CLOCK_133M, CLOCK_133M);
++		else
++			clkdev_add_static(CLOCK_133M, CLOCK_133M, CLOCK_133M);
++		clkdev_add_cgu("ltq_etop", "ephycgu", CGU_EPHY),
++		clkdev_add_pmu("ltq_etop", "ephy", 0, PMU_EPHY);
++	} else {
++		clkdev_add_static(ltq_danube_cpu_hz(), ltq_danube_fpi_hz(),
++					ltq_danube_io_region_clock());
++		if (ltq_is_ar9())
++			clkdev_add_pmu("ltq_etop", "switch", 0, PMU_SWITCH);
++	}
+ }
 -- 
 1.7.7.1

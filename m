@@ -1,16 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:03:21 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47243 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:03:49 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47249 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903627Ab2BWQCP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903632Ab2BWQCP (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 23 Feb 2012 17:02:15 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 1/6] MIPS: lantiq: remove redunant ltq_gpio_request() declaration and add device parameter
-Date:   Thu, 23 Feb 2012 17:01:48 +0100
-Message-Id: <1330012913-13293-1-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 5/6] MIPS: lantiq: convert pci to managed gpio
+Date:   Thu, 23 Feb 2012 17:01:52 +0100
+Message-Id: <1330012913-13293-5-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
-X-archive-position: 32503
+In-Reply-To: <1330012913-13293-1-git-send-email-blogic@openwrt.org>
+References: <1330012913-13293-1-git-send-email-blogic@openwrt.org>
+X-archive-position: 32504
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -19,61 +21,68 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-3.2 introduced devm_request_gpio() to allow managed gpios.
-
-The devres api requires a struct device pointer to work. Add a parameter to ltq_gpio_request()
-so that managed gpios can work.
+ltq_gpio_request() now uses devres to manage the gpios. We need to pass a
+struct device pointer to make it work.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- .../include/asm/mach-lantiq/falcon/lantiq_soc.h    |    4 +---
- arch/mips/include/asm/mach-lantiq/lantiq.h         |    4 ++++
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    3 ---
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ arch/mips/pci/pci-lantiq.c |   18 ++++++++++--------
+ 1 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
-index 8ac509a..1a4b836 100644
---- a/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/falcon/lantiq_soc.h
-@@ -141,9 +141,7 @@ static inline void ltq_sys1_w32_mask(u32 c, u32 s, u32 r)
- 	ltq_sys1_w32((ltq_sys1_r32(r) & ~(c)) | (s), r);
+diff --git a/arch/mips/pci/pci-lantiq.c b/arch/mips/pci/pci-lantiq.c
+index 3bf42c8..47b5d8e 100644
+--- a/arch/mips/pci/pci-lantiq.c
++++ b/arch/mips/pci/pci-lantiq.c
+@@ -150,24 +150,26 @@ static u32 ltq_calc_bar11mask(void)
+ 	return bar11mask;
  }
  
--/* gpio_request wrapper to help configure the pin */
--extern int  ltq_gpio_request(unsigned int pin, unsigned int mux,
--				unsigned int dir, const char *name);
-+/* gpio wrapper to help configure the pin muxing */
- extern int ltq_gpio_mux_set(unsigned int pin, unsigned int mux);
- 
- /* to keep the irq code generic we need to define these to 0 as falcon
-diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
-index bf05854..d90eef3 100644
---- a/arch/mips/include/asm/mach-lantiq/lantiq.h
-+++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
-@@ -39,6 +39,10 @@ extern unsigned int ltq_get_soc_type(void);
- /* spinlock all ebu i/o */
- extern spinlock_t ebu_lock;
- 
-+/* request a non-gpio and set the PIO config */
-+extern int ltq_gpio_request(struct device *dev, unsigned int pin,
-+		unsigned int mux, unsigned int dir, const char *name);
-+
- /* some irq helpers */
- extern void ltq_disable_irq(struct irq_data *data);
- extern void ltq_mask_and_ack_irq(struct irq_data *data);
-diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index 9d0afeb..4213926 100644
---- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-+++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -167,9 +167,6 @@ static inline void ltq_cgu_w32_mask(u32 c, u32 s, u32 r)
- 	ltq_cgu_w32((ltq_cgu_r32(r) & ~(c)) | (s), r);
+-static void ltq_pci_setup_gpio(int gpio)
++static void ltq_pci_setup_gpio(struct device *dev)
+ {
++	struct ltq_pci_data *conf = (struct ltq_pci_data *) dev->platform_data;
+ 	int i;
+ 	for (i = 0; i < ARRAY_SIZE(ltq_pci_gpio_map); i++) {
+-		if (gpio & (1 << i)) {
+-			ltq_gpio_request(ltq_pci_gpio_map[i].pin,
++		if (conf->gpio & (1 << i)) {
++			ltq_gpio_request(dev, ltq_pci_gpio_map[i].pin,
+ 				ltq_pci_gpio_map[i].mux,
+ 				ltq_pci_gpio_map[i].dir,
+ 				ltq_pci_gpio_map[i].name);
+ 		}
+ 	}
+-	ltq_gpio_request(21, 0, 1, "pci-reset");
+-	ltq_pci_req_mask = (gpio >> PCI_REQ_SHIFT) & PCI_REQ_MASK;
++	ltq_gpio_request(dev, 21, 0, 1, "pci-reset");
++	ltq_pci_req_mask = (conf->gpio >> PCI_REQ_SHIFT) & PCI_REQ_MASK;
  }
  
--/* request a non-gpio and set the PIO config */
--extern int  ltq_gpio_request(unsigned int pin, unsigned int mux,
--				unsigned int dir, const char *name);
- extern void ltq_pmu_enable(unsigned int module);
- extern void ltq_pmu_disable(unsigned int module);
- extern void ltq_cgu_enable(unsigned int clk);
+-static int __devinit ltq_pci_startup(struct ltq_pci_data *conf)
++static int __devinit ltq_pci_startup(struct device *dev)
+ {
+ 	u32 temp_buffer;
++	struct ltq_pci_data *conf = (struct ltq_pci_data *) dev->platform_data;
+ 
+ 	/* set clock to 33Mhz */
+ 	if (ltq_is_ar9()) {
+@@ -190,7 +192,7 @@ static int __devinit ltq_pci_startup(struct ltq_pci_data *conf)
+ 	}
+ 
+ 	/* setup pci clock and gpis used by pci */
+-	ltq_pci_setup_gpio(conf->gpio);
++	ltq_pci_setup_gpio(dev);
+ 
+ 	/* enable auto-switching between PCI and EBU */
+ 	ltq_pci_w32(0xa, PCI_CR_CLK_CTRL);
+@@ -275,7 +277,7 @@ static int __devinit ltq_pci_probe(struct platform_device *pdev)
+ 		ioremap_nocache(LTQ_PCI_CFG_BASE, LTQ_PCI_CFG_BASE);
+ 	ltq_pci_controller.io_map_base =
+ 		(unsigned long)ioremap(LTQ_PCI_IO_BASE, LTQ_PCI_IO_SIZE - 1);
+-	ltq_pci_startup(ltq_pci_data);
++	ltq_pci_startup(&pdev->dev);
+ 	register_pci_controller(&ltq_pci_controller);
+ 
+ 	return 0;
 -- 
 1.7.7.1

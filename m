@@ -1,19 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:04:14 +0100 (CET)
-Received: from nbd.name ([46.4.11.11]:47251 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 17:04:40 +0100 (CET)
+Received: from nbd.name ([46.4.11.11]:47253 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903633Ab2BWQCQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903635Ab2BWQCQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Thu, 23 Feb 2012 17:02:16 +0100
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        netdev@vger.kernel.org
-Subject: [PATCH V2 4/6] NET: MIPS: lantiq: convert etop to managed gpio
-Date:   Thu, 23 Feb 2012 17:01:51 +0100
-Message-Id: <1330012913-13293-4-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH V2 6/6] MIPS: lantiq: convert gpio_stp to managed gpio
+Date:   Thu, 23 Feb 2012 17:01:53 +0100
+Message-Id: <1330012913-13293-6-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.7.1
 In-Reply-To: <1330012913-13293-1-git-send-email-blogic@openwrt.org>
 References: <1330012913-13293-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 32505
+X-archive-position: 32506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,37 +25,40 @@ ltq_gpio_request() now uses devres to manage the gpios. We need to pass a
 struct device pointer to make it work.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: netdev@vger.kernel.org
 ---
- drivers/net/ethernet/lantiq_etop.c |    9 ++++++---
- 1 files changed, 6 insertions(+), 3 deletions(-)
+ arch/mips/lantiq/xway/gpio_stp.c |   13 ++++++++-----
+ 1 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 66ec54a..e5ec8b1 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -292,9 +292,6 @@ ltq_etop_gbit_init(void)
+diff --git a/arch/mips/lantiq/xway/gpio_stp.c b/arch/mips/lantiq/xway/gpio_stp.c
+index cb6f170..e6b4809 100644
+--- a/arch/mips/lantiq/xway/gpio_stp.c
++++ b/arch/mips/lantiq/xway/gpio_stp.c
+@@ -80,11 +80,6 @@ static struct gpio_chip ltq_stp_chip = {
+ 
+ static int ltq_stp_hw_init(void)
  {
- 	ltq_pmu_enable(PMU_SWITCH);
- 
--	ltq_gpio_request(42, 2, 1, "MDIO");
--	ltq_gpio_request(43, 2, 1, "MDC");
+-	/* the 3 pins used to control the external stp */
+-	ltq_gpio_request(4, 2, 1, "stp-st");
+-	ltq_gpio_request(5, 2, 1, "stp-d");
+-	ltq_gpio_request(6, 2, 1, "stp-sh");
 -
- 	ltq_gbit_w32_mask(0, GCTL0_SE, LTQ_GBIT_GCTL0);
- 	/** Disable MDIO auto polling mode */
- 	ltq_gbit_w32_mask(0, PX_CTL_DMDIO, LTQ_GBIT_P0_CTL);
-@@ -873,6 +870,12 @@ ltq_etop_probe(struct platform_device *pdev)
- 			err = -ENOMEM;
- 			goto err_out;
- 		}
-+		if (ltq_gpio_request(&pdev->dev, 42, 2, 1, "MDIO") ||
-+				ltq_gpio_request(&pdev->dev, 43, 2, 1, "MDC")) {
-+			dev_err(&pdev->dev, "failed to request MDIO gpios\n");
-+			err = -EBUSY;
-+			goto err_out;
-+		}
+ 	/* sane defaults */
+ 	ltq_stp_w32(0, LTQ_STP_AR);
+ 	ltq_stp_w32(0, LTQ_STP_CPU0);
+@@ -133,6 +128,14 @@ static int __devinit ltq_stp_probe(struct platform_device *pdev)
+ 		dev_err(&pdev->dev, "failed to remap STP memory\n");
+ 		return -ENOMEM;
  	}
- 
- 	dev = alloc_etherdev_mq(sizeof(struct ltq_etop_priv), 4);
++
++	/* the 3 pins used to control the external stp */
++	if (ltq_gpio_request(&pdev->dev, 4, 2, 1, "stp-st") ||
++			ltq_gpio_request(&pdev->dev, 5, 2, 1, "stp-d") ||
++			ltq_gpio_request(&pdev->dev, 6, 2, 1, "stp-sh")) {
++		dev_err(&pdev->dev, "failed to request needed gpios\n");
++		return -EBUSY;
++	}
+ 	ret = gpiochip_add(&ltq_stp_chip);
+ 	if (!ret)
+ 		ret = ltq_stp_hw_init();
 -- 
 1.7.7.1

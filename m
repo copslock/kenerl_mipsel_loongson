@@ -1,68 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Feb 2012 22:27:49 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:47129 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903629Ab2BWV1q (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 23 Feb 2012 22:27:46 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 82E278F61;
-        Thu, 23 Feb 2012 22:27:45 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id XTQJOohT5keX; Thu, 23 Feb 2012 22:27:31 +0100 (CET)
-Received: from [192.168.1.220] (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 3ACFD8F60;
-        Thu, 23 Feb 2012 22:27:31 +0100 (CET)
-Message-ID: <4F46AF41.6060803@hauke-m.de>
-Date:   Thu, 23 Feb 2012 22:27:29 +0100
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2012 08:54:01 +0100 (CET)
+Received: from dns1.mips.com ([12.201.5.69]:35433 "EHLO dns1.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903646Ab2BXHx5 convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2012 08:53:57 +0100
+Received: from exchdb01.mips.com (exchdb01.mips.com [192.168.36.67])
+        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id q1O7rhv9013932;
+        Thu, 23 Feb 2012 23:53:43 -0800
+Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
+ exchdb01.mips.com ([::1]) with mapi id 14.01.0270.001; Thu, 23 Feb 2012
+ 23:53:39 -0800
+From:   "Gandham, Raghu" <raghu@mips.com>
+To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>,
+        Mikael Starvik <mikael.starvik@axis.com>
+CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: RE: SMP MIPS and Linux 3.2
+Thread-Topic: SMP MIPS and Linux 3.2
+Thread-Index: AcznH9lfpXUbAgVmQ5aJnfIX4n0HcAIkubIwAGd2VNAAQXpygAAcmanw
+Date:   Fri, 24 Feb 2012 07:53:38 +0000
+Message-ID: <437D1CB836242C4498C8A7EAC739E10301232877FB@exchdb03.mips.com>
+References: <4BEA3FF3CAA35E408EA55C7BE2E61D055C76C25948@xmail3.se.axis.com>
+ <CAOfQC98QuBp+-9UKXt4kqnrtzmNyHqDWG+6RBzspvhgJwsps4A@mail.gmail.com>
+In-Reply-To: <CAOfQC98QuBp+-9UKXt4kqnrtzmNyHqDWG+6RBzspvhgJwsps4A@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.168.36.79]
+x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+x-ems-stamp: sFkYSjAgrIFyN6BKwCHfOA==
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     linville@tuxdriver.com, b43-dev@lists.infradead.org,
-        linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
-        arend@broadcom.com, m@bues.ch
-Subject: Re: [PATCH 01/11] ssb: sprom fix some sizes / signedness
-References: <1329676345-15856-1-git-send-email-hauke@hauke-m.de> <1329676345-15856-2-git-send-email-hauke@hauke-m.de> <CACna6rwNEPY3iJCeWV3AmbBy7fQwQrgr9Oji6tro-Dr23y5udQ@mail.gmail.com>
-In-Reply-To: <CACna6rwNEPY3iJCeWV3AmbBy7fQwQrgr9Oji6tro-Dr23y5udQ@mail.gmail.com>
-X-Enigmail-Version: 1.3.5
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 32532
+X-archive-position: 32533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: raghu@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 02/23/2012 07:14 PM, RafaÅ‚ MiÅ‚ecki wrote:
-> 2012/2/19 Hauke Mehrtens <hauke@hauke-m.de>:
->> @@ -53,10 +53,10 @@ struct ssb_sprom {
->>        u8 gpio1;               /* GPIO pin 1 */
->>        u8 gpio2;               /* GPIO pin 2 */
->>        u8 gpio3;               /* GPIO pin 3 */
->> -       u16 maxpwr_bg;          /* 2.4GHz Amplifier Max Power (in dBm Q5.2) */
->> -       u16 maxpwr_al;          /* 5.2GHz Amplifier Max Power (in dBm Q5.2) */
->> -       u16 maxpwr_a;           /* 5.3GHz Amplifier Max Power (in dBm Q5.2) */
->> -       u16 maxpwr_ah;          /* 5.8GHz Amplifier Max Power (in dBm Q5.2) */
->> +       u8 maxpwr_bg;           /* 2.4GHz Amplifier Max Power (in dBm Q5.2) */
->> +       u8 maxpwr_al;           /* 5.2GHz Amplifier Max Power (in dBm Q5.2) */
->> +       u8 maxpwr_a;            /* 5.3GHz Amplifier Max Power (in dBm Q5.2) */
->> +       u8 maxpwr_ah;           /* 5.8GHz Amplifier Max Power (in dBm Q5.2) */
->>        u8 itssi_a;             /* Idle TSSI Target for A-PHY */
->>        u8 itssi_bg;            /* Idle TSSI Target for B/G-PHY */
->>        u8 tri2g;               /* 2.4GHz TX isolation */
-> 
-> Just a note in case you're going to develop ssb/bcma/b43/brcm code.
-> Please note we're trying to switch from properties you modified to
-> struct ssb_sprom_core_pwr_info.
-These vars are available in sprom 1-3,8,9 and the ones in struct
-ssb_sprom_core_pwr_info just for sprom 4,5,8,9. The old are probably not
-used by newer chips any more. I just found these because I generated my
-parsing code from broadcom open source code and got a compiler warning
-because of wrong sizes.
-> 
-> The patch still looks fine.
-> 
+
+Hi Deng-Cheng, 
+
+>Do you know why it didn't happen?
+
+I must have forgotten to upload this patch along with other patches I submitted a while ago. I will verify that this patch is valid as is and submit it.
+
+Raghu
+
+>-----Original Message-----
+>From: Deng-Cheng Zhu [mailto:dengcheng.zhu@gmail.com]
+>Sent: Thursday, February 23, 2012 2:11 AM
+>To: Mikael Starvik; Gandham, Raghu
+>Cc: linux-mips@linux-mips.org
+>Subject: Re: SMP MIPS and Linux 3.2
+>
+>I should have contacted the author (Raghu Gandham) of a fix for this
+>issue to get it into the mainline. But it slipped out of my mind...
+>
+>The patch link is here:
+>http://git.linux-mips.org/?p=linux-
+>mti.git;a=commitdiff;h=5460815027d802697b879644c74f0e8365254020
+>
+>Hi, Raghu
+>
+>Do you know why it didn't happen?
+>
+>
+>Deng-Cheng
+>
+>On Wed, Feb 22, 2012 at 6:57 PM, Mikael Starvik
+><mikael.starvik@axis.com> wrote:
+>>
+>> Found it! There are no calls to scheduler_ipi() from the MIPS parts in
+>vanilla 3.2.
+>>
+>> /Mikael
+>>
+>> -----Original Message-----
+>> From: Mikael Starvik
+>> Sent: den 20 februari 2012 10:34
+>> To: 'linux-mips@linux-mips.org'
+>> Subject: SMP MIPS and Linux 3.2
+>>
+>> I'm running Linux 3.2 on a MIPS 34K with two VPEs (in MT_SMP
+>configuration). It works fine in UP but with SMP it deadlocks during
+>bootup (both CPUs gets idle). Typically like this:
+>>
+>> [    0.090000] CPU revision is: 01019550 (MIPS 34Kc) [    0.090000]
+>Primary instruction cache 32kB, VIPT, 4-way, linesize 32 bytes.
+>> [    0.090000] Primary data cache 32kB, 4-way, PIPT, no aliases,
+>linesize 32 bytes [    0.170000] Brought up 2 CPUs <No more output>
+>>
+>> I have tried to enable __ARCH_WANT_INTERRUPTS_ON_CTXSW but that didn't
+>improve anything. Anyone else got this running or have any thoughts
+>about what the problem may be?
+>>
+>> Best Regards
+>> /Mikael
+>>

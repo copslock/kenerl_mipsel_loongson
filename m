@@ -1,65 +1,210 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2012 16:49:38 +0100 (CET)
-Received: from moutng.kundenserver.de ([212.227.126.186]:53695 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903652Ab2BXPte (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2012 16:49:34 +0100
-Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
-        by mrelayeu.kundenserver.de (node=mreu4) with ESMTP (Nemesis)
-        id 0LwBkQ-1SWCRt0XAE-017RQY; Fri, 24 Feb 2012 16:49:03 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH 00/14] DMA-mapping framework redesign preparation
-Date:   Fri, 24 Feb 2012 15:48:59 +0000
-User-Agent: KMail/1.12.2 (Linux/3.3.0-rc1; KDE/4.3.2; x86_64; ; )
-Cc:     linux-kernel@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
-        x86@kernel.org, linux-sh@vger.kernel.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@linux-mips.org, discuss@x86-64.org,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@samsung.com>
-References: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
-In-Reply-To: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201202241548.59791.arnd@arndb.de>
-X-Provags-ID: V02:K0:T7az3aeAxJJ2biO5z7hE5jD6TBIYwaYasOrCkwG3CUl
- vTSpX2XwMIxuIVDPdgwnGbr6FRW8RxQICDQWSWXyApB3pO4U1Q
- QfBbxFcWfTMxLmF0cS8rtUYp8GDWUNMeNHEJFNLUA2J9ej9uns
- xhueLubFJiBlXL2eVEch3AkSsFkCZm2ZIbFmpjtY3ulrbChUxy
- F9hdbMLvUJm6Ap1t7D9RQepxYPTHA/E3xdcAp47h9BphDn/Vz/
- GObA9B/ql/AkniRF9iYr6C3elm/tPlVwGfOcB6d0EmorDfrZmO
- DDiJBO2oGhz71dxK7ynoB/fIMas0g3e0kDxsB3jjWc1oSWtHus
- kqfQlD5ooX2o7Tw051bI=
-X-archive-position: 32546
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2012 17:01:50 +0100 (CET)
+Received: from wp188.webpack.hosteurope.de ([80.237.132.195]:44429 "EHLO
+        wp188.webpack.hosteurope.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903755Ab2BXQBn (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2012 17:01:43 +0100
+Received: from charybdis-ext.suse.de ([195.135.221.2] helo=g231.suse.de); authenticated
+        by wp188.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        id 1S0xaO-0005hi-UO; Fri, 24 Feb 2012 17:01:32 +0100
+From:   Danny Kukawka <danny.kukawka@bisect.de>
+To:     Christian Benvenuti <benve@cisco.com>,
+        Roopa Prabhu <roprabhu@cisco.com>,
+        Neel Patel <neepatel@cisco.com>,
+        Nishank Trivedi <nistrive@cisco.com>,
+        Guo-Fu Tseng <cooldavid@cooldavid.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Andy Gospodarek <andy@greyhouse.net>
+Cc:     Danny Kukawka <dkukawka@suse.de>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: [PATCH 01/12] ethernet: .ndo_set_mac_address: check given address, if invalid return -EADDRNOTAVAIL
+Date:   Fri, 24 Feb 2012 17:01:11 +0100
+Message-Id: <1330099282-4588-2-git-send-email-danny.kukawka@bisect.de>
+X-Mailer: git-send-email 1.7.8.3
+In-Reply-To: <1330099282-4588-1-git-send-email-danny.kukawka@bisect.de>
+References: <1330099282-4588-1-git-send-email-danny.kukawka@bisect.de>
+X-bounce-key: webpack.hosteurope.de;danny.kukawka@bisect.de;1330099303;0498b75c;
+X-archive-position: 32547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: danny.kukawka@bisect.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Friday 23 December 2011, Marek Szyprowski wrote:
-> The solution we found is to introduce a new public dma mapping functions
-> with additional attributes argument: dma_alloc_attrs and
-> dma_free_attrs(). This way all different kinds of architecture specific
-> buffer mappings can be hidden behind the attributes without the need of
-> creating several versions of dma_alloc_ function.
+Check if given address is valid in .ndo_set_mac_address, if
+invalid return -EADDRNOTAVAIL as eth_mac_addr() already does
+if is_valid_ether_addr() fails.
 
-Since the patches are now in linux-next, we should make sure that they
-can actually get merged into 3.4.
+Signed-off-by: Danny Kukawka <danny.kukawka@bisect.de>
+---
+ drivers/net/ethernet/amd/amd8111e.c          |    3 +++
+ drivers/net/ethernet/amd/atarilance.c        |    3 +++
+ drivers/net/ethernet/chelsio/cxgb/cxgb2.c    |    3 +++
+ drivers/net/ethernet/cisco/enic/enic_main.c  |    3 +++
+ drivers/net/ethernet/freescale/fec_mpc52xx.c |    3 +++
+ drivers/net/ethernet/jme.c                   |    3 +++
+ drivers/net/ethernet/micrel/ks8851_mll.c     |    3 +++
+ drivers/net/ethernet/micrel/ksz884x.c        |    3 +++
+ drivers/net/ethernet/seeq/sgiseeq.c          |    3 +++
+ drivers/net/ethernet/sgi/ioc3-eth.c          |    3 +++
+ drivers/net/ethernet/tehuti/tehuti.c         |    3 +++
+ 11 files changed, 33 insertions(+), 0 deletions(-)
 
-I've looked at all the patches again and found them to be straightforward
-and helpful, I hope we can get them merged next time. Please add my
-
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+diff --git a/drivers/net/ethernet/amd/amd8111e.c b/drivers/net/ethernet/amd/amd8111e.c
+index 9f62504..b0e3603 100644
+--- a/drivers/net/ethernet/amd/amd8111e.c
++++ b/drivers/net/ethernet/amd/amd8111e.c
+@@ -1549,6 +1549,9 @@ static int amd8111e_set_mac_address(struct net_device *dev, void *p)
+ 	int i;
+ 	struct sockaddr *addr = p;
+ 
++	if (!is_valid_ether_addr(addr->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	memcpy(dev->dev_addr, addr->sa_data, dev->addr_len);
+ 	spin_lock_irq(&lp->lock);
+ 	/* Setting the MAC address to the device */
+diff --git a/drivers/net/ethernet/amd/atarilance.c b/drivers/net/ethernet/amd/atarilance.c
+index 70ed79c..a9612f7 100644
+--- a/drivers/net/ethernet/amd/atarilance.c
++++ b/drivers/net/ethernet/amd/atarilance.c
+@@ -1125,6 +1125,9 @@ static int lance_set_mac_address( struct net_device *dev, void *addr )
+ 	struct sockaddr *saddr = addr;
+ 	int i;
+ 
++	if (!is_valid_ether_addr(saddr->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	if (lp->cardtype != OLD_RIEBL && lp->cardtype != NEW_RIEBL)
+ 		return -EOPNOTSUPP;
+ 
+diff --git a/drivers/net/ethernet/chelsio/cxgb/cxgb2.c b/drivers/net/ethernet/chelsio/cxgb/cxgb2.c
+index 1d17c92..8e363ce 100644
+--- a/drivers/net/ethernet/chelsio/cxgb/cxgb2.c
++++ b/drivers/net/ethernet/chelsio/cxgb/cxgb2.c
+@@ -841,6 +841,9 @@ static int t1_set_mac_addr(struct net_device *dev, void *p)
+ 	struct cmac *mac = adapter->port[dev->if_port].mac;
+ 	struct sockaddr *addr = p;
+ 
++	if (!is_valid_ether_addr(addr->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	if (!mac->ops->macaddress_set)
+ 		return -EOPNOTSUPP;
+ 
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e27ec1d..67a340d 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -903,6 +903,9 @@ static int enic_set_mac_address(struct net_device *netdev, void *p)
+ 	struct enic *enic = netdev_priv(netdev);
+ 	int err;
+ 
++	if (!is_valid_ether_addr(saddr->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	err = enic_dev_del_station_addr(enic);
+ 	if (err)
+ 		return err;
+diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx.c b/drivers/net/ethernet/freescale/fec_mpc52xx.c
+index 7b34d8c..26ea3ad 100644
+--- a/drivers/net/ethernet/freescale/fec_mpc52xx.c
++++ b/drivers/net/ethernet/freescale/fec_mpc52xx.c
+@@ -123,6 +123,9 @@ static int mpc52xx_fec_set_mac_address(struct net_device *dev, void *addr)
+ {
+ 	struct sockaddr *sock = addr;
+ 
++	if (!is_valid_ether_addr(sock->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	memcpy(dev->dev_addr, sock->sa_data, dev->addr_len);
+ 
+ 	mpc52xx_fec_set_paddr(dev, sock->sa_data);
+diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
+index 1b86d0b..117598e 100644
+--- a/drivers/net/ethernet/jme.c
++++ b/drivers/net/ethernet/jme.c
+@@ -2271,6 +2271,9 @@ jme_set_macaddr(struct net_device *netdev, void *p)
+ 	struct jme_adapter *jme = netdev_priv(netdev);
+ 	struct sockaddr *addr = p;
+ 
++	if (!is_valid_ether_addr(addr->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	if (netif_running(netdev))
+ 		return -EBUSY;
+ 
+diff --git a/drivers/net/ethernet/micrel/ks8851_mll.c b/drivers/net/ethernet/micrel/ks8851_mll.c
+index 10d5798..82430ff 100644
+--- a/drivers/net/ethernet/micrel/ks8851_mll.c
++++ b/drivers/net/ethernet/micrel/ks8851_mll.c
+@@ -1239,6 +1239,9 @@ static int ks_set_mac_address(struct net_device *netdev, void *paddr)
+ 	struct sockaddr *addr = paddr;
+ 	u8 *da;
+ 
++	if (!is_valid_ether_addr(addr->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	netdev->addr_assign_type &= ~NET_ADDR_RANDOM;
+ 	memcpy(netdev->dev_addr, addr->sa_data, netdev->addr_len);
+ 
+diff --git a/drivers/net/ethernet/micrel/ksz884x.c b/drivers/net/ethernet/micrel/ksz884x.c
+index ef723b1..db29407 100644
+--- a/drivers/net/ethernet/micrel/ksz884x.c
++++ b/drivers/net/ethernet/micrel/ksz884x.c
+@@ -5668,6 +5668,9 @@ static int netdev_set_mac_address(struct net_device *dev, void *addr)
+ 	struct sockaddr *mac = addr;
+ 	uint interrupt;
+ 
++	if (!is_valid_ether_addr(mac->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	if (priv->port.first_port > 0)
+ 		hw_del_addr(hw, dev->dev_addr);
+ 	else {
+diff --git a/drivers/net/ethernet/seeq/sgiseeq.c b/drivers/net/ethernet/seeq/sgiseeq.c
+index bb8c822..41ad6ba 100644
+--- a/drivers/net/ethernet/seeq/sgiseeq.c
++++ b/drivers/net/ethernet/seeq/sgiseeq.c
+@@ -163,6 +163,9 @@ static int sgiseeq_set_mac_address(struct net_device *dev, void *addr)
+ 	struct sgiseeq_private *sp = netdev_priv(dev);
+ 	struct sockaddr *sa = addr;
+ 
++	if (!is_valid_ether_addr(sa->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	memcpy(dev->dev_addr, sa->sa_data, dev->addr_len);
+ 
+ 	spin_lock_irq(&sp->tx_lock);
+diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
+index ac149d9..a069546 100644
+--- a/drivers/net/ethernet/sgi/ioc3-eth.c
++++ b/drivers/net/ethernet/sgi/ioc3-eth.c
+@@ -458,6 +458,9 @@ static int ioc3_set_mac_address(struct net_device *dev, void *addr)
+ 	struct ioc3_private *ip = netdev_priv(dev);
+ 	struct sockaddr *sa = addr;
+ 
++	if (!is_valid_ether_addr(sa->sa_data))
++		return -EADDRNOTAVAIL;
++
+ 	memcpy(dev->dev_addr, sa->sa_data, dev->addr_len);
+ 
+ 	spin_lock_irq(&ip->ioc3_lock);
+diff --git a/drivers/net/ethernet/tehuti/tehuti.c b/drivers/net/ethernet/tehuti/tehuti.c
+index ad973ff..30822ac 100644
+--- a/drivers/net/ethernet/tehuti/tehuti.c
++++ b/drivers/net/ethernet/tehuti/tehuti.c
+@@ -837,6 +837,9 @@ static int bdx_set_mac(struct net_device *ndev, void *p)
+ 	struct sockaddr *addr = p;
+ 
+ 	ENTER;
++
++	if (!is_valid_ether_addr(addr->sa_data))
++		return -EADDRNOTAVAIL;
+ 	/*
+ 	   if (netif_running(dev))
+ 	   return -EBUSY
+-- 
+1.7.8.3

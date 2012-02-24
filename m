@@ -1,102 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2012 08:54:01 +0100 (CET)
-Received: from dns1.mips.com ([12.201.5.69]:35433 "EHLO dns1.mips.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903646Ab2BXHx5 convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2012 08:53:57 +0100
-Received: from exchdb01.mips.com (exchdb01.mips.com [192.168.36.67])
-        by dns1.mips.com (8.13.8/8.13.8) with ESMTP id q1O7rhv9013932;
-        Thu, 23 Feb 2012 23:53:43 -0800
-Received: from EXCHDB03.MIPS.com ([fe80::6df1:ae84:797e:9076]) by
- exchdb01.mips.com ([::1]) with mapi id 14.01.0270.001; Thu, 23 Feb 2012
- 23:53:39 -0800
-From:   "Gandham, Raghu" <raghu@mips.com>
-To:     Deng-Cheng Zhu <dengcheng.zhu@gmail.com>,
-        Mikael Starvik <mikael.starvik@axis.com>
-CC:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: RE: SMP MIPS and Linux 3.2
-Thread-Topic: SMP MIPS and Linux 3.2
-Thread-Index: AcznH9lfpXUbAgVmQ5aJnfIX4n0HcAIkubIwAGd2VNAAQXpygAAcmanw
-Date:   Fri, 24 Feb 2012 07:53:38 +0000
-Message-ID: <437D1CB836242C4498C8A7EAC739E10301232877FB@exchdb03.mips.com>
-References: <4BEA3FF3CAA35E408EA55C7BE2E61D055C76C25948@xmail3.se.axis.com>
- <CAOfQC98QuBp+-9UKXt4kqnrtzmNyHqDWG+6RBzspvhgJwsps4A@mail.gmail.com>
-In-Reply-To: <CAOfQC98QuBp+-9UKXt4kqnrtzmNyHqDWG+6RBzspvhgJwsps4A@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [192.168.36.79]
-x-ems-proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
-x-ems-stamp: sFkYSjAgrIFyN6BKwCHfOA==
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-archive-position: 32533
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2012 09:28:26 +0100 (CET)
+Received: from shards.monkeyblade.net ([198.137.202.13]:43702 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903647Ab2BXI2T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2012 09:28:19 +0100
+Received: from localhost (cpe-66-65-56-15.nyc.res.rr.com [66.65.56.15])
+        (authenticated bits=0)
+        by shards.monkeyblade.net (8.14.4/8.14.4) with ESMTP id q1O8SDJh013280
+        (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NO);
+        Fri, 24 Feb 2012 00:28:14 -0800
+Date:   Fri, 24 Feb 2012 03:28:12 -0500 (EST)
+Message-Id: <20120224.032812.10813781440356110.davem@davemloft.net>
+To:     blogic@openwrt.org
+Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH V2 11/14] NET: MIPS: lantiq: convert etop driver to
+ clkdev api
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1330012993-13510-11-git-send-email-blogic@openwrt.org>
+References: <1330012993-13510-1-git-send-email-blogic@openwrt.org>
+        <1330012993-13510-11-git-send-email-blogic@openwrt.org>
+X-Mailer: Mew version 6.4 on Emacs 23.3 / Mule 6.0 (HANACHIRUSATO)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.2.6 (shards.monkeyblade.net [198.137.202.13]); Fri, 24 Feb 2012 00:28:16 -0800 (PST)
+X-archive-position: 32534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raghu@mips.com
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+From: John Crispin <blogic@openwrt.org>
+Date: Thu, 23 Feb 2012 17:03:10 +0100
 
-Hi Deng-Cheng, 
+> Update from old pmu_{dis,en}able() to ckldev api.
+> 
+> Signed-off-by: John Crispin <blogic@openwrt.org>
 
->Do you know why it didn't happen?
+Come on guys, don't do crap like this.
 
-I must have forgotten to upload this patch along with other patches I submitted a while ago. I will verify that this patch is valid as is and submit it.
+When you have a 14 patch series, and I only see one or two of them
+I have no idea what in the world you want me to do with these patches.
 
-Raghu
+Are they dependent upon the previous patches that weren't sent to me?
 
->-----Original Message-----
->From: Deng-Cheng Zhu [mailto:dengcheng.zhu@gmail.com]
->Sent: Thursday, February 23, 2012 2:11 AM
->To: Mikael Starvik; Gandham, Raghu
->Cc: linux-mips@linux-mips.org
->Subject: Re: SMP MIPS and Linux 3.2
->
->I should have contacted the author (Raghu Gandham) of a fix for this
->issue to get it into the mainline. But it slipped out of my mind...
->
->The patch link is here:
->http://git.linux-mips.org/?p=linux-
->mti.git;a=commitdiff;h=5460815027d802697b879644c74f0e8365254020
->
->Hi, Raghu
->
->Do you know why it didn't happen?
->
->
->Deng-Cheng
->
->On Wed, Feb 22, 2012 at 6:57 PM, Mikael Starvik
-><mikael.starvik@axis.com> wrote:
->>
->> Found it! There are no calls to scheduler_ipi() from the MIPS parts in
->vanilla 3.2.
->>
->> /Mikael
->>
->> -----Original Message-----
->> From: Mikael Starvik
->> Sent: den 20 februari 2012 10:34
->> To: 'linux-mips@linux-mips.org'
->> Subject: SMP MIPS and Linux 3.2
->>
->> I'm running Linux 3.2 on a MIPS 34K with two VPEs (in MT_SMP
->configuration). It works fine in UP but with SMP it deadlocks during
->bootup (both CPUs gets idle). Typically like this:
->>
->> [    0.090000] CPU revision is: 01019550 (MIPS 34Kc) [    0.090000]
->Primary instruction cache 32kB, VIPT, 4-way, linesize 32 bytes.
->> [    0.090000] Primary data cache 32kB, 4-way, PIPT, no aliases,
->linesize 32 bytes [    0.170000] Brought up 2 CPUs <No more output>
->>
->> I have tried to enable __ARCH_WANT_INTERRUPTS_ON_CTXSW but that didn't
->improve anything. Anyone else got this running or have any thoughts
->about what the problem may be?
->>
->> Best Regards
->> /Mikael
->>
+Are they not and I can just apply them as-is?
+
+Could I apply them as-is, but you want them to go via the MIPS tree
+for some reason and just want my ACK?
+
+Nobody knows because you didn't bother to say one way or another
+and that is extremely irritating because as a result I have to
+ask you all of these stupid questions and write this rediculious
+email.
+
+I'm just ignoring every single one of these MIPS patches, sorry.

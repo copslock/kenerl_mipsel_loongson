@@ -1,81 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2012 11:56:43 +0100 (CET)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:42842 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903647Ab2BXK4f (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2012 11:56:35 +0100
-Received: by bkcjk13 with SMTP id jk13so2444340bkc.36
-        for <linux-mips@linux-mips.org>; Fri, 24 Feb 2012 02:56:30 -0800 (PST)
-Received-SPF: pass (google.com: domain of sshtylyov@mvista.com designates 10.205.129.137 as permitted sender) client-ip=10.205.129.137;
-Authentication-Results: mr.google.com; spf=pass (google.com: domain of sshtylyov@mvista.com designates 10.205.129.137 as permitted sender) smtp.mail=sshtylyov@mvista.com
-Received: from mr.google.com ([10.205.129.137])
-        by 10.205.129.137 with SMTP id hi9mr803173bkc.131.1330080990753 (num_hops = 1);
-        Fri, 24 Feb 2012 02:56:30 -0800 (PST)
-Received: by 10.205.129.137 with SMTP id hi9mr668368bkc.131.1330080990560;
-        Fri, 24 Feb 2012 02:56:30 -0800 (PST)
-Received: from [192.168.2.2] (ppp91-79-85-203.pppoe.mtu-net.ru. [91.79.85.203])
-        by mx.google.com with ESMTPS id ey8sm7975326bkb.1.2012.02.24.02.56.29
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 24 Feb 2012 02:56:29 -0800 (PST)
-Message-ID: <4F476C93.2000304@mvista.com>
-Date:   Fri, 24 Feb 2012 14:55:15 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Feb 2012 16:49:38 +0100 (CET)
+Received: from moutng.kundenserver.de ([212.227.126.186]:53695 "EHLO
+        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903652Ab2BXPte (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 24 Feb 2012 16:49:34 +0100
+Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
+        by mrelayeu.kundenserver.de (node=mreu4) with ESMTP (Nemesis)
+        id 0LwBkQ-1SWCRt0XAE-017RQY; Fri, 24 Feb 2012 16:49:03 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: Re: [PATCH 00/14] DMA-mapping framework redesign preparation
+Date:   Fri, 24 Feb 2012 15:48:59 +0000
+User-Agent: KMail/1.12.2 (Linux/3.3.0-rc1; KDE/4.3.2; x86_64; ; )
+Cc:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
+        x86@kernel.org, linux-sh@vger.kernel.org,
+        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@linux-mips.org, discuss@x86-64.org,
+        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+References: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
+In-Reply-To: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
 MIME-Version: 1.0
-To:     John Crispin <blogic@openwrt.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH V2 11/14] NET: MIPS: lantiq: convert etop driver to clkdev
- api
-References: <1330012993-13510-1-git-send-email-blogic@openwrt.org> <1330012993-13510-11-git-send-email-blogic@openwrt.org>
-In-Reply-To: <1330012993-13510-11-git-send-email-blogic@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkGbSpcjSlVgvFfEMd5HDltmIsCIjHtPVS1IS3ygryd3Qyx1LM/hC+OPBon4GmycpqoU+69
-X-archive-position: 32545
+Message-Id: <201202241548.59791.arnd@arndb.de>
+X-Provags-ID: V02:K0:T7az3aeAxJJ2biO5z7hE5jD6TBIYwaYasOrCkwG3CUl
+ vTSpX2XwMIxuIVDPdgwnGbr6FRW8RxQICDQWSWXyApB3pO4U1Q
+ QfBbxFcWfTMxLmF0cS8rtUYp8GDWUNMeNHEJFNLUA2J9ej9uns
+ xhueLubFJiBlXL2eVEch3AkSsFkCZm2ZIbFmpjtY3ulrbChUxy
+ F9hdbMLvUJm6Ap1t7D9RQepxYPTHA/E3xdcAp47h9BphDn/Vz/
+ GObA9B/ql/AkniRF9iYr6C3elm/tPlVwGfOcB6d0EmorDfrZmO
+ DDiJBO2oGhz71dxK7ynoB/fIMas0g3e0kDxsB3jjWc1oSWtHus
+ kqfQlD5ooX2o7Tw051bI=
+X-archive-position: 32546
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: arnd@arndb.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+On Friday 23 December 2011, Marek Szyprowski wrote:
+> The solution we found is to introduce a new public dma mapping functions
+> with additional attributes argument: dma_alloc_attrs and
+> dma_free_attrs(). This way all different kinds of architecture specific
+> buffer mappings can be hidden behind the attributes without the need of
+> creating several versions of dma_alloc_ function.
 
-On 23-02-2012 20:03, John Crispin wrote:
+Since the patches are now in linux-next, we should make sure that they
+can actually get merged into 3.4.
 
-> Update from old pmu_{dis,en}able() to ckldev api.
+I've looked at all the patches again and found them to be straightforward
+and helpful, I hope we can get them merged next time. Please add my
 
-> Signed-off-by: John Crispin<blogic@openwrt.org>
-> Cc: netdev@vger.kernel.org
-[...]
-
-> diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-> index e5ec8b1..6b2e4b4 100644
-> --- a/drivers/net/ethernet/lantiq_etop.c
-> +++ b/drivers/net/ethernet/lantiq_etop.c
-[...]
-> @@ -886,6 +903,22 @@ ltq_etop_probe(struct platform_device *pdev)
->   	priv->pdev = pdev;
->   	priv->pldata = dev_get_platdata(&pdev->dev);
->   	priv->netdev = dev;
-> +
-> +	priv->clk_ppe = clk_get(&pdev->dev, NULL);
-> +	if (!priv->clk_ppe)
-> +		return -ENOENT;
-> +	if (ltq_has_gbit()) {
-> +		priv->clk_switch = clk_get(&pdev->dev, "switch");
-> +		if (!priv->clk_switch)
-
-    clk_get() doesn't retirn NULL, it returns error code.
-
-> +			return -ENOENT;
-> +	}
-> +	if (ltq_is_ase()) {
-> +		priv->clk_ephy = clk_get(&pdev->dev, "ephy");
-> +		priv->clk_ephycgu = clk_get(&pdev->dev, "ephycgu");
-> +		if (!priv->clk_ephy || !priv->clk_ephycgu)
-
-    Same here.
-
-WBR, Sergei
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>

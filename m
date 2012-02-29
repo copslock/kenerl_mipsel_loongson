@@ -1,72 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Feb 2012 08:04:32 +0100 (CET)
-Received: from wp188.webpack.hosteurope.de ([80.237.132.195]:53567 "EHLO
-        wp188.webpack.hosteurope.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903555Ab2B2HEZ convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 29 Feb 2012 08:04:25 +0100
-Received: from nrbg-4d077c62.pool.mediaways.net ([77.7.124.98] helo=hp-compaq-2710p-wlan.fritz.box); authenticated
-        by wp188.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-        id 1S2dZn-0003ie-JD; Wed, 29 Feb 2012 08:03:51 +0100
-From:   Danny Kukawka <danny.kukawka@bisect.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 00/12] Part 2: check given MAC address, if invalid return -EADDRNOTAVAIL
-Date:   Wed, 29 Feb 2012 08:02:49 +0100
-User-Agent: KMail/1.9.10
-Cc:     =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirqus@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andy Gospodarek <andy@greyhouse.net>,
-        "Guo-Fu Tseng" <cooldavid@cooldavid.org>,
-        Petko Manolov <petkan@users.sourceforge.net>,
-        "VMware, Inc." <pv-drivers@vmware.com>,
-        "John W. Linville" <linville@tuxdriver.com>, linux390@de.ibm.com,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        Stephen Hemminger <shemminger@vyatta.com>,
-        Joe Perches <joe@perches.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Jiri Pirko <jpirko@redhat.com>, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-mips@linux-mips.org
-References: <1330099282-4588-1-git-send-email-danny.kukawka@bisect.de> <CAHXqBFK=u+MchBn=D31h6nhp-R9GTNbaC18QJA937zjXc60UQw@mail.gmail.com> <CAMuHMdVZ8eVdRLtsq23XCLtA4wU7cTc-mLebAQ4QzO=gkuNMWQ@mail.gmail.com>
-In-Reply-To: <CAMuHMdVZ8eVdRLtsq23XCLtA4wU7cTc-mLebAQ4QzO=gkuNMWQ@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Feb 2012 10:43:34 +0100 (CET)
+Received: from mail-we0-f177.google.com ([74.125.82.177]:35849 "EHLO
+        mail-we0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903554Ab2B2Jna (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 29 Feb 2012 10:43:30 +0100
+Received: by werp11 with SMTP id p11so2341338wer.36
+        for <linux-mips@linux-mips.org>; Wed, 29 Feb 2012 01:43:25 -0800 (PST)
+Received-SPF: pass (google.com: domain of anoop.pa@gmail.com designates 10.180.101.37 as permitted sender) client-ip=10.180.101.37;
+Authentication-Results: mr.google.com; spf=pass (google.com: domain of anoop.pa@gmail.com designates 10.180.101.37 as permitted sender) smtp.mail=anoop.pa@gmail.com; dkim=pass header.i=anoop.pa@gmail.com
+Received: from mr.google.com ([10.180.101.37])
+        by 10.180.101.37 with SMTP id fd5mr18077181wib.1.1330508605492 (num_hops = 1);
+        Wed, 29 Feb 2012 01:43:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=b7Av3XqmpTnXBW0jNo+I1tZU8Ydc0DFx3gidTW1RhTc=;
+        b=dSm3X5P2U+jy01hfAHeOpfw1RFWM65tOpV18YoTioZJvhdH58seMmb5trk0UVwFJca
+         i62szniLmlnauFUOKo78nR56HmZwdF8fl11+5BG+q+K14EuXa/uxoTqMf8PzhTGwHSGg
+         NHkN54OJr1575JPRwuC9+/N81yhxtB0CuzMRo=
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <201202290802.52234.danny.kukawka@bisect.de>
-X-bounce-key: webpack.hosteurope.de;danny.kukawka@bisect.de;1330499065;d1620e5d;
-X-archive-position: 32577
+Received: by 10.180.101.37 with SMTP id fd5mr14388531wib.1.1330508605364; Wed,
+ 29 Feb 2012 01:43:25 -0800 (PST)
+Received: by 10.223.151.14 with HTTP; Wed, 29 Feb 2012 01:43:25 -0800 (PST)
+In-Reply-To: <CAF1ZMEc-44kBhC=zRaT3Kskgc5LdAtki-fZe7tGf8BgGvQqCOw@mail.gmail.com>
+References: <4ED3483E.60204@gmail.com>
+        <CAF1ZMEc-44kBhC=zRaT3Kskgc5LdAtki-fZe7tGf8BgGvQqCOw@mail.gmail.com>
+Date:   Wed, 29 Feb 2012 15:13:25 +0530
+X-Google-Sender-Auth: gNzfP43NGwnstNRC3Dc0zg0Zzxw
+Message-ID: <CAK9+9Tzp3-s6N5_ttBQhh+nV3KVafTzgDUcX=VJUfsv89Cc=og@mail.gmail.com>
+Subject: Re: Using NFS with HIGHMEM support
+From:   Ans_linu <an4linu@gmail.com>
+To:     "Dennis.Yxun" <dennis.yxun@gmail.com>
+Cc:     Jacky Lam <lamshuyin@gmail.com>, linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=f46d04428158cb182c04ba172cd4
+X-archive-position: 32578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danny.kukawka@bisect.de
+X-original-sender: an4linu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Samstag, 25. Februar 2012, Geert Uytterhoeven wrote:
-> 2012/2/24 Michał Mirosław <mirqus@gmail.com>:
-> > 2012/2/24 Danny Kukawka <danny.kukawka@bisect.de>:
-> >> Second Part of series patches to unifiy the return value of
-> >> .ndo_set_mac_address if the given address isn't valid.
-> >>
-> >> These changes check if a given (MAC) address is valid in
-> >> .ndo_set_mac_address, if invalid return -EADDRNOTAVAIL
-> >> as eth_mac_addr() already does if is_valid_ether_addr() fails.
-> >
-> > Why not just fix dev_set_mac_address() and make do_setlink() use that?
->
-> BTW, it's also called from dev_set_mac_address().
->
-> > Checks are specific to address family, not device model I assume.
->
-> Indeed, why can't this be done in one single place, instead of sprinkling
-> these checks over all drivers, missing all out-of-tree (note: I don't care)
-> and all soon-to-be-submitted drivers?
+--f46d04428158cb182c04ba172cd4
+Content-Type: text/plain; charset=ISO-8859-1
 
-Since the .ndo_set_mac_address functions are used by some drivers internally 
-too, you may get some new checks on other places. But I'll take a look at it.
+Hi ,
 
-Danny
+I have faced similar issues before.
+
+Not sure this will help. But please take a look at.
+
+http://www.linux-mips.org/archives/linux-mips/2010-08/msg00075.html
+
+Thanks
+Ans
+
+On Mon, Feb 27, 2012 at 3:34 PM, Dennis.Yxun <dennis.yxun@gmail.com> wrote:
+
+> HI:
+>  I'm encountered pretty much the same problem here
+>  I'm tracing with current 3.3-rc4 branch(from ralf's tree)
+>  If I put rootfs at nand flash + highmem enabled, then execute problem may
+> give
+> illegal instruction error, bus error, try it again may run success.
+>  but if I don't enable highmem, then problem is gone.
+>  any hints? thanks
+>
+> Dennis
+>
+>
+> On Mon, Nov 28, 2011 at 4:37 PM, Jacky Lam <lamshuyin@gmail.com> wrote:
+>
+>> Hi,
+>>
+>>    I am using mips-linux-3.0.4 with HIGHMEM enabled. Everything is
+>> working fine, but I find something strange that when I execute a
+>> statically-linked binary through NFS mounted directory. It will gives me an
+>> illegal instruction error or  SIGSEGV. If I run it again, the binary can
+>> run without problem. I have to reboot or drop all the vm cache in order to
+>> reproduce the error again.
+>>
+>>   Also, if I run the binary in harddisk or dynamically link the binary,
+>> no problem will be found.
+>>
+>>    Any suggestion to debug this problem? Thanks.
+>>
+>> Jacky
+>>
+>>
+>
+
+--f46d04428158cb182c04ba172cd4
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div>Hi ,</div>
+<div>=A0</div>
+<div>I have faced similar issues before. </div>
+<div>=A0</div>
+<div>Not sure this will help. But please take a look at.</div>
+<div>=A0</div>
+<div><a href=3D"http://www.linux-mips.org/archives/linux-mips/2010-08/msg00=
+075.html">http://www.linux-mips.org/archives/linux-mips/2010-08/msg00075.ht=
+ml</a></div>
+<div>=A0</div>
+<div>Thanks</div>
+<div>Ans<br><br></div>
+<div class=3D"gmail_quote">On Mon, Feb 27, 2012 at 3:34 PM, Dennis.Yxun <sp=
+an dir=3D"ltr">&lt;<a href=3D"mailto:dennis.yxun@gmail.com">dennis.yxun@gma=
+il.com</a>&gt;</span> wrote:<br>
+<blockquote style=3D"BORDER-LEFT:#ccc 1px solid;MARGIN:0px 0px 0px 0.8ex;PA=
+DDING-LEFT:1ex" class=3D"gmail_quote">HI:<br>=A0I&#39;m encountered pretty =
+much the same problem here<br>=A0I&#39;m tracing with current 3.3-rc4 branc=
+h(from ralf&#39;s tree)<br>
+=A0If I put rootfs at nand flash + highmem enabled, then execute problem ma=
+y give<br>illegal instruction error, bus error, try it again may run succes=
+s.<br>=A0but if I don&#39;t enable highmem, then problem is gone.<br>=A0any=
+ hints? thanks<span class=3D"HOEnZb"><font color=3D"#888888"><br>
+<br>Dennis</font></span>=20
+<div class=3D"HOEnZb">
+<div class=3D"h5"><br><br>
+<div class=3D"gmail_quote">On Mon, Nov 28, 2011 at 4:37 PM, Jacky Lam <span=
+ dir=3D"ltr">&lt;<a href=3D"mailto:lamshuyin@gmail.com" target=3D"_blank">l=
+amshuyin@gmail.com</a>&gt;</span> wrote:<br>
+<blockquote style=3D"BORDER-LEFT:#ccc 1px solid;MARGIN:0px 0px 0px 0.8ex;PA=
+DDING-LEFT:1ex" class=3D"gmail_quote">Hi,<br><br>=A0 =A0I am using mips-lin=
+ux-3.0.4 with HIGHMEM enabled. Everything is working fine, but I find somet=
+hing strange that when I execute a statically-linked binary through NFS mou=
+nted directory. It will gives me an illegal instruction error or =A0SIGSEGV=
+. If I run it again, the binary can run without problem. I have to reboot o=
+r drop all the vm cache in order to reproduce the error again.<br>
+<br>=A0 Also, if I run the binary in harddisk or dynamically link the binar=
+y, no problem will be found.<br><br>=A0 =A0Any suggestion to debug this pro=
+blem? Thanks.<span><font color=3D"#888888"><br><br>Jacky<br><br></font></sp=
+an></blockquote>
+</div><br></div></div></blockquote></div><br>
+
+--f46d04428158cb182c04ba172cd4--

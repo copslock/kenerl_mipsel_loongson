@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2012 01:58:36 +0100 (CET)
-Received: from mail-gx0-f177.google.com ([209.85.161.177]:41930 "EHLO
-        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903795Ab2CAA5R (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Mar 2012 01:59:01 +0100 (CET)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:53457 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903796Ab2CAA5R (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Thu, 1 Mar 2012 01:57:17 +0100
-Received: by ggnf2 with SMTP id f2so16414ggn.36
+Received: by ghbf11 with SMTP id f11so16303ghb.36
         for <multiple recipients>; Wed, 29 Feb 2012 16:57:11 -0800 (PST)
-Received-SPF: pass (google.com: domain of ddaney.cavm@gmail.com designates 10.236.178.65 as permitted sender) client-ip=10.236.178.65;
-Authentication-Results: mr.google.com; spf=pass (google.com: domain of ddaney.cavm@gmail.com designates 10.236.178.65 as permitted sender) smtp.mail=ddaney.cavm@gmail.com; dkim=pass header.i=ddaney.cavm@gmail.com
-Received: from mr.google.com ([10.236.178.65])
-        by 10.236.178.65 with SMTP id e41mr3866023yhm.130.1330563431025 (num_hops = 1);
+Received-SPF: pass (google.com: domain of ddaney.cavm@gmail.com designates 10.236.155.226 as permitted sender) client-ip=10.236.155.226;
+Authentication-Results: mr.google.com; spf=pass (google.com: domain of ddaney.cavm@gmail.com designates 10.236.155.226 as permitted sender) smtp.mail=ddaney.cavm@gmail.com; dkim=pass header.i=ddaney.cavm@gmail.com
+Received: from mr.google.com ([10.236.155.226])
+        by 10.236.155.226 with SMTP id j62mr3971934yhk.49.1330563431253 (num_hops = 1);
         Wed, 29 Feb 2012 16:57:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=lQxZpzwBnAGyJ0BcDtGBBWNINpXQMPoUW36rNL0OK6M=;
-        b=MIHd2iOZe4npSRPvtYSLYMeHJBbYGwdJ8wWbvmM1AL7joYYlZYEiRsT4WolLsrIMKF
-         p5+7/jVXvLLSTaOUo8eAsGoa5pGNJuqNixv9yZmv74Hz76O80q6IMgvKJ7khGzfulD/0
-         4LCFLAq25zpX6oqiKFj0rfSQTfGMwz0+kS4Kk=
-Received: by 10.236.178.65 with SMTP id e41mr3033176yhm.130.1330563430969;
-        Wed, 29 Feb 2012 16:57:10 -0800 (PST)
+        bh=iN5mnZhLn0YZCAGvEYe9uf7QeGtAccQVNN34wlZibhc=;
+        b=JD9cJpVKCJD1Qnsove7PKGdA3X4ZVvaDVad85aUs7gYRi2yjP47YQYf2FMnj8b5pUD
+         +osytvyigZq52045x6Zj3S4o0fD3cAUWZw6xgKAVMBsKlf4NxS6ezP0W6bUcKUVzoff6
+         5O1nhw7HfsJ5dXq71TFVQidMJpUt8uhRrBl40=
+Received: by 10.236.155.226 with SMTP id j62mr3124430yhk.49.1330563431197;
+        Wed, 29 Feb 2012 16:57:11 -0800 (PST)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id e45sm517793yhk.2.2012.02.29.16.57.09
+        by mx.google.com with ESMTPS id o68sm456387yhk.16.2012.02.29.16.57.09
         (version=TLSv1/SSLv3 cipher=OTHER);
         Wed, 29 Feb 2012 16:57:09 -0800 (PST)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q210v8Or014132;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q210v8Eo014136;
         Wed, 29 Feb 2012 16:57:08 -0800
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q210v839014131;
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q210v8E5014135;
         Wed, 29 Feb 2012 16:57:08 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
@@ -35,13 +35,13 @@ To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         Grant Likely <grant.likely@secretlab.ca>,
         Rob Herring <rob.herring@calxeda.com>
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH v6 4/5] MIPS: Octeon: Setup irq_domains for interrupts.
-Date:   Wed, 29 Feb 2012 16:57:01 -0800
-Message-Id: <1330563422-14078-5-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v6 5/5] MIPS: Octeon: Initialize and fixup device tree.
+Date:   Wed, 29 Feb 2012 16:57:02 -0800
+Message-Id: <1330563422-14078-6-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1330563422-14078-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1330563422-14078-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 32588
+X-archive-position: 32589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,402 +52,652 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: David Daney <david.daney@cavium.com>
 
-Select IRQ_DOMAIN so the core irq_domain code and supply
-irq_create_of_mapping().
-
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/mips/Kconfig                    |    1 +
- arch/mips/cavium-octeon/octeon-irq.c |  301 +++++++++++++++++++++++++++-------
- 2 files changed, 239 insertions(+), 63 deletions(-)
+ arch/mips/Kconfig                         |    2 +
+ arch/mips/cavium-octeon/Makefile          |    3 +
+ arch/mips/cavium-octeon/octeon-platform.c |  523 ++++++++++++++++++++++++++++-
+ arch/mips/cavium-octeon/setup.c           |   45 +++
+ 4 files changed, 572 insertions(+), 1 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index ce30e2f..01344ae 100644
+index 01344ae..f694bdd 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -1432,6 +1432,7 @@ config CPU_CAVIUM_OCTEON
- 	select WEAK_ORDERING
+@@ -1433,6 +1433,8 @@ config CPU_CAVIUM_OCTEON
  	select CPU_SUPPORTS_HIGHMEM
  	select CPU_SUPPORTS_HUGEPAGES
-+	select IRQ_DOMAIN
+ 	select IRQ_DOMAIN
++	select USE_OF
++	select LIBFDT
  	help
  	  The Cavium Octeon processor is a highly integrated chip containing
  	  many ethernet hardware widgets for networking tasks. The processor
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index bdcedd3..e9f2f6c 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -3,14 +3,16 @@
+diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+index 1e37522..bc96e29 100644
+--- a/arch/mips/cavium-octeon/Makefile
++++ b/arch/mips/cavium-octeon/Makefile
+@@ -9,6 +9,9 @@
+ # Copyright (C) 2005-2009 Cavium Networks
+ #
+ 
++CFLAGS_octeon-platform.o = -I$(src)/../../../scripts/dtc/libfdt
++CFLAGS_setup.o = -I$(src)/../../../scripts/dtc/libfdt
++
+ obj-y := cpu.o setup.o serial.o octeon-platform.o octeon-irq.o csrc-octeon.o
+ obj-y += dma-octeon.o flash_setup.o
+ obj-y += octeon-memcpy.o
+diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
+index cd61d72..2754bc2 100644
+--- a/arch/mips/cavium-octeon/octeon-platform.c
++++ b/arch/mips/cavium-octeon/octeon-platform.c
+@@ -3,7 +3,7 @@
   * License.  See the file "COPYING" in the main directory of this archive
   * for more details.
   *
-- * Copyright (C) 2004-2008, 2009, 2010, 2011 Cavium Networks
-+ * Copyright (C) 2004-2008, 2009, 2010, 2011, 2012 Cavium Networks
+- * Copyright (C) 2004-2010 Cavium Networks
++ * Copyright (C) 2004-2011 Cavium Networks
+  * Copyright (C) 2008 Wind River Systems
   */
  
- #include <linux/interrupt.h>
-+#include <linux/irqdomain.h>
- #include <linux/bitops.h>
- #include <linux/percpu.h>
- #include <linux/irq.h>
- #include <linux/smp.h>
-+#include <linux/of.h>
+@@ -13,10 +13,16 @@
+ #include <linux/usb.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
++#include <linux/slab.h>
+ #include <linux/platform_device.h>
++#include <linux/of_platform.h>
++#include <linux/of_fdt.h>
++#include <linux/libfdt.h>
  
  #include <asm/octeon/octeon.h>
+ #include <asm/octeon/cvmx-rnm-defs.h>
++#include <asm/octeon/cvmx-helper.h>
++#include <asm/octeon/cvmx-helper-board.h>
  
-@@ -42,20 +44,27 @@ struct octeon_core_chip_data {
+ static struct octeon_cf_data octeon_cf_data;
  
- static struct octeon_core_chip_data octeon_irq_core_chip_data[MIPS_CORE_IRQ_LINES];
+@@ -440,6 +446,521 @@ device_initcall(octeon_ohci_device_init);
  
--static void __init octeon_irq_set_ciu_mapping(int irq, int line, int bit,
-+static void __init octeon_irq_set_ciu_mapping(unsigned int irq,
-+					      unsigned int line,
-+					      unsigned int bit,
-+					      struct irq_domain *domain,
- 					      struct irq_chip *chip,
- 					      irq_flow_handler_t handler)
- {
-+	struct irq_data *irqd;
- 	union octeon_ciu_chip_data cd;
+ #endif /* CONFIG_USB */
  
- 	irq_set_chip_and_handler(irq, chip, handler);
--
- 	cd.l = 0;
- 	cd.s.line = line;
- 	cd.s.bit = bit;
- 
- 	irq_set_chip_data(irq, cd.p);
- 	octeon_irq_ciu_to_irq[line][bit] = irq;
++static struct of_device_id __initdata octeon_ids[] = {
++	{ .compatible = "simple-bus", },
++	{ .compatible = "cavium,octeon-6335-uctl", },
++	{ .compatible = "cavium,octeon-3860-bootbus", },
++	{ .compatible = "cavium,mdio-mux", },
++	{ .compatible = "gpio-leds", },
++	{},
++};
 +
-+	irqd = irq_get_irq_data(irq);
-+	irqd->hwirq = line << 6 | bit;
-+	irqd->domain = domain;
- }
- 
- static int octeon_coreid_for_cpu(int cpu)
-@@ -855,6 +864,107 @@ static struct irq_chip octeon_irq_chip_ciu_wd = {
- 	.irq_mask = octeon_irq_dummy_mask,
- };
- 
-+static int octeon_irq_gpio_xlat(struct irq_domain *d,
-+				struct device_node *node,
-+				const u32 *intspec,
-+				unsigned int intsize,
-+				unsigned long *out_hwirq,
-+				unsigned int *out_type)
++static bool __init octeon_has_88e1145(void)
 +{
-+	unsigned int irq;
-+	unsigned int type;
-+	unsigned int ciu = 0, bit = 0;
-+	unsigned int pin;
-+	unsigned int trigger;
-+	bool set_edge_handler = false;
++	return !OCTEON_IS_MODEL(OCTEON_CN52XX) &&
++	       !OCTEON_IS_MODEL(OCTEON_CN6XXX) &&
++	       !OCTEON_IS_MODEL(OCTEON_CN56XX);
++}
 +
-+	if (d->of_node != node)
-+		return -EINVAL;
++static void __init octeon_fdt_set_phy(int eth, int phy_addr)
++{
++	const __be32 *phy_handle;
++	const __be32 *alt_phy_handle;
++	const __be32 *reg;
++	u32 phandle;
++	int phy;
++	int alt_phy;
++	const char *p;
++	int current_len;
++	char new_name[20];
 +
-+	if (intsize < 2)
-+		return -EINVAL;
++	phy_handle = fdt_getprop(initial_boot_params, eth, "phy-handle", NULL);
++	if (!phy_handle)
++		return;
 +
-+	pin = intspec[0];
-+	if (pin >= 16)
-+		return -EINVAL;
++	phandle = be32_to_cpup(phy_handle);
++	phy = fdt_node_offset_by_phandle(initial_boot_params, phandle);
 +
-+	trigger = intspec[1];
-+
-+	switch (trigger) {
-+	case 1:
-+		type = IRQ_TYPE_EDGE_RISING;
-+		set_edge_handler = true;
-+		break;
-+	case 2:
-+		type = IRQ_TYPE_EDGE_FALLING;
-+		set_edge_handler = true;
-+		break;
-+	case 4:
-+		type = IRQ_TYPE_LEVEL_HIGH;
-+		break;
-+	case 8:
-+		type = IRQ_TYPE_LEVEL_LOW;
-+		break;
-+	default:
-+		pr_err("Error: (%s) Invalid irq trigger specification: %x\n",
-+		       node->name,
-+		       trigger);
-+		type = IRQ_TYPE_LEVEL_LOW;
-+		break;
++	alt_phy_handle = fdt_getprop(initial_boot_params, eth, "cavium,alt-phy-handle", NULL);
++	if (alt_phy_handle) {
++		u32 alt_phandle = be32_to_cpup(alt_phy_handle);
++		alt_phy = fdt_node_offset_by_phandle(initial_boot_params, alt_phandle);
++	} else {
++		alt_phy = -1;
 +	}
-+	*out_type = type;
-+	*out_hwirq = ((unsigned long)d->host_data) + pin;
 +
-+	ciu = *out_hwirq >> 6;
-+	bit = *out_hwirq & 0x3f;
++	if (phy_addr < 0 || phy < 0) {
++		/* Delete the PHY things */
++		fdt_nop_property(initial_boot_params, eth, "phy-handle");
++		/* This one may fail */
++		fdt_nop_property(initial_boot_params, eth, "cavium,alt-phy-handle");
++		if (phy >= 0)
++			fdt_nop_node(initial_boot_params, phy);
++		if (alt_phy >= 0)
++			fdt_nop_node(initial_boot_params, alt_phy);
++		return;
++	}
 +
-+	irq = octeon_irq_ciu_to_irq[ciu][bit];
++	if (phy_addr >= 256 && alt_phy > 0) {
++		const struct fdt_property *phy_prop;
++		struct fdt_property *alt_prop;
++		u32 phy_handle_name;
 +
-+	if (set_edge_handler)
-+		__irq_set_handler(irq, handle_edge_irq, 0, NULL);
++		/* Use the alt phy node instead.*/
++		phy_prop = fdt_get_property(initial_boot_params, eth, "phy-handle", NULL);
++		phy_handle_name = phy_prop->nameoff;
++		fdt_nop_node(initial_boot_params, phy);
++		fdt_nop_property(initial_boot_params, eth, "phy-handle");
++		alt_prop = fdt_get_property_w(initial_boot_params, eth, "cavium,alt-phy-handle", NULL);
++		alt_prop->nameoff = phy_handle_name;
++		phy = alt_phy;
++	}
 +
-+	return 0;
++	phy_addr &= 0xff;
++
++	if (octeon_has_88e1145()) {
++		fdt_nop_property(initial_boot_params, phy, "marvell,reg-init");
++		memset(new_name, 0, sizeof(new_name));
++		strcpy(new_name, "marvell,88e1145");
++		p = fdt_getprop(initial_boot_params, phy, "compatible",
++				&current_len);
++		if (p && current_len >= strlen(new_name))
++			fdt_setprop_inplace(initial_boot_params, phy,
++					"compatible", new_name, current_len);
++	}
++
++	reg = fdt_getprop(initial_boot_params, phy, "reg", NULL);
++	if (phy_addr == be32_to_cpup(reg))
++		return;
++
++	fdt_setprop_inplace_cell(initial_boot_params, phy, "reg", phy_addr);
++
++	snprintf(new_name, sizeof(new_name), "ethernet-phy@%x", phy_addr);
++
++	p = fdt_get_name(initial_boot_params, phy, &current_len);
++	if (p && current_len == strlen(new_name))
++		fdt_set_name(initial_boot_params, phy, new_name);
++	else
++		pr_err("Error: could not rename ethernet phy: <%s>", p);
 +}
 +
-+static int octeon_irq_ciu_xlat(struct irq_domain *d,
-+			       struct device_node *node,
-+			       const u32 *intspec,
-+			       unsigned int intsize,
-+			       unsigned long *out_hwirq,
-+			       unsigned int *out_type)
++static void __init octeon_fdt_set_mac_addr(int n, u64 *pmac)
 +{
-+	unsigned int ciu, bit;
++	u8 new_mac[6];
++	u64 mac = *pmac;
++	int r;
 +
-+	ciu = intspec[0];
-+	bit = intspec[1];
++	new_mac[0] = (mac >> 40) & 0xff;
++	new_mac[1] = (mac >> 32) & 0xff;
++	new_mac[2] = (mac >> 24) & 0xff;
++	new_mac[3] = (mac >> 16) & 0xff;
++	new_mac[4] = (mac >> 8) & 0xff;
++	new_mac[5] = mac & 0xff;
 +
-+	if (ciu > 1 || bit > 63)
-+		return -EINVAL;
++	r = fdt_setprop_inplace(initial_boot_params, n, "local-mac-address",
++				new_mac, sizeof(new_mac));
 +
-+	if (octeon_irq_ciu_to_irq[ciu][bit] == 0)
-+		return -EINVAL;
-+
-+	*out_hwirq = (ciu << 6) | bit;
-+	*out_type = 0;
-+
-+	return 0;
++	if (r) {
++		pr_err("Setting \"local-mac-address\" failed %d", r);
++		return;
++	}
++	*pmac = mac + 1;
 +}
-+static int octeon_irq_dummy_map(struct irq_domain *d,
-+				unsigned int virq, irq_hw_number_t hw)
++
++static void __init octeon_fdt_rm_ethernet(int node)
 +{
++	const __be32 *phy_handle;
++
++	phy_handle = fdt_getprop(initial_boot_params, node, "phy-handle", NULL);
++	if (phy_handle) {
++		u32 ph = be32_to_cpup(phy_handle);
++		int p = fdt_node_offset_by_phandle(initial_boot_params, ph);
++		if (p >= 0)
++			fdt_nop_node(initial_boot_params, p);
++	}
++	fdt_nop_node(initial_boot_params, node);
++}
++
++static void __init octeon_fdt_pip_port(int iface, int i, int p, int max, u64 *pmac)
++{
++	char name_buffer[20];
++	int eth;
++	int phy_addr;
++	int ipd_port;
++
++	snprintf(name_buffer, sizeof(name_buffer), "ethernet@%x", p);
++	eth = fdt_subnode_offset(initial_boot_params, iface, name_buffer);
++	if (eth < 0)
++		return;
++	if (p > max) {
++		pr_debug("Deleting port %x:%x\n", i, p);
++		octeon_fdt_rm_ethernet(eth);
++		return;
++	}
++	if (OCTEON_IS_MODEL(OCTEON_CN68XX))
++		ipd_port = (0x100 * i) + (0x10 * p) + 0x800;
++	else
++		ipd_port = 16 * i + p;
++
++	phy_addr = cvmx_helper_board_get_mii_address(ipd_port);
++	octeon_fdt_set_phy(eth, phy_addr);
++	octeon_fdt_set_mac_addr(eth, pmac);
++}
++
++static void __init octeon_fdt_pip_iface(int pip, int idx, u64 *pmac)
++{
++	char name_buffer[20];
++	int iface;
++	int p;
++	int count;
++
++	count = cvmx_helper_interface_enumerate(idx);
++
++	snprintf(name_buffer, sizeof(name_buffer), "interface@%d", idx);
++	iface = fdt_subnode_offset(initial_boot_params, pip, name_buffer);
++	if (iface < 0)
++		return;
++
++	for (p = 0; p < 16; p++)
++		octeon_fdt_pip_port(iface, idx, p, count - 1, pmac);
++}
++
++int __init octeon_prune_device_tree(void)
++{
++	int i, max_port, uart_mask;
++	const char *pip_path;
++	const char *alias_prop;
++	char name_buffer[20];
++	int aliases;
++	u64 mac_addr_base;
++
++	if (fdt_check_header(initial_boot_params))
++		panic("Corrupt Device Tree.");
++
++	aliases = fdt_path_offset(initial_boot_params, "/aliases");
++	if (aliases < 0) {
++		pr_err("Error: No /aliases node in device tree.");
++		return -EINVAL;
++	}
++
++
++	mac_addr_base =
++		((octeon_bootinfo->mac_addr_base[0] & 0xffull)) << 40 |
++		((octeon_bootinfo->mac_addr_base[1] & 0xffull)) << 32 |
++		((octeon_bootinfo->mac_addr_base[2] & 0xffull)) << 24 |
++		((octeon_bootinfo->mac_addr_base[3] & 0xffull)) << 16 |
++		((octeon_bootinfo->mac_addr_base[4] & 0xffull)) << 8 |
++		(octeon_bootinfo->mac_addr_base[5] & 0xffull);
++
++	if (OCTEON_IS_MODEL(OCTEON_CN52XX) || OCTEON_IS_MODEL(OCTEON_CN63XX))
++		max_port = 2;
++	else if (OCTEON_IS_MODEL(OCTEON_CN56XX) || OCTEON_IS_MODEL(OCTEON_CN68XX))
++		max_port = 1;
++	else
++		max_port = 0;
++
++	if (octeon_bootinfo->board_type == CVMX_BOARD_TYPE_NIC10E)
++		max_port = 0;
++
++	for (i = 0; i < 2; i++) {
++		int mgmt;
++		snprintf(name_buffer, sizeof(name_buffer),
++			 "mix%d", i);
++		alias_prop = fdt_getprop(initial_boot_params, aliases,
++					name_buffer, NULL);
++		if (alias_prop) {
++			mgmt = fdt_path_offset(initial_boot_params, alias_prop);
++			if (mgmt < 0)
++				continue;
++			if (i >= max_port) {
++				pr_debug("Deleting mix%d\n", i);
++				octeon_fdt_rm_ethernet(mgmt);
++				fdt_nop_property(initial_boot_params, aliases,
++						 name_buffer);
++			} else {
++				int phy_addr = cvmx_helper_board_get_mii_address(CVMX_HELPER_BOARD_MGMT_IPD_PORT + i);
++				octeon_fdt_set_phy(mgmt, phy_addr);
++				octeon_fdt_set_mac_addr(mgmt, &mac_addr_base);
++			}
++		}
++	}
++
++	pip_path = fdt_getprop(initial_boot_params, aliases, "pip", NULL);
++	if (pip_path) {
++		int pip = fdt_path_offset(initial_boot_params, pip_path);
++		if (pip  >= 0)
++			for (i = 0; i <= 4; i++)
++				octeon_fdt_pip_iface(pip, i, &mac_addr_base);
++	}
++
++	/* I2C */
++	if (OCTEON_IS_MODEL(OCTEON_CN52XX) ||
++	    OCTEON_IS_MODEL(OCTEON_CN63XX) ||
++	    OCTEON_IS_MODEL(OCTEON_CN68XX) ||
++	    OCTEON_IS_MODEL(OCTEON_CN56XX))
++		max_port = 2;
++	else
++		max_port = 1;
++
++	for (i = 0; i < 2; i++) {
++		int i2c;
++		snprintf(name_buffer, sizeof(name_buffer),
++			 "twsi%d", i);
++		alias_prop = fdt_getprop(initial_boot_params, aliases,
++					name_buffer, NULL);
++
++		if (alias_prop) {
++			i2c = fdt_path_offset(initial_boot_params, alias_prop);
++			if (i2c < 0)
++				continue;
++			if (i >= max_port) {
++				pr_debug("Deleting twsi%d\n", i);
++				fdt_nop_node(initial_boot_params, i2c);
++				fdt_nop_property(initial_boot_params, aliases,
++						 name_buffer);
++			}
++		}
++	}
++
++	/* SMI/MDIO */
++	if (OCTEON_IS_MODEL(OCTEON_CN68XX))
++		max_port = 4;
++	else if (OCTEON_IS_MODEL(OCTEON_CN52XX) ||
++		 OCTEON_IS_MODEL(OCTEON_CN63XX) ||
++		 OCTEON_IS_MODEL(OCTEON_CN56XX))
++		max_port = 2;
++	else
++		max_port = 1;
++
++	for (i = 0; i < 2; i++) {
++		int i2c;
++		snprintf(name_buffer, sizeof(name_buffer),
++			 "smi%d", i);
++		alias_prop = fdt_getprop(initial_boot_params, aliases,
++					name_buffer, NULL);
++
++		if (alias_prop) {
++			i2c = fdt_path_offset(initial_boot_params, alias_prop);
++			if (i2c < 0)
++				continue;
++			if (i >= max_port) {
++				pr_debug("Deleting smi%d\n", i);
++				fdt_nop_node(initial_boot_params, i2c);
++				fdt_nop_property(initial_boot_params, aliases,
++						 name_buffer);
++			}
++		}
++	}
++
++	/* Serial */
++	uart_mask = 3;
++
++	/* Right now CN52XX is the only chip with a third uart */
++	if (OCTEON_IS_MODEL(OCTEON_CN52XX))
++		uart_mask |= 4; /* uart2 */
++
++	for (i = 0; i < 3; i++) {
++		int uart;
++		snprintf(name_buffer, sizeof(name_buffer),
++			 "uart%d", i);
++		alias_prop = fdt_getprop(initial_boot_params, aliases,
++					name_buffer, NULL);
++
++		if (alias_prop) {
++			uart = fdt_path_offset(initial_boot_params, alias_prop);
++			if (uart_mask & (1 << i))
++				continue;
++			pr_debug("Deleting uart%d\n", i);
++			fdt_nop_node(initial_boot_params, uart);
++			fdt_nop_property(initial_boot_params, aliases,
++					 name_buffer);
++		}
++	}
++
++	/* Compact Flash */
++	alias_prop = fdt_getprop(initial_boot_params, aliases,
++				 "cf0", NULL);
++	if (alias_prop) {
++		union cvmx_mio_boot_reg_cfgx mio_boot_reg_cfg;
++		unsigned long base_ptr, region_base, region_size;
++		unsigned long region1_base = 0;
++		unsigned long region1_size = 0;
++		int cs, bootbus;
++		bool is_16bit = false;
++		bool is_true_ide = false;
++		__be32 new_reg[6];
++		__be32 *ranges;
++		int len;
++
++		int cf = fdt_path_offset(initial_boot_params, alias_prop);
++		base_ptr = 0;
++		if (octeon_bootinfo->major_version == 1
++			&& octeon_bootinfo->minor_version >= 1) {
++			if (octeon_bootinfo->compact_flash_common_base_addr)
++				base_ptr = octeon_bootinfo->compact_flash_common_base_addr;
++		} else {
++			base_ptr = 0x1d000800;
++		}
++
++		if (!base_ptr)
++			goto no_cf;
++
++		/* Find CS0 region. */
++		for (cs = 0; cs < 8; cs++) {
++			mio_boot_reg_cfg.u64 = cvmx_read_csr(CVMX_MIO_BOOT_REG_CFGX(cs));
++			region_base = mio_boot_reg_cfg.s.base << 16;
++			region_size = (mio_boot_reg_cfg.s.size + 1) << 16;
++			if (mio_boot_reg_cfg.s.en && base_ptr >= region_base
++				&& base_ptr < region_base + region_size) {
++				is_16bit = mio_boot_reg_cfg.s.width;
++				break;
++			}
++		}
++		if (cs >= 7) {
++			/* cs and cs + 1 are CS0 and CS1, both must be less than 8. */
++			goto no_cf;
++		}
++
++		if (!(base_ptr & 0xfffful)) {
++			/*
++			 * Boot loader signals availability of DMA (true_ide
++			 * mode) by setting low order bits of base_ptr to
++			 * zero.
++			 */
++
++			/* Asume that CS1 immediately follows. */
++			mio_boot_reg_cfg.u64 =
++				cvmx_read_csr(CVMX_MIO_BOOT_REG_CFGX(cs + 1));
++			region1_base = mio_boot_reg_cfg.s.base << 16;
++			region1_size = (mio_boot_reg_cfg.s.size + 1) << 16;
++			if (!mio_boot_reg_cfg.s.en)
++				goto no_cf;
++			is_true_ide = true;
++
++		} else {
++			fdt_nop_property(initial_boot_params, cf, "cavium,true-ide");
++			fdt_nop_property(initial_boot_params, cf, "cavium,dma-engine-handle");
++			if (!is_16bit) {
++				__be32 width = cpu_to_be32(8);
++				fdt_setprop_inplace(initial_boot_params, cf,
++						"cavium,bus-width", &width, sizeof(width));
++			}
++		}
++		new_reg[0] = cpu_to_be32(cs);
++		new_reg[1] = cpu_to_be32(0);
++		new_reg[2] = cpu_to_be32(0x10000);
++		new_reg[3] = cpu_to_be32(cs + 1);
++		new_reg[4] = cpu_to_be32(0);
++		new_reg[5] = cpu_to_be32(0x10000);
++		fdt_setprop_inplace(initial_boot_params, cf,
++				    "reg",  new_reg, sizeof(new_reg));
++
++		bootbus = fdt_parent_offset(initial_boot_params, cf);
++		if (bootbus < 0)
++			goto no_cf;
++		ranges = fdt_getprop_w(initial_boot_params, bootbus, "ranges", &len);
++		if (!ranges || len < (5 * 8 * sizeof(__be32)))
++			goto no_cf;
++
++		ranges[(cs * 5) + 2] = cpu_to_be32(region_base >> 32);
++		ranges[(cs * 5) + 3] = cpu_to_be32(region_base & 0xffffffff);
++		ranges[(cs * 5) + 4] = cpu_to_be32(region_size);
++		if (is_true_ide) {
++			cs++;
++			ranges[(cs * 5) + 2] = cpu_to_be32(region1_base >> 32);
++			ranges[(cs * 5) + 3] = cpu_to_be32(region1_base & 0xffffffff);
++			ranges[(cs * 5) + 4] = cpu_to_be32(region1_size);
++		}
++		goto end_cf;
++no_cf:
++		fdt_nop_node(initial_boot_params, cf);
++
++end_cf:
++		;
++	}
++
++	/* 8 char LED */
++	alias_prop = fdt_getprop(initial_boot_params, aliases,
++				 "led0", NULL);
++	if (alias_prop) {
++		union cvmx_mio_boot_reg_cfgx mio_boot_reg_cfg;
++		unsigned long base_ptr, region_base, region_size;
++		int cs, bootbus;
++		__be32 new_reg[6];
++		__be32 *ranges;
++		int len;
++		int led = fdt_path_offset(initial_boot_params, alias_prop);
++
++		base_ptr = octeon_bootinfo->led_display_base_addr;
++		if (base_ptr == 0)
++			goto no_led;
++		/* Find CS0 region. */
++		for (cs = 0; cs < 8; cs++) {
++			mio_boot_reg_cfg.u64 = cvmx_read_csr(CVMX_MIO_BOOT_REG_CFGX(cs));
++			region_base = mio_boot_reg_cfg.s.base << 16;
++			region_size = (mio_boot_reg_cfg.s.size + 1) << 16;
++			if (mio_boot_reg_cfg.s.en && base_ptr >= region_base
++				&& base_ptr < region_base + region_size)
++				break;
++		}
++
++		if (cs > 7)
++			goto no_led;
++
++		new_reg[0] = cpu_to_be32(cs);
++		new_reg[1] = cpu_to_be32(0x20);
++		new_reg[2] = cpu_to_be32(0x20);
++		new_reg[3] = cpu_to_be32(cs);
++		new_reg[4] = cpu_to_be32(0);
++		new_reg[5] = cpu_to_be32(0x20);
++		fdt_setprop_inplace(initial_boot_params, led,
++				    "reg",  new_reg, sizeof(new_reg));
++
++		bootbus = fdt_parent_offset(initial_boot_params, led);
++		if (bootbus < 0)
++			goto no_led;
++		ranges = fdt_getprop_w(initial_boot_params, bootbus, "ranges", &len);
++		if (!ranges || len < (5 * 8 * sizeof(__be32)))
++			goto no_led;
++
++		ranges[(cs * 5) + 2] = cpu_to_be32(region_base >> 32);
++		ranges[(cs * 5) + 3] = cpu_to_be32(region_base & 0xffffffff);
++		ranges[(cs * 5) + 4] = cpu_to_be32(region_size);
++		goto end_led;
++
++no_led:
++		fdt_nop_node(initial_boot_params, led);
++end_led:
++		;
++	}
++
++	/* OHCI/UHCI USB */
++	alias_prop = fdt_getprop(initial_boot_params, aliases,
++				 "uctl", NULL);
++	if (alias_prop) {
++		int uctl = fdt_path_offset(initial_boot_params, alias_prop);
++
++		if (uctl >= 0 && (!OCTEON_IS_MODEL(OCTEON_CN6XXX) ||
++				  octeon_bootinfo->board_type == CVMX_BOARD_TYPE_NIC2E)) {
++			pr_debug("Deleting uctl\n");
++			fdt_nop_node(initial_boot_params, uctl);
++			fdt_nop_property(initial_boot_params, aliases, "uctl");
++		} else if (octeon_bootinfo->board_type == CVMX_BOARD_TYPE_NIC10E ||
++			   octeon_bootinfo->board_type == CVMX_BOARD_TYPE_NIC4E) {
++			/* Missing "refclk-type" defaults to crystal. */
++			fdt_nop_property(initial_boot_params, uctl, "refclk-type");
++		}
++	}
++
 +	return 0;
 +}
 +
-+static struct irq_domain_ops octeon_irq_domain_ciu_ops = {
-+	.map = octeon_irq_dummy_map,
-+	.xlate = octeon_irq_ciu_xlat,
-+};
++static int __init octeon_publish_devices(void)
++{
++	return of_platform_bus_probe(NULL, octeon_ids, NULL);
++}
++device_initcall(octeon_publish_devices);
 +
-+static struct irq_domain_ops octeon_irq_domain_gpio_ops = {
-+	.map = octeon_irq_dummy_map,
-+	.xlate = octeon_irq_gpio_xlat,
-+};
+ MODULE_AUTHOR("David Daney <ddaney@caviumnetworks.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Platform driver for Octeon SOC");
+diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
+index 260b273..03e8be0 100644
+--- a/arch/mips/cavium-octeon/setup.c
++++ b/arch/mips/cavium-octeon/setup.c
+@@ -20,6 +20,8 @@
+ #include <linux/platform_device.h>
+ #include <linux/serial_core.h>
+ #include <linux/serial_8250.h>
++#include <linux/of_fdt.h>
++#include <linux/libfdt.h>
+ 
+ #include <asm/processor.h>
+ #include <asm/reboot.h>
+@@ -775,3 +777,46 @@ void prom_free_prom_memory(void)
+ 	}
+ #endif
+ }
 +
- static void octeon_irq_ip2_v1(void)
- {
- 	const unsigned long core_id = cvmx_get_core_num();
-@@ -982,6 +1092,10 @@ static void __init octeon_irq_init_ciu(void)
- 	struct irq_chip *chip_mbox;
- 	struct irq_chip *chip_wd;
- 	struct irq_chip *chip_gpio;
-+	struct device_node *gpio_node;
-+	struct device_node *ciu_node;
-+	struct irq_domain *gpio_domain;
-+	struct irq_domain *ciu_domain;
- 
- 	octeon_irq_init_ciu_percpu();
- 	octeon_irq_setup_secondary = octeon_irq_setup_secondary_ciu;
-@@ -1011,83 +1125,144 @@ static void __init octeon_irq_init_ciu(void)
- 	/* Mips internal */
- 	octeon_irq_init_core();
- 
-+	gpio_node = of_find_compatible_node(NULL, NULL, "cavium,octeon-3860-gpio");
-+	ciu_node = of_find_compatible_node(NULL, NULL, "cavium,octeon-3860-ciu");
-+	/* gpio domain host_data is the base hwirq number. */
-+	gpio_domain = irq_domain_add_linear(gpio_node, 16, &octeon_irq_domain_gpio_ops, (void *)16);
-+	ciu_domain = irq_domain_add_tree(ciu_node, &octeon_irq_domain_ciu_ops, NULL);
++int octeon_prune_device_tree(void);
 +
- 	/* CIU_0 */
- 	for (i = 0; i < 16; i++)
--		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_WORKQ0, 0, i + 0, chip, handle_level_irq);
-+		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_WORKQ0, 0, i + 0,
-+					   ciu_domain, chip, handle_level_irq);
++extern const char __dtb_octeon_3xxx_begin;
++extern const char __dtb_octeon_3xxx_end;
++extern const char __dtb_octeon_68xx_begin;
++extern const char __dtb_octeon_68xx_end;
++void __init device_tree_init(void)
++{
++	int dt_size;
++	struct boot_param_header *fdt;
++	bool do_prune;
 +
- 	for (i = 0; i < 16; i++)
--		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_GPIO0, 0, i + 16, chip_gpio, handle_level_irq);
-+		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_GPIO0, 0, i + 16,
-+					   gpio_domain, chip_gpio, handle_level_irq);
- 
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MBOX0, 0, 32, chip_mbox, handle_percpu_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MBOX1, 0, 33, chip_mbox, handle_percpu_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MBOX0, 0, 32,
-+				   ciu_domain, chip_mbox, handle_percpu_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MBOX1, 0, 33,
-+				   ciu_domain, chip_mbox, handle_percpu_irq);
- 
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_UART0, 0, 34, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_UART1, 0, 35, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_UART0, 0, 34,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_UART1, 0, 35,
-+				   ciu_domain, chip, handle_level_irq);
- 
- 	for (i = 0; i < 4; i++)
--		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_PCI_INT0, 0, i + 36, chip, handle_level_irq);
-+		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_PCI_INT0, 0, i + 36,
-+					   ciu_domain, chip, handle_level_irq);
- 	for (i = 0; i < 4; i++)
--		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_PCI_MSI0, 0, i + 40, chip, handle_level_irq);
-+		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_PCI_MSI0, 0, i + 40,
-+					   ciu_domain, chip, handle_level_irq);
- 
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TWSI, 0, 45, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RML, 0, 46, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TRACE0, 0, 47, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TWSI, 0, 45,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RML, 0, 46,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TRACE0, 0, 47,
-+				   ciu_domain, chip, handle_level_irq);
- 
- 	for (i = 0; i < 2; i++)
--		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_GMX_DRP0, 0, i + 48, chip_edge, handle_edge_irq);
-+		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_GMX_DRP0, 0, i + 48,
-+					   ciu_domain, chip_edge, handle_edge_irq);
- 
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IPD_DRP, 0, 50, chip_edge, handle_edge_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_KEY_ZERO, 0, 51, chip_edge, handle_edge_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IPD_DRP, 0, 50,
-+				   ciu_domain, chip_edge, handle_edge_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_KEY_ZERO, 0, 51,
-+				   ciu_domain, chip_edge, handle_edge_irq);
- 
- 	for (i = 0; i < 4; i++)
--		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_TIMER0, 0, i + 52, chip_edge, handle_edge_irq);
--
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_USB0, 0, 56, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PCM, 0, 57, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MPI, 0, 58, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TWSI2, 0, 59, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_POWIQ, 0, 60, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IPDPPTHR, 0, 61, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MII0, 0, 62, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_BOOTDMA, 0, 63, chip, handle_level_irq);
-+		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_TIMER0, 0, i + 52,
-+					   ciu_domain, chip_edge, handle_edge_irq);
++	if (octeon_bootinfo->minor_version >= 3 && octeon_bootinfo->fdt_addr) {
++		fdt = phys_to_virt(octeon_bootinfo->fdt_addr);
++		if (fdt_check_header(fdt))
++			panic("Corrupt Device Tree passed to kernel.");
++		dt_size = be32_to_cpu(fdt->totalsize);
++		do_prune = false;
++	} else if (OCTEON_IS_MODEL(OCTEON_CN68XX)) {
++		fdt = (struct boot_param_header *)&__dtb_octeon_68xx_begin;
++		dt_size = &__dtb_octeon_68xx_end - &__dtb_octeon_68xx_begin;
++		do_prune = true;
++	} else {
++		fdt = (struct boot_param_header *)&__dtb_octeon_3xxx_begin;
++		dt_size = &__dtb_octeon_3xxx_end - &__dtb_octeon_3xxx_begin;
++		do_prune = true;
++	}
 +
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_USB0, 0, 56,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PCM, 0, 57,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MPI, 0, 58,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TWSI2, 0, 59,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_POWIQ, 0, 60,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IPDPPTHR, 0, 61,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MII0, 0, 62,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_BOOTDMA, 0, 63,
-+				   ciu_domain, chip, handle_level_irq);
- 
- 	/* CIU_1 */
- 	for (i = 0; i < 16; i++)
--		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_WDOG0, 1, i + 0, chip_wd, handle_level_irq);
--
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_UART2, 1, 16, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_USB1, 1, 17, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MII1, 1, 18, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_NAND, 1, 19, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MIO, 1, 20, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IOB, 1, 21, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_FPA, 1, 22, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_POW, 1, 23, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_L2C, 1, 24, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IPD, 1, 25, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PIP, 1, 26, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PKO, 1, 27, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_ZIP, 1, 28, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TIM, 1, 29, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RAD, 1, 30, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_KEY, 1, 31, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_DFA, 1, 32, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_USBCTL, 1, 33, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_SLI, 1, 34, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_DPI, 1, 35, chip, handle_level_irq);
--
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_AGX0, 1, 36, chip, handle_level_irq);
--
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_AGL, 1, 46, chip, handle_level_irq);
--
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PTP, 1, 47, chip_edge, handle_edge_irq);
--
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PEM0, 1, 48, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PEM1, 1, 49, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_SRIO0, 1, 50, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_SRIO1, 1, 51, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_LMC0, 1, 52, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_DFM, 1, 56, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RST, 1, 63, chip, handle_level_irq);
-+		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_WDOG0, 1, i + 0,
-+					   ciu_domain, chip_wd, handle_level_irq);
++	/* Copy the default tree from init memory. */
++	initial_boot_params = early_init_dt_alloc_memory_arch(dt_size, 8);
++	if (initial_boot_params == NULL)
++		panic("Could not allocate initial_boot_params\n");
++	memcpy(initial_boot_params, fdt, dt_size);
 +
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_UART2, 1, 16,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_USB1, 1, 17,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MII1, 1, 18,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_NAND, 1, 19,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MIO, 1, 20,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IOB, 1, 21,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_FPA, 1, 22,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_POW, 1, 23,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_L2C, 1, 24,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_IPD, 1, 25,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PIP, 1, 26,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PKO, 1, 27,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_ZIP, 1, 28,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TIM, 1, 29,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RAD, 1, 30,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_KEY, 1, 31,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_DFA, 1, 32,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_USBCTL, 1, 33,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_SLI, 1, 34,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_DPI, 1, 35,
-+				   ciu_domain, chip, handle_level_irq);
-+
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_AGX0, 1, 36,
-+				   ciu_domain, chip, handle_level_irq);
-+
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_AGL, 1, 46,
-+				   ciu_domain, chip, handle_level_irq);
-+
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PTP, 1, 47,
-+				   ciu_domain, chip_edge, handle_edge_irq);
-+
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PEM0, 1, 48,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_PEM1, 1, 49,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_SRIO0, 1, 50,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_SRIO1, 1, 51,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_LMC0, 1, 52,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_DFM, 1, 56,
-+				   ciu_domain, chip, handle_level_irq);
-+	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RST, 1, 63,
-+				   ciu_domain, chip, handle_level_irq);
- 
- 	/* Enable the CIU lines */
- 	set_c0_status(STATUSF_IP3 | STATUSF_IP2);
++	if (do_prune) {
++		octeon_prune_device_tree();
++		pr_info("Using internal Device Tree.\n");
++	} else {
++		pr_info("Using passed Device Tree.\n");
++	}
++	unflatten_device_tree();
++}
 -- 
 1.7.2.3

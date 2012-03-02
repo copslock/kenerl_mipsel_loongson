@@ -1,112 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2012 20:07:59 +0100 (CET)
-Received: from mail-pw0-f49.google.com ([209.85.160.49]:48995 "EHLO
-        mail-pw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903744Ab2CBTHx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2012 20:07:53 +0100
-Received: by pbbro2 with SMTP id ro2so3086149pbb.36
-        for <linux-mips@linux-mips.org>; Fri, 02 Mar 2012 11:07:46 -0800 (PST)
-Received-SPF: pass (google.com: domain of grant.likely@secretlab.ca designates 10.68.203.73 as permitted sender) client-ip=10.68.203.73;
-Authentication-Results: mr.google.com; spf=pass (google.com: domain of grant.likely@secretlab.ca designates 10.68.203.73 as permitted sender) smtp.mail=grant.likely@secretlab.ca
-Received: from mr.google.com ([10.68.203.73])
-        by 10.68.203.73 with SMTP id ko9mr19508266pbc.130.1330715266811 (num_hops = 1);
-        Fri, 02 Mar 2012 11:07:46 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Mar 2012 20:30:00 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13537 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903743Ab2CBT3y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 2 Mar 2012 20:29:54 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4f5120180000>; Fri, 02 Mar 2012 11:31:36 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 2 Mar 2012 11:29:53 -0800
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 2 Mar 2012 11:29:52 -0800
+Message-ID: <4F511FB0.5070901@cavium.com>
+Date:   Fri, 02 Mar 2012 11:29:52 -0800
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.68.203.73 with SMTP id ko9mr16281973pbc.130.1330715266675;
-        Fri, 02 Mar 2012 11:07:46 -0800 (PST)
-Received: from localhost (S0106d8b37715ee14.cg.shawcable.net. [68.146.14.168])
-        by mx.google.com with ESMTPS id g3sm5678693pbt.41.2012.03.02.11.07.45
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 02 Mar 2012 11:07:45 -0800 (PST)
-Received: by localhost (Postfix, from userid 1000)
-        id 571E03E1C63; Fri,  2 Mar 2012 13:07:44 -0600 (CST)
-From:   Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v6 4/5] MIPS: Octeon: Setup irq_domains for interrupts.
-To:     David Daney <david.daney@cavium.com>,
-        Rob Herring <robherring2@gmail.com>
-Cc:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
+To:     Grant Likely <grant.likely@secretlab.ca>
+CC:     Rob Herring <robherring2@gmail.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "devicetree-discuss@lists.ozlabs.org" 
+        <devicetree-discuss@lists.ozlabs.org>,
         Rob Herring <rob.herring@calxeda.com>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <4F510B8E.3070201@cavium.com>
-References: <1330563422-14078-1-git-send-email-ddaney.cavm@gmail.com> <1330563422-14078-5-git-send-email-ddaney.cavm@gmail.com> <4F50D7C2.7080204@gmail.com> <4F510B8E.3070201@cavium.com>
-Date:   Fri, 02 Mar 2012 12:07:44 -0700
-Message-Id: <20120302190744.571E03E1C63@localhost>
-X-Gm-Message-State: ALoCoQnnrE+cHXqSuvV7ois99yw/yg0c1G9yutriSn+iMCI28BHZvndNjU4M6Wx2WVhMUaTAj0yK
-X-archive-position: 32596
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 4/5] MIPS: Octeon: Setup irq_domains for interrupts.
+References: <1330563422-14078-1-git-send-email-ddaney.cavm@gmail.com> <1330563422-14078-5-git-send-email-ddaney.cavm@gmail.com> <4F50D7C2.7080204@gmail.com> <4F510B8E.3070201@cavium.com> <20120302190744.571E03E1C63@localhost>
+In-Reply-To: <20120302190744.571E03E1C63@localhost>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 02 Mar 2012 19:29:52.0992 (UTC) FILETIME=[D776D600:01CCF8AA]
+X-archive-position: 32597
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Fri, 02 Mar 2012 10:03:58 -0800, David Daney <david.daney@cavium.com> wrote:
-> On 03/02/2012 06:22 AM, Rob Herring wrote:
-> [...]
-> >> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> >> index ce30e2f..01344ae 100644
-> >> --- a/arch/mips/Kconfig
-> >> +++ b/arch/mips/Kconfig
-> >> @@ -1432,6 +1432,7 @@ config CPU_CAVIUM_OCTEON
-> >>   	select WEAK_ORDERING
-> >>   	select CPU_SUPPORTS_HIGHMEM
-> >>   	select CPU_SUPPORTS_HUGEPAGES
-> >> +	select IRQ_DOMAIN
-> >
-> > IIRC, Grant has a patch cued up that enables IRQ_DOMAIN for all of MIPS.
-> >
-> 
-> Indeed, I now see it in linux-next.  I will remove this one.
-> 
-> >>   	help
-> >>   	  The Cavium Octeon processor is a highly integrated chip containing
-> >>   	  many ethernet hardware widgets for networking tasks. The processor
-> >> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-> >> index bdcedd3..e9f2f6c 100644
-> >> --- a/arch/mips/cavium-octeon/octeon-irq.c
-> >> +++ b/arch/mips/cavium-octeon/octeon-irq.c
-> [...]
-> >> +static void __init octeon_irq_set_ciu_mapping(unsigned int irq,
-> >> +					      unsigned int line,
-> >> +					      unsigned int bit,
-> >> +					      struct irq_domain *domain,
-> >>   					      struct irq_chip *chip,
-> >>   					      irq_flow_handler_t handler)
-> >>   {
-> >> +	struct irq_data *irqd;
-> >>   	union octeon_ciu_chip_data cd;
-> >>
-> >>   	irq_set_chip_and_handler(irq, chip, handler);
-> >> -
-> >>   	cd.l = 0;
-> >>   	cd.s.line = line;
-> >>   	cd.s.bit = bit;
-> >>
-> >>   	irq_set_chip_data(irq, cd.p);
-> >>   	octeon_irq_ciu_to_irq[line][bit] = irq;
-> >> +
-> >> +	irqd = irq_get_irq_data(irq);
-> >> +	irqd->hwirq = line<<  6 | bit;
-> >> +	irqd->domain = domain;
-> >
-> > I think the domain code will set these.
-> 
-> It is my understanding that the domain code only does this for:
-> 
-> o irq_domain_add_legacy()
-> 
-> o irq_create_direct_mapping()
-> 
-> o irq_create_mapping()
-> 
-> We use none of those.  So I do it here.
-> 
-> If there is a better way, I am open to suggestions.
+On 03/02/2012 11:07 AM, Grant Likely wrote:
+> On Fri, 02 Mar 2012 10:03:58 -0800, David Daney<david.daney@cavium.com>  wrote:
+>> On 03/02/2012 06:22 AM, Rob Herring wrote:
+>> [...]
+>>>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>>>> index ce30e2f..01344ae 100644
+>>>> --- a/arch/mips/Kconfig
+>>>> +++ b/arch/mips/Kconfig
+>>>> @@ -1432,6 +1432,7 @@ config CPU_CAVIUM_OCTEON
+>>>>    	select WEAK_ORDERING
+>>>>    	select CPU_SUPPORTS_HIGHMEM
+>>>>    	select CPU_SUPPORTS_HUGEPAGES
+>>>> +	select IRQ_DOMAIN
+>>>
+>>> IIRC, Grant has a patch cued up that enables IRQ_DOMAIN for all of MIPS.
+>>>
+>>
+>> Indeed, I now see it in linux-next.  I will remove this one.
+>>
+>>>>    	help
+>>>>    	  The Cavium Octeon processor is a highly integrated chip containing
+>>>>    	  many ethernet hardware widgets for networking tasks. The processor
+>>>> diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+>>>> index bdcedd3..e9f2f6c 100644
+>>>> --- a/arch/mips/cavium-octeon/octeon-irq.c
+>>>> +++ b/arch/mips/cavium-octeon/octeon-irq.c
+>> [...]
+>>>> +static void __init octeon_irq_set_ciu_mapping(unsigned int irq,
+>>>> +					      unsigned int line,
+>>>> +					      unsigned int bit,
+>>>> +					      struct irq_domain *domain,
+>>>>    					      struct irq_chip *chip,
+>>>>    					      irq_flow_handler_t handler)
+>>>>    {
+>>>> +	struct irq_data *irqd;
+>>>>    	union octeon_ciu_chip_data cd;
+>>>>
+>>>>    	irq_set_chip_and_handler(irq, chip, handler);
+>>>> -
+>>>>    	cd.l = 0;
+>>>>    	cd.s.line = line;
+>>>>    	cd.s.bit = bit;
+>>>>
+>>>>    	irq_set_chip_data(irq, cd.p);
+>>>>    	octeon_irq_ciu_to_irq[line][bit] = irq;
+>>>> +
+>>>> +	irqd = irq_get_irq_data(irq);
+>>>> +	irqd->hwirq = line<<   6 | bit;
+>>>> +	irqd->domain = domain;
+>>>
+>>> I think the domain code will set these.
+>>
+>> It is my understanding that the domain code only does this for:
+>>
+>> o irq_domain_add_legacy()
+>>
+>> o irq_create_direct_mapping()
+>>
+>> o irq_create_mapping()
+>>
+>> We use none of those.  So I do it here.
+>>
+>> If there is a better way, I am open to suggestions.
+>
+> irq_create_mapping is called by irq_create_of_mapping() which is
+> in turn called by irq_of_parse_and-map().  irq_domain always
+> manages the hwirq and domain values.  Driver code cannot manipulate
+> them manually.
+>
 
-irq_create_mapping is called by irq_create_of_mapping() which is
-in turn called by irq_of_parse_and-map().  irq_domain always
-manages the hwirq and domain values.  Driver code cannot manipulate
-them manually.
+I really must be missing something.
 
-g.
+Given:
+
+1) I must have a mapping between hwirq and irq that I control so that 
+non-OF code using the OCTEON_IRQ_* constants continues to work.
+
+2) irq_create_mapping() will allocate a random irq value if none is 
+already assigned to the hwirq.
+
+Therefore: To avoid having random irq values assigned, I must manually 
+assign them.
+
+David Daney

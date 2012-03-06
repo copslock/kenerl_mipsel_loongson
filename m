@@ -1,46 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2012 21:34:09 +0100 (CET)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:45894 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903657Ab2CFUdx (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2012 21:33:53 +0100
-Received: by ghbf11 with SMTP id f11so2765612ghb.36
-        for <multiple recipients>; Tue, 06 Mar 2012 12:33:47 -0800 (PST)
-Received-SPF: pass (google.com: domain of ddaney.cavm@gmail.com designates 10.60.4.106 as permitted sender) client-ip=10.60.4.106;
-Authentication-Results: mr.google.com; spf=pass (google.com: domain of ddaney.cavm@gmail.com designates 10.60.4.106 as permitted sender) smtp.mail=ddaney.cavm@gmail.com; dkim=pass header.i=ddaney.cavm@gmail.com
-Received: from mr.google.com ([10.60.4.106])
-        by 10.60.4.106 with SMTP id j10mr9743044oej.47.1331066027145 (num_hops = 1);
-        Tue, 06 Mar 2012 12:33:47 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2012 00:08:54 +0100 (CET)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:61035 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903662Ab2CFXIh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Mar 2012 00:08:37 +0100
+Received: by yhjj52 with SMTP id j52so2863435yhj.36
+        for <multiple recipients>; Tue, 06 Mar 2012 15:08:30 -0800 (PST)
+Received-SPF: pass (google.com: domain of ddaney.cavm@gmail.com designates 10.60.12.8 as permitted sender) client-ip=10.60.12.8;
+Authentication-Results: mr.google.com; spf=pass (google.com: domain of ddaney.cavm@gmail.com designates 10.60.12.8 as permitted sender) smtp.mail=ddaney.cavm@gmail.com; dkim=pass header.i=ddaney.cavm@gmail.com
+Received: from mr.google.com ([10.60.12.8])
+        by 10.60.12.8 with SMTP id u8mr12060860oeb.60.1331075310725 (num_hops = 1);
+        Tue, 06 Mar 2012 15:08:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:date:from:user-agent:mime-version:to:cc:subject
          :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=5ABuA5uQ3aS3SpgjTH4heFBWxsxfvaTPNSJAg3xjWYg=;
-        b=nbHIo2Wig7ojbruPhzlNGXgtIVfN8dWhhuCWxVr/IF/8EXnfPJ4repAaonxE/275zE
-         io63HM+huhCRHQtR7EUucvE8zO+coAu3SnypJiYP2yLMP7LxEZ4ADpgweFXhJVSFw4/3
-         4Nf4zu4YQSfDmQf4ThBVVhTDAcvru9/S1LATyZF/ofC3DcwowBVoZquP3isEPZQRi+pS
-         MpzoR04LPVMsCLXut5N9MVTomq3VZw84cYa7OrLSiTHOToAW6OvvDyOZ4QkkBSjXVtYs
-         3sc8TUK39YiyDhAThgu62ewnE62uHY/FIbo9W7JVl8gBEEY6CilChsZC+i2YpQHBxsu3
-         pGEA==
-Received: by 10.60.4.106 with SMTP id j10mr8581465oej.47.1331066027111;
-        Tue, 06 Mar 2012 12:33:47 -0800 (PST)
+        bh=Ad1pMW43YCX/dGNCiBMbKZu+xhagVyKRn8lRoV27V1M=;
+        b=PA6AcduShsWyxAT77B8zEgEhbPDzmg3CslDQOPrF8m1uolcX/XL5RucA48kBXMufdx
+         gRgRb93dkH765vb/+9LWhjLmMPrvS8Ligv9b+avJ3U4Q7xaEurebQXg8zhJxUlP/o9Qg
+         /len/y77peoe/ytUQquj3HmAPasFcKEJMGLRdSkV4THe9fPSDykbkXGWkYY6+DFCYb/a
+         lgi+mLnxbUYIqhhiX/y39XXz44jL6Gpb6N7RtNP8ua4dyDpBnAUr7tO6Ta316l+xAfjp
+         SInRKl2SXDLDHf2MXBPquP0bFSaeMKbfTIrKfZcZOizF56wAivrldfh5PpypPebGSNFU
+         brkQ==
+Received: by 10.60.12.8 with SMTP id u8mr10425743oeb.60.1331075310663;
+        Tue, 06 Mar 2012 15:08:30 -0800 (PST)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id n1sm1088988oen.8.2012.03.06.12.33.45
+        by mx.google.com with ESMTPS id vy18sm19223436obc.8.2012.03.06.15.08.29
         (version=SSLv3 cipher=OTHER);
-        Tue, 06 Mar 2012 12:33:46 -0800 (PST)
-Message-ID: <4F5674A8.3040605@gmail.com>
-Date:   Tue, 06 Mar 2012 12:33:44 -0800
+        Tue, 06 Mar 2012 15:08:30 -0800 (PST)
+Message-ID: <4F5698EC.1080502@gmail.com>
+Date:   Tue, 06 Mar 2012 15:08:28 -0800
 From:   David Daney <ddaney.cavm@gmail.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
 To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Florian Fainelli <ffainelli@freebox.fr>, loody <miloody@gmail.com>,
-        Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: some questions about mips timer
-References: <CANudz+ugY7NfCSGh-_kS4pzC91p02ZtYpxXMdCOKsM+spAt37g@mail.gmail.com> <160192556.459513.1331042510355.JavaMail.root@zmc> <20120306202712.GM4519@linux-mips.org>
-In-Reply-To: <20120306202712.GM4519@linux-mips.org>
+CC:     Grant Likely <grant.likely@secretlab.ca>,
+        linux-kernel@vger.kernel.org,
+        Rob Herring <rob.herring@calxeda.com>,
+        Thomas Gleixner <tglx@linutronix.de>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] irq_domain/mips: Allow irq_domain on MIPS
+References: <1330100995-19823-1-git-send-email-grant.likely@secretlab.ca> <20120306195700.GK4519@linux-mips.org>
+In-Reply-To: <20120306195700.GK4519@linux-mips.org>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 32610
+X-archive-position: 32611
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,34 +51,37 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/06/2012 12:27 PM, Ralf Baechle wrote:
-> On Tue, Mar 06, 2012 at 03:01:50PM +0100, Florian Fainelli wrote:
+On 03/06/2012 11:57 AM, Ralf Baechle wrote:
+> On Fri, Feb 24, 2012 at 09:29:55AM -0700, Grant Likely wrote:
 >
->>> hi all:
->>> I have some questions about mips_hpt_frequency:
->>> 1. is mips_hpt_frequency == mips cpu frequency?
->>
->> No, it is usually cpu frequency / 2.
+>> This patch makes IRQ_DOMAIN usable on MIPS.  It uses an ugly workaround
+>> to preserve current behaviour so that MIPS has time to add irq_domain
+>> registration to the irq controller drivers.  The workaround will be
+>> removed in Linux v3.6
 >
-> The architecture specification leaves the counter clock rate up up to the
-> implementation and only says the clock rate is a function of the pipeline
-> clock.  In all reality this means the counter is running at the full or
-> half frequency.  Just don't build on it,
+> Looking good, Ack.
 >
->    clock := pipeline_clock * next_weeks_lottery_number % 42
->
-> would by compliant ;-)
->
-> On some CPUs the frequency can even be selected through a configuration
-> bitstream at reset time so you can't always count on a fixed relation
-> between CPU clock and count rate.
->
-> Some older CPU manuals contain a confusing wording saying the counter
-> increments at half (or full) instruction issue rate.  That just means the
-> pipeline clock, no reason to be confused.
+> Is there any good example for the changes that need to be done to
+> irq controller drivers?
 >
 
-If you have a v2 or later ISA, you can use 'rdhwr x, $3' to find the 
-ratio between the clock rate and the increment rate of the timer.
+Well it only affects things that have USE_OF, so most mips things will 
+not need to do anything as they don't USE_OF.
+
+But for those that do USE_OF, you have to call one or more of the 
+irq_domain_add_*() functions.
+
+Slightly off topic:  My OCTEON patch set tries to do this, but hasn't 
+met with quite as much enthusiasm as I would have liked...
 
 David Daney
+
+> Thanks,
+>
+>    Ralf
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+>

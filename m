@@ -1,68 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2012 20:20:52 +0100 (CET)
-Received: from mail.windriver.com ([147.11.1.11]:39697 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903657Ab2CFTUq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 6 Mar 2012 20:20:46 +0100
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
-        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id q26JKd68023581
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Tue, 6 Mar 2012 11:20:39 -0800 (PST)
-Received: from [128.224.146.65] (128.224.146.65) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.50) with Microsoft SMTP Server id 14.1.255.0; Tue, 6 Mar 2012
- 11:20:38 -0800
-Message-ID: <4F566384.5050501@windriver.com>
-Date:   Tue, 6 Mar 2012 14:20:36 -0500
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.27) Gecko/20120216 Thunderbird/3.1.19
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Mar 2012 20:57:09 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:33427 "EHLO linux-mips.org"
+        rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org with ESMTP
+        id S1903663Ab2CFT5F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 6 Mar 2012 20:57:05 +0100
+Received: from duck.linux-mips.net (duck.linux-mips.net [127.0.0.1])
+        by duck.linux-mips.net (8.14.4/8.14.4) with ESMTP id q26Jv2G6027978;
+        Tue, 6 Mar 2012 20:57:02 +0100
+Received: (from ralf@localhost)
+        by duck.linux-mips.net (8.14.4/8.14.4/Submit) id q26Jv0AZ027977;
+        Tue, 6 Mar 2012 20:57:00 +0100
+Date:   Tue, 6 Mar 2012 20:57:00 +0100
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Grant Likely <grant.likely@secretlab.ca>
+Cc:     linux-kernel@vger.kernel.org,
+        Rob Herring <rob.herring@calxeda.com>,
+        Thomas Gleixner <tglx@linutronix.de>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] irq_domain/mips: Allow irq_domain on MIPS
+Message-ID: <20120306195700.GK4519@linux-mips.org>
+References: <1330100995-19823-1-git-send-email-grant.likely@secretlab.ca>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 0/5] MIPS: module.h usage cleanup.
-References: <1330457088-14587-1-git-send-email-paul.gortmaker@windriver.com> <20120306190826.GJ4519@linux-mips.org>
-In-Reply-To: <20120306190826.GJ4519@linux-mips.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [128.224.146.65]
-X-archive-position: 32606
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1330100995-19823-1-git-send-email-grant.likely@secretlab.ca>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 32607
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12-03-06 02:08 PM, Ralf Baechle wrote:
-> On Tue, Feb 28, 2012 at 02:24:43PM -0500, Paul Gortmaker wrote:
-> 
->> Hi Ralf,
->>
->> Not a lot to see here, really.  MIPS had usages of module.h tucked
->> away in a couple asm files, and that was masking some of the other
->> implicit users, plus preventing MIPS from getting the full benefit
->> of not having to feed module.h to cpp 35,000 times.
->>
->> I've left the two drivers/serial commits separate, in case there
->> is a desire to have them go in via Greg's trees, but they are a
->> required dependency for the arch/mips fixes, so I think it makes
->> sense they stay together with the other changes here.
->>
->> I will have some arch independent module.h cleanups (in fs and lib)
->> that will require me to create a module.h tree for 3.4, so I can
->> carry this there if required.  But this lot is all self-contained
->> to MIPS and so I'd be fine with (and actually prefer) this going in
->> via the MIPS tree.  No strong preference - either way, let me know.
-> 
-> Haven't received any comment and the patches are trivial so I'm going
-> to queue them hopeing that Alan Cox (not on cc ...) doesn't mind ...
+On Fri, Feb 24, 2012 at 09:29:55AM -0700, Grant Likely wrote:
 
-I stuck them in linux-next for additional sanity testing above the
-defconfig builds that I did and nothing caught fire.  I'll back
-them out from my for-next branch now that I know you've got them queued
-via the mips for-next.
+> This patch makes IRQ_DOMAIN usable on MIPS.  It uses an ugly workaround
+> to preserve current behaviour so that MIPS has time to add irq_domain
+> registration to the irq controller drivers.  The workaround will be
+> removed in Linux v3.6
 
-Thanks!
-Paul.
+Looking good, Ack.
 
-> 
->   Ralf
+Is there any good example for the changes that need to be done to
+irq controller drivers?
+
+Thanks,
+
+  Ralf

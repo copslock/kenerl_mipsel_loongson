@@ -1,60 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2012 09:20:11 +0100 (CET)
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:34148 "EHLO
-        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901171Ab2CGITz (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 7 Mar 2012 09:19:55 +0100
-Received: by lagy4 with SMTP id y4so9289587lag.36
-        for <multiple recipients>; Wed, 07 Mar 2012 00:19:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=zRsfJqxctb4U+s/tBt+a0lrEHa893vFHoH5xG+pZyBQ=;
-        b=MpbIMrFWClwoCn2iz5ySRDwOrGQHoNCvlUy5PHMiq0zl5QIj8MCXDVS4keV5S6pSk9
-         87/5Anl6BWCRIz+3JZgmfeR8C7pmvS6S4AHQWzGos8tpFglce+amqVW6fo/fCKXbltcL
-         VOYbEETGcQLdCsN5qCxCctwGwMwmN8Y6aD/CcgFf93jTokcIq5SnyF/siU8l0R9um4Sv
-         XEWAwAyQNWGZ1vtH0O+qz8Qxz6VX0P7FDgiPrZaBLOGbIn3zVLLOKxgcYSwmFix5ZJ8f
-         MxT0QCAnTl2accITCfywayIcbkPWzjihvI2EyOpmGC4FiwTpUovWPqwP+aM43fQS9zlE
-         QR1A==
-Received: by 10.112.85.136 with SMTP id h8mr375245lbz.72.1331108389317;
-        Wed, 07 Mar 2012 00:19:49 -0800 (PST)
-Received: from quince.NIISI (t35.niisi.ras.ru. [193.232.173.35])
-        by mx.google.com with ESMTPS id k10sm32361667lbu.1.2012.03.07.00.19.48
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 07 Mar 2012 00:19:48 -0800 (PST)
-From:   Antony Pavlov <antonynpavlov@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-mips@linux-mips.org,
-        Antony Pavlov <antonynpavlov@gmail.com>
-Subject: [PATCH] MIPS: JZ4740: fix the JZ4740_IRQ_DMA macro
-Date:   Wed,  7 Mar 2012 12:19:43 +0400
-Message-Id: <1331108383-11308-1-git-send-email-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 1.7.8.3
-X-archive-position: 32612
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Mar 2012 14:10:48 +0100 (CET)
+Received: from bluegiga.fi ([194.100.31.45]:16222 "EHLO darkblue.bluegiga.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903683Ab2CGNKm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 7 Mar 2012 14:10:42 +0100
+Received: from bluegiga.com ([10.1.1.102]) by darkblue.bluegiga.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 7 Mar 2012 15:10:38 +0200
+Received: by bluegiga.com (sSMTP sendmail emulation); Wed, 07 Mar 2012 15:10:34 +0200
+From:   Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
+        Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>,
+        Russell King <linux@arm.linux.org.uk>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org
+Subject: [PATCH v2] mm: module_alloc: check if size is 0
+Date:   Wed,  7 Mar 2012 15:09:28 +0200
+Message-Id: <1331125768-25454-1-git-send-email-veli-pekka.peltola@bluegiga.com>
+X-Mailer: git-send-email 1.7.5.4
+In-Reply-To: <1330631119-10059-1-git-send-email-veli-pekka.peltola@bluegiga.com>
+References: <1330631119-10059-1-git-send-email-veli-pekka.peltola@bluegiga.com>
+X-OriginalArrivalTime: 07 Mar 2012 13:10:38.0247 (UTC) FILETIME=[B0A50B70:01CCFC63]
+X-archive-position: 32613
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: antonynpavlov@gmail.com
+X-original-sender: veli-pekka.peltola@bluegiga.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/include/asm/mach-jz4740/irq.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+After commit de7d2b567d040e3b67fe7121945982f14343213d (mm/vmalloc.c: report
+more vmalloc failures) users will get a warning if vmalloc_node_range() is
+called with size 0. This happens if module's init size equals to 0. This
+patch changes ARM, MIPS and x86 module_alloc() to return NULL before calling
+vmalloc_node_range() that would also return NULL and print a warning.
 
-diff --git a/arch/mips/include/asm/mach-jz4740/irq.h b/arch/mips/include/asm/mach-jz4740/irq.h
-index a865c98..5ad1a9c 100644
---- a/arch/mips/include/asm/mach-jz4740/irq.h
-+++ b/arch/mips/include/asm/mach-jz4740/irq.h
-@@ -45,7 +45,7 @@
- #define JZ4740_IRQ_LCD		JZ4740_IRQ(30)
+Signed-off-by: Veli-Pekka Peltola <veli-pekka.peltola@bluegiga.com>
+Cc: Russell King <linux@arm.linux.org.uk>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: x86@kernel.org
+---
+I found this with ARM but after checking out various implementations of
+module_alloc() I thought it would be better to fix all at once.
+
+One way to replicate the warning:
+compile kernel with CONFIG_KALLSYMS=n
+insmod a module without init, I used usb-common.ko
+
+Changes since v1:
+ - changed style as hpa suggested
+
+ arch/arm/kernel/module.c  |    2 ++
+ arch/mips/kernel/module.c |    2 ++
+ arch/x86/kernel/module.c  |    2 +-
+ 3 files changed, 5 insertions(+), 1 deletions(-)
+
+diff --git a/arch/arm/kernel/module.c b/arch/arm/kernel/module.c
+index 1e9be5d..17648e2 100644
+--- a/arch/arm/kernel/module.c
++++ b/arch/arm/kernel/module.c
+@@ -39,6 +39,8 @@
+ #ifdef CONFIG_MMU
+ void *module_alloc(unsigned long size)
+ {
++	if (!size)
++		return NULL;
+ 	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END,
+ 				GFP_KERNEL, PAGE_KERNEL_EXEC, -1,
+ 				__builtin_return_address(0));
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index a5066b1..1a51de1 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -47,6 +47,8 @@ static DEFINE_SPINLOCK(dbe_lock);
+ #ifdef MODULE_START
+ void *module_alloc(unsigned long size)
+ {
++	if (!size)
++		return NULL;
+ 	return __vmalloc_node_range(size, 1, MODULE_START, MODULE_END,
+ 				GFP_KERNEL, PAGE_KERNEL, -1,
+ 				__builtin_return_address(0));
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 925179f..fd44d69 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -38,7 +38,7 @@
  
- /* 2nd-level interrupts */
--#define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(32) + (X))
-+#define JZ4740_IRQ_DMA(x)	(JZ4740_IRQ(32) + (x))
- 
- #define JZ4740_IRQ_INTC_GPIO(x) (JZ4740_IRQ_GPIO0 - (x))
- #define JZ4740_IRQ_GPIO(x)	(JZ4740_IRQ(48) + (x))
+ void *module_alloc(unsigned long size)
+ {
+-	if (PAGE_ALIGN(size) > MODULES_LEN)
++	if (!size || PAGE_ALIGN(size) > MODULES_LEN)
+ 		return NULL;
+ 	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END,
+ 				GFP_KERNEL | __GFP_HIGHMEM, PAGE_KERNEL_EXEC,
 -- 
-1.7.8.3
+1.7.5.4

@@ -1,66 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2012 12:35:45 +0100 (CET)
-Received: from mga03.intel.com ([143.182.124.21]:11149 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903567Ab2CILfi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 9 Mar 2012 12:35:38 +0100
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga101.ch.intel.com with ESMTP; 09 Mar 2012 03:35:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
-   d="scan'208";a="116788455"
-Received: from blue.fi.intel.com ([10.237.72.50])
-  by azsmga001.ch.intel.com with ESMTP; 09 Mar 2012 03:35:30 -0800
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     John Crispin <blogic@openwrt.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Kbuild: remove -Werror
-Date:   Fri,  9 Mar 2012 13:35:47 +0200
-Message-Id: <1331292947-14913-1-git-send-email-dedekind1@gmail.com>
-X-Mailer: git-send-email 1.7.9.1
-X-archive-position: 32625
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Mar 2012 17:39:52 +0100 (CET)
+Received: from relay1.mentorg.com ([192.94.38.131]:37041 "EHLO
+        relay1.mentorg.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903692Ab2CIQjs (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 9 Mar 2012 17:39:48 +0100
+Received: from svr-orw-fem-01.mgc.mentorg.com ([147.34.98.93])
+        by relay1.mentorg.com with esmtp 
+        id 1S62r1-0004Vy-43 from Thomas_Schwinge@mentor.com ; Fri, 09 Mar 2012 08:39:43 -0800
+Received: from SVR-ORW-FEM-03.mgc.mentorg.com ([147.34.97.39]) by svr-orw-fem-01.mgc.mentorg.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Fri, 9 Mar 2012 08:39:42 -0800
+Received: from build6-lucid-cs (147.34.91.1) by svr-orw-fem-03.mgc.mentorg.com
+ (147.34.97.39) with Microsoft SMTP Server id 14.1.289.1; Fri, 9 Mar 2012
+ 08:39:42 -0800
+Received: by build6-lucid-cs (Postfix, from userid 49978)       id 0F184E6281; Fri,
+  9 Mar 2012 08:39:41 -0800 (PST)
+From:   Thomas Schwinge <thomas@codesourcery.com>
+CC:     Thomas Schwinge <thomas@codesourcery.com>,
+        Paul Mundt <lethal@linux-sh.org>, <linux-sh@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-mips@linux-mips.org>
+Subject: [PATCH 5/7] USB: r8a66597-hcd: restore big-endian operation.
+Date:   Fri, 9 Mar 2012 17:38:51 +0100
+Message-ID: <1331311133-26937-5-git-send-email-thomas@codesourcery.com>
+X-Mailer: git-send-email 1.7.4.1
+In-Reply-To: <1331311133-26937-1-git-send-email-thomas@codesourcery.com>
+References: <1331311133-26937-1-git-send-email-thomas@codesourcery.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-OriginalArrivalTime: 09 Mar 2012 16:39:42.0413 (UTC) FILETIME=[3A605FD0:01CCFE13]
+To:     unlisted-recipients:; (no To-header on input)
+X-archive-position: 32626
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: thomas@codesourcery.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+On SH, as of 37b7a97884ba64bf7d403351ac2a9476ab4f1bba we have to use the
+endianess-agnostic I/O accessor functions.
 
-MIPS does not build with the standard W=1 Kbuild switch with - tested with
-gcc-4.6 by me and gcc-4.5 by John Crispin. The reason is that MIPS adds
--Werror build option.
+This driver is also enabled in ARM's viper_defconfig as well as MIPS'
+bcm47xx_defconfig and fuloong2e_defconfig -- I suppose none of these are
+operating in big-endian mode, or this issue should already have been noticed
+before.
 
-This patch removes the option to make W=1 work. I do compile-tests for various
-architecture before accepting MTD patches and I have scripts which build before
-applying the patch, then after, and then compare 2 build logs and report about
-new warnings. I use W=1 to see more warnings in the logs diff. And from my
-perspective all platforms should build with W=1.
+The device is now recognized correctly for both litte-endian and big-endian
+sh7785lcr, but I have not tested this any further, as the board is situated in
+a remote data center.
 
-The other way would be to fix all warnings, but there are false positives, and
-it is too difficult to maintain the code warning-free, so it is easier to just
-remove -Werror.
-
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Signed-off-by: Thomas Schwinge <thomas@codesourcery.com>
+Cc: Paul Mundt <lethal@linux-sh.org>
+Cc: linux-sh@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mips@linux-mips.org
 ---
- arch/mips/Kbuild |    5 -----
- 1 files changed, 0 insertions(+), 5 deletions(-)
+ drivers/usb/host/r8a66597.h |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kbuild b/arch/mips/Kbuild
-index 7dd65cf..0d37730 100644
---- a/arch/mips/Kbuild
-+++ b/arch/mips/Kbuild
-@@ -1,8 +1,3 @@
--# Fail on warnings - also for files referenced in subdirs
--# -Werror can be disabled for specific files using:
--# CFLAGS_<file.o> := -Wno-error
--subdir-ccflags-y := -Werror
--
- # platform specific definitions
- include arch/mips/Kbuild.platforms
- obj-y := $(platform-y)
+diff --git a/drivers/usb/host/r8a66597.h b/drivers/usb/host/r8a66597.h
+index f28782d..c2ea6d1 100644
+--- a/drivers/usb/host/r8a66597.h
++++ b/drivers/usb/host/r8a66597.h
+@@ -170,7 +170,7 @@ static inline struct urb *r8a66597_get_urb(struct r8a66597 *r8a66597,
+ 
+ static inline u16 r8a66597_read(struct r8a66597 *r8a66597, unsigned long offset)
+ {
+-	return ioread16(r8a66597->reg + offset);
++	return __raw_readw(r8a66597->reg + offset);
+ }
+ 
+ static inline void r8a66597_read_fifo(struct r8a66597 *r8a66597,
+@@ -198,7 +198,7 @@ static inline void r8a66597_read_fifo(struct r8a66597 *r8a66597,
+ static inline void r8a66597_write(struct r8a66597 *r8a66597, u16 val,
+ 				  unsigned long offset)
+ {
+-	iowrite16(val, r8a66597->reg + offset);
++	__raw_writew(val, r8a66597->reg + offset);
+ }
+ 
+ static inline void r8a66597_mdfy(struct r8a66597 *r8a66597,
 -- 
-1.7.9.1
+1.7.4.1

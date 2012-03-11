@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Mar 2012 21:11:22 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:42576 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Mar 2012 21:11:48 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:42581 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903724Ab2CKUJc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Mar 2012 21:09:32 +0100
+        with ESMTP id S1903723Ab2CKUJf (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Mar 2012 21:09:35 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 7FB618F62;
-        Sun, 11 Mar 2012 21:09:32 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id B1B318F61;
+        Sun, 11 Mar 2012 21:09:34 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bKQOmEdBOOz2; Sun, 11 Mar 2012 21:09:15 +0100 (CET)
+        with ESMTP id c8716hg2WYLU; Sun, 11 Mar 2012 21:09:17 +0100 (CET)
 Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 5F5F68F66;
+        by hauke-m.de (Postfix) with ESMTPSA id B3CDF8F67;
         Sun, 11 Mar 2012 21:08:32 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     gregkh@linuxfoundation.org
 Cc:     stern@rowland.harvard.edu, linux-mips@linux-mips.org,
         ralf@linux-mips.org, m@bues.ch, linux-usb@vger.kernel.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 6/7] USB: OHCI: remove old SSB OHCI driver
-Date:   Sun, 11 Mar 2012 21:08:24 +0100
-Message-Id: <1331496505-18697-7-git-send-email-hauke@hauke-m.de>
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Gabor Juhos <juhosg@openwrt.org>,
+        Imre Kaloz <kaloz@openwrt.org>
+Subject: [PATCH 7/7] USB: use generic platform driver on ath79
+Date:   Sun, 11 Mar 2012 21:08:25 +0100
+Message-Id: <1331496505-18697-8-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <1331496505-18697-1-git-send-email-hauke@hauke-m.de>
 References: <1331496505-18697-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 32648
+X-archive-position: 32649
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,179 +35,436 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This is now replaced by the new ssb USB driver, which also supports
-devices with an EHCI controller.
+The ath79 usb driver doesn't do anything special and is now converted
+to the generic ehci and ohci driver.
+This was tested on a TP-Link TL-WR1043ND (AR9132)
 
+CC: Gabor Juhos <juhosg@openwrt.org>
+CC: Imre Kaloz <kaloz@openwrt.org>
+CC: linux-mips@linux-mips.org
+CC: Ralf Baechle <ralf@linux-mips.org>
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- drivers/usb/host/Kconfig    |   13 --
- drivers/usb/host/ohci-hcd.c |   21 +----
- drivers/usb/host/ohci-ssb.c |  260 -------------------------------------------
- 3 files changed, 1 insertions(+), 293 deletions(-)
- delete mode 100644 drivers/usb/host/ohci-ssb.c
+ arch/mips/ath79/dev-usb.c     |   31 +++++-
+ drivers/usb/host/Kconfig      |   17 ----
+ drivers/usb/host/ehci-ath79.c |  208 -----------------------------------------
+ drivers/usb/host/ehci-hcd.c   |    5 -
+ drivers/usb/host/ohci-ath79.c |  151 -----------------------------
+ drivers/usb/host/ohci-hcd.c   |    5 -
+ 6 files changed, 25 insertions(+), 392 deletions(-)
+ delete mode 100644 drivers/usb/host/ehci-ath79.c
+ delete mode 100644 drivers/usb/host/ohci-ath79.c
 
+diff --git a/arch/mips/ath79/dev-usb.c b/arch/mips/ath79/dev-usb.c
+index 002d6d2..36e9570 100644
+--- a/arch/mips/ath79/dev-usb.c
++++ b/arch/mips/ath79/dev-usb.c
+@@ -17,6 +17,8 @@
+ #include <linux/irq.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/platform_device.h>
++#include <linux/usb/ehci_pdriver.h>
++#include <linux/usb/ohci_pdriver.h>
+ 
+ #include <asm/mach-ath79/ath79.h>
+ #include <asm/mach-ath79/ar71xx_regs.h>
+@@ -36,14 +38,19 @@ static struct resource ath79_ohci_resources[] = {
+ };
+ 
+ static u64 ath79_ohci_dmamask = DMA_BIT_MASK(32);
++
++static struct usb_ohci_pdata ath79_ohci_pdata = {
++};
++
+ static struct platform_device ath79_ohci_device = {
+-	.name		= "ath79-ohci",
++	.name		= "ohci-platform",
+ 	.id		= -1,
+ 	.resource	= ath79_ohci_resources,
+ 	.num_resources	= ARRAY_SIZE(ath79_ohci_resources),
+ 	.dev = {
+ 		.dma_mask		= &ath79_ohci_dmamask,
+ 		.coherent_dma_mask	= DMA_BIT_MASK(32),
++		.platform_data		= &ath79_ohci_pdata,
+ 	},
+ };
+ 
+@@ -60,8 +67,20 @@ static struct resource ath79_ehci_resources[] = {
+ };
+ 
+ static u64 ath79_ehci_dmamask = DMA_BIT_MASK(32);
++
++static struct usb_ehci_pdata ath79_ehci_pdata_v1 = {
++	.has_synopsys_hc_bug	= 1,
++	.port_power_off		= 1,
++};
++
++static struct usb_ehci_pdata ath79_ehci_pdata_v2 = {
++	.caps_offset		= 0x100,
++	.has_tt			= 1,
++	.port_power_off		= 1,
++};
++
+ static struct platform_device ath79_ehci_device = {
+-	.name		= "ath79-ehci",
++	.name		= "ehci-platform",
+ 	.id		= -1,
+ 	.resource	= ath79_ehci_resources,
+ 	.num_resources	= ARRAY_SIZE(ath79_ehci_resources),
+@@ -101,7 +120,7 @@ static void __init ath79_usb_setup(void)
+ 
+ 	ath79_ehci_resources[0].start = AR71XX_EHCI_BASE;
+ 	ath79_ehci_resources[0].end = AR71XX_EHCI_BASE + AR71XX_EHCI_SIZE - 1;
+-	ath79_ehci_device.name = "ar71xx-ehci";
++	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v1;
+ 	platform_device_register(&ath79_ehci_device);
+ }
+ 
+@@ -142,7 +161,7 @@ static void __init ar724x_usb_setup(void)
+ 
+ 	ath79_ehci_resources[0].start = AR724X_EHCI_BASE;
+ 	ath79_ehci_resources[0].end = AR724X_EHCI_BASE + AR724X_EHCI_SIZE - 1;
+-	ath79_ehci_device.name = "ar724x-ehci";
++	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v2;
+ 	platform_device_register(&ath79_ehci_device);
+ }
+ 
+@@ -159,7 +178,7 @@ static void __init ar913x_usb_setup(void)
+ 
+ 	ath79_ehci_resources[0].start = AR913X_EHCI_BASE;
+ 	ath79_ehci_resources[0].end = AR913X_EHCI_BASE + AR913X_EHCI_SIZE - 1;
+-	ath79_ehci_device.name = "ar913x-ehci";
++	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v2;
+ 	platform_device_register(&ath79_ehci_device);
+ }
+ 
+@@ -176,7 +195,7 @@ static void __init ar933x_usb_setup(void)
+ 
+ 	ath79_ehci_resources[0].start = AR933X_EHCI_BASE;
+ 	ath79_ehci_resources[0].end = AR933X_EHCI_BASE + AR933X_EHCI_SIZE - 1;
+-	ath79_ehci_device.name = "ar933x-ehci";
++	ath79_ehci_device.dev.platform_data = &ath79_ehci_pdata_v2;
+ 	platform_device_register(&ath79_ehci_device);
+ }
+ 
 diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index eab27d5..665fb89 100644
+index 665fb89..41c38e8 100644
 --- a/drivers/usb/host/Kconfig
 +++ b/drivers/usb/host/Kconfig
-@@ -360,19 +360,6 @@ config USB_OHCI_HCD_PCI
- 	  Enables support for PCI-bus plug-in USB controller cards.
- 	  If unsure, say Y.
+@@ -217,15 +217,6 @@ config USB_CNS3XXX_EHCI
+ 	  It is needed for high-speed (480Mbit/sec) USB 2.0 device
+ 	  support.
  
--config USB_OHCI_HCD_SSB
--	bool "OHCI support for Broadcom SSB OHCI core"
--	depends on USB_OHCI_HCD && (SSB = y || SSB = USB_OHCI_HCD) && EXPERIMENTAL
--	default n
+-config USB_EHCI_ATH79
+-	bool "EHCI support for AR7XXX/AR9XXX SoCs"
+-	depends on USB_EHCI_HCD && (SOC_AR71XX || SOC_AR724X || SOC_AR913X || SOC_AR933X)
+-	select USB_EHCI_ROOT_HUB_TT
+-	default y
 -	---help---
--	  Support for the Sonics Silicon Backplane (SSB) attached
--	  Broadcom USB OHCI core.
+-	  Enables support for the built-in EHCI controller present
+-	  on the Atheros AR7XXX/AR9XXX SoCs.
 -
--	  This device is present in some embedded devices with
--	  Broadcom based SSB bus.
--
--	  If unsure, say N.
--
- config USB_OHCI_SH
- 	bool "OHCI support for SuperH USB controller"
- 	depends on USB_OHCI_HCD && SUPERH
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 50fbbf9..a2f4d4e 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -1081,11 +1081,6 @@ MODULE_LICENSE ("GPL");
- #define PS3_SYSTEM_BUS_DRIVER	ps3_ohci_driver
- #endif
+ config USB_OXU210HP_HCD
+ 	tristate "OXU210HP HCD support"
+ 	depends on USB
+@@ -311,14 +302,6 @@ config USB_OHCI_HCD_OMAP3
+ 	  Enables support for the on-chip OHCI controller on
+ 	  OMAP3 and later chips.
  
--#ifdef CONFIG_USB_OHCI_HCD_SSB
--#include "ohci-ssb.c"
--#define SSB_OHCI_DRIVER		ssb_ohci_driver
--#endif
+-config USB_OHCI_ATH79
+-	bool "USB OHCI support for the Atheros AR71XX/AR7240 SoCs"
+-	depends on USB_OHCI_HCD && (SOC_AR71XX || SOC_AR724X)
+-	default y
+-	help
+-	  Enables support for the built-in OHCI controller present on the
+-	  Atheros AR71XX/AR7240 SoCs.
 -
- #ifdef CONFIG_MFD_SM501
- #include "ohci-sm501.c"
- #define SM501_OHCI_DRIVER	ohci_hcd_sm501_driver
-@@ -1134,8 +1129,7 @@ MODULE_LICENSE ("GPL");
- 	!defined(SA1111_DRIVER) &&	\
- 	!defined(PS3_SYSTEM_BUS_DRIVER) && \
- 	!defined(SM501_OHCI_DRIVER) && \
--	!defined(TMIO_OHCI_DRIVER) && \
--	!defined(SSB_OHCI_DRIVER)
-+	!defined(TMIO_OHCI_DRIVER)
- #error "missing bus glue for ohci-hcd"
- #endif
- 
-@@ -1201,12 +1195,6 @@ static int __init ohci_hcd_mod_init(void)
- 		goto error_pci;
- #endif
- 
--#ifdef SSB_OHCI_DRIVER
--	retval = ssb_driver_register(&SSB_OHCI_DRIVER);
--	if (retval)
--		goto error_ssb;
--#endif
--
- #ifdef SM501_OHCI_DRIVER
- 	retval = platform_driver_register(&SM501_OHCI_DRIVER);
- 	if (retval < 0)
-@@ -1230,10 +1218,6 @@ static int __init ohci_hcd_mod_init(void)
- 	platform_driver_unregister(&SM501_OHCI_DRIVER);
-  error_sm501:
- #endif
--#ifdef SSB_OHCI_DRIVER
--	ssb_driver_unregister(&SSB_OHCI_DRIVER);
-- error_ssb:
--#endif
- #ifdef PCI_DRIVER
- 	pci_unregister_driver(&PCI_DRIVER);
-  error_pci:
-@@ -1281,9 +1265,6 @@ static void __exit ohci_hcd_mod_exit(void)
- #ifdef SM501_OHCI_DRIVER
- 	platform_driver_unregister(&SM501_OHCI_DRIVER);
- #endif
--#ifdef SSB_OHCI_DRIVER
--	ssb_driver_unregister(&SSB_OHCI_DRIVER);
--#endif
- #ifdef PCI_DRIVER
- 	pci_unregister_driver(&PCI_DRIVER);
- #endif
-diff --git a/drivers/usb/host/ohci-ssb.c b/drivers/usb/host/ohci-ssb.c
+ config USB_OHCI_HCD_PPC_SOC
+ 	bool "OHCI support for on-chip PPC USB controller"
+ 	depends on USB_OHCI_HCD && (STB03xxx || PPC_MPC52xx)
+diff --git a/drivers/usb/host/ehci-ath79.c b/drivers/usb/host/ehci-ath79.c
 deleted file mode 100644
-index 5ba1859..0000000
---- a/drivers/usb/host/ohci-ssb.c
+index f1424f9..0000000
+--- a/drivers/usb/host/ehci-ath79.c
 +++ /dev/null
-@@ -1,260 +0,0 @@
+@@ -1,208 +0,0 @@
 -/*
-- * Sonics Silicon Backplane
-- * Broadcom USB-core OHCI driver
+- *  Bus Glue for Atheros AR7XXX/AR9XXX built-in EHCI controller.
 - *
-- * Copyright 2007 Michael Buesch <m@bues.ch>
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
 - *
-- * Derived from the OHCI-PCI driver
-- * Copyright 1999 Roman Weissgaerber
-- * Copyright 2000-2002 David Brownell
-- * Copyright 1999 Linus Torvalds
-- * Copyright 1999 Gregory P. Smith
+- *  Parts of this file are based on Atheros' 2.6.15 BSP
+- *	Copyright (C) 2007 Atheros Communications, Inc.
 - *
-- * Derived from the USBcore related parts of Broadcom-SB
-- * Copyright 2005 Broadcom Corporation
-- *
-- * Licensed under the GNU/GPL. See COPYING for details.
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
 - */
--#include <linux/ssb/ssb.h>
 -
+-#include <linux/platform_device.h>
 -
--#define SSB_OHCI_TMSLOW_HOSTMODE	(1 << 29)
--
--struct ssb_ohci_device {
--	struct ohci_hcd ohci; /* _must_ be at the beginning. */
--
--	u32 enable_flags;
+-enum {
+-	EHCI_ATH79_IP_V1 = 0,
+-	EHCI_ATH79_IP_V2,
 -};
 -
--static inline
--struct ssb_ohci_device *hcd_to_ssb_ohci(struct usb_hcd *hcd)
+-static const struct platform_device_id ehci_ath79_id_table[] = {
+-	{
+-		.name		= "ar71xx-ehci",
+-		.driver_data	= EHCI_ATH79_IP_V1,
+-	},
+-	{
+-		.name		= "ar724x-ehci",
+-		.driver_data	= EHCI_ATH79_IP_V2,
+-	},
+-	{
+-		.name		= "ar913x-ehci",
+-		.driver_data	= EHCI_ATH79_IP_V2,
+-	},
+-	{
+-		.name		= "ar933x-ehci",
+-		.driver_data	= EHCI_ATH79_IP_V2,
+-	},
+-	{
+-		/* terminating entry */
+-	},
+-};
+-
+-MODULE_DEVICE_TABLE(platform, ehci_ath79_id_table);
+-
+-static int ehci_ath79_init(struct usb_hcd *hcd)
 -{
--	return (struct ssb_ohci_device *)(hcd->hcd_priv);
--}
+-	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
+-	struct platform_device *pdev = to_platform_device(hcd->self.controller);
+-	const struct platform_device_id *id;
+-	int ret;
 -
--
--static int ssb_ohci_reset(struct usb_hcd *hcd)
--{
--	struct ssb_ohci_device *ohcidev = hcd_to_ssb_ohci(hcd);
--	struct ohci_hcd *ohci = &ohcidev->ohci;
--	int err;
--
--	ohci_hcd_init(ohci);
--	err = ohci_init(ohci);
--
--	return err;
--}
--
--static int ssb_ohci_start(struct usb_hcd *hcd)
--{
--	struct ssb_ohci_device *ohcidev = hcd_to_ssb_ohci(hcd);
--	struct ohci_hcd *ohci = &ohcidev->ohci;
--	int err;
--
--	err = ohci_run(ohci);
--	if (err < 0) {
--		ohci_err(ohci, "can't start\n");
--		ohci_stop(hcd);
+-	id = platform_get_device_id(pdev);
+-	if (!id) {
+-		dev_err(hcd->self.controller, "missing device id\n");
+-		return -EINVAL;
 -	}
 -
--	return err;
+-	switch (id->driver_data) {
+-	case EHCI_ATH79_IP_V1:
+-		ehci->has_synopsys_hc_bug = 1;
+-
+-		ehci->caps = hcd->regs;
+-		ehci->regs = hcd->regs +
+-			HC_LENGTH(ehci,
+-				  ehci_readl(ehci, &ehci->caps->hc_capbase));
+-		break;
+-
+-	case EHCI_ATH79_IP_V2:
+-		hcd->has_tt = 1;
+-
+-		ehci->caps = hcd->regs + 0x100;
+-		ehci->regs = hcd->regs + 0x100 +
+-			HC_LENGTH(ehci,
+-				  ehci_readl(ehci, &ehci->caps->hc_capbase));
+-		break;
+-
+-	default:
+-		BUG();
+-	}
+-
+-	dbg_hcs_params(ehci, "reset");
+-	dbg_hcc_params(ehci, "reset");
+-	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
+-	ehci->sbrn = 0x20;
+-
+-	ehci_reset(ehci);
+-
+-	ret = ehci_init(hcd);
+-	if (ret)
+-		return ret;
+-
+-	ehci_port_power(ehci, 0);
+-
+-	return 0;
 -}
 -
--static const struct hc_driver ssb_ohci_hc_driver = {
--	.description		= "ssb-usb-ohci",
--	.product_desc		= "SSB OHCI Controller",
--	.hcd_priv_size		= sizeof(struct ssb_ohci_device),
+-static const struct hc_driver ehci_ath79_hc_driver = {
+-	.description		= hcd_name,
+-	.product_desc		= "Atheros built-in EHCI controller",
+-	.hcd_priv_size		= sizeof(struct ehci_hcd),
+-	.irq			= ehci_irq,
+-	.flags			= HCD_MEMORY | HCD_USB2,
+-
+-	.reset			= ehci_ath79_init,
+-	.start			= ehci_run,
+-	.stop			= ehci_stop,
+-	.shutdown		= ehci_shutdown,
+-
+-	.urb_enqueue		= ehci_urb_enqueue,
+-	.urb_dequeue		= ehci_urb_dequeue,
+-	.endpoint_disable	= ehci_endpoint_disable,
+-	.endpoint_reset		= ehci_endpoint_reset,
+-
+-	.get_frame_number	= ehci_get_frame,
+-
+-	.hub_status_data	= ehci_hub_status_data,
+-	.hub_control		= ehci_hub_control,
+-
+-	.relinquish_port	= ehci_relinquish_port,
+-	.port_handed_over	= ehci_port_handed_over,
+-
+-	.clear_tt_buffer_complete = ehci_clear_tt_buffer_complete,
+-};
+-
+-static int ehci_ath79_probe(struct platform_device *pdev)
+-{
+-	struct usb_hcd *hcd;
+-	struct resource *res;
+-	int irq;
+-	int ret;
+-
+-	if (usb_disabled())
+-		return -ENODEV;
+-
+-	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (!res) {
+-		dev_dbg(&pdev->dev, "no IRQ specified\n");
+-		return -ENODEV;
+-	}
+-	irq = res->start;
+-
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_dbg(&pdev->dev, "no base address specified\n");
+-		return -ENODEV;
+-	}
+-
+-	hcd = usb_create_hcd(&ehci_ath79_hc_driver, &pdev->dev,
+-			     dev_name(&pdev->dev));
+-	if (!hcd)
+-		return -ENOMEM;
+-
+-	hcd->rsrc_start	= res->start;
+-	hcd->rsrc_len	= resource_size(res);
+-
+-	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
+-		dev_dbg(&pdev->dev, "controller already in use\n");
+-		ret = -EBUSY;
+-		goto err_put_hcd;
+-	}
+-
+-	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
+-	if (!hcd->regs) {
+-		dev_dbg(&pdev->dev, "error mapping memory\n");
+-		ret = -EFAULT;
+-		goto err_release_region;
+-	}
+-
+-	ret = usb_add_hcd(hcd, irq, IRQF_SHARED);
+-	if (ret)
+-		goto err_iounmap;
+-
+-	return 0;
+-
+-err_iounmap:
+-	iounmap(hcd->regs);
+-
+-err_release_region:
+-	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+-err_put_hcd:
+-	usb_put_hcd(hcd);
+-	return ret;
+-}
+-
+-static int ehci_ath79_remove(struct platform_device *pdev)
+-{
+-	struct usb_hcd *hcd = platform_get_drvdata(pdev);
+-
+-	usb_remove_hcd(hcd);
+-	iounmap(hcd->regs);
+-	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+-	usb_put_hcd(hcd);
+-
+-	return 0;
+-}
+-
+-static struct platform_driver ehci_ath79_driver = {
+-	.probe		= ehci_ath79_probe,
+-	.remove		= ehci_ath79_remove,
+-	.id_table	= ehci_ath79_id_table,
+-	.driver = {
+-		.owner	= THIS_MODULE,
+-		.name	= "ath79-ehci",
+-	}
+-};
+-
+-MODULE_ALIAS(PLATFORM_MODULE_PREFIX "ath79-ehci");
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index afe0984..b417926 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1351,11 +1351,6 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		s5p_ehci_driver
+ #endif
+ 
+-#ifdef CONFIG_USB_EHCI_ATH79
+-#include "ehci-ath79.c"
+-#define PLATFORM_DRIVER		ehci_ath79_driver
+-#endif
+-
+ #ifdef CONFIG_SPARC_LEON
+ #include "ehci-grlib.c"
+ #define PLATFORM_DRIVER		ehci_grlib_driver
+diff --git a/drivers/usb/host/ohci-ath79.c b/drivers/usb/host/ohci-ath79.c
+deleted file mode 100644
+index 18d574d..0000000
+--- a/drivers/usb/host/ohci-ath79.c
++++ /dev/null
+@@ -1,151 +0,0 @@
+-/*
+- *  OHCI HCD (Host Controller Driver) for USB.
+- *
+- *  Bus Glue for Atheros AR71XX/AR724X built-in OHCI controller.
+- *
+- *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
+- *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
+- *
+- *  Parts of this file are based on Atheros' 2.6.15 BSP
+- *	Copyright (C) 2007 Atheros Communications, Inc.
+- *
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- */
+-
+-#include <linux/platform_device.h>
+-
+-static int __devinit ohci_ath79_start(struct usb_hcd *hcd)
+-{
+-	struct ohci_hcd	*ohci = hcd_to_ohci(hcd);
+-	int ret;
+-
+-	ret = ohci_init(ohci);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = ohci_run(ohci);
+-	if (ret < 0)
+-		goto err;
+-
+-	return 0;
+-
+-err:
+-	ohci_stop(hcd);
+-	return ret;
+-}
+-
+-static const struct hc_driver ohci_ath79_hc_driver = {
+-	.description		= hcd_name,
+-	.product_desc		= "Atheros built-in OHCI controller",
+-	.hcd_priv_size		= sizeof(struct ohci_hcd),
 -
 -	.irq			= ohci_irq,
--	.flags			= HCD_MEMORY | HCD_USB11,
+-	.flags			= HCD_USB11 | HCD_MEMORY,
 -
--	.reset			= ssb_ohci_reset,
--	.start			= ssb_ohci_start,
+-	.start			= ohci_ath79_start,
 -	.stop			= ohci_stop,
 -	.shutdown		= ohci_shutdown,
 -
@@ -213,186 +472,118 @@ index 5ba1859..0000000
 -	.urb_dequeue		= ohci_urb_dequeue,
 -	.endpoint_disable	= ohci_endpoint_disable,
 -
+-	/*
+-	 * scheduling support
+-	 */
 -	.get_frame_number	= ohci_get_frame,
 -
+-	/*
+-	 * root hub support
+-	 */
 -	.hub_status_data	= ohci_hub_status_data,
 -	.hub_control		= ohci_hub_control,
--#ifdef	CONFIG_PM
--	.bus_suspend		= ohci_bus_suspend,
--	.bus_resume		= ohci_bus_resume,
--#endif
--
 -	.start_port_reset	= ohci_start_port_reset,
 -};
 -
--static void ssb_ohci_detach(struct ssb_device *dev)
+-static int ohci_ath79_probe(struct platform_device *pdev)
 -{
--	struct usb_hcd *hcd = ssb_get_drvdata(dev);
--
--	if (hcd->driver->shutdown)
--		hcd->driver->shutdown(hcd);
--	usb_remove_hcd(hcd);
--	iounmap(hcd->regs);
--	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
--	usb_put_hcd(hcd);
--	ssb_device_disable(dev, 0);
--}
--
--static int ssb_ohci_attach(struct ssb_device *dev)
--{
--	struct ssb_ohci_device *ohcidev;
 -	struct usb_hcd *hcd;
--	int err = -ENOMEM;
--	u32 tmp, flags = 0;
--
--	if (dma_set_mask(dev->dma_dev, DMA_BIT_MASK(32)) ||
--	    dma_set_coherent_mask(dev->dma_dev, DMA_BIT_MASK(32)))
--		return -EOPNOTSUPP;
--
--	if (dev->id.coreid == SSB_DEV_USB11_HOSTDEV) {
--		/* Put the device into host-mode. */
--		flags |= SSB_OHCI_TMSLOW_HOSTMODE;
--		ssb_device_enable(dev, flags);
--	} else if (dev->id.coreid == SSB_DEV_USB20_HOST) {
--		/*
--		 * USB 2.0 special considerations:
--		 *
--		 * In addition to the standard SSB reset sequence, the Host
--		 * Control Register must be programmed to bring the USB core
--		 * and various phy components out of reset.
--		 */
--		ssb_device_enable(dev, 0);
--		ssb_write32(dev, 0x200, 0x7ff);
--
--		/* Change Flush control reg */
--		tmp = ssb_read32(dev, 0x400);
--		tmp &= ~8;
--		ssb_write32(dev, 0x400, tmp);
--		tmp = ssb_read32(dev, 0x400);
--
--		/* Change Shim control reg */
--		tmp = ssb_read32(dev, 0x304);
--		tmp &= ~0x100;
--		ssb_write32(dev, 0x304, tmp);
--		tmp = ssb_read32(dev, 0x304);
--
--		udelay(1);
--
--		/* Work around for 5354 failures */
--		if (dev->id.revision == 2 && dev->bus->chip_id == 0x5354) {
--			/* Change syn01 reg */
--			tmp = 0x00fe00fe;
--			ssb_write32(dev, 0x894, tmp);
--
--			/* Change syn03 reg */
--			tmp = ssb_read32(dev, 0x89c);
--			tmp |= 0x1;
--			ssb_write32(dev, 0x89c, tmp);
--		}
--	} else
--		ssb_device_enable(dev, 0);
--
--	hcd = usb_create_hcd(&ssb_ohci_hc_driver, dev->dev,
--			dev_name(dev->dev));
--	if (!hcd)
--		goto err_dev_disable;
--	ohcidev = hcd_to_ssb_ohci(hcd);
--	ohcidev->enable_flags = flags;
--
--	tmp = ssb_read32(dev, SSB_ADMATCH0);
--	hcd->rsrc_start = ssb_admatch_base(tmp);
--	hcd->rsrc_len = ssb_admatch_size(tmp);
--	hcd->regs = ioremap_nocache(hcd->rsrc_start, hcd->rsrc_len);
--	if (!hcd->regs)
--		goto err_put_hcd;
--	err = usb_add_hcd(hcd, dev->irq, IRQF_SHARED);
--	if (err)
--		goto err_iounmap;
--
--	ssb_set_drvdata(dev, hcd);
--
--	return err;
--
--err_iounmap:
--	iounmap(hcd->regs);
--err_put_hcd:
--	usb_put_hcd(hcd);
--err_dev_disable:
--	ssb_device_disable(dev, flags);
--	return err;
--}
--
--static int ssb_ohci_probe(struct ssb_device *dev,
--		const struct ssb_device_id *id)
--{
--	int err;
--	u16 chipid_top;
--
--	/* USBcores are only connected on embedded devices. */
--	chipid_top = (dev->bus->chip_id & 0xFF00);
--	if (chipid_top != 0x4700 && chipid_top != 0x5300)
--		return -ENODEV;
--
--	/* TODO: Probably need checks here; is the core connected? */
+-	struct resource *res;
+-	int irq;
+-	int ret;
 -
 -	if (usb_disabled())
 -		return -ENODEV;
 -
--	/* We currently always attach SSB_DEV_USB11_HOSTDEV
--	 * as HOST OHCI. If we want to attach it as Client device,
--	 * we must branch here and call into the (yet to
--	 * be written) Client mode driver. Same for remove(). */
+-	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (!res) {
+-		dev_dbg(&pdev->dev, "no IRQ specified\n");
+-		return -ENODEV;
+-	}
+-	irq = res->start;
 -
--	err = ssb_ohci_attach(dev);
+-	hcd = usb_create_hcd(&ohci_ath79_hc_driver, &pdev->dev,
+-			     dev_name(&pdev->dev));
+-	if (!hcd)
+-		return -ENOMEM;
 -
--	return err;
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_dbg(&pdev->dev, "no base address specified\n");
+-		ret = -ENODEV;
+-		goto err_put_hcd;
+-	}
+-	hcd->rsrc_start = res->start;
+-	hcd->rsrc_len = resource_size(res);
+-
+-	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
+-		dev_dbg(&pdev->dev, "controller already in use\n");
+-		ret = -EBUSY;
+-		goto err_put_hcd;
+-	}
+-
+-	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
+-	if (!hcd->regs) {
+-		dev_dbg(&pdev->dev, "error mapping memory\n");
+-		ret = -EFAULT;
+-		goto err_release_region;
+-	}
+-
+-	ohci_hcd_init(hcd_to_ohci(hcd));
+-
+-	ret = usb_add_hcd(hcd, irq, 0);
+-	if (ret)
+-		goto err_stop_hcd;
+-
+-	return 0;
+-
+-err_stop_hcd:
+-	iounmap(hcd->regs);
+-err_release_region:
+-	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+-err_put_hcd:
+-	usb_put_hcd(hcd);
+-	return ret;
 -}
 -
--static void ssb_ohci_remove(struct ssb_device *dev)
+-static int ohci_ath79_remove(struct platform_device *pdev)
 -{
--	ssb_ohci_detach(dev);
--}
+-	struct usb_hcd *hcd = platform_get_drvdata(pdev);
 -
--#ifdef CONFIG_PM
--
--static int ssb_ohci_suspend(struct ssb_device *dev, pm_message_t state)
--{
--	ssb_device_disable(dev, 0);
+-	usb_remove_hcd(hcd);
+-	iounmap(hcd->regs);
+-	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
+-	usb_put_hcd(hcd);
 -
 -	return 0;
 -}
 -
--static int ssb_ohci_resume(struct ssb_device *dev)
--{
--	struct usb_hcd *hcd = ssb_get_drvdata(dev);
--	struct ssb_ohci_device *ohcidev = hcd_to_ssb_ohci(hcd);
--
--	ssb_device_enable(dev, ohcidev->enable_flags);
--
--	ohci_finish_controller_resume(hcd);
--	return 0;
--}
--
--#else /* !CONFIG_PM */
--#define ssb_ohci_suspend	NULL
--#define ssb_ohci_resume	NULL
--#endif /* CONFIG_PM */
--
--static const struct ssb_device_id ssb_ohci_table[] = {
--	SSB_DEVICE(SSB_VENDOR_BROADCOM, SSB_DEV_USB11_HOSTDEV, SSB_ANY_REV),
--	SSB_DEVICE(SSB_VENDOR_BROADCOM, SSB_DEV_USB11_HOST, SSB_ANY_REV),
--	SSB_DEVICE(SSB_VENDOR_BROADCOM, SSB_DEV_USB20_HOST, SSB_ANY_REV),
--	SSB_DEVTABLE_END
+-static struct platform_driver ohci_hcd_ath79_driver = {
+-	.probe		= ohci_ath79_probe,
+-	.remove		= ohci_ath79_remove,
+-	.shutdown	= usb_hcd_platform_shutdown,
+-	.driver		= {
+-		.name	= "ath79-ohci",
+-		.owner	= THIS_MODULE,
+-	},
 -};
--MODULE_DEVICE_TABLE(ssb, ssb_ohci_table);
 -
--static struct ssb_driver ssb_ohci_driver = {
--	.name		= KBUILD_MODNAME,
--	.id_table	= ssb_ohci_table,
--	.probe		= ssb_ohci_probe,
--	.remove		= ssb_ohci_remove,
--	.suspend	= ssb_ohci_suspend,
--	.resume		= ssb_ohci_resume,
--};
+-MODULE_ALIAS(PLATFORM_MODULE_PREFIX "ath79-ohci");
+diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+index a2f4d4e..813714d 100644
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -1106,11 +1106,6 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		ohci_hcd_cns3xxx_driver
+ #endif
+ 
+-#ifdef CONFIG_USB_OHCI_ATH79
+-#include "ohci-ath79.c"
+-#define PLATFORM_DRIVER		ohci_hcd_ath79_driver
+-#endif
+-
+ #ifdef CONFIG_CPU_XLR
+ #include "ohci-xls.c"
+ #define PLATFORM_DRIVER		ohci_xls_driver
 -- 
 1.7.5.4

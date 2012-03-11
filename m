@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Mar 2012 21:09:17 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:42519 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Mar 2012 21:09:45 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:42536 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903717Ab2CKUIp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Mar 2012 21:08:45 +0100
+        with ESMTP id S1903719Ab2CKUI7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 11 Mar 2012 21:08:59 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 9CE768F60;
-        Sun, 11 Mar 2012 21:08:45 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id 0102D8F61;
+        Sun, 11 Mar 2012 21:08:59 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id EaYXB7fFSwO0; Sun, 11 Mar 2012 21:08:30 +0100 (CET)
+        with ESMTP id j-302iorJS63; Sun, 11 Mar 2012 21:08:44 +0100 (CET)
 Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 3B11B8F61;
+        by hauke-m.de (Postfix) with ESMTPSA id 8BF8F8F62;
         Sun, 11 Mar 2012 21:08:30 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     gregkh@linuxfoundation.org
 Cc:     stern@rowland.harvard.edu, linux-mips@linux-mips.org,
         ralf@linux-mips.org, m@bues.ch, linux-usb@vger.kernel.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 1/7] USB: OHCI: Add a generic platform device driver
-Date:   Sun, 11 Mar 2012 21:08:19 +0100
-Message-Id: <1331496505-18697-2-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 2/7] USB: EHCI: Add a generic platform device driver
+Date:   Sun, 11 Mar 2012 21:08:20 +0100
+Message-Id: <1331496505-18697-3-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.5.4
 In-Reply-To: <1331496505-18697-1-git-send-email-hauke@hauke-m.de>
 References: <1331496505-18697-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 32643
+X-archive-position: 32644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,34 +35,34 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 This adds a generic driver for platform devices. It works like the PCI
 driver and is based on it. This is for devices which do not have an own
-bus but their OHCI controller works like a PCI controller. It will be
-used for the Broadcom bcma and ssb USB OHCI controller.
+bus but their EHCI controller works like a PCI controller. It will be
+used for the Broadcom bcma and ssb USB EHCI controller.
 
 Acked-by: Alan Stern <stern@rowland.harvard.edu>
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
  drivers/usb/host/Kconfig         |   10 ++
- drivers/usb/host/ohci-hcd.c      |    5 +
- drivers/usb/host/ohci-platform.c |  194 ++++++++++++++++++++++++++++++++++++++
- include/linux/usb/ohci_pdriver.h |   38 ++++++++
- 4 files changed, 247 insertions(+), 0 deletions(-)
- create mode 100644 drivers/usb/host/ohci-platform.c
- create mode 100644 include/linux/usb/ohci_pdriver.h
+ drivers/usb/host/ehci-hcd.c      |    5 +
+ drivers/usb/host/ehci-platform.c |  198 ++++++++++++++++++++++++++++++++++++++
+ include/linux/usb/ehci_pdriver.h |   46 +++++++++
+ 4 files changed, 259 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/usb/host/ehci-platform.c
+ create mode 100644 include/linux/usb/ehci_pdriver.h
 
 diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 353cdd4..4fe564c 100644
+index 4fe564c..0edc445 100644
 --- a/drivers/usb/host/Kconfig
 +++ b/drivers/usb/host/Kconfig
-@@ -393,6 +393,16 @@ config USB_CNS3XXX_OHCI
- 	  Enable support for the CNS3XXX SOC's on-chip OHCI controller.
- 	  It is needed for low-speed USB 1.0 device support.
+@@ -403,6 +403,16 @@ config USB_OHCI_HCD_PLATFORM
  
-+config USB_OHCI_HCD_PLATFORM
-+	bool "OHCI driver for a platform device"
-+	depends on USB_OHCI_HCD && EXPERIMENTAL
+ 	  If unsure, say N.
+ 
++config USB_EHCI_HCD_PLATFORM
++	bool "Generic EHCI driver for a platform device"
++	depends on USB_EHCI_HCD && EXPERIMENTAL
 +	default n
 +	---help---
-+	  Adds an OHCI host driver for a generic platform device, which
++	  Adds an EHCI host driver for a generic platform device, which
 +	  provieds a memory space and an irq.
 +
 +	  If unsure, say N.
@@ -70,36 +70,41 @@ index 353cdd4..4fe564c 100644
  config USB_OHCI_BIG_ENDIAN_DESC
  	bool
  	depends on USB_OHCI_HCD
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 34b9edd..50fbbf9 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -1121,6 +1121,11 @@ MODULE_LICENSE ("GPL");
- #define PLATFORM_DRIVER		ohci_xls_driver
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index a007a9f..afe0984 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1376,6 +1376,11 @@ MODULE_LICENSE ("GPL");
+ #define        PLATFORM_DRIVER         ehci_mv_driver
  #endif
  
-+#ifdef CONFIG_USB_OHCI_HCD_PLATFORM
-+#include "ohci-platform.c"
-+#define PLATFORM_DRIVER		ohci_platform_driver
++#ifdef CONFIG_USB_EHCI_HCD_PLATFORM
++#include "ehci-platform.c"
++#define PLATFORM_DRIVER		ehci_platform_driver
 +#endif
 +
- #if	!defined(PCI_DRIVER) &&		\
- 	!defined(PLATFORM_DRIVER) &&	\
- 	!defined(OMAP1_PLATFORM_DRIVER) &&	\
-diff --git a/drivers/usb/host/ohci-platform.c b/drivers/usb/host/ohci-platform.c
+ #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
+     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER) && \
+     !defined(XILINX_OF_PLATFORM_DRIVER)
+diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
 new file mode 100644
-index 0000000..ec5c679
+index 0000000..d238b4e2
 --- /dev/null
-+++ b/drivers/usb/host/ohci-platform.c
-@@ -0,0 +1,194 @@
++++ b/drivers/usb/host/ehci-platform.c
+@@ -0,0 +1,198 @@
 +/*
-+ * Generic platform ohci driver
++ * Generic platform ehci driver
 + *
++ * Copyright 2007 Steven Brown <sbrown@cortland.com>
++ * Copyright 2010-2012 Hauke Mehrtens <hauke@hauke-m.de>
++ *
++ * Derived from the ohci-ssb driver
 + * Copyright 2007 Michael Buesch <m@bues.ch>
-+ * Copyright 2011-2012 Hauke Mehrtens <hauke@hauke-m.de>
 + *
-+ * Derived from the OCHI-SSB driver
-+ * Derived from the OHCI-PCI driver
++ * Derived from the EHCI-PCI driver
++ * Copyright (c) 2000-2004 by David Brownell
++ *
++ * Derived from the ohci-pci driver
 + * Copyright 1999 Roman Weissgaerber
 + * Copyright 2000-2002 David Brownell
 + * Copyright 1999 Linus Torvalds
@@ -108,72 +113,68 @@ index 0000000..ec5c679
 + * Licensed under the GNU/GPL. See COPYING for details.
 + */
 +#include <linux/platform_device.h>
-+#include <linux/usb/ohci_pdriver.h>
++#include <linux/usb/ehci_pdriver.h>
 +
-+static int ohci_platform_reset(struct usb_hcd *hcd)
++static int ehci_platform_reset(struct usb_hcd *hcd)
 +{
 +	struct platform_device *pdev = to_platform_device(hcd->self.controller);
-+	struct usb_ohci_pdata *pdata = pdev->dev.platform_data;
-+	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
-+	int err;
++	struct usb_ehci_pdata *pdata = pdev->dev.platform_data;
++	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
++	int retval;
 +
-+	if (pdata->big_endian_desc)
-+		ohci->flags |= OHCI_QUIRK_BE_DESC;
-+	if (pdata->big_endian_mmio)
-+		ohci->flags |= OHCI_QUIRK_BE_MMIO;
-+	if (pdata->no_big_frame_no)
-+		ohci->flags |= OHCI_QUIRK_FRAME_NO;
++	hcd->has_tt = pdata->has_tt;
++	ehci->has_synopsys_hc_bug = pdata->has_synopsys_hc_bug;
++	ehci->big_endian_desc = pdata->big_endian_desc;
++	ehci->big_endian_mmio = pdata->big_endian_mmio;
 +
-+	ohci_hcd_init(ohci);
-+	err = ohci_init(ohci);
++	ehci->caps = hcd->regs + pdata->caps_offset;
++	retval = ehci_setup(hcd);
++	if (retval)
++		return retval;
 +
-+	return err;
++	if (pdata->port_power_on)
++		ehci_port_power(ehci, 1);
++	if (pdata->port_power_off)
++		ehci_port_power(ehci, 0);
++
++	return 0;
 +}
 +
-+static int ohci_platform_start(struct usb_hcd *hcd)
-+{
-+	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
-+	int err;
-+
-+	err = ohci_run(ohci);
-+	if (err < 0) {
-+		ohci_err(ohci, "can't start\n");
-+		ohci_stop(hcd);
-+	}
-+
-+	return err;
-+}
-+
-+static const struct hc_driver ohci_platform_hc_driver = {
++static const struct hc_driver ehci_platform_hc_driver = {
 +	.description		= hcd_name,
-+	.product_desc		= "Generic Platform OHCI Controller",
-+	.hcd_priv_size		= sizeof(struct ohci_hcd),
++	.product_desc		= "Generic Platform EHCI Controller",
++	.hcd_priv_size		= sizeof(struct ehci_hcd),
 +
-+	.irq			= ohci_irq,
-+	.flags			= HCD_MEMORY | HCD_USB11,
++	.irq			= ehci_irq,
++	.flags			= HCD_MEMORY | HCD_USB2,
 +
-+	.reset			= ohci_platform_reset,
-+	.start			= ohci_platform_start,
-+	.stop			= ohci_stop,
-+	.shutdown		= ohci_shutdown,
++	.reset			= ehci_platform_reset,
++	.start			= ehci_run,
++	.stop			= ehci_stop,
++	.shutdown		= ehci_shutdown,
 +
-+	.urb_enqueue		= ohci_urb_enqueue,
-+	.urb_dequeue		= ohci_urb_dequeue,
-+	.endpoint_disable	= ohci_endpoint_disable,
++	.urb_enqueue		= ehci_urb_enqueue,
++	.urb_dequeue		= ehci_urb_dequeue,
++	.endpoint_disable	= ehci_endpoint_disable,
++	.endpoint_reset		= ehci_endpoint_reset,
 +
-+	.get_frame_number	= ohci_get_frame,
++	.get_frame_number	= ehci_get_frame,
 +
-+	.hub_status_data	= ohci_hub_status_data,
-+	.hub_control		= ohci_hub_control,
-+#ifdef	CONFIG_PM
-+	.bus_suspend		= ohci_bus_suspend,
-+	.bus_resume		= ohci_bus_resume,
++	.hub_status_data	= ehci_hub_status_data,
++	.hub_control		= ehci_hub_control,
++#if defined(CONFIG_PM)
++	.bus_suspend		= ehci_bus_suspend,
++	.bus_resume		= ehci_bus_resume,
 +#endif
++	.relinquish_port	= ehci_relinquish_port,
++	.port_handed_over	= ehci_port_handed_over,
 +
-+	.start_port_reset	= ohci_start_port_reset,
++	.update_device		= ehci_update_device,
++
++	.clear_tt_buffer_complete = ehci_clear_tt_buffer_complete,
 +};
 +
-+static int __devinit ohci_platform_probe(struct platform_device *dev)
++static int __devinit ehci_platform_probe(struct platform_device *dev)
 +{
 +	struct usb_hcd *hcd;
 +	struct resource *res_mem;
@@ -190,15 +191,14 @@ index 0000000..ec5c679
 +		pr_err("no irq provieded");
 +		return irq;
 +	}
-+
 +	res_mem = platform_get_resource(dev, IORESOURCE_MEM, 0);
 +	if (!res_mem) {
 +		pr_err("no memory recourse provieded");
 +		return -ENXIO;
 +	}
 +
-+	hcd = usb_create_hcd(&ohci_platform_hc_driver, &dev->dev,
-+			dev_name(&dev->dev));
++	hcd = usb_create_hcd(&ehci_platform_hc_driver, &dev->dev,
++			     dev_name(&dev->dev));
 +	if (!hcd)
 +		return -ENOMEM;
 +
@@ -231,7 +231,7 @@ index 0000000..ec5c679
 +	return err;
 +}
 +
-+static int __devexit ohci_platform_remove(struct platform_device *dev)
++static int __devexit ehci_platform_remove(struct platform_device *dev)
 +{
 +	struct usb_hcd *hcd = platform_get_drvdata(dev);
 +
@@ -246,52 +246,56 @@ index 0000000..ec5c679
 +
 +#ifdef CONFIG_PM
 +
-+static int ohci_platform_suspend(struct device *dev)
++static int ehci_platform_suspend(struct device *dev)
 +{
++	struct usb_hcd *hcd = dev_get_drvdata(dev);
++	bool wakeup = device_may_wakeup(dev);
++
++	ehci_prepare_ports_for_controller_suspend(hcd_to_ehci(hcd), wakeup);
 +	return 0;
 +}
 +
-+static int ohci_platform_resume(struct device *dev)
++static int ehci_platform_resume(struct device *dev)
 +{
 +	struct usb_hcd *hcd = dev_get_drvdata(dev);
 +
-+	ohci_finish_controller_resume(hcd);
++	ehci_prepare_ports_for_controller_resume(hcd_to_ehci(hcd));
 +	return 0;
 +}
 +
 +#else /* !CONFIG_PM */
-+#define ohci_platform_suspend	NULL
-+#define ohci_platform_resume	NULL
++#define ehci_platform_suspend	NULL
++#define ehci_platform_resume	NULL
 +#endif /* CONFIG_PM */
 +
-+static const struct platform_device_id ohci_platform_table[] = {
-+	{ "ohci-platform", 0 },
++static const struct platform_device_id ehci_platform_table[] = {
++	{ "ehci-platform", 0 },
 +	{ }
 +};
-+MODULE_DEVICE_TABLE(platform, ohci_platform_table);
++MODULE_DEVICE_TABLE(platform, ehci_platform_table);
 +
-+static const struct dev_pm_ops ohci_platform_pm_ops = {
-+	.suspend	= ohci_platform_suspend,
-+	.resume		= ohci_platform_resume,
++static const struct dev_pm_ops ehci_platform_pm_ops = {
++	.suspend	= ehci_platform_suspend,
++	.resume		= ehci_platform_resume,
 +};
 +
-+static struct platform_driver ohci_platform_driver = {
-+	.id_table	= ohci_platform_table,
-+	.probe		= ohci_platform_probe,
-+	.remove		= __devexit_p(ohci_platform_remove),
++static struct platform_driver ehci_platform_driver = {
++	.id_table	= ehci_platform_table,
++	.probe		= ehci_platform_probe,
++	.remove		= __devexit_p(ehci_platform_remove),
 +	.shutdown	= usb_hcd_platform_shutdown,
 +	.driver		= {
 +		.owner	= THIS_MODULE,
-+		.name	= "ohci-platform",
-+		.pm	= &ohci_platform_pm_ops,
++		.name	= "ehci-platform",
++		.pm	= &ehci_platform_pm_ops,
 +	}
 +};
-diff --git a/include/linux/usb/ohci_pdriver.h b/include/linux/usb/ohci_pdriver.h
+diff --git a/include/linux/usb/ehci_pdriver.h b/include/linux/usb/ehci_pdriver.h
 new file mode 100644
-index 0000000..2808f2a
+index 0000000..b693529
 --- /dev/null
-+++ b/include/linux/usb/ohci_pdriver.h
-@@ -0,0 +1,38 @@
++++ b/include/linux/usb/ehci_pdriver.h
+@@ -0,0 +1,46 @@
 +/*
 + * Copyright (C) 2012 Hauke Mehrtens <hauke@hauke-m.de>
 + *
@@ -310,25 +314,33 @@ index 0000000..2808f2a
 + * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
-+#ifndef __USB_CORE_OHCI_PDRIVER_H
-+#define __USB_CORE_OHCI_PDRIVER_H
++#ifndef __USB_CORE_EHCI_PDRIVER_H
++#define __USB_CORE_EHCI_PDRIVER_H
 +
 +/**
-+ * struct usb_ohci_pdata - platform_data for generic ohci driver
++ * struct usb_ehci_pdata - platform_data for generic ehci driver
 + *
-+ * @big_endian_desc:	BE descriptors
-+ * @big_endian_mmio:	BE registers
-+ * @no_big_frame_no:	no big endian frame_no shift
++ * @caps_offset:	offset of the EHCI Capability Registers to the start of
++ *			the io memory region provided to the driver.
++ * @has_tt:		set to 1 if TT is integrated in root hub.
++ * @port_power_on:	set to 1 if the controller needs a power up after
++ * 			initialization.
++ * @port_power_off:	set to 1 if the controller needs to be powered down
++ * 			after initialization.
 + *
-+ * These are general configuration options for the OHCI controller. All of
++ * These are general configuration options for the EHCI controller. All of
 + * these options are activating more or less workarounds for some hardware.
 + */
-+struct usb_ohci_pdata {
++struct usb_ehci_pdata {
++	int		caps_offset;
++	unsigned	has_tt:1;
++	unsigned	has_synopsys_hc_bug:1;
 +	unsigned	big_endian_desc:1;
 +	unsigned	big_endian_mmio:1;
-+	unsigned	no_big_frame_no:1;
++	unsigned	port_power_on:1;
++	unsigned	port_power_off:1;
 +};
 +
-+#endif /* __USB_CORE_OHCI_PDRIVER_H */
++#endif /* __USB_CORE_EHCI_PDRIVER_H */
 -- 
 1.7.5.4

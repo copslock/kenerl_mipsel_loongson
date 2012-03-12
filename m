@@ -1,74 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2012 15:28:33 +0100 (CET)
-Received: from iolanthe.rowland.org ([192.131.102.54]:44884 "HELO
-        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1903614Ab2CLO2Z (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Mar 2012 15:28:25 +0100
-Received: (qmail 1237 invoked by uid 2102); 12 Mar 2012 10:28:22 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 12 Mar 2012 10:28:22 -0400
-Date:   Mon, 12 Mar 2012 10:28:22 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@iolanthe.rowland.org
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-cc:     gregkh@linuxfoundation.org, <linux-mips@linux-mips.org>,
-        <ralf@linux-mips.org>, <m@bues.ch>, <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH 6/7] USB: OHCI: remove old SSB OHCI driver
-In-Reply-To: <1331496505-18697-7-git-send-email-hauke@hauke-m.de>
-Message-ID: <Pine.LNX.4.44L0.1203121023490.1216-100000@iolanthe.rowland.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Mar 2012 18:47:28 +0100 (CET)
+Received: from charlotte.tuxdriver.com ([70.61.120.58]:48687 "EHLO
+        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903607Ab2CLRrV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 12 Mar 2012 18:47:21 +0100
+Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
+        (envelope-from <linville@tuxdriver.com>)
+        id 1S79Kr-0003t1-Uy; Mon, 12 Mar 2012 13:47:06 -0400
+Received: from linville-8530p.local (linville-8530p.local [127.0.0.1])
+        by linville-8530p.local (8.14.4/8.14.4) with ESMTP id q2CHfHqh022284;
+        Mon, 12 Mar 2012 13:41:17 -0400
+Received: (from linville@localhost)
+        by linville-8530p.local (8.14.4/8.14.4/Submit) id q2CHfE4U022263;
+        Mon, 12 Mar 2012 13:41:14 -0400
+Date:   Mon, 12 Mar 2012 13:41:14 -0400
+From:   "John W. Linville" <linville@tuxdriver.com>
+To:     Julian Calaby <julian.calaby@gmail.com>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>, gregkh@linuxfoundation.org,
+        stern@rowland.harvard.edu, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, m@bues.ch, linux-usb@vger.kernel.org,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 3/7] bcma: scan for extra address space
+Message-ID: <20120312174113.GC2778@tuxdriver.com>
+References: <1331496505-18697-1-git-send-email-hauke@hauke-m.de>
+ <1331496505-18697-4-git-send-email-hauke@hauke-m.de>
+ <CAGRGNgX116dRB03NTL_DFZ4b_PYcdY+Un_cVwt6ZUGR1bwZzHA@mail.gmail.com>
+ <4F5D3679.3090900@hauke-m.de>
+ <CAGRGNgWsO9s2rW1pKBFWd_-0oTAGs9_RXNGyn_y7ic=0Zer=qQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 32654
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGRGNgWsO9s2rW1pKBFWd_-0oTAGs9_RXNGyn_y7ic=0Zer=qQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 32655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stern@rowland.harvard.edu
+X-original-sender: linville@tuxdriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sun, 11 Mar 2012, Hauke Mehrtens wrote:
-
-> This is now replaced by the new ssb USB driver, which also supports
-> devices with an EHCI controller.
+On Mon, Mar 12, 2012 at 12:30:54PM +1100, Julian Calaby wrote:
+> Hi Hauke,
 > 
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->  drivers/usb/host/Kconfig    |   13 --
->  drivers/usb/host/ohci-hcd.c |   21 +----
->  drivers/usb/host/ohci-ssb.c |  260 -------------------------------------------
->  3 files changed, 1 insertions(+), 293 deletions(-)
->  delete mode 100644 drivers/usb/host/ohci-ssb.c
+> On Mon, Mar 12, 2012 at 10:34, Hauke Mehrtens <hauke@hauke-m.de> wrote:
+
+> > I will fix this, should I resend the hole series or just this patch?
 > 
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index eab27d5..665fb89 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -360,19 +360,6 @@ config USB_OHCI_HCD_PCI
->  	  Enables support for PCI-bus plug-in USB controller cards.
->  	  If unsure, say Y.
->  
-> -config USB_OHCI_HCD_SSB
-> -	bool "OHCI support for Broadcom SSB OHCI core"
-> -	depends on USB_OHCI_HCD && (SSB = y || SSB = USB_OHCI_HCD) && EXPERIMENTAL
-> -	default n
-> -	---help---
-> -	  Support for the Sonics Silicon Backplane (SSB) attached
-> -	  Broadcom USB OHCI core.
-> -
-> -	  This device is present in some embedded devices with
-> -	  Broadcom based SSB bus.
-> -
-> -	  If unsure, say N.
-> -
+> I'm not sure the rest of the series made it to linux-wireless, so
+> maybe you should resend everything.
 
-I don't like the idea of removing this section entirely.  It will leave 
-people wondering what happened to their driver.
+FWIW, this was the only one I saw...
 
-Instead, for the next few kernel releases, how about leaving this
-section in place and causing it to select USB_OHCI_HCD_PLATFORM?  Maybe 
-also add a line to the help section explaining that from now on, this 
-driver has been replaced by the generic OHCI platform driver.
-
-And likewise for the SSB EHCI driver, of course.
-
-Alan Stern
+-- 
+John W. Linville		Someday the world will need a hero, and you
+linville@tuxdriver.com			might be all we have.  Be ready.

@@ -1,90 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2012 10:45:23 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:34541 "EHLO arrakis.dune.hu"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903745Ab2CNJkl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Mar 2012 10:40:41 +0100
-X-Virus-Scanned: at arrakis.dune.hu
-Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id 67DB623C00EE;
-        Wed, 14 Mar 2012 10:09:32 +0100 (CET)
-From:   Gabor Juhos <juhosg@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
-        mcgrof@infradead.org, juhosg@openwrt.org
-Subject: [PATCH v2 12/13] MIPS: ath79: add PCI registration code for AR934X
-Date:   Wed, 14 Mar 2012 11:45:30 +0100
-Message-Id: <1331721931-4334-13-git-send-email-juhosg@openwrt.org>
-X-Mailer: git-send-email 1.7.2.5
-In-Reply-To: <1331721931-4334-1-git-send-email-juhosg@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2012 19:33:26 +0100 (CET)
+Received: from wolverine01.qualcomm.com ([199.106.114.254]:14345 "EHLO
+        wolverine01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903740Ab2CNSdS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 14 Mar 2012 19:33:18 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=qca.qualcomm.com; i=rodrigue@qca.qualcomm.com;
+  q=dns/txt; s=qcdkim; t=1331749998; x=1363285998;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  z=Date:=20Wed,=2014=20Mar=202012=2011:33:11=20-0700|From:
+   =20"Luis=20R.=20Rodriguez"=20<rodrigue@qca.qualcomm.com>
+   |To:=20Gabor=20Juhos=20<juhosg@openwrt.org>|CC:=20Ralf=20
+   Baechle=20<ralf@linux-mips.org>,=20<linux-mips@linux-mips
+   .org>,=0D=0A=09<mcgrof@infradead.org>|Subject:=20Re:=20[P
+   ATCH=20v2=2013/13]=20MIPS:=20ath79:=20add=20initial=20sup
+   port=20for=20the=0D=0A=20Atheros=20DB120=20board
+   |Message-ID:=20<20120314183311.GA8265@tux>|References:=20
+   <1331721931-4334-1-git-send-email-juhosg@openwrt.org>=0D
+   =0A=20<1331721931-4334-14-git-send-email-juhosg@openwrt.o
+   rg>|MIME-Version:=201.0|In-Reply-To:=20<1331721931-4334-1
+   4-git-send-email-juhosg@openwrt.org>;
+  bh=W4OyubaSdzc9bicabu63KleprHXSLgu5gGS8/v7ioJA=;
+  b=t++TmE/G3QGCvYUui5udegwqWjZT2CTHWAMGoZfrPNEnmAwbNcQu0cTp
+   PeiHaumeDD9iIYMvwOC+ZH5JmkE3/BBLSZKqFu0xrFZzxegnrmr9sVxqb
+   RRIeNx3MLBVvfGtjSR1Dg+IUhD6+NiEsx60sIAkkF1oHMmEnuONsuM1IS
+   s=;
+X-IronPort-AV: E=McAfee;i="5400,1158,6648"; a="172463732"
+Received: from ironmsg02-l.qualcomm.com ([172.30.48.16])
+  by wolverine01.qualcomm.com with ESMTP; 14 Mar 2012 11:33:14 -0700
+X-IronPort-AV: E=Sophos;i="4.73,584,1325491200"; 
+   d="scan'208";a="119711349"
+Received: from nasanexhc07.na.qualcomm.com ([172.30.39.190])
+  by ironmsg02-L.qualcomm.com with ESMTP/TLS/AES128-SHA; 14 Mar 2012 11:33:14 -0700
+Received: from tux (172.30.39.5) by qcmail1.qualcomm.com (172.30.39.190) with
+ Microsoft SMTP Server (TLS) id 14.1.339.1; Wed, 14 Mar 2012 11:33:12 -0700
+Received: by tux (sSMTP sendmail emulation); Wed, 14 Mar 2012 11:33:11 -0700
+Date:   Wed, 14 Mar 2012 11:33:11 -0700
+From:   "Luis R. Rodriguez" <rodrigue@qca.qualcomm.com>
+To:     Gabor Juhos <juhosg@openwrt.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, <linux-mips@linux-mips.org>,
+        <mcgrof@infradead.org>
+Subject: Re: [PATCH v2 13/13] MIPS: ath79: add initial support for the
+ Atheros DB120 board
+Message-ID: <20120314183311.GA8265@tux>
 References: <1331721931-4334-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 32706
+ <1331721931-4334-14-git-send-email-juhosg@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1331721931-4334-14-git-send-email-juhosg@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Originating-IP: [172.30.39.5]
+X-archive-position: 32707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: juhosg@openwrt.org
+X-original-sender: rodrigue@qca.qualcomm.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
-Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
----
-v2: - no changes
+On Wed, Mar 14, 2012 at 11:45:31AM +0100, Gabor Juhos wrote:
+> Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+> Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+> ---
+> v2: - remove USB controller registration, it will be added
+>       by a separate patch-set
+> 
+> Ralf,
+> 
+> The mach-db120.c file is licensed under the Clear BSD license. That
+> is based on the modified BSD license and the FSF's [1] site states
+> that it is compatible with both the GPLv2 and GPLv3.
+> 
+> However if you have concerns about the copyright we can resubmit
+> this file under the ISC license [2]. The ISC license is already
+> used upstream by the ath6kl and ath9k drivers.
+> 
+> Thanks,
+> Gabor
+> 
+> 1. http://www.gnu.org/licenses/license-list.html#clearbsd
+> 2. http://www.gnu.org/licenses/license-list.html#ISC
 
- arch/mips/ath79/Kconfig |    2 ++
- arch/mips/ath79/pci.c   |   13 ++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletions(-)
+Gabor, please resubmit under the ISC license. The patch
+has been pending since December and I really do not
+want to wait any longer. You can just resubmit this
+one single patch.
 
-diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 123cc37..ea28e89 100644
---- a/arch/mips/ath79/Kconfig
-+++ b/arch/mips/ath79/Kconfig
-@@ -72,6 +72,8 @@ config SOC_AR933X
- 
- config SOC_AR934X
- 	select USB_ARCH_HAS_EHCI
-+	select HW_HAS_PCI
-+	select PCI_AR724X if PCI
- 	def_bool n
- 
- config PCI_AR724X
-diff --git a/arch/mips/ath79/pci.c b/arch/mips/ath79/pci.c
-index bc40070..ca83abd 100644
---- a/arch/mips/ath79/pci.c
-+++ b/arch/mips/ath79/pci.c
-@@ -14,6 +14,7 @@
- 
- #include <linux/init.h>
- #include <linux/pci.h>
-+#include <asm/mach-ath79/ar71xx_regs.h>
- #include <asm/mach-ath79/ath79.h>
- #include <asm/mach-ath79/irq.h>
- #include <asm/mach-ath79/pci.h>
-@@ -57,7 +58,9 @@ int __init pcibios_map_irq(const struct pci_dev *dev, uint8_t slot, uint8_t pin)
- 		if (soc_is_ar71xx()) {
- 			ath79_pci_irq_map = ar71xx_pci_irq_map;
- 			ath79_pci_nr_irqs = ARRAY_SIZE(ar71xx_pci_irq_map);
--		} else if (soc_is_ar724x()) {
-+		} else if (soc_is_ar724x() ||
-+			   soc_is_ar9342() ||
-+			   soc_is_ar9344()) {
- 			ath79_pci_irq_map = ar724x_pci_irq_map;
- 			ath79_pci_nr_irqs = ARRAY_SIZE(ar724x_pci_irq_map);
- 		} else {
-@@ -115,5 +118,13 @@ int __init ath79_register_pci(void)
- 	if (soc_is_ar724x())
- 		return ar724x_pcibios_init(ATH79_CPU_IRQ_IP2);
- 
-+	if (soc_is_ar9342() || soc_is_ar9344()) {
-+		u32 bootstrap;
-+
-+		bootstrap = ath79_reset_rr(AR934X_RESET_REG_BOOTSTRAP);
-+		if (bootstrap & AR934X_BOOTSTRAP_PCIE_RC)
-+			return ar724x_pcibios_init(ATH79_IP2_IRQ(0));
-+	}
-+
- 	return -ENODEV;
- }
--- 
-1.7.2.1
+  Luis

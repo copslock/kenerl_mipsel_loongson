@@ -1,22 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2012 10:40:32 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:34303 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2012 10:40:54 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:34322 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903729Ab2CNJkC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Mar 2012 10:40:02 +0100
+        id S1903730Ab2CNJkG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Mar 2012 10:40:06 +0100
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id DEB4223C00C1;
-        Wed, 14 Mar 2012 10:09:29 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 553C723C00C9;
+        Wed, 14 Mar 2012 10:09:30 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
         mcgrof@infradead.org, juhosg@openwrt.org
-Subject: [PATCH v2 00/13] MIPS: ath79: add initial support for the Atheros AR934X SoCs
-Date:   Wed, 14 Mar 2012 11:45:18 +0100
-Message-Id: <1331721931-4334-1-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH v2 02/13] MIPS: ath79: sort case statements in ath79_detect_sys_type
+Date:   Wed, 14 Mar 2012 11:45:20 +0100
+Message-Id: <1331721931-4334-3-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.5
-X-archive-position: 32694
+In-Reply-To: <1331721931-4334-1-git-send-email-juhosg@openwrt.org>
+References: <1331721931-4334-1-git-send-email-juhosg@openwrt.org>
+X-archive-position: 32695
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,52 +27,58 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch set adds initial support for the Atheros AR934X SoCs.
+Sort the case statements alphabetically in order to improve
+readability.
 
-This depends on the following patch set:
-v3 of 'MIPS: ath79: AR724X PCI fixes and AR71XX PCI support'
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+v2: - no changes
 
-Changes since v1:
- - the watchdog related patch is removed because that is in
-   in upstream already
- - the USB support is removed, it will be reintroduced by a
-   separate series 
+ arch/mips/ath79/setup.c |   24 ++++++++++++------------
+ 1 files changed, 12 insertions(+), 12 deletions(-)
 
-Gabor Juhos (13):
-  MIPS: ath79: add early_printk support for AR934X
-  MIPS: ath79: sort case statements in ath79_detect_sys_type
-  MIPS: ath79: add SoC detection code for AR934X
-  MIPS: ath79: add clock initialization code for AR934X
-  MIPS: ath79: add GPIO support code for AR934X
-  MIPS: ath79: rework IP2/IP3 interrupt handling
-  MIPS: ath79: add IRQ handling code for AR934X
-  MIPS: ath79: add AR934X specific glue to ath79_device_reset_{clear,set}
-  MIPS: ath79: register UART device for AR934X SoCs
-  MIPS: ath79: add WMAC registration code for AR934X
-  MIPS: ath79: add PCI_AR724X Kconfig symbol
-  MIPS: ath79: add PCI registration code for AR934X
-  MIPS: ath79: add initial support for the Atheros DB120 board
-
- arch/mips/ath79/Kconfig                        |   24 ++++-
- arch/mips/ath79/Makefile                       |    1 +
- arch/mips/ath79/clock.c                        |   81 +++++++++++++
- arch/mips/ath79/common.c                       |    9 ++-
- arch/mips/ath79/dev-common.c                   |    3 +-
- arch/mips/ath79/dev-wmac.c                     |   30 +++++-
- arch/mips/ath79/early_printk.c                 |    3 +
- arch/mips/ath79/gpio.c                         |   47 +++++++-
- arch/mips/ath79/irq.c                          |  147 +++++++++++++++++++----
- arch/mips/ath79/mach-db120.c                   |  153 ++++++++++++++++++++++++
- arch/mips/ath79/machtypes.h                    |    1 +
- arch/mips/ath79/pci.c                          |   13 ++-
- arch/mips/ath79/setup.c                        |   45 +++++--
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |   91 ++++++++++++++-
- arch/mips/include/asm/mach-ath79/ath79.h       |   23 ++++
- arch/mips/include/asm/mach-ath79/irq.h         |    6 +-
- arch/mips/include/asm/mach-ath79/pci.h         |    2 +-
- arch/mips/pci/Makefile                         |    2 +-
- 18 files changed, 635 insertions(+), 46 deletions(-)
- create mode 100644 arch/mips/ath79/mach-db120.c
-
+diff --git a/arch/mips/ath79/setup.c b/arch/mips/ath79/setup.c
+index 80a7d40..24dfedf 100644
+--- a/arch/mips/ath79/setup.c
++++ b/arch/mips/ath79/setup.c
+@@ -116,18 +116,6 @@ static void __init ath79_detect_sys_type(void)
+ 		rev = id & AR724X_REV_ID_REVISION_MASK;
+ 		break;
+ 
+-	case REV_ID_MAJOR_AR9330:
+-		ath79_soc = ATH79_SOC_AR9330;
+-		chip = "9330";
+-		rev = id & AR933X_REV_ID_REVISION_MASK;
+-		break;
+-
+-	case REV_ID_MAJOR_AR9331:
+-		ath79_soc = ATH79_SOC_AR9331;
+-		chip = "9331";
+-		rev = id & AR933X_REV_ID_REVISION_MASK;
+-		break;
+-
+ 	case REV_ID_MAJOR_AR913X:
+ 		minor = id & AR913X_REV_ID_MINOR_MASK;
+ 		rev = id >> AR913X_REV_ID_REVISION_SHIFT;
+@@ -145,6 +133,18 @@ static void __init ath79_detect_sys_type(void)
+ 		}
+ 		break;
+ 
++	case REV_ID_MAJOR_AR9330:
++		ath79_soc = ATH79_SOC_AR9330;
++		chip = "9330";
++		rev = id & AR933X_REV_ID_REVISION_MASK;
++		break;
++
++	case REV_ID_MAJOR_AR9331:
++		ath79_soc = ATH79_SOC_AR9331;
++		chip = "9331";
++		rev = id & AR933X_REV_ID_REVISION_MASK;
++		break;
++
+ 	default:
+ 		panic("ath79: unknown SoC, id:0x%08x", id);
+ 	}
 -- 
 1.7.2.1

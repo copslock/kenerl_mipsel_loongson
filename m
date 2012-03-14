@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2012 10:44:12 +0100 (CET)
-Received: from arrakis.dune.hu ([78.24.191.176]:34471 "EHLO arrakis.dune.hu"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Mar 2012 10:44:36 +0100 (CET)
+Received: from arrakis.dune.hu ([78.24.191.176]:34510 "EHLO arrakis.dune.hu"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903740Ab2CNJk3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 14 Mar 2012 10:40:29 +0100
+        id S1903742Ab2CNJkc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 14 Mar 2012 10:40:32 +0100
 X-Virus-Scanned: at arrakis.dune.hu
 Received: from localhost.localdomain (catvpool-576570d8.szarvasnet.hu [87.101.112.216])
-        by arrakis.dune.hu (Postfix) with ESMTPSA id EB33323C00E0;
-        Wed, 14 Mar 2012 10:09:31 +0100 (CET)
+        by arrakis.dune.hu (Postfix) with ESMTPSA id 38FDB23C00E3;
+        Wed, 14 Mar 2012 10:09:32 +0100 (CET)
 From:   Gabor Juhos <juhosg@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     linux-mips@linux-mips.org,
         "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>,
         mcgrof@infradead.org, juhosg@openwrt.org
-Subject: [PATCH v2 10/13] MIPS: ath79: add WMAC registration code for AR934X
-Date:   Wed, 14 Mar 2012 11:45:28 +0100
-Message-Id: <1331721931-4334-11-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH v2 11/13] MIPS: ath79: add PCI_AR724X Kconfig symbol
+Date:   Wed, 14 Mar 2012 11:45:29 +0100
+Message-Id: <1331721931-4334-12-git-send-email-juhosg@openwrt.org>
 X-Mailer: git-send-email 1.7.2.5
 In-Reply-To: <1331721931-4334-1-git-send-email-juhosg@openwrt.org>
 References: <1331721931-4334-1-git-send-email-juhosg@openwrt.org>
-X-archive-position: 32703
+X-archive-position: 32704
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,120 +27,70 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+The AR724X specific PCI code can be used for the
+AR934X SoCs, however it can be selected only if
+SOC_AR724X is set.
+
+Introduce a new Kconfig symbol in order to be able
+to use the code for AR934X as well.
+
 Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
 Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
 ---
-v2: - no changes
+v2: - update due to changes in a previous patch
 
- arch/mips/ath79/Kconfig                        |    2 +-
- arch/mips/ath79/dev-wmac.c                     |   30 ++++++++++++++++++++++-
- arch/mips/include/asm/mach-ath79/ar71xx_regs.h |    3 ++
- 3 files changed, 32 insertions(+), 3 deletions(-)
+ arch/mips/ath79/Kconfig                |    4 ++++
+ arch/mips/include/asm/mach-ath79/pci.h |    2 +-
+ arch/mips/pci/Makefile                 |    2 +-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/arch/mips/ath79/Kconfig b/arch/mips/ath79/Kconfig
-index 7db8e89..5fa3d7b 100644
+index 5fa3d7b..123cc37 100644
 --- a/arch/mips/ath79/Kconfig
 +++ b/arch/mips/ath79/Kconfig
-@@ -86,7 +86,7 @@ config ATH79_DEV_USB
+@@ -59,6 +59,7 @@ config SOC_AR724X
+ 	select USB_ARCH_HAS_EHCI
+ 	select USB_ARCH_HAS_OHCI
+ 	select HW_HAS_PCI
++	select PCI_AR724X if PCI
  	def_bool n
  
- config ATH79_DEV_WMAC
--	depends on (SOC_AR913X || SOC_AR933X)
-+	depends on (SOC_AR913X || SOC_AR933X || SOC_AR934X)
+ config SOC_AR913X
+@@ -73,6 +74,9 @@ config SOC_AR934X
+ 	select USB_ARCH_HAS_EHCI
  	def_bool n
  
- endif
-diff --git a/arch/mips/ath79/dev-wmac.c b/arch/mips/ath79/dev-wmac.c
-index 9c717bf..d6d893c 100644
---- a/arch/mips/ath79/dev-wmac.c
-+++ b/arch/mips/ath79/dev-wmac.c
-@@ -1,9 +1,12 @@
- /*
-  *  Atheros AR913X/AR933X SoC built-in WMAC device support
-  *
-+ *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
-  *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-  *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-  *
-+ *  Parts of this file are based on Atheros 2.6.15/2.6.31 BSP
-+ *
-  *  This program is free software; you can redistribute it and/or modify it
-  *  under the terms of the GNU General Public License version 2 as published
-  *  by the Free Software Foundation.
-@@ -26,8 +29,7 @@ static struct resource ath79_wmac_resources[] = {
- 		/* .start and .end fields are filled dynamically */
- 		.flags	= IORESOURCE_MEM,
- 	}, {
--		.start	= ATH79_CPU_IRQ_IP2,
--		.end	= ATH79_CPU_IRQ_IP2,
-+		/* .start and .end fields are filled dynamically */
- 		.flags	= IORESOURCE_IRQ,
- 	},
- };
-@@ -53,6 +55,8 @@ static void __init ar913x_wmac_setup(void)
- 
- 	ath79_wmac_resources[0].start = AR913X_WMAC_BASE;
- 	ath79_wmac_resources[0].end = AR913X_WMAC_BASE + AR913X_WMAC_SIZE - 1;
-+	ath79_wmac_resources[1].start = ATH79_CPU_IRQ_IP2;
-+	ath79_wmac_resources[1].end = ATH79_CPU_IRQ_IP2;
- }
- 
- 
-@@ -79,6 +83,8 @@ static void __init ar933x_wmac_setup(void)
- 
- 	ath79_wmac_resources[0].start = AR933X_WMAC_BASE;
- 	ath79_wmac_resources[0].end = AR933X_WMAC_BASE + AR933X_WMAC_SIZE - 1;
-+	ath79_wmac_resources[1].start = ATH79_CPU_IRQ_IP2;
-+	ath79_wmac_resources[1].end = ATH79_CPU_IRQ_IP2;
- 
- 	t = ath79_reset_rr(AR933X_RESET_REG_BOOTSTRAP);
- 	if (t & AR933X_BOOTSTRAP_REF_CLK_40)
-@@ -92,12 +98,32 @@ static void __init ar933x_wmac_setup(void)
- 	ath79_wmac_data.external_reset = ar933x_wmac_reset;
- }
- 
-+static void ar934x_wmac_setup(void)
-+{
-+	u32 t;
++config PCI_AR724X
++	def_bool n
 +
-+	ath79_wmac_device.name = "ar934x_wmac";
-+
-+	ath79_wmac_resources[0].start = AR934X_WMAC_BASE;
-+	ath79_wmac_resources[0].end = AR934X_WMAC_BASE + AR934X_WMAC_SIZE - 1;
-+	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
-+	ath79_wmac_resources[1].start = ATH79_IP2_IRQ(1);
-+
-+	t = ath79_reset_rr(AR934X_RESET_REG_BOOTSTRAP);
-+	if (t & AR934X_BOOTSTRAP_REF_CLK_40)
-+		ath79_wmac_data.is_clk_25mhz = false;
-+	else
-+		ath79_wmac_data.is_clk_25mhz = true;
-+}
-+
- void __init ath79_register_wmac(u8 *cal_data)
- {
- 	if (soc_is_ar913x())
- 		ar913x_wmac_setup();
- 	else if (soc_is_ar933x())
- 		ar933x_wmac_setup();
-+	else if (soc_is_ar934x())
-+		ar934x_wmac_setup();
- 	else
- 		BUG();
+ config ATH79_DEV_GPIO_BUTTONS
+ 	def_bool n
  
-diff --git a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-index 32abbf9..1caa78a 100644
---- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-+++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
-@@ -61,6 +61,9 @@
- #define AR933X_EHCI_BASE	0x1b000000
- #define AR933X_EHCI_SIZE	0x1000
+diff --git a/arch/mips/include/asm/mach-ath79/pci.h b/arch/mips/include/asm/mach-ath79/pci.h
+index 4f2222d..7868f7f 100644
+--- a/arch/mips/include/asm/mach-ath79/pci.h
++++ b/arch/mips/include/asm/mach-ath79/pci.h
+@@ -19,7 +19,7 @@ int ar71xx_pcibios_init(void);
+ static inline int ar71xx_pcibios_init(void) { return 0; }
+ #endif
  
-+#define AR934X_WMAC_BASE	(AR71XX_APB_BASE + 0x00100000)
-+#define AR934X_WMAC_SIZE	0x20000
-+
- /*
-  * DDR_CTRL block
-  */
+-#if defined(CONFIG_PCI) && defined(CONFIG_SOC_AR724X)
++#if defined(CONFIG_PCI_AR724X)
+ int ar724x_pcibios_init(int irq);
+ #else
+ static inline int ar724x_pcibios_init(int irq) { return 0; }
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index b1c0a1c..43c5138 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -20,7 +20,7 @@ obj-$(CONFIG_BCM63XX)		+= pci-bcm63xx.o fixup-bcm63xx.o \
+ 					ops-bcm63xx.o
+ obj-$(CONFIG_MIPS_ALCHEMY)	+= pci-alchemy.o
+ obj-$(CONFIG_SOC_AR71XX)	+= pci-ar71xx.o
+-obj-$(CONFIG_SOC_AR724X)	+= pci-ar724x.o
++obj-$(CONFIG_PCI_AR724X)	+= pci-ar724x.o
+ 
+ #
+ # These are still pretty much in the old state, watch, go blind.
 -- 
 1.7.2.1

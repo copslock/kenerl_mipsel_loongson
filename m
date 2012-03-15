@@ -1,69 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2012 17:26:09 +0100 (CET)
-Received: from moutng.kundenserver.de ([212.227.126.171]:55143 "EHLO
-        moutng.kundenserver.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903652Ab2COQ0F (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Mar 2012 17:26:05 +0100
-Received: from klappe2.localnet (deibp9eh1--blueice3n2.emea.ibm.com [195.212.29.180])
-        by mrelayeu.kundenserver.de (node=mreu3) with ESMTP (Nemesis)
-        id 0MU8aj-1RiC9E1YrB-00QnET; Thu, 15 Mar 2012 17:25:34 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Chris Metcalf <cmetcalf@tilera.com>
-Subject: Re: [PATCH v3] ipc: provide generic compat versions of IPC syscalls
-Date:   Thu, 15 Mar 2012 16:25:32 +0000
-User-Agent: KMail/1.12.2 (Linux/3.3.0-rc1; KDE/4.3.2; x86_64; ; )
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux390@de.ibm.com, "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "J. Bruce Fields" <bfields@redhat.com>, NeilBrown <neilb@suse.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org
-References: <201112091536.pB9Fa5f7002738@farm-0002.internal.tilera.com> <201112122148.pBCLmPH0023959@farm-0002.internal.tilera.com> <4F6144B8.5010601@tilera.com>
-In-Reply-To: <4F6144B8.5010601@tilera.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2012 20:44:42 +0100 (CET)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:51856 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903659Ab2COToh (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Mar 2012 20:44:37 +0100
+Received: by dakp5 with SMTP id p5so4611534dak.36
+        for <linux-mips@linux-mips.org>; Thu, 15 Mar 2012 12:44:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent
+         :x-gm-message-state;
+        bh=n40gh3vva+zRGHFg+rfRyUBoUPFk30ur54yCeuNxKT0=;
+        b=mFxeKX6K4IynK3qIDkDvDsdjVTpWh4Q1T40rnOjSQkt+JkQ/Y+lE2Om1r8MXylsM0r
+         iYJMcEbvmw+ZPS5u0v90OWcdm5WPTHohPyR36I/5aO20IOt+TjNzWTsWSGkOxTX1r5V/
+         45yOjmHPAKnWpuobWKBXeQlSpAhGKQ9htDoWBuEdH4xsjesH8S0Q00JG/P+pnEQQyfkE
+         gAWc7Mq0IOcbAWMCNkv41CYPxXMDcG3V8R/CDO4hM5ogCQs8Dnkya2DZ+K4WLSyJKWeQ
+         G1rVWUFs6Kv3p/y2sjPxZFcgRyVgXVPZzYCfGUzPGS3E9sIInSUvpAwn24Aa8Exhos3D
+         83zg==
+Received: by 10.68.226.225 with SMTP id rv1mr7475690pbc.44.1331840670519;
+        Thu, 15 Mar 2012 12:44:30 -0700 (PDT)
+Received: from localhost (c-76-121-69-168.hsd1.wa.comcast.net. [76.121.69.168])
+        by mx.google.com with ESMTPS id d10sm2511320pbr.59.2012.03.15.12.44.27
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 15 Mar 2012 12:44:28 -0700 (PDT)
+Date:   Thu, 15 Mar 2012 12:44:26 -0700
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Hauke Mehrtens <hauke@hauke-m.de>
+Cc:     stern@rowland.harvard.edu, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, m@bues.ch, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v4 4/7] USB: Add driver for the bcma bus
+Message-ID: <20120315194426.GA30682@kroah.com>
+References: <1331597093-425-1-git-send-email-hauke@hauke-m.de>
+ <1331597093-425-5-git-send-email-hauke@hauke-m.de>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Message-Id: <201203151625.32199.arnd@arndb.de>
-X-Provags-ID: V02:K0:P922dHs4wgmggE20Dch8pBF3qhCaJX1GxSiX7E9IPrx
- qxDSkpPXcAq2EXTxEFd4VS8+lQXRvQe06szjqLZYCxPQrSdSSb
- l9QB9361pLH6sbIInR7ci1YdIR0GFrkf2PUZdmdRjzaUgS77Nc
- ZaAVNKopiv8vF4f9dnx2tq46V9gq066lzoPTcWSUx9b+gwNqdA
- de2VQRmPfA1z+FE7Ta4Qdl8cky3gzfiTZBfsEafrVJXz+Cfq+/
- dJMEI/ZAKIBN6gp9qySJhIVnoYtKmisNitvEF8Kph1ldmZKLkY
- GIBgwG2rcENWEk1Gg11WEJjfkVe7/rrHRvJbeeipdKo2GOeEwf
- trtVmexyROrYsqycmwL0=
-X-archive-position: 32711
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1331597093-425-5-git-send-email-hauke@hauke-m.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Gm-Message-State: ALoCoQnXhA51SW5lEZTUn6EI7UqDvFw6TAZSl1RHe3NEyai9i1GEgoF9gD8GWimEPMb6TxWqyu0q
+X-archive-position: 32712
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arnd@arndb.de
+X-original-sender: gregkh@linuxfoundation.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thursday 15 March 2012, Chris Metcalf wrote:
+On Tue, Mar 13, 2012 at 01:04:50AM +0100, Hauke Mehrtens wrote:
+> This adds a USB driver using the generic platform device driver for the
+> USB controller found on the Broadcom bcma bus. The bcma bus just
+> exposes one device which serves the OHCI and the EHCI controller at the
+> same time. This driver probes for this USB controller and creates and
+> registers two new platform devices which will be probed by the new
+> generic platform device driver. This makes it possible to use the EHCI
+> and the OCHI controller on the bcma bus at the same time.
 > 
-> Somewhat belatedly, I'm looking to push this through the "tile" tree. 
-> Andrew Morton has been keeping it in his tree but I figure I should push it
-> since it directly affects "tile" and currently no one else.
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+> ---
+>  drivers/usb/host/Kconfig    |   12 ++
 
-Sounds good.
+This patch fails to apply here, and I can't seem to figure out what tree
+you made this against to fix it up by hand on my end.
 
-> However, it would be nice if anyone could provide a Reviewed-by or Acked-by
-> on the patch.  Thanks!
+Any thoughts?
 
-As the main author of ipc/compat.c in its current form,
-
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+greg k-h

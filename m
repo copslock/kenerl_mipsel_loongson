@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2012 23:50:50 +0100 (CET)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:33575 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Mar 2012 23:51:18 +0100 (CET)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:33583 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903667Ab2COWuq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Mar 2012 23:50:46 +0100
+        with ESMTP id S1903681Ab2COWus (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 15 Mar 2012 23:50:48 +0100
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 7F11F8F65;
-        Thu, 15 Mar 2012 23:50:46 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTP id C46568F60;
+        Thu, 15 Mar 2012 23:50:47 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AJ+W3vlcsmsJ; Thu, 15 Mar 2012 23:50:32 +0100 (CET)
+        with ESMTP id IH7-UDZGRdTd; Thu, 15 Mar 2012 23:50:32 +0100 (CET)
 Received: from localhost.localdomain (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id AE9438F60;
-        Thu, 15 Mar 2012 23:50:31 +0100 (CET)
+        by hauke-m.de (Postfix) with ESMTPSA id 26E0E8F61;
+        Thu, 15 Mar 2012 23:50:32 +0100 (CET)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     gregkh@linuxfoundation.org
 Cc:     stern@rowland.harvard.edu, linux-mips@linux-mips.org,
         ralf@linux-mips.org, m@bues.ch, linux-usb@vger.kernel.org,
         linux-wireless@vger.kernel.org, zajec5@gmail.com,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v5 0/4] USB: OHCI/EHCI: generic platform driver
-Date:   Thu, 15 Mar 2012 23:49:55 +0100
-Message-Id: <1331851799-5968-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH v5 1/4] bcma: scan for extra address space
+Date:   Thu, 15 Mar 2012 23:49:56 +0100
+Message-Id: <1331851799-5968-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.5.4
+In-Reply-To: <1331851799-5968-1-git-send-email-hauke@hauke-m.de>
+References: <1331851799-5968-1-git-send-email-hauke@hauke-m.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-archive-position: 32718
+X-archive-position: 32719
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,64 +37,68 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This EHCI/OHCI platform driver should replace the simple EHCI and OHCI 
-platform drivers. It was developed to be used for the USB core of the 
-Broadcom SoCs supported by ssb and bcma, but it should also work for 
-other devices.
+Some cores like the USB core have two address spaces. In the USB host
+controller one address space is used for the OHCI and the other for the
+EHCI controller interface. The USB controller is the only core I found
+with two address spaces. This code is based on the AI scan function
+ai_scan() in shared/aiutils.c in the Broadcom SDK.
 
-Drivers like ehci-ath79.c, ehci-xls.c and ehci-ixp4xx.c should be 
-relative easy be ported to this EHCI driver.
-And drivers like ohci-ath79.c, ohci-ppc-soc.c, ohci-sh.c and ohci-xls.c 
-should be easy be ported to the this OHCI driver.
+CC: Rafał Miłecki <zajec5@gmail.com>
+CC: linux-wireless@vger.kernel.org
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ drivers/bcma/scan.c       |   19 ++++++++++++++++++-
+ include/linux/bcma/bcma.h |    1 +
+ 2 files changed, 19 insertions(+), 1 deletions(-)
 
-I am unable to test the suspend and resume part, as my SoC does not 
-support this, but most of the platform driver do not support 
-suspend/resume too. The code here should work, but was never runtime 
-tested.
-
-This also contains patches adding USB support for the SoCs based on ssb 
-and bcma and converts the ath79 code to use the generic usb driver.
-
-This patch series is based on the usb tree and should go through it to Linus.
-
-v5:
-   * removed the patches already applied to usb/usb-next
-   * rebase onto usb/usb-next
-
-v4:
-   * handle error when searching for a bridge on bcma
-   * leave old Kconfig options and mark them deprecated and select the
-     new driver
-
-v3:
-   * add patches for bcma and ssb usb driver again
-   * add patch to convert ath79 to use the generic platform driver
-
-v2:
-   * split include/linux/usb/hci_driver.h into include/linux
-     /usb/ehci_pdriver.h and include/linux/usb/ohci_pdriver.h
-   * remove flags from include/linux/usb/{e,o}ehci_pdriver.h
-   * add kernel doc
-   * add some more options into the structs to activate hardware quirks.
-
-Hauke Mehrtens (4):
-  bcma: scan for extra address space
-  USB: Add driver for the bcma bus
-  USB: Add driver for the ssb bus
-  USB: OHCI: remove old SSB OHCI driver
-
- drivers/bcma/scan.c         |   19 +++-
- drivers/usb/host/Kconfig    |   31 ++++-
- drivers/usb/host/Makefile   |    2 +
- drivers/usb/host/bcma-hcd.c |  334 +++++++++++++++++++++++++++++++++++++++++++
- drivers/usb/host/ohci-hcd.c |   21 +---
- drivers/usb/host/ohci-ssb.c |  260 ---------------------------------
- drivers/usb/host/ssb-hcd.c  |  279 ++++++++++++++++++++++++++++++++++++
- include/linux/bcma/bcma.h   |    1 +
- 8 files changed, 665 insertions(+), 282 deletions(-)
- create mode 100644 drivers/usb/host/bcma-hcd.c
- delete mode 100644 drivers/usb/host/ohci-ssb.c
- create mode 100644 drivers/usb/host/ssb-hcd.c
-
+diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
+index 3a2f672..1fa10ed 100644
+--- a/drivers/bcma/scan.c
++++ b/drivers/bcma/scan.c
+@@ -286,6 +286,23 @@ static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
+ 			return -EILSEQ;
+ 	}
+ 
++	/* First Slave Address Descriptor should be port 0:
++	 * the main register space for the core
++	 */
++	tmp = bcma_erom_get_addr_desc(bus, eromptr, SCAN_ADDR_TYPE_SLAVE, 0);
++	if (tmp <= 0) {
++		/* Try again to see if it is a bridge */
++		tmp = bcma_erom_get_addr_desc(bus, eromptr,
++					      SCAN_ADDR_TYPE_BRIDGE, 0);
++		if (tmp <= 0) {
++			return -EILSEQ;
++		} else {
++			pr_info("Bridge found\n");
++			return -ENXIO;
++		}
++	}
++	core->addr = tmp;
++
+ 	/* get & parse slave ports */
+ 	for (i = 0; i < ports[1]; i++) {
+ 		for (j = 0; ; j++) {
+@@ -298,7 +315,7 @@ static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
+ 				break;
+ 			} else {
+ 				if (i == 0 && j == 0)
+-					core->addr = tmp;
++					core->addr1 = tmp;
+ 			}
+ 		}
+ 	}
+diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
+index 83c209f..7fe41e1 100644
+--- a/include/linux/bcma/bcma.h
++++ b/include/linux/bcma/bcma.h
+@@ -138,6 +138,7 @@ struct bcma_device {
+ 	u8 core_index;
+ 
+ 	u32 addr;
++	u32 addr1;
+ 	u32 wrap;
+ 
+ 	void __iomem *io_addr;
 -- 
 1.7.5.4

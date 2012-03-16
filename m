@@ -1,83 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2012 00:35:47 +0100 (CET)
-Received: from mail-pz0-f49.google.com ([209.85.210.49]:56394 "EHLO
-        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903667Ab2COXfl (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Mar 2012 00:35:41 +0100
-Received: by dakp5 with SMTP id p5so4896429dak.36
-        for <linux-mips@linux-mips.org>; Thu, 15 Mar 2012 16:35:34 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2012 09:54:53 +0100 (CET)
+Received: from mail-wi0-f171.google.com ([209.85.212.171]:62506 "EHLO
+        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901172Ab2CPIyt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Mar 2012 09:54:49 +0100
+Received: by wibhj13 with SMTP id hj13so390864wib.6
+        for <linux-mips@linux-mips.org>; Fri, 16 Mar 2012 01:54:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent
-         :x-gm-message-state;
-        bh=12AILZrReOcmh46TXwULypFnX1IKk5Ag8SU68hJ67Fs=;
-        b=pLuMcdYWCPgcU0v7TDTfrIj9unqaDfMhZBDZ4U6At1E7a2ax670VHsi7KfJHIadYex
-         aRfgADtDaVZ2+0kcYNdFRUNzmzUHRGNcsQQojDUooqIOVyjPjkaA/iSebSfJVD6yYfzH
-         JnUz2wAy61/5+jOR2ahD4paFGHANRgugemAjnwtLCjCRiBU8vpRe9ao6jwQbhJFH7B2A
-         0G6+nLBl8hlQRlE5/MqW/Ftgd+BMYn6/cxod4DLH5kqFi4LBMS63ys76kYcmMkD+BMCe
-         KKUGwyVoHGCQtdssNllqQIB5eWaH08/IfFPASt8NTjPuEJUbI3yjOq4SseVkX8L00LY1
-         kdDg==
-Received: by 10.68.130.103 with SMTP id od7mr8237348pbb.66.1331854534450;
-        Thu, 15 Mar 2012 16:35:34 -0700 (PDT)
-Received: from localhost (c-76-121-69-168.hsd1.wa.comcast.net. [76.121.69.168])
-        by mx.google.com with ESMTPS id d10sm2854922pbr.59.2012.03.15.16.35.32
+        h=message-id:date:from:organization:user-agent:mime-version:to:cc
+         :subject:references:in-reply-to:content-type
+         :content-transfer-encoding:x-gm-message-state;
+        bh=7P9rO672wMRoR88BjKPOosa8a6dT2CJyXJxVjm37s2o=;
+        b=jdd1v4SG8KJ1ziuSM/oC0A5IfAOLjB+NmNxPpkh0bslkTxdiGwfPiR18SPfg2uwQ9a
+         zj237dHCtM+qbtDfJ3SOk7jR+ZqH03SU9c62+vTjM/wAByvMieoqzylrHHTswkgjhFGA
+         W030SIgIyhFuBR4I7tN3vm5/hao1X1c/NV39sycRx5yXHHuD1bB3bUXKtgh0muUqbOJB
+         ThnSXUdO2WI7v/ZbdjW6PaKvDruTRWxrv2+fICKVKTcLdIzYMuNxPBOBT6hY087l1wet
+         TJ48HubwrHpjGde/w9fbemxkwWUDwoQ2fcJQo6SlAZiTp2AfKu5CZA4KEfHzXbX33LSa
+         Zx/Q==
+Received: by 10.180.105.69 with SMTP id gk5mr38721728wib.3.1331888084136;
+        Fri, 16 Mar 2012 01:54:44 -0700 (PDT)
+Received: from [10.8.0.6] (fidelio.qi-hardware.com. [213.239.211.82])
+        by mx.google.com with ESMTPS id fl2sm19740427wib.4.2012.03.16.01.54.36
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 15 Mar 2012 16:35:33 -0700 (PDT)
-Date:   Thu, 15 Mar 2012 16:35:31 -0700
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Hauke Mehrtens <hauke@hauke-m.de>
-Cc:     stern@rowland.harvard.edu, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, m@bues.ch, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v4 4/7] USB: Add driver for the bcma bus
-Message-ID: <20120315233531.GA2052@kroah.com>
-References: <1331597093-425-1-git-send-email-hauke@hauke-m.de>
- <1331597093-425-5-git-send-email-hauke@hauke-m.de>
- <20120315194426.GA30682@kroah.com>
- <4F626FCB.6010103@hauke-m.de>
+        Fri, 16 Mar 2012 01:54:43 -0700 (PDT)
+Message-ID: <4F62FFA6.4040101@openmobilefree.net>
+Date:   Fri, 16 Mar 2012 16:53:58 +0800
+From:   Xiangfu Liu <xiangfu@openmobilefree.net>
+Organization: http://www.openmobilefree.net
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4F626FCB.6010103@hauke-m.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQlHE0dGzS11y8r20MKNBaNu0APSj6Bep1SMidddg6dmYyUoGLx9gsVY5YwwPV4qI4oCOgIu
-X-archive-position: 32723
+To:     john stultz <johnstul@us.ibm.com>
+CC:     Matt Turner <mattst88@gmail.com>, linux-mips@linux-mips.org,
+        rtc-linux@googlegroups.com
+Subject: Re: select() to /dev/rtc0 to wait for clock tick timed out
+References: <CAEdQ38HGfd9YWE+WLuirE4Km6UE6N26toTj=-1BuXAQUux6t5g@mail.gmail.com>         <1313777242.2970.131.camel@work-vm>         <CAEdQ38F4zi76ug+ABZPnPLcLvGfUFRhr6SKzYCN+24Otq+qAAQ@mail.gmail.com> <1313783990.2970.136.camel@work-vm> <4EFD76F9.50204@openmobilefree.net>
+In-Reply-To: <4EFD76F9.50204@openmobilefree.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQnePO+VQ2IApFOH4mMNLUlsfV4nnXJfObf8CVN3jE9Hw4ctR9zWBYv4kGOfb5/ErIwxerNU
+X-archive-position: 32724
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: xiangfu@openmobilefree.net
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Mar 15, 2012 at 11:40:11PM +0100, Hauke Mehrtens wrote:
-> On 03/15/2012 08:44 PM, Greg KH wrote:
-> > On Tue, Mar 13, 2012 at 01:04:50AM +0100, Hauke Mehrtens wrote:
-> >> This adds a USB driver using the generic platform device driver for the
-> >> USB controller found on the Broadcom bcma bus. The bcma bus just
-> >> exposes one device which serves the OHCI and the EHCI controller at the
-> >> same time. This driver probes for this USB controller and creates and
-> >> registers two new platform devices which will be probed by the new
-> >> generic platform device driver. This makes it possible to use the EHCI
-> >> and the OCHI controller on the bcma bus at the same time.
-> >>
-> >> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> >> ---
-> >>  drivers/usb/host/Kconfig    |   12 ++
-> > 
-> > This patch fails to apply here, and I can't seem to figure out what tree
-> > you made this against to fix it up by hand on my end.
-> > 
-> > Any thoughts?
-> > 
-> > greg k-h
-> 
-> This patch was against
-> git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git#master, but
-> I will rebase it onto usb/usb-next and send a new version of the patches
-> you have not applied.
+Hi
 
-Thanks, master tracks Linus's tree, which is not good to send patches
-against :)
+After I update kernel to linux v3.2.1. the problem still there.
+Please give me some advice, how to fix this issue?
 
-greg k-h
+Thanks
+
+On 12/30/2011 04:31 PM, Xiangfu Liu wrote:
+> Hi John Stultz
+>
+> I meet the same problem on MIPS jz4740, here is the step I try to find out the problem:
+>
+> 1. when I direct run 'hwclock' it will give
+>     "select() to /dev/rtc0 to wait for clock tick timed out"
+>     attachment 'hwclock.time.out' is the strace log
+>
+> 2. run 'rtctest' program. it works fine. the output is here[1]
+>
+> 3. after 'rtctest', run 'hwclock' again. then it works fine
+>     attachment 'hwclock.wors' is the strace log
+>
+> without 'rtctest' run first. 'hwclock' never works.
+> the hwclock works fine in 2.6.27.6, failed under '3.0.0'
+>
+> Please give me some tips how to fix this problem. shoule I modify the driver code
+> or is that relate to 'CONFIG_RTC_INTF_DEV_UIE_EMUL'?
+>
+> thanks in advance.
+> xiangfu

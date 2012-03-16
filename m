@@ -1,78 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2012 09:54:53 +0100 (CET)
-Received: from mail-wi0-f171.google.com ([209.85.212.171]:62506 "EHLO
-        mail-wi0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901172Ab2CPIyt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 16 Mar 2012 09:54:49 +0100
-Received: by wibhj13 with SMTP id hj13so390864wib.6
-        for <linux-mips@linux-mips.org>; Fri, 16 Mar 2012 01:54:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc
-         :subject:references:in-reply-to:content-type
-         :content-transfer-encoding:x-gm-message-state;
-        bh=7P9rO672wMRoR88BjKPOosa8a6dT2CJyXJxVjm37s2o=;
-        b=jdd1v4SG8KJ1ziuSM/oC0A5IfAOLjB+NmNxPpkh0bslkTxdiGwfPiR18SPfg2uwQ9a
-         zj237dHCtM+qbtDfJ3SOk7jR+ZqH03SU9c62+vTjM/wAByvMieoqzylrHHTswkgjhFGA
-         W030SIgIyhFuBR4I7tN3vm5/hao1X1c/NV39sycRx5yXHHuD1bB3bUXKtgh0muUqbOJB
-         ThnSXUdO2WI7v/ZbdjW6PaKvDruTRWxrv2+fICKVKTcLdIzYMuNxPBOBT6hY087l1wet
-         TJ48HubwrHpjGde/w9fbemxkwWUDwoQ2fcJQo6SlAZiTp2AfKu5CZA4KEfHzXbX33LSa
-         Zx/Q==
-Received: by 10.180.105.69 with SMTP id gk5mr38721728wib.3.1331888084136;
-        Fri, 16 Mar 2012 01:54:44 -0700 (PDT)
-Received: from [10.8.0.6] (fidelio.qi-hardware.com. [213.239.211.82])
-        by mx.google.com with ESMTPS id fl2sm19740427wib.4.2012.03.16.01.54.36
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 16 Mar 2012 01:54:43 -0700 (PDT)
-Message-ID: <4F62FFA6.4040101@openmobilefree.net>
-Date:   Fri, 16 Mar 2012 16:53:58 +0800
-From:   Xiangfu Liu <xiangfu@openmobilefree.net>
-Organization: http://www.openmobilefree.net
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Mar 2012 10:06:09 +0100 (CET)
+Received: from mms3.broadcom.com ([216.31.210.19]:2275 "EHLO MMS3.broadcom.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1901172Ab2CPJGB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 16 Mar 2012 10:06:01 +0100
+Received: from [10.9.200.133] by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Fri, 16 Mar 2012 02:14:58 -0700
+X-Server-Uuid: B730DE51-FC43-4C83-941F-F1F78A914BDD
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Fri, 16 Mar 2012 02:05:09 -0700
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.17.16.106]) by mail-irva-13.broadcom.com (Postfix) with ESMTP id
+ 30524BC395; Fri, 16 Mar 2012 02:05:46 -0700 (PDT)
+Received: from [10.0.2.15] (unknown [10.176.68.152]) by
+ mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id 92186207C0; Fri, 16
+ Mar 2012 02:05:44 -0700 (PDT)
+Message-ID: <4F630267.5050909@broadcom.com>
+Date:   Fri, 16 Mar 2012 10:05:43 +0100
+From:   "Arend van Spriel" <arend@broadcom.com>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:10.0.2) Gecko/20120216
+ Thunderbird/10.0.2
 MIME-Version: 1.0
-To:     john stultz <johnstul@us.ibm.com>
-CC:     Matt Turner <mattst88@gmail.com>, linux-mips@linux-mips.org,
-        rtc-linux@googlegroups.com
-Subject: Re: select() to /dev/rtc0 to wait for clock tick timed out
-References: <CAEdQ38HGfd9YWE+WLuirE4Km6UE6N26toTj=-1BuXAQUux6t5g@mail.gmail.com>         <1313777242.2970.131.camel@work-vm>         <CAEdQ38F4zi76ug+ABZPnPLcLvGfUFRhr6SKzYCN+24Otq+qAAQ@mail.gmail.com> <1313783990.2970.136.camel@work-vm> <4EFD76F9.50204@openmobilefree.net>
-In-Reply-To: <4EFD76F9.50204@openmobilefree.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     "Hauke Mehrtens" <hauke@hauke-m.de>
+cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "m@bues.ch" <m@bues.ch>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "zajec5@gmail.com" <zajec5@gmail.com>
+Subject: Re: [PATCH v5 4/4] USB: OHCI: remove old SSB OHCI driver
+References: <1331851799-5968-1-git-send-email-hauke@hauke-m.de>
+ <1331851799-5968-5-git-send-email-hauke@hauke-m.de>
+In-Reply-To: <1331851799-5968-5-git-send-email-hauke@hauke-m.de>
+X-WSS-ID: 637DDB183E05310984-01-01
+Content-Type: text/plain;
+ charset=iso-8859-1;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQnePO+VQ2IApFOH4mMNLUlsfV4nnXJfObf8CVN3jE9Hw4ctR9zWBYv4kGOfb5/ErIwxerNU
-X-archive-position: 32724
+X-archive-position: 32725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xiangfu@openmobilefree.net
+X-original-sender: arend@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi
+On 03/15/2012 11:49 PM, Hauke Mehrtens wrote:
+> This is now replaced by the new ssb USB driver, which also supports
+> devices with an EHCI controller.
+>
+> Signed-off-by: Hauke Mehrtens<hauke@hauke-m.de>
+> ---
+>   drivers/usb/host/Kconfig    |    7 +-
+>   drivers/usb/host/ohci-hcd.c |   21 +----
+>   drivers/usb/host/ohci-ssb.c |  260 -------------------------------------------
+>   3 files changed, 7 insertions(+), 281 deletions(-)
+>   delete mode 100644 drivers/usb/host/ohci-ssb.c
+>
+> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+> index 2fc5637..00b6fc8 100644
+> --- a/drivers/usb/host/Kconfig
+> +++ b/drivers/usb/host/Kconfig
+> @@ -373,10 +373,15 @@ config USB_OHCI_HCD_PCI
+>   	  If unsure, say Y.
+>
+>   config USB_OHCI_HCD_SSB
+> -	bool "OHCI support for Broadcom SSB OHCI core"
+> +	bool "OHCI support for Broadcom SSB OHCI core (DEPRECATED)"
+>   	depends on USB_OHCI_HCD&&  (SSB = y || SSB = USB_OHCI_HCD)&&  EXPERIMENTAL
+> +	select USB_HCD_SSB
+> +	select USB_OHCI_HCD_PLATFORM
+>   	default n
+>   	---help---
+> +	  This option is deprecated now and the driver was removed, use
+> +	  USB_HCD_SSB and USB_OHCI_HCD_PLATFORM instead.
+> +
+>   	  Support for the Sonics Silicon Backplane (SSB) attached
+>   	  Broadcom USB OHCI core.
 
-After I update kernel to linux v3.2.1. the problem still there.
-Please give me some advice, how to fix this issue?
+Looks fine as it helps transitioning old .config files. Should the 
+select statements be mentioned in the help section, ie. 'using' iso 'use'.
 
-Thanks
-
-On 12/30/2011 04:31 PM, Xiangfu Liu wrote:
-> Hi John Stultz
->
-> I meet the same problem on MIPS jz4740, here is the step I try to find out the problem:
->
-> 1. when I direct run 'hwclock' it will give
->     "select() to /dev/rtc0 to wait for clock tick timed out"
->     attachment 'hwclock.time.out' is the strace log
->
-> 2. run 'rtctest' program. it works fine. the output is here[1]
->
-> 3. after 'rtctest', run 'hwclock' again. then it works fine
->     attachment 'hwclock.wors' is the strace log
->
-> without 'rtctest' run first. 'hwclock' never works.
-> the hwclock works fine in 2.6.27.6, failed under '3.0.0'
->
-> Please give me some tips how to fix this problem. shoule I modify the driver code
-> or is that relate to 'CONFIG_RTC_INTF_DEV_UIE_EMUL'?
->
-> thanks in advance.
-> xiangfu
+Gr. AvS

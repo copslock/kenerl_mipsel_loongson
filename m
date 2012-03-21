@@ -1,109 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2012 14:44:11 +0100 (CET)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:28749 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903745Ab2CUNn6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 21 Mar 2012 14:43:58 +0100
-MIME-version: 1.0
-Content-transfer-encoding: 7BIT
-Content-type: text/plain; charset=us-ascii
-Received: from euspt1 ([210.118.77.14]) by mailout4.w1.samsung.com
- (Sun Java(tm) System Messaging Server 6.3-8.04 (built Jul 29 2009; 32bit))
- with ESMTP id <0M1800DADM54OF90@mailout4.w1.samsung.com> for
- linux-mips@linux-mips.org; Wed, 21 Mar 2012 13:43:52 +0000 (GMT)
-Received: from linux.samsung.com ([106.116.38.10])
- by spt1.w1.samsung.com (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14
- 2004)) with ESMTPA id <0M18008O5M51Q1@spt1.w1.samsung.com> for
- linux-mips@linux-mips.org; Wed, 21 Mar 2012 13:43:50 +0000 (GMT)
-Received: from AMDC159 (unknown [106.116.37.153])
-        by linux.samsung.com (Postfix) with ESMTP id 94D2B270055; Wed,
- 21 Mar 2012 14:43:57 +0100 (CET)
-Date:   Wed, 21 Mar 2012 14:43:46 +0100
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: RE: [GIT PULL] DMA-mapping framework updates for 3.4
-In-reply-to: <1332228283-29077-1-git-send-email-m.szyprowski@samsung.com>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        'Linus Torvalds' <torvalds@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        'Benjamin Herrenschmidt' <benh@kernel.crashing.org>,
-        'Thomas Gleixner' <tglx@linutronix.de>,
-        'Andrew Morton' <akpm@linux-foundation.org>,
-        'Arnd Bergmann' <arnd@arndb.de>,
-        'FUJITA Tomonori' <fujita.tomonori@lab.ntt.co.jp>,
-        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
-        x86@kernel.org, linux-sh@vger.kernel.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@linux-mips.org, discuss@x86-64.org,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linaro-mm-sig@lists.linaro.org, 'Jonathan Corbet' <corbet@lwn.net>,
-        'Kyungmin Park' <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@samsung.com>
-Message-id: <079801cd0768$a3623d10$ea26b730$%szyprowski@samsung.com>
-Organization: SPRC
-X-Mailer: Microsoft Office Outlook 12.0
-Content-language: pl
-Thread-index: Ac0Gaoh/WBn+OB0fQva36xRWNNJUlQA5kGmQ
-References: <1332228283-29077-1-git-send-email-m.szyprowski@samsung.com>
-X-archive-position: 32734
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2012 14:59:02 +0100 (CET)
+Received: from mga03.intel.com ([143.182.124.21]:61469 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1901173Ab2CUN6z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 21 Mar 2012 14:58:55 +0100
+Received: from azsmga001.ch.intel.com ([10.2.17.19])
+  by azsmga101.ch.intel.com with ESMTP; 21 Mar 2012 06:58:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
+   d="asc'?scan'208";a="121512624"
+Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
+  by azsmga001.ch.intel.com with ESMTP; 21 Mar 2012 06:58:46 -0700
+Received: from [10.237.72.167] (sauron.fi.intel.com [10.237.72.167])
+        by linux.intel.com (Postfix) with ESMTP id 979592C8001;
+        Wed, 21 Mar 2012 06:58:43 -0700 (PDT)
+Message-ID: <1332338496.14983.7.camel@sauron.fi.intel.com>
+Subject: Re: [PATCH] MIPS: Kbuild: remove -Werror
+From:   Artem Bityutskiy <dedekind1@gmail.com>
+Reply-To: dedekind1@gmail.com
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        John Crispin <blogic@openwrt.org>
+Date:   Wed, 21 Mar 2012 16:01:36 +0200
+In-Reply-To: <1331292947-14913-1-git-send-email-dedekind1@gmail.com>
+References: <1331292947-14913-1-git-send-email-dedekind1@gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
+        boundary="=-8fUx/z2EktEUi1++CT0s"
+X-Mailer: Evolution 3.2.3 (3.2.3-1.fc16) 
+Mime-Version: 1.0
+X-archive-position: 32735
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m.szyprowski@samsung.com
+X-original-sender: dedekind1@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello,
 
-On Tuesday, March 20, 2012 8:25 AM Marek Szyprowski wrote:
+--=-8fUx/z2EktEUi1++CT0s
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Hi Linus,
-> 
-> Please pull the dma-mapping framework updates for v3.4 since commit
-> c16fa4f2ad19908a47c63d8fa436a1178438c7e7:
-> 
->   Linux 3.3
-> 
-> with the top-most commit e749a9f707f1102735e02338fa564be86be3bb69
-> 
->   common: DMA-mapping: add NON-CONSISTENT attribute
-> 
-> from the git repository at:
-> 
->   git://git.infradead.org/users/kmpark/linux-samsung dma-mapping-next
-> 
-> Those patches introduce a new alloc method (with support for memory
-> attributes) in dma_map_ops structure, which will later replace
-> dma_alloc_coherent and dma_alloc_writecombine functions.
- 
-I've been pointed out that this summary is quite short and misses the main
-rationale for the proposed changes.
+On Fri, 2012-03-09 at 13:35 +0200, Artem Bityutskiy wrote:
+> From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+>=20
+> MIPS does not build with the standard W=3D1 Kbuild switch with - tested w=
+ith
+> gcc-4.6 by me and gcc-4.5 by John Crispin. The reason is that MIPS adds
 
-A few limitations have been identified in the current dma-mapping design and 
-its implementations for various architectures. There exist more than one function
-for allocating and freeing the buffers: currently these 3 are used dma_{alloc,
-free}_coherent, dma_{alloc,free}_writecombine, dma_{alloc,free}_noncoherent.
+Hi Ralf,
 
-For most of the systems these calls are almost equivalent and can be interchanged.
-For others, especially the truly non-coherent ones (like ARM), the difference can
-be easily noticed in overall driver performance. Sadly not all architectures 
-provide implementations for all of them, so the drivers might need to be adapted 
-and cannot be easily shared between different architectures. The provided patches
-unify all these functions and hide the differences under the already existing
-dma attributes concept. The thread with more references is available here: 
-http://www.spinics.net/lists/linux-sh/msg09777.html
+what's the fate of this patch?
 
-These patches are also a prerequisite for unifying DMA-mapping implementation
-on ARM architecture with the common one provided by dma_map_ops structure and 
-extending it with IOMMU support. More information is available in the following 
-thread: http://thread.gmane.org/gmane.linux.kernel.cross-arch/12819
+--=20
+Best Regards,
+Artem Bityutskiy
 
-More works on dma-mapping framework are planned, especially in the area of buffer
-sharing and managing the shared mappings (together with the recently introduced 
-dma_buf interface: commit d15bd7ee445d0702ad801fdaece348fdb79e6581 "dma-buf: 
-Introduce dma buffer sharing mechanism" ).
+--=-8fUx/z2EktEUi1++CT0s
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-Best regards
--- 
-Marek Szyprowski
-Samsung Poland R&D Center
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAABAgAGBQJPad9AAAoJECmIfjd9wqK0gvwP/RIFHMvlayHuShAnh9Ingceh
+rX/qO7QN1yEGZEnIol05Jsbo0wCtsltRDJklGhpsiEIr3TQdnQzu+6V5hYG85S/n
+78CodPiRysw4K1trsyb7DUGhWHAI/rU2wuv//UAcCgQ/rdTkBGjgTtLkpx8vlg03
+es+2+nAIAgI1szQjwXqTmBDxPACwmYRq/+S9/bruysNR9xEtRnNkJ30YDkAMT/yZ
+2oYStUi8elJtX+Ec4X5lSoT3YmycXRH2TIs5WbaVY/Y7Pf4ZXEvX1VFZunWowokT
+wnVh7R8lV5/nmGGRNplFWJy3j2EpHVFb2SimxcrGeTfq9Qoh7tc49QTX5PBq/CqR
+Ne+Tahjjdi6QweFGYBYqVCUeypeh4+wO6dAYHh1eh+aDGb4DWVurNsTR9ESPuxXw
+Rv5gHEU1WythsvFs8jQoV+QjmzMGwRngIqyvk6SS0STvpot2h4WIw+pmM3W3jcwE
+r52FbH5p22z+Y8MhBmT49qpKYsp5/dOaLy4o9BcEJyeQoNI6Vt9fDxyYckFYR0Zy
+GpAgH+Gg26DFYjl4maA+RPU9mamkbWRaLykhoU60G9eH9AMZWQIyVDfRb7Th3jaH
+eqKAQHNZfPqp3L824S7A6FeTTDtblPRZW87LkBAYXWBs+CQdhvjAGQdfaoR4AgAt
+aP6xjcZsMsjQLaEqb2e2
+=/UiI
+-----END PGP SIGNATURE-----
+
+--=-8fUx/z2EktEUi1++CT0s--

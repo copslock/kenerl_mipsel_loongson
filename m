@@ -1,83 +1,186 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Mar 2012 14:59:02 +0100 (CET)
-Received: from mga03.intel.com ([143.182.124.21]:61469 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1901173Ab2CUN6z (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 21 Mar 2012 14:58:55 +0100
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga101.ch.intel.com with ESMTP; 21 Mar 2012 06:58:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
-   d="asc'?scan'208";a="121512624"
-Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
-  by azsmga001.ch.intel.com with ESMTP; 21 Mar 2012 06:58:46 -0700
-Received: from [10.237.72.167] (sauron.fi.intel.com [10.237.72.167])
-        by linux.intel.com (Postfix) with ESMTP id 979592C8001;
-        Wed, 21 Mar 2012 06:58:43 -0700 (PDT)
-Message-ID: <1332338496.14983.7.camel@sauron.fi.intel.com>
-Subject: Re: [PATCH] MIPS: Kbuild: remove -Werror
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        John Crispin <blogic@openwrt.org>
-Date:   Wed, 21 Mar 2012 16:01:36 +0200
-In-Reply-To: <1331292947-14913-1-git-send-email-dedekind1@gmail.com>
-References: <1331292947-14913-1-git-send-email-dedekind1@gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
-        boundary="=-8fUx/z2EktEUi1++CT0s"
-X-Mailer: Evolution 3.2.3 (3.2.3-1.fc16) 
-Mime-Version: 1.0
-X-archive-position: 32735
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Mar 2012 10:56:29 +0100 (CET)
+Received: from e23smtp06.au.ibm.com ([202.81.31.148]:52863 "EHLO
+        e23smtp06.au.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903627Ab2CVJ4T (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 22 Mar 2012 10:56:19 +0100
+Received: from /spool/local
+        by e23smtp06.au.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-mips@linux-mips.org> from <raghavendra.kt@linux.vnet.ibm.com>;
+        Thu, 22 Mar 2012 09:51:29 +1000
+Received: from d23relay03.au.ibm.com (202.81.31.245)
+        by e23smtp06.au.ibm.com (202.81.31.212) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        Thu, 22 Mar 2012 09:51:23 +1000
+Received: from d23av04.au.ibm.com (d23av04.au.ibm.com [9.190.235.139])
+        by d23relay03.au.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id q2M9tkY2987184;
+        Thu, 22 Mar 2012 20:55:46 +1100
+Received: from d23av04.au.ibm.com (loopback [127.0.0.1])
+        by d23av04.au.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id q2M9tj7W005777;
+        Thu, 22 Mar 2012 20:55:46 +1100
+Received: from [9.124.158.167] ([9.124.158.167])
+        by d23av04.au.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id q2M9tQSH005396;
+        Thu, 22 Mar 2012 20:55:43 +1100
+From:   Raghavendra K T <raghavendra.kt@linux.vnet.ibm.com>
+To:     Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Chris Metcalf <cmetcalf@tilera.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Chris Zankel <chris@zankel.net>, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 22 Mar 2012 15:25:08 +0530
+Message-Id: <20120322095502.30866.75756.sendpatchset@codeblue>
+Subject: [PATCH 1/1] config: simplify INLINE_SPIN_UNLOCK
+x-cbid: 12032123-7014-0000-0000-000000C50D9E
+X-archive-position: 32736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: raghavendra.kt@linux.vnet.ibm.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+From: Raghavendra K T <raghavendra.kt@linux.vnet.ibm.com>
 
---=-8fUx/z2EktEUi1++CT0s
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Patch simplifies current INLINE_SPIN_UNLOCK. compile tested on x86_64 
 
-On Fri, 2012-03-09 at 13:35 +0200, Artem Bityutskiy wrote:
-> From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
->=20
-> MIPS does not build with the standard W=3D1 Kbuild switch with - tested w=
-ith
-> gcc-4.6 by me and gcc-4.5 by John Crispin. The reason is that MIPS adds
+Change log:
+get rid of INLINE_SPIN_UNLOCK entirely replacing it with UNINLINE_SPIN_UNLOCK 
+instead with the reverse meaning.
 
-Hi Ralf,
+whover wants to uninline the spinlocks (like spinlock debugging, paravirt etc
+all just do select UNINLINE_SPIN_UNLOCK
 
-what's the fate of this patch?
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Raghavendra K T <raghavendra.kt@linux.vnet.ibm.com>
+---
+ Please refer : https://lkml.org/lkml/2012/3/21/357
 
---=20
-Best Regards,
-Artem Bityutskiy
+ arch/mips/configs/db1300_defconfig  |    2 +-
+ arch/tile/configs/tilegx_defconfig  |    2 +-
+ arch/tile/configs/tilepro_defconfig |    2 +-
+ arch/xtensa/configs/iss_defconfig   |    2 +-
+ include/linux/spinlock_api_smp.h    |    2 +-
+ kernel/Kconfig.locks                |    4 ++--
+ kernel/Kconfig.preempt              |    1 +
+ kernel/spinlock.c                   |    2 +-
+ lib/Kconfig.debug                   |    1 +
+ 9 files changed, 10 insertions(+), 8 deletions(-)
 
---=-8fUx/z2EktEUi1++CT0s
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAABAgAGBQJPad9AAAoJECmIfjd9wqK0gvwP/RIFHMvlayHuShAnh9Ingceh
-rX/qO7QN1yEGZEnIol05Jsbo0wCtsltRDJklGhpsiEIr3TQdnQzu+6V5hYG85S/n
-78CodPiRysw4K1trsyb7DUGhWHAI/rU2wuv//UAcCgQ/rdTkBGjgTtLkpx8vlg03
-es+2+nAIAgI1szQjwXqTmBDxPACwmYRq/+S9/bruysNR9xEtRnNkJ30YDkAMT/yZ
-2oYStUi8elJtX+Ec4X5lSoT3YmycXRH2TIs5WbaVY/Y7Pf4ZXEvX1VFZunWowokT
-wnVh7R8lV5/nmGGRNplFWJy3j2EpHVFb2SimxcrGeTfq9Qoh7tc49QTX5PBq/CqR
-Ne+Tahjjdi6QweFGYBYqVCUeypeh4+wO6dAYHh1eh+aDGb4DWVurNsTR9ESPuxXw
-Rv5gHEU1WythsvFs8jQoV+QjmzMGwRngIqyvk6SS0STvpot2h4WIw+pmM3W3jcwE
-r52FbH5p22z+Y8MhBmT49qpKYsp5/dOaLy4o9BcEJyeQoNI6Vt9fDxyYckFYR0Zy
-GpAgH+Gg26DFYjl4maA+RPU9mamkbWRaLykhoU60G9eH9AMZWQIyVDfRb7Th3jaH
-eqKAQHNZfPqp3L824S7A6FeTTDtblPRZW87LkBAYXWBs+CQdhvjAGQdfaoR4AgAt
-aP6xjcZsMsjQLaEqb2e2
-=/UiI
------END PGP SIGNATURE-----
-
---=-8fUx/z2EktEUi1++CT0s--
+diff --git a/arch/mips/configs/db1300_defconfig b/arch/mips/configs/db1300_defconfig
+index c38b190..3590ab5 100644
+--- a/arch/mips/configs/db1300_defconfig
++++ b/arch/mips/configs/db1300_defconfig
+@@ -133,7 +133,7 @@ CONFIG_BLK_DEV_BSG=y
+ CONFIG_IOSCHED_NOOP=y
+ CONFIG_DEFAULT_NOOP=y
+ CONFIG_DEFAULT_IOSCHED="noop"
+-CONFIG_INLINE_SPIN_UNLOCK=y
++# CONFIG_UNINLINE_SPIN_UNLOCK is not set
+ CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
+ CONFIG_INLINE_READ_UNLOCK=y
+ CONFIG_INLINE_READ_UNLOCK_IRQ=y
+diff --git a/arch/tile/configs/tilegx_defconfig b/arch/tile/configs/tilegx_defconfig
+index dafdbba..db93926 100644
+--- a/arch/tile/configs/tilegx_defconfig
++++ b/arch/tile/configs/tilegx_defconfig
+@@ -187,7 +187,7 @@ CONFIG_PADATA=y
+ # CONFIG_INLINE_SPIN_LOCK_BH is not set
+ # CONFIG_INLINE_SPIN_LOCK_IRQ is not set
+ # CONFIG_INLINE_SPIN_LOCK_IRQSAVE is not set
+-CONFIG_INLINE_SPIN_UNLOCK=y
++# CONFIG_UNINLINE_SPIN_UNLOCK is not set
+ # CONFIG_INLINE_SPIN_UNLOCK_BH is not set
+ CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
+ # CONFIG_INLINE_SPIN_UNLOCK_IRQRESTORE is not set
+diff --git a/arch/tile/configs/tilepro_defconfig b/arch/tile/configs/tilepro_defconfig
+index 6f05f96..a039032 100644
+--- a/arch/tile/configs/tilepro_defconfig
++++ b/arch/tile/configs/tilepro_defconfig
+@@ -153,7 +153,7 @@ CONFIG_DEFAULT_IOSCHED="noop"
+ # CONFIG_INLINE_SPIN_LOCK_BH is not set
+ # CONFIG_INLINE_SPIN_LOCK_IRQ is not set
+ # CONFIG_INLINE_SPIN_LOCK_IRQSAVE is not set
+-CONFIG_INLINE_SPIN_UNLOCK=y
++# CONFIG_UNINLINE_SPIN_UNLOCK is not set
+ # CONFIG_INLINE_SPIN_UNLOCK_BH is not set
+ CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
+ # CONFIG_INLINE_SPIN_UNLOCK_IRQRESTORE is not set
+diff --git a/arch/xtensa/configs/iss_defconfig b/arch/xtensa/configs/iss_defconfig
+index f932b30..ddab37b 100644
+--- a/arch/xtensa/configs/iss_defconfig
++++ b/arch/xtensa/configs/iss_defconfig
+@@ -113,7 +113,7 @@ CONFIG_DEFAULT_IOSCHED="noop"
+ # CONFIG_INLINE_SPIN_LOCK_BH is not set
+ # CONFIG_INLINE_SPIN_LOCK_IRQ is not set
+ # CONFIG_INLINE_SPIN_LOCK_IRQSAVE is not set
+-CONFIG_INLINE_SPIN_UNLOCK=y
++# CONFIG_UNINLINE_SPIN_UNLOCK is not set
+ # CONFIG_INLINE_SPIN_UNLOCK_BH is not set
+ CONFIG_INLINE_SPIN_UNLOCK_IRQ=y
+ # CONFIG_INLINE_SPIN_UNLOCK_IRQRESTORE is not set
+diff --git a/include/linux/spinlock_api_smp.h b/include/linux/spinlock_api_smp.h
+index e253ccd..51df117 100644
+--- a/include/linux/spinlock_api_smp.h
++++ b/include/linux/spinlock_api_smp.h
+@@ -67,7 +67,7 @@ _raw_spin_unlock_irqrestore(raw_spinlock_t *lock, unsigned long flags)
+ #define _raw_spin_trylock_bh(lock) __raw_spin_trylock_bh(lock)
+ #endif
+ 
+-#ifdef CONFIG_INLINE_SPIN_UNLOCK
++#ifndef CONFIG_UNINLINE_SPIN_UNLOCK
+ #define _raw_spin_unlock(lock) __raw_spin_unlock(lock)
+ #endif
+ 
+diff --git a/kernel/Kconfig.locks b/kernel/Kconfig.locks
+index 5068e2a..2251882 100644
+--- a/kernel/Kconfig.locks
++++ b/kernel/Kconfig.locks
+@@ -124,8 +124,8 @@ config INLINE_SPIN_LOCK_IRQSAVE
+ 	def_bool !DEBUG_SPINLOCK && !GENERIC_LOCKBREAK && \
+ 		 ARCH_INLINE_SPIN_LOCK_IRQSAVE
+ 
+-config INLINE_SPIN_UNLOCK
+-	def_bool !DEBUG_SPINLOCK && (!PREEMPT || ARCH_INLINE_SPIN_UNLOCK)
++config UNINLINE_SPIN_UNLOCK
++	bool
+ 
+ config INLINE_SPIN_UNLOCK_BH
+ 	def_bool !DEBUG_SPINLOCK && ARCH_INLINE_SPIN_UNLOCK_BH
+diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
+index 24e7cb0..3f9c974 100644
+--- a/kernel/Kconfig.preempt
++++ b/kernel/Kconfig.preempt
+@@ -36,6 +36,7 @@ config PREEMPT_VOLUNTARY
+ config PREEMPT
+ 	bool "Preemptible Kernel (Low-Latency Desktop)"
+ 	select PREEMPT_COUNT
++	select UNINLINE_SPIN_UNLOCK if !ARCH_INLINE_SPIN_UNLOCK
+ 	help
+ 	  This option reduces the latency of the kernel by making
+ 	  all kernel code (that is not executing in a critical section)
+diff --git a/kernel/spinlock.c b/kernel/spinlock.c
+index 84c7d96..5cdd806 100644
+--- a/kernel/spinlock.c
++++ b/kernel/spinlock.c
+@@ -163,7 +163,7 @@ void __lockfunc _raw_spin_lock_bh(raw_spinlock_t *lock)
+ EXPORT_SYMBOL(_raw_spin_lock_bh);
+ #endif
+ 
+-#ifndef CONFIG_INLINE_SPIN_UNLOCK
++#ifdef CONFIG_UNINLINE_SPIN_UNLOCK
+ void __lockfunc _raw_spin_unlock(raw_spinlock_t *lock)
+ {
+ 	__raw_spin_unlock(lock);
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 8745ac7..286b8af 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -495,6 +495,7 @@ config RT_MUTEX_TESTER
+ config DEBUG_SPINLOCK
+ 	bool "Spinlock and rw-lock debugging: basic checks"
+ 	depends on DEBUG_KERNEL
++	select UNINLINE_SPIN_UNLOCK
+ 	help
+ 	  Say Y here and build SMP to catch missing spinlock initialization
+ 	  and certain other kinds of spinlock errors commonly made.  This is

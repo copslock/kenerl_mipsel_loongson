@@ -1,233 +1,132 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Mar 2012 00:09:44 +0100 (CET)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:48202 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903748Ab2CWXJ1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 24 Mar 2012 00:09:27 +0100
-Received: by ghbf11 with SMTP id f11so3639522ghb.36
-        for <multiple recipients>; Fri, 23 Mar 2012 16:09:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=Gz7V3egu57DYS3+tkjFGqvc7hcgiciWtQbwSmJzSL2Y=;
-        b=KQI79gd1gxbYq44/pBYy48XFyb8vfGapYXg1+LfZtHna8v1UdILCqvtDZAwuxLcAYY
-         tNeizTvm3uavaelxGKc3djOGM4U6UnPSNeALW1S/2YTeWsnwekiDl83BoBwtxWOWgsIJ
-         gVRG5TAUyoZTcjxBF02VzKjM/+Y3rSopMLhp0ShsIwqS8kuQ1uC6UC5+KgdHoLq1haKU
-         gtu25ir5e+pIe1BP+sU/lN+Q51yt1iIzBGuVe8eubriGLoNj0pkmzxOmCdjLcZ4WoCxf
-         p/X6ksgvaFpxFxcLYClG3njcbg8pshhniQ6M1ZNSAke+BlCm5mFHlhtjQun9rjgg5Wyc
-         A2Cw==
-Received: by 10.60.29.10 with SMTP id f10mr16553565oeh.32.1332544160878;
-        Fri, 23 Mar 2012 16:09:20 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id v10sm9081848obb.4.2012.03.23.16.09.19
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 23 Mar 2012 16:09:20 -0700 (PDT)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q2NN9Ikh020411;
-        Fri, 23 Mar 2012 16:09:18 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q2NN9G0B020410;
-        Fri, 23 Mar 2012 16:09:16 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-Subject: [PATCH v7] of/lib: Allow scripts/dtc/libfdt to be used from kernel code
-Date:   Fri, 23 Mar 2012 16:09:15 -0700
-Message-Id: <1332544155-20380-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 32748
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Mar 2012 03:12:10 +0200 (CEST)
+Received: from mail.windriver.com ([147.11.1.11]:64908 "EHLO
+        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903649Ab2CZBMF (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 26 Mar 2012 03:12:05 +0200
+Received: from yow-pgortmak-d1.corp.ad.wrs.com (yow-pgortmak-d1.ottawa.windriver.com [128.224.146.65])
+        by mail.windriver.com (8.14.3/8.14.3) with ESMTP id q2Q1BrD0018132;
+        Sun, 25 Mar 2012 18:11:54 -0700 (PDT)
+From:   Paul Gortmaker <paul.gortmaker@windriver.com>
+To:     klassert@mathematik.tu-chemnitz.de
+Cc:     netdev@vger.kernel.org, linux-mips@linux-mips.org,
+        Paul Gortmaker <paul.gortmaker@windriver.com>
+Subject: [PATCH] netdev: fix compile issues for !CONFIG_PCI in 3c59x
+Date:   Sun, 25 Mar 2012 21:11:46 -0400
+Message-Id: <1332724306-8799-1-git-send-email-paul.gortmaker@windriver.com>
+X-Mailer: git-send-email 1.7.9.4
+X-archive-position: 32750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: paul.gortmaker@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+I hate to add in more #ifdef CONFIG_PCI but there are already
+quite a few in this driver, and it seems like it hasn't been
+built with CONFIG_PCI set to off in quite some time.  The
+MIPS allmodconfig (ISA/EISA based) doesn't set CONFIG_PCI
+and that is why we are here looking at this, even though any
+modern platform has had PCI since 1995 or so.
 
-libfdt is part of the device tree support in scripts/dtc/libfdt.  For
-some platforms that use the Device Tree, we want to be able to edit
-the flattened device tree form.
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-We don't want to burden kernel builds that do not require it, so we
-gate compilation of libfdt files with CONFIG_LIBFDT.  So if it is
-needed, you need to do this in your Kconfig:
-
-	select LIBFDT
-
-And in the Makefile of the code using libfdt something like:
-
-ccflags-y := -I$(src)/../../../scripts/dtc/libfdt
-
-Signed-off-by: David Daney <david.daney@cavium.com>
----
-
-This patch has been seen several times before as part of a larger
-patch set for my OCTEON Device Tree work.  After further refinement to
-my patches that depend on core Device Tree functionality, this is the
-only remaining patch to the common 'core' code.
-
-Here is the history:
-
-v7: No changes other that to split from other, now unneeded, patches.
-
-v6: No changes other than to split these out of the MIPS/OCTEON patch
-    set to allow them to be merged separately if desired.
-
-v5: Build libfdt in the lib directory instead of devices/of, and
-    include all libfdt files.
-
-    Changes to of_find_node_by_path() requested by Grant Likely.
-
-v4: No changes to these two patches.
-
-v3: libfdt building moved to devices/of/libfdt.  Cleanup and style
-    improvements as suggested by Grant Likely.
-
-v2: No changes to these two patches.
-
-There are a couple of possibility for merging this.
-
-1) Via the Device Tree maintainers, thus blocking the follow-ons until
-   it is merged.
-
-2) Via Ralf's Linux/MIPS tree with the rest of the patches after
-   Device Tree maintainer sign-off.
-
- include/linux/libfdt.h     |    8 ++++++++
- include/linux/libfdt_env.h |   13 +++++++++++++
- lib/Kconfig                |    6 ++++++
- lib/Makefile               |    5 +++++
- lib/fdt.c                  |    2 ++
- lib/fdt_ro.c               |    2 ++
- lib/fdt_rw.c               |    2 ++
- lib/fdt_strerror.c         |    2 ++
- lib/fdt_sw.c               |    2 ++
- lib/fdt_wip.c              |    2 ++
- 10 files changed, 44 insertions(+), 0 deletions(-)
- create mode 100644 include/linux/libfdt.h
- create mode 100644 include/linux/libfdt_env.h
- create mode 100644 lib/fdt.c
- create mode 100644 lib/fdt_ro.c
- create mode 100644 lib/fdt_rw.c
- create mode 100644 lib/fdt_strerror.c
- create mode 100644 lib/fdt_sw.c
- create mode 100644 lib/fdt_wip.c
-
-diff --git a/include/linux/libfdt.h b/include/linux/libfdt.h
-new file mode 100644
-index 0000000..4c0306c
---- /dev/null
-+++ b/include/linux/libfdt.h
-@@ -0,0 +1,8 @@
-+#ifndef _INCLUDE_LIBFDT_H_
-+#define _INCLUDE_LIBFDT_H_
-+
-+#include <linux/libfdt_env.h>
-+#include "../../scripts/dtc/libfdt/fdt.h"
-+#include "../../scripts/dtc/libfdt/libfdt.h"
-+
-+#endif /* _INCLUDE_LIBFDT_H_ */
-diff --git a/include/linux/libfdt_env.h b/include/linux/libfdt_env.h
-new file mode 100644
-index 0000000..01508c7
---- /dev/null
-+++ b/include/linux/libfdt_env.h
-@@ -0,0 +1,13 @@
-+#ifndef _LIBFDT_ENV_H
-+#define _LIBFDT_ENV_H
-+
-+#include <linux/string.h>
-+
-+#include <asm/byteorder.h>
-+
-+#define fdt32_to_cpu(x) be32_to_cpu(x)
-+#define cpu_to_fdt32(x) cpu_to_be32(x)
-+#define fdt64_to_cpu(x) be64_to_cpu(x)
-+#define cpu_to_fdt64(x) cpu_to_be64(x)
-+
-+#endif /* _LIBFDT_ENV_H */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 028aba9..e2da829 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -316,4 +316,10 @@ config SIGNATURE
- 	  Digital signature verification. Currently only RSA is supported.
- 	  Implementation is done using GnuPG MPI library
+diff --git a/drivers/net/ethernet/3com/3c59x.c b/drivers/net/ethernet/3com/3c59x.c
+index e463d10..36ad150 100644
+--- a/drivers/net/ethernet/3com/3c59x.c
++++ b/drivers/net/ethernet/3com/3c59x.c
+@@ -999,6 +999,7 @@ static int __init vortex_eisa_init(void)
+ 	return vortex_cards_found - orig_cards_found + eisa_found;
+ }
  
-+#
-+# libfdt files, only selected if needed.
-+#
-+config LIBFDT
-+	bool
-+
- endmenu
-diff --git a/lib/Makefile b/lib/Makefile
-index 18515f0..1c6c198 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -123,6 +123,11 @@ obj-$(CONFIG_SIGNATURE) += digsig.o
++#ifdef CONFIG_PCI
+ /* returns count (>= 0), or negative on error */
+ static int __devinit vortex_init_one(struct pci_dev *pdev,
+ 				      const struct pci_device_id *ent)
+@@ -1045,6 +1046,7 @@ static int __devinit vortex_init_one(struct pci_dev *pdev,
+ out:
+ 	return rc;
+ }
++#endif
  
- obj-$(CONFIG_CLZ_TAB) += clz_tab.o
+ static const struct net_device_ops boomrang_netdev_ops = {
+ 	.ndo_open		= vortex_open,
+@@ -1177,6 +1179,7 @@ static int __devinit vortex_probe1(struct device *gendev,
+ 		compaq_net_device = dev;
+ 	}
  
-+libfdt_files = fdt.o fdt_ro.o fdt_wip.o fdt_rw.o fdt_sw.o fdt_strerror.o
-+$(foreach file, $(libfdt_files), \
-+	$(eval CFLAGS_$(file) = -I$(src)/../scripts/dtc/libfdt))
-+lib-$(CONFIG_LIBFDT) += $(libfdt_files)
-+
- hostprogs-y	:= gen_crc32table
- clean-files	:= crc32table.h
++#ifdef CONFIG_PCI
+ 	/* PCI-only startup logic */
+ 	if (pdev) {
+ 		/* EISA resources already marked, so only PCI needs to do this here */
+@@ -1204,6 +1207,7 @@ static int __devinit vortex_probe1(struct device *gendev,
+ 			}
+ 		}
+ 	}
++#endif
  
-diff --git a/lib/fdt.c b/lib/fdt.c
-new file mode 100644
-index 0000000..97f2006
---- /dev/null
-+++ b/lib/fdt.c
-@@ -0,0 +1,2 @@
-+#include <linux/libfdt_env.h>
-+#include "../scripts/dtc/libfdt/fdt.c"
-diff --git a/lib/fdt_ro.c b/lib/fdt_ro.c
-new file mode 100644
-index 0000000..f73c04e
---- /dev/null
-+++ b/lib/fdt_ro.c
-@@ -0,0 +1,2 @@
-+#include <linux/libfdt_env.h>
-+#include "../scripts/dtc/libfdt/fdt_ro.c"
-diff --git a/lib/fdt_rw.c b/lib/fdt_rw.c
-new file mode 100644
-index 0000000..0c1f0f4
---- /dev/null
-+++ b/lib/fdt_rw.c
-@@ -0,0 +1,2 @@
-+#include <linux/libfdt_env.h>
-+#include "../scripts/dtc/libfdt/fdt_rw.c"
-diff --git a/lib/fdt_strerror.c b/lib/fdt_strerror.c
-new file mode 100644
-index 0000000..8713e3f
---- /dev/null
-+++ b/lib/fdt_strerror.c
-@@ -0,0 +1,2 @@
-+#include <linux/libfdt_env.h>
-+#include "../scripts/dtc/libfdt/fdt_strerror.c"
-diff --git a/lib/fdt_sw.c b/lib/fdt_sw.c
-new file mode 100644
-index 0000000..9ac7e50
---- /dev/null
-+++ b/lib/fdt_sw.c
-@@ -0,0 +1,2 @@
-+#include <linux/libfdt_env.h>
-+#include "../scripts/dtc/libfdt/fdt_sw.c"
-diff --git a/lib/fdt_wip.c b/lib/fdt_wip.c
-new file mode 100644
-index 0000000..45b3fc3
---- /dev/null
-+++ b/lib/fdt_wip.c
-@@ -0,0 +1,2 @@
-+#include <linux/libfdt_env.h>
-+#include "../scripts/dtc/libfdt/fdt_wip.c"
+ 	spin_lock_init(&vp->lock);
+ 	spin_lock_init(&vp->mii_lock);
+@@ -1321,7 +1325,7 @@ static int __devinit vortex_probe1(struct device *gendev,
+ 			step, (eeprom[4]>>5) & 15, eeprom[4] & 31, eeprom[4]>>9);
+ 	}
+ 
+-
++#ifdef CONFIG_PCI
+ 	if (pdev && vci->drv_flags & HAS_CB_FNS) {
+ 		unsigned short n;
+ 
+@@ -1348,6 +1352,7 @@ static int __devinit vortex_probe1(struct device *gendev,
+ 			window_write16(vp, 0x0800, 0, 0);
+ 		}
+ 	}
++#endif
+ 
+ 	/* Extract our information from the EEPROM data. */
+ 	vp->info1 = eeprom[13];
+@@ -3222,6 +3227,7 @@ static void acpi_set_WOL(struct net_device *dev)
+ }
+ 
+ 
++#ifdef CONFIG_PCI
+ static void __devexit vortex_remove_one(struct pci_dev *pdev)
+ {
+ 	struct net_device *dev = pci_get_drvdata(pdev);
+@@ -3269,6 +3275,7 @@ static struct pci_driver vortex_driver = {
+ 	.id_table	= vortex_pci_tbl,
+ 	.driver.pm	= VORTEX_PM_OPS,
+ };
++#endif
+ 
+ 
+ static int vortex_have_pci;
+@@ -3277,9 +3284,13 @@ static int vortex_have_eisa;
+ 
+ static int __init vortex_init(void)
+ {
+-	int pci_rc, eisa_rc;
++	int eisa_rc;
++#ifdef CONFIG_PCI
++	int pci_rc = pci_register_driver(&vortex_driver);
++#else
++	int pci_rc = -ENODEV;
++#endif
+ 
+-	pci_rc = pci_register_driver(&vortex_driver);
+ 	eisa_rc = vortex_eisa_init();
+ 
+ 	if (pci_rc == 0)
+@@ -3318,8 +3329,10 @@ static void __exit vortex_eisa_cleanup(void)
+ 
+ static void __exit vortex_cleanup(void)
+ {
++#ifdef CONFIG_PCI
+ 	if (vortex_have_pci)
+ 		pci_unregister_driver(&vortex_driver);
++#endif
+ 	if (vortex_have_eisa)
+ 		vortex_eisa_cleanup();
+ }
 -- 
-1.7.2.3
+1.7.9.4

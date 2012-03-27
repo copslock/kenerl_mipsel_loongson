@@ -1,151 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2012 20:45:22 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:2007 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903661Ab2C0SpO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2012 20:45:14 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4f720b230000>; Tue, 27 Mar 2012 11:46:59 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 27 Mar 2012 11:44:52 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 27 Mar 2012 11:44:51 -0700
-Message-ID: <4F720AB8.7030508@cavium.com>
-Date:   Tue, 27 Mar 2012 11:45:12 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2012 23:20:26 +0200 (CEST)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:49618 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903668Ab2C0VUM convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 27 Mar 2012 23:20:12 +0200
+Received: by iaky10 with SMTP id y10so495838iak.36
+        for <linux-mips@linux-mips.org>; Tue, 27 Mar 2012 14:20:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=AL41A/CipD4grjfRNMvDofHgBc47Ii7R4haTHNx+j7Y=;
+        b=WSVbkLKVKugYFsdwKDcZJjqvNrt/vgnhT0LioOy76EHXcJB6wPViqYhRDeBqd7p1cq
+         QEKKBAlC1xUresllHcMrj/8lvLF+nPvmP4AaNfS9LVUtnMlj2/oz+sy0nf0eMuS2T3NB
+         PuQqDXw8v908qj0kewaU/Izw5RyaBwm+TnATyAOm6SILioR1TWuCU09a/Zu2RqGDFuR1
+         LaZvSuhPCkmfZxbpeElc5K1V6myOccPhGNbJXbMJtU5R7uY6QpKJjk+S/CgaBQMY/jOh
+         +iMTUsM4vuGDztZAxeWjWdXRqQNc4oGr/C5y1g6RvARS3O3imthDjIAiy+yX3tLS2dWB
+         lCiQ==
 MIME-Version: 1.0
-To:     Rob Herring <robherring2@gmail.com>
-CC:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 3/4] MIPS: Octeon: Add device tree source files.
-References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-4-git-send-email-ddaney.cavm@gmail.com> <4F71282D.9060305@gmail.com>
-In-Reply-To: <4F71282D.9060305@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 Mar 2012 18:44:51.0934 (UTC) FILETIME=[B1D5D7E0:01CD0C49]
-X-archive-position: 32793
+Received: by 10.43.51.10 with SMTP id vg10mr16402919icb.11.1332883205384; Tue,
+ 27 Mar 2012 14:20:05 -0700 (PDT)
+Received: by 10.42.115.68 with HTTP; Tue, 27 Mar 2012 14:20:05 -0700 (PDT)
+In-Reply-To: <1324643253-3024-6-git-send-email-m.szyprowski@samsung.com>
+References: <1324643253-3024-1-git-send-email-m.szyprowski@samsung.com>
+        <1324643253-3024-6-git-send-email-m.szyprowski@samsung.com>
+Date:   Tue, 27 Mar 2012 14:20:05 -0700
+X-Google-Sender-Auth: f7E4OaokyPRw3lkbP3PGUjIEWjo
+Message-ID: <CA+8MBbLAafFbVwviFmkjD0DNz5RsCbB_TNLL67wEi2k-hyXkXA@mail.gmail.com>
+Subject: Re: [PATCH 05/14] IA64: adapt for dma_map_ops changes
+From:   Tony Luck <tony.luck@intel.com>
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
+        x86@kernel.org, linux-sh@vger.kernel.org,
+        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@linux-mips.org, discuss@x86-64.org,
+        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 32794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: tony.luck@intel.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/26/2012 07:38 PM, Rob Herring wrote:
-> On 03/26/2012 02:31 PM, David Daney wrote:
->> From: David Daney<david.daney@cavium.com>
-[...]
->> +++ b/Documentation/devicetree/bindings/gpio/cavium-octeon-gpio.txt
->> @@ -0,0 +1,48 @@
->> +* General Purpose Input Output (GPIO) bus.
->> +
->> +Properties:
->> +- compatible: "cavium,octeon-3860-gpio"
->> +
->> +  Compatibility with all cn3XXX, cn5XXX and cn6XXX SOCs.
->> +
->> +- reg: The base address of the GPIO unit's register bank.
->> +
->> +- gpio-controller: This is a GPIO controller.
->> +
->> +- #gpio-cells: Must be<2>.  The first cell is the GPIO pin.
->> +
->> +- interrupt-controller: The GPIO controller is also an interrupt
->> +  controller, any of its pins may be configured as an interrupt
->> +  source.
->> +
->> +- #interrupt-cells: Must be<2>.  The first cell is the GPIO pin
->> +   connected to the interrupt source.  The second cell is the interrupt
->> +   triggering protocol and may have one of four values:
->> +   1 - edge triggered on the rising edge.
->> +   2 - edge triggered on the falling edge
->> +   4 - level triggered active high.
->> +   8 - level triggered active low.
->> +
->> +- interrupts: Interrupt routing for pin 0.  The remaining pins are
->> +  also routed, but in a manner that can be derived from the pin0
->> +  routing, so they are not specified.
->> +
->> +Example:
->> +
->> +	gpio-controller@1070000000800 {
->> +		#gpio-cells =<2>;
->> +		compatible = "cavium,octeon-3860-gpio";
->> +		reg =<0x10700 0x00000800 0x0 0x100>;
->> +		gpio-controller;
->> +		/* Interrupts are specified by two parts:
->> +		 * 1) GPIO pin number (0..15)
->> +		 * 2) Triggering (1 - edge rising
->> +		 *		  2 - edge falling
->> +		 *		  4 - level active high
->> +		 *		  8 - level active low)
->> +		 */
->> +		interrupt-controller;
->> +		#interrupt-cells =<2>;
->> +		/* The GPIO pin connect to 16 consecutive CUI bits */
->> +		interrupts =<0 16>;
+On Fri, Dec 23, 2011 at 4:27 AM, Marek Szyprowski
+<m.szyprowski@samsung.com> wrote:
+> From: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
 >
-> I think this should really be:
+> Adapt core IA64 architecture code for dma_map_ops changes: replace
+> alloc/free_coherent with generic alloc/free methods.
 >
-> interrupts =<0 16  0 17  0 18  0 19 ... 0 31>;
+> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+> ---
+>  arch/ia64/hp/common/sba_iommu.c     |   11 ++++++-----
+>  arch/ia64/include/asm/dma-mapping.h |   18 ++++++++++++------
+>  arch/ia64/kernel/pci-swiotlb.c      |    9 +++++----
+>  arch/ia64/sn/pci/pci_dma.c          |    9 +++++----
+>  4 files changed, 28 insertions(+), 19 deletions(-)
 
+The series breaks bisection from part 2 (when the x86 part changes
+lib/swiotlb.c)
+until part 5 (when ia64 sees the changes to match).  You could either merge part
+5 into part 2 (to make a combined x86+ia64 piece) ... or try to pull
+the libswiotlb
+changes into their own piece (which would have some of the ia64 and x86 bits).
+Or at the very least minimize the breakage window by putting ia64
+right after x86
+in the patch sequence.
 
-Yes, probably it should be, I will try it.  I was having trouble getting 
-the dtc to accept it when I originally came up with the binding.  I will 
-try again.
+Otherwise seems OK
 
-[...]
->> diff --git a/Documentation/devicetree/bindings/mips/cavium/bootbus.txt b/Documentation/devicetree/bindings/mips/cavium/bootbus.txt
->> new file mode 100644
->> index 0000000..6581478
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/mips/cavium/bootbus.txt
->> @@ -0,0 +1,126 @@
->> +* Boot Bus
->> +
->> +The Octeon Boot Bus is a configurable parallel bus with 8 chip
->> +selects.  Each chip select is independently configurable.
->> +
->> +Properties:
->> +- compatible: "cavium,octeon-3860-bootbus"
->> +
->> +  Compatibility with all cn3XXX, cn5XXX and cn6XXX SOCs.
->> +
->> +- reg: The base address of the Boot Bus' register bank.
->> +
->> +- #address-cells: Must be<2>.  The first cell is the chip select
->> +   within the bootbus.  The second cell is the offset from the chip select.
->> +
->> +- #size-cells: Must be<1>.
->> +
->> +- ranges: There must be one one triplet of (child-bus-address,
->> +  parent-bus-address, length) for each active chip select.  If the
->> +  length element for any triplet is zero, the chip select is disabled,
->> +  making it inactive.
->> +
->> +The configuration parameters for each chip select are stored in child
->> +nodes.
->> +
->> +Configuration Properties:
->> +- compatible:  "cavium,octeon-3860-bootbus-config"
->> +
->> +- cavium,cs-index: A single cell indicating the chip select that
->> +  corresponds to this configuration.
->> +
->> +- cavium,t-adr: A cell specifying the ADR timing (in nS).
->
-> Add -ns to these time values.
-
-I would prefer not to.  There is already firmware in the field with 
-these bindings.  They were discussed here:
-
-http://www.linux-mips.org/archives/linux-mips/2011-06/msg00338.html
-
-Also there is precedence:  Few, if any, of the clock rate and frequency 
-properties end in '-hz'
-
-[...]
+Acked-by: Tony Luck <tony.luck@intel.com>

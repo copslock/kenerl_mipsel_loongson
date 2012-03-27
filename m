@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2012 20:25:20 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:1149 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Mar 2012 20:45:22 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:2007 "EHLO
         mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903661Ab2C0SY4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2012 20:24:56 +0200
+        by eddie.linux-mips.org with ESMTP id S1903661Ab2C0SpO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 27 Mar 2012 20:45:14 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4f72065f0000>; Tue, 27 Mar 2012 11:26:39 -0700
+        id <B4f720b230000>; Tue, 27 Mar 2012 11:46:59 -0700
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 27 Mar 2012 11:24:31 -0700
+         Tue, 27 Mar 2012 11:44:52 -0700
 Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 27 Mar 2012 11:24:31 -0700
-Message-ID: <4F7205F3.3000108@cavium.com>
-Date:   Tue, 27 Mar 2012 11:24:51 -0700
+         Tue, 27 Mar 2012 11:44:51 -0700
+Message-ID: <4F720AB8.7030508@cavium.com>
+Date:   Tue, 27 Mar 2012 11:45:12 -0700
 From:   David Daney <david.daney@cavium.com>
 User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
@@ -20,13 +20,13 @@ CC:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
         Grant Likely <grant.likely@secretlab.ca>,
         Rob Herring <rob.herring@calxeda.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 2/4] MIPS: Octeon: Setup irq_domains for interrupts.
-References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-3-git-send-email-ddaney.cavm@gmail.com> <4F711E69.1080302@gmail.com>
-In-Reply-To: <4F711E69.1080302@gmail.com>
+Subject: Re: [PATCH v7 3/4] MIPS: Octeon: Add device tree source files.
+References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-4-git-send-email-ddaney.cavm@gmail.com> <4F71282D.9060305@gmail.com>
+In-Reply-To: <4F71282D.9060305@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 Mar 2012 18:24:31.0209 (UTC) FILETIME=[DA39FD90:01CD0C46]
-X-archive-position: 32792
+X-OriginalArrivalTime: 27 Mar 2012 18:44:51.0934 (UTC) FILETIME=[B1D5D7E0:01CD0C49]
+X-archive-position: 32793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,142 +35,117 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/26/2012 06:56 PM, Rob Herring wrote:
+On 03/26/2012 07:38 PM, Rob Herring wrote:
 > On 03/26/2012 02:31 PM, David Daney wrote:
 >> From: David Daney<david.daney@cavium.com>
 [...]
->> +static bool octeon_irq_ciu_is_edge(unsigned int line, unsigned int bit)
->> +{
->> +	bool edge = false;
+>> +++ b/Documentation/devicetree/bindings/gpio/cavium-octeon-gpio.txt
+>> @@ -0,0 +1,48 @@
+>> +* General Purpose Input Output (GPIO) bus.
 >> +
->> +	if (line == 0)
->> +		switch (bit) {
->> +		case 48 ... 49: /* GMX DRP */
->> +		case 50: /* IPD_DRP */
->> +		case 52 ... 55: /* Timers */
->> +		case 58: /* MPI */
->> +			edge = true;
->> +			break;
->> +		default:
->> +			break;
->> +		}
->> +	else /* line == 1 */
->> +		switch (bit) {
->> +		case 47: /* PTP */
->> +			edge = true;
->> +			break;
->> +		default:
->> +			break;
->> +		}
->> +	return edge;
+>> +Properties:
+>> +- compatible: "cavium,octeon-3860-gpio"
+>> +
+>> +  Compatibility with all cn3XXX, cn5XXX and cn6XXX SOCs.
+>> +
+>> +- reg: The base address of the GPIO unit's register bank.
+>> +
+>> +- gpio-controller: This is a GPIO controller.
+>> +
+>> +- #gpio-cells: Must be<2>.  The first cell is the GPIO pin.
+>> +
+>> +- interrupt-controller: The GPIO controller is also an interrupt
+>> +  controller, any of its pins may be configured as an interrupt
+>> +  source.
+>> +
+>> +- #interrupt-cells: Must be<2>.  The first cell is the GPIO pin
+>> +   connected to the interrupt source.  The second cell is the interrupt
+>> +   triggering protocol and may have one of four values:
+>> +   1 - edge triggered on the rising edge.
+>> +   2 - edge triggered on the falling edge
+>> +   4 - level triggered active high.
+>> +   8 - level triggered active low.
+>> +
+>> +- interrupts: Interrupt routing for pin 0.  The remaining pins are
+>> +  also routed, but in a manner that can be derived from the pin0
+>> +  routing, so they are not specified.
+>> +
+>> +Example:
+>> +
+>> +	gpio-controller@1070000000800 {
+>> +		#gpio-cells =<2>;
+>> +		compatible = "cavium,octeon-3860-gpio";
+>> +		reg =<0x10700 0x00000800 0x0 0x100>;
+>> +		gpio-controller;
+>> +		/* Interrupts are specified by two parts:
+>> +		 * 1) GPIO pin number (0..15)
+>> +		 * 2) Triggering (1 - edge rising
+>> +		 *		  2 - edge falling
+>> +		 *		  4 - level active high
+>> +		 *		  8 - level active low)
+>> +		 */
+>> +		interrupt-controller;
+>> +		#interrupt-cells =<2>;
+>> +		/* The GPIO pin connect to 16 consecutive CUI bits */
+>> +		interrupts =<0 16>;
 >
-> Moving in the right direction, but I still don't get why this is not in
-> the CIU binding as a 3rd cell?
-
-There are a several reasons, in no particular order they are:
-
-o There is no 3rd cell.  The bindings were discussed with Grant here:
-   http://www.linux-mips.org/archives/linux-mips/2011-05/msg00355.html
-
-o The edge/level thing cannot be changed, and the irq lines don't leave 
-the SOC, so hard coding it is possible.
-
+> I think this should really be:
 >
->> +}
->> +
->> +struct octeon_irq_gpio_domain_data {
->> +	unsigned int base_hwirq;
->> +};
->> +
->> +static int octeon_irq_gpio_xlat(struct irq_domain *d,
->> +				struct device_node *node,
->> +				const u32 *intspec,
->> +				unsigned int intsize,
->> +				unsigned long *out_hwirq,
->> +				unsigned int *out_type)
->> +{
->> +	unsigned int type;
->> +	unsigned int pin;
->> +	unsigned int trigger;
->> +	bool set_edge_handler = false;
->> +	struct octeon_irq_gpio_domain_data *gpiod;
->> +
->> +	if (d->of_node != node)
->> +		return -EINVAL;
->> +
->> +	if (intsize<  2)
->> +		return -EINVAL;
->> +
->> +	pin = intspec[0];
->> +	if (pin>= 16)
->> +		return -EINVAL;
->> +
->> +	trigger = intspec[1];
->> +
->> +	switch (trigger) {
->> +	case 1:
->> +		type = IRQ_TYPE_EDGE_RISING;
->> +		set_edge_handler = true;
->
-> This is never used.
+> interrupts =<0 16  0 17  0 18  0 19 ... 0 31>;
 
-Right, it was leftover from the previous version.
 
->
->> +		break;
->> +	case 2:
->> +		type = IRQ_TYPE_EDGE_FALLING;
->> +		set_edge_handler = true;
->> +		break;
->> +	case 4:
->> +		type = IRQ_TYPE_LEVEL_HIGH;
->> +		break;
->> +	case 8:
->> +		type = IRQ_TYPE_LEVEL_LOW;
->> +		break;
->> +	default:
->> +		pr_err("Error: (%s) Invalid irq trigger specification: %x\n",
->> +		       node->name,
->> +		       trigger);
->> +		type = IRQ_TYPE_LEVEL_LOW;
->> +		break;
->> +	}
->> +	*out_type = type;
->
-> Can't you get rid of the whole switch statement and just do:
->
-> *out_type = intspec[1];
+Yes, probably it should be, I will try it.  I was having trouble getting 
+the dtc to accept it when I originally came up with the binding.  I will 
+try again.
 
-That wouldn't catch erroneous values like 6.
-
->
 [...]
->> +static int octeon_irq_ciu_map(struct irq_domain *d,
->> +			      unsigned int virq, irq_hw_number_t hw)
->> +{
->> +	unsigned int line = hw>>  6;
->> +	unsigned int bit = hw&  63;
+>> diff --git a/Documentation/devicetree/bindings/mips/cavium/bootbus.txt b/Documentation/devicetree/bindings/mips/cavium/bootbus.txt
+>> new file mode 100644
+>> index 0000000..6581478
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mips/cavium/bootbus.txt
+>> @@ -0,0 +1,126 @@
+>> +* Boot Bus
 >> +
->> +	if (virq>= 256)
->> +		return -EINVAL;
+>> +The Octeon Boot Bus is a configurable parallel bus with 8 chip
+>> +selects.  Each chip select is independently configurable.
+>> +
+>> +Properties:
+>> +- compatible: "cavium,octeon-3860-bootbus"
+>> +
+>> +  Compatibility with all cn3XXX, cn5XXX and cn6XXX SOCs.
+>> +
+>> +- reg: The base address of the Boot Bus' register bank.
+>> +
+>> +- #address-cells: Must be<2>.  The first cell is the chip select
+>> +   within the bootbus.  The second cell is the offset from the chip select.
+>> +
+>> +- #size-cells: Must be<1>.
+>> +
+>> +- ranges: There must be one one triplet of (child-bus-address,
+>> +  parent-bus-address, length) for each active chip select.  If the
+>> +  length element for any triplet is zero, the chip select is disabled,
+>> +  making it inactive.
+>> +
+>> +The configuration parameters for each chip select are stored in child
+>> +nodes.
+>> +
+>> +Configuration Properties:
+>> +- compatible:  "cavium,octeon-3860-bootbus-config"
+>> +
+>> +- cavium,cs-index: A single cell indicating the chip select that
+>> +  corresponds to this configuration.
+>> +
+>> +- cavium,t-adr: A cell specifying the ADR timing (in nS).
 >
-> Drop this. You should not care what the virq numbers are.
+> Add -ns to these time values.
 
+I would prefer not to.  There is already firmware in the field with 
+these bindings.  They were discussed here:
 
-I care that they don't overflow the width of octeon_irq_ciu_to_irq (a u8).
+http://www.linux-mips.org/archives/linux-mips/2011-06/msg00338.html
 
-So really I want to say:
+Also there is precedence:  Few, if any, of the clock rate and frequency 
+properties end in '-hz'
 
-    if (virq >= (1 << sizeof (octeon_irq_ciu_to_irq[0][0]))) {
-        WARN(...);
-        return -EINVAL;
-    }
-
-
-I need a map external to any one irq_domain.  The irq handling code 
-handles sources that come from two separate irq_domains, as well as irqs 
-that are not part of any domain.
-
-
-Thanks for looking at this again,  I will re-spin the patch,
-David Daney
+[...]

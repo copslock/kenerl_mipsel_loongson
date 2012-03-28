@@ -1,77 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2012 04:35:09 +0200 (CEST)
-Received: from mprc.pku.edu.cn ([162.105.203.9]:52146 "EHLO mprc.pku.edu.cn"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2012 05:58:17 +0200 (CEST)
+Received: from gate.crashing.org ([63.228.1.57]:40175 "EHLO gate.crashing.org"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1901346Ab2C1CfB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 28 Mar 2012 04:35:01 +0200
-Received: from [192.168.0.105] ([162.105.80.111])
-        by mprc.pku.edu.cn (8.13.8/8.13.8) with ESMTP id q2S2fe5E003107;
-        Wed, 28 Mar 2012 10:41:40 +0800
-Message-ID: <4F7275FE.8000100@mprc.pku.edu.cn>
-Date:   Wed, 28 Mar 2012 10:22:54 +0800
-From:   Guan Xuetao <gxt@mprc.pku.edu.cn>
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
-MIME-Version: 1.0
+        id S1903590Ab2C1D6K (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Mar 2012 05:58:10 +0200
+Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
+        by gate.crashing.org (8.14.1/8.13.8) with ESMTP id q2S3ueUA015939;
+        Tue, 27 Mar 2012 22:56:43 -0500
+Message-ID: <1332907000.2882.74.camel@pasglop>
+Subject: Re: [PATCHv2 04/14] PowerPC: adapt for dma_map_ops changes
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
 To:     Marek Szyprowski <m.szyprowski@samsung.com>
-CC:     linux-kernel@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
-        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
-        x86@kernel.org, linux-sh@vger.kernel.org,
-        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-mips@linux-mips.org, discuss@x86-64.org,
-        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Andrzej Pietrasiewicz <andrzej.p@samsung.com>,
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Kevin Cernekee <cernekee@gmail.com>,
-        Dezhong Diao <dediao@cisco.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Michal Simek <monstr@monstr.eu>,
-        Paul Mundt <lethal@linux-sh.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-mm@kvack.org, sparclinux@vger.kernel.org,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>, linux-arch@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
         Matt Turner <mattst88@gmail.com>,
+        Dezhong Diao <dediao@cisco.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        microblaze-uclinux@itee.uq.edu.au, linaro-mm-sig@lists.linaro.org,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Andrzej Pietrasiewicz <andrzej.p@samsung.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Richard Henderson <rth@twiddle.net>, discuss@x86-64.org,
+        Michal Simek <monstr@monstr.eu>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>
-Subject: Re: [PATCHv2 09/14] Unicore32: adapt for dma_map_ops changes
-References: <1332855768-32583-1-git-send-email-m.szyprowski@samsung.com> <1332855768-32583-10-git-send-email-m.szyprowski@samsung.com>
-In-Reply-To: <1332855768-32583-10-git-send-email-m.szyprowski@samsung.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+        Richard Kuo <rkuo@codeaurora.org>,
+        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+Date:   Wed, 28 Mar 2012 14:56:40 +1100
+In-Reply-To: <1332855768-32583-5-git-send-email-m.szyprowski@samsung.com>
+References: <1332855768-32583-1-git-send-email-m.szyprowski@samsung.com>
+         <1332855768-32583-5-git-send-email-m.szyprowski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.2- 
 Content-Transfer-Encoding: 7bit
-X-archive-position: 32798
+Mime-Version: 1.0
+X-archive-position: 32799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gxt@mprc.pku.edu.cn
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/27/2012 09:42 PM, Marek Szyprowski wrote:
-> diff --git a/arch/unicore32/mm/dma-swiotlb.c b/arch/unicore32/mm/dma-swiotlb.c
-> index bfa9fbb..4cf5f0c 100644
-> --- a/arch/unicore32/mm/dma-swiotlb.c
-> +++ b/arch/unicore32/mm/dma-swiotlb.c
-> @@ -17,9 +17,23 @@
->
->   #include<asm/dma.h>
->
-> +static void *unicore_swiotlb_alloc_coherent(struct device *dev, size_t size,
-> +					    dma_addr_t *dma_handle, gfp_t flags,
-> +					    struct dma_attrs *attrs)
-> +{
-> +	return swiotlb_alloc_coherent(dev, size, dma_handle, flags);
-> +}
-> +
-> +static void unicode_swiotlb_free_coherent(struct device *dev, size_t size,
-The bit is ok for me. Only a typo here, please change unicode to unicore.
+On Tue, 2012-03-27 at 15:42 +0200, Marek Szyprowski wrote:
+> From: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+> 
+> Adapt core PowerPC architecture code for dma_map_ops changes: replace
+> alloc/free_coherent with generic alloc/free methods.
+> 
+> Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+> [added missing changes to arch/powerpc/kernel/vio.c]
+> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> ---
 
-Thanks and Regards.
+FYI. David and Arnd reviews are good enough for me ppc-side.
 
-Guan Xuetao
+Cheers,
+Ben.

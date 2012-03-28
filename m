@@ -1,100 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2012 08:10:58 +0200 (CEST)
-Received: from mailout4.w1.samsung.com ([210.118.77.14]:51299 "EHLO
-        mailout4.w1.samsung.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903564Ab2C1GKv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2012 08:10:51 +0200
-MIME-version: 1.0
-Content-transfer-encoding: 7BIT
-Content-type: text/plain; charset=us-ascii
-Received: from euspt2 ([210.118.77.14]) by mailout4.w1.samsung.com
- (Sun Java(tm) System Messaging Server 6.3-8.04 (built Jul 29 2009; 32bit))
- with ESMTP id <0M1K00G7QZTXVU10@mailout4.w1.samsung.com> for
- linux-mips@linux-mips.org; Wed, 28 Mar 2012 07:10:45 +0100 (BST)
-Received: from linux.samsung.com ([106.116.38.10])
- by spt2.w1.samsung.com (iPlanet Messaging Server 5.2 Patch 2 (built Jul 14
- 2004)) with ESMTPA id <0M1K002VYZTSZH@spt2.w1.samsung.com> for
- linux-mips@linux-mips.org; Wed, 28 Mar 2012 07:10:41 +0100 (BST)
-Received: from AMDC159 (unknown [106.116.37.153])
-        by linux.samsung.com (Postfix) with ESMTP id CAA2427004B; Wed,
- 28 Mar 2012 08:13:50 +0200 (CEST)
-Date:   Wed, 28 Mar 2012 08:10:20 +0200
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: RE: [PATCHv2 09/14] Unicore32: adapt for dma_map_ops changes
-In-reply-to: <4F7275FE.8000100@mprc.pku.edu.cn>
-To:     'Guan Xuetao' <gxt@mprc.pku.edu.cn>
-Cc:     linux-kernel@vger.kernel.org,
-        'Benjamin Herrenschmidt' <benh@kernel.crashing.org>,
-        'Thomas Gleixner' <tglx@linutronix.de>,
-        'Andrew Morton' <akpm@linux-foundation.org>,
-        'Arnd Bergmann' <arnd@arndb.de>,
-        'Stephen Rothwell' <sfr@canb.auug.org.au>,
-        'FUJITA Tomonori' <fujita.tomonori@lab.ntt.co.jp>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2012 13:30:49 +0200 (CEST)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:40342 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903566Ab2C1Lao (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2012 13:30:44 +0200
+Received: by bkcjk13 with SMTP id jk13so1011826bkc.36
+        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2012 04:30:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=85LdmA9jkDNuGTeXX+jqsOLfin+/HXAyUD0Pne9loVc=;
+        b=XK1MhoGoM9B01C4lwrp8gtTxnJBSs/J0weorlptWTQWZJN79pR3SLo7wHR7gIY7pm3
+         sr1q3aFIKdvdLe4XB/d3VvOg2kvhNaKVIpY8N1Z+KgWadPO1m/gR2hglarq9LYTR8VcB
+         sDovk0Tsqv5xJitQKfFv7AKnsKzcbd7a2X3I/Vojym4I9Mp5A6BE3IKQ0hUBJAEJfDlU
+         rSeMMhmD4WZUBDduHgqOKhU9nXbs2e0nP3BTT0kmLNqFplJp/cTzhhINkdUG9alXhQ7I
+         KGqtp4L7tRS3PWQ3JbLdnnNgZfqhKdy4ZN+gCtrEOE0zWGDLZf6g5AfDh6Nm5uu8rddw
+         GWGw==
+Received: by 10.204.143.151 with SMTP id v23mr12009163bku.63.1332934236860;
+        Wed, 28 Mar 2012 04:30:36 -0700 (PDT)
+Received: from [192.168.2.2] (ppp91-79-105-46.pppoe.mtu-net.ru. [91.79.105.46])
+        by mx.google.com with ESMTPS id c4sm5927046bkh.0.2012.03.28.04.30.31
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 28 Mar 2012 04:30:34 -0700 (PDT)
+Message-ID: <4F72F603.2000803@mvista.com>
+Date:   Wed, 28 Mar 2012 15:29:07 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko/20120312 Thunderbird/11.0
+MIME-Version: 1.0
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+CC:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
         microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
         x86@kernel.org, linux-sh@vger.kernel.org,
         linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-mips@linux-mips.org, discuss@x86-64.org,
         linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-        linaro-mm-sig@lists.linaro.org, 'Jonathan Corbet' <corbet@lwn.net>,
-        'Kyungmin Park' <kyungmin.park@samsung.com>,
+        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
         Andrzej Pietrasiewicz <andrzej.p@samsung.com>,
-        'Kevin Cernekee' <cernekee@gmail.com>,
-        'Dezhong Diao' <dediao@cisco.com>,
-        'Richard Kuo' <rkuo@codeaurora.org>,
-        "'David S. Miller'" <davem@davemloft.net>,
-        'Michal Simek' <monstr@monstr.eu>,
-        'Paul Mundt' <lethal@linux-sh.org>,
-        'Richard Henderson' <rth@twiddle.net>,
-        'Ivan Kokshaysky' <ink@jurassic.park.msu.ru>,
-        'Matt Turner' <mattst88@gmail.com>,
-        'Tony Luck' <tony.luck@intel.com>,
-        'Fenghua Yu' <fenghua.yu@intel.com>
-Message-id: <00ac01cd0ca9$7508f4e0$5f1adea0$%szyprowski@samsung.com>
-Organization: SPRC
-X-Mailer: Microsoft Office Outlook 12.0
-Content-language: pl
-Thread-index: Ac0MjBftzrBY64NAQOqZW8vvTBNuSQAGmQ1Q
-References: <1332855768-32583-1-git-send-email-m.szyprowski@samsung.com>
- <1332855768-32583-10-git-send-email-m.szyprowski@samsung.com>
- <4F7275FE.8000100@mprc.pku.edu.cn>
-X-archive-position: 32801
+        Kevin Cernekee <cernekee@gmail.com>,
+        Dezhong Diao <dediao@cisco.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Michal Simek <monstr@monstr.eu>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>
+Subject: Re: [PATCHv2 01/14] common: dma-mapping: introduce alloc_attrs and
+ free_attrs methods
+References: <1332855768-32583-1-git-send-email-m.szyprowski@samsung.com> <1332855768-32583-2-git-send-email-m.szyprowski@samsung.com>
+In-Reply-To: <1332855768-32583-2-git-send-email-m.szyprowski@samsung.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Gm-Message-State: ALoCoQmF4QSFC/uVMqzcbBytffj9Y2DYGq2N8NRYNwfLDeIacTA+CpxZsoIPhRdxzQ9IxpEJpBpx
+X-archive-position: 32802
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: m.szyprowski@samsung.com
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello,
+Hello.
 
-On Wednesday, March 28, 2012 4:23 AM Guan Xuetao wrote:
+On 27-03-2012 17:42, Marek Szyprowski wrote:
 
-> On 03/27/2012 09:42 PM, Marek Szyprowski wrote:
-> > diff --git a/arch/unicore32/mm/dma-swiotlb.c b/arch/unicore32/mm/dma-swiotlb.c
-> > index bfa9fbb..4cf5f0c 100644
-> > --- a/arch/unicore32/mm/dma-swiotlb.c
-> > +++ b/arch/unicore32/mm/dma-swiotlb.c
-> > @@ -17,9 +17,23 @@
-> >
-> >   #include<asm/dma.h>
-> >
-> > +static void *unicore_swiotlb_alloc_coherent(struct device *dev, size_t size,
-> > +					    dma_addr_t *dma_handle, gfp_t flags,
-> > +					    struct dma_attrs *attrs)
-> > +{
-> > +	return swiotlb_alloc_coherent(dev, size, dma_handle, flags);
-> > +}
-> > +
-> > +static void unicode_swiotlb_free_coherent(struct device *dev, size_t size,
-> The bit is ok for me. Only a typo here, please change unicode to unicore.
+> Introduce new generic alloc and free methods with attributes argument.
 
-Ups, I'm sorry for that typo. I've fixed it on my git tree:
+    The method names don't match the ones in the subject.
 
-http://git.linaro.org/gitweb?p=people/mszyprowski/linux-dma-mapping.git;a=commitdiff;h=bbe43c05b0653
-9c09f89e07bcaf61ea0fca8d67f
+> Existing alloc_coherent and free_coherent can be implemented on top of the
+> new calls with NULL attributes argument. Later also dma_alloc_non_coherent
+> can be implemented using DMA_ATTR_NONCOHERENT attribute as well as
+> dma_alloc_writecombine with separate DMA_ATTR_WRITECOMBINE attribute.
 
-Best regards
--- 
-Marek Szyprowski
-Samsung Poland R&D Center
+> This way the drivers will get more generic, platform independent way of
+> allocating dma buffers with specific parameters.
+
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Acked-by: Kyungmin Park <kyungmin.park@samsung.com>
+> Reviewed-by: David Gibson <david@gibson.dropbear.ud.au>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+
+WBR, Sergei

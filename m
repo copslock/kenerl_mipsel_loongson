@@ -1,118 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2012 00:32:06 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:9923 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903678Ab2C0WcA (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 28 Mar 2012 00:32:00 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4f7240490000>; Tue, 27 Mar 2012 15:33:45 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 27 Mar 2012 15:31:37 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Tue, 27 Mar 2012 15:31:37 -0700
-Message-ID: <4F723FDD.4080708@cavium.com>
-Date:   Tue, 27 Mar 2012 15:31:57 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Mar 2012 04:35:09 +0200 (CEST)
+Received: from mprc.pku.edu.cn ([162.105.203.9]:52146 "EHLO mprc.pku.edu.cn"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1901346Ab2C1CfB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 28 Mar 2012 04:35:01 +0200
+Received: from [192.168.0.105] ([162.105.80.111])
+        by mprc.pku.edu.cn (8.13.8/8.13.8) with ESMTP id q2S2fe5E003107;
+        Wed, 28 Mar 2012 10:41:40 +0800
+Message-ID: <4F7275FE.8000100@mprc.pku.edu.cn>
+Date:   Wed, 28 Mar 2012 10:22:54 +0800
+From:   Guan Xuetao <gxt@mprc.pku.edu.cn>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:10.0.2) Gecko/20120216 Thunderbird/10.0.2
 MIME-Version: 1.0
-To:     Rob Herring <robherring2@gmail.com>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 2/4] MIPS: Octeon: Setup irq_domains for interrupts.
-References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-3-git-send-email-ddaney.cavm@gmail.com> <4F711E69.1080302@gmail.com> <4F7205F3.3000108@cavium.com> <4F7239A4.7070905@gmail.com>
-In-Reply-To: <4F7239A4.7070905@gmail.com>
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+CC:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
+        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
+        x86@kernel.org, linux-sh@vger.kernel.org,
+        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@linux-mips.org, discuss@x86-64.org,
+        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@samsung.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Dezhong Diao <dediao@cisco.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>
+Subject: Re: [PATCHv2 09/14] Unicore32: adapt for dma_map_ops changes
+References: <1332855768-32583-1-git-send-email-m.szyprowski@samsung.com> <1332855768-32583-10-git-send-email-m.szyprowski@samsung.com>
+In-Reply-To: <1332855768-32583-10-git-send-email-m.szyprowski@samsung.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 Mar 2012 22:31:37.0491 (UTC) FILETIME=[5F611630:01CD0C69]
-X-archive-position: 32797
+X-archive-position: 32798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: gxt@mprc.pku.edu.cn
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/27/2012 03:05 PM, Rob Herring wrote:
-> On 03/27/2012 01:24 PM, David Daney wrote:
->> On 03/26/2012 06:56 PM, Rob Herring wrote:
->>> On 03/26/2012 02:31 PM, David Daney wrote:
->>>> From: David Daney<david.daney@cavium.com>
->> [...]
->>>> +static bool octeon_irq_ciu_is_edge(unsigned int line, unsigned int bit)
->>>> +{
->>>> +    bool edge = false;
->>>> +
->>>> +    if (line == 0)
->>>> +        switch (bit) {
->>>> +        case 48 ... 49: /* GMX DRP */
->>>> +        case 50: /* IPD_DRP */
->>>> +        case 52 ... 55: /* Timers */
->>>> +        case 58: /* MPI */
->>>> +            edge = true;
->>>> +            break;
->>>> +        default:
->>>> +            break;
->>>> +        }
->>>> +    else /* line == 1 */
->>>> +        switch (bit) {
->>>> +        case 47: /* PTP */
->>>> +            edge = true;
->>>> +            break;
->>>> +        default:
->>>> +            break;
->>>> +        }
->>>> +    return edge;
->>>
->>> Moving in the right direction, but I still don't get why this is not in
->>> the CIU binding as a 3rd cell?
->>
->> There are a several reasons, in no particular order they are:
->>
->> o There is no 3rd cell.  The bindings were discussed with Grant here:
->>    http://www.linux-mips.org/archives/linux-mips/2011-05/msg00355.html
->>
+On 03/27/2012 09:42 PM, Marek Szyprowski wrote:
+> diff --git a/arch/unicore32/mm/dma-swiotlb.c b/arch/unicore32/mm/dma-swiotlb.c
+> index bfa9fbb..4cf5f0c 100644
+> --- a/arch/unicore32/mm/dma-swiotlb.c
+> +++ b/arch/unicore32/mm/dma-swiotlb.c
+> @@ -17,9 +17,23 @@
 >
-> Then add one.
-
-I can't.  The dtb is already programmed into the bootloader ROMs, 
-changing the kernel code will not change that.  It is fait accompli.
-
+>   #include<asm/dma.h>
 >
->> o The edge/level thing cannot be changed, and the irq lines don't leave
->> the SOC, so hard coding it is possible.
->
-> Right, but DT describes h/w connections and this is an aspect of the
-> connection. This may be fixed for the SOC, but it's not fixed for the
-> CIU (i.e. could change in future chips), right?
+> +static void *unicore_swiotlb_alloc_coherent(struct device *dev, size_t size,
+> +					    dma_addr_t *dma_handle, gfp_t flags,
+> +					    struct dma_attrs *attrs)
+> +{
+> +	return swiotlb_alloc_coherent(dev, size, dma_handle, flags);
+> +}
+> +
+> +static void unicode_swiotlb_free_coherent(struct device *dev, size_t size,
+The bit is ok for me. Only a typo here, please change unicode to unicore.
 
-In theory yes.  However:
+Thanks and Regards.
 
-1) The chip designers will not change it.
-
-2) There will likely be no more designs with either CIU or CIU2, so we 
-know what all the different possibilities are today.
-
-When CIU3 is deployed, we will use the lessons we have learned to do 
-things the Right Way.
-
->
-> There's 2 reasons why you would not put this into DTS:
->
-> - All irq lines' trigger type are the same, fixed and known.
-> - You can read a register to tell you the trigger type.
->
-> Even if it's not going to change ever, it's still worth putting into the
-> DTS as it is well suited for holding that data and it is just data.
-
-Agreed that it could be in the DTS, and retrospect it probably should 
-have been put in the DTS, but it wasn't.  So I think what we have now is 
-a workable solution, and has the added attraction of working with 
-already deployed boards.
-
-David Daney
+Guan Xuetao

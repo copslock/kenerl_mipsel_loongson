@@ -1,84 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2012 03:26:18 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:53648 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903696Ab2C2BZa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2012 03:25:30 +0200
-Received: by pbcun4 with SMTP id un4so2867926pbc.36
-        for <linux-mips@linux-mips.org>; Wed, 28 Mar 2012 18:25:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
-         :x-gm-message-state;
-        bh=nnFBfHMsBkf4idIZz9la3kItpXI/VOP+Wdt1BwFv86I=;
-        b=DkZKIHxzq8XjcHrqH10R+so9aloMHb2psb8c3nJV5ywFaHB4X1I4T3HDlSU5JozDig
-         9Lb3hteuuuePPlvVVI5T4D/U2Qo6M4ZEzX6gJx6z1c9h0G6HQzs3C5xVHuQuIAoyIuE2
-         IcPngpn24TNPq03ROXkGHnotqkq9llOYpqPGXFsqF8g1wqrwzI+ODzItKW4uuoShLQRR
-         DKbfQg1k+mHhrP5JLn817+FM3iV/y8fJ22JoPz8amHbyzp+w23ZzJtOsyGhaUvwXHS6C
-         XQOGyMZOp12M/tXoBNSoFP1eXFETIFACy9k0CWWSDGZidZNTrhq+hDVFIssGu9y53lS0
-         0NCg==
-Received: by 10.68.194.198 with SMTP id hy6mr975379pbc.0.1332984323916;
-        Wed, 28 Mar 2012 18:25:23 -0700 (PDT)
-Received: from localhost (S0106d8b37715ee14.cg.shawcable.net. [68.146.14.168])
-        by mx.google.com with ESMTPS id k3sm3829103pbd.17.2012.03.28.18.25.17
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 28 Mar 2012 18:25:19 -0700 (PDT)
-Received: by localhost (Postfix, from userid 1000)
-        id AD0A63E0DAA; Wed, 28 Mar 2012 15:31:55 -0700 (MST)
-From:   Grant Likely <grant.likely@secretlab.ca>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2012 03:34:08 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:3437 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903690Ab2C2BeA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2012 03:34:00 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
+        id <B4f73bc700000>; Wed, 28 Mar 2012 18:35:44 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 28 Mar 2012 18:33:35 -0700
+Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
+         Wed, 28 Mar 2012 18:33:35 -0700
+Message-ID: <4F73BC02.9090102@cavium.com>
+Date:   Wed, 28 Mar 2012 18:33:54 -0700
+From:   David Daney <david.daney@cavium.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+MIME-Version: 1.0
+To:     Grant Likely <grant.likely@secretlab.ca>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "devicetree-discuss@lists.ozlabs.org" 
+        <devicetree-discuss@lists.ozlabs.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v7 2/4] MIPS: Octeon: Setup irq_domains for interrupts.
-To:     David Daney <ddaney.cavm@gmail.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
-        Rob Herring <rob.herring@calxeda.com>
-Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
-In-Reply-To: <1332790281-9648-3-git-send-email-ddaney.cavm@gmail.com>
-References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-3-git-send-email-ddaney.cavm@gmail.com>
-Date:   Wed, 28 Mar 2012 16:31:55 -0600
-Message-Id: <20120328223155.AD0A63E0DAA@localhost>
-X-Gm-Message-State: ALoCoQnPlu17pV/C99fBTuPz65mRSLrzNOHUJHYCQ0+sFHM3rhbj5t/vlu60YxRRVScPrIIXp0K3
-X-archive-position: 32811
+References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-3-git-send-email-ddaney.cavm@gmail.com> <20120328223155.AD0A63E0DAA@localhost>
+In-Reply-To: <20120328223155.AD0A63E0DAA@localhost>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 29 Mar 2012 01:33:35.0206 (UTC) FILETIME=[F541F060:01CD0D4B]
+X-archive-position: 32812
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grant.likely@secretlab.ca
+X-original-sender: david.daney@cavium.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, 26 Mar 2012 12:31:19 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> Create two domains.  One for the GPIO lines, and the other for on-chip
-> sources.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> ---
-[...]
-> +struct octeon_irq_gpio_domain_data {
-> +	unsigned int base_hwirq;
-> +};
+On 03/28/2012 03:31 PM, Grant Likely wrote:
+> On Mon, 26 Mar 2012 12:31:19 -0700, David Daney<ddaney.cavm@gmail.com>  wrote:
+>> From: David Daney<david.daney@cavium.com>
+>>
+>> Create two domains.  One for the GPIO lines, and the other for on-chip
+>> sources.
+>>
+>> Signed-off-by: David Daney<david.daney@cavium.com>
+>> ---
+> [...]
+>> +struct octeon_irq_gpio_domain_data {
+>> +	unsigned int base_hwirq;
+>> +};
+>
+> Hmmm...
+>
+>> +static int octeon_irq_gpio_xlat(struct irq_domain *d,
+>> +				struct device_node *node,
+>> +				const u32 *intspec,
+>> +				unsigned int intsize,
+>> +				unsigned long *out_hwirq,
+>> +				unsigned int *out_type)
+>> +{
+> [...]
+>> +	*out_hwirq = gpiod->base_hwirq + pin;
+>
+> ...base_hwirq is only used here...
+>
+> [...]
+>> +		gpiod = kzalloc(sizeof (*gpiod), GFP_KERNEL);
+>> +		if (gpiod) {
+>> +			/* gpio domain host_data is the base hwirq number. */
+>> +			gpiod->base_hwirq = 16;
+>> +			irq_domain_add_linear(gpio_node, 16,&octeon_irq_domain_gpio_ops, gpiod);
+>
+> ... and it is unconditionally set to 16.  It looks to me like
+> base_hwirq and the associated kzalloc() is unnecessary.
+>
 
-Hmmm...
+There is a little information asymmetry here.  You don't know that I 
+have a patch queued up to add another user of the GPIO irq_domain that 
+has a different base_hwirq.
 
-> +static int octeon_irq_gpio_xlat(struct irq_domain *d,
-> +				struct device_node *node,
-> +				const u32 *intspec,
-> +				unsigned int intsize,
-> +				unsigned long *out_hwirq,
-> +				unsigned int *out_type)
-> +{
-[...]
-> +	*out_hwirq = gpiod->base_hwirq + pin;
+I could re-do this to hard code it, and then add it back.  But it would 
+really just be busy work.
 
-...base_hwirq is only used here...
-
-[...]
-> +		gpiod = kzalloc(sizeof (*gpiod), GFP_KERNEL);
-> +		if (gpiod) {
-> +			/* gpio domain host_data is the base hwirq number. */
-> +			gpiod->base_hwirq = 16;
-> +			irq_domain_add_linear(gpio_node, 16, &octeon_irq_domain_gpio_ops, gpiod);
-
-... and it is unconditionally set to 16.  It looks to me like
-base_hwirq and the associated kzalloc() is unnecessary.
-
-g.
+David Daney

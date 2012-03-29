@@ -1,152 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2012 03:46:37 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:3704 "EHLO
-        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903689Ab2C2Bqa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2012 03:46:30 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,7,2,8378)
-        id <B4f73bf5f0000>; Wed, 28 Mar 2012 18:48:15 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 28 Mar 2012 18:46:06 -0700
-Received: from dd1.caveonetworks.com ([64.2.3.195]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.4675);
-         Wed, 28 Mar 2012 18:46:06 -0700
-Message-ID: <4F73BEF3.8060500@cavium.com>
-Date:   Wed, 28 Mar 2012 18:46:27 -0700
-From:   David Daney <david.daney@cavium.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2012 15:52:21 +0200 (CEST)
+Received: from www.linutronix.de ([62.245.132.108]:36347 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903599Ab2C2NwN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2012 15:52:13 +0200
+Received: from localhost ([127.0.0.1])
+        by Galois.linutronix.de with esmtps (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <tglx@linutronix.de>)
+        id 1SDFlL-0001n5-19; Thu, 29 Mar 2012 15:51:39 +0200
+Date:   Thu, 29 Mar 2012 15:51:36 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+cc:     linux-kernel@vger.kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>,
+        microblaze-uclinux@itee.uq.edu.au, linux-arch@vger.kernel.org,
+        x86@kernel.org, linux-sh@vger.kernel.org,
+        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-mips@linux-mips.org, discuss@x86-64.org,
+        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+        linaro-mm-sig@lists.linaro.org, Jonathan Corbet <corbet@lwn.net>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Andrzej Pietrasiewicz <andrzej.p@samsung.com>,
+        Kevin Cernekee <cernekee@gmail.com>,
+        Dezhong Diao <dediao@cisco.com>,
+        Richard Kuo <rkuo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Michal Simek <monstr@monstr.eu>,
+        Guan Xuetao <gxt@mprc.pku.edu.cn>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>
+Subject: Re: [PATCHv2 02/14] X86 & IA64: adapt for dma_map_ops changes
+In-Reply-To: <1332855768-32583-3-git-send-email-m.szyprowski@samsung.com>
+Message-ID: <alpine.LFD.2.02.1203291545520.2542@ionos>
+References: <1332855768-32583-1-git-send-email-m.szyprowski@samsung.com> <1332855768-32583-3-git-send-email-m.szyprowski@samsung.com>
+User-Agent: Alpine 2.02 (LFD 1266 2009-07-14)
 MIME-Version: 1.0
-To:     Grant Likely <grant.likely@secretlab.ca>
-CC:     Rob Herring <robherring2@gmail.com>,
-        David Daney <ddaney.cavm@gmail.com>,
-        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        "ralf@linux-mips.org" <ralf@linux-mips.org>,
-        "devicetree-discuss@lists.ozlabs.org" 
-        <devicetree-discuss@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 2/4] MIPS: Octeon: Setup irq_domains for interrupts.
-References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-3-git-send-email-ddaney.cavm@gmail.com> <4F711E69.1080302@gmail.com> <4F7205F3.3000108@cavium.com> <4F7239A4.7070905@gmail.com> <4F723FDD.4080708@cavium.com> <4F731E69.8030907@gmail.com> <4F733945.6000804@cavium.com> <20120328220839.599E13E0C26@localhost>
-In-Reply-To: <20120328220839.599E13E0C26@localhost>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 29 Mar 2012 01:46:06.0075 (UTC) FILETIME=[B4CF74B0:01CD0D4D]
-X-archive-position: 32814
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-archive-position: 32815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.daney@cavium.com
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 03/28/2012 03:08 PM, Grant Likely wrote:
-> On Wed, 28 Mar 2012 09:16:05 -0700, David Daney<david.daney@cavium.com>  wrote:
->> On 03/28/2012 07:21 AM, Rob Herring wrote:
->>> On 03/27/2012 05:31 PM, David Daney wrote:
->>>> On 03/27/2012 03:05 PM, Rob Herring wrote:
->>>>> On 03/27/2012 01:24 PM, David Daney wrote:
->>>>>> On 03/26/2012 06:56 PM, Rob Herring wrote:
->>>>>>> On 03/26/2012 02:31 PM, David Daney wrote:
->>>>>>>> From: David Daney<david.daney@cavium.com>
->>>>>> [...]
->>>>>>>> +static bool octeon_irq_ciu_is_edge(unsigned int line, unsigned int
->>>>>>>> bit)
->>>>>>>> +{
->>>>>>>> +    bool edge = false;
->>>>>>>> +
->>>>>>>> +    if (line == 0)
->>>>>>>> +        switch (bit) {
->>>>>>>> +        case 48 ... 49: /* GMX DRP */
->>>>>>>> +        case 50: /* IPD_DRP */
->>>>>>>> +        case 52 ... 55: /* Timers */
->>>>>>>> +        case 58: /* MPI */
->>>>>>>> +            edge = true;
->>>>>>>> +            break;
->>>>>>>> +        default:
->>>>>>>> +            break;
->>>>>>>> +        }
->>>>>>>> +    else /* line == 1 */
->>>>>>>> +        switch (bit) {
->>>>>>>> +        case 47: /* PTP */
->>>>>>>> +            edge = true;
->>>>>>>> +            break;
->>>>>>>> +        default:
->>>>>>>> +            break;
->>>>>>>> +        }
->>>>>>>> +    return edge;
->>>>>>>
->>>>>>> Moving in the right direction, but I still don't get why this is not in
->>>>>>> the CIU binding as a 3rd cell?
->>>>>>
->>>>>> There are a several reasons, in no particular order they are:
->>>>>>
->>>>>> o There is no 3rd cell.  The bindings were discussed with Grant here:
->>>>>>      http://www.linux-mips.org/archives/linux-mips/2011-05/msg00355.html
->>>>>>
->>>>>
->>>>> Then add one.
->>>>
->>>> I can't.  The dtb is already programmed into the bootloader ROMs,
->>>> changing the kernel code will not change that.  It is fait accompli.
->>>>
->>>>>
->>>>>> o The edge/level thing cannot be changed, and the irq lines don't leave
->>>>>> the SOC, so hard coding it is possible.
->>>>>
->>>>> Right, but DT describes h/w connections and this is an aspect of the
->>>>> connection. This may be fixed for the SOC, but it's not fixed for the
->>>>> CIU (i.e. could change in future chips), right?
->>>>
->>>> In theory yes.  However:
->>>>
->>>> 1) The chip designers will not change it.
->>>>
->>>> 2) There will likely be no more designs with either CIU or CIU2, so we
->>>> know what all the different possibilities are today.
->>>>
->>>> When CIU3 is deployed, we will use the lessons we have learned to do
->>>> things the Right Way.
->>>>
->>>>>
->>>>> There's 2 reasons why you would not put this into DTS:
->>>>>
->>>>> - All irq lines' trigger type are the same, fixed and known.
->>>>> - You can read a register to tell you the trigger type.
->>>>>
->>>>> Even if it's not going to change ever, it's still worth putting into the
->>>>> DTS as it is well suited for holding that data and it is just data.
->>>>
->>>> Agreed that it could be in the DTS, and retrospect it probably should
->>>> have been put in the DTS, but it wasn't.  So I think what we have now is
->>>> a workable solution, and has the added attraction of working with
->>>> already deployed boards.
->>>
->>> Aren't you building in the dtb to the kernel?
->>
->> No.  This seems like a bit of a disconnect in this discussion.  From the
->> cover-letter:
->>
->> o A device tree template is statically linked into the kernel image.
->>     Based on SOC type and board type, legacy configuration probing code
->>     is used to prune and patch the device tree template.
->>
->> o New SOCs and boards will directly use a device tree passed by the
->>     bootloader.
->
-> I think the real surprise here is that Octeron is depending on a
-> masked-in copy of the device tree.  It has alwasy been a strong
-> recommendation to store the .dtb along side the kernel in reflashable
-> storage for exactly the reason that updates may be required.  Review
-> is vitally important, but nobody can foresee all the implications
-> until the bindings are actually used.
->
-> I'm not going to harp over this, I understand that you're hamstrung
-> here, but please do pass on to the firmware engineers that storing the
-> .dtb in masked rom is risky.
->
+On Tue, 27 Mar 2012, Marek Szyprowski wrote:
+> From: Andrzej Pietrasiewicz <andrzej.p@samsung.com>
+> -static inline void *dma_alloc_coherent(struct device *dev, size_t size,
+> -				       dma_addr_t *daddr, gfp_t gfp)
+> +#define dma_alloc_coherent(d,s,h,f)	dma_alloc_attrs(d,s,h,f,NULL)
 
-Well in most cases it is not masked ROM, but rather some sort of 
-persistent but modifiable storage.  But still getting people (both 
-internal and external) to update it is not as easy as living with the 
-status quo.  The idea is that someone should be able to get a kernel.orq 
-kernel and use it, without having to re-flash their board's bootloader.
+Please make this an inline function.
 
-David Daney
+>  
+> +#define dma_alloc_coherent(d,s,h,f)	dma_alloc_attrs(d,s,h,f,NULL)
+
+Inline please.
+
+> -static inline void dma_free_coherent(struct device *dev, size_t size,
+> -				     void *vaddr, dma_addr_t bus)
+> +#define dma_free_coherent(d,s,c,h) dma_free_attrs(d,s,c,h,NULL)
+
+Ditto
+
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+
+Thanks,
+
+	tglx

@@ -1,122 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Mar 2012 23:14:03 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:57123 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903692Ab2C2VN4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 29 Mar 2012 23:13:56 +0200
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1SDMdX-0007pY-6j; Thu, 29 Mar 2012 23:12:03 +0200
-Received: from ukl by dude.hi.pengutronix.de with local (Exim 4.77)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1SDMd1-00088m-Gz; Thu, 29 Mar 2012 23:11:31 +0200
-Date:   Thu, 29 Mar 2012 23:11:31 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
-        Anatolij Gustschin <agust@denx.de>,
-        Andreas Koensgen <ajk@comnets.uni-bremen.de>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andrew Victor <linux@maxim.org.za>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Barry Song <baohua.song@csr.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Bryan Huntsman <bryanh@codeaurora.org>,
-        cbe-oss-dev@lists.ozlabs.org,
-        Christoph Lameter <cl@linux-foundation.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        David Brown <davidb@codeaurora.org>,
-        David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Woodhouse <dwmw2@infradead.org>,
-        davinci-linux-open-source@linux.davincidsp.com,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Guenter Roeck <guenter.roeck@ericsson.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        ibm-acpi-devel@lists.sourceforge.net,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Jean Delvare <khali@linux-fr.org>,
-        Jean-Paul Roubelat <jpr@f6fbb.org>,
-        Joerg Reuter <jreuter@yaina.de>,
-        Josh Boyer <jwboyer@gmail.com>, Kevin Hilman <khilman@ti.com>,
-        Klaus Kudielka <klaus.kudielka@ieee.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        Kumar Gala <galak@kernel.crashing.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Lennert Buytenhek <kernel@wantstofly.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Linus Walleij <linus.walleij@stericsson.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mm@kvack.org, linux-mtd@lists.infradead.org,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-samsung-soc@vger.kernel.org, lm-sensors@lm-sensors.org,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Paul Mackerras <paulus@samba.org>,
-        platform-driver-x86@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@xenotime.net>,
-        Russell King <linux@arm.linux.org.uk>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Sekhar Nori <nsekhar@ti.com>, Shawn Guo <shawn.guo@linaro.org>,
-        Tejun Heo <tj@kernel.org>,
-        Tomasz Stanislawski <t.stanislaws@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH 00/17] mark const init data with __initconst instead of
- __initdata
-Message-ID: <20120329211131.GA31250@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2012 00:30:14 +0200 (CEST)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:34131 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903600Ab2C2WaH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2012 00:30:07 +0200
+Received: by bkcjk13 with SMTP id jk13so24708bkc.36
+        for <linux-mips@linux-mips.org>; Thu, 29 Mar 2012 15:30:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=oNPAOjGYD0AqqZHcA+AYIq0ZdYFfGGfK7Ej4OjiPGyo=;
+        b=T2wwGaqdlwKn24Ct27qhGGDkT6JzXV/OtqKmIks/wBdckv1wyxncSR7b9zEAPWY2lI
+         BxDhTwSL41IZ0JVJe/tKRPdQBwrRFyjEnHRAS/8DxfooOLoJw2qHHv0fIo8WHk0cHc98
+         rtmHmAGOECEoHLJMlfvbhzyVwy4m60Z5IRumsi9l0lmuZdgPDbIXhIKPlcAkWQ+8s0vJ
+         G7Rw2jSN4IxKCEpbk8JosOK6U4t6UbvmBF7PyYtrd6skVIHuD//yV84S8wdDtMAVKSgA
+         cgmFDoVhXOnNUPNdkHC4crUEPVg469LVdGzKaVFX35ejgsOX2tlHH//seWi5/fnPeHui
+         3SMQ==
+Received: by 10.205.137.15 with SMTP id im15mr14664255bkc.54.1333060200604;
+        Thu, 29 Mar 2012 15:30:00 -0700 (PDT)
+Received: from [192.168.2.2] (ppp91-79-67-22.pppoe.mtu-net.ru. [91.79.67.22])
+        by mx.google.com with ESMTPS id o22sm5719260bko.2.2012.03.29.15.29.58
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 29 Mar 2012 15:29:59 -0700 (PDT)
+Message-ID: <4F74E210.70707@mvista.com>
+Date:   Fri, 30 Mar 2012 02:28:32 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko/20120327 Thunderbird/11.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+To:     Maarten ter Huurne <maarten@treewalker.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?UTF-8?B?TGx1w61zIEJhdGxsZSBpIFJvc3NlbGw=?= <viric@viric.name>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] MIPS: Enable vmlinuz for JZ4740
+References: <1333037360-18382-1-git-send-email-maarten@treewalker.org>
+In-Reply-To: <1333037360-18382-1-git-send-email-maarten@treewalker.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:21e:67ff:fe11:9c5c
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-X-archive-position: 32821
+X-Gm-Message-State: ALoCoQkxDrh4WOYeI/u6ZWF1dZ2dX+diS2tC+joEt2ZjjwJQvicdZ+BSOHt6fbP99zb0Y0uUYlWo
+X-archive-position: 32822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ukl@pengutronix.de
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello,
+Hello.
 
-this series fixes a common error to use __initdata to mark const
-variables. Most of the time this works well enough to go unnoticed
-(though I wonder why the linker doesn't warn about that).
-Just try adding something like
+On 29-03-2012 20:09, Maarten ter Huurne wrote:
 
-	int something __initdata;
+> From: LluÃ­s Batlle i Rossell<viric@viric.name>
 
-to one of the patched files and compile to see the error.
+> This patch adds support for building a compressed kernel for the JZ4740
+> architecture.
+>
+> Signed-off-by: Lars-Peter Clausen<lars@metafoo.de>
+> Signed-off-by: Maarten ter Huurne<maarten@treewalker.org>
+[...]
 
-While touching these annotations I also corrected the position where it
-was wrong to go between the variable name and the =.
+> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+> index 5042d51..71d89cb 100644
+> --- a/arch/mips/boot/compressed/Makefile
+> +++ b/arch/mips/boot/compressed/Makefile
+> @@ -58,8 +58,12 @@ $(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE
+>   # Calculate the load address of the compressed kernel image
+>   hostprogs-y := calc_vmlinuz_load_addr
+>
+> +ifeq ($(CONFIG_MACH_JZ4740),y)
+> +VMLINUZ_LOAD_ADDRESS:=0x80600000
 
-Note this series is not compile tested.
+    Spaces around :=, please. And why this should be out of order case?
 
-Best regards
-Uwe
+> +else
+>   VMLINUZ_LOAD_ADDRESS = $(shell $(obj)/calc_vmlinuz_load_addr \
+>   		$(obj)/vmlinux.bin $(VMLINUX_LOAD_ADDRESS))
+> +endif
+>
+>   vmlinuzobjs-y += $(obj)/piggy.o
 
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+WBR, Sergei

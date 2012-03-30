@@ -1,170 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2012 22:05:53 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:58793 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903696Ab2C3UFt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2012 22:05:49 +0200
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1SDi4Q-0002kt-9S; Fri, 30 Mar 2012 22:05:14 +0200
-Received: from ukl by dude.hi.pengutronix.de with local (Exim 4.77)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1SDi4M-0003bl-5A; Fri, 30 Mar 2012 22:05:10 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     kernel@pengutronix.de, Ralf Baechle <ralf@linux-mips.org>,
-        linux-mips@linux-mips.org
-Subject: [PATCH v2 07/15] mips: mark const init data with __initconst instead of __initdata
-Date:   Fri, 30 Mar 2012 22:04:57 +0200
-Message-Id: <1333137905-13809-7-git-send-email-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <20120330200358.GV15647@pengutronix.de>
-References: <20120330200358.GV15647@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:21e:67ff:fe11:9c5c
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-X-archive-position: 32832
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2012 02:34:32 +0200 (CEST)
+Received: from mail-pz0-f49.google.com ([209.85.210.49]:48581 "EHLO
+        mail-pz0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903699Ab2CaAe2 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2012 02:34:28 +0200
+Received: by dadq36 with SMTP id q36so82758dad.36
+        for <linux-mips@linux-mips.org>; Fri, 30 Mar 2012 17:34:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=sender:from:subject:to:cc:in-reply-to:references:date:message-id
+         :x-gm-message-state;
+        bh=F2x48JxAL7Tsqs3doHMKHJV06p+42LYx6/LdEMA7zJM=;
+        b=Y3nC8leCoLXdJhrvlDg0HsTBnzPp25dgvl75TtiFGZvMX2TnT2v6WqxJE0PrWBK3P4
+         gJe98+Z9rVOrbEZgiW7kCG7wCzQ8+qgmgHMJ1v4pD0D1pYUm5DTf8bNr8fC4jGInCSF/
+         zijZkJip8S3XHTWygGkShW8dUMeVQ+XQSsueomOGW0SKgGVmXsb36c1z+BRDg7d0eyNd
+         2SjA85bQ8qyhpPRH4Ou1fRzr5vVS/y8l45EltzKzmD9mNkIFQHla/kf2tNvof4EXeV2g
+         YFFCeNH9GTQ5xp+OVGIF4j8yG6aH3hEa2L8mU9dkUUep5Cn4GtT4gXOu59xf/WwoJl/z
+         M+Jg==
+Received: by 10.68.212.35 with SMTP id nh3mr1505862pbc.84.1333154061409;
+        Fri, 30 Mar 2012 17:34:21 -0700 (PDT)
+Received: from localhost (S0106d8b37715ee14.cg.shawcable.net. [68.146.14.168])
+        by mx.google.com with ESMTPS id b1sm8424235pbm.68.2012.03.30.17.34.18
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 30 Mar 2012 17:34:18 -0700 (PDT)
+Received: by localhost (Postfix, from userid 1000)
+        id 47FAA3E04D5; Fri, 30 Mar 2012 15:54:30 -0600 (MDT)
+From:   Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v7 2/4] MIPS: Octeon: Setup irq_domains for interrupts.
+To:     David Daney <david.daney@cavium.com>
+Cc:     Rob Herring <robherring2@gmail.com>,
+        David Daney <ddaney.cavm@gmail.com>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        "devicetree-discuss@lists.ozlabs.org" 
+        <devicetree-discuss@lists.ozlabs.org>,
+        Rob Herring <rob.herring@calxeda.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+In-Reply-To: <4F73BDAF.7020206@cavium.com>
+References: <1332790281-9648-1-git-send-email-ddaney.cavm@gmail.com> <1332790281-9648-3-git-send-email-ddaney.cavm@gmail.com> <4F711E69.1080302@gmail.com> <4F7205F3.3000108@cavium.com> <20120328222246.8AFA83E0CFE@localhost> <4F73BDAF.7020206@cavium.com>
+Date:   Fri, 30 Mar 2012 15:54:30 -0600
+Message-Id: <20120330215430.47FAA3E04D5@localhost>
+X-Gm-Message-State: ALoCoQlrpTrCndr39nYqiDpmJuKUW7thdhPRbDPra6C7FmR+cuvTvWOzAiMyDrNB0jLtZAp4gsu0
+X-archive-position: 32833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ukl@pengutronix.de
+X-original-sender: grant.likely@secretlab.ca
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-As long as there is no other non-const variable marked __initdata in the
-same compilation unit it doesn't hurt. If there were one however
-compilation would fail with
+On Wed, 28 Mar 2012 18:41:03 -0700, David Daney <david.daney@cavium.com> wrote:
+> On 03/28/2012 03:22 PM, Grant Likely wrote:
+> > On Tue, 27 Mar 2012 11:24:51 -0700, David Daney<david.daney@cavium.com>  wrote:
+> >> On 03/26/2012 06:56 PM, Rob Herring wrote:
+> >>> On 03/26/2012 02:31 PM, David Daney wrote:
+> >>>> From: David Daney<david.daney@cavium.com>
+> >> [...]
+> >>>> +static int octeon_irq_ciu_map(struct irq_domain *d,
+> >>>> +			      unsigned int virq, irq_hw_number_t hw)
+> >>>> +{
+> >>>> +	unsigned int line = hw>>   6;
+> >>>> +	unsigned int bit = hw&   63;
+> >>>> +
+> >>>> +	if (virq>= 256)
+> >>>> +		return -EINVAL;
+> >>>
+> >>> Drop this. You should not care what the virq numbers are.
+> >>
+> >>
+> >> I care that they don't overflow the width of octeon_irq_ciu_to_irq (a u8).
+> >>
+> >> So really I want to say:
+> >>
+> >>      if (virq>= (1<<  sizeof (octeon_irq_ciu_to_irq[0][0]))) {
+> >>          WARN(...);
+> >>          return -EINVAL;
+> >>      }
+> >>
+> >>
+> >> I need a map external to any one irq_domain.  The irq handling code
+> >> handles sources that come from two separate irq_domains, as well as irqs
+> >> that are not part of any domain.
+> >
+> > You can get past this limitation by using the struct irq_data .hwirq and
+> > .domain members for the irq ==>  hwirq translation, and for hwirq ==>
+> > irq the code should already have the context to know which user it is.
+> >
+> > For the irqs that are not covered by an irq_domain, the driver is free
+> > to set the .hwirq value directly.  Ultimately however, it will
+> > probably be best to add an irq domain for those users also.
+> >
+> > ...
+> >
+> > Howver, I don't understand where the risk is in overflowing
+> > octeon_irq_ciu_to_irq[][].  From what I can see, the virq value isn't
+> > used at all to calculate the array dereference.  line and bit are
+> > calculated from the hwirq value.  What am I missing?
+> >
+> 
+> We do the opposite.  We extract the hwirq value from the interrupt 
+> controller and then look up virq in the table.  If the range of virq 
+> overflows the width of u8, we would end up calling do_IRQ() with a bad 
+> value.  Also this dispatch code is not aware of the various irq_domains 
+> and non irq_domain irqs, it is a single function that handles them all 
+> calling do_IRQ() with whatever it looks up in the table.
+> 
+> We could use a wider type for this lookup array, but that would increase 
+> the cache footprint of the irq dispatcher...
 
-	error: $variablename causes a section type conflict
+Ah, I missed that octeon_irq_ciu_to_irq was a u8.  You're using Linux
+though; your cache footprint is already trashed.  :-) Please just use
+unsigned int for all irq storage since that is the type used by all
+core interrupt handling code.  Anything else smells like premature
+optimization.  :-)
 
-because a section containing const variables is marked read only and so
-cannot contain non-const variables.
+Besides, now that we have it you should plan to switch to the common
+mechanism of irq_domain for hwirq->irq reverse mapping anyway.  It
+doesn't make any sense for each platform to reinvent it's own reverse
+mapping scheme.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
-changes since (implicit) v1:
- - drop wrong changes to arch/mips/bcm63xx/boards/board_bcm963xx.c
-
- arch/mips/bcm63xx/dev-pcmcia.c         |    4 ++--
- arch/mips/mti-malta/malta-setup.c      |    2 +-
- arch/mips/pci/fixup-mpc30x.c           |    4 ++--
- arch/mips/powertv/asic/asic-calliope.c |    2 +-
- arch/mips/powertv/asic/asic-cronus.c   |    2 +-
- arch/mips/powertv/asic/asic-gaia.c     |    2 +-
- arch/mips/powertv/asic/asic-zeus.c     |    2 +-
- 7 files changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/arch/mips/bcm63xx/dev-pcmcia.c b/arch/mips/bcm63xx/dev-pcmcia.c
-index de4d917..a551bab 100644
---- a/arch/mips/bcm63xx/dev-pcmcia.c
-+++ b/arch/mips/bcm63xx/dev-pcmcia.c
-@@ -79,11 +79,11 @@ static int __init config_pcmcia_cs(unsigned int cs,
- 	return ret;
- }
- 
--static const __initdata struct {
-+static const struct {
- 	unsigned int	cs;
- 	unsigned int	base;
- 	unsigned int	size;
--} pcmcia_cs[3] = {
-+} pcmcia_cs[3] __initconst = {
- 	{
- 		.cs	= MPI_CS_PCMCIA_COMMON,
- 		.base	= BCM_PCMCIA_COMMON_BASE_PA,
-diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-index b7f37d4..2e28f65 100644
---- a/arch/mips/mti-malta/malta-setup.c
-+++ b/arch/mips/mti-malta/malta-setup.c
-@@ -111,7 +111,7 @@ static void __init pci_clock_check(void)
- 	unsigned int __iomem *jmpr_p =
- 		(unsigned int *) ioremap(MALTA_JMPRS_REG, sizeof(unsigned int));
- 	int jmpr = (__raw_readl(jmpr_p) >> 2) & 0x07;
--	static const int pciclocks[] __initdata = {
-+	static const int pciclocks[] __initconst = {
- 		33, 20, 25, 30, 12, 16, 37, 10
- 	};
- 	int pciclock = pciclocks[jmpr];
-diff --git a/arch/mips/pci/fixup-mpc30x.c b/arch/mips/pci/fixup-mpc30x.c
-index e08f49c..8e4f828 100644
---- a/arch/mips/pci/fixup-mpc30x.c
-+++ b/arch/mips/pci/fixup-mpc30x.c
-@@ -22,13 +22,13 @@
- 
- #include <asm/vr41xx/mpc30x.h>
- 
--static const int internal_func_irqs[] __initdata = {
-+static const int internal_func_irqs[] __initconst = {
- 	VRC4173_CASCADE_IRQ,
- 	VRC4173_AC97_IRQ,
- 	VRC4173_USB_IRQ,
- };
- 
--static const int irq_tab_mpc30x[] __initdata = {
-+static const int irq_tab_mpc30x[] __initconst = {
-  [12] = VRC4173_PCMCIA1_IRQ,
-  [13] = VRC4173_PCMCIA2_IRQ,
-  [29] = MQ200_IRQ,
-diff --git a/arch/mips/powertv/asic/asic-calliope.c b/arch/mips/powertv/asic/asic-calliope.c
-index 0a170e0..7773f3d 100644
---- a/arch/mips/powertv/asic/asic-calliope.c
-+++ b/arch/mips/powertv/asic/asic-calliope.c
-@@ -28,7 +28,7 @@
- 
- #define CALLIOPE_ADDR(x)	(CALLIOPE_IO_BASE + (x))
- 
--const struct register_map calliope_register_map __initdata = {
-+const struct register_map calliope_register_map __initconst = {
- 	.eic_slow0_strt_add = {.phys = CALLIOPE_ADDR(0x800000)},
- 	.eic_cfg_bits = {.phys = CALLIOPE_ADDR(0x800038)},
- 	.eic_ready_status = {.phys = CALLIOPE_ADDR(0x80004c)},
-diff --git a/arch/mips/powertv/asic/asic-cronus.c b/arch/mips/powertv/asic/asic-cronus.c
-index bbc0c12..da076db 100644
---- a/arch/mips/powertv/asic/asic-cronus.c
-+++ b/arch/mips/powertv/asic/asic-cronus.c
-@@ -28,7 +28,7 @@
- 
- #define CRONUS_ADDR(x)	(CRONUS_IO_BASE + (x))
- 
--const struct register_map cronus_register_map __initdata = {
-+const struct register_map cronus_register_map __initconst = {
- 	.eic_slow0_strt_add = {.phys = CRONUS_ADDR(0x000000)},
- 	.eic_cfg_bits = {.phys = CRONUS_ADDR(0x000038)},
- 	.eic_ready_status = {.phys = CRONUS_ADDR(0x00004C)},
-diff --git a/arch/mips/powertv/asic/asic-gaia.c b/arch/mips/powertv/asic/asic-gaia.c
-index 91dda68..47683b3 100644
---- a/arch/mips/powertv/asic/asic-gaia.c
-+++ b/arch/mips/powertv/asic/asic-gaia.c
-@@ -23,7 +23,7 @@
- #include <linux/init.h>
- #include <asm/mach-powertv/asic.h>
- 
--const struct register_map gaia_register_map __initdata = {
-+const struct register_map gaia_register_map __initconst = {
- 	.eic_slow0_strt_add = {.phys = GAIA_IO_BASE + 0x000000},
- 	.eic_cfg_bits = {.phys = GAIA_IO_BASE + 0x000038},
- 	.eic_ready_status = {.phys = GAIA_IO_BASE + 0x00004C},
-diff --git a/arch/mips/powertv/asic/asic-zeus.c b/arch/mips/powertv/asic/asic-zeus.c
-index 4a05bb0..6ff4b10 100644
---- a/arch/mips/powertv/asic/asic-zeus.c
-+++ b/arch/mips/powertv/asic/asic-zeus.c
-@@ -28,7 +28,7 @@
- 
- #define ZEUS_ADDR(x)	(ZEUS_IO_BASE + (x))
- 
--const struct register_map zeus_register_map __initdata = {
-+const struct register_map zeus_register_map __initconst = {
- 	.eic_slow0_strt_add = {.phys = ZEUS_ADDR(0x000000)},
- 	.eic_cfg_bits = {.phys = ZEUS_ADDR(0x000038)},
- 	.eic_ready_status = {.phys = ZEUS_ADDR(0x00004c)},
--- 
-1.7.9.5
+g.

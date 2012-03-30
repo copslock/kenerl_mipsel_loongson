@@ -1,134 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2012 12:01:05 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:39129 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903609Ab2C3KAy (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2012 12:00:54 +0200
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.72)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1SDYc7-0004Tg-IU; Fri, 30 Mar 2012 11:59:23 +0200
-Received: from ukl by dude.hi.pengutronix.de with local (Exim 4.77)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1SDYbk-0004Z4-0y; Fri, 30 Mar 2012 11:59:00 +0200
-Date:   Fri, 30 Mar 2012 11:59:00 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
-        Anatolij Gustschin <agust@denx.de>,
-        Andreas Koensgen <ajk@comnets.uni-bremen.de>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andrew Victor <linux@maxim.org.za>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Barry Song <baohua.song@csr.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Bryan Huntsman <bryanh@codeaurora.org>,
-        cbe-oss-dev@lists.ozlabs.org,
-        Christoph Lameter <cl@linux-foundation.org>,
-        Daniel Walker <dwalker@fifo99.com>,
-        David Brown <davidb@codeaurora.org>,
-        David Howells <dhowells@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Woodhouse <dwmw2@infradead.org>,
-        davinci-linux-open-source@linux.davincidsp.com,
-        Eric Miao <eric.y.miao@gmail.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Guenter Roeck <guenter.roeck@ericsson.com>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Henrique de Moraes Holschuh <ibm-acpi@hmh.eng.br>,
-        ibm-acpi-devel@lists.sourceforge.net,
-        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-        Jean Delvare <khali@linux-fr.org>,
-        Jean-Paul Roubelat <jpr@f6fbb.org>,
-        Joerg Reuter <jreuter@yaina.de>,
-        Josh Boyer <jwboyer@gmail.com>, Kevin Hilman <khilman@ti.com>,
-        Klaus Kudielka <klaus.kudielka@ieee.org>,
-        Kukjin Kim <kgene.kim@samsung.com>,
-        Kumar Gala <galak@kernel.crashing.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Lennert Buytenhek <kernel@wantstofly.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Linus Walleij <linus.walleij@stericsson.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mips@linux-mips.org,
-        linux-mm@kvack.org, linux-mtd@lists.infradead.org,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-samsung-soc@vger.kernel.org, lm-sensors@lm-sensors.org,
-        Lucas De Marchi <lucas.demarchi@profusion.mobi>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@atmel.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Paul Mackerras <paulus@samba.org>,
-        platform-driver-x86@vger.kernel.org,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Randy Dunlap <rdunlap@xenotime.net>,
-        Russell King <linux@arm.linux.org.uk>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Sekhar Nori <nsekhar@ti.com>, Shawn Guo <shawn.guo@linaro.org>,
-        Tejun Heo <tj@kernel.org>,
-        Tomasz Stanislawski <t.stanislaws@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 00/17] mark const init data with __initconst instead of
- __initdata
-Message-ID: <20120330095859.GT15647@pengutronix.de>
-References: <20120329211131.GA31250@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2012 14:20:02 +0200 (CEST)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:54724 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903696Ab2C3MT6 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2012 14:19:58 +0200
+Received: by bkcjk13 with SMTP id jk13so573860bkc.36
+        for <linux-mips@linux-mips.org>; Fri, 30 Mar 2012 05:19:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:x-gm-message-state:content-type
+         :content-transfer-encoding;
+        bh=/mtXg0RFQbxbH1FF5p7Ydyc6CcCXbu2SzUznrzCudQ8=;
+        b=bZ5X5ELBCVqxrkxIpZyx/a/2fYDF3sVnMfPFzhYHSEM6V4LdsHM++1OqMyrl+NPCru
+         +DBWWcR1B/g60T3rKv+SMUZe/UyRfyo3tYaaXvaBmVbzfdA7i4K91c400M9+CSjFqW5r
+         nbWpDNAz31ExZOH7Om4XqvaXLbjXfJA7R4FKSQEIvCxD/rIg0E2fq4Y/Zn/F/hxQfOMG
+         fM+5xAWKyGfMWFdicDNC18dsm9Y5zKrLEoGtoLm3RgxRFYPCbNdR/Cl7s7urtjFVXMfU
+         vHW+z1BLZvTycGxNnD8xqFFstj3jii2XPaU7kAMr10pkOyfgHYjm5WMdOf+qCemsTD6G
+         XjSA==
+Received: by 10.204.136.198 with SMTP id s6mr837520bkt.129.1333109991860;
+        Fri, 30 Mar 2012 05:19:51 -0700 (PDT)
+Received: from [192.168.2.2] (ppp91-79-89-254.pppoe.mtu-net.ru. [91.79.89.254])
+        by mx.google.com with ESMTPS id r14sm20351565bkv.11.2012.03.30.05.19.48
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 30 Mar 2012 05:19:49 -0700 (PDT)
+Message-ID: <4F75A48F.8010307@mvista.com>
+Date:   Fri, 30 Mar 2012 16:18:23 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko/20120327 Thunderbird/11.0.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20120329211131.GA31250@pengutronix.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:21e:67ff:fe11:9c5c
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-X-archive-position: 32824
+To:     Maarten ter Huurne <maarten@treewalker.org>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?ISO-8859-1?Q?Llu=EDs_Batlle_i_Rossell?= <viric@viric.name>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] MIPS: Enable vmlinuz for JZ4740
+References: <1333037360-18382-1-git-send-email-maarten@treewalker.org> <4F74E210.70707@mvista.com> <3042754.g6sLXu44Oc@hyperion>
+In-Reply-To: <3042754.g6sLXu44Oc@hyperion>
+X-Gm-Message-State: ALoCoQn7cLpCWBd5URcpc9dy1/RFFBwrtqCPyFqQUZS59+M4bN6FklvDrUZpToxXhr9Eg8bHgtGj
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ukl@pengutronix.de
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, Mar 29, 2012 at 11:11:31PM +0200, Uwe Kleine-König wrote:
-> Hello,
-> 
-> this series fixes a common error to use __initdata to mark const
-> variables. Most of the time this works well enough to go unnoticed
-> (though I wonder why the linker doesn't warn about that).
-> Just try adding something like
-> 
-> 	int something __initdata;
-> 
-> to one of the patched files and compile to see the error.
-> 
-> While touching these annotations I also corrected the position where it
-> was wrong to go between the variable name and the =.
-> 
-> Note this series is not compile tested.
-After a question by Shawn Guo I noticed that my command to do the changes
-was to lax and changed things that must not be changed (at least not
-with further care). Affected are lines like:
+Hello.
 
-	static const char *at91_dt_board_compat[] __initconst = {
+On 30-03-2012 13:53, Maarten ter Huurne wrote:
 
-While at91_dt_board_compat[0] is const, at91_dt_board_compat is not.
+> [...]
 
-I will send a fixed series later today.
+>>> +ifeq ($(CONFIG_MACH_JZ4740),y)
+>>> +VMLINUZ_LOAD_ADDRESS:=0x80600000
 
-Best regards
-Uwe
+>>      Spaces around :=, please. And why this should be out of order case?
 
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> I can add spaces, no problem.
+
+> I don't understand your question though. Do you mean why there is a
+> different address for the JZ4740 platform? Or why the variable name is in
+> upper case? Or something else?
+
+    I should have said: why the variable is handled as a special case for JZ4740?
+
+> Bye,
+> 		Maarten
+
+WBR, Sergei

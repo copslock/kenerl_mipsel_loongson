@@ -1,83 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2012 00:30:14 +0200 (CEST)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:34131 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903600Ab2C2WaH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2012 00:30:07 +0200
-Received: by bkcjk13 with SMTP id jk13so24708bkc.36
-        for <linux-mips@linux-mips.org>; Thu, 29 Mar 2012 15:30:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=oNPAOjGYD0AqqZHcA+AYIq0ZdYFfGGfK7Ej4OjiPGyo=;
-        b=T2wwGaqdlwKn24Ct27qhGGDkT6JzXV/OtqKmIks/wBdckv1wyxncSR7b9zEAPWY2lI
-         BxDhTwSL41IZ0JVJe/tKRPdQBwrRFyjEnHRAS/8DxfooOLoJw2qHHv0fIo8WHk0cHc98
-         rtmHmAGOECEoHLJMlfvbhzyVwy4m60Z5IRumsi9l0lmuZdgPDbIXhIKPlcAkWQ+8s0vJ
-         G7Rw2jSN4IxKCEpbk8JosOK6U4t6UbvmBF7PyYtrd6skVIHuD//yV84S8wdDtMAVKSgA
-         cgmFDoVhXOnNUPNdkHC4crUEPVg469LVdGzKaVFX35ejgsOX2tlHH//seWi5/fnPeHui
-         3SMQ==
-Received: by 10.205.137.15 with SMTP id im15mr14664255bkc.54.1333060200604;
-        Thu, 29 Mar 2012 15:30:00 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-67-22.pppoe.mtu-net.ru. [91.79.67.22])
-        by mx.google.com with ESMTPS id o22sm5719260bko.2.2012.03.29.15.29.58
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 29 Mar 2012 15:29:59 -0700 (PDT)
-Message-ID: <4F74E210.70707@mvista.com>
-Date:   Fri, 30 Mar 2012 02:28:32 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko/20120327 Thunderbird/11.0.1
-MIME-Version: 1.0
-To:     Maarten ter Huurne <maarten@treewalker.org>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        =?UTF-8?B?TGx1w61zIEJhdGxsZSBpIFJvc3NlbGw=?= <viric@viric.name>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Mar 2012 11:47:28 +0200 (CEST)
+Received: from smtp-vbr6.xs4all.nl ([194.109.24.26]:4683 "EHLO
+        smtp-vbr6.xs4all.nl" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903608Ab2C3JrV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 30 Mar 2012 11:47:21 +0200
+Received: from starbug-2.trinair2002 (dhcp-089-098-069-120.chello.nl [89.98.69.120])
+        (authenticated bits=0)
+        by smtp-vbr6.xs4all.nl (8.13.8/8.13.8) with ESMTP id q2U9ktRp024520;
+        Fri, 30 Mar 2012 11:46:55 +0200 (CEST)
+        (envelope-from maarten@treewalker.org)
+Received: from hyperion.localnet (hyperion.trinair2002 [192.168.0.43])
+        by starbug-2.trinair2002 (Postfix) with ESMTP id DCB633DF2B;
+        Fri, 30 Mar 2012 11:46:54 +0200 (CEST)
+From:   Maarten ter Huurne <maarten@treewalker.org>
+To:     Sergei Shtylyov <sshtylyov@mvista.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        =?ISO-8859-1?Q?Llu=EDs?= Batlle i Rossell <viric@viric.name>,
         Lars-Peter Clausen <lars@metafoo.de>
 Subject: Re: [PATCH] MIPS: Enable vmlinuz for JZ4740
-References: <1333037360-18382-1-git-send-email-maarten@treewalker.org>
-In-Reply-To: <1333037360-18382-1-git-send-email-maarten@treewalker.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Gm-Message-State: ALoCoQkxDrh4WOYeI/u6ZWF1dZ2dX+diS2tC+joEt2ZjjwJQvicdZ+BSOHt6fbP99zb0Y0uUYlWo
-X-archive-position: 32822
+Date:   Fri, 30 Mar 2012 11:53:12 +0200
+Message-ID: <3042754.g6sLXu44Oc@hyperion>
+User-Agent: KMail/4.8.0 (Linux/3.1.9-1.4-default; KDE/4.8.1; x86_64; ; )
+In-Reply-To: <4F74E210.70707@mvista.com>
+References: <1333037360-18382-1-git-send-email-maarten@treewalker.org> <4F74E210.70707@mvista.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Virus-Scanned: by XS4ALL Virus Scanner
+X-archive-position: 32823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: maarten@treewalker.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+On Friday 30 March 2012 02:28:32 Sergei Shtylyov wrote:
 
-On 29-03-2012 20:09, Maarten ter Huurne wrote:
-
-> From: Lluís Batlle i Rossell<viric@viric.name>
-
-> This patch adds support for building a compressed kernel for the JZ4740
-> architecture.
->
-> Signed-off-by: Lars-Peter Clausen<lars@metafoo.de>
-> Signed-off-by: Maarten ter Huurne<maarten@treewalker.org>
 [...]
 
-> diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
-> index 5042d51..71d89cb 100644
-> --- a/arch/mips/boot/compressed/Makefile
-> +++ b/arch/mips/boot/compressed/Makefile
-> @@ -58,8 +58,12 @@ $(obj)/piggy.o: $(obj)/dummy.o $(obj)/vmlinux.bin.z FORCE
->   # Calculate the load address of the compressed kernel image
->   hostprogs-y := calc_vmlinuz_load_addr
->
-> +ifeq ($(CONFIG_MACH_JZ4740),y)
-> +VMLINUZ_LOAD_ADDRESS:=0x80600000
+> > +ifeq ($(CONFIG_MACH_JZ4740),y)
+> > +VMLINUZ_LOAD_ADDRESS:=0x80600000
+> 
+>     Spaces around :=, please. And why this should be out of order case?
 
-    Spaces around :=, please. And why this should be out of order case?
+I can add spaces, no problem.
 
-> +else
->   VMLINUZ_LOAD_ADDRESS = $(shell $(obj)/calc_vmlinuz_load_addr \
->   		$(obj)/vmlinux.bin $(VMLINUX_LOAD_ADDRESS))
-> +endif
->
->   vmlinuzobjs-y += $(obj)/piggy.o
+I don't understand your question though. Do you mean why there is a 
+different address for the JZ4740 platform? Or why the variable name is in 
+upper case? Or something else?
 
-WBR, Sergei
+Bye,
+		Maarten

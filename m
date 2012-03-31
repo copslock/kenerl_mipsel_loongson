@@ -1,34 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2012 22:44:18 +0200 (CEST)
-Received: from e31.co.us.ibm.com ([32.97.110.149]:46904 "EHLO
-        e31.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903698Ab2CaUoF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2012 22:44:05 +0200
-Received: from /spool/local
-        by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <paulmck@linux.vnet.ibm.com>;
-        Sat, 31 Mar 2012 14:43:58 -0600
-Received: from d03dlp01.boulder.ibm.com (9.17.202.177)
-        by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Sat, 31 Mar 2012 14:43:44 -0600
-Received: from d03relay03.boulder.ibm.com (d03relay03.boulder.ibm.com [9.17.195.228])
-        by d03dlp01.boulder.ibm.com (Postfix) with ESMTP id 932581FF0048
-        for <linux-mips@linux-mips.org>; Sat, 31 Mar 2012 14:43:43 -0600 (MDT)
-Received: from d03av01.boulder.ibm.com (d03av01.boulder.ibm.com [9.17.195.167])
-        by d03relay03.boulder.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id q2VKhiIr186020
-        for <linux-mips@linux-mips.org>; Sat, 31 Mar 2012 14:43:44 -0600
-Received: from d03av01.boulder.ibm.com (loopback [127.0.0.1])
-        by d03av01.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id q2VKhgrs020781
-        for <linux-mips@linux-mips.org>; Sat, 31 Mar 2012 14:43:43 -0600
-Received: from paulmck-ThinkPad-W500 (sig-9-49-152-53.mts.ibm.com [9.49.152.53])
-        by d03av01.boulder.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id q2VKhfwd020771;
-        Sat, 31 Mar 2012 14:43:42 -0600
-Received: by paulmck-ThinkPad-W500 (Postfix, from userid 1000)
-        id C5519E4ABB; Sat, 31 Mar 2012 13:43:32 -0700 (PDT)
-Date:   Sat, 31 Mar 2012 13:43:32 -0700
-From:   "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-To:     Randy Dunlap <rdunlap@xenotime.net>
-Cc:     Linas Vepstas <linasvepstas@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 31 Mar 2012 23:00:32 +0200 (CEST)
+Received: from mail-wg0-f43.google.com ([74.125.82.43]:45081 "EHLO
+        mail-wg0-f43.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903631Ab2CaVAS (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 31 Mar 2012 23:00:18 +0200
+Received: by wgbdr12 with SMTP id dr12so1367604wgb.24
+        for <linux-mips@linux-mips.org>; Sat, 31 Mar 2012 14:00:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:from:to:cc:in-reply-to:references:content-type:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        bh=cvvbGMem4llGGSx7vHAzopZWFJXuOPwRRXOuYBt14BA=;
+        b=Eh/BPLX58xPJw2TTpkmhXwMk53mByIXhcxI4BhB7l68ZBbnmnqR1hyNdlVOwZRiRFW
+         AHYcKDHrfHcL/C0JW3Lj3Cqj+IRZNbF5lB/mROhbfoSQnmWixAzEQGHYfmeaHeeYRS8P
+         Qq/12wGVWCIo+9NBu4oXc/gc8ObJ41DdevBIe1onk9UL+KU+cAJiXo9C+53uJvRLsWjb
+         lNYPwXHPwqkTY+YogostbbUYYinjv8PP3tajMo62Ul9kRr1u176AYyIF1KKwZHeSiK2k
+         D/gTPitONv60mxfncwAsosrryDORmQ9yeGUYkl+D1w/98WZkTmgzAeljz5POVmcjbAej
+         s1ww==
+Received: by 10.180.88.199 with SMTP id bi7mr9309940wib.12.1333227613215;
+        Sat, 31 Mar 2012 14:00:13 -0700 (PDT)
+Received: from [192.168.179.45] ([74.125.122.49])
+        by mx.google.com with ESMTPS id j3sm30752149wiw.1.2012.03.31.14.00.09
+        (version=SSLv3 cipher=OTHER);
+        Sat, 31 Mar 2012 14:00:12 -0700 (PDT)
+Subject: Re: [PATCH RFC] Simplify the Linux kernel by reducing its state
+ space
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+To:     paulmck@linux.vnet.ibm.com
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         uclinux-dist-devel@blackfin.uclinux.org,
         linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
@@ -39,48 +37,48 @@ Cc:     Linas Vepstas <linasvepstas@gmail.com>,
         sparclinux@vger.kernel.org, tglx@linutronix.de,
         linux@arm.linux.org.uk, dhowells@redhat.com, jejb@parisc-linux.org,
         linux390@de.ibm.com, x86@kernel.org, cmetcalf@tilera.com
-Subject: Re: [PATCH RFC] Simplify the Linux kernel by reducing its state space
-Message-ID: <20120331204332.GH2450@linux.vnet.ibm.com>
-Reply-To: paulmck@linux.vnet.ibm.com
+In-Reply-To: <20120331163321.GA15809@linux.vnet.ibm.com>
 References: <20120331163321.GA15809@linux.vnet.ibm.com>
- <20120331201500.GA27640@linas.org>
- <4F77681E.5010608@xenotime.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4F77681E.5010608@xenotime.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 12033120-7282-0000-0000-000007D474E2
-X-archive-position: 32843
+Content-Type: text/plain; charset="UTF-8"
+Date:   Sat, 31 Mar 2012 23:00:08 +0200
+Message-ID: <1333227608.2325.4054.camel@edumazet-glaptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulmck@linux.vnet.ibm.com
+X-original-sender: eric.dumazet@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, Mar 31, 2012 at 01:25:02PM -0700, Randy Dunlap wrote:
-> On 03/31/2012 01:15 PM, Linas Vepstas wrote:
+On Sun, 2012-04-01 at 00:33 +0800, Paul E. McKenney wrote:
+> Although there have been numerous complaints about the complexity of
+> parallel programming (especially over the past 5-10 years), the plain
+> truth is that the incremental complexity of parallel programming over
+> that of sequential programming is not as large as is commonly believed.
+> Despite that you might have heard, the mind-numbing complexity of modern
+> computer systems is not due so much to there being multiple CPUs, but
+> rather to there being any CPUs at all.  In short, for the ultimate in
+> computer-system simplicity, the optimal choice is NR_CPUS=0.
 > 
-> > 
-> > Hi,
-> > 
-> > I didn't actually try to compile the patch below; it didn't look like
-> > C code so I wasn't sure what compiler to run it through.  I guess maybe
-> > its python?  However, I'm very sure that the patches are completely
-> > correct, because I read them, and I also know Paul.  And I've heard of
-> > Thomas Gleixner.
+> This commit therefore limits kernel builds to zero CPUs.  This change
+> has the beneficial side effect of rendering all kernel bugs harmless.
+> Furthermore, this commit enables additional beneficial changes, for
+> example, the removal of those parts of the kernel that are not needed
+> when there are zero CPUs.
 > 
-> 
-> x86_64 defconfig has many build errors and warnings.  :(
+> Signed-off-by: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+> ---
 
-I suggest removing the code containing the errors and warnings.  I bet
-that the offending code is not needed when running with zero CPUs.
+Hmm... I believe you could go one step forward and allow negative values
+as well. Antimatter was proven to exist after all.
 
-> back to my abacus.
+Hint : nr_cpu_ids is an "int", not an "unsigned int"
 
-;-)
+Bonus: Existing bugs become "must have" features.
 
-							Thanx, Paul
+Of course there is no hurry and this can wait 365 days.

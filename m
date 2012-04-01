@@ -1,91 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Apr 2012 07:56:34 +0200 (CEST)
-Received: from ozlabs.org ([203.10.76.45]:38444 "EHLO ozlabs.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Apr 2012 12:04:55 +0200 (CEST)
+Received: from mail.skyhub.de ([78.46.96.112]:56907 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903638Ab2DAF4Y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sun, 1 Apr 2012 07:56:24 +0200
-Received: by ozlabs.org (Postfix, from userid 1011)
-        id B01DDB6EEC; Sun,  1 Apr 2012 15:56:18 +1000 (EST)
-From:   Rusty Russell <rusty@rustcorp.com.au>
-To:     "Linus Torvalds" <torvalds@linux-foundation.org>
-Cc:     "LKML" <linux-kernel@vger.kernel.org>
-Cc:     Chris Metcalf <cmetcalf@tilera.com> (arch/tile)
-Cc:     cpufreq@vger.kernel.org
-Cc:     Dave Jones <davej@redhat.com>
-Cc:     Helge Deller <deller@gmx.de>
-Cc:     Jonas Aaberg <jonas.aberg@stericsson.com>
-Cc:     Kyle McMartin <kyle@mcmartin.ca>
-Cc:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-hexagon@vger.kernel.org
-Cc:     linux-mips@linux-mips.org
-Cc:     Martin Persson <martin.persson@stericsson.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Richard Kuo <rkuo@codeaurora.org>
-Cc:     Russell King <linux@arm.linux.org.uk>
-Cc:     Sundar Iyer <sundar.iyer@stericsson.com>
-Cc:     user-mode-linux-devel@lists.sourceforge.net
-Subject: [PULL] cpumask cleanups
-User-Agent: Notmuch/0.6.1-1 (http://notmuchmail.org) Emacs/23.3.1 (i686-pc-linux-gnu)
-Date:   Sun, 01 Apr 2012 15:25:50 +0930
-Message-ID: <87sjgovvvd.fsf@rustcorp.com.au>
+        id S1903642Ab2DAKEv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Sun, 1 Apr 2012 12:04:51 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4487F1D9C11;
+        Sun,  1 Apr 2012 12:04:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=alien8.de; s=alien8;
+        t=1333274690; bh=fgfW1dIwbkHrIwNqgGQYRlP+jtXz1e1sbfrsBb6KgmY=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To; b=YaX6/gEGQne0Sa4MLA6gXja4tar7YIHIlSnZZy
+        Hv2rbpF08atGOYiVww/ccmWVM0IJDn4VoPI5BAvKkqaxR8EGg9ra+1IGoNFEPIEpvDp
+        2VBWYpevhqiniR5klEScrQY03tribAqda01SWT34RpeQinIZdpS9pPDX2IamL4Vnyc=
+X-Virus-Scanned: Nedap ESD1 at mail.skyhub.de
+Received: from mail.skyhub.de ([127.0.0.1])
+        by localhost (door.skyhub.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id a4sRHMOeaefi; Sun,  1 Apr 2012 12:04:50 +0200 (CEST)
+Received: from liondog.tnic (p4FF1D52B.dip.t-dialin.net [79.241.213.43])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A52D71D9B04;
+        Sun,  1 Apr 2012 12:04:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=alien8.de; s=alien8;
+        t=1333274689; bh=fgfW1dIwbkHrIwNqgGQYRlP+jtXz1e1sbfrsBb6KgmY=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To; b=BdGci+M7wnSfbDrg7Zjh5aTbjEidehfCbQY8Bw
+        oTqjS9ycftxmrSI0Nr0Ndaz/kfLkqlH9BNgdvadcKVZ87Txawq/voaoPLnTUeNj4FJs
+        KCwdy2/0dwU6zs4KHpgZ8Haex+De2enfOZ5nyOxYegw3khCPoCTx+Fjjm7DgNusIqs=
+Received: by liondog.tnic (Postfix, from userid 1000)
+        id 455264B8D46; Sun,  1 Apr 2012 12:04:48 +0200 (CEST)
+Date:   Sun, 1 Apr 2012 12:04:48 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, tglx@linutronix.de,
+        linux@arm.linux.org.uk, dhowells@redhat.com, jejb@parisc-linux.org,
+        linux390@de.ibm.com, x86@kernel.org, cmetcalf@tilera.com
+Subject: Re: [PATCH RFC] Simplify the Linux kernel by reducing its state space
+Message-ID: <20120401100448.GD14848@liondog.tnic>
+Mail-Followup-To: Borislav Petkov <bp@alien8.de>,
+        "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        uclinux-dist-devel@blackfin.uclinux.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m32r@ml.linux-m32r.org, linux-m32r-ja@ml.linux-m32r.org,
+        linux-mips@linux-mips.org, linux-am33-list@redhat.com,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, tglx@linutronix.de,
+        linux@arm.linux.org.uk, dhowells@redhat.com, jejb@parisc-linux.org,
+        linux390@de.ibm.com, x86@kernel.org, cmetcalf@tilera.com
+References: <20120331163321.GA15809@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-archive-position: 32850
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20120331163321.GA15809@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 32851
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rusty@rustcorp.com.au
+X-original-sender: bp@alien8.de
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-(Somehow forgot to send this out; it's been sitting in linux-next, and
-if you don't want it, it can sit there another cycle)
+On Sun, Apr 01, 2012 at 12:33:21AM +0800, Paul E. McKenney wrote:
+> Although there have been numerous complaints about the complexity of
+> parallel programming (especially over the past 5-10 years), the plain
+> truth is that the incremental complexity of parallel programming over
+> that of sequential programming is not as large as is commonly believed.
+> Despite that you might have heard, the mind-numbing complexity of modern
+> computer systems is not due so much to there being multiple CPUs, but
+> rather to there being any CPUs at all.  In short, for the ultimate in
+> computer-system simplicity, the optimal choice is NR_CPUS=0.
+> 
+> This commit therefore limits kernel builds to zero CPUs.  This change
+> has the beneficial side effect of rendering all kernel bugs harmless.
+> Furthermore, this commit enables additional beneficial changes, for
+> example, the removal of those parts of the kernel that are not needed
+> when there are zero CPUs.
+> 
+> Signed-off-by: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
 
-To git@github.com:rustyrussell/linux.git
-   f946eeb..615399c  master -> master
- + 9dcbe9d...6ac67b9 for-linus -> for-linus (forced update)
-The following changes since commit b5174fa3a7f4f8f150bfa3b917c92608953dfa0f:
+Looks good, thanks for doing that.
 
-  Merge tag 'mmc-merge-for-3.4-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/cjb/mmc (2012-03-28 20:59:45 -0700)
+Btw, I just got confirmation from hw folk that we can actually give you
+hardware support for that code with an upcoming CPU which has NR_CPUS=0
+cores.
 
-are available in the git repository at:
+Oh, and additionally, we can disable some of those so getting into the
+negative is also doable from the hw perspective, so feel free to explore
+that side of the problem too.
 
-  git://github.com/rustyrussell/linux.git master
+ACK.
 
-Rusty Russell (4):
-      remove references to cpu_*_map in arch/
-      drivers/cpufreq/db8500-cpufreq: remove references to cpu_*_map.
-      documentation: remove references to cpu_*_map.
-      cpumask: remove old cpu_*_map.
-
- Documentation/cgroups/cpusets.txt   |    2 +-
- Documentation/cpu-hotplug.txt       |   22 +++++++++++-----------
- arch/alpha/kernel/smp.c             |    2 +-
- arch/arm/kernel/kprobes.c           |    4 ++--
- arch/arm/kernel/smp.c               |    7 ++++---
- arch/hexagon/kernel/smp.c           |    8 ++++----
- arch/ia64/kernel/acpi.c             |    2 +-
- arch/mips/cavium-octeon/smp.c       |    4 ++--
- arch/mips/kernel/mips-mt-fpaff.c    |    2 +-
- arch/mips/kernel/proc.c             |    2 +-
- arch/mips/kernel/smp-bmips.c        |    2 +-
- arch/mips/kernel/smp.c              |   27 ++++++++++++---------------
- arch/mips/kernel/smtc.c             |    2 +-
- arch/mips/mm/c-octeon.c             |    6 +++---
- arch/mips/netlogic/common/smp.c     |    6 +++---
- arch/mips/pmc-sierra/yosemite/smp.c |    8 ++++----
- arch/mips/sgi-ip27/ip27-smp.c       |    2 +-
- arch/mips/sibyte/bcm1480/smp.c      |    7 +++----
- arch/mips/sibyte/sb1250/smp.c       |    7 +++----
- arch/sparc/kernel/leon_kernel.c     |    6 +++---
- arch/tile/kernel/setup.c            |    8 ++++----
- arch/um/kernel/skas/process.c       |    2 +-
- arch/um/kernel/smp.c                |    9 ++++-----
- arch/x86/xen/enlighten.c            |    2 +-
- drivers/cpufreq/db8500-cpufreq.c    |    2 +-
- include/linux/cpumask.h             |    6 ------
- init/Kconfig                        |    4 ++--
- kernel/cpuset.c                     |   10 +++++-----
- 28 files changed, 80 insertions(+), 91 deletions(-)
 -- 
-  How could I marry someone with more hair than me?  http://baldalex.org
+Regards/Gruss,
+    Boris.

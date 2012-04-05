@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Apr 2012 21:01:00 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:33565 "EHLO
-        guruplug.inter.net" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1904016Ab2DETAq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Apr 2012 21:00:46 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Apr 2012 22:27:03 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:33662 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1904025Ab2DEU0y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 5 Apr 2012 22:26:54 +0200
 Received: from solomon.inter.net ([10.0.0.2])
         by guruplug.inter.net with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SFrvB-0002Hn-8R; Thu, 05 Apr 2012 14:00:37 -0500
+        id 1SFtGX-0002eA-80; Thu, 05 Apr 2012 15:26:45 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>, sjhill@realitydiluted.com
-Subject: [PATCH] Update core files for the MALTA platform.
-Date:   Thu,  5 Apr 2012 14:00:24 -0500
-Message-Id: <1333652424-9298-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH v2] Update core files for the MALTA platform.
+Date:   Thu,  5 Apr 2012 15:26:37 -0500
+Message-Id: <1333657597-10355-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
-X-archive-position: 32861
+X-archive-position: 32862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,8 +26,8 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-fad
-fadsfdassadfdfa
+Add newer 1074K core support which also includes needed updates
+to the SMVP and SMTC core code and GIC controller.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---

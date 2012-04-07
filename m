@@ -1,21 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 19:00:06 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:36633 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 19:10:37 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:36649 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904124Ab2DGQ76 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 18:59:58 +0200
+        with ESMTP id S1904124Ab2DGRKa (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 19:10:30 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SGYzP-0004eZ-5Q; Sat, 07 Apr 2012 11:59:51 -0500
+        id 1SGYoq-0004dH-KR; Sat, 07 Apr 2012 11:48:56 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
-        "Steven J. Hill" <sjhill@mips.com>, Chris Dearman <chris@mips.com>
+Cc:     "Steven J. Hill" <sjhill@mips.com>, Chris Dearman <chris@mips.com>
 Subject: [PATCH 10/10] usb: host: mips: sead3: USB Host controller support for SEAD-3 platform.
-Date:   Sat,  7 Apr 2012 11:59:39 -0500
-Message-Id: <1333817979-30288-1-git-send-email-sjhill@mips.com>
+Date:   Sat,  7 Apr 2012 11:48:35 -0500
+Message-Id: <1333817315-30091-11-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
-X-archive-position: 32889
+In-Reply-To: <1333817315-30091-1-git-send-email-sjhill@mips.com>
+References: <1333817315-30091-1-git-send-email-sjhill@mips.com>
+X-archive-position: 32890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

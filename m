@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 18:50:25 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:36603 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 18:50:49 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:36604 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904118Ab2DGQs6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 18:48:58 +0200
+        with ESMTP id S1904119Ab2DGQs7 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 18:48:59 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SGYol-0004dH-Si; Sat, 07 Apr 2012 11:48:51 -0500
+        id 1SGYom-0004dH-T2; Sat, 07 Apr 2012 11:48:52 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 03/10] MIPS: Add support for the M14K core.
-Date:   Sat,  7 Apr 2012 11:48:28 -0500
-Message-Id: <1333817315-30091-4-git-send-email-sjhill@mips.com>
+Subject: [PATCH 04/10] MIPS: Add micro-assembler support for 'ins' and 'ext' instructions.
+Date:   Sat,  7 Apr 2012 11:48:29 -0500
+Message-Id: <1333817315-30091-5-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
 In-Reply-To: <1333817315-30091-1-git-send-email-sjhill@mips.com>
 References: <1333817315-30091-1-git-send-email-sjhill@mips.com>
-X-archive-position: 32881
+X-archive-position: 32882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,158 +27,137 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-This patch depends on the 1074K core support patch being
-applied first.
+Add the MIPS32R2 'ins' and 'ext' instructions for use by the
+kernel's micro-assembler.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/cpu.h          |    5 +++--
- arch/mips/kernel/cpu-probe.c         |   10 +++++++++-
- arch/mips/mm/c-r4k.c                 |    1 +
- arch/mips/mm/tlbex.c                 |    4 +++-
- arch/mips/oprofile/common.c          |    1 +
- arch/mips/oprofile/op_model_mipsxx.c |    4 ++++
- 6 files changed, 21 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/uasm.h |   15 +++++++++++++++
+ arch/mips/mm/tlbex.c         |   17 +++++++++++++++++
+ arch/mips/mm/uasm.c          |   15 +++++++++++++++
+ 3 files changed, 47 insertions(+)
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index ddd8b4a..00e5adf 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -95,6 +95,7 @@
- #define PRID_IMP_74K		0x9700
- #define PRID_IMP_1004K		0x9900
- #define PRID_IMP_1074K		0x9a00
-+#define PRID_IMP_14K		0x9c00
+diff --git a/arch/mips/include/asm/uasm.h b/arch/mips/include/asm/uasm.h
+index 504d40a..f400629 100644
+--- a/arch/mips/include/asm/uasm.h
++++ b/arch/mips/include/asm/uasm.h
+@@ -60,6 +60,16 @@ void __uasminit uasm_i##op(u32 **buf, unsigned int a, signed int b)
  
- /*
-  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
-@@ -261,7 +262,7 @@ enum cpu_type_enum {
- 	 */
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
--	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K,
-+	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K, CPU_14K,
+ #define Ip_0(op) void __uasminit uasm_i##op(u32 **buf)
  
- 	/*
- 	 * MIPS64 class processors
-@@ -289,7 +290,7 @@ enum cpu_type_enum {
- #define MIPS_CPU_ISA_M64R2	0x00000100
- 
- #define MIPS_CPU_ISA_32BIT (MIPS_CPU_ISA_I | MIPS_CPU_ISA_II | \
--	MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2 )
-+	MIPS_CPU_ISA_M32R1 | MIPS_CPU_ISA_M32R2)
- #define MIPS_CPU_ISA_64BIT (MIPS_CPU_ISA_III | MIPS_CPU_ISA_IV | \
- 	MIPS_CPU_ISA_V | MIPS_CPU_ISA_M64R1 | MIPS_CPU_ISA_M64R2)
- 
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index cb1e2e9..0fccb8c 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -4,7 +4,7 @@
-  * Copyright (C) xxxx  the Anonymous
-  * Copyright (C) 1994 - 2006 Ralf Baechle
-  * Copyright (C) 2003, 2004  Maciej W. Rozycki
-- * Copyright (C) 2001, 2004  MIPS Inc.
-+ * Copyright (C) 2001, 2004, 2011  MIPS Technologies, Inc.
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-@@ -22,6 +22,7 @@
- #include <asm/cpu.h>
- #include <asm/fpu.h>
- #include <asm/mipsregs.h>
-+#include <asm/system.h>
- #include <asm/watch.h>
- #include <asm/elf.h>
- #include <asm/spram.h>
-@@ -199,6 +200,7 @@ void __init check_wait(void)
- 		cpu_wait = rm7k_wait_irqoff;
- 		break;
- 
-+	case CPU_14K:
- 	case CPU_24K:
- 	case CPU_34K:
- 	case CPU_1004K:
-@@ -743,6 +745,8 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 	        c->ases |= MIPS_ASE_MIPSMT;
- 	if (config3 & MIPS_CONF3_ULRI)
- 		c->options |= MIPS_CPU_ULRI;
-+	if (config3 & MIPS_CONF3_CTXTC)
-+		c->options |= MIPS_CPU_CTXTC;
- 
- 	return config3 & MIPS_CONF_M;
- }
-@@ -832,6 +836,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->cputype = CPU_74K;
- 		__cpu_name[cpu] = "MIPS 74Kc";
- 		break;
-+	case PRID_IMP_14K:
-+		c->cputype = CPU_14K;
-+		__cpu_name[cpu] = "MIPS 14Kc";
-+		break;
- 	case PRID_IMP_1004K:
- 		c->cputype = CPU_1004K;
- 		__cpu_name[cpu] = "MIPS 1004Kc";
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index efcf385..9cd86fa 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1073,6 +1073,7 @@ static void __cpuinit probe_pcache(void)
- 		/* fall through */
- bypass1074:
- 		;
-+	case CPU_14K:
- 	case CPU_24K:
- 	case CPU_34K:
- 	case CPU_1004K:
++#define Ip_bit_extract(op)					\
++void __cpuinit							\
++uasm_i##op(u32 **buf, unsigned int a, unsigned int b,		\
++		unsigned int c, unsigned int d)
++
++#define Ip_bit_insert(op)					\
++void __cpuinit							\
++uasm_i##op(u32 **buf, unsigned int a, unsigned int b,		\
++		unsigned int c, unsigned int d)
++
+ Ip_u2u1s3(_addiu);
+ Ip_u3u1u2(_addu);
+ Ip_u2u1u3(_andi);
+@@ -114,6 +124,8 @@ Ip_0(_tlbwi);
+ Ip_0(_tlbwr);
+ Ip_u3u1u2(_xor);
+ Ip_u2u1u3(_xori);
++Ip_bit_extract(_ext);
++Ip_bit_insert(_ins);
+ Ip_u2u1msbu3(_dins);
+ Ip_u2u1msbu3(_dinsm);
+ Ip_u1(_syscall);
+@@ -161,6 +173,9 @@ static inline void __uasminit uasm_l##lb(struct uasm_label **lab, u32 *addr) \
+ # define UASM_i_SC(buf, rs, rt, off) uasm_i_scd(buf, rs, rt, off)
+ # define UASM_i_LWX(buf, rs, rt, rd) uasm_i_ldx(buf, rs, rt, rd)
+ #else
++/* actually, the argument sequence is: rt, rs, pos, size. -- LY22 */
++# define UASM_i_EXT(buf, rs, rt, size, pos) uasm_i_ext(buf, rs, rt, size, pos)
++# define UASM_i_INS(buf, rs, rt, size, pos) uasm_i_ins(buf, rs, rt, size, pos)
+ # define UASM_i_LW(buf, rs, rt, off) uasm_i_lw(buf, rs, rt, off)
+ # define UASM_i_SW(buf, rs, rt, off) uasm_i_sw(buf, rs, rt, off)
+ # define UASM_i_SLL(buf, rs, rt, sh) uasm_i_sll(buf, rs, rt, sh)
 diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 0bc485b..a034229b 100644
+index a034229b..4db0d19 100644
 --- a/arch/mips/mm/tlbex.c
 +++ b/arch/mips/mm/tlbex.c
-@@ -8,7 +8,8 @@
-  * Copyright (C) 2004, 2005, 2006, 2008  Thiemo Seufer
-  * Copyright (C) 2005, 2007, 2008, 2009  Maciej W. Rozycki
-  * Copyright (C) 2006  Ralf Baechle (ralf@linux-mips.org)
-- * Copyright (C) 2008, 2009 Cavium Networks, Inc.
-+ * Copyright (C) 2008, 2009  Cavium Networks, Inc.
-+ * Copyright (C) 2011  MIPS Technologies, Inc.
-  *
-  * ... and the days got worse and worse and now you see
-  * I've gone completly out of my mind.
-@@ -494,6 +495,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 	case CPU_R14000:
- 	case CPU_4KC:
- 	case CPU_4KEC:
-+	case CPU_14K:
- 	case CPU_SB1:
- 	case CPU_SB1A:
- 	case CPU_4KSC:
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index 846faf7..b2e850e 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -78,6 +78,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+@@ -921,6 +921,13 @@ build_get_pgde32(u32 **p, unsigned int tmp, unsigned int ptr)
+ #endif
+ 	uasm_i_mfc0(p, tmp, C0_BADVADDR); /* get faulting address */
+ 	uasm_i_lw(p, ptr, uasm_rel_lo(pgdc), ptr);
++#ifdef CONFIG_32BIT
++	if (cpu_has_mips32r2) {
++		uasm_i_ext(p, tmp, tmp, PGDIR_SHIFT, (32 - PGDIR_SHIFT));
++		uasm_i_ins(p, ptr, tmp, PGD_T_LOG2, (32 - PGDIR_SHIFT));
++		return;
++	}
++#endif
+ 	uasm_i_srl(p, tmp, tmp, PGDIR_SHIFT); /* get pgd only bits */
+ 	uasm_i_sll(p, tmp, tmp, PGD_T_LOG2);
+ 	uasm_i_addu(p, ptr, ptr, tmp); /* add in pgd offset */
+@@ -956,6 +963,16 @@ static void __cpuinit build_adjust_context(u32 **p, unsigned int ctx)
  
- 	switch (current_cpu_type()) {
- 	case CPU_5KC:
-+	case CPU_14K:
- 	case CPU_20KC:
- 	case CPU_24K:
- 	case CPU_25KF:
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 13487a9..fdf3ce5 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -317,6 +317,10 @@ static int __init mipsxx_init(void)
+ static void __cpuinit build_get_ptep(u32 **p, unsigned int tmp, unsigned int ptr)
+ {
++#ifdef CONFIG_32BIT
++	if (cpu_has_mips32r2) {
++		/* For MIPS32R2, PTE ptr offset is obtained from BadVAddr */
++		UASM_i_MFC0(p, tmp, C0_BADVADDR);
++		UASM_i_LW(p, ptr, 0, ptr);
++		UASM_i_EXT(p, tmp, tmp, PAGE_SHIFT+1, PGDIR_SHIFT-PAGE_SHIFT-1);
++		UASM_i_INS(p, ptr, tmp, PTE_T_LOG2+1, PGDIR_SHIFT-PAGE_SHIFT-1);
++		return;
++	}
++#endif
+ 	/*
+ 	 * Bug workaround for the Nevada. It seems as if under certain
+ 	 * circumstances the move from cp0_context might produce a
+diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+index 5fa1851..fb6d8e27 100644
+--- a/arch/mips/mm/uasm.c
++++ b/arch/mips/mm/uasm.c
+@@ -63,6 +63,7 @@ enum opcode {
+ 	insn_bne, insn_cache, insn_daddu, insn_daddiu, insn_dmfc0,
+ 	insn_dmtc0, insn_dsll, insn_dsll32, insn_dsra, insn_dsrl,
+ 	insn_dsrl32, insn_drotr, insn_drotr32, insn_dsubu, insn_eret,
++	insn_ins, insn_ext,
+ 	insn_j, insn_jal, insn_jr, insn_ld, insn_ll, insn_lld,
+ 	insn_lui, insn_lw, insn_mfc0, insn_mtc0, insn_or, insn_ori,
+ 	insn_pref, insn_rfe, insn_sc, insn_scd, insn_sd, insn_sll,
+@@ -113,6 +114,8 @@ static struct insn insn_table[] __uasminitdata = {
+ 	{ insn_drotr32, M(spec_op, 1, 0, 0, 0, dsrl32_op), RT | RD | RE },
+ 	{ insn_dsubu, M(spec_op, 0, 0, 0, 0, dsubu_op), RS | RT | RD },
+ 	{ insn_eret,  M(cop0_op, cop_op, 0, 0, 0, eret_op),  0 },
++	{ insn_ins, M(spec3_op, 0, 0, 0, 0, ins_op), RS | RT | RD | RE },
++	{ insn_ext, M(spec3_op, 0, 0, 0, 0, ext_op), RS | RT | RD | RE },
+ 	{ insn_j,  M(j_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jal,  M(jal_op, 0, 0, 0, 0, 0),  JIMM },
+ 	{ insn_jr,  M(spec_op, 0, 0, 0, 0, jr_op),  RS },
+@@ -287,6 +290,16 @@ static void __uasminit build_insn(u32 **buf, enum opcode opc, ...)
+ 	(*buf)++;
+ }
  
- 	op_model_mipsxx_ops.num_counters = counters;
- 	switch (current_cpu_type()) {
-+	case CPU_14K:
-+		op_model_mipsxx_ops.cpu_type = "mips/14K";
-+		break;
-+
- 	case CPU_20KC:
- 		op_model_mipsxx_ops.cpu_type = "mips/20K";
- 		break;
++#define I_bit_extract(op)				\
++Ip_bit_extract(op)					\
++{							\
++	build_insn(buf, insn##op, b, a, d-1, c);	\
++}
++#define I_bit_insert(op)				\
++Ip_bit_insert(op)					\
++{							\
++	build_insn(buf, insn##op, b, a, c+d-1, c);	\
++}
+ #define I_u1u2u3(op)					\
+ Ip_u1u2u3(op)						\
+ {							\
+@@ -396,6 +409,8 @@ I_u2u1u3(_drotr)
+ I_u2u1u3(_drotr32)
+ I_u3u1u2(_dsubu)
+ I_0(_eret)
++I_bit_insert(_ins)
++I_bit_extract(_ext)
+ I_u1(_j)
+ I_u1(_jal)
+ I_u1(_jr)
 -- 
 1.7.9.6

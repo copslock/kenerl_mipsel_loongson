@@ -1,88 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 12:48:10 +0200 (CEST)
-Received: from mail-iy0-f177.google.com ([209.85.210.177]:53317 "EHLO
-        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1904105Ab2DGKrx convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Sat, 7 Apr 2012 12:47:53 +0200
-Received: by iaky10 with SMTP id y10so5002382iak.36
-        for <multiple recipients>; Sat, 07 Apr 2012 03:47:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding;
-        bh=zuv1IqXPti0IU5BmZ75kblFNCIACtH3XD1ImdEoTN1w=;
-        b=xJNOCz6Xs7P3GJW6twCbRm7Cl/j0Zc+xCC2eH7kDIYkWRq30Qskc79GhfGKO2M0ulu
-         69ZkhBgz04EhbhB/fwLHsvhpaDKalZbu+rr03I6Z/v1nKtCpTMIdOOMcrWjf8Jc/HRbe
-         2sBQ/hpiqsXCmRwAmOTOTkAvSRNv8unFv4yfBtps80a6BP5f9JhEv/PJ2h3e3Mogotsb
-         /yQ42gCX6mes9+OskoCmF4EY4OhyBtVRZiW8ReLDKjgW/zzoTZKqa1Ke+h61wS7s2j/J
-         A3FO2WGtd5yCH5UdEfo8JxNzuH9UuzimzZ+g3G18d+o2yVf1LLC8RoVfIUgrz1hdCm3T
-         8PsQ==
-Received: by 10.50.46.138 with SMTP id v10mr697637igm.18.1333795667532; Sat,
- 07 Apr 2012 03:47:47 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.42.202.144 with HTTP; Sat, 7 Apr 2012 03:47:27 -0700 (PDT)
-In-Reply-To: <1333735064-15672-1-git-send-email-sjhill@mips.com>
-References: <1333735064-15672-1-git-send-email-sjhill@mips.com>
-From:   Jonas Gorski <jonas.gorski@gmail.com>
-Date:   Sat, 7 Apr 2012 12:47:27 +0200
-Message-ID: <CAOiHx=nRxy-RPhpbZhbMD++qnM2Uqf6=oP9JMvc+6HcciW8ang@mail.gmail.com>
-Subject: Re: [PATCH 1/5] MIPS: Add support for the 1074K core.
-To:     "Steven J. Hill" <sjhill@mips.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        sjhill@realitydiluted.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-archive-position: 32877
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 18:49:01 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:36596 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1904106Ab2DGQsy (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 18:48:54 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SGYof-0004dH-TH; Sat, 07 Apr 2012 11:48:45 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH 00/10] Add support MIPS SEAD-3 Development Platform.
+Date:   Sat,  7 Apr 2012 11:48:25 -0500
+Message-Id: <1333817315-30091-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.6
+X-archive-position: 32878
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jonas.gorski@gmail.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi,
+From: "Steven J. Hill" <sjhill@mips.com>
 
-On 6 April 2012 19:57, Steven J. Hill <sjhill@mips.com> wrote:
-> From: "Steven J. Hill" <sjhill@mips.com>
->
-> This patch adds support for detecting and using 1074K cores.
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
->
-> (snip)
->
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index bda8eb2..a08e75d 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -977,7 +977,7 @@ static void __cpuinit probe_pcache(void)
->                        c->icache.linesz = 2 << lsize;
->                else
->                        c->icache.linesz = lsize;
-> -               c->icache.sets = 64 << ((config1 >> 22) & 7);
-> +               c->icache.sets = 32 << (((config1 >> 22) + 1) & 7);
+This patch set adds support for the MIPS Technologies, Inc. SEAD-3
+development platform. Please visit <http://www.mips.com/> for more
+detailed information.
 
-Why this change? According to the 1074K datasheet it is still 64 *
-2^S, so to me it looks like the previous version was correct. Also
-adding first and then masking looks really wrong, and will produce
-wrong results for 0x7.
+Steven J. Hill (10):
+  MIPS: Add core files for MIPS SEAD-3 development platform.
+  MIPS: Changes to configuration files for SEAD-3 platform.
+  MIPS: Add support for the M14K core.
+  MIPS: Add micro-assembler support for 'ins' and 'ext' instructions.
+  MIPS: GIC interrupt changes for M14K and SEAD-3 support.
+  MIPS: Code formatting fixes.
+  MIPS: Add support for early serial debug and LCD device on SEAD-3.
+  MIPS: MIPS32R2 optimisations for pipeline stalls and code size.
+  cobalt_lcdfb: LCD panel framebuffer support for SEAD-3 platform.
+  usb: host: mips: sead3: USB Host controller support for SEAD-3
+    platform.
 
->                c->icache.ways = 1 + ((config1 >> 16) & 7);
->
->                icache_size = c->icache.sets *
-> @@ -997,7 +997,7 @@ static void __cpuinit probe_pcache(void)
->                        c->dcache.linesz = 2 << lsize;
->                else
->                        c->dcache.linesz= lsize;
-> -               c->dcache.sets = 64 << ((config1 >> 13) & 7);
-> +               c->dcache.sets = 32 << (((config1 >> 13) + 1) & 7);
+ arch/mips/Kbuild.platforms                         |    1 +
+ arch/mips/Kconfig                                  |   33 +-
+ arch/mips/configs/sead3_defconfig                  | 1757 ++++++++++++++++++++
+ arch/mips/include/asm/cpu-features.h               |    4 +-
+ arch/mips/include/asm/cpu.h                        |    5 +-
+ .../include/asm/mach-sead3/cpu-feature-overrides.h |   72 +
+ arch/mips/include/asm/mach-sead3/irq.h             |    9 +
+ .../include/asm/mach-sead3/kernel-entry-init.h     |   52 +
+ arch/mips/include/asm/mach-sead3/war.h             |   25 +
+ arch/mips/include/asm/mips-boards/generic.h        |    1 +
+ arch/mips/include/asm/mips-boards/sead3int.h       |   67 +
+ arch/mips/include/asm/uasm.h                       |   15 +
+ arch/mips/kernel/cevt-r4k.c                        |    5 +
+ arch/mips/kernel/cpu-probe.c                       |   64 +-
+ arch/mips/kernel/early_printk.c                    |   25 +
+ arch/mips/kernel/irq-gic.c                         |  168 +-
+ arch/mips/mm/c-r4k.c                               |    1 +
+ arch/mips/mm/tlbex.c                               |   54 +-
+ arch/mips/mm/uasm.c                                |   15 +
+ arch/mips/mti-sead3/Makefile                       |   24 +
+ arch/mips/mti-sead3/Platform                       |    7 +
+ arch/mips/mti-sead3/leds-sead3.c                   |  133 ++
+ arch/mips/mti-sead3/sead3-cmdline.c                |   59 +
+ arch/mips/mti-sead3/sead3-console.c                |   52 +
+ arch/mips/mti-sead3/sead3-display.c                |   90 +
+ arch/mips/mti-sead3/sead3-ehci.c                   |   52 +
+ arch/mips/mti-sead3/sead3-i2c-dev.c                |   38 +
+ arch/mips/mti-sead3/sead3-i2c.c                    |   42 +
+ arch/mips/mti-sead3/sead3-init.c                   |  244 +++
+ arch/mips/mti-sead3/sead3-int.c                    |  146 ++
+ arch/mips/mti-sead3/sead3-lcd.c                    |   55 +
+ arch/mips/mti-sead3/sead3-leds.c                   |   91 +
+ arch/mips/mti-sead3/sead3-memory.c                 |  178 ++
+ arch/mips/mti-sead3/sead3-mtd.c                    |   58 +
+ arch/mips/mti-sead3/sead3-net.c                    |   56 +
+ arch/mips/mti-sead3/sead3-pic32-bus.c              |  112 ++
+ arch/mips/mti-sead3/sead3-pic32-i2c-drv.c          |  441 +++++
+ arch/mips/mti-sead3/sead3-platform.c               |   49 +
+ arch/mips/mti-sead3/sead3-reset.c                  |   64 +
+ arch/mips/mti-sead3/sead3-setup.c                  |   49 +
+ arch/mips/mti-sead3/sead3-smtc.c                   |  162 ++
+ arch/mips/mti-sead3/sead3-time.c                   |  145 ++
+ arch/mips/oprofile/common.c                        |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c               |    4 +
+ drivers/usb/host/Kconfig                           |    4 +-
+ drivers/usb/host/ehci-hcd.c                        |    5 +
+ drivers/usb/host/ehci-sead3.c                      |  299 ++++
+ drivers/video/Kconfig                              |    2 +-
+ drivers/video/cobalt_lcdfb.c                       |   45 +-
+ 49 files changed, 5029 insertions(+), 51 deletions(-)
+ create mode 100644 arch/mips/configs/sead3_defconfig
+ create mode 100644 arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-sead3/irq.h
+ create mode 100644 arch/mips/include/asm/mach-sead3/kernel-entry-init.h
+ create mode 100644 arch/mips/include/asm/mach-sead3/war.h
+ create mode 100644 arch/mips/include/asm/mips-boards/sead3int.h
+ create mode 100644 arch/mips/mti-sead3/Makefile
+ create mode 100644 arch/mips/mti-sead3/Platform
+ create mode 100644 arch/mips/mti-sead3/leds-sead3.c
+ create mode 100644 arch/mips/mti-sead3/sead3-cmdline.c
+ create mode 100644 arch/mips/mti-sead3/sead3-console.c
+ create mode 100644 arch/mips/mti-sead3/sead3-display.c
+ create mode 100644 arch/mips/mti-sead3/sead3-ehci.c
+ create mode 100644 arch/mips/mti-sead3/sead3-i2c-dev.c
+ create mode 100644 arch/mips/mti-sead3/sead3-i2c.c
+ create mode 100644 arch/mips/mti-sead3/sead3-init.c
+ create mode 100644 arch/mips/mti-sead3/sead3-int.c
+ create mode 100644 arch/mips/mti-sead3/sead3-lcd.c
+ create mode 100644 arch/mips/mti-sead3/sead3-leds.c
+ create mode 100644 arch/mips/mti-sead3/sead3-memory.c
+ create mode 100644 arch/mips/mti-sead3/sead3-mtd.c
+ create mode 100644 arch/mips/mti-sead3/sead3-net.c
+ create mode 100644 arch/mips/mti-sead3/sead3-pic32-bus.c
+ create mode 100644 arch/mips/mti-sead3/sead3-pic32-i2c-drv.c
+ create mode 100644 arch/mips/mti-sead3/sead3-platform.c
+ create mode 100644 arch/mips/mti-sead3/sead3-reset.c
+ create mode 100644 arch/mips/mti-sead3/sead3-setup.c
+ create mode 100644 arch/mips/mti-sead3/sead3-smtc.c
+ create mode 100644 arch/mips/mti-sead3/sead3-time.c
+ create mode 100644 drivers/usb/host/ehci-sead3.c
 
-See above.
-
->                c->dcache.ways = 1 + ((config1 >> 7) & 7);
->
->                dcache_size = c->dcache.sets *
-> (snip)
-
-
-Jonas
+-- 
+1.7.9.6

@@ -1,24 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 18:52:42 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:36615 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 18:57:17 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:36625 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1904124Ab2DGQtB (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 18:49:01 +0200
+        with ESMTP id S1904124Ab2DGQ5K (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 18:57:10 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SGYop-0004dH-Ps; Sat, 07 Apr 2012 11:48:55 -0500
+        id 1SGYwh-0004eT-MW; Sat, 07 Apr 2012 11:57:03 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:     "Steven J. Hill" <sjhill@mips.com>,
+Cc:     linux-fbdev@vger.kernel.org, "Steven J. Hill" <sjhill@mips.com>,
         Douglas Leung <douglas@mips.com>,
         Chris Dearman <chris@mips.com>
 Subject: [PATCH 09/10] cobalt_lcdfb: LCD panel framebuffer support for SEAD-3 platform.
-Date:   Sat,  7 Apr 2012 11:48:34 -0500
-Message-Id: <1333817315-30091-10-git-send-email-sjhill@mips.com>
+Date:   Sat,  7 Apr 2012 11:56:40 -0500
+Message-Id: <1333817800-30222-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
-In-Reply-To: <1333817315-30091-1-git-send-email-sjhill@mips.com>
-References: <1333817315-30091-1-git-send-email-sjhill@mips.com>
-X-archive-position: 32887
+X-archive-position: 32888
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

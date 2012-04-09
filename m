@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 18:02:43 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:39875 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 18:04:39 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:39880 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903631Ab2DIQCi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 18:02:38 +0200
+        with ESMTP id S1903628Ab2DIQEe (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 18:04:34 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SHH31-0005z2-T9; Mon, 09 Apr 2012 11:02:31 -0500
+        id 1SHH4t-0005zJ-Vk; Mon, 09 Apr 2012 11:04:27 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>,
         Leonid Yegoshin <yegoshin@mips.com>
-Subject: [PATCH] Fix FPU flag race condition.
-Date:   Mon,  9 Apr 2012 11:02:25 -0500
-Message-Id: <1333987345-716-1-git-send-email-sjhill@mips.com>
+Subject: [PATCH] Add MIPS64R2 core support.
+Date:   Mon,  9 Apr 2012 11:04:21 -0500
+Message-Id: <1333987461-822-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
-X-archive-position: 32903
+X-archive-position: 32904
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,74 +26,129 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Subject: [PATCH] Fix race condition with FPU thread task flag during context
-
 Signed-off-by: Leonid Yegoshin <yegoshin@mips.com>
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/switch_to.h |    6 ++++--
- arch/mips/kernel/r4k_switch.S     |   12 +++---------
- 2 files changed, 7 insertions(+), 11 deletions(-)
+ arch/mips/Kconfig            |   29 +++++++++++++++++++++++------
+ arch/mips/include/asm/cpu.h  |    2 +-
+ arch/mips/kernel/cpu-probe.c |    4 ++++
+ arch/mips/kernel/traps.c     |    1 +
+ 4 files changed, 29 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
-index 5d33621..4f8ddba8 100644
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -22,7 +22,7 @@ struct task_struct;
-  * switch_to(n) should switch tasks to task nr n, first
-  * checking that n isn't the current task, in which case it does nothing.
-  */
--extern asmlinkage void *resume(void *last, void *next, void *next_ti);
-+extern asmlinkage void *resume(void *last, void *next, void *next_ti, u32 __usedfpu);
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 991de91..fae33f3 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -282,6 +282,7 @@ config MIPS_MALTA
+ 	select SYS_HAS_CPU_MIPS32_R1
+ 	select SYS_HAS_CPU_MIPS32_R2
+ 	select SYS_HAS_CPU_MIPS64_R1
++	select SYS_HAS_CPU_MIPS64_R2
+ 	select SYS_HAS_CPU_NEVADA
+ 	select SYS_HAS_CPU_RM7000
+ 	select SYS_HAS_EARLY_PRINTK
+@@ -1761,6 +1762,22 @@ config 64BIT
  
- extern unsigned int ll_bit;
- extern struct task_struct *ll_task;
-@@ -66,11 +66,13 @@ do {									\
+ endchoice
  
- #define switch_to(prev, next, last)					\
- do {									\
-+	u32 __usedfpu;							\
- 	__mips_mt_fpaff_switch_to(prev);				\
- 	if (cpu_has_dsp)						\
- 		__save_dsp(prev);					\
- 	__clear_software_ll_bit();					\
--	(last) = resume(prev, next, task_thread_info(next));		\
-+	__usedfpu = test_and_clear_tsk_thread_flag(prev, TIF_USEDFPU);	\
-+	(last) = resume(prev, next, task_thread_info(next), __usedfpu);	\
- } while (0)
++config 64BIT_PHYS_ADDR
++	bool "Kernel supports 64 bit physical addresses" if EXPERIMENTAL
++	depends on 64BIT
++	help
++	  Defines 64 bit physical addresses in kernel.
++	  Increases page table sizes.
++
++	  It is an alternative for HIGHMEM usage of huge physical memory.
++	  Requires 64bit capable CPU and 64 bit kernel code model.
++
++	  Note: without this option kernel can support up to 4GB physical
++	  memory for 4KB pages and up to 64GB for 64KB pages.
++
++config ARCH_PHYS_ADDR_T_64BIT
++       def_bool 64BIT_PHYS_ADDR
++
+ choice
+ 	prompt "Kernel page size"
+ 	default PAGE_SIZE_4KB
+@@ -2038,12 +2055,6 @@ config SB1_PASS_2_1_WORKAROUNDS
+ 	depends on CPU_SB1 && CPU_SB1_PASS_2
+ 	default y
  
- #define finish_arch_switch(prev)					\
-diff --git a/arch/mips/kernel/r4k_switch.S b/arch/mips/kernel/r4k_switch.S
-index 9414f93..a675752 100644
---- a/arch/mips/kernel/r4k_switch.S
-+++ b/arch/mips/kernel/r4k_switch.S
-@@ -41,7 +41,7 @@
+-config 64BIT_PHYS_ADDR
+-	bool
+-
+-config ARCH_PHYS_ADDR_T_64BIT
+-       def_bool 64BIT_PHYS_ADDR
+-
+ config CPU_HAS_SMARTMIPS
+ 	depends on SYS_SUPPORTS_SMARTMIPS
+ 	bool "Support for the SmartMIPS ASE"
+@@ -2488,6 +2499,7 @@ config TRAD_SIGNALS
+ config MIPS32_COMPAT
+ 	bool "Kernel support for Linux/MIPS 32-bit binary compatibility"
+ 	depends on 64BIT
++	default y if CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
+ 	help
+ 	  Select this option if you want Linux/MIPS 32-bit binary
+ 	  compatibility. Since all software available for Linux/MIPS is
+@@ -2506,6 +2518,7 @@ config SYSVIPC_COMPAT
+ config MIPS32_O32
+ 	bool "Kernel support for o32 binaries"
+ 	depends on MIPS32_COMPAT
++	default y if CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
+ 	help
+ 	  Select this option if you want to run o32 binaries.  These are pure
+ 	  32-bit binaries as used by the 32-bit Linux/MIPS port.  Most of
+@@ -2524,6 +2537,10 @@ config MIPS32_N32
  
- /*
-  * task_struct *resume(task_struct *prev, task_struct *next,
-- *                     struct thread_info *next_ti)
-+ *                     struct thread_info *next_ti, u32 __usedfpu)
-  */
- 	.align	5
- 	LEAF(resume)
-@@ -53,16 +53,10 @@
+ 	  If unsure, say N.
+ 
++comment "64bit kernel, but support of 32bit applications is disabled!"
++	depends on 64BIT && !MIPS32_O32 && !MIPS32_N32
++	depends on CPU_SUPPORTS_32BIT_KERNEL && SYS_SUPPORTS_32BIT_KERNEL
++
+ config BINFMT_ELF32
+ 	bool
+ 	default y if MIPS32_O32 || MIPS32_N32
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 242a401..ef6ee50 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -268,7 +268,7 @@ enum cpu_type_enum {
  	/*
- 	 * check if we need to save FPU registers
+ 	 * MIPS64 class processors
  	 */
--	PTR_L	t3, TASK_THREAD_INFO(a0)
--	LONG_L	t0, TI_FLAGS(t3)
--	li	t1, _TIF_USEDFPU
--	and	t2, t0, t1
--	beqz	t2, 1f
--	nor	t1, zero, t1
+-	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
++	CPU_5KC, CPU_5KE, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
+ 	CPU_CAVIUM_OCTEON, CPU_CAVIUM_OCTEON_PLUS, CPU_CAVIUM_OCTEON2,
+ 	CPU_XLR, CPU_XLP,
  
--	and	t0, t0, t1
--	LONG_S	t0, TI_FLAGS(t3)
-+	beqz    a3, 1f
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 0a3e3f6..9b0d4cd 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -821,6 +821,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_5KC;
+ 		__cpu_name[cpu] = "MIPS 5Kc";
+ 		break;
++	case PRID_IMP_5KE:
++		c->cputype = CPU_5KE;
++		__cpu_name[cpu] = "MIPS 5KE";
++		break;
+ 	case PRID_IMP_20KC:
+ 		c->cputype = CPU_20KC;
+ 		__cpu_name[cpu] = "MIPS 20Kc";
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index b88e63d..c42286c 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -1351,6 +1351,7 @@ static inline void parity_protection_init(void)
+ 		break;
  
-+	PTR_L	t3, TASK_THREAD_INFO(a0)
- 	/*
- 	 * clear saved user stack CU1 bit
- 	 */
+ 	case CPU_5KC:
++	case CPU_5KE:
+ 		write_c0_ecc(0x80000000);
+ 		back_to_back_c0_hazard();
+ 		/* Set the PE bit (bit 31) in the c0_errctl register. */
 -- 
 1.7.9.6

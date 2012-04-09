@@ -1,134 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 18:56:53 +0200 (CEST)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:42979 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903628Ab2DIQ4i (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 18:56:38 +0200
-Received: by obhx4 with SMTP id x4so7058537obh.36
-        for <linux-mips@linux-mips.org>; Mon, 09 Apr 2012 09:56:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=9PoMPvOgOrr6l4YZdVKlNMQt0eeW0D5rTqO+6D6zN0M=;
-        b=cLC8/9rHpsrh/erJ7RwwbqQxbYGHwgC/XbG2nby/iK93MzyhASsj9ZUzDiIN44MI+3
-         /AuxOBCMibuCBZ35Mcrf/GP5ni3RDUuraxvBT8oQv6IyynIydKIHLhaq9uRpZCN190g6
-         HD9rHJ3RD84SKNa3TBUmipWybr0hOSfk4Tkane9XxJlz/3yoYrS7Ho4SPBKJ9pwrvHk3
-         92J5lRGPq2n9yGKSp3cq6DkkesJQSGkmI4KalhM5W0USXi94Q2P59NBrZ7jp6FnmZjQS
-         9J3fGX0wp404ulGnyh3rQxAIcgR+0LOPCv4uWwNbHUWlcHr6xDe9ht0PvyF/hFp1b8he
-         BRvA==
-Received: by 10.182.108.74 with SMTP id hi10mr2380080obb.54.1333990592496;
-        Mon, 09 Apr 2012 09:56:32 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id m3sm13150859oem.7.2012.04.09.09.56.31
-        (version=SSLv3 cipher=OTHER);
-        Mon, 09 Apr 2012 09:56:31 -0700 (PDT)
-Message-ID: <4F8314BE.9090708@gmail.com>
-Date:   Mon, 09 Apr 2012 09:56:30 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Grant Likely <grant.likely@secretlab.ca>
-CC:     David Daney <ddaney.cavm@gmail.com>,
-        devicetree-discuss@lists.ozlabs.org,
-        Rob Herring <rob.herring@calxeda.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] irq/irq_domain: Quit ignoring error returns from irq_alloc_desc_from().
-References: <1333669933-25267-1-git-send-email-ddaney.cavm@gmail.com> <20120407012616.62D133E17B2@localhost>
-In-Reply-To: <20120407012616.62D133E17B2@localhost>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32911
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 20:29:30 +0200 (CEST)
+Received: from fep13.mx.upcmail.net ([62.179.121.33]:36743 "EHLO
+        fep13.mx.upcmail.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903631Ab2DIS3Y (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 20:29:24 +0200
+Received: from edge01.upcmail.net ([192.168.13.236])
+          by viefep13-int.chello.at
+          (InterMail vM.8.01.05.04 201-2260-151-105-20111014) with ESMTP
+          id <20120409182919.OWXQ3333.viefep13-int.chello.at@edge01.upcmail.net>;
+          Mon, 9 Apr 2012 20:29:19 +0200
+Received: from ecaz.lan ([80.98.112.136])
+        by edge01.upcmail.net with edge
+        id vuVE1i00x2wdXpc01uVE5E; Mon, 09 Apr 2012 20:29:19 +0200
+X-SourceIP: 80.98.112.136
+From:   Imre Kaloz <kaloz@openwrt.org>
+To:     linux-mips@linux-mips.org
+Cc:     ralf@linux-mips.org, david.daney@cavium.com
+Subject: [PATCH] STAGING: octeon-ethernet: fix build errors by including interrupt.h
+Date:   Mon,  9 Apr 2012 20:29:15 +0200
+Message-Id: <1333996155-30523-1-git-send-email-kaloz@openwrt.org>
+X-Mailer: git-send-email 1.7.1
+X-archive-position: 32912
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: kaloz@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 04/06/2012 06:26 PM, Grant Likely wrote:
-> On Thu,  5 Apr 2012 16:52:13 -0700, David Daney<ddaney.cavm@gmail.com>  wrote:
->> From: David Daney<david.daney@cavium.com>
->>
->> In commit 4bbdd45a (irq_domain/powerpc: eliminate irq_map; use
->> irq_alloc_desc() instead) code was added that ignores error returns
->> from irq_alloc_desc_from() by (silently) casting the return value to
->> unsigned.  The negitive value error return now suddenly looks like a
->> valid irq number.
->>
->> Commits cc79ca69 (irq_domain: Move irq_domain code from powerpc to
->> kernel/irq) and 1bc04f2c (irq_domain: Add support for base irq and
->> hwirq in legacy mappings) move this code to its current location in
->> irqdomain.c
->>
->> The result of all of this is a null pointer dereference OOPS if one of
->> the error cases is hit.
->>
->> The fix: Don't cast away the negativeness of the return value and then
->> check for errors.
->>
->> Signed-off-by: David Daney<david.daney@cavium.com>
->> ---
->>   kernel/irq/irqdomain.c |   11 ++++++-----
->>   1 files changed, 6 insertions(+), 5 deletions(-)
->>
->> diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
->> index af48e59..9d3e3ae 100644
->> --- a/kernel/irq/irqdomain.c
->> +++ b/kernel/irq/irqdomain.c
->> @@ -351,6 +351,7 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
->>   				irq_hw_number_t hwirq)
->>   {
->>   	unsigned int virq, hint;
->> +	int irq;
->
-> Merged, but I've dropped the new variable in favour of making virq an
-> int.  Makes for a smaller diffstat.
->
+This patch fixes the following build failures:
 
-Thanks Grant,
+drivers/staging/octeon/ethernet.c: In function 'cvm_oct_cleanup_module':
+drivers/staging/octeon/ethernet.c:799:2: error: implicit declaration of function 'free_irq'
+drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_no_more_work':
+drivers/staging/octeon/ethernet-rx.c:119:3: error: implicit declaration of function 'enable_irq'
+drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_do_interrupt':
+drivers/staging/octeon/ethernet-rx.c:136:2: error: implicit declaration of function 'disable_irq_nosync'
+drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_rx_initialize':
+drivers/staging/octeon/ethernet-rx.c:532:2: error: implicit declaration of function 'request_irq'
+drivers/staging/octeon/ethernet-tx.c: In function 'cvm_oct_tx_initialize':
+drivers/staging/octeon/ethernet-tx.c:712:2: error: implicit declaration of function 'request_irq'
+drivers/staging/octeon/ethernet-tx.c: In function 'cvm_oct_tx_shutdown':
+drivers/staging/octeon/ethernet-tx.c:723:2: error: implicit declaration of function 'free_irq'
 
-I had thought about that too, but since virq throughout all the rest of 
-the code is unsigned, I didn't want to introduce an inconsistency.
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+---
+ drivers/staging/octeon/ethernet-rx.c |    1 +
+ drivers/staging/octeon/ethernet-tx.c |    1 +
+ drivers/staging/octeon/ethernet.c    |    1 +
+ 3 files changed, 3 insertions(+), 0 deletions(-)
 
-After a little more thought, I think that the domain of virq and the irq 
-used by the rest of the kernel are the same, so it might make sense to 
-change virq to be int universally, and use the kernel convention that 
-negative numbers indicate error conditions.  But that would be a much 
-larger patch.
-
-David Daney
-
-
-
-> g.
->
->>
->>   	pr_debug("irq: irq_create_mapping(0x%p, 0x%lx)\n", domain, hwirq);
->>
->> @@ -380,14 +381,14 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
->>   	hint = hwirq % irq_virq_count;
->>   	if (hint == 0)
->>   		hint++;
->> -	virq = irq_alloc_desc_from(hint, 0);
->> -	if (!virq)
->> -		virq = irq_alloc_desc_from(1, 0);
->> -	if (!virq) {
->> +	irq = irq_alloc_desc_from(hint, 0);
->> +	if (irq<= 0)
->> +		irq = irq_alloc_desc_from(1, 0);
->> +	if (irq<= 0) {
->>   		pr_debug("irq: ->  virq allocation failed\n");
->>   		return 0;
->>   	}
->> -
->> +	virq = irq;
->>   	if (irq_setup_virq(domain, virq, hwirq)) {
->>   		if (domain->revmap_type != IRQ_DOMAIN_MAP_LEGACY)
->>   			irq_free_desc(virq);
->> --
->> 1.7.2.3
->>
->
+diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
+index 400df8c..d91751f 100644
+--- a/drivers/staging/octeon/ethernet-rx.c
++++ b/drivers/staging/octeon/ethernet-rx.c
+@@ -36,6 +36,7 @@
+ #include <linux/prefetch.h>
+ #include <linux/ratelimit.h>
+ #include <linux/smp.h>
++#include <linux/interrupt.h>
+ #include <net/dst.h>
+ #ifdef CONFIG_XFRM
+ #include <linux/xfrm.h>
+diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
+index 56d74dc..91a97b3 100644
+--- a/drivers/staging/octeon/ethernet-tx.c
++++ b/drivers/staging/octeon/ethernet-tx.c
+@@ -32,6 +32,7 @@
+ #include <linux/ip.h>
+ #include <linux/ratelimit.h>
+ #include <linux/string.h>
++#include <linux/interrupt.h>
+ #include <net/dst.h>
+ #ifdef CONFIG_XFRM
+ #include <linux/xfrm.h>
+diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/ethernet.c
+index 9112cd8..60cba81 100644
+--- a/drivers/staging/octeon/ethernet.c
++++ b/drivers/staging/octeon/ethernet.c
+@@ -31,6 +31,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/phy.h>
+ #include <linux/slab.h>
++#include <linux/interrupt.h>
+ 
+ #include <net/dst.h>
+ 
+-- 
+1.7.1

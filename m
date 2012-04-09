@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 17:23:34 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:39798 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 17:24:00 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:39800 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903631Ab2DIPWZ (ORCPT
+        with ESMTP id S1903687Ab2DIPWZ (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 17:22:25 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SHGQ7-0005vf-5L; Mon, 09 Apr 2012 10:22:19 -0500
+        id 1SHGQ7-0005vf-TX; Mon, 09 Apr 2012 10:22:19 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 2/9] MIPS: Optimise core library functions for microMIPS.
-Date:   Mon,  9 Apr 2012 10:21:56 -0500
-Message-Id: <1333984923-445-3-git-send-email-sjhill@mips.com>
+Subject: [PATCH 3/9] MIPS: Add support for the M14KE core.
+Date:   Mon,  9 Apr 2012 10:21:57 -0500
+Message-Id: <1333984923-445-4-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
 In-Reply-To: <1333984923-445-1-git-send-email-sjhill@mips.com>
 References: <1333984923-445-1-git-send-email-sjhill@mips.com>
-X-archive-position: 32894
+X-archive-position: 32895
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,475 +27,156 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Optimise some of the core library functions to use microMIPS
-instructions for binary size reduction. When the microMIPS ISA
-is not being used, the library functions compiled to binary
-are identical.
+This patch depends on the M14K core support patch being
+applied first.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/page.h |    6 +++
- arch/mips/lib/memcpy.S       |   17 ++++++--
- arch/mips/lib/memset.S       |   90 ++++++++++++++++++++++++++++++------------
- arch/mips/lib/strlen_user.S  |   13 ++++--
- arch/mips/lib/strncpy_user.S |   39 +++++++++---------
- arch/mips/lib/strnlen_user.S |   24 ++++++++---
- arch/mips/mm/page.c          |   26 ++++++------
- 7 files changed, 147 insertions(+), 68 deletions(-)
+ arch/mips/include/asm/cpu-features.h |    3 +++
+ arch/mips/include/asm/cpu.h          |    4 +++-
+ arch/mips/kernel/cpu-probe.c         |   10 ++++++++++
+ arch/mips/mm/c-r4k.c                 |    1 +
+ arch/mips/mm/tlbex.c                 |    2 ++
+ arch/mips/oprofile/common.c          |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c |    4 ++++
+ 7 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index da9bd7d..5767678 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -45,6 +45,12 @@
- #define HUGETLB_PAGE_ORDER	({BUILD_BUG(); 0; })
- #endif /* CONFIG_HUGETLB_PAGE */
- 
-+/*
-+ * Clear and copy array sizes for micro-assembly of clear_page/copy_page.
-+ */
-+#define CLEAR_PAGE_ARRAY_SIZE	288
-+#define COPY_PAGE_ARRAY_SIZE	1344
-+
- #ifndef __ASSEMBLY__
- 
- #include <linux/pfn.h>
-diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
-index 56a1f85..0fa4617 100644
---- a/arch/mips/lib/memcpy.S
-+++ b/arch/mips/lib/memcpy.S
-@@ -10,6 +10,7 @@
-  * Copyright (C) 2002 Broadcom, Inc.
-  *   memcpy/copy_user author: Mark Vandevoorde
-  * Copyright (C) 2007  Maciej W. Rozycki
-+ * Copyright (C) 2011  MIPS Technologies, Inc.
-  *
-  * Mnemonic names for arguments to memcpy/__copy_user
-  */
-@@ -21,16 +22,14 @@
-  * end of memory on some systems.  It's also a seriously bad idea on non
-  * dma-coherent systems.
-  */
--#ifdef CONFIG_DMA_NONCOHERENT
--#undef CONFIG_CPU_HAS_PREFETCH
--#endif
--#ifdef CONFIG_MIPS_MALTA
-+#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_MIPS_MALTA)
- #undef CONFIG_CPU_HAS_PREFETCH
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 556afa2..3b50744 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -98,6 +98,9 @@
+ #ifndef kernel_uses_smartmips_rixi
+ #define kernel_uses_smartmips_rixi 0
  #endif
- 
- #include <asm/asm.h>
- #include <asm/asm-offsets.h>
- #include <asm/regdef.h>
-+#include <asm/page.h>
- 
- #define dst a0
- #define src a1
-@@ -564,3 +563,13 @@ LEAF(__rmemcpy)					/* a0=dst a1=src a2=len */
- 	jr	ra
- 	 move	a2, zero
- 	END(__rmemcpy)
-+
-+LEAF(clear_page)
-+1:	j	1b		/* Dummy, will be replaced. */
-+	.space CLEAR_PAGE_ARRAY_SIZE
-+	END(clear_page)
-+
-+LEAF(copy_page)
-+1:	j	1b		/* Dummy, will be replaced. */
-+	.space COPY_PAGE_ARRAY_SIZE
-+	END(copy_page)
-diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
-index 606c8a9..a0df003 100644
---- a/arch/mips/lib/memset.S
-+++ b/arch/mips/lib/memset.S
-@@ -5,7 +5,8 @@
-  *
-  * Copyright (C) 1998, 1999, 2000 by Ralf Baechle
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-- * Copyright (C) 2007  Maciej W. Rozycki
-+ * Copyright (C) 2007 by Maciej W. Rozycki
-+ * Copyright (C) 2011 MIPS Technologies, Inc.
-  */
- #include <asm/asm.h>
- #include <asm/asm-offsets.h>
-@@ -19,6 +20,14 @@
- #define LONG_S_R sdr
++#ifndef cpu_has_mmips
++#define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
++#endif
+ #ifndef cpu_has_vtag_icache
+ #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
  #endif
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 00e5adf..242a401 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -96,6 +96,7 @@
+ #define PRID_IMP_1004K		0x9900
+ #define PRID_IMP_1074K		0x9a00
+ #define PRID_IMP_14K		0x9c00
++#define PRID_IMP_14KE		0x9e00
  
-+#ifdef CONFIG_CPU_MICROMIPS
-+#define STORSIZE (LONGSIZE * 2)
-+#define STORMASK (STORSIZE - 1)
-+#else
-+#define STORSIZE LONGSIZE
-+#define STORMASK LONGMASK
-+#endif
-+
- #define EX(insn,reg,addr,handler)			\
- 9:	insn	reg, addr;				\
- 	.section __ex_table,"a"; 			\
-@@ -26,23 +35,36 @@
- 	.previous
- 
- 	.macro	f_fill64 dst, offset, val, fixup
--	EX(LONG_S, \val, (\offset +  0 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  1 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  2 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  3 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  4 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  5 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  6 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  7 * LONGSIZE)(\dst), \fixup)
-+#ifdef CONFIG_CPU_MICROMIPS
-+	EX(swp, t8, (\offset + 0 * STORSIZE)(\dst), \fixup)
-+	EX(swp, t8, (\offset + 1 * STORSIZE)(\dst), \fixup)
-+	EX(swp, t8, (\offset + 2 * STORSIZE)(\dst), \fixup)
-+	EX(swp, t8, (\offset + 3 * STORSIZE)(\dst), \fixup)
-+#if LONGSIZE == 4
-+	EX(swp, t8, (\offset + 4 * STORSIZE)(\dst), \fixup)
-+	EX(swp, t8, (\offset + 5 * STORSIZE)(\dst), \fixup)
-+	EX(swp, t8, (\offset + 6 * STORSIZE)(\dst), \fixup)
-+	EX(swp, t8, (\offset + 7 * STORSIZE)(\dst), \fixup)
-+#endif
-+#else
-+	EX(LONG_S, \val, (\offset +  0 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  1 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  2 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  3 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  4 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  5 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  6 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  7 * STORSIZE)(\dst), \fixup)
- #if LONGSIZE == 4
--	EX(LONG_S, \val, (\offset +  8 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset +  9 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset + 10 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset + 11 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset + 12 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset + 13 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset + 14 * LONGSIZE)(\dst), \fixup)
--	EX(LONG_S, \val, (\offset + 15 * LONGSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  8 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset +  9 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset + 10 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset + 11 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset + 12 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset + 13 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset + 14 * STORSIZE)(\dst), \fixup)
-+	EX(LONG_S, \val, (\offset + 15 * STORSIZE)(\dst), \fixup)
-+#endif
- #endif
- 	.endm
- 
-@@ -71,16 +93,20 @@ LEAF(memset)
- 1:
- 
- FEXPORT(__bzero)
--	sltiu		t0, a2, LONGSIZE	/* very small region? */
-+	sltiu		t0, a2, STORSIZE	/* very small region? */
- 	bnez		t0, .Lsmall_memset
--	 andi		t0, a0, LONGMASK	/* aligned? */
-+	 andi		t0, a0, STORMASK	/* aligned? */
- 
-+#ifdef CONFIG_CPU_MICROMIPS
-+	move		t8, a1
-+	move		t9, a1
-+#endif
- #ifndef CONFIG_CPU_DADDI_WORKAROUNDS
- 	beqz		t0, 1f
--	 PTR_SUBU	t0, LONGSIZE		/* alignment in bytes */
-+	 PTR_SUBU	t0, STORSIZE		/* alignment in bytes */
- #else
- 	.set		noat
--	li		AT, LONGSIZE
-+	li		AT, STORSIZE
- 	beqz		t0, 1f
- 	 PTR_SUBU	t0, AT			/* alignment in bytes */
- 	.set		at
-@@ -99,7 +125,7 @@ FEXPORT(__bzero)
- 1:	ori		t1, a2, 0x3f		/* # of full blocks */
- 	xori		t1, 0x3f
- 	beqz		t1, .Lmemset_partial	/* no block to fill */
--	 andi		t0, a2, 0x40-LONGSIZE
-+	 andi		t0, a2, 0x40-STORSIZE
- 
- 	PTR_ADDU	t1, a0			/* end address */
- 	.set		reorder
-@@ -112,14 +138,26 @@ FEXPORT(__bzero)
- .Lmemset_partial:
- 	R10KCBARRIER(0(ra))
- 	PTR_LA		t1, 2f			/* where to start */
-+#ifdef CONFIG_CPU_MICROMIPS
-+	LONG_SRL	t7, t0, 1
-+#if LONGSIZE == 4
-+	PTR_SUBU	t1, t7
-+#else
-+	.set		noat
-+	LONG_SRL	AT, t7, 1
-+	PTR_SUBU	t1, AT
-+	.set		at
-+#endif
-+#else
- #if LONGSIZE == 4
- 	PTR_SUBU	t1, t0
- #else
- 	.set		noat
--	LONG_SRL		AT, t0, 1
-+	LONG_SRL	AT, t0, 1
- 	PTR_SUBU	t1, AT
- 	.set		at
- #endif
-+#endif
- 	jr		t1
- 	 PTR_ADDU	a0, t0			/* dest ptr */
- 
-@@ -128,7 +166,7 @@ FEXPORT(__bzero)
- 	.set		nomacro
- 	f_fill64 a0, -64, a1, .Lpartial_fixup	/* ... but first do longs ... */
- 2:	.set		pop
--	andi		a2, LONGMASK		/* At most one long to go */
-+	andi		a2, STORMASK		/* At most one long to go */
- 
- 	beqz		a2, 1f
- 	 PTR_ADDU	a0, a2			/* What's left */
-@@ -169,7 +207,7 @@ FEXPORT(__bzero)
- 
- .Lpartial_fixup:
- 	PTR_L		t0, TI_TASK($28)
--	andi		a2, LONGMASK
-+	andi		a2, STORMASK
- 	LONG_L		t0, THREAD_BUADDR(t0)
- 	LONG_ADDU	a2, t1
- 	jr		ra
-@@ -177,4 +215,4 @@ FEXPORT(__bzero)
- 
- .Llast_fixup:
- 	jr		ra
--	 andi		v1, a2, LONGMASK
-+	 andi		v1, a2, STORMASK
-diff --git a/arch/mips/lib/strlen_user.S b/arch/mips/lib/strlen_user.S
-index fdbb970..60fa23b 100644
---- a/arch/mips/lib/strlen_user.S
-+++ b/arch/mips/lib/strlen_user.S
-@@ -3,8 +3,9 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (c) 1996, 1998, 1999, 2004 by Ralf Baechle
-- * Copyright (c) 1999 Silicon Graphics, Inc.
-+ * Copyright (C) 1996, 1998, 1999, 2004 by Ralf Baechle
-+ * Copyright (C) 1999 Silicon Graphics, Inc.
-+ * Copyright (C) 2011 MIPS Technologies, Inc.
-  */
- #include <asm/asm.h>
- #include <asm/asm-offsets.h>
-@@ -28,9 +29,13 @@ LEAF(__strlen_user_asm)
- 
- FEXPORT(__strlen_user_nocheck_asm)
- 	move		v0, a0
--1:	EX(lb, t0, (v0), .Lfault)
-+#ifdef CONFIG_CPU_MICROMIPS
-+1:	EX(lbu16, v1, (v0), .Lfault)
-+#else
-+1:	EX(lb, v1, (v0), .Lfault)
-+#endif
- 	PTR_ADDIU	v0, 1
--	bnez		t0, 1b
-+	bnez		v1, 1b
- 	PTR_SUBU	v0, a0
- 	jr		ra
- 	END(__strlen_user_asm)
-diff --git a/arch/mips/lib/strncpy_user.S b/arch/mips/lib/strncpy_user.S
-index 7201b2f..bcbb9a0 100644
---- a/arch/mips/lib/strncpy_user.S
-+++ b/arch/mips/lib/strncpy_user.S
-@@ -3,7 +3,8 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  *
-- * Copyright (c) 1996, 1999 by Ralf Baechle
-+ * Copyright (C) 1996, 1999 by Ralf Baechle
-+ * Copyright (C) 2011 MIPS Technologies, Inc.
-  */
- #include <linux/errno.h>
- #include <asm/asm.h>
-@@ -30,30 +31,32 @@
- LEAF(__strncpy_from_user_asm)
- 	LONG_L		v0, TI_ADDR_LIMIT($28)	# pointer ok?
- 	and		v0, a1
-+#ifdef CONFIG_CPU_MICROMIPS
-+	bnezc		v0, .Lfault
-+#else
- 	bnez		v0, .Lfault
-+#endif
- 
- FEXPORT(__strncpy_from_user_nocheck_asm)
--	move		v0, zero
--	move		v1, a1
- 	.set		noreorder
--1:	EX(lbu, t0, (v1), .Lfault)
-+	move		t0, zero
-+	move		v1, a1
-+1:	EX(lbu, v0, (v1), .Lfault)
- 	PTR_ADDIU	v1, 1
- 	R10KCBARRIER(0(ra))
--	beqz		t0, 2f
--	 sb		t0, (a0)
--	PTR_ADDIU	v0, 1
--	.set		reorder
--	PTR_ADDIU	a0, 1
--	bne		v0, a2, 1b
--2:	PTR_ADDU	t0, a1, v0
--	xor		t0, a1
--	bltz		t0, .Lfault
-+	beqz		v0, 2f
-+	 sb		v0, (a0)
-+	PTR_ADDIU	t0, 1
-+	bne		t0, a2, 1b
-+	 PTR_ADDIU	a0, 1
-+2:	PTR_ADDU	v0, a1, t0
-+	xor		v0, a1
-+	bltz		v0, .Lfault
-+	 nop
- 	jr		ra			# return n
-+	move		v0, t0
- 	END(__strncpy_from_user_asm)
- 
--.Lfault:	li		v0, -EFAULT
-+.Lfault:
- 	jr		ra
--
--	.section	__ex_table,"a"
--	PTR		1b, .Lfault
--	.previous
-+	 li		v0, -EFAULT
-diff --git a/arch/mips/lib/strnlen_user.S b/arch/mips/lib/strnlen_user.S
-index 6445716..9090ced 100644
---- a/arch/mips/lib/strnlen_user.S
-+++ b/arch/mips/lib/strnlen_user.S
-@@ -5,6 +5,7 @@
-  *
-  * Copyright (c) 1996, 1998, 1999, 2004 by Ralf Baechle
-  * Copyright (c) 1999 Silicon Graphics, Inc.
-+ * Copyright (C) 2011 MIPS Technologies, Inc.
-  */
- #include <asm/asm.h>
- #include <asm/asm-offsets.h>
-@@ -26,21 +27,34 @@
-  *       the maximum is a tad hairier ...
-  */
- LEAF(__strnlen_user_asm)
-+	.set	noreorder
- 	LONG_L		v0, TI_ADDR_LIMIT($28)	# pointer ok?
- 	and		v0, a0
-+#ifdef CONFIG_CPU_MICROMIPS
-+	bnezc		v0, .Lfault
-+#else
- 	bnez		v0, .Lfault
-+#endif
- 
- FEXPORT(__strnlen_user_nocheck_asm)
--	move		v0, a0
- 	PTR_ADDU	a1, a0			# stop pointer
-+	move		v0, a0
- 1:	beq		v0, a1, 1f		# limit reached?
-+	 nop
- 	EX(lb, t0, (v0), .Lfault)
--	PTR_ADDU	v0, 1
-+#ifdef CONFIG_CPU_MICROMIPS
-+	addius5		v0, 1
-+	bnezc		t0, 1b
-+1:	jr		ra
-+	PTR_SUBU	v0, a0
-+#else
- 	bnez		t0, 1b
--1:	PTR_SUBU	v0, a0
--	jr		ra
-+	PTR_ADDU	v0, 1
-+1:      jr              ra
-+	PTR_SUBU        v0, a0
-+#endif
- 	END(__strnlen_user_asm)
- 
- .Lfault:
--	move		v0, zero
- 	jr		ra
-+	move		v0, zero
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index cc0b626..be71d38 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -6,6 +6,7 @@
-  * Copyright (C) 2003, 04, 05 Ralf Baechle (ralf@linux-mips.org)
-  * Copyright (C) 2007  Maciej W. Rozycki
-  * Copyright (C) 2008  Thiemo Seufer
-+ * Copyright (C) 2011  MIPS Technologies, Inc.
-  */
- #include <linux/init.h>
- #include <linux/kernel.h>
-@@ -79,17 +80,12 @@ static struct uasm_reloc __cpuinitdata relocs[5];
-  * R4600 v2.0:				0x060 bytes
-  * With prefetching, 16 word strides	0x120 bytes
-  */
--
--static u32 clear_page_array[0x120 / 4];
-+u32 clear_page_array[CLEAR_PAGE_ARRAY_SIZE / 4];
- 
- #ifdef CONFIG_SIBYTE_DMA_PAGEOPS
- void clear_page_cpu(void *page) __attribute__((alias("clear_page_array")));
--#else
--void clear_page(void *page) __attribute__((alias("clear_page_array")));
- #endif
- 
--EXPORT_SYMBOL(clear_page);
--
  /*
-  * Maximum sizes:
-  *
-@@ -98,17 +94,13 @@ EXPORT_SYMBOL(clear_page);
-  * R4600 v2.0:				0x07c bytes
-  * With prefetching, 16 word strides	0x540 bytes
-  */
--static u32 copy_page_array[0x540 / 4];
-+u32 copy_page_array[COPY_PAGE_ARRAY_SIZE / 4];
+  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
+@@ -262,7 +263,7 @@ enum cpu_type_enum {
+ 	 */
+ 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
+ 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
+-	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K, CPU_14K,
++	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K, CPU_14K, CPU_14KE,
  
- #ifdef CONFIG_SIBYTE_DMA_PAGEOPS
- void
- copy_page_cpu(void *to, void *from) __attribute__((alias("copy_page_array")));
--#else
--void copy_page(void *to, void *from) __attribute__((alias("copy_page_array")));
- #endif
+ 	/*
+ 	 * MIPS64 class processors
+@@ -319,6 +320,7 @@ enum cpu_type_enum {
+ #define MIPS_CPU_VINT		0x00080000 /* CPU supports MIPSR2 vectored interrupts */
+ #define MIPS_CPU_VEIC		0x00100000 /* CPU supports MIPSR2 external interrupt controller mode */
+ #define MIPS_CPU_ULRI		0x00200000 /* CPU has ULRI feature */
++#define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
  
--EXPORT_SYMBOL(copy_page);
--
+ /*
+  * CPU ASE encodings
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 7d95e62..0a3e3f6 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -201,6 +201,7 @@ void __init check_wait(void)
+ 		break;
  
- static int pref_bias_clear_store __cpuinitdata;
- static int pref_bias_copy_load __cpuinitdata;
-@@ -368,6 +360,12 @@ void __cpuinit build_clear_page(void)
- 	for (i = 0; i < (buf - clear_page_array); i++)
- 		pr_debug("\t.word 0x%08x\n", clear_page_array[i]);
- 	pr_debug("\t.set pop\n");
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_24K:
+ 	case CPU_34K:
+ 	case CPU_1004K:
+@@ -747,6 +748,11 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->options |= MIPS_CPU_ULRI;
+ 	if (config3 & MIPS_CONF3_CTXTC)
+ 		c->options |= MIPS_CPU_CTXTC;
++	if (config3 & MIPS_CONF3_ISA)
++		c->options |= MIPS_CPU_MICROMIPS;
 +#ifdef CONFIG_CPU_MICROMIPS
-+	memcpy(((u8 *)clear_page) - 1, clear_page_array,
-+		ARRAY_SIZE(clear_page_array) * 4);
-+#else
-+	memcpy(clear_page, clear_page_array, ARRAY_SIZE(clear_page_array) * 4);
++	write_c0_config3(read_c0_config3() | MIPS_CONF3_ISA_OE);
 +#endif
- }
  
- static void __cpuinit build_copy_load(u32 **buf, int reg, int off)
-@@ -607,6 +605,12 @@ void __cpuinit build_copy_page(void)
- 	for (i = 0; i < (buf - copy_page_array); i++)
- 		pr_debug("\t.word 0x%08x\n", copy_page_array[i]);
- 	pr_debug("\t.set pop\n");
-+#ifdef CONFIG_CPU_MICROMIPS
-+	memcpy(((u8 *)copy_page) - 1, copy_page_array,
-+		ARRAY_SIZE(copy_page_array) * 4);
-+#else
-+	memcpy(copy_page, copy_page_array, ARRAY_SIZE(copy_page_array) * 4);
-+#endif
+ 	return config3 & MIPS_CONF_M;
  }
+@@ -840,6 +846,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_14K;
+ 		__cpu_name[cpu] = "MIPS 14Kc";
+ 		break;
++	case PRID_IMP_14KE:
++		c->cputype = CPU_14KE;
++		__cpu_name[cpu] = "MIPS 14KEc";
++		break;
+ 	case PRID_IMP_1004K:
+ 		c->cputype = CPU_1004K;
+ 		__cpu_name[cpu] = "MIPS 1004Kc";
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 9cd86fa..821a8bd 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1074,6 +1074,7 @@ static void __cpuinit probe_pcache(void)
+ bypass1074:
+ 		;
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_24K:
+ 	case CPU_34K:
+ 	case CPU_1004K:
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 87f57ae..64d631e 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -461,6 +461,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 		if (cpu_has_mips_r2_exec_hazard) {
+ 			switch (current_cpu_type()) {
+ 			case CPU_14K:
++			case CPU_14KE:
+ 			case CPU_74K:
+ 			case CPU_1074K:
+ 				break;
+@@ -515,6 +516,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	case CPU_4KC:
+ 	case CPU_4KEC:
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_SB1:
+ 	case CPU_SB1A:
+ 	case CPU_4KSC:
+diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+index b2e850e..09b485c 100644
+--- a/arch/mips/oprofile/common.c
++++ b/arch/mips/oprofile/common.c
+@@ -79,6 +79,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+ 	switch (current_cpu_type()) {
+ 	case CPU_5KC:
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_20KC:
+ 	case CPU_24K:
+ 	case CPU_25KF:
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index fdf3ce5..9ee2aaf 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -321,6 +321,10 @@ static int __init mipsxx_init(void)
+ 		op_model_mipsxx_ops.cpu_type = "mips/14K";
+ 		break;
  
- #ifdef CONFIG_SIBYTE_DMA_PAGEOPS
++	case CPU_14KE:
++		op_model_mipsxx_ops.cpu_type = "mips/14KE";
++		break;
++
+ 	case CPU_20KC:
+ 		op_model_mipsxx_ops.cpu_type = "mips/20K";
+ 		break;
 -- 
 1.7.9.6

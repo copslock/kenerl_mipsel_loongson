@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 17:24:00 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:39800 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 17:24:25 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:39802 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903687Ab2DIPWZ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 17:22:25 +0200
+        with ESMTP id S1903691Ab2DIPW1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 17:22:27 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SHGQ7-0005vf-TX; Mon, 09 Apr 2012 10:22:19 -0500
+        id 1SHGQ8-0005vf-GJ; Mon, 09 Apr 2012 10:22:20 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH 3/9] MIPS: Add support for the M14KE core.
-Date:   Mon,  9 Apr 2012 10:21:57 -0500
-Message-Id: <1333984923-445-4-git-send-email-sjhill@mips.com>
+Subject: [PATCH 4/9] MIPS: Add microMIPS versions of breakpoints, BUG, etc.
+Date:   Mon,  9 Apr 2012 10:21:58 -0500
+Message-Id: <1333984923-445-5-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
 In-Reply-To: <1333984923-445-1-git-send-email-sjhill@mips.com>
 References: <1333984923-445-1-git-send-email-sjhill@mips.com>
-X-archive-position: 32895
+X-archive-position: 32896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,156 +27,341 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-This patch depends on the M14K core support patch being
-applied first.
+Add breakpoints, BUG() functions, DSP instruction masks, and
+debug messages for microMIPS. Also add '.insn' directive to
+a number of files that must assemble correctly when using the
+microMIPS or MIPS16e instruction sets.
 
 Signed-off-by: Steven J. Hill <sjhill@mips.com>
 ---
- arch/mips/include/asm/cpu-features.h |    3 +++
- arch/mips/include/asm/cpu.h          |    4 +++-
- arch/mips/kernel/cpu-probe.c         |   10 ++++++++++
- arch/mips/mm/c-r4k.c                 |    1 +
- arch/mips/mm/tlbex.c                 |    2 ++
- arch/mips/oprofile/common.c          |    1 +
- arch/mips/oprofile/op_model_mipsxx.c |    4 ++++
- 7 files changed, 24 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/break.h   |    8 ++++++++
+ arch/mips/include/asm/bug.h     |    8 ++++++++
+ arch/mips/include/asm/dsp.h     |    6 +++++-
+ arch/mips/include/asm/futex.h   |    4 ++++
+ arch/mips/include/asm/paccess.h |    2 ++
+ arch/mips/include/asm/uaccess.h |   14 ++++++++++++--
+ arch/mips/kernel/proc.c         |   27 ++++++++++++++-------------
+ arch/mips/kernel/ptrace.c       |    4 ++++
+ arch/mips/mm/fault.c            |    2 ++
+ 9 files changed, 59 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 556afa2..3b50744 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -98,6 +98,9 @@
- #ifndef kernel_uses_smartmips_rixi
- #define kernel_uses_smartmips_rixi 0
- #endif
-+#ifndef cpu_has_mmips
-+#define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
-+#endif
- #ifndef cpu_has_vtag_icache
- #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
- #endif
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 00e5adf..242a401 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -96,6 +96,7 @@
- #define PRID_IMP_1004K		0x9900
- #define PRID_IMP_1074K		0x9a00
- #define PRID_IMP_14K		0x9c00
-+#define PRID_IMP_14KE		0x9e00
- 
- /*
-  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
-@@ -262,7 +263,7 @@ enum cpu_type_enum {
- 	 */
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
--	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K, CPU_14K,
-+	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K, CPU_14K, CPU_14KE,
- 
- 	/*
- 	 * MIPS64 class processors
-@@ -319,6 +320,7 @@ enum cpu_type_enum {
- #define MIPS_CPU_VINT		0x00080000 /* CPU supports MIPSR2 vectored interrupts */
- #define MIPS_CPU_VEIC		0x00100000 /* CPU supports MIPSR2 external interrupt controller mode */
- #define MIPS_CPU_ULRI		0x00200000 /* CPU has ULRI feature */
-+#define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
- 
- /*
-  * CPU ASE encodings
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 7d95e62..0a3e3f6 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -201,6 +201,7 @@ void __init check_wait(void)
- 		break;
- 
- 	case CPU_14K:
-+	case CPU_14KE:
- 	case CPU_24K:
- 	case CPU_34K:
- 	case CPU_1004K:
-@@ -747,6 +748,11 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 		c->options |= MIPS_CPU_ULRI;
- 	if (config3 & MIPS_CONF3_CTXTC)
- 		c->options |= MIPS_CPU_CTXTC;
-+	if (config3 & MIPS_CONF3_ISA)
-+		c->options |= MIPS_CPU_MICROMIPS;
-+#ifdef CONFIG_CPU_MICROMIPS
-+	write_c0_config3(read_c0_config3() | MIPS_CONF3_ISA_OE);
-+#endif
- 
- 	return config3 & MIPS_CONF_M;
- }
-@@ -840,6 +846,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->cputype = CPU_14K;
- 		__cpu_name[cpu] = "MIPS 14Kc";
- 		break;
-+	case PRID_IMP_14KE:
-+		c->cputype = CPU_14KE;
-+		__cpu_name[cpu] = "MIPS 14KEc";
-+		break;
- 	case PRID_IMP_1004K:
- 		c->cputype = CPU_1004K;
- 		__cpu_name[cpu] = "MIPS 1004Kc";
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 9cd86fa..821a8bd 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1074,6 +1074,7 @@ static void __cpuinit probe_pcache(void)
- bypass1074:
- 		;
- 	case CPU_14K:
-+	case CPU_14KE:
- 	case CPU_24K:
- 	case CPU_34K:
- 	case CPU_1004K:
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 87f57ae..64d631e 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -461,6 +461,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 		if (cpu_has_mips_r2_exec_hazard) {
- 			switch (current_cpu_type()) {
- 			case CPU_14K:
-+			case CPU_14KE:
- 			case CPU_74K:
- 			case CPU_1074K:
- 				break;
-@@ -515,6 +516,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 	case CPU_4KC:
- 	case CPU_4KEC:
- 	case CPU_14K:
-+	case CPU_14KE:
- 	case CPU_SB1:
- 	case CPU_SB1A:
- 	case CPU_4KSC:
-diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
-index b2e850e..09b485c 100644
---- a/arch/mips/oprofile/common.c
-+++ b/arch/mips/oprofile/common.c
-@@ -79,6 +79,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
- 	switch (current_cpu_type()) {
- 	case CPU_5KC:
- 	case CPU_14K:
-+	case CPU_14KE:
- 	case CPU_20KC:
- 	case CPU_24K:
- 	case CPU_25KF:
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index fdf3ce5..9ee2aaf 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -321,6 +321,10 @@ static int __init mipsxx_init(void)
- 		op_model_mipsxx_ops.cpu_type = "mips/14K";
- 		break;
- 
-+	case CPU_14KE:
-+		op_model_mipsxx_ops.cpu_type = "mips/14KE";
-+		break;
+diff --git a/arch/mips/include/asm/break.h b/arch/mips/include/asm/break.h
+index 9161e68..56758eb 100644
+--- a/arch/mips/include/asm/break.h
++++ b/arch/mips/include/asm/break.h
+@@ -27,6 +27,14 @@
+ #define BRK_STACKOVERFLOW 9	/* For Ada stackchecking */
+ #define BRK_NORLD	10	/* No rld found - not used by Linux/MIPS */
+ #define _BRK_THREADBP	11	/* For threads, user bp (used by debuggers) */
 +
- 	case CPU_20KC:
- 		op_model_mipsxx_ops.cpu_type = "mips/20K";
- 		break;
++/* microMIPS definitions */
++#define MM_BRK_BUG	12	/* Used by BUG() */
++#define MM_BRK_KDB	13	/* Used in KDB_ENTER() */
++#define MM_BRK_MEMU	14	/* Used by FPU emulator */
++#define MM_BRK_MULOVF	15	/* Multiply overflow */
++
++/* MIPS32/64 definitions */
+ #define BRK_BUG		512	/* Used by BUG() */
+ #define BRK_KDB		513	/* Used in KDB_ENTER() */
+ #define BRK_MEMU	514	/* Used by FPU emulator */
+diff --git a/arch/mips/include/asm/bug.h b/arch/mips/include/asm/bug.h
+index 540c98a..7afa2e5 100644
+--- a/arch/mips/include/asm/bug.h
++++ b/arch/mips/include/asm/bug.h
+@@ -10,7 +10,11 @@
+ 
+ static inline void __noreturn BUG(void)
+ {
++#ifdef CONFIG_CPU_MICROMIPS
++	__asm__ __volatile__("break %0" : : "i" (MM_BRK_BUG));
++#else
+ 	__asm__ __volatile__("break %0" : : "i" (BRK_BUG));
++#endif
+ 	unreachable();
+ }
+ 
+@@ -27,7 +31,11 @@ static inline void  __BUG_ON(unsigned long condition)
+ 			return;
+ 	}
+ 	__asm__ __volatile__("tne $0, %0, %1"
++#ifdef CONFIG_CPU_MICROMIPS
++			     : : "r" (condition), "i" (MM_BRK_BUG));
++#else
+ 			     : : "r" (condition), "i" (BRK_BUG));
++#endif
+ }
+ 
+ #define BUG_ON(C) __BUG_ON((unsigned long)(C))
+diff --git a/arch/mips/include/asm/dsp.h b/arch/mips/include/asm/dsp.h
+index e9bfc08..ee21c2a 100644
+--- a/arch/mips/include/asm/dsp.h
++++ b/arch/mips/include/asm/dsp.h
+@@ -10,13 +10,17 @@
+ #ifndef _ASM_DSP_H
+ #define _ASM_DSP_H
+ 
+-#include <asm/cpu.h>
++#include <linux/cpu.h>
+ #include <asm/cpu-features.h>
+ #include <asm/hazards.h>
+ #include <asm/mipsregs.h>
+ 
+ #define DSP_DEFAULT	0x00000000
++#ifdef CONFIG_CPU_MICROMIPS
++#define DSP_MASK	0x7f
++#else
+ #define DSP_MASK	0x3ff
++#endif
+ 
+ #define __enable_dsp_hazard()						\
+ do {									\
+diff --git a/arch/mips/include/asm/futex.h b/arch/mips/include/asm/futex.h
+index 6ebf173..007adca 100644
+--- a/arch/mips/include/asm/futex.h
++++ b/arch/mips/include/asm/futex.h
+@@ -31,6 +31,7 @@
+ 		"	beqzl	$1, 1b				\n"	\
+ 		__WEAK_LLSC_MB						\
+ 		"3:						\n"	\
++		"	.insn					\n"	\
+ 		"	.set	pop				\n"	\
+ 		"	.set	mips0				\n"	\
+ 		"	.section .fixup,\"ax\"			\n"	\
+@@ -57,6 +58,7 @@
+ 		"	beqz	$1, 1b				\n"	\
+ 		__WEAK_LLSC_MB						\
+ 		"3:						\n"	\
++		"	.insn					\n"	\
+ 		"	.set	pop				\n"	\
+ 		"	.set	mips0				\n"	\
+ 		"	.section .fixup,\"ax\"			\n"	\
+@@ -156,6 +158,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"	beqzl	$1, 1b					\n"
+ 		__WEAK_LLSC_MB
+ 		"3:							\n"
++		"	.insn						\n"
+ 		"	.set	pop					\n"
+ 		"	.section .fixup,\"ax\"				\n"
+ 		"4:	li	%0, %6					\n"
+@@ -183,6 +186,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
+ 		"	beqz	$1, 1b					\n"
+ 		__WEAK_LLSC_MB
+ 		"3:							\n"
++		"	.insn						\n"
+ 		"	.set	pop					\n"
+ 		"	.section .fixup,\"ax\"				\n"
+ 		"4:	li	%0, %6					\n"
+diff --git a/arch/mips/include/asm/paccess.h b/arch/mips/include/asm/paccess.h
+index 9ce5a1e..f479742 100644
+--- a/arch/mips/include/asm/paccess.h
++++ b/arch/mips/include/asm/paccess.h
+@@ -56,6 +56,7 @@ struct __large_pstruct { unsigned long buf[100]; };
+ 	"1:\t" insn "\t%1,%2\n\t"					\
+ 	"move\t%0,$0\n"							\
+ 	"2:\n\t"							\
++	".insn\n\t"							\
+ 	".section\t.fixup,\"ax\"\n"					\
+ 	"3:\tli\t%0,%3\n\t"						\
+ 	"move\t%1,$0\n\t"						\
+@@ -94,6 +95,7 @@ extern void __get_dbe_unknown(void);
+ 	"1:\t" insn "\t%1,%2\n\t"					\
+ 	"move\t%0,$0\n"							\
+ 	"2:\n\t"							\
++	".insn\n\t"							\
+ 	".section\t.fixup,\"ax\"\n"					\
+ 	"3:\tli\t%0,%3\n\t"						\
+ 	"j\t2b\n\t"							\
+diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
+index 653a412..9510015 100644
+--- a/arch/mips/include/asm/uaccess.h
++++ b/arch/mips/include/asm/uaccess.h
+@@ -261,6 +261,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%1, %3				\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section .fixup,\"ax\"				\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -287,7 +288,9 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	lw	%1, (%3)				\n"	\
+ 	"2:	lw	%D1, 4(%3)				\n"	\
+-	"3:	.section	.fixup,\"ax\"			\n"	\
++	"3:							\n"	\
++	"	.insn						\n"	\
++	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	move	%1, $0					\n"	\
+ 	"	move	%D1, $0					\n"	\
+@@ -355,6 +358,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%z2, %3		# __put_user_asm\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -373,6 +377,7 @@ do {									\
+ 	"1:	sw	%2, (%3)	# __put_user_asm_ll32	\n"	\
+ 	"2:	sw	%D2, 4(%3)				\n"	\
+ 	"3:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	j	3b					\n"	\
+@@ -524,6 +529,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%1, %3				\n"	\
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section .fixup,\"ax\"				\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -549,7 +555,9 @@ do {									\
+ 	"1:	ulw	%1, (%3)				\n"	\
+ 	"2:	ulw	%D1, 4(%3)				\n"	\
+ 	"	move	%0, $0					\n"	\
+-	"3:	.section	.fixup,\"ax\"			\n"	\
++	"3:							\n"	\
++	"	.insn						\n"	\
++	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	move	%1, $0					\n"	\
+ 	"	move	%D1, $0					\n"	\
+@@ -616,6 +624,7 @@ do {									\
+ 	__asm__ __volatile__(						\
+ 	"1:	" insn "	%z2, %3		# __put_user_unaligned_asm\n" \
+ 	"2:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"3:	li	%0, %4					\n"	\
+ 	"	j	2b					\n"	\
+@@ -634,6 +643,7 @@ do {									\
+ 	"1:	sw	%2, (%3)	# __put_user_unaligned_asm_ll32	\n" \
+ 	"2:	sw	%D2, 4(%3)				\n"	\
+ 	"3:							\n"	\
++	"	.insn						\n"	\
+ 	"	.section	.fixup,\"ax\"			\n"	\
+ 	"4:	li	%0, %4					\n"	\
+ 	"	j	3b					\n"	\
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index e309665..2c0f781 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -41,29 +41,30 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 
+ 	seq_printf(m, "processor\t\t: %ld\n", n);
+ 	sprintf(fmt, "cpu model\t\t: %%s V%%d.%%d%s\n",
+-	        cpu_data[n].options & MIPS_CPU_FPU ? "  FPU V%d.%d" : "");
++		      cpu_data[n].options & MIPS_CPU_FPU ? "  FPU V%d.%d" : "");
+ 	seq_printf(m, fmt, __cpu_name[n],
+-	                           (version >> 4) & 0x0f, version & 0x0f,
+-	                           (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
++		      (version >> 4) & 0x0f, version & 0x0f,
++		      (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
+ 	seq_printf(m, "BogoMIPS\t\t: %u.%02u\n",
+-	              cpu_data[n].udelay_val / (500000/HZ),
+-	              (cpu_data[n].udelay_val / (5000/HZ)) % 100);
++		      cpu_data[n].udelay_val / (500000/HZ),
++		      (cpu_data[n].udelay_val / (5000/HZ)) % 100);
+ 	seq_printf(m, "wait instruction\t: %s\n", cpu_wait ? "yes" : "no");
+ 	seq_printf(m, "microsecond timers\t: %s\n",
+-	              cpu_has_counter ? "yes" : "no");
++		      cpu_has_counter ? "yes" : "no");
+ 	seq_printf(m, "tlb_entries\t\t: %d\n", cpu_data[n].tlbsize);
+ 	seq_printf(m, "extra interrupt vector\t: %s\n",
+-	              cpu_has_divec ? "yes" : "no");
++		      cpu_has_divec ? "yes" : "no");
+ 	seq_printf(m, "hardware watchpoint\t: %s",
+-		   cpu_has_watch ? "yes, " : "no\n");
++		      cpu_has_watch ? "yes, " : "no\n");
+ 	if (cpu_has_watch) {
+ 		seq_printf(m, "count: %d, address/irw mask: [",
+-			   cpu_data[n].watch_reg_count);
++		      cpu_data[n].watch_reg_count);
+ 		for (i = 0; i < cpu_data[n].watch_reg_count; i++)
+ 			seq_printf(m, "%s0x%04x", i ? ", " : "" ,
+-				   cpu_data[n].watch_reg_masks[i]);
++				cpu_data[n].watch_reg_masks[i]);
+ 		seq_printf(m, "]\n");
+ 	}
++	seq_printf(m, "microMIPS\t\t: %s\n", cpu_has_mmips ? "yes" : "no");
+ 	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s\n",
+ 		      cpu_has_mips16 ? " mips16" : "",
+ 		      cpu_has_mdmx ? " mdmx" : "",
+@@ -73,13 +74,13 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 		      cpu_has_mipsmt ? " mt" : ""
+ 		);
+ 	seq_printf(m, "shadow register sets\t: %d\n",
+-		       cpu_data[n].srsets);
++		      cpu_data[n].srsets);
+ 	seq_printf(m, "kscratch registers\t: %d\n",
+-		   hweight8(cpu_data[n].kscratch_mask));
++		      hweight8(cpu_data[n].kscratch_mask));
+ 	seq_printf(m, "core\t\t\t: %d\n", cpu_data[n].core);
+ 
+ 	sprintf(fmt, "VCE%%c exceptions\t\t: %s\n",
+-	        cpu_has_vce ? "%u" : "not available");
++		      cpu_has_vce ? "%u" : "not available");
+ 	seq_printf(m, fmt, 'D', vced_count);
+ 	seq_printf(m, fmt, 'I', vcei_count);
+ 	seq_printf(m, "\n");
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index 7c24c29..4b4bbc0 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -364,6 +364,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			preempt_enable();
+ 			break;
+ 		}
++#ifndef CONFIG_CPU_MICROMIPS
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;
+ 
+@@ -384,6 +385,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			}
+ 			tmp = child->thread.dsp.dspcontrol;
+ 			break;
++#endif
+ 		default:
+ 			tmp = 0;
+ 			ret = -EIO;
+@@ -453,6 +455,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 		case FPC_CSR:
+ 			child->thread.fpu.fcr31 = data;
+ 			break;
++#ifndef CONFIG_CPU_MICROMIPS
+ 		case DSP_BASE ... DSP_BASE + 5: {
+ 			dspreg_t *dregs;
+ 
+@@ -472,6 +475,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 			}
+ 			child->thread.dsp.dspcontrol = data;
+ 			break;
++#endif
+ 		default:
+ 			/* The rest are not allowed. */
+ 			ret = -EIO;
+diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+index c14f6df..bae32a7 100644
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -25,6 +25,7 @@
+ #include <asm/uaccess.h>
+ #include <asm/ptrace.h>
+ #include <asm/highmem.h>		/* For VMALLOC_END */
++#include <asm/tlbdebug.h>
+ #include <linux/kdebug.h>
+ 
+ /*
+@@ -231,6 +232,7 @@ no_context:
+ 	       "virtual address %0*lx, epc == %0*lx, ra == %0*lx\n",
+ 	       raw_smp_processor_id(), field, address, field, regs->cp0_epc,
+ 	       field,  regs->regs[31]);
++	dump_tlb_all();
+ 	die("Oops", regs);
+ 
+ out_of_memory:
 -- 
 1.7.9.6

@@ -1,214 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Apr 2012 21:45:50 +0200 (CEST)
-Received: from netrider.rowland.org ([192.131.102.5]:42767 "HELO
-        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1904117Ab2DGTpn (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 7 Apr 2012 21:45:43 +0200
-Received: (qmail 32454 invoked by uid 500); 7 Apr 2012 15:45:37 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 7 Apr 2012 15:45:37 -0400
-Date:   Sat, 7 Apr 2012 15:45:37 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@netrider.rowland.org
-To:     "Steven J. Hill" <sjhill@mips.com>
-cc:     linux-mips@linux-mips.org, <ralf@linux-mips.org>,
-        <linux-usb@vger.kernel.org>, Chris Dearman <chris@mips.com>
-Subject: Re: [PATCH 10/10] usb: host: mips: sead3: USB Host controller support
- for SEAD-3 platform.
-In-Reply-To: <1333817979-30288-1-git-send-email-sjhill@mips.com>
-Message-ID: <Pine.LNX.4.44L0.1204071527590.32196-100000@netrider.rowland.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 32891
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 17:22:30 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:39797 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903628Ab2DIPWX (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 17:22:23 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SHGQ2-0005vf-Tb; Mon, 09 Apr 2012 10:22:14 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH 0/9] Add support for pure microMIPS kernel.
+Date:   Mon,  9 Apr 2012 10:21:54 -0500
+Message-Id: <1333984923-445-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.6
+X-archive-position: 32892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stern@rowland.harvard.edu
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Sat, 7 Apr 2012, Steven J. Hill wrote:
+From: "Steven J. Hill" <sjhill@mips.com>
 
-> From: "Steven J. Hill" <sjhill@mips.com>
-> 
-> Add EHCI driver for MIPS SEAD-3 development platform.
-> 
-> Signed-off-by: Chris Dearman <chris@mips.com>
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
-> ---
->  drivers/usb/host/Kconfig      |    4 +-
->  drivers/usb/host/ehci-hcd.c   |    5 +
->  drivers/usb/host/ehci-sead3.c |  299 +++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 306 insertions(+), 2 deletions(-)
->  create mode 100644 drivers/usb/host/ehci-sead3.c
-> 
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index f788eb8..db29a9f 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -110,13 +110,13 @@ config USB_EHCI_BIG_ENDIAN_MMIO
->  	depends on USB_EHCI_HCD && (PPC_CELLEB || PPC_PS3 || 440EPX || \
->  				    ARCH_IXP4XX || XPS_USB_HCD_XILINX || \
->  				    PPC_MPC512x || CPU_CAVIUM_OCTEON || \
-> -				    PMC_MSP || SPARC_LEON)
-> +				    PMC_MSP || SPARC_LEON || MIPS_SEAD3)
->  	default y
->  
->  config USB_EHCI_BIG_ENDIAN_DESC
->  	bool
->  	depends on USB_EHCI_HCD && (440EPX || ARCH_IXP4XX || XPS_USB_HCD_XILINX || \
-> -				    PPC_MPC512x || PMC_MSP || SPARC_LEON)
-> +				    PPC_MPC512x || PMC_MSP || SPARC_LEON || MIPS_SEAD3)
+This set of patches is to support building a pure microMIPS kernel
+image using only instruction from the microMIPS ISA. The result is
+a kernel binary reduction of more than 20% and an increase in the
+speed of execution due to the smaller and faster instructions.
 
-How about wrapping this to another line, to respect the 80-column 
-limit?
+Steven J. Hill (9):
+  MIPS: Add microMIPS configuration option.
+  MIPS: Optimise core library functions for microMIPS.
+  MIPS: Add support for the M14KE core.
+  MIPS: Add microMIPS versions of breakpoints, BUG, etc.
+  MIPS: Add support for microMIPS instructions.
+  MIPS: Add support for microMIPS exception handling.
+  MIPS: Support microMIPS/MIPS16e handling of delay slots.
+  MIPS: Support microMIPS/MIPS16e unaligned accesses.
+  MIPS: Support microMIPS/MIPS16e floating point.
 
->  	default y
->  
->  config XPS_USB_HCD_XILINX
+ arch/mips/Kconfig                      |   10 +
+ arch/mips/Makefile                     |    1 +
+ arch/mips/configs/sead3micro_defconfig | 1757 ++++++++++++++++++++++++++++++++
+ arch/mips/include/asm/branch.h         |   33 +-
+ arch/mips/include/asm/break.h          |    8 +
+ arch/mips/include/asm/bug.h            |    8 +
+ arch/mips/include/asm/cpu-features.h   |    3 +
+ arch/mips/include/asm/cpu.h            |    4 +-
+ arch/mips/include/asm/dsp.h            |    6 +-
+ arch/mips/include/asm/fpu_emulator.h   |    7 +
+ arch/mips/include/asm/futex.h          |    4 +
+ arch/mips/include/asm/inst.h           |  882 +++++++++++++++-
+ arch/mips/include/asm/mipsregs.h       |  359 +++----
+ arch/mips/include/asm/paccess.h        |    2 +
+ arch/mips/include/asm/page.h           |    6 +
+ arch/mips/include/asm/stackframe.h     |   12 +-
+ arch/mips/include/asm/uaccess.h        |   14 +-
+ arch/mips/kernel/branch.c              |  183 +++-
+ arch/mips/kernel/cpu-probe.c           |   10 +
+ arch/mips/kernel/genex.S               |   82 +-
+ arch/mips/kernel/proc.c                |   27 +-
+ arch/mips/kernel/process.c             |  101 ++
+ arch/mips/kernel/ptrace.c              |    4 +
+ arch/mips/kernel/scall32-o32.S         |   22 +-
+ arch/mips/kernel/smtc-asm.S            |    3 +
+ arch/mips/kernel/traps.c               |  377 ++++---
+ arch/mips/kernel/unaligned.c           | 1496 +++++++++++++++++++++++----
+ arch/mips/lib/memcpy.S                 |   17 +-
+ arch/mips/lib/memset.S                 |   90 +-
+ arch/mips/lib/strlen_user.S            |   13 +-
+ arch/mips/lib/strncpy_user.S           |   39 +-
+ arch/mips/lib/strnlen_user.S           |   24 +-
+ arch/mips/math-emu/cp1emu.c            |  766 ++++++++++++--
+ arch/mips/math-emu/dsemul.c            |   40 +-
+ arch/mips/mm/c-r4k.c                   |    1 +
+ arch/mips/mm/fault.c                   |    2 +
+ arch/mips/mm/page.c                    |   26 +-
+ arch/mips/mm/tlbex.c                   |   23 +
+ arch/mips/mm/uasm.c                    |  174 +++-
+ arch/mips/mti-sead3/sead3-init.c       |   57 +-
+ arch/mips/oprofile/common.c            |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c   |    4 +
+ 42 files changed, 5877 insertions(+), 821 deletions(-)
+ create mode 100644 arch/mips/configs/sead3micro_defconfig
 
-> --- /dev/null
-> +++ b/drivers/usb/host/ehci-sead3.c
-
-> +#ifdef CONFIG_PM
-> +static void mips_start_ehc(void)
-> +{
-> +	pr_debug("mips_start_ehc\n");
-> +}
-> +#endif
-> +
-> +static void mips_stop_ehc(void)
-> +{
-> +	pr_debug("mips_start_ehc\n");
-> +}
-
-Do these really need to be separate functions?
-
-Also, you should use ehci_dbg() instead of pr_debug().  Likewise throughout
-the rest of this file.
-
-> +
-> +static int mips_run(struct usb_hcd *hcd)
-> +{
-> +	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-> +	u32 temp;
-> +
-> +	temp = ehci_reset(ehci);
-> +	if (temp != 0) {
-> +		ehci_mem_cleanup(ehci);
-> +		return temp;
-> +	}
-> +
-> +	return ehci_run(hcd);
-> +}
-> +
-> +const struct hc_driver ehci_mips_hc_driver = {
-> +	.description		= hcd_name,
-> +	.product_desc		= "MIPS EHCI",
-> +	.hcd_priv_size		= sizeof(struct ehci_hcd),
-> +
-> +	/*
-> +	 * generic hardware linkage
-> +	 */
-> +	.irq			= ehci_irq,
-> +	.flags			= HCD_MEMORY | HCD_USB2,
-> +
-> +	/*
-> +	 * basic lifecycle operations
-> +	 *
-> +	 */
-> +	.reset			= ehci_init,
-> +	.start			= mips_run,
-> +	.stop			= ehci_stop,
-> +	.shutdown		= ehci_shutdown,
-> +
-> +	/*
-> +	 * managing i/o requests and associated device resources
-> +	 */
-> +	.urb_enqueue		= ehci_urb_enqueue,
-> +	.urb_dequeue		= ehci_urb_dequeue,
-> +	.endpoint_disable	= ehci_endpoint_disable,
-> +
-> +	/*
-> +	 * scheduling support
-> +	 */
-> +	.get_frame_number	= ehci_get_frame,
-> +
-> +	/*
-> +	 * root hub support
-> +	 */
-> +	.hub_status_data	= ehci_hub_status_data,
-> +	.hub_control		= ehci_hub_control,
-> +	.bus_suspend		= ehci_bus_suspend,
-> +	.bus_resume		= ehci_bus_resume,
-> +	.relinquish_port	= ehci_relinquish_port,
-> +	.port_handed_over	= ehci_port_handed_over,
-> +};
-
-This looks like it was copied from a rather old copy of ehci-au1xxx.
-You should allways base new work on the current version.
-
-> +static int ehci_hcd_mips_drv_probe(struct platform_device *pdev)
-> +{
-> +	struct usb_hcd *hcd;
-> +	struct ehci_hcd *ehci;
-> +	int ret;
-> +
-> +	if (usb_disabled())
-> +		return -ENODEV;
-> +
-> +	if (pdev->resource[1].flags != IORESOURCE_IRQ) {
-> +		pr_debug("resource[1] is not IORESOURCE_IRQ");
-> +		return -ENOMEM;
-> +	}
-> +	hcd = usb_create_hcd(&ehci_mips_hc_driver, &pdev->dev, "MIPS");
-> +	if (!hcd)
-> +		return -ENOMEM;
-> +
-> +	hcd->rsrc_start = pdev->resource[0].start;
-> +	hcd->rsrc_len = pdev->resource[0].end - pdev->resource[0].start + 1;
-> +
-> +	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-> +		pr_debug("request_mem_region failed");
-> +		ret = -EBUSY;
-> +		goto err1;
-> +	}
-> +
-> +	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-> +	if (!hcd->regs) {
-> +		pr_debug("ioremap failed");
-> +		ret = -ENOMEM;
-> +		goto err2;
-> +	}
-> +
-> +	hcd->has_tt = 1;
-> +
-> +	ehci = hcd_to_ehci(hcd);
-> +	ehci->caps = hcd->regs + 0x100;
-
-Some of this (along with mips_run() above) can be replaced with a call
-to ehci_setup().
-
-> +	ehci->regs = hcd->regs + 0x100 +
-> +		HC_LENGTH(ehci, readl(&ehci->caps->hc_capbase));
-> +	/* cache this readonly data; minimize chip reads */
-> +	ehci->hcs_params = readl(&ehci->caps->hcs_params);
-> +
-> +	/* SEAD-3 EHCI matches CPU endianness. */
-> +#ifdef __BIG_ENDIAN
-> +	ehci->big_endian_mmio = 1;
-> +	ehci->big_endian_desc = 1;
-> +#endif
-> +
-> +	/* Set burst length to 16 words */
-> +	/* FIXME: should be tunable */
-> +	ehci_writel(ehci, 0x1010, &ehci->regs->reserved[1]);
-> +
-> +	ret = usb_add_hcd(hcd, pdev->resource[1].start,
-> +			  IRQF_DISABLED | IRQF_SHARED);
-> +	if (ret == 0) {
-> +		platform_set_drvdata(pdev, hcd);
-> +		return ret;
-> +	}
-
-Alan Stern
+-- 
+1.7.9.6

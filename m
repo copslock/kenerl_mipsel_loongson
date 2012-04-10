@@ -1,116 +1,163 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Apr 2012 23:34:09 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:52680 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903692Ab2DIVd4 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 9 Apr 2012 23:33:56 +0200
-Received: by yenm10 with SMTP id m10so2329364yen.36
-        for <multiple recipients>; Mon, 09 Apr 2012 14:33:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=kvRuibZ200IdxDND61UzenYhS9jKaohk6ClIwXhBe4k=;
-        b=abCqvfTGjnLGlscMixXEOFlDZ1Jhw9AKsa/golA30NnMN9jHfjZmqMfrll+zRzAiIj
-         7cEFOe+Y4y9LQiNnwcY/TzwsCIwpjoE0Ea6Uyd09r30JEcasocLJiNyA8JwDozvJh3SH
-         HYSprKA2jSNseU8Fz54Kox2fn+EINY5wSe9dkAkoEk+Xl5sE9Fax3Tz2mGU8HpO2NpIo
-         Dzf3WGHf9NKwumClGMGMHWfrC0MSoqqQhh+y0I2vZo05DLvvo6tXOiMm5PHUDXKg2Tdn
-         RmGdOZFNEe+C/oGFHX/OzlHwwb/zqU6mxuWjWsmZyriZmDxQdsyv1DsnX6mp9qUwb5UX
-         0S3w==
-Received: by 10.60.7.196 with SMTP id l4mr12538900oea.8.1334007229618;
-        Mon, 09 Apr 2012 14:33:49 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id xb7sm17624071obb.10.2012.04.09.14.33.48
-        (version=SSLv3 cipher=OTHER);
-        Mon, 09 Apr 2012 14:33:48 -0700 (PDT)
-Message-ID: <4F8355BB.5020308@gmail.com>
-Date:   Mon, 09 Apr 2012 14:33:47 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Imre Kaloz <kaloz@openwrt.org>
-CC:     linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] STAGING: octeon-ethernet: fix build errors by including
- interrupt.h
-References: <1333996155-30523-1-git-send-email-kaloz@openwrt.org>
-In-Reply-To: <1333996155-30523-1-git-send-email-kaloz@openwrt.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32913
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Apr 2012 03:03:45 +0200 (CEST)
+Received: from relmlor2.renesas.com ([210.160.252.172]:39530 "EHLO
+        relmlor2.renesas.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903693Ab2DJBDj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Apr 2012 03:03:39 +0200
+Received: from relmlir2.idc.renesas.com ([10.200.68.152])
+ by relmlor2.idc.renesas.com ( SJSMS)
+ with ESMTP id <0M2800JONO94CQ20@relmlor2.idc.renesas.com>; Tue,
+ 10 Apr 2012 10:03:04 +0900 (JST)
+Received: from relmlac1.idc.renesas.com ([10.200.69.21])
+ by relmlir2.idc.renesas.com ( SJSMS)
+ with ESMTP id <0M28004SVO94SGG0@relmlir2.idc.renesas.com>; Tue,
+ 10 Apr 2012 10:03:04 +0900 (JST)
+Received: by relmlac1.idc.renesas.com (Postfix, from userid 0)
+        id 15A7080177; Tue, 10 Apr 2012 10:03:04 +0900 (JST)
+Received: from relmlac1.idc.renesas.com (localhost [127.0.0.1])
+        by relmlac1.idc.renesas.com (Postfix) with ESMTP id 080BC8015B; Tue,
+ 10 Apr 2012 10:03:04 +0900 (JST)
+Received: from relmlii2.idc.renesas.com [10.200.68.66]  by
+ relmlac1.idc.renesas.com with ESMTP id LAA17604; Tue,
+ 10 Apr 2012 10:03:04 +0900
+X-IronPort-AV: E=Sophos;i="4.75,396,1330873200";   d="scan'208";a="76457171"
+Received: from unknown (HELO [10.161.69.127]) ([10.161.69.127])
+ by relmlii2.idc.renesas.com with ESMTP; Tue, 10 Apr 2012 10:03:03 +0900
+Message-id: <4F8386C8.9020401@renesas.com>
+Date:   Tue, 10 Apr 2012 10:03:04 +0900
+From:   Shinya Kuribayashi <shinya.kuribayashi.px@renesas.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko/20120312
+ Thunderbird/11.0
+MIME-version: 1.0
+To:     sjhill@mips.com
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org, douglas@mips.com,
+        chris@mips.com
+Subject: Re: [PATCH 01/10] MIPS: Add core files for MIPS SEAD-3 development
+ platform.
+References: <1333817315-30091-1-git-send-email-sjhill@mips.com>
+ <1333817315-30091-2-git-send-email-sjhill@mips.com>
+In-reply-to: <1333817315-30091-2-git-send-email-sjhill@mips.com>
+Content-type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 7bit
+X-archive-position: 32914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: shinya.kuribayashi.px@renesas.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 04/09/2012 11:29 AM, Imre Kaloz wrote:
-> This patch fixes the following build failures:
->
-> drivers/staging/octeon/ethernet.c: In function 'cvm_oct_cleanup_module':
-> drivers/staging/octeon/ethernet.c:799:2: error: implicit declaration of function 'free_irq'
-> drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_no_more_work':
-> drivers/staging/octeon/ethernet-rx.c:119:3: error: implicit declaration of function 'enable_irq'
-> drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_do_interrupt':
-> drivers/staging/octeon/ethernet-rx.c:136:2: error: implicit declaration of function 'disable_irq_nosync'
-> drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_rx_initialize':
-> drivers/staging/octeon/ethernet-rx.c:532:2: error: implicit declaration of function 'request_irq'
-> drivers/staging/octeon/ethernet-tx.c: In function 'cvm_oct_tx_initialize':
-> drivers/staging/octeon/ethernet-tx.c:712:2: error: implicit declaration of function 'request_irq'
-> drivers/staging/octeon/ethernet-tx.c: In function 'cvm_oct_tx_shutdown':
-> drivers/staging/octeon/ethernet-tx.c:723:2: error: implicit declaration of function 'free_irq'
->
+Hello,
 
-If you select some of the IPSec options, linux/interrupt.h will be 
-included indirectly via net/xfrm.h.  Without CONFIG_XFRM, you indeed get 
-these errors, so...
+On 4/8/2012 1:48 AM, Steven J. Hill wrote:
+> diff --git a/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+> new file mode 100644
+> index 0000000..7f3e3f9
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-sead3/cpu-feature-overrides.h
+> @@ -0,0 +1,72 @@
+[...]
+> +/*
+> + * CPU feature overrides for MIPS boards
+> + */
+> +#ifdef CONFIG_CPU_MIPS32
+> +#define cpu_has_tlb		1
+> +#define cpu_has_4kex		1
+> +#define cpu_has_4k_cache	1
+> +/* #define cpu_has_fpu		? */
+> +/* #define cpu_has_32fpr	? */
+> +#define cpu_has_counter		1
+> +/* #define cpu_has_watch	? */
+> +#define cpu_has_divec		1
+> +#define cpu_has_vce		0
+> +/* #define cpu_has_cache_cdex_p	? */
+> +/* #define cpu_has_cache_cdex_s	? */
+> +/* #define cpu_has_prefetch	? */
+> +#define cpu_has_mcheck		1
+> +/* #define cpu_has_ejtag	? */
+> +#ifdef CONFIG_CPU_HAS_LLSC
+> +#define cpu_has_llsc		1
+> +#else
+> +#define cpu_has_llsc		0
+> +#endif
 
-Acked-by: David Daney <david.daney@cavium.com>
+This Ralf's commit maybe be still valid for sead3 board?
 
-I am not sure when Ralf would merge it, but since it is in 
-drivers/staging, it may be best to route it to Greg K-H. with the 
-corresponding stable annotations.
+http://git.kernel.org/linus/b8d6f78cd058e34ec706f7cb353fdb2eb743c050
+MIPS: Malta: Remove pointless use use of CONFIG_CPU_HAS_LLSC
 
-> Signed-off-by: Imre Kaloz<kaloz@openwrt.org>
-> ---
->   drivers/staging/octeon/ethernet-rx.c |    1 +
->   drivers/staging/octeon/ethernet-tx.c |    1 +
->   drivers/staging/octeon/ethernet.c    |    1 +
->   3 files changed, 3 insertions(+), 0 deletions(-)
->
-> diff --git a/drivers/staging/octeon/ethernet-rx.c b/drivers/staging/octeon/ethernet-rx.c
-> index 400df8c..d91751f 100644
-> --- a/drivers/staging/octeon/ethernet-rx.c
-> +++ b/drivers/staging/octeon/ethernet-rx.c
-> @@ -36,6 +36,7 @@
->   #include<linux/prefetch.h>
->   #include<linux/ratelimit.h>
->   #include<linux/smp.h>
-> +#include<linux/interrupt.h>
->   #include<net/dst.h>
->   #ifdef CONFIG_XFRM
->   #include<linux/xfrm.h>
-> diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
-> index 56d74dc..91a97b3 100644
-> --- a/drivers/staging/octeon/ethernet-tx.c
-> +++ b/drivers/staging/octeon/ethernet-tx.c
-> @@ -32,6 +32,7 @@
->   #include<linux/ip.h>
->   #include<linux/ratelimit.h>
->   #include<linux/string.h>
-> +#include<linux/interrupt.h>
->   #include<net/dst.h>
->   #ifdef CONFIG_XFRM
->   #include<linux/xfrm.h>
-> diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/ethernet.c
-> index 9112cd8..60cba81 100644
-> --- a/drivers/staging/octeon/ethernet.c
-> +++ b/drivers/staging/octeon/ethernet.c
-> @@ -31,6 +31,7 @@
->   #include<linux/etherdevice.h>
->   #include<linux/phy.h>
->   #include<linux/slab.h>
-> +#include<linux/interrupt.h>
->
->   #include<net/dst.h>
->
+> +/* #define cpu_has_vtag_icache	? */
+> +/* #define cpu_has_dc_aliases	? */
+> +/* #define cpu_has_ic_fills_f_dc ? */
+> +#define cpu_has_nofpuex		0
+> +/* #define cpu_has_64bits	? */
+> +/* #define cpu_has_64bit_zero_reg ? */
+> +/* #define cpu_has_inclusive_pcaches ? */
+> +#define cpu_icache_snoops_remote_store 1
+> +#endif
+
+Also you might be interested in fls/ffs optimization using CLO/CLZ
+instruction, that will be used in irq_ffs() at plat_irq_dispatch:
+
+https://patchwork.linux-mips.org/patch/1453/
+MIPS: Enable cpu_has_clo_clz for MIPS Technologies' platforms
+
+Some discussions on this is found at:
+http://www.linux-mips.org/archives/linux-mips/2010-07/msg00000.html
+
+> diff --git a/arch/mips/mti-sead3/sead3-int.c b/arch/mips/mti-sead3/sead3-int.c
+> new file mode 100644
+> index 0000000..4cd569e
+> --- /dev/null
+> +++ b/arch/mips/mti-sead3/sead3-int.c
+> @@ -0,0 +1,146 @@
+[...]
+> +/*
+> + * Version of ffs that only looks at bits 8..15
+> + */
+> +static inline unsigned int irq_ffs(unsigned int pending)
+> +{
+> +#if defined(CONFIG_CPU_MIPS32) || defined(CONFIG_CPU_MIPS64)
+> +	return fls(pending) - CAUSEB_IP - 1;
+> +#else
+> +	unsigned int a0 = 7;
+> +	unsigned int t0;
+> +
+> +	t0 = pending & 0xf000;
+> +	t0 = t0 < 1;
+> +	t0 = t0 << 2;
+> +	a0 = a0 - t0;
+> +	pending = pending << t0;
+> +
+> +	t0 = pending & 0xc000;
+> +	t0 = t0 < 1;
+> +	t0 = t0 << 1;
+> +	a0 = a0 - t0;
+> +	pending = pending << t0;
+> +
+> +	t0 = pending & 0x8000;
+> +	t0 = t0 < 1;
+> +	/* t0 = t0 << 2; */
+> +	a0 = a0 - t0;
+> +	/* pending = pending << t0; */
+> +
+> +	return a0;
+> +#endif
+> +}
+> +
+> +asmlinkage void plat_irq_dispatch(void)
+> +{
+> +	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+> +	int irq;
+> +
+> +	irq = irq_ffs(pending);
+> +
+> +	if (irq >= 0)
+> +		do_IRQ(MIPS_CPU_IRQ_BASE + irq);
+> +	else
+> +		spurious_interrupt();
+> +}
+
+-- 
+Shinya Kuribayashi
+Renesas Electronics

@@ -1,68 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Apr 2012 18:43:33 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:54737 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903710Ab2DJQn1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 10 Apr 2012 18:43:27 +0200
-Received: by pbcun4 with SMTP id un4so194270pbc.36
-        for <linux-mips@linux-mips.org>; Tue, 10 Apr 2012 09:43:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent
-         :x-gm-message-state;
-        bh=2eOEapD6MeZz+l48Wfd4vatS0WaK0FOCoYzBAom1OOk=;
-        b=fXiEh1k8DgglyJNZaSEo9pJKTfR10DgyG86d6ZZuwC3f/5xptceB9GO0ybiGTQCHZl
-         HVtRrUv6dsgT2fAILcPsvCPPlWjmc0KS9VDAlW7OLQ40m1nnAf20MU17p+U8y8tUoJjE
-         V2h/X3afQEwqLJ/CUWoW5/AhjqcH+JX8bDC1tYwXCQ8kalxxUeFBAolIaPPf5UUPPcrA
-         RAh4PYd0UyqWHIDxJs2WESj4xaiFvL0lN7c4ROo4p4GZQ15u7EYKwXc0nYIlu5kIcDw4
-         sQ8EMx9z8w8xh1D494BO9ruq14Yg2emKg/nZy+sAnVwh1Vs/i1PA3xkLN5irPym2kZDo
-         J62A==
-Received: by 10.68.202.167 with SMTP id kj7mr31003824pbc.9.1334076200377;
-        Tue, 10 Apr 2012 09:43:20 -0700 (PDT)
-Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net. [67.168.183.230])
-        by mx.google.com with ESMTPS id r10sm306604pbf.22.2012.04.10.09.43.17
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 10 Apr 2012 09:43:18 -0700 (PDT)
-Date:   Tue, 10 Apr 2012 09:43:16 -0700
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 4/5] staging: octeon_ethernet: Convert to use device tree.
-Message-ID: <20120410164316.GA15131@kroah.com>
-References: <1332808075-8333-1-git-send-email-ddaney.cavm@gmail.com>
- <1332808075-8333-5-git-send-email-ddaney.cavm@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Apr 2012 20:03:56 +0200 (CEST)
+Received: from dns0.mips.com ([12.201.5.70]:37039 "EHLO dns0.mips.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903709Ab2DJSDt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 10 Apr 2012 20:03:49 +0200
+Received: from exchdb01.mips.com (exchhub01.mips.com [192.168.36.84])
+        by dns0.mips.com (8.13.8/8.13.8) with ESMTP id q3AI3eWi031710;
+        Tue, 10 Apr 2012 11:03:41 -0700
+Received: from [192.168.65.146] (192.168.65.146) by exchhub01.mips.com
+ (192.168.36.84) with Microsoft SMTP Server id 14.1.270.1; Tue, 10 Apr 2012
+ 11:03:35 -0700
+Message-ID: <4F8475F7.9060809@mips.com>
+Date:   Tue, 10 Apr 2012 11:03:35 -0700
+From:   Leonid Yegoshin <yegoshin@mips.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.18) Gecko/20110617 Thunderbird/3.1.11
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1332808075-8333-5-git-send-email-ddaney.cavm@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Gm-Message-State: ALoCoQl6eDhsw+5bQG7m7+U5SwYkqFRYCyblm5xmczX4CBfNcCdvPwr2POabIcXgcXCSg5DmYI1Z
-X-archive-position: 32924
+To:     Kevin Cernekee <cernekee@gmail.com>
+CC:     "Steven J. Hill" <sjhill@mips.com>, <linux-mips@linux-mips.org>,
+        <ralf@linux-mips.org>
+Subject: Re: [PATCH] Revert "MIPS: cache: Provide cache flush operations for
+ XFS"
+References: <1333987989-1178-1-git-send-email-sjhill@mips.com> <CAJiQ=7AjtSB8KQ9+edUOvW+70nAWzh6c8B26ehnEpuud6QeMJA@mail.gmail.com>
+In-Reply-To: <CAJiQ=7AjtSB8KQ9+edUOvW+70nAWzh6c8B26ehnEpuud6QeMJA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EMS-Proccessed: 6LP3oGfGVdcdb8o1aBnt6w==
+X-EMS-STAMP: ieBl1dS+trVrMX0FtBhyCw==
+X-archive-position: 32925
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@linuxfoundation.org
+X-original-sender: yegoshin@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Mar 26, 2012 at 05:27:54PM -0700, David Daney wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> Get MAC address and PHY connection from the device tree.  The driver
-> is converted to a platform driver.
-> 
-> Cc: netdev@vger.kernel.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> ---
-> 
-> Should probably go via Ralf's linux-mips.org tree.
+On 04/09/2012 07:44 PM, Kevin Cernekee wrote:
+> On Mon,Is there a reason why Ralf's original approach was not workable?
 
-That's fine with me:
-	Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It doesn't work with HIGHMEM + cache aliasing. It also uses cache flush 
+(blast_dcache) to buffer instead of cache invalidate after read I/O is 
+completed.
+
+
+> I suspect that reimplementing the *_kernel_vmap_range functions using
+> _dma_cache_* would result in a double L2 flush on the same memory
+> regions on systems with cache aliases, and an unnecessary L1+L2 flush
+> on systems without aliases.
+
+Good point. I put that to set it working. Now, after your comment, I 
+think it has sense to try with L1 only.
+
+- Leonid.

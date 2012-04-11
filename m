@@ -1,59 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2012 03:58:31 +0200 (CEST)
-Received: from e2.ny.us.ibm.com ([32.97.182.142]:40800 "EHLO e2.ny.us.ibm.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903716Ab2DKB6W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 11 Apr 2012 03:58:22 +0200
-Received: from /spool/local
-        by e2.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-mips@linux-mips.org> from <john.stultz@linaro.org>;
-        Tue, 10 Apr 2012 21:58:15 -0400
-Received: from d01dlp01.pok.ibm.com (9.56.224.56)
-        by e2.ny.us.ibm.com (192.168.1.102) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        Tue, 10 Apr 2012 21:58:13 -0400
-Received: from d01relay04.pok.ibm.com (d01relay04.pok.ibm.com [9.56.227.236])
-        by d01dlp01.pok.ibm.com (Postfix) with ESMTP id 04E9738C8054;
-        Tue, 10 Apr 2012 21:58:12 -0400 (EDT)
-Received: from d01av02.pok.ibm.com (d01av02.pok.ibm.com [9.56.224.216])
-        by d01relay04.pok.ibm.com (8.13.8/8.13.8/NCO v10.0) with ESMTP id q3B1wC3A342974;
-        Tue, 10 Apr 2012 21:58:12 -0400
-Received: from d01av02.pok.ibm.com (loopback [127.0.0.1])
-        by d01av02.pok.ibm.com (8.14.4/8.13.1/NCO v10.0 AVout) with ESMTP id q3B1wBkP020478;
-        Tue, 10 Apr 2012 22:58:11 -0300
-Received: from [9.76.19.45] (sig-9-76-19-45.mts.ibm.com [9.76.19.45])
-        by d01av02.pok.ibm.com (8.14.4/8.13.1/NCO v10.0 AVin) with ESMTP id q3B1wANp020010;
-        Tue, 10 Apr 2012 22:58:10 -0300
-Message-ID: <4F84E531.3010001@linaro.org>
-Date:   Tue, 10 Apr 2012 18:58:09 -0700
-From:   John Stultz <john.stultz@linaro.org>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120310 Thunderbird/11.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2012 13:55:41 +0200 (CEST)
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:36981 "EHLO
+        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903640Ab2DKLzg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2012 13:55:36 +0200
+Received: by lagy4 with SMTP id y4so702749lag.36
+        for <linux-mips@linux-mips.org>; Wed, 11 Apr 2012 04:55:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=PqFaNYmQg6rZvoCSsCRVg8H5/Jkx3RsM0o6zncoCCKY=;
+        b=e39trGmyBtvZqG5b7dms+hWlwaNrFzndmB5VklvBQfsh2xiw5KFJQtiHrDa4NxcIhY
+         miPE3DyY7wWgZT+A0HoDIanJkjjR2U3nq5b+mENS7lm1Al3TIfKZMOF5/BfktZcVsx1F
+         n8FvROdPBTkiCNrEiX9wohRA5yNtt/otrpCUzYJZiMhRu62UfIIAj7DpJuOa95/AcV2c
+         3v58umDVKzYeAIEZ0HVl1X2BVCasm3bThOo8CIVIIJoeFa8raHlEhbI+LdZtMz25jzc/
+         GxNEYU1wEEO7Co6Mgy/YbJQbBLlBC0jUsFGRxfBYHTafqCVOe7BunTKAPLbhZJ2b2/gq
+         lIGA==
+Received: by 10.152.135.104 with SMTP id pr8mr17786601lab.27.1334145329740;
+        Wed, 11 Apr 2012 04:55:29 -0700 (PDT)
+Received: from [192.168.2.2] (ppp91-79-77-157.pppoe.mtu-net.ru. [91.79.77.157])
+        by mx.google.com with ESMTPS id pb13sm2546249lab.16.2012.04.11.04.55.25
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 11 Apr 2012 04:55:26 -0700 (PDT)
+Message-ID: <4F8570D0.3050303@mvista.com>
+Date:   Wed, 11 Apr 2012 15:53:52 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko/20120327 Thunderbird/11.0.1
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     Yong Zhang <yong.zhang0@gmail.com>, linux-mips@linux-mips.org
-Subject: pnx_clocksource broken?
+To:     Leonid Yegoshin <yegoshin@mips.com>
+CC:     "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org,
+        ralf@linux-mips.org
+Subject: Re: [PATCH] Add MIPS64R2 core support.
+References: <1333987461-822-1-git-send-email-sjhill@mips.com> <4F841E48.7000104@mvista.com> <4F848576.6040204@mips.com> <4F848957.6000400@mvista.com> <4F849017.1020706@mips.com>
+In-Reply-To: <4F849017.1020706@mips.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Content-Scanned: Fidelis XPS MAILER
-x-cbid: 12041101-5112-0000-0000-000006F433FF
-X-archive-position: 32930
+X-Gm-Message-State: ALoCoQnGmwrUcO/qsy68z71WOVJGtn4GcnjEof20Ix3Tq8VMlXKqRlomp1REzGVMpAxMv2WGvIlm
+X-archive-position: 32931
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: john.stultz@linaro.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Looking at arch/mips/pnx8550/common/time.c the pnx_clocksource never 
-seems to be assigned a mult/shift value before it calls 
-clocksource_register(). Clearly this is broken and I suspect this 
-clocksource is never used.
+Hello.
 
-I was hoping to convert this driver over (its the last of 3 remaining) 
-to use clocksource_register_hz/khz() but I'm not sure what the actual 
-frequency of the hardware should be. Is mips_hpt_frequency the right 
-value here?
+On 10-04-2012 23:55, Leonid Yegoshin wrote:
 
-Even so, if this is clocksource is never used, should it just be removed?
+>>>>> +config 64BIT_PHYS_ADDR
+>>>>> + bool "Kernel supports 64 bit physical addresses" if EXPERIMENTAL
+>>>>> + depends on 64BIT
 
-thanks
--john
+>>>> This option is selected on 32-bit CPUs like Alchemy, which has 36-bit
+>>>> physical address. It will cause a warning about unmet
+
+>>> Just verified - selected Alchemy and DB1000 board and got
+
+>>> # CONFIG_64BIT is not set
+>>> CONFIG_64BIT_PHYS_ADDR=y
+>>> CONFIG_ARCH_PHYS_ADDR_T_64BIT=y
+>>> CONFIG_PHYS_ADDR_T_64BIT=y
+
+>>> ???
+
+>> And you didn't get a warning on "select 64BIT_PHYS_ADDR"? Strange, modern
+>> Kconfig should spit out one...
+
+> OK, you right, I missed it in bunch of another. It has sense to add a missed
+> dependency.
+
+    You mean to remove it? There's nothing you can add.
+
+> - Leonid.
+
+WBR, Sergei

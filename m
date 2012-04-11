@@ -1,79 +1,353 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2012 13:55:41 +0200 (CEST)
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:36981 "EHLO
-        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903640Ab2DKLzg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2012 13:55:36 +0200
-Received: by lagy4 with SMTP id y4so702749lag.36
-        for <linux-mips@linux-mips.org>; Wed, 11 Apr 2012 04:55:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=PqFaNYmQg6rZvoCSsCRVg8H5/Jkx3RsM0o6zncoCCKY=;
-        b=e39trGmyBtvZqG5b7dms+hWlwaNrFzndmB5VklvBQfsh2xiw5KFJQtiHrDa4NxcIhY
-         miPE3DyY7wWgZT+A0HoDIanJkjjR2U3nq5b+mENS7lm1Al3TIfKZMOF5/BfktZcVsx1F
-         n8FvROdPBTkiCNrEiX9wohRA5yNtt/otrpCUzYJZiMhRu62UfIIAj7DpJuOa95/AcV2c
-         3v58umDVKzYeAIEZ0HVl1X2BVCasm3bThOo8CIVIIJoeFa8raHlEhbI+LdZtMz25jzc/
-         GxNEYU1wEEO7Co6Mgy/YbJQbBLlBC0jUsFGRxfBYHTafqCVOe7BunTKAPLbhZJ2b2/gq
-         lIGA==
-Received: by 10.152.135.104 with SMTP id pr8mr17786601lab.27.1334145329740;
-        Wed, 11 Apr 2012 04:55:29 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-77-157.pppoe.mtu-net.ru. [91.79.77.157])
-        by mx.google.com with ESMTPS id pb13sm2546249lab.16.2012.04.11.04.55.25
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 11 Apr 2012 04:55:26 -0700 (PDT)
-Message-ID: <4F8570D0.3050303@mvista.com>
-Date:   Wed, 11 Apr 2012 15:53:52 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko/20120327 Thunderbird/11.0.1
-MIME-Version: 1.0
-To:     Leonid Yegoshin <yegoshin@mips.com>
-CC:     "Steven J. Hill" <sjhill@mips.com>, linux-mips@linux-mips.org,
-        ralf@linux-mips.org
-Subject: Re: [PATCH] Add MIPS64R2 core support.
-References: <1333987461-822-1-git-send-email-sjhill@mips.com> <4F841E48.7000104@mvista.com> <4F848576.6040204@mips.com> <4F848957.6000400@mvista.com> <4F849017.1020706@mips.com>
-In-Reply-To: <4F849017.1020706@mips.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQnGmwrUcO/qsy68z71WOVJGtn4GcnjEof20Ix3Tq8VMlXKqRlomp1REzGVMpAxMv2WGvIlm
-X-archive-position: 32931
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Apr 2012 20:00:28 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:43324 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903689Ab2DKSAU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 11 Apr 2012 20:00:20 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SI1py-0000b5-6T; Wed, 11 Apr 2012 13:00:10 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>, linux-usb@vger.kernel.org,
+        stern@rowland.harvard.edu, Chris Dearman <chris@mips.com>
+Subject: [PATCH v2 10/10] usb: host: mips: sead3: USB Host controller support for SEAD-3 platform.
+Date:   Wed, 11 Apr 2012 12:59:56 -0500
+Message-Id: <1334167196-30093-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.9.6
+X-archive-position: 32932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+From: "Steven J. Hill" <sjhill@mips.com>
 
-On 10-04-2012 23:55, Leonid Yegoshin wrote:
+Add EHCI driver for MIPS SEAD-3 development platform.
 
->>>>> +config 64BIT_PHYS_ADDR
->>>>> + bool "Kernel supports 64 bit physical addresses" if EXPERIMENTAL
->>>>> + depends on 64BIT
+Signed-off-by: Chris Dearman <chris@mips.com>
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ drivers/usb/host/Kconfig      |    5 +-
+ drivers/usb/host/ehci-hcd.c   |    5 +
+ drivers/usb/host/ehci-sead3.c |  269 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 277 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/usb/host/ehci-sead3.c
 
->>>> This option is selected on 32-bit CPUs like Alchemy, which has 36-bit
->>>> physical address. It will cause a warning about unmet
-
->>> Just verified - selected Alchemy and DB1000 board and got
-
->>> # CONFIG_64BIT is not set
->>> CONFIG_64BIT_PHYS_ADDR=y
->>> CONFIG_ARCH_PHYS_ADDR_T_64BIT=y
->>> CONFIG_PHYS_ADDR_T_64BIT=y
-
->>> ???
-
->> And you didn't get a warning on "select 64BIT_PHYS_ADDR"? Strange, modern
->> Kconfig should spit out one...
-
-> OK, you right, I missed it in bunch of another. It has sense to add a missed
-> dependency.
-
-    You mean to remove it? There's nothing you can add.
-
-> - Leonid.
-
-WBR, Sergei
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index f788eb8..dde5a05 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -110,13 +110,14 @@ config USB_EHCI_BIG_ENDIAN_MMIO
+ 	depends on USB_EHCI_HCD && (PPC_CELLEB || PPC_PS3 || 440EPX || \
+ 				    ARCH_IXP4XX || XPS_USB_HCD_XILINX || \
+ 				    PPC_MPC512x || CPU_CAVIUM_OCTEON || \
+-				    PMC_MSP || SPARC_LEON)
++				    PMC_MSP || SPARC_LEON || MIPS_SEAD3)
+ 	default y
+ 
+ config USB_EHCI_BIG_ENDIAN_DESC
+ 	bool
+ 	depends on USB_EHCI_HCD && (440EPX || ARCH_IXP4XX || XPS_USB_HCD_XILINX || \
+-				    PPC_MPC512x || PMC_MSP || SPARC_LEON)
++				    PPC_MPC512x || PMC_MSP || SPARC_LEON || \
++				    MIPS_SEAD3)
+ 	default y
+ 
+ config XPS_USB_HCD_XILINX
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index aede637..d082d9b 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1371,6 +1371,11 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		ehci_ls1x_driver
+ #endif
+ 
++#ifdef CONFIG_MIPS_SEAD3
++#include "ehci-sead3.c"
++#define	PLATFORM_DRIVER		ehci_hcd_sead3_driver
++#endif
++
+ #ifdef CONFIG_USB_EHCI_HCD_PLATFORM
+ #include "ehci-platform.c"
+ #define PLATFORM_DRIVER		ehci_platform_driver
+diff --git a/drivers/usb/host/ehci-sead3.c b/drivers/usb/host/ehci-sead3.c
+new file mode 100644
+index 0000000..978fc82
+--- /dev/null
++++ b/drivers/usb/host/ehci-sead3.c
+@@ -0,0 +1,269 @@
++/*
++ * MIPS CI13320A EHCI Host Controller driver
++ * Based on "ehci-au1xxx.c" by K.Boge <karsten.boge@amd.com>
++ *
++ * Copyright (C) 2012 MIPS Technologies, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ * for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software Foundation,
++ * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/platform_device.h>
++
++static int sead3_ehci_setup(struct usb_hcd *hcd)
++{
++	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
++	int ret = ehci_init(hcd);
++
++	ehci->need_io_watchdog = 0;
++	ehci_reset(ehci);
++	return ret;
++}
++
++const struct hc_driver ehci_sead3_hc_driver = {
++	.description		= hcd_name,
++	.product_desc		= "SEAD-3 EHCI",
++	.hcd_priv_size		= sizeof(struct ehci_hcd),
++
++	/*
++	 * generic hardware linkage
++	 */
++	.irq			= ehci_irq,
++	.flags			= HCD_MEMORY | HCD_USB2,
++
++	/*
++	 * basic lifecycle operations
++	 *
++	 */
++	.reset			= sead3_ehci_setup,
++	.start			= ehci_run,
++	.stop			= ehci_stop,
++	.shutdown		= ehci_shutdown,
++
++	/*
++	 * managing i/o requests and associated device resources
++	 */
++	.urb_enqueue		= ehci_urb_enqueue,
++	.urb_dequeue		= ehci_urb_dequeue,
++	.endpoint_disable	= ehci_endpoint_disable,
++	.endpoint_reset		= ehci_endpoint_reset,
++
++	/*
++	 * scheduling support
++	 */
++	.get_frame_number	= ehci_get_frame,
++
++	/*
++	 * root hub support
++	 */
++	.hub_status_data	= ehci_hub_status_data,
++	.hub_control		= ehci_hub_control,
++	.bus_suspend		= ehci_bus_suspend,
++	.bus_resume		= ehci_bus_resume,
++	.relinquish_port	= ehci_relinquish_port,
++	.port_handed_over	= ehci_port_handed_over,
++
++	.clear_tt_buffer_complete	= ehci_clear_tt_buffer_complete,
++};
++
++static int ehci_hcd_sead3_drv_probe(struct platform_device *pdev)
++{
++	struct usb_hcd *hcd;
++	struct ehci_hcd *ehci;
++	struct resource *res;
++	int ret;
++
++	if (usb_disabled())
++		return -ENODEV;
++
++	if (pdev->resource[1].flags != IORESOURCE_IRQ) {
++		pr_debug("resource[1] is not IORESOURCE_IRQ");
++		return -ENOMEM;
++	}
++	hcd = usb_create_hcd(&ehci_sead3_hc_driver, &pdev->dev, "SEAD-3");
++	if (!hcd)
++		return -ENOMEM;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	hcd->rsrc_start = res->start;
++	hcd->rsrc_len = resource_size(res);
++
++	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
++		pr_debug("request_mem_region failed");
++		ret = -EBUSY;
++		goto err1;
++	}
++
++	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
++	if (!hcd->regs) {
++		pr_debug("ioremap failed");
++		ret = -ENOMEM;
++		goto err2;
++	}
++
++	ehci = hcd_to_ehci(hcd);
++	ehci->caps = hcd->regs + 0x100;
++	ehci->regs = hcd->regs + 0x100 +
++		HC_LENGTH(ehci, readl(&ehci->caps->hc_capbase));
++	/* cache this readonly data; minimize chip reads */
++	ehci->hcs_params = readl(&ehci->caps->hcs_params);
++
++	/* Root hub has integrated TT. */
++	hcd->has_tt = 1;
++
++	/* SEAD-3 EHCI matches CPU endianness. */
++#ifdef __BIG_ENDIAN
++	ehci->big_endian_mmio = 1;
++	ehci->big_endian_desc = 1;
++#endif
++
++	/* Set burst length to 16 words */
++	/* FIXME: should be tunable */
++	ehci_writel(ehci, 0x1010, &ehci->regs->reserved[1]);
++
++	ret = usb_add_hcd(hcd, pdev->resource[1].start,
++			  IRQF_SHARED);
++	if (ret == 0) {
++		platform_set_drvdata(pdev, hcd);
++		return ret;
++	}
++
++	iounmap(hcd->regs);
++err2:
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++err1:
++	usb_put_hcd(hcd);
++	return ret;
++}
++
++static int ehci_hcd_sead3_drv_remove(struct platform_device *pdev)
++{
++	struct usb_hcd *hcd = platform_get_drvdata(pdev);
++
++	usb_remove_hcd(hcd);
++	iounmap(hcd->regs);
++	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++	usb_put_hcd(hcd);
++	platform_set_drvdata(pdev, NULL);
++
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int ehci_hcd_sead3_drv_suspend(struct device *dev)
++{
++	struct usb_hcd *hcd = dev_get_drvdata(dev);
++	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
++	unsigned long flags;
++	int rc = 0;
++
++	if (time_before(jiffies, ehci->next_statechange))
++		msleep(10);
++
++	/* Root hub was already suspended. Disable irq emission and
++	 * mark HW unaccessible.  The PM and USB cores make sure that
++	 * the root hub is either suspended or stopped.
++	 */
++	ehci_prepare_ports_for_controller_suspend(ehci, device_may_wakeup(dev));
++	spin_lock_irqsave(&ehci->lock, flags);
++	ehci_writel(ehci, 0, &ehci->regs->intr_enable);
++	(void)ehci_readl(ehci, &ehci->regs->intr_enable);
++
++	clear_bit(HCD_FLAG_HW_ACCESSIBLE, &hcd->flags);
++	spin_unlock_irqrestore(&ehci->lock, flags);
++
++	// could save FLADJ in case of Vaux power loss
++	// ... we'd only use it to handle clock skew
++
++	return rc;
++}
++
++static int ehci_hcd_sead3_drv_resume(struct device *dev)
++{
++	struct usb_hcd *hcd = dev_get_drvdata(dev);
++	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
++
++	// maybe restore FLADJ
++
++	if (time_before(jiffies, ehci->next_statechange))
++		msleep(100);
++
++	/* Mark hardware accessible again as we are out of D3 state by now */
++	set_bit(HCD_FLAG_HW_ACCESSIBLE, &hcd->flags);
++
++	/* If CF is still set, we maintained PCI Vaux power.
++	 * Just undo the effect of ehci_pci_suspend().
++	 */
++	if (ehci_readl(ehci, &ehci->regs->configured_flag) == FLAG_CF) {
++		int	mask = INTR_MASK;
++
++		ehci_prepare_ports_for_controller_resume(ehci);
++		if (!hcd->self.root_hub->do_remote_wakeup)
++			mask &= ~STS_PCD;
++		ehci_writel(ehci, mask, &ehci->regs->intr_enable);
++		ehci_readl(ehci, &ehci->regs->intr_enable);
++		return 0;
++	}
++
++	ehci_dbg(ehci, "lost power, restarting\n");
++	usb_root_hub_lost_power(hcd->self.root_hub);
++
++	/* Else reset, to cope with power loss or flush-to-storage
++	 * style "resume" having let BIOS kick in during reboot.
++	 */
++	(void) ehci_halt(ehci);
++	(void) ehci_reset(ehci);
++
++	/* emptying the schedule aborts any urbs */
++	spin_lock_irq(&ehci->lock);
++	if (ehci->reclaim)
++		end_unlink_async(ehci);
++	ehci_work(ehci);
++	spin_unlock_irq(&ehci->lock);
++
++	ehci_writel(ehci, ehci->command, &ehci->regs->command);
++	ehci_writel(ehci, FLAG_CF, &ehci->regs->configured_flag);
++	ehci_readl(ehci, &ehci->regs->command);	/* unblock posted writes */
++
++	/* here we "know" root ports should always stay powered */
++	ehci_port_power(ehci, 1);
++
++	ehci->rh_state = EHCI_RH_SUSPENDED;
++
++	return 0;
++}
++
++static const struct dev_pm_ops sead3_ehci_pmops = {
++	.suspend	= ehci_hcd_sead3_drv_suspend,
++	.resume		= ehci_hcd_sead3_drv_resume,
++};
++
++#define SEAD3_EHCI_PMOPS &sead3_ehci_pmops
++
++#else
++#define SEAD3_EHCI_PMOPS NULL
++#endif
++
++static struct platform_driver ehci_hcd_sead3_driver = {
++	.probe		= ehci_hcd_sead3_drv_probe,
++	.remove		= ehci_hcd_sead3_drv_remove,
++	.shutdown	= usb_hcd_platform_shutdown,
++	.driver = {
++		.name	= "sead3-ehci",
++		.owner	= THIS_MODULE,
++		.pm	= SEAD3_EHCI_PMOPS,
++	}
++};
++
++MODULE_ALIAS("platform:sead3-ehci");
+-- 
+1.7.9.6

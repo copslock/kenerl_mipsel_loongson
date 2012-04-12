@@ -1,105 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Apr 2012 17:00:53 +0200 (CEST)
-Received: from iolanthe.rowland.org ([192.131.102.54]:45685 "HELO
-        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with SMTP id S1903647Ab2DLPAt (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Apr 2012 17:00:49 +0200
-Received: (qmail 2917 invoked by uid 2102); 12 Apr 2012 11:00:45 -0400
-Received: from localhost (sendmail-bs@127.0.0.1)
-  by localhost with SMTP; 12 Apr 2012 11:00:45 -0400
-Date:   Thu, 12 Apr 2012 11:00:45 -0400 (EDT)
-From:   Alan Stern <stern@rowland.harvard.edu>
-X-X-Sender: stern@iolanthe.rowland.org
-To:     "Steven J. Hill" <sjhill@mips.com>
-cc:     linux-mips@linux-mips.org, <ralf@linux-mips.org>,
-        <linux-usb@vger.kernel.org>, Chris Dearman <chris@mips.com>
-Subject: Re: [PATCH v3 10/10] usb: host: mips: sead3: USB Host controller
- support for SEAD-3 platform.
-In-Reply-To: <1334175197-9049-1-git-send-email-sjhill@mips.com>
-Message-ID: <Pine.LNX.4.44L0.1204121056330.1496-100000@iolanthe.rowland.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Apr 2012 17:18:58 +0200 (CEST)
+Received: from mail-bk0-f49.google.com ([209.85.214.49]:56377 "EHLO
+        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903647Ab2DLPSp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Apr 2012 17:18:45 +0200
+Received: by bkcjk13 with SMTP id jk13so2213829bkc.36
+        for <linux-mips@linux-mips.org>; Thu, 12 Apr 2012 08:18:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=sender:message-id:date:from:organization:user-agent:mime-version:to
+         :subject:content-type:content-transfer-encoding;
+        bh=laRpwj7q/9xXe9VXfvAjei0AQwwyBm9UVw1rFHujWNM=;
+        b=EKax53O5y1FqrQD+B1KVug3lt+ZxujgtQnpMcvLyHOS6u6p9pELJ/bWj8mzWMyZhRW
+         mWQWinbeF0FJdB4IpYLG7uRIL2K7WLWadpiw/Seoi60tzOxth8gvEIH0VkEFPIOztRam
+         ZQXaeUu7WJVMir3zGwLOTWzVMMpw97iIY0af0p5mnKCGHpL1ezdSorOl0ZMgfa6ErpDp
+         z3nc4f3b3+ngLekdgbGD7DpGUqdh2SlnVXjakiaNh//7Fe+08a898IIxqN7eZABMZQR1
+         HdQZMaeSY6ismwDL0SOTyQIHItOuBm2LSzOIb1t+c86QIwwFq9uUyJ+qaWwQtLeKJaWg
+         jRNA==
+Received: by 10.204.152.92 with SMTP id f28mr857226bkw.113.1334243919544;
+        Thu, 12 Apr 2012 08:18:39 -0700 (PDT)
+Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by mx.google.com with ESMTPS id z17sm11573863bkw.12.2012.04.12.08.18.36
+        (version=SSLv3 cipher=OTHER);
+        Thu, 12 Apr 2012 08:18:37 -0700 (PDT)
+Message-ID: <4F86F1FC.3080401@openwrt.org>
+Date:   Thu, 12 Apr 2012 17:17:16 +0200
+From:   Florian Fainelli <florian@openwrt.org>
+Organization: OpenWrt
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120329 Thunderbird/11.0.1
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-archive-position: 32935
+To:     linux-mips@linux-mips.org
+Subject: Linux-MIPS project (re)organization proposal
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stern@rowland.harvard.edu
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, 11 Apr 2012, Steven J. Hill wrote:
+Hi all,
 
-> From: "Steven J. Hill" <sjhill@mips.com>
-> 
-> Add EHCI driver for MIPS SEAD-3 development platform.
-> 
-> Signed-off-by: Chris Dearman <chris@mips.com>
-> Signed-off-by: Steven J. Hill <sjhill@mips.com>
+The Linux-MIPS project has not been very active during the last couple 
+merge windows, this made me think that maybe our project model is not so 
+well suited for handling all the patches coming through linux-mips, so 
+here is a proposal of how I see things might be changed, highly inspired 
+from the ARM community.
 
-Even better than before.  But...
+To help with the number of patches, we should create two groups of people:
 
-> +const struct hc_driver ehci_sead3_hc_driver = {
-> +	.description		= hcd_name,
-> +	.product_desc		= "SEAD-3 EHCI",
-> +	.hcd_priv_size		= sizeof(struct ehci_hcd),
-> +
-> +	/*
-> +	 * generic hardware linkage
-> +	 */
-> +	.irq			= ehci_irq,
-> +	.flags			= HCD_MEMORY | HCD_USB2,
-> +
-> +	/*
-> +	 * basic lifecycle operations
-> +	 *
-> +	 */
-> +	.reset			= ehci_setup,
+1) people in charge of reviewing all the MIPS-related infrastructure, 
+shared code, CPU-specific code etc. For this specific task, I was 
+thinking about Ralf, David D. (CAVM), SJ Hill (MTI), Kevin Cernekee for 
+instance. The idea is to have both enough reviewers and committers to 
+push changes, and have some level of redundancy in case Ralf cannot 
+submit the pull request.
 
-You no longer care about the ehci->need_io_watchdog setting?
+2) people in charge of maintaining a SoC, who deal with more subsystems 
+than just MIPS, and usually need general review, both from the "core" 
+MIPS developers, and also other subsystem maintainers, but, in the end, 
+can manage themselves a patch queue in a separate tree and just send 
+pull requests.
 
-> +static int ehci_hcd_sead3_drv_probe(struct platform_device *pdev)
-> +{
-> +	struct usb_hcd *hcd;
-> +	struct ehci_hcd *ehci;
-> +	struct resource *res;
-> +	int ret;
-> +
-> +	if (usb_disabled())
-> +		return -ENODEV;
-> +
-> +	if (pdev->resource[1].flags != IORESOURCE_IRQ) {
-> +		pr_debug("resource[1] is not IORESOURCE_IRQ");
-> +		return -ENOMEM;
-> +	}
-> +	hcd = usb_create_hcd(&ehci_sead3_hc_driver, &pdev->dev, "SEAD-3");
-> +	if (!hcd)
-> +		return -ENOMEM;
-> +
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	hcd->rsrc_start = res->start;
-> +	hcd->rsrc_len = resource_size(res);
-> +
-> +	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-> +		pr_debug("request_mem_region failed");
-> +		ret = -EBUSY;
-> +		goto err1;
-> +	}
-> +
-> +	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-> +	if (!hcd->regs) {
-> +		pr_debug("ioremap failed");
-> +		ret = -ENOMEM;
-> +		goto err2;
-> +	}
-> +
-> +	ehci = hcd_to_ehci(hcd);
-> +	ehci->caps = hcd->regs + 0x100;
-> +	ehci->regs = hcd->regs + 0x100 +
-> +		HC_LENGTH(ehci, readl(&ehci->caps->hc_capbase));
-> +	/* cache this readonly data; minimize chip reads */
-> +	ehci->hcs_params = readl(&ehci->caps->hcs_params);
+Device Tree is now the standard for accepting new architectures/SoCs in 
+Linux, and this usually demands more reviewers as well as good 
+reactivity from the various maintainers, but in the end, there are just 
+more patches being or about to be posted to linux-mips.
 
-The last four lines above are duplicates of code that is already
-present in ehci_setup.
-
-Alan Stern
+What do you guys think about this?
+--
+Florian

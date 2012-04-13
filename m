@@ -1,74 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Apr 2012 17:18:58 +0200 (CEST)
-Received: from mail-bk0-f49.google.com ([209.85.214.49]:56377 "EHLO
-        mail-bk0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903647Ab2DLPSp (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 12 Apr 2012 17:18:45 +0200
-Received: by bkcjk13 with SMTP id jk13so2213829bkc.36
-        for <linux-mips@linux-mips.org>; Thu, 12 Apr 2012 08:18:39 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2012 02:10:52 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:44002 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903724Ab2DMAKg (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2012 02:10:36 +0200
+Received: by obhx4 with SMTP id x4so4183557obh.36
+        for <multiple recipients>; Thu, 12 Apr 2012 17:10:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=sender:message-id:date:from:organization:user-agent:mime-version:to
-         :subject:content-type:content-transfer-encoding;
-        bh=laRpwj7q/9xXe9VXfvAjei0AQwwyBm9UVw1rFHujWNM=;
-        b=EKax53O5y1FqrQD+B1KVug3lt+ZxujgtQnpMcvLyHOS6u6p9pELJ/bWj8mzWMyZhRW
-         mWQWinbeF0FJdB4IpYLG7uRIL2K7WLWadpiw/Seoi60tzOxth8gvEIH0VkEFPIOztRam
-         ZQXaeUu7WJVMir3zGwLOTWzVMMpw97iIY0af0p5mnKCGHpL1ezdSorOl0ZMgfa6ErpDp
-         z3nc4f3b3+ngLekdgbGD7DpGUqdh2SlnVXjakiaNh//7Fe+08a898IIxqN7eZABMZQR1
-         HdQZMaeSY6ismwDL0SOTyQIHItOuBm2LSzOIb1t+c86QIwwFq9uUyJ+qaWwQtLeKJaWg
-         jRNA==
-Received: by 10.204.152.92 with SMTP id f28mr857226bkw.113.1334243919544;
-        Thu, 12 Apr 2012 08:18:39 -0700 (PDT)
-Received: from [192.168.108.37] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by mx.google.com with ESMTPS id z17sm11573863bkw.12.2012.04.12.08.18.36
-        (version=SSLv3 cipher=OTHER);
-        Thu, 12 Apr 2012 08:18:37 -0700 (PDT)
-Message-ID: <4F86F1FC.3080401@openwrt.org>
-Date:   Thu, 12 Apr 2012 17:17:16 +0200
-From:   Florian Fainelli <florian@openwrt.org>
-Organization: OpenWrt
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120329 Thunderbird/11.0.1
-MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Linux-MIPS project (re)organization proposal
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32936
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=v0TDxjcv2GmlzfGeTYToz/I3j0c6FcnlxCDK8gPQe4I=;
+        b=FbIAZQfNF2p7Bh1FguJ4B25j5/S8nSh30ZZyfUsjIjf9O9WyXlfqJUDF1/P5ZLwq6a
+         G+m4Ew+RNGsTxmJBJGqNvPXVP9Evw0ylSKJ3typ58wgwruxzBrzrmOg2R494WVQfDzt5
+         SZM5L/Yfe3LXIWTb5fjNLo2DPDGAn2eqYZTUxN46R42F0pXNTJ/S4JSzfMBgUsLXE8VM
+         B7dKp+YSATVpqkDC58txfgIdrF6YFFuy0x1jWBu+HHRX++ZEsuHQQP1AO9z3VKRpKPCV
+         xTV0XBKmYZ7ZXqr0glfZF4f+x1plcl0NNBoLvTHV1PF8AHSq+yzIH5axCQY/nPCZdcQA
+         fsOA==
+Received: by 10.60.20.10 with SMTP id j10mr236909oee.33.1334275830548;
+        Thu, 12 Apr 2012 17:10:30 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id in4sm8499620obb.2.2012.04.12.17.10.29
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 12 Apr 2012 17:10:29 -0700 (PDT)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3D0ARci007828;
+        Thu, 12 Apr 2012 17:10:27 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3D0ARiO007827;
+        Thu, 12 Apr 2012 17:10:27 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+To:     Grant Likely <grant.likely@secretlab.ca>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org,
+        Linus Walleij <linus.walleij@stericsson.com>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree-discuss@lists.ozlabs.org
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH 1/2] MIPS: OCTEON: Select ARCH_REQUIRE_GPIOLIB
+Date:   Thu, 12 Apr 2012 17:10:19 -0700
+Message-Id: <1334275820-7791-2-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1334275820-7791-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1334275820-7791-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 32937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi all,
+From: David Daney <david.daney@cavium.com>
 
-The Linux-MIPS project has not been very active during the last couple 
-merge windows, this made me think that maybe our project model is not so 
-well suited for handling all the patches coming through linux-mips, so 
-here is a proposal of how I see things might be changed, highly inspired 
-from the ARM community.
+... and create asm/mach-cavium-octeon/gpio.h so that things continue
+to build.
 
-To help with the number of patches, we should create two groups of people:
+This allows us to use the existing I2C connected GPIO expanders.
 
-1) people in charge of reviewing all the MIPS-related infrastructure, 
-shared code, CPU-specific code etc. For this specific task, I was 
-thinking about Ralf, David D. (CAVM), SJ Hill (MTI), Kevin Cernekee for 
-instance. The idea is to have both enough reviewers and committers to 
-push changes, and have some level of redundancy in case Ralf cannot 
-submit the pull request.
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/Kconfig                               |    1 +
+ arch/mips/include/asm/mach-cavium-octeon/gpio.h |   21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/gpio.h
 
-2) people in charge of maintaining a SoC, who deal with more subsystems 
-than just MIPS, and usually need general review, both from the "core" 
-MIPS developers, and also other subsystem maintainers, but, in the end, 
-can manage themselves a patch queue in a separate tree and just send 
-pull requests.
-
-Device Tree is now the standard for accepting new architectures/SoCs in 
-Linux, and this usually demands more reviewers as well as good 
-reactivity from the various maintainers, but in the end, there are just 
-more patches being or about to be posted to linux-mips.
-
-What do you guys think about this?
---
-Florian
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d0011ef..3134457 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -744,6 +744,7 @@ config CAVIUM_OCTEON_REFERENCE_BOARD
+ 	select USB_ARCH_HAS_OHCI
+ 	select USB_ARCH_HAS_EHCI
+ 	select HOLES_IN_ZONE
++	select ARCH_REQUIRE_GPIOLIB
+ 	help
+ 	  This option supports all of the Octeon reference boards from Cavium
+ 	  Networks. It builds a kernel that dynamically determines the Octeon
+diff --git a/arch/mips/include/asm/mach-cavium-octeon/gpio.h b/arch/mips/include/asm/mach-cavium-octeon/gpio.h
+new file mode 100644
+index 0000000..34e9f7a
+--- /dev/null
++++ b/arch/mips/include/asm/mach-cavium-octeon/gpio.h
+@@ -0,0 +1,21 @@
++#ifndef __ASM_MACH_CAVIUM_OCTEON_GPIO_H
++#define __ASM_MACH_CAVIUM_OCTEON_GPIO_H
++
++#ifdef CONFIG_GPIOLIB
++#define gpio_get_value	__gpio_get_value
++#define gpio_set_value	__gpio_set_value
++#define gpio_cansleep	__gpio_cansleep
++#else
++int gpio_request(unsigned gpio, const char *label);
++void gpio_free(unsigned gpio);
++int gpio_direction_input(unsigned gpio);
++int gpio_direction_output(unsigned gpio, int value);
++int gpio_get_value(unsigned gpio);
++void gpio_set_value(unsigned gpio, int value);
++#endif
++
++#include <asm-generic/gpio.h>
++
++#define gpio_to_irq	__gpio_to_irq
++
++#endif /* __ASM_MACH_GENERIC_GPIO_H */
+-- 
+1.7.2.3

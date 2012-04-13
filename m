@@ -1,111 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2012 13:58:56 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:60281 "EHLO
-        hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903547Ab2DML6u (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2012 13:58:50 +0200
-Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 6C51C8F61;
-        Fri, 13 Apr 2012 13:58:49 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
-Received: from hauke-m.de ([127.0.0.1])
-        by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id tXjUjUiPUznO; Fri, 13 Apr 2012 13:58:40 +0200 (CEST)
-Received: from [134.102.26.117] (eduroam-pool6-0629.wlan.uni-bremen.de [134.102.26.117])
-        by hauke-m.de (Postfix) with ESMTPSA id 3D9EF8F60;
-        Fri, 13 Apr 2012 13:58:40 +0200 (CEST)
-Message-ID: <4F8814EE.2050406@hauke-m.de>
-Date:   Fri, 13 Apr 2012 13:58:38 +0200
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.28) Gecko/20120313 Lightning/1.0b2 Thunderbird/3.1.20
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Apr 2012 18:17:37 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:43031 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903651Ab2DMQRV (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 13 Apr 2012 18:17:21 +0200
+Received: by obhx4 with SMTP id x4so5279741obh.36
+        for <multiple recipients>; Fri, 13 Apr 2012 09:17:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=R3T3qLY3gHsVzkegKlabmG/lo8L6gyQUS9yb/CePuq0=;
+        b=xYPurOwJQNLLvb+yGOitHkq3Mhsk60+OmXfUKf+BemeQJzHAhyFCJn3tuReEPzVjGw
+         2VPe4MfEz54wgDBIrs1Rsqco2pJbZSpgtAFQFdR4b6hj2P514OeEFZG8g4Rk7zLV+kj0
+         buCMptu6G3qdYVHHWsdmlbATlqxxNgXfcj+COM7PTdg6b1h/0BCKfXjb9hKIgqYYi+iV
+         0sN8lWHSCMDDnXGu1nvSQR6yogDLpNZplRoc4ji6c+xmq/5e4z6BbFsLu0OH/PqqDH5u
+         qFk90r+S7ZmLB+epYIP8pAtYDOAC/upRE6IgU/OhfBF/Qcsa54Bso3Ig3nNhMOXcnqMh
+         9Mng==
+Received: by 10.182.136.41 with SMTP id px9mr3055988obb.21.1334333832578;
+        Fri, 13 Apr 2012 09:17:12 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id d9sm10640428obq.0.2012.04.13.09.17.10
+        (version=SSLv3 cipher=OTHER);
+        Fri, 13 Apr 2012 09:17:11 -0700 (PDT)
+Message-ID: <4F885185.3070005@gmail.com>
+Date:   Fri, 13 Apr 2012 09:17:09 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-To:     =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-CC:     gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
-        linux-mips@linux-mips.org, ralf@linux-mips.org, m@bues.ch,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        zajec5@gmail.com
-Subject: Re: [PATCH v5 1/4] bcma: scan for extra address space
-References: <1331851799-5968-1-git-send-email-hauke@hauke-m.de> <1331851799-5968-2-git-send-email-hauke@hauke-m.de>
-In-Reply-To: <1331851799-5968-2-git-send-email-hauke@hauke-m.de>
-X-Enigmail-Version: 1.1.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-archive-position: 32941
+To:     Florian Fainelli <florian@openwrt.org>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Grant Likely <grant.likely@secretlab.ca>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org,
+        Linus Walleij <linus.walleij@stericsson.com>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] gpio/MIPS/OCTEON: Add a driver for OCTEON's on-chip
+ GPIO pins.
+References: <1334275820-7791-1-git-send-email-ddaney.cavm@gmail.com> <1334275820-7791-3-git-send-email-ddaney.cavm@gmail.com> <4F87F868.1080804@openwrt.org>
+In-Reply-To: <4F87F868.1080804@openwrt.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hauke@hauke-m.de
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Rafał,
+On 04/13/2012 02:56 AM, Florian Fainelli wrote:
+> Hi David,
+>
+[...]
+>> +/*
+>> + * The address offset of the GPIO configuration register for a given
+>> + * line.
+>> + */
+>> +static unsigned int bit_cfg_reg(unsigned int gpio)
+>> +{
+>> + if (gpio< 16)
+>> + return 8 * gpio;
+>> + else
+>> + return 8 * (gpio - 16) + 0x100;
+>> +}
+>
+> You could explicitely inline this one, though the compiler will
+> certainly do it by itself.
+>
 
-could you give me an Acked-by line as the Maintainer of bcma for this
-patch if you are ok with this patch please.
+I always let the compiler decide.
 
-Hauke
 
-On 03/15/2012 11:49 PM, Hauke Mehrtens wrote:
-> Some cores like the USB core have two address spaces. In the USB host
-> controller one address space is used for the OHCI and the other for the
-> EHCI controller interface. The USB controller is the only core I found
-> with two address spaces. This code is based on the AI scan function
-> ai_scan() in shared/aiutils.c in the Broadcom SDK.
-> 
-> CC: Rafał Miłecki <zajec5@gmail.com>
-> CC: linux-wireless@vger.kernel.org
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->  drivers/bcma/scan.c       |   19 ++++++++++++++++++-
->  include/linux/bcma/bcma.h |    1 +
->  2 files changed, 19 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
-> index 3a2f672..1fa10ed 100644
-> --- a/drivers/bcma/scan.c
-> +++ b/drivers/bcma/scan.c
-> @@ -286,6 +286,23 @@ static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
->  			return -EILSEQ;
->  	}
->  
-> +	/* First Slave Address Descriptor should be port 0:
-> +	 * the main register space for the core
-> +	 */
-> +	tmp = bcma_erom_get_addr_desc(bus, eromptr, SCAN_ADDR_TYPE_SLAVE, 0);
-> +	if (tmp <= 0) {
-> +		/* Try again to see if it is a bridge */
-> +		tmp = bcma_erom_get_addr_desc(bus, eromptr,
-> +					      SCAN_ADDR_TYPE_BRIDGE, 0);
-> +		if (tmp <= 0) {
-> +			return -EILSEQ;
-> +		} else {
-> +			pr_info("Bridge found\n");
-> +			return -ENXIO;
-> +		}
-> +	}
-> +	core->addr = tmp;
-> +
->  	/* get & parse slave ports */
->  	for (i = 0; i < ports[1]; i++) {
->  		for (j = 0; ; j++) {
-> @@ -298,7 +315,7 @@ static int bcma_get_next_core(struct bcma_bus *bus, u32 __iomem **eromptr,
->  				break;
->  			} else {
->  				if (i == 0 && j == 0)
-> -					core->addr = tmp;
-> +					core->addr1 = tmp;
->  			}
->  		}
->  	}
-> diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
-> index 83c209f..7fe41e1 100644
-> --- a/include/linux/bcma/bcma.h
-> +++ b/include/linux/bcma/bcma.h
-> @@ -138,6 +138,7 @@ struct bcma_device {
->  	u8 core_index;
->  
->  	u32 addr;
-> +	u32 addr1;
->  	u32 wrap;
->  
->  	void __iomem *io_addr;
+[...]
+>> +
+>> + if (OCTEON_IS_MODEL(OCTEON_CN66XX) ||
+>> + OCTEON_IS_MODEL(OCTEON_CN61XX) ||
+>> + OCTEON_IS_MODEL(OCTEON_CNF71XX))
+>> + chip->ngpio = 20;
+>> + else
+>> + chip->ngpio = 16;
+>
+> What about getting the number of gpios from platform_data and/or device
+> tree?
+>
+
+Actually I am thinking about just setting it to 20 unconditionally. 
+Anything requesting a non-present GPIO pin is buggy to begin with.
+
+>> +
+>> + chip->direction_input = octeon_gpio_dir_in;
+>> + chip->get = octeon_gpio_get;
+>> + chip->direction_output = octeon_gpio_dir_out;
+>> + chip->set = octeon_gpio_set;
+>> + err = gpiochip_add(chip);
+>> + if (err)
+>> + goto out;
+>> +
+>> + dev_info(&pdev->dev, "version: " DRV_VERSION "\n");
+>> +out:
+>> + return err;
+>> +}
+>> +
+>> +static int __exit octeon_gpio_remove(struct platform_device *pdev)
+>> +{
+>> + struct gpio_chip *chip = pdev->dev.platform_data;
+>> + return gpiochip_remove(chip);
+>> +}
+>> +
+>> +static struct of_device_id octeon_gpio_match[] = {
+>> + {
+>> + .compatible = "cavium,octeon-3860-gpio",
+>> + },
+>> + {},
+>> +};
+>> +MODULE_DEVICE_TABLE(of, octeon_mgmt_match);
+>
+> You are using linux/of.h definitions here but you did not include it.
+> Also, there is a typo, you want octeon_gpio_match instead.
+>
+
+Good catch.  I will fix that.  There is also a section mismatch I need 
+to fix.

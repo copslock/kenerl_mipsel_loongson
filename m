@@ -1,54 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2012 16:00:48 +0200 (CEST)
-Received: from 204.208.187.81.in-addr.arpa ([81.187.208.204]:45280 "EHLO
-        h5.dl5rb.org.uk" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1903664Ab2DPOAo (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2012 16:00:44 +0200
-Received: from h5.dl5rb.org.uk (h5.dl5rb.org.uk [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.5/8.14.3) with ESMTP id q3GE0fEf002958;
-        Mon, 16 Apr 2012 16:00:41 +0200
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.5/8.14.5/Submit) id q3GE0enC002957;
-        Mon, 16 Apr 2012 16:00:40 +0200
-Date:   Mon, 16 Apr 2012 16:00:40 +0200
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     John Stultz <john.stultz@linaro.org>
-Cc:     Yong Zhang <yong.zhang0@gmail.com>, linux-mips@linux-mips.org
-Subject: Any NXP PNX user left (was: Re: pnx_clocksource broken?)
-Message-ID: <20120416140040.GA2378@linux-mips.org>
-References: <4F84E531.3010001@linaro.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Apr 2012 18:48:39 +0200 (CEST)
+Received: from mail-yw0-f49.google.com ([209.85.213.49]:43741 "EHLO
+        mail-yw0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903681Ab2DPQsY (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 16 Apr 2012 18:48:24 +0200
+Received: by yhjj52 with SMTP id j52so2850415yhj.36
+        for <multiple recipients>; Mon, 16 Apr 2012 09:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=6tfnrA3Un8x+uyjmL814/qEOmm3qgywao5WjVh3U7qA=;
+        b=zG5sNEDKaEmXUDvP7gs3bPbGikOEzKvxROsB/BZ4y2rruWE/UsJ80/sA/GacGgwzLL
+         qZHgMKXQLJZqHdpwCm2ySN6/Zwqyuj6dnjdwczLboKMd/TfrCFRFfDMDIPUw5mJ/sHdU
+         6IVTyBTFzh4LQW0oP1cKcDliBrc4Q+sZ3dV32IKkgjL3d2Mv2fBaKrVoXqLxqYwjYsWM
+         f9gdfNiIY5LIPlhRk/zGd5DiLya+HEwt4De6Tvi6JeYc1WpZOmMg350x+yxU8+R2vmdx
+         lxSWWLoEJvZRIKUVLuQO8pBYAYwFN1L9Y10YuTH3Qe5mKrAFwSltagaGKrSourYmARnk
+         beaw==
+Received: by 10.60.1.7 with SMTP id 7mr16736593oei.71.1334594898254;
+        Mon, 16 Apr 2012 09:48:18 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id n10sm19910507obu.23.2012.04.16.09.48.15
+        (version=SSLv3 cipher=OTHER);
+        Mon, 16 Apr 2012 09:48:16 -0700 (PDT)
+Message-ID: <4F8C4D4E.4060900@gmail.com>
+Date:   Mon, 16 Apr 2012 09:48:14 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4F84E531.3010001@linaro.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32945
+To:     Yong Zhang <yong.zhang0@gmail.com>
+CC:     linux-mips@linux-mips.org, Yong Zhang <yong.zhang@windriver.com>,
+        David Daney <ddaney@caviumnetworks.com>,
+        Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] MIPS: cavium: Don't enable irq in ->init__secondary()
+References: <1334561133-19139-1-git-send-email-yong.zhang0@gmail.com>
+In-Reply-To: <1334561133-19139-1-git-send-email-yong.zhang0@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32946
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, Apr 10, 2012 at 06:58:09PM -0700, John Stultz wrote:
+On 04/16/2012 12:25 AM, Yong Zhang wrote:
+> From: Yong Zhang<yong.zhang@windriver.com>
+>
+> Too early to enable irq will break some following action,
+> such as notify_cpu_starting().
 
-> Looking at arch/mips/pnx8550/common/time.c the pnx_clocksource never
-> seems to be assigned a mult/shift value before it calls
-> clocksource_register(). Clearly this is broken and I suspect this
-> clocksource is never used.
-> 
-> I was hoping to convert this driver over (its the last of 3
-> remaining) to use clocksource_register_hz/khz() but I'm not sure
-> what the actual frequency of the hardware should be. Is
-> mips_hpt_frequency the right value here?
-> 
-> Even so, if this is clocksource is never used, should it just be removed?
+Can you be more specific about what breaks?
 
-Iow PNX has not had a functioning clocksource for a very long time.  Equally
-there has not been any user feedback for ages and I wonder if that makes the
-PNX code a candidate for removal.
+>
+> I don't get side effect with this patch.
 
-Any remaining PNX users should raise their voice now or PNX will be
-toast.  Soon.
+Without this, where do irqs get enabled on the secondary CPUs?
 
-  Ralf
+>
+> Signed-off-by: Yong Zhang<yong.zhang0@gmail.com>
+> Cc: David Daney<ddaney@caviumnetworks.com>
+> Cc: Ralf Baechle<ralf@linux-mips.org>
+> ---
+>   arch/mips/cavium-octeon/smp.c |    1 -
+>   1 files changed, 0 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+> index 97e7ce9..7e65c88 100644
+> --- a/arch/mips/cavium-octeon/smp.c
+> +++ b/arch/mips/cavium-octeon/smp.c
+> @@ -185,7 +185,6 @@ static void __cpuinit octeon_init_secondary(void)
+>   	octeon_init_cvmcount();
+>
+>   	octeon_irq_setup_secondary();
+> -	raw_local_irq_enable();
+>   }
+>
+>   /**

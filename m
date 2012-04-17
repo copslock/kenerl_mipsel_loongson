@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 19:34:02 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:44508 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903723Ab2DQRdP (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 19:34:36 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:45610 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903724Ab2DQRdP (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2012 19:33:15 +0200
-Received: by ghbf11 with SMTP id f11so3580317ghb.36
+Received: by obcni5 with SMTP id ni5so1455733obc.36
         for <linux-mips@linux-mips.org>; Tue, 17 Apr 2012 10:33:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=+L6RKIJdnuPhu0uf9zR7x+s8lODEdeeCHKM3Y+MW/g4=;
-        b=jgR44FrZaxUyX0F4lMDy6nRNF2XnijONVQ20MrcLLCBGyie+iSYP4NDKrd+PBwASRJ
-         W4hpYRq0kVbDHvWQaia+mFtDudVHVOkEdZCBSsmNwhknH4c3wmfNvWHQ96OnWbK2Cna4
-         9hEk/nlveWDfOUXW+Fn8YKbUw5cWlW0DtDB+Wx0zX4OSaAaErSrpf9jx51BDeqKvMXjO
-         TlAhEfrASQLPXas4jENzx0RBUQQAjUn3Ew5lRExyYVhslJTyvWtxA39C09ycxLM7InOq
-         esZIz1KNGlk3fYButm0NKgELN0b2lNUyQQIl5A6BLgw2Ue20EgPR/CCOAjPWwSfBmFYH
-         LyDw==
-Received: by 10.182.11.40 with SMTP id n8mr22773028obb.32.1334683989267;
+        bh=f1XsdDH2buwlYx70tDvzncmiNhdpCE9ME1w9owTEiFs=;
+        b=X7yiWpYcOCYNdNjDZ63IfmEn0jj4ZPtjCugDfb1JhtGSf9XPi5nf5CDe9p4TCajlhz
+         /NW9XdcHlOpWl9Ic/q5gPnSDgpPzexmdWFLJSC5RU8bcty6bhg6OOqW9mP9816HxYeoL
+         FA3/XcGj7furxqzQA0ChD9MJedsioSbE29Rcoc4Gh3Ad8hnjrBGfT9o4jEOlhN9iHJwW
+         4E+rf0UYynQKQUW52YwiSlnZs8TY+zUBpsigk9kVCoZ5FaA3Y8c8L+gC2EXIm1qRASDR
+         X/6npH/KkhimdkJncP10jedcyECyMzSbsSq8pKoDfDnQi16jw5UrxfLa+U9lwakd3AL/
+         Z9tA==
+Received: by 10.182.152.72 with SMTP id uw8mr9015419obb.73.1334683989676;
         Tue, 17 Apr 2012 10:33:09 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id m2sm23775255obk.9.2012.04.17.10.33.05
+        by mx.google.com with ESMTPS id k2sm23768476obl.14.2012.04.17.10.33.05
         (version=TLSv1/SSLv3 cipher=OTHER);
         Tue, 17 Apr 2012 10:33:07 -0700 (PDT)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3HHX2EQ012159;
-        Tue, 17 Apr 2012 10:33:02 -0700
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3HHX15H012151;
+        Tue, 17 Apr 2012 10:33:01 -0700
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3HHX2bY012158;
-        Tue, 17 Apr 2012 10:33:02 -0700
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3HHX1VZ012150;
+        Tue, 17 Apr 2012 10:33:01 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     Grant Likely <grant.likely@secretlab.ca>,
         Rob Herring <rob.herring@calxeda.com>,
@@ -34,14 +34,16 @@ To:     Grant Likely <grant.likely@secretlab.ca>,
         "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         afleming@gmail.com, galak@kernel.crashing.org,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH v4 3/3] netdev/of/phy: Add MDIO bus multiplexer driven by GPIO lines.
-Date:   Tue, 17 Apr 2012 10:32:46 -0700
-Message-Id: <1334683966-12112-4-git-send-email-ddaney.cavm@gmail.com>
+        David Daney <david.daney@cavium.com>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH v4 1/3] netdev/of/phy: New function: of_mdio_find_bus().
+Date:   Tue, 17 Apr 2012 10:32:44 -0700
+Message-Id: <1334683966-12112-2-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1334683966-12112-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1334683966-12112-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 32954
+X-archive-position: 32955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,331 +54,95 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: David Daney <david.daney@cavium.com>
 
-The GPIO pins select which sub bus is connected to the master.
+Add of_mdio_find_bus() which allows an mii_bus to be located given its
+associated the device tree node.
 
-Initially tested with an sn74cbtlv3253 switch device wired into the
-MDIO bus.
+This is needed by the follow-on patch to add a driver for MDIO bus
+multiplexers.
+
+The of_mdiobus_register() function is modified so that the device tree
+node is recorded in the mii_bus.  Then we can find it again by
+iterating over all mdio_bus_class devices.
+
+Because the OF device tree has now become an integral part of the
+kernel, this can live in mdio_bus.c (which contains the needed
+mdio_bus_class structure) instead of of_mdio.c.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: "David S. Miller" <davem@davemloft.net>
 ---
- .../devicetree/bindings/net/mdio-mux-gpio.txt      |  127 +++++++++++++++++
- drivers/net/phy/Kconfig                            |   10 ++
- drivers/net/phy/Makefile                           |    1 +
- drivers/net/phy/mdio-mux-gpio.c                    |  142 ++++++++++++++++++++
- 4 files changed, 280 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/mdio-mux-gpio.txt
- create mode 100644 drivers/net/phy/mdio-mux-gpio.c
+ drivers/net/phy/mdio_bus.c |   32 ++++++++++++++++++++++++++++++++
+ drivers/of/of_mdio.c       |    2 ++
+ include/linux/of_mdio.h    |    2 ++
+ 3 files changed, 36 insertions(+), 0 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/mdio-mux-gpio.txt b/Documentation/devicetree/bindings/net/mdio-mux-gpio.txt
-new file mode 100644
-index 0000000..7938411
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/mdio-mux-gpio.txt
-@@ -0,0 +1,127 @@
-+Properties for an MDIO bus multiplexer/switch controlled by GPIO pins.
-+
-+This is a special case of a MDIO bus multiplexer.  One or more GPIO
-+lines are used to control which child bus is connected.
-+
-+Required properties in addition to the generic multiplexer properties:
-+
-+- compatible : mdio-mux-gpio.
-+- gpios : GPIO specifiers for each GPIO line.  One or more must be specified.
-+
-+
-+Example :
-+
-+	/* The parent MDIO bus. */
-+	smi1: mdio@1180000001900 {
-+		compatible = "cavium,octeon-3860-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		reg = <0x11800 0x00001900 0x0 0x40>;
-+	};
-+
-+	/*
-+	   An NXP sn74cbtlv3253 dual 1-of-4 switch controlled by a
-+	   pair of GPIO lines.  Child busses 2 and 3 populated with 4
-+	   PHYs each.
-+	 */
-+	mdio-mux {
-+		compatible = "mdio-mux-gpio";
-+		gpios = <&gpio1 3 0>, <&gpio1 4 0>;
-+		mdio-parent-bus = <&smi1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		mdio@2 {
-+			reg = <2>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			phy11: ethernet-phy@1 {
-+				reg = <1>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+			phy12: ethernet-phy@2 {
-+				reg = <2>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+			phy13: ethernet-phy@3 {
-+				reg = <3>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+			phy14: ethernet-phy@4 {
-+				reg = <4>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+		};
-+
-+		mdio@3 {
-+			reg = <3>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			phy21: ethernet-phy@1 {
-+				reg = <1>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+			phy22: ethernet-phy@2 {
-+				reg = <2>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+			phy23: ethernet-phy@3 {
-+				reg = <3>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+			phy24: ethernet-phy@4 {
-+				reg = <4>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+		};
-+	};
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 222b06b..39d8c66 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -143,6 +143,16 @@ config MDIO_BUS_MUX
- 	  to a parent bus.  Switching between child busses is done by
- 	  device specific drivers.
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 8985cc6..83d5c9f 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -88,6 +88,38 @@ static struct class mdio_bus_class = {
+ 	.dev_release	= mdiobus_release,
+ };
  
-+config MDIO_BUS_MUX_GPIO
-+	tristate "Support for GPIO controlled MDIO bus multiplexers"
-+	depends on GENERIC_GPIO
-+	select MDIO_BUS_MUX
-+	help
-+	  This module provides a driver for MDIO bus multiplexers that
-+	  are controlled via GPIO lines.  The multiplexer connects one of
-+	  several child MDIO busses to a parent bus.  Child bus
-+	  selection is under the control of GPIO lines.
-+
- endif # PHYLIB
- 
- config MICREL_KS8995MA
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index a6b50e7..f51af68 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -26,3 +26,4 @@ obj-$(CONFIG_MDIO_OCTEON)	+= mdio-octeon.o
- obj-$(CONFIG_MICREL_KS8995MA)	+= spi_ks8995.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
- obj-$(CONFIG_MDIO_BUS_MUX)	+= mdio-mux.o
-+obj-$(CONFIG_MDIO_BUS_MUX_GPIO)	+= mdio-mux-gpio.o
-diff --git a/drivers/net/phy/mdio-mux-gpio.c b/drivers/net/phy/mdio-mux-gpio.c
-new file mode 100644
-index 0000000..e0cc4ef
---- /dev/null
-+++ b/drivers/net/phy/mdio-mux-gpio.c
-@@ -0,0 +1,142 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
++#ifdef CONFIG_OF_MDIO
++/* Helper function for of_mdio_find_bus */
++static int of_mdio_bus_match(struct device *dev, void *mdio_bus_np)
++{
++	return dev->of_node == mdio_bus_np;
++}
++/**
++ * of_mdio_find_bus - Given an mii_bus node, find the mii_bus.
++ * @mdio_np: Pointer to the mii_bus.
 + *
-+ * Copyright (C) 2011, 2012 Cavium, Inc.
++ * Returns a pointer to the mii_bus, or NULL if none found.
++ *
++ * Because the association of a device_node and mii_bus is made via
++ * of_mdiobus_register(), the mii_bus cannot be found before it is
++ * registered with of_mdiobus_register().
++ *
 + */
-+
-+#include <linux/platform_device.h>
-+#include <linux/device.h>
-+#include <linux/of_mdio.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/phy.h>
-+#include <linux/mdio-mux.h>
-+#include <linux/of_gpio.h>
-+
-+#define DRV_VERSION "1.0"
-+#define DRV_DESCRIPTION "GPIO controlled MDIO bus multiplexer driver"
-+
-+#define MDIO_MUX_GPIO_MAX_BITS 8
-+
-+struct mdio_mux_gpio_state {
-+	int gpio[MDIO_MUX_GPIO_MAX_BITS];
-+	unsigned int num_gpios;
-+	void *mux_handle;
-+};
-+
-+static int mdio_mux_gpio_switch_fn(int current_child, int desired_child,
-+				   void *data)
++struct mii_bus *of_mdio_find_bus(struct device_node *mdio_bus_np)
 +{
-+	int change;
-+	unsigned int n;
-+	struct mdio_mux_gpio_state *s = data;
++	struct device *d;
 +
-+	if (current_child == desired_child)
-+		return 0;
++	if (!mdio_bus_np)
++		return NULL;
 +
-+	change = current_child == -1 ? -1 : current_child ^ desired_child;
++	d = class_find_device(&mdio_bus_class, NULL,  mdio_bus_np,
++			      of_mdio_bus_match);
 +
-+	for (n = 0; n < s->num_gpios; n++) {
-+		if (change & 1)
-+			gpio_set_value_cansleep(s->gpio[n],
-+						(desired_child & 1) != 0);
-+		change >>= 1;
-+		desired_child >>= 1;
-+	}
-+
-+	return 0;
++	return d ? to_mii_bus(d) : NULL;
 +}
++EXPORT_SYMBOL(of_mdio_find_bus);
++#endif
 +
-+static int __devinit mdio_mux_gpio_probe(struct platform_device *pdev)
-+{
-+	enum of_gpio_flags f;
-+	struct mdio_mux_gpio_state *s;
-+	unsigned int num_gpios;
-+	unsigned int n;
-+	int r;
+ /**
+  * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
+  * @bus: target mii_bus
+diff --git a/drivers/of/of_mdio.c b/drivers/of/of_mdio.c
+index 483c0ad..2574abd 100644
+--- a/drivers/of/of_mdio.c
++++ b/drivers/of/of_mdio.c
+@@ -45,6 +45,8 @@ int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
+ 		for (i=0; i<PHY_MAX_ADDR; i++)
+ 			mdio->irq[i] = PHY_POLL;
+ 
++	mdio->dev.of_node = np;
 +
-+	if (!pdev->dev.of_node)
-+		return -ENODEV;
+ 	/* Register the MDIO bus */
+ 	rc = mdiobus_register(mdio);
+ 	if (rc)
+diff --git a/include/linux/of_mdio.h b/include/linux/of_mdio.h
+index 53b94e0..912c27a 100644
+--- a/include/linux/of_mdio.h
++++ b/include/linux/of_mdio.h
+@@ -22,4 +22,6 @@ extern struct phy_device *of_phy_connect_fixed_link(struct net_device *dev,
+ 					 void (*hndlr)(struct net_device *),
+ 					 phy_interface_t iface);
+ 
++extern struct mii_bus *of_mdio_find_bus(struct device_node *mdio_np);
 +
-+	num_gpios = of_gpio_count(pdev->dev.of_node);
-+	if (num_gpios == 0 || num_gpios > MDIO_MUX_GPIO_MAX_BITS)
-+		return -ENODEV;
-+
-+	s = devm_kzalloc(&pdev->dev, sizeof(*s), GFP_KERNEL);
-+	if (!s)
-+		return -ENOMEM;
-+
-+	s->num_gpios = num_gpios;
-+
-+	for (n = 0; n < num_gpios; ) {
-+		int gpio = of_get_gpio_flags(pdev->dev.of_node, n, &f);
-+		if (gpio < 0) {
-+			r = (gpio == -ENODEV) ? -EPROBE_DEFER : gpio;
-+			goto err;
-+		}
-+		s->gpio[n] = gpio;
-+
-+		n++;
-+
-+		r = gpio_request(gpio, "mdio_mux_gpio");
-+		if (r)
-+			goto err;
-+
-+		r = gpio_direction_output(gpio, 0);
-+		if (r)
-+			goto err;
-+	}
-+
-+	r = mdio_mux_init(&pdev->dev,
-+			  mdio_mux_gpio_switch_fn, &s->mux_handle, s);
-+
-+	if (r == 0) {
-+		pdev->dev.platform_data = s;
-+		return 0;
-+	}
-+err:
-+	while (n) {
-+		n--;
-+		gpio_free(s->gpio[n]);
-+	}
-+	devm_kfree(&pdev->dev, s);
-+	return r;
-+}
-+
-+static int __devexit mdio_mux_gpio_remove(struct platform_device *pdev)
-+{
-+	struct mdio_mux_gpio_state *s = pdev->dev.platform_data;
-+	mdio_mux_uninit(s->mux_handle);
-+	return 0;
-+}
-+
-+static struct of_device_id mdio_mux_gpio_match[] = {
-+	{
-+		.compatible = "mdio-mux-gpio",
-+	},
-+	{
-+		/* Legacy compatible property. */
-+		.compatible = "cavium,mdio-mux-sn74cbtlv3253",
-+	},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, mdio_mux_gpio_match);
-+
-+static struct platform_driver mdio_mux_gpio_driver = {
-+	.driver = {
-+		.name		= "mdio-mux-gpio",
-+		.owner		= THIS_MODULE,
-+		.of_match_table = mdio_mux_gpio_match,
-+	},
-+	.probe		= mdio_mux_gpio_probe,
-+	.remove		= __devexit_p(mdio_mux_gpio_remove),
-+};
-+
-+module_platform_driver(mdio_mux_gpio_driver);
-+
-+MODULE_DESCRIPTION(DRV_DESCRIPTION);
-+MODULE_VERSION(DRV_VERSION);
-+MODULE_AUTHOR("David Daney");
-+MODULE_LICENSE("GPL");
+ #endif /* __LINUX_OF_MDIO_H */
 -- 
 1.7.2.3

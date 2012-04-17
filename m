@@ -1,504 +1,218 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 19:35:17 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:41737 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903725Ab2DQRdQ (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2012 19:33:16 +0200
-Received: by ghbf11 with SMTP id f11so3580337ghb.36
-        for <linux-mips@linux-mips.org>; Tue, 17 Apr 2012 10:33:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 21:50:35 +0200 (CEST)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:35700 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903725Ab2DQTu1 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2012 21:50:27 +0200
+Received: by ggnk1 with SMTP id k1so3713391ggn.36
+        for <linux-mips@linux-mips.org>; Tue, 17 Apr 2012 12:50:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=F2JRv+F/KaohIsIY5c2WAne0oi26lKd1202lIppncaE=;
-        b=aS82VU4kJuJgBSSdTPzrL6F++bAQ3XMQo2Nq7b1Tieb+K2NeqqiuzeetHw+zkmgXcL
-         AM4Zv6ya4E2pv05/7vfxXQDoWvabDt+DB0xVyunLQEP9QmAFX+LKBT1Up8ffaCgJfzbD
-         dG+vPFCSqPBqeb3m4xib4e1SkHpLnXCRiAfi/n/GtrgOqrelsj9GUyXrBq6vfCcBg0iZ
-         U+YyTpgqXkG8yrLswHCFfpWuOXjLf2ShyzftIv4Ev6iO6Rpk8Nh/Ry/GIMFg2JLEjx/K
-         2wmcCiwbfHxw+E69Ke3+A5iHC0xfI6UVb9wwiJP7nWBrOLffOjZSBAbl5q3lz4D1jaLP
-         UhJA==
-Received: by 10.60.20.100 with SMTP id m4mr23694892oee.10.1334683990106;
-        Tue, 17 Apr 2012 10:33:10 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id a8sm19104872oea.8.2012.04.17.10.33.05
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=8242z81rj4K9wM0lnlYOF+4SYShWucsRygbDwGwRaQA=;
+        b=O10Mr+PUzdG79eTGVs6uV2xL5E6Cf+XZ8oIDyJpebU3buKEr3ifvOu/KKVGErhlGxw
+         wOHNySsVhykJO6kgJyCoNnftQRLH4zOi91D90cxokYbdQQMhauNSzmdD0QOiAQIuUErv
+         ZGgPw1GMq6e+WGiu3YY+l5+kbK5CVjaIPMrUI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=from:to:cc:subject:date:message-id:x-mailer:x-gm-message-state;
+        bh=8242z81rj4K9wM0lnlYOF+4SYShWucsRygbDwGwRaQA=;
+        b=ZgiLHrqeLnT+N8CVIoHJSIXj2rrPekO3YMz46uK7u8Oq3CjZeQHT0+piUWf3ffqMGU
+         X121ROeb2fHJ1iWi2dO4BXTBwikEukldRQBIs7QQ0ayNFIY48Yn++/1LHUe1UsO0eQk7
+         ZpxgKZ0pjhNSJoJSMSxRDBSAJOKEn52qeo+sg4I9fVZ87tSDQd9ZBzUUf8TxtLDZ7VIw
+         f8ynZ6VnC+hYENtTUhTUDKd5GBny/pFW6UX/A0FSt5OxEiWZvNgmmUQM3Dc+bKKiBTQ0
+         WRJJ8xHU5uhx49zYTtbphZlcX3l2Q/JdRjOTcjt1KneYAaYPa1WXvc8w/wMU+hkKIQIi
+         Hp4w==
+Received: by 10.236.179.70 with SMTP id g46mr16659548yhm.28.1334692217046;
+        Tue, 17 Apr 2012 12:50:17 -0700 (PDT)
+Received: from localhost.localdomain (173-164-30-65-Nashville.hfc.comcastbusiness.net. [173.164.30.65])
+        by mx.google.com with ESMTPS id b27sm23183436yhe.8.2012.04.17.12.50.14
         (version=TLSv1/SSLv3 cipher=OTHER);
-        Tue, 17 Apr 2012 10:33:07 -0700 (PDT)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3HHX23m012155;
-        Tue, 17 Apr 2012 10:33:02 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3HHX1rq012154;
-        Tue, 17 Apr 2012 10:33:01 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        devicetree-discuss@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        afleming@gmail.com, galak@kernel.crashing.org,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH v4 2/3] netdev/of/phy: Add MDIO bus multiplexer support.
-Date:   Tue, 17 Apr 2012 10:32:45 -0700
-Message-Id: <1334683966-12112-3-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-In-Reply-To: <1334683966-12112-1-git-send-email-ddaney.cavm@gmail.com>
-References: <1334683966-12112-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 32956
+        Tue, 17 Apr 2012 12:50:15 -0700 (PDT)
+From:   Will Drewry <wad@chromium.org>
+To:     jmorris@namei.org
+Cc:     linux-kernel@vger.kernel.org, sfr@canb.auug.org.au,
+        linux-security-module@vger.kernel.org,
+        Will Drewry <wad@chromium.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        linux390@de.ibm.com, Paul Mundt <lethal@linux-sh.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Paris <eparis@redhat.com>,
+        Richard Weinberger <richard@nod.at>,
+        David Howells <dhowells@redhat.com>,
+        Ingo Molnar <mingo@elte.hu>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Peter Zijlstra <a.p.zijlstra@chello.nl>,
+        "H. Peter Anvin" <hpa@zytor.com>, Avi Kivity <avi@redhat.com>,
+        Tony Luck <tony.luck@intel.com>,
+        James Morris <james.l.morris@oracle.com>,
+        Serge Hallyn <serge.hallyn@canonical.com>,
+        Kees Cook <keescook@chromium.org>,
+        microblaze-uclinux@itee.uq.edu.au, linux-mips@linux-mips.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: [PATCH 1/2] seccomp: ignore secure_computing return values
+Date:   Tue, 17 Apr 2012 14:48:57 -0500
+Message-Id: <1334692161-6834-1-git-send-email-wad@chromium.org>
+X-Mailer: git-send-email 1.7.5.4
+X-Gm-Message-State: ALoCoQkRovhgL2o0qhpRplGflUf1kjVNhlZXlubU2PpUYiIzMSfvBTOMRcNNrlu02PYvdcSM8kJf
+X-archive-position: 32957
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: wad@chromium.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+This change is inspired by
+  https://lkml.org/lkml/2012/4/16/14
+which fixes the build warnings for arches that don't support
+CONFIG_HAVE_ARCH_SECCOMP_FILTER.
 
-This patch adds a somewhat generic framework for MDIO bus
-multiplexers.  It is modeled on the I2C multiplexer.
+In particular, there is no requirement for the return value of
+secure_computing() to be checked unless the architecture supports
+seccomp filter.  Instead of silencing the warnings with (void)
+a new static inline is added to encode the expected behavior
+in a compiler and human friendly way.
 
-The multiplexer is needed if there are multiple PHYs with the same
-address connected to the same MDIO bus adepter, or if there is
-insufficient electrical drive capability for all the connected PHY
-devices.
+v2: - cleans things up with a static inline
+    - removes sfr's signed-off-by since it is a different approach
+v1: - matches sfr's original change
 
-Conceptually it could look something like this:
-
-                   ------------------
-                   | Control Signal |
-                   --------+---------
-                           |
- ---------------   --------+------
- | MDIO MASTER |---| Multiplexer |
- ---------------   --+-------+----
-                     |       |
-                     C       C
-                     h       h
-                     i       i
-                     l       l
-                     d       d
-                     |       |
-     ---------       A       B   ---------
-     |       |       |       |   |       |
-     | PHY@1 +-------+       +---+ PHY@1 |
-     |       |       |       |   |       |
-     ---------       |       |   ---------
-     ---------       |       |   ---------
-     |       |       |       |   |       |
-     | PHY@2 +-------+       +---+ PHY@2 |
-     |       |                   |       |
-     ---------                   ---------
-
-This framework configures the bus topology from device tree data.  The
-mechanics of switching the multiplexer is left to device specific
-drivers.
-
-The follow-on patch contains a multiplexer driven by GPIO lines.
-
-Signed-off-by: David Daney <david.daney@cavium.com>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Will Drewry <wad@chromium.org>
+Acked-by: Kees Cook <keescook@chromium.org>
 ---
- Documentation/devicetree/bindings/net/mdio-mux.txt |  136 ++++++++++++++
- drivers/net/phy/Kconfig                            |    8 +
- drivers/net/phy/Makefile                           |    1 +
- drivers/net/phy/mdio-mux.c                         |  192 ++++++++++++++++++++
- include/linux/mdio-mux.h                           |   21 ++
- 5 files changed, 358 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/mdio-mux.txt
- create mode 100644 drivers/net/phy/mdio-mux.c
- create mode 100644 include/linux/mdio-mux.h
+ arch/microblaze/kernel/ptrace.c |    2 +-
+ arch/mips/kernel/ptrace.c       |    2 +-
+ arch/powerpc/kernel/ptrace.c    |    2 +-
+ arch/s390/kernel/ptrace.c       |    2 +-
+ arch/sh/kernel/ptrace_32.c      |    2 +-
+ arch/sh/kernel/ptrace_64.c      |    2 +-
+ arch/sparc/kernel/ptrace_64.c   |    2 +-
+ include/linux/seccomp.h         |    7 +++++++
+ 8 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/mdio-mux.txt b/Documentation/devicetree/bindings/net/mdio-mux.txt
-new file mode 100644
-index 0000000..f65606f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/mdio-mux.txt
-@@ -0,0 +1,136 @@
-+Common MDIO bus multiplexer/switch properties.
-+
-+An MDIO bus multiplexer/switch will have several child busses that are
-+numbered uniquely in a device dependent manner.  The nodes for an MDIO
-+bus multiplexer/switch will have one child node for each child bus.
-+
-+Required properties:
-+- mdio-parent-bus : phandle to the parent MDIO bus.
-+- #address-cells = <1>;
-+- #size-cells = <0>;
-+
-+Optional properties:
-+- Other properties specific to the multiplexer/switch hardware.
-+
-+Required properties for child nodes:
-+- #address-cells = <1>;
-+- #size-cells = <0>;
-+- reg : The sub-bus number.
-+
-+
-+Example :
-+
-+	/* The parent MDIO bus. */
-+	smi1: mdio@1180000001900 {
-+		compatible = "cavium,octeon-3860-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		reg = <0x11800 0x00001900 0x0 0x40>;
-+	};
-+
-+	/*
-+	   An NXP sn74cbtlv3253 dual 1-of-4 switch controlled by a
-+	   pair of GPIO lines.  Child busses 2 and 3 populated with 4
-+	   PHYs each.
-+	 */
-+	mdio-mux {
-+		compatible = "mdio-mux-gpio";
-+		gpios = <&gpio1 3 0>, <&gpio1 4 0>;
-+		mdio-parent-bus = <&smi1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		mdio@2 {
-+			reg = <2>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			phy11: ethernet-phy@1 {
-+				reg = <1>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+			phy12: ethernet-phy@2 {
-+				reg = <2>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+			phy13: ethernet-phy@3 {
-+				reg = <3>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+			phy14: ethernet-phy@4 {
-+				reg = <4>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <10 8>; /* Pin 10, active low */
-+			};
-+		};
-+
-+		mdio@3 {
-+			reg = <3>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			phy21: ethernet-phy@1 {
-+				reg = <1>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+			phy22: ethernet-phy@2 {
-+				reg = <2>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+			phy23: ethernet-phy@3 {
-+				reg = <3>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+			phy24: ethernet-phy@4 {
-+				reg = <4>;
-+				compatible = "marvell,88e1149r";
-+				marvell,reg-init = <3 0x10 0 0x5777>,
-+					<3 0x11 0 0x00aa>,
-+					<3 0x12 0 0x4105>,
-+					<3 0x13 0 0x0a60>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 8>; /* Pin 12, active low */
-+			};
-+		};
-+	};
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 0e01f4e..222b06b 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -135,6 +135,14 @@ config MDIO_OCTEON
+diff --git a/arch/microblaze/kernel/ptrace.c b/arch/microblaze/kernel/ptrace.c
+index 6eb2aa9..ab1b9db 100644
+--- a/arch/microblaze/kernel/ptrace.c
++++ b/arch/microblaze/kernel/ptrace.c
+@@ -136,7 +136,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	long ret = 0;
  
- 	  If in doubt, say Y.
+-	secure_computing(regs->r12);
++	secure_computing_strict(regs->r12);
  
-+config MDIO_BUS_MUX
-+	tristate
-+	help
-+	  This module provides a driver framework for MDIO bus
-+	  multiplexers which connect one of several child MDIO busses
-+	  to a parent bus.  Switching between child busses is done by
-+	  device specific drivers.
-+
- endif # PHYLIB
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
+ 	    tracehook_report_syscall_entry(regs))
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index 7c24c29..4812c6d 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -535,7 +535,7 @@ static inline int audit_arch(void)
+ asmlinkage void syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	/* do the secure computing check first */
+-	secure_computing(regs->regs[2]);
++	secure_computing_strict(regs->regs[2]);
  
- config MICREL_KS8995MA
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index b7438b1..a6b50e7 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -25,3 +25,4 @@ obj-$(CONFIG_MICREL_PHY)	+= micrel.o
- obj-$(CONFIG_MDIO_OCTEON)	+= mdio-octeon.o
- obj-$(CONFIG_MICREL_KS8995MA)	+= spi_ks8995.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
-+obj-$(CONFIG_MDIO_BUS_MUX)	+= mdio-mux.o
-diff --git a/drivers/net/phy/mdio-mux.c b/drivers/net/phy/mdio-mux.c
-new file mode 100644
-index 0000000..39ea067
---- /dev/null
-+++ b/drivers/net/phy/mdio-mux.c
-@@ -0,0 +1,192 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2011, 2012 Cavium, Inc.
-+ */
-+
-+#include <linux/platform_device.h>
-+#include <linux/mdio-mux.h>
-+#include <linux/of_mdio.h>
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/phy.h>
-+
-+#define DRV_VERSION "1.0"
-+#define DRV_DESCRIPTION "MDIO bus multiplexer driver"
-+
-+struct mdio_mux_child_bus;
-+
-+struct mdio_mux_parent_bus {
-+	struct mii_bus *mii_bus;
-+	int current_child;
-+	int parent_id;
-+	void *switch_data;
-+	int (*switch_fn)(int current_child, int desired_child, void *data);
-+
-+	/* List of our children linked through their next fields. */
-+	struct mdio_mux_child_bus *children;
-+};
-+
-+struct mdio_mux_child_bus {
-+	struct mii_bus *mii_bus;
-+	struct mdio_mux_parent_bus *parent;
-+	struct mdio_mux_child_bus *next;
-+	int bus_number;
-+	int phy_irq[PHY_MAX_ADDR];
-+};
-+
-+/*
-+ * The parent bus' lock is used to order access to the switch_fn.
-+ */
-+static int mdio_mux_read(struct mii_bus *bus, int phy_id, int regnum)
+ 	if (!(current->ptrace & PT_PTRACED))
+ 		goto out;
+diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
+index 8d8e028..dd5e214 100644
+--- a/arch/powerpc/kernel/ptrace.c
++++ b/arch/powerpc/kernel/ptrace.c
+@@ -1710,7 +1710,7 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	long ret = 0;
+ 
+-	secure_computing(regs->gpr[0]);
++	secure_computing_strict(regs->gpr[0]);
+ 
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
+ 	    tracehook_report_syscall_entry(regs))
+diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
+index 02f300f..4993e68 100644
+--- a/arch/s390/kernel/ptrace.c
++++ b/arch/s390/kernel/ptrace.c
+@@ -719,7 +719,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
+ 	long ret = 0;
+ 
+ 	/* Do the secure computing check first. */
+-	secure_computing(regs->gprs[2]);
++	secure_computing_strict(regs->gprs[2]);
+ 
+ 	/*
+ 	 * The sysc_tracesys code in entry.S stored the system
+diff --git a/arch/sh/kernel/ptrace_32.c b/arch/sh/kernel/ptrace_32.c
+index 9698671..81f999a 100644
+--- a/arch/sh/kernel/ptrace_32.c
++++ b/arch/sh/kernel/ptrace_32.c
+@@ -503,7 +503,7 @@ asmlinkage long do_syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	long ret = 0;
+ 
+-	secure_computing(regs->regs[0]);
++	secure_computing_strict(regs->regs[0]);
+ 
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
+ 	    tracehook_report_syscall_entry(regs))
+diff --git a/arch/sh/kernel/ptrace_64.c b/arch/sh/kernel/ptrace_64.c
+index bc81e07..af90339 100644
+--- a/arch/sh/kernel/ptrace_64.c
++++ b/arch/sh/kernel/ptrace_64.c
+@@ -522,7 +522,7 @@ asmlinkage long long do_syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	long long ret = 0;
+ 
+-	secure_computing(regs->regs[9]);
++	secure_computing_strict(regs->regs[9]);
+ 
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE) &&
+ 	    tracehook_report_syscall_entry(regs))
+diff --git a/arch/sparc/kernel/ptrace_64.c b/arch/sparc/kernel/ptrace_64.c
+index 6f97c07..484daba 100644
+--- a/arch/sparc/kernel/ptrace_64.c
++++ b/arch/sparc/kernel/ptrace_64.c
+@@ -1062,7 +1062,7 @@ asmlinkage int syscall_trace_enter(struct pt_regs *regs)
+ 	int ret = 0;
+ 
+ 	/* do the secure computing check first */
+-	secure_computing(regs->u_regs[UREG_G1]);
++	secure_computing_strict(regs->u_regs[UREG_G1]);
+ 
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE))
+ 		ret = tracehook_report_syscall_entry(regs);
+diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
+index 60f2b35..84f6320d 100644
+--- a/include/linux/seccomp.h
++++ b/include/linux/seccomp.h
+@@ -75,6 +75,12 @@ static inline int secure_computing(int this_syscall)
+ 	return 0;
+ }
+ 
++/* A wrapper for architectures supporting only SECCOMP_MODE_STRICT. */
++static inline void secure_computing_strict(int this_syscall)
 +{
-+	struct mdio_mux_child_bus *cb = bus->priv;
-+	struct mdio_mux_parent_bus *pb = cb->parent;
-+	int r;
-+
-+	mutex_lock(&pb->mii_bus->mdio_lock);
-+	r = pb->switch_fn(pb->current_child, cb->bus_number, pb->switch_data);
-+	if (r)
-+		goto out;
-+
-+	pb->current_child = cb->bus_number;
-+
-+	r = pb->mii_bus->read(pb->mii_bus, phy_id, regnum);
-+out:
-+	mutex_unlock(&pb->mii_bus->mdio_lock);
-+
-+	return r;
++	BUG_ON(secure_computing(this_syscall) != 0);
 +}
 +
-+/*
-+ * The parent bus' lock is used to order access to the switch_fn.
-+ */
-+static int mdio_mux_write(struct mii_bus *bus, int phy_id,
-+			  int regnum, u16 val)
-+{
-+	struct mdio_mux_child_bus *cb = bus->priv;
-+	struct mdio_mux_parent_bus *pb = cb->parent;
-+
-+	int r;
-+
-+	mutex_lock(&pb->mii_bus->mdio_lock);
-+	r = pb->switch_fn(pb->current_child, cb->bus_number, pb->switch_data);
-+	if (r)
-+		goto out;
-+
-+	pb->current_child = cb->bus_number;
-+
-+	r = pb->mii_bus->write(pb->mii_bus, phy_id, regnum, val);
-+out:
-+	mutex_unlock(&pb->mii_bus->mdio_lock);
-+
-+	return r;
-+}
-+
-+static int parent_count;
-+
-+int mdio_mux_init(struct device *dev,
-+		  int (*switch_fn)(int cur, int desired, void *data),
-+		  void **mux_handle,
-+		  void *data)
-+{
-+	struct device_node *parent_bus_node;
-+	struct device_node *child_bus_node;
-+	int r, ret_val;
-+	struct mii_bus *parent_bus;
-+	struct mdio_mux_parent_bus *pb;
-+	struct mdio_mux_child_bus *cb;
-+
-+	if (!dev->of_node)
-+		return -ENODEV;
-+
-+	parent_bus_node = of_parse_phandle(dev->of_node, "mdio-parent-bus", 0);
-+
-+	if (!parent_bus_node)
-+		return -ENODEV;
-+
-+	parent_bus = of_mdio_find_bus(parent_bus_node);
-+	if (parent_bus == NULL) {
-+		ret_val = -EPROBE_DEFER;
-+		goto err_parent_bus;
-+	}
-+
-+	pb = devm_kzalloc(dev, sizeof(*pb), GFP_KERNEL);
-+	if (pb == NULL) {
-+		ret_val = -ENOMEM;
-+		goto err_parent_bus;
-+	}
-+
-+	pb->switch_data = data;
-+	pb->switch_fn = switch_fn;
-+	pb->current_child = -1;
-+	pb->parent_id = parent_count++;
-+	pb->mii_bus = parent_bus;
-+
-+	ret_val = -ENODEV;
-+	for_each_child_of_node(dev->of_node, child_bus_node) {
-+		u32 v;
-+
-+		r = of_property_read_u32(child_bus_node, "reg", &v);
-+		if (r)
-+			continue;
-+
-+		cb = devm_kzalloc(dev, sizeof(*cb), GFP_KERNEL);
-+		if (cb == NULL) {
-+			dev_err(dev,
-+				"Error: Failed to allocate memory for child\n");
-+			ret_val = -ENOMEM;
-+			break;
-+		}
-+		cb->bus_number = v;
-+		cb->parent = pb;
-+		cb->mii_bus = mdiobus_alloc();
-+		cb->mii_bus->priv = cb;
-+
-+		cb->mii_bus->irq = cb->phy_irq;
-+		cb->mii_bus->name = "mdio_mux";
-+		snprintf(cb->mii_bus->id, MII_BUS_ID_SIZE, "%x.%x",
-+			 pb->parent_id, v);
-+		cb->mii_bus->parent = dev;
-+		cb->mii_bus->read = mdio_mux_read;
-+		cb->mii_bus->write = mdio_mux_write;
-+		r = of_mdiobus_register(cb->mii_bus, child_bus_node);
-+		if (r) {
-+			mdiobus_free(cb->mii_bus);
-+			devm_kfree(dev, cb);
-+		} else {
-+			of_node_get(child_bus_node);
-+			cb->next = pb->children;
-+			pb->children = cb;
-+		}
-+	}
-+	if (pb->children) {
-+		*mux_handle = pb;
-+		dev_info(dev, "Version " DRV_VERSION "\n");
-+		return 0;
-+	}
-+err_parent_bus:
-+	of_node_put(parent_bus_node);
-+	return ret_val;
-+}
-+EXPORT_SYMBOL_GPL(mdio_mux_init);
-+
-+void mdio_mux_uninit(void *mux_handle)
-+{
-+	struct mdio_mux_parent_bus *pb = mux_handle;
-+	struct mdio_mux_child_bus *cb = pb->children;
-+
-+	while (cb) {
-+		mdiobus_unregister(cb->mii_bus);
-+		mdiobus_free(cb->mii_bus);
-+		cb = cb->next;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(mdio_mux_uninit);
-+
-+MODULE_DESCRIPTION(DRV_DESCRIPTION);
-+MODULE_VERSION(DRV_VERSION);
-+MODULE_AUTHOR("David Daney");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/mdio-mux.h b/include/linux/mdio-mux.h
-new file mode 100644
-index 0000000..a243dbb
---- /dev/null
-+++ b/include/linux/mdio-mux.h
-@@ -0,0 +1,21 @@
-+/*
-+ * MDIO bus multiplexer framwork.
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2011, 2012 Cavium, Inc.
-+ */
-+#ifndef __LINUX_MDIO_MUX_H
-+#define __LINUX_MDIO_MUX_H
-+#include <linux/device.h>
-+
-+int mdio_mux_init(struct device *dev,
-+		  int (*switch_fn) (int cur, int desired, void *data),
-+		  void **mux_handle,
-+		  void *data);
-+
-+void mdio_mux_uninit(void *mux_handle);
-+
-+#endif /* __LINUX_MDIO_MUX_H */
+ extern long prctl_get_seccomp(void);
+ extern long prctl_set_seccomp(unsigned long, char __user *);
+ 
+@@ -91,6 +97,7 @@ struct seccomp { };
+ struct seccomp_filter { };
+ 
+ static inline int secure_computing(int this_syscall) { return 0; }
++static inline void secure_computing_strict(int this_syscall) { return; }
+ 
+ static inline long prctl_get_seccomp(void)
+ {
 -- 
-1.7.2.3
+1.7.5.4

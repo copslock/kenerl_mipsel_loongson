@@ -1,120 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 05:09:23 +0200 (CEST)
-Received: from mail-qa0-f49.google.com ([209.85.216.49]:57631 "EHLO
-        mail-qa0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901173Ab2DQDJH (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2012 05:09:07 +0200
-Received: by qafi29 with SMTP id i29so110742qaf.15
-        for <multiple recipients>; Mon, 16 Apr 2012 20:09:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 19:28:09 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:62462 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903690Ab2DQR1x (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2012 19:27:53 +0200
+Received: by obcni5 with SMTP id ni5so1448799obc.36
+        for <linux-mips@linux-mips.org>; Tue, 17 Apr 2012 10:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        bh=KHWZGjbF8JmOp5ELestiWaj5wwigfe1u5dxF9/WtJBA=;
-        b=smGL1PdQG5i0JQFfvJS0W9Q46eDHSWuO4Oo6ED7BIUKq6VY2jaHsTXMzUrCOe2iiyn
-         uiQqmacWPQWzubJDDeDuUFcn/uR9pyeBj1x7zDaB/salTfC8C1tZO7D9C9al8aGOFpOu
-         zIVV/U7Oi5LIZcjE65MK4iM1DododudhW7A6fXtK2JB7Ah7uakmkZnC+ixBd1iIO2opp
-         sTydaP1j6aZTIZxtTnS9BzyFr58nCsGAmnSdkfZ0IJoSHvauYcvdeEgRtkTTiXC2zfzR
-         0B2+jR7YjKpYaVLgnUlBEfPnCim/KyEj23edFQEUboKSo2epqSa0XTi9fKbBL23Y4PTl
-         byBQ==
-Received: by 10.224.213.196 with SMTP id gx4mr18499495qab.95.1334632141548;
-        Mon, 16 Apr 2012 20:09:01 -0700 (PDT)
-Received: from localhost ([61.148.56.138])
-        by mx.google.com with ESMTPS id gy2sm37893892qab.10.2012.04.16.20.08.55
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Mon, 16 Apr 2012 20:09:00 -0700 (PDT)
-Date:   Tue, 17 Apr 2012 11:08:48 +0800
-From:   Yong Zhang <yong.zhang0@gmail.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] MIPS: cavium: Don't enable irq in ->init__secondary()
-Message-ID: <20120417030848.GA6377@zhy>
-Reply-To: Yong Zhang <yong.zhang0@gmail.com>
-References: <1334561133-19139-1-git-send-email-yong.zhang0@gmail.com>
- <4F8C4D4E.4060900@gmail.com>
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=vQVVXPb8FNjbLs/IUX7mgdP/A6gd/uJG1nJznFX3O0I=;
+        b=ySxkN75q/cFTpea/EpvqYw3IED4JNYA4dkNPH1/BoAT/EMJP4EG6vyCV1GCiSbTwuL
+         l0xgZmJGUwHgN2HIz8hEk9OH5o1xuIO09cT5RxSHYngeIIWL57C2FRIUNJp4jP4jecHj
+         30KqLmiOjO3nHTDmDp7trgPLqcQOYGf/Pm/O5LAnLxauhTg7mqmV6Urlikl12ZhM2OVE
+         vhxBvFW7Dtmgi45lAMBVl8JPP94LOhUWSMmQDEXNygBlRyQ656WtCSCUR1NzEXC3Z5my
+         HUGG4yi8tpgBYp3ly5G/fK1r9o04PbJoxFvszEBVnFL+u5/Z1DbOYpONpNY8Z1XoXhvX
+         hOjg==
+Received: by 10.182.225.2 with SMTP id rg2mr22644982obc.2.1334683667210;
+        Tue, 17 Apr 2012 10:27:47 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id yv3sm23763579obb.3.2012.04.17.10.27.44
+        (version=SSLv3 cipher=OTHER);
+        Tue, 17 Apr 2012 10:27:45 -0700 (PDT)
+Message-ID: <4F8DA80F.6030205@gmail.com>
+Date:   Tue, 17 Apr 2012 10:27:43 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4F8C4D4E.4060900@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 32951
+To:     Grant Likely <grant.likely@secretlab.ca>,
+        Rob Herring <rob.herring@calxeda.com>,
+        devicetree-discuss@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+CC:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        afleming@gmail.com, galak@kernel.crashing.org,
+        David Daney <david.daney@cavium.com>
+Subject: Re: [PATCH v3 1/3] netdev/of/phy: New function: of_mdio_find_bus().
+References: <1334624608-26667-1-git-send-email-ddaney.cavm@gmail.com> <1334624608-26667-2-git-send-email-ddaney.cavm@gmail.com>
+In-Reply-To: <1334624608-26667-2-git-send-email-ddaney.cavm@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 32952
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yong.zhang0@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Mon, Apr 16, 2012 at 09:48:14AM -0700, David Daney wrote:
-> On 04/16/2012 12:25 AM, Yong Zhang wrote:
-> >From: Yong Zhang<yong.zhang@windriver.com>
-> >
-> >Too early to enable irq will break some following action,
-> >such as notify_cpu_starting().
-> 
-> Can you be more specific about what breaks?
+On 04/16/2012 06:03 PM, David Daney wrote:
+> From: David Daney<david.daney@cavium.com>
+>
+> Add of_mdio_find_bus() which allows an mii_bus to be located given its
+> associated the device tree node.
+>
+> This is needed by the follow-on patch to add a driver for MDIO bus
+> multiplexers.
+>
+> The of_mdiobus_register() function is modified so that the device tree
+> node is recorded in the mii_bus.  Then we can find it again by
+> iterating over all mdio_bus_class devices.
+>
+> Because the OF device tree has now become an integral part of the
+> kernel, this can live in mdio_bus.c (which contains the needed
+> mdio_bus_class structure) instead of of_mdio.c.
+>
+> Signed-off-by: David Daney<david.daney@cavium.com>
+> Cc: Grant Likely<grant.likely@secretlab.ca>
+> Cc: "David S. Miller"<davem@davemloft.net>
+> ---
+>   drivers/net/phy/mdio_bus.c |   32 ++++++++++++++++++++++++++++++++
+>   drivers/of/of_mdio.c       |    2 ++
+>   include/linux/of_mdio.h    |    2 ++
+>   3 files changed, 36 insertions(+), 0 deletions(-)
+>
+> diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+> index 8985cc6..46e7dc5 100644
+> --- a/drivers/net/phy/mdio_bus.c
+> +++ b/drivers/net/phy/mdio_bus.c
+> @@ -88,6 +88,38 @@ static struct class mdio_bus_class = {
+>   	.dev_release	= mdiobus_release,
+>   };
+>
+> +#ifdef CONFIG_OF_MDIO
+> +/* Helper function for of_phy_find_device */
 
-For example:
+This comment is incorrect.  I will resend the set with this cleaned up.
 
-	CPU1				CPU2
-__cpu_up();
-  mp_ops->boot_secondary();
-    				start_secondary();
-				  octeon_init_secondary();
-				    raw_local_irq_enable();
-				    <IRQ>
-				      do something;
-				      wake up softirqd;
-				      try_to_wake_up();
-				        select_fallback_rq();
-					/* select wrong cpu */
-    set_cpu_online();
+David Daney
 
-> 
-> >
-> >I don't get side effect with this patch.
-> 
-> Without this, where do irqs get enabled on the secondary CPUs?
-
-cpu_idle() will handle it. But in fact we should not depend on
-cpu_idle().
-
-But it seems there is not suitable place to put local_irq_enable(),
-though ->smp_finish() looks like a more suitable place.
-
-When looking more at smp support on MIPS, there is more things I find.
-Such as set_cpu_online() is called on CPU1, so there will be another race
-window like above scenario. Please take a look at what commit 2baab4e9
-intend to resolve.
-
-Thanks,
-Yong
-
-
-
-
-> 
-> >
-> >Signed-off-by: Yong Zhang<yong.zhang0@gmail.com>
-> >Cc: David Daney<ddaney@caviumnetworks.com>
-> >Cc: Ralf Baechle<ralf@linux-mips.org>
-> >---
-> >  arch/mips/cavium-octeon/smp.c |    1 -
-> >  1 files changed, 0 insertions(+), 1 deletions(-)
-> >
-> >diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-> >index 97e7ce9..7e65c88 100644
-> >--- a/arch/mips/cavium-octeon/smp.c
-> >+++ b/arch/mips/cavium-octeon/smp.c
-> >@@ -185,7 +185,6 @@ static void __cpuinit octeon_init_secondary(void)
-> >  	octeon_init_cvmcount();
-> >
-> >  	octeon_irq_setup_secondary();
-> >-	raw_local_irq_enable();
-> >  }
-> >
-> >  /**
-
--- 
-Only stand for myself
+> +static int of_mii_bus_match(struct device *dev, void *mii_bus_np)
+> +{
+> +	return dev->of_node == mii_bus_np;
+> +}
+> +/**
+> + * of_mdio_find_bus - Given an mii_bus node, find the mii_bus.
+> + * @mdio_np: Pointer to the mii_bus.
+> + *
+> + * Returns a pointer to the mii_bus, or NULL if none found.
+> + *
+> + * Because the association of a device_node and mii_bus is made via
+> + * of_mdiobus_register(), the mii_bus cannot be found before it is
+> + * registered with of_mdiobus_register().
+> + *
+> + */
+> +struct mii_bus *of_mdio_find_bus(struct device_node *mdio_np)
+> +{
+[...]

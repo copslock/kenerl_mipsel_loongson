@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 19:28:09 +0200 (CEST)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:62462 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903690Ab2DQR1x (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2012 19:27:53 +0200
-Received: by obcni5 with SMTP id ni5so1448799obc.36
-        for <linux-mips@linux-mips.org>; Tue, 17 Apr 2012 10:27:47 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Apr 2012 19:33:28 +0200 (CEST)
+Received: from mail-gx0-f177.google.com ([209.85.161.177]:32923 "EHLO
+        mail-gx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903690Ab2DQRdO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 17 Apr 2012 19:33:14 +0200
+Received: by ggnk1 with SMTP id k1so3592997ggn.36
+        for <linux-mips@linux-mips.org>; Tue, 17 Apr 2012 10:33:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=vQVVXPb8FNjbLs/IUX7mgdP/A6gd/uJG1nJznFX3O0I=;
-        b=ySxkN75q/cFTpea/EpvqYw3IED4JNYA4dkNPH1/BoAT/EMJP4EG6vyCV1GCiSbTwuL
-         l0xgZmJGUwHgN2HIz8hEk9OH5o1xuIO09cT5RxSHYngeIIWL57C2FRIUNJp4jP4jecHj
-         30KqLmiOjO3nHTDmDp7trgPLqcQOYGf/Pm/O5LAnLxauhTg7mqmV6Urlikl12ZhM2OVE
-         vhxBvFW7Dtmgi45lAMBVl8JPP94LOhUWSMmQDEXNygBlRyQ656WtCSCUR1NzEXC3Z5my
-         HUGG4yi8tpgBYp3ly5G/fK1r9o04PbJoxFvszEBVnFL+u5/Z1DbOYpONpNY8Z1XoXhvX
-         hOjg==
-Received: by 10.182.225.2 with SMTP id rg2mr22644982obc.2.1334683667210;
-        Tue, 17 Apr 2012 10:27:47 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        bh=KTGIh6jmxzwJ2Yk7z+x9ak2StRtS9pl7x6VPaRsf1/I=;
+        b=hY54zKcv9sxKyT99O/Q774AQl4LJ9K5XmDmUsgtAxGis5Kvt1G5syjVOhE8/4sQJja
+         P0ohIxZqJZsYuJzjYs6cYC4QXtHO7/KI+1Lh16bV17GmTd/UmQfsTdETMyMc59ZqEHCa
+         WgTyCBJ00EONcGB7oBjsTCgAOMNPsiX27uLwrlylX3BJraVedS8J6fSGzL9qxyRcH2ZL
+         Q/Av7ylHNVYBEIj3/3zLSmFhYMX0F1eH1qtRieP7rDxMeUMawlvm9g2KOz8J0GizlZuh
+         2IdlPJOlUArytGa3bKRwFJn7ebF8UzRXevSj5b+woPNtTgLcFY8mhYNPmTlcOZAgnHvy
+         afYQ==
+Received: by 10.60.3.99 with SMTP id b3mr22404766oeb.72.1334683988862;
+        Tue, 17 Apr 2012 10:33:08 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id yv3sm23763579obb.3.2012.04.17.10.27.44
-        (version=SSLv3 cipher=OTHER);
-        Tue, 17 Apr 2012 10:27:45 -0700 (PDT)
-Message-ID: <4F8DA80F.6030205@gmail.com>
-Date:   Tue, 17 Apr 2012 10:27:43 -0700
+        by mx.google.com with ESMTPS id k2sm23768520obl.14.2012.04.17.10.33.05
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 17 Apr 2012 10:33:07 -0700 (PDT)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3HHWuNA012147;
+        Tue, 17 Apr 2012 10:32:57 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3HHWq4W012146;
+        Tue, 17 Apr 2012 10:32:52 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
 To:     Grant Likely <grant.likely@secretlab.ca>,
         Rob Herring <rob.herring@calxeda.com>,
         devicetree-discuss@lists.ozlabs.org,
         "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-CC:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         afleming@gmail.com, galak@kernel.crashing.org,
         David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v3 1/3] netdev/of/phy: New function: of_mdio_find_bus().
-References: <1334624608-26667-1-git-send-email-ddaney.cavm@gmail.com> <1334624608-26667-2-git-send-email-ddaney.cavm@gmail.com>
-In-Reply-To: <1334624608-26667-2-git-send-email-ddaney.cavm@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32952
+Subject: [PATCH v4 0/3] netdev/of/phy: MDIO bus multiplexer support.
+Date:   Tue, 17 Apr 2012 10:32:43 -0700
+Message-Id: <1334683966-12112-1-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+X-archive-position: 32953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,62 +48,59 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 04/16/2012 06:03 PM, David Daney wrote:
-> From: David Daney<david.daney@cavium.com>
->
-> Add of_mdio_find_bus() which allows an mii_bus to be located given its
-> associated the device tree node.
->
-> This is needed by the follow-on patch to add a driver for MDIO bus
-> multiplexers.
->
-> The of_mdiobus_register() function is modified so that the device tree
-> node is recorded in the mii_bus.  Then we can find it again by
-> iterating over all mdio_bus_class devices.
->
-> Because the OF device tree has now become an integral part of the
-> kernel, this can live in mdio_bus.c (which contains the needed
-> mdio_bus_class structure) instead of of_mdio.c.
->
-> Signed-off-by: David Daney<david.daney@cavium.com>
-> Cc: Grant Likely<grant.likely@secretlab.ca>
-> Cc: "David S. Miller"<davem@davemloft.net>
-> ---
->   drivers/net/phy/mdio_bus.c |   32 ++++++++++++++++++++++++++++++++
->   drivers/of/of_mdio.c       |    2 ++
->   include/linux/of_mdio.h    |    2 ++
->   3 files changed, 36 insertions(+), 0 deletions(-)
->
-> diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-> index 8985cc6..46e7dc5 100644
-> --- a/drivers/net/phy/mdio_bus.c
-> +++ b/drivers/net/phy/mdio_bus.c
-> @@ -88,6 +88,38 @@ static struct class mdio_bus_class = {
->   	.dev_release	= mdiobus_release,
->   };
->
-> +#ifdef CONFIG_OF_MDIO
-> +/* Helper function for of_phy_find_device */
+From: David Daney <david.daney@cavium.com>
 
-This comment is incorrect.  I will resend the set with this cleaned up.
+This code has been working well for about six months on a couple of
+different configurations (boards), so I thought it would be a good
+time to send it out again, and I hope get it on the path towards
+merging.
 
-David Daney
+v4: Correct some comment text and rename a couple of variables to
+    better reflect their purpose.
 
-> +static int of_mii_bus_match(struct device *dev, void *mii_bus_np)
-> +{
-> +	return dev->of_node == mii_bus_np;
-> +}
-> +/**
-> + * of_mdio_find_bus - Given an mii_bus node, find the mii_bus.
-> + * @mdio_np: Pointer to the mii_bus.
-> + *
-> + * Returns a pointer to the mii_bus, or NULL if none found.
-> + *
-> + * Because the association of a device_node and mii_bus is made via
-> + * of_mdiobus_register(), the mii_bus cannot be found before it is
-> + * registered with of_mdiobus_register().
-> + *
-> + */
-> +struct mii_bus *of_mdio_find_bus(struct device_node *mdio_np)
-> +{
-[...]
+v3: Update binding to use "mdio-mux-gpio" compatible property.
+    Cleanups suggested by Grant Likely.  Now uses the driver probe
+    deferral mechanism if GPIOs or parent bus not available.
+
+v2: Update bindings to use "reg" and "mdio-parent-bus" instead of
+    "cell-index" and "parent-bus"
+
+v1:
+
+We have several different boards with a multiplexer in the MDIO bus.
+There is an MDIO bus controller connected to a switching device with
+several child MDIO busses.
+
+Everything is wired up using device tree bindings.
+
+ 1/3 - New of_mdio_find_bus() function used to help configuring the
+       driver topology.
+
+ 2/3 - MDIO bus multiplexer framework.
+
+ 3/3 - A driver for a GPIO controlled multiplexer.
+
+David Daney (3):
+  netdev/of/phy: New function: of_mdio_find_bus().
+  netdev/of/phy: Add MDIO bus multiplexer support.
+  netdev/of/phy: Add MDIO bus multiplexer driven by GPIO lines.
+
+ .../devicetree/bindings/net/mdio-mux-gpio.txt      |  127 +++++++++++++
+ Documentation/devicetree/bindings/net/mdio-mux.txt |  136 ++++++++++++++
+ drivers/net/phy/Kconfig                            |   18 ++
+ drivers/net/phy/Makefile                           |    2 +
+ drivers/net/phy/mdio-mux-gpio.c                    |  142 +++++++++++++++
+ drivers/net/phy/mdio-mux.c                         |  192 ++++++++++++++++++++
+ drivers/net/phy/mdio_bus.c                         |   32 ++++
+ drivers/of/of_mdio.c                               |    2 +
+ include/linux/mdio-mux.h                           |   21 ++
+ include/linux/of_mdio.h                            |    2 +
+ 10 files changed, 674 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/mdio-mux-gpio.txt
+ create mode 100644 Documentation/devicetree/bindings/net/mdio-mux.txt
+ create mode 100644 drivers/net/phy/mdio-mux-gpio.c
+ create mode 100644 drivers/net/phy/mdio-mux.c
+ create mode 100644 include/linux/mdio-mux.h
+
+-- 
+1.7.2.3

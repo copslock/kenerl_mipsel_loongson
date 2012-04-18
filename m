@@ -1,108 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Apr 2012 01:23:07 +0200 (CEST)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:48087 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903734Ab2DRXVI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Apr 2012 01:21:08 +0200
-Received: by obcni5 with SMTP id ni5so3717470obc.36
-        for <linux-mips@linux-mips.org>; Wed, 18 Apr 2012 16:21:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=yU7GEu1QLe0JUy6ScOAbdi4Qb93sGUeonS6vgGiiagk=;
-        b=P5k31bF/CrFsx+0DYBJM+6oFSiKLbIgJCiZZksuq8ndHT2+hp2sw8XH4BuJhJ3duaH
-         Xwp29PpH79HDTNChXizrtd1IChN+5kkMddSP4Zd0QWYG3PPxdoHlIQlKntI5vkGsoemz
-         bSEmaH7WBOdnBu/FyoA0E7EptPBsy/Pi1ezDvrN2QtX+3+3v+eIoLWED46tSJYNlwf3O
-         uvpUMbn09P9WevUuKXlddT159MKOUIIBnq4wqGa+Nv7y2OASKPFBhGdaX/EppluYXagq
-         /jfQTlXq3JkispotuSKZCcxnyRc9oZ4PmY/V6Awrejd/xVDNocHUqm11plv4s7x7+s1F
-         pBzw==
-Received: by 10.182.31.47 with SMTP id x15mr5547729obh.76.1334791262875;
-        Wed, 18 Apr 2012 16:21:02 -0700 (PDT)
-Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id yw3sm520314obb.7.2012.04.18.16.21.00
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 18 Apr 2012 16:21:00 -0700 (PDT)
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3INKwln016030;
-        Wed, 18 Apr 2012 16:20:58 -0700
-Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3INKtb6016020;
-        Wed, 18 Apr 2012 16:20:55 -0700
-From:   David Daney <ddaney.cavm@gmail.com>
-To:     Grant Likely <grant.likely@secretlab.ca>,
-        Rob Herring <rob.herring@calxeda.com>,
-        devicetree-discuss@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        afleming@gmail.com, galak@kernel.crashing.org,
-        David Daney <david.daney@cavium.com>
-Subject: [PATCH v5 0/3] netdev/of/phy: MDIO bus multiplexer support.
-Date:   Wed, 18 Apr 2012 16:20:51 -0700
-Message-Id: <1334791254-15987-1-git-send-email-ddaney.cavm@gmail.com>
-X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 32969
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Apr 2012 01:47:10 +0200 (CEST)
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:45646 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903729Ab2DRXrA (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Apr 2012 01:47:00 +0200
+Received: from compute4.internal (compute4.nyi.mail.srv.osa [10.202.2.44])
+        by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id 588F22081F
+        for <linux-mips@linux-mips.org>; Wed, 18 Apr 2012 19:46:59 -0400 (EDT)
+Received: from frontend2.nyi.mail.srv.osa ([10.202.2.161])
+  by compute4.internal (MEProxy); Wed, 18 Apr 2012 19:46:59 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+        messagingengine.com; h=date:from:to:cc:subject:message-id
+        :references:mime-version:content-type:in-reply-to; s=smtpout;
+         bh=ST8eLKuFAM6khM+JBo33ofgov7k=; b=HNpjLaxv5g2VF3H/bjTOnbspTIj8
+        wFvcRscQGrD4e6wY/3L/k8esc6NBqudn1naEnul2IhsWA733K/04HdMJpAgscp67
+        U4Bakk+cHvpZ4intFrREQOFX7b/qFktsOfdHzt+xEOjRuwwtkfhIHjy/4buJlxuw
+        8X0w+ROdApLYBzI=
+X-Sasl-enc: 6/PzmHXexx7iyMtGHb10V2LraF+lmEVdfpXJOpPp5ZYi 1334792818
+Received: from localhost (c-67-168-183-230.hsd1.wa.comcast.net [67.168.183.230])
+        by mail.messagingengine.com (Postfix) with ESMTPSA id D31FF4824EE;
+        Wed, 18 Apr 2012 19:46:58 -0400 (EDT)
+Date:   Wed, 18 Apr 2012 16:46:57 -0700
+From:   Greg KH <greg@kroah.com>
+To:     Imre Kaloz <kaloz@openwrt.org>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        david.daney@cavium.com
+Subject: Re: [PATCH] STAGING: octeon-ethernet: fix build errors by including
+ interrupt.h
+Message-ID: <20120418234657.GA2202@kroah.com>
+References: <1333996155-30523-1-git-send-email-kaloz@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1333996155-30523-1-git-send-email-kaloz@openwrt.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-archive-position: 32970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney.cavm@gmail.com
+X-original-sender: greg@kroah.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: David Daney <david.daney@cavium.com>
+On Mon, Apr 09, 2012 at 08:29:15PM +0200, Imre Kaloz wrote:
+> This patch fixes the following build failures:
+> 
+> drivers/staging/octeon/ethernet.c: In function 'cvm_oct_cleanup_module':
+> drivers/staging/octeon/ethernet.c:799:2: error: implicit declaration of function 'free_irq'
+> drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_no_more_work':
+> drivers/staging/octeon/ethernet-rx.c:119:3: error: implicit declaration of function 'enable_irq'
+> drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_do_interrupt':
+> drivers/staging/octeon/ethernet-rx.c:136:2: error: implicit declaration of function 'disable_irq_nosync'
+> drivers/staging/octeon/ethernet-rx.c: In function 'cvm_oct_rx_initialize':
+> drivers/staging/octeon/ethernet-rx.c:532:2: error: implicit declaration of function 'request_irq'
+> drivers/staging/octeon/ethernet-tx.c: In function 'cvm_oct_tx_initialize':
+> drivers/staging/octeon/ethernet-tx.c:712:2: error: implicit declaration of function 'request_irq'
+> drivers/staging/octeon/ethernet-tx.c: In function 'cvm_oct_tx_shutdown':
+> drivers/staging/octeon/ethernet-tx.c:723:2: error: implicit declaration of function 'free_irq'
+> 
+> Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+> Acked-by: David Daney <david.daney@cavium.com>
 
-This code has been working well for about six months on a couple of
-different configurations (boards), so I thought it would be a good
-time to send it out again, and I hope get it on the path towards
-merging.
+This patch is messed up and does not apply.
 
-v5: Correct Kconfig depends in 3/3 as noticed by David Miller.
+And is this needed for 3.4-final?
 
-v4: Correct some comment text and rename a couple of variables to
-    better reflect their purpose.
+Please resend it after you fix up your email client.
 
-v3: Update binding to use "mdio-mux-gpio" compatible property.
-    Cleanups suggested by Grant Likely.  Now uses the driver probe
-    deferral mechanism if GPIOs or parent bus not available.
+thanks,
 
-v2: Update bindings to use "reg" and "mdio-parent-bus" instead of
-    "cell-index" and "parent-bus"
-
-v1:
-
-We have several different boards with a multiplexer in the MDIO bus.
-There is an MDIO bus controller connected to a switching device with
-several child MDIO busses.
-
-Everything is wired up using device tree bindings.
-
- 1/3 - New of_mdio_find_bus() function used to help configuring the
-       driver topology.
-
- 2/3 - MDIO bus multiplexer framework.
-
- 3/3 - A driver for a GPIO controlled multiplexer.
-
-David Daney (3):
-  netdev/of/phy: New function: of_mdio_find_bus().
-  netdev/of/phy: Add MDIO bus multiplexer support.
-  netdev/of/phy: Add MDIO bus multiplexer driven by GPIO lines.
-
- .../devicetree/bindings/net/mdio-mux-gpio.txt      |  127 +++++++++++++
- Documentation/devicetree/bindings/net/mdio-mux.txt |  136 ++++++++++++++
- drivers/net/phy/Kconfig                            |   18 ++
- drivers/net/phy/Makefile                           |    2 +
- drivers/net/phy/mdio-mux-gpio.c                    |  142 +++++++++++++++
- drivers/net/phy/mdio-mux.c                         |  192 ++++++++++++++++++++
- drivers/net/phy/mdio_bus.c                         |   32 ++++
- drivers/of/of_mdio.c                               |    2 +
- include/linux/mdio-mux.h                           |   21 ++
- include/linux/of_mdio.h                            |    2 +
- 10 files changed, 674 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/mdio-mux-gpio.txt
- create mode 100644 Documentation/devicetree/bindings/net/mdio-mux.txt
- create mode 100644 drivers/net/phy/mdio-mux-gpio.c
- create mode 100644 drivers/net/phy/mdio-mux.c
- create mode 100644 include/linux/mdio-mux.h
-
--- 
-1.7.2.3
+greg k-h

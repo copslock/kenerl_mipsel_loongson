@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2012 00:01:03 +0200 (CEST)
-Received: from mail-ob0-f177.google.com ([209.85.214.177]:45496 "EHLO
-        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903732Ab2DSWAR (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2012 00:01:34 +0200 (CEST)
+Received: from mail-gy0-f177.google.com ([209.85.160.177]:42389 "EHLO
+        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903735Ab2DSWAR (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2012 00:00:17 +0200
-Received: by obcni5 with SMTP id ni5so5398667obc.36
+Received: by ghbf11 with SMTP id f11so5439673ghb.36
         for <multiple recipients>; Thu, 19 Apr 2012 15:00:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=c+UH2O4SxdjMCZIzoml/mo6jUQnaPypxbB2dneUJ2qs=;
-        b=h5DKWLJ035HExi5uNLnNy3nPpmUBK/PdEGQB3PpPh9pMyIuMT0bIScl2qJ8W4s70G/
-         1nWYXVXsBJKpo2lrRNcH3KmZd2jjYvJmF2wdjkGcisjJM9xlsNLnGDj97HPW+95RqrdT
-         Il+9Wduu2zqfrymtK5gOJonYt+tGyV9NpNMxyQevpi5CyUrzYY0xTy7hepQKKMlCQXv9
-         N2xLAhzy2bfS4LZUjCYFTuUdiVbtA5Mdmg7lRQ2nN45FpkeNmj19C+D0zVBG1YIiN5aY
-         hD5oLmRU6kyWQJDI34kH/U32CK4ikTGf05NwbaTlS0fL/6baZji4gAjOc01+TrohdUh4
-         5mmw==
-Received: by 10.182.179.73 with SMTP id de9mr5397630obc.44.1334872811368;
+        bh=4d/EUWa9owFv1GX4QJ+lSYKa3id+F6leUdonoJj0UTU=;
+        b=Id7W0zQ0G7aT2YYYCd8+ENsLdGgnv4GbEHstUsEU4C/T8kgcuiRYnBS9O6dwZN+7NG
+         U0rroTQTsTPR7Dki/icZYEhZJMZIxCpTdwkj+gHU8mFh1tTz+fGDK5zx1fBEamsaTOWt
+         WNbGEfcEv16LtOboqfnmHhV7cn2TrtHLMetMj240fJoGanmuw3DIvtr5NCicQE1D6TCp
+         9LOsZBfB4iWvbEzoec2SxT5+Goaqd8bpEClgk1zihUJ8whbhl5Ch6uF1OqH0fvObvlb+
+         ptKPBIimdZGiCvZyQs3xxnaLehajw+jI58JCp1puhommq45EsqylbjTUH3S3oogO+ElF
+         CEnQ==
+Received: by 10.60.0.135 with SMTP id 7mr5402806oee.25.1334872811611;
         Thu, 19 Apr 2012 15:00:11 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id vp14sm3536639oeb.5.2012.04.19.15.00.08
+        by mx.google.com with ESMTPS id bd10sm1750231obb.15.2012.04.19.15.00.08
         (version=TLSv1/SSLv3 cipher=OTHER);
         Thu, 19 Apr 2012 15:00:09 -0700 (PDT)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3JM07Kb014648;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3JM07NE014644;
         Thu, 19 Apr 2012 15:00:07 -0700
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3JM073u014647;
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3JM07Jr014643;
         Thu, 19 Apr 2012 15:00:07 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>,
@@ -37,13 +37,13 @@ To:     Ralf Baechle <ralf@linux-mips.org>,
 Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
         Andrew Morton <akpm@linux-foundation.org>,
         David Daney <david.daney@cavium.com>
-Subject: [PATCH v2 5/5] x86: Select BUILDTIME_EXTABLE_SORT
-Date:   Thu, 19 Apr 2012 14:59:59 -0700
-Message-Id: <1334872799-14589-6-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH v2 4/5] MIPS: Select BUILDTIME_EXTABLE_SORT
+Date:   Thu, 19 Apr 2012 14:59:58 -0700
+Message-Id: <1334872799-14589-5-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1334872799-14589-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1334872799-14589-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 32981
+X-archive-position: 32982
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,25 +54,25 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: David Daney <david.daney@cavium.com>
 
-We can sort the exeception table at build time for x86, so let's do
+We can sort the exeception table at build time for MIPS, so let's do
 it.
 
 Signed-off-by: David Daney <david.daney@cavium.com>
 ---
- arch/x86/Kconfig |    1 +
+ arch/mips/Kconfig |    1 +
  1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 1d14cc6..2f925cc 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -82,6 +82,7 @@ config X86
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select GENERIC_IOMAP
- 	select DCACHE_WORD_ACCESS if !DEBUG_PAGEALLOC
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 3134457..0db1cde 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -29,6 +29,7 @@ config MIPS
+ 	select HAVE_MEMBLOCK
+ 	select HAVE_MEMBLOCK_NODE_MAP
+ 	select ARCH_DISCARD_MEMBLOCK
 +	select BUILDTIME_EXTABLE_SORT
  
- config INSTRUCTION_DECODER
- 	def_bool (KPROBES || PERF_EVENTS)
+ menu "Machine selection"
+ 
 -- 
 1.7.2.3

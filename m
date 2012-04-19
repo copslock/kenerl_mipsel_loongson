@@ -1,22 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Apr 2012 22:06:50 +0200 (CEST)
-Received: from home.bethel-hill.org ([63.228.164.32]:50825 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Apr 2012 22:27:14 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:50850 "EHLO
         home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903732Ab2DSUFk (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Apr 2012 22:05:40 +0200
+        with ESMTP id S1903732Ab2DSU1J (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 19 Apr 2012 22:27:09 +0200
 Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
         (Exim 4.72)
         (envelope-from <sjhill@mips.com>)
-        id 1SKxbi-0005gi-7x; Thu, 19 Apr 2012 15:05:34 -0500
+        id 1SKxwU-0005i6-9A; Thu, 19 Apr 2012 15:27:02 -0500
 From:   "Steven J. Hill" <sjhill@mips.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     "Steven J. Hill" <sjhill@mips.com>
-Subject: [PATCH v2,06/10] MIPS: Code formatting fixes.
-Date:   Thu, 19 Apr 2012 15:05:13 -0500
-Message-Id: <1334865913-12212-3-git-send-email-sjhill@mips.com>
+Subject: [PATCH v2,3/9] MIPS: Add support for the M14KE core.
+Date:   Thu, 19 Apr 2012 15:26:54 -0500
+Message-Id: <1334867214-12451-1-git-send-email-sjhill@mips.com>
 X-Mailer: git-send-email 1.7.9.6
-In-Reply-To: <1334865913-12212-1-git-send-email-sjhill@mips.com>
-References: <1334865913-12212-1-git-send-email-sjhill@mips.com>
-X-archive-position: 32975
+X-archive-position: 32976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,219 +25,157 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: "Steven J. Hill" <sjhill@mips.com>
 
-Signed-off-by: Steven J. Hill <sjhill@mips.com>
----
- arch/mips/kernel/cpu-probe.c |   54 +++++++++++++++++++++---------------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+This patch depends on the M14K core support patch being
+applied first.
 
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+
+---
+ arch/mips/include/asm/cpu-features.h |    3 +++
+ arch/mips/include/asm/cpu.h          |    4 +++-
+ arch/mips/kernel/cpu-probe.c         |   10 ++++++++++
+ arch/mips/mm/c-r4k.c                 |    1 +
+ arch/mips/mm/tlbex.c                 |    2 ++
+ arch/mips/oprofile/common.c          |    1 +
+ arch/mips/oprofile/op_model_mipsxx.c |    4 ++++
+ 7 files changed, 24 insertions(+), 1 deletion(-)
+
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index 556afa2..3b50744 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -98,6 +98,9 @@
+ #ifndef kernel_uses_smartmips_rixi
+ #define kernel_uses_smartmips_rixi 0
+ #endif
++#ifndef cpu_has_mmips
++#define cpu_has_mmips		(cpu_data[0].options & MIPS_CPU_MICROMIPS)
++#endif
+ #ifndef cpu_has_vtag_icache
+ #define cpu_has_vtag_icache	(cpu_data[0].icache.flags & MIPS_CACHE_VTAG)
+ #endif
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 00e5adf..242a401 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -96,6 +96,7 @@
+ #define PRID_IMP_1004K		0x9900
+ #define PRID_IMP_1074K		0x9a00
+ #define PRID_IMP_14K		0x9c00
++#define PRID_IMP_14KE		0x9e00
+ 
+ /*
+  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
+@@ -262,7 +263,7 @@ enum cpu_type_enum {
+ 	 */
+ 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
+ 	CPU_ALCHEMY, CPU_PR4450, CPU_BMIPS32, CPU_BMIPS3300, CPU_BMIPS4350,
+-	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K, CPU_14K,
++	CPU_BMIPS4380, CPU_BMIPS5000, CPU_JZRISC, CPU_1074K, CPU_14K, CPU_14KE,
+ 
+ 	/*
+ 	 * MIPS64 class processors
+@@ -319,6 +320,7 @@ enum cpu_type_enum {
+ #define MIPS_CPU_VINT		0x00080000 /* CPU supports MIPSR2 vectored interrupts */
+ #define MIPS_CPU_VEIC		0x00100000 /* CPU supports MIPSR2 external interrupt controller mode */
+ #define MIPS_CPU_ULRI		0x00200000 /* CPU has ULRI feature */
++#define MIPS_CPU_MICROMIPS	0x01000000 /* CPU has microMIPS capability */
+ 
+ /*
+  * CPU ASE encodings
 diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index c259a25..8770bf5 100644
+index 8770bf5..420518e 100644
 --- a/arch/mips/kernel/cpu-probe.c
 +++ b/arch/mips/kernel/cpu-probe.c
-@@ -343,7 +343,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R2000";
- 		c->isa_level = MIPS_CPU_ISA_I;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_3K_CACHE |
--		             MIPS_CPU_NOFPUEX;
-+			     MIPS_CPU_NOFPUEX;
- 		if (__cpu_has_fpu())
- 			c->options |= MIPS_CPU_FPU;
- 		c->tlbsize = 64;
-@@ -364,7 +364,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		}
- 		c->isa_level = MIPS_CPU_ISA_I;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_3K_CACHE |
--		             MIPS_CPU_NOFPUEX;
-+			     MIPS_CPU_NOFPUEX;
- 		if (__cpu_has_fpu())
- 			c->options |= MIPS_CPU_FPU;
- 		c->tlbsize = 64;
-@@ -390,8 +390,8 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
+@@ -201,6 +201,7 @@ void __init check_wait(void)
+ 		break;
  
- 		c->isa_level = MIPS_CPU_ISA_III;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_WATCH | MIPS_CPU_VCE |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_WATCH | MIPS_CPU_VCE |
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_VR41XX:
-@@ -437,7 +437,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R4300";
- 		c->isa_level = MIPS_CPU_ISA_III;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 32;
- 		break;
- 	case PRID_IMP_R4600:
-@@ -449,7 +449,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		c->tlbsize = 48;
- 		break;
- 	#if 0
-- 	case PRID_IMP_R4650:
-+	case PRID_IMP_R4650:
- 		/*
- 		 * This processor doesn't have an MMU, so it's not
- 		 * "real easy" to run Linux on it. It is left purely
-@@ -458,9 +458,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		 */
- 		c->cputype = CPU_R4650;
- 		__cpu_name[cpu] = "R4650";
--	 	c->isa_level = MIPS_CPU_ISA_III;
-+		c->isa_level = MIPS_CPU_ISA_III;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_LLSC;
--	        c->tlbsize = 48;
-+		c->tlbsize = 48;
- 		break;
- 	#endif
- 	case PRID_IMP_TX39:
-@@ -491,7 +491,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R4700";
- 		c->isa_level = MIPS_CPU_ISA_III;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_TX49:
-@@ -508,7 +508,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R5000";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_R5432:
-@@ -516,7 +516,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R5432";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_WATCH | MIPS_CPU_LLSC;
-+			     MIPS_CPU_WATCH | MIPS_CPU_LLSC;
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_R5500:
-@@ -524,7 +524,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R5500";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_WATCH | MIPS_CPU_LLSC;
-+			     MIPS_CPU_WATCH | MIPS_CPU_LLSC;
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_NEVADA:
-@@ -532,7 +532,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "Nevada";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_DIVEC | MIPS_CPU_LLSC;
-+			     MIPS_CPU_DIVEC | MIPS_CPU_LLSC;
- 		c->tlbsize = 48;
- 		break;
- 	case PRID_IMP_R6000:
-@@ -540,7 +540,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R6000";
- 		c->isa_level = MIPS_CPU_ISA_II;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_FPU |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 32;
- 		break;
- 	case PRID_IMP_R6000A:
-@@ -548,7 +548,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R6000A";
- 		c->isa_level = MIPS_CPU_ISA_II;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_FPU |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 32;
- 		break;
- 	case PRID_IMP_RM7000:
-@@ -556,7 +556,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "RM7000";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		/*
- 		 * Undocumented RM7000:  Bit 29 in the info register of
- 		 * the RM7000 v2.0 indicates if the TLB has 48 or 64
-@@ -572,7 +572,7 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "RM9000";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = R4K_OPTS | MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		/*
- 		 * Bit 29 in the info register of the RM9000
- 		 * indicates if the TLB has 48 or 64 entries.
-@@ -587,8 +587,8 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "RM8000";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_4KEX |
--		             MIPS_CPU_FPU | MIPS_CPU_32FPR |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 384;      /* has weird TLB: 3-way x 128 */
- 		break;
- 	case PRID_IMP_R10000:
-@@ -596,9 +596,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R10000";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE | MIPS_CPU_4KEX |
--		             MIPS_CPU_FPU | MIPS_CPU_32FPR |
-+			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
- 			     MIPS_CPU_COUNTER | MIPS_CPU_WATCH |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 64;
- 		break;
- 	case PRID_IMP_R12000:
-@@ -606,9 +606,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R12000";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE | MIPS_CPU_4KEX |
--		             MIPS_CPU_FPU | MIPS_CPU_32FPR |
-+			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
- 			     MIPS_CPU_COUNTER | MIPS_CPU_WATCH |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 64;
- 		break;
- 	case PRID_IMP_R14000:
-@@ -616,9 +616,9 @@ static inline void cpu_probe_legacy(struct cpuinfo_mips *c, unsigned int cpu)
- 		__cpu_name[cpu] = "R14000";
- 		c->isa_level = MIPS_CPU_ISA_IV;
- 		c->options = MIPS_CPU_TLB | MIPS_CPU_4K_CACHE | MIPS_CPU_4KEX |
--		             MIPS_CPU_FPU | MIPS_CPU_32FPR |
-+			     MIPS_CPU_FPU | MIPS_CPU_32FPR |
- 			     MIPS_CPU_COUNTER | MIPS_CPU_WATCH |
--		             MIPS_CPU_LLSC;
-+			     MIPS_CPU_LLSC;
- 		c->tlbsize = 64;
- 		break;
- 	case PRID_IMP_LOONGSON2:
-@@ -742,7 +742,7 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
- 	if (config3 & MIPS_CONF3_VEIC)
- 		c->options |= MIPS_CPU_VEIC;
- 	if (config3 & MIPS_CONF3_MT)
--	        c->ases |= MIPS_ASE_MIPSMT;
-+		c->ases |= MIPS_ASE_MIPSMT;
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_24K:
+ 	case CPU_34K:
+ 	case CPU_1004K:
+@@ -745,6 +746,11 @@ static inline unsigned int decode_config3(struct cpuinfo_mips *c)
+ 		c->ases |= MIPS_ASE_MIPSMT;
  	if (config3 & MIPS_CONF3_ULRI)
  		c->options |= MIPS_CPU_ULRI;
++	if (config3 & MIPS_CONF3_ISA)
++		c->options |= MIPS_CPU_MICROMIPS;
++#ifdef CONFIG_CPU_MICROMIPS
++	write_c0_config3(read_c0_config3() | MIPS_CONF3_ISA_OE);
++#endif
  
-@@ -770,7 +770,7 @@ static void __cpuinit decode_configs(struct cpuinfo_mips *c)
+ 	return config3 & MIPS_CONF_M;
+ }
+@@ -838,6 +844,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_14K;
+ 		__cpu_name[cpu] = "MIPS 14Kc";
+ 		break;
++	case PRID_IMP_14KE:
++		c->cputype = CPU_14KE;
++		__cpu_name[cpu] = "MIPS 14KEc";
++		break;
+ 	case PRID_IMP_1004K:
+ 		c->cputype = CPU_1004K;
+ 		__cpu_name[cpu] = "MIPS 1004Kc";
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 9cd86fa..821a8bd 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1074,6 +1074,7 @@ static void __cpuinit probe_pcache(void)
+ bypass1074:
+ 		;
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_24K:
+ 	case CPU_34K:
+ 	case CPU_1004K:
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 87f57ae..64d631e 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -461,6 +461,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 		if (cpu_has_mips_r2_exec_hazard) {
+ 			switch (current_cpu_type()) {
+ 			case CPU_14K:
++			case CPU_14KE:
+ 			case CPU_74K:
+ 			case CPU_1074K:
+ 				break;
+@@ -515,6 +516,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	case CPU_4KC:
+ 	case CPU_4KEC:
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_SB1:
+ 	case CPU_SB1A:
+ 	case CPU_4KSC:
+diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+index b2e850e..09b485c 100644
+--- a/arch/mips/oprofile/common.c
++++ b/arch/mips/oprofile/common.c
+@@ -79,6 +79,7 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+ 	switch (current_cpu_type()) {
+ 	case CPU_5KC:
+ 	case CPU_14K:
++	case CPU_14KE:
+ 	case CPU_20KC:
+ 	case CPU_24K:
+ 	case CPU_25KF:
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index fdf3ce5..9ee2aaf 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -321,6 +321,10 @@ static int __init mipsxx_init(void)
+ 		op_model_mipsxx_ops.cpu_type = "mips/14K";
+ 		break;
  
- 	/* MIPS32 or MIPS64 compliant CPU.  */
- 	c->options = MIPS_CPU_4KEX | MIPS_CPU_4K_CACHE | MIPS_CPU_COUNTER |
--	             MIPS_CPU_DIVEC | MIPS_CPU_LLSC | MIPS_CPU_MCHECK;
-+		     MIPS_CPU_DIVEC | MIPS_CPU_LLSC | MIPS_CPU_MCHECK;
- 
- 	c->scache.flags = MIPS_CACHE_NOT_PRESENT;
- 
++	case CPU_14KE:
++		op_model_mipsxx_ops.cpu_type = "mips/14KE";
++		break;
++
+ 	case CPU_20KC:
+ 		op_model_mipsxx_ops.cpu_type = "mips/20K";
+ 		break;
 -- 
 1.7.9.6

@@ -1,137 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2012 05:18:23 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:34241 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1901162Ab2DTDSF (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 20 Apr 2012 05:18:05 +0200
-Received: by pbcun4 with SMTP id un4so595749pbc.36
-        for <multiple recipients>; Thu, 19 Apr 2012 20:17:58 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Apr 2012 05:32:10 +0200 (CEST)
+Received: from mail-wi0-f177.google.com ([209.85.212.177]:37911 "EHLO
+        mail-wi0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1901162Ab2DTDbw convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 20 Apr 2012 05:31:52 +0200
+Received: by wibhj13 with SMTP id hj13so203011wib.6
+        for <multiple recipients>; Thu, 19 Apr 2012 20:31:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=zd4iKqIri2kgtMfhGyFOawBehDdsrP+jLvjSHM80EG0=;
-        b=SCwxSjxgBN4dj1J+eToVFgavIBDbg3jjEc3G1PmloF6q1jMWvwRzA/szHi7TNdGxPr
-         LH/gW5UdXu6qd2rbPxoJnC2+t5wQGCh5rp7NbqsGJfjrJvHx5rE5DiUIxJ0p+cw0Jyo2
-         OWFDvIz1pmvzAeyVUHk4zp3+T/eK6TGBf7UHWae0YIrbgPjytWWzqb8fXezq3XjwedG2
-         BEHZjbHVR1kSynwcbmAIqVhi5GfX9LKxTXYuq5dgL6JktVAOSJqRGstjhdTqxRSbnFcm
-         /0M2m0v/RHLoYOc53TYCzcfPS2gOXQxlidNrXSrhYDoD5kZWD1nbldCwR2Ba2kXev8nd
-         rWrg==
-Received: by 10.68.190.40 with SMTP id gn8mr9508756pbc.12.1334891878830;
-        Thu, 19 Apr 2012 20:17:58 -0700 (PDT)
-Received: from dd_xps.caveonetworks.com (adsl-68-122-34-125.dsl.pltn13.pacbell.net. [68.122.34.125])
-        by mx.google.com with ESMTPS id my1sm2397326pbc.53.2012.04.19.20.17.56
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Thu, 19 Apr 2012 20:17:57 -0700 (PDT)
-Message-ID: <4F90D564.3090508@gmail.com>
-Date:   Thu, 19 Apr 2012 20:17:56 -0700
-From:   David Daney <david.s.daney@gmail.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120329 Thunderbird/11.0.1
+        h=mime-version:sender:in-reply-to:references:from:date
+         :x-google-sender-auth:message-id:subject:to:cc:content-type
+         :content-transfer-encoding;
+        bh=8FwXxm+WvxrMAhBYvHruxaW+jhinBcJb69k6moG6XOY=;
+        b=n7wcdRY1tQDd/nQGHdm0jE/A6Rnbkt16CICUwbw3yOSVFSLtxHKaFGDCiyaPsq/Vn0
+         ci2Vehqti7vQpDTgTu0n0KXuOgseosas582phSvWggAUdc3TLs+ObmpjOX+f8RKx9X0U
+         NcrUI9Eoe+1Y5xBJM+6fqgec4zwLs4SPWSmCW1Y46sF4DQxZZQXNCbZqBwV+uk1gQxhM
+         2T5iWSZpne+TFqLXz/dATP9obmd0NFjCZ6kkCSLYbHkyfnrFVnZblW0hesf2ykhdSV5F
+         rA+VZiMpG+s71/ogQtrLGVZs7Fie7V2ZzCL/exb/nJIdo0y7zlamr4G+9nlvelW3pgOf
+         xiHw==
+Received: by 10.180.92.130 with SMTP id cm2mr11066626wib.4.1334892706700; Thu,
+ 19 Apr 2012 20:31:46 -0700 (PDT)
 MIME-Version: 1.0
-To:     "H. Peter Anvin" <hpa@zytor.com>
-CC:     David Daney <ddaney.cavm@gmail.com>,
+Received: by 10.216.221.167 with HTTP; Thu, 19 Apr 2012 20:31:26 -0700 (PDT)
+In-Reply-To: <4F90D564.3090508@gmail.com>
+References: <1334872799-14589-1-git-send-email-ddaney.cavm@gmail.com>
+ <1334872799-14589-2-git-send-email-ddaney.cavm@gmail.com> <4F90BF8D.7030209@zytor.com>
+ <4F90D564.3090508@gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 19 Apr 2012 20:31:26 -0700
+X-Google-Sender-Auth: USVa9jjoSVK7eSDuOJ-VMhazYAM
+Message-ID: <CA+55aFyijf43qSu3N9nWHEBwaGbb7T2Oq9A=9EyR=Jtyqfq_cQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/5] scripts: Add sortextable to sort the kernel's
+ exception table.
+To:     David Daney <david.s.daney@gmail.com>
+Cc:     "H. Peter Anvin" <hpa@zytor.com>,
+        David Daney <ddaney.cavm@gmail.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         Michal Marek <mmarek@suse.cz>, linux-kernel@vger.kernel.org,
         linux-mips@linux-mips.org,
         Andrew Morton <akpm@linux-foundation.org>,
         David Daney <david.daney@cavium.com>
-Subject: Re: [PATCH v1 1/5] scripts: Add sortextable to sort the kernel's
- exception table.
-References: <1334872799-14589-1-git-send-email-ddaney.cavm@gmail.com> <1334872799-14589-2-git-send-email-ddaney.cavm@gmail.com> <4F90BF8D.7030209@zytor.com>
-In-Reply-To: <4F90BF8D.7030209@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 32987
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 32988
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.s.daney@gmail.com
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 04/19/2012 06:44 PM, H. Peter Anvin wrote:
-> I committed this into the tip tree, but I realized something scary on
-> the way home... this program is broken: it doesn't handle the
-> relocations that go with the entries.  Specifically, it needs to not
-> just handle __ex_table, it also needs to handle the corresponding
-> entries in .rel__ex_table.
+On Thu, Apr 19, 2012 at 8:17 PM, David Daney <david.s.daney@gmail.com> wrote:
 >
-> On x86-32, in particular, *most*, but not *all*, extable relocations
-> will have an R_386_32 relocation on it, so the resulting binary will
-> "mostly work"... but the ELF metadata will be wrong, and pretty much any
-> user of the try/catch mechanism will be broken, unless your kernel
-> happens to be located at its preferred address.
+> I hadn't considered that the image was relocatable.  Our MIPS kernels never
+> have relocations.
 >
-> This needs to be addressed, either by adjusting the exception table to
-> be relative (which would be good for code size on 64-bit platforms)
-> *and* zero out the .rel__ex_table section or by making the program
-> actually sort the relocations correctly.
+> I am working on a version of this that handles the relocations.  It
+> shouldn't be too difficult.
 
-Crap.
+It might be better to just make the rule be that we don't have
+relocations there - make everything relative to the start of the code
+segment or something.
 
-I hadn't considered that the image was relocatable.  Our MIPS kernels 
-never have relocations.
+On x86, we already use that _ASM_EXTABLE() macro to hide the
+differences between x86-64 and x86-32. So it should be be somewhat
+easy to make that same macro make it relative to the code start, and
+at the same time also make the exception table perhaps be two 32-bit
+words rather than two pointers.
 
-I am working on a version of this that handles the relocations.  It 
-shouldn't be too difficult.
+So it would shrink the exception table and avoid relocations at the
+same time. Win-win. No?
 
-
-> 	-hpa
->
-> On 04/19/2012 02:59 PM, David Daney wrote:
->> +
->> +/* w8rev, w8nat, ...: Handle endianness. */
->> +
->> +static uint64_t w8rev(uint64_t const x)
->> +{
->> +	return   ((0xff&  (x>>  (0 * 8)))<<  (7 * 8))
->> +	       | ((0xff&  (x>>  (1 * 8)))<<  (6 * 8))
->> +	       | ((0xff&  (x>>  (2 * 8)))<<  (5 * 8))
->> +	       | ((0xff&  (x>>  (3 * 8)))<<  (4 * 8))
->> +	       | ((0xff&  (x>>  (4 * 8)))<<  (3 * 8))
->> +	       | ((0xff&  (x>>  (5 * 8)))<<  (2 * 8))
->> +	       | ((0xff&  (x>>  (6 * 8)))<<  (1 * 8))
->> +	       | ((0xff&  (x>>  (7 * 8)))<<  (0 * 8));
->> +}
->> +
->> +static uint32_t w4rev(uint32_t const x)
->> +{
->> +	return   ((0xff&  (x>>  (0 * 8)))<<  (3 * 8))
->> +	       | ((0xff&  (x>>  (1 * 8)))<<  (2 * 8))
->> +	       | ((0xff&  (x>>  (2 * 8)))<<  (1 * 8))
->> +	       | ((0xff&  (x>>  (3 * 8)))<<  (0 * 8));
->> +}
->> +
->> +static uint32_t w2rev(uint16_t const x)
->> +{
->> +	return   ((0xff&  (x>>  (0 * 8)))<<  (1 * 8))
->> +	       | ((0xff&  (x>>  (1 * 8)))<<  (0 * 8));
->> +}
->> +
->> +static uint64_t w8nat(uint64_t const x)
->> +{
->> +	return x;
->> +}
->> +
->> +static uint32_t w4nat(uint32_t const x)
->> +{
->> +	return x;
->> +}
->> +
->> +static uint32_t w2nat(uint16_t const x)
->> +{
->> +	return x;
->> +}
->> +
->> +static uint64_t (*w8)(uint64_t);
->> +static uint32_t (*w)(uint32_t);
->> +static uint32_t (*w2)(uint16_t);
-> Stylistic note: these should use the<tools/*_byteshift.h>  headers now.
-
-I will try to use those.
-
-Thanks,
-David Daney
+                      Linus

@@ -1,44 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Apr 2012 18:42:01 +0200 (CEST)
-Received: from mail-gy0-f177.google.com ([209.85.160.177]:54087 "EHLO
-        mail-gy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903756Ab2DWQlr (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 23 Apr 2012 18:41:47 +0200
-Received: by ghbf11 with SMTP id f11so6988033ghb.36
-        for <linux-mips@linux-mips.org>; Mon, 23 Apr 2012 09:41:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Apr 2012 20:23:47 +0200 (CEST)
+Received: from mail-pz0-f48.google.com ([209.85.210.48]:49091 "EHLO
+        mail-pz0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903766Ab2DXSXb (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 24 Apr 2012 20:23:31 +0200
+Received: by dakb39 with SMTP id b39so1052376dak.35
+        for <multiple recipients>; Tue, 24 Apr 2012 11:23:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=bDhzEcqTTfMZGKmrss7W0Uu7v4pj6MrNKKMcnxEP2bs=;
-        b=yQy265C8z/3B2P6qjZRQ2aGosLnwvesANMxAcZs4qkCEl0qTzstXOVat4r6aF8ggkg
-         t8cBAjH8Rg/u3WPsvvc3kN3gV7SfqIGrgu2XGJqZkE/M7wFmOm6KtRMM0+nRIzqo/mnP
-         76A4e9i5/fQxIKY+0fIqauIJje+BAAwJQ1+nSOOPUtqfIApiVCMWtSAMisVy7FLtgJNQ
-         kQNGEaXsiccBkAGkFf5l4iKpB6VxJE+QPGwKftm1CjsoFbkWR8DEb6J2EgpFi9ml6QbK
-         a25RmzI+y/Kug1USxOlfHfH6AGZxR3IZfd6mVGRzloOJNN/HvoaKvKPa/iiC5ZWWRR1D
-         Avmw==
-Received: by 10.60.18.197 with SMTP id y5mr11817830oed.58.1335199301084;
-        Mon, 23 Apr 2012 09:41:41 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=eqWWh6rwtjaa9VtNAQr5Pg+YpYYoYMi1IBnN4B8tUmQ=;
+        b=D0GEQ0usaNVIkKNLHaKXemqSIRFXXWBSE0zQc4MVsQa/ignl7e7TkYbwkuogfqnB26
+         jpRSiHauz/LxE/wVxdgiJlaLGsEJL5C3RFsWTp56fzWStez6hzt4LODrEsV4D/YaY2z5
+         X2fMv8A7Tr8eyeOxJRHyUox59ngYYbOxK9RbOHP0AJD/HGEacjkXVlkarUon4eBzAmAC
+         PrUgFpFnlfLS4nXkhMSNHA7gHOVyBpbNqtEGUb8rcDFvIRx+65C+JDMKl9DgoVOvwwXg
+         amHdKIUfIH1w3XZrvjvxTG8GdKg+ZfvNmCKUPtzsywltgBRkYQ2V7szKwTnTxjMHgJ1n
+         byZg==
+Received: by 10.68.129.129 with SMTP id nw1mr25253pbb.29.1335291805208;
+        Tue, 24 Apr 2012 11:23:25 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id ju5sm6811838obb.23.2012.04.23.09.41.38
-        (version=SSLv3 cipher=OTHER);
-        Mon, 23 Apr 2012 09:41:39 -0700 (PDT)
-Message-ID: <4F958641.7070708@gmail.com>
-Date:   Mon, 23 Apr 2012 09:41:37 -0700
+        by mx.google.com with ESMTPS id r10sm18056978pbf.22.2012.04.24.11.23.22
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 24 Apr 2012 11:23:23 -0700 (PDT)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3OINLrg026737;
+        Tue, 24 Apr 2012 11:23:21 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3OINLGL026736;
+        Tue, 24 Apr 2012 11:23:21 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     David Miller <davem@davemloft.net>
-CC:     david.s.daney@gmail.com, ddaney.cavm@gmail.com,
-        grant.likely@secretlab.ca, rob.herring@calxeda.com,
-        devicetree-discuss@lists.ozlabs.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        afleming@gmail.com, galak@kernel.crashing.org
-Subject: Re: [PATCH v5 2/3] netdev/of/phy: Add MDIO bus multiplexer support.
-References: <1334791254-15987-3-git-send-email-ddaney.cavm@gmail.com>   <20120421.153201.2103447307695063734.davem@davemloft.net>       <4F9325DF.7020003@gmail.com> <20120421.190335.1197591560590885057.davem@davemloft.net>
-In-Reply-To: <20120421.190335.1197591560590885057.davem@davemloft.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33003
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Michal Marek <mmarek@suse.cz>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 2/2] Revert "x86, extable: Disable presorted exception table for now"
+Date:   Tue, 24 Apr 2012 11:23:15 -0700
+Message-Id: <1335291795-26693-3-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1335291795-26693-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1335291795-26693-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 33004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,17 +52,26 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 04/21/2012 04:03 PM, David Miller wrote:
-> From: David Daney<david.s.daney@gmail.com>
-> Date: Sat, 21 Apr 2012 14:25:51 -0700
->
->> If we were to specify the dependencies in both places, we gain nothing
->> other than duplication of information.
->
-> Each Kconfig option enabling a module has to have appropriate
-> dependencies.
->
-I will send a revised patch set.
+From: David Daney <ddaney@caviumnetworks.com>
 
-Thanks,
-David Daney
+sortextable now works with relative entries, re-enable it.
+
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/x86/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 1d14cc6..2f925cc 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -82,6 +82,7 @@ config X86
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_IOMAP
+ 	select DCACHE_WORD_ACCESS if !DEBUG_PAGEALLOC
++	select BUILDTIME_EXTABLE_SORT
+ 
+ config INSTRUCTION_DECODER
+ 	def_bool (KPROBES || PERF_EVENTS)
+-- 
+1.7.7.6

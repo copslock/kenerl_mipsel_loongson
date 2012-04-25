@@ -1,49 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2012 15:58:32 +0200 (CEST)
-Received: from mail-vx0-f177.google.com ([209.85.220.177]:40109 "EHLO
-        mail-vx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903678Ab2DYN6S (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2012 15:58:18 +0200
-Received: by vcbf13 with SMTP id f13so78107vcb.36
-        for <multiple recipients>; Wed, 25 Apr 2012 06:58:12 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2012 18:07:54 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:61117 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903680Ab2DYQHi (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2012 18:07:38 +0200
+Received: by pbbrq13 with SMTP id rq13so1754138pbb.36
+        for <multiple recipients>; Wed, 25 Apr 2012 09:07:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        bh=SojX2MbYNFrs9B99UP91BGZ/MCX+eqYl25lQZvIGxm0=;
-        b=i09sMBi1ePgPhQdx/8tFfDa0490aZuVsQ6FcAoSVSTwx0G5HdNG0YWImSxBIi3kTHC
-         JGyViwzMKJkIGABX7gxDbNO1U2TrDPd3B02vZhk0KcLyH3gnpSylvpgIBVDWaoqj63Ta
-         yt1s7g2nNdag67sKinbUlvC+7mfjNxmQU3gbbdT04yUqXTvYspIf9Uk9vIjjrvOhkbAG
-         A7orKk7QN9zy8OUAQm8HfjIeL1M8rfqmyk4z5vZCxikxBn2HK3wQGTiYN5kd6S9sL4AJ
-         BbJ9r3lkolW3vyXqRp4uwVAzY51avfh/58V5v9B8j6iagfMa4mgBXklIIKeM6VK8R/p9
-         q9Lg==
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=B46n38/XA4eYc36nkVhpdTf50ReTtnn7X+49A2J0TWk=;
+        b=EJPxyjj/BShFsKOqlt6OGGP0rqK+HvEcR7r4rzy5jxtXbyv8SsxfDnfVQpIvMGnAJc
+         RtxQoyqmc7r+cDCPCoNWb27KPD/tarzuvmLxUk1ZS56jQ0OabPP93uH0CDya1fQfOO5C
+         uYcqvdkHlh12nC+1SiZjvlUiUd3UdgzYq55DuHxfqw+5CPMdAnqBHCLeBBp+dJ4oJaZX
+         WbTOf4nPdV6YGCmgFF9/pVHF5WTA7pfcO0CVvzucJgtXE3Zsk6URcVt7RDiVxXT2YX8n
+         /JH2JWitnt1BpehULs3hE65HNUxGfoYJVDgH3pVDbbgSbQfu3IksWHPCGQ3dhgm2Bc31
+         uJrg==
+Received: by 10.68.201.9 with SMTP id jw9mr8063111pbc.88.1335370051232;
+        Wed, 25 Apr 2012 09:07:31 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id wf6sm489654pbc.8.2012.04.25.09.07.29
+        (version=SSLv3 cipher=OTHER);
+        Wed, 25 Apr 2012 09:07:29 -0700 (PDT)
+Message-ID: <4F982140.8000008@gmail.com>
+Date:   Wed, 25 Apr 2012 09:07:28 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.220.10.19 with SMTP id n19mr2684059vcn.36.1335362292025; Wed,
- 25 Apr 2012 06:58:12 -0700 (PDT)
-Received: by 10.220.118.131 with HTTP; Wed, 25 Apr 2012 06:58:11 -0700 (PDT)
-In-Reply-To: <4F9736C9.8020003@gmail.com>
-References: <CAJd=RBAXc+QSX+xnJ2W9vVwK64Etrzrr=iBqPkJXNvYgwujQ_Q@mail.gmail.com>
-        <4F9736C9.8020003@gmail.com>
-Date:   Wed, 25 Apr 2012 21:58:11 +0800
-Message-ID: <CAJd=RBBcWKQC+YoCrpvPJ78jZoytj=t6oeybdR=t_r_DCfGhLQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] MIPS: Add support for transparent huge page
-From:   Hillf Danton <dhillf@gmail.com>
-To:     David Daney <ddaney.cavm@gmail.com>
-Cc:     Ralf Baechle <ralf@linux-mips.org>,
+To:     Hillf Danton <dhillf@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         Andrea Arcangeli <aarcange@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-X-archive-position: 33012
+Subject: Re: [PATCH 1/3] MIPS: Add support for transparent huge page
+References: <CAJd=RBAXc+QSX+xnJ2W9vVwK64Etrzrr=iBqPkJXNvYgwujQ_Q@mail.gmail.com>        <4F9736C9.8020003@gmail.com> <CAJd=RBBcWKQC+YoCrpvPJ78jZoytj=t6oeybdR=t_r_DCfGhLQ@mail.gmail.com>
+In-Reply-To: <CAJd=RBBcWKQC+YoCrpvPJ78jZoytj=t6oeybdR=t_r_DCfGhLQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhillf@gmail.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, Apr 25, 2012 at 7:27 AM, David Daney <ddaney.cavm@gmail.com> wrote:
+On 04/25/2012 06:58 AM, Hillf Danton wrote:
+> On Wed, Apr 25, 2012 at 7:27 AM, David Daney<ddaney.cavm@gmail.com>  wrote:
+>>
+>> I'm not sure where that copyright came from.
+>>
+> You ported hugetlb to MIPS, and I C hello to the author that way:)
 >
-> I'm not sure where that copyright came from.
->
-You ported hugetlb to MIPS, and I C hello to the author that way:)
+
+Really, I think the best policy is to retain copyright messages added by 
+others, but don't invent new ones attributed to others.
+
+David Daney

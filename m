@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2012 03:22:08 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:50946 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903688Ab2D0BUm (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Apr 2012 03:20:42 +0200
-Received: by pbbrq13 with SMTP id rq13so403588pbb.36
-        for <multiple recipients>; Thu, 26 Apr 2012 18:20:36 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2012 03:22:41 +0200 (CEST)
+Received: from mail-iy0-f177.google.com ([209.85.210.177]:51126 "EHLO
+        mail-iy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903690Ab2D0BUo (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Apr 2012 03:20:44 +0200
+Received: by iaky10 with SMTP id y10so388394iak.36
+        for <multiple recipients>; Thu, 26 Apr 2012 18:20:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        bh=4va4bEb7hmp7Qnt/geogQnIyA7XfCrt3XDc3KYhLSYQ=;
-        b=FjbdjPzcBz2GufUzU67WUU3XHkQXhKn5fsFLpCEUgEjsJ7YVfLh6N1MdgKIaS7pNwy
-         hEYXxL/bp7vjnqbH3+9Gp9NXC5ouJNQEtuugUS7a6Wuz2qF7krYwBo0eShhHNmSgvlyF
-         BBM/wqoOi+F+IrE5jwJvDRVNw2hRI9PmFVnKY2Tx/PgjgoGy5IgB+ZOJwl/DDTwFTgUZ
-         SobQZz8clEhCVe/JBhE/yOzmLG459gDO4R5XIOL6KDhp875J5TmMJHtboIrPMekQvo0y
-         PRnzbyFxsASfI6IbULpEM+aW6mrCS9wRCpfF9YuV+Myjjlk1udyhNv6ZUAD1forkaiJJ
-         MAHw==
-Received: by 10.68.227.67 with SMTP id ry3mr12353244pbc.40.1335489636143;
-        Thu, 26 Apr 2012 18:20:36 -0700 (PDT)
+        bh=RrEL4NE4x8jV7leXhfXnuza7h97kRlClWvJphe0CYDQ=;
+        b=J714YAE4pJJQTtNimSesCtiED9dnZ0a6+VETTGoO3GNHFwC9Ta/FQSsi2vWHqwXs26
+         YsEQM1uXZfCyndhyQXkCsOcc6b7KHrluWaUMMaTlrJXWdpsTnd1WRtxBA4uh71sgLfTE
+         EEgxKdUBaAt/lCEo5fnY484fwnmXBfFDueGUg6/eO3mOxNSGixIsYPv5ExVjh55WRvic
+         G76HxoD4qFiBlsm0I1Hr+BljTxmdpJzStOIWcYnI4ym1dBQau2nh+2dMxgmYGM2w4d7m
+         Fmy7pRGFW+jVKUqiHBB8ZKJRu+8LuOvJ1QEJpYZY5Pzakkc/QEzdZdb2QdVaG1jag+qq
+         ZshQ==
+Received: by 10.42.28.135 with SMTP id n7mr7360089icc.46.1335489637378;
+        Thu, 26 Apr 2012 18:20:37 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id i5sm4859989pbf.19.2012.04.26.18.20.34
+        by mx.google.com with ESMTPS id pn10sm3299390pbb.22.2012.04.26.18.20.34
         (version=TLSv1/SSLv3 cipher=OTHER);
         Thu, 26 Apr 2012 18:20:34 -0700 (PDT)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3R1KXd9027057;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3R1KXdV027078;
         Thu, 26 Apr 2012 18:20:33 -0700
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3R1KX5R027056;
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3R1KXpW027077;
         Thu, 26 Apr 2012 18:20:33 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
@@ -33,17 +33,16 @@ To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
         Grant Likely <grant.likely@secretlab.ca>,
         Rob Herring <rob.herring@calxeda.com>
 Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        "Jean Delvare (PC drivers, core)" <khali@linux-fr.org>,
-        "Ben Dooks (embedded platforms)" <ben-linux@fluff.org>,
-        "Wolfram Sang (embedded platforms)" <w.sang@pengutronix.de>,
-        linux-i2c@vger.kernel.org
-Subject: [PATCH v2 1/5] i2c: Convert i2c-octeon.c to use device tree.
-Date:   Thu, 26 Apr 2012 18:20:26 -0700
-Message-Id: <1335489630-27017-2-git-send-email-ddaney.cavm@gmail.com>
+        netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH v2 4/5] staging: octeon_ethernet: Convert to use device tree.
+Date:   Thu, 26 Apr 2012 18:20:29 -0700
+Message-Id: <1335489630-27017-5-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
 In-Reply-To: <1335489630-27017-1-git-send-email-ddaney.cavm@gmail.com>
 References: <1335489630-27017-1-git-send-email-ddaney.cavm@gmail.com>
-X-archive-position: 33021
+X-archive-position: 33022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,379 +53,374 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: David Daney <david.daney@cavium.com>
 
-There are three parts to this:
+Get MAC address and PHY connection from the device tree.  The driver
+is converted to a platform driver.
 
-1) Remove the definitions of OCTEON_IRQ_TWSI and OCTEON_IRQ_TWSI2.
-   The interrupts are specified by the device tree and these hard
-   coded irq numbers block the used of the irq lines by the irq_domain
-   code.
-
-2) Remove platform device setup code from octeon-platform.c, it is
-   now unused.
-
-3) Convert i2c-octeon.c to use device tree.  Part of this includes
-   using the devm_* functions instead of the raw counterparts, thus
-   simplifying error handling.  No functionality is changed.
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: David Daney <david.daney@cavium.com>
-Acked-by: Rob Herring <rob.herring@calxeda.com>
-Cc: "Jean Delvare (PC drivers, core)" <khali@linux-fr.org>
-Cc: "Ben Dooks (embedded platforms)" <ben-linux@fluff.org>
-Cc: "Wolfram Sang (embedded platforms)" <w.sang@pengutronix.de>
-Cc: linux-i2c@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: David S. Miller <davem@davemloft.net>
 ---
- arch/mips/cavium-octeon/octeon-irq.c      |    2 -
- arch/mips/cavium-octeon/octeon-platform.c |   84 --------------------------
- arch/mips/include/asm/octeon/octeon.h     |    5 --
- drivers/i2c/busses/i2c-octeon.c           |   92 +++++++++++++++-------------
- 4 files changed, 49 insertions(+), 134 deletions(-)
+ drivers/staging/octeon/ethernet-mdio.c   |   28 +++---
+ drivers/staging/octeon/ethernet.c        |  153 +++++++++++++++++++-----------
+ drivers/staging/octeon/octeon-ethernet.h |    3 +
+ 3 files changed, 117 insertions(+), 67 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index fc40d0b..c6b0b41 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -1183,13 +1183,11 @@ static void __init octeon_irq_init_ciu(void)
- 	for (i = 0; i < 4; i++)
- 		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_PCI_MSI0, 0, i + 40, chip, handle_level_irq);
+diff --git a/drivers/staging/octeon/ethernet-mdio.c b/drivers/staging/octeon/ethernet-mdio.c
+index e31949c..f15b31b 100644
+--- a/drivers/staging/octeon/ethernet-mdio.c
++++ b/drivers/staging/octeon/ethernet-mdio.c
+@@ -28,6 +28,7 @@
+ #include <linux/ethtool.h>
+ #include <linux/phy.h>
+ #include <linux/ratelimit.h>
++#include <linux/of_mdio.h>
  
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TWSI, 0, 45, chip, handle_level_irq);
- 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_RML, 0, 46, chip, handle_level_irq);
- 	for (i = 0; i < 4; i++)
- 		octeon_irq_set_ciu_mapping(i + OCTEON_IRQ_TIMER0, 0, i + 52, chip, handle_edge_irq);
+ #include <net/dst.h>
  
- 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_USB0, 0, 56, chip, handle_level_irq);
--	octeon_irq_set_ciu_mapping(OCTEON_IRQ_TWSI2, 0, 59, chip, handle_level_irq);
- 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_MII0, 0, 62, chip, handle_level_irq);
- 	octeon_irq_set_ciu_mapping(OCTEON_IRQ_BOOTDMA, 0, 63, chip, handle_level_irq);
- 
-diff --git a/arch/mips/cavium-octeon/octeon-platform.c b/arch/mips/cavium-octeon/octeon-platform.c
-index 2754bc2..f62a40f 100644
---- a/arch/mips/cavium-octeon/octeon-platform.c
-+++ b/arch/mips/cavium-octeon/octeon-platform.c
-@@ -168,90 +168,6 @@ out:
- }
- device_initcall(octeon_rng_device_init);
- 
--static struct i2c_board_info __initdata octeon_i2c_devices[] = {
--	{
--		I2C_BOARD_INFO("ds1337", 0x68),
--	},
--};
--
--static int __init octeon_i2c_devices_init(void)
--{
--	return i2c_register_board_info(0, octeon_i2c_devices,
--				       ARRAY_SIZE(octeon_i2c_devices));
--}
--arch_initcall(octeon_i2c_devices_init);
--
--#define OCTEON_I2C_IO_BASE 0x1180000001000ull
--#define OCTEON_I2C_IO_UNIT_OFFSET 0x200
--
--static struct octeon_i2c_data octeon_i2c_data[2];
--
--static int __init octeon_i2c_device_init(void)
--{
--	struct platform_device *pd;
--	int ret = 0;
--	int port, num_ports;
--
--	struct resource i2c_resources[] = {
--		{
--			.flags	= IORESOURCE_MEM,
--		}, {
--			.flags	= IORESOURCE_IRQ,
--		}
--	};
--
--	if (OCTEON_IS_MODEL(OCTEON_CN56XX) || OCTEON_IS_MODEL(OCTEON_CN52XX))
--		num_ports = 2;
--	else
--		num_ports = 1;
--
--	for (port = 0; port < num_ports; port++) {
--		octeon_i2c_data[port].sys_freq = octeon_get_io_clock_rate();
--		/*FIXME: should be examined. At the moment is set for 100Khz */
--		octeon_i2c_data[port].i2c_freq = 100000;
--
--		pd = platform_device_alloc("i2c-octeon", port);
--		if (!pd) {
--			ret = -ENOMEM;
--			goto out;
--		}
--
--		pd->dev.platform_data = octeon_i2c_data + port;
--
--		i2c_resources[0].start =
--			OCTEON_I2C_IO_BASE + (port * OCTEON_I2C_IO_UNIT_OFFSET);
--		i2c_resources[0].end = i2c_resources[0].start + 0x1f;
--		switch (port) {
--		case 0:
--			i2c_resources[1].start = OCTEON_IRQ_TWSI;
--			i2c_resources[1].end = OCTEON_IRQ_TWSI;
--			break;
--		case 1:
--			i2c_resources[1].start = OCTEON_IRQ_TWSI2;
--			i2c_resources[1].end = OCTEON_IRQ_TWSI2;
--			break;
--		default:
--			BUG();
--		}
--
--		ret = platform_device_add_resources(pd,
--						    i2c_resources,
--						    ARRAY_SIZE(i2c_resources));
--		if (ret)
--			goto fail;
--
--		ret = platform_device_add(pd);
--		if (ret)
--			goto fail;
--	}
--	return ret;
--fail:
--	platform_device_put(pd);
--out:
--	return ret;
--}
--device_initcall(octeon_i2c_device_init);
--
- /* Octeon SMI/MDIO interface.  */
- static int __init octeon_mdiobus_device_init(void)
+@@ -161,22 +162,23 @@ static void cvm_oct_adjust_link(struct net_device *dev)
+ int cvm_oct_phy_setup_device(struct net_device *dev)
  {
-diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index f72f768..1e2486e 100644
---- a/arch/mips/include/asm/octeon/octeon.h
-+++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -215,11 +215,6 @@ struct octeon_cf_data {
- 	int		dma_engine;	/* -1 for no DMA */
- };
+ 	struct octeon_ethernet *priv = netdev_priv(dev);
++	struct device_node *phy_node;
  
--struct octeon_i2c_data {
--	unsigned int	sys_freq;
--	unsigned int	i2c_freq;
--};
--
- extern void octeon_write_lcd(const char *s);
- extern void octeon_check_cpu_bist(void);
- extern int octeon_get_boot_debug_flag(void);
-diff --git a/drivers/i2c/busses/i2c-octeon.c b/drivers/i2c/busses/i2c-octeon.c
-index ee139a5..f44c835 100644
---- a/drivers/i2c/busses/i2c-octeon.c
-+++ b/drivers/i2c/busses/i2c-octeon.c
-@@ -2,7 +2,7 @@
-  * (C) Copyright 2009-2010
-  * Nokia Siemens Networks, michael.lawnick.ext@nsn.com
-  *
-- * Portions Copyright (C) 2010 Cavium Networks, Inc.
-+ * Portions Copyright (C) 2010, 2011 Cavium Networks, Inc.
-  *
-  * This is a driver for the i2c adapter in Cavium Networks' OCTEON processors.
-  *
-@@ -11,17 +11,18 @@
-  * warranty of any kind, whether express or implied.
-  */
+-	int phy_addr = cvmx_helper_board_get_mii_address(priv->port);
+-	if (phy_addr != -1) {
+-		char phy_id[MII_BUS_ID_SIZE + 3];
++	if (!priv->of_node)
++		return 0;
  
-+#include <linux/platform_device.h>
-+#include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of_i2c.h>
-+#include <linux/delay.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/init.h>
--
--#include <linux/io.h>
- #include <linux/i2c.h>
--#include <linux/interrupt.h>
--#include <linux/delay.h>
--#include <linux/platform_device.h>
-+#include <linux/io.h>
-+#include <linux/of.h>
+-		snprintf(phy_id, sizeof(phy_id), PHY_ID_FMT, "mdio-octeon-0", phy_addr);
++	phy_node = of_parse_phandle(priv->of_node, "phy-handle", 0);
++	if (!phy_node)
++		return 0;
  
- #include <asm/octeon/octeon.h>
- 
-@@ -65,7 +66,7 @@ struct octeon_i2c {
- 	wait_queue_head_t queue;
- 	struct i2c_adapter adap;
- 	int irq;
--	int twsi_freq;
-+	u32 twsi_freq;
- 	int sys_freq;
- 	resource_size_t twsi_phys;
- 	void __iomem *twsi_base;
-@@ -121,10 +122,8 @@ static u8 octeon_i2c_read_sw(struct octeon_i2c *i2c, u64 eop_reg)
-  */
- static void octeon_i2c_write_int(struct octeon_i2c *i2c, u64 data)
- {
--	u64 tmp;
--
- 	__raw_writeq(data, i2c->twsi_base + TWSI_INT);
--	tmp = __raw_readq(i2c->twsi_base + TWSI_INT);
-+	__raw_readq(i2c->twsi_base + TWSI_INT);
- }
- 
- /**
-@@ -515,7 +514,6 @@ static int __devinit octeon_i2c_probe(struct platform_device *pdev)
- {
- 	int irq, result = 0;
- 	struct octeon_i2c *i2c;
--	struct octeon_i2c_data *i2c_data;
- 	struct resource *res_mem;
- 
- 	/* All adaptors have an irq.  */
-@@ -523,86 +521,90 @@ static int __devinit octeon_i2c_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	i2c = kzalloc(sizeof(*i2c), GFP_KERNEL);
-+	i2c = devm_kzalloc(&pdev->dev, sizeof(*i2c), GFP_KERNEL);
- 	if (!i2c) {
- 		dev_err(&pdev->dev, "kzalloc failed\n");
- 		result = -ENOMEM;
- 		goto out;
- 	}
- 	i2c->dev = &pdev->dev;
--	i2c_data = pdev->dev.platform_data;
- 
- 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 
- 	if (res_mem == NULL) {
- 		dev_err(i2c->dev, "found no memory resource\n");
- 		result = -ENXIO;
--		goto fail_region;
-+		goto out;
- 	}
-+	i2c->twsi_phys = res_mem->start;
-+	i2c->regsize = resource_size(res_mem);
- 
--	if (i2c_data == NULL) {
--		dev_err(i2c->dev, "no I2C frequency data\n");
-+	/*
-+	 * "clock-rate" is a legacy binding, the official binding is
-+	 * "clock-frequency".  Try the official one first and then
-+	 * fall back if it doesn't exist.
-+	 */
-+	if (of_property_read_u32(pdev->dev.of_node,
-+				 "clock-frequency", &i2c->twsi_freq) &&
-+	    of_property_read_u32(pdev->dev.of_node,
-+				 "clock-rate", &i2c->twsi_freq)) {
-+		dev_err(i2c->dev,
-+			"no I2C 'clock-rate' or 'clock-frequency' property\n");
- 		result = -ENXIO;
--		goto fail_region;
-+		goto out;
- 	}
- 
--	i2c->twsi_phys = res_mem->start;
--	i2c->regsize = resource_size(res_mem);
--	i2c->twsi_freq = i2c_data->i2c_freq;
--	i2c->sys_freq = i2c_data->sys_freq;
-+	i2c->sys_freq = octeon_get_io_clock_rate();
- 
--	if (!request_mem_region(i2c->twsi_phys, i2c->regsize, res_mem->name)) {
-+	if (!devm_request_mem_region(&pdev->dev, i2c->twsi_phys, i2c->regsize,
-+				      res_mem->name)) {
- 		dev_err(i2c->dev, "request_mem_region failed\n");
--		goto fail_region;
-+		goto out;
- 	}
--	i2c->twsi_base = ioremap(i2c->twsi_phys, i2c->regsize);
-+	i2c->twsi_base = devm_ioremap(&pdev->dev, i2c->twsi_phys, i2c->regsize);
- 
- 	init_waitqueue_head(&i2c->queue);
- 
- 	i2c->irq = irq;
- 
--	result = request_irq(i2c->irq, octeon_i2c_isr, 0, DRV_NAME, i2c);
-+	result = devm_request_irq(&pdev->dev, i2c->irq,
-+				  octeon_i2c_isr, 0, DRV_NAME, i2c);
- 	if (result < 0) {
- 		dev_err(i2c->dev, "failed to attach interrupt\n");
--		goto fail_irq;
-+		goto out;
- 	}
- 
- 	result = octeon_i2c_initlowlevel(i2c);
- 	if (result) {
- 		dev_err(i2c->dev, "init low level failed\n");
--		goto  fail_add;
-+		goto  out;
- 	}
- 
- 	result = octeon_i2c_setclock(i2c);
- 	if (result) {
- 		dev_err(i2c->dev, "clock init failed\n");
--		goto  fail_add;
-+		goto  out;
- 	}
- 
- 	i2c->adap = octeon_i2c_ops;
- 	i2c->adap.dev.parent = &pdev->dev;
--	i2c->adap.nr = pdev->id >= 0 ? pdev->id : 0;
-+	i2c->adap.dev.of_node = pdev->dev.of_node;
- 	i2c_set_adapdata(&i2c->adap, i2c);
- 	platform_set_drvdata(pdev, i2c);
- 
--	result = i2c_add_numbered_adapter(&i2c->adap);
-+	result = i2c_add_adapter(&i2c->adap);
- 	if (result < 0) {
- 		dev_err(i2c->dev, "failed to add adapter\n");
- 		goto fail_add;
- 	}
--
- 	dev_info(i2c->dev, "version %s\n", DRV_VERSION);
- 
--	return result;
-+	of_i2c_register_devices(&i2c->adap);
+-		priv->phydev = phy_connect(dev, phy_id, cvm_oct_adjust_link, 0,
+-					PHY_INTERFACE_MODE_GMII);
++	priv->phydev = of_phy_connect(dev, phy_node, cvm_oct_adjust_link, 0,
++				      PHY_INTERFACE_MODE_GMII);
 +
-+	return 0;
++	if (priv->phydev == NULL)
++		return -ENODEV;
++
++	priv->last_link = 0;
++	phy_start_aneg(priv->phydev);
  
- fail_add:
- 	platform_set_drvdata(pdev, NULL);
--	free_irq(i2c->irq, i2c);
--fail_irq:
--	iounmap(i2c->twsi_base);
--	release_mem_region(i2c->twsi_phys, i2c->regsize);
--fail_region:
--	kfree(i2c);
- out:
- 	return result;
- };
-@@ -613,19 +615,24 @@ static int __devexit octeon_i2c_remove(struct platform_device *pdev)
- 
- 	i2c_del_adapter(&i2c->adap);
- 	platform_set_drvdata(pdev, NULL);
--	free_irq(i2c->irq, i2c);
--	iounmap(i2c->twsi_base);
--	release_mem_region(i2c->twsi_phys, i2c->regsize);
--	kfree(i2c);
+-		if (IS_ERR(priv->phydev)) {
+-			priv->phydev = NULL;
+-			return -1;
+-		}
+-		priv->last_link = 0;
+-		phy_start_aneg(priv->phydev);
+-	}
  	return 0;
- };
+ }
+diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/ethernet.c
+index 9112cd8..7df97fc 100644
+--- a/drivers/staging/octeon/ethernet.c
++++ b/drivers/staging/octeon/ethernet.c
+@@ -24,6 +24,7 @@
+  * This file may also be available under a different license from Cavium.
+  * Contact Cavium Networks for more information
+ **********************************************************************/
++#include <linux/platform_device.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+@@ -31,6 +32,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/phy.h>
+ #include <linux/slab.h>
++#include <linux/of_net.h>
  
-+static struct of_device_id octeon_i2c_match[] = {
+ #include <net/dst.h>
+ 
+@@ -112,15 +114,6 @@ int rx_napi_weight = 32;
+ module_param(rx_napi_weight, int, 0444);
+ MODULE_PARM_DESC(rx_napi_weight, "The NAPI WEIGHT parameter.");
+ 
+-/*
+- * The offset from mac_addr_base that should be used for the next port
+- * that is configured.  By convention, if any mgmt ports exist on the
+- * chip, they get the first mac addresses, The ports controlled by
+- * this driver are numbered sequencially following any mgmt addresses
+- * that may exist.
+- */
+-static unsigned int cvm_oct_mac_addr_offset;
+-
+ /**
+  * cvm_oct_poll_queue - Workqueue for polling operations.
+  */
+@@ -175,7 +168,7 @@ static void cvm_oct_periodic_worker(struct work_struct *work)
+ 		queue_delayed_work(cvm_oct_poll_queue, &priv->port_periodic_work, HZ);
+  }
+ 
+-static __init void cvm_oct_configure_common_hw(void)
++static __devinit void cvm_oct_configure_common_hw(void)
+ {
+ 	/* Setup the FPA */
+ 	cvmx_fpa_enable();
+@@ -395,23 +388,21 @@ static void cvm_oct_common_set_multicast_list(struct net_device *dev)
+ 
+  * Returns Zero on success
+  */
+-static int cvm_oct_common_set_mac_address(struct net_device *dev, void *addr)
++static int cvm_oct_set_mac_filter(struct net_device *dev)
+ {
+ 	struct octeon_ethernet *priv = netdev_priv(dev);
+ 	union cvmx_gmxx_prtx_cfg gmx_cfg;
+ 	int interface = INTERFACE(priv->port);
+ 	int index = INDEX(priv->port);
+ 
+-	memcpy(dev->dev_addr, addr + 2, 6);
+-
+ 	if ((interface < 2)
+ 	    && (cvmx_helper_interface_get_mode(interface) !=
+ 		CVMX_HELPER_INTERFACE_MODE_SPI)) {
+ 		int i;
+-		uint8_t *ptr = addr;
++		uint8_t *ptr = dev->dev_addr;
+ 		uint64_t mac = 0;
+ 		for (i = 0; i < 6; i++)
+-			mac = (mac << 8) | (uint64_t) (ptr[i + 2]);
++			mac = (mac << 8) | (uint64_t)ptr[i];
+ 
+ 		gmx_cfg.u64 =
+ 		    cvmx_read_csr(CVMX_GMXX_PRTX_CFG(index, interface));
+@@ -420,17 +411,17 @@ static int cvm_oct_common_set_mac_address(struct net_device *dev, void *addr)
+ 
+ 		cvmx_write_csr(CVMX_GMXX_SMACX(index, interface), mac);
+ 		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM0(index, interface),
+-			       ptr[2]);
++			       ptr[0]);
+ 		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM1(index, interface),
+-			       ptr[3]);
++			       ptr[1]);
+ 		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM2(index, interface),
+-			       ptr[4]);
++			       ptr[2]);
+ 		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM3(index, interface),
+-			       ptr[5]);
++			       ptr[3]);
+ 		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM4(index, interface),
+-			       ptr[6]);
++			       ptr[4]);
+ 		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM5(index, interface),
+-			       ptr[7]);
++			       ptr[5]);
+ 		cvm_oct_common_set_multicast_list(dev);
+ 		cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface),
+ 			       gmx_cfg.u64);
+@@ -438,6 +429,15 @@ static int cvm_oct_common_set_mac_address(struct net_device *dev, void *addr)
+ 	return 0;
+ }
+ 
++static int cvm_oct_common_set_mac_address(struct net_device *dev, void *addr)
++{
++	int r = eth_mac_addr(dev, addr);
++
++	if (r)
++		return r;
++	return cvm_oct_set_mac_filter(dev);
++}
++
+ /**
+  * cvm_oct_common_init - per network device initialization
+  * @dev:    Device to initialize
+@@ -447,26 +447,17 @@ static int cvm_oct_common_set_mac_address(struct net_device *dev, void *addr)
+ int cvm_oct_common_init(struct net_device *dev)
+ {
+ 	struct octeon_ethernet *priv = netdev_priv(dev);
+-	struct sockaddr sa;
+-	u64 mac = ((u64)(octeon_bootinfo->mac_addr_base[0] & 0xff) << 40) |
+-		((u64)(octeon_bootinfo->mac_addr_base[1] & 0xff) << 32) |
+-		((u64)(octeon_bootinfo->mac_addr_base[2] & 0xff) << 24) |
+-		((u64)(octeon_bootinfo->mac_addr_base[3] & 0xff) << 16) |
+-		((u64)(octeon_bootinfo->mac_addr_base[4] & 0xff) << 8) |
+-		(u64)(octeon_bootinfo->mac_addr_base[5] & 0xff);
+-
+-	mac += cvm_oct_mac_addr_offset;
+-	sa.sa_data[0] = (mac >> 40) & 0xff;
+-	sa.sa_data[1] = (mac >> 32) & 0xff;
+-	sa.sa_data[2] = (mac >> 24) & 0xff;
+-	sa.sa_data[3] = (mac >> 16) & 0xff;
+-	sa.sa_data[4] = (mac >> 8) & 0xff;
+-	sa.sa_data[5] = mac & 0xff;
+-
+-	if (cvm_oct_mac_addr_offset >= octeon_bootinfo->mac_addr_count)
+-		printk(KERN_DEBUG "%s: Using MAC outside of the assigned range:"
+-			" %pM\n", dev->name, sa.sa_data);
+-	cvm_oct_mac_addr_offset++;
++	const u8 *mac = NULL;
++
++	if (priv->of_node)
++		mac = of_get_mac_address(priv->of_node);
++
++	if (mac && is_valid_ether_addr(mac)) {
++		memcpy(dev->dev_addr, mac, ETH_ALEN);
++		dev->addr_assign_type &= ~NET_ADDR_RANDOM;
++	} else {
++		eth_hw_addr_random(dev);
++	}
+ 
+ 	/*
+ 	 * Force the interface to use the POW send if always_use_pow
+@@ -487,7 +478,7 @@ int cvm_oct_common_init(struct net_device *dev)
+ 	SET_ETHTOOL_OPS(dev, &cvm_oct_ethtool_ops);
+ 
+ 	cvm_oct_phy_setup_device(dev);
+-	dev->netdev_ops->ndo_set_mac_address(dev, &sa);
++	cvm_oct_set_mac_filter(dev);
+ 	dev->netdev_ops->ndo_change_mtu(dev, dev->mtu);
+ 
+ 	/*
+@@ -594,22 +585,55 @@ static const struct net_device_ops cvm_oct_pow_netdev_ops = {
+ 
+ extern void octeon_mdiobus_force_mod_depencency(void);
+ 
+-static int __init cvm_oct_init_module(void)
++static struct device_node * __devinit cvm_oct_of_get_child(const struct device_node *parent,
++							   int reg_val)
++{
++	struct device_node *node = NULL;
++	int size;
++	const __be32 *addr;
++
++	for (;;) {
++		node = of_get_next_child(parent, node);
++		if (!node)
++			break;
++		addr = of_get_property(node, "reg", &size);
++		if (addr && (be32_to_cpu(*addr) == reg_val))
++			break;
++	}
++	return node;
++}
++
++static struct device_node * __devinit cvm_oct_node_for_port(struct device_node *pip,
++							    int interface, int port)
++{
++	struct device_node *ni, *np;
++
++	ni = cvm_oct_of_get_child(pip, interface);
++	if (!ni)
++		return NULL;
++
++	np = cvm_oct_of_get_child(ni, port);
++	of_node_put(ni);
++
++	return np;
++}
++
++static int __devinit cvm_oct_probe(struct platform_device *pdev)
+ {
+ 	int num_interfaces;
+ 	int interface;
+ 	int fau = FAU_NUM_PACKET_BUFFERS_TO_FREE;
+ 	int qos;
++	struct device_node *pip;
+ 
+ 	octeon_mdiobus_force_mod_depencency();
+ 	pr_notice("cavium-ethernet %s\n", OCTEON_ETHERNET_VERSION);
+ 
+-	if (OCTEON_IS_MODEL(OCTEON_CN52XX))
+-		cvm_oct_mac_addr_offset = 2; /* First two are the mgmt ports. */
+-	else if (OCTEON_IS_MODEL(OCTEON_CN56XX))
+-		cvm_oct_mac_addr_offset = 1; /* First one is the mgmt port. */
+-	else
+-		cvm_oct_mac_addr_offset = 0;
++	pip = pdev->dev.of_node;
++	if (!pip) {
++		pr_err("Error: No 'pip' in /aliases\n");
++		return -EINVAL;
++	}
+ 
+ 	cvm_oct_poll_queue = create_singlethread_workqueue("octeon-ethernet");
+ 	if (cvm_oct_poll_queue == NULL) {
+@@ -688,10 +712,11 @@ static int __init cvm_oct_init_module(void)
+ 		    cvmx_helper_interface_get_mode(interface);
+ 		int num_ports = cvmx_helper_ports_on_interface(interface);
+ 		int port;
++		int port_index;
+ 
+-		for (port = cvmx_helper_get_ipd_port(interface, 0);
++		for (port_index = 0, port = cvmx_helper_get_ipd_port(interface, 0);
+ 		     port < cvmx_helper_get_ipd_port(interface, num_ports);
+-		     port++) {
++		     port_index++, port++) {
+ 			struct octeon_ethernet *priv;
+ 			struct net_device *dev =
+ 			    alloc_etherdev(sizeof(struct octeon_ethernet));
+@@ -702,6 +727,7 @@ static int __init cvm_oct_init_module(void)
+ 
+ 			/* Initialize the device private structure. */
+ 			priv = netdev_priv(dev);
++			priv->of_node = cvm_oct_node_for_port(pip, interface, port_index);
+ 
+ 			INIT_DELAYED_WORK(&priv->port_periodic_work,
+ 					  cvm_oct_periodic_worker);
+@@ -786,7 +812,7 @@ static int __init cvm_oct_init_module(void)
+ 	return 0;
+ }
+ 
+-static void __exit cvm_oct_cleanup_module(void)
++static int __devexit cvm_oct_remove(struct platform_device *pdev)
+ {
+ 	int port;
+ 
+@@ -834,10 +860,29 @@ static void __exit cvm_oct_cleanup_module(void)
+ 	if (CVMX_FPA_OUTPUT_BUFFER_POOL != CVMX_FPA_PACKET_POOL)
+ 		cvm_oct_mem_empty_fpa(CVMX_FPA_OUTPUT_BUFFER_POOL,
+ 				      CVMX_FPA_OUTPUT_BUFFER_POOL_SIZE, 128);
++	return 0;
+ }
+ 
++static struct of_device_id cvm_oct_match[] = {
 +	{
-+		.compatible = "cavium,octeon-3860-twsi",
++		.compatible = "cavium,octeon-3860-pip",
 +	},
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, octeon_i2c_match);
++MODULE_DEVICE_TABLE(of, cvm_oct_match);
 +
- static struct platform_driver octeon_i2c_driver = {
- 	.probe		= octeon_i2c_probe,
- 	.remove		= __devexit_p(octeon_i2c_remove),
- 	.driver		= {
- 		.owner	= THIS_MODULE,
- 		.name	= DRV_NAME,
-+		.of_match_table = octeon_i2c_match,
- 	},
++static struct platform_driver cvm_oct_driver = {
++	.probe		= cvm_oct_probe,
++	.remove		= __devexit_p(cvm_oct_remove),
++	.driver		= {
++		.owner	= THIS_MODULE,
++		.name	= KBUILD_MODNAME,
++		.of_match_table = cvm_oct_match,
++	},
++};
++
++module_platform_driver(cvm_oct_driver);
++
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Cavium Networks <support@caviumnetworks.com>");
+ MODULE_DESCRIPTION("Cavium Networks Octeon ethernet driver.");
+-module_init(cvm_oct_init_module);
+-module_exit(cvm_oct_cleanup_module);
+diff --git a/drivers/staging/octeon/octeon-ethernet.h b/drivers/staging/octeon/octeon-ethernet.h
+index d581925..9360e22 100644
+--- a/drivers/staging/octeon/octeon-ethernet.h
++++ b/drivers/staging/octeon/octeon-ethernet.h
+@@ -31,6 +31,8 @@
+ #ifndef OCTEON_ETHERNET_H
+ #define OCTEON_ETHERNET_H
+ 
++#include <linux/of.h>
++
+ /**
+  * This is the definition of the Ethernet driver's private
+  * driver state stored in netdev_priv(dev).
+@@ -59,6 +61,7 @@ struct octeon_ethernet {
+ 	void (*poll) (struct net_device *dev);
+ 	struct delayed_work	port_periodic_work;
+ 	struct work_struct	port_work;	/* may be unused. */
++	struct device_node	*of_node;
  };
  
-@@ -635,4 +642,3 @@ MODULE_AUTHOR("Michael Lawnick <michael.lawnick.ext@nsn.com>");
- MODULE_DESCRIPTION("I2C-Bus adapter for Cavium OCTEON processors");
- MODULE_LICENSE("GPL");
- MODULE_VERSION(DRV_VERSION);
--MODULE_ALIAS("platform:" DRV_NAME);
+ int cvm_oct_free_work(void *work_queue_entry);
 -- 
 1.7.2.3

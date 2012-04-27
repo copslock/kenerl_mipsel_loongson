@@ -1,40 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2012 20:33:08 +0200 (CEST)
-Received: from mail-pz0-f48.google.com ([209.85.210.48]:47595 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2012 20:33:45 +0200 (CEST)
+Received: from mail-pz0-f48.google.com ([209.85.210.48]:42380 "EHLO
         mail-pz0-f48.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903618Ab2D0Scx (ORCPT
+        by eddie.linux-mips.org with ESMTP id S1903615Ab2D0Scx (ORCPT
         <rfc822;linux-mips@linux-mips.org>); Fri, 27 Apr 2012 20:32:53 +0200
-Received: by dakb39 with SMTP id b39so1178899dak.35
+Received: by dakb39 with SMTP id b39so1178895dak.35
         for <multiple recipients>; Fri, 27 Apr 2012 11:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        bh=DPq54vx61zP4C/q7m7BkJadHMrnHiAr0ftRMaJCHpIg=;
-        b=Kqlot51m2Ypzqe8XXaCbukQjtmUvwLBndyAM9Us+AwoYFLmhaUsnzpbXnjdfmriZeI
-         dOEMSIABC/p69bfs7qSdCTbNa2ear4CYtvcra0hkNYK/JwFOOVolSUjGJokXE3uRmC7t
-         qT/ncJzsjk22SUjBGy55qAeqTuwWly8yOU+xGYbVK78+vTU/SqjmODVP5sE4FggVGxkF
-         x7QoipuREruyMTvpCiRRqAK4MIgizcOqrpXq857SNWzlcq5p51SkLPRNd7tT94XfUTjc
-         TuxDphSuwJZOCIjxfbvBSPEFdwskIV8bjPQaaKNKt90OzW1jr/WbjiGCXSnoOHrcfB1y
-         0Ctg==
-Received: by 10.68.136.1 with SMTP id pw1mr25147033pbb.105.1335551566802;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=yYT+I2de8roh2DzcvLx5npBSG1fXAWk0MxotrzrwM34=;
+        b=v95U+pxQq5vYJmXgh8GBeBfNX5fhsRhU0LgmvDUqIhlrrU79b7rB9raJgXIgeqP5lo
+         L2e4+bgYjk1GAlJJP6fr8bYHBv3wu1OWu2fbmJhEdUnfaSFa23TNr2Kmy1ILVNaj5Fbo
+         4Tf+evn0VDI5r+ZE4opwGrnDMqYcrWdBNOcn9XrckQ/7UNyN3IDTsIC4PqN/ysoniAAG
+         WIu7XvVB/trZMhLRwBcJIeKuMfQ9HyzhMb8YpWPgO84x/WszjQMHxp03EPOe97N7nnDB
+         MhnRMIjpBUv0vhUIFhsk09vC+r0XeKfDlQl+enIWkNjC74+ZaskthyYGFKj+390MoOXc
+         IjIA==
+Received: by 10.68.219.226 with SMTP id pr2mr17501934pbc.66.1335551566607;
         Fri, 27 Apr 2012 11:32:46 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id pn10sm5617123pbb.22.2012.04.27.11.32.45
+        by mx.google.com with ESMTPS id wf6sm7177724pbc.8.2012.04.27.11.32.45
         (version=TLSv1/SSLv3 cipher=OTHER);
         Fri, 27 Apr 2012 11:32:45 -0700 (PDT)
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3RIWiqe019622;
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3RIWivX019626;
         Fri, 27 Apr 2012 11:32:44 -0700
 Received: (from ddaney@localhost)
-        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3RIWh62019620;
-        Fri, 27 Apr 2012 11:32:43 -0700
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3RIWiIg019625;
+        Fri, 27 Apr 2012 11:32:44 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:     David Daney <david.daney@cavium.com>
-Subject: [PATCH 0/8] MIPS: OCTEON: Interrupt controller enhancements.
-Date:   Fri, 27 Apr 2012 11:32:32 -0700
-Message-Id: <1335551560-19581-1-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH 1/8] MIPS: OCTEON: Add detection of cnf71xx parts.
+Date:   Fri, 27 Apr 2012 11:32:33 -0700
+Message-Id: <1335551560-19581-2-git-send-email-ddaney.cavm@gmail.com>
 X-Mailer: git-send-email 1.7.2.3
-X-archive-position: 33036
+In-Reply-To: <1335551560-19581-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1335551560-19581-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 33037
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,44 +47,51 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: David Daney <david.daney@cavium.com>
 
-These patches are meant to be applied on top of:
+Also add cvmx_get_octeon_family().
 
-http://www.linux-mips.org/archives/linux-mips/2012-03/msg00159.html
-http://www.linux-mips.org/archives/linux-mips/2012-04/msg00169.html
-http://www.linux-mips.org/archives/linux-mips/2012-04/msg00173.html
+Both of these are needed by the upcoming register definition refresh
+patch.
 
-The interrupt controller on cn68XX is fundamentally different then on
-previous members of the OCTEON family.  To support it requires
-importing new register layout definitions for all OCTEONs.  The reason
-for the patches are roughly as follows:
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/include/asm/octeon/octeon-model.h |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
 
-1) Recognize cnf71xx parts, as they are referred to in ...
-
-2) Updated register definitions for all OCTEON parts.
-
-3) Fix snafu in previous patch set.
-
-4) Rid ourselves of unused OCTEON_IRQ_* definitions.  We use the
-   device tree infrastructure to find most irqs now.
-
-5) The OCTEON_IRQ_* definitions we still use need to be augmented for
-   the added number of CPUs and increase in size of other SOC
-   resources.
-
-6) Add cn68XX CIU2 support.
-
-7) Quit using sly tricks to avoid taking locks.  These tricks fail
-   with threaded interrupt handlers.
-
-8) Fix !CONFIG_SMP build failure.
-
-David Daney (8):
-  MIPS: OCTEON: Add detection of cnf71xx parts.
-  MIPS: OCTEON: Update register definitions.
-  MIPS: OCTEON: Fix GPIO interrupt configuration.
-  MIPS: OCTEON: Get rid of unused OCTEON_IRQ_* definitions.
-  MIPS: OCTEON: Add OCTEON_IRQ_* definitions for cn68XX chips.
-  MIPS: OCTEON: Add support for cn68XX interrupt controller.
-  MIPS: Octeon: Make interrupt controller work with threaded handlers.
-  MIPS: OCTEON: Don't refer to  octeon_irq_cpu_offline_ciu() when
-    !CONFIG_SMP
+diff --git a/arch/mips/include/asm/octeon/octeon-model.h b/arch/mips/include/asm/octeon/octeon-model.h
+index 4e338a4..59d9426 100644
+--- a/arch/mips/include/asm/octeon/octeon-model.h
++++ b/arch/mips/include/asm/octeon/octeon-model.h
+@@ -61,6 +61,16 @@
+ #define OM_MATCH_5XXX_FAMILY_MODELS     0x20000000
+ /* Match all cn6XXX Octeon models. */
+ #define OM_MATCH_6XXX_FAMILY_MODELS     0x40000000
++/* Match all cnf7XXX Octeon models. */
++#define OM_MATCH_F7XXX_FAMILY_MODELS    0x80000000
++
++/*
++ * CNF7XXX models with new revision encoding
++ */
++#define OCTEON_CNF71XX_PASS1_0  0x000d9400
++
++#define OCTEON_CNF71XX          (OCTEON_CNF71XX_PASS1_0 | OM_IGNORE_REVISION)
++#define OCTEON_CNF71XX_PASS1_X  (OCTEON_CNF71XX_PASS1_0 | OM_IGNORE_MINOR_REVISION)
+ 
+ /*
+  * CN6XXX models with new revision encoding
+@@ -313,6 +323,14 @@ static inline int __octeon_is_model_runtime__(uint32_t model)
+ const char *octeon_model_get_string(uint32_t chip_id);
+ const char *octeon_model_get_string_buffer(uint32_t chip_id, char *buffer);
+ 
++/*
++ * Return the octeon family, i.e., ProcessorID of the PrID register.
++ */
++static inline uint32_t cvmx_get_octeon_family(void)
++{
++	return (cvmx_get_proc_id() & OCTEON_FAMILY_MASK);
++}
++
+ #include "octeon-feature.h"
+ 
+ #endif /* __OCTEON_MODEL_H__ */
+-- 
+1.7.2.3

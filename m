@@ -1,43 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Apr 2012 18:07:54 +0200 (CEST)
-Received: from mail-pb0-f49.google.com ([209.85.160.49]:61117 "EHLO
-        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903680Ab2DYQHi (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Apr 2012 18:07:38 +0200
-Received: by pbbrq13 with SMTP id rq13so1754138pbb.36
-        for <multiple recipients>; Wed, 25 Apr 2012 09:07:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Apr 2012 02:48:30 +0200 (CEST)
+Received: from mail-pz0-f48.google.com ([209.85.210.48]:40047 "EHLO
+        mail-pz0-f48.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903615Ab2D0AsN (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Apr 2012 02:48:13 +0200
+Received: by dakb39 with SMTP id b39so222807dak.35
+        for <multiple recipients>; Thu, 26 Apr 2012 17:48:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        bh=B46n38/XA4eYc36nkVhpdTf50ReTtnn7X+49A2J0TWk=;
-        b=EJPxyjj/BShFsKOqlt6OGGP0rqK+HvEcR7r4rzy5jxtXbyv8SsxfDnfVQpIvMGnAJc
-         RtxQoyqmc7r+cDCPCoNWb27KPD/tarzuvmLxUk1ZS56jQ0OabPP93uH0CDya1fQfOO5C
-         uYcqvdkHlh12nC+1SiZjvlUiUd3UdgzYq55DuHxfqw+5CPMdAnqBHCLeBBp+dJ4oJaZX
-         WbTOf4nPdV6YGCmgFF9/pVHF5WTA7pfcO0CVvzucJgtXE3Zsk6URcVt7RDiVxXT2YX8n
-         /JH2JWitnt1BpehULs3hE65HNUxGfoYJVDgH3pVDbbgSbQfu3IksWHPCGQ3dhgm2Bc31
-         uJrg==
-Received: by 10.68.201.9 with SMTP id jw9mr8063111pbc.88.1335370051232;
-        Wed, 25 Apr 2012 09:07:31 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        bh=wAGQX8lcMO9izpgUahDOm4Axwj1rxFTJWe9QkEmdyNE=;
+        b=wguA5x+qMezNvPaAP/4zprjQzXxw1Bq2SYl2vDm4WRtPV+0JWTtTxWbtAN7tj8d5c5
+         Z+OFVrqQG3OjBYuKqkhK6cUM35Zn/NJH4IrMqntduFmtIPAQs6xZEIkGQvZiUu/Avg8n
+         bBHOTFzPAG5hTyEphr+DTvNt+cfxdOaP4+XZzmBF+7uDAn9P7VnGCcQmYwSyQhwZ3m6K
+         ztSW2fX6TINMHKdY9yXAF9rcZuUsdpf2iC2irYCHYj5hDkutHahziDYZ168K6G++/loR
+         Bh8bhSn1x5dDhQ7hS/AcrsE2uW2Lbs5bdv3gzNyyS4fw9WgBUjjy0jkaUhWus8ZwWYEL
+         zVGw==
+Received: by 10.68.239.37 with SMTP id vp5mr2907798pbc.137.1335487686478;
+        Thu, 26 Apr 2012 17:48:06 -0700 (PDT)
 Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
-        by mx.google.com with ESMTPS id wf6sm489654pbc.8.2012.04.25.09.07.29
-        (version=SSLv3 cipher=OTHER);
-        Wed, 25 Apr 2012 09:07:29 -0700 (PDT)
-Message-ID: <4F982140.8000008@gmail.com>
-Date:   Wed, 25 Apr 2012 09:07:28 -0700
+        by mx.google.com with ESMTPS id gl7sm1816461pbc.10.2012.04.26.17.48.04
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Thu, 26 Apr 2012 17:48:04 -0700 (PDT)
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+        by dd1.caveonetworks.com (8.14.4/8.14.4) with ESMTP id q3R0m3xu026263;
+        Thu, 26 Apr 2012 17:48:03 -0700
+Received: (from ddaney@localhost)
+        by dd1.caveonetworks.com (8.14.4/8.14.4/Submit) id q3R0m35r026262;
+        Thu, 26 Apr 2012 17:48:03 -0700
 From:   David Daney <ddaney.cavm@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
-MIME-Version: 1.0
-To:     Hillf Danton <dhillf@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/3] MIPS: Add support for transparent huge page
-References: <CAJd=RBAXc+QSX+xnJ2W9vVwK64Etrzrr=iBqPkJXNvYgwujQ_Q@mail.gmail.com>        <4F9736C9.8020003@gmail.com> <CAJd=RBBcWKQC+YoCrpvPJ78jZoytj=t6oeybdR=t_r_DCfGhLQ@mail.gmail.com>
-In-Reply-To: <CAJd=RBBcWKQC+YoCrpvPJ78jZoytj=t6oeybdR=t_r_DCfGhLQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33013
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Rob Herring <rob.herring@calxeda.com>
+Cc:     linux-kernel@vger.kernel.org, David Daney <david.daney@cavium.com>
+Subject: [PATCH v8 1/4] MIPS: Don't define early_init_devtree() and device_tree_init() in prom.c for CPU_CAVIUM_OCTEON
+Date:   Thu, 26 Apr 2012 17:47:55 -0700
+Message-Id: <1335487678-26223-2-git-send-email-ddaney.cavm@gmail.com>
+X-Mailer: git-send-email 1.7.2.3
+In-Reply-To: <1335487678-26223-1-git-send-email-ddaney.cavm@gmail.com>
+References: <1335487678-26223-1-git-send-email-ddaney.cavm@gmail.com>
+X-archive-position: 33014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,15 +48,35 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 04/25/2012 06:58 AM, Hillf Danton wrote:
-> On Wed, Apr 25, 2012 at 7:27 AM, David Daney<ddaney.cavm@gmail.com>  wrote:
->>
->> I'm not sure where that copyright came from.
->>
-> You ported hugetlb to MIPS, and I C hello to the author that way:)
->
+From: David Daney <david.daney@cavium.com>
 
-Really, I think the best policy is to retain copyright messages added by 
-others, but don't invent new ones attributed to others.
+This code is not common enough to be in a shared file, so OCTEON defines
+it's own versions.
 
-David Daney
+When the last of this target specific code is moved out, we can remove
+all of this.
+
+Signed-off-by: David Daney <david.daney@cavium.com>
+---
+ arch/mips/kernel/prom.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
+index 558b539..4aaa5c0 100644
+--- a/arch/mips/kernel/prom.c
++++ b/arch/mips/kernel/prom.c
+@@ -60,6 +60,7 @@ void __init early_init_dt_setup_initrd_arch(unsigned long start,
+ }
+ #endif
+ 
++#ifndef CONFIG_CPU_CAVIUM_OCTEON
+ void __init early_init_devtree(void *params)
+ {
+ 	/* Setup flat device-tree pointer */
+@@ -95,3 +96,4 @@ void __init device_tree_init(void)
+ 	/* free the space reserved for the dt blob */
+ 	free_mem_mach(base, size);
+ }
++#endif /* !CONFIG_CPU_CAVIUM_OCTEON */
+-- 
+1.7.2.3

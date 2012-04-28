@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2012 15:15:52 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:4934 "EHLO MMS3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Apr 2012 15:16:20 +0200 (CEST)
+Received: from mms3.broadcom.com ([216.31.210.19]:4936 "EHLO MMS3.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903709Ab2D1NNG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903710Ab2D1NNG (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Sat, 28 Apr 2012 15:13:06 +0200
-Received: from [10.9.200.131] by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Sat, 28 Apr 2012 06:12:53 -0700
+Received: from [10.9.200.133] by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Sat, 28 Apr 2012 06:12:59 -0700
 X-Server-Uuid: B730DE51-FC43-4C83-941F-F1F78A914BDD
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Sat, 28 Apr 2012 06:12:48 -0700
+ IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
+ Server id 8.2.247.2; Sat, 28 Apr 2012 06:12:14 -0700
 Received: from hqcas01.netlogicmicro.com (unknown [10.65.50.14]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id E45B29F9F5; Sat, 28
- Apr 2012 06:12:47 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id ACA399F9F5; Sat, 28
+ Apr 2012 06:12:53 -0700 (PDT)
 Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
  hqcas01.netlogicmicro.com (10.65.50.14) with Microsoft SMTP Server id
- 14.1.339.1; Sat, 28 Apr 2012 06:12:47 -0700
+ 14.1.339.1; Sat, 28 Apr 2012 06:12:53 -0700
 From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
 cc:     "Ganesan Ramalingam" <ganesanr@netlogicmicro.com>,
         "Jayachandran C" <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 09/12] MIPS: Netlogic: Platform NAND/NOR flash support
-Date:   Sat, 28 Apr 2012 18:42:15 +0530
-Message-ID: <1335618738-4679-10-git-send-email-jayachandranc@netlogicmicro.com>
+Subject: [PATCH 12/12] MIPS: Netlogic: USB support for XLP
+Date:   Sat, 28 Apr 2012 18:42:18 +0530
+Message-ID: <1335618738-4679-13-git-send-email-jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1335618738-4679-1-git-send-email-jayachandranc@netlogicmicro.com>
 References: <1335618738-4679-1-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.7.0.77]
-X-WSS-ID: 6385335F3E024591391-01-01
+X-WSS-ID: 638533513E024591421-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33054
+X-archive-position: 33055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,27 +41,65 @@ Return-Path: <linux-mips-bounce@linux-mips.org>
 
 From: Ganesan Ramalingam <ganesanr@netlogicmicro.com>
 
-Changes to add support for the boot NOR flash on XLR boards and the
-boot NAND/NOR flash drivers on the XLS boards.
+The XLP USB controller appears as a device on the internal SoC PCIe
+bus, the block has 2 EHCI blocks and 4 OHCI blocks. Change are to:
+
+* Add files netlogic/xlp/usb-init.c and asm/netlogic/xlp-hal/usb.h
+  to initialize the USB controller and define PCI fixups. The PCI
+  fixups are to setup interrupts and DMA mask.
+* Update include/asm/xlp-hal/{iomap.h,pic.h,xlp.h} to add interrupt
+  mapping for EHCI/OHCI interrupts.
 
 Signed-off-by: Ganesan Ramalingam <ganesanr@netlogicmicro.com>
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/include/asm/netlogic/xlr/bridge.h |  104 +++++++++++++
- arch/mips/include/asm/netlogic/xlr/flash.h  |   55 +++++++
- arch/mips/netlogic/xlr/Makefile             |    2 +-
- arch/mips/netlogic/xlr/platform-flash.c     |  220 +++++++++++++++++++++++++++
- 4 files changed, 380 insertions(+), 1 deletion(-)
- create mode 100644 arch/mips/include/asm/netlogic/xlr/bridge.h
- create mode 100644 arch/mips/include/asm/netlogic/xlr/flash.h
- create mode 100644 arch/mips/netlogic/xlr/platform-flash.c
+ arch/mips/include/asm/netlogic/xlp-hal/iomap.h |    2 +-
+ arch/mips/include/asm/netlogic/xlp-hal/pic.h   |    4 +
+ arch/mips/include/asm/netlogic/xlp-hal/usb.h   |   64 ++++++++++++
+ arch/mips/include/asm/netlogic/xlp-hal/xlp.h   |    6 ++
+ arch/mips/netlogic/xlp/Makefile                |    1 +
+ arch/mips/netlogic/xlp/nlm_hal.c               |   24 +++++
+ arch/mips/netlogic/xlp/platform.c              |    2 +-
+ arch/mips/netlogic/xlp/usb-init.c              |  124 ++++++++++++++++++++++++
+ 8 files changed, 225 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/include/asm/netlogic/xlp-hal/usb.h
+ create mode 100644 arch/mips/netlogic/xlp/usb-init.c
 
-diff --git a/arch/mips/include/asm/netlogic/xlr/bridge.h b/arch/mips/include/asm/netlogic/xlr/bridge.h
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+index ece86f1..2c63f97 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/iomap.h
+@@ -132,7 +132,7 @@
+ #define	PCI_DEVICE_ID_NLM_PIC		0x1003
+ #define	PCI_DEVICE_ID_NLM_PCIE		0x1004
+ #define	PCI_DEVICE_ID_NLM_EHCI		0x1007
+-#define	PCI_DEVICE_ID_NLM_ILK		0x1008
++#define	PCI_DEVICE_ID_NLM_OHCI		0x1008
+ #define	PCI_DEVICE_ID_NLM_NAE		0x1009
+ #define	PCI_DEVICE_ID_NLM_POE		0x100A
+ #define	PCI_DEVICE_ID_NLM_FMN		0x100B
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/pic.h b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
+index b6628f7..ad8b802 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/pic.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/pic.h
+@@ -201,7 +201,11 @@
+ #define PIC_NUM_USB_IRTS		6
+ #define PIC_IRT_USB_0_INDEX		115
+ #define PIC_IRT_EHCI_0_INDEX		115
++#define PIC_IRT_OHCI_0_INDEX		116
++#define PIC_IRT_OHCI_1_INDEX		117
+ #define PIC_IRT_EHCI_1_INDEX		118
++#define PIC_IRT_OHCI_2_INDEX		119
++#define PIC_IRT_OHCI_3_INDEX		120
+ #define PIC_IRT_USB_INDEX(num)		((num) + PIC_IRT_USB_0_INDEX)
+ /* 115 to 120 */
+ #define PIC_IRT_GDX_INDEX		121
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/usb.h b/arch/mips/include/asm/netlogic/xlp-hal/usb.h
 new file mode 100644
-index 0000000..2d02428
+index 0000000..a9cd350
 --- /dev/null
-+++ b/arch/mips/include/asm/netlogic/xlr/bridge.h
-@@ -0,0 +1,104 @@
++++ b/arch/mips/include/asm/netlogic/xlp-hal/usb.h
+@@ -0,0 +1,64 @@
 +/*
 + * Copyright (c) 2003-2012 Broadcom Corporation
 + * All Rights Reserved
@@ -95,371 +133,246 @@ index 0000000..2d02428
 + * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 + * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
-+#ifndef _ASM_NLM_BRIDGE_H_
-+#define _ASM_NLM_BRIDGE_H_
 +
-+#define BRIDGE_DRAM_0_BAR		0
-+#define BRIDGE_DRAM_1_BAR		1
-+#define BRIDGE_DRAM_2_BAR		2
-+#define BRIDGE_DRAM_3_BAR		3
-+#define BRIDGE_DRAM_4_BAR		4
-+#define BRIDGE_DRAM_5_BAR		5
-+#define BRIDGE_DRAM_6_BAR		6
-+#define BRIDGE_DRAM_7_BAR		7
-+#define BRIDGE_DRAM_CHN_0_MTR_0_BAR	8
-+#define BRIDGE_DRAM_CHN_0_MTR_1_BAR	9
-+#define BRIDGE_DRAM_CHN_0_MTR_2_BAR	10
-+#define BRIDGE_DRAM_CHN_0_MTR_3_BAR	11
-+#define BRIDGE_DRAM_CHN_0_MTR_4_BAR	12
-+#define BRIDGE_DRAM_CHN_0_MTR_5_BAR	13
-+#define BRIDGE_DRAM_CHN_0_MTR_6_BAR	14
-+#define BRIDGE_DRAM_CHN_0_MTR_7_BAR	15
-+#define BRIDGE_DRAM_CHN_1_MTR_0_BAR	16
-+#define BRIDGE_DRAM_CHN_1_MTR_1_BAR	17
-+#define BRIDGE_DRAM_CHN_1_MTR_2_BAR	18
-+#define BRIDGE_DRAM_CHN_1_MTR_3_BAR	19
-+#define BRIDGE_DRAM_CHN_1_MTR_4_BAR	20
-+#define BRIDGE_DRAM_CHN_1_MTR_5_BAR	21
-+#define BRIDGE_DRAM_CHN_1_MTR_6_BAR	22
-+#define BRIDGE_DRAM_CHN_1_MTR_7_BAR	23
-+#define BRIDGE_CFG_BAR			24
-+#define BRIDGE_PHNX_IO_BAR		25
-+#define BRIDGE_FLASH_BAR		26
-+#define BRIDGE_SRAM_BAR			27
-+#define BRIDGE_HTMEM_BAR		28
-+#define BRIDGE_HTINT_BAR		29
-+#define BRIDGE_HTPIC_BAR		30
-+#define BRIDGE_HTSM_BAR			31
-+#define BRIDGE_HTIO_BAR			32
-+#define BRIDGE_HTCFG_BAR		33
-+#define BRIDGE_PCIXCFG_BAR		34
-+#define BRIDGE_PCIXMEM_BAR		35
-+#define BRIDGE_PCIXIO_BAR		36
-+#define BRIDGE_DEVICE_MASK		37
-+#define BRIDGE_AERR_INTR_LOG1		38
-+#define BRIDGE_AERR_INTR_LOG2		39
-+#define BRIDGE_AERR_INTR_LOG3		40
-+#define BRIDGE_AERR_DEV_STAT		41
-+#define BRIDGE_AERR1_LOG1		42
-+#define BRIDGE_AERR1_LOG2		43
-+#define BRIDGE_AERR1_LOG3		44
-+#define BRIDGE_AERR1_DEV_STAT		45
-+#define BRIDGE_AERR_INTR_EN		46
-+#define BRIDGE_AERR_UPG			47
-+#define BRIDGE_AERR_CLEAR		48
-+#define BRIDGE_AERR1_CLEAR		49
-+#define BRIDGE_SBE_COUNTS		50
-+#define BRIDGE_DBE_COUNTS		51
-+#define BRIDGE_BITERR_INT_EN		52
++#ifndef __NLM_HAL_USB_H__
++#define __NLM_HAL_USB_H__
 +
-+#define BRIDGE_SYS2IO_CREDITS		53
-+#define BRIDGE_EVNT_CNT_CTRL1		54
-+#define BRIDGE_EVNT_COUNTER1		55
-+#define BRIDGE_EVNT_CNT_CTRL2		56
-+#define BRIDGE_EVNT_COUNTER2		57
-+#define BRIDGE_RESERVED1		58
++#define USB_CTL_0			0x01
++#define USB_PHY_0			0x0A
++#define USB_PHY_RESET			0x01
++#define USB_PHY_PORT_RESET_0		0x10
++#define USB_PHY_PORT_RESET_1		0x20
++#define USB_CONTROLLER_RESET		0x01
++#define USB_INT_STATUS			0x0E
++#define USB_INT_EN			0x0F
++#define USB_PHY_INTERRUPT_EN		0x01
++#define USB_OHCI_INTERRUPT_EN		0x02
++#define USB_OHCI_INTERRUPT1_EN		0x04
++#define USB_OHCI_INTERRUPT2_EN		0x08
++#define USB_CTRL_INTERRUPT_EN		0x10
 +
-+#define BRIDGE_DEFEATURE		59
-+#define BRIDGE_SCRATCH0			60
-+#define BRIDGE_SCRATCH1			61
-+#define BRIDGE_SCRATCH2			62
-+#define BRIDGE_SCRATCH3			63
++#ifndef __ASSEMBLY__
++
++#define nlm_read_usb_reg(b, r)			nlm_read_reg(b, r)
++#define nlm_write_usb_reg(b, r, v)		nlm_write_reg(b, r, v)
++#define nlm_get_usb_pcibase(node, inst)		\
++	nlm_pcicfg_base(XLP_IO_USB_OFFSET(node, inst))
++#define nlm_get_usb_hcd_base(node, inst)	\
++	nlm_xkphys_map_pcibar0(nlm_get_usb_pcibase(node, inst))
++#define nlm_get_usb_regbase(node, inst)		\
++	(nlm_get_usb_pcibase(node, inst) + XLP_IO_PCI_HDRSZ)
 +
 +#endif
-diff --git a/arch/mips/include/asm/netlogic/xlr/flash.h b/arch/mips/include/asm/netlogic/xlr/flash.h
-new file mode 100644
-index 0000000..f8aca54
---- /dev/null
-+++ b/arch/mips/include/asm/netlogic/xlr/flash.h
-@@ -0,0 +1,55 @@
-+/*
-+ * Copyright (c) 2003-2012 Broadcom Corporation
-+ * All Rights Reserved
-+ *
-+ * This software is available to you under a choice of one of two
-+ * licenses.  You may choose to be licensed under the terms of the GNU
-+ * General Public License (GPL) Version 2, available from the file
-+ * COPYING in the main directory of this source tree, or the Broadcom
-+ * license below:
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ *
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in
-+ *    the documentation and/or other materials provided with the
-+ *    distribution.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
-+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
-+#ifndef _ASM_NLM_FLASH_H_
-+#define _ASM_NLM_FLASH_H_
-+
-+#define FLASH_CSBASE_ADDR(cs)		(cs)
-+#define FLASH_CSADDR_MASK(cs)		(0x10 + (cs))
-+#define FLASH_CSDEV_PARM(cs)		(0x20 + (cs))
-+#define FLASH_CSTIME_PARMA(cs)		(0x30 + (cs))
-+#define FLASH_CSTIME_PARMB(cs)		(0x40 + (cs))
-+
-+#define FLASH_INT_MASK			0x50
-+#define FLASH_INT_STATUS		0x60
-+#define FLASH_ERROR_STATUS		0x70
-+#define FLASH_ERROR_ADDR		0x80
-+
-+#define FLASH_NAND_CLE(cs)		(0x90 + (cs))
-+#define FLASH_NAND_ALE(cs)		(0xa0 + (cs))
-+
-+#define FLASH_NAND_CSDEV_PARAM		0x000041e6
-+#define FLASH_NAND_CSTIME_PARAMA	0x4f400e22
-+#define FLASH_NAND_CSTIME_PARAMB	0x000083cf
-+
-+#endif
-diff --git a/arch/mips/netlogic/xlr/Makefile b/arch/mips/netlogic/xlr/Makefile
-index f01e4d7..c287dea 100644
---- a/arch/mips/netlogic/xlr/Makefile
-+++ b/arch/mips/netlogic/xlr/Makefile
-@@ -1,2 +1,2 @@
--obj-y				+= setup.o platform.o
-+obj-y				+= setup.o platform.o platform-flash.o
++#endif /* __NLM_HAL_USB_H__ */
+diff --git a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+index dc6e98e..3921a31 100644
+--- a/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
++++ b/arch/mips/include/asm/netlogic/xlp-hal/xlp.h
+@@ -41,6 +41,12 @@
+ #define PIC_PCIE_LINK_1_IRQ		20
+ #define PIC_PCIE_LINK_2_IRQ		21
+ #define PIC_PCIE_LINK_3_IRQ		22
++#define PIC_EHCI_0_IRQ			23
++#define PIC_EHCI_1_IRQ			24
++#define PIC_OHCI_0_IRQ			25
++#define PIC_OHCI_1_IRQ			26
++#define PIC_OHCI_2_IRQ			27
++#define PIC_OHCI_3_IRQ			28
+ 
+ #ifndef __ASSEMBLY__
+ 
+diff --git a/arch/mips/netlogic/xlp/Makefile b/arch/mips/netlogic/xlp/Makefile
+index b93ed83..5bd24b6 100644
+--- a/arch/mips/netlogic/xlp/Makefile
++++ b/arch/mips/netlogic/xlp/Makefile
+@@ -1,2 +1,3 @@
+ obj-y				+= setup.o platform.o nlm_hal.o
  obj-$(CONFIG_SMP)		+= wakeup.o
-diff --git a/arch/mips/netlogic/xlr/platform-flash.c b/arch/mips/netlogic/xlr/platform-flash.c
++obj-$(CONFIG_USB)		+= usb-init.o
+diff --git a/arch/mips/netlogic/xlp/nlm_hal.c b/arch/mips/netlogic/xlp/nlm_hal.c
+index 3a4a172..fad2cae 100644
+--- a/arch/mips/netlogic/xlp/nlm_hal.c
++++ b/arch/mips/netlogic/xlp/nlm_hal.c
+@@ -77,6 +77,18 @@ int nlm_irq_to_irt(int irq)
+ 	       return PIC_IRT_PCIE_LINK_2_INDEX;
+ 	case PIC_PCIE_LINK_3_IRQ:
+ 	       return PIC_IRT_PCIE_LINK_3_INDEX;
++	case PIC_EHCI_0_IRQ:
++	       return PIC_IRT_EHCI_0_INDEX;
++	case PIC_EHCI_1_IRQ:
++	       return PIC_IRT_EHCI_1_INDEX;
++	case PIC_OHCI_0_IRQ:
++	       return PIC_IRT_OHCI_0_INDEX;
++	case PIC_OHCI_1_IRQ:
++	       return PIC_IRT_OHCI_1_INDEX;
++	case PIC_OHCI_2_IRQ:
++	       return PIC_IRT_OHCI_2_INDEX;
++	case PIC_OHCI_3_IRQ:
++	       return PIC_IRT_OHCI_3_INDEX;
+ 	default:
+ 		return -1;
+ 	}
+@@ -97,6 +109,18 @@ int nlm_irt_to_irq(int irt)
+ 	       return PIC_PCIE_LINK_2_IRQ;
+ 	case PIC_IRT_PCIE_LINK_3_INDEX:
+ 	       return PIC_PCIE_LINK_3_IRQ;
++	case PIC_IRT_EHCI_0_INDEX:
++		return PIC_EHCI_0_IRQ;
++	case PIC_IRT_EHCI_1_INDEX:
++		return PIC_EHCI_1_IRQ;
++	case PIC_IRT_OHCI_0_INDEX:
++		return PIC_OHCI_0_IRQ;
++	case PIC_IRT_OHCI_1_INDEX:
++		return PIC_OHCI_1_IRQ;
++	case PIC_IRT_OHCI_2_INDEX:
++		return PIC_OHCI_2_IRQ;
++	case PIC_IRT_OHCI_3_INDEX:
++		return PIC_OHCI_3_IRQ;
+ 	default:
+ 		return -1;
+ 	}
+diff --git a/arch/mips/netlogic/xlp/platform.c b/arch/mips/netlogic/xlp/platform.c
+index 1f5e4cb..2c510d5 100644
+--- a/arch/mips/netlogic/xlp/platform.c
++++ b/arch/mips/netlogic/xlp/platform.c
+@@ -53,7 +53,7 @@
+ 
+ static unsigned int nlm_xlp_uart_in(struct uart_port *p, int offset)
+ {
+-	 return nlm_read_reg(p->iobase, offset);
++	return nlm_read_reg(p->iobase, offset);
+ }
+ 
+ static void nlm_xlp_uart_out(struct uart_port *p, int offset, int value)
+diff --git a/arch/mips/netlogic/xlp/usb-init.c b/arch/mips/netlogic/xlp/usb-init.c
 new file mode 100644
-index 0000000..340ab16
+index 0000000..dbe083a
 --- /dev/null
-+++ b/arch/mips/netlogic/xlr/platform-flash.c
-@@ -0,0 +1,220 @@
++++ b/arch/mips/netlogic/xlp/usb-init.c
+@@ -0,0 +1,124 @@
 +/*
-+ * Copyright 2011, Netlogic Microsystems.
-+ * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
++ * Copyright (c) 2003-2012 Broadcom Corporation
++ * All Rights Reserved
 + *
-+ * This file is licensed under the terms of the GNU General Public
-+ * License version 2.  This program is licensed "as is" without any
-+ * warranty of any kind, whether express or implied.
++ * This software is available to you under a choice of one of two
++ * licenses.  You may choose to be licensed under the terms of the GNU
++ * General Public License (GPL) Version 2, available from the file
++ * COPYING in the main directory of this source tree, or the Broadcom
++ * license below:
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY BROADCOM ``AS IS'' AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL BROADCOM OR CONTRIBUTORS BE LIABLE
++ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
++ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
++ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
++ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
 +
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
++#include <linux/dma-mapping.h>
 +#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
 +#include <linux/delay.h>
-+#include <linux/ioport.h>
-+#include <linux/resource.h>
-+#include <linux/spi/flash.h>
-+
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/physmap.h>
-+#include <linux/mtd/nand.h>
-+#include <linux/mtd/partitions.h>
++#include <linux/init.h>
++#include <linux/pci.h>
++#include <linux/platform_device.h>
 +
 +#include <asm/netlogic/haldefs.h>
-+#include <asm/netlogic/xlr/iomap.h>
-+#include <asm/netlogic/xlr/flash.h>
-+#include <asm/netlogic/xlr/bridge.h>
-+#include <asm/netlogic/xlr/gpio.h>
-+#include <asm/netlogic/xlr/xlr.h>
++#include <asm/netlogic/xlp-hal/iomap.h>
++#include <asm/netlogic/xlp-hal/xlp.h>
++#include <asm/netlogic/xlp-hal/usb.h>
 +
-+/*
-+ * Default NOR partition layout
-+ */
-+static struct mtd_partition xlr_nor_parts[] = {
-+	{
-+		.name = "User FS",
-+		.offset = 0x800000,
-+		.size   = MTDPART_SIZ_FULL,
-+	}
-+};
-+
-+/*
-+ * Default NAND partition layout
-+ */
-+static struct mtd_partition xlr_nand_parts[] = {
-+	{
-+		.name	= "Root Filesystem",
-+		.offset	= 64 * 64 * 2048,
-+		.size	= 432 * 64 * 2048,
-+	},
-+	{
-+		.name	= "Home Filesystem",
-+		.offset	= MTDPART_OFS_APPEND,
-+		.size   = MTDPART_SIZ_FULL,
-+	},
-+};
-+
-+/* Use PHYSMAP flash for NOR */
-+struct physmap_flash_data xlr_nor_data = {
-+	.width		= 2,
-+	.parts		= xlr_nor_parts,
-+	.nr_parts	= ARRAY_SIZE(xlr_nor_parts),
-+};
-+
-+static struct resource xlr_nor_res[] = {
-+	{
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct platform_device xlr_nor_dev = {
-+	.name	= "physmap-flash",
-+	.dev	= {
-+		.platform_data	= &xlr_nor_data,
-+	},
-+	.num_resources  = ARRAY_SIZE(xlr_nor_res),
-+	.resource       = xlr_nor_res,
-+};
-+
-+const char *xlr_part_probes[] = { "cmdlinepart", NULL };
-+
-+/*
-+ * Use "gen_nand" driver for NAND flash
-+ *
-+ * There seems to be no way to store a private pointer containing
-+ * platform specific info in gen_nand drivier. We will use a global
-+ * struct for now, since we currently have only one NAND chip per board.
-+ */
-+struct xlr_nand_flash_priv {
-+	int cs;
-+	uint64_t flash_mmio;
-+};
-+
-+static struct xlr_nand_flash_priv nand_priv;
-+
-+static void xlr_nand_ctrl(struct mtd_info *mtd, int cmd,
-+		unsigned int ctrl)
++static void nlm_usb_intr_en(int node, int port)
 +{
-+	if (ctrl & NAND_CLE)
-+		nlm_write_reg(nand_priv.flash_mmio,
-+			FLASH_NAND_CLE(nand_priv.cs), cmd);
-+	else if (ctrl & NAND_ALE)
-+		nlm_write_reg(nand_priv.flash_mmio,
-+			FLASH_NAND_ALE(nand_priv.cs), cmd);
++	uint32_t val;
++	uint64_t port_addr;
++
++	port_addr = nlm_get_usb_regbase(node, port);
++	val = nlm_read_usb_reg(port_addr, USB_INT_EN);
++	val = USB_CTRL_INTERRUPT_EN  | USB_OHCI_INTERRUPT_EN |
++		USB_OHCI_INTERRUPT1_EN | USB_CTRL_INTERRUPT_EN  |
++		USB_OHCI_INTERRUPT_EN | USB_OHCI_INTERRUPT2_EN;
++	nlm_write_usb_reg(port_addr, USB_INT_EN, val);
 +}
 +
-+struct platform_nand_data xlr_nand_data = {
-+	.chip = {
-+		.nr_chips	= 1,
-+		.nr_partitions	= ARRAY_SIZE(xlr_nand_parts),
-+		.chip_delay	= 50,
-+		.partitions	= xlr_nand_parts,
-+		.part_probe_types = xlr_part_probes,
-+	},
-+	.ctrl = {
-+		.cmd_ctrl	= xlr_nand_ctrl,
-+	},
-+};
-+
-+static struct resource xlr_nand_res[] = {
-+	{
-+		.flags		= IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct platform_device xlr_nand_dev = {
-+	.name		= "gen_nand",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(xlr_nand_res),
-+	.resource	= xlr_nand_res,
-+	.dev		= {
-+		.platform_data	= &xlr_nand_data,
-+	}
-+};
-+
-+/*
-+ * XLR/XLS supports upto 8 devices on its FLASH interface. The value in
-+ * FLASH_BAR (on the MEM/IO bridge) gives the base for mapping all the
-+ * flash devices.
-+ * Under this, each flash device has an offset and size given by the
-+ * CSBASE_ADDR and CSBASE_MASK registers for the device.
-+ *
-+ * The CSBASE_ registers are expected to be setup by the bootloader.
-+ */
-+static void setup_flash_resource(uint64_t flash_mmio,
-+	uint64_t flash_map_base, int cs, struct resource *res)
++static void nlm_usb_hw_reset(int node, int port)
 +{
-+	u32 base, mask;
++	uint64_t port_addr;
++	uint32_t val;
 +
-+	base = nlm_read_reg(flash_mmio, FLASH_CSBASE_ADDR(cs));
-+	mask = nlm_read_reg(flash_mmio, FLASH_CSADDR_MASK(cs));
++	/* reset USB phy */
++	port_addr = nlm_get_usb_regbase(node, port);
++	val = nlm_read_usb_reg(port_addr, USB_PHY_0);
++	val &= ~(USB_PHY_RESET | USB_PHY_PORT_RESET_0 | USB_PHY_PORT_RESET_1);
++	nlm_write_usb_reg(port_addr, USB_PHY_0, val);
 +
-+	res->start = flash_map_base + ((unsigned long)base << 16);
-+	res->end = res->start + (mask + 1) * 64 * 1024;
++	mdelay(100);
++	val = nlm_read_usb_reg(port_addr, USB_CTL_0);
++	val &= ~(USB_CONTROLLER_RESET);
++	val |= 0x4;
++	nlm_write_usb_reg(port_addr, USB_CTL_0, val);
 +}
 +
-+static int __init xlr_flash_init(void)
++static int __init nlm_platform_usb_init(void)
 +{
-+	uint64_t gpio_mmio, flash_mmio, flash_map_base;
-+	u32 gpio_resetcfg, flash_bar;
-+	int cs, boot_nand, boot_nor;
++	pr_info("Initializing USB Interface\n");
++	nlm_usb_hw_reset(0, 0);
++	nlm_usb_hw_reset(0, 3);
 +
-+	/* Flash address bits 39:24 is in bridge flash BAR */
-+	flash_bar = nlm_read_reg(nlm_io_base, BRIDGE_FLASH_BAR);
-+	flash_map_base = (flash_bar & 0xffff0000) << 8;
++	/* Enable PHY interrupts */
++	nlm_usb_intr_en(0, 0);
++	nlm_usb_intr_en(0, 3);
 +
-+	gpio_mmio = nlm_mmio_base(NETLOGIC_IO_GPIO_OFFSET);
-+	flash_mmio = nlm_mmio_base(NETLOGIC_IO_FLASH_OFFSET);
-+
-+	/* Get the chip reset config */
-+	gpio_resetcfg = nlm_read_reg(gpio_mmio, GPIO_PWRON_RESET_CFG_REG);
-+
-+	/* Check for boot flash type */
-+	boot_nor = boot_nand = 0;
-+	if (nlm_chip_is_xls()) {
-+		/* On XLS, check boot from NAND bit (GPIO reset reg bit 16) */
-+		if (gpio_resetcfg & (1 << 16))
-+			boot_nand = 1;
-+
-+		/* check boot from PCMCIA, (GPIO reset reg bit 15 */
-+		if ((gpio_resetcfg & (1 << 15)) == 0)
-+			boot_nor = 1;	/* not set, booted from NOR */
-+	} else { /* XLR */
-+		/* check boot from PCMCIA (bit 16 in GPIO reset on XLR) */
-+		if ((gpio_resetcfg & (1 << 16)) == 0)
-+			boot_nor = 1;	/* not set, booted from NOR */
-+	}
-+
-+	/* boot flash at chip select 0 */
-+	cs = 0;
-+
-+	if (boot_nand) {
-+		nand_priv.cs = cs;
-+		nand_priv.flash_mmio = flash_mmio;
-+		setup_flash_resource(flash_mmio, flash_map_base, cs,
-+			 xlr_nand_res);
-+
-+		/* Initialize NAND flash at CS 0 */
-+		nlm_write_reg(flash_mmio, FLASH_CSDEV_PARM(cs),
-+				FLASH_NAND_CSDEV_PARAM);
-+		nlm_write_reg(flash_mmio, FLASH_CSTIME_PARMA(cs),
-+				FLASH_NAND_CSTIME_PARAMA);
-+		nlm_write_reg(flash_mmio, FLASH_CSTIME_PARMB(cs),
-+				FLASH_NAND_CSTIME_PARAMB);
-+
-+		pr_info("ChipSelect %d: NAND Flash %pR\n", cs, xlr_nand_res);
-+		return platform_device_register(&xlr_nand_dev);
-+	}
-+
-+	if (boot_nor) {
-+		setup_flash_resource(flash_mmio, flash_map_base, cs,
-+			xlr_nor_res);
-+		pr_info("ChipSelect %d: NOR Flash %pR\n", cs, xlr_nor_res);
-+		return platform_device_register(&xlr_nor_dev);
-+	}
 +	return 0;
 +}
 +
-+arch_initcall(xlr_flash_init);
++arch_initcall(nlm_platform_usb_init);
++
++static u64 xlp_usb_dmamask = ~(u32)0;
++
++/* Fixup the IRQ for USB devices which is exist on XLP SOC PCIE bus */
++static void nlm_usb_fixup_final(struct pci_dev *dev)
++{
++	dev->dev.dma_mask		= &xlp_usb_dmamask;
++	dev->dev.coherent_dma_mask	= DMA_BIT_MASK(64);
++	switch (dev->devfn) {
++	case 0x10:
++	       dev->irq = PIC_EHCI_0_IRQ;
++	       break;
++	case 0x11:
++	       dev->irq = PIC_OHCI_0_IRQ;
++	       break;
++	case 0x12:
++	       dev->irq = PIC_OHCI_1_IRQ;
++	       break;
++	case 0x13:
++	       dev->irq = PIC_EHCI_1_IRQ;
++	       break;
++	case 0x14:
++	       dev->irq = PIC_OHCI_2_IRQ;
++	       break;
++	case 0x15:
++	       dev->irq = PIC_OHCI_3_IRQ;
++	       break;
++	}
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_EHCI,
++		nlm_usb_fixup_final);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_NETLOGIC, PCI_DEVICE_ID_NLM_OHCI,
++		nlm_usb_fixup_final);
 -- 
 1.7.9.5

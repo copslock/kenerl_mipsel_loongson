@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Apr 2012 02:05:20 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:40521 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Apr 2012 02:05:47 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:40530 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903697Ab2D2AFO (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Apr 2012 02:05:14 +0200
+        with ESMTP id S1903706Ab2D2AFP (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Apr 2012 02:05:15 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 1E5498F69;
-        Sun, 29 Apr 2012 02:05:14 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 9AF438F60;
+        Sun, 29 Apr 2012 02:05:15 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zLnf6ND1GH+I; Sun, 29 Apr 2012 02:05:10 +0200 (CEST)
+        with ESMTP id hKustZRA0H4o; Sun, 29 Apr 2012 02:05:11 +0200 (CEST)
 Received: from hauke.lan (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 65F6E8F60;
+        by hauke-m.de (Postfix) with ESMTPSA id C339C8F61;
         Sun, 29 Apr 2012 02:05:10 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linville@tuxdriver.com
@@ -19,11 +19,13 @@ Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
         linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         arend@broadcom.com, m@bues.ch, ralf@linux-mips.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 0/8] ssb/bcma/bcm47xx: extend boardinfo and sprom
-Date:   Sun, 29 Apr 2012 02:04:05 +0200
-Message-Id: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 1/8] ssb: remove rev from boardinfo
+Date:   Sun, 29 Apr 2012 02:04:06 +0200
+Message-Id: <1335657853-23925-2-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.9.5
-X-archive-position: 33069
+In-Reply-To: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
+References: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
+X-archive-position: 33070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,39 +34,170 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-This patch series fixes the boardinfo for ssb based devices by removing 
-board_rev from the struct, this should be fetched from sprom. In 
-addition a boardinfo struct was added to bcma.
-The pci sprom parsing code was extended for bcma to provide all 
-attributes needed by brcmsmac and that code was also copied to ssb.
+Previously the rev contained the revision read from the pci config
+space and was used as board_rev in the wireless drivers. This is wrong
+the board_rev is only fetched from the sprom accordingly to the open
+source part of the Broadcom SDK and brcmsmac. This patch removes the
+rev from the boardinfo structure and uses the board_rev attribute from
+sprom instead. This attribute is filled by PCI, PCMCIA, SDIO and SoC
+code.
 
-This is based on wireless-testing/master.
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+---
+ arch/mips/bcm47xx/setup.c              |    2 --
+ drivers/net/wireless/b43/bus.c         |    2 +-
+ drivers/net/wireless/b43/main.c        |    4 ++--
+ drivers/net/wireless/b43legacy/main.c  |    2 +-
+ drivers/net/wireless/b43legacy/phy.c   |    4 ++--
+ drivers/net/wireless/b43legacy/radio.c |   10 +++++-----
+ drivers/ssb/pci.c                      |    1 -
+ include/linux/ssb/ssb.h                |    1 -
+ 8 files changed, 11 insertions(+), 15 deletions(-)
 
-Hauke Mehrtens (8):
-  ssb: remove rev from boardinfo
-  MIPS: bcm47xx: refactor fetching board data
-  bcma: add boardinfo struct
-  MIPS: bcm47xx: read baordrev without prefix from sprom
-  ssb/bcma: fill attribute alpha2 from sprom
-  ssb: fill board_rev attribute from sprom
-  bcma: read out some additional sprom attributes
-  bcma/ssb: parse new attributes from sprom
-
- arch/mips/bcm47xx/setup.c                    |   11 +-
- arch/mips/bcm47xx/sprom.c                    |   26 +++++
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    9 ++
- drivers/bcma/host_pci.c                      |    3 +
- drivers/bcma/sprom.c                         |  149 +++++++++++++++++++++++++-
- drivers/net/wireless/b43/bus.c               |    6 +-
- drivers/net/wireless/b43/main.c              |    4 +-
- drivers/net/wireless/b43legacy/main.c        |    2 +-
- drivers/net/wireless/b43legacy/phy.c         |    4 +-
- drivers/net/wireless/b43legacy/radio.c       |   10 +-
- drivers/ssb/pci.c                            |   88 +++++++++++++--
- include/linux/bcma/bcma.h                    |    7 ++
- include/linux/ssb/ssb.h                      |    1 -
- include/linux/ssb/ssb_regs.h                 |   61 ++++++++++-
- 14 files changed, 347 insertions(+), 34 deletions(-)
-
+diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
+index 19780aa..d9278a8 100644
+--- a/arch/mips/bcm47xx/setup.c
++++ b/arch/mips/bcm47xx/setup.c
+@@ -115,8 +115,6 @@ static int bcm47xx_get_invariants(struct ssb_bus *bus,
+ 		iv->boardinfo.vendor = SSB_BOARDVENDOR_BCM;
+ 	if (nvram_getenv("boardtype", buf, sizeof(buf)) >= 0)
+ 		iv->boardinfo.type = (u16)simple_strtoul(buf, NULL, 0);
+-	if (nvram_getenv("boardrev", buf, sizeof(buf)) >= 0)
+-		iv->boardinfo.rev = (u16)simple_strtoul(buf, NULL, 0);
+ 
+ 	bcm47xx_fill_sprom(&iv->sprom, NULL);
+ 
+diff --git a/drivers/net/wireless/b43/bus.c b/drivers/net/wireless/b43/bus.c
+index 424692d..8f3c0a8 100644
+--- a/drivers/net/wireless/b43/bus.c
++++ b/drivers/net/wireless/b43/bus.c
+@@ -210,7 +210,7 @@ struct b43_bus_dev *b43_bus_dev_ssb_init(struct ssb_device *sdev)
+ 
+ 	dev->board_vendor = sdev->bus->boardinfo.vendor;
+ 	dev->board_type = sdev->bus->boardinfo.type;
+-	dev->board_rev = sdev->bus->boardinfo.rev;
++	dev->board_rev = sdev->bus->sprom.board_rev;
+ 
+ 	dev->chip_id = sdev->bus->chip_id;
+ 	dev->chip_rev = sdev->bus->chip_rev;
+diff --git a/drivers/net/wireless/b43/main.c b/drivers/net/wireless/b43/main.c
+index 617afc8..5a39b22 100644
+--- a/drivers/net/wireless/b43/main.c
++++ b/drivers/net/wireless/b43/main.c
+@@ -5243,10 +5243,10 @@ static void b43_sprom_fixup(struct ssb_bus *bus)
+ 
+ 	/* boardflags workarounds */
+ 	if (bus->boardinfo.vendor == SSB_BOARDVENDOR_DELL &&
+-	    bus->chip_id == 0x4301 && bus->boardinfo.rev == 0x74)
++	    bus->chip_id == 0x4301 && bus->sprom.board_rev == 0x74)
+ 		bus->sprom.boardflags_lo |= B43_BFL_BTCOEXIST;
+ 	if (bus->boardinfo.vendor == PCI_VENDOR_ID_APPLE &&
+-	    bus->boardinfo.type == 0x4E && bus->boardinfo.rev > 0x40)
++	    bus->boardinfo.type == 0x4E && bus->sprom.board_rev > 0x40)
+ 		bus->sprom.boardflags_lo |= B43_BFL_PACTRL;
+ 	if (bus->bustype == SSB_BUSTYPE_PCI) {
+ 		pdev = bus->host_pci;
+diff --git a/drivers/net/wireless/b43legacy/main.c b/drivers/net/wireless/b43legacy/main.c
+index 1be214b..85f58f9 100644
+--- a/drivers/net/wireless/b43legacy/main.c
++++ b/drivers/net/wireless/b43legacy/main.c
+@@ -3781,7 +3781,7 @@ static void b43legacy_sprom_fixup(struct ssb_bus *bus)
+ 	/* boardflags workarounds */
+ 	if (bus->boardinfo.vendor == PCI_VENDOR_ID_APPLE &&
+ 	    bus->boardinfo.type == 0x4E &&
+-	    bus->boardinfo.rev > 0x40)
++	    bus->sprom.board_rev > 0x40)
+ 		bus->sprom.boardflags_lo |= B43legacy_BFL_PACTRL;
+ }
+ 
+diff --git a/drivers/net/wireless/b43legacy/phy.c b/drivers/net/wireless/b43legacy/phy.c
+index 9503341..995c7d0 100644
+--- a/drivers/net/wireless/b43legacy/phy.c
++++ b/drivers/net/wireless/b43legacy/phy.c
+@@ -408,7 +408,7 @@ static void b43legacy_phy_setupg(struct b43legacy_wldev *dev)
+ 
+ 		if (is_bcm_board_vendor(dev) &&
+ 		    (dev->dev->bus->boardinfo.type == 0x0416) &&
+-		    (dev->dev->bus->boardinfo.rev == 0x0017))
++		    (dev->dev->bus->sprom.board_rev == 0x0017))
+ 			return;
+ 
+ 		b43legacy_ilt_write(dev, 0x5001, 0x0002);
+@@ -424,7 +424,7 @@ static void b43legacy_phy_setupg(struct b43legacy_wldev *dev)
+ 
+ 		if (is_bcm_board_vendor(dev) &&
+ 		    (dev->dev->bus->boardinfo.type == 0x0416) &&
+-		    (dev->dev->bus->boardinfo.rev == 0x0017))
++		    (dev->dev->bus->sprom.board_rev == 0x0017))
+ 			return;
+ 
+ 		b43legacy_ilt_write(dev, 0x0401, 0x0002);
+diff --git a/drivers/net/wireless/b43legacy/radio.c b/drivers/net/wireless/b43legacy/radio.c
+index fcbafcd..8961776 100644
+--- a/drivers/net/wireless/b43legacy/radio.c
++++ b/drivers/net/wireless/b43legacy/radio.c
+@@ -1998,7 +1998,7 @@ u16 b43legacy_default_radio_attenuation(struct b43legacy_wldev *dev)
+ 			if (phy->type == B43legacy_PHYTYPE_G) {
+ 				if (is_bcm_board_vendor(dev) &&
+ 				    dev->dev->bus->boardinfo.type == 0x421 &&
+-				    dev->dev->bus->boardinfo.rev >= 30)
++				    dev->dev->bus->sprom.board_rev >= 30)
+ 					att = 3;
+ 				else if (is_bcm_board_vendor(dev) &&
+ 					 dev->dev->bus->boardinfo.type == 0x416)
+@@ -2008,7 +2008,7 @@ u16 b43legacy_default_radio_attenuation(struct b43legacy_wldev *dev)
+ 			} else {
+ 				if (is_bcm_board_vendor(dev) &&
+ 				    dev->dev->bus->boardinfo.type == 0x421 &&
+-				    dev->dev->bus->boardinfo.rev >= 30)
++				    dev->dev->bus->sprom.board_rev >= 30)
+ 					att = 7;
+ 				else
+ 					att = 6;
+@@ -2018,7 +2018,7 @@ u16 b43legacy_default_radio_attenuation(struct b43legacy_wldev *dev)
+ 			if (phy->type == B43legacy_PHYTYPE_G) {
+ 				if (is_bcm_board_vendor(dev) &&
+ 				    dev->dev->bus->boardinfo.type == 0x421 &&
+-				    dev->dev->bus->boardinfo.rev >= 30)
++				    dev->dev->bus->sprom.board_rev >= 30)
+ 					att = 3;
+ 				else if (is_bcm_board_vendor(dev) &&
+ 					 dev->dev->bus->boardinfo.type ==
+@@ -2052,9 +2052,9 @@ u16 b43legacy_default_radio_attenuation(struct b43legacy_wldev *dev)
+ 	}
+ 	if (is_bcm_board_vendor(dev) &&
+ 	    dev->dev->bus->boardinfo.type == 0x421) {
+-		if (dev->dev->bus->boardinfo.rev < 0x43)
++		if (dev->dev->bus->sprom.board_rev < 0x43)
+ 			att = 2;
+-		else if (dev->dev->bus->boardinfo.rev < 0x51)
++		else if (dev->dev->bus->sprom.board_rev < 0x51)
+ 			att = 3;
+ 	}
+ 	if (att == 0xFFFF)
+diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
+index ed41244..113208e 100644
+--- a/drivers/ssb/pci.c
++++ b/drivers/ssb/pci.c
+@@ -784,7 +784,6 @@ static void ssb_pci_get_boardinfo(struct ssb_bus *bus,
+ {
+ 	bi->vendor = bus->host_pci->subsystem_vendor;
+ 	bi->type = bus->host_pci->subsystem_device;
+-	bi->rev = bus->host_pci->revision;
+ }
+ 
+ int ssb_pci_get_invariants(struct ssb_bus *bus,
+diff --git a/include/linux/ssb/ssb.h b/include/linux/ssb/ssb.h
+index d276831..bc14bd7 100644
+--- a/include/linux/ssb/ssb.h
++++ b/include/linux/ssb/ssb.h
+@@ -188,7 +188,6 @@ struct ssb_sprom {
+ struct ssb_boardinfo {
+ 	u16 vendor;
+ 	u16 type;
+-	u8  rev;
+ };
+ 
+ 
 -- 
 1.7.9.5

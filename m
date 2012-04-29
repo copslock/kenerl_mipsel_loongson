@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Apr 2012 02:06:11 +0200 (CEST)
-Received: from server19320154104.serverpool.info ([193.201.54.104]:40546 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Apr 2012 02:06:35 +0200 (CEST)
+Received: from server19320154104.serverpool.info ([193.201.54.104]:40565 "EHLO
         hauke-m.de" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903707Ab2D2AFS (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Apr 2012 02:05:18 +0200
+        with ESMTP id S1903708Ab2D2AFU (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Apr 2012 02:05:20 +0200
 Received: from localhost (localhost [127.0.0.1])
-        by hauke-m.de (Postfix) with ESMTP id 5E6538F61;
-        Sun, 29 Apr 2012 02:05:18 +0200 (CEST)
+        by hauke-m.de (Postfix) with ESMTP id 360FF8F6A;
+        Sun, 29 Apr 2012 02:05:20 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at hauke-m.de 
 Received: from hauke-m.de ([127.0.0.1])
         by localhost (hauke-m.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id N7REbOj0oPAD; Sun, 29 Apr 2012 02:05:14 +0200 (CEST)
+        with ESMTP id hkJGsgBJF7Nv; Sun, 29 Apr 2012 02:05:16 +0200 (CEST)
 Received: from hauke.lan (unknown [134.102.132.222])
-        by hauke-m.de (Postfix) with ESMTPSA id 4D8B88F62;
+        by hauke-m.de (Postfix) with ESMTPSA id A55138F63;
         Sun, 29 Apr 2012 02:05:11 +0200 (CEST)
 From:   Hauke Mehrtens <hauke@hauke-m.de>
 To:     linville@tuxdriver.com
@@ -19,13 +19,13 @@ Cc:     zajec5@gmail.com, b43-dev@lists.infradead.org,
         linux-mips@linux-mips.org, linux-wireless@vger.kernel.org,
         arend@broadcom.com, m@bues.ch, ralf@linux-mips.org,
         Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 2/8] MIPS: bcm47xx: refactor fetching board data
-Date:   Sun, 29 Apr 2012 02:04:07 +0200
-Message-Id: <1335657853-23925-3-git-send-email-hauke@hauke-m.de>
+Subject: [PATCH 3/8] bcma: add boardinfo struct
+Date:   Sun, 29 Apr 2012 02:04:08 +0200
+Message-Id: <1335657853-23925-4-git-send-email-hauke@hauke-m.de>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
 References: <1335657853-23925-1-git-send-email-hauke@hauke-m.de>
-X-archive-position: 33071
+X-archive-position: 33072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,46 +34,45 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Now the fetching of board data also uses nvram_read_u16 and not
-simple_strtoul any more.
+This struct contains information about the board, the chip is running
+on. The struct is filled for PCIe devices and SoCs. This information is
+used by b43 and will be used by brcmsmac soon.
 
 Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 ---
- arch/mips/bcm47xx/setup.c                    |    7 +------
+ arch/mips/bcm47xx/setup.c                    |    2 ++
  arch/mips/bcm47xx/sprom.c                    |   12 ++++++++++++
- arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    5 +++++
- 3 files changed, 18 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/mach-bcm47xx/bcm47xx.h |    4 ++++
+ drivers/bcma/host_pci.c                      |    3 +++
+ drivers/net/wireless/b43/bus.c               |    4 +---
+ include/linux/bcma/bcma.h                    |    7 +++++++
+ 6 files changed, 29 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/bcm47xx/setup.c b/arch/mips/bcm47xx/setup.c
-index d9278a8..53cdb72 100644
+index 53cdb72..9ef46d2 100644
 --- a/arch/mips/bcm47xx/setup.c
 +++ b/arch/mips/bcm47xx/setup.c
-@@ -109,12 +109,7 @@ static int bcm47xx_get_invariants(struct ssb_bus *bus,
- 	/* Fill boardinfo structure */
- 	memset(&(iv->boardinfo), 0 , sizeof(struct ssb_boardinfo));
- 
--	if (nvram_getenv("boardvendor", buf, sizeof(buf)) >= 0)
--		iv->boardinfo.vendor = (u16)simple_strtoul(buf, NULL, 0);
--	else
--		iv->boardinfo.vendor = SSB_BOARDVENDOR_BCM;
--	if (nvram_getenv("boardtype", buf, sizeof(buf)) >= 0)
--		iv->boardinfo.type = (u16)simple_strtoul(buf, NULL, 0);
-+	bcm47xx_fill_ssb_boardinfo(&iv->boardinfo, NULL);
- 
- 	bcm47xx_fill_sprom(&iv->sprom, NULL);
+@@ -190,6 +190,8 @@ static void __init bcm47xx_register_bcma(void)
+ 	err = bcma_host_soc_register(&bcm47xx_bus.bcma);
+ 	if (err)
+ 		panic("Failed to initialize BCMA bus (err %d)", err);
++
++	bcm47xx_fill_bcma_boardinfo(&bcm47xx_bus.bcma.bus.boardinfo, NULL);
+ }
+ #endif
  
 diff --git a/arch/mips/bcm47xx/sprom.c b/arch/mips/bcm47xx/sprom.c
-index 5c8dcd2..279991a 100644
+index 279991a..a29d207 100644
 --- a/arch/mips/bcm47xx/sprom.c
 +++ b/arch/mips/bcm47xx/sprom.c
-@@ -618,3 +618,15 @@ void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix)
- 		bcm47xx_fill_sprom_r1(sprom, prefix);
- 	}
+@@ -630,3 +630,15 @@ void bcm47xx_fill_ssb_boardinfo(struct ssb_boardinfo *boardinfo,
+ 	nvram_read_u16(prefix, NULL, "boardtype", &boardinfo->type, 0);
  }
+ #endif
 +
-+#ifdef CONFIG_BCM47XX_SSB
-+void bcm47xx_fill_ssb_boardinfo(struct ssb_boardinfo *boardinfo,
-+				const char *prefix)
++#ifdef CONFIG_BCM47XX_BCMA
++void bcm47xx_fill_bcma_boardinfo(struct bcma_boardinfo *boardinfo,
++				 const char *prefix)
 +{
 +	nvram_read_u16(prefix, NULL, "boardvendor", &boardinfo->vendor, 0);
 +	if (!boardinfo->vendor)
@@ -83,18 +82,74 @@ index 5c8dcd2..279991a 100644
 +}
 +#endif
 diff --git a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-index 5ecaf47..42887c6 100644
+index 42887c6..26fdaf4 100644
 --- a/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
 +++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx.h
-@@ -47,4 +47,9 @@ extern enum bcm47xx_bus_type bcm47xx_bus_type;
- void bcm47xx_fill_sprom(struct ssb_sprom *sprom, const char *prefix);
- void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom, const char *prefix);
- 
-+#ifdef CONFIG_BCM47XX_SSB
-+void bcm47xx_fill_ssb_boardinfo(struct ssb_boardinfo *boardinfo,
-+				const char *prefix);
+@@ -51,5 +51,9 @@ void bcm47xx_fill_sprom_ethernet(struct ssb_sprom *sprom, const char *prefix);
+ void bcm47xx_fill_ssb_boardinfo(struct ssb_boardinfo *boardinfo,
+ 				const char *prefix);
+ #endif
++#ifdef CONFIG_BCM47XX_BCMA
++void bcm47xx_fill_bcma_boardinfo(struct bcma_boardinfo *boardinfo,
++				 const char *prefix);
 +#endif
-+
+ 
  #endif /* __ASM_BCM47XX_H */
+diff --git a/drivers/bcma/host_pci.c b/drivers/bcma/host_pci.c
+index e3928d6..3a93563 100644
+--- a/drivers/bcma/host_pci.c
++++ b/drivers/bcma/host_pci.c
+@@ -201,6 +201,9 @@ static int __devinit bcma_host_pci_probe(struct pci_dev *dev,
+ 	bus->hosttype = BCMA_HOSTTYPE_PCI;
+ 	bus->ops = &bcma_host_pci_ops;
+ 
++	bus->boardinfo.vendor = bus->host_pci->subsystem_vendor;
++	bus->boardinfo.type = bus->host_pci->subsystem_device;
++
+ 	/* Register */
+ 	err = bcma_bus_register(bus);
+ 	if (err)
+diff --git a/drivers/net/wireless/b43/bus.c b/drivers/net/wireless/b43/bus.c
+index 8f3c0a8..565fdbd 100644
+--- a/drivers/net/wireless/b43/bus.c
++++ b/drivers/net/wireless/b43/bus.c
+@@ -107,11 +107,9 @@ struct b43_bus_dev *b43_bus_dev_bcma_init(struct bcma_device *core)
+ 	dev->dma_dev = core->dma_dev;
+ 	dev->irq = core->irq;
+ 
+-	/*
+ 	dev->board_vendor = core->bus->boardinfo.vendor;
+ 	dev->board_type = core->bus->boardinfo.type;
+-	dev->board_rev = core->bus->boardinfo.rev;
+-	*/
++	dev->board_rev = core->bus->sprom.board_rev;
+ 
+ 	dev->chip_id = core->bus->chipinfo.id;
+ 	dev->chip_rev = core->bus->chipinfo.rev;
+diff --git a/include/linux/bcma/bcma.h b/include/linux/bcma/bcma.h
+index 5af9a07..747f2ca 100644
+--- a/include/linux/bcma/bcma.h
++++ b/include/linux/bcma/bcma.h
+@@ -26,6 +26,11 @@ struct bcma_chipinfo {
+ 	u8 pkg;
+ };
+ 
++struct bcma_boardinfo {
++	u16 vendor;
++	u16 type;
++};
++
+ enum bcma_clkmode {
+ 	BCMA_CLKMODE_FAST,
+ 	BCMA_CLKMODE_DYNAMIC,
+@@ -198,6 +203,8 @@ struct bcma_bus {
+ 
+ 	struct bcma_chipinfo chipinfo;
+ 
++	struct bcma_boardinfo boardinfo;
++
+ 	struct bcma_device *mapped_core;
+ 	struct list_head cores;
+ 	u8 nr_cores;
 -- 
 1.7.9.5

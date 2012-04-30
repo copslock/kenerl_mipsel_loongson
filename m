@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Apr 2012 13:38:17 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:56992 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Apr 2012 13:50:26 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:53145 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903716Ab2D3Leg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Mon, 30 Apr 2012 13:34:36 +0200
+        id S1903649Ab2D3LuU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Apr 2012 13:50:20 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH 10/14] MIPS: lantiq: add ipi handlers to make vsmp work
-Date:   Mon, 30 Apr 2012 13:33:05 +0200
-Message-Id: <1335785589-32532-10-git-send-email-blogic@openwrt.org>
+Subject: [PATCH 14/14] MIPS: lantiq: cleanup reset code
+Date:   Mon, 30 Apr 2012 13:33:09 +0200
+Message-Id: <1335785589-32532-14-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1335785589-32532-1-git-send-email-blogic@openwrt.org>
 References: <1335785589-32532-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33090
+X-archive-position: 33091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,113 +22,147 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add IPI handlers to the interrupt code. This patch makes MIPS_MT_SMP work
-on lantiq socs. The code is based on the malta implementation.
+Add 2 new soc specifc handlers and remove superflous pr_notice calls.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 ---
- arch/mips/lantiq/irq.c  |   60 +++++++++++++++++++++++++++++++++++++++++++++++
- arch/mips/lantiq/prom.c |    5 ++++
- 2 files changed, 65 insertions(+), 0 deletions(-)
+ arch/mips/include/asm/mach-lantiq/lantiq.h         |    3 +-
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   10 ++++
+ arch/mips/lantiq/xway/reset.c                      |   48 +++++++++++++++-----
+ 3 files changed, 48 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
-index bfd4ad1..d227be1 100644
---- a/arch/mips/lantiq/irq.c
-+++ b/arch/mips/lantiq/irq.c
-@@ -54,6 +54,14 @@
- #define ltq_eiu_w32(x, y)	ltq_w32((x), ltq_eiu_membase + (y))
- #define ltq_eiu_r32(x)		ltq_r32(ltq_eiu_membase + (x))
+diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
+index ce2f029..7a90190 100644
+--- a/arch/mips/include/asm/mach-lantiq/lantiq.h
++++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
+@@ -48,7 +48,8 @@ extern spinlock_t ebu_lock;
+ extern void ltq_disable_irq(struct irq_data *data);
+ extern void ltq_mask_and_ack_irq(struct irq_data *data);
+ extern void ltq_enable_irq(struct irq_data *data);
+-
++/* find out what bootsource we have */
++extern unsigned char ltq_boot_select(void);
+ /* find out what caused the last cpu reset */
+ extern int ltq_reset_cause(void);
+ #define LTQ_RST_CAUSE_WDTRST	0x20
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+index af6c0f0..15eb4dc 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
+@@ -49,6 +49,16 @@
+ #define LTQ_ASC1_BASE_ADDR	0x1E100C00
+ #define LTQ_ASC_SIZE		0x400
  
-+/* our 2 ipi interrupts for VSMP */
-+#define MIPS_CPU_IPI_RESCHED_IRQ	0
-+#define MIPS_CPU_IPI_CALL_IRQ		1
++/* BOOT_SEL - find what boot media we have */
++#define BS_EXT_ROM		0x0
++#define BS_FLASH		0x1
++#define BS_MII0			0x2
++#define BS_PCI			0x3
++#define BS_UART1		0x4
++#define BS_SPI			0x5
++#define BS_NAND			0x6
++#define BS_RMII0		0x7
 +
-+#if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
-+int gic_present;
-+#endif
+ /*
+  * during early_printk no ioremap is possible
+  * lets use KSEG1 instead
+diff --git a/arch/mips/lantiq/xway/reset.c b/arch/mips/lantiq/xway/reset.c
+index 8b66bd8..3327211 100644
+--- a/arch/mips/lantiq/xway/reset.c
++++ b/arch/mips/lantiq/xway/reset.c
+@@ -11,19 +11,31 @@
+ #include <linux/ioport.h>
+ #include <linux/pm.h>
+ #include <linux/export.h>
++#include <linux/delay.h>
++#include <linux/of_address.h>
++#include <linux/of_platform.h>
 +
- static unsigned short ltq_eiu_irq[MAX_EIU] = {
- 	LTQ_EIU_IR0,
- 	LTQ_EIU_IR1,
-@@ -219,6 +227,47 @@ static void ltq_hw5_irqdispatch(void)
- 	do_IRQ(MIPS_CPU_TIMER_IRQ);
- }
+ #include <asm/reboot.h>
  
-+#ifdef CONFIG_MIPS_MT_SMP
-+void __init arch_init_ipiirq(int irq, struct irqaction *action)
-+{
-+	setup_irq(irq, action);
-+	irq_set_handler(irq, handle_percpu_irq);
-+}
+ #include <lantiq_soc.h>
+ 
++#include "../prom.h"
 +
-+static void ltq_sw0_irqdispatch(void)
-+{
-+	do_IRQ(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_RESCHED_IRQ);
-+}
-+
-+static void ltq_sw1_irqdispatch(void)
-+{
-+	do_IRQ(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_CALL_IRQ);
-+}
-+static irqreturn_t ipi_resched_interrupt(int irq, void *dev_id)
-+{
-+	scheduler_ipi();
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t ipi_call_interrupt(int irq, void *dev_id)
-+{
-+	smp_call_function_interrupt();
-+	return IRQ_HANDLED;
-+}
-+
-+static struct irqaction irq_resched = {
-+	.handler	= ipi_resched_interrupt,
-+	.flags		= IRQF_PERCPU,
-+	.name		= "IPI_resched"
-+};
-+
-+static struct irqaction irq_call = {
-+	.handler	= ipi_call_interrupt,
-+	.flags		= IRQF_PERCPU,
-+	.name		= "IPI_call"
-+};
-+#endif
-+
- asmlinkage void plat_irq_dispatch(void)
+ #define ltq_rcu_w32(x, y)	ltq_w32((x), ltq_rcu_membase + (y))
+ #define ltq_rcu_r32(x)		ltq_r32(ltq_rcu_membase + (x))
+ 
+-/* register definitions */
+-#define LTQ_RCU_RST		0x0010
+-#define LTQ_RCU_RST_ALL		0x40000000
++/* reset request register */
++#define RCU_RST_REQ		0x0010
++/* reset status register */
++#define RCU_RST_STAT		0x0014
+ 
+-#define LTQ_RCU_RST_STAT	0x0014
+-#define LTQ_RCU_STAT_SHIFT	26
++/* reboot bit */
++#define RCU_RD_SRST		BIT(30)
++/* reset cause */
++#define RCU_STAT_SHIFT		26
++/* boot selection */
++#define RCU_BOOT_SEL_SHIFT	26
++#define RCU_BOOT_SEL_MASK	0x7
+ 
+ static struct resource ltq_rcu_resource = {
+ 	.name   = "rcu",
+@@ -38,29 +50,41 @@ static void __iomem *ltq_rcu_membase;
+ /* This function is used by the watchdog driver */
+ int ltq_reset_cause(void)
  {
- 	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
-@@ -312,6 +361,17 @@ void __init arch_init_irq(void)
- 			irq_set_chip_and_handler(i, &ltq_irq_type,
- 				handle_level_irq);
- 
-+#if defined(CONFIG_MIPS_MT_SMP)
-+	if (cpu_has_vint) {
-+		pr_info("Setting up IPI vectored interrupts\n");
-+		set_vi_handler(MIPS_CPU_IPI_RESCHED_IRQ, ltq_sw0_irqdispatch);
-+		set_vi_handler(MIPS_CPU_IPI_CALL_IRQ, ltq_sw1_irqdispatch);
-+	}
-+	arch_init_ipiirq(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_RESCHED_IRQ,
-+		&irq_resched);
-+	arch_init_ipiirq(MIPS_CPU_IRQ_BASE + MIPS_CPU_IPI_CALL_IRQ, &irq_call);
-+#endif
-+
- #if !defined(CONFIG_MIPS_MT_SMP) && !defined(CONFIG_MIPS_MT_SMTC)
- 	set_c0_status(IE_IRQ0 | IE_IRQ1 | IE_IRQ2 |
- 		IE_IRQ3 | IE_IRQ4 | IE_IRQ5);
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index e34fcfd..664b7b7 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -68,4 +68,9 @@ void __init prom_init(void)
- 	soc_info.sys_type[LTQ_SYS_TYPE_LEN - 1] = '\0';
- 	pr_info("SoC: %s\n", soc_info.sys_type);
- 	prom_init_cmdline();
-+
-+#if defined(CONFIG_MIPS_MT_SMP)
-+	if (register_vsmp_smp_ops())
-+		panic("failed to register_vsmp_smp_ops()");
-+#endif
+-	u32 val = ltq_rcu_r32(LTQ_RCU_RST_STAT);
+-	return val >> LTQ_RCU_STAT_SHIFT;
++	u32 val = ltq_rcu_r32(RCU_RST_STAT);
++	return val >> RCU_STAT_SHIFT;
  }
+ EXPORT_SYMBOL_GPL(ltq_reset_cause);
+ 
++/* allow platform code to find out what source we booted from */
++unsigned char ltq_boot_select(void)
++{
++	u32 val = ltq_rcu_r32(RCU_RST_STAT);
++	return (val >> RCU_BOOT_SEL_SHIFT) & RCU_BOOT_SEL_MASK;
++}
++
++/* reset a io domain for u micro seconds */
++void ltq_reset_once(unsigned int module, ulong u)
++{
++	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) | module, RCU_RST_REQ);
++	udelay(u);
++	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) & ~module, RCU_RST_REQ);
++}
++
+ static void ltq_machine_restart(char *command)
+ {
+-	pr_notice("System restart\n");
+ 	local_irq_disable();
+-	ltq_rcu_w32(ltq_rcu_r32(LTQ_RCU_RST) | LTQ_RCU_RST_ALL, LTQ_RCU_RST);
++	ltq_rcu_w32(ltq_rcu_r32(RCU_RST_REQ) | RCU_RD_SRST, RCU_RST_REQ);
+ 	unreachable();
+ }
+ 
+ static void ltq_machine_halt(void)
+ {
+-	pr_notice("System halted.\n");
+ 	local_irq_disable();
+ 	unreachable();
+ }
+ 
+ static void ltq_machine_power_off(void)
+ {
+-	pr_notice("Please turn off the power now.\n");
+ 	local_irq_disable();
+ 	unreachable();
+ }
+@@ -79,7 +103,7 @@ static int __init mips_reboot_setup(void)
+ 	ltq_rcu_membase = ioremap_nocache(ltq_rcu_resource.start,
+ 				resource_size(&ltq_rcu_resource));
+ 	if (!ltq_rcu_membase)
+-		panic("Failed to remap rcu memory");
++		panic("Failed to remap core memory");
+ 
+ 	_machine_restart = ltq_machine_restart;
+ 	_machine_halt = ltq_machine_halt;
 -- 
 1.7.9.1

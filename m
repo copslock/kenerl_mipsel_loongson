@@ -1,55 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2012 18:14:42 +0200 (CEST)
-Received: from mail-yx0-f177.google.com ([209.85.213.177]:60550 "EHLO
-        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903756Ab2EBQOj (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 2 May 2012 18:14:39 +0200
-Received: by yenm7 with SMTP id m7so958579yen.36
-        for <linux-mips@linux-mips.org>; Wed, 02 May 2012 09:14:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20120113;
-        h=mime-version:from:date:message-id:subject:to:content-type;
-        bh=KO3QNDFQH6LWvJzMwkTd5z6PAqp16Aehr4Tjjx6gmIc=;
-        b=Pxp+OkQiJ9oTmZ+08NU0hpkQIKe1Hda9phJNCUb6XtwFREngom60u7VT3Rw0EplSG3
-         EF9vO2jksDBNw2SOzoGjIEYZNsuPFAErr6ou3hywh2MSJbiYh23t7ACbCJhg55Qf9u/w
-         t5ksUlSVTAMljf1L7dphUugMnGLFJbl6gveV33WuFWyWqo6o1GFx00LvtUkwtzZ2j5pQ
-         PlwnKZvDGSdQceTogVBNRgMGTf20K7Q620skC4gsaLArC5fYrUHGbcOND/VSPZhaN0wz
-         UxdapuGROesqxKgmpliAyTK2cUm/XlWpXAHV+CPm6gpDuTFPbfnfm7wptP/sK8+yOqll
-         DxIw==
-Received: by 10.236.152.41 with SMTP id c29mr18080761yhk.64.1335975273331;
- Wed, 02 May 2012 09:14:33 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.236.141.171 with HTTP; Wed, 2 May 2012 09:13:53 -0700 (PDT)
-From:   Manuel Lauss <manuel.lauss@googlemail.com>
-Date:   Wed, 2 May 2012 18:13:53 +0200
-Message-ID: <CAOLZvyHrREz+Ya=dn4EJeHCxY-4TXsRdH6ZMwcue6K1BKZSrXg@mail.gmail.com>
-Subject: NFS data corruption on 3.4
-To:     Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-X-archive-position: 33123
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2012 19:34:37 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:43232 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903759Ab2EBRec (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 2 May 2012 19:34:32 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+        Felix Fietkau <nbd@openwrt.org>,
+        John Crispin <blogic@openwrt.org>
+Subject: [PATCH V3 01/14] MIPS: make oprofile use cp0_perfcount_irq if it is set
+Date:   Wed,  2 May 2012 19:33:04 +0200
+Message-Id: <1335979984-3973-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.9.1
+X-archive-position: 33124
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello,
+From: Felix Fietkau <nbd@openwrt.org>
 
-I'm seeing an NFS data corruption problem on 3.4-rcX kernels:
-I copy the rootfs (~8 GB of data) from the DB1200 board using
-NFSv3 over to another machine, and a tiny fraction of files
-(~10 out of >300k) are corrupted on the target; interestingly it's
-always the same ones.
+Make the oprofile code use the performance counters irq.
 
-In the case of /usr/bin/dbus-daemon, which is 464144 bytes in size,
-bytes ranging from offset 36865 (so 32768 + 1x 4k page + 1) to 65535
-are garbage, every time.
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Signed-off-by: John Crispin <blogic@openwrt.org>
 
-I haven't seen this with my x86/x64 machines, and also not with 3.3 or
-earlier versions.
+---
+Changes in V2
+* set Author to Felix
 
-Does anyone have an idea?
+Changes in V3
+* remove IRQF_SHARED
+* make sure cp0_compare_irq != cp0_perfcount_irq
 
-Thanks!
-        Manuel Lauss
+ arch/mips/kernel/perf_event_mipsxx.c |    3 ++-
+ arch/mips/oprofile/op_model_mipsxx.c |   12 ++++++++++++
+ 2 files changed, 14 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/kernel/perf_event_mipsxx.c b/arch/mips/kernel/perf_event_mipsxx.c
+index 811084f..574b4e9 100644
+--- a/arch/mips/kernel/perf_event_mipsxx.c
++++ b/arch/mips/kernel/perf_event_mipsxx.c
+@@ -1532,7 +1532,8 @@ init_hw_perf_events(void)
+ 		irq = MSC01E_INT_BASE + MSC01E_INT_PERFCTR;
+ 	} else {
+ #endif
+-		if (cp0_perfcount_irq >= 0)
++		if ((cp0_perfcount_irq >= 0) &&
++				(cp0_compare_irq != cp0_perfcount_irq))
+ 			irq = MIPS_CPU_IRQ_BASE + cp0_perfcount_irq;
+ 		else
+ 			irq = -1;
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 54759f1..baba3bc 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -298,6 +298,11 @@ static void reset_counters(void *arg)
+ 	}
+ }
+ 
++static irqreturn_t mipsxx_perfcount_int(int irq, void *dev_id)
++{
++	return mipsxx_perfcount_handler();
++}
++
+ static int __init mipsxx_init(void)
+ {
+ 	int counters;
+@@ -374,6 +379,10 @@ static int __init mipsxx_init(void)
+ 	save_perf_irq = perf_irq;
+ 	perf_irq = mipsxx_perfcount_handler;
+ 
++	if ((cp0_perfcount_irq >= 0) && (cp0_compare_irq != cp0_perfcount_irq))
++		return request_irq(cp0_perfcount_irq, mipsxx_perfcount_int,
++			0, "Perfcounter", save_perf_irq);
++
+ 	return 0;
+ }
+ 
+@@ -381,6 +390,9 @@ static void mipsxx_exit(void)
+ {
+ 	int counters = op_model_mipsxx_ops.num_counters;
+ 
++	if ((cp0_perfcount_irq >= 0) && (cp0_compare_irq != cp0_perfcount_irq))
++		free_irq(cp0_perfcount_irq, save_perf_irq);
++
+ 	counters = counters_per_cpu_to_total(counters);
+ 	on_each_cpu(reset_counters, (void *)(long)counters, 1);
+ 
+-- 
+1.7.9.1

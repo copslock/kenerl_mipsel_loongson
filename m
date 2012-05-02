@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2012 14:30:51 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:48066 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2012 14:31:16 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:48068 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903755Ab2EBM3Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        id S1903756Ab2EBM3Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
         Wed, 2 May 2012 14:29:25 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
         John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 05/14] MIPS: parse chosen node on boot
-Date:   Wed,  2 May 2012 14:27:35 +0200
-Message-Id: <1335961659-21358-4-git-send-email-blogic@openwrt.org>
+Subject: [PATCH V2 08/14] MIPS: lantiq: clear all irqs properly on boot
+Date:   Wed,  2 May 2012 14:27:36 +0200
+Message-Id: <1335961659-21358-5-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1335961659-21358-1-git-send-email-blogic@openwrt.org>
 References: <1335961659-21358-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33118
+X-archive-position: 33119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -22,28 +22,39 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Call early_init_devtree from inside __dt_setup_arch to allow parsing of the
-chosen node.
+Due to missing brackets, the irq modules were not properly reset on boot.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
 
 ---
 Changes in V2
-* rebase on previous patch
+* make the commit message accurate
 
- arch/mips/kernel/prom.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ arch/mips/lantiq/irq.c |   11 ++++++-----
+ 1 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/kernel/prom.c b/arch/mips/kernel/prom.c
-index 4c788d2..f11b2bb 100644
---- a/arch/mips/kernel/prom.c
-+++ b/arch/mips/kernel/prom.c
-@@ -105,4 +105,6 @@ void __init __dt_setup_arch(struct boot_param_header *bph)
- 	}
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index d673731..b6b1c72 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -271,12 +271,13 @@ void __init arch_init_irq(void)
+ 	if (!ltq_eiu_membase)
+ 		panic("Failed to remap eiu memory");
  
- 	initial_boot_params = bph;
-+
-+	early_init_devtree(initial_boot_params);
- }
+-	/* make sure all irqs are turned off by default */
+-	for (i = 0; i < 5; i++)
++	/* turn off all irqs by default */
++	for (i = 0; i < 5; i++) {
++		/* make sure all irqs are turned off by default */
+ 		ltq_icu_w32(0, LTQ_ICU_IM0_IER + (i * LTQ_ICU_OFFSET));
+-
+-	/* clear all possibly pending interrupts */
+-	ltq_icu_w32(~0, LTQ_ICU_IM0_ISR + (i * LTQ_ICU_OFFSET));
++		/* clear all possibly pending interrupts */
++		ltq_icu_w32(~0, LTQ_ICU_IM0_ISR + (i * LTQ_ICU_OFFSET));
++	}
+ 
+ 	mips_cpu_irq_init();
+ 
 -- 
 1.7.9.1

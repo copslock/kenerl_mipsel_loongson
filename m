@@ -1,60 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2012 14:32:28 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:48075 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903760Ab2EBM30 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 2 May 2012 14:29:26 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        Thomas Langer <thomas.langer@lantiq.com>,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH V2 12/14] MIPS: lantiq: fix cmdline parsing
-Date:   Wed,  2 May 2012 14:27:39 +0200
-Message-Id: <1335961659-21358-8-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.9.1
-In-Reply-To: <1335961659-21358-1-git-send-email-blogic@openwrt.org>
-References: <1335961659-21358-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33122
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 May 2012 18:14:42 +0200 (CEST)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:60550 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903756Ab2EBQOj (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 2 May 2012 18:14:39 +0200
+Received: by yenm7 with SMTP id m7so958579yen.36
+        for <linux-mips@linux-mips.org>; Wed, 02 May 2012 09:14:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to:content-type;
+        bh=KO3QNDFQH6LWvJzMwkTd5z6PAqp16Aehr4Tjjx6gmIc=;
+        b=Pxp+OkQiJ9oTmZ+08NU0hpkQIKe1Hda9phJNCUb6XtwFREngom60u7VT3Rw0EplSG3
+         EF9vO2jksDBNw2SOzoGjIEYZNsuPFAErr6ou3hywh2MSJbiYh23t7ACbCJhg55Qf9u/w
+         t5ksUlSVTAMljf1L7dphUugMnGLFJbl6gveV33WuFWyWqo6o1GFx00LvtUkwtzZ2j5pQ
+         PlwnKZvDGSdQceTogVBNRgMGTf20K7Q620skC4gsaLArC5fYrUHGbcOND/VSPZhaN0wz
+         UxdapuGROesqxKgmpliAyTK2cUm/XlWpXAHV+CPm6gpDuTFPbfnfm7wptP/sK8+yOqll
+         DxIw==
+Received: by 10.236.152.41 with SMTP id c29mr18080761yhk.64.1335975273331;
+ Wed, 02 May 2012 09:14:33 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.236.141.171 with HTTP; Wed, 2 May 2012 09:13:53 -0700 (PDT)
+From:   Manuel Lauss <manuel.lauss@googlemail.com>
+Date:   Wed, 2 May 2012 18:13:53 +0200
+Message-ID: <CAOLZvyHrREz+Ya=dn4EJeHCxY-4TXsRdH6ZMwcue6K1BKZSrXg@mail.gmail.com>
+Subject: NFS data corruption on 3.4
+To:     Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+X-archive-position: 33123
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Thomas Langer <thomas.langer@lantiq.com>
+Hello,
 
-The code tested if the KSEG1 mapped address of argv was != 0. We need to use
-CPHYSADDR instead to make the conditional actually work.
+I'm seeing an NFS data corruption problem on 3.4-rcX kernels:
+I copy the rootfs (~8 GB of data) from the DB1200 board using
+NFSv3 over to another machine, and a tiny fraction of files
+(~10 out of >300k) are corrupted on the target; interestingly it's
+always the same ones.
 
-Signed-off-by: Thomas Langer <thomas.langer@lantiq.com>
-Signed-off-by: John Crispin <blogic@openwrt.org>
----
-Changes in V2
-* set Author to Thomas
+In the case of /usr/bin/dbus-daemon, which is 464144 bytes in size,
+bytes ranging from offset 36865 (so 32768 + 1x 4k page + 1) to 65535
+are garbage, every time.
 
- arch/mips/lantiq/prom.c |    6 ++++--
- 1 files changed, 4 insertions(+), 2 deletions(-)
+I haven't seen this with my x86/x64 machines, and also not with 3.3 or
+earlier versions.
 
-diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
-index 664b7b7..cd56892 100644
---- a/arch/mips/lantiq/prom.c
-+++ b/arch/mips/lantiq/prom.c
-@@ -45,10 +45,12 @@ static void __init prom_init_cmdline(void)
- 	char **argv = (char **) KSEG1ADDR(fw_arg1);
- 	int i;
- 
-+	arcs_cmdline[0] = '\0';
-+
- 	for (i = 0; i < argc; i++) {
--		char *p = (char *)  KSEG1ADDR(argv[i]);
-+		char *p = (char *) KSEG1ADDR(argv[i]);
- 
--		if (p && *p) {
-+		if (CPHYSADDR(p) && *p) {
- 			strlcat(arcs_cmdline, p, sizeof(arcs_cmdline));
- 			strlcat(arcs_cmdline, " ", sizeof(arcs_cmdline));
- 		}
--- 
-1.7.9.1
+Does anyone have an idea?
+
+Thanks!
+        Manuel Lauss

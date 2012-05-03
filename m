@@ -1,147 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 May 2012 19:44:03 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:50541 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903771Ab2ECRn7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 3 May 2012 19:43:59 +0200
-From:   John Crispin <blogic@openwrt.org>
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-        John Crispin <blogic@openwrt.org>
-Subject: [PATCH 02/14] MIPS: pci: parse memory ranges from devicetree
-Date:   Thu,  3 May 2012 19:42:29 +0200
-Message-Id: <1336066949-24546-1-git-send-email-blogic@openwrt.org>
-X-Mailer: git-send-email 1.7.9.1
-X-archive-position: 33131
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 May 2012 21:30:30 +0200 (CEST)
+Received: from mail-yx0-f177.google.com ([209.85.213.177]:46136 "EHLO
+        mail-yx0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903765Ab2ECTa0 convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 3 May 2012 21:30:26 +0200
+Received: by yenr9 with SMTP id r9so424471yen.36
+        for <multiple recipients>; Thu, 03 May 2012 12:30:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=l1DlFo0gltURw60q+cQHRq36KSU7X6VDNin+NMLqdcA=;
+        b=fWH+5Yz2ykhSVzx1E9G5//L9eHEUHR7ecMvFNi+4fQrWPrfkj+bi5HkNkej//7AVaD
+         UN07Veza9IaOzjVqqiti58dCDXoggrS9LyY1fVVu8sZ1l0/VlmKG6aJ5lHdHhsRailJF
+         sLlSsN/r9983N5mB/Mepj1TKx9EuWBFPXlGNvdanBtDsSUfAJvjpP7rF1iKRVDTG3oC4
+         8b9f8NoqkIiya3ihe4n4r0hLTg9q3Z4kgfjVhe+qWHD7p4AXcUk2VWCWDrXBCIjGwK8+
+         fxAV18JBgCL7A6i3Rt5P21fmUVXfs1FwLbeUlYSnoYaN6B86qAAyyKJ0JQalcPZ++fEg
+         rjtg==
+MIME-Version: 1.0
+Received: by 10.50.178.71 with SMTP id cw7mr1227470igc.19.1336073420081; Thu,
+ 03 May 2012 12:30:20 -0700 (PDT)
+Received: by 10.231.144.135 with HTTP; Thu, 3 May 2012 12:30:20 -0700 (PDT)
+In-Reply-To: <1336066949-24546-1-git-send-email-blogic@openwrt.org>
+References: <1336066949-24546-1-git-send-email-blogic@openwrt.org>
+Date:   Thu, 3 May 2012 21:30:20 +0200
+X-Google-Sender-Auth: Ucju-3sORwKMowOXn4NvoCS2MDA
+Message-ID: <CAMuHMdWkd4YYKp1dBOFXyLFUT=Jc0iE3nb5OqbT6isQ977z1_w@mail.gmail.com>
+Subject: Re: [PATCH 02/14] MIPS: pci: parse memory ranges from devicetree
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     John Crispin <blogic@openwrt.org>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33132
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Implement pci_load_of_ranges on MIPS. Due to lack of test hardware only 32bit
-bus width is supported. This function is based on the implementation found on
-powerpc.
+On Thu, May 3, 2012 at 7:42 PM, John Crispin <blogic@openwrt.org> wrote:
+> Implement pci_load_of_ranges on MIPS. Due to lack of test hardware only 32bit
+> bus width is supported. This function is based on the implementation found on
+> powerpc.
 
-Signed-off-by: John Crispin <blogic@openwrt.org>
+There's no pci_load_of_ranges() in arch/powerpc/?
 
----
-Changes in V2
-* remove some #ifdefs
-* rename to pci_load_of_ranges
+> +void __devinit pci_load_of_ranges(struct pci_controller *hose,
+> +                               struct device_node *node)
+> +{
+> +       const __be32 *ranges;
+> +       int rlen;
+> +       int pna = of_n_addr_cells(node);
+> +       int np = pna + 5;
+> +
+> +       pr_info("PCI host bridge %s ranges:\n", node->full_name);
+> +       ranges = of_get_property(node, "ranges", &rlen);
+> +       if (ranges == NULL)
+> +               return;
+> +       hose->of_node = node;
+> +
+> +       while ((rlen -= np * 4) >= 0) {
+> +               u32 pci_space;
+> +               struct resource *res = NULL;
+> +               unsigned long long addr, size;
 
-Changes in V3
-* set pointers to NULL and not 0
+You better use u64, as that's what of_translate_address() and
+of_read_number() return.
 
- arch/mips/include/asm/pci.h |    6 ++++
- arch/mips/pci/pci.c         |   55 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 61 insertions(+), 0 deletions(-)
+> +
+> +               pci_space = ranges[0];
 
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index fcd4060..90bf3b3 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -17,6 +17,7 @@
-  */
- 
- #include <linux/ioport.h>
-+#include <linux/of.h>
- 
- /*
-  * Each pci channel is a top-level PCI bus seem by CPU.  A machine  with
-@@ -26,6 +27,7 @@
- struct pci_controller {
- 	struct pci_controller *next;
- 	struct pci_bus *bus;
-+	struct device_node *of_node;
- 
- 	struct pci_ops *pci_ops;
- 	struct resource *mem_resource;
-@@ -142,4 +144,8 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- 
- extern char * (*pcibios_plat_setup)(char *str);
- 
-+/* this function parses memory ranges from a device node */
-+extern void __devinit pci_load_of_ranges(struct pci_controller *hose,
-+					 struct device_node *node);
-+
- #endif /* _ASM_PCI_H */
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 0514866..a10c951 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -16,6 +16,7 @@
- #include <linux/init.h>
- #include <linux/types.h>
- #include <linux/pci.h>
-+#include <linux/of_address.h>
- 
- #include <asm/cpu-info.h>
- 
-@@ -114,9 +115,63 @@ static void __devinit pcibios_scanbus(struct pci_controller *hose)
- 			pci_bus_assign_resources(bus);
- 			pci_enable_bridges(bus);
- 		}
-+		bus->dev.of_node = hose->of_node;
- 	}
- }
- 
-+#ifdef CONFIG_OF
-+void __devinit pci_load_of_ranges(struct pci_controller *hose,
-+				struct device_node *node)
-+{
-+	const __be32 *ranges;
-+	int rlen;
-+	int pna = of_n_addr_cells(node);
-+	int np = pna + 5;
-+
-+	pr_info("PCI host bridge %s ranges:\n", node->full_name);
-+	ranges = of_get_property(node, "ranges", &rlen);
-+	if (ranges == NULL)
-+		return;
-+	hose->of_node = node;
-+
-+	while ((rlen -= np * 4) >= 0) {
-+		u32 pci_space;
-+		struct resource *res = NULL;
-+		unsigned long long addr, size;
-+
-+		pci_space = ranges[0];
-+		addr = of_translate_address(node, ranges + 3);
-+		size = of_read_number(ranges + pna + 3, 2);
-+		ranges += np;
-+		switch ((pci_space >> 24) & 0x3) {
-+		case 1:		/* PCI IO space */
-+			pr_info("  IO 0x%016llx..0x%016llx\n",
-+					addr, addr + size - 1);
-+			hose->io_map_base =
-+				(unsigned long)ioremap(addr, size);
-+			res = hose->io_resource;
-+			res->flags = IORESOURCE_IO;
-+			break;
-+		case 2:		/* PCI Memory space */
-+		case 3:		/* PCI 64 bits Memory space */
-+			pr_info(" MEM 0x%016llx..0x%016llx\n",
-+					addr, addr + size - 1);
-+			res = hose->mem_resource;
-+			res->flags = IORESOURCE_MEM;
-+			break;
-+		}
-+		if (res != NULL) {
-+			res->start = addr;
-+			res->name = node->full_name;
-+			res->end = res->start + size - 1;
-+			res->parent = NULL;
-+			res->sibling = NULL;
-+			res->child = NULL;
-+		}
-+	}
-+}
-+#endif
-+
- static DEFINE_MUTEX(pci_scan_mutex);
- 
- void __devinit register_pci_controller(struct pci_controller *hose)
--- 
-1.7.9.1
+pci_space = be32_to_cpup(&ranges[0])
+
+> +               addr = of_translate_address(node, ranges + 3);
+> +               size = of_read_number(ranges + pna + 3, 2);
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

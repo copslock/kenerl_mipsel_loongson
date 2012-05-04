@@ -1,107 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 02:30:49 +0200 (CEST)
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49]:60634 "EHLO
-        mail-lpp01m010-f49.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903782Ab2EDAap convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 May 2012 02:30:45 +0200
-Received: by lagy4 with SMTP id y4so2085942lag.36
-        for <linux-mips@linux-mips.org>; Thu, 03 May 2012 17:30:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 03:18:15 +0200 (CEST)
+Received: from mail-pb0-f49.google.com ([209.85.160.49]:64253 "EHLO
+        mail-pb0-f49.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903771Ab2EDBSI (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2012 03:18:08 +0200
+Received: by pbbrq13 with SMTP id rq13so3428443pbb.36
+        for <multiple recipients>; Thu, 03 May 2012 18:18:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding:x-system-of-record;
-        bh=Y/Ftqp2+f0C33bWO5FyppNYLGW3qQdI+lguCiWNzNQ8=;
-        b=WvIdsWIiYGPAVs28j/adO49txkSfOwjnEKxRrzL3JHXyh5K2Bpy+DO8N/EXopovbWk
-         ZiT/JFpJa11Cezq/YviVhEzny0KDFO05CkpWbFSvfs2WFRj6X7wBWbYcp/mVuuP1PMDU
-         Pohmk6ZP8RK+j33ltsFAxVrsuYRz1lhFGJ6ceIplZm3bU4NEN2YI2Hd2QdljVoMdUCOc
-         jkbZp5/a+3dYGYgU7A/2xcMERnsy1EakEoeo1Zk/ndZm0Gkv1uAaLlSGqdxx1EQYOskx
-         KceGw2A1+/5eBTg8Cut0L5aFXZfNh0A0qxfZTNTLMlA5NLvzlBCD98oDYjeVJ2htfzFa
-         qLmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type:content-transfer-encoding:x-system-of-record
-         :x-gm-message-state;
-        bh=Y/Ftqp2+f0C33bWO5FyppNYLGW3qQdI+lguCiWNzNQ8=;
-        b=mHvV4IaOBGsNypwxtOWSbpGzGK0co8b9dHMX4m2vdvVpLUZMgYVwDvr4cOlneF2ZHs
-         HW24PRTMN9YN1TeOaw4jDHe6ZndVOriMF5CFYpT/GZ8NslcSISbaa+R5BaxhPFXw1/0b
-         8fQzfsTzYWt8uSBBks1a6Z5LoJ9AfElZLk3W9I2mHmxF+IrGJYW3K0fv/PhIVhKOIZSu
-         2MPtDrzjfOS8yaWmb5YnryrOMkE8BphkFbrTcwykc3HMydrljcwh2X95Ng7UOOHJjS/x
-         rIVCLVy1qJC5a6F8Y8712H65Us8Rk/0jIciDkIAewUD1e0EsTPe6gG/jq+4El4e6ooTM
-         kgCA==
-Received: by 10.152.128.137 with SMTP id no9mr3890873lab.2.1336091440360;
-        Thu, 03 May 2012 17:30:40 -0700 (PDT)
-Received: by 10.152.128.137 with SMTP id no9mr3890856lab.2.1336091440239; Thu,
- 03 May 2012 17:30:40 -0700 (PDT)
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding;
+        bh=l4sAEpx8MjtX1KI7Lhv/D/Am3O/SilbAfdb4moW3Uko=;
+        b=H/8yAbyfwkQj0JVsdNbDGzpAgV005Sxg3Ry1nCViXQzGuC85XIvW+4MZcuAxDFAJVj
+         KCP6poyWYlQNvVYz5VaGHlB7KybhchPgwN2Il3EimgtUPnEzOjRzJRLoH+SOcJ/2+p1+
+         kSycSLIXxhV6cCiKNLq+rqyhSVdLmhGPW6u6c0WA9vc+M6EasioEe5z/4i0BOtZN+471
+         myrkHP/4Leuo1B6Mp+k8wdgH5okw5RKuHrUi5nnzO55aI4ugPAHU869xYQ5bGKgeLYjh
+         YUCw9EwON05xpRWBUOBGlgfqOMuO0ZbRLtvJN/8fKxTJXyZGVF2aE8A8xDNkLh5VRyQz
+         2Jlw==
+Received: by 10.68.200.74 with SMTP id jq10mr1839952pbc.66.1336094282010;
+        Thu, 03 May 2012 18:18:02 -0700 (PDT)
+Received: from dd1.caveonetworks.com (64.2.3.195.ptr.us.xo.net. [64.2.3.195])
+        by mx.google.com with ESMTPS id ky10sm117171pbc.0.2012.05.03.18.18.00
+        (version=SSLv3 cipher=OTHER);
+        Thu, 03 May 2012 18:18:00 -0700 (PDT)
+Message-ID: <4FA32E47.7020406@gmail.com>
+Date:   Thu, 03 May 2012 18:17:59 -0700
+From:   David Daney <ddaney.cavm@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.15) Gecko/20101027 Fedora/3.0.10-1.fc12 Thunderbird/3.0.10
 MIME-Version: 1.0
-Received: by 10.112.86.6 with HTTP; Thu, 3 May 2012 17:30:20 -0700 (PDT)
-In-Reply-To: <4F9FE4F6.5070909@openwrt.org>
-References: <1335808019-24502-1-git-send-email-blogic@openwrt.org>
- <4F9ED1DC.3050007@gmail.com> <4F9FE4F6.5070909@openwrt.org>
-From:   Bjorn Helgaas <bhelgaas@google.com>
-Date:   Thu, 3 May 2012 18:30:20 -0600
-Message-ID: <CAErSpo4bZ=0=DtbDots_GOGeLNhX6Q4eJrdetaFQMv4iiv5+XA@mail.gmail.com>
-Subject: Re: [PATCH] OF: PCI: const usage needed by MIPS
-To:     John Crispin <blogic@openwrt.org>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
+To:     Bjorn Helgaas <bhelgaas@google.com>
+CC:     John Crispin <blogic@openwrt.org>,
         Ralf Baechle <ralf@linux-mips.org>,
         Grant Likely <grant.likely@secretlab.ca>,
         linux-pci@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
         linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-System-Of-Record: true
-X-Gm-Message-State: ALoCoQk4H8292E23VWjI4gKTNW2/gsXG/EmIThKYLZ2CAL5WoBbWMxTNmBnGhNzUDCImPxDocN6tZ8sQ7yJ3rGIpyUkPorG2F5xF3WpG7xyEvJFOczugHo08Kr0piSlN/7zQvl5xxu+xFy638AB29+uqagba7PQtcg==
-X-archive-position: 33135
+Subject: Re: [PATCH] OF: PCI: const usage needed by MIPS
+References: <1335808019-24502-1-git-send-email-blogic@openwrt.org> <4F9ED1DC.3050007@gmail.com> <4F9FE4F6.5070909@openwrt.org> <CAErSpo4bZ=0=DtbDots_GOGeLNhX6Q4eJrdetaFQMv4iiv5+XA@mail.gmail.com>
+In-Reply-To: <CAErSpo4bZ=0=DtbDots_GOGeLNhX6Q4eJrdetaFQMv4iiv5+XA@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bhelgaas@google.com
+X-original-sender: ddaney.cavm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Tue, May 1, 2012 at 7:28 AM, John Crispin <blogic@openwrt.org> wrote:
-> On 30/04/12 19:54, David Daney wrote:
->> On 04/30/2012 10:46 AM, John Crispin wrote:
->>> On MIPS we want to call of_irq_map_pci from inside
+On 05/03/2012 05:30 PM, Bjorn Helgaas wrote:
+> On Tue, May 1, 2012 at 7:28 AM, John Crispin<blogic@openwrt.org>  wrote:
+>> On 30/04/12 19:54, David Daney wrote:
+>>> On 04/30/2012 10:46 AM, John Crispin wrote:
+>>>> On MIPS we want to call of_irq_map_pci from inside
+>>>>
+>>>> arch/mips/include/asm/pci.h:extern int pcibios_map_irq(
+>>>>                  const struct pci_dev *dev, u8 slot, u8 pin);
+>>>>
+>>>> For this to work we need to change several functions to const usage.
 >>>
->>> arch/mips/include/asm/pci.h:extern int pcibios_map_irq(
->>>                 const struct pci_dev *dev, u8 slot, u8 pin);
+>>> I think there is a mismatch on this throughout the kernel.
 >>>
->>> For this to work we need to change several functions to const usage.
+>>> Properly fixing it requires touching many more places than these.
+>>> Although I haven't tried it, I wouldn't be surprised if doing this
+>>> caused warnings to appear in non-MIPS code.
+>>>
+>>> Ralf had a patch at one point that tried to make this consistent
+>>> tree-wide, but it is not yet applied.
+>>>
+>>> David Daney
 >>
->> I think there is a mismatch on this throughout the kernel.
+>> Hi,
 >>
->> Properly fixing it requires touching many more places than these.
->> Although I haven't tried it, I wouldn't be surprised if doing this
->> caused warnings to appear in non-MIPS code.
+>> Ok, lets see what Ralf has to say.
 >>
->> Ralf had a patch at one point that tried to make this consistent
->> tree-wide, but it is not yet applied.
->>
->> David Daney
+>> I just tested the patch on x86 with OF enabled and drivers turned on
+>> that use the API. I did not see any errors appear.
 >
-> Hi,
+> I'm far from a const expert, but I think this should be safe.
+
+> Here's my reasoning:
 >
-> Ok, lets see what Ralf has to say.
+> We're changing pci_swizzle_interrupt_pin() to take a pointer to a
+> constant struct pci_dev.  pci_swizzle_interrupt_pin() only reads the
+> struct pci_dev; it doesn't modify it.  It is legal to pass either
+> "struct pci_dev *" or "const struct pci_dev *" to a function expecting
+> "const struct pci_dev *"; the callee just won't be able to modify the
+> struct, even if the caller can.
 >
-> I just tested the patch on x86 with OF enabled and drivers turned on
-> that use the API. I did not see any errors appear.
 
-I'm far from a const expert, but I think this should be safe.  Here's
-my reasoning:
+The problem is when you start declaring function pointers in various ops 
+vectors.
 
-We're changing pci_swizzle_interrupt_pin() to take a pointer to a
-constant struct pci_dev.  pci_swizzle_interrupt_pin() only reads the
-struct pci_dev; it doesn't modify it.  It is legal to pass either
-"struct pci_dev *" or "const struct pci_dev *" to a function expecting
-"const struct pci_dev *"; the callee just won't be able to modify the
-struct, even if the caller can.
+Consider:
 
-Similar reasoning applies to of_irq_map_pci().
+void (*foo)(const struct pci_dev *)
+void (*bar)(struct pci_dev *)
 
-So I'm fine with this.  You sent it to Grant, so I'll assume he'll
-merge it unless I hear otherwise.
+foo and bar are not type compatible, and you will get compiler warnings 
+if you use one where the other is expected.
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+So the question is:  Are we ever going to the address of any of the 
+functions that are being modified?  If so, we have created a problem.
+
+> Similar reasoning applies to of_irq_map_pci().
+>
+> So I'm fine with this.  You sent it to Grant, so I'll assume he'll
+> merge it unless I hear otherwise.
+>
+> Acked-by: Bjorn Helgaas<bhelgaas@google.com>
+>

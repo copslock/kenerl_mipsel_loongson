@@ -1,20 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 14:49:53 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:33954 "EHLO nbd.name"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 14:50:17 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:33977 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903664Ab2EDMtn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 May 2012 14:49:43 +0200
+        id S1903667Ab2EDMuJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 May 2012 14:50:09 +0200
 From:   John Crispin <blogic@openwrt.org>
 To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        linux-watchdog@vger.kernel.org
-Subject: [PATCH 11/14] watchdog: MIPS: lantiq: implement OF support and minor fixes
-Date:   Fri,  4 May 2012 14:18:36 +0200
-Message-Id: <1336133919-26525-11-git-send-email-blogic@openwrt.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH 14/14] MIPS: lantiq: remove orphaned code
+Date:   Fri,  4 May 2012 14:18:39 +0200
+Message-Id: <1336133919-26525-14-git-send-email-blogic@openwrt.org>
 X-Mailer: git-send-email 1.7.9.1
 In-Reply-To: <1336133919-26525-1-git-send-email-blogic@openwrt.org>
 References: <1336133919-26525-1-git-send-email-blogic@openwrt.org>
-X-archive-position: 33150
+X-archive-position: 33151
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -23,172 +21,366 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Add support for OF. We also apply the following small fixes
-* reduce boiler plate by using devm_request_and_ioremap
-* sane error path for the clock
-* move LTQ_RST_CAUSE_WDTRST to a soc specific header file
-* add a message to show that the driver loaded
+Now that all drivers are converted to OF we are able to remove some remaining
+pieces of orphaned code.
 
 Signed-off-by: John Crispin <blogic@openwrt.org>
-Cc: Wim Van Sebroeck <wim@iguana.be>
-Cc: linux-watchdog@vger.kernel.org
-
 ---
-This patch is part of a series moving the mips/lantiq target to OF and clkdev
-support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
-
- arch/mips/include/asm/mach-lantiq/lantiq.h         |    1 -
- .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |    2 +
- drivers/watchdog/lantiq_wdt.c                      |   56 +++++++++-----------
- 3 files changed, 27 insertions(+), 32 deletions(-)
+ arch/mips/include/asm/mach-lantiq/lantiq.h         |    6 --
+ .../mips/include/asm/mach-lantiq/lantiq_platform.h |   53 -----------
+ .../mips/include/asm/mach-lantiq/xway/lantiq_irq.h |   46 +----------
+ .../mips/include/asm/mach-lantiq/xway/lantiq_soc.h |   93 +-------------------
+ arch/mips/lantiq/prom.c                            |    6 --
+ arch/mips/lantiq/xway/sysctrl.c                    |   25 +----
+ 6 files changed, 7 insertions(+), 222 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-lantiq/lantiq_platform.h
 
 diff --git a/arch/mips/include/asm/mach-lantiq/lantiq.h b/arch/mips/include/asm/mach-lantiq/lantiq.h
-index c955e8d..161cce3 100644
+index 161cce3..1aaf265 100644
 --- a/arch/mips/include/asm/mach-lantiq/lantiq.h
 +++ b/arch/mips/include/asm/mach-lantiq/lantiq.h
-@@ -49,7 +49,6 @@ extern struct clk *clk_get_fpi(void);
- extern unsigned char ltq_boot_select(void);
- /* find out what caused the last cpu reset */
- extern int ltq_reset_cause(void);
--#define LTQ_RST_CAUSE_WDTRST	0x20
+@@ -27,9 +27,6 @@
+ 	ltq_w32_mask(x, y, ltq_ebu_membase + (z))
+ extern __iomem void *ltq_ebu_membase;
  
- #define IOPORT_RESOURCE_START	0x10000000
+-extern unsigned int ltq_get_cpu_ver(void);
+-extern unsigned int ltq_get_soc_type(void);
+-
+ /* spinlock all ebu i/o */
+ extern spinlock_t ebu_lock;
+ 
+@@ -43,7 +40,6 @@ extern int clk_activate(struct clk *clk);
+ extern void clk_deactivate(struct clk *clk);
+ extern struct clk *clk_get_cpu(void);
+ extern struct clk *clk_get_fpi(void);
+-#define clk_get_io	clk_get_fpi
+ 
+ /* find out what bootsource we have */
+ extern unsigned char ltq_boot_select(void);
+@@ -54,7 +50,5 @@ extern int ltq_reset_cause(void);
  #define IOPORT_RESOURCE_END	0xffffffff
+ #define IOMEM_RESOURCE_START	0x10000000
+ #define IOMEM_RESOURCE_END	0xffffffff
+-#define LTQ_FLASH_START		0x10000000
+-#define LTQ_FLASH_MAX		0x04000000
+ 
+ #endif
+diff --git a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h b/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
+deleted file mode 100644
+index a305f1d..0000000
+--- a/arch/mips/include/asm/mach-lantiq/lantiq_platform.h
++++ /dev/null
+@@ -1,53 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#ifndef _LANTIQ_PLATFORM_H__
+-#define _LANTIQ_PLATFORM_H__
+-
+-#include <linux/mtd/partitions.h>
+-#include <linux/socket.h>
+-
+-/* struct used to pass info to the pci core */
+-enum {
+-	PCI_CLOCK_INT = 0,
+-	PCI_CLOCK_EXT
+-};
+-
+-#define PCI_EXIN0	0x0001
+-#define PCI_EXIN1	0x0002
+-#define PCI_EXIN2	0x0004
+-#define PCI_EXIN3	0x0008
+-#define PCI_EXIN4	0x0010
+-#define PCI_EXIN5	0x0020
+-#define PCI_EXIN_MAX	6
+-
+-#define PCI_GNT1	0x0040
+-#define PCI_GNT2	0x0080
+-#define PCI_GNT3	0x0100
+-#define PCI_GNT4	0x0200
+-
+-#define PCI_REQ1	0x0400
+-#define PCI_REQ2	0x0800
+-#define PCI_REQ3	0x1000
+-#define PCI_REQ4	0x2000
+-#define PCI_REQ_SHIFT	10
+-#define PCI_REQ_MASK	0xf
+-
+-struct ltq_pci_data {
+-	int clock;
+-	int gpio;
+-	int irq[16];
+-};
+-
+-/* struct used to pass info to network drivers */
+-struct ltq_eth_data {
+-	struct sockaddr mac;
+-	int mii_mode;
+-};
+-
+-#endif
+diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
+index b4465a8..885a429 100644
+--- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
++++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_irq.h
+@@ -17,50 +17,6 @@
+ #define INT_NUM_IM4_IRL0	(INT_NUM_IRQ0 + 128)
+ #define INT_NUM_IM_OFFSET	(INT_NUM_IM1_IRL0 - INT_NUM_IM0_IRL0)
+ 
+-#define LTQ_ASC_TIR(x)		(INT_NUM_IM3_IRL0 + (x * 8))
+-#define LTQ_ASC_RIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 1)
+-#define LTQ_ASC_EIR(x)		(INT_NUM_IM3_IRL0 + (x * 8) + 2)
+-
+-#define LTQ_ASC_ASE_TIR		INT_NUM_IM2_IRL0
+-#define LTQ_ASC_ASE_RIR		(INT_NUM_IM2_IRL0 + 2)
+-#define LTQ_ASC_ASE_EIR		(INT_NUM_IM2_IRL0 + 3)
+-
+-#define LTQ_SSC_TIR		(INT_NUM_IM0_IRL0 + 15)
+-#define LTQ_SSC_RIR		(INT_NUM_IM0_IRL0 + 14)
+-#define LTQ_SSC_EIR		(INT_NUM_IM0_IRL0 + 16)
+-
+-#define LTQ_MEI_DYING_GASP_INT	(INT_NUM_IM1_IRL0 + 21)
+-#define LTQ_MEI_INT		(INT_NUM_IM1_IRL0 + 23)
+-
+-#define LTQ_TIMER6_INT		(INT_NUM_IM1_IRL0 + 23)
+-#define LTQ_USB_INT		(INT_NUM_IM1_IRL0 + 22)
+-#define LTQ_USB_OC_INT		(INT_NUM_IM4_IRL0 + 23)
+-
+-#define MIPS_CPU_TIMER_IRQ		7
+-
+-#define LTQ_DMA_CH0_INT		(INT_NUM_IM2_IRL0)
+-#define LTQ_DMA_CH1_INT		(INT_NUM_IM2_IRL0 + 1)
+-#define LTQ_DMA_CH2_INT		(INT_NUM_IM2_IRL0 + 2)
+-#define LTQ_DMA_CH3_INT		(INT_NUM_IM2_IRL0 + 3)
+-#define LTQ_DMA_CH4_INT		(INT_NUM_IM2_IRL0 + 4)
+-#define LTQ_DMA_CH5_INT		(INT_NUM_IM2_IRL0 + 5)
+-#define LTQ_DMA_CH6_INT		(INT_NUM_IM2_IRL0 + 6)
+-#define LTQ_DMA_CH7_INT		(INT_NUM_IM2_IRL0 + 7)
+-#define LTQ_DMA_CH8_INT		(INT_NUM_IM2_IRL0 + 8)
+-#define LTQ_DMA_CH9_INT		(INT_NUM_IM2_IRL0 + 9)
+-#define LTQ_DMA_CH10_INT	(INT_NUM_IM2_IRL0 + 10)
+-#define LTQ_DMA_CH11_INT	(INT_NUM_IM2_IRL0 + 11)
+-#define LTQ_DMA_CH12_INT	(INT_NUM_IM2_IRL0 + 25)
+-#define LTQ_DMA_CH13_INT	(INT_NUM_IM2_IRL0 + 26)
+-#define LTQ_DMA_CH14_INT	(INT_NUM_IM2_IRL0 + 27)
+-#define LTQ_DMA_CH15_INT	(INT_NUM_IM2_IRL0 + 28)
+-#define LTQ_DMA_CH16_INT	(INT_NUM_IM2_IRL0 + 29)
+-#define LTQ_DMA_CH17_INT	(INT_NUM_IM2_IRL0 + 30)
+-#define LTQ_DMA_CH18_INT	(INT_NUM_IM2_IRL0 + 16)
+-#define LTQ_DMA_CH19_INT	(INT_NUM_IM2_IRL0 + 21)
+-
+-#define LTQ_PPE_MBOX_INT	(INT_NUM_IM2_IRL0 + 24)
+-
+-#define INT_NUM_IM4_IRL14	(INT_NUM_IM4_IRL0 + 14)
++#define MIPS_CPU_TIMER_IRQ	7
+ 
+ #endif
 diff --git a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-index b5a2acf..d0d40a4 100644
+index d0d40a4..fb3e65f 100644
 --- a/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
 +++ b/arch/mips/include/asm/mach-lantiq/xway/lantiq_soc.h
-@@ -133,6 +133,8 @@ extern __iomem void *ltq_cgu_membase;
- #define LTQ_WDT_BASE_ADDR	0x1F8803F0
- #define LTQ_WDT_SIZE		0x10
+@@ -44,11 +44,6 @@
+ #define SOC_TYPE_VR9_2		0x05 /* v1.2 */
+ #define SOC_TYPE_AMAZON_SE	0x06
  
-+#define LTQ_RST_CAUSE_WDTRST	0x20
-+
- /* STP - serial to parallel conversion unit */
- #define LTQ_STP_BASE_ADDR	0x1E100BB0
- #define LTQ_STP_SIZE		0x40
-diff --git a/drivers/watchdog/lantiq_wdt.c b/drivers/watchdog/lantiq_wdt.c
-index a9593a3..f66a9e6 100644
---- a/drivers/watchdog/lantiq_wdt.c
-+++ b/drivers/watchdog/lantiq_wdt.c
-@@ -13,14 +13,15 @@
- #include <linux/fs.h>
- #include <linux/miscdevice.h>
- #include <linux/watchdog.h>
--#include <linux/platform_device.h>
-+#include <linux/of_platform.h>
- #include <linux/uaccess.h>
- #include <linux/clk.h>
- #include <linux/io.h>
+-/* ASC0/1 - serial port */
+-#define LTQ_ASC0_BASE_ADDR	0x1E100400
+-#define LTQ_ASC1_BASE_ADDR	0x1E100C00
+-#define LTQ_ASC_SIZE		0x400
+-
+ /* BOOT_SEL - find what boot media we have */
+ #define BS_EXT_ROM		0x0
+ #define BS_FLASH		0x1
+@@ -68,23 +63,10 @@ extern __iomem void *ltq_cgu_membase;
+  * during early_printk no ioremap is possible
+  * lets use KSEG1 instead
+  */
++#define LTQ_ASC1_BASE_ADDR	0x1E100C00
+ #define LTQ_EARLY_ASC		KSEG1ADDR(LTQ_ASC1_BASE_ADDR)
  
--#include <lantiq.h>
-+#include <lantiq_soc.h>
+-/* RCU - reset control unit */
+-#define LTQ_RCU_BASE_ADDR	0x1F203000
+-#define LTQ_RCU_SIZE		0x1000
+-
+-/* GPTU - general purpose timer unit */
+-#define LTQ_GPTU_BASE_ADDR	0x18000300
+-#define LTQ_GPTU_SIZE		0x100
+-
+ /* EBU - external bus unit */
+-#define LTQ_EBU_GPIO_START	0x14000000
+-#define LTQ_EBU_GPIO_SIZE	0x1000
+-
+-#define LTQ_EBU_BASE_ADDR	0x1E105300
+-#define LTQ_EBU_SIZE		0x100
+-
+ #define LTQ_EBU_BUSCON0		0x0060
+ #define LTQ_EBU_PCC_CON		0x0090
+ #define LTQ_EBU_PCC_IEN		0x00A4
+@@ -93,85 +75,12 @@ extern __iomem void *ltq_cgu_membase;
+ #define LTQ_EBU_ADDRSEL1	0x0024
+ #define EBU_WRDIS		0x80000000
  
--/* Section 3.4 of the datasheet
-+/*
-+ * Section 3.4 of the datasheet
-  * The password sequence protects the WDT control register from unintended
-  * write actions, which might cause malfunction of the WDT.
-  *
-@@ -70,7 +71,8 @@ ltq_wdt_disable(void)
- {
- 	/* write the first password magic */
- 	ltq_w32(LTQ_WDT_PW1, ltq_wdt_membase + LTQ_WDT_CR);
--	/* write the second password magic with no config
-+	/*
-+	 * write the second password magic with no config
- 	 * this turns the watchdog off
- 	 */
- 	ltq_w32(LTQ_WDT_PW2, ltq_wdt_membase + LTQ_WDT_CR);
-@@ -184,7 +186,7 @@ static struct miscdevice ltq_wdt_miscdev = {
- 	.fops	= &ltq_wdt_fops,
- };
+-/* CGU - clock generation unit */
+-#define LTQ_CGU_BASE_ADDR	0x1F103000
+-#define LTQ_CGU_SIZE		0x1000
+-
+-/* ICU - interrupt control unit */
+-#define LTQ_ICU_BASE_ADDR	0x1F880200
+-#define LTQ_ICU_SIZE		0x100
+-
+-/* EIU - external interrupt unit */
+-#define LTQ_EIU_BASE_ADDR	0x1F101000
+-#define LTQ_EIU_SIZE		0x1000
+-
+-/* PMU - power management unit */
+-#define LTQ_PMU_BASE_ADDR	0x1F102000
+-#define LTQ_PMU_SIZE		0x1000
+-
+-#define PMU_DMA			0x0020
+-#define PMU_USB			0x8041
+-#define PMU_LED			0x0800
+-#define PMU_GPT			0x1000
+-#define PMU_PPE			0x2000
+-#define PMU_FPI			0x4000
+-#define PMU_SWITCH		0x10000000
+-
+-/* ETOP - ethernet */
+-#define LTQ_ETOP_BASE_ADDR	0x1E180000
+-#define LTQ_ETOP_SIZE		0x40000
+-
+-/* DMA */
+-#define LTQ_DMA_BASE_ADDR	0x1E104100
+-#define LTQ_DMA_SIZE		0x800
+-
+-/* PCI */
+-#define PCI_CR_BASE_ADDR	0x1E105400
+-#define PCI_CR_SIZE		0x400
+-
+ /* WDT */
+-#define LTQ_WDT_BASE_ADDR	0x1F8803F0
+-#define LTQ_WDT_SIZE		0x10
+-
+ #define LTQ_RST_CAUSE_WDTRST	0x20
  
--static int __init
-+static int __devinit
- ltq_wdt_probe(struct platform_device *pdev)
- {
- 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -194,28 +196,27 @@ ltq_wdt_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "cannot obtain I/O memory region");
- 		return -ENOENT;
- 	}
--	res = devm_request_mem_region(&pdev->dev, res->start,
--		resource_size(res), dev_name(&pdev->dev));
--	if (!res) {
--		dev_err(&pdev->dev, "cannot request I/O memory region");
--		return -EBUSY;
--	}
--	ltq_wdt_membase = devm_ioremap_nocache(&pdev->dev, res->start,
--		resource_size(res));
-+
-+	ltq_wdt_membase = devm_request_and_ioremap(&pdev->dev, res);
- 	if (!ltq_wdt_membase) {
- 		dev_err(&pdev->dev, "cannot remap I/O memory region\n");
- 		return -ENOMEM;
- 	}
+-/* STP - serial to parallel conversion unit */
+-#define LTQ_STP_BASE_ADDR	0x1E100BB0
+-#define LTQ_STP_SIZE		0x40
+-
+-/* GPIO */
+-#define LTQ_GPIO0_BASE_ADDR	0x1E100B10
+-#define LTQ_GPIO1_BASE_ADDR	0x1E100B40
+-#define LTQ_GPIO2_BASE_ADDR	0x1E100B70
+-#define LTQ_GPIO_SIZE		0x30
+-
+-/* SSC */
+-#define LTQ_SSC_BASE_ADDR	0x1e100800
+-#define LTQ_SSC_SIZE		0x100
+-
+-/* MEI - dsl core */
+-#define LTQ_MEI_BASE_ADDR	0x1E116000
+-
+-/* DEU - data encryption unit */
+-#define LTQ_DEU_BASE_ADDR	0x1E103100
+-
+ /* MPS - multi processor unit (voice) */
+ #define LTQ_MPS_BASE_ADDR	(KSEG1 + 0x1F107000)
+ #define LTQ_MPS_CHIPID		((u32 *)(LTQ_MPS_BASE_ADDR + 0x0344))
  
- 	/* we do not need to enable the clock as it is always running */
--	clk = clk_get(&pdev->dev, "io");
--	WARN_ON(!clk);
-+	clk = clk_get_fpi();
-+	if (IS_ERR(clk)) {
-+		dev_err(&pdev->dev, "Failed to get clock\n");
-+		return -ENOENT;
-+	}
- 	ltq_io_region_clk_rate = clk_get_rate(clk);
- 	clk_put(clk);
- 
-+	/* find out if the watchdog caused the last reboot */
- 	if (ltq_reset_cause() == LTQ_RST_CAUSE_WDTRST)
- 		ltq_wdt_bootstatus = WDIOF_CARDRESET;
- 
-+	dev_info(&pdev->dev, "Init done\n");
- 	return misc_register(&ltq_wdt_miscdev);
- }
- 
-@@ -227,33 +228,26 @@ ltq_wdt_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static const struct of_device_id ltq_wdt_match[] = {
-+	{ .compatible = "lantiq,wdt" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, ltq_wdt_match);
- 
- static struct platform_driver ltq_wdt_driver = {
-+	.probe = ltq_wdt_probe,
- 	.remove = __devexit_p(ltq_wdt_remove),
- 	.driver = {
--		.name = "ltq_wdt",
-+		.name = "wdt",
- 		.owner = THIS_MODULE,
-+		.of_match_table = ltq_wdt_match,
- 	},
- };
- 
--static int __init
--init_ltq_wdt(void)
+-/* request a non-gpio and set the PIO config */
+-extern void ltq_pmu_enable(unsigned int module);
+-extern void ltq_pmu_disable(unsigned int module);
+-
+-static inline int ltq_is_ar9(void)
 -{
--	return platform_driver_probe(&ltq_wdt_driver, ltq_wdt_probe);
+-	return (ltq_get_soc_type() == SOC_TYPE_AR9);
 -}
 -
--static void __exit
--exit_ltq_wdt(void)
+-static inline int ltq_is_vr9(void)
 -{
--	return platform_driver_unregister(&ltq_wdt_driver);
+-	return (ltq_get_soc_type() == SOC_TYPE_VR9);
 -}
 -
--module_init(init_ltq_wdt);
--module_exit(exit_ltq_wdt);
-+module_platform_driver(ltq_wdt_driver);
+ #endif /* CONFIG_SOC_TYPE_XWAY */
+ #endif /* _LTQ_XWAY_H__ */
+diff --git a/arch/mips/lantiq/prom.c b/arch/mips/lantiq/prom.c
+index 413ed53..d185e84 100644
+--- a/arch/mips/lantiq/prom.c
++++ b/arch/mips/lantiq/prom.c
+@@ -27,12 +27,6 @@ EXPORT_SYMBOL_GPL(ebu_lock);
+  */
+ static struct ltq_soc_info soc_info;
  
- module_param(nowayout, bool, 0);
- MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started");
+-unsigned int ltq_get_soc_type(void)
+-{
+-	return soc_info.type;
+-}
+-EXPORT_SYMBOL(ltq_get_soc_type);
 -
- MODULE_AUTHOR("John Crispin <blogic@openwrt.org>");
- MODULE_DESCRIPTION("Lantiq SoC Watchdog");
- MODULE_LICENSE("GPL");
+ const char *get_system_type(void)
+ {
+ 	return soc_info.sys_type;
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 3029139..02d2f15 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -42,6 +42,7 @@
+ /* clock gates that we can en/disable */
+ #define PMU_USB0_P	BIT(0)
+ #define PMU_PCI		BIT(4)
++#define PMU_DMA		BIT(5)
+ #define PMU_USB0	BIT(6)
+ #define PMU_ASC0	BIT(7)
+ #define PMU_EPHY	BIT(7)	/* ase */
+@@ -49,7 +50,10 @@
+ #define PMU_DFE		BIT(9)
+ #define PMU_EBU		BIT(10)
+ #define PMU_STP		BIT(11)
++#define PMU_GPT		BIT(12)
++#define PMU_PPE		BIT(13)
+ #define PMU_AHBS	BIT(13) /* vr9 */
++#define PMU_FPI		BIT(14)
+ #define PMU_AHBM	BIT(15)
+ #define PMU_ASC1	BIT(17)
+ #define PMU_PPE_QSB	BIT(18)
+@@ -60,6 +64,7 @@
+ #define PMU_PPE_DPLUS	BIT(24)
+ #define PMU_USB1_P	BIT(26)
+ #define PMU_USB1	BIT(27)
++#define PMU_SWITCH	BIT(28)
+ #define PMU_PPE_TOP	BIT(29)
+ #define PMU_GPHY	BIT(30)
+ #define PMU_PCIE_CLK	BIT(31)
+@@ -76,26 +81,6 @@ static void __iomem *pmu_membase;
+ void __iomem *ltq_cgu_membase;
+ void __iomem *ltq_ebu_membase;
+ 
+-/* legacy function kept alive to ease clkdev transition */
+-void ltq_pmu_enable(unsigned int module)
+-{
+-	int err = 1000000;
+-
+-	pmu_w32(pmu_r32(PMU_PWDCR) & ~module, PMU_PWDCR);
+-	do {} while (--err && (pmu_r32(PMU_PWDSR) & module));
+-
+-	if (!err)
+-		panic("activating PMU module failed!");
+-}
+-EXPORT_SYMBOL(ltq_pmu_enable);
+-
+-/* legacy function kept alive to ease clkdev transition */
+-void ltq_pmu_disable(unsigned int module)
+-{
+-	pmu_w32(pmu_r32(PMU_PWDCR) | module, PMU_PWDCR);
+-}
+-EXPORT_SYMBOL(ltq_pmu_disable);
+-
+ /* enable a hw clock */
+ static int cgu_enable(struct clk *clk)
+ {
 -- 
 1.7.9.1

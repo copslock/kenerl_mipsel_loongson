@@ -1,68 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 12:56:57 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:34022 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903663Ab2EDK4q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 4 May 2012 12:56:46 +0200
-Message-ID: <4FA3B596.3050106@openwrt.org>
-Date:   Fri, 04 May 2012 12:55:18 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 13:17:28 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:54757 "EHLO
+        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903664Ab2EDLRW (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2012 13:17:22 +0200
+Received: by lbbgg6 with SMTP id gg6so2439395lbb.36
+        for <linux-mips@linux-mips.org>; Fri, 04 May 2012 04:17:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :references:in-reply-to:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=ba75U3UMf0M0K0fqnzW9S5Fxge2qW+wAvYB3wpaXoe0=;
+        b=OujX8dyG8IuGPrS/aDHkDSTbemZLCQDbl8v00R9771E2kwGlt2FZpBvYS8B5SeQann
+         KjFKGrVJMN6Q92fBdyvDR+SiBGf3xgDrj3X9srxVJtKE31IoGHb4H5k40hUsF/+nL+0T
+         hHSyDh9o0HCWVTBZKGQzWGoGjsIh2pPOTYneTsQ1FLyMDeHf/D8h8QrYLAwc45PSHDVA
+         8UbVpQ2V3Lnd57SLDNogr82smk4m3+1wdIr8uK52w9LJMXFoky5LJQMEF3I6mI3WrUv0
+         os8kSuA6niyjzuskGz4No1rcph6ZTGbkAs19sHZXhr7Jo+Gy2Ap3QH9PWLnj49TxX/Za
+         /0NQ==
+Received: by 10.112.86.101 with SMTP id o5mr2738744lbz.1.1336130236588;
+        Fri, 04 May 2012 04:17:16 -0700 (PDT)
+Received: from [192.168.2.2] (ppp91-79-80-122.pppoe.mtu-net.ru. [91.79.80.122])
+        by mx.google.com with ESMTPS id o9sm10583668lbm.14.2012.05.04.04.17.13
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Fri, 04 May 2012 04:17:14 -0700 (PDT)
+Message-ID: <4FA3BAA6.5060200@mvista.com>
+Date:   Fri, 04 May 2012 15:16:54 +0400
+From:   Sergei Shtylyov <sshtylyov@mvista.com>
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
 MIME-Version: 1.0
-To:     David Daney <ddaney.cavm@gmail.com>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        linux-pci@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH] OF: PCI: const usage needed by MIPS
-References: <1335808019-24502-1-git-send-email-blogic@openwrt.org> <4F9ED1DC.3050007@gmail.com> <4F9FE4F6.5070909@openwrt.org> <CAErSpo4bZ=0=DtbDots_GOGeLNhX6Q4eJrdetaFQMv4iiv5+XA@mail.gmail.com> <4FA32E47.7020406@gmail.com>
-In-Reply-To: <4FA32E47.7020406@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
+To:     Matt Turner <mattst88@gmail.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] mips: set ST0_MX flag for MDMX
+References: <1336084845-28995-1-git-send-email-mattst88@gmail.com>
+In-Reply-To: <1336084845-28995-1-git-send-email-mattst88@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33138
+X-Gm-Message-State: ALoCoQkUDAQARdnwS7eDQog0sjDw4W5jHeZdukclQ6gZH4JrMyyn29TmBwamsMwkcanwiarJ7Q6Z
+X-archive-position: 33139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: sshtylyov@mvista.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi David,
+Hello.
 
-> The problem is when you start declaring function pointers in various
-> ops vectors.
->
-> Consider:
->
-> void (*foo)(const struct pci_dev *)
-> void (*bar)(struct pci_dev *)
->
-> foo and bar are not type compatible, and you will get compiler
-> warnings if you use one where the other is expected.
->
-> So the question is:  Are we ever going to the address of any of the
-> functions that are being modified?  If so, we have created a problem.
->
+On 04-05-2012 2:40, Matt Turner wrote:
 
+> As the comment in commit 3301edcb
 
+    Please also specify that commit's summary in parens.
 
-i could not find any place in the code where this happens, which does
-not mean that there are none.
+> says, DSP and MDMX share the same
+> config flag bit.
 
+> Without this set, MDMX instructions cause Illegal instruction errors.
 
->> Similar reasoning applies to of_irq_map_pci().
->>
->> So I'm fine with this.  You sent it to Grant, so I'll assume he'll
->> merge it unless I hear otherwise.
->>
->> Acked-by: Bjorn Helgaas<bhelgaas@google.com>
->>
->
+> Signed-off-by: Matt Turner<mattst88@gmail.com>
+> ---
+> Is MDMX implemented by anything other than some Broadcom CPUs? Is it
+> totally replaced by DSP?
 
-Thanks for the Ack, i hope this patch gets accepted as is. I am simply
-missing the overview of the pci subsystem to evaluate if this can cause
-regressions.
+> I had a terrible time finding any documentation on it (which is annoying
+> because Volume IV-b covering MDMX is referenced by all the MIPS64 documents.)
+> but finally found a copy here: www.enlight.ru/docs/cpu/risc/mips/MDMXspec.pdf
 
+> If it's dead, it's too bad because it's a pretty cool ISA.
 
-John
+WBR, Sergei

@@ -1,49 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 15:22:18 +0200 (CEST)
-Received: from ns1.pc-advies.be ([83.149.101.17]:57733 "EHLO
-        spo001.leaseweb.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1903664Ab2EDNWM (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2012 15:22:12 +0200
-Received: from wimvs by spo001.leaseweb.com with local (Exim 4.50)
-        id 1SQISZ-00034l-L8; Fri, 04 May 2012 15:22:11 +0200
-Date:   Fri, 4 May 2012 15:22:11 +0200
-From:   Wim Van Sebroeck <wim@iguana.be>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 11/14] watchdog: MIPS: lantiq: implement OF support and minor fixes
-Message-ID: <20120504132211.GV3074@spo001.leaseweb.com>
-References: <1336133919-26525-1-git-send-email-blogic@openwrt.org> <1336133919-26525-11-git-send-email-blogic@openwrt.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1336133919-26525-11-git-send-email-blogic@openwrt.org>
-User-Agent: Mutt/1.4.1i
-X-archive-position: 33154
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 15:39:06 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:37167 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903664Ab2EDNjC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 May 2012 15:39:02 +0200
+Message-ID: <4FA3DBA3.5030903@phrozen.org>
+Date:   Fri, 04 May 2012 15:37:39 +0200
+From:   John Crispin <john@phrozen.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+MIME-Version: 1.0
+To:     "linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: pci and pcie coexistence
+X-Enigmail-Version: 1.1.2
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: john@phrozen.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 Hi,
 
-> Add support for OF. We also apply the following small fixes
-> * reduce boiler plate by using devm_request_and_ioremap
-> * sane error path for the clock
-> * move LTQ_RST_CAUSE_WDTRST to a soc specific header file
-> * add a message to show that the driver loaded
-> 
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Cc: Wim Van Sebroeck <wim@iguana.be>
-> Cc: linux-watchdog@vger.kernel.org
-> 
-> ---
-> This patch is part of a series moving the mips/lantiq target to OF and clkdev
-> support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
+I have some boards, where pcie and pci need to coexist.
 
-Acked-by: Wim Van Sebroeck <wim@iguana.be>
+This implies, that both drivers share the same pcibios_plat_dev_init and
+pcibios_map_irq.
 
-Kind regards,
-Wim.
+I am trying to figure out, how to best differentiate between the 2
+drivers. Would the following be sane ?
+
+if (pci_find_capability(pdev, PCI_CAP_ID_EXP))
+     do_pcie_stuf();
+else
+     do_pci_stuff();
+
+
+Thanks,
+John

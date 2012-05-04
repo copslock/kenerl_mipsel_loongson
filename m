@@ -1,72 +1,712 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 13:17:28 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:54757 "EHLO
-        mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903664Ab2EDLRW (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 4 May 2012 13:17:22 +0200
-Received: by lbbgg6 with SMTP id gg6so2439395lbb.36
-        for <linux-mips@linux-mips.org>; Fri, 04 May 2012 04:17:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :x-gm-message-state;
-        bh=ba75U3UMf0M0K0fqnzW9S5Fxge2qW+wAvYB3wpaXoe0=;
-        b=OujX8dyG8IuGPrS/aDHkDSTbemZLCQDbl8v00R9771E2kwGlt2FZpBvYS8B5SeQann
-         KjFKGrVJMN6Q92fBdyvDR+SiBGf3xgDrj3X9srxVJtKE31IoGHb4H5k40hUsF/+nL+0T
-         hHSyDh9o0HCWVTBZKGQzWGoGjsIh2pPOTYneTsQ1FLyMDeHf/D8h8QrYLAwc45PSHDVA
-         8UbVpQ2V3Lnd57SLDNogr82smk4m3+1wdIr8uK52w9LJMXFoky5LJQMEF3I6mI3WrUv0
-         os8kSuA6niyjzuskGz4No1rcph6ZTGbkAs19sHZXhr7Jo+Gy2Ap3QH9PWLnj49TxX/Za
-         /0NQ==
-Received: by 10.112.86.101 with SMTP id o5mr2738744lbz.1.1336130236588;
-        Fri, 04 May 2012 04:17:16 -0700 (PDT)
-Received: from [192.168.2.2] (ppp91-79-80-122.pppoe.mtu-net.ru. [91.79.80.122])
-        by mx.google.com with ESMTPS id o9sm10583668lbm.14.2012.05.04.04.17.13
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Fri, 04 May 2012 04:17:14 -0700 (PDT)
-Message-ID: <4FA3BAA6.5060200@mvista.com>
-Date:   Fri, 04 May 2012 15:16:54 +0400
-From:   Sergei Shtylyov <sshtylyov@mvista.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
-MIME-Version: 1.0
-To:     Matt Turner <mattst88@gmail.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips: set ST0_MX flag for MDMX
-References: <1336084845-28995-1-git-send-email-mattst88@gmail.com>
-In-Reply-To: <1336084845-28995-1-git-send-email-mattst88@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Gm-Message-State: ALoCoQkUDAQARdnwS7eDQog0sjDw4W5jHeZdukclQ6gZH4JrMyyn29TmBwamsMwkcanwiarJ7Q6Z
-X-archive-position: 33139
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 May 2012 14:20:14 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:48613 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903664Ab2EDMUJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 4 May 2012 14:20:09 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>
+Subject: [PATCH 01/14] MIPS: lantiq: drop mips_machine support
+Date:   Fri,  4 May 2012 14:18:26 +0200
+Message-Id: <1336133919-26525-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.9.1
+X-archive-position: 33140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@mvista.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hello.
+Before we are able to add OF support, we really want to drop all the bloat
+needed to register all the platform devices.
 
-On 04-05-2012 2:40, Matt Turner wrote:
+Signed-off-by: John Crispin <blogic@openwrt.org>
+---
+ arch/mips/Kconfig                      |    1 -
+ arch/mips/lantiq/Kconfig               |    2 -
+ arch/mips/lantiq/Makefile              |    2 +-
+ arch/mips/lantiq/devices.c             |  120 --------------------------------
+ arch/mips/lantiq/devices.h             |   23 ------
+ arch/mips/lantiq/machtypes.h           |   20 -----
+ arch/mips/lantiq/prom.h                |    1 -
+ arch/mips/lantiq/setup.c               |   23 ------
+ arch/mips/lantiq/xway/Kconfig          |   23 ------
+ arch/mips/lantiq/xway/Makefile         |    9 +--
+ arch/mips/lantiq/xway/devices.c        |  119 -------------------------------
+ arch/mips/lantiq/xway/devices.h        |   20 -----
+ arch/mips/lantiq/xway/mach-easy50601.c |   57 ---------------
+ arch/mips/lantiq/xway/mach-easy50712.c |   74 --------------------
+ arch/mips/lantiq/xway/setup-ase.c      |   19 -----
+ arch/mips/lantiq/xway/setup-xway.c     |   20 -----
+ 16 files changed, 4 insertions(+), 529 deletions(-)
+ delete mode 100644 arch/mips/lantiq/devices.c
+ delete mode 100644 arch/mips/lantiq/devices.h
+ delete mode 100644 arch/mips/lantiq/machtypes.h
+ delete mode 100644 arch/mips/lantiq/xway/Kconfig
+ delete mode 100644 arch/mips/lantiq/xway/devices.c
+ delete mode 100644 arch/mips/lantiq/xway/devices.h
+ delete mode 100644 arch/mips/lantiq/xway/mach-easy50601.c
+ delete mode 100644 arch/mips/lantiq/xway/mach-easy50712.c
+ delete mode 100644 arch/mips/lantiq/xway/setup-ase.c
+ delete mode 100644 arch/mips/lantiq/xway/setup-xway.c
 
-> As the comment in commit 3301edcb
-
-    Please also specify that commit's summary in parens.
-
-> says, DSP and MDMX share the same
-> config flag bit.
-
-> Without this set, MDMX instructions cause Illegal instruction errors.
-
-> Signed-off-by: Matt Turner<mattst88@gmail.com>
-> ---
-> Is MDMX implemented by anything other than some Broadcom CPUs? Is it
-> totally replaced by DSP?
-
-> I had a terrible time finding any documentation on it (which is annoying
-> because Volume IV-b covering MDMX is referenced by all the MIPS64 documents.)
-> but finally found a copy here: www.enlight.ru/docs/cpu/risc/mips/MDMXspec.pdf
-
-> If it's dead, it's too bad because it's a pretty cool ISA.
-
-WBR, Sergei
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ce30e2f..7c85562 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -229,7 +229,6 @@ config LANTIQ
+ 	select SWAP_IO_SPACE
+ 	select BOOT_RAW
+ 	select HAVE_CLK
+-	select MIPS_MACHINE
+ 
+ config LASAT
+ 	bool "LASAT Networks platforms"
+diff --git a/arch/mips/lantiq/Kconfig b/arch/mips/lantiq/Kconfig
+index 3fccf21..2780461 100644
+--- a/arch/mips/lantiq/Kconfig
++++ b/arch/mips/lantiq/Kconfig
+@@ -18,6 +18,4 @@ config SOC_XWAY
+ 	select HW_HAS_PCI
+ endchoice
+ 
+-source "arch/mips/lantiq/xway/Kconfig"
+-
+ endif
+diff --git a/arch/mips/lantiq/Makefile b/arch/mips/lantiq/Makefile
+index e5dae0e..a268391 100644
+--- a/arch/mips/lantiq/Makefile
++++ b/arch/mips/lantiq/Makefile
+@@ -4,7 +4,7 @@
+ # under the terms of the GNU General Public License version 2 as published
+ # by the Free Software Foundation.
+ 
+-obj-y := irq.o setup.o clk.o prom.o devices.o
++obj-y := irq.o setup.o clk.o prom.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ 
+diff --git a/arch/mips/lantiq/devices.c b/arch/mips/lantiq/devices.c
+deleted file mode 100644
+index de1cb2b..0000000
+--- a/arch/mips/lantiq/devices.c
++++ /dev/null
+@@ -1,120 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/export.h>
+-#include <linux/types.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
+-#include <linux/reboot.h>
+-#include <linux/platform_device.h>
+-#include <linux/leds.h>
+-#include <linux/etherdevice.h>
+-#include <linux/time.h>
+-#include <linux/io.h>
+-#include <linux/gpio.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-
+-#include <lantiq_soc.h>
+-
+-#include "devices.h"
+-
+-/* nor flash */
+-static struct resource ltq_nor_resource = {
+-	.name	= "nor",
+-	.start	= LTQ_FLASH_START,
+-	.end	= LTQ_FLASH_START + LTQ_FLASH_MAX - 1,
+-	.flags  = IORESOURCE_MEM,
+-};
+-
+-static struct platform_device ltq_nor = {
+-	.name		= "ltq_nor",
+-	.resource	= &ltq_nor_resource,
+-	.num_resources	= 1,
+-};
+-
+-void __init ltq_register_nor(struct physmap_flash_data *data)
+-{
+-	ltq_nor.dev.platform_data = data;
+-	platform_device_register(&ltq_nor);
+-}
+-
+-/* watchdog */
+-static struct resource ltq_wdt_resource = {
+-	.name	= "watchdog",
+-	.start  = LTQ_WDT_BASE_ADDR,
+-	.end    = LTQ_WDT_BASE_ADDR + LTQ_WDT_SIZE - 1,
+-	.flags  = IORESOURCE_MEM,
+-};
+-
+-void __init ltq_register_wdt(void)
+-{
+-	platform_device_register_simple("ltq_wdt", 0, &ltq_wdt_resource, 1);
+-}
+-
+-/* asc ports */
+-static struct resource ltq_asc0_resources[] = {
+-	{
+-		.name	= "asc0",
+-		.start  = LTQ_ASC0_BASE_ADDR,
+-		.end    = LTQ_ASC0_BASE_ADDR + LTQ_ASC_SIZE - 1,
+-		.flags  = IORESOURCE_MEM,
+-	},
+-	IRQ_RES(tx, LTQ_ASC_TIR(0)),
+-	IRQ_RES(rx, LTQ_ASC_RIR(0)),
+-	IRQ_RES(err, LTQ_ASC_EIR(0)),
+-};
+-
+-static struct resource ltq_asc1_resources[] = {
+-	{
+-		.name	= "asc1",
+-		.start  = LTQ_ASC1_BASE_ADDR,
+-		.end    = LTQ_ASC1_BASE_ADDR + LTQ_ASC_SIZE - 1,
+-		.flags  = IORESOURCE_MEM,
+-	},
+-	IRQ_RES(tx, LTQ_ASC_TIR(1)),
+-	IRQ_RES(rx, LTQ_ASC_RIR(1)),
+-	IRQ_RES(err, LTQ_ASC_EIR(1)),
+-};
+-
+-void __init ltq_register_asc(int port)
+-{
+-	switch (port) {
+-	case 0:
+-		platform_device_register_simple("ltq_asc", 0,
+-			ltq_asc0_resources, ARRAY_SIZE(ltq_asc0_resources));
+-		break;
+-	case 1:
+-		platform_device_register_simple("ltq_asc", 1,
+-			ltq_asc1_resources, ARRAY_SIZE(ltq_asc1_resources));
+-		break;
+-	default:
+-		break;
+-	}
+-}
+-
+-#ifdef CONFIG_PCI
+-/* pci */
+-static struct platform_device ltq_pci = {
+-	.name		= "ltq_pci",
+-	.num_resources	= 0,
+-};
+-
+-void __init ltq_register_pci(struct ltq_pci_data *data)
+-{
+-	ltq_pci.dev.platform_data = data;
+-	platform_device_register(&ltq_pci);
+-}
+-#else
+-void __init ltq_register_pci(struct ltq_pci_data *data)
+-{
+-	pr_err("kernel is compiled without PCI support\n");
+-}
+-#endif
+diff --git a/arch/mips/lantiq/devices.h b/arch/mips/lantiq/devices.h
+deleted file mode 100644
+index 2947bb1..0000000
+--- a/arch/mips/lantiq/devices.h
++++ /dev/null
+@@ -1,23 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#ifndef _LTQ_DEVICES_H__
+-#define _LTQ_DEVICES_H__
+-
+-#include <lantiq_platform.h>
+-#include <linux/mtd/physmap.h>
+-
+-#define IRQ_RES(resname, irq) \
+-	{.name = #resname, .start = (irq), .flags = IORESOURCE_IRQ}
+-
+-extern void ltq_register_nor(struct physmap_flash_data *data);
+-extern void ltq_register_wdt(void);
+-extern void ltq_register_asc(int port);
+-extern void ltq_register_pci(struct ltq_pci_data *data);
+-
+-#endif
+diff --git a/arch/mips/lantiq/machtypes.h b/arch/mips/lantiq/machtypes.h
+deleted file mode 100644
+index 7e01b8c..0000000
+--- a/arch/mips/lantiq/machtypes.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#ifndef _LANTIQ_MACH_H__
+-#define _LANTIQ_MACH_H__
+-
+-#include <asm/mips_machine.h>
+-
+-enum lantiq_mach_type {
+-	LTQ_MACH_GENERIC = 0,
+-	LTQ_MACH_EASY50712,	/* Danube evaluation board */
+-	LTQ_MACH_EASY50601,	/* Amazon SE evaluation board */
+-};
+-
+-#endif
+diff --git a/arch/mips/lantiq/prom.h b/arch/mips/lantiq/prom.h
+index 90070a5..f7c2a79 100644
+--- a/arch/mips/lantiq/prom.h
++++ b/arch/mips/lantiq/prom.h
+@@ -24,7 +24,6 @@ struct ltq_soc_info {
+ };
+ 
+ extern void ltq_soc_detect(struct ltq_soc_info *i);
+-extern void ltq_soc_setup(void);
+ extern void ltq_soc_init(void);
+ 
+ #endif
+diff --git a/arch/mips/lantiq/setup.c b/arch/mips/lantiq/setup.c
+index 1ff6c9d..f1c605a 100644
+--- a/arch/mips/lantiq/setup.c
++++ b/arch/mips/lantiq/setup.c
+@@ -14,8 +14,6 @@
+ 
+ #include <lantiq_soc.h>
+ 
+-#include "machtypes.h"
+-#include "devices.h"
+ #include "prom.h"
+ 
+ void __init plat_mem_setup(void)
+@@ -43,24 +41,3 @@ void __init plat_mem_setup(void)
+ 	memsize *= 1024 * 1024;
+ 	add_memory_region(0x00000000, memsize, BOOT_MEM_RAM);
+ }
+-
+-static int __init
+-lantiq_setup(void)
+-{
+-	ltq_soc_setup();
+-	mips_machine_setup();
+-	return 0;
+-}
+-
+-arch_initcall(lantiq_setup);
+-
+-static void __init
+-lantiq_generic_init(void)
+-{
+-	/* Nothing to do */
+-}
+-
+-MIPS_MACHINE(LTQ_MACH_GENERIC,
+-	     "Generic",
+-	     "Generic Lantiq based board",
+-	     lantiq_generic_init);
+diff --git a/arch/mips/lantiq/xway/Kconfig b/arch/mips/lantiq/xway/Kconfig
+deleted file mode 100644
+index 2b857de..0000000
+--- a/arch/mips/lantiq/xway/Kconfig
++++ /dev/null
+@@ -1,23 +0,0 @@
+-if SOC_XWAY
+-
+-menu "MIPS Machine"
+-
+-config LANTIQ_MACH_EASY50712
+-	bool "Easy50712 - Danube"
+-	default y
+-
+-endmenu
+-
+-endif
+-
+-if SOC_AMAZON_SE
+-
+-menu "MIPS Machine"
+-
+-config LANTIQ_MACH_EASY50601
+-	bool "Easy50601 - Amazon SE"
+-	default y
+-
+-endmenu
+-
+-endif
+diff --git a/arch/mips/lantiq/xway/Makefile b/arch/mips/lantiq/xway/Makefile
+index 42d5fda..7a6c30f 100644
+--- a/arch/mips/lantiq/xway/Makefile
++++ b/arch/mips/lantiq/xway/Makefile
+@@ -1,7 +1,4 @@
+-obj-y := prom.o pmu.o ebu.o reset.o gpio.o gpio_stp.o gpio_ebu.o devices.o dma.o
++obj-y := prom.o pmu.o ebu.o reset.o gpio.o gpio_stp.o gpio_ebu.o dma.o
+ 
+-obj-$(CONFIG_SOC_XWAY) += clk-xway.o setup-xway.o
+-obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o setup-ase.o
+-
+-obj-$(CONFIG_LANTIQ_MACH_EASY50712) += mach-easy50712.o
+-obj-$(CONFIG_LANTIQ_MACH_EASY50601) += mach-easy50601.o
++obj-$(CONFIG_SOC_XWAY) += clk-xway.o
++obj-$(CONFIG_SOC_AMAZON_SE) += clk-ase.o
+diff --git a/arch/mips/lantiq/xway/devices.c b/arch/mips/lantiq/xway/devices.c
+deleted file mode 100644
+index d614aa7..0000000
+--- a/arch/mips/lantiq/xway/devices.c
++++ /dev/null
+@@ -1,119 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/export.h>
+-#include <linux/types.h>
+-#include <linux/string.h>
+-#include <linux/mtd/physmap.h>
+-#include <linux/kernel.h>
+-#include <linux/reboot.h>
+-#include <linux/platform_device.h>
+-#include <linux/leds.h>
+-#include <linux/etherdevice.h>
+-#include <linux/time.h>
+-#include <linux/io.h>
+-#include <linux/gpio.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-
+-#include <lantiq_soc.h>
+-#include <lantiq_irq.h>
+-#include <lantiq_platform.h>
+-
+-#include "devices.h"
+-
+-/* gpio */
+-static struct resource ltq_gpio_resource[] = {
+-	{
+-		.name	= "gpio0",
+-		.start  = LTQ_GPIO0_BASE_ADDR,
+-		.end    = LTQ_GPIO0_BASE_ADDR + LTQ_GPIO_SIZE - 1,
+-		.flags  = IORESOURCE_MEM,
+-	}, {
+-		.name	= "gpio1",
+-		.start  = LTQ_GPIO1_BASE_ADDR,
+-		.end    = LTQ_GPIO1_BASE_ADDR + LTQ_GPIO_SIZE - 1,
+-		.flags  = IORESOURCE_MEM,
+-	}, {
+-		.name	= "gpio2",
+-		.start  = LTQ_GPIO2_BASE_ADDR,
+-		.end    = LTQ_GPIO2_BASE_ADDR + LTQ_GPIO_SIZE - 1,
+-		.flags  = IORESOURCE_MEM,
+-	}
+-};
+-
+-void __init ltq_register_gpio(void)
+-{
+-	platform_device_register_simple("ltq_gpio", 0,
+-		&ltq_gpio_resource[0], 1);
+-	platform_device_register_simple("ltq_gpio", 1,
+-		&ltq_gpio_resource[1], 1);
+-
+-	/* AR9 and VR9 have an extra gpio block */
+-	if (ltq_is_ar9() || ltq_is_vr9()) {
+-		platform_device_register_simple("ltq_gpio", 2,
+-			&ltq_gpio_resource[2], 1);
+-	}
+-}
+-
+-/* serial to parallel conversion */
+-static struct resource ltq_stp_resource = {
+-	.name   = "stp",
+-	.start  = LTQ_STP_BASE_ADDR,
+-	.end    = LTQ_STP_BASE_ADDR + LTQ_STP_SIZE - 1,
+-	.flags  = IORESOURCE_MEM,
+-};
+-
+-void __init ltq_register_gpio_stp(void)
+-{
+-	platform_device_register_simple("ltq_stp", 0, &ltq_stp_resource, 1);
+-}
+-
+-/* asc ports - amazon se has its own serial mapping */
+-static struct resource ltq_ase_asc_resources[] = {
+-	{
+-		.name	= "asc0",
+-		.start  = LTQ_ASC1_BASE_ADDR,
+-		.end    = LTQ_ASC1_BASE_ADDR + LTQ_ASC_SIZE - 1,
+-		.flags  = IORESOURCE_MEM,
+-	},
+-	IRQ_RES(tx, LTQ_ASC_ASE_TIR),
+-	IRQ_RES(rx, LTQ_ASC_ASE_RIR),
+-	IRQ_RES(err, LTQ_ASC_ASE_EIR),
+-};
+-
+-void __init ltq_register_ase_asc(void)
+-{
+-	platform_device_register_simple("ltq_asc", 0,
+-		ltq_ase_asc_resources, ARRAY_SIZE(ltq_ase_asc_resources));
+-}
+-
+-/* ethernet */
+-static struct resource ltq_etop_resources = {
+-	.name	= "etop",
+-	.start	= LTQ_ETOP_BASE_ADDR,
+-	.end	= LTQ_ETOP_BASE_ADDR + LTQ_ETOP_SIZE - 1,
+-	.flags	= IORESOURCE_MEM,
+-};
+-
+-static struct platform_device ltq_etop = {
+-	.name		= "ltq_etop",
+-	.resource	= &ltq_etop_resources,
+-	.num_resources	= 1,
+-};
+-
+-void __init
+-ltq_register_etop(struct ltq_eth_data *eth)
+-{
+-	if (eth) {
+-		ltq_etop.dev.platform_data = eth;
+-		platform_device_register(&ltq_etop);
+-	}
+-}
+diff --git a/arch/mips/lantiq/xway/devices.h b/arch/mips/lantiq/xway/devices.h
+deleted file mode 100644
+index e904934..0000000
+--- a/arch/mips/lantiq/xway/devices.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#ifndef _LTQ_DEVICES_XWAY_H__
+-#define _LTQ_DEVICES_XWAY_H__
+-
+-#include "../devices.h"
+-#include <linux/phy.h>
+-
+-extern void ltq_register_gpio(void);
+-extern void ltq_register_gpio_stp(void);
+-extern void ltq_register_ase_asc(void);
+-extern void ltq_register_etop(struct ltq_eth_data *eth);
+-
+-#endif
+diff --git a/arch/mips/lantiq/xway/mach-easy50601.c b/arch/mips/lantiq/xway/mach-easy50601.c
+deleted file mode 100644
+index d5aaf63..0000000
+--- a/arch/mips/lantiq/xway/mach-easy50601.c
++++ /dev/null
+@@ -1,57 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/platform_device.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/partitions.h>
+-#include <linux/mtd/physmap.h>
+-#include <linux/input.h>
+-
+-#include <lantiq.h>
+-
+-#include "../machtypes.h"
+-#include "devices.h"
+-
+-static struct mtd_partition easy50601_partitions[] = {
+-	{
+-		.name	= "uboot",
+-		.offset	= 0x0,
+-		.size	= 0x10000,
+-	},
+-	{
+-		.name	= "uboot_env",
+-		.offset	= 0x10000,
+-		.size	= 0x10000,
+-	},
+-	{
+-		.name	= "linux",
+-		.offset	= 0x20000,
+-		.size	= 0xE0000,
+-	},
+-	{
+-		.name	= "rootfs",
+-		.offset	= 0x100000,
+-		.size	= 0x300000,
+-	},
+-};
+-
+-static struct physmap_flash_data easy50601_flash_data = {
+-	.nr_parts	= ARRAY_SIZE(easy50601_partitions),
+-	.parts		= easy50601_partitions,
+-};
+-
+-static void __init easy50601_init(void)
+-{
+-	ltq_register_nor(&easy50601_flash_data);
+-}
+-
+-MIPS_MACHINE(LTQ_MACH_EASY50601,
+-			"EASY50601",
+-			"EASY50601 Eval Board",
+-			easy50601_init);
+diff --git a/arch/mips/lantiq/xway/mach-easy50712.c b/arch/mips/lantiq/xway/mach-easy50712.c
+deleted file mode 100644
+index ea5027b..0000000
+--- a/arch/mips/lantiq/xway/mach-easy50712.c
++++ /dev/null
+@@ -1,74 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2010 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <linux/init.h>
+-#include <linux/platform_device.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/partitions.h>
+-#include <linux/mtd/physmap.h>
+-#include <linux/input.h>
+-#include <linux/phy.h>
+-
+-#include <lantiq_soc.h>
+-#include <irq.h>
+-
+-#include "../machtypes.h"
+-#include "devices.h"
+-
+-static struct mtd_partition easy50712_partitions[] = {
+-	{
+-		.name	= "uboot",
+-		.offset	= 0x0,
+-		.size	= 0x10000,
+-	},
+-	{
+-		.name	= "uboot_env",
+-		.offset	= 0x10000,
+-		.size	= 0x10000,
+-	},
+-	{
+-		.name	= "linux",
+-		.offset	= 0x20000,
+-		.size	= 0xe0000,
+-	},
+-	{
+-		.name	= "rootfs",
+-		.offset	= 0x100000,
+-		.size	= 0x300000,
+-	},
+-};
+-
+-static struct physmap_flash_data easy50712_flash_data = {
+-	.nr_parts	= ARRAY_SIZE(easy50712_partitions),
+-	.parts		= easy50712_partitions,
+-};
+-
+-static struct ltq_pci_data ltq_pci_data = {
+-	.clock	= PCI_CLOCK_INT,
+-	.gpio	= PCI_GNT1 | PCI_REQ1,
+-	.irq	= {
+-		[14] = INT_NUM_IM0_IRL0 + 22,
+-	},
+-};
+-
+-static struct ltq_eth_data ltq_eth_data = {
+-	.mii_mode = PHY_INTERFACE_MODE_MII,
+-};
+-
+-static void __init easy50712_init(void)
+-{
+-	ltq_register_gpio_stp();
+-	ltq_register_nor(&easy50712_flash_data);
+-	ltq_register_pci(&ltq_pci_data);
+-	ltq_register_etop(&ltq_eth_data);
+-}
+-
+-MIPS_MACHINE(LTQ_MACH_EASY50712,
+-	     "EASY50712",
+-	     "EASY50712 Eval Board",
+-	      easy50712_init);
+diff --git a/arch/mips/lantiq/xway/setup-ase.c b/arch/mips/lantiq/xway/setup-ase.c
+deleted file mode 100644
+index f6f3267..0000000
+--- a/arch/mips/lantiq/xway/setup-ase.c
++++ /dev/null
+@@ -1,19 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <lantiq_soc.h>
+-
+-#include "../prom.h"
+-#include "devices.h"
+-
+-void __init ltq_soc_setup(void)
+-{
+-	ltq_register_ase_asc();
+-	ltq_register_gpio();
+-	ltq_register_wdt();
+-}
+diff --git a/arch/mips/lantiq/xway/setup-xway.c b/arch/mips/lantiq/xway/setup-xway.c
+deleted file mode 100644
+index c292f64..0000000
+--- a/arch/mips/lantiq/xway/setup-xway.c
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/*
+- *  This program is free software; you can redistribute it and/or modify it
+- *  under the terms of the GNU General Public License version 2 as published
+- *  by the Free Software Foundation.
+- *
+- *  Copyright (C) 2011 John Crispin <blogic@openwrt.org>
+- */
+-
+-#include <lantiq_soc.h>
+-
+-#include "../prom.h"
+-#include "devices.h"
+-
+-void __init ltq_soc_setup(void)
+-{
+-	ltq_register_asc(0);
+-	ltq_register_asc(1);
+-	ltq_register_gpio();
+-	ltq_register_wdt();
+-}
+-- 
+1.7.9.1

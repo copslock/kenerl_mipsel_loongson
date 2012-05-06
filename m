@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 May 2012 09:34:57 +0200 (CEST)
-Received: from mail-lb0-f177.google.com ([209.85.217.177]:48483 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 May 2012 09:37:13 +0200 (CEST)
+Received: from mail-lb0-f177.google.com ([209.85.217.177]:35146 "EHLO
         mail-lb0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903611Ab2EFHex (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sun, 6 May 2012 09:34:53 +0200
-Received: by lbbgg6 with SMTP id gg6so3592568lbb.36
-        for <multiple recipients>; Sun, 06 May 2012 00:34:47 -0700 (PDT)
+        by eddie.linux-mips.org with ESMTP id S1903611Ab2EFHhH (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 6 May 2012 09:37:07 +0200
+Received: by lbbgg6 with SMTP id gg6so3593000lbb.36
+        for <multiple recipients>; Sun, 06 May 2012 00:37:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20120113;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :content-type:x-mailer:mime-version;
-        bh=4dx8ECKyeY/p99+ZQuaB5XCz8zsx60Voaxr+w6/5O1k=;
-        b=pYDtzSsmMfHyPd6UTKHiB9AprZ5E+3/uy8OlBbBx3mqwdnOg9Q+aqXLTgt13mHTHhV
-         cFHoTFPPtTCz2wg8Wg4sCt3eZbODL1+Jek5m9iEg6embSwN6s1n9XxYy7NYzWdNvBS6c
-         u2FjCZ9y+4tUSiFAZNh6k5BFod/4h+rRWakDvErAU0XV/oc+cnNLKIQ2pvsGBkSVmKi6
-         czZRZOG3ynZP2pHGO/HMmDKdxBQbMkioAyoCQtx6SaFtXKF4ACVh7p5R++KB7CjfD5mo
-         SaNfuLoNUP2O89l6OsVNeYRDBagyDZ7BWUC71vNpWeW7L/uZ5Dy5CK1zNbY9ACdZUi1D
-         veKw==
-Received: by 10.112.17.233 with SMTP id r9mr5368146lbd.67.1336289687443;
-        Sun, 06 May 2012 00:34:47 -0700 (PDT)
+        bh=JyXRzu0dOWBcfuz1EeIf9gEDV2VNuX3olol0Osvus2g=;
+        b=k6S7aCLtqVUMdMlSSOC8NiPU/nac2OsObp+QvqWV1V1OLNy+SHH3dqtvB4lwq4vAhh
+         0IV+ATSF+fC0APR9Haqzx3Hn+Rs7OiSXYzgH+wr7U0uII2b92/cjQ1OK23et/KiZrqm0
+         gDiTcl5feSJXEGPdWYdH5neK3/tGKf/JDfcoLgVojMSP4Xgdf+cjyrVrPABYYJA/lSON
+         HEddswRBYwSK+f3B4iWb1HrtXT4VivBgzO3wK2tYYaqZ1wa5l+N4A7r3KsE8oWf0Jeyn
+         QBsN3u3UCxMMRjnLeOgoDBvpIAUO4r1jEOnIqWAWgRc8yPVQn+K4LdkFp1VVDDlCpID4
+         8qrg==
+Received: by 10.152.123.111 with SMTP id lz15mr10826391lab.18.1336289821459;
+        Sun, 06 May 2012 00:37:01 -0700 (PDT)
 Received: from [192.168.255.2] (host-94-101-1-70.igua.fi. [94.101.1.70])
-        by mx.google.com with ESMTPS id u4sm14916893lad.5.2012.05.06.00.34.45
+        by mx.google.com with ESMTPS id uc6sm18262549lbb.3.2012.05.06.00.37.00
         (version=SSLv3 cipher=OTHER);
-        Sun, 06 May 2012 00:34:46 -0700 (PDT)
-Message-ID: <1336289676.1996.3.camel@koala>
-Subject: Re: [PATCH 1/2] MIPS: Kbuild: remove -Werror
+        Sun, 06 May 2012 00:37:00 -0700 (PDT)
+Message-ID: <1336289819.1996.5.camel@koala>
+Subject: Re: [PATCH 2/2] MIPS: bcm63xx: kbuild: remove -Werror
 From:   Artem Bityutskiy <dedekind1@gmail.com>
 To:     "Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:     David Daney <ddaney.cavm@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         MIPS Mailing List <linux-mips@linux-mips.org>,
         MTD Maling List <linux-mtd@lists.infradead.org>
-Date:   Sun, 06 May 2012 10:34:36 +0300
-In-Reply-To: <alpine.LFD.2.00.1205060754390.19691@eddie.linux-mips.org>
+Date:   Sun, 06 May 2012 10:36:59 +0300
+In-Reply-To: <alpine.LFD.2.00.1205060804400.19691@eddie.linux-mips.org>
 References: <1335534510-12573-1-git-send-email-dedekind1@gmail.com>
-         <4F9AD14E.9060008@gmail.com>
-         <alpine.LFD.2.00.1205060754390.19691@eddie.linux-mips.org>
+         <1335534510-12573-2-git-send-email-dedekind1@gmail.com>
+         <alpine.LFD.2.00.1205060804400.19691@eddie.linux-mips.org>
 Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
-        boundary="=-XPE24xsvL2NdTEv8aqjS"
+        boundary="=-yeAv7sbnRzUmnPVNgf5D"
 X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
 Mime-Version: 1.0
-X-archive-position: 33169
+X-archive-position: 33170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,44 +48,40 @@ X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
 
---=-XPE24xsvL2NdTEv8aqjS
+--=-yeAv7sbnRzUmnPVNgf5D
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2012-05-06 at 08:04 +0100, Maciej W. Rozycki wrote:
-> On Fri, 27 Apr 2012, David Daney wrote:
+On Sun, 2012-05-06 at 08:06 +0100, Maciej W. Rozycki wrote:
+> On Fri, 27 Apr 2012, Artem Bityutskiy wrote:
 >=20
-> > > MIPS build fails with the standard W=3D1 Kbuild switch with because o=
-f the
-> > > -Werror gcc switch.
-> > >=20
-> > > This patch removes the gcc switch to make W=3D1 work. Mips is the onl=
-y
-> > > architecture I know which does not build with W=3D1 and this upsets m=
-y aiaiai
-> > > scripts. And in general, you never know which warnings newer versions=
- of gcc
-> > > will start emiting so having -Werror by default is not the best idea.
-> > >=20
-> > > Signed-off-by: Artem Bityutskiy<artem.bityutskiy@linux.intel.com>
+> > From: Artem Bityutskiy <Artem.Bityutskiy@linux.intel.com>
 > >=20
-> > I think the warning messages are enough, we don't need to break things.
+> > I cannot build bcm963xx with the standard Kbuild W=3D1 switch:
+> >=20
+> > arch/mips/bcm63xx/boards/board_bcm963xx.c: At top level:
+> > arch/mips/bcm63xx/boards/board_bcm963xx.c:647:5: error: no previous pro=
+totype for 'bcm63xx_get_fallback_sprom' [-Werror=3Dmissing-prototypes]
+> > cc1: all warnings being treated as errors
+> >=20
+> > This patch removes the gcc switch to make W=3D1 work. Mips is the only
+> > architecture I know which does not build with W=3D1 and this upsets my =
+aiaiai
+> > scripts. And in general, you never know which warnings newer versions o=
+f gcc
+> > will start emiting so having -Werror by default is not the best idea.
 >=20
->  I disagree.  People generally don't fix their broken code just because i=
-t=20
-> triggers warnings.  The cases where GCC is genuinely confused are the=20
-> minority -- and even if so, chances are the human reader of that code wil=
-l=20
-> also be.
+>  If the function has no prototype, then it cannot be reasonably used from=
+=20
+> outside -- perhaps you meant to mark it static instead?
 
-Aggressive opinion, nothing more. A patch which fixes the real issue a
-better way would be way more respectful.
+No, I meant what I meant - MIPS does not build with W=3D1.
 
 --=20
 Best Regards,
 Artem Bityutskiy
 
---=-XPE24xsvL2NdTEv8aqjS
+--=-yeAv7sbnRzUmnPVNgf5D
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
@@ -94,19 +89,19 @@ Content-Transfer-Encoding: 7bit
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAABAgAGBQJPpimMAAoJECmIfjd9wqK0GLUP/2jpVnGbazRmuOKdKpUJPB5m
-zKeIVQIi2tuSOo2VZjE69kc3pr1Jml65v6moF3yh3j9Dke9soUVuuB3g5fayxFxb
-eDqamNWLTi+z2xotRVQz8/gSibytvF0I06AQQb4eA7bV22nz996lHdzGsxA6q8AG
-MD4lvPdzGw9UzX6FMad9p40M1uWtuqdHQedLQQIGrk6RnnpQw54S9IHiha2fVSx+
-xBHC9CqwGDm9vyrYaduMSOV6CVxLDhyB3nKHaR43itjSjnNz5rbvnzDulP4Pj0JB
-gd+E1Z2RBRfUku0+yPu6o2pThGXu8BkAwbzXpPRY9ljic2mIZdAAaRKPLyycegv/
-iT6xQOR/qjPfKXlAu61zbE03OUszj9y05unMe5jLeSoid2M2JXrvMDgMM8G2ibuY
-VVY/g9/bYXAwUiyBmNYprK8kpDWRt4EHA34A7sS2Wp1IyRlQlJdIBAZykdIM/bre
-xePOplM3US+b+EbSFjZ0z823FLmdOrtZ40qdVFmo/4qS+chGWUJekBF2KAhCxggp
-WCuqdjx+yPM9X1TpCddRVukT8VkywjPQ6sIibPgrlkh2z+GIp2uNOLm0ojpysd7v
-FF16jIF984ic+GgFkwtSYfxz236hGmACsLE1b78BEa63/Z+dLyRKz9bAou44X5A6
-1Yzc8yLIgqJylRkONE3E
-=U2uA
+iQIcBAABAgAGBQJPpiobAAoJECmIfjd9wqK0CWgP/09IEFhQNvpYLax535k9UJp8
+l7BHh7CoIUy8UOqwz/ofe/oG7mdUgap+Lf6SV97jfGGm5wEhrqrgwFPSo1G/wv0K
+MYOPcoRVizR+0WsHoksonhQ/34DlVUV7hIiOQPWv4aYeZD+npv9c49icW6z37tny
+DcYuSASQs0X6MEa1Y724LD7xYqvwTB+hcnnO/C6CsPT5VKf/Ul0NeFM0eojUsuWz
+lEVOps/GetRSqXLl7ft3M0kpIIk2CDJZir3QWeJyMKDGMC+r0rSaeS/bTiZDNcU7
+CPx3puJKdBk2qyAz7kSG7PZSnRWLgWCdZ/n9+pa/R0YxVF+gTl1Uo2vGDGbnWJ9B
+V+8cG8kFJr4bH/ZLCG/n78252tTkow555eSH1WnGJJ4DGkP2w7LlcoY13Wse+2vQ
+x/2nGnFq0WPasxsv/I8iQ0JHC3jqG2bkTDqfbYbswzgAAhDsRU41OooUCIFGSSdq
+mrqQoJTIYPwWiSBIJQUSJLA6UQkNT5vbSeJ4Ia4xtBCDJOa2SKiQXv48+XSos3GC
+kxa9oa34EpsPiSIOb0T7gMS+f/sm3GycU7w3Dnme7WxfQT/MGmV8OB2dVhG0TmEb
+Z9MYry6Lj5GhsFoiI46MLFfnUI/eQT9kOuJLnvv+x4dC5BFAGWW15Ha4Ub0ayfls
+hkwaAo78S4DMR941lWpY
+=sbZ9
 -----END PGP SIGNATURE-----
 
---=-XPE24xsvL2NdTEv8aqjS--
+--=-yeAv7sbnRzUmnPVNgf5D--

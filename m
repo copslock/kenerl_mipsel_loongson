@@ -1,68 +1,41 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 12:18:28 +0200 (CEST)
-Received: from mga03.intel.com ([143.182.124.21]:57600 "EHLO mga03.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 12:37:19 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:42690 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903626Ab2EHKSR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 May 2012 12:18:17 +0200
-Received: from azsmga001.ch.intel.com ([10.2.17.19])
-  by azsmga101.ch.intel.com with ESMTP; 08 May 2012 03:18:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
-   d="scan'208";a="140264858"
-Received: from blue.fi.intel.com ([10.237.72.50])
-  by azsmga001.ch.intel.com with ESMTP; 08 May 2012 03:18:08 -0700
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        MIPS Mailing List <linux-mips@linux-mips.org>
-Cc:     Linux Kernel Maling List <linux-kernel@vger.kernel.org>
-Subject: [PATCH] mips: bcm63xx: fix compilation problems
-Date:   Tue,  8 May 2012 13:19:07 +0300
-Message-Id: <1336472347-25822-1-git-send-email-dedekind1@gmail.com>
-X-Mailer: git-send-email 1.7.9.1
-X-archive-position: 33185
+        id S1903627Ab2EHKhM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 May 2012 12:37:12 +0200
+Message-ID: <4FA8F6F9.10703@openwrt.org>
+Date:   Tue, 08 May 2012 12:35:37 +0200
+From:   John Crispin <blogic@openwrt.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+MIME-Version: 1.0
+To:     Bjorn Helgaas <bhelgaas@google.com>
+CC:     David Daney <ddaney.cavm@gmail.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        linux-pci@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH] OF: PCI: const usage needed by MIPS
+References: <1335808019-24502-1-git-send-email-blogic@openwrt.org> <4F9ED1DC.3050007@gmail.com> <4F9FE4F6.5070909@openwrt.org> <CAErSpo4bZ=0=DtbDots_GOGeLNhX6Q4eJrdetaFQMv4iiv5+XA@mail.gmail.com> <4FA32E47.7020406@gmail.com> <4FA3B596.3050106@openwrt.org> <CAErSpo4AQh3cJzULkmP_Dqsf0cSPRP1WqvhuQR3gePXw2rN7rQ@mail.gmail.com>
+In-Reply-To: <CAErSpo4AQh3cJzULkmP_Dqsf0cSPRP1WqvhuQR3gePXw2rN7rQ@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Hi Bjorn,
+> I compiled alpha, ia64, mips, parisc, powerpc, sh, sparc, and x86 and
+> didn't see any issues related to this patch.  There might still be
+> something,  but I'm willing to help work through them or revert this
+> if it turns out to be a problem.  I'm still assuming that Grant will
+> handle this.
+>
+> Bjorn
 
-I get the following build error when I am compiling the MTD gpio-nand driver
-for bcm63xx:
-
-In file included from arch/mips/include/asm/mach-bcm63xx/gpio.h:4:0,
-                 from arch/mips/include/asm/gpio.h:4,
-                 from include/linux/gpio.h:36,
-                 from drivers/mtd/maps/gpio-addr-flash.c:16:
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h: In function 'bcm63xx_gpio_count':
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:10:2: error: implicit declaration of function 'bcm63xx_get_cpu_id' [-Werror=implicit-function-declaration]
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: error: 'BCM6358_CPU_ID' undeclared (first use in this function)
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: note: each undeclared identifier is reported only once for each function it appears in
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:13:7: error: 'BCM6338_CPU_ID' undeclared (first use in this function)
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:15:7: error: 'BCM6345_CPU_ID' undeclared (first use in this function)
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:17:7: error: 'BCM6368_CPU_ID' undeclared (first use in this function)
-arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:19:7: error: 'BCM6348_CPU_ID' undeclared (first use in this function)
-
-This patch sloves the problem.
-
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
----
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
-index 3d5de96..b4b9103 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
-@@ -1,6 +1,7 @@
- #ifndef BCM63XX_GPIO_H
- #define BCM63XX_GPIO_H
- 
-+#include "bcm63xx_cpu.h"
- #include <linux/init.h>
- 
- int __init bcm63xx_gpio_init(void);
--- 
-1.7.9.1
+Thanks for the help,
+John

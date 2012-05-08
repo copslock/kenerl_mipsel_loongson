@@ -1,36 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 14:44:56 +0200 (CEST)
-Received: from mms3.broadcom.com ([216.31.210.19]:2260 "EHLO MMS3.broadcom.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 14:45:19 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:2802 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903687Ab2EHMmo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 May 2012 14:42:44 +0200
-Received: from [10.9.200.133] by MMS3.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Tue, 08 May 2012 05:42:39 -0700
-X-Server-Uuid: B730DE51-FC43-4C83-941F-F1F78A914BDD
+        id S1903689Ab2EHMmt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 May 2012 14:42:49 +0200
+Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 08 May 2012 05:42:56 -0700
+X-Server-Uuid: 72204117-5C29-4314-8910-60DB108979CB
 Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB02.corp.ad.broadcom.com (10.9.200.133) with Microsoft SMTP
- Server id 8.2.247.2; Tue, 8 May 2012 05:41:42 -0700
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Tue, 8 May 2012 05:42:32 -0700
 Received: from hqcas01.netlogicmicro.com (unknown [10.65.50.14]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 1B60F9F9FA; Tue, 8
- May 2012 05:42:22 -0700 (PDT)
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 1491D9F9FC; Tue, 8
+ May 2012 05:42:32 -0700 (PDT)
 Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
  hqcas01.netlogicmicro.com (10.65.50.14) with Microsoft SMTP Server id
- 14.1.339.1; Tue, 8 May 2012 05:42:21 -0700
+ 14.1.339.1; Tue, 8 May 2012 05:42:31 -0700
 From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
 To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Ganesan Ramalingam" <ganesanr@broadcom.com>,
-        "Jayachandran C" <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 02/14] MIPS: Netlogic: MSI enable fix for XLS
-Date:   Tue, 8 May 2012 18:11:56 +0530
-Message-ID: <1336480928-18887-3-git-send-email-jayachandranc@netlogicmicro.com>
+cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>
+Subject: [PATCH 07/14] MIPS: Netlogic: Remove NETLOGIC_ prefix
+Date:   Tue, 8 May 2012 18:12:01 +0530
+Message-ID: <1336480928-18887-8-git-send-email-jayachandranc@netlogicmicro.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <1336480928-18887-1-git-send-email-jayachandranc@netlogicmicro.com>
 References: <1336480928-18887-1-git-send-email-jayachandranc@netlogicmicro.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.7.0.77]
-X-WSS-ID: 63B7CB353E029935953-01-01
+X-WSS-ID: 63B7CB5A44G1245233-01-01
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33201
+X-archive-position: 33202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,131 +38,104 @@ Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+Remove NETLOGIC_ prefix from gpio register definitions, this will
+bring it in-line with the other Netlogic headers.
 
-MSI interrupts do not work on XLS after commit a776c49
-( "PCI: msi: Disable msi interrupts when we initialize a pci device" )
-because the change disables MSI interrupts on the XLS PCIe bridges
-during the PCI enumeration.
+Having NETLOGIC prefix here is misleading because these are XLR/XLS
+specific register definitions.
 
-Fix this by enabling MSI interrupts on the bridge in the
-arch_setup_msi_irq() function. A new function xls_get_pcie_link()
-has been introduced to get the PCI device corresponding to the
-top level PCIe bridge on which MSI has to be enabled.
-
-Also, update get_irq_vector() to use the new xls_get_pcie_link()
-function and PCI_SLOT() macro for determining the IRQ of PCI devices.
-
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
 Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
 ---
- arch/mips/pci/pci-xlr.c |   59 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 50 insertions(+), 9 deletions(-)
+ arch/mips/include/asm/netlogic/xlr/gpio.h |   59 +++++++++++++++--------------
+ arch/mips/netlogic/xlr/setup.c            |    2 +-
+ 2 files changed, 31 insertions(+), 30 deletions(-)
 
-diff --git a/arch/mips/pci/pci-xlr.c b/arch/mips/pci/pci-xlr.c
-index 50ff4dc..172af1c 100644
---- a/arch/mips/pci/pci-xlr.c
-+++ b/arch/mips/pci/pci-xlr.c
-@@ -41,6 +41,7 @@
- #include <linux/irq.h>
- #include <linux/irqdesc.h>
- #include <linux/console.h>
-+#include <linux/pci_regs.h>
+diff --git a/arch/mips/include/asm/netlogic/xlr/gpio.h b/arch/mips/include/asm/netlogic/xlr/gpio.h
+index 51f6ad4..8492e83 100644
+--- a/arch/mips/include/asm/netlogic/xlr/gpio.h
++++ b/arch/mips/include/asm/netlogic/xlr/gpio.h
+@@ -35,39 +35,40 @@
+ #ifndef _ASM_NLM_GPIO_H
+ #define _ASM_NLM_GPIO_H
  
- #include <asm/io.h>
+-#define NETLOGIC_GPIO_INT_EN_REG		0
+-#define NETLOGIC_GPIO_INPUT_INVERSION_REG	1
+-#define NETLOGIC_GPIO_IO_DIR_REG		2
+-#define NETLOGIC_GPIO_IO_DATA_WR_REG		3
+-#define NETLOGIC_GPIO_IO_DATA_RD_REG		4
++#define GPIO_INT_EN_REG			0
++#define GPIO_INPUT_INVERSION_REG	1
++#define GPIO_IO_DIR_REG			2
++#define GPIO_IO_DATA_WR_REG		3
++#define GPIO_IO_DATA_RD_REG		4
  
-@@ -156,35 +157,55 @@ struct pci_controller nlm_pci_controller = {
- 	.io_offset      = 0x00000000UL,
- };
+-#define NETLOGIC_GPIO_SWRESET_REG		8
+-#define NETLOGIC_GPIO_DRAM1_CNTRL_REG		9
+-#define NETLOGIC_GPIO_DRAM1_RATIO_REG		10
+-#define NETLOGIC_GPIO_DRAM1_RESET_REG		11
+-#define NETLOGIC_GPIO_DRAM1_STATUS_REG		12
+-#define NETLOGIC_GPIO_DRAM2_CNTRL_REG		13
+-#define NETLOGIC_GPIO_DRAM2_RATIO_REG		14
+-#define NETLOGIC_GPIO_DRAM2_RESET_REG		15
+-#define NETLOGIC_GPIO_DRAM2_STATUS_REG		16
++#define GPIO_SWRESET_REG		8
++#define GPIO_DRAM1_CNTRL_REG		9
++#define GPIO_DRAM1_RATIO_REG		10
++#define GPIO_DRAM1_RESET_REG		11
++#define GPIO_DRAM1_STATUS_REG		12
++#define GPIO_DRAM2_CNTRL_REG		13
++#define GPIO_DRAM2_RATIO_REG		14
++#define GPIO_DRAM2_RESET_REG		15
++#define GPIO_DRAM2_STATUS_REG		16
  
-+/*
-+ * The top level PCIe links on the XLS PCIe controller appear as
-+ * bridges. Given a device, this function finds which link it is
-+ * on.
-+ */
-+static struct pci_dev *xls_get_pcie_link(const struct pci_dev *dev)
-+{
-+	struct pci_bus *bus, *p;
+-#define NETLOGIC_GPIO_PWRON_RESET_CFG_REG	21
+-#define NETLOGIC_GPIO_BIST_ALL_GO_STATUS_REG	24
+-#define NETLOGIC_GPIO_BIST_CPU_GO_STATUS_REG	25
+-#define NETLOGIC_GPIO_BIST_DEV_GO_STATUS_REG	26
++#define GPIO_PWRON_RESET_CFG_REG	21
++#define GPIO_BIST_ALL_GO_STATUS_REG	24
++#define GPIO_BIST_CPU_GO_STATUS_REG	25
++#define GPIO_BIST_DEV_GO_STATUS_REG	26
+ 
+-#define NETLOGIC_GPIO_FUSE_BANK_REG		35
+-#define NETLOGIC_GPIO_CPU_RESET_REG		40
+-#define NETLOGIC_GPIO_RNG_REG			43
++#define GPIO_FUSE_BANK_REG		35
++#define GPIO_CPU_RESET_REG		40
++#define GPIO_RNG_REG			43
+ 
+-#define NETLOGIC_PWRON_RESET_PCMCIA_BOOT	17
+-#define NETLOGIC_GPIO_LED_BITMAP	0x1700000
+-#define NETLOGIC_GPIO_LED_0_SHIFT		20
+-#define NETLOGIC_GPIO_LED_1_SHIFT		24
++#define PWRON_RESET_PCMCIA_BOOT		17
+ 
+-#define NETLOGIC_GPIO_LED_OUTPUT_CODE_RESET	0x01
+-#define NETLOGIC_GPIO_LED_OUTPUT_CODE_HARD_RESET 0x02
+-#define NETLOGIC_GPIO_LED_OUTPUT_CODE_SOFT_RESET 0x03
+-#define NETLOGIC_GPIO_LED_OUTPUT_CODE_MAIN	0x04
++#define GPIO_LED_BITMAP			0x1700000
++#define GPIO_LED_0_SHIFT		20
++#define GPIO_LED_1_SHIFT		24
 +
-+	/* Find the bridge on bus 0 */
-+	bus = dev->bus;
-+	for (p = bus->parent; p && p->number != 0; p = p->parent)
-+		bus = p;
-+
-+	return p ? bus->self : NULL;
-+}
-+
- static int get_irq_vector(const struct pci_dev *dev)
- {
-+	struct pci_dev *lnk;
-+
- 	if (!nlm_chip_is_xls())
--		return	PIC_PCIX_IRQ;	/* for XLR just one IRQ*/
-+		return	PIC_PCIX_IRQ;	/* for XLR just one IRQ */
++#define GPIO_LED_OUTPUT_CODE_RESET	0x01
++#define GPIO_LED_OUTPUT_CODE_HARD_RESET 0x02
++#define GPIO_LED_OUTPUT_CODE_SOFT_RESET 0x03
++#define GPIO_LED_OUTPUT_CODE_MAIN	0x04
  
- 	/*
- 	 * For XLS PCIe, there is an IRQ per Link, find out which
- 	 * link the device is on to assign interrupts
--	*/
--	if (dev->bus->self == NULL)
-+	 */
-+	lnk = xls_get_pcie_link(dev);
-+	if (lnk == NULL)
- 		return 0;
+ #endif
+diff --git a/arch/mips/netlogic/xlr/setup.c b/arch/mips/netlogic/xlr/setup.c
+index c9d066d..81b1d31 100644
+--- a/arch/mips/netlogic/xlr/setup.c
++++ b/arch/mips/netlogic/xlr/setup.c
+@@ -85,7 +85,7 @@ static void nlm_linux_exit(void)
  
--	switch	(dev->bus->self->devfn) {
--	case 0x0:
-+	switch	(PCI_SLOT(lnk->devfn)) {
-+	case 0:
- 		return PIC_PCIE_LINK0_IRQ;
--	case 0x8:
-+	case 1:
- 		return PIC_PCIE_LINK1_IRQ;
--	case 0x10:
-+	case 2:
- 		if (nlm_chip_is_xls_b())
- 			return PIC_PCIE_XLSB0_LINK2_IRQ;
- 		else
- 			return PIC_PCIE_LINK2_IRQ;
--	case 0x18:
-+	case 3:
- 		if (nlm_chip_is_xls_b())
- 			return PIC_PCIE_XLSB0_LINK3_IRQ;
- 		else
- 			return PIC_PCIE_LINK3_IRQ;
- 	}
--	WARN(1, "Unexpected devfn %d\n", dev->bus->self->devfn);
-+	WARN(1, "Unexpected devfn %d\n", lnk->devfn);
- 	return 0;
+ 	gpiobase = nlm_mmio_base(NETLOGIC_IO_GPIO_OFFSET);
+ 	/* trigger a chip reset by writing 1 to GPIO_SWRESET_REG */
+-	nlm_write_reg(gpiobase, NETLOGIC_GPIO_SWRESET_REG, 1);
++	nlm_write_reg(gpiobase, GPIO_SWRESET_REG, 1);
+ 	for ( ; ; )
+ 		cpu_wait();
  }
- 
-@@ -202,7 +223,27 @@ void arch_teardown_msi_irq(unsigned int irq)
- int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
- {
- 	struct msi_msg msg;
-+	struct pci_dev *lnk;
- 	int irq, ret;
-+	u16 val;
-+
-+	/* MSI not supported on XLR */
-+	if (!nlm_chip_is_xls())
-+		return 1;
-+
-+	/*
-+	 * Enable MSI on the XLS PCIe controller bridge which was disabled
-+	 * at enumeration, the bridge MSI capability is at 0x50
-+	 */
-+	lnk = xls_get_pcie_link(dev);
-+	if (lnk == NULL)
-+		return 1;
-+
-+	pci_read_config_word(lnk, 0x50 + PCI_MSI_FLAGS, &val);
-+	if ((val & PCI_MSI_FLAGS_ENABLE) == 0) {
-+		val |= PCI_MSI_FLAGS_ENABLE;
-+		pci_write_config_word(lnk, 0x50 + PCI_MSI_FLAGS, val);
-+	}
- 
- 	irq = get_irq_vector(dev);
- 	if (irq <= 0)
 -- 
 1.7.9.5

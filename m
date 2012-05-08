@@ -1,82 +1,264 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 13:19:42 +0200 (CEST)
-Received: from mga09.intel.com ([134.134.136.24]:33841 "EHLO mga09.intel.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 14:42:52 +0200 (CEST)
+Received: from mms2.broadcom.com ([216.31.210.18]:2768 "EHLO mms2.broadcom.com"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903640Ab2EHLTh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 May 2012 13:19:37 +0200
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP; 08 May 2012 04:19:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.67,352,1309762800"; 
-   d="asc'?scan'208";a="138156086"
-Received: from linux.jf.intel.com (HELO linux.intel.com) ([10.23.219.25])
-  by orsmga001.jf.intel.com with ESMTP; 08 May 2012 04:19:30 -0700
-Received: from [10.237.72.159] (sauron.fi.intel.com [10.237.72.159])
-        by linux.intel.com (Postfix) with ESMTP id 119136A4008;
-        Tue,  8 May 2012 04:19:29 -0700 (PDT)
-Message-ID: <1336476174.23308.32.camel@sauron.fi.intel.com>
-Subject: Re: xway_nand does not build
-From:   Artem Bityutskiy <dedekind1@gmail.com>
-Reply-To: dedekind1@gmail.com
-To:     John Crispin <blogic@openwrt.org>
-Cc:     MIPS Mailing List <linux-mips@linux-mips.org>,
-        MTD Maling List <linux-mtd@lists.infradead.org>
-Date:   Tue, 08 May 2012 14:22:54 +0300
-In-Reply-To: <4FA8FF4C.5050400@openwrt.org>
-References: <1336474838.23308.28.camel@sauron.fi.intel.com>
-                 <4FA8FD24.6060908@openwrt.org>
-         <1336475618.23308.30.camel@sauron.fi.intel.com>
-         <4FA8FF4C.5050400@openwrt.org>
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature";
-        boundary="=-ntJ3kIXU1PPEY1rrLb4x"
-X-Mailer: Evolution 3.2.3 (3.2.3-3.fc16) 
-Mime-Version: 1.0
-X-archive-position: 33195
+        id S1903640Ab2EHMmo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 May 2012 14:42:44 +0200
+Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.5)); Tue, 08 May 2012 05:42:52 -0700
+X-Server-Uuid: 72204117-5C29-4314-8910-60DB108979CB
+Received: from mail-irva-13.broadcom.com (10.11.16.103) by
+ IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
+ Server id 8.2.247.2; Tue, 8 May 2012 05:42:28 -0700
+Received: from hqcas01.netlogicmicro.com (unknown [10.65.50.14]) by
+ mail-irva-13.broadcom.com (Postfix) with ESMTP id 1747A9F9F5; Tue, 8
+ May 2012 05:42:28 -0700 (PDT)
+Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
+ hqcas01.netlogicmicro.com (10.65.50.14) with Microsoft SMTP Server id
+ 14.1.339.1; Tue, 8 May 2012 05:42:27 -0700
+From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+cc:     "Jayachandran C" <jayachandranc@netlogicmicro.com>
+Subject: [PATCH 05/14] MIPS: Netlogic: Update comments in smpboot.S
+Date:   Tue, 8 May 2012 18:11:59 +0530
+Message-ID: <1336480928-18887-6-git-send-email-jayachandranc@netlogicmicro.com>
+X-Mailer: git-send-email 1.7.9.5
+In-Reply-To: <1336480928-18887-1-git-send-email-jayachandranc@netlogicmicro.com>
+References: <1336480928-18887-1-git-send-email-jayachandranc@netlogicmicro.com>
+MIME-Version: 1.0
+X-Originating-IP: [10.7.0.77]
+X-WSS-ID: 63B7CB4644G1245195-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-archive-position: 33196
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dedekind1@gmail.com
+X-original-sender: jayachandranc@netlogicmicro.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+No change in logic, comments update and whitespace cleanup.
 
---=-ntJ3kIXU1PPEY1rrLb4x
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+* A few comments in the file were in assembler style and the rest
+  int C style, convert all of them to C style.
+* Mark workarounds for Ax silicon with a macro XLP_AX_WORKAROUND
+* Whitespace fixes - use tabs consistently
+* rename __config_lsu macro to xlp_config_lsu
 
-On Tue, 2012-05-08 at 13:11 +0200, John Crispin wrote:
-> That would be appreciated. i will get aligned with Ralf to make sure
-> this patch flow via his tree
+Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
+---
+ arch/mips/netlogic/common/smpboot.S |  112 +++++++++++++++++++----------------
+ 1 file changed, 61 insertions(+), 51 deletions(-)
 
-Feel free to add the following when you send to Ralf:
-
-Acked-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-
---=20
-Best Regards,
-Artem Bityutskiy
-
---=-ntJ3kIXU1PPEY1rrLb4x
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAABAgAGBQJPqQIOAAoJECmIfjd9wqK0SL0QAJOkcSNreolgiIYZD5nJBjL7
-DBlS8vzfvH3TBhX8wd8TylVM7wLzuVgtKP2r/LsDN48Qzgod6ccswuNHresrCxgQ
-O7k/dHZV921nbkVGLUqrLb4G8BbsTbI+Gx1hlS7EoJoOprJJ6N/SYdNvg7riSMxf
-O3/5vXUspg+hcd0fjC2bPd/OVV93ZQx+lbaTRmmEZoPj9Dngj4blfnpW7yfOqmJs
-9swnDWu4HsPWxgGvzYmqyPTehyXNrFrWe3p8cUa3VWtHFbBU3RTT2FzN0Doe/zZJ
-1JwDDiXoBZFu2H2cuNjiXq3O+JzAC4DAjKrYXF03OWMh+R9BHCRJydS7T2osPub7
-bHj+C7qDKB/O0Of+kE1EpHvELCUlWL5qx+7TdySm/fN5nQJSETU+o34pNlRaZBSv
-/fZ8Z1tVr8AzI8lKREB67i4LQaSiTcxcn5MBlo+IA0yXLJT7CdpwWN9XNeTrH0jK
-1OKIn4/P+e74evqiLYQf5uSxaya9TF9ug0BSu/TmHfQQNE5l56QhAiotkEMEK+pn
-ZXPIG3ucun+e6hOyZXhri6HVDHlo8Zyo6Rgd/K+dA86C0iLopjkHd9r5Jj765F/w
-FrAs5yLZ/Pk7GBqwd1dOam/YYkC5bhSecSXgRFKG/I2iRwqeV5SEDQMneZcRDd5J
-eyFB2V8YMoDhypvOWzlQ
-=s0vS
------END PGP SIGNATURE-----
-
---=-ntJ3kIXU1PPEY1rrLb4x--
+diff --git a/arch/mips/netlogic/common/smpboot.S b/arch/mips/netlogic/common/smpboot.S
+index c138b1a..bfe9060 100644
+--- a/arch/mips/netlogic/common/smpboot.S
++++ b/arch/mips/netlogic/common/smpboot.S
+@@ -54,28 +54,36 @@
+ 			XLP_IO_SYS_OFFSET(node) + XLP_IO_PCI_HDRSZ + \
+ 			SYS_CPU_NONCOHERENT_MODE * 4
+ 
+-.macro __config_lsu
+-	li      t0, LSU_DEFEATURE
+-	mfcr    t1, t0
++#define	XLP_AX_WORKAROUND	/* enable Ax silicon workarounds */
+ 
+-	lui     t2, 0x4080  /* Enable Unaligned Access, L2HPE */
+-	or      t1, t1, t2
+-	li	t2, ~0xe    /* S1RCM */
++/* Enable XLP features and workarounds in the LSU */
++.macro xlp_config_lsu
++	li	t0, LSU_DEFEATURE
++	mfcr	t1, t0
++
++	lui	t2, 0x4080	/* Enable Unaligned Access, L2HPE */
++	or	t1, t1, t2
++#ifdef XLP_AX_WORKAROUND
++	li	t2, ~0xe	/* S1RCM */
+ 	and	t1, t1, t2
++#endif
+ 	mtcr    t1, t0
+ 
+-	li      t0, SCHED_DEFEATURE
+-	lui     t1, 0x0100  /* Experimental: Disable BRU accepting ALU ops */
+-	mtcr    t1, t0
++#ifdef XLP_AX_WORKAROUND
++	li	t0, SCHED_DEFEATURE
++	lui	t1, 0x0100	/* Disable BRU accepting ALU ops */
++	mtcr	t1, t0
++#endif
+ .endm
+ 
+ /*
+- * The cores can come start when they are woken up. This is also the NMI
+- * entry, so check that first.
++ * This is the code that will be copied to the reset entry point for
++ * XLR and XLP. The XLP cores start here when they are woken up. This
++ * is also the NMI entry point.
+  *
+- * The data corresponding to reset is stored at RESET_DATA_PHYS location,
+- * this will have the thread mask (used when core is woken up) and the
+- * current NMI handler in case we reached here for an NMI.
++ * The data corresponding to reset/NMI is stored at RESET_DATA_PHYS
++ * location, this will have the thread mask (used when core is woken up)
++ * and the current NMI handler in case we reached here for an NMI.
+  *
+  * When a core or thread is newly woken up, it loops in a 'wait'. When
+  * the CPU really needs waking up, we send an NMI to it, with the NMI
+@@ -89,12 +97,12 @@
+ FEXPORT(nlm_reset_entry)
+ 	dmtc0	k0, $22, 6
+ 	dmtc0	k1, $22, 7
+-	mfc0    k0, CP0_STATUS
+-	li      k1, 0x80000
+-	and     k1, k0, k1
+-	beqz    k1, 1f         /* go to real reset entry */
++	mfc0	k0, CP0_STATUS
++	li	k1, 0x80000
++	and	k1, k0, k1
++	beqz	k1, 1f		/* go to real reset entry */
+ 	nop
+-	li	k1, CKSEG1ADDR(RESET_DATA_PHYS)   /* NMI */
++	li	k1, CKSEG1ADDR(RESET_DATA_PHYS)	/* NMI */
+ 	ld	k0, BOOT_NMI_HANDLER(k1)
+ 	jr	k0
+ 	nop
+@@ -114,21 +122,23 @@ FEXPORT(nlm_reset_entry)
+ 	li	t2, SYS_CPU_COHERENT_BASE(0)
+ 	add	t2, t2, t3		/* t2 <- SYS offset for node */
+ 	lw	t1, 0(t2)
+-	and     t1, t1, t0
+-	sw      t1, 0(t2)
++	and	t1, t1, t0
++	sw	t1, 0(t2)
+ 
+ 	/* read back to ensure complete */
+-	lw      t1, 0(t2)
++	lw	t1, 0(t2)
+ 	sync
+ 
+ 	/* Configure LSU on Non-0 Cores. */
+-	__config_lsu
++	xlp_config_lsu
++	/* FALL THROUGH */
+ 
+ /*
+  * Wake up sibling threads from the initial thread in
+  * a core.
+  */
+ EXPORT(nlm_boot_siblings)
++	/* Enable hw threads by writing to MAP_THREADMODE of the core */
+ 	li	t0, CKSEG1ADDR(RESET_DATA_PHYS)
+ 	lw	t1, BOOT_THREAD_MODE(t0)	/* t1 <- thread mode */
+ 	li	t0, ((CPU_BLOCKID_MAP << 8) | MAP_THREADMODE)
+@@ -139,24 +149,24 @@ EXPORT(nlm_boot_siblings)
+ 	/*
+ 	 * The new hardware thread starts at the next instruction
+ 	 * For all the cases other than core 0 thread 0, we will
+-         * jump to the secondary wait function.
+-         */
++	* jump to the secondary wait function.
++	*/
+ 	mfc0	v0, CP0_EBASE, 1
+ 	andi	v0, 0x7f		/* v0 <- node/core */
+ 
+-#if 1
+-	/* A0 errata - Write MMU_SETUP after changing thread mode register. */
++	/* Init MMU in the first thread after changing THREAD_MODE
++	 * register (Ax Errata?)
++	 */
+ 	andi	v1, v0, 0x3		/* v1 <- thread id */
+ 	bnez	v1, 2f
+ 	nop
+ 
+-        li	t0, MMU_SETUP
+-        li	t1, 0
+-        mtcr	t1, t0
++	li	t0, MMU_SETUP
++	li	t1, 0
++	mtcr	t1, t0
+ 	ehb
+-#endif
+ 
+-2:	beqz	v0, 4f
++2:	beqz	v0, 4f		/* boot cpu (cpuid == 0)? */
+ 	nop
+ 
+ 	/* setup status reg */
+@@ -183,9 +193,9 @@ EXPORT(nlm_boot_siblings)
+ 	 * For the boot CPU, we have to restore registers and
+ 	 * return
+ 	 */
+-4:	dmfc0	t0, $4, 2       /* restore SP from UserLocal */
++4:	dmfc0	t0, $4, 2	/* restore SP from UserLocal */
+ 	li	t1, 0xfadebeef
+-	dmtc0	t1, $4, 2       /* restore SP from UserLocal */
++	dmtc0	t1, $4, 2	/* restore SP from UserLocal */
+ 	PTR_SUBU sp, t0, PT_SIZE
+ 	RESTORE_ALL
+ 	jr   ra
+@@ -193,7 +203,7 @@ EXPORT(nlm_boot_siblings)
+ EXPORT(nlm_reset_entry_end)
+ 
+ FEXPORT(xlp_boot_core0_siblings)	/* "Master" cpu starts from here */
+-	__config_lsu
++	xlp_config_lsu
+ 	dmtc0   sp, $4, 2		/* SP saved in UserLocal */
+ 	SAVE_ALL
+ 	sync
+@@ -234,36 +244,36 @@ END(nlm_boot_secondary_cpus)
+  */
+ 	__CPUINIT
+ NESTED(nlm_rmiboot_preboot, 16, sp)
+-	mfc0	t0, $15, 1	# read ebase
+-	andi	t0, 0x1f	# t0 has the processor_id()
+-	andi	t2, t0, 0x3	# thread no
+-	sll	t0, 2		# offset in cpu array
++	mfc0	t0, $15, 1	/* read ebase */
++	andi	t0, 0x1f	/* t0 has the processor_id() */
++	andi	t2, t0, 0x3	/* thread num */
++	sll	t0, 2		/* offset in cpu array */
+ 
+-	PTR_LA	t1, nlm_cpu_ready # mark CPU ready
++	PTR_LA	t1, nlm_cpu_ready /* mark CPU ready */
+ 	PTR_ADDU t1, t0
+ 	li	t3, 1
+ 	sw	t3, 0(t1)
+ 
+-	bnez	t2, 1f		# skip thread programming
+-	nop			# for non zero hw threads
++	bnez	t2, 1f		/* skip thread programming */
++	nop			/* for thread id != 0 */
+ 
+ 	/*
+-	 * MMU setup only for first thread in core
++	 * XLR MMU setup only for first thread in core
+ 	 */
+ 	li	t0, 0x400
+ 	mfcr	t1, t0
+-	li	t2, 6 		# XLR thread mode mask
++	li	t2, 6 		/* XLR thread mode mask */
+ 	nor	t3, t2, zero
+-	and	t2, t1, t2	# t2 - current thread mode
++	and	t2, t1, t2	/* t2 - current thread mode */
+ 	li	v0, CKSEG1ADDR(RESET_DATA_PHYS)
+-	lw	v1, BOOT_THREAD_MODE(v0) # v1 - new thread mode
++	lw	v1, BOOT_THREAD_MODE(v0) /* v1 - new thread mode */
+ 	sll	v1, 1
+-	beq	v1, t2, 1f 	# same as request value
+-	nop			# nothing to do */
++	beq	v1, t2, 1f 	/* same as request value */
++	nop			/* nothing to do */
+ 
+-	and	t2, t1, t3	# mask out old thread mode
+-	or	t1, t2, v1	# put in new value
+-	mtcr	t1, t0		# update core control
++	and	t2, t1, t3	/* mask out old thread mode */
++	or	t1, t2, v1	/* put in new value */
++	mtcr	t1, t0		/* update core control */
+ 
+ 1:	wait
+ 	j	1b
+-- 
+1.7.9.5

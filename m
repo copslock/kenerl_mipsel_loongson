@@ -1,91 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 16:13:50 +0200 (CEST)
-Received: from nbd.name ([46.4.11.11]:41456 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903633Ab2EHONk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 May 2012 16:13:40 +0200
-Message-ID: <4FA929BA.9020702@openwrt.org>
-Date:   Tue, 08 May 2012 16:12:10 +0200
-From:   John Crispin <blogic@openwrt.org>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.24) Gecko/20111114 Icedove/3.1.16
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 17:28:36 +0200 (CEST)
+Received: from avon.wwwdotorg.org ([70.85.31.133]:45008 "EHLO
+        avon.wwwdotorg.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903633Ab2EHP2a (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 8 May 2012 17:28:30 +0200
+Received: from severn.wwwdotorg.org (unknown [192.168.65.5])
+        (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by avon.wwwdotorg.org (Postfix) with ESMTPS id 1F5D16412;
+        Tue,  8 May 2012 09:30:04 -0600 (MDT)
+Received: from [10.20.204.51] (searspoint.nvidia.com [216.228.112.21])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by severn.wwwdotorg.org (Postfix) with ESMTPSA id 89E32E461C;
+        Tue,  8 May 2012 09:28:25 -0600 (MDT)
+Message-ID: <4FA93B97.4070406@wwwdotorg.org>
+Date:   Tue, 08 May 2012 09:28:23 -0600
+From:   Stephen Warren <swarren@wwwdotorg.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20120430 Thunderbird/12.0.1
 MIME-Version: 1.0
 To:     Linus Walleij <linus.walleij@linaro.org>
-CC:     linux-mips@linux-mips.org, devicetree-discuss@lists.ozlabs.org,
-        Ralf Baechle <ralf@linux-mips.org>
+CC:     John Crispin <blogic@openwrt.org>,
+        Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        devicetree-discuss@lists.ozlabs.org
 Subject: Re: [PATCH 04/14] OF: pinctrl: MIPS: lantiq: implement lantiq/xway
  pinctrl support
 References: <1336133919-26525-1-git-send-email-blogic@openwrt.org> <1336133919-26525-4-git-send-email-blogic@openwrt.org> <CACRpkdYJDd84GbKM7r4Xy+d4iOtdD+rJ3kdq-zwVbf_Attj2Gw@mail.gmail.com>
 In-Reply-To: <CACRpkdYJDd84GbKM7r4Xy+d4iOtdD+rJ3kdq-zwVbf_Attj2Gw@mail.gmail.com>
+X-Enigmail-Version: 1.5pre
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-archive-position: 33213
+X-Virus-Scanned: clamav-milter 0.96.5 at avon.wwwdotorg.org
+X-Virus-Status: Clean
+X-archive-position: 33214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: blogic@openwrt.org
+X-original-sender: swarren@wwwdotorg.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Linus,
-
-Thanks. I will fold your comments with Stephen's into a V2 and resend it.
-
-> Shouldn't this be:
->
-> depends on SOC_TYPE_XWAY
-> depends on PINCTRL_LANTIQ
->
+On 05/08/2012 07:21 AM, Linus Walleij wrote:
+> On Fri, May 4, 2012 at 2:18 PM, John Crispin <blogic@openwrt.org> wrote:
+> 
+>> Implement support for pinctrl on lantiq/xway socs. The IO core found on these
+>> socs has the registers for pinctrl, pinconf and gpio mixed up in the same
+>> register range. As the gpio_chip handling is only a few lines, the driver also
+>> implements the gpio functionality. This obseletes the old gpio driver that was
+>> located in the arch/ folder.
+...
+>> diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+>> index f73a5ea..a19bac96 100644
+>> --- a/drivers/pinctrl/Kconfig
+>> +++ b/drivers/pinctrl/Kconfig
+>> @@ -30,6 +30,11 @@ config PINCTRL_PXA3xx
+>>        bool
+>>        select PINMUX
+>>
+>> +config PINCTRL_LANTIQ
+>> +       bool
+>> +       select PINMUX
+>> +       select PINCONF
+> 
+> depends on LANTIQ
+> 
 > ?
->
+> 
+> I don't think anyone else is going to want to compile
+> this.
+
+This Kconfig option is selected by the ARCH Kconfig, so only selected at
+the right time. The user won't get prompted for it since there's no
+string after "bool". I think this is OK. Tegra's pinctrl Kconfig option
+doesn't have any "depends ARCH_TEGRA" here either, although I note that
+many other pinctrl drivers do.
+
+>>  config PINCTRL_MMP2
+>>        bool "MMP2 pin controller driver"
+>>        depends on ARCH_MMP
+>> @@ -83,6 +88,10 @@ config PINCTRL_COH901
+>>          COH 901 335 and COH 901 571/3. They contain 3, 5 or 7
+>>          ports of 8 GPIO pins each.
+>>
+>> +config PINCTRL_XWAY
+>> +       bool
+>> +       select PINCTRL_LANTIQ
+> 
+> Shouldn't this be:
+> 
+> depends on SOC_TYPE_XWAY
+
+Maybe, but see comments above.
+
+> depends on PINCTRL_LANTIQ
+
+Selecting PINCTRL_LANTIQ seems more appropriate; the ARCH Kconfig just
+selects PINCTRL_XWAY when appropriate, and that then selects anything it
+depends on.
+
+(IIRC, the driver for SOC_TYPE_XWAY uses the driver for LANTIQ, not the
+other way around?)
+
 > So LANTIQ selects it's pinctrl driver, the the xway SoC
 > selects its driver and they both are dependent on their
 > respective system.
->
-The whole select/depends part is broken. I will clean this up properly
-
->> diff --git a/drivers/pinctrl/pinctrl-lantiq.h b/drivers/pinctrl/pinctrl-lantiq.h
->> +#define ARRAY_AND_SIZE(x)      (x), ARRAY_SIZE(x)
-I was actually considering to drop this. Having a "," inside a macro is
-a bit ugly.
-It leads to the calling code invoking the function with N-1 parameters,
-although the function takes N parameters. I find this a bit
-confusing/inconsistent.
-
-
->> +/* macros to help us access the registers */
->> +#define gpio_getbit(m, r, p)   (!!(ltq_r32(m + r) & (1 << p)))
->> +#define gpio_setbit(m, r, p)   ltq_w32_mask(0, (1 << p), m + r)
->> +#define gpio_clearbit(m, r, p) ltq_w32_mask((1 << p), 0, m + r)
-> So what makes this arch so fantastic that it needs its own read/write functions?
-> (Just curious...)
-Nothing. Its a legacy macro from a few years ago when I first added
-lantiq support inside openwrt. I personally like the macro. I use it
-wherever I access lantiq registers.
-When accessing generic memory ranges, as in the nand driver, I use
-writeb() and co.
-
-Matter of taste really. I would prefer to keep it this way if there are
-no guidelines against it.
-
->> +/* ---------  gpio_chip related code --------- */
->> +
->> +int gpio_to_irq(unsigned int gpio)
->> +{
->> +       return -EINVAL;
->> +}
->> +EXPORT_SYMBOL(gpio_to_irq);
->> +
->> +int irq_to_gpio(unsigned int gpio)
->> +{
->> +       return -EINVAL;
->> +}
->> +EXPORT_SYMBOL(irq_to_gpio);
-> Can't you just leave them undefined?
-
-I just checked how ARM does it. They use
-   arch/arm/include/asm/gpio.h
-
-Let me talk to Ralf about this and make a MIPS version of said header file.
-
-Thanks,
-John

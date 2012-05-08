@@ -1,86 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 14:48:48 +0200 (CEST)
-Received: from mms2.broadcom.com ([216.31.210.18]:2742 "EHLO mms2.broadcom.com"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903699Ab2EHMnI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Tue, 8 May 2012 14:43:08 +0200
-Received: from [10.9.200.131] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.5)); Tue, 08 May 2012 05:43:12 -0700
-X-Server-Uuid: 72204117-5C29-4314-8910-60DB108979CB
-Received: from mail-irva-13.broadcom.com (10.11.16.103) by
- IRVEXCHHUB01.corp.ad.broadcom.com (10.9.200.131) with Microsoft SMTP
- Server id 8.2.247.2; Tue, 8 May 2012 05:42:48 -0700
-Received: from hqcas01.netlogicmicro.com (unknown [10.65.50.14]) by
- mail-irva-13.broadcom.com (Postfix) with ESMTP id 133099F9F6; Tue, 8
- May 2012 05:42:48 -0700 (PDT)
-Received: from jayachandranc.netlogicmicro.com (10.7.0.77) by
- hqcas01.netlogicmicro.com (10.65.50.14) with Microsoft SMTP Server id
- 14.1.339.1; Tue, 8 May 2012 05:42:47 -0700
-From:   "Jayachandran C" <jayachandranc@netlogicmicro.com>
-To:     linux-mips@linux-mips.org, ralf@linux-mips.org
-cc:     "Ganesan Ramalingam" <ganesanr@broadcom.com>,
-        "Jayachandran C" <jayachandranc@netlogicmicro.com>
-Subject: [PATCH 14/14] MIPS: Netlogic: Add XLP SoC devices in FDT
-Date:   Tue, 8 May 2012 18:12:08 +0530
-Message-ID: <1336480928-18887-15-git-send-email-jayachandranc@netlogicmicro.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1336480928-18887-1-git-send-email-jayachandranc@netlogicmicro.com>
-References: <1336480928-18887-1-git-send-email-jayachandranc@netlogicmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 14:49:29 +0200 (CEST)
+Received: from mail-ob0-f177.google.com ([209.85.214.177]:56925 "EHLO
+        mail-ob0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1903688Ab2EHMtI convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 May 2012 14:49:08 +0200
+Received: by obqv19 with SMTP id v19so12115049obq.36
+        for <multiple recipients>; Tue, 08 May 2012 05:49:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding;
+        bh=JBdnFaMOQXJTYZuafggE4pGVx1jyN+LE2CLLCXVebIg=;
+        b=hXP3KDMUecgiAZtWd5mefYFnq/P5Pbzfy9oicFfBaW5nAEc3gR/cVOTwlNHcIbow/3
+         Lo1Y9wsz1iMgQPMDQZXKh/3S5RrNBRyQIAyH1kBz76xvk3Qo9CH9ezDyQ0f1RHOipjRB
+         U4rHfYzFpoChKk7qSH1WacEO7SwEL9tDbnZR50ywjMMkOtPbmZGVQUj0lJECXLBIBLFx
+         d/po5Ed5IDtkTPq6CYUWtOw0D1L8aSvOuCezdQfjsKuZCr2t6O17Poak46214VDj2eAX
+         FpMMb65ZGYS9f/sMzoH/sllg8v3C39TJaldDOwFrUWeuXkuSw6vianpngzXJkSGvKvDG
+         Gv2Q==
+Received: by 10.182.119.101 with SMTP id kt5mr26912112obb.70.1336481342076;
+ Tue, 08 May 2012 05:49:02 -0700 (PDT)
 MIME-Version: 1.0
-X-Originating-IP: [10.7.0.77]
-X-WSS-ID: 63B7CB6A44G1245370-01-01
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-archive-position: 33210
+Received: by 10.76.169.138 with HTTP; Tue, 8 May 2012 05:48:41 -0700 (PDT)
+In-Reply-To: <1336472347-25822-1-git-send-email-dedekind1@gmail.com>
+References: <1336472347-25822-1-git-send-email-dedekind1@gmail.com>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Tue, 8 May 2012 14:48:41 +0200
+Message-ID: <CAOiHx==iC27f=frCedDH2xahaK=HBzXBxrWhb-AuG+vcCqSUCw@mail.gmail.com>
+Subject: Re: [PATCH] mips: bcm63xx: fix compilation problems
+To:     Artem Bityutskiy <dedekind1@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>,
+        Linux Kernel Maling List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-archive-position: 33211
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jayachandranc@netlogicmicro.com
+X-original-sender: jonas.gorski@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-From: Ganesan Ramalingam <ganesanr@broadcom.com>
+Hi Artem,
 
-Probe and add devices on SoC "simple-bus" on startup. This will
-in turn add devices like I2C controller that are specified in the
-device tree under 'soc'.
+On 8 May 2012 12:19, Artem Bityutskiy <dedekind1@gmail.com> wrote:
+> From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+>
+> I get the following build error when I am compiling the MTD gpio-nand driver
+> for bcm63xx:
+>
+> In file included from arch/mips/include/asm/mach-bcm63xx/gpio.h:4:0,
+>                 from arch/mips/include/asm/gpio.h:4,
+>                 from include/linux/gpio.h:36,
+>                 from drivers/mtd/maps/gpio-addr-flash.c:16:
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h: In function 'bcm63xx_gpio_count':
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:10:2: error: implicit declaration of function 'bcm63xx_get_cpu_id' [-Werror=implicit-function-declaration]
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: error: 'BCM6358_CPU_ID' undeclared (first use in this function)
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: note: each undeclared identifier is reported only once for each function it appears in
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:13:7: error: 'BCM6338_CPU_ID' undeclared (first use in this function)
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:15:7: error: 'BCM6345_CPU_ID' undeclared (first use in this function)
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:17:7: error: 'BCM6368_CPU_ID' undeclared (first use in this function)
+> arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:19:7: error: 'BCM6348_CPU_ID' undeclared (first use in this function)
+>
+> (snip)
 
-Signed-off-by: Ganesan Ramalingam <ganesanr@broadcom.com>
-Signed-off-by: Jayachandran C <jayachandranc@netlogicmicro.com>
----
- arch/mips/netlogic/xlp/setup.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+I already submitted almost the same patch ~3 months ago:
+http://patchwork.linux-mips.org/patch/3351/
 
-diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
-index b3df7c2..3dec9f2 100644
---- a/arch/mips/netlogic/xlp/setup.c
-+++ b/arch/mips/netlogic/xlp/setup.c
-@@ -41,6 +41,8 @@
- #include <asm/bootinfo.h>
- 
- #include <linux/of_fdt.h>
-+#include <linux/of_platform.h>
-+#include <linux/of_device.h>
- 
- #include <asm/netlogic/haldefs.h>
- #include <asm/netlogic/common.h>
-@@ -109,3 +111,17 @@ void __init prom_init(void)
- 	register_smp_ops(&nlm_smp_ops);
- #endif
- }
-+
-+static struct of_device_id __initdata xlp_ids[] = {
-+	{ .compatible = "simple-bus", },
-+	{},
-+};
-+
-+int __init xlp8xx_ds_publish_devices(void)
-+{
-+	if (!of_have_populated_dt())
-+		return 0;
-+	return of_platform_bus_probe(NULL, xlp_ids, NULL);
-+}
-+
-+device_initcall(xlp8xx_ds_publish_devices);
--- 
-1.7.9.5
+> This patch sloves the problem.
+
+"sloves"? ;p
+
+
+Jonas

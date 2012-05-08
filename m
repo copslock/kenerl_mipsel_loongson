@@ -1,68 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 06:01:28 +0200 (CEST)
-Received: from relmlor2.renesas.com ([210.160.252.172]:37448 "EHLO
-        relmlor2.renesas.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903617Ab2EHEBK (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 8 May 2012 06:01:10 +0200
-Received: from relmlir1.idc.renesas.com ([10.200.68.151])
- by relmlor2.idc.renesas.com ( SJSMS)
- with ESMTP id <0M3O0019MR5T5MA0@relmlor2.idc.renesas.com>; Tue,
- 08 May 2012 13:01:05 +0900 (JST)
-Received: from relmlac1.idc.renesas.com ([10.200.69.21])
- by relmlir1.idc.renesas.com (SJSMS)
- with ESMTP id <0M3O00KM7R5TOW60@relmlir1.idc.renesas.com>; Tue,
- 08 May 2012 13:01:05 +0900 (JST)
-Received: by relmlac1.idc.renesas.com (Postfix, from userid 0)
-        id 7FDD78015D; Tue, 08 May 2012 13:01:05 +0900 (JST)
-Received: from relmlac1.idc.renesas.com (localhost [127.0.0.1])
-        by relmlac1.idc.renesas.com (Postfix) with ESMTP id 4408680193; Tue,
- 08 May 2012 13:01:05 +0900 (JST)
-Received: from relmlii2.idc.renesas.com [10.200.68.66]  by
- relmlac1.idc.renesas.com with ESMTP id PAB29899; Tue,
- 08 May 2012 13:01:05 +0900
-X-IronPort-AV: E=Sophos;i="4.75,547,1330873200";   d="scan'208";a="80159051"
-Received: from unknown (HELO [10.161.69.127]) ([10.161.69.127])
- by relmlii2.idc.renesas.com with ESMTP; Tue, 08 May 2012 13:01:05 +0900
-Message-id: <4FA89A80.6060407@renesas.com>
-Date:   Tue, 08 May 2012 13:01:04 +0900
-From:   Shinya Kuribayashi <shinya.kuribayashi.px@renesas.com>
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120428
- Thunderbird/12.0.1
-MIME-version: 1.0
-To:     sjhill@mips.com
-Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org, douglas@mips.com,
-        chris@mips.com
-Subject: Re: [PATCH 01/10] MIPS: Add core files for MIPS SEAD-3 development
- platform.
-References: <1333817315-30091-1-git-send-email-sjhill@mips.com>
- <1333817315-30091-2-git-send-email-sjhill@mips.com>
- <4F8386C8.9020401@renesas.com>
- <31E06A9FC96CEC488B43B19E2957C1B8011469208F@exchdb03.mips.com>
-In-reply-to: <31E06A9FC96CEC488B43B19E2957C1B8011469208F@exchdb03.mips.com>
-Content-type: text/plain; charset=ISO-8859-1
-Content-transfer-encoding: 7bit
-X-archive-position: 33184
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 May 2012 12:18:28 +0200 (CEST)
+Received: from mga03.intel.com ([143.182.124.21]:57600 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1903626Ab2EHKSR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 8 May 2012 12:18:17 +0200
+Received: from azsmga001.ch.intel.com ([10.2.17.19])
+  by azsmga101.ch.intel.com with ESMTP; 08 May 2012 03:18:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.71,315,1320652800"; 
+   d="scan'208";a="140264858"
+Received: from blue.fi.intel.com ([10.237.72.50])
+  by azsmga001.ch.intel.com with ESMTP; 08 May 2012 03:18:08 -0700
+From:   Artem Bityutskiy <dedekind1@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        MIPS Mailing List <linux-mips@linux-mips.org>
+Cc:     Linux Kernel Maling List <linux-kernel@vger.kernel.org>
+Subject: [PATCH] mips: bcm63xx: fix compilation problems
+Date:   Tue,  8 May 2012 13:19:07 +0300
+Message-Id: <1336472347-25822-1-git-send-email-dedekind1@gmail.com>
+X-Mailer: git-send-email 1.7.9.1
+X-archive-position: 33185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shinya.kuribayashi.px@renesas.com
+X-original-sender: dedekind1@gmail.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-Hi Steven-san,
+From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 
-On 5/8/2012 5:16 AM, Hill, Steven wrote:
-> I will certainly remove CONFIG_CPU_HAS_LLSC, thank you. I attempted to
-> enable 'cpu_has_clo_clz' for SEAD-3, but it breaks my microMIPS-only
-> kernel builds. Specifically, since microMIPS LL/SC instructions do
-> not have 16-bit address offsets, in the '__cmpxchg_asm' macro function
-> I get constraint errors because then the assembler has to use the %LO
-> register in order to calculate the offset address. I am going to hold
-> off on enabling the option until after the 3.5 release and then
-> revisit for a solution. Thank you.
+I get the following build error when I am compiling the MTD gpio-nand driver
+for bcm63xx:
 
-Got it, find no problems with your plan.  It seems there must be other
-issues with optimization on microMIPS-only kernels :-)
+In file included from arch/mips/include/asm/mach-bcm63xx/gpio.h:4:0,
+                 from arch/mips/include/asm/gpio.h:4,
+                 from include/linux/gpio.h:36,
+                 from drivers/mtd/maps/gpio-addr-flash.c:16:
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h: In function 'bcm63xx_gpio_count':
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:10:2: error: implicit declaration of function 'bcm63xx_get_cpu_id' [-Werror=implicit-function-declaration]
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: error: 'BCM6358_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:11:7: note: each undeclared identifier is reported only once for each function it appears in
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:13:7: error: 'BCM6338_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:15:7: error: 'BCM6345_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:17:7: error: 'BCM6368_CPU_ID' undeclared (first use in this function)
+arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h:19:7: error: 'BCM6348_CPU_ID' undeclared (first use in this function)
+
+This patch sloves the problem.
+
+Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+---
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
+index 3d5de96..b4b9103 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_gpio.h
+@@ -1,6 +1,7 @@
+ #ifndef BCM63XX_GPIO_H
+ #define BCM63XX_GPIO_H
+ 
++#include "bcm63xx_cpu.h"
+ #include <linux/init.h>
+ 
+ int __init bcm63xx_gpio_init(void);
 -- 
-Shinya Kuribayashi
-Renesas Electronics
+1.7.9.1

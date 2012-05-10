@@ -1,114 +1,141 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 16:44:51 +0200 (CEST)
-Received: from mail1.windriver.com ([147.11.146.13]:61409 "EHLO
-        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903656Ab2EJOoq (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 May 2012 16:44:46 +0200
-Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
-        by mail1.windriver.com (8.14.3/8.14.3) with ESMTP id q4AEhMaU013035
-        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
-        Thu, 10 May 2012 07:44:31 -0700 (PDT)
-Received: from [128.224.146.65] (128.224.146.65) by ALA-HCA.corp.ad.wrs.com
- (147.11.189.50) with Microsoft SMTP Server id 14.1.255.0; Thu, 10 May 2012
- 07:44:16 -0700
-Message-ID: <4FABD436.7070402@windriver.com>
-Date:   Thu, 10 May 2012 10:44:06 -0400
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120412 Thunderbird/11.0.1
-MIME-Version: 1.0
-To:     Michal Marek <mmarek@suse.cz>
-CC:     Sam Ravnborg <sam@ravnborg.org>, Tony Luck <tony.luck@gmail.com>,
-        linux arch <linux-arch@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnaud Lacombe <lacombar@gmail.com>,
-        Andi Kleen <andi@firstfloor.org>, <ralf@linux-mips.org>,
-        <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 3/4] kbuild: link of vmlinux moved to a script
-References: <20120428205651.GA7426@merkur.ravnborg.org> <20120428205919.GC7442@merkur.ravnborg.org> <4FA460AB.6060309@suse.cz> <20120505082916.GA14006@merkur.ravnborg.org> <CA+8MBbKd9zAouJy5JvUnLwUHMJ65HsYgCTfBgv42nm32EnMPFA@mail.gmail.com> <20120508165118.GA11750@merkur.ravnborg.org> <CAP=VYLobO--uwxv_hiMYBnjD-AU_0fqyQJD6argQygnkHnm5Vg@mail.gmail.com> <20120510122210.GA17550@sepie.suse.cz>
-In-Reply-To: <20120510122210.GA17550@sepie.suse.cz>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [128.224.146.65]
-X-archive-position: 33232
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 23:14:17 +0200 (CEST)
+Received: from home.bethel-hill.org ([63.228.164.32]:60830 "EHLO
+        home.bethel-hill.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903691Ab2EJVON (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 May 2012 23:14:13 +0200
+Received: by home.bethel-hill.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.72)
+        (envelope-from <sjhill@mips.com>)
+        id 1SSagW-0000zV-T2; Thu, 10 May 2012 16:14:04 -0500
+From:   "Steven J. Hill" <sjhill@mips.com>
+To:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:     "Steven J. Hill" <sjhill@mips.com>
+Subject: [PATCH v2,1/5] MIPS: Add support for the 1074K core.
+Date:   Thu, 10 May 2012 16:13:59 -0500
+Message-Id: <1336684439-25109-1-git-send-email-sjhill@mips.com>
+X-Mailer: git-send-email 1.7.10
+X-archive-position: 33233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: sjhill@mips.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On 12-05-10 08:22 AM, Michal Marek wrote:
-> On Wed, May 09, 2012 at 06:58:16PM -0400, Paul Gortmaker wrote:
->> On Tue, May 8, 2012 at 12:51 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
->>> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
->>> index 26c5b65..1f4c27b 100644
->>> --- a/scripts/link-vmlinux.sh
->>> +++ b/scripts/link-vmlinux.sh
->>> @@ -78,8 +78,8 @@ kallsyms()
->>>                kallsymopt=--all-symbols
->>>        fi
->>>
->>> -       local aflags="${KBUILD_AFLAGS} ${NOSTDINC_FLAGS}                     \
->>> -                     ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
->>> +       local aflags="${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL}               \
->>> +                     ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
->>
->> All the linux-next builds for mips are failing, which I tracked down to this.
->> Applying the above update doesn't help.  What is happening is that MIPS
->> gets KBUILD_CPPFLAGS double-quoted, and then you get:
->>
->> + mips-wrs-linux-gnu-nm -n .tmp_vmlinux1
->> + scripts/kallsyms
->> + mips-wrs-linux-gnu-gcc -D__ASSEMBLY__ <..snip..>  -D__KERNEL__
->> '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"' -c -o
->> .tmp_kallsyms1.o -x assembler-with-cpp -
->> <command-line>:0: error: macro names must be identifiers
->> <command-line>:0: error: macro names must be identifiers
->> make[1]: *** [vmlinux] Error 1
->>
->> Note the  '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"'
->> part -- that is what triggers the two above errors.
-> 
-> I think it should be as simple as the below patch. But I have no mips
-> machine to verify myself.
+From: "Steven J. Hill" <sjhill@mips.com>
 
-Well I haven't boot tested it on anything either, but it does
-seem to resolve the double quoting that caused the compile failure.
+This patch adds support for detecting and using 1074K cores.
 
-Thanks,
-Paul.
---
+Signed-off-by: Steven J. Hill <sjhill@mips.com>
+---
+ arch/mips/include/asm/cpu.h          |    1 +
+ arch/mips/kernel/cpu-probe.c         |    4 ++++
+ arch/mips/mm/c-r4k.c                 |   24 +++++++++++++++++++++---
+ arch/mips/oprofile/op_model_mipsxx.c |    6 ------
+ 4 files changed, 26 insertions(+), 9 deletions(-)
 
-> 
-> Michal
-> 
-> From d801533d5e6e509d5e115d2fb47655267c4c5ed4 Mon Sep 17 00:00:00 2001
-> From: Michal Marek <mmarek@suse.cz>
-> Date: Thu, 10 May 2012 14:15:49 +0200
-> Subject: [PATCH] mips: Fix KBUILD_CPPFLAGS definition
-> 
-> The KBUILD_CPPFLAGS variable is no longer passed to sh -c 'gcc ...',
-> but exported and used by the link-vmlinux.sh script. This means that the
-> double-quotes will not be evaluated by the shell.
-> 
-> Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-> Signed-off-by: Michal Marek <mmarek@suse.cz>
-> 
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 4fedf5a..722e04a 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -219,8 +219,8 @@ endif
->  
->  KBUILD_AFLAGS	+= $(cflags-y)
->  KBUILD_CFLAGS	+= $(cflags-y)
-> -KBUILD_CPPFLAGS += -D"VMLINUX_LOAD_ADDRESS=$(load-y)"
-> -KBUILD_CPPFLAGS += -D"DATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)"
-> +KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
-> +KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
->  
->  LDFLAGS			+= -m $(ld-emul)
->  
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index f9fa2a4..9f8feeb 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -94,6 +94,7 @@
+ #define PRID_IMP_24KE		0x9600
+ #define PRID_IMP_74K		0x9700
+ #define PRID_IMP_1004K		0x9900
++#define PRID_IMP_1074K		0x9a00
+ 
+ /*
+  * These are the PRID's for when 23:16 == PRID_COMP_SIBYTE
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 5099201..4b5c7d6 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -835,6 +835,10 @@ static inline void cpu_probe_mips(struct cpuinfo_mips *c, unsigned int cpu)
+ 		c->cputype = CPU_1004K;
+ 		__cpu_name[cpu] = "MIPS 1004Kc";
+ 		break;
++	case PRID_IMP_1074K:
++		c->cputype = CPU_74K;
++		__cpu_name[cpu] = "MIPS 1074Kc";
++		break;
+ 	}
+ 
+ 	spram_config();
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index bda8eb2..c646a79 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -977,7 +977,7 @@ static void __cpuinit probe_pcache(void)
+ 			c->icache.linesz = 2 << lsize;
+ 		else
+ 			c->icache.linesz = lsize;
+-		c->icache.sets = 64 << ((config1 >> 22) & 7);
++		c->icache.sets = 32 << (((config1 >> 22) + 1) & 7);
+ 		c->icache.ways = 1 + ((config1 >> 16) & 7);
+ 
+ 		icache_size = c->icache.sets *
+@@ -997,7 +997,7 @@ static void __cpuinit probe_pcache(void)
+ 			c->dcache.linesz = 2 << lsize;
+ 		else
+ 			c->dcache.linesz= lsize;
+-		c->dcache.sets = 64 << ((config1 >> 13) & 7);
++		c->dcache.sets = 32 << (((config1 >> 13) + 1) & 7);
+ 		c->dcache.ways = 1 + ((config1 >> 7) & 7);
+ 
+ 		dcache_size = c->dcache.sets *
+@@ -1051,9 +1051,26 @@ static void __cpuinit probe_pcache(void)
+ 	case CPU_R14000:
+ 		break;
+ 
++	case CPU_74K:
++		/*
++		 * Early versions of the 74k do not update
++		 * the cache tags on a vtag miss/ptag hit
++		 * which can occur in the case of KSEG0/KUSEG aliases
++		 * In this case it is better to treat the cache as always
++		 * having aliases
++		 */
++		if ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(2, 4, 0))
++			c->dcache.flags |= MIPS_CACHE_VTAG;
++		if ((c->processor_id & 0xff) == PRID_REV_ENCODE_332(2, 4, 0))
++			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
++		if (((c->processor_id & 0xff00) == PRID_IMP_1074K) &&
++		   ((c->processor_id & 0xff) <= PRID_REV_ENCODE_332(1, 1, 0))) {
++			c->dcache.flags |= MIPS_CACHE_VTAG;
++			write_c0_config6(read_c0_config6() | MIPS_CONF6_SYND);
++		}
++		/* fall through */
+ 	case CPU_24K:
+ 	case CPU_34K:
+-	case CPU_74K:
+ 	case CPU_1004K:
+ 		if ((read_c0_config7() & (1 << 16))) {
+ 			/* effectively physically indexed dcache,
+@@ -1061,6 +1078,7 @@ static void __cpuinit probe_pcache(void)
+ 			c->dcache.flags |= MIPS_CACHE_PINDEX;
+ 			break;
+ 		}
++		/* fall through */
+ 	default:
+ 		if (c->dcache.waysize > PAGE_SIZE)
+ 			c->dcache.flags |= MIPS_CACHE_ALIASES;
+diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
+index 54759f1..53bbe55 100644
+--- a/arch/mips/oprofile/op_model_mipsxx.c
++++ b/arch/mips/oprofile/op_model_mipsxx.c
+@@ -330,12 +330,6 @@ static int __init mipsxx_init(void)
+ 		break;
+ 
+ 	case CPU_1004K:
+-#if 0
+-		/* FIXME: report as 34K for now */
+-		op_model_mipsxx_ops.cpu_type = "mips/1004K";
+-		break;
+-#endif
+-
+ 	case CPU_34K:
+ 		op_model_mipsxx_ops.cpu_type = "mips/34K";
+ 		break;
+-- 
+1.7.10

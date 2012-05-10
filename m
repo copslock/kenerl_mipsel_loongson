@@ -1,111 +1,373 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 14:22:25 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:57352 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 14:29:14 +0200 (CEST)
+Received: from nbd.name ([46.4.11.11]:39800 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1903655Ab2EJMWT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 May 2012 14:22:19 +0200
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx2.suse.de (Postfix) with ESMTP id C943EA2CD3;
-        Thu, 10 May 2012 14:22:11 +0200 (CEST)
-Received: by sepie.suse.cz (Postfix, from userid 10020)
-        id BAE6476447; Thu, 10 May 2012 14:22:10 +0200 (CEST)
-Date:   Thu, 10 May 2012 14:22:10 +0200
-From:   Michal Marek <mmarek@suse.cz>
-To:     Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc:     Sam Ravnborg <sam@ravnborg.org>, Tony Luck <tony.luck@gmail.com>,
-        linux arch <linux-arch@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnaud Lacombe <lacombar@gmail.com>,
-        Andi Kleen <andi@firstfloor.org>, ralf@linux-mips.org,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/4] kbuild: link of vmlinux moved to a script
-Message-ID: <20120510122210.GA17550@sepie.suse.cz>
-References: <20120428205651.GA7426@merkur.ravnborg.org>
- <20120428205919.GC7442@merkur.ravnborg.org>
- <4FA460AB.6060309@suse.cz>
- <20120505082916.GA14006@merkur.ravnborg.org>
- <CA+8MBbKd9zAouJy5JvUnLwUHMJ65HsYgCTfBgv42nm32EnMPFA@mail.gmail.com>
- <20120508165118.GA11750@merkur.ravnborg.org>
- <CAP=VYLobO--uwxv_hiMYBnjD-AU_0fqyQJD6argQygnkHnm5Vg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP=VYLobO--uwxv_hiMYBnjD-AU_0fqyQJD6argQygnkHnm5Vg@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-archive-position: 33228
+        id S1903648Ab2EJM3G (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 10 May 2012 14:29:06 +0200
+From:   John Crispin <blogic@openwrt.org>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, John Crispin <blogic@openwrt.org>,
+        devicetree-discuss@lists.ozlabs.org,
+        Grant Likely <grant.likely@secretlab.ca>
+Subject: [PATCH V2 03/14] OF: MIPS: lantiq: implement irq_domain support
+Date:   Thu, 10 May 2012 14:27:25 +0200
+Message-Id: <1336652846-31871-1-git-send-email-blogic@openwrt.org>
+X-Mailer: git-send-email 1.7.9.1
+X-archive-position: 33229
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mmarek@suse.cz
+X-original-sender: blogic@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Wed, May 09, 2012 at 06:58:16PM -0400, Paul Gortmaker wrote:
-> On Tue, May 8, 2012 at 12:51 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
-> > diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-> > index 26c5b65..1f4c27b 100644
-> > --- a/scripts/link-vmlinux.sh
-> > +++ b/scripts/link-vmlinux.sh
-> > @@ -78,8 +78,8 @@ kallsyms()
-> >                kallsymopt=--all-symbols
-> >        fi
-> >
-> > -       local aflags="${KBUILD_AFLAGS} ${NOSTDINC_FLAGS}                     \
-> > -                     ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
-> > +       local aflags="${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL}               \
-> > +                     ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
-> 
-> All the linux-next builds for mips are failing, which I tracked down to this.
-> Applying the above update doesn't help.  What is happening is that MIPS
-> gets KBUILD_CPPFLAGS double-quoted, and then you get:
-> 
-> + mips-wrs-linux-gnu-nm -n .tmp_vmlinux1
-> + scripts/kallsyms
-> + mips-wrs-linux-gnu-gcc -D__ASSEMBLY__ <..snip..>  -D__KERNEL__
-> '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"' -c -o
-> .tmp_kallsyms1.o -x assembler-with-cpp -
-> <command-line>:0: error: macro names must be identifiers
-> <command-line>:0: error: macro names must be identifiers
-> make[1]: *** [vmlinux] Error 1
-> 
-> Note the  '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"'
-> part -- that is what triggers the two above errors.
+Add support for irq_domain on lantiq socs. The conversion is straight forward
+as the ICU found inside the socs allows the usage of irq_domain_add_linear.
 
-I think it should be as simple as the below patch. But I have no mips
-machine to verify myself.
+Harware IRQ 0->7 are the generic MIPS IRQs. 8->199 are the Lantiq IRQ Modules.
+Our irq_chip callbacks need to substract 8 (MIPS_CPU_IRQ_CASCADE) from d->hwirq
+to find out the correct offset into the Interrupt Modules register range.
 
-Michal
+Signed-off-by: John Crispin <blogic@openwrt.org>
+Cc: devicetree-discuss@lists.ozlabs.org
+Cc: Grant Likely <grant.likely@secretlab.ca>
+---
+This patch is part of a series moving the mips/lantiq target to OF and clkdev
+support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
->From d801533d5e6e509d5e115d2fb47655267c4c5ed4 Mon Sep 17 00:00:00 2001
-From: Michal Marek <mmarek@suse.cz>
-Date: Thu, 10 May 2012 14:15:49 +0200
-Subject: [PATCH] mips: Fix KBUILD_CPPFLAGS definition
+Changes in V2
+* properly reserve 8 irqs for MIPS
+* use d->hwirq rather than d->irq
+* use BIT(x) instead of (1 << x)
+* adds a optional property to allow setting the number of available EIU sources
+* simplify icu_map()
 
-The KBUILD_CPPFLAGS variable is no longer passed to sh -c 'gcc ...',
-but exported and used by the link-vmlinux.sh script. This means that the
-double-quotes will not be evaluated by the shell.
+ arch/mips/lantiq/irq.c |  177 +++++++++++++++++++++++++++---------------------
+ 1 files changed, 101 insertions(+), 76 deletions(-)
 
-Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-Signed-off-by: Michal Marek <mmarek@suse.cz>
-
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 4fedf5a..722e04a 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -219,8 +219,8 @@ endif
+diff --git a/arch/mips/lantiq/irq.c b/arch/mips/lantiq/irq.c
+index d227be1..9b5c3fc 100644
+--- a/arch/mips/lantiq/irq.c
++++ b/arch/mips/lantiq/irq.c
+@@ -9,6 +9,11 @@
  
- KBUILD_AFLAGS	+= $(cflags-y)
- KBUILD_CFLAGS	+= $(cflags-y)
--KBUILD_CPPFLAGS += -D"VMLINUX_LOAD_ADDRESS=$(load-y)"
--KBUILD_CPPFLAGS += -D"DATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)"
-+KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
-+KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
+ #include <linux/interrupt.h>
+ #include <linux/ioport.h>
++#include <linux/sched.h>
++#include <linux/irqdomain.h>
++#include <linux/of_platform.h>
++#include <linux/of_address.h>
++#include <linux/of_irq.h>
  
- LDFLAGS			+= -m $(ld-emul)
+ #include <asm/bootinfo.h>
+ #include <asm/irq_cpu.h>
+@@ -16,7 +21,7 @@
+ #include <lantiq_soc.h>
+ #include <irq.h>
  
+-/* register definitions */
++/* register definitions - internal irqs */
+ #define LTQ_ICU_IM0_ISR		0x0000
+ #define LTQ_ICU_IM0_IER		0x0008
+ #define LTQ_ICU_IM0_IOSR	0x0010
+@@ -25,6 +30,7 @@
+ #define LTQ_ICU_IM1_ISR		0x0028
+ #define LTQ_ICU_OFFSET		(LTQ_ICU_IM1_ISR - LTQ_ICU_IM0_ISR)
+ 
++/* register definitions - external irqs */
+ #define LTQ_EIU_EXIN_C		0x0000
+ #define LTQ_EIU_EXIN_INIC	0x0004
+ #define LTQ_EIU_EXIN_INEN	0x000C
+@@ -37,13 +43,14 @@
+ #define LTQ_EIU_IR4		(INT_NUM_IM1_IRL0 + 1)
+ #define LTQ_EIU_IR5		(INT_NUM_IM1_IRL0 + 2)
+ #define LTQ_EIU_IR6		(INT_NUM_IM2_IRL0 + 30)
+-
++#define XWAY_EXIN_COUNT		3
+ #define MAX_EIU			6
+ 
+ /* the performance counter */
+ #define LTQ_PERF_IRQ		(INT_NUM_IM4_IRL0 + 31)
+ 
+-/* irqs generated by device attached to the EBU need to be acked in
++/*
++ * irqs generated by devices attached to the EBU need to be acked in
+  * a special manner
+  */
+ #define LTQ_ICU_EBU_IRQ		22
+@@ -58,6 +65,9 @@
+ #define MIPS_CPU_IPI_RESCHED_IRQ	0
+ #define MIPS_CPU_IPI_CALL_IRQ		1
+ 
++/* we have a cascade of 8 irqs */
++#define MIPS_CPU_IRQ_CASCADE		8
++
+ #if defined(CONFIG_MIPS_MT_SMP) || defined(CONFIG_MIPS_MT_SMTC)
+ int gic_present;
+ #endif
+@@ -71,64 +81,51 @@ static unsigned short ltq_eiu_irq[MAX_EIU] = {
+ 	LTQ_EIU_IR5,
+ };
+ 
+-static struct resource ltq_icu_resource = {
+-	.name	= "icu",
+-	.start	= LTQ_ICU_BASE_ADDR,
+-	.end	= LTQ_ICU_BASE_ADDR + LTQ_ICU_SIZE - 1,
+-	.flags	= IORESOURCE_MEM,
+-};
+-
+-static struct resource ltq_eiu_resource = {
+-	.name	= "eiu",
+-	.start	= LTQ_EIU_BASE_ADDR,
+-	.end	= LTQ_EIU_BASE_ADDR + LTQ_ICU_SIZE - 1,
+-	.flags	= IORESOURCE_MEM,
+-};
+-
++static int exin_avail;
+ static void __iomem *ltq_icu_membase;
+ static void __iomem *ltq_eiu_membase;
+ 
+ void ltq_disable_irq(struct irq_data *d)
+ {
+ 	u32 ier = LTQ_ICU_IM0_IER;
+-	int irq_nr = d->irq - INT_NUM_IRQ0;
++	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
+ 
+-	ier += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
+-	irq_nr %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32(ltq_icu_r32(ier) & ~(1 << irq_nr), ier);
++	ier += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
++	offset %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32(ltq_icu_r32(ier) & ~BIT(offset), ier);
+ }
+ 
+ void ltq_mask_and_ack_irq(struct irq_data *d)
+ {
+ 	u32 ier = LTQ_ICU_IM0_IER;
+ 	u32 isr = LTQ_ICU_IM0_ISR;
+-	int irq_nr = d->irq - INT_NUM_IRQ0;
++	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
+ 
+-	ier += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
+-	isr += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
+-	irq_nr %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32(ltq_icu_r32(ier) & ~(1 << irq_nr), ier);
+-	ltq_icu_w32((1 << irq_nr), isr);
++	ier += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
++	isr += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
++	offset %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32(ltq_icu_r32(ier) & ~BIT(offset), ier);
++	ltq_icu_w32(BIT(offset), isr);
+ }
+ 
+ static void ltq_ack_irq(struct irq_data *d)
+ {
+ 	u32 isr = LTQ_ICU_IM0_ISR;
+-	int irq_nr = d->irq - INT_NUM_IRQ0;
++	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
+ 
+-	isr += LTQ_ICU_OFFSET * (irq_nr / INT_NUM_IM_OFFSET);
+-	irq_nr %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32((1 << irq_nr), isr);
++	isr += LTQ_ICU_OFFSET * (offset / INT_NUM_IM_OFFSET);
++	offset %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32(BIT(offset), isr);
+ }
+ 
+ void ltq_enable_irq(struct irq_data *d)
+ {
+ 	u32 ier = LTQ_ICU_IM0_IER;
+-	int irq_nr = d->irq - INT_NUM_IRQ0;
++	int offset = d->hwirq - MIPS_CPU_IRQ_CASCADE;
+ 
+-	ier += LTQ_ICU_OFFSET  * (irq_nr / INT_NUM_IM_OFFSET);
+-	irq_nr %= INT_NUM_IM_OFFSET;
+-	ltq_icu_w32(ltq_icu_r32(ier) | (1 << irq_nr), ier);
++	ier += LTQ_ICU_OFFSET  * (offset / INT_NUM_IM_OFFSET);
++	offset %= INT_NUM_IM_OFFSET;
++	ltq_icu_w32(ltq_icu_r32(ier) | BIT(offset), ier);
+ }
+ 
+ static unsigned int ltq_startup_eiu_irq(struct irq_data *d)
+@@ -137,15 +134,15 @@ static unsigned int ltq_startup_eiu_irq(struct irq_data *d)
+ 
+ 	ltq_enable_irq(d);
+ 	for (i = 0; i < MAX_EIU; i++) {
+-		if (d->irq == ltq_eiu_irq[i]) {
++		if (d->hwirq == ltq_eiu_irq[i]) {
+ 			/* low level - we should really handle set_type */
+ 			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_C) |
+ 				(0x6 << (i * 4)), LTQ_EIU_EXIN_C);
+ 			/* clear all pending */
+-			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INIC) & ~(1 << i),
++			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INIC) & ~BIT(i),
+ 				LTQ_EIU_EXIN_INIC);
+ 			/* enable */
+-			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INEN) | (1 << i),
++			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INEN) | BIT(i),
+ 				LTQ_EIU_EXIN_INEN);
+ 			break;
+ 		}
+@@ -160,9 +157,9 @@ static void ltq_shutdown_eiu_irq(struct irq_data *d)
+ 
+ 	ltq_disable_irq(d);
+ 	for (i = 0; i < MAX_EIU; i++) {
+-		if (d->irq == ltq_eiu_irq[i]) {
++		if (d->hwirq == ltq_eiu_irq[i]) {
+ 			/* disable */
+-			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INEN) & ~(1 << i),
++			ltq_eiu_w32(ltq_eiu_r32(LTQ_EIU_EXIN_INEN) & ~BIT(i),
+ 				LTQ_EIU_EXIN_INEN);
+ 			break;
+ 		}
+@@ -199,14 +196,15 @@ static void ltq_hw_irqdispatch(int module)
+ 	if (irq == 0)
+ 		return;
+ 
+-	/* silicon bug causes only the msb set to 1 to be valid. all
++	/*
++	 * silicon bug causes only the msb set to 1 to be valid. all
+ 	 * other bits might be bogus
+ 	 */
+ 	irq = __fls(irq);
+-	do_IRQ((int)irq + INT_NUM_IM0_IRL0 + (INT_NUM_IM_OFFSET * module));
++	do_IRQ((int)irq + MIPS_CPU_IRQ_CASCADE + (INT_NUM_IM_OFFSET * module));
+ 
+ 	/* if this is a EBU irq, we need to ack it or get a deadlock */
+-	if ((irq == LTQ_ICU_EBU_IRQ) && (module == 0))
++	if ((irq == LTQ_ICU_EBU_IRQ) && (module == 0) && LTQ_EBU_PCC_ISTAT)
+ 		ltq_ebu_w32(ltq_ebu_r32(LTQ_EBU_PCC_ISTAT) | 0x10,
+ 			LTQ_EBU_PCC_ISTAT);
+ }
+@@ -290,38 +288,66 @@ out:
+ 	return;
+ }
+ 
++static int icu_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
++{
++	struct irq_chip *chip = &ltq_irq_type;
++	int i;
++
++	for (i = 0; i < exin_avail; i++)
++		if (hw == ltq_eiu_irq[i])
++			chip = &ltq_eiu_type;
++
++	irq_set_chip_and_handler(hw, chip, handle_level_irq);
++
++	return 0;
++}
++
++static const struct irq_domain_ops irq_domain_ops = {
++	.xlate = irq_domain_xlate_onetwocell,
++	.map = icu_map,
++};
++
+ static struct irqaction cascade = {
+ 	.handler = no_action,
+ 	.name = "cascade",
+ };
+ 
+-void __init arch_init_irq(void)
++int __init icu_of_init(struct device_node *node, struct device_node *parent)
+ {
++	struct device_node *eiu_node;
++	struct resource res;
+ 	int i;
+ 
+-	if (insert_resource(&iomem_resource, &ltq_icu_resource) < 0)
+-		panic("Failed to insert icu memory");
++	if (of_address_to_resource(node, 0, &res))
++		panic("Failed to get icu memory range");
+ 
+-	if (request_mem_region(ltq_icu_resource.start,
+-			resource_size(&ltq_icu_resource), "icu") < 0)
+-		panic("Failed to request icu memory");
++	if (request_mem_region(res.start, resource_size(&res), res.name) < 0)
++		pr_err("Failed to request icu memory");
+ 
+-	ltq_icu_membase = ioremap_nocache(ltq_icu_resource.start,
+-				resource_size(&ltq_icu_resource));
++	ltq_icu_membase = ioremap_nocache(res.start, resource_size(&res));
+ 	if (!ltq_icu_membase)
+ 		panic("Failed to remap icu memory");
+ 
+-	if (insert_resource(&iomem_resource, &ltq_eiu_resource) < 0)
+-		panic("Failed to insert eiu memory");
+-
+-	if (request_mem_region(ltq_eiu_resource.start,
+-			resource_size(&ltq_eiu_resource), "eiu") < 0)
+-		panic("Failed to request eiu memory");
+-
+-	ltq_eiu_membase = ioremap_nocache(ltq_eiu_resource.start,
+-				resource_size(&ltq_eiu_resource));
+-	if (!ltq_eiu_membase)
+-		panic("Failed to remap eiu memory");
++	/* the external interrupts are optional and xway only */
++	eiu_node = of_find_compatible_node(NULL, NULL, "lantiq,eiu");
++	if (eiu_node && of_address_to_resource(eiu_node, 0, &res)) {
++		/* find out how many external irq sources we have */
++		const __be32 *count = of_get_property(node, "lantiq,count", NULL);
++
++		if (count)
++			exin_avail = *count;
++		if (exin_avail > MAX_EIU)
++			exin_avail = MAX_EIU;
++
++		if (request_mem_region(res.start, resource_size(&res),
++							res.name) < 0)
++			pr_err("Failed to request eiu memory");
++
++		ltq_eiu_membase = ioremap_nocache(res.start,
++							resource_size(&res));
++		if (!ltq_eiu_membase)
++			panic("Failed to remap eiu memory");
++	}
+ 
+ 	/* turn off all irqs by default */
+ 	for (i = 0; i < 5; i++) {
+@@ -346,20 +372,8 @@ void __init arch_init_irq(void)
+ 		set_vi_handler(7, ltq_hw5_irqdispatch);
+ 	}
+ 
+-	for (i = INT_NUM_IRQ0;
+-		i <= (INT_NUM_IRQ0 + (5 * INT_NUM_IM_OFFSET)); i++)
+-		if ((i == LTQ_EIU_IR0) || (i == LTQ_EIU_IR1) ||
+-			(i == LTQ_EIU_IR2))
+-			irq_set_chip_and_handler(i, &ltq_eiu_type,
+-				handle_level_irq);
+-		/* EIU3-5 only exist on ar9 and vr9 */
+-		else if (((i == LTQ_EIU_IR3) || (i == LTQ_EIU_IR4) ||
+-			(i == LTQ_EIU_IR5)) && (ltq_is_ar9() || ltq_is_vr9()))
+-			irq_set_chip_and_handler(i, &ltq_eiu_type,
+-				handle_level_irq);
+-		else
+-			irq_set_chip_and_handler(i, &ltq_irq_type,
+-				handle_level_irq);
++	irq_domain_add_linear(node, 6 * INT_NUM_IM_OFFSET,
++		&irq_domain_ops, 0);
+ 
+ #if defined(CONFIG_MIPS_MT_SMP)
+ 	if (cpu_has_vint) {
+@@ -382,9 +396,20 @@ void __init arch_init_irq(void)
+ 
+ 	/* tell oprofile which irq to use */
+ 	cp0_perfcount_irq = LTQ_PERF_IRQ;
++	return 0;
+ }
+ 
+ unsigned int __cpuinit get_c0_compare_int(void)
+ {
+ 	return CP0_LEGACY_COMPARE_IRQ;
+ }
++
++static struct of_device_id __initdata of_irq_ids[] = {
++	{ .compatible = "lantiq,icu", .data = icu_of_init },
++	{},
++};
++
++void __init arch_init_irq(void)
++{
++	of_irq_init(of_irq_ids);
++}
+-- 
+1.7.9.1

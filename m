@@ -1,80 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 15:24:15 +0200 (CEST)
-Received: from mail-gg0-f177.google.com ([209.85.161.177]:53867 "EHLO
-        mail-gg0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1903652Ab2EJNYL convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 10 May 2012 15:24:11 +0200
-Received: by ggcs5 with SMTP id s5so1084508ggc.36
-        for <linux-mips@linux-mips.org>; Thu, 10 May 2012 06:24:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20120113;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding:x-gm-message-state;
-        bh=SfqS7ImB/x9zZG2IV1Zz0fAPIufHU6UGB6s9C3thDsU=;
-        b=S6ou5RnTNVKwEjnahY6nz+AHicE9HAshId/cSSqeMt912z3NNxwKb/S+YN+BYYTvmK
-         HY+O7XmNve7OglSyyuQ/7RFACCZEp4LpmrgNUIaCdCg+GqdLT1uEMK+CBcIli7AQ2zAt
-         mJp3gaNW1DN3JoedP57Gc+o+BTD7W1AkpaQbxJkLqGsfhafN84kKdY/1ANGyY5t3J35J
-         Q/OuPoX2e+KTcmnasmUwm7ecpPv+XkHwR2W490QvYfBct4vP8M4LE8aGKXSEAsvdT05O
-         ofY7cLo06cIkaQ9U3spbqowiRBbyx0LE70oAF92cwCoD7IF2JP6PECPJJRC1QFHJaKnb
-         Dn2w==
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 16:44:51 +0200 (CEST)
+Received: from mail1.windriver.com ([147.11.146.13]:61409 "EHLO
+        mail1.windriver.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903656Ab2EJOoq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 May 2012 16:44:46 +0200
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca [147.11.189.40])
+        by mail1.windriver.com (8.14.3/8.14.3) with ESMTP id q4AEhMaU013035
+        (version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL);
+        Thu, 10 May 2012 07:44:31 -0700 (PDT)
+Received: from [128.224.146.65] (128.224.146.65) by ALA-HCA.corp.ad.wrs.com
+ (147.11.189.50) with Microsoft SMTP Server id 14.1.255.0; Thu, 10 May 2012
+ 07:44:16 -0700
+Message-ID: <4FABD436.7070402@windriver.com>
+Date:   Thu, 10 May 2012 10:44:06 -0400
+From:   Paul Gortmaker <paul.gortmaker@windriver.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:11.0) Gecko/20120412 Thunderbird/11.0.1
 MIME-Version: 1.0
-Received: by 10.236.76.41 with SMTP id a29mr5034089yhe.117.1336656244835; Thu,
- 10 May 2012 06:24:04 -0700 (PDT)
-Received: by 10.147.137.4 with HTTP; Thu, 10 May 2012 06:24:04 -0700 (PDT)
-In-Reply-To: <1336652846-31871-2-git-send-email-blogic@openwrt.org>
-References: <1336652846-31871-1-git-send-email-blogic@openwrt.org>
-        <1336652846-31871-2-git-send-email-blogic@openwrt.org>
-Date:   Thu, 10 May 2012 15:24:04 +0200
-Message-ID: <CACRpkdZ7YHQ0yhUOM=FB0MqbrT+QT7Zb9YP=JSADJB52qr68Yw@mail.gmail.com>
-Subject: Re: [PATCH V2 04/14] OF: pinctrl: MIPS: lantiq: implement lantiq/xway
- pinctrl support
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     John Crispin <blogic@openwrt.org>
-Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-        devicetree-discuss@lists.ozlabs.org,
-        Stephen Warren <swarren@wwwdotorg.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-Gm-Message-State: ALoCoQkdgjfKxavM/HPbf5DZdCX2znvi/U9k40D27kDvNmbn5Vjxzc+aIOel651FDI9nY9sG7edL
-X-archive-position: 33231
+To:     Michal Marek <mmarek@suse.cz>
+CC:     Sam Ravnborg <sam@ravnborg.org>, Tony Luck <tony.luck@gmail.com>,
+        linux arch <linux-arch@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnaud Lacombe <lacombar@gmail.com>,
+        Andi Kleen <andi@firstfloor.org>, <ralf@linux-mips.org>,
+        <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 3/4] kbuild: link of vmlinux moved to a script
+References: <20120428205651.GA7426@merkur.ravnborg.org> <20120428205919.GC7442@merkur.ravnborg.org> <4FA460AB.6060309@suse.cz> <20120505082916.GA14006@merkur.ravnborg.org> <CA+8MBbKd9zAouJy5JvUnLwUHMJ65HsYgCTfBgv42nm32EnMPFA@mail.gmail.com> <20120508165118.GA11750@merkur.ravnborg.org> <CAP=VYLobO--uwxv_hiMYBnjD-AU_0fqyQJD6argQygnkHnm5Vg@mail.gmail.com> <20120510122210.GA17550@sepie.suse.cz>
+In-Reply-To: <20120510122210.GA17550@sepie.suse.cz>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [128.224.146.65]
+X-archive-position: 33232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@linaro.org
+X-original-sender: paul.gortmaker@windriver.com
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
-On Thu, May 10, 2012 at 2:27 PM, John Crispin <blogic@openwrt.org> wrote:
+On 12-05-10 08:22 AM, Michal Marek wrote:
+> On Wed, May 09, 2012 at 06:58:16PM -0400, Paul Gortmaker wrote:
+>> On Tue, May 8, 2012 at 12:51 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
+>>> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+>>> index 26c5b65..1f4c27b 100644
+>>> --- a/scripts/link-vmlinux.sh
+>>> +++ b/scripts/link-vmlinux.sh
+>>> @@ -78,8 +78,8 @@ kallsyms()
+>>>                kallsymopt=--all-symbols
+>>>        fi
+>>>
+>>> -       local aflags="${KBUILD_AFLAGS} ${NOSTDINC_FLAGS}                     \
+>>> -                     ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
+>>> +       local aflags="${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL}               \
+>>> +                     ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
+>>
+>> All the linux-next builds for mips are failing, which I tracked down to this.
+>> Applying the above update doesn't help.  What is happening is that MIPS
+>> gets KBUILD_CPPFLAGS double-quoted, and then you get:
+>>
+>> + mips-wrs-linux-gnu-nm -n .tmp_vmlinux1
+>> + scripts/kallsyms
+>> + mips-wrs-linux-gnu-gcc -D__ASSEMBLY__ <..snip..>  -D__KERNEL__
+>> '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"' -c -o
+>> .tmp_kallsyms1.o -x assembler-with-cpp -
+>> <command-line>:0: error: macro names must be identifiers
+>> <command-line>:0: error: macro names must be identifiers
+>> make[1]: *** [vmlinux] Error 1
+>>
+>> Note the  '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"'
+>> part -- that is what triggers the two above errors.
+> 
+> I think it should be as simple as the below patch. But I have no mips
+> machine to verify myself.
 
-> Implement support for pinctrl on lantiq/xway socs. The IO core found on these
-> socs has the registers for pinctrl, pinconf and gpio mixed up in the same
-> register range. As the gpio_chip handling is only a few lines, the driver also
-> implements the gpio functionality. This obseletes the old gpio driver that was
-> located in the arch/ folder.
->
-> Signed-off-by: John Crispin <blogic@openwrt.org>
-> Cc: devicetree-discuss@lists.ozlabs.org
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Stephen Warren <swarren@wwwdotorg.org>
-> ---
-> This patch is part of a series moving the mips/lantiq target to OF and clkdev
-> support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
->
-> Changes in V2
-> * cleanup select/depends of the relevant Kconfig symbols
-> * dont assume that the arry with out MFPs is linearly mapped
-> * sane return code checks inside ltq_pinctrl_dt_node_to_map
-> * remove 2 calls to pr_err and replace them with calls to dev_err
-> * propagate gpio_chips base addr to the gpio_range
-> * define the pin count inside the of_device_id.data
-> * minor changes to accomodate the pinctrl-falcon driver (more virt pointers
->  and clocks)
-> * change from core_initcall_sync to arch_initcall
-> * several typos, codestyle and whitespace cleanups
-> * use BIT(x) in favour of (1 << x)
+Well I haven't boot tested it on anything either, but it does
+seem to resolve the double quoting that caused the compile failure.
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Thanks,
+Paul.
+--
 
-Yours,
-Linus Walleij
+> 
+> Michal
+> 
+> From d801533d5e6e509d5e115d2fb47655267c4c5ed4 Mon Sep 17 00:00:00 2001
+> From: Michal Marek <mmarek@suse.cz>
+> Date: Thu, 10 May 2012 14:15:49 +0200
+> Subject: [PATCH] mips: Fix KBUILD_CPPFLAGS definition
+> 
+> The KBUILD_CPPFLAGS variable is no longer passed to sh -c 'gcc ...',
+> but exported and used by the link-vmlinux.sh script. This means that the
+> double-quotes will not be evaluated by the shell.
+> 
+> Reported-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+> Signed-off-by: Michal Marek <mmarek@suse.cz>
+> 
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index 4fedf5a..722e04a 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -219,8 +219,8 @@ endif
+>  
+>  KBUILD_AFLAGS	+= $(cflags-y)
+>  KBUILD_CFLAGS	+= $(cflags-y)
+> -KBUILD_CPPFLAGS += -D"VMLINUX_LOAD_ADDRESS=$(load-y)"
+> -KBUILD_CPPFLAGS += -D"DATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)"
+> +KBUILD_CPPFLAGS += -DVMLINUX_LOAD_ADDRESS=$(load-y)
+> +KBUILD_CPPFLAGS += -DDATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)
+>  
+>  LDFLAGS			+= -m $(ld-emul)
+>  

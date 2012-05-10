@@ -1,42 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 03:19:21 +0200 (CEST)
-Received: from smtpo0.dc-uoit.net ([205.211.180.195]:41959 "EHLO
-        smtpo0.dc-uoit.net" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1903646Ab2EJBTQ convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 10 May 2012 03:19:16 +0200
-Received: from itomgwpp02.oncampus.local (itomgwpp02.oncampus.local [10.120.201.123])
-        by smtpo0.dc-uoit.net (8.14.3/8.14.3/Debian-9.4) with ESMTP id q4A06lFl007001;
-        Wed, 9 May 2012 21:18:14 -0400
-Received: from ITOMSCPP01.oncampus.local ([10.120.201.121]) by
- itomgwpp02.oncampus.local ([10.120.201.123]) with mapi; Wed, 9 May 2012
- 21:06:43 -0400
-From:   Donald McGillivray <Donald.McGillivray@uoit.ca>
-To:     "info@notice.com" <info@notice.com>
-Date:   Wed, 9 May 2012 21:06:42 -0400
-Subject: Webmail Quota Warning!
-Thread-Topic: Webmail Quota Warning!
-Thread-Index: AQHNLkkpbgqk/xuEJk68jnChVQQsZw==
-Message-ID: <66DD8A7A10B3F043ACB11A509D71C8A21BAC1ECD61@ITOMSCPP01.oncampus.local>
-Accept-Language: en-US, en-CA
-Content-Language: en-CA
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage: en-US, en-CA
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 May 2012 07:16:57 +0200 (CEST)
+Received: from smtp.snhosting.dk ([87.238.248.203]:14266 "EHLO
+        smtp.domainteam.dk" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1903541Ab2EJFQx (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 10 May 2012 07:16:53 +0200
+Received: from merkur.ravnborg.org (unknown [188.228.89.252])
+        by smtp.domainteam.dk (Postfix) with ESMTPA id 0242FF1BA9;
+        Thu, 10 May 2012 07:16:47 +0200 (CEST)
+Date:   Thu, 10 May 2012 07:16:46 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc:     Tony Luck <tony.luck@gmail.com>, Michal Marek <mmarek@suse.cz>,
+        linux arch <linux-arch@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnaud Lacombe <lacombar@gmail.com>,
+        Andi Kleen <andi@firstfloor.org>, ralf@linux-mips.org,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/4] kbuild: link of vmlinux moved to a script
+Message-ID: <20120510051646.GA14138@merkur.ravnborg.org>
+References: <20120428205651.GA7426@merkur.ravnborg.org> <20120428205919.GC7442@merkur.ravnborg.org> <4FA460AB.6060309@suse.cz> <20120505082916.GA14006@merkur.ravnborg.org> <CA+8MBbKd9zAouJy5JvUnLwUHMJ65HsYgCTfBgv42nm32EnMPFA@mail.gmail.com> <20120508165118.GA11750@merkur.ravnborg.org> <CAP=VYLobO--uwxv_hiMYBnjD-AU_0fqyQJD6argQygnkHnm5Vg@mail.gmail.com>
 MIME-Version: 1.0
-X-DC-UOIT-MailScanner-ID: q4A06lFl007001
-X-DC-UOIT-MailScanner: Found to be clean
-X-DC-UOIT-MailScanner-SpamCheck: not spam, SpamAssassin (cached, score=0.1,
-        required 5, BAYES_00 -1.90, LOCAL_MAILBOX_FULL 2.00)
-X-DC-UOIT-MailScanner-From: donald.mcgillivray@uoit.ca
-X-archive-position: 33226
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP=VYLobO--uwxv_hiMYBnjD-AU_0fqyQJD6argQygnkHnm5Vg@mail.gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-archive-position: 33227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Donald.McGillivray@uoit.ca
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 Return-Path: <linux-mips-bounce@linux-mips.org>
 
+On Wed, May 09, 2012 at 06:58:16PM -0400, Paul Gortmaker wrote:
+> On Tue, May 8, 2012 at 12:51 PM, Sam Ravnborg <sam@ravnborg.org> wrote:
+> > Hi Tony.
+> >
+> > On Mon, May 07, 2012 at 04:15:44PM -0700, Tony Luck wrote:
+> >> This patch is now in linux-next (tag next-20120507). But it looks to have
+> >> broken the ia64 build. I see this error:
+> >>
+> >>   CC      init/version.o
+> >>   LD      init/built-in.o
+> >>   KSYM    .tmp_kallsyms1.o
+> >> ld: .tmp_kallsyms1.o: linking constant-gp files with non-constant-gp files
+> >> ld: failed to merge target specific data of file .tmp_kallsyms1.o
+> >> make: *** [vmlinux] Error 1
+> >>
+> >> which looks like we used the wrong compile options when building
+> >> .tmp_kallsyms1.o
+> >
+> > Thanks for testing!
+> >
+> > Could you try if this helps.
+> >
+> >        Sam
+> >
+> > diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+> > index 26c5b65..1f4c27b 100644
+> > --- a/scripts/link-vmlinux.sh
+> > +++ b/scripts/link-vmlinux.sh
+> > @@ -78,8 +78,8 @@ kallsyms()
+> >                kallsymopt=--all-symbols
+> >        fi
+> >
+> > -       local aflags="${KBUILD_AFLAGS} ${NOSTDINC_FLAGS}                     \
+> > -                     ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
+> > +       local aflags="${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL}               \
+> > +                     ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
+> 
+> All the linux-next builds for mips are failing, which I tracked down to this.
+> Applying the above update doesn't help.  What is happening is that MIPS
+> gets KBUILD_CPPFLAGS double-quoted, and then you get:
+> 
+> + mips-wrs-linux-gnu-nm -n .tmp_vmlinux1
+> + scripts/kallsyms
+> + mips-wrs-linux-gnu-gcc -D__ASSEMBLY__ <..snip..>  -D__KERNEL__
+> '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"' -c -o
+> .tmp_kallsyms1.o -x assembler-with-cpp -
+> <command-line>:0: error: macro names must be identifiers
+> <command-line>:0: error: macro names must be identifiers
+> make[1]: *** [vmlinux] Error 1
+> 
+> Note the  '-D"VMLINUX_LOAD_ADDRESS=0xffffffff81100000"' '-D"DATAOFFSET=0"'
+> part -- that is what triggers the two above errors.
 
-Your Mailbox Has Exceeded It Storage Limit As Set By Your Administrator, And You Will Not Be Able To Receive New Mails Until You Re-Validate It. To Re-Validate - > Click Here<http://lanb.it/UTRi>
+Hi Paul.
+
+I will take a look at this tonight. Thanks for the report!
+
+	Sam
